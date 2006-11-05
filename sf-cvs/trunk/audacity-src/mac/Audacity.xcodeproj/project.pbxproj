@@ -813,6 +813,10 @@
 		2897F6F90AB3DB5A003C20C5 /* TranscriptionToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6EE0AB3DB5A003C20C5 /* TranscriptionToolBar.cpp */; };
 		2897F6FE0AB3DCD0003C20C5 /* Grabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6FC0AB3DCD0003C20C5 /* Grabber.cpp */; };
 		289F9C7E0AC671BB00797DC1 /* DeviceToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */; };
+		28D0255B0AFDA53B0035F843 /* alpasscv.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D025570AFDA53B0035F843 /* alpasscv.c */; };
+		28D0255C0AFDA53B0035F843 /* alpasscv.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D025580AFDA53B0035F843 /* alpasscv.h */; };
+		28D0255D0AFDA53B0035F843 /* alpassvc.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D025590AFDA53B0035F843 /* alpassvc.c */; };
+		28D0255E0AFDA53B0035F843 /* alpassvc.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D0255A0AFDA53B0035F843 /* alpassvc.h */; };
 		28E3E6E80A7C14CA00AB1361 /* ExportFLAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */; };
 		28E67F710A3A1A750021D89F /* pa_allocation.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E821FF0A39FD7600DCE280 /* pa_allocation.c */; };
 		28E67F720A3A1A770021D89F /* pa_converters.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E822030A39FD7600DCE280 /* pa_converters.c */; };
@@ -1954,6 +1958,10 @@
 		2897F6FD0AB3DCD0003C20C5 /* Grabber.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Grabber.h; sourceTree = "<group>"; };
 		289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = DeviceToolBar.cpp; sourceTree = "<group>"; };
 		289F9C7D0AC671BB00797DC1 /* DeviceToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = DeviceToolBar.h; sourceTree = "<group>"; };
+		28D025570AFDA53B0035F843 /* alpasscv.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = alpasscv.c; sourceTree = "<group>"; };
+		28D025580AFDA53B0035F843 /* alpasscv.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = alpasscv.h; sourceTree = "<group>"; };
+		28D025590AFDA53B0035F843 /* alpassvc.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = alpassvc.c; sourceTree = "<group>"; };
+		28D0255A0AFDA53B0035F843 /* alpassvc.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = alpassvc.h; sourceTree = "<group>"; };
 		28E3E6E60A7C14CA00AB1361 /* ExportFLAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportFLAC.h; sourceTree = "<group>"; };
 		28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFLAC.cpp; sourceTree = "<group>"; };
 		28E67F5F0A3A160D0021D89F /* libportaudio.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libportaudio.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3347,6 +3355,10 @@
 				28EB47D70AFD54B800502984 /* abs.h */,
 				17C8BE2C098B654200216F16 /* alpass.c */,
 				17C8BE2D098B654200216F16 /* alpass.h */,
+				28D025570AFDA53B0035F843 /* alpasscv.c */,
+				28D025580AFDA53B0035F843 /* alpasscv.h */,
+				28D025590AFDA53B0035F843 /* alpassvc.c */,
+				28D0255A0AFDA53B0035F843 /* alpassvc.h */,
 				17C8BE39098B654200216F16 /* amosc.c */,
 				17C8BE3A098B654200216F16 /* amosc.h */,
 				17C8BE3D098B654200216F16 /* areson.c */,
@@ -4043,6 +4055,8 @@
 				17CBAE2A098B84E300575C58 /* osptrs.h in Headers */,
 				17CBAE30098B84E300575C58 /* xldmem.h in Headers */,
 				17CBAE39098B84E300575C58 /* xlisp.h in Headers */,
+				28D0255C0AFDA53B0035F843 /* alpasscv.h in Headers */,
+				28D0255E0AFDA53B0035F843 /* alpassvc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4997,6 +5011,8 @@
 				17CBAE42098B84E300575C58 /* xlsubr.c in Sources */,
 				17CBAE43098B84E300575C58 /* xlsym.c in Sources */,
 				17CBAE44098B84E300575C58 /* xlsys.c in Sources */,
+				28D0255B0AFDA53B0035F843 /* alpasscv.c in Sources */,
+				28D0255D0AFDA53B0035F843 /* alpassvc.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
