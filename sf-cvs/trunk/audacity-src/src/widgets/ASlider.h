@@ -191,9 +191,11 @@ class ASlider :public wxPanel
             const wxPoint & pos, 
             const wxSize & size,
             int style = FRAC_SLIDER,
-            bool popup = true );
+            bool popup = true,
+            bool canUseShift = true,
+            float stepValue = STEP_CONTINUOUS );
    virtual ~ASlider();
-   
+
    float Get( bool convert = true );
    void Set(float value);
 
