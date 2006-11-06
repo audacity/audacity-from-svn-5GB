@@ -1475,8 +1475,10 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       //  depending on the shift key.  If not, cancel all selections.
       if (t)
          SelectionHandleClick(event, t, r, num);
-      else
+      else {
          SelectNone();
+         Refresh(false);
+      }
       
    } else if (event.ButtonUp(1) || event.ButtonUp(3)) {
       SetCapturedTrack( NULL );
@@ -1544,6 +1546,20 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
    mMouseCapture=IsSelecting;
 
    if (event.ShiftDown()) {
+      // If the shift button is down and no track is selected yet,
+      // at least select the track we clicked into.
+      bool isAtLeastOneTrackSelected = false;
+      
+      TrackListIterator iter(mTracks);
+      for (Track *t = iter.First(); t; t = iter.Next())
+         if (t->GetSelected()) {
+            isAtLeastOneTrackSelected = true;
+            break;
+         }
+      
+      if (!isAtLeastOneTrackSelected)
+         pTrack->SetSelected(true);
+
       // If the shift button is down, extend the current selection.
       ExtendSelection(event.m_x, r.x);
       return;
