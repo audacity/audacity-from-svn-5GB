@@ -82,7 +82,6 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
    mMouseOverLabelRight(-1),
    mIsAdjustingLabel(false)
 {
-   InitColours();
    SetDefaultName(_("Label Track"));
    SetName(GetDefaultName());
 
@@ -105,8 +104,6 @@ LabelTrack::LabelTrack(const LabelTrack &orig) :
    mMouseOverLabelRight(-1),
    mIsAdjustingLabel(false)
 {
-   InitColours();
-
    int len = orig.mLabels.Count();
 
    for (int i = 0; i < len; i++) {
@@ -559,15 +556,15 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
 
    wxRect before = r;
    before.width = int ((dsel0 - h) * pps);
-   dc.SetBrush(mUnselectedBrush);
-   dc.SetPen(mUnselectedPen);
+   dc.SetBrush(AColor::labelUnselectedBrush);
+   dc.SetPen(AColor::labelUnselectedPen);
    dc.DrawRectangle(before);
 
    wxRect selr = r;
    selr.x += before.width;
    selr.width = int ((dsel1 - dsel0) * pps);
-   dc.SetBrush(mSelectedBrush);
-   dc.SetPen(mSelectedPen);
+   dc.SetBrush(AColor::labelSelectedBrush);
+   dc.SetPen(AColor::labelSelectedPen);
    dc.DrawRectangle(selr);
 
    wxRect after = r;
@@ -579,8 +576,8 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
       after.x = r.x;
    }
 
-   dc.SetBrush(mUnselectedBrush);
-   dc.SetPen(mUnselectedPen);
+   dc.SetBrush(AColor::labelUnselectedBrush);
+   dc.SetPen(AColor::labelUnselectedPen);
    dc.DrawRectangle(after);
 
    int i;
@@ -611,8 +608,8 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
    ComputeLayout( r, h , pps );
    dc.SetTextForeground(theTheme.Colour( clrLabelTrackText));
    dc.SetBackgroundMode(wxTRANSPARENT);
-   dc.SetBrush(mTextNormalBrush);
-   dc.SetPen(mLabelSurroundPen);
+   dc.SetBrush(AColor::labelTextNormalBrush);
+   dc.SetPen(AColor::labelSurroundPen);
    const int nLabels = (int)mLabels.Count();
    int GlyphLeft;
    int GlyphRight;
@@ -640,9 +637,9 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
    // Draw the label boxes.
    for (i = 0; i < nLabels; i++)
    {
-      if( mSelIndex==i) dc.SetBrush(mTextEditBrush);
+      if( mSelIndex==i) dc.SetBrush(AColor::labelTextEditBrush);
       mLabels[i]->DrawTextBox( dc, r );
-      if( mSelIndex==i) dc.SetBrush(mTextNormalBrush);
+      if( mSelIndex==i) dc.SetBrush(AColor::labelTextNormalBrush);
    }
 
    // Draw highlights
@@ -664,9 +661,9 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
    // Draw the text and the label boxes.
    for (i = 0; i < nLabels; i++)
    {
-      if( mSelIndex==i) dc.SetBrush(mTextEditBrush);
+      if( mSelIndex==i) dc.SetBrush(AColor::labelTextEditBrush);
       mLabels[i]->DrawText( dc, r );
-      if( mSelIndex==i) dc.SetBrush(mTextNormalBrush);
+      if( mSelIndex==i) dc.SetBrush(AColor::labelTextNormalBrush);
    }
 
    // Draw the cursor, if there is one.
@@ -1974,25 +1971,6 @@ void LabelTrack::DeleteLabel(int index)
 {
    wxASSERT((index < (int)mLabels.GetCount()));
    mLabels.RemoveAt(index);
-}
-
-// Private method called from the constructor
-void LabelTrack::InitColours()
-{
-// JKC: Standard Audacity colours are grays and shades of blue.
-// To keep interface 'unified' only use special colors
-// where there is a good/established reason, e.g.
-//   Red   - Record.
-//   Green - Playback.
-   mLabelSurroundPen.SetColour( 0, 0, 0);
-   mTextEditBrush.SetColour( 255,255,255);
-   mTextNormalBrush.SetColour( 190,190,240 );// #BEBEF0
-
-   mUnselectedBrush.SetColour(192, 192, 192);
-   mSelectedBrush.SetColour(148, 148, 170);
-
-   mUnselectedPen.SetColour(192, 192, 192);
-   mSelectedPen.SetColour(148, 148, 170);
 }
 
 wxBitmap & LabelTrack::GetGlyph( int i)

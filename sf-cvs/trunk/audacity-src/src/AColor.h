@@ -62,6 +62,14 @@ class AColor {
    static wxPen WideEnvelopePen;
    static wxBrush envelopeBrush;
 
+   static wxBrush labelTextNormalBrush;
+   static wxBrush labelTextEditBrush;
+   static wxBrush labelUnselectedBrush;
+   static wxBrush labelSelectedBrush;
+   static wxPen labelUnselectedPen;
+   static wxPen labelSelectedPen;
+   static wxPen labelSurroundPen;
+
    static wxBrush tooltipBrush;
 
 

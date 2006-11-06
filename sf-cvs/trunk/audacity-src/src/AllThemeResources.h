@@ -264,3 +264,22 @@ from there.  Audacity will look for a file called "Pause.png".
    DEFINE_COLOUR( clrTimeBack,             wxColour(   160,160,160),  wxT("TimeBack") ); 
    DEFINE_COLOUR( clrTimeFontFocus,        wxColour(     0,  0,  0),  wxT("TimeFontFocus") );
    DEFINE_COLOUR( clrTimeBackFocus,        wxColour(   242,242,255),  wxT("TimeBackFocus") );
+
+   DEFINE_COLOUR( clrLabelTextNormalBrush, wxColour(   190,190,240),  wxT("LabelTextNormalBrush") );
+   DEFINE_COLOUR( clrLabelTextEditBrush,   wxColour(   255,255,255),  wxT("LabelTextEditBrush") );
+   DEFINE_COLOUR( clrLabelUnselectedBrush, wxColour(   192,192,192),  wxT("LabelUnselectedBrush") );
+   DEFINE_COLOUR( clrLabelSelectedBrush,   wxColour(   148,148,170),  wxT("LabelSelectedBrush") );
+   DEFINE_COLOUR( clrLabelUnselectedPen,   wxColour(   192,192,192),  wxT("LabelUnselectedPen") );
+   DEFINE_COLOUR( clrLabelSelectedPen,     wxColour(   148,148,170),  wxT("LabelSelectedPen") );
+   DEFINE_COLOUR( clrLabelSurroundPen,     wxColour(     0,  0,  0),  wxT("LabelSurroundPen") );
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: b8a9d878-fa18-4cba-a5ce-3c61b5d77f0e
