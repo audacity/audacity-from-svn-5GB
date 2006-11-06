@@ -35,6 +35,14 @@ wxBrush AColor::soloBrush;
 wxBrush AColor::envelopeBrush;
 wxPen AColor::envelopePen;
 wxPen AColor::WideEnvelopePen;
+
+wxBrush AColor::labelFlagBrush;
+wxBrush AColor::labelUnselectedBrush;
+wxBrush AColor::labelSelectedBrush;
+wxPen AColor::labelFlagPen;
+wxPen AColor::labelUnselectedPen;
+wxPen AColor::labelSelectedPen;
+
 wxBrush AColor::tooltipBrush;
 
 wxFont AColor::labelFont;
@@ -172,7 +180,15 @@ void AColor::Init(wxDC * dc)
    WideEnvelopePen.SetColour(110, 110, 220);
    envelopeBrush.SetColour(110, 110, 220);
    WideEnvelopePen.SetWidth( 3 );
-   
+
+   labelFlagBrush.SetColour(204, 0, 0);
+   labelUnselectedBrush.SetColour(192, 192, 192);
+   labelSelectedBrush.SetColour(148, 148, 170);
+
+   labelFlagPen.SetColour(204, 0, 0);
+   labelUnselectedPen.SetColour(192, 192, 192);
+   labelSelectedPen.SetColour(148, 148, 170);
+
    // muteBrush[1] is used when solo is on, since solo overrides mute.
 //   muteBrush[0].SetColour(110, 220, 110);
 //   muteBrush[1].SetColour(170, 180, 170);

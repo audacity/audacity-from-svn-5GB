@@ -16,6 +16,7 @@
 #include <wx/textfile.h>
 #include <wx/intl.h>
 
+#include "AColor.h"
 #include "LabelTrack.h"
 #include "DirManager.h"
 #include "Internat.h"
@@ -31,7 +32,6 @@ LabelTrack *TrackFactory::NewLabelTrack()
 LabelTrack::LabelTrack(DirManager * projDirManager):
 Track(projDirManager)
 {
-   InitColours();
    SetName(_("Label Track"));
 
    ResetFont();
@@ -44,8 +44,6 @@ Track(projDirManager)
 LabelTrack::LabelTrack(const LabelTrack &orig) :
 Track(orig)
 {
-   InitColours();
-
    int len = orig.mLabels.Count();
 
    for (int i = 0; i < len; i++) {
@@ -97,15 +95,15 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
 
    wxRect before = r;
    before.width = int ((dsel0 - h) * pps);
-   dc.SetBrush(mUnselectedBrush);
-   dc.SetPen(mUnselectedPen);
+   dc.SetBrush(AColor::labelUnselectedBrush);
+   dc.SetPen(AColor::labelUnselectedPen);
    dc.DrawRectangle(before);
 
    wxRect selr = r;
    selr.x += before.width;
    selr.width = int ((dsel1 - dsel0) * pps);
-   dc.SetBrush(mSelectedBrush);
-   dc.SetPen(mSelectedPen);
+   dc.SetBrush(AColor::labelSelectedBrush);
+   dc.SetPen(AColor::labelSelectedPen);
    dc.DrawRectangle(selr);
 
    wxRect after = r;
@@ -115,12 +113,12 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
       after.width -= (r.x - after.x);
       after.x = r.x;
    }
-   dc.SetBrush(mUnselectedBrush);
-   dc.SetPen(mUnselectedPen);
+   dc.SetBrush(AColor::labelUnselectedBrush);
+   dc.SetPen(AColor::labelUnselectedPen);
    dc.DrawRectangle(after);
 
-   dc.SetBrush(mFlagBrush);
-   dc.SetPen(mFlagPen);
+   dc.SetBrush(AColor::labelFlagBrush);
+   dc.SetPen(AColor::labelFlagPen);
 
    int nextx = 0;
 
@@ -154,7 +152,7 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
                dc.SetBrush(*wxWHITE_BRUSH);
             dc.DrawPolygon(3, tri);
             if (mSelIndex == i)
-               dc.SetBrush(mFlagBrush);
+               dc.SetBrush(AColor::labelFlagBrush);
 
             dc.DrawLine(x, y, x, y + height);
 
@@ -179,7 +177,7 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
 
                dc.SetBrush(*wxTRANSPARENT_BRUSH);
                dc.DrawRectangle(outline);
-               dc.SetBrush(mFlagBrush);
+               dc.SetBrush(AColor::labelFlagBrush);
             }
 
             mLabels[i]->width = textWidth + 8;
@@ -660,16 +658,4 @@ void LabelTrack::AddLabel(double t, double t1, const wxString &title)
    mLabels.Insert(l, pos);
 
    mSelIndex = pos;
-}
-
-// Private method called from the constructor
-void LabelTrack::InitColours()
-{
-   mFlagBrush.SetColour(204, 0, 0);
-   mUnselectedBrush.SetColour(192, 192, 192);
-   mSelectedBrush.SetColour(148, 148, 170);
-
-   mFlagPen.SetColour(204, 0, 0);
-   mUnselectedPen.SetColour(192, 192, 192);
-   mSelectedPen.SetColour(148, 148, 170);
 }
