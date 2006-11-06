@@ -182,15 +182,6 @@ class LabelTrack:public Track {
    int mxMouseDisplacement;    /// Displacement of mouse cursor from the centre being dragged.
    LabelArray mLabels;
 
-   wxBrush mUnselectedBrush;
-   wxBrush mSelectedBrush;
-   wxBrush mTextNormalBrush;
-   wxBrush mTextEditBrush;
-
-   wxPen mLabelSurroundPen;
-   wxPen mUnselectedPen;
-   wxPen mSelectedPen;
-
    static int mIconHeight;
    static int mIconWidth;
    static int mTextHeight;
@@ -214,7 +205,6 @@ class LabelTrack:public Track {
    // Used only for a LabelTrack on the clipboard
    double mClipLen;
 
-   void InitColours();
    void ComputeLayout(wxRect & r, double h, double pps);
    void ComputeTextPosition(wxRect & r, int index);
    void SetCurrentCursorPosition(wxDC & dc, int xPos);

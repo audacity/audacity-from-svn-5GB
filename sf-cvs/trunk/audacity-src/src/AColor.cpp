@@ -45,6 +45,15 @@ wxBrush AColor::soloBrush;
 wxBrush AColor::envelopeBrush;
 wxPen AColor::envelopePen;
 wxPen AColor::WideEnvelopePen;
+
+wxBrush AColor::labelTextNormalBrush;
+wxBrush AColor::labelTextEditBrush;
+wxBrush AColor::labelUnselectedBrush;
+wxBrush AColor::labelSelectedBrush;
+wxPen AColor::labelUnselectedPen;
+wxPen AColor::labelSelectedPen;
+wxPen AColor::labelSurroundPen;
+
 wxBrush AColor::tooltipBrush;
 
 //
@@ -202,7 +211,15 @@ void AColor::Init()
    theTheme.SetBrushColour( envelopeBrush,   clrEnvelope );
 
    WideEnvelopePen.SetWidth( 3 );
-   
+
+   theTheme.SetBrushColour( labelTextNormalBrush, clrLabelTextNormalBrush );
+   theTheme.SetBrushColour( labelTextEditBrush,   clrLabelTextEditBrush );
+   theTheme.SetBrushColour( labelUnselectedBrush, clrLabelUnselectedBrush );
+   theTheme.SetBrushColour( labelSelectedBrush,   clrLabelSelectedBrush );
+   theTheme.SetPenColour( labelUnselectedPen,   clrLabelUnselectedPen );
+   theTheme.SetPenColour( labelSelectedPen,     clrLabelSelectedPen );
+   theTheme.SetPenColour( labelSurroundPen,     clrLabelSurroundPen );
+
    // These colors were modified to avoid using reserved colors red and green
    // for the buttons.
    theTheme.SetBrushColour( muteBrush[0],      clrMuteButtonActive);      
