@@ -52,8 +52,11 @@ class DirManager: public XMLTagHandler {
 
    wxLongLong GetFreeDiskSpace();
 
-   BlockFile *NewSimpleBlockFile(samplePtr sampleData, sampleCount sampleLen,
-                                 sampleFormat format);
+   BlockFile *NewSimpleBlockFile(samplePtr sampleData,
+                                 sampleCount sampleLen,
+                                 sampleFormat format,
+                                 bool allowDeferredWrite = false);
+                                 
    BlockFile *NewAliasBlockFile( wxString aliasedFile, sampleCount aliasStart,
                                  sampleCount aliasLen, int aliasChannel);
 
@@ -123,6 +126,12 @@ class DirManager: public XMLTagHandler {
    // Do not delete any temporary files on exit. This is only called if
    // auto recovery is cancelled and should be retried later
    static void SetDontDeleteTempFiles() { dontDeleteTempFiles = true; }
+   
+   // Write all write-cached block files to disc, if any
+   void WriteCacheToDisk();
+
+   // Fill cache of blockfiles, if caching is enabled (otherwise do nothing)
+   void FillBlockfilesCache();
 
  private:
 

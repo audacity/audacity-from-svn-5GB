@@ -18,6 +18,14 @@
 #include "../DirManager.h"
 #include "../xml/XMLWriter.h"
 
+struct SimpleBlockFileCache {
+   bool active;
+   bool needWrite;
+   sampleFormat format;
+   samplePtr sampleData;
+   void* summaryData;
+};
+
 class SimpleBlockFile : public BlockFile {
  public:
 
@@ -26,7 +34,8 @@ class SimpleBlockFile : public BlockFile {
    /// Create a disk file and write summary and sample data to it
    SimpleBlockFile(wxFileName baseFileName,
                    samplePtr sampleData, sampleCount sampleLen,
-                   sampleFormat format);
+                   sampleFormat format,
+                   bool allowDeferredWrite = false);
    /// Create the memory structure to refer to the given block file
    SimpleBlockFile(wxFileName existingFile, sampleCount len,
                    float min, float max, float rms);
@@ -50,6 +59,21 @@ class SimpleBlockFile : public BlockFile {
    virtual void Recover();
 
    static BlockFile *BuildFromXML(DirManager &dm, const wxChar **attrs);
+   
+   virtual bool GetNeedWriteCacheToDisk();
+   virtual void WriteCacheToDisk();
+
+   virtual bool GetNeedFillCache() { return !mCache.active; }
+   virtual void FillCache();
+
+ protected:
+
+   bool WriteSimpleBlockFile(samplePtr sampleData, sampleCount sampleLen,
+                             sampleFormat format, void* summaryData);
+   static bool GetCache();
+   void ReadIntoCache();
+   
+   SimpleBlockFileCache mCache;
 };
 
 #endif

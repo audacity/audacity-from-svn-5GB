@@ -1750,6 +1750,8 @@ void AudacityProject::OpenFile(wxString fileName)
       delete mRecordingRecoveryHandler;
       mRecordingRecoveryHandler = NULL;
    }
+
+   GetDirManager()->FillBlockfilesCache();
 }
 
 bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
@@ -2340,6 +2342,8 @@ void AudacityProject::Import(wxString fileName)
       SelectAllIfNone();
       OnEffect(ALL_EFFECTS | CONFIGURED_EFFECT, mNormalizeIndex ); // gNormalize);
    }
+
+   GetDirManager()->FillBlockfilesCache();
 }
 
 bool AudacityProject::SaveAs()
@@ -3098,13 +3102,21 @@ void AudacityProject::OnAudioIOStartRecording()
 {
    // Before recording is started, auto-save the file. The file will have
    // empty tracks at the bottom where the recording will be put into
-   if (IsAutoSaveEnabled())
+   //
+   // When block files are cached, auto recovery is disabled while recording,
+   // since no block files are written during recording that could be
+   // recovered.
+   //
+   if (IsAutoSaveEnabled() && !GetCacheBlockFiles())
       AutoSave();
 }
 
+// This is called after recording has stopped and all tracks have flushed.
 void AudacityProject::OnAudioIOStopRecording()
 {
-   // This is called after recording has stopped and all tracks have flushed.
+   // Write all cached files to disk, if any
+   mDirManager->WriteCacheToDisk();
+   
    // Now we auto-save again to get the project to a "normal" state again.
    if (IsAutoSaveEnabled())
       AutoSave();
@@ -3113,7 +3125,8 @@ void AudacityProject::OnAudioIOStopRecording()
 void AudacityProject::OnAudioIONewBlockFiles(const wxString& blockFileLog)
 {
    // New blockfiles have been created, so add them to the auto-save file
-   if (IsAutoSaveEnabled() && !mAutoSaveFileName.IsEmpty())
+   if (IsAutoSaveEnabled() && !GetCacheBlockFiles() &&
+       !mAutoSaveFileName.IsEmpty())
    {
       wxFFile f(mAutoSaveFileName, wxT("at"));
       if (!f.IsOpened())
@@ -3198,6 +3211,13 @@ bool AudacityProject::ProgressIsShown()
 wxString AudacityProject::GetImportFilesFilter()
 {
    return _("All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|MP2/MPEG files (*.mp2;*.mpa;*.mpg;*.mpeg)|*.mp2;*.mpa;*.mpg;*.mpeg|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof");
+}
+
+bool AudacityProject::GetCacheBlockFiles()
+{  
+   bool cacheBlockFiles = false;
+   gPrefs->Read(wxT("/Directories/CacheBlockFiles"), &cacheBlockFiles);
+   return cacheBlockFiles;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

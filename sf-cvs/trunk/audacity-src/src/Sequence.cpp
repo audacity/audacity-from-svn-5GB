@@ -1136,7 +1136,8 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
       int newLastBlockLen = lastBlock->f->GetLength() + addLen;
 
       newLastBlock->f =
-         mDirManager->NewSimpleBlockFile(buffer2, newLastBlockLen, mSampleFormat);
+         mDirManager->NewSimpleBlockFile(buffer2, newLastBlockLen, mSampleFormat,
+                                         blockFileLog != NULL);
       if (blockFileLog)
          ((SimpleBlockFile*)newLastBlock->f)->SaveXML(*blockFileLog);
          
@@ -1158,11 +1159,13 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
       w->start = mNumSamples;
 
       if (format == mSampleFormat) {
-         w->f = mDirManager->NewSimpleBlockFile(buffer, l, mSampleFormat);
+         w->f = mDirManager->NewSimpleBlockFile(buffer, l, mSampleFormat,
+                                                blockFileLog != NULL);
       }
       else {
          CopySamples(buffer, format, temp, mSampleFormat, l);
-         w->f = mDirManager->NewSimpleBlockFile(temp, l, mSampleFormat);
+         w->f = mDirManager->NewSimpleBlockFile(temp, l, mSampleFormat,
+                                                blockFileLog != NULL);
       }
 
       if (blockFileLog)

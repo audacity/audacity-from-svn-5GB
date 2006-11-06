@@ -735,12 +735,14 @@ wxFileName DirManager::MakeBlockFileName()
 
 BlockFile *DirManager::NewSimpleBlockFile(
                                  samplePtr sampleData, sampleCount sampleLen,
-                                 sampleFormat format)
+                                 sampleFormat format,
+                                 bool allowDeferredWrite)
 {
    wxFileName fileName = MakeBlockFileName();
 
    BlockFile *newBlockFile =
-       new SimpleBlockFile(fileName, sampleData, sampleLen, format);
+       new SimpleBlockFile(fileName, sampleData, sampleLen, format,
+                           allowDeferredWrite);
 
    blockFileHash[fileName.GetName()]=newBlockFile;
 
@@ -1398,6 +1400,90 @@ void DirManager::RemoveOrphanedBlockfiles()
       wxRemoveFile(orphanList[i]);
    }
 }
+
+void DirManager::FillBlockfilesCache()
+{
+   bool cacheBlockFiles = false;
+   gPrefs->Read(wxT("/Directories/CacheBlockFiles"), &cacheBlockFiles);
+
+   if (!cacheBlockFiles)
+      return; // user opted not to cache block files
+
+   BlockHash::iterator i;
+   int numNeed = 0;
+
+   i = blockFileHash.begin();
+   while (i != blockFileHash.end())
+   {
+      BlockFile *b = i->second;
+      if (b->GetNeedFillCache())
+         numNeed++;
+      i++;
+   }
+   
+   if (numNeed == 0)
+      return;
+      
+   AudacityProject *p = GetActiveProject();
+   
+   p->ProgressShow(_("Caching audio"),
+      _("Caching audio into memory..."));
+
+   i = blockFileHash.begin();
+   int current = 0;
+   while (i != blockFileHash.end())
+   {
+      BlockFile *b = i->second;
+      if (b->GetNeedFillCache())
+         b->FillCache();
+      if (!p->ProgressUpdate((int)((current * 1000.0) / numNeed)))
+         break; // user cancelled progress dialog, stop caching
+      i++;
+      current++;
+   }
+   
+   p->ProgressHide();
+}
+
+void DirManager::WriteCacheToDisk()
+{
+   BlockHash::iterator i;
+   int numNeed = 0;
+
+   i = blockFileHash.begin();
+   while (i != blockFileHash.end())
+   {
+      BlockFile *b = i->second;
+      if (b->GetNeedWriteCacheToDisk())
+         numNeed++;
+      i++;
+   }
+   
+   if (numNeed == 0)
+      return;
+      
+   AudacityProject *p = GetActiveProject();
+   
+   p->ProgressShow(_("Saving recorded audio"),
+      _("Saving recorded audio to disk..."));
+
+   i = blockFileHash.begin();
+   int current = 0;
+   while (i != blockFileHash.end())
+   {
+      BlockFile *b = i->second;
+      if (b->GetNeedWriteCacheToDisk())
+      {
+         b->WriteCacheToDisk();
+         p->ProgressUpdate((int)((current * 1000.0) / numNeed));
+      }
+      i++;
+      current++;
+   }
+   
+   p->ProgressHide();
+}
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
