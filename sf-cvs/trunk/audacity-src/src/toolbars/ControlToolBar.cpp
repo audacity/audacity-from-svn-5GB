@@ -425,6 +425,9 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
    
    if (cutpreview && t0==t1)
       return; /* msmeyer: makes no sense */
+      
+   if (cutpreview && !mCutPreviewTracks)
+      return; /* no tracks selected, cannot preview */
    
    mStop->Enable();
    mRewind->Disable();
