@@ -48,9 +48,6 @@ Envelope::Envelope()
    mIsDeleting = false;
 
    mMirror = true;
-
-   mPen.SetColour(110, 110, 220);
-   mBrush.SetColour(110, 110, 220);
 }
 
 Envelope::~Envelope()
@@ -165,14 +162,14 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
    double tright = h + (r.width / pps);
    double dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
 
-   dc.SetPen(mPen);
+   dc.SetPen(AColor::envelopePen);
    dc.SetBrush(*wxWHITE_BRUSH);
 
    for (int i = 0; i < (int)mEnv.Count(); i++) {
       if (mEnv[i]->t >= h && mEnv[i]->t <= tright) {
          if (i == mDragPoint) {
-            dc.SetPen(mPen);
-            dc.SetBrush(mBrush);
+            dc.SetPen(AColor::envelopePen);
+            dc.SetBrush(AColor::envelopeBrush);
          }
 
          double v = mEnv[i]->val;
@@ -200,7 +197,7 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
          }
 
          if (i == mDragPoint) {
-            dc.SetPen(mPen);
+            dc.SetPen(AColor::envelopePen);
             dc.SetBrush(*wxWHITE_BRUSH);
          }
       }

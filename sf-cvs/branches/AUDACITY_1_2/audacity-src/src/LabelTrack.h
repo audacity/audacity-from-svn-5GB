@@ -100,20 +100,10 @@ class LabelTrack:public Track {
 
    LabelArray mLabels;
 
-   wxBrush mFlagBrush;
-   wxBrush mUnselectedBrush;
-   wxBrush mSelectedBrush;
-
-   wxPen mFlagPen;
-   wxPen mUnselectedPen;
-   wxPen mSelectedPen;
-
    // Used only for a LabelTrack on the clipboard
    double mClipLen;
 
    static wxFont msFont;
-
-   void InitColours();
 };
 
 #endif
