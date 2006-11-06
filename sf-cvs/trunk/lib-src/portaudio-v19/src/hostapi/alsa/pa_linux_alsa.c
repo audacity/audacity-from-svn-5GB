@@ -1,5 +1,5 @@
 /*
- * $Id: pa_linux_alsa.c,v 1.3 2006-10-02 00:29:03 llucius Exp $
+ * $Id: pa_linux_alsa.c,v 1.4 2006-11-06 11:28:17 msmeyer Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * ALSA implementation by Joshua Haberman and Arve Knudsen
@@ -467,10 +467,8 @@ error:
  */
 static int IgnorePlugin( const char *pluginId )
 {
-    /* XXX: dmix and default ignored because after opening and closing, they seem to keep hogging resources.
-     */
     static const char *ignoredPlugins[] = {"hw", "plughw", "plug", "dsnoop", "tee",
-        "file", "null", "shm", "cards", "dmix", "default", NULL};
+        "file", "null", "shm", "cards", NULL};
     int i = 0;
     while( ignoredPlugins[i] )
     {
@@ -484,6 +482,16 @@ static int IgnorePlugin( const char *pluginId )
     return 0;
 }
 
+static int snd_pcm_open_with_retry(snd_pcm_t **pcmp, const char *name, snd_pcm_stream_t stream, int mode)
+{
+	int ret = snd_pcm_open(pcmp, name, stream, mode);
+	if (ret==EBUSY) {
+		sleep(1);
+		int ret = snd_pcm_open(pcmp, name, stream, mode);
+	}
+	return ret;
+}
+									  
 /* Build PaDeviceInfo list, ignore devices for which we cannot determine capabilities (possibly busy, sigh) */
 static PaError BuildDeviceList( PaAlsaHostApiRepresentation *alsaApi )
 {
@@ -681,7 +689,7 @@ static PaError BuildDeviceList( PaAlsaHostApiRepresentation *alsaApi )
 
         /* Query capture */
         if( deviceNames[i].hasCapture &&
-                snd_pcm_open( &pcm, deviceNames[i].alsaName, SND_PCM_STREAM_CAPTURE, blocking ) >= 0 )
+                snd_pcm_open_with_retry( &pcm, deviceNames[i].alsaName, SND_PCM_STREAM_CAPTURE, blocking ) >= 0 )
         {
             if( GropeDevice( pcm, deviceNames[i].isPlug, StreamDirection_In, blocking, deviceInfo,
                         &canMmap ) != paNoError )
@@ -694,7 +702,7 @@ static PaError BuildDeviceList( PaAlsaHostApiRepresentation *alsaApi )
 
         /* Query playback */
         if( deviceNames[i].hasPlayback &&
-                snd_pcm_open( &pcm, deviceNames[i].alsaName, SND_PCM_STREAM_PLAYBACK, blocking ) >= 0 )
+                snd_pcm_open_with_retry( &pcm, deviceNames[i].alsaName, SND_PCM_STREAM_PLAYBACK, blocking ) >= 0 )
         {
             if( GropeDevice( pcm, deviceNames[i].isPlug, StreamDirection_Out, blocking, deviceInfo,
                         &canMmap ) != paNoError )
@@ -725,6 +733,8 @@ static PaError BuildDeviceList( PaAlsaHostApiRepresentation *alsaApi )
             if( baseApi->info.defaultInputDevice == paNoDevice && baseDeviceInfo->maxInputChannels > 0 )
                 baseApi->info.defaultInputDevice = devIdx;
             if(  baseApi->info.defaultOutputDevice == paNoDevice && baseDeviceInfo->maxOutputChannels > 0 )
+                baseApi->info.defaultOutputDevice = devIdx;
+	    if( strcmp(deviceNames[i].alsaName, "default")==0 )
                 baseApi->info.defaultOutputDevice = devIdx;
             PA_DEBUG(("%s: Adding device %s\n", __FUNCTION__, deviceNames[i].name));
             baseApi->deviceInfos[devIdx++] = (PaDeviceInfo *) deviceInfo;
@@ -869,7 +879,7 @@ static PaError AlsaOpen( const PaUtilHostApiRepresentation *hostApi, const PaStr
         deviceName = streamInfo->deviceString;
 
     PA_DEBUG(( "%s: Opening device %s\n", __FUNCTION__, deviceName ));
-    if( (ret = snd_pcm_open( pcm, deviceName, streamDir == StreamDirection_In ? SND_PCM_STREAM_CAPTURE : SND_PCM_STREAM_PLAYBACK,
+    if( (ret = snd_pcm_open_with_retry( pcm, deviceName, streamDir == StreamDirection_In ? SND_PCM_STREAM_CAPTURE : SND_PCM_STREAM_PLAYBACK,
                     SND_PCM_NONBLOCK )) < 0 )
     {
         /* Not to be closed */
@@ -1981,7 +1991,9 @@ static PaError AlsaStop( PaAlsaStream *stream, int abort )
         if( stream->playback.pcm )
         {
             ENSURE_( snd_pcm_nonblock( stream->playback.pcm, 0 ), paUnanticipatedHostError );
-            if( snd_pcm_drain( stream->playback.pcm ) < 0 )
+	    /* draining causes deadlock when we are using dmix */
+            /* if( snd_pcm_drain( stream->playback.pcm ) < 0 ) */
+            if( snd_pcm_drop( stream->playback.pcm ) < 0 )
             {
                 PA_DEBUG(( "%s: Draining playback handle failed!\n", __FUNCTION__ ));
             }
