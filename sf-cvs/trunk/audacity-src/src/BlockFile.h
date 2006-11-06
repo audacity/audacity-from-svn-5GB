@@ -55,6 +55,14 @@ class BlockFile {
                         sampleCount start, sampleCount len) = 0;
 
    // Other Properties
+   
+   // Write cache to disk, if it has any
+   virtual bool GetNeedWriteCacheToDisk() { return false; }
+   virtual void WriteCacheToDisk() { /* no cache by default */ }
+
+   // Fill read cache of block file, if it has any
+   virtual bool GetNeedFillCache() { return false; }
+   virtual void FillCache() { /* no cache by default */ }
 
    /// Stores a representation of this file in XML
    virtual void SaveXML(XMLWriter &xmlFile) = 0;

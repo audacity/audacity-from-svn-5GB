@@ -96,7 +96,7 @@ void DirectoriesPrefs::PopulateOrExchange( ShuttleGui & S )
    }
    S.EndStatic();
 
-   S.StartStatic( _("Auto save"),1);
+   S.StartStatic( _("Auto save"),0);
    {
       S.TieCheckBox( _("Auto save a copy of the project in a separate folder"),
                      wxT("/Directories/AutoSaveEnabled"), true);
@@ -104,6 +104,13 @@ void DirectoriesPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieTextBox( _("Auto save every:"), wxT("/Directories/AutoSaveMinutes"), 5.0, 9);
       S.AddUnits(  _("minutes") );
       S.EndThreeColumn();
+   }
+   S.EndStatic();
+   
+   S.StartStatic( _("Audio cache"),0);
+   {
+      S.TieCheckBox( _("Always hold all audio data in memory"),
+                     wxT("/Directories/CacheBlockFiles"), false);
    }
    S.EndStatic();
 }

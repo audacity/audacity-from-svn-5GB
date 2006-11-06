@@ -325,6 +325,8 @@ class AudacityProject:public wxFrame,
    
    static wxString GetImportFilesFilter();
 
+   static bool GetCacheBlockFiles();
+
    // Callbacks for backend operations
 
    bool mUserCanceledProgress;
