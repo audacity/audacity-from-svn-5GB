@@ -426,9 +426,6 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
    if (cutpreview && t0==t1)
       return; /* msmeyer: makes no sense */
       
-   if (cutpreview && !mCutPreviewTracks)
-      return; /* no tracks selected, cannot preview */
-   
    mStop->Enable();
    mRewind->Disable();
    mBatch->Disable();
@@ -496,10 +493,20 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
             double tcp0 = t0-beforeLen;
             double tcp1 = (t1+afterLen) - (t1-t0);
             SetupCutPreviewTracks(tcp0, t0, t1, tcp1);
-            token = gAudioIO->StartStream(
-                mCutPreviewTracks->GetWaveTrackArray(false),
-                WaveTrackArray(), NULL, p->GetRate(), tcp0, tcp1, p, false,
-                t0, t1-t0);
+            if (mCutPreviewTracks)
+            {
+               token = gAudioIO->StartStream(
+                  mCutPreviewTracks->GetWaveTrackArray(false),
+                  WaveTrackArray(), NULL, p->GetRate(), tcp0, tcp1, p, false,
+                  t0, t1-t0);
+            } else
+            {
+               // Cannot create cut preview tracks, clean up and exit
+               SetPlay(false);
+               SetStop(false);
+               SetRecord(false);
+               return;
+            }
          } else {
             token = gAudioIO->StartStream(t->GetWaveTrackArray(false),
                                   WaveTrackArray(), t->GetTimeTrack(),
