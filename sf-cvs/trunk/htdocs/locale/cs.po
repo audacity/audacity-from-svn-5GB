@@ -3,7 +3,7 @@ msgid ""
 msgstr "Project-Id-Version: Audacity website\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-08-01 19:18-0700\n"
-"PO-Revision-Date: 2006-11-01 13:54+0100\n"
+"PO-Revision-Date: 2006-11-02 09:47+0100\n"
 "Last-Translator: Ales Tosovsky <tosovsky@wo.cz>\n"
 "Language-Team: Czech <tosovsky@wo.cz>\n"
 "MIME-Version: 1.0\n"
@@ -1158,7 +1158,7 @@ msgstr "Nové vlastnosti  v Audacity 1.3.1 a 1.3.2"
 #: download/features-1.3-a.php:20
 #: download/features-1.3-i.php:70
 msgid "Improved Toolbar Docking"
-msgstr "Vylepšené dokování nástrojových lišt"
+msgstr "Vylepšené dokování nástrojových panelů"
 
 #: download/features-1.3-a.php:21
 msgid "Track focus for improved keyboard navigation"
@@ -1186,7 +1186,7 @@ msgstr "Ukládání a oprava projektu"
 #: download/features-1.3-f.php:40
 #: download/features-1.3-l.php:53
 msgid "Selection Bar"
-msgstr "Výběrová lišta"
+msgstr "Panel výběru"
 
 #: download/features-1.3-a.php:26
 #: download/features-1.3-b.php:50
@@ -1276,7 +1276,7 @@ msgstr "Další:"
 #: download/features-1.3-k.php:51
 #: download/features-1.3-l.php:61
 msgid "Top: "
-msgstr "Zpět na: "
+msgstr "Hlavní téma: "
 
 #: download/features-1.3-c.php:9
 msgid "Audacity 1.3: Multiple clips per track"
@@ -1316,7 +1316,7 @@ msgstr "Přetažení klipu z jiné stopy."
 
 #: download/features-1.3-c.php:110
 msgid "These commands, and other editing commands, are described in detail below.  Alternatively, click on the item in the menu to the left to jump directly to that command."
-msgstr ""
+msgstr "Tyto a další editační příkazy jsou podrobně popsány níže. Můžete také kliknout na položku menu vlevo a skočit přímo na příslušnou část popisu."
 
 #: download/features-1.3-c.php:112
 msgid "Other topics:"
@@ -1334,7 +1334,7 @@ msgstr "Přesouvání několika klipů najednou."
 
 #: download/features-1.3-c.php:122
 msgid "Cut"
-msgstr "Vyjmout"
+msgstr "Vyjmout (Cut)"
 
 #: download/features-1.3-c.php:123
 msgid "Removes the selected audio and puts it on the clipboard, and shifts the following audio to the left."
@@ -1342,7 +1342,7 @@ msgstr ""
 
 #: download/features-1.3-c.php:131
 msgid "Split Cut"
-msgstr "Rozdělit vyjmutím"
+msgstr "Rozdělit vyjmutím (Split Cut)"
 
 #: download/features-1.3-c.php:132
 msgid "Removes the selected audio and puts it on the clipboard, but does not shift the following audio.  The preceding and following audio are now separate clips that can be moved independently."
@@ -1350,7 +1350,7 @@ msgstr ""
 
 #: download/features-1.3-c.php:140
 msgid "Copy"
-msgstr "Kopírovat"
+msgstr "Kopírovat (Copy)"
 
 #: download/features-1.3-c.php:141
 msgid "Copies the selected audio to the clipboard."
@@ -1358,7 +1358,7 @@ msgstr "Překopíruje vybranou část do schránky."
 
 #: download/features-1.3-c.php:149
 msgid "Trim"
-msgstr "Zkrátit"
+msgstr "Zkrátit (Trim)"
 
 #: download/features-1.3-c.php:150
 msgid "Removes all audio from the current clip except the selected part.  Does not affect other clips in the same track."
@@ -1366,7 +1366,7 @@ msgstr ""
 
 #: download/features-1.3-c.php:158
 msgid "Delete"
-msgstr "Smazat"
+msgstr "Smazat (Delete)"
 
 #: download/features-1.3-c.php:159
 msgid "Removes the selected audio without placing it on the clipboard, and shifts following audio to the left."
@@ -1374,7 +1374,7 @@ msgstr ""
 
 #: download/features-1.3-c.php:167
 msgid "Split Delete"
-msgstr "Rozděleit smazáním"
+msgstr "Rozděleit smazáním (Split Delete)"
 
 #: download/features-1.3-c.php:168
 msgid "Removes the selected audio without placing it on the clipboard, but does not shift the following audio.  The preceding and following audio are now separate clips that can be moved independently."
@@ -1382,7 +1382,7 @@ msgstr ""
 
 #: download/features-1.3-c.php:176
 msgid "Silence"
-msgstr "Ticho"
+msgstr "Ticho (Silence)"
 
 #: download/features-1.3-c.php:177
 msgid "Replaces the selection with silence"
@@ -1390,7 +1390,7 @@ msgstr "Nahradí výběr tichem"
 
 #: download/features-1.3-c.php:185
 msgid "Split"
-msgstr "Rozdělit"
+msgstr "Rozdělit (Split)"
 
 #: download/features-1.3-c.php:186
 msgid "Splits the current clip into up to three clips at the selection boundaries.  The audio before, within, and after the selection can now all be shifted independently"
@@ -1398,7 +1398,7 @@ msgstr ""
 
 #: download/features-1.3-c.php:195
 msgid "Duplicate"
-msgstr "Duplikovat"
+msgstr "Duplikovat (Duplicate)"
 
 #: download/features-1.3-c.php:196
 msgid "Creates a new track containing only the current selection as a new clip"
@@ -1422,7 +1422,7 @@ msgstr ""
 
 #: download/features-1.3-c.php:220
 msgid "Join"
-msgstr "Spojit"
+msgstr "Spojit (Join)"
 
 #: download/features-1.3-c.php:221
 msgid "If you select a region that overlaps one or more clips, they are all joined into one large clip.  Regions in-between clips are treated as silence."
@@ -1430,15 +1430,15 @@ msgstr ""
 
 #: download/features-1.3-c.php:230
 msgid "The time-shift tool can now be used to move a single clip between tracks.  Just click and drag."
-msgstr ""
+msgstr "Nástroj pro časový posun se nyní dá použít k přesouvání jednoho klipu mezi zvukovými stopami. Prostě na něj klikněte a přetáhněte ho."
 
 #: download/features-1.3-c.php:239
 msgid "To time-shift multiple clips at once, select all of the clips you want to move using the normal selection tool, then use the time-shift tool to click and drag.  If you click within the selection, all selected clips will move together.  If you click outside the selection, only the clip under the mouse cursor will move."
-msgstr ""
+msgstr "Časový posun několika klipů najednou se dá provést tak, že pomocí normálního nástroje výběru označíte všechny klipy, které chcete přesunout, přepnete na nástroj časového posunu, kliknete a přetáhnete. Jestliže kliknete dovnitř výběru, přesune se vše, co je vybráno najednou. Kdž kliknete mimo výběr, přesune se jen klip pod kurzorem myši."
 
 #: download/features-1.3-d.php:9
 msgid "Audacity 1.3: Selection Bar"
-msgstr "Audacity 1.3: Výběrová lišta"
+msgstr "Audacity 1.3: Výběrový panel"
 
 #: download/features-1.3-d.php:19
 msgid "The selection bar"
@@ -1450,11 +1450,11 @@ msgstr "V Audacity 1.2 je aktuální výběr zobrazen ve stavové liště na dol
 
 #: download/features-1.3-d.php:29
 msgid "The project sample rate control on the selection bar"
-msgstr ""
+msgstr "Ovládání vzorkovací frekvence projektu na výběrovém panelu"
 
 #: download/features-1.3-d.php:35
 msgid "Typing a new time directly into the selection bar."
-msgstr "Psaní nového času přímo do výběrové lišty."
+msgstr "Psaní nového času přímo do výběrového panelu."
 
 #: download/features-1.3-d.php:41
 msgid "Different time formats supported by the selection bar"
@@ -1466,11 +1466,11 @@ msgstr "Audacity 1.3: Vylepšené popisové stopy"
 
 #: download/features-1.3-e.php:16
 msgid "Label Tracks are Audacity's way for you to create markings and annotations within your project.  In Audacity 1.3, Label Tracks are much improved, with support for overlapping labels, and support for modifying both the left and right edge of the label region just by clicking and dragging."
-msgstr ""
+msgstr "Popisové stopy v Audacity představují způsob jak uvnitř projektu vytvářet značky a poznámky. V Audacity 1.3 došlo k mnohým vylepšením. Popisky se mohou překrývat a je možno upravovat levou i pravou hranice označené oblasti prostým kliknutím a přetažením."
 
 #: download/features-1.3-e.php:21
 msgid "To create a label, start by selecting some audio."
-msgstr ""
+msgstr "Když chcete vytvořit popisku, nejprve označte část zvukové stopy."
 
 #: download/features-1.3-e.php:27
 msgid "Select 'Add Label At Selection' from the Tracks menu."
@@ -1478,19 +1478,19 @@ msgstr "Zvolte 'Vložit popisku k výběru' z menu stopy."
 
 #: download/features-1.3-e.php:33
 msgid "Type some text into the label."
-msgstr ""
+msgstr "Do popisky napište nějaký text."
 
 #: download/features-1.3-e.php:39
 msgid "Click and drag the handles to resize the label."
-msgstr ""
+msgstr "Velikost popisky změníte kliknutím a tažením za úchytky."
 
 #: download/features-1.3-e.php:45
 msgid "Later, you can retrieve the selection - just click inside the label."
-msgstr ""
+msgstr "Později, když se chcete vrátit ke stejnému výběru, prostě klikněte dovnitř popisky."
 
 #: download/features-1.3-e.php:51
 msgid "After you click, the label region becomes the current selection, allowing you to perform an operation on other tracks in the area within the label."
-msgstr ""
+msgstr "Po kliknutí se z oblasti označené popiskou stane aktivní výběr, ve kterém můžete na obsažených stopách provádět změny."
 
 #: download/features-1.3-f.php:9
 msgid "Audacity 1.3: Mac OS X features"
@@ -1566,11 +1566,11 @@ msgstr ""
 
 #: download/features-1.3-h.php:9
 msgid "Audacity 1.3: Improved Toolbar Docking"
-msgstr "Audacity 1.3: Vylepšené dokování nástrojových lišt"
+msgstr "Audacity 1.3: Vylepšené dokování nástrojových panelů"
 
 #: download/features-1.3-h.php:16
 msgid "In Audacity 1.3.2 and higher, you can easily dock, undock, and rearrange the location of all of Audacity's toolbars, including the selection bar.  A new blue triangle visually indicates when you are about to dock a toolbar in a particular location."
-msgstr "V Audacity 1.3.2 a vyšší je možné jednoduše přemísťovat nástrojové panely a to včetně výběrové lišty. Při přesouvání se nově objevuje malá modrá šipka, která napovídá, kam se panel umístí."
+msgstr "V Audacity 1.3.2 a vyšší je možné jednoduše přemísťovat nástrojové panely a to včetně panelu pro výběr. Při přesouvání se nově objevuje malá modrá šipka, která napovídá, kam se panel umístí."
 
 #: download/features-1.3-h.php:21
 msgid "First, click on the grabber to the left of a toolbar you wish to drag."
@@ -1586,11 +1586,11 @@ msgstr "Pokud se během přetahování přiblížíte k okraji nebo rozhraní ji
 
 #: download/features-1.3-h.php:39
 msgid "Release the mouse button near a blue arrow and the toolbar is docked in its new location."
-msgstr "Uvolněte tlačítko myši poblíž modré šipky a nástrojová lišta se přichytí na novém místě."
+msgstr "Uvolněte tlačítko myši poblíž modré šipky a nástrojový panel se přichytí na novém místě."
 
 #: download/features-1.3-h.php:42
 msgid "Commands to hide or show toolbars are found in the View menu."
-msgstr "Příkazy skrytí nebo zobrazení nástrojových lišt jsou umístěny v menu Zobrazit (View)."
+msgstr "Příkazy skrytí nebo zobrazení nástrojových panelů jsou umístěny v menu Zobrazit (View)."
 
 #: download/features-1.3-h.php:58
 #: download/features-1.3-j.php:64
@@ -1665,7 +1665,7 @@ msgstr "Nejprve najděte poškozenou část nahrávky a zvětšujte ji<br>\n"
 
 #: download/features-1.3-j.php:28
 msgid "Select the damaged portion of the audio."
-msgstr "Zvolte poškozenou část zvukové stopy."
+msgstr "Označte poškozenou část zvukové stopy."
 
 #: download/features-1.3-j.php:34
 msgid "Choose <b>Repair</b> from the Effect menu.<br>The selection is replaced with smoothly interpolated samples."
@@ -1681,7 +1681,7 @@ msgid "The new Equalization effect, shown below, has many more controls\n"
 "You can either draw an arbitrary equalization curve, or use a graphic\n"
 "equalizer.\n"
 msgstr "Nový ekvalizační efekt, jak je vidět níže, má mnohem víc ovládacích\n"
-" prvků, které umožní sestavit komplexní filtr k zvýraznění nebo redukci\n"
+" prvků, které umožní sestavit komplexní filtr k zvýraznění nebo potlačení\n"
 " určených frekvencí. Také můžete nakreslit libovolnou ekvalizační křivku,\n"
 " nebo použít grafický ekvalizér.\n"
 
@@ -1705,7 +1705,7 @@ msgid "Starting in version 1.3.2, Audacity automatically saves snapshots\n"
 "and prompt you to recover it.\n"
 msgstr "Počínaje verzí 1.3.2 Audacity automaticky průběžně ukládá snímky\n"
 " právě otevřeného projektu. Pokud Audacity nebo celý počítač\n"
-" havaruje nebo neočekávaně vypadne napájení, objeví se při příštím\n"
+" havaruje, nebo neočekávaně vypadne napájení, objeví se při příštím\n"
 " spuštění upozornění a pokud je nalezen neuložený projekt, nabídne\n"
 " se jeho oprava.\n"
 
@@ -1819,7 +1819,7 @@ msgstr "<p>Toto jsou doplňkové efektové pluginy pro zvukový editor Audacity.
 
 #: download/plugins.php:9
 msgid "Plug-In Effects"
-msgstr "Efektové pluginy."
+msgstr "Efektové zásuvné moduly (pluginy)"
 
 #: download/plugins.php:14
 msgid "You can download and install plug-ins to add extra effects to Audacity.  Plug-ins appear at the bottom of the \"Effect\" menu.  To install new plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under \"Program Files.\"  On Mac OS X, it is usually under \"Applications.\""
@@ -1924,9 +1924,41 @@ msgid "<h3>Changes in Audacity 1.2.5</h3>\n"
 "    Lithuanian (lt), Welsh (cy), and Turkish (tr).\n"
 "</li>\n"
 "</ul>"
-msgstr ""
+msgstr "<h3>Změny v Audacity 1.2.5</h3>\n"
+"<ul>\n"
+"<li>K dispozici je oficiální verze pro Intel Mac.\n"
+"</li>\n"
+"<li>Oprava chyby ve funkci generování ticha, která se aplikovala na všechny stopy,\n"
+"    nikoliv jen na vybrané.\n"
+"</li>\n"
+"<li>Mac OS X: kód pro otevírání zvukového zařízení byl přepsán. Především je\n"
+"    konzervativnější ve změnách nastavení zařízení. Už nemění nastavení,\n"
+"	když startujete program nebo zavíráte nastavovací dialog a pokud\n"
+"	je stávající nastavení vyhovující, nemění se ani když spouštíte\n"
+"	přehrávání nebo nahrávání. Pokud se nastavení mění, mělo by to\n"
+"	na zařízeních jako jsou Griffin iMic, ART USB Phono Plus,\n"
+"    a Ion iMX02 USB fungovat lépe.\n"
+"</li>\n"
+"<li>Mac OS X: byla přidána nová možnost nastavení vstupu a výstupu, která dovoluje\n"
+"    nařídit Audacity, aby nikdy neměnila žádná nastavení zvukového zařízení.\n"
+"</li>\n"
+"<li>Novější libsndfile podporuje import a export FLAC\n"
+"</li>\n"
+"<li>Používá se nová verze soundtouch která je rychlejší a kvalitnější\n"
+"</li>\n"
+"<li>Konfigurační script byl opraven tak, aby upřednostňoval systémové knihovny před lokálními kopiemi,\n"
+"    čímž se zkrátí čas kompilace a sníží spotřeba paměti.\n"
+"</li>\n"
+"<li>Menší změny v souborech nápovědy.\n"
+"</li>\n"
+"<li>Nové a změněné překlady: Bulgarian (bg), Galician (gl),\n"
+"    Traditional Chinese (zh_TW), Simplified Chinese (zh), Slovenian (sl),\n"
+"    Swedish (sv), Bangladeshi (bn), Slovakian (sk), Romanian (ro),\n"
+"    Lithuanian (lt), Welsh (cy), and Turkish (tr).\n"
+"</li>\n"
+"</ul>"
 
-#: download/release-notes.php:25
+#: download/release-notes.php:60
 msgid "<h3>Changes in Audacity 1.2.4b</h3>\n"
 "<ul>\n"
 "<li>A serious problem with the French translation was corrected.\n"
@@ -1936,7 +1968,7 @@ msgstr "<h3>Změny v Audacity 1.2.4b</h3>\n"
 "<li>Závažný problém s francouzským překladem byl odstraněn.\n"
 "</ul>"
 
-#: download/release-notes.php:30
+#: download/release-notes.php:65
 msgid "<h3>Changes in Audacity 1.2.4</h3>\n"
 "<ul>\n"
 "<li>The File menu now includes a list of recent files.\n"
@@ -2260,7 +2292,7 @@ msgid "<p>First, set Audacity to <a href=\"faq?s=recording&amp;i=stereo\">record
 "<p>See also: <a href=\"faq?s=files&amp;i=split\">How to split a long recording into multiple files</a>.</p>"
 msgstr "<p>Nejprve Audacity nastavte pro <a href=\"faq?s=recording&amp;i=stereo\">nahrávání ve stereu</a>.</p>\n"
 "<p>Zasuňte jeden konec stereo kabelu do zdířky “Linkový výstup (Line Out)” nebo “Sluchátka (Headphone)” na vašem přehrávači kazet, minidisců nebo jiném stereo systému. Druhý konec zasuňte do zdířky “Linkový vstup (Line In)” na počítači. Jestli takový kabel nemáte, dá se koupit v obchodu s elektronikou.</p>\n"
-"<p>Jako nahrávací vstup na liště Audacity zvolte “Linkový vstup (Line In)” a stiskněte tlačítko pro nahrávání. Jakmile Audacity začne nahrávat, zapněte přehrávání kazety nebo disku. Až bude nahrána celá skladba, stiskněte tlačítko Stop.</p>\n"
+"<p>Jako nahrávací vstup na příslušném panelu Audacity zvolte “Linkový vstup (Line In)” a stiskněte tlačítko pro nahrávání. Jakmile Audacity začne nahrávat, zapněte přehrávání kazety nebo disku. Až bude nahrána celá skladba, stiskněte tlačítko Stop.</p>\n"
 "<p>Poznámky:</p>\n"
 "<ul>\n"
 "\t<li><p>Nepřipojujte externí stereo zařízení do zdířky “Mikrofon (Microphone)” na počítači. Ta je určena pro nízkoúrovňové signály. Místo toho použijte “Linkový vstup (Line In)”.</p></li>\n"
@@ -2339,7 +2371,7 @@ msgid "<h3>Windows and Linux</h3>\n"
 "<p>Mac OS X users can capture streaming audio using a program like <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
 msgstr "<h3>Windows a Linux</h3>\n"
 "<p>Na většině windowsových i linuxových zvukových kartách je možné nahrávat cokoliv, co počítač právě přehrává, včetně internetových streamovaných rádií.</p>\n"
-"<p>V rozbalovacím menu na mixovací liště Audacity zvolte jako vstupní zdroj “Wave Out” nebo “Stereo Mix”. (Označení může být trochu odlišné v závislosti na ovladačích, které ve svém počítači používáte.) Jakmile stisknete tlačítko pro nahrávání, Audacity začne zaznamenávat všechno, co slyšíte ze svých reproduktorů.</p>\n"
+"<p>V rozbalovacím menu na mixovacím panelu Audacity zvolte jako vstupní zdroj “Wave Out” nebo “Stereo Mix”. (Označení může být trochu odlišné v závislosti na ovladačích, které ve svém počítači používáte.) Jakmile stisknete tlačítko pro nahrávání, Audacity začne zaznamenávat všechno, co slyšíte ze svých reproduktorů.</p>\n"
 "<p>Jestli to na vašem počítači takto nefunguje, zbývá ještě možnost propojit na zvukové kartě lineární výstup “Line Out” (speaker) a lineární vstup “Line In” a použít Audacity k nahrávání z Line In.</p>\n"
 "<h3>Mac OS X</h3>\n"
 "<p>Uživatelé Mac OS X mohou k zachycení streamovaného zvuku použít jiné programy. Např. <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> nebo <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
@@ -2452,7 +2484,7 @@ msgstr "<ol>\n"
 "<p>Jestli chcete vyrobit CD, které bude hrát v běžných přehrávačích, ujistěte se, že zvolíte vypálení “music” nebo “audio” CD (nikoliv “data” CD). Používejte CD-R disky, protože některé přehrávače si s přepisovatelnými CD-RW disky neporadí.</p>\n"
 "<p>Některé vypalovací programy dokáží vypalovat pouze zvukové soubory ve formátu “16-bitů, 44.1KHz stereo”. Jestliže váš software na výrobu CD nedokáže otevřít vaše zvukové soubory, vyexportujte je znovu s tímto nastavením:</p>\n"
 "<ol>\n"
-"  <li>Ve spodní liště Audacity nastavte vzorkovací frekvenci na 44100 Hz.</li>\n"
+"  <li>Ve spodním panelu Audacity nastavte vzorkovací frekvenci na 44100 Hz.</li>\n"
 "  <li>V nastavení formátu souboru zvolte WAV (16-bit...) nebo AIFF (16-bit...).</li>\n"
 "  <li>Jestliže váš projekt neobsahuje žádnou stereo stopu, zvolte \"Nová stereo stopa\" z menu Projekt. (To způsobí, že Audacity bude projekt exportovat jako stereo soubor.)</li>\n"
 "</ol>\n"
@@ -3119,7 +3151,7 @@ msgstr "%d. %B %Y"
 
 #: include/news.inc.php:44
 msgid "Audacity 1.3.2 and 1.2.5 Released"
-msgstr "Audacity 1.3.2 a 1.2.0 uvolněna"
+msgstr "Audacity 1.3.2 a 1.2.5 uvolněna"
 
 #: include/news.inc.php:45
 msgid "<p>\n"
@@ -3199,7 +3231,7 @@ msgstr "<p>\n"
 "\n"
 "Kompletní seznam změn a známých problémů v Audacity 1.2.5 najdete v <a href=\"/download/release-notes\">poznámkách k vydání 1.2.5</a>, \n"
 "další informace o nové beta verzi jsou v dokumentu \n"
-"<a href=\"/download/features-1.3-a\">nové vlastnosti ve verzi 1.3</a>\n"
+"<a href=\"/download/features-1.3-a\">nové vlastnosti ve verzi 1.3</a>.\n"
 "\n"
 "</p>\n"
 "\n"
@@ -3207,9 +3239,9 @@ msgstr "<p>\n"
 "<dl><dt></dt><dd><!-- indent cheat -->\n"
 "<dl>\n"
 "       <dt> Zlepšení použitelnosti </dt>\n"
-"             <dd> Nová výběrová lišta </dd>\n"
+"             <dd> Nový výběrový panel </dd>\n"
 "             <dd> Nové vlastnosti popisových stop </dd>\n"
-"             <dd> Vylepšené dokování nástrojových lišt </dd>\n"
+"             <dd> Vylepšené dokování nástrojových panelů </dd>\n"
 "             <dd> Změny názvů a organizace menu </dd>\n"
 "             <dd> Zlepšení výběrů, měřítka a ovládání přehrávání </dd>\n"
 "       <dt> Nejvýznamnější zlepšení v některých vestavěných efektech </td>\n"
@@ -3310,7 +3342,7 @@ msgstr "\n"
 "\t\t\t\t<dt>Opravy pádů</dt><dd>automatické ukládání dat pomáhá rychle a jednoduše opravit pád programu</dd>\n"
 "\t\t\t\t<dt>Nový opravný efekt</dt><dd>vyrovnává poškozené vlny</dd>\n"
 "\t\t\t\t<dt>Změny v uživatelském rozhraní</dt>\n"
-"\t\t\t\t\t<dd>motivy vzhledu (nastavitelné uživatelské rozhraní), nové vlastnosti dokování nástrojových lišt \n"
+"\t\t\t\t\t<dd>motivy vzhledu (nastavitelné uživatelské rozhraní), nové vlastnosti dokování nástrojových panelů \n"
 "\t\t\t\t\t\tnové časové ovládání, vylepšená podpora přístupnosti, změny \n"
 "\t\t\t\t\t\tv okně historie a mnoho dalšího</dd>\n"
 "\t\t\t\t<dt>Vylepšená výběrová lišta</dt><dd>lepší ovládání a opravy chyb</dd>\n"
