@@ -73,6 +73,10 @@ Ruler::~Ruler()
 {
    Invalidate();  // frees up our arrays
 
+   if (mUserBits) {
+      delete[] mUserBits;
+   }
+
    delete mMinorFont;
    delete mMajorFont;
 }
@@ -201,6 +205,7 @@ void Ruler::OfflimitsPixels(int start, int end)
          mLength = mRight-mLeft;
       else
          mLength = mBottom-mTop;      
+      delete [] mUserBits;
       mUserBits = new int[mLength+1];
       for(i=0; i<=mLength; i++)
          mUserBits[i] = 0;
@@ -643,7 +648,11 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
        mDC->GetTextExtent(exampleText, &strW, &strH);
      }
      fontSize--;
-     
+
+     if (mMinorFont)
+        delete mMinorFont;
+     if (mMajorFont)
+        delete mMajorFont;
      mMinorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
      mMajorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxBOLD);
    }
