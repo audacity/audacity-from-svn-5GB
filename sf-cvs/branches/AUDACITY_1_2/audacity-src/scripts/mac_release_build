@@ -1,52 +1,88 @@
 #!/bin/sh
 
+if [ ! -d libiconv* -o ! -d wxMac* -o ! -d audacity ]
+then
+   cat <<EOF
 
-cat <<EOF
+You do not have the build directory setup correctly.  You should have
+a structure that looks like this (as an example):
 
-Did you remember to rebuild wxWidgets with these env vars set:
+   .
+   ..
+   audacity
+   libiconv-1.11
+   wxMac-2.4.2
 
-export MACOSX_DEPLOYMENT_TARGET=10.3
-export NEXT_ROOT="/Developer/SDKs/MacOSX10.3.9.sdk"
-export C_INCLUDE_PATH="/usr/local/include:/Developer/SDKs/MacOSX10.3.9.sdk /usr/include"
-export LIBRARY_PATH="/usr/local/lib:/Developer/SDKs/MacOSX10.3.9.sdk /usr/lib/gcc/darwin/3.3"
-export LD_PREBIND=1
-export CPPFLAGS=-DMAC_OS_X_VERSION_MAX_ALLOWED=1030
+And you should execute this script like this:
 
-Press ENTER to continue
+   audacity/scripts/mac_release_build
+
+This will build libiconv first, then wxMac, and finally Audacity using options
+that will allow Audacity to run on OS X 10.3.9+.
+
+The final DMG files will reside in this directory.
 
 EOF
-read dummy
-
-if [ -f mac_release_build ]
-then
-   echo 'You must execute this script from the base Audacity directory'
    exit 1
 fi
 
+echo "Selecting gcc 3.3...requires root access...enter password when prompted"
+echo 
+sudo gcc_select 3.3
+
+top=$(pwd)
+
 export MACOSX_DEPLOYMENT_TARGET=10.3
 export NEXT_ROOT="/Developer/SDKs/MacOSX10.3.9.sdk"
-export C_INCLUDE_PATH="/usr/local/include:/Developer/SDKs/MacOSX10.3.9.sdk /usr/include"
-export LIBRARY_PATH="/usr/local/lib:/Developer/SDKs/MacOSX10.3.9.sdk /usr/lib/gcc/darwin/3.3"
+export C_INCLUDE_PATH="$top/include /Developer/SDKs/MacOSX10.3.9.sdk /usr/include"
+export LIBRARY_PATH="$top/lib /Developer/SDKs/MacOSX10.3.9.sdk /usr/lib/gcc/darwin/3.3"
 export LD_PREBIND=1
 export CPPFLAGS=-DMAC_OS_X_VERSION_MAX_ALLOWED=1030
+export CFLAGS=-DMAC_OS_X_VERSION_MAX_ALLOWED=1030
+export WX_CONFIG="$top/bin/wx-config"
 
 #
-# Build ANSI version
+# Build libiconv
 #
-./configure --enable-static=yes --enable-shared=no --enable-unicode=no --with-lib-preference=local,system --with-portaudio=v19
-make
+if [ ! -f include/iconv.h ]
+then
+   cd libiconv*
+   ./configure --prefix=$top --enable-static=yes --enable-shared=no --disable-shared
+   make -j 4
+   make install
+   make distclean
+   cd $top
+fi
+
+#
+# Build wxMac ANSI version
+#
+if [ ! -f lib/libwx_mac-* ]
+then
+   cd wxMac*
+   mkdir bld
+   cd bld
+   ../configure --prefix=$top --with-libiconv-prefix=$top --enable-static=yes --enable-shared=no --enable-unicode=no
+   make -j 4
+   make install
+   make distclean
+   cd $top
+fi
+
+#
+# Build Audacity ANSI version
+#
+cd audacity
+export NEXT_ROOT="/Developer/SDKs/MacOSX10.3.9.sdk"
+./configure --enable-static=yes --enable-shared=no --enable-unicode=no
+make || exit 1
 unset NEXT_ROOT
-mkdmg rc1
+scripts/mkdmg rc1
 mv *.dmg ..
 make distclean
+cd $top
 
 #
-# Build UNICODE version
+# Change gcc back
 #
-./configure --enable-static=yes --enable-shared=no --enable-unicode=yes --with-lib-preference=local,system --with-portaudio=v19
-make
-unset NEXT_ROOT
-mkdmg rc1 unicode
-mv *.dmg ..
-make distclean
-
+sudo gcc_select 4.0

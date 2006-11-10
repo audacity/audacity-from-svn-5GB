@@ -8,13 +8,14 @@ SUFFIX=$1
 TYPE=$2
 
 # Setup
-VERSION=`awk '/^#define+ AUDACITY_VERSION / {print $3}' src/Audacity.h`
-RELEASE=`awk '/^#define+ AUDACITY_RELEASE / {print $3}' src/Audacity.h`
-REVISION=`awk '/^#define+ AUDACITY_REVISION / {print $3}' src/Audacity.h`
+VER=`grep AUDACITY_VERSION_STRING src/Audacity.h | cut -f 2 -d '"'`
+VERSION=`echo $VER | cut -f 1 -d '.'`
+RELEASE=`echo $VER | cut -f 2 -d '.'`
+REVISION=`echo $VER | cut -f 3 -d '.' | cut -f 1 -d '-'`
 
 if [ -z "$SUFFIX" ]
 then
-   SUFFIX=`grep '^#define AUDACITY_SUFFIX ' src/Audacity.h | cut -d '"' -f 2`
+   SUFFIX=`echo $VER- | cut -f 2 -d '-'`
 fi
 
 if [ ! -z "$TYPE" ]
