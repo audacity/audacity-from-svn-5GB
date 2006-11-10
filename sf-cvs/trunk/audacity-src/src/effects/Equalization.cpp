@@ -199,6 +199,73 @@ const float EffectEqualization::curvey[][nCurvePoints] =
 #pragma warning( default: 4305 )
 #endif
 
+#ifdef __WXGTK__
+/*
+ * wxSlider exhibits strange behaviour on wxGTK when wxSL_INVERSE and/or
+ * negative scale values are used. This affects at least SUSE 9.3 with
+ * self-compiled wxWidgets 2.6.2 and Kubuntu 6.06. This class is used
+ * to transparently work around those problems. Use wxSliderBugfix wherever
+ * you would have used a slider with wxSL_INVERSE and/or negative scale
+ * values.
+ *
+ * The equalization class uses wxSliderBugfix everywhere even when not
+ * strictly needed. This is important because we override some wxSlider
+ * functions which are not virtual, and so we need to cast to wxSliderBugfix
+ * instead of to wxSlider to allow the right function to be called statically.
+ */
+class wxSliderBugfix : public wxSlider
+{
+public:
+   wxSliderBugfix(wxWindow* parent, wxWindowID id, int value,
+                  int minValue, int maxValue,
+                  const wxPoint& point = wxDefaultPosition,
+                  const wxSize& size = wxDefaultSize,
+                  long style = wxSL_HORIZONTAL,
+                  const wxValidator& validator = wxDefaultValidator,
+                  const wxString& name = wxT("slider")) :
+         wxSlider(parent, id, 0, 0, maxValue - minValue, point,
+                  size, style & ~wxSL_INVERSE, validator, name) {
+      isInverse = (style & wxSL_INVERSE) != 0;
+      originalMinValue = minValue;
+      SetValue(value);
+   }
+   
+   int GetMin() const {
+      return originalMinValue;
+   }
+   
+   int GetMax() const {
+      return wxSlider::GetMax() + originalMinValue;
+   }
+   
+   int GetValue() const {
+      if (isInverse)
+         return wxSlider::GetMax() - wxSlider::GetValue() + originalMinValue;
+      else
+         return wxSlider::GetValue() + originalMinValue;
+   }
+   
+   void SetValue(int value) {
+      if (isInverse)
+         wxSlider::SetValue(wxSlider::GetMax() - value + originalMinValue);
+      else
+         wxSlider::SetValue(value - originalMinValue);
+   }
+   
+private:
+   bool isInverse;
+   int originalMinValue;
+};
+
+#else
+
+/*
+ * On platforms other than wxGTK, the workaround is not needed
+ */
+#define wxSliderBugfix wxSlider
+
+#endif // ifdef __WXGTK__
+
 const wxChar * EffectEqualization::curveNames[] =
   {
     wxT("amradio"),
@@ -897,10 +964,10 @@ void EqualizationDialog::MakeEqualizationDialog()
    szr1->SetFlexibleDirection( wxBOTH );
 
    szr2 = new wxBoxSizer( wxVERTICAL );
-   dBMaxSlider = new wxSlider(this, ID_DBMAX, 30, 0, 60,
+   dBMaxSlider = new wxSliderBugfix(this, ID_DBMAX, 30, 0, 60,
                            wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE);
    szr2->Add( dBMaxSlider, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 4 );
-   dBMinSlider = new wxSlider(this, ID_DBMIN, -30, -120, -10,
+   dBMinSlider = new wxSliderBugfix(this, ID_DBMIN, -30, -120, -10,
                            wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE);
    szr2->Add( dBMinSlider, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 4 );
    szr1->Add( szr2, 0, wxEXPAND|wxALIGN_CENTRE|wxALL, 4 );
@@ -993,7 +1060,7 @@ void EqualizationDialog::MakeEqualizationDialog()
    {
       if( i == NUMBER_OF_BANDS )
          break;
-      m_sliders[i] = new wxSlider(this, ID_SLIDER + i, 0, -20, +20,
+      m_sliders[i] = new wxSliderBugfix(this, ID_SLIDER + i, 0, -20, +20,
                         wxDefaultPosition, wxSize(20, 124), wxSL_VERTICAL|
                          wxSL_INVERSE);
       szrG->Add( m_sliders[i], 0, wxEXPAND|wxALIGN_CENTER );
@@ -1051,7 +1118,7 @@ void EqualizationDialog::MakeEqualizationDialog()
    szrH->Add( txt, 0 );
 
    // length of filter (M) slider
-   MSlider = new wxSlider(this, ID_LENGTH, (M -1)/2, 10, 4095,
+   MSlider = new wxSliderBugfix(this, ID_LENGTH, (M -1)/2, 10, 4095,
                            wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
    szrH->Add( MSlider, 0, wxEXPAND );
 
@@ -1564,7 +1631,7 @@ void EqualizationDialog::WriteXML(XMLWriter &xmlFile)
 
 void EqualizationDialog::OnSlider(wxCommandEvent &event)
 {
-   wxSlider *s = (wxSlider *)event.GetEventObject();
+   wxSliderBugfix *s = (wxSliderBugfix *)event.GetEventObject();
    for (int i = 0; thirdOct[i] <= mHiFreq; ++i)
    {
       if( i == NUMBER_OF_BANDS )
@@ -2325,7 +2392,7 @@ wxAccStatus SliderAx::GetKeyboardShortcut( int childId, wxString *shortcut )
 // rect is in screen coordinates.
 wxAccStatus SliderAx::GetLocation( wxRect& rect, int elementId )
 {
-   wxSlider *s = wxDynamicCast( GetWindow(), wxSlider );
+   wxSliderBugfix *s = wxDynamicCast( GetWindow(), wxSliderBugfix );
 
    rect = s->GetRect();
    rect.SetPosition( s->GetParent()->ClientToScreen( rect.GetPosition() ) );
@@ -2336,7 +2403,7 @@ wxAccStatus SliderAx::GetLocation( wxRect& rect, int elementId )
 // Gets the name of the specified object.
 wxAccStatus SliderAx::GetName(int childId, wxString* name)
 {
-   wxSlider *s = wxDynamicCast( GetWindow(), wxSlider );
+   wxSliderBugfix *s = wxDynamicCast( GetWindow(), wxSliderBugfix );
 
    *name = s->GetName();
 
@@ -2381,7 +2448,7 @@ wxAccStatus SliderAx::GetSelections( wxVariant *selections )
 // Returns a state constant.
 wxAccStatus SliderAx::GetState(int childId, long* state)
 {
-   wxSlider *s = wxDynamicCast( GetWindow(), wxSlider );
+   wxSliderBugfix *s = wxDynamicCast( GetWindow(), wxSliderBugfix );
 
    switch( childId )
    {
@@ -2415,7 +2482,7 @@ wxAccStatus SliderAx::GetState(int childId, long* state)
 // or child.
 wxAccStatus SliderAx::GetValue(int childId, wxString* strValue)
 {
-   wxSlider *s = wxDynamicCast( GetWindow(), wxSlider );
+   wxSliderBugfix *s = wxDynamicCast( GetWindow(), wxSliderBugfix );
 
    if( childId == 0 )
    {
