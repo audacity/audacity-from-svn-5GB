@@ -28,12 +28,10 @@
 #define AUDACITY_QUOTE( x ) AUDACITY_MAKESTR( x )
 
 // Version string for visual display
-#define AUDACITY_VERSION_STRING "1.3.2-beta"
-// Need to figure out how to concatenate for unicode builds
-//#define AUDACITY_VERSION_STRING AUDACITY_QUOTE( AUDACITY_VERSION ) "." \
-//                                AUDACITY_QUOTE( AUDACITY_RELEASE ) "." \
-//                                AUDACITY_QUOTE( AUDACITY_REVISION ) \
-//                                AUDACITY_SUFFIX
+#define AUDACITY_VERSION_STRING wxT( AUDACITY_QUOTE( AUDACITY_VERSION ) ) wxT(".") \
+                                wxT( AUDACITY_QUOTE( AUDACITY_RELEASE ) ) wxT(".") \
+                                wxT( AUDACITY_QUOTE( AUDACITY_REVISION ) ) \
+                                AUDACITY_SUFFIX
 
 // Version string for file info (under Windows)
 #define AUDACITY_FILE_VERSION AUDACITY_QUOTE( AUDACITY_VERSION ) "," \

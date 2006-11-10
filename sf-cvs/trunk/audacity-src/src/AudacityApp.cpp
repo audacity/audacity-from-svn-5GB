@@ -630,7 +630,7 @@ bool AudacityApp::OnInit()
 
          if (!handled && !wxString(wxT("-version")).CmpNoCase(argv[option])) {
             wxPrintf(wxT("Audacity v%s (%s)\n"),
-                     wxT(AUDACITY_VERSION_STRING),
+                     AUDACITY_VERSION_STRING,
                      (wxUSE_UNICODE ? wxT("Unicode") : wxT("ANSI")));
             exit(0);
          }

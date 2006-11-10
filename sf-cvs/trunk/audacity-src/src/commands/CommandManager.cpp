@@ -868,7 +868,7 @@ void CommandManager::WriteXML(XMLWriter &xmlFile)
    unsigned int j;
 
    xmlFile.StartTag(wxT("audacitykeyboard"));
-   xmlFile.WriteAttr(wxT("audacityversion"), wxT(AUDACITY_VERSION_STRING));
+   xmlFile.WriteAttr(wxT("audacityversion"), AUDACITY_VERSION_STRING);
 
    for(j=0; j<mCommandList.GetCount(); j++) {
       if (!mCommandList[j]->multi) {
