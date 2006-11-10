@@ -688,7 +688,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mImportingRaw = false;
 
    wxString msg = wxString::Format(_("Welcome to Audacity version %s"),
-                                   wxT(AUDACITY_VERSION_STRING));
+                                   AUDACITY_VERSION_STRING);
    mStatusBar->SetStatusText(msg);
    mLastStatusUpdateTime = ::wxGetUTCTime();
 
@@ -1880,7 +1880,7 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       wxString msg;
       msg.Printf(_("This file was saved using Audacity %s.\nYou are using Audacity %s - you need to upgrade to\na newer version to open this file."),
                  audacityVersion.c_str(),
-                 wxT(AUDACITY_VERSION_STRING));
+                 AUDACITY_VERSION_STRING);
       wxMessageBox(msg,
                    _("Can't open project file"),
                    wxOK | wxICON_EXCLAMATION | wxCENTRE, this);
@@ -1999,7 +1999,7 @@ void AudacityProject::WriteXML(XMLWriter &xmlFile)
 
    xmlFile.WriteAttr(wxT("projname"), projName);
    xmlFile.WriteAttr(wxT("version"), wxT(AUDACITY_FILE_FORMAT_VERSION));
-   xmlFile.WriteAttr(wxT("audacityversion"), wxT(AUDACITY_VERSION_STRING));
+   xmlFile.WriteAttr(wxT("audacityversion"), AUDACITY_VERSION_STRING);
    xmlFile.WriteAttr(wxT("sel0"), mViewInfo.sel0, 10);
    xmlFile.WriteAttr(wxT("sel1"), mViewInfo.sel1, 10);
    xmlFile.WriteAttr(wxT("vpos"), mViewInfo.vpos);

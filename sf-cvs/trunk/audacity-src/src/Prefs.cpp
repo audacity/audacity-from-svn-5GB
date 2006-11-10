@@ -179,7 +179,7 @@ void InitPreferences()
       gPrefs->Write(wxT("/NewPrefsInitialized"), true);
    }
    
-   gPrefs->Write(wxT("/Version"), wxString(wxT(AUDACITY_VERSION_STRING)));
+   gPrefs->Write(wxT("/Version"), wxString(AUDACITY_VERSION_STRING));
 
    // BG: Make sure the users prefs are up to date
    // BG: Otherwise reset some of them to their defaults

@@ -124,7 +124,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
    :  wxDialog(parent, -1, _("About Audacity..."),
                wxDefaultPosition, wxDefaultSize)
 {
-   wxString versionStr = wxT(AUDACITY_VERSION_STRING);
+   wxString versionStr = AUDACITY_VERSION_STRING;
    wxString informationStr;
 
    creditItems.DeleteContents(true); // switchon automatic deletion of list items
