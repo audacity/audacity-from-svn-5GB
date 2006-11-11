@@ -28,7 +28,8 @@
 # distclean: remove everything except what goes in the distribution
 #
 
-SUBDIRS = doc include man src test build flac.pbproj obj
+# Modified for Audacity to include only necessary libraries...
+SUBDIRS = include src
 
 DISTCLEANFILES = libtool-disable-static
 

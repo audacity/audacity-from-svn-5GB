@@ -15,8 +15,9 @@
 #  restrictive of those mentioned above.  See the file COPYING.Xiph in this
 #  distribution.
 
-if FLaC__HAS_OGG
-OGGFLAC_DIRS = OggFLAC OggFLAC++
-endif
+# modified for Audacity to include only the bare minimum required
+# directories...bloat is bad!
 
-SUBDIRS = FLAC FLAC++ $(OGGFLAC_DIRS) share
+SUBDIRS = \
+	FLAC \
+	FLAC++

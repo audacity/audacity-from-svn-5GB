@@ -46,7 +46,7 @@ libflac/src/libFLAC++/.libs/libFLAC++.a:
 	cd libflac && $(MAKE)
 
 libsndfile/src/.libs/libsndfile.a:
-	cd libsndfile && $(MAKE)
+	cd libsndfile && $(MAKE) -C src
 
 portaudio/pa_unix_oss/portaudio.a:
 	cd portaudio/pa_unix_oss && $(MAKE)
