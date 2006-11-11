@@ -264,58 +264,8 @@ AC_OUTPUT( \
 	src/libFLAC/include/private/Makefile \
 	src/libFLAC/include/protected/Makefile \
 	src/libFLAC++/Makefile \
-	src/libOggFLAC/Makefile \
-	src/libOggFLAC/include/Makefile \
-	src/libOggFLAC/include/private/Makefile \
-	src/libOggFLAC/include/protected/Makefile \
-	src/libOggFLAC++/Makefile \
 	src/flac/Makefile \
-	src/metaflac/Makefile \
-	src/monkeys_audio_utilities/Makefile \
-	src/monkeys_audio_utilities/flac_mac/Makefile \
-	src/monkeys_audio_utilities/flac_ren/Makefile \
-	src/plugin_common/Makefile \
-	src/plugin_winamp2/Makefile \
-	src/plugin_winamp2/include/Makefile \
-	src/plugin_winamp2/include/winamp2/Makefile \
-	src/plugin_xmms/Makefile \
-	src/share/Makefile \
-	src/share/getopt/Makefile \
-	src/share/grabbag/Makefile \
-	src/share/replaygain_analysis/Makefile \
-	src/share/replaygain_synthesis/Makefile \
-	src/share/replaygain_synthesis/include/Makefile \
-	src/share/replaygain_synthesis/include/private/Makefile \
-	src/share/utf8/Makefile \
-	src/test_grabbag/Makefile \
-	src/test_grabbag/cuesheet/Makefile \
-	src/test_libFLAC/Makefile \
-	src/test_libFLAC++/Makefile \
-	src/test_libOggFLAC/Makefile \
-	src/test_libOggFLAC++/Makefile \
-	src/test_seeking/Makefile \
-	src/test_streams/Makefile \
 	include/Makefile \
 	include/FLAC/Makefile \
 	include/FLAC++/Makefile \
-	include/OggFLAC/Makefile \
-	include/OggFLAC++/Makefile \
-	include/share/Makefile \
-	include/share/grabbag/Makefile \
-	doc/Makefile \
-	doc/html/Makefile \
-	doc/html/images/Makefile \
-	doc/html/ru/Makefile \
-	man/Makefile \
-	test/Makefile \
-	test/cuesheets/Makefile \
-	build/Makefile \
-	obj/Makefile \
-	obj/debug/Makefile \
-	obj/debug/bin/Makefile \
-	obj/debug/lib/Makefile \
-	obj/release/Makefile \
-	obj/release/bin/Makefile \
-	obj/release/lib/Makefile \
-	flac.pbproj/Makefile \
 )

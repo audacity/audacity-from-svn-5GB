@@ -15,32 +15,12 @@
 #  restrictive of those mentioned above.  See the file COPYING.Xiph in this
 #  distribution.
 
-if FLaC__HAS_XMMS
-XMMS_DIRS = plugin_xmms
-endif
-
-if FLaC__HAS_OGG
-OGGFLAC_DIRS = libOggFLAC libOggFLAC++
-OGGFLAC_TEST_DIRS = test_libOggFLAC test_libOggFLAC++
-endif
+# modified for Audacity to include only the bare minimum required
+# directories...bloat is bad!
 
 SUBDIRS = \
 	libFLAC \
-	libFLAC++ \
-	$(OGGFLAC_DIRS) \
-	share \
-	flac \
-	metaflac \
-	monkeys_audio_utilities \
-	plugin_common \
-	$(XMMS_DIRS) \
-	plugin_winamp2 \
-	test_grabbag \
-	test_libFLAC \
-	test_libFLAC++ \
-	$(OGGFLAC_TEST_DIRS) \
-	test_seeking \
-	test_streams
+	libFLAC++
 
 EXTRA_DIST = \
 	Makefile.lite
