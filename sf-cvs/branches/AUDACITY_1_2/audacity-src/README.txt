@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.5
+Version 1.2.6
 
 For changelog, see the bottom of this document.
 
@@ -289,6 +289,14 @@ Known issues/problems:
 
 
 -------------------------------------------------------------
+
+Changes in 1.2.6:
+
+  * Fix memory leaks on Windows.
+
+  * Correct font size problems.
+
+  * Enable missing FLAC support.
 
 Changes in 1.2.5:
 
