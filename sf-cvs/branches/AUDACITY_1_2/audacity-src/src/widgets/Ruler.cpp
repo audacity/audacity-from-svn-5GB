@@ -561,7 +561,7 @@ void Ruler::Tick(int pos, double d, bool major)
       if (mFlip)
          strTop = mTop + 4;
       else
-         strTop = mBottom - strH - 6;
+         strTop = mBottom - strH - 4;
    }
    else {
       strLen = strH;

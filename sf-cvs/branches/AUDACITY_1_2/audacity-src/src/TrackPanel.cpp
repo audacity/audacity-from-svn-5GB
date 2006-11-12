@@ -4695,7 +4695,9 @@ void TrackLabel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
 
    SetLabelFont(dc);
    dc->GetTextExtent(str, &textWidth, &textHeight);
-   dc->DrawText(str, bev.x + (bev.width - textWidth) / 2, bev.y + 2);
+   dc->DrawText(str,
+                bev.x + (bev.width - textWidth) / 2,
+                bev.y + (bev.height - textHeight) / 2);
 
    AColor::Bevel(*dc, (solo?t->GetSolo():t->GetMute()) == down, bev);
 
