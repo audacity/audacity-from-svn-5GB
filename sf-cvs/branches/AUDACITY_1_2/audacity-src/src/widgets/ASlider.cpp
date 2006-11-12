@@ -322,23 +322,22 @@ void LWSlider::Init(wxWindow * parent,
 
       if (style == PAN_SLIDER)
       {
-	 AColor::SetLabelFont(*dc);
-
-         wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
-         dc->SetFont(labelFont);
+         AColor::SetLabelFont(*dc);
 
          /* i18n-hint: One-letter abbreviation for Left, in the Pan slider */
-         dc->DrawText(_("L"), mLeftX, 1);
+         dc->DrawText(_("L"), mLeftX, 0);
 
+         int width, height;
          /* i18n-hint: One-letter abbreviation for Right, in the Pan slider */
-         dc->DrawText(_("R"), mRightX-7, 1);
+         dc->GetTextExtent(_("R"), &width, &height);
+         dc->DrawText(_("R"), mRightX-width+1, 0);
       } else
       {
          // draw the '-' and the '+'
          dc->SetPen(*wxBLACK_PEN);
          dc->DrawLine(mLeftX, mCenterY-10, mLeftX+5, mCenterY-10);
-         dc->DrawLine(mRightX-7, mCenterY-10, mRightX-2, mCenterY-10);
-         dc->DrawLine(mRightX-5, mCenterY-12, mRightX-5, mCenterY-7);
+         dc->DrawLine(mRightX-5, mCenterY-10, mRightX+0, mCenterY-10);
+         dc->DrawLine(mRightX-3, mCenterY-12, mRightX-3, mCenterY-7);
       }
       
       delete dc;
