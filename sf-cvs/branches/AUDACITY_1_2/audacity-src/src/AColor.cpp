@@ -162,6 +162,10 @@ void AColor::Init(wxDC * dc)
    desiredPixelHeight -= 3;
    #endif
    
+   #ifdef __WXMSW__
+   desiredPixelHeight -= 2;
+   #endif
+   
    // Keep making the font bigger until it's too big, then subtract one.
    dc->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
    dc->GetTextExtent(exampleText, &strW, &strH);
