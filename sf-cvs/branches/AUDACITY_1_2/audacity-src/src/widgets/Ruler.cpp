@@ -639,6 +639,10 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
      if (desiredPixelHeight > 16)
        desiredPixelHeight = 16;
 
+     #ifdef __WXMAC__
+     desiredPixelHeight -= 3;
+     #endif
+
      // Keep making the font bigger until it's too big, then subtract one.
      mDC->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
      mDC->GetTextExtent(exampleText, &strW, &strH);
