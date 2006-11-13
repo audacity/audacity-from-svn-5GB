@@ -156,7 +156,11 @@ void AColor::Init(wxDC * dc)
    int fontSize = 4;
    wxCoord strW, strH;
    wxString exampleText = wxT("Mute");
-   int desiredPixelHeight = 14;
+   int desiredPixelHeight = 16;
+
+   #ifdef __WXMAC__
+   desiredPixelHeight -= 3;
+   #endif
    
    // Keep making the font bigger until it's too big, then subtract one.
    dc->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
