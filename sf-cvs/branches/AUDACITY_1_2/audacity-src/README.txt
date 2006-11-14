@@ -273,7 +273,8 @@ Known issues/problems:
     (accent marks, etc.) in their names.  Note that files with
     accented characters work, and Audacity projects with
     accented characters work.  Only files inside of folders
-    with accented characters in their names will cause problems.
+    with accented characters in their names will cause problems. This is fixed
+    in unicode-aware builds on 1.3.2 and higher.
 
   * MacOS X only: Some users find that after running Audacity other media
     players don't produce any sound or crash. Audacity tries to select the best
