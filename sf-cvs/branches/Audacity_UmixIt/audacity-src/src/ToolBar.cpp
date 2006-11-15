@@ -430,7 +430,7 @@ END_EVENT_TABLE()
 ToolBarMiniFrame::ToolBarMiniFrame(wxWindow * parent, enum ToolBarType tbt)
    : wxMiniFrame(gParentWindow, -1, "", wxPoint(1, 1),
                  wxSize(20, 20),
-                 wxSTAY_ON_TOP | wxMINIMIZE_BOX | wxCAPTION
+                 wxMINIMIZE_BOX | wxCAPTION
                  | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
 {
    mToolBar = MakeToolBar(tbt, this);
@@ -472,7 +472,7 @@ END_EVENT_TABLE()
 ToolBarFullFrame::ToolBarFullFrame(wxWindow * parent, enum ToolBarType tbt)
    : wxFrame(gParentWindow, -1, "", wxPoint(1, 1),
              wxSize(20, 20),
-             wxSTAY_ON_TOP | wxMINIMIZE_BOX | wxCAPTION
+             wxMINIMIZE_BOX | wxCAPTION
              | wxRESIZE_BORDER
              | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
 {
