@@ -36,6 +36,7 @@
 #include "export/ExportMultiple.h"
 #include "prefs/PrefsDialog.h"
 #include "HistoryWindow.h"
+#include "LyricsWindow.h"
 #include "Internat.h"
 #include "FileFormats.h"
 #include "FormatSelection.h"
@@ -362,6 +363,8 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
    c->AddItem("UndoHistory",    _("&History..."),               FN(OnHistory));
+   c->AddSeparator();
+   c->AddItem("Lyrics",    _("&Lyrics..."),               FN(OnLyrics));
    c->AddSeparator();
    c->AddItem("FloatControlTB", _("Float Control Toolbar"),          FN(OnFloatControlToolBar));
    c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
@@ -2577,7 +2580,16 @@ void AudacityProject::OnFloatMeterToolBar()
    }
 }
 
-
+void AudacityProject::OnLyrics()
+{
+   if (mLyricsWindow)
+      mLyricsWindow->Show(true);
+   else {
+      mLyricsWindow = new LyricsWindow(this);
+      wxASSERT(mLyricsWindow);
+      mLyricsWindow->Show(true);
+   }
+}
 
 //
 // Project Menu

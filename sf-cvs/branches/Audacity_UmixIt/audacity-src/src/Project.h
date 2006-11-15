@@ -55,6 +55,7 @@ class ControlToolBar;
 class MixerToolBar;
 class MeterToolBar;
 class HistoryWindow;
+class LyricsWindow;
 class Importer;
 
 class AudacityProject;
@@ -121,6 +122,7 @@ class AudacityProject:public wxFrame,
    Tags *GetTags();
    int GetAudioIOToken();
    void SetAudioIOToken(int token);
+   LyricsWindow* GetLyricsWindow() { return mLyricsWindow; };
 
    bool IsActive();
 
@@ -253,6 +255,8 @@ class AudacityProject:public wxFrame,
    void ModifyState();
    void PopState(TrackList * l);
 
+   void UpdateLyrics();
+
    // Callbacks for backend operations
 
    bool mUserCanceledProgress;
@@ -322,6 +326,7 @@ class AudacityProject:public wxFrame,
    bool mImportingRaw;
    bool mIconized;
    HistoryWindow *mHistoryWindow;
+   LyricsWindow *mLyricsWindow;
 
    ToolBarArray mToolBarArray;
    int mTotalToolBarHeight;
