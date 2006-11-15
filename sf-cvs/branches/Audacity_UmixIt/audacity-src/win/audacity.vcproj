@@ -683,6 +683,18 @@
 				RelativePath="..\src\Legacy.h">
 			</File>
 			<File
+				RelativePath="..\src\Lyrics.cpp">
+			</File>
+			<File
+				RelativePath="..\src\Lyrics.h">
+			</File>
+			<File
+				RelativePath="..\src\LyricsWindow.cpp">
+			</File>
+			<File
+				RelativePath="..\src\LyricsWindow.h">
+			</File>
+			<File
 				RelativePath="..\src\Menus.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
