@@ -1,0 +1,485 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+<META content="MSHTML 5.00.2614.3500" name=GENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=#ffffff>
+<DIV><FONT face=Arial size=2>
+
+<H2>Audacity Active Buglist</H2>
+
+<font size=+1>This is a list of known bugs with Audacity.  The bugs are
+classified so as to make it easier to find whether a bug you have seen has already been reported.
+Of course some bugs will belong in more than one category.  The rule is simple - the bug
+is put into the first category which it matches in this list.<br><br>
+
+When reporting bugs the most useful information you can give us is precise instructions for
+reproducing that bug.  We ARE interested in hearing of bugs we already know about, as more
+details may well help us to track them down.  You should also tell us which version of 
+Audacity you are using, and what operating system.  The simpler the scenario that you can 
+find that shows the bug, the better.
+
+
+</font>
+
+
+
+<H2>Crashes:</H2>
+<TABLE cellPadding=4 cellSpacing=0 class=bz_buglist width="100%">
+  <TBODY>
+  <TR class="bz_major bz_P3 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=37">37</A> 
+    </TD>
+    <TD>Crashes when opening 1.1.1 project files </TD></TR>
+  <TR class="bz_critical bz_P4 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=24">24</A> 
+    </TD>
+    <TD>Repeatable crash when zoomed in and time shifting </TD></TR>
+  <TR class="bz_major bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=42">42</A> 
+    </TD>
+    <TD>Crash if you edit while playing or recording </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=10">10</A> 
+    </TD>
+    <TD>Select/Copy causes Audacity crash </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=55">55</A> 
+    </TD>
+    <TD>Crash when applying VST effects to a copied track </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=39">39</A> 
+    </TD>
+    <TD>Ogg export can crash on OS X </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=46">46</A> 
+    </TD>
+    <TD>Crash when export to Ogg on Windows? </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=50">50</A> 
+    </TD>
+    <TD>Crash when doing Edit/Cut, because ClearClipboard() uses ... </TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Libsamplerate crashes if you try to change the rate by
+  more than a factor of 12.  We need to handle this case if
+  the user selects a track with, say, 71 Hz when the project
+  is 44100 Hz. </TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Crashes if gPrefs can't be created (Linux)...</TD></TR>
+</TBODY></TABLE>
+
+<H2>Importing and Exporting:</H2>
+<TABLE cellPadding=4 cellSpacing=0 class=bz_buglist width="100%">
+  <TBODY>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=52">52</A> 
+    </TD>
+    <TD>PATCH: Exporting mono MP3 results in 2x speed </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=47">47</A> 
+    </TD>
+    <TD>Exporting MP3, file is too fast (maybe mono/stereo issue)? </TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Exporting using LAME (i.e. exporting to MP3) does incorrect sample rate,
+        or incorrect # of channels?  Maybe only with certain
+        versions of LAME?</TD></TR>
+  <TR class="bz_trivial bz_P1 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=28">28</A> 
+    </TD>
+    <TD>Audacity does not preserve MP3 ID3 tags when importing (Reclassify as a RFE?)</TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=40">40</A> 
+    </TD>
+    <TD>Exporting panned tracks still exports as Mono </TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>MAD imports values out of -1.0...1.0 range...need to clip</TD></TR>
+  <TR class="bz_minor bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=30">30</A> 
+    </TD>
+    <TD>Export Labels does not properly overwrite a file with the... </TD></TR>
+</TBODY></TABLE>
+
+<H2>Bad Sound:</H2>
+<TABLE cellPadding=4 cellSpacing=0 class=bz_buglist width="100%">
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=19">19</A> 
+    </TD>
+    <TD>Edit/Duplicate or Split repeats first part of selection </TD></TR>
+  <TR class="bz_minor bz_P3 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=17">17</A> 
+    </TD>
+    <TD>Clipping in v.1.1.1 </TD></TR>
+  <TR class="bz_minor bz_P3 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=21">21</A> 
+    </TD>
+    <TD>Pops and scratches when using v1.1.2 </TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Full duplex does not work correctly on Audacity 1.1 on
+  Linux.  Sounds recorded appear to be "down an octave".</TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Bass boost can introduce a large amount of -ve DC bias, resulting in clipping.</TD></TR>
+</TBODY></TABLE>
+
+<H2>Filenames and Directories:</H2>
+<TABLE cellPadding=4 cellSpacing=0 class=bz_buglist width="100%">
+  <TBODY>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=43">43</A> 
+    </TD>
+    <TD>Should allow user to click any file for selecting LAME </TD></TR>
+  <TR class="bz_trivial bz_P4 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=16">16</A> 
+    </TD>
+    <TD>Audio filenames with square brackets fail</TD></TR>
+  <TR class="bz_minor bz_P4 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=8">8</A> 
+    </TD>
+    <TD>v0.9.8 - Goes haywire if temp dir not writeable </TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Under Windows, zero available recording time reported where the temporary 
+	directory name has a '.' at the start of its name (or of one of its path 
+	components).
+	</TD></TR>
+</TBODY></TABLE>
+
+<H2>Translation and Gui:</H2>
+<TABLE cellPadding=4 cellSpacing=0 class=bz_buglist width="100%">
+  <TBODY>
+  <TR class="bz_minor bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=6">6</A> 
+    </TD>
+    <TD>Missing strings for translation </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=53">53</A> 
+    </TD>
+    <TD>Some messages disappeared from audacity.pot </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=34">34</A> 
+    </TD>
+    <TD>Both Silence options have the same keyboard shortcut! </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=45">45</A> 
+    </TD>
+    <TD>Toolbars are too small under XP? </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=22">22</A> 
+    </TD>
+    <TD>LADSPA effects windows size </TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Mixer toolbar has no default device written on the menu, but
+  clearly some mixer channel is controlled;</TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Even the play region is completely visible, the display jumps to
+  left -- it jumps so that the start of the play region is on the left
+  edge of display; [Don't understand.  Please explain again].</TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Drawing tool uses Alt modifier but that does not work in GNome
+  (or with other window managers) - there should be another key
+  sequence that's more likely to be supported</TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Very narrow selection is not always drawn; very narrow
+  selections should be one pixel wide if samples/pixel value
+  is high. [22/Jun/03, still present]</TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>At higher zoom, zoom-toggle pressed twice may not return you to where you came from.
+	The waveform may creep sideways.</TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Multi-tool does not work when using vertical zooming - cannot grab envelope or samples.</TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Numbers on the ruler may not be spaced evenly, due to (a) differences in the widths of 
+	digits such as '1' and '8' and (b) a 'beat-frequency' effect in that the ideal spacing
+	may not be an whole number of pixels, so the ideal positions come in and out of alignment
+	with actual pixel positions as we move from left to right.  Only affects layouts where 
+	the numbers are or would be crowded.</TD></TR>
+</TBODY></TABLE>
+
+
+<H2>Windoze or Mac Only:</H2>
+<TABLE cellPadding=4 cellSpacing=0 class=bz_buglist width="100%">
+  <TR class="bz_major bz_P3 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=38">38</A> 
+    </TD>
+    <TD>Trying to set windows registry as non-admin user </TD></TR>
+  <TR class="bz_normal bz_P3 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=32">32</A> 
+    </TD>
+    <TD>On some Windows systems, mixer sliders snap to zero when ... </TD></TR>
+</TBODY></TABLE>
+
+
+<H2>Building and Testing:</H2>
+<TABLE cellPadding=4 cellSpacing=0 class=bz_buglist width="100%">
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=35">35</A> 
+    </TD>
+    <TD>Libaudacity.a is built even if nothing has changed </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=54">54</A> 
+    </TD>
+    <TD>Write autoconf test for lrintf </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=54">54</A> 
+    </TD>
+    <TD>When building Audacity and its libraries with normal settings for warnings
+	there are 656 warnings displayed (Under Windows, MSVC).</TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>In debug builds the progress indicator (for example with the normalize effect
+	and a selection of 2mins 30 secs) may report an assert error from 
+	wxWindows (now wxWidgets) v2.4.0 progdlgg.cpp line 323: 'value <= m_maximum'.
+	</TD></TR>
+</TBODY></TABLE>
+
+
+<H2>Requests For Enhancements:</H2>
+<font size=+1>These should move into 'todo.txt'</font><br><br>
+<TABLE cellPadding=4 cellSpacing=0 class=bz_buglist width="100%">
+  <TR class="bz_enhancement bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=31">31</A> 
+    </TD>
+    <TD>Don't Prevent Clipping </TD></TR>
+  <TR class="bz_enhancement bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=49">49</A> 
+    </TD>
+    <TD>Support SDII .L and .R files </TD></TR>
+</TBODY></TABLE>
+
+
+<H2>Not Classified Elsewhere:</H2>
+<TABLE cellPadding=4 cellSpacing=0 class=bz_buglist width="100%">
+  <TR class="bz_minor bz_P4 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=12">12</A> 
+    </TD>
+    <TD>Unable to set markers on label track </TD></TR>
+  <TR class="bz_critical bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=48">48</A> 
+    </TD>
+    <TD>Should recover temp directory on startup </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=5">5</A> 
+    </TD>
+    <TD>Track Gain Control </TD></TR>
+  <TR class="bz_normal bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=41">41</A> 
+    </TD>
+    <TD>Many VST plug-ins do not work </TD></TR>
+  <TR class="bz_minor bz_P2 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=33">33</A> 
+    </TD>
+    <TD>Can't playback to devices that only support mono </TD></TR>
+  <TR class="bz_minor bz_P4 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=7">7</A> 
+    </TD>
+    <TD>Audacity does not protect against multiple instances running </TD></TR>
+  <TR class="bz_trivial bz_P4 ">
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=9">9</A> 
+    </TD>
+    <TD>v1.1.2 - Automatic Amplify issues </TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Plot spectrum does not work if the selection is too small;
+  [22/Jun/03, still present.]</TD></TR>
+
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>Plot Spectrum doesn't obey the selection - it grabs
+  all tracks (or the last track?), not the selected track [Update:
+  22/Jun/03, Plot Spectrum IS selection sensitive, however 
+  pure-tones (produced using generate) have less sharp spectra 
+  than I would expect, so possibly something still needs looking at 
+  here, e.g. whether plot-spectrum is sampling noise as well
+  as the desired data.  JKC]</TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>The effect 'Repeat Selection' introduces envelope points even when none are needed.
+	</TD></TR>
+  <TR>
+    <TD><A 
+      href="http://audacity.sourceforge.net/cgi-bin/bugzilla/show_bug.cgi?id=-1">--</A> 
+    </TD>
+    <TD>There are a number of memory leaks - regions of memory that are not freed by 
+	Audacity when Audacity exits - most notably after using any 'Nyquist' effect.
+	</TD></TR>
+</TBODY></TABLE>
+
+<br><br>
+For a complete bug list, including historical bugs which have been cleared in the current version, 
+please see our Bugzilla bug tracker:
+
+<a href= http://audacity.sourceforge.net/cgi-bin/bugzilla/>http://audacity.sourceforge.net/cgi-bin/bugzilla/</a>
+
+
+<pre>
+
+Last reviewed 22/Jun/2003.
+
+Items on their way out of the bug list follow:
+
+
+--------------------------------------------------------------
+
+Move these to ToDo.txt (for Post 1.2.0):
+========================================
+* Zoom at low samples/pixel value; make a selection; zoom-out;
+  now adjust an edge of the selection by one pixel; then
+  adjust the edge to its original pixel location; now the
+  selection differs from the original selection. --Not really
+  a bug so much as a request for enhanced behaviour.  This 
+  would be part of a more general move to store positions as 
+  float time values, only rounding down to pixels when drawing 
+  to the screen.  Such a feature would improve functionality 
+  in many other instances where zoom level is changed.--
+
+* Very narrow selection with high samples/pixel value
+  causes problems in grabbing and dragging the selection edges.
+  -- Details:  The selection shown on the wavetrack is rounded to
+  the nearest boundary between samples.  To drag the selection 
+  edge you must look at the sample as shown by the ruler.
+  This will cease to be a problem if we add a new feature that 
+  shows both sample selection and the ruler's time selection
+  (using different shading perhaps, or by changing the appearance
+  of the selcted samples) on the wave track.--
+
+* Multitool slide stops when the pointer moves over the track labels;
+  --Request for Enhancement, not a bug.--
+
+* "Drag the label vertically to change the order of the tracks"
+  performs "select all". Two operations in one.  (It shouldn't
+  do this, right?)
+  --Request for Enhancement, not a bug.--
+
+
+------------------------------
+
+Non Issues
+==========
+* In the input/output gain toolbar the pixmaps are in wrong places:
+  the output has microphone pixmap.  --REALLY???--
+
+* Exporting tracks with envelopes and an offset can result
+  in different WAV output than what you see on the screen in
+  the editor.  See email from Mike Tyson. --Please GIVE DATE
+  of this e-mail so that can follow up the detailed description--
+
+* A toolbar goes slightly over the transport toolbar when they
+  are arranged automatically to the same row.  In wxGTK/Linux.
+  --Please post a screenshot to the developer list showing the 
+  problem, for attention JKC.--
+
+* Beat finder (nyquist script) caused core dump
+  --I can't reproduce this...can someone send me a gdb trace?,
+  for attention DM.  Nyquist has had a major overhaul since this
+  bug was first posted.--
+  
+------------------------------
+
+Resolved:
+=========
+* When using a Nyquist plugin on a track whose sample rate
+  differs from the project rate, the selection changes
+  incorrectly, probably reflecting the project rate rather
+  than the track rate. [Fixed 19/Apr/03]
+
+* Multitool is still not "polished" - the handles on the left and
+  right should line up better [Fixed 15/Jun/03]
+
+* Time scrollbar < and > buttons do not work after 16 (say) zoom steps,
+  e.g., with projects larger than 30 minutes of audio. [Works for me
+  under Win98 JKC]
+
+* After cut, the view is not at the cut point (if selection was
+  4 seconds, the view is 4 seconds forward from the cut point). [Works
+  for me under Win98 JKC]
+
+</pre>
+
+</FONT></DIV></BODY></HTML>

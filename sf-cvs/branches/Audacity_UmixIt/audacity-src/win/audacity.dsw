@@ -1,0 +1,260 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "Audacity"=.\audacity.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libmad
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsndfile
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name PAStaticWMME
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name allegro
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ogg_static
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name vorbis_static
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name vorbisfile_static
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name expat
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libid3tag
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libnyquist
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name portmixer
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libresample
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SoundTouch
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "PAStaticWMME"="..\lib-src\portaudio\winproj\PAStaticWMME\PAStaticWMME.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SoundTouch"="..\lib-src\soundtouch\source\SoundTouch\SoundTouch.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "allegro"="..\lib-src\allegro\allegro.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "expat"="..\LIB-SRC\EXPAT\expat.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libflac"="..\LIB-SRC\LIBFLAC\SRC\LIBFLAC\WIN32\libflac.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libflac_cpp"="..\LIB-SRC\LIBFLAC\SRC\LIBFLAC++\WIN32\libflac_cpp.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libid3tag"="..\lib-src\libid3tag\libid3tag.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libmad"="..\lib-src\libmad\libmad.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libnyquist"="..\lib-src\libnyquist\win\libnyquist.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libresample"="..\lib-src\libresample\win\libresample.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libsamplerate"="..\LIB-SRC\LIBSAMPLERATE\WIN32\libsamplerate.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libsndfile"="..\lib-src\libsndfile\Win32\libsndfile.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ogg_static"="..\lib-src\libogg\win32\ogg_static.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "portmixer"="..\lib-src\portmixer\winproj\portmixer.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "vorbis_static"="..\lib-src\libvorbis\win32\vorbis_static.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "vorbisfile_static"="..\lib-src\libvorbis\win32\vorbisfile_static.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

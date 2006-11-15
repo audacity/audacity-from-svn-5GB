@@ -1,0 +1,34 @@
+
+CC = @CC@
+CXX = @CXX@
+
+# CFLAGS are specific to C.
+override CFLAGS += @CFLAGS@
+
+# CXXFLAGS are specific to C++.
+override CXXFLAGS += @CXXFLAGS@
+
+# CPPFLAGS are for both C and C++.
+override CPPFLAGS += -Wall -I../src @CPPFLAGS@ 
+
+all: run_tests
+check: run_tests
+
+LIBS = @LIBS@ ../src/libaudacity.a
+
+TESTS = \
+	SimpleBlockFileTest \
+
+$(TESTS): %: %.cpp ../src/libaudacity.a
+	$(CXX) -o $@ $< $(CXXFLAGS) $(CPPFLAGS) $(LIBS)
+
+run_tests: $(TESTS)
+	tests='$(TESTS)'; for test in $$tests ; do \
+	   ./$$test ; \
+	done
+
+clean:
+	rm -f $(TESTS)
+
+distclean: clean
+	rm -f Makefile
