@@ -70,7 +70,7 @@ portmixer/px_mac_core/portmixer.a:
 	cd portmixer/px_mac_core && $(MAKE)
 
 soundtouch/source/SoundTouch/.libs/libSoundTouch.a:
-	cd soundtouch && $(MAKE)
+	cd soundtouch && SOUNDTOUCH_CXXFLAGS="@SOUNDTOUCH_CXXFLAGS@" $(MAKE)
 
 clean:
 	-$(MAKE) -C allegro clean

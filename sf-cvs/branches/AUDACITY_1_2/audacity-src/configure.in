@@ -45,6 +45,7 @@ AC_SUBST(INSTALL_PREFIX)
 AC_SUBST(CONFIGHEADER)
 AC_SUBST(PRECOMP_CFLAGS)
 AC_SUBST(EXTRATARGETS)
+AC_SUBST(SOUNDTOUCH_CFLAGS)
 
 dnl allow the user to specify options to configure that change the
 dnl name "audacity" anywhere it appears in a pathname.  This allows
@@ -240,7 +241,7 @@ AC_ARG_WITH(libsamplerate,
 	use_libsamplerate="default")
 
 AC_ARG_ENABLE(flac,
-	[AC_HELP_STRING([--enable-flac ],
+	[AC_HELP_STRING([--enable-flac],
 		[enable FLAC support in local libsndfile [default=yes]
 		This has no effect if you use system libsndfile.])],
 	,default_libflac="no")
@@ -291,6 +292,7 @@ if [[ "$use_soundtouch" = "local" ]] ; then
 	dnl this is the path we need to make that work
 	BUILDLIBS="$BUILDLIBS soundtouch/source/SoundTouch/.libs/libSoundTouch.a"		
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/source/SoundTouch/.libs/libSoundTouch.a"		
+   AX_CHECK_COMPILER_FLAGS("-Os",[SOUNDTOUCH_CXXFLAGS="-Os"])
 
    if test ! -f "lib-src/soundtouch/Makefile"; then
 		echo "--- Configuring soundtouch";
@@ -358,8 +360,8 @@ if [[ "$use_libsndfile" = "local" ]] ; then
             AC_CONFIG_SUBDIRS([[lib-src/libflac]])
          fi
       else
-        	LIBS="$LIBS -lFLAC"
-        fi
+         LIBS="$LIBS -lFLAC"
+      fi
    fi
 
 
