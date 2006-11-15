@@ -4909,14 +4909,14 @@ _ACEOF
 	CXXFLAGS="-I../lib-src/soundtouch/ $CXXFLAGS"
 			BUILDLIBS="$BUILDLIBS soundtouch/source/SoundTouch/.libs/libSoundTouch.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/source/SoundTouch/.libs/libSoundTouch.a"
-    echo "$as_me:$LINENO: checking whether C++ compiler accepts \"-Os\"" >&5
-echo $ECHO_N "checking whether C++ compiler accepts \"-Os\"... $ECHO_C" >&6
-if test "${ax_cv_cxx_flags___Os_+set}" = set; then
+    echo "$as_me:$LINENO: checking whether C++ compiler accepts \"-msse\"" >&5
+echo $ECHO_N "checking whether C++ compiler accepts \"-msse\"... $ECHO_C" >&6
+if test "${ax_cv_cxx_flags___msse_+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
 
       ax_save_FLAGS=$CXXFLAGS
-      CXXFLAGS=""-Os""
+      CXXFLAGS=""-msse""
       cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -4954,22 +4954,22 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  ax_cv_cxx_flags___Os_=yes
+  ax_cv_cxx_flags___msse_=yes
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-ax_cv_cxx_flags___Os_=no
+ax_cv_cxx_flags___msse_=no
 fi
 rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
       CXXFLAGS=$ax_save_FLAGS
 fi
 
-eval ax_check_compiler_flags=$ax_cv_cxx_flags___Os_
+eval ax_check_compiler_flags=$ax_cv_cxx_flags___msse_
 echo "$as_me:$LINENO: result: $ax_check_compiler_flags" >&5
 echo "${ECHO_T}$ax_check_compiler_flags" >&6
 if test "x$ax_check_compiler_flags" = xyes; then
-   SOUNDTOUCH_CXXFLAGS="-Os"
+   SOUNDTOUCH_CXXFLAGS="-msse"
 else
    :
 fi

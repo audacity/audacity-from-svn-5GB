@@ -292,7 +292,7 @@ if [[ "$use_soundtouch" = "local" ]] ; then
 	dnl this is the path we need to make that work
 	BUILDLIBS="$BUILDLIBS soundtouch/source/SoundTouch/.libs/libSoundTouch.a"		
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/source/SoundTouch/.libs/libSoundTouch.a"		
-   AX_CHECK_COMPILER_FLAGS("-Os",[SOUNDTOUCH_CXXFLAGS="-Os"])
+   AX_CHECK_COMPILER_FLAGS("-msse",[SOUNDTOUCH_CXXFLAGS="-msse"])
 
    if test ! -f "lib-src/soundtouch/Makefile"; then
 		echo "--- Configuring soundtouch";
