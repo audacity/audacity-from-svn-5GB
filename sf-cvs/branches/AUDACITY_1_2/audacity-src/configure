@@ -321,7 +321,7 @@ ac_subdirs_all="$ac_subdirs_all [lib-src/libvorbis]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/libid3tag]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/portaudio-v19]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/dlcompat]"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS OPTOBJS CDEPEND AFTERBUILD INSTALL_PREFIX CONFIGHEADER PRECOMP_CFLAGS EXTRATARGETS AUDACITY_NAME PKG_CONFIG ac_pt_PKG_CONFIG subdirs SOUNDTOUCH_CXXFLAGS SOUNDTOUCH_LIBS ZIP WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS OPTOBJS CDEPEND AFTERBUILD INSTALL_PREFIX CONFIGHEADER PRECOMP_CFLAGS EXTRATARGETS SOUNDTOUCH_CFLAGS AUDACITY_NAME PKG_CONFIG ac_pt_PKG_CONFIG subdirs SOUNDTOUCH_CXXFLAGS SOUNDTOUCH_LIBS ZIP WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -3294,6 +3294,7 @@ test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
 
 
+
 test "$program_prefix" != NONE &&
   program_transform_name="s,^,$program_prefix,;$program_transform_name"
 # Use a double $ so make ignores it.
@@ -4908,6 +4909,71 @@ _ACEOF
 	CXXFLAGS="-I../lib-src/soundtouch/ $CXXFLAGS"
 			BUILDLIBS="$BUILDLIBS soundtouch/source/SoundTouch/.libs/libSoundTouch.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/source/SoundTouch/.libs/libSoundTouch.a"
+    echo "$as_me:$LINENO: checking whether C++ compiler accepts \"-Os\"" >&5
+echo $ECHO_N "checking whether C++ compiler accepts \"-Os\"... $ECHO_C" >&6
+if test "${ax_cv_cxx_flags___Os_+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+
+      ax_save_FLAGS=$CXXFLAGS
+      CXXFLAGS=""-Os""
+      cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ax_cv_cxx_flags___Os_=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ax_cv_cxx_flags___Os_=no
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+      CXXFLAGS=$ax_save_FLAGS
+fi
+
+eval ax_check_compiler_flags=$ax_cv_cxx_flags___Os_
+echo "$as_me:$LINENO: result: $ax_check_compiler_flags" >&5
+echo "${ECHO_T}$ax_check_compiler_flags" >&6
+if test "x$ax_check_compiler_flags" = xyes; then
+   SOUNDTOUCH_CXXFLAGS="-Os"
+else
+   :
+fi
+
 
    if test ! -f "lib-src/soundtouch/Makefile"; then
 		echo "--- Configuring soundtouch";
@@ -5157,10 +5223,10 @@ if test $ac_cv_lib_SoundTouch_soundtouch_ac_test = yes; then
 
 										SOUNDTOUCH_CXXFLAGS="-I$soundtouch_prefix/include"
 					SOUNDTOUCH_LIBS="-L$soundtouch_prefix/lib -lSoundTouch"
-					cat >>confdefs.h <<\_ACEOF
-#define HAVE_LIBSOUNDTOUCH 1
-_ACEOF
 
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_LIBSOUNDTOUCH
+_ACEOF
 
 										:
 
@@ -5244,10 +5310,10 @@ if [ "$use_libsndfile" = "local" ] ; then
 
 subdirs="$subdirs lib-src/libflac"
 
-fi
-else
-        	LIBS="$LIBS -lFLAC"
-        fi
+         fi
+      else
+         LIBS="$LIBS -lFLAC"
+      fi
    fi
 
 
@@ -7700,6 +7766,7 @@ s,@INSTALL_PREFIX@,$INSTALL_PREFIX,;t t
 s,@CONFIGHEADER@,$CONFIGHEADER,;t t
 s,@PRECOMP_CFLAGS@,$PRECOMP_CFLAGS,;t t
 s,@EXTRATARGETS@,$EXTRATARGETS,;t t
+s,@SOUNDTOUCH_CFLAGS@,$SOUNDTOUCH_CFLAGS,;t t
 s,@AUDACITY_NAME@,$AUDACITY_NAME,;t t
 s,@PKG_CONFIG@,$PKG_CONFIG,;t t
 s,@ac_pt_PKG_CONFIG@,$ac_pt_PKG_CONFIG,;t t
