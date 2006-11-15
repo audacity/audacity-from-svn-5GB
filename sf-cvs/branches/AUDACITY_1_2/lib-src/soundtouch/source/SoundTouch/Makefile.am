@@ -1,6 +1,6 @@
 ## Process this file with automake to create Makefile.in
 ##
-## $Id: Makefile.am,v 1.1.1.1.2.3 2006-04-08 14:14:10 richardash1981 Exp $
+## $Id: Makefile.am,v 1.1.1.1.2.4 2006-11-15 03:57:44 llucius Exp $
 ##
 ## Copyright (C) 2003 - David W. Durham
 ## 
@@ -35,7 +35,7 @@ libSoundTouch_la_SOURCES=AAFilter.cpp FIRFilter.cpp FIFOSampleBuffer.cpp mmx_opt
 
 # ??? test for -fcheck-new in configure.ac
 # other compiler flags to add
-AM_CXXFLAGS=-O3 -msse -fcheck-new -I../../include
+AM_CXXFLAGS=-O3 -fcheck-new $(SOUNDTOUCH_CXXFLAGS) -I../../include
 
 # other linking flags to add
 #libSoundTouch_la_LIBADD=
