@@ -96,6 +96,8 @@
 #include "ControlToolBar.h"
 #include "Envelope.h"
 #include "LabelTrack.h"
+#include "Lyrics.h"
+#include "LyricsWindow.h"
 #include "NoteTrack.h"
 #include "Track.h"
 #include "TrackArtist.h"
@@ -1172,6 +1174,13 @@ void TrackPanel::OnTimer()
 
    wxCommandEvent dummyEvent;
    AudacityProject *p = (AudacityProject*)GetParent();
+
+   // Update lyrics display
+   if (p->GetAudioIOToken()>0) {
+      LyricsWindow* lyricsWindow = p->GetLyricsWindow();
+      Lyrics *lyrics = lyricsWindow->GetLyricsPanel();
+      lyrics->Update(gAudioIO->GetStreamTime());
+   }
 
    // Each time the loop, check to see if we were playing or
    // recording audio, but the stream has stopped.

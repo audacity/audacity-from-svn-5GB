@@ -68,10 +68,12 @@
 #include "FormatSelection.h"
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
+#include "LyricsWindow.h"
 #include "Internat.h"
 #include "import/Import.h"
 #include "LabelTrack.h"
 #include "Legacy.h"
+#include "Lyrics.h"
 #include "Mix.h"
 #include "MixerToolBar.h"
 #include "NoteTrack.h"
@@ -354,6 +356,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mAutoScrolling(false),
      mActive(true),
      mHistoryWindow(NULL),
+     mLyricsWindow(NULL),
      mTotalToolBarHeight(0),
      mDraggingToolBar(NoneID),
      mAudioIOToken(-1),
@@ -2422,6 +2425,7 @@ void AudacityProject::InitialState()
    ModifyUndoMenus();
 
    UpdateMenus();
+   UpdateLyrics();
 }
 
 void AudacityProject::PushState(wxString desc,
@@ -2442,6 +2446,7 @@ void AudacityProject::PushState(wxString desc,
    ModifyUndoMenus();
 
    UpdateMenus();
+   UpdateLyrics();
 }
 
 void AudacityProject::ModifyState()
@@ -2451,6 +2456,7 @@ void AudacityProject::ModifyState()
    mUndoManager.ModifyState(l, mViewInfo.sel0, mViewInfo.sel1);
 
    delete l;
+   UpdateLyrics();
 }
 
 void AudacityProject::PopState(TrackList * l)
@@ -2469,6 +2475,7 @@ void AudacityProject::PopState(TrackList * l)
    HandleResize();
 
    UpdateMenus();
+   UpdateLyrics();
 }
 
 void AudacityProject::SetStateTo(unsigned int n)
@@ -2480,6 +2487,40 @@ void AudacityProject::SetStateTo(unsigned int n)
    HandleResize();
    mTrackPanel->Refresh(false);
    ModifyUndoMenus();
+   UpdateLyrics();
+}
+
+void AudacityProject::UpdateLyrics()
+{
+   if (mLyricsWindow == NULL) {
+      mLyricsWindow = new LyricsWindow(this);
+      wxASSERT(mLyricsWindow);
+      mLyricsWindow->Show(true);
+   }
+
+   LabelTrack *labelTrack = NULL;
+   Track *t;
+   TrackListIterator iter(mTracks);
+   t = iter.First();
+   while (t) {
+      if (t->GetKind() == Track::Label) {
+         labelTrack = (LabelTrack *)t;
+         break;
+      }
+      t = iter.Next();
+   }
+
+   if (!labelTrack)
+      return;
+
+   Lyrics *lyrics = mLyricsWindow->GetLyricsPanel();
+   lyrics->Clear();
+   for(int i=0; i<labelTrack->GetNumLabels(); i++) {
+     lyrics->Add(labelTrack->GetLabel(i)->t,
+		 labelTrack->GetLabel(i)->title);
+   }
+   lyrics->Finish(labelTrack->GetEndTime());
+   lyrics->Update(0.0);
 }
 
 //
