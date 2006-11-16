@@ -22,6 +22,22 @@
   <li><p><?=_("MacOS X: Audacity cannot work with files or folders that are contained inside folders with non-English characters (accents, symbols, etc.) in their names.  Files with accented characters work, and Audacity projects with accented characters work.  Only folders with accented characters in their names will cause problems.")?></p></li>
 </ul>
 
+<?=_("<h3>Changes in Audacity 1.2.6</h3>
+<ul>
+<li>Fixed memory leaks on Windows.
+</li>
+
+<li>Corrected font size problems.
+</li>
+
+<li>Enabled missing FLAC support.
+</li>
+
+<li>Fixed Mac OS X (PPC only) screen redraw issues.
+</li>")?>
+
+</ul>
+
 <?=_("<h3>Changes in Audacity 1.2.5</h3>
 <ul>
 <li>An official Intel Mac version is now available.
