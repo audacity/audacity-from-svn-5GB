@@ -1,22 +1,22 @@
 <?php
 // The main version number, when we don't distinguish between platforms
-define('stable_version', '1.2.5');
+define('stable_version', '1.2.6');
 
 // Note: Sizes are in MB.
 define('mac_classic_version', '1.0.0');
 define('mac_classic_size',    1.5);
 
-define('macosx_version', '1.2.5');
+define('macosx_version', '1.2.6');
 define('macosx_size',    3.2);
 define('macosx_intel_version', '1.2.5');
 define('macosx_intel_size',    3.4);
 
-define('win_exe_version', '1.2.5');
+define('win_exe_version', '1.2.6');
 define('win_exe_size',    2.1);
-define('win_zip_version', '1.2.5');
+define('win_zip_version', '1.2.6');
 define('win_zip_size',    3.0);
 
-define('src_version', '1.2.5');
+define('src_version', '1.2.6');
 define('src_size',    5.6);
 define('src_suffix',  '.tar.gz');
 
