@@ -29,6 +29,16 @@
   you need to use doubles.
 
 **********************************************************************/
+/*
+  Salvo Ventura - November 2006
+  Added more window functions:
+    * 4: Blackman
+    * 5: Blackman-Harris
+    * 6: Welch
+    * 7: Gaussian(a=2.5)
+    * 8: Gaussian(a=3.5)
+    * 9: Gaussian(a=4.5)
+*/
 
 #ifndef M_PI
 #define	M_PI		3.14159265358979323846  /* pi */
@@ -72,6 +82,12 @@ void FFT(int NumSamples,
  * 1: Bartlett    (triangular)
  * 2: Hamming
  * 3: Hanning
+ * 4: Blackman
+ * 5: Blackman-Harris
+ * 6: Welch
+ * 7: Gaussian(a=2.5)
+ * 8: Gaussian(a=3.5)
+ * 9: Gaussian(a=4.5)
  */
 
 void WindowFunc(int whichFunction, int NumSamples, float *data);
