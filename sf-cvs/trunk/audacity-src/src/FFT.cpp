@@ -6,8 +6,6 @@
 
   September 2000
 
-
-
 *******************************************************************//*!
 
 \file FFT.cpp
@@ -30,7 +28,16 @@
   calculate a real FFT and a real power spectrum.
 
 *//*******************************************************************/
-
+/*
+  Salvo Ventura - November 2006
+  Added more window functions:
+    * 4: Blackman
+    * 5: Blackman-Harris
+    * 6: Welch
+    * 7: Gaussian(a=2.5)
+    * 8: Gaussian(a=3.5)
+    * 9: Gaussian(a=4.5)
+*/
 
 #include <wx/intl.h>
 #include <stdlib.h>
@@ -361,7 +368,7 @@ void PowerSpectrum(int NumSamples, float *In, float *Out)
 
 int NumWindowFuncs()
 {
-   return 4;
+   return 10;
 }
 
 const wxChar *WindowFuncName(int whichFunction)
@@ -376,12 +383,25 @@ const wxChar *WindowFuncName(int whichFunction)
       return wxT("Hamming");
    case 3:
       return wxT("Hanning");
+   case 4:
+      return wxT("Blackman");
+   case 5:
+      return wxT("Blackman-Harris");
+   case 6:
+      return wxT("Welch");
+   case 7:
+      return wxT("Gaussian(a=2.5)");
+   case 8:
+      return wxT("Gaussian(a=3.5)");
+   case 9:
+      return wxT("Gaussian(a=4.5)");
    }
 }
 
 void WindowFunc(int whichFunction, int NumSamples, float *in)
 {
    int i;
+   double A;
 
    if (whichFunction == 1) {
       // Bartlett (triangular) window
@@ -403,6 +423,62 @@ void WindowFunc(int whichFunction, int NumSamples, float *in)
       for (i = 0; i < NumSamples; i++)
          in[i] *= 0.50 - 0.50 * cos(2 * M_PI * i / (NumSamples - 1));
    }
+
+   if (whichFunction == 4) {
+      // Blackman
+      for (i = 0; i < NumSamples; i++) {
+          in[i] *= 0.42 - 0.5 * cos (2 * M_PI * i / (NumSamples - 1)) + 0.08 * cos (4 * M_PI * i / (NumSamples - 1));
+      }
+   }
+
+   if (whichFunction == 5) {
+      // Blackman-Harris
+      for (i = 0; i < NumSamples; i++) {
+          in[i] *= 0.35875 - 0.48829 * cos(2 * M_PI * i /(NumSamples-1)) + 0.14128 * cos(4 * M_PI * i/(NumSamples-1)) - 0.01168 * cos(6 * M_PI * i/(NumSamples-1));
+      }
+   }
+
+   if (whichFunction == 6) {
+      // Welch
+      for (i = 0; i < NumSamples; i++) {
+          in[i] *= 4*i/(float)NumSamples*(1-(i/(float)NumSamples));
+      }
+   }
+
+   if (whichFunction == 7) {
+      // Gaussian (a=2.5)
+      // Precalculate some values, and simplify the fmla to try and reduce overhead
+      A=-2*2.5*2.5;
+
+      for (i = 0; i < NumSamples; i++) {
+          // full
+          // in[i] *= exp(-0.5*(A*((i-NumSamples/2)/NumSamples/2))*(A*((i-NumSamples/2)/NumSamples/2)));
+          // reduced
+          in[i] *= exp(A*(0.25 + ((i/(float)NumSamples)*(i/(float)NumSamples)) - (i/(float)NumSamples)));
+      }
+   }
+
+   if (whichFunction == 8) {
+      // Gaussian (a=3.5)
+      A=-2*3.5*3.5;
+
+      for (i = 0; i < NumSamples; i++) {
+          // reduced
+          in[i] *= exp(A*(0.25 + ((i/(float)NumSamples)*(i/(float)NumSamples)) - (i/(float)NumSamples)));
+      }
+   }
+
+   if (whichFunction == 9) {
+      // Gaussian (a=4.5)
+      A=-2*4.5*4.5;
+
+      for (i = 0; i < NumSamples; i++) {
+          // reduced
+          in[i] *= exp(A*(0.25 + ((i/(float)NumSamples)*(i/(float)NumSamples)) - (i/(float)NumSamples)));
+      }
+   }
+
+
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

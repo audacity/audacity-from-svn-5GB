@@ -26,6 +26,11 @@ the mouse around.
 
 *//*******************************************************************/
 
+/*
+  Salvo Ventura - November 2006
+  Extended range check for additional FFT windows
+*/
+
 
 #include "Audacity.h"
 
@@ -143,7 +148,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    wxStaticText *algLabel = new wxStaticText(this, wxID_ANY, _("Algorithm:"));
    mAlgChoice = new wxChoice(this, FreqAlgChoiceID,
                              wxDefaultPosition, wxDefaultSize,
-                             4, algChoiceStrings);
+                             5, algChoiceStrings);
 
    mAlgChoice->SetSelection(0);
 
@@ -818,7 +823,7 @@ void FreqWindow::Recalc()
    (mSizeChoice->GetStringSelection()).ToLong(&windowSize);
 
    if (!(windowSize >= 32 && windowSize <= 65536 &&
-         alg >= 0 && alg <= 3 && windowFunc >= 0 && windowFunc <= 3)) {
+         alg >= 0 && alg <= 3 && windowFunc >= 0 && windowFunc <= 9)) {
       mFreqPlot->Refresh(true);
       return;
    }
