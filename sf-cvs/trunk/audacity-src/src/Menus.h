@@ -169,6 +169,7 @@ void OnSplitDelete();
 void OnSilence();
 
 void OnSplit();
+void OnSplitNew();
 void OnSplitLabelsToTracks();
 void OnJoin();
 void OnDisjoin();
