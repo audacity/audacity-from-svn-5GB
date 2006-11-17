@@ -2251,7 +2251,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       if (newTracks[i]->GetKind() == WaveTrack::Wave)
       {
          WaveClip* clip = ((WaveTrack*)newTracks[i])->GetClipByIndex(0);
-         if (clip)
+         if (clip && clip->GetSequence()->GetBlockArray()->GetCount())
          {
             SeqBlock* block = clip->GetSequence()->GetBlockArray()->Item(0);
             if (block->f->IsAlias())
