@@ -422,6 +422,11 @@ void AudacityProject::CreateMenusAndCommands()
       AudioIONotBusyFlag | WaveTracksSelectedFlag,
       AudioIONotBusyFlag | WaveTracksSelectedFlag);
 
+   c->AddItem(wxT("SplitNew"),      _("Split Ne&w\tShift+Ctrl+I"),       FN(OnSplitNew));
+   c->SetCommandFlags(wxT("SplitNew"),
+      AudioIONotBusyFlag | WaveTracksSelectedFlag,
+      AudioIONotBusyFlag | WaveTracksSelectedFlag);
+
    c->AddItem(wxT("Join"),           _("&Join\tCtrl+J"),                  FN(OnJoin));
    c->AddItem(wxT("Disjoin"),        _("Disj&oin\tCtrl+Alt+J"),                       FN(OnDisjoin));
    
@@ -2986,6 +2991,50 @@ void AudacityProject::OnSplit()
    */
 #endif
 }
+
+void AudacityProject::OnSplitNew()
+{
+   TrackListIterator iter(mTracks);
+   Track *n = iter.First();
+   Track *dest;
+
+   TrackList newTracks;
+
+   n = iter.First();
+   while (n) {
+      if (n->GetSelected()) {
+         dest = NULL;
+         if (n->GetKind() == Track::Wave)
+         {
+            ((WaveTrack*)n)->SplitCut(mViewInfo.sel0, mViewInfo.sel1, &dest);
+         } else
+         {
+            n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
+         }
+         if (dest) {
+            dest->SetChannel(n->GetChannel());
+            dest->SetTeamed(n->GetTeamed()); // do first
+            dest->SetLinked(n->GetLinked());
+            dest->SetName(n->GetName());
+            dest->SetOffset(wxMax(mViewInfo.sel0, n->GetOffset()));
+            newTracks.Add(dest);
+         }
+      }
+      n = iter.Next();
+   }
+
+   TrackListIterator nIter(&newTracks);
+   n = nIter.First();
+   while (n) {
+      mTracks->Add(n);
+      n = nIter.Next();
+   }
+
+   PushState(_("Split to new track"), _("Split New"));
+
+   RedrawProject();
+}
+
 
 void AudacityProject::OnSplitLabelsToTracks()
 {
