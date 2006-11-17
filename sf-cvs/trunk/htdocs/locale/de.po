@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Audacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-08 09:59-0800\n"
-"PO-Revision-Date: 2006-11-12 12:28+0100\n"
-"Last-Translator: Andreas Klug <sammel@mediensyndikat.de>\n"
+"PO-Revision-Date: 2006-11-17 20:39+0100\n"
+"Last-Translator: Andreas Klug <sammel <at> mediensyndikat.de>\n"
 "Language-Team: Pennywize <pennywize@gmx.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -288,15 +288,15 @@ msgid ""
 "  <li>And more! See the complete <a href=\"features\">list of features</a>.</li>\n"
 "</ul>"
 msgstr ""
-"<p>Audacity ist ein <a href=\"http://audacity.sourceforge.net/about/\">freier</a>, kostenloser, leicht zu bedienender Audioeditor und Rekorder für Windows, Mac OS X, GNU/Linux und andere Betriebssysteme. Sie können Audacity benutzen um:</p>\n"
+"<p>Audacity ist ein freier, kostenloser, leicht zu bedienender Audioeditor und -recorder für Windows, Mac OS X, GNU/Linux und andere Betriebssysteme. Sie können mit Audacity</p>\n"
 "\n"
 "<ul>\n"
-"  <li>Live Audio aufzunehmen</li>\n"
-"<li>Kassetten und Schallplatten zu digitalisieren</li>\n"
-"<li>Ogg Vorbis, MP3 und Wave Dateien zu bearbeiten</li>\n"
-"<li>Töne und Dateien zu schneiden, kopieren und zusammenzumixen</li>\n"
-"<li>Die Geschwindigkeit oder Tonhöhe einer Aufnahme zu ändern</li>\n"
-"<li>und noch vieles mehr! Beachten Sie die komplette <a href=\"features\">Liste</a>.</p>\n"
+"  <li>live Audio aufnehmen</li>\n"
+"  <li>Cassetten und Schallplatten digitalisieren</li>\n"
+"  <li>Ogg Vorbis-, MP3- und Wave-Dateien bearbeiten</li>\n"
+"  <li>Töne und Dateien schneiden, kopieren und mischen</li>\n"
+"  <li>Die Geschwindigkeit oder Tonhöhe einer Aufnahme ändern</li>\n"
+"  <li>... und noch vieles mehr! Beachten Sie die komplette <a href=\"features\">Liste</a>.</p>\n"
 "</ul>"
 
 #. i18n-hint: You may change the link addresses below, if there is a
@@ -1196,7 +1196,7 @@ msgstr "Erlaubt Audacity VST Plugins zu nutzen"
 #: download/common.inc.php:12
 #: main.inc.php:45
 msgid "Plug-Ins"
-msgstr "Plugins"
+msgstr "Plug-ins"
 
 #: download/common.inc.php:12
 msgid "Download additional effects and filters."
@@ -1546,7 +1546,7 @@ msgstr ""
 
 #: download/features-1.3-f.php:18
 msgid "Also on Mac OS X, Audacity now supports Audio Unit plug-ins.  Audacity searches for Audio Units in the usual location, in the system or user's Library folder."
-msgstr "Ebenfalls auf Mac OS X unterstützt Audacity nun Audio Unit Plugins. Audacity sucht dies an den üblichen Orten, im System oder Nutzerverzeichnis."
+msgstr "Auch auf Mac OS X unterstützt Audacity nun Audio Unit Plugins. Audacity sucht dies an den üblichen Orten, im System- oder Nutzerverzeichnis."
 
 #: download/features-1.3-f.php:35
 msgid "This is the end of new features in Audacity 1.3.1 and 1.3.2.  Continue on to read about features that were previously introduced in Audacity 1.3.0."
@@ -1759,7 +1759,7 @@ msgstr "Download"
 
 #: download/index.php:20
 msgid "Select your operating system to download the latest version of the free Audacity sound editor."
-msgstr "Wählen Sie Ihr Betriebssystem um die letzte Version von Audacity herunterzuladen"
+msgstr "Wählen Sie Ihr Betriebssystem um Audacity herunterzuladen:"
 
 #: download/index.php:25
 #: main.inc.php:33
@@ -1787,15 +1787,15 @@ msgstr "Für erfahrene Nutzer"
 
 #: download/index.php:57
 msgid "You can also <a href=\"buy\">purchase</a> a copy of Audacity on CD."
-msgstr "Sie können ebenfalls eine Kopie von Audacity auf CD <a href=\"buy\">kaufen</a> "
+msgstr "Alternativ können sie eine Kopie von Audacity auf CD <a href=\"buy\">kaufen."
 
 #: download/index.php:59
 msgid "If you wish to compile Audacity yourself, download the <a href=\"source\">source code</a>."
-msgstr "Wenn Sie Audacity selber kompilieren möchten, laden Sie den <a href=\"source\">Quellcode</a> herunter."
+msgstr "Wenn Sie Audacity dagegen selbst kompilieren möchten, laden Sie den <a href=\"source\">Quellcode</a> herunter."
 
 #: download/index.php:61
 msgid "You may modify, distribute, and sell Audacity under the <a href=\"../about/license\">GNU GPL</a>."
-msgstr "Sie können Audacity Ändern, Vertreiben und Verkaufen unter <a href=\"../about/license\">GNU GPL</a>."
+msgstr "Grundsätzlich können Sie Audacity ändern, vertreiben und verkaufen gemäß der Lizenz <a href=\"../about/license\">GNU GPL</a>."
 
 #: download/linux.php:15
 msgid "The easiest way to install the free Audacity audio editor on GNU/Linux (and other Unix-like systems) is to download a package built for your operating system:"
@@ -1834,7 +1834,7 @@ msgstr "Audacity 1.0 benötigt Mac OS 9.0 oder später."
 
 #: download/nyquistplugins.php:10
 msgid "Download Nyquist Plug-Ins"
-msgstr "Download von Nyquist Plugins"
+msgstr "Nyquist- Plug-ins herunterladen"
 
 #. i18n-hint: Sorry, the actual plug-in descriptions are not translatable yet.
 #: download/nyquistplugins.php:15
@@ -1843,31 +1843,31 @@ msgstr "<p>Dies sind Plugineffekte für Audacity. Diese sind in der <a href=\"..
 
 #: download/plugins.php:9
 msgid "Plug-In Effects"
-msgstr "Plugins für Effekte"
+msgstr "Effekte-Plug-ins"
 
 #: download/plugins.php:14
 msgid "You can download and install plug-ins to add extra effects to Audacity.  Plug-ins appear at the bottom of the \"Effect\" menu.  To install new plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under \"Program Files.\"  On Mac OS X, it is usually under \"Applications.\""
-msgstr "Sie können zusätzliche Effekte und Plugins für Audacity herunterladen und installieren. Plugins erscheinen am Ende der Liste im \"Effekt\"-Menü. Um diese zu installieren, müssen diese in das<b>PlugIn</b> Verzeichnis im Audacity Installationsordner gespeichert werden. Auf Windows Rechnern ist dies normalerweise im \"Program Files\" (in deutschen Rechnern im \"Programme\" Ordner.) Auf Mac OS X ist dies im \"Applications\" Ordner."
+msgstr "Sie können zusätzliche Effekt-Plug-ins für Audacity herunterladen und installieren. Plug-ins erscheinen im Menü Effekte am Ende der Liste. Damit Audacity die Effekte findet, müssen sie im Audacity-Installationsverzeichnis in das Unterverzeichnis <b>Plug-Ins</b> gespeichert werden. Auf Windows-Rechnern ist Audacity normalerweise im Verzeichnis \"Programme\" installiert (bzw. in \"Program Files\"), unter Mac OS X im Verzeichnis \"Applications\"."
 
 #: download/plugins.php:16
 msgid "LADSPA Plug-Ins"
-msgstr "LADSPA Plugins"
+msgstr "LADSPA-Plug-ins"
 
 #: download/plugins.php:17
 msgid "Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity comes with sample LADSPA effects for Mac and Windows.  For more information and downloads, see the <a href=\"http://www.ladspa.org/\">LADSPA web site</a>.</p>"
-msgstr "Audacity unterstützt LADSPA Plugins. Diese werden normalerweise für Linux entwickelt, es gibt Sie jedoch auch für andere Betriebssysteme. Audacity hat bereits bei der Installation einige Effekte für MAC und Windows dabei. Wenn Sie mehr Informationen benötigen, schauen Sie auf der <a href=\"http://www.ladspa.org/\">LADSPA Webseite</a> nach.</p>"
+msgstr "Audacity unterstützt LADSPA-Plug-ins. Diese sind normalerweise für Linux entwickelt, einige gibt es jedoch auch für andere Betriebssysteme. Detaillierte Informationen gibt es auf der <a href=\"http://www.ladspa.org/\">LADSPA-Website</a>.</p>"
 
 #: download/plugins.php:19
 msgid "Nyquist Plug-Ins"
-msgstr "Nyquist Plugins"
+msgstr "Nyquist-Plugins"
 
 #: download/plugins.php:20
 msgid "Audacity has built-in support for cross-platform Nyquist effects.  You can download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or create your own using the <a href=\"../help/nyquist\">Nyquist programming language</a>"
-msgstr "Audacity unterstützt Nyquist Effekte. Sie können zusätzliche <a href=\"nyquistplugins\">Nyquist Effekte</a> herunterladen oder Sie entwicklen eigene Effekte in der <a href=\"../help/nyquist\">Nyquist Programmiersprache</a>"
+msgstr "Audacity unterstützt Nyquist-Effekte. Sie können zusätzliche <a href=\"nyquistplugins\">Nyquist-Effekte</a> herunterladen oder Sie entwickeln eigene Effekte in der <a href=\"../help/nyquist\">Nyquist-Programmiersprache</a>"
 
 #: download/plugins.php:22
 msgid "VST Plug-Ins"
-msgstr "VST Plugins"
+msgstr "VST-Plugins"
 
 #: download/plugins.php:23
 msgid "Audacity can load VST effects (for Mac OS or Windows) using the optional <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  You can find VST effects at <a href=\"http://www.kvraudio.com/\">KVR Audio</a> and <a href=\"http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/\">other plug-in sites</a>.</p>"
@@ -2139,7 +2139,7 @@ msgstr "<p>Audacity läuft nicht aus. Während Aufnahmen zeigt dir dieser Wert a
 
 #: help/faq.php:57
 msgid "Installation and Plug-Ins"
-msgstr "Installation und Plugins"
+msgstr "Installation und Plug-ins"
 
 #: help/faq.php:60
 msgid "How do I download and install the LAME MP3 encoder?"
@@ -3509,7 +3509,7 @@ msgstr "%d %B %Y"
 
 #: include/news.inc.php:44
 msgid "Audacity 1.3.2 and 1.2.5 Released"
-msgstr "Veröffentlichung von Audacity 1.3.2 und 1.2.5"
+msgstr "Veröffentlichung von Audacity 1.3.2 und 1.2.6"
 
 #: include/news.inc.php:45
 msgid ""
@@ -3576,21 +3576,21 @@ msgstr ""
 "<p>\n"
 "Die neuen Audacity-Versionen bieten eine ganze Reihe neuer \n"
 "Funktionen. Insbesondere <a href=\"/download/features-1.3-a\">Audacity 1.3.2-beta</a> ist \n"
-"voller interessanter Neuigkeiten, an einigen wenigen Stellen allerdings noch ein kleinwenig \"Baustelle\". So \n"
+"voller interessanter Neuigkeiten, an einigen wenigen Stellen allerdings noch ein klein wenig \"Baustelle\". So \n"
 "gibt es derzeit beispielsweise noch keine vollständige Dokumentation. \n"
 "Anwender/-innen mit etwas Erfahrung werden aber schnell zurechtkommen. \n"
-"<a href=\"/download\">Audacity 1.2.5</a> hingegen enthält kleinere Korrekturen \n"
+"<a href=\"/download\">Audacity 1.2.6</a> hingegen enthält kleinere Korrekturen \n"
 "gegenüber der vorangegangenen Version 1.2.4, \n"
-"enthält aber keine wirklichen Neuerungen. Audacity 1.2.5 und 1.3.2-beta \n"
+"allerdings keine wirklichen Neuerungen. Audacity 1.2.6 und 1.3.2-beta \n"
 "können problemlos parallel installiert werden. \n"
-"Darüberhinaus gibt es nun eine Zusammenstellung von 92 \n"
-"<a href=\"/download/plugins\">LADSPA-Plug-ins für Windows</a>\n"
+"Auch unter Windows sind nun die zahlreichen bislang nur unter Linux nutzbaren LADSPA-Plug-ins nutzbar:\n"
+"Hierdurch lässt sich die Zahl der verwendbaren <a href=\"/download/plugins\">Effekte</a>enorm erweitern\n"
 "(für beide Audacity-Versionen).\n"
 "\n"
 "</p><p>\n"
 "\n"
-"Unter <a href=\"/download/release-notes\">1.2.5 Release Notes</a> finden Sie eine vollständige Liste der Änderungen sowie bekannter Probleme in Audacity 1.2.5, unter \n"
-"<a href=\"/download/features-1.3-a\">New Features in 1.3</a>\n"
+"Unter <a href=\"/download/release-notes\">Releaseinformationen</a> finden Sie eine vollständige Liste der Änderungen sowie bekannter Probleme in Audacity 1.2.6, unter \n"
+"<a href=\"/download/features-1.3-a\">Neue Funktionen in Audacity 1.3</a>\n"
 "finden Sie Informationen zu Audacity 1.3.2-beta.\n"
 "\n"
 "</p>\n"
@@ -3599,21 +3599,21 @@ msgstr ""
 "<dl><dt></dt><dd><!-- indent cheat -->\n"
 "<dl>\n"
 "       <dt> Verbesserte Benutzeroberfläche </dt>\n"
-"             <dd> Neue Zeit-Anzeige </dd>\n"
+"             <dd> Neu entwickelte Zeit-Anzeige </dd>\n"
 "             <dd> Interessante Funktionen in der Textspur </dd>\n"
 "             <dd> Flexiblere Positionierung der Werkzeugleisten </dd>\n"
-"             <dd> Benutzungsfreundlichere Organisation der Menüs </dd>\n"
+"             <dd> Logischere Struktur der Menüs </dd>\n"
 "             <dd> Verbesserungen bei den Auswahl- und Wiedergabemöglichkeiten </dd>\n"
 "       <dt> Verbesserungen bei den Effekten</td>\n"
-"              <dd> Neuer Effekt \"Reparieren\" </dd>\n"
-"              <dd> Verbesserter Equalizer </dd>\n"
+"              <dd> Neu entwickelter Effekt \"Reparieren\" </dd>\n"
+"              <dd> Überarbeiteter Equalizer </dd>\n"
 "              <dd> Allerlei Verbesserungen im Detail </dd>\n"
 "       <dt> Benutzungsführung für Blinde </dt>\n"
 "             <dd> Verbesserungen für \"screen reader\", vereinfachter Zugriff auf Spuren, Tastaturkürzel </dd>\n"
 "       <dt> Zeitgesteuerte Aufnahme </dt>\n"
 "       <dt> Automatisches Speichern im Hintergrund sowie Wiederherstellung nach Absturz </dt>\n"
 "       <dt> Neuigkeiten und Verbesserungen für Nyquist-Effekte </dt>\n"
-"       <dt> Deutlich erweiterter \"Einstellungen-\"Dialog </dt>\n"
+"       <dt> Deutlich erweiterter Dialog \"Einstellungen\"</dt>\n"
 "       <dt> Verbesserte Stapelverarbeitung </dt>\n"
 "       <dt> Vielfältigere Exportfunktion </dt>\n"
 "       <dt> Unterstützung für Intel Mac </dt>\n"
@@ -3621,7 +3621,7 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>\n"
 "\n"
-"<b>Audacity 1.2.5</b>\n"
+"<b>Audacity 1.2.6</b>\n"
 "<dl><dt></dt><dd><!-- indent cheat -->\n"
 "<dl>\n"
 "       <dt> Vielfältigere Exportfunktion </dt>\n"
@@ -3731,9 +3731,8 @@ msgid "The Free, Cross-Platform Sound Editor"
 msgstr "Der freie, betriebssystemunabhängige Audioeditor"
 
 #: index.php:50
-#, fuzzy
 msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
-msgstr "Audacity&reg; ist ein <a href=\"http://audacity.sourceforge.net/about/\">freier</a> Mehrspur-Audio-Editor für Linux, Mac und Windows. <a href=\"about/\">Wollen Sie mehr wissen...</a>"
+msgstr "Audacity&reg; ist ein freier Mehrspur-Audio-Editor für Linux, Mac und Windows. <a href=\"about/\">Mehr ...</a>"
 
 #: index.php:55
 #: index.php:59
