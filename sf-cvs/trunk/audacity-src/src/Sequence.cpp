@@ -1128,7 +1128,7 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
 
       CopySamples(buffer,
                   format,
-                  buffer2 + lastBlock->f->GetLength() * SAMPLE_SIZE(format),
+                  buffer2 + lastBlock->f->GetLength() * SAMPLE_SIZE(mSampleFormat),
                   mSampleFormat,
                   addLen);
 
