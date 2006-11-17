@@ -15,6 +15,7 @@ information.
 *//*******************************************************************/
 
 
+#include <wx/dynarray.h>
 #include <wx/intl.h>
 #include "sndfile.h"
 
