@@ -905,6 +905,7 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-static         link wx statically (default=no)
   --enable-unicode        enable unicode support (default=no)
+  --enable-debug          enable unicode support (default=none)
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -3407,6 +3408,14 @@ else
   unicode_preference=""
 fi;
 
+# Check whether --enable-debug or --disable-debug was given.
+if test "${enable_debug+set}" = set; then
+  enableval="$enable_debug"
+  debug_preference="--debug=$enableval"
+else
+  debug_preference=""
+fi;
+
 
 # Check whether --with-lib-preference or --without-lib-preference was given.
 if test "${with_lib_preference+set}" = set; then
@@ -5409,9 +5418,6 @@ _ACEOF
 
 
 
-   LIBSOUNDTOUCH_SYSTEM_AVAILABLE="no"
-
-
 pkg_failed=no
 echo "$as_me:$LINENO: checking for SOUNDTOUCH" >&5
 echo $ECHO_N "checking for SOUNDTOUCH... $ECHO_C" >&6
@@ -6237,14 +6243,14 @@ echo "$as_me: error: \"Could not find wx-config: is wxWindows installed? is wx-c
 fi
 
 
-wx_version=`${WX_CONFIG} $static_preference $unicode_preference --version`
+wx_version=`${WX_CONFIG} $static_preference $unicode_preference $debug_preference --version`
 
-{ echo "$as_me:$LINENO: Checking that the installed version of wxWidgets is 2.6.x" >&5
-echo "$as_me: Checking that the installed version of wxWidgets is 2.6.x" >&6;}
+{ echo "$as_me:$LINENO: Checking that the installed version of wxWidgets is at least 2.6.x" >&5
+echo "$as_me: Checking that the installed version of wxWidgets is at least 2.6.x" >&6;}
 
 case "${wx_version}" in
-  2.6.*)
-    echo "Great, you're using wxWidgets 2.6.x!"
+  2.6.*|2.7.*|2.8.*)
+    echo "Great, you're using wxWidgets ${wx_version}!"
     ;;
   *)
   wx_list=`${WX_CONFIG} --list`
@@ -6262,8 +6268,8 @@ ${wx_list}" >&2;}
 esac
 
 
-LIBS="$LIBS `$WX_CONFIG $static_preference $unicode_preference --libs`"
-CPPFLAGS="$CPPFLAGS `$WX_CONFIG $static_preference $unicode_preference --cxxflags`"
+LIBS="$LIBS `$WX_CONFIG $static_preference $unicode_preference $debug_preference --libs`"
+CPPFLAGS="$CPPFLAGS `$WX_CONFIG $static_preference $unicode_preference $debug_preference --cxxflags`"
 
 # Make sure we can run config.sub.
 $ac_config_sub sun4 >/dev/null 2>&1 ||
