@@ -742,13 +742,17 @@ void LWSlider::OnKeyEvent(wxKeyEvent & event)
       break;
 
       case WXK_PAGEUP:
+#if !wxCHECK_VERSION(2,7,0)
       case WXK_PRIOR:
+#endif
          Increase( 5 );
          SendUpdate( mCurrentValue );
       break;
 
       case WXK_PAGEDOWN:
+#if !wxCHECK_VERSION(2,7,0)
       case WXK_NEXT:
+#endif
          Decrease( 5 );
          SendUpdate( mCurrentValue );
       break;

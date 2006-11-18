@@ -159,7 +159,7 @@ void ControlToolBar::MakeLoopImage()
    wxImage * down2      = OverlayImage(bmpRecoloredDownLarge,   bmpLoop, xoff + 1, yoff + 1);
    wxImage * disable2   = OverlayImage(bmpRecoloredUpLarge,     bmpLoopDisabled, xoff, yoff);
 
-   mPlay->SetAlternateImages(up2, hilite2, down2, disable2);
+   mPlay->SetAlternateImages(*up2, *hilite2, *down2, *disable2);
 
    delete up2;
    delete hilite2;
