@@ -11,6 +11,7 @@
 #ifndef __AUDACITY_LANGUAGES__
 #define __AUDACITY_LANGUAGES__
 
+#include <wx/arrstr.h>
 #include <wx/string.h>
 #include <wx/list.h>
 

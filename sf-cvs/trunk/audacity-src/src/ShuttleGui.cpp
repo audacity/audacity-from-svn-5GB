@@ -98,6 +98,7 @@ for registering for changes.
 #include <wx/wx.h>
 #include <wx/wxprec.h>
 #include <wx/listctrl.h>
+#include <wx/notebook.h>
 #include <wx/treectrl.h>
 #include "Internat.h"
 #include "Experimental.h"
