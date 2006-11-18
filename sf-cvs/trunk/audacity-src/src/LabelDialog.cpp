@@ -736,3 +736,21 @@ void LabelDialog::OnChangeEtime(wxGridEvent &event, int row, RowData *rd)
 
    return;
 }
+
+void LabelDialog::OnOK(wxCommandEvent &event)
+{
+   // Standard handling
+   if (Validate() && TransferDataFromWindow()) {
+      EndModal(wxID_OK);
+   }
+
+   return;
+}
+
+void LabelDialog::OnCancel(wxCommandEvent &event)
+{
+   // Standard handling
+   EndModal(wxID_CANCEL);
+
+   return;
+}
