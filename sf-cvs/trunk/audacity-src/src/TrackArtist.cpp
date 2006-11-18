@@ -1136,7 +1136,7 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    // from now on is drawn using ordinary wxWindows drawing code.
 
    #if BUFFERED_DRAWING
-   wxBitmap *bitmap = new wxBitmap(image);
+   wxBitmap *bitmap = new wxBitmap(*image);
    wxMemoryDC *bitmapDC = new wxMemoryDC();
    bitmapDC->SelectObject(*bitmap);
    dc.Blit(mid.x, mid.y, drawRect.width, drawRect.height,
