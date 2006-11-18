@@ -80,7 +80,8 @@ public:
     { 
        return InsertPage(GetRootItem(), n, page, text, bSelect, imageId).IsOk(); 
     } 
-    virtual int SetSelection(size_t n); 
+    virtual int SetSelection(size_t n);
+    int ChangeSelection(size_t n) { return SetSelection(n); };
 
     // returns true if we have wxLB_TOP or wxLB_BOTTOM style 
     bool IsVertical() const { return HasFlag(wxLB_BOTTOM | wxLB_TOP); } 
