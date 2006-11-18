@@ -66,12 +66,14 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
       case WXK_RETURN:
          newStr += wxT("Return");
          break;
+#if !wxCHECK_VERSION(2, 7, 0)
       case WXK_PRIOR:
          newStr += wxT("PageUp");
          break;
       case WXK_NEXT:
          newStr += wxT("PageDown");
          break;
+#endif
       case WXK_END:
          newStr += wxT("End");
          break;
@@ -246,14 +248,16 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
       case WXK_NUMPAD_DOWN:
          newStr += wxT("NUMPAD_DOWN");
          break;
+#if !wxCHECK_VERSION(2, 7, 0)
       case WXK_NUMPAD_PRIOR:
-         newStr += wxT("NUMPAD_PAGEUP");
-         break;
-      case WXK_NUMPAD_PAGEUP:
          newStr += wxT("NUMPAD_PAGEUP");
          break;
       case WXK_NUMPAD_NEXT:
          newStr += wxT("NUMPAD_PAGEDOWN");
+         break;
+#endif
+      case WXK_NUMPAD_PAGEUP:
+         newStr += wxT("NUMPAD_PAGEUP");
          break;
       case WXK_NUMPAD_PAGEDOWN:
          newStr += wxT("NUMPAD_PAGEDOWN");
