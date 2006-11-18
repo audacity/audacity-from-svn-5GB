@@ -11,6 +11,7 @@
 #ifndef __AUDACITY_EXPORT__
 #define __AUDACITY_EXPORT__
 
+#include <wx/panel.h>
 #include <wx/stattext.h>
 
 class AudacityProject;

@@ -11,6 +11,7 @@
 #ifndef _IMPORT_
 #define _IMPORT_
 
+#include <wx/arrstr.h>
 #include <wx/string.h>
 #include <wx/list.h>
 #include <wx/listimpl.cpp>
