@@ -59,6 +59,8 @@ class LabelDialog:public wxDialog
    void OnChangeLabel(wxGridEvent &event, int row, RowData *rd);
    void OnChangeStime(wxGridEvent &event, int row, RowData *rd);
    void OnChangeEtime(wxGridEvent &event, int row, RowData *rd);
+   void OnOK(wxCommandEvent &event);
+   void OnCancel(wxCommandEvent &event);
 
  private:
 
