@@ -166,6 +166,7 @@ different formats.
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/tooltip.h>
+#include <wx/toplevel.h>
 
 #define ID_MENU 9800
 
@@ -980,8 +981,8 @@ void TimeTextCtrl::OnKeyDown(wxKeyEvent &event)
    } 
 
    else if (keyCode == WXK_RETURN || keyCode == WXK_NUMPAD_ENTER) {
-      wxWindow *parent = GetParent();
-      wxWindow *def = parent->GetDefaultItem();
+      wxTopLevelWindow *tlw = wxDynamicCast(wxGetTopLevelParent(this), wxTopLevelWindow);
+      wxWindow *def = tlw->GetDefaultItem();
       if (def && def->IsEnabled()) {
          wxCommandEvent cevent(wxEVT_COMMAND_BUTTON_CLICKED,
                                def->GetId());

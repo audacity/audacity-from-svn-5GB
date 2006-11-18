@@ -775,11 +775,12 @@ void LWSlider::OnKeyEvent(wxKeyEvent & event)
       case WXK_RETURN:
       case WXK_NUMPAD_ENTER:
       {
-         wxWindow *def = mParent->GetParent()->GetDefaultItem();
-         if (def) {
+         wxTopLevelWindow *tlw = wxDynamicCast(wxGetTopLevelParent(mParent), wxTopLevelWindow);
+         wxWindow *def = tlw->GetDefaultItem();
+         if (def && def->IsEnabled()) {
             wxCommandEvent cevent(wxEVT_COMMAND_BUTTON_CLICKED,
                                   def->GetId());
-            mParent->ProcessEvent( cevent );
+            mParent->ProcessEvent(cevent);
          }
       }
 
