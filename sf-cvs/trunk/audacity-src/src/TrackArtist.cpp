@@ -1451,7 +1451,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    // screen, so remember the display rectangle.
    clip->SetDisplayRect(mid);
 
-   wxBitmap converted = wxBitmap(image);
+   wxBitmap converted = wxBitmap(*image);
 
    wxMemoryDC memDC;
 
