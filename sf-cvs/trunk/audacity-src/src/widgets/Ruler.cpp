@@ -60,6 +60,7 @@ array of Ruler::Label.
 #include <wx/dcscreen.h>
 #include <wx/dcmemory.h>
 #include <wx/dcbuffer.h>
+#include <wx/settings.h>
 
 #include "../Internat.h"
 #include "../Project.h"
