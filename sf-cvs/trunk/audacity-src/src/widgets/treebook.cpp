@@ -54,7 +54,11 @@ END_EVENT_TABLE()
 // ============================================================================ 
 // wxTreebook implementation 
 // ============================================================================ 
+#if wxCHECK_VERSION(2,7,0)
+WX_DELEGATE_TO_CONTROL_CONTAINER(wxTreebook, wxWindow)
+#else
 WX_DELEGATE_TO_CONTROL_CONTAINER(wxTreebook)
+#endif
 
 // ---------------------------------------------------------------------------- 
 // wxTreebook creation 
@@ -509,4 +513,4 @@ bool wxTreebook::SetPageImage(size_t WXUNUSED(n), int WXUNUSED(imageId))
 { 
     //return m_list->SetItemImage(n, imageId); 
    return false; 
-} 
+}

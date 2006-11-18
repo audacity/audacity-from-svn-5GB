@@ -34,6 +34,7 @@ in which buttons can be placed.
 #include <wx/gdicmn.h>
 #include <wx/image.h>
 #include <wx/intl.h>
+#include <wx/settings.h>
 #include <wx/sizer.h>
 #include <wx/sysopt.h>
 #include <wx/window.h>
@@ -442,8 +443,8 @@ AButton * ToolBar::MakeButton(teBmps eUp,
    wxImage * disable2   = OverlayImage(eUp,     eDisabled, xoff, yoff);
 
    AButton * button =
-      new AButton(this, id, placement, size, up2, hilite2, down2,
-            disable2, processdownevents);
+      new AButton(this, id, placement, size, *up2, *hilite2, *down2,
+            *disable2, processdownevents);
 
    delete up2;
    delete down2;

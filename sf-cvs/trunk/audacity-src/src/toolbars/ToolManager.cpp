@@ -527,7 +527,7 @@ void ToolManager::ReadConfig()
          if( width[ ndx ] != -1 && height[ ndx ] != -1 )
          {
             wxSize sz( width[ ndx ], height[ ndx ] );
-            f->SetMinSize( sz );
+            f->SetSizeHints( sz );
             f->SetSize( sz );
             f->Layout();
          }
