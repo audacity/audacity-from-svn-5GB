@@ -78,7 +78,8 @@ const int AudioIO::StandardRates[] = {
    16000,
    22050,
    44100,
-   48000
+   48000,
+   96000
 };
 const int AudioIO::NumStandardRates = sizeof(AudioIO::StandardRates) /
                                       sizeof(AudioIO::StandardRates[0]);
