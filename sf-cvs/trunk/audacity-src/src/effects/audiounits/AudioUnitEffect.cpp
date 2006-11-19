@@ -783,7 +783,13 @@ AudioUnitDialog::AudioUnitDialog(wxWindow *parent, wxWindowID id,
    // compositing...Requires a patch to wx such that the line
    // "attr |= kWindowCompositingAttribute" only happens
    // if m_macUsesCompositing is true...
+   //
+   // LL:  Unfortunately, wxWidgets 2.7+ doesn't have a direct
+   //      way to disable compositing, so bypass it until a way
+   //      is found.
+#if !wxCHECK_VERSION(2, 7, 0)
    m_macUsesCompositing = false; 
+#endif
 
    // Rest of wxTopLevelWindow::Create
    SetName(title);
