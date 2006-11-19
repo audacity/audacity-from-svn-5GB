@@ -152,6 +152,18 @@ class ToolFrame:public wxFrame
       mManager->ProcessEvent( event );
    }
 
+   // 
+   // Handle toolbar updates
+   //
+   void OnToolBarUpdate( wxCommandEvent & event )
+   {
+      // Resize floater window to exactly contain toolbar
+      mBar->GetParent()->SetClientSize( mBar->GetMinSize() );
+
+      // Allow it to propagate to our parent
+      event.Skip();
+   }
+
    //
    // Handle frame paint events
    //
@@ -276,6 +288,7 @@ BEGIN_EVENT_TABLE( ToolFrame, wxFrame )
    EVT_PAINT( ToolFrame::OnPaint )
    EVT_MOUSE_EVENTS( ToolFrame::OnMotion )
    EVT_CLOSE( ToolFrame::OnClose )
+   EVT_COMMAND( wxID_ANY, EVT_TOOLBAR_UPDATED, ToolFrame::OnToolBarUpdate )
 END_EVENT_TABLE()
 
 IMPLEMENT_CLASS( ToolManager, wxEvtHandler );
