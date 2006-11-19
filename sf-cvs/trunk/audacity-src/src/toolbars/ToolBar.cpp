@@ -278,7 +278,7 @@ void ToolBar::SetDocked( bool dock, bool pushed )
 void ToolBar::Updated()
 {
    wxCommandEvent e( EVT_TOOLBAR_UPDATED, GetId() );
-   mParent->GetEventHandler()->AddPendingEvent( e );
+   GetParent()->GetEventHandler()->AddPendingEvent( e );
 }
 
 //

@@ -446,26 +446,6 @@ void ToolDock::OnGrabber( GrabberEvent & event )
    mDockedBars.Remove( t );
 }
 
-// 
-// Handle toolbar updates
-//
-void ToolDock::OnToolBarUpdate( wxCommandEvent & event )
-{
-   ToolBar *t = mBars[ event.GetId() ];
-
-   // Resize floater window to exactly contain toolbar
-   if( !t->IsDocked() )
-   {
-      t->GetParent()->SetClientSize( t->GetMinSize() );
-   }
-
-   // Update the layout
-   LayoutToolBars();
-
-   // Allow it to propagate to our parent
-   event.Skip();
-}
-
 //
 // Handle sizing
 //

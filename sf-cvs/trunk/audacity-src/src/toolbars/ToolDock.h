@@ -68,7 +68,6 @@ class ToolDock:public wxPanel
    void OnErase( wxEraseEvent & event );
    void OnSize( wxSizeEvent & event );
    void OnPaint( wxPaintEvent & event );
-   void OnToolBarUpdate( wxCommandEvent & event );
    void OnGrabber( GrabberEvent & event );
 
  private:
