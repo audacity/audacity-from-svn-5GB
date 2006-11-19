@@ -4523,7 +4523,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC --enable-unicode=$CONFIG_UNICODE $CONFIG_FLAGS --with-lib-preference=local,system\n\nexit $?\n";
+			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC \\\n             --enable-unicode=$CONFIG_UNICODE \\\n             --enable-debug=$CONFIG_DEBUG \\\n             --with-lib-preference=local,system \\\n             --with-wx-version=$WX_VER \\\n             $CONFIG_FLAGS\n\nexit $?\n";
 		};
 		17073FEB0988E6C9008541CC /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5562,6 +5562,7 @@
 		1790ABE509883346008A330A /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CONFIG_DEBUG = yes;
 				CONFIG_FLAGS = "";
 				CONFIG_STATIC = yes;
 				CONFIG_UNICODE = no;
@@ -5571,11 +5572,12 @@
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				TOPLEVEL = ..;
-				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-release-static-2.6 -I$(WX_PREFIX)/include/wx-2.6 -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
+				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macd_xrc-2.6.a $(WX_PREFIX)/lib/libwx_macd_qa-2.6.a $(WX_PREFIX)/lib/libwx_macd_html-2.6.a $(WX_PREFIX)/lib/libwx_macd_adv-2.6.a $(WX_PREFIX)/lib/libwx_macd_core-2.6.a $(WX_PREFIX)/lib/libwx_base_carbond_xml-2.6.a $(WX_PREFIX)/lib/libwx_base_carbond_net-2.6.a $(WX_PREFIX)/lib/libwx_base_carbond-2.6.a $(WX_PREFIX)/lib/libwxexpatd-2.6.a $(WX_PREFIX)/lib/libwxtiffd-2.6.a $(WX_PREFIX)/lib/libwxjpegd-2.6.a $(WX_PREFIX)/lib/libwxpngd-2.6.a";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macd_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macd_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macd_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macd_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macd_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbond_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbond_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbond-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpatd-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiffd-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpegd-$(WX_VER).a $(WX_PREFIX)/lib/libwxpngd-$(WX_VER).a";
 				WX_PREFIX = /usr/local;
+				WX_VER = 2.6;
 				ZERO_LINK = YES;
 			};
 			name = "Debug Static";
@@ -5773,6 +5775,7 @@
 		17CAEB89098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CONFIG_DEBUG = no;
 				CONFIG_FLAGS = "";
 				CONFIG_STATIC = yes;
 				CONFIG_UNICODE = no;
@@ -5782,11 +5785,12 @@
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				TOPLEVEL = ..;
-				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-release-static-2.6 -I$(WX_PREFIX)/include/wx-2.6 -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
+				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_mac_xrc-2.6.a $(WX_PREFIX)/lib/libwx_mac_qa-2.6.a $(WX_PREFIX)/lib/libwx_mac_html-2.6.a $(WX_PREFIX)/lib/libwx_mac_adv-2.6.a $(WX_PREFIX)/lib/libwx_mac_core-2.6.a $(WX_PREFIX)/lib/libwx_base_carbon_xml-2.6.a $(WX_PREFIX)/lib/libwx_base_carbon_net-2.6.a $(WX_PREFIX)/lib/libwx_base_carbon-2.6.a $(WX_PREFIX)/lib/libwxexpat-2.6.a $(WX_PREFIX)/lib/libwxtiff-2.6.a $(WX_PREFIX)/lib/libwxjpeg-2.6.a $(WX_PREFIX)/lib/libwxpng-2.6.a";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_mac_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_mac_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_mac_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_mac_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_mac_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbon_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbon_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbon-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpat-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiff-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpeg-$(WX_VER).a $(WX_PREFIX)/lib/libwxpng-$(WX_VER).a";
 				WX_PREFIX = /usr/local;
+				WX_VER = 2.6;
 			};
 			name = "Release Static";
 		};
@@ -5943,6 +5947,7 @@
 		17CAEBB6098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CONFIG_DEBUG = yes;
 				CONFIG_FLAGS = "";
 				CONFIG_STATIC = yes;
 				CONFIG_UNICODE = yes;
@@ -5952,11 +5957,12 @@
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				TOPLEVEL = ..;
-				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-debug-static-2.6 -I$(WX_PREFIX)/include/wx-2.6 -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
+				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-debug-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macud_xrc-2.6.a $(WX_PREFIX)/lib/libwx_macud_qa-2.6.a $(WX_PREFIX)/lib/libwx_macud_html-2.6.a $(WX_PREFIX)/lib/libwx_macud_adv-2.6.a $(WX_PREFIX)/lib/libwx_macud_core-2.6.a $(WX_PREFIX)/lib/libwx_base_carbonud_xml-2.6.a $(WX_PREFIX)/lib/libwx_base_carbonud_net-2.6.a $(WX_PREFIX)/lib/libwx_base_carbonud-2.6.a $(WX_PREFIX)/lib/libwxregexud-2.6.a $(WX_PREFIX)/lib/libwxexpatd-2.6.a $(WX_PREFIX)/lib/libwxtiffd-2.6.a $(WX_PREFIX)/lib/libwxjpegd-2.6.a $(WX_PREFIX)/lib/libwxpngd-2.6.a";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macud_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonud_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonud_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonud-$(WX_VER).a $(WX_PREFIX)/lib/libwxregexud-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpatd-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiffd-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpegd-$(WX_VER).a $(WX_PREFIX)/lib/libwxpngd-$(WX_VER).a";
 				WX_PREFIX = /usr/local;
+				WX_VER = 2.6;
 				ZERO_LINK = YES;
 			};
 			name = "Debug Static Unicode";
@@ -6205,6 +6211,7 @@
 		28E5DA3A0AC4CBA200E7F64C /* Release Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CONFIG_DEBUG = no;
 				CONFIG_FLAGS = "";
 				CONFIG_STATIC = yes;
 				CONFIG_UNICODE = yes;
@@ -6214,11 +6221,12 @@
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				TOPLEVEL = ..;
-				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-release-static-2.6 -I$(WX_PREFIX)/include/wx-2.6 -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
+				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macu_xrc-2.6.a $(WX_PREFIX)/lib/libwx_macu_qa-2.6.a $(WX_PREFIX)/lib/libwx_macu_html-2.6.a $(WX_PREFIX)/lib/libwx_macu_adv-2.6.a $(WX_PREFIX)/lib/libwx_macu_core-2.6.a $(WX_PREFIX)/lib/libwx_base_carbonu_xml-2.6.a $(WX_PREFIX)/lib/libwx_base_carbonu_net-2.6.a $(WX_PREFIX)/lib/libwx_base_carbonu-2.6.a $(WX_PREFIX)/lib/libwxregexu-2.6.a $(WX_PREFIX)/lib/libwxexpat-2.6.a $(WX_PREFIX)/lib/libwxtiff-2.6.a $(WX_PREFIX)/lib/libwxjpeg-2.6.a $(WX_PREFIX)/lib/libwxpng-2.6.a";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macu_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonu_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonu_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonu-$(WX_VER).a $(WX_PREFIX)/lib/libwxregexu-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpat-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiff-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpeg-$(WX_VER).a $(WX_PREFIX)/lib/libwxpng-$(WX_VER).a";
 				WX_PREFIX = /usr/local;
+				WX_VER = 2.6;
 			};
 			name = "Release Static Unicode";
 		};
