@@ -130,6 +130,12 @@ AC_ARG_WITH(lib-preference,
             lib_preference=$withval,
             lib_preference="system local")
 
+AC_ARG_WITH(wx-version,
+            [AC_HELP_STRING([--with-wx-version],
+                            [override default wxWidgets version [2.6,2.8]])],
+            wx_preference="--version=$withval",
+            wx_preference="")
+
 LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBEXPAT LIBTWOLAME"
 
 AC_MSG_NOTICE([Determining what libraries are available in this tree and on the system])
@@ -324,12 +330,12 @@ fi
 
 dnl Check that the wx version is at least 2.6.x
 
-wx_version=`${WX_CONFIG} $static_preference $unicode_preference $debug_preference --version`
+wx_version=`${WX_CONFIG} $static_preference $unicode_preference $debug_preference $wx_preference --version`
 
 AC_MSG_NOTICE([Checking that the installed version of wxWidgets is at least 2.6.x])
 
 case "${wx_version}" in
-  2.6.*|2.7.*|2.8.*)
+  2.6.*|2.8.*)
     echo "Great, you're using wxWidgets ${wx_version}!"
     ;;
   *)
@@ -343,8 +349,8 @@ esac
 
 dnl Gather wx arguments
 
-LIBS="$LIBS `$WX_CONFIG $static_preference $unicode_preference $debug_preference --libs`"
-CPPFLAGS="$CPPFLAGS `$WX_CONFIG $static_preference $unicode_preference $debug_preference --cxxflags`"
+LIBS="$LIBS `$WX_CONFIG $static_preference $unicode_preference $debug_preference $wx_preference --libs`"
+CPPFLAGS="$CPPFLAGS `$WX_CONFIG $static_preference $unicode_preference $debug_preference $wx_preference --cxxflags`"
 
 AC_CANONICAL_HOST
 

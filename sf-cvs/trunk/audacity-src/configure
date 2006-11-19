@@ -315,7 +315,7 @@ ac_subdirs_all="$ac_subdirs_all lib-src/portaudio-v19"
 ac_subdirs_all="$ac_subdirs_all lib-src/rtaudio"
 ac_subdirs_all="$ac_subdirs_all lib-src/portmixer"
 ac_subdirs_all="$ac_subdirs_all lib-src/dlcompat"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS EXTRATARGETS EXTRAINSTALLTARGETS EXTRAUNINSTALLTARGETS OPTOBJS CDEPEND PRECOMP_CFLAGS AFTERBUILD INSTALL_PREFIX CONFIGHEADER LOCAL_LIBS AUDACITY_NAME PKG_CONFIG ac_pt_PKG_CONFIG SNDFILE_CFLAGS SNDFILE_LIBS SAMPLERATE_CFLAGS SAMPLERATE_LIBS SOUNDTOUCH_CFLAGS SOUNDTOUCH_LIBS subdirs ZIP WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os JACK_CFLAGS JACK_LIBS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS EXTRATARGETS EXTRAINSTALLTARGETS EXTRAUNINSTALLTARGETS OPTOBJS CDEPEND PRECOMP_CFLAGS AFTERBUILD INSTALL_PREFIX CONFIGHEADER LOCAL_LIBS AUDACITY_NAME PKG_CONFIG ac_pt_PKG_CONFIG SNDFILE_CFLAGS SNDFILE_LIBS SAMPLERATE_CFLAGS SAMPLERATE_LIBS subdirs ZIP WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os JACK_CFLAGS JACK_LIBS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -808,14 +808,6 @@ ac_env_SAMPLERATE_LIBS_set=${SAMPLERATE_LIBS+set}
 ac_env_SAMPLERATE_LIBS_value=$SAMPLERATE_LIBS
 ac_cv_env_SAMPLERATE_LIBS_set=${SAMPLERATE_LIBS+set}
 ac_cv_env_SAMPLERATE_LIBS_value=$SAMPLERATE_LIBS
-ac_env_SOUNDTOUCH_CFLAGS_set=${SOUNDTOUCH_CFLAGS+set}
-ac_env_SOUNDTOUCH_CFLAGS_value=$SOUNDTOUCH_CFLAGS
-ac_cv_env_SOUNDTOUCH_CFLAGS_set=${SOUNDTOUCH_CFLAGS+set}
-ac_cv_env_SOUNDTOUCH_CFLAGS_value=$SOUNDTOUCH_CFLAGS
-ac_env_SOUNDTOUCH_LIBS_set=${SOUNDTOUCH_LIBS+set}
-ac_env_SOUNDTOUCH_LIBS_value=$SOUNDTOUCH_LIBS
-ac_cv_env_SOUNDTOUCH_LIBS_set=${SOUNDTOUCH_LIBS+set}
-ac_cv_env_SOUNDTOUCH_LIBS_value=$SOUNDTOUCH_LIBS
 ac_env_JACK_CFLAGS_set=${JACK_CFLAGS+set}
 ac_env_JACK_CFLAGS_value=$JACK_CFLAGS
 ac_cv_env_JACK_CFLAGS_set=${JACK_CFLAGS+set}
@@ -912,6 +904,7 @@ Optional Packages:
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-lib-preference   use local and/or system libraries, in preferred
                           order [system,local]
+  --with-wx-version       override default wxWidgets version [2.6,2.8]
   --with-vorbis           enable ogg vorbis support
   --with-libmad           use libmad for mp3 decoding support
   --with-flac             enable FLAC support
@@ -955,10 +948,6 @@ Some influential environment variables:
               C compiler flags for SAMPLERATE, overriding pkg-config
   SAMPLERATE_LIBS
               linker flags for SAMPLERATE, overriding pkg-config
-  SOUNDTOUCH_CFLAGS
-              C compiler flags for SOUNDTOUCH, overriding pkg-config
-  SOUNDTOUCH_LIBS
-              linker flags for SOUNDTOUCH, overriding pkg-config
   JACK_CFLAGS C compiler flags for JACK, overriding pkg-config
   JACK_LIBS   linker flags for JACK, overriding pkg-config
 
@@ -3425,6 +3414,15 @@ else
   lib_preference="system local"
 fi;
 
+
+# Check whether --with-wx-version or --without-wx-version was given.
+if test "${with_wx_version+set}" = set; then
+  withval="$with_wx_version"
+  wx_preference="--version=$withval"
+else
+  wx_preference=""
+fi;
+
 LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBEXPAT LIBTWOLAME"
 
 { echo "$as_me:$LINENO: Determining what libraries are available in this tree and on the system" >&5
@@ -5280,7 +5278,6 @@ fi
       LIBSAMPLERATE_SYSTEM_AVAILABLE="yes"
       LIBSAMPLERATE_SYSTEM_LIBS=$SAMPLERATE_LIBS
       LIBSAMPLERATE_SYSTEM_CXXFLAGS=$SAMPLERATE_CFLAGS
-      LIBSAMPLERATE_SYSTEM_CPPSYMBOLS="USE_LIBSAMPLERATE"
       { echo "$as_me:$LINENO: Libsamplerate libraries are available as system libraries" >&5
 echo "$as_me: Libsamplerate libraries are available as system libraries" >&6;}
    else
@@ -5418,88 +5415,7 @@ _ACEOF
 
 
 
-pkg_failed=no
-echo "$as_me:$LINENO: checking for SOUNDTOUCH" >&5
-echo $ECHO_N "checking for SOUNDTOUCH... $ECHO_C" >&6
-
-if test -n "$PKG_CONFIG"; then
-    if test -n "$SOUNDTOUCH_CFLAGS"; then
-        pkg_cv_SOUNDTOUCH_CFLAGS="$SOUNDTOUCH_CFLAGS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"soundtouch-1.0 >= 1.3.1\"") >&5
-  ($PKG_CONFIG --exists --print-errors "soundtouch-1.0 >= 1.3.1") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_SOUNDTOUCH_CFLAGS=`$PKG_CONFIG --cflags "soundtouch-1.0 >= 1.3.1" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
-fi
-if test -n "$PKG_CONFIG"; then
-    if test -n "$SOUNDTOUCH_LIBS"; then
-        pkg_cv_SOUNDTOUCH_LIBS="$SOUNDTOUCH_LIBS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"soundtouch-1.0 >= 1.3.1\"") >&5
-  ($PKG_CONFIG --exists --print-errors "soundtouch-1.0 >= 1.3.1") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_SOUNDTOUCH_LIBS=`$PKG_CONFIG --libs "soundtouch-1.0 >= 1.3.1" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        SOUNDTOUCH_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "soundtouch-1.0 >= 1.3.1"`
-        else
-	        SOUNDTOUCH_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "soundtouch-1.0 >= 1.3.1"`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$SOUNDTOUCH_PKG_ERRORS" >&5
-
-	soundtouch_available_system="no"
-elif test $pkg_failed = untried; then
-	soundtouch_available_system="no"
-else
-	SOUNDTOUCH_CFLAGS=$pkg_cv_SOUNDTOUCH_CFLAGS
-	SOUNDTOUCH_LIBS=$pkg_cv_SOUNDTOUCH_LIBS
-        echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-	soundtouch_available_system="yes"
-fi
-
-
-   if test "x$soundtouch_available_system" = "xyes" ; then
-      LIBSOUNDTOUCH_SYSTEM_AVAILABLE="yes"
-      LIBSOUNDTOUCH_SYSTEM_LIBS=$SOUNDTOUCH_LIBS
-      LIBSOUNDTOUCH_SYSTEM_CXXFLAGS=$SOUNDTOUCH_CFLAGS
-      LIBSOUNDTOUCH_SYSTEM_CPPSYMBOLS="USE_SOUNDTOUCH"
-      { echo "$as_me:$LINENO: Libsoundtouch libraries are available as system libraries" >&5
-echo "$as_me: Libsoundtouch libraries are available as system libraries" >&6;}
-   else
-      LIBSOUNDTOUCH_SYSTEM_AVAILABLE="no"
-      { echo "$as_me:$LINENO: Libsoundtouch libraries are NOT available as system libraries" >&5
-echo "$as_me: Libsoundtouch libraries are NOT available as system libraries" >&6;}
-   fi
+   LIBSOUNDTOUCH_SYSTEM_AVAILABLE="no"
 
 
    as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/soundtouch/include/SoundTouch.h" | $as_tr_sh`
@@ -6243,23 +6159,23 @@ echo "$as_me: error: \"Could not find wx-config: is wxWindows installed? is wx-c
 fi
 
 
-wx_version=`${WX_CONFIG} $static_preference $unicode_preference $debug_preference --version`
+wx_version=`${WX_CONFIG} $static_preference $unicode_preference $debug_preference $wx_preference --version`
 
 { echo "$as_me:$LINENO: Checking that the installed version of wxWidgets is at least 2.6.x" >&5
 echo "$as_me: Checking that the installed version of wxWidgets is at least 2.6.x" >&6;}
 
 case "${wx_version}" in
-  2.6.*|2.7.*|2.8.*)
+  2.6.*|2.8.*)
     echo "Great, you're using wxWidgets ${wx_version}!"
     ;;
   *)
   wx_list=`${WX_CONFIG} --list`
-  { { echo "$as_me:$LINENO: error: Unable to locate a suitable configuration of wxWidgets v2.6.x.
+  { { echo "$as_me:$LINENO: error: Unable to locate a suitable configuration of wxWidgets v2.6.x or higher.
 The currently available configurations are listed below.  If necessary, either
 install the package for your distribution or download the latest version of wxWidgets
 from http://wxwidgets.org.
 ${wx_list}" >&5
-echo "$as_me: error: Unable to locate a suitable configuration of wxWidgets v2.6.x.
+echo "$as_me: error: Unable to locate a suitable configuration of wxWidgets v2.6.x or higher.
 The currently available configurations are listed below.  If necessary, either
 install the package for your distribution or download the latest version of wxWidgets
 from http://wxwidgets.org.
@@ -6268,8 +6184,8 @@ ${wx_list}" >&2;}
 esac
 
 
-LIBS="$LIBS `$WX_CONFIG $static_preference $unicode_preference $debug_preference --libs`"
-CPPFLAGS="$CPPFLAGS `$WX_CONFIG $static_preference $unicode_preference $debug_preference --cxxflags`"
+LIBS="$LIBS `$WX_CONFIG $static_preference $unicode_preference $debug_preference $wx_preference --libs`"
+CPPFLAGS="$CPPFLAGS `$WX_CONFIG $static_preference $unicode_preference $debug_preference $wx_preference --cxxflags`"
 
 # Make sure we can run config.sub.
 $ac_config_sub sun4 >/dev/null 2>&1 ||
@@ -7817,8 +7733,6 @@ s,@SNDFILE_CFLAGS@,$SNDFILE_CFLAGS,;t t
 s,@SNDFILE_LIBS@,$SNDFILE_LIBS,;t t
 s,@SAMPLERATE_CFLAGS@,$SAMPLERATE_CFLAGS,;t t
 s,@SAMPLERATE_LIBS@,$SAMPLERATE_LIBS,;t t
-s,@SOUNDTOUCH_CFLAGS@,$SOUNDTOUCH_CFLAGS,;t t
-s,@SOUNDTOUCH_LIBS@,$SOUNDTOUCH_LIBS,;t t
 s,@subdirs@,$subdirs,;t t
 s,@ZIP@,$ZIP,;t t
 s,@WX_CONFIG@,$WX_CONFIG,;t t
