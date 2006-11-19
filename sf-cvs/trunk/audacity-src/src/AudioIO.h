@@ -30,6 +30,7 @@
 class AudioIO;
 class RingBuffer;
 class Mixer;
+class Resample;
 class TimeTrack;
 class AudioThread;
 class Meter;
@@ -45,6 +46,7 @@ public:
    AudioIOListener() {}
    virtual ~AudioIOListener() {}
    
+   virtual void OnAudioIORate(int rate) = 0;
    virtual void OnAudioIOStartRecording() = 0;
    virtual void OnAudioIOStopRecording() = 0;
    virtual void OnAudioIONewBlockFiles(const wxString& blockFileLog) = 0;
@@ -121,6 +123,32 @@ class AudioIO {
       each call to StartStream currently */
    void SetMeters(Meter *inputMeter, Meter *outputMeter);
    
+   /* Get a list of sample rates the current output device supports.
+    * If no information about available sample rates can be fetched,
+    * an empty list is returned.
+    *
+    * You can explicitely give the name of the device.  If you don't
+    * give it, the default device from the preferences will be used.
+    *
+    * You may also specify a rate for which to check in addition to the
+    * standard rates.
+    */
+   static wxArrayLong GetSupportedPlaybackRates(wxString devName = wxT(""),
+                                                double rate = 0.0);
+
+   /* Get a list of sample rates the current input device supports.
+    * If no information about available sample rates can be fetched,
+    * an empty list is returned.
+    *
+    * You can explicitely give the name of the device.  If you don't
+    * give it, the default device from the preferences will be used.
+    *
+    * You may also specify a rate for which to check in addition to the
+    * standard rates.
+    */
+   static wxArrayLong GetSupportedCaptureRates(wxString devName = wxT(""),
+                                               double rate = 0.0);
+
    /* Get a list of sample rates the current input/output device
     * supports. Since there is no concept (yet) for different input/output
     * sample rates, this currently returns only sample rates that are
@@ -130,9 +158,12 @@ class AudioIO {
     * You can explicitely give the names of the playDevice/recDevice.
     * If you don't give them, the default devices from the preferences
     * will be used.
+    * You may also specify a rate for which to check in addition to the
+    * standard rates.
     */
    static wxArrayLong GetSupportedSampleRates(wxString playDevice = wxT(""),
-                                              wxString recDevice = wxT(""));
+                                              wxString recDevice = wxT(""),
+                                              double rate = 0.0);
 
    /* Get a supported sample rate which can be used a an optimal
     * default. Currently, this uses the first supported rate in
@@ -150,8 +181,11 @@ class AudioIO {
    sampleFormat GetCaptureFormat() { return mCaptureFormat; }
    int GetNumCaptureChannels() { return mNumCaptureChannels; }
 
+   static const int StandardRates[];
+   static const int NumStandardRates;
+
 private:
-   long GetBestRate(double sampleRate);
+   long GetBestRate(bool capturing, double sampleRate);
 
    bool StartPortAudioStream(double sampleRate,
                              unsigned int numPlaybackChannels,
@@ -166,6 +200,7 @@ private:
    double NormalizeStreamTime(double absoluteTime) const;
 
    AudioThread        *mThread;
+   Resample          **mResample;
    RingBuffer        **mCaptureBuffers;
    WaveTrackArray      mCaptureTracks;
    RingBuffer        **mPlaybackBuffers;
@@ -174,6 +209,7 @@ private:
    int                 mStreamToken;
    int                 mStopStreamCount;
    static int          mNextStreamToken;
+   double              mFactor;
    double              mRate;
    double              mT;
    double              mT0;

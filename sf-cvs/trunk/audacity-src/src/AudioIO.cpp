@@ -59,6 +59,7 @@ writing audio.
 #include "AudioIO.h"
 #include "WaveTrack.h"
 #include "Mix.h"
+#include "Resample.h"
 #include "RingBuffer.h"
 #include "Prefs.h"
 #include "TimeTrack.h"
@@ -71,6 +72,16 @@ AudioIO *gAudioIO;
 
 // static
 int AudioIO::mNextStreamToken = 0;
+
+const int AudioIO::StandardRates[] = {
+   8000,
+   16000,
+   22050,
+   44100,
+   48000
+};
+const int AudioIO::NumStandardRates = sizeof(AudioIO::StandardRates) /
+                                      sizeof(AudioIO::StandardRates[0]);
 
 #if USE_PORTAUDIO_V19
 int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
@@ -532,7 +543,10 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
                                    sampleFormat captureFormat)
 {
    mLastPaError = paNoError;
-   mRate = GetBestRate(sampleRate);
+   mRate = GetBestRate(numCaptureChannels > 0, sampleRate);
+   if (mListener) {
+      mListener->OnAudioIORate((int)mRate);
+   }
    
    // Special case: Our 24-bit sample format is different from PortAudio's
    // 3-byte packed format. So just make PortAudio return float samples,
@@ -962,10 +976,15 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
       sampleCount captureBufferSize =
          (sampleCount)(mRate * mCaptureRingBufferSecs + 0.5);
       mCaptureBuffers = new RingBuffer* [mCaptureTracks.GetCount()];
+      mResample = new Resample* [mCaptureTracks.GetCount()];
+      mFactor = sampleRate / mRate;
 
       for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
+      {
          mCaptureBuffers[i] = new RingBuffer( mCaptureTracks[i]->GetSampleFormat(),
                                               captureBufferSize );
+         mResample[i] = new Resample( true, mFactor, mFactor );
+      }
    }
 
    // We signal the audio thread to call FillBuffers, to prime the RingBuffers
@@ -1303,22 +1322,109 @@ double AudioIO::GetStreamTime()
 }
 
 
-wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDevice)
+wxArrayLong AudioIO::GetSupportedPlaybackRates(wxString devName, double rate)
 {
-   int numDefaultRates = 7;
-   int defaultRates[] = {
-      8000,
-      11025,
-      16000,
-      22050,
-      44100,
-      48000,
-      96000
-   };
+   wxArrayLong supported;
+   int irate = (int)rate;
+   const PaDeviceInfo* devInfo = NULL;
+   int devIndex = -1;
+   int i;
 
-   const PaDeviceInfo* playInfo = NULL;
-   const PaDeviceInfo* recInfo = NULL;
-   int playIndex = -1, recIndex = -1;
+   if (devName.IsEmpty())
+   {
+      devName = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
+   }
+
+#if USE_PORTAUDIO_V19
+   for (i = 0; i < Pa_GetDeviceCount(); i++)
+#else
+   for (i = 0; i < Pa_CountDevices(); i++)
+#endif
+   {
+      const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
+
+      if (info && DeviceName(info) == devName && info->maxOutputChannels > 0)
+      {
+         devInfo = info;
+         devIndex = i;
+         break;
+      }
+   }
+
+   if (!devInfo)
+   {
+      return supported;
+   }
+
+#if USE_PORTAUDIO_V19
+   PaStreamParameters pars;
+
+   pars.device = devIndex;
+   pars.channelCount = 2;
+   pars.sampleFormat = paFloat32;
+   pars.suggestedLatency = devInfo->defaultHighOutputLatency;
+   pars.hostApiSpecificStreamInfo = NULL;
+   
+   for (i = 0; i < NumStandardRates; i++)
+   {
+      if (Pa_IsFormatSupported(NULL, &pars, StandardRates[i]) == 0)
+      {
+         supported.Add(StandardRates[i]);
+      }
+   }
+
+   if (irate != 0 && supported.Index(irate) == wxNOT_FOUND)
+   {
+      if (Pa_IsFormatSupported(NULL, &pars, irate) == 0)
+      {
+         supported.Add(irate);
+      }
+   }
+#else
+   if (devInfo->numSampleRates == -1)
+   {
+      for (i = 0; i < NumStandardRates; i++)
+      {
+         if (StandardRates[i] >= devInfo->sampleRates[0] &&
+             StandardRates[i] <= devInfo->sampleRates[1])
+         {
+            supported.Add(StandardRates[i]);
+         }
+      }
+
+      if (irate != 0 && supported.Index(irate) == wxNOT_FOUND)
+      {
+         if (irate >= devInfo->sampleRates[0] &&
+             irate <= devInfo->sampleRates[1])
+         {
+            supported.Add(irate);
+         }
+      }
+   }
+   else
+   {
+      for (i = 0; i < devInfo->numSampleRates; i++)
+      {
+         supported.Add((int)devInfo->sampleRates[i]);
+      }
+   }
+#endif
+
+   return supported;
+}
+
+wxArrayLong AudioIO::GetSupportedCaptureRates(wxString devName, double rate)
+{
+   wxArrayLong supported;
+   int irate = (int)rate;
+   const PaDeviceInfo* devInfo = NULL;
+   int devIndex = -1;
+   int i;
+
+   if (devName.IsEmpty())
+   {
+      devName = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
+   }
 
 #if USE_PORTAUDIO_V19
    double latencyDuration = 100.0;
@@ -1327,133 +1433,106 @@ wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDe
    gPrefs->Read(wxT("/AudioIO/RecordChannels"), &recordChannels);
 #endif
 
-   if (playDevice.IsEmpty())
-      playDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
-   if (recDevice.IsEmpty())
-      recDevice = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
-
-   int i;
-
-   // msmeyer: Find info structs for playing/recording devices
 #if USE_PORTAUDIO_V19
-   for (i = 0; i < Pa_GetDeviceCount(); i++) {
+   for (i = 0; i < Pa_GetDeviceCount(); i++)
 #else
-   for (i = 0; i < Pa_CountDevices(); i++) {
+   for (i = 0; i < Pa_CountDevices(); i++)
 #endif
+   {
       const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
 
-      if(!info)
-         continue;
-
-      if (DeviceName(info) == playDevice && info->maxOutputChannels > 0)
+      if (info && DeviceName(info) == devName && info->maxInputChannels > 0)
       {
-         playInfo = info;
-         playIndex = i;
-      }
-      if (DeviceName(info) == recDevice && info->maxInputChannels > 0)
-      {
-         recInfo = info;
-         recIndex = i;
+         devInfo = info;
+         devIndex = i;
+         break;
       }
    }
 
-   // msmeyer: Check which sample rates the play device supports
-   wxArrayLong playSampleRates;
-
-   if (playInfo)
+   if (!devInfo)
    {
+      return supported;
+   }
+
 #if USE_PORTAUDIO_V19
-      PaStreamParameters pars;
+   PaStreamParameters pars;
 
-      pars.device = playIndex;
-      pars.channelCount = 2;
-      pars.sampleFormat = paFloat32;
-      pars.suggestedLatency = latencyDuration;
-      pars.hostApiSpecificStreamInfo = NULL;
-      
-      for (i = 0; i < numDefaultRates; i++)
+   pars.device = devIndex;
+   pars.channelCount = recordChannels;
+   pars.sampleFormat = paFloat32;
+   pars.suggestedLatency = latencyDuration;
+   pars.hostApiSpecificStreamInfo = NULL;
+   
+   for (i = 0; i < NumStandardRates; i++)
+   {
+      if (Pa_IsFormatSupported(NULL, &pars, StandardRates[i]) == 0)
       {
-         if (Pa_IsFormatSupported(NULL, &pars, defaultRates[i]) == 0)
-            playSampleRates.Add(defaultRates[i]);
+         supported.Add(StandardRates[i]);
       }
+   }
+
+   if (irate != 0 && supported.Index(irate) == wxNOT_FOUND)
+   {
+      if (Pa_IsFormatSupported(NULL, &pars, irate) == 0)
+      {
+         supported.Add(irate);
+      }
+   }
 #else
-      if (playInfo->numSampleRates == -1)
+   if (devInfo->numSampleRates == -1)
+   {
+      for (i = 0; i < NumStandardRates; i++)
       {
-         for (i = 0; i < numDefaultRates; i++)
-            if (defaultRates[i] >= playInfo->sampleRates[0] &&
-                defaultRates[i] <= playInfo->sampleRates[1])
-               playSampleRates.Add(defaultRates[i]);
-      } else
-      {
-         for (i = 0; i < playInfo->numSampleRates; i++)
-            playSampleRates.Add((int)playInfo->sampleRates[i]);
+         if (StandardRates[i] >= devInfo->sampleRates[0] &&
+             StandardRates[i] <= devInfo->sampleRates[1])
+         {
+            supported.Add(StandardRates[i]);
+         }
       }
+
+      if (irate != 0 && supported.Index(irate) == wxNOT_FOUND)
+      {
+         if (irate >= devInfo->sampleRates[0] &&
+             irate <= devInfo->sampleRates[1])
+         {
+            supported.Add(irate);
+         }
+      }
+   }
+   else
+   {
+      for (i = 0; i < devInfo->numSampleRates; i++)
+      {
+         supported.Add((int)devInfo->sampleRates[i]);
+      }
+   }
 #endif
-   }
 
-   if (playSampleRates.IsEmpty())
-   {
-      for (i = 0; i < numDefaultRates; i++)
-         playSampleRates.Add(defaultRates[i]);
-   }
+   return supported;
+}
 
-   // msmeyer: Check which sample rates the record device supports
-   wxArrayLong recSampleRates;
-
-   if (recInfo)
-   {
-#if USE_PORTAUDIO_V19
-      PaStreamParameters pars;
-
-      pars.device = recIndex;
-      pars.channelCount = recordChannels;
-      pars.sampleFormat = paFloat32;
-      pars.suggestedLatency = latencyDuration;
-      pars.hostApiSpecificStreamInfo = NULL;
-      
-      for (i = 0; i < numDefaultRates; i++)
-      {
-         if (Pa_IsFormatSupported(&pars, NULL, defaultRates[i]) == 0)
-            recSampleRates.Add(defaultRates[i]);
-      }
-#else
-      if (recInfo->numSampleRates == -1)
-      {
-         for (i = 0; i < numDefaultRates; i++)
-            if (defaultRates[i] >= recInfo->sampleRates[0] &&
-                defaultRates[i] <= recInfo->sampleRates[1])
-               recSampleRates.Add(defaultRates[i]);
-      } else
-      {
-         for (i = 0; i < recInfo->numSampleRates; i++)
-            recSampleRates.Add((int)recInfo->sampleRates[i]);
-      }
-#endif
-   }
-
-   if (recSampleRates.IsEmpty())
-   {
-      for (i = 0; i < numDefaultRates; i++)
-         recSampleRates.Add(defaultRates[i]);
-   }
+wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDevice, double rate)
+{
+   wxArrayLong playback = GetSupportedPlaybackRates(playDevice, rate);
+   wxArrayLong capture = GetSupportedCaptureRates(recDevice, rate);
+   int i;
 
    // Return only sample rates which are in both arrays
    wxArrayLong result;
 
-   for (i = 0; i < (int)playSampleRates.GetCount(); i++)
-      if (recSampleRates.Index(playSampleRates[i]) != wxNOT_FOUND)
-         result.Add(playSampleRates[i]);
+   for (i = 0; i < (int)playback.GetCount(); i++)
+      if (capture.Index(playback[i]) != wxNOT_FOUND)
+         result.Add(playback[i]);
 
    // If this yields no results, use the default sample rates nevertheless
    if (result.IsEmpty())
    {
-      for (i = 0; i < numDefaultRates; i++)
-         result.Add(defaultRates[i]);
+      for (i = 0; i < NumStandardRates; i++)
+         result.Add(StandardRates[i]);
    }
 
    return result;
 }
-
 
 int AudioIO::GetOptimalSupportedSampleRate()
 {
@@ -1468,13 +1547,34 @@ int AudioIO::GetOptimalSupportedSampleRate()
    return rates[rates.GetCount() - 1];
 }
 
-long AudioIO::GetBestRate(double sampleRate)
+long AudioIO::GetBestRate(bool capturing, double sampleRate)
 {
-   wxArrayLong rates = GetSupportedSampleRates();
+   wxArrayLong rates;
+   int i;
+
+   if (capturing) {
+      rates = GetSupportedCaptureRates(wxT(""), sampleRate);
+   }
+   else {
+      rates = GetSupportedPlaybackRates(wxT(""), sampleRate);
+   }
+
    long rate = (long)sampleRate;
    
    if (rates.Index(rate) != wxNOT_FOUND) {
       return rate;
+   }
+
+   if (rates.IsEmpty() || rate < 44100 && rates.Index(44100)) {
+      return 44100;
+   }
+
+   if (rate < 48000 && rates.Index(48000)) {
+      return 48000;
+   }
+
+   if (rate < 96000 && rates.Index(96000)) {
+      return 96000;
    }
 
    return rates[rates.GetCount() - 1];
@@ -1642,13 +1742,30 @@ void AudioIO::FillBuffers()
             sampleFormat trackFormat = mCaptureTracks[i]->GetSampleFormat();
 
             XMLStringWriter appendLog;
-            
-            samplePtr temp = NewSamples(avail, trackFormat);
-            mCaptureBuffers[i]->Get   (temp, trackFormat, avail);
-            mCaptureTracks[i]-> Append(temp, trackFormat, avail, 1, 
-                                       &appendLog);
-            DeleteSamples(temp);
-                                       
+
+            if( mFactor == 1.0 )
+            {
+               samplePtr temp = NewSamples(avail, trackFormat);
+               mCaptureBuffers[i]->Get   (temp, trackFormat, avail);
+               mCaptureTracks[i]-> Append(temp, trackFormat, avail, 1, 
+                                          &appendLog);
+               DeleteSamples(temp);
+            }
+            else
+            {
+               int size = avail * mFactor;
+               samplePtr temp1 = NewSamples(avail, floatSample);
+               samplePtr temp2 = NewSamples(size, floatSample);
+               mCaptureBuffers[i]->Get(temp1, floatSample, avail);
+
+               size = mResample[i]->Process(mFactor, (float *)temp1, avail, true,
+                                            &size, (float *)temp2, size);
+               mCaptureTracks[i]-> Append(temp2, floatSample, size, 1, 
+                                          &appendLog);
+               DeleteSamples(temp1);
+               DeleteSamples(temp2);
+            }
+
             if (!appendLog.IsEmpty())
             {
                blockFileLog.StartTag(wxT("recordingrecovery"));
