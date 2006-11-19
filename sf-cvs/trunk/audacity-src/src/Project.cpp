@@ -471,7 +471,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
       mProgressDialog[mProgressCurrent] = NULL;
    }
 
-   mStatusBar = CreateStatusBar();
+   int widths[] = {-1, 150};
+   mStatusBar = CreateStatusBar(2);
+   mStatusBar->SetStatusWidths(2, widths);
 
 #if wxUSE_DRAG_AND_DROP
    SetDropTarget(new AudacityDropTarget(this));
@@ -2268,7 +2270,8 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       // msmeyer: Before changing rate, check if rate is supported
       // by current sound card. If it is not, don't change it,
       // otherwise playback won't work.
-      if (AudioIO::GetSupportedSampleRates().Index((int)newRate) != wxNOT_FOUND)
+      wxArrayLong rates = AudioIO::GetSupportedSampleRates(wxT(""), wxT(""), newRate);
+      if (rates.Index((int)newRate) != wxNOT_FOUND)
       {
          mRate = newRate;
          GetSelectionBar()->SetRate(mRate);
@@ -3096,6 +3099,13 @@ void AudacityProject::AutoSave()
    
    mAutoSaveFileName += fn + wxT(".autosave");
    mLastAutoSaveTime = wxGetLocalTime();
+}
+
+void AudacityProject::OnAudioIORate(int rate)
+{
+   mStatusBar->SetStatusText(wxString::Format(_("Actual Rate %d"),
+                                              rate), 1);
+   
 }
 
 void AudacityProject::OnAudioIOStartRecording()

@@ -295,6 +295,7 @@ class AudacityProject:public wxFrame,
    void ReleaseKeyboard();
    
    // Audio IO callback methods
+   virtual void OnAudioIORate(int rate);
    virtual void OnAudioIOStartRecording();
    virtual void OnAudioIOStopRecording();
    virtual void OnAudioIONewBlockFiles(const wxString& blockFileLog);
