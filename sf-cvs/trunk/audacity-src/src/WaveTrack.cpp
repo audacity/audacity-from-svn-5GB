@@ -42,6 +42,7 @@ Track classes.
 #include "Internat.h"
 
 #include "AudioIO.h"
+#include "Prefs.h"
 
 WaveTrack *TrackFactory::NewWaveTrack(sampleFormat format, double rate)
 {
@@ -408,6 +409,9 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
 
 bool WaveTrack::Paste(double t0, Track *src)
 {
+   bool editClipCanMove = true;
+   gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
+   
    //printf("paste: entering WaveTrack::Paste\n");
    
    if (src->GetKind() != Track::Wave)
@@ -449,7 +453,7 @@ bool WaveTrack::Paste(double t0, Track *src)
    
    // Make room for the pasted data, unless the space being pasted in is empty of
    // any clips
-   if (!IsEmpty(t0, t0+insertDuration-1.0/mRate)) {
+   if (!IsEmpty(t0, t0+insertDuration-1.0/mRate) && editClipCanMove) {
 
       for (it=GetClipIterator(); it; it=it->GetNext())
       {
@@ -478,13 +482,23 @@ bool WaveTrack::Paste(double t0, Track *src)
          // because an overlap of less than a sample should not trigger
          // traditional behaviour.
 
-         if (t0+src->GetEndTime()-1.0/mRate > clip->GetStartTime() &&
-             t0 < clip->GetEndTime() - 1.0/mRate)
+         if (editClipCanMove)
          {
-            //printf("t0=%.6f: inside clip is %.6f ... %.6f\n",
-            //       t0, clip->GetStartTime(), clip->GetEndTime());
-            insideClip = clip;
-            break;
+            if (t0+src->GetEndTime()-1.0/mRate > clip->GetStartTime() &&
+                t0 < clip->GetEndTime() - 1.0/mRate)
+            {
+               //printf("t0=%.6f: inside clip is %.6f ... %.6f\n",
+               //       t0, clip->GetStartTime(), clip->GetEndTime());
+               insideClip = clip;
+               break;
+            }
+         } else
+         {
+            if (t0 >= clip->GetStartTime() && t0 < clip->GetEndTime())
+            {
+               insideClip = clip;
+               break;
+            }
          }
       }
 
@@ -492,6 +506,26 @@ bool WaveTrack::Paste(double t0, Track *src)
       {
          // Exhibit traditional behaviour
          //printf("paste: traditional behaviour\n");
+         if (!editClipCanMove)
+         {
+            // We did not move other clips out of the way already, so
+            // check if we can paste without having to move other clips
+            for (it=GetClipIterator(); it; it=it->GetNext())
+            {
+               WaveClip *clip = it->GetData();
+               
+               if (clip->GetStartTime() > insideClip->GetStartTime() &&
+                   insideClip->GetEndTime() + insertDuration >
+                                                      clip->GetStartTime())
+               {
+                  wxMessageBox(
+                     _("There is not enough room available to paste the selection"),
+                     _("Error"), wxICON_STOP);
+                  return false;
+               }
+            }
+         }
+         
          return insideClip->Paste(t0, other->GetClipByIndex(0));
       }
 
@@ -500,6 +534,14 @@ bool WaveTrack::Paste(double t0, Track *src)
 
    // Insert new clips
    //printf("paste: multi clip mode!\n");
+   
+   if (!editClipCanMove && !IsEmpty(t0, t0+insertDuration-1.0/mRate))
+   {
+      wxMessageBox(
+         _("There is not enough room available to paste the selection"),
+         _("Error"), wxICON_STOP);
+      return false;
+   }
    
    for (it=other->GetClipIterator(); it; it=it->GetNext())
    {
@@ -540,6 +582,9 @@ bool WaveTrack::HandleClear(double t0, double t1,
 {
    if (t1 < t0)
       return false;
+
+   bool editClipCanMove = true;
+   gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
 
    WaveClipList::Node* it;
    WaveClipList clipsToDelete;
@@ -600,7 +645,8 @@ bool WaveTrack::HandleClear(double t0, double t1,
       if (clip->GetStartTime() >= t1)
       {
          // Clip is "behind" the region -- offset it unless we're splitting
-         if (!split)
+         // or we're using the "don't move other clips" mode
+         if (!split && editClipCanMove)
             clip->Offset(-(t1-t0));
       }
    }
@@ -1476,12 +1522,64 @@ void WaveTrack::UpdateLocationsCache()
 }
 
 // Expand cut line (that is, re-insert audio, then delete audio saved in cut line)
-bool WaveTrack::ExpandCutLine(double cutLinePosition, double* cutlineStart, double* cutlineEnd)
+bool WaveTrack::ExpandCutLine(double cutLinePosition, double* cutlineStart,
+                              double* cutlineEnd)
 {
+   bool editClipCanMove = true;
+   gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
+
+   // Find clip which contains this cut line   
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
    {
-      if (it->GetData()->ExpandCutLine(cutLinePosition, cutlineStart, cutlineEnd))
+      WaveClip* clip = it->GetData();
+      double start = 0, end = 0;
+
+      if (clip->FindCutLine(cutLinePosition, &start, &end))
+      {
+         WaveClipList::Node* it2;
+         
+         if (!editClipCanMove)
+         {
+            // We are not allowed to move the other clips, so see if there
+            // is enough room to expand the cut line
+            for (it2=GetClipIterator(); it2; it2=it2->GetNext())
+            {
+               WaveClip *clip2 = it2->GetData();
+               
+               if (clip2->GetStartTime() > clip->GetStartTime() &&
+                   clip->GetEndTime() + end - start > clip2->GetStartTime())
+               {
+                  wxMessageBox(
+                     _("There is not enough room available to expand the cut line"),
+                     _("Error"), wxICON_STOP);
+                  return false;
+               }
+            }
+         }
+         
+         if (!clip->ExpandCutLine(cutLinePosition))
+            return false;
+
+         if (cutlineStart)
+            *cutlineStart = start;
+         if (cutlineEnd)
+            *cutlineEnd = end;
+
+         // Move clips which are to the right of the cut line
+         if (editClipCanMove)
+         {
+            for (it2=GetClipIterator(); it2;
+                 it2=it2->GetNext())
+            {
+               WaveClip* clip2 = it2->GetData();
+   
+               if (clip2->GetStartTime() > clip->GetStartTime())
+                  clip2->Offset(end - start);
+            }
+         }
+
          return true;
+      }
    }
 
    return false;
