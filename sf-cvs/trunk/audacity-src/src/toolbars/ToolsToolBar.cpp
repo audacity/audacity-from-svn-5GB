@@ -48,8 +48,8 @@
 
 #include "MeterToolBar.h"
 #include "ToolsToolBar.h"
-#include "Prefs.h"
 
+#include "../Prefs.h"
 #include "../AllThemeResources.h"
 #include "../ImageManipulation.h"
 #include "../Project.h"
