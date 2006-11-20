@@ -143,9 +143,18 @@ public:
 
    // Get access to cut lines list
    WaveClipList* GetCutLines() { return &mCutLines; }
+   
+   // Find cut line at (approximately) this position
+   // Returns true and fills in cutLineStart and cutLineEnd (if specified)
+   // if a cut line at this position could be found. Return false otherwise.
+   bool FindCutLine(double cutLinePosition,
+                    double* cutLineStart = NULL,
+                    double *cutLineEnd = NULL);
 
    // Expand cut line (that is, re-insert audio, then delete audio saved in cut line)
-   bool ExpandCutLine(double cutLinePosition, double* cutlineStart = NULL, double* cutlineEnd = NULL);
+   // Returns true if a cut line could be found and sucessfully expanded,
+   // false otherwise
+   bool ExpandCutLine(double cutLinePosition);
 
    // Remove cut line, without expanding the audio in it
    bool RemoveCutLine(double cutLinePosition);

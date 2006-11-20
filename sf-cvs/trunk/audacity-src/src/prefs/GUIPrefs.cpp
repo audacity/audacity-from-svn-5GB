@@ -87,6 +87,8 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("/GUI/CircularTrackNavigation"), false );
       S.TieCheckBox( _("&Present track number to accessibility aid"), 
          wxT("/GUI/PresentTrackNumber"), true );
+      S.TieCheckBox( _("Editing a &clip can move other clips"),
+         wxT("/GUI/EditClipCanMove"), true );
    }
    S.EndStatic();
    S.StartStatic( _("Show / Hide"),1 );

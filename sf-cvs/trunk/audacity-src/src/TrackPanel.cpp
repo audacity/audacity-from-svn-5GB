@@ -3673,6 +3673,11 @@ bool TrackPanel::HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxM
          {
             // When user presses left button on cut line, expand the line again
             double cutlineStart = 0, cutlineEnd = 0;
+      
+            // Release capture so user will be able to click OK on Linux
+            if (HasCapture())
+               ReleaseMouse();
+
             if (track->ExpandCutLine(mCapturedTrackLocation.pos, &cutlineStart, &cutlineEnd))
             {
                WaveTrack* linked = (WaveTrack*)mTracks->GetLink(track);
