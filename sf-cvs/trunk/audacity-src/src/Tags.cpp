@@ -767,9 +767,8 @@ bool TagsEditor::TransferDataToWindow()
       mTrackNumText->SetValue(numStr);
    }
    
-   int numGenres = GetNumGenres();
-   if (mTags->mGenre>=0 && mTags->mGenre<numGenres)
-      mGenreChoice->SetSelection(mTags->mGenre);
+   if (mTags->mGenre >= 0 && mTags->mGenre < GetNumGenres())
+   	mGenreChoice->SetStringSelection(GetGenreNum(mTags->mGenre));
    
    mFormatRadioBox->SetSelection((int)mTags->mID3V2);
 
@@ -800,10 +799,16 @@ bool TagsEditor::TransferDataFromWindow()
 
    mTags->mYear = mYearText->GetValue();
    mTags->mComments = mCommentsText->GetValue();
-   mTags->mGenre = mGenreChoice->GetSelection();
    mTags->mID3V2 = (mFormatRadioBox->GetSelection())?true:false;
 
    int i;
+   
+   for(i=0; i<GetNumGenres(); i++)
+   	if (GetGenreNum(i) == mGenreChoice->GetStringSelection()) {
+   		mTags->mGenre = i;
+   		break;
+   	}
+	
    for(i=0; i<(int)mTags->mExtraNames.GetCount(); i++) {
       mTags->mExtraNames[i] = mExtraNameTexts[i]->GetValue();
       mTags->mExtraValues[i] = mExtraValueTexts[i]->GetValue();
@@ -972,18 +977,17 @@ void TagsEditor::BuildMainPanel()
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 3);
 
-   int numGenres = GetNumGenres();
-   wxString *genres = new wxString[numGenres];
-   for(int i=0; i<numGenres; i++)
-      genres[i] = GetGenreNum(i);
+	wxArrayString sortedGenres;
+	for(int i=0; i<GetNumGenres(); i++)
+		sortedGenres.Add(GetGenreNum(i));
+	sortedGenres.Sort();
 
    mGenreChoice =
        new wxChoice(parent, GenreID,
                     wxDefaultPosition, wxSize(-1, -1),
-                    numGenres, genres);
-   mGenreChoice->SetSelection(0);
+                    sortedGenres);
+   mGenreChoice->SetStringSelection(wxT("Pop")); // sensible default
    gridSizer->Add(mGenreChoice, 1, wxEXPAND | wxALL, 3);
-   delete[] genres;
    
    wxStaticText *item22 =
        new wxStaticText(parent, StaticTextID, _("Comments:"),
