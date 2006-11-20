@@ -183,11 +183,20 @@ FLAC__StreamDecoderWriteStatus MyFLACFile::write_callback(const FLAC__Frame *fra
    short *tmp=new short[frame->header.blocksize];
 
    for (unsigned int chn=0; chn<mFile->mNumChannels; chn++) {
-      for (unsigned int s=0; s<frame->header.blocksize; s++)
-	 tmp[s]=buffer[chn][s];
-      mFile->mChannels[chn]->Append((samplePtr)tmp,
-				   int16Sample,
-				   frame->header.blocksize);
+      if (mFile->mFormat == int16Sample) {
+         for (unsigned int s=0; s<frame->header.blocksize; s++) {
+            tmp[s]=buffer[chn][s];
+         }
+
+         mFile->mChannels[chn]->Append((samplePtr)tmp,
+                  int16Sample,
+                  frame->header.blocksize);
+      }
+      else {
+         mFile->mChannels[chn]->Append((samplePtr)buffer[chn],
+                  int24Sample,
+                  frame->header.blocksize);
+      }
    }
 
    delete [] tmp;
