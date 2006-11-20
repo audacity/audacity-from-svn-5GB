@@ -12,7 +12,7 @@
 \brief Displays a spectrum plot of the waveform.  Has options for 
 selecting parameters of the plot.
 
-Has a feature that finds peaks and rerports their value as you move 
+Has a feature that finds peaks and reports their value as you move 
 the mouse around.
 
 *//****************************************************************//**
@@ -21,7 +21,7 @@ the mouse around.
 \brief Works with FreqWindow to dsplay a spectrum plot of the waveform.
 This class actually does the graph display.
 
-Has a feature that finds peaks and rerports their value as you move 
+Has a feature that finds peaks and reports their value as you move 
 the mouse around.
 
 *//*******************************************************************/
@@ -1048,7 +1048,7 @@ void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
       f.AddLine(_("Lag (seconds)\tFrequency (Hz)\tLevel"));
       for (int i = 1; i < mProcessedSize; i++)
          f.AddLine(wxString::Format(wxT("%f\t%f\t%f"),
-                                    i / mRate, 1.0 / i, mProcessed[i]));
+                                    i / mRate, mRate / i, mProcessed[i]));
    }
 
 #ifdef __WXMAC__
