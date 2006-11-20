@@ -48,6 +48,7 @@
 
 #include "MeterToolBar.h"
 #include "ToolsToolBar.h"
+#include "Prefs.h"
 
 #include "../AllThemeResources.h"
 #include "../ImageManipulation.h"
@@ -107,7 +108,14 @@ void ToolsToolBar::Create(wxWindow * parent)
 {
    ToolBar::Create(parent);
 
-   mCurrentTool = selectTool;
+   bool multiToolActive = false;
+   gPrefs->Read(wxT("/GUI/ToolBars/Tools/MultiToolActive"), &multiToolActive);
+
+   if (multiToolActive)
+      mCurrentTool = multiTool;
+   else
+      mCurrentTool = selectTool;
+      
    mTool[mCurrentTool]->PushDown();
 }
 
@@ -196,7 +204,7 @@ void ToolsToolBar::SetCurrentTool(int tool, bool show)
 {
    //In multi-mode the current tool is shown by the 
    //cursor icon.  The buttons are not updated.
-
+   
    bool leavingMulticlipMode =
       IsDown(multiTool) && show && tool != multiTool;
       
@@ -217,7 +225,13 @@ void ToolsToolBar::SetCurrentTool(int tool, bool show)
 
    //msmeyer: But we instruct the projects to handle the cursor shape again
    if (show)
+   {
       RefreshCursorForAllProjects();
+
+      gPrefs->Write(wxT("/GUI/ToolBars/Tools/MultiToolActive"),
+                    IsDown(multiTool));
+      gPrefs->Flush();
+   }
 }
 
 bool ToolsToolBar::IsDown(int tool)
@@ -254,6 +268,10 @@ void ToolsToolBar::OnTool(wxCommandEvent & evt)
          mTool[i]->PopUp();
 
    RedrawAllProjects();
+
+   gPrefs->Write(wxT("/GUI/ToolBars/Tools/MultiToolActive"),
+                 IsDown(multiTool));
+   gPrefs->Flush();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
