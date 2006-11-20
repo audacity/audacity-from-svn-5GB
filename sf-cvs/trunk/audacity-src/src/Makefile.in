@@ -34,7 +34,7 @@ override CFLAGS += @CFLAGS@
 override CXXFLAGS += @CXXFLAGS@
 
 # CPPFLAGS are for both C and C++.
-override CPPFLAGS += -Wall -I$(srcdir)/include -I. @CPPFLAGS@ 
+override CPPFLAGS += -Wall -fno-strict-aliasing -I$(srcdir)/include -I. @CPPFLAGS@ 
 
 
 ########################################
