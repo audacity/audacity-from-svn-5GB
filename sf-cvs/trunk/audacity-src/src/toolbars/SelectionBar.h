@@ -71,6 +71,8 @@ class SelectionBar:public ToolBar {
    void OnLengthRadio(wxCommandEvent &evt);
 
    void OnRate(wxCommandEvent & event);
+   void OnRateFocus(wxFocusEvent &event);
+   void OnRateCaptureKey(wxCommandEvent &event);
 
    void OnSize(wxSizeEvent &evt);
 

@@ -42,6 +42,7 @@ with changes in the SelectionBar.
 
 #include "SelectionBar.h"
 
+#include "../AudacityApp.h"
 #include "../AudioIO.h"
 #include "../AColor.h"
 #include "../Prefs.h"
@@ -67,6 +68,7 @@ BEGIN_EVENT_TABLE(SelectionBar, ToolBar)
    EVT_COMBOBOX(OnRateID, SelectionBar::OnRate)
    EVT_TEXT(OnRateID, SelectionBar::OnRate)
    EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, SelectionBar::OnUpdate)
+   EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEY, SelectionBar::OnRateCaptureKey)
 END_EVENT_TABLE()
 
 SelectionBar::SelectionBar()
@@ -166,6 +168,34 @@ void SelectionBar::Populate()
    mRateBox->SetName(_("Project Rate (Hz):"));
    mRateBox->SetValue(wxString::Format(wxT("%d"), (int)mRate));
    UpdateRates(); // Must be done _after_ setting value on mRateBox!
+
+   // We need to capture the SetFocus and KillFocus events to set up
+   // for keyboard capture.  On Windows and GTK it's easy since the
+   // combobox is presented as one control to hook into.
+   wxWindow *ctrl = mRateBox;
+
+#if defined(__WXMAC__)
+   // The Mac uses a standard wxTextCtrl for the edit portion and that's
+   // the control that gets the focus events.  So we have to find the
+   // textctrl.
+   wxWindowList kids = mRateBox->GetChildren();
+   for (unsigned int i = 0; i < kids.GetCount(); i++) {
+      wxClassInfo *ci = kids[i]->GetClassInfo();
+      if (ci->IsKindOf(CLASSINFO(wxTextCtrl))) {
+         ctrl = kids[i];
+         break;
+      }
+   }
+#endif
+
+   ctrl->Connect(wxEVT_SET_FOCUS,
+                 wxFocusEventHandler(SelectionBar::OnRateFocus),
+                 NULL,
+                 this);
+   ctrl->Connect(wxEVT_KILL_FOCUS,
+                 wxFocusEventHandler(SelectionBar::OnRateFocus),
+                 NULL,
+                 this);
 
    mainSizer->Add(mRateBox, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
@@ -392,6 +422,35 @@ void SelectionBar::UpdateRates()
       if (rates.Index(96000) != wxNOT_FOUND) mRateBox->Append(wxT("96000"));
    }
    mRateBox->SetValue(oldValue);
+}
+
+void SelectionBar::OnRateFocus(wxFocusEvent &event)
+{
+   wxCommandEvent e(EVT_CAPTURE_KEYBOARD);
+
+   if (event.GetEventType() == wxEVT_KILL_FOCUS) {
+      e.SetEventType(EVT_RELEASE_KEYBOARD);
+   }
+   e.SetEventObject(this);
+   GetParent()->GetEventHandler()->ProcessEvent(e);
+
+   Refresh(false);
+}
+
+void SelectionBar::OnRateCaptureKey(wxCommandEvent &event)
+{
+   wxKeyEvent *kevent = (wxKeyEvent *)event.GetEventObject();
+   int keyCode = kevent->GetKeyCode();
+
+   // Convert numeric keypad entries.
+   if ((keyCode >= WXK_NUMPAD0) && (keyCode <= WXK_NUMPAD9)) keyCode -= WXK_NUMPAD0 - '0';
+
+   if (keyCode >= '0' || keyCode <= '9')
+      return;
+
+   event.Skip();
+
+   return;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
