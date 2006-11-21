@@ -35,6 +35,44 @@ diff -r -u wxMac-2.4.2/src/common/intl.cpp wxMac-2.4.2-patched/src/common/intl.c
  #ifdef HAVE_LANGINFO_H
    #include <langinfo.h>
  #endif
+@@ -422,6 +426,7 @@
+ 
+ #if wxUSE_WCHAR_T
+     wxCSConv *csConv = NULL;
++
+     if ( !!charset )
+         csConv = new wxCSConv(charset);
+ 
+@@ -446,10 +451,12 @@
+     delete csConv;
+ #else // !wxUSE_WCHAR_T
+     #if wxUSE_FONTMAP
++
+     if ( convertEncoding )
+     {
+         wxFontEncoding targetEnc = wxFONTENCODING_SYSTEM;
+         wxFontEncoding enc = wxFontMapper::Get()->CharsetToEncoding(charset, FALSE);
++
+         if ( enc == wxFONTENCODING_SYSTEM )
+         {
+             convertEncoding = FALSE; // unknown encoding
+@@ -460,13 +467,14 @@
+             if (targetEnc == wxFONTENCODING_SYSTEM)
+             {
+                 wxFontEncodingArray a = wxEncodingConverter::GetPlatformEquivalents(enc);
+-                if (a[0] == enc)
++                if (a.GetCount() > 0 && a[0] == enc)  // dmazzoni
+                     // no conversion needed, locale uses native encoding
+                     convertEncoding = FALSE;
+                 if (a.GetCount() == 0)
+                     // we don't know common equiv. under this platform
+                     convertEncoding = FALSE;
+-                targetEnc = a[0];
++                else // dmazzoni
++                    targetEnc = a[0];
+             }
+         }
+ 
 diff -r -u wxMac-2.4.2/src/mac/app.cpp wxMac-2.4.2-patched/src/mac/app.cpp
 --- wxMac-2.4.2/src/mac/app.cpp	2003-06-03 06:58:19.000000000 -0700
 +++ wxMac-2.4.2-patched/src/mac/app.cpp	2006-11-12 21:17:49.000000000 -0800
