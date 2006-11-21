@@ -416,11 +416,11 @@ bool WaveTrack::Paste(double t0, Track *src)
    
    if (src->GetKind() != Track::Wave)
       return false;
-
+      
    //printf("paste: we have a wave track\n");
 
    WaveTrack* other = (WaveTrack*)src;
-
+   
    //
    // Pasting is a bit complicated, because with the existence of multiclip mode,
    // we must guess the behaviour the user wants.
@@ -589,6 +589,24 @@ bool WaveTrack::HandleClear(double t0, double t1,
    WaveClipList::Node* it;
    WaveClipList clipsToDelete;
    WaveClipList clipsToAdd;
+   
+   // We only add cut lines when deleting in the middle of a single clip
+   // The cut line code is not really prepared to handle other situations
+   if (addCutLines)
+   {
+      for (it=GetClipIterator(); it; it=it->GetNext())
+      {
+         WaveClip *clip = it->GetData();
+         
+         if (t1 > clip->GetStartTime() && t0 < clip->GetEndTime() &&
+             (t0 + 1.0/mRate < clip->GetStartTime() ||
+              t1 - 1.0/mRate > clip->GetEndTime()))
+         {
+            addCutLines = false;
+            break;
+         }
+      }
+   }   
 
    for (it=GetClipIterator(); it; it=it->GetNext())
    {
