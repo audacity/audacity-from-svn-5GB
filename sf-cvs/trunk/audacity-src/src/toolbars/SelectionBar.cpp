@@ -404,22 +404,10 @@ void SelectionBar::OnRate(wxCommandEvent & WXUNUSED(event))
 
 void SelectionBar::UpdateRates()
 {
-   wxArrayLong rates = AudioIO::GetSupportedSampleRates();
    wxString oldValue = mRateBox->GetValue();
    mRateBox->Clear();
-   if (rates.GetCount() < 25) {
-      unsigned int i;
-      for(i=0; i<rates.GetCount(); i++)
-         mRateBox->Append(wxString::Format(wxT("%d"), (int)rates[i]));
-   }
-   else {
-      if (rates.Index(8000) != wxNOT_FOUND) mRateBox->Append(wxT("8000"));
-      if (rates.Index(11025) != wxNOT_FOUND) mRateBox->Append(wxT("11025"));
-      if (rates.Index(16000) != wxNOT_FOUND) mRateBox->Append(wxT("16000"));
-      if (rates.Index(22050) != wxNOT_FOUND) mRateBox->Append(wxT("22050"));
-      if (rates.Index(44100) != wxNOT_FOUND) mRateBox->Append(wxT("44100"));
-      if (rates.Index(48000) != wxNOT_FOUND) mRateBox->Append(wxT("48000"));
-      if (rates.Index(96000) != wxNOT_FOUND) mRateBox->Append(wxT("96000"));
+   for (int i = 0; i < AudioIO::NumStandardRates; i++) {
+      mRateBox->Append(wxString::Format(wxT("%d"), AudioIO::StandardRates[i]));
    }
    mRateBox->SetValue(oldValue);
 }

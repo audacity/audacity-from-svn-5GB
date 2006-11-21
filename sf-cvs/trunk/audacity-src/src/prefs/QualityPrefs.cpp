@@ -88,10 +88,9 @@ void QualityPrefs::GetNamesAndLabels()
    //
    //      GetSupportedSampleRates() allows passing in device names, but
    //      how do you get at them as they are on the Audio I/O page????
-   wxArrayLong SampleRateLabelsLong = AudioIO::GetSupportedSampleRates();
-   for (int i=0; i<(int)SampleRateLabelsLong.GetCount(); i++)
+   for (int i=0; i<AudioIO::NumStandardRates; i++)
    {
-      int iRate = (int)SampleRateLabelsLong[i];
+      int iRate = (int)AudioIO::StandardRates[i];
       mmSampleRateLabels.Add( iRate );
       mmSampleRateNames.Add( wxString::Format(wxT("%i Hz"), iRate ));
    }
