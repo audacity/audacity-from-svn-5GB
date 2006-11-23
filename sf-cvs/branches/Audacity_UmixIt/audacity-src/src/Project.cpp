@@ -162,6 +162,19 @@ bool AudacityDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& 
    return true;
 }
 
+bool ImportXMLTagHandler::HandleXMLTag(const char *tag, const char **attrs) 
+{
+   if (strcmp(tag, "import") || strcmp(*attrs++, "filename")) return false;
+   wxString strPathname = *attrs;
+   if (!wxFile::Exists(strPathname)) {
+      strPathname = mProject->GetDirManager()->GetProjectDataDir() + "\\" + strPathname;
+      if (!wxFile::Exists(strPathname)) return false;
+   }
+   mProject->Import(strPathname);
+   return true; //vvv UmixIt   result from Import?
+}
+
+
 AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
 {
    bool bMaximized;
@@ -360,7 +373,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mTotalToolBarHeight(0),
      mDraggingToolBar(NoneID),
      mAudioIOToken(-1),
-     mIsDeleting(false)
+     mIsDeleting(false), 
+     mImportXMLTagHandler(NULL)
 {
    mDrag = NULL;
 
@@ -631,6 +645,9 @@ AudacityProject::~AudacityProject()
 
    delete mRecentFiles;
    mRecentFiles = NULL;
+
+   delete mImportXMLTagHandler;
+   mImportXMLTagHandler = NULL;
 
    // MM: Tell the DirManager it can now delete itself
    // if it finds it is no longer needed. If it is still
@@ -2035,6 +2052,11 @@ XMLTagHandler *AudacityProject::HandleXMLChild(const char *tag)
       return newTrack;
    }
 
+   if (!strcmp(tag, "import")) {
+      if (mImportXMLTagHandler == NULL) mImportXMLTagHandler = new ImportXMLTagHandler(this);
+      return mImportXMLTagHandler;
+   }
+
    return NULL;
 }
 
@@ -2409,6 +2431,10 @@ bool AudacityProject::SaveAs()
 
 void AudacityProject::InitialState()
 {
+   if (mImportXMLTagHandler != NULL) { //vvv UmixIt   Just keep it dirty, or auto-save?
+      this->Save();
+   }
+   
    mUndoManager.ClearStates();
 
    TrackList *l = new TrackList(mTracks);

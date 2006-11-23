@@ -60,6 +60,7 @@ class DirManager: public XMLTagHandler {
    // but it doesn't already exist, SetProject fails and returns false.
    bool SetProject(wxString & projPath, wxString & projName, bool create);
 
+   wxString GetProjectDataDir();
    wxString GetProjectName();
 
    wxLongLong GetFreeDiskSpace();

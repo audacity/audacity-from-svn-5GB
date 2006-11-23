@@ -250,6 +250,11 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
    return true;
 }
 
+wxString DirManager::GetProjectDataDir()
+{
+   return projFull;
+}
+
 wxString DirManager::GetProjectName()
 {
    return projName;
