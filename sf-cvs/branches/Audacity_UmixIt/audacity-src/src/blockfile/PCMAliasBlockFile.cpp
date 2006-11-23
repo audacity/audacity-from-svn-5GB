@@ -38,6 +38,8 @@ PCMAliasBlockFile::~PCMAliasBlockFile()
 {
 }
 
+wxString gProjDir = ""; // Needs to be set in BuildFromXML, so just use a global instead of a member.
+
 /// Reads the specified data from the aliased file, using libsndfile,
 /// and converts it to the given sample format.
 ///
@@ -51,9 +53,14 @@ int PCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
    SF_INFO info;
 
    memset(&info, 0, sizeof(info));
-   SNDFILE *sf = sf_open(FILENAME(mAliasedFileName.GetFullPath()),
-                         SFM_READ, &info);
 
+   wxString strFullPath = mAliasedFileName.GetFullPath();
+   SNDFILE *sf = sf_open(FILENAME(strFullPath), SFM_READ, &info);
+   if (!sf) {
+      // Allow fallback of looking for the file name, located in the data directory.
+      strFullPath = gProjDir + "\\" + mAliasedFileName.GetFullName(); 
+      sf = sf_open(FILENAME(strFullPath), SFM_READ, &info);
+   }
    if (!sf)
       return 0;
 
@@ -128,6 +135,8 @@ void PCMAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
 
 BlockFile *PCMAliasBlockFile::BuildFromXML(wxString projDir, const char **attrs)
 {
+   gProjDir = projDir;
+
    wxFileName summaryFileName;
    wxFileName aliasFileName;
    int aliasStart=0, aliasLen=0, aliasChannel=0;
