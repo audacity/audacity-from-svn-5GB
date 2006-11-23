@@ -42,6 +42,9 @@ class AColor {
    static void LightMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
    static void DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
 
+      // rainbow pastel color based on track's pointer -- so it's unique to track
+      static wxColour GetTrackColor(void* pTrack); //vvv UmixIt 
+
    static wxBrush lightBrush[2];
    static wxBrush mediumBrush[2];
    static wxBrush darkBrush[2];
@@ -55,6 +58,11 @@ class AColor {
 
    static wxBrush muteBrush[2];
    static wxBrush soloBrush;
+
+   //vvv UmixIt
+      // For UmixIt, need color brush for off positions, too.
+      static wxBrush muteBrushOff;
+      static wxBrush soloBrushOff;
 
    static wxPen envelopePen;
    static wxPen WideEnvelopePen;

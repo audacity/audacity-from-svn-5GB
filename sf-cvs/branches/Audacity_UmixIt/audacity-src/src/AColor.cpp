@@ -12,6 +12,7 @@
 **********************************************************************/
 
 #include <wx/dc.h>
+#include <wx/dynarray.h> //vvv UmixIt
 #include <wx/settings.h>
 #include <wx/utils.h>
 
@@ -31,6 +32,11 @@ wxPen AColor::indicatorPen[2];
 
 wxBrush AColor::muteBrush[2];
 wxBrush AColor::soloBrush;
+
+// For UmixIt, need color brush for off positions, too.
+wxBrush AColor::muteBrushOff;
+wxBrush AColor::soloBrushOff;
+
 
 wxBrush AColor::envelopeBrush;
 wxPen AColor::envelopePen;
@@ -129,7 +135,7 @@ void AColor::Mute(wxDC * dc, bool on, bool selected, bool soloing)
    }
    else {
       dc->SetPen(*wxTRANSPARENT_PEN);
-      dc->SetBrush(mediumBrush[index]);
+      dc->SetBrush(muteBrushOff); //vvv UmixIt dc->SetBrush(mediumBrush[index]);
    }
 }
 
@@ -144,7 +150,7 @@ void AColor::Solo(wxDC * dc, bool on, bool selected)
    }
    else {
       dc->SetPen(*wxTRANSPARENT_PEN);
-      dc->SetBrush(mediumBrush[index]);
+      dc->SetBrush(soloBrushOff); //vvv UmixIt dc->SetBrush(mediumBrush[index]);
    }
 }
 
@@ -202,9 +208,16 @@ void AColor::Init(wxDC * dc)
 //   muteBrush[1].SetColour(170, 180, 170);
 //   soloBrush.SetColour(255, 140, 140);
    // Colors modified to avoid using reserved colors red and green.
-   muteBrush[0].SetColour(160, 170, 210);
-   muteBrush[1].SetColour(160, 170, 190);
-   soloBrush.SetColour(160, 170, 210);
+   //muteBrush[0].SetColour(160, 170, 210);
+   //muteBrush[1].SetColour(160, 170, 190);
+   //soloBrush.SetColour(160, 170, 210);
+   //vvv UmixIt mute & solo colors
+      muteBrush[0].SetColour(220, 220, 0); // darker yellow
+      muteBrush[1].SetColour(200, 200, 0); // dark yellow
+      soloBrush.SetColour(0, 220, 0); // darker green
+
+      muteBrushOff.SetColour(255, 255, 0); // yellow
+      soloBrushOff.SetColour(0, 255, 0); // green
 
 
    cursorPen.SetColour(0, 0, 0);
@@ -353,6 +366,35 @@ void AColor::DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ )
    }
 
 }
+
+//vvv UmixIt
+   WX_DEFINE_ARRAY(void*, trackPtrsArray);
+   const wxColour gRed = wxColour(255, 130, 140); // red
+   const wxColour gOrange = wxColour(255, 200, 130); // orange
+   const wxColour gYellow = wxColour(255, 240, 120); // yellow
+   const wxColour gGreen = wxColour(120, 255, 120); // green
+   const wxColour gCyan = wxColour(120, 255, 255); // cyan
+   const wxColour gBlue = wxColour(180, 200, 255); // blue
+   const wxColour gPurple = wxColour(255, 180, 255); // purple
+
+   // rainbow pastel color based on track's pointer -- so it's unique to track
+   wxColour AColor::GetTrackColor(void* pTrack) 
+   { 
+      static trackPtrsArray trackPtrs; 
+      int nCase = trackPtrs.Index(pTrack);
+      if (nCase == wxNOT_FOUND) trackPtrs.Add(pTrack);
+      nCase = trackPtrs.Index(pTrack);
+      switch (nCase % 7) { 
+         case 0: return gRed; 
+         case 1: return gOrange;
+         case 2: return gYellow;
+         case 3: return gGreen;
+         case 4: return gCyan;
+         case 5: return gBlue;
+         case 6: return gPurple;
+      }
+   }
+
 
 void GetColorGradient(float value,
                       bool selected,
