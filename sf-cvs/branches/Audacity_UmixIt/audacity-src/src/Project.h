@@ -92,6 +92,18 @@ class AudacityDropTarget : public wxFileDropTarget
    AudacityProject *mProject;
 };
 
+class ImportXMLTagHandler : public XMLTagHandler 
+{
+ public:
+   ImportXMLTagHandler(AudacityProject* pProject) { mProject = pProject; };
+
+   virtual bool HandleXMLTag(const char *tag, const char **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const char *tag) { return NULL; };
+   virtual void WriteXML(int depth, FILE *fp) {}; //vvv
+ private: 
+   AudacityProject* mProject;
+};
+
 class AudacityProject:public wxFrame,
                       public TrackPanelListener,
                       public AStatusListener,
@@ -337,6 +349,8 @@ class AudacityProject:public wxFrame,
 
    // Recent File and Project History
    wxFileHistory *mRecentFiles;
+
+   ImportXMLTagHandler* mImportXMLTagHandler;
 
  public:
     DECLARE_EVENT_TABLE()
