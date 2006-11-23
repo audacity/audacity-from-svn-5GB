@@ -137,6 +137,11 @@ void TrackArtist::DrawTracks(TrackList * tracks,
       else {
          muted = (hasSolo || t->GetMute()) && !t->GetSolo();
          linkFlag = t->GetLinked();
+         if (!muted) { //vvv UmixIt
+            wxColour trackColor = AColor::GetTrackColor((void*)t);
+            samplePen.SetColour(trackColor);
+            rmsPen.SetColour(trackColor.Red() * 4/5, trackColor.Green() * 4/5, trackColor.Blue() * 4/5);
+         }
       }
 
       trackRect.height = t->GetHeight();

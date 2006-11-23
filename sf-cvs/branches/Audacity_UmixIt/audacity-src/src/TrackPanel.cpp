@@ -4659,6 +4659,10 @@ void TrackLabel::DrawTitleBar(wxDC * dc, const wxRect r, Track * t,
    wxRect bev;
    GetTitleBarRect(r, bev);
    bev.Inflate(-1, -1);
+   { //vvv UmixIt
+      dc->SetBrush(wxBrush(AColor::GetTrackColor((void*)t), wxSOLID)); 
+      dc->DrawRectangle(bev);
+   }
    AColor::Bevel(*dc, true, bev);
 
    // Draw title text
