@@ -768,7 +768,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
                      const wxPoint &position,
                      const wxSize& size,
                      long style):
-   wxDialog( parent, id, title, position, size, style | wxRESIZE_BORDER )
+   wxDialog( parent, id, title, position, size, style | wxRESIZE_BORDER | wxMAXIMIZE_BOX )
 {
    m_pEffect = effect;
 
