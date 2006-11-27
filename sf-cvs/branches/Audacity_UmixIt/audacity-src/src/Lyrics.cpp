@@ -13,13 +13,22 @@
 
 #include <wx/defs.h>
 #include <wx/dcmemory.h>
-#include <wx/html/htmlwin.h>
+#include <wx/mimetype.h>
 
 #include "Lyrics.h"
+#include "Internat.h"
 #include "Project.h" // for GetActiveProject in OnKeyEvent
 
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(SyllableArray);
+
+void LinkingHtmlWindow::OnLinkClicked(const wxHtmlLinkInfo& link) 
+{
+   wxFileType* pFileType = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT(".htm"));
+   if (pFileType == NULL) return;
+   wxString openCmd = pFileType->GetOpenCommand(link.GetHref());
+   ::wxExecute(openCmd);
+}
 
 BEGIN_EVENT_TABLE(Lyrics, wxPanel)
    EVT_CHAR(Lyrics::OnKeyEvent)
@@ -35,8 +44,7 @@ Lyrics::Lyrics(wxWindow* parent, wxWindowID id,
    wxPanel(parent, id, pos, size),
    mWidth(size.x), mHeight(size.y)
 {
-   mHtml = new wxHtmlWindow(this, -1,
-                            wxDefaultPosition, wxDefaultSize);
+   mHtml = new LinkingHtmlWindow(this);
 
    Clear();
    Finish(0.0);
@@ -239,7 +247,7 @@ void Lyrics::GetKaraokePosition(double t,
    // The y position is a simple cosine curve; the max height is a
    // function of the time.
    double height = t2 - t1 > 4.0? 1.0: sqrt((t2-t1)/4.0);
-   #ifdef _WIN32 
+   #ifdef __WXMSW__ 
       #define M_PI 3.1415926535897932385 
    #endif
    *outY = height * sin(M_PI * t);
@@ -261,6 +269,20 @@ void Lyrics::Update(double t, bool bForce /* = false */)
    if (!bForce && (i < 0 || i >= mSyllables.GetCount()))
       htmlText = mText;
    else {
+      // branding
+      AudacityProject* pProject = GetActiveProject();
+      wxString strLogoFilename = "UmixIt.jpg"; //vvv UmixIt: Get name from project file.
+      wxString strLogoPathname = 
+         GetActiveProject()->GetDirManager()->GetProjectDataDir() + "\\" + strLogoFilename;
+      wxString strURL = "http://www.umixit.com"; //vvv UmixIt: Get url from project file.
+      wxString strBranding = "";
+      if (::wxFileExists(FILENAME(strLogoPathname))) 
+         strBranding = 
+            "<center><a href=\"" + FILENAME(strURL) + 
+               "\" target=\"_blank\"><img src=\"" + 
+                  FILENAME(strLogoPathname) + "\" alt=\"" + strLogoFilename + "\"><br>" + 
+               strURL + "</a><hr></center>\n";
+
       // Size the whole htmlText.
       // Map nFontRelativeSize into -2 to +4, in increments of DEFAULT_FONT_POINTSIZE/2
       int nFontRelativeSize = (int)((float)(2 * gKaraokeFontPointSize) / (float)DEFAULT_FONT_POINTSIZE);
@@ -284,21 +306,27 @@ void Lyrics::Update(double t, bool bForce /* = false */)
       if (nFontRelativeSize != 0) {
          strFontRelativeSizeStart = 
             wxString::Format("<font size=\"%s%d\">", (nFontRelativeSize > 0) ? "+" : "", nFontRelativeSize);
-         strFontRelativeSizeEnd = "</font>";
+         strFontRelativeSizeEnd = "</font>\n";
       }
 
-      htmlText = 
-         strFontRelativeSizeStart + 
+      wxString strLyrics = 
          mText.Left(mSyllables[i].char0) +
          "<font color=\"#ee0066\">" + 
          mText.Mid(mSyllables[i].char0,
                    mSyllables[i].char1-mSyllables[i].char0) +
          "</font>" +
-         mText.Mid(mSyllables[i].char1) + 
-         strFontRelativeSizeEnd;
+         mText.Mid(mSyllables[i].char1);
+      strLyrics.Replace("_", "<br>"); // Convert '_' to newline.
+
+      htmlText = 
+         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<html>\n<body>\n" + 
+         strBranding + 
+         strFontRelativeSizeStart + 
+         strLyrics + 
+         strFontRelativeSizeEnd + 
+         "</body>\n</html>";
    }
 
-   htmlText.Replace("_", "<br>"); // Convert '_' to newline.
    mHtml->SetPage(htmlText);
    mHtml->Refresh(false);
 
