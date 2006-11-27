@@ -268,7 +268,7 @@ void CommandManager::AddItem(wxString name, wxString label,
    
    // Mac OS X fixes
   #ifdef __WXMAC__
-   if (newLabel.Length() > 0 && newLabel[0] == '&')
+   if (newLabel.Length() > 0 && newLabel.GetChar(0) == '&')
       newLabel = newLabel.Right(newLabel.Length()-1);
 
    if (shortcut == true &&

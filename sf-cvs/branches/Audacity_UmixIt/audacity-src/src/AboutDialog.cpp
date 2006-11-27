@@ -50,6 +50,10 @@ AboutDialog::AboutDialog(wxWindow * parent)
 
    wxString informationStr;
 
+   #ifdef __i686
+   informationStr += _("Intel Mac version");
+   #endif
+
    #ifdef MP3SUPPORT
    informationStr += _("MP3 importing enabled");
    #else

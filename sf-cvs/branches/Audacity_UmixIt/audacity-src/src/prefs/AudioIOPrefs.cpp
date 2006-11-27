@@ -69,7 +69,7 @@ PrefsPanel(parent)
 
 #ifdef __WXMAC__
    bool noModifyDevice;
-   gPrefs->Read("NoModifyDevice", &noModifyDevice, false);
+   gPrefs->Read("NoModifyDevice", &noModifyDevice, true);
 #endif
 
    gPrefs->SetPath("/");
