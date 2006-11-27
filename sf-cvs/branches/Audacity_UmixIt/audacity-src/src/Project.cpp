@@ -159,6 +159,7 @@ bool AudacityDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& 
 {
    for (int i = 0; i < filenames.GetCount(); i++)
       mProject->Import(filenames[i]);
+   mProject->HandleResize(); // Adjust scrollers for new track sizes.
    return true;
 }
 
@@ -166,9 +167,9 @@ bool ImportXMLTagHandler::HandleXMLTag(const char *tag, const char **attrs)
 {
    if (strcmp(tag, "import") || strcmp(*attrs++, "filename")) return false;
    wxString strPathname = *attrs;
-   if (!wxFile::Exists(strPathname)) {
+   if (!wxFile::Exists(FILENAME(strPathname))) {
       strPathname = mProject->GetDirManager()->GetProjectDataDir() + "\\" + strPathname;
-      if (!wxFile::Exists(strPathname)) return false;
+      if (!wxFile::Exists(FILENAME(strPathname))) return false;
    }
    mProject->Import(strPathname);
    return true; //vvv UmixIt   result from Import?
@@ -2317,7 +2318,8 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       SetTitle(GetName());
    }
 
-   HandleResize();   
+   // Moved this call to higher levels to prevent horrible flicker redrawing everything on each file.
+   //   HandleResize();
 }
 
 void AudacityProject::Import(wxString fileName)
@@ -2431,7 +2433,8 @@ bool AudacityProject::SaveAs()
 
 void AudacityProject::InitialState()
 {
-   if (mImportXMLTagHandler != NULL) { //vvv UmixIt   Just keep it dirty, or auto-save?
+   if (mImportXMLTagHandler != NULL) {
+      // We processed an <import> tag, so save it as a normal project, with no <import> tags.
       this->Save();
    }
    
@@ -2518,12 +2521,6 @@ void AudacityProject::SetStateTo(unsigned int n)
 
 void AudacityProject::UpdateLyrics()
 {
-   if (mLyricsWindow == NULL) {
-      mLyricsWindow = new LyricsWindow(this);
-      wxASSERT(mLyricsWindow);
-      mLyricsWindow->Show(true);
-   }
-
    LabelTrack *labelTrack = NULL;
    Track *t;
    TrackListIterator iter(mTracks);
@@ -2538,6 +2535,12 @@ void AudacityProject::UpdateLyrics()
 
    if (!labelTrack)
       return;
+
+   if (mLyricsWindow == NULL) {
+      mLyricsWindow = new LyricsWindow(this);
+      wxASSERT(mLyricsWindow);
+      mLyricsWindow->Show(true);
+   }
 
    Lyrics *lyrics = mLyricsWindow->GetLyricsPanel();
    lyrics->Clear();
