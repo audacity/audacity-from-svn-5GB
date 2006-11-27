@@ -651,7 +651,7 @@ void AudioIO::StartMonitoring(double sampleRate)
    gPrefs->Read("/AudioIO/RecordChannels", &captureChannels, 1L);
    gPrefs->Read("/AudioIO/SWPlaythrough", &mSoftwarePlaythrough, false);
    #if __WXMAC__
-   gPrefs->Read("/AudioIO/NoModifyDevice", &mNoModifyDevice, false);
+   gPrefs->Read("/AudioIO/NoModifyDevice", &mNoModifyDevice, true);
    #endif
    int playbackChannels = 0;
 
@@ -709,7 +709,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
 
    gPrefs->Read("/AudioIO/SWPlaythrough", &mSoftwarePlaythrough, false);
    #ifdef __WXMAC__
-   gPrefs->Read("/AudioIO/NoModifyDevice", &mNoModifyDevice, false);
+   gPrefs->Read("/AudioIO/NoModifyDevice", &mNoModifyDevice, true);
    #endif
 
    mInputMeter = NULL;
