@@ -119,7 +119,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                            const wxString & title,
                            const wxPoint & pos):
   wxDialog(parent, id, title, pos, wxDefaultSize,
-     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER ),
+     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX ),
   mData(NULL), mProcessed(NULL), mBitmap(NULL)
 {
    mMouseX = 0;
