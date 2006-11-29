@@ -45,7 +45,6 @@ AC_SUBST(INSTALL_PREFIX)
 AC_SUBST(CONFIGHEADER)
 AC_SUBST(PRECOMP_CFLAGS)
 AC_SUBST(EXTRATARGETS)
-AC_SUBST(SOUNDTOUCH_CFLAGS)
 
 dnl allow the user to specify options to configure that change the
 dnl name "audacity" anywhere it appears in a pathname.  This allows
@@ -173,9 +172,12 @@ AC_CHECK_FILE(lib-src/soundtouch/include/SoundTouch.h,
               default_libsoundtouch="local",
               default_libsoundtouch="system")
 
-AC_CHECK_FILE(lib-src/libflac/include/FLAC/all.h,
-              default_libflac="local",
-              default_libflac="system")
+
+#AC_CHECK_FILE(lib-src/libflac/include/FLAC/format.h,
+#              default_libflac="local",
+#              default_libflac="system")
+dnl removed libflac check as the only place it would get used is in
+dnl libsndfile, not audacity itself
 
 dnl If any of the optional sublibraries was not found in lib-src,
 dnl we assume the user wants to use a system library.  If the
@@ -198,9 +200,9 @@ if [[ "$default_libsoundtouch" = "system" ]] ; then
 	AC_CHECK_HEADER(soundtouch/SoundTouch.h, , default_libsoundtouch="no")
 fi
 
-if [[ "$default_libflac" = "system" ]] ; then
-	AC_CHECK_HEADER(FLAC/all.h, , default_libflac="no")
-fi
+#if [[ "$default_libflac" = "system" ]] ; then
+#	AC_CHECK_HEADER(FLAC/format.h, , default_libflac="no")
+#fi
 
 dnl options
 
@@ -241,10 +243,10 @@ AC_ARG_WITH(libsamplerate,
 	use_libsamplerate="default")
 
 AC_ARG_ENABLE(flac,
-	[AC_HELP_STRING([--enable-flac],
-		[enable FLAC support in local libsndfile [default=yes]
+	[AC_HELP_STRING([--enable-flac ],
+		[enable FLAC support in local libsndfile [default=no]
 		This has no effect if you use system libsndfile.])],
-	,default_libflac="no")
+	,)
 dnl this does nothing, because all we are after is passing through the command
 dnl line option to the local libsndfile configure
 
@@ -292,7 +294,6 @@ if [[ "$use_soundtouch" = "local" ]] ; then
 	dnl this is the path we need to make that work
 	BUILDLIBS="$BUILDLIBS soundtouch/source/SoundTouch/.libs/libSoundTouch.a"		
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/source/SoundTouch/.libs/libSoundTouch.a"		
-   AX_CHECK_COMPILER_FLAGS("-msse",[SOUNDTOUCH_CXXFLAGS="-msse"])
 
    if test ! -f "lib-src/soundtouch/Makefile"; then
 		echo "--- Configuring soundtouch";
@@ -349,20 +350,11 @@ if [[ "$use_libsndfile" = "local" ]] ; then
 	dnl then libsndfile will have detected and linked against them
 	dnl so we need extra (static) link flags
 
-   if [[ "$enable_flac" != "no" ]] ; then
-      if [[ "$default_libflac" = "local" ]] ; then
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC/.libs/libFLAC.a"
-         BUILDLIBS="$BUILDLIBS libflac/src/libFLAC/.libs/libFLAC.a"
-         CXXFLAGS="$CXXFLAGS -I../lib-src/libflac/include"
-         export CPPFLAGS="$CPPFLAGS -I`pwd`/lib-src/libflac/include"
-         if test ! -f "lib-src/libflac/Makefile"; then
-            echo "--- Configuring libflac";
-            AC_CONFIG_SUBDIRS([[lib-src/libflac]])
-         fi
-      else
-         LIBS="$LIBS -lFLAC"
-      fi
-   fi
+        AC_CHECK_HEADERS(FLAC/all.h)
+        if test x$ac_cv_header_FLAC_all_h = xyes ;
+	then
+        	LIBS="$LIBS -lFLAC"
+        fi
 
 
    if test ! -f "lib-src/libsndfile/Makefile"; then
@@ -807,6 +799,8 @@ case "$host_os" in
 		echo "Enabling prebinding"
 		LIBS="$LIBS -prebind"
 
+		CXXFLAGS="$CXXFLAGS -I${NEXT_ROOT}/Developer/Headers/FlatCarbon"
+
 		;;
 	*)
       dnl For all other Unix systems, we want to check for lrint/lrintf
@@ -821,18 +815,28 @@ if [[ "$use_precomp" = "yes" ]] ; then
    PRECOMP_CFLAGS="-include AudacityHeaders.h"
 fi
 
+AC_CHECK_HEADER(dlfcn.h, have_dlopen="yes", have_dlopen="no")
+if [[ "$MACOSX_DEPLOYMENT_TARGET" = "10.2" ]] ; then
+  have_dlopen="no"
+fi
+
 dnl Special configuration for LADSPA on Mac OS X
 if [[ "$use_ladspa" = "yes" ]] ; then
    case "$host_os" in
       darwin* | rhapsody*)
 
-      EXTRAOBJS="$EXTRAOBJS ../lib-src/dlcompat/libdl.a"
-      BUILDLIBS="$BUILDLIBS dlcompat/libdl.a"
-      CXXFLAGS="$CXXFLAGS -I../lib-src/dlcompat"
-      if test ! -f "lib-src/dlcompat/Makefile"; then
-         echo "--- Configuring dlcompat";
-         AC_CONFIG_SUBDIRS([[lib-src/dlcompat]])
-      fi		
+      if [[ "$have_dlopen" = "yes" ]] ; then
+        echo "--- Already have dlopen, don't need dlcompat"
+      else
+        echo "Using dlcompat"
+        EXTRAOBJS="$EXTRAOBJS ../lib-src/dlcompat/libdl.a"
+        BUILDLIBS="$BUILDLIBS dlcompat/libdl.a"
+        CXXFLAGS="$CXXFLAGS -I../lib-src/dlcompat"
+        if test ! -f "lib-src/dlcompat/Makefile"; then
+           echo "--- Configuring dlcompat";
+           AC_CONFIG_SUBDIRS([[lib-src/dlcompat]])
+        fi		
+      fi
 
       ;;
    *)
