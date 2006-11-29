@@ -61,6 +61,7 @@ class MP3Exporter {
   protected:
    wxString mLibPath;
    wxDynamicLibrary lame_enc_lib;
+   void *lame_enc_dllib;
 };
 
 #define MP3CONFIG_BITRATE 0x00000001
