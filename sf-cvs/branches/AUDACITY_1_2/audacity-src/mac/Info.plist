@@ -189,11 +189,11 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.2.6</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Audacity version 1.2.6</string>
+	<string>Audacity version 1.2.6 - UmixIt version</string>
 	<key>CFBundleLongVersionString</key>
-	<string>Version 1.2.6</string>
+	<string>Version 1.2.6 - UmixIt version</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Audacity version 1.2.6</string>
+	<string>Audacity version 1.2.6 - UmixIt version</string>
 	<key>LSRequiresCarbon</key>
         <true/>
 	<key>CSResourcesFileMapped</key>
