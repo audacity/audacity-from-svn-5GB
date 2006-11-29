@@ -43,6 +43,7 @@ OBJS = \
 	$(OBJDIR)/AudacityApp.o \
 	$(OBJDIR)/AudioIO.o \
 	$(OBJDIR)/Benchmark.o \
+	$(OBJDIR)/Branding.o \
 	$(OBJDIR)/ControlToolBar.o \
 	$(OBJDIR)/DirManager.o \
 	$(OBJDIR)/Envelope.o \
