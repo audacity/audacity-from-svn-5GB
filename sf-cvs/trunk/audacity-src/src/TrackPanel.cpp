@@ -1194,7 +1194,7 @@ bool TrackPanel::IsUnsafe()
 bool TrackPanel::SetCursorByActivity( )
 {
    bool unsafe = IsUnsafe();
-   
+
    switch( mMouseCapture )
    {
    case IsSelecting:
@@ -1220,11 +1220,13 @@ bool TrackPanel::SetCursorByActivity( )
 }
 
 /// When in the label, we can either vertical zoom or re-order tracks.
-void TrackPanel::SetCursorAndTipWhenInLabel( Track * t, 
+/// Dont't change cursor/tip to zoom if display is not waveform (either linear of dB)
+void TrackPanel::SetCursorAndTipWhenInLabel( Track * t,
          wxMouseEvent &event, const wxChar ** ppTip )
 {
    if (event.m_x >= GetVRulerOffset() &&
-      t->GetKind() == Track::Wave) {
+      t->GetKind() == Track::Wave &&
+      ((WaveTrack *) t)->GetDisplay() <= WaveTrack::WaveformDBDisplay) {
       *ppTip = _("Click to vertically zoom in, Shift-click to zoom out, Drag to create a particular zoom region.");
       SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
    }
@@ -2353,8 +2355,14 @@ void TrackPanel::HandleVZoomClick( wxMouseEvent & event )
                               &mCapturedRect, &mCapturedNum);
    if (!mCapturedTrack)
       return;
-   if (mCapturedTrack->GetKind() != Track::Wave)
+
+   // don't do anything if track is not wave or if it is not
+   // WaveformDisplay or WaveformDBDisplay
+   if (mCapturedTrack->GetKind() != Track::Wave
+      || ((WaveTrack *) mCapturedTrack)->GetDisplay() > WaveTrack::WaveformDBDisplay) {
+
       return;
+   }
 
    mMouseCapture = IsVZooming;
    mZoomStart = event.m_y;
@@ -2381,8 +2389,14 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       return;
 
    mMouseCapture = IsUncaptured;
-   if (mCapturedTrack->GetKind() != Track::Wave)
+
+   // don't do anything if track is not wave or if it is not
+   // WaveformDisplay or WaveformDBDisplay
+   if (mCapturedTrack->GetKind() != Track::Wave
+      || ((WaveTrack *) mCapturedTrack)->GetDisplay() > WaveTrack::WaveformDBDisplay) {
+
       return;
+   }
 
    WaveTrack *track = (WaveTrack *)mCapturedTrack;
    WaveTrack *partner = (WaveTrack *)mTracks->GetLink(track);
@@ -2541,7 +2555,7 @@ void TrackPanel::HandleSampleEditingClick( wxMouseEvent & event )
    //convert t0 to samples
    mDrawingStartSample = (sampleCount) (double)(t0 * rate + 0.5 );
    
-   //Now, figure out what the value of that sample is.      
+   //Now, figure out what the value of that sample is.
    //First, get the sequence of samples so you can mess with it
    //Sequence *seq = ((WaveTrack *)mDrawingTrack)->GetSequence();
 
