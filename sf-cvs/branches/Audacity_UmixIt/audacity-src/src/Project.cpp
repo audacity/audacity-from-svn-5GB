@@ -62,6 +62,7 @@
 #include "AColor.h"
 #include "AStatus.h"
 #include "AudioIO.h"
+#include "Branding.h"
 #include "ControlToolBar.h"
 #include "EditToolBar.h"
 #include "MeterToolBar.h"
@@ -172,7 +173,7 @@ bool ImportXMLTagHandler::HandleXMLTag(const char *tag, const char **attrs)
       if (!wxFile::Exists(FILENAME(strPathname))) return false;
    }
    mProject->Import(strPathname);
-   return true; //vvv UmixIt   result from Import?
+   return true; //v result from Import?
 }
 
 
@@ -576,6 +577,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    // Create tags object
    mTags = new Tags();
 
+   mBranding = NULL;
+
    mTrackFactory = new TrackFactory(mDirManager);
    mImporter = new Importer;
    mImportingRaw = false;
@@ -639,6 +642,9 @@ AudacityProject::~AudacityProject()
 
    delete mTags;
    mTags = NULL;
+
+   delete mBranding;
+   mBranding = NULL;
 
    mTracks->Clear(true);
    delete mTracks;
@@ -2029,6 +2035,11 @@ XMLTagHandler *AudacityProject::HandleXMLChild(const char *tag)
       return mTags;
    }
 
+   if (!strcmp(tag, "branding")) {
+      mBranding = new Branding();
+      return mBranding;
+   }
+
    if (!strcmp(tag, "wavetrack")) {
       WaveTrack *newTrack = mTrackFactory->NewWaveTrack();
       mTracks->Add(newTrack);
@@ -2087,6 +2098,8 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
    fprintf(fp, ">\n");
 
    mTags->WriteXML(depth+1, fp);
+
+   if (mBranding) mBranding->WriteXML(depth+1, fp);
 
    Track *t;
    TrackListIterator iter(mTracks);

@@ -17,7 +17,8 @@
 
 #include "Lyrics.h"
 #include "Internat.h"
-#include "Project.h" // for GetActiveProject in OnKeyEvent
+#include "Project.h" // for GetActiveProject
+#include "Branding.h"
 
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(SyllableArray);
@@ -271,17 +272,40 @@ void Lyrics::Update(double t, bool bForce /* = false */)
    else {
       // branding
       AudacityProject* pProject = GetActiveProject();
-      wxString strLogoFilename = "UmixIt.jpg"; //vvv UmixIt: Get name from project file.
-      wxString strLogoPathname = 
-         GetActiveProject()->GetDirManager()->GetProjectDataDir() + "\\" + strLogoFilename;
-      wxString strURL = "http://www.umixit.com"; //vvv UmixIt: Get url from project file.
+      Branding* pBranding = pProject->GetBranding();
       wxString strBranding = "";
-      if (::wxFileExists(FILENAME(strLogoPathname))) 
-         strBranding = 
-            "<center><a href=\"" + FILENAME(strURL) + 
-               "\" target=\"_blank\"><img src=\"" + 
-                  FILENAME(strLogoPathname) + "\" alt=\"" + strLogoFilename + "\"><br>" + 
-               strURL + "</a><hr></center>\n";
+      if (pBranding) {
+         wxString strBrandName = pBranding->GetBrandName();
+         wxString strURL = pBranding->GetBrandURL();
+
+         wxString strIMGtag = "";
+         wxString strLogoFilename = pBranding->GetBrandLogoFilename();
+         if (!strLogoFilename.IsEmpty()){
+            wxString strLogoPathname = 
+               pProject->GetDirManager()->GetProjectDataDir() + "\\" + strLogoFilename;
+            if (::wxFileExists(FILENAME(strLogoPathname))) 
+               strIMGtag = "<img src=\"" + FILENAME(strLogoPathname) + "\" alt=\"" + strLogoFilename + "\"><br>";
+         }
+
+         if (strURL.IsEmpty()) {
+            if (strIMGtag.IsEmpty()) {
+               if (!strBrandName.IsEmpty()) 
+                  strBranding = "<center><h1>" + strBrandName + "</h1><hr></center>\n";
+            } else {
+               strBranding = "<center>" + strIMGtag + "<hr></center>\n";
+            }
+         } else {
+            if (strIMGtag.IsEmpty()) {
+               if (!strBrandName.IsEmpty()) 
+                  strBranding = 
+                     "<center><h1>" + strBrandName + 
+                     "</h1><br><a href=\"" + FILENAME(strURL) + "\">" + strURL + "</a><hr></center>\n";
+            } else {
+               strBranding = 
+                  "<center><a href=\"" + FILENAME(strURL) + "\">" + strIMGtag + strURL + "</a><hr></center>\n";
+            }
+         }
+      }
 
       // Size the whole htmlText.
       // Map nFontRelativeSize into -2 to +4, in increments of DEFAULT_FONT_POINTSIZE/2
