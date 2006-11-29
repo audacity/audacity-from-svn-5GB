@@ -1178,8 +1178,10 @@ void TrackPanel::OnTimer()
    // Update lyrics display
    if (p->GetAudioIOToken()>0) {
       LyricsWindow* lyricsWindow = p->GetLyricsWindow();
-      Lyrics *lyrics = lyricsWindow->GetLyricsPanel();
-      lyrics->Update(gAudioIO->GetStreamTime());
+      if (lyricsWindow) {
+         Lyrics *lyrics = lyricsWindow->GetLyricsPanel();
+         lyrics->Update(gAudioIO->GetStreamTime());
+      }
    }
 
    // Each time the loop, check to see if we were playing or
