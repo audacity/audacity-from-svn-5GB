@@ -166,11 +166,14 @@ bool AudacityDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& 
 
 bool ImportXMLTagHandler::HandleXMLTag(const char *tag, const char **attrs) 
 {
-   if (strcmp(tag, "import") || strcmp(*attrs++, "filename")) return false;
+   if (strcmp(tag, "import") ||
+       attrs==NULL || (*attrs)==NULL ||
+       strcmp(*attrs++, "filename")) return false;
    wxString strPathname = *attrs;
    if (!wxFile::Exists(FILENAME(strPathname))) {
-      strPathname = mProject->GetDirManager()->GetProjectDataDir() + "\\" + strPathname;
-      if (!wxFile::Exists(FILENAME(strPathname))) return false;
+      strPathname = mProject->GetDirManager()->GetProjectDataDir() + wxFILE_SEP_PATH + strPathname;
+      if (!wxFile::Exists(FILENAME(strPathname)))
+        return false;
    }
    mProject->Import(strPathname);
    return true; //v result from Import?

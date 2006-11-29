@@ -50,6 +50,11 @@ Lyrics::Lyrics(wxWindow* parent, wxWindowID id,
    Clear();
    Finish(0.0);
    mT = 0.0;
+
+  #ifdef __WXMAC__
+   wxSizeEvent dummyEvent;
+   OnSize(dummyEvent);
+  #endif
 }
 
 Lyrics::~Lyrics()
@@ -142,7 +147,30 @@ void Lyrics::Measure(wxDC *dc)
       else {
          dc->GetTextExtent(mSyllables[i].textWithSpace, &width, &height);
       }
-      mSyllables[i].width = width + 30;
+
+      // Add some space between words; the space is normally small but
+      // when there's a long pause relative to the previous word, insert
+      // extra space.
+      int extraSpacing;
+      if (i >= 2 && i < mSyllables.GetCount()-2) {
+         double deltaThis = mSyllables[i+1].t - mSyllables[i].t;
+         double deltaPrev = mSyllables[i].t - mSyllables[i-1].t;
+
+         double ratio;
+         if (deltaPrev > 0.0)
+            ratio = deltaThis / deltaPrev;
+         else
+            ratio = deltaThis;
+
+         if (ratio > 2.0)
+            extraSpacing = 15 + (int)(15.0 * ratio);
+         else
+            extraSpacing = 15;
+      }
+      else
+         extraSpacing = 20;
+      
+      mSyllables[i].width = width + extraSpacing;
       mSyllables[i].leftX = x;
       mSyllables[i].x = x + width/2;
       x += mSyllables[i].width;
@@ -243,6 +271,12 @@ void Lyrics::GetKaraokePosition(double t,
 
    t = (t - t1) / (t2 - t1);
    double xx = a*t*t*t + b*t*t + c*t + d;
+
+   // Unfortunately sometimes our cubic goes backwards.  This is a quick
+   // hack to stop that from happening.
+   if (xx < x1)
+      xx = x1;
+
    *outX = (int)xx;
 
    // The y position is a simple cosine curve; the max height is a
@@ -282,7 +316,7 @@ void Lyrics::Update(double t, bool bForce /* = false */)
          wxString strLogoFilename = pBranding->GetBrandLogoFilename();
          if (!strLogoFilename.IsEmpty()){
             wxString strLogoPathname = 
-               pProject->GetDirManager()->GetProjectDataDir() + "\\" + strLogoFilename;
+               pProject->GetDirManager()->GetProjectDataDir() + wxFILE_SEP_PATH + strLogoFilename;
             if (::wxFileExists(FILENAME(strLogoPathname))) 
                strIMGtag = "<img src=\"" + FILENAME(strLogoPathname) + "\" alt=\"" + strLogoFilename + "\"><br>";
          }
@@ -351,7 +385,13 @@ void Lyrics::Update(double t, bool bForce /* = false */)
          "</body>\n</html>";
    }
 
+   //int x, y;
+   //mHtml->GetViewStart(&x, &y);
+
    mHtml->SetPage(htmlText);
+
+   //mHtml->Scroll(x, y);
+
    mHtml->Refresh(false);
 
    mCurrentSyllable = i;   
@@ -425,8 +465,13 @@ void Lyrics::HandlePaint(wxDC &dc)
          dc.SetTextForeground(*wxBLACK);
          changedColor = true;
       }
-         
-      dc.DrawText(mSyllables[i].text,
+
+      wxString text = mSyllables[i].text;
+      if (text.Length() > 0 && text.Right(1)=="_") {
+         text = text.Left(text.Length() - 1);
+      }
+
+      dc.DrawText(text,
                   mSyllables[i].leftX + ctr - x,
                   yTextTop);
    }
