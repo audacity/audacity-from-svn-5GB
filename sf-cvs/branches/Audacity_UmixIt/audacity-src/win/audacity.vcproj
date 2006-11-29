@@ -309,6 +309,12 @@
 				RelativePath="..\src\BlockFile.h">
 			</File>
 			<File
+				RelativePath="..\src\Branding.cpp">
+			</File>
+			<File
+				RelativePath="..\src\Branding.h">
+			</File>
+			<File
 				RelativePath="..\src\ControlToolBar.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
