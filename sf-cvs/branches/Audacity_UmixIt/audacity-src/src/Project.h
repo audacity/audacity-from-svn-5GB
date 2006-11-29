@@ -48,6 +48,7 @@ class wxScrollEvent;
 class wxScrollBar;
 class wxProgressDialog;
 
+class Branding;
 class Toolbar;
 class TrackList;
 class Tags;
@@ -99,7 +100,7 @@ class ImportXMLTagHandler : public XMLTagHandler
 
    virtual bool HandleXMLTag(const char *tag, const char **attrs);
    virtual XMLTagHandler *HandleXMLChild(const char *tag) { return NULL; };
-   virtual void WriteXML(int depth, FILE *fp) {}; //vvv
+   virtual void WriteXML(int depth, FILE *fp) {}; //v
  private: 
    AudacityProject* mProject;
 };
@@ -132,6 +133,7 @@ class AudacityProject:public wxFrame,
    DirManager *GetDirManager();
    TrackFactory *GetTrackFactory();
    Tags *GetTags();
+   Branding* GetBranding() { return mBranding; };
    int GetAudioIOToken();
    void SetAudioIOToken(int token);
    LyricsWindow* GetLyricsWindow() { return mLyricsWindow; };
@@ -286,6 +288,8 @@ class AudacityProject:public wxFrame,
    // Tags (artist name, song properties, MP3 ID3 info, etc.)
 
    Tags *mTags;
+
+   Branding* mBranding; // branding (brand name, website URL, logo, color scheme)
 
    // List of tracks and display info
 
