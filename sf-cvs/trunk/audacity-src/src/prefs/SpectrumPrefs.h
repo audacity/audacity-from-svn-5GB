@@ -8,6 +8,17 @@
   James Crook
 
 **********************************************************************/
+/*
+  Salvo Ventura
+  November 2006
+
+  Added selection box for windowType and checkBox for AutoMaxFrequency
+  to scale the y axis in spectrum view
+
+  All params are saved in config file.
+  Disable the MaxFreq control when AutoMaxFrequency is TRUE (thx to James)
+*/
+
 
 #ifndef __AUDACITY_SPECTRUM_PREFS__
 #define __AUDACITY_SPECTRUM_PREFS__
@@ -20,7 +31,7 @@
 class wxWindow;
 class ShuttleGui;
 
-class SpectrumPrefs:public PrefsPanel 
+class SpectrumPrefs:public PrefsPanel
 {
 public:
    SpectrumPrefs(wxWindow * parent);
@@ -29,8 +40,14 @@ public:
 
 private:
    void Populate();
+   void SpectrumPrefs::OnCheckAutoMaxFrequency(wxCommandEvent &event);
    void PopulateOrExchange( ShuttleGui & S );
    wxString maxFreqStr;
+   int windowType;
+   bool autoMaxFrequency;
+
+public:
+   DECLARE_EVENT_TABLE();
 };
 
 #endif

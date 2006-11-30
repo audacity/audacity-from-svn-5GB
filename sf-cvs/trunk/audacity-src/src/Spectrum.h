@@ -23,7 +23,7 @@
 
 bool ComputeSpectrum(float * data, int width, int height,
                      int maxFrequency, int windowSize,
-                     double rate, float *out, bool autocorrelation);
+                     double rate, float *out, bool autocorrelation, int windowFunc=3);
 
 #endif
 
