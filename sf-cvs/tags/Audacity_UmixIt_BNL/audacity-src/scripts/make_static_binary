@@ -1,0 +1,76 @@
+#!/usr/bin/env perl
+
+print "make_static_binary -- modifies the Makefile so that Audacity\n";
+print "statically links to wx_gtk-2.4, then builds and copies all of\n";
+print "the files for an Audacity binary release into a new directory.\n";
+print "\n";
+
+unless(-f "src/Audacity.h") {
+	print "Must be run from Audacity directory\n";
+	exit;
+}
+
+unless(-f "src/Makefile") {
+	print "Audacity must already be configured\n";
+	exit;
+}
+
+# find version number
+open(HEADER, "src/Audacity.h");
+@lines = <HEADER>;
+$lines = join " ", @lines;
+$lines =~ /AUDACITY_VERSION_STRING "([0-9\-.a-z]*)"/;
+$version = $1;
+print "version set to $version...\n";
+close(HEADER);
+
+`grep lgtk src/Makefile`;
+if ($? != 0) {
+	print "Patching src/Makefile to build a shared library\n";
+	print "(Saving old Makefile in src/Makefile.shared)\n";
+	`rm src/Makefile.shared`;
+	`mv src/Makefile src/Makefile.shared`;
+	`sed 's|\-lwx_gtk\-2.4|/usr/local/lib/libwx_gtk-2.4.a -L/usr/X11R6/lib -lgtk -lgdk -lgmodule -lgthread -lglib -lXi -lXext -lX11 -lpng -ljpeg -ltiff|' src/Makefile.shared > src/Makefile`;
+}
+else {
+	print "Makefile is already patched.\n";
+}
+
+print "Building audacity...\n";
+`make`;
+
+$dir = "audacity-linux-i386-$version";
+print "Creating directory: ../$dir\n";
+`mkdir ../$dir`;
+
+print "Creating directory structure\n";
+
+`mkdir ../$dir/plug-ins`;
+`mkdir ../$dir/nyquist`;
+`mkdir ../$dir/locale`;
+
+print "Copying files\n";
+`cp audacity ../$dir`;
+`cp README.txt LICENSE.txt ../$dir`;
+`cp help/audacity.1.gz audacity-1.2-help.htb ../$dir`;
+
+`cp plug-ins/clicktrack.ny ../$dir/plug-ins`;
+`cp plug-ins/highpass.ny ../$dir/plug-ins`;
+`cp plug-ins/lowpass.ny ../$dir/plug-ins`;
+`cp plug-ins/pluck.ny ../$dir/plug-ins`;
+`cp plug-ins/tremolo.ny ../$dir/plug-ins`;
+
+`cp nyquist/*.lsp ../$dir/nyquist`;
+
+for $lang (split(" ", "bg ca cs da de es it mk nl pt ru sv")) {
+	`cp -R locale/$lang ../$dir/locale`;
+}
+
+`cp scripts/static-Makefile ../$dir/Makefile`;
+`cp scripts/static-INSTALL.txt ../$dir/INSTALL.txt`;
+
+print "Stripping audacity\n";
+chdir "../$dir";
+`strip ./audacity`;
+
+print "done.\n";

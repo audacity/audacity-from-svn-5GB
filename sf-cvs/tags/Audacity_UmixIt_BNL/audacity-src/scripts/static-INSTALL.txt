@@ -1,0 +1,19 @@
+This is a binary package of Audacity for i386 Linux.  It should run
+on most recent Linux systems running on an Intel x86-compatible
+processor; all it requires is glibc 2.2 and gtk+ 1.2.  If it does
+not run on your system, please notify the Audacity developers
+<audacity-help@lists.sourceforge.net>, and in the meantime you will
+have to compile Audacity from source.
+
+You can run Audacity directly out of this directory by typing:
+
+  ./audacity
+
+To install Audacity in /usr/local, just run "make install" as a
+privileged user, for example:
+
+  sudo make install
+
+To install to a different directory, edit the PREFIX line near
+the top of the Makefile first.
+
