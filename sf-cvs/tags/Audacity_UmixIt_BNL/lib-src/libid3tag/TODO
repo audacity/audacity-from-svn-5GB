@@ -1,0 +1,12 @@
+
+ libid3tag - ID3 tag manipulation library
+ Copyright (C) 2000-2003 Underbit Technologies, Inc.
+
+ $Id: TODO,v 1.1.2.1 2003-09-29 17:03:19 dmazzoni Exp $
+
+===============================================================================
+
+libid3tag:
+  - finish file API
+  - fix API headers
+

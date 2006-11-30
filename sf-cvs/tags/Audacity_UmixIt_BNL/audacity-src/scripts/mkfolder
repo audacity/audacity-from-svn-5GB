@@ -1,0 +1,47 @@
+#!/bin/sh
+#
+# Prepare a disk image
+#
+
+# Setup
+VERSION="1.2.6"
+VOL="Audacity $VERSION UmixIt"
+DMG="audacity-macosx-$VERSION"
+
+# Preclean
+rm -rf "$DMG" "$VOL"
+
+# Create structure
+mkdir "$DMG"
+mkdir "$DMG/Languages"
+mkdir "$DMG/nyquist"
+mkdir "$DMG/plug-ins"
+
+# Copy Audacity and clean it
+cp -pR Audacity.app "$DMG"
+strip "$DMG/Audacity.app/Contents/MacOS/audacity"
+
+# Copy Languages
+for name in locale/*.po
+do
+   src=`echo $name | sed -e 's/.po//'`
+   dst="$DMG/Languages/`basename $src`"
+   cp -pR $src $dst
+done
+
+# Copy Nyquist
+cp -pR nyquist "$DMG"
+rm -rf "$DMG/nyquist/"*CVS*
+
+# Copy Plug-ins
+cp -pR plug-ins "$DMG"
+rm -rf "$DMG/plug-ins/"*CVS*
+
+# Install misc files
+cp -pR README.txt LICENSE.txt "$DMG"
+
+mv "$DMG" "$VOL"
+
+open "$VOL"
+
+exit
