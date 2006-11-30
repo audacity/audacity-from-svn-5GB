@@ -19,7 +19,7 @@
 #include <wx/html/htmlwin.h>
 
 #define LYRICS_DEFAULT_WIDTH 440
-#define LYRICS_DEFAULT_HEIGHT 330
+#define LYRICS_DEFAULT_HEIGHT 280
 
 struct Syllable {
    double t;
@@ -81,6 +81,7 @@ private:
 
    double         mT;
 
+   int            mBrandingHeight; 
    int            mKaraokeHeight;
 
    int            mCurrentSyllable;
@@ -89,7 +90,7 @@ private:
 
    int            mTextHeight;
 
-   LinkingHtmlWindow   *mHtml;
+   LinkingHtmlWindow* mBrandingPanel;
 
    bool           mMeasurementsDone;
 
