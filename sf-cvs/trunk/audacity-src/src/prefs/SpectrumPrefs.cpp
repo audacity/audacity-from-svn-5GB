@@ -23,6 +23,16 @@
 #include "../Prefs.h"
 #include "../ShuttleGui.h"
 #include "SpectrumPrefs.h"
+#include "../FFT.h"
+
+enum {
+   ID_AUTOMAXFREQUENCY = 8000,
+   ID_MAXFREQUENCY
+};
+
+BEGIN_EVENT_TABLE(SpectrumPrefs, wxPanel)
+   EVT_CHECKBOX(ID_AUTOMAXFREQUENCY, SpectrumPrefs::OnCheckAutoMaxFrequency)
+END_EVENT_TABLE()
 
 SpectrumPrefs::SpectrumPrefs(wxWindow * parent):
    PrefsPanel(parent)
@@ -32,15 +42,24 @@ SpectrumPrefs::SpectrumPrefs(wxWindow * parent):
    Populate( );
 }
 
+void SpectrumPrefs::OnCheckAutoMaxFrequency(wxCommandEvent &event) {
+   FindWindow( ID_MAXFREQUENCY )->Enable( !event.IsChecked() );
+}
+
 void SpectrumPrefs::Populate( )
 {
+   int maxFreq;
+
    // First any pre-processing for constructing the GUI.
    // Unusual handling of maxFreqStr because it is a validated input.
-   int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000L);
+   gPrefs->Read(wxT("/Spectrum/MaxFreq"), &maxFreq, 8000L);
+   gPrefs->Read(wxT("/Spectrum/WindowType"), &windowType, 3L);
+   gPrefs->Read(wxT("/Spectrum/AutoMaxFrequency"), &autoMaxFrequency, false);
+
    maxFreqStr.Printf(wxT("%d"), maxFreq);
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
-   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // Use 'eIsCreatingFromPrefs' so that the GUI is
    // initialised with values from gPrefs.
    ShuttleGui S(this, eIsCreatingFromPrefs);
    PopulateOrExchange(S);
@@ -49,6 +68,11 @@ void SpectrumPrefs::Populate( )
 
 void SpectrumPrefs::PopulateOrExchange( ShuttleGui & S )
 {
+   wxArrayString windowTypeList;
+
+   for(int i=0; i<NumWindowFuncs(); i++)
+      windowTypeList.Add(WindowFuncName(i));
+
    S.SetBorder( 2 );
    S.StartHorizontalLay(wxEXPAND, 0 );
    S.StartStatic( _("FFT Size"), 0 );
@@ -65,24 +89,37 @@ void SpectrumPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieRadioButton( wxT("2048"),                2048);
       S.TieRadioButton( _("4096 - most narrowband"),4096);
       S.EndRadioButtonGroup();
-   }                              
+
+      // add choice for windowtype
+      S.StartMultiColumn(2, wxCENTER);
+      {
+         S.TieChoice( _("Window type:"), windowType,  &windowTypeList);
+         S.SetSizeHints(-1,-1);
+      }
+      S.EndMultiColumn();
+   }
    S.EndStatic();
    S.StartStatic( _("Display"),1 );
    {
       // JC: For layout of mixtures of controls I prefer checkboxes on the right,
       // with everything in two columns over what we have here.
-      S.TieCheckBox( _("&Grayscale"),
-         wxT("/Spectrum/Grayscale"), false);
+      S.TieCheckBox( _("&Grayscale"), wxT("/Spectrum/Grayscale"), false);
       S.StartTwoColumn(); // 2 cols because we have a control with a separate label.
-      S.TieTextBox( 
+      S.Id(ID_MAXFREQUENCY).TieTextBox(
          _("Maximum Frequency (Hz):"), // prompt
          maxFreqStr, // String to exchange with
          12 // max number of characters (used to size the control).
          );
       S.EndTwoColumn();
+      // auto max frequency: will always set to Fs/2: if automax is true,
+      // then the other control should be grayed out
+      S.Id(ID_AUTOMAXFREQUENCY).TieCheckBox( _("&Auto max frequency (Fs/2)"), wxT("/Spectrum/AutoMaxFrequency"), false);
    }
    S.EndStatic();
    S.EndHorizontalLay();
+
+   gPrefs->Read(wxT("/Spectrum/AutoMaxFrequency"), &autoMaxFrequency, false);
+   FindWindow( ID_MAXFREQUENCY )->Enable(!autoMaxFrequency);
 }
 
 
@@ -94,8 +131,8 @@ bool SpectrumPrefs::Apply()
    // maxFreqStr is an input field that has validation.
    // We've handled it slightly differently to all the
    // other fields, which just go straight through to gPrefs.
-   // Instead ShuttleGui has been told to only do a one step 
-   // exchange with it, not including gPrefs..  so we now 
+   // Instead ShuttleGui has been told to only do a one step
+   // exchange with it, not including gPrefs..  so we now
    // need to validate it and possibly write it back to gPrefs.
 
    //---- Validation of maxFreqStr
@@ -111,11 +148,12 @@ bool SpectrumPrefs::Apply()
    //---- End of validation of maxFreqStr.
 
    gPrefs->Write(wxT("/Spectrum/MaxFreq"), maxFreq);
+   gPrefs->Write(wxT("/Spectrum/WindowType"), windowType);
+   gPrefs->Write(wxT("/Spectrum/AutoMaxFrequency"), autoMaxFrequency);
 
    // TODO: Force all projects to repaint themselves
    return true;
 }
-
 
 SpectrumPrefs::~SpectrumPrefs()
 {

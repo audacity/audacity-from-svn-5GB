@@ -20,11 +20,10 @@
 *//****************************************************************//**
 
 \class SpecCache
-\brief Cache used with WaveClip to cache spectrum information (for 
+\brief Cache used with WaveClip to cache spectrum information (for
 drawing).
 
 *//*******************************************************************/
-
 
 #include <math.h>
 #include <wx/log.h>
@@ -75,6 +74,7 @@ class SpecCache {
 public:
    SpecCache(int cacheLen, int viewHeight, bool autocorrelation)
    {
+      windowTypeOld = -1;
       maxFreqPrefOld = -1;
       windowSizeOld = -1;
       dirty = -1;
@@ -93,6 +93,7 @@ public:
       delete[] where;
    }
 
+   int          windowTypeOld;
    int          maxFreqPrefOld;
    int          windowSizeOld;
    int          dirty;
@@ -380,10 +381,20 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
                                double t0, double pixelsPerSecond,
                                bool autocorrelation)
 {
+   int windowType;
+   bool autoMaxFrequency;
+
    int maxFreqPref = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000);
    int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
-   
+   gPrefs->Read(wxT("/Spectrum/AutoMaxFrequency"), &autoMaxFrequency, false);
+   gPrefs->Read(wxT("/Spectrum/WindowType"), &windowType, 3);
+   if (autoMaxFrequency) {
+      // automatically set frequency to half of sampling rate
+      maxFreqPref=int(mRate/2);
+   }
+
    if (mSpecCache &&
+       mSpecCache->windowTypeOld == windowType &&
        mSpecCache->maxFreqPrefOld == maxFreqPref &&
        mSpecCache->windowSizeOld == windowSize &&
        mSpecCache->dirty == mDirty &&
@@ -419,6 +430,7 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
    // with the current one, re-use as much of the cache as
    // possible
    if (oldCache->dirty == mDirty &&
+       oldCache->windowTypeOld == windowType &&
        oldCache->maxFreqPrefOld == maxFreqPref &&
        oldCache->windowSizeOld == windowSize &&
        oldCache->pps == pixelsPerSecond &&
@@ -448,6 +460,7 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
    }
 
    float *buffer = new float[windowSize];
+   mSpecCache->windowTypeOld = windowType;
    mSpecCache->maxFreqPrefOld = maxFreqPref;
    mSpecCache->windowSizeOld = windowSize;
 
@@ -463,18 +476,18 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
             for (i = 0; i < (sampleCount)height; i++)
                mSpecCache->freq[height * x + i] = 0;
 
-         } else {
-         
+         }
+         else
+         {
             float *adj = buffer;
             start -= windowSize >> 1;
-            
+
             if (start < 0) {
                for (i = start; i < 0; i++)
                   *adj++ = 0;
                len += start;
                start = 0;
             }
-
             if (start + len > mSequence->GetNumSamples()) {
                len = mSequence->GetNumSamples() - start;
                for (i = len; i < (sampleCount)windowSize; i++)
@@ -487,7 +500,7 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
             ComputeSpectrum(buffer, windowSize, height,
                             maxFreqPref, windowSize,
                             mRate, &mSpecCache->freq[height * x],
-                            autocorrelation);
+                            autocorrelation, windowType);
          }
       }
 
@@ -1060,7 +1073,7 @@ bool WaveClip::Resample(int rate, bool progress)
          error = true;
          break;
       }
-      
+
       if (!newSequence->Append((samplePtr)outBuffer, floatSample,
                                outGenerated))
       {

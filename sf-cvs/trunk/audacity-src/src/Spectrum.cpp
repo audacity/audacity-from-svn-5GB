@@ -13,7 +13,6 @@
 
 *//*******************************************************************/
 
-
 #include <math.h>
 
 #include "Spectrum.h"
@@ -37,10 +36,8 @@ static inline float todB_a(const float *x){
 bool ComputeSpectrum(float * data, int width, int height,
                      int maxFreq, int windowSize,
                      double rate, float *grayscaleOut,
-                     bool autocorrelation)
+                     bool autocorrelation, int windowFunc)
 {
-   int windowFunc = 3;
-
    if (width < windowSize)
       return false;
 
@@ -83,15 +80,13 @@ bool ComputeSpectrum(float * data, int width, int height,
          // Take FFT
          FFT(windowSize, false, in, NULL, out, out2);
 
-         // Take real part of result
-         for (i = 0; i < half; i++)
-            processed[i] += out[i];
-      } else {
+      }
+      else
          PowerSpectrum(windowSize, in, out);
 
-         for (i = 0; i < half; i++)
-            processed[i] += out[i];
-      }
+      // Take real part of result
+      for (i = 0; i < half; i++)
+        processed[i] += out[i];
 
       start += half;
       windows++;
@@ -105,32 +100,36 @@ bool ComputeSpectrum(float * data, int width, int height,
       maxSamples = half;
 
       // Peak Pruning as described by Tolonen and Karjalainen, 2000
-
-      // Clip at zero, copy to temp array
+      /*
+       Combine most of the calculations in a single for loop.
+       It should be safe, as indexes refer only to current and previous elements,
+       that have already been clipped, etc...
+      */
       for (i = 0; i < maxSamples; i++) {
-         if (processed[i] < 0.0)
+        // Clip at zero, copy to temp array
+        if (processed[i] < 0.0)
             processed[i] = float(0.0);
-         out[i] = processed[i];
+        out[i] = processed[i];
+        // Subtract a time-doubled signal (linearly interp.) from the original
+        // (clipped) signal
+        if ((i % 2) == 0)
+           processed[i] -= out[i / 2];
+        else
+           processed[i] -= ((out[i / 2] + out[i / 2 + 1]) / 2);
+
+        // Clip at zero again
+        if (processed[i] < 0.0)
+            processed[i] = float(0.0);
+
+        // Find new max: only for i>0: unused!?!
+        /*
+        if(i) {
+          if (processed[i] > max)
+             max = processed[i];
+        }
+        */
       }
 
-      // Subtract a time-doubled signal (linearly interp.) from the original
-      // (clipped) signal
-      for (i = 0; i < maxSamples; i++)
-         if ((i % 2) == 0)
-            processed[i] -= out[i / 2];
-         else
-            processed[i] -= ((out[i / 2] + out[i / 2 + 1]) / 2);
-
-      // Clip at zero again
-      for (i = 0; i < maxSamples; i++)
-         if (processed[i] < 0.0)
-            processed[i] = float(0.0);
-
-      // Find new max
-      float max = 0;
-      for (i = 1; i < maxSamples; i++)
-         if (processed[i] > max)
-            max = processed[i];
 
       // Reverse and scale
       for (i = 0; i < maxSamples; i++)
@@ -140,10 +139,12 @@ bool ComputeSpectrum(float * data, int width, int height,
    } else {
       // Convert to decibels
       // But do it safely; -Inf is nobody's friend
-
       for (i = 0; i < maxSamples; i++){
          float temp=(processed[i] / windowSize / windows);
-         processed[i] = todB_a(&temp);
+         if (temp > 0.0)
+            processed[i] = 10*log10(temp);
+         else
+            processed[i] = 0;
       }
    }
 
@@ -172,7 +173,7 @@ bool ComputeSpectrum(float * data, int width, int height,
       }
 
       if (!autocorrelation) {
-         // Last step converts dB to a 0.0-1.0 range     
+         // Last step converts dB to a 0.0-1.0 range
          value = (value + 80.0) / 80.0;
       }
 

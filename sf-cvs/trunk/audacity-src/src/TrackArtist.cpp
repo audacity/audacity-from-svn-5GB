@@ -240,6 +240,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 {
    if (t->GetKind() == Track::Wave
        && ((WaveTrack *) t)->GetDisplay() == 0) {
+      // Waveform
       wxRect bev = r;
       bev.Inflate(-1, -1);
       AColor::Bevel(*dc, true, bev);
@@ -250,6 +251,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       vruler->SetOrientation(wxVERTICAL);
       vruler->SetRange(max, min);
       vruler->SetFormat(Ruler::RealFormat);
+      vruler->SetUnits(wxT(""));
       vruler->SetLabelEdges(false);
       vruler->Draw(*dc);
    }
@@ -260,6 +262,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       wxRect bev = r;
       bev.Inflate(-1, -1);
       AColor::Bevel(*dc, true, bev);
+      vruler->SetUnits(wxT(""));
 
       float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
       float min, max;
@@ -310,34 +313,37 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
          return;
 
       double rate = ((WaveTrack *) t)->GetRate();
+      bool autoMaxFrequency;
       int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
-      int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000);
-      int maxSamples = int (maxFreq * windowSize / rate + 0.5);
-      if (maxSamples > windowSize / 2)
-         maxSamples = windowSize / 2;
-      maxFreq = int (maxSamples * rate / windowSize + 0.5);
-      int minFreq = int (rate / windowSize);
+      int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), rate/2.);
+      gPrefs->Read(wxT("/Spectrum/AutoMaxFrequency"), &autoMaxFrequency, false);
 
-      wxString num;
-      long textWidth, textHeight;
+      if (autoMaxFrequency) {
+         // automatically set frequency to half of sampling rate
+         maxFreq=int(rate/2);
+      }
+      int minFreq = 0.;
 
-      num.Printf(wxT("%dK"), int (maxFreq / 1000 + 0.5));
-      dc->GetTextExtent(num, &textWidth, &textHeight);
-      dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + 2);
-      num = wxT("Hz");
-      dc->GetTextExtent(num, &textWidth, &textHeight);
-      dc->DrawText(num, r.x + r.width - 3 - textWidth,
-                   r.y + textHeight + 2);
+      /*
+         draw the ruler
+         we will use Hz if maxFreq is < 2000, otherwise we represent kHz,
+         and append to the numbers a "k"
+      */
+      vruler->SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-1);
+      vruler->SetOrientation(wxVERTICAL);
+      vruler->SetFormat(Ruler::RealFormat);
+      vruler->SetLabelEdges(true);
+      // use kHz in scale, if appropriate
+      if (maxFreq>=2000) {
+         vruler->SetRange((maxFreq/1000.), (minFreq/1000.));
+         vruler->SetUnits(wxT("k"));
+      } else {
+         // use Hz
+         vruler->SetRange(int(maxFreq), int(minFreq));
+         vruler->SetUnits(wxT(""));
+      }
 
-      num.Printf(wxT("%d"), minFreq);
-      dc->GetTextExtent(num, &textWidth, &textHeight);
-      dc->DrawText(num, r.x + r.width - 3 - textWidth,
-                   r.y + r.height - 2 - 2 * textHeight);
-
-      num = wxT("Hz");
-      dc->GetTextExtent(num, &textWidth, &textHeight);
-      dc->DrawText(num, r.x + r.width - 3 - textWidth,
-                   r.y + r.height - 2 - textHeight);
+      vruler->Draw(*dc);
    }
 
    if (t->GetKind() == Track::Wave
@@ -651,7 +657,7 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
          else if (!sel && usingSelPen)
             dc.SetPen(unselectedPen);
          usingSelPen = sel;
-         
+
          if (maxbot[x] != mintop[x]) {
             dc.DrawLine(r.x + x, r.y + maxtop[x],
                         r.x + x, r.y + maxbot[x]);
@@ -735,7 +741,7 @@ void TrackArtist::DrawIndividualClipSamples(wxDC &dc, wxRect r,
          ypos[s] = r.height;
 
    }
-   
+
    // Draw lines
    for (s = 0; s < slen - 1; s++) {
       dc.DrawLine(r.x + xpos[s], r.y + ypos[s],
@@ -1313,7 +1319,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    sampleCount numSamples = clip->GetNumSamples();
    double tOffset = clip->GetOffset();
    double rate = clip->GetRate();
-   double sps = 1./rate;            
+   double sps = 1./rate;
 
    // if nothing is on the screen
    if ((sampleCount) (h * rate + 0.5) >= numSamples)
@@ -1324,7 +1330,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
 
    double tpre = h - tOffset;
    double tstep = 1.0 / pps;
-   double tpost = tpre + (r.width * tstep); 
+   double tpost = tpre + (r.width * tstep);
    double trackLen = clip->GetEndTime() - clip->GetStartTime();
 
    bool showIndividualSamples = (pps / rate > 0.5);   //zoomed in a lot
@@ -1341,7 +1347,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    if (t0 > t1)
       t0 = t1;
 
-   sampleCount ssel0 = wxMax(0, int((sel0 - tOffset) * rate + .99)); 
+   sampleCount ssel0 = wxMax(0, int((sel0 - tOffset) * rate + .99));
    sampleCount ssel1 = wxMax(0, int((sel1 - tOffset) * rate + .99));
 
    //trim selection so that it only contains the actual samples
@@ -1466,7 +1472,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
 
 /*
 Note: recall that Allegro attributes end in a type identifying letter.
- 
+
 In addition to standard notes, an Allegro_Note can denote a graphic.
 A graphic is a note with a loud of zero (for quick testing) and an
 attribute named "shapea" set to one of the following atoms:
@@ -1482,7 +1488,7 @@ attribute named "shapea" set to one of the following atoms:
     polygon
         coordinates are (time, pitch), (x1r, y1r), (x2r, y2r),
           (x3r, y3r), ... are coordinates (since we cannot represent
-          arrays as attribute values, we just generate as many 
+          arrays as attribute values, we just generate as many
           attribute names as we need)
         dur must be the max of xNr-time for all N
     oval
@@ -1501,7 +1507,7 @@ and optional attributes as follows:
     fonta is one of ['roman', 'swiss', 'modern'] (font, otherwise use default)
     weighta may be 'bold' (font) (default is normal)
     sizei is font size (default is 8)
-    justifys is a string containing two letters, a horizontal code and a 
+    justifys is a string containing two letters, a horizontal code and a
       vertical code. The horizontal code is as follows:
         l: the coordinate is to the left of the string (default)
         c: the coordinate is at the center of the string
@@ -1513,7 +1519,7 @@ and optional attributes as follows:
         d: the coordinate is at the baseline of the string (default)
       Thus, -justifys:"lt" places the left top of the string at the point
         given by (pitch, time). The default value is "ld".
-    
+
  */
 
 /* Declare Static functions */
