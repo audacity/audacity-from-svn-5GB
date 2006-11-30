@@ -44,13 +44,58 @@ END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(Lyrics, wxPanel)
 
+#define DEFAULT_BRANDING_HEIGHT 105 //vvv UmixIt: Need to figure it out from logo height, etc. This works for UmixIt.
+
 Lyrics::Lyrics(wxWindow* parent, wxWindowID id,
                const wxPoint& pos /*= wxDefaultPosition*/,
                const wxSize& size /*= wxDefaultSize*/):
    wxPanel(parent, id, pos, size),
    mWidth(size.x), mHeight(size.y)
 {
-   mHtml = new LinkingHtmlWindow(this);
+   // branding
+   //vvv Should change this to just a wxStaticBitmap, but it's working, and no longer showing lyrics.
+   AudacityProject* pProject = GetActiveProject();
+   Branding* pBranding = pProject->GetBranding();
+   wxString strBranding = "";
+   if (pBranding) {
+      wxString strBrandName = pBranding->GetBrandName();
+      wxString strURL = pBranding->GetBrandURL();
+
+      wxString strIMGtag = "";
+      wxString strLogoFilename = pBranding->GetBrandLogoFilename();
+      if (!strLogoFilename.IsEmpty()){
+         wxString strLogoPathname = 
+            pProject->GetDirManager()->GetProjectDataDir() + wxFILE_SEP_PATH + strLogoFilename;
+         if (::wxFileExists(FILENAME(strLogoPathname))) 
+            strIMGtag = "<img src=\"" + FILENAME(strLogoPathname) + "\" alt=\"" + strLogoFilename + "\"><br>";
+      }
+
+      if (strURL.IsEmpty()) {
+         if (strIMGtag.IsEmpty()) {
+            if (!strBrandName.IsEmpty()) 
+               strBranding = "<center><h1>" + strBrandName + "</h1></center>\n";
+         } else {
+            strBranding = "<center>" + strIMGtag + "</center>\n";
+         }
+      } else {
+         if (strIMGtag.IsEmpty()) {
+            if (!strBrandName.IsEmpty()) 
+               strBranding = 
+                  "<center><h1>" + strBrandName + 
+                  "</h1><br><a href=\"" + FILENAME(strURL) + "\">" + strURL + "</a></center>\n";
+         } else {
+            strBranding = 
+               "<center><a href=\"" + FILENAME(strURL) + "\">" + strIMGtag + strURL + "</a></center>\n";
+         }
+      }
+   }
+   if (!strBranding.IsEmpty()) {
+      mBrandingPanel = new LinkingHtmlWindow(this);
+      mBrandingPanel->SetPage(strBranding);
+      mBrandingHeight = DEFAULT_BRANDING_HEIGHT;
+   } else {
+      mBrandingHeight = 0;
+   }
 
    Clear();
    Finish(0.0);
@@ -114,7 +159,7 @@ void Lyrics::Add(double t, wxString syllable)
 
 void Lyrics::Finish(double finalT)
 {
-   // Add two dummy syllables at the end
+   // Add 3 dummy syllables at the end
    int i = mSyllables.GetCount();
    mSyllables.Add(Syllable());
    mSyllables[i].t = finalT + 1;
@@ -129,7 +174,7 @@ void Lyrics::Finish(double finalT)
 }
 
 
-#define DEFAULT_FONT_POINTSIZE 12
+#define DEFAULT_FONT_POINTSIZE 28
 int gKaraokeFontPointSize = DEFAULT_FONT_POINTSIZE;
 
 void Lyrics::SetFont(wxDC *dc)
@@ -304,100 +349,7 @@ void Lyrics::Update(double t, bool bForce /* = false */)
    if (!bForce && (i == mCurrentSyllable))
       return;
 
-   wxString htmlText;
-
-   if (!bForce && (i < 0 || i >= mSyllables.GetCount()))
-      htmlText = mText;
-   else {
-      // branding
-      AudacityProject* pProject = GetActiveProject();
-      Branding* pBranding = pProject->GetBranding();
-      wxString strBranding = "";
-      if (pBranding) {
-         wxString strBrandName = pBranding->GetBrandName();
-         wxString strURL = pBranding->GetBrandURL();
-
-         wxString strIMGtag = "";
-         wxString strLogoFilename = pBranding->GetBrandLogoFilename();
-         if (!strLogoFilename.IsEmpty()){
-            wxString strLogoPathname = 
-               pProject->GetDirManager()->GetProjectDataDir() + wxFILE_SEP_PATH + strLogoFilename;
-            if (::wxFileExists(FILENAME(strLogoPathname))) 
-               strIMGtag = "<img src=\"" + FILENAME(strLogoPathname) + "\" alt=\"" + strLogoFilename + "\"><br>";
-         }
-
-         if (strURL.IsEmpty()) {
-            if (strIMGtag.IsEmpty()) {
-               if (!strBrandName.IsEmpty()) 
-                  strBranding = "<center><h1>" + strBrandName + "</h1><hr></center>\n";
-            } else {
-               strBranding = "<center>" + strIMGtag + "<hr></center>\n";
-            }
-         } else {
-            if (strIMGtag.IsEmpty()) {
-               if (!strBrandName.IsEmpty()) 
-                  strBranding = 
-                     "<center><h1>" + strBrandName + 
-                     "</h1><br><a href=\"" + FILENAME(strURL) + "\">" + strURL + "</a><hr></center>\n";
-            } else {
-               strBranding = 
-                  "<center><a href=\"" + FILENAME(strURL) + "\">" + strIMGtag + strURL + "</a><hr></center>\n";
-            }
-         }
-      }
-
-      // Size the whole htmlText.
-      // Map nFontRelativeSize into -2 to +4, in increments of DEFAULT_FONT_POINTSIZE/2
-      int nFontRelativeSize = (int)((float)(2 * gKaraokeFontPointSize) / (float)DEFAULT_FONT_POINTSIZE);
-      nFontRelativeSize = ((nFontRelativeSize > 6) ? 6 : nFontRelativeSize) - 2;
-      wxString strFontRelativeSizeStart = "";
-      wxString strFontRelativeSizeEnd = "";
-      /* This works for <small>, but on Windows, the <big> acts like <small>!
-         So instead, use a relative size in a <font> tag.
-            switch (nFontRelativeSize) {
-               case -2: strFontRelativeSizeStart = "<small><small>"; strFontRelativeSizeEnd = "</small></small>"; break;
-               case -1: strFontRelativeSizeStart = "<small>"; strFontRelativeSizeEnd = "</small>"; break;
-               default: 
-                  strFontRelativeSizeStart = ""; 
-                  strFontRelativeSizeEnd = "";
-                  for (int i = 0; i < nFontRelativeSize; i++) {
-                     strFontRelativeSizeStart += "<big>";
-                     strFontRelativeSizeEnd += "</big>";
-                  }
-            }
-         */
-      if (nFontRelativeSize != 0) {
-         strFontRelativeSizeStart = 
-            wxString::Format("<font size=\"%s%d\">", (nFontRelativeSize > 0) ? "+" : "", nFontRelativeSize);
-         strFontRelativeSizeEnd = "</font>\n";
-      }
-
-      wxString strLyrics = 
-         mText.Left(mSyllables[i].char0) +
-         "<font color=\"#ee0066\">" + 
-         mText.Mid(mSyllables[i].char0,
-                   mSyllables[i].char1-mSyllables[i].char0) +
-         "</font>" +
-         mText.Mid(mSyllables[i].char1);
-      strLyrics.Replace("_", "<br>"); // Convert '_' to newline.
-
-      htmlText = 
-         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<html>\n<body>\n" + 
-         strBranding + 
-         strFontRelativeSizeStart + 
-         strLyrics + 
-         strFontRelativeSizeEnd + 
-         "</body>\n</html>";
-   }
-
-   //int x, y;
-   //mHtml->GetViewStart(&x, &y);
-
-   mHtml->SetPage(htmlText);
-
-   //mHtml->Scroll(x, y);
-
-   mHtml->Refresh(false);
+   // mBrandingPanel->Refresh(false);
 
    mCurrentSyllable = i;   
 }
@@ -430,8 +382,13 @@ void Lyrics::OnPaint(wxPaintEvent &evt)
 void Lyrics::OnSize(wxSizeEvent &evt)
 {
    GetClientSize(&mWidth, &mHeight);
-   mKaraokeHeight = mHeight / 4;
-   mHtml->SetSize(0, mKaraokeHeight, mWidth, mHeight - mKaraokeHeight);
+   //vvv UmixIt: Remove lower lyrics display for BNL release.
+   int nTenthOfHeight = mHeight / 10;
+   mBrandingHeight = (DEFAULT_BRANDING_HEIGHT > nTenthOfHeight) ? DEFAULT_BRANDING_HEIGHT : nTenthOfHeight;
+   mKaraokeHeight = (mHeight - mBrandingHeight); // gray bar? * 9 / 10; // mHeight * 3 / 4; // mKaraokeHeight = mHeight / 2;
+   // mBrandingPanel->SetSize(0, mKaraokeHeight, mWidth, mHeight - mKaraokeHeight);
+   mBrandingPanel->SetSize(0, mKaraokeHeight, // gray bar? (mHeight - mBrandingHeight), 
+                           mWidth, mBrandingHeight);
    
    gKaraokeFontPointSize = (int)((float)(DEFAULT_FONT_POINTSIZE * mHeight) / (float)LYRICS_DEFAULT_HEIGHT);
    // Usually don't get the size window we want, usually less than 
@@ -459,7 +416,7 @@ void Lyrics::HandlePaint(wxDC &dc)
 
    SetFont(&dc);
    unsigned int i;
-   wxCoord yTextTop = mKaraokeHeight - mTextHeight - 2;
+   wxCoord yTextTop = mKaraokeHeight - mTextHeight - 4;
    for(i=0; i<mSyllables.GetCount(); i++) {
       if (mSyllables[i].x + mSyllables[i].width < (x - ctr))
          continue;
@@ -481,12 +438,12 @@ void Lyrics::HandlePaint(wxDC &dc)
                   yTextTop);
    }
 
-   int bounceTop = 10;
+   int ballRadius = (int)(mTextHeight / 3.0);
+   int bounceTop = ballRadius * 2;
    int bounceHeight = yTextTop - bounceTop;
    int yi = (int)(yTextTop - 4 - (y * bounceHeight));
 
    if (mT >= 0.0) {
-      int ballRadius = (int)(mTextHeight / 3.0);
       wxRect ball(ctr - ballRadius, yi - ballRadius, 2 * ballRadius, 2 * ballRadius);
       dc.SetBrush(wxBrush(wxColour(238, 0, 102), wxSOLID));
       dc.DrawEllipse(ball);
