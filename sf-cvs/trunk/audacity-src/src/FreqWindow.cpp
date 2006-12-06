@@ -833,7 +833,7 @@ void FreqWindow::Recalc()
    (mSizeChoice->GetStringSelection()).ToLong(&windowSize);
 
    if (!(windowSize >= 32 && windowSize <= 65536 &&
-         alg >= 0 && alg <= 3 && windowFunc >= 0 && windowFunc <= 9)) {
+         alg >= 0 && alg <= 4 && windowFunc >= 0 && windowFunc <= 9)) {
       mFreqPlot->Refresh(true);
       return;
    }
