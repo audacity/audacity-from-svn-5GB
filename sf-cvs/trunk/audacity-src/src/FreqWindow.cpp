@@ -546,7 +546,7 @@ void FreqWindow::OnAxisChoice(wxCommandEvent & event)
 
 /* Declare Static functions */
 static float CubicInterpolate(float y0, float y1, float y2, float y3, float x);
-static float CubicMaximize(float y0, float y1, float y2, float y3);
+static float CubicMaximize(float y0, float y1, float y2, float y3, float * max);
 
 float CubicInterpolate(float y0, float y1, float y2, float y3, float x)
 {
@@ -563,7 +563,7 @@ float CubicInterpolate(float y0, float y1, float y2, float y3, float x)
    return (a * xxx + b * xx + c * x + d);
 }
 
-float CubicMaximize(float y0, float y1, float y2, float y3)
+float CubicMaximize(float y0, float y1, float y2, float y3, float * max)
 {
    // Find coefficients of cubic
 
@@ -599,9 +599,15 @@ float CubicMaximize(float y0, float y1, float y2, float y3)
    float ddb = db;
 
    if (dda * x1 + ddb < 0)
+   {
+      *max = a*x1*x1*x1+b*x1*x1+c*x1+d;
       return x1;
+   }
    else
+   {
+      *max = a*x2*x2*x2+b*x2*x2+c*x2+d;
       return x2;
+   }
 }
 
 float FreqWindow::GetProcessedValue(float freq0, float freq1)
@@ -697,6 +703,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
 
       bool up = (mProcessed[1] > mProcessed[0]);
       float bestdist = 1000000;
+      float bestValue;
       for (int bin = 2; bin < mProcessedSize; bin++) {
          bool nowUp = mProcessed[bin] > mProcessed[bin - 1];
          if (!nowUp && up) {
@@ -704,10 +711,11 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
             int leftbin = bin - 2;
             if (leftbin < 1)
                leftbin = 1;
+            float valueAtMax;
             float max = leftbin + CubicMaximize(mProcessed[leftbin],
                                                 mProcessed[leftbin + 1],
                                                 mProcessed[leftbin + 2],
-                                                mProcessed[leftbin + 3]);
+                                                mProcessed[leftbin + 3], &valueAtMax);
 
             float thispeak;
             if (alg == 0)
@@ -718,6 +726,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
             if (fabs(thispeak - xPos) < bestdist) {
                bestpeak = thispeak;
                bestdist = fabs(thispeak - xPos);
+               bestValue = valueAtMax;
                if (thispeak > xPos)
                   break;
             }
@@ -757,18 +766,19 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
          peakpitch = PitchName_Absolute(Freq2Pitch(bestpeak));
          xp = xpitch.c_str();
          pp = peakpitch.c_str();
-         info.Printf(_("Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s)"),
-                     int (xPos + 0.5),
-                     xp, int (value + 0.5), int (bestpeak + 0.5), pp);
+         info.Printf(_("Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s) = %.1f dB"),
+               int (xPos + 0.5), xp,
+               int (value + 0.5), int (bestpeak + 0.5),
+               pp, bestValue);
       } else if (xPos > 0.0 && bestpeak > 0.0) {
          xpitch = PitchName_Absolute(Freq2Pitch(1.0 / xPos));
          peakpitch = PitchName_Absolute(Freq2Pitch(1.0 / bestpeak));
          xp = xpitch.c_str();
          pp = peakpitch.c_str();
-         info.Printf(_("Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s)"),
+         info.Printf(_("Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s) = %.3f"),
                      xPos,
                      int (1.0 / xPos + 0.5),
-                     xp, value, bestpeak, int (1.0 / bestpeak + 0.5), pp);
+                     xp, value, bestpeak, int (1.0 / bestpeak + 0.5), pp, bestValue);
       }
       mInfoText->SetLabel(info);
    }
@@ -917,12 +927,21 @@ void FreqWindow::Recalc()
    switch (alg) {
    case 0:                     // Spectrum
       // Convert to decibels
+      mYMin = 1000000.;
+      mYMax = -1000000.;
       for (i = 0; i < half; i++)
+      {
          mProcessed[i] = 10 * log10(mProcessed[i] / mWindowSize / windows);
+         if(mProcessed[i] > mYMax)
+            mYMax = mProcessed[i];
+         else if(mProcessed[i] < mYMin)
+            mYMin = mProcessed[i];
+      }
+      if(mYMin < -90.)
+         mYMin = -90.;
+      mYMax += .5;
 
       mProcessedSize = half;
-      mYMin = -90;
-      mYMax = 10;
       mYStep = 10;
       break;
 
