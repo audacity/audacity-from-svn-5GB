@@ -40,7 +40,7 @@ public:
 
 private:
    void Populate();
-   void SpectrumPrefs::OnCheckAutoMaxFrequency(wxCommandEvent &event);
+   void OnCheckAutoMaxFrequency(wxCommandEvent &event);
    void PopulateOrExchange( ShuttleGui & S );
    wxString maxFreqStr;
    int windowType;
