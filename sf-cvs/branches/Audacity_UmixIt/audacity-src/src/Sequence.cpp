@@ -16,6 +16,7 @@
 #include <wx/dynarray.h>
 #include <wx/intl.h>
 #include <wx/ffile.h>
+#include <wx/log.h>
 
 #include "Sequence.h"
 
@@ -133,6 +134,7 @@ bool Sequence::ConvertToSampleFormat(sampleFormat format)
       SeqBlock *b = mBlock->Item(i);
       BlockFile *oldBlock = b->f;
       sampleCount len = b->f->GetLength();
+      if (len > mMaxSamples) len = mMaxSamples; // Prevent overruns, per NGS report for UmixIt.
 
       if (!oldBlock->IsAlias()) {
          BlockFile *newBlock;
@@ -338,6 +340,8 @@ bool Sequence::Paste(sampleCount s, const Sequence *src)
       SeqBlock *largerBlock = new SeqBlock();
       largerBlock->start = mBlock->Item(b)->start;
       int largerBlockLen = mBlock->Item(b)->f->GetLength() + addedLen;
+      if (largerBlockLen > mMaxSamples) 
+         largerBlockLen = mMaxSamples; // Prevent overruns, per NGS report for UmixIt.
       largerBlock->f =
          mDirManager->NewSimpleBlockFile(buffer, largerBlockLen, mSampleFormat);
 
@@ -534,6 +538,7 @@ bool Sequence::AppendAlias(wxString fullPath,
    SeqBlock *newBlock = new SeqBlock();
 
    newBlock->start = mNumSamples;
+   if (len > mMaxSamples) len = mMaxSamples; // Prevent overruns, per NGS report for UmixIt.
    newBlock->f =
       mDirManager->NewAliasBlockFile(fullPath, start, len, channel);
 
@@ -586,7 +591,10 @@ sampleCount Sequence::GetBestBlockSize(sampleCount start) const
       result += mBlock->Item(b)->f->GetLength();
    }
    
-   wxASSERT(result > 0 && result <= mMaxSamples);
+   // Prevent overruns in Release build, per NGS report for UmixIt.
+   //    wxASSERT(result > 0 && result <= mMaxSamples);
+   if (result < 1) result = 1;
+   else if (result > mMaxSamples) result = mMaxSamples;
    
    return result;
 }
@@ -671,12 +679,14 @@ void Sequence::HandleXMLEndTag(const char *tag)
    for (b = 0; b < mBlock->Count(); b++) {
       if (mBlock->Item(b)->start != numSamples) {
          mBlock->Item(b)->start = numSamples;
+         wxLogWarning(wxT("Gap detected in project file\n"));
          mErrorOpening = true;         
       }
       numSamples += mBlock->Item(b)->f->GetLength();
    }
    if (mNumSamples != numSamples) {
       mNumSamples = numSamples;
+      wxLogWarning(wxT("Gap detected in project file\n"));
       mErrorOpening = true;
    }
 }
@@ -729,11 +739,18 @@ void Sequence::WriteXML(int depth, FILE *fp)
 int Sequence::FindBlock(sampleCount pos, sampleCount lo,
                         sampleCount guess, sampleCount hi) const
 {
-   wxASSERT(mBlock->Item(guess)->f->GetLength() > 0);
-   wxASSERT(lo <= guess && guess <= hi && lo <= hi);
+   // Prevent overruns in Release build, per NGS report for UmixIt.
+   //    wxASSERT(mBlock->Item(guess)->f->GetLength() > 0);
+   sampleCount guessLen = mBlock->Item(guess)->f->GetLength();
+   if ((guessLen < 1) || (guessLen > mMaxSamples))
+      // Bad blockfile, so skip it. 
+      return FindBlock(pos, guess + 1, (guess + 1 + hi) / 2, hi); //vvvvv Right way to skip it?
+
+   //vvvvv Will the above cause this to fail, so need to catch in release build?
+   wxASSERT(lo <= guess && guess <= hi && lo <= hi); 
 
    if (pos >= mBlock->Item(guess)->start &&
-       pos < mBlock->Item(guess)->start + mBlock->Item(guess)->f->GetLength())
+       pos < mBlock->Item(guess)->start + guessLen)
       return guess;
 
    if (pos < mBlock->Item(guess)->start)
@@ -756,9 +773,16 @@ int Sequence::FindBlock(sampleCount pos) const
 
    int rval = FindBlock(pos, 0, numBlocks / 2, numBlocks);
 
-   wxASSERT(rval >= 0 && rval < numBlocks &&
-            pos >= mBlock->Item(rval)->start &&
-            pos < mBlock->Item(rval)->start + mBlock->Item(rval)->f->GetLength());
+   // Prevent overruns in Release build, per NGS report for UmixIt.
+   //    wxASSERT(rval >= 0 && rval < numBlocks &&
+   //             pos >= mBlock->Item(rval)->start &&
+   //             pos < mBlock->Item(rval)->start + mBlock->Item(rval)->f->GetLength());
+   if ((rval < 0) || 
+         (pos < mBlock->Item(rval)->start) || 
+         (pos >= mBlock->Item(rval)->start + mBlock->Item(rval)->f->GetLength()))
+      return 0;
+   else if (rval >= numBlocks) 
+      return (numBlocks - 1);
 
    return rval;
 }
@@ -766,9 +790,13 @@ int Sequence::FindBlock(sampleCount pos) const
 bool Sequence::Read(samplePtr buffer, sampleFormat format,
                     SeqBlock * b, sampleCount start, sampleCount len) const
 {
-   wxASSERT(b);
-   wxASSERT(start >= 0);
-   wxASSERT(start + len <= b->f->GetLength());
+   // Prevent overruns in Release build, per NGS report for UmixIt.
+   //    wxASSERT(b);
+   //    wxASSERT(start >= 0);
+   //    wxASSERT(start + len <= b->f->GetLength());
+   if (!b || (start < 0) || (start + len > mMaxSamples) || 
+         (start + len > b->f->GetLength()) || (b->f->GetLength() > mMaxSamples))
+      return false; //vvvvv ...Or treat it like the (result != len) case below?
 
    BlockFile *f = b->f;
 
@@ -776,7 +804,7 @@ bool Sequence::Read(samplePtr buffer, sampleFormat format,
 
    if (result != len) {
       // TODO err
-      printf(_("Expected to read %d samples, got %d samples.\n"),
+      wxPrintf(_("Expected to read %d samples, got %d samples.\n"),
              len, result);
       if (result < 0)
          result = 0;
@@ -793,19 +821,25 @@ bool Sequence::CopyWrite(samplePtr buffer, SeqBlock *b,
    // we copy the old block entirely into memory, dereference it,
    // make the change, and then write the new block to disk.
 
-   wxASSERT(b);
-   wxASSERT(b->f->GetLength() <= mMaxSamples);
-   wxASSERT(start + len <= b->f->GetLength());
+   // Check in Release build, too, per NGS report for UmixIt.
+   //    wxASSERT(b);
+   //    wxASSERT(b->f->GetLength() <= mMaxSamples); 
+   //    wxASSERT(start + len <= b->f->GetLength());
+   sampleCount blockLen;
+   if (!b || 
+         ((blockLen = b->f->GetLength()) > mMaxSamples) || // Prevent overruns, per NGS report for UmixIt.
+         (start + len > blockLen)) 
+      return false;
 
    int sampleSize = SAMPLE_SIZE(mSampleFormat);
    samplePtr newBuffer = NewSamples(mMaxSamples, mSampleFormat);
    wxASSERT(newBuffer);
 
-   Read(newBuffer, mSampleFormat, b, 0, b->f->GetLength());
+   Read(newBuffer, mSampleFormat, b, 0, blockLen);
    memcpy(newBuffer + start*sampleSize, buffer, len*sampleSize);
 
    BlockFile *oldBlockFile = b->f;
-   b->f = mDirManager->NewSimpleBlockFile(newBuffer, b->f->GetLength(), mSampleFormat);
+   b->f = mDirManager->NewSimpleBlockFile(newBuffer, blockLen, mSampleFormat);
 
    mDirManager->Deref(oldBlockFile);
 
@@ -1080,7 +1114,7 @@ sampleCount Sequence::GetIdealAppendLen()
    if (numBlocks == 0)
       return max;
 
-   lastBlockLen = mBlock->Item(numBlocks-1)->f->GetLength();
+   lastBlockLen = mBlock->Item(numBlocks-1)->f->GetLength(); //vvvvv Need to check for mMaxSamples for NGS report fixes?
    if (lastBlockLen == max)
       return max;
    else
@@ -1415,9 +1449,13 @@ bool Sequence::ConsistencyCheck(const char *whereStr)
    int pos = 0;
    unsigned int numBlocks = mBlock->Count();
    bool error = false;
+   int len; 
 
    for (i = 0; i < numBlocks; i++) {
       if (pos != mBlock->Item(i)->start)
+         error = true;
+      len = mBlock->Item(i)->f->GetLength();
+      if (len > mMaxSamples) // Check for overrun, per NGS report for UmixIt.
          error = true;
       pos += mBlock->Item(i)->f->GetLength();
    }
