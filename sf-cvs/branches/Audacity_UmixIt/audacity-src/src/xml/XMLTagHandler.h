@@ -18,6 +18,12 @@
 #ifndef __AUDACITY_XML_TAG_HANDLER__
 #define __AUDACITY_XML_TAG_HANDLER__
 
+// "Good" means the name is well-formed and names an existing file.
+// These are functions rather than methods because some non-descendants of XMLTagHandler need it. //vvvvv necessarily?
+bool IsGoodSubdirNameFromXML(const wxString strSubdirName, const wxString strDirName = "");
+bool IsGoodFileNameFromXML(const wxString strFileName, const wxString strDirName = "");
+bool IsGoodPathNameFromXML(const wxString strPathName);
+
 class XMLTagHandler {
  public:
 

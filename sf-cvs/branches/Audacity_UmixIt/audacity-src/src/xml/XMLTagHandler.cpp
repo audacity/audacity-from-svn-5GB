@@ -2,9 +2,10 @@
 
   Audacity: A Digital Audio Editor
 
-  XMLTagHandler.h
+  XMLTagHandler.cpp
 
   Dominic Mazzoni
+  Vaughan Johnson (IsGood*FromXML)
 
   This class is an interface which should be implemented by
   classes which wish to be able to load and save themselves
@@ -18,6 +19,52 @@
 #include "../Internat.h"
 
 #include <wx/defs.h>
+#include <wx/filename.h>
+
+// "Good" means the name is well-formed and names an existing file.
+// These are functions rather than methods because some non-descendants of XMLTagHandler need it. //vvvvv necessarily?
+bool IsGoodFileString(wxString str)
+{
+   // Test against corrupt filenames per security vulnerability report by NGS for UmixIt.
+   wxString intlStrFileName = FILENAME(str);
+   size_t len = intlStrFileName.Length();
+   return ((len <= 128) && // FILENAME_MAX is 260 in MSVC, but inconsistent across platforms, sometimes huge.
+            (intlStrFileName.Find('\0') == len) && // No null characters except terminator.
+            (intlStrFileName.Find(wxFileName::GetPathSeparator()) == -1)); // No path separator characters. //vvv (this won't work on CVS HEAD)
+}
+
+bool IsGoodSubdirNameFromXML(const wxString strSubdirName, const wxString strDirName /* = "" */)
+{
+   // Test strSubdirName.
+   if (!IsGoodFileString(strSubdirName)) return false;
+
+   // Test the corresponding wxFileName.
+   wxFileName fileName(FILENAME(strDirName), FILENAME(strSubdirName));
+   return (fileName.IsOk() && fileName.DirExists());
+}
+
+bool IsGoodFileNameFromXML(const wxString strFileName, const wxString strDirName /* = "" */)
+{
+   // Test strFileName.
+   if (!IsGoodFileString(strFileName)) return false;
+
+   // Test the corresponding wxFileName.
+   wxFileName fileName(FILENAME(strDirName), FILENAME(strFileName));
+   return (fileName.IsOk() && fileName.FileExists());
+}
+
+bool IsGoodPathNameFromXML(const wxString strPathName)
+{
+   // Test strPathName.
+   wxString intlStrPathName = FILENAME(strPathName);
+   if ((intlStrPathName.Find('\0') < intlStrPathName.Length())) // No null characters.
+      return false;
+
+   // Test the corresponding wxFileName.
+   wxFileName fileName(intlStrPathName);
+   return IsGoodFileNameFromXML(fileName.GetFullName(), fileName.GetPath(wxPATH_GET_VOLUME));
+}
+
 
 // See http://www.w3.org/TR/REC-xml for reference
 wxString XMLTagHandler::XMLEsc(wxString s)

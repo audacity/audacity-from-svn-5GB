@@ -66,6 +66,7 @@ DirManager::DirManager()
    projName = "";
 
    mLoadingTarget = NULL;
+   mMaxSamples = -1;
 
    hashTableSize = defaultHashTableSize;
    blockFileHash = new wxHashTable(wxKEY_STRING, hashTableSize);
@@ -360,17 +361,18 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
    if( mLoadingTarget == NULL )
       return false;
 
+   BlockFile* pBlockFile = NULL;
+
    if( !wxStricmp(tag, "silentblockfile") ) {
       // Silent blocks don't actually have a file associated, so
       // we don't need to worry about the hash table at all
       *mLoadingTarget = SilentBlockFile::BuildFromXML(projFull, attrs);
       return true;
    }
-
-   else if ( !wxStricmp(tag, "simpleblockfile") )
-      *mLoadingTarget = SimpleBlockFile::BuildFromXML(projFull, attrs);
+   else if ( !wxStricmp(tag, "simpleblockfile") ) 
+      pBlockFile = SimpleBlockFile::BuildFromXML(projFull, attrs);
    else if( !wxStricmp(tag, "pcmaliasblockfile") )
-      *mLoadingTarget = PCMAliasBlockFile::BuildFromXML(projFull, attrs);
+      pBlockFile = PCMAliasBlockFile::BuildFromXML(projFull, attrs);
    else if( !wxStricmp(tag, "blockfile") ||
             !wxStricmp(tag, "legacyblockfile") ) {
       // Support Audacity version 1.1.1 project files
@@ -389,14 +391,25 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
       }
 
       if (alias)
-         *mLoadingTarget = LegacyAliasBlockFile::BuildFromXML(projFull, attrs);
+         pBlockFile = LegacyAliasBlockFile::BuildFromXML(projFull, attrs);
       else      
-         *mLoadingTarget = LegacyBlockFile::BuildFromXML(projFull, attrs,
+         pBlockFile = LegacyBlockFile::BuildFromXML(projFull, attrs,
                                                          mLoadingBlockLen,
                                                          mLoadingFormat);
    }
    else
       return false;
+
+   if ((pBlockFile == NULL) || 
+         // Check the length here so we don't have to do it in each BuildFromXML method.
+         ((mMaxSamples > -1) && // is initialized
+            (pBlockFile->GetLength() > mMaxSamples)))
+   {
+      delete pBlockFile;
+      return false;
+   }
+   else 
+      *mLoadingTarget = pBlockFile;
 
    //
    // If the block we loaded is already in the hash table, then the

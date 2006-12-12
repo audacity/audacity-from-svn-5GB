@@ -16,6 +16,8 @@
 #include "Audacity.h"
 #include "xml/xmltaghandler.h"
 
+#include <wx/filename.h>
+
 class Branding : public XMLTagHandler
 {
 public:
@@ -27,12 +29,12 @@ public:
 
    wxString GetBrandName() { return m_strBrandName; }
    wxString GetBrandURL() { return m_strBrandURL; }
-   wxString GetBrandLogoFilename() { return m_strBrandLogoFilename; }
+   wxFileName GetBrandLogoFileName() { return m_BrandLogoFileName; }
    wxString GetBrandColorScheme() { return m_strBrandColorScheme; }
 
-public:
+private:
    wxString m_strBrandName;
    wxString m_strBrandURL;
-   wxString m_strBrandLogoFilename;
+   wxFileName m_BrandLogoFileName; // Store full thing, not just file name, so don't need to add path again.
    wxString m_strBrandColorScheme;
 };

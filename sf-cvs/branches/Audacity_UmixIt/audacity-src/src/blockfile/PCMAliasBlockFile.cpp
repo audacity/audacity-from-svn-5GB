@@ -38,8 +38,6 @@ PCMAliasBlockFile::~PCMAliasBlockFile()
 {
 }
 
-wxString gProjDir = ""; // Needs to be set in BuildFromXML, so just use a global instead of a member.
-
 /// Reads the specified data from the aliased file, using libsndfile,
 /// and converts it to the given sample format.
 ///
@@ -54,13 +52,7 @@ int PCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
 
    memset(&info, 0, sizeof(info));
 
-   wxString strFullPath = mAliasedFileName.GetFullPath();
-   SNDFILE *sf = sf_open(FILENAME(strFullPath), SFM_READ, &info);
-   if (!sf) {
-      // Allow fallback of looking for the file name, located in the data directory.
-      strFullPath = gProjDir + "\\" + mAliasedFileName.GetFullName(); 
-      sf = sf_open(FILENAME(strFullPath), SFM_READ, &info);
-   }
+   SNDFILE *sf = sf_open(FILENAME(mAliasedFileName.GetFullPath()), SFM_READ, &info);
    if (!sf)
       return 0;
 
@@ -135,8 +127,6 @@ void PCMAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
 
 BlockFile *PCMAliasBlockFile::BuildFromXML(wxString projDir, const char **attrs)
 {
-   gProjDir = projDir;
-
    wxFileName summaryFileName;
    wxFileName aliasFileName;
    int aliasStart=0, aliasLen=0, aliasChannel=0;
@@ -148,20 +138,33 @@ BlockFile *PCMAliasBlockFile::BuildFromXML(wxString projDir, const char **attrs)
        const char *value = *attrs++;
 
        if( !wxStricmp(attr, "summaryfile") )
-          summaryFileName.Assign(projDir, value);
-       if( !wxStricmp(attr, "aliasfile") )
-          aliasFileName.Assign(value);
-       if( !wxStricmp(attr, "aliasstart") )
+       {
+         if (IsGoodFileNameFromXML(value, projDir))
+            summaryFileName.Assign(projDir, value);
+         else 
+            return NULL;
+       }
+       else if( !wxStricmp(attr, "aliasfile") )
+       {
+         if (IsGoodPathNameFromXML(value))
+            aliasFileName.Assign(value);
+         else if (IsGoodFileNameFromXML(value, projDir))
+            // Allow fallback of looking for the file name, located in the data directory.
+            aliasFileName.Assign(projDir, value);
+         else 
+            return NULL;
+       }
+       else if( !wxStricmp(attr, "aliasstart") )
           aliasStart = atoi(value);
-       if( !wxStricmp(attr, "aliaslen") )
+       else if( !wxStricmp(attr, "aliaslen") )
           aliasLen = atoi(value);
-       if( !wxStricmp(attr, "aliaschannel") )
+       else if( !wxStricmp(attr, "aliaschannel") )
           aliasChannel = atoi(value);
-       if( !wxStricmp(attr, "min") )
+       else if( !wxStricmp(attr, "min") )
           min = atoi(value);
-       if( !wxStricmp(attr, "max") )
+       else if( !wxStricmp(attr, "max") )
           max = atoi(value);
-       if( !wxStricmp(attr, "rms") )
+       else if( !wxStricmp(attr, "rms") )
           rms = atoi(value);
    }
 
