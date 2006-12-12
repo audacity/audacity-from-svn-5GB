@@ -13,56 +13,132 @@
 
 *//*******************************************************************/
 
-#include "../Audacity.h"
-
-#include <wx/defs.h> 
-#include <stdlib.h>
-
 #include "Noise.h"
-#include "Silence.h"
-
+#include "../Audacity.h"
+#include "../Project.h"
+#include "../Prefs.h"
+#include "../ShuttleGui.h"
 #include "../WaveTrack.h"
-#include "../TimeDialog.h"
 
-void MakeNoise(float *buffer, sampleCount len)
-{
-   sampleCount i;
-   float div = ((float)RAND_MAX) / 2.0f;
+#ifndef M_PI
+#define M_PI 3.14159265358979323846  /* pi */
+#endif
+#define AMP_MIN 0
+#define AMP_MAX 1
 
-   for(i=0; i<len; i++)
-      buffer[i] = (rand() / div) - 1.0;
-}
+//
+// EffectNoise
+//
 
 bool EffectNoise::PromptUser()
 {
+   wxArrayString noiseTypeList;
+
+   noiseTypeList.Add(_("White"));
+   noiseTypeList.Add(_("Pink"));
+   noiseTypeList.Add(_("Brown"));
+
+   NoiseDialog dlog(mParent, _("Noise Generator"));
+
+   // dialog will be passed values from effect
+   // Effect retrieves values from saved config
+   // Dialog will take care of using them to initialize controls
+   // If there is a selection, use that duration, otherwise use 
+   // value from saved config: this is useful is user wants to 
+   // replace selection with noise
+   //
    if (mT1 > mT0)
-      length = mT1 - mT0;
+      noiseDuration = mT1 - mT0;
    else
-	   length = sDefaultGenerateLen;
+      gPrefs->Read(wxT("/CsPresets/NoiseGen_Duration"), &noiseDuration, 1L);
 
-   TimeDialog dlog(mParent, wxID_ANY, _("White Noise Generator"));
-   dlog.SetTimeValue(length);
+   gPrefs->Read(wxT("/CsPresets/NoiseGen_Type"), &noiseType, 0L);
+   gPrefs->Read(wxT("/CsPresets/NoiseGen_Amp"), &noiseAmplitude, 1.0);
 
-   if (dlog.ShowModal() == wxID_CANCEL)
+   dlog.nDuration = noiseDuration;
+   dlog.nAmplitude = noiseAmplitude;
+   dlog.nType = noiseType;
+   dlog.nTypeList = &noiseTypeList;
+
+   dlog.Init();
+   dlog.TransferDataToWindow();
+   dlog.ShowModal();
+
+   if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
-   length = dlog.GetTimeValue();
+   noiseType = dlog.nType;
+   noiseDuration = dlog.nDuration;
+   noiseAmplitude = dlog.nAmplitude;
 
+   return true;
+}
+
+bool EffectNoise::TransferParameters( Shuttle & shuttle )
+{
+   return true;
+}
+
+bool EffectNoise::MakeNoise(float *buffer, sampleCount len, float fs, float amplitude)
+{
+   float white, buf0, buf1, buf2, buf3, buf4, buf5;
+   float a0, b1, fc, y;
+   sampleCount i;
+   float div = ((float)RAND_MAX) / 2.0f;
+
+   switch (noiseType) {
+   default:
+   case 0: // white
+       for(i=0; i<len; i++)
+          buffer[i] = amplitude * ((rand() / div) - 1.0f);
+       break;
+
+   case 1: // pink
+       white=buf0=buf1=buf2=buf3=buf4=buf5=0;
+
+       // 0.55f is an experimental normalization factor: thanks to Martyn
+       for(i=0; i<len; i++) {
+        white=(rand() / div) - 1.0f;
+        buf0=0.997f * buf0 + 0.029591f * white;
+        buf1=0.985f * buf1 + 0.032534f * white;
+        buf2=0.950f * buf2 + 0.048056f * white;
+        buf3=0.850f * buf3 + 0.090579f * white;
+        buf4=0.620f * buf4 + 0.108990f * white;
+        buf5=0.250f * buf5 + 0.255784f * white;
+        buffer[i] = 0.55f * amplitude * (buf0 + buf1 + buf2 + buf3 + buf4 + buf5);
+       };
+       break;
+
+   case 2: // brown
+       // fc=100 Hz,
+       // y[n]=a0*x[n] + b1*y[n-1];
+       white=a0=b1=fc=y=0;
+       fc=100; //fs=44100;
+       b1=exp(-2*M_PI*fc/fs);
+       a0=1.0f-b1;
+
+       // 6.2f is an experimental normalization factor: thanks to Martyn
+       for(i=0; i<len; i++){
+         white=(rand() / div) - 1.0f;
+         y = (a0 * white + b1 * y);
+         buffer[i] = 6.2f * amplitude * y;
+       };
+       break;
+   }
    return true;
 }
 
 bool EffectNoise::Process()
 {
-   if (length <= 0.0)
-      length = sDefaultGenerateLen;
+   if (noiseDuration <= 0.0)
+      noiseDuration = sDefaultGenerateLen;
 
    //Iterate over each track
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
       WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(), track->GetRate());
-      longSampleCount numSamples =
-         (longSampleCount)(length * track->GetRate() + 0.5);
+      numSamples = (longSampleCount)(noiseDuration * track->GetRate() + 0.5);
       longSampleCount i = 0;
       float *data = new float[tmp->GetMaxBlockSize()];
       sampleCount block;
@@ -71,7 +147,9 @@ bool EffectNoise::Process()
          block = tmp->GetBestBlockSize(i);
          if (block > (numSamples - i))
              block = numSamples - i;
-         MakeNoise(data, block);
+
+         MakeNoise(data, block, track->GetRate(), noiseAmplitude);
+
          tmp->Append((samplePtr)data, floatSample, block);
          i += block;
       }
@@ -81,14 +159,74 @@ bool EffectNoise::Process()
       track->Clear(mT0, mT1);
       track->Paste(mT0, tmp);
       delete tmp;
-      
+
       //Iterate to the next track
       track = (WaveTrack *)iter.Next();
    }
+   
+   /*
+      save last used values
+      save duration unless value was got from selection, so we save only
+      when user explicitely setup a value
+   */
+   if (mT1 == mT0)
+      gPrefs->Write(wxT("/CsPresets/NoiseGen_Duration"), noiseDuration);
 
-	mT1 = mT0 + length; // Update selection.
+   gPrefs->Write(wxT("/CsPresets/NoiseGen_Type"), noiseType);
+   gPrefs->Write(wxT("/CsPresets/NoiseGen_Amp"), noiseAmplitude);
+
+   mT1 = mT0 + noiseDuration; // Update selection.
+
    return true;
 }
+
+//----------------------------------------------------------------------------
+// NoiseDialog
+//----------------------------------------------------------------------------
+
+#define FREQ_MIN 1
+#define FREQ_MAX 20000
+#define AMP_MIN 0
+#define AMP_MAX 1
+
+NoiseDialog::NoiseDialog(wxWindow * parent, const wxString & title): EffectDialog(parent, title, INSERT_EFFECT)
+{
+   /* // already initialized in EffectNoise::PromptUser
+   nDuration = noiseDuration;
+   nAmplitude = noiseAmplitude;
+   nType = noiseType;
+   */
+}
+
+void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
+{
+   S.StartMultiColumn(2, wxCENTER);
+   {
+      S.TieTextBox( _("Duration (seconds)"), nDuration, 10 );
+      S.TieTextBox( _("Amplitude"),  nAmplitude, 10);
+      S.TieChoice( _("Noise type:"), nType, nTypeList);
+      S.SetSizeHints(-1,-1);
+   }
+   S.EndMultiColumn();
+}
+
+bool NoiseDialog::TransferDataToWindow()
+{
+   ShuttleGui S( this, eIsSettingToDialog );
+   PopulateOrExchange( S );
+   return true;
+}
+
+bool NoiseDialog::TransferDataFromWindow()
+{
+   ShuttleGui S( this, eIsGettingFromDialog );
+   PopulateOrExchange( S );
+   if (nDuration<0) nDuration=0;
+   nAmplitude = TrapDouble(nAmplitude, AMP_MIN, AMP_MAX);
+   return true;
+}
+
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
