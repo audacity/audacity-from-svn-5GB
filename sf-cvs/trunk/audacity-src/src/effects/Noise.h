@@ -5,7 +5,7 @@
   Noise.h
 
   Dominic Mazzoni
-  
+
   An effect for the "Generator" menu to add white noise.
 
 **********************************************************************/
@@ -18,21 +18,34 @@
 
 #include "Effect.h"
 
+class wxString;
+class wxChoice;
+class wxTextCtrl;
+class ShuttleGui;
+
+#define __UNINITIALIZED__ (-1)
+
+class WaveTrack;
+
+
 class EffectNoise:public Effect {
 
  public:
-   EffectNoise() {}
-
-   virtual wxString GetEffectName() {
-      return wxString(_("&White Noise"));
+   EffectNoise() {
+       noiseType=0;
+       noiseAmplitude=1.0;
    }
 
-   virtual wxString GetEffectDescription() { 
-      return wxString::Format(_("Applied effect: Generate White Noise, %.6lf seconds"), length); 
-   } 
+   virtual wxString GetEffectName() {
+      return wxString(_("&Noise..."));
+   }
+
+   virtual wxString GetEffectDescription() {
+      return wxString::Format(_("Applied effect: Generate Noise, %.6lf seconds"), noiseDuration);
+   }
 
    virtual wxString GetEffectAction() {
-      return wxString(_("Generating White Noise"));
+      return wxString(_("Generating Noise"));
    }
 
    virtual int GetEffectFlags() {
@@ -41,12 +54,50 @@ class EffectNoise:public Effect {
 
    virtual bool PromptUser();
    virtual bool Process();
+   virtual bool TransferParameters( Shuttle & shuttle );
 
  private:
-   double length;
+   longSampleCount numSamples;
+   double noiseDuration;
+   int noiseType;
+   double noiseAmplitude;
+
+ protected:
+   virtual bool EffectNoise::MakeNoise(float *buffer, sampleCount len, float fs, float amplitude);
+
+ // friendship ...
+ friend class NoiseDialog;
+
+};
+
+//----------------------------------------------------------------------------
+// NoiseDialog
+//----------------------------------------------------------------------------
+
+// Declare window functions
+
+class NoiseDialog:public EffectDialog {
+ public:
+   // constructors and destructors
+   NoiseDialog(wxWindow * parent, const wxString & title);
+
+   // method declarations
+   void PopulateOrExchange(ShuttleGui & S);
+   bool TransferDataToWindow();
+   bool TransferDataFromWindow();
+
+   double nRate;
+   double nTime;
+
+ public:
+   wxArrayString *nTypeList;
+   double nDuration;
+   int nType;
+   double nAmplitude;
 };
 
 #endif
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
