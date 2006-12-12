@@ -169,13 +169,18 @@ bool ImportXMLTagHandler::HandleXMLTag(const char *tag, const char **attrs)
    if (strcmp(tag, "import") ||
        attrs==NULL || (*attrs)==NULL ||
        strcmp(*attrs++, "filename")) return false;
-   wxString strPathname = *attrs;
-   if (!wxFile::Exists(FILENAME(strPathname))) {
-      strPathname = mProject->GetDirManager()->GetProjectDataDir() + wxFILE_SEP_PATH + strPathname;
-      if (!wxFile::Exists(FILENAME(strPathname)))
-        return false;
+   wxString strPathName = FILENAME(*attrs);
+   if (!IsGoodPathNameFromXML(strPathName)) {
+      // Maybe strPathName is just a fileName, not the full path. Try the project data directory.
+      wxFileName fileName(mProject->GetDirManager()->GetProjectDataDir(), strPathName);
+      if (IsGoodFileNameFromXML(strPathName, fileName.GetPath(wxPATH_GET_VOLUME))) {
+         strPathName = fileName.GetFullPath();
+      } else { 
+         wxMessageBox(_("Could not import file: ") + strPathName, _("Error"), wxOK | wxICON_ERROR);
+         return false;
+      }
    }
-   mProject->Import(strPathname);
+   mProject->Import(strPathName);
    return true; //v result from Import?
 }
 
@@ -1966,7 +1971,8 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
          wxString projName = value;
          wxString projPath = wxPathOnly(mFileName);
          
-         if (!mDirManager->SetProject(projPath, projName, false)) {
+         if (!IsGoodSubdirNameFromXML(projName, projPath) || 
+               !mDirManager->SetProject(projPath, projName, false)) {
 
             wxMessageBox(wxString::Format(_("Couldn't find the project data folder: \"%s\""),
                                           (const char *)projName),

@@ -252,8 +252,13 @@ BlockFile *SimpleBlockFile::BuildFromXML(wxString projDir, const char **attrs)
        const char *attr =  *attrs++;
        const char *value = *attrs++;
 
-       if( !strcmp(attr, "filename") )
-          fileName.Assign(projDir, value);
+       if( !strcmp(attr, "filename") ) 
+       {
+         if (IsGoodFileNameFromXML(value, projDir))
+            fileName.Assign(projDir, value);
+         else 
+            return NULL;
+       }
        if( !strcmp(attr, "len") )
           len = atoi(value);
        if( !strcmp(attr, "min") )

@@ -258,7 +258,12 @@ BlockFile *LegacyBlockFile::BuildFromXML(wxString projDir, const char **attrs,
        const char *value = *attrs++;
 
        if( !strcmp(attr, "name") )
-          fileName.Assign(projDir, value);
+       {
+          if (IsGoodFileNameFromXML(value, projDir))
+            fileName.Assign(projDir, value);
+         else 
+            return NULL;
+       }
        if( !strcmp(attr, "len") )
           len = atoi(value);
        if( !strcmp(attr, "norms") )

@@ -639,7 +639,21 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
             break;
          
          if (!strcmp(attr, "maxsamples"))
-            mMaxSamples = atoi(value);
+         {
+            // Security fixes per NGS report for UmixIt.
+            // First, check that atoi probably won't overflow.
+            if (strlen(value) > strlen("2147483647")) // MAXINT
+               return false;
+
+            // Dominic, 12/10/2006:
+				//    Let's check that maxsamples is >= 1024 and <= 64 * 1024 * 1024 
+			   //    - that's a pretty wide range of reasonable values.
+            sampleCount testMaxSamples = atoi(value);
+            if ((testMaxSamples < 1024) || (testMaxSamples > 64 * 1024 * 1024))
+               return false;
+            mMaxSamples = testMaxSamples;
+            mDirManager->SetMaxSamples(mMaxSamples);
+         }
          else if (!strcmp(attr, "sampleformat"))
             mSampleFormat = (sampleFormat)atoi(value);
          else if (!strcmp(attr, "numsamples"))

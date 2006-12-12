@@ -12,12 +12,15 @@
 **********************************************************************/
 
 #include "Branding.h"
+#include "Project.h"
+
+#include <wx/msgdlg.h>
 
 Branding::Branding()
 {
    m_strBrandName = "";
    m_strBrandURL = "";
-   m_strBrandLogoFilename = "";
+   m_BrandLogoFileName.Clear();
    m_strBrandColorScheme = "";
 }
 
@@ -32,10 +35,25 @@ bool Branding::HandleXMLTag(const char *tag, const char **attrs)
 
       if (!value) break;
 
-      if (!strcmp(attr, "brandname")) m_strBrandName = value;
-      else if (!strcmp(attr, "url")) m_strBrandURL = value;
-      else if (!strcmp(attr, "logofilename")) m_strBrandLogoFilename = value;
-      else if (!strcmp(attr, "colorscheme")) m_strBrandColorScheme = value;
+      if (!strcmp(attr, "brandname")) 
+         m_strBrandName = value;
+      else if (!strcmp(attr, "url")) 
+         m_strBrandURL = value;
+      else if (!strcmp(attr, "logofilename")) 
+      {
+         // Logo file is supposed to be stored in the project data directory.
+         wxString strDirName = GetActiveProject()->GetDirManager()->GetProjectDataDir();
+         if (IsGoodFileNameFromXML(value, strDirName)) {
+            // Store full thing, not just file name, so don't need to add path again.
+            m_BrandLogoFileName.Assign(strDirName, value);
+            m_BrandLogoFileName.Normalize(wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG);
+         } else {
+            wxMessageBox(wxString::Format(_("Could not open branding logo file: %s"), value), 
+                           _("Error"), wxOK | wxICON_ERROR);
+         }
+      }
+      else if (!strcmp(attr, "colorscheme")) 
+         m_strBrandColorScheme = value;
    } // while
 
    return true; 
@@ -50,7 +68,7 @@ void Branding::WriteXML(int depth, FILE *fp)
    fprintf(fp, "<branding ");
    fprintf(fp, "brandname=\"%s\" ", XMLEsc(m_strBrandName).c_str());
    fprintf(fp, "url=\"%s\" ", XMLEsc(m_strBrandURL).c_str());
-   fprintf(fp, "logofilename=\"%s\" ", XMLEsc(m_strBrandLogoFilename).c_str());
+   fprintf(fp, "logofilename=\"%s\" ", XMLEsc(m_BrandLogoFileName.GetFullName()).c_str());
    fprintf(fp, "colorscheme=\"%s\" ", XMLEsc(m_strBrandColorScheme).c_str());
    fprintf(fp, "/>\n"); // XML shorthand for childless tag
 }

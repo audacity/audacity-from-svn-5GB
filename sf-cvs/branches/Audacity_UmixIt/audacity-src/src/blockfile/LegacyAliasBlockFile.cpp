@@ -94,9 +94,22 @@ BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **att
        const char *value = *attrs++;
 
        if( !wxStricmp(attr, "name") )
-          summaryFileName.Assign(projDir, value, "");
+       {
+         if (IsGoodFileNameFromXML(value, projDir))
+            summaryFileName.Assign(projDir, value, "");
+         else 
+            return NULL;
+       }
        if( !wxStricmp(attr, "aliaspath") )
-          aliasFileName.Assign(value);
+       {
+         if (IsGoodPathNameFromXML(value))
+            aliasFileName.Assign(value);
+         else if (IsGoodFileNameFromXML(value, projDir))
+            // Allow fallback of looking for the file name, located in the data directory.
+            aliasFileName.Assign(projDir, value);
+         else 
+            return NULL;
+       }
        if( !wxStricmp(attr, "aliasstart") )
           aliasStart = atoi(value);
        if( !wxStricmp(attr, "aliaslen") )
