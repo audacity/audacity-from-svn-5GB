@@ -62,12 +62,10 @@ Lyrics::Lyrics(wxWindow* parent, wxWindowID id,
       wxString strURL = pBranding->GetBrandURL();
 
       wxString strIMGtag = "";
-      wxString strLogoFilename = pBranding->GetBrandLogoFilename();
-      if (!strLogoFilename.IsEmpty()){
-         wxString strLogoPathname = 
-            pProject->GetDirManager()->GetProjectDataDir() + wxFILE_SEP_PATH + strLogoFilename;
-         if (::wxFileExists(FILENAME(strLogoPathname))) 
-            strIMGtag = "<img src=\"" + FILENAME(strLogoPathname) + "\" alt=\"" + strLogoFilename + "\"><br>";
+      wxFileName brandLogoFileName = pBranding->GetBrandLogoFileName();
+      if (brandLogoFileName.IsOk() && brandLogoFileName.FileExists()){
+         strIMGtag = "<img src=\"" + FILENAME(brandLogoFileName.GetFullPath()) + 
+                        "\" alt=\"" + brandLogoFileName.GetFullName() + "\"><br>";
       }
 
       if (strURL.IsEmpty()) {
@@ -94,6 +92,7 @@ Lyrics::Lyrics(wxWindow* parent, wxWindowID id,
       mBrandingPanel->SetPage(strBranding);
       mBrandingHeight = DEFAULT_BRANDING_HEIGHT;
    } else {
+      mBrandingPanel = NULL;
       mBrandingHeight = 0;
    }
 
@@ -382,13 +381,16 @@ void Lyrics::OnPaint(wxPaintEvent &evt)
 void Lyrics::OnSize(wxSizeEvent &evt)
 {
    GetClientSize(&mWidth, &mHeight);
-   //vvv UmixIt: Remove lower lyrics display for BNL release.
-   int nTenthOfHeight = mHeight / 10;
-   mBrandingHeight = (DEFAULT_BRANDING_HEIGHT > nTenthOfHeight) ? DEFAULT_BRANDING_HEIGHT : nTenthOfHeight;
-   mKaraokeHeight = (mHeight - mBrandingHeight); // gray bar? * 9 / 10; // mHeight * 3 / 4; // mKaraokeHeight = mHeight / 2;
-   // mBrandingPanel->SetSize(0, mKaraokeHeight, mWidth, mHeight - mKaraokeHeight);
-   mBrandingPanel->SetSize(0, mKaraokeHeight, // gray bar? (mHeight - mBrandingHeight), 
-                           mWidth, mBrandingHeight);
+   if (mBrandingPanel != NULL) {
+      int nTenthOfHeight = mHeight / 10;
+      mBrandingHeight = (DEFAULT_BRANDING_HEIGHT > nTenthOfHeight) ? DEFAULT_BRANDING_HEIGHT : nTenthOfHeight;
+      mKaraokeHeight = (mHeight - mBrandingHeight); // gray bar? * 9 / 10; // mHeight * 3 / 4; // mKaraokeHeight = mHeight / 2;
+      // mBrandingPanel->SetSize(0, mKaraokeHeight, mWidth, mHeight - mKaraokeHeight);
+      mBrandingPanel->SetSize(0, mKaraokeHeight, // gray bar? (mHeight - mBrandingHeight), 
+                              mWidth, mBrandingHeight);
+   } else {
+      mKaraokeHeight = mHeight;
+   }
    
    gKaraokeFontPointSize = (int)((float)(DEFAULT_FONT_POINTSIZE * mHeight) / (float)LYRICS_DEFAULT_HEIGHT);
    // Usually don't get the size window we want, usually less than 
