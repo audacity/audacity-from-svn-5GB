@@ -555,7 +555,7 @@ void ReleaseMP3Exporter()
             void *handle = NULL;
             if (wxFileExists(mLibPath))
             {
-               handle = dlopen(mLibPath, RTLD_LAZY);
+               handle = dlopen(OSFILENAME(mLibPath), RTLD_LAZY);
 
                if (!handle)
                   return false;
@@ -564,37 +564,38 @@ void ReleaseMP3Exporter()
                return false;
 
             /* get function pointers from the shared library */
+            /* LLL - The symbols names should not be converted to unicode */
 
-            lame_init = (lame_init_t *)dlsym(handle, wxT("lame_init"));
-            get_lame_version = (get_lame_version_t *)dlsym(handle, wxT("get_lame_version"));
+            lame_init = (lame_init_t *)dlsym(handle, "lame_init");
+            get_lame_version = (get_lame_version_t *)dlsym(handle, "get_lame_version");
             lame_init_params = 
-               (lame_init_params_t *) dlsym(handle, wxT("lame_init_params"));
+               (lame_init_params_t *) dlsym(handle, "lame_init_params");
             lame_encode_buffer =
-                (lame_encode_buffer_t *) dlsym(handle, wxT("lame_encode_buffer"));
+                (lame_encode_buffer_t *) dlsym(handle, "lame_encode_buffer");
             lame_encode_buffer_interleaved =
-                (lame_encode_buffer_interleaved_t *) dlsym(handle, wxT("lame_encode_buffer_interleaved"));
+                (lame_encode_buffer_interleaved_t *) dlsym(handle, "lame_encode_buffer_interleaved");
             lame_encode_flush =
-                (lame_encode_flush_t *) dlsym(handle, wxT("lame_encode_flush"));
+                (lame_encode_flush_t *) dlsym(handle, "lame_encode_flush");
             lame_close =
-                (lame_close_t *) dlsym(handle, wxT("lame_close"));
+                (lame_close_t *) dlsym(handle, "lame_close");
 
             lame_close =
-                (lame_close_t *) dlsym(handle, wxT("lame_close"));
+                (lame_close_t *) dlsym(handle, "lame_close");
 
             lame_set_in_samplerate =
-                (lame_set_in_samplerate_t *) dlsym(handle, wxT("lame_set_in_samplerate"));
+                (lame_set_in_samplerate_t *) dlsym(handle, "lame_set_in_samplerate");
             lame_set_out_samplerate =
-                (lame_set_out_samplerate_t *) dlsym(handle, wxT("lame_set_out_samplerate"));
+                (lame_set_out_samplerate_t *) dlsym(handle, "lame_set_out_samplerate");
             lame_set_num_channels =
-                (lame_set_num_channels_t *) dlsym(handle, wxT("lame_set_num_channels"));
+                (lame_set_num_channels_t *) dlsym(handle, "lame_set_num_channels");
             lame_set_quality =
-                (lame_set_quality_t *) dlsym(handle, wxT("lame_set_quality"));
+                (lame_set_quality_t *) dlsym(handle, "lame_set_quality");
             lame_get_quality =
-                (lame_get_quality_t *) dlsym(handle, wxT("lame_get_quality"));
+                (lame_get_quality_t *) dlsym(handle, "lame_get_quality");
             lame_set_brate =
-                (lame_set_brate_t *) dlsym(handle, wxT("lame_set_brate"));
+                (lame_set_brate_t *) dlsym(handle, "lame_set_brate");
             lame_get_brate =
-                (lame_get_brate_t *) dlsym(handle, wxT("lame_get_brate"));
+                (lame_get_brate_t *) dlsym(handle, "lame_get_brate");
 
             /* we assume that if all the symbols are found, it's a valid library */
 
