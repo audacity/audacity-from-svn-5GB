@@ -97,6 +97,7 @@ bool EffectNoise::MakeNoise(float *buffer, sampleCount len, float fs, float ampl
        white=buf0=buf1=buf2=buf3=buf4=buf5=0;
 
        // 0.55f is an experimental normalization factor: thanks to Martyn
+       amplitude *= 0.55f;
        for(i=0; i<len; i++) {
         white=(rand() / div) - 1.0f;
         buf0=0.997f * buf0 + 0.029591f * white;
@@ -105,7 +106,7 @@ bool EffectNoise::MakeNoise(float *buffer, sampleCount len, float fs, float ampl
         buf3=0.850f * buf3 + 0.090579f * white;
         buf4=0.620f * buf4 + 0.108990f * white;
         buf5=0.250f * buf5 + 0.255784f * white;
-        buffer[i] = 0.55f * amplitude * (buf0 + buf1 + buf2 + buf3 + buf4 + buf5);
+        buffer[i] = amplitude * (buf0 + buf1 + buf2 + buf3 + buf4 + buf5);
        };
        break;
 
@@ -118,10 +119,11 @@ bool EffectNoise::MakeNoise(float *buffer, sampleCount len, float fs, float ampl
        a0=1.0f-b1;
 
        // 6.2f is an experimental normalization factor: thanks to Martyn
+       amplitude *= 6.2f;
        for(i=0; i<len; i++){
          white=(rand() / div) - 1.0f;
          y = (a0 * white + b1 * y);
-         buffer[i] = 6.2f * amplitude * y;
+         buffer[i] = amplitude * y;
        };
        break;
    }
