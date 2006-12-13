@@ -1592,6 +1592,7 @@ void AudacityProject::OpenFile(wxString fileName)
    delete ff;
 
    wxString temp = LAT1CTOWX(buf);
+
    if (temp == wxT("AudacityProject")) {
       // It's an Audacity 1.0 (or earlier) project file.
       // Convert to the new format.

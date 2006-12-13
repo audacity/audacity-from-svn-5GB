@@ -70,7 +70,7 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
    S.StartStatic( _("Behaviors"),1 );
    {
       S.TieCheckBox( _("&Autoscroll while playing"),
-         wxT("/GUI/AutoScroll"), false);
+         wxT("/GUI/AutoScroll"), true);
       S.TieCheckBox( _("Al&ways allow pausing"),
          wxT("/GUI/AlwaysEnablePause"), true);
       S.TieCheckBox( _("&Update spectrogram while playing"),
