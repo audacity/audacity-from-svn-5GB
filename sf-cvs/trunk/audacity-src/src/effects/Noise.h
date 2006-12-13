@@ -63,7 +63,7 @@ class EffectNoise:public Effect {
    double noiseAmplitude;
 
  protected:
-   virtual bool EffectNoise::MakeNoise(float *buffer, sampleCount len, float fs, float amplitude);
+   virtual bool MakeNoise(float *buffer, sampleCount len, float fs, float amplitude);
 
  // friendship ...
  friend class NoiseDialog;
