@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: AudacityWebsite\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-17 12:28-0700\n"
-"PO-Revision-Date: 2006-11-06 15:38+0100\n"
+"PO-Revision-Date: 2006-12-13 10:18+0100\n"
 "Last-Translator: Christian Brochec <christian.brochec@ac-rennes.fr>\n"
 "Language-Team: AudacityFr <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -310,46 +310,46 @@ msgstr "Audacity a été lancé par Domini Mazzoni et Roger Dannenberg à la fin
 msgid "Lead Developers"
 msgstr "Chefs de projets et développeurs principaux"
 
-#: about/credits.php:31
+#: about/credits.php:32
 msgid "Active Developers"
 msgstr "Développeurs actifs"
 
-#: about/credits.php:38
+#: about/credits.php:40
 msgid "Contributors"
 msgstr "Contributeurs"
 
-#: about/credits.php:42
+#: about/credits.php:44
 msgid "Nyquist author, Audacity founder, data structure architect"
 msgstr "auteur de Nyquist, fondateur d'Audacity et achitecte de la structure de données"
 
-#: about/credits.php:49
+#: about/credits.php:51
 msgid "lead documentation writer"
 msgstr "Auteur principal de la documentation"
 
-#: about/credits.php:54
+#: about/credits.php:56
 #: community/index.php:21
 #: community/translation.php:10
 #: main.inc.php:67
 msgid "Translators"
 msgstr "Traducteurs"
 
-#: about/credits.php:100
+#: about/credits.php:102
 msgid "Libraries"
 msgstr "Bibliothèques"
 
-#: about/credits.php:101
+#: about/credits.php:103
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacity s'inspire en partie du code des projets suivants:"
 
-#: about/credits.php:115
+#: about/credits.php:117
 msgid "Thanks"
 msgstr "Remerciements"
 
-#: about/credits.php:116
+#: about/credits.php:118
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "Il y a bien d'autres personnes et organisations que nous voudrions remercier. Beaucoup d'entre elles ont apporté des codes, des correctifs, des commentaires, des financements, du temps et bien d'autres choses au projet. D'autres ont simplement apporté des outils qui ont rendu ce travail possible."
 
-#: about/credits.php:138
+#: about/credits.php:140
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(Si vous vous sentez oublié, faites-le nous savoir!)"
 
@@ -381,7 +381,7 @@ msgstr ""
 "<p>A voir aussi: <a href=\"http://www.gnu.org/licenses/gpl-faq.fr.html\">FAQ de la GNU GPL</a>.</p>"
 
 #: about/news.php:21
-#: index.php:90
+#: index.php:84
 msgid "More news items..."
 msgstr "Plus d'actualités"
 
@@ -971,7 +971,7 @@ msgstr "Pour tous les utilisateurs"
 
 #: download/index.php:30
 #: download/index.php:46
-#: download/windows.php:10
+#: download/windows.php:11
 #: download/beta_windows.php:11
 #: main.inc.php:34
 #: main.inc.php:41
@@ -1014,27 +1014,28 @@ msgstr "Si vous souhaitez compilez vous-meme Audacity, téléchargez le <a href=
 msgid "You may modify, distribute, and sell Audacity under the <a href=\"../about/license\">GNU GPL</a>."
 msgstr "Vous pouvez modifier, distribuer et vendre Audacity en accord avec les termes de la <a href=\"../about/license\">GNU GPL</a>."
 
-#: download/windows.php:16
+#: download/windows.php:17
 #: download/source.php:17
-#: download/mac.php:20
-#: download/beta_mac.php:24
+#: download/mac.php:18
+#: download/beta_mac.php:22
 #: download/beta_source.php:20
 #: download/beta_windows.php:20
 msgid "Recommended Download"
 msgstr "Recommandé"
 
-#: download/windows.php:19
+#: download/windows.php:20
 #: download/beta_windows.php:23
+#: download/beta_windows.php:25
 #, php-format
 msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor."
 msgstr "<a href=\"%s\">Installeur Audacity %s</a> (exécutable .exe, %.1lf MB) - la dernière version stable de Audacity."
 
-#: download/windows.php:22
+#: download/windows.php:23
 #: download/source.php:23
-#: download/mac.php:34
+#: download/mac.php:31
 #: download/beta_mac.php:31
 #: download/beta_source.php:26
-#: download/beta_windows.php:26
+#: download/beta_windows.php:28
 msgid "Optional Downloads"
 msgstr "Autres téléchargements"
 
@@ -1043,35 +1044,41 @@ msgstr "Autres téléchargements"
 #. files available in your language, add them here.  Otherwise, do not
 #. translate this string.  (Or make the translation identical to the
 #. original string.)
-#: download/windows.php:29
 #: download/windows.php:30
-#: download/beta_windows.php:33
-#: download/beta_windows.php:34
+#: download/windows.php:31
+#: download/beta_windows.php:35
+#: download/beta_windows.php:36
 msgid "localized_downloads_windows"
 msgstr "version locales pour Windows"
 
 #: download/windows.php:35
-#: download/beta_windows.php:39
+#: download/beta_windows.php:40
+#, php-format
+msgid "<a href=\"%s\">LADSPA plugins %s installer</a> (.exe file, %.1lf MB) - over 90 plug-ins"
+msgstr "<a href=\"%s\">Installeur de modules (plugins) %s LADSPA</a> (exécutable .exe, %.1lf MB) -plus de 90 modules."
+
+#: download/windows.php:37
+#: download/beta_windows.php:43
 #, php-format
 msgid ""
 "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
 "  - If you can’t run the installer because you are in a computer lab or other restricted environment, download and unzip this file instead."
 msgstr "<a href=\"%s\">Fichier zip Audacity %s</a> (%.1lf MB) Si vous ne pouvez pas exécuter l'installeur (par exemple pour cause de droits restreints), téléchargez et dézippez ce fichier."
 
-#: download/windows.php:40
-#: download/mac.php:39
-#: download/beta_mac.php:36
-#: download/beta_windows.php:44
+#: download/windows.php:42
+#: download/mac.php:36
+#: download/beta_mac.php:41
+#: download/beta_windows.php:52
 msgid "System Requirements"
 msgstr "Configuration minimale"
 
-#: download/windows.php:42
-#: download/beta_windows.php:46
+#: download/windows.php:44
+#: download/beta_windows.php:54
 msgid "Windows 98, ME, 2000, XP, or later.  (Sorry, Audacity is not supported on Windows 95 or NT 4.0.)"
 msgstr "Windows 98, ME, 2000, XP ou plus récent. (Audacity n'a pas été porté sous Windows 95 et NT 4.0.)"
 
-#: download/windows.php:43
-#: download/beta_windows.php:47
+#: download/windows.php:45
+#: download/beta_windows.php:55
 msgid "Audacity runs best with at least 64 MB RAM and 300 MHz processor."
 msgstr "64 MB RAM - Processeur 300 MHz"
 
@@ -1178,48 +1185,35 @@ msgstr ""
 msgid "Mac OS 9 / X"
 msgstr "Mac OS 9 et X"
 
-#: download/mac.php:18
-#: download/beta_mac.php:17
-#: index.php:69
+#: download/mac.php:21
 #, php-format
-msgid "Using an Intel Mac?  Click Here!"
-msgstr "Utilisateur d' un Intel Mac ? Cliquez ici !"
+msgid "For Mac OS X (PPC): <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor."
+msgstr "Pour Mac OS X (PPC) : <a href=\"%s\">Audacity %s</a> (fichier .dmg, %.1lf MB) - la dernière version de l'éditeur audio libre Audacity"
 
 #: download/mac.php:23
-#: download/beta_mac.php:27
 #, php-format
-msgid "For Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor."
-msgstr "Pour Mac OS X : <a href=\"%s\">Audacity %s</a> (fichier .dmg, %.1lf MB) - la dernière version de l'éditeur audio libre Audacity"
+msgid "For Mac OS X (Intel): <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor."
+msgstr "Pour Mac OS X (Intel) : <a href=\"%s\">Audacity %s</a> (fichier .dmg, %.1lf MB) - la dernière version de l'éditeur audio libre Audacity"
 
-#: download/mac.php:25
-msgid ""
-"The above version of Audacity is not suitable for \n"
-"  Intel-based Macs due to issues with Rosetta. Pre-release Native Intel\n"
-"  binaries can be found at "
-msgstr ""
-"La version ci_dessus n'est pas adapté aux \n"
-"  Mac Intel à cause de conflits avec Rosetta. Une pré-distribution \n"
-"  pour Intel est disponible à  "
-
-#: download/mac.php:30
+#: download/mac.php:27
 #, php-format
 msgid "For Mac OS 9: <a href=\"%s\">Audacity %s</a> (.sit file, %.1lf MB)"
 msgstr "Pour Mac OS 9 : <a href=\"%s\">Audacity %s</a> (fichier .sit, %.1lf MB)"
 
-#: download/mac.php:31
+#: download/mac.php:28
 msgid "(Unfortunately, we no longer have the resources to provide new versions of Audacity for Mac OS 9.)"
 msgstr "(Malheureusement, nous n'avons plus les moyens de fournir de nouvelles versions du logiciel pour Mac OS 9.)"
 
-#: download/mac.php:41
+#: download/mac.php:38
 msgid "Audacity 1.2 requires Mac OS X 10.1 or later."
 msgstr "Audacity 1.2 nécessite Mac OS X 10.1 ou plus."
 
-#: download/mac.php:42
+#: download/mac.php:39
 msgid "Audacity 1.0 requires Mac OS 9.0 or later."
 msgstr "Audacity 1.0 nécessite Mac OS X 9.0 ou plus."
 
-#: download/mac.php:43
-#: download/beta_mac.php:39
+#: download/mac.php:40
+#: download/beta_mac.php:44
 msgid "Audacity runs best with at least 64 MB RAM and a 300 MHz processor."
 msgstr "64 MB RAM - Processeur 300 MHz"
 
@@ -1259,6 +1253,107 @@ msgstr "Mac OS X : Audacity ne peut travailler sur des fichiers ou des répertoi
 
 #: download/release-notes.php:25
 msgid ""
+"<h3>Changes in Audacity 1.2.6</h3>\n"
+"<ul>\n"
+"<li>Fixed memory leaks on Windows.\n"
+"</li>\n"
+"\n"
+"<li>Corrected font size problems.\n"
+"</li>\n"
+"\n"
+"<li>Enabled missing FLAC support.\n"
+"</li>\n"
+"\n"
+"<li>Fixed Mac OS X (PPC only) screen redraw issues.\n"
+"</li>"
+msgstr ""
+"<h3>Modifications dans Audacity 1.2.6</h3>\n"
+"<ul>\n"
+"<li>Manque de mémoire sous Windows fixé.\n"
+"</li>\n"
+"\n"
+"<li>Problèmes de taille de fontes corrigés.\n"
+"</li>\n"
+"\n"
+"<li>Support FLAC activé.\n"
+"</li>\n"
+"\n"
+"<li>Réswolution de problèmes de redessin d'écran pour  Mac OS X (PPC only).\n"
+"</li>"
+
+#: download/release-notes.php:41
+msgid ""
+"<h3>Changes in Audacity 1.2.5</h3>\n"
+"<ul>\n"
+"<li>An official Intel Mac version is now available.\n"
+"</li>\n"
+"<li>Fixed bug in Generate Silence which caused it to apply to all tracks\n"
+"    instead of just the selected ones.\n"
+"</li>\n"
+"<li>Mac OS X: audio device opening code has been rewritten.  First, it\n"
+"    is much more conservative about changing device settings; it will\n"
+"    not change settings when you open the program or close the\n"
+"    preferences dialog anymore, and it will not change the settings when\n"
+"    you begin playback/recording if the current settings are adequate.\n"
+"    When it does change the settings, it should work much better on\n"
+"    devices such as the Griffin iMic, ART USB Phono Plus,\n"
+"    and Ion iMX02 USB.\n"
+"</li>\n"
+"<li>Mac OS X: added new Audio I/O preference that lets you tell Audacity\n"
+"    to never change any audio device settings.\n"
+"</li>\n"
+"<li>Newer libsndfile supports FLAC import and export\n"
+"</li>\n"
+"<li>Updated soundtouch to current version which is faster and better quality\n"
+"</li>\n"
+"<li>Modified configure script prefers system libraries to local copies to\n"
+"    reduce compilation times and memory usage.\n"
+"</li>\n"
+"<li>Minor updates to help files.\n"
+"</li>\n"
+"<li>New or updated translations: Bulgarian (bg), Galician (gl),\n"
+"    Traditional Chinese (zh_TW), Simplified Chinese (zh), Slovenian (sl),\n"
+"    Swedish (sv), Bangladeshi (bn), Slovakian (sk), Romanian (ro),\n"
+"    Lithuanian (lt), Welsh (cy), and Turkish (tr).\n"
+"</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Changements dans Audacity 1.2.5</h3>\n"
+"<ul>\n"
+"<li>Une version Intel Mac officielle est désormais disponible.\n"
+"</li>\n"
+"<li>Un bogue est fixé dans Générer silence. Il appliquait cet effet à toutes les pistes\n"
+"    et non aux seules sélectionnées.\n"
+"</li>\n"
+"<li>Mac OS X: codes d'ouverture des périphériques audio réécrits.  Tout d'abord, \n"
+"    il est nettement plus conservateur quant à la modification des paramètres des \n"
+"    périphériques ; il ne changera plus les paramètres à l'ouverture du programme \n"
+"    ou à la fermeture de la boîte de dialogue des préférences. Il ne le fera pas \n"
+"    au démarrage de l'enregistrement ou de la lecture quand les réglages courants\n"
+"     sont adéquats. La modification des paramètres fonctionnera bien mieux sur des \n"
+"    périphériques tels  Griffin iMic, ART USB Phono Plus et Ion iMX02 USB.\n"
+"</li>\n"
+"<li>Mac OS X: ajout de nouvelles préférences d'E/S Audio permettant de demander à Audacity\n"
+"    de ne jamais changer les paramêtres des périphériques audio.\n"
+"</li>\n"
+"<li>Libsndfile plus récent supportant l'import et l'export FLAC\n"
+"</li>\n"
+"<li>Passage à la version courante de soundtouch, plus rapide et de meilleure qualité\n"
+"</li>\n"
+"<li>Le script de configuration préfère désormais les bibliothèques système aux\n"
+"   copies locales afin de réduire le temps de compilation et l'usage de la mémoire.\n"
+"</li>\n"
+"<li>Mises à jour mineures pour les fichiers d'aide.\n"
+"</li>\n"
+"<li>Nouvelles traduction et mises à jour: Bulgare (bg), Galicien (gl),\n"
+"    Chinois traditionnel (zh_TW), Chinois simplifié (zh), Slovenien (sl),\n"
+"    Suédois (sv), Bangladeshi (bn), Slovaque (sk), Roumain (ro),\n"
+"    Lithuanien (lt), Gallois (cy), et Turc (tr).\n"
+"</li>\n"
+"</ul>"
+
+#: download/release-notes.php:76
+msgid ""
 "<h3>Changes in Audacity 1.2.4b</h3>\n"
 "<ul>\n"
 "<li>A serious problem with the French translation was corrected.\n"
@@ -1270,7 +1365,7 @@ msgstr ""
 "<li>(caractères accentués) \n"
 "</ul>"
 
-#: download/release-notes.php:30
+#: download/release-notes.php:81
 msgid ""
 "<h3>Changes in Audacity 1.2.4</h3>\n"
 "<ul>\n"
@@ -1398,8 +1493,8 @@ msgid "LADSPA Plug-Ins"
 msgstr "Modules LADSPA"
 
 #: download/plugins.php:17
-msgid "Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity comes with sample LADSPA effects for Mac and Windows.  For more information and downloads, see the <a href=\"http://www.ladspa.org/\">LADSPA web site</a>.</p>"
-msgstr "Audacity dispose du suuport intégré des modules LADSPA. Ceux-ci sont en majorité destinés à Linux, mais certains sont disponibles sur d'autres systèmes d'exploitation. Sous Windows et Mac, Audacity est distribué avec quelques exemples d'effets LADSPA. Pour plus d'information, visitez le <a href=\"http://www.ladspa.org/\">web site de LADSPA</a>.</p>"
+msgid "Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity comes with sample LADSPA effects for Mac. For Windows, a <a href=\"http://audacity.sourceforge.net/beta/ladspa/ladspa-0.4.15.exe\">set of over 90 LADSPA effects</a> is available.  For more information and downloads, see the <a href=\"http://www.ladspa.org/\">LADSPA web site</a>."
+msgstr "Audacity dispose du suuport intégré des modules LADSPA. Ceux-ci sont en majorité destinés à Linux, mais certains sont disponibles sur d'autres systèmes d'exploitation. Sous Mac, Audacity est distribué avec quelques exemples d'effets LADSPA. Pour Windows, un <a href=\"http://audacity.sourceforge.net/beta/ladspa/ladspa-0.4.15.exe\">set de plus de 90 effets LADSPA</a> est disponible.  Pour plus d'information ainsi que des téléchargements, visitez le <a href=\"http://www.ladspa.org/\">web site de LADSPA</a>.</p>"
 
 #: download/plugins.php:19
 msgid "Nyquist Plug-Ins"
@@ -1427,50 +1522,84 @@ msgid "<p>These are optional plug-in effects for the Audacity sound editor.  The
 msgstr "<p>Voici une liste de modules d'effets supplémentaires pour Audacity. Ils sont écrits en <a href=\"../help/nyquist\">langage de programmation Nyquist</a>. Les instructions d'installation se trouvent sur la <a href=\"plugins\">page des modules</a>.</p>"
 
 #: download/features-1.3-a.php:9
-#: download/features-1.3-b.php:49
-#: download/features-1.3-g.php:67
+#: download/features-1.3-b.php:63
+#: download/features-1.3-f.php:55
+#: download/features-1.3-g.php:63
+#: download/features-1.3-h.php:67
+#: download/features-1.3-i.php:86
+#: download/features-1.3-j.php:80
+#: download/features-1.3-k.php:52
+#: download/features-1.3-l.php:62
 msgid "New features in Audacity 1.3"
 msgstr "Nouvelles fonctionnalités d'Audacity 1.3"
 
 #: download/features-1.3-a.php:17
-msgid "New features"
-msgstr "Nouvelles fonctionnalités"
+msgid "New features in Audacity 1.3.1 and 1.3.2"
+msgstr "Nouvelles fonctionnalités d'Audacity 1.3"
 
-#: download/features-1.3-a.php:18
-msgid "The new features in Audacity 1.3 have been grouped into the following six major categories.  Click on the links below for more information."
-msgstr "Les nouvelles fonctionnalités d'Audacity 1.3 ont été regroupées en six grandes catégories. Cliquez sur les liens ci-dessous pour plus d'informations."
+#: download/features-1.3-a.php:20
+#: download/features-1.3-i.php:70
+msgid "Improved Toolbar Docking"
+msgstr "Verroullage amélioré de la barre d'outils "
 
 #: download/features-1.3-a.php:21
-#: download/features-1.3-c.php:259
-msgid "Collapse/Expand Tracks"
-msgstr "Minimiser/Maximiser (?) les pistes"
+msgid "Track focus for improved keyboard navigation"
+msgstr "Focalisation de piste pour une navigation au clavier améliorée"
 
 #: download/features-1.3-a.php:22
-#: download/features-1.3-b.php:56
-#: download/features-1.3-d.php:62
-msgid "Multiple clips per track"
-msgstr "Plusieurs clips par piste"
+#: download/features-1.3-i.php:77
+#: download/features-1.3-k.php:36
+msgid "Repair and Equalization effects"
+msgstr "Effets de réparation et d'égalisation"
 
 #: download/features-1.3-a.php:23
-#: download/features-1.3-c.php:266
-#: download/features-1.3-e.php:67
+#: download/features-1.3-j.php:71
+#: download/features-1.3-l.php:46
+msgid "Timer Recording"
+msgstr "Enregistrement programmé"
+
+#: download/features-1.3-a.php:24
+#: download/features-1.3-d.php:56
+#: download/features-1.3-k.php:43
+msgid "Project saving and recovery"
+msgstr "Sauvegarde et récupération du projet"
+
+#: download/features-1.3-a.php:25
+#: download/features-1.3-f.php:40
+#: download/features-1.3-l.php:53
 msgid "Selection Bar"
 msgstr "Barre de sélection"
 
-#: download/features-1.3-a.php:24
-#: download/features-1.3-d.php:69
-#: download/features-1.3-f.php:33
+#: download/features-1.3-a.php:26
+#: download/features-1.3-b.php:50
+#: download/features-1.3-d.php:63
+msgid "Mac OS X features"
+msgstr "Fonctionnalités Mac OS X"
+
+#: download/features-1.3-a.php:29
+msgid "New features in Audacity 1.3.0"
+msgstr "Nouvelles fonctionnalités d'Audacity 1.3"
+
+#: download/features-1.3-a.php:32
+#: download/features-1.3-c.php:259
+#: download/features-1.3-f.php:47
+msgid "Collapse/Expand Tracks"
+msgstr "Minimiser/Maximiser (?) les pistes"
+
+#: download/features-1.3-a.php:33
+#: download/features-1.3-b.php:56
+#: download/features-1.3-e.php:67
+msgid "Multiple clips per track"
+msgstr "Plusieurs clips par piste"
+
+#: download/features-1.3-a.php:34
+#: download/features-1.3-c.php:266
+#: download/features-1.3-g.php:54
 msgid "Improved Label Tracks"
 msgstr "Labels de piste améliorés"
 
-#: download/features-1.3-a.php:25
+#: download/features-1.3-a.php:35
 #: download/features-1.3-e.php:74
-#: download/features-1.3-g.php:58
-msgid "QuickTime and Audio Units on Mac OS X"
-msgstr "QuickTime et Audio Units sous Mac OS X"
-
-#: download/features-1.3-a.php:26
-#: download/features-1.3-f.php:40
 msgid "Other features"
 msgstr "Autres fonctionnalités"
 
@@ -1494,22 +1623,42 @@ msgstr "Après avoir minimisé"
 msgid "After selecting 'Collapse All Tracks' from the View menu"
 msgstr "Après avoir sélectionné 'Minimiser toutes les pistes' dans le menu Affichage"
 
-#: download/features-1.3-b.php:48
+#: download/features-1.3-b.php:49
 #: download/features-1.3-c.php:258
-#: download/features-1.3-d.php:61
+#: download/features-1.3-d.php:55
 #: download/features-1.3-e.php:66
-#: download/features-1.3-f.php:32
-#: download/features-1.3-g.php:57
+#: download/features-1.3-f.php:39
+#: download/features-1.3-g.php:53
+#: download/features-1.3-i.php:69
+#: download/features-1.3-j.php:63
+#: download/features-1.3-k.php:35
+#: download/features-1.3-l.php:45
 msgid "Back: "
 msgstr "Précédent :"
 
 #: download/features-1.3-b.php:55
 #: download/features-1.3-c.php:265
-#: download/features-1.3-d.php:68
+#: download/features-1.3-d.php:62
 #: download/features-1.3-e.php:73
-#: download/features-1.3-f.php:39
+#: download/features-1.3-f.php:46
+#: download/features-1.3-h.php:57
+#: download/features-1.3-i.php:76
+#: download/features-1.3-j.php:70
+#: download/features-1.3-k.php:42
+#: download/features-1.3-l.php:52
 msgid "Next: "
 msgstr "Suivant :"
+
+#: download/features-1.3-b.php:62
+#: download/features-1.3-f.php:54
+#: download/features-1.3-g.php:62
+#: download/features-1.3-h.php:66
+#: download/features-1.3-i.php:85
+#: download/features-1.3-j.php:79
+#: download/features-1.3-k.php:51
+#: download/features-1.3-l.php:61
+msgid "Top: "
+msgstr "Niveau supérieur :"
 
 #: download/features-1.3-c.php:9
 msgid "Audacity 1.3: Multiple clips per track"
@@ -1686,14 +1835,10 @@ msgid "The project sample rate control on the selection bar"
 msgstr "Le contrôle du taux d'échantillonnage du projet"
 
 #: download/features-1.3-d.php:35
-msgid "The current selection on the selection bar"
-msgstr "La sélection courante dans la barre de sélection"
+msgid "Typing a new time directly into the selection bar."
+msgstr "Frappe directe d'un nouveau chrono dans la barre de sélection"
 
 #: download/features-1.3-d.php:41
-msgid "The audio position on the selection bar"
-msgstr "La position temporelle du curseur indiquée dans la barre de sélection"
-
-#: download/features-1.3-d.php:47
 msgid "Different time formats supported by the selection bar"
 msgstr "Différents formatages du temps dans la barre de sélection"
 
@@ -1710,8 +1855,8 @@ msgid "To create a label, start by selecting some audio."
 msgstr "Pour créer un marqueur, commencez par sélectionner du contenu audio."
 
 #: download/features-1.3-e.php:27
-msgid "Select 'Add Label At Selection' from the Project menu."
-msgstr "Sélectionner 'Ajouter un marqueur à la sélection' dans le menu Projet."
+msgid "Select 'Add Label At Selection' from the Tracks menu."
+msgstr "Sélectionner 'Ajouter un marqueur à la sélection' dans le menu Pistes."
 
 #: download/features-1.3-e.php:33
 msgid "Type some text into the label."
@@ -1730,16 +1875,24 @@ msgid "After you click, the label region becomes the current selection, allowing
 msgstr "Après un clic, la zone du marqueur devient la sélection courante, vous permettant de réaliser une opération sur d'autres pistes dans la zone comprise dans le marqueur."
 
 #: download/features-1.3-f.php:9
-msgid "Audacity 1.3: QuickTime and Audio Units on Mac OS X"
-msgstr "Audacity 1.3 : QuickTime et AudioUnit sous Mac OS X"
+msgid "Audacity 1.3: Mac OS X features"
+msgstr "Audacity 1.3 : fonctionnalités pour Mac OS X"
 
-#: download/features-1.3-f.php:16
-msgid "On Mac OS X, Audacity can now import any audio file supported by Apple's QuickTime technology.  This includes .MOV and .MP4 (AAC) files.  Unfortunately encrypted audio files (such as those from the iTunes Music Store) cannot be imported directly into Audacity - Apple does not allow this to be done easily because it would be too easy to circumvent the encryption this way."
-msgstr "Sous Mac OS X, Audacity peut désormais importer n'importe quel type de fichiers audio supporté par la technologie Apple QuickTime, notamment les fichiers .MOV et .MP4 (AAC). Malheureusement, les fichiers cryptés (comme ceux associés à iTunes Music Store) ne peuvent être importés directement : Apple n'autorise pas cette manipulation pour éviter de contourner facilement cette protection."
+#: download/features-1.3-f.php:19
+msgid "Audacity's audio I/O library, PortAudio v19, now supports many more Mac audio devices, including multichannel devices that were not supported before."
+msgstr "La bibliothèque d' E/S audio d'Audacity, PortAudio v19, supporte désormais bien plus de périphériques audio Mac, y compris les périphériques multicanaux non supportés auparavant."
 
-#: download/features-1.3-f.php:18
+#: download/features-1.3-f.php:21
+msgid "Audacity is now available for Intel Macs.  For now, this is being provided as a separate download, rather than a universal binary."
+msgstr "Audacity est désormais disponible pour Mac Intel. Il s'agit pour le moment d'un fichier téléchargeable séparément."
+
+#: download/features-1.3-f.php:23
 msgid "Also on Mac OS X, Audacity now supports Audio Unit plug-ins.  Audacity searches for Audio Units in the usual location, in the system or user's Library folder."
-msgstr "Toujours sous Mac OS X, Audacity supporte désormais les modules Audio Unit. Audacity cherche ces modules à leur emplacement usuel, dans le répertoire de libraries du système ou de l'utilisateur."
+msgstr "Toujours sous Mac OS X, Audacity supporte désormais les modules Audio Unit. Audacity cherche ces modules à leur emplacement usuel, dans le répertoire de bibliothèques du système ou de l'utilisateur."
+
+#: download/features-1.3-f.php:35
+msgid "This is the end of new features in Audacity 1.3.1 and 1.3.2.  Continue on to read about features that were previously introduced in Audacity 1.3.0."
+msgstr "C'est fini pour les nouvelles fonctionnalités d'Audacity 1.3.1 et 1.3.2. Poursuivez avec les fonctionnalités précédemment introduites dans Audacity 1.3.0."
 
 #: download/features-1.3-g.php:9
 msgid "Audacity 1.3: Other features"
@@ -1762,54 +1915,50 @@ msgid "When you open an Audacity project in version 1.3, it checks to make sure 
 msgstr "Lorsque vous ouvrez un projet Audacity avec la version 1.3, il vérifie que tous les fichiers de données sont présents."
 
 #: download/features-1.3-g.php:24
-msgid "Transcription toolbar"
-msgstr "Barre de transcription"
-
-#: download/features-1.3-g.php:26
-msgid "A new toolbar for creating transcriptions of speech in Label Tracks.  Includes features that enable you to change the playback speed, create labels automatically based on onsets, and more.  To enable this feature, go to the Interface tab of the Preferences."
-msgstr "Une nouvelle barre d'outils pour créer des transcriptions de parole dans les pistes de marqueurs. Avec la possibilité de changer la vitesse de restitution, de créer des marqueurs de manière automatique, etc... Activez cette fonctionnalité à partir de l'onglet Interface des Préférences."
-
-#: download/features-1.3-g.php:28
 msgid "Upload via FTP"
 msgstr "Télécharger par FTP"
 
-#: download/features-1.3-g.php:30
+#: download/features-1.3-g.php:26
 msgid "Audacity 1.3 has an experimental new dialog for uploading files to a server via FTP.  Currently it is just a simple FTP client; in the future we will integrate this feature into Audacity more so you can publish a project directly to a site as a Podcast, for example."
 msgstr "Audacity 1.3 dispose d'un nouvel outil pour communiquer par FTP (pour envoyer des fichiers sur un serveur par exemple). Actuellement, ce n'est qu'un client FTP simple; dans le futur nous intégrerons cette fonctionnalité à Audacity de manière à ce que la publication sur un site directement à partir d'Audacity soit possible comme avec un PodCast par exemple."
 
-#: download/features-1.3-g.php:32
+#: download/features-1.3-g.php:28
 msgid "Based on wxWidgets 2.6"
 msgstr "Basé sur les wxWidgets 2.6"
 
-#: download/features-1.3-g.php:34
+#: download/features-1.3-g.php:30
 msgid "Previous versions of Audacity were based on wxWidgets 2.4.  This change brings support for GTK2 widgets on Unix and better Unicode support on all platforms, plus many other minor enhancements under the hood."
-msgstr "Les versions précédentes d'Audacity étaient basées sur wxWidgets 2.4.. Ceci apporte le support des widgets GTK2 sous Unix et celui de Unicode sur toutes les plate-formes, et d'autres menues améliorations."
+msgstr "Les versions précédentes d'Audacity étaient basées sur wxWidgets 2.4. Ceci apporte le support des widgets GTK2 sous Unix et celui de Unicode sur toutes les plate-formes, et d'autres menues améliorations."
 
-#: download/features-1.3-g.php:36
+#: download/features-1.3-g.php:32
 msgid "Batch / CleanSpeech"
 msgstr "Traitement par lot/CleanSpeech"
 
-#: download/features-1.3-g.php:38
+#: download/features-1.3-g.php:34
 msgid "Audacity has a new feature that allows you to process a bunch of files, for example normalizing and converting to MP3.  The CleanSpeech mode provides a simplified interface for some standard adjustments typically made on speech recordings.  You can access these features in the Batch tab of the Preferences dialog."
 msgstr "Audacity peut désormais traiter une série de fichiers, par exemple pour normaliser et convertir en MP3. Le mode CleanSpeech fournit une interface simple pour des ajustements habituellement réalisés sur des enregistrements de voix. Accédez à ces fonctionnalités par l'onglet Batch des Préférences."
 
-#: download/features-1.3-g.php:40
+#: download/features-1.3-g.php:36
 msgid "Cut lines"
 msgstr "Couper sans perte"
 
-#: download/features-1.3-g.php:42
+#: download/features-1.3-g.php:38
 msgid "When this feature is enabled (in the Interface tab of the Preferences), cutting audio in the middle of a clip does not remove it permanently - at any time in the future, just click on the cut line to restore it."
 msgstr "Si activée dans l'onglet Interface des Préférences, couper une sélection audio au sein d'un clip n'entraînera pas la perte irrémédiable de son contenu mais placera celle-ci dans le presse-papier."
-
-#: download/features-1.3-g.php:66
-msgid "Top: "
-msgstr "Niveau supérieur :"
 
 #: download/beta_linux.php:16
 msgid "The beta version of Audacity has not been packaged for very many distributions yet.  You probably want to compile Audacity from <a href=\"beta_source\">source code</a>."
 msgstr "La version bêta d'Audacity n'a pas encore été empaquetée pas beaucoup de distributions à ce jour. Vous avez la possibilité de le compiler à partir du <a href=\"beta_source\">code source</a>."
 
-#: download/beta_mac.php:38
+#: download/beta_mac.php:25
+#: download/beta_mac.php:26
+#: download/beta_mac.php:35
+#: download/beta_mac.php:36
+#, php-format
+msgid "<a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB)"
+msgstr "<a href=\"%s\">Audacity %s</a> (fichier .sit, %.1lf MB)"
+
+#: download/beta_mac.php:43
 msgid "Audacity 1.3 requires Mac OS X 10.3 or later."
 msgstr "Audacity 1.2 nécessite Mac OS X 10.3 ou plus."
 
@@ -1909,6 +2058,187 @@ msgstr ""
 "<h3>Podcast Factory&trade; de M-Audio (U.S.) et Pinnacle&trade; (Europe) filiales d'Avid</h3>\n"
 "  <p>Podcast Factory de <a href=\"http://www.m-audio.com/products/en_us/PodcastFactory-main.html\">M-Audio</a> et \n"
 "<a href=\"http://www.pinnaclesys.com/PublicSite/uk/Products/Consumer+Products/Audio/M-Audio/Family?code=UKMaudio\">Pinnacle</a>est une solution matériel/logiciel tout-en-un qui rend aisé l'enregistrement, le montage et la diffusion de podcast de qualité sonore professionnelle. Il est livré avec un microphone de qualité et une interface audio USB 24-bit/48kHz professionnelle permettant de réaliser des enregistrements voix seule ou voix+musique top-niveau. Utilisez le logiciel Audacity inclus pour monter vos enregistrements, créer votre posdcast et le diffuser sur le Web.</p>"
+
+#: download/features-1.3-h.php:9
+msgid "Audacity 1.3: Improved Toolbar Docking"
+msgstr "Audacity 1.3 : verrouillage amélioré de la barre d'outils"
+
+#: download/features-1.3-h.php:16
+msgid "In Audacity 1.3.2 and higher, you can easily dock, undock, and rearrange the location of all of Audacity's toolbars, including the selection bar.  A new blue triangle visually indicates when you are about to dock a toolbar in a particular location."
+msgstr "Dans Audacity 1.3.2 et ultérieur, vous pouvez aisément ancrer, rendre flottantes et réarranger l'emplacement de toutes les barres d'outils d'Audacity, y compris la barre de sélection. Un triangle bleu indique visuellement quand vous pouvez ancrer une barre d'outil sur un emplacement précis."
+
+#: download/features-1.3-h.php:21
+msgid "First, click on the grabber to the left of a toolbar you wish to drag."
+msgstr "Cliquer sur la poignée à gauche de la barre d'outil que vous souhaitez déplacer"
+
+#: download/features-1.3-h.php:27
+msgid "Drag the toolbar away from its original location.<br>If you release the mouse here, it will become a floating toolbar."
+msgstr "Tirer la barre d'outils hors de son emplacement d'origine.<br> En relâchant alors le bourton de la souris, elle deviendra flottante."
+
+#: download/features-1.3-h.php:33
+msgid "While dragging, position the mouse near an edge or between two other toolbars,<br>and a blue triangle appears, indicating a possible location you can dock the toolbar."
+msgstr "Tout en continuant à  la glisser, positionner le curseur de la souris près d'un angle ou entre deux autres barres d'outils.<br> Un triangle bleu apparaît, indiquant un emplacement disponible pour ancrer la barre d'outils."
+
+#: download/features-1.3-h.php:39
+msgid "Release the mouse button near a blue arrow and the toolbar is docked in its new location."
+msgstr "En relâchant le bouton près du triangle bleu, la barre d'outil s'ancre à son nouvel emplacement."
+
+#: download/features-1.3-h.php:42
+msgid "Commands to hide or show toolbars are found in the View menu."
+msgstr "Les commandes d'affichage ou de masquage des barres d'outils sont placées dans le menu Affichage."
+
+#: download/features-1.3-h.php:58
+#: download/features-1.3-j.php:64
+msgid "Track focus"
+msgstr "Visée sur piste"
+
+#: download/features-1.3-i.php:9
+msgid "Audacity 1.3: Track focus"
+msgstr "Audacity 1.3 : visée sur piste"
+
+#: download/features-1.3-i.php:16
+msgid ""
+"In Audacity 1.3.2 and higher, you can fully manipulate the\n"
+"selection using the keyboard.  As always, press the left and right\n"
+"arrows, along with shift and control, to move the cursor or extend a\n"
+"selection to the left or right.  New, press the up or down arrows\n"
+"to change which track is focused, independent of the selection, and\n"
+"press the Enter key to toggle the selectedness of the focused track.\n"
+msgstr ""
+"Dans Audacity 1.3.2 et ultérieur, il est possible de manipuler totalement\n"
+" la sélection à l'aide du clavier. Comme toujours, appuyer sur les flèches \n"
+"droite et gauche, combiné avec Maj. et Contrôle pour déplacer le curseur \n"
+"ou étendre la sélection à gauche ou à droite. Désormais, presser les flèches \n"
+"haut et bas pour modifier la piste visée, indépendamment de la sélection \n"
+"puis presser entrée pour appliquer l'étendue de la sélection à la piste visée.\n"
+
+#: download/features-1.3-i.php:24
+msgid ""
+"The focused track is highlighted in green, as illustrated in\n"
+"the screenshots below.  Clicking on a track selects it and focuses it.\n"
+msgstr ""
+"La piste visée est mise en évidence par du vert, comme\n"
+"illustré sur la copie d'écran ci-dessous.Cliquer sur une piste\n"
+"la sélectionne et la vise.\n"
+
+#: download/features-1.3-i.php:31
+msgid ""
+"Above, a region of audio is selected in the top track.<br>\n"
+"You can tell the track is selected, because its label area is shaded.<br>\n"
+"You can tell the track is focused because of the green border."
+msgstr ""
+"Ci-dessus, une portion d'audio est sélectionnée dans la piste supérieure.<br>\n"
+"On voit que la piste est sélectionnée à son étiquette est grisée.<br>\n"
+"On voit que la piste est visée à cause de ses bordures vertes."
+
+#: download/features-1.3-i.php:39
+msgid ""
+"Pressing the down arrow key changes the focus to the lower track.<br>\n"
+"However, only the top track is selected."
+msgstr ""
+"Un appui sur la flèche Bas passe la visée à la piste inférieure.<br>\n"
+"Toutefois, seule la piste du haut est sélectionnée."
+
+#: download/features-1.3-i.php:46
+msgid "Pressing the enter key toggles the lower track, so it is now selected, too."
+msgstr "Un appui sur la touche Entrée bascule la piste du bas qui est désormais également sélectionnée."
+
+#: download/features-1.3-i.php:52
+msgid ""
+"Finally, press up-arrow and enter to unselect the top track.<br>\n"
+"This is one way to keep a particular range of audio selected<br>while changing which track is selected."
+msgstr ""
+"Finalement, l'appui sur la flèche Haut puis sur entrée désélectionne la piste du haut.<br>\n"
+"C'est un moyen de conserver une zone de sélection audio précise tout en modifiant la piste sélectionnée."
+
+#: download/features-1.3-j.php:9
+msgid "Audacity 1.3: Repair and Equalization Effects"
+msgstr "Audacity 1.3: Effets de réparation et d'égalisation."
+
+#: download/features-1.3-j.php:14
+msgid "Repair Effect"
+msgstr "Effet de réparation"
+
+#: download/features-1.3-j.php:16
+msgid "This new effect will fix a small pop or click in an audio track by smoothly interpolating the damaged audio samples.  It is designed to fix very short glitches, not major distortion or background noise.  It can fix minor clipping."
+msgstr "Ce nouvel effet corrige un petit pop ou un clic en interpolant légèrement les échantillons audio détériorés. Il est prévu pour la correction de petites anomalies, par pour des distorsions importantes ou du bruit de fond. Il peut corriger des saturations mineures."
+
+#: download/features-1.3-j.php:21
+msgid ""
+"First, find the damanged part of your recording and zoom in<br>\n"
+"until you can see the individual audio samples."
+msgstr ""
+"Trouver tout d'abord la partie détériorée de l'enregistrement et zoomer en avant<br>\n"
+"jusqu'à distinguer les échantillons audio"
+
+#: download/features-1.3-j.php:28
+msgid "Select the damaged portion of the audio."
+msgstr "Sélectionner la portion d'audio endommagée."
+
+#: download/features-1.3-j.php:34
+msgid "Choose <b>Repair</b> from the Effect menu.<br>The selection is replaced with smoothly interpolated samples."
+msgstr "Choisir <b>Réparer</b> dans le menu Effets.<br> La sélection est remplacée par des échantillons légèrement interpolés."
+
+#: download/features-1.3-j.php:37
+msgid "Equalization Effect"
+msgstr "Effet d'égalisation"
+
+#: download/features-1.3-j.php:39
+msgid ""
+"The new Equalization effect, shown below, has many more controls\n"
+"for constructing a complex filter to enhance or reduce certain frequencies.\n"
+"You can either draw an arbitrary equalization curve, or use a graphic\n"
+"equalizer.\n"
+msgstr ""
+"Le nouvel effet d'égalisation, montré ci-dessous, a davantage de contrôles,\n"
+"permettant de construire un filtre complexe afin de renforcer ou de réduire \n"
+"certaines fréquences audio. Vous pouvez tout aussi bien dessiner une courbe\n"
+"d'égalisation ou utiliser un égaliseur graphique.\n"
+
+#: download/features-1.3-k.php:9
+msgid "Audacity 1.3: Timer Recording"
+msgstr "Audacity 1.3 : Enregistrement programmé"
+
+#: download/features-1.3-k.php:16
+msgid "Timer Recording lets you schedule Audacity to start recording at a particular time and record only for a certain length of time.  Perfect if you want to record Internet radio or walk away while Audacity is recording from a cassette or LP."
+msgstr "Le programmateur d'enregistrement permet de démarrer un enregistrement à une heure précise et pour une durée déterminée. C'est parfait pour enregistrer une radio sur Internet ou s'en aller pendant qu'Audacity enregistre une cassette ou un vinyle."
+
+#: download/features-1.3-l.php:9
+msgid "Audacity 1.3: Project saving and recovery"
+msgstr "Audacity 1.3 : Sauvegarde et récupération du projet"
+
+#: download/features-1.3-l.php:16
+msgid ""
+"Starting in version 1.3.2, Audacity automatically saves snapshots\n"
+"of your current project constantly.  If Audacity ever crashes,\n"
+"or if your whole computer crashes or suddenly loses power, the next time\n"
+"you start Audacity it will notify you that it found an unsaved project,\n"
+"and prompt you to recover it.\n"
+msgstr ""
+"A partir de la version 1.3.2, Audacity sauvegarde automatiquement \n"
+"des images de votre projet. Si Audacity ou si l'ordinateur crashe \n"
+"ou qu'il s'éteint brutalement, au lancement suivant d'Audacity, \n"
+"un message avertira qu'il a trouvé un projet non-enregistré\n"
+"et proposera de le récupérer.\n"
+
+#: download/features-1.3-l.php:23
+msgid ""
+"One common source of confusion with Audacity is that when you\n"
+"open or import an uncompressed file (e.g. WAV or AIFF), Audacity saves\n"
+"time and memory by only linking to the file, not copying it.  But if you\n"
+"move, modify or delete the original file, your Audacity project will not\n"
+"work anymore.  Starting with version 1.3.2, Audacity will prompt you every\n"
+"time you save if your project is dependent on other audio files, and give\n"
+"you the option of copying them into the project at that time, so it is\n"
+"self-contained."
+msgstr ""
+"Avec Audacity, une cause habituelle de confusion vient du fait qu'en ouvrant\n"
+"ou en important un fichier non compressé (ex; WAV ou AIFF), Audacity économise\n"
+"du temps et de la mémoire en se contentant d'un lien avec le fichier sans le recopier.\n"
+"Mais si le fichier original est déplacé, modifié ou supprimé, votre\n"
+"projet Audacity ne marchera plus. A partir de la version 1.3.2, Audacity\n"
+"avertira à chaque fois que le projet est dépendant d'autres fichiers audio\n"
+"et donnera le choix de les copier dès lors dans le projet."
 
 #: help/index.php:9
 msgid "Documentation and Support"
@@ -3175,7 +3505,7 @@ msgstr "Aller directement au contenu"
 msgid "Audacity: Free Sound Editor and Recording Software"
 msgstr "Audacity: logiciel libre d'enregistrement et de montage son"
 
-#: include/header.inc.php:72
+#: include/header.inc.php:79
 msgid "Site Navigation"
 msgstr "Navigation sur le site"
 
@@ -3219,10 +3549,137 @@ msgid "%B %d, %Y"
 msgstr "%d %B %Y"
 
 #: include/news.inc.php:44
+msgid "Audacity 1.3.2 and 1.2.5 Released"
+msgstr "Sortie des versions 1.2.5 et 1.3.2 d'Audacity "
+
+#: include/news.inc.php:45
+msgid ""
+"<p>\n"
+"The Audacity developers have been busy with many new features over  \n"
+"the past year.  We're pleased to announce\n"
+"<a href=\"/download/features-1.3-a\">Audacity 1.3.2 (beta)</a>, which\n"
+"contains dozens of new features and capabilities.  Because it is a work\n"
+"in progress and does not yet come with complete documentation or translations\n"
+"into foreign languages, it is recommended for more advanced users.\n"
+"For all users, <a href=\"/download\">Audacity 1.2.5</a>\n"
+"is a minor bug-fix update that addresses some problems with Audacity 1.2.4,\n"
+"but does not add any significant new features.\n"
+"It is complete and fully documented.  You can have\n"
+"both Audacity 1.2.5 and 1.3.2 installed simultaneously.\n"
+"Also, we have just made available a set of 92\n"
+"<a href=\"/download/plugins\">LADSPA plug-ins for Windows</a>\n"
+"(for both Audacity 1.2.x and 1.3.x).\n"
+"\n"
+"</p><p>\n"
+"\n"
+"See the <a href=\"/download/release-notes\">1.2.5 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.5, or see\n"
+"<a href=\"/download/features-1.3-a\">New Features in 1.3</a>\n"
+"for information about the new beta version.\n"
+"\n"
+"</p>\n"
+"\n"
+"<b>Beta version 1.3.2</b>\n"
+"<dl><dt></dt><dd><!-- indent cheat -->\n"
+"<dl>\n"
+"       <dt> Usability improvements </dt>\n"
+"             <dd> New selection bar </dd>\n"
+"             <dd> New features for label tracks </dd>\n"
+"             <dd> Improved toolbar docking flexibility </dd>\n"
+"             <dd> Menu renaming and reorganization </dd>\n"
+"             <dd> Selection, ruler, and playback control improvements </dd>\n"
+"       <dt> Major improvements to some built-in effects </td>\n"
+"              <dd> New Repair effect </dd>\n"
+"              <dd> Improved Equalization effect </dd>\n"
+"              <dd> Many fixes and minor improvements to other effects </dd>\n"
+"       <dt> Improved accessibility for the visually impaired </dt>\n"
+"             <dd> Improvements for screen readers, accessibility of tracks, and hot keys </dd>\n"
+"       <dt> Timer recording </dt>\n"
+"       <dt> Auto-save and automatic crash recovery </dt>\n"
+"       <dt> New features and bug fixes for Nyquist </dt>\n"
+"       <dt> Restructured Preferences dialog </dt>\n"
+"       <dt> Improved batch processing </dt>\n"
+"       <dt> File format export improvements </dt>\n"
+"       <dt> Intel Mac support </dt>\n"
+"       <dt> Many bug fixes and stability improvements </dt>\n"
+"</dl>\n"
+"</dd></dl>\n"
+"\n"
+"<b>Stable version 1.2.5</b>\n"
+"<dl><dt></dt><dd><!-- indent cheat -->\n"
+"<dl>\n"
+"       <dt> Support for new file formats, including FLAC </dt>\n"
+"       <dt> Fixes for Mac audio problems </dt>\n"
+"       <dt> Fix Generate Silence bug, a crash issue, and Linux GCC build issues </dt>\n"
+"       <dt> Intel Mac support </dt>\n"
+"</dl>\n"
+"</dd></dl>"
+msgstr ""
+"<p>\n"
+"Les développeurs d'Audacity ont travaillé à plusieurs nouvelles fonctionnalités  \n"
+"durant l'année écoulée. Nous sommes heureux d'annoncer\n"
+"<a href=\"/download/features-1.3-a\">Audacity 1.3.2 (beta)</a>,qui\n"
+"contient des douzaines de nouvelles fonctionnalités. Comme c'est un travail en cours\n"
+"et qu'il n'y a pas pour le moment de documentation complête ou de traductions,\n"
+"il est à réserver aux utilisateurs expérimentés.\n"
+"Pour tout-public, <a href=\"/download\">Audacity 1.2.5</a>\n"
+"est une mise à jour mineure qui règle quelques problèmes rencontrés par Audacity 1.2.4,\n"
+"mais n'ajoute aucune fonctionnalité réellement nouvelle.\n"
+"Il est complet et totalement documenté.  Vous pouvez installer\n"
+"simultanément Audacity 1.2.5 et 1.3.2.\n"
+"Dans le même temps, nous diffusons un set de 92\n"
+"<a href=\"/download/plugins\">modules ( plug-ins) LADSPA Windows</a>\n"
+"(à la fois pour Audacity 1.2.x et 1.3.x).\n"
+"\n"
+"</p><p>\n"
+"\n"
+"Voir les <a href=\"/download/release-notes\">notes de version 1.2.5</a> pour une liste complête des modifications\n"
+"et des problêmes connus d' Audacity 1.2.5, ou les\n"
+"<a href=\"/download/features-1.3-a\">nouvelles fonctionnalités 1.3</a>\n"
+"pour des informations sur la nouvelle version bêta.\n"
+"\n"
+"</p>\n"
+"\n"
+"<b>Version 1.3.2 bêta </b>\n"
+"<dl><dt></dt><dd><!-- indent cheat -->\n"
+"<dl>\n"
+"       <dt> Améliorations de l'usage </dt>\n"
+"             <dd>Nouvelle barre de sélection</dd>\n"
+"             <dd>Nouvelles fonctionnalités des pistes de marqueurs </dd>\n"
+"             <dd> Amélioration du verrouillage des barres d'outils  </dd>\n"
+"             <dd> Réorganisation et nouveaux noms de menu </dd>\n"
+"             <dd> amélioration des contrôles de sélection, de règles et de lecture /dd>\n"
+"       <dt> Amélioration majeure de quelques effets intégrés </td>\n"
+"              <dd>Nouvel effet de réparation </dd>\n"
+"              <dd> Effet d'égalisation amélioré </dd>\n"
+"              <dd> Quelques améliorations mineures d'autres effets </dd>\n"
+"       <dt> Accessibilité des mal-voyants améliorée </dt>\n"
+"             <dd>Améliorations pour les lecteurs d'écrans, l'accessibilité des pistes et des raccourcis clavier </dd>\n"
+"       <dt> Enregistrement programmé </dt>\n"
+"       <dt>Enregistrement et récuparétion des crashes automatiques  </dt>\n"
+"       <dt> Nouvelles fonctionnalités Nyquist et résolution de bogues </dt>\n"
+"       <dt> Boîte de dialogue des préférences restructurée </dt>\n"
+"       <dt> Traitement en lots amélioré </dt>\n"
+"       <dt> amélioration  des formats d'exportation de fichiers </dt>\n"
+"       <dt>Support Mac Intel  </dt>\n"
+"       <dt> Résolution de bogues et amélioration de la stabilité </dt>\n"
+"</dl>\n"
+"</dd></dl>\n"
+"\n"
+"<b> Version stable 1.2.5</b>\n"
+"<dl><dt></dt><dd><!-- indent cheat -->\n"
+"<dl>\n"
+"       <dt> Support de nouveaux formats de fichiers incluant le FLAC </dt>\n"
+"       <dt>Résolution de problèmes audio sous Mac </dt>\n"
+"       <dt> Résolution d'un bogue dans  Générer silence, d'un crash, et de problèmes sous Linux GCC </dt>\n"
+"       <dt> Support Mac Intel </dt>\n"
+"</dl>\n"
+"</dd></dl>\n"
+
+#: include/news.inc.php:109
 msgid "The Audacity Store Is Open"
 msgstr "La boutique Audacity est ouverte"
 
-#: include/news.inc.php:45
+#: include/news.inc.php:110
 msgid ""
 "\n"
 "\t<p>You are invited to try out the new <a href=\"http://audacitystore.com/\">Audacity Store</a>, which features  \n"
@@ -3304,11 +3761,11 @@ msgstr ""
 "\t</p>\n"
 "\t"
 
-#: include/news.inc.php:89
+#: include/news.inc.php:154
 msgid "Audacity 1.2.4 and 1.3.0 Released"
 msgstr "Sortie des versions 1.2.4 et 1.3.0 d'Audacity "
 
-#: include/news.inc.php:90
+#: include/news.inc.php:155
 msgid ""
 "<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple of bug fixes and minor improvements and is recommended for all users.  Audacity 1.3.0 is a beta release that contains hundreds of <a href=\"/download/features-1.3-a\">new features</a>, but this version is unfinished and unstable, and is recommended primarily for advanced users.  You can install both Audacity 1.2 and 1.3 simultaneously.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">1.2.4 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.4, or see <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for information about the new beta version.</p>\n"
@@ -3321,151 +3778,17 @@ msgstr ""
 "<p>Enfin, la meilleure manière d'obtenir de l'aide concernant Audacity est le <a href=\"http://audacityteam.org/forum/\">nouveau Forum Audacity</a>.\n"
 "</p>"
 
-#: include/news.inc.php:100
+#: include/news.inc.php:165
 msgid "Audacity 1.2.3 Released"
 msgstr "Sortie de la version 1.2.3 de Audacity "
 
-#: include/news.inc.php:101
+#: include/news.inc.php:166
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
 msgstr ""
 "<p>Audacity 1.2.3 est la nouvelle version stable de Audacity. Cette version corrige un bogue qui perturbait les enregistrements longs sous Windows, et un autre bogue responsable de plantages aléatoires sous Mac OS X. Il apporte aussi plusieurs traductions mises-à-jour, et d'autres corrections de bogues et améliorations mineures.</p>\n"
 "<p>Consultez les <a href=\"/download/release-notes\">Notes de version</a> pour une liste complète des modifications et des problèmes connus de cette version.</p>"
-
-#: include/news.inc.php:107
-msgid "Audacity 1.3.2 and 1.2.5 Released"
-msgstr "Sortie des versions 1.2.5 et 1.3.2 d'Audacity "
-
-#: include/news.inc.php:108
-msgid ""
-"\n"
-"<p>\n"
-"The Audacity developers have been busy with many new features over  \n"
-"the past year.  We're pleased to announce\n"
-"<a href=\"/download/features-1.3-a\">Audacity 1.3.2 (beta)</a>, which\n"
-"contains dozens of new features and capabilities.  Because it is a work\n"
-"in progress and does not yet come with complete documentation or translations\n"
-"into foreign languages, it is recommended for more advanced users.\n"
-"For all users, <a href=\"/download\">Audacity 1.2.5</a>\n"
-"is a minor bug-fix update that addresses some problems with Audacity 1.2.4,\n"
-"but does not add any significant new features.\n"
-"It is complete and fully documented.  You can have\n"
-"both Audacity 1.2.5 and 1.3.2 installed simultaneously.\n"
-"Also, we have just made available a set of 92\n"
-"<a href=\"/download/plugins\">LADSPA plug-ins for Windows</a>\n"
-"(for both Audacity 1.2.x and 1.3.x).\n"
-"\n"
-"</p><p>\n"
-"\n"
-"See the <a href=\"/download/release-notes\">1.2.5 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.5, or see\n"
-"<a href=\"/download/features-1.3-a\">New Features in 1.3</a>\n"
-"for information about the new beta version.\n"
-"\n"
-"</p>\n"
-"\n"
-"<b>Beta version 1.3.2</b>\n"
-"<dl><dt></dt><dd><!-- indent cheat -->\n"
-"<dl>\n"
-"       <dt> Usability improvements </dt>\n"
-"             <dd> New selection bar </dd>\n"
-"             <dd> New features for label tracks </dd>\n"
-"             <dd> Improved toolbar docking flexibility </dd>\n"
-"             <dd> Menu renaming and reorganization </dd>\n"
-"             <dd> Selection, ruler, and playback control improvements </dd>\n"
-"       <dt> Major improvements to some built-in effects </td>\n"
-"              <dd> New Repair effect </dd>\n"
-"              <dd> Improved Equalization effect </dd>\n"
-"              <dd> Many fixes and minor improvements to other effects </dd>\n"
-"       <dt> Improved accessibility for the visually impaired </dt>\n"
-"             <dd> Improvements for screen readers, accessibility of tracks, and hot keys </dd>\n"
-"       <dt> Timer recording </dt>\n"
-"       <dt> Auto-save and automatic crash recovery </dt>\n"
-"       <dt> New features and bug fixes for Nyquist </dt>\n"
-"       <dt> Restructured Preferences dialog </dt>\n"
-"       <dt> Improved batch processing </dt>\n"
-"       <dt> File format export improvements </dt>\n"
-"       <dt> Intel Mac support </dt>\n"
-"       <dt> Many bug fixes and stability improvements </dt>\n"
-"</dl>\n"
-"</dd></dl>\n"
-"\n"
-"<b>Stable version 1.2.5</b>\n"
-"<dl><dt></dt><dd><!-- indent cheat -->\n"
-"<dl>\n"
-"       <dt> Support for new file formats, including FLAC </dt>\n"
-"       <dt> Fixes for Mac audio problems </dt>\n"
-"       <dt> Fix Generate Silence bug, a crash issue, and Linux GCC build issues </dt>\n"
-"       <dt> Intel Mac support </dt>\n"
-"</dl>\n"
-"</dd></dl>\n"
-"')\n"
-");\n"
-"?>\n"
-msgstr ""
-"\n"
-"<p>\n"
-"Les développeurs d'Audacity ont travaillé à plusieurs nouvelles fonctionnalités  \n"
-"durant l'année écoulée. Nous sommes heureux d'annoncer\n"
-"<a href=\"/download/features-1.3-a\">Audacity 1.3.2 (beta)</a>,qui\n"
-"contient des douzaines de nouvelles fonctionnalités. Comme c'est un travail en cours\n"
-"et qu'il n'y a pas pour le moment de documentation complête ou de traductions,\n"
-"il est à réserver aux utilisateurs expérimentés.\n"
-"Pour tout-public, <a href=\"/download\">Audacity 1.2.5</a>\n"
-"est une mise à jour mineure qui règle quelques problèmes rencontrés par Audacity 1.2.4,\n"
-"mais n'ajoute aucune fonctionnalité réellement nouvelle.\n"
-"Il est complet et totalement documenté.  Vous pouvez installer\n"
-"simultanément Audacity 1.2.5 et 1.3.2.\n"
-"Dans le même temps, nous diffusons un set de 92\n"
-"<a href=\"/download/plugins\">modules ( plug-ins) LADSPA Windows</a>\n"
-"(à la fois pour Audacity 1.2.x et 1.3.x).\n"
-"\n"
-"</p><p>\n"
-"\n"
-"Voir les <a href=\"/download/release-notes\">notes de version 1.2.5</a> pour une liste complête des modifications et des problêmes connus d' Audacity 1.2.5, ou les\n"
-"<a href=\"/download/features-1.3-a\">nouvelles fonctionnalités 1.3</a>\n"
-"pour des informations sur la nouvelle version bêta.\n"
-"\n"
-"</p>\n"
-"\n"
-"<b>Version 1.3.2 bêta </b>\n"
-"<dl><dt></dt><dd><!-- indent cheat -->\n"
-"<dl>\n"
-"       <dt> Améliorations de l'usage </dt>\n"
-"             <dd>Nouvelle barre de sélection</dd>\n"
-"             <dd>Nouvelles fonctionnalités des pistes de marqueurs </dd>\n"
-"             <dd> Amélioration du verrouillage des barres d'outils  </dd>\n"
-"             <dd> Réorganisation et nouveaux noms de menu </dd>\n"
-"             <dd> amélioration des contrôles de sélection, de règles et de lecture /dd>\n"
-"       <dt> Amélioration majeure de quelques effets intégrés </td>\n"
-"              <dd>Nouvel effet de réparation </dd>\n"
-"              <dd> Effet dégalisation amélioré </dd>\n"
-"              <dd> Quelques améliorations mineures d'autres effets </dd>\n"
-"       <dt> Accessibilité des mal-voyants améliorée </dt>\n"
-"             <dd>Améliorations pour les lecteurs d'écrans, l'accessibilité des pistes et des raccourcis clavier </dd>\n"
-"       <dt> Enregistrement programmé </dt>\n"
-"       <dt>Enregistrement et récuparétion des crashes automatiques  </dt>\n"
-"       <dt> Nouvelles fonctionnalités Nyquist et résolution de bogues </dt>\n"
-"       <dt> Boîte de dialogue des préférences restructurée </dt>\n"
-"       <dt> Traitement en lots amélioré </dt>\n"
-"       <dt> amélioration  des formats d'exportation de fichiers </dt>\n"
-"       <dt>Support Mac Intel  </dt>\n"
-"       <dt> Résolution de bogues et amélioration de la stabilité </dt>\n"
-"</dl>\n"
-"</dd></dl>\n"
-"\n"
-"<b> Version stable 1.2.5</b>\n"
-"<dl><dt></dt><dd><!-- indent cheat -->\n"
-"<dl>\n"
-"       <dt> Support de nouveaux formats de fichiers incluant le FLAC </dt>\n"
-"       <dt>Résolution de problèmes audio sous Mac </dt>\n"
-"       <dt> Résolution d'un bogue dans  Générer silence, d'un crash, et de problèmes sous Linux GCC </dt>\n"
-"       <dt> Support Mac Intel </dt>\n"
-"</dl>\n"
-"</dd></dl>\n"
-"')\n"
-");\n"
-"?>\n"
 
 #: index.php:9
 msgid "Free Audio Editor and Recorder"
@@ -3497,23 +3820,23 @@ msgstr "Audacity est un logiciel libre et open-source destiné à l'édition et 
 msgid "Download Audacity %s"
 msgstr "Télécharger Audacity %s"
 
-#: index.php:73
+#: index.php:67
 msgid "Other downloads"
 msgstr "Autres téléchargements"
 
-#: index.php:94
+#: index.php:88
 msgid "Get Notified of New Versions"
 msgstr "Pour être averti de la sortie de nouvelles versions"
 
-#: index.php:106
+#: index.php:100
 msgid "Email address"
 msgstr "Courriel"
 
-#: index.php:107
+#: index.php:101
 msgid "Add"
 msgstr "S'abonner"
 
-#: index.php:108
+#: index.php:102
 msgid "Remove"
 msgstr "Se désabonner"
 
@@ -3552,9 +3875,8 @@ msgstr "Page non trouvée"
 
 #: 404.php:14
 msgid "Sorry, the page you are looking for was not found.  Please try the <a href=\"/\">Audacity home page</a> or the <a href=\"/site-map\">site map</a>."
-msgstr "Désolé, la page que vous avez demandé n'a pas pu etre trouvée sur le serveur. Retournez à la <a href=\"/\">page d'accueil</a> ou consultez le <a href=\"/site-map\">plan du site</a>."
+msgstr "Désolé, la page que vous avez demandé n'a pas pu être trouvée sur le serveur. Retournez à la <a href=\"/\">page d'accueil</a> ou consultez le <a href=\"/site-map\">plan du site</a>."
 
 #: news/test_announcement.php:9
 msgid "Audacity 1.3.2"
 msgstr "Audacity 1.3.2"
-
