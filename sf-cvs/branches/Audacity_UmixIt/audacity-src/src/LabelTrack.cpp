@@ -380,6 +380,7 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
       // loop through attrs, which is a null-terminated list of
       // attribute-value pairs
       bool has_t1 = false;
+      double dblValue;
       while(*attrs) {
          const char *attr = *attrs++;
          const char *value = *attrs++;
@@ -387,14 +388,22 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
          if (!value)
             break;
          
-         if (!strcmp(attr, "t"))
-            Internat::CompatibleToDouble(wxString(value), &l->t);
-         else if (!strcmp(attr, "t1")) {
+         const wxString strValue = value;
+         if (!XMLValueChecker::IsGoodString(strValue))
+         {
+            delete l;
+            return false;
+         }
+        
+         if (!strcmp(attr, "t") && Internat::CompatibleToDouble(strValue, &dblValue))
+            l->t = dblValue;
+         else if (!strcmp(attr, "t1") && Internat::CompatibleToDouble(strValue, &dblValue))
+         {
             has_t1 = true;
-            Internat::CompatibleToDouble(wxString(value), &l->t1);
+            l->t1 = dblValue;
          }
          else if (!strcmp(attr, "title"))
-            l->title = value;
+            l->title = strValue;
 
       } // while
 
@@ -408,19 +417,21 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
       return true;
    }
    else if (!strcmp(tag, "labeltrack")) {
-      if (*attrs) {
+      long nValue;
+      while (*attrs) {
          const char *attr = *attrs++;
          const char *value = *attrs++;
          
          if (!value)
             return true;
 
-         if (!strcmp(attr, "name"))
-            mName = value;
-         else if (!strcmp(attr, "numlabels")) {
-            int len = atoi(value);
+         const wxString strValue = value;
+         if (!strcmp(attr, "name") && XMLValueChecker::IsGoodString(strValue))
+            mName = strValue;
+         else if (!strcmp(attr, "numlabels") && 
+                     XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) {
             mLabels.Clear();
-            mLabels.Alloc(len);
+            mLabels.Alloc(nValue);
          }
       }
 

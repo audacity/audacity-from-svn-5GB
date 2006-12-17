@@ -18,11 +18,25 @@
 #ifndef __AUDACITY_XML_TAG_HANDLER__
 #define __AUDACITY_XML_TAG_HANDLER__
 
-// "Good" means the name is well-formed and names an existing file.
-// These are functions rather than methods because some non-descendants of XMLTagHandler need it. //vvvvv necessarily?
-bool IsGoodSubdirNameFromXML(const wxString strSubdirName, const wxString strDirName = "");
-bool IsGoodFileNameFromXML(const wxString strFileName, const wxString strDirName = "");
-bool IsGoodPathNameFromXML(const wxString strPathName);
+class XMLValueChecker
+{
+public:
+   // "Good" means well-formed and for the file-related functions, names an existing file or folder.
+   // They are used in HandleXMLTag and BuildFomXML methods to check the input for 
+   // security vulnerabilites, per the NGS report for UmixIt.
+   static bool IsGoodString(const wxString str);
+
+   static bool IsGoodFileName(const wxString strFileName, const wxString strDirName = "");
+   static bool IsGoodSubdirName(const wxString strSubdirName, const wxString strDirName = "");
+   static bool IsGoodPathName(const wxString strPathName);
+
+   // Note that because wxString::ToLong does additional testing, IsGoodInt doesn't duplicate 
+   // that testing, so use wxString::ToLong, not just atoi.
+   static bool IsGoodInt(const wxString strInt);
+
+private:
+   static bool IsGoodFileString(wxString str);
+};
 
 class XMLTagHandler {
  public:

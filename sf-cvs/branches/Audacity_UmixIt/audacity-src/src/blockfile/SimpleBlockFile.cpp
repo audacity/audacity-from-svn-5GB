@@ -246,28 +246,41 @@ BlockFile *SimpleBlockFile::BuildFromXML(wxString projDir, const char **attrs)
    wxFileName fileName;
    float min=0, max=0, rms=0;
    sampleCount len = 0;
+   double dblValue;
+   long nValue;
 
    while(*attrs)
    {
        const char *attr =  *attrs++;
        const char *value = *attrs++;
 
+       if (!value)
+         break;
+
+       const wxString strValue = value;
        if( !strcmp(attr, "filename") ) 
        {
-         if (IsGoodFileNameFromXML(value, projDir))
-            fileName.Assign(projDir, value);
-         else 
+         if (!XMLValueChecker::IsGoodFileName(strValue, projDir))
             return NULL;
+         fileName.Assign(projDir, strValue);
        }
-       if( !strcmp(attr, "len") )
-          len = atoi(value);
-       if( !strcmp(attr, "min") )
-          min = Internat::CompatibleToDouble(value);
-       if( !strcmp(attr, "max") )
-          max = Internat::CompatibleToDouble(value);
-       if( !strcmp(attr, "rms") )
-          rms = Internat::CompatibleToDouble(value);
+       else if( !strcmp(attr, "len") && XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
+          len = nValue;
+       else if( !strcmp(attr, "min") && 
+               XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+          min = dblValue;
+       else if( !strcmp(attr, "max") && 
+               XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+          max = dblValue;
+       else if( !strcmp(attr, "rms") && 
+               XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+          rms = dblValue;
    }
+
+   if (!XMLValueChecker::IsGoodFileName(fileName.GetFullName(), 
+                                         fileName.GetPath(wxPATH_GET_VOLUME)) || 
+         (len < 0) || (rms < 0))
+      return NULL;
 
    return new SimpleBlockFile(fileName, len, min, max, rms);
 }

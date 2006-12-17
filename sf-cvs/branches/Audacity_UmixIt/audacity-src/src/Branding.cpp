@@ -20,7 +20,6 @@ Branding::Branding()
 {
    m_strBrandName = "";
    m_strBrandURL = "";
-   m_BrandLogoFileName.Clear();
    m_strBrandColorScheme = "";
 }
 
@@ -33,26 +32,29 @@ bool Branding::HandleXMLTag(const char *tag, const char **attrs)
       const char *attr = *attrs++;
       const char *value = *attrs++;
 
-      if (!value) break;
+      if (!value) 
+         break;
 
-      if (!strcmp(attr, "brandname")) 
+      if (!strcmp(attr, "brandname") && XMLValueChecker::IsGoodString(value)) 
          m_strBrandName = value;
-      else if (!strcmp(attr, "url")) 
+      else if (!strcmp(attr, "url") && XMLValueChecker::IsGoodString(value)) 
          m_strBrandURL = value;
       else if (!strcmp(attr, "logofilename")) 
       {
          // Logo file is supposed to be stored in the project data directory.
          wxString strDirName = GetActiveProject()->GetDirManager()->GetProjectDataDir();
-         if (IsGoodFileNameFromXML(value, strDirName)) {
+         if (XMLValueChecker::IsGoodFileName(value, strDirName)) 
+         {
             // Store full thing, not just file name, so don't need to add path again.
             m_BrandLogoFileName.Assign(strDirName, value);
             m_BrandLogoFileName.Normalize(wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG);
-         } else {
+         } 
+         else
+            // Don't return failure. We'll just not have a logo to show. 
             wxMessageBox(wxString::Format(_("Could not open branding logo file: %s"), value), 
                            _("Error"), wxOK | wxICON_ERROR);
-         }
       }
-      else if (!strcmp(attr, "colorscheme")) 
+      else if (!strcmp(attr, "colorscheme") && XMLValueChecker::IsGoodString(value)) 
          m_strBrandColorScheme = value;
    } // while
 

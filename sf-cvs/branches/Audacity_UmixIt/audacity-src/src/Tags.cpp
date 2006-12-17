@@ -113,6 +113,7 @@ bool Tags::HandleXMLTag(const char *tag, const char **attrs)
 
    // loop through attrs, which is a null-terminated list of
    // attribute-value pairs
+   long nValue;
    while(*attrs) {
       const char *attr = *attrs++;
       const char *value = *attrs++;
@@ -120,22 +121,23 @@ bool Tags::HandleXMLTag(const char *tag, const char **attrs)
       if (!value)
          break;
 
-      if (!strcmp(attr, "title"))
-         mTitle = value;
-      else if (!strcmp(attr, "artist"))
-         mArtist = value;
-      else if (!strcmp(attr, "album"))
-         mAlbum = value;
-      else if (!strcmp(attr, "track"))
-         mTrackNum = atoi(value);
-      else if (!strcmp(attr, "year"))
-         mYear = value;
-      else if (!strcmp(attr, "genre"))
-         mGenre = atoi(value);
-      else if (!strcmp(attr, "comments"))
-         mComments = value;
-      else if (!strcmp(attr, "id3v2"))
-         mID3V2 = atoi(value);         
+      const wxString strValue = value;
+      if (!strcmp(attr, "title") && XMLValueChecker::IsGoodString(strValue))
+         mTitle = strValue;
+      else if (!strcmp(attr, "artist") && XMLValueChecker::IsGoodString(strValue))
+         mArtist = strValue;
+      else if (!strcmp(attr, "album") && XMLValueChecker::IsGoodString(strValue))
+         mAlbum = strValue;
+      else if (!strcmp(attr, "track") && XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+         mTrackNum = nValue;
+      else if (!strcmp(attr, "year") && XMLValueChecker::IsGoodString(strValue))
+         mYear = strValue;
+      else if (!strcmp(attr, "genre") && XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+         mGenre = nValue;
+      else if (!strcmp(attr, "comments") && XMLValueChecker::IsGoodString(strValue))
+         mComments = strValue;
+      else if (!strcmp(attr, "id3v2") && XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+         mID3V2 = (bool)nValue;         
    } // while
    
    return true;
