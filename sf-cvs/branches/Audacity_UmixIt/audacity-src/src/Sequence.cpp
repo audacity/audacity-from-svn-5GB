@@ -601,6 +601,8 @@ sampleCount Sequence::GetBestBlockSize(sampleCount start) const
 
 bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
 {
+   long nValue;
+
    if (!strcmp(tag, "waveblock")) {
       SeqBlock *wb = new SeqBlock();
       wb->f = 0;
@@ -615,12 +617,20 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
          if (!value)
             break;
          
+         // All these attributes have integer values, so just test & convert here.
+         const wxString strValue = value;
+         if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue))
+         {
+            mErrorOpening = true;
+            return false;
+         }
+
          if (!strcmp(attr, "start"))
-            wb->start = atoi(value);
+            wb->start = nValue;
 
          // Handle length tag from legacy project file
          if (!strcmp(attr, "len"))
-            mDirManager->SetLoadingBlockLength(atoi(value));
+            mDirManager->SetLoadingBlockLength(nValue);
  
       } // while
 
@@ -638,26 +648,38 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
          if (!value)
             break;
          
+         // All these attributes have integer values, so just test & convert here.
+         const wxString strValue = value;
+         if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue))
+         {
+            mErrorOpening = true;
+            return false;
+         }
+
          if (!strcmp(attr, "maxsamples"))
          {
-            // Security fixes per NGS report for UmixIt.
-            // First, check that atoi probably won't overflow.
-            if (strlen(value) > strlen("2147483647")) // MAXINT
-               return false;
-
             // Dominic, 12/10/2006:
 				//    Let's check that maxsamples is >= 1024 and <= 64 * 1024 * 1024 
 			   //    - that's a pretty wide range of reasonable values.
-            sampleCount testMaxSamples = atoi(value);
-            if ((testMaxSamples < 1024) || (testMaxSamples > 64 * 1024 * 1024))
+            if ((nValue < 1024) || (nValue > 64 * 1024 * 1024))
+            {
+               mErrorOpening = true;
                return false;
-            mMaxSamples = testMaxSamples;
+            }
+            mMaxSamples = nValue;
             mDirManager->SetMaxSamples(mMaxSamples);
          }
          else if (!strcmp(attr, "sampleformat"))
-            mSampleFormat = (sampleFormat)atoi(value);
+            mSampleFormat = (sampleFormat)nValue;
          else if (!strcmp(attr, "numsamples"))
-            mNumSamples = atoi(value);         
+         {
+            if (nValue < 0)
+            {
+               mErrorOpening = true;
+               return false;
+            }
+            mNumSamples = nValue;
+         }
       } // while
 
       return true;

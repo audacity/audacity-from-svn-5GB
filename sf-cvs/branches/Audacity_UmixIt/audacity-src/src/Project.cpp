@@ -167,13 +167,14 @@ bool AudacityDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& 
 bool ImportXMLTagHandler::HandleXMLTag(const char *tag, const char **attrs) 
 {
    if (strcmp(tag, "import") ||
-       attrs==NULL || (*attrs)==NULL ||
-       strcmp(*attrs++, "filename")) return false;
+         attrs==NULL || (*attrs)==NULL ||
+         strcmp(*attrs++, "filename") || (*attrs)==NULL) 
+       return false;
    wxString strPathName = FILENAME(*attrs);
-   if (!IsGoodPathNameFromXML(strPathName)) {
+   if (!XMLValueChecker::IsGoodPathName(strPathName)) {
       // Maybe strPathName is just a fileName, not the full path. Try the project data directory.
       wxFileName fileName(mProject->GetDirManager()->GetProjectDataDir(), strPathName);
-      if (IsGoodFileNameFromXML(strPathName, fileName.GetPath(wxPATH_GET_VOLUME))) {
+      if (XMLValueChecker::IsGoodFileName(strPathName, fileName.GetPath(wxPATH_GET_VOLUME))) {
          strPathName = fileName.GetFullPath();
       } else { 
          wxMessageBox(_("Could not import file: ") + strPathName, _("Error"), wxOK | wxICON_ERROR);
@@ -1947,6 +1948,7 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
    int requiredTags = 0;
    wxString fileVersion = "";
    wxString audacityVersion = "";
+   double dblValue;
 
    // loop through attrs, which is a null-terminated list of
    // attribute-value pairs
@@ -1957,21 +1959,25 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
       if (!value)
          break;
 
+      const wxString strValue = value;
+      if (!XMLValueChecker::IsGoodString(strValue))
+         return false;
+
       if (!strcmp(attr, "version")) {
-         fileVersion = value;
+         fileVersion = strValue;
          requiredTags++;
       }
 
       if (!strcmp(attr, "audacityversion")) {
-         audacityVersion = value;
+         audacityVersion = strValue;
          requiredTags++;
       }
 
       if (!strcmp(attr, "projname")) {
-         wxString projName = value;
+         wxString projName = strValue;
          wxString projPath = wxPathOnly(mFileName);
          
-         if (!IsGoodSubdirNameFromXML(projName, projPath) || 
+         if (!XMLValueChecker::IsGoodSubdirName(projName, projPath) || 
                !mDirManager->SetProject(projPath, projName, false)) {
 
             wxMessageBox(wxString::Format(_("Couldn't find the project data folder: \"%s\""),
@@ -1985,25 +1991,28 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
          requiredTags++;
       }
 
-      if (!strcmp(attr, "sel0"))
-         Internat::CompatibleToDouble(wxString(value), &mViewInfo.sel0);
+      if (!strcmp(attr, "sel0") && Internat::CompatibleToDouble(strValue, &dblValue))
+         mViewInfo.sel0 = dblValue;
 
-      if (!strcmp(attr, "sel1"))
-         Internat::CompatibleToDouble(wxString(value), &mViewInfo.sel1);
+      if (!strcmp(attr, "sel1") && Internat::CompatibleToDouble(strValue, &dblValue))
+         mViewInfo.sel1 = dblValue;
 
-      long longVpos;
       if (!strcmp(attr, "vpos"))
-         wxString(value).ToLong(&longVpos);
-      mViewInfo.vpos = longVpos;
+      {
+         long longVpos;
+         if (XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&longVpos))
+            mViewInfo.vpos = longVpos;
+      }
 
-      if (!strcmp(attr, "h"))
-         Internat::CompatibleToDouble(wxString(value), &mViewInfo.h);
+      if (!strcmp(attr, "h") && Internat::CompatibleToDouble(strValue, &dblValue))
+         mViewInfo.h = dblValue;
 
-      if (!strcmp(attr, "zoom"))
-         Internat::CompatibleToDouble(wxString(value), &mViewInfo.zoom);
+      if (!strcmp(attr, "zoom") && Internat::CompatibleToDouble(strValue, &dblValue))
+         mViewInfo.zoom = dblValue;
 
-      if (!strcmp(attr, "rate")) {
-         Internat::CompatibleToDouble(wxString(value), &mRate);
+      if (!strcmp(attr, "rate") && Internat::CompatibleToDouble(strValue, &dblValue)) 
+      {
+         mRate = dblValue;
          mStatus->SetRate(mRate);
       }
    } // while

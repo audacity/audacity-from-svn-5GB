@@ -870,6 +870,8 @@ bool WaveTrack::Flush()
 bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
 {
    if (!strcmp(tag, "wavetrack")) {
+      double dblValue;
+      long nValue;
       while(*attrs) {
          const char *attr = *attrs++;
          const char *value = *attrs++;
@@ -877,29 +879,33 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
          if (!value)
             break;
          
-         if (!strcmp(attr, "rate"))
-            Internat::CompatibleToDouble(wxString(value), &mRate);
-         else if (!strcmp(attr, "offset")) {
-            Internat::CompatibleToDouble(wxString(value), &mOffset);
+         const wxString strValue = value;
+         if (!strcmp(attr, "rate") && 
+               XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue) && 
+               (dblValue >= 100.0) && (dblValue <= 100000.0)) // same bounds as ImportRawDialog::OnOK
+            mRate = dblValue;
+         else if (!strcmp(attr, "offset") && 
+                  XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+         {
+            mOffset = dblValue;
             mEnvelope->SetOffset(mOffset);
          }
-         else if (!strcmp(attr, "gain")) {
-            double d;
-            Internat::CompatibleToDouble(wxString(value), &d);
-            mGain = d;
-         }
-         else if (!strcmp(attr, "pan")) {
-            double d;
-            Internat::CompatibleToDouble(wxString(value), &d);
-            if (d >= -1.0 && d <= 1.0)
-               mPan = d;
-         }
-         else if (!strcmp(attr, "name"))
-            mName = value;
-         else if (!strcmp(attr, "channel"))
-            mChannel = atoi(value);
-         else if (!strcmp(attr, "linked"))
-            mLinked = atoi(value);
+         else if (!strcmp(attr, "gain") && 
+                  XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+            mGain = dblValue;
+         else if (!strcmp(attr, "pan") && 
+                  XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue) && 
+                  (dblValue >= -1.0) && (dblValue <= 1.0))
+            mPan = dblValue;
+         else if (!strcmp(attr, "name") && XMLValueChecker::IsGoodString(strValue))
+            mName = strValue;
+         else if (!strcmp(attr, "channel") && 
+                  XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue) && 
+                  (nValue >= LeftChannel) && (nValue <= MonoChannel))
+            mChannel = nValue;
+         else if (!strcmp(attr, "linked") && 
+                  XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+            mLinked = (bool)nValue;
          
       } // while
       return true;

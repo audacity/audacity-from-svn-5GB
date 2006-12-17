@@ -131,42 +131,55 @@ BlockFile *PCMAliasBlockFile::BuildFromXML(wxString projDir, const char **attrs)
    wxFileName aliasFileName;
    int aliasStart=0, aliasLen=0, aliasChannel=0;
    float min=0, max=0, rms=0;
+   long nValue;
 
    while(*attrs)
    {
        const char *attr =  *attrs++;
        const char *value = *attrs++;
+       if (!value) 
+          break;
 
+       const wxString strValue = value;
        if( !wxStricmp(attr, "summaryfile") )
        {
-         if (IsGoodFileNameFromXML(value, projDir))
-            summaryFileName.Assign(projDir, value);
-         else 
+         if (!XMLValueChecker::IsGoodFileName(strValue, projDir))
             return NULL;
+         summaryFileName.Assign(projDir, strValue);
        }
        else if( !wxStricmp(attr, "aliasfile") )
        {
-         if (IsGoodPathNameFromXML(value))
-            aliasFileName.Assign(value);
-         else if (IsGoodFileNameFromXML(value, projDir))
+         if (XMLValueChecker::IsGoodPathName(strValue))
+            aliasFileName.Assign(strValue);
+         else if (XMLValueChecker::IsGoodFileName(strValue, projDir))
             // Allow fallback of looking for the file name, located in the data directory.
-            aliasFileName.Assign(projDir, value);
+            aliasFileName.Assign(projDir, strValue);
          else 
             return NULL;
        }
-       else if( !wxStricmp(attr, "aliasstart") )
-          aliasStart = atoi(value);
-       else if( !wxStricmp(attr, "aliaslen") )
-          aliasLen = atoi(value);
-       else if( !wxStricmp(attr, "aliaschannel") )
-          aliasChannel = atoi(value);
-       else if( !wxStricmp(attr, "min") )
-          min = atoi(value);
-       else if( !wxStricmp(attr, "max") )
-          max = atoi(value);
-       else if( !wxStricmp(attr, "rms") )
-          rms = atoi(value);
+       else if (XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
+       { // integer parameters
+         if( !wxStricmp(attr, "aliasstart") )
+            aliasStart = nValue;
+         else if( !wxStricmp(attr, "aliaslen") )
+            aliasLen = nValue;
+         else if( !wxStricmp(attr, "aliaschannel") )
+            aliasChannel = nValue;
+         else if( !wxStricmp(attr, "min") )
+            min = nValue;
+         else if( !wxStricmp(attr, "max") )
+            max = nValue;
+         else if( !wxStricmp(attr, "rms") )
+            rms = nValue;
+       }
    }
+
+   if (!XMLValueChecker::IsGoodFileName(summaryFileName.GetFullName(), 
+                                         summaryFileName.GetPath(wxPATH_GET_VOLUME)) || 
+         !XMLValueChecker::IsGoodFileName(aliasFileName.GetFullName(), 
+                                          aliasFileName.GetPath(wxPATH_GET_VOLUME)) ||
+         (aliasStart < 0) || (aliasLen < 0) || (aliasChannel < 0) || (aliasChannel > 2) || (rms < 0))
+      return NULL;
 
    return new PCMAliasBlockFile(summaryFileName, aliasFileName,
                                 aliasStart, aliasLen, aliasChannel,
