@@ -11,6 +11,8 @@
 #include <wx/brush.h>
 #include <wx/dc.h>
 #include <wx/event.h>
+#include <wx/log.h>
+#include <wx/msgdlg.h>
 #include <wx/pen.h>
 #include <wx/string.h>
 #include <wx/textfile.h>
@@ -429,7 +431,13 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
          if (!strcmp(attr, "name") && XMLValueChecker::IsGoodString(strValue))
             mName = strValue;
          else if (!strcmp(attr, "numlabels") && 
-                     XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) {
+                     XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
+         {
+            if (nValue < 0)
+            {
+               wxLogWarning(wxT("Project shows negative number of labels: %d"), nValue);
+               return false;
+            }
             mLabels.Clear();
             mLabels.Alloc(nValue);
          }

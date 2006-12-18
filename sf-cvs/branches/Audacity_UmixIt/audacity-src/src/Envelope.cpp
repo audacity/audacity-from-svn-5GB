@@ -220,7 +220,7 @@ bool Envelope::HandleXMLTag(const char *tag, const char **attrs)
                XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
             numPoints = nValue;
       }
-      if (nValue < 0)
+      if (numPoints < 0)
          return false;
 
       WX_CLEAR_ARRAY(mEnv);

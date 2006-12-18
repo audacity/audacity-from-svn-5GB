@@ -279,7 +279,7 @@ BlockFile *SimpleBlockFile::BuildFromXML(wxString projDir, const char **attrs)
 
    if (!XMLValueChecker::IsGoodFileName(fileName.GetFullName(), 
                                          fileName.GetPath(wxPATH_GET_VOLUME)) || 
-         (len < 0) || (rms < 0))
+         (len < 0) || (rms < 0.0))
       return NULL;
 
    return new SimpleBlockFile(fileName, len, min, max, rms);

@@ -275,7 +275,11 @@ BlockFile *LegacyBlockFile::BuildFromXML(wxString projDir, const char **attrs,
          if( !strcmp(attr, "norms") )
             noRMS = (bool)nValue;
          if( !strcmp(attr, "format") )
+         {
+            if ((nValue != int16Sample) && (nValue != int24Sample) && (nValue != floatSample))
+               return NULL;
             format = (sampleFormat)nValue;
+         }
          if( !strcmp(attr, "summarylen") )
             summaryLen = nValue;
        }
@@ -283,7 +287,7 @@ BlockFile *LegacyBlockFile::BuildFromXML(wxString projDir, const char **attrs,
 
    if (!XMLValueChecker::IsGoodFileName(fileName.GetFullName(), 
                                          fileName.GetPath(wxPATH_GET_VOLUME)) || 
-         (summaryLen < 0) || (len < 0))
+         (len < 0) || (summaryLen < 0))
       return NULL;
 
    return new LegacyBlockFile(fileName, format, summaryLen, len, noRMS);
