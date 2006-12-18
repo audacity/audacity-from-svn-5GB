@@ -50,9 +50,10 @@ bool Branding::HandleXMLTag(const char *tag, const char **attrs)
             m_BrandLogoFileName.Normalize(wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG);
          } 
          else
-            // Don't return failure. We'll just not have a logo to show. 
-            wxMessageBox(wxString::Format(_("Could not open branding logo file: %s"), value), 
-                           _("Error"), wxOK | wxICON_ERROR);
+         {
+            wxLogWarning(wxT("Could not open branding logo file: %s"), value);
+            return false;
+         }
       }
       else if (!strcmp(attr, "colorscheme") && XMLValueChecker::IsGoodString(value)) 
          m_strBrandColorScheme = value;

@@ -880,10 +880,13 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
             break;
          
          const wxString strValue = value;
-         if (!strcmp(attr, "rate") && 
-               XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue) && 
-               (dblValue >= 100.0) && (dblValue <= 100000.0)) // same bounds as ImportRawDialog::OnOK
+         if (!strcmp(attr, "rate"))
+         {
+            if (!XMLValueChecker::IsGoodString(strValue) || !Internat::CompatibleToDouble(strValue, &dblValue) ||
+                  (dblValue < 100.0) || (dblValue > 100000.0)) // same bounds as ImportRawDialog::OnOK
+               return false;
             mRate = dblValue;
+         }
          else if (!strcmp(attr, "offset") && 
                   XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
          {
@@ -899,10 +902,13 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
             mPan = dblValue;
          else if (!strcmp(attr, "name") && XMLValueChecker::IsGoodString(strValue))
             mName = strValue;
-         else if (!strcmp(attr, "channel") && 
-                  XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue) && 
-                  (nValue >= LeftChannel) && (nValue <= MonoChannel))
+         else if (!strcmp(attr, "channel"))
+         {
+            if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue) || 
+                  (nValue < LeftChannel) || (nValue > MonoChannel))
+               return false;
             mChannel = nValue;
+         }
          else if (!strcmp(attr, "linked") && 
                   XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
             mLinked = (bool)nValue;

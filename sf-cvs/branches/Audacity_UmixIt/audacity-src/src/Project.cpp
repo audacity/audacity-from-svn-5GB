@@ -177,7 +177,7 @@ bool ImportXMLTagHandler::HandleXMLTag(const char *tag, const char **attrs)
       if (XMLValueChecker::IsGoodFileName(strPathName, fileName.GetPath(wxPATH_GET_VOLUME))) {
          strPathName = fileName.GetFullPath();
       } else { 
-         wxMessageBox(_("Could not import file: ") + strPathName, _("Error"), wxOK | wxICON_ERROR);
+         wxLogWarning(wxT("Could not import file: %s"), strPathName);
          return false;
       }
    }
@@ -2000,7 +2000,7 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
       if (!strcmp(attr, "vpos"))
       {
          long longVpos;
-         if (XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&longVpos))
+         if (XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&longVpos) && (longVpos >= 0))
             mViewInfo.vpos = longVpos;
       }
 
@@ -2010,7 +2010,8 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
       if (!strcmp(attr, "zoom") && Internat::CompatibleToDouble(strValue, &dblValue))
          mViewInfo.zoom = dblValue;
 
-      if (!strcmp(attr, "rate") && Internat::CompatibleToDouble(strValue, &dblValue)) 
+      if (!strcmp(attr, "rate") && Internat::CompatibleToDouble(strValue, &dblValue) && 
+            (dblValue >= 100.0) && (dblValue <= 100000.0)) // same bounds as ImportRawDialog::OnOK
       {
          mRate = dblValue;
          mStatus->SetRate(mRate);

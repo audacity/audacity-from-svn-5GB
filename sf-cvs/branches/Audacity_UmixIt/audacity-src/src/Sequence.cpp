@@ -134,7 +134,6 @@ bool Sequence::ConvertToSampleFormat(sampleFormat format)
       SeqBlock *b = mBlock->Item(i);
       BlockFile *oldBlock = b->f;
       sampleCount len = b->f->GetLength();
-      if (len > mMaxSamples) len = mMaxSamples; // Prevent overruns, per NGS report for UmixIt.
 
       if (!oldBlock->IsAlias()) {
          BlockFile *newBlock;
@@ -538,7 +537,6 @@ bool Sequence::AppendAlias(wxString fullPath,
    SeqBlock *newBlock = new SeqBlock();
 
    newBlock->start = mNumSamples;
-   if (len > mMaxSamples) len = mMaxSamples; // Prevent overruns, per NGS report for UmixIt.
    newBlock->f =
       mDirManager->NewAliasBlockFile(fullPath, start, len, channel);
 
@@ -591,10 +589,7 @@ sampleCount Sequence::GetBestBlockSize(sampleCount start) const
       result += mBlock->Item(b)->f->GetLength();
    }
    
-   // Prevent overruns in Release build, per NGS report for UmixIt.
-   //    wxASSERT(result > 0 && result <= mMaxSamples);
-   if (result < 1) result = 1;
-   else if (result > mMaxSamples) result = mMaxSamples;
+   wxASSERT(result > 0 && result <= mMaxSamples);
    
    return result;
 }
@@ -617,9 +612,9 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
          if (!value)
             break;
          
-         // All these attributes have integer values, so just test & convert here.
+         // All these attributes have non-negative integer values, so just test & convert here.
          const wxString strValue = value;
-         if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue))
+         if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue) || (nValue < 0))
          {
             mErrorOpening = true;
             return false;
@@ -648,9 +643,9 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
          if (!value)
             break;
          
-         // All these attributes have integer values, so just test & convert here.
+         // All these attributes have non-negative integer values, so just test & convert here.
          const wxString strValue = value;
-         if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue))
+         if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue) || (nValue < 0))
          {
             mErrorOpening = true;
             return false;
@@ -670,16 +665,16 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
             mDirManager->SetMaxSamples(mMaxSamples);
          }
          else if (!strcmp(attr, "sampleformat"))
-            mSampleFormat = (sampleFormat)nValue;
-         else if (!strcmp(attr, "numsamples"))
          {
-            if (nValue < 0)
+            if ((nValue != int16Sample) && (nValue != int24Sample) && (nValue != floatSample))
             {
                mErrorOpening = true;
                return false;
             }
-            mNumSamples = nValue;
+            mSampleFormat = (sampleFormat)nValue;
          }
+         else if (!strcmp(attr, "numsamples"))
+            mNumSamples = nValue;
       } // while
 
       return true;
@@ -775,18 +770,11 @@ void Sequence::WriteXML(int depth, FILE *fp)
 int Sequence::FindBlock(sampleCount pos, sampleCount lo,
                         sampleCount guess, sampleCount hi) const
 {
-   // Prevent overruns in Release build, per NGS report for UmixIt.
-   //    wxASSERT(mBlock->Item(guess)->f->GetLength() > 0);
-   sampleCount guessLen = mBlock->Item(guess)->f->GetLength();
-   if ((guessLen < 1) || (guessLen > mMaxSamples))
-      // Bad blockfile, so skip it. 
-      return FindBlock(pos, guess + 1, (guess + 1 + hi) / 2, hi); //vvvvv Right way to skip it?
-
-   //vvvvv Will the above cause this to fail, so need to catch in release build?
+   wxASSERT(mBlock->Item(guess)->f->GetLength() > 0);
    wxASSERT(lo <= guess && guess <= hi && lo <= hi); 
 
    if (pos >= mBlock->Item(guess)->start &&
-       pos < mBlock->Item(guess)->start + guessLen)
+       pos < mBlock->Item(guess)->start + mBlock->Item(guess)->f->GetLength())
       return guess;
 
    if (pos < mBlock->Item(guess)->start)
@@ -809,16 +797,9 @@ int Sequence::FindBlock(sampleCount pos) const
 
    int rval = FindBlock(pos, 0, numBlocks / 2, numBlocks);
 
-   // Prevent overruns in Release build, per NGS report for UmixIt.
-   //    wxASSERT(rval >= 0 && rval < numBlocks &&
-   //             pos >= mBlock->Item(rval)->start &&
-   //             pos < mBlock->Item(rval)->start + mBlock->Item(rval)->f->GetLength());
-   if ((rval < 0) || 
-         (pos < mBlock->Item(rval)->start) || 
-         (pos >= mBlock->Item(rval)->start + mBlock->Item(rval)->f->GetLength()))
-      return 0;
-   else if (rval >= numBlocks) 
-      return (numBlocks - 1);
+   wxASSERT(rval >= 0 && rval < numBlocks &&
+            pos >= mBlock->Item(rval)->start &&
+            pos < mBlock->Item(rval)->start + mBlock->Item(rval)->f->GetLength());
 
    return rval;
 }
@@ -826,13 +807,9 @@ int Sequence::FindBlock(sampleCount pos) const
 bool Sequence::Read(samplePtr buffer, sampleFormat format,
                     SeqBlock * b, sampleCount start, sampleCount len) const
 {
-   // Prevent overruns in Release build, per NGS report for UmixIt.
-   //    wxASSERT(b);
-   //    wxASSERT(start >= 0);
-   //    wxASSERT(start + len <= b->f->GetLength());
-   if (!b || (start < 0) || (start + len > mMaxSamples) || 
-         (start + len > b->f->GetLength()) || (b->f->GetLength() > mMaxSamples))
-      return false; //vvvvv ...Or treat it like the (result != len) case below?
+   wxASSERT(b);
+   wxASSERT(start >= 0);
+   wxASSERT(start + len <= b->f->GetLength());
 
    BlockFile *f = b->f;
 
@@ -857,25 +834,19 @@ bool Sequence::CopyWrite(samplePtr buffer, SeqBlock *b,
    // we copy the old block entirely into memory, dereference it,
    // make the change, and then write the new block to disk.
 
-   // Check in Release build, too, per NGS report for UmixIt.
-   //    wxASSERT(b);
-   //    wxASSERT(b->f->GetLength() <= mMaxSamples); 
-   //    wxASSERT(start + len <= b->f->GetLength());
-   sampleCount blockLen;
-   if (!b || 
-         ((blockLen = b->f->GetLength()) > mMaxSamples) || // Prevent overruns, per NGS report for UmixIt.
-         (start + len > blockLen)) 
-      return false;
+   wxASSERT(b);
+   wxASSERT(b->f->GetLength() <= mMaxSamples);
+   wxASSERT(start + len <= b->f->GetLength());
 
    int sampleSize = SAMPLE_SIZE(mSampleFormat);
    samplePtr newBuffer = NewSamples(mMaxSamples, mSampleFormat);
    wxASSERT(newBuffer);
 
-   Read(newBuffer, mSampleFormat, b, 0, blockLen);
+   Read(newBuffer, mSampleFormat, b, 0, b->f->GetLength());
    memcpy(newBuffer + start*sampleSize, buffer, len*sampleSize);
 
    BlockFile *oldBlockFile = b->f;
-   b->f = mDirManager->NewSimpleBlockFile(newBuffer, blockLen, mSampleFormat);
+   b->f = mDirManager->NewSimpleBlockFile(newBuffer, b->f->GetLength(), mSampleFormat);
 
    mDirManager->Deref(oldBlockFile);
 
@@ -1150,7 +1121,7 @@ sampleCount Sequence::GetIdealAppendLen()
    if (numBlocks == 0)
       return max;
 
-   lastBlockLen = mBlock->Item(numBlocks-1)->f->GetLength(); //vvvvv Need to check for mMaxSamples for NGS report fixes?
+   lastBlockLen = mBlock->Item(numBlocks-1)->f->GetLength();
    if (lastBlockLen == max)
       return max;
    else
