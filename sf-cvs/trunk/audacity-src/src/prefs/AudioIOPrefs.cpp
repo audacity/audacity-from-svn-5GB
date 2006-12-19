@@ -151,7 +151,7 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
    S.StartStatic( _("Playthrough") );
    {
       S.TieCheckBox( _("&Play other tracks while recording new one"),
-         wxT("Duplex"),false);
+         wxT("Duplex"),true);
 #ifdef __MACOSX__
       S.TieCheckBox( _("&Hardware Playthrough (Play new track while recording it)"),
          wxT("Playthrough"),false);
