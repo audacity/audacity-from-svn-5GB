@@ -5,11 +5,14 @@
   XMLTagHandler.cpp
 
   Dominic Mazzoni
-  Vaughan Johnson (IsGood*FromXML)
+  Vaughan Johnson
 
-  This class is an interface which should be implemented by
+  The XMLTagHandler class is an interface which should be implemented by
   classes which wish to be able to load and save themselves
   using XML files.
+
+  The XMLValueChecker class implements static bool methods for checking 
+  input values from XML files.
 
 **********************************************************************/
 
@@ -25,6 +28,8 @@
 #include <wx/defs.h>
 #include <wx/filename.h>
 
+#include "../SampleFormat.h"
+#include "../Track.h"
 
 bool XMLValueChecker::IsGoodString(const wxString str)
 {
@@ -58,9 +63,10 @@ bool XMLValueChecker::IsGoodFileName(const wxString strFileName, const wxString 
 bool XMLValueChecker::IsGoodSubdirName(const wxString strSubdirName, const wxString strDirName /* = "" */)
 {
    // Test strSubdirName. 
-   // Note this prevents path separators, so fixes vulnerability #3 in the NGS report for UmixIt, 
+   // Note this prevents path separators, and relative path to parents (strDirName), 
+   // so fixes vulnerability #3 in the NGS report for UmixIt, 
    // where an attacker could craft an AUP file with relative pathnames to get to system files, for example.
-   if (!IsGoodFileString(strSubdirName)) 
+   if (!IsGoodFileString(strSubdirName) || (strSubdirName == ".") || (strSubdirName == ".."))
       return false;
 
    #ifdef _WIN32
@@ -83,6 +89,7 @@ bool XMLValueChecker::IsGoodPathName(const wxString strPathName)
 bool XMLValueChecker::IsGoodFileString(wxString str)
 {
    return (IsGoodString(str) && 
+            !str.IsEmpty() && 
             (str.Length() <= 260) && // FILENAME_MAX is 260 in MSVC, but inconsistent across platforms, sometimes huge.
             (str.Find(wxFileName::GetPathSeparator()) == -1)); // No path separator characters. //vvv (this won't work on CVS HEAD)
 }
@@ -93,22 +100,45 @@ bool XMLValueChecker::IsGoodInt(const wxString strInt)
       return false;
 
    // Check that the value won't overflow.
-   const wxString strMAXINT = "2147483647";
-   size_t lenMAXINT = strMAXINT.Length();
-   if (strInt.Length() > lenMAXINT)
+   // Signed long: -2,147,483,648 to +2,147,483,647, i.e., -2^31 to 2^31-1
+   // We're strict about disallowing spaces and commas, and requiring minus sign to be first char for negative.
+   const size_t lenMAXABS = strlen("2147483647");
+   const size_t lenStrInt = strInt.Length();
+
+   unsigned long nTest;
+   wxString strTest;
+
+   if (lenStrInt > (lenMAXABS + 1))
       return false;
-   else if (strInt.Length() == lenMAXINT)
+   else if ((lenStrInt == (lenMAXABS + 1)) && (strInt[0] == '-'))
    {
-      const int digitsMAXINT[] = {2, 1, 4, 7, 4, 8, 3, 6, 4, 7};
-      unsigned long nTest;
-      wxString strTest;
-      for (unsigned int i = 0; i < lenMAXINT; i++) {
+      const unsigned long digitsMAXABS[] = {2, 1, 4, 7, 4, 8, 3, 6, 4, 8};
+      for (unsigned int i = 0; i < lenMAXABS; i++) {
+         strTest = strInt[i+1];
+         if (!strTest.ToULong(&nTest) || (nTest > digitsMAXABS[i]))
+            return false;
+      }
+   }
+   else if (lenStrInt == lenMAXABS)
+   {
+      const unsigned long digitsMAXABS[] = {2, 1, 4, 7, 4, 8, 3, 6, 4, 7};
+      for (unsigned int i = 0; i < lenMAXABS; i++) {
          strTest = strInt[i];
-         if (!strTest.ToULong(&nTest) || (nTest > digitsMAXINT[i]))
+         if (!strTest.ToULong(&nTest) || (nTest > digitsMAXABS[i]))
             return false;
       }
    }
    return true;
+}
+
+bool XMLValueChecker::IsValidChannel(const int nValue)
+{
+   return (nValue >= Track::LeftChannel) && (nValue <= Track::MonoChannel);
+}
+
+bool XMLValueChecker::IsValidSampleFormat(const int nValue)
+{
+   return (nValue == int16Sample) || (nValue == int24Sample) || (nValue == floatSample);
 }
 
 

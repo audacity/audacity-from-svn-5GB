@@ -666,7 +666,7 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
          }
          else if (!strcmp(attr, "sampleformat"))
          {
-            if ((nValue != int16Sample) && (nValue != int24Sample) && (nValue != floatSample))
+            if (!XMLValueChecker::IsValidSampleFormat(nValue))
             {
                mErrorOpening = true;
                return false;

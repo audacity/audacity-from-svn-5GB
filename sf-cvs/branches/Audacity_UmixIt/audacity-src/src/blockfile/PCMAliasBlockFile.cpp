@@ -178,7 +178,8 @@ BlockFile *PCMAliasBlockFile::BuildFromXML(wxString projDir, const char **attrs)
                                          summaryFileName.GetPath(wxPATH_GET_VOLUME)) || 
          !XMLValueChecker::IsGoodFileName(aliasFileName.GetFullName(), 
                                           aliasFileName.GetPath(wxPATH_GET_VOLUME)) ||
-         (aliasStart < 0) || (aliasLen < 0) || (aliasChannel < 0) || (aliasChannel > 2) || (rms < 0.0))
+         (aliasStart < 0) || (aliasLen <= 0) || 
+         !XMLValueChecker::IsValidChannel(aliasChannel) || (rms < 0.0))
       return NULL;
 
    return new PCMAliasBlockFile(summaryFileName, aliasFileName,

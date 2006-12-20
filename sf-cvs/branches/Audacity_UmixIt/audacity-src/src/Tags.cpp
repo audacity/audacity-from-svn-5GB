@@ -137,7 +137,7 @@ bool Tags::HandleXMLTag(const char *tag, const char **attrs)
       else if (!strcmp(attr, "comments") && XMLValueChecker::IsGoodString(strValue))
          mComments = strValue;
       else if (!strcmp(attr, "id3v2") && XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
-         mID3V2 = (bool)nValue;         
+         mID3V2 = (nValue != 0);
    } // while
    
    return true;

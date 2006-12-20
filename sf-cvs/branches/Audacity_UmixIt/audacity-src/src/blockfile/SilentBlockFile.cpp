@@ -63,7 +63,7 @@ BlockFile *SilentBlockFile::BuildFromXML(wxString projDir, const char **attrs)
           len = nValue;
    }
 
-   if (len < 0)
+   if (len <= 0)
       return NULL;
 
    return new SilentBlockFile(len);

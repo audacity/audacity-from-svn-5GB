@@ -419,7 +419,7 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
       return true;
    }
    else if (!strcmp(tag, "labeltrack")) {
-      long nValue;
+      long nValue = -1;
       while (*attrs) {
          const char *attr = *attrs++;
          const char *value = *attrs++;

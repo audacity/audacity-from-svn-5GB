@@ -208,7 +208,7 @@ bool Envelope::HandleXMLTag(const char *tag, const char **attrs)
 {
    if (!strcmp(tag, "envelope")) {
       int numPoints = 0;
-      long nValue;
+      long nValue = -1;
 
       while (*attrs) {
          const char *attr = *attrs++;
