@@ -5,10 +5,14 @@
   XMLTagHandler.h
 
   Dominic Mazzoni
+  Vaughan Johnson
 
-  This class is an interface which should be implemented by
+  The XMLTagHandler class is an interface which should be implemented by
   classes which wish to be able to load and save themselves
   using XML files.
+
+  The XMLValueChecker class implements static bool methods for checking 
+  input values from XML files.
 
 **********************************************************************/
 
@@ -22,7 +26,7 @@ class XMLValueChecker
 {
 public:
    // "Good" means well-formed and for the file-related functions, names an existing file or folder.
-   // They are used in HandleXMLTag and BuildFomXML methods to check the input for 
+   // These are used in HandleXMLTag and BuildFomXML methods to check the input for 
    // security vulnerabilites, per the NGS report for UmixIt.
    static bool IsGoodString(const wxString str);
 
@@ -31,8 +35,11 @@ public:
    static bool IsGoodPathName(const wxString strPathName);
 
    // Note that because wxString::ToLong does additional testing, IsGoodInt doesn't duplicate 
-   // that testing, so use wxString::ToLong, not just atoi.
+   // that testing, so use wxString::ToLong after IsGoodInt, not just atoi.
    static bool IsGoodInt(const wxString strInt);
+
+   static bool IsValidChannel(const int nValue); 
+   static bool IsValidSampleFormat(const int nValue); // true if nValue is one sampleFormat enum values
 
 private:
    static bool IsGoodFileString(wxString str);

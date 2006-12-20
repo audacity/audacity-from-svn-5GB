@@ -911,7 +911,7 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
          }
          else if (!strcmp(attr, "linked") && 
                   XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
-            mLinked = (bool)nValue;
+            mLinked = (nValue != 0);
          
       } // while
       return true;

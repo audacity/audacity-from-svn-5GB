@@ -124,7 +124,7 @@ BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **att
          if( !wxStricmp(attr, "summarylen") )
             summaryLen = nValue;
          if( !wxStricmp(attr, "norms") )
-            noRMS = (bool)nValue;
+            noRMS = (nValue != 0);
        }
    }
 
@@ -132,7 +132,8 @@ BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **att
                                          summaryFileName.GetPath(wxPATH_GET_VOLUME)) || 
          !XMLValueChecker::IsGoodFileName(aliasFileName.GetFullName(), 
                                           aliasFileName.GetPath(wxPATH_GET_VOLUME)) ||
-         (aliasStart < 0) || (aliasLen < 0) || (aliasChannel < 0) || (aliasChannel > 2) || (summaryLen < 0))
+         (aliasStart < 0) || (aliasLen <= 0) || 
+         !XMLValueChecker::IsValidChannel(aliasChannel) || (summaryLen <= 0))
       return NULL;
 
    return new LegacyAliasBlockFile(summaryFileName, aliasFileName,
