@@ -61,8 +61,8 @@ http://audacity.sourceforge.net/
 To retrieve the latest version from CVS, use the following
 commands:
 
-  cvs -d :pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity login
-  cvs -d :pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity checkout audacity
+  cvs -d:pserver:anonymous@audacity.cvs.sourceforge.net:/cvsroot/audacity login
+  cvs -d:pserver:anonymous@audacity.cvs.sourceforge.net:/cvsroot/audacity checkout audacity
 
 ----------------------------------
 STEP 3:  Compile and install wxMac
