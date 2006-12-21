@@ -882,22 +882,26 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
          const wxString strValue = value;
          if (!strcmp(attr, "rate"))
          {
-            if (!XMLValueChecker::IsGoodString(strValue) || !Internat::CompatibleToDouble(strValue, &dblValue) ||
+            if (!XMLValueChecker::IsGoodString(strValue) || 
+                  !Internat::CompatibleToDouble(strValue, &dblValue) ||
                   (dblValue < 100.0) || (dblValue > 100000.0)) // same bounds as ImportRawDialog::OnOK
                return false;
             mRate = dblValue;
          }
          else if (!strcmp(attr, "offset") && 
-                  XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+                  XMLValueChecker::IsGoodString(strValue) && 
+                  Internat::CompatibleToDouble(strValue, &dblValue))
          {
             mOffset = dblValue;
             mEnvelope->SetOffset(mOffset);
          }
          else if (!strcmp(attr, "gain") && 
-                  XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+                  XMLValueChecker::IsGoodString(strValue) && 
+                  Internat::CompatibleToDouble(strValue, &dblValue))
             mGain = dblValue;
          else if (!strcmp(attr, "pan") && 
-                  XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue) && 
+                  XMLValueChecker::IsGoodString(strValue) && 
+                  Internat::CompatibleToDouble(strValue, &dblValue) && 
                   (dblValue >= -1.0) && (dblValue <= 1.0))
             mPan = dblValue;
          else if (!strcmp(attr, "name") && XMLValueChecker::IsGoodString(strValue))
@@ -905,7 +909,7 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
          else if (!strcmp(attr, "channel"))
          {
             if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue) || 
-                  (nValue < LeftChannel) || (nValue > MonoChannel))
+                  !XMLValueChecker::IsValidChannel(nValue))
                return false;
             mChannel = nValue;
          }

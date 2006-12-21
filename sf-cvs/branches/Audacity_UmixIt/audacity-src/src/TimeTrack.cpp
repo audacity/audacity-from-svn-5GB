@@ -108,7 +108,8 @@ bool TimeTrack::HandleXMLTag(const char *tag, const char **attrs)
          const wxString strValue = value;
          if (!strcmp(attr, "offset"))
          {
-            if (!XMLValueChecker::IsGoodString(strValue) || !Internat::CompatibleToDouble(strValue, &dblValue))
+            if (!XMLValueChecker::IsGoodString(strValue) || 
+                  !Internat::CompatibleToDouble(strValue, &dblValue))
                return false;
             mOffset = dblValue;
             mEnvelope->SetOffset(mOffset);
@@ -118,7 +119,7 @@ bool TimeTrack::HandleXMLTag(const char *tag, const char **attrs)
          else if (!strcmp(attr, "channel"))
          {
             if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue) || 
-                  (nValue < LeftChannel) || (nValue > MonoChannel))
+                  !XMLValueChecker::IsValidChannel(nValue))
                return false;
             mChannel = nValue;
          }
