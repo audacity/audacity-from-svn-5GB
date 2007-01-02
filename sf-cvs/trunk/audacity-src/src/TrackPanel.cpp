@@ -1220,13 +1220,13 @@ bool TrackPanel::SetCursorByActivity( )
 }
 
 /// When in the label, we can either vertical zoom or re-order tracks.
-/// Dont't change cursor/tip to zoom if display is not waveform (either linear of dB)
+/// Dont't change cursor/tip to zoom if display is not waveform (either linear of dB) or Spectrum
 void TrackPanel::SetCursorAndTipWhenInLabel( Track * t,
          wxMouseEvent &event, const wxChar ** ppTip )
 {
    if (event.m_x >= GetVRulerOffset() &&
       t->GetKind() == Track::Wave &&
-      ((WaveTrack *) t)->GetDisplay() <= WaveTrack::WaveformDBDisplay) {
+      ((WaveTrack *) t)->GetDisplay() <= WaveTrack::SpectrumDisplay) {
       *ppTip = _("Click to vertically zoom in, Shift-click to zoom out, Drag to create a particular zoom region.");
       SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
    }
@@ -2356,13 +2356,10 @@ void TrackPanel::HandleVZoomClick( wxMouseEvent & event )
    if (!mCapturedTrack)
       return;
 
-   // don't do anything if track is not wave or if it is not
-   // WaveformDisplay or WaveformDBDisplay
+   // don't do anything if track is not wave or Spectrum
    if (mCapturedTrack->GetKind() != Track::Wave
-      || ((WaveTrack *) mCapturedTrack)->GetDisplay() > WaveTrack::WaveformDBDisplay) {
-
+      || ((WaveTrack *) mCapturedTrack)->GetDisplay() > WaveTrack::SpectrumDisplay)
       return;
-   }
 
    mMouseCapture = IsVZooming;
    mZoomStart = event.m_y;
@@ -2390,13 +2387,9 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
 
    mMouseCapture = IsUncaptured;
 
-   // don't do anything if track is not wave or if it is not
-   // WaveformDisplay or WaveformDBDisplay
-   if (mCapturedTrack->GetKind() != Track::Wave
-      || ((WaveTrack *) mCapturedTrack)->GetDisplay() > WaveTrack::WaveformDBDisplay) {
-
+   // don't do anything if track is not wave
+   if (mCapturedTrack->GetKind() != Track::Wave)
       return;
-   }
 
    WaveTrack *track = (WaveTrack *)mCapturedTrack;
    WaveTrack *partner = (WaveTrack *)mTracks->GetLink(track);
@@ -2410,8 +2403,21 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       mZoomStart = temp;
    }
 
-   float min, max, c, l;
-   track->GetDisplayBounds(&min, &max);
+   float min, max, c, l, binSize;
+   bool spectrum;
+   int windowSize;
+   double rate = ((WaveTrack *)track)->GetRate();
+   ((WaveTrack *) track)->GetDisplay() == WaveTrack::SpectrumDisplay ? spectrum = true : spectrum = false;
+   if(spectrum) {
+      min = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
+      if(min < 0)
+         min = 0;
+      max = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000L);
+      windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
+      binSize = rate / windowSize;
+   }
+   else
+      track->GetDisplayBounds(&min, &max);
 
    if (IsDragZooming()) {
       // Drag Zoom
@@ -2425,10 +2431,18 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       min = (tmax * (1.0-p2) + tmin * p2);
 
       // Enforce maximum vertical zoom
-      if (max - min < 0.2) {
-         c = (min+max/2);
-         min = c-0.1;
-         max = c+0.1;
+      if(spectrum) {
+         if(min < 0.)
+            min = 0.;
+         if(max < min + 10. * binSize) //minimum 10 freq bins
+            max = min + 10. * binSize;
+      }
+      else {
+         if (max - min < 0.2) {
+            c = (min+max/2);
+            min = c-0.1;
+            max = c+0.1;
+         }
       }
    }
    else if (event.ShiftDown() || event.ButtonUp(3)) {
@@ -2436,41 +2450,73 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       // Zoom out to -1.0...1.0 first, then, and only
       // then, if they click again, allow one more
       // zoom out.
-      if (min <= -1.0 && max >= 1.0) {
-         min = -2.0;
-         max = 2.0;
-      }
-      else {
+      if(spectrum) {
          c = 0.5*(min+max);
          l = (c - min);
-         min = wxMax( -1.0, c - 2*l);
-         max = wxMin(  1.0, c + 2*l);
+         if(c - 2*l <= 0) {
+            min = 0.0;
+            max = wxMin( rate/2., 2. * max);
+         }
+         else {
+            min = wxMax( 0.0, c - 2*l);
+            max = wxMin( rate/2., c + 2*l);
+         }
+      }
+      else {
+         if (min <= -1.0 && max >= 1.0) {
+            min = -2.0;
+            max = 2.0;
+         }
+         else {
+            c = 0.5*(min+max);
+            l = (c - min);
+            min = wxMax( -1.0, c - 2*l);
+            max = wxMin(  1.0, c + 2*l);
+         }
       }
    }
    else {
       // Zoom IN
       float p1;
-
-      // Zoom in centered on cursor
-      if (min < -1.0 || max > 1.0) {
-         min = -1.0;
-         max = 1.0;
-      }
-      else {
+      if(spectrum) {
          c = 0.5*(min+max);
          // Enforce maximum vertical zoom
-         l = wxMax( 0.1, (c - min));
+         l = wxMax( 10. * binSize, (c - min));   //is this a sensible min? MJS
 
          p1 = (mZoomStart - ypos) / (float)height;
          c = (max * (1.0-p1) + min * p1);
-         min = c - 0.5*l;
-         max = c + 0.5*l;
+         min = wxMax( 0.0, c - 0.5*l);
+         max = wxMin( rate/2., min + l);
+      }
+      else {
+
+         // Zoom in centered on cursor
+         if (min < -1.0 || max > 1.0) {
+            min = -1.0;
+            max = 1.0;
+         }
+         else {
+            c = 0.5*(min+max);
+            // Enforce maximum vertical zoom
+            l = wxMax( 0.1, (c - min));
+
+            p1 = (mZoomStart - ypos) / (float)height;
+            c = (max * (1.0-p1) + min * p1);
+            min = c - 0.5*l;
+            max = c + 0.5*l;
+         }
       }
    }
 
-   track->SetDisplayBounds(min, max);
-   if (partner)
-      partner->SetDisplayBounds(min, max);
+   if(spectrum) {
+      gPrefs->Write(wxT("/Spectrum/MaxFreq"), (long)max);
+      gPrefs->Write(wxT("/Spectrum/MinFreq"), (long)min);
+   }
+   else {
+      track->SetDisplayBounds(min, max);
+      if (partner)
+         partner->SetDisplayBounds(min, max);
+   }
 
    mZoomEnd = mZoomStart = 0;
    Refresh(false);
