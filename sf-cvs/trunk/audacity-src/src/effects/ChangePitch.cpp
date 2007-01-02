@@ -93,7 +93,7 @@ void EffectChangePitch::DeduceFrequencies()
       track->Get((samplePtr) buffer, floatSample, start, analyzeSize);
       for(i=0; i<numWindows; i++) {
          ComputeSpectrum(buffer+i*windowSize, windowSize, windowSize/2,
-                         (int)rate, windowSize, rate, freq, true);
+                         (int)rate, 0, windowSize, rate, freq, true);
          for(j=0; j<windowSize/2; j++)
             freqa[j] += freq[j];
       }

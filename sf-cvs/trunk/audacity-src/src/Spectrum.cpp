@@ -34,7 +34,7 @@ static inline float todB_a(const float *x){
 
 
 bool ComputeSpectrum(float * data, int width, int height,
-                     int maxFreq, int windowSize,
+                     int maxFreq, int minFreq, int windowSize,
                      double rate, float *grayscaleOut,
                      bool autocorrelation, int windowFunc)
 {
@@ -92,7 +92,10 @@ bool ComputeSpectrum(float * data, int width, int height,
       windows++;
    }
 
+   int minSamples = int (minFreq * windowSize / rate + 0.5);   // units here are fft bins
    int maxSamples = int (maxFreq * windowSize / rate + 0.5);
+   if (minSamples < 0.)
+      minSamples = 0.;
    if (maxSamples > half)
       maxSamples = half;
 
@@ -139,7 +142,7 @@ bool ComputeSpectrum(float * data, int width, int height,
    } else {
       // Convert to decibels
       // But do it safely; -Inf is nobody's friend
-      for (i = 0; i < maxSamples; i++){
+      for (i = minSamples; i < maxSamples; i++){
          float temp=(processed[i] / windowSize / windows);
          if (temp > 0.0)
             processed[i] = 10*log10(temp);
@@ -149,10 +152,10 @@ bool ComputeSpectrum(float * data, int width, int height,
    }
 
    // Finally, put it into bins in grayscaleOut[], normalized to a 0.0-1.0 scale
-
+   float binPerPx = float(maxSamples - minSamples) / float(height);
    for (i = 0; i < height; i++) {
-      float bin0 = float (i) * maxSamples / height;
-      float bin1 = float (i + 1) * maxSamples / height;
+      float bin0 = float (i) * binPerPx + minSamples;
+      float bin1 = float (i + 1) * binPerPx + minSamples;
 
       float value;
 
@@ -184,7 +187,6 @@ bool ComputeSpectrum(float * data, int width, int height,
 
       grayscaleOut[i] = value;
    }
-
    delete[]in;
    delete[]out;
    delete[]out2;

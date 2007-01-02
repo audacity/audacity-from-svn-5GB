@@ -42,6 +42,7 @@ private:
    void Populate();
    void OnCheckAutoMaxFrequency(wxCommandEvent &event);
    void PopulateOrExchange( ShuttleGui & S );
+   wxString minFreqStr;
    wxString maxFreqStr;
    int windowType;
    bool autoMaxFrequency;
