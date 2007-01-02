@@ -339,6 +339,8 @@ bool Sequence::Paste(sampleCount s, const Sequence *src)
       SeqBlock *largerBlock = new SeqBlock();
       largerBlock->start = mBlock->Item(b)->start;
       int largerBlockLen = mBlock->Item(b)->f->GetLength() + addedLen;
+      if (largerBlockLen > mMaxSamples) 
+         largerBlockLen = mMaxSamples; // Prevent overruns, per NGS report for UmixIt.
       largerBlock->f =
          mDirManager->NewSimpleBlockFile(buffer, largerBlockLen, mSampleFormat);
 
@@ -675,14 +677,14 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
             mNumSamples = nValue;
       } // while
 
-      // Both mMaxSamples and mSampleFormat should have been set. 
-      // Check that mMaxSamples is right for mSampleFormat, using the calculations from the constructor.
-      if ((mMinSamples != sMaxDiskBlockSize / SAMPLE_SIZE(mSampleFormat) / 2) || 
-            (mMaxSamples != mMinSamples * 2))
-      {
-         mErrorOpening = true;
-         return false;
-      }
+      //// Both mMaxSamples and mSampleFormat should have been set. 
+      //// Check that mMaxSamples is right for mSampleFormat, using the calculations from the constructor.
+      //if ((mMinSamples != sMaxDiskBlockSize / SAMPLE_SIZE(mSampleFormat) / 2) || 
+      //      (mMaxSamples != mMinSamples * 2))
+      //{
+      //   mErrorOpening = true;
+      //   return false;
+      //}
 
       return true;
    }
