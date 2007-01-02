@@ -6,8 +6,8 @@
 msgid ""
 msgstr "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2005-01-03 20:59-0800\n"
-"PO-Revision-Date: 2006-10-25 12:20+0100\n"
-"Last-Translator: Kevin Brubeck Unhammer <unhammer@gmail.com>\n"
+"PO-Revision-Date: 2007-01-02 22:26+0100\n"
+"Last-Translator: Richard Ash <richard@audacityteam.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1920,7 +1920,9 @@ msgstr "Mac OS 9 / X"
 msgid "Recommended Download"
 msgstr "Anbefalt nedlasting"
 
-#: download/beta_mac.php:27 download/beta_mac.php:28 download/beta_mac.php:37
+#: download/beta_mac.php:27
+#: download/beta_mac.php:28
+#: download/beta_mac.php:37
 #: download/beta_mac.php:38
 #, php-format
 msgid "<a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB)"
@@ -1972,8 +1974,8 @@ msgid "Nyquist Plug-Ins"
 msgstr "Nyquist-tillegg"
 
 #: download/plugins.php:20
-msgid "Audacity has built-in support for cross-platform Nyquist effects.  You can download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or create your own using the <a href=\"../help/nyquist\">Nyquist programming language</a>"
-msgstr "Audacity har innebygd støtte for plattformsuavhengige Nyquist-effekter. Du kan laste ned ytterlige <a href=\"nyquistplugins\">Nyquist-tillegg</a> eller lage dine egne vha. <a href=\"../help/nyquist\">Nyquist-programmeringsspråket</a>"
+msgid "Audacity has built-in support for cross-platform Nyquist effects.  You can download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or create your own using the <a href=\"../help/nyquist\">Nyquist programming language</a>."
+msgstr "Audacity har innebygd støtte for plattformsuavhengige Nyquist-effekter. Du kan laste ned ytterlige <a href=\"nyquistplugins\">Nyquist-tillegg</a> eller lage dine egne vha. <a href=\"../help/nyquist\">Nyquist-programmeringsspråket</a>."
 
 #: download/plugins.php:22
 msgid "VST Plug-Ins"
@@ -1993,7 +1995,8 @@ msgstr "Nye funksjoner i Audacity 1.3"
 msgid "New features in Audacity 1.3.1 and 1.3.2"
 msgstr ""
 
-#: download/features-1.3-a.php:20 download/features-1.3-i.php:70
+#: download/features-1.3-a.php:20
+#: download/features-1.3-i.php:70
 msgid "Improved Toolbar Docking"
 msgstr ""
 
@@ -2001,17 +2004,20 @@ msgstr ""
 msgid "Track focus for improved keyboard navigation"
 msgstr ""
 
-#: download/features-1.3-a.php:22 download/features-1.3-i.php:77
+#: download/features-1.3-a.php:22
+#: download/features-1.3-i.php:77
 #: download/features-1.3-k.php:36
 msgid "Repair and Equalization effects"
 msgstr ""
 
-#: download/features-1.3-a.php:23 download/features-1.3-j.php:71
+#: download/features-1.3-a.php:23
+#: download/features-1.3-j.php:71
 #: download/features-1.3-l.php:46
 msgid "Timer Recording"
 msgstr ""
 
-#: download/features-1.3-a.php:24 download/features-1.3-d.php:56
+#: download/features-1.3-a.php:24
+#: download/features-1.3-d.php:56
 #: download/features-1.3-k.php:43
 msgid "Project saving and recovery"
 msgstr ""
@@ -2022,7 +2028,8 @@ msgstr ""
 msgid "Selection Bar"
 msgstr "Markeringsverktøy"
 
-#: download/features-1.3-a.php:26 download/features-1.3-b.php:50
+#: download/features-1.3-a.php:26
+#: download/features-1.3-b.php:50
 #: download/features-1.3-d.php:63
 msgid "Mac OS X features"
 msgstr ""
@@ -2408,7 +2415,8 @@ msgstr ""
 msgid "Commands to hide or show toolbars are found in the View menu."
 msgstr ""
 
-#: download/features-1.3-h.php:58 download/features-1.3-j.php:64
+#: download/features-1.3-h.php:58
+#: download/features-1.3-j.php:64
 msgid "Track focus"
 msgstr ""
 
@@ -2756,7 +2764,8 @@ msgstr "<a href=\"%s\">Audacity %s installeringsprogram</a> (.exe-fil, %.1lf MB)
 msgid "localized_downloads_windows"
 msgstr "localized_downloads_windows"
 
-#: download/windows.php:35 download/beta_windows.php:40
+#: download/windows.php:35
+#: download/beta_windows.php:40
 #, php-format
 msgid "<a href=\"%s\">LADSPA plugins %s installer</a> (.exe file, %.1lf MB) - over 90 plug-ins"
 msgstr ""
