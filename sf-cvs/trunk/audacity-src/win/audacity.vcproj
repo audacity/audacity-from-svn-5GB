@@ -2941,6 +2941,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\effects\DtmfGen.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\effects\DtmfGen.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\effects\Echo.cpp"
 				>
 				<FileConfiguration

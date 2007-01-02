@@ -1,0 +1,125 @@
+/**********************************************************************
+
+  Audacity: A Digital Audio Editor
+
+  DtmfGen.h
+
+  Salvo Ventura
+  Dec 2006
+
+  An effect for the "Generator" menu to generate DTMF tones
+
+**********************************************************************/
+
+#ifndef __AUDACITY_EFFECT_DTMF__
+#define __AUDACITY_EFFECT_DTMF__
+
+#include <wx/defs.h>
+#include <wx/intl.h>
+
+#include "Effect.h"
+
+class wxString;
+class wxChoice;
+class wxTextCtrl;
+class ShuttleGui;
+class wxSizer;
+
+#define __UNINITIALIZED__ (-1)
+
+class WaveTrack;
+
+
+class EffectDtmf:public Effect {
+
+ public:
+   EffectDtmf() {
+   }
+
+   virtual wxString GetEffectName() {
+      return wxString(_("&DTMF Tones..."));
+   }
+
+   virtual wxString GetEffectDescription() {
+      return wxString::Format(_("Applied effect: Generate DTMF tones, %.6lf seconds"), dtmfDuration);
+   }
+
+   virtual wxString GetEffectAction() {
+      return wxString(_("Generating DTMF tones"));
+   }
+
+   virtual int GetEffectFlags() {
+      return BUILTIN_EFFECT | INSERT_EFFECT;
+   }
+
+   virtual bool PromptUser();
+   virtual bool Process();
+   virtual bool TransferParameters( Shuttle & shuttle );
+
+ private:
+   longSampleCount numSamplesSequence, numSamplesTone, numSamplesSilence;
+
+   wxString dtmfString;       // dtmf tone string
+   int    dtmfNTones;         // total number of tones to generate
+   double dtmfTone;           // duration of a single tone in ms
+   double dtmfSilence;        // duration of silence between tones in ms
+   double dtmfDuration;       // duration of the whole dtmf tone sequence in seconds
+   double dtmfDutyCycle;      // ratio of dtmfTone/(dtmfTone+dtmfSilence)
+
+
+ protected:
+   virtual bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar tone, sampleCount last, longSampleCount total);
+
+ // friendship ...
+ friend class DtmfDialog;
+
+};
+
+//----------------------------------------------------------------------------
+// DtmfDialog
+//----------------------------------------------------------------------------
+
+// Declare window functions
+
+class DtmfDialog:public EffectDialog {
+ public:
+   // constructors and destructors
+   DtmfDialog(wxWindow * parent, const wxString & title);
+
+   // method declarations
+   void PopulateOrExchange(ShuttleGui & S);
+   bool TransferDataToWindow();
+   bool TransferDataFromWindow();
+
+ private:
+   void OnDtmfStringText(wxCommandEvent & event);
+   void OnDtmfDurationText(wxCommandEvent & event);
+   void OnDutyCycleSlider(wxCommandEvent & event);
+   void Recalculate(void);
+
+ private:
+   wxSlider   *mDtmfDutyS;
+   wxTextCtrl *mDtmfStringT;
+   wxTextCtrl *mDtmfDurationT;
+   wxStaticText *mDtmfToneT;
+   wxStaticText *mDtmfSilenceT;
+   wxStaticText *mDtmfDutyT;
+   bool         startup; // this is needed to discriminate between first time dialog is up
+                         // and subsequent text updates, as the Recalculate() method is called
+                         // The problem is caused by the fact that the EVT_TEXT is generated
+                         // also by an internal SetValue. Maybe with wxWidget 2.8 we can clean
+                         // this up...
+
+   DECLARE_EVENT_TABLE()
+
+ public:
+   wxString dString;       // dtmf tone string
+   int    dNTones;         // total number of tones to generate
+   double dTone;           // duration of a single tone
+   double dSilence;        // duration of silence between tones
+   double dDuration;       // duration of the whole dtmf tone sequence
+   double dDutyCycle;      // ratio of dTone/(dTone+dSilence)
+
+};
+
+#endif

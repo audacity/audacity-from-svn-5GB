@@ -20,6 +20,7 @@
 #include "ChangeSpeed.h"
 #include "ClickRemoval.h"
 #include "Compressor.h"
+#include "DtmfGen.h"
 #include "Echo.h"
 #include "Equalization.h"
 #include "Fade.h"
@@ -75,6 +76,7 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectNoise());
    Effect::RegisterEffect(new EffectSilence());
    Effect::RegisterEffect(new EffectToneGen());
+   Effect::RegisterEffect(new EffectDtmf());
    // A little magic to convert 'Tone' to chirps.
    Effect::RegisterEffect(&((new EffectToneGen())->EnableForChirps()));
 
