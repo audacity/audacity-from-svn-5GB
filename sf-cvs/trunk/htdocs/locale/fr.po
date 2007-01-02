@@ -7,8 +7,8 @@ msgid ""
 msgstr "Project-Id-Version: AudacityWebsite\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-17 12:28-0700\n"
-"PO-Revision-Date: 2006-12-13 10:18+0100\n"
-"Last-Translator: Christian Brochec <christian.brochec@ac-rennes.fr>\n"
+"PO-Revision-Date: 2007-01-02 22:24+0100\n"
+"Last-Translator: Richard Ash <richard@audacityteam.org>\n"
 "Language-Team: AudacityFr <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2136,8 +2136,8 @@ msgid "Nyquist Plug-Ins"
 msgstr "Modules Nyquist"
 
 #: download/plugins.php:20
-msgid "Audacity has built-in support for cross-platform Nyquist effects.  You can download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or create your own using the <a href=\"../help/nyquist\">Nyquist programming language</a>"
-msgstr "Audacity dispose du support intégré multiplateforme des effets Nyquist. Vous pouvez télécharger des <a href=\"nyquistplugins\">modules Nyquist</a> supplémentaires, ou meme créer votre propre module grace au <a href=\"../help/nyquist\">langage de programmation Nyquist</a>"
+msgid "Audacity has built-in support for cross-platform Nyquist effects.  You can download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or create your own using the <a href=\"../help/nyquist\">Nyquist programming language</a>."
+msgstr "Audacity dispose du support intégré multiplateforme des effets Nyquist. Vous pouvez télécharger des <a href=\"nyquistplugins\">modules Nyquist</a> supplémentaires, ou meme créer votre propre module grace au <a href=\"../help/nyquist\">langage de programmation Nyquist</a>."
 
 #: download/plugins.php:22
 msgid "VST Plug-Ins"
