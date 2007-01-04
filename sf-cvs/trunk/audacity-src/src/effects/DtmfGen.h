@@ -68,7 +68,9 @@ class EffectDtmf:public Effect {
 
 
  protected:
-   virtual bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar tone, sampleCount last, longSampleCount total);
+   virtual bool MakeDtmfTone(float *buffer, sampleCount len, float fs,
+                             wxChar tone, sampleCount last,
+                             longSampleCount total);
 
  // friendship ...
  friend class DtmfDialog;
