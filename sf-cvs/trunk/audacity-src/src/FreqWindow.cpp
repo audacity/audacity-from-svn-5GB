@@ -346,9 +346,7 @@ void FreqWindow::OnSize(wxSizeEvent & event)
 
    DrawPlot();
 
-#if defined(__WXMSW__)
    Refresh(true);
-#endif
 }
 
 void FreqWindow::DrawPlot()
