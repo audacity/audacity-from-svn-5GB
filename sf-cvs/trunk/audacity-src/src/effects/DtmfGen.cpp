@@ -377,7 +377,7 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
       S.SetSizeHints(-1,-1);
    }
    S.EndMultiColumn();
-   S.StartHorizontalLay(wxCENTER, false);
+   S.StartHorizontalLay(wxCENTER | wxEXPAND, false);
    {
       S.SetStyle(wxSL_HORIZONTAL);
       mDtmfDutyS = S.Id(ID_DTMF_DUTYCYCLE_SLIDER).AddSlider(wxT(""), dDutyCycle, DUTY_MAX);
