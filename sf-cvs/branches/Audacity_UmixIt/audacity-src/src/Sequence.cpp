@@ -709,6 +709,8 @@ void Sequence::HandleXMLEndTag(const char *tag)
          else
             len = mNumSamples - mBlock->Item(b)->start;
 
+         if (len > mMaxSamples) // This could be why the blockfile failed.
+            len = mMaxSamples;
          mBlock->Item(b)->f = new SilentBlockFile(len);
          mErrorOpening = true;
       }
