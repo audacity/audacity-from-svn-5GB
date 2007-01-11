@@ -121,6 +121,7 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
    double BlendedAmplitude;
    double BlendedFrequency;
    double BlendedLogFrequency;
+   double positionInCycles;
 
    // Do our divisions here, outside the loop, for greater efficiency.
 
@@ -141,8 +142,8 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
       t = iSample * BlendMultiplier;
       BlendedAmplitude = amplitude[0] + (amplitude[1]-amplitude[0]) * t;
 
-      if( i == (len/2) )
-         i=i;
+      if( i == (len/2) )   // what's this for? MJS
+         i=i;              // what's this for? MJS
 
       // Log interpolation is not currently used.
       // A linear shift in frequency is what most people expect, and
@@ -158,17 +159,18 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
       }
 
       // Add cycles/second * second/samples * 1-sample
-      mPositionInCycles += BlendedFrequency * PositionMultiplier;
+      mPositionInCycles += BlendedFrequency;
+      positionInCycles = mPositionInCycles * PositionMultiplier;
 
       switch (waveform) {
          case 0:    //sine
-            f = (float) sin(2 * M_PI * mPositionInCycles);
+            f = (float) sin(2 * M_PI * positionInCycles);
             break;
          case 1:    //square
-            f = (modf(mPositionInCycles, &throwaway) < 0.5) ? 1.0f :-1.0f;
+            f = (modf(positionInCycles, &throwaway) < 0.5) ? 1.0f :-1.0f;
             break;
          case 2:    //sawtooth
-            f = (2 * modf(mPositionInCycles+0.5f, &throwaway)) -1.0f;
+            f = (2 * modf(positionInCycles+0.5f, &throwaway)) -1.0f;
             break;
          default:
             break;
