@@ -423,6 +423,8 @@ void SelectionBar::OnRateFocus(wxFocusEvent &event)
    GetParent()->GetEventHandler()->ProcessEvent(e);
 
    Refresh(false);
+
+   event.Skip();
 }
 
 void SelectionBar::OnRateCaptureKey(wxCommandEvent &event)
