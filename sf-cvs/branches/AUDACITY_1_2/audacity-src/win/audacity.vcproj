@@ -2186,6 +2186,28 @@
 				RelativePath="..\src\prefs\KeyConfigPrefs.h">
 			</File>
 			<File
+				RelativePath="..\src\prefs\MousePrefs.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\src\prefs\MousePrefs.h">
+			</File>
+			<File
 				RelativePath="..\src\prefs\PrefsDialog.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -2741,28 +2763,6 @@
 		</File>
 		<File
 			RelativePath="wx\msw\magnif1.cur">
-		</File>
-		<File
-			RelativePath="..\src\prefs\MousePrefs.cpp">
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\src\prefs\MousePrefs.h">
 		</File>
 		<File
 			RelativePath="wx\msw\noentry.cur">

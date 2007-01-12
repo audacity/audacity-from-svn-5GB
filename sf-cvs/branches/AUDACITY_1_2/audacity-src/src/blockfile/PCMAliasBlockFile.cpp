@@ -38,8 +38,6 @@ PCMAliasBlockFile::~PCMAliasBlockFile()
 {
 }
 
-wxString gProjDir = ""; // Needs to be set in BuildFromXML, so just use a global instead of a member.
-
 /// Reads the specified data from the aliased file, using libsndfile,
 /// and converts it to the given sample format.
 ///
@@ -54,13 +52,7 @@ int PCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
 
    memset(&info, 0, sizeof(info));
 
-   wxString strFullPath = mAliasedFileName.GetFullPath();
-   SNDFILE *sf = sf_open(FILENAME(strFullPath), SFM_READ, &info);
-   if (!sf) {
-      // Allow fallback of looking for the file name, located in the data directory.
-      strFullPath = gProjDir + "\\" + mAliasedFileName.GetFullName(); 
-      sf = sf_open(FILENAME(strFullPath), SFM_READ, &info);
-   }
+   SNDFILE *sf = sf_open(FILENAME(mAliasedFileName.GetFullPath()), SFM_READ, &info);
    if (!sf)
       return 0;
 
@@ -135,35 +127,60 @@ void PCMAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
 
 BlockFile *PCMAliasBlockFile::BuildFromXML(wxString projDir, const char **attrs)
 {
-   gProjDir = projDir;
-
    wxFileName summaryFileName;
    wxFileName aliasFileName;
    int aliasStart=0, aliasLen=0, aliasChannel=0;
    float min=0, max=0, rms=0;
+   long nValue;
 
    while(*attrs)
    {
        const char *attr =  *attrs++;
        const char *value = *attrs++;
+       if (!value) 
+          break;
 
+       const wxString strValue = value;
        if( !wxStricmp(attr, "summaryfile") )
-          summaryFileName.Assign(projDir, value);
-       if( !wxStricmp(attr, "aliasfile") )
-          aliasFileName.Assign(value);
+       {
+         if (!XMLValueChecker::IsGoodFileName(strValue, projDir))
+            return NULL;
+         summaryFileName.Assign(projDir, strValue);
+       }
+       else if( !wxStricmp(attr, "aliasfile") )
+       {
+         if (XMLValueChecker::IsGoodPathName(strValue))
+            aliasFileName.Assign(strValue);
+         else if (XMLValueChecker::IsGoodFileName(strValue, projDir))
+            // Allow fallback of looking for the file name, located in the data directory.
+            aliasFileName.Assign(projDir, strValue);
+         else 
+            return NULL;
+       }
+       else if (XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
+       { // integer parameters
        if( !wxStricmp(attr, "aliasstart") )
-          aliasStart = atoi(value);
-       if( !wxStricmp(attr, "aliaslen") )
-          aliasLen = atoi(value);
-       if( !wxStricmp(attr, "aliaschannel") )
-          aliasChannel = atoi(value);
-       if( !wxStricmp(attr, "min") )
-          min = atoi(value);
-       if( !wxStricmp(attr, "max") )
-          max = atoi(value);
-       if( !wxStricmp(attr, "rms") )
-          rms = atoi(value);
+            aliasStart = nValue;
+         else if( !wxStricmp(attr, "aliaslen") )
+            aliasLen = nValue;
+         else if( !wxStricmp(attr, "aliaschannel") )
+            aliasChannel = nValue;
+         else if( !wxStricmp(attr, "min") )
+            min = nValue;
+         else if( !wxStricmp(attr, "max") )
+            max = nValue;
+         else if( !wxStricmp(attr, "rms") )
+            rms = nValue;
    }
+   }
+
+   if (!XMLValueChecker::IsGoodFileName(summaryFileName.GetFullName(), 
+                                         summaryFileName.GetPath(wxPATH_GET_VOLUME)) || 
+         !XMLValueChecker::IsGoodFileName(aliasFileName.GetFullName(), 
+                                          aliasFileName.GetPath(wxPATH_GET_VOLUME)) ||
+         (aliasStart < 0) || (aliasLen <= 0) || 
+         !XMLValueChecker::IsValidChannel(aliasChannel) || (rms < 0.0))
+      return NULL;
 
    return new PCMAliasBlockFile(summaryFileName, aliasFileName,
                                 aliasStart, aliasLen, aliasChannel,

@@ -157,6 +157,7 @@ bool AudacityDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& 
 {
    for (int i = 0; i < filenames.GetCount(); i++)
       mProject->Import(filenames[i]);
+   mProject->HandleResize(); // Adjust scrollers for new track sizes.
    return true;
 }
 
@@ -1912,6 +1913,7 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
    int requiredTags = 0;
    wxString fileVersion = "";
    wxString audacityVersion = "";
+   double dblValue;
 
    // loop through attrs, which is a null-terminated list of
    // attribute-value pairs
@@ -1922,21 +1924,26 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
       if (!value)
          break;
 
+      const wxString strValue = value;
+      if (!XMLValueChecker::IsGoodString(strValue))
+         return false;
+
       if (!strcmp(attr, "version")) {
-         fileVersion = value;
+         fileVersion = strValue;
          requiredTags++;
       }
 
       if (!strcmp(attr, "audacityversion")) {
-         audacityVersion = value;
+         audacityVersion = strValue;
          requiredTags++;
       }
 
       if (!strcmp(attr, "projname")) {
-         wxString projName = value;
+         wxString projName = strValue;
          wxString projPath = wxPathOnly(mFileName);
          
-         if (!mDirManager->SetProject(projPath, projName, false)) {
+         if (!XMLValueChecker::IsGoodSubdirName(projName, projPath) || 
+               !mDirManager->SetProject(projPath, projName, false)) {
 
             wxMessageBox(wxString::Format(_("Couldn't find the project data folder: \"%s\""),
                                           (const char *)projName),
@@ -1949,25 +1956,29 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
          requiredTags++;
       }
 
-      if (!strcmp(attr, "sel0"))
-         Internat::CompatibleToDouble(wxString(value), &mViewInfo.sel0);
+      if (!strcmp(attr, "sel0") && Internat::CompatibleToDouble(strValue, &dblValue))
+         mViewInfo.sel0 = dblValue;
 
-      if (!strcmp(attr, "sel1"))
-         Internat::CompatibleToDouble(wxString(value), &mViewInfo.sel1);
+      if (!strcmp(attr, "sel1") && Internat::CompatibleToDouble(strValue, &dblValue))
+         mViewInfo.sel1 = dblValue;
 
-      long longVpos;
       if (!strcmp(attr, "vpos"))
-         wxString(value).ToLong(&longVpos);
-      mViewInfo.vpos = longVpos;
+      {
+         long longVpos;
+         if (XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&longVpos) && (longVpos >= 0))
+            mViewInfo.vpos = longVpos;
+      }
 
-      if (!strcmp(attr, "h"))
-         Internat::CompatibleToDouble(wxString(value), &mViewInfo.h);
+      if (!strcmp(attr, "h") && Internat::CompatibleToDouble(strValue, &dblValue))
+         mViewInfo.h = dblValue;
 
-      if (!strcmp(attr, "zoom"))
-         Internat::CompatibleToDouble(wxString(value), &mViewInfo.zoom);
+      if (!strcmp(attr, "zoom") && Internat::CompatibleToDouble(strValue, &dblValue))
+         mViewInfo.zoom = dblValue;
 
-      if (!strcmp(attr, "rate")) {
-         Internat::CompatibleToDouble(wxString(value), &mRate);
+      if (!strcmp(attr, "rate") && Internat::CompatibleToDouble(strValue, &dblValue) && 
+            (dblValue >= 100.0) && (dblValue <= 100000.0)) // same bounds as ImportRawDialog::OnOK
+      {
+         mRate = dblValue;
          mStatus->SetRate(mRate);
       }
    } // while
@@ -2292,7 +2303,8 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       SetTitle(GetName());
    }
 
-   HandleResize();   
+   // Moved this call to higher levels to prevent horrible flicker redrawing everything on each file.
+   //   HandleResize();
 }
 
 void AudacityProject::Import(wxString fileName)

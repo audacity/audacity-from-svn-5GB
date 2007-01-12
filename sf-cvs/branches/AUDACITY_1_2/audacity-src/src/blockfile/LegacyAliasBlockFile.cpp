@@ -83,31 +83,58 @@ BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **att
 {
    wxFileName summaryFileName;
    wxFileName aliasFileName;
-   
    int aliasStart=0, aliasLen=0, aliasChannel=0;
    int summaryLen=0;
    bool noRMS = false;
+   long nValue;
 
    while(*attrs)
    {
        const char *attr =  *attrs++;
        const char *value = *attrs++;
 
+      if (!value)
+         break;
+
+      const wxString strValue = value;
        if( !wxStricmp(attr, "name") )
-          summaryFileName.Assign(projDir, value, "");
-       if( !wxStricmp(attr, "aliaspath") )
-          aliasFileName.Assign(value);
+       {
+         if (!XMLValueChecker::IsGoodFileName(strValue, projDir))
+            return NULL;
+         summaryFileName.Assign(projDir, strValue, "");
+       }
+       else if ( !wxStricmp(attr, "aliaspath") )
+       {
+         if (XMLValueChecker::IsGoodPathName(strValue))
+            aliasFileName.Assign(strValue);
+         else if (XMLValueChecker::IsGoodFileName(strValue, projDir))
+            // Allow fallback of looking for the file name, located in the data directory.
+            aliasFileName.Assign(projDir, strValue);
+         else 
+            return NULL;
+       }
+       else if (XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
+       { // integer parameters
        if( !wxStricmp(attr, "aliasstart") )
-          aliasStart = atoi(value);
+            aliasStart = nValue;
        if( !wxStricmp(attr, "aliaslen") )
-          aliasLen = atoi(value);
+            aliasLen = nValue;
        if( !wxStricmp(attr, "aliaschannel") )
-          aliasChannel = atoi(value);
+            aliasChannel = nValue;
        if( !wxStricmp(attr, "summarylen") )
-          summaryLen = atoi(value);
+            summaryLen = nValue;
        if( !wxStricmp(attr, "norms") )
-          noRMS = (bool)atoi(value);
+            noRMS = (nValue != 0);
    }
+   }
+
+   if (!XMLValueChecker::IsGoodFileName(summaryFileName.GetFullName(), 
+                                         summaryFileName.GetPath(wxPATH_GET_VOLUME)) || 
+         !XMLValueChecker::IsGoodFileName(aliasFileName.GetFullName(), 
+                                          aliasFileName.GetPath(wxPATH_GET_VOLUME)) ||
+         (aliasStart < 0) || (aliasLen <= 0) || 
+         !XMLValueChecker::IsValidChannel(aliasChannel) || (summaryLen <= 0))
+      return NULL;
 
    return new LegacyAliasBlockFile(summaryFileName, aliasFileName,
                                    aliasStart, aliasLen, aliasChannel,
