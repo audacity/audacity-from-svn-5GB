@@ -619,9 +619,9 @@ bool CommandManager::HandleXMLTag(const char *tag, const char **attrs)
          if (!value)
             break;
          
-         if (!strcmp(attr, "name"))
+         if (!strcmp(attr, "name") && XMLValueChecker::IsGoodString(value))
             name = value;
-         if (!strcmp(attr, "key"))
+         if (!strcmp(attr, "key") && XMLValueChecker::IsGoodString(value))
             key = value;
       }
 
