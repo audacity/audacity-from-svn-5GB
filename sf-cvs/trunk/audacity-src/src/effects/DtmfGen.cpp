@@ -72,15 +72,10 @@ bool EffectDtmf::PromptUser()
    dlog.dDutyCycle = dtmfDutyCycle;
    dlog.dDuration = dtmfDuration;
 
-   /*
-   dlog.dNTones = dtmfNTones;
-   dlog.dTone = dtmfTone;
-   dlog.dSilence = dtmfSilence;
-   */
-
    // start dialog
    dlog.Init();
    dlog.TransferDataToWindow();
+   dlog.Fit();
    dlog.ShowModal();
 
    if (dlog.GetReturnCode() == wxID_CANCEL)
@@ -90,7 +85,6 @@ bool EffectDtmf::PromptUser()
    dtmfString = dlog.dString;
    dtmfDutyCycle = dlog.dDutyCycle;
    dtmfDuration = dlog.dDuration;
-   //dtmfNTones = wxStrlen(dtmfString);
 
    dtmfNTones = dlog.dNTones;
    dtmfTone = dlog.dTone;
@@ -227,6 +221,22 @@ bool EffectDtmf::Process()
       numSamplesTone = (longSampleCount)(dtmfTone * track->GetRate() + 0.5);
       numSamplesSilence = (longSampleCount)(dtmfSilence * track->GetRate() + 0.5);
 
+      // recalculate the sum, and spread the difference - due to approximations.
+      // Since diff should be in the order of "some" samples, a division (resulting in zero)
+      // is not sufficient, so we add the additional remaining samples in each tone/silence block,
+      // at least until available.
+
+      int diff = numSamplesSequence - (dtmfNTones*numSamplesTone) - (dtmfNTones-1)*numSamplesSilence;
+      if (diff>dtmfNTones) {
+         // in this case, both these values would change, so it makes sense to recalculate diff
+         // otherwise just keep the value we already have
+         numSamplesTone += (diff/(dtmfNTones));
+         numSamplesSilence += (diff/(dtmfNTones-1));
+         diff = numSamplesSequence - (dtmfNTones*numSamplesTone) - (dtmfNTones-1)*numSamplesSilence;
+      }
+      // this var will be used as extra samples distributor
+      int extra=0;
+
       longSampleCount i = 0;
       longSampleCount j = 0;
       int n=0; // pointer to string in dtmfString
@@ -240,18 +250,28 @@ bool EffectDtmf::Process()
       // tone and silence generally have different duration, thus two generation blocks
       //
       // Note: to overcome a 'clicking' noise introduced by the abrupt transition from/to
-      // silence, I added a fade in/out of 1/250th of a second (4ms). This can still be 
+      // silence, I added a fade in/out of 1/250th of a second (4ms). This can still be
       // tweaked but gives excellent results at 44.1kHz: I haven't tried other freqs.
       // A problem might be if the tone duration is very short (<10ms)... (?)
-      // 
+      //
+      // One more problem is to deal with the approximations done when calculating the duration 
+      // of both tone and silence: in some cases the final sum might not be same as the initial
+      // duration. So, to overcome this, we had a redistribution block up, and now we will spread
+      // the remaining samples in every bin in order to achieve the full duration: test case was
+      // to generate an 11 tone DTMF sequence, in 4 seconds, and with DutyCycle=75%: after generation
+      // you ended up with 3.999s or in other units: 3 seconds and 44097 samples.
+      //
       while(i < numSamplesSequence) {
          if (isTone)
          // generate tone
          {
-            for(j=0; j < numSamplesTone; j+=block) {
+            // the statement takes care of extracting one sample from the diff bin and
+            // adding it into the tone block until depletion
+            extra=(diff-- > 0?1:0);
+            for(j=0; j < numSamplesTone+extra; j+=block) {
                block = tmp->GetBestBlockSize(j);
-               if (block > (numSamplesTone - j))
-                   block = numSamplesTone - j;
+               if (block > (numSamplesTone+extra - j))
+                   block = numSamplesTone+extra - j;
 
                // generate the tone and append
                MakeDtmfTone(data, block, track->GetRate(), dtmfString[n], j, numSamplesTone);
@@ -259,16 +279,18 @@ bool EffectDtmf::Process()
             }
             i += numSamplesTone;
             n++;
-            if(n>dtmfNTones)break;
-
+            if(n>=dtmfNTones)break;
          }
          else
          // generate silence
          {
-            for(j=0; j < numSamplesSilence; j+=block) {
+            // the statement takes care of extracting one sample from the diff bin and
+            // adding it into the silence block until depletion
+            extra=(diff-- > 0?1:0);
+            for(j=0; j < numSamplesSilence+extra; j+=block) {
                block = tmp->GetBestBlockSize(j);
-               if (block > (numSamplesSilence - j))
-                   block = numSamplesSilence - j;
+               if (block > (numSamplesSilence+extra - j))
+                   block = numSamplesSilence+extra - j;
 
                // generate silence and append
                memset(data, 0, sizeof(float)*block);
@@ -302,7 +324,9 @@ bool EffectDtmf::Process()
    gPrefs->Write(wxT("/CsPresets/DtmfGen_String"), dtmfString);
    gPrefs->Write(wxT("/CsPresets/DtmfGen_DutyCycle"), dtmfDutyCycle);
 
-   // Update selection.
+   // Update selection: this is not accurate if my calculations are wrong.
+   // To validate, once the effect is done, unselect, and select all, then
+   // see what the selection length is being reported (in sec,ms,samples)
    mT1 = mT0 + dtmfDuration;
 
    return true;
@@ -321,14 +345,6 @@ const static wxChar *dtmfSymbols[] =
    wxT("a"), wxT("b"), wxT("c"), wxT("d")
 };
 
-const static wxChar *numbers[] =
-{
-   wxT("0"), wxT("1"), wxT("2"), wxT("3"), wxT("4"),
-   wxT("5"), wxT("6"), wxT("7"), wxT("8"), wxT("9"),
-   wxT(".")
-};
-
-
 #define ID_DTMF_DUTYCYCLE_SLIDER 10001
 #define ID_DTMF_STRING_TEXT      10002
 #define ID_DTMF_DURATION_TEXT    10003
@@ -340,6 +356,7 @@ const static wxChar *numbers[] =
 BEGIN_EVENT_TABLE(DtmfDialog, EffectDialog)
     EVT_TEXT(ID_DTMF_STRING_TEXT, DtmfDialog::OnDtmfStringText)
     EVT_TEXT(ID_DTMF_DURATION_TEXT, DtmfDialog::OnDtmfDurationText)
+    EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, DtmfDialog::OnTimeCtrlUpdate)
     EVT_SLIDER(ID_DTMF_DUTYCYCLE_SLIDER, DtmfDialog::OnDutyCycleSlider)
 END_EVENT_TABLE()
 
@@ -363,36 +380,53 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
 {
    wxTextValidator vldDtmf(wxFILTER_INCLUDE_CHAR_LIST);
    vldDtmf.SetIncludes(wxArrayString(20, dtmfSymbols));
-   wxTextValidator vld(wxFILTER_INCLUDE_CHAR_LIST);
-   vld.SetIncludes(wxArrayString(11, numbers));
+
    S.AddTitle(_("by Salvo Ventura (2006)"));
 
-   S.StartMultiColumn(2, wxCENTER);
+   S.StartMultiColumn(2, wxCENTER | wxEXPAND);
    {
       mDtmfStringT = S.Id(ID_DTMF_STRING_TEXT).AddTextBox(_("DTMF sequence"), wxT(""), 10);
       mDtmfStringT->SetValidator(vldDtmf);
-      mDtmfDurationT = S.Id(ID_DTMF_DURATION_TEXT).AddTextBox(_("DTMF duration (s)"), wxT(""), 10);
-      mDtmfDurationT->SetValidator(vld);
+
+      S.AddFixedText(_("DTMF duration"), false);
+      mDtmfDurationT = new
+         TimeTextCtrl(this,
+                      ID_DTMF_DURATION_TEXT,
+                      /*
+                      use this instead of "seconds" because if a selection is passed to the effect,
+                      I want it (dDuration) to be used as the duration, and with "seconds" this does
+                      not always work properly. For example, it rounds down to zero...
+                      */
+                      TimeTextCtrl::GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")),
+                      dDuration,
+                      44100,
+                      wxDefaultPosition,
+                      wxDefaultSize,
+                      true);
+      S.AddWindow(mDtmfDurationT);
+      mDtmfDurationT->EnableMenu();
 
       S.SetSizeHints(-1,-1);
    }
    S.EndMultiColumn();
-   S.StartHorizontalLay(wxCENTER | wxEXPAND, false);
+
+   S.StartMultiColumn(2, wxCENTER | wxEXPAND);
    {
-      S.SetStyle(wxSL_HORIZONTAL);
+      S.AddFixedText(_("Tone/silence ratio:"), false);
+      S.SetStyle(wxSL_HORIZONTAL | wxEXPAND);
       mDtmfDutyS = S.Id(ID_DTMF_DUTYCYCLE_SLIDER).AddSlider(wxT(""), dDutyCycle, DUTY_MAX);
       mDtmfDutyS->SetRange(DUTY_MIN, DUTY_MAX);
    }
-   S.EndHorizontalLay();
+   S.EndMultiColumn();
 
    S.StartMultiColumn(2, wxCENTER);
    {
       S.AddFixedText(_("duty cycle"), false);
-      mDtmfDutyT = S.Id(ID_DTMF_DUTYCYCLE_TEXT).AddVariableText(wxString::Format(wxT("%.1f%"), (float) dDutyCycle/DUTY_SCALE), false);
+      mDtmfDutyT = S.Id(ID_DTMF_DUTYCYCLE_TEXT).AddVariableText(wxString::Format(_("%.1f %%"), (float) dDutyCycle/DUTY_SCALE), false);
       S.AddFixedText(_("tone duration"), false);
-      mDtmfSilenceT = S.Id(ID_DTMF_TONELEN_TEXT).AddVariableText(wxString::Format(wxT("%d ms"),  (int) dTone * 1000), false);
+      mDtmfSilenceT = S.Id(ID_DTMF_TONELEN_TEXT).AddVariableText(wxString::Format(_("%d ms"),  (int) dTone * 1000), false);
       S.AddFixedText(_("silence duration"), false);
-      mDtmfToneT = S.Id(ID_DTMF_SILENCE_TEXT).AddVariableText(wxString::Format(wxT("%d ms"), (int) dSilence * 1000), false);
+      mDtmfToneT = S.Id(ID_DTMF_SILENCE_TEXT).AddVariableText(wxString::Format(_("%d ms"), (int) dSilence * 1000), false);
    }
    S.EndMultiColumn();
 
@@ -401,14 +435,11 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
 
 bool DtmfDialog::TransferDataToWindow()
  {
-   /*
-   ShuttleGui S( this, eIsSettingToDialog );
-   PopulateOrExchange( S );
-   */
-
    mDtmfDutyS->SetValue(dDutyCycle);
    mDtmfStringT->SetValue(dString);
-   mDtmfDurationT->SetValue(wxString::Format(wxT("%.2f"), (float)dDuration));
+   mDtmfDurationT->SetTimeValue(dDuration);
+   mDtmfDurationT->SetFocus();
+   mDtmfDurationT->Fit();
 
    return true;
 }
@@ -427,10 +458,11 @@ bool DtmfDialog::TransferDataFromWindow()
 void DtmfDialog::Recalculate(void) {
 
    // remember that dDutyCycle is in range (0-1000)
-   float slot;
+   double slot;
 
    dString = mDtmfStringT->GetValue();
-   mDtmfDurationT->GetValue().ToDouble(&dDuration);
+   dDuration = mDtmfDurationT->GetTimeValue();
+
    dNTones = wxStrlen(dString);
    dDutyCycle = TrapLong(mDtmfDutyS->GetValue(), DUTY_MIN, DUTY_MAX);
 
@@ -454,7 +486,7 @@ void DtmfDialog::Recalculate(void) {
         // which can be simplified in the one below.
         // Then just take the part that belongs to tone or silence.
         //
-        slot=(float)dDuration/((float)dNTones+(dDutyCycle/DUTY_MAX)-1);
+        slot=dDuration/((double)dNTones+(dDutyCycle/DUTY_MAX)-1);
         dTone = slot * (dDutyCycle/DUTY_MAX); // seconds
         dSilence = slot * (1.0 - (dDutyCycle/DUTY_MAX)); // seconds
 
@@ -466,19 +498,20 @@ void DtmfDialog::Recalculate(void) {
         // - dNTones-1 silences
      }
 
-   mDtmfDutyT->SetLabel(wxString::Format(wxT("%.1f%"), (float)dDutyCycle/DUTY_SCALE));
-   mDtmfSilenceT->SetLabel(wxString::Format(wxT("%d ms"),  (int) (dTone * 1000)));
-   mDtmfToneT->SetLabel(wxString::Format(wxT("%d ms"),  (int) (dSilence * 1000)));
+   mDtmfDutyT->SetLabel(wxString::Format(_("%.1f %%"), (float)dDutyCycle/DUTY_SCALE));
+   mDtmfSilenceT->SetLabel(wxString::Format(_("%d ms"),  (int) (dTone * 1000)));
+   mDtmfToneT->SetLabel(wxString::Format(_("%d ms"),  (int) (dSilence * 1000)));
 }
 
-void DtmfDialog::OnDtmfStringText(wxCommandEvent & event) {
+void DtmfDialog::OnDutyCycleSlider(wxCommandEvent & event) {
    if(!startup) {
       Recalculate();
    }
    startup=false;
 }
 
-void DtmfDialog::OnDutyCycleSlider(wxCommandEvent & event) {
+
+void DtmfDialog::OnDtmfStringText(wxCommandEvent & event) {
    if(!startup) {
       Recalculate();
    }
@@ -490,4 +523,8 @@ void DtmfDialog::OnDtmfDurationText(wxCommandEvent & event) {
       Recalculate();
    }
    startup=false;
+}
+
+void DtmfDialog::OnTimeCtrlUpdate(wxCommandEvent & event) {
+   this->Fit();
 }

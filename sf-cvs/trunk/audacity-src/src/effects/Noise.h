@@ -17,6 +17,7 @@
 #include <wx/intl.h>
 
 #include "Effect.h"
+#include "../widgets/TimeTextCtrl.h"
 
 class wxString;
 class wxChoice;
@@ -86,14 +87,21 @@ class NoiseDialog:public EffectDialog {
    bool TransferDataToWindow();
    bool TransferDataFromWindow();
 
-   double nRate;
-   double nTime;
+ private:
+   void OnTimeCtrlUpdate(wxCommandEvent & event);
+   void OnNoiseDurationText(wxCommandEvent & event);
+   DECLARE_EVENT_TABLE()
 
  public:
+   double nRate;
+   double nTime;
    wxArrayString *nTypeList;
    double nDuration;
    int nType;
    double nAmplitude;
+
+ private:
+  TimeTextCtrl *mNoiseDurationT;
 };
 
 #endif

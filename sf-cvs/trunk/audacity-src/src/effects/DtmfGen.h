@@ -16,6 +16,7 @@
 
 #include <wx/defs.h>
 #include <wx/intl.h>
+#include "../widgets/TimeTextCtrl.h"
 
 #include "Effect.h"
 
@@ -97,12 +98,13 @@ class DtmfDialog:public EffectDialog {
    void OnDtmfStringText(wxCommandEvent & event);
    void OnDtmfDurationText(wxCommandEvent & event);
    void OnDutyCycleSlider(wxCommandEvent & event);
+   void OnTimeCtrlUpdate(wxCommandEvent & event);
    void Recalculate(void);
 
  private:
    wxSlider   *mDtmfDutyS;
    wxTextCtrl *mDtmfStringT;
-   wxTextCtrl *mDtmfDurationT;
+   TimeTextCtrl *mDtmfDurationT;
    wxStaticText *mDtmfToneT;
    wxStaticText *mDtmfSilenceT;
    wxStaticText *mDtmfDutyT;
