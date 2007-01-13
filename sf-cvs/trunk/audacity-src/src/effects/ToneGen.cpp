@@ -55,7 +55,7 @@ EffectToneGen::EffectToneGen()
 wxString EffectToneGen::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
    /// \todo update to include *all* chirp parameters??
-   const wxChar* waveformNames[] = {wxT("sine"), wxT("square"), wxT("sawtooth")};
+   const wxChar* waveformNames[] = {wxT("sine"), wxT("square"), wxT("sawtooth"), wxT("square, no alias")};
    return wxString::Format(_("Applied effect: Generate %s wave %s, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"), 
       waveformNames[waveform], mbChirp ? wxT("chirp") : wxT("tone"), frequency[0], amplitude[0], length); 
 } 
@@ -69,6 +69,7 @@ bool EffectToneGen::PromptUser()
    waveforms.Add(_("Sine"));
    waveforms.Add(_("Square"));
    waveforms.Add(_("Sawtooth"));
+   waveforms.Add(_("Square, no alias"));
 
    ToneGenDialog dlog(mParent, mbChirp ? _("Chirp Generator") : _("Tone Generator"));
    dlog.mbChirp = mbChirp;
@@ -122,6 +123,7 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
    double BlendedFrequency;
    double BlendedLogFrequency;
    double positionInCycles;
+   double a;
 
    // Do our divisions here, outside the loop, for greater efficiency.
 
@@ -171,6 +173,14 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
             break;
          case 2:    //sawtooth
             f = (2 * modf(positionInCycles+0.5f, &throwaway)) -1.0f;
+            break;
+         case 3:    //square, no alias
+            f = 0.;
+            for(int k=1; (k<100) && (k * BlendedFrequency < mCurRate/2.); k+=2)
+            {
+               a = .54 + .46 * cos((2 * M_PI * k * BlendedFrequency)/mCurRate);  //Hamming Window in freq domain
+               f += (float) a * sin(2 * M_PI * positionInCycles * k)/k;
+            }
             break;
          default:
             break;
