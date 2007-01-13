@@ -55,18 +55,22 @@ bool EffectNoise::PromptUser()
    gPrefs->Read(wxT("/CsPresets/NoiseGen_Type"), &noiseType, 0L);
    gPrefs->Read(wxT("/CsPresets/NoiseGen_Amp"), &noiseAmplitude, 1.0);
 
+   // Initialize dialog locals
    dlog.nDuration = noiseDuration;
    dlog.nAmplitude = noiseAmplitude;
    dlog.nType = noiseType;
    dlog.nTypeList = &noiseTypeList;
 
+   // start dialog
    dlog.Init();
    dlog.TransferDataToWindow();
+   dlog.Fit();
    dlog.ShowModal();
 
    if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
+   // if there was an OK, retrieve values
    noiseType = dlog.nType;
    noiseDuration = dlog.nDuration;
    noiseAmplitude = dlog.nAmplitude;
@@ -165,7 +169,7 @@ bool EffectNoise::Process()
       //Iterate to the next track
       track = (WaveTrack *)iter.Next();
    }
-   
+
    /*
       save last used values
       save duration unless value was got from selection, so we save only
@@ -191,6 +195,14 @@ bool EffectNoise::Process()
 #define AMP_MIN 0
 #define AMP_MAX 1
 
+#define ID_NOISE_DURATION_TEXT 10001
+
+BEGIN_EVENT_TABLE(NoiseDialog, EffectDialog)
+    EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, NoiseDialog::OnTimeCtrlUpdate)
+    EVT_TEXT(ID_NOISE_DURATION_TEXT, NoiseDialog::OnNoiseDurationText)
+END_EVENT_TABLE()
+
+
 NoiseDialog::NoiseDialog(wxWindow * parent, const wxString & title): EffectDialog(parent, title, INSERT_EFFECT)
 {
    /* // already initialized in EffectNoise::PromptUser
@@ -202,9 +214,26 @@ NoiseDialog::NoiseDialog(wxWindow * parent, const wxString & title): EffectDialo
 
 void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
 {
+   S.AddTitle(_(""));
    S.StartMultiColumn(2, wxCENTER);
    {
-      S.TieTextBox( _("Duration (seconds)"), nDuration, 10 );
+      S.AddFixedText(_("Noise duration"), false);
+      mNoiseDurationT = new
+      TimeTextCtrl(this,
+                   ID_NOISE_DURATION_TEXT,
+                   /*
+                   use this instead of "seconds" because if a selection is passed to the effect,
+                   I want it (nDuration) to be used as the duration, and with "seconds" this does
+                   not always work properly. For example, it rounds down to zero...
+                   */
+                   TimeTextCtrl::GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")),
+                   nDuration,
+                   44100,
+                   wxDefaultPosition,
+                   wxDefaultSize,
+                   true);
+      S.AddWindow(mNoiseDurationT);
+      mNoiseDurationT->EnableMenu();
       S.TieTextBox( _("Amplitude"),  nAmplitude, 10);
       S.TieChoice( _("Noise type:"), nType, nTypeList);
       S.SetSizeHints(-1,-1);
@@ -214,8 +243,15 @@ void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
 
 bool NoiseDialog::TransferDataToWindow()
 {
-   ShuttleGui S( this, eIsSettingToDialog );
-   PopulateOrExchange( S );
+//  if you don't remove these, there will be a double
+//  timetextctrl in the dialog. Don't know why...
+//
+//    ShuttleGui S( this, eIsSettingToDialog );
+//    PopulateOrExchange( S );
+
+   mNoiseDurationT->SetTimeValue(nDuration);
+   mNoiseDurationT->SetFocus();
+   mNoiseDurationT->Fit();
    return true;
 }
 
@@ -223,11 +259,18 @@ bool NoiseDialog::TransferDataFromWindow()
 {
    ShuttleGui S( this, eIsGettingFromDialog );
    PopulateOrExchange( S );
-   if (nDuration<0) nDuration=0;
+
    nAmplitude = TrapDouble(nAmplitude, AMP_MIN, AMP_MAX);
    return true;
 }
 
+void NoiseDialog::OnNoiseDurationText(wxCommandEvent & event) {
+   nDuration = mNoiseDurationT->GetTimeValue();
+}
+
+void NoiseDialog::OnTimeCtrlUpdate(wxCommandEvent & event) {
+   this->Fit();
+}
 
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
