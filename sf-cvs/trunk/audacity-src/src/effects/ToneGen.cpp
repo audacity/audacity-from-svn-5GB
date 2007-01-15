@@ -82,6 +82,7 @@ bool EffectToneGen::PromptUser()
    dlog.waveforms = &waveforms;
    dlog.Init();
    dlog.TransferDataToWindow();
+   dlog.Fit();
    dlog.ShowModal();
 
    if (dlog.GetReturnCode() == wxID_CANCEL)
@@ -102,7 +103,7 @@ bool EffectToneGen::PromptUser()
 }
 
 bool EffectToneGen::TransferParameters( Shuttle & shuttle )
-{  
+{
 /// \todo this should in time be using ShuttleGui too.
 //   shuttle.TransferInt("",,0);
    return true;
@@ -112,84 +113,104 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
 {
    double throwaway = 0;        //passed to modf but never used
    int i;
-
-   int iSample;
    double f;
 
-   // t is our Blend parameter, 0.0 at left end, 1.0 at right end 
-   // of the complete tone.
-   double t;
-   double BlendedAmplitude;
    double BlendedFrequency;
-   double BlendedLogFrequency;
-   double positionInCycles;
-   double a;
+   double BlendedAmplitude;
 
-   // Do our divisions here, outside the loop, for greater efficiency.
+   // mSample is an external placeholder to remember the last "buffer"
+   // position so we use it to reinitialize from where we left
+   int iSample = mSample;
 
-   // Multiplier to convert from the sample number to the position in blend.
-   double BlendMultiplier = 1.0f/numSamples;
-   // Multiplier to convert from cycles-per-second to cycles-per-sample.
-   double PositionMultiplier = 1.0f/ mCurRate;
+   // calculate delta, and reposition from where we left
+   double amplitudeQuantum = (amplitude[1]-amplitude[0]) / numSamples;
+   double frequencyQuantum = (frequency[1]-frequency[0]) / numSamples;
+   BlendedAmplitude = amplitude[0] + amplitudeQuantum * mSample;
 
+   // precalculations:
+   double pre2PI = 2 * M_PI;
+
+   /*
+    Duplicate the code for the two cases, log interpolation and linear interpolation
+    I hope this is more readable, a bit faster (only one branching in mbLogInterpolation)
+    Local variables are declared inside respective branch, globals are declared up.
+   */
+
+   // this for log interpolation
    if( mbLogInterpolation )
    {
       logFrequency[0] = log10( frequency[0] );
       logFrequency[1] = log10( frequency[1] );
-   }
+      // calculate delta, and reposition from where we left
+      double logfrequencyQuantum = (logFrequency[1]-logFrequency[0]) / numSamples;
+      double BlendedLogFrequency = logFrequency[0] + logfrequencyQuantum * mSample;
 
-   for (i = 0; i < len; i++)
-   {
-      iSample = i+mSample;
-      t = iSample * BlendMultiplier;
-      BlendedAmplitude = amplitude[0] + (amplitude[1]-amplitude[0]) * t;
-
-      if( i == (len/2) )   // what's this for? MJS
-         i=i;              // what's this for? MJS
-
-      // Log interpolation is not currently used.
-      // A linear shift in frequency is what most people expect, and
-      // gives straight lines on a frequency plot.
-      if( mbLogInterpolation )
+      for (i = 0; i < len; i++)
       {
-         BlendedLogFrequency = logFrequency[0] + (logFrequency[1]-logFrequency[0]) * t;
          BlendedFrequency = pow( 10.0, (double)BlendedLogFrequency );
+         switch (waveform) {
+            case 0:    //sine
+               f = (float) sin(pre2PI * mPositionInCycles/mCurRate);
+               break;
+            case 1:    //square
+               f = (modf(mPositionInCycles/mCurRate, &throwaway) < 0.5) ? 1.0f :-1.0f;
+               break;
+            case 2:    //sawtooth
+               f = (2 * modf(mPositionInCycles/mCurRate+0.5f, &throwaway)) -1.0f;
+               break;
+            default:
+               break;
+         }
+         // insert value in buffer
+         buffer[i] = BlendedAmplitude * f;
+         // update freq,amplitude
+         mPositionInCycles += BlendedFrequency;
+         BlendedAmplitude += amplitudeQuantum;
+         BlendedLogFrequency += logfrequencyQuantum;
       }
-      else
+
+   } else {
+      // this for regular case, linear interpolation
+      BlendedFrequency = frequency[0] + frequencyQuantum * mSample;
+      double a;
+      for (i = 0; i < len; i++)
       {
-         BlendedFrequency = frequency[0] + (frequency[1]-frequency[0]) * t;
-      }
-
-      // Add cycles/second * second/samples * 1-sample
-      mPositionInCycles += BlendedFrequency;
-      positionInCycles = mPositionInCycles * PositionMultiplier;
-
-      switch (waveform) {
-         case 0:    //sine
-            f = (float) sin(2 * M_PI * positionInCycles);
-            break;
-         case 1:    //square
-            f = (modf(positionInCycles, &throwaway) < 0.5) ? 1.0f :-1.0f;
-            break;
-         case 2:    //sawtooth
-            f = (2 * modf(positionInCycles+0.5f, &throwaway)) -1.0f;
-            break;
+         switch (waveform) {
+            case 0:    //sine
+               f = (float) sin(pre2PI * mPositionInCycles/mCurRate);
+               break;
+            case 1:    //square
+               f = (modf(mPositionInCycles/mCurRate, &throwaway) < 0.5) ? 1.0f :-1.0f;
+               break;
+            case 2:    //sawtooth
+               f = (2 * modf(mPositionInCycles/mCurRate+0.5f, &throwaway)) -1.0f;
+               break;
          case 3:    //square, no alias
-            f = 0.;
-            for(int k=1; (k<100) && (k * BlendedFrequency < mCurRate/2.); k+=2)
-            {
-               a = .54 + .46 * cos((2 * M_PI * k * BlendedFrequency)/mCurRate);  //Hamming Window in freq domain
-               f += (float) a * sin(2 * M_PI * positionInCycles * k)/k;
-            }
-            break;
-         default:
-            break;
+               f = 0.;
+               for(int k=1; (k<100) && (k * BlendedFrequency < mCurRate/2.); k+=2)
+               {
+                  a = .54 + .46 * cos((pre2PI * k * BlendedFrequency)/mCurRate);  //Hamming Window in freq domain
+                  f += (float) a * sin(pre2PI * mPositionInCycles/mCurRate * k)/k;
+               }
+               break;
+
+            default:
+               break;
+         }
+         // insert value in buffer
+         buffer[i] = BlendedAmplitude * f;
+         // update freq,amplitude
+         mPositionInCycles += BlendedFrequency;
+         BlendedFrequency += frequencyQuantum;
+         BlendedAmplitude += amplitudeQuantum;
       }
-      buffer[i] = BlendedAmplitude * f;
    }
+   // update external placeholder
    mSample += len;
    return true;
 }
+
+
 
 bool EffectToneGen::Process()
 {
@@ -223,7 +244,7 @@ bool EffectToneGen::Process()
       track->Clear(mT0, mT1);
       track->Paste(mT0, tmp);
       delete tmp;
-      
+
       //Iterate to the next track
       track = (WaveTrack *)iter.Next();
    }
@@ -244,6 +265,14 @@ bool EffectToneGen::Process()
 #define AMP_MIN 0
 #define AMP_MAX 1
 
+#define ID_TONE_DURATION_TEXT 10001
+
+BEGIN_EVENT_TABLE(ToneGenDialog, EffectDialog)
+    EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, ToneGenDialog::OnTimeCtrlUpdate)
+    EVT_TEXT(ID_TONE_DURATION_TEXT, ToneGenDialog::OnToneGenDurationText)
+END_EVENT_TABLE()
+
+
 ToneGenDialog::ToneGenDialog(wxWindow * parent, const wxString & title)
 : EffectDialog(parent, title, INSERT_EFFECT)
 {
@@ -259,7 +288,18 @@ void ToneGenDialog::PopulateOrExchangeStandard( ShuttleGui & S )
       S.SetSizeHints(-1,-1);
       S.TieTextBox( _("Frequency / Hz"),frequency[0], 5);
       S.TieTextBox( _("Amplitude (0-1)"),amplitude[0], 5);
-      S.TieTextBox( _("Length (seconds)"),length, 5 );
+      S.AddFixedText(_("Length"), false);
+      mToneDurationT = new
+      TimeTextCtrl(this,
+                   ID_TONE_DURATION_TEXT,
+                   TimeTextCtrl::GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")),
+                   length,
+                   44100,
+                   wxDefaultPosition,
+                   wxDefaultSize,
+                   true);
+      S.AddWindow(mToneDurationT);
+      mToneDurationT->EnableMenu();
    }
    S.EndMultiColumn();
 }
@@ -286,7 +326,18 @@ void ToneGenDialog::PopulateOrExchangeExtended( ShuttleGui & S )
    S.EndMultiColumn();
    S.StartMultiColumn(2, wxCENTER);
    {
-      S.TieTextBox( _("Length (seconds)"),length, 10 );
+      S.AddFixedText(_("Length"), false);
+      mToneDurationT = new
+      TimeTextCtrl(this,
+                   ID_TONE_DURATION_TEXT,
+                   TimeTextCtrl::GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")),
+                   length,
+                   44100,
+                   wxDefaultPosition,
+                   wxDefaultSize,
+                   true);
+      S.AddWindow(mToneDurationT);
+      mToneDurationT->EnableMenu();
    }
    S.EndMultiColumn();
 }
@@ -301,8 +352,15 @@ void ToneGenDialog::PopulateOrExchange(ShuttleGui & S)
 
 bool ToneGenDialog::TransferDataToWindow()
 {
-   ShuttleGui S( this, eIsSettingToDialog );
-   PopulateOrExchange( S );
+//  if you don't remove these, there will be a double
+//  timetextctrl in the dialog. Don't know why...
+//   ShuttleGui S( this, eIsSettingToDialog );
+//   PopulateOrExchange( S );
+
+   mToneDurationT->SetTimeValue(length);
+   mToneDurationT->SetFocus();
+   mToneDurationT->Fit();
+
    return true;
 }
 
@@ -310,11 +368,20 @@ bool ToneGenDialog::TransferDataFromWindow()
 {
    ShuttleGui S( this, eIsGettingFromDialog );
    PopulateOrExchange( S );
+
    amplitude[0] = TrapDouble(amplitude[0], AMP_MIN, AMP_MAX);
    frequency[0] = TrapDouble(frequency[0], FREQ_MIN, FREQ_MAX);
    amplitude[1] = TrapDouble(amplitude[1], AMP_MIN, AMP_MAX);
    frequency[1] = TrapDouble(frequency[1], FREQ_MIN, FREQ_MAX);
    return true;
+}
+
+void ToneGenDialog::OnToneGenDurationText(wxCommandEvent & event) {
+   length = mToneDurationT->GetTimeValue();
+}
+
+void ToneGenDialog::OnTimeCtrlUpdate(wxCommandEvent & event) {
+   this->Fit();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
