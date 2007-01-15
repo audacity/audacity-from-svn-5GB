@@ -5,7 +5,7 @@
   ToneGen.h
 
   Steve Jolly
-  
+
   This class implements a tone generator effect.
 
 **********************************************************************/
@@ -14,6 +14,7 @@
 #define __AUDACITY_EFFECT_TONEGEN__
 
 #include "Effect.h"
+#include "../widgets/TimeTextCtrl.h"
 
 #include <wx/dialog.h>
 
@@ -32,7 +33,7 @@ class EffectToneGen:public Effect {
  public:
    EffectToneGen();
    // A 'Chirp' is a tone that changes in frequency.
-   EffectToneGen & EnableForChirps(){mbChirp=true;return *this;}; 
+   EffectToneGen & EnableForChirps(){mbChirp=true;return *this;};
 
    virtual wxString GetEffectName() {
       return wxString(mbChirp? _("&Chirp..."):_("&Tone..."));
@@ -42,7 +43,7 @@ class EffectToneGen:public Effect {
       return wxString(mbChirp? _("Generating Chirp") : _("Generating Tone"));
    }
 
-   // Useful only after PromptUser values have been set. 
+   // Useful only after PromptUser values have been set.
    virtual wxString GetEffectDescription(); 
 
    virtual int GetEffectFlags() {
@@ -95,6 +96,9 @@ class ToneGenDialog:public EffectDialog {
  private:
    void PopulateOrExchangeStandard( ShuttleGui & S );
    void PopulateOrExchangeExtended( ShuttleGui & S );
+   void OnTimeCtrlUpdate(wxCommandEvent & event);
+   void OnToneGenDurationText(wxCommandEvent & event);
+   DECLARE_EVENT_TABLE()
 
 //   wxChoice *mWaveform;
 //   wxTextCtrl *mFreq;
@@ -108,6 +112,9 @@ class ToneGenDialog:public EffectDialog {
    double frequency[2];
    double amplitude[2];
    double length;
+
+ private:
+   TimeTextCtrl *mToneDurationT;
 };
 
 #endif
