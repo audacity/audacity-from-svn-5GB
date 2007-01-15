@@ -2439,7 +2439,7 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       }
       else {
          if (max - min < 0.2) {
-            c = (min+max/2);
+            c = (min+max)/2;
             min = c-0.1;
             max = c+0.1;
          }
