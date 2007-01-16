@@ -1551,7 +1551,8 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
       // If the shift button is down and no track is selected yet,
       // at least select the track we clicked into.
       bool isAtLeastOneTrackSelected = false;
-      
+      double selend = PositionToTime(event.m_x, r.x);
+     
       TrackListIterator iter(mTracks);
       for (Track *t = iter.First(); t; t = iter.Next())
          if (t->GetSelected()) {
@@ -1561,6 +1562,12 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
       
       if (!isAtLeastOneTrackSelected)
          pTrack->SetSelected(true);
+
+      // Edit the selection boundary nearest the mouse click.
+      if (fabs(selend - mViewInfo->sel0) < fabs(selend - mViewInfo->sel1))
+         mSelStart = mViewInfo->sel1;
+      else
+         mSelStart = mViewInfo->sel0;
 
       // If the shift button is down, extend the current selection.
       ExtendSelection(event.m_x, r.x);
@@ -1738,12 +1745,6 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
 void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge)
 {
    double selend = PositionToTime(mouseXCoordinate, trackLeftEdge);
-
-   // Edit the selection boundary nearest the mouse click.
-   if (fabs(selend - mViewInfo->sel0) < fabs(selend - mViewInfo->sel1))
-      mSelStart = mViewInfo->sel1;
-   else
-      mSelStart = mViewInfo->sel0;
 
    clip_bottom(selend, 0.0);
 
