@@ -129,6 +129,7 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
 
    // precalculations:
    double pre2PI = 2 * M_PI;
+   double pre4divPI = 4. / M_PI;
 
    /*
     Duplicate the code for the two cases, log interpolation and linear interpolation
@@ -172,7 +173,8 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
    } else {
       // this for regular case, linear interpolation
       BlendedFrequency = frequency[0] + frequencyQuantum * mSample;
-      double a;
+      double a,b;
+      int k;
       for (i = 0; i < len; i++)
       {
          switch (waveform) {
@@ -185,12 +187,16 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
             case 2:    //sawtooth
                f = (2 * modf(mPositionInCycles/mCurRate+0.5f, &throwaway)) -1.0f;
                break;
-         case 3:    //square, no alias
-               f = 0.;
-               for(int k=1; (k<100) && (k * BlendedFrequency < mCurRate/2.); k+=2)
+         case 3:    //square, no alias.  Good down to 110Hz @ 44100Hz sampling.
+               //do fundamental (k=1) outside loop
+               b = (1. + cos((pre2PI * BlendedFrequency)/mCurRate))/pre4divPI;  //scaling
+               f = (float) pre4divPI * sin(pre2PI * mPositionInCycles/mCurRate);
+               for(k=3; (k<200) && (k * BlendedFrequency < mCurRate/2.); k+=2)
                {
-                  a = .54 + .46 * cos((pre2PI * k * BlendedFrequency)/mCurRate);  //Hamming Window in freq domain
-                  f += (float) a * sin(pre2PI * mPositionInCycles/mCurRate * k)/k;
+                  //Hanning Window in freq domain
+                  a = 1. + cos((pre2PI * k * BlendedFrequency)/mCurRate);
+                  //calc harmonic, apply window, scale to amplitude of fundamental
+                  f += (float) a * sin(pre2PI * mPositionInCycles/mCurRate * k)/(b*k);
                }
                break;
 
