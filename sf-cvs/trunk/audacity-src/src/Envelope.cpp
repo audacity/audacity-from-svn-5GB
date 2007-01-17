@@ -16,7 +16,7 @@
   This class manages an envelope - i.e. a piecewise linear funtion
   that the user can edit by dragging control points around.  The
   envelope is most commonly used to control the amplitude of a
-  waveform, but it is also used to shape a general FFT filter.
+  waveform, but it is also used to shape the Equalization curve.
 
 *//****************************************************************//**
 
@@ -940,8 +940,7 @@ double Envelope::Average( double t0, double t1 )
 //
 // The functions below are used by the TimeTrack and possibly for
 // other debugging.  They do not affect normal amplitude envelopes
-// for waveforms, not frequency envelopes for the FFT Filter or
-// equalization.
+// for waveforms, not frequency envelopes for equalization.
 //
 
 // We should be able to write a very efficient memoizer for this
