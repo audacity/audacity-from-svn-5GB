@@ -19,11 +19,21 @@ EqualizationPanel, EQCurve and EQPoint.
 
 \class EffectEqualization
 \brief An Effect.
+  
+  Performs filtering, using an FFT to do a FIR filter.
+  It lets the user draw an arbitrary envelope (using the same
+  envelope editing code that is used to edit the track's
+  amplitude envelope).
+  
+  Also allows the curve to be specified with a series of 'graphic EQ'
+  sliders.
 
-  Applies an FFT of certain specific equalization curves, suitable
+  The filter is applied using overlap/add of Hanning windows.
+  
+  Has presets of certain specific equalization curves, suitable
   for old recordings.
 
-  Clone of the FFT Filter effect, see documentation there.
+  Clone of the FFT Filter effect, no longer part of Audacity.
 
 *//****************************************************************//**
 
