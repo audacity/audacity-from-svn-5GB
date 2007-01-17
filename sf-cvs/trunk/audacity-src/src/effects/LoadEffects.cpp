@@ -24,7 +24,6 @@
 #include "Echo.h"
 #include "Equalization.h"
 #include "Fade.h"
-#include "Filter.h"
 #include "Invert.h"
 #include "Leveller.h"
 #include "Noise.h"
@@ -103,7 +102,6 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectEqualization());
    Effect::RegisterEffect(new EffectFadeIn(), SIMPLE_EFFECT);
    Effect::RegisterEffect(new EffectFadeOut(), SIMPLE_EFFECT);
-   Effect::RegisterEffect(new EffectFilter());
    Effect::RegisterEffect(new EffectInvert());
    Effect::RegisterEffect(new EffectLeveller(), SIMPLE_EFFECT);
    Effect::RegisterEffect(new EffectNoiseRemoval(), SIMPLE_EFFECT);
