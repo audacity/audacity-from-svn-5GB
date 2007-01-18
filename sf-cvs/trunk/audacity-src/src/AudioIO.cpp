@@ -1551,7 +1551,6 @@ int AudioIO::GetOptimalSupportedSampleRate()
 long AudioIO::GetBestRate(bool capturing, double sampleRate)
 {
    wxArrayLong rates;
-   int i;
 
    if (capturing) {
       rates = GetSupportedCaptureRates(wxT(""), sampleRate);
