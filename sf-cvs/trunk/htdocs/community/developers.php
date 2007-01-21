@@ -17,21 +17,21 @@
 <h3><?=_('Mailing Lists')?></h3>
 <p><?=_('Join the <a href="../contact/lists#devel">audacity-devel</a> mailing list to discuss current and future development, or to get help building and modifying the Audacity source code.')?></p>
 
-<h3 id="cvs">CVS</h3>
+<h3 id="cvs"><?=_('CVS')?></h3>
 
-<p><?=('You can get the latest development code from our CVS repository.')?>
+<p><?=_('You can get the latest development code from our CVS repository.')?>
 
 <ul>
-  <li><p><a href="http://audacity.cvs.sourceforge.net/audacity"><?=('Browse the Audacity source code online.')?></a></p></li>
+  <li><p><a href="http://audacity.cvs.sourceforge.net/audacity"><?=_('Browse the Audacity source code online.')?></a></p></li>
 
-  <li><p><?=('Use this command to check out the latest Audacity stable source code from CVS:')?> (1.2)</p>
+  <li><p><?=_('Use this command to check out the latest Audacity stable source code from CVS:')?> (1.2)</p>
   <p><kbd>cvs -d:pserver:anonymous@audacity.cvs.sourceforge.net:/cvsroot/audacity checkout -r AUDACITY_1_2 audacity</kbd></p></li>
 
-  <li><p><?=('Or use this command to check out the latest Audacity unstable/development source code from CVS:')?> (1.3)</p>
+  <li><p><?=_('Or use this command to check out the latest Audacity unstable/development source code from CVS:')?> (1.3)</p>
   <p><kbd>cvs -d:pserver:anonymous@audacity.cvs.sourceforge.net:/cvsroot/audacity checkout audacity</kbd></p></li>
 </ul>
-<p><?=('For more information, read the <a href="http://sourceforge.net/cvs/?group_id=6235">SourceForge CVS instructions</a>.')?></p>
-<p><?=('See the source code page for <a href="../download/source#instructions">compilation instructions</a>.')?></p>
+<p><?=_('For more information, read the <a href="http://sourceforge.net/cvs/?group_id=6235">SourceForge CVS instructions</a>.')?></p>
+<p><?=_('See the source code page for <a href="../download/source#instructions">compilation instructions</a>.')?></p>
 
 <?php printf(_('<h3 id="bugzilla">Bugzilla</h3>
 <p>The Audacity developers use <a href="%s/">Bugzilla</a> to keep track of confirmed bugs.  Check the list of <a href="%s/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">open bugs</a> if you are looking for something to work on.</p>
