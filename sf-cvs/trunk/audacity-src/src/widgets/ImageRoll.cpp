@@ -267,6 +267,14 @@ void ImageRoll::Init(RollType type, const wxImage &src, wxColour magicColor)
       mMaxSize.y = src.GetHeight();
       break;
 
+   /* Adding these shuts up some GCC warnings. It is functionally what was
+    * implict here before - Richard */
+   case Uninitialized:
+   break;
+
+   case Frame:
+   break;
+
    } // switch
 }
 
@@ -394,6 +402,13 @@ void ImageRoll::Draw(wxDC &dc, wxRect rect, int logicalFunc)
    case FixedImage:
       DrawBitmap(dc, mPieces[0], rect.x, rect.y);
       break;
+   /* the other possible cases don't really make sense, but not having them
+    * listed gives a GCC warning */
+   case Uninitialized:
+   break;
+
+   case Frame:
+   break;
 
    } // switch      
 }
