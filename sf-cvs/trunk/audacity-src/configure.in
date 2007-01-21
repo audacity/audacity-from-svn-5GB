@@ -120,7 +120,7 @@ AC_ARG_ENABLE(unicode,
 
 AC_ARG_ENABLE(debug,
             [AC_HELP_STRING([--enable-debug],
-                            [enable unicode support (default=none)])],
+                            [enable debug support (default=none)])],
             debug_preference="--debug=$enableval",
             debug_preference="")
 
@@ -218,9 +218,30 @@ else
    fi
 fi
 
-if test "$LIBRESAMPLE_USE_LOCAL" = "yes" || test "$LIBRESAMPLE_USE_SYSTEM" = "yes" ; then
-   LIBSAMPLERATE_USE_LOCAL="no"
-   LIBSAMPLERATE_USE_SYSTEM="no"
+dnl we can only have one sample rate conversion library used.
+dnl by now we will have both enabled if they are present, regardless of whether
+dnl they were requested, unless one was specifically disabled.
+dnl we would like to honour requests at this stage, so need to know about
+dnl the original options, not just which LIB_USE variables have been set.
+if ( test "$LIBRESAMPLE_USE_LOCAL" = "yes" || test "$LIBRESAMPLE_USE_SYSTEM" = "yes") && ( test "$LIBSAMPLERATE_USE_LOCAL" = "yes" || test "$LIBSAMPLERATE_USE_SYSTEM" = "yes"); then
+   dnl if we get here, both libraries are available to us.
+   AC_MSG_NOTICE([Both libresample and libsamplerate are available])
+   AC_MSG_NOTICE([deciding which to use based on arguments ...])
+   if test x"$LIBSAMPLERATE_ARGUMENT" = x"unspecified" ; then
+      dnl they didn't ask for libsamplerate, they don't get it
+      LIBSAMPLERATE_USE_LOCAL="no"
+      LIBSAMPLERATE_USE_SYSTEM="no"
+      dnl done - we are using libresample
+      AC_MSG_NOTICE([Libsamplerate not explicity requested, using libresample])
+   else
+      dnl if we get here, then libsample rate has been explicity specified.
+      dnl could that be disabling it? No, because it wouldn't then have been
+      dnl enabled above.
+      LIBRESAMPLE_USE_LOCAL="no"
+      LIBRESAMPLE_USE_SYSTEM="no"
+      dnl done - we are using libsamplerate
+      AC_MSG_NOTICE([Using libsamplerate as requested])
+   fi
 fi
 
 #
@@ -322,10 +343,10 @@ fi
 
 dnl --- check for required libraries ---
 
-dnl wxWindows -- we assume that if wx-config is found, wxWindows is successfully installed.
+dnl wxWidgets -- we assume that if wx-config is found, wxWidgets is successfully installed.
 AC_PATH_PROG(WX_CONFIG, wx-config, no, $PATH:/usr/local/bin )
 if [[ "$WX_CONFIG" = "no" ]] ; then
-   AC_MSG_ERROR("Could not find wx-config: is wxWindows installed? is wx-config in your path?")
+   AC_MSG_ERROR("Could not find wx-config: is wxWidgets installed? is wx-config in your path?")
 fi
 
 dnl Check that the wx version is at least 2.6.x
@@ -342,7 +363,8 @@ case "${wx_version}" in
   wx_list=`${WX_CONFIG} --list`
   AC_MSG_ERROR([Unable to locate a suitable configuration of wxWidgets v2.6.x or higher.
 The currently available configurations are listed below.  If necessary, either
-install the package for your distribution or download the latest version of wxWidgets
+install the package for your distribution or download the latest version of
+wxWidgets
 from http://wxwidgets.org.
 ${wx_list}])
 esac
