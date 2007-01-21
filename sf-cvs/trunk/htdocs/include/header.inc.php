@@ -27,7 +27,7 @@
 <td nowrap="nowrap">
 <input type="hidden" name="domains" value="audacity.sourceforge.net"></input>
 <input type="text" name="q" size="31" maxlength="255" value=""></input>
-<input type="submit" name="sa" value="Search"></input>
+<input type="submit" name="sa" value="<?=_('Search')?>"></input>
 </td></tr>
 <tr>
 <td>&nbsp;</td>
@@ -36,7 +36,7 @@
 <tr>
 <td>
 <input type="radio" name="sitesearch" value=""></input>
-<font size="-1" color="#000000">Web</font>
+<font size="-1" color="#000000"><?=_('Web')?></font>
 </td>
 <td>
 <input type="radio" name="sitesearch" value="audacity.sourceforge.net" checked="checked"></input>
