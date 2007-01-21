@@ -192,7 +192,7 @@ for lib in $LIBRARIES ; do
             eval ${lib}_USE_SYSTEM="yes"
             AC_MSG_NOTICE([Using the SYSTEM libraries for $lib because you specifically requested this])
          else
-            AC_MSG_ERROR([You requested using the local libraries for $lib but they are not available])
+            AC_MSG_ERROR([You requested using the system libraries for $lib but they are not available])
          fi
       elif test $LIB_ARGUMENT = no ; then
          AC_MSG_NOTICE([disabling $lib at your request])
