@@ -214,7 +214,6 @@ NoiseDialog::NoiseDialog(wxWindow * parent, const wxString & title): EffectDialo
 
 void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
 {
-   S.AddTitle(_(""));
    S.StartMultiColumn(2, wxCENTER);
    {
       S.AddFixedText(_("Noise duration"), false);
