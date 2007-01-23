@@ -5,10 +5,9 @@
  * http://creativecommons.org/licenses/by/2.0/
  */
 
-/* this is the boilderplate text for the recommended download */
-?><p><?php echo _('This is a Sourceforge.net download page and you will be
-asked before downloading to select a mirror. A "mirror" is one of a
-group of internet addresses hosting an identical download. If
-possible, simply select the one closest to your actual location. When
-downloading please disable any download managers you may have
-and left click on the link to start your Audacity download');?></p>
+/* This is the boilerplate text for the recommended download.
+   Note that users no longer have to choose a mirror. */
+?><p><?php echo _('Clicking on one of the links below will take you to
+the appropriate Sourceforge.net download page; the download will automatically
+start after you click.  If you are having trouble try disabling any
+automatic download managers you might have running.');?></p>
