@@ -33,8 +33,8 @@
 #define M_PI 3.14159265358979323846  /* pi */
 #endif
 #define DUTY_MIN 0
-#define DUTY_MAX 1000.0
-#define DUTY_SCALE (DUTY_MAX/100)
+#define DUTY_MAX 1000
+#define DUTY_SCALE (DUTY_MAX/100.0) // ensure float division
 #define FADEINOUT 250.0    // used for fadein/out needed to remove clicking noise
 
 
@@ -383,12 +383,12 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
 
    S.AddTitle(_("by Salvo Ventura (2006)"));
 
-   S.StartMultiColumn(2, wxCENTER | wxEXPAND);
+   S.StartMultiColumn(2, wxEXPAND);
    {
-      mDtmfStringT = S.Id(ID_DTMF_STRING_TEXT).AddTextBox(_("DTMF sequence"), wxT(""), 10);
+      mDtmfStringT = S.Id(ID_DTMF_STRING_TEXT).AddTextBox(_("DTMF sequence:"), wxT(""), 10);
       mDtmfStringT->SetValidator(vldDtmf);
 
-      S.AddFixedText(_("DTMF duration"), false);
+      S.AddPrompt(_("DTMF duration:"));
       mDtmfDurationT = new
          TimeTextCtrl(this,
                       ID_DTMF_DURATION_TEXT,
@@ -406,26 +406,22 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
       S.AddWindow(mDtmfDurationT);
       mDtmfDurationT->EnableMenu();
 
-      S.SetSizeHints(-1,-1);
-   }
-   S.EndMultiColumn();
-
-   S.StartMultiColumn(2, wxCENTER | wxEXPAND);
-   {
       S.AddFixedText(_("Tone/silence ratio:"), false);
       S.SetStyle(wxSL_HORIZONTAL | wxEXPAND);
-      mDtmfDutyS = S.Id(ID_DTMF_DUTYCYCLE_SLIDER).AddSlider(wxT(""), dDutyCycle, DUTY_MAX);
+      mDtmfDutyS = S.Id(ID_DTMF_DUTYCYCLE_SLIDER).AddSlider(wxT(""), (int)dDutyCycle, DUTY_MAX);
       mDtmfDutyS->SetRange(DUTY_MIN, DUTY_MAX);
+
+      S.SetSizeHints(-1,-1);
    }
    S.EndMultiColumn();
 
    S.StartMultiColumn(2, wxCENTER);
    {
-      S.AddFixedText(_("duty cycle"), false);
+      S.AddFixedText(_("duty cycle:"), false);
       mDtmfDutyT = S.Id(ID_DTMF_DUTYCYCLE_TEXT).AddVariableText(wxString::Format(_("%.1f %%"), (float) dDutyCycle/DUTY_SCALE), false);
-      S.AddFixedText(_("tone duration"), false);
+      S.AddFixedText(_("tone duration:"), false);
       mDtmfSilenceT = S.Id(ID_DTMF_TONELEN_TEXT).AddVariableText(wxString::Format(_("%d ms"),  (int) dTone * 1000), false);
-      S.AddFixedText(_("silence duration"), false);
+      S.AddFixedText(_("silence duration:"), false);
       mDtmfToneT = S.Id(ID_DTMF_SILENCE_TEXT).AddVariableText(wxString::Format(_("%d ms"), (int) dSilence * 1000), false);
    }
    S.EndMultiColumn();
@@ -435,7 +431,7 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
 
 bool DtmfDialog::TransferDataToWindow()
  {
-   mDtmfDutyS->SetValue(dDutyCycle);
+   mDtmfDutyS->SetValue((int)dDutyCycle);
    mDtmfStringT->SetValue(dString);
    mDtmfDurationT->SetTimeValue(dDuration);
    mDtmfDurationT->SetFocus();
