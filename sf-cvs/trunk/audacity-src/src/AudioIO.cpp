@@ -1461,7 +1461,7 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(wxString devName, double rate)
    pars.device = devIndex;
    pars.channelCount = recordChannels;
    pars.sampleFormat = paFloat32;
-   pars.suggestedLatency = latencyDuration;
+   pars.suggestedLatency = latencyDuration / 1000.0;
    pars.hostApiSpecificStreamInfo = NULL;
    
    for (i = 0; i < NumStandardRates; i++)

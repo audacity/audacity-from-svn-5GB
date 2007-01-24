@@ -56,12 +56,6 @@ void AudioIOPrefs::Populate( )
    // ----------------------- End of main section --------------
    // GUI is built, now do any post processing of it.
 
-   // For Portaudio v18, we cannot set the latency
-   // \todo Check whether this test would always enable the control.
-#if USE_PORTAUDIO_V19
-// Commented out for the moment...
-//   mLatencyDuration->Enable(USE_PORTAUDIO_V19);
-#endif
    // Fit(); // JKC: Doesn't seem to make any difference...
 }
 
@@ -174,8 +168,12 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
    S.StartStatic( _("Latency"),1 );
    {
       S.StartThreeColumn();
+#if USE_PORTAUDIO_V19
+      // only show the following controls if we use Portaudio v19, because
+      // for Portaudio v19 we always use default buffer sizes
       S.TieTextBox( _("Audio to buffer:"),wxT("LatencyDuration"),100.0,9);
       S.AddUnits(  _("milliseconds") );
+#endif
       S.TieTextBox( _("Latency correction:"),wxT("LatencyCorrection"),0.0,9);
       S.AddUnits(  _("milliseconds") );
       S.EndThreeColumn();
