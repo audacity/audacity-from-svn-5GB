@@ -85,11 +85,10 @@ bool EffectDtmf::PromptUser()
    dtmfString = dlog.dString;
    dtmfDutyCycle = dlog.dDutyCycle;
    dtmfDuration = dlog.dDuration;
-
+   
    dtmfNTones = dlog.dNTones;
    dtmfTone = dlog.dTone;
    dtmfSilence = dlog.dSilence;
-
 
    return true;
 }
@@ -372,8 +371,6 @@ DtmfDialog::DtmfDialog(wxWindow * parent, const wxString & title): EffectDialog(
    */
    dTone = 0;
    dSilence = 0;
-   startup = true;
-
 }
 
 void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
@@ -425,8 +422,6 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
       mDtmfToneT = S.Id(ID_DTMF_SILENCE_TEXT).AddVariableText(wxString::Format(_("%d ms"), (int) dSilence * 1000), false);
    }
    S.EndMultiColumn();
-
-   return;
 }
 
 bool DtmfDialog::TransferDataToWindow()
@@ -444,6 +439,10 @@ bool DtmfDialog::TransferDataFromWindow()
 {
    ShuttleGui S( this, eIsGettingFromDialog );
    PopulateOrExchange( S );
+
+   // recalculate to make sure all values are up-to-date. This is especially
+   // important if the user did not change any values in the dialog
+   Recalculate();
 
    return true;
 }
@@ -500,25 +499,16 @@ void DtmfDialog::Recalculate(void) {
 }
 
 void DtmfDialog::OnDutyCycleSlider(wxCommandEvent & event) {
-   if(!startup) {
-      Recalculate();
-   }
-   startup=false;
+   Recalculate();
 }
 
 
 void DtmfDialog::OnDtmfStringText(wxCommandEvent & event) {
-   if(!startup) {
-      Recalculate();
-   }
-   startup=false;
+   Recalculate();
 }
 
 void DtmfDialog::OnDtmfDurationText(wxCommandEvent & event) {
-   if(!startup) {
-      Recalculate();
-   }
-   startup=false;
+   Recalculate();
 }
 
 void DtmfDialog::OnTimeCtrlUpdate(wxCommandEvent & event) {
