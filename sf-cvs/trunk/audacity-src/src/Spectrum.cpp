@@ -33,15 +33,15 @@ static inline float todB_a(const float *x){
 #endif
 
 
-bool ComputeSpectrum(float * data, int width, int height,
-                     int maxFreq, int minFreq, int windowSize,
-                     double rate, float *grayscaleOut,
+bool ComputeSpectrum(float * data, int width,
+                     int windowSize,
+                     double rate, float *output,
                      bool autocorrelation, int windowFunc)
 {
    if (width < windowSize)
       return false;
 
-   if (!data || !grayscaleOut)
+   if (!data || !output)
       return true;
 
    float *processed = new float[windowSize];
@@ -92,15 +92,7 @@ bool ComputeSpectrum(float * data, int width, int height,
       windows++;
    }
 
-   int minSamples = int (minFreq * windowSize / rate + 0.5);   // units here are fft bins
-   int maxSamples = int (maxFreq * windowSize / rate + 0.5);
-   if (minSamples < 0.)
-      minSamples = 0.;
-   if (maxSamples > half)
-      maxSamples = half;
-
    if (autocorrelation) {
-      maxSamples = half;
 
       // Peak Pruning as described by Tolonen and Karjalainen, 2000
       /*
@@ -108,7 +100,7 @@ bool ComputeSpectrum(float * data, int width, int height,
        It should be safe, as indexes refer only to current and previous elements,
        that have already been clipped, etc...
       */
-      for (i = 0; i < maxSamples; i++) {
+      for (i = 0; i < half; i++) {
         // Clip at zero, copy to temp array
         if (processed[i] < 0.0)
             processed[i] = float(0.0);
@@ -123,26 +115,17 @@ bool ComputeSpectrum(float * data, int width, int height,
         // Clip at zero again
         if (processed[i] < 0.0)
             processed[i] = float(0.0);
-
-        // Find new max: only for i>0: unused!?!
-        /*
-        if(i) {
-          if (processed[i] > max)
-             max = processed[i];
-        }
-        */
       }
 
-
       // Reverse and scale
-      for (i = 0; i < maxSamples; i++)
+      for (i = 0; i < half; i++)
          in[i] = processed[i] / (windowSize / 4);
-      for (i = 0; i < maxSamples; i++)
-         processed[maxSamples - 1 - i] = in[i];
+      for (i = 0; i < half; i++)
+         processed[half - 1 - i] = in[i];
    } else {
       // Convert to decibels
       // But do it safely; -Inf is nobody's friend
-      for (i = minSamples; i < maxSamples; i++){
+      for (i = 0; i < half; i++){
          float temp=(processed[i] / windowSize / windows);
          if (temp > 0.0)
             processed[i] = 10*log10(temp);
@@ -151,42 +134,8 @@ bool ComputeSpectrum(float * data, int width, int height,
       }
    }
 
-   // Finally, put it into bins in grayscaleOut[], normalized to a 0.0-1.0 scale
-   float binPerPx = float(maxSamples - minSamples) / float(height);
-   for (i = 0; i < height; i++) {
-      float bin0 = float (i) * binPerPx + minSamples;
-      float bin1 = float (i + 1) * binPerPx + minSamples;
-
-      float value;
-
-      if (int (bin1) == int (bin0))
-         value = processed[int (bin0)];
-      else {
-         float binwidth= bin1 - bin0;
-         value = processed[int (bin0)] * (1.f - bin0 + (int)bin0);
-
-         bin0 = 1 + int (bin0);
-         while (bin0 < int (bin1)) {
-            value += processed[int (bin0)];
-            bin0 += 1.0;
-         }
-         value += processed[int (bin1)] * (bin1 - int (bin1));
-
-         value /= binwidth;
-      }
-
-      if (!autocorrelation) {
-         // Last step converts dB to a 0.0-1.0 range
-         value = (value + 80.0) / 80.0;
-      }
-
-      if (value > 1.0)
-         value = float(1.0);
-      if (value < 0.0)
-         value = float(0.0);
-
-      grayscaleOut[i] = value;
-   }
+   for(i=0;i<half;i++)
+      output[i] = processed[i];
    delete[]in;
    delete[]out;
    delete[]out2;

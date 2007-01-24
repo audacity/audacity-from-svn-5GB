@@ -18,11 +18,10 @@
   a function of frequency, for some block of audio data.
 
   width: the number of samples
-  height: the desired number of frequencies
+  calculates windowSize/2 frequency samples
 */
 
-bool ComputeSpectrum(float * data, int width, int height,
-                     int maxFrequency, int minFrequency, int windowSize,
+bool ComputeSpectrum(float * data, int width, int windowSize,
                      double rate, float *out, bool autocorrelation, int windowFunc=3);
 
 #endif

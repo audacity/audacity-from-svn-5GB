@@ -72,19 +72,16 @@ public:
 
 class SpecCache {
 public:
-   SpecCache(int cacheLen, int viewHeight, bool autocorrelation)
+   SpecCache(int cacheLen, int half, bool autocorrelation)
    {
       windowTypeOld = -1;
-      maxFreqPrefOld = -1;
-      minFreqPrefOld = -1;
       windowSizeOld = -1;
       dirty = -1;
       start = -1.0;
       pps = 0.0;
       len = cacheLen;
       ac = autocorrelation;
-      height = viewHeight;
-      freq = new float[len*height];
+      freq = new float[len*half];
       where = new sampleCount[len+1];
    }
 
@@ -95,11 +92,8 @@ public:
    }
 
    int          windowTypeOld;
-   int          maxFreqPrefOld;
-   int          minFreqPrefOld;
    int          windowSizeOld;
    int          dirty;
-   int          height;
    bool         ac;
    sampleCount  len;
    double       start;
@@ -379,42 +373,31 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,
 }
 
 bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
-                               int numPixels, int height,
+                               int numPixels,
                                double t0, double pixelsPerSecond,
                                bool autocorrelation)
 {
    int windowType;
-   bool autoMaxFrequency;
-
-   int minFreqPref = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
-   int maxFreqPref = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000L);
    int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
-   gPrefs->Read(wxT("/Spectrum/AutoMaxFrequency"), &autoMaxFrequency, false);
+   int half = windowSize/2;
    gPrefs->Read(wxT("/Spectrum/WindowType"), &windowType, 3);
-   if (autoMaxFrequency) {
-      // automatically set frequency to half of sampling rate
-      maxFreqPref=int(mRate/2);
-   }
 
    if (mSpecCache &&
        mSpecCache->windowTypeOld == windowType &&
-       mSpecCache->maxFreqPrefOld == maxFreqPref &&
-       mSpecCache->minFreqPrefOld == minFreqPref &&
        mSpecCache->windowSizeOld == windowSize &&
        mSpecCache->dirty == mDirty &&
        mSpecCache->start == t0 &&
        mSpecCache->ac == autocorrelation &&
-       mSpecCache->height == height &&
        mSpecCache->len >= numPixels &&
        mSpecCache->pps == pixelsPerSecond) {
-      memcpy(freq, mSpecCache->freq, numPixels*height*sizeof(float));
+      memcpy(freq, mSpecCache->freq, numPixels*half*sizeof(float));
       memcpy(where, mSpecCache->where, (numPixels+1)*sizeof(sampleCount));
       return true;
    }
 
    SpecCache *oldCache = mSpecCache;
 
-   mSpecCache = new SpecCache(numPixels, height, autocorrelation);
+   mSpecCache = new SpecCache(numPixels, half, autocorrelation);
    mSpecCache->pps = pixelsPerSecond;
    mSpecCache->start = t0;
 
@@ -435,11 +418,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
    // possible
    if (oldCache->dirty == mDirty &&
        oldCache->windowTypeOld == windowType &&
-       oldCache->maxFreqPrefOld == maxFreqPref &&
-       oldCache->minFreqPrefOld == minFreqPref &&
        oldCache->windowSizeOld == windowSize &&
        oldCache->pps == pixelsPerSecond &&
-       oldCache->height == height &&
        oldCache->ac == autocorrelation &&
        oldCache->where[0] < mSpecCache->where[mSpecCache->len] &&
        oldCache->where[oldCache->len] > mSpecCache->where[0]) {
@@ -455,9 +435,9 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
             if (ox >= 0 && ox < oldCache->len &&
                 mSpecCache->where[x] == oldCache->where[ox]) {
 
-               for (sampleCount i = 0; i < (sampleCount)height; i++)
-                  mSpecCache->freq[height * x + i] =
-                     oldCache->freq[height * ox + i];
+               for (sampleCount i = 0; i < (sampleCount)half; i++)
+                  mSpecCache->freq[half * x + i] =
+                     oldCache->freq[half * ox + i];
 
                recalc[x] = false;
             }
@@ -466,8 +446,6 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
 
    float *buffer = new float[windowSize];
    mSpecCache->windowTypeOld = windowType;
-   mSpecCache->maxFreqPrefOld = maxFreqPref;
-   mSpecCache->minFreqPrefOld = minFreqPref;
    mSpecCache->windowSizeOld = windowSize;
 
    for (x = 0; x < mSpecCache->len; x++)
@@ -479,8 +457,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
 
          if (start <= 0 || start >= mSequence->GetNumSamples()) {
 
-            for (i = 0; i < (sampleCount)height; i++)
-               mSpecCache->freq[height * x + i] = 0;
+            for (i = 0; i < (sampleCount)half; i++)
+               mSpecCache->freq[half * x + i] = 0;
 
          }
          else
@@ -503,9 +481,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
             if (len > 0)
                mSequence->Get((samplePtr)adj, floatSample, start, len);
 
-            ComputeSpectrum(buffer, windowSize, height,
-                            maxFreqPref, minFreqPref, windowSize,
-                            mRate, &mSpecCache->freq[height * x],
+            ComputeSpectrum(buffer, windowSize, windowSize,
+                            mRate, &mSpecCache->freq[half * x],
                             autocorrelation, windowType);
          }
       }
@@ -515,9 +492,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
    delete oldCache;
 
    mSpecCache->dirty = mDirty;
-   memcpy(freq, mSpecCache->freq, numPixels*height*sizeof(float));
+   memcpy(freq, mSpecCache->freq, numPixels*half*sizeof(float));
    memcpy(where, mSpecCache->where, (numPixels+1)*sizeof(sampleCount));
-
    return true;
 }
 
