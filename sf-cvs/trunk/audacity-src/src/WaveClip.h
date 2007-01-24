@@ -101,7 +101,7 @@ public:
    bool GetWaveDisplay(float *min, float *max, float *rms, sampleCount *where,
                        int numPixels, double t0, double pixelsPerSecond);
    bool GetSpectrogram(float *buffer, sampleCount *where,
-                       int numPixels, int height,
+                       int numPixels,
                        double t0, double pixelsPerSecond,
                        bool autocorrelation);
    bool GetMinMax(float *min, float *max, double t0, double t1);

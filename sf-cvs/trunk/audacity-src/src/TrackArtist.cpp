@@ -1415,10 +1415,12 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    if (!image)return;
    unsigned char *data = image->GetData();
 
-   float *freq = new float[mid.width * mid.height];
+   int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
+   int half = windowSize/2;
+   float *freq = new float[mid.width * half];
    sampleCount *where = new sampleCount[mid.width+1];
 
-   if (!clip->GetSpectrogram(freq, where, mid.width, mid.height,
+   if (!clip->GetSpectrogram(freq, where, mid.width,
                               t0, pps, autocorrelation)) {
       delete image;
       delete[] where;
@@ -1428,28 +1430,60 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
 
    bool isGrayscale = false;
    gPrefs->Read(wxT("/Spectrum/Grayscale"), &isGrayscale, false);
+   int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), rate/2.);
+   int minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
+   int minSamples = int (minFreq * windowSize / rate + 0.5);   // units here are fft bins
+   int maxSamples = int (maxFreq * windowSize / rate + 0.5);
+   float binPerPx = float(maxSamples - minSamples) / float(mid.height);
 
    int x = 0;
    sampleCount w1 = (sampleCount) ((t0*rate + x *rate *tstep) + .5);
    while (x < mid.width) {
-
       sampleCount w0 = w1;
       w1 = (sampleCount) ((t0*rate + (x+1) *rate *tstep) + .5);
-
-      float *spec = &freq[mid.height * x];
 
       for (int yy = 0; yy < mid.height; yy++) {
          bool selflag = (ssel0 <= w0 && w1 < ssel1);
          unsigned char rv, gv, bv;
 
-         GetColorGradient(spec[mid.height - 1 - yy],
-                          selflag, isGrayscale, &rv, &gv, &bv);
+         float bin0 = float (yy) * binPerPx + minSamples;
+         float bin1 = float (yy + 1) * binPerPx + minSamples;
 
-         data[(yy * mid.width + x) * 3] = rv;
-         data[(yy * mid.width + x) * 3 + 1] = gv;
-         data[(yy * mid.width + x) * 3 + 2] = bv;
+         float value;
+
+         if (int (bin1) == int (bin0))
+            value = freq[half * x + int (bin0)];
+         else {
+            float binwidth= bin1 - bin0;
+            value = freq[half * x + int (bin0)] * (1.f - bin0 + (int)bin0);
+
+            bin0 = 1 + int (bin0);
+            while (bin0 < int (bin1)) {
+               value += freq[half * x + int (bin0)];
+               bin0 += 1.0;
+            }
+            value += freq[half * x + int (bin1)] * (bin1 - int (bin1));
+
+            value /= binwidth;
+         }
+
+         if (!autocorrelation) {
+            // Last step converts dB to a 0.0-1.0 range
+            value = (value + 80.0) / 80.0;
+         }
+
+         if (value > 1.0)
+            value = float(1.0);
+         if (value < 0.0)
+            value = float(0.0);
+
+         GetColorGradient(value, selflag, isGrayscale, &rv, &gv, &bv);
+
+         int px = ((mid.height - 1 - yy) * mid.width + x) * 3;
+         data[px++] = rv;
+         data[px++] = gv;
+         data[px] = bv;
       }
-
       x++;
    }
 
