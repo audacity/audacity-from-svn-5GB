@@ -3517,6 +3517,7 @@ void AudacityProject::OnImport()
       
       Import(fileName);
    }
+   HandleResize(); // Adjust scrollers for new track sizes.
 }
 
 void AudacityProject::OnImportLabels()
@@ -3632,6 +3633,7 @@ void AudacityProject::OnImportRaw()
       return;
 
    AddImportedTracks(fileName, newTracks, numTracks);
+   HandleResize(); // Adjust scrollers for new track sizes.
 }
 
 void AudacityProject::OnEditID3()
