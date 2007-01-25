@@ -112,6 +112,8 @@ double TimeTrack::warp( double t )
 bool TimeTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
    if (!wxStrcmp(tag, wxT("timetrack"))) {
+      double dblValue;
+      long nValue;
       while(*attrs) {
          const wxChar *attr = *attrs++;
          const wxChar *value = *attrs++;
@@ -119,13 +121,25 @@ bool TimeTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          if (!value)
             break;
          
-         else if (!wxStrcmp(attr, wxT("offset"))) {
-            Internat::CompatibleToDouble(value, &mOffset);
+         const wxString strValue = value;
+         if (!wxStrcmp(attr, wxT("offset"))) 
+         {
+            if (!XMLValueChecker::IsGoodString(strValue) || 
+                  !Internat::CompatibleToDouble(strValue, &dblValue))
+               return false;
+            mOffset = dblValue;
             mEnvelope->SetOffset(mOffset);
-         }else if (!wxStrcmp(attr, wxT("name")))
-            mName = value;
+         }
+         else if (!wxStrcmp(attr, wxT("name")) && XMLValueChecker::IsGoodString(strValue))
+            mName = strValue;
          else if (!wxStrcmp(attr, wxT("channel")))
-            mChannel = wxAtoi(value);
+         {
+            if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue) || 
+                  !XMLValueChecker::IsValidChannel(nValue))
+               return false;
+            mChannel = nValue;
+         }
+
          
       } // while
       return true;

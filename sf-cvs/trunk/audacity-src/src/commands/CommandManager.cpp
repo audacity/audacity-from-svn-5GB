@@ -833,9 +833,9 @@ bool CommandManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          if (!value)
             break;
          
-         if (!wxStrcmp(attr, wxT("name")))
+         if (!wxStrcmp(attr, wxT("name")) && XMLValueChecker::IsGoodString(value))
             name = value;
-         if (!wxStrcmp(attr, wxT("key")))
+         if (!wxStrcmp(attr, wxT("key")) && XMLValueChecker::IsGoodString(value))
             key = value;
       }
 

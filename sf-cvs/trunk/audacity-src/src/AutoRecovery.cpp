@@ -283,6 +283,7 @@ bool RecordingRecoveryHandler::HandleXMLTag(const wxChar *tag,
    {
       // loop through attrs, which is a null-terminated list of
       // attribute-value pairs
+      long nValue;
       while(*attrs)
       {
          const wxChar *attr = *attrs++;
@@ -291,10 +292,21 @@ bool RecordingRecoveryHandler::HandleXMLTag(const wxChar *tag,
          if (!value)
             break;
          
+         const wxString strValue = value;
          if (wxStrcmp(attr, wxT("channel")) == 0)
-            mChannel = wxAtoi(value);
-         if (wxStrcmp(attr, wxT("numchannels")) == 0)
-            mNumChannels = wxAtoi(value);
+         {
+            if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue) || 
+                  !XMLValueChecker::IsValidChannel(nValue))
+               return false;
+            mChannel = nValue;
+         }
+         else if (wxStrcmp(attr, wxT("numchannels")) == 0)
+         {
+            if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue) || 
+                  (nValue < 1))
+               return false;
+            mChannel = nValue;
+         }
       }
    }
    

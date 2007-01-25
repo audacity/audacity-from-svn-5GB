@@ -474,23 +474,47 @@ BlockFile *SimpleBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
    wxFileName fileName;
    float min=0, max=0, rms=0;
    sampleCount len = 0;
+   double dblValue;
+   long nValue;
 
    while(*attrs)
    {
-       const wxChar *attr =  *attrs++;
-       const wxChar *value = *attrs++;
+      const wxChar *attr =  *attrs++;
+      const wxChar *value = *attrs++;
 
-       if( !wxStrcmp(attr, wxT("filename")) )
-	  dm.AssignFile(fileName,value,FALSE);
-       if( !wxStrcmp(attr, wxT("len")) )
-          len = wxAtoi(value);
-       if( !wxStrcmp(attr, wxT("min")) )
-          min = Internat::CompatibleToDouble(value);
-       if( !wxStrcmp(attr, wxT("max")) )
-          max = Internat::CompatibleToDouble(value);
-       if( !wxStrcmp(attr, wxT("rms")) )
-          rms = Internat::CompatibleToDouble(value);
+      if (!value)
+         break;
+
+      const wxString strValue = value;
+      if( !wxStrcmp(attr, wxT("filename")) )
+      {
+         // Can't use XMLValueChecker::IsGoodFileName here, but do part of its test.
+         if (!XMLValueChecker::IsGoodFileString(strValue))
+            return NULL;
+
+         #ifdef _WIN32
+            if (strValue.Length() + 1 + dm.GetProjectDataDir().Length() > MAX_PATH)
+               return NULL;
+         #endif
+
+         dm.AssignFile(fileName,value,FALSE);
+      }
+      else if( !wxStrcmp(attr, wxT("len")) && XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
+         len = nValue;
+      else if( !wxStrcmp(attr, wxT("min")) && 
+               XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+         min = dblValue;
+      else if( !wxStrcmp(attr, wxT("max")) && 
+               XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+         max = dblValue;
+      else if( !wxStrcmp(attr, wxT("rms")) && 
+               XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+         rms = dblValue;
    }
+
+   if (!XMLValueChecker::IsGoodFileName(fileName.GetFullName(), fileName.GetPath(wxPATH_GET_VOLUME)) || 
+         (len <= 0) || (rms < 0.0))
+      return NULL;
 
    return new SimpleBlockFile(fileName, len, min, max, rms);
 }

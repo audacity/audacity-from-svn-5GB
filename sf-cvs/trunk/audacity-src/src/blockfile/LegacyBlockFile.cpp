@@ -281,23 +281,44 @@ BlockFile *LegacyBlockFile::BuildFromXML(wxString projDir, const wxChar **attrs,
    wxFileName fileName;
    sampleCount summaryLen = 0;
    bool noRMS = false;
+   long nValue;
 
    while(*attrs)
    {
-       const wxChar *attr =  *attrs++;
-       const wxChar *value = *attrs++;
+      const wxChar *attr =  *attrs++;
+      const wxChar *value = *attrs++;
 
-       if( !wxStrcmp(attr, wxT("name")) )
-          fileName.Assign(projDir, value);
-       if( !wxStrcmp(attr, wxT("len")) )
-          len = wxAtoi(value);
-       if( !wxStrcmp(attr, wxT("norms")) )
-          noRMS = wxAtoi(value)?true:false;
-       if( !wxStrcmp(attr, wxT("format")) )
-          format = (sampleFormat)wxAtoi(value);
-       if( !wxStrcmp(attr, wxT("summarylen")) )
-          summaryLen = wxAtoi(value);
+      if (!value)
+         break;
+
+      const wxString strValue = value;
+      if( !wxStrcmp(attr, wxT("name")) )
+      {
+         if (!XMLValueChecker::IsGoodFileName(strValue, projDir))
+            return NULL;
+         fileName.Assign(projDir, strValue);
+      }
+      else if (XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
+      { // integer parameters
+         if( !wxStrcmp(attr, wxT("len")) )
+            len = nValue;
+         if( !wxStrcmp(attr, wxT("norms")) )
+            noRMS = (nValue != 0);
+         if( !wxStrcmp(attr, wxT("format")) )
+         {
+            if (!XMLValueChecker::IsValidSampleFormat(nValue))
+               return NULL;
+            format = (sampleFormat)nValue;
+         }
+         if( !wxStrcmp(attr, wxT("summarylen")) )
+            summaryLen = nValue;
+      }
    }
+
+   if (!XMLValueChecker::IsGoodFileName(fileName.GetFullName(), 
+                                         fileName.GetPath(wxPATH_GET_VOLUME)) || 
+         (len <= 0) || (summaryLen <= 0))
+      return NULL;
 
    return new LegacyBlockFile(fileName, format, summaryLen, len, noRMS);
 }

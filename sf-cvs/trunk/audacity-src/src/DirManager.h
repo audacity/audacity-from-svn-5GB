@@ -48,6 +48,7 @@ class DirManager: public XMLTagHandler {
    // but it doesn't already exist, SetProject fails and returns false.
    bool SetProject(wxString & projPath, wxString & projName, bool create);
 
+   wxString GetProjectDataDir();
    wxString GetProjectName();
 
    wxLongLong GetFreeDiskSpace();
@@ -87,6 +88,7 @@ class DirManager: public XMLTagHandler {
    void SetLoadingTarget(BlockFile **target) { mLoadingTarget = target; }
    void SetLoadingFormat(sampleFormat format) { mLoadingFormat = format; }
    void SetLoadingBlockLength(sampleCount len) { mLoadingBlockLen = len; }
+   void SetMaxSamples(sampleCount max) { mMaxSamples = max; }
    bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    XMLTagHandler *HandleXMLChild(const wxChar *tag) { return NULL; }
    void WriteXML(XMLWriter &xmlFile) { };
@@ -171,6 +173,8 @@ class DirManager: public XMLTagHandler {
    BlockFile **mLoadingTarget;
    sampleFormat mLoadingFormat;
    sampleCount mLoadingBlockLen;
+
+   sampleCount mMaxSamples;
 
    static wxString globaltemp;
    wxString mytemp;

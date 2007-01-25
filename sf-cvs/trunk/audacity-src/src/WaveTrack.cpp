@@ -964,6 +964,8 @@ bool WaveTrack::Flush()
 bool WaveTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
    if (!wxStrcmp(tag, wxT("wavetrack"))) {
+      double dblValue;
+      long nValue;
       while(*attrs) {
          const wxChar *attr = *attrs++;
          const wxChar *value = *attrs++;
@@ -971,33 +973,45 @@ bool WaveTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          if (!value)
             break;
          
+         const wxString strValue = value;
          if (!wxStrcmp(attr, wxT("rate")))
-            mRate = wxAtoi(value);
-         else if (!wxStrcmp(attr, wxT("offset"))) {
+         {
+            // mRate is an int, but "rate" in the project file is a float.
+            if (!XMLValueChecker::IsGoodString(strValue) || 
+                  !Internat::CompatibleToDouble(strValue, &dblValue) ||
+                  (dblValue < 100.0) || (dblValue > 100000.0)) // same bounds as ImportRawDialog::OnOK
+            mRate = dblValue;
+         }
+         else if (!wxStrcmp(attr, wxT("offset")) && 
+                  XMLValueChecker::IsGoodString(strValue) && 
+                  Internat::CompatibleToDouble(strValue, &dblValue))
+         {
             // Offset is only relevant for legacy project files. The value
             // is cached until the actual WaveClip containing the legacy
             // track is created.
-            double ofs = 0.0;
-            Internat::CompatibleToDouble(wxString(value), &ofs);
-            mLegacyProjectFileOffset = ofs;
+            mLegacyProjectFileOffset = dblValue;
          }
-         else if (!wxStrcmp(attr, wxT("gain"))) {
-            double d;
-            Internat::CompatibleToDouble(wxString(value), &d);
-            mGain = d;
-         }
-         else if (!wxStrcmp(attr, wxT("pan"))) {
-            double d;
-            Internat::CompatibleToDouble(wxString(value), &d);
-            if (d >= -1.0 && d <= 1.0)
-               mPan = d;
-         }
-         else if (!wxStrcmp(attr, wxT("name")))
-            mName = value;
+         else if (!wxStrcmp(attr, wxT("gain")) && 
+                  XMLValueChecker::IsGoodString(strValue) && 
+                  Internat::CompatibleToDouble(strValue, &dblValue))
+            mGain = dblValue;
+         else if (!wxStrcmp(attr, wxT("pan")) && 
+                  XMLValueChecker::IsGoodString(strValue) && 
+                  Internat::CompatibleToDouble(strValue, &dblValue) && 
+                  (dblValue >= -1.0) && (dblValue <= 1.0))
+            mPan = dblValue;
+         else if (!wxStrcmp(attr, wxT("name")) && XMLValueChecker::IsGoodString(strValue))
+            mName = strValue;
          else if (!wxStrcmp(attr, wxT("channel")))
-            mChannel = wxAtoi(value);
-         else if (!wxStrcmp(attr, wxT("linked")))
-            mLinked = wxAtoi(value) != 0;
+         {
+            if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue) || 
+                  !XMLValueChecker::IsValidChannel(nValue))
+               return false;
+            mChannel = nValue;
+         }
+         else if (!wxStrcmp(attr, wxT("linked")) && 
+                  XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+            mLinked = (nValue != 0);
          
       } // while
       return true;
