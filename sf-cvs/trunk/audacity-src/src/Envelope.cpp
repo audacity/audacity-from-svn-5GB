@@ -226,13 +226,21 @@ bool Envelope::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
    if (!wxStrcmp(tag, wxT("envelope"))) {
       int numPoints = 0;
+      long nValue = -1;
 
       while (*attrs) {
          const wxChar *attr = *attrs++;
          const wxChar *value = *attrs++;
-         if (!wxStrcmp(attr, wxT("numpoints")))
-            numPoints = wxAtoi(value);
+         if (!value)
+            break;
+         const wxString strValue = value;
+         if( !wxStrcmp(attr, wxT("numpoints")) && 
+               XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
+            numPoints = nValue;
       }
+      if (numPoints < 0)
+         return false;
+
       WX_CLEAR_ARRAY(mEnv);
       mEnv.Alloc(numPoints);
       return true;

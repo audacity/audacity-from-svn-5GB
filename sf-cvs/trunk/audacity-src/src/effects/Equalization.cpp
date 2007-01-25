@@ -1529,7 +1529,10 @@ bool EqualizationDialog::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          // Create a new curve and name it
          if( !wxStrcmp( attr, wxT("name") ) )
          {
-            mCurves.Add( EQCurve( value ) );
+            const wxString strValue = value;
+            if (!XMLValueChecker::IsGoodString(strValue))
+               return false;
+            mCurves.Add( EQCurve( strValue ) );
          }
       }
 
@@ -1545,20 +1548,29 @@ bool EqualizationDialog::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       double d = 0.0;
 
       // Process the attributes
+      double dblValue;
       while( *attrs )
       {   // Cache attr/value and bump to next
          const wxChar *attr = *attrs++;
          const wxChar *value = *attrs++;
 
+         const wxString strValue = value;
+
          // Get the frequency
          if( !wxStrcmp( attr, wxT("f") ) )
          {
-            f = Internat::CompatibleToDouble( value );
+            if (!XMLValueChecker::IsGoodString(strValue) || 
+                  !Internat::CompatibleToDouble(strValue, &dblValue))
+               return false;
+            f = dblValue;
          }
          // Get the dB
          else if( !wxStrcmp( attr, wxT("d") ) )
          {
-            d = Internat::CompatibleToDouble( value );
+            if (!XMLValueChecker::IsGoodString(strValue) || 
+                  !Internat::CompatibleToDouble(strValue, &dblValue))
+               return false;
+            d = dblValue;
          }
       }
 

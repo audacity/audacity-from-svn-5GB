@@ -46,6 +46,7 @@ void SilentBlockFile::SaveXML(XMLWriter &xmlFile)
 /// static
 BlockFile *SilentBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
 {
+   long nValue;
    sampleCount len = 0;
 
    while(*attrs)
@@ -53,9 +54,17 @@ BlockFile *SilentBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
        const wxChar *attr =  *attrs++;
        const wxChar *value = *attrs++;
 
-       if( !wxStrcmp(attr, wxT("len")) )
-          len = wxAtoi(value);
+       if (!value)
+         break;
+
+       const wxString strValue = value;
+       if( !wxStrcmp(attr, wxT("len")) && 
+            XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
+          len = nValue;
    }
+
+   if (len <= 0)
+      return NULL;
 
    return new SilentBlockFile(len);
 }

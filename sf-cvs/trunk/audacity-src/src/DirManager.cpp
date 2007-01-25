@@ -113,6 +113,7 @@ DirManager::DirManager()
    projName = wxT("");
 
    mLoadingTarget = NULL;
+   mMaxSamples = -1;
 
    // toplevel pool hash is fully populated to begin 
    {
@@ -407,6 +408,11 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
    return true;
 }
 
+wxString DirManager::GetProjectDataDir()
+{
+   return projFull;
+}
+  
 wxString DirManager::GetProjectName()
 {
    return projName;
@@ -801,6 +807,8 @@ bool DirManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
    if( mLoadingTarget == NULL )
       return false;
 
+   BlockFile* pBlockFile = NULL;
+
    if( !wxStricmp(tag, wxT("silentblockfile")) ) {
       // Silent blocks don't actually have a file associated, so
       // we don't need to worry about the hash table at all
@@ -808,9 +816,9 @@ bool DirManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       return true;
    }
    else if ( !wxStricmp(tag, wxT("simpleblockfile")) )
-      *mLoadingTarget = SimpleBlockFile::BuildFromXML(*this, attrs);
+      pBlockFile = SimpleBlockFile::BuildFromXML(*this, attrs);
    else if( !wxStricmp(tag, wxT("pcmaliasblockfile")) )
-      *mLoadingTarget = PCMAliasBlockFile::BuildFromXML(*this, attrs);
+      pBlockFile = PCMAliasBlockFile::BuildFromXML(*this, attrs);
    else if( !wxStricmp(tag, wxT("blockfile")) ||
             !wxStricmp(tag, wxT("legacyblockfile")) ) {
       // Support Audacity version 1.1.1 project files
@@ -829,15 +837,26 @@ bool DirManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       }
 
       if (alias)
-         *mLoadingTarget = LegacyAliasBlockFile::BuildFromXML(projFull, attrs);
+         pBlockFile = LegacyAliasBlockFile::BuildFromXML(projFull, attrs);
       else      
-         *mLoadingTarget = LegacyBlockFile::BuildFromXML(projFull, attrs,
+         pBlockFile = LegacyBlockFile::BuildFromXML(projFull, attrs,
                                                          mLoadingBlockLen,
                                                          mLoadingFormat);
    }
    else
       return false;
       
+   if ((pBlockFile == NULL) || 
+         // Check the length here so we don't have to do it in each BuildFromXML method.
+         ((mMaxSamples > -1) && // is initialized
+            (pBlockFile->GetLength() > mMaxSamples)))
+   {
+      delete pBlockFile;
+      return false;
+   }
+   else 
+      *mLoadingTarget = pBlockFile;
+
    //
    // If the block we loaded is already in the hash table, then the
    // object we just loaded is a duplicate, so we delete it and

@@ -354,6 +354,8 @@ bool Sequence::Paste(sampleCount s, const Sequence *src)
       SeqBlock *largerBlock = new SeqBlock();
       largerBlock->start = mBlock->Item(b)->start;
       int largerBlockLen = mBlock->Item(b)->f->GetLength() + addedLen;
+      if (largerBlockLen > mMaxSamples) 
+         largerBlockLen = mMaxSamples; // Prevent overruns, per NGS report for UmixIt.
       largerBlock->f =
          mDirManager->NewSimpleBlockFile(buffer, largerBlockLen, mSampleFormat);
 
@@ -532,11 +534,11 @@ bool Sequence::InsertSilence(sampleCount s0, sampleCount len)
 
    sTrack->mNumSamples = pos;
 
-   Paste(s0, sTrack);
+   bool bResult = Paste(s0, sTrack);
 
    delete sTrack;
 
-   return ConsistencyCheck(wxT("InsertSilence"));
+   return bResult && ConsistencyCheck(wxT("InsertSilence"));
 }
 
 bool Sequence::AppendAlias(wxString fullPath,
@@ -609,6 +611,8 @@ sampleCount Sequence::GetBestBlockSize(sampleCount start) const
 
 bool Sequence::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
+   long nValue;
+
    if (!wxStrcmp(tag, wxT("waveblock"))) {
       SeqBlock *wb = new SeqBlock();
       wb->f = 0;
@@ -623,12 +627,20 @@ bool Sequence::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          if (!value)
             break;
          
+         // All these attributes have non-negative integer values, so just test & convert here.
+         const wxString strValue = value;
+         if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue) || (nValue < 0))
+         {
+            mErrorOpening = true;
+            return false;
+         }
+         
          if (!wxStrcmp(attr, wxT("start")))
-            wb->start = wxAtoi(value);
+            wb->start = nValue;
 
          // Handle length tag from legacy project file
          if (!wxStrcmp(attr, wxT("len")))
-            mDirManager->SetLoadingBlockLength(wxAtoi(value));
+            mDirManager->SetLoadingBlockLength(nValue);
  
       } // while
 
@@ -646,13 +658,48 @@ bool Sequence::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          if (!value)
             break;
          
+         // All these attributes have non-negative integer values, so just test & convert here.
+         const wxString strValue = value;
+         if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue) || (nValue < 0))
+         {
+            mErrorOpening = true;
+            return false;
+         }
+
          if (!wxStrcmp(attr, wxT("maxsamples")))
-            mMaxSamples = wxAtoi(value);
+         {
+            // Dominic, 12/10/2006:
+			//    Let's check that maxsamples is >= 1024 and <= 64 * 1024 * 1024 
+			//    - that's a pretty wide range of reasonable values.
+            if ((nValue < 1024) || (nValue > 64 * 1024 * 1024))
+            {
+               mErrorOpening = true;
+               return false;
+            }
+            mMaxSamples = nValue;
+            mDirManager->SetMaxSamples(mMaxSamples);
+         }
          else if (!wxStrcmp(attr, wxT("sampleformat")))
-            mSampleFormat = (sampleFormat)wxAtoi(value);
+         {
+            if (!XMLValueChecker::IsValidSampleFormat(nValue))
+            {
+               mErrorOpening = true;
+               return false;
+            }
+            mSampleFormat = (sampleFormat)nValue;
+         }
          else if (!wxStrcmp(attr, wxT("numsamples")))
-            mNumSamples = wxAtoi(value);         
+            mNumSamples = nValue;
       } // while
+
+      //// Both mMaxSamples and mSampleFormat should have been set. 
+      //// Check that mMaxSamples is right for mSampleFormat, using the calculations from the constructor.
+      //if ((mMinSamples != sMaxDiskBlockSize / SAMPLE_SIZE(mSampleFormat) / 2) || 
+      //      (mMaxSamples != mMinSamples * 2))
+      //{
+      //   mErrorOpening = true;
+      //   return false;
+      //}
 
       return true;
    }
@@ -677,6 +724,10 @@ void Sequence::HandleXMLEndTag(const wxChar *tag)
          else
             len = mNumSamples - mBlock->Item(b)->start;
 
+         if (len > mMaxSamples) 
+         	// This could be why the blockfile failed, so limit 
+         	// the silent replacement to mMaxSamples.
+            len = mMaxSamples;
          mBlock->Item(b)->f = new SilentBlockFile(len);
          wxLogWarning(wxT("Gap detected in project file\n"));
          mErrorOpening = true;

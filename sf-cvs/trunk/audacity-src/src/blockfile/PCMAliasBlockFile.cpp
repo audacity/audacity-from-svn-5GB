@@ -146,29 +146,60 @@ BlockFile *PCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
    wxFileName aliasFileName;
    int aliasStart=0, aliasLen=0, aliasChannel=0;
    float min=0, max=0, rms=0;
+   long nValue;
 
    while(*attrs)
    {
-       const wxChar *attr =  *attrs++;
-       const wxChar *value = *attrs++;
+      const wxChar *attr =  *attrs++;
+      const wxChar *value = *attrs++;
+      if (!value) 
+         break;
 
-       if( !wxStricmp(attr, wxT("summaryfile")) )
-	  dm.AssignFile(summaryFileName,value,FALSE);
-       if( !wxStricmp(attr, wxT("aliasfile")) )
-          aliasFileName.Assign(value);
-       if( !wxStricmp(attr, wxT("aliasstart")) )
-          aliasStart = wxAtoi(value);
-       if( !wxStricmp(attr, wxT("aliaslen")) )
-          aliasLen = wxAtoi(value);
-       if( !wxStricmp(attr, wxT("aliaschannel")) )
-          aliasChannel = wxAtoi(value);
-       if( !wxStricmp(attr, wxT("min")) )
-          min = wxAtoi(value);
-       if( !wxStricmp(attr, wxT("max")) )
-          max = wxAtoi(value);
-       if( !wxStricmp(attr, wxT("rms")) )
-          rms = wxAtoi(value);
+      const wxString strValue = value;
+      if( !wxStricmp(attr, wxT("summaryfile")) )
+      {
+         // Can't use XMLValueChecker::IsGoodFileName here, but do part of its test.
+         if (!XMLValueChecker::IsGoodFileString(strValue))
+            return NULL;
+
+         #ifdef _WIN32
+            if (strValue.Length() + 1 + dm.GetProjectDataDir().Length() > MAX_PATH)
+               return NULL;
+         #endif
+
+         dm.AssignFile(summaryFileName,value,FALSE);
+      }
+      else if( !wxStricmp(attr, wxT("aliasfile")) )
+      {
+         if (XMLValueChecker::IsGoodPathName(strValue))
+            aliasFileName.Assign(strValue);
+         else if (XMLValueChecker::IsGoodFileName(strValue, dm.GetProjectDataDir()))
+            // Allow fallback of looking for the file name, located in the data directory.
+            aliasFileName.Assign(dm.GetProjectDataDir(), strValue);
+         else 
+            return NULL;
+      }
+      else if (XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
+      { // integer parameters
+         if( !wxStricmp(attr, wxT("aliasstart")) )
+            aliasStart = nValue;
+         else if( !wxStricmp(attr, wxT("aliaslen")) )
+            aliasLen = nValue;
+         else if( !wxStricmp(attr, wxT("aliaschannel")) )
+            aliasChannel = nValue;
+         else if( !wxStricmp(attr, wxT("min")) )
+            min = nValue;
+         else if( !wxStricmp(attr, wxT("max")) )
+            max = nValue;
+         else if( !wxStricmp(attr, wxT("rms")) )
+            rms = nValue;
+      }
    }
+
+   if (!XMLValueChecker::IsGoodFileName(summaryFileName.GetFullName(), summaryFileName.GetPath(wxPATH_GET_VOLUME)) || 
+         !XMLValueChecker::IsGoodFileName(aliasFileName.GetFullName(), aliasFileName.GetPath(wxPATH_GET_VOLUME)) || 
+         (aliasLen <= 0) || (aliasLen < 0.0) || !XMLValueChecker::IsValidChannel(aliasChannel) || (rms < 0.0))
+      return NULL;
 
    return new PCMAliasBlockFile(summaryFileName, aliasFileName,
                                 aliasStart, aliasLen, aliasChannel,

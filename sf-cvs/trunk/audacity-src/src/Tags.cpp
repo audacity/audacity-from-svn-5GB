@@ -147,6 +147,7 @@ bool Tags::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
    if (wxStrcmp(tag, wxT("tags")) == 0) {
       // loop through attrs, which is a null-terminated list of
       // attribute-value pairs
+      long nValue;
       while(*attrs) {
          const wxChar *attr = *attrs++;
          const wxChar *value = *attrs++;
@@ -154,25 +155,27 @@ bool Tags::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          if (!value)
             break;
 
-         if (!wxStrcmp(attr, wxT("title")))
-            mTitle = value;
-         else if (!wxStrcmp(attr, wxT("artist")))
-            mArtist = value;
-         else if (!wxStrcmp(attr, wxT("album")))
-            mAlbum = value;
-         else if (!wxStrcmp(attr, wxT("track")))
-            mTrackNum = wxAtoi(value);
-         else if (!wxStrcmp(attr, wxT("year")))
-            mYear = value;
-         else if (!wxStrcmp(attr, wxT("genre")))
-            mGenre = wxAtoi(value);
-         else if (!wxStrcmp(attr, wxT("comments")))
-            mComments = value;
-         else if (!wxStrcmp(attr, wxT("id3v2")))
-            mID3V2 = wxAtoi(value)?true:false;
-         else {
+         const wxString strValue = value;
+         if (!wxStrcmp(attr, wxT("title")) && XMLValueChecker::IsGoodString(strValue))
+            mTitle = strValue;
+         else if (!wxStrcmp(attr, wxT("artist")) && XMLValueChecker::IsGoodString(strValue))
+            mArtist = strValue;
+         else if (!wxStrcmp(attr, wxT("album")) && XMLValueChecker::IsGoodString(strValue))
+            mAlbum = strValue;
+         else if (!wxStrcmp(attr, wxT("track")) && XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+            mTrackNum = nValue;
+         else if (!wxStrcmp(attr, wxT("year")) && XMLValueChecker::IsGoodString(strValue))
+            mYear = strValue;
+         else if (!wxStrcmp(attr, wxT("genre")) && XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+            mGenre = nValue;
+         else if (!wxStrcmp(attr, wxT("comments")) && XMLValueChecker::IsGoodString(strValue))
+            mComments = strValue;
+         else if (!wxStrcmp(attr, wxT("id3v2")) && XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+            mID3V2 = (nValue != 0);
+         else if (XMLValueChecker::IsGoodString(strValue) && 
+                  XMLValueChecker::IsGoodString(wxString(attr))) {
             mExtraNames.Add(wxString(attr));
-            mExtraValues.Add(wxString(value));
+            mExtraValues.Add(strValue);
          }
       } // while
 
@@ -189,10 +192,11 @@ bool Tags::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          if (!value)
             break;
 
-         if (!wxStrcmp(attr, wxT("name")))
-            mExtraNames.Add(wxString(value));
-         else if (!wxStrcmp(attr, wxT("value")))
-            mExtraValues.Add(wxString(value));
+         const wxString strValue = value;
+         if (!wxStrcmp(attr, wxT("name")) && XMLValueChecker::IsGoodString(strValue))
+            mExtraNames.Add(strValue);
+         else if (!wxStrcmp(attr, wxT("value")) && XMLValueChecker::IsGoodString(strValue))
+            mExtraValues.Add(strValue);
       } // while
 
       return true;
