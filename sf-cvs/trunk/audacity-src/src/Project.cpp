@@ -230,6 +230,7 @@ bool AudacityDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& 
 {
    for (unsigned int i = 0; i < filenames.GetCount(); i++)
       mProject->Import(filenames[i]);
+   mProject->HandleResize(); // Adjust scrollers for new track sizes.
    return true;
 }
 #endif
@@ -2293,7 +2294,8 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       SetProjectTitle();
    }
 
-   HandleResize();   
+   // Moved this call to higher levels to prevent flicker redrawing everything on each file.
+   //   HandleResize();
 }
 
 void AudacityProject::Import(wxString fileName)
