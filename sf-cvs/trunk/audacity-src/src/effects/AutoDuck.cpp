@@ -34,10 +34,12 @@
  * Default values for effect params
  */
 #define PARAM_DEFAULT_DUCK_AMOUNT_DB -12.0
-#define PARAM_DEFAULT_FADE_DOWN_LEN 0.5
-#define PARAM_DEFAULT_FADE_UP_LEN 0.5
+#define PARAM_DEFAULT_OUTER_FADE_DOWN_LEN 0.5
+#define PARAM_DEFAULT_INNER_FADE_DOWN_LEN 0
+#define PARAM_DEFAULT_OUTER_FADE_UP_LEN 0.5
+#define PARAM_DEFAULT_INNER_FADE_UP_LEN 0
 #define PARAM_DEFAULT_THRESHOLD_DB -30.0
-#define PARAM_DEFAULT_MAXIMUM_PAUSE 0
+#define PARAM_DEFAULT_MAXIMUM_PAUSE 1.0
 
 /*
  * Common constants
@@ -80,10 +82,14 @@ bool EffectAutoDuck::Init()
 {
    gPrefs->Read(wxT("/Effects/AutoDuck/DuckAmountDb"),
       &mDuckAmountDb, PARAM_DEFAULT_DUCK_AMOUNT_DB);
-   gPrefs->Read(wxT("/Effects/AutoDuck/FadeDownLen"),
-      &mFadeDownLen, PARAM_DEFAULT_FADE_DOWN_LEN);
-   gPrefs->Read(wxT("/Effects/AutoDuck/FadeUpLen"),
-      &mFadeUpLen, PARAM_DEFAULT_FADE_UP_LEN);
+   gPrefs->Read(wxT("/Effects/AutoDuck/InnerFadeDownLen"),
+      &mInnerFadeDownLen, PARAM_DEFAULT_INNER_FADE_DOWN_LEN);
+   gPrefs->Read(wxT("/Effects/AutoDuck/InnerFadeUpLen"),
+      &mInnerFadeUpLen, PARAM_DEFAULT_INNER_FADE_UP_LEN);
+   gPrefs->Read(wxT("/Effects/AutoDuck/OuterFadeDownLen"),
+      &mOuterFadeDownLen, PARAM_DEFAULT_OUTER_FADE_DOWN_LEN);
+   gPrefs->Read(wxT("/Effects/AutoDuck/OuterFadeUpLen"),
+      &mOuterFadeUpLen, PARAM_DEFAULT_OUTER_FADE_UP_LEN);
    gPrefs->Read(wxT("/Effects/AutoDuck/ThresholdDb"),
       &mThresholdDb, PARAM_DEFAULT_THRESHOLD_DB);
    gPrefs->Read(wxT("/Effects/AutoDuck/MaximumPause"),
@@ -143,10 +149,14 @@ bool EffectAutoDuck::TransferParameters( Shuttle & shuttle )
 {
    shuttle.TransferDouble(wxT("DuckAmountDb"), mDuckAmountDb,
       PARAM_DEFAULT_DUCK_AMOUNT_DB);
-   shuttle.TransferDouble(wxT("FadeDownLen"), mFadeDownLen,
-      PARAM_DEFAULT_FADE_DOWN_LEN);
-   shuttle.TransferDouble(wxT("FadeUpLen"), mFadeUpLen,
-      PARAM_DEFAULT_FADE_UP_LEN);
+   shuttle.TransferDouble(wxT("InnerFadeDownLen"), mInnerFadeDownLen,
+      PARAM_DEFAULT_INNER_FADE_DOWN_LEN);
+   shuttle.TransferDouble(wxT("InnerFadeUpLen"), mInnerFadeUpLen,
+      PARAM_DEFAULT_INNER_FADE_UP_LEN);
+   shuttle.TransferDouble(wxT("OuterFadeDownLen"), mOuterFadeDownLen,
+      PARAM_DEFAULT_OUTER_FADE_DOWN_LEN);
+   shuttle.TransferDouble(wxT("OuterFadeUpLen"), mOuterFadeUpLen,
+      PARAM_DEFAULT_OUTER_FADE_UP_LEN);
    shuttle.TransferDouble(wxT("ThresholdDb"), mThresholdDb,
       PARAM_DEFAULT_THRESHOLD_DB);
    shuttle.TransferDouble(wxT("MaximumPause"), mMaximumPause,
@@ -173,8 +183,10 @@ bool EffectAutoDuck::PromptUser()
       return false; // user cancelled dialog
       
    gPrefs->Write(wxT("/Effects/AutoDuck/DuckAmountDb"), mDuckAmountDb);
-   gPrefs->Write(wxT("/Effects/AutoDuck/FadeDownLen"), mFadeDownLen);
-   gPrefs->Write(wxT("/Effects/AutoDuck/FadeUpLen"), mFadeUpLen);
+   gPrefs->Write(wxT("/Effects/AutoDuck/OuterFadeDownLen"), mOuterFadeDownLen);
+   gPrefs->Write(wxT("/Effects/AutoDuck/OuterFadeUpLen"), mOuterFadeUpLen);
+   gPrefs->Write(wxT("/Effects/AutoDuck/InnerFadeDownLen"), mInnerFadeDownLen);
+   gPrefs->Write(wxT("/Effects/AutoDuck/InnerFadeUpLen"), mInnerFadeUpLen);
    gPrefs->Write(wxT("/Effects/AutoDuck/ThresholdDb"), mThresholdDb);
    gPrefs->Write(wxT("/Effects/AutoDuck/MaximumPause"), mMaximumPause);
 
@@ -191,9 +203,9 @@ bool EffectAutoDuck::Process()
    bool cancel = false;
 
    longSampleCount start =
-      mControlTrack->TimeToLongSamples(mT0 + mFadeDownLen);
+      mControlTrack->TimeToLongSamples(mT0 + mOuterFadeDownLen);
    longSampleCount end =
-      mControlTrack->TimeToLongSamples(mT1 - mFadeUpLen);
+      mControlTrack->TimeToLongSamples(mT1 - mOuterFadeUpLen);
    
    if (end <= start)
       return false;
@@ -201,8 +213,11 @@ bool EffectAutoDuck::Process()
    // the minimum number of samples we have to wait until the maximum
    // pause has been exceeded
    double maxPause = mMaximumPause;
-   if (maxPause < mFadeDownLen + mFadeUpLen)
-      maxPause = mFadeDownLen + mFadeUpLen;
+   
+   // We don't fade in until we have time enough to actually fade out again
+   if (maxPause < mOuterFadeDownLen + mOuterFadeUpLen)
+      maxPause = mOuterFadeDownLen + mOuterFadeUpLen;
+      
    longSampleCount minSamplesPause =
       mControlTrack->TimeToLongSamples(maxPause);
 
@@ -276,8 +291,8 @@ bool EffectAutoDuck::Process()
                   mControlTrack->LongSamplesToTime(i - curSamplesPause);
                   
                regions.Add(AutoDuckRegion(
-                              duckRegionStart - mFadeDownLen,
-                              duckRegionEnd + mFadeUpLen));
+                              duckRegionStart - mOuterFadeDownLen,
+                              duckRegionEnd + mOuterFadeUpLen));
 
                inDuckRegion = false;
             }
@@ -300,8 +315,8 @@ bool EffectAutoDuck::Process()
       double duckRegionEnd =
          mControlTrack->LongSamplesToTime(end - curSamplesPause);
       regions.Add(AutoDuckRegion(
-                     duckRegionStart - mFadeDownLen,
-                     duckRegionEnd + mFadeUpLen));
+                     duckRegionStart - mOuterFadeDownLen,
+                     duckRegionEnd + mOuterFadeUpLen));
    }
    
    delete[] buf;
@@ -353,11 +368,13 @@ bool EffectAutoDuck::ApplyDuckFade(int trackNumber, WaveTrack* t,
    float *buf = new float[BUF_SIZE];
    int pos = start;
    
-   int fadeDownSamples = t->TimeToLongSamples(mFadeDownLen);
+   int fadeDownSamples = t->TimeToLongSamples(
+      mOuterFadeDownLen + mInnerFadeDownLen);
    if (fadeDownSamples < 1)
       fadeDownSamples = 1;
 
-   int fadeUpSamples = t->TimeToLongSamples(mFadeUpLen);
+   int fadeUpSamples = t->TimeToLongSamples(
+      mOuterFadeUpLen + mInnerFadeUpLen);
    if (fadeUpSamples < 1)
       fadeUpSamples = 1;
       
@@ -409,20 +426,24 @@ bool EffectAutoDuck::ApplyDuckFade(int trackNumber, WaveTrack* t,
  * Effect dialog implementation
  */
  
-#define ID_DUCK_AMOUNT_DB  10001
-#define ID_THRESHOLD_DB    10002
-#define ID_FADE_DOWN_LEN   10003
-#define ID_FADE_UP_LEN     10004
-#define ID_MAXIMUM_PAUSE   10005
-#define ID_PANEL           10006
+#define ID_DUCK_AMOUNT_DB        10001
+#define ID_THRESHOLD_DB          10002
+#define ID_INNER_FADE_DOWN_LEN   10003
+#define ID_INNER_FADE_UP_LEN     10004
+#define ID_OUTER_FADE_DOWN_LEN   10005
+#define ID_OUTER_FADE_UP_LEN     10006
+#define ID_MAXIMUM_PAUSE         10007
+#define ID_PANEL                 10008
 
 BEGIN_EVENT_TABLE(EffectAutoDuckDialog, wxDialog)
    EVT_BUTTON(wxID_OK, EffectAutoDuckDialog::OnOk)
    EVT_BUTTON(wxID_OK, EffectAutoDuckDialog::OnCancel)
    EVT_TEXT(ID_DUCK_AMOUNT_DB, EffectAutoDuckDialog::OnValueChanged)
    EVT_TEXT(ID_THRESHOLD_DB, EffectAutoDuckDialog::OnValueChanged)
-   EVT_TEXT(ID_FADE_DOWN_LEN, EffectAutoDuckDialog::OnValueChanged)
-   EVT_TEXT(ID_FADE_UP_LEN, EffectAutoDuckDialog::OnValueChanged)
+   EVT_TEXT(ID_INNER_FADE_DOWN_LEN, EffectAutoDuckDialog::OnValueChanged)
+   EVT_TEXT(ID_INNER_FADE_UP_LEN, EffectAutoDuckDialog::OnValueChanged)
+   EVT_TEXT(ID_OUTER_FADE_DOWN_LEN, EffectAutoDuckDialog::OnValueChanged)
+   EVT_TEXT(ID_OUTER_FADE_UP_LEN, EffectAutoDuckDialog::OnValueChanged)
    EVT_TEXT(ID_MAXIMUM_PAUSE, EffectAutoDuckDialog::OnValueChanged)
 END_EVENT_TABLE()
 
@@ -469,21 +490,34 @@ EffectAutoDuckDialog::EffectAutoDuckDialog(EffectAutoDuck* effect,
             Internat::ToDisplayString(mEffect->mMaximumPause), 10);
          S.AddUnits(_("seconds"));
 
-         mFadeDownLenBox = S.Id(ID_FADE_DOWN_LEN).AddTextBox(
-            _("Fade Down Length:"),
-            Internat::ToDisplayString(mEffect->mFadeDownLen), 10);
+         mOuterFadeDownLenBox = S.Id(ID_OUTER_FADE_DOWN_LEN).AddTextBox(
+            _("Outer Fade Down Length:"),
+            Internat::ToDisplayString(mEffect->mOuterFadeDownLen), 10);
          S.AddUnits(_("seconds"));
          
+         mOuterFadeUpLenBox = S.Id(ID_OUTER_FADE_UP_LEN).AddTextBox(
+            _("Outer Fade Up Length:"),
+            Internat::ToDisplayString(mEffect->mOuterFadeUpLen), 10);
+         S.AddUnits(_("seconds"));
+
+         mInnerFadeDownLenBox = S.Id(ID_INNER_FADE_DOWN_LEN).AddTextBox(
+            _("Inner Fade Down Length:"),
+            Internat::ToDisplayString(mEffect->mInnerFadeDownLen), 10);
+         S.AddUnits(_("seconds"));
+         
+         mInnerFadeUpLenBox = S.Id(ID_INNER_FADE_UP_LEN).AddTextBox(
+            _("Inner Fade Up Length:"),
+            Internat::ToDisplayString(mEffect->mInnerFadeUpLen), 10);
+         S.AddUnits(_("seconds"));
+      }
+      S.EndMultiColumn();
+      
+      S.StartMultiColumn(3, wxCENTER);
+      {
          mThresholdDbBox = S.Id(ID_THRESHOLD_DB).AddTextBox(
             _("Threshold:"),
             Internat::ToDisplayString(mEffect->mThresholdDb), 10);
          S.AddUnits(_("db"));
-
-         mFadeUpLenBox = S.Id(ID_FADE_UP_LEN).AddTextBox(
-            _("Fade Up Length:"),
-            Internat::ToDisplayString(mEffect->mFadeUpLen), 10);
-         S.AddUnits(_("seconds"));
-
       }
       S.EndMultiColumn();
 
@@ -510,9 +544,11 @@ EffectAutoDuckDialog::EffectAutoDuckDialog(EffectAutoDuck* effect,
 
 void EffectAutoDuckDialog::OnOk(wxCommandEvent& evt)
 {
-   double duckAmountDb = 0, thresholdDb = 0, fadeDownLen = 0;
-   double fadeUpLen = 0, maximumPause = 0;
-   
+   double duckAmountDb = 0, thresholdDb = 0;
+   double innerFadeDownLen = 0, innerFadeUpLen = 0;
+   double outerFadeDownLen = 0, outerFadeUpLen = 0;
+   double maximumPause = 0;
+
    bool success = 
       mDuckAmountDbBox->GetValue().ToDouble(&duckAmountDb) &&
       mEffect->mDuckAmountDb > -100 &&
@@ -520,12 +556,18 @@ void EffectAutoDuckDialog::OnOk(wxCommandEvent& evt)
       mThresholdDbBox->GetValue().ToDouble(&thresholdDb) &&
       mEffect->mThresholdDb > -100 &&
       mEffect->mThresholdDb < 0 &&
-      mFadeDownLenBox->GetValue().ToDouble(&fadeDownLen) &&
-      mEffect->mFadeDownLen >= 0 &&
-      mEffect->mFadeDownLen < 1000 &&
-      mFadeUpLenBox->GetValue().ToDouble(&fadeUpLen) &&
-      mEffect->mFadeUpLen >= 0 &&
-      mEffect->mFadeUpLen < 1000 &&
+      mInnerFadeDownLenBox->GetValue().ToDouble(&innerFadeDownLen) &&
+      mEffect->mInnerFadeDownLen >= 0 &&
+      mEffect->mInnerFadeDownLen < 1000 &&
+      mInnerFadeUpLenBox->GetValue().ToDouble(&innerFadeUpLen) &&
+      mEffect->mInnerFadeUpLen >= 0 &&
+      mEffect->mInnerFadeUpLen < 1000 &&
+      mOuterFadeDownLenBox->GetValue().ToDouble(&outerFadeDownLen) &&
+      mEffect->mOuterFadeDownLen >= 0 &&
+      mEffect->mOuterFadeDownLen < 1000 &&
+      mOuterFadeUpLenBox->GetValue().ToDouble(&outerFadeUpLen) &&
+      mEffect->mOuterFadeUpLen >= 0 &&
+      mEffect->mOuterFadeUpLen < 1000 &&
       mMaximumPauseBox->GetValue().ToDouble(&maximumPause) &&
       mEffect->mMaximumPause >= 0 &&
       mEffect->mMaximumPause < 1000;
@@ -539,8 +581,10 @@ void EffectAutoDuckDialog::OnOk(wxCommandEvent& evt)
    
    mEffect->mDuckAmountDb = duckAmountDb;
    mEffect->mThresholdDb = thresholdDb;
-   mEffect->mFadeDownLen = fadeDownLen;
-   mEffect->mFadeUpLen = fadeUpLen;
+   mEffect->mInnerFadeDownLen = innerFadeDownLen;
+   mEffect->mInnerFadeUpLen = innerFadeUpLen;
+   mEffect->mOuterFadeDownLen = outerFadeDownLen;
+   mEffect->mOuterFadeUpLen = outerFadeUpLen;
    mEffect->mMaximumPause = maximumPause;
 
    EndModal(wxID_OK);
@@ -565,17 +609,17 @@ void EffectAutoDuckDialog::OnValueChanged(wxCommandEvent& evt)
 
 #define TEXT_DISTANCE 15 // pixel distance text <-> center of control point
 
-#define FADE_DOWN_START 50 // x coordinate
-#define FADE_UP_START 550 // x coordinate
+#define FADE_DOWN_START 150 // x coordinate
+#define FADE_UP_START 450 // x coordinate
 #define DUCK_AMOUNT_START 50 // y coordinate
 
 #define MAX_DUCK_AMOUNT 0 // db
 #define MIN_DUCK_AMOUNT -24 // db
 
 #define MIN_FADE 0 // seconds
-#define MAX_FADE 4.5 // seconds
+#define MAX_FADE 3 // seconds
 
-#define FADE_SCALE 50 // scale factor for second -> pixel conversion
+#define FADE_SCALE 40 // scale factor for second -> pixel conversion
 #define DUCK_AMOUNT_SCALE 8 // scale factor for db -> pixel conversion
 
 static int GetDistance(const wxPoint& first, const wxPoint& second)
@@ -614,8 +658,10 @@ EffectAutoDuckPanel::~EffectAutoDuckPanel()
 
 void EffectAutoDuckPanel::ResetControlPoints()
 {
-   mControlPoints[fadeDown] = wxPoint(-100,-100);
-   mControlPoints[fadeUp] = wxPoint(-100,-100);
+   mControlPoints[innerFadeDown] = wxPoint(-100,-100);
+   mControlPoints[innerFadeUp] = wxPoint(-100,-100);
+   mControlPoints[outerFadeDown] = wxPoint(-100,-100);
+   mControlPoints[outerFadeUp] = wxPoint(-100,-100);
    mControlPoints[duckAmount] = wxPoint(-100,-100);
 }
 
@@ -645,14 +691,20 @@ void EffectAutoDuckPanel::OnPaint(wxPaintEvent& evt)
    dc.SetTextBackground(*wxWHITE);
 
    double duckAmountDb = 0;
-   double fadeDownLen = 0;
-   double fadeUpLen = 0;
+   double innerFadeDownLen = 0;
+   double innerFadeUpLen = 0;
+   double outerFadeDownLen = 0;
+   double outerFadeUpLen = 0;
    mParent->mDuckAmountDbBox->GetValue().ToDouble(&duckAmountDb);
-   mParent->mFadeDownLenBox->GetValue().ToDouble(&fadeDownLen);
-   mParent->mFadeUpLenBox->GetValue().ToDouble(&fadeUpLen);
+   mParent->mInnerFadeDownLenBox->GetValue().ToDouble(&innerFadeDownLen);
+   mParent->mInnerFadeUpLenBox->GetValue().ToDouble(&innerFadeUpLen);
+   mParent->mOuterFadeDownLenBox->GetValue().ToDouble(&outerFadeDownLen);
+   mParent->mOuterFadeUpLenBox->GetValue().ToDouble(&outerFadeUpLen);
    
-   if (fadeDownLen < MIN_FADE || fadeDownLen > MAX_FADE ||
-       fadeUpLen < MIN_FADE || fadeUpLen > MAX_FADE ||
+   if (innerFadeDownLen < MIN_FADE || innerFadeDownLen > MAX_FADE ||
+       innerFadeUpLen < MIN_FADE || innerFadeUpLen > MAX_FADE ||
+       outerFadeDownLen < MIN_FADE || outerFadeDownLen > MAX_FADE ||
+       outerFadeUpLen < MIN_FADE || outerFadeUpLen > MAX_FADE ||
        duckAmountDb < MIN_DUCK_AMOUNT || duckAmountDb > MAX_DUCK_AMOUNT)
    {
       // values are out of range, no preview available
@@ -671,49 +723,66 @@ void EffectAutoDuckPanel::OnPaint(wxPaintEvent& evt)
       
       wxPoint points[6];
       
-      points[0].x = FADE_DOWN_START - 30;
+      points[0].x = 10;
       points[0].y = DUCK_AMOUNT_START;
       
-      points[1].x = FADE_DOWN_START;
+      points[1].x = FADE_DOWN_START - (int)(outerFadeDownLen * FADE_SCALE);
       points[1].y = DUCK_AMOUNT_START;
       
-      points[2].x = FADE_DOWN_START + (int)(fadeDownLen * FADE_SCALE);
+      points[2].x = FADE_DOWN_START + (int)(innerFadeDownLen * FADE_SCALE);
       points[2].y = DUCK_AMOUNT_START -
          (int)(duckAmountDb * DUCK_AMOUNT_SCALE);
       
-      points[3].x = FADE_UP_START - (int)(fadeUpLen * FADE_SCALE);
+      points[3].x = FADE_UP_START - (int)(innerFadeUpLen * FADE_SCALE);
       points[3].y = DUCK_AMOUNT_START -
          (int)(duckAmountDb * DUCK_AMOUNT_SCALE);
       
-      points[4].x = FADE_UP_START;
+      points[4].x = FADE_UP_START + (int)(outerFadeUpLen * FADE_SCALE);
       points[4].y = DUCK_AMOUNT_START;
-      
-      points[5].x = FADE_UP_START + 30;
+
+      points[5].x = clientWidth - 10;
       points[5].y = DUCK_AMOUNT_START;
-      
+
       dc.DrawLines(6, points);
+      
+      dc.SetPen(wxPen(*wxBLACK, 1, wxDOT));
+      
+      dc.DrawLine(FADE_DOWN_START, 10, FADE_DOWN_START, clientHeight - 10);
+      dc.DrawLine(FADE_UP_START, 10, FADE_UP_START, clientHeight - 10);
       
       dc.SetPen(AColor::envelopePen);
       dc.SetBrush(*wxWHITE_BRUSH);
       
-      mControlPoints[fadeDown] = wxPoint(points[2].x - 3, points[2].y - 2);
-      mControlPoints[fadeUp] = wxPoint(points[3].x - 3, points[3].y - 2);
+      mControlPoints[outerFadeDown] = points[1];
+      mControlPoints[innerFadeDown] = points[2];
+      mControlPoints[innerFadeUp] = points[3];
+      mControlPoints[outerFadeUp] = points[4];
       mControlPoints[duckAmount] = wxPoint(
-         (points[2].x + points[3].x) / 2 - 3, points[2].y - 3);
+         (points[2].x + points[3].x) / 2, points[2].y);
          
       for (int i = 0; i < AUTO_DUCK_PANEL_NUM_CONTROL_POINTS; i++)
       {
+         EControlPoint cp = (EControlPoint)i;
          int digits;
          float value;
          
-         if (i == (int)fadeDown)
+         if (cp == innerFadeDown)
          {
-            value = fadeDownLen;
+            value = innerFadeDownLen;
             digits = 2;
          }
-         else if (i == (int)fadeUp)
+         else if (cp == innerFadeUp)
          {
-            value = fadeUpLen;
+            value = innerFadeUpLen;
+            digits = 2;
+         }
+         else if (cp == outerFadeDown)
+         {
+            value = outerFadeDownLen;
+            digits = 2;
+         } else if (cp == outerFadeUp)
+         {
+            value = outerFadeUpLen;
             digits = 2;
          }
          else
@@ -725,7 +794,7 @@ void EffectAutoDuckPanel::OnPaint(wxPaintEvent& evt)
          wxString valueStr = Internat::ToDisplayString(value, digits);
          valueStr += wxT(" ");
          
-         if (i == (int)duckAmount)
+         if (cp == duckAmount)
             valueStr += wxT("db"); // i18n-hint: short form of 'decibels'
          else
             valueStr += _("s"); // i18n-hint: short form of 'seconds'
@@ -736,15 +805,15 @@ void EffectAutoDuckPanel::OnPaint(wxPaintEvent& evt)
          int textPosX = mControlPoints[i].x - textWidth / 2;
          int textPosY = mControlPoints[i].y;
          
-         if (i == (int)duckAmount)
+         if (cp == duckAmount || cp == outerFadeDown || cp == outerFadeUp)
             textPosY -= TEXT_DISTANCE + textHeight;
          else
             textPosY += TEXT_DISTANCE;
             
          dc.DrawText(valueStr, textPosX, textPosY);
 
-         dc.DrawEllipse(mControlPoints[i].x,
-                        mControlPoints[i].y, 6, 6);
+         dc.DrawEllipse(mControlPoints[i].x - 3,
+                        mControlPoints[i].y - 3, 6, 6);
       }
    }
 
@@ -821,8 +890,10 @@ void EffectAutoDuckPanel::OnMotion(wxMouseEvent &evt)
    case none:
       SetCursor(wxNullCursor);
       break;
-   case fadeDown:
-   case fadeUp:
+   case innerFadeDown:
+   case innerFadeUp:
+   case outerFadeDown:
+   case outerFadeUp:
       SetCursor(wxCursor(wxCURSOR_SIZEWE));
       break;
    case duckAmount:
@@ -860,22 +931,40 @@ void EffectAutoDuckPanel::OnMotion(wxMouseEvent &evt)
          
          switch (mCurrentControlPoint)
          {
-         case fadeDown:
+         case outerFadeDown:
+            newValue = ((double)(FADE_DOWN_START - evt.GetX())) / FADE_SCALE;
+            if (newValue < MIN_FADE)
+               newValue = MIN_FADE;
+            if (newValue > MAX_FADE)
+               newValue = MAX_FADE;
+            mParent->mOuterFadeDownLenBox->SetValue(
+               Internat::ToDisplayString(newValue));
+            break;
+         case outerFadeUp:
+            newValue = ((double)(evt.GetX() - FADE_UP_START)) / FADE_SCALE;
+            if (newValue < MIN_FADE)
+               newValue = MIN_FADE;
+            if (newValue > MAX_FADE)
+               newValue = MAX_FADE;
+            mParent->mOuterFadeUpLenBox->SetValue(
+               Internat::ToDisplayString(newValue));
+            break;
+         case innerFadeDown:
             newValue = ((double)(evt.GetX() - FADE_DOWN_START)) / FADE_SCALE;
             if (newValue < MIN_FADE)
                newValue = MIN_FADE;
             if (newValue > MAX_FADE)
                newValue = MAX_FADE;
-            mParent->mFadeDownLenBox->SetValue(
+            mParent->mInnerFadeDownLenBox->SetValue(
                Internat::ToDisplayString(newValue));
             break;
-         case fadeUp:
+         case innerFadeUp:
             newValue = ((double)(FADE_UP_START - evt.GetX())) / FADE_SCALE;
             if (newValue < MIN_FADE)
                newValue = MIN_FADE;
             if (newValue > MAX_FADE)
                newValue = MAX_FADE;
-            mParent->mFadeUpLenBox->SetValue(
+            mParent->mInnerFadeUpLenBox->SetValue(
                Internat::ToDisplayString(newValue));
             break;
          case duckAmount:
