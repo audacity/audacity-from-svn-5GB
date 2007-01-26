@@ -448,7 +448,8 @@ BEGIN_EVENT_TABLE(EffectAutoDuckDialog, wxDialog)
 END_EVENT_TABLE()
 
 EffectAutoDuckDialog::EffectAutoDuckDialog(EffectAutoDuck* effect,
-   wxWindow *parent) : wxDialog(parent, -1, _("Auto Duck"))
+   wxWindow *parent) : wxDialog(parent, -1, _("Auto Duck"),
+                                wxDefaultPosition, wxDefaultSize)
 {
    mEffect = effect;
 
