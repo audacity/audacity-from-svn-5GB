@@ -105,7 +105,7 @@ bool Internat::CompatibleToDouble(const wxString& stringToConvert, double* resul
 
 double Internat::CompatibleToDouble(const wxString& stringToConvert)
 {
-   double result;
+   double result = 0;
    Internat::CompatibleToDouble(stringToConvert, &result);
    return result;
 }
@@ -130,7 +130,7 @@ wxString Internat::ToDisplayString(double numberToConvert,
    if (digitsAfterDecimalPoint == -1)
    {
       result.Printf(wxT("%f"), numberToConvert);
-
+      
       // Not all libcs respect the decimal separator, so always convert
       // any dots found to the decimal separator
       result.Replace(wxT("."), decSep);
