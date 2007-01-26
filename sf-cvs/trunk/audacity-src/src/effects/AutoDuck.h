@@ -35,8 +35,10 @@ private:
    EffectAutoDuck* mEffect;
    
    wxTextCtrl* mDuckAmountDbBox;
-   wxTextCtrl* mFadeDownLenBox;
-   wxTextCtrl* mFadeUpLenBox;
+   wxTextCtrl* mInnerFadeDownLenBox;
+   wxTextCtrl* mInnerFadeUpLenBox;
+   wxTextCtrl* mOuterFadeDownLenBox;
+   wxTextCtrl* mOuterFadeUpLenBox;
    wxTextCtrl* mThresholdDbBox;
    wxTextCtrl* mMaximumPauseBox;
    EffectAutoDuckPanel* mPanel;
@@ -44,7 +46,7 @@ private:
    DECLARE_EVENT_TABLE()
 };
 
-#define AUTO_DUCK_PANEL_NUM_CONTROL_POINTS 3
+#define AUTO_DUCK_PANEL_NUM_CONTROL_POINTS 5
 
 class EffectAutoDuckPanel: public wxPanel
 {
@@ -55,8 +57,10 @@ public:
 private:
    enum EControlPoint
    {
-      fadeDown = 0,
-      fadeUp,
+      innerFadeDown = 0,
+      outerFadeDown,
+      innerFadeUp,
+      outerFadeUp,
       duckAmount,
       none = 99,
    };
@@ -110,8 +114,10 @@ private:
    bool ApplyDuckFade(int trackNumber, WaveTrack* t, double t0, double t1);
    
    double mDuckAmountDb;
-   double mFadeDownLen;
-   double mFadeUpLen;
+   double mInnerFadeDownLen;
+   double mInnerFadeUpLen;
+   double mOuterFadeDownLen;
+   double mOuterFadeUpLen;
    double mThresholdDb;
    double mMaximumPause;
 
