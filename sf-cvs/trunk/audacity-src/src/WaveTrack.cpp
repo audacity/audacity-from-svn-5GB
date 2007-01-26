@@ -1102,6 +1102,11 @@ longSampleCount WaveTrack::TimeToLongSamples(double t0)
    return (longSampleCount)floor(t0 * mRate + 0.5);
 }
 
+double WaveTrack::LongSamplesToTime(longSampleCount pos)
+{
+   return ((double)pos) / mRate;
+}
+
 double WaveTrack::GetStartTime()
 {
    bool found = false;

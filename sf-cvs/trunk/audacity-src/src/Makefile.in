@@ -101,6 +101,7 @@ OBJS = \
 	effects/SoundTouchEffect.o \
 	effects/LoadEffects.o \
 	effects/Amplify.o \
+	effects/AutoDuck.o \
 	effects/BassBoost.o \
 	effects/ChangeLength.o \
 	effects/ChangePitch.o \

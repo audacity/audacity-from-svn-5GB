@@ -220,10 +220,11 @@ class WaveTrack: public Track {
    bool Lock();
    bool Unlock();
 
-   // Utility function to convert between times in seconds
+   // Utility functions to convert between times in seconds
    // and sample positions
 
    longSampleCount TimeToLongSamples(double t0);
+   double LongSamplesToTime(longSampleCount pos);
 
    // Get access to the clips in the tracks. This is used by
    // track artists and also by TrackPanel when sliding...it would
