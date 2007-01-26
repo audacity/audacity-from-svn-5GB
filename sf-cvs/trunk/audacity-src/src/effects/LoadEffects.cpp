@@ -16,6 +16,7 @@
 
 #include "Amplify.h"
 // #include "AvcCompressor.h"
+#include "AutoDuck.h"
 #include "BassBoost.h"
 #include "ChangeSpeed.h"
 #include "ClickRemoval.h"
@@ -90,6 +91,8 @@ void LoadEffects()
    // In this list, designating an effect as 'SIMPLE_EFFECT' just means
    // that it should be included in even the most basic of menus.
    // This was introduced for CleanSpeech mode.
+   
+   Effect::RegisterEffect(new EffectAutoDuck());
    Effect::RegisterEffect(new EffectBassBoost());
    Effect::RegisterEffect(new EffectChangeSpeed());
 	#ifdef USE_SOUNDTOUCH
