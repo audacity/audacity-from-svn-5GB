@@ -2406,7 +2406,7 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
 
    float min, max, c, l, binSize;
    bool spectrum;
-   int windowSize;
+   int windowSize, minBins;
    double rate = ((WaveTrack *)track)->GetRate();
    ((WaveTrack *) track)->GetDisplay() == WaveTrack::SpectrumDisplay ? spectrum = true : spectrum = false;
    if(spectrum) {
@@ -2414,8 +2414,11 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       if(min < 0)
          min = 0;
       max = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000L);
+      if(max > rate/2.)
+         max = rate/2.;
       windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
       binSize = rate / windowSize;
+      minBins = wxMin(10, windowSize/2); //minimum 10 freq bins, unless there are less
    }
    else
       track->GetDisplayBounds(&min, &max);
@@ -2435,8 +2438,12 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       if(spectrum) {
          if(min < 0.)
             min = 0.;
-         if(max < min + 10. * binSize) //minimum 10 freq bins
-            max = min + 10. * binSize;
+         if(max < min + minBins * binSize)
+            max = min + minBins * binSize;
+         if(max > rate/2.) {
+            max = rate/2.;
+            min = max - minBins * binSize;
+         }
       }
       else {
          if (max - min < 0.2) {
