@@ -26,14 +26,9 @@
 #include "../FFT.h"
 
 enum {
-   ID_AUTOMAXFREQUENCY = 8000,
-   ID_MINFREQUENCY,
+   ID_MINFREQUENCY = 8000,
    ID_MAXFREQUENCY
 };
-
-BEGIN_EVENT_TABLE(SpectrumPrefs, wxPanel)
-   EVT_CHECKBOX(ID_AUTOMAXFREQUENCY, SpectrumPrefs::OnCheckAutoMaxFrequency)
-END_EVENT_TABLE()
 
 SpectrumPrefs::SpectrumPrefs(wxWindow * parent):
    PrefsPanel(parent)
@@ -41,10 +36,6 @@ SpectrumPrefs::SpectrumPrefs(wxWindow * parent):
    SetLabel(_("Spectrograms"));         // Provide visual label
    SetName(_("Spectrograms"));          // Provide audible label
    Populate( );
-}
-
-void SpectrumPrefs::OnCheckAutoMaxFrequency(wxCommandEvent &event) {
-   FindWindow( ID_MAXFREQUENCY )->Enable( !event.IsChecked() );
 }
 
 void SpectrumPrefs::Populate( )
@@ -57,7 +48,6 @@ void SpectrumPrefs::Populate( )
    gPrefs->Read(wxT("/Spectrum/MaxFreq"), &maxFreq, 8000L);
    gPrefs->Read(wxT("/Spectrum/MinFreq"), &minFreq, 0L);
    gPrefs->Read(wxT("/Spectrum/WindowType"), &windowType, 3L);
-   gPrefs->Read(wxT("/Spectrum/AutoMaxFrequency"), &autoMaxFrequency, false);
 
    minFreqStr.Printf(wxT("%d"), minFreq);
    maxFreqStr.Printf(wxT("%d"), maxFreq);
@@ -120,15 +110,9 @@ void SpectrumPrefs::PopulateOrExchange( ShuttleGui & S )
          12 // max number of characters (used to size the control).
          );
       S.EndTwoColumn();
-      // auto max frequency: will always set to Fs/2: if automax is true,
-      // then the other control should be grayed out
-      S.Id(ID_AUTOMAXFREQUENCY).TieCheckBox( _("&Auto max frequency (Fs/2)"), wxT("/Spectrum/AutoMaxFrequency"), false);
    }
    S.EndStatic();
    S.EndHorizontalLay();
-
-   gPrefs->Read(wxT("/Spectrum/AutoMaxFrequency"), &autoMaxFrequency, false);
-   FindWindow( ID_MAXFREQUENCY )->Enable(!autoMaxFrequency);
 }
 
 
@@ -171,7 +155,6 @@ bool SpectrumPrefs::Apply()
    gPrefs->Write(wxT("/Spectrum/MinFreq"), minFreq);
    gPrefs->Write(wxT("/Spectrum/MaxFreq"), maxFreq);
    gPrefs->Write(wxT("/Spectrum/WindowType"), windowType);
-   gPrefs->Write(wxT("/Spectrum/AutoMaxFrequency"), autoMaxFrequency);
 
    // TODO: Force all projects to repaint themselves
    return true;

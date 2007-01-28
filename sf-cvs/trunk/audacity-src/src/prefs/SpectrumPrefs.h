@@ -12,11 +12,9 @@
   Salvo Ventura
   November 2006
 
-  Added selection box for windowType and checkBox for AutoMaxFrequency
-  to scale the y axis in spectrum view
+  Added selection box for windowType
 
   All params are saved in config file.
-  Disable the MaxFreq control when AutoMaxFrequency is TRUE (thx to James)
 */
 
 
@@ -40,15 +38,11 @@ public:
 
 private:
    void Populate();
-   void OnCheckAutoMaxFrequency(wxCommandEvent &event);
    void PopulateOrExchange( ShuttleGui & S );
    wxString minFreqStr;
    wxString maxFreqStr;
    int windowType;
-   bool autoMaxFrequency;
 
-public:
-   DECLARE_EVENT_TABLE();
 };
 
 #endif

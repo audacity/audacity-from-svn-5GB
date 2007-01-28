@@ -313,16 +313,9 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
          return;
 
       double rate = ((WaveTrack *) t)->GetRate();
-      bool autoMaxFrequency;
       int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
       int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), rate/2.);
       int minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0.);
-      gPrefs->Read(wxT("/Spectrum/AutoMaxFrequency"), &autoMaxFrequency, false);
-
-      if (autoMaxFrequency) {
-         // automatically set frequency to half of sampling rate
-         maxFreq=int(rate/2);
-      }
 
       /*
          draw the ruler
