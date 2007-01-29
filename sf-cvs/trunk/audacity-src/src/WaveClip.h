@@ -30,6 +30,25 @@ class SpecCache;
 class WaveClip;
 class WaveClipList;
 
+class SpecPxCache {
+public:
+   SpecPxCache(int cacheLen)
+   {
+      len = cacheLen;
+      values = new float[len];
+      valid = false;
+   }
+
+   ~SpecPxCache()
+   {
+      delete[] values;
+   }
+
+   sampleCount  len;
+   float       *values;
+   bool         valid;
+};
+
 WX_DECLARE_LIST(WaveClip, WaveClipList);
 
 class WaveClip: public XMLTagHandler
@@ -177,6 +196,9 @@ public:
    virtual void HandleXMLEndTag(const wxChar *tag);
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(XMLWriter &xmlFile);
+
+   // Cache of values to colour pixels of Spectrogram - used by TrackArtist
+   SpecPxCache    *mSpecPxCache;
 
 protected:
    wxRect mDisplayRect;

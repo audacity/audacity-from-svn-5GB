@@ -2519,6 +2519,19 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
    if(spectrum) {
       gPrefs->Write(wxT("/Spectrum/MaxFreq"), (long)max);
       gPrefs->Write(wxT("/Spectrum/MinFreq"), (long)min);
+      TrackListIterator iter(mTracks);
+      Track *t = iter.First();
+      while (t) {
+         if (t->GetKind() == Track::Wave) {
+            WaveTrack *wt = (WaveTrack *)t;
+            WaveClipList::Node* it;
+            for(it=wt->GetClipIterator(); it; it=it->GetNext()) {
+               WaveClip *clip = it->GetData();
+               clip->mSpecPxCache->valid = false;
+            }
+         }
+         t = iter.Next();
+      }
    }
    else {
       track->SetDisplayBounds(min, max);
