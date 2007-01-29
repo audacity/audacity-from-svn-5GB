@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh-TW\n"
 "POT-Creation-Date: 2004-08-10 20:54-0700\n"
-"PO-Revision-Date: 2005-12-11 00:47+0800\n"
+"PO-Revision-Date: 2007-01-11 13:04+0800\n"
 "Last-Translator: \n"
 "Language-Team: Taiwan <milo@ms52.url.com.tw>\n"
 "MIME-Version: 1.0\n"
@@ -2169,7 +2169,7 @@ msgstr "輸入音量"
 
 #: ../src/MeterToolBar.cpp:67
 msgid "Input level meter - click to monitor input"
-msgstr "輸入音量儀表 - 點擊監視輸入"
+msgstr "輸入音量儀表 - 點擊監聽輸入"
 
 #: ../src/prefs/PrefsDialog.cpp:89
 msgid "Interface"
@@ -2321,7 +2321,7 @@ msgstr "滑鼠左鍵=放大，右鍵=縮小，中鍵=正常"
 #: ../src/effects/Silence.cpp:127
 #: ../src/effects/ToneGen.cpp:306
 msgid "Length (seconds)"
-msgstr "長度 (秒)：從"
+msgstr "長度 (秒)："
 
 #: ../src/effects/ChangeTempo.cpp:241
 msgid "Length (seconds):   from"
@@ -2498,7 +2498,7 @@ msgstr "已修改標籤"
 
 #: ../src/widgets/Meter.cpp:299
 msgid "Monitor input"
-msgstr "監視輸入"
+msgstr "監聽輸入"
 
 #: ../src/TrackPanel.cpp:840
 msgid "Mono"
@@ -2591,7 +2591,7 @@ msgstr "靜音"
 #. i18n-hint: hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:39
 msgid "NTSC drop-frame h:mm:ss:ff"
-msgstr "NTSC 失畫格 時:分:秒:ff"
+msgstr "NTSC drop-frame 時:分:秒:ff"
 
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:37
@@ -3850,7 +3850,7 @@ msgstr ""
 "同時執行兩個Audacity可能會導致\n"
 "資料遺失或系統當機。請不要做這種嘗試。\n"
 "\n"
-"在目前執行的Audacity裡用\"開啟新檔\"或\"開啟\"命令\n"
+"在目前執行的Audacity裡用\"開新檔案\"或\"開啟\"命令\n"
 "可以同時開啟多個檔案。\n"
 
 #: ../src/Menus.cpp:3041
@@ -3902,7 +3902,7 @@ msgstr ""
 msgid "This version of Audacity was not compiled with %s support."
 msgstr "此版本的Audacity在編譯時沒有附帶針對%s的支援。"
 
-# 壓縮動作的起始點，指的是輸入音量的值。 
+# 壓縮動作的起始點，指的是輸入音量的值。
 # THRESHOLD是用來決定開始壓縮動作的音量 ，一但超過此起始點，壓縮動作就會開始。
 #: ../src/effects/Compressor.cpp:444
 msgid "Threshold: "
