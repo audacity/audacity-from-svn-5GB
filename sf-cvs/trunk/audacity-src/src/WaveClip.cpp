@@ -21,7 +21,7 @@
 
 \class SpecCache
 \brief Cache used with WaveClip to cache spectrum information (for
-drawing).
+drawing).  Cache's the Spectrogram frequency samples.
 
 *//*******************************************************************/
 
@@ -102,7 +102,6 @@ public:
    float       *freq;
 };
 
-
 WaveClip::WaveClip(DirManager *projDirManager, sampleFormat format, int rate)
 {
    mOffset = 0;
@@ -111,6 +110,7 @@ WaveClip::WaveClip(DirManager *projDirManager, sampleFormat format, int rate)
    mEnvelope = new Envelope();
    mWaveCache = new WaveCache(1);
    mSpecCache = new SpecCache(1, 1, false);
+   mSpecPxCache = new SpecPxCache(1);
    mAppendBuffer = NULL;
    mAppendBufferLen = 0;
    mDirty = 0;
@@ -131,6 +131,7 @@ WaveClip::WaveClip(WaveClip& orig, DirManager *projDirManager)
    mEnvelope->SetTrackLen(orig.mSequence->GetNumSamples() / orig.mRate);
    mWaveCache = new WaveCache(1);
    mSpecCache = new SpecCache(1, 1, false);
+   mSpecPxCache = new SpecPxCache(1);
 
    for (WaveClipList::Node* it=orig.mCutLines.GetFirst(); it; it=it->GetNext())
       mCutLines.Append(new WaveClip(*it->GetData(), projDirManager));
@@ -146,6 +147,7 @@ WaveClip::~WaveClip()
    delete mEnvelope;
    delete mWaveCache;
    delete mSpecCache;
+   delete mSpecPxCache;
 
    if (mAppendBuffer)
       DeleteSamples(mAppendBuffer);
@@ -392,7 +394,7 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
        mSpecCache->pps == pixelsPerSecond) {
       memcpy(freq, mSpecCache->freq, numPixels*half*sizeof(float));
       memcpy(where, mSpecCache->where, (numPixels+1)*sizeof(sampleCount));
-      return true;
+      return false;  //hit cache completely
    }
 
    SpecCache *oldCache = mSpecCache;

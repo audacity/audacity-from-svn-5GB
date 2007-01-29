@@ -315,7 +315,13 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       double rate = ((WaveTrack *) t)->GetRate();
       int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
       int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), rate/2.);
+      if(maxFreq > rate/2.)
+         maxFreq = rate/2.;
       int minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0.);
+      if(minFreq < 0) {
+         minFreq = 0.;
+         gPrefs->Write(wxT("/Spectrum/MinFreq"), 0L);
+      }
 
       /*
          draw the ruler
@@ -1413,19 +1419,31 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    float *freq = new float[mid.width * half];
    sampleCount *where = new sampleCount[mid.width+1];
 
-   if (!clip->GetSpectrogram(freq, where, mid.width,
-                              t0, pps, autocorrelation)) {
-      delete image;
-      delete[] where;
-      delete[] freq;
-      return;
-   }
-
+   bool updated = clip->GetSpectrogram(freq, where, mid.width,
+                              t0, pps, autocorrelation);
    bool isGrayscale = false;
    gPrefs->Read(wxT("/Spectrum/Grayscale"), &isGrayscale, false);
    int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), rate/2.);
+   if(maxFreq > rate/2.)
+      maxFreq = rate/2.;
    int minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
-   int minSamples = int (minFreq * windowSize / rate + 0.5);   // units here are fft bins
+   if(minFreq < 0) {
+      minFreq = 0.;
+      gPrefs->Write(wxT("/Spectrum/MinFreq"), 0L);
+   }
+   bool usePxCache = false;
+
+   if( !updated && clip->mSpecPxCache->valid && (clip->mSpecPxCache->len == mid.height * mid.width) ) {
+      usePxCache = true;
+   }
+   else {
+      delete clip->mSpecPxCache;
+      clip->mSpecPxCache = new SpecPxCache(mid.width * mid.height);
+      usePxCache = false;
+      clip->mSpecPxCache->valid = true;
+   }
+
+   int minSamples = int (minFreq * windowSize / rate + 0.5);   // units are fft bins
    int maxSamples = int (maxFreq * windowSize / rate + 0.5);
    float binPerPx = float(maxSamples - minSamples) / float(mid.height);
 
@@ -1438,37 +1456,42 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
       for (int yy = 0; yy < mid.height; yy++) {
          bool selflag = (ssel0 <= w0 && w1 < ssel1);
          unsigned char rv, gv, bv;
-
-         float bin0 = float (yy) * binPerPx + minSamples;
-         float bin1 = float (yy + 1) * binPerPx + minSamples;
-
          float value;
 
-         if (int (bin1) == int (bin0))
-            value = freq[half * x + int (bin0)];
-         else {
-            float binwidth= bin1 - bin0;
-            value = freq[half * x + int (bin0)] * (1.f - bin0 + (int)bin0);
+         if(!usePxCache) {
+            float bin0 = float (yy) * binPerPx + minSamples;
+            float bin1 = float (yy + 1) * binPerPx + minSamples;
 
-            bin0 = 1 + int (bin0);
-            while (bin0 < int (bin1)) {
-               value += freq[half * x + int (bin0)];
-               bin0 += 1.0;
+
+            if (int (bin1) == int (bin0))
+               value = freq[half * x + int (bin0)];
+            else {
+               float binwidth= bin1 - bin0;
+               value = freq[half * x + int (bin0)] * (1.f - bin0 + (int)bin0);
+
+               bin0 = 1 + int (bin0);
+               while (bin0 < int (bin1)) {
+                  value += freq[half * x + int (bin0)];
+                  bin0 += 1.0;
+               }
+               value += freq[half * x + int (bin1)] * (bin1 - int (bin1));
+
+               value /= binwidth;
             }
-            value += freq[half * x + int (bin1)] * (bin1 - int (bin1));
 
-            value /= binwidth;
+            if (!autocorrelation) {
+               // Last step converts dB to a 0.0-1.0 range
+               value = (value + 80.0) / 80.0;
+            }
+
+            if (value > 1.0)
+               value = float(1.0);
+            if (value < 0.0)
+               value = float(0.0);
+            clip->mSpecPxCache->values[x * mid.height + yy] = value;
          }
-
-         if (!autocorrelation) {
-            // Last step converts dB to a 0.0-1.0 range
-            value = (value + 80.0) / 80.0;
-         }
-
-         if (value > 1.0)
-            value = float(1.0);
-         if (value < 0.0)
-            value = float(0.0);
+         else
+            value = clip->mSpecPxCache->values[x * mid.height + yy];
 
          GetColorGradient(value, selflag, isGrayscale, &rv, &gv, &bv);
 
