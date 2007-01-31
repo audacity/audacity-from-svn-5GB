@@ -108,11 +108,6 @@ class DtmfDialog:public EffectDialog {
    wxStaticText *mDtmfToneT;
    wxStaticText *mDtmfSilenceT;
    wxStaticText *mDtmfDutyT;
-   bool         startup; // this is needed to discriminate between first time dialog is up
-                         // and subsequent text updates, as the Recalculate() method is called
-                         // The problem is caused by the fact that the EVT_TEXT is generated
-                         // also by an internal SetValue. Maybe with wxWidget 2.8 we can clean
-                         // this up...
 
    DECLARE_EVENT_TABLE()
 
@@ -123,6 +118,7 @@ class DtmfDialog:public EffectDialog {
    double dSilence;        // duration of silence between tones
    double dDuration;       // duration of the whole dtmf tone sequence
    double dDutyCycle;      // ratio of dTone/(dTone+dSilence)
+   bool   dIsSelection;    // true if duration comes from selection
 
 };
 

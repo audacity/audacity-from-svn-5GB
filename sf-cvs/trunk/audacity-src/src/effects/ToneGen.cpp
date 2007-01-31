@@ -63,15 +63,18 @@ wxString EffectToneGen::GetEffectDescription() {
 bool EffectToneGen::PromptUser()
 {
    wxArrayString waveforms;
-   if (mT1 > mT0)
-      length = mT1 - mT0;
-
+   ToneGenDialog dlog(mParent, mbChirp ? _("Chirp Generator") : _("Tone Generator"));
    waveforms.Add(_("Sine"));
    waveforms.Add(_("Square"));
    waveforms.Add(_("Sawtooth"));
    waveforms.Add(_("Square, no alias"));
+   dlog.isSelection= false;
 
-   ToneGenDialog dlog(mParent, mbChirp ? _("Chirp Generator") : _("Tone Generator"));
+   if (mT1 > mT0) {
+      length = mT1 - mT0;
+      dlog.isSelection= true;
+   }
+  
    dlog.mbChirp = mbChirp;
    dlog.waveform = waveform;
    dlog.frequency[0] = frequency[0];
@@ -298,7 +301,7 @@ void ToneGenDialog::PopulateOrExchangeStandard( ShuttleGui & S )
       mToneDurationT = new
       TimeTextCtrl(this,
                    ID_TONE_DURATION_TEXT,
-                   TimeTextCtrl::GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")),
+                   TimeTextCtrl::GetBuiltinFormat(isSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
                    length,
                    44100,
                    wxDefaultPosition,
@@ -336,7 +339,7 @@ void ToneGenDialog::PopulateOrExchangeExtended( ShuttleGui & S )
       mToneDurationT = new
       TimeTextCtrl(this,
                    ID_TONE_DURATION_TEXT,
-                   TimeTextCtrl::GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")),
+                   TimeTextCtrl::GetBuiltinFormat(isSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
                    length,
                    44100,
                    wxDefaultPosition,

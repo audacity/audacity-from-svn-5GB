@@ -47,10 +47,13 @@ bool EffectNoise::PromptUser()
    // value from saved config: this is useful is user wants to 
    // replace selection with noise
    //
-   if (mT1 > mT0)
+   if (mT1 > mT0) {
       noiseDuration = mT1 - mT0;
-   else
+      dlog.nIsSelection = true;
+   } else {
       gPrefs->Read(wxT("/CsPresets/NoiseGen_Duration"), &noiseDuration, 1L);
+      dlog.nIsSelection = false;
+   }
 
    gPrefs->Read(wxT("/CsPresets/NoiseGen_Type"), &noiseType, 0L);
    gPrefs->Read(wxT("/CsPresets/NoiseGen_Amp"), &noiseAmplitude, 1.0);
@@ -225,7 +228,7 @@ void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
                    I want it (nDuration) to be used as the duration, and with "seconds" this does
                    not always work properly. For example, it rounds down to zero...
                    */
-                   TimeTextCtrl::GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")),
+                   TimeTextCtrl::GetBuiltinFormat(nIsSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
                    nDuration,
                    44100,
                    wxDefaultPosition,

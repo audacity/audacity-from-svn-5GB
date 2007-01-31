@@ -57,9 +57,11 @@ bool EffectDtmf::PromptUser()
    if (mT1 > mT0) {
       // there is a selection: let's fit in there...
       dtmfDuration = mT1 - mT0;
+      dlog.dIsSelection = true;
    } else {
       // retrieve last used values
       gPrefs->Read(wxT("/CsPresets/DtmfGen_SequenceDuration"), &dtmfDuration, 2L);
+      dlog.dIsSelection = false;
    }
 
    gPrefs->Read(wxT("/CsPresets/DtmfGen_String"), &dtmfString, _("12345"));
@@ -394,7 +396,7 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
                       I want it (dDuration) to be used as the duration, and with "seconds" this does
                       not always work properly. For example, it rounds down to zero...
                       */
-                      TimeTextCtrl::GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")),
+                      TimeTextCtrl::GetBuiltinFormat(dIsSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
                       dDuration,
                       44100,
                       wxDefaultPosition,
