@@ -148,7 +148,7 @@ Run Visual C++ and load the Audacity solution,
 (For VC7: 
    We maintain the Audacity VC7 solution and project files as they are 
    backed up by the VC8 conversion tool, i.e., in the same location as 
-   the converted fiels, but with a suffix of ".old" added for the 
+   the converted files, but with a suffix of ".old" added for the 
    solution and a suffix of ".7.10.old" on the project files. So, 
    you'll need to delete the VC8 solution and project files, and 
    fix the VC7 suffixes to use the VC7 files.
