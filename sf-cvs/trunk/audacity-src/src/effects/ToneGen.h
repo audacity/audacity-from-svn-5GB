@@ -112,6 +112,7 @@ class ToneGenDialog:public EffectDialog {
    double frequency[2];
    double amplitude[2];
    double length;
+   bool isSelection;
 
  private:
    TimeTextCtrl *mToneDurationT;

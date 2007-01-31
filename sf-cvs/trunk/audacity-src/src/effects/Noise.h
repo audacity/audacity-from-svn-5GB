@@ -99,6 +99,7 @@ class NoiseDialog:public EffectDialog {
    double nDuration;
    int nType;
    double nAmplitude;
+   bool nIsSelection;
 
  private:
   TimeTextCtrl *mNoiseDurationT;

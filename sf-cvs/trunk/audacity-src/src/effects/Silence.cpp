@@ -29,10 +29,17 @@
 
 bool EffectSilence::PromptUser()
 {
-   if (mT1 > mT0)
-      length = mT1 - mT0;
-
    TimeDialog dlog(mParent, wxID_ANY, _("Silence Generator"));
+
+   if (mT1 > mT0) {
+      // there is a selection: let's fit in there...
+      length = mT1 - mT0;
+      dlog.SetFormatString(wxT("hh:mm:ss + samples"));
+
+   } else {
+      // retrieve last used values
+      dlog.SetFormatString(wxT("seconds"));
+   }
    dlog.SetTimeValue(length);
 
    if (dlog.ShowModal() == wxID_CANCEL)
