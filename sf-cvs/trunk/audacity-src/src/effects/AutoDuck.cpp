@@ -482,32 +482,32 @@ EffectAutoDuckDialog::EffectAutoDuckDialog(EffectAutoDuck* effect,
       S.StartMultiColumn(6, wxCENTER);
       {
          mDuckAmountDbBox = S.Id(ID_DUCK_AMOUNT_DB).AddTextBox(
-            _("Duck Amount:"),
+            _("Duck amount:"),
             Internat::ToDisplayString(mEffect->mDuckAmountDb), 10);
          S.AddUnits(_("db"));
          
          mMaximumPauseBox = S.Id(ID_MAXIMUM_PAUSE).AddTextBox(
-            _("Maximum Pause:"),
+            _("Maximum pause:"),
             Internat::ToDisplayString(mEffect->mMaximumPause), 10);
          S.AddUnits(_("seconds"));
 
          mOuterFadeDownLenBox = S.Id(ID_OUTER_FADE_DOWN_LEN).AddTextBox(
-            _("Outer Fade Down Length:"),
+            _("Outer fade down length:"),
             Internat::ToDisplayString(mEffect->mOuterFadeDownLen), 10);
          S.AddUnits(_("seconds"));
          
          mOuterFadeUpLenBox = S.Id(ID_OUTER_FADE_UP_LEN).AddTextBox(
-            _("Outer Fade Up Length:"),
+            _("Outer fade up length:"),
             Internat::ToDisplayString(mEffect->mOuterFadeUpLen), 10);
          S.AddUnits(_("seconds"));
 
          mInnerFadeDownLenBox = S.Id(ID_INNER_FADE_DOWN_LEN).AddTextBox(
-            _("Inner Fade Down Length:"),
+            _("Inner fade down length:"),
             Internat::ToDisplayString(mEffect->mInnerFadeDownLen), 10);
          S.AddUnits(_("seconds"));
          
          mInnerFadeUpLenBox = S.Id(ID_INNER_FADE_UP_LEN).AddTextBox(
-            _("Inner Fade Up Length:"),
+            _("Inner fade up length:"),
             Internat::ToDisplayString(mEffect->mInnerFadeUpLen), 10);
          S.AddUnits(_("seconds"));
       }
@@ -789,7 +789,7 @@ void EffectAutoDuckPanel::OnPaint(wxPaintEvent& evt)
          else
          {
             value = duckAmountDb;
-            digits = 3;
+            digits = 1;
          }
 
          wxString valueStr = Internat::ToDisplayString(value, digits);
