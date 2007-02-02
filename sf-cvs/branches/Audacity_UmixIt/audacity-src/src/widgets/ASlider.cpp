@@ -633,11 +633,12 @@ END_EVENT_TABLE()
 ASlider::ASlider(wxWindow * parent, wxWindowID id,
                  wxString name,
                  const wxPoint & pos,
-                 const wxSize & size):
+                 const wxSize & size, 
+                 int style /*= FRAC_SLIDER*/):
    wxWindow(parent, id, pos, size)
 {
    mLWSlider = new LWSlider(this, name, wxPoint(0, 0), size,
-                            FRAC_SLIDER, true);
+                            style, true);
    mLWSlider->SetId(id);
 }
 
