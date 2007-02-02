@@ -158,7 +158,8 @@ class ASlider :public wxWindow
    ASlider(wxWindow * parent, wxWindowID id,
            wxString name,
            const wxPoint & pos,
-           const wxSize & size);
+           const wxSize & size, 
+           int style = FRAC_SLIDER);
 
    virtual ~ASlider();
    

@@ -70,6 +70,7 @@
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
 #include "LyricsWindow.h"
+#include "MixerBoard.h"
 #include "Internat.h"
 #include "import/Import.h"
 #include "LabelTrack.h"
@@ -381,6 +382,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mActive(true),
      mHistoryWindow(NULL),
      mLyricsWindow(NULL),
+     mMixerBoard(NULL),
      mTotalToolBarHeight(0),
      mDraggingToolBar(NoneID),
      mAudioIOToken(-1),
@@ -542,6 +544,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    // MM: Give track panel the focus to ensure keyboard commands work
    mTrackPanel->SetFocus();
+   //vvvvv UmixIt mTrackPanel->Hide(); // This works okay except that each added track updates the 
+                                       // scroll bars. They probably shouldn't even be visible, i.e., 
+                                       // should be owned by the TrackPanel?
 
 #if defined __WXMAC__ 
    width++;
@@ -2487,6 +2492,7 @@ void AudacityProject::InitialState()
 
    UpdateMenus();
    UpdateLyrics();
+   UpdateMixerBoard();
 }
 
 void AudacityProject::PushState(wxString desc,
@@ -2508,6 +2514,7 @@ void AudacityProject::PushState(wxString desc,
 
    UpdateMenus();
    UpdateLyrics();
+   UpdateMixerBoard();
 }
 
 void AudacityProject::ModifyState()
@@ -2518,6 +2525,7 @@ void AudacityProject::ModifyState()
 
    delete l;
    UpdateLyrics();
+   UpdateMixerBoard();
 }
 
 void AudacityProject::PopState(TrackList * l)
@@ -2537,6 +2545,7 @@ void AudacityProject::PopState(TrackList * l)
 
    UpdateMenus();
    UpdateLyrics();
+   UpdateMixerBoard();
 }
 
 void AudacityProject::SetStateTo(unsigned int n)
@@ -2549,6 +2558,7 @@ void AudacityProject::SetStateTo(unsigned int n)
    mTrackPanel->Refresh(false);
    ModifyUndoMenus();
    UpdateLyrics();
+   UpdateMixerBoard();
 }
 
 void AudacityProject::UpdateLyrics()
@@ -2582,6 +2592,21 @@ void AudacityProject::UpdateLyrics()
    }
    lyrics->Finish(labelTrack->GetEndTime());
    lyrics->Update(0.0);
+}
+
+void AudacityProject::UpdateMixerBoard()
+{
+   if (mTracks->IsEmpty())
+      return;
+
+   if (mMixerBoard == NULL) {
+      mMixerBoard = new MixerBoard(this);
+      wxASSERT(mMixerBoard);
+      mMixerBoard->Show(true);
+   }
+
+   wxASSERT(gAudioIO);
+   mMixerBoard->Update(gAudioIO->GetStreamTime()); 
 }
 
 //

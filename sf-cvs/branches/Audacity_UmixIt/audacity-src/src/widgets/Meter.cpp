@@ -5,6 +5,7 @@
   Meter.cpp
 
   Dominic Mazzoni
+  Vaughan Johnson (overload of Meter::UpdateDisplay)
 
   VU Meter, for displaying recording/playback level
 
@@ -134,14 +135,15 @@ END_EVENT_TABLE()
 IMPLEMENT_CLASS(Meter, wxPanel)
 
 Meter::Meter(wxWindow* parent, wxWindowID id,
-             bool isInput,
+             bool isInput, Style style /*= HorizontalStereo*/, 
              const wxPoint& pos /*= wxDefaultPosition*/,
-             const wxSize& size /*= wxDefaultSize*/):
+             const wxSize& size /*= wxDefaultSize*/,
+             const wxColour& rmsColor /*= wxNullColour*/): // Darker shades are automatically determined.
    wxPanel(parent, id, pos, size),
    mQueue(256),
    mWidth(size.x), mHeight(size.y),
    mIsInput(isInput),
-   mStyle(HorizontalStereo),
+   mStyle(style),
    mDB(true),
    mDBRange(60),
    mDecay(true),
@@ -169,7 +171,17 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mLeftSize = wxSize(0, 0);
    mRightSize = wxSize(0, 0);
 
-   if (mIsInput) {
+   if (rmsColor != wxNullColour)
+   {
+      wxColour darkerColor((rmsColor.Red() * 4/5), (rmsColor.Green() * 4/5), (rmsColor.Blue() * 4/5));
+      mPen = wxPen(darkerColor, 1, wxSOLID);
+      mBrush = wxBrush(darkerColor, wxSOLID);
+      mRMSBrush = wxBrush(rmsColor, wxSOLID);
+      mClipBrush = wxBrush(wxColour(255, 53, 53), wxSOLID);
+      mLightPen = wxPen(rmsColor, 1, wxSOLID);
+      mDarkPen = wxPen(darkerColor, 1, wxSOLID);
+   }
+   else if (mIsInput) {
       mPen = wxPen(wxColour(204, 70, 70), 1, wxSOLID);
       mBrush = wxBrush(wxColour(204, 70, 70), wxSOLID);
       mRMSBrush = wxBrush(wxColour(255, 102, 102), wxSOLID);
@@ -186,7 +198,9 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mDarkPen = wxPen(wxColour(61, 164, 61), 1, wxSOLID);
    }
 
-   CreateIcon(2);
+   // MixerTrackPanel style has no popup, so disallows SetStyle, so never needs icon.
+   if ((mStyle != MixerTrackPanel) && (mStyle != MixerTrackPanelMono))
+      CreateIcon(2);
 
    // The new Ruler is much smarter at picking fonts than we are...
    //mRuler.SetFonts(GetFont(), GetFont());
@@ -265,6 +279,9 @@ void Meter::OnSize(wxSizeEvent &evt)
 
 void Meter::OnMouse(wxMouseEvent &evt)
 {
+   if ((mStyle == MixerTrackPanel) || (mStyle == MixerTrackPanelMono)) // MixerTrackPanel style has no popup.
+      return;
+
   #if wxUSE_TOOLTIPS // Not available in wxX11
    if (evt.Leaving()){
       GetActiveProject()->TP_DisplayStatusMessage("",0);
@@ -319,6 +336,8 @@ void Meter::OnMouse(wxMouseEvent &evt)
 
 void Meter::SetStyle(Meter::Style newStyle)
 {
+   if ((mStyle == MixerTrackPanel) || (mStyle == MixerTrackPanelMono)) // MixerTrackPanel disallows style change.
+      return;
    mStyle = newStyle;
    mLayoutValid = false;
    Refresh(true);
@@ -435,6 +454,57 @@ void Meter::UpdateDisplay(int numChannels, int numFrames, float *sampleData)
    mQueue.Put(msg);
 }
 
+
+void Meter::UpdateDisplay(int numChannels, int numFrames, 
+                           // need to make these double-indexed arrays if we handle more than 2 channels.
+                           float* maxLeft, float* rmsLeft, 
+                           float* maxRight, float* rmsRight)
+{
+   int i, j;
+   int num = intmin(numChannels, mNumBars);
+   MeterUpdateMsg msg;
+
+   msg.numFrames = numFrames;
+   for(j=0; j<mNumBars; j++) {
+      msg.peak[j] = 0;
+      msg.rms[j] = 0;
+      msg.clipping[j] = false;
+      msg.headPeakCount[j] = 0;
+      msg.tailPeakCount[j] = 0;
+   }
+
+   for(i=0; i<numFrames; i++) {
+      for(j=0; j<num; j++) {
+         msg.peak[j] = floatMax(msg.peak[j], ((j == 0) ? maxLeft[i] : maxRight[i]));
+         msg.rms[j] = floatMax(msg.rms[j], ((j == 0) ? rmsLeft[i] : rmsRight[i]));
+
+         // In addition to looking for mNumPeakSamplesToClip peaked
+         // samples in a row, also send the number of peaked samples
+         // at the head and tail, in case there's a run 
+         // of peaked samples that crosses block boundaries.
+         if (fabs((j == 0) ? maxLeft[i] : maxRight[i]) >= 1.0)
+         {
+            if (msg.headPeakCount[j]==i)
+               msg.headPeakCount[j]++;
+            msg.tailPeakCount[j]++;
+            if (msg.tailPeakCount[j] > mNumPeakSamplesToClip)
+               msg.clipping[j] = true;
+         }
+         else
+            msg.tailPeakCount[j] = 0;
+      }
+   }
+
+   if (mDB) {
+      for(j=0; j<mNumBars; j++) {
+         msg.peak[j] = ToDB(msg.peak[j], mDBRange);
+         msg.rms[j] = ToDB(msg.rms[j], mDBRange);
+      }
+   }
+
+   mQueue.Put(msg);
+}
+
 void Meter::OnMeterUpdate(wxTimerEvent &evt)
 {
    MeterUpdateMsg msg;
@@ -512,8 +582,13 @@ void Meter::ResetBar(MeterBar *b, bool resetClipping)
 
 void Meter::HandleLayout()
 {
-   int iconWidth = mIcon->GetWidth();
-   int iconHeight = mIcon->GetHeight();
+   int iconWidth = 0;
+   int iconHeight = 0;
+   if ((mStyle != MixerTrackPanel) && (mStyle != MixerTrackPanelMono))
+   {
+      iconWidth = mIcon->GetWidth();
+      iconHeight = mIcon->GetHeight();
+   }
    int menuWidth = 17;
    int menuHeight = 11;
    int width = mWidth;
@@ -543,9 +618,12 @@ void Meter::HandleLayout()
    default:
       printf("Style not handled yet!\n");
    case VerticalStereo:
+   case MixerTrackPanel: // Doesn't show menu or icon, but is otherwise like VerticalStereo.
+   case MixerTrackPanelMono: // Likewise, but mono.
       mMenuRect = wxRect(mWidth - menuWidth - 5, mHeight - menuHeight - 2,
                          menuWidth, menuHeight);
-      if (mHeight < (menuHeight + iconHeight + 8))
+      if ((mHeight < (menuHeight + iconHeight + 8)) || 
+            (mStyle == MixerTrackPanel) || (mStyle == MixerTrackPanelMono))
          mIconPos = wxPoint(-999, -999); // Don't display
       else
          mIconPos = wxPoint(mWidth - iconWidth - 1, 1);
@@ -558,7 +636,7 @@ void Meter::HandleLayout()
       }
       barw = (width-2)/2;
       barh = height - 4;
-      mNumBars = 2;
+      mNumBars = (mStyle != MixerTrackPanelMono) ? 2 : 1;
       mBar[0].vert = true;
       ResetBar(&mBar[0], false);
       mBar[0].r = wxRect(left + width/2 - barw - 1, 2, barw, barh);
@@ -670,7 +748,9 @@ void Meter::HandleLayout()
       mAllBarsRect = wxRect(left, top, right-left+1, bottom-top+1);
    }
 
-   CreateIcon(mIconPos.y % 4);
+   // MixerTrackPanel style has no popup, so disallows SetStyle, so never needs icon.
+   //vvvvv if ((mStyle != MixerTrackPanel) && (mStyle != MixerTrackPanelMono))
+      CreateIcon(mIconPos.y % 4);
 
    mLayoutValid = true;
 }
@@ -696,19 +776,23 @@ void Meter::HandlePaint(wxDC &dc)
    dc.DrawRectangle(0, 0, mWidth, mHeight);
 #endif
 
-   dc.DrawBitmap(*mIcon, mIconPos.x, mIconPos.y);
+   // MixerTrackPanel style has no popup or icon.
+   if ((mStyle != MixerTrackPanel) && (mStyle != MixerTrackPanelMono))
+   {
+      dc.DrawBitmap(*mIcon, mIconPos.x, mIconPos.y);
 
-   dc.SetPen(*wxBLACK_PEN);
-   dc.SetBrush(*wxTRANSPARENT_BRUSH);
-   wxRect r = mMenuRect;
-   dc.DrawRectangle(r);
-   for(i=2; i<r.height-2; i++)   // Menu triangle
-      dc.DrawLine(r.x + i, r.y + i,
-                  r.x + r.width - i, r.y + i);
-   dc.DrawLine(r.x + r.width, r.y + 1,
-               r.x + r.width, r.y + r.height);
-   dc.DrawLine(r.x + 1, r.y + r.height,
-               r.x + r.width, r.y + r.height);
+      dc.SetPen(*wxBLACK_PEN);
+      dc.SetBrush(*wxTRANSPARENT_BRUSH);
+      wxRect r = mMenuRect;
+      dc.DrawRectangle(r);
+      for(i=2; i<r.height-2; i++)   // Menu triangle
+         dc.DrawLine(r.x + i, r.y + i,
+                     r.x + r.width - i, r.y + i);
+      dc.DrawLine(r.x + r.width, r.y + 1,
+                  r.x + r.width, r.y + r.height);
+      dc.DrawLine(r.x + 1, r.y + r.height,
+                  r.x + r.width, r.y + r.height);
+   }
 
    if (mNumBars>0)
       mRuler.Draw(dc);

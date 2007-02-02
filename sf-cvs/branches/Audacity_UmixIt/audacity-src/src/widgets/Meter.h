@@ -73,13 +73,6 @@ class Meter : public wxPanel
    DECLARE_DYNAMIC_CLASS(Meter)
 
  public:
-   Meter(wxWindow* parent, wxWindowID id,
-         bool isInput,
-         const wxPoint& pos = wxDefaultPosition,
-         const wxSize& size = wxDefaultSize);
-
-   ~Meter();
-
    // These should be kept in the same order as they appear
    // in the menu
    enum Style {
@@ -87,8 +80,18 @@ class Meter : public wxPanel
       VerticalStereo,
       VerticalMulti,
       Equalizer,
-      Waveform
+      Waveform, 
+      MixerTrackPanel, 
+      MixerTrackPanelMono
    };
+
+   Meter(wxWindow* parent, wxWindowID id,
+         bool isInput, Style style = HorizontalStereo, 
+         const wxPoint& pos = wxDefaultPosition,
+         const wxSize& size = wxDefaultSize,
+         const wxColour& rmsColor = wxNullColour); // Darker shades are automatically determined.
+
+   ~Meter();
 
    Style GetStyle() { return mStyle; }
    void SetStyle(Style newStyle);
@@ -99,6 +102,10 @@ class Meter : public wxPanel
    void Reset(double sampleRate, bool resetClipping);
    void UpdateDisplay(int numChannels,
                       int numFrames, float *sampleData);
+   void UpdateDisplay(int numChannels, int numFrames, 
+                        // Need to make these double-indexed max and min arrays if we handle more than 2 channels.
+                        float* maxLeft, float* rmsLeft, 
+                        float* maxRight, float* rmsRight);
    // End thread-safe methods
    //
 

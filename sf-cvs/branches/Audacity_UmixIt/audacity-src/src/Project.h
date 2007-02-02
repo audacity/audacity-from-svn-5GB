@@ -57,6 +57,7 @@ class MixerToolBar;
 class MeterToolBar;
 class HistoryWindow;
 class LyricsWindow;
+class MixerBoard;
 class Importer;
 
 class AudacityProject;
@@ -100,7 +101,7 @@ class ImportXMLTagHandler : public XMLTagHandler
 
    virtual bool HandleXMLTag(const char *tag, const char **attrs);
    virtual XMLTagHandler *HandleXMLChild(const char *tag) { return NULL; };
-   virtual void WriteXML(int depth, FILE *fp) {}; //v
+   virtual void WriteXML(int depth, FILE *fp) {}; //vvv todo
  private: 
    AudacityProject* mProject;
 };
@@ -137,6 +138,7 @@ class AudacityProject:public wxFrame,
    int GetAudioIOToken();
    void SetAudioIOToken(int token);
    LyricsWindow* GetLyricsWindow() { return mLyricsWindow; };
+   MixerBoard* GetMixerBoard() { return mMixerBoard; };
 
    bool IsActive();
 
@@ -270,6 +272,7 @@ class AudacityProject:public wxFrame,
    void PopState(TrackList * l);
 
    void UpdateLyrics();
+   void UpdateMixerBoard();
 
    // Callbacks for backend operations
 
@@ -343,6 +346,7 @@ class AudacityProject:public wxFrame,
    bool mIconized;
    HistoryWindow *mHistoryWindow;
    LyricsWindow *mLyricsWindow;
+   MixerBoard *mMixerBoard;
 
    ToolBarArray mToolBarArray;
    int mTotalToolBarHeight;

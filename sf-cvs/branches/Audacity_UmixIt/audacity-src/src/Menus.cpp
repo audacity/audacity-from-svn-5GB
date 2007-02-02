@@ -37,6 +37,7 @@
 #include "prefs/PrefsDialog.h"
 #include "HistoryWindow.h"
 #include "LyricsWindow.h"
+#include "MixerBoard.h"
 #include "Internat.h"
 #include "FileFormats.h"
 #include "FormatSelection.h"
@@ -364,7 +365,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem("UndoHistory",    _("&History..."),               FN(OnHistory));
    c->AddSeparator();
-   c->AddItem("Lyrics",    _("&Lyrics..."),               FN(OnLyrics));
+   c->AddItem("Lyrics",         _("&Lyrics..."),                FN(OnLyrics));
+   c->AddItem("Mixer Board",    _("&Mixer Board..."),           FN(OnMixerBoard));
    c->AddSeparator();
    c->AddItem("FloatControlTB", _("Float Control Toolbar"),          FN(OnFloatControlToolBar));
    c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
@@ -2588,6 +2590,17 @@ void AudacityProject::OnLyrics()
       mLyricsWindow = new LyricsWindow(this);
       wxASSERT(mLyricsWindow);
       mLyricsWindow->Show(true);
+   }
+}
+
+void AudacityProject::OnMixerBoard()
+{
+   if (mMixerBoard)
+      mMixerBoard->Show(true);
+   else {
+      mMixerBoard = new MixerBoard(this);
+      wxASSERT(mMixerBoard);
+      mMixerBoard->Show(true);
    }
 }
 

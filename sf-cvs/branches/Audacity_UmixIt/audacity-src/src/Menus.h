@@ -149,6 +149,7 @@ void OnLoadMeterToolBar();
 void OnFloatMeterToolBar();
 
 void OnLyrics();
+void OnMixerBoard();
 
         // Project Menu
 

@@ -55,10 +55,10 @@ void MeterToolBar::InitializeMeterToolBar()
    mTitle = _("Audacity Meter Toolbar");
    mType = MeterToolBarID;
 
-   mPlayMeter = new Meter(this, -1, false,
+   mPlayMeter = new Meter(this, -1, false, Meter::HorizontalStereo, 
                           wxPoint(0, 0),
                           wxSize(97, 55));
-   mRecordMeter = new Meter(this, -1, true,
+   mRecordMeter = new Meter(this, -1, true, Meter::HorizontalStereo, 
                             wxPoint(98, 0),
                             wxSize(97, 55));
 
