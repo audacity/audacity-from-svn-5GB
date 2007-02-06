@@ -786,7 +786,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    dBMin = -30.;
    dBMax = 30;
 
-#if wxUSE_TOOLTOPS
+#if wxUSE_TOOLTIPS
    wxToolTip::Enable(true);
 #endif
 
@@ -951,7 +951,7 @@ void EqualizationDialog::SaveCurves()
 //
 void EqualizationDialog::MakeEqualizationDialog()
 {
-   wxBoxSizer *szrH;
+   wxBoxSizer *szrJ;
    wxStaticText *txt;
    wxButton *btn;
 
@@ -1117,7 +1117,11 @@ void EqualizationDialog::MakeEqualizationDialog()
                              3, interpChoiceStrings);
 
    mInterpChoice->SetSelection(0);
-   szrH->Add( mInterpChoice, 0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 80 );
+   szrI = new wxBoxSizer( wxHORIZONTAL );
+   szrI->Add( mInterpChoice, 0, wxLEFT | wxRIGHT | wxALIGN_CENTER_VERTICAL, 40 );
+   szrH->Add( szrI );
+   szrL = new wxBoxSizer( wxHORIZONTAL );
+   szrH->Add(szrL);  // either szrI or szrL are visible, not both.
 
    // -------------------------------------------------------------------
    // ROW 5b: Filter length grouping
@@ -1143,21 +1147,21 @@ void EqualizationDialog::MakeEqualizationDialog()
     // -------------------------------------------------------------------
    // ROW 6: Preview, OK, & Cancel buttons
    // -------------------------------------------------------------------
-   szrH = new wxBoxSizer(wxHORIZONTAL);
+   szrJ = new wxBoxSizer(wxHORIZONTAL);
 
    btn = new wxButton(this, ID_PREVIEW, m_pEffect->GetPreviewName());
-   szrH->Add( btn, 0, wxALIGN_LEFT | wxALL, 4 );
+   szrJ->Add( btn, 0, wxALIGN_LEFT | wxALL, 4 );
 
-   szrH->Add(80, 4); // horizontal spacer
+   szrJ->Add(80, 4); // horizontal spacer
 
    btn = new wxButton(this, wxID_CANCEL, _("&Cancel"));
-   szrH->Add( btn, 0, wxALIGN_RIGHT | wxALL, 4 );
+   szrJ->Add( btn, 0, wxALIGN_RIGHT | wxALL, 4 );
 
    btn = new wxButton(this, wxID_OK, _("&OK"));
    btn->SetDefault();
-   szrH->Add( btn, 0, wxALIGN_RIGHT | wxALL, 4 );
+   szrJ->Add( btn, 0, wxALIGN_RIGHT | wxALL, 4 );
 
-   szrV->Add( szrH, 0, wxALIGN_CENTER );
+   szrV->Add( szrJ, 0, wxALIGN_CENTER );
 
    // -------------------------------------------------------------------
    // Display now
@@ -1166,12 +1170,17 @@ void EqualizationDialog::MakeEqualizationDialog()
 
    szrV->Show(szrC,false);
    szrV->Show(szrG,true);
+   szrH->Show(szrI,true);
+   szrH->Show(szrL,false);
 
    SetSizerAndFit( szrV );
    SetSizeHints(GetSize());
+   szrL->SetMinSize( szrI->GetSize() );
 
    szrV->Show(szrC,true);
    szrV->Show(szrG,false);
+   szrH->Show(szrI,false);
+   szrH->Show(szrL,true);
 
    return;
 }
@@ -1941,6 +1950,8 @@ void EqualizationDialog::OnDrawRadio(wxCommandEvent &evt)
    Select( (int) mCurves.GetCount()-1 );
    szrV->Show(szrC,true);
    szrV->Show(szrG,false);
+   szrH->Show(szrI,false);
+   szrH->Show(szrL,true);
    Layout();
    mPanel->RecalcRequired = true;   // it may have changed slightly due to the deletion of points
    mPanel->Refresh( false );
@@ -1987,6 +1998,8 @@ void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
    }
    szrV->Show(szrC,false);
    szrV->Show(szrG,true);
+   szrH->Show(szrI,true);
+   szrH->Show(szrL,false);
    Layout();            // Make all sizers get resized first
    LayoutEQSliders();   // Then layout sliders
    Layout();            // And layout again to resize dialog
