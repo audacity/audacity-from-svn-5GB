@@ -72,10 +72,10 @@ wxString FileNames::DataDir()
       // If there is a directory "Portable Settings" relative to the
       // executable's EXE file, the prefs are stored in there, otherwise
       // the prefs are stored in the user data dir provided by the OS.
-      wxFileName portablePrefsPath(PlatformCompatibility::GetExecutablePath());
-      portablePrefsPath.AppendDir(wxT("Portable Settings"));
+      wxFileName exePath(PlatformCompatibility::GetExecutablePath());
+      wxFileName portablePrefsPath(exePath.GetPath(), wxT("Portable Settings"));
       
-      if (portablePrefsPath.DirExists())
+      if (::wxDirExists(portablePrefsPath.GetFullPath()))
       {
          // Use "Portable Settings" folder
          gDataDir = portablePrefsPath.GetFullPath();
