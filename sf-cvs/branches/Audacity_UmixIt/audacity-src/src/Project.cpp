@@ -544,7 +544,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    // MM: Give track panel the focus to ensure keyboard commands work
    mTrackPanel->SetFocus();
-   //vvvvv UmixIt mTrackPanel->Hide(); // This works okay except that each added track updates the 
+   //vvv UmixIt mTrackPanel->Hide();   // This works okay except that each added track updates the 
                                        // scroll bars. They probably shouldn't even be visible, i.e., 
                                        // should be owned by the TrackPanel?
 
@@ -1902,7 +1902,7 @@ void AudacityProject::OpenFile(wxString fileName)
    ///
 
    mFileName = fileName;
-   SetTitle(GetName());
+   SetTitle("Audacity - " + GetName());
 
    XMLFileReader xmlFile;
 
@@ -2352,7 +2352,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
    if (initiallyEmpty && mDirManager->GetProjectName() == "") {
       wxString name = fileName.AfterLast(wxFILE_SEP_PATH).BeforeLast('.');
       mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + name + ".aup";
-      SetTitle(GetName());
+      SetTitle("Audacity - " + GetName());
    }
 
    // Moved this call to higher levels to prevent horrible flicker redrawing everything on each file.
@@ -2450,7 +2450,7 @@ bool AudacityProject::SaveAs()
       fName = fName.Mid(0, len - 4);
 
    mFileName = fName + ".aup";
-   SetTitle(GetName());
+   SetTitle("Audacity - " + GetName());
 
    bool sucess = Save(false, true);
 
@@ -2514,6 +2514,9 @@ void AudacityProject::PushState(wxString desc,
 
    UpdateMenus();
    UpdateLyrics();
+
+   if (mMixerBoard) // All the different ways to add tracks funnel through here.
+      mMixerBoard->AddTrackClusters();
    UpdateMixerBoard();
 }
 
@@ -2601,12 +2604,14 @@ void AudacityProject::UpdateMixerBoard()
 
    if (mMixerBoard == NULL) {
       mMixerBoard = new MixerBoard(this);
-      wxASSERT(mMixerBoard);
-      mMixerBoard->Show(true);
+      if (mMixerBoard)
+      {
+         mMixerBoard->AddTrackClusters();
+         mMixerBoard->Show(true);
+      }
    }
 
-   wxASSERT(gAudioIO);
-   mMixerBoard->Update(gAudioIO->GetStreamTime()); 
+   mMixerBoard->UpdateMeters(gAudioIO->GetStreamTime()); 
 }
 
 //

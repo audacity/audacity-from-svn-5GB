@@ -30,6 +30,7 @@ class Ruler;
 class AdornedRulerPanel;
 class LWSlider;
 class ControlToolBar; //Needed because state of controls can affect what gets drawn.
+class MixerBoard;
 
 struct ViewInfo;
 
@@ -155,6 +156,7 @@ class TrackPanel:public wxWindow {
    void HandleShiftKey(bool down);
 
  private:
+   MixerBoard* GetMixerBoard();
 
    void TrackSpecificMouseEvent(wxMouseEvent & event);
    void DrawCursors(wxDC * dc = NULL);

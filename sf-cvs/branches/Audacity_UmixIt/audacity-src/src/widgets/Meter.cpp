@@ -198,8 +198,8 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mDarkPen = wxPen(wxColour(61, 164, 61), 1, wxSOLID);
    }
 
-   // MixerTrackPanel style has no popup, so disallows SetStyle, so never needs icon.
-   if ((mStyle != MixerTrackPanel) && (mStyle != MixerTrackPanelMono))
+   // MixerTrackCluster style has no popup, so disallows SetStyle, so never needs icon.
+   if ((mStyle != MixerTrackCluster) && (mStyle != MixerTrackClusterMono))
       CreateIcon(2);
 
    // The new Ruler is much smarter at picking fonts than we are...
@@ -279,7 +279,7 @@ void Meter::OnSize(wxSizeEvent &evt)
 
 void Meter::OnMouse(wxMouseEvent &evt)
 {
-   if ((mStyle == MixerTrackPanel) || (mStyle == MixerTrackPanelMono)) // MixerTrackPanel style has no popup.
+   if ((mStyle == MixerTrackCluster) || (mStyle == MixerTrackClusterMono)) // MixerTrackCluster style has no popup.
       return;
 
   #if wxUSE_TOOLTIPS // Not available in wxX11
@@ -336,7 +336,7 @@ void Meter::OnMouse(wxMouseEvent &evt)
 
 void Meter::SetStyle(Meter::Style newStyle)
 {
-   if ((mStyle == MixerTrackPanel) || (mStyle == MixerTrackPanelMono)) // MixerTrackPanel disallows style change.
+   if ((mStyle == MixerTrackCluster) || (mStyle == MixerTrackClusterMono)) // MixerTrackCluster disallows style change.
       return;
    mStyle = newStyle;
    mLayoutValid = false;
@@ -411,8 +411,8 @@ void Meter::UpdateDisplay(int numChannels, int numFrames, float *sampleData)
 
    msg.numFrames = numFrames;
    for(j=0; j<mNumBars; j++) {
-      msg.peak[j] = 0;
-      msg.rms[j] = 0;
+      msg.peak[j] = 0.0;
+      msg.rms[j] = 0.0;
       msg.clipping[j] = false;
       msg.headPeakCount[j] = 0;
       msg.tailPeakCount[j] = 0;
@@ -454,9 +454,8 @@ void Meter::UpdateDisplay(int numChannels, int numFrames, float *sampleData)
    mQueue.Put(msg);
 }
 
-
 void Meter::UpdateDisplay(int numChannels, int numFrames, 
-                           // need to make these double-indexed arrays if we handle more than 2 channels.
+                           // Need to make these double-indexed arrays if we handle more than 2 channels.
                            float* maxLeft, float* rmsLeft, 
                            float* maxRight, float* rmsRight)
 {
@@ -466,8 +465,8 @@ void Meter::UpdateDisplay(int numChannels, int numFrames,
 
    msg.numFrames = numFrames;
    for(j=0; j<mNumBars; j++) {
-      msg.peak[j] = 0;
-      msg.rms[j] = 0;
+      msg.peak[j] = 0.0;
+      msg.rms[j] = 0.0;
       msg.clipping[j] = false;
       msg.headPeakCount[j] = 0;
       msg.tailPeakCount[j] = 0;
@@ -584,7 +583,7 @@ void Meter::HandleLayout()
 {
    int iconWidth = 0;
    int iconHeight = 0;
-   if ((mStyle != MixerTrackPanel) && (mStyle != MixerTrackPanelMono))
+   if ((mStyle != MixerTrackCluster) && (mStyle != MixerTrackClusterMono))
    {
       iconWidth = mIcon->GetWidth();
       iconHeight = mIcon->GetHeight();
@@ -618,12 +617,12 @@ void Meter::HandleLayout()
    default:
       printf("Style not handled yet!\n");
    case VerticalStereo:
-   case MixerTrackPanel: // Doesn't show menu or icon, but is otherwise like VerticalStereo.
-   case MixerTrackPanelMono: // Likewise, but mono.
+   case MixerTrackCluster: // Doesn't show menu or icon, but is otherwise like VerticalStereo.
+   case MixerTrackClusterMono: // Likewise, but mono.
       mMenuRect = wxRect(mWidth - menuWidth - 5, mHeight - menuHeight - 2,
                          menuWidth, menuHeight);
       if ((mHeight < (menuHeight + iconHeight + 8)) || 
-            (mStyle == MixerTrackPanel) || (mStyle == MixerTrackPanelMono))
+            (mStyle == MixerTrackCluster) || (mStyle == MixerTrackClusterMono))
          mIconPos = wxPoint(-999, -999); // Don't display
       else
          mIconPos = wxPoint(mWidth - iconWidth - 1, 1);
@@ -636,7 +635,7 @@ void Meter::HandleLayout()
       }
       barw = (width-2)/2;
       barh = height - 4;
-      mNumBars = (mStyle != MixerTrackPanelMono) ? 2 : 1;
+      mNumBars = (mStyle != MixerTrackClusterMono) ? 2 : 1;
       mBar[0].vert = true;
       ResetBar(&mBar[0], false);
       mBar[0].r = wxRect(left + width/2 - barw - 1, 2, barw, barh);
@@ -748,8 +747,8 @@ void Meter::HandleLayout()
       mAllBarsRect = wxRect(left, top, right-left+1, bottom-top+1);
    }
 
-   // MixerTrackPanel style has no popup, so disallows SetStyle, so never needs icon.
-   //vvvvv if ((mStyle != MixerTrackPanel) && (mStyle != MixerTrackPanelMono))
+   // MixerTrackCluster style has no popup, so disallows SetStyle, so never needs icon.
+   //vvvvv There's an ASSERT failure if this:  if ((mStyle != MixerTrackCluster) && (mStyle != MixerTrackClusterMono))
       CreateIcon(mIconPos.y % 4);
 
    mLayoutValid = true;
@@ -776,8 +775,8 @@ void Meter::HandlePaint(wxDC &dc)
    dc.DrawRectangle(0, 0, mWidth, mHeight);
 #endif
 
-   // MixerTrackPanel style has no popup or icon.
-   if ((mStyle != MixerTrackPanel) && (mStyle != MixerTrackPanelMono))
+   // MixerTrackCluster style has no popup or icon.
+   if ((mStyle != MixerTrackCluster) && (mStyle != MixerTrackClusterMono))
    {
       dc.DrawBitmap(*mIcon, mIconPos.x, mIconPos.y);
 
