@@ -13,14 +13,14 @@
 
 #include <wx/frame.h>
 #include <wx/hashmap.h>
+#include <wx/image.h>
 #include <wx/panel.h>
-
-// controls
-#include <wx/stattext.h>
-#include <wx/tglbtn.h>
-#include <wx/sizer.h>
+#include <wx/scrolwin.h>
 #include <wx/slider.h>
+#include <wx/statbmp.h>
+#include <wx/stattext.h>
 
+#include "widgets/AButton.h"
 #include "widgets/ASlider.h"
 #include "widgets/Meter.h"
 
@@ -28,18 +28,29 @@ class AudacityProject;
 class MixerBoard;
 class WaveTrack;
 
-class MixerTrackPanel : public wxPanel { 
-   DECLARE_DYNAMIC_CLASS(MixerTrackPanel)
+class MixerTrackCluster : public wxPanel { 
+   DECLARE_DYNAMIC_CLASS(MixerTrackCluster)
 
- public:
-   MixerTrackPanel(MixerBoard* parent, AudacityProject* project, 
+public:
+   MixerTrackCluster(wxScrolledWindow* parent, 
+                     MixerBoard* grandParent, AudacityProject* project, 
                      WaveTrack* pLeftTrack, WaveTrack* pRightTrack = NULL, 
                      const wxPoint& pos = wxDefaultPosition, 
                      const wxSize& size = wxDefaultSize);
-   ~MixerTrackPanel() {};
+   ~MixerTrackCluster() {};
 
+   void ResetMeter();
+
+   void UpdateName();
+   void UpdateMute();
+   void UpdateSolo();
+   void UpdatePan();
+   void UpdateGain();
+   void UpdateMeter(double t);
+
+private:
+   int GetGainToSliderValue();
    wxColour GetTrackColor();
-   void Update(double t, bool bForce = false);
 
    // event handlers
    void OnButton_Mute(wxCommandEvent& event);
@@ -50,7 +61,7 @@ class MixerTrackPanel : public wxPanel {
 
    void OnPaint(wxPaintEvent &evt);
 
- private:
+private:
    MixerBoard* mMixerBoard;
    AudacityProject* mProject;
 
@@ -59,36 +70,73 @@ class MixerTrackPanel : public wxPanel {
 
    // controls
    wxStaticText* mStaticText_TrackName;
-   wxToggleButton* mToggleButton_Mute;
-   wxToggleButton* mToggleButton_Solo;
+   wxStaticBitmap* mStaticBitmap_MusicalInstrument;
+   AButton* mToggleButton_Mute;
+   AButton* mToggleButton_Solo;
    ASlider* mSlider_Pan;
    wxSlider* mSlider_Gain; //vvv ASlider* mSlider_Gain;
    Meter* mMeter;
 
- public:
+public:
    DECLARE_EVENT_TABLE()
 };
 
-WX_DECLARE_VOIDPTR_HASH_MAP(MixerTrackPanel*, MixerTrackPanelHash);
+WX_DECLARE_VOIDPTR_HASH_MAP(MixerTrackCluster*, MixerTrackClusterHash);
 
-class MixerBoard : public wxFrame { //vvv or wxScrolledWindow ?
- public:
+class MixerBoard : public wxFrame { 
+public:
    MixerBoard(AudacityProject* parent);
    ~MixerBoard();
 
-   void Update(double t, bool bForce = false);
+   void AddTrackClusters(); // Add clusters for any tracks we're not yet showing.
+   //vvv Also need to remove clusters for any removed tracks. 
 
- private:
+   wxBitmap* GetMusicalInstrumentBitmap(const WaveTrack* pLeftTrack);
+
+   bool HasSolo();
+   void IncrementSoloCount(int nIncrement = 1);
+
+   void ResetMeters();
+
+   void UniquelyMuteOrSolo(const WaveTrack* pTargetLeftTrack, bool bSolo);
+
+   void UpdateName(const WaveTrack* pLeftTrack);
+   void UpdateMute(const WaveTrack* pLeftTrack = NULL); // NULL means update for all tracks.
+   void UpdateSolo(const WaveTrack* pLeftTrack = NULL); // NULL means update for all tracks.
+   void UpdatePan(const WaveTrack* pLeftTrack);
+   void UpdateGain(const WaveTrack* pLeftTrack);
+   
+   void UpdateMeters(double t);
+
+private:
+   void CreateMuteSoloImages();
+
    // event handlers
    void OnCloseWindow(wxCloseEvent & WXUNUSED(event));
    void OnKeyEvent(wxKeyEvent & event);
 
-   MixerTrackPanelHash  mMixerTrackPanels; // Hash the panels based on the left WaveTrack* they're showing.
-   AudacityProject*     mProject;
-   wxSize               mSize;
-   double               mT;
+public:
+   // mute & solo button images: Create once and store on MixerBoard for use in all MixerTrackClusters.
+   wxImage* mImageMuteUp;
+   wxImage* mImageMuteOver;
+   wxImage* mImageMuteDown;
+   wxImage* mImageMuteDownWhileSolo; // the one actually alternate image
+   wxImage* mImageMuteDisabled;
+   wxImage* mImageSoloUp;
+   wxImage* mImageSoloOver;
+   wxImage* mImageSoloDown;
+   wxImage* mImageSoloDisabled;
 
- public:
+private:
+   MixerTrackClusterHash   mMixerTrackClusters; // Hash the panels based on the left WaveTrack* they're showing.
+   int                     mMixerTrackClusterWidth;
+   wxBitmap*               mMusicalInstrumentBitmaps; //vvvvv Will become some storage for several.
+   AudacityProject*        mProject;
+   wxScrolledWindow*       mScrolledWindow; // Holds the MixerTrackClusters and handles scrolling.
+   unsigned int            mSoloCount;
+   double                  mT;
+
+public:
    DECLARE_EVENT_TABLE()
 };
 

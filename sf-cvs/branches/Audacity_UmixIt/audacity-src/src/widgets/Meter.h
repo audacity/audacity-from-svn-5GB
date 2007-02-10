@@ -81,8 +81,8 @@ class Meter : public wxPanel
       VerticalMulti,
       Equalizer,
       Waveform, 
-      MixerTrackPanel, 
-      MixerTrackPanelMono
+      MixerTrackCluster, 
+      MixerTrackClusterMono
    };
 
    Meter(wxWindow* parent, wxWindowID id,

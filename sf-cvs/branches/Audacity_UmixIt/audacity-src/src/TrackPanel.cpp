@@ -1176,6 +1176,7 @@ void TrackPanel::OnTimer()
 
    wxCommandEvent dummyEvent;
    AudacityProject *p = (AudacityProject*)GetParent();
+   MixerBoard* pMixerBoard = p->GetMixerBoard();
 
    if (p->GetAudioIOToken()>0) {
       // Update lyrics display 
@@ -1185,10 +1186,8 @@ void TrackPanel::OnTimer()
          lyrics->Update(gAudioIO->GetStreamTime());
       }
 
-      // Update mixer board
-      MixerBoard* pMixerBoard = p->GetMixerBoard();
       if (pMixerBoard) 
-         pMixerBoard->Update(gAudioIO->GetStreamTime());
+         pMixerBoard->UpdateMeters(gAudioIO->GetStreamTime());
    }
 
    // Each time the loop, check to see if we were playing or
@@ -1196,6 +1195,8 @@ void TrackPanel::OnTimer()
    if (p->GetAudioIOToken()>0 &&
        !gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
       p->GetControlToolBar()->OnStop(dummyEvent);      
+      if (pMixerBoard) 
+         pMixerBoard->ResetMeters();
    }
 
    // Next, check to see if we were playing or recording
@@ -2744,6 +2745,7 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
    else if (event.ButtonUp(1) ) {
 
       if (buttonRect.Inside(event.m_x, event.m_y)) {
+         MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
          if (event.ShiftDown()) {
             // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
             TrackListIterator iter(mTracks);
@@ -2763,13 +2765,26 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
                }
                i = iter.Next();
             }
+            if (pMixerBoard) 
+            {
+               pMixerBoard->UpdateMute(); // Update for all tracks.
+               pMixerBoard->UpdateSolo(); // Update for all tracks.
+            }
          }
          else {
             // Normal click just toggles this track.
             if (solo)
+            {
                t->SetSolo(!t->GetSolo());
+               if (pMixerBoard) 
+                  pMixerBoard->UpdateSolo((WaveTrack*)t);
+            }
             else
+            {
                t->SetMute(!t->GetMute());
+               if (pMixerBoard) 
+                  pMixerBoard->UpdateMute((WaveTrack*)t);
+            }
          }
       }
       if (solo) {
@@ -2798,16 +2813,21 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
    float newValue = slider->Get();
 
    WaveTrack *link = (WaveTrack *)mTracks->GetLink(mCapturedTrack);
+   MixerBoard* pMixerBoard = this->GetMixerBoard();
    
    if (pan) {
       ((WaveTrack *)mCapturedTrack)->SetPan(newValue);
       if (link)
          link->SetPan(newValue);
+      if (pMixerBoard) 
+         pMixerBoard->UpdatePan((WaveTrack*)mCapturedTrack);
    }
    else {
       ((WaveTrack *)mCapturedTrack)->SetGain(newValue);
       if (link)
          link->SetGain(newValue);
+      if (pMixerBoard) 
+         pMixerBoard->UpdateGain((WaveTrack*)mCapturedTrack);
    }
    
    if (event.ButtonUp()) {
@@ -3390,6 +3410,15 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
 
    event.Skip();
 }
+
+
+MixerBoard* TrackPanel::GetMixerBoard()
+{
+   AudacityProject *p = (AudacityProject*)GetParent();
+   wxASSERT(p);
+   return p->GetMixerBoard();
+}
+
 
 // AS: This handles just generic mouse events.  Then, based
 //  on our current state, we forward the mouse events to
@@ -4427,13 +4456,20 @@ void TrackPanel::OnSetName(wxCommandEvent &event)
       wxString newName = wxGetTextFromUser(_("Change track name to:"),
                                            _("Track Name"), defaultStr);
       if (newName != "")
+      {
          t->SetName(newName);
-      MakeParentPushState(wxString::Format(_("Renamed '%s' to '%s'"),
-                                           defaultStr.c_str(),
-                                           newName.c_str()),
-                          _("Name Change"));
 
-      Refresh(false);
+         MixerBoard* pMixerBoard = this->GetMixerBoard();
+         if (pMixerBoard) 
+            pMixerBoard->UpdateName((WaveTrack*)t);
+
+         MakeParentPushState(wxString::Format(_("Renamed '%s' to '%s'"),
+                                             defaultStr.c_str(),
+                                             newName.c_str()),
+                           _("Name Change"));
+
+         Refresh(false);
+      }
    }
 }
 
