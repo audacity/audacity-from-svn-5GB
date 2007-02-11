@@ -159,6 +159,8 @@ public:
    float dBMin;
    bool RecalcRequired;
 
+   Envelope *mEnvelope;
+
 private:
 
    wxBitmap *mBitmap;
@@ -174,8 +176,6 @@ private:
 
    double mLoFreq;
    double mHiFreq;
-
-   Envelope *mEnvelope;
 
    DECLARE_EVENT_TABLE()
 };
@@ -210,6 +210,7 @@ public:
    static const double thirdOct[];
    wxRadioButton *mFaderOrDraw[2];
    wxChoice *mInterpChoice;
+   wxCheckBox *mLinFreq;
    int M;
    float dBMin;
    float dBMax;
@@ -254,6 +255,7 @@ private:
       drawRadioID,
       sliderRadioID,
       ID_INTERP,
+      ID_LIN_FREQ,
       ID_SLIDER   // needs to come last
    };
 
@@ -269,6 +271,9 @@ private:
    void OnSliderDBMIN( wxCommandEvent &event );
    void OnDrawRadio(wxCommandEvent &event );
    void OnSliderRadio(wxCommandEvent &event );
+   void OnLinFreq(wxCommandEvent &event );
+   void EnvLogToLin(void);
+   void EnvLinToLog(void);
    void ErrMin(void);
    void OnCurve( wxCommandEvent &event );
    void OnSaveAs( wxCommandEvent &event );
@@ -292,7 +297,8 @@ private:
    double m_EQVals[NUMBER_OF_BANDS+1];
 
    EqualizationPanel *mPanel;
-   Envelope *mEnvelope;
+   Envelope *mLogEnvelope;
+   Envelope *mLinEnvelope;
    wxBoxSizer *mCurveSizer;
    wxChoice *mCurve;
    wxButton *mDelete;
