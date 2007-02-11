@@ -656,16 +656,20 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
    double scale = (double)mEnvRect.height/(dBMax-dBMin);   //pixels per dB
    double yF;   //gain at this freq
    double delta = mHiFreq/(((double)mWindowSize/2.));   //size of each freq bin
+
+   bool lin = mParent->mFaderOrDraw[0]->GetValue() & mParent->mLinFreq->IsChecked();   // log or lin scale?
+
    double loLog = log10(mLoFreq);
-   double stepLog = (log10(mHiFreq) - loLog)/((double)mEnvRect.width-1.);
+   double step = lin ? mHiFreq : (log10(mHiFreq) - loLog);
+   step /= ((double)mEnvRect.width-1.);
    double freq;   //actual freq corresponding to x position
    int halfM = (M-1)/2;
    int n;   //index to mFreqFunc
    for(int i=0; i<mEnvRect.width; i++)
    {
       x = mEnvRect.x + i;
-      freq = pow(10., loLog + i*stepLog);   //Hz
-      if( (pow(10., loLog + (i+1)*stepLog)-freq) < delta)
+      freq = lin ? step*i : pow(10., loLog + i*step);   //Hz
+      if( ( lin ? step : (pow(10., loLog + (i+1)*step)-freq) ) < delta)
       {   //not enough resolution in FFT
          freq = M_PI*freq/mHiFreq;   //radians, normalized
          yF = 0.;
@@ -766,6 +770,7 @@ BEGIN_EVENT_TABLE(EqualizationDialog,wxDialog)
    EVT_BUTTON( wxID_CANCEL, EqualizationDialog::OnCancel )
    EVT_RADIOBUTTON(drawRadioID, EqualizationDialog::OnDrawRadio)
    EVT_RADIOBUTTON(sliderRadioID, EqualizationDialog::OnSliderRadio)
+	EVT_CHECKBOX(ID_LIN_FREQ, EqualizationDialog::OnLinFreq)
 END_EVENT_TABLE()
 
 EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
@@ -790,9 +795,13 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    wxToolTip::Enable(true);
 #endif
 
-   mEnvelope = new Envelope();
-   mEnvelope->SetInterpolateDB(false);
-   mEnvelope->Mirror(false);
+   mLogEnvelope = new Envelope();
+   mLogEnvelope->SetInterpolateDB(false);
+   mLogEnvelope->Mirror(false);
+
+   mLinEnvelope = new Envelope();
+   mLinEnvelope->SetInterpolateDB(false);
+   mLinEnvelope->Mirror(false);
 
    mLoFreq = loFreq;
    mHiFreq = hiFreq;
@@ -811,7 +820,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    MakeEqualizationDialog();
 
    // Set initial curve
-   setCurve( mEnvelope );
+   setCurve( mLogEnvelope );
 
    bandsInUse = NUMBER_OF_BANDS;
    double loLog = log10(mLoFreq);
@@ -1007,7 +1016,7 @@ void EqualizationDialog::MakeEqualizationDialog()
    szr1->Add( szr4, 0, wxEXPAND|wxALIGN_LEFT|wxALL );
 
    mPanel = new EqualizationPanel( mLoFreq, mHiFreq,
-                                   mEnvelope,
+                                   mLogEnvelope,
                                    this,
                                    mFilterFuncR, mFilterFuncI, mWindowSize,
                                    ID_FILTERPANEL);
@@ -1120,7 +1129,10 @@ void EqualizationDialog::MakeEqualizationDialog()
    szrI = new wxBoxSizer( wxHORIZONTAL );
    szrI->Add( mInterpChoice, 0, wxLEFT | wxRIGHT | wxALIGN_CENTER_VERTICAL, 40 );
    szrH->Add( szrI );
+
    szrL = new wxBoxSizer( wxHORIZONTAL );
+   mLinFreq = new wxCheckBox(this, ID_LIN_FREQ, _("Linear frequency scale"));
+   szrL->Add( mLinFreq, 0 );
    szrH->Add(szrL);  // either szrI or szrL are visible, not both.
 
    // -------------------------------------------------------------------
@@ -1317,16 +1329,32 @@ bool EqualizationDialog::CalcFilter()
    double denom = hiLog - loLog;
 
    double delta = mHiFreq / ((double)(mWindowSize/2.));
-   double val0 = mEnvelope->GetValue(0.0);   //no scaling required - saved in mEnvelope as dB
-   double val1 = mEnvelope->GetValue(1.0);
+   double val0;
+   double val1;
 
+   bool lin = mFaderOrDraw[0]->GetValue() & mLinFreq->IsChecked();
+
+   if( lin )
+   {
+      val0 = mLinEnvelope->GetValue(0.0);   //no scaling required - saved as dB
+      val1 = mLinEnvelope->GetValue(1.0);
+   }
+   else
+   {
+      val0 = mLogEnvelope->GetValue(0.0);   //no scaling required - saved as dB
+      val1 = mLogEnvelope->GetValue(1.0);
+   }
    mFilterFuncR[0] = val0;
    double freq = delta;
 
    int i;
    for(i=1; i<=mWindowSize/2; i++)
    {
-      double when = (log10(freq) - loLog)/denom;
+      double when;
+      if( lin )
+         when = freq/mHiFreq;
+      else
+         when = (log10(freq) - loLog)/denom;
       if(when < 0.)
       {
          mFilterFuncR[i] = val0;
@@ -1337,7 +1365,10 @@ bool EqualizationDialog::CalcFilter()
             }
             else
             {
-               mFilterFuncR[i] = mEnvelope->GetValue(when);
+               if( lin )
+                  mFilterFuncR[i] = mLinEnvelope->GetValue(when);
+               else
+                  mFilterFuncR[i] = mLogEnvelope->GetValue(when);
             }
       freq += delta;
    }
@@ -1425,7 +1456,7 @@ void EqualizationDialog::setCurve(Envelope *env, int currentCurve)
       {
          when = (log10(mCurves[currentCurve].points[i].Freq) - loLog)/denom;
          value = mCurves[currentCurve].points[i].dB;
-         if(when < 1)
+         if(when <= 1)
             env->Insert(when, value);
          else
             break;
@@ -1475,10 +1506,10 @@ void EqualizationDialog::Select( int curve )
 void EqualizationDialog::EnvelopeUpdated()
 {
    // Allocate and populate point arrays
-   int numPoints = mEnvelope->GetNumberOfPoints();
+   int numPoints = mLogEnvelope->GetNumberOfPoints();
    double *when = new double[ numPoints ];
    double *value = new double[ numPoints ];
-   mEnvelope->GetPoints( when, value, numPoints );
+   mLogEnvelope->GetPoints( when, value, numPoints );
 
    // Clear the custom curve
    #if wxCHECK_VERSION(2, 6, 2) && !defined(__WXX11__)
@@ -1698,13 +1729,13 @@ void EqualizationDialog::OnSlider(wxCommandEvent &event)
          break;
       }
    }
-   GraphicEQ(mEnvelope);
+   GraphicEQ(mLogEnvelope);
 }
 
 void EqualizationDialog::OnInterp(wxCommandEvent &event)
 {
    if(mFaderOrDraw[1]->GetValue())
-      GraphicEQ(mEnvelope);
+      GraphicEQ(mLogEnvelope);
 }
 
 void EqualizationDialog::LayoutEQSliders()
@@ -1917,20 +1948,21 @@ double EqualizationDialog::splint(double x[], double y[], int n, double y2[], do
 
 void EqualizationDialog::OnDrawRadio(wxCommandEvent &evt)
 {
-   int numPoints = mEnvelope->GetNumberOfPoints();
+   int numPoints = mLogEnvelope->GetNumberOfPoints();
    double *when = new double[ numPoints ];
    double *value = new double[ numPoints ];
    double deltadB = 0.1;
    double dx, dy, dx1, dy1, err;
-   mEnvelope->GetPoints( when, value, numPoints );
-   int j;
+
+   mLogEnvelope->GetPoints( when, value, numPoints );
+
    bool flag = true;
    while (flag)
    {
       flag = false;
       int numDeleted = 0;
-      mEnvelope->GetPoints( when, value, numPoints );
-      for(j=0;j<numPoints-2;j++)
+      mLogEnvelope->GetPoints( when, value, numPoints );
+      for(int j=0;j<numPoints-2;j++)
       {
          dx = when[j+2+numDeleted] - when[j+numDeleted];
          dy = value[j+2+numDeleted] - value[j+numDeleted];
@@ -1939,15 +1971,25 @@ void EqualizationDialog::OnDrawRadio(wxCommandEvent &evt)
          err = fabs(value[j+numDeleted+1] - (value[j+numDeleted] + dy1));
          if( err < deltadB )
          {   // within < deltadB dB?
-            mEnvelope->Delete(j+1);
+            mLogEnvelope->Delete(j+1);
             numPoints--;
             numDeleted++;
             flag = true;
          }
       }
    }
+
    // set 'custom' as the selected curve
-   Select( (int) mCurves.GetCount()-1 );
+   EnvelopeUpdated();
+
+   if(mLinFreq->IsChecked())
+   {
+      EnvLogToLin();
+      mPanel->mEnvelope = mLinEnvelope;
+      freqRuler->ruler.SetLog(false);
+      freqRuler->ruler.SetRange(0, mHiFreq);
+   }
+
    szrV->Show(szrC,true);
    szrV->Show(szrG,false);
    szrH->Show(szrI,false);
@@ -1963,6 +2005,23 @@ void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
    double hiLog = log10(mHiFreq);
    double denom = hiLog - loLog;
 
+   if(mLinFreq->IsChecked())  //going from lin to log freq scale
+   {  // add some extra points to the linear envelope for the graphic to follow
+      double step = pow(2., 1./12.);   // twelve steps per octave
+      double when,value;
+      for(double freq=10.; freq<mHiFreq; freq*=step)
+      {
+         when = freq/mHiFreq;
+         value = mLinEnvelope->GetValue(when);
+         mLinEnvelope->Insert(when, value);
+      }
+
+      EnvLinToLog();
+      mPanel->mEnvelope = mLogEnvelope;
+      freqRuler->ruler.SetLog(true);
+      freqRuler->ruler.SetRange(mLoFreq, mHiFreq);
+   }
+
    bandsInUse = 0;
    while(thirdOct[bandsInUse] <= mHiFreq) {
       bandsInUse++;
@@ -1976,7 +2035,7 @@ void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
          whenSliders[i] = 0.;
       else
          whenSliders[i] = (log10(thirdOct[i])-loLog)/denom;
-      m_EQVals[i] = mEnvelope->GetValue(whenSliders[i]);    //set initial values of sliders
+      m_EQVals[i] = mLogEnvelope->GetValue(whenSliders[i]);    //set initial values of sliders
       if( m_EQVals[i] > 20.)
          m_EQVals[i] = 20.;
       if( m_EQVals[i] < -20.)
@@ -2010,7 +2069,66 @@ void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
    {
       Fit();
    }
-   GraphicEQ(mEnvelope);
+   GraphicEQ(mLogEnvelope);
+}
+
+void EqualizationDialog::OnLinFreq(wxCommandEvent &evt)
+{
+   if(mLinFreq->IsChecked())  //going from log to lin freq scale
+   {
+      freqRuler->ruler.SetLog(false);
+      freqRuler->ruler.SetRange(0, mHiFreq);
+      EnvLogToLin();
+      mPanel->mEnvelope = mLinEnvelope;
+   }
+   else  //going from lin to log freq scale
+   {
+      freqRuler->ruler.SetLog(true);
+      freqRuler->ruler.SetRange(mLoFreq, mHiFreq);
+      EnvLinToLog();
+      mPanel->mEnvelope = mLogEnvelope;
+   }
+   CalcFilter();
+   freqRuler->Refresh(false);
+   mPanel->Refresh(false);
+}
+
+void EqualizationDialog::EnvLogToLin(void)
+{
+      int numPoints = mLogEnvelope->GetNumberOfPoints();
+      double *when = new double[ numPoints ];
+      double *value = new double[ numPoints ];
+
+      mLinEnvelope->Flatten(0.);
+      mLinEnvelope->SetTrackLen(1.0);
+      mLogEnvelope->GetPoints( when, value, numPoints );
+      mLinEnvelope->Move(0., value[0]);
+      double loLog = log10(20.);
+      double hiLog = log10(mHiFreq);
+      double denom = hiLog - loLog;
+
+      for( int i=0; i < numPoints; i++)
+         mLinEnvelope->Insert(pow( 10., ((when[i] * denom) + loLog))/mHiFreq , value[i]);
+      mLinEnvelope->Move(1., value[numPoints-1]);
+}
+
+void EqualizationDialog::EnvLinToLog(void)
+{
+      int numPoints = mLinEnvelope->GetNumberOfPoints();
+      double *when = new double[ numPoints ];
+      double *value = new double[ numPoints ];
+
+      mLogEnvelope->Flatten(0.);
+      mLogEnvelope->SetTrackLen(1.0);
+      mLinEnvelope->GetPoints( when, value, numPoints );
+      mLogEnvelope->Move(0., value[0]);
+      double loLog = log10(20.);
+      double hiLog = log10(mHiFreq);
+      double denom = hiLog - loLog;
+
+      for( int i=0; i < numPoints; i++)
+         mLogEnvelope->Insert((log10(when[i]*mHiFreq)-loLog)/denom , value[i]);
+      mLogEnvelope->Move(1., value[numPoints-1]);
 }
 
 void EqualizationDialog::ErrMin(void)
@@ -2025,14 +2143,14 @@ void EqualizationDialog::ErrMin(void)
    int j=0;
 
    for(i=0; i < NUM_PTS; i++)
-      vals[i] = mEnvelope->GetValue(whens[i]);
+      vals[i] = mLogEnvelope->GetValue(whens[i]);
 
    //   Do error minimisation
    error = 0.;
-   GraphicEQ(mEnvelope);
+   GraphicEQ(mLogEnvelope);
    for(i=0; i < NUM_PTS; i++)   //calc initial error
    {
-      double err = vals[i] - mEnvelope->GetValue(whens[i]);
+      double err = vals[i] - mLogEnvelope->GetValue(whens[i]);
       error += err*err;
    }
    oldError = error;
@@ -2063,11 +2181,11 @@ void EqualizationDialog::ErrMin(void)
             m_EQVals[i] = -20.;
             flag = false;
          }
-         GraphicEQ(mEnvelope);         //calculate envelope
+         GraphicEQ(mLogEnvelope);         //calculate envelope
          error = 0.;
          for(int k=0; k < NUM_PTS; k++)  //calculate error
          {
-            double err = vals[k] - mEnvelope->GetValue(whens[k]);
+            double err = vals[k] - mLogEnvelope->GetValue(whens[k]);
             error += err*err;
          }
       }
@@ -2099,10 +2217,12 @@ void EqualizationDialog::OnCurve(wxCommandEvent &event)
 {
    // Select new curve
    #if wxCHECK_VERSION(2, 6, 2) && !defined(__WXX11__)
-   setCurve( mEnvelope, mCurve->GetCurrentSelection() );
+   setCurve( mLogEnvelope, mCurve->GetCurrentSelection() );
    #else
-   setCurve( mEnvelope, mCurve->GetSelection() );
+   setCurve( mLogEnvelope, mCurve->GetSelection() );
    #endif
+   if( mFaderOrDraw[0]->GetValue() & mLinFreq->IsChecked() )
+      EnvLogToLin();
 }
 
 //
@@ -2238,13 +2358,17 @@ void EqualizationDialog::OnDelete(wxCommandEvent &event)
    Select( (int) mCurves.GetCount()-1 );
 
    // Reselect
-   setCurve( mEnvelope, mCurves.GetCount()-1 );
+   setCurve( mLogEnvelope, mCurves.GetCount()-1 );
+   if( mFaderOrDraw[0]->GetValue() & mLinFreq->IsChecked() )
+      EnvLogToLin();
 }
 
 void EqualizationDialog::OnClear(wxCommandEvent &event)
 {
-   mEnvelope->Flatten(0.);
-   mEnvelope->SetTrackLen(1.0);
+   mLogEnvelope->Flatten(0.);
+   mLogEnvelope->SetTrackLen(1.0);
+   mLinEnvelope->Flatten(0.);
+   mLinEnvelope->SetTrackLen(1.0);
    EnvelopeUpdated();
    mPanel->RecalcRequired = true;
    mPanel->Refresh(false);
@@ -2287,9 +2411,12 @@ void EqualizationDialog::OnPreview(wxCommandEvent &event)
 
 void EqualizationDialog::OnCancel(wxCommandEvent &event)
 {
-   if(mEnvelope)
-     delete mEnvelope;
-   mEnvelope = NULL;
+   if(mLogEnvelope)
+     delete mLogEnvelope;
+   mLogEnvelope = NULL;
+   if(mLinEnvelope)
+     delete mLinEnvelope;
+   mLinEnvelope = NULL;
    mPanel = NULL;
 
    EndModal(false);
@@ -2304,16 +2431,16 @@ void EqualizationDialog::OnOk(wxCommandEvent &event)
       // Update custom curve (so it's there for next time)
       //(done in a hurry, may not be the neatest -MJS)
       int i, j;
-      int numPoints = mEnvelope->GetNumberOfPoints();
+      int numPoints = mLogEnvelope->GetNumberOfPoints();
       double *when = new double[ numPoints ];
       double *value = new double[ numPoints ];
-      mEnvelope->GetPoints( when, value, numPoints );
+      mLogEnvelope->GetPoints( when, value, numPoints );
       for(i=0,j=0;j<numPoints-2;i++,j++)
       {
          if( (value[i]<value[i+1]+.05) && (value[i]>value[i+1]-.05) &&
              (value[i+1]<value[i+2]+.05) && (value[i+1]>value[i+2]-.05) )
          {   // within < 0.05 dB?
-            mEnvelope->Delete(j+1);
+            mLogEnvelope->Delete(j+1);
             numPoints--;
             j--;
          }
@@ -2323,9 +2450,12 @@ void EqualizationDialog::OnOk(wxCommandEvent &event)
       mDirty = true;
       SaveCurves();
 
-      if(mEnvelope)
-         delete mEnvelope;
-      mEnvelope = NULL;
+      if(mLogEnvelope)
+         delete mLogEnvelope;
+      mLogEnvelope = NULL;
+      if(mLinEnvelope)
+         delete mLinEnvelope;
+      mLinEnvelope = NULL;
       mPanel = NULL;
 
       EndModal(true);
