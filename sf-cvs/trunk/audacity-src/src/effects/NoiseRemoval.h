@@ -53,26 +53,59 @@ private:
    void CleanSpeechMayReadNoisegate();
    void CleanSpeechMayWriteNoiseGate();
 
-   bool ProcessOne(int count, WaveTrack * track,
-                   longSampleCount start, sampleCount len);
-
-   void GetProfile(sampleCount len,
-                   float *buffer);
-   void RemoveNoise(sampleCount len,
-                    float *buffer);
-   
-   Envelope *mEnvelope;
-
-   int       windowSize;
-   float    *mNoiseGate;
-   float    *sum;
-   float    *sumsq;
-   float    *smoothing;
-   int      *profileCount;
-   
    bool      mDoProfile;
    bool      mHasProfile;
    int       mLevel;
+
+   // Parameters chosen before the first phase
+   double    mSampleRate;
+   int       mWindowSize;
+   int       mSpectrumSize;
+   float     mMinSignalTime;    // in secs
+
+   // The frequency-indexed noise threshold derived during the first
+   // phase of analysis
+   float    *mNoiseThreshold;  // length is mSpectrumSize
+
+   // Parameters that affect the noise removal, regardless of how the
+   // noise profile was extracted
+   double     mFreqSmoothingHz;
+   double     mNoiseGain;              // in dB, should be negative
+   double     mAttackDecayTime;        // in secs
+
+   bool ProcessOne(int count, WaveTrack * track,
+                   longSampleCount start, sampleCount len);
+
+   void Initialize();
+   void StartNewTrack();
+   void ProcessSamples(sampleCount len, float *buffer);
+   void FillFirstHistoryWindow();
+   void ApplyFreqSmoothing(float *spec);
+   void GetProfile();
+   void RemoveNoise();
+   void RotateHistoryWindows();
+   void FinishTrack();
+   void Cleanup();
+
+   // Variables that only exist during processing
+   WaveTrack            *mOutputTrack;
+   longSampleCount       mInSampleCount;
+   longSampleCount       mOutSampleCount;
+   int                   mInputPos;
+
+   int       mFreqSmoothingBins;
+   int       mAttackDecayBlocks;
+   float     mOneBlockAttackDecay;
+   int       mMinSignalBlocks;
+   int       mHistoryLen;
+   float    *mInWaveBuffer;     // mWindowSize
+   float    *mOutWaveBuffer;    // mWindowSize
+   float    *mOutImagBuffer;    // mWindowSize
+   float    *mOutOverlapBuffer; // mWindowSize
+   float   **mSpectrums;        // mHistoryLen x mSpectrumSize
+   float   **mGains;            // mHistoryLen x mSpectrumSize
+   float   **mRealFFTs;         // mHistoryLen x mWindowSize
+   float   **mImagFFTs;         // mHistoryLen x mWindowSize
 
 friend class NoiseRemovalDialog;
 };
@@ -85,18 +118,19 @@ friend class NoiseRemovalDialog;
 
 // Declare window functions
 
-class NoiseRemovalDialog: public wxDialog
+class NoiseRemovalDialog: public EffectDialog
 {
 public:
    // constructors and destructors
    NoiseRemovalDialog(EffectNoiseRemoval * effect,
-								wxWindow *parent, wxWindowID id, 
-								const wxString &title,
-								const wxPoint& pos = wxDefaultPosition,
-								const wxSize& size = wxDefaultSize,
-								long style = wxDEFAULT_DIALOG_STYLE );
+                      wxWindow *parent);
 
-   wxSizer *MakeNoiseRemovalDialog(bool call_fit = true, bool set_sizer = true);
+   wxSizer *MakeNoiseRemovalDialog(bool call_fit = true,
+                                   bool set_sizer = true);
+
+   void PopulateOrExchange(ShuttleGui & S);
+   bool TransferDataToWindow();
+   bool TransferDataFromWindow();
    
 private:
    // handlers
@@ -105,19 +139,36 @@ private:
    void OnRemoveNoise( wxCommandEvent &event );
    void OnCancel( wxCommandEvent &event );
    
-private:
-	EffectNoiseRemoval * m_pEffect;
+   void OnGainText(wxCommandEvent & event);
+   void OnFreqText(wxCommandEvent & event);
+   void OnTimeText(wxCommandEvent & event);
+   void OnGainSlider(wxCommandEvent & event);
+   void OnFreqSlider(wxCommandEvent & event);
+   void OnTimeSlider(wxCommandEvent & event);
 
-public:
-//TIDY-ME: Is mLevel needed in the dialog??
-   int  mLevel;
+ public:
+
+   EffectNoiseRemoval * m_pEffect;
+
    wxButton * m_pButton_GetProfile;
-   wxSlider * m_pSlider;
    wxButton * m_pButton_Preview;
    wxButton * m_pButton_RemoveNoise;
-   
+
+   wxSlider   *mGainS;
+   wxSlider   *mFreqS;
+   wxSlider   *mTimeS;
+
+   wxTextCtrl *mGainT;
+   wxTextCtrl *mFreqT;
+   wxTextCtrl *mTimeT;
+
+   float       mGain;
+   float       mFreq;
+   float       mTime;
+
 private:
    DECLARE_EVENT_TABLE()
+
 };
 
 #endif
