@@ -801,11 +801,10 @@ void Envelope::GetValues(double *buffer, int bufferLen,
    double tprev, vprev, tnext = 0, vnext, vstep = 0;
 
    for (int b = 0; b < bufferLen; b++) {
-
       if (len <= 0) {
-	 buffer[b] = mDefaultValue;
-	 t += tstep;
-	 continue;
+         buffer[b] = mDefaultValue;
+         t += tstep;
+         continue;
       }
       if (t <= mEnv[0]->t) {
          buffer[b] = mEnv[0]->val;
