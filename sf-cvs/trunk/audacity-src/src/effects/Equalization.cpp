@@ -93,6 +93,8 @@ various graphing code, such as provided by FreqWindow and FilterPanel.
 #include <wx/filefn.h>
 #include <wx/stdpaths.h>
 #include <wx/settings.h>
+#include <wx/checkbox.h>
+
 #if wxUSE_TOOLTIPS
 #include <wx/tooltip.h>
 #endif
