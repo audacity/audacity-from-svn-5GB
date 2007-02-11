@@ -9,10 +9,10 @@
 *******************************************************************//**
 
 \class FreqWindow
-\brief Displays a spectrum plot of the waveform.  Has options for 
+\brief Displays a spectrum plot of the waveform.  Has options for
 selecting parameters of the plot.
 
-Has a feature that finds peaks and reports their value as you move 
+Has a feature that finds peaks and reports their value as you move
 the mouse around.
 
 *//****************************************************************//**
@@ -21,7 +21,7 @@ the mouse around.
 \brief Works with FreqWindow to dsplay a spectrum plot of the waveform.
 This class actually does the graph display.
 
-Has a feature that finds peaks and reports their value as you move 
+Has a feature that finds peaks and reports their value as you move
 the mouse around.
 
 *//*******************************************************************/
@@ -250,7 +250,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    r.Union( mCloseButton->GetRect() );
    mExportButton->SetMinSize( r.GetSize() );
    mCloseButton->SetMinSize( r.GetSize() );
-   
+
    // Add everything to the sizers
 
    wxBoxSizer *vs = new wxBoxSizer( wxVERTICAL );
@@ -854,14 +854,18 @@ void FreqWindow::Recalc()
    float *in2 = new float[mWindowSize];
    float *out = new float[mWindowSize];
    float *out2 = new float[mWindowSize];
+   float *win = new float[mWindowSize];
+
+   // initialize the window
+   for(int i=0; i<mWindowSize; i++)
+      win[i] = 1.0;
+   WindowFunc(windowFunc, mWindowSize, win);
 
    int start = 0;
    int windows = 0;
    while (start + mWindowSize <= mDataLen) {
       for (i = 0; i < mWindowSize; i++)
-         in[i] = mData[start + i];
-
-      WindowFunc(windowFunc, mWindowSize, in);
+         in[i] = win[i] * mData[start + i];
 
       switch (alg) {
       case 0:                  // Spectrum
@@ -1026,6 +1030,7 @@ void FreqWindow::Recalc()
    delete[]in2;
    delete[]out;
    delete[]out2;
+   delete[]win;
 
    DrawPlot();
    mFreqPlot->Refresh(true);
