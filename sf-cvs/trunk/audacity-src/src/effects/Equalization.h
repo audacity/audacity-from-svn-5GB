@@ -36,6 +36,7 @@ class wxString;
 class wxBoxSizer;
 class wxChoice;
 class wxRadioButton;
+class wxCheckBox;
 
 #include "Effect.h"
 #include "../xml/XMLTagHandler.h"
