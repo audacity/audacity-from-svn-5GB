@@ -11,7 +11,7 @@
 *******************************************************************//**
 
 \file EffectEqualization.cpp
-\brief Implements EffectEqualiztaion, EqualizationDialog, 
+\brief Implements EffectEqualiztaion, EqualizationDialog,
 EqualizationPanel, EQCurve and EQPoint.
 
 *//****************************************************************//**
@@ -19,17 +19,17 @@ EqualizationPanel, EQCurve and EQPoint.
 
 \class EffectEqualization
 \brief An Effect.
-  
+
   Performs filtering, using an FFT to do a FIR filter.
   It lets the user draw an arbitrary envelope (using the same
   envelope editing code that is used to edit the track's
   amplitude envelope).
-  
+
   Also allows the curve to be specified with a series of 'graphic EQ'
   sliders.
 
   The filter is applied using overlap/add of Hanning windows.
-  
+
   Has presets of certain specific equalization curves, suitable
   for old recordings.
 
@@ -43,8 +43,8 @@ EqualizationPanel, EQCurve and EQPoint.
 *//****************************************************************//**
 
 \class EqualizationPanel
-\brief EqualizationPanel is used with EqualizationDialog and controls 
-a graph for EffectEqualization.  We should look at amalgamating the 
+\brief EqualizationPanel is used with EqualizationDialog and controls
+a graph for EffectEqualization.  We should look at amalgamating the
 various graphing code, such as provided by FreqWindow and FilterPanel.
 
 *//****************************************************************//**
@@ -60,7 +60,6 @@ various graphing code, such as provided by FreqWindow and FilterPanel.
 *//*******************************************************************/
 
 #include "../Audacity.h"
-
 #include "Equalization.h"
 #include "../PlatformCompatibility.h"
 #include "../FileNames.h"
@@ -241,29 +240,29 @@ public:
       originalMinValue = minValue;
       SetValue(value);
    }
-   
+
    int GetMin() const {
       return originalMinValue;
    }
-   
+
    int GetMax() const {
       return wxSlider::GetMax() + originalMinValue;
    }
-   
+
    int GetValue() const {
       if (isInverse)
          return wxSlider::GetMax() - wxSlider::GetValue() + originalMinValue;
       else
          return wxSlider::GetValue() + originalMinValue;
    }
-   
+
    void SetValue(int value) {
       if (isInverse)
          wxSlider::SetValue(wxSlider::GetMax() - value + originalMinValue);
       else
          wxSlider::SetValue(value - originalMinValue);
    }
-   
+
 private:
    bool isInverse;
    int originalMinValue;
@@ -772,7 +771,7 @@ BEGIN_EVENT_TABLE(EqualizationDialog,wxDialog)
    EVT_BUTTON( wxID_CANCEL, EqualizationDialog::OnCancel )
    EVT_RADIOBUTTON(drawRadioID, EqualizationDialog::OnDrawRadio)
    EVT_RADIOBUTTON(sliderRadioID, EqualizationDialog::OnSliderRadio)
-	EVT_CHECKBOX(ID_LIN_FREQ, EqualizationDialog::OnLinFreq)
+   EVT_CHECKBOX(ID_LIN_FREQ, EqualizationDialog::OnLinFreq)
 END_EVENT_TABLE()
 
 EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
@@ -1601,7 +1600,7 @@ bool EqualizationDialog::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          // Get the frequency
          if( !wxStrcmp( attr, wxT("f") ) )
          {
-            if (!XMLValueChecker::IsGoodString(strValue) || 
+            if (!XMLValueChecker::IsGoodString(strValue) ||
                   !Internat::CompatibleToDouble(strValue, &dblValue))
                return false;
             f = dblValue;
@@ -1609,7 +1608,7 @@ bool EqualizationDialog::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          // Get the dB
          else if( !wxStrcmp( attr, wxT("d") ) )
          {
-            if (!XMLValueChecker::IsGoodString(strValue) || 
+            if (!XMLValueChecker::IsGoodString(strValue) ||
                   !Internat::CompatibleToDouble(strValue, &dblValue))
                return false;
             d = dblValue;
@@ -2112,6 +2111,9 @@ void EqualizationDialog::EnvLogToLin(void)
       for( int i=0; i < numPoints; i++)
          mLinEnvelope->Insert(pow( 10., ((when[i] * denom) + loLog))/mHiFreq , value[i]);
       mLinEnvelope->Move(1., value[numPoints-1]);
+
+      delete [] when;
+      delete [] value;
 }
 
 void EqualizationDialog::EnvLinToLog(void)
@@ -2131,6 +2133,9 @@ void EqualizationDialog::EnvLinToLog(void)
       for( int i=0; i < numPoints; i++)
          mLogEnvelope->Insert((log10(when[i]*mHiFreq)-loLog)/denom , value[i]);
       mLogEnvelope->Move(1., value[numPoints-1]);
+
+      delete [] when;
+      delete [] value;
 }
 
 void EqualizationDialog::ErrMin(void)
@@ -2452,6 +2457,8 @@ void EqualizationDialog::OnOk(wxCommandEvent &event)
       mDirty = true;
       SaveCurves();
 
+      delete [] when;
+      delete [] value;
       if(mLogEnvelope)
          delete mLogEnvelope;
       mLogEnvelope = NULL;
