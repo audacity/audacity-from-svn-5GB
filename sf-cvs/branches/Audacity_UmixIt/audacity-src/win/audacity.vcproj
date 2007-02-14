@@ -767,6 +767,12 @@
 				RelativePath="..\src\Mix.h">
 			</File>
 			<File
+				RelativePath="..\src\MixerBoard.cpp">
+			</File>
+			<File
+				RelativePath="..\src\MixerBoard.h">
+			</File>
+			<File
 				RelativePath="..\src\MixerToolBar.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
