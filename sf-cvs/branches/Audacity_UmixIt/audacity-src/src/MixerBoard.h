@@ -53,13 +53,14 @@ private:
    wxColour GetTrackColor();
 
    // event handlers
+   void OnKeyEvent(wxKeyEvent & event);
+   void OnPaint(wxPaintEvent &evt);
+
    void OnButton_Mute(wxCommandEvent& event);
    void OnButton_Solo(wxCommandEvent& event);
    void OnSlider_Pan(wxCommandEvent& event);
    void OnSlider_Gain(wxCommandEvent& event);
    void OnSliderScroll_Gain(wxScrollEvent& event);
-
-   void OnPaint(wxPaintEvent &evt);
 
 private:
    MixerBoard* mMixerBoard;
@@ -81,7 +82,20 @@ public:
    DECLARE_EVENT_TABLE()
 };
 
+
+class TrackList;
+
 WX_DECLARE_VOIDPTR_HASH_MAP(MixerTrackCluster*, MixerTrackClusterHash);
+
+class MusicalInstrument {
+public:
+   MusicalInstrument(wxBitmap* pBitmap, const wxString strXPMfilename);
+   ~MusicalInstrument();
+
+   wxBitmap*      mBitmap;
+   wxArrayString  mKeywords;
+};
+WX_DECLARE_OBJARRAY(MusicalInstrument, MusicalInstrumentArray);
 
 class MixerBoard : public wxFrame { 
 public:
@@ -110,10 +124,10 @@ public:
 
 private:
    void CreateMuteSoloImages();
+   void LoadMusicalInstruments();
 
    // event handlers
    void OnCloseWindow(wxCloseEvent & WXUNUSED(event));
-   void OnKeyEvent(wxKeyEvent & event);
 
 public:
    // mute & solo button images: Create once and store on MixerBoard for use in all MixerTrackClusters.
@@ -127,14 +141,17 @@ public:
    wxImage* mImageSoloDown;
    wxImage* mImageSoloDisabled;
 
+   int mMuteSoloWidth;
+
 private:
-   MixerTrackClusterHash   mMixerTrackClusters; // Hash the panels based on the left WaveTrack* they're showing.
+   MixerTrackClusterHash   mMixerTrackClusters; // Hash clusters based on the left WaveTrack* they're showing.
    int                     mMixerTrackClusterWidth;
-   wxBitmap*               mMusicalInstrumentBitmaps; //vvvvv Will become some storage for several.
+   MusicalInstrumentArray  mMusicalInstruments; 
    AudacityProject*        mProject;
    wxScrolledWindow*       mScrolledWindow; // Holds the MixerTrackClusters and handles scrolling.
    unsigned int            mSoloCount;
    double                  mT;
+   TrackList*              mTracks;
 
 public:
    DECLARE_EVENT_TABLE()
