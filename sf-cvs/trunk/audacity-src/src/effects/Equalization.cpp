@@ -73,7 +73,6 @@ various graphing code, such as provided by FreqWindow and FilterPanel.
 #include "../Theme.h"
 #include "../AllThemeResources.h"
 
-
 #include <wx/bitmap.h>
 #include <wx/button.h>
 #include <wx/msgdlg.h>
@@ -827,10 +826,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    double loLog = log10(mLoFreq);
    double stepLog = (log10(mHiFreq) - loLog)/((double)NUM_PTS-1.);
    for(int i=0; i<NUM_PTS-1; i++)
-   {
       whens[i] = (double)i/(NUM_PTS-1.);
-      whensFreq[i] = pow(10., loLog + i*stepLog);   //actual freq for this position
-   }
    whens[NUM_PTS-1] = 1.;
    whenSliders[NUMBER_OF_BANDS] = 1.;
    m_EQVals[NUMBER_OF_BANDS] = 0.;
@@ -1785,7 +1781,7 @@ void EqualizationDialog::GraphicEQ(Envelope *env)
          int minF = 0;
          for(int i=0; i<NUM_PTS; i++)
          {
-            while( (whenSliders[minF] < whens[i]) & (minF < bandsInUse) )
+            while( (whenSliders[minF] <= whens[i]) & (minF < bandsInUse) )
                minF++;
             minF--;
             if( minF < 0 ) //before first slider
@@ -1840,7 +1836,7 @@ void EqualizationDialog::GraphicEQ(Envelope *env)
                   }
                }
             }
-            if(whens[i]==0.)
+            if(whens[i]<=0.)
                env->Move( 0., value );
             env->Insert( whens[i], value );
          }
@@ -1853,7 +1849,7 @@ void EqualizationDialog::GraphicEQ(Envelope *env)
          int minF = 0;
          for(int i=0; i<NUM_PTS; i++)
          {
-            while( (whenSliders[minF] < whens[i]) & (minF < bandsInUse) )
+            while( (whenSliders[minF] <= whens[i]) & (minF < bandsInUse) )
                minF++;
             minF--;
             if( minF < 0 ) //before first slider
@@ -1881,10 +1877,10 @@ void EqualizationDialog::GraphicEQ(Envelope *env)
                   span = whenSliders[minF+1] - whenSliders[minF];
                   dist = whenSliders[minF+1] - whens[i];
                   value = m_EQVals[minF]*(1. + cos(M_PI*(span-dist)/span))/2. +
-                       m_EQVals[minF+1]*(1. + cos(M_PI*dist/span))/2.;
+                  m_EQVals[minF+1]*(1. + cos(M_PI*dist/span))/2.;
                }
             }
-            if(whens[i]==0.)
+            if(whens[i]<=0.)
                env->Move( 0., value );
             env->Insert( whens[i], value );
          }
