@@ -216,7 +216,6 @@ public:
    float dBMin;
    float dBMax;
    double whens[NUM_PTS];
-   double whensFreq[NUM_PTS];
    double whenSliders[NUMBER_OF_BANDS+1];
    int bandsInUse;
 
