@@ -2038,7 +2038,7 @@ void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
       if( m_EQVals[i] < -20.)
          m_EQVals[i] = -20.;
    }
-   ErrMin();                  //move sliders about to minimise error
+   ErrMin();                  //move sliders to minimise error
    for (int i = 0; i<bandsInUse; ++i)
    {
       m_sliders[i]->SetValue((int)(m_EQVals[i]+.5)); //actually set slider positions
