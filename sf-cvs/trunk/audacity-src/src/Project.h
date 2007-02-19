@@ -292,7 +292,7 @@ class AudacityProject:public wxFrame,
 
    wxWindow *HasKeyboardCapture();
    void CaptureKeyboard(wxWindow *h);
-   void ReleaseKeyboard();
+   void ReleaseKeyboard(wxWindow *h);
    
    // Audio IO callback methods
    virtual void OnAudioIORate(int rate);
