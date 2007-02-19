@@ -1192,7 +1192,8 @@ bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
    if (w) {
       wxCommandEvent e(EVT_CAPTURE_KEY);
       e.SetEventObject(&event);
-      if (w->ProcessEvent(e)) {
+      w->ProcessEvent(e);
+      if (e.GetSkipped()) {
          return false;
       }
    }
@@ -1476,7 +1477,7 @@ void AudacityProject::OnCaptureKeyboard(wxCommandEvent & event)
 
 void AudacityProject::OnReleaseKeyboard(wxCommandEvent & event)
 {
-   ReleaseKeyboard();
+   ReleaseKeyboard((wxWindow *)event.GetEventObject());
 }
 
 // static method, can be called outside of a project
@@ -3007,9 +3008,12 @@ void AudacityProject::CaptureKeyboard(wxWindow *w)
    mKeyboardCaptured = w;
 }
 
-void AudacityProject::ReleaseKeyboard()
+void AudacityProject::ReleaseKeyboard(wxWindow *w)
 {
-   mKeyboardCaptured = NULL;
+   if (w == mKeyboardCaptured)
+   {
+      mKeyboardCaptured = NULL;
+   }
 }
 
 void AudacityProject::DeleteCurrentAutoSaveFile()

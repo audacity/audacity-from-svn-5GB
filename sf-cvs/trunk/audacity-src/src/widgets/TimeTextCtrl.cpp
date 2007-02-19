@@ -321,6 +321,10 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
 
 TimeTextCtrl::~TimeTextCtrl()
 {
+   wxCommandEvent e(EVT_RELEASE_KEYBOARD);
+   e.SetEventObject(this);
+   GetParent()->GetEventHandler()->ProcessEvent(e);
+
    if (mBackgroundBitmap)
       delete mBackgroundBitmap;
    if (mDigitFont)
@@ -806,6 +810,8 @@ void TimeTextCtrl::OnContext(wxContextMenuEvent &event)
       return;
    }
 
+   SetFocus();
+
    for(i=0; i<GetNumBuiltins(); i++) {
       menu.AppendCheckItem(ID_MENU+i, GetBuiltinName(i));
       if (mFormatString == GetBuiltinFormat(i))
@@ -840,8 +846,6 @@ void TimeTextCtrl::OnMouse(wxMouseEvent &event)
       Refresh(false);
    }
    else if (event.RightDown() && mMenuEnabled) {
-      SetFocus();
-
       wxContextMenuEvent e;
       OnContext(e);
    }
@@ -896,7 +900,7 @@ void TimeTextCtrl::OnCaptureKey(wxCommandEvent &event)
          return;
 
       default:
-         if (keyCode >= '0' || keyCode <= '9')
+         if (keyCode >= '0' && keyCode <= '9')
             return;
    }
 

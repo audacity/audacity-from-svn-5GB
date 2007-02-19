@@ -302,7 +302,11 @@ void SelectionBar::OnEndRadio(wxCommandEvent &evt)
 void SelectionBar::OnUpdate(wxCommandEvent &evt)
 {
    int index = evt.GetInt();
-
+   wxWindow *w = FindFocus();
+   bool leftFocus = (w == mLeftTime);
+   bool rightFocus = (w == mRightTime);
+   bool audioFocus = (w == mAudioTime);
+   
    evt.Skip(false);
 
    wxString formatName =  TimeTextCtrl::GetBuiltinName(index);
@@ -324,6 +328,16 @@ void SelectionBar::OnUpdate(wxCommandEvent &evt)
    ToolBar::ReCreateButtons();
 
    ValuesToControls();
+
+   if (leftFocus) {
+      mLeftTime->SetFocus();
+   }
+   else if (rightFocus) {
+      mRightTime->SetFocus();
+   }
+   else if (audioFocus) {
+      mAudioTime->SetFocus();
+   }
 
    Updated();
 }
