@@ -41,6 +41,9 @@ public:
 
    void ResetMeter();
 
+   void UpdateHeight(); // For wxSizeEvents, update gain slider and meter.
+
+   // These are used by TrackPanel for synchronizing control states, etc.
    void UpdateName();
    void UpdateMute();
    void UpdateSolo();
@@ -62,12 +65,13 @@ private:
    void OnSlider_Gain(wxCommandEvent& event);
    void OnSliderScroll_Gain(wxScrollEvent& event);
 
+public:
+   WaveTrack* mLeftTrack;
+   WaveTrack* mRightTrack;
+
 private:
    MixerBoard* mMixerBoard;
    AudacityProject* mProject;
-
-   WaveTrack* mLeftTrack;
-   WaveTrack* mRightTrack;
 
    // controls
    wxStaticText* mStaticText_TrackName;
@@ -82,10 +86,8 @@ public:
    DECLARE_EVENT_TABLE()
 };
 
+WX_DEFINE_ARRAY(MixerTrackCluster*, MixerTrackClusterArray);
 
-class TrackList;
-
-WX_DECLARE_VOIDPTR_HASH_MAP(MixerTrackCluster*, MixerTrackClusterHash);
 
 class MusicalInstrument {
 public:
@@ -97,13 +99,17 @@ public:
 };
 WX_DECLARE_OBJARRAY(MusicalInstrument, MusicalInstrumentArray);
 
+
+class TrackList;
+
 class MixerBoard : public wxFrame { 
 public:
    MixerBoard(AudacityProject* parent);
    ~MixerBoard();
 
    void AddTrackClusters(); // Add clusters for any tracks we're not yet showing.
-   //vvv Also need to remove clusters for any removed tracks. 
+   void RemoveTrackCluster(const WaveTrack* pLeftTrack);
+   void MoveTrackCluster(const WaveTrack* pLeftTrack, bool bUp); // Up in TrackPanel is left in MixerBoard.
 
    wxBitmap* GetMusicalInstrumentBitmap(const WaveTrack* pLeftTrack);
 
@@ -122,12 +128,18 @@ public:
    
    void UpdateMeters(double t);
 
+   void UpdateWidth();
+
 private:
    void CreateMuteSoloImages();
+   int FindMixerTrackCluster(const WaveTrack* pLeftTrack, MixerTrackCluster** hMixerTrackCluster);
    void LoadMusicalInstruments();
 
    // event handlers
-   void OnCloseWindow(wxCloseEvent & WXUNUSED(event));
+   void OnCloseWindow(wxCloseEvent &WXUNUSED(event));
+   void OnMaximize(wxMaximizeEvent &event);
+   void OnSize(wxSizeEvent &evt);
+
 
 public:
    // mute & solo button images: Create once and store on MixerBoard for use in all MixerTrackClusters.
@@ -144,8 +156,7 @@ public:
    int mMuteSoloWidth;
 
 private:
-   MixerTrackClusterHash   mMixerTrackClusters; // Hash clusters based on the left WaveTrack* they're showing.
-   int                     mMixerTrackClusterWidth;
+   MixerTrackClusterArray  mMixerTrackClusters; 
    MusicalInstrumentArray  mMusicalInstruments; 
    AudacityProject*        mProject;
    wxScrolledWindow*       mScrolledWindow; // Holds the MixerTrackClusters and handles scrolling.

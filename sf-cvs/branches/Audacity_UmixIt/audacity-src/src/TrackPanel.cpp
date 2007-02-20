@@ -2705,6 +2705,13 @@ void TrackPanel::RemoveTrack(Track * toRemove)
    Track *t = iter.First();
    while (t) {
       if (t == toRemove || t == partner) {
+         if (t->GetKind() == Track::Wave)
+         {
+            MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
+            if (pMixerBoard)
+               pMixerBoard->RemoveTrackCluster((WaveTrack*)t);
+         }
+
          name = t->GetName();
          delete t;
          t = iter.RemoveCurrent();
@@ -3046,10 +3053,19 @@ void TrackPanel::HandleRearrange(wxMouseEvent & event)
       SetCursor(*mArrowCursor);
       return;
    }
+   MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
    if (event.m_y < mMoveUpThreshold)
+   {
       mTracks->MoveUp(mCapturedTrack);
+      if (pMixerBoard)
+         pMixerBoard->MoveTrackCluster((WaveTrack*)mCapturedTrack, true);
+   }
    else if (event.m_y > mMoveDownThreshold)
+   {
       mTracks->MoveDown(mCapturedTrack);
+      if (pMixerBoard)
+         pMixerBoard->MoveTrackCluster((WaveTrack*)mCapturedTrack, false);
+   }
    else
       return;
 
@@ -4419,7 +4435,12 @@ void TrackPanel::OnSetTimeTrackRange(wxCommandEvent &event)
 void TrackPanel::OnMoveTrack(wxCommandEvent & event)
 {
    wxASSERT(event.GetId() == OnMoveUpID || event.GetId() == OnMoveDownID);
-   if (mTracks->Move(mPopupMenuTarget, OnMoveUpID == event.GetId())) {
+   bool bUp = (OnMoveUpID == event.GetId());
+   if (mTracks->Move(mPopupMenuTarget, bUp)) {
+      MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
+      if (pMixerBoard)
+         pMixerBoard->MoveTrackCluster((WaveTrack*)mPopupMenuTarget, bUp);
+      
       MakeParentPushState(wxString::Format(_("Moved '%s' %s"),
                                            mPopupMenuTarget->GetName().
                                            c_str(),
