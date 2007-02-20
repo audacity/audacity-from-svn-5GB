@@ -26,8 +26,12 @@ END_EVENT_TABLE()
 const wxSize gSize = wxSize(LYRICS_DEFAULT_WIDTH, LYRICS_DEFAULT_HEIGHT);
 
 LyricsWindow::LyricsWindow(AudacityProject *parent):
-  wxFrame(parent, -1, _("Audacity Lyrics - ") + parent->GetName(), 
-            wxDefaultPosition,  gSize, 
+   wxFrame(parent, -1, 
+            wxString::Format(_("Audacity Lyrics%s"), 
+                              ((parent->GetName() == wxEmptyString) ? 
+                                 wxEmptyString : 
+                                 wxString::Format(wxT("- %s"), parent->GetName()))), 
+            wxDefaultPosition, gSize, 
             wxDEFAULT_FRAME_STYLE | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT))
 {
    mProject = parent;
