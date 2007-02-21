@@ -454,17 +454,10 @@ bool WaveTrack::Paste(double t0, Track *src)
    // Make room for the pasted data, unless the space being pasted in is empty of
    // any clips
    if (!IsEmpty(t0, t0+insertDuration-1.0/mRate) && editClipCanMove) {
-
-      for (it=GetClipIterator(); it; it=it->GetNext())
-      {
-         WaveClip* clip = it->GetData();
-
-         //printf("paste: offsetting already existing clip %i by %f seconds\n",
-         //(int)clip, insertDuration);
-
-         if (clip->GetStartTime() > t0-(1.0/mRate))
-            clip->Offset(insertDuration);
-      }
+      Track *tmp = NULL;
+      Cut(t0, GetEndTime()+1.0/mRate, &tmp);
+      Paste(t0 + insertDuration, tmp);
+      delete tmp;
    }
 
    if (other->GetNumClips() == 1)
@@ -534,7 +527,7 @@ bool WaveTrack::Paste(double t0, Track *src)
 
    // Insert new clips
    //printf("paste: multi clip mode!\n");
-   
+
    if (!editClipCanMove && !IsEmpty(t0, t0+insertDuration-1.0/mRate))
    {
       wxMessageBox(
@@ -542,7 +535,7 @@ bool WaveTrack::Paste(double t0, Track *src)
          _("Error"), wxICON_STOP);
       return false;
    }
-   
+
    for (it=other->GetClipIterator(); it; it=it->GetNext())
    {
       WaveClip* clip = it->GetData();
