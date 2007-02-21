@@ -81,15 +81,15 @@ class Meter : public wxPanel
       VerticalMulti,
       Equalizer,
       Waveform, 
-      MixerTrackCluster, 
-      MixerTrackClusterMono
+      MixerTrackCluster // Doesn't show menu, icon, or L/R labels, but otherwise like VerticalStereo.
    };
 
    Meter(wxWindow* parent, wxWindowID id,
          bool isInput, Style style = HorizontalStereo, 
          const wxPoint& pos = wxDefaultPosition,
          const wxSize& size = wxDefaultSize,
-         const wxColour& rmsColor = wxNullColour); // Darker shades are automatically determined.
+         const wxColour& rmsColor = wxNullColour, // Darker shades are automatically determined.
+         const float decayRate = 60.0f); // dB/sec
 
    ~Meter();
 

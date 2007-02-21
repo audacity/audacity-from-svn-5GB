@@ -138,7 +138,8 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
              bool isInput, Style style /*= HorizontalStereo*/, 
              const wxPoint& pos /*= wxDefaultPosition*/,
              const wxSize& size /*= wxDefaultSize*/,
-             const wxColour& rmsColor /*= wxNullColour*/): // Darker shades are automatically determined.
+             const wxColour& rmsColor /*= wxNullColour*/, // Darker shades are automatically determined.
+             const float decayRate /*= 60.0f*/) : // dB/sec
    wxPanel(parent, id, pos, size),
    mQueue(256),
    mWidth(size.x), mHeight(size.y),
@@ -147,7 +148,7 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mDB(true),
    mDBRange(60),
    mDecay(true),
-   mDecayRate(60),
+   mDecayRate(decayRate),
    mClip(true),
    mNumPeakSamplesToClip(3),
    mPeakHoldDuration(3),
@@ -198,8 +199,8 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mDarkPen = wxPen(wxColour(61, 164, 61), 1, wxSOLID);
    }
 
-   // MixerTrackCluster style has no popup, so disallows SetStyle, so never needs icon.
-   if ((mStyle != MixerTrackCluster) && (mStyle != MixerTrackClusterMono))
+   // MixerTrackCluster style has no menu, so disallows SetStyle, so never needs icon.
+   if (mStyle != MixerTrackCluster)
       CreateIcon(2);
 
    // The new Ruler is much smarter at picking fonts than we are...
@@ -279,7 +280,7 @@ void Meter::OnSize(wxSizeEvent &evt)
 
 void Meter::OnMouse(wxMouseEvent &evt)
 {
-   if ((mStyle == MixerTrackCluster) || (mStyle == MixerTrackClusterMono)) // MixerTrackCluster style has no popup.
+   if (mStyle == MixerTrackCluster) // MixerTrackCluster style has no menu.
       return;
 
   #if wxUSE_TOOLTIPS // Not available in wxX11
@@ -336,7 +337,7 @@ void Meter::OnMouse(wxMouseEvent &evt)
 
 void Meter::SetStyle(Meter::Style newStyle)
 {
-   if ((mStyle == MixerTrackCluster) || (mStyle == MixerTrackClusterMono)) // MixerTrackCluster disallows style change.
+   if (mStyle == MixerTrackCluster) // MixerTrackCluster disallows style change.
       return;
    mStyle = newStyle;
    mLayoutValid = false;
@@ -583,13 +584,15 @@ void Meter::HandleLayout()
 {
    int iconWidth = 0;
    int iconHeight = 0;
-   if ((mStyle != MixerTrackCluster) && (mStyle != MixerTrackClusterMono))
+   int menuWidth = 0;
+   int menuHeight = 0;
+   if (mStyle != MixerTrackCluster) // MixerTrackCluster style has no menu or icon.
    {
       iconWidth = mIcon->GetWidth();
       iconHeight = mIcon->GetHeight();
+      menuWidth = 17;
+      menuHeight = 11;
    }
-   int menuWidth = 17;
-   int menuHeight = 11;
    int width = mWidth;
    int height = mHeight;
    int left = 0, top = 0;
@@ -617,25 +620,26 @@ void Meter::HandleLayout()
    default:
       printf("Style not handled yet!\n");
    case VerticalStereo:
-   case MixerTrackCluster: // Doesn't show menu or icon, but is otherwise like VerticalStereo.
-   case MixerTrackClusterMono: // Likewise, but mono.
       mMenuRect = wxRect(mWidth - menuWidth - 5, mHeight - menuHeight - 2,
                          menuWidth, menuHeight);
-      if ((mHeight < (menuHeight + iconHeight + 8)) || 
-            (mStyle == MixerTrackCluster) || (mStyle == MixerTrackClusterMono))
+      if (mHeight < (menuHeight + iconHeight + 8))
          mIconPos = wxPoint(-999, -999); // Don't display
       else
          mIconPos = wxPoint(mWidth - iconWidth - 1, 1);
       width = intmin(mWidth-(iconWidth+2), mWidth-(menuWidth+3));
+   case MixerTrackCluster: // Doesn't show menu, icon, or L/R labels, but otherwise like VerticalStereo.
       if (width >= mLeftSize.x + mRightSize.x + 24) {
-         mLeftTextPos = wxPoint(2, height-2-mLeftSize.y);
+         if (mStyle != MixerTrackCluster)
+         {
+            mLeftTextPos = wxPoint(2, height-2-mLeftSize.y);
+            left += mLeftSize.x+4;
+         }
          mRightTextPos = wxPoint(width-mLeftSize.x, height-2-mLeftSize.y);
-         left += mLeftSize.x+4;
          width -= mLeftSize.x + mRightSize.x + 8;
       }
       barw = (width-2)/2;
       barh = height - 4;
-      mNumBars = (mStyle != MixerTrackClusterMono) ? 2 : 1;
+      mNumBars = 2;
       mBar[0].vert = true;
       ResetBar(&mBar[0], false);
       mBar[0].r = wxRect(left + width/2 - barw - 1, 2, barw, barh);
@@ -667,7 +671,8 @@ void Meter::HandleLayout()
          mRuler.SetRange(1, 0);
          mRuler.SetFormat(Ruler::RealFormat);
       }
-      mRuler.OfflimitsPixels(mMenuRect.y-mBar[1].r.y, mBar[1].r.height);
+      if (mStyle != MixerTrackCluster) // MixerTrackCluster style has no menu.
+         mRuler.OfflimitsPixels(mMenuRect.y-mBar[1].r.y, mBar[1].r.height);
       break;
    case HorizontalStereo:
       if (mWidth < menuWidth + iconWidth + 8) {
@@ -748,7 +753,7 @@ void Meter::HandleLayout()
    }
 
    // MixerTrackCluster style has no popup, so disallows SetStyle, so never needs icon.
-   //vvvvv There's an ASSERT failure if this:  if ((mStyle != MixerTrackCluster) && (mStyle != MixerTrackClusterMono))
+   //vvvvv There's an ASSERT failure if this:  if (mStyle != MixerTrackCluster)
       CreateIcon(mIconPos.y % 4);
 
    mLayoutValid = true;
@@ -759,9 +764,21 @@ void Meter::HandlePaint(wxDC &dc)
    int i;
 
    dc.SetFont(GetFont());
-   if (mLeftSize.x == 0) {
-      dc.GetTextExtent(mLeftText, &mLeftSize.x, &mLeftSize.y);
-      dc.GetTextExtent(mRightText, &mRightSize.x, &mRightSize.y);
+   if (mLeftSize.x == 0) { // Not yet initialized to dc.
+      if (mStyle != MixerTrackCluster) // MixerTrackCluster style has no L/R labels.
+      {
+         dc.GetTextExtent(mLeftText, &mLeftSize.x, &mLeftSize.y);
+         dc.GetTextExtent(mRightText, &mRightSize.x, &mRightSize.y);
+      }
+      if ((mStyle == VerticalStereo) || (mStyle == MixerTrackCluster)) // VerticalMulti?
+      {
+         // For any vertical style, also need mRightSize big enough for Ruler width.
+         int rulerWidth;
+         int rulerHeight;
+         dc.GetTextExtent(wxT("-88"), &rulerWidth, &rulerHeight); // -88 is nice and wide.
+         if (mRightSize.x < rulerWidth)
+            mRightSize.x = rulerWidth;
+      }
    }
 
    if (!mLayoutValid)
@@ -775,8 +792,8 @@ void Meter::HandlePaint(wxDC &dc)
    dc.DrawRectangle(0, 0, mWidth, mHeight);
 #endif
 
-   // MixerTrackCluster style has no popup or icon.
-   if ((mStyle != MixerTrackCluster) && (mStyle != MixerTrackClusterMono))
+   // MixerTrackCluster style has no menu or icon.
+   if (mStyle != MixerTrackCluster)
    {
       dc.DrawBitmap(*mIcon, mIconPos.x, mIconPos.y);
 
@@ -796,9 +813,13 @@ void Meter::HandlePaint(wxDC &dc)
    if (mNumBars>0)
       mRuler.Draw(dc);
    
-   dc.SetFont(GetFont());
-   dc.DrawText(mLeftText, mLeftTextPos.x, mLeftTextPos.y);
-   dc.DrawText(mRightText, mRightTextPos.x, mRightTextPos.y);
+   // MixerTrackCluster style has no L/R labels.
+   if (mStyle != MixerTrackCluster)
+   {
+      dc.SetFont(GetFont());
+      dc.DrawText(mLeftText, mLeftTextPos.x, mLeftTextPos.y);
+      dc.DrawText(mRightText, mRightTextPos.x, mRightTextPos.y);
+   }
 
    for(i=0; i<mNumBars; i++)
       DrawMeterBar(dc, &mBar[i]);
