@@ -13,7 +13,7 @@
 #include <wx/dcmemory.h>
 #include <wx/arrimpl.cpp>
 #include <wx/settings.h> // for wxSystemSettings::GetSystemColour and wxSystemSettings::GetMetric
-#include <wx/sizer.h>
+// #include <wx/sizer.h> //vvv Just get rid of sizers?
 
 #include "AColor.h"
 #include "Branding.h"
@@ -72,7 +72,7 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
    
    // Not sure why, but sizers aren't getting offset vertically, 
    // probably because not using wxDefaultPosition, 
-   // so positions are calculated explicitly below, but sizers are commented out. 
+   // so positions are calculated explicitly below, and sizers are commented out. 
    //    wxBoxSizer* pBoxSizer_MixerTrackCluster = new wxBoxSizer(wxVERTICAL);
 
    wxColour trackColor = this->GetTrackColor();
@@ -140,7 +140,7 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
    // gain slider & level meter
    ctrlPos.x = kDoubleInset;
    ctrlPos.y += PAN_HEIGHT + kQuadrupleInset;
-   ctrlSize = wxSize((size.GetWidth() / 3), 
+   ctrlSize = wxSize((nHalfWidth - kQuadrupleInset), 
                      (size.GetHeight() - ctrlPos.y - kQuadrupleInset));
    mSlider_Gain = 
       // ASlider doesn't do vertical.  
@@ -151,15 +151,19 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
                      kGainSliderMin, kGainSliderMax, // int minValue, int maxValue, 
                      ctrlPos, ctrlSize, // const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, 
                      wxSL_VERTICAL | wxSL_AUTOTICKS | wxSUNKEN_BORDER); // long style = wxSL_HORIZONTAL, ...
+
    // too much color:   mSlider_Gain->SetBackgroundColour(trackColor);
    // too dark:   mSlider_Gain->SetBackgroundColour(wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW));
    mSlider_Gain->SetBackgroundColour(wxColour(192, 192, 192));
 
-   ctrlPos.x += ctrlSize.GetWidth() + kInset;
-   ctrlSize = wxSize((nHalfWidth - kInset), ctrlSize.GetHeight());
-   mMeter = new Meter(this, -1, false, Meter::MixerTrackCluster, ctrlPos, ctrlSize, trackColor);
-   mMeter->HandleLayout();
-   //this->ResetMeter();
+   ctrlPos.x = nHalfWidth;
+   ctrlSize.SetWidth(nHalfWidth - kInset);
+   mMeter = 
+      new Meter(this, -1, // wxWindow* parent, wxWindowID id, 
+                  false, Meter::MixerTrackCluster, // bool isInput, Style style = HorizontalStereo, 
+                  ctrlPos, ctrlSize, // const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
+                  trackColor, // const wxColour& rmsColor = wxNullColour, // Darker shades are automatically determined.
+                  300.0f); // const float decayRate = 60.0f); // dB/sec
 
    //wxBoxSizer* pBoxSizer_GainAndMeter = new wxBoxSizer(wxHORIZONTAL);
    //pBoxSizer_GainAndMeter->Add(mSlider_Gain, 0, wxALIGN_CENTER | wxALL, kInset);
@@ -178,6 +182,12 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
 
       mMeter->SetToolTip(_T("Level Meter"));
    #endif // wxUSE_TOOLTIPS
+
+   //vvv Necessary? Taken from Lyrics constructor.
+   #ifdef __WXMAC__
+      wxSizeEvent dummyEvent;
+      this->OnSize(dummyEvent);
+   #endif
 }
 
 void MixerTrackCluster::ResetMeter()
@@ -204,7 +214,13 @@ void MixerTrackCluster::UpdateHeight() // For wxSizeEvents, update gain slider a
          PAN_HEIGHT + kQuadrupleInset) - // pan slider
       kQuadrupleInset; // margin below gain slider and meter 
 
-   mSlider_Gain->SetSize(-1, newHeight);
+   // -1 doesn't work right to preserve width for wxSlider, and it doesn't implement GetSize(void).
+   //    mSlider_Gain->SetSize(-1, newHeight);
+   int oldWidth; 
+   int oldHeight;
+   mSlider_Gain->GetSize(&oldWidth, &oldHeight);
+   mSlider_Gain->SetSize(oldWidth, newHeight); 
+
    mMeter->SetSize(-1, newHeight);
 }
 
@@ -324,6 +340,12 @@ void MixerTrackCluster::OnPaint(wxPaintEvent &evt)
    wxPaintDC dc(this);
 
    dc.BeginDrawing();
+
+   #ifdef __WXMAC__
+      // Fill with correct color, not scroller background. Done automatically on Windows.
+      AColor::Medium(&dc, false);
+      dc.DrawRectangle(this->GetRect());
+   #endif
 
    wxSize clusterSize = this->GetSize();
    wxRect bev(0, 0, clusterSize.GetWidth() - 1, clusterSize.GetHeight() - 1);
@@ -971,18 +993,24 @@ void MixerBoard::LoadMusicalInstruments()
    pMusicalInstrument = new MusicalInstrument(bitmap, wxT("loop"));
    mMusicalInstruments.Add(pMusicalInstrument);
 
+   bitmap = new wxBitmap((const char**)organ_org_xpm);
+   dc.SelectObject(*bitmap);
+   AColor::Bevel(dc, false, bev);
+   pMusicalInstrument = new MusicalInstrument(bitmap, wxT("organ_org"));
+   mMusicalInstruments.Add(pMusicalInstrument);
+
    bitmap = new wxBitmap((const char**)perc_xpm);
    dc.SelectObject(*bitmap);
    AColor::Bevel(dc, false, bev);
    pMusicalInstrument = new MusicalInstrument(bitmap, wxT("perc"));
    mMusicalInstruments.Add(pMusicalInstrument);
 
+
    bitmap = new wxBitmap((const char**)sax_xpm);
    dc.SelectObject(*bitmap);
    AColor::Bevel(dc, false, bev);
    pMusicalInstrument = new MusicalInstrument(bitmap, wxT("sax"));
    mMusicalInstruments.Add(pMusicalInstrument);
-
 
    bitmap = new wxBitmap((const char**)snare_xpm);
    dc.SelectObject(*bitmap);
@@ -1002,12 +1030,12 @@ void MixerBoard::LoadMusicalInstruments()
    pMusicalInstrument = new MusicalInstrument(bitmap, wxT("synth"));
    mMusicalInstruments.Add(pMusicalInstrument);
 
+
    bitmap = new wxBitmap((const char**)tambo_xpm);
    dc.SelectObject(*bitmap);
    AColor::Bevel(dc, false, bev);
    pMusicalInstrument = new MusicalInstrument(bitmap, wxT("tambo"));
    mMusicalInstruments.Add(pMusicalInstrument);
-
 
    bitmap = new wxBitmap((const char**)trumpet_horn_xpm);
    dc.SelectObject(*bitmap);
@@ -1027,6 +1055,7 @@ void MixerBoard::LoadMusicalInstruments()
    pMusicalInstrument = new MusicalInstrument(bitmap, wxT("vibraphone_vibes"));
    mMusicalInstruments.Add(pMusicalInstrument);
 
+
    bitmap = new wxBitmap((const char**)vocal_vox_xpm);
    dc.SelectObject(*bitmap);
    AColor::Bevel(dc, false, bev);
@@ -1034,7 +1063,7 @@ void MixerBoard::LoadMusicalInstruments()
    mMusicalInstruments.Add(pMusicalInstrument);
 
 
-   // This one should always be last, so it wins when best score is 0.
+   // This one must be last, so it wins when best score is 0.
    bitmap = new wxBitmap((const char**)_default_instrument_xpm); 
    dc.SelectObject(*bitmap);
    AColor::Bevel(dc, false, bev);
