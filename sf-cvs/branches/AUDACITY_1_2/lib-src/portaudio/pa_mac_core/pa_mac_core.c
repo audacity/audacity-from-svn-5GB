@@ -1,5 +1,5 @@
 /*
- * $Id: pa_mac_core.c,v 1.9.2.4 2006-03-22 12:03:54 dmazzoni Exp $
+ * $Id: pa_mac_core.c,v 1.9.2.5 2007-02-21 06:01:40 llucius Exp $
  * pa_mac_core.c
  * Implementation of PortAudio for Mac OS X Core Audio
  *
@@ -1494,7 +1494,7 @@ static OSStatus PAOSX_DevicePropertyListener (AudioDeviceID					inDevice,
 	userStreamFormat.mFormatID = kAudioFormatLinearPCM;
 	userStreamFormat.mFormatFlags =
 	  kAudioFormatFlagIsFloat |
-	  kAudioFormatFlagIsBigEndian |
+	  kAudioFormatFlagsNativeEndian |
 	  kAudioFormatFlagIsPacked;
 	userStreamFormat.mBitsPerChannel = 32;
         userStreamFormat.mSampleRate = past->past_SampleRate;	// sample rate of the user synthesis code
