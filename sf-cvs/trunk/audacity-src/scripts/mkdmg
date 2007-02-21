@@ -38,7 +38,7 @@ mkdir "$DMG/plug-ins"
 
 # Copy Audacity and clean it
 cp -pR Audacity.app "$DMG"
-strip "$DMG/Audacity.app/Contents/MacOS/audacity"
+strip "$DMG/Audacity.app/Contents/MacOS/"*
 
 # Copy Languages
 for name in locale/*.po
