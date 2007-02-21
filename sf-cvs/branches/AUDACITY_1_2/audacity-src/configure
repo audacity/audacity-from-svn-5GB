@@ -693,16 +693,16 @@ CXXFLAGS
 CCC
 CXXCPP
 PKG_CONFIG'
-ac_subdirs_all='[lib-src/soundtouch]
-[lib-src/libsndfile]
-[lib-src/libresample]
-[lib-src/libsamplerate]
-[lib-src/libmad]
-[lib-src/libogg]
-[lib-src/libvorbis]
-[lib-src/libid3tag]
-[lib-src/portaudio-v19]
-[lib-src/dlcompat]'
+ac_subdirs_all='lib-src/soundtouch
+lib-src/libsndfile
+lib-src/libresample
+lib-src/libsamplerate
+lib-src/libmad
+lib-src/libogg
+lib-src/libvorbis
+lib-src/libid3tag
+lib-src/portaudio-v19
+lib-src/dlcompat'
 
 # Initialize some variables set by options.
 ac_init_help=
@@ -5595,7 +5595,7 @@ _ACEOF
 
    if test ! -f "lib-src/soundtouch/Makefile"; then
 		echo "--- Configuring soundtouch";
-		subdirs="$subdirs [lib-src/soundtouch]"
+		subdirs="$subdirs lib-src/soundtouch"
 
    fi
 fi
@@ -6111,7 +6111,7 @@ done
 
    if test ! -f "lib-src/libsndfile/Makefile"; then
 		echo "--- Configuring libsndfile";
-		subdirs="$subdirs [lib-src/libsndfile]"
+		subdirs="$subdirs lib-src/libsndfile"
 
    fi
 fi
@@ -6166,7 +6166,7 @@ _ACEOF
 
    if test ! -f "lib-src/libresample/Makefile"; then
 		echo "--- Configuring libresample";
-		subdirs="$subdirs [lib-src/libresample]"
+		subdirs="$subdirs lib-src/libresample"
 
    fi
 fi
@@ -6183,7 +6183,7 @@ _ACEOF
 
    if test ! -f "lib-src/libsamplerate/Makefile"; then
 		echo "--- Configuring libsamplerate";
-		subdirs="$subdirs [lib-src/libsamplerate]"
+		subdirs="$subdirs lib-src/libsamplerate"
 
    fi
 fi
@@ -6217,7 +6217,7 @@ _ACEOF
 
    if test ! -f "lib-src/libmad/Makefile"; then
 		echo "--- Configuring libmad";
-		subdirs="$subdirs [lib-src/libmad]"
+		subdirs="$subdirs lib-src/libmad"
 
    fi
 fi
@@ -6566,13 +6566,13 @@ _ACEOF
 
    if test ! -f "lib-src/libogg/Makefile"; then
 		echo "--- Configuring libogg";
-		subdirs="$subdirs [lib-src/libogg]"
+		subdirs="$subdirs lib-src/libogg"
 
    fi
 
    if test ! -f "lib-src/libvorbis/Makefile"; then
 		echo "--- Configuring libvorbis";
-		subdirs="$subdirs [lib-src/libvorbis]"
+		subdirs="$subdirs lib-src/libvorbis"
 
    fi
 fi
@@ -6845,7 +6845,7 @@ _ACEOF
 
    if test ! -f "lib-src/libid3tag/Makefile"; then
 		echo "--- Configuring libid3tag";
-		subdirs="$subdirs [lib-src/libid3tag]"
+		subdirs="$subdirs lib-src/libid3tag"
 
    fi
 fi
@@ -7117,7 +7117,7 @@ fi
 #
 #   if test ! -f "lib-src/libflac/Makefile"; then
 #		echo "--- Configuring libflac";
-#		AC_CONFIG_SUBDIRS([[lib-src/libflac]])
+#		AC_CONFIG_SUBDIRS([lib-src/libflac])
 #   fi
 #fi
 
@@ -7568,7 +7568,7 @@ fi
 		use_ladspa="yes";
 	fi
 
-	subdirs="$subdirs [lib-src/portaudio-v19]"
+	subdirs="$subdirs lib-src/portaudio-v19"
 
 
 else
@@ -8022,7 +8022,7 @@ if [ "$use_ladspa" = "yes" ] ; then
         CXXFLAGS="$CXXFLAGS -I../lib-src/dlcompat"
         if test ! -f "lib-src/dlcompat/Makefile"; then
            echo "--- Configuring dlcompat";
-           subdirs="$subdirs [lib-src/dlcompat]"
+           subdirs="$subdirs lib-src/dlcompat"
 
         fi
       fi
