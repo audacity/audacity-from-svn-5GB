@@ -297,7 +297,7 @@ if [[ "$use_soundtouch" = "local" ]] ; then
 
    if test ! -f "lib-src/soundtouch/Makefile"; then
 		echo "--- Configuring soundtouch";
-		AC_CONFIG_SUBDIRS([[lib-src/soundtouch]])
+		AC_CONFIG_SUBDIRS([lib-src/soundtouch])
    fi
 fi
 
@@ -359,7 +359,7 @@ if [[ "$use_libsndfile" = "local" ]] ; then
 
    if test ! -f "lib-src/libsndfile/Makefile"; then
 		echo "--- Configuring libsndfile";
-		AC_CONFIG_SUBDIRS([[lib-src/libsndfile]])
+		AC_CONFIG_SUBDIRS([lib-src/libsndfile])
    fi
 fi
 
@@ -416,7 +416,7 @@ if [[ "$use_libresample" = "yes" ]] ; then
 
    if test ! -f "lib-src/libresample/Makefile"; then
 		echo "--- Configuring libresample";
-		AC_CONFIG_SUBDIRS([[lib-src/libresample]])
+		AC_CONFIG_SUBDIRS([lib-src/libresample])
    fi
 fi
 
@@ -429,7 +429,7 @@ if [[ "$use_libsamplerate" = "local" ]] ; then
 
    if test ! -f "lib-src/libsamplerate/Makefile"; then
 		echo "--- Configuring libsamplerate";
-		AC_CONFIG_SUBDIRS([[lib-src/libsamplerate]])
+		AC_CONFIG_SUBDIRS([lib-src/libsamplerate])
    fi
 fi
 
@@ -453,7 +453,7 @@ if [[ "$use_libmad" = "yes" ]] ; then
 
    if test ! -f "lib-src/libmad/Makefile"; then
 		echo "--- Configuring libmad";
-		AC_CONFIG_SUBDIRS([[lib-src/libmad]])
+		AC_CONFIG_SUBDIRS([lib-src/libmad])
    fi
 fi
 
@@ -506,12 +506,12 @@ if [[ $use_vorbis = "yes" ]] ; then
 
    if test ! -f "lib-src/libogg/Makefile"; then
 		echo "--- Configuring libogg";
-		AC_CONFIG_SUBDIRS([[lib-src/libogg]])
+		AC_CONFIG_SUBDIRS([lib-src/libogg])
    fi
 
    if test ! -f "lib-src/libvorbis/Makefile"; then
 		echo "--- Configuring libvorbis";
-		AC_CONFIG_SUBDIRS([[lib-src/libvorbis]])
+		AC_CONFIG_SUBDIRS([lib-src/libvorbis])
    fi
 fi
 
@@ -541,7 +541,7 @@ if [[ $use_libid3tag = "yes" ]] ; then
 
    if test ! -f "lib-src/libid3tag/Makefile"; then
 		echo "--- Configuring libid3tag";
-		AC_CONFIG_SUBDIRS([[lib-src/libid3tag]])
+		AC_CONFIG_SUBDIRS([lib-src/libid3tag])
    fi
 fi
 
@@ -572,7 +572,7 @@ fi
 #
 #   if test ! -f "lib-src/libflac/Makefile"; then
 #		echo "--- Configuring libflac";
-#		AC_CONFIG_SUBDIRS([[lib-src/libflac]])
+#		AC_CONFIG_SUBDIRS([lib-src/libflac])
 #   fi
 #fi
 
@@ -693,7 +693,7 @@ if [[ "$use_portaudio" = "v19" ]] ; then
 		use_ladspa="yes";
 	fi
 
-	AC_CONFIG_SUBDIRS([[lib-src/portaudio-v19]])
+	AC_CONFIG_SUBDIRS([lib-src/portaudio-v19])
 
 else
 
@@ -796,8 +796,11 @@ case "$host_os" in
 		   gcc3="no"
 		fi
 
-		echo "Enabling prebinding"
-		LIBS="$LIBS -prebind"
+      # Not sure if this should be done on Intel or not so...
+      if [[ `uname -p` = "powerpc" ]] ; then
+         echo "Enabling prebinding"
+         LIBS="$LIBS -prebind"
+      fi
 
 		CXXFLAGS="$CXXFLAGS -I${NEXT_ROOT}/Developer/Headers/FlatCarbon"
 
@@ -834,7 +837,7 @@ if [[ "$use_ladspa" = "yes" ]] ; then
         CXXFLAGS="$CXXFLAGS -I../lib-src/dlcompat"
         if test ! -f "lib-src/dlcompat/Makefile"; then
            echo "--- Configuring dlcompat";
-           AC_CONFIG_SUBDIRS([[lib-src/dlcompat]])
+           AC_CONFIG_SUBDIRS([lib-src/dlcompat])
         fi		
       fi
 
