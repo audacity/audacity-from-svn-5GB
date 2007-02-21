@@ -1,0 +1,226 @@
+Index: config.guess
+===================================================================
+RCS file: /pack/cvsroots/wxwidgets/wxWidgets/config.guess,v
+retrieving revision 1.10.2.4
+diff -w -u -r1.10.2.4 config.guess
+--- config.guess	2004/07/31 13:57:26	1.10.2.4
++++ config.guess	2007/02/21 03:56:14
+@@ -1197,7 +1197,7 @@
+ 	exit 0 ;;
+     *:Darwin:*:*)
+ 	case `uname -p` in
+-	    *86) UNAME_PROCESSOR=i686 ;;
++	    *86) UNAME_PROCESSOR=i386 ;;
+ 	    powerpc) UNAME_PROCESSOR=powerpc ;;
+ 	esac
+ 	echo ${UNAME_PROCESSOR}-apple-darwin${UNAME_RELEASE}
+Index: configure.in
+===================================================================
+RCS file: /pack/cvsroots/wxwidgets/wxWidgets/configure.in,v
+retrieving revision 1.624.2.70
+diff -w -u -r1.624.2.70 configure.in
+--- configure.in	2006/04/13 07:40:12	1.624.2.70
++++ configure.in	2007/02/21 03:56:17
+@@ -299,6 +299,17 @@
+     DEFAULT_DEFAULT_wxUSE_MAC=1
+   ;;
+ 
++  *-*-darwin* )
++    dnl PowerPC Darwin based distributions (including Mac OS X)
++    USE_BSD=1
++    USE_DARWIN=1
++    SO_SUFFIX=dylib
++    AC_DEFINE(__BSD__)
++    AC_DEFINE(__DARWIN__)
++    AC_DEFINE(__I386__)
++    DEFAULT_DEFAULT_wxUSE_MAC=1
++  ;;
++
+   *-*-beos* )
+     dnl leave USE_UNIX on - BeOS is sufficiently Unix-like for this
+     USE_BEOS=1
+@@ -1290,7 +1301,7 @@
+     dnl The other BSD's should probably go in here too, since this is
+     dnl to workaround a strange static lib BSDism.
+     dnl Mac OS X install seems to ignore -p option...
+-    powerpc-*-darwin* )
++    *-*-darwin* )
+         INSTALL_PROGRAM="cp -fp"
+         INSTALL_DATA="cp -fp"
+         ;;
+Index: include/wx/font.h
+===================================================================
+RCS file: /pack/cvsroots/wxwidgets/wxWidgets/include/wx/font.h,v
+retrieving revision 1.32.2.3
+diff -w -u -r1.32.2.3 font.h
+--- include/wx/font.h	2005/06/20 17:36:12	1.32.2.3
++++ include/wx/font.h	2007/02/21 03:56:17
+@@ -138,8 +138,8 @@
+     wxString GetWeightString() const;
+ 
+     // Unofficial API, don't use
+-    virtual void SetNoAntiAliasing( bool no = TRUE ) {  }
+-    virtual bool GetNoAntiAliasing() { return FALSE; }
++    virtual void SetNoAntiAliasing( bool no = TRUE ) { mNoAntiAliasing = no; }
++    virtual bool GetNoAntiAliasing() { return mNoAntiAliasing; }
+ 
+     // the default encoding is used for creating all fonts with default
+     // encoding parameter
+@@ -150,6 +150,8 @@
+     // get the internal data
+     wxFontRefData *GetFontData() const
+         { return (wxFontRefData *)m_refData; }
++
++    bool mNoAntiAliasing;
+     
+ private:
+     // the currently default encoding: by default, it's the default system
+Index: src/common/intl.cpp
+===================================================================
+RCS file: /pack/cvsroots/wxwidgets/wxWidgets/src/common/intl.cpp,v
+retrieving revision 1.82.2.23
+diff -w -u -r1.82.2.23 intl.cpp
+--- src/common/intl.cpp	2005/06/20 17:41:02	1.82.2.23
++++ src/common/intl.cpp	2007/02/21 03:56:19
+@@ -30,6 +30,10 @@
+ #include <locale.h>
+ #include <ctype.h>
+ #include <stdlib.h>
++
++// dmazzoni: langinfo.h is not included in Mac OS X 10.2
++#undef HAVE_LANGINFO_H
++
+ #ifdef HAVE_LANGINFO_H
+   #include <langinfo.h>
+ #endif
+@@ -418,6 +422,7 @@
+ 
+ #if wxUSE_WCHAR_T
+     wxCSConv *csConv = NULL;
++
+     if ( !!charset )
+         csConv = new wxCSConv(charset);
+ 
+@@ -456,12 +461,13 @@
+             if (targetEnc == wxFONTENCODING_SYSTEM)
+             {
+                 wxFontEncodingArray a = wxEncodingConverter::GetPlatformEquivalents(enc);
+-                if (a[0] == enc)
++                if (a.GetCount() > 0 && a[0] == enc)  // dmazzoni
+                     // no conversion needed, locale uses native encoding
+                     convertEncoding = FALSE;
+                 if (a.GetCount() == 0)
+                     // we don't know common equiv. under this platform
+                     convertEncoding = FALSE;
++                else // dmazzoni
+                 targetEnc = a[0];
+             }
+         }
+Index: src/mac/app.cpp
+===================================================================
+RCS file: /pack/cvsroots/wxwidgets/wxWidgets/src/mac/Attic/app.cpp,v
+retrieving revision 1.72.2.19
+diff -w -u -r1.72.2.19 app.cpp
+--- src/mac/app.cpp	2005/06/20 17:42:30	1.72.2.19
++++ src/mac/app.cpp	2007/02/21 03:56:19
+@@ -1497,6 +1497,11 @@
+         	sleepTime = 0 ;
+         else
+         	sleepTime = GetCaretTime() / 2 ;
++
++        // dmazzoni: hack to never sleep more than 1/60 of a second
++        // otherwise Audacity's user interface doesn't update
++        // frequently enough
++        sleepTime = 1;
+     }
+     if ( event.what != kHighLevelEvent )
+         SetRectRgn( (RgnHandle) s_macCursorRgn , event.where.h , event.where.v ,  event.where.h + 1 , event.where.v + 1 ) ;
+Index: src/mac/cursor.cpp
+===================================================================
+RCS file: /pack/cvsroots/wxwidgets/wxWidgets/src/mac/Attic/cursor.cpp,v
+retrieving revision 1.7.2.3
+diff -w -u -r1.7.2.3 cursor.cpp
+--- src/mac/cursor.cpp	2005/06/20 17:42:35	1.7.2.3
++++ src/mac/cursor.cpp	2007/02/21 03:56:19
+@@ -268,8 +268,13 @@
+             *((*(**ch).crsrData) + y * bytesPerRow + x) = 
+                 GetCTabIndex( newColors , &col) ;
+         }
++#ifdef WORDS_BIGENDIAN
+         (**ch).crsr1Data[y] = rowbits ;
+         (**ch).crsrMask[y] = maskbits ;
++#else
++        (**ch).crsr1Data[y] = CFSwapInt16(rowbits) ;
++        (**ch).crsrMask[y] = CFSwapInt16(maskbits) ;
++#endif
+     }
+     if ( !bHasMask )
+     {
+Index: src/mac/dc.cpp
+===================================================================
+RCS file: /pack/cvsroots/wxwidgets/wxWidgets/src/mac/Attic/dc.cpp,v
+retrieving revision 1.56.2.13
+diff -w -u -r1.56.2.13 dc.cpp
+--- src/mac/dc.cpp	2005/06/20 17:42:36	1.56.2.13
++++ src/mac/dc.cpp	2007/02/21 03:56:19
+@@ -1368,7 +1368,11 @@
+ 	long xx = XLOG2DEVMAC(x);
+ 	long yy = YLOG2DEVMAC(y);
+ #if TARGET_CARBON
+-	bool useDrawThemeText = ( DrawThemeTextBox != (void*) kUnresolvedCFragSymbolAddress ) ;
++        // dmazzoni hack: Audacity is too slow on Mac OS X 10.2
++        // unless we turn off "theme text" (anti-aliased":
++	// bool useDrawThemeText = ( DrawThemeTextBox != (void*) kUnresolvedCFragSymbolAddress ) ;
++        bool useDrawThemeText = false;
++
+ 	if ( IsKindOf(CLASSINFO( wxPrinterDC ) ) ||  m_font.GetNoAntiAliasing() )
+ 	    useDrawThemeText = false ;
+ #endif
+@@ -1515,7 +1519,10 @@
+ 	FontInfo fi ;
+ 	::GetFontInfo( &fi ) ;
+ #if TARGET_CARBON
+-	bool useGetThemeText = ( GetThemeTextDimensions != (void*) kUnresolvedCFragSymbolAddress ) ;
++        // dmazzoni hack: Audacity is too slow on Mac OS X 10.2
++        // unless we turn off "theme text" (anti-aliased":
++        bool useGetThemeText = false;
++	//bool useGetThemeText = ( GetThemeTextDimensions != (void*) kUnresolvedCFragSymbolAddress ) ;
+ 	if ( IsKindOf(CLASSINFO( wxPrinterDC ) ) || ((wxFont*)&m_font)->GetNoAntiAliasing() )
+ 	    useGetThemeText = false ;
+ #endif
+Index: src/mac/dcclient.cpp
+===================================================================
+RCS file: /pack/cvsroots/wxwidgets/wxWidgets/src/mac/Attic/dcclient.cpp,v
+retrieving revision 1.19.2.2
+diff -w -u -r1.19.2.2 dcclient.cpp
+--- src/mac/dcclient.cpp	2005/06/20 17:42:36	1.19.2.2
++++ src/mac/dcclient.cpp	2007/02/21 03:56:19
+@@ -68,6 +68,12 @@
+ 
+ wxWindowDC::~wxWindowDC()
+ {
++   // dmazzoni - this fixes a serious crashing bug
++   // To trigger it more rapidly, set the MallocScribble and MallocGuardEdges
++   // environment variables first...
++   if (!m_macPort)
++      return;
++
+     // set clipping region to full window so that the OS can draw controls everywhere
+     RgnHandle       visRgn = NewRgn() ;
+     GetPortVisibleRegion( (CGrafPtr) m_macPort , visRgn );
+Index: src/mac/font.cpp
+===================================================================
+RCS file: /pack/cvsroots/wxwidgets/wxWidgets/src/mac/Attic/font.cpp,v
+retrieving revision 1.14.2.2
+diff -w -u -r1.14.2.2 font.cpp
+--- src/mac/font.cpp	2005/06/20 17:42:40	1.14.2.2
++++ src/mac/font.cpp	2007/02/21 03:56:19
+@@ -157,6 +157,8 @@
+                     const wxString& faceName,
+                     wxFontEncoding encoding)
+ {
++    mNoAntiAliasing = false;
++
+     UnRef();
+     m_refData = new wxFontRefData(pointSize, family, style, weight,
+                                   underlined, faceName, encoding);
