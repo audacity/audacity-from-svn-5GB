@@ -22,17 +22,19 @@
 
 #include "MusicalInstruments/kick.xpm"
 #include "MusicalInstruments/loop.xpm"
+#include "MusicalInstruments/organ_org.xpm"
 #include "MusicalInstruments/perc.xpm"
-#include "MusicalInstruments/sax.xpm"
 
+#include "MusicalInstruments/sax.xpm"
 #include "MusicalInstruments/snare.xpm"
 #include "MusicalInstruments/string_violin_cello.xpm"
 #include "MusicalInstruments/synth.xpm"
-#include "MusicalInstruments/tambo.xpm"
 
+#include "MusicalInstruments/tambo.xpm"
 #include "MusicalInstruments/trumpet_horn.xpm"
 #include "MusicalInstruments/turntable.xpm"
 #include "MusicalInstruments/vibraphone_vibes.xpm"
+
 #include "MusicalInstruments/vocal_vox.xpm"
 
 // This one should always be last, so it wins when best score is 0.
