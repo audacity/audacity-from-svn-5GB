@@ -76,7 +76,7 @@
 #include "../Tags.h"
 #include "../WaveTrack.h"
 
-#if defined(__WXMAC__) && defined(__i686)
+#if defined(__WXMAC__) && defined(__i386)
 #include <dlfcn.h>
 #endif
 
@@ -429,7 +429,7 @@ void ReleaseMP3Exporter()
    gMP3Exporter = NULL;
 }
 
-#elif defined(__MACOSX__) && !defined(__i686)
+#elif defined(__MACOSX__) && !defined(__i386)
 
    /* --------------------------------------------------------------------------*/
 
@@ -754,7 +754,7 @@ void ReleaseMP3Exporter()
    gMP3Exporter = NULL;
 }
 
-#elif defined(__WXMAC__) && defined(__i686)
+#elif defined(__WXMAC__) && defined(__i386)
 
    /* Intel Mac : libmp3lame.dylib
       Very similar to the Linux code */
@@ -1010,7 +1010,7 @@ void ReleaseMP3Exporter()
    gMP3Exporter = NULL;
 }
 
-#elif defined(__WXMAC__) && !defined(__i686)
+#elif defined(__WXMAC__) && !defined(__i386)
 
    /* Old Mac OS 9 code */
 
