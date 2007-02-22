@@ -942,12 +942,15 @@ void AudacityProject::CreateRecentFilesMenu(CommandManager *c)
 // when calling an effect.
 void AudacityProject::ResolveEffectIndices(EffectArray *effects)
 {
+   mNormalizeIndex = -1;
+   mStereoToMonoIndex = -1;
+
    for (unsigned int i = 0; i < effects->GetCount(); i++) {
-      wxString effectName = (*effects)[i]->GetEffectName();
-      if (effectName == wxT("Normalize...")) {
+      wxString effectIdentifier = (*effects)[i]->GetEffectIdentifier();
+      if (effectIdentifier == wxT("Normalize")) {
          mNormalizeIndex = i;
       }
-      else if (effectName == wxT("Stereo To Mono")) {
+      else if (effectIdentifier == wxT("StereoToMono")) {
          mStereoToMonoIndex = i;
       }
    }
@@ -1905,6 +1908,7 @@ void AudacityProject::OnEffect(int type, int index)
    Effect *f = NULL;
 
    effects = Effect::GetEffects(type);
+
    f = (*effects)[index];
    delete effects;
 
@@ -2031,7 +2035,8 @@ void AudacityProject::OnProcessEffect(int index)
 
 void AudacityProject::OnStereoToMono(int index)
 {
-   OnEffect(ALL_EFFECTS, mStereoToMonoIndex);
+   if (mStereoToMonoIndex >= 0)
+      OnEffect(ALL_EFFECTS, mStereoToMonoIndex);
 }
 
 void AudacityProject::OnProcessPlugin(int index)
