@@ -78,7 +78,7 @@ END_EVENT_TABLE()
 
 ////Standard Constructor
 TranscriptionToolBar::TranscriptionToolBar()
-: ToolBar(TranscriptionBarID, _("Transcription"))
+: ToolBar(TranscriptionBarID, _("Transcription"), wxT("Transcription"))
 {
 }
 

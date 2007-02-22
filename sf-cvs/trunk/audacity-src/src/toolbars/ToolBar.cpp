@@ -85,12 +85,14 @@ END_EVENT_TABLE()
 //
 ToolBar::ToolBar( int type,
                   const wxString &label,
+                  const wxString &section,
                   bool resizable )
 : wxPanel()
 {
    // Save parameters
    mType = type;
    mLabel = label;
+   mSection = section;
    mTitle.Printf( _("Audacity %s ToolBar"), mLabel.c_str() );
    mResizable = resizable;
 
@@ -123,6 +125,14 @@ wxString ToolBar::GetTitle()
 wxString ToolBar::GetLabel()
 {
    return mLabel;
+}
+
+//
+// Returns the toolbar preferences section
+//
+wxString ToolBar::GetSection()
+{
+   return mSection;
 }
 
 //

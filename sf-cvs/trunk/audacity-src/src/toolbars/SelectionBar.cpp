@@ -72,7 +72,7 @@ BEGIN_EVENT_TABLE(SelectionBar, ToolBar)
 END_EVENT_TABLE()
 
 SelectionBar::SelectionBar()
-: ToolBar(SelectionBarID, _("Selection")),
+: ToolBar(SelectionBarID, _("Selection"), wxT("Selection")),
   mStart(0.0), mEnd(0.0), mAudio(0.0),
   mModifyingSelection(false), mLeftTime(NULL)  
 {
