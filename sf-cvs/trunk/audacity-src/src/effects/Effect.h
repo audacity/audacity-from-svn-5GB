@@ -84,6 +84,11 @@ class Effect {
    // This name will go in the menu bar;
    // append "..." if your effect pops up a dialog
    virtual wxString GetEffectName() = 0;
+
+   // Totally optional - if you need a way to identify your effect
+   // from somewhere else in the program.  This should be human-readable,
+   // but should NOT be translated.  Use wxT(""), not _("").
+   virtual wxString GetEffectIdentifier() { return wxT(""); }
    
    // Each subclass of Effect should override this method.
    // This name will go in the progress dialog, but can be used

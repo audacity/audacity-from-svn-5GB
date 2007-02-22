@@ -31,6 +31,11 @@ public:
    virtual wxString GetEffectName() {
       return wxString(_("Normalize..."));
    }
+
+   // This is just used internally, users should not see it.  Do not translate.
+   virtual wxString GetEffectIdentifier() {
+      return wxT("Normalize");
+   }
    
    virtual wxString GetEffectAction() {
       return wxString(_("Normalizing..."));

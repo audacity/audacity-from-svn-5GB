@@ -23,6 +23,11 @@ public:
       return wxString(_("Stereo To Mono"));
    }
 
+   // Used internally, users will not see this.  Do not translate.
+   virtual wxString GetEffectIdentifier() {
+      return wxT("StereoToMono");
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Applying Stereo To Mono"));
    }
