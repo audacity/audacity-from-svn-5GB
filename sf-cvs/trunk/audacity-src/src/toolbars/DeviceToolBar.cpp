@@ -51,7 +51,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 DeviceToolBar::DeviceToolBar()
-: ToolBar(DeviceBarID, _("Device"))
+: ToolBar(DeviceBarID, _("Device"), wxT("Device"))
 {
 }
 

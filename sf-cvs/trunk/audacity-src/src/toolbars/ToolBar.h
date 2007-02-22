@@ -75,7 +75,7 @@ class ToolBar:public wxPanel
 
  public:
 
-   ToolBar(int type, const wxString & label, bool resizable = false);
+   ToolBar(int type, const wxString & label, const wxString & section, bool resizable = false);
    virtual ~ToolBar();
 
    virtual void Create(wxWindow *parent);
@@ -87,6 +87,7 @@ class ToolBar:public wxPanel
    int GetType();
    wxString GetTitle();
    wxString GetLabel();
+   wxString GetSection();
    ToolDock *GetDock();
 
    bool Expose( bool show = true );
@@ -166,6 +167,7 @@ class ToolBar:public wxPanel
 
    wxString mTitle;
    wxString mLabel;
+   wxString mSection;
    int mType;
 
    bool mVisible;

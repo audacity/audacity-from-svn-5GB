@@ -79,7 +79,7 @@ END_EVENT_TABLE()
 
 //Standard constructor
 ControlToolBar::ControlToolBar()
-: ToolBar(ControlBarID, _("Control"))
+: ToolBar(ControlBarID, _("Control"), wxT("Control"))
 {
    mPaused = false;
    mSizer = NULL;

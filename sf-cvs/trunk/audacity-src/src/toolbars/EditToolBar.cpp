@@ -72,7 +72,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 EditToolBar::EditToolBar()
-: ToolBar(EditBarID, _("Edit"))
+: ToolBar(EditBarID, _("Edit"), wxT("Edit"))
 {
 }
 

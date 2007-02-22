@@ -55,7 +55,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 MixerToolBar::MixerToolBar()
-: ToolBar(MixerBarID, _("Mixer"))
+: ToolBar(MixerBarID, _("Mixer"), wxT("Mixer"))
 {
 }
 

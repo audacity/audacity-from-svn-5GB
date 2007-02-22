@@ -87,7 +87,7 @@ END_EVENT_TABLE()
 
 //Standard constructor
 ToolsToolBar::ToolsToolBar()
-: ToolBar(ToolsBarID, _("Tools"))
+: ToolBar(ToolsBarID, _("Tools"), wxT("Tools"))
 {
    //Read the following wxASSERTs as documentating a design decision
    wxASSERT( selectTool   == selectTool   - firstTool );

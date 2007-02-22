@@ -46,7 +46,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 MeterToolBar::MeterToolBar()
-: ToolBar(MeterBarID, _("Meter"), true)
+: ToolBar(MeterBarID, _("Meter"), wxT("Meter"), true)
 {
    mSizer = NULL;
    mPlayMeter = NULL;
