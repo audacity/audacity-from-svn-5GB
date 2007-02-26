@@ -850,6 +850,9 @@ void MixerBoard::CreateMuteSoloImages()
 {
    // Much of this is taken TrackLabel::DrawMuteSolo 
    wxMemoryDC dc;
+   wxBitmap dummy(100, 100);
+   dc.SelectObject(dummy);
+
    wxString str = _("Mute"); 
    long textWidth, textHeight;
    AColor::SetLabelFont(dc);
