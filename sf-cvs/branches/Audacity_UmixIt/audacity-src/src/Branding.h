@@ -14,7 +14,7 @@
 #pragma once
 
 #include "Audacity.h"
-#include "xml/xmltaghandler.h"
+#include "xml/XMLTagHandler.h"
 
 #include <wx/filename.h>
 
