@@ -485,8 +485,9 @@ MixerBoard::MixerBoard(AudacityProject* parent):
   wxFrame(parent, -1,
             wxString::Format(_("Audacity Mixer Board%s"), 
                               ((parent->GetName() == wxEmptyString) ? 
-                                 wxEmptyString : 
-                                 wxString::Format(wxT("- %s"), parent->GetName()))), 
+                                 wxT("") : 
+                                 wxString::Format(wxT("- %s"),
+                                                  parent->GetName().c_str()).c_str())), 
             wxDefaultPosition, kDefaultSize, 
             wxDEFAULT_FRAME_STYLE | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT))
 {
