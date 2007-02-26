@@ -27,7 +27,9 @@ class wxPoint;
 //
 #define FRAC_SLIDER 1    // 0.0...1.0
 #define DB_SLIDER 2      // -36...36 dB
-#define PAN_SLIDER 3     // -1.0...1.0
+#define PAN_SLIDER 4     // -1.0...1.0
+
+#define NO_AQUA 0x100
 
 // Customizable slider only: If stepValue is STEP_CONTINUOUS,
 // every value on the slider between minValue and maxValue
@@ -78,6 +80,7 @@ class LWSlider
       float stepValue,
       bool canUseShift,
       int style,
+      bool aquaOk,
       bool heavyweight=false
    );
 

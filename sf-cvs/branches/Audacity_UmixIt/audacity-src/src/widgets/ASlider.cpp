@@ -173,8 +173,14 @@ LWSlider::LWSlider(wxWindow * parent,
          bool heavyweight /* = false */
          )
 {
+   bool aquaOk = true;
+   if (style & NO_AQUA) {
+      style -= NO_AQUA;
+      aquaOk = false;
+   }
+
    Init(parent, name, pos, size, minValue, maxValue,
-      stepValue, canUseShift, style, heavyweight);
+      stepValue, canUseShift, style, aquaOk, heavyweight);
 }
 
 // Construct predefined slider
@@ -187,6 +193,11 @@ LWSlider::LWSlider(wxWindow *parent,
 {
    wxString leftLabel, rightLabel;
    float minValue, maxValue, stepValue;
+   bool aquaOk = true;
+   if (style & NO_AQUA) {
+      style -= NO_AQUA;
+      aquaOk = false;
+   }
 
    switch(style)
    {
@@ -213,20 +224,21 @@ LWSlider::LWSlider(wxWindow *parent,
    }
 
    Init(parent, name, pos, size, minValue, maxValue, stepValue,
-        true, style, heavyweight);
+        true, style, aquaOk, heavyweight);
 }
 
 void LWSlider::Init(wxWindow * parent,
-     wxString name,
-     const wxPoint &pos,
-     const wxSize &size,
-     float minValue,
-     float maxValue,
-     float stepValue,
-     bool canUseShift,
-     int style,
-     bool heavyweight /* = false */
-     )
+                    wxString name,
+                    const wxPoint &pos,
+                    const wxSize &size,
+                    float minValue,
+                    float maxValue,
+                    float stepValue,
+                    bool canUseShift,
+                    int style,
+                    bool aquaOk,
+                    bool heavyweight /* = false */
+                    )
 {
    mName = name;
    mStyle = style;
@@ -256,8 +268,11 @@ void LWSlider::Init(wxWindow * parent,
    AColor::Medium(dc, true);   
    wxColour selBkgnd = dc->GetBrush().GetColour();
 
-   wxImage *backgroundImage =
-      CreateSysBackground(mWidth, mHeight, 0, bkgnd);
+   wxImage *backgroundImage;
+   if (aquaOk)
+      backgroundImage = CreateSysBackground(mWidth, mHeight, 0, bkgnd);
+   else
+      backgroundImage = CreateBackground(mWidth, mHeight, bkgnd);
 #if wxCHECK_VERSION(2, 5, 0)
    wxBitmap backgroundBitmap(backgroundImage);
 #else
