@@ -52,7 +52,7 @@ int PCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
 
    memset(&info, 0, sizeof(info));
 
-   SNDFILE *sf = sf_open(FILENAME(mAliasedFileName.GetFullPath()), SFM_READ, &info);
+   SNDFILE *sf = sf_open(mAliasedFullPath, SFM_READ, &info);
    if (!sf)
       return 0;
 

@@ -181,7 +181,7 @@ int LegacyBlockFile::ReadData(samplePtr data, sampleFormat format,
    info.frames = mLen + (mSummaryInfo.totalSummaryBytes /
                          SAMPLE_SIZE(mFormat));
    
-   SNDFILE *sf = sf_open(FILENAME(mFileName.GetFullPath()), SFM_READ, &info);
+   SNDFILE *sf = sf_open(mFullPath, SFM_READ, &info);
 
    if (!sf)
       return 0;
