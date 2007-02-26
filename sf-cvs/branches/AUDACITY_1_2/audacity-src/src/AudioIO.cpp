@@ -974,10 +974,7 @@ void AudioIO::StopStream()
       mAudioThreadShouldCallFillBuffersOnce = true;
 
       while( mAudioThreadShouldCallFillBuffersOnce == true )
-      {
-         wxYield();
          wxUsleep( 50 );
-      }
 
       //
       // Everything is taken care of.  Now, just free all the resources
