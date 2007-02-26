@@ -178,7 +178,8 @@ bool ImportXMLTagHandler::HandleXMLTag(const char *tag, const char **attrs)
       if (XMLValueChecker::IsGoodFileName(strPathName, fileName.GetPath(wxPATH_GET_VOLUME))) {
          strPathName = fileName.GetFullPath();
       } else { 
-         wxLogWarning(wxT("Could not import file: %s"), strPathName);
+         wxLogWarning(wxT("Could not import file: %s"),
+                      strPathName.c_str());
          return false;
       }
    }

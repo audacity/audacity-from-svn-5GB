@@ -29,10 +29,14 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
    wxFrame(parent, -1, 
             wxString::Format(_("Audacity Lyrics%s"), 
                               ((parent->GetName() == wxEmptyString) ? 
-                                 wxEmptyString : 
-                                 wxString::Format(wxT("- %s"), parent->GetName()))), 
+                                 wxT("") :
+                                 wxString::Format(
+                                   wxT("- %s"),
+                                   parent->GetName().c_str()).c_str())),
             wxDefaultPosition, gSize, 
-            wxDEFAULT_FRAME_STYLE | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT))
+            wxDEFAULT_FRAME_STYLE | ((parent == NULL) ?
+                                     0x0 :
+                                     wxFRAME_FLOAT_ON_PARENT))
 {
    mProject = parent;
    mLyricsPanel = new Lyrics(this, -1, wxPoint(0, 0), gSize);

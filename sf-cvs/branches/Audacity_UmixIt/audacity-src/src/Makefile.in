@@ -64,6 +64,7 @@ OBJS = \
 	$(OBJDIR)/Menus.o \
 	$(OBJDIR)/MeterToolBar.o \
 	$(OBJDIR)/Mix.o \
+	$(OBJDIR)/MixerBoard.o \
 	$(OBJDIR)/MixerToolBar.o \
 	$(OBJDIR)/NoteTrack.o \
 	$(OBJDIR)/PitchName.o \
