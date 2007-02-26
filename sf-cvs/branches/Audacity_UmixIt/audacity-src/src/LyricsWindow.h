@@ -29,7 +29,6 @@ class LyricsWindow : public wxFrame {
 
  private:
    void OnCloseWindow(wxCloseEvent & WXUNUSED(event));
-   //void OnFontSizeBtn(wxCommandEvent & event);
 
    AudacityProject *mProject;
    Lyrics *mLyricsPanel;
