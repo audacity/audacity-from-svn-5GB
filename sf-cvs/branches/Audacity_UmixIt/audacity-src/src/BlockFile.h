@@ -129,6 +129,7 @@ class BlockFile {
 
  protected:
    wxFileName mFileName;
+   wxString mFullPath;  // cached so we don't need to recompute each time
    sampleCount mLen;
    SummaryInfo mSummaryInfo;
    float mMin, mMax, mRMS;
@@ -185,6 +186,7 @@ class AliasBlockFile : public BlockFile
    virtual bool ReadSummary(void *data);
 
    wxFileName  mAliasedFileName;
+   wxString    mAliasedFullPath;
    sampleCount mAliasStart;
    int         mAliasChannel;
 };

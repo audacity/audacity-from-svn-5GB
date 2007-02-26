@@ -54,12 +54,13 @@ BlockFile::BlockFile(wxFileName fileName, sampleCount samples):
    mLen(samples),
    mSummaryInfo(samples)
 {
+   mFullPath = FILENAME(mFileName.GetFullPath());
 }
 
 BlockFile::~BlockFile()
 {
    if (!IsLocked() && mFileName.HasName())
-      wxRemoveFile(FILENAME(mFileName.GetFullPath()));
+      wxRemoveFile(mFullPath);
 }
 
 /// Returns the file name of the disk file associated with this
@@ -468,6 +469,7 @@ AliasBlockFile::AliasBlockFile(wxFileName baseFileName,
    mAliasStart(aliasStart),
    mAliasChannel(aliasChannel)
 {
+   mAliasedFullPath = FILENAME(mAliasedFileName.GetFullPath());
 }
 
 AliasBlockFile::AliasBlockFile(wxFileName existingSummaryFile,
@@ -495,13 +497,13 @@ AliasBlockFile::AliasBlockFile(wxFileName existingSummaryFile,
 /// summarize.
 void AliasBlockFile::WriteSummary()
 {
-   wxASSERT( !wxFileExists(FILENAME(mFileName.GetFullPath())));
+   wxASSERT(!wxFileExists(mFullPath));
    // I would much rather have this code as part of the constructor, but
    // I can't call virtual functions from the constructor.  So we just
    // need to ensure that every derived class calls this in *its* constructor
    wxFFile summaryFile;
 
-   if( !summaryFile.Open(FILENAME(mFileName.GetFullPath()), "wb") )
+   if( !summaryFile.Open(mFullPath, "wb") )
       // failed.  what to do?
       return;
 
@@ -530,7 +532,7 @@ bool AliasBlockFile::ReadSummary(void *data)
 {
    wxFFile summaryFile;
 
-   if( !summaryFile.Open(FILENAME(mFileName.GetFullPath()), "rb") )
+   if( !summaryFile.Open(mFullPath, "rb") )
       return false;
 
    int read = summaryFile.Read(data, (size_t)mSummaryInfo.totalSummaryBytes);
@@ -557,7 +559,7 @@ void AliasBlockFile::ChangeAliasedFile(wxFileName newAliasedFile)
 
 int AliasBlockFile::GetSpaceUsage()
 {
-   wxFFile summaryFile(FILENAME(mFileName.GetFullPath()));
+   wxFFile summaryFile(mFullPath);
    return summaryFile.Length();
 }
 
