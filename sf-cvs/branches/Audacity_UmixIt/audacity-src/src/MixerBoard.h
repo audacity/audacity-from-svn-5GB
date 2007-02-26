@@ -79,7 +79,7 @@ private:
    AButton* mToggleButton_Mute;
    AButton* mToggleButton_Solo;
    ASlider* mSlider_Pan;
-   wxSlider* mSlider_Gain; //vvv ASlider* mSlider_Gain;
+   wxSlider* mSlider_Gain; //v ASlider* mSlider_Gain;
    Meter* mMeter;
 
 public:

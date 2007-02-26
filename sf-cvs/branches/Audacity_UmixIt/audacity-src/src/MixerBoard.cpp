@@ -36,7 +36,8 @@
 #define MUTE_SOLO_HEIGHT 16
 #define PAN_HEIGHT 24
 
-const int kGainSliderMin = -6, kGainSliderMax = 36; // wxSlider has min at top, so this is [-36dB,6dB]. 
+const int kGainSliderMin = -36; 
+const int kGainSliderMax = 6; 
 
 enum {
    ID_TOGGLEBUTTON_MUTE = 13000,
@@ -144,15 +145,28 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
    ctrlPos.y += PAN_HEIGHT + kQuadrupleInset;
    ctrlSize = wxSize((nHalfWidth - kQuadrupleInset), 
                      (size.GetHeight() - ctrlPos.y - kQuadrupleInset));
-   mSlider_Gain = 
-      // ASlider doesn't do vertical.  
-      /* i18n-hint: Title of the Gain slider, used to adjust the volume */
-      //    new ASlider(this, ID_SLIDER_GAIN, _("Gain"), ctrlPos, ctrlSize, DB_SLIDER | NO_AQUA);
-      new wxSlider(this, ID_SLIDER_GAIN, // wxWindow* parent, wxWindowID id, 
-                   this->GetGainToSliderValue(),  // int value, 
-                   0, kGainSliderMax - kGainSliderMin, // int minValue, int maxValue, 
-                   ctrlPos, ctrlSize, // const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, 
-                   wxSL_VERTICAL | wxSL_AUTOTICKS | wxSUNKEN_BORDER); // long style = wxSL_HORIZONTAL, ...
+
+   // ASlider doesn't do vertical, so use wxSlider for now. 
+   /* i18n-hint: Title of the Gain slider, used to adjust the volume */
+   #ifdef __WXMSW__
+      mSlider_Gain = 
+         //    new ASlider(this, ID_SLIDER_GAIN, _("Gain"), ctrlPos, ctrlSize, DB_SLIDER | NO_AQUA);
+         new wxSlider(this, ID_SLIDER_GAIN, // wxWindow* parent, wxWindowID id, 
+                     this->GetGainToSliderValue(),  // int value, 
+                     -kGainSliderMax, -kGainSliderMin, // Max is at bottom for Windows! // int minValue, int maxValue, 
+                     ctrlPos, ctrlSize, // const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, 
+                     wxSL_VERTICAL | wxSL_AUTOTICKS | wxSUNKEN_BORDER); // long style = wxSL_HORIZONTAL, ...
+   #else
+      mSlider_Gain = 
+         // ASlider doesn't do vertical.  
+         /* i18n-hint: Title of the Gain slider, used to adjust the volume */
+         //    new ASlider(this, ID_SLIDER_GAIN, _("Gain"), ctrlPos, ctrlSize, DB_SLIDER | NO_AQUA);
+         new wxSlider(this, ID_SLIDER_GAIN, // wxWindow* parent, wxWindowID id, 
+                     this->GetGainToSliderValue(),  // int value, 
+                     kGainSliderMin, kGainSliderMax, // int minValue, int maxValue, 
+                     ctrlPos, ctrlSize, // const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, 
+                     wxSL_VERTICAL | wxSL_AUTOTICKS | wxSUNKEN_BORDER); // long style = wxSL_HORIZONTAL, ...
+   #endif
 
    // too much color:   mSlider_Gain->SetBackgroundColour(trackColor);
    // too dark:   mSlider_Gain->SetBackgroundColour(wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW));
@@ -182,16 +196,14 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
       wxScrollEvent dummy;
       this->OnSliderScroll_Gain(dummy); // Set the tooltip to show the current value.
 
-      mMeter->SetToolTip(_T("Level Meter"));
+      mMeter->SetToolTip(_T("Signal Level Meter"));
    #endif // wxUSE_TOOLTIPS
 
-   //vvv Necessary? Taken from Lyrics constructor.
    #ifdef __WXMAC__
       wxSizeEvent dummyEvent;
       this->OnSize(dummyEvent);
+      UpdateGain();
    #endif
-
-   UpdateGain();
 }
 
 void MixerTrackCluster::ResetMeter()
@@ -313,17 +325,15 @@ void MixerTrackCluster::UpdateMeter(double t)
 int MixerTrackCluster::GetGainToSliderValue()
 {
    int nSliderValue = 
-      // Analog to LWSlider::Set() calc for DB_SLIDER. Negate because wxSlider has min at top.
-      -(int)(20.0f * log10(mLeftTrack->GetGain()));
+      // Analog to LWSlider::Set() calc for DB_SLIDER. 
+      (int)(20.0f * log10(mLeftTrack->GetGain()));
    if (nSliderValue < kGainSliderMin)
       nSliderValue = kGainSliderMin;
    if (nSliderValue > kGainSliderMax)
       nSliderValue = kGainSliderMax;
-   nSliderValue -= kGainSliderMin;
 
-   #ifdef __WXMAC__
-   // Mac is upside-down from Windows!!!
-   nSliderValue = (kGainSliderMax - kGainSliderMin) - nSliderValue;
+   #ifdef __WXMSW__
+      nSliderValue = -nSliderValue; // wxSlider on Windows has max at bottom!
    #endif
 
    return nSliderValue;
@@ -420,19 +430,16 @@ void MixerTrackCluster::OnSlider_Pan(wxCommandEvent& event)
 
 void MixerTrackCluster::OnSlider_Gain(wxCommandEvent& event)
 {
-   // Analog to LWSlider::Set() calc for DB_SLIDER. Negate because wxSlider has min at top.
-   // mSlider_Gain->GetValue() is in [-6,36]. wxSlider has min at top, so this is [-36dB,6dB]. 
-
+   // Analog to LWSlider::Set() calc for DB_SLIDER. 
    int sliderValue = mSlider_Gain->GetValue();
-   
-   #ifdef __WXMAC__
-   // Mac slider is upside-down from Windows!
-   sliderValue = (kGainSliderMax - kGainSliderMin) - sliderValue;
+
+   #ifdef __WXMSW__
+      // Negate because wxSlider on Windows has min at top, max at bottom. 
+      // mSlider_Gain->GetValue() is in [-6,36]. wxSlider has min at top, so this is [-36dB,6dB]. 
+      sliderValue = -sliderValue;
    #endif
 
-   sliderValue += kGainSliderMin;
-
-   float fValue = pow(10.0f, -(float)sliderValue / 20.0f); 
+   float fValue = pow(10.0f, (float)sliderValue / 20.0f); 
    mLeftTrack->SetGain(fValue);
    if (mRightTrack != NULL)
       mRightTrack->SetGain(fValue);
@@ -446,7 +453,12 @@ void MixerTrackCluster::OnSlider_Gain(wxCommandEvent& event)
 
 void MixerTrackCluster::OnSliderScroll_Gain(wxScrollEvent& event)
 {
-   int gainValue = -mSlider_Gain->GetValue();
+   int gainValue = mSlider_Gain->GetValue();
+   #ifdef __WXMSW__
+      // Negate because wxSlider on Windows has min at top, max at bottom. 
+      // mSlider_Gain->GetValue() is in [-6,36]. wxSlider has min at top, so this is [-36dB,6dB]. 
+      gainValue = -gainValue;
+   #endif
    wxString str = _T("Gain: ");
    if (gainValue > 0) 
       str += "+";
