@@ -135,7 +135,7 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
    ctrlPos.y += MUTE_SOLO_HEIGHT + kQuadrupleInset;
    ctrlSize = wxSize((size.GetWidth() * 4 / 5), PAN_HEIGHT);
    /* i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically */
-   mSlider_Pan = new ASlider(this, ID_ASLIDER_PAN, _("Pan"), ctrlPos, ctrlSize, PAN_SLIDER);
+   mSlider_Pan = new ASlider(this, ID_ASLIDER_PAN, _("Pan"), ctrlPos, ctrlSize, PAN_SLIDER | NO_AQUA);
    //pBoxSizer_MixerTrackCluster->Add(mSlider_Pan, 0, wxALIGN_CENTER | wxALL, kDoubleInset);
 
 
@@ -147,12 +147,12 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
    mSlider_Gain = 
       // ASlider doesn't do vertical.  
       /* i18n-hint: Title of the Gain slider, used to adjust the volume */
-      //    new ASlider(this, ID_SLIDER_GAIN, _("Gain"), ctrlPos, ctrlSize, DB_SLIDER);
+      //    new ASlider(this, ID_SLIDER_GAIN, _("Gain"), ctrlPos, ctrlSize, DB_SLIDER | NO_AQUA);
       new wxSlider(this, ID_SLIDER_GAIN, // wxWindow* parent, wxWindowID id, 
-                     this->GetGainToSliderValue(),  // int value, 
-                     kGainSliderMin, kGainSliderMax, // int minValue, int maxValue, 
-                     ctrlPos, ctrlSize, // const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, 
-                     wxSL_VERTICAL | wxSL_AUTOTICKS | wxSUNKEN_BORDER); // long style = wxSL_HORIZONTAL, ...
+                   this->GetGainToSliderValue(),  // int value, 
+                   0, kGainSliderMax - kGainSliderMin, // int minValue, int maxValue, 
+                   ctrlPos, ctrlSize, // const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, 
+                   wxSL_VERTICAL | wxSL_AUTOTICKS | wxSUNKEN_BORDER); // long style = wxSL_HORIZONTAL, ...
 
    // too much color:   mSlider_Gain->SetBackgroundColour(trackColor);
    // too dark:   mSlider_Gain->SetBackgroundColour(wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW));
@@ -190,6 +190,8 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
       wxSizeEvent dummyEvent;
       this->OnSize(dummyEvent);
    #endif
+
+   UpdateGain();
 }
 
 void MixerTrackCluster::ResetMeter()
@@ -317,6 +319,13 @@ int MixerTrackCluster::GetGainToSliderValue()
       nSliderValue = kGainSliderMin;
    if (nSliderValue > kGainSliderMax)
       nSliderValue = kGainSliderMax;
+   nSliderValue -= kGainSliderMin;
+
+   #ifdef __WXMAC__
+   // Mac is upside-down from Windows!!!
+   nSliderValue = (kGainSliderMax - kGainSliderMin) - nSliderValue;
+   #endif
+
    return nSliderValue;
 }
 
@@ -346,7 +355,7 @@ void MixerTrackCluster::OnPaint(wxPaintEvent &evt)
    #ifdef __WXMAC__
       // Fill with correct color, not scroller background. Done automatically on Windows.
       AColor::Medium(&dc, false);
-      dc.DrawRectangle(this->GetRect());
+      dc.DrawRectangle(this->GetClientRect());
    #endif
 
    wxSize clusterSize = this->GetSize();
@@ -413,7 +422,17 @@ void MixerTrackCluster::OnSlider_Gain(wxCommandEvent& event)
 {
    // Analog to LWSlider::Set() calc for DB_SLIDER. Negate because wxSlider has min at top.
    // mSlider_Gain->GetValue() is in [-6,36]. wxSlider has min at top, so this is [-36dB,6dB]. 
-   float fValue = pow(10.0f, -(float)(mSlider_Gain->GetValue()) / 20.0f); 
+
+   int sliderValue = mSlider_Gain->GetValue();
+   
+   #ifdef __WXMAC__
+   // Mac slider is upside-down from Windows!
+   sliderValue = (kGainSliderMax - kGainSliderMin) - sliderValue;
+   #endif
+
+   sliderValue += kGainSliderMin;
+
+   float fValue = pow(10.0f, -(float)sliderValue / 20.0f); 
    mLeftTrack->SetGain(fValue);
    if (mRightTrack != NULL)
       mRightTrack->SetGain(fValue);
