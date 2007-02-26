@@ -545,7 +545,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    // MM: Give track panel the focus to ensure keyboard commands work
    mTrackPanel->SetFocus();
-   //vvv UmixIt mTrackPanel->Hide();   // This works okay except that each added track updates the 
+   //v UmixIt mTrackPanel->Hide();     // This works okay except that each added track updates the 
                                        // scroll bars. They probably shouldn't even be visible, i.e., 
                                        // should be owned by the TrackPanel?
 

@@ -16,14 +16,8 @@
 #include "../images/AudacityLogo.xpm"
 #include "../images/AudacityLogo48x48.xpm"
 
-//enum {
-//   LyricsWindowCtlID = 1000,
-//   FontSizeBtnID
-//};
-
 BEGIN_EVENT_TABLE(LyricsWindow, wxFrame)
    EVT_CLOSE(LyricsWindow::OnCloseWindow)
-   //EVT_BUTTON(FontSizeBtnID, LyricsWindow::OnFontSizeBtn)
 END_EVENT_TABLE()
 
 const wxSize gSize = wxSize(LYRICS_DEFAULT_WIDTH, LYRICS_DEFAULT_HEIGHT);
@@ -62,9 +56,4 @@ void LyricsWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
 {
   this->Hide();
 }
-
-//void LyricsWindow::OnFontSizeBtn(wxCommandEvent & event)
-//{
-//   // this->UpdateDisplay();
-//}
 
