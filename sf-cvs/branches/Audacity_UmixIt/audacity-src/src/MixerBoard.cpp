@@ -21,6 +21,8 @@
 #include "Project.h"
 
 #include "../images/MusicalInstruments.h"
+#include "../images/AudacityLogo.xpm"
+#include "../images/AudacityLogo48x48.xpm"
 
 // class MixerTrackCluster
 

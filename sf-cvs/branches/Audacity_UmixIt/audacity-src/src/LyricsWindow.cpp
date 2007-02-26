@@ -13,6 +13,9 @@
 #include "Lyrics.h"
 #include "Project.h"
 
+#include "../images/AudacityLogo.xpm"
+#include "../images/AudacityLogo48x48.xpm"
+
 //enum {
 //   LyricsWindowCtlID = 1000,
 //   FontSizeBtnID
