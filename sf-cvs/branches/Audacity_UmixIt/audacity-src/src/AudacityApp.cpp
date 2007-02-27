@@ -140,9 +140,9 @@ void QuitAudacity(bool bForce)
 	   if (!gAudacityProjects[i]->Close()){
 	       gIsQuitting = false;
                return;
+           }
          }
       }
-   }
    }
 
    if (gFreqWindow)

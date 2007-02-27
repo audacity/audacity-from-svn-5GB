@@ -254,7 +254,7 @@ void LWSlider::Init(wxWindow * parent,
    mCanUseShift = canUseShift;
    mCurrentValue = 0.0f;
 
-   if (!(mWidth & 0))
+   if (!(mWidth & 1))
       mWidth--;
 
    mCenterY = mHeight - 9;

@@ -135,15 +135,23 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
    ctrlPos.x = (size.GetWidth() / 10);
    ctrlPos.y += MUTE_SOLO_HEIGHT + kQuadrupleInset;
    ctrlSize = wxSize((size.GetWidth() * 4 / 5), PAN_HEIGHT);
+
+   // The width of the pan slider must be odd (don't ask)
+   if (!(ctrlSize.x & 1))
+      ctrlSize.x--;
+
    /* i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically */
    mSlider_Pan = new ASlider(this, ID_ASLIDER_PAN, _("Pan"), ctrlPos, ctrlSize, PAN_SLIDER | NO_AQUA);
    //pBoxSizer_MixerTrackCluster->Add(mSlider_Pan, 0, wxALIGN_CENTER | wxALL, kDoubleInset);
 
 
+   // Instead of an even split, give this many extra pixels to the meter
+   const int kExtraMeter = 8;
+
    // gain slider & level meter
    ctrlPos.x = kDoubleInset;
    ctrlPos.y += PAN_HEIGHT + kQuadrupleInset;
-   ctrlSize = wxSize((nHalfWidth - kQuadrupleInset), 
+   ctrlSize = wxSize((nHalfWidth - kQuadrupleInset - kExtraMeter), 
                      (size.GetHeight() - ctrlPos.y - kQuadrupleInset));
 
    // ASlider doesn't do vertical, so use wxSlider for now. 
@@ -170,16 +178,22 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
 
    // too much color:   mSlider_Gain->SetBackgroundColour(trackColor);
    // too dark:   mSlider_Gain->SetBackgroundColour(wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW));
+  #ifdef __WXMAC__
+   mSlider_Gain->SetBackgroundColour(wxColour(220, 220, 220));
+  #else
    mSlider_Gain->SetBackgroundColour(wxColour(192, 192, 192));
+  #endif
 
-   ctrlPos.x = nHalfWidth;
-   ctrlSize.SetWidth(nHalfWidth - kInset);
+   ctrlPos.x = nHalfWidth - kExtraMeter;
+   ctrlSize.SetWidth(nHalfWidth - kInset + kExtraMeter);
+
    mMeter = 
       new Meter(this, -1, // wxWindow* parent, wxWindowID id, 
-                  false, Meter::MixerTrackCluster, // bool isInput, Style style = HorizontalStereo, 
-                  ctrlPos, ctrlSize, // const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
-                  trackColor, // const wxColour& rmsColor = wxNullColour, // Darker shades are automatically determined.
-                  300.0f); // const float decayRate = 60.0f); // dB/sec
+                false, Meter::MixerTrackCluster, // bool isInput, Style style = HorizontalStereo, 
+                ctrlPos, ctrlSize, // const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
+                trackColor, // const wxColour& rmsColor = wxNullColour, // Darker shades are automatically determined.
+                300.0f, // const float decayRate = 60.0f // dB/sec
+                false); // aqua not ok
 
    //wxBoxSizer* pBoxSizer_GainAndMeter = new wxBoxSizer(wxHORIZONTAL);
    //pBoxSizer_GainAndMeter->Add(mSlider_Gain, 0, wxALIGN_CENTER | wxALL, kInset);
@@ -372,6 +386,8 @@ void MixerTrackCluster::OnPaint(wxPaintEvent &evt)
    wxRect bev(0, 0, clusterSize.GetWidth() - 1, clusterSize.GetHeight() - 1);
    AColor::Bevel(dc, true, bev);
 
+   mSlider_Pan->Refresh(false);
+
    dc.EndDrawing();
 }
 
@@ -522,7 +538,11 @@ MixerBoard::MixerBoard(AudacityProject* parent):
                                  wxString::Format(wxT("- %s"),
                                                   parent->GetName().c_str()).c_str())), 
             wxDefaultPosition, kDefaultSize, 
-            wxDEFAULT_FRAME_STYLE | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT))
+            wxDEFAULT_FRAME_STYLE
+#ifndef __WXMAC__
+          | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT)
+#endif
+          )
 {
    // public data members
    // mute & solo button images: Create once and store on MixerBoard for use in all MixerTrackClusters.

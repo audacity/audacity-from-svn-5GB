@@ -31,9 +31,11 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
                                    wxT("- %s"),
                                    parent->GetName().c_str()).c_str())),
             wxDefaultPosition, gSize, 
-            wxDEFAULT_FRAME_STYLE | ((parent == NULL) ?
-                                     0x0 :
-                                     wxFRAME_FLOAT_ON_PARENT))
+            wxDEFAULT_FRAME_STYLE
+#ifndef __WXMAC__
+           | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT)
+#endif
+             )
 {
    mProject = parent;
    mLyricsPanel = new Lyrics(this, -1, wxPoint(0, 0), gSize);
