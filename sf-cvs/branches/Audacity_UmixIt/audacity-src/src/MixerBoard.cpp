@@ -48,10 +48,9 @@ enum {
 
 BEGIN_EVENT_TABLE(MixerTrackCluster, wxPanel)
    EVT_CHAR(MixerTrackCluster::OnKeyEvent)
-   EVT_PAINT(MixerTrackCluster::OnPaint)
-
    EVT_COMMAND(ID_TOGGLEBUTTON_MUTE, wxEVT_COMMAND_BUTTON_CLICKED, MixerTrackCluster::OnButton_Mute)
    EVT_COMMAND(ID_TOGGLEBUTTON_SOLO, wxEVT_COMMAND_BUTTON_CLICKED, MixerTrackCluster::OnButton_Solo)
+   EVT_PAINT(MixerTrackCluster::OnPaint)
    EVT_SLIDER(ID_ASLIDER_PAN, MixerTrackCluster::OnSlider_Pan)
    EVT_SLIDER(ID_SLIDER_GAIN, MixerTrackCluster::OnSlider_Gain)
    EVT_COMMAND_SCROLL(ID_SLIDER_GAIN, MixerTrackCluster::OnSliderScroll_Gain)
@@ -144,7 +143,6 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
    mSlider_Pan = new ASlider(this, ID_ASLIDER_PAN, _("Pan"), ctrlPos, ctrlSize, PAN_SLIDER | NO_AQUA);
    //pBoxSizer_MixerTrackCluster->Add(mSlider_Pan, 0, wxALIGN_CENTER | wxALL, kDoubleInset);
 
-
    // Instead of an even split, give this many extra pixels to the meter
    const int kExtraMeter = 8;
 
@@ -199,7 +197,6 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
    //pBoxSizer_GainAndMeter->Add(mSlider_Gain, 0, wxALIGN_CENTER | wxALL, kInset);
    //pBoxSizer_GainAndMeter->Add(mMeter, 0, wxALIGN_CENTER | wxALL, kInset);
    //pBoxSizer_MixerTrackCluster->Add(pBoxSizer_GainAndMeter, 0, wxALIGN_CENTER | wxALL, kDoubleInset);
-
 
    #if wxUSE_TOOLTIPS
       mStaticText_TrackName->SetToolTip(_T("Track Name"));
@@ -385,8 +382,6 @@ void MixerTrackCluster::OnPaint(wxPaintEvent &evt)
    wxSize clusterSize = this->GetSize();
    wxRect bev(0, 0, clusterSize.GetWidth() - 1, clusterSize.GetHeight() - 1);
    AColor::Bevel(dc, true, bev);
-
-   mSlider_Pan->Refresh(false);
 
    dc.EndDrawing();
 }
