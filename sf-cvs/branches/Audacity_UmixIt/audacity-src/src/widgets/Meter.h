@@ -89,7 +89,8 @@ class Meter : public wxPanel
          const wxPoint& pos = wxDefaultPosition,
          const wxSize& size = wxDefaultSize,
          const wxColour& rmsColor = wxNullColour, // Darker shades are automatically determined.
-         const float decayRate = 60.0f); // dB/sec
+         const float decayRate = 60.0f,
+         const bool aquaOk = true); // dB/sec
 
    ~Meter();
 
@@ -190,6 +191,7 @@ class Meter : public wxPanel
    wxBrush   mBkgndBrush;
    wxRect    mAllBarsRect;
    Ruler     mRuler;
+   bool      mAquaOk;
 
    DECLARE_EVENT_TABLE()
 };

@@ -631,25 +631,32 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
 
      if (mOrientation == wxHORIZONTAL)
        desiredPixelHeight = (mBottom-mTop-3);
-     else
+     else {
        desiredPixelHeight = (mRight-mLeft)/2;
+     }
 
-     if (desiredPixelHeight < 8)
-       desiredPixelHeight = 8;
+     if (desiredPixelHeight < 9)
+       desiredPixelHeight = 9;
      if (desiredPixelHeight > 16)
        desiredPixelHeight = 16;
 
      #ifdef __WXMAC__
      desiredPixelHeight -= 3;
+     if (desiredPixelHeight < 12)
+       desiredPixelHeight = 12;
      #endif
-
+     
+     wxMemoryDC memDC;
+     wxBitmap dummy(100, 100);
+     memDC.SelectObject(dummy);
      // Keep making the font bigger until it's too big, then subtract one.
-     mDC->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
-     mDC->GetTextExtent(exampleText, &strW, &strH);
+     memDC.SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
+     memDC.GetTextExtent(exampleText, &strW, &strH);
+
      while(strH <= desiredPixelHeight && fontSize < 40) {
        fontSize++;
-       mDC->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
-       mDC->GetTextExtent(exampleText, &strW, &strH);
+       memDC.SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
+       memDC.GetTextExtent(exampleText, &strW, &strH);
      }
      fontSize--;
 

@@ -139,7 +139,8 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
              const wxPoint& pos /*= wxDefaultPosition*/,
              const wxSize& size /*= wxDefaultSize*/,
              const wxColour& rmsColor /*= wxNullColour*/, // Darker shades are automatically determined.
-             const float decayRate /*= 60.0f*/) : // dB/sec
+             const float decayRate /*= 60.0f*/,
+             const bool aquaOk = true) : // dB/sec
    wxPanel(parent, id, pos, size),
    mQueue(256),
    mWidth(size.x), mHeight(size.y),
@@ -158,7 +159,8 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mLayoutValid(false),
    mBitmap(NULL),
    mBackgroundBitmap(NULL),
-   mIcon(NULL)
+   mIcon(NULL),
+   mAquaOk(aquaOk)
 {
    int i;
    
@@ -169,8 +171,12 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    /* i18n-hint: One-letter abbreviation for Right, in VU Meter */
    mRightText = _("R");
 
-   mLeftSize = wxSize(0, 0);
-   mRightSize = wxSize(0, 0);
+   wxMemoryDC memDC;
+   wxBitmap dummy(100, 100);
+   memDC.SetFont(GetFont());
+   memDC.SelectObject(dummy);
+   memDC.GetTextExtent(mLeftText, &mLeftSize.x, &mLeftSize.y);
+   memDC.GetTextExtent(mRightText, &mRightSize.x, &mRightSize.y);
 
    if (rmsColor != wxNullColour)
    {
@@ -233,8 +239,15 @@ void Meter::CreateIcon(int aquaOffset)
       alpha = new wxImage(wxBitmap(SpeakerAlpha).ConvertToImage());
    }
 
-   wxImage *bkgnd = CreateSysBackground(25, 25, aquaOffset,
-					backgroundColour);
+   wxImage *bkgnd;
+
+   if (mAquaOk) {
+      bkgnd = CreateSysBackground(25, 25, aquaOffset,
+                                  backgroundColour);
+   }
+   else {
+      bkgnd = CreateBackground(25, 25, backgroundColour);
+   }
    wxImage *final = OverlayImage(bkgnd, image, alpha, 0, 0);
    mIcon = new wxBitmap(final);
 
@@ -337,9 +350,9 @@ void Meter::OnMouse(wxMouseEvent &evt)
 
 void Meter::SetStyle(Meter::Style newStyle)
 {
-   if (mStyle == MixerTrackCluster) // MixerTrackCluster disallows style change.
-      return;
-   mStyle = newStyle;
+   // MixerTrackCluster disallows style change.
+   if (mStyle != MixerTrackCluster)
+      mStyle = newStyle;
    mLayoutValid = false;
    Refresh(true);
 }
@@ -586,7 +599,7 @@ void Meter::HandleLayout()
    int iconHeight = 0;
    int menuWidth = 0;
    int menuHeight = 0;
-   if (mStyle != MixerTrackCluster) // MixerTrackCluster style has no menu or icon.
+   if (mStyle != MixerTrackCluster)
    {
       iconWidth = mIcon->GetWidth();
       iconHeight = mIcon->GetHeight();
@@ -627,7 +640,10 @@ void Meter::HandleLayout()
       else
          mIconPos = wxPoint(mWidth - iconWidth - 1, 1);
       width = intmin(mWidth-(iconWidth+2), mWidth-(menuWidth+3));
-   case MixerTrackCluster: // Doesn't show menu, icon, or L/R labels, but otherwise like VerticalStereo.
+   case MixerTrackCluster:
+      // Doesn't show menu, icon, or L/R labels,
+      // but otherwise like VerticalStereo.
+
       if (width >= mLeftSize.x + mRightSize.x + 24) {
          if (mStyle != MixerTrackCluster)
          {
@@ -636,6 +652,10 @@ void Meter::HandleLayout()
          }
          mRightTextPos = wxPoint(width-mLeftSize.x, height-2-mLeftSize.y);
          width -= mLeftSize.x + mRightSize.x + 8;
+
+         #ifdef __WXMAC__
+         width -= 8;
+         #endif
       }
       barw = (width-2)/2;
       barh = height - 4;
@@ -785,7 +805,13 @@ void Meter::HandlePaint(wxDC &dc)
       HandleLayout();
 
 #ifdef __WXMAC__
-   dc.DrawBitmap(*mBackgroundBitmap, 0, 0);
+   if (mAquaOk) {
+      dc.DrawBitmap(*mBackgroundBitmap, 0, 0);
+   } else {
+      dc.SetPen(*wxTRANSPARENT_PEN);
+      dc.SetBrush(mBkgndBrush);
+      dc.DrawRectangle(0, 0, mWidth, mHeight);
+   }
 #else
    dc.SetPen(*wxTRANSPARENT_PEN);
    dc.SetBrush(mBkgndBrush);
