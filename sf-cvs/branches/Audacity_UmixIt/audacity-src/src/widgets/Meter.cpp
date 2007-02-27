@@ -140,7 +140,7 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
              const wxSize& size /*= wxDefaultSize*/,
              const wxColour& rmsColor /*= wxNullColour*/, // Darker shades are automatically determined.
              const float decayRate /*= 60.0f*/,
-             const bool aquaOk = true) : // dB/sec
+             const bool aquaOk /*= true*/) : // dB/sec
    wxPanel(parent, id, pos, size),
    mQueue(256),
    mWidth(size.x), mHeight(size.y),
