@@ -13,6 +13,7 @@
 
 #include <math.h>
 
+#include <wx/dcmemory.h>
 #include <wx/dcscreen.h>
 
 #include "../Internat.h"
