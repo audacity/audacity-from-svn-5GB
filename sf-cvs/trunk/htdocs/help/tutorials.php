@@ -28,7 +28,6 @@
 	<li><p><a href="http://audacity.sourceforge.net/manual-1.2/tutorials.html"><?=_("Audacity 1.2 Tutorials")?></a> - <?=_("From the official Audacity user's manual.")?></p></li>
 	<li><p><a href="http://www.edhsonline.org/other/audacity/"><?=_("Audacity 1.2 Tutorial by Dan Eliot")?></a> - <?=_("Learn how to open and edit a WAV file, and save the result in an MP3.")?></p></li>
 	<li><p><a href="http://quicktoots.linuxaudio.org/toots/audacity/"><?=_("Audacity Tutorial by Daniel James")?></a> - <?=_("Shows how to mix a multi-track project.  Includes sample sound files.")?></p></li>
-	<li><p><a href="http://audacitybook.org/html/"><?=_("The Audacity Book")?></a> - <?=_("An online book for new Audacity users.  (This is an incomplete work in progress.)")?></p></li>
 </ul>
 
 <p><?=_('For additional help, see the <a href="documentation">Audacity documentation</a>.')?></p>
