@@ -28,7 +28,7 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
                               ((parent->GetName() == wxEmptyString) ? 
                                  wxT("") :
                                  wxString::Format(
-                                   wxT("- %s"),
+                                   wxT(" - %s"),
                                    parent->GetName().c_str()).c_str())),
             wxDefaultPosition, gSize, 
             wxDEFAULT_FRAME_STYLE

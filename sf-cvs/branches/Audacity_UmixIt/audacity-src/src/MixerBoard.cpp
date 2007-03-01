@@ -5,6 +5,7 @@
   MixerBoard.cpp
 
   Vaughan Johnson, January 2007
+  Dominic Mazzoni
 
 **********************************************************************/
 
@@ -96,7 +97,7 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
    wxBitmap* bitmap = mMixerBoard->GetMusicalInstrumentBitmap(mLeftTrack);
    wxASSERT(bitmap);
    mStaticBitmap_MusicalInstrument = 
-      new wxStaticBitmap(this, -1, *bitmap, ctrlPos, ctrlSize, wxSUNKEN_BORDER);
+      new wxStaticBitmap(this, -1, *bitmap, ctrlPos, ctrlSize);
    //pBoxSizer_MixerTrackCluster->Add(mStaticBitmap_MusicalInstrument, 0, wxALIGN_CENTER | wxALL, kDoubleInset);
 
 
@@ -149,7 +150,10 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
    // gain slider & level meter
    ctrlPos.x = kDoubleInset;
    ctrlPos.y += PAN_HEIGHT + kQuadrupleInset;
-   ctrlSize = wxSize((nHalfWidth - kQuadrupleInset - kExtraMeter), 
+
+   //v For the slider width, subtracting kTripleInset instead of kQuadrupleInset makes it not show 
+   //    ticks on Windows -- wxSlider bug. But it looks better this way with the now wider meter.
+   ctrlSize = wxSize((nHalfWidth - kTripleInset - kExtraMeter), 
                      (size.GetHeight() - ctrlPos.y - kQuadrupleInset));
 
    // ASlider doesn't do vertical, so use wxSlider for now. 
@@ -510,7 +514,7 @@ WX_DEFINE_OBJARRAY(MusicalInstrumentArray);
 
 // class MixerBoard
 
-#define MIXER_BOARD_MIN_HEIGHT 480
+#define MIXER_BOARD_MIN_HEIGHT 500
 #define MIXER_TRACK_CLUSTER_WIDTH 100 - kInset
 #define DEFAULT_NUM_TRACKCLUSTERS 8 // Default to fitting 8 tracks.
 const wxSize kDefaultSize = 
@@ -530,7 +534,7 @@ MixerBoard::MixerBoard(AudacityProject* parent):
             wxString::Format(_("Audacity Mixer Board%s"), 
                               ((parent->GetName() == wxEmptyString) ? 
                                  wxT("") : 
-                                 wxString::Format(wxT("- %s"),
+                                 wxString::Format(wxT(" - %s"),
                                                   parent->GetName().c_str()).c_str())), 
             wxDefaultPosition, kDefaultSize, 
             wxDEFAULT_FRAME_STYLE
