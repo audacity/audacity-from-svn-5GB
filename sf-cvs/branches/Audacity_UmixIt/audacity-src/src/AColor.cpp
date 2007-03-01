@@ -393,6 +393,7 @@ void AColor::DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ )
          case 5: return gBlue;
          case 6: return gPurple;
       }
+      return gRed;
    }
 
 

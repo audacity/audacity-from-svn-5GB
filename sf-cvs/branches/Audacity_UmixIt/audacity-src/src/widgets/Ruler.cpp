@@ -646,6 +646,11 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
      if (desiredPixelHeight < 12)
        desiredPixelHeight = 12;
      #endif
+
+     #ifdef __WXMSW__
+       if ((mOrientation == wxVERTICAL) && (desiredPixelHeight < 14))
+         desiredPixelHeight = 14;
+     #endif
      
      wxMemoryDC memDC;
      wxBitmap dummy(100, 100);
