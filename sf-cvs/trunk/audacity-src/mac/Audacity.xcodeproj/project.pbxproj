@@ -361,7 +361,6 @@
 		1790B13A09883BFD008A330A /* Effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B01909883BFD008A330A /* Effect.cpp */; };
 		1790B13B09883BFD008A330A /* Equalization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B01B09883BFD008A330A /* Equalization.cpp */; };
 		1790B13C09883BFD008A330A /* Fade.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B01D09883BFD008A330A /* Fade.cpp */; };
-		1790B13D09883BFD008A330A /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B01F09883BFD008A330A /* Filter.cpp */; };
 		1790B13E09883BFD008A330A /* Invert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B02109883BFD008A330A /* Invert.cpp */; };
 		1790B13F09883BFD008A330A /* LadspaEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B02609883BFD008A330A /* LadspaEffect.cpp */; };
 		1790B14009883BFD008A330A /* LoadLadspa.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B02809883BFD008A330A /* LoadLadspa.cpp */; };
@@ -817,6 +816,8 @@
 		28D0255C0AFDA53B0035F843 /* alpasscv.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D025580AFDA53B0035F843 /* alpasscv.h */; };
 		28D0255D0AFDA53B0035F843 /* alpassvc.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D025590AFDA53B0035F843 /* alpassvc.c */; };
 		28D0255E0AFDA53B0035F843 /* alpassvc.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D0255A0AFDA53B0035F843 /* alpassvc.h */; };
+		28D65C720B97E54B000E001A /* AutoDuck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D65C700B97E54B000E001A /* AutoDuck.cpp */; };
+		28D65C760B97E573000E001A /* DtmfGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D65C740B97E573000E001A /* DtmfGen.cpp */; };
 		28E3E6E80A7C14CA00AB1361 /* ExportFLAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */; };
 		28E67F710A3A1A750021D89F /* pa_allocation.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E821FF0A39FD7600DCE280 /* pa_allocation.c */; };
 		28E67F720A3A1A770021D89F /* pa_converters.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E822030A39FD7600DCE280 /* pa_converters.c */; };
@@ -1391,8 +1392,6 @@
 		1790B01C09883BFD008A330A /* Equalization.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Equalization.h; sourceTree = "<group>"; };
 		1790B01D09883BFD008A330A /* Fade.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Fade.cpp; sourceTree = "<group>"; };
 		1790B01E09883BFD008A330A /* Fade.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Fade.h; sourceTree = "<group>"; };
-		1790B01F09883BFD008A330A /* Filter.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Filter.cpp; sourceTree = "<group>"; };
-		1790B02009883BFD008A330A /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Filter.h; sourceTree = "<group>"; };
 		1790B02109883BFD008A330A /* Invert.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Invert.cpp; sourceTree = "<group>"; };
 		1790B02209883BFD008A330A /* Invert.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Invert.h; sourceTree = "<group>"; };
 		1790B02509883BFD008A330A /* ladspa.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ladspa.h; sourceTree = "<group>"; };
@@ -1962,6 +1961,10 @@
 		28D025580AFDA53B0035F843 /* alpasscv.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = alpasscv.h; sourceTree = "<group>"; };
 		28D025590AFDA53B0035F843 /* alpassvc.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = alpassvc.c; sourceTree = "<group>"; };
 		28D0255A0AFDA53B0035F843 /* alpassvc.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = alpassvc.h; sourceTree = "<group>"; };
+		28D65C700B97E54B000E001A /* AutoDuck.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = AutoDuck.cpp; sourceTree = "<group>"; };
+		28D65C710B97E54B000E001A /* AutoDuck.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AutoDuck.h; sourceTree = "<group>"; };
+		28D65C740B97E573000E001A /* DtmfGen.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = DtmfGen.cpp; sourceTree = "<group>"; };
+		28D65C750B97E573000E001A /* DtmfGen.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = DtmfGen.h; sourceTree = "<group>"; };
 		28E3E6E60A7C14CA00AB1361 /* ExportFLAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportFLAC.h; sourceTree = "<group>"; };
 		28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFLAC.cpp; sourceTree = "<group>"; };
 		28E67F5F0A3A160D0021D89F /* libportaudio.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libportaudio.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2901,6 +2904,10 @@
 		1790AFFD09883BFD008A330A /* effects */ = {
 			isa = PBXGroup;
 			children = (
+				28D65C740B97E573000E001A /* DtmfGen.cpp */,
+				28D65C750B97E573000E001A /* DtmfGen.h */,
+				28D65C700B97E54B000E001A /* AutoDuck.cpp */,
+				28D65C710B97E54B000E001A /* AutoDuck.h */,
 				1790B00009883BFD008A330A /* audiounits */,
 				1790B02309883BFD008A330A /* ladspa */,
 				1790B03409883BFD008A330A /* nyquist */,
@@ -2929,8 +2936,6 @@
 				1790B01C09883BFD008A330A /* Equalization.h */,
 				1790B01D09883BFD008A330A /* Fade.cpp */,
 				1790B01E09883BFD008A330A /* Fade.h */,
-				1790B01F09883BFD008A330A /* Filter.cpp */,
-				1790B02009883BFD008A330A /* Filter.h */,
 				1790B02109883BFD008A330A /* Invert.cpp */,
 				1790B02209883BFD008A330A /* Invert.h */,
 				1790B02A09883BFD008A330A /* Leveller.cpp */,
@@ -5089,7 +5094,6 @@
 				1790B13A09883BFD008A330A /* Effect.cpp in Sources */,
 				1790B13B09883BFD008A330A /* Equalization.cpp in Sources */,
 				1790B13C09883BFD008A330A /* Fade.cpp in Sources */,
-				1790B13D09883BFD008A330A /* Filter.cpp in Sources */,
 				1790B13E09883BFD008A330A /* Invert.cpp in Sources */,
 				1790B13F09883BFD008A330A /* LadspaEffect.cpp in Sources */,
 				1790B14009883BFD008A330A /* LoadLadspa.cpp in Sources */,
@@ -5224,6 +5228,8 @@
 				283DE1360AC0D4FD00E8C3AE /* XMLWriter.cpp in Sources */,
 				289F9C7E0AC671BB00797DC1 /* DeviceToolBar.cpp in Sources */,
 				2840CF860AEB83DB00F49FC3 /* ExportMP2.cpp in Sources */,
+				28D65C720B97E54B000E001A /* AutoDuck.cpp in Sources */,
+				28D65C760B97E573000E001A /* DtmfGen.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
