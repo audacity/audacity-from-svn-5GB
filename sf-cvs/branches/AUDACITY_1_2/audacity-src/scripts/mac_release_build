@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ ! -d libiconv* -o ! -d wxMac* -o ! -d audacity ]
+if [ ! -d libiconv* -o ! -d wxWidgets* -o ! -d audacity ]
 then
    cat <<EOF
 
@@ -11,14 +11,14 @@ a structure that looks like this (as an example):
    ..
    audacity
    libiconv-1.11
-   wxMac-2.4.2
+   wxWidgets-2.4.5 (+ patches in audacity/mac subdirectory)
 
 And you should execute this script like this:
 
    audacity/scripts/mac_release_build
 
 This will build libiconv first, then wxMac, and finally Audacity using options
-that will allow Audacity to run on OS X 10.3.9+.
+that will allow Audacity to run on OS X 10.2.8+.
 
 The final DMG files will reside in this directory.
 
@@ -32,14 +32,13 @@ sudo gcc_select 3.3
 
 top=$(pwd)
 
-export MACOSX_DEPLOYMENT_TARGET=10.3
-export NEXT_ROOT="/Developer/SDKs/MacOSX10.3.9.sdk"
-export C_INCLUDE_PATH="$top/include /Developer/SDKs/MacOSX10.3.9.sdk /usr/include"
-export LIBRARY_PATH="$top/lib /Developer/SDKs/MacOSX10.3.9.sdk /usr/lib/gcc/darwin/3.3"
+export MACOSX_DEPLOYMENT_TARGET=10.2
+export NEXT_ROOT="/Developer/SDKs/MacOSX10.2.8.sdk"
+export C_INCLUDE_PATH="$top /Developer/SDKs/MacOSX10.2.8.sdk/usr/include"
+export LIBRARY_PATH="$top /Developer/SDKs/MacOSX10.2.8.sdk/usr/lib/gcc/darwin/3.3"
 export LD_PREBIND=1
-export CPPFLAGS=-DMAC_OS_X_VERSION_MAX_ALLOWED=1030
-export CFLAGS=-DMAC_OS_X_VERSION_MAX_ALLOWED=1030
-export WX_CONFIG="$top/bin/wx-config"
+export CPPFLAGS='-DMAC_OS_X_VERSION_MAX_ALLOWED=1020'
+export CFLAGS='-DMAC_OS_X_VERSION_MAX_ALLOWED=1020'
 
 #
 # Build libiconv
@@ -47,9 +46,25 @@ export WX_CONFIG="$top/bin/wx-config"
 if [ ! -f include/iconv.h ]
 then
    cd libiconv*
+
    ./configure --prefix=$top --enable-static=yes --enable-shared=no --disable-shared
-   make -j 4
+   if [ $? -ne 0 ]
+   then
+      exit 1
+   fi
+
+   make -j 4 
+   if [ $? -ne 0 ]
+   then
+      exit 1
+   fi
+
    make install
+   if [ $? -ne 0 ]
+   then
+      exit 1
+   fi
+
    make distclean
    cd $top
 fi
@@ -57,15 +72,33 @@ fi
 #
 # Build wxMac ANSI version
 #
-if [ ! -f lib/libwx_mac-* ]
+if [ ! -f lib/libwx_mac-2.4.a ]
 then
-   cd wxMac*
+   cd wxWidgets*
    mkdir bld
    cd bld
+
    ../configure --prefix=$top --with-libiconv-prefix=$top --enable-static=yes --enable-shared=no --enable-unicode=no
+   if [ $? -ne 0 ]
+   then
+      exit 1
+   fi
+
    make -j 4
+   if [ $? -ne 0 ]
+   then
+      exit 1
+   fi
+
    make install
-   make distclean
+   if [ $? -ne 0 ]
+   then
+      exit 1
+   fi
+
+   cd ..
+   rm -rf bld
+
    cd $top
 fi
 
@@ -73,13 +106,30 @@ fi
 # Build Audacity ANSI version
 #
 cd audacity
-export NEXT_ROOT="/Developer/SDKs/MacOSX10.3.9.sdk"
-./configure --enable-static=yes --enable-shared=no --enable-unicode=no
-make || exit 1
+export NEXT_ROOT="/Developer/SDKs/MacOSX10.2.8.sdk"
+export PATH="$top/bin:$PATH"
+
+./configure --enable-static=yes --enable-shared=no --enable-unicode=no --enable-flac
+if [ $? -ne 0 ]
+then
+   exit 1
+fi
+
+sed -e "s#-liconv#$top/lib/libiconv.a#" src/Makefile >src/Makefilex
+mv src/Makefilex src/Makefile
+
+make
+if [ $? -ne 0 ]
+then
+   exit 1
+fi
+
 unset NEXT_ROOT
-scripts/mkdmg rc1
+scripts/mkdmg -test ppc
 mv *.dmg ..
+
 make distclean
+
 cd $top
 
 #
