@@ -234,7 +234,7 @@ $(DIRS):
 ../Audacity.app: ../audacity
 	mkdir -p ../Audacity.app/Contents/MacOS
 	mkdir -p ../Audacity.app/Contents/Resources
-	cp -f ../audacity ../Audacity.app/Contents/MacOS
+	cp -f ../audacity ../Audacity.app/Contents/MacOS/Audacity
 	cp -f ../mac/Info.plist ../Audacity.app/Contents
 	test -f "../Audacity.app/Contents/PkgInfo" || \
 	     echo "APPLauDy" > ../Audacity.app/Contents/PkgInfo
