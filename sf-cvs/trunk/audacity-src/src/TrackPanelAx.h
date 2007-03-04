@@ -2,9 +2,9 @@
 
   Audacity: A Digital Audio Editor
 
-  TrackPanel.h
+  TrackPanelAx.h
 
-  Dominic Mazzoni
+  Leland Lucius
 
 **********************************************************************/
 

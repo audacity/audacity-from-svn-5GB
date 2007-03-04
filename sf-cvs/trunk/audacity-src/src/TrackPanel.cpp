@@ -1478,6 +1478,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       if (t)
          SelectionHandleClick(event, t, r, num);
       else {
+         SetFocusedTrack(NULL);
          SelectNone();
          Refresh(false);
       }
@@ -1662,6 +1663,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
       SelectNone();
       StartSelection(event.m_x, r.x);
       mTracks->Select(pTrack);
+      SetFocusedTrack(pTrack);
       DisplaySelection();
    }
 }
@@ -2924,11 +2926,14 @@ void TrackPanel::RemoveTrack(Track * toRemove)
    TrackListIterator iter(mTracks);
    Track *t;
 
-   // Reassign focus to either the next or, if unavailable, the previous track
-   t = mTracks->GetNext(toRemove, true);
-   if (t == NULL)
-      t = mTracks->GetPrev( toRemove, true );
-   SetFocusedTrack(t);  // No need to worry about a possible NULL track pointer
+   // If it was focused, reassign focus to the next or, if
+   // unavailable, the previous track.
+   if (GetFocusedTrack() == toRemove) {
+      t = mTracks->GetNext(toRemove, true);
+      if (t == NULL)
+         t = mTracks->GetPrev( toRemove, true );
+      SetFocusedTrack(t);  // It's okay if this is NULL
+   }
 
    Track *partner = mTracks->GetLink(toRemove);
    wxString name;
@@ -4358,7 +4363,7 @@ void TrackPanel::DrawEverythingElse(wxDC * dc, const wxRect panelRect,
    AColor::Dark(dc, false);
    dc->DrawRectangle(trackRect);
 
-   if (GetFocusedTrack() != NULL) {
+   if (GetFocusedTrack() != NULL && wxWindow::FindFocus() == this) {
       HighlightFocusedTrack(dc, focusRect);
    }
 }
@@ -4555,10 +4560,11 @@ void TrackPanel::OnPrevTrack( bool shift )
    bool tSelected,pSelected;
 
    t = GetFocusedTrack();   // Get currently focused track
-   if( t == NULL )   // if there isn't one (does this ever happen?), focus on first
+   if( t == NULL )   // if there isn't one, focus on last
    {
-      t = iter.First();
+      t = iter.Last();
       SetFocusedTrack( t );
+      EnsureVisible( t );
       return;
    }
 
@@ -4657,10 +4663,11 @@ void TrackPanel::OnNextTrack( bool shift )
    bool tSelected,nSelected;
 
    t = GetFocusedTrack();   // Get currently focused track
-   if( t == NULL )   // if there isn't one (does this ever happen?), focus on first
+   if( t == NULL )   // if there isn't one, focus on first
    {
       t = iter.First();
       SetFocusedTrack( t );
+      EnsureVisible( t );
       return;
    }
 
@@ -4747,8 +4754,18 @@ void TrackPanel::OnToggle()
    Track *t;
 
    t = GetFocusedTrack();   // Get currently focused track
+   if (!t)
+      return;
+
    mTracks->Select( t, !t->GetSelected() );
    EnsureVisible( t );
+   return;
+}
+
+void TrackPanel::OnNoFocus()
+{
+   SetFocusedTrack(NULL);
+   Refresh(false);
    return;
 }
 
@@ -4779,19 +4796,15 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
    }
    mLastSelectionAdjustment = curtime;
 
-   // Get currently focused track...bail if there isn't one.
+   // Get currently focused track if there is one
    t = GetFocusedTrack();
-   if( t == NULL )
-   {
-      return;
-   }
 
    // Contract selection from the right to the left
    if( shift && ctrl )
    {
       // Ensure currently focused track is selected.
       // (Possible if mouse and keyboard are used together)
-      if( !t->GetSelected() )
+      if( t && !t->GetSelected() )
       {
          mTracks->Select( t );
       }
@@ -4822,7 +4835,7 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
       
       // Ensure currently focused track is selected.
       // (Possible if mouse and keyboard are used together)
-      if( !t->GetSelected() )
+      if( t && !t->GetSelected() )
       {
          mTracks->Select( t );
       }
@@ -4898,19 +4911,15 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
    }
    mLastSelectionAdjustment = curtime;
 
-   // Get currently focused track...bail if there isn't one.
+   // Get currently focused track if there is one
    t = GetFocusedTrack();
-   if( t == NULL )
-   {
-      return;
-   }
 
    // Contract selection from the left to the right
    if( shift && ctrl )
    {
       // Ensure currently focused track is selected.
       // (Possible if mouse and keyboard are used together)
-      if( !t->GetSelected() )
+      if( t && !t->GetSelected() )
       {
          mTracks->Select( t );
       }
@@ -4941,7 +4950,7 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
       
       // Ensure currently focused track is selected.
       // (Possible if mouse and keyboard are used together)
-      if( !t->GetSelected() )
+      if( t && !t->GetSelected() )
       {
          mTracks->Select( t );
       }
@@ -5010,7 +5019,7 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
 void TrackPanel::OnTrackPan()
 {
    Track *t = GetFocusedTrack();
-   if(!t || (t->GetKind() != Track::Wave)) return;
+   if (!t || (t->GetKind() != Track::Wave)) return;
 
    //Find out which track we are on.
    int tracknum = FindTrackNum(t);
@@ -5027,7 +5036,7 @@ void TrackPanel::OnTrackPan()
 void TrackPanel::OnTrackPanLeft()
 {
    Track *t = GetFocusedTrack();
-   if(!t || (t->GetKind() != Track::Wave)) return;
+   if (!t || (t->GetKind() != Track::Wave)) return;
 
    //Find out which track we are on.
    int tracknum = FindTrackNum(t);
@@ -5042,7 +5051,7 @@ void TrackPanel::OnTrackPanLeft()
 void TrackPanel::OnTrackPanRight()
 {
    Track *t = GetFocusedTrack();
-   if(!t || (t->GetKind() != Track::Wave)) return;
+   if (!t || (t->GetKind() != Track::Wave)) return;
 
    //Find out which track we are on.
    int tracknum = FindTrackNum(t);
@@ -5072,7 +5081,7 @@ void TrackPanel::SetTrackPan(Track * t, LWSlider * s)
 void TrackPanel::OnTrackGain()
 {
    Track *t = GetFocusedTrack();
-   if(!t || (t->GetKind() != Track::Wave)) return;
+   if (!t || (t->GetKind() != Track::Wave)) return;
 
    //Find out which track we are on.
    int tracknum = FindTrackNum(t);
@@ -5089,7 +5098,7 @@ void TrackPanel::OnTrackGain()
 void TrackPanel::OnTrackGainInc()
 {
    Track *t = GetFocusedTrack();
-   if(!t || (t->GetKind() != Track::Wave)) return;
+   if (!t || (t->GetKind() != Track::Wave)) return;
 
    //Find out which track we are on.
    int tracknum = FindTrackNum(t);
@@ -5104,7 +5113,7 @@ void TrackPanel::OnTrackGainInc()
 void TrackPanel::OnTrackGainDec()
 {
    Track *t = GetFocusedTrack();
-   if(!t || (t->GetKind() != Track::Wave)) return;
+   if (!t || (t->GetKind() != Track::Wave)) return;
 
    //Find out which track we are on.
    int tracknum = FindTrackNum(t);
@@ -5338,8 +5347,6 @@ void TrackPanel::EnsureVisible(Track * t)
    Track *it = NULL;
    Track *nt = NULL;
    //int i = 0;
-
-   SetFocusedTrack(t);
 
    int trackTop = 0;
    int trackHeight =0;
@@ -6067,6 +6074,10 @@ Track *TrackPanel::GetFocusedTrack()
 
 void TrackPanel::SetFocusedTrack( Track *t )
 {
+   // Make sure we always have the first linked track of a stereo track
+   if (t && !t->GetLinked() && mTracks->GetLink(t))
+      t = (WaveTrack*)mTracks->GetLink(t);
+
    AudacityProject *p = GetActiveProject();
    
    if (p && p->HasKeyboardCapture()) {
@@ -6080,8 +6091,9 @@ void TrackPanel::SetFocusedTrack( Track *t )
       e.SetEventObject(this);
       GetParent()->GetEventHandler()->ProcessEvent(e);
    }
-      
+
    mAx->SetFocus( t );
+   Refresh( false );
 }
 
 void TrackPanel::OnSetFocus(wxFocusEvent & event)

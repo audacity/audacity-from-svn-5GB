@@ -4,7 +4,7 @@
 
   TrackPanelAx.cpp
 
-  Dominic Mazzoni
+  Leland Lucius
   and lots of other contributors
 
 ******************************************************************//*!
@@ -62,11 +62,12 @@ void TrackPanelAx::SetFocus( Track *track )
 #endif
    }
 
-   if( track == NULL )
-   {
-      TrackListIterator iter( mTrackPanel->mTracks );
-      track = iter.First();
-   }
+   // It's fine to have no focused track.
+   //if( track == NULL )
+   //{
+   //   TrackListIterator iter( mTrackPanel->mTracks );
+   //   track = iter.First();
+   //}
 
    mFocusedTrack = track;
 
@@ -380,3 +381,11 @@ wxAccStatus TrackPanelAx::GetFocus( int *childId, wxAccessible **child )
    return wxACC_OK;
 }
 #endif // wxUSE_ACCESSIBILITY
+
+// Indentation settings for Vim and Emacs.
+// Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:

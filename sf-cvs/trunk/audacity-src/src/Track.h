@@ -167,6 +167,8 @@ class TrackListIterator {
   Track *First();
   Track *Next(bool SkipLinked = false);
   Track *RemoveCurrent();     // returns next
+
+  Track *Last();
   
  private:
   TrackList * l;
