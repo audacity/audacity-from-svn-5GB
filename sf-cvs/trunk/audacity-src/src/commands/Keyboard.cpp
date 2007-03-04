@@ -92,6 +92,9 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
       case WXK_DOWN:
          newStr += wxT("Down");
          break;
+      case WXK_ESCAPE:
+         newStr += wxT("Escape");
+         break;
       case WXK_INSERT:
          newStr += wxT("Insert");
          break;
