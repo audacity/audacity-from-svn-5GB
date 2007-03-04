@@ -286,7 +286,8 @@ void UploadDialog::OnConnect(wxCommandEvent & WXUNUSED(event))
     else
     {
         wxMessageBox(_("Connection cannot be established"), _("FTP Status"), wxOK | wxICON_INFORMATION, this);
-        delete ftp;
+      delete ftp;
+      ftp = NULL;
     }
 
     SetCursor(wxCURSOR_ARROW);
@@ -296,7 +297,9 @@ void UploadDialog::OnConnect(wxCommandEvent & WXUNUSED(event))
 void UploadDialog::OnDisconnect(wxCommandEvent & WXUNUSED(event))
 {
 
-    delete ftp;
+   delete ftp;
+   ftp = NULL;
+
 
     btnDisconnect->Enable(false);
     btnConnect->Enable(true);
