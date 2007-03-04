@@ -175,7 +175,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>audacity</string>
+	<string>Audacity</string>
 	<key>CFBundleIconFile</key>
 	<string>Audacity.icns</string>
 	<key>CFBundleName</key>
