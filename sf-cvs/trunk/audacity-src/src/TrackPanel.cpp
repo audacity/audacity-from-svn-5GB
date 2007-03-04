@@ -4338,11 +4338,15 @@ void TrackPanel::DrawEverythingElse(wxDC * dc, const wxRect panelRect,
    TrackListIterator iter(mTracks);
 
    wxRect trackRect = panelRect;
+   wxRect focusRect(-1, -1, 0, 0);
    wxRect r;
 
    int i = 0;
    for (Track * t = iter.First(); t; t = iter.Next()) {
       DrawEverythingElse(t, dc, r, trackRect, i);
+      if( mAx->IsFocused( t ) ) {
+         focusRect = mLastDrawnTrackRect;
+      }
       i++;
    }
 
@@ -4353,8 +4357,15 @@ void TrackPanel::DrawEverythingElse(wxDC * dc, const wxRect panelRect,
    GetSize(&trackRect.width, &trackRect.height);
    AColor::Dark(dc, false);
    dc->DrawRectangle(trackRect);
+
+   if (GetFocusedTrack() != NULL) {
+      HighlightFocusedTrack(dc, focusRect);
+   }
 }
 
+/// Draws 'Everything else' for one particular track.  Basically
+/// everything except the actual waveform.
+///
 /// Note that this is being called in a loop and that the parameter values
 /// are expected to be maintained each time through.
 void TrackPanel::DrawEverythingElse(Track * t, wxDC * dc, wxRect & r,
@@ -4408,6 +4419,17 @@ void TrackPanel::DrawEverythingElse(Track * t, wxDC * dc, wxRect & r,
    trackRect.y += t->GetHeight();
 }
 
+/// Draw a three-level highlight gradient around the focused track.
+void TrackPanel::HighlightFocusedTrack(wxDC * dc, const wxRect r) {
+   dc->SetBrush(*wxTRANSPARENT_BRUSH);
+   AColor::TrackFocusPen(dc, 0);
+   dc->DrawRectangle(r.x-1, r.y-1, r.width+2, r.height+2);
+   AColor::TrackFocusPen(dc, 1);
+   dc->DrawRectangle(r.x-2, r.y-2, r.width+4, r.height+4);
+   AColor::TrackFocusPen(dc, 2);
+   dc->DrawRectangle(r.x-3, r.y-3, r.width+6, r.height+6);
+}
+
 /// Draw zooming indicator that shows the region that will
 /// be zoomed into when the user clicks and drags with a
 /// zoom cursor.  Handles both vertical and horizontal
@@ -4449,6 +4471,8 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    r.y += kTopInset;
    r.width -= kLeftInset * 2;
    r.height -= kTopInset;
+
+   mLastDrawnTrackRect = r;
 
    mTrackLabel.DrawBackground(dc, r, t->GetSelected(), labelw);
    DrawBordersAroundTrack(t, dc, r, labelw, vrul);
@@ -5363,10 +5387,7 @@ void TrackPanel::DrawBordersAroundTrack(Track * t, wxDC * dc,
                                         const int labelw)
 {
    // Borders around track and label area
-   if( mAx->IsFocused( t ) )
-      dc->SetPen(*wxGREEN_PEN);
-   else
-      dc->SetPen(*wxBLACK_PEN);
+   dc->SetPen(*wxBLACK_PEN);
    dc->DrawLine(r.x, r.y, r.x + r.width - 1, r.y);      // top
    dc->DrawLine(r.x, r.y, r.x, r.y + r.height - 1);     // left
    dc->DrawLine(r.x, r.y + r.height - 2, r.x + r.width - 1, r.y + r.height - 2);        // bottom

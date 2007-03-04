@@ -53,6 +53,7 @@ wxBrush AColor::labelSelectedBrush;
 wxPen AColor::labelUnselectedPen;
 wxPen AColor::labelSelectedPen;
 wxPen AColor::labelSurroundPen;
+wxPen AColor::trackFocusPens[3];
 
 wxBrush AColor::tooltipBrush;
 
@@ -165,6 +166,13 @@ void AColor::PlayRegionColor(wxDC * dc, bool locked)
    dc->SetBrush(playRegionBrush[(int)locked]);
 }
 
+void AColor::TrackFocusPen(wxDC * dc, int level)
+{
+   if (!inited)
+      Init();
+   dc->SetPen(trackFocusPens[level]);
+}
+
 void AColor::Mute(wxDC * dc, bool on, bool selected, bool soloing)
 {
    if (!inited)
@@ -239,6 +247,11 @@ void AColor::Init()
 
    //Determine tooltip color
    tooltipBrush.SetColour( wxSystemSettingsNative::GetColour(wxSYS_COLOUR_INFOBK) );
+
+   // A tiny gradient of yellow surrounding the current focused track
+   trackFocusPens[0].SetColour(255, 255, 128);
+   trackFocusPens[1].SetColour(215, 215, 138);
+   trackFocusPens[2].SetColour(185, 185, 142);
 
 #if defined(__WXMSW__) || defined(__WXGTK__)
    // unselected
