@@ -368,6 +368,7 @@ private:
                     const int vrul, const wxRect trackRect, int index);
    void DrawZooming(wxDC* dc, const wxRect clip);
 
+   void HighlightFocusedTrack (wxDC* dc, const wxRect r);
    void DrawShadow            (Track *t, wxDC* dc, const wxRect r);
    void DrawBordersAroundTrack(Track *t, wxDC* dc, const wxRect r, const int labelw, const int vrul);
    void DrawOutsideOfTrack    (Track *t, wxDC* dc, const wxRect r);
@@ -470,6 +471,7 @@ private:
    float mDrawingStartSampleValue;    // value of last click-down
    sampleCount mDrawingLastDragSample; // sample of last drag-over
    float mDrawingLastDragSampleValue;  // value of last drag-over
+   wxRect mLastDrawnTrackRect;
  
    double PositionToTime(int mouseXCoordinate,
                          int trackLeftEdge) const;
