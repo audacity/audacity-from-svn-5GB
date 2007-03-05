@@ -54,6 +54,7 @@ wxPen AColor::labelUnselectedPen;
 wxPen AColor::labelSelectedPen;
 wxPen AColor::labelSurroundPen;
 wxPen AColor::trackFocusPens[3];
+wxPen AColor::snapGuidePen;
 
 wxBrush AColor::tooltipBrush;
 
@@ -173,6 +174,13 @@ void AColor::TrackFocusPen(wxDC * dc, int level)
    dc->SetPen(trackFocusPens[level]);
 }
 
+void AColor::SnapGuidePen(wxDC * dc)
+{
+   if (!inited)
+      Init();
+   dc->SetPen(snapGuidePen);
+}
+
 void AColor::Mute(wxDC * dc, bool on, bool selected, bool soloing)
 {
    if (!inited)
@@ -252,6 +260,10 @@ void AColor::Init()
    trackFocusPens[0].SetColour(255, 255, 128);
    trackFocusPens[1].SetColour(215, 215, 138);
    trackFocusPens[2].SetColour(185, 185, 142);
+
+   // A vertical line indicating that the selection or sliding has
+   // been snapped to the nearest boundary.
+   snapGuidePen.SetColour(255, 255, 0);
 
 #if defined(__WXMSW__) || defined(__WXGTK__)
    // unselected

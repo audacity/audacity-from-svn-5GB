@@ -32,6 +32,7 @@ class TrackArtist;
 class WaveTrack;
 class LabelTrack;
 class Ruler;
+class SnapManager;
 class AdornedRulerPanel;
 class LWSlider;
 class ControlToolBar; //Needed because state of controls can affect what gets drawn.
@@ -235,11 +236,12 @@ class TrackPanel:public wxPanel {
 
    // AS: Selection handling
    void HandleSelect(wxMouseEvent & event);
-   void SelectionHandleDrag(wxMouseEvent &event);
+   void SelectionHandleDrag(wxMouseEvent &event, Track *pTrack);
    void SelectionHandleClick(wxMouseEvent &event, 
 			     Track* pTrack, wxRect r, int num);
-   void StartSelection (int, int);
-   void ExtendSelection(int, int);
+   void StartSelection (int mouseXCoordinate, int trackLeftEdge);
+   void ExtendSelection(int mouseXCoordinate, int trackLeftEdge,
+                        Track *pTrack);
    void SelectTracksByLabel( LabelTrack *t );
 
 
@@ -465,6 +467,15 @@ private:
 
    int mZoomStart;
    int mZoomEnd;
+
+   // Handles snapping the selection boundaries or track boundaries to
+   // line up with existing tracks or labels.  mSnapLeft and mSnapRight
+   // are the horizontal index of pixels to display user feedback
+   // guidelines so the user knows when such snapping is taking place.
+   SnapManager *mSnapManager;
+   int mSnapLeft;
+   int mSnapRight;
+   bool mSnapPreferRightEdge;
 
    Track * mDrawingTrack;          // Keeps track of which track you are drawing on between events cf. HandleDraw()
    int mDrawingTrackTop;           // Keeps track of the top position of the drawing track.
