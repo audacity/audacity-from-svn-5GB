@@ -43,6 +43,7 @@ class AColor {
    static void DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
 
    static void TrackFocusPen(wxDC * dc, int level /* 0 - 2 */);
+   static void SnapGuidePen(wxDC * dc);
 
    // Member variables
 
@@ -75,6 +76,7 @@ class AColor {
    static wxPen labelSurroundPen;
 
    static wxPen trackFocusPens[3];
+   static wxPen snapGuidePen;
 
    static wxBrush tooltipBrush;
 

@@ -28,6 +28,8 @@ THEME_INITS or THEME_DECLARATIONS or neither of these.
 
 *//*******************************************************************/
 
+#include "Theme.h"
+
 // undefine the macros.
 #undef DEFINE_IMAGE
 #undef DEFINE_COLOUR

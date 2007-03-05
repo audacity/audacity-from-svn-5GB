@@ -185,32 +185,32 @@ a list of fonts.
 #include <wx/textctrl.h>
 #include <wx/intl.h>
 #include <wx/image.h>
-
+  
 #include "AColor.h"
+#include "AllThemeResources.h"
 #include "AudacityApp.h"
 #include "AudioIO.h"
 #include "Envelope.h"
+#include "Experimental.h"
 #include "LabelTrack.h"
 #include "NoteTrack.h"
-#include "Track.h"
-#include "TrackArtist.h"
 #include "Prefs.h"
 #include "Project.h"
+#include "Snap.h"
+#include "Theme.h"
+#include "TimeTrack.h"
+#include "Track.h"
+#include "TrackArtist.h"
+#include "TrackPanelAx.h"
 #include "ViewInfo.h"
 #include "WaveTrack.h"
-#include "TimeTrack.h"
-#include "Experimental.h"
 
-#include "TrackPanelAx.h"
-  
-#include "toolbars/ToolManager.h"
 #include "toolbars/ControlToolBar.h"
+#include "toolbars/ToolManager.h"
 #include "toolbars/ToolsToolBar.h"
 
 #include "widgets/ASlider.h"
 #include "widgets/Ruler.h"
-#include "Theme.h"
-#include "AllThemeResources.h"
 
 #include <wx/arrimpl.cpp>
 
@@ -574,6 +574,12 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    //Initialize the last selection adjustment time.
    mLastSelectionAdjustment = ::wxGetLocalTimeMillis();
 
+   // This is used to snap the cursor to the nearest track that
+   // lines up with it.
+   mSnapManager = NULL;
+   mSnapLeft = -1;
+   mSnapRight = -1;
+
    mLastCursor = -1;
    mLastIndicator = -1;
 }
@@ -610,6 +616,8 @@ TrackPanel::~TrackPanel()
    delete mRearrangeCursor;
    delete mAdjustLeftSelectionCursor;
    delete mAdjustRightSelectionCursor;
+
+   delete mSnapManager;
 
    // Note that the submenus (mRateMenu, ...)
    // are deleted by their parent
@@ -1464,14 +1472,13 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 /// dragging over a waveform.
 void TrackPanel::HandleSelect(wxMouseEvent & event)
 {
+   wxRect r;
+   int num;
+   Track *t = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
+
    // AS: Ok, did the user just click the mouse, release the mouse,
    //  or drag?
    if (event.ButtonDown(1)) {
-      wxRect r;
-      int num;
-      
-      Track *t = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
-
       // AS: Now, did they click in a track somewhere?  If so, we want
       //  to extend the current selection or start a new selection, 
       //  depending on the shift key.  If not, cancel all selections.
@@ -1484,6 +1491,13 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       }
       
    } else if (event.ButtonUp(1) || event.ButtonUp(3)) {
+      if (mSnapManager) {
+         delete mSnapManager;
+         mSnapManager = NULL;
+      }
+      mSnapLeft = -1;
+      mSnapRight = -1;
+
       SetCapturedTrack( NULL );
       //Send the new selection state to the undo/redo stack:
       MakeParentModifyState();
@@ -1531,13 +1545,13 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       MakeParentModifyState();
    } 
  done:
-   SelectionHandleDrag(event);
+   SelectionHandleDrag(event, t);
 }
 
 /// This function gets called when we're handling selection
 /// and the mouse was just clicked.
 void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
-        Track * pTrack, wxRect r, int num)
+                                      Track * pTrack, wxRect r, int num)
 {
    mCapturedTrack = pTrack;
    mCapturedRect = r;
@@ -1547,6 +1561,14 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
    mMouseClickY = event.m_y;
    bool startNewSelection = true;
    mMouseCapture=IsSelecting;
+
+   if (mSnapManager)
+      delete mSnapManager;
+   mSnapManager = new SnapManager(mTracks, NULL,
+                                  mViewInfo->zoom,
+                                  4); // pixel tolerance
+   mSnapLeft = -1;
+   mSnapRight = -1;
 
    if (event.ShiftDown()) {
       // If the shift button is down and no track is selected yet,
@@ -1571,7 +1593,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
          mSelStart = mViewInfo->sel0;
 
       // If the shift button is down, extend the current selection.
-      ExtendSelection(event.m_x, r.x);
+      ExtendSelection(event.m_x, r.x, pTrack);
       return;
    }
 
@@ -1674,16 +1696,92 @@ void TrackPanel::StartSelection(int mouseXCoordinate, int trackLeftEdge)
 {
    mSelStart = mViewInfo->h + ((mouseXCoordinate - trackLeftEdge)
                                / mViewInfo->zoom);
-   mViewInfo->sel0 = mSelStart;
-   mViewInfo->sel1 = mSelStart;
+
+   double s = mSelStart;
+
+   if (mSnapManager) {
+      mSnapLeft = -1;
+      mSnapRight = -1;
+      if (mSnapManager->Snap(mCapturedTrack, mSelStart, false, &s)) {
+         mSnapLeft = TimeToPosition(s, trackLeftEdge);
+      }
+   }
+
+   mViewInfo->sel0 = s;
+   mViewInfo->sel1 = s;
 
    MakeParentModifyState();
+}
+
+/// Extend the existing selection
+void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge,
+                                 Track *pTrack)
+{
+   double selend = PositionToTime(mouseXCoordinate, trackLeftEdge);
+   clip_bottom(selend, 0.0);
+
+   double origSel0, origSel1;
+   double sel0, sel1;
+   Track *track0, *track1;
+
+   if (pTrack == NULL && mCapturedTrack != NULL)
+      pTrack = mCapturedTrack;
+
+   if (mSelStart < selend) {
+      sel0 = mSelStart;
+      track0 = mCapturedTrack;
+      sel1 = selend;
+      track1 = pTrack;
+   }
+   else {
+      sel1 = mSelStart;
+      track1 = mCapturedTrack;
+      sel0 = selend;
+      track0 = pTrack;
+   }
+
+   origSel0 = sel0;
+   origSel1 = sel1;
+
+   if (mSnapManager) {
+      mSnapLeft = -1;
+      mSnapRight = -1;
+      if (mSnapManager->Snap(mCapturedTrack, sel0, false, &sel0)) {
+         mSnapLeft = TimeToPosition(sel0, trackLeftEdge);
+      }
+      if (mSnapManager->Snap(mCapturedTrack, sel1, true, &sel1)) {
+         mSnapRight = TimeToPosition(sel1, trackLeftEdge);
+      }
+
+      if (mSnapLeft >= 0 && mSnapRight >= 0 && mSnapRight - mSnapLeft < 3) {
+         // Too close together.  Better not to snap at all.
+         sel0 = origSel0;
+         sel1 = origSel1;
+         mSnapLeft = -1;
+         mSnapRight = -1;
+      }
+   }
+
+   mViewInfo->sel0 = sel0;
+   mViewInfo->sel1 = sel1;
+
+   MakeParentModifyState();
+
+   // Full refresh since the label area may need to indicate
+   // newly selected tracks.
+   Refresh(false);
+
+   // Make sure the ruler follows suit.
+   mRuler->DrawSelection();
+
+   // As well as the SelectionBar.
+   DisplaySelection();
 }
 
 /// AS: If we're dragging to extend a selection (or actually,
 ///  if the screen is scrolling while you're selecting), we
 ///  handle it here.
-void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
+void TrackPanel::SelectionHandleDrag(wxMouseEvent & event, Track *clickedTrack)
 {
    // AS: If we're not in the process of selecting (set in
    //  the SelectionHandleClick above), fuhggeddaboudit.
@@ -1733,7 +1831,7 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
       }
    }
 
-   ExtendSelection(x, r.x);
+   ExtendSelection(x, r.x, clickedTrack);
 
 #ifdef __WXMAC__
 #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
@@ -1741,29 +1839,6 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
       MacUpdateImmediately();
 #endif
 #endif
-}
-
-/// Extend the existing selection
-void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge)
-{
-   double selend = PositionToTime(mouseXCoordinate, trackLeftEdge);
-
-   clip_bottom(selend, 0.0);
-
-   mViewInfo->sel0 = wxMin(mSelStart, selend);
-   mViewInfo->sel1 = wxMax(mSelStart, selend);
-
-   MakeParentModifyState();
-
-   // Full refresh since the label area may need to indicate
-   // newly selected tracks.
-   Refresh(false);
-
-   // Make sure the ruler follows suit.
-   mRuler->DrawSelection();
-
-   // As well as the SelectionBar.
-   DisplaySelection();
 }
 
 /// Converts a position (mouse X coordinate) to 
@@ -1939,6 +2014,13 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
    if (event.ButtonUp(1)) {
       SetCapturedTrack( NULL );
 
+      if (mSnapManager) {
+         delete mSnapManager;
+         mSnapManager = NULL;
+      }
+      mSnapLeft = -1;
+      mSnapRight = -1;
+
       if (!mDidSlideVertically && mHSlideAmount==0)
          return;
 
@@ -2043,8 +2125,6 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
             }
          }
       }
-
-
    } else {
       mCapturedClip = NULL;
       mCapturedClipArray.Clear();
@@ -2060,6 +2140,22 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
    mMouseClickY = event.m_y;
 
    mSelStart = mViewInfo->h + ((event.m_x - r.x) / mViewInfo->zoom);
+
+   if (mSnapManager)
+      delete mSnapManager;
+   mSnapManager = new SnapManager(mTracks,
+                                  &mCapturedClipArray,
+                                  mViewInfo->zoom,
+                                  4); // pixel tolerance
+   mSnapLeft = -1;
+   mSnapRight = -1;
+   mSnapPreferRightEdge = false;
+   if (mCapturedClip) {
+      if (fabs(mSelStart - mCapturedClip->GetEndTime()) <
+          fabs(mSelStart - mCapturedClip->GetStartTime()))
+         mSnapPreferRightEdge = true;
+   }
+
    mMouseCapture = IsSliding;
 }
 
@@ -2115,8 +2211,39 @@ void TrackPanel::DoSlide(wxMouseEvent & event)
 
    double desiredSlideAmount = (event.m_x - mMouseClickX) / mViewInfo->zoom;
 
-   /// \todo Adjust desiredSlideAmount by snapping track to nearby
-   /// snap points...
+   // Adjust desiredSlideAmount using SnapManager
+   if (mSnapManager && mCapturedClip) {
+      double clipLeft = mCapturedClip->GetStartTime() + desiredSlideAmount;
+      double clipRight = mCapturedClip->GetEndTime() + desiredSlideAmount;
+
+      double newClipLeft = clipLeft;
+      double newClipRight = clipRight;
+
+      mSnapManager->Snap(mCapturedTrack, clipLeft, false, &newClipLeft);
+      mSnapManager->Snap(mCapturedTrack, clipRight, false, &newClipRight);
+
+      // Only one of them is allowed to snap
+      if (newClipLeft != clipLeft && newClipRight != clipRight) {
+         if (mSnapPreferRightEdge)
+            newClipLeft = clipLeft;
+         else
+            newClipRight = clipRight;
+      }
+
+      // Take whichever one snapped (if any) and compute the new desiredSlideAmount
+      mSnapLeft = -1;
+      mSnapRight = -1;
+      if (newClipLeft != clipLeft) {
+         double difference = (newClipLeft - clipLeft);
+         desiredSlideAmount += difference;
+         mSnapLeft = TimeToPosition(newClipLeft, GetLeftOffset());
+      }
+      else if (newClipRight != clipRight) {
+         double difference = (newClipRight - clipRight);
+         desiredSlideAmount += difference;
+         mSnapRight = TimeToPosition(newClipRight, GetLeftOffset());
+      }
+   }
 
    //If the mouse is over a track that isn't the captured track,
    //drag the clip to the mousetrack
@@ -4367,6 +4494,15 @@ void TrackPanel::DrawEverythingElse(wxDC * dc, const wxRect panelRect,
    if (GetFocusedTrack() != NULL && wxWindow::FindFocus() == this) {
       HighlightFocusedTrack(dc, focusRect);
    }
+
+   // Draw snap guidelines if we have any
+   if (mSnapManager && (mSnapLeft >= 0 || mSnapRight >= 0)) {
+      AColor::SnapGuidePen(dc);
+      if (mSnapLeft >= 0)
+         dc->DrawLine(mSnapLeft, 0, mSnapLeft, 30000);
+      if (mSnapRight >= 0)
+         dc->DrawLine(mSnapRight, 0, mSnapRight, 30000);
+   }
 }
 
 /// Draws 'Everything else' for one particular track.  Basically
@@ -4502,11 +4638,7 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    if (t->GetKind() == Track::Wave && !t->GetMinimized()) {
       int offset;
 
-      #ifdef __WXMAC__
       offset = 8;
-      #else
-      offset = 16;
-      #endif
       
       if (r.y + 22 + 12 < rec.y + rec.height - 19)
          dc->DrawText(TrackSubText(t), r.x + offset, r.y + 22);
