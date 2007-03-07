@@ -114,7 +114,6 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    SetSize(rect);
 
    wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
-
 // mCategories = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize
 // mCategories = new wxChoicebook(this, -1, wxDefaultPosition, wxDefaultSize
 // mCategories = new wxListbook(this, -1, wxDefaultPosition, wxDefaultSize
@@ -163,11 +162,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
    mOK = new wxButton(this,
                       wxID_OK, _("&OK"));
-
-#ifndef TARGET_CARBON
    mOK->SetDefault();
-   mOK->SetFocus();
-#endif
 
    mCancel = new wxButton(this,
                           wxID_CANCEL,
