@@ -22,12 +22,14 @@
 <h3><?=_("Audacity Team Members")?></h3>
 <ul>
   <li>Gale Andrews, <?=_("documentation and support")?></li>
+  <li>Richard Ash, <?=_("documentation and support")?></li>
   <li>Christian Brochec, <?=_("documentation and support")?>, <?=_("French")?></li>
   <li>James Crook, <?=_("developer")?></li>
   <li>Vaughan Johnson, <?=_("developer")?></li>
   <li>Leland Lucius, <?=_("developer")?></li>
   <li>Dominic Mazzoni, <?=_("developer")?></li>
   <li>Markus Meyer, <?=_("developer")?></li>
+  <li>Alexandre Prokoudine, <?=_("documentation and support")?></li>
   <li>Martyn Shaw, <?=_("developer")?></li>
 </ul>
 
@@ -127,7 +129,6 @@
 <h3><?=_("Thanks")?></h3>
 <p><?=_("There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible.")?></p>
 <ul>
-  <li>Richard Ash</li>
   <li>Dave Beydler</li>
   <li>Jason Cohen</li>
   <li>Dave Fancella</li>
