@@ -19,7 +19,19 @@
 
 <p><?=_("Audacity was started by Dominic Mazzoni and Roger Dannenberg in the fall of 1999 at Carnegie Mellon University.  It was released as open-source software at SourceForge.net in May of 2000.")?></p>
 
-<h3><?=_("Lead Developers")?></h3>
+<h3><?=_("Audacity Team Members")?></h3>
+<ul>
+  <li>Gale Andrews, <?=_("documentation and support")?></li>
+  <li>Christian Brochec, <?=_("documentation and support")?>, <?=_("French")?></li>
+  <li>James Crook, <?=_("developer")?></li>
+  <li>Vaughan Johnson, <?=_("developer")?></li>
+  <li>Leland Lucius, <?=_("developer")?></li>
+  <li>Dominic Mazzoni, <?=_("developer")?></li>
+  <li>Markus Meyer, <?=_("developer")?></li>
+  <li>Martyn Shaw, <?=_("developer")?></li>
+</ul>
+
+<h3><?=_("Technical leadership council")?></h3>
 <ul>
   <li><a href="http://dominic-mazzoni.com/">Dominic Mazzoni</a> - (dominic (at) audacityteam.org)</li>
   <li><a href="http://claimid.com/mbrubeck">Matt Brubeck</a> - (mbrubeck (at) audacityteam.org)</li>
@@ -29,28 +41,26 @@
   <li>Markus Meyer - (markus (at) audacityteam.org)</li>
 </ul>
 
-<h3><?=_("Active Developers")?></h3>
+<h3><?=_("Emeritus: distinguished Audacity team members, not currently active")?></h3>
 <ul>
-  <li><a href="http://www.reverberate.org/">Joshua Haberman</a> - (joshua (at) audacityteam.org)</li>
-  <li>Monty Montgomery</li>
-  <li>Shane Mueller</li>
-  <li>Martyn Shaw</li>
+  <li><a href="http://claimid.com/mbrubeck">Matt Brubeck</a>, <?=_("developer")?></li>
+  <li><a href="http://www.cs.cmu.edu/~rbd">Roger Dannenberg</a>, <?=_("developer")?></li>
+  <li><a href="http://www.reverberate.org/">Joshua Haberman</a>, <?=_("developer")?></li>
+  <li>Monty Montgomery, <?=_("developer")?></li>
+  <li>Shane Mueller, <?=_("developer")?></li>
+  <li>Tony Oetzmann, <?=_("documentation and support")?></li>
 </ul>
 
 <h3><?=_("Contributors")?></h3>
 <ul>
-  <li>William Bland</li>
-  <li>Roger Dannenberg -
-    <p><?=_("Nyquist author, Audacity founder, data structure architect")?></p></li>
-  <li>Brian Gunlogson</li>
-  <li>Harvey Lubin</li>
-  <li>Greg Mekkes</li>
-  <li>Abe Milde</li>
-  <li>Paul Nasca</li>
-  <li>Tony Oetzmann -
-    <p><?=_("lead documentation writer")?></p></li>
-  <li>Augustus Saunders</li>
-  <li>Tom Woodhams</li>
+  <li>William Bland, <?=_("developer")?></li>
+  <li>Brian Gunlogson, <?=_("developer")?></li>
+  <li>Harvey Lubin, <?=_("graphic artist")?></li>
+  <li>Greg Mekkes, <?=_("developer")?></li>
+  <li>Abe Milde, <?=_("developer")?></li>
+  <li>Paul Nasca, <?=_("developer")?></li>
+  <li>Augustus Saunders, <?=_("developer")?></li>
+  <li>Tom Woodhams, <?=_("developer")?></li>
 </ul>
 
 <h3><?=_("Translators")?></h3>
@@ -136,6 +146,7 @@
   <li>Mark Tomlinson</li>
   <li>David Topper</li>
   <li>Rudy Trubitt</li>
+  <li>UmixIt Technologies, LLC</li>
   <li>Verilogix, Inc.</li>
   <li><?=_("(Let us know if we're forgetting anyone!)")?></li>
 </ul>
