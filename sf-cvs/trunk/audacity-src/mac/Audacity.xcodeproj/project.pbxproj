@@ -742,6 +742,7 @@
 		28105DAA0AD09FC500BB4269 /* px_mac_coreaudio.c in Sources */ = {isa = PBXBuildFile; fileRef = 28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */; };
 		28105DAB0AD09FC500BB4269 /* px_mixer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28105DA10AD09FC500BB4269 /* px_mixer.c */; };
 		28105DAC0AD09FC500BB4269 /* px_mixer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28105DA20AD09FC500BB4269 /* px_mixer.h */; };
+		282D474C0B9E8D900034BC49 /* Snap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 282D474A0B9E8D900034BC49 /* Snap.cpp */; };
 		2835062D0A3A88ED00EB1EBD /* pa_unix_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 283506280A3A88ED00EB1EBD /* pa_unix_util.c */; };
 		2835062E0A3A88ED00EB1EBD /* pa_unix_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 283506290A3A88ED00EB1EBD /* pa_unix_util.h */; };
 		283A11A50A2C0DE7004372C4 /* broadcast.c in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A40A2C0DE7004372C4 /* broadcast.c */; };
@@ -1864,6 +1865,8 @@
 		28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = px_mac_coreaudio.c; sourceTree = "<group>"; };
 		28105DA10AD09FC500BB4269 /* px_mixer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = px_mixer.c; sourceTree = "<group>"; };
 		28105DA20AD09FC500BB4269 /* px_mixer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = px_mixer.h; sourceTree = "<group>"; };
+		282D474A0B9E8D900034BC49 /* Snap.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Snap.cpp; sourceTree = "<group>"; };
+		282D474B0B9E8D900034BC49 /* Snap.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Snap.h; sourceTree = "<group>"; };
 		283506280A3A88ED00EB1EBD /* pa_unix_util.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_unix_util.c; sourceTree = "<group>"; };
 		283506290A3A88ED00EB1EBD /* pa_unix_util.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_unix_util.h; sourceTree = "<group>"; };
 		283A11A40A2C0DE7004372C4 /* broadcast.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = broadcast.c; sourceTree = "<group>"; };
@@ -2737,6 +2740,8 @@
 		1790AFC409883BFD008A330A /* src */ = {
 			isa = PBXGroup;
 			children = (
+				282D474A0B9E8D900034BC49 /* Snap.cpp */,
+				282D474B0B9E8D900034BC49 /* Snap.h */,
 				174D9025098C78AF00D5909F /* commands */,
 				1790AFDC09883BFD008A330A /* blockfile */,
 				1790AFFD09883BFD008A330A /* effects */,
@@ -5230,6 +5235,7 @@
 				2840CF860AEB83DB00F49FC3 /* ExportMP2.cpp in Sources */,
 				28D65C720B97E54B000E001A /* AutoDuck.cpp in Sources */,
 				28D65C760B97E573000E001A /* DtmfGen.cpp in Sources */,
+				282D474C0B9E8D900034BC49 /* Snap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
