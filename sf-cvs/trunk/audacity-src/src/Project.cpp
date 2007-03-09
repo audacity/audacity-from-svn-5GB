@@ -1192,8 +1192,8 @@ bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
    if (w) {
       wxCommandEvent e(EVT_CAPTURE_KEY);
       e.SetEventObject(&event);
-      w->ProcessEvent(e);
-      if (e.GetSkipped()) {
+   
+      if (w->ProcessEvent(e)) {
          return false;
       }
    }
