@@ -1809,7 +1809,31 @@ void AudacityProject::OnTrackGainDec()
 
 void AudacityProject::OnTrackMenu()
 {
-   mTrackPanel->OnTrackMenu();
+   // LLL:  There's a slight problem on Windows that I was not able to track
+   //       down to the actual cause.  I "think" it might be a problem in wxWidgets
+   //       on Windows, but I'm not sure.
+   //
+   //       Let's say the user has SHIFT+M assigned as the keyboard shortcut for
+   //       bringing up the track menu.  If there is only 1 wave track and the user
+   //       uses the shortcut, the menu is display and immediately disappears.  But,
+   //       if there are 2 or more wave tracks, then the menu is displayed.
+   //
+   //       However, what is actually happening is that the popup menu is processing
+   //       the "M" as the menu item to select after the menu is displayed.  With only
+   //       1 track, the only (enabled) menu item that begins with "M" is Mono and
+   //       that's what gets selected.
+   //
+   //       With 2+ wave tracks, there's 2 menu items that begin with "M" and Mono
+   //       is only highlighted by not selected, so the menu doesn't get dismissed.
+   //
+   //       While the 1 or 2 track example above is a way to recreate the issue, the
+   //       real problem is when there's only one enabled menu item that begins with
+   //       the selected shortcut key.
+   //
+   //       The workaround is to queue a context menu event, allowing the key press
+   //       event to complete.
+   wxContextMenuEvent e(wxEVT_CONTEXT_MENU, GetId());
+   mTrackPanel->AddPendingEvent(e);
 }
 
 void AudacityProject::OnTrackMute()
