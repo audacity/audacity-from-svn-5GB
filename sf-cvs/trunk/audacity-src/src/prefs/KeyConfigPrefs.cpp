@@ -229,9 +229,15 @@ void KeyConfigPrefs::OnSet(wxCommandEvent& event)
       mList->GetItem(item);
       if (item.m_text == newKey)
       {
+         wxListItem item;
+         item.m_col = CommandColumn;
+         item.m_mask = wxLIST_MASK_TEXT;
+         item.SetId(i);
+         mList->GetItem(item);
          wxString prompt = wxString::Format(
-            _("The keyboard shortcut '%s' is already assigned to another key. It has not been set."),
-            newKey.c_str());
+            _("The keyboard shortcut '%s' is already assigned to:\n\n'%s'"),
+            newKey.c_str(),
+            item.m_text);
             
          wxMessageBox(prompt, _("Error"), wxICON_STOP | wxCENTRE, this);
          
