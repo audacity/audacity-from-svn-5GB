@@ -76,8 +76,6 @@ bool EffectDtmf::PromptUser()
 
    // start dialog
    dlog.Init();
-   dlog.TransferDataToWindow();
-   dlog.Fit();
    dlog.ShowModal();
 
    if (dlog.GetReturnCode() == wxID_CANCEL)
@@ -373,6 +371,7 @@ DtmfDialog::DtmfDialog(wxWindow * parent, const wxString & title): EffectDialog(
    */
    dTone = 0;
    dSilence = 0;
+   dDuration = 0;
 }
 
 void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
@@ -431,23 +430,19 @@ bool DtmfDialog::TransferDataToWindow()
    mDtmfDutyS->SetValue((int)dDutyCycle);
    mDtmfStringT->SetValue(dString);
    mDtmfDurationT->SetTimeValue(dDuration);
-   mDtmfDurationT->SetFocus();
-   mDtmfDurationT->Fit();
 
    return true;
 }
 
 bool DtmfDialog::TransferDataFromWindow()
 {
-   ShuttleGui S( this, eIsGettingFromDialog );
-   PopulateOrExchange( S );
-
    // recalculate to make sure all values are up-to-date. This is especially
    // important if the user did not change any values in the dialog
    Recalculate();
 
    return true;
 }
+
 /*
  *
  */
