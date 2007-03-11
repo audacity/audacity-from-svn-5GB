@@ -49,6 +49,7 @@ private:
    void OnSet(wxCommandEvent& event);
    void OnClear(wxCommandEvent& event);
    void OnItemSelected(wxListEvent &event);
+   void OnKeyDown(wxListEvent &event);
    void RepopulateBindingsList();
 
    SysKeyTextCtrl *mCurrentComboText;

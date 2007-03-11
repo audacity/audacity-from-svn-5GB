@@ -53,6 +53,7 @@ BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
    EVT_BUTTON(SaveButtonID, KeyConfigPrefs::OnSave)
    EVT_BUTTON(LoadButtonID, KeyConfigPrefs::OnLoad)
    EVT_LIST_ITEM_SELECTED(CommandsListID, KeyConfigPrefs::OnItemSelected)
+   EVT_LIST_KEY_DOWN(CommandsListID, KeyConfigPrefs::OnKeyDown)
 END_EVENT_TABLE()
 
 KeyConfigPrefs::KeyConfigPrefs(wxWindow * parent):
@@ -237,7 +238,7 @@ void KeyConfigPrefs::OnSet(wxCommandEvent& event)
          wxString prompt = wxString::Format(
             _("The keyboard shortcut '%s' is already assigned to:\n\n'%s'"),
             newKey.c_str(),
-            item.m_text);
+            item.m_text.c_str());
             
          wxMessageBox(prompt, _("Error"), wxICON_STOP | wxCENTRE, this);
          
@@ -254,6 +255,37 @@ void KeyConfigPrefs::OnClear(wxCommandEvent& event)
    if (mCommandSelected < 0 || mCommandSelected >= (int)mNames.GetCount())
       return;
    mList->SetItem( mCommandSelected, KeyComboColumn, wxT("") );
+}
+
+void KeyConfigPrefs::OnKeyDown(wxListEvent &event)
+{
+   int keycode = event.GetKeyCode();
+   int selected = mList->GetNextItem(-1, wxLIST_NEXT_ALL,  wxLIST_STATE_SELECTED);
+   int cnt = mList->GetItemCount();
+   wxListItem item;
+
+   item.SetColumn(CommandColumn);
+   item.SetMask(wxLIST_MASK_TEXT);
+
+   for (int i = selected + 1; i < cnt; i++)
+   {
+      item.SetId(i);
+
+      mList->GetItem(item);
+
+      if (item.m_text.Left(1).IsSameAs(keycode, false)) {
+         mList->SetItemState(event.GetIndex(),
+                             0,
+                             wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
+
+         mList->SetItemState(i,
+                             wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED,
+                             wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
+
+         mList->EnsureVisible(i);
+         break;
+      }
+   }
 }
 
 void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
