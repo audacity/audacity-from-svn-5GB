@@ -422,7 +422,7 @@ void AudacityProject::CreateMenusAndCommands()
       AudioIONotBusyFlag | WaveTracksSelectedFlag,
       AudioIONotBusyFlag | WaveTracksSelectedFlag);
 
-   c->AddItem(wxT("SplitNew"),      _("Split Ne&w\tShift+Ctrl+I"),       FN(OnSplitNew));
+   c->AddItem(wxT("SplitNew"),      _("Split Ne&wCtrl+Alt+I"),       FN(OnSplitNew));
    c->SetCommandFlags(wxT("SplitNew"),
       AudioIONotBusyFlag | WaveTracksSelectedFlag,
       AudioIONotBusyFlag | WaveTracksSelectedFlag);
