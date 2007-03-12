@@ -905,10 +905,8 @@ void ThemeBase::LoadComponents( bool bOkIfNotFound )
    {
       if( bOkIfNotFound )
          return;
-      wxMessageBox(
-         wxString::Format( 
-            _("None of the expected theme component files\n were found in:\n  %s.")),
-            FileNames::ThemeComponentsDir().c_str() ));
+      wxMessageBox(wxString::Format(_("None of the expected theme component files\n were found in:\n  %s."),
+                                    FileNames::ThemeComponentsDir().c_str()));
    }
 }
 
