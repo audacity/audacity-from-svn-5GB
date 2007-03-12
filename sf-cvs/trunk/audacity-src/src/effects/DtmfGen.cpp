@@ -64,7 +64,7 @@ bool EffectDtmf::PromptUser()
       dlog.dIsSelection = false;
    }
 
-   gPrefs->Read(wxT("/CsPresets/DtmfGen_String"), &dtmfString, _("12345"));
+   gPrefs->Read(wxT("/CsPresets/DtmfGen_String"), &dtmfString, wxT("12345"));
    gPrefs->Read(wxT("/CsPresets/DtmfGen_DutyCycle"), &dtmfDutyCycle, 750L);
 
    dtmfNTones = wxStrlen(dtmfString);
@@ -415,12 +415,12 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
 
    S.StartMultiColumn(2, wxCENTER);
    {
-      S.AddFixedText(_("duty cycle:"), false);
-      mDtmfDutyT = S.Id(ID_DTMF_DUTYCYCLE_TEXT).AddVariableText(wxString::Format(_("%.1f %%"), (float) dDutyCycle/DUTY_SCALE), false);
-      S.AddFixedText(_("tone duration:"), false);
-      mDtmfSilenceT = S.Id(ID_DTMF_TONELEN_TEXT).AddVariableText(wxString::Format(_("%d ms"),  (int) dTone * 1000), false);
-      S.AddFixedText(_("silence duration:"), false);
-      mDtmfToneT = S.Id(ID_DTMF_SILENCE_TEXT).AddVariableText(wxString::Format(_("%d ms"), (int) dSilence * 1000), false);
+      S.AddFixedText(_("Duty cycle:"), false);
+      mDtmfDutyT = S.Id(ID_DTMF_DUTYCYCLE_TEXT).AddVariableText(wxString::Format(wxT("%.1f %%"), (float) dDutyCycle/DUTY_SCALE), false);
+      S.AddFixedText(_("Tone duration:"), false);
+      mDtmfSilenceT = S.Id(ID_DTMF_TONELEN_TEXT).AddVariableText(wxString::Format(wxString(wxT("%d ")) + _("ms"),  (int) dTone * 1000), false);
+      S.AddFixedText(_("Silence duration:"), false);
+      mDtmfToneT = S.Id(ID_DTMF_SILENCE_TEXT).AddVariableText(wxString::Format(wxString(wxT("%d ")) + _("ms"), (int) dSilence * 1000), false);
    }
    S.EndMultiColumn();
 }
@@ -490,9 +490,9 @@ void DtmfDialog::Recalculate(void) {
         // - dNTones-1 silences
      }
 
-   mDtmfDutyT->SetLabel(wxString::Format(_("%.1f %%"), (float)dDutyCycle/DUTY_SCALE));
-   mDtmfSilenceT->SetLabel(wxString::Format(_("%d ms"),  (int) (dTone * 1000)));
-   mDtmfToneT->SetLabel(wxString::Format(_("%d ms"),  (int) (dSilence * 1000)));
+   mDtmfDutyT->SetLabel(wxString::Format(wxT("%.1f %%"), (float)dDutyCycle/DUTY_SCALE));
+   mDtmfSilenceT->SetLabel(wxString::Format(wxString(wxT("%d ")) + _("ms"),  (int) (dTone * 1000)));
+   mDtmfToneT->SetLabel(wxString::Format(wxString(wxT("%d ")) + _("ms"),  (int) (dSilence * 1000)));
 }
 
 void DtmfDialog::OnDutyCycleSlider(wxCommandEvent & event) {

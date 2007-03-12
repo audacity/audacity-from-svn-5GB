@@ -177,15 +177,15 @@ wxString Internat::FormatSize(double size)
    else {
       /* make it look nice, by formatting into k, MB, etc */
       if (size < 1024.0)
-         sizeStr = ToDisplayString(size) + _(" bytes");
+         sizeStr = ToDisplayString(size) + wxT(" ") + _("bytes");
       else if (size < 1024.0 * 1024.0) {
-         sizeStr = ToDisplayString(size / 1024.0, 1) + _(" KB");
+         sizeStr = ToDisplayString(size / 1024.0, 1) + wxT(" ") + _("KB");
       }
       else if (size < 1024.0 * 1024.0 * 1024.0) {
-         sizeStr = ToDisplayString(size / (1024.0 * 1024.0), 1) + _(" MB");
+         sizeStr = ToDisplayString(size / (1024.0 * 1024.0), 1) + wxT(" ") + _("MB");
       }
       else {
-         sizeStr = ToDisplayString(size / (1024.0 * 1024.0 * 1024.0), 1) + _(" GB");
+         sizeStr = ToDisplayString(size / (1024.0 * 1024.0 * 1024.0), 1) + wxT(" ") + _("GB");
       }
    }
 
@@ -284,6 +284,19 @@ wxString Internat::FromFilename(const wxString &s)
 }
 
 #endif
+
+wxString Internat::StripAccelerators(const wxString &s)
+{
+   wxString result;
+   result.Alloc(s.Length());
+   for(int i = 0; i < s.Length(); i++) {
+      if (s[i] == '\t')
+         break;
+      if (s[i] != '&' && s[i] != '.')
+         result += s[i];
+   }
+   return result;
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

@@ -2371,7 +2371,7 @@ bool AudacityProject::SaveAs()
 	{
  	  ShowWarningDialog(this, wxT("FirstProjectSave"),
                      _("Audacity project files (.aup) let you save everything you're working on exactly as it\nappears on the screen, but most other programs can't open Audacity project files.\n\nWhen you want to save a file that can be opened by other programs, select one of the\nExport commands."));
- 	  fName = wxFileSelector(_("Save Project As:"),
+ 	  fName = wxFileSelector(_NoAcc("Save Project &As...") + wxT(":"),
                           path, fName, wxT(""),
                           _("Audacity projects (*.aup)|*.aup"),
                           wxSAVE | wxOVERWRITE_PROMPT, this);

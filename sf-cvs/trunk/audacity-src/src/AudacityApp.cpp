@@ -784,7 +784,7 @@ bool AudacityApp::InitCleanSpeech()
 
    if (presets == wxT("")) {
       // Failed
-      wxMessageBox(_("Audacity could not find a place to store\n.csp CleanSpeech preset files\nAudacity is now going to exit. \nInstallation may be corrupt."));
+      wxMessageBox(wxT("Audacity could not find a place to store\n.csp CleanSpeech preset files\nAudacity is now going to exit. \nInstallation may be corrupt."));
       return false;
    }
 
@@ -874,12 +874,16 @@ bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
    wxString name = wxString::Format(wxT("audacity-lock-%s"), wxGetUserId().c_str());
    mChecker = new wxSingleInstanceChecker();
 
+   wxString runningTwoCopiesStr = _("Running two copies of Audacity simultaneously may cause\ndata loss or cause your system to crash.\n\n");
+
    if (!mChecker->Create(name, dir)) {
       // Error initializing the wxSingleInstanceChecker.  We don't know
       // whether there is another instance running or not.
 
       wxString prompt =
-         _("Audacity was not able to lock the temporary files directory.\nThis folder may be in use by another copy of Audacity.\nRunning two copies of Audacity simultaneously may cause\ndata loss or cause your system to crash.\n\nDo you still want to start Audacity?");
+         _("Audacity was not able to lock the temporary files directory.\nThis folder may be in use by another copy of Audacity.\n") +
+         runningTwoCopiesStr +
+         _("Do you still want to start Audacity?");
       int action = wxMessageBox(prompt,
                                 _("Error locking temporary folder"),
                                 wxYES_NO | wxICON_EXCLAMATION,
@@ -893,7 +897,9 @@ bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
       // There is another copy of Audacity running.  Force quit.
       
       wxString prompt =
-         _("The system has detected that another copy of Audacity is running.\nRunning two copies of Audacity simultaneously may lead to\ndata loss or cause your system to crash, so is not allowed.\n\nUse the New or Open commands in the currently running Audacity\nprocess to open multiple projects simultaneously.\n");
+         _("The system has detected that another copy of Audacity is running.\n") +
+         runningTwoCopiesStr +
+         _("Use the New or Open commands in the currently running Audacity\nprocess to open multiple projects simultaneously.\n");
       wxMessageBox(prompt, _("Audacity is already running"),
             wxOK | wxICON_ERROR);
       delete mChecker;

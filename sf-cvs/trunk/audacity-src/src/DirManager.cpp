@@ -1257,7 +1257,7 @@ int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect)
          prompt.Printf(promptA,missingAliasFiles.size());
       
          const wxChar *buttons[]={_("Replace missing data with silence [permanent upon save]"),
-                                  _("Temporarily replace missing files with silence [this session only]"),
+                                  _("Temporarily replace missing data with silence [this session only]"),
                                   _("Close project immediately with no further changes"),NULL};
          action = ShowMultiDialog(prompt,
                                       _("Warning"),

@@ -134,7 +134,7 @@ void EffectAvcCompressor::OutputSample ( IAVCSAMPLETYPE left, IAVCSAMPLETYPE rig
 bool EffectAvcCompressor::PromptUser()
 {
    if ( mpDialog == NULL )	// reuse dialog so we keep user changes to values
-	   mpDialog = new AvcCompressorDialog(mParent, -1, _("Automatic Volume Control"));
+	   mpDialog = new AvcCompressorDialog(mParent, -1, wxT("Automatic Volume Control"));
 
    mpDialog->CentreOnParent();
    mpDialog->ShowModal();
@@ -380,8 +380,8 @@ bool AvcCompressorDialog::LongRangeCheck ( wxWindow *window,
         if ( !wxValidator::IsSilent() )
             wxBell();
 		wxString strTemp;
-		strTemp.Printf ( _("Value must be from %d to %d."), nMin, nMax );
-		wxMessageBox(strTemp, _("Validation error"),
+		strTemp.Printf ( wxT("Value must be from %d to %d."), nMin, nMax );
+		wxMessageBox(strTemp, wxT("Validation error"),
 					 wxOK | wxICON_EXCLAMATION, GetParent() );
  		if ( window )
 			window->SetFocus();
@@ -417,8 +417,8 @@ void AvcCompressorDialog::OnOK(wxCommandEvent &event)
 		}
 
 		if ( mnChangeWin > mnAdjWin ) {
-			wxMessageBox(_("Change window size must be less than or equal to Adjustment window size."),
-					 _("Validation error"), wxOK | wxICON_EXCLAMATION, GetParent() );
+			wxMessageBox(wxT("Change window size must be less than or equal to Adjustment window size."),
+					 wxT("Validation error"), wxOK | wxICON_EXCLAMATION, GetParent() );
  			if ( mctlChangeWin )
 				mctlChangeWin->SetFocus();
 			return;
@@ -442,15 +442,15 @@ void AvcCompressorDialog::OnOK(wxCommandEvent &event)
 
 			if ( i > 0 ) {
 				if ( mnXAxis[i] <= mnXAxis[iPrevPoint] ) {
-					wxMessageBox(_("Values in columns must be in ascending order."),
-								 _("Validation error"),
+					wxMessageBox(wxT("Values in columns must be in ascending order."),
+								 wxT("Validation error"),
 								 wxOK | wxICON_EXCLAMATION, GetParent() );
 					mctlXAxis[(i==NUM_CURVE_POINTS-1) ? iPrevPoint : i]->SetFocus();
 					return;
 				}
 				if ( mnYAxis[i] <= mnYAxis[iPrevPoint] ) {
-					wxMessageBox(_("Values in columns must be in ascending order."),
-								 _("Validation error"),
+					wxMessageBox(wxT("Values in columns must be in ascending order."),
+								 wxT("Validation error"),
 								 wxOK | wxICON_EXCLAMATION, GetParent() );
 					mctlYAxis[(i==NUM_CURVE_POINTS-1) ? iPrevPoint : i]->SetFocus();
 					return;
@@ -570,7 +570,7 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 
 	staticText =
        new wxStaticText(parent, ID_TEXT,
-                        _("Automatic Volume Control by Vincent A. Busam"),
+                        wxT("Automatic Volume Control by Vincent A. Busam"),
                         wxDefaultPosition, wxDefaultSize, 0);
 	mainSizer->Add(staticText, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -583,12 +583,12 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 	// 1.1  Group Box for adjustment window settings
 
 	group = new wxStaticBoxSizer(new wxStaticBox(parent, -1,
-                                                _("Adjustment Settings")), wxVERTICAL);
+                                                wxT("Adjustment Settings")), wxVERTICAL);
 	flexGridSizer = new wxFlexGridSizer(2, 0, 0);
 
 	// 1.1.1  Adjustment Window
 	staticText =
-       new wxStaticText(parent, ID_TEXT, _("Adjustment Window:"),
+       new wxStaticText(parent, ID_TEXT, wxT("Adjustment Window:"),
                         wxDefaultPosition, wxDefaultSize, 0 );
 	flexGridSizer->Add(staticText, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -600,7 +600,7 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 
 	// 1.1.2  Adjustment Delay
 	staticText =
-       new wxStaticText(parent, ID_TEXT, _("Adjustment Delay:"),
+       new wxStaticText(parent, ID_TEXT, wxT("Adjustment Delay:"),
                         wxDefaultPosition, wxDefaultSize, 0);
 	flexGridSizer->Add(staticText, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -613,7 +613,7 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 	// 1.1.3  Min Change Window
    /* i18n-hint: the minimum size of the window that is changed */
 	staticText =
-       new wxStaticText(parent, ID_TEXT, _("Minimum Change Window:"),
+       new wxStaticText(parent, ID_TEXT, wxT("Minimum Change Window:"),
                         wxDefaultPosition, wxDefaultSize, 0);
 	flexGridSizer->Add(staticText, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -625,7 +625,7 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 
 	// 1.1.4  Min Change %
 	staticText =
-       new wxStaticText(parent, ID_TEXT, _("Minimum Change %:"),
+       new wxStaticText(parent, ID_TEXT, wxT("Minimum Change %:"),
                         wxDefaultPosition, wxDefaultSize, 0);
 	flexGridSizer->Add(staticText, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -664,7 +664,7 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 	// 2.  Group Box for volume settings
 
 	group = new wxStaticBoxSizer(new wxStaticBox(parent, -1,
-                                                _("Amplification Settings")), wxVERTICAL);
+                                                wxT("Amplification Settings")), wxVERTICAL);
 
 	// 2.1  Add one row each time through loop
 
@@ -676,12 +676,12 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 	flexGridSizer->Add(staticText, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	staticText =
-       new wxStaticText(parent, ID_TEXT, _("Original Value"),
+       new wxStaticText(parent, ID_TEXT, wxT("Original Value"),
                         wxDefaultPosition, wxDefaultSize, 0);
 	flexGridSizer->Add(staticText, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	staticText =
-       new wxStaticText(parent, ID_TEXT, _("New Value"),
+       new wxStaticText(parent, ID_TEXT, wxT("New Value"),
                         wxDefaultPosition, wxDefaultSize, 0);
 	flexGridSizer->Add(staticText, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -723,13 +723,13 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 
 	// Add restore defaults button
 	button =
-       new wxButton(parent, ID_RESTORE_DEFAULTS, _("Restore Defaults"), wxDefaultPosition,
+       new wxButton(parent, ID_RESTORE_DEFAULTS, wxT("Restore Defaults"), wxDefaultPosition,
                     wxDefaultSize, 0);
 	boxSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
 	// Add Cancel button
 	button =
-       new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
+       new wxButton(parent, wxID_CANCEL, _("&Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
 	boxSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 

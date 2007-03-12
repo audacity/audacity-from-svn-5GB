@@ -260,8 +260,7 @@ bool Tags::ShowEditDialog(wxWindow *parent, wxString title, bool modal)
 
    if (modal) {
       ToolBarDialog *tbd = new ToolBarDialog(parent, -1, title);
-      TagsEditor *te = new TagsEditor(tbd, -1, this,
-                                      mEditTitle, mEditTrackNumber);
+      new TagsEditor(tbd, -1, this, mEditTitle, mEditTrackNumber);
       tbd->CentreOnParent();
       tbd->ShowModal();
       // No need to delete...see TagsEditor::OnClose()
@@ -904,7 +903,7 @@ void TagsEditor::BuildMainPanel()
    formats[0] = _("ID3v1 (more compatible)");
    formats[1] = _("ID3v2 (more flexible)");
 
-   mFormatRadioBox = new wxRadioBox(parent, FormatID, _("Format:"),
+   mFormatRadioBox = new wxRadioBox(parent, FormatID, wxString(_("Format")) + wxT(":"),
                                     wxDefaultPosition, wxDefaultSize,
                                     2, formats,
                                     0, wxRA_VERTICAL);
@@ -915,7 +914,7 @@ void TagsEditor::BuildMainPanel()
    wxFlexGridSizer *gridSizer = new wxFlexGridSizer(2, 0, 0);
 
    wxStaticText *item3 =
-       new wxStaticText(parent, StaticTextID, _("Title:"),
+       new wxStaticText(parent, StaticTextID, wxString(_("Title")) + wxT(":"),
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 3);
 
@@ -925,7 +924,7 @@ void TagsEditor::BuildMainPanel()
    gridSizer->Add(mTitleText, 1, wxEXPAND | wxALL, 3);
 
    wxStaticText *item5 =
-       new wxStaticText(parent, StaticTextID, _("Artist:"),
+       new wxStaticText(parent, StaticTextID, wxString(_("Artist")) + wxT(":"),
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 3);
 
@@ -935,7 +934,7 @@ void TagsEditor::BuildMainPanel()
    gridSizer->Add(mArtistText, 1, wxEXPAND | wxALL, 3);
 
    wxStaticText *item7 =
-       new wxStaticText(parent, StaticTextID, _("Album:"),
+       new wxStaticText(parent, StaticTextID, wxString(_("Album")) + wxT(":"),
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item7, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 3);
 
@@ -951,7 +950,7 @@ void TagsEditor::BuildMainPanel()
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 
    wxStaticText *item9 =
-       new wxStaticText(parent, StaticTextID, _("Track Number:"),
+       new wxStaticText(parent, StaticTextID, wxString(_("Track Number")) + wxT(":"),
                         wxDefaultPosition, wxDefaultSize, 0);
    hSizer->Add(item9, 0, wxALIGN_CENTRE | wxALL, 3);
 
@@ -961,7 +960,7 @@ void TagsEditor::BuildMainPanel()
    hSizer->Add(mTrackNumText, 0, wxALIGN_CENTRE | wxALL, 3);
 
    wxStaticText *item11 =
-       new wxStaticText(parent, StaticTextID, _("Year:"),
+       new wxStaticText(parent, StaticTextID, wxString(_("Year")) + wxT(":"),
                         wxDefaultPosition, wxDefaultSize, 0);
    hSizer->Add(item11, 0, wxALIGN_CENTRE | wxALL, 3);
 
@@ -977,7 +976,7 @@ void TagsEditor::BuildMainPanel()
    gridSizer = new wxFlexGridSizer(2, 0, 0);
 
    wxStaticText *item20 =
-       new wxStaticText(parent, StaticTextID, _("Genre:"),
+       new wxStaticText(parent, StaticTextID, wxString(_("Genre")) + wxT(":"),
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 3);
 
@@ -994,7 +993,7 @@ void TagsEditor::BuildMainPanel()
    gridSizer->Add(mGenreChoice, 1, wxEXPAND | wxALL, 3);
    
    wxStaticText *item22 =
-       new wxStaticText(parent, StaticTextID, _("Comments:"),
+       new wxStaticText(parent, StaticTextID, wxString(_("Comments")) + wxT(":"),
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item22, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 3);
 

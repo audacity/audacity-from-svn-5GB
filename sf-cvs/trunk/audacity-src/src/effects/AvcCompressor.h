@@ -63,11 +63,11 @@ public:
    virtual ~EffectAvcCompressor();
    
    virtual wxString GetEffectName() {
-      return wxString(_("Automatic Volume Control..."));
+      return wxString(wxT("Automatic Volume Control..."));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString(_("Changing volume"));
+      return wxString(wxT("Changing volume"));
    }
    
    // Useful only after PromptUser values have been set. 

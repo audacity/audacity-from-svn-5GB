@@ -319,7 +319,7 @@ bool EffectNyquist::PromptUser()
 
    if (mInteractive) {
       NyquistInputDialog dlog(mParent, -1,
-                              _("Nyquist Prompt"),
+                              _NoAcc("Nyquist Prompt..."),
                               _("Enter Nyquist Command: "),
                               mCmd);
       dlog.CentreOnParent();
@@ -591,7 +591,8 @@ bool EffectNyquist::ProcessOne()
 
    if (rval == nyx_double) {
       wxString str;
-      str.Printf(_("Nyquist returned the value: %f"), nyx_get_double());
+      str.Printf(_("Nyquist returned the value:") + wxString(wxT(" %f")),
+                 nyx_get_double());
       wxMessageBox(str, wxT("Nyquist"),
                    wxOK | wxCENTRE, mParent);
       nyx_cleanup();
@@ -601,7 +602,8 @@ bool EffectNyquist::ProcessOne()
 
    if (rval == nyx_int) {
       wxString str;
-      str.Printf(_("Nyquist returned the value: %d"), nyx_get_int());
+      str.Printf(_("Nyquist returned the value:") + wxString(wxT(" %d")),
+                 nyx_get_int());
       wxMessageBox(str, wxT("Nyquist"),
                    wxOK | wxCENTRE, mParent);
       nyx_cleanup();
@@ -982,10 +984,10 @@ NyquistInputDialog::NyquistInputDialog(wxWindow * parent, wxWindowID id,
 
    hSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   button = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   button = new wxButton(this, wxID_CANCEL, _("&Cancel"));
    hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   button = new wxButton(this, wxID_MORE, _("Debug"));
+   button = new wxButton(this, wxID_MORE, _("&Debug"));
    hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
    button = new wxButton(this, wxID_OK, _("OK"));

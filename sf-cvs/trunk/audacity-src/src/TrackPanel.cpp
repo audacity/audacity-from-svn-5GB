@@ -192,6 +192,7 @@ a list of fonts.
 #include "AudioIO.h"
 #include "Envelope.h"
 #include "Experimental.h"
+#include "Internat.h"
 #include "LabelTrack.h"
 #include "NoteTrack.h"
 #include "Prefs.h"
@@ -2034,11 +2035,12 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
       }
       else {
          wxString direction = mHSlideAmount>0 ? _("right") : _("left");
+         /* i18n-hint: %s is a direction like left or right */
          msg.Printf(_("Time shifted tracks/clips %s %.02f seconds"),
                     direction.c_str(), fabs(mHSlideAmount));
          consolidate = true;
       }
-      MakeParentPushState(msg, _("Time Shift"), consolidate);
+      MakeParentPushState(msg, _("Time-Shift"), consolidate);
    }
 }
 
@@ -3920,7 +3922,7 @@ bool TrackPanel::HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxM
          WaveTrack* linked = (WaveTrack*)mTracks->GetLink(track);
          if (linked)
             linked->RemoveCutLine(mCapturedTrackLocation.pos);
-         MakeParentPushState(_("Removed Cut Line"), _("Remove"), false );
+         MakeParentPushState(_("Removed Cut Line"), _NoAcc("&Remove"), false );
          handled = true;
       }
       
@@ -5594,8 +5596,8 @@ int channels[] = { Track::LeftChannel, Track::RightChannel,
    Track::MonoChannel
 };
 
-const wxChar *channelmsgs[] = { _("'left' channel"), _("'right' channel"),
-   _("'mono'")
+const wxChar *channelmsgs[] = { _("Left Channel"), _("Right Channel"),
+   _("Mono")
 };
 
 void TrackPanel::OnChannelChange(wxCommandEvent & event)

@@ -162,7 +162,8 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
       wxT("16384")
    };
 
-   wxStaticText *sizeLabel = new wxStaticText(this, wxID_ANY, _("Size:"));
+   wxStaticText *sizeLabel = new wxStaticText(this, wxID_ANY,
+                                              wxString(_("Size")) + wxT(":"));
    mSizeChoice = new wxChoice(this, FreqSizeChoiceID,
                               wxDefaultPosition, wxDefaultSize,
                               8, sizeChoiceStrings);
@@ -200,7 +201,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    mLogAxis = false;
 
    mExportButton = new wxButton(this, FreqExportButtonID,
-                                _("Export..."));
+                                _("&Export..."));
 
    mCloseButton = new wxButton(this, FreqCloseButtonID,
                                _("Close"));
@@ -764,6 +765,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
          peakpitch = PitchName_Absolute(Freq2Pitch(bestpeak));
          xp = xpitch.c_str();
          pp = peakpitch.c_str();
+
          info.Printf(_("Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s) = %.1f dB"),
                int (xPos + 0.5), xp,
                int (value + 0.5), int (bestpeak + 0.5),

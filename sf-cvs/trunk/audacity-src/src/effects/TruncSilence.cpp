@@ -81,7 +81,7 @@ void EffectTruncSilence::End()
 
 bool EffectTruncSilence::PromptUser()
 {
-   TruncSilenceDialog dlog(mParent, -1, _("Truncate Silence"));
+   TruncSilenceDialog dlog(mParent, -1, _NoAcc("Truncate Silence..."));
    dlog.mTruncLongestAllowedSilentMs = mTruncLongestAllowedSilentMs;
    dlog.mTruncDbChoiceIndex = mTruncDbChoiceIndex;
    dlog.TransferDataToWindow();
@@ -275,7 +275,7 @@ TruncSilenceDialog::TruncSilenceDialog(wxWindow *parent, wxWindowID id, const wx
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
    hSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("&Cancel"));
    hSizer->Add(cancel, 0, wxALIGN_CENTRE|wxALL, 5);
 
    wxButton *ok = new wxButton(this, wxID_OK, _("OK"));

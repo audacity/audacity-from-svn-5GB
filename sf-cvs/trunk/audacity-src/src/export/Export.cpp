@@ -421,7 +421,7 @@ bool ExportCompressed(AudacityProject *project, const wxString& format,
       success = ::ExportFLAC(project, numChannels, fName,
                       selectionOnly, t0, t1,mixerSpec);
 #else
-      wxMessageBox(_("Flac support is not included in this build of Audacity"));
+      wxMessageBox(wxT("Flac support is not included in this build of Audacity"));
 #endif
    }
    else if( format == wxT("External Program") ) {
@@ -435,7 +435,7 @@ bool ExportCompressed(AudacityProject *project, const wxString& format,
          success = ::ExportCL(project, (numChannels == 2), fName,
                            selectionOnly, t0, t1, mixerSpec);
 #else
-      wxMessageBox(_("Command-line exporting is only supported on UNIX"));
+      wxMessageBox(wxT("Command-line exporting is only supported on UNIX"));
 #endif
    }
    else if( format == wxT("MP2") ) {
@@ -448,7 +448,7 @@ bool ExportCompressed(AudacityProject *project, const wxString& format,
          success = ::ExportMP2(project, (numChannels == 2), fName,
                             selectionOnly, t0, t1, mixerSpec);
 #else
-      wxMessageBox(_("MP2 export support is not included in this build of Audacity"));
+      wxMessageBox(wxT("MP2 export support is not included in this build of Audacity"));
 #endif
    }
 

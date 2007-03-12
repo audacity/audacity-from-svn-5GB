@@ -123,7 +123,7 @@ bool EffectAutoDuck::Init()
          {
             wxMessageBox(
                _("You selected a track which does not contain audio. AutoDuck can only process audio tracks."),
-               _("AutoDuck"), wxICON_ERROR, mParent);
+               _("Auto Duck"), wxICON_ERROR, mParent);
             return false;
          }
       }
@@ -134,8 +134,8 @@ bool EffectAutoDuck::Init()
    if (!controlTrackCandidate)
    {
       wxMessageBox(
-         _("AutoDuck needs a control track which must be placed below the selected track(s)."),
-         _("AutoDuck"), wxICON_ERROR, mParent);
+         _("Auto Duck needs a control track which must be placed below the selected track(s)."),
+         _("Auto Duck"), wxICON_ERROR, mParent);
       return false;
    }
    
@@ -484,7 +484,7 @@ EffectAutoDuckDialog::EffectAutoDuckDialog(EffectAutoDuck* effect,
          mDuckAmountDbBox = S.Id(ID_DUCK_AMOUNT_DB).AddTextBox(
             _("Duck amount:"),
             Internat::ToDisplayString(mEffect->mDuckAmountDb), 10);
-         S.AddUnits(_("db"));
+         S.AddUnits(_("dB"));
          
          mMaximumPauseBox = S.Id(ID_MAXIMUM_PAUSE).AddTextBox(
             _("Maximum pause:"),
@@ -518,7 +518,7 @@ EffectAutoDuckDialog::EffectAutoDuckDialog(EffectAutoDuck* effect,
          mThresholdDbBox = S.Id(ID_THRESHOLD_DB).AddTextBox(
             _("Threshold:"),
             Internat::ToDisplayString(mEffect->mThresholdDb), 10);
-         S.AddUnits(_("db"));
+         S.AddUnits(_("dB"));
       }
       S.EndMultiColumn();
 
@@ -796,7 +796,7 @@ void EffectAutoDuckPanel::OnPaint(wxPaintEvent& evt)
          valueStr += wxT(" ");
          
          if (cp == duckAmount)
-            valueStr += wxT("db"); // i18n-hint: short form of 'decibels'
+            valueStr += _("dB"); // i18n-hint: short form of 'decibels'
          else
             valueStr += _("s"); // i18n-hint: short form of 'seconds'
    

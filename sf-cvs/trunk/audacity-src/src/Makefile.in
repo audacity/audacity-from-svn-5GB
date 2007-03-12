@@ -104,7 +104,6 @@ OBJS = \
 	effects/Amplify.o \
 	effects/AutoDuck.o \
 	effects/BassBoost.o \
-	effects/ChangeLength.o \
 	effects/ChangePitch.o \
 	effects/ChangeSpeed.o \
 	effects/ChangeTempo.o \

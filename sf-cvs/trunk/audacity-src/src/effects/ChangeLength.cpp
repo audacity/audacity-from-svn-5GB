@@ -54,7 +54,7 @@ void EffectChangeLength::End()
 
 bool EffectChangeLength::PromptUser()
 {
-   ChangeLengthDialog dlog(mParent, -1, _("Change Length"));
+   ChangeLengthDialog dlog(mParent, -1, wxT("Change Length"));
    dlog.mToLength = mToLength;
    dlog.mFromLength = mFromLength;
    dlog.TransferDataToWindow();
@@ -73,7 +73,7 @@ bool EffectChangeLength::PromptUser()
 }
 bool EffectChangeLength::TransferParameters( Shuttle & shuttle )
 {  
-// shuttle.TransferInt(_(""),,0);
+// shuttle.TransferInt(wxT(""),,0);
    return true;
 }
 
@@ -109,33 +109,33 @@ ChangeLengthDialog::ChangeLengthDialog(wxWindow *parent, wxWindowID id, const wx
 //   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
    wxBoxSizer * pBoxSizer_Dialog = new wxBoxSizer(wxVERTICAL);
    wxStaticText *statText = new wxStaticText(this, -1,
-                            _("Change Length by Lynn Allan\n"
+                            wxT("Change Length by Lynn Allan\n"
                              "Make shorter or longer by up to +/- 10%\n"
                              "to fit certain number of minutes\n"));
    pBoxSizer_Dialog->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
    pBoxSizer_Dialog->Add(0, 4, 0); // spacer
 
    wxBoxSizer * pBoxSizer_ToLength = new wxBoxSizer(wxHORIZONTAL);
-   statText = new wxStaticText(this, -1, _("Desired Length (minutes): "),
+   statText = new wxStaticText(this, -1, wxT("Desired Length (minutes): "),
 									       wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_ToLength->Add(statText, 0, 
 									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
    m_pTextCtrl_ToLength =
-       new wxTextCtrl(this, ID_CHANGE_LENGTH_TO_TEXT, _("0.0"), 
+       new wxTextCtrl(this, ID_CHANGE_LENGTH_TO_TEXT, wxT("0.0"), 
 								wxDefaultPosition, wxSize(48, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_ToLength->Add(m_pTextCtrl_ToLength, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
    pBoxSizer_Dialog->Add(pBoxSizer_ToLength, 0, wxALIGN_CENTER | wxALL, 4);
 
-   wxStaticBoxSizer *infoGroup = new wxStaticBoxSizer(new wxStaticBox(this, -1, _("Information")), wxVERTICAL);
+   wxStaticBoxSizer *infoGroup = new wxStaticBoxSizer(new wxStaticBox(this, -1, wxT("Information")), wxVERTICAL);
 
    wxBoxSizer * pBoxSizer_FromLength = new wxBoxSizer(wxHORIZONTAL);
-   statText = new wxStaticText(this, -1, _("Current Length (minutes): "),
+   statText = new wxStaticText(this, -1, wxT("Current Length (minutes): "),
 									       wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_FromLength->Add(statText, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
    m_pTextCtrl_FromLength = 
-		new wxTextCtrl(this, ID_CHANGE_LENGTH_FROM_TEXT, _("0.0"), 
+		new wxTextCtrl(this, ID_CHANGE_LENGTH_FROM_TEXT, wxT("0.0"), 
 							wxDefaultPosition, wxSize(48, -1), 
 							wxTE_READONLY); // Read only because it's from the selection.
 							// No validator because it's read only.
@@ -146,11 +146,11 @@ ChangeLengthDialog::ChangeLengthDialog(wxWindow *parent, wxWindowID id, const wx
    infoGroup->Add(0, 4, 0); // spacer
 
    wxBoxSizer * pBoxSizer_Range = new wxBoxSizer(wxHORIZONTAL);
-   statText = new wxStaticText(this, -1, _("Allowed Range: "),
+   statText = new wxStaticText(this, -1, wxT("Allowed Range: "),
 									       wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Range->Add(statText, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
    m_pTextCtrl_ToRange = 
-		new wxTextCtrl(this, ID_TO_RANGE_TEXT, _("90% to 110%"), 
+		new wxTextCtrl(this, ID_TO_RANGE_TEXT, wxT("90% to 110%"), 
 							wxDefaultPosition, wxSize(90, -1), 
 							wxTE_READONLY); // Read only because it's from the selection.
 							// No validator because it's read only.
@@ -165,12 +165,12 @@ ChangeLengthDialog::ChangeLengthDialog(wxWindow *parent, wxWindowID id, const wx
 
    wxBoxSizer * pBoxSizer_PercentChange = new wxBoxSizer(wxHORIZONTAL);
 
-   statText = new wxStaticText(this, -1, _("Percent Change:"),
+   statText = new wxStaticText(this, -1, wxT("Percent Change:"),
 												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_PercentChange->Add(statText, 0, 
 											wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
    m_pTextCtrl_PercentChange = 
-		new wxTextCtrl(this, ID_PERCENT_CHANGE_TEXT, _("0.0"), 
+		new wxTextCtrl(this, ID_PERCENT_CHANGE_TEXT, wxT("0.0"), 
 							wxDefaultPosition, wxSize(40, -1), wxTE_READONLY);
    pBoxSizer_PercentChange->Add(m_pTextCtrl_PercentChange, 0, 
 											wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
@@ -178,7 +178,7 @@ ChangeLengthDialog::ChangeLengthDialog(wxWindow *parent, wxWindowID id, const wx
    pBoxSizer_Dialog->Add(infoGroup, 0, wxALIGN_CENTER | wxALL, 4);
 
    wxBoxSizer * pBoxSizer_Controls = new wxBoxSizer(wxHORIZONTAL);
-   wxButton *recalculate = new wxButton(this, ID_BUTTON_RECALCULATE, _("Recalculate"));
+   wxButton *recalculate = new wxButton(this, ID_BUTTON_RECALCULATE, wxT("Recalculate"));
    pBoxSizer_Controls->Add(recalculate, 0, wxALIGN_CENTRE|wxALL, 5);
 
    wxButton *cancel = new wxButton(this, wxID_CANCEL, _("&Cancel"));
@@ -209,7 +209,7 @@ bool ChangeLengthDialog::TransferDataToWindow()
       mToLength = mFromLength * 0.90;
       percentChange = -10.0;
    }
-   m_pTextCtrl_ToRange->SetValue(wxString::Format(_("%.1f to %.1f"), 
+   m_pTextCtrl_ToRange->SetValue(wxString::Format(wxT("%.1f to %.1f"), 
           ((mFromLength * 0.90) / 60.0), ((mFromLength * 1.10) / 60.0)));
    m_pTextCtrl_PercentChange->SetValue(wxString::Format(wxT("%.1f"), percentChange));
    m_pTextCtrl_ToLength->SetValue(wxString::Format(wxT("%.1f"), (mToLength / 60.0)));

@@ -200,7 +200,7 @@ int Importer::Import(wxString fName,
    //WMA files of various forms
    if ((extension.IsSameAs(wxT("wmv"), false))||(extension.IsSameAs(wxT("wma"), false))||(extension.IsSameAs(wxT("asf"), false))) {
       errorMessage = wxT("\"") + fName + wxT("\"") + 
-         _(" is an Windows Media Audio file. \nAudacity cannot open this type of file to due to patent restrictions.\nYou need to convert it to a supported audio format.");
+         _(" is a Windows Media Audio file. \nAudacity cannot open this type of file to due to patent restrictions.\nYou need to convert it to a supported audio format.");
       return 0;
    }
    //AAC files of various forms (probably not encrypted)

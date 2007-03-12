@@ -35,6 +35,7 @@
 #include "WaveTrack.h"
 #include "DirManager.h"
 #include "Envelope.h"
+#include "Internat.h"
 #include "Prefs.h"
 #include "Project.h"
 #include "Resample.h"
@@ -115,7 +116,7 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
                             rate, format);
 
    wxYield();
-   GetActiveProject()->ProgressShow(_("Mix and Render"),
+   GetActiveProject()->ProgressShow(_NoAcc("&Mix and Render"),
                                     _("Mixing and rendering tracks"));
    wxBusyCursor busy;
    

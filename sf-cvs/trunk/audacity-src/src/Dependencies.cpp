@@ -318,8 +318,8 @@ void DependencyDialog::PopulateOrExchange(ShuttleGui& S)
          {
             wxArrayString choices;
             choices.Add(_("Ask me"));
-            choices.Add(_("Always copy all audio (safest)"));
-            choices.Add(_("Never copy any audio"));
+            choices.Add(_("Always &copy all audio (safest)"));
+            choices.Add(_("&Never copy any audio"));
             mChoice = S.Id(FutureActionID).AddChoice(
                _("Whenever a project depends on other files:"),
                _("Ask me"), &choices);

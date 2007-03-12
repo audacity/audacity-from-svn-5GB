@@ -824,7 +824,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
 
    bandsInUse = NUMBER_OF_BANDS;
    double loLog = log10(mLoFreq);
-   double stepLog = (log10(mHiFreq) - loLog)/((double)NUM_PTS-1.);
+   //double stepLog = (log10(mHiFreq) - loLog)/((double)NUM_PTS-1.);
    for(int i=0; i<NUM_PTS-1; i++)
       whens[i] = (double)i/(NUM_PTS-1.);
    whens[NUM_PTS-1] = 1.;
@@ -990,9 +990,9 @@ void EqualizationDialog::MakeEqualizationDialog()
 
 #if wxUSE_ACCESSIBILITY
    dBMaxSlider->SetName(_("Max dB"));
-   dBMaxSlider->SetAccessible(new SliderAx(dBMaxSlider, _("%d dB")));
+   dBMaxSlider->SetAccessible(new SliderAx(dBMaxSlider, wxT("%d ") + _("dB")));
    dBMinSlider->SetName(_("Min dB"));
-   dBMinSlider->SetAccessible(new SliderAx(dBMinSlider, _("%d dB")));
+   dBMinSlider->SetAccessible(new SliderAx(dBMinSlider, wxT("%d ") + _("dB")));
 #endif
 
    dBRuler = new RulerPanel(this, wxID_ANY);
@@ -1088,11 +1088,11 @@ void EqualizationDialog::MakeEqualizationDialog()
 #if wxUSE_ACCESSIBILITY
       wxString name;
       if( thirdOct[i] < 1000.)
-         name.Printf(_("%dHz"), (int)thirdOct[i]);
+         name.Printf(wxT("%d ") + _("Hz"), (int)thirdOct[i]);
       else
-         name.Printf(_("%gkHz"), thirdOct[i]/1000.);
+         name.Printf(wxT("%g ") + _("kHz"), thirdOct[i]/1000.);
       m_sliders[i]->SetName(name);
-      m_sliders[i]->SetAccessible(new SliderAx(m_sliders[i], _("%d dB")));
+      m_sliders[i]->SetAccessible(new SliderAx(m_sliders[i], wxT("%d ") + _("dB")));
 #endif
    }
    szrV->Add( szrG, 0, wxEXPAND|wxALIGN_LEFT|wxALL, 0 );
@@ -1270,7 +1270,7 @@ bool EqualizationDialog::TransferDataFromWindow()
       dBMin = dB;
       mPanel->dBMin = dBMin;
 #if wxUSE_TOOLTIPS
-      tip.Printf(_("%ddB"),(int)dBMin);
+      tip.Printf(wxString(wxT("%d ")) + _("dB"),(int)dBMin);
       dBMinSlider->SetToolTip(tip);
 #endif
    }
@@ -1281,7 +1281,7 @@ bool EqualizationDialog::TransferDataFromWindow()
       dBMax = dB;
       mPanel->dBMax = dBMax;
 #if wxUSE_TOOLTIPS
-      tip.Printf(_("%ddB"),(int)dBMax);
+      tip.Printf(wxString(wxT("%d ")) + _("dB"),(int)dBMax);
       dBMaxSlider->SetToolTip(tip);
 #endif
    }
@@ -1309,7 +1309,7 @@ bool EqualizationDialog::TransferDataFromWindow()
       mPanel->M = M;
       mMText->SetLabel(wxString::Format(wxT("%d"), M));
 #if wxUSE_TOOLTIPS
-      tip.Printf(_("%d"),M);
+      tip.Printf(wxT("%d"), M);
       MSlider->SetToolTip(tip);
 #endif
    }
@@ -2336,7 +2336,7 @@ void EqualizationDialog::OnDelete(wxCommandEvent &event)
 
    // Create the prompt
    wxString quest;
-   quest = _("Delete ") + mCurves[ sel ].Name + _("?");
+   quest = wxString(_("Delete")) + wxT(" ") + mCurves[ sel ].Name + wxT("?");
 
    // Ask for confirmation
    int ans = wxMessageBox( quest,

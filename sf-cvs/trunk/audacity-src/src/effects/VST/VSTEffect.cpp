@@ -449,7 +449,7 @@ VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
                    vst->GetPreviewName(),
                    wxPoint(10, y), wxSize(80, 30));
    wxButton *cancel =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(130, y), wxSize(80, 30));
+       new wxButton(this, wxID_CANCEL, _("&Cancel"), wxPoint(130, y), wxSize(80, 30));
    wxButton *ok =
        new wxButton(this, wxID_OK, _("OK"), wxPoint(220, y), wxSize(80, 30));
 

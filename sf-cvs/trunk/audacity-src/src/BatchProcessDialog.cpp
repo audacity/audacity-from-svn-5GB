@@ -35,6 +35,7 @@
 #include "Prefs.h"
 #include "Project.h"
 #include "BatchProcessDialog.h"
+#include "Internat.h"
 #include "commands/CommandManager.h"
 #include "effects/Effect.h"
 #include "../images/Arrow.xpm"
@@ -61,7 +62,7 @@ BatchProcessDialog::BatchProcessDialog(wxWindow * parent):
    AudacityProject * p = GetActiveProject();
    if (p->GetCleanSpeechMode())
    {
-      SetTitle(_("CleanSpeech Batch Processing"));
+      SetTitle(wxT("CleanSpeech Batch Processing"));
    }
 
    SetLabel(_("Apply Chain"));         // Provide visual label
@@ -200,10 +201,10 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
 
    wxString path = gPrefs->Read(wxT("/DefaultOpenPath"), ::wxGetCwd());
    wxString prompt =  project->GetCleanSpeechMode() ? 
-      _("Select vocal file(s) for batch CleanSpeech Chain...") :
+      wxT("Select vocal file(s) for batch CleanSpeech Chain...") :
       _("Select file(s) for batch processing...");
    wxString fileSelector = project->GetCleanSpeechMode() ? 
-      _("Vocal files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3") :
+      wxT("Vocal files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3") :
       _("All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac"
        );
 
@@ -241,7 +242,7 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
 
       S.StartHorizontalLay(wxCENTER, false);
       {
-         S.Id(wxID_CANCEL).AddButton(_("Cancel"));
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
       }
       S.EndHorizontalLay();
    }
@@ -447,8 +448,8 @@ void EditChainsDialog::PopulateOrExchange(ShuttleGui & S)
          //can't be right aligned.
          mList->InsertColumn(BlankColumn, wxT(""), wxLIST_FORMAT_LEFT);
          mList->InsertColumn(ItemNumberColumn, _("No"), wxLIST_FORMAT_RIGHT);
-         mList->InsertColumn(ActionColumn, _("Command"), wxLIST_FORMAT_RIGHT);
-         mList->InsertColumn(ParamsColumn, _("Parameters"), wxLIST_FORMAT_LEFT);
+         mList->InsertColumn(ActionColumn, _NoAcc("&Command"), wxLIST_FORMAT_RIGHT);
+         mList->InsertColumn(ParamsColumn, _NoAcc("&Parameters"), wxLIST_FORMAT_LEFT);
 
          S.StartHorizontalLay(wxCENTER, false);
          {

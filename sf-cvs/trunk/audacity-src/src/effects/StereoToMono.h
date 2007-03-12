@@ -20,7 +20,7 @@ public:
    EffectStereoToMono();
 
    virtual wxString GetEffectName() {
-      return wxString(_("Stereo To Mono"));
+      return wxString(_NoAcc("&Stereo To Mono"));
    }
 
    // Used internally, users will not see this.  Do not translate.
