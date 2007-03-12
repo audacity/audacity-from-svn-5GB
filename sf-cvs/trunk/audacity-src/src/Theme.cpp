@@ -617,8 +617,7 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
       {
          wxMessageBox(
             wxString::Format( 
-            _("Theme cache file:\r\n  %s\r\nalready exists.\r\n"
-               wxT("Are you sure you want to replace it?")),
+            _("Theme cache file:\n  %s\nalready exists.\nAre you sure you want to replace it?"),
                FileName.c_str() ));
          return;
       }
@@ -627,13 +626,13 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
       {
          wxMessageBox(
             wxString::Format( 
-            _("Audacity could not write file:\r\n  %s."),
+            _("Audacity could not write file:\n  %s."),
                FileName.c_str() ));
          return;
       }
       wxMessageBox(
          wxString::Format( 
-            wxT("Theme written to:\r\n  %s."),
+            wxT("Theme written to:\n  %s."),
             FileName.c_str() ));
    }
    // ELSE saving to a C code textual version.
@@ -645,7 +644,7 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
       {
          wxMessageBox(
             wxString::Format( 
-            _("Audacity could not open file:\r\n  %s\r\nfor writing."),
+            _("Audacity could not open file:\n  %s\nfor writing."),
             FileName.c_str() ));
          return;
       }
@@ -653,13 +652,13 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
       {
          wxMessageBox(
             wxString::Format( 
-            _("Audacity could not write images to file:\r\n  %s."),
+            _("Audacity could not write images to file:\n  %s."),
             FileName.c_str() ));
          return;
       }
       wxMessageBox(
          wxString::Format( 
-            wxT("Theme as Cee code written to:\r\n  %s."),
+            wxT("Theme as Cee code written to:\n  %s."),
             FileName.c_str() ));
    }
 }
@@ -788,7 +787,7 @@ bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
             return false; // did not load the images, so return false.
          wxMessageBox(
             wxString::Format( 
-            _("Audacity could not find file:\r\n  %s.\r\nTheme not loaded."),
+            _("Audacity could not find file:\n  %s.\nTheme not loaded."),
                FileName.c_str() ));
          return false;
       }
@@ -796,7 +795,7 @@ bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
       {
          wxMessageBox(
             wxString::Format( 
-            _("Audacity could not load file:\r\n  %s.\r\nBad png format perhaps?"),
+            _("Audacity could not load file:\n  %s.\nBad png format perhaps?"),
                FileName.c_str() ));
          return false;
       }
@@ -812,12 +811,7 @@ bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
          // was not a valid png image.
          // Most likely someone edited it by mistake, 
          // Or some experiment is being tried with new formats for it.
-         wxMessageBox(
-            wxString::Format( 
-               _("Audacity could not read its default theme.\r\n"
-               wxT("We're not sure how this happened.\r\n")
-               wxT("Please report the problem.")))
-               );
+         wxMessageBox(_("Audacity could not read its default theme.\nPlease report the problem."));
          return false;
       }
    }
@@ -889,7 +883,7 @@ void ThemeBase::LoadComponents( bool bOkIfNotFound )
             {
                wxMessageBox(
                   wxString::Format( 
-                  _("Audacity could not load file:\r\n  %s.\r\nBad png format perhaps?"),
+                  _("Audacity could not load file:\n  %s.\nBad png format perhaps?"),
                      FileName.c_str() ));
                return;
             }
@@ -913,8 +907,7 @@ void ThemeBase::LoadComponents( bool bOkIfNotFound )
          return;
       wxMessageBox(
          wxString::Format( 
-            _("None of the expected theme component files\r\n"
-            wxT("were found in:\r\n  %s.")),
+            _("None of the expected theme component files\n were found in:\n  %s.")),
             FileNames::ThemeComponentsDir().c_str() ));
    }
 }
@@ -938,7 +931,7 @@ void ThemeBase::SaveComponents()
       {
          wxMessageBox(
             wxString::Format( 
-            _("Could not create directory:\r\n  %s"),
+            _("Could not create directory:\n  %s"),
                FileNames::ThemeComponentsDir().c_str() ));
          return;
       }
@@ -959,7 +952,7 @@ void ThemeBase::SaveComponents()
             {
                wxMessageBox(
                   wxString::Format( 
-                  _("Audacity could not save file:\r\n  %s"),
+                  _("Audacity could not save file:\n  %s"),
                      FileName.c_str() ));
                return;
             }
@@ -971,13 +964,13 @@ void ThemeBase::SaveComponents()
    {
       wxMessageBox(
          wxString::Format( 
-         _("All required files in:\r\n  %s\r\nwere already present."),
+         _("All required files in:\n  %s\nwere already present."),
             FileNames::ThemeComponentsDir().c_str() ));
       return;
    }
    wxMessageBox(
       wxString::Format( 
-         wxT("Theme written to:\r\n  %s."),
+         wxT("Theme written to:\n  %s."),
          FileNames::ThemeComponentsDir().c_str() ));
 }
 
