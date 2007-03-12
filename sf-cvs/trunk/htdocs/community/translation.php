@@ -15,6 +15,8 @@
 
 <p><?=_('A group of volunteers is translating the free Audacity sound editor into several languages.  If you would like to help, please join the <a href="../contact/lists#translation">audacity-translation mailing list</a> and introduce yourself.')?></p>
 
+<p><?=_('The translation effort is now focused on Audacity 1.3.3 and beyond.  Translations from previous versions of Audacity have been imported and need to be updated.')?></p>
+
 <h3><?=_("Resources for Translators")?></h3>
 <ul>
   <li><a href="../contact/lists#translation"><?=_("Mailing list and archives")?></a>.</li>
@@ -51,7 +53,7 @@
   <li><p><b>"Import Audio...\tCtrl+i"</b> is also a menu item.  The \t stands for a tab character, which separates the menu text from the keyboard command.</p>
   <li><p>You will find many strings like <b>"There were %%d buffer underruns, last near %%lf seconds."</b>  The %% signs mark places where numbers or names will be inserted into the string.  For example, this string might become "There were 4 buffer underruns, last near 3.01 seconds." If you change the order of the the %% markers in a string, add "1$" after the percent sign that used to be first, "2$" after the percent sign that used to be second, and so on.  For example:</p>
   <blockquote><p><b>"The buffer underrun near %%2$lf seconds was the last of %%1$d."</b></p></blockquote>
-</ul>'), "http://audacity.cvs.sourceforge.net/audacity/audacity-src/locale/?only_with_tag=AUDACITY_1_2", "http://audacity.cvs.sourceforge.net/audacity/htdocs/locale/");
+</ul>'), "http://audacity.cvs.sourceforge.net/audacity/audacity-src/locale/", "http://audacity.cvs.sourceforge.net/audacity/htdocs/locale/");
 
   include "../include/footer.inc.php";
 ?>
