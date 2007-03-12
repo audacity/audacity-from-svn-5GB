@@ -197,7 +197,7 @@ void TranscriptionToolBar::Populate()
 
 #ifdef EXPERIMENTAL_VOICE_DETECTION
    AddButton(bmpTnStartOn,     bmpTnStartOnDisabled,  TTB_StartOn,
-      _("Adjust left selection to  next onset"),
+      _("Adjust left selection to next onset"),
       _("Left-to-On"));
    AddButton(bmpTnEndOn,       bmpTnEndOnDisabled,   TTB_EndOn,
       _("Adjust right selection to previous offset"),

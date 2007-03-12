@@ -17,6 +17,7 @@
 #include <wx/grid.h>
 #include <wx/string.h>
 
+#include "Internat.h"
 #include "widgets/Grid.h"
 
 class DirManager;
@@ -46,7 +47,7 @@ class LabelDialog:public wxDialog
    bool Validate();
    void FindAllLabels();
    void AddLabels(LabelTrack *t);
-   wxString TrackName(int & index, wxString dflt = _("Label Track"));
+   wxString TrackName(int & index, wxString dflt = _NoAcc("&Label Track"));
 
    void OnUpdate(wxCommandEvent &event);
    void OnInsert(wxCommandEvent &event);

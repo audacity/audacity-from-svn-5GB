@@ -116,7 +116,7 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       S.StartMultiColumn(2, wxEXPAND);
       S.SetStretchyCol(1);
-      S.TieChoice( _("Device:"), wxT("PlaybackDevice"), 
+      S.TieChoice( _("Device") + wxString(wxT(":")), wxT("PlaybackDevice"), 
          wxT(""), mmPlayNames, mmPlayLabels );
 
       S.AddPrompt( _("Using:") );
@@ -134,9 +134,9 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       S.StartMultiColumn(2, wxEXPAND);
       S.SetStretchyCol(1);
-      S.TieChoice( _("Device:"), wxT("RecordingDevice"), 
+      S.TieChoice( _("Device") + wxString(wxT(":")), wxT("RecordingDevice"), 
          wxT(""), mmRecordNames, mmRecordLabels );
-      S.TieChoice( _("Channels:"), wxT("RecordChannels"), 
+      S.TieChoice( _("Channels") + wxString(wxT(":")), wxT("RecordChannels"), 
          2, mmChannelNames, mmChannelLabels );
       S.EndMultiColumn();
    }

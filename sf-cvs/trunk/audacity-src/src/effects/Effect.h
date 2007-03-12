@@ -22,6 +22,7 @@ class wxFrame;
 #include "../WaveTrack.h"
 #include "../Shuttle.h"
 #include "../ShuttleGui.h"
+#include "../Internat.h"
 
 class Effect;
 

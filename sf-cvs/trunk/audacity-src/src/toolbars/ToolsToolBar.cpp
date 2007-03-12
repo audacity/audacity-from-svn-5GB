@@ -179,12 +179,12 @@ void ToolsToolBar::Populate()
    Add( mToolSizer );
 
    /* Tools */
-   mTool[ selectTool   ] = MakeTool( bmpIBeam, selectTool, _("SelectionTool") );
-   mTool[ envelopeTool ] = MakeTool( bmpEnvelope, envelopeTool, _("TimeShiftTool") );
-   mTool[ drawTool     ] = MakeTool( bmpDraw, drawTool, _("DrawTool") );
-   mTool[ zoomTool     ] = MakeTool( bmpZoom, zoomTool, _("ZoomTool") );
-   mTool[ slideTool    ] = MakeTool( bmpTimeShift, slideTool, _("SlideTool") );
-   mTool[ multiTool    ] = MakeTool( bmpMulti, multiTool, _("MultiTool") );
+   mTool[ selectTool   ] = MakeTool( bmpIBeam, selectTool, _("Selection Tool") );
+   mTool[ envelopeTool ] = MakeTool( bmpEnvelope, envelopeTool, _("Time Shift Tool") );
+   mTool[ drawTool     ] = MakeTool( bmpDraw, drawTool, _("Draw Tool") );
+   mTool[ zoomTool     ] = MakeTool( bmpZoom, zoomTool, _("Zoom Tool") );
+   mTool[ slideTool    ] = MakeTool( bmpTimeShift, slideTool, _("Slide Tool") );
+   mTool[ multiTool    ] = MakeTool( bmpMulti, multiTool, _("Multi Tool") );
 
    RegenerateToolsTooltips();
 }

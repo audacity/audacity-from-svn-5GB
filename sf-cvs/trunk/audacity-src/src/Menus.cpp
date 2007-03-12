@@ -163,6 +163,18 @@ enum {
    PlayRegionNotLockedFlag= 0x00100000   //msmeyer
 };
 
+wxString SHOW(const wxString &toolbarName)
+{
+   /* i18n-hint: here, %s is the name of a toolbar, e.g. "Control Toolbar" */
+   return wxString::Format(_("Show %s"), toolbarName.c_str());
+}
+
+wxString HIDE(const wxString &toolbarName)
+{
+   /* i18n-hint: here, %s is the name of a toolbar, e.g. "Control Toolbar" */
+   return wxString::Format(_("Hide %s"), toolbarName.c_str());
+}
+
 #define FN(X) new AudacityProjectCommandFunctor(this, &AudacityProject:: X )
 
 /// CreateMenusAndCommands builds the menus, and also rebuilds them after
@@ -270,7 +282,7 @@ void AudacityProject::CreateMenusAndCommands()
                          wxT("ExportFLACSel"), NULL);
 #endif
 #ifdef USE_LIBTWOLAME
-      c->AddItem(wxT("ExportMP2Sel"),    _("&MP&2..."), FN(OnExportMP2Selection));
+      c->AddItem(wxT("ExportMP2Sel"),    _("MP&2..."), FN(OnExportMP2Selection));
       c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
                          AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
                          wxT("ExportMP2Sel"), NULL);
@@ -324,10 +336,10 @@ void AudacityProject::CreateMenusAndCommands()
       
       c->AddSeparator();
 
-      c->AddItem(wxT("ApplyChain"), _("CleanSpeech C&hain..."),   FN(OnApplyChain));
+      c->AddItem(wxT("ApplyChain"), wxT("CleanSpeech C&hain..."),   FN(OnApplyChain));
       c->AddItem(wxT("EditChains"), _("Edit C&hains..."), FN(OnEditChains));
-      c->AddItem(wxT("ExportCcSettings"), _("Export CleanSpeech &Presets..."),   FN(OnExportCleanSpeechPresets));
-      c->AddItem(wxT("ImportCcSettings"), _("I&mport CleanSpeech Presets..."),   FN(OnImportCleanSpeechPresets));
+      c->AddItem(wxT("ExportCcSettings"), wxT("Export CleanSpeech &Presets..."),   FN(OnExportCleanSpeechPresets));
+      c->AddItem(wxT("ImportCcSettings"), wxT("I&mport CleanSpeech Presets..."),   FN(OnImportCleanSpeechPresets));
       c->SetCommandFlags(wxT("BatchProcess"), AudioIONotBusyFlag, AudioIONotBusyFlag);
 #ifdef __WXDEBUG__
 	   gPrefs->Write(wxT("/Validate/DebugBuild"), "Y");
@@ -436,7 +448,7 @@ void AudacityProject::CreateMenusAndCommands()
    // which doesn't have a Project menu, but they are under Project for normal Audacity.
    if( mCleanSpeechMode )
 	{
-      c->AddItem(wxT("Stereo To Mono"),      _("Stereo To Mono"),            FN(OnStereoToMono));
+      c->AddItem(wxT("Stereo To Mono"),      _("&Stereo To Mono"),            FN(OnStereoToMono));
       c->SetCommandFlags(wxT("Stereo To Mono"),
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag,
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag);
@@ -444,40 +456,49 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
 
    c->BeginSubMenu( _( "Labeled Re&gions..." ) );
+   /* i18n-hint: Labeled Regions submenu */
    c->AddItem( wxT( "CutLabels" ), _( "&Cut\tAlt+X" ), 
          FN( OnCutLabels ) );
    c->SetCommandFlags( wxT( "CutLabels" ), LabelsSelectedFlag, 
          LabelsSelectedFlag );
+   /* i18n-hint: Labeled Regions submenu */
    c->AddItem( wxT( "SplitCutLabels" ), _( "&Split Cut\tShift+Alt+X" ), 
          FN( OnSplitCutLabels ) );
    c->SetCommandFlags( wxT( "SplitCutLabels" ), LabelsSelectedFlag, 
          LabelsSelectedFlag );
+   /* i18n-hint: Labeled Regions submenu */
    c->AddItem( wxT( "CopyLabels" ), _( "Co&py\tShift+Alt+C" ), 
          FN( OnCopyLabels ) );
    c->SetCommandFlags( wxT( "CopyLabels" ), LabelsSelectedFlag, 
          LabelsSelectedFlag );
    c->AddSeparator();
+   /* i18n-hint: Labeled Regions submenu */
    c->AddItem( wxT( "DeleteLabels" ), _( "&Delete\tAlt+K" ), 
          FN( OnDeleteLabels ) );
    c->SetCommandFlags( wxT( "DeleteLabels" ), LabelsSelectedFlag, 
          LabelsSelectedFlag );
+   /* i18n-hint: Labeled Regions submenu */
    c->AddItem( wxT( "SplitDeleteLabels" ), _( "Sp&lit Delete\tShift+Alt+K" ), 
          FN( OnSplitDeleteLabels ) );
    c->SetCommandFlags( wxT( "SplitDeleteLabels" ), LabelsSelectedFlag, 
          LabelsSelectedFlag );
+   /* i18n-hint: Labeled Regions submenu */
    c->AddItem( wxT( "SilenceLabels" ), _( "Sile&nce\tAlt+L" ), 
          FN( OnSilenceLabels ) );
    c->SetCommandFlags( wxT( "SilenceLabels" ), LabelsSelectedFlag, 
          LabelsSelectedFlag );
    c->AddSeparator();
+   /* i18n-hint: Labeled Regions submenu */
    c->AddItem( wxT( "SplitLabels" ), _( "Spli&t\tAlt+I" ), 
          FN( OnSplitLabels ) );
    c->SetCommandFlags( wxT( "SplitLabels" ), LabelsSelectedFlag, 
          LabelsSelectedFlag );
+   /* i18n-hint: Labeled Regions submenu */
    c->AddItem( wxT( "JoinLabels" ), _( "&Join\tAlt+J" ), 
          FN( OnJoinLabels ) );
    c->SetCommandFlags( wxT( "JoinLabels" ), LabelsSelectedFlag, 
          LabelsSelectedFlag );
+   /* i18n-hint: Labeled Regions submenu */
    c->AddItem( wxT( "DisjoinLabels" ), _( "Disj&oin\tShift+Alt+J" ), 
          FN( OnDisjoinLabels ) );
    c->SetCommandFlags( wxT( "DisjoinLabels" ), LabelsSelectedFlag, 
@@ -594,14 +615,14 @@ void AudacityProject::CreateMenusAndCommands()
 #endif
    c->AddSeparator();
    c->BeginSubMenu(_("&Toolbars..."));
-   c->AddItem(wxT("ShowControlTB"),       _("Show Control Toolbar"),       FN(OnShowControlToolBar));
-   c->AddItem(wxT("ShowDeviceTB"),        _("Show Device Toolbar"),        FN(OnShowDeviceToolBar));
-   c->AddItem(wxT("ShowEditTB"),          _("Show Edit Toolbar"),          FN(OnShowEditToolBar));
-   c->AddItem(wxT("ShowMeterTB"),         _("Show Meter Toolbar"),         FN(OnShowMeterToolBar));
-   c->AddItem(wxT("ShowMixerTB"),         _("Show Mixer Toolbar"),         FN(OnShowMixerToolBar));
-   c->AddItem(wxT("ShowSelectionTB"),     _("Show Selection Toolbar"),     FN(OnShowSelectionToolBar));
-   c->AddItem(wxT("ShowToolsTB"),         _("Show Tools Toolbar"),         FN(OnShowToolsToolBar));
-   c->AddItem(wxT("ShowTranscriptionTB"), _("Show Transcription Toolbar"), FN(OnShowTranscriptionToolBar));
+   c->AddItem(wxT("ShowControlTB"),       SHOW(_("Control Toolbar")),       FN(OnShowControlToolBar));
+   c->AddItem(wxT("ShowDeviceTB"),        SHOW(_("Device Toolbar")),        FN(OnShowDeviceToolBar));
+   c->AddItem(wxT("ShowEditTB"),          SHOW(_("Edit Toolbar")),          FN(OnShowEditToolBar));
+   c->AddItem(wxT("ShowMeterTB"),         SHOW(_("Meter Toolbar")),         FN(OnShowMeterToolBar));
+   c->AddItem(wxT("ShowMixerTB"),         SHOW(_("Mixer Toolbar")),         FN(OnShowMixerToolBar));
+   c->AddItem(wxT("ShowSelectionTB"),     SHOW(_("Selection Toolbar")),     FN(OnShowSelectionToolBar));
+   c->AddItem(wxT("ShowToolsTB"),         SHOW(_("Tools Toolbar")),         FN(OnShowToolsToolBar));
+   c->AddItem(wxT("ShowTranscriptionTB"), SHOW(_("Transcription Toolbar")), FN(OnShowTranscriptionToolBar));
    c->EndSubMenu();
 
    c->EndMenu();
@@ -1179,36 +1200,36 @@ void AudacityProject::ModifyToolbarMenus()
 {
    mCommandManager.Modify(wxT("ShowControlTB"),
                           mToolManager->IsVisible(ControlBarID ) ?
-                          _("Hide Control Toolbar") :
-                          _("Show Control Toolbar"));
+                          HIDE(_("Control Toolbar")) :
+                          SHOW(_("Control Toolbar")));
    mCommandManager.Modify(wxT("ShowDeviceTB"),
                           mToolManager->IsVisible(DeviceBarID) ?
-                          _("Hide Device Toolbar") :
-                          _("Show Device Toolbar"));
+                          HIDE(_("Device Toolbar")) :
+                          SHOW(_("Device Toolbar")));
    mCommandManager.Modify(wxT("ShowEditTB"),
                           mToolManager->IsVisible(EditBarID) ?
-                          _("Hide Edit Toolbar") :
-                          _("Show Edit Toolbar"));
+                          HIDE(_("Edit Toolbar")) :
+                          SHOW(_("Edit Toolbar")));
    mCommandManager.Modify(wxT("ShowMeterTB"),
                           mToolManager->IsVisible(MeterBarID) ?
-                          _("Hide Meter Toolbar") :
-                          _("Show Meter Toolbar"));
+                          HIDE(_("Meter Toolbar")) :
+                          SHOW(_("Meter Toolbar")));
    mCommandManager.Modify(wxT("ShowMixerTB"),
                           mToolManager->IsVisible(MixerBarID) ?
-                          _("Hide Mixer Toolbar") :
-                          _("Show Mixer Toolbar"));
+                          HIDE(_("Mixer Toolbar")) :
+                          SHOW(_("Mixer Toolbar")));
    mCommandManager.Modify(wxT("ShowSelectionTB"),
                           mToolManager->IsVisible(SelectionBarID) ?
-                          _("Hide Selection Toolbar") :
-                          _("Show Selection Toolbar"));
+                          HIDE(_("Selection Toolbar")) :
+                          SHOW(_("Selection Toolbar")));
    mCommandManager.Modify(wxT("ShowToolsTB"),
                           mToolManager->IsVisible(ToolsBarID) ?
-                          _("Hide Tools Toolbar") :
-                          _("Show Tools Toolbar"));
+                          HIDE(_("Tools Toolbar")) :
+                          SHOW(_("Tools Toolbar")));
    mCommandManager.Modify(wxT("ShowTranscriptionTB"),
                           mToolManager->IsVisible(TranscriptionBarID) ?
-                          _("Hide Transcription Toolbar") :
-                          _("Show Transcription Toolbar"));
+                          HIDE(_("Transcription Toolbar")) :
+                          SHOW(_("Transcription Toolbar")));
  }
 
 void AudacityProject::UpdateMenus()
@@ -2125,8 +2146,8 @@ void AudacityProject::OnExit()
 
 void AudacityProject::OnUpload()
 {
-   //if (mTags->ShowEditDialog(this, _("Edit ID3 Tags (for MP3 exporting)")))
-   //   PushState(_("Edit ID3 tags"), _("Edit ID3 Tags"));
+   //if (mTags->ShowEditDialog(this, wxT("Edit ID3 Tags (for MP3 exporting)")))
+   //   PushState(wxT("Edit ID3 Tags"), wxT("Edit ID3 Tags"));
 
    UploadDialog dlog(this);
    dlog.ShowModal();
@@ -3736,7 +3757,7 @@ void AudacityProject::OnMixAndRender()
          else
             msg.Printf(_("Mixed and rendered %d tracks into one new mono track"),
                        selectedCount);
-         PushState(msg, _("Mix and Render"));
+         PushState(msg, _NoAcc("&Mix and Render"));
       }
 
       mTrackPanel->SetFocusedTrack(newLeft);
@@ -4205,11 +4226,11 @@ void AudacityProject::OnImportCleanSpeechPresets()
    do {
       fileOkay = true;
 
-      fName = wxFileSelector(_("Open CleanSpeech Preset File:"),
+      fName = wxFileSelector(wxT("Open CleanSpeech Preset File:"),
                              path,
-                             _("*.csp"),       // default file name
+                             wxT("*.csp"),       // default file name
                              extension,
-                             _("CleanSpeech Presets (*.csp)|*.csp"),
+                             wxT("CleanSpeech Presets (*.csp)|*.csp"),
                              wxOPEN);
 
       if (fName.empty()) { // if cancel selected
@@ -4222,8 +4243,8 @@ void AudacityProject::OnImportCleanSpeechPresets()
          int lenPreset = sizeof(preset);
          int count = presetsFile.Read(preset, lenPreset);
          if (preset[0] != PRESET_FORMAT) {
-            wxMessageBox(wxString::Format(_("Preset may be invalid or corrupted.\nExpected format %d ... found %d"), PRESET_FORMAT, preset[0]),
-                         _("Error opening preset"),
+            wxMessageBox(wxString::Format(wxT("Preset may be invalid or corrupted.\nExpected format %d ... found %d"), PRESET_FORMAT, preset[0]),
+                         wxT("Error opening preset"),
                          wxOK | wxCENTRE | wxICON_WARNING, this);
             return;
          }
@@ -4255,8 +4276,8 @@ void AudacityProject::OnImportCleanSpeechPresets()
          presetsFile.Close();
       }
       else {
-         wxMessageBox(_("Problem encountered importing presets."),
-                     _("Unable to import"),
+         wxMessageBox(wxT("Problem encountered importing presets."),
+                     wxT("Unable to import"),
                      wxOK | wxICON_WARNING);
          fileOkay = false;
          continue;
@@ -4305,9 +4326,9 @@ wxString AudacityProject::BuildCleanFileName(wxString fileName)
 //      double startTime = 0.0;
       OnSelectAll();
       pathName = gPrefs->Read(wxT("/DefaultOpenPath"), ::wxGetCwd());
-      ::wxMessageBox(wxString::Format(_("Export recording to %s\n/cleaned/%s.mp3"), 
+      ::wxMessageBox(wxString::Format(wxT("Export recording to %s\n/cleaned/%s.mp3"), 
          pathName.c_str(), justName.c_str()),
-         _("Export recording"),
+         wxT("Export recording"),
                   wxOK | wxCENTRE);
       pathName += wxT("/");
    }
@@ -4315,7 +4336,7 @@ wxString AudacityProject::BuildCleanFileName(wxString fileName)
    cleanedName += wxT("cleaned");
    bool flag  = ::wxFileName::FileExists(cleanedName);
    if (flag == true) {
-      ::wxMessageBox(_("Cannot create directory 'cleaned'. \nFile already exists that is not a directory"));
+      ::wxMessageBox(wxT("Cannot create directory 'cleaned'. \nFile already exists that is not a directory"));
       return wxT("");
    }
    ::wxFileName::Mkdir(cleanedName, 0777, wxPATH_MKDIR_FULL); // make sure it exists

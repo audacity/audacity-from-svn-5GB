@@ -358,7 +358,7 @@ bool ImportPCM(wxWindow * parent,
 
    wxString progressStr;
    wxString formatName = sf_header_name(info.format & SF_FORMAT_TYPEMASK);
-   progressStr.Printf(_("Importing %s file..."),
+   progressStr.Printf(_("Importing %s File..."),
                       formatName.c_str());
 
    *numChannels = info.channels;

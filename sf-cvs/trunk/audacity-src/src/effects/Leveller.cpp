@@ -214,17 +214,23 @@ LevellerDialog::LevellerDialog(wxWindow *parent, wxWindowID id,
                            _("Leveller by Lynn Allan"));
    mainSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
    statText = new wxStaticText(this, -1,
-                           _("Equalize soft and loud sections ... a key to better listening"));
+                           _("Equalize soft and loud sections"));
    mainSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticBoxSizer *group = new wxStaticBoxSizer(new wxStaticBox(this, -1, _("Degree of Leveling")), wxVERTICAL);;
+
+
+   #if 0
+   // dmazzoni: This is too much text.
    item = new wxStaticText(this, -1,
-                           _("You want to preclude the listener feeling the need to increase\nthe volume during soft sections and decreasing during loud parts.\nSome distortion can result from excessive leveling, so try to minimize\nthis with good equipment, recording technique, the speaker not\nusing too much dynamic range, and perhaps 'working the mic'."),
+                           wxT("You want to preclude the listener feeling the need to increase\nthe volume during soft sections and decreasing during loud parts.\nSome distortion can result from excessive leveling, so try to minimize\nthis with good equipment, recording technique, the speaker not\nusing too much dynamic range, and perhaps 'working the mic'."),
                            wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
    group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
+   #endif
+
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 //   wxString numPasses[] = { "None-Skip", "Light", "Moderate", "Heavy", "Heavier", "Heaviest" };
-   statText = new wxStaticText(this, -1, _("Degree of Leveling: "));
+   statText = new wxStaticText(this, -1, _("Degree of Leveling") + wxString(wxT(": ")));
    hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mLevellerNumPassesChoice = new wxChoice(this, ID_DB_NUM_PASSES_CHOICE,
@@ -236,10 +242,14 @@ LevellerDialog::LevellerDialog(wxWindow *parent, wxWindowID id,
 
    group = new wxStaticBoxSizer(new wxStaticBox(this, -1,
                                                 _("Noise Threshold (Hiss/Hum/Ambient Noise)")), wxVERTICAL);
+
+   #if 0
+   // dmazzoni: This is too much text.
    item = new wxStaticText(this, -1,
-                           _("Below the Noise Threshold, the Signal Strength is reduced.\nAbove this Threshold, the Signal Strength is equalized so that\nsoft parts are made louder and loud parts are made softer.\n\nGenerally, recordings with low noise can use lower settings. so\ngood equipment, technique, and NoiseRemoval help out a LOT."),
+                           wxT("Below the Noise Threshold, the Signal Strength is reduced.\nAbove this Threshold, the Signal Strength is equalized so that\nsoft parts are made louder and loud parts are made softer.\n\nGenerally, recordings with low noise can use lower settings. so\ngood equipment, technique, and NoiseRemoval help out a LOT."),
                            wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
    group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
+   #endif
 
    hSizer = new wxBoxSizer(wxHORIZONTAL);
    statText = new wxStaticText(this, -1, _("Threshold for Noise: "));

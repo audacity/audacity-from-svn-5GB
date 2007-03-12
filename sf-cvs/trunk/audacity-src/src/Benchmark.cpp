@@ -78,11 +78,11 @@ private:
 void RunBenchmark(wxWindow *parent)
 {
    /*
-   int action = wxMessageBox(_("This will close all project windows "
+   int action = wxMessageBox(wxT("This will close all project windows "
                                "(without saving)\n"
                                "and open the Audacity Benchmark dialog.\n\n"
                                "Are you sure you want to do this?"),
-                             _("Benchmark"),
+                             wxT("Benchmark"),
                              wxYES_NO | wxICON_EXCLAMATION,
                              NULL);
 
@@ -123,7 +123,7 @@ BEGIN_EVENT_TABLE(BenchmarkDialog,wxDialog)
 END_EVENT_TABLE()
 
 BenchmarkDialog::BenchmarkDialog(wxWindow *parent):
-      wxDialog( parent, 0, _("Benchmark"),
+      wxDialog( parent, 0, wxT("Benchmark"),
                 wxDefaultPosition, wxDefaultSize,
                 wxDEFAULT_DIALOG_STYLE |
                 wxDIALOG_MODAL |
@@ -229,7 +229,7 @@ wxSizer *BenchmarkDialog::MakeBenchmarkDialog( wxWindow *parent, bool call_fit, 
 
    hSizer->Add(5, 5, 1, wxEXPAND);
 
-   item = new wxButton( parent, BCloseID, _("Close"));
+   item = new wxButton( parent, BCloseID, wxT("Close"));
    hSizer->Add(item, 0, wxALL, 5 );
 
    mainSizer->Add(hSizer, 0, wxEXPAND, 5);   

@@ -859,7 +859,7 @@ AudioUnitDialog::AudioUnitDialog(wxWindow *parent, wxWindowID id,
    ok->SetFocus();
    hSizer->Add(ok, 0, wxALL, 10);
 
-   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("&Cancel"));
    hSizer->Add(cancel, 0, wxALL, 10);
 
    mMainSizer->Add(hSizer, 0, wxALIGN_CENTER);

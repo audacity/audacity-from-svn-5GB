@@ -110,7 +110,7 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
                             channels, maxBlockLen, true,
                             rate, int16Sample, true, mixerSpec);
 
-   GetActiveProject()->ProgressShow(_("Export"),
+   GetActiveProject()->ProgressShow(_("E&xport"),
       selectionOnly ?
       _("Exporting the selected audio using command-line encoder") :
       _("Exporting the entire project using command-line encoder"));

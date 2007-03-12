@@ -617,7 +617,7 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
       {
          wxMessageBox(
             wxString::Format( 
-            _("Theme cache file:\n  %s\nalready exists.\nAre you sure you want to replace it?"),
+            wxT("Theme cache file:\n  %s\nalready exists.\nAre you sure you want to replace it?"),
                FileName.c_str() ));
          return;
       }

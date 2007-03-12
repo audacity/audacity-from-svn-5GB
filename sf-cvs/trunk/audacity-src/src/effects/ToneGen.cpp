@@ -293,9 +293,9 @@ void ToneGenDialog::PopulateOrExchangeStandard( ShuttleGui & S )
 {
    S.StartMultiColumn(2, wxCENTER);
    {
-      S.TieChoice( _("Waveform:"), waveform,  waveforms);
+      S.TieChoice( _("Waveform") + wxString(wxT(":")), waveform,  waveforms);
       S.SetSizeHints(-1,-1);
-      S.TieTextBox( _("Frequency / Hz"),frequency[0], 5);
+      S.TieTextBox( _("Frequency (Hz)"),frequency[0], 5);
       S.TieTextBox( _("Amplitude (0-1)"),amplitude[0], 5);
       S.AddFixedText(_("Length"), false);
       mToneDurationT = new

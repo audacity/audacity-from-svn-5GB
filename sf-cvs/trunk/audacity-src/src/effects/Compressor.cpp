@@ -476,7 +476,7 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
 
    wxFlexGridSizer *gridSizer = new wxFlexGridSizer(2, 0, 0);
 
-   mThresholdText = new wxStaticText(this, -1, wxString(_("Threshold: ")) + wxT("XXX dB"));
+   mThresholdText = new wxStaticText(this, -1, wxString(_("Threshold:")) + wxT(" XXX dB"));
    gridSizer->Add(mThresholdText, 0, wxALIGN_LEFT|wxALL, 5);
 
    mThresholdSlider = new wxSlider(this, ThresholdID, -8, -60, -1,

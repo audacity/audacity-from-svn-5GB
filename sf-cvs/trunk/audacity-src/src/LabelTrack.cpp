@@ -84,7 +84,7 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
    mMouseOverLabelRight(-1),
    mIsAdjustingLabel(false)
 {
-   SetDefaultName(_("Label Track"));
+   SetDefaultName(_NoAcc("&Label Track"));
    SetName(GetDefaultName());
 
    ResetFont();

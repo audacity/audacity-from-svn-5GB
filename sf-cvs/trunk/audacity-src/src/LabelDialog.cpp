@@ -49,7 +49,7 @@ static const wxChar *headers[Col_Max] =
 {
    _("Track"),
    _("Label"),
-   _("Start Time"),
+   _NoAcc("&Start Time"),
    _("End Time")
 };
 
@@ -95,7 +95,7 @@ LabelDialog::LabelDialog(wxWindow *parent,
                          double rate)
 : wxDialog(parent,
            wxID_ANY,
-           _("Edit Labels"),
+           _NoAcc("&Edit Labels"),
            wxDefaultPosition,
            wxSize(800, 600),
            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
@@ -689,7 +689,7 @@ void LabelDialog::OnChangeTrack(wxGridEvent &event, int row, RowData *rd)
       wxTextEntryDialog d(this,
                           _("New Label Track"),
                           _("Enter track name"),
-                          _("Label Track"));
+                          _NoAcc("&Label Track"));
 
       // User canceled so repopulating the grid will set the track
       // name to the orignal value

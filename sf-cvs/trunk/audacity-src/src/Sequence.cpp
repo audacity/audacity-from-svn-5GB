@@ -835,7 +835,7 @@ bool Sequence::Read(samplePtr buffer, sampleFormat format,
 
    if (result != len) {
       // TODO err
-      wxPrintf(_("Expected to read %d samples, got %d samples.\n"),
+      wxPrintf(wxT("Expected to read %d samples, got %d samples.\n"),
              len, result);
       if (result < 0)
          result = 0;

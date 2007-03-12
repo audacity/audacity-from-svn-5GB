@@ -150,8 +150,10 @@ static bool RemoveAllAutoSaveFiles()
    {
       if (!wxRemoveFile(files[i]))
       {
-         wxMessageBox(_("Could not remove auto save file: " + files[i]),
-                      _("Error"), wxICON_STOP);
+         // I don't think this error message is actually useful.
+         // -dmazzoni
+         //wxMessageBox(wxT("Could not remove auto save file: " + files[i]),
+         //             _("Error"), wxICON_STOP);
          return false;
       }
    }

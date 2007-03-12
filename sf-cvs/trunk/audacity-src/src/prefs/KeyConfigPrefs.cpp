@@ -137,7 +137,7 @@ void KeyConfigPrefs::CreateList()
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
    mList->InsertColumn(BlankColumn,    wxT(""), wxLIST_FORMAT_LEFT );
-   mList->InsertColumn(CommandColumn,  _("Command"),  wxLIST_FORMAT_RIGHT );
+   mList->InsertColumn(CommandColumn,  _NoAcc("&Command"),  wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(KeyComboColumn, _("Key Combination"), wxLIST_FORMAT_LEFT );
 
    RepopulateBindingsList();
@@ -338,7 +338,7 @@ void KeyConfigPrefs::RepopulateBindingsList()
       if (mNames[i] == wxT("Undo"))
          label = _("Undo");
       else if (mNames[i] == wxT("Redo"))
-         label = _("Redo");
+         label = _NoAcc("&Redo");
       else
          label = mManager->GetPrefixedLabelFromName(mNames[i]);
       

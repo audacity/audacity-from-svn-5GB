@@ -42,9 +42,10 @@ class AboutDialog:public wxDialog {
     
  private:
    enum Role {
-      roleProjectLeader,
-      roleLeadDeveloper,
-      roleDeveloper,
+      roleTeamDeveloper,
+      roleTeamSupport,
+      roleEmeritusDeveloper,
+      roleEmeritusSupport,
       roleContributor,
       roleLibrary,
       roleThanks

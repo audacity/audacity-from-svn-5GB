@@ -99,7 +99,7 @@ void ThemePrefs::PopulateOrExchange( ShuttleGui & S)
       S.Id( idSaveThemeAsCode ).AddButton( wxT("Output Sourcery" ));
 #endif
 
-      S.Id( idReadThemeInternal ).AddButton( _("Defaults" ));
+      S.Id( idReadThemeInternal ).AddButton( _("&Defaults" ));
       S.TieCheckBox( _("Load Theme Cache At Startup"),  
          wxT("/Theme/LoadAtStart"), false);
    }
@@ -137,7 +137,7 @@ void ThemePrefs::PopulateOrExchange( ShuttleGui & S)
 
 #ifdef __WXDEBUG__
       S.AddFixedText( 
-         _("You have compiled Audacity with an extra button, \n"
+         wxT("You have compiled Audacity with an extra button, \n"
          wxT("'Output Sourcery'.  This will save a C version of \n")
          wxT("the image cache that can be compiled in as a default.\n"))
          );

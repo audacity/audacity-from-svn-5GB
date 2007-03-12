@@ -211,7 +211,7 @@ AudioIO::AudioIO()
    PaError err = Pa_Initialize();
 
    if (err != paNoError) {
-      wxString errStr = _("There was an error initializing the audio i/o layer.\n");
+      wxString errStr = _("Could not find any audio devices.\n");
       errStr += _("You will not be able to play or record audio.\n\n");
       wxString paErrStr = LAT1CTOWX(Pa_GetErrorText(err));
       if (paErrStr)

@@ -49,6 +49,7 @@
 #include "../AllThemeResources.h"
 #include "../AudioIO.h"
 #include "../ImageManipulation.h"
+#include "../Internat.h"
 #include "../Project.h"
 #include "../Theme.h"
 #include "../UndoManager.h"
@@ -72,7 +73,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 EditToolBar::EditToolBar()
-: ToolBar(EditBarID, _("Edit"), wxT("Edit"))
+: ToolBar(EditBarID, _NoAcc("&Edit"), wxT("Edit"))
 {
 }
 
@@ -142,7 +143,7 @@ void EditToolBar::Populate()
    AddButton(bmpUndo, bmpUndoDisabled, ETBUndoID,
       _("Undo"), _("Undo"));
    AddButton(bmpRedo, bmpRedoDisabled, ETBRedoID,
-      _("Redo"), _("Redo"));
+      _NoAcc("&Redo"), _NoAcc("&Redo"));
    AddSeparator();
 
    AddButton(bmpZoomIn, bmpZoomInDisabled, ETBZoomInID,

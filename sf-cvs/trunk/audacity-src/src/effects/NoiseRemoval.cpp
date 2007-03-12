@@ -746,14 +746,14 @@ void NoiseRemovalDialog::PopulateOrExchange(ShuttleGui & S)
       // don't use CleanSpeech so it'd be a waste of time for most
       // translators
       step1Label = wxT("Preparation Step");
-      step1Prompt = _("Listen carefully to section with some speech "
+      step1Prompt = wxT("Listen carefully to section with some speech "
                         wxT("and some silence to check before/after.\n")
                         wxT("Select a few seconds of just noise ('thinner' ")
                         wxT("part of wave pattern usually between\nspoken ")
                         wxT("phrases or during pauses) so Audacity knows ")
                         wxT("what to filter out, then click"));
       step2Label = wxT("Actually Remove Noise");
-      step2Prompt = _("Select what part of the audio you want filtered "
+      step2Prompt = wxT("Select what part of the audio you want filtered "
                         wxT("(Ctrl-A = All), chose how much noise\nyou want ")
                         wxT("filtered out with sliders below, and then click ")
                         wxT("'OK' to remove noise.\nFind best setting with ")
@@ -765,7 +765,6 @@ void NoiseRemovalDialog::PopulateOrExchange(ShuttleGui & S)
       step1Prompt = _("Select a few seconds of just noise so Audacity knows what to filter out,\nthen click Get Noise Profile:");
       step2Label = _("Step 2");
       step2Prompt = _("Select all of the audio you want filtered, choose how much noise you want\nfiltered out, and then click 'OK' to remove noise.\n");
-
    }
 
    S.StartHorizontalLay(wxCENTER, false);

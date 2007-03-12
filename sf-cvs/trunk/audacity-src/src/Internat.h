@@ -18,7 +18,8 @@
 class Internat
 {
 public:
-	static void CleanUp();
+   static void CleanUp();
+
    // Initialize internationalisation support. Call this once at
    // program start.
    static void Init();
@@ -54,6 +55,13 @@ public:
    static wxString ToFilename(const wxString &s);
    static wxString FromFilename(const wxString &s);
 
+   // Utility function - takes a translatable string to be used as a
+   // menu item, for example _("&Splash...\tAlt+S"), and strips all of the
+   // menu accelerator stuff from it, to make "Splash".  That way the
+   // same translatable string can be used both when accelerators
+   // are needed and when they aren't, saving translators effort.
+   static wxString StripAccelerators(const wxString& str);
+
 private:
    static wxChar mDecimalSeparator;
    static wxMBConv *mConvLocal;
@@ -63,6 +71,8 @@ private:
    static void *mTECFromUTF;
    #endif
 };
+
+#define _NoAcc(X) Internat::StripAccelerators(_(X))
 
 // Use this macro to wrap all filenames and pathnames that get
 // passed directly to a system call, like opening a file, creating
