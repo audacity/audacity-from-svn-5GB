@@ -8,7 +8,7 @@
 # This makefile may be invoked to build either audacity.pot or any lang.mo
 
 PROGNAME=audacity
-LINGUAS=af ar bg ca cs da de el es eu fi fr ga hu it ja lt mk nb nl pl pt ru sl sv tr uk zh zh_TW
+LINGUAS=af ar bn bg ca cs cy da de el es eu fi fr ga gl hu it ja lt mk nb nl oc pl pt ro ru sk sl sv tr uk zh zh_TW
 
 prefix=@prefix@
 # this defaults to /usr/share
@@ -29,17 +29,21 @@ allpo: $(LINGUAS:%=%.po) FORCE
 allmo: $(LINGUAS:%=%/$(PROGNAME).mo) FORCE
 
 # Update the POT template file.
-POTFILE=$(PROGNAME).pot 
+POTFILE=audacity.pot
 update: force-update $(POTFILE) updatepo FORCE
 
 # the programs we use (TODO: use configure to detect them)
 MSGFMT=msgfmt -v
-MSGMERGE=msgmerge
 XGETTEXT=xgettext
 XARGS=xargs
 
-# common xgettext args: C++ syntax, use the specified macro names as markers
-XGETTEXT_ARGS=-C -k_ -kwxTRANSLATE -s -j --add-comments="i18n-hint"
+# xgettext args:
+#             -C: C++ syntax
+#             -k: mark the functions that wrap translatable strings
+#             -F: sort by file
+XGETTEXT_ARGS=-F -C -k_ -k_NoAcc -kwxTRANSLATE \
+	--add-comments="i18n-hint" \
+	--msgid-bugs-address="audacity-translation@lists.sourceforge.net"
 
 # implicit rules
 
@@ -52,7 +56,7 @@ updatepo: $(POTFILE)
 	    pofile="$$lang.po"; \
 	    if [ -f $$pofile ]; then \
 		    echo "Updating catalog: $$pofile"; \
-		    $(MSGMERGE) $$pofile $(POTFILE) > $$pofile.new && mv $$pofile.new $$pofile; \
+		    ./smartmsgmerge.py $$pofile $(POTFILE) $$pofile.new && mv $$pofile.new $$pofile; \
 	    else \
 		    echo "Creating new catalog: $$pofile"; \
 		    cp $(POTFILE) $$pofile; \
@@ -61,8 +65,19 @@ updatepo: $(POTFILE)
 
 $(POTFILE):
 	touch $@
-	find ../src -name "*.cpp" -or -name "*.h" \
-		| $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o $(POTFILE)
+	cd ../src && find . -name "*.cpp" -or -name "*.h" \
+	  | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) \
+	  -o ../locale/$(POTFILE).template
+	cd ../locale && sed \
+	  -e 's/PACKAGE VERSION/Audacity 1.3.3/' \
+	  -e 's/SOME DESCRIPTIVE TITLE/Audacity Strings for Translation/' \
+	  -e 's/YEAR/1999 and beyond/' \
+	  -e 's/THE PACKAGE.S COPYRIGHT HOLDER/Audacity Development Team/' \
+	  -e 's/the PACKAGE package/Audacity/' \
+	  -e 's/FIRST AUTHOR/Audacity Team/' \
+	  -e 's/EMAIL@ADDRESS/audacity-translation@lists.sourceforge.net/' \
+	  $(POTFILE).template > $(POTFILE)
+	rm -f $(POTFILE).template
 
 force-update: FORCE
 	rm -f $(POTFILE)

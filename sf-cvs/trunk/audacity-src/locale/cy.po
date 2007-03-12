@@ -1,26 +1,27 @@
-# translation of audacity.po to Chinese(Tranditonal)
-# Chinese(Tranditonal) translation of Audacity 1.2.
-# Copyright (C) 2002,2003, 2004 Free Software Foundation, Inc.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
-msgstr "Project-Id-Version: zh-TW\n"
-"POT-Creation-Date: 2004-08-10 20:54-0700\n"
-"PO-Revision-Date: 2007-01-11 13:04+0800\n"
+msgstr "Project-Id-Version: Audacity 1.24b\n"
+"POT-Creation-Date: 2005-10-21 01:19-0700\n"
+"PO-Revision-Date: 2006-03-07 11:16-0000\n"
 "Last-Translator: \n"
-"Language-Team: Taiwan <milo@ms52.url.com.tw>\n"
+"Language-Team: Audacity Cymru <f00@hushmail.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0.2\n"
-"X-Poedit-Language: Chinese\n"
-"X-Poedit-Country: TAIWAN\n"
+"X-Poedit-Language: Cymraeg\n"
+"X-Poedit-Country: Cymru\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: ../src/Menus.cpp:529
 msgid "&About Audacity..."
-msgstr "關於&Audacity..."
+msgstr "&Ynglyn â Audacity..."
 
 #: ../src/effects/AvcCompressor.cpp:652
 msgid "Enabled"
-msgstr "啟用"
+msgstr "Galluogwyd"
 
 #: AboutDialog.cpp:148
 msgid "Disabled"
@@ -29,7 +30,7 @@ msgstr ""
 #: AboutDialog.cpp:204
 #, fuzzy
 msgid "Program build date: "
-msgstr "程式編譯日期："
+msgstr "Dyddiad Adeiladu'r Rhaglen"
 
 #: AboutDialog.cpp:209
 msgid "Settings folder: "
@@ -38,41 +39,34 @@ msgstr ""
 #: AboutDialog.cpp:214
 #, fuzzy
 msgid "Audacity is a free program written by a team of volunteer developers around the world. Coordination happens thanks to SourceForge.net, an online service that provides free tools to open-source software projects. Audacity is available for Windows 98 and newer, Mac OS X, Linux, and other Unix-like operating systems. Older versions of Audacity are available for Mac OS 9."
-msgstr "Audacity 是一個由世界各地志願開發團隊合力撰寫的自由程式。在此要感謝一個把這些資源集中的自由軟體協同開發的網站, SourceForge.net 所提供的線上服務。Audacity 可以在Windows 98 及更新的Windows 作業系統, Mac OS X, Linux, 和其他類似Unix 的作業系統上使用。更舊版本的 Audacity 可以在Mac OS 9 上使用。"
+msgstr "Mae Audacity yn raglen rhad ac am ddim wedi ei ysgrifennu gan dîm o ddatblygwyr o bedwar ban byd.  Mae'r cyd-drefnu â chymorth SourceForge.net, gwasanaeth ar-lein sydd yn darparu offer yn rhad ac am ddim i brosiectau meddalwedd cod agored. Mae Audacity ar gael ar gyfer Windows 98 a fersiynau diweddarach, Mac OS X a Linux a systemau gweithredu tebyg i Unix. Mae fersiynau hŷn o Audacity ar gael ar gyfer Mac OS 9."
 
 #: ../src/AboutDialog.cpp:108
 msgid "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
-msgstr "這是測試版(beta)。可能包含原始碼錯誤及未完成的功能。我們需\n"
-"要您的回饋，請瀏覽我們的網站填寫錯誤報告，或者您也可以填\n"
-"寫功能申請，以便將您所希望的新功能告訴我們。"
+msgstr "Mae hwn yn fersiwn beta o'r rhaglen. Mi ellith gynnwys gwallau a anorffenedig. Rydym yn dibynnu ar eich adwaith, felly ymwelwch a'n gewfan os gwelwch yn dda a rhowch i ni eich adroddiadau namau a'ch ceisiau nodweddion."
 
 #: AboutDialog.cpp:221
 #, fuzzy
 msgid "This is a stable, completed release of Audacity. However, if you find a bug or have a suggestion, please contact us. We depend on feedback from users in order to continue to improve Audacity. For more information, visit our website."
-msgstr "此Audacity是一個穩定的完整版。如果您發現錯誤或有什麼建\n"
-"議，請與我們聯繫。我們需要來自使用者的回饋，以改進Audacity\n"
-"軟體。詳情請瀏覽我們的網站。\n"
-"\n"
-"對於正體中文有問題的話，請回報給\n"
-"http://rt.openfoundry.org/Foundry/Project/index.html?Queue=210"
+msgstr "Mae hwn yn fersiwn sefydlog, gorffenadwy o Audacity. Serch hynny, os ddarganfyddwch gwallau neu os oes gennych awgrymiad, cysllystwch â ni, os gwelwch yn dda. Rydym yn dibynnu ar adwaith defnyddwyr er mwyn parhau i wella Audacity. Am fwy o fanylion, ymwelwch â'n gwefan."
 
 #. i18n-hint: The translation of "translator_credits" will appear
 #: ../src/AboutDialog.cpp:127
 #: ../src/AboutDialog.cpp:129
 msgid "translator_credits"
-msgstr "Chinese(Traditional) translation by Chido, Milo"
+msgstr "Cyfieithwyd y fersiwn Gymraeg gan f00."
 
 #: ../src/AboutDialog.cpp:141
 msgid "A Free Digital Audio Editor"
-msgstr "一個自由的數位成音工程軟體"
+msgstr "Golygydd Sain Digidol Rhad ac Am Ddim"
 
 #: ../src/AboutDialog.cpp:150
 msgid "Information"
-msgstr "資訊"
+msgstr "Gwybodaeth"
 
 #: ../src/AboutDialog.cpp:154
 msgid "Credits"
-msgstr "開發小組"
+msgstr "Rhestr Clod"
 
 #: AboutDialog.cpp:256
 #, c-format
@@ -102,17 +96,17 @@ msgstr ""
 
 #: ../src/AboutDialog.cpp:237
 msgid "Special thanks:"
-msgstr "特別感謝："
+msgstr "Diolchiadau arbennig:"
 
 #: ../src/AboutDialog.cpp:271
 msgid "Audacious!"
-msgstr "嗆聲！"
+msgstr "Mentrus!"
 
 #: ../src/AudacityApp.cpp:304
 #: ../src/Project.cpp:1770
 #, c-format
 msgid "%s is already open in another window."
-msgstr "%s已在其他視窗開啟"
+msgstr "Mae %s yn barod yn agored mewn ffenest arall."
 
 #: ../src/AudacityApp.cpp:306
 #: ../src/Project.cpp:1772
@@ -121,28 +115,28 @@ msgstr "%s已在其他視窗開啟"
 #: ../src/Project.cpp:1905
 #: ../src/Project.cpp:1943
 msgid "Error opening project"
-msgstr "開啟專案錯誤"
+msgstr "Gwall wrth agor cywaith"
 
 #: ../src/AudacityApp.cpp:338
 #, c-format
 msgid "%s does not exist and could not be opened.\n"
 "\n"
 "It has been removed from the history list."
-msgstr "%s不存在，或者無法開啟。\n"
+msgstr "Nid yw %s yn bod a ni ellir ei agor.\n"
 "\n"
-"它將從工作記錄中移除。"
+"Mae wedi ei dynnu o'r rhestr hanes."
 
 #: ../src/AudacityApp.cpp:367
 msgid "Master Gain Control"
-msgstr "主控增益控制"
+msgstr "Prif Reolydd Cynnydd"
 
 #: ../src/AudacityApp.cpp:368
 msgid "Input Meter"
-msgstr "輸入儀表"
+msgstr "Mesurydd Mewnbwn"
 
 #: ../src/AudacityApp.cpp:369
 msgid "Output Meter"
-msgstr "輸出儀表"
+msgstr "Mesurydd Allbwn"
 
 #. i18n-hint: Mac OS X shortcut should be Ctrl+,
 #. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
@@ -158,13 +152,13 @@ msgstr ""
 #: ../src/AudacityApp.cpp:696
 #, c-format
 msgid "Using block size of %ld\n"
-msgstr "使用塊大小為 %ld\n"
+msgstr "Defnyddio maint bloc o %ld\n"
 
 #: ../src/AudacityApp.cpp:641
 #: ../src/AudacityApp.cpp:711
 #, c-format
 msgid "Unknown command line option: %s\n"
-msgstr "不支援的命令列選項: %s\n"
+msgstr "Opsiwn llinell orchymun anhybus: %s\n"
 
 #. i18n-hint: '-help', '-test' and
 #: ../src/AudacityApp.cpp:610
@@ -177,24 +171,24 @@ msgid "Command-line options supported:\n"
 "In addition, specify the name of an audio file or Audacity project\n"
 "to open it.\n"
 "\n"
-msgstr "命令列選項有:\n"
-"  -help (本說明信息)\n"
-"  -test (執行自我診斷)\n"
-"  -blocksize ### (設定最大的磁區大小，以位元組為單位)\n"
+msgstr "Cynhelir y dewisiadau llinell orchymyn hyn:\n"
+"  -help (y neges hon)\n"
+"  -test (rhedeg deiagnostig)\n"
+"  -blocksize ### (gosod uchafswm maint blociau'r ddisg mewn beitiau)\n"
 "\n"
-"此外，指定要開啟的聲音檔案或Audacity成音工程的檔案名稱。\n"
-"\n"
+"Yn ogystal, penodwch enw ffeil sain neu gywaith Audacity i'w agor.\n"
 
 #: ../src/AudacityApp.cpp:773
 msgid "Audacity could not find a place to store temporary files.\n"
 "Please enter an appropriate directory in the preferences dialog."
-msgstr "Audacity無法儲存暫存檔案。\n"
-"請至偏好設定輸入適當目錄。"
+msgstr "Methodd Audacity ganfod lle i storio ffeiliau dros dro.\n"
+"Dewisiwch ffolder addas yn yr ymgom hoffterau."
 
 #: AudacityApp.cpp:845
 #, fuzzy
 msgid "Audacity is now going to exit. Please launch Audacity again to use the new temporary directory."
-msgstr "Audacity即將結束。請重新啟動Audacity使用新的暫存目錄。"
+msgstr "Mae Audacity am orffen nawr. Rhedwch Audacity eto i ddefnyddio'r\n"
+"ffolder dros dro newydd, os gwelwch yn dda."
 
 #: AudacityApp.cpp:877
 msgid "Running two copies of Audacity simultaneously may cause\n"
@@ -213,7 +207,7 @@ msgstr ""
 
 #: ../src/AudacityApp.cpp:829
 msgid "Error locking temporary folder"
-msgstr "鎖定暫存目錄錯誤"
+msgstr "Gwall wrth gloi'r ffolder dros dro"
 
 #: AudacityApp.cpp:900
 msgid "The system has detected that another copy of Audacity is running.\n"
@@ -226,21 +220,21 @@ msgstr ""
 
 #: ../src/AudacityApp.cpp:846
 msgid "Audacity is already running"
-msgstr "Audacity 已在執行"
+msgstr "Mae Audacity yn rhedeg yn barod"
 
 #: ../src/AudacityApp.cpp:1099
 msgid "Audacity project (.AUP) files are not currently \n"
 "associated with Audacity. \n"
 "\n"
 "Associate them, so they open on double-click?"
-msgstr "Audacity成音工程(.AUP)檔案目前沒有關聯到Audacity程式。\n"
-"關聯後可以雙擊AUP檔案時，用Audacity開啟。\n"
+msgstr "Nid yw ffeiliau cywaith Audacity (.AUP) yn gysylltiedig \n"
+"â Audacity yn bresennol.\n"
 "\n"
-"要進行關聯嗎？"
+"Eu cysylltu, fel bod modd agor y ffeiliau gyda chlic-ddwbl?"
 
 #: ../src/AudacityApp.cpp:1100
 msgid "Audacity Project Files"
-msgstr "Audacity 成音工程檔案"
+msgstr "Ffeiliau Cywaith Audacity"
 
 #: AudioIO.cpp:214
 msgid "Could not find any audio devices.\n"
@@ -249,16 +243,16 @@ msgstr ""
 #: ../src/AudioIO.cpp:167
 msgid "You will not be able to play or record audio.\n"
 "\n"
-msgstr "無法播放/錄製音訊。\n"
+msgstr "Ni fyddwch yn gallu chwarae neu recordio sain.\n"
 "\n"
 
 #: ../src/AudioIO.cpp:170
 msgid "Error: "
-msgstr "錯誤："
+msgstr "Gwall:"
 
 #: ../src/AudioIO.cpp:173
 msgid "Error Initializing Audio"
-msgstr "聲音初始化錯誤"
+msgstr "Gwall Wrth Baratoi'r Sain"
 
 #: AutoRecovery.cpp:40
 msgid "Automatic Crash Recovery"
@@ -310,7 +304,7 @@ msgstr ""
 #: ../src/effects/Effect.cpp:331
 #: ../src/prefs/DirectoriesPrefs.cpp:204
 msgid "Error"
-msgstr "發生錯誤"
+msgstr "Gwall"
 
 #: BatchCommandDialog.cpp:56 BatchCommandDialog.cpp:60
 #: BatchCommandDialog.cpp:61
@@ -342,11 +336,11 @@ msgstr ""
 
 #: ../src/effects/Normalize.cpp:29
 msgid "Normalize"
-msgstr "標準化[Normalize]"
+msgstr "Normaleiddio"
 
 #: ../src/effects/NoiseRemoval.cpp:69
 msgid "Noise Removal"
-msgstr "去雜音[Noise Removal]"
+msgstr "Tynnu Sŵn"
 
 #: BatchCommands.cpp:236 effects/TruncSilence.cpp:84 effects/TruncSilence.h:29
 msgid "Truncate Silence..."
@@ -552,7 +546,7 @@ msgstr ""
 #: ../src/effects/ClickRemoval.cpp:371
 #: ../src/effects/NoiseRemoval.cpp:463
 msgid "Close"
-msgstr "關閉"
+msgstr "Cau"
 
 #: Dependencies.cpp:311
 msgid "Copy All Audio Into Project (safer)"
@@ -590,11 +584,11 @@ msgstr ""
 #, fuzzy
 msgid "Warning: there is very little free disk space left on this volume.\n"
 "Please select another temporary directory in your preferences."
-msgstr "警告：磁碟剩餘空間不足。請於偏好設定中設定其他暫存目錄。"
+msgstr "Rhybydd: nid oes llawer o le rhydd ar ddisg ar y gyfrol yma. Dewiswch ffolder dros dro arall yn eich hoffterau, os gwelwch yn dda."
 
 #: ../src/DirManager.cpp:157
 msgid "Progress"
-msgstr "進行"
+msgstr "Cynnydd"
 
 #: DirManager.cpp:285
 msgid "Cleaning up temporary files"
@@ -618,7 +612,7 @@ msgstr ""
 #: ../src/DirManager.cpp:627
 #, c-format
 msgid "%s-old%d"
-msgstr "%s-old%d"
+msgstr "%s-hen%d"
 
 #: DirManager.cpp:993
 msgid "Unable to open/create test file"
@@ -632,12 +626,12 @@ msgstr ""
 #: ../src/DirManager.cpp:643
 #, c-format
 msgid "Renamed file: %s\n"
-msgstr "已更名檔案： %s\n"
+msgstr "Wedi ailenwi ffeil: %s\n"
 
 #: ../src/DirManager.cpp:660
 #, c-format
 msgid "Changing block %s\n"
-msgstr "變更區塊 %s\n"
+msgstr "Newid bloc %s\n"
 
 #: DirManager.cpp:1051
 #, c-format
@@ -694,7 +688,7 @@ msgstr ""
 
 #: ../src/widgets/Warning.cpp:45
 msgid "Warning"
-msgstr "警告"
+msgstr "Rhybudd"
 
 #: DirManager.cpp:1254
 #, c-format
@@ -770,33 +764,33 @@ msgstr ""
 
 #: ../src/FFT.cpp:364
 msgid "Rectangular"
-msgstr "矩形[Rectanglar]"
+msgstr "Petryalog"
 
 #: ../src/FreqWindow.cpp:68
 msgid "Frequency Analysis"
-msgstr "頻率分析"
+msgstr "Dadansoddiad Amledd"
 
 #: ../src/FreqWindow.cpp:129
 #: ../src/TrackPanel.cpp:837
 msgid "Spectrum"
-msgstr "頻譜"
+msgstr "Sbectrwm"
 
 #: ../src/FreqWindow.cpp:130
 msgid "Standard Autocorrelation"
-msgstr "標準自相關(Standard Autocorrelation)"
+msgstr "Awto-gydberthynas Safonnol"
 
 #: ../src/FreqWindow.cpp:131
 msgid "Cuberoot Autocorrelation"
-msgstr "立方根自相關[Cuberoot Autocorrelation]"
+msgstr "Awto-gydberthynas Trydydd Isradd"
 
 #: ../src/FreqWindow.cpp:132
 msgid "Enhanced Autocorrelation"
-msgstr "增強自相關"
+msgstr "Awto-gydberthynas Uwch"
 
 #. i18n-hint: This is a technical term, derived from the word
 #: ../src/FreqWindow.cpp:136
 msgid "Cepstrum"
-msgstr "倒頻譜[Cepstrum]"
+msgstr "Cepstrum"
 
 #: FreqWindow.cpp:148
 msgid "Algorithm:"
@@ -804,12 +798,12 @@ msgstr ""
 
 #: ../src/HistoryWindow.cpp:58
 msgid "Size"
-msgstr "大小"
+msgstr "Maint"
 
 #. i18n-hint: This refers to a "window function", used in the
 #: ../src/FreqWindow.cpp:167
 msgid " window"
-msgstr "視窗"
+msgstr " ffenest"
 
 #: FreqWindow.cpp:182
 msgid "Function:"
@@ -817,11 +811,11 @@ msgstr ""
 
 #: ../src/FreqWindow.cpp:177
 msgid "Linear frequency"
-msgstr "線性頻率"
+msgstr "Amledd Linellol"
 
 #: ../src/FreqWindow.cpp:178
 msgid "Log frequency"
-msgstr "對數頻率"
+msgstr "Amledd log"
 
 #: FreqWindow.cpp:194
 msgid "Axis:"
@@ -831,14 +825,12 @@ msgstr ""
 msgid "&Export..."
 msgstr ""
 
-# 分貝
 #: ../src/effects/Compressor.cpp:385
 #: ../src/effects/Compressor.cpp:393
 #: ../src/widgets/Meter.cpp:293
 msgid "dB"
 msgstr "dB"
 
-# 赫茲
 #. i18n-hint: This is the abbreviation for "Hertz", or
 #: ../src/import/ImportRaw.cpp:378
 msgid "Hz"
@@ -846,7 +838,7 @@ msgstr "Hz"
 
 #: ../src/FreqWindow.cpp:463
 msgid "Not enough data selected."
-msgstr "沒有選取足夠的數據。"
+msgstr "Ni ddewiswyd digon o ddata."
 
 #: FreqWindow.cpp:441 effects/AutoDuck.cpp:801
 msgid "s"
@@ -864,50 +856,50 @@ msgstr ""
 
 #: ../src/FreqWindow.cpp:996
 msgid "spectrum.txt"
-msgstr "spectrum.txt"
+msgstr "sbectrwm.txt"
 
 #: ../src/FreqWindow.cpp:998
 msgid "Export Spectral Data As:"
-msgstr "將頻譜數據匯出為："
+msgstr "Allforio Data Sbectral Fel:"
 
 #: ../src/FreqWindow.cpp:1014
 #: ../src/Menus.cpp:1393
 #: ../src/Project.cpp:2159
 #: ../src/prefs/KeyConfigPrefs.cpp:173
 msgid "Couldn't write to file: "
-msgstr "無法寫入檔案："
+msgstr "Methwyd ysgrifennu i'r ffeil: "
 
 #: ../src/FreqWindow.cpp:1019
 msgid "Frequency (Hz)\tLevel (dB)"
-msgstr "頻率(Hz)\tLevel (dB)"
+msgstr "Amledd (Hz)\tLefel (dB)"
 
 #: ../src/FreqWindow.cpp:1025
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
-msgstr "延遲 (秒)\t頻率 (Hz)\t水平"
+msgstr "Oedi (eiliadau)\tAmledd (Hz)\tLefel"
 
 #: ../src/Help.cpp:60
 msgid "Where is audacity-1.2-help.htb?"
-msgstr "audacity-1.2-help.htb在哪裡？"
+msgstr "Ble mae audacity-1.2-help.htb?"
 
 #: ../src/Help.cpp:63
 msgid "HTML Help Books (*.htb)|*.htb"
-msgstr "HTML說明文件(*.htb)|*.htb"
+msgstr "Llyfrau Help HTML (*.htb)|*.htb"
 
 #: ../src/Help.cpp:71
 msgid "Couldn't open the Audacity Help file."
-msgstr "無法開啟Audacity幫助檔案。"
+msgstr "Methwyd agor ffeil Help Audacity."
 
 #: ../src/Help.cpp:109
 msgid "Search for?"
-msgstr "尋找？"
+msgstr "Chwilio am?"
 
 #: ../src/Help.cpp:110
 msgid "Search help for keyword"
-msgstr "在說明中尋找關鍵字"
+msgstr "Chwilio help am allweddair"
 
 #: ../src/HistoryWindow.cpp:44
 msgid "Undo History"
-msgstr "復原記錄"
+msgstr "Hanes Dadwneud"
 
 #: HistoryWindow.cpp:72
 msgid "Manage History"
@@ -915,7 +907,7 @@ msgstr ""
 
 #: ../src/HistoryWindow.cpp:57
 msgid "Action"
-msgstr "動作"
+msgstr "Gweithred"
 
 #: HistoryWindow.cpp:86
 msgid "&Undo Levels Available"
@@ -945,11 +937,11 @@ msgstr ""
 
 #: ../src/prefs/DirectoriesPrefs.cpp:114
 msgid "Unable to determine"
-msgstr "無法驗證"
+msgstr "Methu penodi"
 
 #: ../src/import/ImportRaw.cpp:354
 msgid "bytes"
-msgstr "位元組"
+msgstr "beit"
 
 #: Internat.cpp:182
 msgid "KB"
@@ -969,7 +961,7 @@ msgstr ""
 
 #: ../src/Menus.cpp:3088
 msgid "Label"
-msgstr "標籤"
+msgstr "Label"
 
 #: LabelDialog.cpp:52
 msgid "&Start Time"
@@ -1013,18 +1005,18 @@ msgstr ""
 
 #: ../src/Menus.cpp:2631
 msgid "Select a text file containing labels..."
-msgstr "選擇包含標籤的文字檔案..."
+msgstr "Dewisiwch ffeil testun yn cynnwys labeli..."
 
 #: ../src/Menus.cpp:2635
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
-msgstr "文字檔案 (*.txt)|*.txt|所有檔案 (*.*)|*.*"
+msgstr "Ffeiliau Testun (*.txt)|*.txt|Pob Ffeil (*.*)|*.*"
 
 #: ../src/Menus.cpp:2647
 #: ../src/Project.cpp:1820
 #: ../src/Project.cpp:1828
 #: ../src/import/ImportMIDI.cpp:31
 msgid "Could not open file: "
-msgstr "無法開啟檔案："
+msgstr "Methwyd agor y ffeil: "
 
 #: LabelDialog.cpp:549
 msgid "No labels to export."
@@ -1032,16 +1024,16 @@ msgstr ""
 
 #: ../src/Menus.cpp:1358
 msgid "Export Labels As:"
-msgstr "將標籤匯出為："
+msgstr "Allforio Labeli Fel:"
 
 #: ../src/Menus.cpp:1356
 msgid "labels.txt"
-msgstr "labels.txt"
+msgstr "labeli.txt"
 
 #: LabelDialog.cpp:690
 #, fuzzy
 msgid "New Label Track"
-msgstr "新增標籤軌(&B)"
+msgstr "Trac La&bel Newydd"
 
 #: LabelDialog.cpp:691
 msgid "Enter track name"
@@ -1050,15 +1042,15 @@ msgstr ""
 #: LabelDialog.cpp:692 LabelDialog.h:50 LabelTrack.cpp:87 Menus.cpp:645
 #, fuzzy
 msgid "&Label Track"
-msgstr "標籤軌"
+msgstr "Label Trac"
 
 #: ../src/LangChoice.cpp:47
 msgid "Audacity First Run"
-msgstr "首次執行 Audacity"
+msgstr "Rhedeiad Cyntaf Audacity"
 
 #: ../src/LangChoice.cpp:74
 msgid "Choose Language for Audacity to use:"
-msgstr "選擇Audacity使用的語言："
+msgstr "Dewis Iaith ar gyfer Audacity:"
 
 #: ../src/LangChoice.cpp:94
 #: ../src/Tags.cpp:721
@@ -1086,18 +1078,18 @@ msgstr "選擇Audacity使用的語言："
 #: ../src/prefs/PrefsDialog.cpp:100
 #: ../src/widgets/Warning.cpp:56
 msgid "OK"
-msgstr "確定"
+msgstr "OK"
 
 #: ../src/Legacy.cpp:337
 #, c-format
 msgid "Converted a 1.0 project file to the new format.\n"
 "The old file has been saved as '%s'"
-msgstr "將Audacity 1.0成音工程檔案格式的轉換成新格式。\n"
-"原檔案另存新檔為'%s'。"
+msgstr "Wedi trosi ffeil cywaith 1.0 i'r sfformat newydd.\n"
+"Mae'r hen ffeil wedi'i gadw fel '%s'"
 
 #: ../src/Legacy.cpp:338
 msgid "Opening Audacity Project"
-msgstr "開啟Audacity成音工程"
+msgstr "Yn Agor Cywaith Audacity"
 
 #. i18n-hint: here, %s is the name of a toolbar, e.g. "Control Toolbar"
 #: Menus.cpp:169
@@ -1113,27 +1105,27 @@ msgstr ""
 
 #: ../src/Menus.cpp:139
 msgid "&File"
-msgstr "檔案(&F)"
+msgstr "&Ffeil"
 
 #: ../src/Menus.cpp:141
 msgid "&New\tCtrl+N"
-msgstr "開新檔案(&N)\tCtrl+N"
+msgstr "&Newydd\tCtrl+N"
 
 #: ../src/Menus.cpp:143
 msgid "&Open...\tCtrl+O"
-msgstr "開啟舊檔(&O)...\tCtrl+O"
+msgstr "&Agor...\tCtrl+O"
 
 #: ../src/Menus.cpp:145
 msgid "&Close\tCtrl+W"
-msgstr "關閉(&C)\tCtrl+W"
+msgstr "&Cau\tCtrl+W"
 
 #: ../src/Menus.cpp:146
 msgid "&Save Project\tCtrl+S"
-msgstr "儲存成音工程(&S)\tCtrl+S"
+msgstr "Ca&dw Cywaith\tCtrl+S"
 
 #: ../src/Menus.cpp:150
 msgid "Save Project &As..."
-msgstr "另存成音工程(&A)..."
+msgstr "Cadw Cywaith &Fel..."
 
 #: Menus.cpp:223
 msgid "Chec&k Dependencies..."
@@ -1162,7 +1154,7 @@ msgstr ""
 #: Menus.cpp:244 Menus.cpp:318
 #, fuzzy
 msgid "&Export As..."
-msgstr "匯出為%s(&E)..."
+msgstr "Allforio Fel..."
 
 #: Menus.cpp:245 Menus.cpp:269 Menus.cpp:319 Menus.cpp:324
 msgid "&WAV..."
@@ -1187,15 +1179,15 @@ msgstr ""
 #: Menus.cpp:268 Menus.cpp:323
 #, fuzzy
 msgid "Expo&rt Selection As..."
-msgstr "將選取範圍匯出為%s(&E)..."
+msgstr "Allforio'r Dewis Fel..."
 
 #: ../src/Menus.cpp:173
 msgid "Export &Labels..."
-msgstr "匯出標籤(&L)..."
+msgstr "Allforio &Labeli"
 
 #: ../src/Menus.cpp:174
 msgid "Export &Multiple..."
-msgstr "匯出多個檔案(&M)..."
+msgstr "Allforio Nife&r..."
 
 #: Menus.cpp:340 Menus.cpp:354
 msgid "Edit C&hains..."
@@ -1212,7 +1204,7 @@ msgstr ""
 #: Menus.cpp:363
 #, fuzzy
 msgid "Pa&ge Setup..."
-msgstr "頁面設定..."
+msgstr "Gosodiad Tudalen..."
 
 #: Menus.cpp:364
 msgid "&Print..."
@@ -1224,19 +1216,19 @@ msgstr ""
 
 #: ../src/Menus.cpp:227
 msgid "&Edit"
-msgstr "編輯 (&E)"
+msgstr "&Golygu"
 
 #: ../src/Menus.cpp:231
 msgid "&Undo\tCtrl+Z"
-msgstr "復原(&U)\tCtrl+Z"
+msgstr "&Dadwneud\tCtrl+Z"
 
 #: ../src/Menus.cpp:239
 msgid "&Redo"
-msgstr "重做(&R)"
+msgstr "&Ailwneud"
 
 #: ../src/Menus.cpp:252
 msgid "Cu&t\tCtrl+X"
-msgstr "剪下(&T)\tCtrl+X"
+msgstr "&Torri\tCtrl+X"
 
 #: Menus.cpp:420
 msgid "Spl&it Cut\tCtrl+Alt+X"
@@ -1244,11 +1236,11 @@ msgstr ""
 
 #: ../src/Menus.cpp:253
 msgid "&Copy\tCtrl+C"
-msgstr "複製(&C)\tCtrl+C"
+msgstr "&Copio\tCtrl+C"
 
 #: ../src/Menus.cpp:254
 msgid "&Paste\tCtrl+V"
-msgstr "貼上(&P)\tCtrl+V"
+msgstr "&Gludo\tCtrl+V"
 
 #: Menus.cpp:426
 msgid "Tri&m\tCtrl+T"
@@ -1256,7 +1248,7 @@ msgstr ""
 
 #: ../src/Menus.cpp:260
 msgid "&Delete\tCtrl+K"
-msgstr "刪除(&D)\tCtrl+K"
+msgstr "Di&leu\tCtrl+K"
 
 #: Menus.cpp:429
 msgid "Split D&elete\tCtrl+Alt+K"
@@ -1264,7 +1256,7 @@ msgstr ""
 
 #: ../src/Menus.cpp:261
 msgid "&Silence\tCtrl+L"
-msgstr "靜音(&S)\tCtrl+L"
+msgstr "Di&stewi\tCtrl+L"
 
 #: Menus.cpp:432
 msgid "Sp&lit\tCtrl+I"
@@ -1337,11 +1329,11 @@ msgstr ""
 
 #: ../src/Menus.cpp:268
 msgid "Select..."
-msgstr "選取..."
+msgstr "Dewis..."
 
 #: ../src/Menus.cpp:269
 msgid "&All\tCtrl+A"
-msgstr "全選(&A)\tCtrl+A"
+msgstr "&Popeth\tCtrl+A"
 
 #: Menus.cpp:513
 msgid "Left at Playback Position\t["
@@ -1353,50 +1345,50 @@ msgstr ""
 
 #: ../src/Menus.cpp:272
 msgid "Start to Cursor"
-msgstr "從起點至游標位置"
+msgstr "O'r Dechrau i'r Cyrchydd"
 
 #: ../src/Menus.cpp:273
 msgid "Cursor to End"
-msgstr "從游標位置至結束點"
+msgstr "O'r Cyrchydd i'r Diwedd"
 
 #: Menus.cpp:525
 #, fuzzy
 msgid "Find &Zero Crossings\tZ"
-msgstr "尋找零交點[Zero Crossing]\tZ"
+msgstr "Canfod Croesiadau Sero\tZ"
 
 #: Menus.cpp:527
 #, fuzzy
 msgid "Mo&ve Cursor..."
-msgstr "移動游標..."
+msgstr "Symud Cyrchydd..."
 
 #: ../src/Menus.cpp:292
 msgid "to Selection Start"
-msgstr "至選取起始點"
+msgstr "i Ddechrau y Dewisiad"
 
 #: ../src/Menus.cpp:293
 msgid "to Selection End"
-msgstr "至選取結束點"
+msgstr "i Ddiwedd y Dewisiad"
 
 #: ../src/Menus.cpp:288
 msgid "to Track Start"
-msgstr "至音軌起始點"
+msgstr "i Ddechrau y Trac"
 
 #: ../src/Menus.cpp:289
 msgid "to Track End"
-msgstr "至音軌結束點"
+msgstr "i Ddiwedd y Trac"
 
 #: ../src/Menus.cpp:280
 msgid "Selection Save"
-msgstr "儲存選取"
+msgstr "Cadw'r Dewisiad"
 
 #: ../src/Menus.cpp:281
 msgid "Selection Restore"
-msgstr "恢復選取"
+msgstr "Ail-sefydlu'r Dewisiad"
 
 #: Menus.cpp:548
 #, fuzzy
 msgid "S&nap-To..."
-msgstr "滑扣至整秒數點..."
+msgstr "Neidio-I..."
 
 #. i18n-hint: Set snap-to mode on or off
 #: Menus.cpp:551
@@ -1422,52 +1414,52 @@ msgstr ""
 
 #: ../src/Menus.cpp:311
 msgid "Turn Snap-To On"
-msgstr "開啟滑扣功能"
+msgstr "Troi Snap-I Ymlaen"
 
 #: ../src/Menus.cpp:312
 msgid "Turn Snap-To Off"
-msgstr "關閉滑扣功能"
+msgstr "Troi Snap-I i Ffwrdd"
 
 #: ../src/Menus.cpp:313
 msgid "Turn Grid Snap On"
-msgstr "開啟格線滑扣功能"
+msgstr "Troi Snap Grid Ymlaen"
 
 #: ../src/Menus.cpp:314
 msgid "Turn Grid Snap Off"
-msgstr "關閉格線滑扣功能"
+msgstr "Troi Snap Grid I Ffwrdd"
 
 #: ../src/Menus.cpp:327
 #: ../src/Menus.cpp:333
 msgid "&Preferences...\tCtrl+P"
-msgstr "偏好設定(&P)...\tCtrl+P"
+msgstr "&Hoffterau...\tCtrl+P"
 
 #: ../src/Menus.cpp:345
 msgid "&View"
-msgstr "檢視(&V)"
+msgstr "G&weld"
 
 #: ../src/Menus.cpp:347
 msgid "Zoom &In\tCtrl+1"
-msgstr "放大(&I)\tCtrl+1"
+msgstr "&Nesáu\tCtrl+1"
 
 #: ../src/Menus.cpp:350
 msgid "Zoom &Normal\tCtrl+2"
-msgstr "一般(&N)\tCtrl+2"
+msgstr "Golygfa &Arferol\tCtrl+2"
 
 #: ../src/Menus.cpp:351
 msgid "Zoom &Out\tCtrl+3"
-msgstr "縮小(&O)\tCtrl+3"
+msgstr "&Pellhau\tCtrl+3"
 
 #: ../src/Menus.cpp:354
 msgid "&Fit in Window\tCtrl+F"
-msgstr "成音工程適合視窗大小(&F)\tCtrl+F"
+msgstr "&Ffitio yn y Ffenest\tCtrl+F"
 
 #: ../src/Menus.cpp:355
 msgid "Fit &Vertically\tCtrl+Shift+F"
-msgstr "適合垂直大小(&V)\tCtrl+Shift+F"
+msgstr "Ffitio'n &Fertigol\tCtrl+Shift+F"
 
 #: ../src/Menus.cpp:356
 msgid "&Zoom to Selection\tCtrl+E"
-msgstr "縮放選取範圍符合視窗(&Z)\tCtrl+E"
+msgstr "&Chwyddo i'r Dewisiad\tCtrl+E"
 
 #: Menus.cpp:603
 msgid "&Collapse All Tracks\tCtrl+Shift+C"
@@ -1479,7 +1471,7 @@ msgstr ""
 
 #: ../src/Menus.cpp:364
 msgid "&History..."
-msgstr "工作記錄(&H)..."
+msgstr "&Hanes..."
 
 #: Menus.cpp:614
 msgid "&Experimental Display..."
@@ -1540,7 +1532,7 @@ msgstr ""
 #: Menus.cpp:646 TimeTrack.cpp:44
 #, fuzzy
 msgid "&Time Track"
-msgstr "時間軌"
+msgstr "Track Amser"
 
 #: Menus.cpp:649
 msgid "&Timer Record"
@@ -1556,44 +1548,44 @@ msgstr ""
 
 #: ../src/Menus.cpp:398
 msgid "Remo&ve Tracks"
-msgstr "移除音軌(&V)"
+msgstr "&Dileu Traciau"
 
 #: ../src/Menus.cpp:405
 msgid "Align with &Zero"
-msgstr "與原點對齊(&Z)"
+msgstr "Alino â &Sero"
 
 #: ../src/Menus.cpp:406
 msgid "Align with &Cursor"
-msgstr "與游標對齊(&C)"
+msgstr "Alinio'r â'r &Cyrchydd"
 
 #: ../src/Menus.cpp:407
 msgid "Align with Selection &Start"
-msgstr "與選取範圍前端對齊(&E)"
+msgstr "Alinio â &Dechrau y Dewisiad"
 
 #: ../src/Menus.cpp:408
 msgid "Align with Selection &End"
-msgstr "與選取範圍尾端對齊(&E)"
+msgstr "Alinio â Di&wedd y Dewisiad"
 
 #: ../src/Menus.cpp:409
 msgid "Align End with Cursor"
-msgstr "結束點和游標對齊"
+msgstr "Alinio'r Diwedd â'r Cyrchydd"
 
 #: ../src/Menus.cpp:410
 msgid "Align End with Selection Start"
-msgstr "結束點與選取範圍前端對齊"
+msgstr "Alinio'r Diwedd â Dechrau'r Dewisiad"
 
 #: ../src/Menus.cpp:411
 msgid "Align End with Selection End"
-msgstr "結束點與選取範圍尾端對齊"
+msgstr "Alinio'r Diwedd â Diwedd y Dewisiad"
 
 #: ../src/Menus.cpp:412
 msgid "Align Tracks Together"
-msgstr "對齊音軌"
+msgstr "Alinio Traciau at ei gilydd"
 
 #: Menus.cpp:688
 #, fuzzy
 msgid "&Align Tracks..."
-msgstr "對齊音軌..."
+msgstr "&Alinio Traciau..."
 
 #: Menus.cpp:697
 msgid "Ali&gn And Move Cursor..."
@@ -1602,12 +1594,12 @@ msgstr ""
 #: Menus.cpp:705
 #, fuzzy
 msgid "Add &Label At Selection\tCtrl+B"
-msgstr "在選取範圍加上標籤\tCtrl+B"
+msgstr "Ychwanegu Label ger y Dewisiad\tCtrl+B"
 
 #: Menus.cpp:706
 #, fuzzy
 msgid "Add Label At &Playback Position\tCtrl+M"
-msgstr "在播放點加上標籤\tCtrl+M"
+msgstr "Ychwanegu Label ger y Safle Chwarae\tCtrl+M"
 
 #: Menus.cpp:712
 msgid "S&ort tracks by..."
@@ -1623,19 +1615,19 @@ msgstr ""
 
 #: ../src/Menus.cpp:441
 msgid "&Generate"
-msgstr "產生(&G)"
+msgstr "Cy&nhyrchu"
 
 #: ../src/Menus.cpp:464
 msgid "Effe&ct"
-msgstr "效果(&C)"
+msgstr "&Effeithio"
 
 #: ../src/Menus.cpp:468
 msgid "Repeat Last Effect\tCtrl+R"
-msgstr "重複最近一次效果\tCtrl+R"
+msgstr "Ailadrodd yr effaith ddiwethaf\tCtrl+R"
 
 #: ../src/Menus.cpp:494
 msgid "&Analyze"
-msgstr "分析(&A)"
+msgstr "&Dadansoddi"
 
 #: Menus.cpp:786
 msgid "&Plot Spectrum..."
@@ -1645,11 +1637,11 @@ msgstr ""
 #: ../src/Menus.cpp:524
 #: ../src/Menus.cpp:540
 msgid "&Help"
-msgstr "幫助(&H)"
+msgstr "&Help"
 
 #: ../src/Menus.cpp:526
 msgid "&Contents..."
-msgstr "內容(&C)..."
+msgstr "&Cynnwys..."
 
 #: Menus.cpp:829
 msgid "&About Audacity CleanSpeech..."
@@ -1657,7 +1649,7 @@ msgstr ""
 
 #: ../src/Menus.cpp:533
 msgid "&Run Benchmark..."
-msgstr "執行Benchmark(&R)..."
+msgstr "&Rhedeg Meincnod..."
 
 #: Menus.cpp:848
 msgid "Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"
@@ -1669,51 +1661,51 @@ msgstr ""
 
 #: ../src/Menus.cpp:549
 msgid "Selection Tool\tF1"
-msgstr "選取工具\tF1"
+msgstr "Erfyn Dewis\tF1"
 
 #: ../src/Menus.cpp:550
 msgid "Envelope Tool\tF2"
-msgstr "波封工具\tF2"
+msgstr "Erfyn Chwyddamlen\tF2"
 
 #: ../src/Menus.cpp:551
 msgid "Draw Tool\tF3"
-msgstr "拖拉工具\tF3"
+msgstr "Erfyn Darlunio\tF3"
 
 #: ../src/Menus.cpp:552
 msgid "Zoom Tool\tF4"
-msgstr "縮放工具\tF4"
+msgstr "Erfyn Chwyddo\tF4"
 
 #: ../src/Menus.cpp:553
 msgid "Time Shift Tool\tF5"
-msgstr "時間移位工具\tF5"
+msgstr "Erfyn Symud Trac Sain\tF5"
 
 #: ../src/Menus.cpp:554
 msgid "Multi Tool\tF6"
-msgstr "複合工具\tF6"
+msgstr "Aml-Erfynl\tF6"
 
 #: ../src/Menus.cpp:556
 msgid "Next Tool\tD"
-msgstr "\"下一個(Next)\"工具\tD"
+msgstr "Erfyn Nesaf\tD"
 
 #: ../src/Menus.cpp:557
 msgid "Previous Tool\tA"
-msgstr "上一個工具\tA"
+msgstr "Erfyn Blaenorol\tA"
 
 #: ../src/Menus.cpp:559
 msgid "Play/Stop\tSpacebar"
-msgstr "播放/停止\tSpacebar"
+msgstr "Chwarae/Aros\tSpacebar"
 
 #: ../src/Menus.cpp:560
 msgid "Stop\tS"
-msgstr "停止\tS"
+msgstr "Aros\tS"
 
 #: ../src/Menus.cpp:561
 msgid "Pause\tP"
-msgstr "暫停\tP"
+msgstr "Seibio\tP"
 
 #: ../src/Menus.cpp:562
 msgid "Record\tR"
-msgstr "錄音\tR"
+msgstr "Recordio\tR"
 
 #: Menus.cpp:867
 msgid "Stop and Select\tShift+A"
@@ -1721,19 +1713,19 @@ msgstr ""
 
 #: ../src/Menus.cpp:564
 msgid "Play One Second\t1"
-msgstr "播放一秒\t1"
+msgstr "Chwarae Un Eiliad\t1"
 
 #: ../src/Menus.cpp:565
 msgid "Play To Selection\tB"
-msgstr "播放至選取選圍\tB"
+msgstr "Chwarae I'r Dewisiad\tB"
 
 #: ../src/Menus.cpp:566
 msgid "Play Looped\tL"
-msgstr "循環播放\tL"
+msgstr "Chwarae'n Gylch\tL"
 
 #: ../src/Menus.cpp:567
 msgid "Play Looped\tShift+Spacebar"
-msgstr "循環播放\tShift+Spacebar"
+msgstr "Chwarae'n Gylch\tShift+Spacebar"
 
 #: Menus.cpp:873
 msgid "Play Cut Preview\tC"
@@ -1741,27 +1733,27 @@ msgstr ""
 
 #: ../src/Menus.cpp:569
 msgid "Skip to Start\tHome"
-msgstr "跳至起始點\tHome"
+msgstr "Neidio i'r Dechrau\tHome"
 
 #: ../src/Menus.cpp:570
 msgid "Skip to End\tEnd"
-msgstr "跳至結束點\tEnd"
+msgstr "Neidio i'r Diwedd\tEnd"
 
 #: ../src/Menus.cpp:572
 msgid "Selection to Start\tShift+Home"
-msgstr "移至起始點\tShift+Home"
+msgstr "Dewisiad i'r Dechrau\tShift+Home"
 
 #: ../src/Menus.cpp:573
 msgid "Selection to End\tShift+End"
-msgstr "移至結束點\tShift+End"
+msgstr "Dewisiad i'r Diwedd\tShift+End"
 
 #: ../src/Menus.cpp:575
 msgid "DeleteKey\tBackspace"
-msgstr "刪除鍵\tBackspace"
+msgstr "BysellDdileu\tBackspace"
 
 #: ../src/Menus.cpp:580
 msgid "DeleteKey2\tDelete"
-msgstr "刪除鍵二\tDelete"
+msgstr "BysellDdileu2\tDelete"
 
 #: Menus.cpp:892
 msgid "Seek left short period during playback\tLeft"
@@ -1813,27 +1805,27 @@ msgstr ""
 
 #: ../src/Menus.cpp:585
 msgid "Cursor Left\tLeft"
-msgstr "游標左移\tLeft"
+msgstr "Cyrchydd i'r Chwith\tLeft"
 
 #: ../src/Menus.cpp:586
 msgid "Cursor Right\tRight"
-msgstr "游標右移\tRight"
+msgstr "Cyrchydd i'r Dde\tRight"
 
 #: ../src/Menus.cpp:587
 msgid "Selection Extend Left\tShift+Left"
-msgstr "選取左端延伸\tShift+Left"
+msgstr "Estyn Dewisiad i'r Chwith\tShift+Chwith"
 
 #: ../src/Menus.cpp:588
 msgid "Selection Extend Right\tShift+Right"
-msgstr "選取右端延伸\tShift+Right"
+msgstr "Estyn Dewisiad i'r Dde\tShift+Dde"
 
 #: ../src/Menus.cpp:589
 msgid "Selection Contract Left\tCtrl+Shift+Right"
-msgstr "選取左端縮減\tCtrl+Shift+Right"
+msgstr "Lleihau'r Dewisiad i'r Chwith\tCtrl+Shift+Dde"
 
 #: ../src/Menus.cpp:590
 msgid "Selection Contract Right\tCtrl+Shift+Left"
-msgstr "選取右端縮減\tCtrl+Shift+Left"
+msgstr "Lleihau'r Dewisiad i'r Dde\tCtrl+Shift+Chwith"
 
 #: Menus.cpp:916
 msgid "Change pan on focused track\tShift+P"
@@ -1882,7 +1874,7 @@ msgstr ""
 
 #: ../src/Menus.cpp:154
 msgid "Recent &Files..."
-msgstr "最近使用的檔案(&F)..."
+msgstr "Ffeiliau &Diweddar..."
 
 #: Menus.cpp:987 Menus.cpp:990
 #, c-format
@@ -1892,20 +1884,20 @@ msgstr ""
 #: ../src/Menus.cpp:620
 #, c-format
 msgid "&Undo %s"
-msgstr "復原 %s (&U)"
+msgstr "&Dadwneud %s"
 
 #: ../src/Menus.cpp:626
 msgid "Can't Undo"
-msgstr "無法復原"
+msgstr "Methu Dadwneud"
 
 #: ../src/Menus.cpp:633
 #, c-format
 msgid "&Redo %s"
-msgstr "重做 %s (&R)"
+msgstr "&Ailwneud %s"
 
 #: ../src/Menus.cpp:639
 msgid "Can't Redo"
-msgstr "無法重做"
+msgstr "Methu Ailwneud"
 
 #: Menus.cpp:1557
 msgid "Sort By Time"
@@ -1933,33 +1925,33 @@ msgstr ""
 
 #: ../src/Menus.cpp:1225
 msgid "You must select a track first."
-msgstr "必須先選取音軌。"
+msgstr "Rhaid dewis trac yn gyntaf."
 
 #: ../src/Menus.cpp:1248
 #, c-format
 msgid "Repeat %s\tCtrl+R"
-msgstr "重複%s\tCtrl+R"
+msgstr "Ailadrodd %s\tCtrl+R"
 
 #: ../src/Menus.cpp:1352
 msgid "There are no label tracks to export."
-msgstr "沒有標籤音軌，無法匯出。"
+msgstr "Nid oes labeli traciau i allforio."
 
 #: ../src/Menus.cpp:1636
 msgid "Nothing to undo"
-msgstr "沒有可復原的操作"
+msgstr "Dim i'w ddadwneud"
 
 #: ../src/Menus.cpp:1655
 msgid "Nothing to redo"
-msgstr "沒有可重做的操作"
+msgstr "Dim i'w ailwneud"
 
 #: ../src/EditToolBar.cpp:148
 #: ../src/Menus.cpp:1713
 msgid "Cut"
-msgstr "剪下"
+msgstr "Torri"
 
 #: ../src/Menus.cpp:1713
 msgid "Cut to the clipboard"
-msgstr "剪下至剪貼簿"
+msgstr "Torri i'r clipfwrdd"
 
 #: Menus.cpp:2468
 msgid "Split Cut"
@@ -1973,7 +1965,7 @@ msgstr ""
 #: ../src/Menus.cpp:1818
 #: ../src/Menus.cpp:1862
 msgid "Paste"
-msgstr "貼上"
+msgstr "Gludo"
 
 #: Menus.cpp:2530
 msgid "Pasted text from the clipboard"
@@ -1982,7 +1974,7 @@ msgstr ""
 #: ../src/Menus.cpp:1818
 #: ../src/Menus.cpp:1862
 msgid "Pasted from the clipboard"
-msgstr "從剪貼簿貼上"
+msgstr "Gludo o'r clipfwrdd"
 
 #: Menus.cpp:2628
 msgid "Copying stereo audio into a mono track is not allowed."
@@ -1990,11 +1982,11 @@ msgstr ""
 
 #: ../src/Menus.cpp:1902
 msgid "Trim"
-msgstr "剪輯"
+msgstr "Tocio"
 
 #: ../src/Menus.cpp:1902
 msgid "Trim file to selection"
-msgstr "將檔案剪輯至選取範圍"
+msgstr "Tocio'r ffeil i'r dewisiad"
 
 #: Menus.cpp:2747
 #, c-format
@@ -2026,20 +2018,20 @@ msgstr ""
 #: ../src/Menus.cpp:1926
 #, c-format
 msgid "Silenced selected tracks for %.2f seconds at %.2f"
-msgstr "使選定音軌靜音%.2f 秒，位置在 %.2f 秒處"
+msgstr "Wedi distewi'r traciau a ddewiswyd am %.2f eiliad ger %.2f"
 
 #: ../src/Menus.cpp:1928
 #: ../src/effects/Silence.h:33
 msgid "Silence"
-msgstr "靜音"
+msgstr "Distewi"
 
 #: ../src/Menus.cpp:1962
 msgid "Duplicate"
-msgstr "複製到新音軌"
+msgstr "Dyblygu"
 
 #: ../src/Menus.cpp:1962
 msgid "Duplicated"
-msgstr "已複製到新音軌"
+msgstr "Dyblygwyd"
 
 #: Menus.cpp:2872
 msgid "Cut Labels"
@@ -2116,7 +2108,7 @@ msgstr ""
 #: ../src/Menus.cpp:2009
 #: ../src/TrackPanel.cpp:4134
 msgid "Split"
-msgstr "分離"
+msgstr "Hollti"
 
 #: Menus.cpp:3089
 msgid "Split New"
@@ -2128,55 +2120,55 @@ msgstr ""
 
 #: ../src/Menus.cpp:2092
 msgid "Split at labels"
-msgstr "按標籤分離"
+msgstr "Hollti wrth labeli"
 
 #: ../src/Menus.cpp:2369
 msgid "To plot the spectrum, all selected tracks must be the same sample rate."
-msgstr "為了描繪頻譜，所有選定的音軌必須具有相同的取樣頻率。"
+msgstr "I blotio'r sbectrwm, rhaid i bob trac dewisiedig fod o'r un graddfa samplo."
 
 #: ../src/Menus.cpp:2395
 #, c-format
 msgid "Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."
-msgstr "選擇的聲音過多。只有開始 %.1f 秒的聲音會被分析。"
+msgstr "Dewiswyd gormod o sain. Dim ond y %.1f eiliad o sain gaith ei ddadansoddi."
 
 #: ../src/Menus.cpp:2595
 #: ../src/Project.cpp:1738
 msgid "Select one or more audio files..."
-msgstr "選取一個或多個聲音檔案..."
+msgstr "Dewis un neu fwy o ffeiliau sain..."
 
 #: ../src/Menus.cpp:2660
 #, c-format
 msgid "Imported labels from '%s'"
-msgstr "從'%s'匯入的標籤"
+msgstr "Mewnforwyd labeli o '%s'"
 
 #: ../src/Menus.cpp:2661
 msgid "Import Labels"
-msgstr "匯入標籤"
+msgstr "Mewnforio Labeli"
 
 #: ../src/Menus.cpp:2672
 msgid "Select a MIDI file..."
-msgstr "選擇MIDI檔案..."
+msgstr "Dewis ffeil MIDI..."
 
 #: ../src/Menus.cpp:2676
 msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
-msgstr "所有檔案(*.*)|*.*|MIDI檔案(*.mid)|*.mid|Allegro檔案 (*.gro)|*.gro"
+msgstr "Pob Ffeil (*.*)|*.*|Ffeiliau MIDI (*.mid)|*.mid|Ffeiliau Allegro (*.gro)|*.gro"
 
 #: ../src/Menus.cpp:2694
 #, c-format
 msgid "Imported MIDI from '%s'"
-msgstr "從'%s'匯入的MIDI"
+msgstr "Mewnforwyd MIDI o '%s'"
 
 #: ../src/Menus.cpp:2696
 msgid "Import MIDI"
-msgstr "匯入MIDI"
+msgstr "Mewnforio MIDI"
 
 #: ../src/Menus.cpp:2709
 msgid "Select any uncompressed audio file..."
-msgstr "選取任何非壓縮聲音檔案..."
+msgstr "Dewisiwch unrhyw ffeil heb ei gywasgu..."
 
 #: ../src/Menus.cpp:2713
 msgid "All files (*)|*"
-msgstr "所有檔案(*)|*"
+msgstr "Pob ffeil (*)|*"
 
 #: ../src/Project.cpp:2236
 #: ../src/Project.cpp:2283
@@ -2184,19 +2176,19 @@ msgstr "所有檔案(*)|*"
 #: ../src/import/ImportPCM.cpp:488
 #: ../src/import/ImportRaw.cpp:408
 msgid "Import"
-msgstr "匯入"
+msgstr "Mewnforio"
 
 #: ../src/Menus.cpp:2751
 msgid "Edit ID3 Tags (for MP3 exporting)"
-msgstr "編輯ID3 Tags(MP3匯出用)"
+msgstr "Golygu'r Tagiau ID3 (argyfer allforio MP3)"
 
 #: ../src/Menus.cpp:2752
 msgid "Edit ID3 Tags"
-msgstr "編輯ID3 Tags"
+msgstr "Golygu'r Tagiau ID3"
 
 #: ../src/Menus.cpp:2752
 msgid "Edit ID3 tags"
-msgstr "編輯ID3 Tags"
+msgstr "Golygu'r Tagiau ID3"
 
 #: Menus.cpp:3749
 #, c-format
@@ -2219,70 +2211,70 @@ msgstr ""
 
 #: ../src/Menus.cpp:2892
 msgid "Aligned with zero"
-msgstr "已與原點對齊"
+msgstr "Wedi alinio â sero"
 
 #: ../src/Menus.cpp:2896
 msgid "Aligned cursor"
-msgstr "已對齊游標"
+msgstr "Wedi Alinio'r Cyrchydd"
 
 #: ../src/Menus.cpp:2900
 msgid "Aligned with selection start"
-msgstr "已與選取範圍前端對齊"
+msgstr "Wedi alinio â dechrau'r dewisiad"
 
 #: ../src/Menus.cpp:2904
 msgid "Aligned with selection end"
-msgstr "已與選取範圍尾端對齊"
+msgstr "Wedi alinio â diwedd y dewisiad"
 
 #: ../src/Menus.cpp:2908
 msgid "Aligned end with cursor"
-msgstr "已對齊結束點與游標"
+msgstr "Wedi alinio'r diwedd â'r cyrchydd"
 
 #: ../src/Menus.cpp:2912
 msgid "Aligned end with selection start"
-msgstr "已對齊結束點與選取範圍前端"
+msgstr "Wedi alinio'r diwedd â dechrau'r dewisiad"
 
 #: ../src/Menus.cpp:2916
 msgid "Aligned end with selection end"
-msgstr "已對齊結束點與選取範圍尾端"
+msgstr "Wedi alinio'r diwedd â diwedd y dewisiad"
 
 #: ../src/Menus.cpp:2920
 msgid "Aligned"
-msgstr "已對齊"
+msgstr "Wedi Alinio"
 
 #: ../src/Menus.cpp:2953
 msgid "Align"
-msgstr "對齊"
+msgstr "Alinio"
 
 #: ../src/Menus.cpp:2977
 msgid "Created new audio track"
-msgstr "已新建音軌"
+msgstr "Crëwyd trac sain newydd"
 
 #: ../src/Menus.cpp:2977
 #: ../src/Menus.cpp:3001
 #: ../src/Menus.cpp:3016
 #: ../src/Menus.cpp:3052
 msgid "New Track"
-msgstr "新增音軌"
+msgstr "Trac Newydd"
 
 #: ../src/Menus.cpp:3001
 msgid "Created new stereo audio track"
-msgstr "已新建立體聲音軌"
+msgstr "Crëwyd trac sain stereo newydd"
 
 #: ../src/Menus.cpp:3016
 msgid "Created new label track"
-msgstr "已新建標籤音軌"
+msgstr "Crëwyd trac label newydd"
 
 #: ../src/Menus.cpp:3041
 msgid "The version of Audacity you are using does not support multiple time tracks."
-msgstr "您使用的Audacity版本不支援多個時間軌。"
+msgstr "Nid yw'r fersiwn yma o Audacity yn caniatau mwy nag un trac amser."
 
 #: ../src/Menus.cpp:3052
 msgid "Created new time track"
-msgstr "已新建時間軌"
+msgstr "Wedi creu trac amser newydd"
 
 #: ../src/Menus.cpp:3088
 msgid "Added label"
-msgstr "已加標籤"
+msgstr "Wedi ychwanegu label"
 
 #: Menus.cpp:4119
 msgid "Edited labels"
@@ -2298,7 +2290,7 @@ msgstr ""
 
 #: ../src/export/Export.cpp:185
 msgid "Sorry, pathnames longer than 256 characters not supported."
-msgstr "抱歉，路徑名不能超過256個字元。"
+msgstr "Ni chanieteir enwau llwybr hirach na 256 nod."
 
 #: Menus.cpp:4203
 msgid "Problem encountered exporting presets."
@@ -2310,11 +2302,11 @@ msgstr ""
 
 #: ../src/Menus.cpp:3122
 msgid "Remove Track"
-msgstr "移除音軌"
+msgstr "Gwaredu Trac"
 
 #: ../src/Menus.cpp:3122
 msgid "Removed audio track(s)"
-msgstr "移除音訊音軌"
+msgstr "Gwaredwyd Trac(iau) sain"
 
 #: Menus.cpp:4480
 msgid "Enter new samplerate:"
@@ -2344,7 +2336,7 @@ msgstr ""
 #: ../src/Mix.cpp:74
 #: ../src/Mix.cpp:82
 msgid "Mix"
-msgstr "混音[Mix]"
+msgstr "Cymysgu"
 
 #: Mix.cpp:120
 msgid "Mixing and rendering tracks"
@@ -2352,15 +2344,15 @@ msgstr ""
 
 #: ../src/NoteTrack.cpp:30
 msgid "Note Track"
-msgstr "MIDI 註解音軌"
+msgstr "Trac Nodau"
 
 #: ../src/Menus.cpp:1617
 msgid "There was a problem printing."
-msgstr "列印發生錯誤。"
+msgstr "Roedd anhawster wrth argraffu."
 
 #: ../src/Menus.cpp:1618
 msgid "Print"
-msgstr "列印"
+msgstr "Argraffu"
 
 #: Project.cpp:573
 msgid "Main Mix"
@@ -2379,20 +2371,20 @@ msgstr ""
 #: ../src/Project.cpp:1707
 #: ../src/TrackPanel.cpp:1208
 msgid "Record"
-msgstr "錄音"
+msgstr "Recordio"
 
 #: ../src/Project.cpp:1707
 #: ../src/TrackPanel.cpp:1208
 msgid "Recorded Audio"
-msgstr "已錄製音訊"
+msgstr "Sain a Recordwyd"
 
 #: ../src/Project.cpp:1716
 msgid "Save changes before closing?"
-msgstr "在關閉前儲存變更？"
+msgstr "Cadw'r newidiadau cyn cau?"
 
 #: ../src/Project.cpp:1717
 msgid "Save changes?"
-msgstr "儲存變更？"
+msgstr "Cadw'r newidiadau?"
 
 #: Project.cpp:1496
 msgid "Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3"
@@ -2401,7 +2393,7 @@ msgstr ""
 #: ../src/Project.cpp:1821
 #: ../src/Project.cpp:1829
 msgid "Error opening file"
-msgstr "開啟檔案錯誤"
+msgstr "Gwall wrth agor ffeil"
 
 #: Project.cpp:1585
 #, c-format
@@ -2415,7 +2407,7 @@ msgstr ""
 
 #: ../src/Project.cpp:1842
 msgid "Audacity was unable to convert an Audacity 1.0 project to the new project format."
-msgstr "Audacity 1.0格式的成音工程不能轉換為新的成音工程格式。"
+msgstr "Methodd Audacity drosi'r cywaith Audacity 1.0 i'r fformat cywaith newydd."
 
 #: Project.cpp:1706
 msgid "Could not remove old auto save file"
@@ -2440,20 +2432,20 @@ msgstr ""
 #: ../src/Project.cpp:1941
 #, c-format
 msgid "Couldn't find the project data folder: \"%s\""
-msgstr "找不到成音工程資料目錄：\"%s"
+msgstr "Methwyd canfod ffolder data y cywaith: \"%s\""
 
 #: ../src/Project.cpp:1985
 #, c-format
 msgid "This file was saved using Audacity %s.\n"
 "You are using Audacity %s - you need to upgrade to\n"
 "a newer version to open this file."
-msgstr "這個檔案是由Audacity %s 儲存的。\n"
-"您現在使用的是Audacity %s - 您需要更新的版本\n"
-"來開啟這個檔案。"
+msgstr "Cadwyd y ffeil gan defnyddio Audacity %s.\n"
+"Rydych yn defnyddio Audacity %s - mae angen uwchraddio\n"
+"i fersiwn diweddarach i agor y ffeil hwn."
 
 #: ../src/Project.cpp:1991
 msgid "Can't open project file"
-msgstr "無法開啟成音工程檔案。"
+msgstr "Methu agor ffeil cywaith"
 
 #: Project.cpp:1898
 #, c-format
@@ -2474,37 +2466,37 @@ msgstr ""
 #, fuzzy
 msgid "Could not save project. Perhaps %s is not writeable,\n"
 "or the disk is full."
-msgstr "無法儲存成音工程。您沒有%s的寫入權限，\n"
-"或磁碟已滿。"
+msgstr "Methwyd cadw'r cywaith.  Efallai fod dim modd ysgrifennu i %s,\n"
+"neu fod y ddisg yn llawnl."
 
 #: ../src/Project.cpp:2148
 #: ../src/Project.cpp:2160
 msgid "Error saving project"
-msgstr "儲存成音工程錯誤"
+msgstr "Gwall wrth gadw'r cywaith"
 
 #: ../src/Project.cpp:2200
 #, c-format
 msgid "Saved %s"
-msgstr "%s已儲存"
+msgstr "Cadwyd %s"
 
 #. i18n-hint: This refers to files that are opened directly
 #: ../src/Project.cpp:2228
 msgid "Raw"
-msgstr "原始"
+msgstr "Crai"
 
 #: ../src/Project.cpp:2233
 #, c-format
 msgid "Importing %s File..."
-msgstr "匯入%s檔案中..."
+msgstr "Mewnforio ffeil %s ..."
 
 #: ../src/Project.cpp:2282
 #, c-format
 msgid "Imported '%s'"
-msgstr "'%s'已匯入"
+msgstr "Mewnforwyd '%s'"
 
 #: ../src/Project.cpp:2340
 msgid "Error importing"
-msgstr "匯入錯誤"
+msgstr "Gwall wrth fewnforio"
 
 #: Project.cpp:2365
 msgid "Save Speech As:"
@@ -2520,28 +2512,28 @@ msgid "Audacity project files (.aup) let you save everything you're working on e
 "\n"
 "When you want to save a file that can be opened by other programs, select one of the\n"
 "Export commands."
-msgstr "Audacity成音工程檔案(.AUP)能儲存您的所有工作，\n"
-"但大多數的其它軟體無法開啟Audacity成音工程檔案。\n"
+msgstr "Mae ffiliau cywaith Audacity (.aup) yn eich galluogi i gadw i ddisg popeth yr ydych yn\n"
+"ei weithio arno fel y mae ar y sgrin, ond nid yw rhaglenni eraill yn gallu agor ffeiliau Audacity.\n"
 "\n"
-"當您需要儲存為其它軟體能開啟的檔案時，請選擇\n"
-"匯出'(Export)命令。"
+"Pan mae angen cadw ffeil er mwyn ei agor â rhaglenni eraill,\n"
+"dewisiwch un o'r gorchmynion Allforio."
 
 #: ../src/Project.cpp:2378
 msgid "Audacity projects (*.aup)|*.aup"
-msgstr "Audacity成音工程檔案 (*.aup)|*.aup"
+msgstr "Cyweithiau Audacity (*.aup)|*.aup"
 
 #: ../src/Project.cpp:2414
 msgid "Created new project"
-msgstr "已新建專案"
+msgstr "Crëwyd cywaith newydd"
 
 #: ../src/Project.cpp:2527
 #, c-format
 msgid "Deleted %.2f seconds at t=%.2f"
-msgstr "刪除 %.2f 秒 (位置 t=%.2f)"
+msgstr "Wedi dileu %.2f eiliad ger t=%.2f"
 
 #: ../src/Project.cpp:2530
 msgid "Delete"
-msgstr "刪除"
+msgstr "Dileu"
 
 #: Project.cpp:2738
 #, c-format
@@ -2565,7 +2557,7 @@ msgstr ""
 
 #: ../src/Project.cpp:2706
 msgid "Out of disk space"
-msgstr "磁碟空間已滿"
+msgstr "Allan o le ar y ddisg"
 
 #: Project.cpp:3027
 msgid "Could not remove old autosave file: "
@@ -2594,29 +2586,29 @@ msgstr ""
 
 #: ../src/Resample.cpp:35
 msgid "Libresample by Dominic Mazzoni and Julius Smith"
-msgstr "Libresample by Dominic Mazzoni and Julius Smith"
+msgstr "Libresample gan Dominic Mazzoni a Julius Smith"
 
 #: ../src/Resample.cpp:46
 msgid "High-quality Sinc Interpolation"
-msgstr "高品質Sinc內插法"
+msgstr "Rhyngosodiad Sinc Ansawdd Uchel"
 
 #: ../src/Resample.cpp:48
 msgid "Fast Sinc Interpolation"
-msgstr "快速Sinc內插法"
+msgstr "Rhyngosodiad Sinc Chwim"
 
 #: ../src/Resample.cpp:118
 msgid "Libsamplerate by Erik de Castro Lopo"
-msgstr "Libsamplerate(取樣率庫，Erik de Castro Lopo提供)"
+msgstr "Libsamplerate gan Erik de Castro Lopo"
 
 #: ../src/Resample.cpp:211
 #, c-format
 msgid "Libsamplerate error: %d\n"
-msgstr "Libsamplerate 錯誤：%d\n"
+msgstr "Gwall Libsamplerate: %d\n"
 
 #: ../src/Resample.cpp:233
 #: ../src/Resample.cpp:243
 msgid "Resampling disabled."
-msgstr "停用重取樣。"
+msgstr "Analluogwyd ailsamplo."
 
 #: SmartRecordDialog.cpp:68
 msgid "Audacity Timer Record"
@@ -2663,35 +2655,35 @@ msgstr ""
 #: ../src/Tags.cpp:429
 #, c-format
 msgid "Maximum length of attribute '%s' is %d characters. Data was truncated."
-msgstr "屬性 '%s' 的最大長度是 %d 個字元。數據被截短了。"
+msgstr "Hyd mwyaf y nodwedd '%s' yw %d nod. Tociwyd y data."
 
 #: ../src/Tags.cpp:435
 msgid "Title"
-msgstr "標題"
+msgstr "Teitl"
 
 #: ../src/Tags.cpp:445
 msgid "Artist"
-msgstr "演出者"
+msgstr "Artist"
 
 #: ../src/Tags.cpp:455
 msgid "Album"
-msgstr "專輯"
+msgstr "Albwm"
 
 #: ../src/Tags.cpp:465
 msgid "Year"
-msgstr "年份"
+msgstr "Blwyddyn"
 
 #: ../src/Tags.cpp:475
 msgid "Comments"
-msgstr "註解"
+msgstr "Sylwadau"
 
 #: ../src/Tags.cpp:607
 msgid "ID3v1 (more compatible)"
-msgstr "ID3v1 (更好的相容性)"
+msgstr "ID3v1 (yn fwy cyfaddas)"
 
 #: ../src/Tags.cpp:608
 msgid "ID3v2 (more flexible)"
-msgstr "ID3v2 (更靈活)"
+msgstr "ID3v2 (yn fwy hyblyg)"
 
 #: Tags.cpp:906
 msgid "Format"
@@ -2700,7 +2692,7 @@ msgstr ""
 #: Tags.cpp:953
 #, fuzzy
 msgid "Track Number"
-msgstr "音軌編號："
+msgstr "Rhif Trac:"
 
 #: Tags.cpp:979
 msgid "Genre"
@@ -2811,106 +2803,106 @@ msgstr ""
 #: ../src/prefs/FileFormatPrefs.cpp:105
 #: ../src/prefs/QualityPrefs.cpp:91
 msgid "Other..."
-msgstr "其它..."
+msgstr "Arall..."
 
 #: ../src/TrackPanel.cpp:830
 #: ../src/TrackPanel.cpp:851
 #: ../src/TrackPanel.cpp:860
 #: ../src/TrackPanel.cpp:868
 msgid "Name..."
-msgstr "命名..."
+msgstr "Enwi..."
 
 #: ../src/TrackPanel.cpp:832
 #: ../src/TrackPanel.cpp:853
 #: ../src/TrackPanel.cpp:864
 #: ../src/TrackPanel.cpp:870
 msgid "Move Track Up"
-msgstr "向上移動音軌"
+msgstr "Symud Trac i Fynu"
 
 #: ../src/TrackPanel.cpp:833
 #: ../src/TrackPanel.cpp:854
 #: ../src/TrackPanel.cpp:865
 #: ../src/TrackPanel.cpp:871
 msgid "Move Track Down"
-msgstr "向下移動音軌"
+msgstr "Symud Trac i Lawr"
 
 #: ../src/TrackPanel.cpp:835
 msgid "Waveform"
-msgstr "波形"
+msgstr "Tonffurf"
 
 #: ../src/TrackPanel.cpp:836
 msgid "Waveform (dB)"
-msgstr "波形 (dB)"
+msgstr "Tonffurf (dB)"
 
 #: ../src/TrackPanel.cpp:838
 msgid "Pitch (EAC)"
-msgstr "音高 (EAC)"
+msgstr "Traw (EAC)"
 
 #: ../src/TrackPanel.cpp:840
 msgid "Mono"
-msgstr "單聲道"
+msgstr "Mono"
 
 #: ../src/TrackPanel.cpp:841
 msgid "Left Channel"
-msgstr "左聲道"
+msgstr "Sianel Chwith"
 
 #: ../src/TrackPanel.cpp:842
 msgid "Right Channel"
-msgstr "右聲道"
+msgstr "Sianel Dde"
 
 #: ../src/TrackPanel.cpp:843
 msgid "Make Stereo Track"
-msgstr "製作立體聲音軌"
+msgstr "Gwneud Trac Stereo"
 
 #: ../src/TrackPanel.cpp:844
 msgid "Split Stereo Track"
-msgstr "分離音體聲音軌"
+msgstr "Hollti Trac Stereo"
 
 #: ../src/TrackPanel.cpp:846
 msgid "Set Sample Format"
-msgstr "設定取樣格式"
+msgstr "Gosod Fformat Sampl"
 
 #: ../src/AStatus.cpp:352
 #: ../src/TrackPanel.cpp:848
 #: ../src/TrackPanel.cpp:4322
 msgid "Set Rate"
-msgstr "設定取樣頻率"
+msgstr "Gosod Graddfa Samplo"
 
 #: ../src/TrackPanel.cpp:856
 msgid "Up Octave"
-msgstr "高八度"
+msgstr "I fynu Wythfed"
 
 #: ../src/TrackPanel.cpp:857
 msgid "Down Octave"
-msgstr "降一個八度"
+msgstr "I Lawr Wythfed"
 
 #: ../src/TrackPanel.cpp:862
 msgid "Font..."
-msgstr "字型..."
+msgstr "Ffont..."
 
 #: ../src/TrackPanel.cpp:873
 msgid "Set Range..."
-msgstr "設定範圍..."
+msgstr "Gosod Amrediad..."
 
 #: ../src/EditToolBar.cpp:150
 msgid "Copy"
-msgstr "複製"
+msgstr "Copio"
 
 #: ../src/TrackPanel.cpp:1513
 msgid "Click to vertically zoom in, Shift-click to zoom out, Drag to create a particular zoom region."
-msgstr "單擊放大垂直檢視，Shift-單擊則縮小垂直檢視，拖曳則拉出一個特定的縮放區域。"
+msgstr "Clico i chywddo yn fertigol,  Shift-Clic i bellhau, Llusgo i greu ardal chwyddo benodol."
 
 #: ../src/TrackPanel.cpp:1519
 msgid "Drag the label vertically to change the order of the tracks."
-msgstr "垂直拖曳標籤改變音軌順序。"
+msgstr "Llusgwch y label yn unionsyth i newid trefn y traciau."
 
 #: ../src/TrackPanel.cpp:1616
 msgid "Click and drag to adjust relative size of stereo tracks."
-msgstr "單擊拖曳調整立體聲音軌的相對大小。"
+msgstr "Cliciwch a llusgwch i newid maint cymharol y traciau stereo."
 
 #: ../src/TrackPanel.cpp:1621
 msgid "Click and drag to resize the track."
-msgstr "單擊拖曳以調整音軌大小。"
+msgstr "Clicio a llusgo i newid maint y trac."
 
 #: TrackPanel.cpp:1298
 msgid "Drag one or more label boundaries"
@@ -2922,36 +2914,36 @@ msgstr ""
 
 #: ../src/TrackPanel.cpp:1541
 msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
-msgstr "複合工具模式: Cmd-，滑鼠和鍵盤設定"
+msgstr "Modd Aml-Erfyn: Cmd-, ar gyfer Hoffterau Llygoden a Bysellfwrdd"
 
 #: ../src/TrackPanel.cpp:1543
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
-msgstr "複合工具模式： Ctrl-P，滑鼠和鍵盤設定"
+msgstr "Modd Aml-Erfyn: Ctrl-P ar gyfer Hoffterau Llygoden a Bysellfwrdd"
 
 #: ../src/TrackPanel.cpp:1574
 msgid "Click and drag to move left selection boundary."
-msgstr "單擊拖曳以選取範圍左邊界。"
+msgstr "Cliciwch a llusgwch i symud terfyn chwith y dewisiad."
 
 #: ../src/TrackPanel.cpp:1579
 msgid "Click and drag to move right selection boundary."
-msgstr "單擊拖曳以選取範圍右邊界。"
+msgstr "Cliciwch a llusgwch i symud terfyn dde y dewisiad."
 
 #: ../src/TrackPanel.cpp:3314
 msgid "Modified Label"
-msgstr "已修改標籤"
+msgstr "Newidwyd Label"
 
 #: ../src/TrackPanel.cpp:3315
 msgid "Label Edit"
-msgstr "標籤編輯"
+msgstr "Golygu Label"
 
 #: ../src/TrackPanel.cpp:1904
 msgid "Adjusted envelope."
-msgstr "已調整波封線。"
+msgstr "Addaswyd y chwyddamlen."
 
 #: ../src/TrackPanel.cpp:1905
 #: ../src/prefs/MousePrefs.cpp:98
 msgid "Envelope"
-msgstr "波封"
+msgstr "Chwyddamlen"
 
 #: TrackPanel.cpp:2033
 msgid "Moved clip to another track"
@@ -2959,11 +2951,11 @@ msgstr ""
 
 #: ../src/TrackPanel.cpp:2012
 msgid "left"
-msgstr "左"
+msgstr "chwith"
 
 #: ../src/TrackPanel.cpp:2012
 msgid "right"
-msgstr "右"
+msgstr "dde"
 
 #. i18n-hint: %s is a direction like left or right
 #: TrackPanel.cpp:2039
@@ -2973,7 +2965,7 @@ msgstr ""
 
 #: ../src/prefs/MousePrefs.cpp:97
 msgid "Time-Shift"
-msgstr "時間-位移[Time-Shift]"
+msgstr "Symud-Sain"
 
 #: TrackPanel.cpp:2696
 msgid "Draw currently only works with linear-view waveforms."
@@ -2981,63 +2973,63 @@ msgstr ""
 
 #: ../src/TrackPanel.cpp:2378
 msgid "You are not zoomed in enough. Zoom in until you can see the individual samples."
-msgstr "放大不夠。請放大到您能看清楚個別取樣點。"
+msgstr "Rydych heb nesáu digon. Rhaid nesáu nes gallu gweld y samplau unigol."
 
 #: ../src/TrackPanel.cpp:2637
 msgid "Moved Sample"
-msgstr "已移動取樣"
+msgstr "Symudwyd y Sampl"
 
 #: ../src/TrackPanel.cpp:2638
 msgid "Sample Edit"
-msgstr "編輯樣本"
+msgstr "Golygu Sampl"
 
 #: ../src/TrackPanel.cpp:2703
 #, c-format
 msgid "Removed track '%s.'"
-msgstr "移除'%s'音軌。"
+msgstr "Wedi dileu'r trac '%s.'"
 
 #: ../src/TrackPanel.cpp:2705
 msgid "Track Remove"
-msgstr "移除音軌"
+msgstr "Dileu Trac"
 
 #: ../src/TrackPanel.cpp:2806
 msgid "Moved gain slider"
-msgstr "已移動增益滑桿"
+msgstr "Symudwyd y llithrydd cynnydd"
 
 #: ../src/TrackPanel.cpp:2806
 msgid "Moved pan slider"
-msgstr "已移動面板滑桿"
+msgstr "Symudwyd y llithrydd trem"
 
 #. i18n-hint: Title of the Gain slider, used to adjust the volume
 #: ../src/TrackPanel.cpp:2807
 #: ../src/TrackPanel.cpp:4726
 msgid "Gain"
-msgstr "增益"
+msgstr "Cynnydd"
 
 #. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
 #: ../src/TrackPanel.cpp:2807
 #: ../src/TrackPanel.cpp:4733
 msgid "Pan"
-msgstr "面板"
+msgstr "Trem"
 
 #: ../src/TrackPanel.cpp:4387
 #: ../src/effects/ChangePitch.cpp:277
 msgid "up"
-msgstr "上"
+msgstr "i fynu"
 
 #: ../src/TrackPanel.cpp:4388
 #: ../src/effects/ChangePitch.cpp:277
 msgid "down"
-msgstr "下"
+msgstr "i lawr"
 
 #: ../src/TrackPanel.cpp:4383
 #, c-format
 msgid "Moved '%s' %s"
-msgstr "已移動 '%s' %s"
+msgstr "Symudwyd '%s' %s"
 
 #: ../src/TrackPanel.cpp:4389
 msgid "Move Track"
-msgstr "移動音軌"
+msgstr "Symud Trac"
 
 #: TrackPanel.cpp:3905
 msgid "Expand"
@@ -3065,126 +3057,125 @@ msgstr ""
 
 #: ../src/TrackPanel.cpp:4087
 msgid "Stereo, "
-msgstr "立體聲，"
+msgstr "Stereo,"
 
 #: ../src/TrackPanel.cpp:4090
 msgid "Mono, "
-msgstr "單聲道，"
+msgstr "Mono,"
 
 #: ../src/TrackPanel.cpp:4092
 msgid "Left, "
-msgstr "左聲道，"
+msgstr "Chwith,"
 
 #: ../src/TrackPanel.cpp:4094
 msgid "Right, "
-msgstr "右聲道，"
+msgstr "Dde,"
 
 #: ../src/TrackPanel.cpp:4116
 #: ../src/TrackPanel.cpp:4225
 #, c-format
 msgid "Changed '%s' to %s"
-msgstr "已變更的'%s' 至 %s"
+msgstr "Newidwyd '%s' i %s"
 
 #: ../src/TrackPanel.cpp:4121
 msgid "Channel"
-msgstr "聲道"
+msgstr "Sianel"
 
 #: ../src/TrackPanel.cpp:4131
 #, c-format
 msgid "Split stereo track '%s'"
-msgstr "分離立體聲音軌'%s'"
+msgstr "Trac stereo holltedig '%s'"
 
 #: ../src/TrackPanel.cpp:4153
 #, c-format
 msgid "Made '%s' a stereo track"
-msgstr "將'%s'製作為立體聲音軌"
+msgstr "Gwneud '%s' yn drac stereo"
 
 #: ../src/TrackPanel.cpp:4156
 msgid "Make Stereo"
-msgstr "製作立體聲"
+msgstr "Troi i Stereo"
 
 #: ../src/TrackPanel.cpp:4189
 #, c-format
 msgid "Changed '%s' to %d Hz"
-msgstr "已變更的'%s' 至 %d Hz"
+msgstr "Newidwyd '%s' i %d Hz"
 
 #: ../src/TrackPanel.cpp:4191
 msgid "Rate Change"
-msgstr "速率變更"
+msgstr "Newid Graddfa Sampl"
 
 #: ../src/TrackPanel.cpp:4229
 msgid "Format Change"
-msgstr "變更格式"
+msgstr "Newid Fformat"
 
 #: ../src/TrackPanel.cpp:4320
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
-msgstr "輸入取樣頻率(Hz，每秒的取樣數)，範圍介於1至100000："
+msgstr "Rhowch raddfa samplo mewn Hz (yr eiliad) rhwng 1 a 100000:"
 
 #: ../src/AStatus.cpp:362
 #: ../src/TrackPanel.cpp:4331
 msgid "Invalid rate."
-msgstr "無效速率。"
+msgstr "Graddfa Annilys."
 
 #: ../src/TrackPanel.cpp:4351
 msgid "Change lower speed limit (%) to:"
-msgstr "變更最低速率限制(%)為："
+msgstr "Newid y cyfyngiad cyflymder isaf (%) i:"
 
 #: ../src/TrackPanel.cpp:4352
 #: ../src/TrackPanel.cpp:4353
 msgid "Lower speed limit"
-msgstr "最低速率限制"
+msgstr "Cyfyngiad cyflymder isaf"
 
 #: ../src/TrackPanel.cpp:4358
 msgid "Change upper speed limit (%) to:"
-msgstr "變更最高速率限制(%)為："
+msgstr "Newid y cyfyngiad cyflymder uchaf (%) i:"
 
 #: ../src/TrackPanel.cpp:4359
 #: ../src/TrackPanel.cpp:4360
 msgid "Upper speed limit"
-msgstr "最高速率限制"
+msgstr "Cyfyngiad cylfymder uchaf"
 
 #: ../src/TrackPanel.cpp:4368
 #, c-format
 msgid "Set range to '%d' - '%d'"
-msgstr "設定範圍為 '%d' - '%d"
+msgstr "Gosod amrediad i '%d'- '%d'"
 
 #: ../src/TrackPanel.cpp:4371
 msgid "Set Range"
-msgstr "設定範圍"
+msgstr "Gosod Amrediad"
 
 #: ../src/TrackPanel.cpp:4416
 msgid "Change track name to:"
-msgstr "變更音軌名稱為："
+msgstr "Newid enw trac i:"
 
 #: ../src/TrackPanel.cpp:4417
 msgid "Track Name"
-msgstr "音軌名稱"
+msgstr "Enw Trac"
 
 #: ../src/TrackPanel.cpp:4420
 #, c-format
 msgid "Renamed '%s' to '%s'"
-msgstr "將'%s'更名為'%s'"
+msgstr "Ailenwyd '%s' i '%s'"
 
 #: ../src/TrackPanel.cpp:4423
 msgid "Name Change"
-msgstr "變更名稱"
+msgstr "Newid Enw"
 
 #: ../src/TrackPanel.cpp:4453
 msgid "Choose a font for Label Tracks"
-msgstr "選擇標籤軌的字體"
+msgstr "Dewid ffont ar gyfer Traciau Label"
 
 #: ../src/TrackPanel.cpp:4454
 msgid "Label Track Font"
-msgstr "標籤軌字形"
+msgstr "Ffont Label Trac"
 
-# 靜音播放
 #: ../src/TrackPanel.cpp:4701
 msgid "Mute"
-msgstr "靜音"
+msgstr "Mudo"
 
 #: ../src/TrackPanel.cpp:4701
 msgid "Solo"
-msgstr "獨奏"
+msgstr "Unawd"
 
 #: TrackPanelAx.cpp:266
 msgid "TrackView"
@@ -3236,7 +3227,7 @@ msgstr ""
 
 #: ../src/WaveTrack.cpp:128
 msgid "Audio Track"
-msgstr "音軌"
+msgstr "Trac Sain"
 
 #: WaveTrack.cpp:515 WaveTrack.cpp:534
 msgid "There is not enough room available to paste the selection"
@@ -3249,55 +3240,54 @@ msgstr ""
 #: ../src/commands/CommandManager.cpp:323
 #, c-format
 msgid "Plugins 1 to %i"
-msgstr "外掛程式1 至 %i"
+msgstr "Ategion 1 i %i"
 
 #: ../src/commands/CommandManager.cpp:337
 #, c-format
 msgid "Plugins %i to %i"
-msgstr "外掛程式%i 至 %i"
+msgstr "Ategion %i i %i"
 
 #: ../src/commands/CommandManager.cpp:640
 #, c-format
 msgid "Loaded %d keyboard shortcuts\n"
-msgstr "已讀取%d快速鍵\n"
+msgstr "Wedi llwytho %d byrlwybr bysellfwrdd\n"
 
 #: ../src/commands/CommandManager.cpp:643
 msgid "Loading keyboard shortcuts"
-msgstr "讀取快速鍵中"
+msgstr "Llwytho byrlwybrau'r bysellfwrdd"
 
 #: ../src/effects/Amplify.cpp:34
 #, c-format
 msgid "Applied effect: %s %.1f dB"
-msgstr "已套用效果： %s %.1f dB"
+msgstr "Gweithredwyd effaith: %s %.1f dB"
 
 #: ../src/effects/Amplify.cpp:63
 msgid "Amplify"
-msgstr "增幅[Amplify]"
+msgstr "Chwyddo"
 
-# Dominic Mazzoni 是 Audacity 發展工程的主導人之一
 #: ../src/effects/Amplify.cpp:125
 msgid "Amplify by Dominic Mazzoni"
-msgstr "增幅(Dominic Mazzoni提供)"
+msgstr "Chwyddo gan Dominic Mazzoni"
 
 #: ../src/effects/Amplify.cpp:132
 msgid "Amplification (dB):"
-msgstr "增幅(dB)："
+msgstr "Chwyddiad (dB):"
 
 #: ../src/effects/Amplify.cpp:152
 msgid "New Peak Amplitude (dB):"
-msgstr "新增峰值振幅 (dB)："
+msgstr "Osged Frig Newydd (dB):"
 
 #: ../src/effects/Amplify.cpp:164
 msgid "Allow clipping"
-msgstr "允許剪輯"
+msgstr "Caniatau Clipio"
 
 #: ../src/effects/Amplify.h:47
 msgid "Amplify..."
-msgstr "增幅[Amplify]..."
+msgstr "Chwyddo..."
 
 #: ../src/effects/Amplify.h:51
 msgid "Amplifying"
-msgstr "增幅處理中"
+msgstr "Yn chwyddo"
 
 #: effects/AutoDuck.cpp:125
 msgid "You selected a track which does not contain audio. AutoDuck can only process audio tracks."
@@ -3351,7 +3341,7 @@ msgstr ""
 #: effects/AutoDuck.cpp:519 effects/Compressor.cpp:479
 #, fuzzy
 msgid "Threshold:"
-msgstr "臨界值："
+msgstr "Trothwy:"
 
 #: effects/AutoDuck.cpp:578
 msgid "Please enter valid values."
@@ -3372,12 +3362,12 @@ msgstr ""
 #: ../src/effects/BassBoost.cpp:36
 #, c-format
 msgid "Applied effect: %s frequency = %.0f Hz, boost = %.0f dB"
-msgstr "已套用效果： %s 頻率 = %.0f Hz，提昇 = %.0f dB"
+msgstr "Gweithredwyd effaith: %s amledd = %.0f Hz, chwydd = %.0f dB"
 
 #: effects/BassBoost.cpp:169
 #, fuzzy
 msgid "BassBoost"
-msgstr "低音增強[BassBoost]"
+msgstr "Chwyddo Bas"
 
 #: effects/BassBoost.cpp:182
 msgid "by Nasca Octavian Paul"
@@ -3385,20 +3375,20 @@ msgstr ""
 
 #: ../src/effects/BassBoost.cpp:286
 msgid "Frequency (Hz):"
-msgstr "頻率(Hz)："
+msgstr "Amledd (Hz):"
 
 #: ../src/effects/BassBoost.cpp:302
 msgid "Boost (dB):"
-msgstr "增強[Boost] (dB)："
+msgstr "Chwyddo (dB)"
 
 #: effects/BassBoost.h:35
 #, fuzzy
 msgid "BassBoost..."
-msgstr "低音增強[BassBoost]..."
+msgstr "Chwyddo Bas..."
 
 #: ../src/effects/BassBoost.h:48
 msgid "Boosting Bass Frequencies"
-msgstr "低頻増強中"
+msgstr "Yn Chwyddo'r Amleddau Bas"
 
 #: effects/ChangeLength.h:26
 msgid "Change Length..."
@@ -3411,30 +3401,30 @@ msgstr ""
 #: ../src/effects/ChangePitch.cpp:56
 #, c-format
 msgid "Applied effect: %s %.2f semitones"
-msgstr "已套用效果： %s %.2f 半音程"
+msgstr "Gweithredwyd effaith: %s %.2f hanner tôn"
 
 #: ../src/effects/ChangePitch.cpp:119
 msgid "Change Pitch"
-msgstr "變更音高"
+msgstr "Newid Traw"
 
 #: ../src/effects/ChangePitch.cpp:242
 msgid "Change Pitch without Changing Tempo"
-msgstr "變更音高維持節拍不變"
+msgstr "Newid Traw heb Newid Tempo"
 
 #: ../src/effects/ChangePitch.cpp:247
 #: ../src/effects/ChangeSpeed.cpp:287
 #: ../src/effects/ChangeTempo.cpp:164
 msgid "by Vaughan Johnson && Dominic Mazzoni"
-msgstr "Vaughan Johnson && Dominic Mazzoni提供"
+msgstr "gan Vaughan Johnson && Dominic Mazzoni"
 
 #: ../src/effects/ChangePitch.cpp:252
 #: ../src/effects/ChangeTempo.cpp:169
 msgid "using SoundTouch, by Olli Parviainen"
-msgstr "使用SoundTouch(Olli Parviainen提供)"
+msgstr "yn defnyddio SoundTouch, gan Olli Parviainen"
 
 #: ../src/effects/ChangePitch.cpp:262
 msgid "Pitch:   from"
-msgstr "音高：從"
+msgstr "Traw:   o"
 
 #: ../src/effects/ChangePitch.cpp:284
 #: ../src/effects/ChangePitch.cpp:330
@@ -3442,104 +3432,100 @@ msgstr "音高：從"
 #: ../src/effects/ChangeTempo.cpp:223
 #: ../src/effects/ChangeTempo.cpp:254
 msgid "to"
-msgstr "至"
+msgstr "i"
 
 #: ../src/effects/ChangePitch.cpp:299
 msgid "Semitones (half-steps):"
-msgstr "半音程(半音階)："
+msgstr "Hanner tonau:"
 
 #: ../src/effects/ChangePitch.cpp:318
 msgid "Frequency (Hz):   from"
-msgstr "頻率(Hz)：從"
+msgstr "Amledd (Hz):   o"
 
 #: ../src/effects/ChangePitch.cpp:353
 #: ../src/effects/ChangeSpeed.cpp:305
 #: ../src/effects/ChangeTempo.cpp:182
 msgid "Percent Change:"
-msgstr "改變百分比(%)："
+msgstr "Canran Newid:"
 
 #: ../src/effects/ChangePitch.h:31
 msgid "Change Pitch..."
-msgstr "變更音高[Change Pitch]..."
+msgstr "Newid Traw..."
 
 #: ../src/effects/ChangePitch.h:35
 msgid "Changing Pitch"
-msgstr "變更音高中"
+msgstr "Yn Newid Traw"
 
 #: ../src/effects/ChangeSpeed.cpp:40
 #: ../src/effects/ChangeTempo.cpp:43
 #, c-format
 msgid "Applied effect: %s %.1f%%"
-msgstr "已套用效果： %s %.1f%%"
+msgstr "Gweithredwyd effaith: %s %.1f%%"
 
 #: ../src/effects/ChangeSpeed.cpp:47
 msgid "Change Speed"
-msgstr "變更速度"
+msgstr "Newid Cyflymder"
 
 #: ../src/effects/ChangeSpeed.cpp:282
 msgid "Change Speed, affecting both Tempo and Pitch"
-msgstr "變更速度(同時影響節拍和音高)"
+msgstr "Newid Cyflymder, yn effeithio Tempo a Traw"
 
 #: ../src/effects/ChangeSpeed.cpp:292
 msgid "using SampleRate, by Erik de Castro Lopo"
-msgstr "使用SampleRate(Erik de Castro Lopo提供)"
+msgstr "yn defnyddio SampleRate, gan Erik de Castro Lopo"
 
-#  i18n-hint: n/a is an English
-#  abbreviation meaning "not
-#  applicable" (in other words,
-#  unimportant, not relevant).
 #. i18n-hint: n/a is an English
 #: ../src/effects/ChangeSpeed.cpp:338
 msgid "n/a"
-msgstr "N/A"
+msgstr "cdda mun:eil:fframau 75 fye"
 
 #: ../src/effects/ChangeSpeed.cpp:341
 msgid "Standard Vinyl RPM:   from"
-msgstr "標準Vinyl RPM：從"
+msgstr "RPM Safonol Finyl :   o"
 
 #: ../src/effects/ChangeSpeed.h:37
 msgid "Change Speed..."
-msgstr "變更速度[Change Speed]..."
+msgstr "Newid Cyflymder..."
 
 #: ../src/effects/ChangeSpeed.h:40
 msgid "Changing Speed"
-msgstr "變更速度中"
+msgstr "Newid Cyflymder"
 
 #: ../src/effects/ChangeTempo.cpp:62
 msgid "Change Tempo"
-msgstr "變更節拍"
+msgstr "Newid Tempo"
 
 #: ../src/effects/ChangeTempo.cpp:159
 msgid "Change Tempo without Changing Pitch"
-msgstr "變更節拍維持音高不變"
+msgstr "Newid Tempo heb Newid Traw"
 
 #: ../src/effects/ChangeTempo.cpp:211
 msgid "Beats per Minute (BPM):   from"
-msgstr "每分鐘的拍數(BPM)：從"
+msgstr "Curiadau y Munud (CYM):   o"
 
 #: ../src/effects/ChangeTempo.cpp:241
 msgid "Length (seconds):   from"
-msgstr "長度 (秒)：從"
+msgstr "Hyd (eiliadau):   o"
 
 #: ../src/effects/ChangeTempo.h:40
 msgid "Change Tempo..."
-msgstr "變更節拍[Change Tempo]..."
+msgstr "Newid Tempo..."
 
 #: ../src/effects/ChangeTempo.h:44
 msgid "Changing Tempo"
-msgstr "變更節拍中"
+msgstr "Yn Newid Tempo"
 
 #: ../src/effects/ClickRemoval.cpp:67
 msgid "Click and Pop Removal"
-msgstr "移除噼啪聲或嘀噠聲"
+msgstr "Tynnu Cliciau a Popiau"
 
 #: ../src/effects/ClickRemoval.cpp:317
 msgid "Click and Pop Removal by Craig DeForest"
-msgstr "移除噼啪聲或嘀噠聲由Craig DeForest提供"
+msgstr "Tynnu Cliciau a Popiau gan Craig DeForest"
 
 #: ../src/effects/ClickRemoval.cpp:323
 msgid "Settings"
-msgstr "效果器設定"
+msgstr "Gosodiadau"
 
 #: effects/ClickRemoval.cpp:368
 msgid "\n"
@@ -3563,63 +3549,63 @@ msgstr ""
 #: effects/ClickRemoval.cpp:422
 #, fuzzy
 msgid "&Remove clicks"
-msgstr "移除噼啪聲或嘀噠聲(&V)"
+msgstr "Gwaredu cliciau"
 
 #: ../src/effects/ClickRemoval.h:42
 msgid "Click Removal..."
-msgstr "移除噼啪聲或嘀噠聲..."
+msgstr "Tynnu Cliciau..."
 
 #: ../src/effects/ClickRemoval.h:46
 msgid "Removing clicks and pops..."
-msgstr "移除噼啪聲或嘀噠聲..."
+msgstr "Yn tynnu cliciau a popiau..."
 
 #: ../src/effects/Compressor.cpp:43
 msgid "Dynamic Range Compressor"
-msgstr "動態範圍壓縮器"
+msgstr "Cywasgydd Amrediad Ddeinamig"
 
 #: ../src/effects/Compressor.cpp:433
 msgid "Dynamic Range Compressor by Dominic Mazzoni"
-msgstr "動態範圍壓縮器(Dominic Mazzoni提供)"
+msgstr "Cywasgydd Amrediad Ddeinamig gan Dominic Mazzoni"
 
 #: ../src/effects/Compressor.cpp:451
 msgid "Ratio: "
-msgstr "壓縮比[Ratio]："
+msgstr "Cymhareb:"
 
 #: ../src/effects/Compressor.cpp:458
 msgid "Attack Time: "
-msgstr "上升時間："
+msgstr "Amser Ymosod:"
 
 #: ../src/effects/Compressor.cpp:469
 msgid "Normalize to 0dB after compressing"
-msgstr "壓縮後套用增益"
+msgstr "Normaleiddio i 0dB ar ôl cywasgu"
 
 #: ../src/effects/Compressor.cpp:525
 #, c-format
 msgid "Threshold: %d dB"
-msgstr "臨界值：%d dB"
+msgstr "Trothwy: %d dB"
 
 #: ../src/effects/Compressor.cpp:528
 #, c-format
 msgid "Ratio: %.0f:1"
-msgstr "壓縮比：%.0f:1"
+msgstr "Cymhareb: %.0f:1"
 
 #: ../src/effects/Compressor.cpp:530
 #, c-format
 msgid "Ratio: %.1f:1"
-msgstr "壓縮比：%.1f:1"
+msgstr "Cymhareb: %.1f:1"
 
 #: ../src/effects/Compressor.cpp:532
 #, c-format
 msgid "Attack Time: %.1f secs"
-msgstr "上升時間： %.1f 秒"
+msgstr "Amser Ymosod: %.1f eiliad"
 
 #: ../src/effects/Compressor.h:36
 msgid "Compressor..."
-msgstr "壓縮[Compressor]..."
+msgstr "Cywasgydd..."
 
 #: ../src/effects/Compressor.h:40
 msgid "Applying Dynamic Range Compression..."
-msgstr "套用動態範圍壓縮中..."
+msgstr "Gweithredu Cywasgiad yr Amrediad Ddeinamig..."
 
 #: effects/DtmfGen.cpp:47
 msgid "DTMF Tone Generator"
@@ -3674,32 +3660,32 @@ msgstr ""
 #: ../src/effects/Echo.cpp:33
 #, c-format
 msgid "Applied effect: %s delay = %f seconds, decay factor = %f"
-msgstr "已套用效果： %s 延遲=%f秒，衰減係數 = %f"
+msgstr "Gweithredwyd effaith: %s oedi = %f eiliad, ffactor gwanhau = %f"
 
 #: ../src/effects/Echo.cpp:39
 #: ../src/effects/Echo.cpp:177
 msgid "Echo"
-msgstr "迴音[Echo]"
+msgstr "Atsain"
 
 #: ../src/effects/Echo.cpp:182
 msgid "by Dominic Mazzoni && Vaughan Johnson"
-msgstr "Dominic Mazzoni && Vaughan Johnson提供"
+msgstr "gan Dominic Mazzoni && Vaughan Johnson"
 
 #: ../src/effects/Echo.cpp:192
 msgid "Delay time (seconds):"
-msgstr "延遲時間(秒)："
+msgstr "Amser oedi (eiliadau):"
 
 #: ../src/effects/Echo.cpp:211
 msgid "Decay factor:"
-msgstr "衰減係數："
+msgstr "Ffactor Gwanhau:"
 
 #: ../src/effects/Echo.h:36
 msgid "Echo..."
-msgstr "迴音[Echo]..."
+msgstr "Atsain..."
 
 #: ../src/effects/Echo.h:40
 msgid "Performing Echo"
-msgstr "執行迴音"
+msgstr "Gweithredu Atsain"
 
 #: effects/Effect.cpp:254 effects/Effect.cpp:370 effects/Phaser.cpp:595
 #: effects/Wahwah.cpp:582 effects/audiounits/AudioUnitEffect.cpp:852
@@ -3709,16 +3695,16 @@ msgstr ""
 #: ../src/ControlToolBar.cpp:721
 #: ../src/effects/Effect.cpp:329
 msgid "Error while opening sound device. Please check the output device settings and the project sample rate."
-msgstr "開啟聲音設備錯誤。請檢查輸出設備的設置及專案取樣頻率。"
+msgstr "Gwall wrth agor y ddyfais sain. Gwiriwch osodiadau'r ddyfais allbwn a graddfa samplo y cywaith."
 
 #: ../src/effects/Effect.h:84
 #, c-format
 msgid "Applied effect: %s"
-msgstr "已套用效果： %s"
+msgstr "Gweithredwyd effaith : %s"
 
 #: ../src/effects/Equalization.cpp:156
 msgid "Equalization"
-msgstr "等化[Equalization]"
+msgstr "Hafalu"
 
 #: effects/Equalization.cpp:865
 msgid "Error loading EQ curve"
@@ -3794,36 +3780,35 @@ msgstr ""
 
 #: ../src/effects/Equalization.h:38
 msgid "Equalization..."
-msgstr "等化[Equalization]..."
+msgstr "Hafalu..."
 
 #: ../src/effects/Equalization.h:42
 msgid "Performing Equalization"
-msgstr "使用等化器"
+msgstr "Gweithredu Hafalu"
 
 #: ../src/effects/Fade.h:23
 msgid "Fade In"
-msgstr "淡入[Fade In]"
+msgstr "Mewnhidlo"
 
 #: ../src/effects/Fade.h:27
 msgid "Fading In"
-msgstr "淡入中"
+msgstr "Yn Mewnhidlo"
 
 #: ../src/effects/Fade.h:43
 msgid "Fade Out"
-msgstr "淡出[Fade Out ]"
+msgstr "Allhidlo"
 
 #: ../src/effects/Fade.h:47
 msgid "Fading Out"
-msgstr "淡出中"
+msgstr "Yn Allhidlo"
 
-# 波形上下反轉
 #: ../src/effects/Invert.h:27
 msgid "Invert"
-msgstr "波形上下反轉[Invert]"
+msgstr "Gwrthdroi"
 
 #: ../src/effects/Invert.h:31
 msgid "Inverting"
-msgstr "波形上下反轉中"
+msgstr "Yn Gwrthdroi"
 
 #: effects/Leveller.cpp:47
 msgid "Heavier"
@@ -3925,7 +3910,7 @@ msgstr ""
 
 #: ../src/effects/NoiseRemoval.cpp:410
 msgid "Step 1"
-msgstr "步驟 1"
+msgstr "Cam 1"
 
 #: effects/NoiseRemoval.cpp:765
 msgid "Select a few seconds of just noise so Audacity knows what to filter out,\n"
@@ -3934,7 +3919,7 @@ msgstr ""
 
 #: ../src/effects/NoiseRemoval.cpp:427
 msgid "Step 2"
-msgstr "步驟 2"
+msgstr "Cam 2"
 
 #: effects/NoiseRemoval.cpp:767
 msgid "Select all of the audio you want filtered, choose how much noise you want\n"
@@ -3943,11 +3928,11 @@ msgstr ""
 
 #: ../src/effects/NoiseRemoval.cpp:403
 msgid "Noise Removal by Dominic Mazzoni"
-msgstr "去雜音(Dominic Mazzoni提供)"
+msgstr "Tynnu Sŵn gan Dominic Mazzoni"
 
 #: ../src/effects/NoiseRemoval.cpp:419
 msgid "Get Noise Profile"
-msgstr "取得雜音特徵"
+msgstr "Nôl Proffil Sŵn"
 
 #: effects/NoiseRemoval.cpp:791
 msgid "Noise reduction (dB):"
@@ -3963,15 +3948,15 @@ msgstr ""
 
 #: ../src/effects/NoiseRemoval.h:38
 msgid "Noise Removal..."
-msgstr "去雜音[Noise Removal]..."
+msgstr "Tynnu Sŵn..."
 
 #: ../src/effects/NoiseRemoval.h:43
 msgid "Creating Noise Profile"
-msgstr "新建雜音特徵"
+msgstr "Creu Proffil Sŵn"
 
 #: ../src/effects/NoiseRemoval.h:45
 msgid "Removing Noise"
-msgstr "移除雜音中"
+msgstr "Yn Tynnu Sŵn"
 
 #: effects/Normalize.cpp:316
 msgid "Normalize by Dominic Mazzoni\n"
@@ -3979,7 +3964,7 @@ msgstr ""
 
 #: ../src/effects/Normalize.cpp:239
 msgid "Remove any DC offset (center on 0 vertically)"
-msgstr "移除任何直流偏移(垂直中心為0)"
+msgstr "Tynnu unrhyw atred 'DC' (canoli ar 0 yn fertigol)"
 
 #: effects/Normalize.cpp:328
 msgid "Normalize maximum amplitude to"
@@ -3991,62 +3976,62 @@ msgstr ""
 
 #: ../src/effects/Normalize.h:34
 msgid "Normalize..."
-msgstr "標準化[Normalize]..."
+msgstr "Normaleiddio..."
 
 #: ../src/effects/Normalize.h:38
 msgid "Normalizing..."
-msgstr "標準化處理中..."
+msgstr "Yn Normaleiddio..."
 
 #: ../src/effects/Phaser.cpp:47
 #, c-format
 msgid "Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = %.0f deg, depth = %d, feedback = %.0f%%"
-msgstr "已套用效果： %s %d 階段， %.0f%% 濕[wet]，頻率 = %.1f Hz，起始相位 = %.0f度，深度 = %d，回饋 = %.0f%%"
+msgstr "Gweithredwyd effaith: %s %d rhan, %.0f%% gwlyb, amledd = %.1f Hz, gwedd gychwyn = %.0f gradd, dyfnder = %d, adlif = %.0f%%"
 
 #: ../src/effects/Phaser.cpp:59
 msgid "Phaser"
-msgstr "移相器"
+msgstr "Gweddydd"
 
 #: ../src/effects/Phaser.cpp:448
 msgid "Phaser by Nasca Octavian Paul"
-msgstr "移相器(Nasca Octavian Paul提供)"
+msgstr "Gweddydd gan Nasca Octavian Paul"
 
 #: ../src/effects/Phaser.cpp:455
 msgid "Stages:"
-msgstr "階段："
+msgstr "Rhannau:"
 
 #: ../src/effects/Phaser.cpp:476
 msgid "DRY"
-msgstr "乾[DRY]"
+msgstr "SYCH"
 
 #: ../src/effects/Phaser.cpp:483
 msgid "WET"
-msgstr "濕[WET]"
+msgstr "GWLYB"
 
 #: ../src/effects/Phaser.cpp:497
 #: ../src/effects/Wahwah.cpp:468
 msgid "LFO Frequency (Hz):"
-msgstr "LFO 頻率 (Hz)："
+msgstr "Amledd LFO (Hz):"
 
 #: ../src/effects/Phaser.cpp:513
 #: ../src/effects/Wahwah.cpp:484
 msgid "LFO Start Phase (deg.):"
-msgstr "LFO 起始相位 (角度)："
+msgstr "Gwedd Gychwyn LFO (gradd):"
 
 #: ../src/effects/Phaser.cpp:529
 msgid "Depth:"
-msgstr "深度："
+msgstr "Dyfnder:"
 
 #: ../src/effects/Phaser.cpp:545
 msgid "Feedback (%):"
-msgstr "回饋 (%)："
+msgstr "Adlif (%):"
 
 #: ../src/effects/Phaser.h:41
 msgid "Phaser..."
-msgstr "移相器[Phaser]..."
+msgstr "Gweddydd..."
 
 #: ../src/effects/Phaser.h:45
 msgid "Applying Phaser"
-msgstr "套用移相器中"
+msgstr "Gweithredu'r Gweddydd"
 
 #: effects/Repair.cpp:94
 msgid "The Repair effect is intended to be used on very short sections of damaged audio (up to 128 samples).\n"
@@ -4061,55 +4046,55 @@ msgstr ""
 #: ../src/effects/Repeat.cpp:31
 #, c-format
 msgid "Repeated %d times"
-msgstr "重複%d次"
+msgstr "Ailadroddwyd %d o weithiau"
 
 #: ../src/effects/Repeat.cpp:57
 msgid "Tracks are too long to repeat the selection."
-msgstr "音軌太長，無法重複選取範圍。"
+msgstr "Traciau yn rhy hir i aildraethu'r dewisiad."
 
 #: ../src/effects/Repeat.cpp:58
 #: ../src/effects/Repeat.cpp:62
 msgid "Repeat"
-msgstr "重複"
+msgstr "Ailadrodd"
 
 #: ../src/effects/Repeat.cpp:222
 msgid "Repeat by Dominic Mazzoni && Vaughan Johnson"
-msgstr "重複(Dominic Mazzoni && Vaughan Johnson提供)"
+msgstr "Ailadrodd gan Dominic Mazzoni && Vaughan Johnson"
 
 #: ../src/effects/Repeat.cpp:229
 msgid "Number of times to repeat: "
-msgstr "重複次數："
+msgstr "Nifer o weithiau i ailadrodd: "
 
 #: ../src/effects/Repeat.cpp:241
 #: ../src/effects/Repeat.cpp:280
 msgid "New selection length: "
-msgstr "新的選取長度："
+msgstr "Hyd dewisiad newydd: "
 
 #: ../src/effects/Repeat.cpp:282
 #, c-format
 msgid "%d minutes, %d seconds"
-msgstr "%d 分, %d 秒"
+msgstr "%d munud, %d eiliad"
 
 #: ../src/effects/Repeat.cpp:285
 #, c-format
 msgid "%d seconds"
-msgstr "%d 秒"
+msgstr "%d eiliad"
 
 #: ../src/effects/Repeat.h:34
 msgid "Repeat..."
-msgstr "重複[Repeat]..."
+msgstr "Ailadrodd..."
 
 #: ../src/effects/Repeat.h:38
 msgid "Performing Repeat"
-msgstr "重複執行"
+msgstr "Gweithredu Ailadrodd"
 
 #: ../src/effects/Reverse.h:30
 msgid "Reverse"
-msgstr "時間前後反轉[Reverse]"
+msgstr "Troi o Chwith"
 
 #: ../src/effects/Reverse.h:34
 msgid "Reversing"
-msgstr "時間前後反轉中"
+msgstr "Yn Troi o Chwith"
 
 #: effects/Silence.cpp:32
 msgid "Silence Generator"
@@ -4121,12 +4106,12 @@ msgstr ""
 
 #: ../src/effects/Silence.h:37
 msgid "Generating Silence"
-msgstr "產生靜音中"
+msgstr "Yn Cynhyrchu  Distawrwydd"
 
 #: ../src/effects/Silence.h:42
 #, c-format
 msgid "Applied effect: Generate Silence, %.6lf seconds"
-msgstr "已套用效果： 產生%.6lf 秒靜音"
+msgstr "Gweithredwyd effaith: Cynhyrchu Distawrwydd, %.6lf eiliad"
 
 #: effects/SimplePairedTwoTrack.h:120
 msgid "Sorry, This effect cannot be performed on stereo tracks where "
@@ -4172,19 +4157,19 @@ msgstr ""
 
 #: ../src/effects/ToneGen.cpp:43
 msgid "Tone Generator"
-msgstr "基音產生器"
+msgstr "Cynhyrchydd Tôn"
 
 #: ../src/effects/ToneGen.cpp:48
 msgid "Sine"
-msgstr "正弦波"
+msgstr "Sin"
 
 #: ../src/effects/ToneGen.cpp:49
 msgid "Square"
-msgstr "方波[Square]"
+msgstr "Sgwâr"
 
 #: ../src/effects/ToneGen.cpp:50
 msgid "Sawtooth"
-msgstr "鋸齒波"
+msgstr "Dant llif"
 
 #: effects/ToneGen.cpp:70
 msgid "Square, no alias"
@@ -4196,7 +4181,7 @@ msgstr ""
 
 #: ../src/effects/ToneGen.cpp:293
 msgid "Amplitude (0-1)"
-msgstr "振幅 (0-1)"
+msgstr "Osgled (0-1)"
 
 #: effects/ToneGen.cpp:300 effects/ToneGen.cpp:338
 #: toolbars/SelectionBar.cpp:135 toolbars/SelectionBar.cpp:225
@@ -4205,7 +4190,7 @@ msgstr ""
 
 #: ../src/effects/ToneGen.cpp:263
 msgid "Waveform:"
-msgstr "波形："
+msgstr "Tonffurf:"
 
 #: effects/ToneGen.cpp:328 toolbars/ControlToolBar.cpp:186
 msgid "Start"
@@ -4218,7 +4203,7 @@ msgstr ""
 
 #: ../src/effects/ToneGen.cpp:277
 msgid "Frequency / Hz"
-msgstr "頻率 / Hz"
+msgstr "Amledd / Hz"
 
 #: effects/ToneGen.h:39
 msgid "&Chirp..."
@@ -4234,7 +4219,7 @@ msgstr ""
 
 #: ../src/effects/ToneGen.h:44
 msgid "Generating Tone"
-msgstr "產生基音中"
+msgstr "Yn Cynhyrchu Tôn"
 
 #: effects/TruncSilence.cpp:64
 msgid "Sorry. Truncate Silence only valid with mono track"
@@ -4255,53 +4240,53 @@ msgstr ""
 
 #: ../src/effects/VST/VSTEffect.cpp:180
 msgid "Sorry, VST Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
-msgstr "抱歉，當立體聲軌道不匹配時，無法執行VST效果。"
+msgstr "Mae'n ddrwg gen i, nid yw'n bosib cyflawni Effeithiau VST pan fo traciau unigol y sianeli ddim yn cydweddu."
 
 #: ../src/effects/VST/VSTEffect.cpp:196
 msgid "Can't process replacing"
-msgstr "無法執行取代"
+msgstr "Methu prosesu'r amnewid"
 
 #: ../src/effects/VST/VSTEffect.cpp:410
 msgid "VST Plug-in parameters:"
-msgstr "VST 外掛程式參數："
+msgstr "Paramedrau Ategyn VST:"
 
 #: ../src/effects/Wahwah.cpp:41
 #, c-format
 msgid "Applied effect: %s frequency = %.1f Hz, start phase = %.0f deg, depth = %.0f%%, resonance = %.1f, frequency offset = %.0f%%"
-msgstr "已套用效果： %s 頻率 = %.1f Hz，起始相位 = %.0f度，深度 = %.0f%%，共振 = %.1f，頻率偏移 = %.0f%%"
+msgstr "Gweithredwyd effaith: %s amledd = %.1f Hz, gwedd gychwyn = %.0f gradd, dyfnder = %.0f%%, cyseiniant = %.1f, atred amledd = %.0f%%"
 
 #: ../src/effects/Wahwah.cpp:52
 msgid "Wahwah"
-msgstr "嗚咿[Wahwah]"
+msgstr "Wa-wa"
 
 #: ../src/effects/Wahwah.cpp:461
 msgid "Wahwah by Nasca Octavian Paul"
-msgstr "嗚咿聲產生器(Nasca Octavian Paul提供)"
+msgstr "Wa-wa gan Nasca Octavian Paul"
 
 #: ../src/effects/Wahwah.cpp:500
 msgid "Depth (%):"
-msgstr "深度 (%)："
+msgstr "Dyfnder (%):"
 
 #: ../src/effects/Wahwah.cpp:516
 msgid "Resonance:"
-msgstr "\t共振："
+msgstr "Cyseiniant:"
 
 #: ../src/effects/Wahwah.cpp:532
 msgid "Wah Frequency Offset (%):"
-msgstr "嗚咿聲頻率偏移 (%)："
+msgstr "Atred Amledd Wa-wa  (%):"
 
 #: ../src/effects/Wahwah.h:39
 msgid "Wahwah..."
-msgstr "\"嗚咿\"聲[Wahwah]..."
+msgstr "Wa-wa..."
 
 #: ../src/effects/Wahwah.h:43
 msgid "Applying Wahwah"
-msgstr "套用嗚咿聲產生器中"
+msgstr "Gweithredu'r Wa-wa"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:137
 #, c-format
 msgid "Performing Effect: %s"
-msgstr "執行特效：%s"
+msgstr "Gweithredu effaith: %s"
 
 #: effects/ladspa/LadspaEffect.cpp:173
 msgid "Sorry, Plug-in Effects cannot be performed                             on stereo tracks where the individual                             channels of the track do not match."
@@ -4311,44 +4296,44 @@ msgstr ""
 #: ../src/effects/ladspa/LadspaEffect.cpp:443
 #: ../src/prefs/QualityPrefs.cpp:160
 msgid "None"
-msgstr "無"
+msgstr "Dim"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:437
 msgid "Author: "
-msgstr "作者："
+msgstr "Awdur:"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:452
 msgid "Effect Settings"
-msgstr "效果器設定"
+msgstr "Gosodiadau'r Effaith"
 
 #: ../src/effects/Silence.cpp:127
 #: ../src/effects/ToneGen.cpp:306
 msgid "Length (seconds)"
-msgstr "長度 (秒)："
+msgstr "Hyd (eiliadau)"
 
 #: ../src/effects/nyquist/Nyquist.cpp:217
 msgid "Applying Nyquist Effect..."
-msgstr "套用奈奎斯特[Nyquist]效果中..."
+msgstr "Gweithredu'r Effaith Nyquist..."
 
 #: ../src/effects/nyquist/Nyquist.cpp:224
 msgid "Nyquist Prompt..."
-msgstr "Nyquist 表示式..."
+msgstr "Annog Nyquist..."
 
 #: ../src/effects/nyquist/Nyquist.cpp:282
 msgid "Enter Nyquist Command: "
-msgstr "輸入奈奎斯特[Nyquist]命令："
+msgstr "Rhowch Orchymun Nyquist:"
 
 #: ../src/effects/nyquist/Nyquist.cpp:370
 msgid "Sorry, cannot apply effect on stereo tracks where the tracks don't match."
-msgstr "抱歉，當立體聲音軌不匹配時，無法套用效果。"
+msgstr "Mae'n ddrwg gen i, nid yw'n bosib cyflawni effeithiau pan fo traciau unigol y sianeli ddim yn cydweddu."
 
 #: ../src/effects/nyquist/Nyquist.cpp:397
 msgid "Nyquist"
-msgstr "Nyquist 表示式"
+msgstr "Nyquist"
 
 #: ../src/effects/nyquist/Nyquist.cpp:398
 msgid "Nyquist Output: "
-msgstr "Nyquist 表示式"
+msgstr "Allbwn Nyquist: "
 
 #: effects/nyquist/Nyquist.cpp:594 effects/nyquist/Nyquist.cpp:605
 msgid "Nyquist returned the value:"
@@ -4356,11 +4341,11 @@ msgstr ""
 
 #: ../src/effects/nyquist/Nyquist.cpp:594
 msgid "Nyquist did not return audio.\n"
-msgstr "Nyquist 運算沒有返回音訊。\n"
+msgstr "Ni ddychwelodd Nyquist unrhyw sain.\n"
 
 #: ../src/effects/nyquist/Nyquist.cpp:604
 msgid "Nyquist returned too many audio channels.\n"
-msgstr "Nyquist 傳回了過多的聲音聲道。\n"
+msgstr "Dychwelodd Nyquist gormod o sianeli sain.\n"
 
 #: effects/nyquist/Nyquist.cpp:826 effects/nyquist/Nyquist.cpp:990
 msgid "&Debug"
@@ -4373,11 +4358,11 @@ msgstr ""
 
 #: ../src/export/Export.cpp:142
 msgid "Your tracks will be mixed down to two stereo channels in the exported file."
-msgstr "您的音軌將在匯出檔案中被合成為雙聲道立體聲。"
+msgstr "Bydd eich traciau yn cael eu cymysgu i ddau sianel stereo yn y ffeil allforedig."
 
 #: ../src/export/Export.cpp:147
 msgid "Your tracks will be mixed down to a single mono channel in the exported file."
-msgstr "您的音軌將在匯出檔案中被合成為單聲道。"
+msgstr "Fydd eich traciau yn cael eu cymysgu i lawr i un sianel mono yn y ffeil a allforwyd."
 
 #: export/Export.cpp:171
 msgid "Advanced Mixing Options"
@@ -4386,20 +4371,19 @@ msgstr ""
 #: ../src/export/Export.cpp:175
 #, c-format
 msgid "Save %s File As:"
-msgstr "%s另存新檔："
+msgstr "Cadw ffeil %s Fel:"
 
 #: ../src/export/Export.cpp:202
 msgid "Are you sure you want to save the file as \""
-msgstr "您確認要將該檔案另存新檔為 \""
+msgstr " Ydych wir eisiau cadw'r ffeil fel \""
 
 #: ../src/export/Export.cpp:240
 #, c-format
 msgid "You are about to save a %s file with the name %s.\n"
 "Normally these files end in %s, and some programs will not open files with nonstandard extensions.\n"
 "Are you sure you want to save the file under this name?"
-msgstr "您要將%s檔案以\"%s\"的副檔名儲存起來。\n"
-"通常，這類檔案的副檔名為%s，且有些軟體無法開啟非標準副檔名的文件。\n"
-"您是否確定要以此副檔名儲存檔案？"
+msgstr "rydych ar fin cadw ffeil %s gyda'r enw %s.\n"
+"Yn arferol mae'r ffeiliau hyn yn gorffen gyda %s, a ni wnaiff "
 
 #: export/Export.cpp:370 export/Export.cpp:464
 #, c-format
@@ -4412,7 +4396,7 @@ msgstr ""
 
 #: ../src/export/Export.cpp:366
 msgid "Ogg Vorbis support is not included in this build of Audacity"
-msgstr "本Audacity中不包含Ogg Vorbis的支援"
+msgstr "Nid yw cynnal Ogg Vorbis ar gael yn yr adeiladaeth yma o Audacity."
 
 #: export/Export.cpp:632
 #, c-format
@@ -4439,11 +4423,11 @@ msgstr ""
 
 #: ../src/export/ExportCL.cpp:144
 msgid "Exporting the selected audio using command-line encoder"
-msgstr "用命令列編碼器匯出選定的聲音"
+msgstr "Allforio'r sain ddewisiedig gan ddefnyddio'r amgodydd llinell orchymun"
 
 #: ../src/export/ExportCL.cpp:146
 msgid "Exporting the entire project using command-line encoder"
-msgstr "用命令列編碼器匯出全部成音工程"
+msgstr "Allforio'r cywaith cyfan gan ddefnyddio'r amgodydd llinell orchymun"
 
 #: export/ExportFLAC.cpp:93
 msgid "Exporting the selected audio as FLAC"
@@ -4459,12 +4443,12 @@ msgstr ""
 
 #: ../src/export/ExportMP3.cpp:1354
 msgid "Edit the ID3 tags for the MP3 file"
-msgstr "編輯此MP3檔案的ID3 Tags"
+msgstr "Golygu'r Tagiau ID3 ar gyfer y ffeil MP3"
 
 #: ../src/export/ExportMP3.cpp:1345
 #: ../src/export/ExportOGG.cpp:53
 msgid "Unable to open target file for writing"
-msgstr "無法開啟目標檔案寫入"
+msgstr "Methu agor y ffeil ar gyfer ysgrifennu"
 
 #: export/ExportMP2.cpp:144 export/ExportMP3.cpp:1680
 #, c-format
@@ -4479,23 +4463,23 @@ msgstr ""
 #: ../src/export/ExportMP3.cpp:104
 #: ../src/export/ExportMP3.cpp:144
 msgid "Export MP3"
-msgstr "匯出MP3"
+msgstr "Allforio MP3"
 
 #. i18n-hint: It's asking for the location of a file, for
 #: ../src/export/ExportMP3.cpp:113
 #, c-format
 msgid "Where is %s?"
-msgstr "%s在哪裡？"
+msgstr "Ble mae %s?"
 
 #: export/ExportMP3.cpp:153
 #, c-format
 #, fuzzy
 msgid "Audacity was expecting a library named \"%s\". Are you sure you want to attempt to export MP3 files using \"%s\"?"
-msgstr "Audacity需要名為\"%s\"的程式庫。您是否確定要用\"%s\"匯出MP3\"檔案？"
+msgstr "Roedd Audacity yn disgwyl rhaglengell o'r enw \"%s\". Ydych yn siwr eich bod am geisio allforio ffeiliau MP3 gan ddefnyddio \"%s\"?"
 
 #: ../src/export/ExportMP3.cpp:255
 msgid "Only libmp3lame.so|libmp3lame.so|Primary Shared Object files (*.so)|*.so|Extended Libraries (*.so*)|*.so*|All Files (*)|*"
-msgstr "僅限libmp3lame.so|libmp3lame.so|主要的共享目標檔案(*.so)|*.so|\"\"擴充資料庫(*.so*)|*.so*|全部檔案(*)|*"
+msgstr "Dim ond libmp3lame.so|libmp3lame.so|Ffeiliau Prif Wrthrych Cyfrannol (*.so)|*.so|Rhaglengelloedd Estynedig (*.so*)|*.so*|Pob ffeil (*)|*"
 
 #. i18n-hint: This message is used on Unix/Linux
 #: ../src/export/ExportMP3.cpp:261
@@ -4506,12 +4490,12 @@ msgid "Audacity does not export MP3 files directly, but instead uses the \n"
 "need to do this once.\n"
 "\n"
 "Would you like to locate libmp3lame.so now?"
-msgstr "Audacity不能直接匯出MP3檔案，而是使用免費的\n"
-"LAME程式庫來處理MP3檔案的編碼。您必須另外獲得\n"
-"LAME MP3編碼器(libmp3lame.so，該文件可以下載或者透過編譯原始碼得到)，\n"
-"然後告訴Audacity此檔案的位置。此操作只需要執行一次即可。\n"
+msgstr "Nid yw Audacity yn allforio ffeiliau MP3 yn uniongyrchol, ond yn hytrach defnyddir \n"
+"rhaglengell LAME, sydd ar gael yn rhad ac am ddim, i  drin amgodio ffeiliau MP3. Rhaid i chi\n"
+"gael libmp3lame.so ar wahân, wrth ei lawrlwytho neu ei adieladu o'r tarddiadau ac yna \n"
+"canfod y ffeil yma ar gyfer Audacity.  Dim ond unwaith mae angen gwneud hyn.\n"
 "\n"
-"您要現在定位libmp3lame.so嗎？"
+"Hoffech leoli libmp3lame.so nawr?"
 
 #: export/ExportMP3.cpp:536
 msgid "Only libmp3lame.dylib|libmp3lame.dylib|Dynamic Libraries (*.dylib)|*.dylib|All Files (*)|*"
@@ -4527,7 +4511,7 @@ msgstr ""
 
 #: ../src/export/ExportMP3.cpp:552
 msgid "Only LameLib|LameLib|All Files (*)|*"
-msgstr "僅限LameLib|LameLib|全部檔案(*)|*"
+msgstr "Dim ond LameLib|LameLib|Pob Ffeil (*)|*"
 
 #. i18n-hint: This message is used on Mac OS X.  This particular
 #: ../src/export/ExportMP3.cpp:560
@@ -4535,17 +4519,19 @@ msgstr "僅限LameLib|LameLib|全部檔案(*)|*"
 msgid "Audacity does not export MP3 files directly, but instead uses LAME, an MP3 exporting library available separately.  See the documentation for more information.\n"
 "\n"
 "Would you like to locate LameLib now?"
-msgstr "Audacity無法直接匯出MP3文件，而是使用LAME(一個可以單獨使用的MP3匯出程式庫)來完成匯出。詳情見相關文件。\n"
+msgstr "Nid yw Audacity yn allforio ffeiliau MP3 yn uniongyrchol, ond yn hytrach\n"
+"defnyddir LAME, rhaglengelll allforio MP3 sydd ar gael ar wahân.\n"
+"Gwelwch y ddogfennaeth am fwy o wybodaeth.\n"
 "\n"
-"你願意現在定位LimeLib的位置嗎？"
+"Hoffech leoli LameLib nawr?"
 
 #: ../src/export/ExportMP3.cpp:866
 msgid "Only LAMELib|LAMELib|Shared Libraries (*)|*"
-msgstr "僅限LAMELib|LAMELib|共享資料庫(*)|*"
+msgstr "Dim ond LAMELib|LAMELib|Rhaglengelloedd Cyfrannol (*)|*"
 
 #: ../src/export/ExportMP3.cpp:1116
 msgid "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
-msgstr "僅限lame_enc.dll|lame_enc.dll|動態連接庫(*.dll)|*.dll|\"\"全部檔案(*.*)|*"
+msgstr "Dim ond lame_enc.dll|lame_enc.dll|Rhaglengelloedd (*.dll)|*.dll|Pob Ffeil (*.*)|*"
 
 #. i18n-hint: This message is used on Windows.
 #: ../src/export/ExportMP3.cpp:1122
@@ -4554,19 +4540,20 @@ msgid "Audacity does not export MP3 files directly, but instead uses the\n"
 "obtain lame_enc.dll separately, by downloading the LAME MP3 encoder,and then locate this file for Audacity.  You only need to do this once.\n"
 "\n"
 "Would you like to locate lame_enc.dll now?"
-msgstr "Audacity不能直接匯出MP3文件，而是使用免費的\n"
-"LAME程式庫來處理MP3檔案的編碼。您必須另外下載\n"
-"LAME MP3編碼器(lame_enc.dll)，然後告訴Audacity此檔案的位置。此操作只需要執行一次即可。\n"
+msgstr "Nid yw Audacity yn allforio ffeiliau MP3 yn uniongyrchol, ond yn hytrach defnyddir \n"
+"rhaglengell LAME, sydd ar gael yn rhad ac am ddim, i  drin amgodio ffeiliau MP3. Rhaid i chi\n"
+"gael lame_enc.dll ar wahân, wrth lawrlwytho amgodydd MP3 LAME, ac yna canfod y ffeil\n"
+"yma ar gyfer Audacity.  Dim ond unwaith mae angen gwneud hyn.\n"
 "\n"
-"您要現在定位lame_enc.dll嗎？"
+"Hoffech leoli lame_enc.dll nawr?"
 
 #: ../src/export/ExportMP3.cpp:1328
 msgid "Could not open MP3 encoding library!"
-msgstr "無法開啟MP3編碼程式庫！"
+msgstr "Methwyd agor y rhaglengell amgodio MP3!"
 
 #: ../src/export/ExportMP3.cpp:1335
 msgid "Not a valid or supported MP3 encoding library!"
-msgstr "不是有效的或支援的MP3編碼程式庫！"
+msgstr "Nid yw'n lyfrgell amgodio MP3 dilys neu ni'i chynhelir!"
 
 #: export/ExportMultiple.cpp:271
 msgid "Audacity needs to know the location of the TOMPG.EXE program.\n"
@@ -4587,13 +4574,13 @@ msgstr ""
 #: ../src/export/ExportMultiple.cpp:472
 #, c-format
 msgid "Successfully exported %d files."
-msgstr "%d 檔案匯出成功"
+msgstr "Allforwyd %d ffeil yn llwyddianus."
 
 #: ../src/export/ExportMultiple.cpp:367
 #: ../src/export/ExportMultiple.cpp:474
 #: ../src/export/ExportMultiple.cpp:562
 msgid "Export Multiple"
-msgstr "匯出多個檔案"
+msgstr "Allforio Niferus"
 
 #: export/ExportMultiple.cpp:590
 #, c-format
@@ -4610,31 +4597,31 @@ msgid "If you have more than one Audio Track, you can export each track as a sep
 "or if you have a Label Track, you can export a new file for each label.\n"
 "\n"
 "This project does not have multiple tracks or a Label Track, so you cannot export multiple files."
-msgstr "如果您需要匯出多個音軌，您可將每個軌道單獨匯出為一個檔案，\n"
-"或者如果存在一個標籤軌，您可將每個標籤匯出為一個新的檔案。\n"
+msgstr "Os oes gennych mwy nag un Trac Sain, gellwch allforio pob trac fel ffeil ar-wahân,\n"
+"neu os oes gennych Drac Labeli, gallwch allforio ffeil newydd i bob label.\n"
 "\n"
-"該檔案不包含多個音軌，或者不含標籤軌，所以無法匯出多個檔案。"
+"Nis oes gan y cywaith yma mwy nag un trac na chwaith Drac Labeli, felly ni gewch allforio mwy nag un ffeil."
 
 #: ../src/export/ExportMultiple.cpp:493
 msgid "Can't export multiple files"
-msgstr "無法匯出多個檔案"
+msgstr "Methu allforio ffeiliau niferus"
 
 #: ../src/export/ExportMultiple.cpp:521
 msgid "Edit the ID3 tags for all MP3 files"
-msgstr "編輯所有MP3檔案的ID3 Tags"
+msgstr "Golygu'r Tagiau ID3 ar gyfer pob ffeil MP3"
 
 #: ../src/export/ExportMultiple.cpp:576
 msgid "Export format:"
-msgstr "匯出檔案格式："
+msgstr "Fformat Allforio:"
 
 #: ../src/export/ExportMultiple.cpp:594
 msgid "Export location:"
-msgstr "匯出檔案位置："
+msgstr "Lleoliad allforio:"
 
 #: ../src/export/ExportMultiple.cpp:600
 #: ../src/prefs/DirectoriesPrefs.cpp:82
 msgid "Choose..."
-msgstr "選擇..."
+msgstr "Dewis..."
 
 #: export/ExportMultiple.cpp:740
 msgid "MP3 Bit Rate: "
@@ -4646,93 +4633,93 @@ msgstr ""
 
 #: ../src/export/ExportMultiple.cpp:612
 msgid "Split files based on:"
-msgstr "分離檔案，基於："
+msgstr "Hollti ffeiliau ar sail:"
 
 #: ../src/export/ExportMultiple.cpp:615
 msgid "Labels"
-msgstr "標籤"
+msgstr "Labeli"
 
 #: ../src/export/ExportMultiple.cpp:623
 msgid "Include audio before first label"
-msgstr "包含在第一個標籤之前的聲音"
+msgstr "Cynnwys sain cyn y label cyntaf"
 
 #: ../src/export/ExportMultiple.cpp:629
 msgid "First file name:"
-msgstr "第一個檔案名稱："
+msgstr "Enw'r ffeil gyntaf:"
 
 #: ../src/export/ExportMultiple.cpp:636
 msgid "Tracks"
-msgstr "音軌"
+msgstr "Traciau"
 
 #: ../src/export/ExportMultiple.cpp:646
 msgid "Name files:"
-msgstr "命名檔案："
+msgstr "Enwi ffeiliau:"
 
 #: ../src/export/ExportMultiple.cpp:649
 msgid "Using Label/Track Name"
-msgstr "使用標籤/音軌名"
+msgstr "Yn Defnyddio Label/Enw Trac"
 
 #: ../src/export/ExportMultiple.cpp:655
 msgid "Numbering consecutively"
-msgstr "連續編號"
+msgstr "Rhifo'n olynol"
 
 #: ../src/export/ExportMultiple.cpp:660
 msgid "File name prefix:"
-msgstr "檔名前置字元："
+msgstr "Rhagddodiad enw ffeil:"
 
 #: ../src/export/ExportMultiple.cpp:677
 msgid "Overwrite existing files"
-msgstr "覆蓋現有的檔案"
+msgstr "Ysgrifennu dros ffeiliau cyfredol"
 
 #: ../src/export/ExportMultiple.cpp:766
 msgid "Choose a location to save the exported files"
-msgstr "選擇儲存匯出檔案的位置"
+msgstr "Dewis lleoliad i gadw'r ffeiliau allforio"
 
 #: ../src/export/ExportOGG.cpp:191
 msgid "Exporting the selected audio as Ogg Vorbis"
-msgstr "將選定的聲音匯出為Ogg Vorbis"
+msgstr "Allforio'r sain dewisiedig fel Ogg Vorbis"
 
 #: ../src/export/ExportOGG.cpp:192
 msgid "Exporting the entire project as Ogg Vorbis"
-msgstr "將全部成音工程匯出為 Ogg Vorbis"
+msgstr "Allforio'r cywaith cyfan fel Ogg Vorbis"
 
 #: ../src/export/ExportPCM.cpp:73
 msgid "Cannot export audio in this format."
-msgstr "無法匯出此格式"
+msgstr "Methu allforio sain yn y fformat yma."
 
 #: ../src/export/ExportPCM.cpp:79
 #, c-format
 msgid "Cannot export audio to %s"
-msgstr "無法匯出聲音至%s"
+msgstr "Methu allforio sain i %s"
 
 #: ../src/export/ExportPCM.cpp:127
 #, c-format
 msgid "Exporting the selected audio as a %s file"
-msgstr "將選定的聲音匯出為%s檔案"
+msgstr "Allforio'r sain dewisiedig fel ffeil %s"
 
 #: ../src/export/ExportPCM.cpp:132
 #, c-format
 msgid "Exporting the entire project as a %s file"
-msgstr "將全部成音工程匯出為MP3 %s file"
+msgstr "Allforio'r cywaith cyfan fel ffeil %s"
 
 #: export/ExportPCM.cpp:140
 #, c-format
 #, fuzzy
 msgid "Error (file may not have been written): %hs"
-msgstr "發生錯誤 (檔案不能寫入): %s"
+msgstr "Gwall (efallai na gadwyd y ffeil): %s"
 
 #: ../src/import/Import.cpp:159
 #, c-format
 msgid "This version of Audacity was not compiled with %s support."
-msgstr "此版本的Audacity在編譯時沒有附帶針對%s的支援。"
+msgstr "Ni grynhöwyd y fersiwn yma o Audacity â chynhaliaeth %s."
 
 #: ../src/import/Import.cpp:83
 msgid " is an audio CD file. \n"
 "Audacity does not open this type of file.\n"
 "Try ripping it to a native audio format that Audacity can import."
-msgstr "是音樂CD檔案。\n"
-"Audacity無法開啟該類型檔案。\n"
-"請嘗試將它轉錄成Audacity能匯入的聲音格式。"
+msgstr "  yn ffeil sain CD. \n"
+" Nid yw Audacity yn agor y math yma o ffeil.\n"
+" Ceisiwch ei newid i fformat sain cynhenid mae Audacity yn ei fewnforio."
 
 #: import/Import.cpp:197
 msgid " is a playlist file.\n"
@@ -4767,18 +4754,19 @@ msgstr ""
 #: ../src/import/Import.cpp:170
 msgid "Audacity did not recognize the type of this file.\n"
 "If it is uncompressed, try importing it using \"Import Raw\""
-msgstr "Audacity無法識別該檔案的類型。\n"
-"如果它未被壓縮，請嘗試用\"原始匯入\"將其匯入。"
+msgstr "Methodd Audacity adnabod y math yma o ffeil.\n"
+"Os yw heb ei gywasgu, ceisiwch ei fewnforio trwy\n"
+"ddefnyddio \"Mewnforio Data Crai\""
 
 #: ../src/import/ImportLOF.cpp:151
 #: ../src/import/ImportLOF.cpp:177
 msgid "List of Files in basic text format"
-msgstr "基本文字格式的檔案列表"
+msgstr "Rhestr o Ffeiliau mewn fformat testun sylfaenol"
 
 #. i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:268
 msgid "Invalid window offset in LOF file."
-msgstr "LOF 檔案視窗偏移無效。"
+msgstr "Atred ffenest annilys yn y ffeil LOF."
 
 #. i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:270
@@ -4786,116 +4774,115 @@ msgstr "LOF 檔案視窗偏移無效。"
 #: ../src/import/ImportLOF.cpp:364
 #: ../src/import/ImportLOF.cpp:384
 msgid "LOF Error"
-msgstr "LOF 錯誤"
+msgstr "Gwall LOF"
 
 #. i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:289
 msgid "Invalid duration in LOF file."
-msgstr "LOF檔案持續時間無效。"
+msgstr "Hyd annilys yn y ffeil LOF."
 
 #: import/ImportLOF.cpp:407
 #, fuzzy
 msgid "MIDI tracks cannot be offset individually, only audio files can be."
-msgstr "MIDI音軌不能單獨偏移，只有音訊檔案才可以。"
+msgstr "Ni ellir atredu traciau MIDI yn unigol, dim ond â thraciau sain mae posib gwneud hyn."
 
 #. i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:383
 msgid "Invalid track offset in LOF file."
-msgstr "LOF 檔案音軌偏移無效。"
+msgstr "Atred trac annilys yn y ffeil LOF."
 
 #: ../src/import/ImportMIDI.cpp:46
 msgid "Error parsing Allegro file."
-msgstr "分析Allegro檔案出錯。"
+msgstr "Gwall wrth ddehongli'r ffeil Allegro."
 
 #: ../src/import/ImportMIDI.cpp:76
 msgid "Error parsing MIDI file."
-msgstr "分析MIDI檔案出錯。"
+msgstr "Gwall wrth ddehongli'r ffeil MIDI."
 
 #: ../src/import/ImportOGG.cpp:124
 msgid "Media read error"
-msgstr "媒體讀取錯誤"
+msgstr "Gwall Darllen Cyfrwng"
 
 #: ../src/import/ImportOGG.cpp:127
 msgid "Not an Ogg Vorbis file"
-msgstr "不是Ogg Vorbis檔案"
+msgstr "Nid yw'n ffeil Ogg Vorbis"
 
 #: ../src/import/ImportOGG.cpp:130
 msgid "Vorbis version mismatch"
-msgstr "Vorbis版本不匹配"
+msgstr "Anghydweddiad fersiwn Vorbis"
 
 #: ../src/import/ImportOGG.cpp:133
 msgid "Invalid Vorbis bitstream header"
-msgstr "Vorbis位元流標頭無效"
+msgstr "Pennawd didlif Vorbis annilys"
 
 #: ../src/import/ImportOGG.cpp:136
 msgid "Internal logic fault"
-msgstr "內部處理錯誤"
+msgstr "Nam rhesymeg fewnol"
 
 #: ../src/import/ImportRaw.cpp:256
 msgid "Import Raw Data"
-msgstr "匯入原始數據[Raw Data]"
+msgstr "Mewnforio Data Crai"
 
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #: ../src/import/ImportRaw.cpp:299
 msgid "No endianness"
-msgstr "無元位組序[endianness]"
+msgstr "Dim 'endianness'"
 
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
 #: ../src/import/ImportRaw.cpp:302
 msgid "Little-endian"
-msgstr "Little-endian(以低位結束一種存儲方式)"
+msgstr "Little-endian"
 
-# 高位元組在前
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
 #: ../src/import/ImportRaw.cpp:305
 msgid "Big-endian"
-msgstr "Big-endian(以高位數結束一種存儲方式)"
+msgstr "Big-endian"
 
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #: ../src/import/ImportRaw.cpp:308
 msgid "Default endianness"
-msgstr "預設位元組序[Endianness]"
+msgstr "'Endianness' Rhagosodedig"
 
 #: ../src/import/ImportRaw.cpp:332
 msgid "1 Channel (Mono)"
-msgstr "單聲道 (單聲道)"
+msgstr "1 Sianel (Mono)"
 
 #: ../src/import/ImportRaw.cpp:333
 msgid "2 Channels (Stereo)"
-msgstr "雙聲道 (立體聲)"
+msgstr "2 Sianel (Stereo)"
 
 #: ../src/import/ImportRaw.cpp:335
 #, c-format
 msgid "%d Channels"
-msgstr "%d 聲道"
+msgstr "%d Sianel"
 
 #: ../src/import/ImportRaw.cpp:348
 msgid "Start offset:"
-msgstr "起始偏移："
+msgstr "Atred gychwyn:"
 
 #: ../src/import/ImportRaw.cpp:359
 msgid "Amount to import:"
-msgstr "匯入量："
+msgstr "Faint i fewnforio:"
 
 #: ../src/import/ImportRaw.cpp:370
 msgid "Sample rate:"
-msgstr "取樣頻率："
+msgstr "Graddfa Samplo:"
 
 #: ../src/prefs/PrefsDialog.cpp:84
 msgid "Audio I/O"
-msgstr "音訊 I/O"
+msgstr "Sain M/A"
 
 #: ../src/prefs/AudioIOPrefs.cpp:212
 msgid "1 (Mono)"
-msgstr "1 (單聲道)"
+msgstr "1 (Mono)"
 
 #: ../src/prefs/AudioIOPrefs.cpp:213
 msgid "2 (Stereo)"
-msgstr "2 (立體聲)"
+msgstr "2 (Stereo)"
 
 #: ../src/prefs/AudioIOPrefs.cpp:80
 msgid "Playback"
-msgstr "播放裝置"
+msgstr "Chwarae Nôl"
 
 #: prefs/AudioIOPrefs.cpp:119 prefs/AudioIOPrefs.cpp:137
 #: toolbars/DeviceToolBar.cpp:54
@@ -4912,7 +4899,7 @@ msgstr ""
 
 #: ../src/prefs/AudioIOPrefs.cpp:148
 msgid "Recording"
-msgstr "錄製裝置"
+msgstr "Recordio"
 
 #: prefs/AudioIOPrefs.cpp:139
 msgid "Channels"
@@ -4925,17 +4912,17 @@ msgstr ""
 #: prefs/AudioIOPrefs.cpp:147
 #, fuzzy
 msgid "&Play other tracks while recording new one"
-msgstr "在錄製新音軌時播放其它的音軌"
+msgstr "Chwarae traciau eraill tra'n recordio un newydd"
 
 #: prefs/AudioIOPrefs.cpp:150
 #, fuzzy
 msgid "&Hardware Playthrough (Play new track while recording it)"
-msgstr "硬體播放(在錄音時播放新建的音軌)"
+msgstr "Chwarae tryw'r Caledwedd (Chwarae trac newyd tra'n ei recordio)"
 
 #: prefs/AudioIOPrefs.cpp:153
 #, fuzzy
 msgid "&Software Playthrough (Play new track while recording it)"
-msgstr "軟體播放 (在錄音時播放新建的音軌)"
+msgstr "Chwarae trwy'r Feddalwedd (Chwarae trac newydd tra'n ei recordio)"
 
 #: prefs/AudioIOPrefs.cpp:158
 msgid "Cut Preview"
@@ -5020,7 +5007,7 @@ msgstr ""
 #: ../src/prefs/PrefsDialog.cpp:88
 #: ../src/prefs/PrefsDialog.cpp:216
 msgid "Directories"
-msgstr "目錄路徑"
+msgstr "Ffolderau"
 
 #: prefs/DirectoriesPrefs.cpp:87
 msgid "Temporary files directory"
@@ -5028,11 +5015,11 @@ msgstr ""
 
 #: ../src/prefs/DirectoriesPrefs.cpp:57
 msgid "Location:"
-msgstr "路徑："
+msgstr "Lleoliad:"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:78
 msgid "Free Space:"
-msgstr "可用空間："
+msgstr "Lle Rhydd:"
 
 #: prefs/DirectoriesPrefs.cpp:99
 msgid "Auto save"
@@ -5060,43 +5047,43 @@ msgstr ""
 
 #: ../src/prefs/DirectoriesPrefs.cpp:135
 msgid "Choose a location to place the temporary directory"
-msgstr "選擇存放暫存目錄的位置"
+msgstr "Dewisiwch leoliad ar gyfer y ffolder dros dro"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:181
 #, c-format
 msgid "Directory %s does not exist. Create it?"
-msgstr "%s目錄不存在。新增？"
+msgstr "Nid yw'r ffolder %s yn bod. Ei greu?"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:183
 msgid "New Temporary Directory"
-msgstr "新增暫存目錄"
+msgstr "Ffolder Dros Dro Newydd"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:202
 #, c-format
 msgid "Directory %s is not writable"
-msgstr "%s目錄無法寫入"
+msgstr "Nid oes posib ysgrifennu i'r ffolder %s"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:214
 msgid "Changes to temporary directory will not take effect until Audacity is restarted"
-msgstr "Audacity重開後，才會變更暫存目錄。"
+msgstr "Ni fydd newidiadau i'r ffolder dros dro yn cael effaith tan ailgychwyn Audacity"
 
 #: ../src/prefs/PrefsDialog.cpp:86
 msgid "File Formats"
-msgstr "檔案格式"
+msgstr "Fformatiau Ffeil"
 
 #: ../src/prefs/FileFormatPrefs.cpp:68
 msgid "When importing uncompressed audio files into Audacity"
-msgstr "當 Aidacity 匯入非壓縮聲音檔案時"
+msgstr "Pan yn mewnforio ffeiliau sain anghywasgedig i mewn i Audacity"
 
 #: prefs/FileFormatPrefs.cpp:127
 #, fuzzy
 msgid "&Make a copy of the file before editing (safer)"
-msgstr "在編輯前製作檔案備份(較安全)"
+msgstr "Gwneud copi o'r ffeil cyn golygu (saffach)"
 
 #: prefs/FileFormatPrefs.cpp:128
 #, fuzzy
 msgid "&Read directly from the original file (faster)"
-msgstr "從原始檔案中直接讀取(快速)"
+msgstr "Darllen yn uniongyrchol o'r ffeil gwreiddiol (cynt)"
 
 #: prefs/FileFormatPrefs.cpp:132
 msgid "When saving a project that depends on other audio files"
@@ -5120,32 +5107,32 @@ msgstr ""
 
 #: ../src/prefs/FileFormatPrefs.cpp:93
 msgid "Uncompressed Export Format"
-msgstr "非壓縮匯出格式"
+msgstr "Fformat Allforio Heb ei Gywasgu"
 
 #: ../src/prefs/FileFormatPrefs.cpp:138
 msgid "OGG Export Setup"
-msgstr "OGG匯出設定"
+msgstr "Ffurfweddu Allforio OGG"
 
 #: ../src/prefs/FileFormatPrefs.cpp:147
 msgid "OGG Quality:"
-msgstr "OGG品質："
+msgstr "Ansawdd OGG:"
 
 #: ../src/prefs/FileFormatPrefs.cpp:172
 msgid "MP3 Export Setup"
-msgstr "MP3匯出設定"
+msgstr "Ffurfweddu Alfforio MP3"
 
 #: ../src/prefs/FileFormatPrefs.cpp:180
 msgid "MP3 Library Version:"
-msgstr "MP3程式庫版本:"
+msgstr "Fersiwn Rhaglengell MP3:"
 
 #: ../src/prefs/FileFormatPrefs.cpp:197
 msgid "Bit Rate:"
-msgstr "位元速率："
+msgstr "Cyfradd Ddidau:"
 
 #: prefs/FileFormatPrefs.cpp:185
 #, fuzzy
 msgid "&Find Library"
-msgstr "尋找程式庫位址"
+msgstr "Canfod Rhaglengell"
 
 #: prefs/FileFormatPrefs.cpp:190
 msgid "FLAC Export Setup"
@@ -5169,49 +5156,49 @@ msgstr ""
 
 #: ../src/prefs/FileFormatPrefs.cpp:261
 msgid "MP3 exporting plugin not found"
-msgstr "找不到MP3匯出外掛程式"
+msgstr "Methwyd canfod yr ategyn allforio MP3"
 
 #: ../src/prefs/FileFormatPrefs.cpp:395
 msgid "File Format"
-msgstr "檔案格式"
+msgstr "Fformat Ffeil"
 
 #: ../src/prefs/FileFormatPrefs.cpp:405
 msgid "(Not all combinations of headers\n"
 "and encodings are possible.)"
-msgstr "(並非所有的標頭與編碼的\n"
-"\"組合是可能成立的。)"
+msgstr "(Nid yw pob cyfiniad o bennawdau\n"
+"ac amgodiadau yn bosib.)"
 
 #: ../src/prefs/FileFormatPrefs.cpp:415
 msgid "Header: "
-msgstr "標頭："
+msgstr "Pennawd:"
 
 #: ../src/prefs/FileFormatPrefs.cpp:438
 msgid "Encoding: "
-msgstr "編碼："
+msgstr "Amgodiad:"
 
 #: ../src/prefs/PrefsDialog.cpp:89
 msgid "Interface"
-msgstr "介面"
+msgstr "Rhyngwyneb"
 
 #: prefs/GUIPrefs.cpp:72
 #, fuzzy
 msgid "&Autoscroll while playing"
-msgstr "在播放中自動捲動"
+msgstr "Awtosgrolio tra'n chwarae"
 
 #: prefs/GUIPrefs.cpp:74
 #, fuzzy
 msgid "Al&ways allow pausing"
-msgstr "總是允許暫停"
+msgstr "Caniatau seibio bob amser"
 
 #: prefs/GUIPrefs.cpp:76
 #, fuzzy
 msgid "&Update spectrogram while playing"
-msgstr "在播放時更新頻譜圖"
+msgstr "Diweddaru'r sbectrogram tra'n chwarae"
 
 #: prefs/GUIPrefs.cpp:78
 #, fuzzy
 msgid "&Quit Audacity upon closing last window"
-msgstr "在關閉最後一個視窗後結束Audacity"
+msgstr "Gadael Audacity wrth gloi'r ffenest olaf"
 
 #: prefs/GUIPrefs.cpp:80
 msgid "&Dragging of left and right selection edges"
@@ -5251,35 +5238,35 @@ msgstr ""
 
 #: ../src/prefs/GUIPrefs.cpp:134
 msgid "Language:"
-msgstr "語言："
+msgstr "Iaith:"
 
 #: ../src/prefs/GUIPrefs.cpp:145
 msgid "Minimum of dB mode display range"
-msgstr "最小 dB 模式顯示範圍"
+msgstr "Lleiafswm amrediad y dangosydd modd dB"
 
 #: ../src/prefs/GUIPrefs.cpp:150
 msgid "-36 dB (shallow range for high-amplitude editing)"
-msgstr "-36 dB  (小範圍，適用大振幅編輯)"
+msgstr "-36 dB (amrediad bas ar gyfer golygu osgled-uchel)"
 
 #: ../src/prefs/GUIPrefs.cpp:157
 msgid "-48 dB (PCM range of 8 bit samples)"
-msgstr "-48 dB (PCM 8bit 取樣範圍)"
+msgstr "-48 dB (amrediad PCM samplau 8 did)"
 
 #: ../src/prefs/GUIPrefs.cpp:164
 msgid "-96 dB (PCM range of 16 bit samples)"
-msgstr "-96 dB (PCM 16bit 取樣範圍)"
+msgstr "-96 dB (amrediad PCM samplau 16 did)"
 
 #: ../src/prefs/GUIPrefs.cpp:171
 msgid "-120 dB (approximate limit of human hearing)"
-msgstr "-120 dB (接近人類聽力的極限)"
+msgstr "-120 dB (bras derfyn clyw dynol)"
 
 #: ../src/prefs/GUIPrefs.cpp:178
 msgid "-145 dB (PCM range of 24 bit samples)"
-msgstr "-145 dB(PCM 24bit 取樣範圍)"
+msgstr "-145 dB (amrediad PCM samplau 24 did)"
 
 #: ../src/prefs/PrefsDialog.cpp:90
 msgid "Keyboard"
-msgstr "鍵盤功能設定"
+msgstr "Bysellfwrdd"
 
 #: prefs/KeyConfigPrefs.cpp:93
 msgid "Key Bindings"
@@ -5295,7 +5282,7 @@ msgstr ""
 
 #: ../src/prefs/KeyConfigPrefs.cpp:115
 msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
-msgstr "注意：按Cmd+Q將結束。其它所有按鍵均有效。"
+msgstr "Nodyn: Bydd pwyso Cmd+Q yn cau. Mae pob bysell arall yn ddilys."
 
 #: prefs/KeyConfigPrefs.cpp:122 prefs/ThemePrefs.cpp:102
 msgid "&Defaults"
@@ -5303,27 +5290,27 @@ msgstr ""
 
 #: ../src/prefs/KeyConfigPrefs.cpp:79
 msgid "Key Combination"
-msgstr "按鍵組合"
+msgstr "Cyfuniad Bysyll"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:159
 msgid "Export Keyboard Shortcuts As:"
-msgstr "匯出快速鍵為："
+msgstr "Allforio Byrlwybrau Allweddell Fel:"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:174
 msgid "Error saving keyboard shortcuts"
-msgstr "儲存快速鍵錯誤"
+msgstr "Gwall tra'n cadw byrlwybrau'r allweddell"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:188
 msgid "Select an XML file containing Audacity keyboard shortcuts..."
-msgstr "選取包含Audacity快速鍵定義的XML檔案..."
+msgstr "Dewisiwch ffeil XML yn cynnwys byrlwybrau bysellfwrdd Audacity..."
 
 #: ../src/prefs/KeyConfigPrefs.cpp:192
 msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*"
-msgstr "XML檔案 (*.xml)|*.xml|全部檔案 (*.*)|*.*"
+msgstr "Ffeiliau XML (*.xml)|*.xml|Pob ffeil (*.*)|*.*"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:206
 msgid "Error loading keyboard shortcuts"
-msgstr "讀取快速鍵錯誤"
+msgstr "Gwall tra'n llwytho byrlwybrau'r allweddell."
 
 #: prefs/KeyConfigPrefs.cpp:239
 #, c-format
@@ -5334,43 +5321,43 @@ msgstr ""
 
 #: ../src/EditToolBar.cpp:159
 msgid "Undo"
-msgstr "復原"
+msgstr "Dadwneud"
 
 #: ../src/prefs/PrefsDialog.cpp:91
 msgid "Mouse"
-msgstr "滑鼠功能表"
+msgstr "Llygoden"
 
 #: ../src/prefs/MousePrefs.cpp:71
 msgid "Mouse Bindings (default values, not configurable)"
-msgstr "滑鼠繫結[Mouse Bindings] (預設值，不可更改)"
+msgstr "Rhwymiadau'r Llygoden (gwerthoedd rhagosodedig,  nid yw'n ffurfweddadwy)"
 
 #: ../src/prefs/MousePrefs.cpp:84
 msgid "Tool"
-msgstr "工具"
+msgstr "Erfyn"
 
 #: ../src/prefs/MousePrefs.cpp:85
 msgid "Command Action"
-msgstr "命令動作"
+msgstr "Gweithred Orchymun"
 
 #: ../src/prefs/MousePrefs.cpp:86
 msgid "Buttons"
-msgstr "按鈕"
+msgstr "Botymau"
 
 #: ../src/prefs/MousePrefs.cpp:88
 #: ../src/prefs/MousePrefs.cpp:92
 #: ../src/prefs/MousePrefs.cpp:100
 msgid "Left-Click"
-msgstr "左鍵點擊"
+msgstr "Clic-Chwith"
 
 #: ../src/prefs/MousePrefs.cpp:88
 #: ../src/prefs/MousePrefs.cpp:89
 #: ../src/prefs/MousePrefs.cpp:90
 msgid "Select"
-msgstr "選取"
+msgstr "Dewis"
 
 #: ../src/prefs/MousePrefs.cpp:88
 msgid "Set Selection Point"
-msgstr "設定選取位置"
+msgstr "Gosod Pwynt Dewisiad"
 
 #: ../src/prefs/MousePrefs.cpp:89
 #: ../src/prefs/MousePrefs.cpp:93
@@ -5378,34 +5365,34 @@ msgstr "設定選取位置"
 #: ../src/prefs/MousePrefs.cpp:98
 #: ../src/prefs/MousePrefs.cpp:102
 msgid "Left-Drag"
-msgstr "左鍵拖曳"
+msgstr "Chiwth-Lusgo"
 
 #: ../src/prefs/MousePrefs.cpp:89
 msgid "Set Selection Range"
-msgstr "設定選取範圍"
+msgstr "Gosod Amrediad Dewisiad"
 
 #: ../src/prefs/MousePrefs.cpp:90
 msgid "Extend Selection Range"
-msgstr "延伸選取範圍"
+msgstr "Estyn Amrediad y Dewisiad"
 
 #: ../src/prefs/MousePrefs.cpp:90
 msgid "Shift-Left-Click"
-msgstr "Shift-滑鼠左擊"
+msgstr "Shift-Clic-Chwith"
 
 #: ../src/prefs/MousePrefs.cpp:92
 #: ../src/prefs/MousePrefs.cpp:93
 #: ../src/prefs/MousePrefs.cpp:94
 #: ../src/prefs/MousePrefs.cpp:95
 msgid "Zoom"
-msgstr "縮放工具"
+msgstr "Chwyddo"
 
 #: ../src/prefs/MousePrefs.cpp:92
 msgid "Zoom in on Point"
-msgstr "以點為目標放大檢視"
+msgstr "Nesáu at Bwynt"
 
 #: ../src/prefs/MousePrefs.cpp:93
 msgid "Zoom in on a Range"
-msgstr "範圍放大"
+msgstr "Nesáu at Amrediad"
 
 #: prefs/MousePrefs.cpp:103
 msgid "same as right-drag"
@@ -5413,15 +5400,15 @@ msgstr ""
 
 #: ../src/prefs/MousePrefs.cpp:94
 msgid "Right-Click"
-msgstr "右鍵點選"
+msgstr "Clic-dde"
 
 #: ../src/prefs/MousePrefs.cpp:94
 msgid "Zoom out one step"
-msgstr "縮小一級"
+msgstr "Pellhau un cam"
 
 #: ../src/prefs/MousePrefs.cpp:95
 msgid "Right-Drag"
-msgstr "右鍵拖曳"
+msgstr "Chwith-Lusgo"
 
 #: prefs/MousePrefs.cpp:105
 msgid "same as left-drag"
@@ -5441,7 +5428,7 @@ msgstr ""
 
 #: ../src/prefs/MousePrefs.cpp:103
 msgid "Ctrl-Left-Drag"
-msgstr "Ctrl-Left-拖曳"
+msgstr "Ctrl-Chwith-Lusgo"
 
 #: prefs/MousePrefs.cpp:109
 msgid "Move clip up/down between tracks"
@@ -5449,92 +5436,92 @@ msgstr ""
 
 #: ../src/prefs/MousePrefs.cpp:98
 msgid "Change Amplification Envelope"
-msgstr "變更波封線增幅"
+msgstr "Newid Chwyddamlen"
 
 #: ../src/prefs/MousePrefs.cpp:100
 msgid "Change Sample"
-msgstr "變更取樣點"
+msgstr "Newid Sampl"
 
 #: ../src/prefs/MousePrefs.cpp:100
 #: ../src/prefs/MousePrefs.cpp:101
 #: ../src/prefs/MousePrefs.cpp:102
 #: ../src/prefs/MousePrefs.cpp:103
 msgid "Pencil"
-msgstr "繪製工具"
+msgstr "Pensil"
 
 #: ../src/prefs/MousePrefs.cpp:101
 msgid "Alt-Left-Click"
-msgstr "按住 Alt 鍵並以滑鼠左鍵點擊"
+msgstr "Alt-Chwith-Clic"
 
 #: ../src/prefs/MousePrefs.cpp:101
 msgid "Smooth at Sample"
-msgstr "平滑取樣"
+msgstr "Llyfn wrth Sampl"
 
 #: ../src/prefs/MousePrefs.cpp:102
 msgid "Change Several Samples"
-msgstr "變更部分取樣點"
+msgstr "Newid Sawl Sampl"
 
 #: ../src/prefs/MousePrefs.cpp:103
 msgid "Change ONE Sample only"
-msgstr "僅變更一處取樣點"
+msgstr "Newid UN sampl yn unig"
 
 #: ../src/prefs/MousePrefs.cpp:105
 #: ../src/prefs/MousePrefs.cpp:106
 #: ../src/prefs/MousePrefs.cpp:107
 #: ../src/prefs/MousePrefs.cpp:108
 msgid "Multi"
-msgstr "複合工具"
+msgstr "Aml"
 
 #: prefs/MousePrefs.cpp:118 prefs/MousePrefs.cpp:119
 #, fuzzy
 msgid "same as select tool"
-msgstr "與選取工具相同"
+msgstr "Fel yr erfyn dewis"
 
 #: prefs/MousePrefs.cpp:120 prefs/MousePrefs.cpp:121
 #, fuzzy
 msgid "same as zoom tool"
-msgstr "與縮放工具相同"
+msgstr "Fel yr erfyn chwyddo"
 
 #: ../src/prefs/MousePrefs.cpp:110
 #: ../src/prefs/MousePrefs.cpp:111
 msgid "Any"
-msgstr "任何工具"
+msgstr "Unrhyw"
 
 #: ../src/prefs/MousePrefs.cpp:110
 msgid "Scroll up or down"
-msgstr "上下捲動"
+msgstr "Sgrolio i fyny neu i lawr"
 
 #: ../src/prefs/MousePrefs.cpp:110
 msgid "Wheel-Rotate"
-msgstr "滾輪"
+msgstr "Cylchdroi Olwyn"
 
 #: ../src/prefs/MousePrefs.cpp:111
 msgid "Ctrl-Wheel-Rotate"
-msgstr "Ctrl-滾輪"
+msgstr "Ctrl-Cylchdroi-Olwyn"
 
 #: ../src/prefs/MousePrefs.cpp:111
 msgid "Zoom in or out"
-msgstr "放大或縮小"
+msgstr "Nesáu neu Pellhau"
 
 #: ../src/prefs/PrefsDialog.cpp:52
 msgid "Audacity Preferences"
-msgstr "Audacity 偏好設定"
+msgstr "Hoffterau Audacity"
 
 #: ../src/prefs/PrefsDialog.cpp:85
 msgid "Quality"
-msgstr "品質"
+msgstr "Ansawdd"
 
 #: ../src/prefs/QualityPrefs.cpp:161
 msgid "Rectangle"
-msgstr "矩形[Rectangle]"
+msgstr "Petryal"
 
 #: ../src/prefs/QualityPrefs.cpp:162
 msgid "Triangle"
-msgstr "三角波[Triangle]"
+msgstr "Triongl"
 
 #: ../src/prefs/QualityPrefs.cpp:163
 msgid "Shaped"
-msgstr "使定形"
+msgstr "Wedi shapio"
 
 #: prefs/QualityPrefs.cpp:122
 msgid "Sampling"
@@ -5542,27 +5529,27 @@ msgstr ""
 
 #: ../src/prefs/QualityPrefs.cpp:80
 msgid "Default Sample Rate:"
-msgstr "預設取樣頻率："
+msgstr "Graddfa Samplo Rhagosodedig:"
 
 #: ../src/prefs/QualityPrefs.cpp:114
 msgid "Default Sample Format:"
-msgstr "預設取樣格式："
+msgstr "Fformat Sampl Rhagosodedig:"
 
 #: ../src/prefs/QualityPrefs.cpp:136
 msgid "Real-time sample rate converter:"
-msgstr "即時取樣頻率轉換器："
+msgstr "Trosydd graddfa samplo amser real"
 
 #: ../src/prefs/QualityPrefs.cpp:147
 msgid "High-quality sample rate converter:"
-msgstr "高品質取樣頻率轉換器："
+msgstr "Troswr Graddfa Samplo Ansawdd Uchel:"
 
 #: ../src/prefs/QualityPrefs.cpp:171
 msgid "Real-time dither:"
-msgstr "即時擾動(dither)："
+msgstr "'Dither' amser real:"
 
 #: ../src/prefs/QualityPrefs.cpp:186
 msgid "High-quality dither:"
-msgstr "高品質擾動："
+msgstr "'Dither' Ansawdd Uchel:"
 
 #: prefs/QualityPrefs.cpp:157
 msgid "Conversion"
@@ -5586,11 +5573,11 @@ msgstr ""
 
 #: ../src/prefs/PrefsDialog.cpp:87
 msgid "Spectrograms"
-msgstr "聲譜圖"
+msgstr "Sbectrogramau"
 
 #: ../src/prefs/SpectrumPrefs.cpp:70
 msgid "FFT Size"
-msgstr "FFT的取樣點數"
+msgstr "Maint FFT"
 
 #: prefs/SpectrumPrefs.cpp:75
 msgid "8 - most wideband"
@@ -5598,11 +5585,11 @@ msgstr ""
 
 #: ../src/prefs/SpectrumPrefs.cpp:40
 msgid "256 - default"
-msgstr "256 - 預設值"
+msgstr "256 - rhagosodedig"
 
 #: ../src/prefs/SpectrumPrefs.cpp:44
 msgid "4096 - most narrowband"
-msgstr "4096 - 最窄帶"
+msgstr "4096 - amrediad mwyaf cul"
 
 #: prefs/SpectrumPrefs.cpp:90
 msgid "Window type:"
@@ -5622,15 +5609,15 @@ msgstr ""
 
 #: ../src/prefs/SpectrumPrefs.cpp:104
 msgid "Maximum Frequency (Hz):"
-msgstr "最高頻率 (Hz)："
+msgstr "Amledd Uchaf (Hz):"
 
 #: ../src/prefs/SpectrumPrefs.cpp:148
 msgid "The maximum frequency must be an integer"
-msgstr "最大頻率值必須是整數。"
+msgstr "Rhaid i'r amledd uchaf for yn gyfanrif"
 
 #: ../src/prefs/SpectrumPrefs.cpp:152
 msgid "Maximum frequency must be in the range 100 Hz - 100,000 Hz"
-msgstr "最高頻率需介於 100 Hz - 100,000 Hz"
+msgstr "Rhaid i'd amledd uchaf fod rhwng 100 Hz a 100,000 Hz"
 
 #: prefs/SpectrumPrefs.cpp:146
 msgid "The minimum frequency must be an integer"
@@ -5691,7 +5678,7 @@ msgstr ""
 
 #: ../src/ControlToolBar.cpp:470
 msgid "Pause"
-msgstr "暫停"
+msgstr "Seibio"
 
 #: toolbars/ControlToolBar.cpp:178
 msgid "Play"
@@ -5699,19 +5686,19 @@ msgstr ""
 
 #: ../src/ControlToolBar.cpp:468
 msgid "Play (Shift for loop-play)"
-msgstr "播放 (Shift for loop-play)"
+msgstr "Chwarae (Shift i gylchu)"
 
 #: ../src/ControlToolBar.cpp:471
 msgid "Stop"
-msgstr "停止"
+msgstr "Aros"
 
 #: ../src/ControlToolBar.cpp:467
 msgid "Skip to Start"
-msgstr "跳至起始點"
+msgstr "Neidio i'r Dechrau"
 
 #: ../src/ControlToolBar.cpp:472
 msgid "Skip to End"
-msgstr "跳至結束點"
+msgstr "Neidio i'r Diwedd"
 
 #: toolbars/ControlToolBar.cpp:195
 msgid "Clean Speech"
@@ -5739,23 +5726,23 @@ msgstr ""
 
 #: ../src/EditToolBar.cpp:154
 msgid "Trim outside selection"
-msgstr "剪輯非選取部分"
+msgstr "Tocio tu allan i'r dewisiad"
 
 #: ../src/EditToolBar.cpp:156
 msgid "Silence selection"
-msgstr "使選取範圍靜音"
+msgstr "Distewi'r dewisiad"
 
 #: ../src/EditToolBar.cpp:164
 msgid "Zoom In"
-msgstr "放大"
+msgstr "Nesáu"
 
 #: ../src/EditToolBar.cpp:166
 msgid "Zoom Out"
-msgstr "縮小"
+msgstr "Pellhau"
 
 #: ../src/EditToolBar.cpp:170
 msgid "Zoom Toggle"
-msgstr "鎖定縮放倍率"
+msgstr "Newid Chwyddo"
 
 #: toolbars/EditToolBar.cpp:160
 msgid "Fit Selection"
@@ -5763,7 +5750,7 @@ msgstr ""
 
 #: ../src/EditToolBar.cpp:174
 msgid "Fit selection in window"
-msgstr "選取範圍適合視窗大小"
+msgstr "Ffitio'r dewisiad i'r ffenest"
 
 #: toolbars/EditToolBar.cpp:162
 msgid "Fit Project"
@@ -5771,7 +5758,7 @@ msgstr ""
 
 #: ../src/EditToolBar.cpp:176
 msgid "Fit project in window"
-msgstr "成音工程適合視窗大小"
+msgstr "Ffitio'r cywaith i'r ffenest"
 
 #: toolbars/MeterToolBar.cpp:49
 msgid "Meter"
@@ -5795,11 +5782,11 @@ msgstr ""
 
 #: ../src/MeterToolBar.cpp:66
 msgid "Output level meter"
-msgstr "輸出電平計"
+msgstr "Mesurydd lefel allbwn"
 
 #: ../src/MeterToolBar.cpp:67
 msgid "Input level meter - click to monitor input"
-msgstr "輸入音量儀表 - 點擊監聽輸入"
+msgstr "Mesurydd lefel mewnbwn - cliciwch i arsylwi'r mewnbwn"
 
 #: toolbars/MixerToolBar.cpp:58
 msgid "Mixer"
@@ -5807,7 +5794,7 @@ msgstr ""
 
 #: ../src/MixerToolBar.cpp:135
 msgid "Output Volume"
-msgstr "輸出音量"
+msgstr "Lefel Sain Allbwn"
 
 #: toolbars/MixerToolBar.cpp:93
 msgid "Slider-Output"
@@ -5815,7 +5802,7 @@ msgstr ""
 
 #: ../src/MixerToolBar.cpp:138
 msgid "Input Volume"
-msgstr "輸入音量"
+msgstr "Lefel Sain Mewnbwn"
 
 #: toolbars/MixerToolBar.cpp:104
 msgid "Slider-Input"
@@ -5868,61 +5855,59 @@ msgstr ""
 
 #: ../src/ControlToolBar.cpp:76
 msgid "Click and drag to select audio"
-msgstr "單擊拖曳以選擇音訊"
+msgstr "Cliciwch a llusgwch i ddewis y sain"
 
 #: ../src/ControlToolBar.cpp:77
 msgid "Click and drag to edit the amplitude envelope"
-msgstr "單擊拖曳以調整振幅波封線。"
+msgstr "Cliciwch a llusgwch i olygu'r chwyddamlen"
 
 #: ../src/ControlToolBar.cpp:78
 msgid "Click and drag to edit the samples"
-msgstr "單擊拖曳以編輯取樣點。"
+msgstr "Cliciwch a llusgwch i olygu'r samplau"
 
 #: ../src/ControlToolBar.cpp:80
 msgid "Click to Zoom In, Shift-Click to Zoom Out"
-msgstr "單擊放大檢視，Shift-單擊則縮小檢視。"
+msgstr "Clicio i Nesáu, Shift-Clic i Bellhau"
 
 #: ../src/ControlToolBar.cpp:82
 msgid "Drag to Zoom Into Region, Right-Click to Zoom Out"
-msgstr "拖入放大區域，右擊縮小"
+msgstr "Llusgo i Nesáu at yr Ardal, Clic-Dde i Bellhau"
 
 #: ../src/ControlToolBar.cpp:84
 msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
-msgstr "滑鼠左鍵=放大，右鍵=縮小，中鍵=正常"
+msgstr "Chwith=Nesáu, Dde=Pellhau, Canol=Arferol"
 
 #: ../src/ControlToolBar.cpp:86
 msgid "Click and drag to move a track in time"
-msgstr "單擊拖曳以移動時間範圍內的音軌。"
+msgstr "Cliciwch a llusgwch i symud y trac yn ôl neu ymlaen"
 
 #: toolbars/ToolsToolBar.cpp:90
 msgid "Tools"
 msgstr ""
 
-# 按下此按鈕後，可以用拖曳法建立音波選取區，以進行編輯工作。
 #: ../src/ControlToolBar.cpp:355
 msgid "Selection Tool"
-msgstr "選取工具"
+msgstr "Erfyn Dewis"
 
 #: ../src/ControlToolBar.cpp:356
 msgid "Envelope Tool"
-msgstr "波封工具"
+msgstr "Erfyn Chwyddamlen"
 
-# 按下此按鈕後，可以用拖曳法將整音效檔的時間往前/往後移動。
 #: ../src/ControlToolBar.cpp:357
 msgid "Time Shift Tool"
-msgstr "時間移位工具"
+msgstr "Erfyn Symud Trac Sain"
 
 #: ../src/ControlToolBar.cpp:358
 msgid "Zoom Tool"
-msgstr "縮放工具"
+msgstr "Erfyn Chwyddo"
 
 #: ../src/ControlToolBar.cpp:359
 msgid "Draw Tool"
-msgstr "拖拉工具"
+msgstr "Erfyn Darlunio"
 
 #: ../src/ControlToolBar.cpp:360
 msgid "Multi-Tool Mode"
-msgstr "複合工具模式"
+msgstr "Modd Aml-Erfyn"
 
 #: toolbars/ToolsToolBar.cpp:186
 msgid "Slide Tool"
@@ -6054,7 +6039,7 @@ msgstr ""
 
 #: ../src/widgets/AButton.cpp:181
 msgid " (disabled)"
-msgstr " (停用)"
+msgstr " (analluogwyd)"
 
 #: widgets/AButton.cpp:443
 msgid "Press"
@@ -6068,25 +6053,25 @@ msgstr ""
 #: ../src/widgets/ASlider.cpp:329
 #: ../src/widgets/Meter.cpp:165
 msgid "L"
-msgstr "左"
+msgstr "Ch"
 
 #. i18n-hint: One-letter abbreviation for Right, in the Pan slider
 #: ../src/widgets/ASlider.cpp:332
 #: ../src/widgets/Meter.cpp:167
 msgid "R"
-msgstr "右"
+msgstr "Dd"
 
 #: ../src/widgets/ASlider.cpp:484
 msgid "Center"
-msgstr "中央"
+msgstr "Canoli"
 
 #: ../src/widgets/ASlider.cpp:488
 msgid "Left"
-msgstr "左聲道"
+msgstr "Chwith"
 
 #: ../src/widgets/ASlider.cpp:491
 msgid "Right"
-msgstr "右聲道"
+msgstr "Dde"
 
 #: widgets/Grabber.cpp:61
 msgid "Grabber"
@@ -6133,15 +6118,15 @@ msgstr ""
 
 #: ../src/widgets/Meter.cpp:285
 msgid "Horizontal Stereo"
-msgstr "水平立體聲"
+msgstr "Stereo Llorweddol"
 
 #: ../src/widgets/Meter.cpp:286
 msgid "Vertical Stereo"
-msgstr "垂直立體聲"
+msgstr "Stereo Fertigol"
 
 #: ../src/widgets/Meter.cpp:292
 msgid "Linear"
-msgstr "線性"
+msgstr "Llinellol"
 
 #: widgets/Meter.cpp:365
 msgid "Preferences..."
@@ -6296,20 +6281,20 @@ msgstr ""
 
 #: ../src/widgets/Warning.cpp:53
 msgid "Don't show this warning again"
-msgstr "下次不再顯示警告"
+msgstr "Peidio dangos y rhybydd yma eto"
 
 #: ../src/xml/XMLFileReader.cpp:45
 #, c-format
 msgid "Could not open file: \"%s\""
-msgstr "無法開啟檔案： \"%s\""
+msgstr "Methwyd agor y ffeil: \"%s\""
 
 #: xml/XMLFileReader.cpp:64
 #, c-format
 #, fuzzy
 msgid "Error: %hs at line %d"
-msgstr "錯誤：%s (%d 行)"
+msgstr "Gwall: %s ar linell %d"
 
 #: ../src/xml/XMLFileReader.cpp:83
 msgid "Unable to open project file."
-msgstr "無法開啟成音工程檔案。"
+msgstr "Methu agor y ffeil cywaith."
 
