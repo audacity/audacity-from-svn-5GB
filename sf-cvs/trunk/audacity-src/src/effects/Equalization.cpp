@@ -990,9 +990,9 @@ void EqualizationDialog::MakeEqualizationDialog()
 
 #if wxUSE_ACCESSIBILITY
    dBMaxSlider->SetName(_("Max dB"));
-   dBMaxSlider->SetAccessible(new SliderAx(dBMaxSlider, wxT("%d ") + _("dB")));
+   dBMaxSlider->SetAccessible(new SliderAx(dBMaxSlider, wxString(wxT("%d ")) + _("dB")));
    dBMinSlider->SetName(_("Min dB"));
-   dBMinSlider->SetAccessible(new SliderAx(dBMinSlider, wxT("%d ") + _("dB")));
+   dBMinSlider->SetAccessible(new SliderAx(dBMinSlider, wxString(wxT("%d ")) + _("dB")));
 #endif
 
    dBRuler = new RulerPanel(this, wxID_ANY);
@@ -1088,11 +1088,11 @@ void EqualizationDialog::MakeEqualizationDialog()
 #if wxUSE_ACCESSIBILITY
       wxString name;
       if( thirdOct[i] < 1000.)
-         name.Printf(wxT("%d ") + _("Hz"), (int)thirdOct[i]);
+         name.Printf(wxString(wxT("%d ")) + _("Hz"), (int)thirdOct[i]);
       else
-         name.Printf(wxT("%g ") + _("kHz"), thirdOct[i]/1000.);
+         name.Printf(wxString(wxT("%g ")) + _("kHz"), thirdOct[i]/1000.);
       m_sliders[i]->SetName(name);
-      m_sliders[i]->SetAccessible(new SliderAx(m_sliders[i], wxT("%d ") + _("dB")));
+      m_sliders[i]->SetAccessible(new SliderAx(m_sliders[i], wxString(wxT("%d ")) + _("dB")));
 #endif
    }
    szrV->Add( szrG, 0, wxEXPAND|wxALIGN_LEFT|wxALL, 0 );
