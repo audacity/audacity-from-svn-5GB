@@ -62,12 +62,11 @@ void TrackPanelAx::SetFocus( Track *track )
 #endif
    }
 
-   // It's fine to have no focused track.
-   //if( track == NULL )
-   //{
-   //   TrackListIterator iter( mTrackPanel->mTracks );
-   //   track = iter.First();
-   //}
+   if( track == NULL )
+   {
+      TrackListIterator iter( mTrackPanel->mTracks );
+      track = iter.First();
+   }
 
    mFocusedTrack = track;
 
