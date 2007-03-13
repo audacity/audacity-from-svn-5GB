@@ -447,9 +447,10 @@ void SelectionBar::OnRateCaptureKey(wxCommandEvent &event)
    int keyCode = kevent->GetKeyCode();
 
    // Convert numeric keypad entries.
-   if ((keyCode >= WXK_NUMPAD0) && (keyCode <= WXK_NUMPAD9)) keyCode -= WXK_NUMPAD0 - '0';
+   if ((keyCode >= WXK_NUMPAD0) && (keyCode <= WXK_NUMPAD9))
+      keyCode -= WXK_NUMPAD0 - '0';
 
-   if (keyCode >= '0' || keyCode <= '9')
+   if (keyCode >= '0' && keyCode <= '9')
       return;
 
    event.Skip();
