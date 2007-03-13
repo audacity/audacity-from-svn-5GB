@@ -38,6 +38,7 @@ with changes in the SelectionBar.
 #include <wx/radiobut.h>
 #include <wx/sizer.h>
 #include <wx/statline.h>
+#include <wx/valtext.h>
 #endif
 
 #include "SelectionBar.h"
@@ -166,6 +167,7 @@ void SelectionBar::Populate()
                              wxT(""),
                              wxDefaultPosition, wxSize(80, -1));
    mRateBox->SetName(_("Project Rate (Hz):"));
+   mRateBox->SetValidator(wxTextValidator(wxFILTER_NUMERIC));
    mRateBox->SetValue(wxString::Format(wxT("%d"), (int)mRate));
    UpdateRates(); // Must be done _after_ setting value on mRateBox!
 
@@ -408,7 +410,7 @@ void SelectionBar::SetRate(double rate)
 void SelectionBar::OnRate(wxCommandEvent & WXUNUSED(event))
 {
    mRateBox->GetValue().ToDouble(&mRate);
-   if (mLeftTime) {
+   if (mRate != 0.0 && mLeftTime) {
       mLeftTime->SetSampleRate(mRate);
       mRightTime->SetSampleRate(mRate);
       mAudioTime->SetSampleRate(mRate);
