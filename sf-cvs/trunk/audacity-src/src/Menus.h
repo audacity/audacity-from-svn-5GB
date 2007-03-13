@@ -92,7 +92,6 @@ void OnShiftUp();
 void OnCursorDown();
 void OnShiftDown();
 void OnToggle();
-void OnNoFocus();
 
 void OnCursorLeft();
 void OnCursorRight();

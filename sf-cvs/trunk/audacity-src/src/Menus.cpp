@@ -903,7 +903,6 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("Toggle"),        _("Toggle Focused Track\tReturn"),                    FN(OnToggle));
    c->AddCommand(wxT("Toggle1"),       _("Toggle Focused Track\tNUMPAD_ENTER"),              FN(OnToggle));
    c->AddCommand(wxT("Toggle2"),       _("Toggle Focused Track\tCtrl+Spacebar"),             FN(OnToggle));
-   c->AddCommand(wxT("NoFocus"),       _("Unfocus Track\tEscape"),                           FN(OnNoFocus));
 
    c->AddCommand(wxT("CursorLeft"),    _("Cursor Left\tLeft"),                               FN(OnCursorLeft));
    c->AddCommand(wxT("CursorRight"),   _("Cursor Right\tRight"),                             FN(OnCursorRight));
@@ -1655,11 +1654,6 @@ void AudacityProject::OnShiftDown()
 void AudacityProject::OnToggle()
 {
    mTrackPanel->OnToggle( );
-}
-
-void AudacityProject::OnNoFocus()
-{
-   mTrackPanel->OnNoFocus( );
 }
 
 void AudacityProject::OnCursorLeft()

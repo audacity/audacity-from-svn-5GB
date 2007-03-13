@@ -190,7 +190,6 @@ class TrackPanel:public wxPanel {
    void OnPrevTrack(bool shift = false);
    void OnNextTrack(bool shift = false);
    void OnToggle();
-   void OnNoFocus();
 
    void OnCursorLeft(bool shift, bool ctrl);
    void OnCursorRight(bool shift, bool ctrl);

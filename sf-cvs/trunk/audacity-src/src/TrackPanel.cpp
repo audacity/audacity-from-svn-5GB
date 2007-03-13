@@ -1486,7 +1486,6 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       if (t)
          SelectionHandleClick(event, t, r, num);
       else {
-         SetFocusedTrack(NULL);
          SelectNone();
          Refresh(false);
       }
@@ -4897,13 +4896,6 @@ void TrackPanel::OnToggle()
    return;
 }
 
-void TrackPanel::OnNoFocus()
-{
-   SetFocusedTrack(NULL);
-   Refresh(false);
-   return;
-}
-
 // Make sure selection edge is in view                                       
 void TrackPanel::ScrollIntoView(double pos)
 {
@@ -5482,6 +5474,8 @@ void TrackPanel::EnsureVisible(Track * t)
    Track *it = NULL;
    Track *nt = NULL;
    //int i = 0;
+
+   SetFocusedTrack(t);
 
    int trackTop = 0;
    int trackHeight =0;
