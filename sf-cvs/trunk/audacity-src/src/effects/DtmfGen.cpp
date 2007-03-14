@@ -179,8 +179,8 @@ bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar t
 
    // now generate the wave: 'last' is used to avoid phase errors
    // when inside the inner for loop of the Process() function.
-   for(sampleCount i=last; i<len+last; i++) {
-      buffer[i]=0.5*(sin(A*(i))+sin(B*(i)));
+   for(sampleCount i=0; i<len; i++) {
+      buffer[i]=0.5*(sin(A*(i+last))+sin(B*(i+last)));
    }
 
    // generate a fade-in of duration 1/250th of second
@@ -195,8 +195,12 @@ bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar t
    if (last==total-len) {
       A=(fs/FADEINOUT);
       sampleCount offset=total-(longSampleCount)(fs/FADEINOUT);
-      for(sampleCount i=0; i<A; i++) {
-         buffer[i+offset]*=(1-(i/A));
+      // protect against negative offset, which can occur if too a 
+      // small selection is made
+      if (offset>=0) {
+         for(sampleCount i=0; i<A; i++) {
+            buffer[i+offset]*=(1-(i/A));
+         }
       }
    }
    return true;
