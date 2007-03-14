@@ -406,6 +406,9 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
 
    TrackProgress(count, 0.);
 
+   int wcopy;
+   int offset = (mM - 1)/2;
+
    while(len)
    {
       sampleCount block = idealBlockLen;
@@ -418,7 +421,7 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
 
       for(i=0; i<block; i+=L)   //go through block in lumps of length L
       {
-         int wcopy = L;
+         wcopy = L;
          if (i + wcopy > block)   //if last lump would exceed block
             wcopy = block - i;   //shorten it
          for(j=0; j<wcopy; j++)
@@ -430,15 +433,30 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
 
          Filter(windowSize, thisWindow);
 
-         for(j=0; j<mM-1; j++)
-            buffer[i+j] = thisWindow[j] + lastWindow[L + j];
-         for(j=mM-1; j<wcopy; j++)
-            buffer[i+j] = thisWindow[j];
+         //when copying samples from the output of the filter back to the buffer,
+         //offset them by half the filter length.  This makes the filter acausal
+         //but eliminates the delay.
+         //This means we start 'offset' samples into the filter's output.
+         if(i == 0)
+         {
+            for(j=offset; j<wcopy; j++)
+               buffer[i+j-offset] = thisWindow[j];
+         }
+         else
+         {
+            for(j=0; j<mM-1; j++)
+               buffer[i+j-offset] = thisWindow[j] + lastWindow[L + j];
+            for(j=mM-1; j<wcopy; j++)
+               buffer[i+j-offset] = thisWindow[j];
+         }
 
          float *tempP = thisWindow;
          thisWindow = lastWindow;
          lastWindow = tempP;
-      }   //next i, windowSize lump of this block
+      }   //next i, lump of size L or less
+      i -= L;  //put pointer back where it was
+      for(j; j<wcopy+offset; j++)   //fill the last 'offset' samples from the filter
+         buffer[i+j-offset] = lastWindow[j];
 
       t->Set((samplePtr)buffer, floatSample, s, block);
 
