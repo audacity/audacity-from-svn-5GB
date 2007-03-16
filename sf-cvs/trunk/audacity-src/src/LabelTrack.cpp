@@ -37,6 +37,7 @@ for drawing different aspects of the label and its text box.
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
 #include <wx/dc.h>
+#include <wx/dcclient.h>
 #include <wx/event.h>
 #include <wx/intl.h>
 #include <wx/log.h>
@@ -530,6 +531,23 @@ void LabelStruct::getXPos( wxDC & dc, int * xPos1, int cursorPos)
       dc.GetTextExtent(title.Left(cursorPos), &partWidth, NULL);
       *xPos1 += partWidth;
    }
+}
+
+bool LabelTrack::CalcCursorX(wxWindow * parent, int * x)
+{
+   if (mSelIndex >= 0) {
+      wxClientDC dc(parent);
+
+      if (msFont.Ok()) {
+         dc.SetFont(msFont);
+      }
+
+      mLabels[mSelIndex]->getXPos(dc, x, mCurrentCursorPos);
+      *x += LabelTrack::mIconWidth / 2;
+      return true;
+   }
+
+   return false;
 }
 
 /// Draw calls other functions to draw the LabelTrack.
@@ -1242,12 +1260,18 @@ bool LabelTrack::CaptureKey(wxKeyEvent & event)
          case WXK_TAB:
             return true;
          break;
+         case 'C':
+         case 'X':
+         case 'V':
+//            if (event.CmdDown())
+//               return true;
+         break;
       }
    }
 
    if (IsGoodLabelCharacter(keyCode, charCode) && !event.CmdDown())
       return true;
-
+printf("false\n");
    return false;
 }
 
