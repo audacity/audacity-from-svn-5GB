@@ -165,6 +165,7 @@ class LabelTrack:public Track {
    void DeleteLabel(int index);
 
    //get current cursor position
+   bool CalcCursorX(wxWindow * parent, int * x);
    int getCurrentCursorPosition() const { return mCurrentCursorPos; };
 
  public:

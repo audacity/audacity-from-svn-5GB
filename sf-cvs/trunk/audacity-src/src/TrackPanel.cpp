@@ -3722,14 +3722,22 @@ void TrackPanel::OnKeyDown(wxKeyEvent & event)
       return;
    }
 
+   LabelTrack *lt = (LabelTrack *)t;
    double bkpSel0 = mViewInfo->sel0, bkpSel1 = mViewInfo->sel1;
+
    // Pass keystroke to labeltrack's handler and add to history if any
    // updates were done
-   if (((LabelTrack *)t)->OnKeyDown(mViewInfo->sel0, mViewInfo->sel1, event))
+   if (lt->OnKeyDown(mViewInfo->sel0, mViewInfo->sel1, event))
       MakeParentPushState(_("Modified Label"),
                           _("Label Edit"),
                           true /* consolidate */);
-   
+
+   // Make sure caret is in view
+   int x;
+   if (lt->CalcCursorX(this, &x)) {
+      ScrollIntoView(PositionToTime(x, GetLeftOffset()));
+   }
+
    // If selection modified, refresh
    // Otherwise, refresh track display if the keystroke was handled
    if( bkpSel0 != mViewInfo->sel0 || bkpSel1 != mViewInfo->sel1 )
@@ -3755,7 +3763,7 @@ void TrackPanel::OnChar(wxKeyEvent & event)
       MakeParentPushState(_("Modified Label"),
                           _("Label Edit"),
                           true /* consolidate */);
-   
+
    // If selection modified, refresh
    // Otherwise, refresh track display if the keystroke was handled
    if( bkpSel0 != mViewInfo->sel0 || bkpSel1 != mViewInfo->sel1 )
