@@ -53,11 +53,12 @@ void InitHelp(wxWindow * parent)
                                             wxGetApp().audacityPathList);
       }
 
+#if defined(__WXMSW__)
       wxGetApp().FindFilesInPathList(wxT("audacity-1.2-help.chm"),
                                      wxGetApp().audacityPathList,
                                      wxFILE,
                                      helpFiles);
-
+#endif
       if (helpFiles.GetCount() == 0) {
          wxGetApp().FindFilesInPathList(wxT("audacity-1.2-help.htb"),
                                         wxGetApp().audacityPathList,
@@ -68,7 +69,11 @@ void InitHelp(wxWindow * parent)
                                       NULL,
                                       wxT("audacity-1.2-help"),
                                       wxT(""),
+#if defined(__WXMSW__)
                                       _("Help Files (*.chm, *.htb)|*.chm;*.htb"),
+#else
+                                      _("Help Files (*.htb)|*.htb"),
+#endif
                                       wxOPEN,
                                       parent);
          }
@@ -84,12 +89,12 @@ void InitHelp(wxWindow * parent)
          return;
       }
 
-      if (helpFile.GetExt().Lower() == wxT("chm")) {
+#if defined(__WXMSW__)
+      if (helpFile.GetExt().Lower() == wxT("chm"))
          gHelp = new wxCHMHelpController();
-      }
-      else {
+      else
+#endif
          gHelp = new wxHtmlHelpController();
-      }
 
       gHelp->SetParentWindow(parent);
       if (!gHelp->Initialize(helpFile.GetFullPath())) {
@@ -98,7 +103,7 @@ void InitHelp(wxWindow * parent)
          gHelp = NULL;
       }
 
-      gPrefs->Write(wxT("/Help/helpFilePath1.2"), helpFile.GetPath());
+      gPrefs->Write(wxT("/Help/helpFilePath1.2"), helpFile.GetPath() + wxFILE_SEP_PATH);
    }
 }
 
