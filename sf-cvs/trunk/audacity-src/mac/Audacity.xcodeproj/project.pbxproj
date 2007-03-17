@@ -3033,14 +3033,14 @@
 		1790B06209883BFD008A330A /* export */ = {
 			isa = PBXGroup;
 			children = (
-				2840CF840AEB83DB00F49FC3 /* ExportMP2.cpp */,
-				2840CF850AEB83DB00F49FC3 /* ExportMP2.h */,
 				1790B06409883BFD008A330A /* Export.cpp */,
 				1790B06509883BFD008A330A /* Export.h */,
 				1790B06609883BFD008A330A /* ExportCL.cpp */,
 				1790B06709883BFD008A330A /* ExportCL.h */,
 				28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */,
 				28E3E6E60A7C14CA00AB1361 /* ExportFLAC.h */,
+				2840CF840AEB83DB00F49FC3 /* ExportMP2.cpp */,
+				2840CF850AEB83DB00F49FC3 /* ExportMP2.h */,
 				1790B06809883BFD008A330A /* ExportMP3.cpp */,
 				1790B06909883BFD008A330A /* ExportMP3.h */,
 				1790B06A09883BFD008A330A /* ExportMultiple.cpp */,
@@ -5584,7 +5584,7 @@
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				TOPLEVEL = ..;
-				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
+				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-debug-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
 				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macd_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macd_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macd_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macd_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macd_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbond_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbond_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbond-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpatd-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiffd-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpegd-$(WX_VER).a $(WX_PREFIX)/lib/libwxpngd-$(WX_VER).a";
