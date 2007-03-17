@@ -28,8 +28,10 @@
 
 #include <wx/defs.h>
 #include <wx/filedlg.h>
+#include <wx/filename.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
+#include <wx/help.h>
 #include <wx/html/helpctrl.h>
 #include <wx/intl.h>
 
@@ -38,50 +40,65 @@
 #include "Internat.h"
 #include "Prefs.h"
 
-wxHtmlHelpController *gHelp = NULL;
+wxHelpControllerBase *gHelp = NULL;
 
 void InitHelp(wxWindow * parent)
 {
    if (!gHelp) {
-      wxString defaultLoc;
       wxArrayString helpFiles;
+      wxFileName helpFile = gPrefs->Read(wxT("/Help/helpFilePath1.2"), wxT(""));
 
-      wxGetApp().FindFilesInPathList(wxT("audacity-1.2-help.htb"),
+      if (helpFile != wxT("")) {
+         wxGetApp().AddUniquePathToPathList(helpFile.GetPath(),
+                                            wxGetApp().audacityPathList);
+      }
+
+      wxGetApp().FindFilesInPathList(wxT("audacity-1.2-help.chm"),
                                      wxGetApp().audacityPathList,
                                      wxFILE,
                                      helpFiles);
 
-      if (helpFiles.GetCount() > 0)
-         defaultLoc = helpFiles[0];
-	  else {
-         defaultLoc = wxT(INSTALL_PREFIX);
-         defaultLoc += wxT("/share/audacity/audacity-1.2-help.htb");
-	  }
-
-      wxString helpFilePath =
-          gPrefs->Read(wxT("/Help/HelpFilePath1.2"), defaultLoc);
-
-      if (!::wxFileExists(helpFilePath)) {
-         helpFilePath = defaultLoc;
+      if (helpFiles.GetCount() == 0) {
+         wxGetApp().FindFilesInPathList(wxT("audacity-1.2-help.htb"),
+                                        wxGetApp().audacityPathList,
+                                        wxFILE,
+                                        helpFiles);
+         if (helpFiles.GetCount() == 0) {
+            helpFile = wxFileSelector(_("Where is audacity-1.2-help?"),
+                                      NULL,
+                                      wxT("audacity-1.2-help"),
+                                      wxT(""),
+                                      _("Help Files (*.chm, *.htb)|*.chm;*.htb"),
+                                      wxOPEN,
+                                      parent);
+         }
+         else {
+            helpFile = helpFiles[0];
+         }
       }
-      if (!::wxFileExists(helpFilePath)) {
-         helpFilePath = wxFileSelector(_("Where is audacity-1.2-help.htb?"), NULL,
-                                       wxT("audacity-1.2-help.htb"),    // Name
-                                       wxT(""),                     // Extension
-                                       _("HTML Help Books (*.htb)|*.htb"),
-                                       wxOPEN, parent);
-         if (helpFilePath == wxT(""))
-            return;
+      else {
+         helpFile = helpFiles[0];
       }
 
-      gHelp = new wxHtmlHelpController();
-      if (!gHelp->AddBook(helpFilePath)) {
+      if (!::wxFileExists(helpFile.GetFullPath())) {
+         return;
+      }
+
+      if (helpFile.GetExt().Lower() == wxT("chm")) {
+         gHelp = new wxCHMHelpController();
+      }
+      else {
+         gHelp = new wxHtmlHelpController();
+      }
+
+      gHelp->SetParentWindow(parent);
+      if (!gHelp->Initialize(helpFile.GetFullPath())) {
          wxMessageBox(_("Couldn't open the Audacity Help file."));
          delete gHelp;
          gHelp = NULL;
       }
 
-      gPrefs->Write(wxT("/Help/HelpFilePath1.2"), helpFilePath);
+      gPrefs->Write(wxT("/Help/helpFilePath1.2"), helpFile.GetPath());
    }
 }
 
@@ -90,15 +107,18 @@ void ShowHelp(wxWindow * parent)
    InitHelp(parent);
 
    if (gHelp)
-      gHelp->Display(wxT("contents.htm"));
+      gHelp->DisplayContents();
 }
 
 void ShowHelpIndex(wxWindow * parent)
 {
    InitHelp(parent);
 
-   if (gHelp)
-      gHelp->DisplayIndex();
+// LLL: No DisplayIndex() in CHM help controller.  Not using right
+//      now anyway.
+//
+//   if (gHelp)
+//      gHelp->DisplayIndex();
 }
 
 void ShowHelp(wxWindow * parent, wxString topic)
