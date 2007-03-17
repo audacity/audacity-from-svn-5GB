@@ -160,7 +160,8 @@ enum {
    LabelsSelectedFlag     = 0x00020000,
    AudioIOBusyFlag        = 0x00040000,  //lll
    PlayRegionLockedFlag   = 0x00080000,  //msmeyer
-   PlayRegionNotLockedFlag= 0x00100000   //msmeyer
+   PlayRegionNotLockedFlag= 0x00100000,  //msmeyer
+   CutCopyAvailableFlag   = 0x00200000   //lll
 };
 
 wxString SHOW(const wxString &toolbarName)
@@ -417,8 +418,14 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
    c->AddItem(wxT("Cut"),            _("Cu&t\tCtrl+X"),                   FN(OnCut));
+   c->SetCommandFlags(wxT("Cut"),
+                      AudioIONotBusyFlag | CutCopyAvailableFlag,
+                      AudioIONotBusyFlag | CutCopyAvailableFlag);
    c->AddItem(wxT("SplitCut"),       _("Spl&it Cut\tCtrl+Alt+X"),          FN(OnSplitCut));
    c->AddItem(wxT("Copy"),           _("&Copy\tCtrl+C"),                  FN(OnCopy)); 
+   c->SetCommandFlags(wxT("Copy"),
+                      AudioIONotBusyFlag | CutCopyAvailableFlag,
+                      AudioIONotBusyFlag | CutCopyAvailableFlag);
    c->AddItem(wxT("Paste"),          _("&Paste\tCtrl+V"),                 FN(OnPaste));
    c->SetCommandFlags(wxT("Paste"),
                       AudioIONotBusyFlag | ClipboardFlag,
@@ -1120,26 +1127,28 @@ wxUint32 AudacityProject::GetUpdateFlags()
    Track *t = iter.First();
    while (t) {
       flags |= TracksExistFlag;
-      if (t->GetKind() == Track::Label)
-      {
-         flags |= LabelTracksExistFlag;
-         if( t->GetSelected() )
-         {
-            flags |= TracksSelectedFlag;
+      if (t->GetKind() == Track::Label) {
+         LabelTrack *lt = (LabelTrack *) t;
 
-            LabelTrack *lt = ( LabelTrack* )t; 
-            for( int i = 0; i < lt->GetNumLabels(); i++ ) 
-            {
-               const LabelStruct *ls = lt->GetLabel( i );
-               if( ls->t >= mViewInfo.sel0 && ls->t1 <= mViewInfo.sel1 )
-               {
+         flags |= LabelTracksExistFlag;
+
+         if (lt->GetSelected()) {
+            flags |= TracksSelectedFlag;
+            for (int i = 0; i < lt->GetNumLabels(); i++) {
+               const LabelStruct *ls = lt->GetLabel(i);
+               if (ls->t >= mViewInfo.sel0 && ls->t1 <= mViewInfo.sel1) {
                   flags |= LabelsSelectedFlag;
                   break;
                }
             }
+         }
 
-            if (((LabelTrack *)t)->IsTextClipSupported())
-               flags |= TextClipFlag;
+         if (lt->IsTextSelected()) {
+            flags |= CutCopyAvailableFlag;
+         }
+
+         if (lt->IsTextClipSupported()) {
+            flags |= TextClipFlag;
          }
       }
       else if (t->GetKind() == Track::Wave) {
@@ -1183,6 +1192,14 @@ wxUint32 AudacityProject::GetUpdateFlags()
       flags |= PlayRegionLockedFlag;
    else
       flags |= PlayRegionNotLockedFlag;
+
+   if (flags & AudioIONotBusyFlag) {
+      if (flags & TimeSelectedFlag) {
+         if (flags & TracksSelectedFlag) {
+            flags |= CutCopyAvailableFlag;
+         }
+      }
+   }
 
    return flags;
 }
@@ -1250,6 +1267,11 @@ void AudacityProject::UpdateMenus()
 
    mLastFlags = flags;
    mCommandManager.EnableUsingFlags(flags, 0xFFFFFFFF);
+
+   if (flags & CutCopyAvailableFlag) {
+      mCommandManager.Enable(wxT("Copy"), true);
+      mCommandManager.Enable(wxT("Cut"), true);
+   }
 
    ModifyToolbarMenus();
 
@@ -2520,8 +2542,16 @@ void AudacityProject::OnPaste()
    while (countTrack) {
       if (countTrack->GetSelected()) {
          if (countTrack->GetKind() == Track::Label) {
-            if (((LabelTrack *)countTrack)->PasteSelectedText(mViewInfo.sel0, mViewInfo.sel1)) {
+            LabelTrack *lt = (LabelTrack *) countTrack;
+            if (lt->PasteSelectedText(mViewInfo.sel0, mViewInfo.sel1)) {
                PushState(_("Pasted text from the clipboard"), _("Paste"));
+
+               // Make sure caret is in view
+               int x;
+               if (lt->CalcCursorX(this, &x)) {
+                  mTrackPanel->ScrollIntoView(x);
+               }
+
                RedrawProject();
                return;
             }

@@ -1260,18 +1260,12 @@ bool LabelTrack::CaptureKey(wxKeyEvent & event)
          case WXK_TAB:
             return true;
          break;
-         case 'C':
-         case 'X':
-         case 'V':
-//            if (event.CmdDown())
-//               return true;
-         break;
       }
    }
 
    if (IsGoodLabelCharacter(keyCode, charCode) && !event.CmdDown())
       return true;
-printf("false\n");
+
    return false;
 }
 
