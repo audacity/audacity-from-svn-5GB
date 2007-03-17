@@ -39,6 +39,8 @@ private:
    void GetNamesAndLabels();
    void OnFormatChoice(wxCommandEvent& evt);
    void OnMP3FindButton(wxCommandEvent& evt);
+   void OnMP3VBR(wxCommandEvent& evt);
+   void OnMP3CBR(wxCommandEvent& evt);
    void SetMP3VersionText();
    void SetFormatText();
    void OpenOtherFormatDialog();
@@ -46,11 +48,17 @@ private:
    int mOggQualityUnscaled;
    int mFormat;
 
+   wxArrayString mMP3RateNames;
+   wxArrayInt    mMP3RateLabels;
    wxArrayString mBitRateNames;
    wxArrayInt    mBitRateLabels;
    wxArrayString mFormatNames;
    wxString      mFormatFromChoice;
 
+   wxRadioButton *mMP3Stereo;
+   wxRadioButton *mMP3Joint;
+   wxRadioButton *mMP3VBR;
+   wxRadioButton *mMP3CBR;
    wxChoice *mMP3Bitrate;
    wxStaticText *mMP3Version;
    wxStaticText *mFormatText;

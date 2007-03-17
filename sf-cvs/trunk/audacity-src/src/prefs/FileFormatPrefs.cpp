@@ -32,6 +32,7 @@ just the standard combinations.
 #include <wx/intl.h>
 #include <wx/choice.h>
 #include <wx/stattext.h>
+#include <wx/radiobut.h>
 #include <wx/button.h>
 #include <wx/arrstr.h>
 
@@ -46,10 +47,14 @@ just the standard combinations.
 #define ID_MP3_FIND_BUTTON         7001
 #define ID_EXPORT_OPTIONS_BUTTON   7002
 #define ID_FORMAT_CHOICE           7003
+#define ID_MP3_VBR                 7004
+#define ID_MP3_CBR                 7005
 
 BEGIN_EVENT_TABLE(FileFormatPrefs, wxPanel)
    EVT_BUTTON(ID_MP3_FIND_BUTTON, FileFormatPrefs::OnMP3FindButton)
    EVT_CHOICE(ID_FORMAT_CHOICE,   FileFormatPrefs::OnFormatChoice)
+   EVT_RADIOBUTTON(ID_MP3_VBR,    FileFormatPrefs::OnMP3VBR)
+   EVT_RADIOBUTTON(ID_MP3_CBR,    FileFormatPrefs::OnMP3CBR)
 END_EVENT_TABLE()
 
 FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
@@ -85,8 +90,13 @@ void FileFormatPrefs::Populate( )
    // ----------------------- End of main section --------------
    // Set the MP3 Version string.  Also enable/disable bitrate.
    SetMP3VersionText();
-   if(!GetMP3Exporter()->ValidLibraryLoaded())
+   if(!GetMP3Exporter()->ValidLibraryLoaded()) {
       mMP3Bitrate->Enable(false);
+      mMP3Stereo->Enable(false);
+      mMP3Joint->Enable(false);
+      mMP3VBR->Enable(false);
+      mMP3CBR->Enable(false);
+   }
    // Set the format string.
    SetFormatText();
 }
@@ -175,15 +185,49 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
       // Some rather fiddly sizers to get the 'Find Library' button 
       // exactly where we want it.
       S.StartMultiColumn(2,wxEXPAND);
-      S.SetStretchyCol(1);
-      S.StartTwoColumn();
-      S.AddFixedText( _("MP3 Library Version:"));
-      mMP3Version = S.AddVariableText( wxT("CAPITAL LETTERS"));
-      mMP3Bitrate = S.TieChoice( _("Bit Rate:"), wxT("/FileFormats/MP3Bitrate"), 
-         128, mBitRateNames, mBitRateLabels );
-      S.EndTwoColumn();
-      S.Id( ID_MP3_FIND_BUTTON ).AddButton( _("&Find Library"), 
-         wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL);
+         S.SetStretchyCol(1);
+         S.StartTwoColumn();
+            S.AddFixedText( _("MP3 Library Version:"));
+            mMP3Version = S.AddVariableText( wxT("CAPITAL LETTERS"));
+            S.AddPrompt( _("Bit Rate:"));
+            S.StartTwoColumn();
+               S.StartRadioButtonGroup(wxT("/FileFormats/MP3RateMode"),wxT("cbr"));
+                  mMP3VBR = S.Id( ID_MP3_VBR ).TieRadioButton( _("Variable"), wxT("vbr"));
+                  mMP3CBR = S.Id( ID_MP3_CBR ).TieRadioButton( _("Constant"), wxT("cbr"));
+               S.EndRadioButtonGroup();
+            S.EndTwoColumn();
+
+            if (mMP3VBR->GetValue()) {
+               mMP3RateNames.Add(_("0 (Best quality)"));
+               mMP3RateLabels.Add( 0 );
+               for(unsigned int i=1;i<9;i++)
+               {
+                  mMP3RateNames.Add(wxString::Format(wxT("%i"),i));
+                  mMP3RateLabels.Add( i );
+               }
+               mMP3RateNames.Add(_("9 (Smaller files)"));
+               mMP3RateLabels.Add( 9 );
+            }
+            else {
+               for(unsigned int i=0;i<(sizeof(iBitrates)/sizeof(int));i++)
+               {
+                  mMP3RateNames.Add( wxString::Format(wxT("%i"),iBitrates[i] ));
+                  mMP3RateLabels.Add( iBitrates[i] );
+               }
+            }
+
+            mMP3Bitrate = S.TieChoice( _("Quality:"), wxT("/FileFormats/MP3Bitrate"), 
+                                       128, mMP3RateNames, mMP3RateLabels );
+            S.AddPrompt( _("Mode:"));
+            S.StartTwoColumn();
+               S.StartRadioButtonGroup(wxT("/FileFormats/MP3ChannelMode"),wxT("joint"));
+                  mMP3Joint = S.TieRadioButton( _("Joint Stereo"), wxT("joint"));
+                  mMP3Stereo = S.TieRadioButton( _("Stereo"), wxT("stereo"));
+               S.EndRadioButtonGroup();
+            S.EndTwoColumn();
+         S.EndTwoColumn();
+         S.Id( ID_MP3_FIND_BUTTON ).AddButton( _("&Find Library"), 
+            wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL);
       S.EndMultiColumn();
    }
    S.EndStatic();
@@ -269,8 +313,56 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
       gPrefs->Write(wxT("/MP3/MP3LibPath"), oldPath);
    }
    
-   if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE)
-      mMP3Bitrate->Enable(GetMP3Exporter()->ValidLibraryLoaded());
+   if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
+      bool valid = GetMP3Exporter()->ValidLibraryLoaded();
+      mMP3Bitrate->Enable(valid);
+      mMP3Stereo->Enable(valid);
+      mMP3Joint->Enable(valid);
+      mMP3VBR->Enable(valid);
+      mMP3CBR->Enable(valid);
+   }
+}
+
+/// 
+/// 
+void FileFormatPrefs::OnMP3VBR(wxCommandEvent& evt)
+{
+   mMP3Bitrate->Clear();
+   mMP3RateNames.Clear();
+   mMP3RateLabels.Clear();
+
+   mMP3RateNames.Add(_("0 (Best quality)"));
+   mMP3RateLabels.Add( 0 );
+   for(unsigned int i=1;i<9;i++)
+   {
+      mMP3RateNames.Add(wxString::Format(wxT("%i"),i));
+      mMP3RateLabels.Add( i );
+   }
+   mMP3RateNames.Add(_("9 (Smaller files)"));
+   mMP3RateLabels.Add( 9 );
+
+   mMP3Bitrate->Append(mMP3RateNames);
+   mMP3Bitrate->SetSelection(5);
+   mMP3Bitrate->Refresh();
+}
+
+/// 
+/// 
+void FileFormatPrefs::OnMP3CBR(wxCommandEvent& evt)
+{
+   mMP3Bitrate->Clear();
+   mMP3RateNames.Clear();
+   mMP3RateLabels.Clear();
+
+   for(unsigned int i=0;i<(sizeof(iBitrates)/sizeof(int));i++)
+   {
+      mMP3RateNames.Add( wxString::Format(wxT("%i"),iBitrates[i] ));
+      mMP3RateLabels.Add( iBitrates[i] );
+   }
+
+   mMP3Bitrate->Append(mMP3RateNames);
+   mMP3Bitrate->SetSelection(10);
+   mMP3Bitrate->Refresh();
 }
 
 /// Takes the settings from the dilaog and puts them into prefs.

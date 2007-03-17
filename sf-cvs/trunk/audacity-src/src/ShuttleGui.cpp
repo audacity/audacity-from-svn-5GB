@@ -1422,16 +1422,16 @@ void ShuttleGuiBase::StartRadioButtonGroup( const wxString & SettingName, const 
 
 
 /// This function must be within a StartRadioButtonGroup - EndRadioButtonGroup pair.
-void ShuttleGuiBase::TieRadioButton( 
+wxRadioButton * ShuttleGuiBase::TieRadioButton( 
    const wxString &Prompt, 
    int iValue)
 {
    WrappedType WrappedRef( iValue );
-   TieRadioButton( Prompt, WrappedRef );
+   return TieRadioButton( Prompt, WrappedRef );
 }
 
 /// This function must be within a StartRadioButtonGroup - EndRadioButtonGroup pair.
-void ShuttleGuiBase::TieRadioButton( 
+wxRadioButton * ShuttleGuiBase::TieRadioButton( 
    const wxString &Prompt, 
    const wxString &Value)
 {
@@ -1439,7 +1439,7 @@ void ShuttleGuiBase::TieRadioButton(
    // don't have a 'read-only' version, so we copy to deal with the constness.
    wxString Temp = Value;
    WrappedType WrappedRef( Temp ); 
-   TieRadioButton( Prompt, WrappedRef );
+   return TieRadioButton( Prompt, WrappedRef );
 }
 
 //------------------------------------------------------------------//
