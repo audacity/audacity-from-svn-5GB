@@ -5004,9 +5004,6 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
          return;
       }
       
-      // Clear all selections
-      SelectNone();
- 
       // Already in cursor mode?
       if( mViewInfo->sel0 == mViewInfo->sel1 )
       {
@@ -5119,10 +5116,7 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
          gAudioIO->SeekStream(mSeekShort);
          return;
       }
-      
-      // Clear all selections
-      SelectNone();
- 
+
       // Already in cursor mode?
       if (mViewInfo->sel0 == mViewInfo->sel1)
       {
