@@ -151,8 +151,8 @@ public:
    wxSlider * TieSlider( const wxString &Prompt, int &pos, const int max );
 
    wxRadioButton * TieRadioButton( const wxString & Prompt, WrappedType &WrappedRef);
-   void TieRadioButton( const wxString &Prompt, const int iValue);
-   void TieRadioButton( const wxString &Prompt, const wxString &Value);
+   wxRadioButton * TieRadioButton( const wxString &Prompt, const int iValue);
+   wxRadioButton * TieRadioButton( const wxString &Prompt, const wxString &Value);
 
 //-- Variants of the standard Tie functions which do two step exchange in one go
 // Note that unlike the other Tie functions, ALL the arguments are const.

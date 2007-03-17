@@ -51,6 +51,13 @@ typedef int lame_set_quality_t(lame_global_flags*, int);
 typedef int lame_get_quality_t(lame_global_flags*);
 typedef int lame_set_brate_t(lame_global_flags*, int);
 typedef int lame_get_brate_t(lame_global_flags*);
+typedef int lame_set_VBR_t(lame_global_flags *, vbr_mode);
+typedef vbr_mode lame_get_VBR_t(const lame_global_flags *);
+typedef int lame_set_VBR_q_t(lame_global_flags *, int);
+typedef int lame_get_VBR_q_t(const lame_global_flags *);
+typedef int lame_set_mode_t(lame_global_flags *, MPEG_mode);
+typedef MPEG_mode lame_get_mode_t(const lame_global_flags *);
+
 
 /* --------------------------------------------------------------------------*/
 
@@ -94,6 +101,10 @@ class MP3Exporter {
       int GetBitrate();
       void SetQuality(int quality);
       int GetQuality();
+      void SetVBRQuality(int quality);
+      int GetVBRQuality();
+      void SetMode(MPEG_mode mode);
+      MPEG_mode GetMode();
 
    protected:
 
@@ -118,6 +129,12 @@ class MP3Exporter {
       lame_get_quality_t* lame_get_quality;
       lame_set_brate_t* lame_set_brate;
       lame_get_brate_t* lame_get_brate;
+      lame_set_VBR_t* lame_set_VBR;
+      lame_get_VBR_t* lame_get_VBR;
+      lame_set_VBR_q_t* lame_set_VBR_q;
+      lame_get_VBR_q_t* lame_get_VBR_q;
+      lame_set_mode_t* lame_set_mode;
+      lame_get_mode_t* lame_get_mode;
 
       lame_global_flags *mGF;
       

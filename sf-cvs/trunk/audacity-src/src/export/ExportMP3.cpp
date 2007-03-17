@@ -310,6 +310,16 @@ bool MP3Exporter::LoadLibrary()
        (lame_set_brate_t *) lame_enc_lib.GetSymbol(wxT("lame_set_brate"));
    lame_get_brate =
        (lame_get_brate_t *) lame_enc_lib.GetSymbol(wxT("lame_get_brate"));
+   lame_set_VBR =
+       (lame_set_VBR_t *) lame_enc_lib.GetSymbol(wxT("lame_set_VBR"));
+   lame_get_VBR =
+       (lame_get_VBR_t *) lame_enc_lib.GetSymbol(wxT("lame_get_VBR"));
+   lame_set_VBR_q =
+       (lame_set_VBR_q_t *) lame_enc_lib.GetSymbol(wxT("lame_set_VBR_q"));
+   lame_get_VBR_q =
+       (lame_get_VBR_q_t *) lame_enc_lib.GetSymbol(wxT("lame_get_VBR_q"));
+   lame_set_mode =
+       (lame_set_mode_t *) lame_enc_lib.GetSymbol(wxT("lame_set_mode"));
 
    /* we assume that if all the symbols are found, it's a valid library */
 
@@ -324,7 +334,10 @@ bool MP3Exporter::LoadLibrary()
        !lame_set_out_samplerate ||
        !lame_set_num_channels ||
        !lame_set_quality ||
-       !lame_set_brate) {
+       !lame_set_brate ||
+       !lame_set_VBR ||
+       !lame_set_VBR_q ||
+       !lame_set_mode) {
       return false;
    }
 
@@ -425,12 +438,34 @@ int MP3Exporter::GetQualityVariance()
 
 void MP3Exporter::SetBitrate(int rate)
 {
+   lame_set_VBR(mGF, vbr_off);
    lame_set_brate(mGF, rate);
 }
 
 int MP3Exporter::GetBitrate()
 {
-   return lame_get_quality(mGF);
+   return lame_get_brate(mGF);
+}
+
+void MP3Exporter::SetVBRQuality(int quality)
+{
+   lame_set_VBR(mGF, vbr_mtrh);
+   lame_set_VBR_q(mGF, quality);
+}
+
+int MP3Exporter::GetVBRQuality()
+{
+   return lame_get_VBR_q(mGF);
+}
+
+void MP3Exporter::SetMode(MPEG_mode mode)
+{
+   lame_set_mode(mGF, mode);
+}
+
+MPEG_mode MP3Exporter::GetMode()
+{
+   return lame_get_mode(mGF);
 }
 
 void MP3Exporter::SetQuality(int quality)
@@ -531,7 +566,16 @@ bool ExportMP3(AudacityProject *project,
    /* Export MP3 using DLL */
 
    long bitrate = gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), 128);
-   exporter->SetBitrate(bitrate);
+   wxString rmode = gPrefs->Read(wxT("/FileFormats/MP3RateMode"), wxT("cbr"));
+   if (rmode == wxT("cbr")) {
+      exporter->SetBitrate(bitrate);
+   }
+   else {
+      exporter->SetVBRQuality(bitrate);
+   }
+
+   wxString cmode = gPrefs->Read(wxT("/FileFormats/MP3ChannelMode"), wxT("joint"));
+   exporter->SetMode( cmode == wxT("joint") ? JOINT_STEREO : STEREO );
 
    sampleCount inSamples = exporter->InitializeStream(stereo ? 2 : 1, int(rate + 0.5));
 
