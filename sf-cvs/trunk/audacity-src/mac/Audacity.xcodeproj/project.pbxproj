@@ -1491,7 +1491,6 @@
 		1790B08F09883BFD008A330A /* ImportRaw.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ImportRaw.h; sourceTree = "<group>"; };
 		1790B09009883BFD008A330A /* RawAudioGuess.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = RawAudioGuess.cpp; sourceTree = "<group>"; };
 		1790B09109883BFD008A330A /* RawAudioGuess.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = RawAudioGuess.h; sourceTree = "<group>"; };
-		1790B09309883BFD008A330A /* BladeMP3EncDLL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = BladeMP3EncDLL.h; sourceTree = "<group>"; };
 		1790B09509883BFD008A330A /* lame.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = lame.h; sourceTree = "<group>"; };
 		1790B09909883BFD008A330A /* Internat.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Internat.cpp; sourceTree = "<group>"; };
 		1790B09A09883BFD008A330A /* Internat.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Internat.h; sourceTree = "<group>"; };
@@ -3082,7 +3081,6 @@
 		1790B09209883BFD008A330A /* include */ = {
 			isa = PBXGroup;
 			children = (
-				1790B09309883BFD008A330A /* BladeMP3EncDLL.h */,
 				1790B09509883BFD008A330A /* lame.h */,
 			);
 			path = include;
