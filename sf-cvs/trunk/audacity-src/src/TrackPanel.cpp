@@ -3735,7 +3735,7 @@ void TrackPanel::OnKeyDown(wxKeyEvent & event)
    // Make sure caret is in view
    int x;
    if (lt->CalcCursorX(this, &x)) {
-      ScrollIntoView(PositionToTime(x, GetLeftOffset()));
+      ScrollIntoView(x);
    }
 
    // If selection modified, refresh
@@ -4915,6 +4915,11 @@ void TrackPanel::ScrollIntoView(double pos)
    {
       mListener->TP_ScrollWindow( pos - ( ( w / 2 ) / mViewInfo->zoom ) );
    }
+}
+
+void TrackPanel::ScrollIntoView(int x)
+{
+   ScrollIntoView(PositionToTime(x, GetLeftOffset()));
 }
 
 void TrackPanel::OnCursorLeft( bool shift, bool ctrl )

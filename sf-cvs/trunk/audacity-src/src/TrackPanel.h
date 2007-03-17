@@ -194,6 +194,7 @@ class TrackPanel:public wxPanel {
    void OnCursorLeft(bool shift, bool ctrl);
    void OnCursorRight(bool shift, bool ctrl);
    void ScrollIntoView(double pos);
+   void ScrollIntoView(int x);
 
    void OnTrackPan();
    void OnTrackPanLeft();
