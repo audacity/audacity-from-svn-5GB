@@ -70,7 +70,6 @@ simplifies construction of menu items.
 #include "Tags.h"
 #include "Mix.h"
 #include "AboutDialog.h"
-#include "Help.h"
 #include "Benchmark.h"
 
 #include "Resample.h"
@@ -828,10 +827,6 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->BeginMenu(_("&Help"));
    c->SetDefaultFlags(0, 0);
-   c->AddItem(wxT("Help"),           _("&Contents..."),             FN(OnHelp));
-#if !defined(__WXMAC__)
-   c->AddSeparator();   
-#endif
    if( mCleanSpeechMode )
    	c->AddItem(wxT("About"),          _("&About Audacity CleanSpeech..."), FN(OnAbout));
    else
@@ -840,7 +835,9 @@ void AudacityProject::CreateMenusAndCommands()
 #if 1 // Benchmark is enabled in unstable builds
    if( !mCleanSpeechMode )
    {
-      c->AddSeparator();   
+#if !defined(__WXMAC__)
+      c->AddSeparator();
+#endif
       c->AddItem(wxT("Benchmark"),      _("&Run Benchmark..."),           FN(OnBenchmark));
    }
 #endif 
@@ -4422,21 +4419,6 @@ void AudacityProject::OnAbout()
 {
    AboutDialog dlog(this);
    dlog.ShowModal();
-}
-
-void AudacityProject::OnHelp()
-{
-   ::ShowHelp(this);
-}
-
-void AudacityProject::OnHelpIndex()
-{
-   ::ShowHelpIndex(this);
-}
-
-void AudacityProject::OnHelpSearch()
-{
-   ::SearchHelp(this);
 }
 
 void AudacityProject::OnBenchmark()
