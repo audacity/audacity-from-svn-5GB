@@ -55,7 +55,6 @@ OBJS = \
 	FFT.o \
 	FileNames.o \
 	FreqWindow.o \
-	Help.o \
 	HistoryWindow.o \
 	ImageManipulation.o \
 	InterpolateAudio.o \
