@@ -27,7 +27,6 @@ hold information about one contributor to Audacity.
 #include "Audacity.h"
 
 #include <wx/dialog.h>
-#include <wx/html/htmlwin.h>
 #include <wx/button.h>
 #include <wx/dcclient.h>
 #include <wx/sizer.h>
@@ -37,6 +36,8 @@ hold information about one contributor to Audacity.
 #include "AboutDialog.h"
 #include "FileNames.h"
 #include "Internat.h"
+#include "widgets/LinkingHtmlWindow.h"
+
 #include "portaudio.h"
 
 #include <wx/listimpl.cpp>
@@ -246,7 +247,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
       _("A Free Digital Audio Editor") + 
       wxT("</center><p>") + par1Str +
       wxT("<p>") + par2Str +
-      wxT("<p>http://audacity.sourceforge.net/") + 
+      wxT("<p><center><a href=\"http://audacity.sourceforge.net/\">http://audacity.sourceforge.net/</a></center>") + 
       wxT("<p><center><b>") + _("Information") + wxT("</b></center>") + 
       wxT("<p><br>") + informationStr + 
       wxT("<p><center><b>") + _("Credits") + wxT("</b></center>")
@@ -298,10 +299,11 @@ AboutDialog::AboutDialog(wxWindow * parent)
                           wxSize(215, 190));
    pBoxSizer->Add(icon, 0, wxALIGN_CENTER | wxALL, 8);
 
-   wxHtmlWindow *html = new wxHtmlWindow(this, -1,
-                                         wxDefaultPosition,
-                                         wxSize(480, 240),
-                                         wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
+   wxHtmlWindow *html = 
+      new LinkingHtmlWindow(this, -1,
+                             wxDefaultPosition,
+                             wxSize(480, 240),
+                             wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
    html->SetPage(creditStr);
    pBoxSizer->Add(html, 0, wxALIGN_CENTER | wxALL, 8);
 
