@@ -57,7 +57,7 @@ cp -pR plug-ins "$DMG"
 rm -rf "$DMG/plug-ins/"*CVS*
 
 # Install misc files
-cp -pR README.txt LICENSE.txt audacity-*-help.htb "$DMG"
+cp -pR README.txt LICENSE.txt "$DMG"
 
 # Create and mount the image
 hdiutil create -ov -srcdir "$DMG" -fs HFS+ -volname "$VOL" TMP.dmg
