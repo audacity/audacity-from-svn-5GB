@@ -280,9 +280,6 @@ int  mStereoToMonoIndex;
         // Help Menu
 
 void OnAbout();
-void OnHelp();
-void OnHelpIndex();
-void OnHelpSearch();
 void OnBenchmark();
 
        //

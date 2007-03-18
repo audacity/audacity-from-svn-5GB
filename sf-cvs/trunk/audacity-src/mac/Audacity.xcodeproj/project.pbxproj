@@ -396,7 +396,6 @@
 		1790B16109883BFD008A330A /* FFT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B07009883BFD008A330A /* FFT.cpp */; };
 		1790B16209883BFD008A330A /* FileFormats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B07209883BFD008A330A /* FileFormats.cpp */; };
 		1790B16309883BFD008A330A /* FreqWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B07509883BFD008A330A /* FreqWindow.cpp */; };
-		1790B16409883BFD008A330A /* Help.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B07709883BFD008A330A /* Help.cpp */; };
 		1790B16509883BFD008A330A /* HistoryWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B07909883BFD008A330A /* HistoryWindow.cpp */; };
 		1790B16609883BFD008A330A /* ImageManipulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B07B09883BFD008A330A /* ImageManipulation.cpp */; };
 		1790B16709883BFD008A330A /* Import.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B07F09883BFD008A330A /* Import.cpp */; };
@@ -1466,8 +1465,6 @@
 		1790B07409883BFD008A330A /* float_cast.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = float_cast.h; sourceTree = "<group>"; };
 		1790B07509883BFD008A330A /* FreqWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = FreqWindow.cpp; sourceTree = "<group>"; };
 		1790B07609883BFD008A330A /* FreqWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FreqWindow.h; sourceTree = "<group>"; };
-		1790B07709883BFD008A330A /* Help.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Help.cpp; sourceTree = "<group>"; };
-		1790B07809883BFD008A330A /* Help.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Help.h; sourceTree = "<group>"; };
 		1790B07909883BFD008A330A /* HistoryWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = HistoryWindow.cpp; sourceTree = "<group>"; };
 		1790B07A09883BFD008A330A /* HistoryWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = HistoryWindow.h; sourceTree = "<group>"; };
 		1790B07B09883BFD008A330A /* ImageManipulation.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ImageManipulation.cpp; sourceTree = "<group>"; };
@@ -2794,8 +2791,6 @@
 				1790B07409883BFD008A330A /* float_cast.h */,
 				1790B07509883BFD008A330A /* FreqWindow.cpp */,
 				1790B07609883BFD008A330A /* FreqWindow.h */,
-				1790B07709883BFD008A330A /* Help.cpp */,
-				1790B07809883BFD008A330A /* Help.h */,
 				1790B07909883BFD008A330A /* HistoryWindow.cpp */,
 				1790B07A09883BFD008A330A /* HistoryWindow.h */,
 				1790B07B09883BFD008A330A /* ImageManipulation.cpp */,
@@ -5132,7 +5127,6 @@
 				1790B16109883BFD008A330A /* FFT.cpp in Sources */,
 				1790B16209883BFD008A330A /* FileFormats.cpp in Sources */,
 				1790B16309883BFD008A330A /* FreqWindow.cpp in Sources */,
-				1790B16409883BFD008A330A /* Help.cpp in Sources */,
 				1790B16509883BFD008A330A /* HistoryWindow.cpp in Sources */,
 				1790B16609883BFD008A330A /* ImageManipulation.cpp in Sources */,
 				1790B16709883BFD008A330A /* Import.cpp in Sources */,

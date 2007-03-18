@@ -56,7 +56,6 @@ It handles initialization and termination by subclassing wxApp.
 #include "DirManager.h"
 #include "effects/LoadEffects.h"
 #include "FreqWindow.h"
-#include "Help.h"
 #include "Internat.h"
 #include "LangChoice.h"
 #include "Prefs.h"
@@ -172,8 +171,6 @@ void QuitAudacity(bool bForce)
 
    //Delete the clipboard
    AudacityProject::DeleteClipboard();
-
-   QuitHelp();
 
    if (bForce)
    {
