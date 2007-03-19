@@ -741,6 +741,7 @@
 		28105DAA0AD09FC500BB4269 /* px_mac_coreaudio.c in Sources */ = {isa = PBXBuildFile; fileRef = 28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */; };
 		28105DAB0AD09FC500BB4269 /* px_mixer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28105DA10AD09FC500BB4269 /* px_mixer.c */; };
 		28105DAC0AD09FC500BB4269 /* px_mixer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28105DA20AD09FC500BB4269 /* px_mixer.h */; };
+		2816372E0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2816372C0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp */; };
 		282D474C0B9E8D900034BC49 /* Snap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 282D474A0B9E8D900034BC49 /* Snap.cpp */; };
 		2835062D0A3A88ED00EB1EBD /* pa_unix_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 283506280A3A88ED00EB1EBD /* pa_unix_util.c */; };
 		2835062E0A3A88ED00EB1EBD /* pa_unix_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 283506290A3A88ED00EB1EBD /* pa_unix_util.h */; };
@@ -1861,6 +1862,8 @@
 		28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = px_mac_coreaudio.c; sourceTree = "<group>"; };
 		28105DA10AD09FC500BB4269 /* px_mixer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = px_mixer.c; sourceTree = "<group>"; };
 		28105DA20AD09FC500BB4269 /* px_mixer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = px_mixer.h; sourceTree = "<group>"; };
+		2816372C0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = LinkingHtmlWindow.cpp; sourceTree = "<group>"; };
+		2816372D0BAE3B6C0079C746 /* LinkingHtmlWindow.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LinkingHtmlWindow.h; sourceTree = "<group>"; };
 		282D474A0B9E8D900034BC49 /* Snap.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Snap.cpp; sourceTree = "<group>"; };
 		282D474B0B9E8D900034BC49 /* Snap.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Snap.h; sourceTree = "<group>"; };
 		283506280A3A88ED00EB1EBD /* pa_unix_util.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_unix_util.c; sourceTree = "<group>"; };
@@ -3114,8 +3117,6 @@
 		1790B0FD09883BFD008A330A /* widgets */ = {
 			isa = PBXGroup;
 			children = (
-				2882178A0A35D90C0029AF41 /* treebook.cpp */,
-				2882178B0A35D90C0029AF41 /* treebook.h */,
 				1790B0FE09883BFD008A330A /* AButton.cpp */,
 				1790B0FF09883BFD008A330A /* AButton.h */,
 				1790B10009883BFD008A330A /* ASlider.cpp */,
@@ -3130,6 +3131,8 @@
 				280828590A75E0EA000002EF /* Grid.h */,
 				28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */,
 				28F1D81C0A2D0019005506A7 /* ImageRoll.h */,
+				2816372C0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp */,
+				2816372D0BAE3B6C0079C746 /* LinkingHtmlWindow.h */,
 				1790B10309883BFD008A330A /* Meter.cpp */,
 				1790B10409883BFD008A330A /* Meter.h */,
 				1790B10509883BFD008A330A /* MultiDialog.cpp */,
@@ -3140,6 +3143,8 @@
 				1790B10A09883BFD008A330A /* TimeTextCtrl.h */,
 				1790B10B09883BFD008A330A /* Warning.cpp */,
 				1790B10C09883BFD008A330A /* Warning.h */,
+				2882178A0A35D90C0029AF41 /* treebook.cpp */,
+				2882178B0A35D90C0029AF41 /* treebook.h */,
 			);
 			path = widgets;
 			sourceTree = "<group>";
@@ -5228,6 +5233,7 @@
 				28D65C720B97E54B000E001A /* AutoDuck.cpp in Sources */,
 				28D65C760B97E573000E001A /* DtmfGen.cpp in Sources */,
 				282D474C0B9E8D900034BC49 /* Snap.cpp in Sources */,
+				2816372E0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

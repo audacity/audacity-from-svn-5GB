@@ -175,6 +175,7 @@ OBJS = \
 	widgets/Grabber.o \
 	widgets/Grid.o \
 	widgets/ImageRoll.o \
+	widgets/LinkingHtmlWindow.o \
 	widgets/Meter.o \
 	widgets/MultiDialog.o \
 	widgets/Ruler.o \
