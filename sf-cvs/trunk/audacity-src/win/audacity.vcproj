@@ -5237,6 +5237,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\widgets\LinkingHtmlWindow.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\widgets\LinkingHtmlWindow.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\widgets\Meter.cpp"
 				>
 				<FileConfiguration
