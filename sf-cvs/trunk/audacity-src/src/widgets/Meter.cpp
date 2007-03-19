@@ -1036,7 +1036,7 @@ void Meter::OnPreferences(wxCommandEvent &evt)
    if (-1 <  (refreshRate = ::wxGetNumberFromUser
               (_("This determines how often the meter is refreshed.\nIf you have a slower PC you may want to select a\nlower refresh rate (30 per second or lower), so that\naudio qualtiy is not affected by the meter display."),
                _("Meter refresh rate per second [1-100]: "),
-               _("Meter Perferences"),
+               _("Meter Preferences"),
                mMeterRefreshRate, 1, 100)))
       mMeterRefreshRate = refreshRate;
    gPrefs->Write(wxT("/Meter/MeterRefreshRate"), mMeterRefreshRate);
