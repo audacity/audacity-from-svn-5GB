@@ -1,0 +1,55 @@
+#!/bin/sh
+
+if [ ! -d wxWidgets* -o ! -d audacity ]
+then
+   cat <<EOF
+
+You do not have the build directory setup correctly.  You should have
+a structure that looks like this (as an example):
+
+   .
+   ..
+   audacity
+   wxWidgets-2.4.5 (+ patches in audacity/mac subdirectory)
+
+And you should execute this script like this:
+
+   audacity/scripts/mac_release_build
+
+This will build wxWidgets first and finally Audacity using options
+that will allow Audacity to run on OS X 10.4+.
+
+The final DMG files will reside in this directory.
+
+EOF
+   exit 1
+fi
+
+top=$(pwd)
+
+#
+# Build wxWidgets ANSI version
+#
+if [ ! -f lib/libwx_mac-2.4.a ]
+then
+   cd wxWidgets*
+   mkdir bld
+   cd bld
+   ../configure --prefix=$top --enable-static=yes --enable-shared=no --enable-unicode=no
+   make -j 4
+   make install
+   make distclean
+   cd $top
+fi
+
+#
+# Build Audacity ANSI version
+#
+cd audacity
+export PATH="$top/bin:$PATH"
+./configure --enable-static=yes --enable-shared=no --enable-unicode=no
+make || exit 1
+scripts/mkdmg -test intel
+mv *.dmg ..
+make distclean
+cd $top
