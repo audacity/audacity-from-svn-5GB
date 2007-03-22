@@ -16,7 +16,8 @@
 
 #include <wx/dynarray.h>
 #include <wx/panel.h>
-#include <wx/html/htmlwin.h>
+
+#include "widgets/LinkingHtmlWindow.h"
 
 #define LYRICS_DEFAULT_WIDTH 440
 #define LYRICS_DEFAULT_HEIGHT 280
@@ -33,13 +34,6 @@ struct Syllable {
 };
 
 WX_DECLARE_OBJARRAY(Syllable, SyllableArray);
-
-class LinkingHtmlWindow : public wxHtmlWindow 
-{
- public:
-   LinkingHtmlWindow(wxWindow *parent) : wxHtmlWindow(parent) {};
-   virtual void OnLinkClicked(const wxHtmlLinkInfo& link);
-};
 
 class Lyrics : public wxPanel
 {
