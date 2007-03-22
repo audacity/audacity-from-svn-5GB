@@ -706,14 +706,7 @@ public:
    void OnDownload(wxCommandEvent & event)
    {
       wxString page = wxT("http://audacity.sourceforge.net/lame");
-#if defined(__WXMAC__)
-      ::wxExecute(wxT("open ") + page);
-#else
-      wxFileType* pFileType = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT(".htm"));
-      if (pFileType != NULL) {
-         ::wxExecute(pFileType->GetOpenCommand(page));
-      }
-#endif
+      ::OpenInDefaultBrowser(page);
    }
 
    wxString GetLibPath()
