@@ -32,7 +32,7 @@
 #define kTripleInset (3 * kInset)
 #define kQuadrupleInset (4 * kInset)
 
-#define TITLE_BAR_HEIGHT 18
+#define TRACK_NAME_HEIGHT 18
 #define MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH 48
 #define MUTE_SOLO_HEIGHT 16
 #define PAN_HEIGHT 24
@@ -82,7 +82,7 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
 
 	// track name
    wxPoint ctrlPos(kInset, kInset);
-   wxSize ctrlSize(size.GetWidth() - kDoubleInset, TITLE_BAR_HEIGHT);
+   wxSize ctrlSize(size.GetWidth() - kDoubleInset, TRACK_NAME_HEIGHT);
    mStaticText_TrackName = 
       new wxStaticText(this, -1, mLeftTrack->GetName(), ctrlPos, ctrlSize, 
                         wxALIGN_CENTRE | wxST_NO_AUTORESIZE | wxSUNKEN_BORDER);
@@ -92,7 +92,7 @@ MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent,
 
    // musical instrument image
    ctrlPos.x = (size.GetWidth() - MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH) / 2; // center
-   ctrlPos.y += TITLE_BAR_HEIGHT + kDoubleInset;
+   ctrlPos.y += TRACK_NAME_HEIGHT + kDoubleInset;
    ctrlSize = wxSize(MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH, MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH);
    wxBitmap* bitmap = mMixerBoard->GetMusicalInstrumentBitmap(mLeftTrack);
    wxASSERT(bitmap);
@@ -239,7 +239,7 @@ void MixerTrackCluster::UpdateHeight() // For wxSizeEvents, update gain slider a
    int newHeight = 
       newClusterHeight - 
       (kInset + // margin above mStaticText_TrackName
-         TITLE_BAR_HEIGHT + kDoubleInset + // mStaticText_TrackName + margin
+         TRACK_NAME_HEIGHT + kDoubleInset + // mStaticText_TrackName + margin
          MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH + kQuadrupleInset + // musical instrument icon + margin
          MUTE_SOLO_HEIGHT + kQuadrupleInset + // mute/solo buttons + margin
          PAN_HEIGHT + kQuadrupleInset) - // pan slider
@@ -356,13 +356,11 @@ int MixerTrackCluster::GetGainToSliderValue()
 
 wxColour MixerTrackCluster::GetTrackColor()
 {
-   //vvv This doesn't work right when switching back and forth between two projects 
-   // when one is branded and the other is not, because OnActivate 
-   // isn't always called, so gActiveProject isn't updated. 
-   Branding* pBranding = mProject->GetBranding();
-   if (pBranding && (pBranding->GetBrandColorScheme() == "UmixIt")) //vvv UmixIt 
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
       return AColor::GetTrackColor((void*)mLeftTrack);
-   return wxColour(102, 255, 102); // same as Meter playback color
+   #else
+      return wxColour(102, 255, 102); // same as Meter playback color
+   #endif
 }
 
 // event handlers
@@ -529,19 +527,21 @@ BEGIN_EVENT_TABLE(MixerBoard, wxFrame)
    EVT_SIZE(MixerBoard::OnSize)
 END_EVENT_TABLE()
 
-MixerBoard::MixerBoard(AudacityProject* parent):
-  wxFrame(parent, -1,
+MixerBoard::MixerBoard(AudacityProject* parent, 
+                        const wxPoint& pos /*= wxDefaultPosition*/, 
+                        const wxSize& size /*= wxDefaultSize*/) :
+   wxFrame(parent, -1,
             wxString::Format(_("Audacity Mixer Board%s"), 
                               ((parent->GetName() == wxEmptyString) ? 
                                  wxT("") : 
                                  wxString::Format(wxT(" - %s"),
                                                   parent->GetName().c_str()).c_str())), 
-            wxDefaultPosition, kDefaultSize, 
+            pos, size, 
             wxDEFAULT_FRAME_STYLE
-#ifndef __WXMAC__
-          | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT)
-#endif
-          )
+            #ifndef __WXMAC__
+               | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT)
+            #endif
+            )
 {
    // public data members
    // mute & solo button images: Create once and store on MixerBoard for use in all MixerTrackClusters.

@@ -516,7 +516,7 @@ void ControlToolBar::MakeButtons()
 
 ControlToolBar::~ControlToolBar()
 {
-   for (int i = 0; i < 5; i++)
+   for (int i = 0; i < numTools; i++)
       delete mTool[i];
 
    delete mRewind;
