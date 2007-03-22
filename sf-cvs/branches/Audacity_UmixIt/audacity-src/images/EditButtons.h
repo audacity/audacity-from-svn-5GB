@@ -44,3 +44,7 @@
 #include "EditButtons/ZoomSelDisabled.xpm"
 #include "EditButtons/ZoomFitDisabled.xpm"
 #include "EditButtons/ZoomToggleDisabled.xpm"
+
+#include "EditButtons/ZoomFitV.xpm"
+#include "EditButtons/ZoomFitVDisabled.xpm"
+#include "EditButtons/ZoomFitVAlpha.xpm"
