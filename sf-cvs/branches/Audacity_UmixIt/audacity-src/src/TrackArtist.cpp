@@ -137,11 +137,14 @@ void TrackArtist::DrawTracks(TrackList * tracks,
       else {
          muted = (hasSolo || t->GetMute()) && !t->GetSolo();
          linkFlag = t->GetLinked();
-         if (!muted) { //vvv UmixIt
-            wxColour trackColor = AColor::GetTrackColor((void*)t);
-            samplePen.SetColour(trackColor);
-            rmsPen.SetColour(trackColor.Red() * 4/5, trackColor.Green() * 4/5, trackColor.Blue() * 4/5);
-         }
+         #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+            // per track coloring for UmixIt
+            if (!muted) { 
+               wxColour trackColor = AColor::GetTrackColor((void*)t);
+               samplePen.SetColour(trackColor);
+               rmsPen.SetColour(trackColor.Red() * 4/5, trackColor.Green() * 4/5, trackColor.Blue() * 4/5);
+            }
+         #endif
       }
 
       trackRect.height = t->GetHeight();
@@ -194,7 +197,7 @@ void TrackArtist::DrawTracks(TrackList * tracks,
 void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 {
    if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == 0) {
+       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::WaveformDisplay) {
       wxRect bev = r;
       bev.Inflate(-1, -1);
       AColor::Bevel(*dc, true, bev);
@@ -210,7 +213,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
    }
 
    if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == 1) {
+       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::WaveformDBDisplay) {
       // Waveform (db)
       wxRect bev = r;
       bev.Inflate(-1, -1);
@@ -255,7 +258,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
    }
 
    if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == 2) {
+       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::SpectrumDisplay) {
       // Spectrum
       wxRect bev = r;
       bev.Inflate(-1, -1);
@@ -296,7 +299,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
    }
 
    if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == 3) {
+       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::PitchDisplay) {
       // Pitch
       wxRect bev = r;
       bev.Inflate(-1, -1);
