@@ -4725,15 +4725,11 @@ void TrackLabel::DrawTitleBar(wxDC * dc, const wxRect r, Track * t,
    wxRect bev;
    GetTitleBarRect(r, bev);
    bev.Inflate(-1, -1);
-   //vvv This doesn't work right when switching back and forth between two projects 
-   // when one is branded and the other is not, because for some reason, OnActivate 
-   // isn't always called, so gActiveProject isn't updated. 
-   AudacityProject* pProject = GetActiveProject();
-   Branding* pBranding = pProject->GetBranding();
-   if (pBranding && (pBranding->GetBrandColorScheme() == "UmixIt")) { //vvv UmixIt 
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      // per track coloring for UmixIt
       dc->SetBrush(wxBrush(AColor::GetTrackColor((void*)t), wxSOLID)); 
       dc->DrawRectangle(bev);
-   }
+   #endif
    AColor::Bevel(*dc, true, bev);
 
    // Draw title text

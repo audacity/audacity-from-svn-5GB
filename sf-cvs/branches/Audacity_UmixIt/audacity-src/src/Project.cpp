@@ -545,9 +545,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    // MM: Give track panel the focus to ensure keyboard commands work
    mTrackPanel->SetFocus();
-   //v UmixIt mTrackPanel->Hide();     // This works okay except that each added track updates the 
-                                       // scroll bars. They probably shouldn't even be visible, i.e., 
-                                       // should be owned by the TrackPanel?
 
 #if defined __WXMAC__ 
    width++;
@@ -567,6 +564,22 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                        wxSize(sbarControlWidth,
                               height - sbarSpaceWidth - voffset +
                               sbarExtraLen), wxSB_VERTICAL);
+
+
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      // Usually, mMixerBoard is created only when the View > Mixer Board 
+      // command is given, but we always want it for UmixIt, and not the Track Panel.
+      //vvvvv EXCEPT THE RULER!
+      //mTrackPanel->Hide();
+      //mHsbar->Hide();
+      //mVsbar->Hide();
+
+      // Position and size the MixerBoard where TrackPanel would be (but must specify in global coords).
+      wxPoint mixerPos = this->ClientToScreen(wxPoint(left, top + voffset));
+      mMixerBoard = new MixerBoard(this, mixerPos, wxSize(width, height - voffset));
+
+      mMixerBoard->Show();
+   #endif
 
    InitialState();
    FixScrollbars();
@@ -2518,8 +2531,8 @@ void AudacityProject::PushState(wxString desc,
    UpdateMenus();
    UpdateLyrics();
 
-   if (mMixerBoard) // All the different ways to add tracks funnel through here.
-      mMixerBoard->AddTrackClusters();
+   // All the different ways to add tracks funnel through here.
+   mMixerBoard->AddTrackClusters();
    UpdateMixerBoard();
 }
 
@@ -2587,7 +2600,7 @@ void AudacityProject::UpdateLyrics()
    if (mLyricsWindow == NULL) {
       mLyricsWindow = new LyricsWindow(this);
       wxASSERT(mLyricsWindow);
-      mLyricsWindow->Show(true);
+      mLyricsWindow->Show();
    }
 
    Lyrics *lyrics = mLyricsWindow->GetLyricsPanel();
@@ -2605,15 +2618,11 @@ void AudacityProject::UpdateMixerBoard()
    if (mTracks->IsEmpty())
       return;
 
-   if (mMixerBoard == NULL) {
+   if (!mMixerBoard)
       mMixerBoard = new MixerBoard(this);
-      if (mMixerBoard)
-      {
-         mMixerBoard->AddTrackClusters();
-         mMixerBoard->Show(true);
-      }
-   }
 
+   mMixerBoard->AddTrackClusters();
+   mMixerBoard->Show();
    mMixerBoard->UpdateMeters(gAudioIO->GetStreamTime()); 
 }
 

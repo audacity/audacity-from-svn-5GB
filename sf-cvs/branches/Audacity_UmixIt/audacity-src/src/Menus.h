@@ -150,6 +150,7 @@ void OnFloatMeterToolBar();
 
 void OnLyrics();
 void OnMixerBoard();
+void OnTrackPanel();
 
         // Project Menu
 

@@ -104,7 +104,9 @@ class TrackList;
 
 class MixerBoard : public wxFrame { 
 public:
-   MixerBoard(AudacityProject* parent);
+   MixerBoard(AudacityProject* parent, 
+               const wxPoint& pos = wxDefaultPosition, 
+               const wxSize& size = wxDefaultSize);
    ~MixerBoard();
 
    void AddTrackClusters(); // Add clusters for any tracks we're not yet showing.
