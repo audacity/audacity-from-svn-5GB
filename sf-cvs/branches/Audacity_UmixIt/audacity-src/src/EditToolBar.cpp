@@ -174,6 +174,8 @@ void EditToolBar::MakeButtons()
              _("Fit selection in window"));
    AddButton(ZoomFit, ZoomFitDisabled, ZoomFitAlpha, ETBZoomFitID,
              _("Fit project in window"));
+   AddButton(ZoomFitV, ZoomFitVDisabled, ZoomFitVAlpha, ETBZoomFitVertID, 
+             _("Fit project vertically in window"));
 
    mButtons[ETBZoomInID]->SetEnabled(false);
    mButtons[ETBZoomOutID]->SetEnabled(false);
@@ -184,6 +186,7 @@ void EditToolBar::MakeButtons()
 
    mButtons[ETBZoomSelID]->SetEnabled(false);
    mButtons[ETBZoomFitID]->SetEnabled(false);
+   mButtons[ETBZoomFitVertID]->SetEnabled(false);
    mButtons[ETBPasteID]->SetEnabled(false);
 
    delete upImage;
@@ -254,6 +257,9 @@ void EditToolBar::OnButton(wxCommandEvent &event)
       case ETBZoomFitID:
          p->OnZoomFit();
          break;
+      case ETBZoomFitVertID:
+         p->OnZoomFitV();
+         break;
    }
 
    SetButton(false, mButtons[id]);
@@ -307,6 +313,7 @@ void EditToolBar::EnableDisableButtons()
 
    mButtons[ETBZoomSelID]->SetEnabled(selection);
    mButtons[ETBZoomFitID]->SetEnabled(tracks);
+   mButtons[ETBZoomFitVertID]->SetEnabled(tracks);
 
    mButtons[ETBPasteID]->SetEnabled(p->Clipboard());
 }

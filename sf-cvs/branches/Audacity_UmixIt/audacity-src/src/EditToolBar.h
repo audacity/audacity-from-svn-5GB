@@ -62,6 +62,7 @@ enum {
 
    ETBZoomSelID,
    ETBZoomFitID,
+   ETBZoomFitVertID,
 
    ETBNumButtons
 };
