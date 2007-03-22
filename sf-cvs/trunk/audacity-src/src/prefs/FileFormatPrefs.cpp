@@ -261,11 +261,11 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
 void FileFormatPrefs::SetMP3VersionText()
 {
    wxString versionString = _("MP3 exporting plugin not found");
-   bool doMP3 = GetMP3Exporter()->LoadLibrary();
+   bool doMP3 = GetMP3Exporter()->LoadLibrary(this, false);
 
    if (doMP3)
       doMP3 = GetMP3Exporter()->ValidLibraryLoaded();
-   if(doMP3)
+   if (doMP3)
       versionString = GetMP3Exporter()->GetLibraryVersion();
    
    mMP3Version->SetLabel(versionString);
@@ -302,25 +302,16 @@ void FileFormatPrefs::OnFormatChoice(wxCommandEvent& evt)
 /// tell us where the MP3 library is.
 void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 {
-   // We go round the houses here, because GetMP3Exporter 
-   // takes its path from gPrefs rather than as a parameter.
-   wxString oldPath = gPrefs->Read(wxT("/MP3/MP3LibPath"), wxT(""));
-   gPrefs->Write(wxT("/MP3/MP3LibPath"), wxString(wxT("")));
-   
-   if (GetMP3Exporter()->FindLibrary(this))
+   if (GetMP3Exporter()->FindLibrary(this, false)) {
       SetMP3VersionText();
-   else {
-      gPrefs->Write(wxT("/MP3/MP3LibPath"), oldPath);
    }
    
-   if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
-      bool valid = GetMP3Exporter()->ValidLibraryLoaded();
-      mMP3Bitrate->Enable(valid);
-      mMP3Stereo->Enable(valid);
-      mMP3Joint->Enable(valid);
-      mMP3VBR->Enable(valid);
-      mMP3CBR->Enable(valid);
-   }
+   bool valid = GetMP3Exporter()->ValidLibraryLoaded();
+   mMP3Bitrate->Enable(valid);
+   mMP3Stereo->Enable(valid);
+   mMP3Joint->Enable(valid);
+   mMP3VBR->Enable(valid);
+   mMP3CBR->Enable(valid);
 }
 
 /// 
