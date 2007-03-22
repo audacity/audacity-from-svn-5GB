@@ -23,19 +23,6 @@
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(SyllableArray);
 
-void LinkingHtmlWindow::OnLinkClicked(const wxHtmlLinkInfo& link) 
-{
-#ifdef __WXMAC__
-   wxString openCmd = "open " + link.GetHref();
-   ::wxExecute(openCmd);
-#else
-   wxFileType* pFileType = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT(".htm"));
-   if (pFileType == NULL) return;
-   wxString openCmd = pFileType->GetOpenCommand(link.GetHref());
-   ::wxExecute(openCmd);
-#endif
-}
-
 BEGIN_EVENT_TABLE(Lyrics, wxPanel)
    EVT_CHAR(Lyrics::OnKeyEvent)
    EVT_PAINT(Lyrics::OnPaint)
