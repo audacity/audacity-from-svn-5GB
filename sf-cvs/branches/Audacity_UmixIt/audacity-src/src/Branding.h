@@ -13,7 +13,6 @@
 
 #pragma once
 
-#include "Audacity.h"
 #include "xml/XMLTagHandler.h"
 
 #include <wx/filename.h>

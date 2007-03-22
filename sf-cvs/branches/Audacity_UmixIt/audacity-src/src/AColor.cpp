@@ -12,11 +12,14 @@
 **********************************************************************/
 
 #include <wx/dc.h>
-#include <wx/dynarray.h> //vvv UmixIt
 #include <wx/settings.h>
 #include <wx/utils.h>
 
 #include "AColor.h"
+
+#if (AUDACITY_BRANDING == BRAND_UMIXIT)
+   #include <wx/dynarray.h>
+#endif
 
 bool AColor::inited = false;
 wxBrush AColor::lightBrush[2];
@@ -33,10 +36,11 @@ wxPen AColor::indicatorPen[2];
 wxBrush AColor::muteBrush[2];
 wxBrush AColor::soloBrush;
 
-// For UmixIt, need color brush for off positions, too.
-wxBrush AColor::muteBrushOff;
-wxBrush AColor::soloBrushOff;
-
+#if (AUDACITY_BRANDING == BRAND_UMIXIT)
+   // For UmixIt, need color brush for off positions, too.
+   wxBrush AColor::muteBrushOff;
+   wxBrush AColor::soloBrushOff;
+#endif
 
 wxBrush AColor::envelopeBrush;
 wxPen AColor::envelopePen;
@@ -135,7 +139,11 @@ void AColor::Mute(wxDC * dc, bool on, bool selected, bool soloing)
    }
    else {
       dc->SetPen(*wxTRANSPARENT_PEN);
-      dc->SetBrush(muteBrushOff); //vvv UmixIt dc->SetBrush(mediumBrush[index]);
+      #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+         dc->SetBrush(muteBrushOff);
+      #else
+         dc->SetBrush(mediumBrush[index]);
+      #endif
    }
 }
 
@@ -150,7 +158,11 @@ void AColor::Solo(wxDC * dc, bool on, bool selected)
    }
    else {
       dc->SetPen(*wxTRANSPARENT_PEN);
-      dc->SetBrush(soloBrushOff); //vvv UmixIt dc->SetBrush(mediumBrush[index]);
+      #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+         dc->SetBrush(soloBrushOff); 
+      #else
+         dc->SetBrush(mediumBrush[index]);
+      #endif
    }
 }
 
@@ -204,21 +216,23 @@ void AColor::Init(wxDC * dc)
    labelSelectedPen.SetColour(148, 148, 170);
 
    // muteBrush[1] is used when solo is on, since solo overrides mute.
-//   muteBrush[0].SetColour(110, 220, 110);
-//   muteBrush[1].SetColour(170, 180, 170);
-//   soloBrush.SetColour(255, 140, 140);
-   // Colors modified to avoid using reserved colors red and green.
-   //muteBrush[0].SetColour(160, 170, 210);
-   //muteBrush[1].SetColour(160, 170, 190);
-   //soloBrush.SetColour(160, 170, 210);
-   //vvv UmixIt mute & solo colors
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      // UmixIt mute & solo colors
       muteBrush[0].SetColour(220, 220, 0); // darker yellow
       muteBrush[1].SetColour(200, 200, 0); // dark yellow
       soloBrush.SetColour(0, 220, 0); // darker green
 
       muteBrushOff.SetColour(255, 255, 0); // yellow
       soloBrushOff.SetColour(0, 255, 0); // green
-
+   #else
+      //   muteBrush[0].SetColour(110, 220, 110);
+      //   muteBrush[1].SetColour(170, 180, 170);
+      //   soloBrush.SetColour(255, 140, 140);
+      // Colors modified to avoid using reserved colors red and green.
+      muteBrush[0].SetColour(160, 170, 210);
+      muteBrush[1].SetColour(160, 170, 190);
+      soloBrush.SetColour(160, 170, 210);
+   #endif
 
    cursorPen.SetColour(0, 0, 0);
 //   indicatorPen[0].SetColour(255, 0, 51); //recording
@@ -367,7 +381,7 @@ void AColor::DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ )
 
 }
 
-//vvv UmixIt
+#if (AUDACITY_BRANDING == BRAND_UMIXIT)
    WX_DEFINE_ARRAY(void*, trackPtrsArray);
    const wxColour gRed = wxColour(255, 130, 140); // red
    const wxColour gOrange = wxColour(255, 200, 130); // orange
@@ -395,7 +409,7 @@ void AColor::DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ )
       }
       return gRed;
    }
-
+#endif
 
 void GetColorGradient(float value,
                       bool selected,

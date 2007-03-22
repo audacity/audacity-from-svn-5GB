@@ -17,6 +17,8 @@
 #include <wx/brush.h>
 #include <wx/pen.h>
 
+#include "AudacityBranding.h"
+
 class wxDC;
 class wxRect;
 
@@ -42,8 +44,10 @@ class AColor {
    static void LightMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
    static void DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
 
-   // rainbow pastel color based on track's pointer -- so it's unique to track
-   static wxColour GetTrackColor(void* pTrack); //vvv UmixIt 
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      // rainbow pastel color based on track's pointer -- so it's unique to track
+      static wxColour GetTrackColor(void* pTrack);
+   #endif
 
    static wxBrush lightBrush[2];
    static wxBrush mediumBrush[2];
@@ -59,10 +63,11 @@ class AColor {
    static wxBrush muteBrush[2];
    static wxBrush soloBrush;
 
-   //vvv UmixIt
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
       // For UmixIt, need color brush for off positions, too.
       static wxBrush muteBrushOff;
       static wxBrush soloBrushOff;
+   #endif
 
    static wxPen envelopePen;
    static wxPen WideEnvelopePen;

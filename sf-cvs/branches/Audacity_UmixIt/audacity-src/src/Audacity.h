@@ -17,7 +17,7 @@
 #define __AUDACITY_H__
 
 // Increment this every time you release a new version
-#define AUDACITY_VERSION_STRING "1.2.6 (customized for UmixIt)"
+#define AUDACITY_VERSION_STRING "1.2.6 (UmixIt)"
 
 // Increment this every time the prefs need to be reset
 // the first part (before the r) indicates the version the reset took place
@@ -27,6 +27,8 @@
 // Don't change this unless the file format changes
 // in an irrevocable way
 #define AUDACITY_FILE_FORMAT_VERSION "1.1.0"
+
+#include "AudacityBranding.h"
 
 class wxWindow;
 class ToolBarStub;
