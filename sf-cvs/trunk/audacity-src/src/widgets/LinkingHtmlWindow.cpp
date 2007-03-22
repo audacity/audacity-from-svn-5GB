@@ -19,7 +19,7 @@
 void OpenInDefaultBrowser(const wxHtmlLinkInfo& link)
 {
    #ifdef __WXMAC__
-      wxString openCmd = "open " + link.GetHref();
+      wxString openCmd = wxT("open ") + link.GetHref();
       ::wxExecute(openCmd);
    #else
       wxFileType* pFileType = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT(".htm"));
