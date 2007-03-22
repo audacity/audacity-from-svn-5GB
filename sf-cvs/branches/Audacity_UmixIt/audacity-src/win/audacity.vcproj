@@ -221,6 +221,9 @@
 				RelativePath="..\src\AStatus.h">
 			</File>
 			<File
+				RelativePath="..\src\Audacity.h">
+			</File>
+			<File
 				RelativePath="..\src\AudacityApp.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -241,6 +244,9 @@
 			</File>
 			<File
 				RelativePath="..\src\AudacityApp.h">
+			</File>
+			<File
+				RelativePath="..\src\AudacityBranding.h">
 			</File>
 			<File
 				RelativePath="..\src\AudioIO.cpp">
@@ -2347,6 +2353,12 @@
 			</File>
 			<File
 				RelativePath="..\src\widgets\ASlider.h">
+			</File>
+			<File
+				RelativePath="..\src\widgets\LinkingHtmlWindow.cpp">
+			</File>
+			<File
+				RelativePath="..\src\widgets\LinkingHtmlWindow.h">
 			</File>
 			<File
 				RelativePath="..\src\widgets\Meter.cpp">
