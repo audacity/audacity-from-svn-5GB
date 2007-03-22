@@ -18,132 +18,77 @@
 
 /* --------------------------------------------------------------------------*/
 
-typedef lame_global_flags *lame_init_t(void);
-typedef int lame_init_params_t(lame_global_flags*);
-typedef const char* get_lame_version_t(void);
-
-typedef int lame_encode_buffer_t (
-      lame_global_flags* gf,
-      const short int    buffer_l [],
-      const short int    buffer_r [],
-      const int          nsamples,
-      unsigned char *    mp3buf,
-      const int          mp3buf_size );
-
-typedef int lame_encode_buffer_interleaved_t(
-      lame_global_flags* gf,
-      short int          pcm[],
-      int                num_samples,   /* per channel */
-      unsigned char*     mp3buf,
-      int                mp3buf_size );
-
-typedef int lame_encode_flush_t(
-      lame_global_flags *gf,
-      unsigned char*     mp3buf,
-      int                size );
-
-typedef int lame_close_t(lame_global_flags*);
-
-typedef int lame_set_in_samplerate_t(lame_global_flags*, int);
-typedef int lame_set_out_samplerate_t(lame_global_flags*, int);
-typedef int lame_set_num_channels_t(lame_global_flags*, int );
-typedef int lame_set_quality_t(lame_global_flags*, int);
-typedef int lame_get_quality_t(lame_global_flags*);
-typedef int lame_set_brate_t(lame_global_flags*, int);
-typedef int lame_get_brate_t(lame_global_flags*);
-typedef int lame_set_VBR_t(lame_global_flags *, vbr_mode);
-typedef vbr_mode lame_get_VBR_t(const lame_global_flags *);
-typedef int lame_set_VBR_q_t(lame_global_flags *, int);
-typedef int lame_get_VBR_q_t(const lame_global_flags *);
-typedef int lame_set_mode_t(lame_global_flags *, MPEG_mode);
-typedef MPEG_mode lame_get_mode_t(const lame_global_flags *);
-
-
-/* --------------------------------------------------------------------------*/
-
 class AudacityProject;
 class MixerSpec;
 
-class MP3Exporter {
+class MP3Exporter
+{
+public:
 
-   public:
-   
-      MP3Exporter();
-      virtual ~MP3Exporter() { };
+   enum
+   {
+      MP3_MODE_STEREO = 0,
+      MP3_MODE_JOINT,
+      MP3_MODE_DUAL,
+      MP3_MODE_MONO
+   } MP3Modes;
 
-      bool FindLibrary(wxWindow *parent);
-      bool LoadLibrary();
-      bool ValidLibraryLoaded();
-      wxString GetLibraryVersion();
+   MP3Exporter();
+   virtual ~MP3Exporter();
 
-      /* returns the number of samples PER CHANNEL to send for each call to EncodeBuffer */
-      int InitializeStream(int channels, int sampleRate);
-      /* In bytes. must be called AFTER InitializeStream */
-      int GetOutBufferSize();
-      /* returns the number of bytes written. input is interleaved if stereo*/
-      int EncodeBuffer(short int inbuffer[], unsigned char outbuffer[]);
-      int EncodeRemainder(short int inbuffer[], int nSamples,
-                          unsigned char outbuffer[]);
+   bool FindLibrary(wxWindow *parent, bool showdialog);
+   bool LoadLibrary(wxWindow *parent, bool askuser);
+   bool ValidLibraryLoaded();
 
-      int EncodeBufferMono(short int inbuffer[], unsigned char outbuffer[]);
-      int EncodeRemainderMono(short int inbuffer[], int nSamples,
-                              unsigned char outbuffer[]);
+   /* These global settings keep state over the life of the object */
+   void SetBitrate(int rate);
+   int GetBitrate();
+   void SetVBRQuality(int quality);
+   int GetVBRQuality();
+   void SetMode(int mode);
+   int GetMode();
 
-      int FinishStream(unsigned char outbuffer[]);
-      void CancelEncoding();
+   /* Virtual methods that must be supplied by library interfaces */
 
-      /* The number of different quality settings */
-      int GetQualityVariance();
-      
-      /* These global settings keep state over the life of the object */
-      int GetConfigurationCaps();
-      void SetBitrate(int rate);
-      int GetBitrate();
-      void SetQuality(int quality);
-      int GetQuality();
-      void SetVBRQuality(int quality);
-      int GetVBRQuality();
-      void SetMode(MPEG_mode mode);
-      MPEG_mode GetMode();
+   /* initialize the library interface */
+   virtual bool InitLibrary() = 0;
 
-   protected:
+   /* get library info */
+   virtual wxString GetLibraryVersion() = 0;
+   virtual wxString GetLibraryName() = 0;
+   virtual wxString GetLibraryPath() = 0;
+   virtual wxString GetLibraryTypeString() = 0;
 
-      wxString mLibPath;
-      wxDynamicLibrary lame_enc_lib;
+   /* returns the number of samples PER CHANNEL to send for each call to EncodeBuffer */
+   virtual int InitializeStream(int channels, int sampleRate) = 0;
 
-   private:
+   /* In bytes. must be called AFTER InitializeStream */
+   virtual int GetOutBufferSize() = 0;
 
-      /* function pointers to the symbols we get from the library */
-      lame_init_t* lame_init;
-      lame_init_params_t* lame_init_params;
-      lame_encode_buffer_t* lame_encode_buffer;
-      lame_encode_buffer_interleaved_t* lame_encode_buffer_interleaved;
-      lame_encode_flush_t* lame_encode_flush;
-      lame_close_t* lame_close;
-      get_lame_version_t* get_lame_version;
-      
-      lame_set_in_samplerate_t* lame_set_in_samplerate;
-      lame_set_out_samplerate_t* lame_set_out_samplerate;
-      lame_set_num_channels_t* lame_set_num_channels;
-      lame_set_quality_t* lame_set_quality;
-      lame_get_quality_t* lame_get_quality;
-      lame_set_brate_t* lame_set_brate;
-      lame_get_brate_t* lame_get_brate;
-      lame_set_VBR_t* lame_set_VBR;
-      lame_get_VBR_t* lame_get_VBR;
-      lame_set_VBR_q_t* lame_set_VBR_q;
-      lame_get_VBR_q_t* lame_get_VBR_q;
-      lame_set_mode_t* lame_set_mode;
-      lame_get_mode_t* lame_get_mode;
+   /* returns the number of bytes written. input is interleaved if stereo*/
+   virtual int EncodeBuffer(short int inbuffer[], unsigned char outbuffer[]) = 0;
+   virtual int EncodeRemainder(short int inbuffer[], int nSamples,
+                               unsigned char outbuffer[]) = 0;
 
-      lame_global_flags *mGF;
-      
-      bool mLibraryLoaded, mEncoding;
-      char mVersion[20];
+   virtual int EncodeBufferMono(short int inbuffer[], unsigned char outbuffer[]) = 0;
+   virtual int EncodeRemainderMono(short int inbuffer[], int nSamples,
+                                   unsigned char outbuffer[]) = 0;
 
-      static const int mSamplesPerChunk = 220500;
-      static const int mOutBufferSize = int(1.25 * mSamplesPerChunk + 7200);
+   virtual int FinishStream(unsigned char outbuffer[]) = 0;
+   virtual void CancelEncoding() = 0;
 
+protected:
+
+   wxString mLibPath;
+   wxDynamicLibrary lame_lib;
+
+   bool mLibraryLoaded;
+   bool mEncoding;
+
+   int mBitrate;
+   bool mVBR;
+   int mVBRQuality;
+   int mMode;
 };
 
 #define MP3CONFIG_BITRATE 0x00000001
