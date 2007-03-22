@@ -367,6 +367,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem("Lyrics",         _("&Lyrics..."),                FN(OnLyrics));
    c->AddItem("Mixer Board",    _("&Mixer Board..."),           FN(OnMixerBoard));
+   c->AddItem("Track Panel",    _("&Track Panel..."),           FN(OnTrackPanel));
    c->AddSeparator();
    c->AddItem("FloatControlTB", _("Float Control Toolbar"),          FN(OnFloatControlToolBar));
    c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
@@ -498,7 +499,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->BeginMenu(_("&Analyze"));
 	/* plot spectrum moved from view */
-   c->AddItem("PlotSpectrum",   _("&Plot Spectrum"),                 FN(OnPlotSpectrum));
+      c->AddItem("PlotSpectrum",   _("&Plot Spectrum..."),                 FN(OnPlotSpectrum));
    c->SetCommandFlags("PlotSpectrum",
                       AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
                       AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);	
@@ -1673,10 +1674,10 @@ void AudacityProject::OnRedo()
 void AudacityProject::OnHistory()
 {
    if (mHistoryWindow)
-      mHistoryWindow->Show(true);
+      mHistoryWindow->Show();
    else {
       mHistoryWindow = new HistoryWindow(this, &mUndoManager);
-      mHistoryWindow->Show(true);
+      mHistoryWindow->Show();
    }
 }
 
@@ -2401,7 +2402,7 @@ void AudacityProject::OnPlotSpectrum()
 
    InitFreqWindow(gParentWindow);
    gFreqWindow->Plot(len, buffer, rate);
-   gFreqWindow->Show(true);
+   gFreqWindow->Show();
    gFreqWindow->Raise();
 
    delete[] buffer;
@@ -2585,23 +2586,25 @@ void AudacityProject::OnFloatMeterToolBar()
 void AudacityProject::OnLyrics()
 {
    if (mLyricsWindow)
-      mLyricsWindow->Show(true);
+      mLyricsWindow->Show();
    else {
       mLyricsWindow = new LyricsWindow(this);
       wxASSERT(mLyricsWindow);
-      mLyricsWindow->Show(true);
+      mLyricsWindow->Show();
    }
 }
 
 void AudacityProject::OnMixerBoard()
 {
-   if (mMixerBoard)
-      mMixerBoard->Show(true);
-   else {
+   if (!mMixerBoard)
       mMixerBoard = new MixerBoard(this);
-      wxASSERT(mMixerBoard);
-      mMixerBoard->Show(true);
-   }
+
+   mMixerBoard->Show();
+}
+
+void AudacityProject::OnTrackPanel()
+{
+   mTrackPanel->Show();
 }
 
 //
