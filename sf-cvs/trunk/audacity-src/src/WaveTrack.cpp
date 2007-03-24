@@ -1481,7 +1481,8 @@ bool WaveTrack::SplitAt(double t)
             delete newClip;
             return false;
          }
-         newClip->Offset(t - c->GetStartTime());
+         longSampleCount here = floor(((t - c->GetStartTime() - mOffset) * mRate) + 0.5);
+         newClip->Offset((double)here/(double)mRate);
          mClips.Append(newClip);
          return true;
       }
