@@ -23,9 +23,14 @@ void OpenInDefaultBrowser(const wxHtmlLinkInfo& link)
       ::wxExecute(openCmd);
    #else
       wxFileType* pFileType = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT(".htm"));
-      if (pFileType == NULL) return;
+      if (pFileType == NULL) 
+         return;
       wxString openCmd = pFileType->GetOpenCommand(link.GetHref());
+      if (openCmd.Contains(wxT("iexplore.exe")))
+         // GetOpenCommand is not quite right for Internet Explorer.
+         openCmd.Replace(wxT("WWW_OpenURL#\"file://"), wxT("WWW_OpenURL#\""));
       ::wxExecute(openCmd);
+      delete pFileType;
    #endif
 };
 
