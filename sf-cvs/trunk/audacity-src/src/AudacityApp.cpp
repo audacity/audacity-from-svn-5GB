@@ -1149,83 +1149,82 @@ void AudacityApp::OnMenuExit(wxCommandEvent & event)
 #if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
 void AudacityApp::AssociateFileTypes()
 {
-	wxRegKey associateFileTypes;
-	associateFileTypes.SetName(wxT("HKCR\\.AUP"));
-	bool bKeyExists = associateFileTypes.Exists();
-	if (!bKeyExists) {
-		// Not at HKEY_CLASSES_ROOT. Try HKEY_CURRENT_USER.
-		associateFileTypes.SetName(wxT("HKCU\\.AUP"));
-		bKeyExists = associateFileTypes.Exists();
-	}
-	if (!bKeyExists) {	
-		// File types are not currently associated. 
-		// Check pref in case user has already decided against it.
-		bool bWantAssociateFiles = true;
-		if (!gPrefs->Read(wxT("/WantAssociateFiles"), &bWantAssociateFiles) || 
-				bWantAssociateFiles) {
-			// Either there's no pref or user does want associations 
-			// and they got stepped on, so ask.
-			int wantAssoc = 
-				wxMessageBox(
-					_("Audacity project (.AUP) files are not currently \nassociated with Audacity. \n\nAssociate them, so they open on double-click?"), 
-					_("Audacity Project Files"), 
-					wxYES_NO | wxICON_QUESTION);
-			if (wantAssoc == wxYES) {
-				gPrefs->Write(wxT("/WantAssociateFiles"), true);
+   wxRegKey associateFileTypes;
+   associateFileTypes.SetName(wxT("HKCR\\.AUP"));
+   bool bKeyExists = associateFileTypes.Exists();
+   if (!bKeyExists) {
+      // Not at HKEY_CLASSES_ROOT. Try HKEY_CURRENT_USER.
+      associateFileTypes.SetName(wxT("HKCU\\Software\\Classes\\.AUP"));
+      bKeyExists = associateFileTypes.Exists();
+   }
+   if (!bKeyExists) {	
+      // File types are not currently associated. 
+      // Check pref in case user has already decided against it.
+      bool bWantAssociateFiles = true;
+      if (!gPrefs->Read(wxT("/WantAssociateFiles"), &bWantAssociateFiles) || 
+            bWantAssociateFiles) {
+         // Either there's no pref or user does want associations 
+         // and they got stepped on, so ask.
+         int wantAssoc = 
+            wxMessageBox(
+               _("Audacity project (.AUP) files are not currently \nassociated with Audacity. \n\nAssociate them, so they open on double-click?"), 
+               _("Audacity Project Files"), 
+               wxYES_NO | wxICON_QUESTION);
+         if (wantAssoc == wxYES) {
+            gPrefs->Write(wxT("/WantAssociateFiles"), true);
 
-				wxString root_key = wxT("HKCR");
-				associateFileTypes.SetName(wxT("HKCR\\.AUP")); // Start again with HKEY_CLASSES_ROOT.
-				if (!associateFileTypes.Create(true)) {
-					// Not at HKEY_CLASSES_ROOT. Try HKEY_CURRENT_USER.
-					associateFileTypes.SetName(wxT("HKCU\\.AUP"));
-					if (!associateFileTypes.Create(true)) { 
-						// Actually, can't create keys. Empty root_key to flag failure.
-						root_key.Empty();
-					} else {
-						// User must not have privileges to create at HKEY_CLASSES_ROOT.
-						// Succeeded setting key for HKEY_CURRENT_USER. Continue that way.
-						root_key = wxT("HKCU");
-					}
-				}
-				if (root_key.IsEmpty()) {
-					//v Warn that we can't set keys. Ask whether to set pref for no retry?
-				} else {
-					associateFileTypes = wxT("Audacity.Project"); // Finally set value for .AUP key
+            wxString root_key;
 
-					associateFileTypes.SetName(root_key + wxT("\\Audacity.Project"));
-					if(!associateFileTypes.Exists()) {
-						associateFileTypes.Create(true);
-						associateFileTypes = wxT("Audacity Project File");
-					}
+            root_key = wxT("HKCU\\Software\\Classes\\");
+            associateFileTypes.SetName(root_key + wxT(".AUP")); // Start again with HKEY_CLASSES_ROOT.
+            if (!associateFileTypes.Create(true)) {
+               // Not at HKEY_CLASSES_USER. Try HKEY_CURRENT_ROOT.
+               root_key = wxT("HKCR\\");
+               associateFileTypes.SetName(root_key + wxT(".AUP"));
+               if (!associateFileTypes.Create(true)) { 
+                  // Actually, can't create keys. Empty root_key to flag failure.
+                  root_key.Empty();
+               }
+            }
+            if (root_key.IsEmpty()) {
+               //v Warn that we can't set keys. Ask whether to set pref for no retry?
+            } else {
+               associateFileTypes = wxT("Audacity.Project"); // Finally set value for .AUP key
 
-					associateFileTypes.SetName(root_key + wxT("\\Audacity.Project\\shell"));
-					if(!associateFileTypes.Exists()) {
-						associateFileTypes.Create(true);
-						associateFileTypes = wxT("");
-					}
+               associateFileTypes.SetName(root_key + wxT("Audacity.Project"));
+               if(!associateFileTypes.Exists()) {
+                  associateFileTypes.Create(true);
+                  associateFileTypes = wxT("Audacity Project File");
+               }
 
-					associateFileTypes.SetName(root_key + wxT("\\Audacity.Project\\shell\\open"));
-					if(!associateFileTypes.Exists()) {
-						associateFileTypes.Create(true);
-					}
+               associateFileTypes.SetName(root_key + wxT("Audacity.Project\\shell"));
+               if(!associateFileTypes.Exists()) {
+                  associateFileTypes.Create(true);
+                  associateFileTypes = wxT("");
+               }
 
-					associateFileTypes.SetName(root_key + wxT("\\Audacity.Project\\shell\\open\\command"));
-					wxString tmpRegAudPath;
-					if(associateFileTypes.Exists()) {
-						tmpRegAudPath = wxString(associateFileTypes).Lower();
-					}
-					if (!associateFileTypes.Exists() || 
-							(tmpRegAudPath.Find(wxT("\\audacity.exe")) >= 0)) {
-						associateFileTypes.Create(true);
-						associateFileTypes = (wxString)argv[0] + (wxString)wxT(" \"%1\"");
-					}
-				}
-			} else {
-				// User said no. Set a pref so we don't keep asking.
-				gPrefs->Write(wxT("/WantAssociateFiles"), false);
-			}
-		}
-	}
+               associateFileTypes.SetName(root_key + wxT("Audacity.Project\\shell\\open"));
+               if(!associateFileTypes.Exists()) {
+                  associateFileTypes.Create(true);
+               }
+
+               associateFileTypes.SetName(root_key + wxT("Audacity.Project\\shell\\open\\command"));
+               wxString tmpRegAudPath;
+               if(associateFileTypes.Exists()) {
+                  tmpRegAudPath = wxString(associateFileTypes).Lower();
+               }
+               if (!associateFileTypes.Exists() || 
+                     (tmpRegAudPath.Find(wxT("audacity.exe")) >= 0)) {
+                  associateFileTypes.Create(true);
+                  associateFileTypes = (wxString)argv[0] + (wxString)wxT(" \"%1\"");
+               }
+            }
+         } else {
+            // User said no. Set a pref so we don't keep asking.
+            gPrefs->Write(wxT("/WantAssociateFiles"), false);
+         }
+      }
+   }
 }
 #endif
 
