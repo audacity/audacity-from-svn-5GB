@@ -263,6 +263,7 @@ void KeyConfigPrefs::OnKeyDown(wxListEvent &event)
    int selected = mList->GetNextItem(-1, wxLIST_NEXT_ALL,  wxLIST_STATE_SELECTED);
    int cnt = mList->GetItemCount();
    wxListItem item;
+   bool found = false;
 
    item.SetColumn(CommandColumn);
    item.SetMask(wxLIST_MASK_TEXT);
@@ -283,7 +284,32 @@ void KeyConfigPrefs::OnKeyDown(wxListEvent &event)
                              wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
 
          mList->EnsureVisible(i);
+
+         found = true;
+
          break;
+      }
+   }
+
+   if (!found) {
+      for (int i = 0; i < selected; i++)
+      {
+         item.SetId(i);
+
+         mList->GetItem(item);
+
+         if (item.m_text.Left(1).IsSameAs(keycode, false)) {
+            mList->SetItemState(event.GetIndex(),
+                                0,
+                                wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
+
+            mList->SetItemState(i,
+                                wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED,
+                                wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
+
+            mList->EnsureVisible(i);
+            break;
+         }
       }
    }
 }
