@@ -3,12 +3,12 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=audacity-win-unicode-1.3.2
+OutputBaseFilename=audacity-win-unicode-1.3.3
 SolidCompression=yes
 
 ; installer-related directives
 AppName=Audacity 1.3 Beta (Unicode)
-AppVerName=Audacity 1.3.2 (Unicode)
+AppVerName=Audacity 1.3.3 (Unicode)
 AppPublisher=Audacity Team
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
