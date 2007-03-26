@@ -1,52 +1,89 @@
 #!/bin/sh
 
-
-cat <<EOF
-
-Did you remember to rebuild wxWidgets with these env vars set:
-
-export MACOSX_DEPLOYMENT_TARGET=10.3
-export NEXT_ROOT="/Developer/SDKs/MacOSX10.3.9.sdk"
-export C_INCLUDE_PATH="/usr/local/include:/Developer/SDKs/MacOSX10.3.9.sdk /usr/include"
-export LIBRARY_PATH="/usr/local/lib:/Developer/SDKs/MacOSX10.3.9.sdk /usr/lib/gcc/darwin/3.3"
-export LD_PREBIND=1
-export CPPFLAGS=-DMAC_OS_X_VERSION_MAX_ALLOWED=1030
-
-Press ENTER to continue
-
-EOF
-read dummy
-
 if [ -f mac_release_build ]
 then
    echo 'You must execute this script from the base Audacity directory'
    exit 1
 fi
 
-export MACOSX_DEPLOYMENT_TARGET=10.3
-export NEXT_ROOT="/Developer/SDKs/MacOSX10.3.9.sdk"
-export C_INCLUDE_PATH="/usr/local/include:/Developer/SDKs/MacOSX10.3.9.sdk /usr/include"
-export LIBRARY_PATH="/usr/local/lib:/Developer/SDKs/MacOSX10.3.9.sdk /usr/lib/gcc/darwin/3.3"
-export LD_PREBIND=1
-export CPPFLAGS=-DMAC_OS_X_VERSION_MAX_ALLOWED=1030
+plugs='gverb_1216.so hard_limiter_1413.so sc4_1882.so'
+for plug in $plugs
+do
+   if [ ! -f plug-ins/$plug ]
+   then
+      echo "Missing plugin: $plug"
+      echo
+      echo "You must copy the following to the plug-ins directory before building:"
+      echo
+      echo $plugs
+      echo
+      exit 1
+   fi
+done
+
+ARCH=$(uname -p)
+
+if [ "$ARCH" = "powerpc" ]
+then
+   cat <<'   EOF'
+   
+   Did you remember to rebuild wxWidgets with these env vars set:
+   
+   export MACOSX_DEPLOYMENT_TARGET=10.3
+   export NEXT_ROOT="/Developer/SDKs/MacOSX10.3.9.sdk"
+   export C_INCLUDE_PATH="/usr/local/include:/Developer/SDKs/MacOSX10.3.9.sdk/usr/include"
+   export LIBRARY_PATH="/usr/local/lib:/Developer/SDKs/MacOSX10.3.9.sdk/usr/lib/gcc/darwin/3.3"
+   export CPPFLAGS=-DMAC_OS_X_VERSION_MAX_ALLOWED=1030
+   
+   Press ENTER to continue
+   
+   EOF
+   read dummy
+   
+   echo "Selecting gcc 3.3...requires root access...enter password when prompted"
+   echo 
+   sudo gcc_select 3.3
+
+   export MACOSX_DEPLOYMENT_TARGET=10.3
+   export NEXT_ROOT="/Developer/SDKs/MacOSX10.3.9.sdk"
+   export C_INCLUDE_PATH="/usr/local/include:/Developer/SDKs/MacOSX10.3.9.sdk/usr/include"
+   export LIBRARY_PATH="/usr/local/lib:/Developer/SDKs/MacOSX10.3.9.sdk/usr/lib/gcc/darwin/3.3"
+   export CPPFLAGS=-DMAC_OS_X_VERSION_MAX_ALLOWED=1030
+fi
+   
+#
+# Build UNICODE version only
+#
+./configure --enable-debug=no --enable-static=yes --enable-shared=no --enable-unicode=yes --with-lib-preference=local,system
 
 #
-# Build ANSI version
+# gcc 3.3 doesn't understand '-msse'
 #
-./configure --enable-static=yes --enable-shared=no --enable-unicode=no --with-lib-preference=local,system --with-portaudio=v19
+sed -e 's/ -msse//' lib-src/soundtouch/source/SoundTouch/Makefile >lib-src/soundtouch/source/SoundTouch/Makefile.new
+mv lib-src/soundtouch/source/SoundTouch/Makefile.new lib-src/soundtouch/source/SoundTouch/Makefile
+
+#
+# Mac does not support elf binaries
+#
+if [ "$ARCH" = "i386" ]
+then
+   sed -e 's/OBJ_FORMAT = elf/OBJ_FORMAT = aout/;s/-f $(OBJ_FORMAT)/-f macho/' lib-src/libflac/src/libFLAC/ia32/Makefile >lib-src/libflac/src/libFLAC/ia32/Makefile.new
+   mv lib-src/libflac/src/libFLAC/ia32/Makefile.new lib-src/libflac/src/libFLAC/ia32/Makefile
+fi
+
+#
+# Build it
+#
 make
-unset NEXT_ROOT
-mkdmg rc1
-mv *.dmg ..
-make distclean
 
-#
-# Build UNICODE version
-#
-./configure --enable-static=yes --enable-shared=no --enable-unicode=yes --with-lib-preference=local,system --with-portaudio=v19
-make
-unset NEXT_ROOT
-mkdmg rc1 unicode
-mv *.dmg ..
-make distclean
+if [ "$ARCH" = "powerpc" ]
+then
+   unset NEXT_ROOT
 
+   echo "Selecting gcc 4.0...requires root access...enter password when prompted"
+   echo 
+   sudo gcc_select 4.0
+fi
+
+scripts/mkdmg $1 $2
+mv *.dmg ..
