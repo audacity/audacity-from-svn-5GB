@@ -7,6 +7,14 @@
 // License:     wxWindows license 
 ///////////////////////////////////////////////////////////////////////////// 
 
+#include <wx/version.h>
+
+#if !wxCHECK_VERSION(2,7,0)
+
+//
+// For wxWidgets 2.6.x, use our backported version of wxTreebook
+//
+
 #include "wx/listctrl.h" 
 #include "wx/statline.h" 
 #include "wx/listbook.h"  // wxListbookEvent 
@@ -514,3 +522,5 @@ bool wxTreebook::SetPageImage(size_t WXUNUSED(n), int WXUNUSED(imageId))
     //return m_list->SetItemImage(n, imageId); 
    return false; 
 }
+
+#endif // wxCHECK_VERSION(2,7,0)
