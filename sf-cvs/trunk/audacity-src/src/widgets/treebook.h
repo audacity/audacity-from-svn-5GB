@@ -7,6 +7,15 @@
 // License:     wxWindows license 
 ///////////////////////////////////////////////////////////////////////////// 
 
+#include <wx/version.h>
+
+#if wxCHECK_VERSION(2,7,0)
+
+// wxWidgets 2.7.x and greater does have wxTreebook
+#include <wx/treebook.h>
+
+#else
+
 #ifndef __TREEBOOK_H__ 
 #define __TREEBOOK_H__ 
 
@@ -136,3 +145,5 @@ protected:
 }; 
 
 #endif // __TREEBOOK_H__ 
+
+#endif // wxCHECK_VERSION(2,7,0)
