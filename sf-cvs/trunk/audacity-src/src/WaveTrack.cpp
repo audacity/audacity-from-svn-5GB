@@ -1548,7 +1548,7 @@ void WaveTrack::UpdateLocationsCache()
       if (i > 0)
       {
          WaveClip* previousClip = clips.Item(i - 1);
-         
+
          if (fabs(previousClip->GetEndTime() - clip->GetStartTime())
                                           < WAVETRACK_MERGE_POINT_TOLERANCE)
          {
@@ -1671,7 +1671,10 @@ bool WaveTrack::Resample(int rate, bool progress)
 
 static int SortClipArrayCmpFunc(WaveClip** clip1, WaveClip** clip2)
 {
-   return (int)((*clip1)->GetStartTime() - (*clip2)->GetStartTime());
+   if((*clip1)->GetStartTime() < (*clip2)->GetStartTime())
+      return -1;
+   else
+      return 1;
 }
 
 void WaveTrack::FillSortedClipArray(WaveClipArray& clips)
