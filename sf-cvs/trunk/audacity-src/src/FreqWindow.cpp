@@ -911,9 +911,15 @@ void FreqWindow::Recalc()
          FFT(mWindowSize, false, in, NULL, out, out2);
 
          // Compute log power
+         float power;
          for (i = 0; i < mWindowSize; i++)
-            in[i] = log((out[i] * out[i]) + (out2[i] * out2[i]));
-
+         {
+            power = (out[i] * out[i]) + (out2[i] * out2[i]);
+            if(power <= 0.)
+               in[i] = -100000.;
+            else
+               in[i] = log((out[i] * out[i]) + (out2[i] * out2[i]));
+         }
          // Take IFFT
          FFT(mWindowSize, true, in, NULL, out, out2);
 
