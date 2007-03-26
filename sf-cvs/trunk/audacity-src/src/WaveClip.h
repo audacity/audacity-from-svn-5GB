@@ -50,6 +50,7 @@ public:
 };
 
 WX_DECLARE_LIST(WaveClip, WaveClipList);
+WX_DEFINE_ARRAY_PTR(WaveClip*, WaveClipArray);
 
 class WaveClip: public XMLTagHandler
 {

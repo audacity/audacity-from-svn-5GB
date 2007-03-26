@@ -249,6 +249,10 @@ class WaveTrack: public Track {
 
    // Get number of clips in this WaveTrack
    int GetNumClips() const;
+   
+   // Add all wave clips to the given array 'clips' and sort the array by
+   // clip start time. The array is emptied prior to adding the clips.
+   void FillSortedClipArray(WaveClipArray& clips);
 
    // Before calling 'Offset' on a clip, use this function to see if the
    // offsetting is allowed with respect to the other clips in this track.

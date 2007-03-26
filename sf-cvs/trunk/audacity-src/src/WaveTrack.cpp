@@ -29,6 +29,7 @@ Track classes.
 
 #include <wx/defs.h>
 #include <wx/intl.h>
+#include <wx/debug.h>
 
 #include <math.h>
 
@@ -1493,27 +1494,29 @@ bool WaveTrack::SplitAt(double t)
 
 void WaveTrack::UpdateLocationsCache()
 {
-   WaveClipList::Node *it, *jt;
+   unsigned int i;
+   WaveClipArray clips;
+   
+   FillSortedClipArray(clips);
    
    mDisplayNumLocations = 0;
-
-   for (it=GetClipIterator(); it; it=it->GetNext())
+   
+   // Count number of display locations
+   for (i = 0; i < clips.GetCount(); i++)
    {
-      WaveClip* clip = it->GetData();
+      WaveClip* clip = clips.Item(i);
       
       mDisplayNumLocations += clip->GetCutLines()->GetCount();
-      
-      for (jt=GetClipIterator(); jt; jt=jt->GetNext())
-      {
-         WaveClip* clip2 = jt->GetData();
-         if (clip != clip2 && fabs(clip->GetEndTime()-clip2->GetStartTime()) < WAVETRACK_MERGE_POINT_TOLERANCE)
-            mDisplayNumLocations++;
-      }
+
+      if (i > 0 && fabs(clips.Item(i - 1)->GetEndTime() -
+                  clip->GetStartTime()) < WAVETRACK_MERGE_POINT_TOLERANCE)
+         mDisplayNumLocations++;
    }
 
    if (mDisplayNumLocations == 0)
       return;
 
+   // Alloc necessary number of display locations
    if (mDisplayNumLocations > mDisplayNumLocationsAllocated)
    {
       // Only realloc, if we need more space than before. Otherwise
@@ -1524,32 +1527,42 @@ void WaveTrack::UpdateLocationsCache()
       mDisplayNumLocationsAllocated = mDisplayNumLocations;
    }
 
+   // Add all display locations to cache
    int curpos = 0;
-
-   for (it=GetClipIterator(); it; it=it->GetNext())
+   
+   for (i = 0; i < clips.GetCount(); i++)
    {
-      WaveClip* clip = it->GetData();
+      WaveClip* clip = clips.Item(i);
+
       WaveClipList* cutlines = clip->GetCutLines();
-      for (jt = cutlines->GetFirst(); jt; jt=jt->GetNext())
+      for (WaveClipList::Node* it = cutlines->GetFirst(); it;
+           it = it->GetNext())
       {
+         // Add cut line expander point
          mDisplayLocations[curpos].typ = locationCutLine;
-         mDisplayLocations[curpos].pos = jt->GetData()->GetOffset() + it->GetData()->GetOffset();
+         mDisplayLocations[curpos].pos =
+            clip->GetOffset() + it->GetData()->GetOffset();
          curpos++;
       }
-
-      for (jt=GetClipIterator(); jt; jt=jt->GetNext())
+      
+      if (i > 0)
       {
-         WaveClip* clip2 = jt->GetData();
-         if (clip != clip2 && fabs(clip->GetEndTime()-clip2->GetStartTime()) < WAVETRACK_MERGE_POINT_TOLERANCE)
+         WaveClip* previousClip = clips.Item(i - 1);
+         
+         if (fabs(previousClip->GetEndTime() - clip->GetStartTime())
+                                          < WAVETRACK_MERGE_POINT_TOLERANCE)
          {
+            // Add merge point
             mDisplayLocations[curpos].typ = locationMergePoint;
-            mDisplayLocations[curpos].pos = clip->GetEndTime();
-            mDisplayLocations[curpos].clipidx1 = mClips.IndexOf(clip);
-            mDisplayLocations[curpos].clipidx2 = mClips.IndexOf(clip2);
+            mDisplayLocations[curpos].pos = clips.Item(i-1)->GetEndTime();
+            mDisplayLocations[curpos].clipidx1 = mClips.IndexOf(previousClip);
+            mDisplayLocations[curpos].clipidx2 = mClips.IndexOf(clip);
             curpos++;
          }
       }
    }
+   
+   wxASSERT(curpos == mDisplayNumLocations);
 }
 
 // Expand cut line (that is, re-insert audio, then delete audio saved in cut line)
@@ -1654,6 +1667,21 @@ bool WaveTrack::Resample(int rate, bool progress)
    mRate = rate;
    
    return true;
+}
+
+static int SortClipArrayCmpFunc(WaveClip** clip1, WaveClip** clip2)
+{
+   return (int)((*clip1)->GetStartTime() - (*clip2)->GetStartTime());
+}
+
+void WaveTrack::FillSortedClipArray(WaveClipArray& clips)
+{
+   clips.Empty();
+   
+   for (WaveClipList::Node *it=GetClipIterator(); it; it=it->GetNext())
+      clips.Add(it->GetData());
+   
+   clips.Sort(SortClipArrayCmpFunc);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
