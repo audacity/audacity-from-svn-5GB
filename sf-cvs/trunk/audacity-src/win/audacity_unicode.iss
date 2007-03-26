@@ -54,7 +54,6 @@ Name: associate_aup; Description: "&Associate Audacity project files"; GroupDesc
 Source: "..\README.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\win\unicode_release\audacity.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\win\unicode_release\audacity-1.2-help.htb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\win\unicode_release\Languages\*"; DestDir: "{app}\Languages\"; Flags: ignoreversion recursesubdirs
 Source: "..\win\unicode_release\Nyquist\*"; DestDir: "{app}\Nyquist\"; Flags: ignoreversion
 Source: "..\win\unicode_release\Plug-Ins\*"; DestDir: "{app}\Plug-Ins\"; Excludes: "analyze.ny, fadein.ny, fadeout.ny, undcbias.ny"; Flags: ignoreversion
@@ -67,6 +66,7 @@ Name: "{userdesktop}\Audacity 1.3 Beta (Unicode)"; Filename: "{app}\audacity.exe
 [InstallDelete]
 ; Get rid of Audacity 1.0.0 stuff that's no longer used.
 Type: files; Name: "{app}\audacity-help.htb"
+Type: files; Name: "{app}\audacity-1.2-help.htb"
 ; Don't think we want to do this because user may have stored their own.
 ;   Type: filesandordirs; Name: "{app}\vst"
 
