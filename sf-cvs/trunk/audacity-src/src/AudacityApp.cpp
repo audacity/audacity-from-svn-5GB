@@ -70,10 +70,72 @@ It handles initialization and termination by subclassing wxApp.
 #include "FileNames.h"
 #include "AutoRecovery.h"
 
+// Windows specific linker control...only needed once so
+// this is a good place (unless we want to add another file).
+#if defined(__WXMSW__)
+
 // These lines ensure that Audacity gets WindowsXP themes.
 // Without them we get the old-style Windows98/2000 look under XP.
-#if defined(__WXMSW__) && !defined(__WXWINCE__) 
-#pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='X86' publicKeyToken='6595b64144ccf1df'\"") 
+#  if !defined(__WXWINCE__)
+#     pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='X86' publicKeyToken='6595b64144ccf1df'\"")
+#  endif
+
+// These lines allows conditional inclusion of the various libraries
+// that Audacity can use.
+#  if wxUSE_UNICODE
+#     define U "u"
+#  else
+#     define U ""
+#  endif
+
+#  if DEBUG
+#     define D "d"
+#  else
+#     define D ""
+#  endif
+
+#  if defined(USE_LIBFLAC)
+#     pragma comment(lib, "libFLAC++" U D)
+#     pragma comment(lib, "libFLAC" U D)
+#  endif
+
+#  if defined(USE_LIBID3TAG)
+#     pragma comment(lib, "libid3tag" U D)
+#  endif
+
+#  if defined(USE_LIBMAD)
+#     pragma comment(lib, "mad" U D)
+#  endif
+
+#  if defined(USE_LIBRESAMPLE)
+#     pragma comment(lib, "libresample" U D)
+#  endif
+
+#  if defined(USE_LIBSAMPLERATE)
+#     pragma comment(lib, "libsamplerate" U D)
+#  endif
+
+#  if defined(USE_LIBVORBIS)
+#     pragma comment(lib, "ogg_static" U D)
+#     pragma comment(lib, "vorbis_static" U D)
+#     pragma comment(lib, "vorbisfile_static" U D)
+#  endif
+
+#  if defined(USE_NYQUIST)
+#     pragma comment(lib, "libnyquist" U D)
+#  endif
+
+#  if defined(USE_SOUNDTOUCH)
+#     pragma comment(lib, "soundtouch" U D)
+#  endif
+
+#  if defined(USE_LIBTWOLAME)
+#     pragma comment(lib, "libtwolame_static" U D)
+#  endif
+
+#  undef U
+#  undef D
+
 #endif 
 
 #if wxUSE_ACCESSIBILITY

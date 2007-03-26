@@ -70,7 +70,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\VorbisFile_Static_$(ConfigurationName)\vorbisfile_static_d.lib"
+				OutputFile=".\VorbisFile_Static_$(ConfigurationName)\vorbisfile_staticd.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -222,7 +222,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\VorbisFile_Static_$(ConfigurationName)\vorbisfile_static_ud.lib"
+				OutputFile=".\VorbisFile_Static_$(ConfigurationName)\vorbisfile_staticud.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -299,7 +299,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\VorbisFile_Static_$(ConfigurationName)\vorbisfile_static_u.lib"
+				OutputFile=".\VorbisFile_Static_$(ConfigurationName)\vorbisfile_staticu.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
