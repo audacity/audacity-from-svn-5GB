@@ -147,7 +147,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\Static_$(ConfigurationName)\ogg_static_d.lib"
+				OutputFile=".\Static_$(ConfigurationName)\ogg_staticd.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -222,7 +222,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\Static_$(ConfigurationName)\ogg_static_ud.lib"
+				OutputFile=".\Static_$(ConfigurationName)\ogg_staticud.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -299,7 +299,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\Static_$(ConfigurationName)\ogg_static_u.lib"
+				OutputFile=".\Static_$(ConfigurationName)\ogg_staticu.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
