@@ -68,7 +68,8 @@ class AudioUnitDialog : public wxDialog
  public:
    AudioUnitDialog(wxWindow *parent, wxWindowID id, wxString title,
                    AudioUnit unit,
-                   AudioUnitCarbonView carbonView);
+                   AudioUnitCarbonView carbonView,
+                   Effect *effect);
 
    void OnOK(wxCommandEvent &event);
    void OnCancel(wxCommandEvent &event);
@@ -78,6 +79,7 @@ class AudioUnitDialog : public wxDialog
    AudioUnit             mUnit;
    AudioUnitGUIControl  *mGUIControl;
    wxBoxSizer           *mMainSizer;
+   Effect               *mEffect;
 
    EventHandlerRef       mEventHandlerRef;
 
@@ -166,7 +168,7 @@ bool AudioUnitEffect::PromptUser()
    }
 
    AudioUnitDialog dlog(mParent, -1, mName,
-                        mUnit, carbonView);
+                        mUnit, carbonView, this);
    dlog.CentreOnParent();
    dlog.ShowModal();
 
@@ -755,8 +757,10 @@ END_EVENT_TABLE()
 AudioUnitDialog::AudioUnitDialog(wxWindow *parent, wxWindowID id,
                                  wxString title,
                                  AudioUnit unit,
-                                 AudioUnitCarbonView carbonView):
-   mUnit(unit)
+                                 AudioUnitCarbonView carbonView,
+                                 Effect *effect):
+   mUnit(unit),
+   mEffect(effect)
 {
    long style = wxDEFAULT_DIALOG_STYLE;
    
@@ -897,7 +901,16 @@ void AudioUnitDialog::OnCancel(wxCommandEvent &event)
 
 void AudioUnitDialog::OnPreview(wxCommandEvent &event)
 {
-   // TODO
+   mEffect->Preview();
 }
 
-
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 21aef079-ec47-4ff9-a359-7d159e2ba0e6
