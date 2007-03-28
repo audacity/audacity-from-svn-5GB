@@ -1323,8 +1323,8 @@ void TrackPanel::SetCursorAndTipWhenSelectTool( Track * t,
    if (!t || !t->GetSelected()) 
       return;
 
-   int leftSel = TimeToPosition(mViewInfo->sel0, r.x);
-   int rightSel = TimeToPosition(mViewInfo->sel1, r.x);
+   wxInt64 leftSel = TimeToPosition(mViewInfo->sel0, r.x);
+   wxInt64 rightSel = TimeToPosition(mViewInfo->sel1, r.x);
 
    // Something is wrong if right edge comes before left edge
    wxASSERT(!(rightSel < leftSel));
@@ -1639,8 +1639,8 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
       }  
    //Make sure you are within the selected track
    if (pTrack && pTrack->GetSelected()) {
-      int leftSel = TimeToPosition(mViewInfo->sel0, r.x);
-      int rightSel = TimeToPosition(mViewInfo->sel1, r.x);
+      wxInt64 leftSel = TimeToPosition(mViewInfo->sel0, r.x);
+      wxInt64 rightSel = TimeToPosition(mViewInfo->sel1, r.x);
       wxASSERT(leftSel <= rightSel);
       // Adjusting selection edges can be turned off in the
       // preferences now
@@ -1813,7 +1813,7 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event, Track *clickedTrack)
    // Can someone make this value of '5' configurable in
    // preferences?
    const int minimumSizedSelection = 5; //measured in pixels
-   int SelStart=TimeToPosition( mSelStart, r.x); //cvt time to pixels.
+   wxInt64 SelStart=TimeToPosition( mSelStart, r.x); //cvt time to pixels.
    // Abandon this drag if selecting < 5 pixels.
    if(abs( SelStart-x) < minimumSizedSelection)
        return;
@@ -1844,7 +1844,8 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event, Track *clickedTrack)
 /// Converts a position (mouse X coordinate) to 
 /// project time, in seconds.  Needs the left edge of
 /// the track as an additional parameter.
-double TrackPanel::PositionToTime(int mouseXCoordinate, int trackLeftEdge) const
+double TrackPanel::PositionToTime(wxInt64 mouseXCoordinate,
+                                  wxInt64 trackLeftEdge) const
 {
    return mViewInfo->h + ((mouseXCoordinate - trackLeftEdge)
                           / mViewInfo->zoom);
@@ -1852,11 +1853,12 @@ double TrackPanel::PositionToTime(int mouseXCoordinate, int trackLeftEdge) const
 
 
 /// STM: Converts a project time to screen x position.
-int TrackPanel::TimeToPosition(double projectTime, int trackLeftEdge) const
+wxInt64 TrackPanel::TimeToPosition(double projectTime,
+                                   wxInt64 trackLeftEdge) const
 {
    return static_cast <
-       int >(mViewInfo->zoom * (projectTime - mViewInfo->h) +
-             trackLeftEdge);
+       wxInt64 >(mViewInfo->zoom * (projectTime - mViewInfo->h) +
+                 trackLeftEdge);
 }
 
 /// HandleEnvelope gets called when the user is changing the
@@ -4508,9 +4510,9 @@ void TrackPanel::DrawEverythingElse(wxDC * dc, const wxRect panelRect,
    if (mSnapManager && (mSnapLeft >= 0 || mSnapRight >= 0)) {
       AColor::SnapGuidePen(dc);
       if (mSnapLeft >= 0)
-         dc->DrawLine(mSnapLeft, 0, mSnapLeft, 30000);
+         dc->DrawLine((int)mSnapLeft, 0, mSnapLeft, 30000);
       if (mSnapRight >= 0)
-         dc->DrawLine(mSnapRight, 0, mSnapRight, 30000);
+         dc->DrawLine((int)mSnapRight, 0, mSnapRight, 30000);
    }
 }
 
