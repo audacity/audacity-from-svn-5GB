@@ -49,6 +49,7 @@ enum {
 
 BEGIN_EVENT_TABLE(MixerTrackCluster, wxPanel)
    EVT_CHAR(MixerTrackCluster::OnKeyEvent)
+   EVT_MOUSE_EVENTS(MixerTrackCluster::OnMouseEvent)
    EVT_COMMAND(ID_TOGGLEBUTTON_MUTE, wxEVT_COMMAND_BUTTON_CLICKED, MixerTrackCluster::OnButton_Mute)
    EVT_COMMAND(ID_TOGGLEBUTTON_SOLO, wxEVT_COMMAND_BUTTON_CLICKED, MixerTrackCluster::OnButton_Solo)
    EVT_PAINT(MixerTrackCluster::OnPaint)
@@ -57,9 +58,7 @@ BEGIN_EVENT_TABLE(MixerTrackCluster, wxPanel)
    EVT_COMMAND_SCROLL(ID_SLIDER_GAIN, MixerTrackCluster::OnSliderScroll_Gain)
 END_EVENT_TABLE()
 
-IMPLEMENT_CLASS(MixerTrackCluster, wxPanel)
-
-MixerTrackCluster::MixerTrackCluster(wxScrolledWindow* parent, 
+MixerTrackCluster::MixerTrackCluster(wxWindow* parent, 
                                        MixerBoard* grandParent, AudacityProject* project, 
                                        WaveTrack* pLeftTrack, WaveTrack* pRightTrack /*= NULL*/, 
                                        const wxPoint& pos /*= wxDefaultPosition*/, 
@@ -231,7 +230,10 @@ void MixerTrackCluster::UpdateHeight() // For wxSizeEvents, update gain slider a
    wxSize scrolledWindowClientSize = this->GetParent()->GetClientSize();   
    int newClusterHeight = 
       scrolledWindowClientSize.GetHeight() - 
-      wxSystemSettings::GetMetric(wxSYS_HSCROLL_Y) + // wxScrolledWindow::GetClientSize doesn't account for its scrollbar size.
+
+      // wxScrolledWindow::GetClientSize doesn't account for its scrollbar size.
+      wxSystemSettings::GetMetric(wxSYS_HSCROLL_Y) + 
+      
       kDoubleInset;
    this->SetSize(-1, newClusterHeight); 
 
@@ -369,6 +371,27 @@ void MixerTrackCluster::OnKeyEvent(wxKeyEvent & event)
    mProject->HandleKeyDown(event);
 }
 
+void MixerTrackCluster::OnMouseEvent(wxMouseEvent& event)
+{
+   if (event.ButtonUp()) 
+   {
+      if (!event.ShiftDown()) 
+         // exclusive select
+         mProject->SelectNone();
+
+      mLeftTrack->SetSelected(true);
+      if (mRightTrack)
+         mRightTrack->SetSelected(true);
+      
+      if (event.ShiftDown())
+         // Inclusive select, so refresh only this one.
+         this->Refresh(false);
+      else
+         // Exclusive select, so refresh all.
+         mMixerBoard->Refresh(false);
+   }
+}
+
 void MixerTrackCluster::OnPaint(wxPaintEvent &evt)
 {
    wxPaintDC dc(this);
@@ -383,7 +406,29 @@ void MixerTrackCluster::OnPaint(wxPaintEvent &evt)
 
    wxSize clusterSize = this->GetSize();
    wxRect bev(0, 0, clusterSize.GetWidth() - 1, clusterSize.GetHeight() - 1);
-   AColor::Bevel(dc, true, bev);
+   if (mLeftTrack->GetSelected())
+   {
+      wxPen highlightPen;
+      for (unsigned int i = 0; i < 2; i++)
+      {
+         //#if (AUDACITY_BRANDING == BRAND_UMIXIT)
+         //   highlightPen.SetColour(*wxCYAN);
+         //   dc.SetPen(highlightPen);
+         //   dc.DrawLine(bev.x, bev.y, bev.x + bev.width, bev.y); // top
+         //   dc.DrawLine(bev.x, bev.y, bev.x, bev.y + bev.height);    // left
+         //   highlightPen.SetColour(*wxBLUE); 
+         //   dc.SetPen(highlightPen);
+         //   dc.DrawLine(bev.x + bev.width, bev.y, bev.x + bev.width, bev.y + bev.height);       // right
+         //   dc.DrawLine(bev.x, bev.y + bev.height, bev.x + bev.width + 1, bev.y + bev.height);  // bottom
+         //   bev.Inflate(-1, -1);
+         //#else
+            bev.Inflate(-1, -1);
+            AColor::Bevel(dc, false, bev);
+         //#endif
+      }
+   }
+   else
+      AColor::Bevel(dc, true, bev);
 
    dc.EndDrawing();
 }
@@ -510,6 +555,40 @@ MusicalInstrument::~MusicalInstrument()
 WX_DEFINE_OBJARRAY(MusicalInstrumentArray);
 
 
+// class MixerBoardScrolledWindow 
+
+// wxScrolledWindow ignores mouse clicks in client area, 
+// but they don't get passed to Mixerboard.
+// We need to catch them to deselect all track clusters.
+
+BEGIN_EVENT_TABLE(MixerBoardScrolledWindow, wxScrolledWindow)
+   EVT_MOUSE_EVENTS(MixerBoardScrolledWindow::OnMouseEvent)
+END_EVENT_TABLE()
+
+MixerBoardScrolledWindow::MixerBoardScrolledWindow(AudacityProject* project, 
+                                                   MixerBoard* parent, wxWindowID id /*= -1*/, 
+                                                   const wxPoint& pos /*= wxDefaultPosition*/, 
+                                                   const wxSize& size /*= wxDefaultSize*/, 
+                                                   long style /*= wxHSCROLL | wxVSCROLL*/) : 
+   wxScrolledWindow(parent, id, pos, size, style)
+{
+   mMixerBoard = parent;
+   mProject = project;
+}
+
+void MixerBoardScrolledWindow::OnMouseEvent(wxMouseEvent& event)
+{
+   if (event.ButtonUp()) 
+   {
+      //v Even when I implement MixerBoard::OnMouseEvent and call event.Skip() 
+      // here, MixerBoard::OnMouseEvent never gets called.
+      // So, added mProject to MixerBoardScrolledWindow and just directly do what's needed here.
+      mProject->SelectNone();
+      mMixerBoard->Refresh(false);
+   }
+}
+
+
 // class MixerBoard
 
 #define MIXER_BOARD_MIN_HEIGHT 500
@@ -521,27 +600,15 @@ const wxSize kDefaultSize =
                kDoubleInset, // plus final right margin
             MIXER_BOARD_MIN_HEIGHT); 
 
-BEGIN_EVENT_TABLE(MixerBoard, wxFrame)
-   EVT_CLOSE(MixerBoard::OnCloseWindow)
-   EVT_MAXIMIZE(MixerBoard::OnMaximize)
+BEGIN_EVENT_TABLE(MixerBoard, wxWindow)
    EVT_SIZE(MixerBoard::OnSize)
 END_EVENT_TABLE()
 
-MixerBoard::MixerBoard(AudacityProject* parent, 
+MixerBoard::MixerBoard(AudacityProject* pProject, 
+                        wxFrame* parent, 
                         const wxPoint& pos /*= wxDefaultPosition*/, 
                         const wxSize& size /*= wxDefaultSize*/) :
-   wxFrame(parent, -1,
-            wxString::Format(_("Audacity Mixer Board%s"), 
-                              ((parent->GetName() == wxEmptyString) ? 
-                                 wxT("") : 
-                                 wxString::Format(wxT(" - %s"),
-                                                  parent->GetName().c_str()).c_str())), 
-            pos, size, 
-            wxDEFAULT_FRAME_STYLE
-            #ifndef __WXMAC__
-               | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT)
-            #endif
-            )
+   wxWindow(parent, -1, pos, size)
 {
    // public data members
    // mute & solo button images: Create once and store on MixerBoard for use in all MixerTrackClusters.
@@ -557,19 +624,21 @@ MixerBoard::MixerBoard(AudacityProject* parent,
 
    // private data members
    this->LoadMusicalInstruments(); // Set up mMusicalInstruments.
-   mProject = parent;
+   mProject = pProject;
    
    mScrolledWindow = 
-      new wxScrolledWindow(this, -1, // wxWindow* parent, wxWindowID id = -1, 
-                           this->GetClientAreaOrigin(), // const wxPoint& pos = wxDefaultPosition, 
-                           this->GetClientSize(), // const wxSize& size = wxDefaultSize, 
-                           wxHSCROLL); // long style = wxHSCROLL | wxVSCROLL, const wxString& name = "scrolledWindow")
+      new MixerBoardScrolledWindow(
+         pProject, // AudacityProject* project,
+         this, -1, // wxWindow* parent, wxWindowID id = -1, 
+         this->GetClientAreaOrigin(), // const wxPoint& pos = wxDefaultPosition, 
+         size, // const wxSize& size = wxDefaultSize, 
+         wxHSCROLL); // long style = wxHSCROLL | wxVSCROLL, const wxString& name = "scrolledWindow")
 
    // Set background color a la wxColour dark in AColor::Init, so same as TrackPanel background.
    mScrolledWindow->SetBackgroundColour(wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW)); 
    
    mScrolledWindow->SetScrollRate(10, 0); // no vertical scroll
-   mScrolledWindow->SetVirtualSize(kDefaultSize.GetWidth(), -1);
+   mScrolledWindow->SetVirtualSize(size);
 
    /* This doesn't work to make the mScrolledWindow automatically resize, so do it explicitly in OnSize.
          wxBoxSizer* pBoxSizer = new wxBoxSizer(wxVERTICAL);
@@ -583,19 +652,6 @@ MixerBoard::MixerBoard(AudacityProject* parent,
    mSoloCount = 0;
    mT = -1.0;
    mTracks = mProject->GetTracks();
-
-   this->SetSizeHints(kInset + MIXER_TRACK_CLUSTER_WIDTH, // int minW=-1, // Show at least one cluster wide. 
-                        MIXER_BOARD_MIN_HEIGHT); // int minH=-1, 
-
-   // loads either the XPM or the windows resource, depending on the platform
-   #if !defined(__WXMAC__) && !defined(__WXX11__)
-      #ifdef __WXMSW__
-         wxIcon ic(wxICON(AudacityLogo));
-      #else
-         wxIcon ic(wxICON(AudacityLogo48x48));
-      #endif
-      SetIcon(ic);
-   #endif
 }
 
 MixerBoard::~MixerBoard()
@@ -617,7 +673,6 @@ MixerBoard::~MixerBoard()
 
 void MixerBoard::AddTrackClusters() // Add clusters for any tracks we're not yet showing.
 {
-   wxASSERT(mTracks);
    if (mTracks->IsEmpty())
       return;
 
@@ -661,8 +716,12 @@ void MixerBoard::AddTrackClusters() // Add clusters for any tracks we're not yet
    }
 
    if (pMixerTrackCluster)
+   {
       // Added at least one MixerTrackCluster.
       this->UpdateWidth();
+      for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
+         mMixerTrackClusters[i]->UpdateHeight();
+   }
 }
 
 void MixerBoard::RemoveTrackCluster(const WaveTrack* pLeftTrack)
@@ -883,16 +942,35 @@ void MixerBoard::UpdateMeters(double t)
 void MixerBoard::UpdateWidth()
 {
    int newWidth = 
-      (mMixerTrackClusters.GetCount() * 
-         (kInset + MIXER_TRACK_CLUSTER_WIDTH)) + // left margin and width for each
-      kTripleInset; // plus final right margin
+      (mMixerTrackClusters.GetCount() *            // number of tracks times
+         (kInset + MIXER_TRACK_CLUSTER_WIDTH)) +   // left margin and width for each
+      kTripleInset;                                // plus final right margin
 
-   mScrolledWindow->SetVirtualSize(newWidth - kInset, -1);
+   int width;
+   int height;
+   this->GetSize(&width, &height);
+   if (newWidth == width)
+      return;
 
-   this->SetSizeHints(kInset + MIXER_TRACK_CLUSTER_WIDTH, // int minW=-1, // Show at least one cluster wide. 
-                        MIXER_BOARD_MIN_HEIGHT, // int minH=-1, 
-                        newWidth); // int maxW=-1, 
-   this->SetSize(newWidth, -1);
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      if (width < newWidth - kInset)
+         mScrolledWindow->SetVirtualSize(newWidth, -1);
+      else
+         mScrolledWindow->SetVirtualSize(width, -1);
+   #else
+      mScrolledWindow->SetVirtualSize(newWidth, -1);
+
+      wxWindow* pParent = this->GetParent(); // Might be mProject, or might be a MixerBoardFrame.
+      mProject->SetSizeHints(
+         kInset + MIXER_TRACK_CLUSTER_WIDTH, // int minW=-1, // Show at least one cluster wide. 
+         MIXER_BOARD_MIN_HEIGHT, // int minH=-1, 
+         newWidth); // int maxW=-1, 
+      wxPoint parentPos = pParent->GetPosition();
+      int maxWidth = wxSystemSettings::GetMetric(wxSYS_SCREEN_X) - parentPos.x;
+      if (newWidth > maxWidth) 
+         newWidth = maxWidth;
+      pParent->SetSize(newWidth, -1);
+   #endif
 }
 
 // private methods
@@ -1128,33 +1206,79 @@ void MixerBoard::LoadMusicalInstruments()
 }
 
 // event handlers
-void MixerBoard::OnCloseWindow(wxCloseEvent &WXUNUSED(event))
-{
-  this->Hide();
-}
-
-void MixerBoard::OnMaximize(wxMaximizeEvent &event) 
-{
-   // Update the size hints before skipping to let default handling happen.
-   // Try to show all clusters.
-   int newWidth = 
-      (mMixerTrackClusters.GetCount() * (kInset + MIXER_TRACK_CLUSTER_WIDTH)) + // left margin and width for each
-                     kTripleInset; // plus final right margin
-   this->SetSizeHints(kInset + MIXER_TRACK_CLUSTER_WIDTH, // int minW=-1, // Show at least one cluster wide. 
-                        MIXER_BOARD_MIN_HEIGHT, // int minH=-1, 
-                        newWidth); // int maxW=-1, 
-
-   mScrolledWindow->SetVirtualSize(newWidth - kInset, -1);
-
-   event.Skip();
-}
 
 void MixerBoard::OnSize(wxSizeEvent &evt)
 {
    // this->FitInside() doesn't work, and it doesn't happen automatically. Is wxScrolledWindow wrong?
-   mScrolledWindow->SetSize(this->GetClientSize());
+   mScrolledWindow->SetSize(evt.GetSize());
    
+   this->UpdateWidth(); // primarily to update mScrolledWindow's virtual width
    for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
       mMixerTrackClusters[i]->UpdateHeight();
-
 }
+
+
+#if (AUDACITY_BRANDING != BRAND_UMIXIT)
+
+   // class MixerBoardFrame
+
+   BEGIN_EVENT_TABLE(MixerBoardFrame, wxFrame)
+      EVT_CLOSE(MixerBoardFrame::OnCloseWindow)
+      EVT_MAXIMIZE(MixerBoardFrame::OnMaximize)
+      EVT_SIZE(MixerBoardFrame::OnSize)
+   END_EVENT_TABLE()
+
+
+   MixerBoardFrame::MixerBoardFrame(AudacityProject* parent) :
+      wxFrame(parent, -1,
+               wxString::Format(_("Audacity Mixer Board%s"), 
+                                 ((parent->GetName() == wxEmptyString) ? 
+                                    wxT("") : 
+                                    wxString::Format(wxT(" - %s"),
+                                                   parent->GetName().c_str()).c_str())), 
+               wxDefaultPosition, wxDefaultSize, 
+               wxDEFAULT_FRAME_STYLE
+               #ifndef __WXMAC__
+                  | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT)
+               #endif
+               )
+   {
+      mMixerBoard = new MixerBoard(parent, this);
+     
+      this->SetSizeHints(kInset + MIXER_TRACK_CLUSTER_WIDTH, // int minW=-1, // Show at least one cluster wide. 
+                           MIXER_BOARD_MIN_HEIGHT); // int minH=-1, 
+
+      // loads either the XPM or the windows resource, depending on the platform
+      #if !defined(__WXMAC__) && !defined(__WXX11__)
+         #ifdef __WXMSW__
+            wxIcon ic(wxICON(AudacityLogo));
+         #else
+            wxIcon ic(wxICON(AudacityLogo48x48));
+         #endif
+         SetIcon(ic);
+      #endif
+   }
+
+   MixerBoardFrame::~MixerBoardFrame()
+   {
+   }
+
+   // event handlers
+   void MixerBoardFrame::OnCloseWindow(wxCloseEvent &WXUNUSED(event))
+   {
+   this->Hide();
+   }
+
+   void MixerBoardFrame::OnMaximize(wxMaximizeEvent &event)
+   {
+      // Update the size hints to show all tracks before skipping to let default handling happen.
+      mMixerBoard->UpdateWidth();
+      event.Skip();
+   }
+
+   void MixerBoardFrame::OnSize(wxSizeEvent &event)
+   {
+      mMixerBoard->SetSize(this->GetClientSize());
+   }
+#endif
+

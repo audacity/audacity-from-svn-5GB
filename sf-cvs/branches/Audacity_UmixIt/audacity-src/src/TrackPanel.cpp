@@ -877,6 +877,10 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
 
    mRuler = new AdornedRulerPanel();
 
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      mShowRulerOnly = true;
+   #endif
+
    mTimeCount = 0;
    mTimer.parent = this;
    mTimer.Start(50, FALSE);
@@ -983,6 +987,11 @@ void TrackPanel::SelectNone()
 void TrackPanel::GetTracksUsableArea(int *width, int *height) const
 {
    GetSize(width, height);
+
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      if (mShowRulerOnly) 
+         return;
+   #endif
 
    *width -= GetLabelWidth();
 
@@ -1308,6 +1317,17 @@ void TrackPanel::ScrollDuringDrag()
    }
 }
 
+#if (AUDACITY_BRANDING == BRAND_UMIXIT)
+   // from Project.cpp defs
+   #ifdef __WXMAC__
+      const int sbarSpaceWidth = 15;
+   #elif defined(__WXMSW__)
+      const int sbarSpaceWidth = 16;
+   #else // wxGTK, wxMOTIF, wxX11
+      const int sbarSpaceWidth = 15;
+   #endif
+#endif
+
 // AS: This updates the indicator (on a timer tick) that shows
 //  where the current play or record position is.  To do this,
 //  we cheat a little.  The indicator is drawn during the ruler
@@ -1338,6 +1358,10 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
 
       int width, height;
       GetSize(&width, &height);
+      #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+         if (mShowRulerOnly)
+            width += sbarSpaceWidth;
+      #endif
       height = GetRulerHeight();
 
       bool bIsClientDC = false;
@@ -1347,8 +1371,11 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
          dc = new wxClientDC(this);
       }
     
-      //Draw the line across all tracks specifying where play is
-      DrawTrackIndicator(dc);
+      #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+         if (!mShowRulerOnly)
+      #endif
+            //Draw the line across all tracks specifying where play is
+            DrawTrackIndicator(dc);
 
 
       wxMemoryDC memDC;
@@ -1390,6 +1417,15 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
 
    dc.BeginDrawing();
 
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      if (mShowRulerOnly) 
+      {
+         DrawRuler(&dc);
+         dc.EndDrawing();
+         return;
+      }
+   #endif
+
    DrawTracks(&dc);
    DrawRuler(&dc);
    RemoveStaleIndicators(&upd);
@@ -1411,6 +1447,13 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
 
    int width, height;
    GetSize(&width, &height);
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      if (mShowRulerOnly) 
+      {
+         width += sbarSpaceWidth;
+         height = this->GetRulerHeight();
+      }
+   #endif
    if (width != mPrevWidth || height != mPrevHeight || !mBitmap) {
       mPrevWidth = width;
       mPrevHeight = height;
@@ -1424,6 +1467,15 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    wxMemoryDC memDC;
 
    memDC.SelectObject(*mBitmap);
+
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      if (mShowRulerOnly) 
+      {
+         DrawRuler(&memDC);
+         dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+         return;
+      }
+   #endif
 
    DrawTracks(&memDC);
    DrawRuler(&memDC);
@@ -3835,6 +3887,14 @@ int TrackPanel::GetRulerHeight()
    return AdornedRulerPanel::GetRulerHeight();
 }
 
+int TrackPanel::GetLeftOffset() const 
+{ 
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      if (mShowRulerOnly)
+         return 1;
+   #endif
+   return GetLabelWidth() + 1;
+}
 
 
 //
@@ -4084,11 +4144,18 @@ void TrackPanel::DrawRuler( wxDC * dc, bool text )
    GetSize( &r.width, &r.height );
    r.x = 0;
    r.y = 0;
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      if (mShowRulerOnly)
+         r.width += sbarSpaceWidth;
+   #endif
    r.height = GetRulerHeight() - 1;
    mRuler->SetSize( r );
    mRuler->SetLeftOffset( GetLeftOffset() );
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      if (mShowRulerOnly)
+         mRuler->SetLeftOffset(0);
+   #endif
 
-      
    bool bRecording = (gAudioIO->GetNumCaptureChannels() ? false : true);
 
    mRuler->DrawAdornedRuler( dc, mViewInfo, text, bIndicators, bRecording );
@@ -4606,6 +4673,12 @@ void TrackPanel::DisplaySelection()
    mListener->TP_DisplaySelection();
 }
 
+#if (AUDACITY_BRANDING == BRAND_UMIXIT)
+   void TrackPanel::ShowRulerOnly(const bool bShowRulerOnly /*= true*/) 
+   { 
+      mShowRulerOnly = bShowRulerOnly; 
+   }
+#endif
 
 /**********************************************************************
 
