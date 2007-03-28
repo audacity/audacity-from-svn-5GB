@@ -73,8 +73,11 @@ class EffectToneGen:public Effect {
    float amplitude[2];
    double length;
    float logFrequency[2];
-   int mSample;
    double mCurRate;
+
+   // mSample is an external placeholder to remember the last "buffer"
+   // position so we use it to reinitialize from where we left
+   int mSample;
 };
 
 // WDR: class declarations

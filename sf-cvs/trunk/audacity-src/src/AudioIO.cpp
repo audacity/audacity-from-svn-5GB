@@ -1753,7 +1753,7 @@ void AudioIO::FillBuffers()
             }
             else
             {
-               int size = avail * mFactor;
+               int size = lrint(avail * mFactor);
                samplePtr temp1 = NewSamples(avail, floatSample);
                samplePtr temp2 = NewSamples(size, floatSample);
                mCaptureBuffers[i]->Get(temp1, floatSample, avail);

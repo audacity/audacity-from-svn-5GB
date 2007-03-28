@@ -227,7 +227,6 @@ void Theme::RegisterImages()
    if( mbInitialised )
       return;
    mbInitialised = true;
-   int i=0;
 
 // This initialises the variables e.g
 // RegisterImage( bmpRecordButton, some image, wxT("RecordButton"));
@@ -334,7 +333,7 @@ wxImage ThemeBase::MaskedImage( char const ** pXpm, char const ** pMask )
    wxImage Img1( Bmp1.ConvertToImage());
    wxImage Img2( Bmp2.ConvertToImage());
 
-   unsigned char *src = Img1.GetData();
+//   unsigned char *src = Img1.GetData();
    unsigned char *mk = Img2.GetData();
    unsigned char *alpha = (unsigned char*)malloc( nBytes );
 

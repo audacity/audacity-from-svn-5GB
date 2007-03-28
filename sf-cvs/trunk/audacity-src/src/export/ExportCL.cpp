@@ -50,7 +50,6 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
 {
    int rate = int(project->GetRate() + 0.5);
-   wxWindow *parent = project;
    TrackList *tracks = project->GetTracks();
    
    wxString command = gPrefs->Read(wxT("/FileFormats/ExternalProgramExportCommand"), wxT("lame - '%f'"));

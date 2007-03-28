@@ -41,7 +41,6 @@ bool ExportOGG(AudacityProject *project,
                bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
 {
    double    rate    = project->GetRate();
-   wxWindow  *parent = project;
    TrackList *tracks = project->GetTracks();
    double    quality = (gPrefs->Read(wxT("/FileFormats/OggExportQuality"), 50)/(float)100.0);
 

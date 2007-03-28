@@ -406,7 +406,7 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
 
    TrackProgress(count, 0.);
 
-   int wcopy;
+   int wcopy = 0;
    int offset = (mM - 1)/2;
 
    while(len)
@@ -417,7 +417,7 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
 
       t->Get((samplePtr)buffer, floatSample, s, block);
 
-      int j;
+      int j = 0;
 
       for(i=0; i<block; i+=L)   //go through block in lumps of length L
       {
@@ -455,7 +455,7 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
          lastWindow = tempP;
       }   //next i, lump of size L or less
       i -= L;  //put pointer back where it was
-      for(j; j<wcopy+offset; j++)   //fill the last 'offset' samples from the filter
+      for(; j<wcopy+offset; j++)   //fill the last 'offset' samples from the filter
          buffer[i+j-offset] = lastWindow[j];
 
       t->Set((samplePtr)buffer, floatSample, s, block);
@@ -841,7 +841,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    setCurve( mLogEnvelope );
 
    bandsInUse = NUMBER_OF_BANDS;
-   double loLog = log10(mLoFreq);
+   //double loLog = log10(mLoFreq);
    //double stepLog = (log10(mHiFreq) - loLog)/((double)NUM_PTS-1.);
    for(int i=0; i<NUM_PTS-1; i++)
       whens[i] = (double)i/(NUM_PTS-1.);
@@ -2158,7 +2158,7 @@ void EqualizationDialog::ErrMin(void)
    int i;
    double error;
    double oldError;
-   double m_EQValsOld;
+   double m_EQValsOld = 0.0;
    double correction = 1.6;
    bool flag;
    int j=0;

@@ -313,13 +313,13 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
          return;
 
       double rate = ((WaveTrack *) t)->GetRate();
-      int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
-      int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), rate/2.);
-      if(maxFreq > rate/2.)
-         maxFreq = rate/2.;
-      int minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0.);
+      int freq = lrint(rate/2.);
+      int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), freq);
+      if(maxFreq > freq)
+         maxFreq = freq;
+      int minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
       if(minFreq < 0) {
-         minFreq = 0.;
+         minFreq = 0;
          gPrefs->Write(wxT("/Spectrum/MinFreq"), 0L);
       }
 
@@ -1423,12 +1423,13 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
                               t0, pps, autocorrelation);
    bool isGrayscale = false;
    gPrefs->Read(wxT("/Spectrum/Grayscale"), &isGrayscale, false);
-   int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), rate/2.);
-   if(maxFreq > rate/2.)
-      maxFreq = rate/2.;
+   int ifreq = lrint(rate/2);
+   int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), ifreq);
+   if(maxFreq > ifreq)
+      maxFreq = ifreq;
    int minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
    if(minFreq < 0) {
-      minFreq = 0.;
+      minFreq = 0;
       gPrefs->Write(wxT("/Spectrum/MinFreq"), 0L);
    }
    bool usePxCache = false;
