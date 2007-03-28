@@ -99,19 +99,13 @@ find . -depth -name 'CVS' -execdir rm -rf '{}' ';'
 find . -name '.cvsignore' -execdir rm -rf '{}' ';'
 printf "Done\n"
 
-printf "removing emacs temp files... ";
+printf "removing vim / emacs temp files... ";
 if [ $mode -eq 1 ]; then
 	find . -name '*~' -exec rm -rvf '{}' ';'
 else
 	find . -name '*~' -exec rm -rf '{}' ';'
 fi
 printf "Done\n"
-
-if [ $mode -eq 1 ]; then
-		redirect="2> /dev/null > /dev/null"
-else
-		redirect=""
-fi
 
 printf "removing executable and other intermediate files... ";
 myrmvf $mode audacity .depend obj  config.status config.log Makefile
@@ -131,13 +125,6 @@ myrmrvf $mode scripts
 printf "Done\n"
 
 printf "removing libraries that should be installed locally... "
-#if [ $mode -eq 1 ]; then
-#	printf "\n * libOgg, libVorbis, libMAD, id3lib\n"
-#	printf " * libid3tag"
-#	printf " * iAVC, libsamplerate\n"
-#	printf " * wave++ libFLAC\n"
-#	printf " * twolame\n ... "
-#fi
 myrmrvf $mode lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib;
 myrmrvf $mode lib-src/libid3tag;
 myrmrvf $mode lib-src/iAVC lib-src/libsamplerate;
@@ -155,10 +142,6 @@ myrmrvf $mode dox2-src
 printf "Done\n"
 
 printf "removing unused portaudio-v19 directories ... ";
-#if [ $mode -eq 1 ]; then
-#	printf "\n * docs\n"
-#	printf "pa_asio, pa_sgi, pa_mac_sm ... "
-#fi
 myrmrvf $mode lib-src/portaudio-v19/docs
 myrmrvf $mode lib-src/portaudio-v19/pa_asio
 myrmrvf $mode lib-src/portaudio-v19/pa_sgi
