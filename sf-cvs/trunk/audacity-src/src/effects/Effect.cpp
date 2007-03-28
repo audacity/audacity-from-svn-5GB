@@ -316,9 +316,10 @@ void Effect::Preview()
    int token =
       gAudioIO->StartStream(playbackTracks, recordingTracks, NULL,
                             rate, t0, t1, NULL);
+
    if (token) {
       wxBusyCursor busy;
-      ::wxMilliSleep((int)(previewLen*1000));
+      ::wxMilliSleep((int)((t1-t0)*1000));
 
       while(gAudioIO->IsStreamActive(token)) {
          ::wxMilliSleep(100);
