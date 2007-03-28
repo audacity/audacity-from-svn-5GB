@@ -473,8 +473,8 @@ private:
    // are the horizontal index of pixels to display user feedback
    // guidelines so the user knows when such snapping is taking place.
    SnapManager *mSnapManager;
-   int mSnapLeft;
-   int mSnapRight;
+   wxInt64 mSnapLeft;
+   wxInt64 mSnapRight;
    bool mSnapPreferRightEdge;
 
    Track * mDrawingTrack;          // Keeps track of which track you are drawing on between events cf. HandleDraw()
@@ -485,10 +485,10 @@ private:
    float mDrawingLastDragSampleValue;  // value of last drag-over
    wxRect mLastDrawnTrackRect;
  
-   double PositionToTime(int mouseXCoordinate,
-                         int trackLeftEdge) const;
-   int TimeToPosition(double time,
-                      int trackLeftEdge) const;
+   double PositionToTime(wxInt64 mouseXCoordinate,
+                         wxInt64 trackLeftEdge) const;
+   wxInt64 TimeToPosition(double time,
+                          wxInt64 trackLeftEdge) const;
 
    int mInitialTrackHeight;
    int mInitialUpperTrackHeight;
