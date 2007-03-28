@@ -653,9 +653,7 @@ void Meter::HandleLayout()
          mRightTextPos = wxPoint(width-mLeftSize.x, height-2-mLeftSize.y);
          width -= mLeftSize.x + mRightSize.x + 8;
 
-         //vvv #ifdef __WXMAC__
          width -= 8;
-         //vvv #endif
       }
       barw = (width-2)/2;
       barh = height - 4;

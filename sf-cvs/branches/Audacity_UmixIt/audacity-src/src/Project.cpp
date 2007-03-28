@@ -367,7 +367,7 @@ END_EVENT_TABLE()
 AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                  const wxPoint & pos,
                                  const wxSize & size)
-   : wxFrame(parent, id, "Audacity", pos, size),
+   : wxFrame(parent, id, wxGetApp().GetAppName().c_str(), pos, size),
      mLastPlayMode(normalPlay),
      mImportProgressDialog(NULL),
      mRate((double) gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", AudioIO::GetOptimalSupportedSampleRate())),
@@ -384,6 +384,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mHistoryWindow(NULL),
      mLyricsWindow(NULL),
      mMixerBoard(NULL),
+     #if (AUDACITY_BRANDING != BRAND_UMIXIT)
+        mMixerBoardFrame(NULL),
+     #endif
      mTotalToolBarHeight(0),
      mDraggingToolBar(NoneID),
      mAudioIOToken(-1),
@@ -569,14 +572,15 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    #if (AUDACITY_BRANDING == BRAND_UMIXIT)
       // Usually, mMixerBoard is created only when the View > Mixer Board 
       // command is given, but we always want it for UmixIt, and not the Track Panel.
-      //vvvvv EXCEPT THE RULER!
-      //mTrackPanel->Hide();
-      //mHsbar->Hide();
-      //mVsbar->Hide();
+      mTrackPanel->ShowRulerOnly();
+      mHsbar->Hide();
+      mVsbar->Hide();
 
-      // Position and size the MixerBoard where TrackPanel would be (but must specify in global coords).
-      wxPoint mixerPos = this->ClientToScreen(wxPoint(left, top + voffset));
-      mMixerBoard = new MixerBoard(this, mixerPos, wxSize(width, height - voffset));
+      // Position and size the MixerBoard where TrackPanel would be.
+      mMixerBoard = 
+         new MixerBoard(this, this, 
+                        wxPoint(left, top + voffset), 
+                        wxSize(width, height - voffset));
 
       mMixerBoard->Show();
    #endif
@@ -1004,21 +1008,40 @@ void AudacityProject::HandleResize()
    mStatus->SetSize(0, top + height - sh, width, sh);
    height -= sh;
 
-   mTrackPanel->SetSize(left, top,
-                        width - sbarSpaceWidth,
-                        height - sbarSpaceWidth);
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      if (mMixerBoard->IsShown())
+         mTrackPanel->SetSize(left, top,
+                              width,
+                              mTrackPanel->GetRulerHeight());
+      else
+   #endif
+         mTrackPanel->SetSize(left, top,
+                              width - sbarSpaceWidth,
+                              height - sbarSpaceWidth);
 
    int hoffset = mTrackPanel->GetLeftOffset() - 1;
    int voffset = mTrackPanel->GetRulerHeight();
 
-   mHsbar->SetSize(hoffset, top + height - sbarSpaceWidth,
-                   width - hoffset - sbarSpaceWidth + sbarExtraLen,
-                   sbarControlWidth);
-   mVsbar->SetSize(width - sbarSpaceWidth, top + voffset - sbarExtraLen,
-                   sbarControlWidth,
-                   height - sbarSpaceWidth - voffset +
-                   2 * sbarExtraLen);
-   FixScrollbars();
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      if (!mMixerBoard->IsShown())
+      {
+   #endif      
+         mHsbar->SetSize(hoffset, top + height - sbarSpaceWidth,
+                        width - hoffset - sbarSpaceWidth + sbarExtraLen,
+                        sbarControlWidth);
+         mVsbar->SetSize(width - sbarSpaceWidth, top + voffset - sbarExtraLen,
+                        sbarControlWidth,
+                        height - sbarSpaceWidth - voffset +
+                        2 * sbarExtraLen);
+         FixScrollbars();
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      }
+      else
+      {
+         mMixerBoard->SetSize(left, top + voffset, width, height - voffset);
+         this->OnZoomFit();
+      }
+   #endif
 }
 
 
@@ -1918,7 +1941,7 @@ void AudacityProject::OpenFile(wxString fileName)
    ///
 
    mFileName = fileName;
-   SetTitle("Audacity - " + GetName());
+   SetTitle(wxGetApp().GetAppName() + " - " + GetName());
 
    XMLFileReader xmlFile;
 
@@ -2368,7 +2391,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
    if (initiallyEmpty && mDirManager->GetProjectName() == "") {
       wxString name = fileName.AfterLast(wxFILE_SEP_PATH).BeforeLast('.');
       mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + name + ".aup";
-      SetTitle("Audacity - " + GetName());
+      SetTitle(wxGetApp().GetAppName() + " - " + GetName());
    }
 
    // Moved this call to higher levels to prevent horrible flicker redrawing everything on each file.
@@ -2466,7 +2489,7 @@ bool AudacityProject::SaveAs()
       fName = fName.Mid(0, len - 4);
 
    mFileName = fName + ".aup";
-   SetTitle("Audacity - " + GetName());
+   SetTitle(wxGetApp().GetAppName() + " - " + GetName());
 
    bool sucess = Save(false, true);
 
@@ -2615,14 +2638,10 @@ void AudacityProject::UpdateLyrics()
 
 void AudacityProject::UpdateMixerBoard()
 {
-   if (mTracks->IsEmpty())
+   if (mTracks->IsEmpty() || !mMixerBoard)
       return;
 
-   if (!mMixerBoard)
-      mMixerBoard = new MixerBoard(this);
-
    mMixerBoard->AddTrackClusters();
-   mMixerBoard->Show();
    mMixerBoard->UpdateMeters(gAudioIO->GetStreamTime()); 
 }
 

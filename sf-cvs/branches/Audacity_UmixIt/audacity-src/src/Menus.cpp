@@ -366,8 +366,11 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("UndoHistory",    _("&History..."),               FN(OnHistory));
    c->AddSeparator();
    c->AddItem("Lyrics",         _("&Lyrics..."),                FN(OnLyrics));
-   c->AddItem("Mixer Board",    _("&Mixer Board..."),           FN(OnMixerBoard));
-   c->AddItem("Track Panel",    _("&Track Panel..."),           FN(OnTrackPanel));
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      c->AddItem("Mixer Board",    _("&Track Panel"),           FN(OnMixerBoard));
+   #else
+      c->AddItem("Mixer Board",    _("&Mixer Board..."),           FN(OnMixerBoard));
+   #endif
    c->AddSeparator();
    c->AddItem("FloatControlTB", _("Float Control Toolbar"),          FN(OnFloatControlToolBar));
    c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
@@ -2111,6 +2114,7 @@ void AudacityProject::OnSelectAll()
    mViewInfo.sel1 = mTracks->GetEndTime();
 
    mTrackPanel->Refresh(false);
+   mMixerBoard->Refresh(false);
 }
 
 void AudacityProject::OnSelectCursorEnd()
@@ -2596,16 +2600,26 @@ void AudacityProject::OnLyrics()
 
 void AudacityProject::OnMixerBoard()
 {
-   if (!mMixerBoard)
-      mMixerBoard = new MixerBoard(this);
-
-   mMixerBoard->Show();
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      // For UmixIt, Mixer Board is XOR Track Panel.
+      bool bWantTrackPanel = mMixerBoard->IsShown();
+      mMixerBoard->Show(!bWantTrackPanel);
+      mTrackPanel->ShowRulerOnly(!bWantTrackPanel);
+      mHsbar->Show(bWantTrackPanel);
+      mVsbar->Show(bWantTrackPanel);
+      this->HandleResize();
+      
+      mCommandManager.Modify("Mixer Board", bWantTrackPanel ? _("&Mixer Board") : _("&Track Panel"));
+   #else
+      if (!mMixerBoardFrame)
+      {
+         mMixerBoardFrame = new MixerBoardFrame(this);
+         mMixerBoard = mMixerBoardFrame->mMixerBoard;
+      }
+      mMixerBoardFrame->Show();
+   #endif
 }
 
-void AudacityProject::OnTrackPanel()
-{
-   mTrackPanel->Show();
-}
 
 //
 // Project Menu

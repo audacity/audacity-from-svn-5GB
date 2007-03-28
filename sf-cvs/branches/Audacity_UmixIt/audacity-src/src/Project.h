@@ -58,6 +58,7 @@ class MeterToolBar;
 class HistoryWindow;
 class LyricsWindow;
 class MixerBoard;
+class MixerBoardFrame;
 class Importer;
 
 class AudacityProject;
@@ -138,7 +139,11 @@ class AudacityProject:public wxFrame,
    int GetAudioIOToken();
    void SetAudioIOToken(int token);
    LyricsWindow* GetLyricsWindow() { return mLyricsWindow; };
+
    MixerBoard* GetMixerBoard() { return mMixerBoard; };
+   #if (AUDACITY_BRANDING != BRAND_UMIXIT)
+      MixerBoardFrame* GetMixerBoardFrame() { return mMixerBoardFrame; };
+   #endif
 
    bool IsActive();
 
@@ -346,7 +351,11 @@ class AudacityProject:public wxFrame,
    bool mIconized;
    HistoryWindow *mHistoryWindow;
    LyricsWindow *mLyricsWindow;
-   MixerBoard *mMixerBoard;
+
+   MixerBoard* mMixerBoard;
+   #if (AUDACITY_BRANDING != BRAND_UMIXIT)
+      MixerBoardFrame* mMixerBoardFrame;
+   #endif
 
    ToolBarArray mToolBarArray;
    int mTotalToolBarHeight;

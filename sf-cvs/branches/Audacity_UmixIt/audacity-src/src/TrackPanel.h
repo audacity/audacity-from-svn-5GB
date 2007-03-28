@@ -138,7 +138,7 @@ class TrackPanel:public wxWindow {
    void OnTimer();
 
    int GetRulerHeight();
-   int GetLeftOffset() const { return GetLabelWidth() + 1;}
+   int GetLeftOffset() const;
 
    void GetTracksUsableArea(int *width, int *height) const;
 
@@ -149,6 +149,10 @@ class TrackPanel:public wxWindow {
    virtual void Refresh(bool eraseBackground = TRUE,
                         const wxRect *rect = (const wxRect *) NULL);
    void DisplaySelection();
+
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      void ShowRulerOnly(const bool bShowRulerOnly = true);
+   #endif
 
    void SetSelectionFormat(int iformat);
    void SetSnapTo(int snapto);
@@ -293,6 +297,9 @@ class TrackPanel:public wxWindow {
 
    AdornedRulerPanel *mRuler;
 
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      bool mShowRulerOnly;
+   #endif
 
    TrackArtist *mTrackArtist;
 

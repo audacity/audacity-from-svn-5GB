@@ -29,10 +29,8 @@ class MixerBoard;
 class WaveTrack;
 
 class MixerTrackCluster : public wxPanel { 
-   DECLARE_DYNAMIC_CLASS(MixerTrackCluster)
-
 public:
-   MixerTrackCluster(wxScrolledWindow* parent, 
+   MixerTrackCluster(wxWindow* parent, 
                      MixerBoard* grandParent, AudacityProject* project, 
                      WaveTrack* pLeftTrack, WaveTrack* pRightTrack = NULL, 
                      const wxPoint& pos = wxDefaultPosition, 
@@ -56,8 +54,9 @@ private:
    wxColour GetTrackColor();
 
    // event handlers
-   void OnKeyEvent(wxKeyEvent & event);
-   void OnPaint(wxPaintEvent &evt);
+   void OnKeyEvent(wxKeyEvent& event);
+   void OnMouseEvent(wxMouseEvent& event);
+   void OnPaint(wxPaintEvent& evt);
 
    void OnButton_Mute(wxCommandEvent& event);
    void OnButton_Solo(wxCommandEvent& event);
@@ -100,11 +99,45 @@ public:
 WX_DECLARE_OBJARRAY(MusicalInstrument, MusicalInstrumentArray);
 
 
+
+// wxScrolledWindow ignores mouse clicks in client area, 
+// but they don't get passed to Mixerboard.
+// We need to catch them to deselect all track clusters.
+class MixerBoardScrolledWindow : public wxScrolledWindow {
+public: 
+   MixerBoardScrolledWindow(AudacityProject* project, 
+                           MixerBoard* parent, wxWindowID id = -1, 
+                           const wxPoint& pos = wxDefaultPosition, 
+                           const wxSize& size = wxDefaultSize, 
+                           long style = wxHSCROLL | wxVSCROLL);
+
+private:
+   void OnMouseEvent(wxMouseEvent& event);
+
+private: 
+   MixerBoard* mMixerBoard;
+   AudacityProject* mProject;
+
+public:
+   DECLARE_EVENT_TABLE()
+};
+
+
 class TrackList;
 
-class MixerBoard : public wxFrame { 
+// MixerBoard is a window that can either be in MixerBoardFrame or AudacityProject frame.
+#if (AUDACITY_BRANDING != BRAND_UMIXIT)
+   class MixerBoardFrame;
+#endif
+
+class MixerBoard : public wxWindow { 
+#if (AUDACITY_BRANDING != BRAND_UMIXIT)
+   friend class MixerBoardFrame;
+#endif
+
 public:
-   MixerBoard(AudacityProject* parent, 
+   MixerBoard(AudacityProject* pProject, 
+               wxFrame* parent, 
                const wxPoint& pos = wxDefaultPosition, 
                const wxSize& size = wxDefaultSize);
    ~MixerBoard();
@@ -138,8 +171,6 @@ private:
    void LoadMusicalInstruments();
 
    // event handlers
-   void OnCloseWindow(wxCloseEvent &WXUNUSED(event));
-   void OnMaximize(wxMaximizeEvent &event);
    void OnSize(wxSizeEvent &evt);
 
 
@@ -158,16 +189,35 @@ public:
    int mMuteSoloWidth;
 
 private:
-   MixerTrackClusterArray  mMixerTrackClusters; 
-   MusicalInstrumentArray  mMusicalInstruments; 
-   AudacityProject*        mProject;
-   wxScrolledWindow*       mScrolledWindow; // Holds the MixerTrackClusters and handles scrolling.
-   unsigned int            mSoloCount;
-   double                  mT;
-   TrackList*              mTracks;
+   MixerTrackClusterArray     mMixerTrackClusters; 
+   MusicalInstrumentArray     mMusicalInstruments; 
+   AudacityProject*           mProject;
+   MixerBoardScrolledWindow*  mScrolledWindow; // Holds the MixerTrackClusters and handles scrolling.
+   unsigned int               mSoloCount;
+   double                     mT;
+   TrackList*                 mTracks;
 
 public:
    DECLARE_EVENT_TABLE()
 };
+
+#if (AUDACITY_BRANDING != BRAND_UMIXIT)
+   class MixerBoardFrame : public wxFrame { 
+   public:
+      MixerBoardFrame(AudacityProject* parent);
+      ~MixerBoardFrame();
+   private:
+      // event handlers
+      void OnCloseWindow(wxCloseEvent &WXUNUSED(event));
+      void OnMaximize(wxMaximizeEvent &event);
+      void OnSize(wxSizeEvent &evt);
+
+   public:
+      MixerBoard* mMixerBoard;
+
+   public:
+      DECLARE_EVENT_TABLE()
+   };
+#endif
 
 #endif // __AUDACITY_MIXER_BOARD__

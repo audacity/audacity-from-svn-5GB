@@ -2,7 +2,7 @@
 
    Audacity: A Digital Audio Editor
 
-   Branding.h
+   AudacityBranding.h
 
    Vaughan Johnson, March 2007
 
@@ -25,7 +25,7 @@
 #define AUDACITY_BRANDING BRAND_UMIXIT
 
 //vvvvv OR do it this way:
-//#undef AUDACITY_BRANDING_BRANDNAME // standard version
+//#define AUDACITY_BRANDING BRAND_AUDACITY // standard version
 
 #define AUDACITY_BRANDING_BRANDNAME wxT("UmixIt")
 #define AUDACITY_BRANDING_BRANDURL wxT("http://www.umixit.com/")
