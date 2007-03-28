@@ -24,8 +24,6 @@
 
 #if USE_SOUNDTOUCH
 
-#include "SoundTouch.h"
-
 #include "ChangeTempo.h"
 
 #include <math.h>

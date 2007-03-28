@@ -15,8 +15,6 @@
 
 #if USE_SOUNDTOUCH
 
-#include "SoundTouch.h"
-
 #include "ChangePitch.h"
 
 #include "../PitchName.h"

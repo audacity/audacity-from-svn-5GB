@@ -18,6 +18,13 @@
 #define __AUDACITY_EFFECT_SOUNDTOUCH__
 
 #include "Effect.h"
+
+// Soundtouch defines these as well, so get rid of them before including 
+#undef PACKAGE_NAME
+#undef PACKAGE_STRING
+#undef PACKAGE_TARNAME
+#undef PACKAGE_VERSION
+#undef PACKAGE_BUGREPORT
 #include "SoundTouch.h"
 
 using namespace soundtouch;
