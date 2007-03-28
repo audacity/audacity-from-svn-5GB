@@ -974,7 +974,7 @@ bool WaveTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
             if (!XMLValueChecker::IsGoodString(strValue) || 
                   !Internat::CompatibleToDouble(strValue, &dblValue) ||
                   (dblValue < 100.0) || (dblValue > 100000.0)) // same bounds as ImportRawDialog::OnOK
-            mRate = dblValue;
+            mRate = lrint(dblValue);
          }
          else if (!wxStrcmp(attr, wxT("offset")) && 
                   XMLValueChecker::IsGoodString(strValue) && 
@@ -1482,7 +1482,7 @@ bool WaveTrack::SplitAt(double t)
             delete newClip;
             return false;
          }
-         longSampleCount here = floor(((t - c->GetStartTime() - mOffset) * mRate) + 0.5);
+         longSampleCount here = llrint(floor(((t - c->GetStartTime() - mOffset) * mRate) + 0.5));
          newClip->Offset((double)here/(double)mRate);
          mClips.Append(newClip);
          return true;

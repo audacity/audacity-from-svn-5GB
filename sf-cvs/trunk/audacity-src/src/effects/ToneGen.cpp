@@ -116,14 +116,10 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
 {
    double throwaway = 0;        //passed to modf but never used
    int i;
-   double f;
+   double f = 0.0;
 
    double BlendedFrequency;
    double BlendedAmplitude;
-
-   // mSample is an external placeholder to remember the last "buffer"
-   // position so we use it to reinitialize from where we left
-   int iSample = mSample;
 
    // calculate delta, and reposition from where we left
    double amplitudeQuantum = (amplitude[1]-amplitude[0]) / numSamples;

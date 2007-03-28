@@ -9,7 +9,7 @@
   Audacity is free software.
   This file is licensed under the wxWindows license, see License.txt
 
-/****************************************************************//**
+*****************************************************************//**
 
 \class AttachableScrollBar
 \brief An AttachableScrollBar is a scroll bar that can be attached 
@@ -74,9 +74,7 @@ void AttachableScrollBar::SetViewInfoFromScrollBar()
    ViewInfo & mViewInfo = *mpViewInfo;
 
    int hlast = mViewInfo.sbarH;
-   int vlast = mViewInfo.vpos;
    int hoffset = 0;
-   int voffset = 0;
 
    mViewInfo.sbarH = GetThumbPosition();
 

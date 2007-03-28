@@ -76,7 +76,6 @@ bool ExportMP2(AudacityProject *project,
 {
    long bitrate = gPrefs->Read(wxT("/FileFormats/MP2Bitrate"), 160);
    double rate = project->GetRate();
-   wxWindow *parent = project;
    TrackList *tracks = project->GetTracks();
 
    wxLogNull logNo;             /* temporarily disable wxWindows error messages */

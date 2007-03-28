@@ -164,7 +164,7 @@ SimpleBlockFile::~SimpleBlockFile()
    if (mCache.active)
    {
       delete[] mCache.sampleData;
-      delete[] mCache.summaryData;
+      delete[] (char *)mCache.summaryData;
    }
 }
 

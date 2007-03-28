@@ -2534,9 +2534,9 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       mZoomStart = temp;
    }
 
-   float min, max, c, l, binSize;
+   float min, max, c, l, binSize = 0.0;
    bool spectrum;
-   int windowSize, minBins;
+   int windowSize, minBins = 0;
    double rate = ((WaveTrack *)track)->GetRate();
    ((WaveTrack *) track)->GetDisplay() == WaveTrack::SpectrumDisplay ? spectrum = true : spectrum = false;
    if(spectrum) {

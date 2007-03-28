@@ -702,7 +702,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
 
       bool up = (mProcessed[1] > mProcessed[0]);
       float bestdist = 1000000;
-      float bestValue;
+      float bestValue = 0.0;
       for (int bin = 2; bin < mProcessedSize; bin++) {
          bool nowUp = mProcessed[bin] > mProcessed[bin - 1];
          if (!nowUp && up) {
@@ -710,7 +710,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
             int leftbin = bin - 2;
             if (leftbin < 1)
                leftbin = 1;
-            float valueAtMax;
+            float valueAtMax = 0.0;
             float max = leftbin + CubicMaximize(mProcessed[leftbin],
                                                 mProcessed[leftbin + 1],
                                                 mProcessed[leftbin + 2],
