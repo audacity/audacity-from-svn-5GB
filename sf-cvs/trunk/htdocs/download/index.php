@@ -7,7 +7,7 @@
   require_once "main.inc.php";
   $pageId = "";
   $pageTitle = _("Download");
-  include "../include/header.inc.php";
+  include "../include/header_adsense.inc.php";
 
   include "../latest/versions.inc.php";
   include "../beta/versions.inc.php";

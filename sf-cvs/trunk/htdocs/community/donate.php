@@ -9,7 +9,7 @@
   require_once "main.inc.php";
   $pageId = "donate";
   $pageTitle = _("How Does Audacity Raise Money?");
-  include "../include/header.inc.php";
+  include "../include/header_adsense.inc.php";
 ?>
 
 <h2><?=$pageTitle?></h2>
@@ -20,7 +20,14 @@
 </p>
 
 <p>
-  <?=_('This income is not distributed among previous contributors to Audacity. 
+  <?=_('As of March 2007, <a href="http://sourceforge.net/">SourceForge.net</a>, 
+  which hosts the Audacity site and downloads, is allowing us to also post 
+  advertisements, in an innovative program whereby we split the revenues.
+  Thank you, <a href="http://sourceforge.net/">SourceForge.net</a>!')?>
+</p>
+
+<p>
+  <?=_('Income to Audacity is not distributed among previous contributors to Audacity. 
   There are too many people and it would be difficult to do so fairly. 
   Also, nobody contributed code to Audacity expecting money in return. 
   Audacity is developed by volunteers, working in our spare time. 
