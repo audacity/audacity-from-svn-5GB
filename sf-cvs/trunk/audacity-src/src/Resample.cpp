@@ -137,7 +137,7 @@ int Resample::GetNumMethods()
 
 wxString Resample::GetMethodName(int index)
 {
-   return wxString(src_get_name(index));
+   return wxString(wxString::FromAscii(src_get_name(index)));
 }
 
 int Resample::GetFastMethod()
