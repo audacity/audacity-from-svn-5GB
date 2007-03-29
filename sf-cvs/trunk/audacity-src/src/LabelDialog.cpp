@@ -344,9 +344,7 @@ bool LabelDialog::Validate()
 
    for (i = 0; i < cnt; i++) {
       if (mData[i]->title.IsEmpty()) {
-         int id = wxMessageBox(_("You have left blank label names.  These will be\n"
-                             wxT("skipped when repopulating the Label Tracks.\n\n")
-                             wxT("Would you like to go back and provide names?")),
+         int id = wxMessageBox(_("You have left blank label names.  These will be\nskipped when repopulating the Label Tracks.\n\nWould you like to go back and provide names?"),
                                _("Confirm"),
                                wxYES_NO | wxICON_EXCLAMATION);
          if (id == wxYES) {

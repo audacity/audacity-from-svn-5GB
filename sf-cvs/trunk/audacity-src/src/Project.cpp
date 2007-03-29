@@ -2364,7 +2364,7 @@ bool AudacityProject::SaveAs()
 	{
 	   fName = wxFileSelector(_("Save Speech As:"),
                           path, fName, wxT(""),
-                          _("Windows PCM Audio file *.wav)|*.wav"),  //lda
+                          _("Windows PCM Audio file (*.wav)|*.wav"),  //lda
                           wxSAVE | wxOVERWRITE_PROMPT, this);
 	}
 	else

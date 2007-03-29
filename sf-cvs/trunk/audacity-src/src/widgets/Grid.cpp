@@ -624,12 +624,12 @@ wxAccStatus GridAx::GetDescription(int childId, wxString *description)
          break;
 
          case wxROLE_SYSTEM_CELL:
-            description->Printf(_("%d"),
+            description->Printf(wxT("%d"),
                                 mCol);
          break;
 
          default:
-            description->Printf(_("oh-oh...buggie"));
+            description->Printf(wxT("oh-oh...buggie"));
          break;
       }
 

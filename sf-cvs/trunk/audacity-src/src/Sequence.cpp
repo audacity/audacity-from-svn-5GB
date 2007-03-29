@@ -729,7 +729,7 @@ void Sequence::HandleXMLEndTag(const wxChar *tag)
          	// the silent replacement to mMaxSamples.
             len = mMaxSamples;
          mBlock->Item(b)->f = new SilentBlockFile(len);
-         wxLogWarning(wxT("Gap detected in project file\n"));
+         wxLogWarning(_("Gap detected in project file\n"));
          mErrorOpening = true;
       }
    }
@@ -739,14 +739,14 @@ void Sequence::HandleXMLEndTag(const wxChar *tag)
    for (b = 0; b < mBlock->Count(); b++) {
       if (mBlock->Item(b)->start != numSamples) {
          mBlock->Item(b)->start = numSamples;
-         wxLogWarning(wxT("Gap detected in project file\n"));
+         wxLogWarning(_("Gap detected in project file\n"));
          mErrorOpening = true;         
       }
       numSamples += mBlock->Item(b)->f->GetLength();
    }
    if (mNumSamples != numSamples) {
       mNumSamples = numSamples;
-      wxLogWarning(wxT("Gap detected in project file\n"));
+      wxLogWarning(_("Gap detected in project file\n"));
       mErrorOpening = true;
    }
 }
