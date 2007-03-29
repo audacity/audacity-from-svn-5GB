@@ -89,6 +89,30 @@
 		return intgr ;
 	}
 
+	__inline long long int 
+	llrint (double flt)
+	{	long long int intgr;
+
+		_asm
+		{	fld flt
+			fistp intgr
+			} ;
+			
+		return intgr ;
+	} 
+	
+	__inline long long int 
+	llrintf (float flt)
+	{	long long int intgr;
+
+		_asm
+		{	fld flt
+			fistp intgr
+			} ;
+			
+		return intgr ;
+	}
+
 #else
 
    /* dmazzoni: modified these to do a proper rounding, even though

@@ -33,6 +33,8 @@ Track classes.
 
 #include <math.h>
 
+#include "float_cast.h"
+
 #include "WaveTrack.h"
 
 #include "Envelope.h"

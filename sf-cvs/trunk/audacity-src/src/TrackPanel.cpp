@@ -1815,7 +1815,7 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event, Track *clickedTrack)
    const int minimumSizedSelection = 5; //measured in pixels
    wxInt64 SelStart=TimeToPosition( mSelStart, r.x); //cvt time to pixels.
    // Abandon this drag if selecting < 5 pixels.
-   if(abs( SelStart-x) < minimumSizedSelection)
+   if(wxLongLong(SelStart-x).Abs() < minimumSizedSelection)
        return;
 
    // Handle which tracks are selected
