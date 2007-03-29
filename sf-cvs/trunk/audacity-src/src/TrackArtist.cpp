@@ -22,6 +22,7 @@
 
 #include "Audacity.h"
 #include "TrackArtist.h"
+#include "float_cast.h"
 
 #include <math.h>
 #include <float.h>

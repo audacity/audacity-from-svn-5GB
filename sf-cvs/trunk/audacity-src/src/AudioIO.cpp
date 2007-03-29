@@ -40,6 +40,7 @@ writing audio.
 *//*******************************************************************/
 
 #include "Audacity.h"
+#include "float_cast.h"
 
 #include <math.h>
 #include <stdlib.h>
