@@ -17,7 +17,6 @@ It handles initialization and termination by subclassing wxApp.
 
 
 #include "Audacity.h" // This should always be included first
-#include "float_cast.h"
 
 #include <wx/defs.h>
 #include <wx/app.h>
