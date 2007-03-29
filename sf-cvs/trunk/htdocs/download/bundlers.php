@@ -8,7 +8,7 @@
   require_once "main.inc.php";
   $pageId = "bundlers";
   $pageTitle = _("Vendors that Bundle Audacity");
-  include "../include/header.inc.php";
+  include "../include/header_adsense.inc.php";
 
   echo "<h2>$pageTitle</h2>";
   echo "<p>"._('Audacity is free to download, but vendors are also free to bundle copies of the program with their products, thanks to the <a href="../about/license">GNU General Public License</a>. The following are legitimate, legal offerings. We are happy and proud that they chose to bundle Audacity with their products.')."</p>";
