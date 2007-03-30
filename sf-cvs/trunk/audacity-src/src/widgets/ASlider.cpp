@@ -404,6 +404,16 @@ void LWSlider::SetId(wxWindowID id)
    mID = id;
 }
 
+wxWindow* LWSlider::GetToolTipParent() const
+{
+   wxWindow *top = mParent;
+   while(top && top->GetParent()) {
+      top = top->GetParent();
+   }
+   
+   return top;
+}
+
 void LWSlider::CreatePopWin()
 {
    if (mPopWin)
@@ -414,31 +424,19 @@ void LWSlider::CreatePopWin()
    if (mStyle == PAN_SLIDER || mStyle == DB_SLIDER || mStyle == SPEED_SLIDER)
       maxStr += wxT("000");
 
-   wxWindow *top = mParent;
-   while(top && !top->IsTopLevel()) {
-      top = top->GetParent();
-   }
-
-   mPopWin = new TipPanel(top, -1, maxStr, wxDefaultPosition);
+   mPopWin = new TipPanel(GetToolTipParent(), -1, maxStr, wxDefaultPosition);
    mPopWin->Hide();
 }
 
 void LWSlider::SetPopWinPosition()
 {
-   int x, y, wx, wy;
-
-   x=mWidth/2 + mLeft;
-   y=mHeight + mTop + 1;
-   wxWindow *top = mParent;
-   while(top && !top->IsTopLevel()) {
-      top->GetPosition(&wx, &wy);
-      x += wx;
-      y += wy;
-      top = top->GetParent();
-   }
+   wxPoint pt(mWidth/2 + mLeft, mHeight + mTop + 1);
+   pt = mParent->ClientToScreen(pt);
+   if (GetToolTipParent())
+      pt = GetToolTipParent()->ScreenToClient(pt);
 
    if (mPopWin)
-      ((TipPanel *)mPopWin)->SetPos(wxPoint(x, y));
+      ((TipPanel *)mPopWin)->SetPos(pt);
 }
 
 void LWSlider::Move(const wxPoint &newpos)

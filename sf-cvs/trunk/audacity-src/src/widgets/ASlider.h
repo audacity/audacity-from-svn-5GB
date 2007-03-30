@@ -131,6 +131,8 @@ class LWSlider
 
    int ValueToPosition(float val);
    float PositionToValue(int xPos, bool shiftDown);
+   
+   wxWindow* GetToolTipParent() const;
       
    wxWindow *mParent;
 
