@@ -59,6 +59,7 @@ but little else.
 #ifndef __AUDACITY_IMPORTER__
 #define __AUDACITY_IMPORTER__
 
+#include <wx/arrstr.h>
 #include <wx/string.h>
 #include <wx/list.h>
 
