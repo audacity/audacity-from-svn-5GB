@@ -17,33 +17,13 @@ only about every 2-3 months.
 * Some improvements to Save / Export - not a full
   refactoring, but some of the ideas below.
 
-* Normalize Effect that removes DC bias and sets maximum
-  amplitude to some standard value like -6 dB
-
 * Allow the user to create keyboard shortcuts for Effects
-
-* A Fit option that sizes the tracks vertically to fit
-  in the window.  Shortcut should be Shift+Ctrl+F.
-
-* Finish adding Preview for all effects where it makes sense
 
 * Support custom cursors on Mac.
 
 * New waveform-drawing code that I half-finished  Speeds up
   drawing in Mac OS X by 2-3x minimum, also should help on
   older PCs.
-
-* Check for multiple copies of Audacity on Unix
-
-* Add a new item at the top of the Effect menu - Repeat Last Effect
-  (maybe it could dynamically change its name, i.e. "Repeat
-  Compressor".  It would not bring up a dialog, but use the last
-  values.  It would have a keyboard shortcut.
-
-* Open multiple files (it's supported by wxWindows; we should
-  enable and use this feature.)  Both Open and Import.
-
-* VU meters, if at all possible, with a "monitor" mode for recording.
 
 * A master gain control, if at all possible
 
@@ -152,20 +132,10 @@ continue with a new unstable branch...)
   with the normal record button (in the future: volume-triggered
   recording, record directly to MP3/Ogg, etc.)
 
-* A master gain control.
-
-  (I don't think it's necessary.  I'd rather see some option
-   that lets you adjust all gains simultaneously by holding
-   down shift or something...)
-
 * A bars/beats time ruler and snap-to bars/beats.
 
   (Karl, if you want to submit a patch, it's fine with me,
   as long as it's complete and clean.)
-
-* A function to export all tracks as separate wave files all at once.
-
-* Alternate keyboard layouts
 
 * In the Timeshift-tool mode I propose making [ctrl+mb1] do
 "Align track to cursor". Since they're only one clip per track,
@@ -253,11 +223,6 @@ assumed that dragging small area with rmb would zoom out a lot,
 and dragging bigger areas would zoom out less.
 
 ------------------------------------------------------
- Bugs
-------------------------------------------------------
-Moved to bugs.txt.
-
-------------------------------------------------------
  More far-future ideas
 ------------------------------------------------------
 
@@ -301,26 +266,19 @@ have been removed, so these are all still valid ideas.
   a project - help the user find it if it's not there.
 
 - Smart Record dialog
-  - VU meter
   - Control latency
   - Use as little CPU power as possible
   - Detect dropped samples using many different methods
   - Visually show buffer sizes
   - Multi-channel record
   - Show remaining disk space
-  - Timed record (i.e. only record x seconds, start
-    at particular time)
 
-- Choice of dither
 - Pre-roll and post-roll: amount to play before and after
   a selection (see DG Malham email - Please add date so can
   check the archives for it.)
-- Latency control in Audio I/O prefs
-- Support portaudio multiple driver models
 
 UI::
 - Turn off autoscrolling if the user manually hits the scroll bar.
-- Allow opening multiple files (use wxFileDialog wxMULTIPLE option)
 - Label the "Left" and "Right" channels!
 - Select None
 - Small toolbar option
@@ -340,23 +298,16 @@ UI::
 - Make ID3 tag dialog optional when saving MP3s
 - Import... should be able to import Audacity projects
   and Audacity project files
-- Crash recovery
 - Adapt text color - should be white by default if
   the background color is very dark
-- Select dialog box ("1.5 - 3.0 seconds")
-  and allow selection by frames (24 frames/sec), samples, etc.
 - Invert selection (for now, until we allow discontiguous selections,
                     this should mean two options: select up to selection,
                     and select after selection)
-- Vertical zooming
 - Legend (Ruler) for pitch and spectrum
 - A way to turn a track into a loop.  It would be cool if the
   display showed the "real" waveform once, and then "ghosts" of
   that waveform repeating forever...  (We now have a loop-play
   using shift-play which goes some way to answering this request).
-- While playing, click in ruler to change playback
-  position
-- Drag the play marker in the ruler to "skip" to a new time
 - Scrubbing, where you here the track speeded up as you drag 
   the play marker.
    
@@ -384,9 +335,6 @@ Future:
 - Speed issues when you have a project of 5 or more tracks
 - Edit markers
 - "Fit in window" also works vertically
-- Better adaptation to different font sizes (sizers)
-- Move to lossless compression (FLAC?) for internal representation
-  (Note: this doesn't support 32-bit float samples)
 - discontiguous selection
 - visualization window: VU meters, equalizer, continuous waveform, oscilloscope
 - Mouse scroller should vertically scroll project (Um, isn't it assigned
@@ -396,74 +344,6 @@ Future:
 
 -----------------------------------------
 
-Resolved-Issues
-===============
-* Make Generate a submenu of the Effect menu?  [Jun/22/03 No,
-  not at this stage.  That list of Generate's will grow - JKC]
-
-* We could have a bias parameter per track, next to the track
-  volume fader.  (I don't think this is useful - adjusting the
-  bias is a very unusual operation and the only reasonable
-  justification I can think of is to center the waveform
-  vertically - why would you ever legitimately want to bias
-  it? DM) [Jun/22/03.  Bias parameter would be a bad use of
-  screen real estate.  Let's drop this suggestion, and if
-  anyone does want non-zero bias it can be via a Nyquist 
-  effect JKC]
-
-- Horizonal line at zero point in waveform display.  
-  [Has been tried.  The waveform looks better without.  Showing
-  the rms in a lighter blue as Audacity does gives you a good
-  idea of where the zero-line is.  JKC]
-
-
-Done. Remove these items from this list once 1.2.0 is released:
-===============================================================
-
-* Upgrade of cursors and tool-button-bitmaps so that cursors
-  and button bitmaps match (on platforms where this is possible).
-  This should be supported on all platforms - I will personally
-  patch wxMac 2.4.0 to enable this feature on the official Mac
-  build.
-
-* Option to have "Close" not exit Audacity, but instead open
-  a new blank document.  A very vocal MINORITY of users seem
-  to prefer it this way; we should give them the option but
-  I don't think it should be the default (except on the Mac,
-  where m programs stay open until you explicitly Quit).
-
-* Zooming using mousewheel - obviously this shouldn't
-  be the only way to do it, since not everyone has a
-  mousewheel.  When should it be used, then? [Added by Markus]
-
-* Finish adding Preview for all effects where it makes sense
-  [Assuming we are not adding preview for Nyquist.]
-
-* Fine tuning of colours/bitmaps
-
-  - Should the gain tooltips be the same shade as other
-    tooltips?  Where does wxWindows come up with the shade
-    for tooltip backgrounds?  Can we copy it?
-
-  - What's the consensus on the new magnifying glass image?
-    (I'd actually slightly favor reverting back to the older
-    image.)
-
-* MS Windows window resizing handle graphic.  (bottom right 
-  corner).  
-
-* A zoom-toggle button that switches between two zoom levels.
-
-[ We could add two radio buttons and one standard button to toolbar:
-<Z1, level1 select>, <Z2, level2 select>, and <ZS, zoom set>. The set
-button would assign the current zoom level to the selected button.
-Initially the zoom level memories would be empty, and only press of <ZS>
-will change their values, i.e., user could change the zoom in anyway
-but he would get the memorized zoom value by clicking the <Z1> and <Z2>
-buttons. ][Done using a simpler one button solution 15/Jun/03].
-
-- Ability to drag tracks instead of move down, move down, move down
-- Save preferences (write to disk) after closing dialog
 
 arch-tag: 391c81dc-d7dc-48ea-9aec-98f4c9728be7
 
