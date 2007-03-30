@@ -511,6 +511,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mViewInfo.sbarH = 0;
    mViewInfo.sbarScreen = 1;
    mViewInfo.sbarTotal = 1;
+   mViewInfo.sbarScale = 1.0;
 
    UpdatePrefs();
    
@@ -868,11 +869,13 @@ void AudacityProject::FinishAutoScroll()
 ///
 void AudacityProject::OnScrollLeft()
 {
-   int pos = mHsbar->GetThumbPosition();
-   pos = (pos > 0) ? pos : 0;   //Set to larger of pos and 0
+   wxInt64 pos = mHsbar->GetThumbPosition();
+   // move at least one scroll increment
+   pos -= wxMax((wxInt64)(sbarHjump * mViewInfo.sbarScale), 1);
+   pos = wxMax(pos, 0);
 
-   if (pos > 0) {
-      mHsbar->SetThumbPosition(pos - sbarHjump);        //Jump sbarHjump pixels to the left
+   if (pos != mHsbar->GetThumbPosition()) {
+      mHsbar->SetThumbPosition((int)pos);
       FinishAutoScroll();
    }
 }
@@ -883,12 +886,15 @@ void AudacityProject::OnScrollLeft()
 
 void AudacityProject::OnScrollRight()
 {
-   int pos = mHsbar->GetThumbPosition();
-   int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
-   pos = (pos < max) ? pos : max;       //Set to smaller of pos and max
+   wxInt64 pos = mHsbar->GetThumbPosition();
+   // move at least one scroll increment
+   // use wxInt64 for calculation to prevent temporary overflow
+   pos += wxMax((wxInt64)(sbarHjump * mViewInfo.sbarScale), 1);
+   wxInt64 max = mHsbar->GetRange() - mHsbar->GetThumbSize();
+   pos = wxMin(pos, max);
 
-   if (pos < max) {
-      mHsbar->SetThumbPosition(pos + sbarHjump);        //Jump sbarHjump pixels to the right
+   if (pos != mHsbar->GetThumbPosition()) {
+      mHsbar->SetThumbPosition((int)pos);
       FinishAutoScroll();
    }
 }
@@ -898,11 +904,13 @@ void AudacityProject::OnScrollRight()
 ///
 void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
 {
-   int pos = mHsbar->GetThumbPosition();
-   pos = (pos > 0) ? pos : 0;   //Set to larger of pos and 0
+   wxInt64 pos = mHsbar->GetThumbPosition();
+   // move at least one scroll increment
+   pos -= wxMax((wxInt64)(sbarHjump * mViewInfo.sbarScale), 1);
+   pos = wxMax(pos, 0);
 
-   if (pos > 0) {
-      mHsbar->SetThumbPosition(pos - sbarHjump);        //Jump sbarHjump pixels to the left
+   if (pos != mHsbar->GetThumbPosition()) {
+      mHsbar->SetThumbPosition((int)pos);
       OnScroll(event);
    }
 }
@@ -912,12 +920,15 @@ void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
 ///
 void AudacityProject::OnScrollRightButton(wxScrollEvent & event)
 {
-   int pos = mHsbar->GetThumbPosition();
-   int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
-   pos = (pos < max) ? pos : max;       //Set to smaller of pos and max
+   wxInt64 pos = mHsbar->GetThumbPosition();
+   // move at least one scroll increment
+   // use wxInt64 for calculation to prevent temporary overflow
+   pos += wxMax((wxInt64)(sbarHjump * mViewInfo.sbarScale), 1);
+   wxInt64 max = mHsbar->GetRange() - mHsbar->GetThumbSize();
+   pos = wxMin(pos, max);
 
-   if (pos < max) {
-      mHsbar->SetThumbPosition(pos + sbarHjump);        //Jump sbarHjump pixels to the right
+   if (pos != mHsbar->GetThumbPosition()) {
+      mHsbar->SetThumbPosition((int)pos);
       OnScroll(event);
    }
 }
@@ -929,7 +940,7 @@ void AudacityProject::OnScrollRightButton(wxScrollEvent & event)
 //
 void AudacityProject::TP_ScrollWindow(double scrollto)
 {
-   int pos = (int) (scrollto * mViewInfo.zoom);
+   int pos = (int) (scrollto * mViewInfo.zoom * mViewInfo.sbarScale);
    int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
 
    if (pos > max)
@@ -1000,9 +1011,9 @@ void AudacityProject::FixScrollbars()
       rescroll = true;
    }
 
-   mViewInfo.sbarTotal = (int) (mViewInfo.total * mViewInfo.zoom);
-   mViewInfo.sbarScreen = (int) (mViewInfo.screen * mViewInfo.zoom);
-   mViewInfo.sbarH = (int) (mViewInfo.h * mViewInfo.zoom);
+   mViewInfo.sbarTotal = (wxInt64) (mViewInfo.total * mViewInfo.zoom);
+   mViewInfo.sbarScreen = (wxInt64) (mViewInfo.screen * mViewInfo.zoom);
+   mViewInfo.sbarH = (wxInt64) (mViewInfo.h * mViewInfo.zoom);
 
    mViewInfo.vpos = mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
 
@@ -1040,10 +1051,29 @@ void AudacityProject::FixScrollbars()
       mTrackPanel->Refresh(false);
       rescroll = false;
    }
-
-   mHsbar->SetScrollbar(mViewInfo.sbarH, mViewInfo.sbarScreen,
-                        mViewInfo.sbarTotal, mViewInfo.sbarScreen, TRUE);
+   
+   // wxScrollbar only supports int values but we need a greater range, so
+   // we scale the scrollbar coordinates on demand. We only do this if we
+   // would exceed the int range, so we can always use the maximum resolution
+   // available.
+   
+   // Don't use the full 2^31 max int range but a bit less, so rounding
+   // errors in calculations do not overflow max int
+   wxInt64 maxScrollbarRange = (wxInt64)(2147483647 * 0.999);
+   if (mViewInfo.sbarTotal > maxScrollbarRange)
+      mViewInfo.sbarScale = ((double)maxScrollbarRange) / mViewInfo.sbarTotal;
+   else
+      mViewInfo.sbarScale = 1.0; // use maximum resolution
+      
+   int scaledSbarH = (int)(mViewInfo.sbarH * mViewInfo.sbarScale);
+   int scaledSbarScreen = (int)(mViewInfo.sbarScreen * mViewInfo.sbarScale);
+   int scaledSbarTotal = (int)(mViewInfo.sbarTotal * mViewInfo.sbarScale);
+   
+   mHsbar->SetScrollbar(scaledSbarH, scaledSbarScreen, scaledSbarTotal,
+                        scaledSbarScreen, TRUE);
    mHsbar->Refresh();
+   
+   // Vertical scrollbar
    mVsbar->SetScrollbar(mViewInfo.vpos / mViewInfo.scrollStep,
                         panelHeight / mViewInfo.scrollStep,
                         totalHeight / mViewInfo.scrollStep,
@@ -1136,12 +1166,11 @@ void AudacityProject::OnToolBarUpdate(wxCommandEvent & event)
 
 void AudacityProject::OnScroll(wxScrollEvent & event)
 {
-   int hlast = mViewInfo.sbarH;
-   int vlast = mViewInfo.vpos;
-   int hoffset = 0;
-   int voffset = 0;
+   wxInt64 hlast = mViewInfo.sbarH;
+   wxInt64 hoffset = 0;
 
-   mViewInfo.sbarH = mHsbar->GetThumbPosition();
+   mViewInfo.sbarH = (wxInt64)
+      (mHsbar->GetThumbPosition() / mViewInfo.sbarScale);
 
    if (mViewInfo.sbarH != hlast) {
       mViewInfo.h = mViewInfo.sbarH / mViewInfo.zoom;
@@ -1152,6 +1181,9 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
          mViewInfo.h = 0.0;
       hoffset = (mViewInfo.sbarH - hlast);
    }
+
+   int vlast = mViewInfo.vpos;
+   int voffset = 0;
 
    mViewInfo.vpos = mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
    voffset = mViewInfo.vpos - vlast;
