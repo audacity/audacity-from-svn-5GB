@@ -576,6 +576,12 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
                                               wxDefaultPosition,
                                               wxDefaultSize,
                                               wxVSCROLL | wxTAB_TRAVERSAL);
+
+   // Try to give the window a sensible default/minimum size
+   w->SetMinSize(wxSize(
+      wxMax(600, parent->GetSize().GetWidth() * 2/3),
+      parent->GetSize().GetHeight() / 2));
+                                              
    w->SetScrollRate(0, 20);
    vSizer->Add(w, 1, wxEXPAND|wxALL, 5);
 
