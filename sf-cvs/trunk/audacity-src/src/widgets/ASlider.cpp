@@ -292,7 +292,7 @@ LWSlider::LWSlider(wxWindow * parent,
          )
 {
    Init(parent, name, pos, size, minValue, maxValue,
-      stepValue, canUseShift, style, heavyweight, popup);
+        stepValue, canUseShift, style, heavyweight, popup, 1.0);
 }
 
 // Construct predefined slider
@@ -306,6 +306,7 @@ LWSlider::LWSlider(wxWindow *parent,
 {
    wxString leftLabel, rightLabel;
    float minValue, maxValue, stepValue;
+   float speed = 1.0;
 
    switch(style)
    {
@@ -317,7 +318,8 @@ LWSlider::LWSlider(wxWindow *parent,
    case DB_SLIDER:
       minValue = -36.0f;
       maxValue = 36.0f;
-      stepValue = 3.0f;
+      stepValue = 1.0f;
+      speed = 0.5;
       break;
    case FRAC_SLIDER:
       minValue = 0.0f;
@@ -338,20 +340,21 @@ LWSlider::LWSlider(wxWindow *parent,
    }
 
    Init(parent, name, pos, size, minValue, maxValue, stepValue,
-        true, style, heavyweight, popup);
+        true, style, heavyweight, popup, speed);
 }
 
 void LWSlider::Init(wxWindow * parent,
-     wxString name,
-     const wxPoint &pos,
-     const wxSize &size,
-     float minValue,
-     float maxValue,
-     float stepValue,
-     bool canUseShift,
-     int style,
-     bool heavyweight /* = false */,
-     bool popup /* = true */
+                    wxString name,
+                    const wxPoint &pos,
+                    const wxSize &size,
+                    float minValue,
+                    float maxValue,
+                    float stepValue,
+                    bool canUseShift,
+                    int style,
+                    bool heavyweight,
+                    bool popup,
+                    float speed
      )
 {
    mName = name;
@@ -362,6 +365,7 @@ void LWSlider::Init(wxWindow * parent,
    mParent = parent;
    mHW = heavyweight;
    mPopup = popup;
+   mSpeed = speed;
    mID = wxID_ANY;
    mMinValue = minValue;
    mMaxValue = maxValue;
@@ -651,7 +655,18 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
 
    float prevValue = mCurrentValue;
 
-   if( event.ButtonDClick() && mPopup ) // Should probably use a right click instead
+   // Figure out the thumb position
+   wxRect r;
+   r.x = mLeft + ValueToPosition(mCurrentValue);
+   r.y = mTop + (mCenterY - (mThumbHeight / 2));
+   r.width = mThumbWidth;
+   r.height = mThumbHeight;
+
+   wxRect tolerantThumbRect = r;
+   tolerantThumbRect.Inflate(3, 3);
+
+   // Should probably use a right click instead/also
+   if( event.ButtonDClick() && mPopup )
    {
       //On a double-click, we should pop up a dialog.
       DoShowDialog(mParent->ClientToScreen(wxPoint(event.m_x,event.m_y)));
@@ -660,36 +675,31 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
    {
       mParent->SetFocus();
 
-      // Figure out the thumb position
-      wxRect r;
-      r.x = mLeft + ValueToPosition(mCurrentValue);
-      r.y = mTop + (mCenterY - (mThumbHeight / 2));
-      r.width = mThumbWidth;
-      r.height = mThumbHeight;
-
       // Thumb clicked?
       //
       // Do not change position until first drag.  This helps
       // with unintended value changes.
-      if( r.Inside( event.GetPosition() ) )
+      if( tolerantThumbRect.Inside( event.GetPosition() ) )
       {
-         // Remember mouse offset within thumb
-         mClickX = event.m_x - r.x - mLeftX;
+         // Remember mouse position and current value
+         mClickX = event.m_x;
+         mClickValue = mCurrentValue;
 
          mIsDragging = true;
-         mParent->CaptureMouse();
-
-         FormatPopWin();
-         SetPopWinPosition();
-         mPopWin->Show();
       }
-      // Left or right hand side clicked?
+      // Clicked to set location?
       else
       {
-         mCurrentValue = PositionToValue(event.m_x, event.ShiftDown());
+         mCurrentValue = ClickPositionToValue(event.m_x, event.ShiftDown());
       }
+
+      mParent->CaptureMouse();
+
+      FormatPopWin();
+      SetPopWinPosition();
+      mPopWin->Show();
    }
-   else if( event.ButtonUp() && mIsDragging )
+   else if( event.ButtonUp() )
    {
       mIsDragging = false;
       mParent->ReleaseMouse();
@@ -698,7 +708,17 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
    }
    else if( event.Dragging() && mIsDragging )
    {
-      mCurrentValue = PositionToValue(event.m_x - mClickX, event.ShiftDown());
+      if (event.m_y < (r.y - 2 * r.height) ||
+          event.m_y > (r.y + 3 * r.height)) {
+         // If the mouse y coordinate is relatively far from the slider,
+         // snap back to the original position
+         mCurrentValue = mClickValue;
+      }
+      else {
+         // Otherwise, move the slider to the right position based
+         // on the mouse position
+         mCurrentValue = DragPositionToValue(event.m_x, event.ShiftDown());
+      }
    }
    else if( event.m_wheelRotation != 0 )
    {
@@ -814,19 +834,53 @@ int LWSlider::ValueToPosition(float val)
    return (int)rint((val - mMinValue) * mWidthX / (mMaxValue - mMinValue));
 }
 
-float LWSlider::PositionToValue(int xPos, bool shiftDown)
+void LWSlider::SetSpeed(float speed)
 {
-   int pos = (xPos - mLeft) - mLeftX;
+   mSpeed = speed;
+}
 
-   // MM: Special cases: If position is at the very left or the
-   // very right, set minimum/maximum value without other checks
+// Given the mouse x coordinate in xPos, compute the new value
+// of the slider when clicking to set a new position.
+float LWSlider::ClickPositionToValue(int xPos, bool shiftDown)
+{
+   int pos = (xPos - mLeft - (mThumbWidth / 2));
+
    if (pos <= 0)
       return mMinValue;
    if (pos >= mWidthX)
       return mMaxValue;
-   
-   float val = ((float)pos/(float)mWidthX) 
+
+   float val = (pos / (float)mWidthX)
       * (mMaxValue - mMinValue) + mMinValue;
+
+   if (val < mMinValue)
+      val = mMinValue;
+   if (val > mMaxValue)
+      val = mMaxValue;
+
+   if (!(mCanUseShift && shiftDown) && mStepValue != STEP_CONTINUOUS)
+   {
+      // MM: If shift is not down, or we don't allow usage
+      // of shift key at all, trim value to steps of
+      // provided size.
+      val = (int)(val / mStepValue + 0.5 * (val>0?1.0f:-1.0f)) * mStepValue;
+   }
+
+   return val;
+}
+
+// Given the mouse x coordinate in xPos, compute the new value
+// of the slider during a drag.
+float LWSlider::DragPositionToValue(int xPos, bool shiftDown)
+{
+   int delta = (xPos - mClickX);
+   float val = mClickValue +
+      mSpeed * (delta / (float)mWidthX) * (mMaxValue - mMinValue);
+
+   if (val < mMinValue)
+      val = mMinValue;
+   if (val > mMaxValue)
+      val = mMaxValue;
 
    if (!(mCanUseShift && shiftDown) && mStepValue != STEP_CONTINUOUS)
    {
@@ -1053,6 +1107,11 @@ void ASlider::Increase(int steps)
 void ASlider::Decrease(int steps)
 {
    mLWSlider->Decrease(steps);
+}
+
+void ASlider::SetSpeed(float speed)
+{
+   mLWSlider->SetSpeed(speed);
 }
 
 #if wxUSE_ACCESSIBILITY
