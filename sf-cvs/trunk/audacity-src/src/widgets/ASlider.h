@@ -83,16 +83,17 @@ class LWSlider
             bool popup=true);
 
    void Init(wxWindow * parent,
-      wxString name,
-      const wxPoint &pos,
-      const wxSize &size,
-      float minValue,
-      float maxValue,
-      float stepValue,
-      bool canUseShift,
-      int style,
-      bool heavyweight=false,
-      bool popup=true
+             wxString name,
+             const wxPoint &pos,
+             const wxSize &size,
+             float minValue,
+             float maxValue,
+             float stepValue,
+             bool canUseShift,
+             int style,
+             bool heavyweight,
+             bool popup,
+             float speed
    );
 
    virtual ~LWSlider();
@@ -105,6 +106,10 @@ class LWSlider
 
    void Increase(int steps);
    void Decrease(int steps);
+
+   // If set to less than 1.0, moving the mouse one pixel will move
+   // the slider by less than 1 unit
+   void SetSpeed(float speed);
 
    void Move(const wxPoint &newpos);
 
@@ -130,7 +135,8 @@ class LWSlider
    void SendUpdate( float newValue );
 
    int ValueToPosition(float val);
-   float PositionToValue(int xPos, bool shiftDown);
+   float DragPositionToValue(int xPos, bool shiftDown);
+   float ClickPositionToValue(int xPos, bool shiftDown);
    
    wxWindow* GetToolTipParent() const;
       
@@ -156,13 +162,14 @@ class LWSlider
    int mThumbWidth;             //In pixels
    int mThumbHeight;            //In pixels
 
-   int mClickValue;
+   float mClickValue;
    int mClickX;
 
    float mMinValue;
    float mMaxValue;
    float mStepValue;
-   
+   float mSpeed;
+ 
    float mCurrentValue;
 
    bool mCanUseShift;
@@ -203,6 +210,8 @@ class ASlider :public wxPanel
 
    void Increase(int steps);
    void Decrease(int steps);
+
+   void SetSpeed(float speed);
 
    void OnErase(wxEraseEvent & event);
    void OnPaint(wxPaintEvent & event);
