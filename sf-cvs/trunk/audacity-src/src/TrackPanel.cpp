@@ -2186,6 +2186,8 @@ void TrackPanel::DoSlide(wxMouseEvent & event)
          break;
       }
    }
+   if(i>=tracks.GetCount())
+      return;  // not in a track at all - probably between/above/below them
 
    // Start by undoing the current slide amount; everything
    // happens relative to the original horizontal position of
@@ -2213,6 +2215,7 @@ void TrackPanel::DoSlide(wxMouseEvent & event)
    mHSlideAmount = 0.0;
 
    double desiredSlideAmount = (event.m_x - mMouseClickX) / mViewInfo->zoom;
+   desiredSlideAmount = rint(mouseTrack->GetRate() * desiredSlideAmount) / mouseTrack->GetRate();  // set it to a sample point
 
    // Adjust desiredSlideAmount using SnapManager
    if (mSnapManager && mCapturedClip) {
@@ -2250,7 +2253,7 @@ void TrackPanel::DoSlide(wxMouseEvent & event)
 
    //If the mouse is over a track that isn't the captured track,
    //drag the clip to the mousetrack
-   if (mCapturedClip && mouseTrack && mouseTrack != mCapturedTrack &&
+   if (mCapturedClip && mouseTrack != mCapturedTrack &&
        !mCapturedClipIsSelection)
    {
       // Make sure we always have the first linked track of a stereo track
