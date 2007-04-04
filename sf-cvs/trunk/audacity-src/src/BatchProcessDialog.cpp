@@ -447,6 +447,7 @@ void EditChainsDialog::PopulateOrExchange(ShuttleGui & S)
          //An empty first column is a workaround - under Win98 the first column 
          //can't be right aligned.
          mList->InsertColumn(BlankColumn, wxT(""), wxLIST_FORMAT_LEFT);
+         /* i18n-hint: This is the number of the command in the list */
          mList->InsertColumn(ItemNumberColumn, _("No"), wxLIST_FORMAT_RIGHT);
          mList->InsertColumn(ActionColumn, _NoAcc("&Command"), wxLIST_FORMAT_RIGHT);
          mList->InsertColumn(ParamsColumn, _NoAcc("&Parameters"), wxLIST_FORMAT_LEFT);

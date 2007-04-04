@@ -176,8 +176,7 @@ bool VSTEffect::Init()
             GetSamples((WaveTrack *)right, &rstart, &rlen);
             
             if (llen != rlen || ((WaveTrack *)left)->GetRate() != ((WaveTrack *)right)->GetRate()) {
-               wxMessageBox(_("Sorry, VST Effects cannot be performed on stereo tracks where "
-                            "the individual channels of the track do not match."));
+               wxMessageBox(_("Sorry, VST Effects cannot be performed on stereo tracks where the individual channels of the track do not match."));
                return false;
             }
          }
