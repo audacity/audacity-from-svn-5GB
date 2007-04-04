@@ -155,8 +155,8 @@ AboutDialog::AboutDialog(wxWindow * parent)
       + par1Str +
       "<p>"
       + par2Str +
-      "<p>"
-      "http://audacity.sourceforge.net/"
+      "<p>" + 
+      AUDACITY_URL + 
       "<p>"
       "<center><b>" + _("Information") + "</b></center>"
       "<p><br>"

@@ -1186,6 +1186,7 @@ void TrackPanel::OnTimer()
    wxCommandEvent dummyEvent;
    AudacityProject *p = (AudacityProject*)GetParent();
    MixerBoard* pMixerBoard = p->GetMixerBoard();
+   bool bMixerBoardShowing = pMixerBoard && pMixerBoard->IsShown();
 
    if (p->GetAudioIOToken()>0) {
       // Update lyrics display 
@@ -1195,7 +1196,7 @@ void TrackPanel::OnTimer()
          lyrics->Update(gAudioIO->GetStreamTime());
       }
 
-      if (pMixerBoard) 
+      if (bMixerBoardShowing) 
          pMixerBoard->UpdateMeters(gAudioIO->GetStreamTime());
    }
 
@@ -1204,7 +1205,7 @@ void TrackPanel::OnTimer()
    if (p->GetAudioIOToken()>0 &&
        !gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
       p->GetControlToolBar()->OnStop(dummyEvent);      
-      if (pMixerBoard) 
+      if (bMixerBoardShowing) 
          pMixerBoard->ResetMeters();
    }
 
@@ -1245,11 +1246,17 @@ void TrackPanel::OnTimer()
    // AS: Um, I get the feeling we want to redraw the cursors
    //  every 10 timer ticks or something...
    if ((mTimeCount % 10) == 0 &&
-       !mTracks->IsEmpty() && mViewInfo->sel0 == mViewInfo->sel1 && !mIsSelecting) {
+         #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+            !mShowRulerOnly && 
+         #endif
+         !mTracks->IsEmpty() && mViewInfo->sel0 == mViewInfo->sel1 && !mIsSelecting) {
       DrawCursors();
    }
 
    if(gAudioIO->IsStreamActive(p->GetAudioIOToken()) &&
+      #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+         !mShowRulerOnly && 
+      #endif
       gAudioIO->GetNumCaptureChannels()) {
 
       // Periodically update the display while recording

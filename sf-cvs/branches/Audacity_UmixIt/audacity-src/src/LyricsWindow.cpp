@@ -30,7 +30,7 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
                                  wxString::Format(
                                    wxT(" - %s"),
                                    parent->GetName().c_str()).c_str())),
-            wxDefaultPosition, gSize, 
+            wxPoint(100, 300), gSize, 
             wxDEFAULT_FRAME_STYLE
 #ifndef __WXMAC__
            | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT)

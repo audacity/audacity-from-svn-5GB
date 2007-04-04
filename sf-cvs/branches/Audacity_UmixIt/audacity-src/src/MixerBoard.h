@@ -66,7 +66,7 @@ private:
 
 public:
    WaveTrack* mLeftTrack;
-   WaveTrack* mRightTrack;
+   WaveTrack* mRightTrack; // NULL if mono
 
 private:
    MixerBoard* mMixerBoard;
@@ -142,7 +142,10 @@ public:
                const wxSize& size = wxDefaultSize);
    ~MixerBoard();
 
-   void AddTrackClusters(); // Add clusters for any tracks we're not yet showing.
+   // Add clusters for any tracks we're not yet showing.
+   // Update pointers for tracks we're aleady showing. 
+   void AddOrUpdateTrackClusters(); 
+
    void RemoveTrackCluster(const WaveTrack* pLeftTrack);
    void MoveTrackCluster(const WaveTrack* pLeftTrack, bool bUp); // Up in TrackPanel is left in MixerBoard.
 
@@ -167,7 +170,8 @@ public:
 
 private:
    void CreateMuteSoloImages();
-   int FindMixerTrackCluster(const WaveTrack* pLeftTrack, MixerTrackCluster** hMixerTrackCluster);
+   int FindMixerTrackCluster(const WaveTrack* pLeftTrack, 
+                              MixerTrackCluster** hMixerTrackCluster) const;
    void LoadMusicalInstruments();
 
    // event handlers
@@ -189,7 +193,9 @@ public:
    int mMuteSoloWidth;
 
 private:
+   // Track clusters are maintained in the same order as the WaveTracks.
    MixerTrackClusterArray     mMixerTrackClusters; 
+
    MusicalInstrumentArray     mMusicalInstruments; 
    AudacityProject*           mProject;
    MixerBoardScrolledWindow*  mScrolledWindow; // Holds the MixerTrackClusters and handles scrolling.

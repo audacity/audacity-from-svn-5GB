@@ -557,9 +557,21 @@ bool AudacityApp::OnInit()
    //Initiate globally-held toolbar stubs here.
    gControlToolBarStub = new ToolBarStub(gParentWindow, ControlToolBarID);
 
+   bool bDefaultMixerToolbar = true;
+   bool bDefaultMeterToolbar = true;
+   bool bDefaultEditToolbar = true;
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      bDefaultMixerToolbar = false;
+      bDefaultEditToolbar = false;
+   #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // no Mixer or Meter Toolbar by default for Thinklabs
+      bDefaultMixerToolbar = false;
+      bDefaultMeterToolbar = false;
+   #endif
+
    //Only load the mixer toolbar if it says so in the preferences
    bool mixerToolBar;
-   gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
+   gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, bDefaultMixerToolbar);
    if(mixerToolBar)
       gMixerToolBarStub =  new ToolBarStub(gParentWindow, MixerToolBarID);
    else
@@ -567,7 +579,7 @@ bool AudacityApp::OnInit()
 
    //Only load the meter toolbar if it says so in the preferences
    bool meterToolBar;
-   gPrefs->Read("/GUI/EnableMeterToolBar", &meterToolBar, true);
+   gPrefs->Read("/GUI/EnableMeterToolBar", &meterToolBar, bDefaultMeterToolbar);
    if(meterToolBar)
       gMeterToolBarStub =  new ToolBarStub(gParentWindow, MeterToolBarID);
    else
@@ -577,7 +589,7 @@ bool AudacityApp::OnInit()
    // load without the toolbar in memory at all.
 
    bool editToolBar;
-   gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, true);
+   gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, bDefaultEditToolbar);
    if(editToolBar)
       gEditToolBarStub =  new ToolBarStub(gParentWindow, EditToolBarID);
    else

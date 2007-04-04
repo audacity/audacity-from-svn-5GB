@@ -375,20 +375,34 @@ void MixerTrackCluster::OnMouseEvent(wxMouseEvent& event)
 {
    if (event.ButtonUp()) 
    {
-      if (!event.ShiftDown()) 
+      if (event.ShiftDown()) 
+      {
+         // ShiftDown => Just toggle selection on this track.
+         bool bSelect = !mLeftTrack->GetSelected();
+         mLeftTrack->SetSelected(bSelect);
+         if (mRightTrack)
+            mRightTrack->SetSelected(bSelect);
+         this->Refresh(false); // Refresh only this MixerTrackCluster.
+      }
+      else
+      {
          // exclusive select
          mProject->SelectNone();
+         mLeftTrack->SetSelected(true);
+         if (mRightTrack)
+            mRightTrack->SetSelected(true);
 
-      mLeftTrack->SetSelected(true);
-      if (mRightTrack)
-         mRightTrack->SetSelected(true);
-      
-      if (event.ShiftDown())
-         // Inclusive select, so refresh only this one.
-         this->Refresh(false);
-      else
-         // Exclusive select, so refresh all.
+         ViewInfo* pViewInfo = mProject->GetViewInfo();
+         if (pViewInfo->sel0 >= pViewInfo->sel1)
+         {
+            // No range previously selected, so use the range of this track. 
+            pViewInfo->sel0 = mLeftTrack->GetOffset();
+            pViewInfo->sel1 = mLeftTrack->GetEndTime();
+         }
+
+         // Exclusive select, so refresh all MixerTrackClusters.
          mMixerBoard->Refresh(false);
+      }
    }
 }
 
@@ -408,23 +422,10 @@ void MixerTrackCluster::OnPaint(wxPaintEvent &evt)
    wxRect bev(0, 0, clusterSize.GetWidth() - 1, clusterSize.GetHeight() - 1);
    if (mLeftTrack->GetSelected())
    {
-      wxPen highlightPen;
-      for (unsigned int i = 0; i < 2; i++)
+      for (unsigned int i = 0; i < 2; i++) 
       {
-         //#if (AUDACITY_BRANDING == BRAND_UMIXIT)
-         //   highlightPen.SetColour(*wxCYAN);
-         //   dc.SetPen(highlightPen);
-         //   dc.DrawLine(bev.x, bev.y, bev.x + bev.width, bev.y); // top
-         //   dc.DrawLine(bev.x, bev.y, bev.x, bev.y + bev.height);    // left
-         //   highlightPen.SetColour(*wxBLUE); 
-         //   dc.SetPen(highlightPen);
-         //   dc.DrawLine(bev.x + bev.width, bev.y, bev.x + bev.width, bev.y + bev.height);       // right
-         //   dc.DrawLine(bev.x, bev.y + bev.height, bev.x + bev.width + 1, bev.y + bev.height);  // bottom
-         //   bev.Inflate(-1, -1);
-         //#else
-            bev.Inflate(-1, -1);
-            AColor::Bevel(dc, false, bev);
-         //#endif
+         bev.Inflate(-1, -1);
+         AColor::Bevel(dc, false, bev);
       }
    }
    else
@@ -671,7 +672,7 @@ MixerBoard::~MixerBoard()
    mMusicalInstruments.Clear();
 }
 
-void MixerBoard::AddTrackClusters() // Add clusters for any tracks we're not yet showing.
+void MixerBoard::AddOrUpdateTrackClusters() 
 {
    if (mTracks->IsEmpty())
       return;
@@ -680,7 +681,8 @@ void MixerBoard::AddTrackClusters() // Add clusters for any tracks we're not yet
       this->CreateMuteSoloImages();
 
    const int kClusterHeight = mScrolledWindow->GetClientSize().GetHeight() - kDoubleInset;
-   size_t count = mMixerTrackClusters.GetCount();
+   const size_t kClusterCount = mMixerTrackClusters.GetCount();
+   unsigned int nClusterIndex = 0;
    TrackListIterator iterTracks(mTracks);
    MixerTrackCluster* pMixerTrackCluster = NULL;
    Track* pLeftTrack;
@@ -688,15 +690,25 @@ void MixerBoard::AddTrackClusters() // Add clusters for any tracks we're not yet
 
    pLeftTrack = iterTracks.First();
    while (pLeftTrack) {
-      pRightTrack = NULL;
-      if (pLeftTrack->GetLinked()) 
-         pRightTrack = iterTracks.Next();
+      pRightTrack = pLeftTrack->GetLinked() ? iterTracks.Next() : NULL;
 
-      if (pLeftTrack->GetKind() == Track::Wave) {
-         if (this->FindMixerTrackCluster((WaveTrack*)pLeftTrack, &pMixerTrackCluster) == -1)
-         {  // Not already showing it.
+      if (pLeftTrack->GetKind() == Track::Wave) 
+      {
+         if (nClusterIndex < kClusterCount)
+         {
+            // Already showing it. 
+            // Track clusters are maintained in the same order as the WaveTracks.
+            // Track pointers can change for the "same" track for different states 
+            // on the undo stack, so update the pointers.
+            mMixerTrackClusters[nClusterIndex]->mLeftTrack = (WaveTrack*)pLeftTrack;
+            mMixerTrackClusters[nClusterIndex]->mRightTrack = (WaveTrack*)pRightTrack;
+         }
+         else
+         {
+            // Not already showing it. Add a new MixerTrackCluster.
             wxPoint clusterPos(
-               ((count * (kInset + MIXER_TRACK_CLUSTER_WIDTH)) + // left margin and width for each to its left
+               ((nClusterIndex * 
+                  (kInset + MIXER_TRACK_CLUSTER_WIDTH)) + // left margin and width for each to its left
                   kInset), // plus left margin for new cluster
                kInset); 
             wxSize clusterSize(MIXER_TRACK_CLUSTER_WIDTH, kClusterHeight);
@@ -707,12 +719,12 @@ void MixerBoard::AddTrackClusters() // Add clusters for any tracks we're not yet
             if (pMixerTrackCluster)
             {
                mMixerTrackClusters.Add(pMixerTrackCluster);
-               count++;
                this->IncrementSoloCount((int)(pLeftTrack->GetSolo()));
             }
          }
       }
       pLeftTrack = iterTracks.Next();
+      nClusterIndex++;
    }
 
    if (pMixerTrackCluster)
@@ -1043,7 +1055,8 @@ void MixerBoard::CreateMuteSoloImages()
    mImageSoloDisabled = new wxImage(mMuteSoloWidth, MUTE_SOLO_HEIGHT); // Leave empty because unused.
 }
 
-int MixerBoard::FindMixerTrackCluster(const WaveTrack* pLeftTrack, MixerTrackCluster** hMixerTrackCluster)
+int MixerBoard::FindMixerTrackCluster(const WaveTrack* pLeftTrack, 
+                                      MixerTrackCluster** hMixerTrackCluster) const
 {
    *hMixerTrackCluster = NULL;
    for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
@@ -1266,7 +1279,7 @@ void MixerBoard::OnSize(wxSizeEvent &evt)
    // event handlers
    void MixerBoardFrame::OnCloseWindow(wxCloseEvent &WXUNUSED(event))
    {
-   this->Hide();
+      this->Hide();
    }
 
    void MixerBoardFrame::OnMaximize(wxMaximizeEvent &event)

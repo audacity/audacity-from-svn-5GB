@@ -49,6 +49,9 @@ class wxScrollBar;
 class wxProgressDialog;
 
 class Branding;
+#if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+   class BrandingPanel;
+#endif
 class Toolbar;
 class TrackList;
 class Tags;
@@ -122,6 +125,7 @@ class AudacityProject:public wxFrame,
    virtual ~ AudacityProject();
 
    TrackList *GetTracks() { return mTracks; };
+   ViewInfo* GetViewInfo() {return &mViewInfo; }
    UndoManager *GetUndoManager() { return &mUndoManager; }
 
    double GetRate() { return mRate; }
@@ -298,6 +302,9 @@ class AudacityProject:public wxFrame,
    Tags *mTags;
 
    Branding* mBranding; // branding (brand name, website URL, logo, color scheme)
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+      BrandingPanel* mBrandingPanel;
+   #endif
 
    // List of tracks and display info
 

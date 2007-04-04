@@ -159,7 +159,7 @@ AudacityDropTarget::~AudacityDropTarget()
 
 bool AudacityDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
 {
-   for (int i = 0; i < filenames.GetCount(); i++)
+   for (unsigned int i = 0; i < filenames.GetCount(); i++)
       mProject->Import(filenames[i]);
    mProject->HandleResize(); // Adjust scrollers for new track sizes.
    return true;
@@ -532,6 +532,20 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mLastStatusUpdateTime = ::wxGetUTCTime();
    mTimer = new wxTimer(this, AudacityProjectTimerID);
    mTimer->Start(200);
+
+   // BrandingPanel
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+      mBrandingPanel = 
+         new BrandingPanel(this, 
+                           wxPoint(left, top), 
+                           wxSize(width, 64 + 3*4)); //vvv default powered_by_Audacity_xpm height plus 3*kInset 
+      wxSize panelSize = mBrandingPanel->GetSize(); 
+      int nBrandingPanelHeight = panelSize.GetHeight();
+      if (nBrandingPanelHeight < mBrandingPanel->GetMinHeight())
+         nBrandingPanelHeight = mBrandingPanel->GetMinHeight();
+      top += nBrandingPanelHeight;
+      height -= nBrandingPanelHeight;
+   #endif
 
    //
    // Create the TrackPanel and the scrollbars
@@ -1007,6 +1021,14 @@ void AudacityProject::HandleResize()
 
    mStatus->SetSize(0, top + height - sh, width, sh);
    height -= sh;
+
+   // BrandingPanel
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+      int nBrandingPanelHeight = mBrandingPanel->GetMinHeight();
+      mBrandingPanel->SetSize(left, top, width, nBrandingPanelHeight);
+      top += nBrandingPanelHeight;
+      height -= nBrandingPanelHeight;
+   #endif
 
    #if (AUDACITY_BRANDING == BRAND_UMIXIT)
       if (mMixerBoard->IsShown())
@@ -2099,7 +2121,11 @@ XMLTagHandler *AudacityProject::HandleXMLChild(const char *tag)
    }
 
    if (!strcmp(tag, "branding")) {
-      mBranding = new Branding();
+      #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+         mBranding = new Branding(mBrandingPanel);
+      #else
+         mBranding = new Branding();
+      #endif
       return mBranding;
    }
 
@@ -2555,7 +2581,7 @@ void AudacityProject::PushState(wxString desc,
    UpdateLyrics();
 
    // All the different ways to add tracks funnel through here.
-   mMixerBoard->AddTrackClusters();
+   mMixerBoard->AddOrUpdateTrackClusters();
    UpdateMixerBoard();
 }
 
@@ -2641,8 +2667,9 @@ void AudacityProject::UpdateMixerBoard()
    if (mTracks->IsEmpty() || !mMixerBoard)
       return;
 
-   mMixerBoard->AddTrackClusters();
-   mMixerBoard->UpdateMeters(gAudioIO->GetStreamTime()); 
+   mMixerBoard->AddOrUpdateTrackClusters();
+   if (mMixerBoard->IsShown())
+      mMixerBoard->UpdateMeters(gAudioIO->GetStreamTime()); 
 }
 
 //
