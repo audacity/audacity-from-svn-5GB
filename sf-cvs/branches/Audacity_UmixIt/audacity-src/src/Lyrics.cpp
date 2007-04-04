@@ -18,7 +18,7 @@
 #include "Lyrics.h"
 #include "Internat.h"
 #include "Project.h" // for GetActiveProject
-#include "Branding.h"
+// Branding removed from Lyrics window.   #include "Branding.h"
 
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(SyllableArray);
@@ -31,7 +31,7 @@ END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(Lyrics, wxPanel)
 
-#define DEFAULT_BRANDING_HEIGHT 105 //vvv UmixIt: Need to figure it out from logo height, etc. This works for UmixIt.
+// Branding removed from Lyrics window.   #define DEFAULT_BRANDING_HEIGHT 105 //v UmixIt: Need to figure it out from logo height, etc. This works for UmixIt.
 
 Lyrics::Lyrics(wxWindow* parent, wxWindowID id,
                const wxPoint& pos /*= wxDefaultPosition*/,
@@ -39,49 +39,50 @@ Lyrics::Lyrics(wxWindow* parent, wxWindowID id,
    wxPanel(parent, id, pos, size),
    mWidth(size.x), mHeight(size.y)
 {
-   // branding
-   //vvv Should change this to just a wxStaticBitmap, but it's working, and no longer showing lyrics.
-   AudacityProject* pProject = GetActiveProject();
-   Branding* pBranding = pProject->GetBranding();
-   wxString strBranding = "";
-   if (pBranding) {
-      wxString strBrandName = pBranding->GetBrandName();
-      wxString strURL = pBranding->GetBrandURL();
+   // Branding removed from Lyrics window.   
+   //// branding
+   ////v Should change this to just a wxStaticBitmap, but it's working, and no longer showing lyrics.
+   //AudacityProject* pProject = GetActiveProject();
+   //Branding* pBranding = pProject->GetBranding();
+   //wxString strBranding = "";
+   //if (pBranding) {
+   //   wxString strBrandName = pBranding->GetBrandName();
+   //   wxString strURL = pBranding->GetBrandURL();
 
-      wxString strIMGtag = "";
-      wxFileName brandLogoFileName = pBranding->GetBrandLogoFileName();
-      if (brandLogoFileName.IsOk() && brandLogoFileName.FileExists()){
-         strIMGtag = "<img src=\"" + FILENAME(brandLogoFileName.GetFullPath()) + 
-                        "\" alt=\"" + brandLogoFileName.GetFullName() + "\"><br>";
-      }
+   //   wxString strIMGtag = "";
+   //   wxFileName brandLogoFileName = pBranding->GetBrandLogoFileName();
+   //   if (brandLogoFileName.IsOk() && brandLogoFileName.FileExists()){
+   //      strIMGtag = "<img src=\"" + FILENAME(brandLogoFileName.GetFullPath()) + 
+   //                     "\" alt=\"" + brandLogoFileName.GetFullName() + "\"><br>";
+   //   }
 
-      if (strURL.IsEmpty()) {
-         if (strIMGtag.IsEmpty()) {
-            if (!strBrandName.IsEmpty()) 
-               strBranding = "<center><h1>" + strBrandName + "</h1></center>\n";
-         } else {
-            strBranding = "<center>" + strIMGtag + "</center>\n";
-         }
-      } else {
-         if (strIMGtag.IsEmpty()) {
-            if (!strBrandName.IsEmpty()) 
-               strBranding = 
-                  "<center><h1>" + strBrandName + 
-                  "</h1><br><a href=\"" + FILENAME(strURL) + "\">" + strURL + "</a></center>\n";
-         } else {
-            strBranding = 
-               "<center><a href=\"" + FILENAME(strURL) + "\">" + strIMGtag + strURL + "</a></center>\n";
-         }
-      }
-   }
-   if (!strBranding.IsEmpty()) {
-      mBrandingPanel = new LinkingHtmlWindow(this);
-      mBrandingPanel->SetPage(strBranding);
-      mBrandingHeight = DEFAULT_BRANDING_HEIGHT;
-   } else {
-      mBrandingPanel = NULL;
-      mBrandingHeight = 0;
-   }
+   //   if (strURL.IsEmpty()) {
+   //      if (strIMGtag.IsEmpty()) {
+   //         if (!strBrandName.IsEmpty()) 
+   //            strBranding = "<center><h1>" + strBrandName + "</h1></center>\n";
+   //      } else {
+   //         strBranding = "<center>" + strIMGtag + "</center>\n";
+   //      }
+   //   } else {
+   //      if (strIMGtag.IsEmpty()) {
+   //         if (!strBrandName.IsEmpty()) 
+   //            strBranding = 
+   //               "<center><h1>" + strBrandName + 
+   //               "</h1><br><a href=\"" + FILENAME(strURL) + "\">" + strURL + "</a></center>\n";
+   //      } else {
+   //         strBranding = 
+   //            "<center><a href=\"" + FILENAME(strURL) + "\">" + strIMGtag + strURL + "</a></center>\n";
+   //      }
+   //   }
+   //}
+   //if (!strBranding.IsEmpty()) {
+   //   mBrandingPanel = new LinkingHtmlWindow(this);
+   //   mBrandingPanel->SetPage(strBranding);
+   //   mBrandingHeight = DEFAULT_BRANDING_HEIGHT;
+   //} else {
+   //   mBrandingPanel = NULL;
+   //   mBrandingHeight = 0;
+   //}
 
    Clear();
    Finish(0.0);
@@ -160,7 +161,7 @@ void Lyrics::Finish(double finalT)
 }
 
 
-#define DEFAULT_FONT_POINTSIZE 28
+#define DEFAULT_FONT_POINTSIZE 80
 int gKaraokeFontPointSize = DEFAULT_FONT_POINTSIZE;
 
 void Lyrics::SetFont(wxDC *dc)
@@ -335,8 +336,6 @@ void Lyrics::Update(double t, bool bForce /* = false */)
    if (!bForce && (i == mCurrentSyllable))
       return;
 
-   // mBrandingPanel->Refresh(false);
-
    mCurrentSyllable = i;   
 }
 
@@ -368,16 +367,17 @@ void Lyrics::OnPaint(wxPaintEvent &evt)
 void Lyrics::OnSize(wxSizeEvent &evt)
 {
    GetClientSize(&mWidth, &mHeight);
-   if (mBrandingPanel != NULL) {
-      int nTenthOfHeight = mHeight / 10;
-      mBrandingHeight = (DEFAULT_BRANDING_HEIGHT > nTenthOfHeight) ? DEFAULT_BRANDING_HEIGHT : nTenthOfHeight;
-      mKaraokeHeight = (mHeight - mBrandingHeight); // gray bar? * 9 / 10; // mHeight * 3 / 4; // mKaraokeHeight = mHeight / 2;
-      // mBrandingPanel->SetSize(0, mKaraokeHeight, mWidth, mHeight - mKaraokeHeight);
-      mBrandingPanel->SetSize(0, mKaraokeHeight, // gray bar? (mHeight - mBrandingHeight), 
-                              mWidth, mBrandingHeight);
-   } else {
+   // Branding removed from Lyrics window.
+   //if (mBrandingPanel != NULL) {
+   //   int nTenthOfHeight = mHeight / 10;
+   //   mBrandingHeight = (DEFAULT_BRANDING_HEIGHT > nTenthOfHeight) ? DEFAULT_BRANDING_HEIGHT : nTenthOfHeight;
+   //   mKaraokeHeight = (mHeight - mBrandingHeight); // gray bar? * 9 / 10; // mHeight * 3 / 4; // mKaraokeHeight = mHeight / 2;
+   //   // mBrandingPanel->SetSize(0, mKaraokeHeight, mWidth, mHeight - mKaraokeHeight);
+   //   mBrandingPanel->SetSize(0, mKaraokeHeight, // gray bar? (mHeight - mBrandingHeight), 
+   //                           mWidth, mBrandingHeight);
+   //} else {
       mKaraokeHeight = mHeight;
-   }
+   //}
    
    gKaraokeFontPointSize = (int)((float)(DEFAULT_FONT_POINTSIZE * mHeight) / (float)LYRICS_DEFAULT_HEIGHT);
    // Usually don't get the size window we want, usually less than 
@@ -427,7 +427,7 @@ void Lyrics::HandlePaint(wxDC &dc)
                   yTextTop);
    }
 
-   int ballRadius = (int)(mTextHeight / 3.0);
+   int ballRadius = (int)(mTextHeight / 8.0);
    int bounceTop = ballRadius * 2;
    int bounceHeight = yTextTop - bounceTop;
    int yi = (int)(yTextTop - 4 - (y * bounceHeight));

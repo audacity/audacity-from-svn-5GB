@@ -17,9 +17,9 @@
 #include <wx/dynarray.h>
 #include <wx/panel.h>
 
-#include "widgets/LinkingHtmlWindow.h"
+// Branding removed from Lyrics window.   #include "widgets/LinkingHtmlWindow.h"
 
-#define LYRICS_DEFAULT_WIDTH 440
+#define LYRICS_DEFAULT_WIDTH 608
 #define LYRICS_DEFAULT_HEIGHT 280
 
 struct Syllable {
@@ -75,7 +75,7 @@ private:
 
    double         mT;
 
-   int            mBrandingHeight; 
+   // Branding removed from Lyrics window.   int            mBrandingHeight; 
    int            mKaraokeHeight;
 
    int            mCurrentSyllable;
@@ -84,7 +84,7 @@ private:
 
    int            mTextHeight;
 
-   LinkingHtmlWindow* mBrandingPanel;
+   // Branding removed from Lyrics window.   LinkingHtmlWindow* mBrandingPanel;
 
    bool           mMeasurementsDone;
 

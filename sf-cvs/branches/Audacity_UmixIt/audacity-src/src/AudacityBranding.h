@@ -27,6 +27,8 @@
 //vvvvv OR do it this way:
 //#define AUDACITY_BRANDING BRAND_AUDACITY // standard version
 
+#define AUDACITY_URL wxT("http://audacity.sourceforge.net/")
+
 #define AUDACITY_BRANDING_BRANDNAME wxT("UmixIt")
 #define AUDACITY_BRANDING_BRANDURL wxT("http://www.umixit.com/")
 

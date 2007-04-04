@@ -41,9 +41,21 @@ PrefsPanel(parent)
    gPrefs->Read("/GUI/AutoScroll", &autoscroll, true);
    gPrefs->Read("/GUI/UpdateSpectrogram", &spectrogram, true);
 
-   gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, true);
-   gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
-   gPrefs->Read("/GUI/EnableMeterToolBar", &meterToolBar, true);
+   bool bDefaultEditToolbar = true;
+   bool bDefaultMixerToolbar = true;
+   bool bDefaultMeterToolbar = true;
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      bDefaultEditToolbar = false;
+      bDefaultMixerToolbar = false;
+   #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // no Mixer or Meter Toolbar by default for Thinklabs
+      bDefaultMixerToolbar = false;
+      bDefaultMeterToolbar = false;
+   #endif
+   gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, bDefaultEditToolbar);
+   gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, bDefaultMixerToolbar);
+   gPrefs->Read("/GUI/EnableMeterToolBar", &meterToolBar, bDefaultMeterToolbar);
+
    gPrefs->Read("/GUI/AlwaysEnablePause", &alwaysEnablePause, false);
    gPrefs->Read("/GUI/AlwaysEnablePlay", &alwaysEnablePlay, false);
 

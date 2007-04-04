@@ -6,22 +6,66 @@
 
    Vaughan Johnson, November 2006
 
-   Project-specific branding (brand name, website URL, logo, color scheme)
+   class Branding: 
+      Project-specific branding (brand/artist name, website URL, logo, color scheme)
+   class BrandingPanel: 
+      Custom build branding, based on AUDACITY_BRANDING build flag
 
-  
 **********************************************************************/
 
 #pragma once
 
+#include <wx/filename.h>
+
+#include "AudacityBranding.h"
 #include "xml/XMLTagHandler.h"
 
-#include <wx/filename.h>
+#if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+   #include <wx/panel.h>
+   #include "widgets/AButton.h"
+   
+   class AudacityProject;
+
+   class BrandingPanel : public wxPanel {
+   public: 
+      BrandingPanel(AudacityProject* pProject, 
+                     const wxPoint& pos = wxDefaultPosition, 
+                     const wxSize& size = wxDefaultSize);
+      const int GetMinHeight() { return mMinHeight; };
+      void SetProjectLogo(wxFileName brandLogoFileName);
+
+   private:
+      // event handlers
+      void OnButton_ProjectLogo(wxCommandEvent& event); // from project file
+      void OnButton_CompanyLogo(wxCommandEvent& event); // AUDACITY_BRANDING build flag
+      void OnButton_AudacityLogo(wxCommandEvent& event); // AUDACITY_BRANDING build flag
+
+      void OnPaint(wxPaintEvent& evt);
+      void OnSize(wxSizeEvent &evt);
+
+   private:
+      AudacityProject* mProject;
+
+      AButton* mButton_ProjectLogo;
+      AButton* mButton_CompanyLogo;
+      AButton* mButton_AudacityLogo;
+
+      int mMinHeight;
+
+   public:
+      DECLARE_EVENT_TABLE()
+   };
+#endif
 
 class Branding : public XMLTagHandler
 {
 public:
-   Branding();
-
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+      Branding(BrandingPanel* pBrandingPanel);
+   #else
+      Branding();
+   #endif
+   
    virtual bool HandleXMLTag(const char *tag, const char **attrs);
    virtual XMLTagHandler *HandleXMLChild(const char *tag) { return NULL; }; //v
    virtual void WriteXML(int depth, FILE *fp);
@@ -36,4 +80,8 @@ private:
    wxString m_strBrandURL;
    wxFileName m_BrandLogoFileName; // Store full thing, not just file name, so don't need to add path again.
    wxString m_strBrandColorScheme;
+
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+      BrandingPanel* mBrandingPanel;
+   #endif
 };
