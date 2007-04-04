@@ -117,8 +117,7 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Init()
          GetSamples((WaveTrack *)right, &rstart, &rlen);
         
          if (llen != rlen || ((WaveTrack *)left)->GetRate() != ((WaveTrack *)right)->GetRate()) {
-            wxMessageBox(_("Sorry, This effect cannot be performed on stereo tracks where ")
-                        wxT("the individual channels of the track do not match."));
+            wxMessageBox(_("Sorry, This effect cannot be performed on stereo tracks where the individual channels of the track do not match."));
             return false;
 		 }
       }
