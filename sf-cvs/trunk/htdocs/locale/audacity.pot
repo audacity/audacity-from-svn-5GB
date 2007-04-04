@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.3.3\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-03-28 20:17+0100\n"
+"POT-Creation-Date: 2007-04-04 20:15+0100\n"
 "PO-Revision-Date: 1999 and beyond-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <audacity-translation@lists.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -119,13 +119,13 @@ msgstr ""
 msgid "Audacious!"
 msgstr ""
 
-#: AudacityApp.cpp:335 Project.cpp:1521
+#: AudacityApp.cpp:335 Project.cpp:1553
 #, c-format
 msgid "%s is already open in another window."
 msgstr ""
 
-#: AudacityApp.cpp:337 Project.cpp:1523 Project.cpp:1604 Project.cpp:1748
-#: Project.cpp:1850
+#: AudacityApp.cpp:337 Project.cpp:1555 Project.cpp:1636 Project.cpp:1780
+#: Project.cpp:1882
 msgid "Error opening project"
 msgstr ""
 
@@ -242,21 +242,21 @@ msgstr ""
 msgid "Audacity Project Files"
 msgstr ""
 
-#: AudioIO.cpp:214
+#: AudioIO.cpp:215
 msgid "Could not find any audio devices.\n"
 msgstr ""
 
-#: AudioIO.cpp:215
+#: AudioIO.cpp:216
 msgid ""
 "You will not be able to play or record audio.\n"
 "\n"
 msgstr ""
 
-#: AudioIO.cpp:218
+#: AudioIO.cpp:219
 msgid "Error: "
 msgstr ""
 
-#: AudioIO.cpp:221
+#: AudioIO.cpp:222
 msgid "Error Initializing Audio"
 msgstr ""
 
@@ -311,11 +311,11 @@ msgid "Could not enumerate files in auto save directory"
 msgstr ""
 
 #: AutoRecovery.cpp:133 AutoRecovery.cpp:170 Menus.cpp:2650 Menus.cpp:4492
-#: Project.cpp:1707 Project.cpp:3028 Project.cpp:3103 WaveTrack.cpp:517
-#: WaveTrack.cpp:536 WaveTrack.cpp:1598 effects/Effect.cpp:335
+#: Project.cpp:1739 Project.cpp:3060 Project.cpp:3135 WaveTrack.cpp:519
+#: WaveTrack.cpp:538 WaveTrack.cpp:1600 effects/Effect.cpp:335
 #: export/ExportMP2.cpp:94 prefs/DirectoriesPrefs.cpp:188
 #: prefs/KeyConfigPrefs.cpp:243 toolbars/ControlToolBar.cpp:526
-#: toolbars/ControlToolBar.cpp:778
+#: toolbars/ControlToolBar.cpp:777
 msgid "Error"
 msgstr ""
 
@@ -324,7 +324,7 @@ msgstr ""
 msgid "Select Command"
 msgstr ""
 
-#: BatchCommandDialog.cpp:80 BatchProcessDialog.cpp:451
+#: BatchCommandDialog.cpp:80 BatchProcessDialog.cpp:452
 #: prefs/KeyConfigPrefs.cpp:140
 msgid "&Command"
 msgstr ""
@@ -333,7 +333,7 @@ msgstr ""
 msgid "&Edit Parameters"
 msgstr ""
 
-#: BatchCommandDialog.cpp:89 BatchProcessDialog.cpp:452
+#: BatchCommandDialog.cpp:89 BatchProcessDialog.cpp:453
 msgid "&Parameters"
 msgstr ""
 
@@ -395,9 +395,9 @@ msgstr ""
 #: effects/Equalization.cpp:1184 effects/Leveller.cpp:249
 #: effects/Normalize.cpp:353 effects/Phaser.cpp:600 effects/Repeat.cpp:271
 #: effects/SpikeCleaner.cpp:188 effects/TruncSilence.cpp:278
-#: effects/VST/VSTEffect.cpp:95 effects/VST/VSTEffect.cpp:452
+#: effects/VST/VSTEffect.cpp:95 effects/VST/VSTEffect.cpp:451
 #: effects/Wahwah.cpp:587 effects/audiounits/AudioUnitEffect.cpp:866
-#: effects/ladspa/LadspaEffect.cpp:589 effects/nyquist/Nyquist.cpp:823
+#: effects/ladspa/LadspaEffect.cpp:593 effects/nyquist/Nyquist.cpp:823
 #: effects/nyquist/Nyquist.cpp:987 export/Export.cpp:788
 #: export/ExportMP3.cpp:665 export/ExportMP3.cpp:669
 #: export/ExportMultiple.cpp:844 import/ImportRaw.cpp:443
@@ -450,7 +450,7 @@ msgstr ""
 msgid "&Add"
 msgstr ""
 
-#: BatchProcessDialog.cpp:434 LabelDialog.cpp:126 TrackPanel.cpp:3932
+#: BatchProcessDialog.cpp:434 LabelDialog.cpp:126 TrackPanel.cpp:3937
 msgid "&Remove"
 msgstr ""
 
@@ -462,57 +462,58 @@ msgstr ""
 msgid "C&hain (Double-Click or press SPACE to edit)"
 msgstr ""
 
-#: BatchProcessDialog.cpp:450
+#. i18n-hint: This is the number of the command in the list
+#: BatchProcessDialog.cpp:451
 msgid "No"
 msgstr ""
 
-#: BatchProcessDialog.cpp:456
+#: BatchProcessDialog.cpp:457
 msgid "&Insert"
 msgstr ""
 
-#: BatchProcessDialog.cpp:457
+#: BatchProcessDialog.cpp:458
 msgid "De&lete"
 msgstr ""
 
-#: BatchProcessDialog.cpp:458
+#: BatchProcessDialog.cpp:459
 msgid "Move &Up"
 msgstr ""
 
-#: BatchProcessDialog.cpp:459
+#: BatchProcessDialog.cpp:460
 msgid "Move &Down"
 msgstr ""
 
-#: BatchProcessDialog.cpp:460
+#: BatchProcessDialog.cpp:461
 msgid "De&faults"
 msgstr ""
 
-#: BatchProcessDialog.cpp:504
+#: BatchProcessDialog.cpp:505
 msgid "- END -"
 msgstr ""
 
-#: BatchProcessDialog.cpp:531
+#: BatchProcessDialog.cpp:532
 #, c-format
 msgid "%s changed"
 msgstr ""
 
-#: BatchProcessDialog.cpp:532
+#: BatchProcessDialog.cpp:533
 msgid "Do you want to save the changes?"
 msgstr ""
 
-#: BatchProcessDialog.cpp:614
+#: BatchProcessDialog.cpp:615
 msgid "Enter name of new chain"
 msgstr ""
 
-#: BatchProcessDialog.cpp:625
+#: BatchProcessDialog.cpp:626
 msgid "Name must not be blank"
 msgstr ""
 
-#: BatchProcessDialog.cpp:634
+#: BatchProcessDialog.cpp:635
 #, c-format
 msgid "Names may not contain '%c' and '%c'"
 msgstr ""
 
-#: BatchProcessDialog.cpp:664
+#: BatchProcessDialog.cpp:665
 #, c-format
 msgid "Are you sure you want to delete %s?"
 msgstr ""
@@ -903,8 +904,8 @@ msgstr ""
 msgid "Export Spectral Data As:"
 msgstr ""
 
-#: FreqWindow.cpp:1067 LabelDialog.cpp:588 Menus.cpp:2225 Project.cpp:2139
-#: Project.cpp:3080 prefs/KeyConfigPrefs.cpp:178
+#: FreqWindow.cpp:1067 LabelDialog.cpp:588 Menus.cpp:2225 Project.cpp:2171
+#: Project.cpp:3112 prefs/KeyConfigPrefs.cpp:178
 msgid "Couldn't write to file: "
 msgstr ""
 
@@ -948,7 +949,7 @@ msgstr ""
 #: effects/Equalization.cpp:1187 effects/Leveller.cpp:252
 #: effects/Normalize.cpp:356 effects/Phaser.cpp:605 effects/Repeat.cpp:274
 #: effects/SpikeCleaner.cpp:191 effects/VST/VSTEffect.cpp:98
-#: effects/Wahwah.cpp:592 effects/ladspa/LadspaEffect.cpp:592
+#: effects/Wahwah.cpp:592 effects/ladspa/LadspaEffect.cpp:596
 #: effects/nyquist/Nyquist.cpp:829 export/Export.cpp:791
 #: export/ExportMP3.cpp:666 export/ExportMP3.cpp:668
 #: prefs/FileFormatPrefs.cpp:491 prefs/PrefsDialog.cpp:164
@@ -1035,7 +1036,7 @@ msgstr ""
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr ""
 
-#: LabelDialog.cpp:521 Menus.cpp:3621 Project.cpp:1570 Project.cpp:1578
+#: LabelDialog.cpp:521 Menus.cpp:3621 Project.cpp:1602 Project.cpp:1610
 #: import/ImportMIDI.cpp:31
 msgid "Could not open file: "
 msgstr ""
@@ -1073,7 +1074,7 @@ msgid "Choose Language for Audacity to use:"
 msgstr ""
 
 #: LangChoice.cpp:103 effects/AvcCompressor.cpp:738
-#: effects/TruncSilence.cpp:281 effects/VST/VSTEffect.cpp:454
+#: effects/TruncSilence.cpp:281 effects/VST/VSTEffect.cpp:453
 #: effects/audiounits/AudioUnitEffect.cpp:861 effects/nyquist/Nyquist.cpp:993
 #: effects/nyquist/Nyquist.cpp:1059 widgets/Warning.cpp:67
 msgid "OK"
@@ -1122,7 +1123,7 @@ msgstr ""
 msgid "&Save Project\tCtrl+S"
 msgstr ""
 
-#: Menus.cpp:220 Project.cpp:2374
+#: Menus.cpp:220 Project.cpp:2406
 msgid "Save Project &As..."
 msgstr ""
 
@@ -1259,7 +1260,7 @@ msgid "Sp&lit\tCtrl+I"
 msgstr ""
 
 #: Menus.cpp:443
-msgid "Split Ne&wCtrl+Alt+I"
+msgid "Split Ne&w\tCtrl+Alt+I"
 msgstr ""
 
 #: Menus.cpp:448
@@ -2081,7 +2082,7 @@ msgstr ""
 msgid "Disjoined labeled regions"
 msgstr ""
 
-#: Menus.cpp:3016 TrackPanel.cpp:5631
+#: Menus.cpp:3016 TrackPanel.cpp:5636
 msgid "Split"
 msgstr ""
 
@@ -2108,7 +2109,7 @@ msgid ""
 "analyzed."
 msgstr ""
 
-#: Menus.cpp:3572 Project.cpp:1493
+#: Menus.cpp:3572 Project.cpp:1525
 msgid "Select one or more audio files..."
 msgstr ""
 
@@ -2147,7 +2148,7 @@ msgstr ""
 msgid "All files (*)|*"
 msgstr ""
 
-#: Menus.cpp:3699 Project.cpp:2285 Project.cpp:2310 import/ImportPCM.cpp:405
+#: Menus.cpp:3699 Project.cpp:2317 Project.cpp:2342 import/ImportPCM.cpp:405
 #: import/ImportPCM.cpp:449 import/ImportRaw.cpp:446
 msgid "Import"
 msgstr ""
@@ -2325,88 +2326,88 @@ msgstr ""
 msgid "Print"
 msgstr ""
 
-#: Project.cpp:573
+#: Project.cpp:574
 msgid "Main Mix"
 msgstr ""
 
-#: Project.cpp:693
+#: Project.cpp:694
 #, c-format
 msgid "Welcome to Audacity version %s"
 msgstr ""
 
-#: Project.cpp:831
+#: Project.cpp:832
 msgid "(Recovered)"
 msgstr ""
 
-#: Project.cpp:1318 TrackPanel.cpp:776 toolbars/ControlToolBar.cpp:192
+#: Project.cpp:1350 TrackPanel.cpp:776 toolbars/ControlToolBar.cpp:192
 msgid "Record"
 msgstr ""
 
-#: Project.cpp:1318 TrackPanel.cpp:776
+#: Project.cpp:1350 TrackPanel.cpp:776
 msgid "Recorded Audio"
 msgstr ""
 
-#: Project.cpp:1335
+#: Project.cpp:1367
 msgid "Save changes before closing?"
 msgstr ""
 
-#: Project.cpp:1336
+#: Project.cpp:1368
 msgid "Save changes?"
 msgstr ""
 
-#: Project.cpp:1496
+#: Project.cpp:1528
 msgid ""
 "Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*."
 "mp3)|*.mp3"
 msgstr ""
 
-#: Project.cpp:1571 Project.cpp:1579
+#: Project.cpp:1603 Project.cpp:1611
 msgid "Error opening file"
 msgstr ""
 
-#: Project.cpp:1585
+#: Project.cpp:1617
 #, c-format
 msgid ""
 "File may be invalid or corrupted: \n"
 "%s"
 msgstr ""
 
-#: Project.cpp:1586
+#: Project.cpp:1618
 msgid "Error opening file or project"
 msgstr ""
 
-#: Project.cpp:1603
+#: Project.cpp:1635
 msgid ""
 "Audacity was unable to convert an Audacity 1.0 project to the new project "
 "format."
 msgstr ""
 
-#: Project.cpp:1706
+#: Project.cpp:1738
 msgid "Could not remove old auto save file"
 msgstr ""
 
-#: Project.cpp:1708
+#: Project.cpp:1740
 msgid "Project was recovered"
 msgstr ""
 
-#: Project.cpp:1708
+#: Project.cpp:1740
 msgid "Recover"
 msgstr ""
 
-#: Project.cpp:1737
+#: Project.cpp:1769
 msgid "Project checker repaired file"
 msgstr ""
 
-#: Project.cpp:1737 effects/Repair.h:29
+#: Project.cpp:1769 effects/Repair.h:29
 msgid "Repair"
 msgstr ""
 
-#: Project.cpp:1848
+#: Project.cpp:1880
 #, c-format
 msgid "Couldn't find the project data folder: \"%s\""
 msgstr ""
 
-#: Project.cpp:1886
+#: Project.cpp:1918
 #, c-format
 msgid ""
 "This file was saved using Audacity %s.\n"
@@ -2414,11 +2415,11 @@ msgid ""
 "a newer version to open this file."
 msgstr ""
 
-#: Project.cpp:1890
+#: Project.cpp:1922
 msgid "Can't open project file"
 msgstr ""
 
-#: Project.cpp:1898
+#: Project.cpp:1930
 #, c-format
 msgid ""
 "This file was saved by Audacity %s and the format\n"
@@ -2429,55 +2430,55 @@ msgid ""
 "Would you like to open this file right now anyway?"
 msgstr ""
 
-#: Project.cpp:1902
+#: Project.cpp:1934
 msgid "Opening old project file"
 msgstr ""
 
-#: Project.cpp:2124
+#: Project.cpp:2156
 #, c-format
 msgid ""
 "Could not save project. Perhaps %s is not writeable,\n"
 "or the disk is full."
 msgstr ""
 
-#: Project.cpp:2126 Project.cpp:2140
+#: Project.cpp:2158 Project.cpp:2172
 msgid "Error saving project"
 msgstr ""
 
-#: Project.cpp:2202
+#: Project.cpp:2234
 #, c-format
 msgid "Saved %s"
 msgstr ""
 
 #. i18n-hint: This refers to files that are opened directly
 #. without looking at the file header.  Same as "Import Raw"
-#: Project.cpp:2218
+#: Project.cpp:2250
 msgid "Raw"
 msgstr ""
 
-#: Project.cpp:2223 import/ImportPCM.cpp:361
+#: Project.cpp:2255 import/ImportPCM.cpp:361
 #, c-format
 msgid "Importing %s File..."
 msgstr ""
 
-#: Project.cpp:2284
+#: Project.cpp:2316
 #, c-format
 msgid "Imported '%s'"
 msgstr ""
 
-#: Project.cpp:2324
+#: Project.cpp:2356
 msgid "Error importing"
 msgstr ""
 
-#: Project.cpp:2365
+#: Project.cpp:2397
 msgid "Save Speech As:"
 msgstr ""
 
-#: Project.cpp:2367
-msgid "Windows PCM Audio file *.wav)|*.wav"
+#: Project.cpp:2399
+msgid "Windows PCM Audio file (*.wav)|*.wav"
 msgstr ""
 
-#: Project.cpp:2373
+#: Project.cpp:2405
 msgid ""
 "Audacity project files (.aup) let you save everything you're working on "
 "exactly as it\n"
@@ -2489,70 +2490,70 @@ msgid ""
 "Export commands."
 msgstr ""
 
-#: Project.cpp:2376
+#: Project.cpp:2408
 msgid "Audacity projects (*.aup)|*.aup"
 msgstr ""
 
-#: Project.cpp:2420
+#: Project.cpp:2452
 msgid "Created new project"
 msgstr ""
 
-#: Project.cpp:2542
+#: Project.cpp:2574
 #, c-format
 msgid "Deleted %.2f seconds at t=%.2f"
 msgstr ""
 
-#: Project.cpp:2545 effects/Equalization.cpp:1079
+#: Project.cpp:2577 effects/Equalization.cpp:1079
 #: effects/Equalization.cpp:2357
 msgid "Delete"
 msgstr ""
 
-#: Project.cpp:2738
+#: Project.cpp:2770
 #, c-format
 msgid "Disk space remains for recording %d hours and %d minutes."
 msgstr ""
 
-#: Project.cpp:2741
+#: Project.cpp:2773
 #, c-format
 msgid "Disk space remains for recording 1 hour and %d minutes."
 msgstr ""
 
-#: Project.cpp:2744
+#: Project.cpp:2776
 #, c-format
 msgid "Disk space remains for recording %d minutes."
 msgstr ""
 
-#: Project.cpp:2747
+#: Project.cpp:2779
 #, c-format
 msgid "Disk space remains for recording %d seconds."
 msgstr ""
 
-#: Project.cpp:2750
+#: Project.cpp:2782
 msgid "Out of disk space"
 msgstr ""
 
-#: Project.cpp:3027
+#: Project.cpp:3059
 msgid "Could not remove old autosave file: "
 msgstr ""
 
-#: Project.cpp:3068
+#: Project.cpp:3100
 msgid "New Project"
 msgstr ""
 
-#: Project.cpp:3081
+#: Project.cpp:3113
 msgid "Error writing autosave file"
 msgstr ""
 
-#: Project.cpp:3102
+#: Project.cpp:3134
 msgid "Could not create autosave file: "
 msgstr ""
 
-#: Project.cpp:3113
+#: Project.cpp:3145
 #, c-format
 msgid "Actual Rate %d"
 msgstr ""
 
-#: Project.cpp:3230
+#: Project.cpp:3262
 msgid ""
 "All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|"
 "AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|MP2/"
@@ -2815,15 +2816,15 @@ msgstr ""
 msgid "Pitch (EAC)"
 msgstr ""
 
-#: TrackPanel.cpp:514 TrackPanel.cpp:5601
+#: TrackPanel.cpp:514 TrackPanel.cpp:5606
 msgid "Mono"
 msgstr ""
 
-#: TrackPanel.cpp:515 TrackPanel.cpp:5600
+#: TrackPanel.cpp:515 TrackPanel.cpp:5605
 msgid "Left Channel"
 msgstr ""
 
-#: TrackPanel.cpp:516 TrackPanel.cpp:5600
+#: TrackPanel.cpp:516 TrackPanel.cpp:5605
 msgid "Right Channel"
 msgstr ""
 
@@ -2839,7 +2840,7 @@ msgstr ""
 msgid "Set Sample Format"
 msgstr ""
 
-#: TrackPanel.cpp:522 TrackPanel.cpp:5818
+#: TrackPanel.cpp:522 TrackPanel.cpp:5823
 msgid "Set Rate"
 msgstr ""
 
@@ -2907,248 +2908,248 @@ msgstr ""
 msgid "Click and drag to move right selection boundary."
 msgstr ""
 
-#: TrackPanel.cpp:1669 TrackPanel.cpp:3731 TrackPanel.cpp:3763
-#: TrackPanel.cpp:4008 TrackPanel.cpp:5930 TrackPanel.cpp:5950
+#: TrackPanel.cpp:1669 TrackPanel.cpp:3736 TrackPanel.cpp:3768
+#: TrackPanel.cpp:4013 TrackPanel.cpp:5935 TrackPanel.cpp:5955
 msgid "Modified Label"
 msgstr ""
 
-#: TrackPanel.cpp:1670 TrackPanel.cpp:3732 TrackPanel.cpp:3764
-#: TrackPanel.cpp:4009 TrackPanel.cpp:5931 TrackPanel.cpp:5951
+#: TrackPanel.cpp:1670 TrackPanel.cpp:3737 TrackPanel.cpp:3769
+#: TrackPanel.cpp:4014 TrackPanel.cpp:5936 TrackPanel.cpp:5956
 msgid "Label Edit"
 msgstr ""
 
-#: TrackPanel.cpp:1895
+#: TrackPanel.cpp:1897
 msgid "Adjusted envelope."
 msgstr ""
 
-#: TrackPanel.cpp:1896 prefs/MousePrefs.cpp:111
+#: TrackPanel.cpp:1898 prefs/MousePrefs.cpp:111
 msgid "Envelope"
 msgstr ""
 
-#: TrackPanel.cpp:2032
+#: TrackPanel.cpp:2034
 msgid "Moved clip to another track"
 msgstr ""
 
-#: TrackPanel.cpp:2036
+#: TrackPanel.cpp:2038
 msgid "left"
 msgstr ""
 
-#: TrackPanel.cpp:2036
+#: TrackPanel.cpp:2038
 msgid "right"
 msgstr ""
 
 #. i18n-hint: %s is a direction like left or right
-#: TrackPanel.cpp:2038
+#: TrackPanel.cpp:2040
 #, c-format
 msgid "Time shifted tracks/clips %s %.02f seconds"
 msgstr ""
 
-#: TrackPanel.cpp:2042 prefs/MousePrefs.cpp:107 prefs/MousePrefs.cpp:108
+#: TrackPanel.cpp:2044 prefs/MousePrefs.cpp:107 prefs/MousePrefs.cpp:108
 #: prefs/MousePrefs.cpp:109
 msgid "Time-Shift"
 msgstr ""
 
-#: TrackPanel.cpp:2695
+#: TrackPanel.cpp:2700
 msgid "Draw currently only works with linear-view waveforms."
 msgstr ""
 
-#: TrackPanel.cpp:2712
+#: TrackPanel.cpp:2717
 msgid ""
 "You are not zoomed in enough. Zoom in until you can see the individual "
 "samples."
 msgstr ""
 
-#: TrackPanel.cpp:2983
+#: TrackPanel.cpp:2988
 msgid "Moved Sample"
 msgstr ""
 
-#: TrackPanel.cpp:2984
+#: TrackPanel.cpp:2989
 msgid "Sample Edit"
 msgstr ""
 
-#: TrackPanel.cpp:3083
+#: TrackPanel.cpp:3088
 #, c-format
 msgid "Removed track '%s.'"
 msgstr ""
 
-#: TrackPanel.cpp:3085
+#: TrackPanel.cpp:3090
 msgid "Track Remove"
 msgstr ""
 
-#: TrackPanel.cpp:3226
+#: TrackPanel.cpp:3231
 msgid "Moved gain slider"
 msgstr ""
 
-#: TrackPanel.cpp:3226
+#: TrackPanel.cpp:3231
 msgid "Moved pan slider"
 msgstr ""
 
 #. i18n-hint: Title of the Gain slider, used to adjust the volume
-#: TrackPanel.cpp:3227 TrackPanel.cpp:5271 TrackPanel.cpp:6487
+#: TrackPanel.cpp:3232 TrackPanel.cpp:5276 TrackPanel.cpp:6492
 msgid "Gain"
 msgstr ""
 
 #. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#: TrackPanel.cpp:3227 TrackPanel.cpp:5209 TrackPanel.cpp:6494
+#: TrackPanel.cpp:3232 TrackPanel.cpp:5214 TrackPanel.cpp:6499
 msgid "Pan"
 msgstr ""
 
-#: TrackPanel.cpp:3352 TrackPanel.cpp:5883 effects/ChangePitch.cpp:281
+#: TrackPanel.cpp:3357 TrackPanel.cpp:5888 effects/ChangePitch.cpp:281
 msgid "up"
 msgstr ""
 
-#: TrackPanel.cpp:3356 TrackPanel.cpp:5884 effects/ChangePitch.cpp:281
+#: TrackPanel.cpp:3361 TrackPanel.cpp:5889 effects/ChangePitch.cpp:281
 msgid "down"
 msgstr ""
 
-#: TrackPanel.cpp:3361 TrackPanel.cpp:5879
+#: TrackPanel.cpp:3366 TrackPanel.cpp:5884
 #, c-format
 msgid "Moved '%s' %s"
 msgstr ""
 
-#: TrackPanel.cpp:3364 TrackPanel.cpp:5885
+#: TrackPanel.cpp:3369 TrackPanel.cpp:5890
 msgid "Move Track"
 msgstr ""
 
-#: TrackPanel.cpp:3912
+#: TrackPanel.cpp:3917
 msgid "Expand"
 msgstr ""
 
-#: TrackPanel.cpp:3912
+#: TrackPanel.cpp:3917
 msgid "Expanded Cut Line"
 msgstr ""
 
-#: TrackPanel.cpp:3932
+#: TrackPanel.cpp:3937
 msgid "Removed Cut Line"
 msgstr ""
 
-#: TrackPanel.cpp:5209
+#: TrackPanel.cpp:5214
 msgid "Adjusted Pan"
 msgstr ""
 
-#: TrackPanel.cpp:5271
+#: TrackPanel.cpp:5276
 msgid "Adjusted gain"
 msgstr ""
 
-#: TrackPanel.cpp:5427
+#: TrackPanel.cpp:5432
 msgid "Can't delete track with active audio"
 msgstr ""
 
-#: TrackPanel.cpp:5581
+#: TrackPanel.cpp:5586
 msgid "Stereo, "
 msgstr ""
 
-#: TrackPanel.cpp:5584
+#: TrackPanel.cpp:5589
 msgid "Mono, "
 msgstr ""
 
-#: TrackPanel.cpp:5586
+#: TrackPanel.cpp:5591
 msgid "Left, "
 msgstr ""
 
-#: TrackPanel.cpp:5588
+#: TrackPanel.cpp:5593
 msgid "Right, "
 msgstr ""
 
-#: TrackPanel.cpp:5610 TrackPanel.cpp:5723
+#: TrackPanel.cpp:5615 TrackPanel.cpp:5728
 #, c-format
 msgid "Changed '%s' to %s"
 msgstr ""
 
-#: TrackPanel.cpp:5615
+#: TrackPanel.cpp:5620
 msgid "Channel"
 msgstr ""
 
-#: TrackPanel.cpp:5628
+#: TrackPanel.cpp:5633
 #, c-format
 msgid "Split stereo track '%s'"
 msgstr ""
 
-#: TrackPanel.cpp:5649
+#: TrackPanel.cpp:5654
 #, c-format
 msgid "Made '%s' a stereo track"
 msgstr ""
 
-#: TrackPanel.cpp:5652
+#: TrackPanel.cpp:5657
 msgid "Make Stereo"
 msgstr ""
 
-#: TrackPanel.cpp:5687
+#: TrackPanel.cpp:5692
 #, c-format
 msgid "Changed '%s' to %d Hz"
 msgstr ""
 
-#: TrackPanel.cpp:5689
+#: TrackPanel.cpp:5694
 msgid "Rate Change"
 msgstr ""
 
-#: TrackPanel.cpp:5727
+#: TrackPanel.cpp:5732
 msgid "Format Change"
 msgstr ""
 
-#: TrackPanel.cpp:5817
+#: TrackPanel.cpp:5822
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
 msgstr ""
 
-#: TrackPanel.cpp:5827
+#: TrackPanel.cpp:5832
 msgid "Invalid rate."
 msgstr ""
 
-#: TrackPanel.cpp:5847
+#: TrackPanel.cpp:5852
 msgid "Change lower speed limit (%) to:"
 msgstr ""
 
-#: TrackPanel.cpp:5848 TrackPanel.cpp:5849
+#: TrackPanel.cpp:5853 TrackPanel.cpp:5854
 msgid "Lower speed limit"
 msgstr ""
 
-#: TrackPanel.cpp:5854
+#: TrackPanel.cpp:5859
 msgid "Change upper speed limit (%) to:"
 msgstr ""
 
-#: TrackPanel.cpp:5855 TrackPanel.cpp:5856
+#: TrackPanel.cpp:5860 TrackPanel.cpp:5861
 msgid "Upper speed limit"
 msgstr ""
 
-#: TrackPanel.cpp:5864
+#: TrackPanel.cpp:5869
 #, c-format
 msgid "Set range to '%d' - '%d'"
 msgstr ""
 
-#: TrackPanel.cpp:5867
+#: TrackPanel.cpp:5872
 msgid "Set Range"
 msgstr ""
 
-#: TrackPanel.cpp:5912
+#: TrackPanel.cpp:5917
 msgid "Change track name to:"
 msgstr ""
 
-#: TrackPanel.cpp:5913
+#: TrackPanel.cpp:5918
 msgid "Track Name"
 msgstr ""
 
-#: TrackPanel.cpp:5916
+#: TrackPanel.cpp:5921
 #, c-format
 msgid "Renamed '%s' to '%s'"
 msgstr ""
 
-#: TrackPanel.cpp:5919
+#: TrackPanel.cpp:5924
 msgid "Name Change"
 msgstr ""
 
-#: TrackPanel.cpp:5981
+#: TrackPanel.cpp:5986
 msgid "Choose a font for Label Tracks"
 msgstr ""
 
-#: TrackPanel.cpp:5982
+#: TrackPanel.cpp:5987
 msgid "Label Track Font"
 msgstr ""
 
-#: TrackPanel.cpp:6422
+#: TrackPanel.cpp:6427
 msgid "Mute"
 msgstr ""
 
-#: TrackPanel.cpp:6422
+#: TrackPanel.cpp:6427
 msgid "Solo"
 msgstr ""
 
@@ -3200,15 +3201,15 @@ msgstr ""
 msgid "Direction Changes  -- mean: %1.4f  sd: (%1.4f)\n"
 msgstr ""
 
-#: WaveTrack.cpp:73
+#: WaveTrack.cpp:75
 msgid "Audio Track"
 msgstr ""
 
-#: WaveTrack.cpp:516 WaveTrack.cpp:535
+#: WaveTrack.cpp:518 WaveTrack.cpp:537
 msgid "There is not enough room available to paste the selection"
 msgstr ""
 
-#: WaveTrack.cpp:1597
+#: WaveTrack.cpp:1599
 msgid "There is not enough room available to expand the cut line"
 msgstr ""
 
@@ -4091,7 +4092,9 @@ msgid "Applied effect: Generate Silence, %.6lf seconds"
 msgstr ""
 
 #: effects/SimplePairedTwoTrack.h:120
-msgid "Sorry, This effect cannot be performed on stereo tracks where "
+msgid ""
+"Sorry, This effect cannot be performed on stereo tracks where the individual "
+"channels of the track do not match."
 msgstr ""
 
 #: effects/SpikeCleaner.cpp:69
@@ -4225,11 +4228,11 @@ msgid ""
 "channels of the track do not match."
 msgstr ""
 
-#: effects/VST/VSTEffect.cpp:195
+#: effects/VST/VSTEffect.cpp:194
 msgid "Can't process replacing"
 msgstr ""
 
-#: effects/VST/VSTEffect.cpp:409
+#: effects/VST/VSTEffect.cpp:408
 msgid "VST Plug-in parameters:"
 msgstr ""
 
@@ -4276,25 +4279,24 @@ msgstr ""
 
 #: effects/ladspa/LadspaEffect.cpp:173
 msgid ""
-"Sorry, Plug-in Effects cannot be performed                             on "
-"stereo tracks where the individual                             channels of "
-"the track do not match."
+"Sorry, Plug-in Effects cannot be performed on stereo tracks where the "
+"individual channels of the track do not match."
 msgstr ""
 
-#: effects/ladspa/LadspaEffect.cpp:559 effects/ladspa/LadspaEffect.cpp:567
+#: effects/ladspa/LadspaEffect.cpp:557 effects/ladspa/LadspaEffect.cpp:565
 #: prefs/QualityPrefs.cpp:72
 msgid "None"
 msgstr ""
 
-#: effects/ladspa/LadspaEffect.cpp:561
+#: effects/ladspa/LadspaEffect.cpp:559
 msgid "Author: "
 msgstr ""
 
-#: effects/ladspa/LadspaEffect.cpp:601
+#: effects/ladspa/LadspaEffect.cpp:605
 msgid "Effect Settings"
 msgstr ""
 
-#: effects/ladspa/LadspaEffect.cpp:692
+#: effects/ladspa/LadspaEffect.cpp:696
 msgid "Length (seconds)"
 msgstr ""
 
@@ -5638,10 +5640,40 @@ msgstr ""
 msgid ""
 "Themability is an experimental feature.\n"
 "\n"
+"To try it out, click \"Save Theme Cache\" then\n"
+"find and modify the images and colors in \n"
+"ImageCacheVxx.png using an image editor such \n"
+"as the Gimp.\n"
+"\n"
+"Click \"Load Theme Cache\" to load the changed images\n"
+"and colors back into Audacity.\n"
+"\n"
+"[Only the control toolbar and the colors on the \n"
+"wavetrack are currently affected, even though the\n"
+"image file shows other icons too.]\n"
 msgstr ""
 
-#: prefs/ThemePrefs.cpp:147
-msgid "If 'Load Theme Cache At Startup' is checked, then \n"
+#: prefs/ThemePrefs.cpp:131
+msgid ""
+"You have compiled Audacity with an extra button, \n"
+"'Output Sourcery'.  This will save a C version of \n"
+"the image cache that can be compiled in as a default.\n"
+msgstr ""
+
+#: prefs/ThemePrefs.cpp:136
+msgid ""
+"If 'Load Theme Cache At Startup' is checked, then \n"
+"the Theme Cache will be loaded when the program \n"
+"starts up.\n"
+"\n"
+msgstr ""
+
+#: prefs/ThemePrefs.cpp:139
+msgid ""
+"Saving and loading individual theme files uses a \n"
+"separate file for each image, but is otherwise the \n"
+"same idea.\n"
+"\n"
 msgstr ""
 
 #: toolbars/ControlToolBar.cpp:82
@@ -5676,15 +5708,17 @@ msgstr ""
 msgid "Clean Speech"
 msgstr ""
 
-#: toolbars/ControlToolBar.cpp:524 toolbars/ControlToolBar.cpp:776
+#: toolbars/ControlToolBar.cpp:524 toolbars/ControlToolBar.cpp:775
 msgid "Error while opening sound device. "
 msgstr ""
 
 #: toolbars/ControlToolBar.cpp:683
-msgid "CleanSpeech only allows recording mono track.\n"
+msgid ""
+"CleanSpeech only allows recording mono tracks.\n"
+"Recording is not possible when more than one window is open."
 msgstr ""
 
-#: toolbars/ControlToolBar.cpp:685
+#: toolbars/ControlToolBar.cpp:684
 msgid "Recording not permitted"
 msgstr ""
 
@@ -6023,25 +6057,25 @@ msgstr ""
 
 #. i18n-hint: One-letter abbreviation for Left, in VU Meter
 #. i18n-hint: One-letter abbreviation for Left, in the Pan slider
-#: widgets/ASlider.cpp:538 widgets/Meter.cpp:205
+#: widgets/ASlider.cpp:540 widgets/Meter.cpp:205
 msgid "L"
 msgstr ""
 
 #. i18n-hint: One-letter abbreviation for Right, in VU Meter
 #. i18n-hint: One-letter abbreviation for Right, in the Pan slider
-#: widgets/ASlider.cpp:541 widgets/Meter.cpp:207
+#: widgets/ASlider.cpp:543 widgets/Meter.cpp:207
 msgid "R"
 msgstr ""
 
-#: widgets/ASlider.cpp:581
+#: widgets/ASlider.cpp:583
 msgid "Center"
 msgstr ""
 
-#: widgets/ASlider.cpp:585
+#: widgets/ASlider.cpp:587
 msgid "Left"
 msgstr ""
 
-#: widgets/ASlider.cpp:588
+#: widgets/ASlider.cpp:590
 msgid "Right"
 msgstr ""
 
@@ -6057,15 +6091,6 @@ msgstr ""
 #: widgets/Grid.cpp:622 widgets/Grid.cpp:749
 #, c-format
 msgid "Row %d"
-msgstr ""
-
-#: widgets/Grid.cpp:627
-#, c-format
-msgid "%d"
-msgstr ""
-
-#: widgets/Grid.cpp:632
-msgid "oh-oh...buggie"
 msgstr ""
 
 #: widgets/Grid.cpp:764
