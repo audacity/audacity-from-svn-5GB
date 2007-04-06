@@ -6107,6 +6107,10 @@ done
 LOCAL_LIBS="$LOCAL_LIBS allegro.a"
 CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/allegro"
 
+LOCAL_LIBS="$LOCAL_LIBS FileDialog.a"
+CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/FileDialog"
+
+
 
 
 
