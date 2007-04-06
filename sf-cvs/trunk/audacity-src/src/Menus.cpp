@@ -54,7 +54,6 @@ simplifies construction of menu items.
 #include "import/ImportMIDI.h"
 #include "import/ImportRaw.h"
 #include "export/Export.h"
-#include "export/ExportMP3.h"
 #include "export/ExportMultiple.h"
 #include "prefs/PrefsDialog.h"
 #include "widgets/TimeTextCtrl.h"
@@ -241,62 +240,17 @@ void AudacityProject::CreateMenusAndCommands()
       
       c->AddSeparator();
       
-      c->BeginSubMenu(_("&Export As..."));
-      c->AddItem(wxT("Export"),         _("&WAV..."),                   FN(OnExportMix));
-      c->AddItem(wxT("ExportMP3"),      _("&MP3..."),               FN(OnExportMP3Mix));
-#ifdef USE_LIBVORBIS
-      c->AddItem(wxT("ExportOgg"),      _("Ogg &Vorbis..."),        FN(OnExportOggMix));
+      c->AddItem(wxT("Export"),         _("&Export As..."),           FN(OnExport));
       // Enable Export commands only when there are tracks
-      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
+      c->SetCommandFlags(wxT("Export"),
                          AudioIONotBusyFlag | TracksExistFlag,
-                         wxT("ExportOgg"), NULL);
-#endif
-#ifdef USE_LIBFLAC
-      c->AddItem(wxT("ExportFLAC"),      _("&FLAC..."),        FN(OnExportFLACMix));
-      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
-                         AudioIONotBusyFlag | TracksExistFlag,
-                         wxT("ExportFLAC"), NULL);
-#endif
-#ifdef USE_LIBTWOLAME
-      c->AddItem(wxT("ExportMP2"), _("MP&2..."), FN(OnExportMP2Mix));
-      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
-                         AudioIONotBusyFlag | TracksExistFlag,
-                         wxT("ExportMP2"), NULL);
-#endif
-      c->EndSubMenu();
-      
-      c->BeginSubMenu(_("Expo&rt Selection As..."));
-      c->AddItem(wxT("ExportSel"),      _("&WAV..."),         FN(OnExportSelection));
-      c->AddItem(wxT("ExportMP3Sel"),   _("&MP3..."),     FN(OnExportMP3Selection));
-#ifdef USE_LIBVORBIS
-      c->AddItem(wxT("ExportOggSel"),   _("Ogg &Vorbis..."), FN(OnExportOggSelection));
+                         AudioIONotBusyFlag | TracksExistFlag);
+
+      c->AddItem(wxT("ExportSel"),      _("Expo&rt Selection As..."), FN(OnExportSelection));
       // Enable Export Selection commands only when there's a selection
-      c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+      c->SetCommandFlags(wxT("ExportSel"),
                          AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
-                         wxT("ExportOggSel"), NULL);
-#endif
-#ifdef USE_LIBFLAC
-      c->AddItem(wxT("ExportFLACSel"),   _("&FLAC..."), FN(OnExportFLACSelection));
-      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
-                         AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
-                         wxT("ExportFLACSel"), NULL);
-#endif
-#ifdef USE_LIBTWOLAME
-      c->AddItem(wxT("ExportMP2Sel"),    _("MP&2..."), FN(OnExportMP2Selection));
-      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
-                         AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
-                         wxT("ExportMP2Sel"), NULL);
-#endif
-      c->EndSubMenu();
-      
-      // Enable Export commands only when there are tracks
-      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
-                         AudioIONotBusyFlag | TracksExistFlag,
-                         wxT("Export"), wxT("ExportMP3"), NULL);
-      // Enable Export Selection commands only when there's a selection
-      c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
-                         AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
-                         wxT("ExportSel"), wxT("ExportMP3Sel"), NULL);
+                         AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag);
       
       c->AddSeparator();
       c->AddItem(wxT("ExportLabels"),   _("Export &Labels..."),              FN(OnExportLabels));
@@ -315,24 +269,17 @@ void AudacityProject::CreateMenusAndCommands()
 	if( mCleanSpeechMode )
 	{
       
-      c->BeginSubMenu(_("&Export As..."));
-      c->AddItem(wxT("Export"),         _("&WAV..."),                   FN(OnExportMix));
-      c->AddItem(wxT("ExportMP3"),      _("&MP3..."),               FN(OnExportMP3Mix));
-      c->EndSubMenu();
-      
-      c->BeginSubMenu(_("Expo&rt Selection As..."));
-      c->AddItem(wxT("ExportSel"),      _("&WAV..."),         FN(OnExportSelection));
-      c->AddItem(wxT("ExportMP3Sel"),   _("&MP3..."),     FN(OnExportMP3Selection));
-      c->EndSubMenu();
-      
+      c->AddItem(wxT("Export"),         _("&Export As..."),           FN(OnExport));
       // Enable Export commands only when there are tracks
-      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
+      c->SetCommandFlags(wxT("Export"),
                          AudioIONotBusyFlag | TracksExistFlag,
-                         wxT("Export"), wxT("ExportMP3"), NULL);
+                         AudioIONotBusyFlag | TracksExistFlag);
+
+      c->AddItem(wxT("ExportSel"),      _("Expo&rt Selection As..."), FN(OnExportSelection));
       // Enable Export Selection commands only when there's a selection
-      c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+      c->SetCommandFlags(wxT("ExportSel"),
                          AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
-                         wxT("ExportSel"), wxT("ExportMP3Sel"), NULL);
+                         AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag);
       
       c->AddSeparator();
 
@@ -844,8 +791,6 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->EndMenu();
 
-   ModifyExportMenus();
-
    SetMenuBar(menubar);
 
    c->SetDefaultFlags(0, 0);
@@ -979,19 +924,6 @@ void AudacityProject::ResolveEffectIndices(EffectArray *effects)
          mStereoToMonoIndex = i;
       }
    }
-}
-
-void AudacityProject::ModifyExportMenus()
-{
-   int format = ReadExportFormatPref();
-   wxString pcmFormat = sf_header_shortname(format & SF_FORMAT_TYPEMASK);
-
-   mCommandManager.Modify(wxT("Export"),
-                          wxString::Format(_("&%s..."),
-                                           pcmFormat.c_str()));
-   mCommandManager.Modify(wxT("ExportSel"),
-                          wxString::Format(_("&%s..."),
-                                           pcmFormat.c_str()));
 }
 
 void AudacityProject::ModifyUndoMenus()
@@ -2242,54 +2174,18 @@ void AudacityProject::OnExportLabels()
    f.Close();
 }
 
-void AudacityProject::OnExportMix()
+void AudacityProject::OnExport()
 {
-   ::ExportPCM(this, false, 0.0, mTracks->GetEndTime());
+   Export e(this);
+
+   e.Process(false, 0.0, mTracks->GetEndTime());
 }
 
 void AudacityProject::OnExportSelection()
 {
-   ::ExportPCM(this, true, mViewInfo.sel0, mViewInfo.sel1);
-}
-
-void AudacityProject::OnExportMP3Mix()
-{
-   ::ExportCompressed(this, wxT("MP3"), false, 0.0, mTracks->GetEndTime());
-}
-
-void AudacityProject::OnExportMP3Selection()
-{
-   ::ExportCompressed(this, wxT("MP3"), true, mViewInfo.sel0, mViewInfo.sel1);
-}
-
-void AudacityProject::OnExportMP2Mix()
-{
-   ::ExportCompressed(this, wxT("MP2"), false, 0.0, mTracks->GetEndTime());
-}
-
-void AudacityProject::OnExportMP2Selection()
-{
-   ::ExportCompressed(this, wxT("MP2"), true, mViewInfo.sel0, mViewInfo.sel1);
-}
-
-void AudacityProject::OnExportOggMix()
-{
-   ::ExportCompressed(this, wxT("OGG"), false, 0.0, mTracks->GetEndTime());
-}
-
-void AudacityProject::OnExportFLACMix()
-{
-   ::ExportCompressed(this, wxT("FLAC"), false, 0.0, mTracks->GetEndTime());
-}
-
-void AudacityProject::OnExportOggSelection()
-{
-   ::ExportCompressed(this, wxT("OGG"), true, mViewInfo.sel0, mViewInfo.sel1);
-}
-
-void AudacityProject::OnExportFLACSelection()
-{
-   ::ExportCompressed(this, wxT("FLAC"), true, mViewInfo.sel0, mViewInfo.sel1);
+   Export e(this);
+   
+   e.Process(true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
 void AudacityProject::OnExportMultiple()
