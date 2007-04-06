@@ -18,7 +18,6 @@ void CommandManagerListCallback(void *fptr, int index);
 void CreateMenusAndCommands();
 
 void CreateRecentFilesMenu(CommandManager *c);
-void ModifyExportMenus();
 void ModifyUndoMenus();
 void ModifyToolbarMenus();
 
@@ -125,19 +124,9 @@ void OnSaveAs();
 
 void OnCheckDependencies();
 
-void OnExportMix();
+void OnExport();
 void OnExportSelection();
-void OnExportMP3Mix();
-void OnExportMP3Selection();
-void OnExportOggMix();
-void OnExportOggSelection();
-void OnExportFLACMix();
-void OnExportFLACSelection();
-void OnExportMP2Mix();
-void OnExportMP2Selection();
-
 void OnExportMultiple();
-
 void OnExportLabels();
 
 void OnUpload();

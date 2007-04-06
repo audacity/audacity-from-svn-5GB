@@ -382,13 +382,6 @@ bool FileFormatPrefs::Apply()
    }
 #endif
 
-   // Tell all open projects to modify their menu bar to reflect
-   // the new export formats.
-   for(unsigned int i = 0; i < gAudacityProjects.GetCount(); i++)
-   {
-      if(gAudacityProjects[i])
-         gAudacityProjects[i]->ModifyExportMenus();
-   }
    return true;
 }
 
