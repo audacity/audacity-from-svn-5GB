@@ -24,6 +24,7 @@ bool ExportFLAC(AudacityProject *project,
                 bool selectionOnly, double t0, double t1,
                 MixerSpec *mixerSpec = NULL);
 
+bool ExportFLACOptions(AudacityProject *project);
 
 #endif
 

@@ -19,9 +19,11 @@ class AudacityProject;
 class MixerSpec;
 
 bool ExportMP2(AudacityProject *project,
-               bool stereo, wxString fName,
+               int Channels, wxString fName,
                bool selectionOnly, double t0, double t1, 
                MixerSpec *mixerSpec = NULL);
+
+bool ExportMP2Options(AudacityProject *project);
 
 #endif
 

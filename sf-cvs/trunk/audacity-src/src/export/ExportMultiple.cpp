@@ -54,6 +54,7 @@ enum {
    FormatID = 10001,
    DirID,
    ChooseID,
+   OptionsID,
    LabelID,
    FirstID,
    FirstFileNameID,
@@ -97,6 +98,8 @@ class ExportMultipleDialog : public wxDialog
    void EnableControls();
 
    void OnFormat(wxCommandEvent& event);
+   void OnOptions(wxCommandEvent& event);
+
    void OnChoose(wxCommandEvent& event);
 
    void OnLabel(wxCommandEvent& event);
@@ -121,6 +124,8 @@ class ExportMultipleDialog : public wxDialog
 
 
    wxChoice      *mFormat;
+   wxButton      *mOptions;
+
    wxTextCtrl    *mDir;
    wxButton      *mChoose;
    
@@ -327,7 +332,7 @@ static bool DoExport(AudacityProject *project,
       tags->SetTrackNumber(trackNumber);
       wxString fullPath = MakeFullPath(overwrite,
                                        dir, name, wxT(".mp3"));
-      return ExportMP3(project, stereo, fullPath,
+      return ExportMP3(project, stereo ? 2 : 1, fullPath,
                        selectionOnly, t0, t1); }
    case 2: {
 #ifdef USE_LIBVORBIS
@@ -671,6 +676,7 @@ BEGIN_EVENT_TABLE(ExportMultipleDialog, wxDialog)
    EVT_BUTTON(wxID_OK, ExportMultipleDialog::OnExport)
    EVT_BUTTON(wxID_CANCEL, ExportMultipleDialog::OnCancel)
    EVT_BUTTON(ChooseID, ExportMultipleDialog::OnChoose)
+   EVT_BUTTON(OptionsID, ExportMultipleDialog::OnOptions)
    EVT_RADIOBUTTON(LabelID, ExportMultipleDialog::OnLabel)
    EVT_RADIOBUTTON(TrackID, ExportMultipleDialog::OnTrack)
    EVT_RADIOBUTTON(ByNameID, ExportMultipleDialog::OnByName)
@@ -711,12 +717,15 @@ ExportMultipleDialog::ExportMultipleDialog(wxWindow *parent, wxWindowID id):
                           wxDefaultPosition, wxDefaultSize,
                           numFormats, formatList);
    int selFormat = gPrefs->Read(wxT("/FileFormats/ExportMultipleFormat"), format);
-
-
    mFormat->SetSelection(selFormat);
    hSizer->Add(mFormat, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-   vSizer->Add(hSizer, 0, wxALL, 5);
+   hSizer->AddStretchSpacer(true);
+
+   mOptions = new wxButton(this, OptionsID, _("Options..."));
+   hSizer->Add(mOptions, 0, wxALL, 5);
+   
+   vSizer->Add(hSizer, 1, wxALL | wxEXPAND, 5);
 
    hSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -734,6 +743,7 @@ ExportMultipleDialog::ExportMultipleDialog(wxWindow *parent, wxWindowID id):
 
    // bit rate display and stereo/mono selection
    hSizer = new wxBoxSizer(wxHORIZONTAL);
+
    long mp3Bitrate = gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), 128);
    wxString mp3BitrateString = wxString::Format(wxT("%ld"), mp3Bitrate);
 
@@ -763,6 +773,7 @@ ExportMultipleDialog::ExportMultipleDialog(wxWindow *parent, wxWindowID id):
    mLabel = new wxRadioButton(this, LabelID, _("Labels"),
                               wxDefaultPosition, wxDefaultSize,
                               wxRB_GROUP);
+   mLabel->SetValue(true);
    group->Add(mLabel, 0, wxALL, 5);
 
    hSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -797,7 +808,8 @@ ExportMultipleDialog::ExportMultipleDialog(wxWindow *parent, wxWindowID id):
    mByName= new wxRadioButton(this, ByNameID, _("Using Label/Track Name"),
                               wxDefaultPosition, wxDefaultSize,
                               wxRB_GROUP);
-   group->Add(mByName, 0, wxALL, 5);   
+   mByName->SetValue(true);
+   group->Add(mByName, 0, wxALL, 5);
 
    mByNumber = new wxRadioButton(this, ByNumberID,
                                  _("Numbering consecutively"));
@@ -909,20 +921,50 @@ void ExportMultipleDialog::CopyDataToControls()
 }
 
 void ExportMultipleDialog::OnFormat(wxCommandEvent& event)
-   {
+{
    if (mFormat->GetSelection()==3)
-      {
+   {
       mForceMono->Enable(true);
-      }
+   }
    else
-      {
+   {
       mForceMono->Enable(false);
-      }
+   }
    
    gPrefs->Write(wxT("/FileFormats/ExportMultipleFormat"), mFormat->GetSelection());
 
    EnableControls();
+}
+
+void ExportMultipleDialog::OnOptions(wxCommandEvent& event)
+{
+   switch(mFormat->GetSelection())
+   {
+      case 0:     // WAV
+      {
+      }
+      break;
+
+      case 1:     // MP3
+      case 3:     // MP3_mpg
+      {
+         ::ExportMP3Options(GetActiveProject());
+      }
+      break;
+
+      case 2:     // OGG
+      {
+         ::ExportOGGOptions(GetActiveProject());
+      }
+      break;
+
+      case 4:     // FLAC
+      {
+         ::ExportFLACOptions(GetActiveProject());
+      }
+      break;
    }
+}
 
 void ExportMultipleDialog::OnChoose(wxCommandEvent& event)
 {

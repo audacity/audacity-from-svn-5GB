@@ -11,22 +11,116 @@
 #ifndef __AUDACITY_EXPORT__
 #define __AUDACITY_EXPORT__
 
+#include <wx/dynarray.h>
+#include <wx/filename.h>
 #include <wx/panel.h>
-#include <wx/stattext.h>
 
+class wxFileName;
+class wxMemoryDC;
+class wxStaticText;
 class AudacityProject;
 class DirManager;
 class WaveTrack;
 class TrackList;
 class MixerSpec;
-class wxMemoryDC;
+class FileDialog;
 
-bool ExportPCM(AudacityProject *project,
-               bool selectionOnly, double t0, double t1);
+//----------------------------------------------------------------------------
+// ExportType
+//----------------------------------------------------------------------------
+class ExportType;
 
-bool ExportCompressed(AudacityProject *project, const wxString& format,
-                      bool selectionOnly, double t0, double t1);
+WX_DECLARE_OBJARRAY(ExportType, ExportTypeArray);
 
+// Prototype for the options dialog
+typedef bool (*ExportOptions)(AudacityProject *project);
+
+// Prototype for the actual export routine
+typedef bool (*ExportRoutine)(AudacityProject *project,
+                              int channels,
+                              wxString fName,
+                              bool selectionOnly,
+                              double t0,
+                              double t1,
+                              MixerSpec *mixerSpec);
+
+
+class ExportType
+{
+public:
+
+   ExportType();
+
+   void Set(ExportRoutine routine,
+            ExportOptions options,
+            wxString format,
+            wxString extension,
+            int maxchannels,
+            wxString description = wxEmptyString);
+   
+   ExportRoutine GetRoutine();
+   ExportOptions GetOptions();
+   wxString GetFormat();
+   wxString GetExtension();
+   wxString GetDescription();
+   wxString GetMask();
+   int GetMaxChannels();
+
+private:
+
+   ExportRoutine mRoutine;
+   ExportOptions mOptions;
+   wxString mFormat;
+   wxString mExtension;
+   wxString mDescription;
+   int mMaxChannels;
+};
+
+//----------------------------------------------------------------------------
+// Export
+//----------------------------------------------------------------------------
+class Export
+{
+public:
+
+   Export(AudacityProject *project);
+   virtual ~Export();
+
+   bool Process(bool selectionOnly, double t0, double t1);
+
+   void DisplayOptions(int index);
+
+private:
+
+   bool ExamineTracks();
+   bool GetFilename();
+   bool CheckMix();
+   bool ExportTracks();
+
+private:
+
+   AudacityProject *mProject;
+   MixerSpec *mMixerSpec;
+
+   ExportTypeArray mTypes;
+
+   wxFileName mFilename;
+   wxFileName mActualName;
+
+   double mT0;
+   double mT1;
+   int mFormat;
+   int mNumSelected;
+   int mNumLeft;
+   int mNumRight;
+   int mNumMono;
+   int mChannels;
+   bool mSelectionOnly;
+};
+
+//----------------------------------------------------------------------------
+// ExportMixerPanel
+//----------------------------------------------------------------------------
 class ExportMixerPanel: public wxPanel
 {
 public:
@@ -57,6 +151,9 @@ private:
    DECLARE_EVENT_TABLE()
 };
 
+//----------------------------------------------------------------------------
+// ExportMixerDialog
+//----------------------------------------------------------------------------
 class ExportMixerDialog: public wxDialog
 {
 public:

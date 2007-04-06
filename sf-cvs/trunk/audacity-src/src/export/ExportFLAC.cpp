@@ -129,6 +129,92 @@ bool ExportFLAC(AudacityProject *project,
    return !cancelling;
 }
 
+class FLACOptionsDialog : public wxDialog
+{
+public:
+
+   /// 
+   /// 
+   FLACOptionsDialog(wxWindow *parent)
+   : wxDialog(NULL, wxID_ANY, wxString(_("Specify FLAC Options")),
+      wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+   {
+      ShuttleGui S(this, eIsCreatingFromPrefs);
+
+      PopulateOrExchange(S);
+   }
+
+   /// 
+   /// 
+   void PopulateOrExchange(ShuttleGui & S)
+   {
+      wxArrayString flacBitDepthNames, flacBitDepthLabels;
+      flacBitDepthLabels.Add(wxT("16")); flacBitDepthNames.Add(_("16 bit"));
+      flacBitDepthLabels.Add(wxT("24")); flacBitDepthNames.Add(_("24 bit"));
+
+      S.StartHorizontalLay(wxEXPAND, 0);
+      {
+         S.StartStatic(_("FLAC Export Setup"), 0);
+         {
+            S.StartTwoColumn();
+            {
+               S.TieChoice(_("Bit depth:"), wxT("/FileFormats/FLACBitDepth"),
+                           wxT("16"), flacBitDepthNames, flacBitDepthLabels);
+            }
+            S.EndTwoColumn();
+         }
+         S.EndStatic();
+      }
+      S.EndHorizontalLay();
+      S.StartHorizontalLay(wxALIGN_CENTER, false);
+      {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+      }
+      GetSizer()->AddSpacer(5);
+      Layout();
+      Fit();
+      SetMinSize(GetSize());
+      Center();
+
+      return;
+   }
+
+   /// 
+   /// 
+   void OnOK(wxCommandEvent& event)
+   {
+      ShuttleGui S(this, eIsSavingToPrefs);
+      PopulateOrExchange(S);
+
+      wxDialog::OnOK(event);
+
+      return;
+   }
+
+private:
+
+   DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(FLACOptionsDialog, wxDialog)
+   EVT_BUTTON(wxID_OK, FLACOptionsDialog::OnOK)
+END_EVENT_TABLE()
+
+bool ExportFLACOptions(AudacityProject *project)
+{
+   FLACOptionsDialog od(project);
+
+   od.ShowModal();
+
+   return true;
+}
+
 #endif // USE_LIBVORBIS
 
 

@@ -24,6 +24,8 @@ bool ExportOGG(
    double t0, double t1, 
    MixerSpec *mixerSpec = NULL);
 
+bool ExportOGGOptions(AudacityProject *project);
+
 #endif
 
 

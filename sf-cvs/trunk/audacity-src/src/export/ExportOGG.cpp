@@ -197,6 +197,93 @@ bool ExportOGG(AudacityProject *project,
    return !cancelling;
 }
 
+class OGGOptionsDialog : public wxDialog
+{
+public:
+
+   /// 
+   /// 
+   OGGOptionsDialog(wxWindow *parent)
+   : wxDialog(NULL, wxID_ANY, wxString(_("Specify MP2 Options")),
+      wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+   {
+      ShuttleGui S(this, eIsCreatingFromPrefs);
+
+      mOggQualityUnscaled = gPrefs->Read(wxT("/FileFormats/OggExportQuality"),50)/10;
+
+      PopulateOrExchange(S);
+   }
+
+   /// 
+   /// 
+   void PopulateOrExchange(ShuttleGui & S)
+   {
+      S.StartHorizontalLay(wxEXPAND, 0);
+      {
+         S.StartStatic(_("OGG Export Setup"), 1);
+         {
+            S.StartMultiColumn(2, wxEXPAND);
+            {
+               S.SetStretchyCol(1);
+               S.TieSlider(_("OGG Quality:"), mOggQualityUnscaled, 10);
+            }
+            S.EndMultiColumn();
+         }
+         S.EndStatic();
+      }
+      S.EndHorizontalLay();
+      S.StartHorizontalLay(wxALIGN_CENTER, false);
+      {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+      }
+      GetSizer()->AddSpacer(5);
+      Layout();
+      Fit();
+      SetMinSize(GetSize());
+      Center();
+
+      return;
+   }
+
+   /// 
+   /// 
+   void OnOK(wxCommandEvent& event)
+   {
+      ShuttleGui S(this, eIsSavingToPrefs);
+      PopulateOrExchange(S);
+
+      gPrefs->Write(wxT("/FileFormats/OggExportQuality"),mOggQualityUnscaled * 10);
+
+      wxDialog::OnOK(event);
+
+      return;
+   }
+
+private:
+   int mOggQualityUnscaled;
+
+   DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(OGGOptionsDialog, wxDialog)
+   EVT_BUTTON(wxID_OK, OGGOptionsDialog::OnOK)
+END_EVENT_TABLE()
+
+bool ExportOGGOptions(AudacityProject *project)
+{
+   OGGOptionsDialog od(project);
+
+   od.ShowModal();
+
+   return true;
+}
+
 #endif // USE_LIBVORBIS
 
 

@@ -71,9 +71,10 @@
 #include "twolame.h"
 
 bool ExportMP2(AudacityProject *project,
-               bool stereo, wxString fName,
+               int channels, wxString fName,
                bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
 {
+   bool stereo = (channels == 2);
    long bitrate = gPrefs->Read(wxT("/FileFormats/MP2Bitrate"), 160);
    double rate = project->GetRate();
    TrackList *tracks = project->GetTracks();
@@ -209,6 +210,102 @@ bool ExportMP2(AudacityProject *project,
 #endif
 
    return !cancelling;
+}
+
+static int iBitrates[] = {
+   16, 24, 32, 40, 48, 56, 64,
+   80, 96, 112, 128, 160,
+   192, 224, 256, 320 
+};
+
+class MP2OptionsDialog : public wxDialog
+{
+public:
+
+   /// 
+   /// 
+   MP2OptionsDialog(wxWindow *parent)
+   : wxDialog(NULL, wxID_ANY, wxString(_("Specify MP2 Options")),
+      wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+   {
+      ShuttleGui S(this, eIsCreatingFromPrefs);
+
+      for (unsigned int i=0; i < (sizeof(iBitrates)/sizeof(int)); i++)
+      {
+         mBitRateNames.Add(wxString::Format(wxT("%i"),iBitrates[i]));
+         mBitRateLabels.Add(iBitrates[i]);
+      }
+
+      PopulateOrExchange(S);
+   }
+
+   /// 
+   /// 
+   void PopulateOrExchange(ShuttleGui & S)
+   {
+      S.StartHorizontalLay(wxEXPAND, 0);
+      {
+         S.StartStatic(_("MP2 Export Setup"), 0);
+         {
+            S.StartTwoColumn();
+            {
+               S.TieChoice(_("Bit Rate:"), wxT("/FileFormats/MP2Bitrate"), 
+                  160, mBitRateNames, mBitRateLabels);
+            }
+            S.EndTwoColumn();
+         }
+         S.EndStatic();
+      }
+      S.EndHorizontalLay();
+      S.StartHorizontalLay(wxALIGN_CENTER, false);
+      {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+      }
+      GetSizer()->AddSpacer(5);
+      Layout();
+      Fit();
+      SetMinSize(GetSize());
+      Center();
+
+      return;
+   }
+
+   /// 
+   /// 
+   void OnOK(wxCommandEvent& event)
+   {
+      ShuttleGui S(this, eIsSavingToPrefs);
+      PopulateOrExchange(S);
+
+      wxDialog::OnOK(event);
+
+      return;
+   }
+
+private:
+   wxArrayString mBitRateNames;
+   wxArrayInt    mBitRateLabels;
+
+   DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(MP2OptionsDialog, wxDialog)
+   EVT_BUTTON(wxID_OK, MP2OptionsDialog::OnOK)
+END_EVENT_TABLE()
+
+bool ExportMP2Options(AudacityProject *project)
+{
+   MP2OptionsDialog od(project);
+
+   od.ShowModal();
+
+   return true;
 }
 
 #endif // #ifdef USE_LIBTWOLAME
