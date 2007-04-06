@@ -18,6 +18,12 @@ expat-recursive:
 expat.a: expat-recursive
 	ln -sf expat/expat.a expat.a
 
+# FileDialog
+FileDialog-recursive:
+	$(MAKE) -C FileDialog
+FileDialog.a: FileDialog-recursive
+	ln -sf FileDialog/FileDialog.a FileDialog.a
+
 # libogg
 libogg-recursive:
 	$(MAKE) -C libogg
@@ -124,6 +130,7 @@ clean:
 	-$(MAKE) -C allegro clean
 	-$(MAKE) -C dlcompat clean	
 	-$(MAKE) -C expat clean
+	-$(MAKE) -C FileDialog clean
 	-$(MAKE) -C libid3tag clean
 	-$(MAKE) -C libmad clean
 	-$(MAKE) -C libnyquist clean
@@ -148,6 +155,7 @@ distclean:
 	-$(MAKE) -C allegro distclean
 	-$(MAKE) -C dlcompat distclean
 	-$(MAKE) -C expat distclean
+	-$(MAKE) -C FileDialog distclean
 	-$(MAKE) -C libid3tag distclean
 	-$(MAKE) -C libmad distclean
 	-$(MAKE) -C libnyquist distclean
@@ -168,7 +176,7 @@ distclean:
 	-$(MAKE) -C twolame distclean
 	-rm -f @LOCAL_LIBS@
 
-.PHONY: allegro-recursive expat-recursive libogg-recursive \
+.PHONY: allegro-recursive expat-recursive FileDialog-recursive libogg-recursive \
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
 	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
 	libresample-recursive libsamplerate-recursive librtaudio-recursive \
