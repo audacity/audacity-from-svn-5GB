@@ -51,7 +51,8 @@ public:
    /* Virtual methods that must be supplied by library interfaces */
 
    /* initialize the library interface */
-   virtual bool InitLibrary() = 0;
+   virtual bool InitLibrary(wxString libpath) = 0;
+   virtual void FreeLibrary() = 0;
 
    /* get library info */
    virtual wxString GetLibraryVersion() = 0;
@@ -80,7 +81,6 @@ public:
 protected:
 
    wxString mLibPath;
-   wxDynamicLibrary lame_lib;
 
    bool mLibraryLoaded;
    bool mEncoding;
@@ -96,11 +96,13 @@ protected:
 
 MP3Exporter *GetMP3Exporter();
 void         ReleaseMP3Exporter();
-        
+
 bool ExportMP3(AudacityProject *project,
-               bool stereo, wxString fName,
+               int channels, wxString fName,
                bool selectionOnly, double t0, double t1, 
                MixerSpec *mixerSpec = NULL);
+
+bool ExportMP3Options(AudacityProject *project);
 
 #endif
 
