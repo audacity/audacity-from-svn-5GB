@@ -39,11 +39,10 @@ typedef bool (*ExportOptions)(AudacityProject *project);
 typedef bool (*ExportRoutine)(AudacityProject *project,
                               int channels,
                               wxString fName,
-                              bool selectionOnly,
+                              bool selectedOnly,
                               double t0,
                               double t1,
                               MixerSpec *mixerSpec);
-
 
 class ExportType
 {
@@ -56,6 +55,7 @@ public:
             wxString format,
             wxString extension,
             int maxchannels,
+            bool canmetadata = false,
             wxString description = wxEmptyString);
    
    ExportRoutine GetRoutine();
@@ -65,6 +65,16 @@ public:
    wxString GetDescription();
    wxString GetMask();
    int GetMaxChannels();
+   bool GetCanMetaData();
+   
+   bool DisplayOptions(AudacityProject *project = NULL);
+   bool Export(AudacityProject *project,
+               int channels,
+               wxString fName,
+               bool selectedOnly,
+               double t0,
+               double t1,
+               MixerSpec *mixerSpec = NULL);
 
 private:
 
@@ -74,6 +84,7 @@ private:
    wxString mExtension;
    wxString mDescription;
    int mMaxChannels;
+   bool mCanMetaData;
 };
 
 //----------------------------------------------------------------------------
@@ -83,12 +94,14 @@ class Export
 {
 public:
 
-   Export(AudacityProject *project);
+   Export();
    virtual ~Export();
 
-   bool Process(bool selectionOnly, double t0, double t1);
+   bool Process(AudacityProject *project, bool selectedOnly, double t0, double t1);
 
    void DisplayOptions(int index);
+
+   static ExportTypeArray GetTypes();
 
 private:
 
@@ -115,7 +128,7 @@ private:
    int mNumRight;
    int mNumMono;
    int mChannels;
-   bool mSelectionOnly;
+   bool mSelectedOnly;
 };
 
 //----------------------------------------------------------------------------
@@ -158,7 +171,7 @@ class ExportMixerDialog: public wxDialog
 {
 public:
    // constructors and destructors
-   ExportMixerDialog( TrackList * tracks, bool selectionOnly, int maxNumChannels,
+   ExportMixerDialog( TrackList * tracks, bool selectedOnly, int maxNumChannels,
          wxWindow *parent, wxWindowID id, const wxString &title, 
          const wxPoint& pos = wxDefaultPosition,
          const wxSize& size = wxDefaultSize, 

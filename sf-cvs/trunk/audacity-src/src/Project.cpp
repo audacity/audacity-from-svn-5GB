@@ -2088,9 +2088,9 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    // and just work with .Wav, so does an export on a save.
    if( mCleanSpeechMode )
    {
-      Export e(this);
+      Export e;
       double endTime = mTracks->GetEndTime();
-      bool flag = e.Process(false, 0.0, endTime);
+      bool flag = e.Process(this, false, 0.0, endTime);
       return flag;
    }
 

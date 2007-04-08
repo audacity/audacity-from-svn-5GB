@@ -139,9 +139,12 @@ Track *TrackListIterator::Last()
       return NULL;
 }
 
-Track *TrackListIterator::First()
+Track *TrackListIterator::First(TrackList * val)
 {
-   if( l== NULL )
+   if (val != NULL)
+      l = val;
+
+   if (l == NULL)
       return NULL;
 
    cur = l->head;

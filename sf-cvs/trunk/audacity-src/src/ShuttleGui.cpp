@@ -1308,33 +1308,39 @@ void ShuttleGuiBase::TieCheckBox(
 
 /// Variant of the standard TieTextBox which does the two step exchange 
 /// between gui and stack variable and stack variable and shuttle.
-void ShuttleGuiBase::TieTextBox(
+wxTextCtrl * ShuttleGuiBase::TieTextBox(
    const wxString & Prompt, 
    const wxString & SettingName, 
    const wxString & Default,
    const int nChars)
 {
+   wxTextCtrl * pText=(wxTextCtrl*)NULL;
+
    wxString Temp = Default;
    WrappedType WrappedRef( Temp );
    if( DoStep(1) ) DoDataShuttle( SettingName, WrappedRef );
-   if( DoStep(2) ) TieTextBox( Prompt, WrappedRef, nChars );
+   if( DoStep(2) ) pText = TieTextBox( Prompt, WrappedRef, nChars );
    if( DoStep(3) ) DoDataShuttle( SettingName, WrappedRef );
+   return pText;
 }
 
 /// Variant of the standard TieTextBox which does the two step exchange 
 /// between gui and stack variable and stack variable and shuttle.
 /// This one does it for double values...
-void ShuttleGuiBase::TieTextBox(
+wxTextCtrl * ShuttleGuiBase::TieTextBox(
    const wxString & Prompt, 
    const wxString & SettingName, 
    const double & Default,
    const int nChars)
 {
+   wxTextCtrl * pText=(wxTextCtrl*)NULL;
+
    double Temp = Default;
    WrappedType WrappedRef( Temp );
    if( DoStep(1) ) DoDataShuttle( SettingName, WrappedRef );
-   if( DoStep(2) ) TieTextBox( Prompt, WrappedRef, nChars );
+   if( DoStep(2) ) pText = TieTextBox( Prompt, WrappedRef, nChars );
    if( DoStep(3) ) DoDataShuttle( SettingName, WrappedRef );
+   return pText;
 }
 
 /// Variant of the standard TieChoice which does the two step exchange 

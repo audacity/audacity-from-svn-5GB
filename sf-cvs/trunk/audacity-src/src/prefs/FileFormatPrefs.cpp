@@ -47,14 +47,10 @@ just the standard combinations.
 #define ID_MP3_FIND_BUTTON         7001
 #define ID_EXPORT_OPTIONS_BUTTON   7002
 #define ID_FORMAT_CHOICE           7003
-#define ID_MP3_VBR                 7004
-#define ID_MP3_CBR                 7005
 
 BEGIN_EVENT_TABLE(FileFormatPrefs, wxPanel)
    EVT_BUTTON(ID_MP3_FIND_BUTTON, FileFormatPrefs::OnMP3FindButton)
    EVT_CHOICE(ID_FORMAT_CHOICE,   FileFormatPrefs::OnFormatChoice)
-   EVT_RADIOBUTTON(ID_MP3_VBR,    FileFormatPrefs::OnMP3VBR)
-   EVT_RADIOBUTTON(ID_MP3_CBR,    FileFormatPrefs::OnMP3CBR)
 END_EVENT_TABLE()
 
 FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
@@ -62,21 +58,13 @@ FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
 {
    SetLabel(_("File Formats"));         // Provide visual label
    SetName(_("File Formats"));          // Provide audible label
-   mFormatText = NULL;
    Populate( );
 }
-
-int iBitrates[] = {
-   16, 24, 32, 40, 48, 56, 64,
-   80, 96, 112, 128, 160,
-   192, 224, 256, 320 
-};
 
 /// Creates the dialog and its contents.
 void FileFormatPrefs::Populate( )
 {
    // First any pre-processing for constructing the GUI.
-   mOggQualityUnscaled = gPrefs->Read( wxT("/FileFormats/OggExportQuality"),50)/10;
    mFormat = ReadExportFormatPref();
 
    //----- Gather our strings used in choices.
@@ -88,28 +76,13 @@ void FileFormatPrefs::Populate( )
    ShuttleGui S(this, eIsCreatingFromPrefs);
    PopulateOrExchange(S);
    // ----------------------- End of main section --------------
-   // Set the MP3 Version string.  Also enable/disable bitrate.
+   // Set the MP3 Version string.
    SetMP3VersionText();
-   if(!GetMP3Exporter()->ValidLibraryLoaded()) {
-      mMP3Bitrate->Enable(false);
-      mMP3Stereo->Enable(false);
-      mMP3Joint->Enable(false);
-      mMP3VBR->Enable(false);
-      mMP3CBR->Enable(false);
-   }
-   // Set the format string.
-   SetFormatText();
 }
 
 /// Gets ArrayStrings that will be used in wxChoices.
 void FileFormatPrefs::GetNamesAndLabels()
 {
-   for(unsigned int i=0;i<(sizeof(iBitrates)/sizeof(int));i++)
-   {
-      mBitRateNames.Add( wxString::Format(wxT("%i"),iBitrates[i] ));
-      mBitRateLabels.Add( iBitrates[i] );
-   }
-
    int numSimpleFormats = sf_num_simple_formats();
    int sel = numSimpleFormats;
    for(int i=0; i<numSimpleFormats; i++) 
@@ -159,98 +132,23 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
    S.StartHorizontalLay(wxEXPAND,0);
    S.StartStatic(_("Uncompressed Export Format"),1);
    {
-      S.StartMultiColumn(1);
       // We need the pointers to these controls for the special behaviour.      
       mDefaultExportFormat = S.Id( ID_FORMAT_CHOICE ).TieChoice( 
             wxT(""),           // No prompt required.
             mFormatFromChoice, // Value (as a string)
             &mFormatNames      // List of possible options, including 'Other...'
             );
-      mFormatText = S.AddVariableText( wxT("CAPITAL LETTERS"));
-      S.EndMultiColumn();
    }
    S.EndStatic();
-   S.StartStatic( _("OGG Export Setup"),1);
-   {
-      S.StartMultiColumn(2, wxEXPAND);
-      S.SetStretchyCol(1);
-      S.TieSlider( _("OGG Quality:"),mOggQualityUnscaled,10 );
-      S.EndMultiColumn();
-   }
-   S.EndStatic();
-   S.EndHorizontalLay();
    S.StartHorizontalLay(wxEXPAND,0);
    S.StartStatic( _("MP3 Export Setup"),0);
    {
-      // Some rather fiddly sizers to get the 'Find Library' button 
-      // exactly where we want it.
-      S.StartMultiColumn(2,wxEXPAND);
-         S.SetStretchyCol(1);
-         S.StartTwoColumn();
-            S.AddFixedText( _("MP3 Library Version:"));
-            mMP3Version = S.AddVariableText( wxT("CAPITAL LETTERS"));
-            S.AddPrompt( _("Bit Rate:"));
-            S.StartTwoColumn();
-               S.StartRadioButtonGroup(wxT("/FileFormats/MP3RateMode"),wxT("cbr"));
-                  mMP3VBR = S.Id( ID_MP3_VBR ).TieRadioButton( _("Variable"), wxT("vbr"));
-                  mMP3CBR = S.Id( ID_MP3_CBR ).TieRadioButton( _("Constant"), wxT("cbr"));
-               S.EndRadioButtonGroup();
-            S.EndTwoColumn();
-
-            if (mMP3VBR->GetValue()) {
-               mMP3RateNames.Add(_("0 (Best quality)"));
-               mMP3RateLabels.Add( 0 );
-               for(unsigned int i=1;i<9;i++)
-               {
-                  mMP3RateNames.Add(wxString::Format(wxT("%i"),i));
-                  mMP3RateLabels.Add( i );
-               }
-               mMP3RateNames.Add(_("9 (Smaller files)"));
-               mMP3RateLabels.Add( 9 );
-            }
-            else {
-               for(unsigned int i=0;i<(sizeof(iBitrates)/sizeof(int));i++)
-               {
-                  mMP3RateNames.Add( wxString::Format(wxT("%i"),iBitrates[i] ));
-                  mMP3RateLabels.Add( iBitrates[i] );
-               }
-            }
-
-            mMP3Bitrate = S.TieChoice( _("Quality:"), wxT("/FileFormats/MP3Bitrate"), 
-                                       128, mMP3RateNames, mMP3RateLabels );
-            S.AddPrompt( _("Mode:"));
-            S.StartTwoColumn();
-               S.StartRadioButtonGroup(wxT("/FileFormats/MP3ChannelMode"),wxT("joint"));
-                  mMP3Joint = S.TieRadioButton( _("Joint Stereo"), wxT("joint"));
-                  mMP3Stereo = S.TieRadioButton( _("Stereo"), wxT("stereo"));
-               S.EndRadioButtonGroup();
-            S.EndTwoColumn();
-         S.EndTwoColumn();
-         S.Id( ID_MP3_FIND_BUTTON ).AddButton( _("&Find Library"), 
-            wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL);
-      S.EndMultiColumn();
-   }
-   S.EndStatic();
-   S.StartStatic( _("FLAC Export Setup"),0);
-   {
-      wxArrayString flacBitDepthNames, flacBitDepthLabels;
-      flacBitDepthLabels.Add(wxT("16")); flacBitDepthNames.Add(_("16 bit"));
-      flacBitDepthLabels.Add(wxT("24")); flacBitDepthNames.Add(_("24 bit"));
-      S.StartMultiColumn(2, wxEXPAND);
-      S.SetStretchyCol(1);
-      S.TieChoice(_("Bit depth:"), wxT("/FileFormats/FLACBitDepth"),
-                  wxT("16"), flacBitDepthNames, flacBitDepthLabels);
-      S.EndMultiColumn();
-   }
-   S.EndStatic();
-   S.EndHorizontalLay();
-   S.StartHorizontalLay(wxEXPAND,0);
-   S.StartStatic( _("MP2 Export Setup"),0);
-   {
-      S.StartTwoColumn();
-      S.TieChoice( _("Bit Rate:"), wxT("/FileFormats/MP2Bitrate"), 
-         160, mBitRateNames, mBitRateLabels );
-      S.EndTwoColumn();
+      S.StartThreeColumn();
+         S.AddFixedText( _("MP3 Library Version:"), true);
+         mMP3Version = S.AddVariableText( wxT("CAPITAL LETTERS"), true);
+      S.Id( ID_MP3_FIND_BUTTON ).AddButton( _("&Find Library"), 
+         wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL);
+      S.EndThreeColumn();
    }
    S.EndStatic();
    S.EndHorizontalLay();
@@ -271,16 +169,6 @@ void FileFormatPrefs::SetMP3VersionText()
    mMP3Version->SetLabel(versionString);
 }
 
-/// Sets a text area on the dialog to have the name
-/// of the currently selected format.
-void FileFormatPrefs::SetFormatText()
-{
-   wxString formatString;
-   formatString = sf_header_name(mFormat & SF_FORMAT_TYPEMASK);
-   formatString += wxT(", ") + sf_encoding_name(mFormat & SF_FORMAT_SUBMASK);
-   mFormatText->SetLabel(formatString);
-}
-
 /// Updates the dialog when a format preference has changed.
 /// If the user selected 'Other... ' for the format, then a 
 /// more detailed dialog for format preferences is opened
@@ -294,8 +182,6 @@ void FileFormatPrefs::OnFormatChoice(wxCommandEvent& evt)
       OpenOtherFormatDialog();
    else 
       mFormat = sf_simple_format(sel)->format;
-
-   SetFormatText();
 }
 
 /// Opens a file-finder dialog so that the user can
@@ -305,55 +191,6 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
    if (GetMP3Exporter()->FindLibrary(this, false)) {
       SetMP3VersionText();
    }
-   
-   bool valid = GetMP3Exporter()->ValidLibraryLoaded();
-   mMP3Bitrate->Enable(valid);
-   mMP3Stereo->Enable(valid);
-   mMP3Joint->Enable(valid);
-   mMP3VBR->Enable(valid);
-   mMP3CBR->Enable(valid);
-}
-
-/// 
-/// 
-void FileFormatPrefs::OnMP3VBR(wxCommandEvent& evt)
-{
-   mMP3Bitrate->Clear();
-   mMP3RateNames.Clear();
-   mMP3RateLabels.Clear();
-
-   mMP3RateNames.Add(_("0 (Best quality)"));
-   mMP3RateLabels.Add( 0 );
-   for(unsigned int i=1;i<9;i++)
-   {
-      mMP3RateNames.Add(wxString::Format(wxT("%i"),i));
-      mMP3RateLabels.Add( i );
-   }
-   mMP3RateNames.Add(_("9 (Smaller files)"));
-   mMP3RateLabels.Add( 9 );
-
-   mMP3Bitrate->Append(mMP3RateNames);
-   mMP3Bitrate->SetSelection(5);
-   mMP3Bitrate->Refresh();
-}
-
-/// 
-/// 
-void FileFormatPrefs::OnMP3CBR(wxCommandEvent& evt)
-{
-   mMP3Bitrate->Clear();
-   mMP3RateNames.Clear();
-   mMP3RateLabels.Clear();
-
-   for(unsigned int i=0;i<(sizeof(iBitrates)/sizeof(int));i++)
-   {
-      mMP3RateNames.Add( wxString::Format(wxT("%i"),iBitrates[i] ));
-      mMP3RateLabels.Add( iBitrates[i] );
-   }
-
-   mMP3Bitrate->Append(mMP3RateNames);
-   mMP3Bitrate->SetSelection(10);
-   mMP3Bitrate->Refresh();
 }
 
 /// Takes the settings from the dilaog and puts them into prefs.
@@ -364,23 +201,9 @@ bool FileFormatPrefs::Apply()
    ShuttleGui S( this, eIsSavingToPrefs );
    PopulateOrExchange( S );    
    
-   gPrefs->Write( wxT("/FileFormats/OggExportQuality"),mOggQualityUnscaled * 10);
    // JKC: I'd like to include the body of this one-line function here.
    // so that the code is more regular/readable, and the same with the read.
    WriteExportFormatPref(mFormat);
-
-   //-- Isn't the next parameter long gone??  Can we remove it?
-   //gPrefs->Write( wxT("/FileFormats/LossyExportFormat"), wxT("MP3"));
-
-   //-- We always write the bitrate, so I don't think we need the commmented out
-   // code anymore.
-#if 0
-   if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
-      long bitrate;
-      mMP3Bitrate->GetStringSelection().ToLong(&bitrate);
-      gPrefs->Write(wxT("/FileFormats/MP3Bitrate"), bitrate);
-   }
-#endif
 
    return true;
 }
