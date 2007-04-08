@@ -2176,21 +2176,23 @@ void AudacityProject::OnExportLabels()
 
 void AudacityProject::OnExport()
 {
-   Export e(this);
+   Export e;
 
-   e.Process(false, 0.0, mTracks->GetEndTime());
+   e.Process(this, false, 0.0, mTracks->GetEndTime());
 }
 
 void AudacityProject::OnExportSelection()
 {
-   Export e(this);
+   Export e;
    
-   e.Process(true, mViewInfo.sel0, mViewInfo.sel1);
+   e.Process(this, true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
 void AudacityProject::OnExportMultiple()
 {
-   ::ExportMultiple(this);
+   ExportMultiple em(this);
+   
+   em.ShowModal();
 }
 
 void AudacityProject::OnPreferences()

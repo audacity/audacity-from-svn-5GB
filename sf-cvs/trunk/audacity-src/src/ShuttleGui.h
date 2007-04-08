@@ -171,12 +171,12 @@ public:
       const int Default, 
       const wxArrayString & Choices,
       const wxArrayInt & TranslatedChoices);
-   void TieTextBox(
+   wxTextCtrl * TieTextBox(
       const wxString &Prompt, 
       const wxString &SettingName, 
       const wxString &Default,
       const int nChars);
-   void TieTextBox(
+   wxTextCtrl * TieTextBox(
       const wxString & Prompt, 
       const wxString & SettingName, 
       const double & Default,

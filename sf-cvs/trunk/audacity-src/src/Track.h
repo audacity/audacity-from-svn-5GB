@@ -161,10 +161,10 @@ class TrackList;
 
 class TrackListIterator {
  public:
-  TrackListIterator(TrackList * val);
+  TrackListIterator(TrackList * val = NULL);
   
   // Iterate functions
-  Track *First();
+  Track *First(TrackList * val = NULL);
   Track *Next(bool SkipLinked = false);
   Track *RemoveCurrent();     // returns next
 
