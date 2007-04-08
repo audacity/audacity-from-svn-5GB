@@ -215,10 +215,10 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
          {
             // Row 1
             S.SetBorder(1);
-            mLabel = S.AddRadioButton(wxT(""));
+            mLabel = S.Id(LabelID)
+               .AddRadioButton(wxT(""));
             S.SetBorder(3);
-            mLabelLabel = S.Id(LabelID)
-               .AddVariableText(_("Labels"), false);
+            mLabelLabel = S.AddVariableText(_("Labels"), false);
 
             // Row 2
             S.AddVariableText(wxT(""), false);
