@@ -1,13 +1,18 @@
-/////////////////////////////////////////////////////////////////////////////
-// Name:        filedlg.h
-// Purpose:     wxFileDialog base header
-// Author:      Robert Roebling
-// Modified by:
-// Created:     8/17/99
-// Copyright:   (c) Robert Roebling
-// RCS-ID:      $Id: FileDialog.h,v 1.1 2007-04-06 10:16:52 llucius Exp $
-// Licence:     wxWindows licence
-/////////////////////////////////////////////////////////////////////////////
+/**********************************************************************
+
+  Audacity: A Digital Audio Editor
+
+  FileDialog.h
+
+  Leland Lucius
+
+*******************************************************************//**
+
+\class FileDialog
+\brief Dialog used to present platform specific "Save As" dialog with
+custom controls.
+
+*//*******************************************************************/
 
 #ifndef _FILE_DIALOG_H_
 #define _FILE_DIALOG_H_
@@ -21,7 +26,7 @@ typedef void (*fdCallback)(void *, int);
 #include "mac/FileDialog.h"
 #elif defined(__WXMSW__)
 #include "win/FileDialog.h"
-#elif defined(__WXGTK__)
+#elif defined(__FORCE_WXGTK__)
 #include "gtk/FileDialog.h"
 #else
 #include "generic/FileDialog.h"
