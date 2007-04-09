@@ -298,7 +298,9 @@ void Effect::Preview()
    // Effect is already inited; we call Process, End, and then Init
    // again, so the state is exactly the way it was before Preview
    // was called.
+   GetActiveProject()->ProgressShow(GetEffectName(), GetEffectAction());
    Process();
+   GetActiveProject()->ProgressHide();
    End();
    Init();
 
@@ -311,24 +313,30 @@ void Effect::Preview()
    if (mixRight)
       playbackTracks.Add(mixRight);
 
+
    // Start audio playing
-   
+
    int token =
       gAudioIO->StartStream(playbackTracks, recordingTracks, NULL,
                             rate, t0, t1, NULL);
 
    if (token) {
-      wxBusyCursor busy;
-      ::wxMilliSleep((int)((t1-t0)*1000));
+      bool previewing = true;
 
-      while(gAudioIO->IsStreamActive(token)) {
+      GetActiveProject()->ProgressShow(GetEffectName(), _("Previewing"));
+
+      while (gAudioIO->IsStreamActive(token) && previewing) {
          ::wxMilliSleep(100);
+         int t = int(1000 * (gAudioIO->GetStreamTime() / t1));
+         previewing = GetActiveProject()->ProgressUpdate(t);
       }
       gAudioIO->StopStream();
 
-      while(gAudioIO->IsBusy()) {
+      while (gAudioIO->IsBusy()) {
          ::wxMilliSleep(100);
       }
+
+      GetActiveProject()->ProgressHide();
    }
    else {
       wxMessageBox(_("Error while opening sound device. Please check the output device settings and the project sample rate."),
