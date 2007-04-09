@@ -20,7 +20,7 @@ custom controls.
 #include "mac/FileDialog.hpp"
 #elif defined(__WXMSW__)
 #include "win/FileDialog.hpp"
-#elif defined(__WXGTK__)
+#elif defined(__FORCE_WXGTK__)
 #include "gtk/FileDialog.hpp"
 #else
 #include "generic/FileDialog.hpp"
