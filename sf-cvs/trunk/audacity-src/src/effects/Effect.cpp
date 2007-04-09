@@ -298,7 +298,7 @@ void Effect::Preview()
    // Effect is already inited; we call Process, End, and then Init
    // again, so the state is exactly the way it was before Preview
    // was called.
-   GetActiveProject()->ProgressShow(GetEffectName(), GetEffectAction());
+   GetActiveProject()->ProgressShow(GetEffectName(), _("Preparing preview"));
    Process();
    GetActiveProject()->ProgressHide();
    End();
