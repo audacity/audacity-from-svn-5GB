@@ -22,6 +22,7 @@ It handles initialization and termination by subclassing wxApp.
 #include <wx/app.h>
 #include <wx/docview.h>
 #include <wx/event.h>
+#include <wx/ipc.h>
 #include <wx/log.h>
 #include <wx/window.h>
 #include <wx/intl.h>
@@ -244,6 +245,67 @@ void QuitAudacity()
 {
    QuitAudacity(false);
 }
+
+#if defined(__WXMSW__)
+
+#define IPC_APPL wxT("audacity")
+#define IPC_TOPIC wxT("System")
+
+class IPCConn : public wxConnection
+{
+public:
+   IPCConn()
+   : wxConnection()
+   {
+   };
+
+   ~IPCConn()
+   {
+   };
+
+   bool OnExecute(const wxString & topic,
+                  wxChar *data,
+                  int size,
+                  wxIPCFormat format)
+   {
+      if (!gInited) {
+         return false;
+      }
+
+      AudacityProject *project = GetActiveProject();
+      if (project == NULL || !project->GetTracks()->IsEmpty()) {
+         project = CreateNewAudacityProject(gParentWindow);
+      }
+      project->OpenFile(wxString(data));
+
+      return true;
+   };
+};
+
+class IPCServ : public wxServer
+{
+public:
+   IPCServ()
+   : wxServer()
+   {
+      Create(wxT("audacity"));
+   };
+
+   ~IPCServ()
+   {
+   };
+
+   wxConnectionBase *OnAcceptConnection(const wxString & topic)
+   {
+      if (topic != IPC_TOPIC) {
+         return NULL;
+      }
+
+      return new IPCConn();
+   };
+};
+
+#endif
 
 IMPLEMENT_APP(AudacityApp)
 
@@ -800,6 +862,10 @@ bool AudacityApp::OnInit()
 
 #endif // Cygwin command-line parser
 
+#if defined(__WXMSW__)
+   mIPCServ = new IPCServ();
+#endif
+
    gInited = true;
    
    return TRUE;
@@ -1085,6 +1151,10 @@ int AudacityApp::OnExit()
       Dispatch();
    }
 
+#if defined(__WXMSW__)
+   delete mIPCServ;
+#endif
+
    if(gPrefs)
    {
       bool bFalse = false;
@@ -1279,6 +1349,24 @@ void AudacityApp::AssociateFileTypes()
                      (tmpRegAudPath.Find(wxT("audacity.exe")) >= 0)) {
                   associateFileTypes.Create(true);
                   associateFileTypes = (wxString)argv[0] + (wxString)wxT(" \"%1\"");
+               }
+
+               associateFileTypes.SetName(root_key + wxT("Audacity.Project\\shell\\open\\ddeexec"));
+               if(!associateFileTypes.Exists()) {
+                  associateFileTypes.Create(true);
+                  associateFileTypes = wxT("%1");
+               }
+
+               associateFileTypes.SetName(root_key + wxT("Audacity.Project\\shell\\open\\ddeexec\\Application"));
+               if(!associateFileTypes.Exists()) {
+                  associateFileTypes.Create(true);
+                  associateFileTypes = IPC_APPL;
+               }
+
+               associateFileTypes.SetName(root_key + wxT("Audacity.Project\\shell\\open\\ddeexec\\Topic"));
+               if(!associateFileTypes.Exists()) {
+                  associateFileTypes.Create(true);
+                  associateFileTypes = IPC_TOPIC;
                }
             }
          } else {

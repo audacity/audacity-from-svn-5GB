@@ -18,6 +18,7 @@
 
 class wxLocale;
 class wxSingleInstanceChecker;
+class IPCServ;
 
 void SaveWindowSize();
 
@@ -124,6 +125,9 @@ class AudacityApp:public wxApp {
    wxString mAppHomeDir;
    wxString mPresetsDir;
 
+#if defined(__WXMSW__)
+   IPCServ *mIPCServ;
+#endif
  public:
     DECLARE_EVENT_TABLE()
 };
