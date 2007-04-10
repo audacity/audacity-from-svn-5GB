@@ -32,4 +32,35 @@ typedef void (*fdCallback)(void *, int);
 #include "generic/FileDialog.h"
 #endif
 
+/////////////////////////////////////////////////////////////////////////////
+// Name:        filedlg.h
+// Purpose:     wxFileDialog base header
+// Author:      Robert Roebling
+// Modified by: Leland Lucius
+// Created:     8/17/99
+// Copyright:   (c) Robert Roebling
+// RCS-ID:      $Id: FileDialog.h,v 1.3 2007-04-10 02:22:20 llucius Exp $
+// Licence:     wxWindows licence
+//
+// Modified for Audacity to support an additional button on Save dialogs
+//
+/////////////////////////////////////////////////////////////////////////////
+
+//----------------------------------------------------------------------------
+// wxFileDialog convenience functions
+//----------------------------------------------------------------------------
+
+// File selector - backward compatibility
+WXDLLEXPORT wxString
+FileSelector(const wxChar *message = wxFileSelectorPromptStr,
+             const wxChar *default_path = NULL,
+             const wxChar *default_filename = NULL,
+             const wxChar *default_extension = NULL,
+             const wxChar *wildcard = wxFileSelectorDefaultWildcardStr,
+             int flags = 0,
+             wxWindow *parent = NULL,
+             wxString label = wxEmptyString,
+             fdCallback cb = NULL,
+             void *cbdata = NULL);
+
 #endif

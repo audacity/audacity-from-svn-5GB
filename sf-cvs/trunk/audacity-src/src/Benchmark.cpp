@@ -38,6 +38,8 @@ of the BlockFile system.
 #include "WaveTrack.h"
 #include "Sequence.h"
 
+#include "FileDialog.h"
+
 class BenchmarkDialog: public wxDialog
 {
 public:
@@ -250,8 +252,8 @@ void BenchmarkDialog::OnSave( wxCommandEvent &event )
 {
    wxString fName = wxT("benchmark.txt");
 
-   fName = wxFileSelector(wxT("Export Benchmark Data As:"),
-                          NULL, fName, wxT("txt"), wxT("*.txt"), wxSAVE, this);
+   fName = FileSelector(wxT("Export Benchmark Data As:"),
+                        NULL, fName, wxT("txt"), wxT("*.txt"), wxSAVE, this);
 
    if (fName == wxT(""))
       return;

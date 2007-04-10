@@ -36,6 +36,8 @@
 #include "ViewInfo.h"
 #include "widgets/TimeTextCtrl.h"
 
+#include "FileDialog.h"
+
 enum Column
 {
    Col_Track,
@@ -500,13 +502,13 @@ void LabelDialog::OnImport(wxCommandEvent &event)
 
    // Ask user for a filename
    wxString fileName =
-       wxFileSelector(_("Select a text file containing labels..."),
-                      path,     // Path
-                      wxT(""),       // Name
-                      wxT(".txt"),   // Extension
-                      _("Text files (*.txt)|*.txt|All files (*.*)|*.*"),
-                      0,        // Flags
-                      this);    // Parent
+       FileSelector(_("Select a text file containing labels..."),
+                    path,     // Path
+                    wxT(""),       // Name
+                    wxT(".txt"),   // Extension
+                    _("Text files (*.txt)|*.txt|All files (*.*)|*.*"),
+                    0,        // Flags
+                    this);    // Parent
 
    // They gave us one...
    if (fileName != wxT("")) {
@@ -550,11 +552,11 @@ void LabelDialog::OnExport(wxCommandEvent &event)
 
    wxString fName;
 
-   fName = wxFileSelector(_("Export Labels As:"),
-                          NULL,
-                          _("labels.txt"),
-                          wxT("txt"),
-                          wxT("*.txt"), wxSAVE | wxOVERWRITE_PROMPT, this);
+   fName = FileSelector(_("Export Labels As:"),
+                        NULL,
+                        _("labels.txt"),
+                        wxT("txt"),
+                        wxT("*.txt"), wxSAVE | wxOVERWRITE_PROMPT, this);
 
    if (fName == wxT(""))
       return;

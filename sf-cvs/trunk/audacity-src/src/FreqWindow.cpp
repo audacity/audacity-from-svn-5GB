@@ -71,6 +71,8 @@ the mouse around.
 #include "Theme.h"
 #include "AllThemeResources.h"
 
+#include "FileDialog.h"
+
 enum {
    FirstID = 7000,
 
@@ -1048,8 +1050,8 @@ void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
 {
    wxString fName = _("spectrum.txt");
 
-   fName = wxFileSelector(_("Export Spectral Data As:"),
-                          NULL, fName, wxT("txt"), wxT("*.txt"), wxSAVE, this);
+   fName = FileSelector(_("Export Spectral Data As:"),
+                        NULL, fName, wxT("txt"), wxT("*.txt"), wxSAVE, this);
 
    if (fName == wxT(""))
       return;

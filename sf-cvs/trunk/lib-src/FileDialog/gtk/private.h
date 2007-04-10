@@ -2,11 +2,14 @@
 // Name:        wx/gtk/private.h
 // Purpose:     wxGTK private macros, functions &c
 // Author:      Vadim Zeitlin
-// Modified by:
+// Modified by: Leland Lucius
 // Created:     12.03.02
-// RCS-ID:      $Id: private.h,v 1.1 2007-04-06 10:16:52 llucius Exp $
+// RCS-ID:      $Id: private.h,v 1.2 2007-04-10 02:22:21 llucius Exp $
 // Copyright:   (c) 2002 Vadim Zeitlin <vadim@wxwidgets.org>
 // Licence:     wxWindows licence
+//
+// Modified for Audacity to support an additional button on Save dialogs
+//
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef _WX_GTK_PRIVATE_H_

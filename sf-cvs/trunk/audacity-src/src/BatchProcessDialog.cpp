@@ -44,6 +44,8 @@
 #include "Theme.h"
 #include "AllThemeResources.h"
 
+#include "FileDialog.h"
+
 #define ChainsListID       7001
 #define ApplyToProjectID   7002
 #define ApplyToFilesID     7003
@@ -208,9 +210,9 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
       _("All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac"
        );
 
-   wxFileDialog dlog(this, prompt,
-                     path, wxT(""), fileSelector,
-                     wxOPEN | wxMULTIPLE);
+   FileDialog dlog(this, prompt,
+                   path, wxT(""), fileSelector,
+                   wxOPEN | wxMULTIPLE);
 
    if (dlog.ShowModal() != wxID_OK) {
       return;

@@ -35,6 +35,8 @@ KeyConfigPrefs and MousePrefs use.
 #include "../ShuttleGui.h"
 #include "KeyConfigPrefs.h"
 
+#include "FileDialog.h"
+
 #define AssignDefaultsButtonID  7001
 #define CurrentComboID          7002
 #define SetButtonID             7003
@@ -158,11 +160,11 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
    wxString path = gPrefs->Read(wxT("/DefaultExportPath"),
                                 ::wxGetCwd());
 
-   fName = wxFileSelector(_("Export Keyboard Shortcuts As:"),
-                          NULL,
-                          fName,
-                          wxT("xml"),
-                          wxT("*.xml"), wxSAVE | wxOVERWRITE_PROMPT, this);
+   fName = FileSelector(_("Export Keyboard Shortcuts As:"),
+                        NULL,
+                        fName,
+                        wxT("xml"),
+                        wxT("*.xml"), wxSAVE | wxOVERWRITE_PROMPT, this);
 
    if (!fName)
       return;
@@ -191,13 +193,13 @@ void KeyConfigPrefs::OnLoad(wxCommandEvent& event)
    wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),
                                 ::wxGetCwd());
 
-   wxString fileName = wxFileSelector(_("Select an XML file containing Audacity keyboard shortcuts..."),
-                                      path,     // Path
-                                      wxT(""),       // Name
-                                      wxT(""),       // Extension
-                                      _("XML files (*.xml)|*.xml|All files (*.*)|*.*"),
-                                      0,        // Flags
-                                      this);    // Parent
+   wxString fileName = FileSelector(_("Select an XML file containing Audacity keyboard shortcuts..."),
+                                    path,     // Path
+                                    wxT(""),       // Name
+                                    wxT(""),       // Extension
+                                    _("XML files (*.xml)|*.xml|All files (*.*)|*.*"),
+                                    0,        // Flags
+                                    this);    // Parent
 
    if (!fileName)
       return;
