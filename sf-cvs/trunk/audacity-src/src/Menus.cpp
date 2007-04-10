@@ -87,6 +87,8 @@ simplifies construction of menu items.
 #include "SmartRecordDialog.h"
 #include "LabelDialog.h"
 
+#include "FileDialog.h"
+
 enum {
    kAlignZero=0,
    kAlignCursor,
@@ -2119,11 +2121,11 @@ void AudacityProject::OnExportLabels()
 
    wxString fName = _("labels.txt");
 
-   fName = wxFileSelector(_("Export Labels As:"),
-                          NULL,
-                          fName,
-                          wxT("txt"),
-                          wxT("*.txt"), wxSAVE | wxOVERWRITE_PROMPT, this);
+   fName = FileSelector(_("Export Labels As:"),
+                        NULL,
+                        fName,
+                        wxT("txt"),
+                        wxT("*.txt"), wxSAVE | wxOVERWRITE_PROMPT, this);
 
    if (fName == wxT(""))
       return;
@@ -3467,10 +3469,10 @@ void AudacityProject::OnImport()
 
    // TODO: Build the list of file types dynamically
    
-   wxFileDialog dlog(this, _("Select one or more audio files..."),
-                     path, wxT(""),
-                     GetImportFilesFilter(),
-                     wxOPEN | wxMULTIPLE);
+   FileDialog dlog(this, _("Select one or more audio files..."),
+                   path, wxT(""),
+                   GetImportFilesFilter(),
+                   wxOPEN | wxMULTIPLE);
 
    int result = dlog.ShowModal();
 
@@ -3500,13 +3502,13 @@ void AudacityProject::OnImportLabels()
    wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
 
    wxString fileName =
-       wxFileSelector(_("Select a text file containing labels..."),
-                      path,     // Path
-                      wxT(""),       // Name
-                      wxT(".txt"),   // Extension
-                      _("Text files (*.txt)|*.txt|All files (*.*)|*.*"),
-                      0,        // Flags
-                      this);    // Parent
+       FileSelector(_("Select a text file containing labels..."),
+                    path,     // Path
+                    wxT(""),       // Name
+                    wxT(".txt"),   // Extension
+                    _("Text files (*.txt)|*.txt|All files (*.*)|*.*"),
+                    0,        // Flags
+                    this);    // Parent
 
    if (fileName != wxT("")) {
       path =::wxPathOnly(fileName);
@@ -3540,13 +3542,13 @@ void AudacityProject::OnImportMIDI()
 {
    wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
 
-   wxString fileName = wxFileSelector(_("Select a MIDI file..."),
-                                      path,     // Path
-                                      wxT(""),       // Name
-                                      wxT(""),       // Extension
-                                      _("All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"),
-                                      0,        // Flags
-                                      this);    // Parent
+   wxString fileName = FileSelector(_("Select a MIDI file..."),
+                                    path,     // Path
+                                    wxT(""),       // Name
+                                    wxT(""),       // Extension
+                                    _("All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"),
+                                    0,        // Flags
+                                    this);    // Parent
 
    if (fileName != wxT("")) {
       path =::wxPathOnly(fileName);
@@ -3575,13 +3577,13 @@ void AudacityProject::OnImportRaw()
    wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
 
    wxString fileName =
-       wxFileSelector(_("Select any uncompressed audio file..."),
-                      path,     // Path
-                      wxT(""),       // Name
-                      wxT(""),       // Extension
-                      _("All files (*)|*"),
-                      0,        // Flags
-                      this);    // Parent
+       FileSelector(_("Select any uncompressed audio file..."),
+                    path,     // Path
+                    wxT(""),       // Name
+                    wxT(""),       // Extension
+                    _("All files (*)|*"),
+                    0,        // Flags
+                    this);    // Parent
 
    if (fileName == wxT(""))
       return;
@@ -4062,12 +4064,12 @@ void AudacityProject::OnExportCleanSpeechPresets()
    do {
       fileOkay = true;
 
-      fName = wxFileSelector(_("Save CleanSpeech Preset File As:"),
-                        path,
-                        wxT("*.csp"),       // default file extension
-                        extension,
-                        _("CleanSpeech Presets (*.csp)|*.csp"),
-                        wxSAVE | wxOVERWRITE_PROMPT);
+      fName = FileSelector(_("Save CleanSpeech Preset File As:"),
+                           path,
+                           wxT("*.csp"),       // default file extension
+                           extension,
+                           _("CleanSpeech Presets (*.csp)|*.csp"),
+                           wxSAVE | wxOVERWRITE_PROMPT);
 
       if (fName.empty()) { // if cancel selected
          return;
@@ -4145,12 +4147,12 @@ void AudacityProject::OnImportCleanSpeechPresets()
    do {
       fileOkay = true;
 
-      fName = wxFileSelector(wxT("Open CleanSpeech Preset File:"),
-                             path,
-                             wxT("*.csp"),       // default file name
-                             extension,
-                             wxT("CleanSpeech Presets (*.csp)|*.csp"),
-                             wxOPEN);
+      fName = FileSelector(wxT("Open CleanSpeech Preset File:"),
+                           path,
+                           wxT("*.csp"),       // default file name
+                           extension,
+                           wxT("CleanSpeech Presets (*.csp)|*.csp"),
+                           wxOPEN);
 
       if (fName.empty()) { // if cancel selected
          return;

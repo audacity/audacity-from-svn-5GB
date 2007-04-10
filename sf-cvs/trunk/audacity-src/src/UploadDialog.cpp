@@ -49,6 +49,8 @@
 #include "AllThemeResources.h"
 #include "Project.h"
 
+#include "FileDialog.h"
+
 //#include "../images/AudacityLogo.xpm"
 //#include "../images/UploadImages.h"
 
@@ -333,17 +335,17 @@ void UploadDialog::OnUploadFile(wxCommandEvent & WXUNUSED(event))
 
     abort = false;
 
-    wxFileDialog *open = new wxFileDialog(this, wxT("Choose file(s) to upload"),
-                                          ::wxGetCwd(), wxT(""),
-                                          wxT("All files (*.*)|*.*"),
-                                          wxOPEN | wxMULTIPLE); 
+    FileDialog open(this, wxT("Choose file(s) to upload"),
+                    ::wxGetCwd(), wxT(""),
+                    wxT("All files (*.*)|*.*"),
+                    wxOPEN | wxMULTIPLE); 
     
-    if (open->ShowModal()==wxID_OK)
+    if (open.ShowModal()==wxID_OK)
     {
         SetCursor(wxCURSOR_WAIT);
 
         // get the file(s) the user selected
-        open->GetPaths(files);
+        open.GetPaths(files);
 
         for (count = 0; count < files.GetCount(); count++)
         {   
@@ -370,15 +372,15 @@ void UploadDialog::OnUploadFile(wxCommandEvent & WXUNUSED(event))
 void UploadDialog::OnUploadDir(wxCommandEvent & WXUNUSED(event))
 {
 
-    wxDirDialog *open = new wxDirDialog(this, wxT("Choose folder to upload"), wxT("")); 
-    int result = open->ShowModal();
+    wxDirDialog open(this, wxT("Choose folder to upload"), wxT("")); 
+    int result = open.ShowModal();
 
     abort = false;
 
     if (result ==  wxID_OK)
     {
         SetCursor(wxCURSOR_WAIT);
-        UploadDir(open->GetPath(), wxT(""));
+        UploadDir(open.GetPath(), wxT(""));
         SetCursor(wxCURSOR_ARROW);
     }
 }
@@ -1196,13 +1198,13 @@ void UploadDialog::DownloadItem (wxString &src, wxString &dest,
         }
         else
         {
-            wxFileDialog *saveFile = new wxFileDialog(this, wxT("Download File"),
-                                                      wxT(""), src,
-                                                      wxT("All files (*.*)|*.*"), wxSAVE);
-            int result = saveFile->ShowModal();
+            FileDialog saveFile(this, wxT("Download File"),
+                                wxT(""), src,
+                                wxT("All files (*.*)|*.*"), wxSAVE);
+            int result = saveFile.ShowModal();
     
             if (result == wxID_OK)
-                DownloadFile(src, saveFile->GetPath());
+                DownloadFile(src, saveFile.GetPath());
         }
     }
 }
@@ -1215,21 +1217,21 @@ void UploadDialog::DownloadItem (wxString &src, bool dir)
     if (dir)
     {
         
-        wxDirDialog *saveDir = new wxDirDialog(this, wxT("Download Folder"), wxT(""));
-        int result = saveDir->ShowModal();
+        wxDirDialog saveDir(this, wxT("Download Folder"), wxT(""));
+        int result = saveDir.ShowModal();
 
         if (result == wxID_OK)
-            DownloadDir(src, saveDir->GetPath());
+            DownloadDir(src, saveDir.GetPath());
 
     }
     else
     {
 
-        wxFileDialog *saveFile = new wxFileDialog(this, wxT("Download File"), wxT(""), src, wxT("All files (*.*)|*.*"), wxSAVE);
-        int result = saveFile->ShowModal();
+        FileDialog saveFile(this, wxT("Download File"), wxT(""), src, wxT("All files (*.*)|*.*"), wxSAVE);
+        int result = saveFile.ShowModal();
     
         if (result == wxID_OK)
-            DownloadFile(src, saveFile->GetPath());
+            DownloadFile(src, saveFile.GetPath());
         
     }
 }

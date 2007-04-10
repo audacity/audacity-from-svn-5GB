@@ -93,6 +93,8 @@ destructor does the cleanup.
 #include "../WaveTrack.h"
 #include "../widgets/LinkingHtmlWindow.h"
 
+#include "FileDialog.h"
+
 #include "ExportMP3.h"
 
 #ifdef __WXMAC__
@@ -738,13 +740,13 @@ public:
          "Where would I find the file %s" instead if you want. */
       question.Printf(_("Where is %s?"), mName.c_str());
 
-      wxString path = wxFileSelector(question, 
-                                     mLibPath.GetPath(),
-                                     mLibPath.GetName(),
-                                     wxT(""),
-                                     mType,
-                                     wxOPEN,
-                                     this);
+      wxString path = FileSelector(question, 
+                                   mLibPath.GetPath(),
+                                   mLibPath.GetName(),
+                                   wxT(""),
+                                   mType,
+                                   wxOPEN,
+                                   this);
       if (!path.IsEmpty()) {
          mLibPath = path;
          mPathText->SetValue(path);

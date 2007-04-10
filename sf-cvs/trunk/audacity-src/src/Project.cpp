@@ -123,6 +123,8 @@ scroll information.  It also has some status flags.
 #include "Theme.h"
 #include "AllThemeResources.h"
 
+#include "FileDialog.h"
+
 #include "toolbars/ToolManager.h"
 #include "toolbars/ControlToolBar.h"
 #include "toolbars/DeviceToolBar.h"
@@ -1522,13 +1524,13 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
    // so we must go via prefs.
    bool bCleanSpeechMode;
    gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &bCleanSpeechMode, false );
-   wxFileDialog dlog(NULL, _("Select one or more audio files..."),
-                     path, wxT(""),
-	                  bCleanSpeechMode ? 
-                        _("Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3")
-                     :
-                     GetImportFilesFilter().c_str(),
-                     wxOPEN | wxMULTIPLE);
+   FileDialog dlog(NULL, _("Select one or more audio files..."),
+                   path, wxT(""),
+	                bCleanSpeechMode ? 
+                      _("Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3")
+                   :
+                   GetImportFilesFilter().c_str(),
+                   wxOPEN | wxMULTIPLE);
 
    int result = dlog.ShowModal();
 
@@ -2395,16 +2397,16 @@ bool AudacityProject::SaveAs()
 	fName = GetName().Len()? GetName() + ext : wxString(wxT(""));
 	if( mCleanSpeechMode )
 	{
-	   fName = wxFileSelector(_("Save Speech As:"),
-                          path, fName, wxT(""),
-                          _("Windows PCM Audio file (*.wav)|*.wav"),  //lda
-                          wxSAVE | wxOVERWRITE_PROMPT, this);
+	   fName = FileSelector(_("Save Speech As:"),
+                           path, fName, wxT(""),
+                           _("Windows PCM Audio file (*.wav)|*.wav"),  //lda
+                           wxSAVE | wxOVERWRITE_PROMPT, this);
 	}
 	else
 	{
  	  ShowWarningDialog(this, wxT("FirstProjectSave"),
                      _("Audacity project files (.aup) let you save everything you're working on exactly as it\nappears on the screen, but most other programs can't open Audacity project files.\n\nWhen you want to save a file that can be opened by other programs, select one of the\nExport commands."));
- 	  fName = wxFileSelector(_NoAcc("Save Project &As...") + wxT(":"),
+ 	  fName = FileSelector(_NoAcc("Save Project &As...") + wxT(":"),
                           path, fName, wxT(""),
                           _("Audacity projects (*.aup)|*.aup"),
                           wxSAVE | wxOVERWRITE_PROMPT, this);

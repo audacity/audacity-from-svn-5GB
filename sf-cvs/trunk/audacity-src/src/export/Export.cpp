@@ -385,7 +385,7 @@ bool Export::GetFilename()
 
       fd.SetFilterIndex(mFormat);
 
-      fd.EnableButton(_("&Options..."), ExportCallback, this);
+      fd.EnableButton(_("Options..."), ExportCallback, this);
 
       if (fd.ShowModal() == wxID_CANCEL) {
          return false;
