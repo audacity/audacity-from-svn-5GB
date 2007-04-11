@@ -1261,10 +1261,15 @@ bool LabelTrack::CaptureKey(wxKeyEvent & event)
             return true;
          break;
       }
+
+      if (IsGoodLabelCharacter(keyCode, charCode) && !event.CmdDown()) {
+         return true;
+      }
    }
 
-   if (IsGoodLabelCharacter(keyCode, charCode) && !event.CmdDown())
+   if (IsGoodLabelFirstCharacter(keyCode, charCode) && !event.CmdDown()) {
       return true;
+   }
 
    return false;
 }
@@ -2122,7 +2127,7 @@ void LabelTrack::CreateCustomGlyphs()
 /// character.
 bool LabelTrack::IsGoodLabelFirstCharacter(int keyCode, wxChar charCode)
 {
-   return (keyCode < WXK_START && !wxIscntrl(charCode)) ||
+   return (keyCode < WXK_START && !wxIscntrl(charCode) && (keyCode != WXK_SPACE)) ||
           keyCode > WXK_COMMAND;
 }
 
