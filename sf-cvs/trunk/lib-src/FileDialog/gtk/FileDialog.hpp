@@ -2,7 +2,7 @@
 // Name:        gtk/filedlg.cpp
 // Purpose:     native implementation of FileDialog
 // Author:      Robert Roebling, Zbigniew Zagorski, Mart Raudsepp
-// Id:          $Id: FileDialog.hpp,v 1.2 2007-04-10 02:22:21 llucius Exp $
+// Id:          $Id: FileDialog.hpp,v 1.3 2007-04-11 00:05:54 llucius Exp $
 // Copyright:   (c) 1998 Robert Roebling, 2004 Zbigniew Zagorski, 2005 Mart Raudsepp
 // Licence:     wxWindows licence
 //
@@ -36,6 +36,25 @@
 //-----------------------------------------------------------------------------
 
 extern void wxapp_install_idle_handler();
+
+//-----------------------------------------------------------------------------
+// Open expanders on the dialog (really only the "Browser for other folders")
+//-----------------------------------------------------------------------------
+
+extern "C" {
+
+static void SetExpanded(GtkWidget *widget, gpointer data)
+{
+    if (GTK_IS_EXPANDER(widget)) {
+        gtk_expander_set_expanded(GTK_EXPANDER(widget), true);
+    }
+    else if (GTK_IS_CONTAINER(widget)) {
+        gtk_container_forall(GTK_CONTAINER(widget), SetExpanded, data);
+    }
+
+    return;
+}
+}
 
 //-----------------------------------------------------------------------------
 // "clicked" for OK-button
@@ -268,11 +287,17 @@ int FileDialog::ShowModal()
 {
     if ( !m_buttonlabel.IsEmpty() )
     {
-        GtkWidget *btn;
-        btn = gtk_button_new_with_label(wxGTK_CONV(m_buttonlabel));
-        gtk_file_chooser_set_extra_widget(GTK_FILE_CHOOSER(m_widget), btn);
-        g_signal_connect(G_OBJECT(btn), "clicked",
+        GtkWidget *widget;
+        wxString label = m_buttonlabel;
+
+        label.Replace(wxT("&"), wxT("_"));
+
+        widget = gtk_button_new_with_mnemonic(wxGTK_CONV(label));
+        gtk_file_chooser_set_extra_widget(GTK_FILE_CHOOSER(m_widget), widget);
+        g_signal_connect(G_OBJECT(widget), "clicked",
             GTK_SIGNAL_FUNC(gtk_filedialog_extra_callback), (gpointer)this);
+
+        gtk_container_forall(GTK_CONTAINER(m_widget), SetExpanded, NULL);
     }
 
 #if defined(__WXGTK24__) && (!defined(__WXGPE__))

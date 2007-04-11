@@ -20,7 +20,7 @@ custom controls.
 #include "mac/FileDialog.hpp"
 #elif defined(__WXMSW__)
 #include "win/FileDialog.hpp"
-#elif defined(__FORCE_WXGTK__)
+#elif defined(__WXGTK__)
 #include "gtk/FileDialog.hpp"
 #else
 #include "generic/FileDialog.hpp"
@@ -47,7 +47,7 @@ void FileDialog::ClickButton(int index)
 // Author:      John Labenski
 // Modified by: Leland Lucius
 // Created:     14.06.03 (extracted from src/*/filedlg.cpp)
-// RCS-ID:      $Id: FileDialog.cpp,v 1.3 2007-04-10 02:22:20 llucius Exp $
+// RCS-ID:      $Id: FileDialog.cpp,v 1.4 2007-04-11 00:05:54 llucius Exp $
 // Copyright:   (c) Robert Roebling
 // Licence:     wxWindows licence
 //
