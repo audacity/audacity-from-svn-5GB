@@ -26,7 +26,7 @@ typedef void (*fdCallback)(void *, int);
 #include "mac/FileDialog.h"
 #elif defined(__WXMSW__)
 #include "win/FileDialog.h"
-#elif defined(__FORCE_WXGTK__)
+#elif defined(__WXGTK__)
 #include "gtk/FileDialog.h"
 #else
 #include "generic/FileDialog.h"
@@ -39,7 +39,7 @@ typedef void (*fdCallback)(void *, int);
 // Modified by: Leland Lucius
 // Created:     8/17/99
 // Copyright:   (c) Robert Roebling
-// RCS-ID:      $Id: FileDialog.h,v 1.3 2007-04-10 02:22:20 llucius Exp $
+// RCS-ID:      $Id: FileDialog.h,v 1.4 2007-04-11 00:05:54 llucius Exp $
 // Licence:     wxWindows licence
 //
 // Modified for Audacity to support an additional button on Save dialogs
