@@ -2,7 +2,7 @@
 // Name:        gtk/filedlg.cpp
 // Purpose:     native implementation of FileDialog
 // Author:      Robert Roebling, Zbigniew Zagorski, Mart Raudsepp
-// Id:          $Id: FileDialog.hpp,v 1.3 2007-04-11 00:05:54 llucius Exp $
+// Id:          $Id: FileDialog.hpp,v 1.4 2007-04-11 01:33:22 llucius Exp $
 // Copyright:   (c) 1998 Robert Roebling, 2004 Zbigniew Zagorski, 2005 Mart Raudsepp
 // Licence:     wxWindows licence
 //
@@ -237,6 +237,7 @@ FileDialog::FileDialog(wxWindow *parent, const wxString& message,
             if (!gtk_check_version(2,7,3))
                 gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(m_widget), TRUE);
 #endif
+            gtk_container_forall(GTK_CONTAINER(m_widget), SetExpanded, NULL);
         }
         else
         {
@@ -296,8 +297,6 @@ int FileDialog::ShowModal()
         gtk_file_chooser_set_extra_widget(GTK_FILE_CHOOSER(m_widget), widget);
         g_signal_connect(G_OBJECT(widget), "clicked",
             GTK_SIGNAL_FUNC(gtk_filedialog_extra_callback), (gpointer)this);
-
-        gtk_container_forall(GTK_CONTAINER(m_widget), SetExpanded, NULL);
     }
 
 #if defined(__WXGTK24__) && (!defined(__WXGPE__))
