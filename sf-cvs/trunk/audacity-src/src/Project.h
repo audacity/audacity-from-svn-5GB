@@ -201,6 +201,7 @@ class AudacityProject:public wxFrame,
    void OnCloseWindow(wxCloseEvent & event);
    void OnTimer(wxTimerEvent & event);
    void OnToolBarUpdate(wxCommandEvent & event);
+   void OnOpenAudioFile(wxCommandEvent & event);
    void OnCaptureKeyboard(wxCommandEvent & event);
    void OnReleaseKeyboard(wxCommandEvent & event);
    bool HandleKeyDown(wxKeyEvent & event);

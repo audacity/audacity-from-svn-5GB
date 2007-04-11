@@ -150,6 +150,7 @@ const wxChar *overrideSliderNameStr = wxT("");
 /// Custom events
 ////////////////////////////////////////////////////////////
 
+DEFINE_EVENT_TYPE(EVT_OPEN_AUDIO_FILE);
 DEFINE_EVENT_TYPE(EVT_CAPTURE_KEYBOARD);
 DEFINE_EVENT_TYPE(EVT_RELEASE_KEYBOARD);
 DEFINE_EVENT_TYPE(EVT_CAPTURE_KEY);
@@ -248,6 +249,11 @@ void QuitAudacity()
 
 #if defined(__WXMSW__)
 
+//
+// DDE support for opening multiple files with one instance
+// of Audacity.
+//
+
 #define IPC_APPL wxT("audacity")
 #define IPC_TOPIC wxT("System")
 
@@ -272,11 +278,19 @@ public:
          return false;
       }
 
-      AudacityProject *project = GetActiveProject();
-      if (project == NULL || !project->GetTracks()->IsEmpty()) {
-         project = CreateNewAudacityProject(gParentWindow);
+      AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+
+      wxString cmd(data);
+
+      // We queue a command event to the project responsible for 
+      // opening the file since it can be a long process and we
+      // only have 5 seconds to return the Execute message to the
+      // client.
+      if (!cmd.IsEmpty()) {
+         wxCommandEvent e(EVT_OPEN_AUDIO_FILE);
+         e.SetString(data);
+         project->AddPendingEvent(e);
       }
-      project->OpenFile(wxString(data));
 
       return true;
    };
@@ -862,10 +876,6 @@ bool AudacityApp::OnInit()
 
 #endif // Cygwin command-line parser
 
-#if defined(__WXMSW__)
-   mIPCServ = new IPCServ();
-#endif
-
    gInited = true;
    
    return TRUE;
@@ -1019,6 +1029,32 @@ bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
       }
    }
    else if ( mChecker->IsAnotherRunning() ) {
+#if defined(__WXMSW__)
+      //
+      // On Windows (and possibly Linux?), we attempt to make
+      // a DDE connection to an already active Audacity.  If
+      // successful, we send the first command line argument
+      // (the audio file name) to that Audacity for processing.
+      wxClient client;
+      wxConnectionBase *conn;
+
+      // We try up to 10 times since there's a small window
+      // where the DDE server may not have been fully initialized
+      // yet.
+      for (int i = 0; i < 10; i++) {
+         conn = client.MakeConnection(wxEmptyString,
+                                      IPC_APPL,
+                                      IPC_TOPIC);
+         if (conn) {
+            if (conn->Execute(argv[1])) {
+               // Command was successfully queued so exit quietly
+               delete mChecker;
+               return false;
+            }
+         }
+         wxMilliSleep(100);
+      }
+#endif
       // There is another copy of Audacity running.  Force quit.
       
       wxString prompt =
@@ -1030,6 +1066,11 @@ bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
       delete mChecker;
       return false;
    }
+
+#if defined(__WXMSW__)
+   // Create the DDE server
+   mIPCServ = new IPCServ();
+#endif
 
    return true;
 }
@@ -1348,9 +1389,13 @@ void AudacityApp::AssociateFileTypes()
                if (!associateFileTypes.Exists() || 
                      (tmpRegAudPath.Find(wxT("audacity.exe")) >= 0)) {
                   associateFileTypes.Create(true);
-                  associateFileTypes = (wxString)argv[0]; // + (wxString)wxT(" \"%1\"");
+                  associateFileTypes = (wxString)argv[0] + (wxString)wxT(" \"%1\"");
                }
 
+#if 0
+               // These can be use later to support more startup messages
+               // like maybe "Import into existing project" or some such.
+               // Leaving here for an example...
                associateFileTypes.SetName(root_key + wxT("Audacity.Project\\shell\\open\\ddeexec"));
                if(!associateFileTypes.Exists()) {
                   associateFileTypes.Create(true);
@@ -1368,6 +1413,7 @@ void AudacityApp::AssociateFileTypes()
                   associateFileTypes.Create(true);
                   associateFileTypes = IPC_TOPIC;
                }
+#endif
             }
          } else {
             // User said no. Set a pref so we don't keep asking.
