@@ -29,6 +29,9 @@ extern wxFrame *gParentFrame;
 
 extern bool gIsQuitting;
 
+// Asynchronous open
+DECLARE_EVENT_TYPE(EVT_OPEN_AUDIO_FILE, -1);
+
 // Keyboard capture support
 DECLARE_EVENT_TYPE(EVT_CAPTURE_KEYBOARD, -1);
 DECLARE_EVENT_TYPE(EVT_RELEASE_KEYBOARD, -1);

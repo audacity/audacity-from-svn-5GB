@@ -435,6 +435,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     // Update menu method
     EVT_UPDATE_UI(1, AudacityProject::OnUpdateMenus)
     EVT_ICONIZE(AudacityProject::OnIconize)
+    EVT_COMMAND(wxID_ANY, EVT_OPEN_AUDIO_FILE, AudacityProject::OnOpenAudioFile)
     EVT_COMMAND(wxID_ANY, EVT_TOOLBAR_UPDATED, AudacityProject::OnToolBarUpdate)
     EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEYBOARD, AudacityProject::OnCaptureKeyboard)
     EVT_COMMAND(wxID_ANY, EVT_RELEASE_KEYBOARD, AudacityProject::OnReleaseKeyboard)
@@ -1502,6 +1503,17 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    }
 
    Destroy();
+}
+
+void AudacityProject::OnOpenAudioFile(wxCommandEvent & event)
+{
+   wxString cmd = event.GetString();
+
+   if (!cmd.IsEmpty()) {
+      OpenFile(cmd);
+   }
+
+   RequestUserAttention();
 }
 
 void AudacityProject::OnCaptureKeyboard(wxCommandEvent & event)
