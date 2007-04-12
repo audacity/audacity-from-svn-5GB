@@ -20,7 +20,12 @@
 <p><?=_('Audacity has built-in support for cross-platform Nyquist effects.  You can download additional <a href="nyquistplugins">Nyquist plug-ins</a>, or create your own using the <a href="../help/nyquist">Nyquist programming language</a>.')?>
 
 <h3><?=_("VST Plug-Ins")?></h3>
-<p><?=_('Audacity can load VST effects (for Mac OS or Windows) using the optional <a href="../help/faq?s=install&amp;i=vst-enabler">VST Enabler</a>.  You can find VST effects at <a href="http://www.kvraudio.com/">KVR Audio</a> and <a href="http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/">other plug-in sites</a>.</p>')?>
+<p><?=_('Audacity can load VST effects (for Mac OS or Windows) using the optional <a href="../help/faq?s=install&amp;i=vst-enabler">VST Enabler</a>.  You can find VST effects on many plug-in sites')?></p>
+<ul>
+<li><a href="http://www.hitsquad.com/smm/cat/PLUGINS_VST/?nl14">Hitsquad</a></li>
+<li><a href="http://www.kvraudio.com/">KVR Audio</a></li>
+<li><a href="http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/">Open Directory</a>.</li>
+</ul>
 
 <?php
   include "../include/footer.inc.php";
