@@ -70,13 +70,10 @@ destructor does the cleanup.
 
 #include <wx/choice.h>
 #include <wx/dynlib.h>
-#include <wx/ffile.h>
-#include <wx/filedlg.h>
 #include <wx/intl.h>
 #include <wx/log.h>
 #include <wx/mimetype.h>
 #include <wx/msgdlg.h>
-#include <wx/progdlg.h>
 #include <wx/radiobut.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
@@ -85,6 +82,7 @@ destructor does the cleanup.
 #include <wx/window.h>
 
 #include "../Audacity.h"
+#include "../FileIO.h"
 #include "../Internat.h"
 #include "../Mix.h"
 #include "../Prefs.h"
@@ -96,18 +94,6 @@ destructor does the cleanup.
 #include "FileDialog.h"
 
 #include "ExportMP3.h"
-
-#ifdef __WXMAC__
-#define __MOVIES__  /* Apple's Movies.h not compatible with Audacity */
-/* #define __MACHELP__ */
-
-#include <wx/mac/private.h>
-# ifdef __UNIX__
-#  include <CoreServices/CoreServices.h>
-# else
-#  include <Files.h>
-# endif
-#endif
 
 MP3Exporter *gMP3Exporter = NULL;
 
@@ -978,8 +964,7 @@ bool ExportMP3(AudacityProject *project,
    }
    
    /* Open file for writing */
-
-   wxFFile outFile(fName, wxT("wb"));
+   FileIO outFile(fName, FileIO::Output);
    if (!outFile.IsOpened()) {
       wxMessageBox(_("Unable to open target file for writing"));
       return false;
@@ -1095,24 +1080,8 @@ bool ExportMP3(AudacityProject *project,
    free(id3buffer);
 
    /* Close file */
-   
    outFile.Close();
       
-   /* MacOS: set the file type/creator so that the OS knows it's an MP3
-      file which was created by Audacity */
-      
-#ifdef __WXMAC__
-   FSSpec spec;
-   wxMacFilename2FSSpec(fName, &spec);
-   FInfo finfo;
-   if (FSpGetFInfo(&spec, &finfo) == noErr) {
-      finfo.fdType = 'MP3 ';
-      finfo.fdCreator = AUDACITY_CREATOR;
-
-      FSpSetFInfo(&spec, &finfo);
-   }
-#endif
-
    delete[]buffer;
    
    return !cancelling;

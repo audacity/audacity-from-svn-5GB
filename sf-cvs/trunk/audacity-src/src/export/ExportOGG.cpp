@@ -21,13 +21,12 @@
 
 #include "ExportOGG.h"
 
-#include <wx/progdlg.h>
-#include <wx/ffile.h>
 #include <wx/log.h>
 #include <wx/msgdlg.h>
 
 #include <vorbis/vorbisenc.h>
 
+#include "../FileIO.h"
 #include "../Project.h"
 #include "../Mix.h"
 #include "../Prefs.h"
@@ -48,7 +47,7 @@ bool ExportOGG(AudacityProject *project,
    bool      cancelling = false;
    int       eos = 0;
 
-   wxFFile outFile(fName, wxT("wb"));
+   FileIO outFile(fName, FileIO::Output);
 
    if(!outFile.IsOpened()) {
       wxMessageBox(_("Unable to open target file for writing"));
