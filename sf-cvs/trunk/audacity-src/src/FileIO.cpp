@@ -128,6 +128,8 @@ void FileIO::Close()
       mFtp = NULL;
    }
 
+   SetCatalogInfo();
+
    mOpen = false;
 }
 
@@ -143,7 +145,7 @@ void FileIO::SetCatalogInfo()
 
    wxUint32 type;
    wxFileName fn(mName);
-   wxString ext = fn.GetExt().ToUpper() + wxT("    ");
+   wxString ext = fn.GetExt().MakeUpper() + wxT("    ");
 
    type = (ext[0] & 0xff) << 24 |
           (ext[1] & 0xff) << 16 |

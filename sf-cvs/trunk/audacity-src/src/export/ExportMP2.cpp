@@ -41,31 +41,19 @@
 #include <wx/dynlib.h>
 #include <wx/msgdlg.h>
 #include <wx/utils.h>
-#include <wx/progdlg.h>
 #include <wx/timer.h>
 #include <wx/window.h>
-#include <wx/ffile.h>
 #include <wx/log.h>
-#include <wx/filedlg.h>
 #include <wx/intl.h>
 
 #include "ExportMP2.h"
+#include "../FileIO.h"
 #include "../Internat.h"
 #include "../Mix.h"
 #include "../Prefs.h"
 #include "../Project.h"
 #include "../Tags.h"
 #include "../WaveTrack.h"
-
-#ifdef __WXMAC__
-#define __MOVIES__
-#include <wx/mac/private.h>
-#ifdef __UNIX__
-#include <CoreServices/CoreServices.h>
-#else
-#include <Files.h>
-#endif
-#endif
 
 #define LIBTWOLAME_STATIC
 #include "twolame.h"
@@ -109,7 +97,7 @@ bool ExportMP2(AudacityProject *project,
       }
    }
 
-   wxFFile outFile(fName, wxT("wb"));
+   FileIO outFile(fName, FileIO::Output);
    if (!outFile.IsOpened()) {
       wxMessageBox(_("Unable to open target file for writing"));
       return false;
@@ -193,21 +181,6 @@ bool ExportMP2(AudacityProject *project,
    /* Close file */
    
    outFile.Close();
-
-   /* MacOS: set the file type/creator so that the OS knows it's an MP2
-      file which was created by Audacity */
-      
-#ifdef __WXMAC__
-   FSSpec spec;
-   wxMacFilename2FSSpec(fName, &spec);
-   FInfo finfo;
-   if (FSpGetFInfo(&spec, &finfo) == noErr) {
-      finfo.fdType = 'MP2 ';
-      finfo.fdCreator = AUDACITY_CREATOR;
-
-      FSpSetFInfo(&spec, &finfo);
-   }
-#endif
 
    return !cancelling;
 }
