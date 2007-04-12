@@ -4,7 +4,7 @@
 // Author:      Stefan Csomor
 // Modified by: Leland Lucius
 // Created:     1998-01-01
-// RCS-ID:      $Id: FileDialog.hpp,v 1.2 2007-04-10 02:22:21 llucius Exp $
+// RCS-ID:      $Id: FileDialog.hpp,v 1.3 2007-04-12 00:15:37 llucius Exp $
 // Copyright:   (c) Stefan Csomor
 // Licence:     wxWindows licence
 //
@@ -354,6 +354,7 @@ FileDialog::FileDialog(wxWindow *parent, const wxString& message,
     wxASSERT_MSG( NavServicesAvailable() , wxT("Navigation Services are not running") ) ;
     m_callback = NULL;
     m_cbdata = NULL;
+    m_dialogStyle = style;
 }
 
 static pascal Boolean CrossPlatformFilterCallback (

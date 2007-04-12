@@ -283,7 +283,7 @@ public:
       ShuttleGui S(this, eIsSavingToPrefs);
       PopulateOrExchange(S);
 
-      wxDialog::OnOK(event);
+      EndModal(wxID_OK);
 
       return;
    }

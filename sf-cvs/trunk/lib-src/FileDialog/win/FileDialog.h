@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialog.h,v 1.2 2007-04-10 02:22:21 llucius Exp $
+// RCS-ID:      $Id: FileDialog.h,v 1.3 2007-04-12 00:15:37 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -52,6 +52,7 @@ protected:
 private:
     wxArrayString m_fileNames;
     bool m_bMovedWindow;
+    long m_dialogStyle;
 
     fdCallback m_callback;
     void *m_cbdata;

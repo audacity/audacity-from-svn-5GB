@@ -5,7 +5,7 @@
 // Modified by: Leland Lucius
 // Created:     8/17/99
 // Copyright:   (c) Robert Roebling
-// RCS-ID:      $Id: FileDialog.h,v 1.2 2007-04-10 02:22:21 llucius Exp $
+// RCS-ID:      $Id: FileDialog.h,v 1.3 2007-04-12 00:15:36 llucius Exp $
 // Licence:     wxWindows licence
 //
 // Modified for Audacity to support an additional button on Save dialogs
@@ -125,6 +125,7 @@ private:
     static long ms_lastViewStyle;     // list or report?
     static bool ms_lastShowHidden;    // did we show hidden files?
 
+    long m_dialogStyle;
     wxBoxSizer *m_choicesizer;
     wxString m_buttonlabel;
     fdCallback m_callback;

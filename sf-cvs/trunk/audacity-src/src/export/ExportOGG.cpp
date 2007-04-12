@@ -260,7 +260,7 @@ public:
 
       gPrefs->Write(wxT("/FileFormats/OggExportQuality"),mOggQualityUnscaled * 10);
 
-      wxDialog::OnOK(event);
+      EndModal(wxID_OK);
 
       return;
    }
