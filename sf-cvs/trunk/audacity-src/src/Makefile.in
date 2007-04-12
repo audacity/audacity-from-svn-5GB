@@ -53,6 +53,7 @@ OBJS = \
 	Dependencies.o \
 	Envelope.o \
 	FFT.o \
+   FileIO.o \
 	FileNames.o \
 	FreqWindow.o \
 	HistoryWindow.o \
