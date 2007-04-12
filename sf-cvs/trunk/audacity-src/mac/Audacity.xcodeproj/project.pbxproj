@@ -737,6 +737,7 @@
 		17FDBD03098BFF4E00BCEF32 /* framing.c in Sources */ = {isa = PBXBuildFile; fileRef = 1707339A0988D6AC008541CC /* framing.c */; };
 		280828550A75E0D0000002EF /* LabelDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828530A75E0D0000002EF /* LabelDialog.cpp */; };
 		2808285A0A75E0EA000002EF /* Grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828580A75E0EA000002EF /* Grid.cpp */; };
+		2809C4B80BCB7E560006010F /* FileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2809C4B60BCB7E560006010F /* FileIO.cpp */; };
 		28105D9C0AD09FB200BB4269 /* portmixer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28105D9B0AD09FB200BB4269 /* portmixer.h */; };
 		28105DAA0AD09FC500BB4269 /* px_mac_coreaudio.c in Sources */ = {isa = PBXBuildFile; fileRef = 28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */; };
 		28105DAB0AD09FC500BB4269 /* px_mixer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28105DA10AD09FC500BB4269 /* px_mixer.c */; };
@@ -1859,6 +1860,8 @@
 		280828540A75E0D0000002EF /* LabelDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LabelDialog.h; sourceTree = "<group>"; };
 		280828580A75E0EA000002EF /* Grid.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Grid.cpp; sourceTree = "<group>"; };
 		280828590A75E0EA000002EF /* Grid.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Grid.h; sourceTree = "<group>"; };
+		2809C4B60BCB7E560006010F /* FileIO.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FileIO.cpp; sourceTree = "<group>"; };
+		2809C4B70BCB7E560006010F /* FileIO.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FileIO.h; sourceTree = "<group>"; };
 		28105D9B0AD09FB200BB4269 /* portmixer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = portmixer.h; sourceTree = "<group>"; };
 		28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = px_mac_coreaudio.c; sourceTree = "<group>"; };
 		28105DA10AD09FC500BB4269 /* px_mixer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = px_mixer.c; sourceTree = "<group>"; };
@@ -2795,6 +2798,8 @@
 				1790B07109883BFD008A330A /* FFT.h */,
 				1790B07209883BFD008A330A /* FileFormats.cpp */,
 				1790B07309883BFD008A330A /* FileFormats.h */,
+				2809C4B60BCB7E560006010F /* FileIO.cpp */,
+				2809C4B70BCB7E560006010F /* FileIO.h */,
 				28F00A900A3E2FF100A3E5F5 /* FileNames.cpp */,
 				28F00A910A3E2FF100A3E5F5 /* FileNames.h */,
 				1790B07409883BFD008A330A /* float_cast.h */,
@@ -5260,6 +5265,7 @@
 				282D474C0B9E8D900034BC49 /* Snap.cpp in Sources */,
 				2816372E0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp in Sources */,
 				283B3D4D0BC21EBE00FA01D5 /* FileDialog.cpp in Sources */,
+				2809C4B80BCB7E560006010F /* FileIO.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
