@@ -59,17 +59,28 @@
 #include <wx/defs.h>
 
 #if wxUSE_ACCESSIBILITY
-#define wxTextCtrlNameStr overrideTextCtrlNameStr
+
+#define _PTR_
+
+#if wxCHECK_VERSION(2, 8, 0)
+extern const wxChar overrideTextCtrlNameStr[];
+extern const wxChar overrideChoiceNameStr[];
+extern const wxChar overrideComboBoxNameStr[];
+extern const wxChar overrideSliderNameStr[];
+#else
 extern const wxChar *overrideTextCtrlNameStr;
-
-#define wxChoiceNameStr overrideChoiceNameStr
 extern const wxChar *overrideChoiceNameStr;
-
-#define wxComboBoxNameStr overrideComboBoxNameStr
 extern const wxChar *overrideComboBoxNameStr;
-
-#define wxSliderNameStr overrideSliderNameStr
 extern const wxChar *overrideSliderNameStr;
 #endif
+
+#define wxTextCtrlNameStr overrideTextCtrlNameStr
+#define wxChoiceNameStr overrideChoiceNameStr
+#define wxComboBoxNameStr overrideComboBoxNameStr
+#define wxSliderNameStr overrideSliderNameStr
+
+#undef _PTR_
+#endif
+
 // arch-tag: dcb2defc-1c07-4bae-a9ca-c5377cb470e4
 

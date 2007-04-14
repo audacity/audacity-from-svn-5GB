@@ -140,10 +140,17 @@ It handles initialization and termination by subclassing wxApp.
 #endif 
 
 #if wxUSE_ACCESSIBILITY
+#if wxCHECK_VERSION(2, 8, 0)
+const wxChar overrideTextCtrlNameStr[] = wxT("");
+const wxChar overrideChoiceNameStr[] = wxT("");
+const wxChar overrideComboBoxNameStr[] = wxT("");
+const wxChar overrideSliderNameStr[] = wxT("");
+#else
 const wxChar *overrideTextCtrlNameStr = wxT("");
 const wxChar *overrideChoiceNameStr = wxT("");
 const wxChar *overrideComboBoxNameStr = wxT("");
 const wxChar *overrideSliderNameStr = wxT("");
+#endif
 #endif
 
 ////////////////////////////////////////////////////////////
