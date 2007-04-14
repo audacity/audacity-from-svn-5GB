@@ -242,13 +242,13 @@ void AudacityProject::CreateMenusAndCommands()
       
       c->AddSeparator();
       
-      c->AddItem(wxT("Export"),         _("&Export As..."),           FN(OnExport));
+      c->AddItem(wxT("Export"),         _("&Export..."),           FN(OnExport));
       // Enable Export commands only when there are tracks
       c->SetCommandFlags(wxT("Export"),
                          AudioIONotBusyFlag | TracksExistFlag,
                          AudioIONotBusyFlag | TracksExistFlag);
 
-      c->AddItem(wxT("ExportSel"),      _("Expo&rt Selection As..."), FN(OnExportSelection));
+      c->AddItem(wxT("ExportSel"),      _("Expo&rt Selection..."), FN(OnExportSelection));
       // Enable Export Selection commands only when there's a selection
       c->SetCommandFlags(wxT("ExportSel"),
                          AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
@@ -271,13 +271,13 @@ void AudacityProject::CreateMenusAndCommands()
 	if( mCleanSpeechMode )
 	{
       
-      c->AddItem(wxT("Export"),         _("&Export As..."),           FN(OnExport));
+      c->AddItem(wxT("Export"),         _("&Export..."),           FN(OnExport));
       // Enable Export commands only when there are tracks
       c->SetCommandFlags(wxT("Export"),
                          AudioIONotBusyFlag | TracksExistFlag,
                          AudioIONotBusyFlag | TracksExistFlag);
 
-      c->AddItem(wxT("ExportSel"),      _("Expo&rt Selection As..."), FN(OnExportSelection));
+      c->AddItem(wxT("ExportSel"),      _("Expo&rt Selection..."), FN(OnExportSelection));
       // Enable Export Selection commands only when there's a selection
       c->SetCommandFlags(wxT("ExportSel"),
                          AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
