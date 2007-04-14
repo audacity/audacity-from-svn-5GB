@@ -55,7 +55,7 @@ void LoadLadspaEffect(wxSortedArrayString &uniq, wxString fname)
       data = mainFn(index);
       while(data) {
 
-         wxString uniqid = wxString::Format(wxT("%08x-%s"), data->UniqueID, data->Label);
+         wxString uniqid = wxString::Format(wxT("%08x-%s"), data->UniqueID, LAT1CTOWX(data->Label).c_str());
          if (uniq.Index(uniqid) == wxNOT_FOUND) {
             uniq.Add(uniqid);
             LadspaEffect *effect = new LadspaEffect(data);
