@@ -203,7 +203,7 @@ public:
    /// 
    /// 
    OGGOptionsDialog(wxWindow *parent)
-   : wxDialog(NULL, wxID_ANY, wxString(_("Specify MP2 Options")),
+   : wxDialog(NULL, wxID_ANY, wxString(_("Specify OGG Options")),
       wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
    {
       ShuttleGui S(this, eIsCreatingFromPrefs);
