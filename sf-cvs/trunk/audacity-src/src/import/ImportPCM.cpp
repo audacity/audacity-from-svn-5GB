@@ -49,7 +49,7 @@ public:
    PCMImportPlugin():
       ImportPlugin(wxArrayString())
    {
-      sf_get_all_extensions(mExtensions);
+      mExtensions = sf_get_all_extensions();
    }
 
    ~PCMImportPlugin() { }

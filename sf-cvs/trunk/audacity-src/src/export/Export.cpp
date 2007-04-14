@@ -8,6 +8,16 @@
 
 *******************************************************************//**
 
+\class Export
+\brief Main class to control the export function.
+
+*//****************************************************************//**
+
+\class ExportType
+\brief Container for information about supported export types.
+
+*//****************************************************************//**
+
 \class ExportMixerDialog
 \brief Dialog for advanced mixing.
 
@@ -77,19 +87,31 @@ ExportType::ExportType()
 
 void ExportType::Set(ExportRoutine routine,
                      ExportOptions options,
-                     wxString format,
+                     wxArrayString extensions,
                      wxString extension,
                      int maxchannels,
-                     bool canmetadata,
-                     wxString description)
+                     bool canmetadata)
+{
+   mExtensions = extensions;
+   Set(routine, options, extension, maxchannels, canmetadata);
+}
+
+void ExportType::Set(ExportRoutine routine,
+                     ExportOptions options,
+                     wxString extension,
+                     int maxchannels,
+                     bool canmetadata)
 {
    mRoutine = routine;
    mOptions = options;
-   mFormat = format;
-   mExtension = extension;
+   mFormat = extension.MakeUpper();
+   mExtension = extension.MakeLower();
    mMaxChannels = maxchannels;
    mCanMetaData = canmetadata;
-   mDescription = description;
+
+   if (mExtensions.GetCount() == 0) {
+      mExtensions.Add(mExtension);
+   }
 }
 
 ExportRoutine ExportType::GetRoutine()
@@ -112,9 +134,9 @@ wxString ExportType::GetExtension()
    return mExtension;
 }
 
-wxString ExportType::GetDescription()
+wxArrayString ExportType::GetExtensions()
 {
-   return mDescription;
+   return mExtensions;
 }
 
 int ExportType::GetMaxChannels()
@@ -129,17 +151,24 @@ bool ExportType::GetCanMetaData()
 
 wxString ExportType::GetMask()
 {
-   if (mDescription == wxEmptyString) {
-      return wxString::Format(wxT("%s files (*.%s)|*.%s"),
-                              mFormat.c_str(),
-                              mExtension.c_str(),
-                              mExtension.c_str());
+   wxString mask = mFormat + wxT(" files|");
+   size_t i;
+
+   // Build the mask, but cater to the Mac FileDialog and put the default
+   // extension at the end of the mask.
+
+   for (i = 0; i < mExtensions.GetCount(); i++) {
+      if (mExtension != mExtensions[i]) {
+         mask += wxT("*.") + mExtensions[i] + wxT(";");
+      }
    }
 
-   return wxString::Format(wxT("%s files (*.%s)|*.%s"),
-                           mDescription.c_str(),
-                           mExtension.c_str(),
-                           mExtension.c_str());
+   return mask + wxT("*.") + mExtension;
+}
+
+bool ExportType::IsExtension(wxString & ext)
+{
+   return mExtensions.Index(ext, false) != wxNOT_FOUND;
 }
 
 bool ExportType::DisplayOptions(AudacityProject *project)
@@ -197,28 +226,24 @@ ExportTypeArray Export::GetTypes()
    ExportTypeArray types;
    ExportType et;
 
-   int format = ReadExportFormatPref();
-   wxString desc = sf_header_name(format & SF_FORMAT_TYPEMASK);
-   wxString ext = sf_header_extension(format & SF_FORMAT_TYPEMASK);
-
-   et.Set(ExportPCM, NULL, wxT("WAV"), ext, 2, false, desc);
+   et.Set(ExportPCM, ExportPCMOptions, sf_get_all_extensions(), wxT("wav"), 2);
    types.Add(et);
 
-   et.Set(ExportMP3, ExportMP3Options, wxT("MP3"), wxT("mp3"), 2, true);
+   et.Set(ExportMP3, ExportMP3Options, wxT("mp3"), 2, true);
    types.Add(et);
 
 #ifdef USE_LIBVORBIS
-   et.Set(ExportOGG, ExportOGGOptions, wxT("OGG"), wxT("ogg"), 32);
+   et.Set(ExportOGG, ExportOGGOptions, wxT("ogg"), 32);
    types.Add(et);
 #endif
    
 #ifdef USE_LIBFLAC
-   et.Set(ExportFLAC, ExportFLACOptions, wxT("FLAC"), wxT("flac"), 8, true);
+   et.Set(ExportFLAC, ExportFLACOptions, wxT("flac"), 8, true);
    types.Add(et);
 #endif
    
 #if USE_LIBTWOLAME
-   et.Set(ExportMP2, ExportMP2Options, wxT("MP2"), wxT("mp2"), 2);
+   et.Set(ExportMP2, ExportMP2Options, wxT("mp2"), 2);
    types.Add(et);
 #endif
 
@@ -436,7 +461,7 @@ bool Export::GetFilename()
 
          mFilename.SetExt(defext);
       }
-      else if (ext.CmpNoCase(mTypes[mFormat].GetExtension()) && ext.CmpNoCase(defext)) {
+      else if (!mTypes[mFormat].IsExtension(ext) && ext.CmpNoCase(defext)) {
          wxString prompt;
          prompt.Printf(_("You are about to save a %s file with the name \"%s\".\n\nNormally these files end in \".%s\", and some programs will not open files with nonstandard extensions.\n\nAre you sure you want to save the file under this name?"),
                        mTypes[mFormat].GetFormat().c_str(),

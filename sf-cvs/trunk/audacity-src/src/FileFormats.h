@@ -9,6 +9,7 @@
 **********************************************************************/
 
 #include <wx/list.h>
+#include <wx/arrstr.h>
 #include <wx/string.h>
 
 #include "Audacity.h"
@@ -54,7 +55,7 @@ SF_FORMAT_INFO *sf_simple_format(int i);
 bool sf_subtype_more_than_16_bits(unsigned int format);
 bool sf_subtype_is_integer(unsigned int format);
 
-void sf_get_all_extensions(wxArrayString &exts);
+wxArrayString sf_get_all_extensions();
 
 //
 // Mac OS 4-char type

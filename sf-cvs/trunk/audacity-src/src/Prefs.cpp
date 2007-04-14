@@ -206,17 +206,6 @@ void FinishPreferences()
    }
 }
 
-int ReadExportFormatPref()
-{
-   return gPrefs->Read(wxT("/FileFormats/ExportFormat_SF1"),
-                       (long int)(SF_FORMAT_WAV | SF_FORMAT_PCM_16));
-}
-
-void WriteExportFormatPref(int format)
-{
-   gPrefs->Write(wxT("/FileFormats/ExportFormat_SF1"), (long int)format);
-}
-
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //

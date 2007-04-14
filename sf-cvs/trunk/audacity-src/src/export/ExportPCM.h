@@ -23,6 +23,7 @@ bool ExportPCM(AudacityProject *project,
                bool selectionOnly, double t0, double t1, 
                MixerSpec *mixerSpec = NULL);
 
+bool ExportPCMOptions(AudacityProject *project);
 
 #endif
 
