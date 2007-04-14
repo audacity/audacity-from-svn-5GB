@@ -205,8 +205,9 @@ bool sf_subtype_is_integer(unsigned int format)
            subtype == SF_FORMAT_PCM_32);
 }
       
-void sf_get_all_extensions(wxArrayString &exts)
+wxArrayString sf_get_all_extensions()
 {
+   wxArrayString exts;
    SF_FORMAT_INFO	format_info;
    int count, k;
 
@@ -232,6 +233,8 @@ void sf_get_all_extensions(wxArrayString &exts)
    exts.Add(wxT("svx"));
    exts.Add(wxT("svx8"));
    exts.Add(wxT("sv16"));
+
+   return exts;
 }
 
 #ifdef __WXMAC__

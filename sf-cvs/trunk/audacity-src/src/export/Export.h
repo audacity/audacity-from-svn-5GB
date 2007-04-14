@@ -52,21 +52,28 @@ public:
 
    void Set(ExportRoutine routine,
             ExportOptions options,
-            wxString format,
             wxString extension,
             int maxchannels,
-            bool canmetadata = false,
-            wxString description = wxEmptyString);
+            bool canmetadata = false);
+   
+   void Set(ExportRoutine routine,
+            ExportOptions options,
+            wxArrayString extensions,
+            wxString extension,
+            int maxchannels,
+            bool canmetadata = false);
    
    ExportRoutine GetRoutine();
    ExportOptions GetOptions();
    wxString GetFormat();
    wxString GetExtension();
-   wxString GetDescription();
+   wxArrayString GetExtensions();
    wxString GetMask();
    int GetMaxChannels();
    bool GetCanMetaData();
    
+   bool IsExtension(wxString & ext);
+
    bool DisplayOptions(AudacityProject *project = NULL);
    bool Export(AudacityProject *project,
                int channels,
@@ -82,7 +89,7 @@ private:
    ExportOptions mOptions;
    wxString mFormat;
    wxString mExtension;
-   wxString mDescription;
+   wxArrayString mExtensions;
    int mMaxChannels;
    bool mCanMetaData;
 };

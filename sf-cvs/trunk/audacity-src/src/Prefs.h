@@ -39,10 +39,6 @@ extern wxFileConfig *gPrefs;
 
 extern int gMenusDirty;
 
-int ReadExportFormatPref();
-void WriteExportFormatPref(int format);
-
-
 #endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
