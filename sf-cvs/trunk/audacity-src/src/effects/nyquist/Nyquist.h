@@ -63,6 +63,10 @@ public:
    }
    
    virtual wxString GetEffectIdentifier() {
+      if (mInteractive) {
+         return wxT("NyquistPrompt");
+      }
+      
       wxStringTokenizer st(mName, wxT(" "));
       wxString id;
 
