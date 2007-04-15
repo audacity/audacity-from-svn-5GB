@@ -34,6 +34,10 @@ class EffectWahwah:public EffectSimpleMono {
       return wxString(_("Wahwah..."));
    }
    
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Wahwah"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Applying Wahwah"));
    }

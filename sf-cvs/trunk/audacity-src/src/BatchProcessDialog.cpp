@@ -511,6 +511,12 @@ void EditChainsDialog::PopulateList()
       mSelectedCommand = 0;
    }
    mList->SetItemState(mSelectedCommand, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+
+   // Size columns properly
+   mList->SetColumnWidth(BlankColumn, 0); // First column width is zero, to hide it.
+   mList->SetColumnWidth(ItemNumberColumn,  wxLIST_AUTOSIZE);
+   mList->SetColumnWidth(ActionColumn, wxLIST_AUTOSIZE);
+   mList->SetColumnWidth(ParamsColumn, wxLIST_AUTOSIZE);
 }
 
 /// Add one item into mList

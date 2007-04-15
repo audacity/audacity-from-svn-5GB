@@ -29,6 +29,8 @@ class LadspaEffect:public Effect {
 
    virtual wxString GetEffectName();
    
+   virtual wxString GetEffectIdentifier();
+   
    virtual wxString GetEffectAction();
 
    virtual int GetEffectFlags() {

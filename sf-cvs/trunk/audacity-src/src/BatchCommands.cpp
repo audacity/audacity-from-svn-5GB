@@ -51,11 +51,11 @@ enum eCommandType { CtEffect, CtMenu, CtSpecial };
 // TIDY-ME: Not currently translated, 
 // but there are issues to address if we do.  
 wxString SpecialCommands[] = {
-   wxT("No Action"),
+   wxT("NoAction"),
    wxT("Import"),
-   wxT("Save Hq Master1"),
-   wxT("Save Hq Master2"),
-   wxT("Stereo To Mono"),
+   wxT("SaveHqMaster1"),
+   wxT("SaveHqMaster2"),
+   wxT("StereoToMono"),
    wxT("ExportFlac"),
    wxT("ExportMp3"),
    wxT("ExportOgg"),
@@ -131,8 +131,9 @@ bool BatchCommands::ReadChain(const wxString & chain)
 
          // Find the command name terminator...ingore line if not found
          int splitAt = tf[i].Find(wxT(':'));
-         if (splitAt < 0)
+         if (splitAt < 0) {
             continue;
+         }
 
          // Parse and clean
          wxString cmd = tf[i].Left(splitAt).Strip(wxString::both);
@@ -229,13 +230,13 @@ void BatchCommands::SetCleanSpeechChain()
 // Commands (at least currently) don't.  Messy.
 
 /* i18n-hint: Effect name translations must agree with those used elsewhere, or batch won't find them */
-   AddToChain(   _NoAcc("&Stereo To Mono") );
-   AddToChain(   _("Normalize") );
-   AddToChain( wxT("Save Hq Master1") );
-   AddToChain(   _("Noise Removal") );
-   AddToChain(   _NoAcc("Truncate Silence...") );
-   AddToChain(   _("Leveller") );
-   AddToChain(   _("Normalize") );
+   AddToChain( wxT("StereoToMono") );
+   AddToChain( wxT("Normalize") );
+   AddToChain( wxT("SaveHqMaster1") );
+   AddToChain( wxT("NoiseRemoval") );
+   AddToChain( wxT("TruncateSilence") );
+   AddToChain( wxT("Leveller") );
+   AddToChain( wxT("Normalize") );
    AddToChain( wxT("ExportMp3") );
 }
 
@@ -243,14 +244,14 @@ void BatchCommands::SetWavToMp3Chain()
 {
    ResetChain();
  
-   AddToChain(   _("Normalize") );
+   AddToChain( wxT("Normalize") );
    AddToChain( wxT("ExportMp3") );
 }
 
 // Gets all commands that are valid for this mode.
 wxArrayString BatchCommands::GetAllCommands()
 {
-   wxArrayString commands;
+   wxArrayString commands(true);
    wxString command;
    commands.Clear();
 
@@ -271,9 +272,10 @@ wxArrayString BatchCommands::GetAllCommands()
        additionalEffects = 0;
    effects = Effect::GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT | additionalEffects);
    for(i=0; i<effects->GetCount(); i++) {
-      command=(*effects)[i]->GetEffectName();
-      command.Replace( wxT("..."), wxT(""));
-      commands.Add( command);
+      command=(*effects)[i]->GetEffectIdentifier();
+      if (!command.IsEmpty()) {
+         commands.Add( command);
+      }
    }
    delete effects;
 
@@ -298,8 +300,7 @@ Effect * BatchCommands::GetEffectFromCommandName(wxString inCommand)
    EffectArray * effects = Effect::GetEffects( ALL_EFFECTS );
    for(i=0; i<effects->GetCount(); i++) {
       f = (*effects)[i];
-      command=f->GetEffectName();
-      command.Replace( wxT("..."), wxT(""));
+      command=f->GetEffectIdentifier();
       if( command.IsSameAs( inCommand ))
       {  
          delete effects;
@@ -452,23 +453,23 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
    // We have a command index, but we don't use it!
    // TODO: Make this special-batch-command code use the menu item code....
    // FIX-ME: No error reporting on write file failure in batch mode.
-   if( command == wxT("No Action")){
+   if( command == wxT("NoAction")){
       return true;
    } else if (!mFileName.IsEmpty() && command == wxT("Import") ){
       // historically this was in use, now ignored if there
       return true;
-   } else if (command == wxT("Save Hq Master1")){
+   } else if (command == wxT("SaveHqMaster1")){
       filename.Replace(wxT("cleaned/"), wxT("cleaned/MasterBefore_"), false);
       return WriteMp3File( filename, 56 );
-   } else if (command == wxT("Save Hq Master2")){
+   } else if (command == wxT("SaveHqMaster2")){
       filename.Replace(wxT("cleaned/"), wxT("cleaned/MasterAfter_"), false);
       return WriteMp3File ( filename, 56 );
-   } else if (command == _NoAcc("&Stereo To Mono")){
+   } else if (command == wxT("StereoToMono")){
       // StereoToMono is an effect masquerading as a menu item.
-      Effect * f=GetEffectFromCommandName( _NoAcc("&Stereo To Mono") );
+      Effect * f=GetEffectFromCommandName( wxT("StereoToMono") );
       if( f!=NULL )
          return ApplyEffectCommand( f, command, params );
-      wxMessageBox( wxT("Stereo To Mono Effect not found"));
+      wxMessageBox(_("Stereo To Mono Effect not found"));
       return false;
    } else if (command == wxT("ExportMp3") ){
       return WriteMp3File ( filename, 0 ); // 0 bitrate means use default/current
@@ -486,7 +487,7 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
          return false;
       return ::ExportOGG(project, numChannels, filename, false, 0.0, endTime);
 #else
-      wxMessageBox(wxT("Ogg Vorbis support is not included in this build of Audacity"));
+      wxMessageBox(_("Ogg Vorbis support is not included in this build of Audacity"));
       return false;
 #endif
    } else if (command == wxT("ExportFlac")){
@@ -497,11 +498,11 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
          return false;
       return ::ExportFLAC(project, numChannels, filename, false, 0.0, endTime);
 #else
-      wxMessageBox(wxT("FLAC support is not included in this build of Audacity"));
+      wxMessageBox(_("FLAC support is not included in this build of Audacity"));
       return false;
 #endif
    } 
-   wxMessageBox( wxString::Format(wxT("Command %s not implemented yet"),command.c_str()) );
+   wxMessageBox( wxString::Format(_("Command %s not implemented yet"),command.c_str()) );
    return false;
 }
 
@@ -517,7 +518,7 @@ bool BatchCommands::SetCurrentParametersFor( Effect * f, const wxString command,
       {
          wxMessageBox(
             wxString::Format(
-            wxT("Could not set parameters of effect %s\n to %s."), command.c_str(),params.c_str() ));
+            _("Could not set parameters of effect %s\n to %s."), command.c_str(),params.c_str() ));
          return false;
       }
    }
@@ -571,7 +572,7 @@ bool BatchCommands::ApplyCommand(const wxString command, const wxString params)
 //   return ApplyMenuCommand( command, params );
    wxMessageBox(
       wxString::Format(
-      wxT("Your batch command of %s was not recognised."), command.c_str() ));
+      _("Your batch command of %s was not recognised."), command.c_str() ));
    return false;
 }
 
@@ -662,13 +663,13 @@ bool BatchCommands::ReportAndSkip(const wxString command, const wxString params)
    //TODO: Add a cancel button to these, and add the logic so that we can abort.
    if( params != wxT("") )
    {
-      wxMessageBox( wxString::Format(wxT("Apply %s with parameter(s)\n\n%s"),command.c_str(), params.c_str()),
-         wxT("Test Mode"));
+      wxMessageBox( wxString::Format(_("Apply %s with parameter(s)\n\n%s"),command.c_str(), params.c_str()),
+         _("Test Mode"));
    }
    else
    {
-      wxMessageBox( wxString::Format(wxT("Apply %s"),command.c_str()),
-         wxT("Test Mode"));
+      wxMessageBox( wxString::Format(_("Apply %s"),command.c_str()),
+         _("Test Mode"));
    }
    return true;
 }

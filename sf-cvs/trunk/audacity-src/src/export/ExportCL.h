@@ -15,9 +15,12 @@
 
 class MixerSpec;
 
-bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
-              bool selectionOnly, double t0, double t1, 
-              MixerSpec *mixerSpec = NULL);
+bool ExportCL(AudacityProject *project,
+               int channels, wxString fName,
+               bool selectionOnly, double t0, double t1, 
+               MixerSpec *mixerSpec = NULL);
+
+bool ExportCLOptions(AudacityProject *project);
 
 #endif
 

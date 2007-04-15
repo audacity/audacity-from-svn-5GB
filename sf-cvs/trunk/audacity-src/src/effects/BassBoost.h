@@ -35,6 +35,10 @@ class EffectBassBoost:public EffectSimpleMono {
       return wxString(_("BassBoost..."));
    }
    
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("BassBoost"));
+   }
+   
    virtual wxString GetEffectAction() {
       return wxString(_("Boosting Bass Frequencies"));
    }

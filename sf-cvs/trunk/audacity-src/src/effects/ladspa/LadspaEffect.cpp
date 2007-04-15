@@ -35,6 +35,7 @@ effects from this one class.
 #include <wx/statbox.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/tokenzr.h>
 #include <wx/intl.h>
 #include <wx/scrolwin.h>
 
@@ -45,7 +46,7 @@ effects from this one class.
 LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data)
 {
    mData = data;
-   pluginName = LAT1CTOWX(data->Name);
+   pluginName = LAT1CTOWX(mData->Name);
 
    fInBuffer = NULL;
    fOutBuffer = NULL;
@@ -146,6 +147,21 @@ wxString LadspaEffect::GetEffectName()
       return pluginName + wxT("...");
    else
       return pluginName;
+}
+
+wxString LadspaEffect::GetEffectIdentifier()
+{
+   wxStringTokenizer st(pluginName, wxT(" "));
+   wxString id;
+
+   // CamelCase the name
+   while (st.HasMoreTokens()) {
+      wxString tok = st.GetNextToken();
+
+      id += tok.Left(1).MakeUpper() + tok.Mid(1);
+   }
+
+   return id;
 }
 
 wxString LadspaEffect::GetEffectAction()

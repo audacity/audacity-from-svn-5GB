@@ -39,6 +39,10 @@ class EffectToneGen:public Effect {
       return wxString(mbChirp? _("&Chirp..."):_("&Tone..."));
    }
 
+   virtual wxString GetEffectIdentifier() {
+      return wxString(mbChirp ? wxT("Chirp") : wxT("Tone"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(mbChirp? _("Generating Chirp") : _("Generating Tone"));
    }

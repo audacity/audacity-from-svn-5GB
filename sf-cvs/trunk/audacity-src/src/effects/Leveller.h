@@ -28,6 +28,10 @@ public:
       return wxString(_("Leveller..."));
    }
 
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Leveller"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Applying Leveller..."));
    }

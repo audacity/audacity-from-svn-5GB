@@ -36,6 +36,10 @@ public:
       return wxString(_("Compressor..."));
    }
    
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Compressor"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Applying Dynamic Range Compression..."));
    }

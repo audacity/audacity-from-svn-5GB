@@ -32,6 +32,7 @@
 #include <wx/panel.h>
 #include <wx/sizer.h>
 #include <wx/settings.h>
+#include <wx/tokenzr.h>
 
 #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION < 6))
 #error Audio Units support requires wxMac 2.6
@@ -111,7 +112,22 @@ wxString AudioUnitEffect::GetEffectName()
 {
    return mName;
 }
-   
+
+wxString AudioUnitEffect::GetEffectIdentifier()
+{
+   wxStringTokenizer st(mName, wxT(" "));
+   wxString id;
+
+   // CamelCase the name
+   while (st.HasMoreTokens()) {
+      wxString tok = st.GetNextToken();
+
+      id += tok.Left(1).MakeUpper() + tok.Mid(1);
+   }
+
+   return id;
+}
+
 wxString AudioUnitEffect::GetEffectAction()
 {
    return wxString::Format(_("Performing Effect: %s"), 

@@ -31,7 +31,11 @@ class EffectRepeat:public Effect {
    virtual wxString GetEffectName() {
       return wxString(_("Repeat..."));
    }
-   
+
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Repeat"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Performing Repeat"));
    }

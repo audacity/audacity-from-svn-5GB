@@ -28,7 +28,11 @@ public:
    virtual wxString GetEffectName() {
       return wxString(_("Repair"));
    }
-   
+
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Repair"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Repairing damaged audio"));
    }

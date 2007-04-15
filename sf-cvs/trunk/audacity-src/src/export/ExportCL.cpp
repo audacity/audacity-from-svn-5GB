@@ -13,8 +13,6 @@
 
 **********************************************************************/
 
-#ifdef __WXGTK__
-
 #include <stdio.h>
 #include <wx/progdlg.h>
 
@@ -46,8 +44,10 @@ struct wav_header {
    wxUint32 dataLen;          /* length of all samples in bytes */
 };
 
-bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
-              bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
+bool ExportCL(AudacityProject *project,
+              int channels, wxString fName,
+              bool selectionOnly, double t0, double t1, 
+              MixerSpec *mixerSpec)
 {
    int rate = int(project->GetRate() + 0.5);
    TrackList *tracks = project->GetTracks();
@@ -56,7 +56,6 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
    command.Replace(wxT("%f"), fName);
 
    /* establish parameters */
-   int channels = stereo ? 2 : 1;
    unsigned long totalSamples = (unsigned long)((t1 - t0) * rate + 0.5);
    unsigned long sampleBytes = totalSamples * channels * SAMPLE_SIZE(int16Sample);
 
@@ -152,8 +151,92 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
    return true;
 }
 
-#endif  /* __WXGTK__ */
+class CLOptionsDialog : public wxDialog
+{
+public:
 
+   /// 
+   /// 
+   CLOptionsDialog(wxWindow *parent)
+   : wxDialog(NULL, wxID_ANY, wxString(_("Specify Command Line Options")),
+      wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+   {
+      ShuttleGui S(this, eIsCreatingFromPrefs);
+
+      PopulateOrExchange(S);
+   }
+
+   /// 
+   /// 
+   void PopulateOrExchange(ShuttleGui & S)
+   {
+      S.StartHorizontalLay(wxEXPAND, 0);
+      {
+         S.StartStatic(_("Command Line Export Setup"), true);
+         {
+            S.StartMultiColumn(2, wxEXPAND);
+            {
+               S.SetStretchyCol(1);
+               S.TieTextBox(_("Command:"),
+                            wxT("/FileFormats/ExternalProgramExportCommand"),
+                            wxT("lame - '%f'"),
+                            64);
+            }
+            S.EndMultiColumn();
+            S.AddFixedText(_("Include \"%f\" where the output filename should be substituted."));
+         }
+         S.EndStatic();
+      }
+      S.EndHorizontalLay();
+      S.StartHorizontalLay(wxALIGN_CENTER, false);
+      {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+      }
+      GetSizer()->AddSpacer(5);
+      Layout();
+      Fit();
+      SetMinSize(GetSize());
+      Center();
+
+      return;
+   }
+
+   /// 
+   /// 
+   void OnOK(wxCommandEvent& event)
+   {
+      ShuttleGui S(this, eIsSavingToPrefs);
+      PopulateOrExchange(S);
+
+      EndModal(wxID_OK);
+
+      return;
+   }
+
+private:
+   int mCLQualityUnscaled;
+
+   DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(CLOptionsDialog, wxDialog)
+   EVT_BUTTON(wxID_OK, CLOptionsDialog::OnOK)
+END_EVENT_TABLE()
+
+bool ExportCLOptions(AudacityProject *project)
+{
+   CLOptionsDialog od(project);
+
+   od.ShowModal();
+
+   return true;
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

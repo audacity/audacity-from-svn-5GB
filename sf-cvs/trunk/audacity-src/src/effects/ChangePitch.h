@@ -31,6 +31,10 @@ class EffectChangePitch:public EffectSoundTouch {
       return wxString(_("Change Pitch..."));
    }
    
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("ChangePitch"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Changing Pitch"));
    }

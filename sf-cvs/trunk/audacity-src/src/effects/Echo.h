@@ -33,7 +33,11 @@ class EffectEcho:public Effect {
    virtual wxString GetEffectName() {
       return wxString(_("Echo..."));
    }
-   
+
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Echo"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Performing Echo"));
    }

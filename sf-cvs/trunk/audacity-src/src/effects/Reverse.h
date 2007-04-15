@@ -29,7 +29,11 @@ class EffectReverse:public Effect {
    virtual wxString GetEffectName() {
       return wxString(_("Reverse"));
    }
-   
+
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Reverse"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Reversing"));
    }

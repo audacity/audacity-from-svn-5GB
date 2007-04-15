@@ -35,6 +35,10 @@ public:
       return wxString(_("Noise Removal..."));
    }
    
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("NoiseRemoval"));
+   }
+
    virtual wxString GetEffectAction() {
       if (mDoProfile)
          return wxString(_("Creating Noise Profile"));

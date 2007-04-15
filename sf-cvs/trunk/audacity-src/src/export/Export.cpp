@@ -90,7 +90,8 @@ void ExportType::Set(ExportRoutine routine,
                      wxArrayString extensions,
                      wxString extension,
                      int maxchannels,
-                     bool canmetadata)
+                     bool canmetadata,
+                     wxString description)
 {
    mExtensions = extensions;
    Set(routine, options, extension, maxchannels, canmetadata);
@@ -100,7 +101,8 @@ void ExportType::Set(ExportRoutine routine,
                      ExportOptions options,
                      wxString extension,
                      int maxchannels,
-                     bool canmetadata)
+                     bool canmetadata,
+                     wxString description)
 {
    mRoutine = routine;
    mOptions = options;
@@ -108,6 +110,7 @@ void ExportType::Set(ExportRoutine routine,
    mExtension = extension.MakeLower();
    mMaxChannels = maxchannels;
    mCanMetaData = canmetadata;
+   mDescription = description;
 
    if (mExtensions.GetCount() == 0) {
       mExtensions.Add(mExtension);
@@ -139,6 +142,11 @@ wxArrayString ExportType::GetExtensions()
    return mExtensions;
 }
 
+wxString ExportType::GetDescription()
+{
+   return mDescription;
+}
+
 int ExportType::GetMaxChannels()
 {
    return mMaxChannels;
@@ -151,13 +159,19 @@ bool ExportType::GetCanMetaData()
 
 wxString ExportType::GetMask()
 {
-   wxString mask = mFormat + wxT(" files|");
-   size_t i;
+   wxString mask;
+   
+   if (mDescription.IsEmpty()) {
+      mask = mFormat + wxT(" files|");
+   }
+   else {
+      mask = mDescription + wxT("|");
+   }
 
    // Build the mask, but cater to the Mac FileDialog and put the default
    // extension at the end of the mask.
 
-   for (i = 0; i < mExtensions.GetCount(); i++) {
+   for (size_t i = 0; i < mExtensions.GetCount(); i++) {
       if (mExtension != mExtensions[i]) {
          mask += wxT("*.") + mExtensions[i] + wxT(";");
       }
@@ -168,7 +182,7 @@ wxString ExportType::GetMask()
 
 bool ExportType::IsExtension(wxString & ext)
 {
-   return mExtensions.Index(ext, false) != wxNOT_FOUND;
+   return mExtension == wxT("*") || mExtensions.Index(ext, false) != wxNOT_FOUND;
 }
 
 bool ExportType::DisplayOptions(AudacityProject *project)
@@ -236,16 +250,19 @@ ExportTypeArray Export::GetTypes()
    et.Set(ExportOGG, ExportOGGOptions, wxT("ogg"), 32);
    types.Add(et);
 #endif
-   
+
 #ifdef USE_LIBFLAC
    et.Set(ExportFLAC, ExportFLACOptions, wxT("flac"), 8, true);
    types.Add(et);
 #endif
-   
+
 #if USE_LIBTWOLAME
    et.Set(ExportMP2, ExportMP2Options, wxT("mp2"), 2);
    types.Add(et);
 #endif
+
+   et.Set(ExportCL, ExportCLOptions, wxT("*"), 2, false, _("Command Line"));
+   types.Add(et);
 
    return types;
 }

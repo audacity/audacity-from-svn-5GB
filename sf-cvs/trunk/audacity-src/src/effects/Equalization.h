@@ -87,6 +87,10 @@ public:
       return wxString(_("Equalization..."));
    }
 
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Equalization"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Performing Equalization"));
    }
