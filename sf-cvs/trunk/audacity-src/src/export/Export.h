@@ -54,20 +54,23 @@ public:
             ExportOptions options,
             wxString extension,
             int maxchannels,
-            bool canmetadata = false);
+            bool canmetadata = false,
+            wxString description = wxEmptyString);
    
    void Set(ExportRoutine routine,
             ExportOptions options,
             wxArrayString extensions,
             wxString extension,
             int maxchannels,
-            bool canmetadata = false);
+            bool canmetadata = false,
+            wxString description = wxEmptyString);
    
    ExportRoutine GetRoutine();
    ExportOptions GetOptions();
    wxString GetFormat();
    wxString GetExtension();
    wxArrayString GetExtensions();
+   wxString GetDescription();
    wxString GetMask();
    int GetMaxChannels();
    bool GetCanMetaData();
@@ -90,6 +93,7 @@ private:
    wxString mFormat;
    wxString mExtension;
    wxArrayString mExtensions;
+   wxString mDescription;
    int mMaxChannels;
    bool mCanMetaData;
 };

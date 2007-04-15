@@ -38,6 +38,10 @@ class EffectPhaser:public EffectSimpleMono {
       return wxString(_("Phaser..."));
    }
    
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Phaser"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Applying Phaser"));
    }

@@ -41,6 +41,10 @@ class EffectNoise:public Effect {
       return wxString(_("&Noise..."));
    }
 
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Noise"));
+   }
+
    virtual wxString GetEffectDescription() {
       return wxString::Format(_("Applied effect: Generate Noise, %.6lf seconds"), noiseDuration);
    }

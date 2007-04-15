@@ -41,6 +41,10 @@ class EffectDtmf:public Effect {
       return wxString(_("&DTMF Tones..."));
    }
 
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("DTMFTone"));
+   }
+
    virtual wxString GetEffectDescription() {
       return wxString::Format(_("Applied effect: Generate DTMF tones, %.6lf seconds"), dtmfDuration);
    }

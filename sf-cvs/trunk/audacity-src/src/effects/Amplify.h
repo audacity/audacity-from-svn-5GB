@@ -45,7 +45,11 @@ class EffectAmplify:public EffectSimpleMono {
    virtual wxString GetEffectName() {
       return wxString(_("Amplify..."));
    }
-   
+
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Amplify"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Amplifying"));
    }

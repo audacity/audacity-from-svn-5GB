@@ -20,6 +20,7 @@
 #include <wx/slider.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/tokenzr.h>
 
 #include "../Effect.h"
 
@@ -59,6 +60,20 @@ public:
 
    virtual wxString GetEffectName() {
       return mName;
+   }
+   
+   virtual wxString GetEffectIdentifier() {
+      wxStringTokenizer st(mName, wxT(" "));
+      wxString id;
+
+      // CamelCase the name
+      while (st.HasMoreTokens()) {
+         wxString tok = st.GetNextToken();
+
+         id += tok.Left(1).MakeUpper() + tok.Mid(1);
+      }
+
+      return id;
    }
    
    virtual wxString GetEffectAction() {

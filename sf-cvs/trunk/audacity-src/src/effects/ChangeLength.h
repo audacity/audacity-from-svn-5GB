@@ -26,6 +26,10 @@ public:
       return wxString(_("Change Length..."));
    }
 
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("ChangeLength"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Changing Length..."));
    }

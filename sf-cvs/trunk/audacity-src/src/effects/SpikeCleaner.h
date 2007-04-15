@@ -27,6 +27,10 @@ public:
       return wxString(_("Spike Cleaner..."));
    }
 
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("SpikeCleaner"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Applying Spike Cleaner..."));
    }

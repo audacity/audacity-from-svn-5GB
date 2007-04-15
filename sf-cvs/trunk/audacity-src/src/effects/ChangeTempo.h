@@ -34,7 +34,11 @@ class EffectChangeTempo:public EffectSoundTouch {
    virtual wxString GetEffectName() {
       return wxString(_("Change Tempo..."));
    }
-   
+
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("ChangeTempo"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Changing Tempo"));
    }

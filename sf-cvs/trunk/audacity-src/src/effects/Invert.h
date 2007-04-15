@@ -27,6 +27,10 @@ class EffectInvert:public EffectSimpleMono {
       return wxString(_("Invert"));
    }
    
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Invert"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Inverting"));
    }

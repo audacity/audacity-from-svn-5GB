@@ -29,6 +29,10 @@ public:
       return wxString(_("Truncate Silence..."));
    }
 
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("TruncateSilence"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Truncating Silence..."));
    }

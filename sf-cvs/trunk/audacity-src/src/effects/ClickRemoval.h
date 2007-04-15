@@ -42,6 +42,10 @@ public:
       return wxString(_("Click Removal..."));
    }
 
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("ClickRemoval"));
+   }
+
    virtual wxString GetEffectAction() {
          return wxString(_("Removing clicks and pops..."));
    }

@@ -97,6 +97,11 @@ public:
       return wxString(_("Auto Duck..."));
    }
    
+   virtual wxString GetEffectIdentifier()
+   {
+      return wxString(wxT("AutoDuck"));
+   }
+
    virtual wxString GetEffectAction()
    {
       return wxString(_("Processing Auto Duck..."));

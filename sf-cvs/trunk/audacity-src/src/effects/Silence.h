@@ -34,6 +34,10 @@ class EffectSilence:public Effect {
       return wxString(_("&Silence..."));
    }
 
+   virtual wxString GetEffectIdentifier() {
+      return wxString(wxT("Silence"));
+   }
+
    virtual wxString GetEffectAction() {
       return wxString(_("Generating Silence"));
    }

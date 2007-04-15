@@ -28,6 +28,8 @@ class AudioUnitEffect:public Effect {
 
    virtual wxString GetEffectName();
    
+   virtual wxString GetEffectIdentifier();
+   
    virtual wxString GetEffectAction();
 
    virtual int GetEffectFlags();
