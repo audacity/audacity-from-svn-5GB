@@ -34,16 +34,12 @@ static wxString gDataDir;
 
 wxString FileNames::MkDir(const wxString &Str)
 {
-   wxFileName fn = Str;
+   // Behaviour of wxFileName::DirExists() and wxFileName::MkDir() has
+   // changed between wx2.6 and wx2.8, so we use static functions instead.
+   if (!wxFileName::DirExists(Str))
+      wxFileName::Mkdir(Str, 511, wxPATH_MKDIR_FULL);
 
-   // If the directory doesn't exist...
-   if( !fn.DirExists() )
-   {
-      // Attempt to create it
-      fn.Mkdir( fn.GetFullPath(), 511, wxPATH_MKDIR_FULL );
-   }
-
-   return fn.GetFullPath();
+   return Str;
 }
 
 /// Returns the directory used for temp files.
@@ -82,11 +78,14 @@ wxString FileNames::DataDir()
       } else
       {
          // Use OS-provided user data dir folder
+         wxString dataDir;
 #if defined( __WXGTK__ )
-         gDataDir = FileNames::MkDir( wxStandardPaths::Get().GetUserDataDir() + wxT("-data") );
+         dataDir = wxStandardPaths::Get().GetUserDataDir() + wxT("-data");
 #else
-         gDataDir = FileNames::MkDir( wxStandardPaths::Get().GetUserDataDir() );
+         dataDir = wxStandardPaths::Get().GetUserDataDir();
 #endif
+
+         gDataDir = FileNames::MkDir(dataDir);
       }
    }
    
