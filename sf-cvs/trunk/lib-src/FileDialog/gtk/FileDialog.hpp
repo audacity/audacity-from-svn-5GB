@@ -2,7 +2,7 @@
 // Name:        gtk/filedlg.cpp
 // Purpose:     native implementation of FileDialog
 // Author:      Robert Roebling, Zbigniew Zagorski, Mart Raudsepp
-// Id:          $Id: FileDialog.hpp,v 1.5 2007-04-15 10:36:04 msmeyer Exp $
+// Id:          $Id: FileDialog.hpp,v 1.6 2007-04-15 20:12:00 msmeyer Exp $
 // Copyright:   (c) 1998 Robert Roebling, 2004 Zbigniew Zagorski, 2005 Mart Raudsepp
 // Licence:     wxWindows licence
 //
@@ -214,6 +214,9 @@ FileDialog::FileDialog(wxWindow *parent, const wxString& message,
                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                        ok_btn_stock, GTK_RESPONSE_ACCEPT,
                        NULL);
+                       
+        // Allow pressing "Enter" key for default action
+        gtk_dialog_set_default_response(GTK_DIALOG(m_widget), GTK_RESPONSE_ACCEPT);
 
         if ( style & wxMULTIPLE )
             gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(m_widget), true);
