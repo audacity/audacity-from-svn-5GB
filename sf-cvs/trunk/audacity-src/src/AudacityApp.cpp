@@ -899,15 +899,12 @@ bool AudacityApp::InitCleanSpeech()
       presetsFromPrefs = wxT("");
    #endif
 
-   #ifdef __WXMSW__
-   wxString presetsDefaultLoc = userdatadir + wxT("\\presets");
-   #else
-   wxString presetsDefaultLoc = userdatadir + wxT("/presets");
-   #endif
+   wxString presetsDefaultLoc =
+      wxFileName(userdatadir, wxT("presets")).GetFullPath();
 
    // Stop wxWindows from printing its own error messages (not used ... does this really do anything?)
    wxLogNull logNo;
-
+   
    // Try temp dir that was stored in prefs first
    if (presetsFromPrefs != wxT("")) {
       if (wxDirExists(presetsFromPrefs))
