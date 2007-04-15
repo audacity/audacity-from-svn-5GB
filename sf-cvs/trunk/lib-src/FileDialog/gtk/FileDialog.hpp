@@ -2,7 +2,7 @@
 // Name:        gtk/filedlg.cpp
 // Purpose:     native implementation of FileDialog
 // Author:      Robert Roebling, Zbigniew Zagorski, Mart Raudsepp
-// Id:          $Id: FileDialog.hpp,v 1.4 2007-04-11 01:33:22 llucius Exp $
+// Id:          $Id: FileDialog.hpp,v 1.5 2007-04-15 10:36:04 msmeyer Exp $
 // Copyright:   (c) 1998 Robert Roebling, 2004 Zbigniew Zagorski, 2005 Mart Raudsepp
 // Licence:     wxWindows licence
 //
@@ -30,6 +30,7 @@
 #include "wx/tokenzr.h" // wxStringTokenizer
 #include "wx/filefn.h" // ::wxGetCwd
 #include "wx/msgdlg.h" // wxMessageDialog
+#include "wx/version.h"
 
 //-----------------------------------------------------------------------------
 // idle system
@@ -167,7 +168,12 @@ FileDialog::FileDialog(wxWindow *parent, const wxString& message,
                            const wxString& wildCard,
                            long style, const wxPoint& pos)
     : wxGenericFileDialog(parent, message, defaultDir, defaultFileName,
-                       wildCard, style, pos, true )
+                       wildCard, style, pos, 
+#if wxCHECK_VERSION(2,8,0)
+                       wxDefaultSize,
+                       wxFileDialogNameStr,
+#endif
+                       true )
 {
 #if defined(__WXGTK24__) && (!defined(__WXGPE__))
     if (!gtk_check_version(2,4,0))
@@ -277,9 +283,10 @@ FileDialog::~FileDialog()
 void FileDialog::OnFakeOk( wxCommandEvent &event )
 {
 #if defined(__WXGTK24__) && (!defined(__WXGPE__))
-    if (!gtk_check_version(2,4,0))
-        wxDialog::OnOK( event );
-    else
+    if (!gtk_check_version(2,4,0)) {
+        if (Validate() && TransferDataFromWindow())
+            EndModal(wxID_OK);
+    } else
 #endif
         wxGenericFileDialog::OnListOk( event );
 }
