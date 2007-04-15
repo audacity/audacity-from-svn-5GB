@@ -161,7 +161,8 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
    bool returnVal = true;
    bool skipFlag = CheckWhetherSkipEffect();
    if (skipFlag == false) {
-      GetActiveProject()->ProgressShow(GetEffectName(), GetEffectAction());
+      GetActiveProject()->ProgressShow(StripAmpersand(GetEffectName()),
+                                       GetEffectAction());
       returnVal = Process();
       GetActiveProject()->ProgressHide();
    }
@@ -298,7 +299,8 @@ void Effect::Preview()
    // Effect is already inited; we call Process, End, and then Init
    // again, so the state is exactly the way it was before Preview
    // was called.
-   GetActiveProject()->ProgressShow(GetEffectName(), _("Preparing preview"));
+   GetActiveProject()->ProgressShow(StripAmpersand(GetEffectName()),
+                                    _("Preparing preview"));
    Process();
    GetActiveProject()->ProgressHide();
    End();
@@ -323,7 +325,8 @@ void Effect::Preview()
    if (token) {
       bool previewing = true;
 
-      GetActiveProject()->ProgressShow(GetEffectName(), _("Previewing"));
+      GetActiveProject()->ProgressShow(StripAmpersand(GetEffectName()),
+                                       _("Previewing"));
 
       while (gAudioIO->IsStreamActive(token) && previewing) {
          ::wxMilliSleep(100);
