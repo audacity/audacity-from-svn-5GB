@@ -383,8 +383,6 @@
 		1790B15209883BFD008A330A /* ToneGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B04E09883BFD008A330A /* ToneGen.cpp */; };
 		1790B15309883BFD008A330A /* TruncSilence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B05009883BFD008A330A /* TruncSilence.cpp */; };
 		1790B15409883BFD008A330A /* TwoPassSimpleMono.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B05209883BFD008A330A /* TwoPassSimpleMono.cpp */; };
-		1790B15509883BFD008A330A /* LoadVSTMac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B05609883BFD008A330A /* LoadVSTMac.cpp */; };
-		1790B15709883BFD008A330A /* VSTEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B05A09883BFD008A330A /* VSTEffect.cpp */; };
 		1790B15809883BFD008A330A /* Wahwah.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B05C09883BFD008A330A /* Wahwah.cpp */; };
 		1790B15A09883BFD008A330A /* Envelope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B05F09883BFD008A330A /* Envelope.cpp */; };
 		1790B15B09883BFD008A330A /* Export.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B06409883BFD008A330A /* Export.cpp */; };
@@ -1440,10 +1438,6 @@
 		1790B05109883BFD008A330A /* TruncSilence.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = TruncSilence.h; sourceTree = "<group>"; };
 		1790B05209883BFD008A330A /* TwoPassSimpleMono.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = TwoPassSimpleMono.cpp; sourceTree = "<group>"; };
 		1790B05309883BFD008A330A /* TwoPassSimpleMono.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = TwoPassSimpleMono.h; sourceTree = "<group>"; };
-		1790B05609883BFD008A330A /* LoadVSTMac.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = LoadVSTMac.cpp; sourceTree = "<group>"; };
-		1790B05709883BFD008A330A /* LoadVSTMac.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LoadVSTMac.h; sourceTree = "<group>"; };
-		1790B05A09883BFD008A330A /* VSTEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VSTEffect.cpp; sourceTree = "<group>"; };
-		1790B05B09883BFD008A330A /* VSTEffect.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VSTEffect.h; sourceTree = "<group>"; };
 		1790B05C09883BFD008A330A /* Wahwah.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Wahwah.cpp; sourceTree = "<group>"; };
 		1790B05D09883BFD008A330A /* Wahwah.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Wahwah.h; sourceTree = "<group>"; };
 		1790B05F09883BFD008A330A /* Envelope.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Envelope.cpp; sourceTree = "<group>"; };
@@ -2920,7 +2914,6 @@
 				1790B00009883BFD008A330A /* audiounits */,
 				1790B02309883BFD008A330A /* ladspa */,
 				1790B03409883BFD008A330A /* nyquist */,
-				1790B05409883BFD008A330A /* VST */,
 				1790AFFE09883BFD008A330A /* Amplify.cpp */,
 				1790AFFF09883BFD008A330A /* Amplify.h */,
 				28D65C700B97E54B000E001A /* AutoDuck.cpp */,
@@ -3025,17 +3018,6 @@
 				1790B03909883BFD008A330A /* Nyquist.h */,
 			);
 			path = nyquist;
-			sourceTree = "<group>";
-		};
-		1790B05409883BFD008A330A /* VST */ = {
-			isa = PBXGroup;
-			children = (
-				1790B05609883BFD008A330A /* LoadVSTMac.cpp */,
-				1790B05709883BFD008A330A /* LoadVSTMac.h */,
-				1790B05A09883BFD008A330A /* VSTEffect.cpp */,
-				1790B05B09883BFD008A330A /* VSTEffect.h */,
-			);
-			path = VST;
 			sourceTree = "<group>";
 		};
 		1790B06209883BFD008A330A /* export */ = {
@@ -5149,8 +5131,6 @@
 				1790B15209883BFD008A330A /* ToneGen.cpp in Sources */,
 				1790B15309883BFD008A330A /* TruncSilence.cpp in Sources */,
 				1790B15409883BFD008A330A /* TwoPassSimpleMono.cpp in Sources */,
-				1790B15509883BFD008A330A /* LoadVSTMac.cpp in Sources */,
-				1790B15709883BFD008A330A /* VSTEffect.cpp in Sources */,
 				1790B15809883BFD008A330A /* Wahwah.cpp in Sources */,
 				1790B15A09883BFD008A330A /* Envelope.cpp in Sources */,
 				1790B15B09883BFD008A330A /* Export.cpp in Sources */,
