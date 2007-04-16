@@ -232,6 +232,12 @@ bool LOFImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 {
    wxASSERT(mTextFile->IsOpened());
 
+   if(mTextFile->Eof())
+   {
+      mTextFile->Close();
+      return false;
+   }
+
    wxString line = mTextFile->GetFirstLine();
 
    while (!mTextFile->Eof())
