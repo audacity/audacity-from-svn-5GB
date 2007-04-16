@@ -1023,10 +1023,16 @@ bool ExportMP3(AudacityProject *project,
                             stereo? 2: 1, inSamples, true,
                             rate, int16Sample, true, mixerSpec);
 
-   GetActiveProject()->ProgressShow(selectionOnly ?
-      wxString::Format(_("Exporting selected audio at %d kbps"), bitrate) :
-      wxString::Format(_("Exporting entire file at %d kbps"), bitrate),
-      wxFileName(fName).GetName());
+   if (rmode == wxT("cbr"))
+      GetActiveProject()->ProgressShow(selectionOnly ?
+         wxString::Format(_("Exporting selected audio at %d kbps"), bitrate) :
+         wxString::Format(_("Exporting entire file at %d kbps"), bitrate),
+         wxFileName(fName).GetName());
+   else
+      GetActiveProject()->ProgressShow(selectionOnly ?
+         wxString::Format(_("Exporting selected audio at quality %d"), bitrate) :
+         wxString::Format(_("Exporting entire file at quality %d"), bitrate),
+         wxFileName(fName).GetName());
 
    while (!cancelling) {
       sampleCount blockLen = mixer->Process(inSamples);
@@ -1138,21 +1144,32 @@ public:
 
                   if (mMP3VBR->GetValue())
                   {
-                     mMP3RateNames.Add(_("0 (Best quality)"));
+                     mMP3RateNames.Add(_("0 (Best quality), 220-260 kbps"));
                      mMP3RateLabels.Add(0);
-                     for (unsigned int i=1; i < 9; i++)
-                     {
-                        mMP3RateNames.Add(wxString::Format(wxT("%i"),i));
-                        mMP3RateLabels.Add(i);
-                     }
-                     mMP3RateNames.Add(_("9 (Smaller files)"));
+                     mMP3RateNames.Add(_("1, 200-250 kbps"));
+                     mMP3RateLabels.Add(1);
+                     mMP3RateNames.Add(_("2, 170-210 kbps"));
+                     mMP3RateLabels.Add(2);
+                     mMP3RateNames.Add(_("3, 155-195 kbps"));
+                     mMP3RateLabels.Add(3);
+                     mMP3RateNames.Add(_("4, 145-185 kbps"));
+                     mMP3RateLabels.Add(4);
+                     mMP3RateNames.Add(_("5, 110-150 kbps"));
+                     mMP3RateLabels.Add(5);
+                     mMP3RateNames.Add(_("6, 95-135 kbps"));
+                     mMP3RateLabels.Add(6);
+                     mMP3RateNames.Add(_("7, 80-120 kbps"));
+                     mMP3RateLabels.Add(7);
+                     mMP3RateNames.Add(_("8, 65-105 kbps"));
+                     mMP3RateLabels.Add(8);
+                     mMP3RateNames.Add(_("9 (Smaller files), 45-85 kbps"));
                      mMP3RateLabels.Add(9);
                   }
                   else
                   {
                      for(unsigned int i=0; i < (sizeof(iBitrates)/sizeof(int)); i++)
                      {
-                        mMP3RateNames.Add(wxString::Format(wxT("%i"),iBitrates[i]));
+                        mMP3RateNames.Add(wxString::Format(wxT("%i kbps"),iBitrates[i]));
                         mMP3RateLabels.Add(iBitrates[i]);
                      }
                   }
@@ -1220,15 +1237,26 @@ public:
       mMP3RateNames.Clear();
       mMP3RateLabels.Clear();
 
-      mMP3RateNames.Add(_("0 (Best quality)"));
-      mMP3RateLabels.Add( 0 );
-      for(unsigned int i=1;i<9;i++)
-      {
-         mMP3RateNames.Add(wxString::Format(wxT("%i"),i));
-         mMP3RateLabels.Add( i );
-      }
-      mMP3RateNames.Add(_("9 (Smaller files)"));
-      mMP3RateLabels.Add( 9 );
+      mMP3RateNames.Add(_("0 (Best quality), 220-260 kbps"));
+      mMP3RateLabels.Add(0);
+      mMP3RateNames.Add(_("1, 200-250 kbps"));
+      mMP3RateLabels.Add(1);
+      mMP3RateNames.Add(_("2, 170-210 kbps"));
+      mMP3RateLabels.Add(2);
+      mMP3RateNames.Add(_("3, 155-195 kbps"));
+      mMP3RateLabels.Add(3);
+      mMP3RateNames.Add(_("4, 145-185 kbps"));
+      mMP3RateLabels.Add(4);
+      mMP3RateNames.Add(_("5, 110-150 kbps"));
+      mMP3RateLabels.Add(5);
+      mMP3RateNames.Add(_("6, 95-135 kbps"));
+      mMP3RateLabels.Add(6);
+      mMP3RateNames.Add(_("7, 80-120 kbps"));
+      mMP3RateLabels.Add(7);
+      mMP3RateNames.Add(_("8, 65-105 kbps"));
+      mMP3RateLabels.Add(8);
+      mMP3RateNames.Add(_("9 (Smaller files), 45-85 kbps"));
+      mMP3RateLabels.Add(9);
 
       mMP3Bitrate->Append(mMP3RateNames);
       mMP3Bitrate->SetSelection(5);
@@ -1245,7 +1273,7 @@ public:
 
       for(unsigned int i=0;i<(sizeof(iBitrates)/sizeof(int));i++)
       {
-         mMP3RateNames.Add( wxString::Format(wxT("%i"),iBitrates[i] ));
+         mMP3RateNames.Add( wxString::Format(wxT("%i kbps"),iBitrates[i] ));
          mMP3RateLabels.Add( iBitrates[i] );
       }
 
