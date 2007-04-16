@@ -261,8 +261,11 @@ ExportTypeArray Export::GetTypes()
    types.Add(et);
 #endif
 
+#if !defined(__WXMSW__) && !defined(__WXMAC__)
+   // Command line export not available on Windows and Mac platforms
    et.Set(ExportCL, ExportCLOptions, wxT("*"), 2, false, _("Command Line"));
    types.Add(et);
+#endif
 
    return types;
 }
