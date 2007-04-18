@@ -512,7 +512,7 @@ BlockFile *SimpleBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
          rms = dblValue;
    }
 
-   if (!XMLValueChecker::IsGoodFileName(fileName.GetFullName(), fileName.GetPath(wxPATH_GET_VOLUME)) || 
+   if (!XMLValueChecker::IsGoodFileString(fileName.GetFullName()) || 
          (len <= 0) || (rms < 0.0))
       return NULL;
 
