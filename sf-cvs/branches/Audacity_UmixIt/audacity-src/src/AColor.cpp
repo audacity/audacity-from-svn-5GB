@@ -1,4 +1,3 @@
-
 /**********************************************************************
 
   Audacity: A Digital Audio Editor
@@ -22,6 +21,11 @@
 #endif
 
 bool AColor::inited = false;
+
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   bool AColor::mWantDarkColorScheme = true; // Start with Dark Color Scheme.
+#endif
+
 wxBrush AColor::lightBrush[2];
 wxBrush AColor::mediumBrush[2];
 wxBrush AColor::darkBrush[2];

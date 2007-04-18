@@ -116,7 +116,11 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
          Read("/SamplingRate/DefaultProjectSampleRate", AudioIO::GetOptimalSupportedSampleRate());
    }
 
-   mDisplay = 0; // Move to GUIWaveTrack
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      mDisplay = WaveformAndSpectrumDisplay; // Move to GUIWaveTrack
+   #else
+      mDisplay = WaveformDisplay; // Move to GUIWaveTrack
+   #endif
 
    mSequence = new Sequence(projDirManager, format);
    mEnvelope = new Envelope();
@@ -135,7 +139,11 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
 WaveTrack::WaveTrack(WaveTrack &orig):
    Track(orig)
 {
-   mDisplay = 0; // Move to GUIWaveTrack
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      mDisplay = WaveformAndSpectrumDisplay; // Move to GUIWaveTrack
+   #else
+      mDisplay = WaveformDisplay; // Move to GUIWaveTrack
+   #endif
 
    Init(orig);
 
@@ -641,8 +649,15 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
          }
    }
 
-   int maxFreqPref = gPrefs->Read("/Spectrum/MaxFreq", 8000);
-   int windowSize = gPrefs->Read("/Spectrum/FFTSize", 256);
+   int defaultMaxFreq = 8000;
+   int defaultFFTSize = 256;
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // Thinklabs has lower default for Spectrum MaxFreq & bigger FFTSize than standard Audacity
+      defaultMaxFreq = 1000;
+      defaultFFTSize = 4096;
+   #endif
+   int maxFreqPref = gPrefs->Read("/Spectrum/MaxFreq", defaultMaxFreq);
+   int windowSize = gPrefs->Read("/Spectrum/FFTSize", defaultFFTSize);
    float *buffer = new float[windowSize];
 
    for (x = 0; x < mSpecCache->len; x++)

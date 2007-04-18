@@ -373,7 +373,11 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mRate((double) gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", AudioIO::GetOptimalSupportedSampleRate())),
      mDefaultFormat((sampleFormat) gPrefs->
            Read("/SamplingRate/DefaultProjectSampleFormat", floatSample)),
-     mSelectionFormat(SELECTION_FORMAT_RULER_MIN_SEC),
+     #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+        mSelectionFormat(SELECTION_FORMAT_RULER_SEC), // Default to secs for Thinklabs.
+     #else
+        mSelectionFormat(SELECTION_FORMAT_RULER_MIN_SEC),
+     #endif
      mSnapTo(0),
      mDirty(false),
      mTrackPanel(NULL),
@@ -538,7 +542,11 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
       mBrandingPanel = 
          new BrandingPanel(this, 
                            wxPoint(left, top), 
-                           wxSize(width, 64 + 3*4)); //vvv default powered_by_Audacity_xpm height plus 3*kInset 
+                           #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+                              wxSize(width, 64 + 3*4)); //vvv default powered_by_Audacity_xpm height plus 3*kInset 
+                           #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
+                              wxSize(width, 42 + 3*4)); //vvv default powered_by_Audacity_xpm height plus 3*kInset  
+                           #endif
       wxSize panelSize = mBrandingPanel->GetSize(); 
       int nBrandingPanelHeight = panelSize.GetHeight();
       if (nBrandingPanelHeight < mBrandingPanel->GetMinHeight())
@@ -1061,6 +1069,19 @@ void AudacityProject::HandleResize()
       else
       {
          mMixerBoard->SetSize(left, top + voffset, width, height - voffset);
+         int nTrackClustersWidth = mMixerBoard->GetTrackClustersWidth();
+         if (mLyricsWindow && 
+               (width > (nTrackClustersWidth + (LYRICS_DEFAULT_WIDTH * 3 / 4))))
+         {
+            // Resize Lyrics window to cover gray background at right of Mixer Board.
+            int screenX = nTrackClustersWidth; // Start from client coords.
+            int screenY = top + voffset; // Start from client coords.
+            this->ClientToScreen(&screenX, &screenY);
+            mLyricsWindow->SetSize(
+               screenX, screenY, 
+               width - nTrackClustersWidth - 4, height - voffset);
+         }
+
          this->OnZoomFit();
       }
    #endif
@@ -2188,7 +2209,8 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
 
    mTags->WriteXML(depth+1, fp);
 
-   if (mBranding) mBranding->WriteXML(depth+1, fp);
+   if (mBranding) 
+      mBranding->WriteXML(depth+1, fp);
 
    Track *t;
    TrackListIterator iter(mTracks);
@@ -2578,11 +2600,52 @@ void AudacityProject::PushState(wxString desc,
    ModifyUndoMenus();
 
    UpdateMenus();
-   UpdateLyrics();
 
-   // All the different ways to add tracks funnel through here.
-   mMixerBoard->AddOrUpdateTrackClusters();
-   UpdateMixerBoard();
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // All the different ways to add tracks funnel through here.
+      // For Thinklabs, we want every wavetrack to have a label track. 
+      // This check just makes sure that if the last track is a 
+      // wave track, we add a label track.
+      TrackListIterator iter(mTracks);
+      Track* pTrack = iter.First();
+      Track* pNextTrack;
+      while (pTrack) {
+         pNextTrack = iter.Next();
+         if ((pNextTrack == NULL) && (pTrack->GetKind() == Track::Wave))
+         {
+            // pTrack is the last track, but is a wave track with no label track.
+            // This code is mostly the same as AudacityProject::OnNewLabelTrack, but 
+            // name the label track to match the wave track.
+            LabelTrack *t = new LabelTrack(mDirManager);
+
+            SelectNone();
+
+            mTracks->Add(t);
+            t->SetSelected(true);
+            t->SetName(pTrack->GetName());
+
+            PushState(_("Created new label track"), _("New Track"));
+
+            FixScrollbars();
+            mTrackPanel->Refresh(false);
+
+            // Quit the loop.
+            pTrack = NULL;
+         }
+         else 
+         {
+            if (pTrack->GetLinked())
+               pTrack = iter.Next(); // Skip the right channel
+            pTrack = iter.Next();
+         }
+      }
+   #else
+      UpdateLyrics();
+
+      // All the different ways to add tracks funnel through here.
+      mMixerBoard->AddOrUpdateTrackClusters();
+      UpdateMixerBoard();
+   #endif
 }
 
 void AudacityProject::ModifyState()

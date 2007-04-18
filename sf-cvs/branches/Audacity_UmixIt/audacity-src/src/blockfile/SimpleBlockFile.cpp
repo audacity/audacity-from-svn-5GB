@@ -258,7 +258,7 @@ BlockFile *SimpleBlockFile::BuildFromXML(wxString projDir, const char **attrs)
          break;
 
        const wxString strValue = value;
-       if( !strcmp(attr, "filename") ) 
+       if( !strcmp(attr, "filename") )
        {
          if (!XMLValueChecker::IsGoodFileName(strValue, projDir))
             return NULL;

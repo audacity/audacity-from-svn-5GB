@@ -27,6 +27,7 @@
 #ifndef __AUDACITY_CONTROL_TOOLBAR__
 #define __AUDACITY_CONTROL_TOOLBAR__
 
+#include "AudacityBranding.h"
 #include "ToolBar.h"
 
 class AButton;
@@ -75,6 +76,9 @@ class ControlToolBar:public ToolBar {
    // StopPlaying() which are defined below.
    void OnRewind(wxCommandEvent &evt);
    void OnPlay(wxCommandEvent &evt);
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      void OnLoopPlay(wxCommandEvent &evt);
+   #endif
    void OnStop(wxCommandEvent &evt);
    void OnRecord(wxCommandEvent &evt);
    void OnFF(wxCommandEvent &evt);
@@ -135,6 +139,9 @@ class ControlToolBar:public ToolBar {
 
    AButton *mRewind;
    AButton *mPlay;
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      AButton* mLoopPlay;
+   #endif
    AButton *mRecord;
    AButton *mPause;
    AButton *mStop;

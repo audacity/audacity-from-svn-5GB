@@ -32,6 +32,7 @@
 
 #include "AColor.h"
 #include "BlockFile.h"
+#include "AudacityBranding.h"
 #include "Envelope.h"
 #include "Track.h"
 #include "NoteTrack.h"
@@ -144,6 +145,25 @@ void TrackArtist::DrawTracks(TrackList * tracks,
                samplePen.SetColour(trackColor);
                rmsPen.SetColour(trackColor.Red() * 4/5, trackColor.Green() * 4/5, trackColor.Blue() * 4/5);
             }
+         #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
+            if (AColor::mWantDarkColorScheme)
+            {
+               unselectedBrush.SetColour( 32,  32,  32); // not quite black (vs dragsampleBrush)
+               sampleBrush    .SetColour(  0, 255, 255); // same as Meter playback color
+
+               unselectedPen.SetColour( 32,  32,  32);   // not quite black (vs dragsampleBrush)
+               samplePen    .SetColour(  0, 255, 255);   // same as Meter playback color
+               rmsPen       .SetColour(  0, 255, 255);   // same as samplepen, so no rms display
+            }
+            else
+            {
+               unselectedBrush.SetColour(245 ,245, 245); // not quite white
+               sampleBrush    .SetColour( 32,   0, 128); // blue per Clive, 4/8/2007
+
+               unselectedPen.SetColour(245 ,245, 245);   // not quite black (vs dragsampleBrush)
+               samplePen    .SetColour( 32,   0, 128);   // blue per Clive, 4/8/2007
+               rmsPen       .SetColour( 32,   0, 128);   // same as samplepen, so no rms display
+            }
          #endif
       }
 
@@ -175,6 +195,17 @@ void TrackArtist::DrawTracks(TrackList * tracks,
             case WaveTrack::PitchDisplay:
                DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, true);
                break;
+            case WaveTrack::WaveformAndSpectrumDisplay:
+               // Show both waveform and spectrum simultaneously. 
+               int halfHeight = (rr.height / 2) - 1;
+               rr.height = halfHeight;
+               DrawWaveform((WaveTrack *)t, dc, rr, viewInfo,
+                              drawEnvelope, drawSamples, drawSliders, false, muted);
+               
+               rr.y += halfHeight + 1;
+               DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, false);
+               
+               break;
             }
             break;              // case Wave
          case Track::Note:
@@ -196,8 +227,19 @@ void TrackArtist::DrawTracks(TrackList * tracks,
 
 void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 {
+   bool bWantBothWaveAndSpectrum = 
+      (((WaveTrack *)t)->GetDisplay() == WaveTrack::WaveformAndSpectrumDisplay);
+   int halfHeight = 0;
+   if (bWantBothWaveAndSpectrum)
+      halfHeight = (r.height / 2);
+
    if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::WaveformDisplay) {
+       && ((((WaveTrack *) t)->GetDisplay() == WaveTrack::WaveformDisplay) ||
+            bWantBothWaveAndSpectrum)) 
+   {
+      if (bWantBothWaveAndSpectrum)
+         r.height = halfHeight;
+
       wxRect bev = r;
       bev.Inflate(-1, -1);
       AColor::Bevel(*dc, true, bev);
@@ -258,7 +300,12 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
    }
 
    if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::SpectrumDisplay) {
+       && ((((WaveTrack *) t)->GetDisplay() == WaveTrack::SpectrumDisplay) ||
+            bWantBothWaveAndSpectrum))
+   {
+      if (bWantBothWaveAndSpectrum)
+         r.y += halfHeight + 1;
+
       // Spectrum
       wxRect bev = r;
       bev.Inflate(-1, -1);
@@ -268,8 +315,17 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
          return;
 
       double rate = ((WaveTrack *) t)->GetRate();
-      int windowSize = gPrefs->Read("/Spectrum/FFTSize", 256);
-      int maxFreq = gPrefs->Read("/Spectrum/MaxFreq", 8000);
+
+      int defaultMaxFreq = 8000;
+      int defaultFFTSize = 256;
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         // Thinklabs has lower default for Spectrum MaxFreq & bigger FFTSize than standard Audacity
+         defaultMaxFreq = 1000;
+         defaultFFTSize = 4096;
+      #endif
+      int maxFreq = gPrefs->Read("/Spectrum/MaxFreq", defaultMaxFreq);
+      int windowSize = gPrefs->Read("/Spectrum/FFTSize", defaultFFTSize);
+      
       int maxSamples = int (maxFreq * windowSize / rate + 0.5);
       if (maxSamples > windowSize / 2)
          maxSamples = windowSize / 2;

@@ -736,6 +736,14 @@ void MixerBoard::AddOrUpdateTrackClusters()
    }
 }
 
+int MixerBoard::GetTrackClustersWidth()
+{
+   return 
+      (mMixerTrackClusters.GetCount() *            // number of tracks times
+         (kInset + MIXER_TRACK_CLUSTER_WIDTH)) +   // left margin and width for each
+      kInset;                                      // plus final right margin
+}
+
 void MixerBoard::RemoveTrackCluster(const WaveTrack* pLeftTrack)
 {
    // Find and destroy.
@@ -953,11 +961,7 @@ void MixerBoard::UpdateMeters(double t)
 
 void MixerBoard::UpdateWidth()
 {
-   int newWidth = 
-      (mMixerTrackClusters.GetCount() *            // number of tracks times
-         (kInset + MIXER_TRACK_CLUSTER_WIDTH)) +   // left margin and width for each
-      kTripleInset;                                // plus final right margin
-
+   int newWidth = this->GetTrackClustersWidth() + kDoubleInset; // a bit extra padding on the right
    int width;
    int height;
    this->GetSize(&width, &height);
@@ -973,7 +977,7 @@ void MixerBoard::UpdateWidth()
       mScrolledWindow->SetVirtualSize(newWidth, -1);
 
       wxWindow* pParent = this->GetParent(); // Might be mProject, or might be a MixerBoardFrame.
-      mProject->SetSizeHints(
+      pParent->SetSizeHints(
          kInset + MIXER_TRACK_CLUSTER_WIDTH, // int minW=-1, // Show at least one cluster wide. 
          MIXER_BOARD_MIN_HEIGHT, // int minH=-1, 
          newWidth); // int maxW=-1, 

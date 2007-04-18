@@ -486,6 +486,7 @@ AliasBlockFile::AliasBlockFile(wxFileName existingSummaryFile,
       // Throw an exception?
       return;
    }
+   mAliasedFullPath = FILENAME(mAliasedFileName.GetFullPath());
 
    mMin = min;
    mMax = max;

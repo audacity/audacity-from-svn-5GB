@@ -38,6 +38,79 @@ const float EffectEqualization::curvex[] =
     5000., 6000., 7000., 8000., 9000., 10000., 15000., 16000.
   };
 
+#if (AUDACITY_BRANDING == BRAND_THINKLABS) // custom curves for Thinklabs
+// Clive, 4/11/2007: [visual] Order of filters:
+// Enhance Heart Valves 1       Enhance Lungs                          Remove Record Hiss 1
+// Enhance Heart Valves 2       Convert Bell > Diaphragm           remove Record Hiss 2
+// Enhance Low Murmurs
+
+const float EffectEqualization::curvey[][nCurvePoints] =
+{
+   {
+      // Enhance Heart Valves 1
+      -24.0, -24.0, -24.0, -24.0, -24.0, 0.0, 12.0, 12.0, 12.0, 12.0,
+      0.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0,
+      -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24
+   }, 
+   {
+      // Enhance Lungs
+      -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -12.0, 0.0, 6.0, 12.0,
+      12.0, 12.0, 12.0, 12.0, 12.0, 6.0, -12.0, -24.0, -24.0, -24.0,
+      -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24
+   }, 
+   {
+		// Remove Record Hiss 1
+		0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+		0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -24.0, -24.0, -24.0,
+		-24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0
+   }, 
+
+   {
+      // Enhance Heart Valves 2
+      -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, 0.0, 12.0, 12.0, 12.0,
+      12.0, 12.0, 12.0, 12.0, 0.0, -12.0, -24.0, -24.0, -24.0, -24.0,
+      -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24
+   }, 
+   {
+      // Convert Bell > Diaphragm
+      -24.0, -24.0, -24.0, -24.0, -12.0, 0.0, 6.0, 6.0, 6.0, 6.0,
+      6.0, 6.0, 6.0, 6.0, 6.0, 12.0, 0.0, -12.0, -24.0, -24.0,
+      -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24
+   },
+   {
+      // Remove Record Hiss 2
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+      0.0, 0.0, -12.0, -18.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0,
+      -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0
+   }, 
+
+   {
+      // Enhance Low Murmurs
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -12.0, -24.0,
+      -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0,
+      -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24.0, -24
+   },
+};
+
+const char * EffectEqualization::curveNames[] =
+{
+   // Clive, 4/11/2007: [visual] Order of filters:
+   // Enhance Heart Valves 1       Enhance Lungs                          Remove Record Hiss 1
+   // Enhance Heart Valves 2       Convert Bell > Diaphragm           remove Record Hiss 2
+   // Enhance Low Murmurs
+   "Enhance Heart Valves 1",
+   "Enhance Lungs",
+   "Remove Record Hiss 1",
+
+   "Enhance Heart Valves 2",
+   "Convert Bell > Diaphragm",
+   "Remove Record Hiss 2",
+
+   "Enhance Low Murmurs",
+};
+
+#else // not Thinklabs
+
 const float EffectEqualization::curvey[][nCurvePoints] =
    {
       {
@@ -130,7 +203,7 @@ const char * EffectEqualization::curveNames[] =
     "RCA Victor 1947"
   };
 
-
+#endif // (AUDACITY_BRANDING == BRAND_THINKLABS)
 
 EffectEqualization::EffectEqualization()
 {
@@ -659,7 +732,11 @@ wxSizer * MakeEqualizationDialog(
 
 	wxStaticText *item1 =
 		new wxStaticText(parent, -1,
-							  _("Equalization, by Mitch Golden && Vaughan Johnson"),
+                       #if (AUDACITY_BRANDING == BRAND_THINKLABS) // custom curves for Thinklabs
+							     _("Equalization, by Mitch Golden, Vaughan Johnson, && Clive Smith"),
+                       #else
+							     _("Equalization, by Mitch Golden && Vaughan Johnson"),
+                       #endif
 							  wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);
 	item0->Add( item1, 0, wxALIGN_CENTRE|wxALL, 4 );
 

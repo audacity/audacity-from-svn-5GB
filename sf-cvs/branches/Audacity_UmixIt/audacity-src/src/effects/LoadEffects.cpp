@@ -61,10 +61,12 @@
 
 void LoadEffects()
 {
-   // Generate menu
-   Effect::RegisterEffect(new EffectNoise());
-   Effect::RegisterEffect(new EffectSilence());
-   Effect::RegisterEffect(new EffectToneGen());
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      // Generate menu
+      Effect::RegisterEffect(new EffectNoise());
+      Effect::RegisterEffect(new EffectSilence());
+      Effect::RegisterEffect(new EffectToneGen());
+   #endif
 
    // Effect menu
    
@@ -73,45 +75,63 @@ void LoadEffects()
    //Commented out now that the Compressor effect works better
    //Effect::RegisterEffect(new EffectAvcCompressor());
 
-   Effect::RegisterEffect(new EffectBassBoost());
-   Effect::RegisterEffect(new EffectChangeSpeed());
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      Effect::RegisterEffect(new EffectBassBoost());
+      Effect::RegisterEffect(new EffectChangeSpeed());
+   #endif
 	#ifdef USE_SOUNDTOUCH
-		Effect::RegisterEffect(new EffectChangePitch());
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+		   Effect::RegisterEffect(new EffectChangePitch());
+      #endif
 		Effect::RegisterEffect(new EffectChangeTempo());
 	#endif
-   Effect::RegisterEffect(new EffectClickRemoval());
-   Effect::RegisterEffect(new EffectCompressor());
-   Effect::RegisterEffect(new EffectEcho());
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      Effect::RegisterEffect(new EffectClickRemoval());
+      Effect::RegisterEffect(new EffectCompressor());
+      Effect::RegisterEffect(new EffectEcho());
+   #endif
    Effect::RegisterEffect(new EffectEqualization());
-   Effect::RegisterEffect(new EffectFadeIn());
-   Effect::RegisterEffect(new EffectFadeOut());
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      Effect::RegisterEffect(new EffectFadeIn());
+      Effect::RegisterEffect(new EffectFadeOut());
+   #endif
    Effect::RegisterEffect(new EffectFilter());
-   Effect::RegisterEffect(new EffectInvert());
-   Effect::RegisterEffect(new EffectNoiseRemoval());
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      Effect::RegisterEffect(new EffectInvert());
+      Effect::RegisterEffect(new EffectNoiseRemoval());
+   #endif
    Effect::RegisterEffect(new EffectNormalize());
-   Effect::RegisterEffect(new EffectPhaser());
-   Effect::RegisterEffect(new EffectRepeat());
-   Effect::RegisterEffect(new EffectReverse());
-   Effect::RegisterEffect(new EffectWahwah());
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      Effect::RegisterEffect(new EffectPhaser());
+      Effect::RegisterEffect(new EffectRepeat());
+      Effect::RegisterEffect(new EffectReverse());
+      Effect::RegisterEffect(new EffectWahwah());
+   #endif
 
    // Analyze menu
    // [nothing built-in, but plug-ins might go here]
 
 
-#ifdef USE_WAVELET
-   Effect::RegisterEffect(new EffectWaveletDenoise());
+#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #ifdef USE_WAVELET
+      Effect::RegisterEffect(new EffectWaveletDenoise());
+   #endif
 #endif
 
+// Thinklabs wants High-pass and Low-pass only, so LoadNyquistPlugins, 
+// but install only those two in the folder.
 #ifdef USE_NYQUIST
    LoadNyquistPlugins();
 #endif
 
-#if defined(__WXMAC__) || defined(__WXMSW__)  && !defined(__CYGWIN__)
-   LoadVSTPlugins();
-#endif
+#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if defined(__WXMAC__) || defined(__WXMSW__)  && !defined(__CYGWIN__)
+      LoadVSTPlugins();
+   #endif
 
-#ifdef USE_LADSPA
-   LoadLadspaPlugins();
+   #ifdef USE_LADSPA
+      LoadLadspaPlugins();
+   #endif
 #endif
 }
 

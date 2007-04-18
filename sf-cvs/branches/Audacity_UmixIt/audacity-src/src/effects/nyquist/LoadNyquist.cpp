@@ -35,8 +35,11 @@ void LoadNyquistPlugins()
    unsigned int i;
 
    // Create one "interactive Nyquist"
-   EffectNyquist *effect = new EffectNyquist("");
-   Effect::RegisterEffect(effect);
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      // easy mode for Thinklabs
+      EffectNyquist *effect = new EffectNyquist("");
+      Effect::RegisterEffect(effect);
+   #endif
 
    // Load .ny plug-ins
    for(i=0; i<audacityPathList.GetCount(); i++) {

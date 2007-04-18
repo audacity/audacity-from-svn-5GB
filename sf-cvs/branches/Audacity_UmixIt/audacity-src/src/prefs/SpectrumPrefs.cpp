@@ -20,6 +20,8 @@
 #include <wx/textctrl.h>
 
 #include "../Prefs.h"
+#include "../AudacityBranding.h"
+#include "../Project.h"
 #include "SpectrumPrefs.h"
 
 int numFFTSizes = 7;
@@ -47,15 +49,24 @@ wxString stringFFTSizes[] = {
 SpectrumPrefs::SpectrumPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
-   int fftSize = gPrefs->Read("/Spectrum/FFTSize", 256L);
+   int defaultFFTSize = 256L;
+   int defaultMaxFreq = 8000L;
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // Thinklabs has lower default for Spectrum MaxFreq & bigger FFTSize than standard Audacity
+      defaultFFTSize = 4096L;
+      defaultMaxFreq = 1000L;
+   #endif
+
+   int fftSize = gPrefs->Read("/Spectrum/FFTSize", defaultFFTSize);
+   
    bool isGrayscale = false;
    gPrefs->Read("/Spectrum/Grayscale", &isGrayscale, false);
 
-   int i;
-   int maxFreq = gPrefs->Read("/Spectrum/MaxFreq", 8000L);
+   int maxFreq = gPrefs->Read("/Spectrum/MaxFreq", defaultMaxFreq);
    wxString maxFreqStr;
    maxFreqStr.Printf("%d", maxFreq);
 
+   int i;
    int pos = 3;                 // Fall back to 256 if it doesn't match anything else
    for (i = 0; i < numFFTSizes; i++)
       if (fftSize == FFTSizes[i]) {
@@ -155,7 +166,12 @@ bool SpectrumPrefs::Apply()
    }
    gPrefs->Write("/Spectrum/MaxFreq", maxFreq);
 
-   // TODO: Force all projects to repaint themselves
+   // TODO: Force all projects to repaint themselves 
+   //v? Or just the active project, voila?
+   // Update the TrackPanel correspondingly. 
+   // Calling RedrawProject is inefficient relative to sending a msg to TrackPanel 
+   // for a particular track and control, but not a real performance hit.
+   GetActiveProject()->RedrawProject();
 
    return true;
 

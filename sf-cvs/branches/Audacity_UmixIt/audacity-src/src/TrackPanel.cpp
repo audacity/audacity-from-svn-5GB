@@ -246,7 +246,46 @@ static const char * TimeCursorXpm[] = {
 "................................",
 "................................"};
 
-
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+// For Thinklabs, surround the I-beam with white, so it shows on light or dark background.
+static const char * IBeamCursorXpm[] = {
+"32 32 3 1",
+".	c #FF0000", // mask color = RGB:255,0,0
+"#	c #000000",
+"+	c #FFFFFF",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+".............++++++++...........",
+"............+####+###+..........",
+".............+++##+++...........",
+"...............+##+.............",
+"...............+##+.............",
+"...............+##+.............",
+"...............+##+.............",
+"...............+##+.............",
+"...............+##+.............",
+"...............+##+.............",
+"...............+##+.............",
+"...............+##+.............",
+"...............+##+.............",
+"...............+##+.............",
+"...............+##+.............",
+".............+++##+++...........",
+"............+####+###+..........",
+".............++++++++...........",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................"};
+#else
 static const char * IBeamCursorXpm[] = {
 "32 32 3 1",
 ".	c #FF0000", // mask color = RGB:255,0,0
@@ -284,6 +323,7 @@ static const char * IBeamCursorXpm[] = {
 "................................",
 "................................",
 "................................"};
+#endif // (AUDACITY_BRANDING == BRAND_THINKLABS)
 
 //Image of a pencil.
 static const char * DrawCursorXpm[] = {
@@ -475,6 +515,30 @@ static const char * TimeCursorXpm[] = {
 
 // Classic optical illusion.
 // the beam looks taller than the arrow.
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+// For Thinklabs, surround the I-beam with white, so it shows on light or dark background.
+static const char * IBeamCursorXpm[] = {
+"16 16 3 1",
+".	c #FF0000", // mask color = RGB:255,0,0
+"#	c #000000",
+"+	c #FFFFFF",
+"...+####+###+...",
+"......+##+......",
+"......+##+......",
+"......+##+......",
+"......+##+......",
+"......+##+......",
+"......+##+......",
+"......+##+......",
+"......+##+......",
+"......+##+......",
+"......+##+......",
+"......+##+......",
+"......+##+......",
+"......+##+......",
+"......+##+......",
+"...+####+###+..."};
+#else
 static const char * IBeamCursorXpm[] = {
 "16 16 3 1",
 ".	c #FF0000", // mask color = RGB:255,0,0
@@ -496,6 +560,7 @@ static const char * IBeamCursorXpm[] = {
 ".......##.......",
 ".......##.......",
 "....####.###...."};
+#endif // (AUDACITY_BRANDING == BRAND_THINKLABS)
 
 //Image of a pencil.
 static const char * DrawCursorXpm[] = {
@@ -651,6 +716,7 @@ enum {
    OnWaveformDBID,
    OnSpectrumID,
    OnPitchID,
+   OnWaveformAndSpectrumID,
 
    OnSplitStereoID,
    OnMergeStereoID,
@@ -670,7 +736,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU_RANGE(OnUpOctaveID, OnDownOctaveID, TrackPanel::OnChangeOctave)
     EVT_MENU_RANGE(OnChannelLeftID, OnChannelMonoID,
                TrackPanel::OnChannelChange)
-    EVT_MENU_RANGE(OnWaveformID, OnPitchID, TrackPanel::OnSetDisplay)
+    EVT_MENU_RANGE(OnWaveformID, OnWaveformAndSpectrumID, TrackPanel::OnSetDisplay)
     EVT_MENU_RANGE(OnRate8ID, OnRate96ID, TrackPanel::OnRateChange)
     EVT_MENU_RANGE(On16BitID, OnFloatID, TrackPanel::OnFormatChange)
     EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
@@ -828,21 +894,32 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mWaveTrackMenu->AppendSeparator();
    mWaveTrackMenu->Append(OnMoveUpID, _("Move Track Up"));
    mWaveTrackMenu->Append(OnMoveDownID, _("Move Track Down"));
+
    mWaveTrackMenu->AppendSeparator();
    mWaveTrackMenu->Append(OnWaveformID, _("Waveform"));
-   mWaveTrackMenu->Append(OnWaveformDBID, _("Waveform (dB)"));
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      mWaveTrackMenu->Append(OnWaveformDBID, _("Waveform (dB)"));
+   #endif
    mWaveTrackMenu->Append(OnSpectrumID, _("Spectrum"));
-   mWaveTrackMenu->Append(OnPitchID, _("Pitch (EAC)"));
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      mWaveTrackMenu->Append(OnPitchID, _("Pitch (EAC)"));
+   #endif
+   mWaveTrackMenu->Append(OnWaveformAndSpectrumID, _("Waveform and Spectrum"));
+
    mWaveTrackMenu->AppendSeparator();
    mWaveTrackMenu->Append(OnChannelMonoID, _("Mono"));
-   mWaveTrackMenu->Append(OnChannelLeftID, _("Left Channel"));
-   mWaveTrackMenu->Append(OnChannelRightID, _("Right Channel"));
-   mWaveTrackMenu->Append(OnMergeStereoID, _("Make Stereo Track"));
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      mWaveTrackMenu->Append(OnChannelLeftID, _("Left Channel"));
+      mWaveTrackMenu->Append(OnChannelRightID, _("Right Channel"));
+      mWaveTrackMenu->Append(OnMergeStereoID, _("Make Stereo Track"));
+   #endif
    mWaveTrackMenu->Append(OnSplitStereoID, _("Split Stereo Track"));
-   mWaveTrackMenu->AppendSeparator();
-   mWaveTrackMenu->Append(0, _("Set Sample Format"), mFormatMenu);
-   mWaveTrackMenu->AppendSeparator();
-   mWaveTrackMenu->Append(0, _("Set Rate"), mRateMenu);
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      mWaveTrackMenu->AppendSeparator();
+      mWaveTrackMenu->Append(0, _("Set Sample Format"), mFormatMenu);
+      mWaveTrackMenu->AppendSeparator();
+      mWaveTrackMenu->Append(0, _("Set Rate"), mRateMenu);
+   #endif
 
    mNoteTrackMenu = new wxMenu();
    mNoteTrackMenu->Append(OnSetNameID, _("Name..."));
@@ -1579,8 +1656,18 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
    // (3) They're over the label or vertical ruler.
    if (label) {
-      if (event.m_x >= GetVRulerOffset() &&
-          label->GetKind() == Track::Wave) {
+      int nDisplayType = ((WaveTrack*)label)->GetDisplay();
+      if ((label->GetKind() == Track::Wave) && 
+
+            // No zoom for spectrum/pitch displays in 1.2.x.
+            // Check the display type, and y pos for WaveformAndSpectrumDisplay.
+            ((nDisplayType <= WaveTrack::WaveformDBDisplay) || 
+               ((nDisplayType == WaveTrack::WaveformAndSpectrumDisplay) && 
+                  // Showing both waveform and spectrum, waveform in upper half.
+                  (event.m_y <= (r.GetY() + (r.GetHeight() / 2))))) && 
+
+            event.m_x >= GetVRulerOffset())
+      {
          tip = _("Click to vertically zoom in, Shift-click to zoom out, "
                  "Drag to create a particular zoom region.");
          SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
@@ -2203,7 +2290,17 @@ void TrackPanel::HandleVZoom(wxMouseEvent & event)
       WaveTrack *track = (WaveTrack *)mCapturedTrack;
       WaveTrack *partner = (WaveTrack *)mTracks->GetLink(track);
       int height = track->GetHeight();
+
       int ypos = mCapturedRect.y;
+
+      if (track->GetDisplay() == WaveTrack::WaveformAndSpectrumDisplay)
+      {
+         // Displaying both waveform and spectrum.
+         // Can currently zoom only on the waveform, in the upper half.
+         height /= 2; 
+         if ((event.m_y - ypos) > height)
+            return;
+      }
 
       if (mZoomEnd < mZoomStart) {
          int temp = mZoomEnd;
@@ -2935,24 +3032,32 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
           && next->GetKind() == Track::Wave)
          canMakeStereo = true;
 
-      theMenu->Enable(OnMergeStereoID, canMakeStereo);
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+         theMenu->Enable(OnMergeStereoID, canMakeStereo);
+      #endif
       theMenu->Enable(OnSplitStereoID, t->GetLinked());
       theMenu->Enable(OnChannelMonoID, !t->GetLinked());
-      theMenu->Enable(OnChannelLeftID, !t->GetLinked());
-      theMenu->Enable(OnChannelRightID, !t->GetLinked());
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+         theMenu->Enable(OnChannelLeftID, !t->GetLinked());
+         theMenu->Enable(OnChannelRightID, !t->GetLinked());
+      #endif
 
       int display = ((WaveTrack *) t)->GetDisplay();
-
       theMenu->Enable(OnWaveformID, display != WaveTrack::WaveformDisplay);
-      theMenu->Enable(OnWaveformDBID,
-                      display != WaveTrack::WaveformDBDisplay);
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+         theMenu->Enable(OnWaveformDBID, display != WaveTrack::WaveformDBDisplay);
+      #endif
       theMenu->Enable(OnSpectrumID, display != WaveTrack::SpectrumDisplay);
-      theMenu->Enable(OnPitchID, display != WaveTrack::PitchDisplay);
-      
-      WaveTrack * track = (WaveTrack *)t;
-      SetMenuCheck(*mRateMenu, IdOfRate((int) track->GetRate()));
-      SetMenuCheck(*mFormatMenu, IdOfFormat(track->GetSampleFormat()));
- 
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+         theMenu->Enable(OnPitchID, display != WaveTrack::PitchDisplay);
+      #endif
+      theMenu->Enable(OnWaveformAndSpectrumID, display != WaveTrack::WaveformAndSpectrumDisplay);
+
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+         WaveTrack * track = (WaveTrack *)t;
+         SetMenuCheck(*mRateMenu, IdOfRate((int) track->GetRate()));
+         SetMenuCheck(*mFormatMenu, IdOfFormat(track->GetSampleFormat()));
+      #endif
    }
 
    if (t->GetKind() == Track::Note)
@@ -4163,6 +4268,7 @@ void TrackPanel::DrawRuler( wxDC * dc, bool text )
          mRuler->SetLeftOffset(0);
    #endif
 
+      
    bool bRecording = (gAudioIO->GetNumCaptureChannels() ? false : true);
 
    mRuler->DrawAdornedRuler( dc, mViewInfo, text, bIndicators, bRecording );
@@ -4296,7 +4402,7 @@ void TrackPanel::OnMergeStereo(wxCommandEvent &event)
 void TrackPanel::OnSetDisplay(wxCommandEvent & event)
 {
    int id = event.GetId();
-   wxASSERT(id >= OnWaveformID && id <= OnPitchID);
+   wxASSERT(id >= OnWaveformID && id <= OnWaveformAndSpectrumID);
    wxASSERT(mPopupMenuTarget
             && mPopupMenuTarget->GetKind() == Track::Wave);
    ((WaveTrack *) mPopupMenuTarget)->SetDisplay(id - OnWaveformID);

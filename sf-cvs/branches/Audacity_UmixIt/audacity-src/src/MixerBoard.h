@@ -146,6 +146,7 @@ public:
    // Update pointers for tracks we're aleady showing. 
    void AddOrUpdateTrackClusters(); 
 
+   int GetTrackClustersWidth();
    void RemoveTrackCluster(const WaveTrack* pLeftTrack);
    void MoveTrackCluster(const WaveTrack* pLeftTrack, bool bUp); // Up in TrackPanel is left in MixerBoard.
 

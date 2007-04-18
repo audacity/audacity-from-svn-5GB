@@ -77,6 +77,23 @@ Effect *Effect::GetEffect(int ID)
    return NULL;
 }
 
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+	Effect* Effect::GetEffectByName(const wxString strTargetName, const int kFlags /*= ALL_EFFECTS*/)
+	{
+	   int nCount = mEffects.GetCount();
+	   int nFlags;
+	   for (unsigned int i = 0; i < nCount; i++) 
+	   {
+	      nFlags = mEffects[i]->GetEffectFlags();
+	      if (((nFlags & kFlags) == nFlags) && 
+	            strTargetName.IsSameAs(mEffects[i]->GetEffectName()))
+	      {
+	         return mEffects[i];
+	      }
+	   }
+	   return NULL;
+	}
+#endif
 EffectArray *Effect::GetEffects(int flags /* = ALL_EFFECTS */)
 {
    EffectArray *results = new EffectArray();
