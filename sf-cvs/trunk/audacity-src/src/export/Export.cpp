@@ -85,24 +85,13 @@ ExportType::ExportType()
    mMaxChannels = 0;
 }
 
-void ExportType::Set(ExportRoutine routine,
+void ExportType::Set(wxString description,
+                     ExportRoutine routine,
                      ExportOptions options,
                      wxArrayString extensions,
                      wxString extension,
                      int maxchannels,
-                     bool canmetadata,
-                     wxString description)
-{
-   mExtensions = extensions;
-   Set(routine, options, extension, maxchannels, canmetadata);
-}
-
-void ExportType::Set(ExportRoutine routine,
-                     ExportOptions options,
-                     wxString extension,
-                     int maxchannels,
-                     bool canmetadata,
-                     wxString description)
+                     bool canmetadata)
 {
    mRoutine = routine;
    mOptions = options;
@@ -112,9 +101,26 @@ void ExportType::Set(ExportRoutine routine,
    mCanMetaData = canmetadata;
    mDescription = description;
 
-   if (mExtensions.GetCount() == 0) {
-      mExtensions.Add(mExtension);
-   }
+   mExtensions = extensions;
+}
+
+void ExportType::Set(wxString description,
+                     ExportRoutine routine,
+                     ExportOptions options,
+                     wxString extension,
+                     int maxchannels,
+                     bool canmetadata)
+{
+   mRoutine = routine;
+   mOptions = options;
+   mFormat = extension.MakeUpper();
+   mExtension = extension.MakeLower();
+   mMaxChannels = maxchannels;
+   mCanMetaData = canmetadata;
+   mDescription = description;
+
+   mExtensions.Clear();
+   mExtensions.Add(mExtension);
 }
 
 ExportRoutine ExportType::GetRoutine()
@@ -159,14 +165,7 @@ bool ExportType::GetCanMetaData()
 
 wxString ExportType::GetMask()
 {
-   wxString mask;
-   
-   if (mDescription.IsEmpty()) {
-      mask = mFormat + wxT(" files|");
-   }
-   else {
-      mask = mDescription + wxT("|");
-   }
+   wxString mask = mDescription + wxT("|");
 
    // Build the mask, but cater to the Mac FileDialog and put the default
    // extension at the end of the mask.
@@ -240,30 +239,30 @@ ExportTypeArray Export::GetTypes()
    ExportTypeArray types;
    ExportType et;
 
-   et.Set(ExportPCM, ExportPCMOptions, sf_get_all_extensions(), wxT("wav"), 2);
+   et.Set(_("WAV, AIFF, and other PCM Files"), ExportPCM, ExportPCMOptions, sf_get_all_extensions(), wxT("wav"), 2);
    types.Add(et);
 
-   et.Set(ExportMP3, ExportMP3Options, wxT("mp3"), 2, true);
+   et.Set(_("MP3 Files"), ExportMP3, ExportMP3Options, wxT("mp3"), 2, true);
    types.Add(et);
 
 #ifdef USE_LIBVORBIS
-   et.Set(ExportOGG, ExportOGGOptions, wxT("ogg"), 32);
+   et.Set(_("OGG Files"), ExportOGG, ExportOGGOptions, wxT("ogg"), 32);
    types.Add(et);
 #endif
 
 #ifdef USE_LIBFLAC
-   et.Set(ExportFLAC, ExportFLACOptions, wxT("flac"), 8, true);
+   et.Set(_("FLAC Files"), ExportFLAC, ExportFLACOptions, wxT("flac"), 8, true);
    types.Add(et);
 #endif
 
 #if USE_LIBTWOLAME
-   et.Set(ExportMP2, ExportMP2Options, wxT("mp2"), 2);
+   et.Set(_("MP2 Files"), ExportMP2, ExportMP2Options, wxT("mp2"), 2);
    types.Add(et);
 #endif
 
 #if !defined(__WXMSW__) && !defined(__WXMAC__)
    // Command line export not available on Windows and Mac platforms
-   et.Set(ExportCL, ExportCLOptions, wxT("*"), 2, false, _("Command Line"));
+   et.Set(_("(external program)"), ExportCL, ExportCLOptions, wxT("*"), 2, false);
    types.Add(et);
 #endif
 
@@ -412,7 +411,7 @@ bool Export::GetFilename()
       }
    }
    maskString.RemoveLast();
-
+wxLogDebug(wxT("mask '%s'\n"), maskString);
    mFilename.SetPath(gPrefs->Read(wxT("/Export/Path"), ::wxGetCwd()));
    mFilename.SetName(mProject->GetName());
    mFilename.SetExt(mTypes[mFormat].GetExtension());
