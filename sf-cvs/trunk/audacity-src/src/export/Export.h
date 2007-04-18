@@ -50,20 +50,20 @@ public:
 
    ExportType();
 
-   void Set(ExportRoutine routine,
+   void Set(wxString description,
+            ExportRoutine routine,
             ExportOptions options,
             wxString extension,
             int maxchannels,
-            bool canmetadata = false,
-            wxString description = wxEmptyString);
-   
-   void Set(ExportRoutine routine,
+            bool canmetadata = false);
+
+   void Set(wxString description,
+            ExportRoutine routine,
             ExportOptions options,
             wxArrayString extensions,
             wxString extension,
             int maxchannels,
-            bool canmetadata = false,
-            wxString description = wxEmptyString);
+            bool canmetadata = false);
    
    ExportRoutine GetRoutine();
    ExportOptions GetOptions();
