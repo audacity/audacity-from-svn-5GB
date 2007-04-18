@@ -411,7 +411,7 @@ bool Export::GetFilename()
       }
    }
    maskString.RemoveLast();
-wxLogDebug(wxT("mask '%s'\n"), maskString);
+
    mFilename.SetPath(gPrefs->Read(wxT("/Export/Path"), ::wxGetCwd()));
    mFilename.SetName(mProject->GetName());
    mFilename.SetExt(mTypes[mFormat].GetExtension());
