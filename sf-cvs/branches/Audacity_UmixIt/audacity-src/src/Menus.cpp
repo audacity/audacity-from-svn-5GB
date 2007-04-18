@@ -29,6 +29,10 @@
 #include "Project.h"
 
 #include "AudioIO.h"
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   #include "AColor.h"
+   #include "Branding.h"
+#endif
 #include "LabelTrack.h"
 #include "import/ImportMIDI.h"
 #include "import/ImportRaw.h"
@@ -36,8 +40,10 @@
 #include "export/ExportMultiple.h"
 #include "prefs/PrefsDialog.h"
 #include "HistoryWindow.h"
-#include "LyricsWindow.h"
-#include "MixerBoard.h"
+#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #include "LyricsWindow.h"
+   #include "MixerBoard.h"
+#endif
 #include "Internat.h"
 #include "FileFormats.h"
 #include "FormatSelection.h"
@@ -168,9 +174,13 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem("ExportMP3",      _("Export As MP3..."),               FN(OnExportMP3Mix));
    c->AddItem("ExportMP3Sel",   _("Export Selection As MP3..."),     FN(OnExportMP3Selection));
-   c->AddSeparator();
-   c->AddItem("ExportOgg",      _("Export As Ogg Vorbis..."),        FN(OnExportOggMix));
-   c->AddItem("ExportOggSel",   _("Export Selection As Ogg Vorbis..."), FN(OnExportOggSelection));
+
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
+      c->AddSeparator();
+      c->AddItem("ExportOgg",      _("Export As Ogg Vorbis..."),        FN(OnExportOggMix));
+      c->AddItem("ExportOggSel",   _("Export Selection As Ogg Vorbis..."), FN(OnExportOggSelection));
+   #endif
+
    c->AddSeparator();
    c->AddItem("ExportLabels",   _("Export &Labels..."),              FN(OnExportLabels));
    c->AddItem("ExportMultiple",   _("Export &Multiple..."),              FN(OnExportMultiple));
@@ -356,29 +366,36 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("FitInWindow",    _("&Fit in Window\tCtrl+F"),         FN(OnZoomFit));
    c->AddItem("FitV",           _("Fit &Vertically\tCtrl+Shift+F"),  FN(OnZoomFitV));
    c->AddItem("ZoomSel",        _("&Zoom to Selection\tCtrl+E"),     FN(OnZoomSel));
-   c->AddSeparator();
 
-   c->BeginSubMenu(_("Set Selection Format"));
-   c->AddItemList("SelectionFormat", GetSelectionFormats(), FN(OnSelectionFormat));
-   c->EndSubMenu();
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
+      c->AddSeparator();
+      c->BeginSubMenu(_("Set Selection Format"));
+      c->AddItemList("SelectionFormat", GetSelectionFormats(), FN(OnSelectionFormat));
+      c->EndSubMenu();
+   #endif
 
    c->AddSeparator();
    c->AddItem("UndoHistory",    _("&History..."),               FN(OnHistory));
-   c->AddSeparator();
-   c->AddItem("Lyrics",         _("&Lyrics..."),                FN(OnLyrics));
-   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
-      c->AddItem("Mixer Board",    _("&Track Panel"),           FN(OnMixerBoard));
-   #else
-      c->AddItem("Mixer Board",    _("&Mixer Board..."),           FN(OnMixerBoard));
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
+      c->AddSeparator();
+
+      c->AddItem("Lyrics",         _("&Lyrics..."),                FN(OnLyrics));
+      #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+         c->AddItem("MixerBoard",    _("&Track Panel"),           FN(OnMixerBoard));
+      #else
+         c->AddItem("MixerBoard",    _("&Mixer Board..."),           FN(OnMixerBoard));
+      #endif
+
+      c->AddSeparator();
+      c->AddItem("FloatControlTB", _("Float Control Toolbar"),          FN(OnFloatControlToolBar));
+      c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
+      c->AddItem("FloatMixerTB",   _("Float Mixer Toolbar"),            FN(OnFloatMixerToolBar));
+      c->AddItem("FloatMeterTB",   _("Float Meter Toolbar"),            FN(OnFloatMeterToolBar));
+      c->SetCommandFlags("FloatMeterTB", AudioIONotBusyFlag, AudioIONotBusyFlag);
+      //v At first, we were still showing these, but defaulting to Mixer and Meter toolbars not shown.
+      //   c->Enable("FloatMixerTB", false);
+      //   c->Enable("FloatMeterTB", false);
    #endif
-   c->AddSeparator();
-   c->AddItem("FloatControlTB", _("Float Control Toolbar"),          FN(OnFloatControlToolBar));
-   c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
-   c->AddItem("FloatMixerTB",   _("Float Mixer Toolbar"),            FN(OnFloatMixerToolBar));
-   c->AddItem("FloatMeterTB",   _("Float Meter Toolbar"),            FN(OnFloatMeterToolBar));
-
-   c->SetCommandFlags("FloatMeterTB", AudioIONotBusyFlag, AudioIONotBusyFlag);
-
    c->EndMenu();
 
    //
@@ -389,52 +406,62 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
    c->AddItem("ImportAudio",    _("&Import Audio...\tCtrl+I"),       FN(OnImport));
    c->AddItem("ImportLabels",   _("Import &Labels..."),              FN(OnImportLabels));
-   c->AddItem("ImportMIDI",     _("Import &MIDI..."),                FN(OnImportMIDI));
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
+      c->AddItem("ImportMIDI",     _("Import &MIDI..."),                FN(OnImportMIDI));
+   #endif
    c->AddItem("ImportRaw",      _("Import &Raw Data..."),            FN(OnImportRaw));
    c->AddSeparator();
+   //vvv c->AddItem("ProjectNotes",  _("Project &Notes..."),              FN(OnProjectNotes));
    c->AddItem("EditID3",        _("&Edit ID3 Tags..."),              FN(OnEditID3));
    c->AddSeparator();
-   c->AddItem("QuickMix",       _("&Quick Mix"),                     FN(OnQuickMix));
-   c->SetCommandFlags("QuickMix",
-                      AudioIONotBusyFlag | WaveTracksSelectedFlag,
-                      AudioIONotBusyFlag | WaveTracksSelectedFlag);
-   c->AddSeparator();
-   c->AddItem("NewAudioTrack",  _("New &Audio Track"),               FN(OnNewWaveTrack));
-   c->AddItem("NewStereoTrack", _("New &Stereo Track"),              FN(OnNewStereoTrack));
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
+      c->AddItem("QuickMix",       _("&Quick Mix"),                     FN(OnQuickMix));
+      c->SetCommandFlags("QuickMix",
+                        AudioIONotBusyFlag | WaveTracksSelectedFlag,
+                        AudioIONotBusyFlag | WaveTracksSelectedFlag);
+      c->AddSeparator();
+      c->AddItem("NewAudioTrack",  _("New &Audio Track"),               FN(OnNewWaveTrack));
+      c->AddItem("NewStereoTrack", _("New &Stereo Track"),              FN(OnNewStereoTrack));
+   #endif
    c->AddItem("NewLabelTrack",  _("New La&bel Track"),               FN(OnNewLabelTrack));
-   c->AddItem("NewTimeTrack",   _("New &Time Track"),                FN(OnNewTimeTrack));
-   c->AddSeparator();
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
+      c->AddItem("NewTimeTrack",   _("New &Time Track"),                FN(OnNewTimeTrack));
+      c->AddSeparator();
+   #endif
    c->AddItem("RemoveTracks",   _("Remo&ve Tracks"),                 FN(OnRemoveTracks));
    c->SetCommandFlags("RemoveTracks",
                       AudioIONotBusyFlag | TracksSelectedFlag,
                       AudioIONotBusyFlag | TracksSelectedFlag);
-   c->AddSeparator();
 
-   wxArrayString alignLabels;
-   alignLabels.Add(_("Align with &Zero"));
-   alignLabels.Add(_("Align with &Cursor"));
-   alignLabels.Add(_("Align with Selection &Start"));
-   alignLabels.Add(_("Align with Selection &End"));
-   alignLabels.Add(_("Align End with Cursor"));
-   alignLabels.Add(_("Align End with Selection Start"));
-   alignLabels.Add(_("Align End with Selection End"));
-   alignLabels.Add(_("Align Tracks Together"));
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
+      c->AddSeparator();
 
-   c->BeginSubMenu(_("Align Tracks..."));
-   c->AddItemList("Align", alignLabels, FN(OnAlign));
-   c->SetCommandFlags("Align",
-                      AudioIONotBusyFlag | TracksSelectedFlag,
-                      AudioIONotBusyFlag | TracksSelectedFlag);
-   c->EndSubMenu();
+      wxArrayString alignLabels;
+      alignLabels.Add(_("Align with &Zero"));
+      alignLabels.Add(_("Align with &Cursor"));
+      alignLabels.Add(_("Align with Selection &Start"));
+      alignLabels.Add(_("Align with Selection &End"));
+      alignLabels.Add(_("Align End with Cursor"));
+      alignLabels.Add(_("Align End with Selection Start"));
+      alignLabels.Add(_("Align End with Selection End"));
+      alignLabels.Add(_("Align Tracks Together"));
 
-   alignLabels.Remove(7); // Can't align together and move cursor
+      c->BeginSubMenu(_("Align Tracks..."));
+      c->AddItemList("Align", alignLabels, FN(OnAlign));
+      c->SetCommandFlags("Align",
+                        AudioIONotBusyFlag | TracksSelectedFlag,
+                        AudioIONotBusyFlag | TracksSelectedFlag);
+      c->EndSubMenu();
 
-   c->BeginSubMenu(_("Align and move cursor..."));
-   c->AddItemList("AlignMove", alignLabels, FN(OnAlignMoveSel));
-   c->SetCommandFlags("AlignMove",
-                      AudioIONotBusyFlag | TracksSelectedFlag,
-                      AudioIONotBusyFlag | TracksSelectedFlag);
-   c->EndSubMenu();
+      alignLabels.Remove(7); // Can't align together and move cursor
+
+      c->BeginSubMenu(_("Align and move cursor..."));
+      c->AddItemList("AlignMove", alignLabels, FN(OnAlignMoveSel));
+      c->SetCommandFlags("AlignMove",
+                        AudioIONotBusyFlag | TracksSelectedFlag,
+                        AudioIONotBusyFlag | TracksSelectedFlag);
+      c->EndSubMenu();
+   #endif
 
    c->AddSeparator();   
    c->AddItem("AddLabel",       _("Add Label At Selection\tCtrl+B"), FN(OnAddLabel));
@@ -443,88 +470,92 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetCommandFlags("AddLabelPlaying", 0, AudioIONotBusyFlag);
    c->EndMenu();
 
-   //
-   // Generate, Effect & Analyze menus
-   //
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
+      //
+      // Generate, Effect & Analyze menus
+      //
 
-   c->BeginMenu(_("&Generate"));
-   c->SetDefaultFlags(AudioIONotBusyFlag,
-                      AudioIONotBusyFlag);
+      c->BeginMenu(_("&Generate"));
+      c->SetDefaultFlags(AudioIONotBusyFlag,
+                        AudioIONotBusyFlag);
 
-   effects = Effect::GetEffects(INSERT_EFFECT | BUILTIN_EFFECT);
-   if(effects->GetCount()){
-      for(i=0; i<effects->GetCount(); i++)
-         names.Add((*effects)[i]->GetEffectName());
-      c->AddItemList("Generate", names, FN(OnGenerateEffect));
-   }
-   delete effects;
+      effects = Effect::GetEffects(INSERT_EFFECT | BUILTIN_EFFECT);
+      if(effects->GetCount()){
+         for(i=0; i<effects->GetCount(); i++)
+            names.Add((*effects)[i]->GetEffectName());
+         c->AddItemList("Generate", names, FN(OnGenerateEffect));
+      }
+      delete effects;
 
-   effects = Effect::GetEffects(INSERT_EFFECT | PLUGIN_EFFECT);
-   if (effects->GetCount()) {
+      effects = Effect::GetEffects(INSERT_EFFECT | PLUGIN_EFFECT);
+      if (effects->GetCount()) {
+         c->AddSeparator();
+         names.Clear();
+         for(i=0; i<effects->GetCount(); i++)
+            names.Add((*effects)[i]->GetEffectName());
+         c->AddItemList("GeneratePlugin", names, FN(OnGeneratePlugin), true);
+      }
+      delete effects;
+      c->EndMenu();
+
+
+      c->BeginMenu(_("Effe&ct"));
+      c->SetDefaultFlags(AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
+                        AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag);
+
+      c->AddItem("RepeatLastEffect",     _("Repeat Last Effect\tCtrl+R"),    FN(OnRepeatLastEffect));
+      c->SetCommandFlags("RepeatLastEffect",
+                        AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag | HasLastEffectFlag,
+                        AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag | HasLastEffectFlag);
       c->AddSeparator();
-      names.Clear();
-      for(i=0; i<effects->GetCount(); i++)
-         names.Add((*effects)[i]->GetEffectName());
-      c->AddItemList("GeneratePlugin", names, FN(OnGeneratePlugin), true);
-   }
-   delete effects;
-   c->EndMenu();
 
-   c->BeginMenu(_("Effe&ct"));
-   c->SetDefaultFlags(AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
-                      AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag);
+      effects = Effect::GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT);
+      if(effects->GetCount()){
+         names.Clear();
+         for(i=0; i<effects->GetCount(); i++)
+            names.Add((*effects)[i]->GetEffectName());
+         c->AddItemList("Effect", names, FN(OnProcessEffect));
+      }
+      delete effects;
 
-   c->AddItem("RepeatLastEffect",     _("Repeat Last Effect\tCtrl+R"),    FN(OnRepeatLastEffect));
-   c->SetCommandFlags("RepeatLastEffect",
-                      AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag | HasLastEffectFlag,
-                      AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag | HasLastEffectFlag);
-   c->AddSeparator();
+      effects = Effect::GetEffects(PROCESS_EFFECT | PLUGIN_EFFECT);
+      if (effects->GetCount()) {
+         c->AddSeparator();
+         names.Clear();
+         for(i=0; i<effects->GetCount(); i++)
+            names.Add((*effects)[i]->GetEffectName());
+         c->AddItemList("EffectPlugin", names, FN(OnProcessPlugin), true);
+      }
+      delete effects;
+      c->EndMenu();
 
-   effects = Effect::GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT);
-   if(effects->GetCount()){
-      names.Clear();
-      for(i=0; i<effects->GetCount(); i++)
-         names.Add((*effects)[i]->GetEffectName());
-      c->AddItemList("Effect", names, FN(OnProcessEffect));
-   }
-   delete effects;
 
-   effects = Effect::GetEffects(PROCESS_EFFECT | PLUGIN_EFFECT);
-   if (effects->GetCount()) {
-      c->AddSeparator();
-      names.Clear();
-      for(i=0; i<effects->GetCount(); i++)
-         names.Add((*effects)[i]->GetEffectName());
-      c->AddItemList("EffectPlugin", names, FN(OnProcessPlugin), true);
-   }
-   delete effects;
-   c->EndMenu();
-
-   c->BeginMenu(_("&Analyze"));
-	/* plot spectrum moved from view */
+      c->BeginMenu(_("&Analyze"));
+	   /* plot spectrum moved from view */
       c->AddItem("PlotSpectrum",   _("&Plot Spectrum..."),                 FN(OnPlotSpectrum));
-   c->SetCommandFlags("PlotSpectrum",
-                      AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
-                      AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);	
-   effects = Effect::GetEffects(ANALYZE_EFFECT | BUILTIN_EFFECT);
-   if(effects->GetCount()){
-      names.Clear();
-      for(i=0; i<effects->GetCount(); i++)
-         names.Add((*effects)[i]->GetEffectName());
-      c->AddItemList("Analyze", names, FN(OnAnalyzeEffect));
-   }
-   delete effects;
+      c->SetCommandFlags("PlotSpectrum",
+                        AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
+                        AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);	
+      effects = Effect::GetEffects(ANALYZE_EFFECT | BUILTIN_EFFECT);
+      if(effects->GetCount()){
+         names.Clear();
+         for(i=0; i<effects->GetCount(); i++)
+            names.Add((*effects)[i]->GetEffectName());
+         c->AddItemList("Analyze", names, FN(OnAnalyzeEffect));
+      }
+      delete effects;
 
-   effects = Effect::GetEffects(ANALYZE_EFFECT | PLUGIN_EFFECT);
-   if (effects->GetCount()) {
-      c->AddSeparator();
-      names.Clear();
-      for(i=0; i<effects->GetCount(); i++)
-         names.Add((*effects)[i]->GetEffectName());
-      c->AddItemList("AnalyzePlugin", names, FN(OnAnalyzePlugin), true);
-   }
-   delete effects;
-   c->EndMenu();
+      effects = Effect::GetEffects(ANALYZE_EFFECT | PLUGIN_EFFECT);
+      if (effects->GetCount()) {
+         c->AddSeparator();
+         names.Clear();
+         for(i=0; i<effects->GetCount(); i++)
+            names.Add((*effects)[i]->GetEffectName());
+         c->AddItemList("AnalyzePlugin", names, FN(OnAnalyzePlugin), true);
+      }
+      delete effects;
+      c->EndMenu();
+   #endif
 
    /* i18n-hint: The name of the Help menu */
    c->BeginMenu(_("&Help"));
@@ -540,6 +571,65 @@ void AudacityProject::CreateMenusAndCommands()
 #endif 
 
    c->EndMenu();
+
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      //
+      // Thinklabs Menu
+      //
+      c->BeginMenu(wxT("Thinklabs"));
+      c->SetDefaultFlags(AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
+                           AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag);
+
+      // Several of these duplicate commands in other menus. 
+      
+      // duplicates from Effect Menu
+      effects = Effect::GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT);
+      if(effects->GetCount()){
+         names.Clear();
+         for(i=0; i<effects->GetCount(); i++)
+            names.Add((*effects)[i]->GetEffectName());
+         c->AddItemList("Effect", names, FN(OnProcessEffect));
+      }
+      delete effects;
+
+      effects = Effect::GetEffects(PROCESS_EFFECT | PLUGIN_EFFECT);
+      if (effects->GetCount()) {
+         names.Clear();
+         for(i=0; i<effects->GetCount(); i++)
+            names.Add((*effects)[i]->GetEffectName());
+         c->AddItemList("EffectPlugin", names, FN(OnProcessPlugin), true);
+      }
+      delete effects;
+
+      // No Analyze Menu for Thinklabs, but want Plot Spectrum.
+      c->AddItem("PlotSpectrum",   _("&Plot Spectrum..."),                 FN(OnPlotSpectrum));
+
+      
+      // duplicates from Project Menu
+      c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
+
+      c->AddSeparator();
+      c->AddItem("ImportAudio",    _("&Import Audio...\tCtrl+I"),       FN(OnImport));
+
+      c->AddItem("NewLabelTrack",  _("New La&bel Track"),               FN(OnNewLabelTrack));
+
+      
+      // Thinklabs commands
+      c->SetDefaultFlags(0, 0);
+
+      //vvv c->AddSeparator();
+      //c->AddItem("ProjectNotes",  _("Project &Notes..."),              FN(OnProjectNotes));
+
+      c->AddSeparator();
+      c->AddItem("ChangeColorScheme",  _("Light &Color Scheme"), FN(OnChangeColorScheme));
+      c->AddItem("HowToCopyTheDisplay",  _("How to Copy the &Display..."), FN(OnHowToCopyDisplay));
+
+      c->AddSeparator();
+      c->AddItem(
+         wxString::Format("AboutBrand", AUDACITY_BRANDING_BRANDNAME), 
+         wxString::Format(_("About %s..."), AUDACITY_BRANDING_BRANDNAME), 
+         FN(OnAboutBrand));
+   #endif
 
 #ifdef __WXMAC__
  #if (!((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4)))
@@ -739,6 +829,11 @@ int AudacityProject::GetToolBarChecksum()
 
 void AudacityProject::ModifyToolbarMenus()
 {
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // no float/dock commands for Thinklabs
+      return;
+   #endif
+
    if (gEditToolBarStub) {
 
      // Loaded or unloaded?
@@ -813,6 +908,9 @@ void AudacityProject::UpdateMenus()
    for (i = 0; i < mToolBarArray.GetCount(); i++) {
       mToolBarArray[i]->EnableDisableButtons();
    }
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      mBrandingPanel->EnableDisableButtons();
+   #endif
 
    //Now, do the same thing for the (possibly invisible) floating toolbars
    ToolBar *tb1 = gControlToolBarStub->GetToolBar();
@@ -1548,6 +1646,17 @@ bool AudacityPrintout::OnPrintPage(int page)
             break;
          case WaveTrack::PitchDisplay:
             artist.DrawSpectrum((WaveTrack *)n, *dc, r, &viewInfo, true);
+            break;
+         case WaveTrack::WaveformAndSpectrumDisplay:
+            // Show both waveform and spectrum simultaneously. 
+            int halfHeight = (r.height / 2) - 1;
+            r.height = halfHeight;
+            artist.DrawWaveform((WaveTrack *)n, *dc, r,
+                                &viewInfo, false, false, false, false, false);
+            
+            r.y += halfHeight + 1;
+            artist.DrawSpectrum((WaveTrack *)n, *dc, r, &viewInfo, false);
+
             break;
          }
          break;
@@ -2609,7 +2718,7 @@ void AudacityProject::OnMixerBoard()
       mVsbar->Show(bWantTrackPanel);
       this->HandleResize();
       
-      mCommandManager.Modify("Mixer Board", bWantTrackPanel ? _("&Mixer Board") : _("&Track Panel"));
+      mCommandManager.Modify("MixerBoard", bWantTrackPanel ? _("&Mixer Board") : _("&Track Panel"));
    #else
       if (!mMixerBoardFrame)
       {
@@ -3194,6 +3303,37 @@ void AudacityProject::OnBenchmark()
 {
    ::RunBenchmark(this);
 }
+
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   void AudacityProject::OnChangeColorScheme()
+   {
+      AColor::mWantDarkColorScheme = !AColor::mWantDarkColorScheme;
+      mCommandManager.Modify(
+         "ChangeColorScheme", 
+         AColor::mWantDarkColorScheme ? _("Light &Color Scheme") : _("Dark &Color Scheme"));
+      mTrackPanel->Refresh(false);
+   }
+
+   //void AudacityProject::OnProjectNotes()
+   //{
+   //   wxMessageBox(_("Project Notes not yet implemented."), _("Project Notes"), wxICON_EXCLAMATION);
+   //}
+
+   void AudacityProject::OnHowToCopyDisplay()
+   {
+      wxMessageBox(
+         _("To copy the Audacity display, make it the active window, \nthen press ALT+PRINT SCREEN on your keyboard.\n\nThen, to paste the image into a document in \nanother application (word processing, email, etc.), \nclick the Edit menu in the document window, \nand then click Paste.\n\nIf you're planning to print the display, change the \ncolor scheme to \"Light Color Scheme\" (Thinklabs menu) \nbefore you Copy and Paste."), 
+         _("How to Copy the Display"), 
+         wxICON_INFORMATION);
+   }
+
+   #include "widgets/LinkingHtmlWindow.h"
+   void AudacityProject::OnAboutBrand()
+   {
+      wxHtmlLinkInfo link(AUDACITY_BRANDING_BRANDURL);
+      OpenInDefaultBrowser(link);
+   }
+#endif
 
 //
 

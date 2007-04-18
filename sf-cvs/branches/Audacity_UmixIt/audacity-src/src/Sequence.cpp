@@ -782,7 +782,7 @@ int Sequence::FindBlock(sampleCount pos, sampleCount lo,
                         sampleCount guess, sampleCount hi) const
 {
    wxASSERT(mBlock->Item(guess)->f->GetLength() > 0);
-   wxASSERT(lo <= guess && guess <= hi && lo <= hi); 
+   wxASSERT(lo <= guess && guess <= hi && lo <= hi);
 
    if (pos >= mBlock->Item(guess)->start &&
        pos < mBlock->Item(guess)->start + mBlock->Item(guess)->f->GetLength())

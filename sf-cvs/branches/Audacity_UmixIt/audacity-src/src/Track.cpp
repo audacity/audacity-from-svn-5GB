@@ -34,6 +34,10 @@ Track::Track(DirManager * projDirManager)
    mSolo      = false;
 
    mHeight = 136;
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // default to taller for Thinklabs
+      mHeight = 240;
+   #endif
 
    mOffset = 0.0;
 

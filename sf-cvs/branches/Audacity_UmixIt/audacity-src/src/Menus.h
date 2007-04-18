@@ -201,6 +201,14 @@ void OnHelpIndex();
 void OnHelpSearch();
 void OnBenchmark();
 
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   // Thinklabs Menu
+   //vvv void OnProjectNotes();
+   void OnChangeColorScheme();
+   void OnHowToCopyDisplay();
+   void OnAboutBrand();
+#endif
+
        //
 
 void OnSeparator();

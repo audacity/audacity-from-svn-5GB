@@ -49,6 +49,9 @@ class Effect {
    static void RegisterEffect(Effect *f);
    static void UnregisterEffects();
    static Effect *GetEffect(int ID);
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      static Effect* GetEffectByName(const wxString strTargetName, const int kFlags = ALL_EFFECTS);
+   #endif
    static int GetNumEffects();
 
    // Returns a sorted array of effects, which may be filtered

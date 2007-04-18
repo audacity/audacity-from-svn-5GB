@@ -97,7 +97,7 @@ BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **att
          break;
 
       const wxString strValue = value;
-      if( !wxStricmp(attr, "name") )
+       if( !wxStricmp(attr, "name") )
        {
          if (!XMLValueChecker::IsGoodFileName(strValue, projDir))
             return NULL;
@@ -115,17 +115,17 @@ BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **att
        }
        else if (XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
        { // integer parameters
-         if( !wxStricmp(attr, "aliasstart") )
+       if( !wxStricmp(attr, "aliasstart") )
             aliasStart = nValue;
-         if( !wxStricmp(attr, "aliaslen") )
+       if( !wxStricmp(attr, "aliaslen") )
             aliasLen = nValue;
-         if( !wxStricmp(attr, "aliaschannel") )
+       if( !wxStricmp(attr, "aliaschannel") )
             aliasChannel = nValue;
-         if( !wxStricmp(attr, "summarylen") )
+       if( !wxStricmp(attr, "summarylen") )
             summaryLen = nValue;
-         if( !wxStricmp(attr, "norms") )
+       if( !wxStricmp(attr, "norms") )
             noRMS = (nValue != 0);
-       }
+   }
    }
 
    if (!XMLValueChecker::IsGoodFileName(summaryFileName.GetFullName(), 

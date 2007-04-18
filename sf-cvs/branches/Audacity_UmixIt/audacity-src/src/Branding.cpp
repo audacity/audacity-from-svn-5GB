@@ -18,40 +18,78 @@
 #include "Branding.h"
 
 #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+// class BrandingPanel: 
+//    Custom build branding, based on AUDACITY_BRANDING build flag
+
 #include <wx/image.h>
 
 #include "AColor.h"
 #include "Project.h"
 #include "widgets/LinkingHtmlWindow.h"
 
-// class BrandingPanel: 
-//    Custom build branding, based on AUDACITY_BRANDING build flag
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   #include <wx/dcmemory.h>
+   #include "AudioIO.h" // gAudioIO for enabling/disabling custom buttons
+   #include "WaveTrack.h"
 
-// Build in the brand-specific logo and mouse-over bitmaps.
-// The data global vars in these MUST be named company_logo_xpm and 
-// company_logo_over_xpm, so the code works for all.
-// If you want the size the same as the "powered by Audacity" logo, it's 162x64
-#if (AUDACITY_BRANDING == BRAND_UMIXIT) 
-   #include "../images/Branding/UmixIt.xpm"
-   #include "../images/Branding/UmixIt_over.xpm"
-#elif (AUDACITY_BRANDING == BRAND_THINKLABS)
-   #include "../images/Branding/Thinklabs.xpm"
-   #include "../images/Branding/Thinklabs_over.xpm"
+   // Thinklabs custom buttons (all 64x42)
+   #include "../images/Branding/Thinklabs_buttons.h" 
 #endif
 
-#include "../images/Branding/powered_by_Audacity.xpm"
-#include "../images/Branding/powered_by_Audacity_over.xpm"
+// Build in the brand-specific logo and mouse-over bitmaps. 
+// The data global vars in these MUST be named 
+// company_logo_xpm and company_logo_over_xpm, 
+// so the code works for any size.
+// 
+#if (AUDACITY_BRANDING == BRAND_UMIXIT) 
+   #include "../images/Branding/UmixIt.xpm" // 162x64
+   #include "../images/Branding/UmixIt_over.xpm" // 162x64
+#elif (AUDACITY_BRANDING == BRAND_THINKLABS)
+   #include "../images/Branding/Thinklabs.xpm" // 182x42
+   #include "../images/Branding/Thinklabs_over.xpm" // 182x42
+#endif
+
+// Build in the "powered by Audacity" logos preferred for each. 
+// The data global vars in these MUST be named 
+// powered_by_Audacity_xpm and powered_by_Audacity_over_xpm, 
+// so the code works for any size.
+// 
+#if (AUDACITY_BRANDING == BRAND_UMIXIT)
+   // bigger ones for UmixIt
+   #include "../images/Branding/powered_by_Audacity_162x64.xpm"
+   #include "../images/Branding/powered_by_Audacity_over_162x64.xpm"
+#else
+   #include "../images/Branding/powered_by_Audacity.xpm"
+   #include "../images/Branding/powered_by_Audacity_over.xpm"
+#endif
 
 enum {
    ID_BUTTON_PROJECT_LOGO = 13010,
    ID_BUTTON_COMPANY_LOGO, 
-   ID_BUTTON_AUDACITY_LOGO // "powered by Audacity" logo
+   ID_BUTTON_AUDACITY_LOGO, // "powered by Audacity" logo
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // Thinklabs custom buttons
+      ID_BUTTON_IMPORT, 
+      ID_BUTTON_AMPLIFY, 
+      ID_BUTTON_FILTER, 
+      ID_BUTTON_RATE, 
+      ID_BUTTON_DISPLAY, 
+   #endif // (AUDACITY_BRANDING == BRAND_THINKLABS)
 };
 
 BEGIN_EVENT_TABLE(BrandingPanel, wxPanel)
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // Thinklabs custom buttons
+   	EVT_BUTTON(ID_BUTTON_IMPORT, BrandingPanel::OnButton_Import)
+   	EVT_BUTTON(ID_BUTTON_AMPLIFY, BrandingPanel::OnButton_Amplify)
+   	EVT_BUTTON(ID_BUTTON_FILTER, BrandingPanel::OnButton_Filter)
+   	EVT_BUTTON(ID_BUTTON_RATE, BrandingPanel::OnButton_Rate)
+   	EVT_BUTTON(ID_BUTTON_DISPLAY, BrandingPanel::OnButton_Display)
+   #endif // (AUDACITY_BRANDING == BRAND_THINKLABS)
 	EVT_BUTTON(ID_BUTTON_PROJECT_LOGO, BrandingPanel::OnButton_ProjectLogo)
 	EVT_BUTTON(ID_BUTTON_COMPANY_LOGO, BrandingPanel::OnButton_CompanyLogo)
 	EVT_BUTTON(ID_BUTTON_AUDACITY_LOGO, BrandingPanel::OnButton_AudacityLogo)
+   EVT_CHAR(BrandingPanel::OnKeyEvent)
    EVT_PAINT(BrandingPanel::OnPaint)
    EVT_SIZE(BrandingPanel::OnSize)
 END_EVENT_TABLE()
@@ -69,61 +107,69 @@ BrandingPanel::BrandingPanel(AudacityProject* pProject,
 {
    mProject = pProject;
 
-   this->SetBackgroundColour(*wxWHITE); 
+   //#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      this->SetBackgroundColour(*wxWHITE); 
+   //#endif
 
-   // buttons
+   mMinHeight = 0;
+   mProjectLogo_origWidth = 0;
+
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      mMinLeftSectionWidth = 0;
+      this->AddCustomButtons();
+   #endif
+
+   // logo buttons
    mButton_ProjectLogo = NULL; // Won't know this until loading project.
 
-   wxImage buttonImage;
+   wxImage buttonImageUp;
    wxImage buttonImageOver;
    wxPoint buttonPos;
    wxSize buttonSize;
    wxBitmap* pButtonBitmap;
    wxBitmap* pButtonBitmapOver;
 
-   mMinHeight = 0;
-
    // Default positioning has powered_by_Audacity_xpm rightmost and   
    // company_logo_xpm to its left.
    // Start with powered_by_Audacity_xpm rightmost. 
    pButtonBitmap = new wxBitmap(powered_by_Audacity_xpm);
-   buttonImage = pButtonBitmap->ConvertToImage();
-   buttonPos = wxPoint(size.GetWidth() - pButtonBitmap->GetWidth() - kInset, kInset);
-   buttonSize = wxSize(pButtonBitmap->GetWidth(), pButtonBitmap->GetHeight()); 
+   buttonImageUp = pButtonBitmap->ConvertToImage();
    pButtonBitmapOver = new wxBitmap(powered_by_Audacity_over_xpm);
    buttonImageOver = pButtonBitmapOver->ConvertToImage();
+   buttonPos = wxPoint(size.GetWidth() - pButtonBitmap->GetWidth() - kInset, kInset);
+   buttonSize = wxSize(pButtonBitmap->GetWidth(), pButtonBitmap->GetHeight()); 
    mButton_AudacityLogo = 
       new AButton(this, ID_BUTTON_AUDACITY_LOGO, 
                   buttonPos, buttonSize, 
-                  &buttonImage, &buttonImageOver, 
-                  &buttonImage, &buttonImage, //vvv other images?
+                  &buttonImageUp, &buttonImageOver, 
+                  &buttonImageUp, &buttonImageUp, //vvv other images?
                   false); // momentary button
    if (mMinHeight < buttonSize.GetHeight() + kDoubleInset)
       mMinHeight = buttonSize.GetHeight() + kDoubleInset;
 
    pButtonBitmap = new wxBitmap(company_logo_xpm);
-   buttonImage = pButtonBitmap->ConvertToImage();
+   buttonImageUp = pButtonBitmap->ConvertToImage();
+   pButtonBitmapOver = new wxBitmap(company_logo_over_xpm);
+   buttonImageOver = pButtonBitmapOver->ConvertToImage();
    buttonPos = 
       wxPoint(buttonPos.x - pButtonBitmap->GetWidth() - kInset, // left of powered_by_Audacity_xpm
                kInset);
    buttonSize = wxSize(pButtonBitmap->GetWidth(), pButtonBitmap->GetHeight()); 
-   pButtonBitmapOver = new wxBitmap(company_logo_over_xpm);
-   buttonImageOver = pButtonBitmapOver->ConvertToImage();
    mButton_CompanyLogo = 
       new AButton(this, ID_BUTTON_COMPANY_LOGO, 
                   buttonPos, buttonSize, 
-                  &buttonImage, &buttonImageOver, 
-                  &buttonImage, &buttonImage, //vvv other images?
+                  &buttonImageUp, &buttonImageOver, 
+                  &buttonImageUp, &buttonImageUp, //vvv other images?
                   false); // momentary button
    if (mMinHeight < buttonSize.GetHeight() + kDoubleInset)
       mMinHeight = buttonSize.GetHeight() + kDoubleInset;
-
-   this->SetSizeHints(-1, mMinHeight);
 
    #if wxUSE_TOOLTIPS
       mButton_CompanyLogo->SetToolTip(AUDACITY_BRANDING_BRANDURL);
       mButton_AudacityLogo->SetToolTip(AUDACITY_URL);
    #endif // wxUSE_TOOLTIPS
+
+   this->SetSizeHints(-1, mMinHeight);
 }
 
 void BrandingPanel::SetProjectLogo(wxFileName brandLogoFileName)
@@ -135,24 +181,341 @@ void BrandingPanel::SetProjectLogo(wxFileName brandLogoFileName)
          mButton_ProjectLogo->Destroy();
          mButton_ProjectLogo = NULL;
       }
-      wxImage buttonImage(brandLogoFileName.GetFullPath());
+      wxImage buttonImageUp(brandLogoFileName.GetFullPath());
       mButton_ProjectLogo = 
          new AButton(this, ID_BUTTON_PROJECT_LOGO, 
-                     wxPoint(kInset, kInset), 
-                     wxSize(buttonImage.GetWidth(), buttonImage.GetHeight()), 
-                     &buttonImage, &buttonImage, 
-                     &buttonImage, &buttonImage, //vvv other images?
+                     wxPoint(1, 1),  // inset for bevel
+                     wxSize(buttonImageUp.GetWidth(), buttonImageUp.GetHeight()), 
+                     &buttonImageUp, &buttonImageUp, 
+                     &buttonImageUp, &buttonImageUp, //vvv other images?
                      false); // momentary button
-      if (mMinHeight < buttonImage.GetHeight() + kDoubleInset)
-         mMinHeight = buttonImage.GetHeight() + kDoubleInset;
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         if (mMinLeftSectionWidth < buttonImageUp.GetWidth() + kDoubleInset)
+            mMinLeftSectionWidth = buttonImageUp.GetWidth() + kDoubleInset;
+      #endif
+      if (mMinHeight < buttonImageUp.GetHeight() + 2) // height plus bevel
+         mMinHeight = buttonImageUp.GetHeight() + 2;
+      mProjectLogo_origWidth = buttonImageUp.GetWidth();
+
       #if wxUSE_TOOLTIPS
          Branding* pBranding = mProject->GetBranding();
          if (pBranding)
             mButton_ProjectLogo->SetToolTip(pBranding->GetBrandURL());
       #endif // wxUSE_TOOLTIPS
+
       mProject->HandleResize();
    }
 }
+
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   // utility to draw a 2-pixel bevel that shows up against white background
+   void Bevel2OnWhite(wxDC & dc, bool up, wxRect & r) {
+      if (up)
+         dc.SetPen(*wxLIGHT_GREY_PEN);
+      else
+         dc.SetPen(*wxMEDIUM_GREY_PEN);
+
+      // top 
+      dc.DrawLine(r.x, r.y, r.x + r.width, r.y);
+      dc.DrawLine(r.x + 1, r.y + 1, r.x + r.width - 1, r.y + 1);
+
+      // left
+      dc.DrawLine(r.x, r.y, r.x, r.y + r.height);
+      dc.DrawLine(r.x + 1, r.y + 1, r.x + 1, r.y + r.height - 2);
+
+      if (!up)
+         dc.SetPen(*wxLIGHT_GREY_PEN);
+      else
+         dc.SetPen(*wxMEDIUM_GREY_PEN);
+
+      // right
+      dc.DrawLine(r.x + r.width, r.y, r.x + r.width, r.y + r.height);
+      dc.DrawLine(r.x + r.width - 1, r.y + 1, r.x + r.width - 1, r.y + r.height - 1);
+
+      // bottom
+      dc.DrawLine(r.x, r.y + r.height, r.x + r.width + 1, r.y + r.height);
+      dc.DrawLine(r.x + 1, r.y + r.height - 1, r.x + r.width, r.y + r.height - 1);
+   };
+
+   void BrandingPanel::EnableDisableButtons()
+   {
+      bool bAudioIONotBusy = !gAudioIO->IsBusy();
+      bool bTimeSelected = (mProject->GetSel0() < mProject->GetSel1());
+
+      bool bWaveTracksSelected = false;
+      TrackList* pTracks = mProject->GetTracks();
+      TrackListIterator iter(pTracks);
+      for (Track* t = iter.First(); t; t = iter.Next())
+         if (t->GetSelected())
+         {
+            bWaveTracksSelected = true;
+            break;
+         }
+
+      mButton_Import->SetEnabled(bAudioIONotBusy);
+
+      bool bEnableEffects = bAudioIONotBusy && bTimeSelected && bWaveTracksSelected;
+      mButton_Amplify->SetEnabled(bEnableEffects);
+      mButton_Filter->SetEnabled(bEnableEffects);
+      mButton_Rate->SetEnabled(bEnableEffects);
+
+      mButton_Display->SetEnabled(!pTracks->IsEmpty());
+   }
+
+   void BrandingPanel::AddCustomButtons()
+   {
+      wxRect bev;
+      wxImage buttonImageUp;
+      wxImage buttonImageOver;
+      wxImage buttonImageDown;
+      wxImage buttonImageDis;
+      wxPoint buttonPos(kInset, kInset);
+      wxSize buttonSize;
+      wxMemoryDC dc;
+      wxBitmap* pButtonBitmap;
+
+      mMinLeftSectionWidth = kTripleInset;
+
+      // Import button
+      // Make up and down from same image, with different bevel
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Import_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      bev = wxRect(0, 0, pButtonBitmap->GetWidth() - 1, pButtonBitmap->GetHeight() - 1);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageUp = pButtonBitmap->ConvertToImage();
+      Bevel2OnWhite(dc, false, bev);
+      buttonImageDown = pButtonBitmap->ConvertToImage();
+
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Import_over_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageOver = pButtonBitmap->ConvertToImage();
+
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Import_dis_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageDis = pButtonBitmap->ConvertToImage();
+
+      buttonPos.x = mMinLeftSectionWidth;
+      buttonSize = wxSize(pButtonBitmap->GetWidth(), pButtonBitmap->GetHeight()); 
+      mButton_Import = 
+         new AButton(this, ID_BUTTON_IMPORT, 
+                     buttonPos, buttonSize, 
+                     &buttonImageUp, &buttonImageOver, 
+                     &buttonImageDown, &buttonImageDis,
+                     false); // momentary button
+      if (mMinHeight < buttonSize.GetHeight() + kDoubleInset)
+         mMinHeight = buttonSize.GetHeight() + kDoubleInset;
+      mMinLeftSectionWidth += buttonSize.GetWidth() + kInset;
+
+
+      // Amplify button
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Amplify_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      bev = wxRect(0, 0, pButtonBitmap->GetWidth() - 1, pButtonBitmap->GetHeight() - 1);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageUp = pButtonBitmap->ConvertToImage();
+      Bevel2OnWhite(dc, false, bev);
+      buttonImageDown = pButtonBitmap->ConvertToImage();
+
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Amplify_over_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageOver = pButtonBitmap->ConvertToImage();
+
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Amplify_dis_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageDis = pButtonBitmap->ConvertToImage();
+
+      buttonPos.x = mMinLeftSectionWidth;
+      buttonSize = wxSize(pButtonBitmap->GetWidth(), pButtonBitmap->GetHeight()); 
+      mButton_Amplify = 
+         new AButton(this, ID_BUTTON_AMPLIFY, 
+                     buttonPos, buttonSize, 
+                     &buttonImageUp, &buttonImageOver, 
+                     &buttonImageDown, &buttonImageDis,
+                     false); // momentary button
+      mButton_Amplify->Disable();
+      if (mMinHeight < buttonSize.GetHeight() + kDoubleInset)
+         mMinHeight = buttonSize.GetHeight() + kDoubleInset;
+      mMinLeftSectionWidth += buttonSize.GetWidth() + kInset;
+
+
+      // Filter button
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Filter_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      bev = wxRect(0, 0, pButtonBitmap->GetWidth() - 1, pButtonBitmap->GetHeight() - 1);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageUp = pButtonBitmap->ConvertToImage();
+      Bevel2OnWhite(dc, false, bev);
+      buttonImageDown = pButtonBitmap->ConvertToImage();
+
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Filter_over_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageOver = pButtonBitmap->ConvertToImage();
+
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Filter_dis_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageDis = pButtonBitmap->ConvertToImage();
+
+      buttonPos.x = mMinLeftSectionWidth;
+      buttonSize = wxSize(pButtonBitmap->GetWidth(), pButtonBitmap->GetHeight()); 
+      mButton_Filter = 
+         new AButton(this, ID_BUTTON_FILTER, 
+                     buttonPos, buttonSize, 
+                     &buttonImageUp, &buttonImageOver, 
+                     &buttonImageDown, &buttonImageDis,
+                     false); // momentary button
+      mButton_Filter->Disable();
+      if (mMinHeight < buttonSize.GetHeight() + kDoubleInset)
+         mMinHeight = buttonSize.GetHeight() + kDoubleInset;
+      mMinLeftSectionWidth += buttonSize.GetWidth() + kInset;
+
+
+      // Rate button
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Rate_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      bev = wxRect(0, 0, pButtonBitmap->GetWidth() - 1, pButtonBitmap->GetHeight() - 1);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageUp = pButtonBitmap->ConvertToImage();
+      Bevel2OnWhite(dc, false, bev);
+      buttonImageDown = pButtonBitmap->ConvertToImage();
+
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Rate_over_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageOver = pButtonBitmap->ConvertToImage();
+
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Rate_dis_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageDis = pButtonBitmap->ConvertToImage();
+
+      buttonPos.x = mMinLeftSectionWidth;
+      buttonSize = wxSize(pButtonBitmap->GetWidth(), pButtonBitmap->GetHeight()); 
+      mButton_Rate = 
+         new AButton(this, ID_BUTTON_RATE, 
+                     buttonPos, buttonSize, 
+                     &buttonImageUp, &buttonImageOver, 
+                     &buttonImageDown, &buttonImageDis,
+                     false); // momentary button
+      mButton_Rate->Disable();
+      if (mMinHeight < buttonSize.GetHeight() + kDoubleInset)
+         mMinHeight = buttonSize.GetHeight() + kDoubleInset;
+      mMinLeftSectionWidth += buttonSize.GetWidth() + kInset;
+
+
+      // Display button
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Display_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      bev = wxRect(0, 0, pButtonBitmap->GetWidth() - 1, pButtonBitmap->GetHeight() - 1);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageUp = pButtonBitmap->ConvertToImage();
+      Bevel2OnWhite(dc, false, bev);
+      buttonImageDown = pButtonBitmap->ConvertToImage();
+
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Display_over_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageOver = pButtonBitmap->ConvertToImage();
+
+      pButtonBitmap = new wxBitmap(Thinklabs_button_Display_dis_xpm);
+      dc.SelectObject(*pButtonBitmap);
+      Bevel2OnWhite(dc, true, bev);
+      buttonImageDis = pButtonBitmap->ConvertToImage();
+
+      buttonPos.x = mMinLeftSectionWidth;
+      buttonSize = wxSize(pButtonBitmap->GetWidth(), pButtonBitmap->GetHeight()); 
+      mButton_Display = 
+         new AButton(this, ID_BUTTON_DISPLAY, 
+                     buttonPos, buttonSize, 
+                     &buttonImageUp, &buttonImageOver, 
+                     &buttonImageDown, &buttonImageDis,
+                     false); // momentary button
+      mButton_Display->Disable();
+      if (mMinHeight < buttonSize.GetHeight() + kDoubleInset)
+         mMinHeight = buttonSize.GetHeight() + kDoubleInset;
+      mMinLeftSectionWidth += buttonSize.GetWidth() + kInset;
+
+      #if wxUSE_TOOLTIPS
+         mButton_Import->SetToolTip(_("Import Audio (Add sound file to current Project)... (Ctrl+I)"));
+         mButton_Amplify->SetToolTip(_("Amplify/Attenuate selected waveform..."));
+         mButton_Filter->SetToolTip(_("Filter selected waveform..."));
+         mButton_Rate->SetToolTip(_("Slow down selected waveform..."));
+         mButton_Display->SetToolTip(_("Waveform Display for All Tracks"));
+      #endif // wxUSE_TOOLTIPS
+   }
+
+   // event handlers
+   void BrandingPanel::OnButton_Import(wxCommandEvent& event)
+   {
+      mProject->OnImport();
+      mButton_Import->PopUp();
+   }
+
+   void BrandingPanel::OnButton_Amplify(wxCommandEvent& event)
+   {
+      Effect* pEffect = Effect::GetEffectByName(_("Amplify..."), PROCESS_EFFECT | BUILTIN_EFFECT);
+      if (pEffect)
+         mProject->OnProcessEffect(pEffect->GetID());
+
+      mButton_Amplify->PopUp();
+   }
+
+   void BrandingPanel::OnButton_Filter(wxCommandEvent& event)
+   {
+      Effect* pEffect = Effect::GetEffectByName(_("Equalization..."), PROCESS_EFFECT | BUILTIN_EFFECT);
+      if (pEffect)
+         mProject->OnProcessEffect(pEffect->GetID());
+
+      mButton_Filter->PopUp();
+   }
+
+   void BrandingPanel::OnButton_Rate(wxCommandEvent& event)
+   {
+      Effect* pEffect = Effect::GetEffectByName(_("Change Tempo..."), PROCESS_EFFECT | BUILTIN_EFFECT);
+      if (pEffect)
+         mProject->OnProcessEffect(pEffect->GetID());
+
+      mButton_Rate->PopUp();
+   }
+
+   void BrandingPanel::OnButton_Display(wxCommandEvent& event)
+   {
+      static bool bWantWaveformDisplay = false; // Start with WaveformAndSpectrumDisplay.
+      bWantWaveformDisplay = !bWantWaveformDisplay;
+
+      TrackList* pTracks = mProject->GetTracks();
+      TrackListIterator iter(pTracks);
+      for (Track* pTrack = iter.First(); pTrack; pTrack = iter.Next())
+         if (pTrack->GetKind() == Track::Wave)
+         {
+            WaveTrack* pWaveTrack = (WaveTrack*)pTrack;
+            if (bWantWaveformDisplay)
+               pWaveTrack->SetDisplay(WaveTrack::WaveformDisplay);
+            else
+               pWaveTrack->SetDisplay(WaveTrack::WaveformAndSpectrumDisplay);
+         }
+
+      #if wxUSE_TOOLTIPS
+         if (bWantWaveformDisplay)
+            mButton_Display->SetToolTip(_("Waveform and Spectrum Display for All Tracks"));
+         else
+            mButton_Display->SetToolTip(_("Waveform Display for All Tracks"));
+      #endif // wxUSE_TOOLTIPS
+
+      mButton_Display->PopUp();
+
+      // Update the TrackPanel correspondingly. 
+      // Calling RedrawProject is inefficient relative to sending a msg to TrackPanel 
+      // for a particular track and control, but not a real performance hit.
+      mProject->RedrawProject();
+   }
+
+#endif // (AUDACITY_BRANDING == BRAND_THINKLABS)
 
 
 // event handlers
@@ -181,6 +544,11 @@ void BrandingPanel::OnButton_AudacityLogo(wxCommandEvent& event)
    mButton_AudacityLogo->PopUp();
 }
 
+void BrandingPanel::OnKeyEvent(wxKeyEvent & event)
+{
+   event.Skip();
+}
+
 void BrandingPanel::OnPaint(wxPaintEvent& evt)
 {
    wxPaintDC dc(this);
@@ -198,18 +566,48 @@ void BrandingPanel::OnSize(wxSizeEvent &evt)
    wxSize evtSize = evt.GetSize();
    int yPos;
 
-   // mButton_ProjectLogo never moves.
+   // mButton_ProjectLogo never moves from (1, 1).
 
    wxSize buttonSize_ProjectLogo = 
       mButton_ProjectLogo ? mButton_ProjectLogo->GetSize() : wxSize(0, 0);
    wxSize buttonSize_CompanyLogo = mButton_CompanyLogo->GetSize();
    wxSize buttonSize_AudacityLogo = mButton_AudacityLogo->GetSize();
+   int nMinRightSectionWidth = buttonSize_AudacityLogo.GetWidth() + kDoubleInset;
+   int newLogoWidth = 0;
 
-   if ((buttonSize_ProjectLogo.GetWidth() + 
+   if (((buttonSize_CompanyLogo.GetHeight() + 
+            buttonSize_AudacityLogo.GetHeight())) < // Stack the logos.
+         evtSize.GetHeight())
+   {
+      // Can stack mButton_CompanyLogo and mButton_AudacityLogo at the right side.
+      yPos = (evtSize.GetHeight() / 2) - kHalfInset - buttonSize_CompanyLogo.GetHeight();
+      if (yPos < 0)
+         yPos = 0;
+      buttonPos = wxPoint(evtSize.GetWidth() - buttonSize_CompanyLogo.GetWidth() - kInset, yPos);
+      mButton_CompanyLogo->Move(buttonPos);
+
+      yPos += buttonSize_CompanyLogo.GetHeight();
+      buttonPos = wxPoint(evtSize.GetWidth() - buttonSize_AudacityLogo.GetWidth() - kInset, yPos);
+      mButton_AudacityLogo->Move(buttonPos);
+
+      if (mButton_ProjectLogo)
+      {
+         if (nMinRightSectionWidth < buttonSize_CompanyLogo.GetWidth() + kDoubleInset)
+            nMinRightSectionWidth = buttonSize_CompanyLogo.GetWidth() + kDoubleInset;
+         newLogoWidth = evtSize.GetWidth() - nMinRightSectionWidth;
+         if (newLogoWidth > mProjectLogo_origWidth)
+            newLogoWidth = mProjectLogo_origWidth;
+         mButton_ProjectLogo->SetSize(1, 1, newLogoWidth, -1);
+      }
+   }
+   else if ((
+         #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+            mMinLeftSectionWidth + 
+         #endif
          buttonSize_CompanyLogo.GetWidth() + 
          buttonSize_AudacityLogo.GetWidth() + kTripleInset) < evtSize.GetWidth())
    {
-      // Can put them all side-by side. This is preferred, to take up least vertical space.
+      // Put the company and Audacity logos side-by side. 
       // Start with powered_by_Audacity_xpm rightmost, centered vertically.  
       yPos = (evtSize.GetHeight() - buttonSize_AudacityLogo.GetHeight()) / 2;
       if (yPos < kInset)
@@ -224,25 +622,25 @@ void BrandingPanel::OnSize(wxSizeEvent &evt)
          wxPoint(buttonPos.x - buttonSize_CompanyLogo.GetWidth() - kInset, // left of powered_by_Audacity_xpm
                   yPos);
       mButton_CompanyLogo->Move(buttonPos);
-   }
-   else if (evtSize.GetHeight() >=
-            (buttonSize_CompanyLogo.GetHeight() + buttonSize_AudacityLogo.GetHeight()) + kInset)
-   {
-      // Can stack mButton_CompanyLogo and mButton_AudacityLogo at the right side.
-      yPos = (evtSize.GetHeight() / 2) - kHalfInset - buttonSize_CompanyLogo.GetHeight();
-      if (yPos < 0)
-         yPos = 0;
-      buttonPos = wxPoint(evtSize.GetWidth() - buttonSize_CompanyLogo.GetWidth() - kInset, yPos);
-      mButton_CompanyLogo->Move(buttonPos);
 
-      yPos += buttonSize_CompanyLogo.GetHeight() + kInset;
-      buttonPos = wxPoint(evtSize.GetWidth() - buttonSize_AudacityLogo.GetWidth() - kInset, yPos);
-      mButton_AudacityLogo->Move(buttonPos);
+      if (mButton_ProjectLogo)
+      {
+         nMinRightSectionWidth += buttonSize_CompanyLogo.GetWidth() + kInset;
+         newLogoWidth = evtSize.GetWidth() - nMinRightSectionWidth;
+         if (newLogoWidth > mProjectLogo_origWidth)
+            newLogoWidth = mProjectLogo_origWidth;
+         mButton_ProjectLogo->SetSize(1, 1, newLogoWidth, -1);
+      }
    }
    else
    {
-      // Just move mButton_CompanyLogo and mButton_AudacityLogo to the immediate right of mButton_ProjectLogo.
-      buttonPos = wxPoint(buttonSize_ProjectLogo.GetWidth() + kDoubleInset, kInset);
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         // Just move mButton_CompanyLogo and mButton_AudacityLogo to the immediate right of left section.
+         buttonPos = wxPoint(mMinLeftSectionWidth + kDoubleInset, kInset);
+      #else 
+         // Just move mButton_CompanyLogo and mButton_AudacityLogo to the immediate right of mButton_ProjectLogo.
+         buttonPos = wxPoint(buttonSize_ProjectLogo.GetWidth() + kDoubleInset, kInset);
+      #endif
       mButton_CompanyLogo->Move(buttonPos);
 
       if (evtSize.GetHeight() - buttonSize_CompanyLogo.GetHeight() >
@@ -255,7 +653,8 @@ void BrandingPanel::OnSize(wxSizeEvent &evt)
    }
 }
 
-#endif // (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+// end of class BrandingPanel
+#endif // (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS) 
 
 
 // class Branding: 

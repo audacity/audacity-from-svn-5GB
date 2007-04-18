@@ -94,7 +94,8 @@ class WaveTrack: public Track {
       WaveformDisplay,
       WaveformDBDisplay,
       SpectrumDisplay,
-      PitchDisplay
+      PitchDisplay,
+      WaveformAndSpectrumDisplay
    } WaveTrackDisplay;
    void SetDisplay(int display) {mDisplay = display;}
    int GetDisplay() {return mDisplay;}

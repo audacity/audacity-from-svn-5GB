@@ -23,6 +23,7 @@
 class wxString;
 
 #include "Effect.h"
+#include "../AudacityBranding.h"
 
 class Envelope;
 class WaveTrack;
@@ -63,12 +64,16 @@ private:
    float *mFilterFunc;
 
 public:
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS) // custom curves for Thinklabs
+      static const int nCurveTypes = 7;
+   #else // not Thinklabs
    enum curveType {
      acoustic,
      nab, lp, aes, deccaffrrmicro, deccaffrr78, riaa,
      col78, deccaffrrlp, emi78, rcavictor1938, rcavictor1947,
      nCurveTypes
    };
+   #endif
 
    enum {nCurvePoints=28};
    static const float curvex[];

@@ -37,21 +37,20 @@
 // For pow() in GetSoundVol()
 #include <math.h>
 
-#include "widgets/AButton.h"
-#include "widgets/ASlider.h"
+#include "AColor.h"
 #include "AudioIO.h"
 #include "ImageManipulation.h"
+#include "MeterToolBar.h"
 #include "Prefs.h"
 #include "Project.h"
 #include "Track.h"
+#include "widgets/AButton.h"
+#include "widgets/ASlider.h"
 
-#include "MeterToolBar.h"
-
-#include "../AColor.h"
 #include "../images/ControlButtons.h"
 
-// Code duplication warning: these apparently need to be in the
-// same order as the enum in ControlToolBar.cpp
+// Code duplication warning: the tools enum (numTools) in ControlToolBar.h apparently need to be in the
+// same order as this enum.
 
 enum {
    ID_SELECT,
@@ -61,6 +60,9 @@ enum {
    ID_SLIDE,
    ID_MULTI,
    ID_PLAY_BUTTON,
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      ID_LOOP_PLAY_BUTTON,
+   #endif
    ID_RECORD_BUTTON,
    ID_PAUSE_BUTTON,
    ID_STOP_BUTTON,
@@ -104,6 +106,10 @@ BEGIN_EVENT_TABLE(ControlToolBar, wxWindow)
          wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnTool)
    EVT_COMMAND(ID_PLAY_BUTTON,
          wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnPlay)
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      EVT_COMMAND(ID_LOOP_PLAY_BUTTON,
+            wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnLoopPlay)
+   #endif
    EVT_COMMAND(ID_STOP_BUTTON,
          wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnStop)
    EVT_COMMAND(ID_RECORD_BUTTON,
@@ -176,7 +182,13 @@ void ControlToolBar::InitializeControlToolBar()
 #endif
 
    mCurrentTool = selectTool;
-   mTool[mCurrentTool]->PushDown();
+
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // no tools for Thinklabs
+      mIdealSize = wxSize(360, 55); // 95 less wide than with tools
+   #else 
+      mTool[mCurrentTool]->PushDown();
+   #endif
 
    gPrefs->Read("/GUI/AlwaysEnablePlay", &mAlwaysEnablePlay, false);
    gPrefs->Read("/GUI/AlwaysEnablePause", &mAlwaysEnablePause, false);
@@ -352,13 +364,13 @@ void ControlToolBar::RegenerateToolsTooltips()
 	// to reappear, so they're commented out now.
 	//		wxSafeYield(); //Deal with some queued up messages...
 
-   #if wxUSE_TOOLTIPS
-   mTool[selectTool]->SetToolTip(_("Selection Tool"));
-   mTool[envelopeTool]->SetToolTip(_("Envelope Tool"));
-   mTool[slideTool]->SetToolTip(_("Time Shift Tool"));
-   mTool[zoomTool]->SetToolTip(_("Zoom Tool"));
-   mTool[drawTool]->SetToolTip(_("Draw Tool"));
-   mTool[multiTool]->SetToolTip(_("Multi-Tool Mode"));
+   #if (wxUSE_TOOLTIPS && (AUDACITY_BRANDING != BRAND_THINKLABS)) // no tools for Thinklabs
+      mTool[selectTool]->SetToolTip(_("Selection Tool"));
+      mTool[envelopeTool]->SetToolTip(_("Envelope Tool"));
+      mTool[slideTool]->SetToolTip(_("Time Shift Tool"));
+      mTool[zoomTool]->SetToolTip(_("Zoom Tool"));
+      mTool[drawTool]->SetToolTip(_("Draw Tool"));
+      mTool[multiTool]->SetToolTip(_("Multi-Tool Mode"));
    #endif
 
    //		wxSafeYield();
@@ -386,8 +398,17 @@ void ControlToolBar::MakeButtons()
 #endif
 
    /* Buttons */
-   int buttonOrder[6];
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      #define kNumButtons 7
+   #else
+      #define kNumButtons 6
+   #endif
+   int buttonOrder[kNumButtons];
    mButtonPos = 95;
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // no tools for Thinklabs
+      mButtonPos = 0;
+   #endif
    
    gPrefs->Read("/GUI/ErgonomicTransportButtons", &mErgonomicTransportButtons, false);
 
@@ -395,21 +416,37 @@ void ControlToolBar::MakeButtons()
    {
       buttonOrder[0] = ID_PAUSE_BUTTON;
       buttonOrder[1] = ID_PLAY_BUTTON;
-      buttonOrder[2] = ID_STOP_BUTTON;
-      buttonOrder[3] = ID_REW_BUTTON;
-      buttonOrder[4] = ID_FF_BUTTON;
-      buttonOrder[5] = ID_RECORD_BUTTON;
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         buttonOrder[2] = ID_LOOP_PLAY_BUTTON;
+         buttonOrder[3] = ID_STOP_BUTTON;
+         buttonOrder[4] = ID_REW_BUTTON;
+         buttonOrder[5] = ID_FF_BUTTON;
+         buttonOrder[6] = ID_RECORD_BUTTON;
+      #else
+         buttonOrder[2] = ID_STOP_BUTTON;
+         buttonOrder[3] = ID_REW_BUTTON;
+         buttonOrder[4] = ID_FF_BUTTON;
+         buttonOrder[5] = ID_RECORD_BUTTON;
+      #endif
    } else
    {
       buttonOrder[0] = ID_REW_BUTTON;
       buttonOrder[1] = ID_PLAY_BUTTON;
-      buttonOrder[2] = ID_RECORD_BUTTON;
-      buttonOrder[3] = ID_PAUSE_BUTTON;
-      buttonOrder[4] = ID_STOP_BUTTON;
-      buttonOrder[5] = ID_FF_BUTTON;
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         buttonOrder[2] = ID_LOOP_PLAY_BUTTON;
+         buttonOrder[3] = ID_RECORD_BUTTON;
+         buttonOrder[4] = ID_PAUSE_BUTTON;
+         buttonOrder[5] = ID_STOP_BUTTON;
+         buttonOrder[6] = ID_FF_BUTTON;
+      #else
+         buttonOrder[2] = ID_RECORD_BUTTON;
+         buttonOrder[3] = ID_PAUSE_BUTTON;
+         buttonOrder[4] = ID_STOP_BUTTON;
+         buttonOrder[5] = ID_FF_BUTTON;
+      #endif
    }
    
-   for (int iButton = 0; iButton < 6; iButton++)
+   for (int iButton = 0; iButton < kNumButtons; iButton++)
    {
       switch (buttonOrder[iButton])
       {
@@ -428,6 +465,15 @@ void ControlToolBar::MakeButtons()
          MakeLoopImage();
          break;
       
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         case ID_LOOP_PLAY_BUTTON:
+            mLoopPlay = MakeButton((char const **) Loop,
+                              (char const **) LoopDisabled,
+                              (char const **) LoopAlpha, ID_LOOP_PLAY_BUTTON,
+                              false);
+            break;
+      #endif
+
       case ID_RECORD_BUTTON:
          if (mErgonomicTransportButtons)
             mButtonPos += 10; // space before record button
@@ -467,6 +513,9 @@ void ControlToolBar::MakeButtons()
    #if wxUSE_TOOLTIPS
          mRewind->SetToolTip(_("Skip to Start"));
          mPlay->SetToolTip(_("Play (Shift for loop-play)"));
+         #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+            mLoopPlay->SetToolTip(_("Loop Play"));
+         #endif
          mRecord->SetToolTip(_("Record"));
          mPause->SetToolTip(_("Pause"));
          mStop->SetToolTip(_("Stop"));
@@ -485,20 +534,26 @@ void ControlToolBar::MakeButtons()
 
    /* Tools */
 
-   #ifdef __WXMAC__ // different positioning
-   mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
-   mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 26);
-   mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 26, 0);
-   mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 26, 26);
-   mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 52, 0);
-   mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 52, 26); 
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // no tools for Thinklabs
+      for (unsigned int i = 0; i < numTools; i++)
+         mTool[i] = NULL;
    #else
-   mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
-   mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 28);
-   mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 27, 0);
-   mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 27, 28);
-   mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 54, 0);
-   mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 54, 28); 
+      #ifdef __WXMAC__ // different positioning
+         mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
+         mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 26);
+         mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 26, 0);
+         mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 26, 26);
+         mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 52, 0);
+         mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 52, 26); 
+      #else
+         mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
+         mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 28);
+         mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 27, 0);
+         mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 27, 28);
+         mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 54, 0);
+         mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 54, 28); 
+      #endif
    #endif
 
 #if wxUSE_TOOLTIPS
@@ -521,6 +576,9 @@ ControlToolBar::~ControlToolBar()
 
    delete mRewind;
    delete mPlay;
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      delete mLoopPlay;
+   #endif
    delete mStop;
    delete mRecord;
    delete mFF;
@@ -594,6 +652,11 @@ int ControlToolBar::GetCurrentTool()
 /// @param show - should we update the button display?
 void ControlToolBar::SetCurrentTool(int tool, bool show)
 {
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS) 
+      // no tools for Thinklabs
+      return;
+   #endif
+
    //In multi-mode the current tool is shown by the 
    //cursor icon.  The buttons are not updated.
 
@@ -610,9 +673,19 @@ void ControlToolBar::SetCurrentTool(int tool, bool show)
 void ControlToolBar::SetPlay(bool down)
 {
    if (down)
+   {
       mPlay->PushDown();
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         mLoopPlay->PopUp();
+         mLoopPlay->Disable();
+      #endif
+   }
    else {
       mPlay->PopUp();
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         mLoopPlay->PopUp();
+         mLoopPlay->Enable();
+      #endif
       mPlay->SetAlternate(false);
    }
 }
@@ -626,6 +699,9 @@ void ControlToolBar::SetStop(bool down)
       mStop->Disable();
       mRecord->Enable();
       mPlay->Enable();
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         mLoopPlay->Enable();
+      #endif
       if(!mAlwaysEnablePause)
          mPause->Disable();
       mRewind->Enable();
@@ -646,6 +722,9 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
 {
    if (gAudioIO->IsBusy()) {
       mPlay->PopUp();
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         mLoopPlay->PopUp();
+      #endif
       return;
    }
    
@@ -762,6 +841,22 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
 	   mPlay->PopUp();
 }
 
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   void ControlToolBar::OnLoopPlay(wxCommandEvent &evt)
+   {
+	   if(mAlwaysEnablePlay)
+		   StopPlaying();
+
+      PlayCurrentRegion(true);
+
+      if(mAlwaysEnablePlay)
+      {
+	      mPlay->PopUp();
+         mLoopPlay->PopUp();
+      }
+   }
+#endif
+
 void ControlToolBar::SetVUMeters(AudacityProject *p)
 {
    MeterToolBar *bar;
@@ -818,6 +913,9 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
    }
 
    mPlay->Disable();
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      mLoopPlay->Disable();
+   #endif
    mStop->Enable();
    mRewind->Disable();
    mFF->Disable();
@@ -955,7 +1053,11 @@ bool ControlToolBar::GetZoomToolDown()
 
 bool ControlToolBar::GetEnvelopeToolDown()
 {
-   return mTool[ envelopeTool]->IsDown();
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS) // no tools for Thinklabs
+      return false;
+   #else
+      return mTool[ envelopeTool]->IsDown();
+   #endif
 }
 
 bool ControlToolBar::GetSlideToolDown()
@@ -965,12 +1067,20 @@ bool ControlToolBar::GetSlideToolDown()
 
 bool ControlToolBar::GetDrawToolDown()
 {
-   return mTool[ drawTool ]->IsDown();
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS) // no tools for Thinklabs
+      return false;
+   #else
+      return mTool[ drawTool ]->IsDown();
+   #endif
 }
 
 bool ControlToolBar::GetMultiToolDown()
 {
-   return mTool[ multiTool ]->IsDown();
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS) // no tools for Thinklabs
+      return false;
+   #else
+      return mTool[ multiTool ]->IsDown();
+   #endif
 }
 
 const char * ControlToolBar::GetMessageForTool( int ToolNumber )
@@ -1001,26 +1111,33 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    GetSize(&width, &height);
 
 
-#if defined __WXMAC__
-   // Mac has an Aqua background...
-   DrawBackground(dc, width, height); 
-#else
-   //TODO: Get rid of all the magic numbers used in sizing.
-   // On other platforms put the big buttons on a beveled platform.
-   DrawBackground(dc, 81, height);
-   // Width is reduced by an extra two pixels to visually separate
-   // the control toolbar from the next grab bar on the right.
-   wxRect bevelRect( 81, 0, width-84, height-1 );
-   AColor::Bevel( dc, true, bevelRect );
-#endif
+   #if defined __WXMAC__
+      // Mac has an Aqua background...
+      DrawBackground(dc, width, height); 
+   #elif (AUDACITY_BRANDING == BRAND_THINKLABS) 
+      // no tools for Thinklabs
+      DrawBackground(dc, width, height); 
+      wxRect bevelRect(0, 0, width - 1, height - 1);
+      AColor::Bevel(dc, true, bevelRect);
+   #else
+      //TODO: Get rid of all the magic numbers used in sizing.
+      // On other platforms put the big buttons on a beveled platform.
+      DrawBackground(dc, 81, height);
+      // Width is reduced by an extra two pixels to visually separate
+      // the control toolbar from the next grab bar on the right.
+      wxRect bevelRect( 81, 0, width-84, height-1 );
+      AColor::Bevel( dc, true, bevelRect );
+   #endif
 
    #ifndef __WXMAC__
-   // JKC: Grey horizontal spacer line between buttons.
-   // Not quite ideal, but seems the best solution to 
-   // make the tool button heights add up to the 
-   // main control button height.
-   AColor::Dark( &dc, false);
-   dc.DrawLine(0, 27, 81, 27);
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS) 
+         // JKC: Grey horizontal spacer line between buttons.
+         // Not quite ideal, but seems the best solution to 
+         // make the tool button heights add up to the 
+         // main control button height.
+         AColor::Dark( &dc, false);
+         dc.DrawLine(0, 27, 81, 27);
+      #endif
    #endif
 }
 
@@ -1040,6 +1157,10 @@ void ControlToolBar::EnableDisableButtons()
 
    //mPlay->SetEnabled(tracks && !busy);
    mPlay->SetEnabled(tracks && !mRecord->IsDown());
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      mPlay->SetEnabled(tracks && !mRecord->IsDown() && !mLoopPlay->IsDown());
+      mLoopPlay->SetEnabled(tracks && !mRecord->IsDown() && !mPlay->IsDown());
+   #endif
 
    mStop->SetEnabled(busy);
    mRewind->SetEnabled(tracks && !busy);

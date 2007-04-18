@@ -34,6 +34,7 @@
 #include <math.h>
 
 #include "AColor.h"
+#include "AudacityBranding.h"
 #include "FFT.h"
 #include "Internat.h"
 #include "PitchName.h"
@@ -157,6 +158,9 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                               wxSize(160, 20), 8, sizeChoiceStrings);
 
    mSizeChoice->SetSelection(2);
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      mSizeChoice->SetSelection(7);
+   #endif
 
    int f = NumWindowFuncs();
 
@@ -183,8 +187,11 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                               wxSize(160, 20), 2, axisChoiceStrings);
 
    mAxisChoice->SetSelection(0);
-
    mLogAxis = false;
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      mAxisChoice->SetSelection(1);
+      mLogAxis = true;
+   #endif
 
   #ifdef __WXMAC__
    mBackgroundBrush.SetColour(wxColour(255, 255, 255));

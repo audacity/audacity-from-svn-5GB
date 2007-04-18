@@ -632,9 +632,8 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
 
      if (mOrientation == wxHORIZONTAL)
        desiredPixelHeight = (mBottom-mTop-3);
-     else {
+     else
        desiredPixelHeight = (mRight-mLeft)/2;
-     }
 
      if (desiredPixelHeight < 9)
        desiredPixelHeight = 9;

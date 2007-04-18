@@ -47,6 +47,8 @@ class AColor {
    #if (AUDACITY_BRANDING == BRAND_UMIXIT)
       // rainbow pastel color based on track's pointer -- so it's unique to track
       static wxColour GetTrackColor(void* pTrack);
+   #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
+      static bool mWantDarkColorScheme; 
    #endif
 
    static wxBrush lightBrush[2];

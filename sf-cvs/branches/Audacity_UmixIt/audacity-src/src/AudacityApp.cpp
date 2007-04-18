@@ -566,7 +566,7 @@ bool AudacityApp::OnInit()
    #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
       // no Mixer or Meter Toolbar by default for Thinklabs
       bDefaultMixerToolbar = false;
-      bDefaultMeterToolbar = false;
+      bDefaultMeterToolbar = true;
    #endif
 
    //Only load the mixer toolbar if it says so in the preferences

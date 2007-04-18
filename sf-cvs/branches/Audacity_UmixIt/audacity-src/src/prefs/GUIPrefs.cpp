@@ -50,7 +50,7 @@ PrefsPanel(parent)
    #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
       // no Mixer or Meter Toolbar by default for Thinklabs
       bDefaultMixerToolbar = false;
-      bDefaultMeterToolbar = false;
+      bDefaultMeterToolbar = true;
    #endif
    gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, bDefaultEditToolbar);
    gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, bDefaultMixerToolbar);

@@ -369,7 +369,7 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
       *mLoadingTarget = SilentBlockFile::BuildFromXML(projFull, attrs);
       return true;
    }
-   else if ( !wxStricmp(tag, "simpleblockfile") ) 
+   else if ( !wxStricmp(tag, "simpleblockfile") )
       pBlockFile = SimpleBlockFile::BuildFromXML(projFull, attrs);
    else if( !wxStricmp(tag, "pcmaliasblockfile") )
       pBlockFile = PCMAliasBlockFile::BuildFromXML(projFull, attrs);
