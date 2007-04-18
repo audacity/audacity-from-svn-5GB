@@ -64,7 +64,8 @@ public:
    
    virtual wxString GetEffectIdentifier() {
       if (mInteractive) {
-         return wxT("NyquistPrompt");
+         // Disabled for now...
+         return wxT("");
       }
       
       wxStringTokenizer st(mName, wxT(" "));
