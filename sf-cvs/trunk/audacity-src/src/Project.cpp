@@ -1315,7 +1315,7 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 //     and/or attempts to delete objects twice.
 void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 {
-   if (gPrefsDialogVisible) {
+   if (gPrefsDialogVisible || wxIsBusy()) {
       event.Veto();
       return;
    }
@@ -1466,6 +1466,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    for (mProgressCurrent = 2; mProgressCurrent >= 0; mProgressCurrent--) {
       if (mProgressDialog[mProgressCurrent]) {
          delete mProgressDialog[mProgressCurrent];
+         mProgressDialog[mProgressCurrent] = NULL;
       }
    }
 
@@ -3226,6 +3227,10 @@ void AudacityProject::ProgressShow(const wxString &title, const wxString &messag
       mProgressDialog[mProgressCurrent] = NULL;
    }
 
+   GetMenuBar()->Enable(false);
+   GetMenuBar()->Enable(wxID_ABOUT, false);
+   GetMenuBar()->Enable(wxID_PREFERENCES, false);
+   GetMenuBar()->Enable(wxID_EXIT, false);
    wxStartTimer();
    wxBeginBusyCursor();
    wxSafeYield(this, true);
@@ -3240,6 +3245,11 @@ void AudacityProject::ProgressHide()
    if (wxIsBusy()) {
       wxEndBusyCursor();
    }
+
+   GetMenuBar()->Enable(wxID_EXIT, true);
+   GetMenuBar()->Enable(wxID_PREFERENCES, true);
+   GetMenuBar()->Enable(wxID_ABOUT, true);
+   GetMenuBar()->Enable(true);
 }
 
 bool AudacityProject::ProgressUpdate(int value, const wxString &message)
