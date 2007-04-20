@@ -147,6 +147,7 @@ void ControlToolBar::InitializeControlToolBar()
    mIdealSize = wxSize(420, 55); // ideal for (mShowTools == true)
    mTitle = _("Audacity Control Toolbar");
    mType = ControlToolBarID;
+   mShowTools = true;
 
    wxColour backgroundColour =
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
@@ -183,7 +184,7 @@ void ControlToolBar::InitializeControlToolBar()
 #endif
 
    mCurrentTool = selectTool;
-   mShowTools = true;
+
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
       // no tools created for Thinklabs
       mShowTools = false;

@@ -999,8 +999,8 @@ void AdornedRulerPanel::DrawAdornedRuler(
 
    DrawBorder(dc, r);
 
-   if (pViewInfo->sel0 < pViewInfo->sel1)
-      DrawSelection(dc, r);
+   //if (pViewInfo->sel0 < pViewInfo->sel1)
+   DrawSelection(dc, r);
 
    if( indicator )
       DrawIndicator(dc, bRecording);
@@ -1052,6 +1052,10 @@ void AdornedRulerPanel::DrawSelection(wxDC * dc, const wxRect r)
    sr.y = 1;
    sr.width = p1 - p0 - 1;
    sr.height = GetRulerHeight() - 3;
+
+   if (sr.width < 1)
+     sr.width = 1;
+
    dc->DrawRectangle(sr);
 }
 
@@ -1098,43 +1102,38 @@ void AdornedRulerPanel::DrawIndicator(wxDC * dc, bool bRecording)
 
 void AdornedRulerPanel::OnMouseEvent(wxMouseEvent &evt)
 {
-   //vvvvv DRAGGING - but just for play region.
-   if (evt.LeftDown())
+   double zoomedLeftOffset = GetLeftOffset() / mViewInfo->zoom;
+   double t = mViewInfo->h - zoomedLeftOffset +
+     (evt.m_x / mViewInfo->zoom);
+
+   if (evt.ButtonDown())
    {
+      mMouseClickX = evt.m_x;
+      mSelStart = t;
+
+      if (evt.ShiftDown())
+      {
+         if (fabs(t - mViewInfo->sel0) < fabs(t - mViewInfo->sel1)) {
+            mSelStart = mViewInfo->sel1;
+	    mViewInfo->sel0 = t;
+	 }
+	 else {
+	    mSelStart = mViewInfo->sel0;
+	    mViewInfo->sel1 = t;
+	 }
+      }
+      else
+      {
+         mViewInfo->sel0 = t;
+         mViewInfo->sel1 = t;
+      }
+
+      this->Refresh(false);
    }
-   else if (evt.ButtonUp())
+   else if (evt.Dragging())
    {
-      double zoomedLeftOffset = GetLeftOffset() / mViewInfo->zoom;
-      double sel0 = mViewInfo->sel0 - mViewInfo->h + zoomedLeftOffset;
-      double sel1 = mViewInfo->sel1 - mViewInfo->h + zoomedLeftOffset;
-
-      if (sel0 < 0.0)
-         sel0 = 0.0;
-      int width;
-      int height;
-      this->GetSize(&width, &height);
-
-      if (sel1 > (width / mViewInfo->zoom))
-         sel1 = width / mViewInfo->zoom;
-
-      int p0 = int (sel0 * mViewInfo->zoom + 0.5);
-      int p1 = int (sel1 * mViewInfo->zoom + 0.5);
-
-      long evtX = evt.GetX();
-      if (evtX < p0)
-      {
-         sel0 = evtX / mViewInfo->zoom;
-         if (sel0 < 0.0)
-            sel0 = 0.0;
-         mViewInfo->sel0 = sel0 + mViewInfo->h - zoomedLeftOffset;
-      }
-      else if (evtX > p1)
-      {
-         sel1 = evtX / mViewInfo->zoom;
-         if (sel1 > (width / mViewInfo->zoom))
-            sel1 = width / mViewInfo->zoom;
-         mViewInfo->sel1 = sel1 + mViewInfo->h - zoomedLeftOffset;
-      }
+      mViewInfo->sel0 = wxMin(mSelStart, t);
+      mViewInfo->sel1 = wxMax(mSelStart, t);
       this->Refresh(false);
    }
 }

@@ -198,13 +198,16 @@ AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
    AudacityProject *p = new AudacityProject(parentWindow, -1,
                                             wxPoint(wndRect.x, wndRect.y), wxSize(wndRect.width, wndRect.height));
 
+   if (!gActiveProject)
+     gActiveProject = p;
+
    if(bMaximized)
       p->Maximize(true);
 
-   p->Show(true);
-
    //Set the new project as active:
    SetActiveProject(p);
+
+   p->Show(true);
 
    return p;
 }
