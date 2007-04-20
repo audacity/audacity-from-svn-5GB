@@ -2710,12 +2710,13 @@ void AudacityProject::OnLyrics()
 void AudacityProject::OnMixerBoard()
 {
    #if (AUDACITY_BRANDING == BRAND_UMIXIT)
-      // For UmixIt, Mixer Board is XOR Track Panel.
-      bool bWantTrackPanel = mMixerBoard->IsShown();
+      // For UmixIt, MixerBoard is XOR TrackPanel, except the Ruler.
+      bool bWantTrackPanel = mMixerBoard->IsShown(); // Switch to TrackPanel if currently showing MixerBoard
       mMixerBoard->Show(!bWantTrackPanel);
       mTrackPanel->ShowRulerOnly(!bWantTrackPanel);
       mHsbar->Show(bWantTrackPanel);
       mVsbar->Show(bWantTrackPanel);
+      this->GetControlToolBar()->ShowTools(bWantTrackPanel);
       this->HandleResize();
       
       mCommandManager.Modify("MixerBoard", bWantTrackPanel ? _("&Mixer Board") : _("&Track Panel"));

@@ -23,7 +23,6 @@
 #include <wx/dcmemory.h>
 #include <wx/intl.h>
 #include <wx/string.h>
-#include <wx/radiobox.h>
 
 #include "Equalization.h"
 #include "../Envelope.h"
@@ -555,12 +554,26 @@ void EqualizationPanel::OnMouseEvent(wxMouseEvent & event)
 
 // WDR: event table for EqualizationDialog
 
+#define ID_TEXT 10000
+#define ID_FILTERPANEL 10001
+#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #define ID_CLEAR 10002
+   #define ID_LOADCURVE 10003
+#else
+   #define ID_RADIOBOX_CURVE 10005
+#endif
+#define ID_BUTTON_PREVIEW 10004
+
 BEGIN_EVENT_TABLE(EqualizationDialog,wxDialog)
    EVT_BUTTON( wxID_OK, EqualizationDialog::OnOk )
    EVT_BUTTON( wxID_CANCEL, EqualizationDialog::OnCancel )
    EVT_SIZE( EqualizationDialog::OnSize )
-   EVT_BUTTON( ID_CLEAR, EqualizationDialog::OnClear )
-   EVT_BUTTON( ID_LOADCURVE, EqualizationDialog::OnLoadCurve )
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      EVT_BUTTON( ID_CLEAR, EqualizationDialog::OnClear )
+      EVT_BUTTON( ID_LOADCURVE, EqualizationDialog::OnLoadCurve )
+   #else
+      EVT_RADIOBOX(ID_RADIOBOX_CURVE, EqualizationDialog::OnRadioBoxCurve)
+   #endif
 	EVT_BUTTON(ID_BUTTON_PREVIEW, EqualizationDialog::OnPreview)
 END_EVENT_TABLE()
 
@@ -591,6 +604,10 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
 
    mFilterFunc = filterFunc;
    mWindowSize = windowSize;
+
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS) 
+      this->setCurve(mEnvelope, predefined->GetSelection());
+   #endif
 }
 
 bool EqualizationDialog::Validate()
@@ -693,6 +710,19 @@ void EqualizationDialog::OnLoadCurve(wxCommandEvent &event)
    mPanel->Refresh(false);
 }
 
+#if (AUDACITY_BRANDING == BRAND_THINKLABS) // custom curves for Thinklabs
+   void EqualizationDialog::OnRadioBoxCurve( wxCommandEvent &event )
+   {
+      int nSelection = predefined->GetSelection();
+      wxCommandEvent dummyEvent;
+      if (nSelection == EffectEqualization::nCurveTypes)
+         // "Clear" is the last radio, but not a curve.
+         this->OnClear(dummyEvent);
+      else
+         // It's a curve.
+         this->OnLoadCurve(dummyEvent);
+   }
+#endif
 
 void EqualizationDialog::setCurve(Envelope *env, int currentCurve)
 {
@@ -733,7 +763,7 @@ wxSizer * MakeEqualizationDialog(
 	wxStaticText *item1 =
 		new wxStaticText(parent, -1,
                        #if (AUDACITY_BRANDING == BRAND_THINKLABS) // custom curves for Thinklabs
-							     _("Equalization, by Mitch Golden, Vaughan Johnson, && Clive Smith"),
+							     _("Equalization, by Mitch Golden, Vaughan Johnson, && Clive Smith\n\nClick points and drag on the curve to customize."),
                        #else
 							     _("Equalization, by Mitch Golden && Vaughan Johnson"),
                        #endif
@@ -749,37 +779,54 @@ wxSizer * MakeEqualizationDialog(
    item0->Add( item2, 1, wxGROW|wxALIGN_CENTRE|wxALL, 4);
 
 
-   wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
 
-   wxButton *item4a = new wxButton( parent, ID_LOADCURVE, _("Load Predefined Curve"),
-                       wxDefaultPosition, wxDefaultSize, 0 );
-   item3->Add( item4a, 0, wxALIGN_CENTRE|wxLEFT, 4);
+      wxButton *item4a = new wxButton( parent, ID_LOADCURVE, _("Load Predefined Curve"),
+                        wxDefaultPosition, wxDefaultSize, 0 );
+      item3->Add( item4a, 0, wxALIGN_CENTRE|wxLEFT, 4);
 
-   item3->Add(80, 4); // horizontal spacer
+      item3->Add(80, 4); // horizontal spacer
 
-   wxButton *item4b = new wxButton( parent, ID_CLEAR, _("Clear"),
-                       wxDefaultPosition, wxDefaultSize, 0 );
-   item3->Add( item4b, 0, wxALIGN_CENTRE|wxRIGHT, 4);
+      wxButton *item4b = new wxButton( parent, ID_CLEAR, _("Clear"),
+                        wxDefaultPosition, wxDefaultSize, 0 );
+      item3->Add( item4b, 0, wxALIGN_CENTRE|wxRIGHT, 4);
 
-   item0->Add( item3, 0, wxALIGN_CENTER | wxALL, 0);
-
+      item0->Add( item3, 0, wxALIGN_CENTER | wxALL, 0);
+   #endif
 
 	// predefined curves
 	wxBoxSizer *item9 = new wxBoxSizer( wxVERTICAL );
 
-   wxString formats[EffectEqualization::nCurveTypes];
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS) 
+      wxString formats[EffectEqualization::nCurveTypes + 1]; // Clear is now a radio button, but not a curve.
+      formats[EffectEqualization::nCurveTypes] = _("Clear");
+   #else
+      wxString formats[EffectEqualization::nCurveTypes];
+   #endif
    int i;
 
    for(i=0;i<EffectEqualization::nCurveTypes;i++) {
      formats[i] = EffectEqualization::curveNames[i];
    }
 
-   wxRadioBox *predefined = new wxRadioBox(parent, -1, _("Predefined:"),
-			       wxDefaultPosition, wxDefaultSize,
-			       EffectEqualization::nCurveTypes,
-			       formats,
-			       3,
-			       wxRA_SPECIFY_COLS);
+   wxRadioBox *predefined = 
+      new wxRadioBox(parent, 
+                     #if (AUDACITY_BRANDING == BRAND_THINKLABS) 
+                        ID_RADIOBOX_CURVE, 
+                     #else
+                        -1, 
+                     #endif
+                     _("Predefined:"),
+			            wxDefaultPosition, wxDefaultSize,
+                     #if (AUDACITY_BRANDING == BRAND_THINKLABS) 
+   			            EffectEqualization::nCurveTypes + 1,
+                     #else
+   			            EffectEqualization::nCurveTypes,
+                     #endif
+			            formats,
+			            3,
+			            wxRA_SPECIFY_COLS);
 
    ((EqualizationDialog *)parent)->predefined = predefined;
 

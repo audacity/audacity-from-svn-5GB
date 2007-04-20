@@ -202,23 +202,20 @@ private:
 // Once TrackPanel uses wxSizers, we will derive it from some 
 // wxWindow and the GetSize and SetSize functions
 // will then be wxWindows functions instead.
-//class AdornedRulerPanel : public RulerPanel {
-class AdornedRulerPanel 
+class AdornedRulerPanel : public wxPanel
 {
  public:
-//   AdornedRulerPanel(wxWindow* parent, wxWindowID id,
-//              const wxPoint& pos = wxDefaultPosition,
-//              const wxSize& size = wxDefaultSize);
+   AdornedRulerPanel(wxWindow* parent, wxWindowID id = -1,
+                     const wxPoint& pos = wxDefaultPosition,
+                     const wxSize& size = wxDefaultSize);
 
-    AdornedRulerPanel();
+   AdornedRulerPanel();
    ~AdornedRulerPanel();
 
 public:
    void DrawAdornedRuler(wxDC * dc, ViewInfo * pViewInfo, 
       bool text, bool indicator, bool bRecording);
    static int GetRulerHeight() { return 22;}
-   void SetSize( const wxRect & r );
-   void GetSize( int * width, int * height );
    void SetLeftOffset( int offset ){ leftOffset = offset;}
    double indicatorPos;
 
@@ -226,7 +223,6 @@ public:
    Ruler  ruler;
 
 private:
-   wxRect mRect;
    ViewInfo * mViewInfo;
    int leftOffset;  // Number of pixels before we hit the 'zero position'.
    int GetLeftOffset() { return leftOffset;}
@@ -234,6 +230,12 @@ private:
    void DrawSelection(wxDC * dc,  const wxRect r);
    void DrawMarks(wxDC * dc, const wxRect r, bool /*text */ );
    void DrawIndicator(wxDC * dc, bool bRecording);
+
+   void OnMouseEvent(wxMouseEvent &evt);
+   void OnPaint(wxPaintEvent &evt);
+
+private:
+    DECLARE_EVENT_TABLE()
 };
 
 #endif //define __AUDACITY_RULER__

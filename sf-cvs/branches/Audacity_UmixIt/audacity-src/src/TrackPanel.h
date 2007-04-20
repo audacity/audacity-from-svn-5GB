@@ -98,7 +98,10 @@ private:
    void GetTitleBarRect(const wxRect r, wxRect &dest) const;
    void GetMuteSoloRect(const wxRect r, wxRect &dest, bool solo) const;
    void GetGainRect(const wxRect r, wxRect &dest) const;
-   void GetPanRect(const wxRect r, wxRect &dest) const;
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      // No Pan sliders for Thinklabs.
+      void GetPanRect(const wxRect r, wxRect &dest) const;
+   #endif
 
 public:
    LWSliderArray mGains;

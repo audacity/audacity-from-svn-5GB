@@ -952,7 +952,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mCapturedTrack = NULL;
    mPopupMenuTarget = NULL;
 
-   mRuler = new AdornedRulerPanel();
+   mRuler = new AdornedRulerPanel(this);
 
    #if (AUDACITY_BRANDING == BRAND_UMIXIT)
       mShowRulerOnly = true;
@@ -2909,8 +2909,10 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
 
       if (buttonRect.Inside(event.m_x, event.m_y)) {
          MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS) // For Thinklabs, ALWAYS uniquely solo.
          if (event.ShiftDown()) {
             // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
+      #endif
             TrackListIterator iter(mTracks);
             Track *i = iter.First();
             while (i) {
@@ -2928,6 +2930,7 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
                }
                i = iter.Next();
             }
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS) // For Thinklabs, ALWAYS uniquely solo.
             if (pMixerBoard) 
             {
                pMixerBoard->UpdateMute(); // Update for all tracks.
@@ -2949,6 +2952,7 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
                   pMixerBoard->UpdateMute((WaveTrack*)t);
             }
          }
+      #endif
       }
       if (solo) {
          mIsSoloing = false;
@@ -3283,17 +3287,21 @@ bool TrackPanel::GainFunc(Track * t, wxRect r, wxMouseEvent &event,
 bool TrackPanel::PanFunc(Track * t, wxRect r, wxMouseEvent &event,
                          int index, int x, int y)
 {
-   wxRect sliderRect;
-   mTrackLabel.GetPanRect(r, sliderRect);
-   if (sliderRect.Inside(x, y)) {
-      mIsPanSliding = true;
-      mCapturedTrack = t;
-      mCapturedRect = r;
-      mCapturedNum = index;
-      HandleSliders(event, true);
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      // No Pan sliders for Thinklabs.
 
-      return true;
-   }
+      wxRect sliderRect;
+      mTrackLabel.GetPanRect(r, sliderRect);
+      if (sliderRect.Inside(x, y)) {
+         mIsPanSliding = true;
+         mCapturedTrack = t;
+         mCapturedRect = r;
+         mCapturedNum = index;
+         HandleSliders(event, true);
+
+         return true;
+      }
+   #endif
 
    return false;
 }
@@ -4844,6 +4852,23 @@ void TrackLabel::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
    dest.width = 36;
    dest.height = 16;
 
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // No mute button for Thinklabs.
+      if (solo)
+      {
+         // Let Solo be just left of where Mute usually is, and wide enough to say "Playback Select".
+         dest.x -= 2; // margin
+         dest.width += 36 + 8 + 4;
+      }
+      else
+      {
+         // No-size dest, so no mute target.
+         dest.width = 0;
+         dest.height = 0;
+      }
+      return; 
+   #endif
+
    if (solo)
       dest.x += 36 + 8;
 }
@@ -4856,13 +4881,16 @@ void TrackLabel::GetGainRect(const wxRect r, wxRect & dest) const
    dest.height = 25;
 }
 
-void TrackLabel::GetPanRect(const wxRect r, wxRect & dest) const
-{
-   dest.x = r.x + 7;
-   dest.y = r.y + 100;
-   dest.width = 84;
-   dest.height = 25;
-}
+
+#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   void TrackLabel::GetPanRect(const wxRect r, wxRect & dest) const
+   {
+      dest.x = r.x + 7;
+      dest.y = r.y + 100;
+      dest.width = 84;
+      dest.height = 25;
+   }
+#endif
 
 
 void TrackLabel::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
@@ -4949,6 +4977,12 @@ void TrackLabel::DrawTitleBar(wxDC * dc, const wxRect r, Track * t,
 void TrackLabel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
                               bool down, bool solo)
 {
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      if (!solo)
+         // No mute button for Thinklabs. 
+         return; 
+   #endif
+
    wxRect bev;
    GetMuteSoloRect(r, bev, solo);
    bev.Inflate(-1, -1);
@@ -4957,7 +4991,12 @@ void TrackLabel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
    dc->DrawRectangle(bev);
 
    long textWidth, textHeight;
-   wxString str = (solo) ? _("Solo") : _("Mute");
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // Must be Solo, or we wouldn't have gotten here. Rename it for Thinklabs' uniquely soloing.
+      wxString str = _("Playback Select");
+   #else
+      wxString str = (solo) ? _("Solo") : _("Mute");
+   #endif
 
    SetLabelFont(dc);
    dc->GetTextExtent(str, &textWidth, &textHeight);
@@ -4978,10 +5017,8 @@ void TrackLabel::MakeMoreSliders()
 {
    wxRect r(0, 0, 1000, 1000);
    wxRect gainRect;
-   wxRect panRect;
 
    GetGainRect(r, gainRect);
-   GetPanRect(r, panRect);
 
    /* i18n-hint: Title of the Gain slider, used to adjust the volume */
    LWSlider *slider = new LWSlider(pParent, _("Gain"),
@@ -4989,19 +5026,30 @@ void TrackLabel::MakeMoreSliders()
                                    wxSize(gainRect.width, gainRect.height),
                                    DB_SLIDER);
    mGains.Add(slider);
-   
-   /* i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically */
-   slider = new LWSlider(pParent, _("Pan"),
-                         wxPoint(panRect.x, panRect.y),
-                         wxSize(panRect.width, panRect.height),
-                         PAN_SLIDER);
-   mPans.Add(slider);
+
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      // No Pan sliders for Thinklabs.
+      
+      wxRect panRect;
+      GetPanRect(r, panRect);
+
+      /* i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically */
+      slider = new LWSlider(pParent, _("Pan"),
+                           wxPoint(panRect.x, panRect.y),
+                           wxSize(panRect.width, panRect.height),
+                           PAN_SLIDER);
+      mPans.Add(slider);
+   #endif
 }
 
 void TrackLabel::EnsureSufficientSliders(int index)
 {
-   while (mGains.Count() < (unsigned int)index+1 ||
-          mPans.Count() < (unsigned int)index+1)
+   while (mGains.Count() < (unsigned int)index+1 
+            #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+               // No Pan sliders for Thinklabs.
+               || mPans.Count() < (unsigned int)index+1
+            #endif
+          )
       MakeMoreSliders();
 }
 
@@ -5009,12 +5057,10 @@ void TrackLabel::EnsureSufficientSliders(int index)
 void TrackLabel::DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index)
 {
    wxRect gainRect;
-   wxRect panRect;
 
    EnsureSufficientSliders( index );
 
    GetGainRect(r, gainRect);
-   GetPanRect(r, panRect);
 
    if (gainRect.y + gainRect.height < r.y + r.height - 1) {
       mGains[index]->Move(wxPoint(gainRect.x, gainRect.y));
@@ -5022,11 +5068,16 @@ void TrackLabel::DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index)
       mGains[index]->OnPaint(*dc, t->GetSelected());
    }
 
-   if (panRect.y + panRect.height < r.y + r.height - 1) {
-      mPans[index]->Move(wxPoint(panRect.x, panRect.y));
-      mPans[index]->Set(t->GetPan());
-      mPans[index]->OnPaint(*dc, t->GetSelected());
-   }
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      // No Pan sliders for Thinklabs.
+      wxRect panRect;
+      GetPanRect(r, panRect);
+      if (panRect.y + panRect.height < r.y + r.height - 1) {
+         mPans[index]->Move(wxPoint(panRect.x, panRect.y));
+         mPans[index]->Set(t->GetPan());
+         mPans[index]->OnPaint(*dc, t->GetSelected());
+      }
+   #endif
 }
 
 

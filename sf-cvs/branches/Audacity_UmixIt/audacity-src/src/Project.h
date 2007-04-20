@@ -143,11 +143,7 @@ class AudacityProject:public wxFrame,
    int GetAudioIOToken();
    void SetAudioIOToken(int token);
    LyricsWindow* GetLyricsWindow() { return mLyricsWindow; };
-
    MixerBoard* GetMixerBoard() { return mMixerBoard; };
-   #if (AUDACITY_BRANDING != BRAND_UMIXIT)
-      MixerBoardFrame* GetMixerBoardFrame() { return mMixerBoardFrame; };
-   #endif
 
    bool IsActive();
 

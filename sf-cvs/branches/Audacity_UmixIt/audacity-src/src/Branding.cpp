@@ -603,6 +603,8 @@ void BrandingPanel::OnSize(wxSizeEvent &evt)
    else if ((
          #if (AUDACITY_BRANDING == BRAND_THINKLABS)
             mMinLeftSectionWidth + 
+         #else 
+            buttonSize_ProjectLogo.GetWidth() + 
          #endif
          buttonSize_CompanyLogo.GetWidth() + 
          buttonSize_AudacityLogo.GetWidth() + kTripleInset) < evtSize.GetWidth())

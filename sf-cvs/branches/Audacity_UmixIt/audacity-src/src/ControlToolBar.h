@@ -89,6 +89,7 @@ class ControlToolBar:public ToolBar {
    void SetStop(bool down);
    void SetRecord(bool down);
    void SetCurrentTool(int tool, bool show);
+   void ShowTools(bool bShowTools = true);
 
    // Play currently selected region, or if nothing selected,
    // play from current cursor.
@@ -151,6 +152,7 @@ class ControlToolBar:public ToolBar {
 
    ASlider *mVolume;
    int mCurrentTool;
+   bool mShowTools;
 
    wxBitmap *mDivBitmap;
    wxBitmap *mMuteBitmap;
