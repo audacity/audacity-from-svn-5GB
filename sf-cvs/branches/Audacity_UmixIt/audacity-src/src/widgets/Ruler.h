@@ -223,6 +223,8 @@ public:
    Ruler  ruler;
 
 private:
+   int  mMouseClickX;
+   double mSelStart;
    ViewInfo * mViewInfo;
    int leftOffset;  // Number of pixels before we hit the 'zero position'.
    int GetLeftOffset() { return leftOffset;}
