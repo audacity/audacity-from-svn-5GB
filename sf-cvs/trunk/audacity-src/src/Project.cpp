@@ -3227,10 +3227,6 @@ void AudacityProject::ProgressShow(const wxString &title, const wxString &messag
       mProgressDialog[mProgressCurrent] = NULL;
    }
 
-   GetMenuBar()->Enable(false);
-   GetMenuBar()->Enable(wxID_ABOUT, false);
-   GetMenuBar()->Enable(wxID_PREFERENCES, false);
-   GetMenuBar()->Enable(wxID_EXIT, false);
    wxStartTimer();
    wxBeginBusyCursor();
    wxSafeYield(this, true);
@@ -3245,11 +3241,6 @@ void AudacityProject::ProgressHide()
    if (wxIsBusy()) {
       wxEndBusyCursor();
    }
-
-   GetMenuBar()->Enable(wxID_EXIT, true);
-   GetMenuBar()->Enable(wxID_PREFERENCES, true);
-   GetMenuBar()->Enable(wxID_ABOUT, true);
-   GetMenuBar()->Enable(true);
 }
 
 bool AudacityProject::ProgressUpdate(int value, const wxString &message)
