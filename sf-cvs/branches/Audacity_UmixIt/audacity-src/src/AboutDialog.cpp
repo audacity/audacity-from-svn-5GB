@@ -19,8 +19,20 @@
 
 #include "AboutDialog.h"
 #include "Audacity.h"
+#include "AudacityApp.h"
+#include "AudacityBranding.h"
 
-#include "../images/AudacityLogo.xpm"
+#if (AUDACITY_BRANDING == BRAND_UMIXIT)
+   #define nBrandHeight 64
+   #include "../images/Branding/UmixIt.xpm" // 162x64
+   #include "../images/Branding/powered_by_Audacity_162x64.xpm" // 162x64
+#elif (AUDACITY_BRANDING == BRAND_THINKLABS)
+   #define nBrandHeight 42
+   #include "../images/Branding/Thinklabs.xpm" // 182x42
+   #include "../images/Branding/powered_by_Audacity.xpm" // 106x42
+#else
+   #include "../images/AudacityLogo.xpm"
+#endif
 
 #ifdef __WXMSW__
 # define DLOG_HEIGHT 430
@@ -44,7 +56,14 @@ IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
 AboutDialog::AboutDialog(wxWindow * parent)
 :  wxDialog(parent, -1, _("About Audacity..."),
-         wxDefaultPosition, wxSize(400, DLOG_HEIGHT), wxDEFAULT_DIALOG_STYLE)
+            wxDefaultPosition, 
+            wxSize(400, 
+                     #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS) 
+                        DLOG_HEIGHT + nBrandHeight + 8),
+                     #else
+                        DLOG_HEIGHT), 
+                     #endif
+            wxDEFAULT_DIALOG_STYLE)
 {
    wxString versionStr = AUDACITY_VERSION_STRING;
 
@@ -99,6 +118,26 @@ AboutDialog::AboutDialog(wxWindow * parent)
    informationStr += _("Program build date:");
    informationStr += " " __DATE__ "<br>\n";
 
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      wxString strThinklabsPreamble = _(
+         "Thinklabs Phonocardiography, powered by Audacity, "
+         "is provided free to researchers and clinicians in the interests of "
+         "promoting sound medicine. Thinklabs Phonocardiography is a custom "
+         "version of Audacity, for working with heart and lung sounds. It is "
+         "designed to complement the power of Thinklabs Digital Stethoscopes."
+
+         "<p>Thinklabs Phonocardiography, powered by Audacity, "
+         "is open source software, and researchers are encouraged to "
+         "develop it further to enhance the diagnostic power of medical acoustics. "
+         "Hopefully the results of such research will be shared freely under the "
+         "spirit and letter of the GPL license, under which Audacity is licensed. \n\n"
+         
+         "<p>Thinklabs Phonocardiography, powered by Audacity, "
+         "was developed from Audacity by Vaughan Johnson and Clive Smith, "
+         "with funding provided by Thinklabs Medical LLC."
+         );
+   #endif
+
    wxString par1Str = _(
      "Audacity is a free program written by a team of volunteer developers "
      "around the world.  Coordination happens thanks to SourceForge.net, "
@@ -148,9 +187,13 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "<body bgcolor=\"#ffffff\">"
       "<font size=1>"
       "<center>"
-      "<h3>Audacity " + versionStr + "</h3>"
+      "<h3>" +  wxGetApp().GetAppName() + "&reg; " + versionStr + "</h3>"
       + _("A Free Digital Audio Editor") +
       "</center>"
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS) 
+         "<p>"
+         + strThinklabsPreamble + 
+      #endif
       "<p>"
       + par1Str +
       "<p>"
@@ -268,23 +311,55 @@ AboutDialog::AboutDialog(wxWindow * parent)
 
    wxBoxSizer * pBoxSizer = new wxBoxSizer(wxVERTICAL);
 
-   logo = new wxBitmap((const char **) AudacityLogo_xpm);
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+      pBrandLogo = new wxBitmap((const char **)company_logo_xpm);
+      int nBrandLogoWidth = pBrandLogo->GetWidth();
+      int nBrandLogoHeight = pBrandLogo->GetHeight();
+      pBrandIcon =
+         new wxStaticBitmap(this, -1, *pBrandLogo, 
+                              wxPoint(32, 16),
+                              wxSize(nBrandLogoWidth, nBrandLogoHeight));
+      pBoxSizer->Add(pBrandIcon, 0, wxALIGN_CENTER | wxALL, 8);
+   #endif
+
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+      logo = new wxBitmap((const char **) powered_by_Audacity_xpm);
+   #else
+      logo = new wxBitmap((const char **) AudacityLogo_xpm);
+   #endif
    icon =
-       new wxStaticBitmap(this, -1, *logo, wxPoint(93, 10),
-                          wxSize(215, 190));
+       new wxStaticBitmap(this, -1, *logo, 
+                          #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+                             // powered_by_Audacity logo at right side
+                             wxPoint(400 - logo->GetWidth() - 40, 16),
+                             wxSize(logo->GetWidth(), logo->GetHeight()));
+                          #else
+                             wxPoint(93, 10),
+                             wxSize(215, 190));
+                          #endif
    pBoxSizer->Add(icon, 0, wxALIGN_CENTER | wxALL, 8);
 
-   wxHtmlWindow *html = new wxHtmlWindow(this, -1,
-                                         wxPoint(10, 210),
-                                         wxSize(380, 150), 
-                                         wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
+   wxHtmlWindow *html = 
+      new wxHtmlWindow(this, -1,
+                        #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+                           wxPoint(10, nBrandLogoHeight + 32),
+                           wxSize(380, 324), 
+                        #else
+                           wxPoint(10, 210),
+                           wxSize(380, 150), 
+                        #endif
+                        wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
    html->SetPage(creditStr);
    pBoxSizer->Add(html, 0, wxALIGN_CENTER | wxALL, 8);
 
    wxButton *ok = new wxButton(this, wxID_OK,
                                _("Audacious!"),
-                               wxPoint(150, 372),
-                               wxSize(100, -1));
+                                 #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+                                    wxPoint(150, nBrandLogoHeight + 372),
+                                 #else
+                                    wxPoint(150, 372),
+                                 #endif
+                                 wxSize(100, -1));
    ok->SetDefault();
    ok->SetFocus();
    pBoxSizer->Add(ok, 0, wxALIGN_CENTER | wxALL, 8);
@@ -294,6 +369,10 @@ AboutDialog::~AboutDialog()
 {
    delete icon;
    delete logo;
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+      delete pBrandIcon;
+      delete pBrandLogo;
+   #endif
 }
 
 void AboutDialog::OnOK(wxCommandEvent & WXUNUSED(event))

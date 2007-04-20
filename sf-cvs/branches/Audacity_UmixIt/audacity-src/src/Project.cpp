@@ -597,6 +597,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
       mTrackPanel->ShowRulerOnly();
       mHsbar->Hide();
       mVsbar->Hide();
+      this->GetControlToolBar()->ShowTools(false);
 
       // Position and size the MixerBoard where TrackPanel would be.
       mMixerBoard = 
@@ -1075,11 +1076,16 @@ void AudacityProject::HandleResize()
          {
             // Resize Lyrics window to cover gray background at right of Mixer Board.
             int screenX = nTrackClustersWidth; // Start from client coords.
-            int screenY = top + voffset; // Start from client coords.
+            int screenY = top + voffset + 4; // Start from client coords.
             this->ClientToScreen(&screenX, &screenY);
-            mLyricsWindow->SetSize(
-               screenX, screenY, 
-               width - nTrackClustersWidth - 4, height - voffset);
+
+            int newWidth = width - nTrackClustersWidth - 4;
+            int newHeight = height - voffset - 8;
+            if ((float)newWidth / (float)newHeight < 1.618f) 
+               // For legibility, want w/h >= phi, phi being Golden Mean (which just works well!)
+               newHeight = (int)((float)newWidth / 1.618f);
+
+            mLyricsWindow->SetSize(screenX, screenY, newWidth, newHeight);
          }
 
          this->OnZoomFit();

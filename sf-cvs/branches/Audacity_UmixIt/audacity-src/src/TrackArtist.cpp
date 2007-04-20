@@ -149,11 +149,13 @@ void TrackArtist::DrawTracks(TrackList * tracks,
             if (AColor::mWantDarkColorScheme)
             {
                unselectedBrush.SetColour( 32,  32,  32); // not quite black (vs dragsampleBrush)
-               sampleBrush    .SetColour(  0, 255, 255); // same as Meter playback color
+               sampleBrush    .SetColour(  0, 255, 255); // cyan
 
                unselectedPen.SetColour( 32,  32,  32);   // not quite black (vs dragsampleBrush)
-               samplePen    .SetColour(  0, 255, 255);   // same as Meter playback color
+               samplePen    .SetColour(  0, 255, 255);   // cyan
                rmsPen       .SetColour(  0, 255, 255);   // same as samplepen, so no rms display
+               muteRmsPen   .SetColour(  0, 160, 160);   // same as muteSamplePen, so no rms display
+               muteSamplePen.SetColour(  0, 160, 160);   // darker cyan
             }
             else
             {
@@ -163,6 +165,8 @@ void TrackArtist::DrawTracks(TrackList * tracks,
                unselectedPen.SetColour(245 ,245, 245);   // not quite black (vs dragsampleBrush)
                samplePen    .SetColour( 32,   0, 128);   // blue per Clive, 4/8/2007
                rmsPen       .SetColour( 32,   0, 128);   // same as samplepen, so no rms display
+               muteRmsPen   .SetColour(136, 136, 144);   // back to default, in case we changed it for mWantDarkColorScheme
+               muteSamplePen.SetColour(136, 136, 144);   // back to default, in case we changed it for mWantDarkColorScheme
             }
          #endif
       }

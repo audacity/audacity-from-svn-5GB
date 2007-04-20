@@ -960,17 +960,20 @@ void RulerPanel::OnSize(wxSizeEvent &evt)
 #include "../ViewInfo.h"
 #include "../AColor.h"
 
-#if 0
+BEGIN_EVENT_TABLE(AdornedRulerPanel, wxPanel)
+   EVT_MOUSE_EVENTS(AdornedRulerPanel::OnMouseEvent)
+   EVT_PAINT(AdornedRulerPanel::OnPaint)
+END_EVENT_TABLE()
+
 AdornedRulerPanel::AdornedRulerPanel(wxWindow* parent, wxWindowID id,
               const wxPoint& pos,
               const wxSize& size ) :
-   RulerPanel( parent, id, pos, size )
+   wxPanel( parent, id, pos, size )
 {
    ruler.SetLabelEdges(false);
    ruler.SetFormat(Ruler::TimeFormat);
 
 }
-#endif
 
 AdornedRulerPanel::AdornedRulerPanel()
 {
@@ -982,18 +985,6 @@ AdornedRulerPanel::AdornedRulerPanel()
 AdornedRulerPanel::~AdornedRulerPanel()
 {
 }
-
-void AdornedRulerPanel::SetSize( const wxRect & r )
-{
-   mRect = r;
-}
-
-void AdornedRulerPanel::GetSize( int * width, int * height )
-{
-   *width = mRect.width;
-   *height= mRect.height;
-}
-
 
 void AdornedRulerPanel::DrawAdornedRuler(
    wxDC * dc, ViewInfo * pViewInfo, bool text, bool indicator, bool bRecording)
@@ -1104,3 +1095,64 @@ void AdornedRulerPanel::DrawIndicator(wxDC * dc, bool bRecording)
       dc->DrawPolygon(3, tri);
    }
 }
+
+void AdornedRulerPanel::OnMouseEvent(wxMouseEvent &evt)
+{
+   //vvvvv DRAGGING - but just for play region.
+   if (evt.LeftDown())
+   {
+   }
+   else if (evt.ButtonUp())
+   {
+      double zoomedLeftOffset = GetLeftOffset() / mViewInfo->zoom;
+      double sel0 = mViewInfo->sel0 - mViewInfo->h + zoomedLeftOffset;
+      double sel1 = mViewInfo->sel1 - mViewInfo->h + zoomedLeftOffset;
+
+      if (sel0 < 0.0)
+         sel0 = 0.0;
+      int width;
+      int height;
+      this->GetSize(&width, &height);
+
+      if (sel1 > (width / mViewInfo->zoom))
+         sel1 = width / mViewInfo->zoom;
+
+      int p0 = int (sel0 * mViewInfo->zoom + 0.5);
+      int p1 = int (sel1 * mViewInfo->zoom + 0.5);
+
+      long evtX = evt.GetX();
+      if (evtX < p0)
+      {
+         sel0 = evtX / mViewInfo->zoom;
+         if (sel0 < 0.0)
+            sel0 = 0.0;
+         mViewInfo->sel0 = sel0 + mViewInfo->h - zoomedLeftOffset;
+      }
+      else if (evtX > p1)
+      {
+         sel1 = evtX / mViewInfo->zoom;
+         if (sel1 > (width / mViewInfo->zoom))
+            sel1 = width / mViewInfo->zoom;
+         mViewInfo->sel1 = sel1 + mViewInfo->h - zoomedLeftOffset;
+      }
+      this->Refresh(false);
+   }
+}
+
+#include "../AudioIO.h"
+#include "../Project.h"
+void AdornedRulerPanel::OnPaint(wxPaintEvent &evt)
+{
+   wxPaintDC dc(this);
+
+   // Borrow settings from the one place DrawAdornedRuler was originally called, TrackPanel::DrawRuler.
+   const bool bText = true; // ALWAYS true in all current calls to TrackPanel::DrawRuler.
+   bool bIndicators = gAudioIO->IsStreamActive(GetActiveProject()->GetAudioIOToken());
+   this->indicatorPos = bIndicators ? gAudioIO->GetStreamTime() : 0.0;
+   bool bRecording = (gAudioIO->GetNumCaptureChannels() ? false : true);
+
+   this->DrawAdornedRuler(&dc, mViewInfo, bText, bIndicators, bRecording);
+
+   ruler.Draw(dc);
+}
+

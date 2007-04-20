@@ -77,10 +77,10 @@ void InitPreferences()
    wxString vendorName = AUDACITY_NAME;
 #elif (AUDACITY_BRANDING == BRAND_UMIXIT)
    wxString vendorName = "Audacity";
-   wxString appName = "UmixIt powered by Audacity";
+   wxString appName = "UmixIt, powered by Audacity";
 #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
    wxString vendorName = "Audacity";
-   wxString appName = "Audacity_Thinklabs";
+   wxString appName = "Thinklabs Phonocardiography, powered by Audacity";
 #else
    wxString vendorName = "Audacity";
    wxString appName = "Audacity";

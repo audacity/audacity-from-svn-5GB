@@ -29,7 +29,10 @@ class AboutDialog:public wxDialog {
    wxBoxSizer *topsizer;
    wxStaticBitmap *icon;
    wxBitmap *logo;
-
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
+      wxStaticBitmap* pBrandIcon;
+      wxBitmap* pBrandLogo;
+   #endif
     DECLARE_EVENT_TABLE()
 };
 

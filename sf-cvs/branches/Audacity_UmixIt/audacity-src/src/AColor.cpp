@@ -228,6 +228,9 @@ void AColor::Init(wxDC * dc)
 
       muteBrushOff.SetColour(255, 255, 0); // yellow
       soloBrushOff.SetColour(0, 255, 0); // green
+   #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // no Mute buttons for Thinklabs
+      soloBrush.SetColour(0, 255, 255); // cyan
    #else
       //   muteBrush[0].SetColour(110, 220, 110);
       //   muteBrush[1].SetColour(170, 180, 170);

@@ -41,6 +41,7 @@
 #include "AudioIO.h"
 #include "ImageManipulation.h"
 #include "MeterToolBar.h"
+#include "MixerBoard.h"
 #include "Prefs.h"
 #include "Project.h"
 #include "Track.h"
@@ -143,7 +144,7 @@ ControlToolBar::ControlToolBar(wxWindow * parent, wxWindowID id,
 // and creating the buttons.
 void ControlToolBar::InitializeControlToolBar()
 {
-   mIdealSize = wxSize(420, 55);
+   mIdealSize = wxSize(420, 55); // ideal for (mShowTools == true)
    mTitle = _("Audacity Control Toolbar");
    mType = ControlToolBarID;
 
@@ -182,10 +183,10 @@ void ControlToolBar::InitializeControlToolBar()
 #endif
 
    mCurrentTool = selectTool;
-
+   mShowTools = true;
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
-      // no tools for Thinklabs
-      mIdealSize = wxSize(360, 55); // 95 less wide than with tools
+      // no tools created for Thinklabs
+      mShowTools = false;
    #else 
       mTool[mCurrentTool]->PushDown();
    #endif
@@ -378,6 +379,9 @@ void ControlToolBar::RegenerateToolsTooltips()
 
 }
 
+static const int kToolsClusterWidth = 3 * 27; // Each tool is 27x27, in a 3x2 grid.
+static const int kButtonsXOffset = 14;
+
 void ControlToolBar::MakeButtons()
 {
    wxImage *upOriginal = new wxImage(wxBitmap(UpButton).ConvertToImage());
@@ -404,10 +408,11 @@ void ControlToolBar::MakeButtons()
       #define kNumButtons 6
    #endif
    int buttonOrder[kNumButtons];
-   mButtonPos = 95;
-   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   mButtonPos = kButtonsXOffset;
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
       // no tools for Thinklabs
-      mButtonPos = 0;
+      if (mShowTools)
+         mButtonPos += kToolsClusterWidth;
    #endif
    
    gPrefs->Read("/GUI/ErgonomicTransportButtons", &mErgonomicTransportButtons, false);
@@ -668,6 +673,52 @@ void ControlToolBar::SetCurrentTool(int tool, bool show)
          mTool[mCurrentTool]->PushDown();
    }
    RedrawAllProjects();
+}
+
+/// Show/Hide the tools at left. 
+void ControlToolBar::ShowTools(bool bShowTools /*= true*/)
+{
+   if (mShowTools == bShowTools)
+      return; // no change
+   mShowTools = bShowTools;
+
+   // Show/Hide the tools. 
+   for (unsigned int i = 0; i < numTools; i++)
+      mTool[i]->Show(bShowTools);
+
+   // Move the transport buttons.
+   int x; 
+   int y;
+
+   mRewind->GetPosition(&x, &y);
+   mRewind->Move(bShowTools ? x + kToolsClusterWidth : x - kToolsClusterWidth, y);
+
+   mPlay->GetPosition(&x, &y);
+   mPlay->Move(bShowTools ? x + kToolsClusterWidth : x - kToolsClusterWidth, y);
+
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      mLoopPlay->GetPosition(&x, &y);
+      mLoopPlay->Move(bShowTools ? x + kToolsClusterWidth : x - kToolsClusterWidth, y);
+   #endif
+
+   mRecord->GetPosition(&x, &y);
+   mRecord->Move(bShowTools ? x + kToolsClusterWidth : x - kToolsClusterWidth, y);
+
+   mPause->GetPosition(&x, &y);
+   mPause->Move(bShowTools ? x + kToolsClusterWidth : x - kToolsClusterWidth, y);
+
+   mStop->GetPosition(&x, &y);
+   mStop->Move(bShowTools ? x + kToolsClusterWidth : x - kToolsClusterWidth, y);
+
+   mFF->GetPosition(&x, &y);
+   mFF->Move(bShowTools ? x + kToolsClusterWidth : x - kToolsClusterWidth, y);
+
+
+   // Change the toolbar size.
+   if (bShowTools)
+      mIdealSize = wxSize(420, 55); 
+   else
+      mIdealSize = wxSize(420 - kToolsClusterWidth, 55); 
 }
 
 void ControlToolBar::SetPlay(bool down)
@@ -1114,30 +1165,35 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    #if defined __WXMAC__
       // Mac has an Aqua background...
       DrawBackground(dc, width, height); 
-   #elif (AUDACITY_BRANDING == BRAND_THINKLABS) 
-      // no tools for Thinklabs
-      DrawBackground(dc, width, height); 
-      wxRect bevelRect(0, 0, width - 1, height - 1);
-      AColor::Bevel(dc, true, bevelRect);
    #else
-      //TODO: Get rid of all the magic numbers used in sizing.
-      // On other platforms put the big buttons on a beveled platform.
-      DrawBackground(dc, 81, height);
-      // Width is reduced by an extra two pixels to visually separate
-      // the control toolbar from the next grab bar on the right.
-      wxRect bevelRect( 81, 0, width-84, height-1 );
-      AColor::Bevel( dc, true, bevelRect );
+      if (mShowTools)
+      {
+         //TODO: Get rid of all the magic numbers used in sizing.
+         // On other platforms put the big buttons on a beveled platform.
+         DrawBackground(dc, 81, height);
+         // Width is reduced by an extra two pixels to visually separate
+         // the control toolbar from the next grab bar on the right.
+         wxRect bevelRect( 81, 0, width-84, height-1 );
+         AColor::Bevel( dc, true, bevelRect );
+      }
+      else
+      {
+         DrawBackground(dc, width, height); 
+         wxRect bevelRect(0, 0, width - 1, height - 1);
+         AColor::Bevel(dc, true, bevelRect);
+      }
    #endif
 
    #ifndef __WXMAC__
-      #if (AUDACITY_BRANDING != BRAND_THINKLABS) 
+      if (mShowTools)
+      {
          // JKC: Grey horizontal spacer line between buttons.
          // Not quite ideal, but seems the best solution to 
          // make the tool button heights add up to the 
          // main control button height.
          AColor::Dark( &dc, false);
          dc.DrawLine(0, 27, 81, 27);
-      #endif
+      }
    #endif
 }
 
