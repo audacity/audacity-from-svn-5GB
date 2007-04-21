@@ -181,7 +181,7 @@ wxString ExportType::GetMask()
 
 bool ExportType::IsExtension(wxString & ext)
 {
-   return mExtension == wxT("*") || mExtensions.Index(ext, false) != wxNOT_FOUND;
+   return mExtension == wxT("") || mExtensions.Index(ext, false) != wxNOT_FOUND;
 }
 
 bool ExportType::DisplayOptions(AudacityProject *project)
@@ -260,11 +260,9 @@ ExportTypeArray Export::GetTypes()
    types.Add(et);
 #endif
 
-#if !defined(__WXMSW__) && !defined(__WXMAC__)
    // Command line export not available on Windows and Mac platforms
-   et.Set(_("(external program)"), ExportCL, ExportCLOptions, wxT("*"), 2, false);
+   et.Set(_("(external program)"), ExportCL, ExportCLOptions, wxT(""), 32);
    types.Add(et);
-#endif
 
    return types;
 }
@@ -414,22 +412,19 @@ bool Export::GetFilename()
 
    mFilename.SetPath(gPrefs->Read(wxT("/Export/Path"), ::wxGetCwd()));
    mFilename.SetName(mProject->GetName());
-   mFilename.SetExt(mTypes[mFormat].GetExtension());
 
-   bool fileOkay = false;
-
-   while (!fileOkay) {
+   while (true) {
 
       FileDialog fd(mProject,
                     _("Export File"),
                     mFilename.GetPath(),
                     mFilename.GetFullName(),
                     maskString,
-                    wxSAVE | wxOVERWRITE_PROMPT);
+                    wxSAVE);
 
       fd.SetFilterIndex(mFormat);
 
-      fd.EnableButton(_("Options..."), ExportCallback, this);
+      fd.EnableButton(_("&Options..."), ExportCallback, this);
 
       if (fd.ShowModal() == wxID_CANCEL) {
          return false;
@@ -438,11 +433,6 @@ bool Export::GetFilename()
       mFilename = fd.GetPath();
       mFormat = fd.GetFilterIndex();
 
-      if (mFilename.GetFullPath().Length() >= 256) {
-         wxMessageBox(_("Sorry, pathnames longer than 256 characters not supported."));
-         return false;
-      }
-      
       if (mFilename == wxT("")) {
          return false;
       }
@@ -459,8 +449,7 @@ bool Export::GetFilename()
       // Check the extension - add the default if it's not there,
       // and warn user if it's abnormal.
       //
-
-      if (ext == wxT("")) {
+      if (ext.IsEmpty()) {
          //
          // Make sure the user doesn't accidentally save the file
          // as an extension with no name, like just plain ".wav".
@@ -471,7 +460,7 @@ bool Export::GetFilename()
                               wxT("\"?\n");
             
             int action = wxMessageBox(prompt,
-                                      wxT("Warning"),
+                                      _("Warning"),
                                       wxYES_NO | wxICON_EXCLAMATION);
             if (action != wxYES) {
                continue;
@@ -480,7 +469,7 @@ bool Export::GetFilename()
 
          mFilename.SetExt(defext);
       }
-      else if (!mTypes[mFormat].IsExtension(ext) && ext.CmpNoCase(defext)) {
+      else if (!ext.IsEmpty() && !mTypes[mFormat].IsExtension(ext) && ext.CmpNoCase(defext)) {
          wxString prompt;
          prompt.Printf(_("You are about to save a %s file with the name \"%s\".\n\nNormally these files end in \".%s\", and some programs will not open files with nonstandard extensions.\n\nAre you sure you want to save the file under this name?"),
                        mTypes[mFormat].GetFormat().c_str(),
@@ -488,14 +477,33 @@ bool Export::GetFilename()
                        defext.c_str());
 
          int action = wxMessageBox(prompt,
-                                   wxT("Warning"),
+                                   _("Warning"),
                                    wxYES_NO | wxICON_EXCLAMATION);
          if (action != wxYES) {
             continue;
          }
       }
 
-      fileOkay = true;
+      if (mFilename.GetFullPath().Length() >= 256) {
+         wxMessageBox(_("Sorry, pathnames longer than 256 characters not supported."));
+         continue;
+      }
+
+      if (mFilename.FileExists()) {
+         wxString prompt;
+
+         prompt.Printf(_("A file named \"%s\" already exists.  Replace?"),
+                       mFilename.GetFullPath().c_str());
+         
+         int action = wxMessageBox(prompt,
+                                   _("Warning"),
+                                   wxYES_NO | wxICON_EXCLAMATION);
+         if (action != wxYES) {
+            continue;
+         }
+      }
+         
+      break;
    }
 
    //
@@ -505,7 +513,7 @@ bool Export::GetFilename()
    // existing file.)
    //
 
-   if (!mProject->GetDirManager()->EnsureSafeFilename(wxFileName(mFilename)))
+   if (!mProject->GetDirManager()->EnsureSafeFilename(mFilename))
       return false;
 
    gPrefs->Write(wxT("/Export/Format"), mTypes[mFormat].GetFormat());
@@ -520,7 +528,7 @@ bool Export::GetFilename()
 
    int suffix = 0;
    while (mFilename.FileExists()) {
-      mFilename.SetName(mFilename.GetName() +
+      mFilename.SetName(mActualName.GetName() +
                         wxString::Format(wxT("%d"), suffix));
       suffix++;
    }
