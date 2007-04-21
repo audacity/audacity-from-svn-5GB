@@ -4,7 +4,7 @@
 // Author:      Stefan Csomor
 // Modified by: Leland Lucius
 // Created:     1998-01-01
-// RCS-ID:      $Id: FileDialog.hpp,v 1.3 2007-04-12 00:15:37 llucius Exp $
+// RCS-ID:      $Id: FileDialog.hpp,v 1.4 2007-04-21 19:37:41 llucius Exp $
 // Copyright:   (c) Stefan Csomor
 // Licence:     wxWindows licence
 //
@@ -151,7 +151,7 @@ static void HandleCustomMouseDown(NavCBRecPtr callBackParms, CustomData *data)
                             
                             wxMacCFStringHolder cfString(NavDialogGetSaveFileName(callBackParms->context), false);
                             sfilename = cfString.AsString() ;
-                            
+#if 0
                             int pos = sfilename.Find('.', true) ;
                             if (pos != wxNOT_FOUND)
                             {
@@ -159,6 +159,7 @@ static void HandleCustomMouseDown(NavCBRecPtr callBackParms, CustomData *data)
                                 cfString.Assign(sfilename, wxFONTENCODING_DEFAULT);
                                 NavDialogSetSaveFileName(callBackParms->context, cfString);
                             }
+#endif
                         }
                     }
                     
@@ -458,7 +459,7 @@ int FileDialog::ShowModal()
 
     if (!m_buttonlabel.IsEmpty())
     {
-        wxMacCFStringHolder cfString(m_buttonlabel.c_str(), wxFONTENCODING_DEFAULT);
+        wxMacCFStringHolder cfString(wxStripMenuCodes(m_buttonlabel).c_str(), wxFONTENCODING_DEFAULT);
         SetRect(&r, myData.bounds.right + gap, margin, 0, 0);
         CreatePushButtonControl(NULL, &r, cfString, &myData.button);
         SetControlID(myData.button, &kButtonID);
