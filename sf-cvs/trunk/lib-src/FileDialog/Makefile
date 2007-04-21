@@ -16,5 +16,5 @@ distclean: clean
 FileDialog.a: FileDialog.o
 	$(AR) $(ARFLAGS) $@ $<
 
-FileDialog.o: FileDialog.cpp FileDialog.h
+FileDialog.o: FileDialog.cpp FileDialog.h */FileDialog.h*
 
