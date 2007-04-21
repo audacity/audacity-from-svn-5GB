@@ -74,7 +74,7 @@ public:
 	wxRadioButton * AddRadioButtonToGroup( const wxString & Prompt);
 	wxButton * AddButton( const wxString & Text, int PositionFlags = wxALIGN_CENTRE );
    wxBitmapButton * AddBitmapButton(const wxBitmap &Bitmap, int PositionFlags = wxALIGN_CENTRE);
-   wxStaticText * AddVariableText(const wxString &Str, bool bCenter = false);
+   wxStaticText * AddVariableText(const wxString &Str, bool bCenter = false, int PositionFlags = 0);
    wxTextCtrl * AddTextBox(const wxString &Caption, const wxString &Value, const int nChars);
    wxTextCtrl * AddTextWindow(const wxString &Value);
    wxListCtrl * AddListControl();

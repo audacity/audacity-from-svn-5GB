@@ -362,7 +362,7 @@ void ShuttleGuiBase::AddFixedText(const wxString &Str, bool bCenter)
       UpdateSizers();
 }
 
-wxStaticText * ShuttleGuiBase::AddVariableText(const wxString &Str, bool bCenter)
+wxStaticText * ShuttleGuiBase::AddVariableText(const wxString &Str, bool bCenter, int PositionFlags)
 {
    UseUpId();
    if( mShuttleMode != eIsCreating )
@@ -374,10 +374,16 @@ wxStaticText * ShuttleGuiBase::AddVariableText(const wxString &Str, bool bCenter
    if( bCenter )
    {
       miProp=1;
-      UpdateSizersC();
+      if( PositionFlags )
+         UpdateSizersCore( false, PositionFlags );
+      else
+         UpdateSizersC();
    }
    else
-      UpdateSizers();
+      if( PositionFlags )
+         UpdateSizersCore( false, PositionFlags );
+      else
+         UpdateSizers();
    return pStatic;
 }
 
