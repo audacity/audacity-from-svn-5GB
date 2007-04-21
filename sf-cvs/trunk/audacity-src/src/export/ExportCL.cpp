@@ -14,12 +14,16 @@
 **********************************************************************/
 
 #include <stdio.h>
+#include <wx/log.h>
+#include <wx/process.h>
 #include <wx/progdlg.h>
+#include <wx/textctrl.h>
 
 #include "../Project.h"
 #include "../Mix.h"
 #include "../Prefs.h"
 #include "../Internat.h"
+#include "../float_cast.h"
 
 /* this structure combines the RIFF header, the format chunk, and the data
  * chunk header */
@@ -44,109 +48,233 @@ struct wav_header {
    wxUint32 dataLen;          /* length of all samples in bytes */
 };
 
+static void Drain(wxInputStream *s, wxString *o)
+{
+   while (s->CanRead()) {
+      char buffer[4096];
+
+      s->Read(buffer, WXSIZEOF(buffer) - 1);
+      buffer[s->LastRead()] = _T('\0');
+      *o += LAT1CTOWX(buffer);
+   }
+}
+
+class MyProcess : public wxProcess
+{
+public:
+   MyProcess(wxString *output)
+   {
+      mOutput = output;
+      mActive = true;
+      mStatus = -555;
+      Redirect();
+   }
+
+   bool IsActive()
+   {
+      return mActive;
+   }
+
+   void OnTerminate(int WXUNUSED( pid ), int status)
+   {
+      Drain(GetInputStream(), mOutput);
+      Drain(GetErrorStream(), mOutput);
+
+      mStatus = status;
+      mActive = false;
+   }
+
+   int GetStatus()
+   {
+      return mStatus;
+   }
+
+private:
+   wxString *mOutput;
+   bool mActive;
+   int mStatus;
+};
+
 bool ExportCL(AudacityProject *project,
               int channels, wxString fName,
               bool selectionOnly, double t0, double t1, 
               MixerSpec *mixerSpec)
 {
-   int rate = int(project->GetRate() + 0.5);
-   TrackList *tracks = project->GetTracks();
-   
-   wxString command = gPrefs->Read(wxT("/FileFormats/ExternalProgramExportCommand"), wxT("lame - '%f'"));
-   command.Replace(wxT("%f"), fName);
+   MyProcess *p;
+   wxString output;
+   wxString cmd;
+   bool show;
 
-   /* establish parameters */
-   unsigned long totalSamples = (unsigned long)((t1 - t0) * rate + 0.5);
+   // Retrieve settings
+   gPrefs->Read(wxT("/FileFormats/ExternalProgramShowOutput"), &show, false);
+   cmd = gPrefs->Read(wxT("/FileFormats/ExternalProgramExportCommand"), wxT("lame - '%f'"));
+   cmd.Replace(wxT("%f"), fName);
+
+   // Kick off the command
+   p = new MyProcess(&output);
+   if (!wxExecute(cmd, wxEXEC_ASYNC, p)) {
+      wxMessageBox(wxString::Format(_("Cannot export audio to %s"),
+                                    fName.c_str()));
+      p->Detach();
+      p->CloseOutput();
+      return false;
+   }
+
+   // Turn off logging to prevent broken pipe messages
+   wxLogNull nolog;
+
+   // establish parameters
+   int rate = lrint(project->GetRate());
+   sampleCount maxBlockLen = 44100 * 5;
+   unsigned long totalSamples = lrint((t1 - t0) * rate);
    unsigned long sampleBytes = totalSamples * channels * SAMPLE_SIZE(int16Sample);
 
-   /* fill up the wav header */
+   // fill up the wav header
    wav_header header;
-   header.riffID[0] = 'R';
-   header.riffID[1] = 'I';
-   header.riffID[2] = 'F';
-   header.riffID[3] = 'F';
-   header.riffType[0] = 'W';
-   header.riffType[1] = 'A';
-   header.riffType[2] = 'V';
-   header.riffType[3] = 'E';
-   header.lenAfterRiff = sampleBytes + 32;
+   header.riffID[0]        = 'R';
+   header.riffID[1]        = 'I';
+   header.riffID[2]        = 'F';
+   header.riffID[3]        = 'F';
+   header.riffType[0]      = 'W';
+   header.riffType[1]      = 'A';
+   header.riffType[2]      = 'V';
+   header.riffType[3]      = 'E';
+   header.lenAfterRiff     = wxUINT32_SWAP_ON_BE(sampleBytes + 32);
 
-   header.fmtID[0]  = 'f';
-   header.fmtID[1]  = 'm';
-   header.fmtID[2]  = 't';
-   header.fmtID[3]  = ' ';
-   header.formatChunkLen = 16;
-   header.formatTag      = 1;
-   header.channels       = channels;
-   header.sampleRate     = rate;
-   header.bitsPerSample  = SAMPLE_SIZE(int16Sample) * 8;
-   header.blockAlign     = header.bitsPerSample * header.channels;
-   header.avgBytesPerSec = header.sampleRate * header.blockAlign;
+   header.fmtID[0]         = 'f';
+   header.fmtID[1]         = 'm';
+   header.fmtID[2]         = 't';
+   header.fmtID[3]         = ' ';
+   header.formatChunkLen   = wxUINT32_SWAP_ON_BE(16);
+   header.formatTag        = wxUINT16_SWAP_ON_BE(1);
+   header.channels         = wxUINT16_SWAP_ON_BE(channels);
+   header.sampleRate       = wxUINT32_SWAP_ON_BE(rate);
+   header.bitsPerSample    = wxUINT16_SWAP_ON_BE(SAMPLE_SIZE(int16Sample) * 8);
+   header.blockAlign       = wxUINT16_SWAP_ON_BE(header.bitsPerSample * header.channels);
+   header.avgBytesPerSec   = wxUINT32_SWAP_ON_BE(header.sampleRate * header.blockAlign);
+   header.dataID[0]        = 'd';
+   header.dataID[1]        = 'a';
+   header.dataID[2]        = 't';
+   header.dataID[3]        = 'a';
+   header.dataLen          = wxUINT32_SWAP_ON_BE(sampleBytes);
 
-   header.dataID[0] = 'd';
-   header.dataID[1] = 'a';
-   header.dataID[2] = 't';
-   header.dataID[3] = 'a';
-   header.dataLen   = sampleBytes;
+   // write the header
+   wxOutputStream *os = p->GetOutputStream();
+   os->Write(&header, sizeof(wav_header));
 
-   FILE *pipe = popen(OSFILENAME(command), "w");
-
-   /* write the header */
-
-   fwrite( &header, sizeof(wav_header), 1, pipe );
-
-   sampleCount maxBlockLen = 44100 * 5;
-
-   bool cancelling = false;
-
+   // Mix 'em up
    int numWaveTracks;
    WaveTrack **waveTracks;
+   TrackList *tracks = project->GetTracks();
    tracks->GetWaveTracks(selectionOnly, &numWaveTracks, &waveTracks);
-   Mixer *mixer = new Mixer(numWaveTracks, waveTracks,
+   Mixer *mixer = new Mixer(numWaveTracks,
+                            waveTracks,
                             tracks->GetTimeTrack(),
-                            t0, t1,
-                            channels, maxBlockLen, true,
-                            rate, int16Sample, true, mixerSpec);
+                            t0,
+                            t1,
+                            channels,
+                            maxBlockLen,
+                            true,
+                            rate,
+                            int16Sample,
+                            true,
+                            mixerSpec);
 
-   GetActiveProject()->ProgressShow(_("E&xport"),
+   size_t numBytes = 0;
+   samplePtr mixed;
+   bool cancelling = false;
+
+   // Prepare the progress display
+   GetActiveProject()->ProgressShow(_("Export"),
       selectionOnly ?
       _("Exporting the selected audio using command-line encoder") :
       _("Exporting the entire project using command-line encoder"));
 
-   while(!cancelling) {
-      sampleCount numSamples = mixer->Process(maxBlockLen);
+   // Starting piping the mixed data to the command
+   while (!cancelling && p->IsActive() && os->IsOk()) {
+      // Capture any stdout and stderr from the command
+      Drain(p->GetInputStream(), &output);
+      Drain(p->GetErrorStream(), &output);
 
-      if (numSamples == 0)
-         break;
-      
-      samplePtr mixed = mixer->GetBuffer();
+      // Need to mix another block
+      if (numBytes == 0) {
+         sampleCount numSamples = mixer->Process(maxBlockLen);
+         if (numSamples == 0) {
+            break;
+         }
+         
+         mixed = mixer->GetBuffer();
+         numBytes = numSamples * channels;
 
-      char *buffer = new char[numSamples * SAMPLE_SIZE(int16Sample) * channels];
-      wxASSERT(buffer);
-
-      // Byte-swapping is neccesary on big-endian machines, since
-      // WAV files are little-endian
+         // Byte-swapping is neccesary on big-endian machines, since
+         // WAV files are little-endian
 #if wxBYTE_ORDER == wxBIG_ENDIAN
-      {
-         short *buffer = (short*)mixed;
-         for( int i = 0; i < numSamples; i++ )
-            buffer[i] = wxINT16_SWAP_ON_BE(buffer[i]);
-      }
+         wxUint16 *buffer = (wxUint16 *) mixed;
+         for (int i = 0; i < numBytes; i++) {
+            buffer[i] = wxUINT16_SWAP_ON_BE(buffer[i]);
+         }
 #endif
+         numBytes *= SAMPLE_SIZE(int16Sample);
+      }
 
-      fwrite( mixed, numSamples * channels * SAMPLE_SIZE(int16Sample), 1, pipe );
+      // Don't write too much at once...pipes may not be able to handle it
+      size_t bytes = wxMin(numBytes, 4096);
+      numBytes -= bytes;
 
-      int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
+      while (bytes > 0) {
+         os->Write(mixed, bytes);
+         if (!os->IsOk()) {
+            break;
+         }
+         bytes -= os->LastWrite();
+         mixed += os->LastWrite();
+      }
+
+      // Update the progress display
+      int progressvalue = lrint(1000 * ((mixer->MixGetCurrentTime()-t0) /
                                        (t1-t0)));
       cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
-
-      delete[]buffer;
    }
+
+   // Done with the progress display
    GetActiveProject()->ProgressHide();
 
-   delete mixer;
+   // Should make the process die
+   p->CloseOutput();
 
-   pclose( pipe );
+   // Wait for process to terminate
+   while (p->IsActive()) {
+      wxMilliSleep(10);
+      wxYield();
+   }
+
+   // Display output on error or if the user wants to see it
+   if (p->GetStatus() != 0 || show) {
+      wxDialog dlg(NULL,
+                   wxID_ANY,
+                   wxString(_("Command Output")),
+                   wxDefaultPosition,
+                   wxSize(600, 400),
+                   wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+
+      ShuttleGui S(&dlg, eIsCreating);
+      wxTextCtrl *tc = S.AddTextWindow(output);
+      S.StartHorizontalLay(wxALIGN_CENTER, false);
+      {
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+      }
+      dlg.GetSizer()->AddSpacer(5);
+      dlg.Layout();
+      dlg.SetMinSize(dlg.GetSize());
+      dlg.Center();
+
+      dlg.ShowModal();
+   }
+
+   // Clean up
+   delete mixer;
+   delete[] waveTracks;                            
+   delete p;
 
    return true;
 }
@@ -179,10 +307,16 @@ public:
                S.SetStretchyCol(1);
                S.TieTextBox(_("Command:"),
                             wxT("/FileFormats/ExternalProgramExportCommand"),
-                            wxT("lame - '%f'"),
+                            wxT("lame - \"%f\""),
                             64);
+               S.AddFixedText(wxT(""));
+               S.TieCheckBox(_("Show output"),
+                             wxT("/FileFormats/ExternalProgramShowOutput"),
+                             false);
             }
             S.EndMultiColumn();
+
+
             S.AddFixedText(_("Include \"%f\" where the output filename should be substituted."));
          }
          S.EndStatic();
