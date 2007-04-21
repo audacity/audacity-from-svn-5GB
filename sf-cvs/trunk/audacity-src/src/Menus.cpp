@@ -462,8 +462,9 @@ void AudacityProject::CreateMenusAndCommands()
    
    c->BeginSubMenu(_("Select..."));
    c->AddItem(wxT("SelectAll"),      _("&All\tCtrl+A"),                   FN(OnSelectAll));
-   c->SetCommandFlags(wxT("SelectAll"),
-                      TracksExistFlag, TracksExistFlag);
+   c->AddItem(wxT("SelectNone"),     _("&None\tCtrl+Shift+A"),            FN(OnSelectNone));
+   c->SetCommandFlags(TracksExistFlag, TracksExistFlag,
+                      wxT("SelectAll"), wxT("SelectNone"), NULL);
 
    c->AddItem(wxT("SetLeftSelection"),_("Left at Playback Position\t["), FN(OnSetLeftSelection));
    c->AddItem(wxT("SetRightSelection"),_("Right at Playback Position\t]"), FN(OnSetRightSelection));
@@ -3106,6 +3107,22 @@ void AudacityProject::OnSelectAll()
    }
    mViewInfo.sel0 = mTracks->GetMinOffset();
    mViewInfo.sel1 = mTracks->GetEndTime();
+
+   ModifyState();
+   
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnSelectNone()
+{
+   TrackListIterator iter(mTracks);
+
+   Track *t = iter.First();
+   while (t) {
+      t->SetSelected(false);
+      t = iter.Next();
+   }
+   mViewInfo.sel1 = mViewInfo.sel0;
 
    ModifyState();
    

@@ -175,6 +175,7 @@ void OnJoinLabels();
 void OnDisjoinLabels();
 
 void OnSelectAll();
+void OnSelectNone();
 void OnSelectCursorEnd();
 void OnSelectStartCursor();
 
