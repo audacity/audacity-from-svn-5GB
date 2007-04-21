@@ -181,7 +181,7 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
       wxArrayString formats;
       
       for (size_t i = 0; i < mTypes.GetCount(); i++) {
-         formats.Add(mTypes[i].GetFormat());
+         formats.Add(mTypes[i].GetDescription());
       }
 
       S.AddPrompt(_("Export format:"));
