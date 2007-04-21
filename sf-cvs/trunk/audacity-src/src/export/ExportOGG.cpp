@@ -118,7 +118,7 @@ bool ExportOGG(AudacityProject *project,
                             numChannels, SAMPLES_PER_RUN, false,
                             rate, floatSample, true, mixerSpec);
 
-   GetActiveProject()->ProgressShow(_("E&xport"),
+   GetActiveProject()->ProgressShow(_("Export"),
                                     selectionOnly ?
                                     _("Exporting the selected audio as Ogg Vorbis") :
                                     _("Exporting the entire project as Ogg Vorbis"));
