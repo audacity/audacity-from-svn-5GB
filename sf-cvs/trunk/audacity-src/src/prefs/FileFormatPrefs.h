@@ -13,16 +13,10 @@
 #ifndef __AUDACITY_FILE_FORMAT_PREFS__
 #define __AUDACITY_FILE_FORMAT_PREFS__
 
-#include "../Project.h"
 #include "PrefsPanel.h"
 
-class wxButton;
-class wxCheckBox;
-class wxChoice;
 class wxCommandEvent;
-class wxRadioButton;
 class wxStaticText;
-class wxSlider;
 class wxWindow;
 class ShuttleGui;
 
@@ -35,20 +29,12 @@ public:
    
 private:
    void Populate();
-   void PopulateOrExchange( ShuttleGui & S );
-   void GetNamesAndLabels();
-   void OnFormatChoice(wxCommandEvent& evt);
+   void PopulateOrExchange(ShuttleGui & S);
    void OnMP3FindButton(wxCommandEvent& evt);
+   void OnMP3DownButton(wxCommandEvent& evt);
    void SetMP3VersionText();
-   void OpenOtherFormatDialog();
-
-   int mFormat;
-
-   wxArrayString mFormatNames;
-   wxString      mFormatFromChoice;
 
    wxStaticText *mMP3Version;
-   wxChoice *mDefaultExportFormat;
 
 public:
    DECLARE_EVENT_TABLE();
