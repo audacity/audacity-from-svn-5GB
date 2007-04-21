@@ -3985,6 +3985,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\export\ExportCL.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\export\ExportCL.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\export\ExportFLAC.cpp"
 				>
 				<FileConfiguration

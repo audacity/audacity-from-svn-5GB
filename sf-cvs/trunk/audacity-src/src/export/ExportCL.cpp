@@ -107,7 +107,7 @@ bool ExportCL(AudacityProject *project,
 
    // Retrieve settings
    gPrefs->Read(wxT("/FileFormats/ExternalProgramShowOutput"), &show, false);
-   cmd = gPrefs->Read(wxT("/FileFormats/ExternalProgramExportCommand"), wxT("lame - '%f'"));
+   cmd = gPrefs->Read(wxT("/FileFormats/ExternalProgramExportCommand"), wxT("lame - \"%f.mp3\""));
    cmd.Replace(wxT("%f"), fName);
 
    // Kick off the command
