@@ -23,25 +23,22 @@ locate the MP3 encoding library.
 
 #include <wx/defs.h>
 #include <wx/intl.h>
-#include <wx/choice.h>
 #include <wx/stattext.h>
-#include <wx/radiobut.h>
 #include <wx/button.h>
-#include <wx/arrstr.h>
-
-#include "sndfile.h"
 
 #include "../export/ExportMP3.h"
-#include "../FileFormats.h"
 #include "../Prefs.h"
 #include "../ShuttleGui.h"
+#include "../widgets/LinkingHtmlWindow.h"
+
 #include "FileFormatPrefs.h"
 
-#define ID_MP3_FIND_BUTTON         7001
-#define ID_EXPORT_OPTIONS_BUTTON   7002
+#define ID_MP3_FIND_BUTTON          7001
+#define ID_MP3_DOWN_BUTTON          7002
 
 BEGIN_EVENT_TABLE(FileFormatPrefs, wxPanel)
    EVT_BUTTON(ID_MP3_FIND_BUTTON, FileFormatPrefs::OnMP3FindButton)
+   EVT_BUTTON(ID_MP3_DOWN_BUTTON, FileFormatPrefs::OnMP3DownButton)
 END_EVENT_TABLE()
 
 FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
@@ -103,12 +100,18 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
    S.EndStatic();
    S.StartStatic( _("MP3 Export Setup"));
    {
-      S.StartThreeColumn();
-         S.AddFixedText( _("MP3 Library Version:"), true);
-         mMP3Version = S.AddVariableText( wxT("CAPITAL LETTERS"), true);
-      S.Id( ID_MP3_FIND_BUTTON ).AddButton( _("&Find Library"), 
-         wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL);
-      S.EndThreeColumn();
+      S.StartHorizontalLay(wxEXPAND, true);
+         S.AddVariableText( _("MP3 Library Version:"),
+            true,
+            wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
+         mMP3Version = S.AddVariableText( wxT("9.99"),
+            true,
+            wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
+         S.Id( ID_MP3_FIND_BUTTON ).AddButton( _("&Find Library"), 
+            wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
+         S.Id( ID_MP3_DOWN_BUTTON ).AddButton( _("&Download free copy of LAME"), 
+            wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
+      S.EndHorizontalLay();
    }
    S.EndStatic();
 }
@@ -135,6 +138,14 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
    if (GetMP3Exporter()->FindLibrary(this, false)) {
       SetMP3VersionText();
    }
+}
+
+/// Opens a file-finder dialog so that the user can
+/// tell us where the MP3 library is.
+void FileFormatPrefs::OnMP3DownButton(wxCommandEvent& evt)
+{
+   wxString url = wxT("http://audacity.sourceforge.net/lame.html");
+   ::OpenInDefaultBrowser(url);
 }
 
 /// Takes the settings from the dilaog and puts them into prefs.
