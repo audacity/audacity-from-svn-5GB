@@ -18,7 +18,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-/* $Id: lame.h,v 1.4 2007-03-20 07:39:51 llucius Exp $ */
+/* $Id: lame.h,v 1.5 2007-04-22 18:44:39 llucius Exp $ */
 
 #ifndef LAME_LAME_H
 #define LAME_LAME_H
@@ -67,6 +67,29 @@ typedef enum Padding_type_e {
   PAD_MAX_INDICATOR   /* Don't use this! It's used for sanity checks. */
 } Padding_type;
 
+
+
+/*presets*/
+typedef enum preset_mode_e {
+    /*values from 8 to 320 should be reserved for abr bitrates*/
+    /*for abr I'd suggest to directly use the targeted bitrate as a value*/
+    ABR_8 = 8,
+    ABR_320 = 320,
+    R3MIX = 1000,
+    STANDARD = 1001,
+    EXTREME = 1002,
+    INSANE = 1003,
+    STANDARD_FAST = 1004,
+    EXTREME_FAST = 1005
+} preset_mode;
+
+
+/*asm optimizations*/
+typedef enum asm_optimizations_e {
+    MMX = 1,
+    AMD_3DNOW = 2,
+    SSE = 3
+} asm_optimizations;
 
 
 struct lame_global_struct;
@@ -221,6 +244,12 @@ int CDECL lame_get_brate(const lame_global_flags *);
 int CDECL lame_set_compression_ratio(lame_global_flags *, float);
 float CDECL lame_get_compression_ratio(const lame_global_flags *);
 
+
+int CDECL lame_set_preset( lame_global_flags*  gfp, int );
+int CDECL lame_set_asm_optimizations( lame_global_flags*  gfp, int, int );
+
+
+
 /********************************************************************
  *  frame params
  ***********************************************************************/
@@ -273,7 +302,9 @@ int CDECL lame_get_experimentalZ(const lame_global_flags *);
 int CDECL lame_set_exp_nspsytune(lame_global_flags *, int);
 int CDECL lame_get_exp_nspsytune(const lame_global_flags *);
 
-
+int lame_set_exp_nspsytune2_int( lame_global_flags*, int, int);
+float lame_set_exp_nspsytune2_real( lame_global_flags*, int, float);
+void * lame_set_exp_nspsytune2_pointer( lame_global_flags*, int, void *);
 
 /********************************************************************
  * VBR control
@@ -368,6 +399,10 @@ int CDECL lame_get_allow_diff_short(const lame_global_flags *);
 // use temporal masking effect (default = 1)
 int CDECL lame_set_useTemporal(lame_global_flags *, int);
 int CDECL lame_get_useTemporal(const lame_global_flags *);
+
+// use temporal masking effect (default = 1)
+int CDECL lame_set_interChRatio(lame_global_flags *, float);
+int CDECL lame_get_interChRatio(const lame_global_flags *);
 
 // disable short blocks
 int CDECL lame_set_no_short_blocks(lame_global_flags *, int);

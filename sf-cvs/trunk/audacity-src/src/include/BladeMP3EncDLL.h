@@ -1,7 +1,7 @@
 /*
- * Blade DLL Interface for LAME.
+ * Blade Type of DLL Interface for MP2Enc.
  *
- * Copyright (c) 1999 A.L. Faber
+ * Copyright (c) 1999-2002 A.L. Faber
  * Based on bladedll.h version 1.0 written by Jukka Poikolainen
  *
  * This library is free software; you can redistribute it and/or
@@ -25,6 +25,10 @@
 
 #pragma pack(push)
 #pragma pack(1)
+
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
 /* encoding formats */
 
@@ -70,17 +74,6 @@ typedef		unsigned long			BE_ERR;
 #define CURRENT_STRUCT_VERSION 1
 #define CURRENT_STRUCT_SIZE sizeof(BE_CONFIG)	// is currently 331 bytes
 
-/* OBSOLETE, VALUES STILL WORK
-typedef enum 
-{
-	NORMAL_QUALITY=0,
-	LOW_QUALITY,
-	HIGH_QUALITY,
-	VOICE_QUALITY
-} LAME_QUALTIY_PRESET;
-
-*/
-
 
 typedef enum
 {
@@ -94,15 +87,22 @@ typedef enum
 
 typedef enum 
 {
-	LQP_NOPRESET=-1,
+	LQP_NOPRESET			=-1,
 
 	// QUALITY PRESETS
-	LQP_NORMAL_QUALITY=0,
-	LQP_LOW_QUALITY,
-	LQP_HIGH_QUALITY,
-	LQP_VOICE_QUALITY,
-	LQP_R3MIX_QUALITY,
-	LQP_VERYHIGH_QUALITY,
+	LQP_NORMAL_QUALITY		= 0,
+	LQP_LOW_QUALITY			= 1,
+	LQP_HIGH_QUALITY		= 2,
+	LQP_VOICE_QUALITY		= 3,
+	LQP_R3MIX				= 4,
+	LQP_VERYHIGH_QUALITY	= 5,
+	LQP_STANDARD			= 6,
+	LQP_FAST_STANDARD		= 7,
+	LQP_EXTREME				= 8,
+	LQP_FAST_EXTREME		= 9,
+	LQP_INSANE				= 10,
+	LQP_ABR					= 11,
+	LQP_CBR					= 12,
 
 	// NEW PRESET VALUES
 	LQP_PHONE	=1000,
@@ -127,7 +127,7 @@ typedef struct	{
 
 		struct	{
 
-			DWORD	dwSampleRate;	// 48000, 44100 and 32000 allowed
+			DWORD	dwSampleRate;		// 48000, 44100 and 32000 allowed
 			BYTE	byMode;			// BE_MP3_MODE_STEREO, BE_MP3_MODE_DUALCHANNEL, BE_MP3_MODE_MONO
 			WORD	wBitrate;		// 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256 and 320 allowed
 			BOOL	bPrivate;		
@@ -144,21 +144,21 @@ typedef struct	{
 			DWORD			dwStructSize;
 
 			// BASIC ENCODER SETTINGS
-			DWORD			dwSampleRate;	// SAMPLERATE OF INPUT FILE
-			DWORD			dwReSampleRate;	// DOWNSAMPLERATE, 0=ENCODER DECIDES  
-			LONG			nMode;			// BE_MP3_MODE_STEREO, BE_MP3_MODE_DUALCHANNEL, BE_MP3_MODE_MONO
-			DWORD			dwBitrate;		// CBR bitrate, VBR min bitrate
-			DWORD			dwMaxBitrate;	// CBR ignored, VBR Max bitrate
-			LONG			nPreset;		// Quality preset, use one of the settings of the LAME_QUALITY_PRESET enum
-			DWORD			dwMpegVersion;	// FUTURE USE, MPEG-1 OR MPEG-2
-			DWORD			dwPsyModel;		// FUTURE USE, SET TO 0
-			DWORD			dwEmphasis;		// FUTURE USE, SET TO 0
+			DWORD			dwSampleRate;		// SAMPLERATE OF INPUT FILE
+			DWORD			dwReSampleRate;		// DOWNSAMPLERATE, 0=ENCODER DECIDES  
+			LONG			nMode;				// BE_MP3_MODE_STEREO, BE_MP3_MODE_DUALCHANNEL, BE_MP3_MODE_MONO
+			DWORD			dwBitrate;			// CBR bitrate, VBR min bitrate
+			DWORD			dwMaxBitrate;		// CBR ignored, VBR Max bitrate
+			LONG			nPreset;			// Quality preset, use one of the settings of the LAME_QUALITY_PRESET enum
+			DWORD			dwMpegVersion;		// FUTURE USE, MPEG-1 OR MPEG-2
+			DWORD			dwPsyModel;			// FUTURE USE, SET TO 0
+			DWORD			dwEmphasis;			// FUTURE USE, SET TO 0
 
 			// BIT STREAM SETTINGS
-			BOOL			bPrivate;		// Set Private Bit (TRUE/FALSE)
-			BOOL			bCRC;			// Insert CRC (TRUE/FALSE)
-			BOOL			bCopyright;		// Set Copyright Bit (TRUE/FALSE)
-			BOOL			bOriginal;		// Set Original Bit (TRUE/FALSE)
+			BOOL			bPrivate;			// Set Private Bit (TRUE/FALSE)
+			BOOL			bCRC;				// Insert CRC (TRUE/FALSE)
+			BOOL			bCopyright;			// Set Copyright Bit (TRUE/FALSE)
+			BOOL			bOriginal;			// Set Original Bit (TRUE/FALSE)
 			
 			// VBR STUFF
 			BOOL			bWriteVBRHeader;	// WRITE XING VBR HEADER (TRUE/FALSE)
@@ -166,9 +166,11 @@ typedef struct	{
 			INT				nVBRQuality;		// VBR QUALITY 0..9
 			DWORD			dwVbrAbr_bps;		// Use ABR in stead of nVBRQuality
 			VBRMETHOD		nVbrMethod;
-			BOOL			bNoRes;				// Disable Bit resorvoir
+			BOOL			bNoRes;				// Disable Bit resorvoir (TRUE/FALSE)
 
-			BYTE			btReserved[255-3*sizeof(DWORD)];	// FUTURE USE, SET TO 0
+			BOOL			bStrictIso;			// Use strict ISO encoding rules (TRUE/FALSE)
+				
+			BYTE			btReserved[255-4*sizeof(DWORD)];	// FUTURE USE, SET TO 0
 
 			} LHV1;					// LAME header version 1
 
@@ -221,30 +223,42 @@ typedef struct	{
 
 typedef BE_ERR	(*BEINITSTREAM)			(PBE_CONFIG, PDWORD, PDWORD, PHBE_STREAM);
 typedef BE_ERR	(*BEENCODECHUNK)		(HBE_STREAM, DWORD, PSHORT, PBYTE, PDWORD);
-typedef BE_ERR	(*BEDEINITSTREAM)		(HBE_STREAM, PBYTE, PDWORD);
-typedef BE_ERR	(*BECLOSESTREAM)		(HBE_STREAM);
-typedef VOID	(*BEVERSION)			(PBE_VERSION);
-typedef VOID	(*BEWRITEVBRHEADER)		(LPCSTR);
 
-#define	TEXT_BEINITSTREAM		"beInitStream"
-#define	TEXT_BEENCODECHUNK		"beEncodeChunk"
-#define	TEXT_BEDEINITSTREAM		"beDeinitStream"
-#define	TEXT_BECLOSESTREAM		"beCloseStream"
-#define	TEXT_BEVERSION			"beVersion"
-#define	TEXT_BEWRITEVBRHEADER	"beWriteVBRHeader"
+// added for floating point audio  -- DSPguru, jd
+typedef BE_ERR	(*BEENCODECHUNKFLOATS16NI)	(HBE_STREAM, DWORD, PFLOAT, PFLOAT, PBYTE, PDWORD);
+typedef BE_ERR	(*BEDEINITSTREAM)			(HBE_STREAM, PBYTE, PDWORD);
+typedef BE_ERR	(*BECLOSESTREAM)			(HBE_STREAM);
+typedef VOID	(*BEVERSION)				(PBE_VERSION);
+typedef VOID	(*BEWRITEVBRHEADER)			(LPCSTR);
+
+#define	TEXT_BEINITSTREAM				"beInitStream"
+#define	TEXT_BEENCODECHUNK				"beEncodeChunk"
+#define	TEXT_BEENCODECHUNKFLOATS16NI	"beEncodeChunkFloatS16NI"
+#define	TEXT_BEDEINITSTREAM				"beDeinitStream"
+#define	TEXT_BECLOSESTREAM				"beCloseStream"
+#define	TEXT_BEVERSION					"beVersion"
+#define	TEXT_BEWRITEVBRHEADER			"beWriteVBRHeader"
+#define	TEXT_BEFLUSHNOGAP				"beFlushNoGap"
 
 #else
 
 __declspec(dllexport) BE_ERR	beInitStream(PBE_CONFIG pbeConfig, PDWORD dwSamples, PDWORD dwBufferSize, PHBE_STREAM phbeStream);
 __declspec(dllexport) BE_ERR	beEncodeChunk(HBE_STREAM hbeStream, DWORD nSamples, PSHORT pSamples, PBYTE pOutput, PDWORD pdwOutput);
+
+// added for floating point audio  -- DSPguru, jd
+__declspec(dllexport) BE_ERR	beEncodeChunkFloatS16NI(HBE_STREAM hbeStream, DWORD nSamples, PFLOAT buffer_l, PFLOAT buffer_r, PBYTE pOutput, PDWORD pdwOutput);
 __declspec(dllexport) BE_ERR	beDeinitStream(HBE_STREAM hbeStream, PBYTE pOutput, PDWORD pdwOutput);
 __declspec(dllexport) BE_ERR	beCloseStream(HBE_STREAM hbeStream);
 __declspec(dllexport) VOID		beVersion(PBE_VERSION pbeVersion);
 __declspec(dllexport) BE_ERR	beWriteVBRHeader(LPCSTR lpszFileName);
-
+__declspec(dllexport) BE_ERR	beFlushNoGap(HBE_STREAM hbeStream, PBYTE pOutput, PDWORD pdwOutput);
 
 #endif
 
 #pragma pack(pop)
+
+#ifdef	__cplusplus
+}
+#endif
 
 #endif
