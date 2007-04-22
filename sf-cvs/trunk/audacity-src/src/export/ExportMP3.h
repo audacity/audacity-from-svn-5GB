@@ -25,14 +25,6 @@ class MP3Exporter
 {
 public:
 
-   enum
-   {
-      MP3_MODE_STEREO = 0,
-      MP3_MODE_JOINT,
-      MP3_MODE_DUAL,
-      MP3_MODE_MONO
-   } MP3Modes;
-
    MP3Exporter();
    virtual ~MP3Exporter();
 
@@ -41,12 +33,10 @@ public:
    bool ValidLibraryLoaded();
 
    /* These global settings keep state over the life of the object */
-   void SetBitrate(int rate);
-   int GetBitrate();
-   void SetVBRQuality(int quality);
-   int GetVBRQuality();
    void SetMode(int mode);
-   int GetMode();
+   void SetBitrate(int rate);
+   void SetQuality(int q, int r);
+   void SetChannel(int mode);
 
    /* Virtual methods that must be supplied by library interfaces */
 
@@ -85,10 +75,11 @@ protected:
    bool mLibraryLoaded;
    bool mEncoding;
 
-   int mBitrate;
-   bool mVBR;
-   int mVBRQuality;
    int mMode;
+   int mBitrate;
+   int mQuality;
+   int mRoutine;
+   int mChannel;
 };
 
 #define MP3CONFIG_BITRATE 0x00000001
