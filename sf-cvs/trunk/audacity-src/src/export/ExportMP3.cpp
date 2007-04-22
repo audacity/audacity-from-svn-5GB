@@ -97,6 +97,181 @@ destructor does the cleanup.
 
 MP3Exporter *gMP3Exporter = NULL;
 
+#define MODE_SET           0
+#define MODE_VBR           1
+#define MODE_ABR           2
+#define MODE_CBR           3
+
+#define CHANNEL_JOINT      0
+#define CHANNEL_STEREO     1
+
+#define QUALITY_0          0
+#define QUALITY_1          1
+#define QUALITY_2          2
+#define QUALITY_3          3
+#define QUALITY_4          4
+#define QUALITY_5          5
+#define QUALITY_6          6
+#define QUALITY_7          7
+#define QUALITY_8          8
+#define QUALITY_9          9
+
+#define ROUTINE_FAST       0
+#define ROUTINE_STANDARD   1
+
+#define PRESET_EXTREME     0
+#define PRESET_STANDARD    1
+#define PRESET_MEDIUM      2
+
+// Note: The label field is what will be written to preferences and carries
+//       no numerical significance.  It is simply a means to look up a value
+//       in a table.
+//
+//       The entries should be listed in order you want them to appear in the
+//       choice dropdown based on the name field.
+typedef struct
+{
+   wxString name;
+   int label;
+} CHOICES;
+
+static CHOICES fixRates[] =
+{
+   {  _("16 kbps"),  16    },
+   {  _("24 kbps"),  24    },
+   {  _("32 kbps"),  32    },
+   {  _("40 kbps"),  40    },
+   {  _("48 kbps"),  48    },
+   {  _("56 kbps"),  56    },
+   {  _("64 kbps"),  64    },
+   {  _("80 kbps"),  80    },
+   {  _("96 kbps"),  96    },
+   {  _("112 kbps"), 112   },
+   {  _("128 kbps"), 128   },
+   {  _("160 kbps"), 160   },
+   {  _("192 kbps"), 192   },
+   {  _("224 kbps"), 224   },
+   {  _("256 kbps"), 256   },
+   {  _("320 kbps"), 320   }
+};
+
+static CHOICES varRates[] =
+{
+   {  _("220-260 kbps (Best Quality)"),   QUALITY_0   },
+   {  _("200-250 kbps"),                  QUALITY_1   },
+   {  _("170-210 kbps"),                  QUALITY_2   },
+   {  _("155-195 kbps"),                  QUALITY_3   },
+   {  _("145-185 kbps"),                  QUALITY_4   },
+   {  _("110-150 kbps"),                  QUALITY_5   },
+   {  _("95-135 kbps"),                   QUALITY_6   },
+   {  _("80-120 kbps"),                   QUALITY_7   },
+   {  _("65-105 kbps"),                   QUALITY_8   },
+   {  _("45-85 kbps (Smaller files)"),    QUALITY_9   }
+};
+
+static CHOICES varModes[] =
+{
+   {  _("Fast"),     ROUTINE_FAST      },
+   {  _("Standard"), ROUTINE_STANDARD  }
+};
+
+static CHOICES setRates[] =
+{
+   {  _("Extreme"),  PRESET_EXTREME    },
+   {  _("Medium"),   PRESET_MEDIUM     },
+   {  _("Standard"), PRESET_STANDARD   }
+};
+
+#if 0
+// Debug routine from BladeMP3EncDLL.c in the libmp3lame distro
+static void dump_config( 	lame_global_flags*	gfp )
+{
+	wxPrintf(wxT("\n\nLame_enc configuration options:\n"));
+	wxPrintf(wxT("==========================================================\n"));
+
+	wxPrintf(wxT("version                =%d\n"),lame_get_version( gfp ) );
+	wxPrintf(wxT("Layer                  =3\n"));
+	wxPrintf(wxT("mode                   ="));
+	switch ( lame_get_mode( gfp ) )
+	{
+		case STEREO:       wxPrintf(wxT( "Stereo\n" )); break;
+		case JOINT_STEREO: wxPrintf(wxT( "Joint-Stereo\n" )); break;
+		case DUAL_CHANNEL: wxPrintf(wxT( "Forced Stereo\n" )); break;
+		case MONO:         wxPrintf(wxT( "Mono\n" )); break;
+		case NOT_SET:      /* FALLTROUGH */
+		default:           wxPrintf(wxT( "Error (unknown)\n" )); break;
+	}
+
+	wxPrintf(wxT("Input sample rate      =%.1f kHz\n"), lame_get_in_samplerate( gfp ) /1000.0 );
+	wxPrintf(wxT("Output sample rate     =%.1f kHz\n"), lame_get_out_samplerate( gfp ) /1000.0 );
+
+	wxPrintf(wxT("bitrate                =%d kbps\n"), lame_get_brate( gfp ) );
+	wxPrintf(wxT("Quality Setting        =%d\n"), lame_get_quality( gfp ) );
+
+	wxPrintf(wxT("Low pass frequency     =%d\n"), lame_get_lowpassfreq( gfp ) );
+	wxPrintf(wxT("Low pass width         =%d\n"), lame_get_lowpasswidth( gfp ) );
+
+	wxPrintf(wxT("High pass frequency    =%d\n"), lame_get_highpassfreq( gfp ) );
+	wxPrintf(wxT("High pass width        =%d\n"), lame_get_highpasswidth( gfp ) );
+
+	wxPrintf(wxT("No short blocks        =%d\n"), lame_get_no_short_blocks( gfp ) );
+	wxPrintf(wxT("Force short blocks     =%d\n"), lame_get_force_short_blocks( gfp ) );
+
+	wxPrintf(wxT("de-emphasis            =%d\n"), lame_get_emphasis( gfp ) );
+	wxPrintf(wxT("private flag           =%d\n"), lame_get_extension( gfp ) );
+
+	wxPrintf(wxT("copyright flag         =%d\n"), lame_get_copyright( gfp ) );
+	wxPrintf(wxT("original flag          =%d\n"),	lame_get_original( gfp ) );
+	wxPrintf(wxT("CRC                    =%s\n"), lame_get_error_protection( gfp ) ? wxT("on") : wxT("off") );
+	wxPrintf(wxT("Fast mode              =%s\n"), ( lame_get_quality( gfp ) )? wxT("enabled") : wxT("disabled") );
+	wxPrintf(wxT("Force mid/side stereo  =%s\n"), ( lame_get_force_ms( gfp ) )?wxT("enabled"):wxT("disabled") );
+	wxPrintf(wxT("Padding Type           =%d\n"), lame_get_padding_type( gfp ) );
+	wxPrintf(wxT("Disable Reservoir      =%d\n"), lame_get_disable_reservoir( gfp ) );
+	wxPrintf(wxT("Allow diff-short       =%d\n"), lame_get_allow_diff_short( gfp ) );
+	wxPrintf(wxT("Interchannel masking   =%f\n"), lame_get_interChRatio( gfp ) );
+	wxPrintf(wxT("Strict ISO Encoding    =%s\n"), ( lame_get_strict_ISO( gfp ) ) ?wxT("Yes"):wxT("No"));
+	wxPrintf(wxT("Scale                  =%5.2f\n"), lame_get_scale( gfp ) );
+
+	wxPrintf(wxT("VBR                    =%s, VBR_q =%d, VBR method ="),
+					( lame_get_VBR( gfp ) !=vbr_off ) ? wxT("enabled"): wxT("disabled"),
+		            lame_get_VBR_q( gfp ) );
+
+	switch ( lame_get_VBR( gfp ) )
+	{
+		case vbr_off:	wxPrintf(wxT( "vbr_off\n" ));	break;
+		case vbr_mt :	wxPrintf(wxT( "vbr_mt \n" ));	break;
+		case vbr_rh :	wxPrintf(wxT( "vbr_rh \n" ));	break;
+		case vbr_mtrh:	wxPrintf(wxT( "vbr_mtrh \n" ));	break;
+		case vbr_abr: 
+			wxPrintf(wxT( "vbr_abr (average bitrate %d kbps)\n"), lame_get_VBR_mean_bitrate_kbps( gfp ) );
+		break;
+		default:
+			wxPrintf(wxT("error, unknown VBR setting\n"));
+		break;
+	}
+
+	wxPrintf(wxT("Vbr Min bitrate        =%d kbps\n"), lame_get_VBR_min_bitrate_kbps( gfp ) );
+	wxPrintf(wxT("Vbr Max bitrate        =%d kbps\n"), lame_get_VBR_max_bitrate_kbps( gfp ) );
+
+	wxPrintf(wxT("Write VBR Header       =%s\n"), ( lame_get_bWriteVbrTag( gfp ) ) ?wxT("Yes"):wxT("No"));
+	wxPrintf(wxT("VBR Hard min           =%d\n"), lame_get_VBR_hard_min( gfp ) );
+
+	wxPrintf(wxT("ATH Only               =%d\n"), lame_get_ATHonly( gfp ) );
+	wxPrintf(wxT("ATH short              =%d\n"), lame_get_ATHshort( gfp ) );
+	wxPrintf(wxT("ATH no                 =%d\n"), lame_get_noATH( gfp ) );
+	wxPrintf(wxT("ATH type               =%d\n"), lame_get_ATHtype( gfp ) );
+	wxPrintf(wxT("ATH lower              =%f\n"), lame_get_ATHlower( gfp ) );
+	wxPrintf(wxT("ATH aa                 =%d\n"), lame_get_athaa_type( gfp ) );
+	wxPrintf(wxT("ATH aa  loudapprox     =%d\n"), lame_get_athaa_loudapprox( gfp ) );
+	wxPrintf(wxT("ATH aa  sensitivity    =%f\n"), lame_get_athaa_sensitivity( gfp ) );
+
+	wxPrintf(wxT("Experimental nspsytune =%d\n"), lame_get_exp_nspsytune( gfp ) );
+	wxPrintf(wxT("Experimental X         =%d\n"), lame_get_experimentalX( gfp ) );
+	wxPrintf(wxT("Experimental Y         =%d\n"), lame_get_experimentalY( gfp ) );
+	wxPrintf(wxT("Experimental Z         =%d\n"), lame_get_experimentalZ( gfp ) );
+}
+#endif
+
 #if defined(__WXMSW__)
 
 #include "BladeMP3EncDLL.h"
@@ -106,15 +281,6 @@ class LameExporter : public MP3Exporter
 public:
    LameExporter() : MP3Exporter()
    {
-      /* Set config defaults to sane values */
-      memset(&mConf, 0, CURRENT_STRUCT_SIZE);
-      mConf.dwConfig = BE_CONFIG_LAME;
-      mConf.format.LHV1.dwStructVersion = CURRENT_STRUCT_VERSION;
-      mConf.format.LHV1.dwStructSize = CURRENT_STRUCT_SIZE;
-      mConf.format.LHV1.nPreset = LQP_HIGH_QUALITY;
-      mConf.format.LHV1.dwMpegVersion = MPEG1;
-      mConf.format.LHV1.bCRC = true;
-      mConf.format.LHV1.bNoRes = true;
    }
 
    ~LameExporter()
@@ -175,16 +341,84 @@ public:
          return -1;
       }
 
+      // Set config defaults to sane values
+      memset(&mConf, 0, CURRENT_STRUCT_SIZE);
+      mConf.dwConfig = BE_CONFIG_LAME;
+      mConf.format.LHV1.dwStructVersion = CURRENT_STRUCT_VERSION;
+      mConf.format.LHV1.dwStructSize = CURRENT_STRUCT_SIZE;
+      mConf.format.LHV1.nPreset = LQP_NOPRESET;
+      mConf.format.LHV1.dwMpegVersion = MPEG1;
+      mConf.format.LHV1.bCRC = true;
+      mConf.format.LHV1.bNoRes = true;
       mConf.format.LHV1.dwSampleRate = sampleRate;
-      mConf.format.LHV1.nMode = (channels == 1 ? BE_MP3_MODE_MONO : mMode);
       mConf.format.LHV1.dwBitrate = mBitrate;
-      if (mVBR) {
-         mConf.format.LHV1.bEnableVBR = true;
-         mConf.format.LHV1.nVBRQuality = mVBRQuality;
+
+      // Set the VBR quality or ABR/CBR bitrate
+      switch (mMode) {
+         case MODE_SET:
+         {
+            int preset;
+
+            if (mRoutine == ROUTINE_FAST) {
+               if (mQuality == PRESET_EXTREME) {
+                  preset = LQP_FAST_EXTREME;
+               }
+               else if (mQuality == PRESET_STANDARD) {
+                  preset = LQP_FAST_STANDARD;
+               }
+               else {
+                  preset = 14;   // Not defined until 3.96
+               }
+            }
+            else {
+               if (mQuality == PRESET_EXTREME) {
+                  preset = LQP_EXTREME;
+               }
+               else if (mQuality == PRESET_STANDARD) {
+                  preset = LQP_STANDARD;
+               }
+               else {
+                  preset = 13;   // Not defined until 3.96
+               }
+            }
+
+             mConf.format.LHV1.nPreset = preset;
+         }
+         break;
+
+         case MODE_VBR:
+            mConf.format.LHV1.bEnableVBR = true;
+            mConf.format.LHV1.nVbrMethod = mRoutine == ROUTINE_STANDARD ?
+                                           VBR_METHOD_OLD :
+                                           VBR_METHOD_NEW;
+            mConf.format.LHV1.nVBRQuality = mQuality;
+         break;
+
+         case MODE_ABR:
+            mConf.format.LHV1.bEnableVBR = true;
+            mConf.format.LHV1.nVbrMethod = VBR_METHOD_ABR;
+            mConf.format.LHV1.dwVbrAbr_bps = mBitrate * 1000;
+         break;
+
+         default:
+            mConf.format.LHV1.bEnableVBR = false;
+            mConf.format.LHV1.nVbrMethod = VBR_METHOD_NONE;
+            mConf.format.LHV1.dwBitrate = mBitrate;
+         break;
+      }
+
+      // Set the channel mode
+      int mode;
+      if (channels == 1) {
+         mode = BE_MP3_MODE_MONO;
+      }
+      else if (mChannel == CHANNEL_JOINT) {
+         mode = BE_MP3_MODE_JSTEREO;
       }
       else {
-         mConf.format.LHV1.bEnableVBR = false;
+         mode = BE_MP3_MODE_STEREO;
       }
+      mConf.format.LHV1.nMode = mode;
 
       if (beInitStream(&mConf, &mInSampleNum, &mOutBufferSize, &mStreamHandle)) {
          return -1;
@@ -346,6 +580,7 @@ typedef int lame_set_VBR_t(lame_global_flags *, vbr_mode);
 typedef int lame_set_VBR_q_t(lame_global_flags *, int);
 typedef int lame_set_VBR_min_bitrate_kbps_t(lame_global_flags *, int);
 typedef int lame_set_mode_t(lame_global_flags *, MPEG_mode);
+typedef int lame_set_preset_t(lame_global_flags *, int);
 typedef int lame_set_error_protection_t(lame_global_flags *, int);
 
 /* --------------------------------------------------------------------------*/
@@ -409,6 +644,8 @@ public:
           dlsym(mLib, "lame_set_VBR_min_bitrate_kbps");
       lame_set_mode = (lame_set_mode_t *) 
           dlsym(mLib, "lame_set_mode");
+      lame_set_preset = (lame_set_preset_t *)
+          dlsym(mLib, "lame_set_preset");
       lame_set_error_protection = (lame_set_error_protection_t *)
           dlsym(mLib, "lame_set_error_protection");
 
@@ -429,6 +666,7 @@ public:
          !lame_set_VBR ||
          !lame_set_VBR_q ||
          !lame_set_mode ||
+         !lame_set_preset ||
          !lame_set_error_protection) {
          return false;
       }
@@ -467,37 +705,73 @@ public:
       lame_set_num_channels(mGF, channels);
       lame_set_in_samplerate(mGF, sampleRate);
       lame_set_out_samplerate(mGF, sampleRate);
-      lame_set_brate(mGF, mBitrate);
 
-      if (mVBR) {
-         lame_set_VBR(mGF, vbr_mtrh);
-         lame_set_VBR_q(mGF, mVBRQuality);
-         lame_set_VBR_min_bitrate_kbps(mGF, mBitrate);
+      // Set the VBR quality or ABR/CBR bitrate
+      switch (mMode) {
+         case MODE_SET:
+         {
+            int preset;
+
+            if (mRoutine == ROUTINE_FAST) {
+               if (mQuality == PRESET_EXTREME) {
+                  preset = EXTREME_FAST;
+               }
+               else if (mQuality == PRESET_STANDARD) {
+                  preset = STANDARD_FAST;
+               }
+               else {
+                  preset = 1007;    // Not defined until 3.96
+               }
+            }
+            else {
+               if (mQuality == PRESET_EXTREME) {
+                  preset = EXTREME;
+               }
+               else if (mQuality == PRESET_STANDARD) {
+                  preset = STANDARD;
+               }
+               else {
+                  preset = 1006;    // Not defined until 3.96
+               }
+            }
+
+            lame_set_preset(mGF, preset);
+         }
+         break;
+
+         case MODE_VBR:
+            lame_set_VBR(mGF, (mRoutine == ROUTINE_STANDARD ? vbr_rh : vbr_mtrh ));
+            lame_set_VBR_q(mGF, mQuality);
+         break;
+
+         case MODE_ABR:
+            lame_set_preset(mGF, mBitrate );
+         break;
+
+         default:
+            lame_set_VBR(mGF, vbr_off);
+            lame_set_brate(mGF, mBitrate);
+         break;
+      }
+
+      // Set the channel mode
+      MPEG_mode mode;
+      if (channels == 1) {
+         mode = MONO;
+      }
+      else if (mChannel == CHANNEL_JOINT) {
+         mode = JOINT_STEREO;
       }
       else {
-         lame_set_VBR(mGF, vbr_off);
+         mode = STEREO;
       }
-
-      int mode = (channels == 1 ? MP3_MODE_MONO : mMode);
-      switch (mode) {
-         case MP3_MODE_STEREO:
-            lame_set_mode(mGF, STEREO);
-         break;
-
-         case MP3_MODE_JOINT:
-            lame_set_mode(mGF, JOINT_STEREO);
-         break;
-
-         case MP3_MODE_DUAL:
-            lame_set_mode(mGF, DUAL_CHANNEL);
-         break;
-
-         case MP3_MODE_MONO:
-            lame_set_mode(mGF, MONO);
-         break;
-      }
+      lame_set_mode(mGF, mode);
 
       lame_init_params(mGF);
+
+#if 0
+      dump_config(mGF);
+#endif
 
       mEncoding = true;
 
@@ -629,6 +903,7 @@ private:
    lame_set_VBR_q_t* lame_set_VBR_q;
    lame_set_VBR_min_bitrate_kbps_t* lame_set_VBR_min_bitrate_kbps;
    lame_set_mode_t* lame_set_mode;
+   lame_set_preset_t* lame_set_preset;
    lame_set_error_protection_t* lame_set_error_protection;
 
    lame_global_flags *mGF;
@@ -695,7 +970,7 @@ public:
          S.SetBorder(5);
          S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_CENTER, false);
          {
-            S.StartHorizontalLay(wxALIGN_CENTER, false);
+//            S.StartHorizontalLay(wxALIGN_CENTER, false);
             {
 #if defined(__WXGTK20__) || defined(__WXMAC__)
                S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
@@ -705,6 +980,7 @@ public:
                S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
 #endif
             }
+//            S.EndHorizontalLay();
          }
          S.EndHorizontalLay();
       }
@@ -780,9 +1056,10 @@ MP3Exporter::MP3Exporter()
    }
 
    mBitrate = 128;
-   mVBRQuality = 5;
-   mMode = JOINT_STEREO;
-   mVBR = false;
+   mQuality = QUALITY_2;
+   mChannel = CHANNEL_STEREO;
+   mMode = MODE_CBR;
+   mRoutine = ROUTINE_FAST;
 }
 
 MP3Exporter::~MP3Exporter()
@@ -872,40 +1149,25 @@ bool MP3Exporter::ValidLibraryLoaded()
    return mLibraryLoaded;
 }
 
-void MP3Exporter::SetBitrate(int rate)
-{
-   mVBR = false;
-   mBitrate = rate;
-}
-
-int MP3Exporter::GetBitrate()
-{
-   return mBitrate;
-}
-
-void MP3Exporter::SetVBRQuality(int quality)
-{
-   mVBR = true;
-   mVBRQuality = quality;
-}
-
-int MP3Exporter::GetVBRQuality()
-{
-   return mVBRQuality;
-}
-
 void MP3Exporter::SetMode(int mode)
 {
-   if (mode < MP3_MODE_STEREO || mode > MP3_MODE_MONO) {
-      return;
-   }
-
    mMode = mode;
 }
 
-int MP3Exporter::GetMode()
+void MP3Exporter::SetBitrate(int rate)
 {
-   return mMode;
+   mBitrate = rate;
+}
+
+void MP3Exporter::SetQuality(int q, int r)
+{
+   mQuality = q;
+   mRoutine = r;
+}
+
+void MP3Exporter::SetChannel(int mode)
+{
+   mChannel = mode;
 }
 
 MP3Exporter *GetMP3Exporter()
@@ -939,11 +1201,21 @@ public:
 // exits it will clean up any allocated MP3 exporter.
 MP3ExporterCleanup gMP3ExporterCleanup;
 
+static int FindValue(CHOICES *choices, int cnt, int needle, int def)
+{
+   for (int i = 0; i < cnt; i++) {
+      if (choices[i].label == needle) {
+         return needle;
+      }
+   }
+
+   return def;
+}
+
 bool ExportMP3(AudacityProject *project,
                int channels, wxString fName,
                bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
 {
-   bool stereo = (channels == 2);
    double rate = project->GetRate();
    wxWindow *parent = project;
    TrackList *tracks = project->GetTracks();
@@ -991,21 +1263,50 @@ bool ExportMP3(AudacityProject *project,
      outFile.Write(id3buffer, id3len);
    }
 
-   /* Export MP3 using DLL */
+   // Retrieve preferences
+   int brate;
+   int rmode;
+   int vmode;
+   int cmode;
 
-   long bitrate = gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), 128);
-   wxString rmode = gPrefs->Read(wxT("/FileFormats/MP3RateMode"), wxT("cbr"));
-   if (rmode == wxT("cbr")) {
-      exporter->SetBitrate(bitrate);
+   gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), &brate, 128);
+   gPrefs->Read(wxT("/FileFormats/MP3RateMode"), &rmode, MODE_CBR);
+   gPrefs->Read(wxT("/FileFormats/MP3VarMode"), &vmode, ROUTINE_FAST);
+   gPrefs->Read(wxT("/FileFormats/MP3ChannelMode"), &cmode, CHANNEL_STEREO);
+
+   // Set the bitrate/quality and mode
+   if (rmode == MODE_SET) {
+      int q = FindValue(setRates, WXSIZEOF(setRates), brate, PRESET_STANDARD);
+      int r = FindValue(varModes, WXSIZEOF(varModes), vmode, ROUTINE_FAST);
+      exporter->SetMode(MODE_SET);
+      exporter->SetQuality(q, r);
+   }
+   else if (rmode == MODE_VBR) {
+      int q = FindValue(varRates, WXSIZEOF(varRates), brate, QUALITY_2);
+      int r = FindValue(varModes, WXSIZEOF(varModes), vmode, ROUTINE_FAST);
+      exporter->SetMode(MODE_VBR);
+      exporter->SetQuality(q, r);
+   }
+   else if (rmode == MODE_ABR) {
+      int r = FindValue(fixRates, WXSIZEOF(fixRates), brate, 128);
+      exporter->SetMode(MODE_ABR);
+      exporter->SetBitrate(r);
    }
    else {
-      exporter->SetVBRQuality(bitrate);
+      int r = FindValue(fixRates, WXSIZEOF(fixRates), brate, 128);
+      exporter->SetMode(MODE_CBR);
+      exporter->SetBitrate(r);
    }
 
-   wxString cmode = gPrefs->Read(wxT("/FileFormats/MP3ChannelMode"), wxT("joint"));
-   exporter->SetMode( cmode == wxT("joint") ? JOINT_STEREO : STEREO );
+   // Set the channel mode
+   if (cmode == CHANNEL_JOINT) {
+      exporter->SetChannel(CHANNEL_JOINT);
+   }
+   else {
+      exporter->SetChannel(CHANNEL_STEREO);
+   }
 
-   sampleCount inSamples = exporter->InitializeStream(stereo ? 2 : 1, int(rate + 0.5));
+   sampleCount inSamples = exporter->InitializeStream(channels, int(rate + 0.5));
 
    bool cancelling = false;
    long bytes;
@@ -1020,18 +1321,18 @@ bool ExportMP3(AudacityProject *project,
    Mixer *mixer = new Mixer(numWaveTracks, waveTracks,
                             tracks->GetTimeTrack(),
                             t0, t1,
-                            stereo? 2: 1, inSamples, true,
+                            channels, inSamples, true,
                             rate, int16Sample, true, mixerSpec);
 
-   if (rmode == wxT("cbr"))
+   if (rmode == MODE_CBR)
       GetActiveProject()->ProgressShow(selectionOnly ?
-         wxString::Format(_("Exporting selected audio at %d kbps"), bitrate) :
-         wxString::Format(_("Exporting entire file at %d kbps"), bitrate),
+         wxString::Format(_("Exporting selected audio at %d kbps"), brate) :
+         wxString::Format(_("Exporting entire file at %d kbps"), brate),
          wxFileName(fName).GetName());
    else
       GetActiveProject()->ProgressShow(selectionOnly ?
-         wxString::Format(_("Exporting selected audio at quality %d"), bitrate) :
-         wxString::Format(_("Exporting entire file at quality %d"), bitrate),
+         wxString::Format(_("Exporting selected audio at quality %d"), brate) :
+         wxString::Format(_("Exporting entire file at quality %d"), brate),
          wxFileName(fName).GetName());
 
    while (!cancelling) {
@@ -1044,7 +1345,7 @@ bool ExportMP3(AudacityProject *project,
       short *mixed = (short *)mixer->GetBuffer();
 
       if (blockLen < inSamples) {
-         if (stereo) {
+         if (channels > 1) {
             bytes = exporter->EncodeRemainder(mixed,  blockLen , buffer);
          }
          else {
@@ -1052,7 +1353,7 @@ bool ExportMP3(AudacityProject *project,
          }
       }
       else {
-         if (stereo) {
+         if (channels > 1) {
             bytes = exporter->EncodeBuffer(mixed, buffer);
          }
          else {
@@ -1093,14 +1394,10 @@ bool ExportMP3(AudacityProject *project,
    return !cancelling;
 }
 
-#define ID_MP3_VBR 7000
-#define ID_MP3_CBR 7001
-
-static int iBitrates[] = {
-   16, 24, 32, 40, 48, 56, 64,
-   80, 96, 112, 128, 160,
-   192, 224, 256, 320 
-};
+#define ID_SET 7000
+#define ID_VBR 7001
+#define ID_ABR 7002
+#define ID_CBR 7003
 
 class MP3OptionsDialog : public wxDialog
 {
@@ -1125,67 +1422,82 @@ public:
       {
          S.StartStatic(_("MP3 Export Setup"), 0);
          {
-            S.StartMultiColumn(2,wxEXPAND);
+            S.StartMultiColumn(2, wxEXPAND);
             {
                S.SetStretchyCol(1);
                S.StartTwoColumn();
                {
-                  S.AddPrompt(_("Bit Rate:"));
-                  S.StartTwoColumn();
+                  S.AddPrompt(_("Bit Rate Mode:"));
+                  S.StartHorizontalLay();
                   {
-                     S.StartRadioButtonGroup(wxT("/FileFormats/MP3RateMode"), wxT("cbr"));
+                     S.StartRadioButtonGroup(wxT("/FileFormats/MP3RateMode"), MODE_CBR);
                      {
-                        mMP3VBR = S.Id(ID_MP3_VBR).TieRadioButton(_("Variable"), wxT("vbr"));
-                        mMP3CBR = S.Id(ID_MP3_CBR).TieRadioButton(_("Constant"), wxT("cbr"));
+                        mSET = S.Id(ID_SET).TieRadioButton(_("Preset"), MODE_SET);
+                        mVBR = S.Id(ID_VBR).TieRadioButton(_("Variable"), MODE_VBR);
+                        mABR = S.Id(ID_ABR).TieRadioButton(_("Average"), MODE_ABR);
+                        mCBR = S.Id(ID_CBR).TieRadioButton(_("Constant"), MODE_CBR);
                      }
                      S.EndRadioButtonGroup();
                   }
-                  S.EndTwoColumn();
+                  S.EndHorizontalLay();
 
-                  if (mMP3VBR->GetValue())
-                  {
-                     mMP3RateNames.Add(_("0 (Best quality), 220-260 kbps"));
-                     mMP3RateLabels.Add(0);
-                     mMP3RateNames.Add(_("1, 200-250 kbps"));
-                     mMP3RateLabels.Add(1);
-                     mMP3RateNames.Add(_("2, 170-210 kbps"));
-                     mMP3RateLabels.Add(2);
-                     mMP3RateNames.Add(_("3, 155-195 kbps"));
-                     mMP3RateLabels.Add(3);
-                     mMP3RateNames.Add(_("4, 145-185 kbps"));
-                     mMP3RateLabels.Add(4);
-                     mMP3RateNames.Add(_("5, 110-150 kbps"));
-                     mMP3RateLabels.Add(5);
-                     mMP3RateNames.Add(_("6, 95-135 kbps"));
-                     mMP3RateLabels.Add(6);
-                     mMP3RateNames.Add(_("7, 80-120 kbps"));
-                     mMP3RateLabels.Add(7);
-                     mMP3RateNames.Add(_("8, 65-105 kbps"));
-                     mMP3RateLabels.Add(8);
-                     mMP3RateNames.Add(_("9 (Smaller files), 45-85 kbps"));
-                     mMP3RateLabels.Add(9);
+                  CHOICES *choices;
+                  int cnt;
+                  bool enable;
+                  int defrate;
+                  bool preset = false;
+
+                  if (mSET->GetValue()) {
+                     choices = setRates;
+                     cnt = WXSIZEOF(setRates);
+                     enable = true;
+                     defrate = PRESET_STANDARD;
+                     preset = true;
                   }
-                  else
-                  {
-                     for(unsigned int i=0; i < (sizeof(iBitrates)/sizeof(int)); i++)
-                     {
-                        mMP3RateNames.Add(wxString::Format(wxT("%i kbps"),iBitrates[i]));
-                        mMP3RateLabels.Add(iBitrates[i]);
-                     }
+                  else if (mVBR->GetValue()) {
+                     choices = varRates;
+                     cnt = WXSIZEOF(varRates);
+                     enable = true;
+                     defrate = QUALITY_4;
+                  }
+                  else if (mABR->GetValue()) {
+                     choices = fixRates;
+                     cnt = WXSIZEOF(fixRates);
+                     enable = false;
+                     defrate = 128;
+                  }
+                  else {
+                     mCBR->SetValue(true);
+                     choices = fixRates;
+                     cnt = WXSIZEOF(fixRates);
+                     enable = false;
+                     defrate = 128;
                   }
 
-                  mMP3Bitrate = S.TieChoice(_("Quality:"),
-                                            wxT("/FileFormats/MP3Bitrate"), 
-                                            128,
-                                            mMP3RateNames,
-                                            mMP3RateLabels);
-                  S.AddPrompt(_("Mode:"));
+                  mRate = S.TieChoice(wxT("Quality"),
+                                      wxT("/FileFormats/MP3Bitrate"), 
+                                      defrate,
+                                      GetNames(choices, cnt),
+                                      GetLabels(choices, cnt));
+
+                  mMode = S.TieChoice(_("Variable Mode:"),
+                                      wxT("/FileFormats/MP3VarMode"), 
+                                      ROUTINE_FAST,
+                                      GetNames(varModes, WXSIZEOF(varModes)),
+                                      GetLabels(varModes, WXSIZEOF(varModes)));
+                  mMode->Enable(enable);
+
+                  S.AddPrompt(_("Channel Mode:"));
                   S.StartTwoColumn();
                   {
-                     S.StartRadioButtonGroup(wxT("/FileFormats/MP3ChannelMode"), wxT("joint"));
+                     S.StartRadioButtonGroup(wxT("/FileFormats/MP3ChannelMode"), CHANNEL_STEREO);
                      {
-                        mMP3Joint = S.TieRadioButton(_("Joint Stereo"), wxT("joint"));
-                        mMP3Stereo = S.TieRadioButton(_("Stereo"), wxT("stereo"));
+                        mJoint = S.TieRadioButton(_("Joint Stereo"), CHANNEL_JOINT);
+                        mStereo = S.TieRadioButton(_("Stereo"), CHANNEL_STEREO);
+#if defined(__WXMSW__)
+                        mJoint->Enable(!preset);
+                        mStereo->Enable(!preset);
+#endif
                      }
                      S.EndRadioButtonGroup();
                   }
@@ -1231,74 +1543,120 @@ public:
 
    /// 
    /// 
-   void OnMP3VBR(wxCommandEvent& evt)
+   void OnSET(wxCommandEvent& evt)
    {
-      mMP3Bitrate->Clear();
-      mMP3RateNames.Clear();
-      mMP3RateLabels.Clear();
+      LoadNames(setRates, WXSIZEOF(setRates));
 
-      mMP3RateNames.Add(_("0 (Best quality), 220-260 kbps"));
-      mMP3RateLabels.Add(0);
-      mMP3RateNames.Add(_("1, 200-250 kbps"));
-      mMP3RateLabels.Add(1);
-      mMP3RateNames.Add(_("2, 170-210 kbps"));
-      mMP3RateLabels.Add(2);
-      mMP3RateNames.Add(_("3, 155-195 kbps"));
-      mMP3RateLabels.Add(3);
-      mMP3RateNames.Add(_("4, 145-185 kbps"));
-      mMP3RateLabels.Add(4);
-      mMP3RateNames.Add(_("5, 110-150 kbps"));
-      mMP3RateLabels.Add(5);
-      mMP3RateNames.Add(_("6, 95-135 kbps"));
-      mMP3RateLabels.Add(6);
-      mMP3RateNames.Add(_("7, 80-120 kbps"));
-      mMP3RateLabels.Add(7);
-      mMP3RateNames.Add(_("8, 65-105 kbps"));
-      mMP3RateLabels.Add(8);
-      mMP3RateNames.Add(_("9 (Smaller files), 45-85 kbps"));
-      mMP3RateLabels.Add(9);
-
-      mMP3Bitrate->Append(mMP3RateNames);
-      mMP3Bitrate->SetSelection(5);
-      mMP3Bitrate->Refresh();
+      mRate->SetSelection(2);
+      mRate->Refresh();
+      mMode->Enable(true);
+#if defined(__WXMSW__)
+      mJoint->Enable(false);
+      mStereo->Enable(false);
+#endif
    }
 
    /// 
    /// 
-   void OnMP3CBR(wxCommandEvent& evt)
+   void OnVBR(wxCommandEvent& evt)
    {
-      mMP3Bitrate->Clear();
-      mMP3RateNames.Clear();
-      mMP3RateLabels.Clear();
+      LoadNames(varRates, WXSIZEOF(varRates));
 
-      for(unsigned int i=0;i<(sizeof(iBitrates)/sizeof(int));i++)
-      {
-         mMP3RateNames.Add( wxString::Format(wxT("%i kbps"),iBitrates[i] ));
-         mMP3RateLabels.Add( iBitrates[i] );
-      }
+      mRate->SetSelection(2);
+      mRate->Refresh();
+      mMode->Enable(true);
+#if defined(__WXMSW__)
+      mJoint->Enable(true);
+      mStereo->Enable(true);
+#endif
+   }
 
-      mMP3Bitrate->Append(mMP3RateNames);
-      mMP3Bitrate->SetSelection(10);
-      mMP3Bitrate->Refresh();
+   /// 
+   /// 
+   void OnABR(wxCommandEvent& evt)
+   {
+      LoadNames(fixRates, WXSIZEOF(fixRates));
+
+      mRate->SetSelection(10);
+      mRate->Refresh();
+      mMode->Enable(false);
+#if defined(__WXMSW__)
+      mJoint->Enable(true);
+      mStereo->Enable(true);
+#endif
+   }
+
+   /// 
+   /// 
+   void OnCBR(wxCommandEvent& evt)
+   {
+      LoadNames(fixRates, WXSIZEOF(fixRates));
+
+      mRate->SetSelection(10);
+      mRate->Refresh();
+      mMode->Enable(false);
+#if defined(__WXMSW__)
+      mJoint->Enable(true);
+      mStereo->Enable(true);
+#endif
    }
 
 private:
-   wxArrayString mMP3RateNames;
-   wxArrayInt    mMP3RateLabels;
 
-   wxRadioButton *mMP3Stereo;
-   wxRadioButton *mMP3Joint;
-   wxRadioButton *mMP3VBR;
-   wxRadioButton *mMP3CBR;
-   wxChoice *mMP3Bitrate;
+   void LoadNames(CHOICES *choices, int count)
+   {
+      mRate->Clear();
+
+      for (int i = 0; i < count; i++)
+      {
+         mRate->Append(choices[i].name);
+      }
+   }
+   
+   wxArrayString GetNames(CHOICES *choices, int count)
+   {
+      wxArrayString names;
+
+      for (int i = 0; i < count; i++)
+      {
+         names.Add(choices[i].name);
+      }
+
+      return names;
+   }
+
+   wxArrayInt GetLabels(CHOICES *choices, int count)
+   {
+      wxArrayInt labels;
+
+      for (int i = 0; i < count; i++)
+      {
+         labels.Add(choices[i].label);
+      }
+
+      return labels;
+   }
+
+private:
+
+   wxRadioButton *mStereo;
+   wxRadioButton *mJoint;
+   wxRadioButton *mSET;
+   wxRadioButton *mVBR;
+   wxRadioButton *mABR;
+   wxRadioButton *mCBR;
+   wxChoice *mRate;
+   wxChoice *mMode;
 
    DECLARE_EVENT_TABLE()
 };
 
 BEGIN_EVENT_TABLE(MP3OptionsDialog, wxDialog)
-   EVT_RADIOBUTTON(ID_MP3_VBR,   MP3OptionsDialog::OnMP3VBR)
-   EVT_RADIOBUTTON(ID_MP3_CBR,   MP3OptionsDialog::OnMP3CBR)
-   EVT_BUTTON(wxID_OK,           MP3OptionsDialog::OnOK)
+   EVT_RADIOBUTTON(ID_SET,    MP3OptionsDialog::OnSET)
+   EVT_RADIOBUTTON(ID_VBR,    MP3OptionsDialog::OnVBR)
+   EVT_RADIOBUTTON(ID_ABR,    MP3OptionsDialog::OnABR)
+   EVT_RADIOBUTTON(ID_CBR,    MP3OptionsDialog::OnCBR)
+   EVT_BUTTON(wxID_OK,        MP3OptionsDialog::OnOK)
 END_EVENT_TABLE()
 
 bool ExportMP3Options(AudacityProject *project)
