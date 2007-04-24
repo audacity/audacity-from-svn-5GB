@@ -150,7 +150,7 @@ bool EffectLeveller::PromptUser()
 
 bool EffectLeveller::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferEnum(wxT("Db"),mLevellerDbChoiceIndex,Enums::NumDbChoices,Enums::GetDbChoices());
+   shuttle.TransferEnum(wxT("dB"),mLevellerDbChoiceIndex,Enums::NumDbChoices,Enums::GetDbChoices());
    shuttle.TransferInt(wxT("Passes"),mLevellerNumPasses,1);
    return true;
 }

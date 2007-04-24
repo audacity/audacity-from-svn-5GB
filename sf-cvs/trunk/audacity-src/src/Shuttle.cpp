@@ -74,14 +74,14 @@ preferences.
 const int Enums::NumDbChoices = 14;
 
 const wxString Enums::DbChoices[] = 
-   {wxT("-20db"), wxT("-25db"), wxT("-30db"), 
-    wxT("-35db"), wxT("-40db"), wxT("-45db"), 
-    wxT("-50db"), wxT("-55db"), wxT("-60db"),
-    wxT("-65db"), wxT("-70db"), wxT("-75db"), 
-    wxT("-80db"), wxT("Off-Skip")};
+   {wxT("-20dB"), wxT("-25dB"), wxT("-30dB"), 
+    wxT("-35dB"), wxT("-40dB"), wxT("-45dB"), 
+    wxT("-50dB"), wxT("-55dB"), wxT("-60dB"),
+    wxT("-65dB"), wxT("-70dB"), wxT("-75dB"), 
+    wxT("-80dB"), wxT("Off-Skip")};
 
 const double Enums::Db2Signal[] = 
-//     -20db    -25db    -30db    -35db    -40db    -45db    -50db    -55db    -60db    -65db     -70db     -75db     -80db    Off
+//     -20dB    -25dB    -30dB    -35dB    -40dB    -45dB    -50dB    -55dB    -60dB    -65dB     -70dB     -75dB     -80dB    Off
    { 0.10000, 0.05620, 0.03160, 0.01780, 0.01000, 0.00562, 0.00316, 0.00178, 0.00100, 0.000562, 0.000316, 0.000178, 0.0001000, 0.0 };
 
 
@@ -205,6 +205,7 @@ bool Shuttle::TransferEnum( const wxString & Name, int & iValue,
             if( mValueString.IsSameAs( pFirstStr[i] ))
             {
                iValue = i;
+               break;
             }
          }
       }
@@ -224,9 +225,19 @@ bool Shuttle::TransferEnum( const wxString & Name, int & iValue,
 
 bool Shuttle::TransferString( const wxString & Name, wxString & strValue, const wxString &strDefault )
 {
-   /// Not yet implemented...  but might be implemented in a derived class.
-   wxASSERT( false );
-   return false;
+   if( mbStoreInClient )
+   {
+      if( ExchangeWithMaster( Name ))
+      {
+         strValue = mValueString;
+      }
+   }
+   else
+   {
+      mValueString = wxT('"') + strValue + wxT('"');  //strings have quotes around them
+      return ExchangeWithMaster( Name );
+   }
+   return true;
 }
 
 bool Shuttle::TransferWrappedType( const wxString & Name, WrappedType & W )
@@ -256,7 +267,7 @@ bool Shuttle::ExchangeWithMaster(const wxString & Name)
    return true;
 }
 
-// This variant uses valuse of the form
+// This variant uses values of the form
 // param1=value1 param2=value2 
 bool ShuttleCli::ExchangeWithMaster(const wxString & Name)
 {
@@ -275,8 +286,14 @@ bool ShuttleCli::ExchangeWithMaster(const wxString & Name)
       if( i>=0 )
       {
          int j=i+2+Name.Length();
+         wxString terminator = wxT(' ');
+         if(mParams.GetChar(j) == wxT('"')) //Strings are surrounded by quotes
+         {
+            terminator = wxT('"');
+            j++;
+         }
          i=j;
-         while( j<(int)mParams.Length() && mParams.GetChar(j) != wxT(' ') )
+         while( j<(int)mParams.Length() && mParams.GetChar(j) != terminator )
             j++;
          mValueString = mParams.Mid(i,j-i);
          return true;
