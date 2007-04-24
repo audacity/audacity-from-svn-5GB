@@ -74,11 +74,12 @@
       AButton* mButton_CompanyLogo;
       AButton* mButton_AudacityLogo;
 
-      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+         int mProjectLogo_origWidth;
+      #else
          int mMinLeftSectionWidth;
       #endif
       int mMinHeight;
-      int mProjectLogo_origWidth;
 
    public:
       DECLARE_EVENT_TABLE()

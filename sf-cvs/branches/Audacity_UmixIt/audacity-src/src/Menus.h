@@ -148,8 +148,10 @@ void OnFloatMixerToolBar();
 void OnLoadMeterToolBar();
 void OnFloatMeterToolBar();
 
-void OnLyrics();
-void OnMixerBoard();
+#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   void OnLyrics();
+   void OnMixerBoard();
+#endif
 
         // Project Menu
 
@@ -197,6 +199,9 @@ void OnAnalyzePlugin(int index);
 
 void OnAbout();
 void OnHelp();
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   void OnThinklabsHelp();
+#endif
 void OnHelpIndex();
 void OnHelpSearch();
 void OnBenchmark();

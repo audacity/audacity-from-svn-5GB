@@ -41,7 +41,9 @@
 #include "AudioIO.h"
 #include "ImageManipulation.h"
 #include "MeterToolBar.h"
-#include "MixerBoard.h"
+#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #include "MixerBoard.h"
+#endif
 #include "Prefs.h"
 #include "Project.h"
 #include "Track.h"
@@ -978,6 +980,15 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
    AudacityProject *p = GetActiveProject();
    if (p) {
       TrackList *t = p->GetTracks();
+
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         // For Thinklabs, always switch all tracks to WaveformDisplay on Record, for performance.
+         TrackListIterator iter(t);
+         for (Track* pTrack = iter.First(); pTrack; pTrack = iter.Next())
+            if (pTrack->GetKind() == Track::Wave)
+               ((WaveTrack*)pTrack)->SetDisplay(WaveTrack::WaveformDisplay);
+      #endif
+
       double t0 = p->GetSel0();
       double t1 = p->GetSel1();
       if (t1 == t0)

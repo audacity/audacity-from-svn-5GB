@@ -116,11 +116,12 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
          Read("/SamplingRate/DefaultProjectSampleRate", AudioIO::GetOptimalSupportedSampleRate());
    }
 
-   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
-      mDisplay = WaveformAndSpectrumDisplay; // Move to GUIWaveTrack
-   #else
+   //v 4/22/2007: Clive decided to revert to WaveformDisplay as default.
+   //#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   //   mDisplay = WaveformAndSpectrumDisplay; // Move to GUIWaveTrack
+   //#else
       mDisplay = WaveformDisplay; // Move to GUIWaveTrack
-   #endif
+   //#endif
 
    mSequence = new Sequence(projDirManager, format);
    mEnvelope = new Envelope();
