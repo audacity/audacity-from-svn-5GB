@@ -69,13 +69,15 @@
 #include "FormatSelection.h"
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
-#include "LyricsWindow.h"
-#include "MixerBoard.h"
+#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #include "Lyrics.h"
+   #include "LyricsWindow.h"
+   #include "MixerBoard.h"
+#endif
 #include "Internat.h"
 #include "import/Import.h"
 #include "LabelTrack.h"
 #include "Legacy.h"
-#include "Lyrics.h"
 #include "Mix.h"
 #include "MixerToolBar.h"
 #include "NoteTrack.h"
@@ -389,10 +391,12 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mAutoScrolling(false),
      mActive(true),
      mHistoryWindow(NULL),
-     mLyricsWindow(NULL),
-     mMixerBoard(NULL),
-     #if (AUDACITY_BRANDING != BRAND_UMIXIT)
-        mMixerBoardFrame(NULL),
+     #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+        mLyricsWindow(NULL),
+        mMixerBoard(NULL),
+        #if (AUDACITY_BRANDING != BRAND_UMIXIT)
+           mMixerBoardFrame(NULL),
+        #endif
      #endif
      mTotalToolBarHeight(0),
      mDraggingToolBar(NoneID),
@@ -546,9 +550,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
          new BrandingPanel(this, 
                            wxPoint(left, top), 
                            #if (AUDACITY_BRANDING == BRAND_UMIXIT)
-                              wxSize(width, 64 + 3*4)); //vvv default powered_by_Audacity_xpm height plus 3*kInset 
+                              wxSize(width, 64 + 3*4)); //v default powered_by_Audacity_xpm height plus 3*kInset 
                            #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
-                              wxSize(width, 42 + 3*4)); //vvv default powered_by_Audacity_xpm height plus 3*kInset  
+                              wxSize(width, 42 + 3*4)); //v default powered_by_Audacity_xpm height plus 3*kInset  
                            #endif
       wxSize panelSize = mBrandingPanel->GetSize(); 
       int nBrandingPanelHeight = panelSize.GetHeight();
@@ -609,6 +613,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                         wxSize(width, height - voffset));
 
       mMixerBoard->Show();
+   #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
+      this->GetControlToolBar()->ShowTools(false);
    #endif
 
    InitialState();
@@ -2018,6 +2024,9 @@ void AudacityProject::OpenFile(wxString fileName)
       }
 
       InitialState();
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         this->EnforceTrackConstraints();
+      #endif
       HandleResize();
       mTrackPanel->Refresh(false);
 
@@ -2587,8 +2596,10 @@ void AudacityProject::InitialState()
    ModifyUndoMenus();
 
    UpdateMenus();
-   UpdateLyrics();
-   UpdateMixerBoard();
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      UpdateLyrics();
+      UpdateMixerBoard();
+   #endif
 }
 
 void AudacityProject::PushState(wxString desc,
@@ -2610,16 +2621,85 @@ void AudacityProject::PushState(wxString desc,
 
    UpdateMenus();
 
+   // All the different ways to add tracks funnel through here.
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      this->EnforceTrackConstraints();
+   #else // (AUDACITY_BRANDING != BRAND_THINKLABS)
+      UpdateLyrics();
+
       // All the different ways to add tracks funnel through here.
-      // For Thinklabs, we want every wavetrack to have a label track. 
-      // This check just makes sure that if the last track is a 
-      // wave track, we add a label track.
+      mMixerBoard->AddOrUpdateTrackClusters();
+      UpdateMixerBoard();
+   #endif 
+}
+
+void AudacityProject::ModifyState()
+{
+   TrackList *l = new TrackList(mTracks);
+
+   mUndoManager.ModifyState(l, mViewInfo.sel0, mViewInfo.sel1);
+
+   delete l;
+   
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      UpdateLyrics();
+      UpdateMixerBoard();
+   #endif
+}
+
+void AudacityProject::PopState(TrackList * l)
+{
+   mTracks->Clear(true);
+   TrackListIterator iter(l);
+   Track *t = iter.First();
+   while (t) {
+      //    printf("Popping track with %d samples\n",
+      //           ((WaveTrack *)t)->numSamples);
+      //  ((WaveTrack *)t)->Debug();
+      mTracks->Add(t->Duplicate());
+      t = iter.Next();
+   }
+
+   HandleResize();
+
+   UpdateMenus();
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      UpdateLyrics();
+      UpdateMixerBoard();
+   #endif
+}
+
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   void AudacityProject::EnforceTrackConstraints()
+   {
+      // For Thinklabs, 2 constraints: 
+      // 1. Uniquely solo
+      // 2. Label Track for every Wave Track
+      //    For now the code just makes sure that if the last track is a 
+      //    wave track, we add a label track.
       TrackListIterator iter(mTracks);
       Track* pTrack = iter.First();
       Track* pNextTrack;
+      bool bHasUniqueSolo = false;
+      Track* pFirstWaveTrack = NULL;
       while (pTrack) {
          pNextTrack = iter.Next();
+         if (pTrack->GetLinked())
+            pNextTrack = iter.Next(); // Skip the right channel
+
+         // Uniquely solo
+         if (pTrack->GetKind() == Track::Wave)
+         {
+            if (pFirstWaveTrack == NULL)
+               pFirstWaveTrack = pTrack;
+            if (bHasUniqueSolo)
+               // Already have a track that's soloing, so this one cannot.
+               pTrack->SetSolo(false);
+            else
+               bHasUniqueSolo = pTrack->GetSolo();
+         }
+
+         // Make sure every Wave track has a Label track.
          if ((pNextTrack == NULL) && (pTrack->GetKind() == Track::Wave))
          {
             // pTrack is the last track, but is a wave track with no label track.
@@ -2643,50 +2723,14 @@ void AudacityProject::PushState(wxString desc,
          }
          else 
          {
-            if (pTrack->GetLinked())
-               pTrack = iter.Next(); // Skip the right channel
             pTrack = iter.Next();
          }
       }
-   #else
-      UpdateLyrics();
-
-      // All the different ways to add tracks funnel through here.
-      mMixerBoard->AddOrUpdateTrackClusters();
-      UpdateMixerBoard();
-   #endif
-}
-
-void AudacityProject::ModifyState()
-{
-   TrackList *l = new TrackList(mTracks);
-
-   mUndoManager.ModifyState(l, mViewInfo.sel0, mViewInfo.sel1);
-
-   delete l;
-   UpdateLyrics();
-   UpdateMixerBoard();
-}
-
-void AudacityProject::PopState(TrackList * l)
-{
-   mTracks->Clear(true);
-   TrackListIterator iter(l);
-   Track *t = iter.First();
-   while (t) {
-      //    printf("Popping track with %d samples\n",
-      //           ((WaveTrack *)t)->numSamples);
-      //  ((WaveTrack *)t)->Debug();
-      mTracks->Add(t->Duplicate());
-      t = iter.Next();
+      if (!bHasUniqueSolo && (pFirstWaveTrack != NULL))
+         // No WaveTrack is soloing. Thinklabs always wants uniquely solo, so solo the first one.
+         pFirstWaveTrack->SetSolo(true);
    }
-
-   HandleResize();
-
-   UpdateMenus();
-   UpdateLyrics();
-   UpdateMixerBoard();
-}
+#endif
 
 void AudacityProject::SetStateTo(unsigned int n)
 {
@@ -2697,10 +2741,13 @@ void AudacityProject::SetStateTo(unsigned int n)
    HandleResize();
    mTrackPanel->Refresh(false);
    ModifyUndoMenus();
-   UpdateLyrics();
-   UpdateMixerBoard();
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      UpdateLyrics();
+      UpdateMixerBoard();
+   #endif
 }
 
+#if (AUDACITY_BRANDING != BRAND_THINKLABS)
 void AudacityProject::UpdateLyrics()
 {
    LabelTrack *labelTrack = NULL;
@@ -2743,6 +2790,8 @@ void AudacityProject::UpdateMixerBoard()
    if (mMixerBoard->IsShown())
       mMixerBoard->UpdateMeters(gAudioIO->GetStreamTime()); 
 }
+
+#endif // (AUDACITY_BRANDING != BRAND_THINKLABS)
 
 //
 // Clipboard methods

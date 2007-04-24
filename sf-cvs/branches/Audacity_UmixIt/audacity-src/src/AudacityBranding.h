@@ -23,8 +23,9 @@
 #define BRAND_THINKLABS 2
 
 #define AUDACITY_BRANDING BRAND_UMIXIT
+//#define AUDACITY_BRANDING BRAND_THINKLABS
 
-//vvvvv OR do it this way:
+//vvv OR do it this way:
 //#define AUDACITY_BRANDING BRAND_AUDACITY // standard version
 
 #define AUDACITY_URL wxT("http://audacity.sourceforge.net/")

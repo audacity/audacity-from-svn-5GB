@@ -55,6 +55,7 @@
 #include "AboutDialog.h"
 #include "Help.h"
 #include "Benchmark.h"
+#include "widgets/LinkingHtmlWindow.h"
 
 // Printing
 #include <wx/print.h>
@@ -560,9 +561,20 @@ void AudacityProject::CreateMenusAndCommands()
    /* i18n-hint: The name of the Help menu */
    c->BeginMenu(_("&Help"));
    c->SetDefaultFlags(0, 0);
-   c->AddItem("Help",           _("&Contents..."),             FN(OnHelp));
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      c->AddItem("ThinklabsHelp",  _("&Thinklabs Phonocardiography Help..."),       FN(OnThinklabsHelp));
+      c->AddItem("Help",           _("&Audacity Help..."),        FN(OnHelp));
+   #else
+      c->AddItem("Help",           _("&Contents..."),             FN(OnHelp));
+   #endif
    /* i18n-hint: The option to read the installed help file */
    c->AddSeparator();   
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      c->AddItem(
+         wxString::Format("AboutBrand", AUDACITY_BRANDING_BRANDNAME), 
+         wxString::Format(_("About %s..."), AUDACITY_BRANDING_BRANDNAME), 
+         FN(OnAboutBrand));
+   #endif
    c->AddItem("About",          _("&About Audacity..."),          FN(OnAbout));
 
 #if 0 // No Benchmark in stable release
@@ -2223,7 +2235,9 @@ void AudacityProject::OnSelectAll()
    mViewInfo.sel1 = mTracks->GetEndTime();
 
    mTrackPanel->Refresh(false);
-   mMixerBoard->Refresh(false);
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      mMixerBoard->Refresh(false);
+   #endif
 }
 
 void AudacityProject::OnSelectCursorEnd()
@@ -2696,39 +2710,41 @@ void AudacityProject::OnFloatMeterToolBar()
    }
 }
 
-void AudacityProject::OnLyrics()
-{
-   if (mLyricsWindow)
-      mLyricsWindow->Show();
-   else {
-      mLyricsWindow = new LyricsWindow(this);
-      wxASSERT(mLyricsWindow);
-      mLyricsWindow->Show();
-   }
-}
-
-void AudacityProject::OnMixerBoard()
-{
-   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
-      // For UmixIt, MixerBoard is XOR TrackPanel, except the Ruler.
-      bool bWantTrackPanel = mMixerBoard->IsShown(); // Switch to TrackPanel if currently showing MixerBoard
-      mMixerBoard->Show(!bWantTrackPanel);
-      mTrackPanel->ShowRulerOnly(!bWantTrackPanel);
-      mHsbar->Show(bWantTrackPanel);
-      mVsbar->Show(bWantTrackPanel);
-      this->GetControlToolBar()->ShowTools(bWantTrackPanel);
-      this->HandleResize();
-      
-      mCommandManager.Modify("MixerBoard", bWantTrackPanel ? _("&Mixer Board") : _("&Track Panel"));
-   #else
-      if (!mMixerBoardFrame)
-      {
-         mMixerBoardFrame = new MixerBoardFrame(this);
-         mMixerBoard = mMixerBoardFrame->mMixerBoard;
+#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   void AudacityProject::OnLyrics()
+   {
+      if (mLyricsWindow)
+         mLyricsWindow->Show();
+      else {
+         mLyricsWindow = new LyricsWindow(this);
+         wxASSERT(mLyricsWindow);
+         mLyricsWindow->Show();
       }
-      mMixerBoardFrame->Show();
-   #endif
-}
+   }
+
+   void AudacityProject::OnMixerBoard()
+   {
+      #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+         // For UmixIt, MixerBoard is XOR TrackPanel, except the Ruler.
+         bool bWantTrackPanel = mMixerBoard->IsShown(); // Switch to TrackPanel if currently showing MixerBoard
+         mMixerBoard->Show(!bWantTrackPanel);
+         mTrackPanel->ShowRulerOnly(!bWantTrackPanel);
+         mHsbar->Show(bWantTrackPanel);
+         mVsbar->Show(bWantTrackPanel);
+         this->GetControlToolBar()->ShowTools(bWantTrackPanel);
+         this->HandleResize();
+         
+         mCommandManager.Modify("MixerBoard", bWantTrackPanel ? _("&Mixer Board") : _("&Track Panel"));
+      #else
+         if (!mMixerBoardFrame)
+         {
+            mMixerBoardFrame = new MixerBoardFrame(this);
+            mMixerBoard = mMixerBoardFrame->mMixerBoard;
+         }
+         mMixerBoardFrame->Show();
+      #endif
+   }
+#endif // (AUDACITY_BRANDING != BRAND_THINKLABS)
 
 
 //
@@ -3290,6 +3306,14 @@ void AudacityProject::OnHelp()
    ::ShowHelp(this);
 }
 
+#if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   void AudacityProject::OnThinklabsHelp()
+   {
+      wxHtmlLinkInfo link(wxT("thinklabsmedical.com/phonocardiography_help/"));
+      OpenInDefaultBrowser(link);
+   }
+#endif
+
 void AudacityProject::OnHelpIndex()
 {
    ::ShowHelpIndex(this);
@@ -3328,7 +3352,6 @@ void AudacityProject::OnBenchmark()
          wxICON_INFORMATION);
    }
 
-   #include "widgets/LinkingHtmlWindow.h"
    void AudacityProject::OnAboutBrand()
    {
       wxHtmlLinkInfo link(AUDACITY_BRANDING_BRANDURL);

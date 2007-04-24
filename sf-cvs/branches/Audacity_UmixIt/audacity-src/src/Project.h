@@ -59,9 +59,11 @@ class ControlToolBar;
 class MixerToolBar;
 class MeterToolBar;
 class HistoryWindow;
-class LyricsWindow;
-class MixerBoard;
-class MixerBoardFrame;
+#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   class LyricsWindow;
+   class MixerBoard;
+   class MixerBoardFrame;
+#endif
 class Importer;
 
 class AudacityProject;
@@ -142,8 +144,10 @@ class AudacityProject:public wxFrame,
    Branding* GetBranding() { return mBranding; };
    int GetAudioIOToken();
    void SetAudioIOToken(int token);
-   LyricsWindow* GetLyricsWindow() { return mLyricsWindow; };
-   MixerBoard* GetMixerBoard() { return mMixerBoard; };
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      LyricsWindow* GetLyricsWindow() { return mLyricsWindow; };
+      MixerBoard* GetMixerBoard() { return mMixerBoard; };
+   #endif
 
    bool IsActive();
 
@@ -276,8 +280,12 @@ class AudacityProject:public wxFrame,
    void ModifyState();
    void PopState(TrackList * l);
 
-   void UpdateLyrics();
-   void UpdateMixerBoard();
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      void EnforceTrackConstraints(); // Thinklabs: Uniquely solo and a Label Track for every Wave Track
+   #else
+      void UpdateLyrics();
+      void UpdateMixerBoard();
+   #endif
 
    // Callbacks for backend operations
 
@@ -353,11 +361,14 @@ class AudacityProject:public wxFrame,
    bool mImportingRaw;
    bool mIconized;
    HistoryWindow *mHistoryWindow;
-   LyricsWindow *mLyricsWindow;
+   
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      LyricsWindow *mLyricsWindow;
 
-   MixerBoard* mMixerBoard;
-   #if (AUDACITY_BRANDING != BRAND_UMIXIT)
-      MixerBoardFrame* mMixerBoardFrame;
+      MixerBoard* mMixerBoard;
+      #if (AUDACITY_BRANDING != BRAND_UMIXIT)
+         MixerBoardFrame* mMixerBoardFrame;
+      #endif
    #endif
 
    ToolBarArray mToolBarArray;
