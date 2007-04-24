@@ -10,13 +10,13 @@ SetupIconFile=Audacity.ico
 SolidCompression=yes
 
 ; installer-related directives
-AppName=UmixIt powered by Audacity
-AppVerName=UmixIt powered by Audacity 1.2.6, 2007-03-27
+AppName=UmixIt, powered by Audacity
+AppVerName=UmixIt, powered by Audacity 1.2.6
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
 ChangesAssociations=yes
-DefaultDirName={pf}\UmixIt powered by Audacity
+DefaultDirName={pf}\UmixIt, powered by Audacity
 ; Always warn if dir exists, because we'll overwrite previous Audacity.
 DirExistsWarning=yes
 DisableProgramGroupPage=yes
@@ -102,7 +102,7 @@ Source: "..\win\Release\Plug-Ins\tremolo.ny"; DestDir: "{app}\Plug-Ins"; Flags: 
 
 [Icons]
 Name: "{commonprograms}\Audacity"; Filename: "{app}\audacity.exe"
-Name: "{userdesktop}\UmixIt powered by Audacity"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
+Name: "{userdesktop}\UmixIt, powered by Audacity"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
 
 [InstallDelete]
 ; Get rid of Audacity 1.0.0 stuff that's no longer used.
