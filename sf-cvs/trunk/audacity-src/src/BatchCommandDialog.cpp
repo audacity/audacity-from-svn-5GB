@@ -49,7 +49,7 @@ BEGIN_EVENT_TABLE(BatchCommandDialog, wxDialog)
    EVT_BUTTON(wxID_OK,                     BatchCommandDialog::OnOk)
    EVT_BUTTON(wxID_CANCEL,                 BatchCommandDialog::OnCancel)
    EVT_BUTTON(EditParamsButtonID,          BatchCommandDialog::OnEditParams)
-   EVT_LIST_ITEM_SELECTED(CommandsListID,  BatchCommandDialog::OnItemSelected)
+   EVT_LIST_ITEM_ACTIVATED(CommandsListID,  BatchCommandDialog::OnItemSelected)
 END_EVENT_TABLE();
 
 BatchCommandDialog::BatchCommandDialog(wxWindow * parent, wxWindowID id):
