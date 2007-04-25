@@ -107,11 +107,10 @@ class TranscriptionToolBar:public ToolBar {
    double mPlaySpeed;
    ASlider *mSensitivitySlider;
    double mSensitivity;
-   VoiceKey *vk;
+   VoiceKey *mVk;
    
    wxBrush mBackgroundBrush;
    wxPen mBackgroundPen;
-   wxBitmap *mBackgroundBitmap;
    int mBackgroundWidth;
    int mBackgroundHeight;
 
