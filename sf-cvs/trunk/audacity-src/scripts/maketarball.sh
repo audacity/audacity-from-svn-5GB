@@ -37,6 +37,24 @@ function myrmvf {
 	fi
 	}
 
+function updsln  {
+	# removes unwanted projects from the Windows solution
+	# setting it to 1 makes it verbose, to anything else makes it quiet
+	if [ $1 -eq 1 ]
+	then	#verbose mode
+		shift
+		echo "sed -e '/$*/,/EndProject/d' win/Audacity.sln >win/Audacity.sln.new"
+		sed -e "/$*/,/EndProject/d" win/Audacity.sln >win/Audacity.sln.new
+		echo "mv win/Audacity.sln.new win/Audacity.sln"
+      mv win/Audacity.sln.new win/Audacity.sln
+	else
+		# quietly
+		shift
+		sed -e "/$*/,/EndProject/d" win/Audacity.sln >win/Audacity.sln.new
+      mv win/Audacity.sln.new win/Audacity.sln
+	fi
+	}
+
 echo "Maketarball 2.0.0 -- make an Audacity distribution tarball"
 
 # check number of arguments, if not one then print a usage message
@@ -124,7 +142,7 @@ printf "removing scripts ... ";
 myrmrvf $mode scripts
 printf "Done\n"
 
-printf "removing libraries that should be installed locally... "
+printf "removing libraries that should be installed locally...\n"
 myrmrvf $mode lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib;
 myrmrvf $mode lib-src/libid3tag;
 myrmrvf $mode lib-src/iAVC lib-src/libsamplerate;
@@ -158,12 +176,12 @@ printf "Done\n"
 
 printf "Giving VC++ project/workspace files DOS line endings ... "
 if [ $mode -eq 1 ]; then
-	for file in `find . \( -name "*.ds?" -print \) , \( -name "*.vcproj" -print \) , \( -name "*.sln" -print \) `
+	for file in `find . \( -name '*.ds?' -print \) -or  \( -name '*.vcproj' -print \) -or \( -name '*.sln' -print \)`
 	do
 		unix2dos "$file" 
 	done
 else
-	for file in `find . \( -name "*.ds?" -print \) , \( -name "*.vcproj" -print \) , \( -name "*.sln" -print \) `
+	for file in `find . \( -name '*.ds?' -print \) -or  \( -name '*.vcproj' -print \) -or \( -name '*.sln' -print \)`
 	do
 		unix2dos "$file" > /dev/null 2>/dev/null
 	done
@@ -188,13 +206,14 @@ echo "#undef USE_LIBSAMPLERATE" >> "win/configwin.h"
 echo "#undef USE_LIBVORBIS" >> "win/configwin.h"
 echo "#undef USE_LIBTWOLAME" >> "win/configwin.h"
 
-
-#print "Using the VC++ workspace that doesn't depend on libmad, libid3tag,\n";
-#print "libogg, libvorbis, libsamplerate, or libflac.\n";
-#print "\n";
-#TODO: Update this to use .vcproj/.sln files?
-#
-#`cp win/audacity-nomp3ogg.dsw win/audacity.dsw`;
-#`rm win/audacity-nomp3ogg.dsw`;
-
-printf "Done.\n";
+printf "removing unwanted projects from VC++ solution\n"
+updsln $mode ogg_static
+updsln $mode vorbis_static
+updsln $mode vorbisfile_static
+updsln $mode libmad
+updsln $mode libid3tag
+updsln $mode libsamplerate
+updsln $mode libflac
+updsln $mode libflac_cpp
+updsln $mode libtwolame_static
+printf "Done\n"
