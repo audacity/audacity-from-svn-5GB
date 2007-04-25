@@ -26,6 +26,7 @@ class wxWindow;
 class AButton;
 class AudacityProject;
 class TrackList;
+class TimeTrack;
 
 class ControlToolBar:public ToolBar {
 
@@ -61,7 +62,8 @@ class ControlToolBar:public ToolBar {
    // Play the region [t0,t1]
    void PlayPlayRegion(double t0, double t1,
                        bool looped = false,
-                       bool cutpreview = false);
+                       bool cutpreview = false,
+                       TimeTrack *timetrack = NULL);
    void PlayDefault();
    
    // Stop playing

@@ -416,7 +416,8 @@ void ControlToolBar::SetRecord(bool down)
 
 void ControlToolBar::PlayPlayRegion(double t0, double t1,
                                     bool looped /* = false */,
-                                    bool cutpreview /* = false */)
+                                    bool cutpreview /* = false */,
+                                    TimeTrack *timetrack /* = NULL */)
 {
    if (gAudioIO->IsBusy()) {
       mPlay->PopUp();
@@ -508,8 +509,11 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
                return;
             }
          } else {
+            if (!timetrack) {
+               timetrack = t->GetTimeTrack();
+            }
             token = gAudioIO->StartStream(t->GetWaveTrackArray(false),
-                                  WaveTrackArray(), t->GetTimeTrack(),
+                                  WaveTrackArray(), timetrack,
                                   p->GetRate(), t0, t1, p, looped);
          }
          if (token != 0) {

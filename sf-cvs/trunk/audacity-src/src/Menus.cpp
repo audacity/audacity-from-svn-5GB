@@ -3485,7 +3485,7 @@ void AudacityProject::OnImport()
    wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
 
    // TODO: Build the list of file types dynamically
-   
+
    FileDialog dlog(this, _("Select one or more audio files..."),
                    path, wxT(""),
                    GetImportFilesFilter(),
@@ -3942,45 +3942,22 @@ void AudacityProject::OnNewLabelTrack()
 
 void AudacityProject::OnNewTimeTrack()
 {
-   TrackListIterator iter(mTracks);
-   Track *t = iter.First();
-   bool alreadyHaveTimeTrack = false;
-   
-   while (t)
-      {
-         if (t->GetKind() == Track::Time)
-            {
-               alreadyHaveTimeTrack = true;
-               break;
-            }
-         t = iter.Next();
-      }
-   
-   if( alreadyHaveTimeTrack )
-      {
-         wxString msg;
-         msg.Printf(_("The version of Audacity you are using does not support multiple time tracks."));
-         wxMessageBox(msg);
-      }
-   else
-      {
-         TimeTrack *t = new TimeTrack(mDirManager);
+   if (mTracks->GetTimeTrack()) {
+      wxMessageBox(_("The version of Audacity you are using does not support multiple time tracks."));
+      return;
+   }
 
-         SelectNone();
-         mTracks->AddToHead(t);
-         t->SetSelected(true);
-         
-         PushState(_("Created new time track"), _("New Track"));
+   TimeTrack *t = new TimeTrack(mDirManager);
 
-         /*
-         TrackListIterator iter(mTracks);
-         for( Track *tr = iter.First(); (tr); tr = iter.Next() )
-            tr->SetTimeTrack( t );
-         */
-         
-         RedrawProject();
-         mTrackPanel->EnsureVisible(t);
-      }
+   SelectNone();
+
+   mTracks->AddToHead(t);
+   t->SetSelected(true);
+   
+   PushState(_("Created new time track"), _("New Track"));
+
+   RedrawProject();
+   mTrackPanel->EnsureVisible(t);
 }
 
 void AudacityProject::OnSmartRecord()
