@@ -215,6 +215,7 @@ private:
    double              mT0;
    double              mT1;
    double              mTime;
+   double              mWarpedT1;
    double              mSeek;
    double              mPlaySpeed;
    double              mPlaybackRingBufferSecs;
