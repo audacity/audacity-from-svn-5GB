@@ -41,6 +41,29 @@ and libvorbis examples, Monty <monty@xiph.org>
 
 #define SAMPLES_PER_RUN 8192
 
+static struct
+{
+   bool        do_exhaustive_model_search;
+   bool        do_escape_coding;
+   bool        do_mid_side_stereo;
+   bool        loose_mid_side_stereo;
+   unsigned    qlp_coeff_precision;
+   unsigned    min_residual_partition_order;
+   unsigned    max_residual_partition_order;
+   unsigned    rice_parameter_search_dist;
+   unsigned    max_lpc_order;
+} flacLevels[] = {
+   {  false,   false,   false,   false,   0, 2, 2, 0, 0  },
+   {  false,   false,   true,    true,    0, 2, 2, 0, 0  },
+   {  false,   false,   true,    false,   0, 0, 3, 0, 0  },
+   {  false,   false,   false,   false,   0, 3, 3, 0, 6  },
+   {  false,   false,   true,    true,    0, 3, 3, 0, 8  },
+   {  false,   false,   true,    false,   0, 3, 3, 0, 8  },
+   {  false,   false,   true,    false,   0, 0, 4, 0, 8  },
+   {  true,    false,   true,    false,   0, 0, 6, 0, 8  },
+   {  true,    false,   true,    false,   0, 0, 6, 0, 12 },
+};
+
 bool ExportFLAC(AudacityProject *project,
                 int numChannels, wxString fName,
                 bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
@@ -54,9 +77,12 @@ bool ExportFLAC(AudacityProject *project,
 
    Tags *tags = project->GetTags();
 
+   int levelPref;
+   gPrefs->Read(wxT("/FileFormats/FLACLevel"), &levelPref, 5);
+
    wxString bitDepthPref =
       gPrefs->Read(wxT("/FileFormats/FLACBitDepth"), wxT("16"));
-   
+
    FLAC::Encoder::File *encoder= new FLAC::Encoder::File();
    encoder->set_filename(OSFILENAME(fName));
    encoder->set_channels(numChannels);
@@ -72,6 +98,21 @@ bool ExportFLAC(AudacityProject *project,
     	format=int16Sample;
    	encoder->set_bits_per_sample(16);
    }
+
+   // Duplicate the flac command line compression levels
+   if (levelPref < 0 || levelPref > 8) {
+      levelPref = 5;
+   }
+   encoder->set_do_exhaustive_model_search(flacLevels[levelPref].do_exhaustive_model_search);
+   encoder->set_do_escape_coding(flacLevels[levelPref].do_escape_coding);
+   encoder->set_do_mid_side_stereo(flacLevels[levelPref].do_mid_side_stereo);
+   encoder->set_loose_mid_side_stereo(flacLevels[levelPref].loose_mid_side_stereo);
+   encoder->set_qlp_coeff_precision(flacLevels[levelPref].qlp_coeff_precision);
+   encoder->set_min_residual_partition_order(flacLevels[levelPref].min_residual_partition_order);
+   encoder->set_max_residual_partition_order(flacLevels[levelPref].max_residual_partition_order);
+   encoder->set_rice_parameter_search_dist(flacLevels[levelPref].rice_parameter_search_dist);
+   encoder->set_max_lpc_order(flacLevels[levelPref].max_lpc_order);
+
    encoder->init();
    
    int numWaveTracks;
@@ -148,6 +189,17 @@ public:
    /// 
    void PopulateOrExchange(ShuttleGui & S)
    {
+      wxArrayString flacLevelNames, flacLevelLabels;
+      flacLevelLabels.Add(wxT("0")); flacLevelNames.Add(_("0 (fastest)"));
+      flacLevelLabels.Add(wxT("1")); flacLevelNames.Add(_("1"));
+      flacLevelLabels.Add(wxT("2")); flacLevelNames.Add(_("2"));
+      flacLevelLabels.Add(wxT("3")); flacLevelNames.Add(_("3"));
+      flacLevelLabels.Add(wxT("4")); flacLevelNames.Add(_("4"));
+      flacLevelLabels.Add(wxT("5")); flacLevelNames.Add(_("5"));
+      flacLevelLabels.Add(wxT("6")); flacLevelNames.Add(_("6"));
+      flacLevelLabels.Add(wxT("7")); flacLevelNames.Add(_("7"));
+      flacLevelLabels.Add(wxT("8")); flacLevelNames.Add(_("8 (best)"));
+
       wxArrayString flacBitDepthNames, flacBitDepthLabels;
       flacBitDepthLabels.Add(wxT("16")); flacBitDepthNames.Add(_("16 bit"));
       flacBitDepthLabels.Add(wxT("24")); flacBitDepthNames.Add(_("24 bit"));
@@ -158,6 +210,8 @@ public:
          {
             S.StartTwoColumn();
             {
+               S.TieChoice(_("Level:"), wxT("/FileFormats/FLACLevel"),
+                           wxT("5"), flacLevelNames, flacLevelLabels);
                S.TieChoice(_("Bit depth:"), wxT("/FileFormats/FLACBitDepth"),
                            wxT("16"), flacBitDepthNames, flacBitDepthLabels);
             }
