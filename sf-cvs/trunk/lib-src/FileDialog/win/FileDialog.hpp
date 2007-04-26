@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialog.hpp,v 1.3 2007-04-12 00:15:37 llucius Exp $
+// RCS-ID:      $Id: FileDialog.hpp,v 1.4 2007-04-26 04:05:23 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -141,13 +141,14 @@ FileDialogHookFunction(HWND      hDlg,
                         GetWindowLongPtr(hDlg, GWLP_USERDATA);
                     FileDialog *me = (FileDialog *)
                         ofn->lCustData;
-
+                    HWND w = GetFocus();
                     int index = SendDlgItemMessage(hwndDialog,
                                                    cmb1,
                                                    CB_GETCURSEL,
                                                    0,
                                                    0);
                     me->ClickButton(index);
+                    SetFocus(w);
                  }
             }
             break;
