@@ -119,9 +119,10 @@ MP3Exporter *gMP3Exporter = NULL;
 #define ROUTINE_FAST       0
 #define ROUTINE_STANDARD   1
 
-#define PRESET_EXTREME     0
-#define PRESET_STANDARD    1
-#define PRESET_MEDIUM      2
+#define PRESET_INSANE      0
+#define PRESET_EXTREME     1
+#define PRESET_STANDARD    2
+#define PRESET_MEDIUM      3
 
 // Note: The label field is what will be written to preferences and carries
 //       no numerical significance.  It is simply a means to look up a value
@@ -157,16 +158,16 @@ static CHOICES fixRates[] =
 
 static CHOICES varRates[] =
 {
-   {  _("220-260 kbps (Best Quality)"),   QUALITY_0   },
-   {  _("200-250 kbps"),                  QUALITY_1   },
-   {  _("170-210 kbps"),                  QUALITY_2   },
-   {  _("155-195 kbps"),                  QUALITY_3   },
-   {  _("145-185 kbps"),                  QUALITY_4   },
-   {  _("110-150 kbps"),                  QUALITY_5   },
-   {  _("95-135 kbps"),                   QUALITY_6   },
-   {  _("80-120 kbps"),                   QUALITY_7   },
-   {  _("65-105 kbps"),                   QUALITY_8   },
-   {  _("45-85 kbps (Smaller files)"),    QUALITY_9   }
+   {  _("0, 220-260 kbps (Best Quality)"),   QUALITY_0   },
+   {  _("1, 200-250 kbps"),                  QUALITY_1   },
+   {  _("2, 170-210 kbps"),                  QUALITY_2   },
+   {  _("3, 155-195 kbps"),                  QUALITY_3   },
+   {  _("4, 145-185 kbps"),                  QUALITY_4   },
+   {  _("5, 110-150 kbps"),                  QUALITY_5   },
+   {  _("6, 95-135 kbps"),                   QUALITY_6   },
+   {  _("7, 80-120 kbps"),                   QUALITY_7   },
+   {  _("8, 65-105 kbps"),                   QUALITY_8   },
+   {  _("9, 45-85 kbps (Smaller files)"),    QUALITY_9   }
 };
 
 static CHOICES varModes[] =
@@ -177,9 +178,10 @@ static CHOICES varModes[] =
 
 static CHOICES setRates[] =
 {
-   {  _("Extreme"),  PRESET_EXTREME    },
-   {  _("Medium"),   PRESET_MEDIUM     },
-   {  _("Standard"), PRESET_STANDARD   }
+   {  _("Insane, 320 kbps"),        PRESET_INSANE     },
+   {  _("Extreme, 220-260 kbps"),   PRESET_EXTREME    },
+   {  _("Standard, 170-210 kbps"),  PRESET_STANDARD   },
+   {  _("Medium, 145-185 kbps"),    PRESET_MEDIUM     },
 };
 
 #if 0
@@ -359,7 +361,10 @@ public:
          {
             int preset;
 
-            if (mRoutine == ROUTINE_FAST) {
+            if (mQuality == PRESET_INSANE) {
+               preset = LQP_INSANE;
+            }
+            else if (mRoutine == ROUTINE_FAST) {
                if (mQuality == PRESET_EXTREME) {
                   preset = LQP_FAST_EXTREME;
                }
@@ -712,7 +717,10 @@ public:
          {
             int preset;
 
-            if (mRoutine == ROUTINE_FAST) {
+            if (mQuality == PRESET_INSANE) {
+               preset = INSANE;
+            }
+            else if (mRoutine == ROUTINE_FAST) {
                if (mQuality == PRESET_EXTREME) {
                   preset = EXTREME_FAST;
                }
@@ -1480,7 +1488,7 @@ public:
                                       GetNames(choices, cnt),
                                       GetLabels(choices, cnt));
 
-                  mMode = S.TieChoice(_("Variable Mode:"),
+                  mMode = S.TieChoice(_("Variable Speed:"),
                                       wxT("/FileFormats/MP3VarMode"), 
                                       ROUTINE_FAST,
                                       GetNames(varModes, WXSIZEOF(varModes)),
