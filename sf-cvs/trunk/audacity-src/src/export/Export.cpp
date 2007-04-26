@@ -239,7 +239,7 @@ ExportTypeArray Export::GetTypes()
    ExportTypeArray types;
    ExportType et;
 
-   et.Set(_("WAV, AIFF, and other PCM Files"), ExportPCM, ExportPCMOptions, sf_get_all_extensions(), wxT("wav"), 2);
+   et.Set(_("WAV, AIFF, and other uncompressed types"), ExportPCM, ExportPCMOptions, sf_get_all_extensions(), wxT("wav"), 2);
    types.Add(et);
 
    et.Set(_("MP3 Files"), ExportMP3, ExportMP3Options, wxT("mp3"), 2, true);
