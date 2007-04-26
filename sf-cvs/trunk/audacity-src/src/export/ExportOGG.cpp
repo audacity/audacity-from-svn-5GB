@@ -224,7 +224,7 @@ public:
             S.StartMultiColumn(2, wxEXPAND);
             {
                S.SetStretchyCol(1);
-               S.TieSlider(_("OGG Quality:"), mOggQualityUnscaled, 10);
+               S.TieSlider(_("Quality:"), mOggQualityUnscaled, 10);
             }
             S.EndMultiColumn();
          }
