@@ -31,7 +31,6 @@
 #include "toolbars/SelectionBar.h"
 
 #include <wx/defs.h>
-#include <wx/dnd.h>
 #include <wx/event.h>
 #include <wx/log.h>
 #include <wx/dragimag.h>
@@ -92,18 +91,6 @@ enum PlayMode {
    oneSecondPlay,
    loopedPlay
 };
-
-#if wxUSE_DRAG_AND_DROP
-class AudacityDropTarget : public wxFileDropTarget
-{
- public:
-   AudacityDropTarget(AudacityProject *proj);
-   virtual ~AudacityDropTarget();
-   virtual bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames);
- private:
-   AudacityProject *mProject;
-};
-#endif
 
 class AudacityProject:public wxFrame,
                       public TrackPanelListener,
