@@ -9,7 +9,7 @@
 *******************************************************************//**
 
 \file Project.cpp
-\brief Implements AudacityProject and AudcityDropTarget.  
+\brief Implements AudacityProject, DropTarget, and FileObject.
 Includes Menus.cpp.
 
 *//****************************************************************//**
@@ -30,9 +30,15 @@ the menu bars and acting on clicks, are found in file Menus.cpp
 
 *//****************************************************************//**
 
-\class AudacityDropTarget
-\brief AudacityDropTarget, derived from wxFileDropTarget gives 
-drag and drop functionality for audio files.
+\class DropTarget
+\brief DropTarget, derived from wxFileDropTarget gives drag and drop
+functionality for audio files.
+
+*//****************************************************************//**
+
+\class FileObject
+\brief FileObject, derived from wxFileDataObject gives extended drag
+and drop functionality for audio files.
 
 *//****************************************************************//**
 
@@ -52,41 +58,31 @@ scroll information.  It also has some status flags.
 #include <wx/app.h>
 #include <wx/dc.h>
 #include <wx/dcmemory.h>
+#include <wx/dnd.h>
 #include <wx/docview.h>
-#include <wx/intl.h>
-#include <wx/string.h>
-#include <wx/filefn.h>
+#include <wx/event.h>
 #include <wx/ffile.h>
+#include <wx/filedlg.h>
+#include <wx/filefn.h>
+#include <wx/intl.h>
 #include <wx/log.h>
-#include <wx/timer.h>
+#include <wx/menu.h>
+#include <wx/msgdlg.h>
+#include <wx/notebook.h>
+#include <wx/progdlg.h>
+#include <wx/scrolbar.h>
 #include <wx/sizer.h>
 #include <wx/statusbr.h>
-#include <wx/notebook.h>
+#include <wx/string.h>
+#include <wx/textfile.h>
+#include <wx/timer.h>
 
-#ifdef __MACOSX__
+#include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
+
+#if defined(__WXMAC__)
 #include <CoreServices/CoreServices.h>
-#endif
-
-#ifdef __MACOS9__
-#include <Files.h>
-#endif
-
-#ifdef __WXMAC__
-#define __MOVIES__  /* Apple's Movies.h not compatible with Audacity */
 #include <wx/mac/private.h>
 #endif
-
-#include <wx/dragimag.h>
-#include <wx/generic/dragimgg.h>
-
-#include <wx/event.h>
-#include <wx/filedlg.h>
-#include <wx/msgdlg.h>
-#include <wx/scrolbar.h>
-#include <wx/textfile.h>
-#include <wx/menu.h>
-#include <wx/progdlg.h>
-#include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
 
 #include "Project.h"
 
@@ -141,11 +137,7 @@ TrackList *AudacityProject::msClipboard = new TrackList();
 double AudacityProject::msClipLen = 0.0;
 AudacityProject *AudacityProject::msClipProject = NULL;
 
-#ifdef __WXMAC__
-# ifndef __UNIX__
-#  include <Files.h>
-# endif
-
+#if defined(__WXMAC__)
 const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 16;
 const int sbarExtraLen = 1;
@@ -160,10 +152,8 @@ const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 15;
 const int sbarExtraLen = 0;
 const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
-//#include "../images/AudacityLogo48x48.xpm"
 #include "Theme.h"
 #include "AllThemeResources.h"
-
 #endif
 
 //
@@ -219,22 +209,115 @@ void SetActiveProject(AudacityProject * project)
 }
 
 #if wxUSE_DRAG_AND_DROP
-AudacityDropTarget::AudacityDropTarget(AudacityProject *proj)
-   : mProject(proj)
+class FileObject: public wxFileDataObject
 {
-}
+public:
+   FileObject::FileObject()
+   {
+   }
 
-AudacityDropTarget::~AudacityDropTarget()
-{
-}
+   bool IsSupportedFormat(const wxDataFormat & format, Direction dir = Get) const
+   {
+      if (format.GetType() == wxDF_FILENAME) {
+         return true;
+      }
 
-bool AudacityDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
+#if defined(__WXMAC__)
+      if (format.GetFormatId() == kDragPromisedFlavorFindFile) {
+         return true;
+      }
+#endif
+
+      return false;
+   }
+};
+
+class DropTarget: public wxFileDropTarget
 {
-   for (unsigned int i = 0; i < filenames.GetCount(); i++)
-      mProject->Import(filenames[i]);
-   mProject->HandleResize(); // Adjust scrollers for new track sizes.
-   return true;
-}
+public:
+   DropTarget(AudacityProject *proj)
+   {
+      mProject = proj;
+
+      SetDataObject(new FileObject());
+   }
+
+   ~DropTarget()
+   {
+   }
+
+#if defined(__WXMAC__)
+   bool GetData()
+   {
+      bool foundSupported = false;
+      bool firstFileAdded = false;
+      OSErr result;
+
+      UInt16 items = 0;
+      CountDragItems((DragReference)m_currentDrag, &items);
+
+      for (UInt16 index = 1; index <= items; index++) {
+
+         DragItemRef theItem = 0;
+         GetDragItemReferenceNumber((DragReference)m_currentDrag, index, &theItem);
+
+         UInt16 flavors = 0;
+         CountDragItemFlavors((DragReference)m_currentDrag, theItem , &flavors ) ;
+
+         for (UInt16 flavor = 1 ;flavor <= flavors; flavor++) {
+
+            FlavorType theType = 0;
+            result = GetFlavorType((DragReference)m_currentDrag, theItem, flavor, &theType);
+            if (theType != kDragPromisedFlavorFindFile && theType != kDragFlavorTypeHFS) {
+               continue;
+            }
+            foundSupported = true;
+
+            Size dataSize = 0;
+            GetFlavorDataSize((DragReference)m_currentDrag, theItem, theType, &dataSize);
+
+            Ptr theData = new char[dataSize];
+            GetFlavorData((DragReference)m_currentDrag, theItem, theType, (void*) theData, &dataSize, 0L); 
+
+            wxString name;
+            if (theType == kDragPromisedFlavorFindFile) {
+               name = wxMacFSSpec2MacFilename((FSSpec *)theData);
+            }
+            else if (theType == kDragFlavorTypeHFS) {
+               name = wxMacFSSpec2MacFilename(&((HFSFlavor *)theData)->fileSpec);
+            }
+
+            delete[] theData;
+
+            if (!firstFileAdded) {
+               // reset file list
+               ((wxFileDataObject*)GetDataObject())->SetData(0, "");
+               firstFileAdded = true;
+            }
+            ((wxFileDataObject*)GetDataObject())->AddFile(name);
+
+            // We only want to process one flavor
+            break;
+         }
+      }
+
+      return foundSupported;
+   }
+#endif
+
+   bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
+   {
+      for (unsigned int i = 0; i < filenames.GetCount(); i++) {
+         mProject->Import(filenames[i]);
+      }
+      mProject->HandleResize(); // Adjust scrollers for new track sizes.
+      return true;
+   }
+
+private:
+   AudacityProject *mProject;
+};
+
 #endif
 
 AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
@@ -479,10 +562,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mStatusBar = CreateStatusBar(2);
    mStatusBar->SetStatusWidths(2, widths);
 
-#if wxUSE_DRAG_AND_DROP
-   SetDropTarget(new AudacityDropTarget(this));
-#endif
-
    // MM: DirManager is created dynamically, freed on demand via ref-counting
    // MM: We don't need to Ref() here because it start with refcount=1
    mDirManager = new DirManager();
@@ -701,6 +780,13 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    mTimer = new wxTimer(this, AudacityProjectTimerID);
    mTimer->Start(200);
+
+#if wxUSE_DRAG_AND_DROP
+   // We can import now, so become a drag target
+//   SetDropTarget(new AudacityDropTarget(this));
+//   mTrackPanel->SetDropTarget(new AudacityDropTarget(this));
+   mTrackPanel->SetDropTarget(new DropTarget(this));
+#endif
 }
 
 AudacityProject::~AudacityProject()
