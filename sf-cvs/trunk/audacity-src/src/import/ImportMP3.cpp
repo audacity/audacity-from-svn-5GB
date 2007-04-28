@@ -66,6 +66,10 @@ void GetMP3ImportPlugin(ImportPluginList *importPluginList,
 
 extern "C" {
 #include "mad.h"
+
+#ifdef USE_LIBID3TAG 
+#include <id3tag.h>
+#endif
 }
 
 #include "../WaveTrack.h"
@@ -85,6 +89,7 @@ struct private_data {
    progress_callback_t progressCallback;
    void *userData;
    bool cancelled;
+   bool id3checked;
 };
 
 class MP3ImportPlugin : public ImportPlugin
@@ -197,8 +202,9 @@ bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
    mPrivateData.file        = mFile;
    mPrivateData.inputBuffer = new unsigned char [INPUT_BUFFER_SIZE];
-   mPrivateData.channels   = NULL;
+   mPrivateData.channels    = NULL;
    mPrivateData.cancelled   = false;
+   mPrivateData.id3checked  = false;
    mPrivateData.numChannels = 0;
    mPrivateData.trackFactory= trackFactory;
 
@@ -276,6 +282,21 @@ enum mad_flow input_cb(void *_data, struct mad_stream *stream)
       data->cancelled = false;
       return MAD_FLOW_STOP;
    }
+
+#ifdef USE_LIBID3TAG 
+   if (!data->id3checked) {
+      off_t read = data->file->Read(data->inputBuffer, ID3_TAG_QUERYSIZE);
+      int len = id3_tag_query(data->inputBuffer, ID3_TAG_QUERYSIZE);
+      if (len > 0) {
+         data->file->Seek(len, wxFromCurrent);
+      }
+      else {
+         data->file->Seek(0);
+      }
+      
+      data->id3checked = true;
+   }
+#endif
 
    /* "Each time you refill your buffer, you need to preserve the data in
     *  your existing buffer from stream.next_frame to the end.
