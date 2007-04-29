@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: frame.c,v 1.3 2004-06-08 06:38:15 dmazzoni Exp $
+ * $Id: frame.c,v 1.4 2007-04-29 05:10:24 llucius Exp $
  */
 
 # ifdef HAVE_CONFIG_H
@@ -539,8 +539,12 @@ id3_length_t id3_frame_render(struct id3_frame const *frame,
 
   if (flags & (ID3_FRAME_FLAG_FORMATFLAGS & ~ID3_FRAME_FLAG_KNOWNFLAGS)) {
     size += id3_render_binary(ptr, frame->encoded, frame->encoded_length);
-    if (size_ptr)
+    if (size_ptr) {
+      if (options & ID3_TAG_OPTION_ID3V2_3)
+        id3_render_int(&size_ptr, size - 10, 4);
+      else
       id3_render_syncsafe(&size_ptr, size - 10, 4);
+    }
 
     return size;
   }
@@ -617,8 +621,12 @@ id3_length_t id3_frame_render(struct id3_frame const *frame,
 
   /* patch size and flags */
 
-  if (size_ptr)
+  if (size_ptr) {
+    if (options & ID3_TAG_OPTION_ID3V2_3)
+      id3_render_int(&size_ptr, size - 10, 4);
+    else
     id3_render_syncsafe(&size_ptr, size - 10, 4);
+  }
   if (flags_ptr)
     id3_render_int(&flags_ptr, flags, 2);
 
