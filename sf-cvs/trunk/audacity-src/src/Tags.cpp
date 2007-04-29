@@ -541,7 +541,7 @@ int Tags::ExportID3(char **buffer, bool *endOfFile)
       // If this version of libid3tag supports it, use v2.3 ID3
       // tags instead of the newer, but less well supported, v2.4
       // that libid3tag uses by default.
-      #ifdef ID3_TAG_OPTION_ID3V2_3
+      #ifdef ID3_TAG_HAS_TAG_OPTION_ID3V2_3
       tp->options |= ID3_TAG_OPTION_ID3V2_3;
       #endif
 

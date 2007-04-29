@@ -19,7 +19,7 @@
  * If you would like to negotiate alternate licensing terms, you may do
  * so by contacting: Underbit Technologies, Inc. <info@underbit.com>
  *
- * $Id: id3tag.h,v 1.3 2004-06-08 06:38:15 dmazzoni Exp $
+ * $Id: id3tag.h,v 1.4 2007-04-29 05:10:24 llucius Exp $
  */
 
 # ifndef LIBID3TAG_ID3TAG_H
@@ -131,6 +131,8 @@ enum {
 
 /* library options */
 
+#define ID3_TAG_HAS_TAG_OPTION_ID3V2_3
+
 enum {
   ID3_TAG_OPTION_UNSYNCHRONISATION = 0x0001,	/* use unsynchronisation */
   ID3_TAG_OPTION_COMPRESSION       = 0x0002,	/* use compression */
@@ -139,7 +141,8 @@ enum {
   ID3_TAG_OPTION_APPENDEDTAG       = 0x0010,	/* tag will be appended */
   ID3_TAG_OPTION_FILEALTERED       = 0x0020,	/* audio data was altered */
 
-  ID3_TAG_OPTION_ID3V1             = 0x0100	/* render ID3v1/ID3v1.1 tag */
+  ID3_TAG_OPTION_ID3V1             = 0x0100,/* render ID3v1/ID3v1.1 tag */
+  ID3_TAG_OPTION_ID3V2_3           = 0x0200  /* render ID3v2.3 tag */
 };
 
 struct id3_frame {

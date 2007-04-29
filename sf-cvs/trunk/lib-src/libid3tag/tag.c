@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: tag.c,v 1.3 2004-06-08 06:38:15 dmazzoni Exp $
+ * $Id: tag.c,v 1.4 2007-04-29 05:10:24 llucius Exp $
  */
 
 # ifdef HAVE_CONFIG_H
@@ -762,6 +762,155 @@ id3_length_t v1_render(struct id3_tag const *tag, id3_byte_t *buffer)
 }
 
 /*
+ * NAME:	v2_3_render()
+ * DESCRIPTION:	render a v2.3 ID3 tag for compatibility
+ * AUTHOR: Dominic Mazzoni
+ */
+
+#define ID3V2_3_TAG_VERSION 0x0300
+#define ID3V2_3_TAG_FLAG_KNOWNFLAGS 0xc0
+
+id3_length_t v2_3_render(struct id3_tag const *tag, id3_byte_t *buffer)
+{
+  id3_length_t size = 0;
+  id3_byte_t **ptr,
+    *header_ptr = 0, *tagsize_ptr = 0, *crc_ptr = 0, *frames_ptr = 0;
+  int flags, extendedflags;
+  unsigned int i;
+
+  assert(tag);
+
+  /* a tag must contain at least one (renderable) frame */
+
+  for (i = 0; i < tag->nframes; ++i) {
+    if (id3_frame_render(tag->frames[i], 0, 0) > 0)
+      break;
+  }
+
+  if (i == tag->nframes)
+    return 0;
+
+  ptr = buffer ? &buffer : 0;
+
+  /* get flags */
+
+  flags         = tag->flags         & ID3V2_3_TAG_FLAG_KNOWNFLAGS;
+  extendedflags = tag->extendedflags & ID3_TAG_EXTENDEDFLAG_KNOWNFLAGS;
+
+  extendedflags &= ~ID3_TAG_EXTENDEDFLAG_CRCDATAPRESENT;
+  if (tag->options & ID3_TAG_OPTION_CRC)
+    extendedflags |= ID3_TAG_EXTENDEDFLAG_CRCDATAPRESENT;
+
+  extendedflags &= ~ID3_TAG_EXTENDEDFLAG_TAGRESTRICTIONS;
+  if (tag->restrictions)
+    extendedflags |= ID3_TAG_EXTENDEDFLAG_TAGRESTRICTIONS;
+
+
+  extendedflags = 0;
+
+
+  flags &= ~ID3_TAG_FLAG_UNSYNCHRONISATION;
+  if (tag->options & ID3_TAG_OPTION_UNSYNCHRONISATION)
+    flags |= ID3_TAG_FLAG_UNSYNCHRONISATION;
+
+  flags &= ~ID3_TAG_FLAG_EXTENDEDHEADER;
+  if (extendedflags)
+    flags |= ID3_TAG_FLAG_EXTENDEDHEADER;
+
+  /* header */
+
+  if (ptr)
+    header_ptr = *ptr;
+
+  size += id3_render_immediate(ptr, "ID3", 3);
+  size += id3_render_int(ptr, ID3V2_3_TAG_VERSION, 2);
+  size += id3_render_int(ptr, flags, 1);
+
+  if (ptr)
+    tagsize_ptr = *ptr;
+
+  size += id3_render_syncsafe(ptr, 0, 4);
+
+  /* extended header */
+
+  if (flags & ID3_TAG_FLAG_EXTENDEDHEADER) {
+    id3_length_t ehsize = 0;
+    id3_byte_t *ehsize_ptr = 0;
+
+    if (ptr)
+      ehsize_ptr = *ptr;
+
+    ehsize += id3_render_syncsafe(ptr, 0, 4);
+    ehsize += id3_render_int(ptr, 1, 1);
+    ehsize += id3_render_int(ptr, extendedflags, 1);
+
+    if (extendedflags & ID3_TAG_EXTENDEDFLAG_TAGISANUPDATE)
+      ehsize += id3_render_int(ptr, 0, 1);
+
+    if (extendedflags & ID3_TAG_EXTENDEDFLAG_CRCDATAPRESENT) {
+      ehsize += id3_render_int(ptr, 5, 1);
+
+      if (ptr)
+        crc_ptr = *ptr;
+
+      ehsize += id3_render_syncsafe(ptr, 0, 5);
+    }
+
+    if (extendedflags & ID3_TAG_EXTENDEDFLAG_TAGRESTRICTIONS) {
+      ehsize += id3_render_int(ptr, 1, 1);
+      ehsize += id3_render_int(ptr, tag->restrictions, 1);
+    }
+
+    if (ehsize_ptr)
+      id3_render_syncsafe(&ehsize_ptr, ehsize, 4);
+
+    size += ehsize;
+  }
+
+  /* frames */
+
+  if (ptr)
+    frames_ptr = *ptr;
+
+  for (i = 0; i < tag->nframes; ++i)
+    size += id3_frame_render(tag->frames[i], ptr, tag->options);
+
+  /* padding */
+
+  if (!(flags & ID3_TAG_FLAG_FOOTERPRESENT)) {
+    if (size < tag->paddedsize)
+      size += id3_render_padding(ptr, 0, tag->paddedsize - size);
+    else if (tag->options & ID3_TAG_OPTION_UNSYNCHRONISATION) {
+      if (ptr == 0)
+	size += 1;
+      else {
+	if ((*ptr)[-1] == 0xff)
+	  size += id3_render_padding(ptr, 0, 1);
+      }
+    }
+  }
+
+  /* patch tag size and CRC */
+
+  if (tagsize_ptr)
+    id3_render_syncsafe(&tagsize_ptr, size - 10, 4);
+
+  if (crc_ptr) {
+    id3_render_syncsafe(&crc_ptr,
+			id3_crc_compute(frames_ptr, *ptr - frames_ptr), 5);
+  }
+
+  /* footer */
+
+  if (flags & ID3_TAG_FLAG_FOOTERPRESENT) {
+    size += id3_render_immediate(ptr, "3DI", 3);
+    size += id3_render_binary(ptr, header_ptr + 3, 7);
+  }
+
+  return size;
+}
+
+/*
  * NAME:	tag->render()
  * DESCRIPTION:	render a complete ID3 tag
  */
@@ -777,6 +926,9 @@ id3_length_t id3_tag_render(struct id3_tag const *tag, id3_byte_t *buffer)
 
   if (tag->options & ID3_TAG_OPTION_ID3V1)
     return v1_render(tag, buffer);
+
+  if (tag->options & ID3_TAG_OPTION_ID3V2_3)
+    return v2_3_render(tag, buffer);
 
   /* a tag must contain at least one (renderable) frame */
 
