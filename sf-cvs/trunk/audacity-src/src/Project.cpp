@@ -212,7 +212,7 @@ void SetActiveProject(AudacityProject * project)
 class FileObject: public wxFileDataObject
 {
 public:
-   FileObject::FileObject()
+   FileObject()
    {
    }
 
