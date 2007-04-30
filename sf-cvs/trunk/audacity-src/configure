@@ -273,6 +273,7 @@ PACKAGE_BUGREPORT=
 
 ac_unique_file="src/Audacity.h"
 ac_default_prefix=/usr/local
+ac_subdirs_all="$ac_subdirs_all lib-src/FileDialog"
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>
@@ -315,7 +316,7 @@ ac_subdirs_all="$ac_subdirs_all lib-src/portaudio-v19"
 ac_subdirs_all="$ac_subdirs_all lib-src/rtaudio"
 ac_subdirs_all="$ac_subdirs_all lib-src/portmixer"
 ac_subdirs_all="$ac_subdirs_all lib-src/dlcompat"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS EXTRATARGETS EXTRAINSTALLTARGETS EXTRAUNINSTALLTARGETS OPTOBJS CDEPEND PRECOMP_CFLAGS AFTERBUILD INSTALL_PREFIX CONFIGHEADER LOCAL_LIBS AUDACITY_NAME PKG_CONFIG ac_pt_PKG_CONFIG SNDFILE_CFLAGS SNDFILE_LIBS SAMPLERATE_CFLAGS SAMPLERATE_LIBS SOUNDTOUCH_CFLAGS SOUNDTOUCH_LIBS subdirs WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os JACK_CFLAGS JACK_LIBS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS EXTRATARGETS EXTRAINSTALLTARGETS EXTRAUNINSTALLTARGETS OPTOBJS CDEPEND PRECOMP_CFLAGS AFTERBUILD INSTALL_PREFIX CONFIGHEADER LOCAL_LIBS AUDACITY_NAME subdirs PKG_CONFIG ac_pt_PKG_CONFIG SNDFILE_CFLAGS SNDFILE_LIBS SAMPLERATE_CFLAGS SAMPLERATE_LIBS SOUNDTOUCH_CFLAGS SOUNDTOUCH_LIBS WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os JACK_CFLAGS JACK_LIBS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -3433,6 +3434,11 @@ else
   wx_preference=""
 fi;
 
+
+
+subdirs="$subdirs lib-src/FileDialog"
+
+
 LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBEXPAT LIBTWOLAME"
 
 { echo "$as_me:$LINENO: Determining what libraries are available in this tree and on the system" >&5
@@ -6236,6 +6242,9 @@ ${wx_list}" >&2;}
 esac
 
 
+ac_configure_args="$ac_configure_args --with-wx-config=\"$WX_CONFIG\""
+
+
 LIBS="$LIBS `$WX_CONFIG $static_preference $unicode_preference $debug_preference $wx_preference --libs`"
 CPPFLAGS="$CPPFLAGS `$WX_CONFIG $static_preference $unicode_preference $debug_preference $wx_preference --cxxflags`"
 
@@ -7779,6 +7788,7 @@ s,@INSTALL_PREFIX@,$INSTALL_PREFIX,;t t
 s,@CONFIGHEADER@,$CONFIGHEADER,;t t
 s,@LOCAL_LIBS@,$LOCAL_LIBS,;t t
 s,@AUDACITY_NAME@,$AUDACITY_NAME,;t t
+s,@subdirs@,$subdirs,;t t
 s,@PKG_CONFIG@,$PKG_CONFIG,;t t
 s,@ac_pt_PKG_CONFIG@,$ac_pt_PKG_CONFIG,;t t
 s,@SNDFILE_CFLAGS@,$SNDFILE_CFLAGS,;t t
@@ -7787,7 +7797,6 @@ s,@SAMPLERATE_CFLAGS@,$SAMPLERATE_CFLAGS,;t t
 s,@SAMPLERATE_LIBS@,$SAMPLERATE_LIBS,;t t
 s,@SOUNDTOUCH_CFLAGS@,$SOUNDTOUCH_CFLAGS,;t t
 s,@SOUNDTOUCH_LIBS@,$SOUNDTOUCH_LIBS,;t t
-s,@subdirs@,$subdirs,;t t
 s,@WX_CONFIG@,$WX_CONFIG,;t t
 s,@build@,$build,;t t
 s,@build_cpu@,$build_cpu,;t t

@@ -23,13 +23,13 @@ custom controls.
 typedef void (*fdCallback)(void *, int);
 
 #if defined(__WXMAC__)
-#include "mac/FileDialog.h"
+#include "mac/FileDialogPrivate.h"
 #elif defined(__WXMSW__)
-#include "win/FileDialog.h"
+#include "win/FileDialogPrivate.h"
 #elif defined(__WXGTK__)
-#include "gtk/FileDialog.h"
+#include "gtk/FileDialogPrivate.h"
 #else
-#include "generic/FileDialog.h"
+#include "generic/FileDialogPrivate.h"
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ typedef void (*fdCallback)(void *, int);
 // Modified by: Leland Lucius
 // Created:     8/17/99
 // Copyright:   (c) Robert Roebling
-// RCS-ID:      $Id: FileDialog.h,v 1.4 2007-04-11 00:05:54 llucius Exp $
+// RCS-ID:      $Id: FileDialog.h,v 1.5 2007-04-30 04:12:42 llucius Exp $
 // Licence:     wxWindows licence
 //
 // Modified for Audacity to support an additional button on Save dialogs

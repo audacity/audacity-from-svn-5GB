@@ -2,7 +2,7 @@
 // Name:        gtk/filedlg.cpp
 // Purpose:     native implementation of FileDialog
 // Author:      Robert Roebling, Zbigniew Zagorski, Mart Raudsepp
-// Id:          $Id: FileDialog.hpp,v 1.7 2007-04-21 21:52:23 llucius Exp $
+// Id:          $Id: FileDialogPrivate.cpp,v 1.1 2007-04-30 04:12:49 llucius Exp $
 // Copyright:   (c) 1998 Robert Roebling, 2004 Zbigniew Zagorski, 2005 Mart Raudsepp
 // Licence:     wxWindows licence
 //
@@ -16,7 +16,7 @@
 // Include setup.h to get wxUSE flags for compilers that do not support precompilation of headers
 #include "wx/setup.h"
 
-#include "FileDialog.h"
+#include "../FileDialog.h"
 
 #if defined(__WXGTK24__) && (!defined(__WXGPE__))
 
