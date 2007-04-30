@@ -300,6 +300,8 @@ EffectEqualization::EffectEqualization()
    mFilterFuncR = new float[windowSize];
    mFilterFuncI = new float[windowSize];
    mM = 4001;
+   mCurveName = wxString(wxT("custom"));
+   mLin = false;
    mdBMin = -30.;
    mdBMax = 30.;
 }
@@ -315,7 +317,6 @@ EffectEqualization::~EffectEqualization()
    mFilterFuncI = NULL;
 }
 
-
 bool EffectEqualization::PromptUser()
 {
    TrackListIterator iter(mWaveTracks);
@@ -328,9 +329,11 @@ bool EffectEqualization::PromptUser()
 
 
    EqualizationDialog dlog(this, ((double)loFreqI), hiFreq, mFilterFuncR, mFilterFuncI,
-                           windowSize, mParent, -1, _("Equalization"));
+                           windowSize, mCurveName, mParent, -1, _("Equalization"));
 
    dlog.M = mM;
+   dlog.curveName = mCurveName;
+   dlog.linCheck = mLin;
    dlog.dBMin = mdBMin;
    dlog.dBMax = mdBMax;
    dlog.TransferDataToWindow();
@@ -341,21 +344,49 @@ bool EffectEqualization::PromptUser()
       return false;
 
    mM = dlog.M;
+   mCurveName = dlog.curveName;
+   mLin = dlog.linCheck;
    mdBMin = dlog.dBMin;
    mdBMax = dlog.dBMax;
 
    return true;
 }
 
+bool EffectEqualization::DontPromptUser()
+{
+   TrackListIterator iter(mWaveTracks);
+   WaveTrack *t = (WaveTrack *) iter.First();
+   float hiFreq;
+   if (t)
+      hiFreq = ((float)(t->GetRate())/2.);
+   else
+      hiFreq = ((float)(GetActiveProject()->GetRate())/2.);
+
+
+   EqualizationDialog dlog(this, ((double)loFreqI), hiFreq, mFilterFuncR, mFilterFuncI,
+                           windowSize, mCurveName, mParent, -1, _("Equalization"));
+
+   dlog.M = mM;
+   dlog.curveName = mCurveName;
+   dlog.linCheck = mLin;
+   dlog.TransferDataToWindow();
+   dlog.CalcFilter();
+
+   return true;
+}
+
 bool EffectEqualization::TransferParameters( Shuttle & shuttle )
 {
-   //TODO: Lots of parameters...
-//   shuttle.TransferInt("",,0);
+   shuttle.TransferInt(wxT("FilterLength"),mM,4001);
+   shuttle.TransferString(wxT("CurveName"),mCurveName,wxT("eric"));
+   shuttle.TransferBool(wxT("InterpolateLin"),mLin,false);
+
    return true;
 }
 
 bool EffectEqualization::Process()
 {
+   DontPromptUser();
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
@@ -796,6 +827,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
                      float *filterFuncR,
                      float *filterFuncI,
                      long windowSize,
+                     wxString curveName,
                      wxWindow *parent, wxWindowID id,
                      const wxString &title,
                      const wxPoint &position,
@@ -806,6 +838,8 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    m_pEffect = effect;
 
    M = 4001;
+   curveName = wxT("custom");
+   linCheck = false;
    dBMin = -30.;
    dBMax = 30;
 
@@ -838,7 +872,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    MakeEqualizationDialog();
 
    // Set initial curve
-   setCurve( mLogEnvelope );
+   setCurve( mLogEnvelope, curveName );
 
    bandsInUse = NUMBER_OF_BANDS;
    //double loLog = log10(mLoFreq);
@@ -1262,6 +1296,11 @@ bool EqualizationDialog::Validate()
 //
 bool EqualizationDialog::TransferDataToWindow()
 {
+   // Set log or lin freq scale (affects interpolation as well)
+   mLinFreq->SetValue( linCheck );
+   wxCommandEvent dummyEvent;
+   OnLinFreq(dummyEvent);
+
    MSlider->SetValue((M-1)/2);
    M = 0;                        // force refresh in TransferDataFromWindow()
 
@@ -1270,6 +1309,9 @@ bool EqualizationDialog::TransferDataToWindow()
 
    dBMaxSlider->SetValue((int)dBMax);
    dBMax = 0;                    // force refresh in TransferDataFromWindow()
+
+   // Set initial curve
+   setCurve( mLogEnvelope, curveName );
 
    return TransferDataFromWindow();
 }
@@ -1488,6 +1530,21 @@ void EqualizationDialog::setCurve(Envelope *env)
    setCurve( env, (int) mCurves.GetCount()-1);
 }
 
+void EqualizationDialog::setCurve(Envelope *env, wxString curveName)
+{
+   unsigned i = 0;
+   for( i = 0; i < mCurves.GetCount(); i++ )
+      if( curveName == mCurves[ i ].Name )
+         break;
+   if( i == mCurves.GetCount())
+   {
+      wxMessageBox( wxT("Requested curve not found, using 'custom'"), wxT("Curve not found"), wxOK|wxICON_ERROR );
+      setCurve( env, (int) mCurves.GetCount()-1);
+   }
+   else
+      setCurve( env, i );
+}
+
 //
 // Set new curve selection and manage state of delete button
 //
@@ -1495,6 +1552,7 @@ void EqualizationDialog::Select( int curve )
 {
    // Set current choice
    mCurve->SetSelection( curve );
+   curveName = mCurves[ curve ].Name;
 
    // If the "custom" curve became active
    if( curve == mCurve->GetCount() - 1 )
@@ -2095,6 +2153,7 @@ void EqualizationDialog::OnLinFreq(wxCommandEvent &evt)
       freqRuler->ruler.SetRange(0, mHiFreq);
       EnvLogToLin();
       mPanel->mEnvelope = mLinEnvelope;
+      linCheck = true;
    }
    else  //going from lin to log freq scale
    {
@@ -2102,6 +2161,7 @@ void EqualizationDialog::OnLinFreq(wxCommandEvent &evt)
       freqRuler->ruler.SetRange(mLoFreq, mHiFreq);
       EnvLinToLog();
       mPanel->mEnvelope = mLogEnvelope;
+      linCheck = false;
    }
    CalcFilter();
    freqRuler->Refresh(false);
@@ -2451,28 +2511,29 @@ void EqualizationDialog::OnOk(wxCommandEvent &event)
    {
       // Update custom curve (so it's there for next time)
       //(done in a hurry, may not be the neatest -MJS)
-      int i, j;
-      int numPoints = mLogEnvelope->GetNumberOfPoints();
-      double *when = new double[ numPoints ];
-      double *value = new double[ numPoints ];
-      mLogEnvelope->GetPoints( when, value, numPoints );
-      for(i=0,j=0;j<numPoints-2;i++,j++)
+      if( mDirty == true )
       {
-         if( (value[i]<value[i+1]+.05) && (value[i]>value[i+1]-.05) &&
-             (value[i+1]<value[i+2]+.05) && (value[i+1]>value[i+2]-.05) )
-         {   // within < 0.05 dB?
-            mLogEnvelope->Delete(j+1);
-            numPoints--;
-            j--;
+         int i, j;
+         int numPoints = mLogEnvelope->GetNumberOfPoints();
+         double *when = new double[ numPoints ];
+         double *value = new double[ numPoints ];
+         mLogEnvelope->GetPoints( when, value, numPoints );
+         for(i=0,j=0;j<numPoints-2;i++,j++)
+         {
+            if( (value[i]<value[i+1]+.05) && (value[i]>value[i+1]-.05) &&
+                (value[i+1]<value[i+2]+.05) && (value[i+1]>value[i+2]-.05) )
+            {   // within < 0.05 dB?
+               mLogEnvelope->Delete(j+1);
+               numPoints--;
+               j--;
+            }
          }
+         delete [] when;
+         delete [] value;
+         Select( (int) mCurves.GetCount()-1 );
       }
-      Select( (int) mCurves.GetCount()-1 );
-      EnvelopeUpdated();
-      mDirty = true;
       SaveCurves();
 
-      delete [] when;
-      delete [] value;
       if(mLogEnvelope)
          delete mLogEnvelope;
       mLogEnvelope = NULL;

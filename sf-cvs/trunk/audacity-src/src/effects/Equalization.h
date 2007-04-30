@@ -96,6 +96,7 @@ public:
    }
 
    virtual bool PromptUser();
+   virtual bool DontPromptUser();
    virtual bool TransferParameters( Shuttle & shuttle );
 
    virtual bool Process();
@@ -117,6 +118,8 @@ private:
    float *mFilterFuncR;
    float *mFilterFuncI;
    int mM;
+   wxString mCurveName;
+   bool mLin;
    float mdBMax;
    float mdBMin;
 
@@ -198,7 +201,7 @@ public:
    // constructors and destructors
    EqualizationDialog(EffectEqualization * effect,
                double loFreq, double hiFreq,
-               float *filterFuncR, float *filterFuncI, long windowSize,
+               float *filterFuncR, float *filterFuncI, long windowSize, wxString CurveName,
                wxWindow *parent, wxWindowID id,
                const wxString &title,
                const wxPoint& pos = wxDefaultPosition,
@@ -217,6 +220,8 @@ public:
    wxChoice *mInterpChoice;
    wxCheckBox *mLinFreq;
    int M;
+   wxString curveName;
+   bool linCheck;
    float dBMin;
    float dBMax;
    double whens[NUM_PTS];
@@ -231,6 +236,7 @@ private:
    void SaveCurves();
    void Select(int sel);
    void setCurve(Envelope *env, int currentCurve);
+   void setCurve(Envelope *env, wxString curveName);
    void setCurve(Envelope *env);
    void GraphicEQ(Envelope *env);
    void spline(double x[], double y[], int n, double y2[]);
