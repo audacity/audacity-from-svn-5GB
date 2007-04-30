@@ -16,16 +16,6 @@ custom controls.
 
 #include "FileDialog.h"
 
-#if defined(__WXMAC__)
-#include "mac/FileDialog.hpp"
-#elif defined(__WXMSW__)
-#include "win/FileDialog.hpp"
-#elif defined(__WXGTK__)
-#include "gtk/FileDialog.hpp"
-#else
-#include "generic/FileDialog.hpp"
-#endif
-
 void FileDialog::EnableButton(wxString label, fdCallback cb, void *data)
 {
    m_buttonlabel = label;
@@ -47,7 +37,7 @@ void FileDialog::ClickButton(int index)
 // Author:      John Labenski
 // Modified by: Leland Lucius
 // Created:     14.06.03 (extracted from src/*/filedlg.cpp)
-// RCS-ID:      $Id: FileDialog.cpp,v 1.4 2007-04-11 00:05:54 llucius Exp $
+// RCS-ID:      $Id: FileDialog.cpp,v 1.5 2007-04-30 04:12:42 llucius Exp $
 // Copyright:   (c) Robert Roebling
 // Licence:     wxWindows licence
 //

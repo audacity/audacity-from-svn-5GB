@@ -136,6 +136,8 @@ AC_ARG_WITH(wx-version,
             wx_preference="--version=$withval",
             wx_preference="")
 
+AC_CONFIG_SUBDIRS([lib-src/FileDialog])
+
 LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBEXPAT LIBTWOLAME"
 
 AC_MSG_NOTICE([Determining what libraries are available in this tree and on the system])
@@ -352,6 +354,10 @@ wxWidgets
 from http://wxwidgets.org.
 ${wx_list}])
 esac
+
+dnl Pass wx config path to lower levels
+
+ac_configure_args="$ac_configure_args --with-wx-config=\"$WX_CONFIG\""
 
 dnl Gather wx arguments
 

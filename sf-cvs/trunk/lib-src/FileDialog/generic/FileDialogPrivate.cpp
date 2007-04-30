@@ -4,7 +4,7 @@
 // Author:      Robert Roebling
 // Modified by: Leland Lucius
 // Created:     12/12/98
-// RCS-ID:      $Id: FileDialog.hpp,v 1.3 2007-04-12 00:15:36 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.1 2007-04-30 04:12:45 llucius Exp $
 // Copyright:   (c) Robert Roebling
 // Licence:     wxWindows licence
 //
@@ -18,6 +18,8 @@
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
+
+#include "../FileDialog.h"
 
 #include "wx/checkbox.h"
 #include "wx/textctrl.h"

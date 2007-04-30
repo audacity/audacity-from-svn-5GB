@@ -5,7 +5,7 @@
 // Modified by: Leland Lucius
 // Created:     8/17/99
 // Copyright:   (c) Robert Roebling
-// RCS-ID:      $Id: FileDialog.h,v 1.3 2007-04-12 00:15:36 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.h,v 1.1 2007-04-30 04:12:46 llucius Exp $
 // Licence:     wxWindows licence
 //
 // Modified for Audacity to support an additional button on Save dialogs
