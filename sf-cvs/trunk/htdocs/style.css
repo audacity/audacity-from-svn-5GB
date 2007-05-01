@@ -64,12 +64,15 @@ h4 { font-size:1em; margin:1em 0 .5em 0; }
 #sitenav :link, #sitenav :visited { text-decoration:none; }
 #sitenav :link:hover, #sitenav :visited:hover { text-decoration:underline; }
 
+#leftcolumn {
+	float:left;
+}
+
 #subnav {
 	background:#ddd;
 	border:2px solid #666;
-	float:left;
 	margin:2em 1em;
-	width:11em;
+	width:156px; /* SourceForge/AdSense ads are 160px wide, minus 4px for the border.		11em; */
 }
 #subnav h3 {
 	font-size:1em;
@@ -107,7 +110,12 @@ h4 { font-size:1em; margin:1em 0 .5em 0; }
 #subnav :link:hover, #subnav :visited:hover {
 	background:#ccc;
 }
-.afternav { margin-left:12em; }
+
+#adsense {
+	margin:2em 1em;
+}
+
+.afternav { margin-left:170px; /* SourceForge/AdSense ads are 160px wide.	12em; */}
 
 #content {
 	max-width:60em;
@@ -150,7 +158,8 @@ h4 { font-size:1em; margin:1em 0 .5em 0; }
 .downloads h3 { margin:1em; }
 .downloads img { position:relative; /* safari fix */ }
 
-.download_container {
+.download_container {  
+  margin-top: 0px;
 }
 
 .under_downloads {
@@ -162,6 +171,7 @@ h4 { font-size:1em; margin:1em 0 .5em 0; }
   width: 48%;
   border: 2px solid;
   border-color: #009;
+  margin-top: 0px;
 }
 
 #stable_downloads {
