@@ -9,7 +9,7 @@
   require_once "main.inc.php";
   $pageId = "donate";
   $pageTitle = _("How Does Audacity Raise Money?");
-  include "../include/header_adsense.inc.php";
+  include "../include/header.inc.php";
 ?>
 
 <h2><?=$pageTitle?></h2>
