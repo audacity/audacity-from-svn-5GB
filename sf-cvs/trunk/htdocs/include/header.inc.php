@@ -198,7 +198,7 @@
 		<br>
 		<a href="http://audacity.sourceforge.net/community/donate"><font size="-2">Why is Audacity showing ads?</font></a>  
 	</center>
-  </div> <!-- adsense -->
+  </div>
 
   </div> <!-- leftcolumn -->
 
