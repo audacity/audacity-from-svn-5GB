@@ -7,7 +7,7 @@
   require_once "main.inc.php";
   $pageId = "";
   $pageTitle = _("Get Involved");
-  include "../include/header_adsense.inc.php";
+  include "../include/header.inc.php";
 ?>
 
 <h2><?=$pageTitle?></h2>
