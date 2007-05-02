@@ -12,6 +12,7 @@
 <head>
   <title><?=_("Audacity")?>: <?=$pageTitle?></title>
   <meta http-equiv="Content-Type" content="text/html; charset=<?=$encoding?>">
+  <meta name="keywords" content="Audacity audio software recording editing sounds">
   <link rel="stylesheet" href="<?=$sitePath?>/style.css" type="text/css">
 </head>
 <body>
