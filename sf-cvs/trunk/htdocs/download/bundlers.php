@@ -9,23 +9,234 @@
   $pageId = "bundlers";
   $pageTitle = _("Vendors that Bundle Audacity");
   include "../include/header.inc.php";
+?>
 
-  echo "<h2>$pageTitle</h2>";
-  echo "<p>"._('Audacity is free to download, but vendors are also free to bundle copies of the program with their products, thanks to the <a href="../about/license">GNU General Public License</a>. The following are legitimate, legal offerings. We are happy and proud that they chose to bundle Audacity with their products.')."</p>";
+<h2><?=$pageTitle?></h2>
 
-  echo _('<h3>Behringer iAXE393 USB-Guitar</h3>
-  <p>The <a href="http://www.behringer.com/IAXE393/">Behringer iAXE393 USB-Guitar</a> 
-is an electric guitar that connects to the computer via USB and has headphones output. It comes with the "Guitar Combos BEHRINGER Edition" from Native Instruments, software emulations of three amp/effects combos.</p>');
+<p><?=_('Audacity is free to download, but vendors are also free to bundle copies of the program with their product, thanks to the <a href="../about/license">GNU General Public License</a>. The following are legitimate, legal offerings. We are happy and proud that they chose to bundle Audacity with their products.')?></p>
 
-  echo _('<h3>Ion&reg; iTTUSB and Numark&reg; ttUSB turntables</h3>
-  <p>The <a href="http://www.ion-audio.com/ittusb.php">Ion iTTUSB</a> and 
-<a href="http://www.numark.com/products/product_view.php?v=overview&n=144">Numark ttUSB</a> turntables allow users to record vinyl and shellac records into Audacity via the USB port on the computer, so neither a conventional turntable nor line-in is required.</p>
-   <p>The Ion iTTUSB also provides a line-in port where an external device such as a cassette player can be attached and recorded into Audacity through the USB port. The Numark ttUSB is similar, made by a sister company, and adds a variable pitch control.</p>
-   <p>Currently these turntables disable system sound on Windows machines until they are unplugged at the USB connection. This is correctable by resetting the system playback device in the Windows mixer. They also have no volume control nor apparently any ability to vary the input level of the recording.</p>');
+<p><?=_('Two of these vendors, <a href="http://umixit.com">UmixIt</a> and <a href="http://www.thinklabsmedical.com">Thinklabs</a>, have additionally supported Audacity by sponsoring custom versions. The first <a href="http://umixit.com"><em>UmixIt, powered by Audacity</em></a> Enhanced CD was <a href="http://www.bnlmusic.com/">"Barenaked Ladies Are Men"</a>, released February 2007. Both custom versions will soon be available for download.')?></p>
 
-  echo _('<h3>Podcast Factory&trade; from M-Audio (U.S.) and Pinnacle&trade; (Europe) divisions of Avid</h3>
-  <p>Podcast Factory from <a href="http://www.m-audio.com/products/en_us/PodcastFactory-main.html">M-Audio</a> and 
-<a href="http://www.pinnaclesys.com/PublicSite/uk/Products/Consumer+Products/Audio/M-Audio/Family?code=UKMaudio">Pinnacle</a> is an all-in-one hardware/software solution that makes it easy to record, edit and distribute professional-sounding podcasts. It comes with a broadcast-quality microphone and professional 24-bit/48kHz USB audio interface for making top-notch voice and voice+music recordings. Use the included Audacity software to edit your recordings, create your podcast, and publish it to the Web.</p>');
+<table border="2" cellpadding="8">
+  <tr><th>Vendor</th><th>Product</th><th>Description</th></tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/FCA202">F-CONTROL AUDIO FCA202</a>
+    </td>
+    <td>2 In/2 Out 24-Bit/96 kHz FireWire® audio interface</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/UCG102">GUITAR LINK UCG102</a>
+    </td>
+    <td>guitar-to-USB interface with modeling amps and effects</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/IAXE393">iAXE393 USB-GUITAR</a>
+    </td>
+    <td>electric guitar with built-in USB port, modeling amps and effects</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/IAXE393-BK">iAXE393-BK USB-GUITAR</a>
+    </td>
+    <td>electric guitar with built-in USB port, modeling amps and effects</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/IAXE624-BD">iAXE624-BD CENTARI USB GUITAR</a>
+    </td>
+    <td>electric guitar with built-in USB port, modeling amps and effects</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/IAXE624-BK">iAXE624-BK CENTARI USB GUITAR</a>
+    </td>
+    <td>electric guitar with built-in USB port, modeling amps and effects</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/IAXE629-BKLS">iAXE629-BKLS METALIEN USB-GUITAR</a>
+    </td>
+    <td>electric guitar with built-in USB port, modeling amps and effects</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/PODCASTUDIO-FIREWIRE">PODCASTUDIO FIREWIRE</a>
+    </td>
+    <td>FireWire audio interface, 8-input mixer, headphones, studio microphone with stand, cables, software</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/PODCASTUDIO-USB">PODCASTUDIO USB</a>
+    </td>
+    <td>USB audio interface, 8-input mixer, headphones, studio microphone with stand, cables, software</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/UMA25S">U-CONTROL UMA25S</a>
+    </td>
+    <td>ultra-slim 25-Key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/UMX25">U-CONTROL UMX25</a>
+    </td>
+    <td>25-Key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/UMX49">U-CONTROL UMX49</a>
+    </td>
+    <td>49-Key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/UMX61">U-CONTROL UMX61</a>
+    </td>
+    <td>61-Key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/V-AMP2">V-AMP 2</a>
+    </td>
+    <td>virtual guitar amplifier with tube simulation and 24-bit effects</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.diamondmm.com">Diamond Multimedia</a>
+    </td>
+    <td>
+      <a href="http://www.diamondmm.com/XS51.php">XS51</a>
+    </td>
+    <td>Diamond XtremeSound - 5.1/16 bit Sound Card</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.diamondmm.com">Diamond Multimedia</a>
+    </td>
+    <td>
+      <a href="http://www.diamondmm.com/XS71.php">XS71</a>
+    </td>
+    <td>Diamond XtremeSound - 7.1/24 bit Sound Card</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.ion-audio.com">Ion Audio</a>
+    </td>
+    <td>
+      <a href="http://www.ion-audio.com/ittusb.php">iTTUSB</a>
+    </td>
+    <td>USB turntable</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.m-audio.com">M-Audio</a>
+    </td>
+    <td>
+      <a href="http://www.m-audio.com/products/en_us/PodcastFactory-main.html">Podcast Factory</a>
+    </td>
+    <td>hardware and software to record, edit and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.numark.com">Numark</a>
+    </td>
+    <td>
+      <a href="http://www.numark.com/products/product_view.php?v=overview&n=144">TTUSB</a>
+    </td>
+    <td>USB turntable</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.pinnaclesys.com">Pinnacle Systems</a>
+    </td>
+    <td>
+      <a href="http://www.pinnaclesys.com/PublicSite/uk/Products/Consumer+Products/Audio/M-Audio/Family?code=UKMaudio">Podcast Factory</a>
+    </td>
+    <td>hardware and software to record, edit and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.presonus.com">Presonus Audio Electronics</a>
+    </td>
+    <td>
+      <a href="http://www.presonus.com/inspire1394.html">Inspire 1394</a>
+    </td>
+    <td>FireWire recording system featuring 24-bit/96k analog to digital conversion rate, four simultaneous inputs, software control panel, audio recording and production software</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.trinityaudiogroup.com">Trinity Audio Group</a>
+    </td>
+    <td>
+      <a href="http://www.trinityaudiogroup.com/home.html">Trinity</a>
+    </td>
+    <td>portable recording studio or (DAW) digital audio workstation, featuring "walk and mix" technology</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.thinklabsmedical.com">ThinkLabs</a>
+    </td>
+    <td>
+      <a href="http://www.thinklabsmedical.com">ds32a digital stethoscope; Thinklabs Phonocardiography, powered by Audacity</a>
+    </td>
+    <td>digital stethoscopes: enhanced sound quality, with 50X amplification. Adjust volume for faint heart sounds, obese patients, noisy work environments.</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://umixit.com">UmixIt</a>
+    </td>
+    <td>
+      <a href="http://umixit.com">UmixIt, powered by Audacity</a>
+    </td>
+    <td>original artist re-mix tracks. "Share the studio experience" with favorite recording artists, with the ability to remix, record, sing karaoke, add effects, and edit original artist's recordings track-by-track.</td>
+  </tr>
+</table>
 
+<?php
   include "../include/footer.inc.php";
 ?>
