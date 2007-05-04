@@ -1266,7 +1266,6 @@ void TrackPanel::OnTimer()
    AudacityProject *p = (AudacityProject*)GetParent();
    #if (AUDACITY_BRANDING != BRAND_THINKLABS)
       MixerBoard* pMixerBoard = p->GetMixerBoard();
-      bool bMixerBoardShowing = pMixerBoard && pMixerBoard->IsShown();
 
       if (p->GetAudioIOToken()>0) {
          // Update lyrics display 
@@ -1276,7 +1275,7 @@ void TrackPanel::OnTimer()
             lyrics->Update(gAudioIO->GetStreamTime());
          }
 
-         if (bMixerBoardShowing) 
+         if (pMixerBoard) 
             pMixerBoard->UpdateMeters(gAudioIO->GetStreamTime());
       }
    #endif
@@ -1287,7 +1286,7 @@ void TrackPanel::OnTimer()
        !gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
       p->GetControlToolBar()->OnStop(dummyEvent);  
       #if (AUDACITY_BRANDING != BRAND_THINKLABS)    
-         if (bMixerBoardShowing) 
+         if (pMixerBoard) 
             pMixerBoard->ResetMeters();
       #endif
    }

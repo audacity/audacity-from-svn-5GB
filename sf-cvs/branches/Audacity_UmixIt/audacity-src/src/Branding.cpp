@@ -23,7 +23,6 @@
 
 #include <wx/image.h>
 
-#include "AColor.h"
 #include "Project.h"
 #include "widgets/LinkingHtmlWindow.h"
 
@@ -34,13 +33,14 @@
 
    // Thinklabs custom buttons (all 64x42)
    #include "../images/Branding/Thinklabs_buttons.h" 
+#else
+   #include "MixerBoard.h"
 #endif
 
 // Build in the brand-specific logo and mouse-over bitmaps. 
 // The data global vars in these MUST be named 
 // company_logo_xpm and company_logo_over_xpm, 
 // so the code works for any size.
-// 
 #if (AUDACITY_BRANDING == BRAND_UMIXIT) 
    #include "../images/Branding/UmixIt.xpm" // 162x64
    #include "../images/Branding/UmixIt_over.xpm" // 162x64
@@ -53,12 +53,12 @@
 // The data global vars in these MUST be named 
 // powered_by_Audacity_xpm and powered_by_Audacity_over_xpm, 
 // so the code works for any size.
-// 
 #if (AUDACITY_BRANDING == BRAND_UMIXIT)
    // bigger ones for UmixIt
    #include "../images/Branding/powered_by_Audacity_162x64.xpm"
    #include "../images/Branding/powered_by_Audacity_over_162x64.xpm"
 #else
+   // for Thinklabs, and default
    #include "../images/Branding/powered_by_Audacity.xpm"
    #include "../images/Branding/powered_by_Audacity_over.xpm"
 #endif
@@ -108,17 +108,16 @@ BrandingPanel::BrandingPanel(AudacityProject* pProject,
 {
    mProject = pProject;
 
-   //#if (AUDACITY_BRANDING != BRAND_THINKLABS)
-      this->SetBackgroundColour(*wxWHITE); 
-   //#endif
+   this->SetBackgroundColour(*wxWHITE); 
 
    mMinHeight = 0;
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
       mMinLeftSectionWidth = 0;
       this->AddCustomButtons();
    #else
-      mProjectLogo_origWidth = 0;
       mButton_ProjectLogo = NULL; // Won't know this until loading project.
+      mMinRightSectionWidth = 0;
+      mProjectLogo_origWidth = 0;
    #endif
 
    wxImage buttonImageUp;
@@ -143,8 +142,8 @@ BrandingPanel::BrandingPanel(AudacityProject* pProject,
                   &buttonImageUp, &buttonImageOver, 
                   &buttonImageUp, &buttonImageUp, //v other images?
                   false); // momentary button
-   if (mMinHeight < buttonSize.GetHeight() + kDoubleInset)
-      mMinHeight = buttonSize.GetHeight() + kDoubleInset;
+   if (mMinHeight < buttonSize.GetHeight() + kTripleInset)
+      mMinHeight = buttonSize.GetHeight() + kTripleInset;
 
    pButtonBitmap = new wxBitmap(company_logo_xpm);
    buttonImageUp = pButtonBitmap->ConvertToImage();
@@ -160,8 +159,8 @@ BrandingPanel::BrandingPanel(AudacityProject* pProject,
                   &buttonImageUp, &buttonImageOver, 
                   &buttonImageUp, &buttonImageUp, //v other images?
                   false); // momentary button
-   if (mMinHeight < buttonSize.GetHeight() + kDoubleInset)
-      mMinHeight = buttonSize.GetHeight() + kDoubleInset;
+   if (mMinHeight < buttonSize.GetHeight() + kTripleInset)
+      mMinHeight = buttonSize.GetHeight() + kTripleInset;
 
    #if wxUSE_TOOLTIPS
       mButton_CompanyLogo->SetToolTip(AUDACITY_BRANDING_BRANDURL);
@@ -171,9 +170,39 @@ BrandingPanel::BrandingPanel(AudacityProject* pProject,
    this->SetSizeHints(-1, mMinHeight);
 }
 
+// utility to draw a 2-pixel bevel that shows up against white background
+static void Bevel2OnWhite(wxDC & dc, bool up, wxRect & r) {
+   if (up)
+      dc.SetPen(*wxLIGHT_GREY_PEN);
+   else
+      dc.SetPen(*wxMEDIUM_GREY_PEN);
+
+   // top 
+   dc.DrawLine(r.x,     r.y,     r.x + r.width,       r.y);
+   dc.DrawLine(r.x + 1, r.y + 1, r.x + r.width - 1,   r.y + 1);
+
+   // left
+   dc.DrawLine(r.x,     r.y,     r.x,     r.y + r.height);
+   dc.DrawLine(r.x + 1, r.y + 1, r.x + 1, r.y + r.height - 2);
+
+   if (!up)
+      dc.SetPen(*wxLIGHT_GREY_PEN);
+   else
+      dc.SetPen(*wxMEDIUM_GREY_PEN);
+
+   // right
+   dc.DrawLine(r.x + r.width - 1, r.y,       r.x + r.width - 1,   r.y + r.height - 1);
+   dc.DrawLine(r.x + r.width - 2, r.y + 1,   r.x + r.width - 2,   r.y + r.height - 2);
+
+   // bottom
+   dc.DrawLine(r.x,     r.y + r.height - 1,  r.x + r.width - 1,   r.y + r.height - 1);
+   dc.DrawLine(r.x + 1, r.y + r.height - 2,  r.x + r.width - 2,   r.y + r.height - 2);
+};
+
 #if (AUDACITY_BRANDING != BRAND_THINKLABS)
-   void BrandingPanel::SetProjectLogo(wxFileName brandLogoFileName)
+   void BrandingPanel::SetProjectBranding(Branding* pBranding)
    {
+      wxFileName brandLogoFileName = pBranding->GetBrandLogoFileName();
       if (brandLogoFileName.IsOk() && brandLogoFileName.FileExists())
       {
          if (mButton_ProjectLogo != NULL)
@@ -184,7 +213,7 @@ BrandingPanel::BrandingPanel(AudacityProject* pProject,
          wxImage buttonImageUp(brandLogoFileName.GetFullPath());
          mButton_ProjectLogo = 
             new AButton(this, ID_BUTTON_PROJECT_LOGO, 
-                        wxPoint(1, 1),  // inset for bevel
+                        wxPoint(2, 2),  // inset for bevel
                         wxSize(buttonImageUp.GetWidth(), buttonImageUp.GetHeight()), 
                         &buttonImageUp, &buttonImageUp, 
                         &buttonImageUp, &buttonImageUp, //v other images?
@@ -193,14 +222,12 @@ BrandingPanel::BrandingPanel(AudacityProject* pProject,
             if (mMinLeftSectionWidth < buttonImageUp.GetWidth() + kDoubleInset)
                mMinLeftSectionWidth = buttonImageUp.GetWidth() + kDoubleInset;
          #endif
-         if (mMinHeight < buttonImageUp.GetHeight() + 2) // height plus bevel
-            mMinHeight = buttonImageUp.GetHeight() + 2;
+         if (mMinHeight < buttonImageUp.GetHeight() + kInset) // height plus bevel
+            mMinHeight = buttonImageUp.GetHeight() + kInset;
          mProjectLogo_origWidth = buttonImageUp.GetWidth();
 
          #if wxUSE_TOOLTIPS
-            Branding* pBranding = mProject->GetBranding();
-            if (pBranding)
-               mButton_ProjectLogo->SetToolTip(pBranding->GetBrandURL());
+            mButton_ProjectLogo->SetToolTip(pBranding->GetBrandURL());
          #endif // wxUSE_TOOLTIPS
 
          mProject->HandleResize();
@@ -208,35 +235,6 @@ BrandingPanel::BrandingPanel(AudacityProject* pProject,
    }
 
 #else // (AUDACITY_BRANDING == BRAND_THINKLABS)
-   // utility to draw a 2-pixel bevel that shows up against white background
-   void Bevel2OnWhite(wxDC & dc, bool up, wxRect & r) {
-      if (up)
-         dc.SetPen(*wxLIGHT_GREY_PEN);
-      else
-         dc.SetPen(*wxMEDIUM_GREY_PEN);
-
-      // top 
-      dc.DrawLine(r.x, r.y, r.x + r.width, r.y);
-      dc.DrawLine(r.x + 1, r.y + 1, r.x + r.width - 1, r.y + 1);
-
-      // left
-      dc.DrawLine(r.x, r.y, r.x, r.y + r.height);
-      dc.DrawLine(r.x + 1, r.y + 1, r.x + 1, r.y + r.height - 2);
-
-      if (!up)
-         dc.SetPen(*wxLIGHT_GREY_PEN);
-      else
-         dc.SetPen(*wxMEDIUM_GREY_PEN);
-
-      // right
-      dc.DrawLine(r.x + r.width, r.y, r.x + r.width, r.y + r.height);
-      dc.DrawLine(r.x + r.width - 1, r.y + 1, r.x + r.width - 1, r.y + r.height - 1);
-
-      // bottom
-      dc.DrawLine(r.x, r.y + r.height, r.x + r.width + 1, r.y + r.height);
-      dc.DrawLine(r.x + 1, r.y + r.height - 1, r.x + r.width, r.y + r.height - 1);
-   };
-
    void BrandingPanel::EnableDisableButtons()
    {
       bool bAudioIONotBusy = !gAudioIO->IsBusy();
@@ -557,11 +555,18 @@ void BrandingPanel::OnPaint(wxPaintEvent& evt)
 
    dc.BeginDrawing();
    wxSize mySize = this->GetSize();
-   wxRect bev(0, 0, mySize.GetWidth() - 1, mySize.GetHeight() - 1);
-   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
-      Bevel2OnWhite(dc, true, bev);
-   #else 
-      AColor::Bevel(dc, true, bev);
+   wxRect bev(0, 0, mySize.GetWidth(), mySize.GetHeight());
+   Bevel2OnWhite(dc, true, bev);
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      if (mButton_ProjectLogo)
+      {
+         // Also bevel the cluster at right, when Project Logo is showing.
+         // Whether stacked or side-by-side, mButton_AudacityLogo is always at the leftmost edge.
+         bev = 
+            wxRect(mySize.GetWidth() - mMinRightSectionWidth + 2, 0, 
+                     mMinRightSectionWidth, mySize.GetHeight() - 1);
+         Bevel2OnWhite(dc, true, bev);
+      }
    #endif
    dc.EndDrawing();
 }
@@ -575,37 +580,38 @@ void BrandingPanel::OnSize(wxSizeEvent &evt)
    wxSize buttonSize_CompanyLogo = mButton_CompanyLogo->GetSize();
    wxSize buttonSize_AudacityLogo = mButton_AudacityLogo->GetSize();
    #if (AUDACITY_BRANDING != BRAND_THINKLABS)
-      // mButton_ProjectLogo never moves from (1, 1).
+      // mButton_ProjectLogo never moves from (2, 2).
       wxSize buttonSize_ProjectLogo = 
          mButton_ProjectLogo ? mButton_ProjectLogo->GetSize() : wxSize(0, 0);
       int newProjectLogoWidth = 0;
-      int nMinRightSectionWidth = buttonSize_AudacityLogo.GetWidth() + kDoubleInset;
+      mMinRightSectionWidth = buttonSize_AudacityLogo.GetWidth() + kDoubleInset;
    #endif
 
-   if (((buttonSize_CompanyLogo.GetHeight() + 
-            buttonSize_AudacityLogo.GetHeight())) < // Stack the logos vertically with no gap.
+   if ((buttonSize_CompanyLogo.GetHeight() + 
+            buttonSize_AudacityLogo.GetHeight() + 
+            4) <= // Stack the logos vertically with 2-pixel bevel.
          evtSize.GetHeight())
    {
       // Can stack mButton_CompanyLogo and mButton_AudacityLogo at the right side.
-      yPos = (evtSize.GetHeight() / 2) - kHalfInset - buttonSize_CompanyLogo.GetHeight();
-      if (yPos < 0)
-         yPos = 0;
+      yPos = (evtSize.GetHeight() / 2) - buttonSize_CompanyLogo.GetHeight();
+      if (yPos < 2) // 2-pixel bevel
+         yPos = 2;
       buttonPos = wxPoint(evtSize.GetWidth() - buttonSize_CompanyLogo.GetWidth() - kInset, yPos);
       mButton_CompanyLogo->Move(buttonPos);
 
-      yPos += buttonSize_CompanyLogo.GetHeight();
+      yPos += buttonSize_CompanyLogo.GetHeight() - 1; // no vertical gap
       buttonPos = wxPoint(evtSize.GetWidth() - buttonSize_AudacityLogo.GetWidth() - kInset, yPos);
       mButton_AudacityLogo->Move(buttonPos);
 
       #if (AUDACITY_BRANDING != BRAND_THINKLABS)
          if (mButton_ProjectLogo)
          {
-            if (nMinRightSectionWidth < buttonSize_CompanyLogo.GetWidth() + kDoubleInset)
-               nMinRightSectionWidth = buttonSize_CompanyLogo.GetWidth() + kDoubleInset;
-            newProjectLogoWidth = evtSize.GetWidth() - nMinRightSectionWidth;
+            if (mMinRightSectionWidth < buttonSize_CompanyLogo.GetWidth() + kDoubleInset)
+               mMinRightSectionWidth = buttonSize_CompanyLogo.GetWidth() + kDoubleInset;
+            newProjectLogoWidth = evtSize.GetWidth() - mMinRightSectionWidth;
             if (newProjectLogoWidth > mProjectLogo_origWidth)
                newProjectLogoWidth = mProjectLogo_origWidth;
-            mButton_ProjectLogo->SetSize(1, 1, newProjectLogoWidth, -1);
+            mButton_ProjectLogo->SetSize(2, 2, newProjectLogoWidth, -1);
          }
       #endif
    }
@@ -636,11 +642,11 @@ void BrandingPanel::OnSize(wxSizeEvent &evt)
       #if (AUDACITY_BRANDING != BRAND_THINKLABS)
          if (mButton_ProjectLogo)
          {
-            nMinRightSectionWidth += buttonSize_CompanyLogo.GetWidth() + kInset;
-            newProjectLogoWidth = evtSize.GetWidth() - nMinRightSectionWidth;
+            mMinRightSectionWidth += buttonSize_CompanyLogo.GetWidth() + kInset;
+            newProjectLogoWidth = evtSize.GetWidth() - mMinRightSectionWidth;
             if (newProjectLogoWidth > mProjectLogo_origWidth)
                newProjectLogoWidth = mProjectLogo_origWidth;
-            mButton_ProjectLogo->SetSize(1, 1, newProjectLogoWidth, -1);
+            mButton_ProjectLogo->SetSize(2, 2, newProjectLogoWidth, -1);
          }
       #endif
    }
@@ -703,14 +709,16 @@ bool Branding::HandleXMLTag(const char *tag, const char **attrs)
       else if (!strcmp(attr, "logofilename")) 
       {
          // Logo file is supposed to be stored in the project data directory.
-         wxString strDirName = GetActiveProject()->GetDirManager()->GetProjectDataDir();
+         AudacityProject* pProject = GetActiveProject();
+         wxString strDirName = pProject->GetDirManager()->GetProjectDataDir();
          if (XMLValueChecker::IsGoodFileName(value, strDirName)) 
          {
             // Store full thing, not just file name, so don't need to add path again.
             m_BrandLogoFileName.Assign(strDirName, value);
             m_BrandLogoFileName.Normalize(wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG);
             #if (AUDACITY_BRANDING == BRAND_UMIXIT)
-               mBrandingPanel->SetProjectLogo(m_BrandLogoFileName);
+               mBrandingPanel->SetProjectBranding(this);
+               pProject->GetMixerBoard()->SetProjectBranding(this);
             #endif
          } 
          else

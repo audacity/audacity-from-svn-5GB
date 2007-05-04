@@ -25,6 +25,7 @@
    #include "widgets/AButton.h"
    
    class AudacityProject;
+   class Branding;
 
    class BrandingPanel : public wxPanel {
    public: 
@@ -32,7 +33,9 @@
                      const wxPoint& pos = wxDefaultPosition, 
                      const wxSize& size = wxDefaultSize);
       const int GetMinHeight() { return mMinHeight; };
-      void SetProjectLogo(wxFileName brandLogoFileName); // Updates mMinHeight.
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+         void SetProjectBranding(Branding* pBranding); // Updates mMinHeight.
+      #endif
 
       #if (AUDACITY_BRANDING == BRAND_THINKLABS)
          // Thinklabs custom buttons
@@ -70,14 +73,15 @@
    private:
       AudacityProject* mProject;
 
-      AButton* mButton_ProjectLogo;
       AButton* mButton_CompanyLogo;
       AButton* mButton_AudacityLogo;
 
-      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
-         int mProjectLogo_origWidth;
-      #else
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
          int mMinLeftSectionWidth;
+      #else
+         AButton* mButton_ProjectLogo;
+         int mMinRightSectionWidth;
+         int mProjectLogo_origWidth;
       #endif
       int mMinHeight;
 

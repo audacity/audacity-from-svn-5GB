@@ -2626,9 +2626,6 @@ void AudacityProject::PushState(wxString desc,
       this->EnforceTrackConstraints();
    #else // (AUDACITY_BRANDING != BRAND_THINKLABS)
       UpdateLyrics();
-
-      // All the different ways to add tracks funnel through here.
-      mMixerBoard->AddOrUpdateTrackClusters();
       UpdateMixerBoard();
    #endif 
 }
@@ -2783,12 +2780,11 @@ void AudacityProject::UpdateLyrics()
 
 void AudacityProject::UpdateMixerBoard()
 {
-   if (mTracks->IsEmpty() || !mMixerBoard)
+   if (!mMixerBoard)
       return;
 
-   mMixerBoard->AddOrUpdateTrackClusters();
-   if (mMixerBoard->IsShown())
-      mMixerBoard->UpdateMeters(gAudioIO->GetStreamTime()); 
+   mMixerBoard->UpdateTrackClusters();
+   mMixerBoard->UpdateMeters(gAudioIO->GetStreamTime()); 
 }
 
 #endif // (AUDACITY_BRANDING != BRAND_THINKLABS)
