@@ -106,23 +106,27 @@ WX_DECLARE_OBJARRAY(MusicalInstrument, MusicalInstrumentArray);
 class MixerBoardScrolledWindow : public wxScrolledWindow {
 public: 
    MixerBoardScrolledWindow(AudacityProject* project, 
-                           MixerBoard* parent, wxWindowID id = -1, 
-                           const wxPoint& pos = wxDefaultPosition, 
-                           const wxSize& size = wxDefaultSize, 
-                           long style = wxHSCROLL | wxVSCROLL);
+                              MixerBoard* parent, wxWindowID id = -1, 
+                              const wxPoint& pos = wxDefaultPosition, 
+                              const wxSize& size = wxDefaultSize, 
+                              long style = wxHSCROLL | wxVSCROLL);
+   ~MixerBoardScrolledWindow();
 
 private:
    void OnMouseEvent(wxMouseEvent& event);
+   void OnPaint(wxPaintEvent& evt);
 
 private: 
    MixerBoard* mMixerBoard;
    AudacityProject* mProject;
+   wxImage* mImage;
 
 public:
    DECLARE_EVENT_TABLE()
 };
 
 
+class Branding;
 class TrackList;
 
 // MixerBoard is a window that can either be in MixerBoardFrame or AudacityProject frame.
@@ -142,19 +146,26 @@ public:
                const wxSize& size = wxDefaultSize);
    ~MixerBoard();
 
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      Branding* GetProjectBranding() { return mBranding; }; 
+      void SetProjectBranding(Branding* pBranding); 
+   #endif
+
    // Add clusters for any tracks we're not yet showing.
    // Update pointers for tracks we're aleady showing. 
-   void AddOrUpdateTrackClusters(); 
+   void UpdateTrackClusters(); 
 
    int GetTrackClustersWidth();
-   void RemoveTrackCluster(const WaveTrack* pLeftTrack);
    void MoveTrackCluster(const WaveTrack* pLeftTrack, bool bUp); // Up in TrackPanel is left in MixerBoard.
+   void RemoveTrackCluster(const WaveTrack* pLeftTrack);
+
 
    wxBitmap* GetMusicalInstrumentBitmap(const WaveTrack* pLeftTrack);
 
    bool HasSolo();
    void IncrementSoloCount(int nIncrement = 1);
 
+   void RefreshTrackClusters();
    void ResetMeters();
 
    void UniquelyMuteOrSolo(const WaveTrack* pTargetLeftTrack, bool bSolo);
@@ -180,6 +191,8 @@ private:
 
 
 public:
+   Branding* mBranding;
+
    // mute & solo button images: Create once and store on MixerBoard for use in all MixerTrackClusters.
    wxImage* mImageMuteUp;
    wxImage* mImageMuteOver;

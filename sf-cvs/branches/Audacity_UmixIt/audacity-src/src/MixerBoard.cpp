@@ -401,7 +401,10 @@ void MixerTrackCluster::OnMouseEvent(wxMouseEvent& event)
          }
 
          // Exclusive select, so refresh all MixerTrackClusters.
-         mMixerBoard->Refresh(false);
+         //    This could just be a call to wxWindow::Refresh, but this is 
+         //    more efficient and when ProjectLogo is shown as background, 
+         //    it's necessary to prevent blinking.
+         mMixerBoard->RefreshTrackClusters();
       }
    }
 }
@@ -564,6 +567,7 @@ WX_DEFINE_OBJARRAY(MusicalInstrumentArray);
 
 BEGIN_EVENT_TABLE(MixerBoardScrolledWindow, wxScrolledWindow)
    EVT_MOUSE_EVENTS(MixerBoardScrolledWindow::OnMouseEvent)
+   EVT_PAINT(MixerBoardScrolledWindow::OnPaint)
 END_EVENT_TABLE()
 
 MixerBoardScrolledWindow::MixerBoardScrolledWindow(AudacityProject* project, 
@@ -575,6 +579,13 @@ MixerBoardScrolledWindow::MixerBoardScrolledWindow(AudacityProject* project,
 {
    mMixerBoard = parent;
    mProject = project;
+   mImage = NULL;
+}
+
+MixerBoardScrolledWindow::~MixerBoardScrolledWindow()
+{
+   delete mImage;
+   mImage = NULL;
 }
 
 void MixerBoardScrolledWindow::OnMouseEvent(wxMouseEvent& event)
@@ -585,10 +596,34 @@ void MixerBoardScrolledWindow::OnMouseEvent(wxMouseEvent& event)
       // here, MixerBoard::OnMouseEvent never gets called.
       // So, added mProject to MixerBoardScrolledWindow and just directly do what's needed here.
       mProject->SelectNone();
-      mMixerBoard->Refresh(false);
+      mMixerBoard->RefreshTrackClusters();
    }
+   else
+      event.Skip();
 }
 
+void MixerBoardScrolledWindow::OnPaint(wxPaintEvent &evt)
+{
+   wxScrolledWindow::OnPaint(evt);
+
+   if (mImage == NULL)
+   {
+      Branding* pBranding = mMixerBoard->GetProjectBranding();
+      if (pBranding == NULL)
+         return;
+      wxFileName brandLogoFileName = pBranding->GetBrandLogoFileName();
+      mImage = new wxImage(brandLogoFileName.GetFullPath());
+   }
+
+   wxPaintDC dc(this);
+   dc.BeginDrawing();
+
+   wxSize clientSize = this->GetClientSize();
+   wxBitmap bmp(mImage->Scale(clientSize.GetWidth(), clientSize.GetHeight()));
+   dc.DrawBitmap(bmp, 0, 0);
+
+   dc.EndDrawing();
+}
 
 // class MixerBoard
 
@@ -612,6 +647,8 @@ MixerBoard::MixerBoard(AudacityProject* pProject,
    wxWindow(parent, -1, pos, size)
 {
    // public data members
+   mBranding = NULL;
+
    // mute & solo button images: Create once and store on MixerBoard for use in all MixerTrackClusters.
    mImageMuteUp = NULL;
    mImageMuteOver = NULL;
@@ -672,11 +709,15 @@ MixerBoard::~MixerBoard()
    mMusicalInstruments.Clear();
 }
 
-void MixerBoard::AddOrUpdateTrackClusters() 
-{
-   if (mTracks->IsEmpty())
-      return;
+#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   void MixerBoard::SetProjectBranding(Branding* pBranding)
+   {
+      mBranding = pBranding;
+   }
+#endif
 
+void MixerBoard::UpdateTrackClusters() 
+{
    if (mImageMuteUp == NULL) 
       this->CreateMuteSoloImages();
 
@@ -699,9 +740,10 @@ void MixerBoard::AddOrUpdateTrackClusters()
             // Already showing it. 
             // Track clusters are maintained in the same order as the WaveTracks.
             // Track pointers can change for the "same" track for different states 
-            // on the undo stack, so update the pointers.
+            // on the undo stack, so update the pointers and display name.
             mMixerTrackClusters[nClusterIndex]->mLeftTrack = (WaveTrack*)pLeftTrack;
             mMixerTrackClusters[nClusterIndex]->mRightTrack = (WaveTrack*)pRightTrack;
+            mMixerTrackClusters[nClusterIndex]->UpdateName();
          }
          else
          {
@@ -722,17 +764,26 @@ void MixerBoard::AddOrUpdateTrackClusters()
                this->IncrementSoloCount((int)(pLeftTrack->GetSolo()));
             }
          }
+         nClusterIndex++;
       }
       pLeftTrack = iterTracks.Next();
-      nClusterIndex++;
    }
 
    if (pMixerTrackCluster)
    {
       // Added at least one MixerTrackCluster.
       this->UpdateWidth();
-      for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
-         mMixerTrackClusters[i]->UpdateHeight();
+      for (nClusterIndex = 0; nClusterIndex < mMixerTrackClusters.GetCount(); nClusterIndex++)
+         mMixerTrackClusters[nClusterIndex]->UpdateHeight();
+   }
+   else if (nClusterIndex < kClusterCount)
+   {
+      // We've got too many clusters. 
+      // This can only on things like Undo New Audio Track or Undo Import
+      // that don't call RemoveTrackCluster explicitly. 
+      // We've already updated the track pointers for the clusters to the left, so just remove these.
+      for (; nClusterIndex < kClusterCount; nClusterIndex++)
+         this->RemoveTrackCluster(mMixerTrackClusters[nClusterIndex]->mLeftTrack);
    }
 }
 
@@ -742,33 +793,6 @@ int MixerBoard::GetTrackClustersWidth()
       (mMixerTrackClusters.GetCount() *            // number of tracks times
          (kInset + MIXER_TRACK_CLUSTER_WIDTH)) +   // left margin and width for each
       kInset;                                      // plus final right margin
-}
-
-void MixerBoard::RemoveTrackCluster(const WaveTrack* pLeftTrack)
-{
-   // Find and destroy.
-   MixerTrackCluster* pMixerTrackCluster;
-   int nIndex = this->FindMixerTrackCluster(pLeftTrack, &pMixerTrackCluster);
-   if (pMixerTrackCluster == NULL) 
-      return; // Couldn't find it.
-      
-   mMixerTrackClusters.RemoveAt(nIndex);
-   pMixerTrackCluster->Destroy(); // delete is unsafe on wxWindow.
-
-   // Close the gap, if any.
-   wxPoint pos;
-   int targetX;
-   for (unsigned int i = nIndex; i < mMixerTrackClusters.GetCount(); i++)
-   {
-      pos = mMixerTrackClusters[i]->GetPosition();
-      targetX = 
-         (i * (kInset + MIXER_TRACK_CLUSTER_WIDTH)) + // left margin and width for each
-         kInset; // plus left margin for this cluster
-      if (pos.x != targetX)
-         mMixerTrackClusters[i]->Move(targetX, pos.y);
-   }
-
-   this->UpdateWidth();
 }
 
 void MixerBoard::MoveTrackCluster(const WaveTrack* pLeftTrack, 
@@ -802,6 +826,33 @@ void MixerBoard::MoveTrackCluster(const WaveTrack* pLeftTrack,
       mMixerTrackClusters[nIndex + 1] = pMixerTrackCluster;
       pMixerTrackCluster->Move(pos.x + (kInset + MIXER_TRACK_CLUSTER_WIDTH), pos.y);
    }
+}
+
+void MixerBoard::RemoveTrackCluster(const WaveTrack* pLeftTrack)
+{
+   // Find and destroy.
+   MixerTrackCluster* pMixerTrackCluster;
+   int nIndex = this->FindMixerTrackCluster(pLeftTrack, &pMixerTrackCluster);
+   if (pMixerTrackCluster == NULL) 
+      return; // Couldn't find it.
+      
+   mMixerTrackClusters.RemoveAt(nIndex);
+   pMixerTrackCluster->Destroy(); // delete is unsafe on wxWindow.
+
+   // Close the gap, if any.
+   wxPoint pos;
+   int targetX;
+   for (unsigned int i = nIndex; i < mMixerTrackClusters.GetCount(); i++)
+   {
+      pos = mMixerTrackClusters[i]->GetPosition();
+      targetX = 
+         (i * (kInset + MIXER_TRACK_CLUSTER_WIDTH)) + // left margin and width for each
+         kInset; // plus left margin for this cluster
+      if (pos.x != targetX)
+         mMixerTrackClusters[i]->Move(targetX, pos.y);
+   }
+
+   this->UpdateWidth();
 }
 
 
@@ -859,8 +910,17 @@ void MixerBoard::IncrementSoloCount(int nIncrement /*= 1*/)
    mSoloCount += nIncrement; 
 }
 
+void MixerBoard::RefreshTrackClusters()
+{
+   for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
+      mMixerTrackClusters[i]->Refresh();
+}
+
 void MixerBoard::ResetMeters()
 {
+   if (!this->IsShown())
+      return;
+
    for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
       mMixerTrackClusters[i]->ResetMeter();
 }
@@ -950,7 +1010,7 @@ void MixerBoard::UpdateGain(const WaveTrack* pLeftTrack)
 
 void MixerBoard::UpdateMeters(double t)
 {
-   if (t == mT)
+   if (!this->IsShown() || (t == mT))
       return;
 
    mT = t;

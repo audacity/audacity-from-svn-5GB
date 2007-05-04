@@ -3279,6 +3279,10 @@ void AudacityProject::OnRemoveTracks()
 
    while (t) {
       if (t->GetSelected()) {
+         #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+            if (t->GetKind() == Track::Wave)
+               mMixerBoard->RemoveTrackCluster((WaveTrack*)t);
+         #endif
          delete t;
          t = iter.RemoveCurrent();
       }
@@ -3289,6 +3293,9 @@ void AudacityProject::OnRemoveTracks()
    PushState(_("Removed audio track(s)"), _("Remove Track"));
 
    mTrackPanel->Refresh(false);
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      mMixerBoard->Refresh(true);
+   #endif
 }
 
 //
