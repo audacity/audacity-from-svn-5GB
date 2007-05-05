@@ -460,7 +460,7 @@ void AudacityProject::CreateMenusAndCommands()
          LabelsSelectedFlag );
    c->EndSubMenu();
    
-   c->BeginSubMenu(_("Select..."));
+   c->BeginSubMenu(_("&Select..."));
    c->AddItem(wxT("SelectAll"),      _("&All\tCtrl+A"),                   FN(OnSelectAll));
    c->AddItem(wxT("SelectNone"),     _("&None\tCtrl+Shift+A"),            FN(OnSelectNone));
    c->SetCommandFlags(TracksExistFlag, TracksExistFlag,
