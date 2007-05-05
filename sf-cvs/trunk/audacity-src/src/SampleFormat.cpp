@@ -34,7 +34,7 @@
 
 *//*******************************************************************/
 
-
+#include <wx/intl.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,8 +51,6 @@ Dither gDitherAlgorithm;
 void InitDitherers()
 {
    // Read dither preferences
-   // Note: We use 'triangle' dithering for now, because
-   //       the 'shaped' dithering is supposed to be broken.
    gLowQualityDither = (Dither::DitherType)
    gPrefs->Read(wxT("/Quality/DitherAlgorithm"), (long)Dither::none);
 
@@ -64,13 +62,16 @@ const wxChar *GetSampleFormatStr(sampleFormat format)
 {
    switch(format) {
    case int16Sample:
-      return wxT("16-bit");
+      /* i18n-hint: Audio data bit depth (precison): 16-bit integers */
+      return _("16-bit PCM");
    case int24Sample:
-      return wxT("24-bit");
+      /* i18n-hint: Audio data bit depth (precison): 24-bit integers */
+      return _("24-bit PCM");
    case floatSample:
-      return wxT("32-bit float");
+      /* i18n-hint: Audio data bit depth (precison): 32-bit floating point */
+      return _("32-bit float");
    }
-   return wxT(""); // compiler food
+   return wxT("Unknown format"); // compiler food
 }
 
 samplePtr NewSamples(int count, sampleFormat format)
