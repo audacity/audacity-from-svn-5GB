@@ -716,45 +716,81 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
 
       bool duplex;
       gPrefs->Read(wxT("/AudioIO/Duplex"), &duplex, true);
-      int recordingChannels = gPrefs->Read(wxT("/AudioIO/RecordChannels"), 1);
-
       if( duplex )
          playbackTracks = t->GetWaveTrackArray(false);
       else
          playbackTracks = WaveTrackArray();
 
-      for( int c = 0; c < recordingChannels; c++ )
-      {
-         WaveTrack *newTrack = p->GetTrackFactory()->NewWaveTrack();
-         int initialheight = newTrack->GetHeight();
-         newTrack->SetOffset(t0);
-         newTrack->SetHeight(initialheight / recordingChannels);
-         if( recordingChannels == 2 )
+      // If SHIFT key was down, the user wants append to selected tracks
+      int recordingChannels = 0;
+      if (mRecord->WasShiftDown()) {
+         TrackListIterator it(t);
+         WaveTrack *wt;
+
+         // Find the maximum end time of selected tracks
+         for (Track *tt = it.First(); tt; tt = it.Next()) {
+            if (tt->GetKind() == Track::Wave && tt->GetSelected()) {
+               wt = (WaveTrack *)tt;
+               if (wt->GetEndTime() > t0) {
+                  t0 = wt->GetEndTime();
+               }
+            }
+         }
+
+         // Pad any selected tracks to make them all the same length
+         for (Track *tt = it.First(); tt; tt = it.Next()) {
+            if (tt->GetKind() == Track::Wave && tt->GetSelected()) {
+               wt = (WaveTrack *)tt;
+               t1 = wt->GetEndTime();
+               if (t1 < t0) {
+                  WaveTrack *newTrack = p->GetTrackFactory()->NewWaveTrack();
+                  newTrack->InsertSilence(0.0, t0 - t1);
+                  newTrack->Flush();
+                  wt->Clear(t1, t0);
+                  wt->Paste(t1, newTrack);
+                  delete newTrack;
+               }
+               newRecordingTracks.Add(wt);
+            }
+         }
+
+         t1 = 1000000000.0;     // record for a long, long time (tens of years)
+      }
+      else {
+         recordingChannels = gPrefs->Read(wxT("/AudioIO/RecordChannels"), 1);
+         for( int c = 0; c < recordingChannels; c++ )
          {
-            if( c == 0 )
+            WaveTrack *newTrack = p->GetTrackFactory()->NewWaveTrack();
+            int initialheight = newTrack->GetHeight();
+            newTrack->SetOffset(t0);
+            newTrack->SetHeight(initialheight / recordingChannels);
+            if( recordingChannels == 2 )
             {
-               newTrack->SetChannel(Track::LeftChannel);
-               newTrack->SetLinked(true);
+               if( c == 0 )
+               {
+                  newTrack->SetChannel(Track::LeftChannel);
+                  newTrack->SetLinked(true);
+               }
+               else
+               {
+                  newTrack->SetChannel(Track::RightChannel);
+                  newTrack->SetTeamed(true);
+               }
             }
             else
             {
-               newTrack->SetChannel(Track::RightChannel);
-               newTrack->SetTeamed(true);
+               newTrack->SetChannel( Track::MonoChannel );
             }
-         }
-         else
-         {
-            newTrack->SetChannel( Track::MonoChannel );
-         }
 
-         newRecordingTracks.Add(newTrack);
+            newRecordingTracks.Add(newTrack);
+         }
+         
+         // msmeyer: StartStream calls a callback which triggers auto-save, so
+         // we add the tracks where recording is done into now. We remove them
+         // later if starting the stream fails
+         for (unsigned int i = 0; i < newRecordingTracks.GetCount(); i++)
+            t->Add(newRecordingTracks[i]);
       }
-      
-      // msmeyer: StartStream calls a callback which triggers auto-save, so
-      // we add the tracks where recording is done into now. We remove them
-      // later if starting the stream fails
-      for (unsigned int i = 0; i < newRecordingTracks.GetCount(); i++)
-         t->Add(newRecordingTracks[i]);
 
       int token = gAudioIO->StartStream(playbackTracks,
                                         newRecordingTracks, t->GetTimeTrack(),
