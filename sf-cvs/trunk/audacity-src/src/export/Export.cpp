@@ -299,11 +299,6 @@ bool Export::Process(AudacityProject *project, bool selectedOnly, double t0, dou
       mMixerSpec = NULL;
    }
 
-   // Rename file, if needed
-   if (success && mActualName != mFilename) {
-      ::wxRenameFile(mFilename.GetFullPath(), mActualName.GetFullPath());
-   }
-
    return success;
 }
 
@@ -611,13 +606,34 @@ bool Export::CheckMix()
 
 bool Export::ExportTracks()
 {
-   return mTypes[mFormat].Export(mProject,
-                                 mChannels,
-                                 mFilename.GetFullPath(),
-                                 mSelectedOnly,
-                                 mT0,
-                                 mT1,
-                                 mMixerSpec);
+   bool success;
+
+   // Keep original in case of failure
+   if (mActualName != mFilename) {
+      ::wxRenameFile(mActualName.GetFullPath(), mFilename.GetFullPath());
+   }
+
+   success = mTypes[mFormat].Export(mProject,
+                                    mChannels,
+                                    mActualName.GetFullPath(),
+                                    mSelectedOnly,
+                                    mT0,
+                                    mT1,
+                                    mMixerSpec);
+
+   if (mActualName != mFilename) {
+      // Remove backup
+      if (success) {
+         ::wxRemoveFile(mFilename.GetFullPath());
+      }
+      else {
+         // Restore original, if needed
+         ::wxRemoveFile(mActualName.GetFullPath());
+         ::wxRenameFile(mFilename.GetFullPath(), mActualName.GetFullPath());
+      }
+   }
+
+   return success;
 }
 
 //----------------------------------------------------------------------------
