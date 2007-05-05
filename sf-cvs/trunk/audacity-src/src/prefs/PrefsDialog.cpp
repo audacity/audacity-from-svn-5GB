@@ -159,6 +159,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
       mSelected = 0;
 
    mCategories->SetSelection(selected);
+   mCategories->GetTreeCtrl()->EnsureVisible(mCategories->GetTreeCtrl()->GetRootItem());
 
    mOK = new wxButton(this,
                       wxID_OK, _("&OK"));
