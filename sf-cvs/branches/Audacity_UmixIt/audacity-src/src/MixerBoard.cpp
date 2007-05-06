@@ -157,33 +157,25 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
 
    // ASlider doesn't do vertical, so use wxSlider for now. 
    /* i18n-hint: Title of the Gain slider, used to adjust the volume */
-   #ifdef __WXMSW__
-      mSlider_Gain = 
-         //    new ASlider(this, ID_SLIDER_GAIN, _("Gain"), ctrlPos, ctrlSize, DB_SLIDER | NO_AQUA);
-         new wxSlider(this, ID_SLIDER_GAIN, // wxWindow* parent, wxWindowID id, 
-                     this->GetGainToSliderValue(),  // int value, 
-                     -kGainSliderMax, -kGainSliderMin, // Max is at bottom for Windows! // int minValue, int maxValue, 
-                     ctrlPos, ctrlSize, // const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, 
-                     wxSL_VERTICAL | wxSL_AUTOTICKS | wxSUNKEN_BORDER); // long style = wxSL_HORIZONTAL, ...
-   #else
-      mSlider_Gain = 
-         // ASlider doesn't do vertical.  
-         /* i18n-hint: Title of the Gain slider, used to adjust the volume */
-         //    new ASlider(this, ID_SLIDER_GAIN, _("Gain"), ctrlPos, ctrlSize, DB_SLIDER | NO_AQUA);
-         new wxSlider(this, ID_SLIDER_GAIN, // wxWindow* parent, wxWindowID id, 
-                     this->GetGainToSliderValue(),  // int value, 
-                     kGainSliderMin, kGainSliderMax, // int minValue, int maxValue, 
-                     ctrlPos, ctrlSize, // const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, 
-                     wxSL_VERTICAL | wxSL_AUTOTICKS | wxSUNKEN_BORDER); // long style = wxSL_HORIZONTAL, ...
-   #endif
+   mSlider_Gain = 
+      new ASlider(this, ID_SLIDER_GAIN, _("Gain"), ctrlPos, ctrlSize, DB_SLIDER | NO_AQUA, wxVERTICAL);
+      ////vvvvv new wxSlider(this, ID_SLIDER_GAIN, // wxWindow* parent, wxWindowID id, 
+      //             this->GetGainToSliderValue(),  // int value, 
+      //             #ifdef __WXMSW__
+      //                -kGainSliderMax, -kGainSliderMin, // Max is at bottom for Windows! // int minValue, int maxValue, 
+      //             #else
+      //                kGainSliderMin, kGainSliderMax, // int minValue, int maxValue, 
+      //             #endif
+      //            ctrlPos, ctrlSize, // const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, 
+      //            wxSL_VERTICAL | wxSL_AUTOTICKS | wxSUNKEN_BORDER); // long style = wxSL_HORIZONTAL, ...
 
    // too much color:   mSlider_Gain->SetBackgroundColour(trackColor);
    // too dark:   mSlider_Gain->SetBackgroundColour(wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW));
-  #ifdef __WXMAC__
-   mSlider_Gain->SetBackgroundColour(wxColour(220, 220, 220));
-  #else
-   mSlider_Gain->SetBackgroundColour(wxColour(192, 192, 192));
-  #endif
+  //vvvvv #ifdef __WXMAC__
+  // mSlider_Gain->SetBackgroundColour(wxColour(220, 220, 220));
+  //#else
+  // mSlider_Gain->SetBackgroundColour(wxColour(192, 192, 192));
+  //#endif
 
    ctrlPos.x = nHalfWidth - kExtraMeter;
    ctrlSize.SetWidth(nHalfWidth - kInset + kExtraMeter);
@@ -207,8 +199,9 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
       mToggleButton_Solo->SetToolTip(_T("Solo"));
       // LWSlider already shows the value, so don't do this:   mSlider_Pan->SetToolTip(_T("Pan"));
       
-      wxScrollEvent dummy;
-      this->OnSliderScroll_Gain(dummy); // Set the tooltip to show the current value.
+      //vvvvv LWSlider already shows the value, so don't do this:
+      //wxScrollEvent dummy;
+      //this->OnSliderScroll_Gain(dummy); // Set the tooltip to show the current value.
 
       mMeter->SetToolTip(_T("Signal Level Meter"));
    #endif // wxUSE_TOOLTIPS
@@ -291,7 +284,7 @@ void MixerTrackCluster::UpdatePan()
 
 void MixerTrackCluster::UpdateGain()
 {
-   mSlider_Gain->SetValue(this->GetGainToSliderValue());
+   mSlider_Gain->Set(mLeftTrack->GetGain()); //vvvvv mSlider_Gain->SetValue(this->GetGainToSliderValue());
 }
 
 void MixerTrackCluster::UpdateMeter(double t)
@@ -493,15 +486,16 @@ void MixerTrackCluster::OnSlider_Pan(wxCommandEvent& event)
 void MixerTrackCluster::OnSlider_Gain(wxCommandEvent& event)
 {
    // Analog to LWSlider::Set() calc for DB_SLIDER. 
-   int sliderValue = mSlider_Gain->GetValue();
+   ////vvvvv int sliderValue = mSlider_Gain->GetValue();
 
-   #ifdef __WXMSW__
-      // Negate because wxSlider on Windows has min at top, max at bottom. 
-      // mSlider_Gain->GetValue() is in [-6,36]. wxSlider has min at top, so this is [-36dB,6dB]. 
-      sliderValue = -sliderValue;
-   #endif
+   //#ifdef __WXMSW__
+   //   // Negate because wxSlider on Windows has min at top, max at bottom. 
+   //   // mSlider_Gain->GetValue() is in [-6,36]. wxSlider has min at top, so this is [-36dB,6dB]. 
+   //   sliderValue = -sliderValue;
+   //#endif
 
-   float fValue = pow(10.0f, (float)sliderValue / 20.0f); 
+   //float fValue = pow(10.0f, (float)sliderValue / 20.0f); 
+   float fValue = mSlider_Gain->Get();
    mLeftTrack->SetGain(fValue);
    if (mRightTrack != NULL)
       mRightTrack->SetGain(fValue);
@@ -515,17 +509,18 @@ void MixerTrackCluster::OnSlider_Gain(wxCommandEvent& event)
 
 void MixerTrackCluster::OnSliderScroll_Gain(wxScrollEvent& event)
 {
-   int gainValue = mSlider_Gain->GetValue();
-   #ifdef __WXMSW__
-      // Negate because wxSlider on Windows has min at top, max at bottom. 
-      // mSlider_Gain->GetValue() is in [-6,36]. wxSlider has min at top, so this is [-36dB,6dB]. 
-      gainValue = -gainValue;
-   #endif
-   wxString str = _T("Gain: ");
-   if (gainValue > 0) 
-      str += "+";
-   str += wxString::Format("%d dB", gainValue);
-   mSlider_Gain->SetToolTip(str);
+   //vvvvv 
+   //int sliderValue = (int)(mSlider_Gain->Get()); //vvvvv mSlider_Gain->GetValue();
+   //#ifdef __WXMSW__
+   //   // Negate because wxSlider on Windows has min at top, max at bottom. 
+   //   // mSlider_Gain->GetValue() is in [-6,36]. wxSlider has min at top, so this is [-36dB,6dB]. 
+   //   sliderValue = -sliderValue;
+   //#endif
+   //wxString str = _T("Gain: ");
+   //if (sliderValue > 0) 
+   //   str += "+";
+   //str += wxString::Format("%d dB", sliderValue);
+   //mSlider_Gain->SetToolTip(str);
 }
 
 
