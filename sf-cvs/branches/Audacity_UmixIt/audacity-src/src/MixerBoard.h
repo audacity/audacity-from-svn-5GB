@@ -16,7 +16,7 @@
 #include <wx/image.h>
 #include <wx/panel.h>
 #include <wx/scrolwin.h>
-#include <wx/slider.h>
+//vvvvv #include <wx/slider.h>
 #include <wx/statbmp.h>
 #include <wx/stattext.h>
 
@@ -78,7 +78,7 @@ private:
    AButton* mToggleButton_Mute;
    AButton* mToggleButton_Solo;
    ASlider* mSlider_Pan;
-   wxSlider* mSlider_Gain; //v ASlider* mSlider_Gain;
+   ASlider* mSlider_Gain; //vvvvv wxSlider* mSlider_Gain; //v ASlider* mSlider_Gain;
    Meter* mMeter;
 
 public:

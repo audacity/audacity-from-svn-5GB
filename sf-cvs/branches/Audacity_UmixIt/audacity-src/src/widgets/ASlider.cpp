@@ -41,6 +41,7 @@
 #include "../Project.h"
 
 #include "../../images/SliderThumb.xpm"
+#include "../../images/VerticalSliderThumb.xpm"
 
 #if defined __WXMSW__
 const int sliderFontSize = 10;
@@ -170,6 +171,7 @@ LWSlider::LWSlider(wxWindow * parent,
          float stepValue,
          bool canUseShift,
          int style,
+         int orientation /*= wxHORIZONTAL*/, // wxHORIZONTAL or wxVERTICAL 
          bool heavyweight /* = false */
          )
 {
@@ -180,7 +182,7 @@ LWSlider::LWSlider(wxWindow * parent,
    }
 
    Init(parent, name, pos, size, minValue, maxValue,
-      stepValue, canUseShift, style, aquaOk, heavyweight);
+      stepValue, canUseShift, style, aquaOk, orientation, heavyweight);
 }
 
 // Construct predefined slider
@@ -189,6 +191,7 @@ LWSlider::LWSlider(wxWindow *parent,
                    const wxPoint &pos,
                    const wxSize &size,
                    int style,
+                   int orientation /*= wxHORIZONTAL*/, // wxHORIZONTAL or wxVERTICAL 
                    bool heavyweight /* = false */)
 {
    wxString leftLabel, rightLabel;
@@ -205,11 +208,20 @@ LWSlider::LWSlider(wxWindow *parent,
       minValue = -1.0f;
       maxValue = +1.0f;
       stepValue = 0.1f;
+      orientation = wxHORIZONTAL; //v Vertical PAN_SLIDER currently not handled, forced to horizontal.
       break;
    case DB_SLIDER:
       minValue = -36.0f;
-      maxValue = 36.0f;
-      stepValue = 3.0f;
+      if (orientation == wxHORIZONTAL)
+      {
+         maxValue = 36.0f;
+         stepValue = 3.0f;
+      }
+      else
+      {
+         maxValue = 6.0f;
+         stepValue = 1.0f;
+      }
       break;
    case FRAC_SLIDER:
       minValue = 0.0f;
@@ -224,7 +236,7 @@ LWSlider::LWSlider(wxWindow *parent,
    }
 
    Init(parent, name, pos, size, minValue, maxValue, stepValue,
-        true, style, aquaOk, heavyweight);
+        true, style, aquaOk, orientation, heavyweight);
 }
 
 void LWSlider::Init(wxWindow * parent,
@@ -237,11 +249,14 @@ void LWSlider::Init(wxWindow * parent,
                     bool canUseShift,
                     int style,
                     bool aquaOk,
+                    int orientation /*= wxHORIZONTAL*/, // wxHORIZONTAL or wxVERTICAL 
                     bool heavyweight /* = false */
                     )
 {
    mName = name;
    mStyle = style;
+   mAquaOk = aquaOk;
+   mOrientation = orientation;
    mIsDragging = false;
    mWidth = size.x;
    mHeight = size.y;
@@ -254,34 +269,23 @@ void LWSlider::Init(wxWindow * parent,
    mCanUseShift = canUseShift;
    mCurrentValue = 0.0f;
 
-   if (!(mWidth & 1))
-      mWidth--;
-
-   mCenterY = mHeight - 9;
-
+   // Set the background colors and thumb image.
    wxMemoryDC *dc = new wxMemoryDC();
    wxBitmap *bitmap = new wxBitmap(8, 8);
    dc->SelectObject(*bitmap);
 
    AColor::Medium(dc, false);
-   wxColour bkgnd = dc->GetBrush().GetColour();
+   mBkgndColor = dc->GetBrush().GetColour();
    AColor::Medium(dc, true);   
-   wxColour selBkgnd = dc->GetBrush().GetColour();
+   mSelBkgndColor = dc->GetBrush().GetColour();
 
-   wxImage *backgroundImage;
-   if (aquaOk)
-      backgroundImage = CreateSysBackground(mWidth, mHeight, 0, bkgnd);
+   wxImage *thumbImage;
+   if (mOrientation == wxHORIZONTAL)
+      thumbImage = new wxImage(wxBitmap(SliderThumb).ConvertToImage());
    else
-      backgroundImage = CreateBackground(mWidth, mHeight, bkgnd);
-#if wxCHECK_VERSION(2, 5, 0)
-   wxBitmap backgroundBitmap(backgroundImage);
-#else
-   wxBitmap backgroundBitmap =
-      backgroundImage->ConvertToBitmap();
-#endif
-   wxImage *thumbImage = new wxImage(wxBitmap(SliderThumb).ConvertToImage());
-   wxImage *thumb1 = ChangeImageColour(thumbImage, bkgnd);
-   wxImage *thumb2 = ChangeImageColour(thumbImage, selBkgnd);
+      thumbImage = new wxImage(wxBitmap(VerticalSliderThumb).ConvertToImage());
+   wxImage *thumb1 = ChangeImageColour(thumbImage, mBkgndColor);
+   wxImage *thumb2 = ChangeImageColour(thumbImage, mSelBkgndColor);
    mThumbBitmap = new wxBitmap(thumb1);
    mSelThumbBitmap = new wxBitmap(thumb2);
    delete thumb1;
@@ -294,85 +298,17 @@ void LWSlider::Init(wxWindow * parent,
    mThumbWidth = mThumbBitmap->GetWidth();
    mThumbHeight = mThumbBitmap->GetHeight();
 
-   mLeftX = mThumbWidth/2;
-   mRightX = mWidth - mThumbWidth/2 - 1;
-   mWidthX = mRightX - mLeftX;
 
-   int i;
-   for(i=0; i<2; i++) {
-      wxBitmap *bitmap;
+   this->OnSize(size); // Adjusts mWidth & mHeight. Creates new background images.
 
-      bitmap = new wxBitmap(mWidth, mHeight);
-      wxMemoryDC *dc = new wxMemoryDC();
-      dc->SelectObject(*bitmap);
-
-      if (mHW) {
-         dc->DrawBitmap(backgroundBitmap, 0, 0);
-      }
-      else {
-         AColor::Medium(dc, i==1);
-         dc->DrawRectangle(-1, -1, mWidth+2, mHeight+2);
-      }
-
-      AColor::Medium(dc, i==1);
-      dc->DrawLine(mLeftX, mCenterY, mRightX+2, mCenterY);
-      AColor::Dark(dc, false);
-      dc->DrawLine(mLeftX, mCenterY+1, mRightX+2, mCenterY+1);
-
-      int divs = 10;
-      double upp = divs / (double)(mWidthX-1);
-      double d = 0;
-      int int_d = -1;
-      for(int p=0; p<=mWidthX; p++) {
-         if (((int)d) > int_d) {
-            int_d = (int)d;
-            int ht = (int_d==0 || int_d==divs? 5: 3);
-            AColor::Light(dc, false);
-            dc->DrawLine(mLeftX+p, mCenterY-ht, mLeftX+p, mCenterY);
-            AColor::Dark(dc, false);
-            dc->DrawLine(mLeftX+p+1, mCenterY-ht+1, mLeftX+p+1, mCenterY);
-         }
-         d += upp;
-      }
-
-      if (style == PAN_SLIDER)
-      {
-         AColor::SetLabelFont(*dc);
-
-         /* i18n-hint: One-letter abbreviation for Left, in the Pan slider */
-         dc->DrawText(_("L"), mLeftX, 0);
-
-         int width, height;
-         /* i18n-hint: One-letter abbreviation for Right, in the Pan slider */
-         dc->GetTextExtent(_("R"), &width, &height);
-         dc->DrawText(_("R"), mRightX-width+1, 0);
-      } else
-      {
-         // draw the '-' and the '+'
-         dc->SetPen(*wxBLACK_PEN);
-         dc->DrawLine(mLeftX, mCenterY-10, mLeftX+5, mCenterY-10);
-         dc->DrawLine(mRightX-5, mCenterY-10, mRightX+0, mCenterY-10);
-         dc->DrawLine(mRightX-3, mCenterY-12, mRightX-3, mCenterY-7);
-      }
-      
-      delete dc;
-
-      if (i==0)
-         mBitmap = bitmap;
-      else
-         mSelBitmap = bitmap;
-   }
-
-   delete backgroundImage;
-
-   int x=mWidth/2, y=mHeight, wx, wy;
-   wxWindow *top = mParent;
-   while(top && !top->IsTopLevel()) {
-      top->GetPosition(&wx, &wy);
-      x += wx;
-      y += wy;
-      top = top->GetParent();
-   }
+   //int x=mWidth/2, y=mHeight, wx, wy;
+   //wxWindow *top = mParent;
+   //while(top && !top->IsTopLevel()) {
+   //   top->GetPosition(&wx, &wy);
+   //   x += wx;
+   //   y += wy;
+   //   top = top->GetParent();
+   //}
    
    mPopWin = NULL;
    Move(pos);
@@ -414,10 +350,21 @@ void LWSlider::CreatePopWin()
 
 void LWSlider::SetPopWinPosition()
 {
+   if (mPopWin == NULL)
+      return;
+
    int x, y, wx, wy;
 
-   x=mWidth/2 + mLeft;
-   y=mHeight + mTop + 1;
+   if (mOrientation == wxHORIZONTAL)
+   {
+      x=mWidth/2 + mLeft;
+      y=mHeight + mTop + 1;
+   }
+   else
+   {
+      x = mWidth + mLeft + 1;
+      y = mHeight/2 + mTop;
+   }
    wxWindow *top = mParent;
    while(top && !top->IsTopLevel()) {
       top->GetPosition(&wx, &wy);
@@ -426,8 +373,7 @@ void LWSlider::SetPopWinPosition()
       top = top->GetParent();
    }
 
-   if (mPopWin)
-      ((TipPanel *)mPopWin)->SetPos(wxPoint(x, y));
+   ((TipPanel *)mPopWin)->SetPos(wxPoint(x, y));
 }
 
 void LWSlider::Move(const wxPoint &newpos)
@@ -447,7 +393,11 @@ void LWSlider::OnPaint(wxDC &dc, bool selected)
 {
    //thumbPos should be in pixels
    int thumbPos = ValueToPosition(mCurrentValue);
-   int thumbY = mCenterY - (mThumbHeight/2);
+   int thumbOrtho; // position in axis orthogonal to mOrientation
+   if (mOrientation == wxHORIZONTAL)
+      thumbOrtho = mCenterY - (mThumbHeight/2);
+   else
+      thumbOrtho = mCenterX - (mThumbWidth/2);
    wxBitmap *bitmap;
    wxBitmap *thumbBitmap;
 
@@ -462,19 +412,172 @@ void LWSlider::OnPaint(wxDC &dc, bool selected)
 
 #if defined(__WXMAC__) || defined(__WXMSW__)
    dc.DrawBitmap(*bitmap, mLeft, mTop);
-   dc.DrawBitmap(*thumbBitmap, mLeft+thumbPos, mTop+thumbY);
+   if (mOrientation == wxHORIZONTAL)
+      dc.DrawBitmap(*thumbBitmap, mLeft+thumbPos, mTop+thumbOrtho);
+   else
+      dc.DrawBitmap(*thumbBitmap, mLeft+thumbOrtho, mTop+thumbPos);
 #else
    wxMemoryDC memDC;
    memDC.SelectObject(*bitmap);
    dc.Blit(mLeft, mTop, mWidth, mHeight, &memDC, 0, 0, wxCOPY, FALSE);
    memDC.SelectObject(*thumbBitmap);
-   dc.Blit(mLeft+thumbPos, mTop+thumbY, mThumbWidth, mThumbHeight,
-           &memDC, 0, 0, wxCOPY, FALSE);
+   if (mOrientation == wxHORIZONTAL)
+      dc.Blit(mLeft+thumbPos, mTop+thumbOrtho, mThumbWidth, mThumbHeight,
+            &memDC, 0, 0, wxCOPY, FALSE);
+   else
+      dc.Blit(mLeft+thumbOrtho, mTop+thumbPos, mThumbWidth, mThumbHeight,
+            &memDC, 0, 0, wxCOPY, FALSE);
 #endif
 
    if (mPopWin)
       mPopWin->Refresh();
 }
+
+void LWSlider::OnSize(const wxSize &size)
+{
+   mWidth = size.GetWidth();
+   mHeight = size.GetHeight();
+
+   if (!(mWidth & 1))
+      mWidth--;
+
+   if (mOrientation == wxHORIZONTAL)
+      mCenterY = mHeight - 9;
+   else
+      mCenterX = mWidth - 9; 
+
+   if (mOrientation == wxHORIZONTAL)
+   {
+      mLeftX = mThumbWidth/2;
+      mRightX = mWidth - mThumbWidth/2 - 1;
+      mWidthX = mRightX - mLeftX;
+   }
+   else
+   {
+      mTopY = mThumbWidth/2;
+      mBottomY = mHeight - mThumbWidth/2 - 1; 
+      mHeightY = mBottomY - mTopY;
+   }
+
+   wxImage *backgroundImage;
+   if (mAquaOk)
+      backgroundImage = CreateSysBackground(mWidth, mHeight, 0, mBkgndColor);
+   else
+      backgroundImage = CreateBackground(mWidth, mHeight, mBkgndColor);
+#if wxCHECK_VERSION(2, 5, 0)
+   wxBitmap backgroundBitmap(backgroundImage);
+#else
+   wxBitmap backgroundBitmap = 
+      backgroundImage->ConvertToBitmap();
+#endif
+
+   int i;
+   for(i=0; i<2; i++) {
+      wxBitmap *bitmap;
+
+      bitmap = new wxBitmap(mWidth, mHeight);
+      wxMemoryDC *dc = new wxMemoryDC();
+      dc->SelectObject(*bitmap);
+
+      // background
+      if (mHW) {
+         dc->DrawBitmap(backgroundBitmap, 0, 0);
+      }
+      else {
+         AColor::Medium(dc, i==1);
+         dc->DrawRectangle(-1, -1, mWidth+2, mHeight+2);
+      }
+
+      // tick marks at extremes
+      AColor::Medium(dc, i==1);
+      if (mOrientation == wxHORIZONTAL)
+         dc->DrawLine(mLeftX, mCenterY, mRightX+2, mCenterY);
+      else
+         dc->DrawLine(mCenterX, mTopY, mCenterX, mBottomY+2);
+
+      AColor::Dark(dc, false);
+      if (mOrientation == wxHORIZONTAL)
+         dc->DrawLine(mLeftX, mCenterY+1, mRightX+2, mCenterY+1);
+      else
+         dc->DrawLine(mCenterX+1, mTopY, mCenterX+1, mBottomY+2);
+
+      // internal tick marks
+      int divs = 10;
+      double upp;
+      if (mOrientation == wxHORIZONTAL) 
+         upp = divs / (double)(mWidthX-1);
+      else 
+      {
+         if (mStyle == DB_SLIDER)
+            // 3dB increments for vertical DB_SLIDER
+            divs = (int)((mMaxValue - mMinValue) / 3.0);
+         upp = divs / (double)(mHeightY-1);
+      }
+      double d = 0;
+      int int_d = -1;
+      const int kMax = (mOrientation == wxHORIZONTAL) ? mWidthX : mHeightY;
+      for(int p=0; p<= kMax; p++) {
+         if (((int)d) > int_d) {
+            int_d = (int)d;
+            int ht = (int_d==0 || int_d==divs? 5: 3);
+
+            AColor::Light(dc, false);
+            if (mOrientation == wxHORIZONTAL)
+               dc->DrawLine(mLeftX+p, mCenterY-ht, mLeftX+p, mCenterY); // ticks above
+            else
+               dc->DrawLine(mCenterX-ht, mTopY+p, mCenterX, mTopY+p); // ticks at left
+
+            AColor::Dark(dc, false);
+            if (mOrientation == wxHORIZONTAL)
+               dc->DrawLine(mLeftX+p+1, mCenterY-ht+1, mLeftX+p+1, mCenterY); // ticks above
+            else
+               dc->DrawLine(mCenterX-ht+1, mTopY+p+1, mCenterX, mTopY+p+1); // ticks at left
+         }
+         d += upp;
+      }
+
+      if (mStyle == PAN_SLIDER)
+      {
+         //v Vertical PAN_SLIDER currently not handled, forced to horizontal.
+
+         AColor::SetLabelFont(*dc);
+
+         /* i18n-hint: One-letter abbreviation for Left, in the Pan slider */
+         dc->DrawText(_("L"), mLeftX, 0);
+
+         int width, height;
+         /* i18n-hint: One-letter abbreviation for Right, in the Pan slider */
+         dc->GetTextExtent(_("R"), &width, &height);
+         dc->DrawText(_("R"), mRightX-width+1, 0);
+      } else
+      {
+         // draw the '-' and the '+'
+         dc->SetPen(*wxBLACK_PEN);
+         if (mOrientation == wxHORIZONTAL)
+         {
+            dc->DrawLine(mLeftX, mCenterY-10, mLeftX+5, mCenterY-10);
+            dc->DrawLine(mRightX-5, mCenterY-10, mRightX+0, mCenterY-10);
+            dc->DrawLine(mRightX-3, mCenterY-12, mRightX-3, mCenterY-7);
+         }
+         else
+         {
+            dc->DrawLine(mCenterX-12, mBottomY-3,  mCenterX-7, mBottomY-3);   // '-'
+            dc->DrawLine(mCenterX-12, mTopY+2,     mCenterX-7, mTopY+2);      // '+' horizontal
+            dc->DrawLine(mCenterX-10, mTopY,       mCenterX-10, mTopY+5);     // '+' vertical
+         }
+      }
+      
+      delete dc;
+
+      if (i==0)
+         mBitmap = bitmap;
+      else
+         mSelBitmap = bitmap;
+   }
+
+   delete backgroundImage;
+}
+
 
 void LWSlider::FormatPopWin()
 {
@@ -536,7 +639,10 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
 
       //This jumps the thumb to clicked position
       if (!mIsDragging) {
-         mCurrentValue = PositionToValue(event.m_x, event.ShiftDown());
+         if (mOrientation == wxHORIZONTAL)
+            mCurrentValue = PositionToValue(event.m_x, event.ShiftDown());
+         else 
+            mCurrentValue = PositionToValue(event.m_y, event.ShiftDown());
 
          mIsDragging = true;
          mParent->CaptureMouse();
@@ -555,7 +661,10 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       mPopWin->Hide();
       ((TipPanel *)mPopWin)->SetPos(wxPoint(-1000, -1000));
    } else if (event.Dragging() && mIsDragging) {
-      mCurrentValue = PositionToValue(event.m_x, event.ShiftDown());
+      if (mOrientation == wxHORIZONTAL)
+         mCurrentValue = PositionToValue(event.m_x, event.ShiftDown());
+      else 
+         mCurrentValue = PositionToValue(event.m_y, event.ShiftDown());
    }
 
    if (prevValue != mCurrentValue) {
@@ -576,21 +685,38 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
 
 int LWSlider::ValueToPosition(float val)
 {
-   return (int)rint((val - mMinValue) * mWidthX / (mMaxValue - mMinValue));
+   float fRange = mMaxValue - mMinValue;
+   if (mOrientation == wxHORIZONTAL)
+      return (int)rint((val - mMinValue) * mWidthX / fRange);
+   else
+      // low values at bottom 
+      return (int)rint((mMaxValue - val) * mHeightY / fRange);
 }
 
-float LWSlider::PositionToValue(int xPos, bool shiftDown)
+float LWSlider::PositionToValue(int fromPos, bool shiftDown)
 {
-   int pos = (xPos - mLeft) - mLeftX;
+   int nSpan;
+   int pos;
+   if (mOrientation == wxHORIZONTAL)
+   {
+      pos = (fromPos - mLeft) - mLeftX;
+      nSpan = mWidthX;
+   }
+   else
+   {
+      // wxVERTICAL => Low values at bottom.
+      pos = mBottomY - fromPos;
+      nSpan = mHeightY;
+   }
 
    // MM: Special cases: If position is at the very left or the
-   // very right, set minimum/maximum value without other checks
+   // very right (or top/bottom for wxVERTICAL), set minimum/maximum value without other checks
    if (pos <= 0)
       return mMinValue;
-   if (pos >= mWidthX)
+   if (pos >= nSpan)
       return mMaxValue;
    
-   float val = ((float)pos/(float)mWidthX) 
+   float val = ((float)pos/(float)nSpan) 
       * (mMaxValue - mMinValue) + mMinValue;
 
    if (!(mCanUseShift && shiftDown) && mStepValue != STEP_CONTINUOUS)
@@ -643,17 +769,19 @@ void LWSlider::Refresh()
 BEGIN_EVENT_TABLE(ASlider, wxWindow)
    EVT_MOUSE_EVENTS(ASlider::OnMouseEvent)
    EVT_PAINT(ASlider::OnPaint)
+   EVT_SIZE(ASlider::OnSize)
 END_EVENT_TABLE()
 
 ASlider::ASlider(wxWindow * parent, wxWindowID id,
                  wxString name,
                  const wxPoint & pos,
                  const wxSize & size, 
-                 int style /*= FRAC_SLIDER*/):
+                 int style /*= FRAC_SLIDER*/, 
+                 int orientation /*= wxHORIZONTAL*/): // wxHORIZONTAL or wxVERTICAL 
    wxWindow(parent, id, pos, size)
 {
    mLWSlider = new LWSlider(this, name, wxPoint(0, 0), size,
-                            style, true);
+                            style, orientation, true);
    mLWSlider->SetId(id);
 }
 
@@ -667,6 +795,11 @@ void ASlider::OnPaint(wxPaintEvent &event)
    wxPaintDC dc(this);
 
    mLWSlider->OnPaint(dc, false);
+}
+
+void ASlider::OnSize(wxSizeEvent &event)
+{
+   mLWSlider->OnSize(event.GetSize());
 }
 
 void ASlider::OnMouseEvent(wxMouseEvent &event)

@@ -23,7 +23,7 @@ class wxSize;
 class wxPoint;
 
 //
-// Predefined slider types
+// Predefined slider types (mStyle)
 //
 #define FRAC_SLIDER 1    // 0.0...1.0
 #define DB_SLIDER 2      // -36...36 dB
@@ -60,6 +60,7 @@ class LWSlider
        float stepValue,
        bool canUseShift,
        int style,
+       int orientation = wxHORIZONTAL, // wxHORIZONTAL or wxVERTICAL 
        bool heavyweight=false
        );
     
@@ -69,6 +70,7 @@ class LWSlider
             const wxPoint &pos,
             const wxSize &size,
             int style,
+            int orientation = wxHORIZONTAL, // wxHORIZONTAL or wxVERTICAL 
             bool heavyweight=false);
 
    void Init(wxWindow * parent,
@@ -81,6 +83,7 @@ class LWSlider
       bool canUseShift,
       int style,
       bool aquaOk,
+      int orientation = wxHORIZONTAL, // wxHORIZONTAL or wxVERTICAL 
       bool heavyweight=false
    );
 
@@ -95,6 +98,8 @@ class LWSlider
 
    void OnPaint(wxDC &dc, bool selected);
    void OnMouseEvent(wxMouseEvent &event);
+   void OnSize(const wxSize &size);
+
    void Refresh();
 
    void RecreateTipWin();
@@ -106,11 +111,13 @@ class LWSlider
    void CreatePopWin();
 
    int ValueToPosition(float val);
-   float PositionToValue(int xPos, bool shiftDown);
+   float PositionToValue(int fromPos, bool shiftDown);
       
    wxWindow *mParent;
 
    int mStyle;
+   bool mAquaOk;
+   int mOrientation; // wxHORIZONTAL or wxVERTICAL 
 
    bool mHW; // is it really heavyweight (in a window)
 
@@ -120,11 +127,20 @@ class LWSlider
    int mWidth;                  //In pixels
    int mHeight;                 //In pixels
 
+   // for (mOrientation == wxHORIZONTAL)
    int mCenterY;
 
    int mLeftX;
    int mRightX;
    int mWidthX;
+
+   // for (mOrientation == wxVERTICAL) //v Vertical PAN_SLIDER currently not handled, forced to horizontal.
+   int mCenterX;
+
+   int mTopY;
+   int mBottomY; // low values at bottom 
+   int mHeightY;
+
 
    int mThumbWidth;             //In pixels
    int mThumbHeight;            //In pixels
@@ -150,6 +166,8 @@ class LWSlider
    wxBitmap *mSelBitmap;
    wxBitmap *mThumbBitmap;
    wxBitmap *mSelThumbBitmap;
+   wxColour mBkgndColor;
+   wxColour mSelBkgndColor;
 
    wxString mName;
 
@@ -162,7 +180,8 @@ class ASlider :public wxWindow
            wxString name,
            const wxPoint & pos,
            const wxSize & size, 
-           int style = FRAC_SLIDER);
+           int style = FRAC_SLIDER, 
+           int orientation = wxHORIZONTAL);
 
    virtual ~ASlider();
    
@@ -171,6 +190,7 @@ class ASlider :public wxWindow
 
    void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
+   void OnSize(wxSizeEvent &event);
 
    void RecreateTipWin();
 
