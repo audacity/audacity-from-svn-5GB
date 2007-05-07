@@ -169,10 +169,10 @@ void ScreenFrame::Capture(wxString basename,
    memDC.Blit(0, 0, width, height, &src, x, y, wxCOPY);
    wxImage image = bitmap.ConvertToImage();
    if (image.SaveFile(filename)) {
-      mStatus->SetStatusText(wxT("Saved ") + filename);
+      mStatus->SetStatusText(_("Saved ") + filename);
    }
    else {
-      wxMessageBox(wxT("Error trying to save file: ") + filename);
+      wxMessageBox(_("Error trying to save file: ") + filename);
    }
 }
 
@@ -431,7 +431,7 @@ void ScreenFrame::OnCaptureWindowContents(wxCommandEvent& evt)
    proj->GetClientSize(&width, &height);
 
    wxClientDC dc(proj);
-   Capture(_("window"), dc, 0, 0, width, height);
+   Capture(wxT("window"), dc, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureWindowPlus(wxCommandEvent& evt)
@@ -443,7 +443,7 @@ void ScreenFrame::OnCaptureWindowPlus(wxCommandEvent& evt)
    GetActiveProject()->Raise();
 
    wxScreenDC screenDC;
-   Capture(_("windowplus"), screenDC, 0, 0, width + x + 16, height + y + 16);
+   Capture(wxT("windowplus"), screenDC, 0, 0, width + x + 16, height + y + 16);
 }
 
 void ScreenFrame::OnCaptureFullScreen(wxCommandEvent& evt)
@@ -453,7 +453,7 @@ void ScreenFrame::OnCaptureFullScreen(wxCommandEvent& evt)
    wxScreenDC screenDC;
 
    GetActiveProject()->Raise();
-   Capture(_("fullscreen"), screenDC, 0, 0, width, height);
+   Capture(wxT("fullscreen"), screenDC, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureToolbars(wxCommandEvent& evt)
@@ -462,7 +462,7 @@ void ScreenFrame::OnCaptureToolbars(wxCommandEvent& evt)
    wxRect r = proj->mToolManager->GetTopDock()->GetRect();
 
    wxClientDC dc(proj);
-   Capture(_("toolbars"), dc, r.x, r.y, r.width, r.height);
+   Capture(wxT("toolbars"), dc, r.x, r.y, r.width, r.height);
 }
 
 void ScreenFrame::OnCaptureSelectionBar(wxCommandEvent& evt)
@@ -471,7 +471,7 @@ void ScreenFrame::OnCaptureSelectionBar(wxCommandEvent& evt)
    wxRect r = proj->mToolManager->GetBotDock()->GetRect();
 
    wxClientDC dc(proj);
-   Capture(_("selectionbar"), dc, r.x, r.y, r.width, r.height);
+   Capture(wxT("selectionbar"), dc, r.x, r.y, r.width, r.height);
 }
 
 void ScreenFrame::OnCaptureTools(wxCommandEvent& evt)
@@ -481,7 +481,7 @@ void ScreenFrame::OnCaptureTools(wxCommandEvent& evt)
    w->GetClientSize(&width, &height);
 
    wxClientDC dc(w);
-   Capture(_("tools"), dc, 0, 0, width, height);
+   Capture(wxT("tools"), dc, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureControl(wxCommandEvent& evt)
@@ -491,7 +491,7 @@ void ScreenFrame::OnCaptureControl(wxCommandEvent& evt)
    w->GetClientSize(&width, &height);
 
    wxClientDC dc(w);
-   Capture(_("control"), dc, 0, 0, width, height);
+   Capture(wxT("control"), dc, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureMixer(wxCommandEvent& evt)
@@ -501,7 +501,7 @@ void ScreenFrame::OnCaptureMixer(wxCommandEvent& evt)
    w->GetClientSize(&width, &height);
 
    wxClientDC dc(w);
-   Capture(_("mixer"), dc, 0, 0, width, height);
+   Capture(wxT("mixer"), dc, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureMeter(wxCommandEvent& evt)
@@ -511,7 +511,7 @@ void ScreenFrame::OnCaptureMeter(wxCommandEvent& evt)
    w->GetClientSize(&width, &height);
 
    wxClientDC dc(w);
-   Capture(_("meter"), dc, 0, 0, width, height);
+   Capture(wxT("meter"), dc, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureEdit(wxCommandEvent& evt)
@@ -521,7 +521,7 @@ void ScreenFrame::OnCaptureEdit(wxCommandEvent& evt)
    w->GetClientSize(&width, &height);
 
    wxClientDC dc(w);
-   Capture(_("edit"), dc, 0, 0, width, height);
+   Capture(wxT("edit"), dc, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureDevice(wxCommandEvent& evt)
@@ -531,7 +531,7 @@ void ScreenFrame::OnCaptureDevice(wxCommandEvent& evt)
    w->GetClientSize(&width, &height);
 
    wxClientDC dc(w);
-   Capture(_("device"), dc, 0, 0, width, height);
+   Capture(wxT("device"), dc, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureTranscription(wxCommandEvent& evt)
@@ -541,7 +541,7 @@ void ScreenFrame::OnCaptureTranscription(wxCommandEvent& evt)
    w->GetClientSize(&width, &height);
 
    wxClientDC dc(w);
-   Capture(_("transcription"), dc, 0, 0, width, height);
+   Capture(wxT("transcription"), dc, 0, 0, width, height);
 }
 
 
@@ -654,7 +654,7 @@ void ScreenFrame::OnCaptureTrackPanel(wxCommandEvent& evt)
    int width, height;
    panel->GetClientSize(&width, &height);
    wxClientDC dc(panel);
-   Capture(_("trackpanel"), dc, 0, 0, width, height);
+   Capture(wxT("trackpanel"), dc, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureRuler(wxCommandEvent& evt)
@@ -665,7 +665,7 @@ void ScreenFrame::OnCaptureRuler(wxCommandEvent& evt)
    int width, height;
    panel->GetClientSize(&width, &height);
    wxClientDC dc(panel);
-   Capture(_("ruler"), dc, 0, 0, width, height);
+   Capture(wxT("ruler"), dc, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureTracks(wxCommandEvent& evt)
@@ -675,7 +675,7 @@ void ScreenFrame::OnCaptureTracks(wxCommandEvent& evt)
    int width, height;
    panel->GetClientSize(&width, &height);
    wxClientDC dc(panel);
-   Capture(_("tracks"), dc, 0, 0, width, height);
+   Capture(wxT("tracks"), dc, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureFirstTrack(wxCommandEvent& evt)
@@ -689,7 +689,7 @@ void ScreenFrame::OnCaptureFirstTrack(wxCommandEvent& evt)
    int width, height;
    panel->GetClientSize(&width, &height);
    wxClientDC dc(panel);
-   Capture(_("firsttrack"), dc, 0, r.y - 3, width, r.height + 6);
+   Capture(wxT("firsttrack"), dc, 0, r.y - 3, width, r.height + 6);
 }
 
 void ScreenFrame::OnCaptureSecondTrack(wxCommandEvent& evt)
@@ -706,7 +706,7 @@ void ScreenFrame::OnCaptureSecondTrack(wxCommandEvent& evt)
    int width, height;
    panel->GetClientSize(&width, &height);
    wxClientDC dc(panel);
-   Capture(_("secondtrack"), dc, 0, r.y - 3, width, r.height + 6);
+   Capture(wxT("secondtrack"), dc, 0, r.y - 3, width, r.height + 6);
 }
 
 void ScreenFrame::OnDirChoose(wxCommandEvent& evt)
