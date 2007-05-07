@@ -73,10 +73,6 @@ const int MAX_NUM_ROWS =80;
 
 class LabelTrack:public Track {
    friend class LabelStruct;
-   friend class BouncePane;
-   friend bool ExportPCM(AudacityProject *project,
-               wxString format, bool stereo, wxString fName,
-               bool selectionOnly, double t0, double t1);
 
  public:
 	bool IsGoodLabelCharacter(int keyCode, wxChar charCode);

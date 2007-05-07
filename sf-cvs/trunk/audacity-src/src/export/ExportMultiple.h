@@ -69,7 +69,8 @@ private:
    void OnExport(wxCommandEvent& event);
 
 private:
-   ExportTypeArray mTypes;
+   Exporter mExporter;
+   ExportPluginArray mPlugins;
    AudacityProject *mProject;
    TrackList *mTracks;
    TrackListIterator mIterator;

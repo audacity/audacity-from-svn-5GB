@@ -2179,15 +2179,15 @@ void AudacityProject::OnExportLabels()
 
 void AudacityProject::OnExport()
 {
-   Export e;
+   Exporter e;
 
    e.Process(this, false, 0.0, mTracks->GetEndTime());
 }
 
 void AudacityProject::OnExportSelection()
 {
-   Export e;
-   
+   Exporter e;
+
    e.Process(this, true, mViewInfo.sel0, mViewInfo.sel1);
 }
 

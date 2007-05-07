@@ -11,19 +11,12 @@
 #ifndef __AUDACITY_EXPORTPCM__
 #define __AUDACITY_EXPORTPCM__
 
-class wxString;
+class ExportPlugin;
 
-class AudacityProject;
-class DirManager;
-class WaveTrack;
-class MixerSpec;
-
-bool ExportPCM(AudacityProject *project,
-               int numChannels, wxString fName,
-               bool selectionOnly, double t0, double t1, 
-               MixerSpec *mixerSpec = NULL);
-
-bool ExportPCMOptions(AudacityProject *project);
+//----------------------------------------------------------------------------
+// Constructor
+//----------------------------------------------------------------------------
+ExportPlugin *New_ExportPCM();
 
 #endif
 

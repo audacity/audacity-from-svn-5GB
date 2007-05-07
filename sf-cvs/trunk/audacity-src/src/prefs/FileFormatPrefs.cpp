@@ -118,26 +118,16 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
 
 /// Sets the a text area on the dialog to have the name
 /// of the MP3 Library version.
-void FileFormatPrefs::SetMP3VersionText()
+void FileFormatPrefs::SetMP3VersionText(bool prompt)
 {
-   wxString versionString = _("MP3 exporting plugin not found");
-   bool doMP3 = GetMP3Exporter()->LoadLibrary(this, false);
-
-   if (doMP3)
-      doMP3 = GetMP3Exporter()->ValidLibraryLoaded();
-   if (doMP3)
-      versionString = GetMP3Exporter()->GetLibraryVersion();
-   
-   mMP3Version->SetLabel(versionString);
+   mMP3Version->SetLabel(GetMP3Version(this, prompt));
 }
 
 /// Opens a file-finder dialog so that the user can
 /// tell us where the MP3 library is.
 void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 {
-   if (GetMP3Exporter()->FindLibrary(this, false)) {
-      SetMP3VersionText();
-   }
+   SetMP3VersionText(true);
 }
 
 /// Opens a file-finder dialog so that the user can

@@ -11,16 +11,12 @@
 #ifndef __AUDACITY_EXPORTCL__
 #define __AUDACITY_EXPORTCL__
 
-#include <wx/string.h>
+class ExportPlugin;
 
-class MixerSpec;
-
-bool ExportCL(AudacityProject *project,
-               int channels, wxString fName,
-               bool selectionOnly, double t0, double t1, 
-               MixerSpec *mixerSpec = NULL);
-
-bool ExportCLOptions(AudacityProject *project);
+//----------------------------------------------------------------------------
+// Constructor
+//----------------------------------------------------------------------------
+ExportPlugin *New_ExportCL();
 
 #endif
 

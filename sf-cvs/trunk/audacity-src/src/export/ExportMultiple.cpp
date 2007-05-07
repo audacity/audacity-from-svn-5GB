@@ -89,7 +89,7 @@ ExportMultiple::ExportMultiple(AudacityProject *project)
 {
    mProject = project;
    mTracks = project->GetTracks();
-   mTypes = Export::GetTypes();
+   mPlugins = mExporter.GetPlugins();
 
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
@@ -180,8 +180,8 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
    {
       wxArrayString formats;
       
-      for (size_t i = 0; i < mTypes.GetCount(); i++) {
-         formats.Add(mTypes[i].GetDescription());
+      for (size_t i = 0; i < mPlugins.GetCount(); i++) {
+         formats.Add(mPlugins[i]->GetDescription());
       }
 
       S.AddPrompt(_("Export format:"));
@@ -350,7 +350,7 @@ void ExportMultiple::OnFormat(wxCommandEvent& event)
 
 void ExportMultiple::OnOptions(wxCommandEvent& event)
 {
-   mTypes[mFormat->GetSelection()].DisplayOptions(mProject);
+   mPlugins[mFormat->GetSelection()]->DisplayOptions(mProject);
 }
 
 void ExportMultiple::OnCreate(wxCommandEvent& event)
@@ -435,7 +435,7 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
    mFormatIndex = mFormat->GetSelection();
    bool overwrite = mOverwrite->GetValue();
 
-   if (mTypes[mFormatIndex].GetCanMetaData()) {
+   if (mPlugins[mFormatIndex]->GetCanMetaData()) {
       Tags *tags = mProject->GetTags();
 
       if (tags->IsEmpty()) {
@@ -751,7 +751,7 @@ bool ExportMultiple::DoExport(bool stereo,
                               double t1,
                               int trackNumber)
 {
-   wxFileName fn(mDir->GetValue(), name, mTypes[mFormatIndex].GetExtension());
+   wxFileName fn(mDir->GetValue(), name, mPlugins[mFormatIndex]->GetExtension());
 
    // Generate a unique name if we're not allowed to overwrite
    if (!mOverwrite->GetValue()) {
@@ -762,19 +762,19 @@ bool ExportMultiple::DoExport(bool stereo,
    }
 
    // If the format supports tags, then set the name and track number
-   if (mTypes[mFormatIndex].GetCanMetaData()) {
+   if (mPlugins[mFormatIndex]->GetCanMetaData()) {
       Tags *tags = mProject->GetTags();
       tags->SetTitle(name);
       tags->SetTrackNumber(trackNumber);
    }
 
    // Call the format export routine
-   return mTypes[mFormatIndex].Export(mProject,
-                                      stereo ? 2 : 1,
-                                      fn.GetFullPath(),
-                                      selectedOnly,
-                                      t0,
-                                      t1);
+   return mPlugins[mFormatIndex]->Export(mProject,
+                                         stereo ? 2 : 1,
+                                         fn.GetFullPath(),
+                                         selectedOnly,
+                                         t0,
+                                         t1);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

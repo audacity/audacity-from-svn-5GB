@@ -15,6 +15,8 @@
 #include <wx/defs.h>
 #include <wx/string.h>
 
+#include "export/export.h"
+
 class Effect;
 
 class BatchCommands {
@@ -74,6 +76,7 @@ class BatchCommands {
    wxArrayString mParamsChain;
    bool mAbort;
 
+   Exporter mExporter;
    wxString mFileName;
 };
 

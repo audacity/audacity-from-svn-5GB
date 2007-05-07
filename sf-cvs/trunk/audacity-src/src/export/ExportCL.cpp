@@ -13,11 +13,13 @@
 
 **********************************************************************/
 
-#include <stdio.h>
+#include "../Audacity.h"
+
 #include <wx/log.h>
 #include <wx/process.h>
-#include <wx/progdlg.h>
 #include <wx/textctrl.h>
+
+#include "Export.h"
 
 #include "../Project.h"
 #include "../Mix.h"
@@ -25,28 +27,102 @@
 #include "../Internat.h"
 #include "../float_cast.h"
 
-/* this structure combines the RIFF header, the format chunk, and the data
- * chunk header */
-struct wav_header {
-   /* RIFF header */
-   char riffID[4];            /* "RIFF" */
-   wxUint32 lenAfterRiff;     /* basically the file len - 8, or samples len + 32 */
-   char riffType[4];          /* "WAVE" */
-   
-   /* format chunk */
-   char fmtID[4];             /* "fmt " */
-   wxUint32 formatChunkLen;   /* (format chunk len - first two fields) 16 in our case */
-   wxUint16 formatTag;        /* 1 for PCM */
-   wxUint16 channels;
-   wxUint32 sampleRate;
-   wxUint32 avgBytesPerSec;   /* sampleRate * blockAlign */
-   wxUint16 blockAlign;       /* bitsPerSample * channels (assume bps % 8 = 0) */
-   wxUint16 bitsPerSample;
+//----------------------------------------------------------------------------
+// ExportCLOptions
+//----------------------------------------------------------------------------
 
-   /* data chunk header */
-   char dataID[4];            /* "data" */
-   wxUint32 dataLen;          /* length of all samples in bytes */
+class ExportCLOptions : public wxDialog
+{
+public:
+
+   ExportCLOptions(wxWindow *parent);
+   void PopulateOrExchange(ShuttleGui & S);
+   void OnOK(wxCommandEvent & event);
+
+private:
+
+   DECLARE_EVENT_TABLE()
 };
+
+BEGIN_EVENT_TABLE(ExportCLOptions, wxDialog)
+   EVT_BUTTON(wxID_OK, ExportCLOptions::OnOK)
+END_EVENT_TABLE()
+
+/// 
+/// 
+ExportCLOptions::ExportCLOptions(wxWindow *parent)
+:  wxDialog(NULL, wxID_ANY,
+   wxString(_("Specify Command Line Options")),
+   wxDefaultPosition, wxDefaultSize,
+   wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+{
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+
+   PopulateOrExchange(S);
+}
+
+/// 
+/// 
+void ExportCLOptions::PopulateOrExchange(ShuttleGui & S)
+{
+   S.StartHorizontalLay(wxEXPAND, 0);
+   {
+      S.StartStatic(_("Command Line Export Setup"), true);
+      {
+         S.StartMultiColumn(2, wxEXPAND);
+         {
+            S.SetStretchyCol(1);
+            S.TieTextBox(_("Command:"),
+                         wxT("/FileFormats/ExternalProgramExportCommand"),
+                         wxT("lame - \"%f\""),
+                         64);
+            S.AddFixedText(wxT(""));
+            S.TieCheckBox(_("Show output"),
+                          wxT("/FileFormats/ExternalProgramShowOutput"),
+                          false);
+         }
+         S.EndMultiColumn();
+
+
+         S.AddFixedText(_("Include \"%f\" where the output filename should be substituted."));
+      }
+      S.EndStatic();
+   }
+   S.EndHorizontalLay();
+   S.StartHorizontalLay(wxALIGN_CENTER, false);
+   {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+   }
+   GetSizer()->AddSpacer(5);
+   Layout();
+   Fit();
+   SetMinSize(GetSize());
+   Center();
+
+   return;
+}
+
+/// 
+/// 
+void ExportCLOptions::OnOK(wxCommandEvent& event)
+{
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
+
+   EndModal(wxID_OK);
+
+   return;
+}
+
+//----------------------------------------------------------------------------
+// ExportCLProcess
+//----------------------------------------------------------------------------
 
 static void Drain(wxInputStream *s, wxString *o)
 {
@@ -59,10 +135,10 @@ static void Drain(wxInputStream *s, wxString *o)
    }
 }
 
-class MyProcess : public wxProcess
+class ExportCLProcess : public wxProcess
 {
 public:
-   MyProcess(wxString *output)
+   ExportCLProcess(wxString *output)
    {
       mOutput = output;
       mActive = true;
@@ -95,12 +171,76 @@ private:
    int mStatus;
 };
 
-bool ExportCL(AudacityProject *project,
-              int channels, wxString fName,
-              bool selectionOnly, double t0, double t1, 
-              MixerSpec *mixerSpec)
+//----------------------------------------------------------------------------
+// ExportCL
+//----------------------------------------------------------------------------
+
+/* this structure combines the RIFF header, the format chunk, and the data
+ * chunk header */
+struct wav_header {
+   /* RIFF header */
+   char riffID[4];            /* "RIFF" */
+   wxUint32 lenAfterRiff;     /* basically the file len - 8, or samples len + 32 */
+   char riffType[4];          /* "WAVE" */
+   
+   /* format chunk */
+   char fmtID[4];             /* "fmt " */
+   wxUint32 formatChunkLen;   /* (format chunk len - first two fields) 16 in our case */
+   wxUint16 formatTag;        /* 1 for PCM */
+   wxUint16 channels;
+   wxUint32 sampleRate;
+   wxUint32 avgBytesPerSec;   /* sampleRate * blockAlign */
+   wxUint16 blockAlign;       /* bitsPerSample * channels (assume bps % 8 = 0) */
+   wxUint16 bitsPerSample;
+
+   /* data chunk header */
+   char dataID[4];            /* "data" */
+   wxUint32 dataLen;          /* length of all samples in bytes */
+};
+
+class ExportCL : public ExportPlugin
 {
-   MyProcess *p;
+public:
+
+   ExportCL();
+   void Destroy();
+
+   // Required
+
+   bool DisplayOptions(AudacityProject *project = NULL);
+   bool Export(AudacityProject *project,
+               int channels,
+               wxString fName,
+               bool selectedOnly,
+               double t0,
+               double t1,
+               MixerSpec *mixerSpec = NULL);
+};
+
+ExportCL::ExportCL()
+:  ExportPlugin()
+{
+   SetFormat(wxT("CL"));
+   SetExtension(wxT(""));
+   SetMaxChannels(255);
+   SetCanMetaData(false);
+   SetDescription(_("(external program)"));
+}
+
+void ExportCL::Destroy()
+{
+   delete this;
+}
+
+bool ExportCL::Export(AudacityProject *project,
+                      int channels,
+                      wxString fName,
+                      bool selectionOnly,
+                      double t0,
+                      double t1, 
+                      MixerSpec *mixerSpec)
+{
+   ExportCLProcess *p;
    wxString output;
    wxString cmd;
    bool show;
@@ -111,7 +251,7 @@ bool ExportCL(AudacityProject *project,
    cmd.Replace(wxT("%f"), fName);
 
    // Kick off the command
-   p = new MyProcess(&output);
+   p = new ExportCLProcess(&output);
    if (!wxExecute(cmd, wxEXEC_ASYNC, p)) {
       wxMessageBox(wxString::Format(_("Cannot export audio to %s"),
                                     fName.c_str()));
@@ -190,7 +330,7 @@ bool ExportCL(AudacityProject *project,
       _("Exporting the selected audio using command-line encoder") :
       _("Exporting the entire project using command-line encoder"));
 
-   // Starting piping the mixed data to the command
+   // Start piping the mixed data to the command
    while (!cancelling && p->IsActive() && os->IsOk()) {
       // Capture any stdout and stderr from the command
       Drain(p->GetInputStream(), &output);
@@ -279,97 +419,21 @@ bool ExportCL(AudacityProject *project,
    return true;
 }
 
-class CLOptionsDialog : public wxDialog
+bool ExportCL::DisplayOptions(AudacityProject *project)
 {
-public:
-
-   /// 
-   /// 
-   CLOptionsDialog(wxWindow *parent)
-   : wxDialog(NULL, wxID_ANY, wxString(_("Specify Command Line Options")),
-      wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
-   {
-      ShuttleGui S(this, eIsCreatingFromPrefs);
-
-      PopulateOrExchange(S);
-   }
-
-   /// 
-   /// 
-   void PopulateOrExchange(ShuttleGui & S)
-   {
-      S.StartHorizontalLay(wxEXPAND, 0);
-      {
-         S.StartStatic(_("Command Line Export Setup"), true);
-         {
-            S.StartMultiColumn(2, wxEXPAND);
-            {
-               S.SetStretchyCol(1);
-               S.TieTextBox(_("Command:"),
-                            wxT("/FileFormats/ExternalProgramExportCommand"),
-                            wxT("lame - \"%f\""),
-                            64);
-               S.AddFixedText(wxT(""));
-               S.TieCheckBox(_("Show output"),
-                             wxT("/FileFormats/ExternalProgramShowOutput"),
-                             false);
-            }
-            S.EndMultiColumn();
-
-
-            S.AddFixedText(_("Include \"%f\" where the output filename should be substituted."));
-         }
-         S.EndStatic();
-      }
-      S.EndHorizontalLay();
-      S.StartHorizontalLay(wxALIGN_CENTER, false);
-      {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-#else
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-      }
-      GetSizer()->AddSpacer(5);
-      Layout();
-      Fit();
-      SetMinSize(GetSize());
-      Center();
-
-      return;
-   }
-
-   /// 
-   /// 
-   void OnOK(wxCommandEvent& event)
-   {
-      ShuttleGui S(this, eIsSavingToPrefs);
-      PopulateOrExchange(S);
-
-      EndModal(wxID_OK);
-
-      return;
-   }
-
-private:
-   int mCLQualityUnscaled;
-
-   DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE(CLOptionsDialog, wxDialog)
-   EVT_BUTTON(wxID_OK, CLOptionsDialog::OnOK)
-END_EVENT_TABLE()
-
-bool ExportCLOptions(AudacityProject *project)
-{
-   CLOptionsDialog od(project);
+   ExportCLOptions od(project);
 
    od.ShowModal();
 
    return true;
+}
+
+//----------------------------------------------------------------------------
+// Constructor
+//----------------------------------------------------------------------------
+ExportPlugin *New_ExportCL()
+{
+   return new ExportCL();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

@@ -11,89 +11,21 @@
 #ifndef __AUDACITY_EXPORTMP3__
 #define __AUDACITY_EXPORTMP3__
 
-#include <wx/string.h>
-#include <wx/dynlib.h>
-
-#include "lame.h"
-
 /* --------------------------------------------------------------------------*/
 
-class AudacityProject;
-class MixerSpec;
+class ExportPlugin;
+class wxString;
+class wxWindow;
 
-class MP3Exporter
-{
-public:
+//----------------------------------------------------------------------------
+// Constructor
+//----------------------------------------------------------------------------
+ExportPlugin *New_ExportMP3();
 
-   MP3Exporter();
-   virtual ~MP3Exporter();
-
-   bool FindLibrary(wxWindow *parent, bool showdialog);
-   bool LoadLibrary(wxWindow *parent, bool askuser);
-   bool ValidLibraryLoaded();
-
-   /* These global settings keep state over the life of the object */
-   void SetMode(int mode);
-   void SetBitrate(int rate);
-   void SetQuality(int q, int r);
-   void SetChannel(int mode);
-
-   /* Virtual methods that must be supplied by library interfaces */
-
-   /* initialize the library interface */
-   virtual bool InitLibrary(wxString libpath) = 0;
-   virtual void FreeLibrary() = 0;
-
-   /* get library info */
-   virtual wxString GetLibraryVersion() = 0;
-   virtual wxString GetLibraryName() = 0;
-   virtual wxString GetLibraryPath() = 0;
-   virtual wxString GetLibraryTypeString() = 0;
-
-   /* returns the number of samples PER CHANNEL to send for each call to EncodeBuffer */
-   virtual int InitializeStream(int channels, int sampleRate) = 0;
-
-   /* In bytes. must be called AFTER InitializeStream */
-   virtual int GetOutBufferSize() = 0;
-
-   /* returns the number of bytes written. input is interleaved if stereo*/
-   virtual int EncodeBuffer(short int inbuffer[], unsigned char outbuffer[]) = 0;
-   virtual int EncodeRemainder(short int inbuffer[], int nSamples,
-                               unsigned char outbuffer[]) = 0;
-
-   virtual int EncodeBufferMono(short int inbuffer[], unsigned char outbuffer[]) = 0;
-   virtual int EncodeRemainderMono(short int inbuffer[], int nSamples,
-                                   unsigned char outbuffer[]) = 0;
-
-   virtual int FinishStream(unsigned char outbuffer[]) = 0;
-   virtual void CancelEncoding() = 0;
-
-protected:
-
-   wxString mLibPath;
-
-   bool mLibraryLoaded;
-   bool mEncoding;
-
-   int mMode;
-   int mBitrate;
-   int mQuality;
-   int mRoutine;
-   int mChannel;
-};
-
-#define MP3CONFIG_BITRATE 0x00000001
-#define MP3CONFIG_QUALITY 0x00000002
-
-MP3Exporter *GetMP3Exporter();
-void         ReleaseMP3Exporter();
-
-bool ExportMP3(AudacityProject *project,
-               int channels, wxString fName,
-               bool selectionOnly, double t0, double t1, 
-               MixerSpec *mixerSpec = NULL);
-
-bool ExportMP3Options(AudacityProject *project);
+//----------------------------------------------------------------------------
+// Get MP3 library versioqn
+//----------------------------------------------------------------------------
+wxString GetMP3Version(wxWindow *parent, bool prompt);
 
 #endif
 

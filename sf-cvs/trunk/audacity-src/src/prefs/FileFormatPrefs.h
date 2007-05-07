@@ -32,7 +32,7 @@ private:
    void PopulateOrExchange(ShuttleGui & S);
    void OnMP3FindButton(wxCommandEvent& evt);
    void OnMP3DownButton(wxCommandEvent& evt);
-   void SetMP3VersionText();
+   void SetMP3VersionText(bool prompt = false);
 
    wxStaticText *mMP3Version;
 

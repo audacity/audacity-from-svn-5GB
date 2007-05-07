@@ -46,7 +46,7 @@
 #include <wx/log.h>
 #include <wx/intl.h>
 
-#include "ExportMP2.h"
+#include "Export.h"
 #include "../FileIO.h"
 #include "../Internat.h"
 #include "../Mix.h"
@@ -58,7 +58,144 @@
 #define LIBTWOLAME_STATIC
 #include "twolame.h"
 
-bool ExportMP2(AudacityProject *project,
+//----------------------------------------------------------------------------
+// ExportMP2Options
+//----------------------------------------------------------------------------
+
+static int iBitrates[] = {
+   16, 24, 32, 40, 48, 56, 64,
+   80, 96, 112, 128, 160,
+   192, 224, 256, 320 
+};
+
+class ExportMP2Options : public wxDialog
+{
+public:
+
+   /// 
+   /// 
+   ExportMP2Options(wxWindow *parent);
+   void PopulateOrExchange(ShuttleGui & S);
+   void OnOK(wxCommandEvent& event);
+
+private:
+   wxArrayString mBitRateNames;
+   wxArrayInt    mBitRateLabels;
+
+   DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(ExportMP2Options, wxDialog)
+   EVT_BUTTON(wxID_OK, ExportMP2Options::OnOK)
+END_EVENT_TABLE()
+
+/// 
+/// 
+ExportMP2Options::ExportMP2Options(wxWindow *parent)
+:  wxDialog(NULL, wxID_ANY,
+            wxString(_("Specify MP2 Options")),
+            wxDefaultPosition, wxDefaultSize,
+            wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+{
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+
+   for (unsigned int i=0; i < (sizeof(iBitrates)/sizeof(int)); i++)
+   {
+      mBitRateNames.Add(wxString::Format(wxT("%i"),iBitrates[i]));
+      mBitRateLabels.Add(iBitrates[i]);
+   }
+
+   PopulateOrExchange(S);
+}
+
+/// 
+/// 
+void ExportMP2Options::PopulateOrExchange(ShuttleGui & S)
+{
+   S.StartHorizontalLay(wxEXPAND, 0);
+   {
+      S.StartStatic(_("MP2 Export Setup"), 0);
+      {
+         S.StartTwoColumn();
+         {
+            S.TieChoice(_("Bit Rate:"), wxT("/FileFormats/MP2Bitrate"), 
+               160, mBitRateNames, mBitRateLabels);
+         }
+         S.EndTwoColumn();
+      }
+      S.EndStatic();
+   }
+   S.EndHorizontalLay();
+   S.StartHorizontalLay(wxALIGN_CENTER, false);
+   {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+   }
+   GetSizer()->AddSpacer(5);
+   Layout();
+   Fit();
+   SetMinSize(GetSize());
+   Center();
+
+   return;
+}
+
+/// 
+/// 
+void ExportMP2Options::OnOK(wxCommandEvent& event)
+{
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
+
+   EndModal(wxID_OK);
+
+   return;
+}
+
+//----------------------------------------------------------------------------
+// ExportMP2
+//----------------------------------------------------------------------------
+
+class ExportMP2 : public ExportPlugin
+{
+public:
+
+   ExportMP2();
+   void Destroy();
+
+   // Required
+
+   bool DisplayOptions(AudacityProject *project = NULL);
+   bool Export(AudacityProject *project,
+               int channels,
+               wxString fName,
+               bool selectedOnly,
+               double t0,
+               double t1,
+               MixerSpec *mixerSpec = NULL);
+};
+
+ExportMP2::ExportMP2()
+:  ExportPlugin()
+{
+   SetFormat(wxT("MP2"));
+   SetExtension(wxT("mp2"));
+   SetMaxChannels(2);
+   SetCanMetaData(true);
+   SetDescription(_("MP2 Files"));
+}
+
+void ExportMP2::Destroy()
+{
+   delete this;
+}
+
+bool ExportMP2::Export(AudacityProject *project,
                int channels, wxString fName,
                bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
 {
@@ -185,100 +322,21 @@ bool ExportMP2(AudacityProject *project,
    return !cancelling;
 }
 
-static int iBitrates[] = {
-   16, 24, 32, 40, 48, 56, 64,
-   80, 96, 112, 128, 160,
-   192, 224, 256, 320 
-};
-
-class MP2OptionsDialog : public wxDialog
+bool ExportMP2::DisplayOptions(AudacityProject *project)
 {
-public:
-
-   /// 
-   /// 
-   MP2OptionsDialog(wxWindow *parent)
-   : wxDialog(NULL, wxID_ANY, wxString(_("Specify MP2 Options")),
-      wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
-   {
-      ShuttleGui S(this, eIsCreatingFromPrefs);
-
-      for (unsigned int i=0; i < (sizeof(iBitrates)/sizeof(int)); i++)
-      {
-         mBitRateNames.Add(wxString::Format(wxT("%i"),iBitrates[i]));
-         mBitRateLabels.Add(iBitrates[i]);
-      }
-
-      PopulateOrExchange(S);
-   }
-
-   /// 
-   /// 
-   void PopulateOrExchange(ShuttleGui & S)
-   {
-      S.StartHorizontalLay(wxEXPAND, 0);
-      {
-         S.StartStatic(_("MP2 Export Setup"), 0);
-         {
-            S.StartTwoColumn();
-            {
-               S.TieChoice(_("Bit Rate:"), wxT("/FileFormats/MP2Bitrate"), 
-                  160, mBitRateNames, mBitRateLabels);
-            }
-            S.EndTwoColumn();
-         }
-         S.EndStatic();
-      }
-      S.EndHorizontalLay();
-      S.StartHorizontalLay(wxALIGN_CENTER, false);
-      {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-#else
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-      }
-      GetSizer()->AddSpacer(5);
-      Layout();
-      Fit();
-      SetMinSize(GetSize());
-      Center();
-
-      return;
-   }
-
-   /// 
-   /// 
-   void OnOK(wxCommandEvent& event)
-   {
-      ShuttleGui S(this, eIsSavingToPrefs);
-      PopulateOrExchange(S);
-
-      EndModal(wxID_OK);
-
-      return;
-   }
-
-private:
-   wxArrayString mBitRateNames;
-   wxArrayInt    mBitRateLabels;
-
-   DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE(MP2OptionsDialog, wxDialog)
-   EVT_BUTTON(wxID_OK, MP2OptionsDialog::OnOK)
-END_EVENT_TABLE()
-
-bool ExportMP2Options(AudacityProject *project)
-{
-   MP2OptionsDialog od(project);
+   ExportMP2Options od(project);
 
    od.ShowModal();
 
    return true;
+}
+
+//----------------------------------------------------------------------------
+// Constructor
+//----------------------------------------------------------------------------
+ExportPlugin *New_ExportMP2()
+{
+   return new ExportMP2();
 }
 
 #endif // #ifdef USE_LIBTWOLAME

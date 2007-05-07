@@ -11,20 +11,12 @@
 #ifndef __AUDACITY_EXPORTFLAC__
 #define __AUDACITY_EXPORTFLAC__
 
-#include <wx/defs.h>
-#include <wx/string.h>
+class ExportPlugin;
 
-class MixerSpec;
-class AudacityProject;
-class DirManager;
-class WaveTrack;
-
-bool ExportFLAC(AudacityProject *project,
-                int channels, wxString fName,
-                bool selectionOnly, double t0, double t1,
-                MixerSpec *mixerSpec = NULL);
-
-bool ExportFLACOptions(AudacityProject *project);
+//----------------------------------------------------------------------------
+// Constructor
+//----------------------------------------------------------------------------
+ExportPlugin *New_ExportFLAC();
 
 #endif
 
