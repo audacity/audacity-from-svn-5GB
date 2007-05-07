@@ -619,7 +619,48 @@ void Tags::ExportFLACTags(FLAC::Encoder::File *encoder)
 }
 #endif
 
+#ifdef USE_LIBVORBIS
+void Tags::ExportOGGTags(vorbis_comment *comment)
+{
+   vorbis_comment_init(comment);
+// ((char *) (const char *)(X).mb_str())
+   if (mTitle != wxT("")) {
+      vorbis_comment_add_tag(comment, "TITLE", (char *) (const char *) mTitle.mb_str());
+   }
 
+   if (mArtist != wxT("")) {
+      vorbis_comment_add_tag(comment, "ARTIST", (char *) (const char *) mArtist.mb_str());
+   }
+
+   if (mAlbum != wxT("")) {
+      vorbis_comment_add_tag(comment, "ALBUM", (char *) (const char *) mAlbum.mb_str());
+   }
+
+   if (mYear != wxT("")) {
+      vorbis_comment_add_tag(comment, "YEAR", (char *) (const char *) mYear.mb_str());
+   }
+
+   if (mComments != wxT("")) {
+      vorbis_comment_add_tag(comment, "COMMENT", (char *) (const char *) mComments.mb_str());
+   }
+
+   if (mTrackNum >= 0) {
+      wxString trackNumStr;
+      trackNumStr.Printf(wxT("%d"), mTrackNum);
+      vorbis_comment_add_tag(comment, "TRACKNUMBER", (char *) (const char *) trackNumStr.mb_str());
+   }
+
+   if (mGenre >= 0) {
+      vorbis_comment_add_tag(comment, "GENRE", (char *) (const char *) GetGenreNum(mGenre).mb_str());
+   }
+
+   for (size_t i = 0; i < mExtraNames.GetCount(); i++) {
+      vorbis_comment_add_tag(comment,
+                             (char *) (const char *) mExtraNames[i].mb_str(),
+                             (char *) (const char *) mExtraValues[i].mb_str());
+   }
+}
+#endif
 
 //
 // TagsEditor
