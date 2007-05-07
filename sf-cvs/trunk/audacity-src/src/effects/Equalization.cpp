@@ -299,11 +299,26 @@ EffectEqualization::EffectEqualization()
 {
    mFilterFuncR = new float[windowSize];
    mFilterFuncI = new float[windowSize];
-   mM = 4001;
-   mCurveName = wxString(wxT("custom"));
-   mLin = false;
-   mdBMin = -30.;
-   mdBMax = 30.;
+   gPrefs->Read(wxT("/CsPresets/EQFilterLength"),
+                &mM, 4001);
+   if ((mM < 21) || (mM > 8191)) {  // corrupted Prefs?
+      mM = 4001;  //default
+      gPrefs->Write(wxT("/CsPresets/EQFilterLength"), mM);
+   }
+   gPrefs->Read(wxT("/CsPresets/EQCurveName"), &mCurveName, wxT("custom"));
+   gPrefs->Read(wxT("/CsPresets/EQLin"), &mLin, false);
+   gPrefs->Read(wxT("/CsPresets/EQdBMin"), &mdBMin, -30.0);
+   if ((mdBMin < -120) || (mdBMin > -10)) {  // corrupted Prefs?
+      mdBMin = -30;  //default
+      gPrefs->Write(wxT("/CsPresets/EQFilterLength"), mdBMin);
+   }
+   gPrefs->Read(wxT("/CsPresets/EQdBMax"), &mdBMax, 30.);
+   if ((mdBMax < 0) || (mdBMax > 60)) {  // corrupted Prefs?
+      mdBMax = 30;  //default
+      gPrefs->Write(wxT("/CsPresets/EQFilterLength"), mdBMax);
+   }
+   gPrefs->Read(wxT("/CsPresets/EQDrawMode"),
+                &mDrawMode, true);
 }
 
 
@@ -336,6 +351,7 @@ bool EffectEqualization::PromptUser()
    dlog.linCheck = mLin;
    dlog.dBMin = mdBMin;
    dlog.dBMax = mdBMax;
+   dlog.drawMode = mDrawMode;
    dlog.TransferDataToWindow();
    dlog.CentreOnParent();
    dlog.ShowModal();
@@ -348,6 +364,14 @@ bool EffectEqualization::PromptUser()
    mLin = dlog.linCheck;
    mdBMin = dlog.dBMin;
    mdBMax = dlog.dBMax;
+   mDrawMode = dlog.drawMode;
+
+   gPrefs->Write(wxT("/CsPresets/EQFilterLength"),mM);
+   gPrefs->Write(wxT("/CsPresets/EQCurveName"),mCurveName);
+   gPrefs->Write(wxT("/CsPresets/EQLin"),mLin);
+   gPrefs->Write(wxT("/CsPresets/EQdBMin"),mdBMin);
+   gPrefs->Write(wxT("/CsPresets/EQdBMax"),mdBMax);
+   gPrefs->Write(wxT("/CsPresets/EQDrawMode"),mDrawMode);
 
    return true;
 }
@@ -1093,33 +1117,7 @@ void EqualizationDialog::MakeEqualizationDialog()
    szrV->Add( szr1, 1, wxEXPAND|wxALIGN_CENTER|wxALL, 0 );
 
    // -------------------------------------------------------------------
-   // ROW 3: Curve management grouping
-   // -------------------------------------------------------------------
-   szrC = new wxBoxSizer( wxHORIZONTAL );   //szrC is for the curves bits
-
-   txt = new wxStaticText( this, wxID_ANY, _("Select curve:") );
-   szrC->Add( txt, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxLEFT, 4 );
-
-   // Create the choice sizer (helps in recreating choice control)
-   mCurveSizer = new wxBoxSizer( wxHORIZONTAL );
-   szrC->Add( mCurveSizer, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxLEFT, 4 );
-
-   // Create the choice control
-   CreateChoice();
-
-   mSaveAs = new wxButton( this, ID_SAVEAS, _("Save As...") );
-   szrC->Add( mSaveAs, 0, wxALIGN_CENTRE|wxLEFT, 4 );
-
-   mDelete = new wxButton( this, ID_DELETE, _("Delete") );
-   szrC->Add( mDelete, 0, wxALIGN_CENTRE|wxLEFT, 4 );
-
-   btn = new wxButton( this, ID_CLEAR, _("Flat"));
-   szrC->Add( btn, 0, wxALIGN_CENTRE | wxALL, 4 );
-
-   szrV->Add( szrC, 0, wxALIGN_CENTER | wxALL, 0 );
-
-   // -------------------------------------------------------------------
-   // ROW 4: Graphic EQ - this gets laid out horizontally in onSize
+   // ROW 3: Graphic EQ - this gets laid out horizontally in onSize
    // -------------------------------------------------------------------
 
    szrG = new wxBoxSizer( wxHORIZONTAL  );
@@ -1154,7 +1152,7 @@ void EqualizationDialog::MakeEqualizationDialog()
    szr3->SetMinSize(EQsliderSize.x/2, -1);   //extra gap for last slider
 
    // -------------------------------------------------------------------
-   // ROW 5a: Graphic or curve drawing?
+   // ROW 4a: Graphic or curve drawing?
    // -------------------------------------------------------------------
    szrH = new wxBoxSizer( wxHORIZONTAL );
 
@@ -1185,7 +1183,7 @@ void EqualizationDialog::MakeEqualizationDialog()
    szrH->Add(szrL);  // either szrI or szrL are visible, not both.
 
    // -------------------------------------------------------------------
-   // ROW 5b: Filter length grouping
+   // ROW 4b: Filter length grouping
    // -------------------------------------------------------------------
 
    // length of filter (M) label
@@ -1205,7 +1203,33 @@ void EqualizationDialog::MakeEqualizationDialog()
    // Add the length / graphic / draw grouping
    szrV->Add( szrH, 0, wxALIGN_CENTER | wxALL, 4 );
 
-    // -------------------------------------------------------------------
+   // -------------------------------------------------------------------
+   // ROW 5: Curve management grouping
+   // -------------------------------------------------------------------
+   szrC = new wxBoxSizer( wxHORIZONTAL );   //szrC is for the curves bits
+
+   txt = new wxStaticText( this, wxID_ANY, _("Select curve:") );
+   szrC->Add( txt, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxLEFT, 4 );
+
+   // Create the choice sizer (helps in recreating choice control)
+   mCurveSizer = new wxBoxSizer( wxHORIZONTAL );
+   szrC->Add( mCurveSizer, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxLEFT, 4 );
+
+   // Create the choice control
+   CreateChoice();
+
+   mSaveAs = new wxButton( this, ID_SAVEAS, _("Save As...") );
+   szrC->Add( mSaveAs, 0, wxALIGN_CENTRE|wxLEFT, 4 );
+
+   mDelete = new wxButton( this, ID_DELETE, _("Delete") );
+   szrC->Add( mDelete, 0, wxALIGN_CENTRE|wxLEFT, 4 );
+
+   btn = new wxButton( this, ID_CLEAR, _("Flat"));
+   szrC->Add( btn, 0, wxALIGN_CENTRE | wxALL, 4 );
+
+   szrV->Add( szrC, 0, wxALIGN_CENTER | wxALL, 0 );
+
+   // -------------------------------------------------------------------
    // ROW 6: Preview, OK, & Cancel buttons
    // -------------------------------------------------------------------
    szrJ = new wxBoxSizer(wxHORIZONTAL);
@@ -1312,6 +1336,18 @@ bool EqualizationDialog::TransferDataToWindow()
 
    // Set initial curve
    setCurve( mLogEnvelope, curveName );
+
+   // Set Graphic (Fader) or Draw mode
+   if(drawMode)
+   {
+      mFaderOrDraw[0]->SetValue(true);
+      OnDrawRadio(dummyEvent);
+   }
+   else
+   {
+      mFaderOrDraw[1]->SetValue(true);
+      OnSliderRadio(dummyEvent);
+   }
 
    return TransferDataFromWindow();
 }
@@ -1979,6 +2015,7 @@ void EqualizationDialog::GraphicEQ(Envelope *env)
 
    mPanel->RecalcRequired = true;
    mPanel->Refresh( false );
+   EnvelopeUpdated();
 }
 
 void EqualizationDialog::spline(double x[], double y[], int n, double y2[])
@@ -2070,6 +2107,7 @@ void EqualizationDialog::OnDrawRadio(wxCommandEvent &evt)
    Layout();
    mPanel->RecalcRequired = true;   // it may have changed slightly due to the deletion of points
    mPanel->Refresh( false );
+   drawMode = true;
 }
 
 void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
@@ -2128,7 +2166,7 @@ void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
       m_sliders[i]->SetToolTip(tip);
 #endif
    }
-   szrV->Show(szrC,false);
+//   szrV->Show(szrC,false);
    szrV->Show(szrG,true);
    szrH->Show(szrI,true);
    szrH->Show(szrL,false);
@@ -2143,6 +2181,7 @@ void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
       Fit();
    }
    GraphicEQ(mLogEnvelope);
+   drawMode = false;
 }
 
 void EqualizationDialog::OnLinFreq(wxCommandEvent &evt)
@@ -2218,6 +2257,7 @@ void EqualizationDialog::ErrMin(void)
    int i;
    double error;
    double oldError;
+   double originalError;
    double m_EQValsOld = 0.0;
    double correction = 1.6;
    bool flag;
@@ -2235,6 +2275,7 @@ void EqualizationDialog::ErrMin(void)
       error += err*err;
    }
    oldError = error;
+   originalError = error;
    while( j < bandsInUse*12 )  //loop over the sliders a number of times
    {
       i = j%bandsInUse;       //use this slider
@@ -2273,6 +2314,11 @@ void EqualizationDialog::ErrMin(void)
       m_EQVals[i] = m_EQValsOld;   //last one didn't work
       j++;  //try next slider
    }
+   if( error > .0025 * bandsInUse ) // within 0.05dB on each slider
+      mDirty = true;
+   else
+      mDirty = false;
+
 }
 
 void EqualizationDialog::OnSliderM(wxCommandEvent &event)
@@ -2304,6 +2350,11 @@ void EqualizationDialog::OnCurve(wxCommandEvent &event)
    #endif
    if( mFaderOrDraw[0]->GetValue() & mLinFreq->IsChecked() )
       EnvLogToLin();
+   if( !drawMode )
+   {
+      wxCommandEvent dummyEvent;
+      OnSliderRadio(dummyEvent);
+   }
 }
 
 //
@@ -2453,6 +2504,15 @@ void EqualizationDialog::OnClear(wxCommandEvent &event)
    EnvelopeUpdated();
    mPanel->RecalcRequired = true;
    mPanel->Refresh(false);
+   if( !drawMode )
+   {
+      for( int i=0; i< bandsInUse; i++)
+      {
+         m_sliders[i]->SetValue(0);
+         m_sliders_old[i] = 0;
+         m_EQVals[i] = 0.;
+      }
+   }
 }
 
 void EqualizationDialog::OnErase(wxEraseEvent &event)
