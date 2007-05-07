@@ -427,6 +427,11 @@ class AudacityProject:public wxFrame,
    // Dependencies have been imported and a warning should be shown on save
    bool mImportedDependencies;
 
+ private:
+
+   // The screenshot class needs to access internals
+   friend class ScreenFrame;
+
  public:
     DECLARE_EVENT_TABLE()
 };
