@@ -721,25 +721,40 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       else
          playbackTracks = WaveTrackArray();
 
-      // If SHIFT key was down, the user wants append to selected tracks
+      // If SHIFT key was down, the user wants append to tracks
       int recordingChannels = 0;
-      if (mRecord->WasShiftDown()) {
+      bool shifted = mRecord->WasShiftDown();
+      if (shifted) {
          TrackListIterator it(t);
          WaveTrack *wt;
+         bool sel = false;
+         double allt0 = t0;
 
-         // Find the maximum end time of selected tracks
+         // Find the maximum end time of selected and all wave tracks
          for (Track *tt = it.First(); tt; tt = it.Next()) {
-            if (tt->GetKind() == Track::Wave && tt->GetSelected()) {
+            if (tt->GetKind() == Track::Wave) {
                wt = (WaveTrack *)tt;
-               if (wt->GetEndTime() > t0) {
-                  t0 = wt->GetEndTime();
+               if (wt->GetEndTime() > allt0) {
+                  allt0 = wt->GetEndTime();
+               }
+            
+               if (tt->GetSelected()) {
+                  sel = true;
+                  if (wt->GetEndTime() > t0) {
+                     t0 = wt->GetEndTime();
+                  }
                }
             }
          }
 
-         // Pad any selected tracks to make them all the same length
+         // Use end time of all wave tracks if none selected
+         if (!sel) {
+            t0 = allt0;
+         }
+
+         // Pad selected/all wave tracks to make them all the same length
          for (Track *tt = it.First(); tt; tt = it.Next()) {
-            if (tt->GetKind() == Track::Wave && tt->GetSelected()) {
+            if (tt->GetKind() == Track::Wave && (tt->GetSelected() || !sel)) {
                wt = (WaveTrack *)tt;
                t1 = wt->GetEndTime();
                if (t1 < t0) {
@@ -805,10 +820,11 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       }
       else {
          // msmeyer: Delete recently added tracks if opening stream fails
-         for (unsigned int i = 0; i < newRecordingTracks.GetCount(); i++)
-         {
-            t->Remove(newRecordingTracks[i]);
-            delete newRecordingTracks[i];
+         if (!shifted) {
+            for (unsigned int i = 0; i < newRecordingTracks.GetCount(); i++) {
+               t->Remove(newRecordingTracks[i]);
+               delete newRecordingTracks[i];
+            }
          }
 
          // msmeyer: Show error message if stream could not be opened
