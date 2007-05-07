@@ -15,7 +15,7 @@
 #include <wx/defs.h>
 #include <wx/string.h>
 
-#include "export/export.h"
+#include "export/Export.h"
 
 class Effect;
 
