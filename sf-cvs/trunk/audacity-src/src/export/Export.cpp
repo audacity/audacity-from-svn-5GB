@@ -154,18 +154,19 @@ wxString ExportPlugin::GetMask()
       return mMask;
    }
 
-   wxString mask = mDescription + wxT("|");
+   wxString mask = GetDescription() + wxT("|");
 
    // Build the mask, but cater to the Mac FileDialog and put the default
    // extension at the end of the mask.
-
-   for (size_t i = 0; i < mExtensions.GetCount(); i++) {
-      if (mExtension != mExtensions[i]) {
-         mask += wxT("*.") + mExtensions[i] + wxT(";");
+   wxString ext = GetExtension();
+   wxArrayString exts = GetExtensions();
+   for (size_t i = 0; i < exts.GetCount(); i++) {
+      if (ext != exts[i]) {
+         mask += wxT("*.") + exts[i] + wxT(";");
       }
    }
 
-   return mask + wxT("*.") + mExtension;
+   return mask + wxT("*.") + ext;
 }
 
 int ExportPlugin::GetMaxChannels()
@@ -180,7 +181,8 @@ bool ExportPlugin::GetCanMetaData()
 
 bool ExportPlugin::IsExtension(wxString & ext)
 {
-   return mExtension == wxT("") || mExtensions.Index(ext, false) != wxNOT_FOUND;
+   return GetExtension() == wxT("") ||
+          GetExtensions().Index(ext, false) != wxNOT_FOUND;
 }
 
 bool ExportPlugin::DisplayOptions(AudacityProject *project)
