@@ -6626,6 +6626,14 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\src\Screenshot.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\src\Screenshot.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
