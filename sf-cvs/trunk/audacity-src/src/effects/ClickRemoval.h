@@ -79,43 +79,40 @@ friend class ClickRemovalDialog;
 // WDR: class declarations
 
 //----------------------------------------------------------------------------
-// ClickRemovalDialog
+// BassWidthDialog
 //----------------------------------------------------------------------------
-
-// Declare window functions
-
-class ClickRemovalDialog: public wxDialog
-{
-public:
+class ClickRemovalDialog:public EffectDialog {
+ public:
    // constructors and destructors
-   ClickRemovalDialog(EffectClickRemoval * effect,
-                wxWindow *parent, wxWindowID id,
-                const wxString &title,
-                const wxPoint& pos = wxDefaultPosition,
-                const wxSize& size = wxDefaultSize,
-                long style = wxDEFAULT_DIALOG_STYLE );
+   ClickRemovalDialog(EffectClickRemoval *effect, wxWindow *parent);
 
-   wxSizer *MakeClickRemovalDialog(bool call_fit = true, bool set_sizer = true);
+   // WDR: method declarations for BassWidthDialog
+   void PopulateOrExchange(ShuttleGui & S);
+   bool TransferDataToWindow();
+   bool TransferDataFromWindow();
 
-private:
-   // handlers
-//   void OnPreview(wxCommandEvent &event);
-   void OnRemoveClicks( wxCommandEvent &event );
-   void OnCancel( wxCommandEvent &event );
+ private:
+   // WDR: handler declarations for BassWidthDialog
+   void OnWidthText(wxCommandEvent & event);
+   void OnThreshText(wxCommandEvent & event);
+   void OnWidthSlider(wxCommandEvent & event);
+   void OnThreshSlider(wxCommandEvent & event);
+   void OnPreview(wxCommandEvent & event);
 
-private:
-  EffectClickRemoval * m_pEffect;
+ private:
+   wxSlider *mWidthS;
+   wxSlider *mThreshS;
+   wxTextCtrl *mWidthT;
+   wxTextCtrl *mThreshT;
 
-public:
-   wxButton * m_pButton_GetProfile;
-   wxSlider * m_pSlider_threshold;
-   wxSlider * m_pSlider_width;
-   wxSlider * m_pSlider_sep;
-   wxButton * m_pButton_Preview;
-   wxButton * m_pButton_RemoveClicks;
-
-private:
    DECLARE_EVENT_TABLE()
+
+ public:
+   EffectClickRemoval *mEffect;
+   
+   int mThresh;
+   int mWidth;
+
 };
 
 #endif

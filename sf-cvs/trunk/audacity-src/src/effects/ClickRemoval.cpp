@@ -62,6 +62,11 @@
 #include "../WaveTrack.h"
 #include "../Prefs.h"
 
+#define MIN_THRESHOLD   0
+#define MAX_THRESHOLD   900
+#define MIN_CLICK_WIDTH 0
+#define MAX_CLICK_WIDTH 40
+
 EffectClickRemoval::EffectClickRemoval()
 {
    windowSize = 8192;
@@ -76,17 +81,15 @@ EffectClickRemoval::~EffectClickRemoval()
 {
 }
 
-#define MAX_THRESHOLD 900
-#define MAX_CLICK_WIDTH 40
 bool EffectClickRemoval::Init()
 {
    mThresholdLevel = gPrefs->Read(wxT("/CsPresets/ClickThresholdLevel"), 200);
-   if ((mThresholdLevel < 0) || (mThresholdLevel > MAX_THRESHOLD)) {  // corrupted Prefs?
+   if ((mThresholdLevel < MIN_THRESHOLD) || (mThresholdLevel > MAX_THRESHOLD)) {  // corrupted Prefs?
       mThresholdLevel = 0;  //Off-skip
       gPrefs->Write(wxT("/CsPresets/ClickThresholdLevel"), mThresholdLevel);
    }
    mClickWidth = gPrefs->Read(wxT("/CsPresets/ClickWidth"), 20);
-   if ((mClickWidth < 0) || (mClickWidth > MAX_CLICK_WIDTH)) {  // corrupted Prefs?
+   if ((mClickWidth < MIN_CLICK_WIDTH) || (mClickWidth > MAX_CLICK_WIDTH)) {  // corrupted Prefs?
       mClickWidth = 0;  //Off-skip
       gPrefs->Write(wxT("/CsPresets/ClickWidth"), mClickWidth);
    }
@@ -101,21 +104,20 @@ bool EffectClickRemoval::CheckWhetherSkipEffect()
 
 bool EffectClickRemoval::PromptUser()
 {
-   ClickRemovalDialog dlog(this, mParent, -1, _("Click and Pop Removal"));
-   dlog.m_pSlider_threshold->SetValue(mThresholdLevel);
-   dlog.m_pSlider_width->SetValue(mClickWidth);
-   //   dlog.m_pSlider_sep->SetValue(sep);
-   dlog.m_pButton_RemoveClicks->SetDefault();
+   ClickRemovalDialog dlog(this, mParent);
+   dlog.mThresh = mThresholdLevel;
+   dlog.mWidth = mClickWidth;
 
+   dlog.TransferDataToWindow();
    dlog.CentreOnParent();
    dlog.ShowModal();
 
-   if (dlog.GetReturnCode() == 0)
+   if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
-   mThresholdLevel = dlog.m_pSlider_threshold->GetValue();
-   mClickWidth = dlog.m_pSlider_width->GetValue();
-   //   sep = dlog.m_pSlider_sep->GetValue();
+   mThresholdLevel = dlog.mThresh;
+   mClickWidth = dlog.mWidth;
+
    gPrefs->Write(wxT("/CsPresets/ClickThresholdLevel"), mThresholdLevel);
    gPrefs->Write(wxT("/CsPresets/ClickWidth"), mClickWidth);
 
@@ -286,35 +288,138 @@ void EffectClickRemoval::RemoveClicks(sampleCount len, float *buffer)
 // ClickRemovalDialog
 //----------------------------------------------------------------------------
 
-// WDR: event table for ClickRemovalDialog
+const static wxChar *numbers[] =
+{
+   wxT("0"), wxT("1"), wxT("2"), wxT("3"), wxT("4"),
+   wxT("5"), wxT("6"), wxT("7"), wxT("8"), wxT("9")
+};
 
-//enum {
-//  ID_BUTTON_PREVIEW=10002
-//};
+// Declare window functions                                                                                                         
+                                                                                                                                    
+#define ID_THRESH_TEXT     10001
+#define ID_THRESH_SLIDER   10002
+#define ID_WIDTH_TEXT      10003
+#define ID_WIDTH_SLIDER    10004
 
-BEGIN_EVENT_TABLE(ClickRemovalDialog,wxDialog)
-  EVT_BUTTON(wxID_OK, ClickRemovalDialog::OnRemoveClicks)
-  EVT_BUTTON(wxID_CANCEL, ClickRemovalDialog::OnCancel)
-//  EVT_BUTTON(ID_BUTTON_PREVIEW, ClickRemovalDialog::OnPreview)
+// Declare ranges
+
+BEGIN_EVENT_TABLE(ClickRemovalDialog, EffectDialog)
+    EVT_SLIDER(ID_THRESH_SLIDER, ClickRemovalDialog::OnThreshSlider)
+    EVT_SLIDER(ID_WIDTH_SLIDER, ClickRemovalDialog::OnWidthSlider)
+    EVT_TEXT(ID_THRESH_TEXT, ClickRemovalDialog::OnThreshText)
+    EVT_TEXT(ID_WIDTH_TEXT, ClickRemovalDialog::OnWidthText)
+    EVT_BUTTON(ID_EFFECT_PREVIEW, ClickRemovalDialog::OnPreview)
 END_EVENT_TABLE()
 
-ClickRemovalDialog::ClickRemovalDialog(EffectClickRemoval * effect,
-                          wxWindow *parent, wxWindowID id,
-                          const wxString &title,
-                          const wxPoint &position,
-                          const wxSize& size,
-                          long style ) :
-   wxDialog( parent, id, title, position, size, style )
+ClickRemovalDialog::ClickRemovalDialog(EffectClickRemoval *effect,
+                                       wxWindow *parent)
+:  EffectDialog(parent, _("ClickRemoval"), PROCESS_EFFECT),
+   mEffect(effect)
 {
-   m_pEffect = effect;
+   Init();
+}
 
-   // NULL out the control members until the controls are created.
-   m_pButton_GetProfile = NULL;
-   m_pSlider_threshold = NULL;
-//   m_pButton_Preview = NULL;
-   m_pButton_RemoveClicks = NULL;
+void ClickRemovalDialog::PopulateOrExchange(ShuttleGui & S)
+{
+   wxTextValidator vld(wxFILTER_INCLUDE_CHAR_LIST);
+   vld.SetIncludes(wxArrayString(10, numbers));
 
-   this->MakeClickRemovalDialog(true);
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      S.AddTitle(_("Click and Pop Removal by Craig DeForest"));
+   }
+   S.EndHorizontalLay();
+
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      // Add a little space
+   }
+   S.EndHorizontalLay();
+
+   S.StartMultiColumn(3, wxEXPAND);
+   S.SetStretchyCol(2);
+   {
+      // Threshold
+      mThreshT = S.Id(ID_THRESH_TEXT).AddTextBox(_("Select threshold (lower is more sensitive):"),
+                                                  wxT(""),
+                                                  10);
+      mThreshT->SetValidator(vld);
+
+      S.SetStyle(wxSL_HORIZONTAL);
+      mThreshS = S.Id(ID_THRESH_SLIDER).AddSlider(wxT(""),
+                                                  0,
+                                                  MAX_THRESHOLD);
+      mThreshS->SetRange(MIN_THRESHOLD, MAX_THRESHOLD);
+
+      // Click width
+      mWidthT = S.Id(ID_WIDTH_TEXT).AddTextBox(_("Max spike width (higher is more sensitive):"),
+                                               wxT(""),
+                                               10);
+      mWidthT->SetValidator(vld);
+
+      S.SetStyle(wxSL_HORIZONTAL);
+      mWidthS = S.Id(ID_WIDTH_SLIDER).AddSlider(wxT(""),
+                                                0,
+                                                MAX_CLICK_WIDTH);
+      mWidthS->SetRange(MIN_CLICK_WIDTH, MAX_CLICK_WIDTH);
+   }
+   S.EndMultiColumn();
+   return;
+}
+
+bool ClickRemovalDialog::TransferDataToWindow()
+{
+   mWidthS->SetValue(mWidth);
+   mThreshS->SetValue(mThresh);
+
+   mWidthT->SetValue(wxString::Format(wxT("%d"), mWidth));
+   mThreshT->SetValue(wxString::Format(wxT("%d"), mThresh));
+
+   return true;
+}
+
+bool ClickRemovalDialog::TransferDataFromWindow()
+{
+   mWidth = TrapLong(mWidthS->GetValue(), MIN_CLICK_WIDTH, MAX_CLICK_WIDTH);
+   mThresh = TrapLong(mThreshS->GetValue(), MIN_THRESHOLD, MAX_THRESHOLD);
+
+   return true;
+}
+
+// WDR: handler implementations for ClickRemovalDialog
+
+void ClickRemovalDialog::OnWidthText(wxCommandEvent & event)
+{
+   long val;
+
+   mWidthT->GetValue().ToLong(&val);
+   mWidthS->SetValue(TrapLong(val, MIN_CLICK_WIDTH, MAX_CLICK_WIDTH));
+}
+
+void ClickRemovalDialog::OnThreshText(wxCommandEvent & event)
+{
+   long val;
+
+   mThreshT->GetValue().ToLong(&val);
+   mThreshS->SetValue(TrapLong(val, MIN_THRESHOLD, MAX_THRESHOLD));
+}
+
+void ClickRemovalDialog::OnWidthSlider(wxCommandEvent & event)
+{
+   mWidthT->SetValue(wxString::Format(wxT("%d"), mWidthS->GetValue()));
+}
+
+void ClickRemovalDialog::OnThreshSlider(wxCommandEvent & event)
+{
+   mThreshT->SetValue(wxString::Format(wxT("%d"), mThreshS->GetValue()));
+}
+
+void ClickRemovalDialog::OnPreview(wxCommandEvent & event)
+{
+   TransferDataFromWindow();
+   mEffect->mThresholdLevel = mThresh;
+   mEffect->mClickWidth = mWidth;
+   mEffect->Preview();
 }
 
 // WDR: handler implementations for NoiseRemovalDialog
@@ -338,104 +443,3 @@ void ClickRemovalDialog::OnPreview(wxCommandEvent &event)
   m_pEffect->mThresholdLevel = oldLevel;
 }
 */
-void ClickRemovalDialog::OnRemoveClicks( wxCommandEvent &event )
-{
-   EndModal(2);
-}
-
-void ClickRemovalDialog::OnCancel(wxCommandEvent &event)
-{
-   EndModal(0);
-}
-
-wxSizer *ClickRemovalDialog::MakeClickRemovalDialog(bool call_fit /* = true */,
-                                   bool set_sizer /* = true */)
-{
-   wxBoxSizer *mainSizer = new wxBoxSizer( wxVERTICAL );
-   wxStaticBoxSizer *group;
-   wxControl *item;
-
-   item = new wxStaticText(this, -1,
-                   _("Click and Pop Removal by Craig DeForest"), wxDefaultPosition,
-                   wxDefaultSize, wxALIGN_CENTRE );
-   mainSizer->Add(item, 0, wxALIGN_CENTRE|wxALL, 5);
-
-
-   group = new wxStaticBoxSizer(new wxStaticBox(this, -1,
-                                                _("Settings")), wxVERTICAL);
-
-   item = new wxStaticText(this, -1,
-                           _("\nSelect threshold (lower is more sensitive)"),
-                           wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
-   group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
-
-   m_pSlider_threshold = new wxSlider(this, -1, 8, 0, MAX_THRESHOLD,  wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL);
-   group->Add(m_pSlider_threshold, 1, wxEXPAND|wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxTOP, 5 );
-
-   wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
-   item = new wxStaticText(this, -1, _("Off"));
-   hSizer->Add(item, 0, wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxBOTTOM, 5 );
-   hSizer->Add(10, 10, 1, wxALIGN_CENTRE | wxLEFT | wxRIGHT | wxBOTTOM, 5);
-   item = new wxStaticText(this, -1, _("Medium"));
-   hSizer->Add(item, 0, wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxBOTTOM, 5 );
-   hSizer->Add(10, 10, 1, wxALIGN_CENTRE | wxLEFT | wxRIGHT | wxBOTTOM, 5);
-   item = new wxStaticText(this, -1, _("Max"));
-   hSizer->Add(item, 0, wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxBOTTOM, 5 );
-   group->Add(hSizer, 1, wxEXPAND|wxALIGN_CENTRE|wxALL, 5 );
-
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   item = new wxStaticText(this,-1,
-         _("\n\nMax spike width (higher is more sensitive)"),
-         wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
-   group->Add(item,0,wxALIGN_CENTER|wxALL,5);
-
-   m_pSlider_width = new wxSlider(this, -1, 8, 0, MAX_CLICK_WIDTH, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL);
-   group->Add(m_pSlider_width, 1, wxEXPAND|wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxTOP, 5 );
-
-
-   //   item = new wxStaticText(this,-1,
-   //        _("\nNeighborhood"),
-   //        wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
-   //   group->Add(item,0,wxALIGN_CENTER|wxALL,5);
-   //   m_pSlider_sep = new wxSlider(this,-1,8,1,4100,wxDefaultPosition,wxDefaultSize,wxSL_HORIZONTAL);
-   //   group->Add(m_pSlider_sep, 1, wxEXPAND|wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxTOP, 5 );
-
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-   item = new wxStaticText(this, -1, _("Off"));
-   hSizer->Add(item, 0, wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxBOTTOM, 5 );
-   hSizer->Add(10, 10, 1, wxALIGN_CENTRE | wxLEFT | wxRIGHT | wxBOTTOM, 5);
-   item = new wxStaticText(this, -1, _("Medium"));
-   hSizer->Add(item, 0, wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxBOTTOM, 5 );
-   hSizer->Add(10, 10, 1, wxALIGN_CENTRE | wxLEFT | wxRIGHT | wxBOTTOM, 5);
-   item = new wxStaticText(this, -1, _("Max"));
-   hSizer->Add(item, 0, wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxBOTTOM, 5 );
-   group->Add(hSizer, 1, wxEXPAND|wxALIGN_CENTRE|wxALL, 5 );
-
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-/*
-   m_pButton_Preview = new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
-   hSizer->Add(m_pButton_Preview, 0, wxALIGN_LEFT | wxALL, 5);
-
-   hSizer->Add(25, 5); // horizontal spacer
-*/
-   m_pButton_RemoveClicks = new wxButton(this, wxID_OK, _("&Remove clicks"), wxDefaultPosition, wxDefaultSize, 0 );
-   hSizer->Add(m_pButton_RemoveClicks, 0, wxALIGN_RIGHT | wxALL, 5 );
-
-   group->Add(hSizer, 0, wxALIGN_CENTER | wxALL, 5 );
-
-   mainSizer->Add( group, 0, wxALIGN_CENTRE|wxALL, 5 );
-
-   item = new wxButton( this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-   mainSizer->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
-
-   if (set_sizer) {
-      this->SetAutoLayout( TRUE );
-      this->SetSizer( mainSizer );
-      if (call_fit) {
-         mainSizer->Fit( this );
-         mainSizer->SetSizeHints( this );
-      }
-   }
-   return mainSizer;
-}
