@@ -68,103 +68,92 @@
 // Callback to display format options
 static void ExportCallback(void *cbdata, int index)
 {
-   ((Export *) cbdata)->DisplayOptions(index);
+   ((Exporter *) cbdata)->DisplayOptions(index);
 }
 
+//----------------------------------------------------------------------------
+// ExportPlugin
+//----------------------------------------------------------------------------
 #include <wx/arrimpl.cpp>
 
-WX_DEFINE_OBJARRAY(ExportTypeArray);
+WX_DEFINE_OBJARRAY(ExportPluginArray);
 
-//----------------------------------------------------------------------------
-// ExportType
-//----------------------------------------------------------------------------
-ExportType::ExportType()
+ExportPlugin::ExportPlugin()
 {
-   mRoutine = NULL;
-   mOptions = NULL;
    mMaxChannels = 0;
+   mCanMetaData = false;
 }
 
-void ExportType::Set(wxString description,
-                     ExportRoutine routine,
-                     ExportOptions options,
-                     wxArrayString extensions,
-                     wxString extension,
-                     int maxchannels,
-                     bool canmetadata)
+ExportPlugin::~ExportPlugin()
 {
-   mRoutine = routine;
-   mOptions = options;
-   mFormat = extension.MakeUpper();
-   mExtension = extension.MakeLower();
-   mMaxChannels = maxchannels;
-   mCanMetaData = canmetadata;
-   mDescription = description;
+}
 
+void ExportPlugin::Destroy()
+{
+   delete this;
+}
+
+void ExportPlugin::SetFormat(const wxString & format)
+{
+   mFormat = format;
+}
+
+void ExportPlugin::SetDescription(const wxString & description)
+{
+   mDescription = description;
+}
+
+void ExportPlugin::SetExtension(const wxString & extension)
+{
+   mExtension = extension;
+}
+
+void ExportPlugin::SetExtensions(const wxArrayString & extensions)
+{
    mExtensions = extensions;
 }
 
-void ExportType::Set(wxString description,
-                     ExportRoutine routine,
-                     ExportOptions options,
-                     wxString extension,
-                     int maxchannels,
-                     bool canmetadata)
+void ExportPlugin::SetMask(const wxString & mask)
 {
-   mRoutine = routine;
-   mOptions = options;
-   mFormat = extension.MakeUpper();
-   mExtension = extension.MakeLower();
+   mMask = mask;
+}
+
+void ExportPlugin::SetMaxChannels(int maxchannels)
+{
    mMaxChannels = maxchannels;
+}
+
+void ExportPlugin::SetCanMetaData(bool canmetadata)
+{
    mCanMetaData = canmetadata;
-   mDescription = description;
-
-   mExtensions.Clear();
-   mExtensions.Add(mExtension);
 }
 
-ExportRoutine ExportType::GetRoutine()
-{
-   return mRoutine;
-}
-
-ExportOptions ExportType::GetOptions()
-{
-   return mOptions;
-}
-
-wxString ExportType::GetFormat()
+wxString ExportPlugin::GetFormat()
 {
    return mFormat;
 }
 
-wxString ExportType::GetExtension()
-{
-   return mExtension;
-}
-
-wxArrayString ExportType::GetExtensions()
-{
-   return mExtensions;
-}
-
-wxString ExportType::GetDescription()
+wxString ExportPlugin::GetDescription()
 {
    return mDescription;
 }
 
-int ExportType::GetMaxChannels()
+wxString ExportPlugin::GetExtension()
 {
-   return mMaxChannels;
+   return mExtension;
 }
 
-bool ExportType::GetCanMetaData()
+wxArrayString ExportPlugin::GetExtensions()
 {
-   return mCanMetaData;
+   return mExtensions;
 }
 
-wxString ExportType::GetMask()
+wxString ExportPlugin::GetMask()
 {
+   if (!mMask.IsEmpty()) {
+      return mMask;
+   }
+
    wxString mask = mDescription + wxT("|");
 
    // Build the mask, but cater to the Mac FileDialog and put the default
@@ -179,40 +168,58 @@ wxString ExportType::GetMask()
    return mask + wxT("*.") + mExtension;
 }
 
-bool ExportType::IsExtension(wxString & ext)
+int ExportPlugin::GetMaxChannels()
+{
+   return mMaxChannels;
+}
+
+bool ExportPlugin::GetCanMetaData()
+{
+   return mCanMetaData;
+}
+
+bool ExportPlugin::IsExtension(wxString & ext)
 {
    return mExtension == wxT("") || mExtensions.Index(ext, false) != wxNOT_FOUND;
 }
 
-bool ExportType::DisplayOptions(AudacityProject *project)
+bool ExportPlugin::DisplayOptions(AudacityProject *project)
 {
    if (project == NULL) {
       project = GetActiveProject();
    }
 
-   if (mOptions) {
-      return mOptions(project);
-   }
-
-   return true;
+   return DoDisplayOptions(project);
 }
 
-bool ExportType::Export(AudacityProject *project,
-                        int channels,
-                        wxString fName,
-                        bool selectedOnly,
-                        double t0,
-                        double t1,
-                        MixerSpec *mixerSpec)
+bool ExportPlugin::DoDisplayOptions(AudacityProject *project)
+{
+   return false;
+}
+
+bool ExportPlugin::Export(AudacityProject *project,
+                          int channels,
+                          wxString fName,
+                          bool selectedOnly,
+                          double t0,
+                          double t1,
+                          MixerSpec *mixerSpec)
 {
    if (project == NULL) {
       project = GetActiveProject();
    }
 
-   if (mRoutine) {
-      return mRoutine(project, channels, fName, selectedOnly, t0, t1, mixerSpec);
-   }
+  return DoExport(project, channels, fName, selectedOnly, t0, t1, mixerSpec);
+}
 
+bool ExportPlugin::DoExport(AudacityProject *project,
+                            int channels,
+                            wxString fName,
+                            bool selectedOnly,
+                            double t0,
+                            double t1,
+                            MixerSpec *mixerSpec)
+{
    return false;
 }
 
@@ -220,54 +227,52 @@ bool ExportType::Export(AudacityProject *project,
 // Export
 //----------------------------------------------------------------------------
 
-Export::Export()
+Exporter::Exporter()
 {
    mMixerSpec = NULL;
-   mTypes = GetTypes();
+
+   RegisterPlugin(New_ExportPCM());
+   RegisterPlugin(New_ExportMP3());
+
+#ifdef USE_LIBVORBIS
+   RegisterPlugin(New_ExportOGG());
+#endif
+
+#ifdef USE_LIBFLAC
+   RegisterPlugin(New_ExportFLAC());
+#endif
+
+#if USE_LIBTWOLAME
+   RegisterPlugin(New_ExportMP2());
+#endif
+
+   // Command line export not available on Windows and Mac platforms
+   RegisterPlugin(New_ExportCL());
 }
 
-Export::~Export()
+Exporter::~Exporter()
 {
+   for (size_t i = 0; i < mPlugins.GetCount(); i++) {
+      mPlugins[i]->Destroy();
+   }
+   mPlugins.Clear();
+
    if (mMixerSpec) {
       delete mMixerSpec;
    }
 }
 
-// Static method
-ExportTypeArray Export::GetTypes()
+void Exporter::RegisterPlugin(ExportPlugin *ExportPlugin)
 {
-   ExportTypeArray types;
-   ExportType et;
-
-   et.Set(_("WAV, AIFF, and other uncompressed types"), ExportPCM, ExportPCMOptions, sf_get_all_extensions(), wxT("wav"), 2);
-   types.Add(et);
-
-   et.Set(_("MP3 Files"), ExportMP3, ExportMP3Options, wxT("mp3"), 2, true);
-   types.Add(et);
-
-#ifdef USE_LIBVORBIS
-   et.Set(_("OGG Files"), ExportOGG, ExportOGGOptions, wxT("ogg"), 32);
-   types.Add(et);
-#endif
-
-#ifdef USE_LIBFLAC
-   et.Set(_("FLAC Files"), ExportFLAC, ExportFLACOptions, wxT("flac"), 8, true);
-   types.Add(et);
-#endif
-
-#if USE_LIBTWOLAME
-   et.Set(_("MP2 Files"), ExportMP2, ExportMP2Options, wxT("mp2"), 2);
-   types.Add(et);
-#endif
-
-   // Command line export not available on Windows and Mac platforms
-   et.Set(_("(external program)"), ExportCL, ExportCLOptions, wxT(""), 32);
-   types.Add(et);
-
-   return types;
+   mPlugins.Add(ExportPlugin);
 }
 
-bool Export::Process(AudacityProject *project, bool selectedOnly, double t0, double t1)
+const ExportPluginArray Exporter::GetPlugins()
+{
+   return mPlugins;
+}
+
+bool Exporter::Process(AudacityProject *project, bool selectedOnly, double t0, double t1)
 {
    // Save parms
    mProject = project;
@@ -302,7 +307,30 @@ bool Export::Process(AudacityProject *project, bool selectedOnly, double t0, dou
    return success;
 }
 
-bool Export::ExamineTracks()
+bool Exporter::Process(AudacityProject *project, int numChannels,
+                       const wxChar *type, const wxString filename,
+                       bool selectedOnly, double t0, double t1)
+{
+   // Save parms
+   mProject = project;
+   mChannels = numChannels;
+   mFilename = filename;
+   mSelectedOnly = selectedOnly;
+   mT0 = t0;
+   mT1 = t1;
+   mActualName = mFilename;
+
+   for (size_t i = 0; i < mPlugins.GetCount(); i++) {
+      if (mPlugins[i]->GetFormat().IsSameAs(type, false)) {
+         mFormat = i;
+         return ExportTracks();
+      }
+   }
+
+   return false;
+}
+
+bool Exporter::ExamineTracks()
 {
    // Init
    mNumSelected = 0;
@@ -388,7 +416,7 @@ bool Export::ExamineTracks()
 // The calling function should rename the file when it's successfully
 // exported.
 //
-bool Export::GetFilename()
+bool Exporter::GetFilename()
 {
    mFormat = 0;
 
@@ -396,10 +424,10 @@ bool Export::GetFilename()
    wxString defaultFormat = gPrefs->Read(wxT("/Export/Format"),
                                          wxT("WAV"));
 
-   for (size_t i = 0; i < mTypes.GetCount(); i++) {
-      maskString += mTypes[i].GetMask() + wxT("|");
+   for (size_t i = 0; i < mPlugins.GetCount(); i++) {
+      maskString += mPlugins[i]->GetMask() + wxT("|");
 
-      if (mTypes[i].GetFormat() == defaultFormat) {
+      if (mPlugins[i]->GetFormat() == defaultFormat) {
          mFormat = i;
       }
    }
@@ -433,7 +461,7 @@ bool Export::GetFilename()
       }
 
       wxString ext = mFilename.GetExt();
-      wxString defext = mTypes[mFormat].GetExtension();
+      wxString defext = mPlugins[mFormat]->GetExtension();
       #if defined(__WXMSW__)
       defext = defext.Left(3);
       #else
@@ -464,10 +492,10 @@ bool Export::GetFilename()
 
          mFilename.SetExt(defext);
       }
-      else if (!ext.IsEmpty() && !mTypes[mFormat].IsExtension(ext) && ext.CmpNoCase(defext)) {
+      else if (!ext.IsEmpty() && !mPlugins[mFormat]->IsExtension(ext) && ext.CmpNoCase(defext)) {
          wxString prompt;
          prompt.Printf(_("You are about to save a %s file with the name \"%s\".\n\nNormally these files end in \".%s\", and some programs will not open files with nonstandard extensions.\n\nAre you sure you want to save the file under this name?"),
-                       mTypes[mFormat].GetFormat().c_str(),
+                       mPlugins[mFormat]->GetFormat().c_str(),
                        mFilename.GetFullName().c_str(),
                        defext.c_str());
 
@@ -511,7 +539,7 @@ bool Export::GetFilename()
    if (!mProject->GetDirManager()->EnsureSafeFilename(mFilename))
       return false;
 
-   gPrefs->Write(wxT("/Export/Format"), mTypes[mFormat].GetFormat());
+   gPrefs->Write(wxT("/Export/Format"), mPlugins[mFormat]->GetFormat());
    gPrefs->Write(wxT("/Export/Path"), mFilename.GetPath());
 
    //
@@ -531,24 +559,17 @@ bool Export::GetFilename()
    return true;
 }
 
-void Export::DisplayOptions(int index)
+void Exporter::DisplayOptions(int index)
 {
    // This shouldn't happen...
-   if (index >= (int)mTypes.GetCount()) {
+   if (index >= (int)mPlugins.GetCount()) {
       return;
    }
 
-   ExportOptions options = mTypes[index].GetOptions();
-
-   if (options) {
-      options(mProject);
-   }
-   else {
-      // Could display a message here???
-   }
+   mPlugins[index]->DisplayOptions(mProject);
 }
 
-bool Export::CheckMix()
+bool Exporter::CheckMix()
 {
    // Clean up ... should never happen
    if (mMixerSpec) {
@@ -588,7 +609,7 @@ bool Export::CheckMix()
    {
       ExportMixerDialog md(mProject->GetTracks(),
                            mSelectedOnly,
-                           mTypes[mFormat].GetMaxChannels(),
+                           mPlugins[mFormat]->GetMaxChannels(),
                            NULL, 
                            1,
                            _("Advanced Mixing Options"));
@@ -604,7 +625,7 @@ bool Export::CheckMix()
    return true;
 }
 
-bool Export::ExportTracks()
+bool Exporter::ExportTracks()
 {
    bool success;
 
@@ -613,7 +634,7 @@ bool Export::ExportTracks()
       ::wxRenameFile(mActualName.GetFullPath(), mFilename.GetFullPath());
    }
 
-   success = mTypes[mFormat].Export(mProject,
+   success = mPlugins[mFormat]->Export(mProject,
                                     mChannels,
                                     mActualName.GetFullPath(),
                                     mSelectedOnly,
@@ -924,6 +945,9 @@ ExportMixerDialog::ExportMixerDialog( TrackList *tracks, bool selectedOnly,
          else
             mTrackNames.Add( t->GetName() );
       }
+
+   if (maxNumChannels > 32)
+      maxNumChannels = 32;
 
    mMixerSpec = new MixerSpec( numTracks, maxNumChannels );
 

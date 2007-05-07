@@ -12,18 +12,12 @@
 #ifndef __AUDACITY_EXPORTMP2__
 #define __AUDACITY_EXPORTMP2__
 
-#include <wx/string.h>
-#include <wx/dynlib.h>
+class ExportPlugin;
 
-class AudacityProject;
-class MixerSpec;
-
-bool ExportMP2(AudacityProject *project,
-               int Channels, wxString fName,
-               bool selectionOnly, double t0, double t1, 
-               MixerSpec *mixerSpec = NULL);
-
-bool ExportMP2Options(AudacityProject *project);
+//----------------------------------------------------------------------------
+// Constructor
+//----------------------------------------------------------------------------
+ExportPlugin *New_ExportMP2();
 
 #endif
 

@@ -19,7 +19,7 @@
 
 #ifdef USE_LIBVORBIS
 
-#include "ExportOGG.h"
+#include "Export.h"
 
 #include <wx/log.h>
 #include <wx/msgdlg.h>
@@ -32,12 +32,144 @@
 #include "../Prefs.h"
 
 #include "../Internat.h"
+#include "../Tags.h"
+
+//----------------------------------------------------------------------------
+// ExportOGGOptions
+//----------------------------------------------------------------------------
+
+class ExportOGGOptions : public wxDialog
+{
+public:
+
+   ExportOGGOptions(wxWindow *parent);
+   void PopulateOrExchange(ShuttleGui & S);
+   void OnOK(wxCommandEvent& event);
+
+private:
+
+   int mOggQualityUnscaled;
+
+   DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(ExportOGGOptions, wxDialog)
+   EVT_BUTTON(wxID_OK, ExportOGGOptions::OnOK)
+END_EVENT_TABLE()
+
+/// 
+/// 
+ExportOGGOptions::ExportOGGOptions(wxWindow *parent)
+:  wxDialog(NULL, wxID_ANY,
+            wxString(_("Specify OGG Options")),
+            wxDefaultPosition, wxDefaultSize,
+            wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+{
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+
+   mOggQualityUnscaled = gPrefs->Read(wxT("/FileFormats/OggExportQuality"),50)/10;
+
+   PopulateOrExchange(S);
+}
+
+/// 
+/// 
+void ExportOGGOptions::PopulateOrExchange(ShuttleGui & S)
+{
+   S.StartHorizontalLay(wxEXPAND, 0);
+   {
+      S.StartStatic(_("OGG Export Setup"), 1);
+      {
+         S.StartMultiColumn(2, wxEXPAND);
+         {
+            S.SetStretchyCol(1);
+            S.TieSlider(_("Quality:"), mOggQualityUnscaled, 10);
+         }
+         S.EndMultiColumn();
+      }
+      S.EndStatic();
+   }
+   S.EndHorizontalLay();
+   S.StartHorizontalLay(wxALIGN_CENTER, false);
+   {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+   }
+   GetSizer()->AddSpacer(5);
+   Layout();
+   Fit();
+   SetMinSize(GetSize());
+   Center();
+
+   return;
+}
+
+/// 
+/// 
+void ExportOGGOptions::OnOK(wxCommandEvent& event)
+{
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
+
+   gPrefs->Write(wxT("/FileFormats/OggExportQuality"),mOggQualityUnscaled * 10);
+
+   EndModal(wxID_OK);
+
+   return;
+}
+
+//----------------------------------------------------------------------------
+// ExportOGG
+//----------------------------------------------------------------------------
 
 #define SAMPLES_PER_RUN 8192
 
-bool ExportOGG(AudacityProject *project,
-               int numChannels, wxString fName,
-               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
+class ExportOGG : public ExportPlugin
+{
+public:
+
+   ExportOGG();
+   void Destroy();
+
+   // Required
+
+   bool DisplayOptions(AudacityProject *project = NULL);
+   bool Export(AudacityProject *project,
+               int channels,
+               wxString fName,
+               bool selectedOnly,
+               double t0,
+               double t1,
+               MixerSpec *mixerSpec = NULL);
+};
+
+ExportOGG::ExportOGG()
+:  ExportPlugin()
+{
+   SetFormat(wxT("OGG"));
+   SetExtension(wxT("ogg"));
+   SetMaxChannels(255);
+   SetCanMetaData(true);
+   SetDescription(_("OGG Files"));
+}
+
+void ExportOGG::Destroy()
+{
+   delete this;
+}
+
+bool ExportOGG::Export(AudacityProject *project,
+                       int numChannels,
+                       wxString fName,
+                       bool selectionOnly,
+                       double t0,
+                       double t1,
+                       MixerSpec *mixerSpec)
 {
    double    rate    = project->GetRate();
    TrackList *tracks = project->GetTracks();
@@ -49,7 +181,7 @@ bool ExportOGG(AudacityProject *project,
 
    FileIO outFile(fName, FileIO::Output);
 
-   if(!outFile.IsOpened()) {
+   if (!outFile.IsOpened()) {
       wxMessageBox(_("Unable to open target file for writing"));
       return false;
    }
@@ -68,8 +200,8 @@ bool ExportOGG(AudacityProject *project,
    vorbis_info_init(&info);
    vorbis_encode_init_vbr(&info, numChannels, int(rate + 0.5), quality);
 
-   vorbis_comment_init(&comment);
-   // If we wanted to add comments, we would do it here
+   // Retrieve tags
+   project->GetTags()->ExportOGGTags(&comment);
 
    // Set up analysis state and auxiliary encoding storage
    vorbis_analysis_init(&dsp, &info);
@@ -103,8 +235,7 @@ bool ExportOGG(AudacityProject *project,
 
    // Flushing these headers now guarentees that audio data will
    // start on a new page, which apparently makes streaming easier
-   while(ogg_stream_flush(&stream, &page))
-   {
+   while (ogg_stream_flush(&stream, &page)) {
       outFile.Write(page.header, page.header_len);
       outFile.Write(page.body, page.body_len);
    }
@@ -123,7 +254,7 @@ bool ExportOGG(AudacityProject *project,
                                     _("Exporting the selected audio as Ogg Vorbis") :
                                     _("Exporting the entire project as Ogg Vorbis"));
 
-   while(!cancelling && !eos) {
+   while (!cancelling && !eos) {
       float **vorbis_buffer = vorbis_analysis_buffer(&dsp, SAMPLES_PER_RUN);
       sampleCount samplesThisRun = mixer->Process(SAMPLES_PER_RUN);
 
@@ -133,7 +264,7 @@ bool ExportOGG(AudacityProject *project,
       }
       else {
          
-         for( int i = 0; i < numChannels; i++ ) {            
+         for (int i = 0; i < numChannels; i++) {
             float *temp = (float *)mixer->GetBuffer(i);
             memcpy(vorbis_buffer[i], temp, sizeof(float)*SAMPLES_PER_RUN);
          }
@@ -148,13 +279,13 @@ bool ExportOGG(AudacityProject *project,
       //    vorbis does some data preanalysis, then divvies up blocks
       //    for more involved (potentially parallel) processing. Get
       //    a single block for encoding now
-      while(vorbis_analysis_blockout(&dsp, &block) == 1) {
+      while (vorbis_analysis_blockout(&dsp, &block) == 1) {
 
          // analysis, assume we want to use bitrate management
          vorbis_analysis(&block, NULL);
          vorbis_bitrate_addblock(&block);
 
-         while(vorbis_bitrate_flushpacket(&dsp, &packet)) {
+         while (vorbis_bitrate_flushpacket(&dsp, &packet)) {
 
             // add the packet to the bitstream
             ogg_stream_packetin(&stream, &packet);
@@ -165,14 +296,16 @@ bool ExportOGG(AudacityProject *project,
 
             while (!eos) {
 					int result = ogg_stream_pageout(&stream, &page);
-					if (!result)
+					if (!result) {
                   break;
+               }
 
                outFile.Write(page.header, page.header_len);
                outFile.Write(page.body, page.body_len);
 
-               if (ogg_page_eos(&page))
+               if (ogg_page_eos(&page)) {
                   eos = 1;
+               }
 				}
          }
       }
@@ -196,91 +329,21 @@ bool ExportOGG(AudacityProject *project,
    return !cancelling;
 }
 
-class OGGOptionsDialog : public wxDialog
+bool ExportOGG::DisplayOptions(AudacityProject *project)
 {
-public:
-
-   /// 
-   /// 
-   OGGOptionsDialog(wxWindow *parent)
-   : wxDialog(NULL, wxID_ANY, wxString(_("Specify OGG Options")),
-      wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
-   {
-      ShuttleGui S(this, eIsCreatingFromPrefs);
-
-      mOggQualityUnscaled = gPrefs->Read(wxT("/FileFormats/OggExportQuality"),50)/10;
-
-      PopulateOrExchange(S);
-   }
-
-   /// 
-   /// 
-   void PopulateOrExchange(ShuttleGui & S)
-   {
-      S.StartHorizontalLay(wxEXPAND, 0);
-      {
-         S.StartStatic(_("OGG Export Setup"), 1);
-         {
-            S.StartMultiColumn(2, wxEXPAND);
-            {
-               S.SetStretchyCol(1);
-               S.TieSlider(_("Quality:"), mOggQualityUnscaled, 10);
-            }
-            S.EndMultiColumn();
-         }
-         S.EndStatic();
-      }
-      S.EndHorizontalLay();
-      S.StartHorizontalLay(wxALIGN_CENTER, false);
-      {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-#else
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-      }
-      GetSizer()->AddSpacer(5);
-      Layout();
-      Fit();
-      SetMinSize(GetSize());
-      Center();
-
-      return;
-   }
-
-   /// 
-   /// 
-   void OnOK(wxCommandEvent& event)
-   {
-      ShuttleGui S(this, eIsSavingToPrefs);
-      PopulateOrExchange(S);
-
-      gPrefs->Write(wxT("/FileFormats/OggExportQuality"),mOggQualityUnscaled * 10);
-
-      EndModal(wxID_OK);
-
-      return;
-   }
-
-private:
-   int mOggQualityUnscaled;
-
-   DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE(OGGOptionsDialog, wxDialog)
-   EVT_BUTTON(wxID_OK, OGGOptionsDialog::OnOK)
-END_EVENT_TABLE()
-
-bool ExportOGGOptions(AudacityProject *project)
-{
-   OGGOptionsDialog od(project);
+   ExportOGGOptions od(project);
 
    od.ShowModal();
 
    return true;
+}
+
+//----------------------------------------------------------------------------
+// Constructor
+//----------------------------------------------------------------------------
+ExportPlugin *New_ExportOGG()
+{
+   return new ExportOGG();
 }
 
 #endif // USE_LIBVORBIS

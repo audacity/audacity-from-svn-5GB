@@ -22,7 +22,7 @@ and libvorbis examples, Monty <monty@xiph.org>
 
 #ifdef USE_LIBFLAC
 
-#include "ExportFLAC.h"
+#include "Export.h"
 
 #include <wx/progdlg.h>
 #include <wx/ffile.h>
@@ -38,6 +38,110 @@ and libvorbis examples, Monty <monty@xiph.org>
 
 #include "../Internat.h"
 #include "../Tags.h"
+
+//----------------------------------------------------------------------------
+// ExportFLACOptions Class
+//----------------------------------------------------------------------------
+
+class ExportFLACOptions : public wxDialog
+{
+public:
+
+   ExportFLACOptions(wxWindow *parent);
+   void PopulateOrExchange(ShuttleGui & S);
+   void OnOK(wxCommandEvent& event);
+
+private:
+
+   DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(ExportFLACOptions, wxDialog)
+   EVT_BUTTON(wxID_OK, ExportFLACOptions::OnOK)
+END_EVENT_TABLE()
+
+/// 
+/// 
+ExportFLACOptions::ExportFLACOptions(wxWindow *parent)
+:  wxDialog(NULL, wxID_ANY,
+            wxString(_("Specify FLAC Options")),
+            wxDefaultPosition, wxDefaultSize,
+            wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+{
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+
+   PopulateOrExchange(S);
+}
+
+/// 
+/// 
+void ExportFLACOptions::PopulateOrExchange(ShuttleGui & S)
+{
+   wxArrayString flacLevelNames, flacLevelLabels;
+   flacLevelLabels.Add(wxT("0")); flacLevelNames.Add(_("0 (fastest)"));
+   flacLevelLabels.Add(wxT("1")); flacLevelNames.Add(_("1"));
+   flacLevelLabels.Add(wxT("2")); flacLevelNames.Add(_("2"));
+   flacLevelLabels.Add(wxT("3")); flacLevelNames.Add(_("3"));
+   flacLevelLabels.Add(wxT("4")); flacLevelNames.Add(_("4"));
+   flacLevelLabels.Add(wxT("5")); flacLevelNames.Add(_("5"));
+   flacLevelLabels.Add(wxT("6")); flacLevelNames.Add(_("6"));
+   flacLevelLabels.Add(wxT("7")); flacLevelNames.Add(_("7"));
+   flacLevelLabels.Add(wxT("8")); flacLevelNames.Add(_("8 (best)"));
+
+   wxArrayString flacBitDepthNames, flacBitDepthLabels;
+   flacBitDepthLabels.Add(wxT("16")); flacBitDepthNames.Add(_("16 bit"));
+   flacBitDepthLabels.Add(wxT("24")); flacBitDepthNames.Add(_("24 bit"));
+
+   S.StartHorizontalLay(wxEXPAND, 0);
+   {
+      S.StartStatic(_("FLAC Export Setup"), 0);
+      {
+         S.StartTwoColumn();
+         {
+            S.TieChoice(_("Level:"), wxT("/FileFormats/FLACLevel"),
+                        wxT("5"), flacLevelNames, flacLevelLabels);
+            S.TieChoice(_("Bit depth:"), wxT("/FileFormats/FLACBitDepth"),
+                        wxT("16"), flacBitDepthNames, flacBitDepthLabels);
+         }
+         S.EndTwoColumn();
+      }
+      S.EndStatic();
+   }
+   S.EndHorizontalLay();
+   S.StartHorizontalLay(wxALIGN_CENTER, false);
+   {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+   }
+   GetSizer()->AddSpacer(5);
+   Layout();
+   Fit();
+   SetMinSize(GetSize());
+   Center();
+
+   return;
+}
+
+/// 
+/// 
+void ExportFLACOptions::OnOK(wxCommandEvent& event)
+{
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
+
+   EndModal(wxID_OK);
+
+   return;
+}
+
+//----------------------------------------------------------------------------
+// ExportFLAC Class
+//----------------------------------------------------------------------------
 
 #define SAMPLES_PER_RUN 8192
 
@@ -64,15 +168,56 @@ static struct
    {  true,    false,   true,    false,   0, 0, 6, 0, 12 },
 };
 
-bool ExportFLAC(AudacityProject *project,
-                int numChannels, wxString fName,
-                bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
+//----------------------------------------------------------------------------
+
+class ExportFLAC : public ExportPlugin
+{
+public:
+
+   ExportFLAC();
+   void Destroy();
+
+   // Required
+
+   bool DisplayOptions(AudacityProject *project = NULL);
+   bool Export(AudacityProject *project,
+               int channels,
+               wxString fName,
+               bool selectedOnly,
+               double t0,
+               double t1,
+               MixerSpec *mixerSpec = NULL);
+};
+
+//----------------------------------------------------------------------------
+
+ExportFLAC::ExportFLAC()
+:  ExportPlugin()
+{
+   SetFormat(wxT("FLAC"));
+   SetExtension(wxT("flac"));
+   SetMaxChannels(FLAC__MAX_CHANNELS);
+   SetCanMetaData(true);
+   SetDescription(_("FLAC Files"));
+}
+
+void ExportFLAC::Destroy()
+{
+   delete this;
+}
+
+bool ExportFLAC::Export(AudacityProject *project,
+                        int numChannels,
+                        wxString fName,
+                        bool selectionOnly,
+                        double t0,
+                        double t1,
+                        MixerSpec *mixerSpec)
 {
    double    rate    = project->GetRate();
    TrackList *tracks = project->GetTracks();
    
    wxLogNull logNo;            // temporarily disable wxWindows error messages 
-   int       eos = 0;
    bool      cancelling = false;
 
    Tags *tags = project->GetTags();
@@ -91,11 +236,11 @@ bool ExportFLAC(AudacityProject *project,
    tags->ExportFLACTags(encoder);
    
    sampleFormat format;
-   if(bitDepthPref == wxT("24")){
-   	format=int24Sample;
+   if (bitDepthPref == wxT("24")) {
+   	format = int24Sample;
    	encoder->set_bits_per_sample(24);
-   }else {//convert float to 16 bits*/
-    	format=int16Sample;
+   } else { //convert float to 16 bits*/
+    	format = int16Sample;
    	encoder->set_bits_per_sample(16);
    }
 
@@ -105,8 +250,14 @@ bool ExportFLAC(AudacityProject *project,
    }
    encoder->set_do_exhaustive_model_search(flacLevels[levelPref].do_exhaustive_model_search);
    encoder->set_do_escape_coding(flacLevels[levelPref].do_escape_coding);
-   encoder->set_do_mid_side_stereo(flacLevels[levelPref].do_mid_side_stereo);
-   encoder->set_loose_mid_side_stereo(flacLevels[levelPref].loose_mid_side_stereo);
+   if (numChannels != 2) {
+      encoder->set_do_mid_side_stereo(false);
+      encoder->set_loose_mid_side_stereo(false);
+   }
+   else {
+      encoder->set_do_mid_side_stereo(flacLevels[levelPref].do_mid_side_stereo);
+      encoder->set_loose_mid_side_stereo(flacLevels[levelPref].loose_mid_side_stereo);
+   }
    encoder->set_qlp_coeff_precision(flacLevels[levelPref].qlp_coeff_precision);
    encoder->set_min_residual_partition_order(flacLevels[levelPref].min_residual_partition_order);
    encoder->set_max_residual_partition_order(flacLevels[levelPref].max_residual_partition_order);
@@ -114,7 +265,7 @@ bool ExportFLAC(AudacityProject *project,
    encoder->set_max_lpc_order(flacLevels[levelPref].max_lpc_order);
 
    encoder->init();
-   
+
    int numWaveTracks;
    WaveTrack **waveTracks;
    tracks->GetWaveTracks(selectionOnly, &numWaveTracks, &waveTracks);
@@ -123,45 +274,50 @@ bool ExportFLAC(AudacityProject *project,
                             t0, t1,
                             numChannels, SAMPLES_PER_RUN, false,
                             rate, format, true, mixerSpec);
-   
-   int i,j;
-   i=j=0;
+
+   int i, j;
    FLAC__int32 **tmpsmplbuf = new FLAC__int32*[numChannels];
-   for(i=0;i<numChannels;i++)
-   	tmpsmplbuf[i]=(FLAC__int32*)calloc(SAMPLES_PER_RUN,sizeof(FLAC__int32));
+   for (i = 0; i < numChannels; i++) {
+   	tmpsmplbuf[i] = (FLAC__int32 *) calloc(SAMPLES_PER_RUN, sizeof(FLAC__int32));
+   }
 
    GetActiveProject()->ProgressShow(selectionOnly ?
                                     _("Exporting the selected audio as FLAC") :
                                     _("Exporting the entire project as FLAC"),
                                     wxFileName(fName).GetName());
 
-   while(!cancelling && !eos) {
+   while (!cancelling) {
       sampleCount samplesThisRun = mixer->Process(SAMPLES_PER_RUN);
-      if (samplesThisRun == 0) {//stop encoding
+      if (samplesThisRun == 0) { //stop encoding
          break;
       }
       else {
-         for(i=0;i<numChannels;i++){
+         for (i = 0; i < numChannels; i++) {
             samplePtr mixed = mixer->GetBuffer(i);
-            for(j=0;j<samplesThisRun;j++){
-               if(format==int24Sample)
-                  tmpsmplbuf[i][j]= ((int*)mixed)[j];
-               else
-                  tmpsmplbuf[i][j]= ((short*)mixed)[j];
+            if (format == int24Sample) {
+               for (j = 0; j < samplesThisRun; j++) {
+                  tmpsmplbuf[i][j] = ((int *) mixed)[j];
+               }
+            }
+            else {
+               for (j = 0; j < samplesThisRun; j++) {
+                  tmpsmplbuf[i][j] = ((short *) mixed)[j];
+               }
             }
          }
-         encoder->process(tmpsmplbuf,samplesThisRun);
+         encoder->process(tmpsmplbuf, samplesThisRun);
       }
-      int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
-                                       (t1-t0)));
+      int progressvalue = int(1000 * ((mixer->MixGetCurrentTime()-t0) /
+                                      (t1-t0)));
       cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
    }
    encoder->finish();
 
    GetActiveProject()->ProgressHide();
 
-   for(i=0;i<numChannels;i++)
+   for (i = 0; i < numChannels; i++) {
    	free(tmpsmplbuf[i]);
+   }
    delete mixer;
    delete encoder;
    
@@ -170,107 +326,24 @@ bool ExportFLAC(AudacityProject *project,
    return !cancelling;
 }
 
-class FLACOptionsDialog : public wxDialog
+bool ExportFLAC::DisplayOptions(AudacityProject *project)
 {
-public:
-
-   /// 
-   /// 
-   FLACOptionsDialog(wxWindow *parent)
-   : wxDialog(NULL, wxID_ANY, wxString(_("Specify FLAC Options")),
-      wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
-   {
-      ShuttleGui S(this, eIsCreatingFromPrefs);
-
-      PopulateOrExchange(S);
-   }
-
-   /// 
-   /// 
-   void PopulateOrExchange(ShuttleGui & S)
-   {
-      wxArrayString flacLevelNames, flacLevelLabels;
-      flacLevelLabels.Add(wxT("0")); flacLevelNames.Add(_("0 (fastest)"));
-      flacLevelLabels.Add(wxT("1")); flacLevelNames.Add(_("1"));
-      flacLevelLabels.Add(wxT("2")); flacLevelNames.Add(_("2"));
-      flacLevelLabels.Add(wxT("3")); flacLevelNames.Add(_("3"));
-      flacLevelLabels.Add(wxT("4")); flacLevelNames.Add(_("4"));
-      flacLevelLabels.Add(wxT("5")); flacLevelNames.Add(_("5"));
-      flacLevelLabels.Add(wxT("6")); flacLevelNames.Add(_("6"));
-      flacLevelLabels.Add(wxT("7")); flacLevelNames.Add(_("7"));
-      flacLevelLabels.Add(wxT("8")); flacLevelNames.Add(_("8 (best)"));
-
-      wxArrayString flacBitDepthNames, flacBitDepthLabels;
-      flacBitDepthLabels.Add(wxT("16")); flacBitDepthNames.Add(_("16 bit"));
-      flacBitDepthLabels.Add(wxT("24")); flacBitDepthNames.Add(_("24 bit"));
-
-      S.StartHorizontalLay(wxEXPAND, 0);
-      {
-         S.StartStatic(_("FLAC Export Setup"), 0);
-         {
-            S.StartTwoColumn();
-            {
-               S.TieChoice(_("Level:"), wxT("/FileFormats/FLACLevel"),
-                           wxT("5"), flacLevelNames, flacLevelLabels);
-               S.TieChoice(_("Bit depth:"), wxT("/FileFormats/FLACBitDepth"),
-                           wxT("16"), flacBitDepthNames, flacBitDepthLabels);
-            }
-            S.EndTwoColumn();
-         }
-         S.EndStatic();
-      }
-      S.EndHorizontalLay();
-      S.StartHorizontalLay(wxALIGN_CENTER, false);
-      {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-#else
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-      }
-      GetSizer()->AddSpacer(5);
-      Layout();
-      Fit();
-      SetMinSize(GetSize());
-      Center();
-
-      return;
-   }
-
-   /// 
-   /// 
-   void OnOK(wxCommandEvent& event)
-   {
-      ShuttleGui S(this, eIsSavingToPrefs);
-      PopulateOrExchange(S);
-
-      EndModal(wxID_OK);
-
-      return;
-   }
-
-private:
-
-   DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE(FLACOptionsDialog, wxDialog)
-   EVT_BUTTON(wxID_OK, FLACOptionsDialog::OnOK)
-END_EVENT_TABLE()
-
-bool ExportFLACOptions(AudacityProject *project)
-{
-   FLACOptionsDialog od(project);
+   ExportFLACOptions od(project);
 
    od.ShowModal();
 
    return true;
 }
 
-#endif // USE_LIBVORBIS
+//----------------------------------------------------------------------------
+// Constructor
+//----------------------------------------------------------------------------
+ExportPlugin *New_ExportFLAC()
+{
+   return new ExportFLAC();
+}
 
+#endif // USE_LIBVORBIS
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

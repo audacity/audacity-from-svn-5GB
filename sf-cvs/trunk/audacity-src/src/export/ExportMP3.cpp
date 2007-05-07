@@ -57,13 +57,6 @@
 \class MP3Exporter
 \brief Class used to export MP3 files
 
-*//*****************************************************************//**
-
-\class MP3ExporterCleanup
-\brief Tiny class that is used to clean up any allocated resources 
-when the program exits.  A global instance of it is created, and its
-destructor does the cleanup.
-
 *//********************************************************************/
 
 #include <wx/defs.h>
@@ -93,9 +86,11 @@ destructor does the cleanup.
 
 #include "FileDialog.h"
 
-#include "ExportMP3.h"
+#include "Export.h"
 
-MP3Exporter *gMP3Exporter = NULL;
+//----------------------------------------------------------------------------
+// ExportMP3Options
+//----------------------------------------------------------------------------
 
 #define MODE_SET           0
 #define MODE_VBR           1
@@ -184,95 +179,607 @@ static CHOICES setRates[] =
    {  _("Medium, 145-185 kbps"),    PRESET_MEDIUM     },
 };
 
-#if 0
-// Debug routine from BladeMP3EncDLL.c in the libmp3lame distro
-static void dump_config( 	lame_global_flags*	gfp )
+#define ID_SET 7000
+#define ID_VBR 7001
+#define ID_ABR 7002
+#define ID_CBR 7003
+
+class ExportMP3Options : public wxDialog
 {
-	wxPrintf(wxT("\n\nLame_enc configuration options:\n"));
-	wxPrintf(wxT("==========================================================\n"));
+public:
 
-	wxPrintf(wxT("version                =%d\n"),lame_get_version( gfp ) );
-	wxPrintf(wxT("Layer                  =3\n"));
-	wxPrintf(wxT("mode                   ="));
-	switch ( lame_get_mode( gfp ) )
-	{
-		case STEREO:       wxPrintf(wxT( "Stereo\n" )); break;
-		case JOINT_STEREO: wxPrintf(wxT( "Joint-Stereo\n" )); break;
-		case DUAL_CHANNEL: wxPrintf(wxT( "Forced Stereo\n" )); break;
-		case MONO:         wxPrintf(wxT( "Mono\n" )); break;
-		case NOT_SET:      /* FALLTROUGH */
-		default:           wxPrintf(wxT( "Error (unknown)\n" )); break;
-	}
+   ExportMP3Options(wxWindow *parent);
+   void PopulateOrExchange(ShuttleGui & S);
+   void OnOK(wxCommandEvent& event);
+   void OnSET(wxCommandEvent& evt);
+   void OnVBR(wxCommandEvent& evt);
+   void OnABR(wxCommandEvent& evt);
+   void OnCBR(wxCommandEvent& evt);
+   void LoadNames(CHOICES *choices, int count);
+   wxArrayString GetNames(CHOICES *choices, int count);
+   wxArrayInt GetLabels(CHOICES *choices, int count);
 
-	wxPrintf(wxT("Input sample rate      =%.1f kHz\n"), lame_get_in_samplerate( gfp ) /1000.0 );
-	wxPrintf(wxT("Output sample rate     =%.1f kHz\n"), lame_get_out_samplerate( gfp ) /1000.0 );
+private:
 
-	wxPrintf(wxT("bitrate                =%d kbps\n"), lame_get_brate( gfp ) );
-	wxPrintf(wxT("Quality Setting        =%d\n"), lame_get_quality( gfp ) );
+   wxRadioButton *mStereo;
+   wxRadioButton *mJoint;
+   wxRadioButton *mSET;
+   wxRadioButton *mVBR;
+   wxRadioButton *mABR;
+   wxRadioButton *mCBR;
+   wxChoice *mRate;
+   wxChoice *mMode;
 
-	wxPrintf(wxT("Low pass frequency     =%d\n"), lame_get_lowpassfreq( gfp ) );
-	wxPrintf(wxT("Low pass width         =%d\n"), lame_get_lowpasswidth( gfp ) );
+   DECLARE_EVENT_TABLE()
+};
 
-	wxPrintf(wxT("High pass frequency    =%d\n"), lame_get_highpassfreq( gfp ) );
-	wxPrintf(wxT("High pass width        =%d\n"), lame_get_highpasswidth( gfp ) );
+BEGIN_EVENT_TABLE(ExportMP3Options, wxDialog)
+   EVT_RADIOBUTTON(ID_SET,    ExportMP3Options::OnSET)
+   EVT_RADIOBUTTON(ID_VBR,    ExportMP3Options::OnVBR)
+   EVT_RADIOBUTTON(ID_ABR,    ExportMP3Options::OnABR)
+   EVT_RADIOBUTTON(ID_CBR,    ExportMP3Options::OnCBR)
+   EVT_BUTTON(wxID_OK,        ExportMP3Options::OnOK)
+END_EVENT_TABLE()
 
-	wxPrintf(wxT("No short blocks        =%d\n"), lame_get_no_short_blocks( gfp ) );
-	wxPrintf(wxT("Force short blocks     =%d\n"), lame_get_force_short_blocks( gfp ) );
+/// 
+/// 
+ExportMP3Options::ExportMP3Options(wxWindow *parent)
+:  wxDialog(NULL, wxID_ANY,
+            wxString(_("Specify MP3 Options")),
+            wxDefaultPosition, wxDefaultSize,
+            wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+{
+   ShuttleGui S(this, eIsCreatingFromPrefs);
 
-	wxPrintf(wxT("de-emphasis            =%d\n"), lame_get_emphasis( gfp ) );
-	wxPrintf(wxT("private flag           =%d\n"), lame_get_extension( gfp ) );
-
-	wxPrintf(wxT("copyright flag         =%d\n"), lame_get_copyright( gfp ) );
-	wxPrintf(wxT("original flag          =%d\n"),	lame_get_original( gfp ) );
-	wxPrintf(wxT("CRC                    =%s\n"), lame_get_error_protection( gfp ) ? wxT("on") : wxT("off") );
-	wxPrintf(wxT("Fast mode              =%s\n"), ( lame_get_quality( gfp ) )? wxT("enabled") : wxT("disabled") );
-	wxPrintf(wxT("Force mid/side stereo  =%s\n"), ( lame_get_force_ms( gfp ) )?wxT("enabled"):wxT("disabled") );
-	wxPrintf(wxT("Padding Type           =%d\n"), lame_get_padding_type( gfp ) );
-	wxPrintf(wxT("Disable Reservoir      =%d\n"), lame_get_disable_reservoir( gfp ) );
-	wxPrintf(wxT("Allow diff-short       =%d\n"), lame_get_allow_diff_short( gfp ) );
-	wxPrintf(wxT("Interchannel masking   =%f\n"), lame_get_interChRatio( gfp ) );
-	wxPrintf(wxT("Strict ISO Encoding    =%s\n"), ( lame_get_strict_ISO( gfp ) ) ?wxT("Yes"):wxT("No"));
-	wxPrintf(wxT("Scale                  =%5.2f\n"), lame_get_scale( gfp ) );
-
-	wxPrintf(wxT("VBR                    =%s, VBR_q =%d, VBR method ="),
-					( lame_get_VBR( gfp ) !=vbr_off ) ? wxT("enabled"): wxT("disabled"),
-		            lame_get_VBR_q( gfp ) );
-
-	switch ( lame_get_VBR( gfp ) )
-	{
-		case vbr_off:	wxPrintf(wxT( "vbr_off\n" ));	break;
-		case vbr_mt :	wxPrintf(wxT( "vbr_mt \n" ));	break;
-		case vbr_rh :	wxPrintf(wxT( "vbr_rh \n" ));	break;
-		case vbr_mtrh:	wxPrintf(wxT( "vbr_mtrh \n" ));	break;
-		case vbr_abr: 
-			wxPrintf(wxT( "vbr_abr (average bitrate %d kbps)\n"), lame_get_VBR_mean_bitrate_kbps( gfp ) );
-		break;
-		default:
-			wxPrintf(wxT("error, unknown VBR setting\n"));
-		break;
-	}
-
-	wxPrintf(wxT("Vbr Min bitrate        =%d kbps\n"), lame_get_VBR_min_bitrate_kbps( gfp ) );
-	wxPrintf(wxT("Vbr Max bitrate        =%d kbps\n"), lame_get_VBR_max_bitrate_kbps( gfp ) );
-
-	wxPrintf(wxT("Write VBR Header       =%s\n"), ( lame_get_bWriteVbrTag( gfp ) ) ?wxT("Yes"):wxT("No"));
-	wxPrintf(wxT("VBR Hard min           =%d\n"), lame_get_VBR_hard_min( gfp ) );
-
-	wxPrintf(wxT("ATH Only               =%d\n"), lame_get_ATHonly( gfp ) );
-	wxPrintf(wxT("ATH short              =%d\n"), lame_get_ATHshort( gfp ) );
-	wxPrintf(wxT("ATH no                 =%d\n"), lame_get_noATH( gfp ) );
-	wxPrintf(wxT("ATH type               =%d\n"), lame_get_ATHtype( gfp ) );
-	wxPrintf(wxT("ATH lower              =%f\n"), lame_get_ATHlower( gfp ) );
-	wxPrintf(wxT("ATH aa                 =%d\n"), lame_get_athaa_type( gfp ) );
-	wxPrintf(wxT("ATH aa  loudapprox     =%d\n"), lame_get_athaa_loudapprox( gfp ) );
-	wxPrintf(wxT("ATH aa  sensitivity    =%f\n"), lame_get_athaa_sensitivity( gfp ) );
-
-	wxPrintf(wxT("Experimental nspsytune =%d\n"), lame_get_exp_nspsytune( gfp ) );
-	wxPrintf(wxT("Experimental X         =%d\n"), lame_get_experimentalX( gfp ) );
-	wxPrintf(wxT("Experimental Y         =%d\n"), lame_get_experimentalY( gfp ) );
-	wxPrintf(wxT("Experimental Z         =%d\n"), lame_get_experimentalZ( gfp ) );
+   PopulateOrExchange(S);
 }
+
+/// 
+/// 
+void ExportMP3Options::PopulateOrExchange(ShuttleGui & S)
+{
+   S.StartHorizontalLay(wxEXPAND, 0);
+   {
+      S.StartStatic(_("MP3 Export Setup"), 0);
+      {
+         S.StartMultiColumn(2, wxEXPAND);
+         {
+            S.SetStretchyCol(1);
+            S.StartTwoColumn();
+            {
+               S.AddPrompt(_("Bit Rate Mode:"));
+               S.StartHorizontalLay();
+               {
+                  S.StartRadioButtonGroup(wxT("/FileFormats/MP3RateMode"), MODE_CBR);
+                  {
+                     mSET = S.Id(ID_SET).TieRadioButton(_("Preset"), MODE_SET);
+                     mVBR = S.Id(ID_VBR).TieRadioButton(_("Variable"), MODE_VBR);
+                     mABR = S.Id(ID_ABR).TieRadioButton(_("Average"), MODE_ABR);
+                     mCBR = S.Id(ID_CBR).TieRadioButton(_("Constant"), MODE_CBR);
+                  }
+                  S.EndRadioButtonGroup();
+               }
+               S.EndHorizontalLay();
+
+               CHOICES *choices;
+               int cnt;
+               bool enable;
+               int defrate;
+               bool preset = false;
+
+               if (mSET->GetValue()) {
+                  choices = setRates;
+                  cnt = WXSIZEOF(setRates);
+                  enable = true;
+                  defrate = PRESET_STANDARD;
+                  preset = true;
+               }
+               else if (mVBR->GetValue()) {
+                  choices = varRates;
+                  cnt = WXSIZEOF(varRates);
+                  enable = true;
+                  defrate = QUALITY_4;
+               }
+               else if (mABR->GetValue()) {
+                  choices = fixRates;
+                  cnt = WXSIZEOF(fixRates);
+                  enable = false;
+                  defrate = 128;
+               }
+               else {
+                  mCBR->SetValue(true);
+                  choices = fixRates;
+                  cnt = WXSIZEOF(fixRates);
+                  enable = false;
+                  defrate = 128;
+               }
+
+               mRate = S.TieChoice(wxT("Quality"),
+                                   wxT("/FileFormats/MP3Bitrate"), 
+                                   defrate,
+                                   GetNames(choices, cnt),
+                                   GetLabels(choices, cnt));
+
+               mMode = S.TieChoice(_("Variable Speed:"),
+                                   wxT("/FileFormats/MP3VarMode"), 
+                                   ROUTINE_FAST,
+                                   GetNames(varModes, WXSIZEOF(varModes)),
+                                   GetLabels(varModes, WXSIZEOF(varModes)));
+               mMode->Enable(enable);
+
+               S.AddPrompt(_("Channel Mode:"));
+               S.StartTwoColumn();
+               {
+                  S.StartRadioButtonGroup(wxT("/FileFormats/MP3ChannelMode"), CHANNEL_STEREO);
+                  {
+                     mJoint = S.TieRadioButton(_("Joint Stereo"), CHANNEL_JOINT);
+                     mStereo = S.TieRadioButton(_("Stereo"), CHANNEL_STEREO);
+#if defined(__WXMSW__)
+                     mJoint->Enable(!preset);
+                     mStereo->Enable(!preset);
 #endif
+                  }
+                  S.EndRadioButtonGroup();
+               }
+               S.EndTwoColumn();
+            }
+            S.EndTwoColumn();
+         }
+         S.EndMultiColumn();
+      }
+      S.EndStatic();
+   }
+   S.EndHorizontalLay();
+   S.StartHorizontalLay(wxALIGN_CENTER, false);
+   {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+   }
+   GetSizer()->AddSpacer(5);
+   Layout();
+   Fit();
+   SetMinSize(GetSize());
+   Center();
+
+   return;
+}
+
+/// 
+/// 
+void ExportMP3Options::OnOK(wxCommandEvent& event)
+{
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
+
+   EndModal(wxID_OK);
+
+   return;
+}
+
+/// 
+/// 
+void ExportMP3Options::OnSET(wxCommandEvent& evt)
+{
+   LoadNames(setRates, WXSIZEOF(setRates));
+
+   mRate->SetSelection(2);
+   mRate->Refresh();
+   mMode->Enable(true);
+#if defined(__WXMSW__)
+   mJoint->Enable(false);
+   mStereo->Enable(false);
+#endif
+}
+
+/// 
+/// 
+void ExportMP3Options::OnVBR(wxCommandEvent& evt)
+{
+   LoadNames(varRates, WXSIZEOF(varRates));
+
+   mRate->SetSelection(2);
+   mRate->Refresh();
+   mMode->Enable(true);
+#if defined(__WXMSW__)
+   mJoint->Enable(true);
+   mStereo->Enable(true);
+#endif
+}
+
+/// 
+/// 
+void ExportMP3Options::OnABR(wxCommandEvent& evt)
+{
+   LoadNames(fixRates, WXSIZEOF(fixRates));
+
+   mRate->SetSelection(10);
+   mRate->Refresh();
+   mMode->Enable(false);
+#if defined(__WXMSW__)
+   mJoint->Enable(true);
+   mStereo->Enable(true);
+#endif
+}
+
+/// 
+/// 
+void ExportMP3Options::OnCBR(wxCommandEvent& evt)
+{
+   LoadNames(fixRates, WXSIZEOF(fixRates));
+
+   mRate->SetSelection(10);
+   mRate->Refresh();
+   mMode->Enable(false);
+#if defined(__WXMSW__)
+   mJoint->Enable(true);
+   mStereo->Enable(true);
+#endif
+}
+
+void ExportMP3Options::LoadNames(CHOICES *choices, int count)
+{
+   mRate->Clear();
+
+   for (int i = 0; i < count; i++)
+   {
+      mRate->Append(choices[i].name);
+   }
+}
+
+wxArrayString ExportMP3Options::GetNames(CHOICES *choices, int count)
+{
+   wxArrayString names;
+
+   for (int i = 0; i < count; i++) {
+      names.Add(choices[i].name);
+   }
+
+   return names;
+}
+
+wxArrayInt ExportMP3Options::GetLabels(CHOICES *choices, int count)
+{
+   wxArrayInt labels;
+
+   for (int i = 0; i < count; i++) {
+      labels.Add(choices[i].label);
+   }
+
+   return labels;
+}
+
+//----------------------------------------------------------------------------
+// FindDialog
+//----------------------------------------------------------------------------
+
+#define ID_BROWSE 5000
+#define ID_DLOAD  5001
+
+class FindDialog : public wxDialog
+{
+public:
+
+   FindDialog(wxWindow *parent, wxString path, wxString name, wxString type)
+   :  wxDialog(parent, wxID_ANY, wxString(_("Locate Lame")))
+   {
+      ShuttleGui S(this, eIsCreating);
+
+      mPath = path;
+      mName = name;
+      mType = type;
+
+      mLibPath.Assign(mPath, mName);
+
+      PopulateOrExchange(S);
+   }
+
+   void PopulateOrExchange(ShuttleGui & S)
+   {
+      wxString text;
+
+      S.SetBorder(10);
+      S.StartVerticalLay(true);
+      {
+         text.Printf(_("Audacity needs the file %s to create MP3s."), mName.c_str());
+         S.AddTitle(text);
+
+         S.SetBorder(3);
+         S.StartHorizontalLay(wxALIGN_LEFT, true);
+         {
+            text.Printf(_("Location of %s:"), mName.c_str());
+            S.AddTitle(text);
+         }
+         S.EndHorizontalLay();
+
+         S.StartMultiColumn(2, wxEXPAND);
+         S.SetStretchyCol(0);
+         {
+            if (mLibPath.GetFullPath().IsEmpty()) {
+               text.Printf(_("To find %s, click here -->"), mName.c_str());
+               mPathText = S.AddTextBox(wxT(""), text, 0);
+            }
+            else {
+               mPathText = S.AddTextBox(wxT(""), mLibPath.GetFullPath(), 0);
+            }
+            S.Id(ID_BROWSE).AddButton(_("Browse..."), wxALIGN_RIGHT);
+            S.AddVariableText(_("To get a free copy of Lame, click here -->"), true);
+            S.Id(ID_DLOAD).AddButton(_("Download..."), wxALIGN_RIGHT);
+         }
+         S.EndMultiColumn();
+         S.SetBorder(5);
+         S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_CENTER, false);
+         {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+            S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+            S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+            S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+            S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+         }
+         S.EndHorizontalLay();
+      }
+      S.EndVerticalLay();
+      GetSizer()->AddSpacer(5);
+      Layout();
+      Fit();
+      SetMinSize(GetSize());
+      Center();
+
+      return;
+   }
+
+   void OnBrowse(wxCommandEvent & event)
+   {
+      wxString question;
+      /* i18n-hint: It's asking for the location of a file, for
+         example, "Where is lame_enc.dll?" - you could translate
+         "Where would I find the file %s" instead if you want. */
+      question.Printf(_("Where is %s?"), mName.c_str());
+
+      wxString path = FileSelector(question, 
+                                   mLibPath.GetPath(),
+                                   mLibPath.GetName(),
+                                   wxT(""),
+                                   mType,
+                                   wxOPEN,
+                                   this);
+      if (!path.IsEmpty()) {
+         mLibPath = path;
+         mPathText->SetValue(path);
+      }
+   }
+
+   void OnDownload(wxCommandEvent & event)
+   {
+      wxString page = wxT("http://audacity.sourceforge.net/lame");
+      ::OpenInDefaultBrowser(page);
+   }
+
+   wxString GetLibPath()
+   {
+      return mLibPath.GetFullPath();
+   }
+
+private:
+
+   wxFileName mLibPath;
+
+   wxString mPath;
+   wxString mName;
+   wxString mType;
+
+   wxTextCtrl *mPathText;
+
+   DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(FindDialog, wxDialog)
+   EVT_BUTTON(ID_BROWSE, FindDialog::OnBrowse)
+   EVT_BUTTON(ID_DLOAD,  FindDialog::OnDownload)
+END_EVENT_TABLE()
+
+//----------------------------------------------------------------------------
+// MP3Exporter
+//----------------------------------------------------------------------------
+
+class MP3Exporter
+{
+public:
+
+   MP3Exporter();
+   virtual ~MP3Exporter();
+
+   bool FindLibrary(wxWindow *parent);
+   bool LoadLibrary(wxWindow *parent, bool askuser);
+   bool ValidLibraryLoaded();
+
+   /* These global settings keep state over the life of the object */
+   void SetMode(int mode);
+   void SetBitrate(int rate);
+   void SetQuality(int q, int r);
+   void SetChannel(int mode);
+
+   /* Virtual methods that must be supplied by library interfaces */
+
+   /* initialize the library interface */
+   virtual bool InitLibrary(wxString libpath) = 0;
+   virtual void FreeLibrary() = 0;
+
+   /* get library info */
+   virtual wxString GetLibraryVersion() = 0;
+   virtual wxString GetLibraryName() = 0;
+   virtual wxString GetLibraryPath() = 0;
+   virtual wxString GetLibraryTypeString() = 0;
+
+   /* returns the number of samples PER CHANNEL to send for each call to EncodeBuffer */
+   virtual int InitializeStream(int channels, int sampleRate) = 0;
+
+   /* In bytes. must be called AFTER InitializeStream */
+   virtual int GetOutBufferSize() = 0;
+
+   /* returns the number of bytes written. input is interleaved if stereo*/
+   virtual int EncodeBuffer(short int inbuffer[], unsigned char outbuffer[]) = 0;
+   virtual int EncodeRemainder(short int inbuffer[], int nSamples,
+                               unsigned char outbuffer[]) = 0;
+
+   virtual int EncodeBufferMono(short int inbuffer[], unsigned char outbuffer[]) = 0;
+   virtual int EncodeRemainderMono(short int inbuffer[], int nSamples,
+                                   unsigned char outbuffer[]) = 0;
+
+   virtual int FinishStream(unsigned char outbuffer[]) = 0;
+   virtual void CancelEncoding() = 0;
+
+protected:
+
+   wxString mLibPath;
+
+   bool mLibraryLoaded;
+   bool mEncoding;
+
+   int mMode;
+   int mBitrate;
+   int mQuality;
+   int mRoutine;
+   int mChannel;
+};
+
+//----------------------------------------------------------------------------
+// MP3Exporter
+//----------------------------------------------------------------------------
+
+MP3Exporter::MP3Exporter()
+{
+   mLibraryLoaded = false;
+   mEncoding = false;
+
+   if (gPrefs) {
+      mLibPath = gPrefs->Read(wxT("/MP3/MP3LibPath"), wxT(""));
+   }
+
+   mBitrate = 128;
+   mQuality = QUALITY_2;
+   mChannel = CHANNEL_STEREO;
+   mMode = MODE_CBR;
+   mRoutine = ROUTINE_FAST;
+}
+
+MP3Exporter::~MP3Exporter()
+{
+}
+
+bool MP3Exporter::FindLibrary(wxWindow *parent)
+{
+   wxString path;
+   wxString name;
+
+   if (!mLibPath.IsEmpty()) {
+      wxFileName fn = mLibPath;
+      path = fn.GetPath();
+      name = fn.GetFullName();
+   }
+   else {
+      path = GetLibraryPath();
+      name = GetLibraryName();
+   }
+
+   FindDialog fd(parent,
+                 path,
+                 name,
+                 GetLibraryTypeString());
+
+   if (fd.ShowModal() == wxID_CANCEL) {
+      return false;
+   }
+
+   path = fd.GetLibPath();
+   
+   if (!::wxFileExists(path)) {
+      return false;
+   }
+
+   mLibPath = path;
+   gPrefs->Write(wxT("/MP3/MP3LibPath"), mLibPath);
+
+   return true;
+}
+
+bool MP3Exporter::LoadLibrary(wxWindow *parent, bool askuser)
+{
+   wxLogNull logNo;
+
+   if (ValidLibraryLoaded()) {
+      FreeLibrary();
+      mLibraryLoaded = false;
+   }
+
+   // First try loading it from a previously located path
+   if (!mLibPath.IsEmpty()) {
+      mLibraryLoaded = InitLibrary(mLibPath);
+   }
+
+   // If not successful, try loading using system search paths
+   if (!ValidLibraryLoaded()) {
+      mLibPath = GetLibraryName();
+      mLibraryLoaded = InitLibrary(mLibPath);
+   }
+
+   // If not successful, try loading using compiled in path
+   if (!ValidLibraryLoaded()) {
+      wxFileName fn(GetLibraryPath(), GetLibraryName());
+      mLibPath = fn.GetFullPath();
+      mLibraryLoaded = InitLibrary(mLibPath);
+   }
+
+   // If not successful, must ask the user
+   if (!ValidLibraryLoaded()) {
+      if (askuser && FindLibrary(parent)) {
+         mLibraryLoaded = InitLibrary(mLibPath);
+      }
+   }
+
+   // Oh well, just give up
+   if (!ValidLibraryLoaded()) {
+      return false;
+   }
+
+   return true;
+}
+
+bool MP3Exporter::ValidLibraryLoaded()
+{
+   return mLibraryLoaded;
+}
+
+void MP3Exporter::SetMode(int mode)
+{
+   mMode = mode;
+}
+
+void MP3Exporter::SetBitrate(int rate)
+{
+   mBitrate = rate;
+}
+
+void MP3Exporter::SetQuality(int q, int r)
+{
+   mQuality = q;
+   mRoutine = r;
+}
+
+void MP3Exporter::SetChannel(int mode)
+{
+   mChannel = mode;
+}
+
+//----------------------------------------------------------------------------
+// LameExporter
+//----------------------------------------------------------------------------
 
 #if defined(__WXMSW__)
 
@@ -587,6 +1094,96 @@ typedef int lame_set_VBR_min_bitrate_kbps_t(lame_global_flags *, int);
 typedef int lame_set_mode_t(lame_global_flags *, MPEG_mode);
 typedef int lame_set_preset_t(lame_global_flags *, int);
 typedef int lame_set_error_protection_t(lame_global_flags *, int);
+
+#if 0
+// Debug routine from BladeMP3EncDLL.c in the libmp3lame distro
+static void dump_config( 	lame_global_flags*	gfp )
+{
+	wxPrintf(wxT("\n\nLame_enc configuration options:\n"));
+	wxPrintf(wxT("==========================================================\n"));
+
+	wxPrintf(wxT("version                =%d\n"),lame_get_version( gfp ) );
+	wxPrintf(wxT("Layer                  =3\n"));
+	wxPrintf(wxT("mode                   ="));
+	switch ( lame_get_mode( gfp ) )
+	{
+		case STEREO:       wxPrintf(wxT( "Stereo\n" )); break;
+		case JOINT_STEREO: wxPrintf(wxT( "Joint-Stereo\n" )); break;
+		case DUAL_CHANNEL: wxPrintf(wxT( "Forced Stereo\n" )); break;
+		case MONO:         wxPrintf(wxT( "Mono\n" )); break;
+		case NOT_SET:      /* FALLTROUGH */
+		default:           wxPrintf(wxT( "Error (unknown)\n" )); break;
+	}
+
+	wxPrintf(wxT("Input sample rate      =%.1f kHz\n"), lame_get_in_samplerate( gfp ) /1000.0 );
+	wxPrintf(wxT("Output sample rate     =%.1f kHz\n"), lame_get_out_samplerate( gfp ) /1000.0 );
+
+	wxPrintf(wxT("bitrate                =%d kbps\n"), lame_get_brate( gfp ) );
+	wxPrintf(wxT("Quality Setting        =%d\n"), lame_get_quality( gfp ) );
+
+	wxPrintf(wxT("Low pass frequency     =%d\n"), lame_get_lowpassfreq( gfp ) );
+	wxPrintf(wxT("Low pass width         =%d\n"), lame_get_lowpasswidth( gfp ) );
+
+	wxPrintf(wxT("High pass frequency    =%d\n"), lame_get_highpassfreq( gfp ) );
+	wxPrintf(wxT("High pass width        =%d\n"), lame_get_highpasswidth( gfp ) );
+
+	wxPrintf(wxT("No short blocks        =%d\n"), lame_get_no_short_blocks( gfp ) );
+	wxPrintf(wxT("Force short blocks     =%d\n"), lame_get_force_short_blocks( gfp ) );
+
+	wxPrintf(wxT("de-emphasis            =%d\n"), lame_get_emphasis( gfp ) );
+	wxPrintf(wxT("private flag           =%d\n"), lame_get_extension( gfp ) );
+
+	wxPrintf(wxT("copyright flag         =%d\n"), lame_get_copyright( gfp ) );
+	wxPrintf(wxT("original flag          =%d\n"),	lame_get_original( gfp ) );
+	wxPrintf(wxT("CRC                    =%s\n"), lame_get_error_protection( gfp ) ? wxT("on") : wxT("off") );
+	wxPrintf(wxT("Fast mode              =%s\n"), ( lame_get_quality( gfp ) )? wxT("enabled") : wxT("disabled") );
+	wxPrintf(wxT("Force mid/side stereo  =%s\n"), ( lame_get_force_ms( gfp ) )?wxT("enabled"):wxT("disabled") );
+	wxPrintf(wxT("Padding Type           =%d\n"), lame_get_padding_type( gfp ) );
+	wxPrintf(wxT("Disable Reservoir      =%d\n"), lame_get_disable_reservoir( gfp ) );
+	wxPrintf(wxT("Allow diff-short       =%d\n"), lame_get_allow_diff_short( gfp ) );
+	wxPrintf(wxT("Interchannel masking   =%f\n"), lame_get_interChRatio( gfp ) );
+	wxPrintf(wxT("Strict ISO Encoding    =%s\n"), ( lame_get_strict_ISO( gfp ) ) ?wxT("Yes"):wxT("No"));
+	wxPrintf(wxT("Scale                  =%5.2f\n"), lame_get_scale( gfp ) );
+
+	wxPrintf(wxT("VBR                    =%s, VBR_q =%d, VBR method ="),
+					( lame_get_VBR( gfp ) !=vbr_off ) ? wxT("enabled"): wxT("disabled"),
+		            lame_get_VBR_q( gfp ) );
+
+	switch ( lame_get_VBR( gfp ) )
+	{
+		case vbr_off:	wxPrintf(wxT( "vbr_off\n" ));	break;
+		case vbr_mt :	wxPrintf(wxT( "vbr_mt \n" ));	break;
+		case vbr_rh :	wxPrintf(wxT( "vbr_rh \n" ));	break;
+		case vbr_mtrh:	wxPrintf(wxT( "vbr_mtrh \n" ));	break;
+		case vbr_abr: 
+			wxPrintf(wxT( "vbr_abr (average bitrate %d kbps)\n"), lame_get_VBR_mean_bitrate_kbps( gfp ) );
+		break;
+		default:
+			wxPrintf(wxT("error, unknown VBR setting\n"));
+		break;
+	}
+
+	wxPrintf(wxT("Vbr Min bitrate        =%d kbps\n"), lame_get_VBR_min_bitrate_kbps( gfp ) );
+	wxPrintf(wxT("Vbr Max bitrate        =%d kbps\n"), lame_get_VBR_max_bitrate_kbps( gfp ) );
+
+	wxPrintf(wxT("Write VBR Header       =%s\n"), ( lame_get_bWriteVbrTag( gfp ) ) ?wxT("Yes"):wxT("No"));
+	wxPrintf(wxT("VBR Hard min           =%d\n"), lame_get_VBR_hard_min( gfp ) );
+
+	wxPrintf(wxT("ATH Only               =%d\n"), lame_get_ATHonly( gfp ) );
+	wxPrintf(wxT("ATH short              =%d\n"), lame_get_ATHshort( gfp ) );
+	wxPrintf(wxT("ATH no                 =%d\n"), lame_get_noATH( gfp ) );
+	wxPrintf(wxT("ATH type               =%d\n"), lame_get_ATHtype( gfp ) );
+	wxPrintf(wxT("ATH lower              =%f\n"), lame_get_ATHlower( gfp ) );
+	wxPrintf(wxT("ATH aa                 =%d\n"), lame_get_athaa_type( gfp ) );
+	wxPrintf(wxT("ATH aa  loudapprox     =%d\n"), lame_get_athaa_loudapprox( gfp ) );
+	wxPrintf(wxT("ATH aa  sensitivity    =%f\n"), lame_get_athaa_sensitivity( gfp ) );
+
+	wxPrintf(wxT("Experimental nspsytune =%d\n"), lame_get_exp_nspsytune( gfp ) );
+	wxPrintf(wxT("Experimental X         =%d\n"), lame_get_experimentalX( gfp ) );
+	wxPrintf(wxT("Experimental Y         =%d\n"), lame_get_experimentalY( gfp ) );
+	wxPrintf(wxT("Experimental Z         =%d\n"), lame_get_experimentalZ( gfp ) );
+}
+#endif
 
 /* --------------------------------------------------------------------------*/
 
@@ -921,322 +1518,71 @@ private:
 };
 #endif
 
-#define ID_BROWSE 5000
-#define ID_DLOAD  5001
+//----------------------------------------------------------------------------
+// ExportMP3
+//----------------------------------------------------------------------------
 
-class FindDialog : public wxDialog
+class ExportMP3 : public ExportPlugin
 {
 public:
 
-   FindDialog(wxWindow *parent, wxString path, wxString name, wxString type)
-   : wxDialog(parent, wxID_ANY, wxString(_("Locate Lame")))
-   {
-      ShuttleGui S(this, eIsCreating);
+   ExportMP3();
+   void Destroy();
 
-      mPath = path;
-      mName = name;
-      mType = type;
+   // Required
 
-      mLibPath.Assign(mPath, mName);
-
-      PopulateOrExchange(S);
-   }
-
-   void PopulateOrExchange(ShuttleGui & S)
-   {
-      wxString text;
-
-      S.SetBorder(10);
-      S.StartVerticalLay(true);
-      {
-         text.Printf(_("Audacity needs the file %s to create MP3s."), mName.c_str());
-         S.AddTitle(text);
-
-         S.SetBorder(3);
-         S.StartHorizontalLay(wxALIGN_LEFT, true);
-         {
-            text.Printf(_("Location of %s:"), mName.c_str());
-            S.AddTitle(text);
-         }
-         S.EndHorizontalLay();
-
-         S.StartMultiColumn(2, wxEXPAND);
-         S.SetStretchyCol(0);
-         {
-            if (mLibPath.GetFullPath().IsEmpty()) {
-               text.Printf(_("To find %s, click here -->"), mName.c_str());
-               mPathText = S.AddTextBox(wxT(""), text, 0);
-            }
-            else {
-               mPathText = S.AddTextBox(wxT(""), mLibPath.GetFullPath(), 0);
-            }
-            S.Id(ID_BROWSE).AddButton(_("Browse..."), wxALIGN_RIGHT);
-            S.AddVariableText(_("To get a free copy of Lame, click here -->"), true);
-            S.Id(ID_DLOAD).AddButton(_("Download..."), wxALIGN_RIGHT);
-         }
-         S.EndMultiColumn();
-         S.SetBorder(5);
-         S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_CENTER, false);
-         {
-//            S.StartHorizontalLay(wxALIGN_CENTER, false);
-            {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-               S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-               S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-#else
-               S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-               S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-            }
-//            S.EndHorizontalLay();
-         }
-         S.EndHorizontalLay();
-      }
-      S.EndVerticalLay();
-      GetSizer()->AddSpacer(5);
-      Layout();
-      Fit();
-      SetMinSize(GetSize());
-      Center();
-
-      return;
-   }
-
-   void OnBrowse(wxCommandEvent & event)
-   {
-      wxString question;
-      /* i18n-hint: It's asking for the location of a file, for
-         example, "Where is lame_enc.dll?" - you could translate
-         "Where would I find the file %s" instead if you want. */
-      question.Printf(_("Where is %s?"), mName.c_str());
-
-      wxString path = FileSelector(question, 
-                                   mLibPath.GetPath(),
-                                   mLibPath.GetName(),
-                                   wxT(""),
-                                   mType,
-                                   wxOPEN,
-                                   this);
-      if (!path.IsEmpty()) {
-         mLibPath = path;
-         mPathText->SetValue(path);
-      }
-   }
-
-   void OnDownload(wxCommandEvent & event)
-   {
-      wxString page = wxT("http://audacity.sourceforge.net/lame");
-      ::OpenInDefaultBrowser(page);
-   }
-
-   wxString GetLibPath()
-   {
-      return mLibPath.GetFullPath();
-   }
+   bool DisplayOptions(AudacityProject *project = NULL);
+   bool Export(AudacityProject *project,
+               int channels,
+               wxString fName,
+               bool selectedOnly,
+               double t0,
+               double t1,
+               MixerSpec *mixerSpec = NULL);
 
 private:
 
-   wxFileName mLibPath;
+   int FindValue(CHOICES *choices, int cnt, int needle, int def);
+   wxString FindName(CHOICES *choices, int cnt, int needle);
 
-   wxString mPath;
-   wxString mName;
-   wxString mType;
-
-   wxTextCtrl *mPathText;
-
-   DECLARE_EVENT_TABLE()
 };
 
-BEGIN_EVENT_TABLE(FindDialog, wxDialog)
-   EVT_BUTTON(ID_BROWSE, FindDialog::OnBrowse)
-   EVT_BUTTON(ID_DLOAD,  FindDialog::OnDownload)
-END_EVENT_TABLE()
-
-// --------------------------------------------------------------------
-
-MP3Exporter::MP3Exporter()
+ExportMP3::ExportMP3()
+:  ExportPlugin()
 {
-   mLibraryLoaded = false;
-   mEncoding = false;
-
-   if (gPrefs) {
-      mLibPath = gPrefs->Read(wxT("/MP3/MP3LibPath"), wxT(""));
-   }
-
-   mBitrate = 128;
-   mQuality = QUALITY_2;
-   mChannel = CHANNEL_STEREO;
-   mMode = MODE_CBR;
-   mRoutine = ROUTINE_FAST;
+   SetFormat(wxT("MP3"));
+   SetExtension(wxT("mp3"));
+   SetMaxChannels(2);
+   SetCanMetaData(true);
+   SetDescription(_("MP3 Files"));
 }
 
-MP3Exporter::~MP3Exporter()
+void ExportMP3::Destroy()
 {
+   delete this;
 }
 
-bool MP3Exporter::FindLibrary(wxWindow *parent, bool showdialog)
-{
-   wxString path;
-   wxString name;
-
-   if (!mLibPath.IsEmpty()) {
-      wxFileName fn = mLibPath;
-      path = fn.GetPath();
-      name = fn.GetFullName();
-   }
-   else {
-      path = GetLibraryPath();
-      name = GetLibraryName();
-   }
-
-   FindDialog fd(parent,
-                 path,
-                 name,
-                 GetLibraryTypeString());
-
-   if (fd.ShowModal() == wxID_CANCEL) {
-      return false;
-   }
-
-   path = fd.GetLibPath();
-   
-   if (!::wxFileExists(path)) {
-      return false;
-   }
-
-   mLibPath = path;
-   gPrefs->Write(wxT("/MP3/MP3LibPath"), mLibPath);
-
-   return true;
-}
-
-bool MP3Exporter::LoadLibrary(wxWindow *parent, bool askuser)
-{
-   wxLogNull logNo;
-
-   if (ValidLibraryLoaded()) {
-      FreeLibrary();
-      mLibraryLoaded = false;
-   }
-
-   // First try loading it from a previously located path
-   if (!mLibPath.IsEmpty()) {
-      mLibraryLoaded = InitLibrary(mLibPath);
-   }
-
-   // If not successful, try loading using system search paths
-   if (!ValidLibraryLoaded()) {
-      mLibPath = GetLibraryName();
-      mLibraryLoaded = InitLibrary(mLibPath);
-   }
-
-   // If not successful, try loading using compiled in path
-   if (!ValidLibraryLoaded()) {
-      wxFileName fn(GetLibraryPath(), GetLibraryName());
-      mLibPath = fn.GetFullPath();
-      mLibraryLoaded = InitLibrary(mLibPath);
-   }
-
-   // If not successful, must ask the user
-   if (!ValidLibraryLoaded()) {
-      if (askuser && FindLibrary(parent, true)) {
-         mLibraryLoaded = InitLibrary(mLibPath);
-      }
-   }
-
-   // Oh well, just give up
-   if (!ValidLibraryLoaded()) {
-      return false;
-   }
-
-   return true;
-}
-
-bool MP3Exporter::ValidLibraryLoaded()
-{
-   return mLibraryLoaded;
-}
-
-void MP3Exporter::SetMode(int mode)
-{
-   mMode = mode;
-}
-
-void MP3Exporter::SetBitrate(int rate)
-{
-   mBitrate = rate;
-}
-
-void MP3Exporter::SetQuality(int q, int r)
-{
-   mQuality = q;
-   mRoutine = r;
-}
-
-void MP3Exporter::SetChannel(int mode)
-{
-   mChannel = mode;
-}
-
-MP3Exporter *GetMP3Exporter()
-{
-   if (!gMP3Exporter) {
-      gMP3Exporter = new LameExporter();
-   }
-   
-   return gMP3Exporter;
-}
-
-void ReleaseMP3Exporter()
-{
-   if (gMP3Exporter) {
-      delete gMP3Exporter;
-   }
-
-   gMP3Exporter = NULL;
-}
-
-class MP3ExporterCleanup
-{
-public:
-   MP3ExporterCleanup(){};
-   ~MP3ExporterCleanup(){ ReleaseMP3Exporter();}
-};
-
-// Create instance of this cleanup class purely to clean up 
-// the exporter.
-// No one will reference this variable, but when the program
-// exits it will clean up any allocated MP3 exporter.
-MP3ExporterCleanup gMP3ExporterCleanup;
-
-static int FindValue(CHOICES *choices, int cnt, int needle, int def)
-{
-   for (int i = 0; i < cnt; i++) {
-      if (choices[i].label == needle) {
-         return needle;
-      }
-   }
-
-   return def;
-}
-
-bool ExportMP3(AudacityProject *project,
-               int channels, wxString fName,
-               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
+bool ExportMP3::Export(AudacityProject *project,
+                       int channels,
+                       wxString fName,
+                       bool selectionOnly,
+                       double t0,
+                       double t1,
+                       MixerSpec *mixerSpec)
 {
    double rate = project->GetRate();
    wxWindow *parent = project;
    TrackList *tracks = project->GetTracks();
-   MP3Exporter *exporter = GetMP3Exporter();
+   LameExporter exporter;
 
-   if (!exporter->LoadLibrary(parent, true)) {
+   if (!exporter.LoadLibrary(parent, true)) {
       wxMessageBox(_("Could not open MP3 encoding library!"));
       gPrefs->Write(wxT("/MP3/MP3LibPath"), wxString(wxT("")));
 
       return false;
    }
 
-   if (!exporter->ValidLibraryLoaded()) {
+   if (!exporter.ValidLibraryLoaded()) {
       wxMessageBox(_("Not a valid or supported MP3 encoding library!"));      
       gPrefs->Write(wxT("/MP3/MP3LibPath"), wxString(wxT("")));
       
@@ -1286,40 +1632,40 @@ bool ExportMP3(AudacityProject *project,
    if (rmode == MODE_SET) {
       int q = FindValue(setRates, WXSIZEOF(setRates), brate, PRESET_STANDARD);
       int r = FindValue(varModes, WXSIZEOF(varModes), vmode, ROUTINE_FAST);
-      exporter->SetMode(MODE_SET);
-      exporter->SetQuality(q, r);
+      exporter.SetMode(MODE_SET);
+      exporter.SetQuality(q, r);
    }
    else if (rmode == MODE_VBR) {
       int q = FindValue(varRates, WXSIZEOF(varRates), brate, QUALITY_2);
       int r = FindValue(varModes, WXSIZEOF(varModes), vmode, ROUTINE_FAST);
-      exporter->SetMode(MODE_VBR);
-      exporter->SetQuality(q, r);
+      exporter.SetMode(MODE_VBR);
+      exporter.SetQuality(q, r);
    }
    else if (rmode == MODE_ABR) {
       int r = FindValue(fixRates, WXSIZEOF(fixRates), brate, 128);
-      exporter->SetMode(MODE_ABR);
-      exporter->SetBitrate(r);
+      exporter.SetMode(MODE_ABR);
+      exporter.SetBitrate(r);
    }
    else {
       int r = FindValue(fixRates, WXSIZEOF(fixRates), brate, 128);
-      exporter->SetMode(MODE_CBR);
-      exporter->SetBitrate(r);
+      exporter.SetMode(MODE_CBR);
+      exporter.SetBitrate(r);
    }
 
    // Set the channel mode
    if (cmode == CHANNEL_JOINT) {
-      exporter->SetChannel(CHANNEL_JOINT);
+      exporter.SetChannel(CHANNEL_JOINT);
    }
    else {
-      exporter->SetChannel(CHANNEL_STEREO);
+      exporter.SetChannel(CHANNEL_STEREO);
    }
 
-   sampleCount inSamples = exporter->InitializeStream(channels, int(rate + 0.5));
+   sampleCount inSamples = exporter.InitializeStream(channels, int(rate + 0.5));
 
    bool cancelling = false;
    long bytes;
 
-   int bufferSize = exporter->GetOutBufferSize();
+   int bufferSize = exporter.GetOutBufferSize();
    unsigned char *buffer = new unsigned char[bufferSize];
    wxASSERT(buffer);
 
@@ -1332,16 +1678,26 @@ bool ExportMP3(AudacityProject *project,
                             channels, inSamples, true,
                             rate, int16Sample, true, mixerSpec);
 
-   if (rmode == MODE_CBR)
-      GetActiveProject()->ProgressShow(selectionOnly ?
-         wxString::Format(_("Exporting selected audio at %d kbps"), brate) :
-         wxString::Format(_("Exporting entire file at %d kbps"), brate),
-         wxFileName(fName).GetName());
-   else
-      GetActiveProject()->ProgressShow(selectionOnly ?
-         wxString::Format(_("Exporting selected audio at quality %d"), brate) :
-         wxString::Format(_("Exporting entire file at quality %d"), brate),
-         wxFileName(fName).GetName());
+   wxString title;
+   if (rmode == MODE_SET) {
+      title.Printf(selectionOnly ?
+                   _("Exporting selected audio with %s preset") :
+                   _("Exporting entire file with %s preset"),
+                   FindName(setRates, WXSIZEOF(setRates), brate).c_str());
+   }
+   else if (rmode == MODE_VBR) {
+      title.Printf(selectionOnly ?
+                   _("Exporting selected audio with VBR quality %s") :
+                   _("Exporting entire file with VBR quality %s"),
+                   FindName(varRates, WXSIZEOF(setRates), brate).c_str());
+   }
+   else {
+      title.Printf(selectionOnly ?
+                   _("Exporting selected audio at %d Kbps") :
+                   _("Exporting entire file at %d Kbps"),
+                   brate);
+   }
+   GetActiveProject()->ProgressShow(title, wxFileName(fName).GetName());
 
    while (!cancelling) {
       sampleCount blockLen = mixer->Process(inSamples);
@@ -1354,18 +1710,18 @@ bool ExportMP3(AudacityProject *project,
 
       if (blockLen < inSamples) {
          if (channels > 1) {
-            bytes = exporter->EncodeRemainder(mixed,  blockLen , buffer);
+            bytes = exporter.EncodeRemainder(mixed,  blockLen , buffer);
          }
          else {
-            bytes = exporter->EncodeRemainderMono(mixed,  blockLen , buffer);
+            bytes = exporter.EncodeRemainderMono(mixed,  blockLen , buffer);
          }
       }
       else {
          if (channels > 1) {
-            bytes = exporter->EncodeBuffer(mixed, buffer);
+            bytes = exporter.EncodeBuffer(mixed, buffer);
          }
          else {
-            bytes = exporter->EncodeBufferMono(mixed, buffer);
+            bytes = exporter.EncodeBufferMono(mixed, buffer);
          }
       }
 
@@ -1380,7 +1736,7 @@ bool ExportMP3(AudacityProject *project,
 
    delete mixer;
 
-   bytes = exporter->FinishStream(buffer);
+   bytes = exporter.FinishStream(buffer);
 
    if (bytes) {
       outFile.Write(buffer, bytes);
@@ -1402,278 +1758,63 @@ bool ExportMP3(AudacityProject *project,
    return !cancelling;
 }
 
-#define ID_SET 7000
-#define ID_VBR 7001
-#define ID_ABR 7002
-#define ID_CBR 7003
-
-class MP3OptionsDialog : public wxDialog
+bool ExportMP3::DisplayOptions(AudacityProject *project)
 {
-public:
-
-   /// 
-   /// 
-   MP3OptionsDialog(wxWindow *parent)
-   : wxDialog(NULL, wxID_ANY, wxString(_("Specify MP3 Options")),
-      wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
-   {
-      ShuttleGui S(this, eIsCreatingFromPrefs);
-
-      PopulateOrExchange(S);
-   }
-
-   /// 
-   /// 
-   void PopulateOrExchange(ShuttleGui & S)
-   {
-      S.StartHorizontalLay(wxEXPAND, 0);
-      {
-         S.StartStatic(_("MP3 Export Setup"), 0);
-         {
-            S.StartMultiColumn(2, wxEXPAND);
-            {
-               S.SetStretchyCol(1);
-               S.StartTwoColumn();
-               {
-                  S.AddPrompt(_("Bit Rate Mode:"));
-                  S.StartHorizontalLay();
-                  {
-                     S.StartRadioButtonGroup(wxT("/FileFormats/MP3RateMode"), MODE_CBR);
-                     {
-                        mSET = S.Id(ID_SET).TieRadioButton(_("Preset"), MODE_SET);
-                        mVBR = S.Id(ID_VBR).TieRadioButton(_("Variable"), MODE_VBR);
-                        mABR = S.Id(ID_ABR).TieRadioButton(_("Average"), MODE_ABR);
-                        mCBR = S.Id(ID_CBR).TieRadioButton(_("Constant"), MODE_CBR);
-                     }
-                     S.EndRadioButtonGroup();
-                  }
-                  S.EndHorizontalLay();
-
-                  CHOICES *choices;
-                  int cnt;
-                  bool enable;
-                  int defrate;
-                  bool preset = false;
-
-                  if (mSET->GetValue()) {
-                     choices = setRates;
-                     cnt = WXSIZEOF(setRates);
-                     enable = true;
-                     defrate = PRESET_STANDARD;
-                     preset = true;
-                  }
-                  else if (mVBR->GetValue()) {
-                     choices = varRates;
-                     cnt = WXSIZEOF(varRates);
-                     enable = true;
-                     defrate = QUALITY_4;
-                  }
-                  else if (mABR->GetValue()) {
-                     choices = fixRates;
-                     cnt = WXSIZEOF(fixRates);
-                     enable = false;
-                     defrate = 128;
-                  }
-                  else {
-                     mCBR->SetValue(true);
-                     choices = fixRates;
-                     cnt = WXSIZEOF(fixRates);
-                     enable = false;
-                     defrate = 128;
-                  }
-
-                  mRate = S.TieChoice(wxT("Quality"),
-                                      wxT("/FileFormats/MP3Bitrate"), 
-                                      defrate,
-                                      GetNames(choices, cnt),
-                                      GetLabels(choices, cnt));
-
-                  mMode = S.TieChoice(_("Variable Speed:"),
-                                      wxT("/FileFormats/MP3VarMode"), 
-                                      ROUTINE_FAST,
-                                      GetNames(varModes, WXSIZEOF(varModes)),
-                                      GetLabels(varModes, WXSIZEOF(varModes)));
-                  mMode->Enable(enable);
-
-                  S.AddPrompt(_("Channel Mode:"));
-                  S.StartTwoColumn();
-                  {
-                     S.StartRadioButtonGroup(wxT("/FileFormats/MP3ChannelMode"), CHANNEL_STEREO);
-                     {
-                        mJoint = S.TieRadioButton(_("Joint Stereo"), CHANNEL_JOINT);
-                        mStereo = S.TieRadioButton(_("Stereo"), CHANNEL_STEREO);
-#if defined(__WXMSW__)
-                        mJoint->Enable(!preset);
-                        mStereo->Enable(!preset);
-#endif
-                     }
-                     S.EndRadioButtonGroup();
-                  }
-                  S.EndTwoColumn();
-               }
-               S.EndTwoColumn();
-            }
-            S.EndMultiColumn();
-         }
-         S.EndStatic();
-      }
-      S.EndHorizontalLay();
-      S.StartHorizontalLay(wxALIGN_CENTER, false);
-      {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-#else
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-      }
-      GetSizer()->AddSpacer(5);
-      Layout();
-      Fit();
-      SetMinSize(GetSize());
-      Center();
-
-      return;
-   }
-
-   /// 
-   /// 
-   void OnOK(wxCommandEvent& event)
-   {
-      ShuttleGui S(this, eIsSavingToPrefs);
-      PopulateOrExchange(S);
-
-      EndModal(wxID_OK);
-
-      return;
-   }
-
-   /// 
-   /// 
-   void OnSET(wxCommandEvent& evt)
-   {
-      LoadNames(setRates, WXSIZEOF(setRates));
-
-      mRate->SetSelection(2);
-      mRate->Refresh();
-      mMode->Enable(true);
-#if defined(__WXMSW__)
-      mJoint->Enable(false);
-      mStereo->Enable(false);
-#endif
-   }
-
-   /// 
-   /// 
-   void OnVBR(wxCommandEvent& evt)
-   {
-      LoadNames(varRates, WXSIZEOF(varRates));
-
-      mRate->SetSelection(2);
-      mRate->Refresh();
-      mMode->Enable(true);
-#if defined(__WXMSW__)
-      mJoint->Enable(true);
-      mStereo->Enable(true);
-#endif
-   }
-
-   /// 
-   /// 
-   void OnABR(wxCommandEvent& evt)
-   {
-      LoadNames(fixRates, WXSIZEOF(fixRates));
-
-      mRate->SetSelection(10);
-      mRate->Refresh();
-      mMode->Enable(false);
-#if defined(__WXMSW__)
-      mJoint->Enable(true);
-      mStereo->Enable(true);
-#endif
-   }
-
-   /// 
-   /// 
-   void OnCBR(wxCommandEvent& evt)
-   {
-      LoadNames(fixRates, WXSIZEOF(fixRates));
-
-      mRate->SetSelection(10);
-      mRate->Refresh();
-      mMode->Enable(false);
-#if defined(__WXMSW__)
-      mJoint->Enable(true);
-      mStereo->Enable(true);
-#endif
-   }
-
-private:
-
-   void LoadNames(CHOICES *choices, int count)
-   {
-      mRate->Clear();
-
-      for (int i = 0; i < count; i++)
-      {
-         mRate->Append(choices[i].name);
-      }
-   }
-   
-   wxArrayString GetNames(CHOICES *choices, int count)
-   {
-      wxArrayString names;
-
-      for (int i = 0; i < count; i++)
-      {
-         names.Add(choices[i].name);
-      }
-
-      return names;
-   }
-
-   wxArrayInt GetLabels(CHOICES *choices, int count)
-   {
-      wxArrayInt labels;
-
-      for (int i = 0; i < count; i++)
-      {
-         labels.Add(choices[i].label);
-      }
-
-      return labels;
-   }
-
-private:
-
-   wxRadioButton *mStereo;
-   wxRadioButton *mJoint;
-   wxRadioButton *mSET;
-   wxRadioButton *mVBR;
-   wxRadioButton *mABR;
-   wxRadioButton *mCBR;
-   wxChoice *mRate;
-   wxChoice *mMode;
-
-   DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE(MP3OptionsDialog, wxDialog)
-   EVT_RADIOBUTTON(ID_SET,    MP3OptionsDialog::OnSET)
-   EVT_RADIOBUTTON(ID_VBR,    MP3OptionsDialog::OnVBR)
-   EVT_RADIOBUTTON(ID_ABR,    MP3OptionsDialog::OnABR)
-   EVT_RADIOBUTTON(ID_CBR,    MP3OptionsDialog::OnCBR)
-   EVT_BUTTON(wxID_OK,        MP3OptionsDialog::OnOK)
-END_EVENT_TABLE()
-
-bool ExportMP3Options(AudacityProject *project)
-{
-   MP3OptionsDialog od(project);
+   ExportMP3Options od(project);
 
    od.ShowModal();
 
    return true;
+}
+
+int ExportMP3::FindValue(CHOICES *choices, int cnt, int needle, int def)
+{
+   for (int i = 0; i < cnt; i++) {
+      if (choices[i].label == needle) {
+         return needle;
+      }
+   }
+
+   return def;
+}
+
+wxString ExportMP3::FindName(CHOICES *choices, int cnt, int needle)
+{
+   for (int i = 0; i < cnt; i++) {
+      if (choices[i].label == needle) {
+         return choices[i].name.BeforeFirst(wxT(','));
+      }
+   }
+
+   return wxT("");
+}
+
+//----------------------------------------------------------------------------
+// Constructor
+//----------------------------------------------------------------------------
+ExportPlugin *New_ExportMP3()
+{
+   return new ExportMP3();
+}
+
+//----------------------------------------------------------------------------
+// Return library version
+//----------------------------------------------------------------------------
+
+wxString GetMP3Version(wxWindow *parent, bool prompt)
+{
+   LameExporter exporter;
+   wxString versionString = _("MP3 exporting plugin not found");
+
+   if (prompt) {
+      exporter.FindLibrary(parent);
+   }
+
+   if (exporter.LoadLibrary(parent, false)) {
+      versionString = exporter.GetLibraryVersion();
+   }
+
+   return versionString;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

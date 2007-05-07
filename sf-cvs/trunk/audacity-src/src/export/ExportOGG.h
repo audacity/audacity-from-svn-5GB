@@ -11,20 +11,12 @@
 #ifndef __AUDACITY_EXPORTOGG__
 #define __AUDACITY_EXPORTOGG__
 
-class AudacityProject;
-class MixerSpec;
+class ExportPlugin;
 
-#include <wx/string.h>
-
-bool ExportOGG(
-   AudacityProject *project,
-   int numChannels,
-   wxString fName,
-   bool selectionOnly,
-   double t0, double t1, 
-   MixerSpec *mixerSpec = NULL);
-
-bool ExportOGGOptions(AudacityProject *project);
+//----------------------------------------------------------------------------
+// Constructor
+//----------------------------------------------------------------------------
+ExportPlugin *New_ExportOGG();
 
 #endif
 

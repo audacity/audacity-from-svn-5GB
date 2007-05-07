@@ -392,8 +392,10 @@ bool BatchCommands::IsMono()
 
 bool BatchCommands::WriteMp3File( const wxString Name, int bitrate )
 {  //check if current project is mono or stereo
-   bool Mp3Stereo = true;
-   if (IsMono()) {Mp3Stereo = false;};
+   int numChannels = 2;
+   if (IsMono()) {
+      numChannels = 1;
+   }
 
    double endTime = GetEndTime();
    if( endTime <= 0.0f )
@@ -403,14 +405,15 @@ bool BatchCommands::WriteMp3File( const wxString Name, int bitrate )
    {
       // 'No' bitrate given, use the current default.
       // Use Mp3Stereo to control if export is to a stereo or mono file
-      return ::ExportMP3(project, Mp3Stereo, Name, false, 0.0, endTime);
+      return mExporter.Process(project, numChannels, wxT("MP3"), Name, false, 0.0, endTime);
    }
+
 
    bool rc;
    long prevBitRate = gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), 128);
    gPrefs->Write(wxT("/FileFormats/MP3Bitrate"), bitrate);
    // Use Mp3Stereo to control if export is to a stereo or mono file
-   rc = ::ExportMP3(project, Mp3Stereo, Name, false, 0.0, endTime);
+   rc = mExporter.Process(project, numChannels, wxT("MP3"), Name, false, 0.0, endTime);
    gPrefs->Write(wxT("/FileFormats/MP3Bitrate"), prevBitRate);
    return rc;
 }
@@ -431,8 +434,11 @@ bool BatchCommands::WriteMp3File( const wxString Name, int bitrate )
 // ======= IMPORTANT ========
 bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,const wxString params)
 {
+   if (ReportAndSkip(command, params))
+      return true;
+
    AudacityProject *project = GetActiveProject();
-   wxString filename;
+
    int numChannels = 1;		//used to switch between mono and stereo export
    if (IsMono()) {
       numChannels = 1;	//export in mono
@@ -440,9 +446,7 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
       numChannels = 2;	//export in stereo
    }
 
-   if( ReportAndSkip(command, params))
-      return true;
-
+   wxString filename;
    if (mFileName.IsEmpty()) {   
       filename = project->BuildCleanFileName(project->GetFileName());
    }
@@ -453,56 +457,60 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
    // We have a command index, but we don't use it!
    // TODO: Make this special-batch-command code use the menu item code....
    // FIX-ME: No error reporting on write file failure in batch mode.
-   if( command == wxT("NoAction")){
+   if (command == wxT("NoAction")) {
       return true;
-   } else if (!mFileName.IsEmpty() && command == wxT("Import") ){
+   } else if (!mFileName.IsEmpty() && command == wxT("Import")) {
       // historically this was in use, now ignored if there
       return true;
-   } else if (command == wxT("SaveHqMaster1")){
+   } else if (command == wxT("SaveHqMaster1")) {
       filename.Replace(wxT("cleaned/"), wxT("cleaned/MasterBefore_"), false);
-      return WriteMp3File( filename, 56 );
-   } else if (command == wxT("SaveHqMaster2")){
+      return WriteMp3File(filename, 56);
+   } else if (command == wxT("SaveHqMaster2")) {
       filename.Replace(wxT("cleaned/"), wxT("cleaned/MasterAfter_"), false);
-      return WriteMp3File ( filename, 56 );
-   } else if (command == wxT("StereoToMono")){
+      return WriteMp3File(filename, 56);
+   } else if (command == wxT("StereoToMono")) {
       // StereoToMono is an effect masquerading as a menu item.
-      Effect * f=GetEffectFromCommandName( wxT("StereoToMono") );
-      if( f!=NULL )
-         return ApplyEffectCommand( f, command, params );
+      Effect * f = GetEffectFromCommandName(wxT("StereoToMono"));
+      if (f != NULL) {
+         return ApplyEffectCommand(f, command, params);
+      }
       wxMessageBox(_("Stereo To Mono Effect not found"));
       return false;
-   } else if (command == wxT("ExportMp3") ){
-      return WriteMp3File ( filename, 0 ); // 0 bitrate means use default/current
-   } else if (command == wxT("ExportWav") ){
+   } else if (command == wxT("ExportMp3")) {
+      return WriteMp3File(filename, 0); // 0 bitrate means use default/current
+   } else if (command == wxT("ExportWav")) {
       filename.Replace(wxT(".mp3"), wxT(".wav"), false);
       double endTime = GetEndTime();
-      if( endTime <= 0.0f )
+      if (endTime <= 0.0f) {
          return false;
-      return ::ExportPCM(project, numChannels, filename, false, 0.0, endTime);
-   } else if (command == wxT("ExportOgg")){
+      }
+      return mExporter.Process(project, numChannels, wxT("WAV"), filename, false, 0.0, endTime);
+   } else if (command == wxT("ExportOgg")) {
 #ifdef USE_LIBVORBIS
       filename.Replace(wxT(".mp3"), wxT(".ogg"), false);
       double endTime = GetEndTime();
-      if( endTime <= 0.0f )
+      if (endTime <= 0.0f) {
          return false;
-      return ::ExportOGG(project, numChannels, filename, false, 0.0, endTime);
+      }
+      return mExporter.Process(project, numChannels, wxT("OGG"), filename, false, 0.0, endTime);
 #else
       wxMessageBox(_("Ogg Vorbis support is not included in this build of Audacity"));
       return false;
 #endif
-   } else if (command == wxT("ExportFlac")){
+   } else if (command == wxT("ExportFlac")) {
 #ifdef USE_LIBFLAC
       filename.Replace(wxT(".mp3"), wxT(".flac"), false);
       double endTime = GetEndTime();
-      if( endTime <= 0.0f )
+      if (endTime <= 0.0f) {
          return false;
-      return ::ExportFLAC(project, numChannels, filename, false, 0.0, endTime);
+      }
+      return mExporter.Process(project, numChannels, wxT("FLAC"), filename, false, 0.0, endTime);
 #else
       wxMessageBox(_("FLAC support is not included in this build of Audacity"));
       return false;
 #endif
    } 
-   wxMessageBox( wxString::Format(_("Command %s not implemented yet"),command.c_str()) );
+   wxMessageBox(wxString::Format(_("Command %s not implemented yet"),command.c_str()));
    return false;
 }
 
