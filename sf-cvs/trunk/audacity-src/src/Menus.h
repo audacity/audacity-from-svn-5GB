@@ -271,6 +271,7 @@ int  mStereoToMonoIndex;
 
 void OnAbout();
 void OnBenchmark();
+void OnScreenshot();
 
        //
 

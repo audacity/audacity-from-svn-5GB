@@ -70,6 +70,7 @@ simplifies construction of menu items.
 #include "Mix.h"
 #include "AboutDialog.h"
 #include "Benchmark.h"
+#include "Screenshot.h"
 
 #include "Resample.h"
 #include "BatchProcessDialog.h"
@@ -782,12 +783,12 @@ void AudacityProject::CreateMenusAndCommands()
    else
       c->AddItem(wxT("About"),          _("&About Audacity..."),          FN(OnAbout));
 
-#if 1 // Benchmark is enabled in unstable builds
+#if 1 // Debugging tools are enabled in unstable builds
    if( !mCleanSpeechMode )
    {
-#if !defined(__WXMAC__)
-      c->AddSeparator();
-#endif
+      c->AddSeparator();   
+      c->AddItem(wxT("Screenshot"),     _("&Screenshot Tools..."),        FN(OnScreenshot));
+      c->AddSeparator();   
       c->AddItem(wxT("Benchmark"),      _("&Run Benchmark..."),           FN(OnBenchmark));
    }
 #endif 
@@ -4318,6 +4319,11 @@ void AudacityProject::OnAbout()
 void AudacityProject::OnBenchmark()
 {
    ::RunBenchmark(this);
+}
+
+void AudacityProject::OnScreenshot()
+{
+   ::OpenScreenshotTools();
 }
 
 //
