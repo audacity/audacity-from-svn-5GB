@@ -40,6 +40,10 @@
 #include "FLAC++/encoder.h"
 #endif
 
+#ifdef USE_LIBVORBIS
+#include <vorbis/vorbisenc.h>
+#endif
+
 class wxRadioBox;
 class wxTextCtrl;
 class wxChoice;
@@ -72,6 +76,10 @@ public:
    void ExportFLACTags(FLAC::Encoder::File *encoder);
 #endif
    
+#ifdef USE_LIBVORBIS
+   void ExportOGGTags(vorbis_comment *comment);
+#endif
+
    void AllowEditTitle(bool editTitle);
    void SetTitle(wxString title);
    wxString GetTitle();
