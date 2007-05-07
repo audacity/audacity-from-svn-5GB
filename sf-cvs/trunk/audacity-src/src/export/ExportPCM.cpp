@@ -49,7 +49,11 @@
 static int ReadExportFormatPref()
 {
    return gPrefs->Read(wxT("/FileFormats/ExportFormat_SF1"),
+#if defined(__WXMAC__)
+                       (long int)(SF_FORMAT_AIFF | SF_FORMAT_PCM_16));
+#else
                        (long int)(SF_FORMAT_WAV | SF_FORMAT_PCM_16));
+#endif
 }
 
 static void WriteExportFormatPref(int format)
