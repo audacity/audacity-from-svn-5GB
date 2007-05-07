@@ -120,8 +120,9 @@ private:
    int mM;
    wxString mCurveName;
    bool mLin;
-   float mdBMax;
-   float mdBMin;
+   double mdBMax;
+   double mdBMin;
+   bool mDrawMode;
 
 public:
    enum curveType {
@@ -227,6 +228,7 @@ public:
    double whens[NUM_PTS];
    double whenSliders[NUMBER_OF_BANDS+1];
    int bandsInUse;
+   bool drawMode;
 
 private:
    void MakeEqualizationDialog();
