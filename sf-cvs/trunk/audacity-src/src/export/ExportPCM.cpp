@@ -307,6 +307,7 @@ public:
    int GetMaxChannels();
    wxString GetExtension();
    wxArrayString GetExtensions();
+   bool IsExtension(wxString & ext);
 };
 
 ExportPCM::ExportPCM()
@@ -474,6 +475,11 @@ wxString ExportPCM::GetExtension()
 wxArrayString ExportPCM::GetExtensions()
 {
    return sf_get_all_extensions();
+}
+
+bool ExportPCM::IsExtension(wxString & ext)
+{
+   return ext.IsSameAs(GetExtension(), false);
 }
 
 //----------------------------------------------------------------------------
