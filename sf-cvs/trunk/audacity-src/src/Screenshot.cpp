@@ -21,6 +21,7 @@
 #include <wx/image.h>
 #include <wx/intl.h>
 #include <wx/panel.h>
+#include <wx/settings.h>
 #include <wx/statusbr.h>
 #include <wx/textctrl.h>
 #include <wx/window.h>
