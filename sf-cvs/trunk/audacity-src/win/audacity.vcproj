@@ -1993,6 +1993,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\Screenshot.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Screenshot.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\Sequence.cpp"
 				>
 				<FileConfiguration
@@ -6626,14 +6634,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath="..\src\Screenshot.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\src\Screenshot.h"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
