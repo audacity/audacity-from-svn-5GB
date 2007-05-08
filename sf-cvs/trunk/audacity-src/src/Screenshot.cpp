@@ -26,6 +26,7 @@
 #include <wx/window.h>
 
 #include "Project.h"
+#include "Prefs.h"
 #include "ShuttleGui.h"
 #include "TrackPanel.h"
 #include "toolbars/ToolManager.h"
