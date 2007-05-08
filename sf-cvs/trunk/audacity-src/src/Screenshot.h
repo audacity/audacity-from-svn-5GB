@@ -24,6 +24,7 @@
 #include "wx/defs.h"
 
 void OpenScreenshotTools();
+void CloseScreenshotTools();
 
 #endif // __AUDACITY_SCREENSHOT__
 

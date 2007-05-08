@@ -61,6 +61,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "LangChoice.h"
 #include "Prefs.h"
 #include "Project.h"
+#include "Screenshot.h"
 #include "Sequence.h"
 #include "WaveTrack.h"
 #include "Internat.h"
@@ -240,7 +241,9 @@ void QuitAudacity(bool bForce)
    gFreqWindow = NULL;
    gParentFrame = NULL;
 
-   //Delete the clipboard
+   CloseScreenshotTools();
+
+      //Delete the clipboard
    AudacityProject::DeleteClipboard();
 
    if (bForce)
