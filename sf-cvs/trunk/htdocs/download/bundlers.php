@@ -21,6 +21,15 @@
   <tr><th>Vendor</th><th>Product</th><th>Description</th></tr>
   <tr>
     <td>
+      <a href="http://www.artproaudio.com">Applied Research and Technology</a>
+    </td>
+    <td>
+      <a href="http://www.artproaudio.com/products.asp?type=90&cat=13&id=128">USBPhonoPlus v2</a>
+    </td>
+    <td>interface for analog or digital audio source into computer via USB</td>
+  </tr>
+  <tr>
+    <td>
       <a href="http://www.behringer.com">Behringer</a>
     </td>
     <td>
@@ -147,6 +156,15 @@
   </tr>
   <tr>
     <td>
+      <a href="http://www.citronic.co.uk">Citronic</a>
+    </td>
+    <td>
+      <a href="http://www.citronic.co.uk/product/product.php?s=128.515">AC-1USB Audio Capture Device</a>
+    </td>
+    <td>interface to connect turntable, mixer, or CD player to USB or analog</td>
+  </tr>
+  <tr>
+    <td>
       <a href="http://www.diamondmm.com">Diamond Multimedia</a>
     </td>
     <td>
@@ -169,6 +187,24 @@
     </td>
     <td>
       <a href="http://www.ion-audio.com/ittusb.php">iTTUSB</a>
+    </td>
+    <td>USB turntable</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.kam.co.uk">Kam</a>
+    </td>
+    <td>
+      <a href="http://www.kam.co.uk/products/turntables/bx900usb.htm">BDX900 USB</a>
+    </td>
+    <td>USB turntable</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.lenco.de">Lenco</a>
+    </td>
+    <td>
+      <a href="http://www.lenco.de/en/products/7/Turntable/444/TURNTABLE_WITH_USB_CONNECTION">L-3866 USB</a>
     </td>
     <td>USB turntable</td>
   </tr>
