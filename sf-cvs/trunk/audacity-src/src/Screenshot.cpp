@@ -20,6 +20,7 @@
 #include <wx/event.h>
 #include <wx/image.h>
 #include <wx/intl.h>
+#include <wx/panel.h>
 #include <wx/statusbr.h>
 #include <wx/textctrl.h>
 #include <wx/window.h>
@@ -69,6 +70,7 @@ class ScreenFrame : public wxFrame {
  private:
    void Capture(wxString basename, wxDC& src,
                 int x, int y, int width, int height);
+   void CaptureToolbar(int type, wxString name);
 
    void Populate();
    void PopulateOrExchange(ShuttleGui &S);
@@ -120,18 +122,28 @@ class ScreenFrame : public wxFrame {
    DECLARE_EVENT_TABLE()
 };
 
-void OpenScreenshotTools() {
-   static ScreenFrame *dlog = NULL;
+static ScreenFrame *mFrame = NULL;
 
-   if (!dlog) {
-      dlog = new ScreenFrame(NULL, -1);
-      dlog->Show();
+void OpenScreenshotTools() {
+
+   if (!mFrame) {
+      mFrame = new ScreenFrame(NULL, -1);
+   }
+   mFrame->Show();
+}
+
+void CloseScreenshotTools() {
+
+   if (mFrame) {
+      mFrame->Destroy();
+      mFrame = NULL;
    }
 }
 
 ScreenFrame::ScreenFrame(wxWindow * parent, wxWindowID id):
    wxFrame(parent, id, wxT("Screen Capture Frame"),
-            wxDefaultPosition)
+            wxDefaultPosition, wxDefaultSize,
+            wxSYSTEM_MENU|wxCAPTION|wxCLOSE_BOX)
 {
    mStatus = CreateStatusBar();
    mBackground = new wxFrame(NULL, -1, wxT(""),
@@ -174,6 +186,33 @@ void ScreenFrame::Capture(wxString basename,
    else {
       wxMessageBox(_("Error trying to save file: ") + filename);
    }
+}
+
+void ScreenFrame::CaptureToolbar(int type, wxString name)
+{
+   AudacityProject *proj = GetActiveProject();
+   ToolManager *man = proj->mToolManager;
+
+   bool visible = man->IsVisible(type);
+   if (!visible) {
+      man->ShowHide(type);
+   }
+
+   wxWindow *w = man->GetToolBar(type);
+   int width, height;
+   w->GetClientSize(&width, &height);
+
+   proj->Raise();
+   wxSafeYield();
+
+   wxClientDC dc(w);
+   Capture(name, dc, 0, 0, width, height);
+
+   if (!visible) {
+      man->ShowHide(type);
+   }
+
+   Raise();
 }
 
 void ScreenFrame::Populate()
@@ -222,6 +261,8 @@ enum {
 
 void ScreenFrame::PopulateOrExchange(ShuttleGui &S)
 {
+   S.StartPanel(0)->SetBackgroundColour(
+      wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
    S.SetBorder(2);
    S.StartVerticalLay(0);
 
@@ -229,9 +270,10 @@ void ScreenFrame::PopulateOrExchange(ShuttleGui &S)
    S.StartMultiColumn(2, wxEXPAND);
    S.SetStretchyCol( 1 );// Column 1 is stretchy...
    {
+      wxString dir = gPrefs->Read(wxT("/ScreenshotPath"), ::wxGetCwd());
       mDirectoryTextBox =
          S.Id(IdDirectory).AddTextBox(wxT("Save images here:"),
-                                      ::wxGetCwd(), 30);
+                                      dir, 30);
       S.Id(IdDirChoose).AddButton(wxT("Choose Directory"));
    }
    S.EndMultiColumn();
@@ -310,6 +352,7 @@ void ScreenFrame::PopulateOrExchange(ShuttleGui &S)
    S.EndStatic();
 
    S.EndVerticalLay();
+   S.EndPanel();
 
    Layout();
    Fit();
@@ -374,6 +417,7 @@ END_EVENT_TABLE();
 
 void ScreenFrame::OnCloseWindow(wxCloseEvent & evt)
 {
+   mFrame = NULL;
    Destroy();
 }
 
@@ -430,30 +474,44 @@ void ScreenFrame::OnCaptureWindowContents(wxCommandEvent& evt)
    int width, height;
    proj->GetClientSize(&width, &height);
 
+   proj->Raise();
+   wxSafeYield();
+
    wxClientDC dc(proj);
    Capture(wxT("window"), dc, 0, 0, width, height);
+
+   Raise();
 }
 
 void ScreenFrame::OnCaptureWindowPlus(wxCommandEvent& evt)
 {
+   wxWindow *proj = GetActiveProject();
    int x, y;
    int width, height;
-   GetActiveProject()->GetPosition(&x, &y);
-   GetActiveProject()->GetSize(&width, &height);
-   GetActiveProject()->Raise();
+   proj->GetPosition(&x, &y);
+   proj->GetSize(&width, &height);
+
+   proj->Raise();
+   wxSafeYield();
 
    wxScreenDC screenDC;
    Capture(wxT("windowplus"), screenDC, 0, 0, width + x + 16, height + y + 16);
+
+   Raise();
 }
 
 void ScreenFrame::OnCaptureFullScreen(wxCommandEvent& evt)
 {
    int width, height;
    wxDisplaySize(&width, &height);
-   wxScreenDC screenDC;
 
    GetActiveProject()->Raise();
+   wxSafeYield();
+
+   wxScreenDC screenDC;
    Capture(wxT("fullscreen"), screenDC, 0, 0, width, height);
+
+   Raise();
 }
 
 void ScreenFrame::OnCaptureToolbars(wxCommandEvent& evt)
@@ -461,8 +519,13 @@ void ScreenFrame::OnCaptureToolbars(wxCommandEvent& evt)
    AudacityProject *proj = GetActiveProject();
    wxRect r = proj->mToolManager->GetTopDock()->GetRect();
 
+   proj->Raise();
+   wxSafeYield();
+
    wxClientDC dc(proj);
    Capture(wxT("toolbars"), dc, r.x, r.y, r.width, r.height);
+
+   Raise();
 }
 
 void ScreenFrame::OnCaptureSelectionBar(wxCommandEvent& evt)
@@ -470,80 +533,49 @@ void ScreenFrame::OnCaptureSelectionBar(wxCommandEvent& evt)
    AudacityProject *proj = GetActiveProject();
    wxRect r = proj->mToolManager->GetBotDock()->GetRect();
 
+   proj->Raise();
+   wxSafeYield();
+
    wxClientDC dc(proj);
    Capture(wxT("selectionbar"), dc, r.x, r.y, r.width, r.height);
+
+   Raise();
 }
 
 void ScreenFrame::OnCaptureTools(wxCommandEvent& evt)
 {
-   wxWindow *w = GetActiveProject()->GetToolsToolBar();
-   int width, height;
-   w->GetClientSize(&width, &height);
-
-   wxClientDC dc(w);
-   Capture(wxT("tools"), dc, 0, 0, width, height);
+   CaptureToolbar(ToolsBarID, wxT("tools"));
 }
 
 void ScreenFrame::OnCaptureControl(wxCommandEvent& evt)
 {
-   wxWindow *w = GetActiveProject()->GetControlToolBar();
-   int width, height;
-   w->GetClientSize(&width, &height);
-
-   wxClientDC dc(w);
-   Capture(wxT("control"), dc, 0, 0, width, height);
+   CaptureToolbar(ControlBarID, wxT("control"));
 }
 
 void ScreenFrame::OnCaptureMixer(wxCommandEvent& evt)
 {
-   wxWindow *w = GetActiveProject()->GetMixerToolBar();
-   int width, height;
-   w->GetClientSize(&width, &height);
-
-   wxClientDC dc(w);
-   Capture(wxT("mixer"), dc, 0, 0, width, height);
+   CaptureToolbar(MixerBarID, wxT("mixer"));
 }
 
 void ScreenFrame::OnCaptureMeter(wxCommandEvent& evt)
 {
-   wxWindow *w = GetActiveProject()->GetMeterToolBar();
-   int width, height;
-   w->GetClientSize(&width, &height);
-
-   wxClientDC dc(w);
-   Capture(wxT("meter"), dc, 0, 0, width, height);
+   CaptureToolbar(MeterBarID, wxT("meter"));
 }
 
 void ScreenFrame::OnCaptureEdit(wxCommandEvent& evt)
 {
-   wxWindow *w = GetActiveProject()->GetEditToolBar();
-   int width, height;
-   w->GetClientSize(&width, &height);
-
-   wxClientDC dc(w);
-   Capture(wxT("edit"), dc, 0, 0, width, height);
+   CaptureToolbar(EditBarID, wxT("edit"));
 }
 
 void ScreenFrame::OnCaptureDevice(wxCommandEvent& evt)
 {
-   wxWindow *w = GetActiveProject()->GetDeviceToolBar();
-   int width, height;
-   w->GetClientSize(&width, &height);
-
-   wxClientDC dc(w);
-   Capture(wxT("device"), dc, 0, 0, width, height);
+   CaptureToolbar(DeviceBarID, wxT("device"));
 }
 
 void ScreenFrame::OnCaptureTranscription(wxCommandEvent& evt)
 {
-   wxWindow *w = GetActiveProject()->GetTranscriptionToolBar();
-   int width, height;
-   w->GetClientSize(&width, &height);
-
-   wxClientDC dc(w);
-   Capture(wxT("transcription"), dc, 0, 0, width, height);
+   CaptureToolbar(TranscriptionBarID, wxT("transcription"));
 }
-
 
 void ScreenFrame::OnOneSec(wxCommandEvent& evt)
 {
@@ -723,6 +755,8 @@ void ScreenFrame::OnDirChoose(wxCommandEvent& evt)
       tmpDirPath.AssignDir(dlog.GetPath());
       mDirectoryTextBox->SetValue
          (tmpDirPath.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR));
+      gPrefs->Write(wxT("/ScreenshotPath"),
+         tmpDirPath.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR));
    }
 }
 
