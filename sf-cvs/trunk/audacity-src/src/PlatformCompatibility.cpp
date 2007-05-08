@@ -112,7 +112,7 @@ wxString PlatformCompatibility::GetExecutablePath()
         ProcessSerialNumber procno ;
         FSSpec fsSpec;
 
-        procno.highLongOfPSN = NULL ;
+        procno.highLongOfPSN = 0 ;
         procno.lowLongOfPSN = kCurrentProcess ;
         processinfo.processInfoLength = sizeof(ProcessInfoRec);
         processinfo.processName = NULL;
