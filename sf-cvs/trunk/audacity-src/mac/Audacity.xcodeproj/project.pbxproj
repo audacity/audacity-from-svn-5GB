@@ -798,6 +798,7 @@
 		2849B4620A7444BE00ECF12D /* Dependencies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2849B4600A7444BE00ECF12D /* Dependencies.cpp */; };
 		28560C910A75E40F00A3429E /* AutoRecovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */; };
 		285D8BA10AAEFDFD00E0B5BE /* SmartRecordDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D8B9F0AAEFDFD00E0B5BE /* SmartRecordDialog.cpp */; };
+		285DE1FA0BF03C7800A20DF0 /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285DE1F80BF03C7800A20DF0 /* Screenshot.cpp */; };
 		287F9F3D0A69748F00F025FA /* TimeDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 287F9F3C0A69748F00F025FA /* TimeDialog.cpp */; };
 		2882177B0A35D8730029AF41 /* ShuttlePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288217790A35D8730029AF41 /* ShuttlePrefs.cpp */; };
 		2882178C0A35D90C0029AF41 /* treebook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2882178A0A35D90C0029AF41 /* treebook.cpp */; };
@@ -1930,6 +1931,8 @@
 		28560C900A75E40F00A3429E /* AutoRecovery.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AutoRecovery.h; sourceTree = "<group>"; };
 		285D8B9F0AAEFDFD00E0B5BE /* SmartRecordDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SmartRecordDialog.cpp; sourceTree = "<group>"; };
 		285D8BA00AAEFDFD00E0B5BE /* SmartRecordDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SmartRecordDialog.h; sourceTree = "<group>"; };
+		285DE1F80BF03C7800A20DF0 /* Screenshot.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Screenshot.cpp; sourceTree = "<group>"; };
+		285DE1F90BF03C7800A20DF0 /* Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Screenshot.h; sourceTree = "<group>"; };
 		287F9F3B0A69748F00F025FA /* TimeDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeDialog.h; sourceTree = "<group>"; };
 		287F9F3C0A69748F00F025FA /* TimeDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeDialog.cpp; sourceTree = "<group>"; };
 		288217790A35D8730029AF41 /* ShuttlePrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ShuttlePrefs.cpp; sourceTree = "<group>"; };
@@ -2843,6 +2846,8 @@
 				1790B0D509883BFD008A330A /* RingBuffer.h */,
 				1790B0D609883BFD008A330A /* SampleFormat.cpp */,
 				1790B0D709883BFD008A330A /* SampleFormat.h */,
+				285DE1F80BF03C7800A20DF0 /* Screenshot.cpp */,
+				285DE1F90BF03C7800A20DF0 /* Screenshot.h */,
 				1790B0DA09883BFD008A330A /* Sequence.cpp */,
 				1790B0DB09883BFD008A330A /* Sequence.h */,
 				1790B0DC09883BFD008A330A /* Shuttle.cpp */,
@@ -5248,6 +5253,7 @@
 				283B3D4D0BC21EBE00FA01D5 /* FileDialog.cpp in Sources */,
 				2809C4B80BCB7E560006010F /* FileIO.cpp in Sources */,
 				28F5C1110BE5886A00D17341 /* FileDialogPrivate.cpp in Sources */,
+				285DE1FA0BF03C7800A20DF0 /* Screenshot.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
