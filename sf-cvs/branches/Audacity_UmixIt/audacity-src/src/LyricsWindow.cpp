@@ -37,6 +37,10 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
 #endif
              )
 {
+#ifdef __WXMAC__
+   // WXMAC doesn't support wxFRAME_FLOAT_ON_PARENT, so we do
+   SetWindowClass((WindowRef) MacGetWindowRef(), kFloatingWindowClass);
+#endif
    mProject = parent;
    mLyricsPanel = new Lyrics(this, -1, wxPoint(0, 0), gSize);
 
