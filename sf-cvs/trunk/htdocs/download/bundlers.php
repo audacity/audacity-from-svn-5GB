@@ -7,7 +7,7 @@
  */
   require_once "main.inc.php";
   $pageId = "bundlers";
-  $pageTitle = _("Vendors that Bundle Audacity");
+  $pageTitle = _("Vendors that Distribute Audacity");
   include "../include/header.inc.php";
 ?>
 
@@ -170,7 +170,7 @@
     <td>
       <a href="http://www.diamondmm.com/XS51.php">XS51</a>
     </td>
-    <td>Diamond XtremeSound - 5.1/16 bit Sound Card</td>
+    <td>XtremeSound 5.1/16 bit Sound Card</td>
   </tr>
   <tr>
     <td>
@@ -179,7 +179,16 @@
     <td>
       <a href="http://www.diamondmm.com/XS71.php">XS71</a>
     </td>
-    <td>Diamond XtremeSound - 7.1/24 bit Sound Card</td>
+    <td>XtremeSound 7.1/24 bit Sound Card</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.diamondmm.com">Diamond Multimedia</a>
+    </td>
+    <td>
+      <a href="http://www.diamondmm.com/XS71.php">XS71DDL</a>
+    </td>
+    <td>XtremeSound 7.1/24 bit Sound Card with Dolby Digital Live</td>
   </tr>
   <tr>
     <td>
@@ -188,7 +197,7 @@
     <td>
       <a href="http://www.ion-audio.com/ittusb.php">iTTUSB</a>
     </td>
-    <td>USB turntable</td>
+    <td>USB turntable. NOTE: On January 21, 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what the article stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and export the multiple files together based on split points. ION and Numark have corrected their documentation, and they are apparently still bundling Audacity. Please see our Wiki page on <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB turntables</a> for more information.</td>
   </tr>
   <tr>
     <td>
@@ -224,7 +233,7 @@
     <td>
       <a href="http://www.numark.com/products/product_view.php?v=overview&n=144">TTUSB</a>
     </td>
-    <td>USB turntable</td>
+    <td>USB turntable. NOTE: On January 21, 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what the article stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and export the multiple files together based on split points. ION and Numark have corrected their documentation, and they are apparently still bundling Audacity. Please see our Wiki page on <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB turntables</a> for more information.</td>
   </tr>
   <tr>
     <td>
@@ -243,6 +252,15 @@
       <a href="http://www.presonus.com/inspire1394.html">Inspire 1394</a>
     </td>
     <td>FireWire recording system featuring 24-bit/96k analog to digital conversion rate, four simultaneous inputs, software control panel, audio recording and production software</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.theopencd.org">TheOpenCD</a>
+    </td>
+    <td>
+      <a href="http://www.theopencd.org">OpenCD</a>
+    </td>
+    <td>collection of high quality Free and Open Source Software (including Audacity) for Microsoft Windows</td>
   </tr>
   <tr>
     <td>
@@ -270,6 +288,24 @@
       <a href="http://umixit.com">UmixIt, powered by Audacity</a>
     </td>
     <td>original artist re-mix tracks. "Share the studio experience" with favorite recording artists, with the ability to remix, record, sing karaoke, add effects, and edit original artist's recordings track-by-track.</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://westek.com">Westek</a>
+    </td>
+    <td>
+      <a href="http://www.google.com/search?q=Westek+TeleTool+2000">Westek TeleTool 2000 PC/Telephone Recorder</a>
+    </td>
+    <td>Record telephone conversations from phone to PC.</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.forest.impress.co.jp">Windows Forest</a>
+    </td>
+    <td>
+      <a href="http://www.forest.impress.co.jp/lib/pic/music/soundedit/audacity.html">Audacity</a>
+    </td>
+    <td>mirror site for Audacity downloads, from webzine about Windows software at Impress Watch Corporation, Tokyo, Japan</td>
   </tr>
 </table>
 

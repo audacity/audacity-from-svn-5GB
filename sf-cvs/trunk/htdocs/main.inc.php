@@ -23,7 +23,7 @@ $siteNavItems = array(
       array(_("Features"), "features"),
       array(_("Screenshots"), "screenshots"),
       array(_("News"), "news"),
-      array(_("License"), "license"),
+      array(_("License, and Advice for Vendors"), "license"),
       array(_("Credits"), "credits"),
       array(_("Links"), "links"),
     )
@@ -44,7 +44,7 @@ $siteNavItems = array(
       array($ind._("Source Code"), "beta_source"),
       array(_("Plug-Ins"), "plugins"),
       array(_("Buy a CD"), "buy"),
-      array(_("Vendors that Bundle Audacity"), "bundlers"),
+      array(_("Vendors that Distribute Audacity"), "bundlers"),
     )
   ),
   array(_("Help"), "help/",

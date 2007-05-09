@@ -10,7 +10,7 @@
   include "../include/header.inc.php";
 
   echo "<h2>$pageTitle</h2>";
-  echo "<p>"._('Audacity is free to download, but vendors are also free to sell copies of the program, thanks to the <a href="../about/license">GNU General Public License</a>.  If you want a copy of Audacity on CD-ROM, we encourage you to buy from a vendor listed below.')."</p>";
+  echo "<p>"._('Audacity is free to download, but vendors are also free to sell copies of the program (see <a href="../download/bundlers">Vendors that Distribute Audacity</a>), thanks to the <a href="../about/license">GNU General Public License</a>.  If you want a copy of Audacity on CD-ROM, we encourage you to buy from a vendor listed below.')."</p>";
 
   echo _('<h3>TheOpenCD (Windows)</h3>
   <p><a href="http://www.theopencd.org/">TheOpenCD</a> is a collection of high-quality free software for Microsoft Windows, including Audacity.  You can <a href="http://www.theopencd.org/purchase">purchase a copy of TheOpenCD</a> from several different vendors.</p>');
