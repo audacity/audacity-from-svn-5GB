@@ -87,6 +87,7 @@ void BatchCommandDialog::PopulateOrExchange(ShuttleGui &S)
       {
          S.SetStretchyCol(1);
          mParameters = S.AddTextBox(_("&Parameters"), wxT(""), 0);
+         mParameters->SetEditable(false);
       }
       S.EndMultiColumn();
 
