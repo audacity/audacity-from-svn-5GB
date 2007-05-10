@@ -272,7 +272,9 @@ void ScreenFrame::PopulateOrExchange(ShuttleGui &S)
    S.StartMultiColumn(2, wxEXPAND);
    S.SetStretchyCol( 1 );// Column 1 is stretchy...
    {
-      wxString dir = gPrefs->Read(wxT("/ScreenshotPath"), ::wxGetCwd());
+      wxString dir =
+         gPrefs->Read(wxT("/ScreenshotPath"),
+                      wxFileName::GetHomeDir());
       mDirectoryTextBox =
          S.Id(IdDirectory).AddTextBox(wxT("Save images here:"),
                                       dir, 30);
@@ -687,19 +689,32 @@ void ScreenFrame::OnCaptureTrackPanel(wxCommandEvent& evt)
    TrackPanel *panel = proj->mTrackPanel;
    int width, height;
    panel->GetClientSize(&width, &height);
+
+   proj->Raise();
+   wxSafeYield();
+
    wxClientDC dc(panel);
    Capture(wxT("trackpanel"), dc, 0, 0, width, height);
+
+   Raise();
 }
 
 void ScreenFrame::OnCaptureRuler(wxCommandEvent& evt)
 {
    AudacityProject *proj = GetActiveProject();
    TrackPanel *panel = proj->mTrackPanel;
-   wxPanel *ruler = panel->mRuler;
+   AdornedRulerPanel *ruler = panel->mRuler;
    int width, height;
-   panel->GetClientSize(&width, &height);
-   wxClientDC dc(panel);
+   ruler->GetClientSize(&width, &height);
+   height = ruler->GetRulerHeight();
+
+   proj->Raise();
+   wxSafeYield();
+
+   wxClientDC dc(ruler);
    Capture(wxT("ruler"), dc, 0, 0, width, height);
+
+   Raise();
 }
 
 void ScreenFrame::OnCaptureTracks(wxCommandEvent& evt)
@@ -708,8 +723,14 @@ void ScreenFrame::OnCaptureTracks(wxCommandEvent& evt)
    TrackPanel *panel = proj->mTrackPanel;
    int width, height;
    panel->GetClientSize(&width, &height);
+
+   proj->Raise();
+   wxSafeYield();
+
    wxClientDC dc(panel);
    Capture(wxT("tracks"), dc, 0, 0, width, height);
+
+   Raise();
 }
 
 void ScreenFrame::OnCaptureFirstTrack(wxCommandEvent& evt)
@@ -718,12 +739,20 @@ void ScreenFrame::OnCaptureFirstTrack(wxCommandEvent& evt)
    TrackPanel *panel = proj->mTrackPanel;
    TrackListIterator iter(proj->GetTracks());
    Track * t = iter.First();
+   if (!t)
+      return;
    wxRect r = panel->FindTrackRect(t, true);
 
    int width, height;
    panel->GetClientSize(&width, &height);
+
+   proj->Raise();
+   wxSafeYield();
+
    wxClientDC dc(panel);
    Capture(wxT("firsttrack"), dc, 0, r.y - 3, width, r.height + 6);
+
+   Raise();
 }
 
 void ScreenFrame::OnCaptureSecondTrack(wxCommandEvent& evt)
@@ -732,15 +761,25 @@ void ScreenFrame::OnCaptureSecondTrack(wxCommandEvent& evt)
    TrackPanel *panel = proj->mTrackPanel;
    TrackListIterator iter(proj->GetTracks());
    Track * t = iter.First();
+   if (!t)
+      return;
    if (t->GetLinked())
       t = iter.Next();
    t = iter.Next();
+   if (!t)
+      return;
    wxRect r = panel->FindTrackRect(t, true);
 
    int width, height;
    panel->GetClientSize(&width, &height);
+
+   proj->Raise();
+   wxSafeYield();
+
    wxClientDC dc(panel);
    Capture(wxT("secondtrack"), dc, 0, r.y - 3, width, r.height + 6);
+
+   Raise();
 }
 
 void ScreenFrame::OnDirChoose(wxCommandEvent& evt)
