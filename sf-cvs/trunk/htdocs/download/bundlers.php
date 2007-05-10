@@ -13,7 +13,7 @@
 
 <h2><?=$pageTitle?></h2>
 
-<p><?=_('Audacity is free to download, but vendors are also free to bundle copies of the program with their product, thanks to the <a href="../about/license">GNU General Public License</a>. The following are legitimate, legal offerings. We are happy and proud that they chose to bundle Audacity with their products.')?></p>
+<p><?=_('Audacity is free to download, but vendors are also free to bundle copies of the program with their product, or resell or distribute Audacity, thanks to the <a href="../about/license">GNU General Public License</a>. The following are legitimate, legal offerings. We are happy and proud that they chose to bundle Audacity with their products.')?></p>
 
 <p><?=_('Two of these vendors, <a href="http://umixit.com">UmixIt</a> and <a href="http://www.thinklabsmedical.com">Thinklabs</a>, have additionally supported Audacity by sponsoring custom versions. The first <a href="http://umixit.com"><em>UmixIt, powered by Audacity</em></a> Enhanced CD was <a href="http://www.bnlmusic.com/">"Barenaked Ladies Are Men"</a>, released February 2007. Both custom versions will soon be available for download.')?></p>
 
