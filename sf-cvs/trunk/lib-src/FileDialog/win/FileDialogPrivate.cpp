@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.1 2007-04-30 04:12:57 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.2 2007-05-10 06:18:54 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -421,7 +421,7 @@ int FileDialog::ShowModal()
     // user types "foo" and the default extension is ".bar" we should force it
     // to check for "foo.bar" existence and not "foo")
     wxString defextBuffer; // we need it to be alive until GetSaveFileName()!
-    if (m_dialogStyle & wxSAVE)
+    if (m_dialogStyle & wxSAVE && m_dialogStyle & wxOVERWRITE_PROMPT)
     {
         const wxChar* extension = filterBuffer;
         int maxFilter = (int)(of.nFilterIndex*2L) - 1;
@@ -529,6 +529,9 @@ int FileDialog::ShowModal()
         else
         {
             //=== Adding the correct extension >>=================================
+#if 0
+            // LLL:  Removed to prevent adding extension during Export
+            //       processing.
 
             m_filterIndex = (int)of.nFilterIndex - 1;
 
@@ -546,7 +549,7 @@ int FileDialog::ShowModal()
                 wxStrncpy(fileNameBuffer, m_fileName.c_str(), wxMin(m_fileName.Len(), wxMAXPATH-1));
                 fileNameBuffer[wxMin(m_fileName.Len(), wxMAXPATH-1)] = wxT('\0');
             }
-
+#endif
             m_path = fileNameBuffer;
             m_fileName = wxFileNameFromPath(fileNameBuffer);
             m_fileNames.Add(m_fileName);
