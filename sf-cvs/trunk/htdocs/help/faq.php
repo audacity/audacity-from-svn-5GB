@@ -34,7 +34,7 @@
         ),
         "copy-permission" => array(
           _("May I distribute copies of Audacity?"),
-          _("<p>You can redistribute Audacity under the GNU General Public License, which gives you permission to modify, copy, and sell the program as long as you keep the same license and make the source code available.  For details, see our <a href=\"../about/license\">license information</a>.</p>")
+          _("<p>You can redistribute Audacity under the <a href=\"../about/license\">GNU General Public License</a>, which gives you permission to modify, copy, and sell the program as long as you keep the same license and make the source code available.  For details, see <a href=\"../about/license\">License, and Advice for Vendors</a>.</p>")
         ),
         "ebay" => array(
           _("Someone is selling Audacity on eBay.  Is this legal?"),
