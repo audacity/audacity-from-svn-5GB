@@ -1867,6 +1867,27 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    Destroy();
 }
 
+// This function unmangles short filenames into their long version.
+#if defined(__WXMAC__) && !wxCHECK_VERSION(2,6,0)
+wxString MacLongFilename(wxString inName)
+{
+   wxString outName = inName;
+   OSStatus err = noErr;
+   FSRef theRef;
+   char buf[1024];
+
+   err = FSPathMakeRef((const UInt8 *) inName.c_str(), &theRef, NULL);
+   if (err == noErr) {
+      err = FSRefMakePath(&theRef, (UInt8 *) buf, sizeof(buf));
+   }
+   if (err == noErr) {
+      outName = buf;
+   }
+
+   return outName;
+}
+#endif
+
 // static method, can be called outside of a project
 void AudacityProject::ShowOpenDialog(AudacityProject *proj)
 {
@@ -1897,6 +1918,9 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
 
    for(ff=0; ff<selectedFiles.GetCount(); ff++) {
       wxString fileName = selectedFiles[ff];
+#if defined(__WXMAC__) && !wxCHECK_VERSION(2,6,0)
+      fileName = MacLongFilename(fileName);
+#endif
       wxFileName newFileName(fileName);
 
       gPrefs->Write("/DefaultOpenPath", wxPathOnly(fileName));
