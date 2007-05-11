@@ -16,6 +16,10 @@
 #include "../images/AudacityLogo.xpm"
 #include "../images/AudacityLogo48x48.xpm"
 
+#ifdef __WXMAC__
+#include <Carbon/Carbon.h>
+#endif
+
 BEGIN_EVENT_TABLE(LyricsWindow, wxFrame)
    EVT_CLOSE(LyricsWindow::OnCloseWindow)
 END_EVENT_TABLE()
