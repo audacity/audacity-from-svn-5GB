@@ -860,6 +860,7 @@ public:
       mConf.format.LHV1.bCRC = true;
       mConf.format.LHV1.bNoRes = true;
       mConf.format.LHV1.dwSampleRate = sampleRate;
+      mConf.format.LHV1.dwReSampleRate = sampleRate;
       mConf.format.LHV1.dwBitrate = mBitrate;
 
       // Set the VBR quality or ABR/CBR bitrate
