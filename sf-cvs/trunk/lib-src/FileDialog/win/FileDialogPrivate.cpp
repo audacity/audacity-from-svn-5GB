@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.2 2007-05-10 06:18:54 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.3 2007-05-12 06:14:29 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -529,11 +529,11 @@ int FileDialog::ShowModal()
         else
         {
             //=== Adding the correct extension >>=================================
+            m_filterIndex = (int)of.nFilterIndex - 1;
+
 #if 0
             // LLL:  Removed to prevent adding extension during Export
             //       processing.
-
-            m_filterIndex = (int)of.nFilterIndex - 1;
 
             if ( !of.nFileExtension ||
                  (of.nFileExtension && fileNameBuffer[of.nFileExtension] == wxT('\0')) )
