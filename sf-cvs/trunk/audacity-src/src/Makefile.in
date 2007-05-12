@@ -20,7 +20,7 @@ PRECOMP_CFLAGS = @PRECOMP_CFLAGS@
 LOCAL_LIBS = @LOCAL_LIBS@
 EXTRAOBJS = @EXTRAOBJS@
 EXTRATARGETS = @EXTRATARGETS@
-LIBS = @LIBS@
+LIBS = @LIBS@ @PA_LIBS@
 DIRS=blockfile commands effects effects/ladspa effects/nyquist export import prefs toolbars widgets xml
 
 srcdir=@srcdir@

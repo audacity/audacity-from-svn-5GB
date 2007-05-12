@@ -316,7 +316,7 @@ ac_subdirs_all="$ac_subdirs_all lib-src/portaudio-v19"
 ac_subdirs_all="$ac_subdirs_all lib-src/rtaudio"
 ac_subdirs_all="$ac_subdirs_all lib-src/portmixer"
 ac_subdirs_all="$ac_subdirs_all lib-src/dlcompat"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS EXTRATARGETS EXTRAINSTALLTARGETS EXTRAUNINSTALLTARGETS OPTOBJS CDEPEND PRECOMP_CFLAGS AFTERBUILD INSTALL_PREFIX CONFIGHEADER LOCAL_LIBS AUDACITY_NAME subdirs PKG_CONFIG ac_pt_PKG_CONFIG SNDFILE_CFLAGS SNDFILE_LIBS SAMPLERATE_CFLAGS SAMPLERATE_LIBS SOUNDTOUCH_CFLAGS SOUNDTOUCH_LIBS WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os JACK_CFLAGS JACK_LIBS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS EXTRATARGETS EXTRAINSTALLTARGETS EXTRAUNINSTALLTARGETS OPTOBJS CDEPEND PRECOMP_CFLAGS AFTERBUILD INSTALL_PREFIX CONFIGHEADER LOCAL_LIBS AUDACITY_NAME subdirs PKG_CONFIG ac_pt_PKG_CONFIG SNDFILE_CFLAGS SNDFILE_LIBS SAMPLERATE_CFLAGS SAMPLERATE_LIBS SOUNDTOUCH_CFLAGS SOUNDTOUCH_LIBS WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -817,14 +817,6 @@ ac_env_SOUNDTOUCH_LIBS_set=${SOUNDTOUCH_LIBS+set}
 ac_env_SOUNDTOUCH_LIBS_value=$SOUNDTOUCH_LIBS
 ac_cv_env_SOUNDTOUCH_LIBS_set=${SOUNDTOUCH_LIBS+set}
 ac_cv_env_SOUNDTOUCH_LIBS_value=$SOUNDTOUCH_LIBS
-ac_env_JACK_CFLAGS_set=${JACK_CFLAGS+set}
-ac_env_JACK_CFLAGS_value=$JACK_CFLAGS
-ac_cv_env_JACK_CFLAGS_set=${JACK_CFLAGS+set}
-ac_cv_env_JACK_CFLAGS_value=$JACK_CFLAGS
-ac_env_JACK_LIBS_set=${JACK_LIBS+set}
-ac_env_JACK_LIBS_value=$JACK_LIBS
-ac_cv_env_JACK_LIBS_set=${JACK_LIBS+set}
-ac_cv_env_JACK_LIBS_value=$JACK_LIBS
 
 #
 # Report the --help message.
@@ -959,8 +951,6 @@ Some influential environment variables:
               C compiler flags for SOUNDTOUCH, overriding pkg-config
   SOUNDTOUCH_LIBS
               linker flags for SOUNDTOUCH, overriding pkg-config
-  JACK_CFLAGS C compiler flags for JACK, overriding pkg-config
-  JACK_LIBS   linker flags for JACK, overriding pkg-config
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -6364,333 +6354,6 @@ _ACEOF
 subdirs="$subdirs lib-src/portaudio-v19"
 
 
-      case "${host_os}" in
-      darwin* | rhapsody*)
-         LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
-         LIBS="-framework CoreAudio $LIBS -lz"
-         ;;
-      cygwin*)
-         ;;
-      *)
-                  echo "$as_me:$LINENO: checking for snd_pcm_open in -lasound" >&5
-echo $ECHO_N "checking for snd_pcm_open in -lasound... $ECHO_C" >&6
-if test "${ac_cv_lib_asound_snd_pcm_open+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lasound  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char snd_pcm_open ();
-int
-main ()
-{
-snd_pcm_open ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_asound_snd_pcm_open=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_cv_lib_asound_snd_pcm_open=no
-fi
-rm -f conftest.err conftest.$ac_objext \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-echo "$as_me:$LINENO: result: $ac_cv_lib_asound_snd_pcm_open" >&5
-echo "${ECHO_T}$ac_cv_lib_asound_snd_pcm_open" >&6
-if test $ac_cv_lib_asound_snd_pcm_open = yes; then
-  have_alsa=yes
-else
-  have_alsa=no
-fi
-
-         if [ $have_alsa = "yes" ] ; then
-            LIBS="$LIBS -lasound"
-         fi
-
-pkg_failed=no
-echo "$as_me:$LINENO: checking for JACK" >&5
-echo $ECHO_N "checking for JACK... $ECHO_C" >&6
-
-if test -n "$PKG_CONFIG"; then
-    if test -n "$JACK_CFLAGS"; then
-        pkg_cv_JACK_CFLAGS="$JACK_CFLAGS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"jack\"") >&5
-  ($PKG_CONFIG --exists --print-errors "jack") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_JACK_CFLAGS=`$PKG_CONFIG --cflags "jack" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
-fi
-if test -n "$PKG_CONFIG"; then
-    if test -n "$JACK_LIBS"; then
-        pkg_cv_JACK_LIBS="$JACK_LIBS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"jack\"") >&5
-  ($PKG_CONFIG --exists --print-errors "jack") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_JACK_LIBS=`$PKG_CONFIG --libs "jack" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        JACK_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "jack"`
-        else
-	        JACK_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "jack"`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$JACK_PKG_ERRORS" >&5
-
-	have_jack=no
-elif test $pkg_failed = untried; then
-	have_jack=no
-else
-	JACK_CFLAGS=$pkg_cv_JACK_CFLAGS
-	JACK_LIBS=$pkg_cv_JACK_LIBS
-        echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-	have_jack=yes
-fi
-         if [ $have_jack = "yes" ] ; then
-            LIBS="$LIBS $JACK_LIBS"
-         fi
-         echo "$as_me:$LINENO: checking for clock_gettime in -lrt" >&5
-echo $ECHO_N "checking for clock_gettime in -lrt... $ECHO_C" >&6
-if test "${ac_cv_lib_rt_clock_gettime+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lrt  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char clock_gettime ();
-int
-main ()
-{
-clock_gettime ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_rt_clock_gettime=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_cv_lib_rt_clock_gettime=no
-fi
-rm -f conftest.err conftest.$ac_objext \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-echo "$as_me:$LINENO: result: $ac_cv_lib_rt_clock_gettime" >&5
-echo "${ECHO_T}$ac_cv_lib_rt_clock_gettime" >&6
-if test $ac_cv_lib_rt_clock_gettime = yes; then
-  rt_libs=" -lrt"
-fi
-
-         LIBS="${LIBS}${rt_libs}"
-
-
-for ac_func in clock_gettime nanosleep
-do
-as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for $ac_func" >&5
-echo $ECHO_N "checking for $ac_func... $ECHO_C" >&6
-if eval "test \"\${$as_ac_var+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-/* Define $ac_func to an innocuous variant, in case <limits.h> declares $ac_func.
-   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
-#define $ac_func innocuous_$ac_func
-
-/* System header to define __stub macros and hopefully few prototypes,
-    which can conflict with char $ac_func (); below.
-    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
-    <limits.h> exists even on freestanding compilers.  */
-
-#ifdef __STDC__
-# include <limits.h>
-#else
-# include <assert.h>
-#endif
-
-#undef $ac_func
-
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char $ac_func ();
-/* The GNU C library defines this for functions which it implements
-    to always fail with ENOSYS.  Some functions are actually named
-    something starting with __ and the normal name is an alias.  */
-#if defined (__stub_$ac_func) || defined (__stub___$ac_func)
-choke me
-#else
-char (*f) () = $ac_func;
-#endif
-#ifdef __cplusplus
-}
-#endif
-
-int
-main ()
-{
-return f != $ac_func;
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  eval "$as_ac_var=yes"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-eval "$as_ac_var=no"
-fi
-rm -f conftest.err conftest.$ac_objext \
-      conftest$ac_exeext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_var'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_var'}'`" >&6
-if test `eval echo '${'$as_ac_var'}'` = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define `echo "HAVE_$ac_func" | $as_tr_cpp` 1
-_ACEOF
-
-fi
-done
-
-         ;;
-   esac
 
 else
       CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio/pa_common $CXXFLAGS"
@@ -7806,8 +7469,6 @@ s,@host@,$host,;t t
 s,@host_cpu@,$host_cpu,;t t
 s,@host_vendor@,$host_vendor,;t t
 s,@host_os@,$host_os,;t t
-s,@JACK_CFLAGS@,$JACK_CFLAGS,;t t
-s,@JACK_LIBS@,$JACK_LIBS,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
 CEOF
@@ -8478,6 +8139,12 @@ echo "$as_me: error: $ac_sub_configure failed for $ac_dir" >&2;}
   done
 fi
 
+
+pa_libs=
+if [ "$use_portaudio" = "v19" ] ; then
+   pa_libs=`grep 'Libs:' lib-src/portaudio-v19/portaudio-2.0.pc | sed -e 's/Libs://;s/-L${libdir}//;s/-lportaudio//'`
+fi
+sed -i -e "s/@PA_LIBS@/$pa_libs/" src/Makefile
 
 echo ""
 echo "Finished configure:"

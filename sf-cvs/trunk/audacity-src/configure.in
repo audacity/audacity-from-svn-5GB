@@ -419,29 +419,7 @@ if [[ "$use_portaudio" = "v19" ]] ; then
 
    AC_CONFIG_SUBDIRS([lib-src/portaudio-v19])
 
-   dnl TODO: Use same library selections as PortAudio v19's configure script.
-   case "${host_os}" in
-      darwin* | rhapsody*)
-         LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
-         LIBS="-framework CoreAudio $LIBS -lz"
-         ;;
-      cygwin*)
-         ;;
-      *)
-         dnl Unix
-         AC_CHECK_LIB(asound, snd_pcm_open, have_alsa=yes, have_alsa=no)
-         if [[ $have_alsa = "yes" ]] ; then
-            LIBS="$LIBS -lasound"
-         fi
-         PKG_CHECK_MODULES(JACK, jack, have_jack=yes, have_jack=no)
-         if [[ $have_jack = "yes" ]] ; then
-            LIBS="$LIBS $JACK_LIBS"
-         fi
-         AC_CHECK_LIB(rt, clock_gettime, [rt_libs=" -lrt"])
-         LIBS="${LIBS}${rt_libs}"
-         AC_CHECK_FUNCS([clock_gettime nanosleep])
-         ;;
-   esac
+   dnl See below for v19 library handling
 
 else
    dnl PortAudio v18
@@ -580,6 +558,15 @@ AC_CONFIG_FILES([Makefile src/Makefile lib-src/Makefile \
                  locale/Makefile tests/Makefile])
 
 AC_OUTPUT
+
+dnl
+dnl Substitute any addition libraries that portaudio (v19) requires
+dnl
+pa_libs=
+if [[ "$use_portaudio" = "v19" ]] ; then
+   pa_libs=`grep 'Libs:' lib-src/portaudio-v19/portaudio-2.0.pc | sed -e 's/Libs://;s/-L${libdir}//;s/-lportaudio//'`
+fi
+sed -i -e "s/@PA_LIBS@/$pa_libs/" src/Makefile
 
 echo ""
 echo "Finished configure:"
