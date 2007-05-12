@@ -72,15 +72,15 @@ int gMenusDirty = 0;
 
 void InitPreferences()
 {
-#ifdef AUDACITY_NAME
-   wxString appName = AUDACITY_NAME;
-   wxString vendorName = AUDACITY_NAME;
-#elif (AUDACITY_BRANDING == BRAND_UMIXIT)
+#if (AUDACITY_BRANDING == BRAND_UMIXIT)
    wxString vendorName = "Audacity";
    wxString appName = "UmixIt, powered by Audacity";
 #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
    wxString vendorName = "Audacity";
    wxString appName = "Thinklabs Phonocardiography, powered by Audacity";
+#elif AUDACITY_NAME
+   wxString appName = AUDACITY_NAME;
+   wxString vendorName = AUDACITY_NAME;
 #else
    wxString vendorName = "Audacity";
    wxString appName = "Audacity";
