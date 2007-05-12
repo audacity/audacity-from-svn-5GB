@@ -133,6 +133,7 @@ typedef struct
 
 static CHOICES fixRates[] =
 {
+   {  _("8 kbps"),   8     },
    {  _("16 kbps"),  16    },
    {  _("24 kbps"),  24    },
    {  _("32 kbps"),  32    },
@@ -144,6 +145,7 @@ static CHOICES fixRates[] =
    {  _("96 kbps"),  96    },
    {  _("112 kbps"), 112   },
    {  _("128 kbps"), 128   },
+   {  _("144 kbps"), 144   },
    {  _("160 kbps"), 160   },
    {  _("192 kbps"), 192   },
    {  _("224 kbps"), 224   },
@@ -177,6 +179,19 @@ static CHOICES setRates[] =
    {  _("Extreme, 220-260 kbps"),   PRESET_EXTREME    },
    {  _("Standard, 170-210 kbps"),  PRESET_STANDARD   },
    {  _("Medium, 145-185 kbps"),    PRESET_MEDIUM     },
+};
+
+static CHOICES sampRates[] =
+{
+   {  _("8000"),  8000     },
+   {  _("11025"), 11025    },
+   {  _("12000"), 12000    },
+   {  _("16000"), 16000    },
+   {  _("22050"), 22050    },
+   {  _("24000"), 24000    },
+   {  _("32000"), 32000    },
+   {  _("44100"), 44100    },
+   {  _("48000"), 48000    },
 };
 
 #define ID_SET 7000
@@ -1545,6 +1560,7 @@ private:
 
    int FindValue(CHOICES *choices, int cnt, int needle, int def);
    wxString FindName(CHOICES *choices, int cnt, int needle);
+   int AskResample(int bitrate, int rate, int highrate);
 
 };
 
@@ -1571,7 +1587,7 @@ bool ExportMP3::Export(AudacityProject *project,
                        double t1,
                        MixerSpec *mixerSpec)
 {
-   double rate = project->GetRate();
+   int rate = lrint(project->GetRate());
    wxWindow *parent = project;
    TrackList *tracks = project->GetTracks();
    LameExporter exporter;
@@ -1590,35 +1606,9 @@ bool ExportMP3::Export(AudacityProject *project,
       return false;
    }
    
-   /* Open file for writing */
-   FileIO outFile(fName, FileIO::Output);
-   if (!outFile.IsOpened()) {
-      wxMessageBox(_("Unable to open target file for writing"));
-      return false;
-   }
-   
-   /* Put ID3 tags at beginning of file */
-   /*lda Check ShowId3Dialog flag for CleanSpeech */
-   bool showId3Dialog = project->GetShowId3Dialog();
-   Tags *tags = project->GetTags();
-   bool emptyTags = tags->IsEmpty();
-   if (showId3Dialog && emptyTags) {
-      if (!tags->ShowEditDialog(project,
-                                _("Edit the ID3 tags for the MP3 file"),
-                                true)) {
-         return false;  // used selected "cancel"
-      }
-   }
-
-   char *id3buffer = NULL;
-   int id3len;
-   bool endOfFile;
-   id3len = tags->ExportID3(&id3buffer, &endOfFile);
-   if (!endOfFile) {
-     outFile.Write(id3buffer, id3len);
-   }
-
    // Retrieve preferences
+   int highrate = 48000;
+   int bitrate = 0;
    int brate;
    int rmode;
    int vmode;
@@ -1651,6 +1641,19 @@ bool ExportMP3::Export(AudacityProject *project,
       int r = FindValue(fixRates, WXSIZEOF(fixRates), brate, 128);
       exporter.SetMode(MODE_CBR);
       exporter.SetBitrate(r);
+
+      bitrate = r;
+      if (r <= 16 || r == 144) {
+         highrate = 24000;
+      }
+   }
+
+   // Verify sample rate
+   if (FindName(sampRates, WXSIZEOF(sampRates), rate).IsEmpty() || rate > highrate) {
+      rate = AskResample(bitrate, rate, highrate);
+      if (rate == 0) {
+         return false;
+      }
    }
 
    // Set the channel mode
@@ -1661,7 +1664,35 @@ bool ExportMP3::Export(AudacityProject *project,
       exporter.SetChannel(CHANNEL_STEREO);
    }
 
-   sampleCount inSamples = exporter.InitializeStream(channels, int(rate + 0.5));
+   // Put ID3 tags at beginning of file 
+   // lda Check ShowId3Dialog flag for CleanSpeech
+   bool showId3Dialog = project->GetShowId3Dialog();
+   Tags *tags = project->GetTags();
+   bool emptyTags = tags->IsEmpty();
+   if (showId3Dialog && emptyTags) {
+      if (!tags->ShowEditDialog(project,
+                                _("Edit the ID3 tags for the MP3 file"),
+                                true)) {
+         return false;  // used selected "cancel"
+      }
+   }
+
+   // Open file for writing
+   FileIO outFile(fName, FileIO::Output);
+   if (!outFile.IsOpened()) {
+      wxMessageBox(_("Unable to open target file for writing"));
+      return false;
+   }
+   
+   char *id3buffer = NULL;
+   int id3len;
+   bool endOfFile;
+   id3len = tags->ExportID3(&id3buffer, &endOfFile);
+   if (!endOfFile) {
+     outFile.Write(id3buffer, id3len);
+   }
+
+   sampleCount inSamples = exporter.InitializeStream(channels, rate);
 
    bool cancelling = false;
    long bytes;
@@ -1788,6 +1819,85 @@ wxString ExportMP3::FindName(CHOICES *choices, int cnt, int needle)
    }
 
    return wxT("");
+}
+
+int ExportMP3::AskResample(int bitrate, int rate, int highrate)
+{
+   wxDialog d(NULL, wxID_ANY, wxString(wxT("Invalid sampel rate")));
+   wxChoice *choice;
+   ShuttleGui S(&d, eIsCreating);
+   wxString text;
+
+   S.StartVerticalLay();
+   {
+      S.SetBorder(10);
+      S.StartStatic(_("Resample"));
+      {
+         S.StartHorizontalLay(wxALIGN_CENTER, false);
+         {
+            if (bitrate == 0) {
+               text.Printf(_("The project sample rate (%d) is not supported by the MP3\nfile format.  "), rate);
+            }
+            else {
+               text.Printf(_("The project sample rate (%d) and bit rate (%d kbps) combination is not\nsupported by the MP3 file format.  "), rate, bitrate);
+            }
+
+            text += _("You may resample to one of the rates below.");
+            S.AddTitle(text);
+         }
+         S.EndHorizontalLay();
+
+         wxArrayString choices;
+         wxString selected = wxT("");
+         for (int i = 0; i < WXSIZEOF(sampRates); i++) {
+            if (sampRates[i].label <= highrate) {
+               choices.Add(sampRates[i].name);
+               if (sampRates[i].label <= rate) {
+                  selected = sampRates[i].name;
+               }
+            }
+         }
+
+         if (selected.IsEmpty()) {
+            selected = choices[0];
+         }
+
+         S.StartHorizontalLay(wxALIGN_CENTER, false);
+         {
+            choice = S.AddChoice(_("Sample Rates"),
+                                 selected,
+                                 &choices);
+         }
+         S.EndHorizontalLay();
+      }
+      S.EndStatic();
+
+      S.SetBorder(5);
+      S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_CENTER, false);
+      {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+      }
+      S.EndHorizontalLay();
+   }
+   S.EndVerticalLay();
+
+   d.GetSizer()->AddSpacer(5);
+   d.Layout();
+   d.Fit();
+   d.SetMinSize(d.GetSize());
+   d.Center();
+
+   if (d.ShowModal() == wxID_CANCEL) {
+      return 0;
+   }
+
+   return sampRates[choice->GetSelection()].label;
 }
 
 //----------------------------------------------------------------------------
