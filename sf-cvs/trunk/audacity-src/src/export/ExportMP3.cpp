@@ -83,6 +83,7 @@
 #include "../Tags.h"
 #include "../WaveTrack.h"
 #include "../widgets/LinkingHtmlWindow.h"
+#include "float_cast.h"
 
 #include "FileDialog.h"
 
