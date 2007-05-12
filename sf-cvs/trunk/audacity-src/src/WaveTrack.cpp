@@ -976,6 +976,7 @@ bool WaveTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
             if (!XMLValueChecker::IsGoodString(strValue) || 
                   !Internat::CompatibleToDouble(strValue, &dblValue) ||
                   (dblValue < 100.0) || (dblValue > 100000.0)) // same bounds as ImportRawDialog::OnOK
+               return false;
             mRate = lrint(dblValue);
          }
          else if (!wxStrcmp(attr, wxT("offset")) && 
