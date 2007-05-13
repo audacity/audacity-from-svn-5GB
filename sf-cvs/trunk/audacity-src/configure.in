@@ -436,6 +436,10 @@ if [[ "$use_portaudio" = "v19" ]] ; then
          if [[ $have_jack = "yes" ]] ; then
             LIBS="$LIBS $JACK_LIBS"
          fi
+         AC_CHECK_LIB(hpi, HPI_SubSysCreate, have_asihpi=yes, have_asihpi=no, -lm)
+         if [[ $have_asihpi = "yes" ]] ; then
+            LIBS="$LIBS -lhpi"
+         fi    
          AC_CHECK_LIB(rt, clock_gettime, [rt_libs=" -lrt"])
          LIBS="${LIBS}${rt_libs}"
          AC_CHECK_FUNCS([clock_gettime nanosleep])
