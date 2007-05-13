@@ -75,6 +75,7 @@
 #include <wx/window.h>
 
 #include "../Audacity.h"
+#include "../float_cast.h"
 #include "../FileIO.h"
 #include "../Internat.h"
 #include "../Mix.h"
