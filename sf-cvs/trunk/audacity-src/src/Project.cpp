@@ -3359,7 +3359,13 @@ bool AudacityProject::ProgressIsShown()
 
 wxString AudacityProject::GetImportFilesFilter()
 {
-   return _("All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|MP2/MPEG files (*.mp2;*.mpa;*.mpg;*.mpeg)|*.mp2;*.mpa;*.mpg;*.mpeg|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof");
+   wxString filter = _("All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|MP2/MPEG files (*.mp2;*.mpa;*.mpg;*.mpeg)|*.mp2;*.mpa;*.mpg;*.mpeg|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof");
+
+   #if USE_QUICKTIME
+   filter += _("|iTunes MPEG-4 Audio (*.m4a)|*.m4a");
+   #endif
+
+   return filter;
 }
 
 bool AudacityProject::GetCacheBlockFiles()

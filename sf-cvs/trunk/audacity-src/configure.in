@@ -309,6 +309,12 @@ AC_ARG_WITH(audiounits,
    use_audiounits=$withval,
    use_audiounits="auto")
 
+AC_ARG_WITH(quicktime,
+   [AC_HELP_STRING([--with-quicktime],
+      [compile with QuickTime import support (Mac OS X only) [default=auto]])],
+   use_quicktime=$withval,
+   use_quicktime="auto")
+
 AC_ARG_WITH(portmixer,
    [AC_HELP_STRING([--with-portmixer],
       [compile with PortMixer [default=yes]])],
@@ -379,6 +385,9 @@ case "${host_os}" in
       EXTRATARGETS="../Audacity.app"
       if [[ "$use_audiounits" = "auto" ]] ; then
          use_audiounits="yes"
+      fi
+      if [[ "$use_quicktime" = "auto" ]] ; then
+         use_quicktime="yes"
       fi
       EXTRAINSTALLTARGETS=""
       EXTRAUNINSTALLTARGETS=""
@@ -562,6 +571,14 @@ if [[ "$use_audiounits" = "yes" ]] ; then
 
    AC_DEFINE(USE_AUDIO_UNITS, 1,
              [Define if Audio Unit plug-ins are enabled (Mac OS X only)])
+fi
+
+if [[ "$use_quicktime" = "yes" ]] ; then
+   OPTOBJS="$OPTOBJS import/ImportQT.o"
+   OPTOBJS="$OPTOBJS import/ImportQTWrapper.o"
+
+   AC_DEFINE(USE_QUICKTIME, 1,
+             [Define if QuickTime importing is enabled (Mac OS X only)])
 fi
 
 dnl Checks for typedefs, structures, and compiler characteristics.

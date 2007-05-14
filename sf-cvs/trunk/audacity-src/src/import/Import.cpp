@@ -47,6 +47,7 @@ and ImportLOF.cpp.
 #include "ImportPCM.h"
 #include "ImportMP3.h"
 #include "ImportOGG.h"
+#include "ImportQT.h"
 #include "ImportRaw.h"
 #include "ImportLOF.h"
 #include "ImportFLAC.h"
@@ -65,6 +66,7 @@ Importer::Importer()
    // in the order defined here.
    GetPCMImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetOGGImportPlugin(mImportPluginList, mUnusableImportPluginList);
+   GetQTImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetFLACImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetMP3ImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetLOFImportPlugin(mImportPluginList, mUnusableImportPluginList);

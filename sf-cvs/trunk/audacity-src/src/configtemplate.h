@@ -67,6 +67,9 @@
 /* Define if Audio Unit plug-ins are enabled (Mac OS X only) */
 #undef USE_AUDIO_UNITS
 
+/* Define if QuickTime importing is enabled (Mac OS X only) */
+#undef USE_QUICKTIME
+
 /* Define if LADSPA plug-ins are enabled */
 #undef USE_LADSPA
 

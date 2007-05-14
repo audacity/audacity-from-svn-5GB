@@ -316,7 +316,7 @@ ac_subdirs_all="$ac_subdirs_all lib-src/portaudio-v19"
 ac_subdirs_all="$ac_subdirs_all lib-src/rtaudio"
 ac_subdirs_all="$ac_subdirs_all lib-src/portmixer"
 ac_subdirs_all="$ac_subdirs_all lib-src/dlcompat"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS EXTRATARGETS EXTRAINSTALLTARGETS EXTRAUNINSTALLTARGETS OPTOBJS CDEPEND PRECOMP_CFLAGS AFTERBUILD INSTALL_PREFIX CONFIGHEADER LOCAL_LIBS AUDACITY_NAME subdirs PKG_CONFIG ac_pt_PKG_CONFIG SNDFILE_CFLAGS SNDFILE_LIBS SAMPLERATE_CFLAGS SAMPLERATE_LIBS SOUNDTOUCH_CFLAGS SOUNDTOUCH_LIBS WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os JACK_CFLAGS JACK_LIBS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS EXTRATARGETS EXTRAINSTALLTARGETS EXTRAUNINSTALLTARGETS OPTOBJS CDEPEND PRECOMP_CFLAGS AFTERBUILD INSTALL_PREFIX CONFIGHEADER LOCAL_LIBS AUDACITY_NAME subdirs PKG_CONFIG SNDFILE_CFLAGS SNDFILE_LIBS SAMPLERATE_CFLAGS SAMPLERATE_LIBS SOUNDTOUCH_CFLAGS SOUNDTOUCH_LIBS WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os JACK_CFLAGS JACK_LIBS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -789,42 +789,6 @@ ac_env_CXXCPP_set=${CXXCPP+set}
 ac_env_CXXCPP_value=$CXXCPP
 ac_cv_env_CXXCPP_set=${CXXCPP+set}
 ac_cv_env_CXXCPP_value=$CXXCPP
-ac_env_PKG_CONFIG_set=${PKG_CONFIG+set}
-ac_env_PKG_CONFIG_value=$PKG_CONFIG
-ac_cv_env_PKG_CONFIG_set=${PKG_CONFIG+set}
-ac_cv_env_PKG_CONFIG_value=$PKG_CONFIG
-ac_env_SNDFILE_CFLAGS_set=${SNDFILE_CFLAGS+set}
-ac_env_SNDFILE_CFLAGS_value=$SNDFILE_CFLAGS
-ac_cv_env_SNDFILE_CFLAGS_set=${SNDFILE_CFLAGS+set}
-ac_cv_env_SNDFILE_CFLAGS_value=$SNDFILE_CFLAGS
-ac_env_SNDFILE_LIBS_set=${SNDFILE_LIBS+set}
-ac_env_SNDFILE_LIBS_value=$SNDFILE_LIBS
-ac_cv_env_SNDFILE_LIBS_set=${SNDFILE_LIBS+set}
-ac_cv_env_SNDFILE_LIBS_value=$SNDFILE_LIBS
-ac_env_SAMPLERATE_CFLAGS_set=${SAMPLERATE_CFLAGS+set}
-ac_env_SAMPLERATE_CFLAGS_value=$SAMPLERATE_CFLAGS
-ac_cv_env_SAMPLERATE_CFLAGS_set=${SAMPLERATE_CFLAGS+set}
-ac_cv_env_SAMPLERATE_CFLAGS_value=$SAMPLERATE_CFLAGS
-ac_env_SAMPLERATE_LIBS_set=${SAMPLERATE_LIBS+set}
-ac_env_SAMPLERATE_LIBS_value=$SAMPLERATE_LIBS
-ac_cv_env_SAMPLERATE_LIBS_set=${SAMPLERATE_LIBS+set}
-ac_cv_env_SAMPLERATE_LIBS_value=$SAMPLERATE_LIBS
-ac_env_SOUNDTOUCH_CFLAGS_set=${SOUNDTOUCH_CFLAGS+set}
-ac_env_SOUNDTOUCH_CFLAGS_value=$SOUNDTOUCH_CFLAGS
-ac_cv_env_SOUNDTOUCH_CFLAGS_set=${SOUNDTOUCH_CFLAGS+set}
-ac_cv_env_SOUNDTOUCH_CFLAGS_value=$SOUNDTOUCH_CFLAGS
-ac_env_SOUNDTOUCH_LIBS_set=${SOUNDTOUCH_LIBS+set}
-ac_env_SOUNDTOUCH_LIBS_value=$SOUNDTOUCH_LIBS
-ac_cv_env_SOUNDTOUCH_LIBS_set=${SOUNDTOUCH_LIBS+set}
-ac_cv_env_SOUNDTOUCH_LIBS_value=$SOUNDTOUCH_LIBS
-ac_env_JACK_CFLAGS_set=${JACK_CFLAGS+set}
-ac_env_JACK_CFLAGS_value=$JACK_CFLAGS
-ac_cv_env_JACK_CFLAGS_set=${JACK_CFLAGS+set}
-ac_cv_env_JACK_CFLAGS_value=$JACK_CFLAGS
-ac_env_JACK_LIBS_set=${JACK_LIBS+set}
-ac_env_JACK_LIBS_value=$JACK_LIBS
-ac_cv_env_JACK_LIBS_set=${JACK_LIBS+set}
-ac_cv_env_JACK_LIBS_value=$JACK_LIBS
 
 #
 # Report the --help message.
@@ -929,6 +893,8 @@ Optional Packages:
   --with-ladspa           compile with ladspa plug-in support [default=yes]
   --with-audiounits       compile with audio unit plug-in support
                           [default=auto]
+  --with-quicktime        compile with QuickTime import support (Mac OS X
+                          only) [default=auto]
   --with-portmixer        compile with PortMixer [default=yes]
   --with-portaudio        which version of PortAudio to use (=[v18,v19])
                           [default=v19]
@@ -946,21 +912,6 @@ Some influential environment variables:
   CXX         C++ compiler command
   CXXFLAGS    C++ compiler flags
   CXXCPP      C++ preprocessor
-  PKG_CONFIG  path to pkg-config utility
-  SNDFILE_CFLAGS
-              C compiler flags for SNDFILE, overriding pkg-config
-  SNDFILE_LIBS
-              linker flags for SNDFILE, overriding pkg-config
-  SAMPLERATE_CFLAGS
-              C compiler flags for SAMPLERATE, overriding pkg-config
-  SAMPLERATE_LIBS
-              linker flags for SAMPLERATE, overriding pkg-config
-  SOUNDTOUCH_CFLAGS
-              C compiler flags for SOUNDTOUCH, overriding pkg-config
-  SOUNDTOUCH_LIBS
-              linker flags for SOUNDTOUCH, overriding pkg-config
-  JACK_CFLAGS C compiler flags for JACK, overriding pkg-config
-  JACK_LIBS   linker flags for JACK, overriding pkg-config
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -4667,10 +4618,22 @@ echo "$as_me: FLAC libraries are NOT available in this source tree" >&6;}
 
 
 
-if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
-	if test -n "$ac_tool_prefix"; then
-  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
-set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
+
+# Check whether --with-libsndfile or --without-libsndfile was given.
+if test "${with_libsndfile+set}" = set; then
+  withval="$with_libsndfile"
+  LIBSNDFILE_ARGUMENT=$withval
+else
+  LIBSNDFILE_ARGUMENT="unspecified"
+fi;
+
+
+
+  succeeded=no
+
+  if test -z "$PKG_CONFIG"; then
+    # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
@@ -4695,6 +4658,7 @@ do
 done
 done
 
+  test -z "$ac_cv_path_PKG_CONFIG" && ac_cv_path_PKG_CONFIG="no"
   ;;
 esac
 fi
@@ -4708,149 +4672,58 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-fi
-if test -z "$ac_cv_path_PKG_CONFIG"; then
-  ac_pt_PKG_CONFIG=$PKG_CONFIG
-  # Extract the first word of "pkg-config", so it can be a program name with args.
-set dummy pkg-config; ac_word=$2
-echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_path_ac_pt_PKG_CONFIG+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $ac_pt_PKG_CONFIG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
   fi
-done
-done
 
-  ;;
-esac
-fi
-ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
+  if test "$PKG_CONFIG" = "no" ; then
+     echo "*** The pkg-config script could not be found. Make sure it is"
+     echo "*** in your path, or set the PKG_CONFIG environment variable"
+     echo "*** to the full path to pkg-config."
+     echo "*** Or see http://www.freedesktop.org/software/pkgconfig to get pkg-config."
+  else
+     PKG_CONFIG_MIN_VERSION=0.9.0
+     if $PKG_CONFIG --atleast-pkgconfig-version $PKG_CONFIG_MIN_VERSION; then
+        echo "$as_me:$LINENO: checking for sndfile >= 1.0.0" >&5
+echo $ECHO_N "checking for sndfile >= 1.0.0... $ECHO_C" >&6
 
-if test -n "$ac_pt_PKG_CONFIG"; then
-  echo "$as_me:$LINENO: result: $ac_pt_PKG_CONFIG" >&5
-echo "${ECHO_T}$ac_pt_PKG_CONFIG" >&6
-else
-  echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-fi
-
-  PKG_CONFIG=$ac_pt_PKG_CONFIG
-else
-  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
-fi
-
-fi
-if test -n "$PKG_CONFIG"; then
-	_pkg_min_version=0.9.0
-	echo "$as_me:$LINENO: checking pkg-config is at least version $_pkg_min_version" >&5
-echo $ECHO_N "checking pkg-config is at least version $_pkg_min_version... $ECHO_C" >&6
-	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
-		echo "$as_me:$LINENO: result: yes" >&5
+        if $PKG_CONFIG --exists "sndfile >= 1.0.0" ; then
+            echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
-	else
-		echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-		PKG_CONFIG=""
-	fi
+            succeeded=yes
 
-fi
+            echo "$as_me:$LINENO: checking SNDFILE_CFLAGS" >&5
+echo $ECHO_N "checking SNDFILE_CFLAGS... $ECHO_C" >&6
+            SNDFILE_CFLAGS=`$PKG_CONFIG --cflags "sndfile >= 1.0.0"`
+            echo "$as_me:$LINENO: result: $SNDFILE_CFLAGS" >&5
+echo "${ECHO_T}$SNDFILE_CFLAGS" >&6
 
-
-
-# Check whether --with-libsndfile or --without-libsndfile was given.
-if test "${with_libsndfile+set}" = set; then
-  withval="$with_libsndfile"
-  LIBSNDFILE_ARGUMENT=$withval
-else
-  LIBSNDFILE_ARGUMENT="unspecified"
-fi;
-
-
-
-pkg_failed=no
-echo "$as_me:$LINENO: checking for SNDFILE" >&5
-echo $ECHO_N "checking for SNDFILE... $ECHO_C" >&6
-
-if test -n "$PKG_CONFIG"; then
-    if test -n "$SNDFILE_CFLAGS"; then
-        pkg_cv_SNDFILE_CFLAGS="$SNDFILE_CFLAGS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sndfile >= 1.0.0\"") >&5
-  ($PKG_CONFIG --exists --print-errors "sndfile >= 1.0.0") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_SNDFILE_CFLAGS=`$PKG_CONFIG --cflags "sndfile >= 1.0.0" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
-fi
-if test -n "$PKG_CONFIG"; then
-    if test -n "$SNDFILE_LIBS"; then
-        pkg_cv_SNDFILE_LIBS="$SNDFILE_LIBS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sndfile >= 1.0.0\"") >&5
-  ($PKG_CONFIG --exists --print-errors "sndfile >= 1.0.0") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_SNDFILE_LIBS=`$PKG_CONFIG --libs "sndfile >= 1.0.0" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        SNDFILE_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "sndfile >= 1.0.0"`
+            echo "$as_me:$LINENO: checking SNDFILE_LIBS" >&5
+echo $ECHO_N "checking SNDFILE_LIBS... $ECHO_C" >&6
+            SNDFILE_LIBS=`$PKG_CONFIG --libs "sndfile >= 1.0.0"`
+            echo "$as_me:$LINENO: result: $SNDFILE_LIBS" >&5
+echo "${ECHO_T}$SNDFILE_LIBS" >&6
         else
-	        SNDFILE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "sndfile >= 1.0.0"`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$SNDFILE_PKG_ERRORS" >&5
+            SNDFILE_CFLAGS=""
+            SNDFILE_LIBS=""
+            ## If we have a custom action on failure, don't print errors, but
+            ## do set a variable so people can do so.
+            SNDFILE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "sndfile >= 1.0.0"`
 
-	sndfile_available_system="no"
-elif test $pkg_failed = untried; then
-	sndfile_available_system="no"
-else
-	SNDFILE_CFLAGS=$pkg_cv_SNDFILE_CFLAGS
-	SNDFILE_LIBS=$pkg_cv_SNDFILE_LIBS
-        echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-	sndfile_available_system="yes"
-fi
+        fi
+
+
+
+     else
+        echo "*** Your version of pkg-config is too old. You need version $PKG_CONFIG_MIN_VERSION or newer."
+        echo "*** See http://www.freedesktop.org/software/pkgconfig"
+     fi
+  fi
+
+  if test $succeeded = yes; then
+     sndfile_available_system="yes"
+  else
+     sndfile_available_system="no"
+  fi
+
 
    if test "x$sndfile_available_system" = "xyes" ; then
       LIBSNDFILE_SYSTEM_AVAILABLE="yes"
@@ -5221,74 +5094,101 @@ _ACEOF
 
 
 
-pkg_failed=no
-echo "$as_me:$LINENO: checking for SAMPLERATE" >&5
-echo $ECHO_N "checking for SAMPLERATE... $ECHO_C" >&6
+  succeeded=no
+
+  if test -z "$PKG_CONFIG"; then
+    # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  test -z "$ac_cv_path_PKG_CONFIG" && ac_cv_path_PKG_CONFIG="no"
+  ;;
+esac
+fi
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
 
 if test -n "$PKG_CONFIG"; then
-    if test -n "$SAMPLERATE_CFLAGS"; then
-        pkg_cv_SAMPLERATE_CFLAGS="$SAMPLERATE_CFLAGS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"samplerate >= 0.1.2\"") >&5
-  ($PKG_CONFIG --exists --print-errors "samplerate >= 0.1.2") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_SAMPLERATE_CFLAGS=`$PKG_CONFIG --cflags "samplerate >= 0.1.2" 2>/dev/null`
+  echo "$as_me:$LINENO: result: $PKG_CONFIG" >&5
+echo "${ECHO_T}$PKG_CONFIG" >&6
 else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
-fi
-if test -n "$PKG_CONFIG"; then
-    if test -n "$SAMPLERATE_LIBS"; then
-        pkg_cv_SAMPLERATE_LIBS="$SAMPLERATE_LIBS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"samplerate >= 0.1.2\"") >&5
-  ($PKG_CONFIG --exists --print-errors "samplerate >= 0.1.2") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_SAMPLERATE_LIBS=`$PKG_CONFIG --libs "samplerate >= 0.1.2" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
 fi
 
+  fi
 
+  if test "$PKG_CONFIG" = "no" ; then
+     echo "*** The pkg-config script could not be found. Make sure it is"
+     echo "*** in your path, or set the PKG_CONFIG environment variable"
+     echo "*** to the full path to pkg-config."
+     echo "*** Or see http://www.freedesktop.org/software/pkgconfig to get pkg-config."
+  else
+     PKG_CONFIG_MIN_VERSION=0.9.0
+     if $PKG_CONFIG --atleast-pkgconfig-version $PKG_CONFIG_MIN_VERSION; then
+        echo "$as_me:$LINENO: checking for samplerate >= 0.1.2" >&5
+echo $ECHO_N "checking for samplerate >= 0.1.2... $ECHO_C" >&6
 
-if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "samplerate >= 0.1.2"`
-        else
-	        SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "samplerate >= 0.1.2"`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$SAMPLERATE_PKG_ERRORS" >&5
-
-	samplerate_available_system="no"
-elif test $pkg_failed = untried; then
-	samplerate_available_system="no"
-else
-	SAMPLERATE_CFLAGS=$pkg_cv_SAMPLERATE_CFLAGS
-	SAMPLERATE_LIBS=$pkg_cv_SAMPLERATE_LIBS
-        echo "$as_me:$LINENO: result: yes" >&5
+        if $PKG_CONFIG --exists "samplerate >= 0.1.2" ; then
+            echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
-	samplerate_available_system="yes"
-fi
+            succeeded=yes
+
+            echo "$as_me:$LINENO: checking SAMPLERATE_CFLAGS" >&5
+echo $ECHO_N "checking SAMPLERATE_CFLAGS... $ECHO_C" >&6
+            SAMPLERATE_CFLAGS=`$PKG_CONFIG --cflags "samplerate >= 0.1.2"`
+            echo "$as_me:$LINENO: result: $SAMPLERATE_CFLAGS" >&5
+echo "${ECHO_T}$SAMPLERATE_CFLAGS" >&6
+
+            echo "$as_me:$LINENO: checking SAMPLERATE_LIBS" >&5
+echo $ECHO_N "checking SAMPLERATE_LIBS... $ECHO_C" >&6
+            SAMPLERATE_LIBS=`$PKG_CONFIG --libs "samplerate >= 0.1.2"`
+            echo "$as_me:$LINENO: result: $SAMPLERATE_LIBS" >&5
+echo "${ECHO_T}$SAMPLERATE_LIBS" >&6
+        else
+            SAMPLERATE_CFLAGS=""
+            SAMPLERATE_LIBS=""
+            ## If we have a custom action on failure, don't print errors, but
+            ## do set a variable so people can do so.
+            SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "samplerate >= 0.1.2"`
+
+        fi
+
+
+
+     else
+        echo "*** Your version of pkg-config is too old. You need version $PKG_CONFIG_MIN_VERSION or newer."
+        echo "*** See http://www.freedesktop.org/software/pkgconfig"
+     fi
+  fi
+
+  if test $succeeded = yes; then
+     samplerate_available_system="yes"
+  else
+     samplerate_available_system="no"
+  fi
+
 
    if test "x$samplerate_available_system" = "xyes" ; then
       LIBSAMPLERATE_SYSTEM_AVAILABLE="yes"
@@ -5432,74 +5332,101 @@ _ACEOF
 
 
 
-pkg_failed=no
-echo "$as_me:$LINENO: checking for SOUNDTOUCH" >&5
-echo $ECHO_N "checking for SOUNDTOUCH... $ECHO_C" >&6
+  succeeded=no
+
+  if test -z "$PKG_CONFIG"; then
+    # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  test -z "$ac_cv_path_PKG_CONFIG" && ac_cv_path_PKG_CONFIG="no"
+  ;;
+esac
+fi
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
 
 if test -n "$PKG_CONFIG"; then
-    if test -n "$SOUNDTOUCH_CFLAGS"; then
-        pkg_cv_SOUNDTOUCH_CFLAGS="$SOUNDTOUCH_CFLAGS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"soundtouch-1.0 >= 1.3.1\"") >&5
-  ($PKG_CONFIG --exists --print-errors "soundtouch-1.0 >= 1.3.1") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_SOUNDTOUCH_CFLAGS=`$PKG_CONFIG --cflags "soundtouch-1.0 >= 1.3.1" 2>/dev/null`
+  echo "$as_me:$LINENO: result: $PKG_CONFIG" >&5
+echo "${ECHO_T}$PKG_CONFIG" >&6
 else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
-fi
-if test -n "$PKG_CONFIG"; then
-    if test -n "$SOUNDTOUCH_LIBS"; then
-        pkg_cv_SOUNDTOUCH_LIBS="$SOUNDTOUCH_LIBS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"soundtouch-1.0 >= 1.3.1\"") >&5
-  ($PKG_CONFIG --exists --print-errors "soundtouch-1.0 >= 1.3.1") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_SOUNDTOUCH_LIBS=`$PKG_CONFIG --libs "soundtouch-1.0 >= 1.3.1" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
 fi
 
+  fi
 
+  if test "$PKG_CONFIG" = "no" ; then
+     echo "*** The pkg-config script could not be found. Make sure it is"
+     echo "*** in your path, or set the PKG_CONFIG environment variable"
+     echo "*** to the full path to pkg-config."
+     echo "*** Or see http://www.freedesktop.org/software/pkgconfig to get pkg-config."
+  else
+     PKG_CONFIG_MIN_VERSION=0.9.0
+     if $PKG_CONFIG --atleast-pkgconfig-version $PKG_CONFIG_MIN_VERSION; then
+        echo "$as_me:$LINENO: checking for soundtouch-1.0 >= 1.3.1" >&5
+echo $ECHO_N "checking for soundtouch-1.0 >= 1.3.1... $ECHO_C" >&6
 
-if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        SOUNDTOUCH_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "soundtouch-1.0 >= 1.3.1"`
-        else
-	        SOUNDTOUCH_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "soundtouch-1.0 >= 1.3.1"`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$SOUNDTOUCH_PKG_ERRORS" >&5
-
-	soundtouch_available_system="no"
-elif test $pkg_failed = untried; then
-	soundtouch_available_system="no"
-else
-	SOUNDTOUCH_CFLAGS=$pkg_cv_SOUNDTOUCH_CFLAGS
-	SOUNDTOUCH_LIBS=$pkg_cv_SOUNDTOUCH_LIBS
-        echo "$as_me:$LINENO: result: yes" >&5
+        if $PKG_CONFIG --exists "soundtouch-1.0 >= 1.3.1" ; then
+            echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
-	soundtouch_available_system="yes"
-fi
+            succeeded=yes
+
+            echo "$as_me:$LINENO: checking SOUNDTOUCH_CFLAGS" >&5
+echo $ECHO_N "checking SOUNDTOUCH_CFLAGS... $ECHO_C" >&6
+            SOUNDTOUCH_CFLAGS=`$PKG_CONFIG --cflags "soundtouch-1.0 >= 1.3.1"`
+            echo "$as_me:$LINENO: result: $SOUNDTOUCH_CFLAGS" >&5
+echo "${ECHO_T}$SOUNDTOUCH_CFLAGS" >&6
+
+            echo "$as_me:$LINENO: checking SOUNDTOUCH_LIBS" >&5
+echo $ECHO_N "checking SOUNDTOUCH_LIBS... $ECHO_C" >&6
+            SOUNDTOUCH_LIBS=`$PKG_CONFIG --libs "soundtouch-1.0 >= 1.3.1"`
+            echo "$as_me:$LINENO: result: $SOUNDTOUCH_LIBS" >&5
+echo "${ECHO_T}$SOUNDTOUCH_LIBS" >&6
+        else
+            SOUNDTOUCH_CFLAGS=""
+            SOUNDTOUCH_LIBS=""
+            ## If we have a custom action on failure, don't print errors, but
+            ## do set a variable so people can do so.
+            SOUNDTOUCH_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "soundtouch-1.0 >= 1.3.1"`
+
+        fi
+
+
+
+     else
+        echo "*** Your version of pkg-config is too old. You need version $PKG_CONFIG_MIN_VERSION or newer."
+        echo "*** See http://www.freedesktop.org/software/pkgconfig"
+     fi
+  fi
+
+  if test $succeeded = yes; then
+     soundtouch_available_system="yes"
+  else
+     soundtouch_available_system="no"
+  fi
+
 
 
    if test "x$soundtouch_available_system" = "xyes" ; then
@@ -6140,6 +6067,15 @@ else
 fi;
 
 
+# Check whether --with-quicktime or --without-quicktime was given.
+if test "${with_quicktime+set}" = set; then
+  withval="$with_quicktime"
+  use_quicktime=$withval
+else
+  use_quicktime="auto"
+fi;
+
+
 # Check whether --with-portmixer or --without-portmixer was given.
 if test "${with_portmixer+set}" = set; then
   withval="$with_portmixer"
@@ -6315,6 +6251,9 @@ case "${host_os}" in
       if [ "$use_audiounits" = "auto" ] ; then
          use_audiounits="yes"
       fi
+      if [ "$use_quicktime" = "auto" ] ; then
+         use_quicktime="yes"
+      fi
       EXTRAINSTALLTARGETS=""
       EXTRAUNINSTALLTARGETS=""
 
@@ -6446,74 +6385,101 @@ fi
             LIBS="$LIBS -lasound"
          fi
 
-pkg_failed=no
-echo "$as_me:$LINENO: checking for JACK" >&5
-echo $ECHO_N "checking for JACK... $ECHO_C" >&6
+  succeeded=no
+
+  if test -z "$PKG_CONFIG"; then
+    # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  test -z "$ac_cv_path_PKG_CONFIG" && ac_cv_path_PKG_CONFIG="no"
+  ;;
+esac
+fi
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
 
 if test -n "$PKG_CONFIG"; then
-    if test -n "$JACK_CFLAGS"; then
-        pkg_cv_JACK_CFLAGS="$JACK_CFLAGS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"jack\"") >&5
-  ($PKG_CONFIG --exists --print-errors "jack") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_JACK_CFLAGS=`$PKG_CONFIG --cflags "jack" 2>/dev/null`
+  echo "$as_me:$LINENO: result: $PKG_CONFIG" >&5
+echo "${ECHO_T}$PKG_CONFIG" >&6
 else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
-fi
-if test -n "$PKG_CONFIG"; then
-    if test -n "$JACK_LIBS"; then
-        pkg_cv_JACK_LIBS="$JACK_LIBS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"jack\"") >&5
-  ($PKG_CONFIG --exists --print-errors "jack") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_JACK_LIBS=`$PKG_CONFIG --libs "jack" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
 fi
 
+  fi
 
+  if test "$PKG_CONFIG" = "no" ; then
+     echo "*** The pkg-config script could not be found. Make sure it is"
+     echo "*** in your path, or set the PKG_CONFIG environment variable"
+     echo "*** to the full path to pkg-config."
+     echo "*** Or see http://www.freedesktop.org/software/pkgconfig to get pkg-config."
+  else
+     PKG_CONFIG_MIN_VERSION=0.9.0
+     if $PKG_CONFIG --atleast-pkgconfig-version $PKG_CONFIG_MIN_VERSION; then
+        echo "$as_me:$LINENO: checking for jack" >&5
+echo $ECHO_N "checking for jack... $ECHO_C" >&6
 
-if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        JACK_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "jack"`
-        else
-	        JACK_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "jack"`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$JACK_PKG_ERRORS" >&5
-
-	have_jack=no
-elif test $pkg_failed = untried; then
-	have_jack=no
-else
-	JACK_CFLAGS=$pkg_cv_JACK_CFLAGS
-	JACK_LIBS=$pkg_cv_JACK_LIBS
-        echo "$as_me:$LINENO: result: yes" >&5
+        if $PKG_CONFIG --exists "jack" ; then
+            echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
-	have_jack=yes
-fi
+            succeeded=yes
+
+            echo "$as_me:$LINENO: checking JACK_CFLAGS" >&5
+echo $ECHO_N "checking JACK_CFLAGS... $ECHO_C" >&6
+            JACK_CFLAGS=`$PKG_CONFIG --cflags "jack"`
+            echo "$as_me:$LINENO: result: $JACK_CFLAGS" >&5
+echo "${ECHO_T}$JACK_CFLAGS" >&6
+
+            echo "$as_me:$LINENO: checking JACK_LIBS" >&5
+echo $ECHO_N "checking JACK_LIBS... $ECHO_C" >&6
+            JACK_LIBS=`$PKG_CONFIG --libs "jack"`
+            echo "$as_me:$LINENO: result: $JACK_LIBS" >&5
+echo "${ECHO_T}$JACK_LIBS" >&6
+        else
+            JACK_CFLAGS=""
+            JACK_LIBS=""
+            ## If we have a custom action on failure, don't print errors, but
+            ## do set a variable so people can do so.
+            JACK_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "jack"`
+
+        fi
+
+
+
+     else
+        echo "*** Your version of pkg-config is too old. You need version $PKG_CONFIG_MIN_VERSION or newer."
+        echo "*** See http://www.freedesktop.org/software/pkgconfig"
+     fi
+  fi
+
+  if test $succeeded = yes; then
+     have_jack=yes
+  else
+     have_jack=no
+  fi
+
          if [ $have_jack = "yes" ] ; then
             LIBS="$LIBS $JACK_LIBS"
          fi
@@ -7020,6 +6986,17 @@ if [ "$use_audiounits" = "yes" ] ; then
 
 cat >>confdefs.h <<\_ACEOF
 #define USE_AUDIO_UNITS 1
+_ACEOF
+
+fi
+
+if [ "$use_quicktime" = "yes" ] ; then
+   OPTOBJS="$OPTOBJS import/ImportQT.o"
+   OPTOBJS="$OPTOBJS import/ImportQTWrapper.o"
+
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_QUICKTIME 1
 _ACEOF
 
 fi
@@ -7863,7 +7840,6 @@ s,@LOCAL_LIBS@,$LOCAL_LIBS,;t t
 s,@AUDACITY_NAME@,$AUDACITY_NAME,;t t
 s,@subdirs@,$subdirs,;t t
 s,@PKG_CONFIG@,$PKG_CONFIG,;t t
-s,@ac_pt_PKG_CONFIG@,$ac_pt_PKG_CONFIG,;t t
 s,@SNDFILE_CFLAGS@,$SNDFILE_CFLAGS,;t t
 s,@SNDFILE_LIBS@,$SNDFILE_LIBS,;t t
 s,@SAMPLERATE_CFLAGS@,$SAMPLERATE_CFLAGS,;t t
