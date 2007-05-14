@@ -14,13 +14,13 @@
 class ImportPluginList;
 class UnusableImportPluginList;
 
+void GetQTImportPlugin(ImportPluginList *importPluginList,
+                       UnusableImportPluginList *unusableImportPluginList);
+
 #ifdef USE_QUICKTIME
 
 void InitQuicktime();
 void ExitQuicktime();
-
-void GetQTImportPlugin(ImportPluginList *importPluginList,
-                       UnusableImportPluginList *unusableImportPluginList);
 
 #endif
 
