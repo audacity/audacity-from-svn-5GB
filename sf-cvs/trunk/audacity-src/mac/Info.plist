@@ -188,6 +188,26 @@
 			<string>Editor</string>
 		</dict>
 
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>MPEG-4 Audio File</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>m4a</string>
+			</array>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>audio/m4a</string>
+				<string>audio/x-m4a</string>
+			</array>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>M4A </string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+
 	</array>
 
 	<key>CFBundleInfoDictionaryVersion</key>
