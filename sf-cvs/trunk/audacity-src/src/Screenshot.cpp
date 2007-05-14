@@ -548,13 +548,10 @@ void ScreenFrame::AddDockedToolbar(AudacityProject *proj,
 
 void ScreenFrame::OnMainWindowSmall(wxCommandEvent& evt)
 {
-   int top = 0;
-   #ifdef __WXMAC__
-   top += 20;
-   #endif
+   int top = 20;
 
    AudacityProject *proj = GetActiveProject();
-   proj->SetSize(16, 16 + top, 620, 450);
+   proj->SetSize(16, 16 + top, 680, 450);
    ToolManager *man = proj->mToolManager;
    ToolDock *dock = man->GetTopDock();
 
@@ -569,7 +566,12 @@ void ScreenFrame::OnMainWindowSmall(wxCommandEvent& evt)
    ToolBar *meter = man->GetToolBar(MeterBarID);
    int width, height;
    meter->GetSize(&width, &height);
-   meter->SetSize(274, height);
+
+   #ifdef __WXMAC__
+   meter->SetSize(334, height);
+   #else
+   meter->SetSize(260, height);
+   #endif
 
    AddDockedToolbar(proj, ToolsBarID, 0);
    AddDockedToolbar(proj, ControlBarID, 1);
@@ -586,10 +588,7 @@ void ScreenFrame::OnMainWindowSmall(wxCommandEvent& evt)
 
 void ScreenFrame::OnMainWindowLarge(wxCommandEvent& evt)
 {
-   int top = 0;
-   #ifdef __WXMAC__
-   top += 20;
-   #endif
+   int top = 20;
 
    AudacityProject *proj = GetActiveProject();
    proj->SetSize(16, 16 + top, 900, 600);
@@ -606,7 +605,12 @@ void ScreenFrame::OnMainWindowLarge(wxCommandEvent& evt)
    ToolBar *meter = man->GetToolBar(MeterBarID);
    int width, height;
    meter->GetSize(&width, &height);
+
+   #ifdef __WXMAC__
    meter->SetSize(554, height);
+   #else
+   meter->SetSize(480, height);
+   #endif
 
    AddDockedToolbar(proj, ToolsBarID, 0);
    AddDockedToolbar(proj, ControlBarID, 1);
@@ -629,8 +633,18 @@ void ScreenFrame::AdjustBackground()
    GetFrontWindow()->GetPosition(&x, &y);
    GetFrontWindow()->GetSize(&width, &height);
 
-   mBackground->SetSize(x - 20, y - 20, width + 40, height + 40);
-   mStaticColorPanel->SetSize(0, 0, width + 40, height + 40);
+   #ifdef __WXMAC__
+   int b = 20;
+   int extra = 0;
+   #else
+   int b = 12;
+   int extra = 20;
+   #endif
+
+   int b2 = b * 2;
+
+   mBackground->SetSize(x - b, y - b - extra, width + b2, height + b2 + extra);
+   mStaticColorPanel->SetSize(0, 0, width + b2, height + b2 + extra);
    mStaticColorPanel->Show();
 }
 
@@ -697,17 +711,25 @@ void ScreenFrame::OnCaptureWindowPlus(wxCommandEvent& evt)
    if (mBackground->IsShown()) {
       AdjustBackground();
       mBackground->Raise();
+      wxYield();
       w->Raise();
       wxYield();
+      wxMilliSleep(200);
+      wxYield();      
    }
+
+   int extraheight = 0;
+   #ifndef __WXMAC__
+   extraheight += 20;
+   #endif
 
    if (x > 16 && y > 16) {
       Capture(basename, screenDC, w,
-              x - 16, y - 16, width + 32, height + 32);
+              x - 16, y - 16, width + 32, height + 32 + extraheight);
    }
    else {
       Capture(basename, screenDC, w,
-              0, 0, width + x + 16, height + y + 16);
+              0, 0, width + x + 16, height + y + 16 + extraheight);
    }
 }
 
