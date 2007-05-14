@@ -150,6 +150,7 @@ void OpenScreenshotTools() {
       mFrame = new ScreenFrame(NULL, -1);
    }
    mFrame->Show();
+   mFrame->Raise();
 }
 
 void CloseScreenshotTools() {
@@ -211,9 +212,14 @@ enum {
 ScreenFrame::ScreenFrame(wxWindow * parent, wxWindowID id):
    wxFrame(parent, id, wxT("Screen Capture Frame"),
            wxDefaultPosition, wxDefaultSize,
-           wxSYSTEM_MENU|wxCAPTION|wxCLOSE_BOX|
-           wxFRAME_TOOL_WINDOW)
+#if !defined(__WXMSW__)
+           wxFRAME_TOOL_WINDOW)|
+#endif
+           wxSYSTEM_MENU|wxCAPTION|wxCLOSE_BOX)
 {
+   mDelayCheckBox = NULL;
+   mDirectoryTextBox = NULL;
+
    mStatus = CreateStatusBar();
    mBackground = new wxFrame(NULL, -1, wxT(""),
                              wxPoint(-100, -100),
@@ -249,7 +255,8 @@ public:
 
 bool ScreenFrame::ProcessEvent(wxEvent& event) {
    int id = event.GetId();
-   if (mDelayCheckBox->GetValue() &&
+   if (mDelayCheckBox &&
+       mDelayCheckBox->GetValue() &&
        event.IsCommandEvent() &&
        event.GetEventType() == wxEVT_COMMAND_BUTTON_CLICKED &&
        id >= IdAllDelayedEvents && id <= IdLastDelayedEvent &&
@@ -355,6 +362,7 @@ void ScreenFrame::CaptureToolbar(int type, wxString name)
 
    if (!visible) {
       man->ShowHide(type);
+      Raise();
    }
 }
 
