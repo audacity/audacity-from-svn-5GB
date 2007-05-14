@@ -72,6 +72,10 @@ It handles initialization and termination by subclassing wxApp.
 #include "FileNames.h"
 #include "AutoRecovery.h"
 
+#ifdef USE_QUICKTIME
+#include "import/ImportQT.h"
+#endif
+
 // Windows specific linker control...only needed once so
 // this is a good place (unless we want to add another file).
 #if defined(__WXMSW__)
@@ -498,6 +502,10 @@ void AudacityApp::OnMRUProject(wxCommandEvent& event) {
 // main frame
 bool AudacityApp::OnInit()
 {
+   #if USE_QUICKTIME
+   ::InitQuicktime();
+   #endif
+
    // Unused strings that we want to be translated, even though
    // we're not using them yet...
    wxString future1 = _("Master Gain Control");

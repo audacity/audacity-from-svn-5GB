@@ -270,6 +270,13 @@ $(OBJS) $(LIBAUDACITY_OBJS): %.o: $(srcdir)/%.cpp configunix.h $(CDEPEND)
 	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $(PRECOMP_CFLAGS) $< -o $@
 
 #
+# Special case: files that need to be compiled without precompiled headers.
+#
+
+import/ImportQTWrapper.o: import/ImportQTWrapper.cpp $(CONFIGHEADER) $(CDEPEND)
+	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
+
+#
 # Precompiled headers:
 #
 
