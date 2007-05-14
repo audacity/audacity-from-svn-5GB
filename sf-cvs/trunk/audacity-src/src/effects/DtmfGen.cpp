@@ -193,8 +193,10 @@ bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar t
 
    // generate a fade-out of duration 1/250th of second
    if (last==total-len) {
+      // we are at the last buffer of 'len' size, so, offset is to
+      // backup 'A' samples, from 'len'
       A=(fs/FADEINOUT);
-      sampleCount offset=total-(longSampleCount)(fs/FADEINOUT);
+      sampleCount offset=len-(longSampleCount)(fs/FADEINOUT);
       // protect against negative offset, which can occur if too a 
       // small selection is made
       if (offset>=0) {
@@ -228,11 +230,14 @@ bool EffectDtmf::Process()
       // Since diff should be in the order of "some" samples, a division (resulting in zero)
       // is not sufficient, so we add the additional remaining samples in each tone/silence block,
       // at least until available.
-
       int diff = numSamplesSequence - (dtmfNTones*numSamplesTone) - (dtmfNTones-1)*numSamplesSilence;
       if (diff>dtmfNTones) {
          // in this case, both these values would change, so it makes sense to recalculate diff
          // otherwise just keep the value we already have
+
+         // should always be the case that dtmfNTones>1, as if 0, we don't even start processing,
+         // and with 1 there is no difference to spread (no silence slot)...
+         wxASSERT(dtmfNTones > 1);
          numSamplesTone += (diff/(dtmfNTones));
          numSamplesSilence += (diff/(dtmfNTones-1));
          diff = numSamplesSequence - (dtmfNTones*numSamplesTone) - (dtmfNTones-1)*numSamplesSilence;
@@ -463,8 +468,11 @@ void DtmfDialog::Recalculate(void) {
    dDutyCycle = TrapLong(mDtmfDutyS->GetValue(), DUTY_MIN, DUTY_MAX);
 
    if (dNTones==0) {
-      // no tones, all zero
+      // no tones, all zero: don't do anything
+      // this should take care of the case where user got an empty
+      // dtmf sequence into the generator: track won't be generated
       dTone = 0;
+      dDuration = 0;
       dSilence = dDuration;
    } else
      if (dNTones==1) {
