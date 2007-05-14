@@ -213,7 +213,7 @@ ScreenFrame::ScreenFrame(wxWindow * parent, wxWindowID id):
    wxFrame(parent, id, wxT("Screen Capture Frame"),
            wxDefaultPosition, wxDefaultSize,
 #if !defined(__WXMSW__)
-           wxFRAME_TOOL_WINDOW)|
+           wxFRAME_TOOL_WINDOW|
 #endif
            wxSYSTEM_MENU|wxCAPTION|wxCLOSE_BOX)
 {
