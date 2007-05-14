@@ -66,10 +66,13 @@ Importer::Importer()
    // in the order defined here.
    GetPCMImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetOGGImportPlugin(mImportPluginList, mUnusableImportPluginList);
-   GetQTImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetFLACImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetMP3ImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetLOFImportPlugin(mImportPluginList, mUnusableImportPluginList);
+
+   #ifdef USE_QUICKTIME
+   GetQTImportPlugin(mImportPluginList, mUnusableImportPluginList);
+   #endif
 }
 
 Importer::~Importer()
