@@ -672,7 +672,7 @@ void ScreenFrame::OnCaptureWindowContents(wxCommandEvent& evt)
 
    wxString basename = wxT("window");
    if (w != GetActiveProject() && w->GetTitle() != wxT("")) {
-      basename += ("-" + w->GetTitle() + "-");
+      basename += (wxT("-") + w->GetTitle() + wxT("-"));
    }
 
    wxClientDC dc(w);
@@ -691,7 +691,7 @@ void ScreenFrame::OnCaptureWindowPlus(wxCommandEvent& evt)
 
    wxString basename = wxT("windowplus");
    if (w != GetActiveProject() && w->GetTitle() != wxT("")) {
-      basename += ("-" + w->GetTitle() + "-");
+      basename += (wxT("-") + w->GetTitle() + wxT("-"));
    }
 
    if (mBackground->IsShown()) {
