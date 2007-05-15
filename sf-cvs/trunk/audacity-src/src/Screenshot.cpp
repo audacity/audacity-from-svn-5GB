@@ -83,7 +83,7 @@ class ScreenFrame : public wxFrame {
  private:
    wxTopLevelWindow *GetFrontWindow();
 
-   void Capture(wxString basename, wxDC& src,
+   void Capture(wxString basename, wxWindow *sw,
                 wxTopLevelWindow *window,
                 int x, int y, int width, int height);
    void CaptureToolbar(int type, wxString name);
@@ -312,7 +312,7 @@ wxTopLevelWindow *ScreenFrame::GetFrontWindow() {
    return (wxTopLevelWindow *)front;
 }
 
-void ScreenFrame::Capture(wxString basename, wxDC& src,
+void ScreenFrame::Capture(wxString basename, wxWindow *sw,
                           wxTopLevelWindow *window,
                           int x, int y, int width, int height)
 {
@@ -333,9 +333,23 @@ void ScreenFrame::Capture(wxString basename, wxDC& src,
    window->Raise();
    Hide();
    wxYield();
+   wxMilliSleep(200);
+   wxYield();
+
+   // Create the DCs here since the window to be captured MUST be
+   // completely visible before creating the wxClientDC.  (Under GTK,
+   // at least.)
+   wxDC *src;
+   if (sw == NULL) {
+      src = new wxScreenDC();
+   }
+   else {
+      src = new wxClientDC(sw);
+   }
+
 
    wxRect r(x, y, width, height);
-   wxRect srcr(0, 0, src.MaxX(), src.MaxY());
+   wxRect srcr(0, 0, src->MaxX(), src->MaxY());
 
    if (srcr.GetWidth() && srcr.GetHeight()) {
       r = r.Intersect(srcr);
@@ -344,7 +358,7 @@ void ScreenFrame::Capture(wxString basename, wxDC& src,
    wxBitmap bitmap(r.width, r.height);
    wxMemoryDC memDC;
    memDC.SelectObject(bitmap);
-   memDC.Blit(0, 0, r.width, r.height, &src, r.x, r.y, wxCOPY);
+   memDC.Blit(0, 0, r.width, r.height, src, r.x, r.y, wxCOPY);
    wxImage image = bitmap.ConvertToImage();
    if (image.SaveFile(filename)) {
       mStatus->SetStatusText(_("Saved ") + filename);
@@ -352,6 +366,8 @@ void ScreenFrame::Capture(wxString basename, wxDC& src,
    else {
       wxMessageBox(_("Error trying to save file: ") + filename);
    }
+
+   delete src;
 
    ::wxBell();
 
@@ -372,8 +388,7 @@ void ScreenFrame::CaptureToolbar(int type, wxString name)
    int width, height;
    w->GetClientSize(&width, &height);
 
-   wxClientDC dc(w);
-   Capture(name, dc, proj, 0, 0, width, height);
+   Capture(name, w, proj, 0, 0, width, height);
 
    if (!visible) {
       man->ShowHide(type);
@@ -588,8 +603,8 @@ wxRect ScreenFrame::PlusRect()
    int b = 12;
    int extra = 0;
    #else
-   int b = 12;
-   int extra = 20;
+   int b = 20;
+   int extra = 0;
    #endif
 
    r.Inflate(b, b + extra);
@@ -647,15 +662,13 @@ void ScreenFrame::OnCaptureWindowContents(wxCommandEvent& evt)
       basename += (wxT("-") + w->GetTitle() + wxT("-"));
    }
 
-   wxClientDC dc(w);
-   Capture(basename, dc, w, 0, 0, width, height);
+   Capture(basename, w, w, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureWindowPlus(wxCommandEvent& evt)
 {
    wxTopLevelWindow *w = GetFrontWindow();
    wxRect r = PlusRect();
-   wxScreenDC screenDC;
 
    wxString basename = wxT("windowplus");
    if (w != GetActiveProject() && w->GetTitle() != wxT("")) {
@@ -672,7 +685,7 @@ void ScreenFrame::OnCaptureWindowPlus(wxCommandEvent& evt)
       wxYield();      
    }
 
-   Capture(basename, screenDC, w,
+   Capture(basename, NULL, w,
            r.x, r.y, r.width, r.height);
 }
 
@@ -681,8 +694,7 @@ void ScreenFrame::OnCaptureFullScreen(wxCommandEvent& evt)
    int width, height;
    wxDisplaySize(&width, &height);
 
-   wxScreenDC screenDC;
-   Capture(wxT("fullscreen"), screenDC, GetFrontWindow(),
+   Capture(wxT("fullscreen"), NULL, GetFrontWindow(),
            0, 0, width, height);
 }
 
@@ -691,8 +703,7 @@ void ScreenFrame::OnCaptureToolbars(wxCommandEvent& evt)
    AudacityProject *proj = GetActiveProject();
    wxRect r = proj->mToolManager->GetTopDock()->GetRect();
 
-   wxClientDC dc(proj);
-   Capture(wxT("toolbars"), dc, proj, r.x, r.y, r.width, r.height);
+   Capture(wxT("toolbars"), proj, proj, r.x, r.y, r.width, r.height);
 }
 
 void ScreenFrame::OnCaptureSelectionBar(wxCommandEvent& evt)
@@ -700,8 +711,7 @@ void ScreenFrame::OnCaptureSelectionBar(wxCommandEvent& evt)
    AudacityProject *proj = GetActiveProject();
    wxRect r = proj->mToolManager->GetBotDock()->GetRect();
 
-   wxClientDC dc(proj);
-   Capture(wxT("selectionbar"), dc, proj, r.x, r.y, r.width, r.height);
+   Capture(wxT("selectionbar"), proj, proj, r.x, r.y, r.width, r.height);
 }
 
 void ScreenFrame::OnCaptureTools(wxCommandEvent& evt)
@@ -844,8 +854,7 @@ void ScreenFrame::OnCaptureTrackPanel(wxCommandEvent& evt)
    panel->GetClientSize(&width, &height);
    rulerheight = ruler->GetRulerHeight();
 
-   wxClientDC dc(panel);
-   Capture(wxT("trackpanel"), dc, proj, 0, -rulerheight, width, height);
+   Capture(wxT("trackpanel"), panel, proj, 0, -rulerheight, width, height);
 }
 
 void ScreenFrame::OnCaptureRuler(wxCommandEvent& evt)
@@ -857,8 +866,7 @@ void ScreenFrame::OnCaptureRuler(wxCommandEvent& evt)
    ruler->GetClientSize(&width, &height);
    height = ruler->GetRulerHeight();
 
-   wxClientDC dc(ruler);
-   Capture(wxT("ruler"), dc, proj, 0, 0, width, height);
+   Capture(wxT("ruler"), ruler, proj, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureTracks(wxCommandEvent& evt)
@@ -868,8 +876,7 @@ void ScreenFrame::OnCaptureTracks(wxCommandEvent& evt)
    int width, height;
    panel->GetClientSize(&width, &height);
 
-   wxClientDC dc(panel);
-   Capture(wxT("tracks"), dc, proj, 0, 0, width, height);
+   Capture(wxT("tracks"), panel, proj, 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureFirstTrack(wxCommandEvent& evt)
@@ -885,8 +892,7 @@ void ScreenFrame::OnCaptureFirstTrack(wxCommandEvent& evt)
    int width, height;
    panel->GetClientSize(&width, &height);
 
-   wxClientDC dc(panel);
-   Capture(wxT("firsttrack"), dc, proj, 0, r.y - 3, width, r.height + 6);
+   Capture(wxT("firsttrack"), panel, proj, 0, r.y - 3, width, r.height + 6);
 }
 
 void ScreenFrame::OnCaptureSecondTrack(wxCommandEvent& evt)
@@ -907,8 +913,7 @@ void ScreenFrame::OnCaptureSecondTrack(wxCommandEvent& evt)
    int width, height;
    panel->GetClientSize(&width, &height);
 
-   wxClientDC dc(panel);
-   Capture(wxT("secondtrack"), dc, proj, 0, r.y - 3, width, r.height + 6);
+   Capture(wxT("secondtrack"), panel, proj, 0, r.y - 3, width, r.height + 6);
 }
 
 void ScreenFrame::OnDirChoose(wxCommandEvent& evt)
