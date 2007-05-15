@@ -29,8 +29,8 @@ void GetQTImportPlugin(ImportPluginList *importPluginList,
                        UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* qtIsUnsupported =
-      new UnusableImportPlugin("QuickTime",
-                               wxStringList("mov", NULL));
+      new UnusableImportPlugin(wxT("QuickTime"),
+                               wxArrayString(WXSIZEOF(exts), exts));
 
    unusableImportPluginList->Append(qtIsUnsupported);
 }
