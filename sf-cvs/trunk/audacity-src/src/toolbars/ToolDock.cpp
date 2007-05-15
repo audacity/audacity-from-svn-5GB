@@ -433,6 +433,37 @@ void ToolDock::ShowHide( int type )
 }
 
 //
+// Set the visible/hidden state of a toolbar
+//
+void ToolDock::Expose( int type, bool show )
+{
+   ToolBar *t = mBars[ type ];
+
+   // Maintain the docked array
+   if( show )
+   {
+      if( mDockedBars.Index( t ) == wxNOT_FOUND )
+      {
+         mDockedBars.Add( t );
+      }
+   }
+   else
+   {
+      if( mDockedBars.Index( t ) != wxNOT_FOUND )
+      {
+         mDockedBars.Remove( t );
+      }
+   }
+
+   // Make it (dis)appear
+   t->Expose( show );
+
+   // Update the layout
+   LayoutToolBars();
+   Updated();
+}
+
+//
 // Queues an EVT_TOOLBAR_UPDATED command event to notify any
 // interested parties of an updated toolbar or dock layout
 //

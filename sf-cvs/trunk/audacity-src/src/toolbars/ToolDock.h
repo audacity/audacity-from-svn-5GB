@@ -57,6 +57,8 @@ class ToolDock:public wxPanel
 
    void ShowHide( int type );
 
+   void Expose( int type, bool show );
+
    int GetOrder( ToolBar *bar );
 
    void Dock( ToolBar *bar, int ndx = -1 );
