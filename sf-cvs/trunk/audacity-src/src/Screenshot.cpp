@@ -129,6 +129,7 @@ class ScreenFrame : public wxFrame {
 
    void OnDirChoose(wxCommandEvent& evt);
 
+   wxRect PlusRect();
    void AdjustBackground();
    void AddDockedToolbar(AudacityProject *proj,
                          int id, int index);
@@ -227,7 +228,15 @@ ScreenFrame::ScreenFrame(wxWindow * parent, wxWindowID id):
                              wxFRAME_NO_TASKBAR);
    mStaticColorPanel = new StaticColorPanel(mBackground);
 
+   // Reset the toolbars to a known state
+   GetActiveProject()->mToolManager->Reset();
+   wxYield();
+   wxMilliSleep(200);
+   wxYield();
+
    Populate();
+
+   Raise();   
 }
 
 ScreenFrame::~ScreenFrame() {
@@ -634,25 +643,32 @@ void ScreenFrame::OnMainWindowLarge(wxCommandEvent& evt)
    AdjustBackground();
 }
 
-void ScreenFrame::AdjustBackground()
+wxRect ScreenFrame::PlusRect()
 {
-   int x, y;
-   int width, height;
-   GetFrontWindow()->GetPosition(&x, &y);
-   GetFrontWindow()->GetSize(&width, &height);
+   wxRect r = GetFrontWindow()->GetRect();
 
    #ifdef __WXMAC__
    int b = 20;
+   int extra = 0;
+   #elif defined(__WXMSW__)
+   int b = 12;
    int extra = 0;
    #else
    int b = 12;
    int extra = 20;
    #endif
 
-   int b2 = b * 2;
+   r.Inflate(b, b + extra);
 
-   mBackground->SetSize(x - b, y - b - extra, width + b2, height + b2 + extra);
-   mStaticColorPanel->SetSize(0, 0, width + b2, height + b2 + extra);
+   return r;
+}
+
+void ScreenFrame::AdjustBackground()
+{
+   wxRect r = PlusRect();
+
+   mBackground->SetSize(r);
+   mStaticColorPanel->SetSize(0, 0, r.width, r.height);
    mStaticColorPanel->Show();
 }
 
@@ -704,11 +720,7 @@ void ScreenFrame::OnCaptureWindowContents(wxCommandEvent& evt)
 void ScreenFrame::OnCaptureWindowPlus(wxCommandEvent& evt)
 {
    wxTopLevelWindow *w = GetFrontWindow();
-   int x, y;
-   int width, height;
-   w->GetPosition(&x, &y);
-   w->GetSize(&width, &height);
-
+   wxRect r = PlusRect();
    wxScreenDC screenDC;
 
    wxString basename = wxT("windowplus");
@@ -726,19 +738,8 @@ void ScreenFrame::OnCaptureWindowPlus(wxCommandEvent& evt)
       wxYield();      
    }
 
-   int extraheight = 0;
-   #ifndef __WXMAC__
-   extraheight += 20;
-   #endif
-
-   if (x > 16 && y > 16) {
-      Capture(basename, screenDC, w,
-              x - 16, y - 16, width + 32, height + 32 + extraheight);
-   }
-   else {
-      Capture(basename, screenDC, w,
-              0, 0, width + x + 16, height + y + 16 + extraheight);
-   }
+   Capture(basename, screenDC, w,
+           r.x, r.y, r.width, r.height);
 }
 
 void ScreenFrame::OnCaptureFullScreen(wxCommandEvent& evt)

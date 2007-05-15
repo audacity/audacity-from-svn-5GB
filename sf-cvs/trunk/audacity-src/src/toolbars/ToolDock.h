@@ -61,6 +61,8 @@ class ToolDock:public wxPanel
 
    void Dock( ToolBar *bar, int ndx = -1 );
 
+   void Undock( ToolBar *bar );
+
    int PositionBar( ToolBar *t, wxPoint & pos, wxRect & rect );
 
  protected:

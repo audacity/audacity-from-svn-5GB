@@ -82,15 +82,16 @@ class ToolBar:public wxPanel
    virtual void EnableDisableButtons() = 0;
    virtual void ReCreateButtons();
 
-   void SetDocked(bool dock, bool pushed);
+   void SetDocked(ToolDock *dock, bool pushed);
 
    int GetType();
    wxString GetTitle();
    wxString GetLabel();
    wxString GetSection();
    ToolDock *GetDock();
+   void SetDock( ToolDock *dock);
 
-   bool Expose( bool show = true );
+   bool Expose(bool show = true);
 
    bool IsResizable();
    bool IsVisible();
@@ -170,8 +171,9 @@ class ToolBar:public wxPanel
    wxString mSection;
    int mType;
 
+   ToolDock *mDock;
+
    bool mVisible;
-   bool mDocked;
    bool mResizable;
 
  public:

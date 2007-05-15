@@ -580,6 +580,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("ShowSelectionTB"),     SHOW(_("Selection Toolbar")),     FN(OnShowSelectionToolBar));
    c->AddItem(wxT("ShowToolsTB"),         SHOW(_("Tools Toolbar")),         FN(OnShowToolsToolBar));
    c->AddItem(wxT("ShowTranscriptionTB"), SHOW(_("Transcription Toolbar")), FN(OnShowTranscriptionToolBar));
+   c->AddSeparator();
+   c->AddItem(wxT("ResetToolbars"),       _("Reset Toolbars"),              FN(OnResetToolBars));
    c->EndSubMenu();
 
    c->EndMenu();
@@ -3473,6 +3475,12 @@ void AudacityProject::OnShowToolsToolBar()
 void AudacityProject::OnShowTranscriptionToolBar()
 {
    mToolManager->ShowHide( TranscriptionBarID );
+   ModifyToolbarMenus();
+}
+
+void AudacityProject::OnResetToolBars()
+{
+   mToolManager->Reset();
    ModifyToolbarMenus();
 }
 

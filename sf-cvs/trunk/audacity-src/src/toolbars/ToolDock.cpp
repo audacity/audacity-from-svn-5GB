@@ -104,6 +104,17 @@ int ToolDock::GetOrder( ToolBar *bar )
 }
 
 //
+// Remove the toolbar from our control
+//
+void ToolDock::Undock( ToolBar *bar )
+{
+   if( mDockedBars.Index( bar ) != wxNOT_FOUND )
+   {
+      mDockedBars.Remove( bar );
+   }
+}
+
+//
 // Handle ToolDock events
 //
 void ToolDock::Dock( ToolBar *bar, int before )
@@ -126,7 +137,7 @@ void ToolDock::Dock( ToolBar *bar, int before )
    }
 
    // Inform toolbar of change
-   bar->SetDocked( true, false );
+   bar->SetDocked( this, false );
 
    // Rearrange our world
    LayoutToolBars();
