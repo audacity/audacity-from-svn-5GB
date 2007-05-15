@@ -57,6 +57,8 @@ class ToolManager:public wxEvtHandler
 
    void ShowHide( int type );
 
+   void Expose( int type, bool show );
+
    ToolBar *GetToolBar( int type ) const;
 
    ToolDock *GetTopDock();

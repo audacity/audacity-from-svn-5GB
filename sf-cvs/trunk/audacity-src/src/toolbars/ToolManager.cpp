@@ -465,22 +465,26 @@ void ToolManager::Reset()
       if( ndx == SelectionBarID )
       {
          dock = mBotDock;
+
+         wxCommandEvent e;
+         bar->GetEventHandler()->ProcessEvent(e);
       }
       else
       {
          dock = mTopDock;
+         bar->ReCreateButtons();
       }
-
-      bar->ReCreateButtons();
 
       bar->EnableDisableButtons();
-
+#if 0
+      if( bar->IsResizable() )
+      {
+         bar->SetSize(bar->GetBestFittingSize());
+      }
+#endif
       dock->Dock( bar );
 
-      if( ndx == DeviceBarID && bar->IsVisible() )
-      {
-         dock->ShowHide( ndx );
-      }
+      Expose( ndx, ndx ==  DeviceBarID ? false : true );
 
       if( parent )
       {
@@ -793,6 +797,24 @@ void ToolManager::ShowHide( int type )
    else
    {
       t->Expose( !t->IsVisible() );
+   }
+}
+
+//
+// Set the visible/hidden state of a toolbar
+//
+void ToolManager::Expose( int type, bool show )
+{
+   ToolBar *t = mBars[ type ];
+
+   // Handle docked and floaters differently
+   if( t->IsDocked() )
+   {
+      t->GetDock()->Expose( type, show );
+   }
+   else
+   {
+      t->Expose( show );
    }
 }
 
