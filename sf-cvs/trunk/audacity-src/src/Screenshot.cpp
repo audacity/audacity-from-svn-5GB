@@ -131,8 +131,6 @@ class ScreenFrame : public wxFrame {
 
    wxRect PlusRect();
    void AdjustBackground();
-   void AddDockedToolbar(AudacityProject *proj,
-                         int id, int index);
 
    wxCheckBox *mDelayCheckBox;
    wxTextCtrl *mDirectoryTextBox;
@@ -333,12 +331,20 @@ void ScreenFrame::Capture(wxString basename, wxDC& src,
 
    // Try to make sure the window raises and activates
    window->Raise();
+   Hide();
    wxYield();
 
-   wxBitmap bitmap(width, height);
+   wxRect r(x, y, width, height);
+   wxRect srcr(0, 0, src.MaxX(), src.MaxY());
+
+   if (srcr.GetWidth() && srcr.GetHeight()) {
+      r = r.Intersect(srcr);
+   }
+
+   wxBitmap bitmap(r.width, r.height);
    wxMemoryDC memDC;
    memDC.SelectObject(bitmap);
-   memDC.Blit(0, 0, width, height, &src, x, y, wxCOPY);
+   memDC.Blit(0, 0, r.width, r.height, &src, r.x, r.y, wxCOPY);
    wxImage image = bitmap.ConvertToImage();
    if (image.SaveFile(filename)) {
       mStatus->SetStatusText(_("Saved ") + filename);
@@ -349,7 +355,7 @@ void ScreenFrame::Capture(wxString basename, wxDC& src,
 
    ::wxBell();
 
-   Raise();
+   Show();
 }
 
 void ScreenFrame::CaptureToolbar(int type, wxString name)
@@ -549,56 +555,13 @@ void ScreenFrame::OnCloseWindow(wxCloseEvent & evt)
    Destroy();
 }
 
-void ScreenFrame::AddDockedToolbar(AudacityProject *proj,
-                                   int id, int index) {
-   ToolManager *man = proj->mToolManager;
-   ToolDock *dock = man->GetTopDock();
-   ToolBar *bar = man->GetToolBar(id);
-
-   man->ShowHide(id);
-   if (!bar->IsDocked()) {
-      wxWindow *parent = bar->GetParent();
-      dock->Dock(bar, index);
-      parent->Destroy();
-   }
-}
-
 void ScreenFrame::OnMainWindowSmall(wxCommandEvent& evt)
 {
    int top = 20;
 
    AudacityProject *proj = GetActiveProject();
    proj->SetSize(16, 16 + top, 680, 450);
-   ToolManager *man = proj->mToolManager;
-   ToolDock *dock = man->GetTopDock();
-
-   int i;
-   for(i = 0; i < ToolBarCount; i++) {
-      if (man->IsVisible(i))
-         man->ShowHide(i);
-   }
-
-   dock->LayoutToolBars();
-
-   ToolBar *meter = man->GetToolBar(MeterBarID);
-   int width, height;
-   meter->GetSize(&width, &height);
-
-   #ifdef __WXMAC__
-   meter->SetSize(334, height);
-   #else
-   meter->SetSize(260, height);
-   #endif
-
-   AddDockedToolbar(proj, ToolsBarID, 0);
-   AddDockedToolbar(proj, ControlBarID, 1);
-   AddDockedToolbar(proj, MeterBarID, 2);
-   AddDockedToolbar(proj, MixerBarID, 3);
-   AddDockedToolbar(proj, EditBarID, 4);
-
-   dock->LayoutToolBars();
-
-   man->ShowHide(SelectionBarID);
+   proj->mToolManager->Reset();
 
    AdjustBackground();
 }
@@ -609,37 +572,8 @@ void ScreenFrame::OnMainWindowLarge(wxCommandEvent& evt)
 
    AudacityProject *proj = GetActiveProject();
    proj->SetSize(16, 16 + top, 900, 600);
-   ToolManager *man = proj->mToolManager;
-   ToolDock *dock = man->GetTopDock();
-   int i;
-   for(i = 0; i < ToolBarCount; i++) {
-      if (man->IsVisible(i))
-         man->ShowHide(i);
-   }
-
-   dock->LayoutToolBars();
-
-   ToolBar *meter = man->GetToolBar(MeterBarID);
-   int width, height;
-   meter->GetSize(&width, &height);
-
-   #ifdef __WXMAC__
-   meter->SetSize(554, height);
-   #else
-   meter->SetSize(480, height);
-   #endif
-
-   AddDockedToolbar(proj, ToolsBarID, 0);
-   AddDockedToolbar(proj, ControlBarID, 1);
-   AddDockedToolbar(proj, MeterBarID, 2);
-   AddDockedToolbar(proj, EditBarID, 3);
-   AddDockedToolbar(proj, MixerBarID, 4);
-   AddDockedToolbar(proj, DeviceBarID, 5);
-
-   dock->LayoutToolBars();
-
-   man->ShowHide(SelectionBarID);
-
+   proj->mToolManager->Reset();
+   
    AdjustBackground();
 }
 
@@ -648,7 +582,7 @@ wxRect ScreenFrame::PlusRect()
    wxRect r = GetFrontWindow()->GetRect();
 
    #ifdef __WXMAC__
-   int b = 20;
+   int b = 12;
    int extra = 0;
    #elif defined(__WXMSW__)
    int b = 12;
