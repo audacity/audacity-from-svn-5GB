@@ -1022,7 +1022,7 @@ int AudacityProject::GetFocusedFrame()
 {
    wxWindow *w = FindFocus();
 
-   while (w) {
+   while (w && mToolManager && mTrackPanel) {
       if (w == mToolManager->GetTopDock()) {
          return TopDockHasFocus;
       }
