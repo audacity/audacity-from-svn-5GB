@@ -100,7 +100,7 @@ ToolBar::ToolBar( int type,
    mParent = NULL;
    mHSizer = NULL;
    mSpacer = NULL;
-   mDocked = true;
+   mDock = NULL;
    mVisible = false;
 }
 
@@ -156,7 +156,7 @@ bool ToolBar::IsResizable()
 //
 bool ToolBar::IsDocked()
 {
-   return mDocked;
+   return mDock != NULL;
 }
 
 //
@@ -234,7 +234,7 @@ void ToolBar::ReCreateButtons()
    ms->Add( mHSizer, 1, wxEXPAND );
 
    // (Re)Establish dock state
-   SetDocked( IsDocked(), false );
+   SetDocked( GetDock(), false );
 
    // Go add all the rest of the gadgets
    Populate();
@@ -262,16 +262,16 @@ void ToolBar::ReCreateButtons()
 
 ToolDock *ToolBar::GetDock()
 {
-   return (ToolDock *)mParent;
+   return mDock;
 };
 
 //
 // Toggle the docked/floating state
 //
-void ToolBar::SetDocked( bool dock, bool pushed )
+void ToolBar::SetDocked( ToolDock *dock, bool pushed )
 {
    // Remember it
-   mDocked = dock;
+   mDock = dock;
 
    // Change the tooltip of the grabber
 #if wxUSE_TOOLTIPS

@@ -207,6 +207,7 @@ void OnShowMixerToolBar();
 void OnShowSelectionToolBar();
 void OnShowToolsToolBar();
 void OnShowTranscriptionToolBar();
+void OnResetToolBars();
 
 
         // Project Menu

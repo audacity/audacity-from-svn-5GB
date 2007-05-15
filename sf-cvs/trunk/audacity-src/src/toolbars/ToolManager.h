@@ -62,6 +62,8 @@ class ToolManager:public wxEvtHandler
    ToolDock *GetTopDock();
    ToolDock *GetBotDock();
 
+   void Reset();
+
  private:
 
    ToolBar *Float( ToolBar *t, wxPoint & pos );

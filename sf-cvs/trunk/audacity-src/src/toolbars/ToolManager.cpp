@@ -1,4 +1,4 @@
- /**********************************************************************
+/**********************************************************************
 
   Audacity: A Digital Audio Editor
 
@@ -133,7 +133,7 @@ class ToolFrame:public wxFrame
       Layout();
 
       // Inform toolbar of change
-      bar->SetDocked( false, true );
+      bar->SetDocked( NULL, true );
 
       // Make sure resizable floaters don't get any smaller than initial size
       if( bar->IsResizable() )
@@ -384,8 +384,8 @@ ToolManager::ToolManager( AudacityProject *parent )
                      this );
 
    // Create the top and bottom docks
-   mTopDock = new ToolDock( this, parent, TopDockID );
-   mBotDock = new ToolDock( this, parent, BotDockID );
+   mTopDock = new ToolDock( this, mParent, TopDockID );
+   mBotDock = new ToolDock( this, mParent, BotDockID );
 
    // Create all of the toolbars
    mBars[ ToolsBarID ]         = new ToolsToolBar();
@@ -439,6 +439,58 @@ ToolManager::~ToolManager()
    delete mLeft;
    delete mDown;
 }
+
+void ToolManager::Reset()
+{
+   int ndx;
+
+   // Disconnect all docked bars
+   for( ndx = 0; ndx < ToolBarCount; ndx++ )
+   {
+      wxWindow *parent;
+      ToolDock *dock;
+      ToolBar *bar = mBars[ ndx ];
+
+      // Disconnect the bar
+      if( bar->IsDocked() )
+      {
+         bar->GetDock()->Undock( bar );
+         parent = NULL;
+      }
+      else
+      {
+         parent = bar->GetParent();
+      }
+
+      if( ndx == SelectionBarID )
+      {
+         dock = mBotDock;
+      }
+      else
+      {
+         dock = mTopDock;
+      }
+
+      bar->ReCreateButtons();
+
+      bar->EnableDisableButtons();
+
+      dock->Dock( bar );
+
+      if( ndx == DeviceBarID && bar->IsVisible() )
+      {
+         dock->ShowHide( ndx );
+      }
+
+      if( parent )
+      {
+         parent->Destroy();
+      }
+   }
+
+   LayoutToolBars();
+   Updated();
+} 
 
 //
 // Read the toolbar states
@@ -549,7 +601,7 @@ void ToolManager::ReadConfig()
          bar->Expose( show[ ndx ] );
 
          // Inform toolbar of change
-         bar->SetDocked( false, false );
+         bar->SetDocked( NULL, false );
       }
 
       // Change back to the bar root
@@ -804,7 +856,7 @@ void ToolManager::OnMouse( wxMouseEvent & event )
       else
       {
          // Calling SetDocked() to force the grabber button to popup
-         mDragBar->SetDocked( false, false );
+         mDragBar->SetDocked( NULL, false );
       }
 
       // Done dragging
@@ -1012,7 +1064,7 @@ void ToolManager::OnGrabber( GrabberEvent & event )
       mp -= mDragOffset;
 
       // Inform toolbar of change
-      mDragBar->SetDocked( false, true );
+      mDragBar->SetDocked( NULL, true );
 
       // Construct a new floater
       mDragWindow = new ToolFrame( mParent, this, mDragBar, mp );
