@@ -733,6 +733,8 @@
 		17FDBD01098BFF4E00BCEF32 /* os_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 170732F90988D6AB008541CC /* os_types.h */; };
 		17FDBD02098BFF4E00BCEF32 /* bitwise.c in Sources */ = {isa = PBXBuildFile; fileRef = 170733980988D6AC008541CC /* bitwise.c */; };
 		17FDBD03098BFF4E00BCEF32 /* framing.c in Sources */ = {isa = PBXBuildFile; fileRef = 1707339A0988D6AC008541CC /* framing.c */; };
+		2801A6460BF9268700648258 /* ImportQT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2801A6430BF9268700648258 /* ImportQT.cpp */; };
+		2801A6470BF9268700648258 /* ImportQTWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2801A6450BF9268700648258 /* ImportQTWrapper.cpp */; };
 		280828550A75E0D0000002EF /* LabelDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828530A75E0D0000002EF /* LabelDialog.cpp */; };
 		2808285A0A75E0EA000002EF /* Grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828580A75E0EA000002EF /* Grid.cpp */; };
 		2809C4B80BCB7E560006010F /* FileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2809C4B60BCB7E560006010F /* FileIO.cpp */; };
@@ -1328,7 +1330,7 @@
 		176EEBEA09A2F16200188F3B /* libFLAC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFLAC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		176EEC1E09A2F2DD00188F3B /* libFLAC++.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libFLAC++.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		178CF4FF0989541C0056CE58 /* configmac.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = configmac.h; path = mac/configmac.h; sourceTree = "<group>"; };
-		1790AFB009883B6D008A330A /* Audacity.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Audacity.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1790AFB009883B6D008A330A /* Audacity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Audacity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1790AFC709883BFD008A330A /* AboutDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AboutDialog.cpp; sourceTree = "<group>"; };
 		1790AFC809883BFD008A330A /* AboutDialog.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AboutDialog.h; sourceTree = "<group>"; };
 		1790AFC909883BFD008A330A /* AColor.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AColor.cpp; sourceTree = "<group>"; };
@@ -1852,6 +1854,9 @@
 		17C8BF52098B654400216F16 /* xlsym.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = xlsym.c; sourceTree = "<group>"; };
 		17C8BF54098B654400216F16 /* xlsys.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = xlsys.c; sourceTree = "<group>"; };
 		17FC86F30994637C0061DC94 /* compile.txt */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; name = compile.txt; path = mac/compile.txt; sourceTree = "<group>"; };
+		2801A6430BF9268700648258 /* ImportQT.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImportQT.cpp; sourceTree = "<group>"; };
+		2801A6440BF9268700648258 /* ImportQT.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ImportQT.h; sourceTree = "<group>"; };
+		2801A6450BF9268700648258 /* ImportQTWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImportQTWrapper.cpp; sourceTree = "<group>"; };
 		280828530A75E0D0000002EF /* LabelDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = LabelDialog.cpp; sourceTree = "<group>"; };
 		280828540A75E0D0000002EF /* LabelDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LabelDialog.h; sourceTree = "<group>"; };
 		280828580A75E0EA000002EF /* Grid.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Grid.cpp; sourceTree = "<group>"; };
@@ -3067,6 +3072,9 @@
 				1790B08B09883BFD008A330A /* ImportPCM.cpp */,
 				1790B08C09883BFD008A330A /* ImportPCM.h */,
 				1790B08D09883BFD008A330A /* ImportPlugin.h */,
+				2801A6430BF9268700648258 /* ImportQT.cpp */,
+				2801A6440BF9268700648258 /* ImportQT.h */,
+				2801A6450BF9268700648258 /* ImportQTWrapper.cpp */,
 				1790B08E09883BFD008A330A /* ImportRaw.cpp */,
 				1790B08F09883BFD008A330A /* ImportRaw.h */,
 				1790B09009883BFD008A330A /* RawAudioGuess.cpp */,
@@ -5254,6 +5262,8 @@
 				2809C4B80BCB7E560006010F /* FileIO.cpp in Sources */,
 				28F5C1110BE5886A00D17341 /* FileDialogPrivate.cpp in Sources */,
 				285DE1FA0BF03C7800A20DF0 /* Screenshot.cpp in Sources */,
+				2801A6460BF9268700648258 /* ImportQT.cpp in Sources */,
+				2801A6470BF9268700648258 /* ImportQTWrapper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
