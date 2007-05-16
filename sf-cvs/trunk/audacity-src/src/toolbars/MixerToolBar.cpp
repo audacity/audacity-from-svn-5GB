@@ -187,8 +187,12 @@ void MixerToolBar::UpdateControls()
    //if (inputSource != mInputSourceChoice->GetSelection())
    //    mInputSourceChoice->SetSelection(inputSource);
 
-   mOutputSlider->Set(playbackVolume);
-   mInputSlider->Set(inputVolume);
+   if (mOutputSlider->Get() != playbackVolume) {
+      mOutputSlider->Set(playbackVolume);
+   }
+   if (mInputSlider->Get() != inputVolume) {
+      mInputSlider->Set(inputVolume);
+   }
 #endif // USE_PORTMIXER
 }
 
