@@ -26,6 +26,7 @@
 #include <wx/statusbr.h>
 #include <wx/textctrl.h>
 #include <wx/timer.h>
+#include <wx/tglbtn.h>
 #include <wx/window.h>
 
 #include "Project.h"
@@ -83,9 +84,10 @@ class ScreenFrame : public wxFrame {
  private:
    wxTopLevelWindow *GetFrontWindow();
 
-   void Capture(wxString basename, wxWindow *sw,
-                wxTopLevelWindow *window,
-                int x, int y, int width, int height);
+   void Capture(wxString basename,
+                wxWindow *window,
+                int x, int y, int width, int height,
+                bool bg = false);
    void CaptureToolbar(int type, wxString name);
 
    void Populate();
@@ -129,14 +131,13 @@ class ScreenFrame : public wxFrame {
 
    void OnDirChoose(wxCommandEvent& evt);
 
-   wxRect PlusRect();
-   void AdjustBackground();
-
    wxCheckBox *mDelayCheckBox;
    wxTextCtrl *mDirectoryTextBox;
+   wxToggleButton *mBlue;
+   wxToggleButton *mWhite;
    wxStatusBar *mStatus;
-   wxFrame *mBackground;
-   StaticColorPanel *mStaticColorPanel;
+   bool mBackground;
+   wxColour mBackColor;
 
    DECLARE_EVENT_TABLE()
 };
@@ -150,6 +151,9 @@ void OpenScreenshotTools() {
    }
    mFrame->Show();
    mFrame->Raise();
+   wxYield();
+   wxMilliSleep(200);
+   wxYield();
 }
 
 void CloseScreenshotTools() {
@@ -218,13 +222,9 @@ ScreenFrame::ScreenFrame(wxWindow * parent, wxWindowID id):
 {
    mDelayCheckBox = NULL;
    mDirectoryTextBox = NULL;
+   mBackground = false;
 
    mStatus = CreateStatusBar();
-   mBackground = new wxFrame(NULL, -1, wxT(""),
-                             wxPoint(-100, -100),
-                             wxSize(1, 1),
-                             wxFRAME_NO_TASKBAR);
-   mStaticColorPanel = new StaticColorPanel(mBackground);
 
    // Reset the toolbars to a known state
    GetActiveProject()->mToolManager->Reset();
@@ -233,12 +233,10 @@ ScreenFrame::ScreenFrame(wxWindow * parent, wxWindowID id):
    wxYield();
 
    Populate();
-
-   Raise();   
 }
 
-ScreenFrame::~ScreenFrame() {
-   delete mBackground;
+ScreenFrame::~ScreenFrame()
+{
 }
 
 class ScreenFrameTimer : public wxTimer {
@@ -298,7 +296,7 @@ wxTopLevelWindow *ScreenFrame::GetFrontWindow() {
          wxWindow *win = wxFindWindowAtPoint(wxPoint(x, y));
          if (win) {
             win = wxGetTopLevelParent(win);
-            if (win != this && win != proj && win != mBackground) {
+            if (win != this && win != proj) {
                front = win;
                break;
             }
@@ -312,9 +310,10 @@ wxTopLevelWindow *ScreenFrame::GetFrontWindow() {
    return (wxTopLevelWindow *)front;
 }
 
-void ScreenFrame::Capture(wxString basename, wxWindow *sw,
-                          wxTopLevelWindow *window,
-                          int x, int y, int width, int height)
+void ScreenFrame::Capture(wxString basename,
+                          wxWindow *window,
+                          int x, int y, int width, int height,
+                          bool bg)
 {
    wxFileName prefixPath;
    prefixPath.AssignDir(mDirectoryTextBox->GetValue());
@@ -329,7 +328,37 @@ void ScreenFrame::Capture(wxString basename, wxWindow *sw,
       i++;
    } while (::wxFileExists(filename));
 
-   // Try to make sure the window raises and activates
+   wxFrame *frame = NULL;
+   StaticColorPanel *panel = NULL;
+   wxWindow *p = window->GetParent();
+
+   if (p) {
+      panel = new StaticColorPanel(p);
+      panel->SetSize(x, y, width, height);
+      panel->Hide();
+      if (bg && mBackground) {
+         panel->Show();
+      }
+   }
+   else {
+      frame = new wxFrame(NULL,
+                          wxID_ANY,
+                          wxT(""),
+                          wxDefaultPosition,
+                          wxDefaultSize,
+                          wxNO_BORDER|wxFRAME_NO_TASKBAR|wxFRAME_TOOL_WINDOW);
+      panel = new StaticColorPanel(frame);
+      panel->SetSize(x, y, width, height);
+
+      frame->Move(x < 0 ? 0 : x, y < 0 ? 0 : y);
+      frame->SetClientSize(width, height);
+      frame->Hide();
+      if (bg && mBackground) {
+         frame->Show();
+      }
+   }
+   panel->SetColour(mBackColor);
+
    window->Raise();
    Hide();
    wxYield();
@@ -340,26 +369,17 @@ void ScreenFrame::Capture(wxString basename, wxWindow *sw,
    // completely visible before creating the wxClientDC.  (Under GTK,
    // at least.)
    wxDC *src;
-   if (sw == NULL) {
-      src = new wxScreenDC();
-   }
-   else {
-      src = new wxClientDC(sw);
-   }
+   src = new wxScreenDC();
 
-
-   wxRect r(x, y, width, height);
-   wxRect srcr(0, 0, src->MaxX(), src->MaxY());
-
-   if (srcr.GetWidth() && srcr.GetHeight()) {
-      r = r.Intersect(srcr);
-   }
+   wxRect r = panel->GetRect();
+   r.SetPosition(panel->GetParent()->ClientToScreen(r.GetPosition()));
 
    wxBitmap bitmap(r.width, r.height);
    wxMemoryDC memDC;
    memDC.SelectObject(bitmap);
    memDC.Blit(0, 0, r.width, r.height, src, r.x, r.y, wxCOPY);
    wxImage image = bitmap.ConvertToImage();
+
    if (image.SaveFile(filename)) {
       mStatus->SetStatusText(_("Saved ") + filename);
    }
@@ -367,6 +387,12 @@ void ScreenFrame::Capture(wxString basename, wxWindow *sw,
       wxMessageBox(_("Error trying to save file: ") + filename);
    }
 
+   if (frame) {
+      delete frame;
+   }
+   else {
+      delete panel;
+   }
    delete src;
 
    ::wxBell();
@@ -385,10 +411,14 @@ void ScreenFrame::CaptureToolbar(int type, wxString name)
    }
 
    wxWindow *w = man->GetToolBar(type);
+   int x = 0, y = 0;
    int width, height;
+
+   w->ClientToScreen(&x, &y);
+   w->GetParent()->ScreenToClient(&x, &y);
    w->GetClientSize(&width, &height);
 
-   Capture(name, w, proj, 0, 0, width, height);
+   Capture(name, w, x, y, width, height);
 
    if (!visible) {
       man->ShowHide(type);
@@ -404,7 +434,8 @@ void ScreenFrame::Populate()
 
 void ScreenFrame::PopulateOrExchange(ShuttleGui &S)
 {
-   S.StartPanel(0)->SetBackgroundColour(
+   wxPanel *p = S.StartPanel(0);
+   p->SetBackgroundColour(
       wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
    S.SetBorder(2);
    S.StartVerticalLay(1);
@@ -424,14 +455,19 @@ void ScreenFrame::PopulateOrExchange(ShuttleGui &S)
    S.EndMultiColumn();
    S.EndStatic();
 
-
    S.StartStatic(wxT("Capture entire window or screen"), true);
    S.StartHorizontalLay();
    {
       S.Id(IdMainWindowSmall).AddButton(wxT("Resize Small"));
       S.Id(IdMainWindowLarge).AddButton(wxT("Resize Large"));
-      S.Id(IdToggleBackgroundBlue).AddButton(wxT("Blue Bkgnd"));
-      S.Id(IdToggleBackgroundWhite).AddButton(wxT("White Bkgnd"));
+      mBlue = new wxToggleButton(p,
+                                 IdToggleBackgroundBlue,
+                                 wxT("Blue Bkgnd"));
+      S.AddWindow(mBlue);
+      mWhite = new wxToggleButton(p,
+                                  IdToggleBackgroundWhite,
+                                  wxT("White Bkgnd"));
+      S.AddWindow(mWhite);
    }
    S.EndHorizontalLay();
    S.StartHorizontalLay();
@@ -527,8 +563,8 @@ BEGIN_EVENT_TABLE(ScreenFrame, wxFrame)
 
    EVT_BUTTON(IdMainWindowSmall,        ScreenFrame::OnMainWindowSmall)
    EVT_BUTTON(IdMainWindowLarge,        ScreenFrame::OnMainWindowLarge)
-   EVT_BUTTON(IdToggleBackgroundBlue,   ScreenFrame::OnToggleBackgroundBlue)
-   EVT_BUTTON(IdToggleBackgroundWhite,  ScreenFrame::OnToggleBackgroundWhite)
+   EVT_TOGGLEBUTTON(IdToggleBackgroundBlue,   ScreenFrame::OnToggleBackgroundBlue)
+   EVT_TOGGLEBUTTON(IdToggleBackgroundWhite,  ScreenFrame::OnToggleBackgroundWhite)
    EVT_BUTTON(IdCaptureWindowContents,  ScreenFrame::OnCaptureWindowContents)
    EVT_BUTTON(IdCaptureWindowPlus,      ScreenFrame::OnCaptureWindowPlus)
 
@@ -577,8 +613,6 @@ void ScreenFrame::OnMainWindowSmall(wxCommandEvent& evt)
    AudacityProject *proj = GetActiveProject();
    proj->SetSize(16, 16 + top, 680, 450);
    proj->mToolManager->Reset();
-
-   AdjustBackground();
 }
 
 void ScreenFrame::OnMainWindowLarge(wxCommandEvent& evt)
@@ -588,105 +622,80 @@ void ScreenFrame::OnMainWindowLarge(wxCommandEvent& evt)
    AudacityProject *proj = GetActiveProject();
    proj->SetSize(16, 16 + top, 900, 600);
    proj->mToolManager->Reset();
-   
-   AdjustBackground();
-}
-
-wxRect ScreenFrame::PlusRect()
-{
-   wxRect r = GetFrontWindow()->GetRect();
-
-   #ifdef __WXMAC__
-   int b = 12;
-   int extra = 0;
-   #elif defined(__WXMSW__)
-   int b = 12;
-   int extra = 0;
-   #else
-   int b = 20;
-   int extra = 0;
-   #endif
-
-   r.Inflate(b, b + extra);
-
-   return r;
-}
-
-void ScreenFrame::AdjustBackground()
-{
-   wxRect r = PlusRect();
-
-   mBackground->SetSize(r);
-   mStaticColorPanel->SetSize(0, 0, r.width, r.height);
-   mStaticColorPanel->Show();
 }
 
 void ScreenFrame::OnToggleBackgroundBlue(wxCommandEvent& evt)
 {
-   if (mBackground->IsShown()) {
-      mBackground->Hide();
-      return;
-   }
-
-   mStaticColorPanel->SetColour(wxColour(51, 102, 153));
-   wxTopLevelWindow *front = GetFrontWindow();
-   AdjustBackground();
-   mBackground->Show();
-   front->Raise();
-   Raise();
+   mBackColor = wxColour(51, 102, 153);
+   mBackground = mBlue->GetValue();
+   mWhite->SetValue(false);
 }
 
 void ScreenFrame::OnToggleBackgroundWhite(wxCommandEvent& evt)
 {
-   if (mBackground->IsShown()) {
-      mBackground->Hide();
-      return;
-   }
-
-   mStaticColorPanel->SetColour(wxColour(255, 255, 255));
-   wxTopLevelWindow *front = GetFrontWindow();
-   AdjustBackground();
-   mBackground->Show();
-   front->Raise();
-   Raise();
+   mBackColor = wxColour(255, 255, 255);
+   mBackground = mWhite->GetValue();
+   mBlue->SetValue(false);
 }
 
 void ScreenFrame::OnCaptureWindowContents(wxCommandEvent& evt)
 {
    wxTopLevelWindow *w = GetFrontWindow();
+   int x = 0, y = 0;
    int width, height;
+
+   w->ClientToScreen(&x, &y);
    w->GetClientSize(&width, &height);
+   wxWindow *p = w->GetParent();
+
+   if (p) {
+      p->ScreenToClient(&x, &y);
+   }
 
    wxString basename = wxT("window");
    if (w != GetActiveProject() && w->GetTitle() != wxT("")) {
       basename += (wxT("-") + w->GetTitle() + wxT("-"));
    }
 
-   Capture(basename, w, w, 0, 0, width, height);
+   Capture(basename, w, x, y, width, height);
 }
 
 void ScreenFrame::OnCaptureWindowPlus(wxCommandEvent& evt)
 {
    wxTopLevelWindow *w = GetFrontWindow();
-   wxRect r = PlusRect();
+   wxWindow *p = w->GetParent();
+   wxRect r = w->GetRect();
+
+   int eh = 0;
+   int ev = 0;
+   #ifdef __WXMAC__
+   int h = 16;
+   int v = 16;
+   #elif defined(__WXMSW__)
+   int h = 16;
+   int v = 16;
+   #else
+   int h = 12;
+   int v = 24;
+   eh = 6;
+   ev = 24;
+   #endif
+
+   r.x -= h;
+   r.y -= v;
+   r.width += h * 2 + eh;
+   r.height += v * 2 + ev;
+
+   if (p) {
+      p->ScreenToClient(&r.x, &r.y);
+   }
 
    wxString basename = wxT("windowplus");
    if (w != GetActiveProject() && w->GetTitle() != wxT("")) {
       basename += (wxT("-") + w->GetTitle() + wxT("-"));
    }
 
-   if (mBackground->IsShown()) {
-      AdjustBackground();
-      mBackground->Raise();
-      wxYield();
-      w->Raise();
-      wxYield();
-      wxMilliSleep(200);
-      wxYield();      
-   }
-
-   Capture(basename, NULL, w,
-           r.x, r.y, r.width, r.height);
+   Capture(basename, w, r.x, r.y, r.width, r.height, true);
 }
 
 void ScreenFrame::OnCaptureFullScreen(wxCommandEvent& evt)
@@ -694,24 +703,37 @@ void ScreenFrame::OnCaptureFullScreen(wxCommandEvent& evt)
    int width, height;
    wxDisplaySize(&width, &height);
 
-   Capture(wxT("fullscreen"), NULL, GetFrontWindow(),
-           0, 0, width, height);
+   Capture(wxT("fullscreen"), GetFrontWindow(), 0, 0, width, height);
 }
 
 void ScreenFrame::OnCaptureToolbars(wxCommandEvent& evt)
 {
    AudacityProject *proj = GetActiveProject();
-   wxRect r = proj->mToolManager->GetTopDock()->GetRect();
+   wxWindow *w = proj->mToolManager->GetTopDock();
 
-   Capture(wxT("toolbars"), proj, proj, r.x, r.y, r.width, r.height);
+   int x = 0, y = 0;
+   int width, height;
+
+   w->ClientToScreen(&x, &y);
+   w->GetParent()->ScreenToClient(&x, &y);
+   w->GetClientSize(&width, &height);
+
+   Capture(wxT("toolbars"), w, x, y, width, height);
 }
 
 void ScreenFrame::OnCaptureSelectionBar(wxCommandEvent& evt)
 {
    AudacityProject *proj = GetActiveProject();
-   wxRect r = proj->mToolManager->GetBotDock()->GetRect();
+   wxWindow *w = proj->mToolManager->GetBotDock();
 
-   Capture(wxT("selectionbar"), proj, proj, r.x, r.y, r.width, r.height);
+   int x = 0, y = 0;
+   int width, height;
+
+   w->ClientToScreen(&x, &y);
+   w->GetParent()->ScreenToClient(&x, &y);
+   w->GetClientSize(&width, &height);
+
+   Capture(wxT("selectionbar"), w, x, y, width, height);
 }
 
 void ScreenFrame::OnCaptureTools(wxCommandEvent& evt)
@@ -850,11 +872,16 @@ void ScreenFrame::OnCaptureTrackPanel(wxCommandEvent& evt)
    AudacityProject *proj = GetActiveProject();
    TrackPanel *panel = proj->mTrackPanel;
    AdornedRulerPanel *ruler = panel->mRuler;
-   int width, height, rulerheight;
-   panel->GetClientSize(&width, &height);
-   rulerheight = ruler->GetRulerHeight();
 
-   Capture(wxT("trackpanel"), panel, proj, 0, -rulerheight, width, height);
+   int h = ruler->GetRulerHeight();
+   int x = 0, y = -h;
+   int width, height;
+
+   panel->ClientToScreen(&x, &y);
+   panel->GetParent()->ScreenToClient(&x, &y);
+   panel->GetClientSize(&width, &height);
+
+   Capture(wxT("trackpanel"), panel, x, y, width, height + h);
 }
 
 void ScreenFrame::OnCaptureRuler(wxCommandEvent& evt)
@@ -862,21 +889,31 @@ void ScreenFrame::OnCaptureRuler(wxCommandEvent& evt)
    AudacityProject *proj = GetActiveProject();
    TrackPanel *panel = proj->mTrackPanel;
    AdornedRulerPanel *ruler = panel->mRuler;
+
+   int x = 0, y = 0;
    int width, height;
+
+   ruler->ClientToScreen(&x, &y);
+   ruler->GetParent()->ScreenToClient(&x, &y);
    ruler->GetClientSize(&width, &height);
    height = ruler->GetRulerHeight();
 
-   Capture(wxT("ruler"), ruler, proj, 0, 0, width, height);
+   Capture(wxT("ruler"), ruler, x, y, width, height);
 }
 
 void ScreenFrame::OnCaptureTracks(wxCommandEvent& evt)
 {
    AudacityProject *proj = GetActiveProject();
    TrackPanel *panel = proj->mTrackPanel;
+
+   int x = 0, y = 0;
    int width, height;
+
+   panel->ClientToScreen(&x, &y);
+   panel->GetParent()->ScreenToClient(&x, &y);
    panel->GetClientSize(&width, &height);
 
-   Capture(wxT("tracks"), panel, proj, 0, 0, width, height);
+   Capture(wxT("tracks"), panel, x, y, width, height);
 }
 
 void ScreenFrame::OnCaptureFirstTrack(wxCommandEvent& evt)
@@ -889,10 +926,14 @@ void ScreenFrame::OnCaptureFirstTrack(wxCommandEvent& evt)
       return;
    wxRect r = panel->FindTrackRect(t, true);
 
+   int x = 0, y = r.y - 3;
    int width, height;
+
+   panel->ClientToScreen(&x, &y);
+   panel->GetParent()->ScreenToClient(&x, &y);
    panel->GetClientSize(&width, &height);
 
-   Capture(wxT("firsttrack"), panel, proj, 0, r.y - 3, width, r.height + 6);
+   Capture(wxT("firsttrack"), panel, x, y, width, r.height + 6);
 }
 
 void ScreenFrame::OnCaptureSecondTrack(wxCommandEvent& evt)
@@ -910,10 +951,14 @@ void ScreenFrame::OnCaptureSecondTrack(wxCommandEvent& evt)
       return;
    wxRect r = panel->FindTrackRect(t, true);
 
+   int x = 0, y = r.y - 3;
    int width, height;
+
+   panel->ClientToScreen(&x, &y);
+   panel->GetParent()->ScreenToClient(&x, &y);
    panel->GetClientSize(&width, &height);
 
-   Capture(wxT("secondtrack"), panel, proj, 0, r.y - 3, width, r.height + 6);
+   Capture(wxT("secondtrack"), panel, x, y, width, r.height + 6);
 }
 
 void ScreenFrame::OnDirChoose(wxCommandEvent& evt)
