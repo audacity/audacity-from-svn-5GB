@@ -2,6 +2,7 @@
 /*
  * Copyright 2004 Matt Brubeck
  * 2006 Richard Ash
+ * Copyright 2007 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -19,33 +20,40 @@
   // Note that the Audacity Forum has sections specially for Spanish,
   // French, German, and Russian!
   ?>
-<p><?php  echo _('If you have questions or comments for the Audacity developers,
-e-mail us at: ');?><a href="mailto:audacity-help@lists.sourceforge.net">
-audacity-help@lists.sourceforge.net</a>. <?php
-echo _('(This is a public mailing list.  For details, see our ');?><a href="../contact/privacy"><?php echo _('privacy policy');?></a>.)</p>
 
-<p><?php echo _('If you have a general question about how to use Audacity,
-please use the ');?><a href="http://audacityteam.org/forum/"><?php 
-// i18n-hint: this is the link text to the Forum
-echo _('Audacity Forum');?></a>.<?php 
-// i18n-hint: this is instructions on how to use the forum. The name of the
-// link probably shouldn't be translated unless the forum interface supports
-// your language - currently German I think
-echo _(' You will need to register in order to
-post on the forum, then log in and use the "Create New Thread" link');?>.</p>
-
-<p><b><?php echo _('When you report a bug or problem, please:');?></b></p>
+<h3><?=_('Bugs and Major Usage Problems')?></h3>
+<p><?=_('Before you contact us, check the <a href="../help/faq">Frequently Asked Questions (FAQ)</a>.')?></p>
+<p><?=_('If you still need help, email us at the <a href="mailto:audacity-help@lists.sourceforge.net">Help list, audacity-help@lists.sourceforge.net</a>. This is a public mailing list. For details, see our <a href="../contact/privacy">privacy policy</a>.')?></p>
+<p><?=_('When you report a bug or problem, please:')?></p>
 <ol>
-  <li><?php echo _('Before you contact us, check the ');?>
-  <a href="../help/faq"><?php 
-  // i18n-hint: this bit is the link text to the FAQ
-  echo _('Frequently Asked Questions');?></a>.</li>
-  <li><?php echo _('Tell us what version of Audacity and which operating
-  system you are using');?>.</li>
-  <li>
-  <?php echo _('Include details of what you are trying to do, and any error
-  messages or other problems you experience');?>.</li>
+  <li><?=_('Tell us what version of Audacity you are using (for example, 1.2.6).')?></li>
+  <li><?=_('Tell us what operating system you are using (for example, Windows XP Service Pack 2 or Mac OS X 10.4).')?></li>
+  <li><?=_('Include details of what you are trying to do, and any error messages or other problems you experience.')?></li>
 </ol>
+
+
+<h3><?=_('General Questions on How to Use Audacity')?></h3>
+<p><?=_('First, check the <a href="../help/faq">Frequently Asked Questions (FAQ)</a>.')?></p>
+<p>
+  <?php echo _('If you still have a general question about how to use Audacity, please use the ');?>
+  <a href="http://audacityteam.org/forum/"><?php 
+  // i18n-hint: this is the link text to the Forum
+  echo _('Audacity Forum');?>
+  </a>.<?php 
+  // i18n-hint: this is instructions on how to use the forum. The name of the
+  // link probably shouldn't be translated unless the forum interface supports
+  // your language - currently German I think
+  echo _('You can search the Forum and may well be able to find an immediate answer. If not, you can register and then post your question to other users. Log in and use the "Create New Thread" link.');?>
+</p>
+<p><?=_('You might also find helpful information by searching the <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=audacity-help">Help list archive</a>, also available at <a href="http://www.nabble.com/audacity-help-f4506.html">Nabble</a> with an easier search interface.')?></p>
+
+
+<h3><?=_('Suggestions and Comments for Audacity Developers')?></h3>
+<p>
+  <?=_('Please email suggestions and comments for Audacity Developers to the <a href="mailto:audacity-help@lists.sourceforge.net">Help list, audacity-help@lists.sourceforge.net</a>. This is a public mailing list. For details, see our <a href="../contact/privacy">privacy policy</a>.')?>
+</p>
+
+
 <h3><?php echo _('Discussion Lists')?></h3>
 <p><?php echo _('To discuss Audacity with other users and developers, join our');?>
  <a href="../contact/lists"><?php
