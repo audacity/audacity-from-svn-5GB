@@ -2,6 +2,7 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2005 Matt Brubeck
+ * Copyright 2007 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -116,6 +117,12 @@
 </ul>
 <p>See also: <a href="faq?s=files&amp;i=split">How to split a long recording into multiple files</a>.</p>').
           "<p>"._("See also:").' <a href="faq?s=files&amp;i=burn-cd">'._("How do I save my recording on an audio CD?")."</a></p>"
+        ),
+        "mixer-toolbar-input" => array(
+          _("Why is the Input selector in the Mixer Toolbar not working as expected?"),
+          _("<p>The Input selector may be greyed-out, lacking the expected choices, or apparently not recording from the indicated source.</p>
+<p>The causes of these problems vary by operating system and sound card driver. For a complete discussion, see the <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixer Toolbar Issues</a> page on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>
+")
         ),
         "playthrough" => array(
           _("Why can’t I hear what I’m recording?"),

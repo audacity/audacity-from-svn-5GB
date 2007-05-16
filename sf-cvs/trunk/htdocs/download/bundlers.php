@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2006 Vaughan Johnson
+ * Copyright 2007 Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -19,8 +19,80 @@
 
 <p><?=_('To be considered for addition to this list, please first review our <a href="../about/license">License, and Advice for Vendors</a> page. If you are distributing Audacity under those terms and would like to be on this list, contact Vaughan Johnson (vaughan (at) audacityteam.org) or write to the <a href="mailto:audacity-help@lists.sourceforge.net?subject=bundlers">audacity-help</a> list.')?></p>
 
+<ul>
+  <li>
+    <a href="#Hardware Bundles">Hardware Bundles</a>
+  </li>
+  <li>
+    <a href="#Interfaces">Interfaces</a>
+  </li>
+  <li>
+    <a href="#Musical Instruments">Musical Instruments</a>
+  </li>
+  <li>
+    <a href="#Playback Devices">Playback Devices</a>
+  </li>
+  <li>
+    <a href="#Others">Others</a>
+  </li>
+</ul>
+
+
+<a name="Hardware Bundles"></a>
+<h3>Hardware Bundles</h3>
 <table border="2" cellpadding="8">
-  <tr><th>Vendor</th><th>Product</th><th>Description</th></tr>
+  <tr>
+    <th>Vendor</th>
+    <th>Product</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/PODCASTUDIO-FIREWIRE">PODCASTUDIO FIREWIRE</a>
+    </td>
+    <td>FireWire audio interface, 8-input mixer, headphones, studio microphone with stand, cables, software</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.behringer.com">Behringer</a>
+    </td>
+    <td>
+      <a href="http://www.behringer.com/PODCASTUDIO-USB">PODCASTUDIO USB</a>
+    </td>
+    <td>USB audio interface, 8-input mixer, headphones, studio microphone with stand, cables, software</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.m-audio.com">M-Audio</a>
+    </td>
+    <td>
+      <a href="http://www.m-audio.com/products/en_us/PodcastFactory-main.html">Podcast Factory</a>
+    </td>
+    <td>hardware and software to record, edit and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand. NOTE: Currently Podcast Factory will not work with Windows XP Media Center Edition (XP Home and Pro are not affected). Audacity itself does work with Media Center Edition, subject to your computer having suitable sound device drivers specific to your hardware.</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.pinnaclesys.com">Pinnacle Systems</a>
+    </td>
+    <td>
+      <a href="http://www.pinnaclesys.com/PublicSite/uk/Products/Consumer+Products/Audio/M-Audio/Family?code=UKMaudio">Podcast Factory</a>
+    </td>
+    <td>hardware and software to record, edit and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand. NOTE: Currently Podcast Factory will not work with Windows XP Media Center Edition (XP Home and Pro are not affected). Audacity itself does work with Media Center Edition, subject to your computer having suitable sound device drivers specific to your hardware.</td>
+  </tr>
+</table>
+
+
+<a name="Interfaces"></a>
+<h3>Interfaces</h3>
+<table border="2" cellpadding="8">
+  <tr>
+    <th>Vendor</th>
+    <th>Product</th>
+    <th>Description</th>
+  </tr>
   <tr>
     <td>
       <a href="http://www.artproaudio.com">Applied Research and Technology</a>
@@ -38,6 +110,71 @@
       <a href="http://www.behringer.com/FCA202">F-CONTROL AUDIO FCA202</a>
     </td>
     <td>2 In/2 Out 24-Bit/96 kHz FireWire® audio interface</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.citronic.co.uk">Citronic</a>
+    </td>
+    <td>
+      <a href="http://www.citronic.co.uk/product/product.php?s=128.515">AC-1USB Audio Capture Device</a>
+    </td>
+    <td>interface to connect turntable, mixer, or CD player to USB or analog</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.diamondmm.com">Diamond Multimedia</a>
+    </td>
+    <td>
+      <a href="http://www.diamondmm.com/XS51.php">XS51</a>
+    </td>
+    <td>XtremeSound 5.1/16 bit Sound Card</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.diamondmm.com">Diamond Multimedia</a>
+    </td>
+    <td>
+      <a href="http://www.diamondmm.com/XS71.php">XS71</a>
+    </td>
+    <td>XtremeSound 7.1/24 bit Sound Card</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.diamondmm.com">Diamond Multimedia</a>
+    </td>
+    <td>
+      <a href="http://www.diamondmm.com/XS71.php">XS71DDL</a>
+    </td>
+    <td>XtremeSound 7.1/24 bit Sound Card with Dolby Digital Live</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.presonus.com">Presonus Audio Electronics</a>
+    </td>
+    <td>
+      <a href="http://www.presonus.com/inspire1394.html">Inspire 1394</a>
+    </td>
+    <td>FireWire recording system featuring 24-bit/96k analog to digital conversion rate, four simultaneous inputs, software control panel, audio recording and production software</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://westek.com">Westek</a>
+    </td>
+    <td>
+      <a href="http://www.google.com/search?q=Westek+TeleTool+2000">Westek TeleTool 2000 PC/Telephone Recorder</a>
+    </td>
+    <td>Record telephone conversations from phone to PC.</td>
+  </tr>
+</table>
+
+
+<a name="Musical Instruments"></a>
+<h3>Musical Instruments</h3>
+<table border="2" cellpadding="8">
+  <tr>
+    <th>Vendor</th>
+    <th>Product</th>
+    <th>Description</th>
   </tr>
   <tr>
     <td>
@@ -98,24 +235,6 @@
       <a href="http://www.behringer.com">Behringer</a>
     </td>
     <td>
-      <a href="http://www.behringer.com/PODCASTUDIO-FIREWIRE">PODCASTUDIO FIREWIRE</a>
-    </td>
-    <td>FireWire audio interface, 8-input mixer, headphones, studio microphone with stand, cables, software</td>
-  </tr>
-  <tr>
-    <td>
-      <a href="http://www.behringer.com">Behringer</a>
-    </td>
-    <td>
-      <a href="http://www.behringer.com/PODCASTUDIO-USB">PODCASTUDIO USB</a>
-    </td>
-    <td>USB audio interface, 8-input mixer, headphones, studio microphone with stand, cables, software</td>
-  </tr>
-  <tr>
-    <td>
-      <a href="http://www.behringer.com">Behringer</a>
-    </td>
-    <td>
       <a href="http://www.behringer.com/UMA25S">U-CONTROL UMA25S</a>
     </td>
     <td>ultra-slim 25-Key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition</td>
@@ -156,41 +275,16 @@
     </td>
     <td>virtual guitar amplifier with tube simulation and 24-bit effects</td>
   </tr>
+</table>
+
+
+<a name="Playback Devices"></a>
+<h3>Playback Devices</h3>
+<table border="2" cellpadding="8">
   <tr>
-    <td>
-      <a href="http://www.citronic.co.uk">Citronic</a>
-    </td>
-    <td>
-      <a href="http://www.citronic.co.uk/product/product.php?s=128.515">AC-1USB Audio Capture Device</a>
-    </td>
-    <td>interface to connect turntable, mixer, or CD player to USB or analog</td>
-  </tr>
-  <tr>
-    <td>
-      <a href="http://www.diamondmm.com">Diamond Multimedia</a>
-    </td>
-    <td>
-      <a href="http://www.diamondmm.com/XS51.php">XS51</a>
-    </td>
-    <td>XtremeSound 5.1/16 bit Sound Card</td>
-  </tr>
-  <tr>
-    <td>
-      <a href="http://www.diamondmm.com">Diamond Multimedia</a>
-    </td>
-    <td>
-      <a href="http://www.diamondmm.com/XS71.php">XS71</a>
-    </td>
-    <td>XtremeSound 7.1/24 bit Sound Card</td>
-  </tr>
-  <tr>
-    <td>
-      <a href="http://www.diamondmm.com">Diamond Multimedia</a>
-    </td>
-    <td>
-      <a href="http://www.diamondmm.com/XS71.php">XS71DDL</a>
-    </td>
-    <td>XtremeSound 7.1/24 bit Sound Card with Dolby Digital Live</td>
+    <th>Vendor</th>
+    <th>Product</th>
+    <th>Description</th>
   </tr>
   <tr>
     <td>
@@ -199,7 +293,7 @@
     <td>
       <a href="http://www.ion-audio.com/ittusb.php">iTTUSB</a>
     </td>
-    <td>USB turntable. NOTE: On January 21, 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what the article stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and export the multiple files together based on split points. ION and Numark have corrected their documentation, and they are apparently still bundling Audacity. Please see our Wiki page on <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB turntables</a> for more information.</td>
+    <td>USB turntable. NOTE: On January 21, 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> (now available for a price) appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what the article stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and export the multiple files together based on split points. ION and Numark have corrected their documentation, and they are apparently still bundling Audacity. Please see our Wiki page on <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB turntables</a> for more information.</td>
   </tr>
   <tr>
     <td>
@@ -221,40 +315,20 @@
   </tr>
   <tr>
     <td>
-      <a href="http://www.m-audio.com">M-Audio</a>
-    </td>
-    <td>
-      <a href="http://www.m-audio.com/products/en_us/PodcastFactory-main.html">Podcast Factory</a>
-    </td>
-    <td>hardware and software to record, edit and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand. NOTE: Currently Podcast Factory will not work with Windows XP Media Center Edition (XP Home and Pro are not affected). Audacity itself does work with Media Center Edition, subject to your computer having suitable sound device drivers specific to your hardware.</td>
-  </tr>
-  <tr>
-    <td>
       <a href="http://www.numark.com">Numark</a>
     </td>
     <td>
       <a href="http://www.numark.com/products/product_view.php?v=overview&n=144">TTUSB</a>
     </td>
-    <td>USB turntable. NOTE: On January 21, 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what the article stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and export the multiple files together based on split points. ION and Numark have corrected their documentation, and they are apparently still bundling Audacity. Please see our Wiki page on <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB turntables</a> for more information.</td>
+    <td>USB turntable. NOTE: On January 21, 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> (now available for a price) appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what the article stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and export the multiple files together based on split points. ION and Numark have corrected their documentation, and they are apparently still bundling Audacity. Please see our Wiki page on <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB turntables</a> for more information.</td>
   </tr>
-  <tr>
-    <td>
-      <a href="http://www.pinnaclesys.com">Pinnacle Systems</a>
-    </td>
-    <td>
-      <a href="http://www.pinnaclesys.com/PublicSite/uk/Products/Consumer+Products/Audio/M-Audio/Family?code=UKMaudio">Podcast Factory</a>
-    </td>
-    <td>hardware and software to record, edit and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand. NOTE: Currently Podcast Factory will not work with Windows XP Media Center Edition (XP Home and Pro are not affected). Audacity itself does work with Media Center Edition, subject to your computer having suitable sound device drivers specific to your hardware.</td>
-  </tr>
-  <tr>
-    <td>
-      <a href="http://www.presonus.com">Presonus Audio Electronics</a>
-    </td>
-    <td>
-      <a href="http://www.presonus.com/inspire1394.html">Inspire 1394</a>
-    </td>
-    <td>FireWire recording system featuring 24-bit/96k analog to digital conversion rate, four simultaneous inputs, software control panel, audio recording and production software</td>
-  </tr>
+</table>
+
+
+<a name="Others"></a>
+<h3>Others</h3>
+<table border="2" cellpadding="8">
+  <tr><th>Vendor</th><th>Product</th><th>Description</th></tr>
   <tr>
     <td>
       <a href="http://www.theopencd.org">TheOpenCD</a>
@@ -263,15 +337,6 @@
       <a href="http://www.theopencd.org">OpenCD</a>
     </td>
     <td>collection of high quality Free and Open Source Software (including Audacity) for Microsoft Windows</td>
-  </tr>
-  <tr>
-    <td>
-      <a href="http://www.trinityaudiogroup.com">Trinity Audio Group</a>
-    </td>
-    <td>
-      <a href="http://www.trinityaudiogroup.com/home.html">Trinity</a>
-    </td>
-    <td>portable recording studio or (DAW) digital audio workstation, featuring "walk and mix" technology</td>
   </tr>
   <tr>
     <td>
@@ -284,21 +349,21 @@
   </tr>
   <tr>
     <td>
+      <a href="http://www.trinityaudiogroup.com">Trinity Audio Group</a>
+    </td>
+    <td>
+      <a href="http://www.trinityaudiogroup.com/home.html">Trinity</a>
+    </td>
+    <td>portable recording studio or (DAW) digital audio workstation, featuring "walk and mix" technology</td>
+  </tr>
+  <tr>
+    <td>
       <a href="http://umixit.com">UmixIt</a>
     </td>
     <td>
       <a href="http://umixit.com">UmixIt, powered by Audacity</a>
     </td>
     <td>original artist re-mix tracks. "Share the studio experience" with favorite recording artists, with the ability to remix, record, sing karaoke, add effects, and edit original artist's recordings track-by-track.</td>
-  </tr>
-  <tr>
-    <td>
-      <a href="http://westek.com">Westek</a>
-    </td>
-    <td>
-      <a href="http://www.google.com/search?q=Westek+TeleTool+2000">Westek TeleTool 2000 PC/Telephone Recorder</a>
-    </td>
-    <td>Record telephone conversations from phone to PC.</td>
   </tr>
   <tr>
     <td>
