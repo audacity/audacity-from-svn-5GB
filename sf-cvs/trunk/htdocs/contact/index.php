@@ -21,17 +21,6 @@
   // French, German, and Russian!
   ?>
 
-<h3><?=_('Bugs and Major Usage Problems')?></h3>
-<p><?=_('Before you contact us, check the <a href="../help/faq">Frequently Asked Questions (FAQ)</a>.')?></p>
-<p><?=_('If you still need help, email us at the <a href="mailto:audacity-help@lists.sourceforge.net">Help list, audacity-help@lists.sourceforge.net</a>. This is a public mailing list. For details, see our <a href="../contact/privacy">privacy policy</a>.')?></p>
-<p><?=_('When you report a bug or problem, please:')?></p>
-<ol>
-  <li><?=_('Tell us what version of Audacity you are using (for example, 1.2.6).')?></li>
-  <li><?=_('Tell us what operating system you are using (for example, Windows XP Service Pack 2 or Mac OS X 10.4).')?></li>
-  <li><?=_('Include details of what you are trying to do, and any error messages or other problems you experience.')?></li>
-</ol>
-
-
 <h3><?=_('General Questions on How to Use Audacity')?></h3>
 <p><?=_('First, check the <a href="../help/faq">Frequently Asked Questions (FAQ)</a>.')?></p>
 <p>
@@ -46,6 +35,17 @@
   echo _('You can search the Forum and may well be able to find an immediate answer. If not, you can register and then post your question to other users. Log in and use the "Create New Thread" link.');?>
 </p>
 <p><?=_('You might also find helpful information by searching the <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=audacity-help">Help list archive</a>, also available at <a href="http://www.nabble.com/audacity-help-f4506.html">Nabble</a> with an easier search interface.')?></p>
+
+
+<h3><?=_('Bugs and Major Usage Problems')?></h3>
+<p><?=_('Before you contact us, check the <a href="../help/faq">Frequently Asked Questions (FAQ)</a>.')?></p>
+<p><?=_('If you still need help, email us at the <a href="mailto:audacity-help@lists.sourceforge.net">Help list, audacity-help@lists.sourceforge.net</a>. This is a public mailing list. For details, see our <a href="../contact/privacy">privacy policy</a>.')?></p>
+<p><?=_('When you report a bug or problem, please:')?></p>
+<ol>
+  <li><?=_('Tell us what version of Audacity you are using (for example, 1.2.6).')?></li>
+  <li><?=_('Tell us what operating system you are using (for example, Windows XP Service Pack 2 or Mac OS X 10.4).')?></li>
+  <li><?=_('Include details of what you are trying to do, and any error messages or other problems you experience.')?></li>
+</ol>
 
 
 <h3><?=_('Suggestions and Comments for Audacity Developers')?></h3>
