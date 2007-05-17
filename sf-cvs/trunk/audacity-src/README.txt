@@ -294,6 +294,48 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
+Changes in 1.3.2 and 1.3.3:
+
+Opening/saving formats:
+   * Import of audio from QuickTime (mov, aac, m4a) files is now  
+     supported on OSX
+   * Metadata may be added to OGG files
+   * Improved export option selection
+   * Importing of Broadcast Wave Format (BWF) wave files now tolerated
+   * Additional export options added to MP3 and FLAC file formats
+   * Command line exporter now supported on Windows and OSX
+
+Effects:
+   * EQ effect responsiveness improved
+   * Several enhancements to the EQ Effect
+   * Batch support added for the EQ effect
+   * New Auto Duck effect
+   * Added previewing to AudioUnit effects
+   * Much improved Noise Removal effect
+   * Effects previewing may now be canceled
+   * New DTMF Tone Generator effect
+   * Additional options available in Noise effect
+   * Improved the Tone Generation effects
+
+Other features:
+   * New built-in screen capture utility
+   * Major speed improvement in Spectrogram rendering
+   * Increased support for drag and drop on OSX
+   * Support added for building against wxWidgets 2.8
+   * Support opening multiple Audacity Projects at once from Explorer on  
+     Windows
+   * Improved main window sliders
+   * New support for snapping while selecting and sliding
+   * Improved track focus handling and visual feedback
+   * Speed improvements and handling of resizing/zooming in tracks
+   * Spectrum view may now be zoomed
+   * New internal file cache to improve handling of project files over  
+     networks
+
+Also:
+   * Many improvements to language specific translations
+   * Numerous stability improvements
+
 Changes in 1.3.1 and 1.3.2:
 
 o Improved accessibility for the visually impaired
