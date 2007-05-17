@@ -123,6 +123,7 @@ private:
    double mdBMax;
    double mdBMin;
    bool mDrawMode;
+   int mInterp;
 
 public:
    enum curveType {
@@ -216,6 +217,7 @@ public:
    virtual bool CalcFilter();
 
    void EnvelopeUpdated();
+   void EnvelopeUpdated(Envelope *env);
    static const double thirdOct[];
    wxRadioButton *mFaderOrDraw[2];
    wxChoice *mInterpChoice;
@@ -229,6 +231,7 @@ public:
    double whenSliders[NUMBER_OF_BANDS+1];
    int bandsInUse;
    bool drawMode;
+   int interp;
 
 private:
    void MakeEqualizationDialog();
@@ -284,6 +287,7 @@ private:
    void OnDrawRadio(wxCommandEvent &event );
    void OnSliderRadio(wxCommandEvent &event );
    void OnLinFreq(wxCommandEvent &event );
+   void UpdateGraphic(void);
    void EnvLogToLin(void);
    void EnvLinToLog(void);
    void ErrMin(void);
