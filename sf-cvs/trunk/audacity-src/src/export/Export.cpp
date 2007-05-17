@@ -463,12 +463,7 @@ bool Exporter::GetFilename()
       }
 
       wxString ext = mFilename.GetExt();
-      wxString defext = mPlugins[mFormat]->GetExtension();
-      #if defined(__WXMSW__)
-      defext = defext.Left(3);
-      #else
-      defext = defext.Lower();
-      #endif
+      wxString defext = mPlugins[mFormat]->GetExtension().Lower();
 
       //
       // Check the extension - add the default if it's not there,
