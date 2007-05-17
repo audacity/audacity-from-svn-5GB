@@ -137,7 +137,7 @@ void GetQTImportPlugin(ImportPluginList *importPluginList,
 
 wxString QTImportPlugin::GetPluginFormatDescription()
 {
-   return "QuickTime";
+   return wxT("QuickTime");
 }
 
 ImportFileHandle *QTImportPlugin::Open(wxString Filename)
@@ -202,7 +202,7 @@ ImportFileHandle *QTImportPlugin::Open(wxString Filename)
 
 wxString QTImportFileHandle::GetFileDescription()
 {
-   return "";
+   return wxT("");
 }
 
 int QTImportFileHandle::GetFileUncompressedBytes()
@@ -540,11 +540,11 @@ SoundConverterFillBufferCallback(SoundComponentDataPtr *outData, void *userData)
          pFillData->compData.commonFrameSize = 0;
 
          if(sourceBytesReturned == 0)
-            wxMessageBox("There were simply no bytes returned!");
+            wxMessageBox(wxT("There were simply no bytes returned!"));
          if(err != noErr)
-            wxMessageBox(wxString::Format("Error returned: %d", err));
+            wxMessageBox(wxString::Format(wxT("Error returned: %d"), err));
          if ((err != noErr) && (sourceBytesReturned > 0))
-            wxMessageBox("GetMediaSample - Failed in FillBufferDataProc");
+            wxMessageBox(wxT("GetMediaSample - Failed in FillBufferDataProc"));
       }
 
       pFillData->getMediaAtThisTime = sourceReturnedTime + (durationPerSample * numberOfSamples);
