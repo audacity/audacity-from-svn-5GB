@@ -563,7 +563,7 @@ void ToolManager::ReadConfig()
          }
 
          // Set the width
-         if( width[ ndx ] )
+         if( width[ ndx ] >= bar->GetSize().x )
          {
             wxSize sz( width[ ndx ], bar->GetSize().y );
             bar->SetSize( sz );
