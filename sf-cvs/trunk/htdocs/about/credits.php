@@ -55,14 +55,19 @@
 
 <h3><?=_("Contributors")?></h3>
 <ul>
+  <li>Lynn Allan, <?=_("developer")?></li>
   <li>William Bland, <?=_("developer")?></li>
   <li>Brian Gunlogson, <?=_("developer")?></li>
+  <li>Arun Kishore, <?=_("developer")?></li>
   <li>Harvey Lubin, <?=_("graphic artist")?></li>
   <li>Greg Mekkes, <?=_("developer")?></li>
   <li>Abe Milde, <?=_("developer")?></li>
   <li>Paul Nasca, <?=_("developer")?></li>
   <li>Augustus Saunders, <?=_("developer")?></li>
+  <li>Mike Underwood, <?=_("developer")?></li>
+  <li>Jun Wan, <?=_("developer")?></li>
   <li>Tom Woodhams, <?=_("developer")?></li>
+  <li>Wing Yu, <?=_("developer")?></li>
 </ul>
 
 <h3><?=_("Translators")?></h3>
@@ -147,6 +152,7 @@
   <li>Mark Tomlinson</li>
   <li>David Topper</li>
   <li>Rudy Trubitt</li>
+  <li>StreetIQ.com</li>
   <li>UmixIt Technologies, LLC</li>
   <li>Verilogix, Inc.</li>
   <li><?=_("(Let us know if we're forgetting anyone!)")?></li>
