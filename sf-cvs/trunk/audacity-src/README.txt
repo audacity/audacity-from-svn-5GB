@@ -294,25 +294,28 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
-Changes in 1.3.2 and 1.3.3:
+Changes in 1.3.3:
 
 Opening/saving formats:
-   * Import of audio from QuickTime (mov, aac, m4a) files is now  
-     supported on OSX
-   * Metadata may be added to OGG files
-   * Improved export option selection
-   * Importing of Broadcast Wave Format (BWF) wave files now tolerated
-   * Additional export options added to MP3 and FLAC file formats
-   * Command line exporter now supported on Windows and OSX
+   * Import
+      * Import of audio from QuickTime (mov, aac, m4a) files is now  
+        supported on OSX.
+      * Broadcast Wave Format (BWF) wave files can now be imported.
+   * Export
+      * Metadata can be added to OGG files
+      * Improved export option selection
+      * Additional export options added to MP3 and FLAC file formats
+      * Command line exporter now supported on Windows and OSX
 
 Effects:
-   * EQ effect responsiveness improved
-   * Several enhancements to the EQ Effect
-   * Batch support added for the EQ effect
+   * EQ effect 
+      * Responsiveness improved.
+      * Several enhancements added.
+      * Batch support added.
    * New Auto Duck effect
    * Added previewing to AudioUnit effects
    * Much improved Noise Removal effect
-   * Effects previewing may now be canceled
+   * Effects previewing can now be canceled
    * New DTMF Tone Generator effect
    * Additional options available in Noise effect
    * Improved the Tone Generation effects
@@ -328,7 +331,7 @@ Other features:
    * New support for snapping while selecting and sliding
    * Improved track focus handling and visual feedback
    * Speed improvements and handling of resizing/zooming in tracks
-   * Spectrum view may now be zoomed
+   * Spectrum view can now be zoomed.
    * New internal file cache to improve handling of project files over  
      networks
 
