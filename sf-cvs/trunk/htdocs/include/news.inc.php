@@ -39,6 +39,80 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "May 18, 2007",
+        "1.3.3-release",
+  _("Audacity 1.3.3 Released"),
+  _("
+<p>
+The Audacity Team is pleased to announce the release of 
+<a href=\"/download\">Audacity 1.3.3 (beta)</a>, which
+contains numerous new features and capabilities, beyond the 1.3.2 (beta) release.
+Because it is a work 
+in progress and does not yet come with complete documentation or translations
+into foreign languages, it is recommended for more advanced users.
+For all users, <a href=\"/download\">Audacity 1.2.6</a>
+is a stable release, complete and fully documented.  You can have
+both Audacity 1.2.6 and 1.3.3 installed simultaneously.
+</p>
+
+<p>
+See <a href=\"/download/features-1.3-a\">New Features in 1.3</a>
+for more information about the 1.3.x beta series.
+</p>
+
+<b>Beta version 1.3.3</b>
+<dl><dt></dt><dd><!-- indent cheat -->
+<dl>
+	<dt> Opening/saving formats </dt>
+		<dd> Import 
+			<ul>
+				<li>Import of audio from QuickTime (mov, aac, m4a) files now supported on OSX.</li>
+				<li>Broadcast Wave Format (BWF) wave files can now be imported.</li>
+			</ul>
+		</dd>
+		<dd> Export 
+			<ul>
+				<li>Metadata can be added to OGG files.</li>
+				<li>Improved Export option selection.</li>
+				<li>Additional export options added to MP3 and FLAC file formats.</li>
+				<li>Command line exporter now supported on Windows and OSX.</li>
+			</ul>
+		</dd>
+	<dt> Effects </dt>
+		<dd> EQ effect
+			<ul> 
+				<li>Responsiveness improved.</li>
+				<li>Several enhancements added.</li>
+				<li>Batch support added.</li>				
+			</ul>
+		</dd>
+		<dd> New Auto Duck effect </dd>
+		<dd> Added previewing to AudioUnit effects. </dd>
+		<dd> Much improved Noise Removal effect </dd>
+		<dd> Effects previewing can now be canceled. </dd>
+		<dd> New DTMF Tone Generator effect </dd>
+		<dd> Additional options available in Noise effect. </dd>
+		<dd> Improved the Tone Generation effects. </dd>
+	<dt> Other features </dt>
+		<dd> New built-in screen capture utility </dd>
+		<dd> Major speed improvement in Spectrogram rendering </dd>
+		<dd> Increased support for drag and drop on OSX. </dd>
+		<dd> Support added for building against wxWidgets 2.8.x. </dd>
+		<dd> Can now open multiple Audacity Projects at once from Explorer on Windows. </dd>
+		<dd> Improved main window sliders. </dd>
+		<dd> New support for snapping while selecting and sliding </dd>
+		<dd> Improved track focus handling and visual feedback. </dd>
+		<dd> Speed improvements and handling of resizing/zooming in tracks </dd>
+		<dd> Spectrum view can now be zoomed. </dd>
+		<dd> New internal file cache to improve handling of project files over networks </dd>
+	<dt> Also </dt>
+		<dd> Many improvements to language specific translations </dd>
+		<dd> Numerous stability improvements </dd>
+</dl>
+</dd></dl>
+"));
+
+add_news_item(
   "October 30, 2006",
         "1.3.2-release",
   _("Audacity 1.3.2 and 1.2.5 Released"),
@@ -75,7 +149,7 @@ for information about the new beta version.
              <dd> Improved toolbar docking flexibility </dd>
              <dd> Menu renaming and reorganization </dd>
              <dd> Selection, ruler, and playback control improvements </dd>
-       <dt> Major improvements to some built-in effects </td>
+       <dt> Major improvements to some built-in effects </dt>
               <dd> New Repair effect </dd>
               <dd> Improved Equalization effect </dd>
               <dd> Many fixes and minor improvements to other effects </dd>
