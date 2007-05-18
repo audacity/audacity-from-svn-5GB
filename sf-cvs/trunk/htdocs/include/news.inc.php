@@ -46,7 +46,7 @@ add_news_item(
 <p>
 The Audacity Team is pleased to announce the release of 
 <a href=\"/download\">Audacity 1.3.3 (beta)</a>, which
-contains numerous new features and capabilities, beyond the 1.3.2 (beta) release.
+contains numerous new features and capabilities beyond the 1.3.2 (beta) release.
 Because it is a work 
 in progress and does not yet come with complete documentation or translations
 into foreign languages, it is recommended for more advanced users.
