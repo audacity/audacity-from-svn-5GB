@@ -4,6 +4,7 @@
 [Setup]
 ; compiler-related directives
 OutputBaseFilename=audacity-win-unicode-1.3.3
+SetupIconFile=audacity.ico
 SolidCompression=yes
 
 ; installer-related directives
