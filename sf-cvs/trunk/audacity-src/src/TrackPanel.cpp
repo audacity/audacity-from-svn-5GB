@@ -2383,24 +2383,28 @@ void TrackPanel::HandleZoom(wxMouseEvent & event)
    if (event.ButtonDown() || event.ButtonDClick(1)) {
       HandleZoomClick(event);
    }
-   else if (event.Dragging()) {
-      HandleZoomDrag(event);
-   }
-   else if (event.ButtonUp()) {
-      HandleZoomButtonUp(event);
+   else if (mMouseCapture == IsZooming) {
+      if (event.Dragging()) {
+         HandleZoomDrag(event);
+      }
+      else if (event.ButtonUp()) {
+         HandleZoomButtonUp(event);
+      }
    }
 }
 
 /// Zoom button down, record the position.
 void TrackPanel::HandleZoomClick(wxMouseEvent & event)
 {
-   Track *t;
-   wxRect r;
-   int num;
+   if (mCapturedTrack)
+      return;
 
-   t = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
+   mCapturedTrack = FindTrack(event.m_x, event.m_y, false, false,
+                              &mCapturedRect, &mCapturedNum);
+   if (!mCapturedTrack)
+      return;
 
-   SetCapturedTrack(t, IsZooming);
+   SetCapturedTrack(mCapturedTrack, IsZooming);
 
    mZoomStart = event.m_x;
    mZoomEnd = event.m_x;
@@ -2448,6 +2452,12 @@ void TrackPanel::HandleZoomButtonUp(wxMouseEvent & event)
 
    MakeParentRedrawScrollbars();
    Refresh(false);
+}
+
+/// Determines if drag zooming is active
+bool TrackPanel::IsDragZooming()
+{
+   return (abs(mZoomEnd - mZoomStart) > DragThreshold);
 }
 
 ///  This actually sets the Zoom value when you're done doing
@@ -4523,8 +4533,10 @@ void TrackPanel::DrawEverythingElse(wxDC * dc, const wxRect panelRect,
       i++;
    }
 
-   if (IsDragZooming()  && (mMouseCapture != IsAdjustingLabel))
+   if ((mMouseCapture == IsZooming || mMouseCapture == IsVZooming) &&
+       IsDragZooming()) {
       DrawZooming(dc, clip);
+   }
 
    // Paint over the part below the tracks
    GetSize(&trackRect.width, &trackRect.height);
@@ -4618,16 +4630,18 @@ void TrackPanel::HighlightFocusedTrack(wxDC * dc, const wxRect r) {
 /// zooming.
 void TrackPanel::DrawZooming(wxDC * dc, const wxRect clip)
 {
-
    wxRect r;
 
    dc->SetBrush(*wxTRANSPARENT_BRUSH);
    dc->SetPen(*wxBLACK_DASHED_PEN);
 
    if (mMouseCapture==IsVZooming) {
+      int width, height;
+      GetTracksUsableArea(&width, &height);
+
       r.y = mZoomStart;
       r.x = GetVRulerOffset();
-      r.width = 10000;
+      r.width = width + GetVRulerWidth() + 1; //+1 extends into border rect
       r.height = mZoomEnd - mZoomStart;
    }
    else {
