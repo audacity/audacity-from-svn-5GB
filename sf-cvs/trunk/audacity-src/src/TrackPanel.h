@@ -271,6 +271,7 @@ class TrackPanel:public wxPanel {
    void HandleZoomDrag(wxMouseEvent & event);
    void HandleZoomButtonUp(wxMouseEvent & event);
 
+   bool IsDragZooming();
    void DragZoom(wxMouseEvent &event, int x);
    void DoZoomInOut(wxMouseEvent &event, int x);
 
@@ -531,8 +532,6 @@ private:
    //   coordinate should the dragging track move up or down?
    int mMoveUpThreshold;
    int mMoveDownThreshold;
-   
-   bool IsDragZooming() const { return abs(mZoomEnd - mZoomStart) > DragThreshold;}
 
    wxCursor *mArrowCursor;
    wxCursor *mPencilCursor;
