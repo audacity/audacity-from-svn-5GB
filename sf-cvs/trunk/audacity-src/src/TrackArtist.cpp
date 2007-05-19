@@ -240,7 +240,7 @@ void TrackArtist::DrawTracks(TrackList * tracks,
 void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 {
    if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == 0) {
+       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::WaveformDisplay) {
       // Waveform
       wxRect bev = r;
       bev.Inflate(-1, -1);
@@ -258,7 +258,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
    }
 
    if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == 1) {
+       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::WaveformDBDisplay) {
       // Waveform (db)
       wxRect bev = r;
       bev.Inflate(-1, -1);
@@ -304,7 +304,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
    }
 
    if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == 2) {
+       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::SpectrumDisplay) {
       // Spectrum
       wxRect bev = r;
       bev.Inflate(-1, -1);
@@ -347,7 +347,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
    }
 
    if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == 3) {
+       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::PitchDisplay) {
       // Pitch
       wxRect bev = r;
       bev.Inflate(-1, -1);
