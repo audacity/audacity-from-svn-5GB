@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-10-22 02:46-0700\n"
-"PO-Revision-Date: 2007-05-19 13:45+0300\n"
+"PO-Revision-Date: 2007-05-19 14:06+0300\n"
 "Last-Translator: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -108,7 +108,7 @@ msgstr ""
 "Поскольку эта версия пока нестабильна\n"
 "и не содержит полную документацию и переводы,\n"
 "она рекомендуется только опытным пользователям.\n"
-"Всем остальным мы советуем использовать <a href=\"/download\">Audacity 1.2.6</a>&mdash;—\n"
+"Всем остальным мы советуем использовать <a href=\"/download\">Audacity 1.2.6</a> — \n"
 "стабильную и полностью документированную. Вы можете одновременно установить Audacity 1.2.6 и 1.3.3.\n"
 "</p>\n"
 "\n"
@@ -146,9 +146,9 @@ msgstr ""
 "\t\t<dd> Прослушивание эффектов AudioUnit на OSX. </dd>\n"
 "\t\t<dd> Существенно улучшен фильтр подавления шума. </dd>\n"
 "\t\t<dd> Прослушивание эффектов может быть отменено. </dd>\n"
-"\t\t<dd> Новое расширение дял создания телефонных сигналов (DTMF Tone Generator). </dd>\n"
+"\t\t<dd> Новое расширение для создания телефонных сигналов (DTMF Tone Generator). </dd>\n"
 "\t\t<dd> Дополнительные параметры в эффекте «Шум». </dd>\n"
-"\t\t<dd> Улушчены генераторы сигналов. </dd>\n"
+"\t\t<dd> Улучшены генераторы сигналов. </dd>\n"
 "\t<dt> Прочие новшества </dt>\n"
 "\t\t<dd> Встроенная утилита снятия скриншотов </dd>\n"
 "\t\t<dd> Существенное ускорение отрисовки спектрограммы </dd>\n"
@@ -1624,11 +1624,11 @@ msgstr ""
 
 #: help/faq.php:102
 msgid "Recording"
-msgstr ""
+msgstr "Запись"
 
 #: help/faq.php:105
 msgid "How can I record in stereo?"
-msgstr ""
+msgstr "Как записать стерео?"
 
 #: help/faq.php:106
 msgid "<p>To record in stereo, open the Audacity preferences.  In the “Audio I/O” section, change the number of recording channels from 1 (mono) to 2 (stereo).</p>"
@@ -1636,7 +1636,7 @@ msgstr ""
 
 #: help/faq.php:109
 msgid "How do I record from vinyl records, cassette tapes, or minidiscs?"
-msgstr ""
+msgstr "Как записать звук с грампластинки, кассеты или минидиска?"
 
 #: help/faq.php:110
 msgid ""
@@ -1655,17 +1655,17 @@ msgstr ""
 #: help/faq.php:184
 #: help/faq.php:233
 msgid "See also:"
-msgstr ""
+msgstr "Кроме того:"
 
 #: help/faq.php:119
 #: help/faq.php:209
 #: help/faq.php:233
 msgid "How do I save my recording on an audio CD?"
-msgstr ""
+msgstr "Как записать мой проект на звуковой CD?"
 
 #: help/faq.php:122
 msgid "Why is the Input selector in the Mixer Toolbar not working as expected?"
-msgstr ""
+msgstr "Почему выбор источника в микшере не работает?"
 
 #: help/faq.php:123
 msgid ""
@@ -1675,7 +1675,7 @@ msgstr ""
 
 #: help/faq.php:128
 msgid "Why can’t I hear what I’m recording?"
-msgstr ""
+msgstr "Почему я не слышу то, что записывается?"
 
 #: help/faq.php:129
 msgid ""
@@ -1688,7 +1688,7 @@ msgstr ""
 
 #: help/faq.php:137
 msgid "Can I play a track while recording a new one on top of it?"
-msgstr ""
+msgstr "Можно ли воспроизводить существующую дорожку при записи новой?"
 
 #: help/faq.php:138
 msgid ""
@@ -1703,7 +1703,7 @@ msgstr ""
 
 #: help/faq.php:147
 msgid "Why isn’t my new track in sync with the previous ones?"
-msgstr ""
+msgstr "Почему дорожка не синхронизирована с остальными?"
 
 #: help/faq.php:148
 msgid ""
@@ -1713,7 +1713,7 @@ msgstr ""
 
 #: help/faq.php:152
 msgid "Can Audacity record RealAudio or other streaming audio?"
-msgstr ""
+msgstr "Может ли Audacity записывать файлы формата RealAudio и прочие потоковые звуковые данные?"
 
 #: help/faq.php:153
 msgid ""
@@ -1743,12 +1743,12 @@ msgstr ""
 
 #: help/faq.php:175
 msgid "Opening and Saving Files"
-msgstr ""
+msgstr "Открытие и сохранение файлов"
 
 #: help/faq.php:178
 #: help/faq.php:184
 msgid "How do I open an Audacity project (AUP file) in another program?"
-msgstr ""
+msgstr "Как мне открыть файлы Audacity (AUP) в другой программе?"
 
 #: help/faq.php:179
 msgid "<p>Audacity project files are saved in a special format that only Audacity can open.  To open your project in another program or burn it to CD, you must open the “project.aup” file in Audacity, and use the Export commands (in the File menu) to save it in a standard format like WAV or AIFF.</p>"
@@ -1764,7 +1764,7 @@ msgstr ""
 
 #: help/faq.php:187
 msgid "Audacity crashed!  Can I recover any unsaved data?"
-msgstr ""
+msgstr "Audacity грохнулся! Как мне восстановить все несохранённые данные?"
 
 #. i18n-hint: Sorry, these links are in English only.  If you would
 #. like to make more information available, please create a page on
@@ -1775,7 +1775,7 @@ msgstr ""
 
 #: help/faq.php:194
 msgid "Can Audacity import file formats like WMA, AAC, FLAC, etc.?"
-msgstr ""
+msgstr "Может ли Audacity импортировать файлов форматов вроде WMA, AAC, FLAC и.т.д.?"
 
 #: help/faq.php:195
 msgid ""
@@ -1787,7 +1787,7 @@ msgstr ""
 
 #: help/faq.php:201
 msgid "Why can’t I play MIDI files?"
-msgstr ""
+msgstr "Почему я не могу воспроизвести файлы MIDI?"
 
 #: help/faq.php:202
 msgid "<p>Sorry, Audacity cannot play, edit, or convert MIDI files.  It can only display them visually (for comparison with recorded sounds).  We might add MIDI editing to a future version of Audacity, but for now Audacity is focused on sampled audio (like WAV files).</p>"
@@ -1795,7 +1795,7 @@ msgstr ""
 
 #: help/faq.php:205
 msgid "How do I import a track from an audio CD?"
-msgstr ""
+msgstr "Как мне импортировать файл со звукового CD?"
 
 #: help/faq.php:206
 msgid "<p>Audacity cannot import a track directly from an audio CD.  You must use a separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks into a format that Audacity can read, like WAV or AIFF.</p>"
@@ -1838,7 +1838,7 @@ msgstr ""
 
 #: help/faq.php:238
 msgid "Editing"
-msgstr ""
+msgstr "Редактирование"
 
 #: help/faq.php:241
 msgid "Why can’t I use the effects or other menu items?"
@@ -2467,7 +2467,7 @@ msgstr "Назад: "
 #: download/features-1.3-i.php:77
 #: download/features-1.3-a.php:22
 msgid "Repair and Equalization effects"
-msgstr ""
+msgstr "Эффект восстановления и эквалайзер"
 
 #: download/features-1.3-k.php:42
 #: download/features-1.3-j.php:70
@@ -2497,7 +2497,7 @@ msgstr "Сохранение и восстановление проектов"
 #: download/features-1.3-g.php:62
 #: download/features-1.3-h.php:66
 msgid "Top: "
-msgstr ""
+msgstr "Вверх:"
 
 #: download/features-1.3-k.php:52
 #: download/features-1.3-j.php:80
@@ -3303,16 +3303,16 @@ msgstr "Вы можете изменять, распространять и пр
 
 #: download/release-notes.php:17
 msgid "Known Problems"
-msgstr ""
+msgstr "Известные недочёты"
 
 #: download/release-notes.php:18
 #, php-format
 msgid "The following are known bugs or problems in Audacity %s:"
-msgstr ""
+msgstr "Ниже перечислены известные недочёты Audacity %s:"
 
 #: download/release-notes.php:20
 msgid "Audacity can import and display MIDI files, but cannot play or edit them."
-msgstr ""
+msgstr "Audacity может импортировать и показывать файлы MIDI, но не может воспроизводить и позволять редактировать их."
 
 #: download/release-notes.php:21
 msgid "Linux:  Recording in full duplex (playing existing tracks while recording) on some systems causes mono recordings to sound distorted or low-pitched.  To work around this problem, set Audacity to record in stereo."
@@ -3338,6 +3338,19 @@ msgid ""
 "<li>Fixed Mac OS X (PPC only) screen redraw issues.\n"
 "</li>"
 msgstr ""
+"<h3>Изменения в Audacity 1.2.6</h3>\n"
+"<ul>\n"
+"<li>Исправлены утечки памяти в версии для Windows.\n"
+"</li>\n"
+"\n"
+"<li>Исправлена ошибка с кеглем шрифта.\n"
+"</li>\n"
+"\n"
+"<li>Восстановлена поддержка FLAC.\n"
+"</li>\n"
+"\n"
+"<li>Устранены неполадки в перерисовке окна на Mac OS X (только PPC).\n"
+"</li>"
 
 #: download/release-notes.php:41
 msgid ""
@@ -3384,6 +3397,10 @@ msgid ""
 "<li>A serious problem with the French translation was corrected.\n"
 "</ul>"
 msgstr ""
+"<h3>Изменения в Audacity 1.2.4b</h3>\n"
+"<ul>\n"
+"<li>Исправлена серьёзная ошибка во французской локализации.\n"
+"</ul>"
 
 #: download/release-notes.php:81
 msgid ""
@@ -3435,9 +3452,9 @@ msgid ""
 msgstr ""
 
 #: download/windows.php:21
-#, fuzzy, php-format
+#, php-format
 msgid "Windows 98/ME/2000/XP/Vista: <a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor."
-msgstr "<a href=\"%s\">Пакет для установки Audacity %s</a> (файл .exe,  %.1lf Мбайт)&nbsp;&mdash; самая новая версия Audacity."
+msgstr "Windows 98/ME/2000/XP/Vista: <a href=\"%s\">инсталлятор Audacity %s</a> (файл .exe, %.1lf Мбайт)&nbsp;— самая новая версия Audacity."
 
 #: download/windows.php:38
 #, php-format
@@ -3448,7 +3465,7 @@ msgstr ""
 
 #: download/windows.php:45
 msgid "Windows 98, ME, 2000, XP, or Vista  (Sorry, Audacity is not supported on Windows 95 or NT 4.0.)"
-msgstr ""
+msgstr "Windows 98, ME, 2000, XP или Vista  (извините, Audacity не поддерживается на Windows 95 и NT 4.0.)"
 
 #: download/features-1.3-d.php:9
 msgid "Audacity 1.3: Selection Bar"
