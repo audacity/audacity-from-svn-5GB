@@ -2381,34 +2381,27 @@ void TrackPanel::DoSlide(wxMouseEvent & event)
 void TrackPanel::HandleZoom(wxMouseEvent & event)
 {
    if (event.ButtonDown() || event.ButtonDClick(1)) {
-      HandleZoomClick( event );
+      HandleZoomClick(event);
    }
    else if (event.Dragging()) {
-      HandleZoomDrag( event );
+      HandleZoomDrag(event);
    }
    else if (event.ButtonUp()) {
-      HandleZoomButtonUp( event );
-   }
-}
-
-/// Vertical zooming (triggered by clicking in the
-/// vertical ruler)
-void TrackPanel::HandleVZoom(wxMouseEvent & event)
-{
-   if (event.ButtonDown() || event.ButtonDClick()) {
-      HandleVZoomClick( event );
-   }
-   else if (event.Dragging()) {
-      HandleVZoomDrag( event );
-   }
-   else if (event.ButtonUp()) {
-      HandleVZoomButtonUp( event );
+      HandleZoomButtonUp(event);
    }
 }
 
 /// Zoom button down, record the position.
 void TrackPanel::HandleZoomClick(wxMouseEvent & event)
 {
+   Track *t;
+   wxRect r;
+   int num;
+
+   t = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
+
+   SetCapturedTrack(t, IsZooming);
+
    mZoomStart = event.m_x;
    mZoomEnd = event.m_x;
 }
@@ -2416,8 +2409,21 @@ void TrackPanel::HandleZoomClick(wxMouseEvent & event)
 /// Zoom drag
 void TrackPanel::HandleZoomDrag(wxMouseEvent & event)
 {
+   int left, width, height;
+
+   left = GetLeftOffset();
+   GetTracksUsableArea(&width, &height);
+
    mZoomEnd = event.m_x;
-   if (IsDragZooming()){
+
+   if (event.m_x < left) {
+      mZoomEnd = left;
+   }
+   else if (event.m_x >= left + width - 1) {
+      mZoomEnd = left + width - 1;
+   }
+
+   if (IsDragZooming()) {
       Refresh(false);
    }
 }
@@ -2432,11 +2438,13 @@ void TrackPanel::HandleZoomButtonUp(wxMouseEvent & event)
    }
 
    if (IsDragZooming())
-      DragZoom(event, GetLabelWidth()+1);
+      DragZoom(event, GetLeftOffset());
    else
-      DoZoomInOut(event, GetLabelWidth()+1);
+      DoZoomInOut(event, GetLeftOffset());
 
    mZoomEnd = mZoomStart = 0;
+
+   SetCapturedTrack(NULL);
 
    MakeParentRedrawScrollbars();
    Refresh(false);
@@ -2480,6 +2488,21 @@ void TrackPanel::DoZoomInOut(wxMouseEvent & event, int trackLeftEdge)
    double new_center_h = PositionToTime(event.m_x, trackLeftEdge);
 
    mViewInfo->h += (center_h - new_center_h);
+}
+
+/// Vertical zooming (triggered by clicking in the
+/// vertical ruler)
+void TrackPanel::HandleVZoom(wxMouseEvent & event)
+{
+   if (event.ButtonDown() || event.ButtonDClick()) {
+      HandleVZoomClick( event );
+   }
+   else if (event.Dragging()) {
+      HandleVZoomDrag( event );
+   }
+   else if (event.ButtonUp()) {
+      HandleVZoomButtonUp( event );
+   }
 }
 
 /// VZoom click
@@ -3683,7 +3706,7 @@ void TrackPanel::HandleWheelRotation(wxMouseEvent & event)
    {
       // MM: Zoom in/out when used with Control key down
       // MM: I don't understand what trackLeftEdge does
-      int trackLeftEdge = GetLabelWidth()+1;
+      int trackLeftEdge = GetLeftOffset();
       
       double center_h = PositionToTime(event.m_x, trackLeftEdge);
       if (steps < 0)
@@ -3850,6 +3873,9 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       break;
    case IsMinimizing:
       HandleMinimizing(event);
+      break;
+   case IsZooming:
+      HandleZoom(event);
       break;
    default: //includes case of IsUncaptured
       HandleTrackSpecificMouseEvent(event);
@@ -4120,7 +4146,7 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
    }
 
    //Determine if user clicked on the track's left-hand label
-   if (!mCapturedTrack && event.m_x < GetLabelWidth()+1) {
+   if (!mCapturedTrack && event.m_x < GetLeftOffset()) {
       if (event.m_x >= GetVRulerOffset()) {
          if( !event.Dragging() ) // JKC: Only want the mouse down event.
             HandleVZoom(event);
@@ -6018,7 +6044,7 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label, bool link,
    GetSize(&r.width, &r.height);
 
    if (label) {
-      r.width = GetLabelWidth()+1;
+      r.width = GetLeftOffset();
    } else {
       r.x = GetLeftOffset();
       r.width -= GetLeftOffset();

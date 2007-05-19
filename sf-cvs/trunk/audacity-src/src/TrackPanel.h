@@ -514,7 +514,8 @@ private:
       IsMinimizing,
       IsOverCutLine,
       WasOverCutLine,
-      IsPopping
+      IsPopping,
+      IsZooming
    };
 
    enum MouseCaptureEnum mMouseCapture;
