@@ -306,6 +306,10 @@ static void ComputeMinMax256(float *summary256,
          max = summary256[3*i+1];
       else if (!(summary256[3*i+1] <= max))
          bad++;
+      if (wxIsNaN(summary256[3*i+2]))
+         bad++;
+      if (summary256[3*i+2] < -1 || summary256[3*i+2] > 1)
+         bad++;
    }
 
    *outMin = min;
