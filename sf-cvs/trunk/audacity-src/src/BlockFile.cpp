@@ -49,6 +49,7 @@ out.
 #include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/log.h>
+#include <wx/math.h>
 
 #include "BlockFile.h"
 #include "Internat.h"
