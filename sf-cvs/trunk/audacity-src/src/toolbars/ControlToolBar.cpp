@@ -679,8 +679,7 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       return;
    }
    AudacityProject *p = GetActiveProject();
-   if( p && p->GetCleanSpeechMode() )
-   {
+   if (p && p->GetCleanSpeechMode()) {
       size_t numProjects = gAudacityProjects.Count();
       bool tracks = (p && !p->GetTracks()->IsEmpty());
       if (tracks || (numProjects > 1)) {
@@ -702,8 +701,7 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
 
    mRecord->PushDown();
 
-   if (p) 
-   {
+   if (p) {
       TrackList *t = p->GetTracks();
       double t0 = p->GetSel0();
       double t1 = p->GetSel1();
@@ -716,7 +714,7 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
 
       bool duplex;
       gPrefs->Read(wxT("/AudioIO/Duplex"), &duplex, true);
-      if( duplex )
+      if (duplex)
          playbackTracks = t->GetWaveTrackArray(false);
       else
          playbackTracks = WaveTrackArray();
@@ -773,27 +771,31 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       }
       else {
          recordingChannels = gPrefs->Read(wxT("/AudioIO/RecordChannels"), 1);
-         for( int c = 0; c < recordingChannels; c++ )
-         {
+         for (int c = 0; c < recordingChannels; c++) {
             WaveTrack *newTrack = p->GetTrackFactory()->NewWaveTrack();
+
             int initialheight = newTrack->GetHeight();
+
             newTrack->SetOffset(t0);
-            newTrack->SetHeight(initialheight / recordingChannels);
-            if( recordingChannels == 2 )
-            {
-               if( c == 0 )
-               {
+
+            if (recordingChannels <= 2) {
+               newTrack->SetHeight(initialheight/recordingChannels);
+            }
+            else {
+               newTrack->SetMinimized(true);
+            }
+
+            if (recordingChannels == 2) {
+               if (c == 0) {
                   newTrack->SetChannel(Track::LeftChannel);
                   newTrack->SetLinked(true);
                }
-               else
-               {
+               else {
                   newTrack->SetChannel(Track::RightChannel);
                   newTrack->SetTeamed(true);
                }
             }
-            else
-            {
+            else {
                newTrack->SetChannel( Track::MonoChannel );
             }
 
