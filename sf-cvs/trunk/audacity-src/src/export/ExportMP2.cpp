@@ -228,9 +228,9 @@ bool ExportMP2::Export(AudacityProject *project,
    bool emptyTags = tags->IsEmpty();
    if (showId3Dialog && emptyTags) {
       if (!tags->ShowEditDialog(project,
-                                _("Edit the ID3 tags for the MP3 file"),
+                                _("Edit the ID3 tags for the MP2 file"),
                                 true)) {
-         return false;  // used selected "cancel"
+         return false;  // user selected "cancel"
       }
    }
 
