@@ -85,6 +85,7 @@ void Track::Init(const Track &orig)
 
    mSelected = orig.mSelected;
    mLinked = orig.mLinked;
+   mTeamed = orig.mTeamed;
    mMute = orig.mMute;
    mSolo = orig.mSolo;
    mHeight = orig.mHeight;
