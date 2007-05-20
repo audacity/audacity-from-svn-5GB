@@ -226,7 +226,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
 
-   c->AddItem(wxT("EditID3"),        _("Open Me&tadata Editor"),              FN(OnEditID3));
+   c->AddItem(wxT("EditMetaData"),  _("Open Me&tadata Editor"),              FN(OnEditMetadata));
    //c->SetCommandFlags(wxT("EditID3"), AudioIONotBusyFlag, AudioIONotBusyFlag);
 
    if( !mCleanSpeechMode )
@@ -3639,10 +3639,10 @@ void AudacityProject::OnImportRaw()
    HandleResize(); // Adjust scrollers for new track sizes.
 }
 
-void AudacityProject::OnEditID3()
+void AudacityProject::OnEditMetadata()
 {
-   if (mTags->ShowEditDialog(this, _("Edit ID3 Tags (for MP3 exporting)")))
-      PushState(_("Edit ID3 tags"), _("Edit ID3 Tags"));
+   if (mTags->ShowEditDialog(this, _("Edit the metadata tags")))
+      PushState(_("Edit Metadata tags"), _("Edit Metadata"));
 }
 
 void AudacityProject::OnMixAndRender()

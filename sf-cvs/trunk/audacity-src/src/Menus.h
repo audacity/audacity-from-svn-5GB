@@ -217,7 +217,7 @@ void OnImportLabels();
 void OnImportMIDI();
 void OnImportRaw();
 
-void OnEditID3();
+void OnEditMetadata();
 
 void OnMixAndRender();
 
