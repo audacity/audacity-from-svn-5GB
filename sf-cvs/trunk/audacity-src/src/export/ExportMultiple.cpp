@@ -446,7 +446,7 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
          tags->AllowEditTitle(false);
          tags->AllowEditTrackNumber(false);
          bool rval = tags->ShowEditDialog(mProject,
-                                          _("Edit the ID3 tags for all MP3 files"),
+                                          _("Edit the metadata"),
                                           true);
          tags->AllowEditTitle(true);
          tags->AllowEditTrackNumber(true);
