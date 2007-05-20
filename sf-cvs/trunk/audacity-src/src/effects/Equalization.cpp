@@ -601,7 +601,7 @@ EqualizationPanel::EqualizationPanel( double loFreq, double hiFreq,
    mHeight = 0;
    mLoFreq = loFreq;
    mHiFreq = hiFreq;
-   M = 0;
+   M = 21;  // should be odd
    mWindowSize = windowSize;
    mFilterFuncR = filterFuncR;
    mFilterFuncI = filterFuncI;
