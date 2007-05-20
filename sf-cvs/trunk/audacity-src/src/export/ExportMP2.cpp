@@ -248,8 +248,8 @@ bool ExportMP2::Export(AudacityProject *project,
      outFile.Write(id3buffer, id3len);
 
    // Values taken from the twolame simple encoder sample
-   const int pcmBufferSize = 16384 / 2; // number of samples
-   const int mp2BufferSize = 9216; // bytes
+   const int pcmBufferSize = 9216 / 2; // number of samples
+   const int mp2BufferSize = 16384 ; // bytes
 
    // We allocate a buffer which is twice as big as the
    // input buffer, which should always be enough.
