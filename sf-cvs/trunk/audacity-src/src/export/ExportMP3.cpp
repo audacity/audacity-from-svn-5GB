@@ -1670,11 +1670,11 @@ bool ExportMP3::Export(AudacityProject *project,
    bool showId3Dialog = project->GetShowId3Dialog();
    Tags *tags = project->GetTags();
    bool emptyTags = tags->IsEmpty();
-   if (showId3Dialog && emptyTags) {
+   if (emptyTags) {
       if (!tags->ShowEditDialog(project,
                                 _("Edit the ID3 tags for the MP3 file"),
                                 true)) {
-         return false;  // used selected "cancel"
+         return false;  // user selected "cancel"
       }
    }
 
@@ -1824,7 +1824,7 @@ wxString ExportMP3::FindName(CHOICES *choices, int cnt, int needle)
 
 int ExportMP3::AskResample(int bitrate, int rate, int highrate)
 {
-   wxDialog d(NULL, wxID_ANY, wxString(wxT("Invalid sampel rate")));
+   wxDialog d(NULL, wxID_ANY, wxString(_("Invalid sample rate")));
    wxChoice *choice;
    ShuttleGui S(&d, eIsCreating);
    wxString text;
