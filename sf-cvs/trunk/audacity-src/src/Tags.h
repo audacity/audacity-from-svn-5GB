@@ -91,6 +91,7 @@ public:
    bool IsEmpty();
 
 private:
+   void LoadDefaults();
    void EditorIsClosing();
 
    wxString      mTitle;
@@ -138,10 +139,12 @@ class TagsEditor: public ExpandingToolBar
  private:
    void OnChange(wxCommandEvent & event);
 
+   void OnCancel(wxCommandEvent & event);
    void OnClose(wxCommandEvent & event);
 
    void OnMore(wxCommandEvent & event);
    void OnFewer(wxCommandEvent & event);
+   void OnClear(wxCommandEvent & event);
 
    void OnLoad(wxCommandEvent & event);
    void OnSave(wxCommandEvent & event);
@@ -159,6 +162,18 @@ class TagsEditor: public ExpandingToolBar
    int          mNumExtras;
    wxTextCtrl **mExtraNameTexts;
    wxTextCtrl **mExtraValueTexts;
+
+   wxString      mTitle;
+   wxString      mArtist;
+   wxString      mAlbum;
+   int           mTrackNum;
+   wxString      mYear;
+   int           mGenre;
+   wxString      mComments;
+   bool          mID3V2;
+
+   wxArrayString mExtraNames;
+   wxArrayString mExtraValues;
 
    bool         mTransfering;
 
