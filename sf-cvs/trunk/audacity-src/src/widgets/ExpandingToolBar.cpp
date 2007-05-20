@@ -726,7 +726,7 @@ ToolBarDialog::ToolBarDialog(wxWindow* parent,
                            wxWindowID id,
                            const wxString& name,
                            const wxPoint& pos):
-   wxDialog(parent, id, name, pos, wxSize(1, 1)),
+   wxDialog(parent, id, name, pos, wxSize(1, 1), wxCAPTION|wxCLOSE_BOX),
    mChild(NULL)
 {
 }
@@ -773,7 +773,7 @@ ToolBarFrame::ToolBarFrame(wxWindow* parent,
                            wxWindowID id,
                            const wxString& name,
                            const wxPoint& pos):
-   wxMiniFrame(parent, id, name, pos, wxSize(1, 1)),
+   wxMiniFrame(parent, id, name, pos, wxSize(1, 1), wxCAPTION|wxCLOSE_BOX),
    mChild(NULL)
 {
 }
