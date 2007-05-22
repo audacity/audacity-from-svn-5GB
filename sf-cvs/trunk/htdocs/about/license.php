@@ -44,22 +44,26 @@ echo _('<h3>Advice for Vendors</h3>
 
 <p>IMPORTANT: If you write your own documentation on Audacity, please let us review it for possible errors, <em>before</em> you publish it.</p>
    
-<p>If you modify Audacity without the express permission of the Audacity Team, you do not have the right to use the name Audacity, which is registered trademark of Dominic Mazzoni.  You must rename the product and provide all of your own tech support.</p>
+<p>If you modify Audacity without the express permission of the Audacity Team, you do not have the right to use the name Audacity, which is registered trademark of Dominic Mazzoni.  You must rename the product and provide all of your own technical support.</p>
 
 <p>
-  <h4>For vendors selling a hardware product, with Audacity included:</h4>
+  <dl><dt></dt><dd><!-- indent cheat -->
+    <h4>For vendors selling a hardware product, with Audacity included:</h4>
+  </dd></dl>
   <ol>
     <li>Thank you for choosing to distribute Audacity with your product! Please contact us early so that we can work together to help make your product a success.</li>
     <li>Please distribute Audacity unmodified. If you need to modify it to work with your device, please contact us first.</li>
     <li>Please test your device with Audacity thoroughly.  If there are any specific configuration instructions that users need to follow in order for your device to work with Audacity, make sure they are included with your device.</li>
-    <li>Please do not refer customers to Audacity tech support when they are having difficulties using your device.  If you are selling a commercial product, you should provide your own tech support.  When users are having Audacity-specific issues that are not related to your specific device, we will of course be happy to assist them.</li>
+    <li>Please do not refer customers to Audacity technical support when they are having difficulties using your device.  If you are selling a commercial product, you should provide your own technical support.  When users are having Audacity-specific issues that are not related to your specific device, we will of course be happy to assist them.</li>
   </ol>
 </p>
 
 <p>
-  <h4>For vendors who wish to resell or distribute Audacity:</h4>
+  <dl><dt></dt><dd><!-- indent cheat -->
+    <h4>For vendors who wish to resell or distribute Audacity:</h4>
+  </dd></dl>
   <ol>
-    <li>If you are distributing Audacity unmodified, your advertising should make it clear that Audacity is available for free on the Internet, and make it clear what the customer is paying for when they purchase Audacity from you.  Possiblilties include the convenience of Audacity on CD-ROM, other bundled software or music files, a printed manual, or more.</li>
+    <li>If you are reselling Audacity unmodified, your advertising should make it clear that Audacity is available for free on the Internet, and make it clear what the customer is paying for when they purchase Audacity from you.  Possiblilties include the convenience of Audacity on CD-ROM, other bundled software or music files, a printed manual, or more.</li>
     <li>If you are distributing Audacity unmodified, we expect you to provide your own technical support wherever possible in support of your own customers. If you have any concerns or we can help you in this, please contact us.</li>
     <li>You may not advertise your business as an authorized distributor of Audacity.  The name Audacity is a registered trademark of Dominic Mazzoni.</li>
   </ol>
