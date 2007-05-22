@@ -354,6 +354,13 @@ void FreqWindow::OnSize(wxSizeEvent & event)
 
 void FreqWindow::DrawPlot()
 {
+   if (mUpdateRect.width == 0 || mUpdateRect.height == 0)
+   {
+      // Update rect not yet initialized properly
+      // (can happen during initialization phase on wx2.8)
+      return;
+   }
+
    if (mBitmap)
    {
       delete mBitmap;
@@ -361,7 +368,7 @@ void FreqWindow::DrawPlot()
    }
 
    mBitmap = new wxBitmap(mUpdateRect.width, mUpdateRect.height);
-
+   
    wxMemoryDC memDC;
    memDC.SelectObject(*mBitmap);
 
