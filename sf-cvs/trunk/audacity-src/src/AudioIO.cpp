@@ -63,7 +63,7 @@ writing audio.
 #include "Resample.h"
 #include "RingBuffer.h"
 #include "Prefs.h"
-#include "TimeTrack.h"
+#include "Project.h"
 
 #include "widgets/Meter.h"
 
@@ -874,6 +874,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
 
    gPrefs->Read(wxT("/AudioIO/SWPlaythrough"), &mSoftwarePlaythrough, false);
 
+   mTimeTrack = timeTrack;
    mListener = listener;
    mInputMeter = NULL;
    mOutputMeter = NULL;
@@ -890,14 +891,17 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mCutPreviewGapStart = cutPreviewGapStart;
    mCutPreviewGapLen = cutPreviewGapLen;
 
-   mPlaySpeed = 1.0;
-   if (timeTrack) {
-      mPlaySpeed = timeTrack->GetEnvelope()->GetValue(t0);
-      mPlaySpeed = 1 / ((timeTrack->GetRangeLower() * (1 - mPlaySpeed) +
-                        mPlaySpeed * timeTrack->GetRangeUpper())/100.0);
+   double factor = 1.0;
+   if (mTimeTrack) {
+      factor = mTimeTrack->GetEnvelope()->Average(0, mT1);
+      factor = (mTimeTrack->GetRangeLower() *
+               (1 - factor) +
+               factor *
+               mTimeTrack->GetRangeUpper()) / 
+               100.0;
    }
-   mWarpedT1 = mT0 + ((mT1 - mT0) * mPlaySpeed);
-
+   mWarpedT1 = mT0 + ((mT1 - mT0) / factor);
+      
    //
    // The RingBuffer sizes, and the max amount of the buffer to
    // fill at a time, both grow linearly with the number of
@@ -971,7 +975,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
          mPlaybackBuffers[i] = new RingBuffer(floatSample, playbackBufferSize);
 
          mPlaybackMixers[i]  = new Mixer(1, &mPlaybackTracks[i],
-                                         timeTrack, mT0, mWarpedT1, 1,
+                                         mTimeTrack, mT0, mWarpedT1, 1,
                                          playbackMixBufferSize, false,
                                          mRate, floatSample, false);
          mPlaybackMixers[i]->ApplyTrackGains(false);
@@ -1654,7 +1658,7 @@ void AudioIO::FillBuffers()
    unsigned int i;
 
    gAudioIO->mAudioThreadFillBuffersLoopActive = true;
-   
+
    if( mPlaybackTracks.GetCount() > 0 )
    {
       // Though extremely unlikely, it is possible that some buffers
@@ -1897,7 +1901,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                                   numCaptureChannels,
                                   (float *)outputBuffer, (int)framesPerBuffer, gain);
          }
-         
+
          if (gAudioIO->mSeek)
          {
             // Pause audio thread and wait for it to finish
@@ -1911,17 +1915,17 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
             gAudioIO->mTime += gAudioIO->mSeek;
             if (gAudioIO->mTime < gAudioIO->mT0)
                 gAudioIO->mTime = gAudioIO->mT0;
-            else if (gAudioIO->mTime > gAudioIO->mT1)
-                gAudioIO->mTime = gAudioIO->mT1;
+            else if (gAudioIO->mTime > gAudioIO->mWarpedT1)
+                gAudioIO->mTime = gAudioIO->mWarpedT1;
             gAudioIO->mSeek = 0.0;
             
             // Reset mixer positions and flush buffers for all tracks
+            gAudioIO->mT = gAudioIO->mT0 + ((gAudioIO->mTime - gAudioIO->mT0));
             for (i = 0; i < (unsigned int)numPlaybackTracks; i++)
             {
-               gAudioIO->mPlaybackMixers[i]->Reposition( gAudioIO->mTime );
-               gAudioIO->mPlaybackBuffers[i]->Discard( gAudioIO->mPlaybackBuffers[i]->AvailForGet() );
+               gAudioIO->mPlaybackMixers[i]->Reposition(gAudioIO->mT);
+               gAudioIO->mPlaybackBuffers[i]->Discard(gAudioIO->mPlaybackBuffers[i]->AvailForGet());
             }
-            gAudioIO->mT = gAudioIO->mTime;
 
             // Reload the ring buffers
             gAudioIO->mAudioThreadShouldCallFillBuffersOnce = true;
@@ -2099,9 +2103,19 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
             }
          }
       }
-      
+
       // Update the current time position
-      gAudioIO->mTime += ((framesPerBuffer / gAudioIO->mRate) / gAudioIO->mPlaySpeed);
+      double factor = 1.0;
+      if (gAudioIO->mTimeTrack) {
+         factor = gAudioIO->mTimeTrack->GetEnvelope()->GetValue(gAudioIO->mTime);
+         factor = (gAudioIO->mTimeTrack->GetRangeLower() *
+                  (1 - factor) +
+                  factor *
+                  gAudioIO->mTimeTrack->GetRangeUpper()) / 
+                  100.0;
+      }
+      gAudioIO->mTime += ((framesPerBuffer / gAudioIO->mRate) * factor);
+
       
       // Record the reported latency from PortAudio.
       // TODO: Don't recalculate this with every callback?
