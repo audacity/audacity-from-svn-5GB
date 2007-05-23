@@ -2178,14 +2178,17 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
    gAudioIO->mUpdatingMeters = true;
    if (gAudioIO->mUpdateMeters) {
 
-      if (!gAudioIO->mOutputMeter->IsMeterDisabled()
-            && gAudioIO->mOutputMeter && outputBuffer)
+      if (gAudioIO->mOutputMeter && 
+          !gAudioIO->mOutputMeter->IsMeterDisabled() &&
+          outputBuffer) {
          gAudioIO->mOutputMeter->UpdateDisplay(numPlaybackChannels,
                                                framesPerBuffer,
                                                (float *)outputBuffer);
+      }
 
-      if (!gAudioIO->mInputMeter->IsMeterDisabled()
-            && gAudioIO->mInputMeter && inputBuffer) {
+      if (gAudioIO->mInputMeter &&
+          !gAudioIO->mInputMeter->IsMeterDisabled() &&
+          inputBuffer) {
          if (gAudioIO->mCaptureFormat == floatSample)
             gAudioIO->mInputMeter->UpdateDisplay(numCaptureChannels,
                                                  framesPerBuffer,

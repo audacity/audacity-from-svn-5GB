@@ -32,6 +32,7 @@
 
 #include "MeterToolBar.h"
 
+#include "../AudioIO.h"
 #include "../widgets/Meter.h"
 
 IMPLEMENT_CLASS(MeterToolBar, ToolBar);
@@ -93,6 +94,18 @@ void MeterToolBar::Populate()
    mPlayMeter->SetToolTip( _("Output level meter") );
    mRecordMeter->SetToolTip( _("Input level meter - click to monitor input") );
 #endif
+
+   if (gAudioIO) {
+      gAudioIO->SetMeters(mRecordMeter, mPlayMeter);
+   }
+}
+
+bool MeterToolBar::DestroyChildren()
+{
+   mPlayMeter = NULL;
+   mRecordMeter = NULL;
+   gAudioIO->SetMeters(NULL, NULL);
+   ToolBar::DestroyChildren();
 }
 
 void MeterToolBar::OnSize( wxSizeEvent & evt )

@@ -31,6 +31,7 @@ class MeterToolBar:public ToolBar {
    virtual ~MeterToolBar();
 
    void Create(wxWindow *parent);
+   bool DestroyChildren();
 
    virtual void Populate();
    virtual void Repaint(wxDC *dc) {};
