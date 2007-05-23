@@ -567,6 +567,9 @@ void AudacityProject::CreateMenusAndCommands()
 //
 //   c->AddSeparator();
    c->AddItem(wxT("UndoHistory"),    _("&History..."),               FN(OnHistory));
+   c->SetCommandFlags(wxT("UndoHistory"),
+                      AudioIONotBusyFlag | UndoAvailableFlag,
+                      AudioIONotBusyFlag | UndoAvailableFlag);
 #ifdef EXPERIMENTAL_TRACK_PANEL
    c->AddItem(wxT("NewTrackPanel"),  _("&Experimental Display..."),  FN(OnExperimentalTrackPanel));
 #endif
