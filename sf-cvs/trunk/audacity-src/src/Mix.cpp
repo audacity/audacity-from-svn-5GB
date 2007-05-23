@@ -318,39 +318,42 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
                                     int *queueStart, int *queueLen,
                                     Resample *SRC)
 {
-   double initialWarp = mRate / track->GetRate();
-   double t = *pos / track->GetRate();
+   double trackRate = track->GetRate();
+   double initialWarp = mRate / trackRate;
+   double t = *pos / trackRate;
    int sampleSize = SAMPLE_SIZE(floatSample);
    int i, c;
 
    sampleCount out = 0;
 
+   // Find the last sample
+   longSampleCount last = -1;
+   WaveClipList::Node* it = track->GetClipIterator();
+   while (it) {
+      longSampleCount end = it->GetData()->GetEndSample();
+      if (end > last) {
+         last = end;
+      }
+      it = it->GetNext();
+   }
+
    while(out < mMaxOut) {
       if (*queueLen < mProcessLen) {
-         memmove(queue, &queue[*queueStart],
-                 (*queueLen)*sampleSize);
+         memmove(queue, &queue[*queueStart], (*queueLen)*sampleSize);
          *queueStart = 0;
 
          int getLen = mQueueMaxLen - *queueLen;
 
-         #if 0
-
-         // TODO: fix this code so that extra silence isn't added
-         // to the end of a track
-
-         double trackTime = (*pos + getLen) / track->GetRate();
-         if (trackTime > track->GetEndTime()) {
-            getLen = (int)(0.5 + track->GetRate() *
-                           (track->GetEndTime() -
-                            ((*pos) / track->GetRate())));
+         // Constrain
+         if (*pos + getLen > last) {
+            getLen = last - *pos;
          }
-         #endif
 
          track->Get((samplePtr)&queue[*queueLen], floatSample,
                     *pos, getLen);
 
-         track->GetEnvelopeValues(mEnvValues, getLen, (*pos) / track->GetRate(),
-                                  1.0 / track->GetRate());
+         track->GetEnvelopeValues(mEnvValues, getLen, (*pos) / trackRate,
+                                  1.0 / trackRate);
 
          for(i=0; i<getLen; i++)
             queue[(*queueLen)+i] *= mEnvValues[i];
@@ -387,7 +390,7 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
       *queueStart += input_used;
       *queueLen -= input_used;
       out += outgen;
-      t += (input_used / track->GetRate());
+      t += (input_used / trackRate);
 
       if (last)
          break;
@@ -400,9 +403,9 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
          mGains[c] = 1.0;
 
    MixBuffers(mNumChannels, channelFlags, mGains,
-              (samplePtr)mFloatBuffer, mTemp, mMaxOut, mInterleaved);
+              (samplePtr)mFloatBuffer, mTemp, out, mInterleaved);
 
-   return mMaxOut;
+   return out;
 }
 
 sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
@@ -444,7 +447,7 @@ sampleCount Mixer::Process(int maxToProcess)
 {
    if (mT >= mT1)
       return 0;
-   
+
    int i, j;
    sampleCount out;
    sampleCount maxOut = 0;
@@ -543,7 +546,7 @@ void Mixer::Reposition(double t)
       mT = mT0;
    if( mT > mT1 )
       mT = mT1;
-   
+
    for(i=0; i<mNumInputTracks; i++) {
       mSamplePos[i] = mInputTrack[i]->TimeToLongSamples(mT);
       mQueueStart[i] = 0;
