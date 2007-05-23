@@ -34,6 +34,7 @@ class Resample;
 class TimeTrack;
 class AudioThread;
 class Meter;
+class TimeTrack;
 
 extern AudioIO *gAudioIO;
 
@@ -217,7 +218,6 @@ private:
    double              mTime;
    double              mWarpedT1;
    double              mSeek;
-   double              mPlaySpeed;
    double              mPlaybackRingBufferSecs;
    double              mCaptureRingBufferSecs;
    double              mMaxPlaybackSecsToCopy;
@@ -267,6 +267,8 @@ private:
    friend void InitAudioIO();
    friend void DeinitAudioIO();
 
+   TimeTrack *mTimeTrack;
+   
 #if USE_PORTAUDIO_V19
    friend int audacityAudioCallback(
                 const void *inputBuffer, void *outputBuffer,
