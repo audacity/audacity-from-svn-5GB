@@ -195,15 +195,13 @@ void TimeTrack::Draw(wxDC & dc, wxRect & r, double h, double pps)
    double min = t0;
    double max = min + r.width / pps;
    mRuler->SetRange(min, max);
-   mRuler->SetFlip( false );  // If we don't do this, the Ruler doesn't redraw itself when the envelope is modified.
-                              // I have no idea why!
-   mRuler->SetFlip( true );
+   mRuler->SetFlip(false);  // If we don't do this, the Ruler doesn't redraw itself when the envelope is modified.
+                            // I have no idea why!
+                            //
+                            // LL:  It's because the ruler only Invalidate()s when the new value is different
+                            //      than the current value.
+   mRuler->SetFlip(GetHeight() > 75 ? true : true);
    mRuler->Draw(dc, GetEnvelope(), GetRangeLower(), GetRangeUpper());
-   if( GetHeight() > 75 )
-     {
-       mRuler->SetFlip( false );
-       mRuler->Draw(dc, GetEnvelope(), GetRangeLower(), GetRangeUpper());
-     }
 
    int *heights = new int[mid.width];
    double *envValues = new double[mid.width];
