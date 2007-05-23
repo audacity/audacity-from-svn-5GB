@@ -40,12 +40,7 @@
     "../latest/".$win_zip_url, win_zip_version, win_zip_size)?></p></li>
 </ul>
 
-<h3><?=_("System Requirements")?></h3>
-<ul>
-  <li><?=_("Windows 98, ME, 2000, XP, or Vista  (Sorry, Audacity is not supported on Windows 95 or NT 4.0.)")?></li>
-  <li><?=_("Audacity runs best with at least 64 MB RAM and 300 MHz processor.")?></li>
-</ul>
-
+<?php include "windows_sys_reqs.inc.php" ?>
 
 <?php
   include "../include/footer.inc.php";
