@@ -12,6 +12,9 @@
 
 **********************************************************************/
 
+#undef Track
+#define Track XTrack
+
 #ifdef __MACH__
    #include <Carbon/Carbon.h>
    #include <QuickTime/QuickTime.h>
