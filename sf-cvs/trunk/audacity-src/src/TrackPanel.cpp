@@ -290,18 +290,18 @@ enum {
    OnChannelRightID,
    OnChannelMonoID,
 
-   OnRate8ID,
-   OnRate11ID,
-   OnRate16ID,
-   OnRate22ID,
-   OnRate44ID,
-   OnRate48ID,
-   OnRate96ID,
-   OnRateOtherID,
-
-   On16BitID,
-   On24BitID,
-   OnFloatID,
+   OnRate8ID,              // <--\
+   OnRate11ID,             //    |
+   OnRate16ID,             //    |
+   OnRate22ID,             //    |
+   OnRate44ID,             //    |
+   OnRate48ID,             //    | Leave these in order
+   OnRate96ID,             //    | see OnTrackMenu()
+   OnRateOtherID,          //    |
+                           //    |
+   On16BitID,              //    |
+   On24BitID,              //    |
+   OnFloatID,              // <--/
 
    OnWaveformID,
    OnWaveformDBID,
@@ -5361,6 +5361,11 @@ void TrackPanel::OnTrackMenu(Track *t)
       WaveTrack * track = (WaveTrack *)t;
       SetMenuCheck(*mRateMenu, IdOfRate((int) track->GetRate()));
       SetMenuCheck(*mFormatMenu, IdOfFormat(track->GetSampleFormat()));
+
+      bool unsafe = IsUnsafe();
+      for (int i = OnRate8ID; i <= OnFloatID; i++) {
+         theMenu->Enable(i, !unsafe);
+      }
    }
    
    if (t->GetKind() == Track::Note)
