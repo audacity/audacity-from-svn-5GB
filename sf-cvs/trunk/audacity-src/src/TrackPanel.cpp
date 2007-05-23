@@ -290,7 +290,7 @@ enum {
    OnChannelRightID,
    OnChannelMonoID,
 
-   OnRate8ID,              // <--\
+   OnRate8ID,              // <---
    OnRate11ID,             //    |
    OnRate16ID,             //    |
    OnRate22ID,             //    |
@@ -301,7 +301,7 @@ enum {
                            //    |
    On16BitID,              //    |
    On24BitID,              //    |
-   OnFloatID,              // <--/
+   OnFloatID,              // <---
 
    OnWaveformID,
    OnWaveformDBID,
