@@ -520,7 +520,7 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
    for (tr = mIterator.First(mTracks); tr != NULL; tr = mIterator.Next()) {
 
       // Only want wave tracks
-      if (!tr->GetKind() == Track::Wave) {
+      if (tr->GetKind() != Track::Wave) {
          continue;
       }
 
