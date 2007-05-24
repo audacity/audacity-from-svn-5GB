@@ -11,10 +11,9 @@
   <?=_("Windows 95 and NT are not supported.")?>
 </p>
 <p>
-  <?=_('The values in the "Recommended RAM/processor speed" column below are for tasks like recording for an hour, or editing three 20 minute tracks simultaneously. The values in the "Minimum RAM/processor speed" column will be fine for smaller/shorter tasks especially if unnecessary programs are closed.')?>
+  <?=_('The values in the "Recommended RAM/processor speed" column below are for tasks like recording for an hour, or editing three 20 minute tracks simultaneously. The values in the "Minimum RAM/processor speed" column will be fine for smaller/shorter tasks, especially if unnecessary programs are closed.')?>
 </p>
 
-<p>&nbsp;</p>
 <table border="2" cellpadding="8">
   <tr>
     <th><?=_("Windows version")?></th>
