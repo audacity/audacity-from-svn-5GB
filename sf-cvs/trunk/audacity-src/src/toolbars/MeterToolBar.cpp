@@ -105,7 +105,7 @@ bool MeterToolBar::DestroyChildren()
    mPlayMeter = NULL;
    mRecordMeter = NULL;
    gAudioIO->SetMeters(NULL, NULL);
-   ToolBar::DestroyChildren();
+   return ToolBar::DestroyChildren();
 }
 
 void MeterToolBar::OnSize( wxSizeEvent & evt )
