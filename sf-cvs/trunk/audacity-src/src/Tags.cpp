@@ -42,12 +42,14 @@
 
 #include "Audacity.h"
 #include "FileDialog.h"
+#include "FileNames.h"
 #include "Internat.h"
 #include "Prefs.h"
 #include "xml/XMLFileReader.h"
 
 #include <wx/button.h>
 #include <wx/choice.h>
+#include <wx/filename.h>
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
 #include <wx/radiobox.h>
@@ -122,7 +124,10 @@ void Tags::LoadDefaults()
    while (cont) {
       gPrefs->Read(name, &value, wxT(""));
 
-      if (name == wxT("Title")) {
+      if (name == wxT("ID3V2")) {
+         mID3V2 = wxAtoi(value) != 0;
+      }
+      else if (name == wxT("Title")) {
          mTitle = value;
       }
       else if (name == wxT("Artist")) {
@@ -775,7 +780,7 @@ TagsEditor::TagsEditor(wxWindow * parent, wxWindowID id,
 {
    mTransfering = true; // avoid endless update loop
 
-   // Make local copies of metadata
+   // Make local backup copies of metadata
    mTitle       = mTags->mTitle;
    mArtist      = mTags->mArtist;
    mAlbum       = mTags->mAlbum;
@@ -789,11 +794,12 @@ TagsEditor::TagsEditor(wxWindow * parent, wxWindowID id,
 
    BuildMainPanel();
    BuildExtraPanel();
+   GetMainPanel()->Layout();
+   GetMainPanel()->Fit();
    Layout();
    Fit();
 
-   wxSize sz = GetMainPanel()->GetSize();
-   GetExtraPanel()->SetSize(sz.GetWidth(), -1);
+   GetExtraPanel()->SetSize(GetMainPanel()->GetSize().GetWidth(), -1);
 
    if (!editTitle)
       mTitleText->Enable(false);
@@ -808,8 +814,14 @@ TagsEditor::TagsEditor(wxWindow * parent, wxWindowID id,
 
 TagsEditor::~TagsEditor()
 {
-   delete[] mExtraNameTexts;
-   delete[] mExtraValueTexts;
+   if (mExtraNameTexts) {
+      delete[] mExtraNameTexts;
+   }
+
+   if (mExtraValueTexts) {
+      delete[] mExtraValueTexts;
+   }
+
    mTags->EditorIsClosing();
 }
 
@@ -818,53 +830,53 @@ bool TagsEditor::Validate()
    wxString errorString =
       _("Maximum length of attribute '%s' is %d characters. Data was truncated.");
 
-   if(!mID3V2)
+   if(!mTags->mID3V2)
    {
-      if(mTitle.Length() > 30)
+      if(mTags->mTitle.Length() > 30)
       {
          wxMessageBox(wxString::Format(errorString, _("Title"), 30));
 
-         mTitle = mTitle.Left(30);
+         mTags->mTitle = mTags->mTitle.Left(30);
          TransferDataToWindow();
 
          return FALSE;
       }
 
-      if(mArtist.Length() > 30)
+      if(mTags->mArtist.Length() > 30)
       {
          wxMessageBox(wxString::Format(errorString, _("Artist"), 30));
 
-         mArtist = mArtist.Left(30);
+         mTags->mArtist = mTags->mArtist.Left(30);
          TransferDataToWindow();
 
          return FALSE;
       }
 
-      if(mAlbum.Length() > 30)
+      if(mTags->mAlbum.Length() > 30)
       {
          wxMessageBox(wxString::Format(errorString, _("Album"), 30));
 
-         mAlbum = mAlbum.Left(30);
+         mTags->mAlbum = mTags->mAlbum.Left(30);
          TransferDataToWindow();
 
          return FALSE;
       }
 
-      if(mYear.Length() > 4)
+      if(mTags->mYear.Length() > 4)
       {
          wxMessageBox(wxString::Format(errorString, _("Year"), 4));
 
-         mYear = mYear.Left(4);
+         mTags->mYear = mTags->mYear.Left(4);
          TransferDataToWindow();
 
          return FALSE;
       }
 
-      if(mComments.Length() > 30)
+      if(mTags->mComments.Length() > 30)
       {
          wxMessageBox(wxString::Format(errorString, _("Comments"), 30));
 
-         mComments = mComments.Left(30);
+         mTags->mComments = mTags->mComments.Left(30);
          TransferDataToWindow();
 
          return FALSE;
@@ -876,28 +888,28 @@ bool TagsEditor::Validate()
 
 bool TagsEditor::TransferDataToWindow()
 {
-   mTitleText->SetValue(mTitle);
-   mArtistText->SetValue(mArtist);   
-   mAlbumText->SetValue(mAlbum);
-   mYearText->SetValue(mYear);
-   mCommentsText->SetValue(mComments);
+   mTitleText->SetValue(mTags->mTitle);
+   mArtistText->SetValue(mTags->mArtist);   
+   mAlbumText->SetValue(mTags->mAlbum);
+   mYearText->SetValue(mTags->mYear);
+   mCommentsText->SetValue(mTags->mComments);
    
-   if (mTrackNum != -1) {
+   if (mTags->mTrackNum != -1) {
       wxString numStr;
-      numStr.Printf(wxT("%d"), mTrackNum);
+      numStr.Printf(wxT("%d"), mTags->mTrackNum);
       mTrackNumText->SetValue(numStr);
    }
    
-   if (mGenre >= 0 && mGenre < GetNumGenres())
-   	mGenreChoice->SetStringSelection(GetGenreNum(mGenre));
+   if (mTags->mGenre >= 0 && mTags->mGenre < GetNumGenres())
+   	mGenreChoice->SetStringSelection(GetGenreNum(mTags->mGenre));
    
-   mFormatRadioBox->SetSelection((int)mID3V2);
+   mFormatRadioBox->SetSelection((int)mTags->mID3V2);
 
    int i;
 
-   for(i=0; i<(int)mExtraNames.GetCount(); i++) {
-      mExtraNameTexts[i]->SetValue(mExtraNames[i]);
-      mExtraValueTexts[i]->SetValue(mExtraValues[i]);
+   for(i=0; i<(int)mTags->mExtraNames.GetCount(); i++) {
+      mExtraNameTexts[i]->SetValue(mTags->mExtraNames[i]);
+      mExtraValueTexts[i]->SetValue(mTags->mExtraValues[i]);
    }
 
    return TRUE;
@@ -905,34 +917,34 @@ bool TagsEditor::TransferDataToWindow()
 
 bool TagsEditor::TransferDataFromWindow()
 {
-   mTitle = mTitleText->GetValue();
-   mArtist = mArtistText->GetValue();
-   mAlbum = mAlbumText->GetValue();
+   mTags->mTitle = mTitleText->GetValue();
+   mTags->mArtist = mArtistText->GetValue();
+   mTags->mAlbum = mAlbumText->GetValue();
 
    wxString str = mTrackNumText->GetValue();
    if (str == wxT(""))
-      mTrackNum = -1;
+      mTags->mTrackNum = -1;
    else {
       long i;
       str.ToLong(&i);
-      mTrackNum = i;
+      mTags->mTrackNum = i;
    }
 
-   mYear = mYearText->GetValue();
-   mComments = mCommentsText->GetValue();
-   mID3V2 = (mFormatRadioBox->GetSelection())?true:false;
+   mTags->mYear = mYearText->GetValue();
+   mTags->mComments = mCommentsText->GetValue();
+   mTags->mID3V2 = (mFormatRadioBox->GetSelection())?true:false;
 
    int i;
    
    for(i=0; i<GetNumGenres(); i++)
    	if (GetGenreNum(i) == mGenreChoice->GetStringSelection()) {
-   		mGenre = i;
+   		mTags->mGenre = i;
    		break;
    	}
 	
-   for(i=0; i<(int)mExtraNames.GetCount(); i++) {
-      mExtraNames[i] = mExtraNameTexts[i]->GetValue();
-      mExtraValues[i] = mExtraValueTexts[i]->GetValue();
+   for(i=0; i<(int)mTags->mExtraNames.GetCount(); i++) {
+      mTags->mExtraNames[i] = mExtraNameTexts[i]->GetValue();
+      mTags->mExtraValues[i] = mExtraValueTexts[i]->GetValue();
    }
 
    return TRUE;
@@ -949,15 +961,9 @@ void TagsEditor::OnChange(wxCommandEvent & event)
 
 void TagsEditor::OnCancel(wxCommandEvent & event)
 {
-   GetParent()->Destroy();
-}
-
-void TagsEditor::OnClose(wxCommandEvent & event)
-{
-   if (!TransferDataFromWindow()) {
-      return;
-   }
-
+   // Restore original values
+   mTags->mExtraNames.Clear();
+   mTags->mExtraValues.Clear();
    mTags->mTitle       = mTitle;
    mTags->mArtist      = mArtist;
    mTags->mAlbum       = mAlbum;
@@ -972,78 +978,171 @@ void TagsEditor::OnClose(wxCommandEvent & event)
    GetParent()->Destroy();
 }
 
+void TagsEditor::OnClose(wxCommandEvent & event)
+{
+   if (!TransferDataFromWindow()) {
+      return;
+   }
+
+   GetParent()->Destroy();
+}
+
 void TagsEditor::OnMore(wxCommandEvent & event)
 {
    TransferDataFromWindow();
 
-   mExtraNames.Add(wxT(""));
-   mExtraValues.Add(wxT(""));
+   mTags->mExtraNames.Add(wxT(""));
+   mTags->mExtraValues.Add(wxT(""));
 
    RebuildMainPanel();
-
-   mTransfering = true;
-   TransferDataToWindow();
-   mTransfering = false;
 }
 
 void TagsEditor::OnFewer(wxCommandEvent & event)
 {
    TransferDataFromWindow();
 
-   int len = (int)mExtraNames.GetCount();
+   int len = (int)mTags->mExtraNames.GetCount();
    if (len > 0) {
-      mExtraNames.RemoveAt(len-1);
-      mExtraValues.RemoveAt(len-1);
+      mTags->mExtraNames.RemoveAt(len-1);
+      mTags->mExtraValues.RemoveAt(len-1);
 
       RebuildMainPanel();
-
-      mTransfering = true;
-      TransferDataToWindow();
-      mTransfering = false;
    }
 }
 
 void TagsEditor::OnClear(wxCommandEvent & event)
 {
-   mTitle.Clear();
-   mArtist.Clear();
-   mAlbum.Clear();
-   mTrackNum = -1;
-   mYear.Clear();
-   mGenre = -1;
-   mComments.Clear();
-   mID3V2 = true;;
-   mExtraNames.Clear();
-   mExtraValues.Clear();
+   mTags->mTitle.Clear();
+   mTags->mArtist.Clear();
+   mTags->mAlbum.Clear();
+   mTags->mTrackNum = -1;
+   mTags->mYear.Clear();
+   mTags->mGenre = -1;
+   mTags->mComments.Clear();
+   mTags->mID3V2 = true;;
+   mTags->mExtraNames.Clear();
+   mTags->mExtraValues.Clear();
 
    RebuildMainPanel();
-
-   mTransfering = true;
-   TransferDataToWindow();
-   mTransfering = false;
 }
 
 void TagsEditor::OnLoad(wxCommandEvent & event)
 {
+   wxString fn;
+
+   // For drawer to remain visible while dialog is displayed since the mouse
+   // position is still tracked.
+   Expand();
+
+   // Ask the user for the real name
+   fn = FileSelector(_("Save Metadata As:"),
+                     FileNames::DataDir(),
+                     wxT("Tags.xml"),
+                     wxT("xml"),
+                     wxT("*.xml"),
+                     wxOPEN,
+                     this);
+
+   // Now, allow the drawer to be active again.
+   Collapse();
+   TryAutoExpand();
+   Fit();
+
+   // User canceled...
+   if (fn.IsEmpty()) {
+      return;
+   }
+
+   // Clear current contents
+   mTags->mTitle.Clear();
+   mTags->mArtist.Clear();
+   mTags->mAlbum.Clear();
+   mTags->mTrackNum = -1;
+   mTags->mYear.Clear();
+   mTags->mGenre = -1;
+   mTags->mComments.Clear();
+   mTags->mID3V2 = true;;
+   mTags->mExtraNames.Clear();
+   mTags->mExtraValues.Clear();
+
+   // Load the metadata
+   XMLFileReader reader;
+   if (!reader.Parse(mTags, fn)) {
+      // Inform user of load failure
+      wxMessageBox(reader.GetErrorStr(),
+                   _("Error loading metadata"),
+                   wxOK | wxCENTRE,
+                   this);
+   }
+
+   // Refresh the dialog
+   RebuildMainPanel();
+
+   return;
 }
 
 void TagsEditor::OnSave(wxCommandEvent & event)
 {
+   wxString fn;
+
+   // For drawer to remain visible while dialog is displayed since the mouse
+   // position is still tracked.
+   Expand();
+
+   // Ask the user for the real name
+   fn = FileSelector(_("Save Metadata As:"),
+                     FileNames::DataDir(),
+                     wxT("Tags.xml"),
+                     wxT("xml"),
+                     wxT("*.xml"),
+                     wxSAVE | wxOVERWRITE_PROMPT,
+                     this);
+
+   // Now, allow the drawer to be active again.
+   Collapse();
+   TryAutoExpand();
+   Fit();
+
+   // User canceled...
+   if (fn.IsEmpty()) {
+      return;
+   }
+
+   // Create/Open the file
+   XMLFileWriter writer;
+   writer.Open(fn, wxT("wb"));
+
+   // Complain if open failed
+   if (!writer.IsOpened())
+   {
+      // Constructor will emit message
+      return;
+   }
+
+   // Write the metadata
+   mTags->WriteXML(writer);
+
+   // Close the file
+   writer.Close();
+
+   return;
 }
 
 void TagsEditor::OnSaveDefaults(wxCommandEvent & event)
 {
-   gPrefs->Write(wxT("/Tags/Title"), mTitle);
-   gPrefs->Write(wxT("/Tags/Artist"), mArtist);
-   gPrefs->Write(wxT("/Tags/Album"), mAlbum);
-   gPrefs->Write(wxT("/Tags/Year"), mYear);
-   gPrefs->Write(wxT("/Tags/Comments"), mComments);
-   gPrefs->Write(wxT("/Tags/TrackNumber"), mTrackNum);
-   gPrefs->Write(wxT("/Tags/Genre"), mGenre);
+   gPrefs->DeleteGroup(wxT("/Tags"));
+   gPrefs->Write(wxT("/Tags/ID3V2"), mTags->mID3V2);
+   gPrefs->Write(wxT("/Tags/Title"), mTags->mTitle);
+   gPrefs->Write(wxT("/Tags/Artist"), mTags->mArtist);
+   gPrefs->Write(wxT("/Tags/Album"), mTags->mAlbum);
+   gPrefs->Write(wxT("/Tags/Year"), mTags->mYear);
+   gPrefs->Write(wxT("/Tags/Comments"), mTags->mComments);
+   gPrefs->Write(wxT("/Tags/TrackNumber"), mTags->mTrackNum);
+   gPrefs->Write(wxT("/Tags/Genre"), mTags->mGenre);
 
-   for (size_t i = 0; i < mExtraNames.GetCount(); i++) {
-      gPrefs->Write(wxT("/Tags/") + mExtraNames[i],
-                    mExtraValues[i]);
+   for (size_t i = 0; i < mTags->mExtraNames.GetCount(); i++) {
+      gPrefs->Write(wxT("/Tags/") + mTags->mExtraNames[i],
+                    mTags->mExtraValues[i]);
    }
 }
 
@@ -1051,15 +1150,29 @@ void TagsEditor::RebuildMainPanel()
 {
    GetMainPanel()->DestroyChildren();
 
-   delete[] mExtraNameTexts;
-   delete[] mExtraValueTexts;
+   if (mExtraNameTexts) {
+      delete[] mExtraNameTexts;
+      mExtraNameTexts = NULL;
+   }
+
+   if (mExtraNameTexts) {
+      delete[] mExtraValueTexts;
+      mExtraValueTexts = NULL;
+   }
 
    BuildMainPanel();
+   GetMainPanel()->Layout();
+   GetMainPanel()->Fit();
    Layout();
    Fit();
 
-   wxSize sz = GetMainPanel()->GetSize();
-   GetExtraPanel()->SetSize(sz.GetWidth(), -1);
+   GetExtraPanel()->SetSize(GetMainPanel()->GetSize().GetWidth(), -1);
+
+   TryAutoExpand();
+
+   mTransfering = true;
+   TransferDataToWindow();
+   mTransfering = false;
 }
 
 void TagsEditor::BuildMainPanel()
@@ -1177,7 +1290,7 @@ void TagsEditor::BuildMainPanel()
 
    /***/
 
-   int len = (int)mExtraNames.GetCount();
+   int len = (int)mTags->mExtraNames.GetCount();
    int i;
 
    mExtraNameTexts = new wxTextCtrl*[len];
@@ -1198,11 +1311,10 @@ void TagsEditor::BuildMainPanel()
    }
 
    mainSizer->Add(gridSizer, 0, wxEXPAND | wxALL, 7);
-   
-   parent->SetAutoLayout(TRUE);
+
    parent->SetSizer(mainSizer);
-   mainSizer->Fit(parent);
-   mainSizer->SetSizeHints(parent);
+   parent->Layout();
+   parent->Fit();
 }
 
 void TagsEditor::BuildExtraPanel()
@@ -1287,10 +1399,9 @@ void TagsEditor::BuildExtraPanel()
 
    mainSizer->Add(1, 5, wxEXPAND);
 
-   parent->SetAutoLayout(TRUE);
    parent->SetSizer(mainSizer);
-   mainSizer->Fit(parent);
-   mainSizer->SetSizeHints(parent);
+   parent->Layout();
+   parent->Fit();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
