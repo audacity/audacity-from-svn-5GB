@@ -11,9 +11,10 @@
   <?=_("Windows 95 and NT are not supported.")?>
 </p>
 <p>
-  <?=_('The values in the "Recommended RAM/processor speed" column below are for tasks like recording for an hour, or editing three 20 minute tracks simultaneously. The values in the "Minimum RAM/processor speed" column will be fine for smaller/shorter tasks especially if un-necessary programs are closed.')?>
+  <?=_('The values in the "Recommended RAM/processor speed" column below are for tasks like recording for an hour, or editing three 20 minute tracks simultaneously. The values in the "Minimum RAM/processor speed" column will be fine for smaller/shorter tasks especially if unnecessary programs are closed.')?>
 </p>
 
+<p>&nbsp;</p>
 <table border="2" cellpadding="8">
   <tr>
     <th><?=_("Windows version")?></th>
@@ -41,6 +42,7 @@
     <td>1 GB / 1 GHz</td>
   </tr>
 </table>
+
 <p>&nbsp;</p>
 <p>
   <?=_("Generally, Audacity works best on computers meeting more than the minimum requirements for the operating system. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows 2000, XP or Vista running on machines of substantially higher specification than the minimum required for the operating system.")?>
