@@ -65,7 +65,7 @@
 static int iBitrates[] = {
    16, 24, 32, 40, 48, 56, 64,
    80, 96, 112, 128, 160,
-   192, 224, 256, 320 
+   192, 224, 256, 320, 384
 };
 
 class ExportMP2Options : public wxDialog
