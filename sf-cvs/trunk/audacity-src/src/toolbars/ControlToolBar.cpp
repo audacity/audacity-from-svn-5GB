@@ -424,9 +424,11 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
       return;
    }
    
-   if (cutpreview && t0==t1)
+   if (cutpreview && t0==t1) {
+      mPlay->PopUp();
       return; /* msmeyer: makes no sense */
-      
+   }
+
    mStop->Enable();
    mRewind->Disable();
    mBatch->Disable();
