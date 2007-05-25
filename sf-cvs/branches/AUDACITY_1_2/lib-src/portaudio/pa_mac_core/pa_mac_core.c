@@ -1,5 +1,5 @@
 /*
- * $Id: pa_mac_core.c,v 1.9.2.5 2007-02-21 06:01:40 llucius Exp $
+ * $Id: pa_mac_core.c,v 1.9.2.6 2007-05-25 13:13:10 llucius Exp $
  * pa_mac_core.c
  * Implementation of PortAudio for Mac OS X Core Audio
  *
@@ -613,7 +613,7 @@ static int PaOSX_QueryDeviceInfo( PaHostDeviceInfo *hostDeviceInfo, int coreDevi
     formatDesc.mFormatID = kAudioFormatLinearPCM;
     formatDesc.mFormatFlags =
        kAudioFormatFlagIsFloat |
-       kAudioFormatFlagIsBigEndian |
+       kAudioFormatFlagsNativeEndian |
        kAudioFormatFlagIsPacked;
     outSize = sizeof(formatDesc);
     err = AudioDeviceGetProperty( devID, 0,
