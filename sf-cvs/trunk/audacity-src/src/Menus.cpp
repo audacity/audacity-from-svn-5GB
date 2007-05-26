@@ -3187,6 +3187,14 @@ void AudacityProject::OnSelectStartCursor()
 
 void AudacityProject::OnZoomIn()
 {
+   // LLL: Handling positioning differently when audio is active
+   if (gAudioIO->IsStreamActive(GetAudioIOToken()) != 0) {
+      Zoom(mViewInfo.zoom * 2.0);
+      mTrackPanel->ScrollIntoView(gAudioIO->GetStreamTime());
+      mTrackPanel->Refresh(false);
+      return;
+   }
+
    // DMM: Here's my attempt to get logical zooming behavior
    // when there's a selection that's currently at least
    // partially on-screen
