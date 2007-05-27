@@ -162,7 +162,8 @@ enum {
    AudioIOBusyFlag        = 0x00040000,  //lll
    PlayRegionLockedFlag   = 0x00080000,  //msmeyer
    PlayRegionNotLockedFlag= 0x00100000,  //msmeyer
-   CutCopyAvailableFlag   = 0x00200000   //lll
+   CutCopyAvailableFlag   = 0x00200000,  //lll
+   SnapToFlag             = 0x00400000   //lll
 };
 
 wxString SHOW(const wxString &toolbarName)
@@ -508,8 +509,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("SnapOn"),         _("On"),                        FN(OnSnapOn));
    /* i18n-hint: Set snap-to mode on or off */
    c->AddItem(wxT("SnapOff"),        _("Off"),                       FN(OnSnapOff));
-
-   c->SetCommandFlags(0, 0, wxT("SnapOn"), wxT("SnapOff"), NULL);
+   c->SetCommandFlags(wxT("SnapOn"), ~SnapToFlag, SnapToFlag);
+   c->SetCommandFlags(wxT("SnapOff"), SnapToFlag, SnapToFlag);
 
    c->EndSubMenu();
    
@@ -1125,7 +1126,11 @@ wxUint32 AudacityProject::GetUpdateFlags()
       flags |= ZoomOutAvailableFlag;
 
    flags |= GetFocusedFrame();
-   
+
+   if (mSnapTo) {
+      flags |= SnapToFlag;
+   }
+
    if (IsPlayRegionLocked())
       flags |= PlayRegionLockedFlag;
    else
