@@ -485,6 +485,11 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
             t1 = minofmaxs;
          }
       }
+
+      // Can't play before 0...either shifted or latencey corrected tracks
+      if (t0 < 0.0) {
+         t0 = 0.0;
+      }
       
       bool success = false;
       if (t1 > t0) {
@@ -568,10 +573,9 @@ void ControlToolBar::PlayCurrentRegion(bool looped /* = false */,
       double playRegionStart, playRegionEnd;
       p->GetPlayRegion(&playRegionStart, &playRegionEnd);
          
-      if (playRegionStart >= 0)
-         PlayPlayRegion(playRegionStart,
-                        playRegionEnd,
-                        looped, cutpreview);
+      PlayPlayRegion(playRegionStart,
+                     playRegionEnd,
+                     looped, cutpreview);
    }
 }
 
