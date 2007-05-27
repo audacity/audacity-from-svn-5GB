@@ -15,6 +15,9 @@
 #include "../Audacity.h"
 #include "ImportQT.h"
 #include "ImportPlugin.h"
+#include "wx/intl.h"
+
+#define DESC _("QuickTime files")
 
 static const wxChar *exts[] =
 {
@@ -29,8 +32,7 @@ void GetQTImportPlugin(ImportPluginList *importPluginList,
                        UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* qtIsUnsupported =
-      new UnusableImportPlugin(wxT("QuickTime"),
-                               wxArrayString(WXSIZEOF(exts), exts));
+      new UnusableImportPlugin(DESC, wxArrayString(WXSIZEOF(exts), exts));
 
    unusableImportPluginList->Append(qtIsUnsupported);
 }
@@ -64,7 +66,6 @@ void GetQTImportPlugin(ImportPluginList *importPluginList,
 #undef Track
 
 #include "../WaveTrack.h"
-
 
 // Prototype for the callback
 static pascal Boolean
@@ -137,7 +138,7 @@ void GetQTImportPlugin(ImportPluginList *importPluginList,
 
 wxString QTImportPlugin::GetPluginFormatDescription()
 {
-   return wxT("QuickTime");
+   return DESC;
 }
 
 ImportFileHandle *QTImportPlugin::Open(wxString Filename)
@@ -202,7 +203,7 @@ ImportFileHandle *QTImportPlugin::Open(wxString Filename)
 
 wxString QTImportFileHandle::GetFileDescription()
 {
-   return wxT("");
+   return DESC;
 }
 
 int QTImportFileHandle::GetFileUncompressedBytes()

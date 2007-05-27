@@ -31,6 +31,8 @@
 #include "ImportOGG.h"
 #include "../Internat.h"
 
+#define DESC _("Ogg Vorbis files")
+
 static const wxChar *exts[] =
 {
    wxT("ogg")
@@ -44,7 +46,7 @@ void GetOGGImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* oggIsUnsupported =
-      new UnusableImportPlugin(wxT("Ogg Vorbis"), wxArrayString(1, exts));
+      new UnusableImportPlugin(DESC, wxArrayString(WXSIZEOF(exts), exts));
 
    unusableImportPluginList->Append(oggIsUnsupported);
 }
@@ -69,7 +71,7 @@ class OggImportPlugin : public ImportPlugin
 {
 public:
    OggImportPlugin():
-      ImportPlugin(wxArrayString(1, exts))
+      ImportPlugin(wxArrayString(WXSIZEOF(exts), exts))
    {
    }
 
@@ -113,7 +115,7 @@ void GetOGGImportPlugin(ImportPluginList *importPluginList,
 
 wxString OggImportPlugin::GetPluginFormatDescription()
 {
-    return wxT("Ogg Vorbis");
+    return DESC;
 }
 
 ImportFileHandle *OggImportPlugin::Open(wxString filename)
@@ -170,7 +172,7 @@ void OggImportFileHandle::SetProgressCallback(progress_callback_t progressCallba
 
 wxString OggImportFileHandle::GetFileDescription()
 {
-   return wxT("Ogg Vorbis");
+   return DESC;
 }
 
 int OggImportFileHandle::GetFileUncompressedBytes()

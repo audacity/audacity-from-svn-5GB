@@ -138,7 +138,8 @@ class AudacityProject:public wxFrame,
 
    // File I/O
 
-   static void ShowOpenDialog(AudacityProject *proj);
+   static wxArrayString ShowOpenDialog(wxString extra = wxEmptyString);
+   static void OpenFiles(AudacityProject *proj);
    void OpenFile(wxString fileName);
    void Import(wxString fileName);
    void AddImportedTracks(wxString fileName,
@@ -312,8 +313,6 @@ class AudacityProject:public wxFrame,
    static bool IsAutoSaveEnabled();
    void DeleteCurrentAutoSaveFile();
    
-   wxString GetImportFilesFilter();
-
    static bool GetCacheBlockFiles();
 
    // Callbacks for backend operations

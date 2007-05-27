@@ -89,6 +89,8 @@
 
 #define BINARY_FILE_CHECK_BUFFER_SIZE 1024
 
+#define DESC _("List of Files in basic text format")
+
 static const wxChar *exts[] =
 {
    wxT("lof")
@@ -98,7 +100,7 @@ class LOFImportPlugin : public ImportPlugin
 {
 public:
    LOFImportPlugin():
-      ImportPlugin(wxArrayString(1, exts))
+      ImportPlugin(wxArrayString(WXSIZEOF(exts), exts))
    {
    }
 
@@ -169,7 +171,7 @@ void GetLOFImportPlugin(ImportPluginList *importPluginList,
 
 wxString LOFImportPlugin::GetPluginFormatDescription()
 {
-    return _("List of Files in basic text format");
+    return DESC;
 }
 
 ImportFileHandle *LOFImportPlugin::Open(wxString filename)
@@ -219,7 +221,7 @@ void LOFImportFileHandle::SetProgressCallback(progress_callback_t progressCallba
 
 wxString LOFImportFileHandle::GetFileDescription()
 {
-   return _("List of Files in basic text format");
+   return DESC;
 }
 
 int LOFImportFileHandle::GetFileUncompressedBytes()

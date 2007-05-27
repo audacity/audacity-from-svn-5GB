@@ -1609,34 +1609,88 @@ void AudacityProject::OnReleaseKeyboard(wxCommandEvent & event)
 }
 
 // static method, can be called outside of a project
-void AudacityProject::ShowOpenDialog(AudacityProject *proj)
+wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
 {
-   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),
-                                ::wxGetCwd());
-   // Beware, some compilers let you access mCleanSpeechMode
-   // here, even though it is not valid for a static method call,
-   // so we must go via prefs.
-   bool bCleanSpeechMode;
-   gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &bCleanSpeechMode, false );
-   FileDialog dlog(NULL, _("Select one or more audio files..."),
-                   path, wxT(""),
-	                bCleanSpeechMode ? 
-                      _("Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3")
-                   :
-                   proj->GetImportFilesFilter().c_str(),
+   FormatList l;
+   wxString filter;
+   wxString all = extra.AfterFirst(wxT('|')).BeforeFirst(wxT('|'));
+
+   // Construct the filter
+   wxGetApp().mImporter->GetSupportedImportFormats(&l);
+
+   for (FormatList::Node *n = l.GetFirst(); n; n = n->GetNext()) {
+      Format *f = n->GetData();
+
+      filter += f->formatName + wxT("|");
+      for (size_t i = 0; i < f->formatExtensions.GetCount(); i++) {
+         filter += wxT("*.") + f->formatExtensions[i] + wxT(";");
+         all += wxT("*.") + f->formatExtensions[i] + wxT(";");
+      }
+      filter.RemoveLast(1);
+
+      filter += wxT("|");
+   }
+   all.RemoveLast(1);
+   filter.RemoveLast(1);
+
+   wxString mask = _("All files|*.*|All supported files|") +
+                   all + wxT("|") +
+                   extra + 
+                   filter;
+
+   // Retrieve saved path and type
+   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
+   wxString type = gPrefs->Read(wxT("/DefaultOpenType"),mask.BeforeFirst(wxT('|')));
+
+   // Convert the type to the filter index
+   int index = mask.First(type + wxT("|"));
+   if (index == wxNOT_FOUND) {
+      index = 0;
+   }
+   else {
+      index = mask.Left(index).Freq(wxT('|')) / 2;
+      if (index < 0) {
+         index = 0;
+      }
+   }
+
+   // Construct and display the file dialog
+   wxArrayString selected;
+
+   FileDialog dlog(NULL,
+                   _("Select one or more audio files..."),
+                   path,
+                   wxT(""),
+                   mask,
                    wxOPEN | wxMULTIPLE);
 
-   int result = dlog.ShowModal();
+   dlog.SetFilterIndex(index);
 
-   if (result != wxID_OK)
+   if (dlog.ShowModal() != wxID_OK) {
+      return selected;
+   }
+
+   // Convert the filter index to type and save
+   index = dlog.GetFilterIndex();
+   for (int i = 0; i < index; i++) {
+      mask = mask.AfterFirst(wxT('|')).AfterFirst(wxT('|'));
+   }
+   gPrefs->Write(wxT("/DefaultOpenType"), mask.BeforeFirst(wxT('|')));
+
+   // Return the selected files
+   dlog.GetPaths(selected);
+   return selected;
+}
+
+// static method, can be called outside of a project
+void AudacityProject::OpenFiles(AudacityProject *proj)
+{
+   wxArrayString selectedFiles = ShowOpenDialog(_("Audacity projects|*.aup|"));
+   if (selectedFiles.GetCount() == 0) {
       return;
+   }
 
-   wxArrayString selectedFiles;
-   unsigned int ff;
-
-   dlog.GetPaths(selectedFiles);
-
-   for(ff=0; ff<selectedFiles.GetCount(); ff++) {
+   for (size_t ff = 0; ff < selectedFiles.GetCount(); ff++) {
       wxString fileName = selectedFiles[ff];
       wxFileName newFileName(fileName);
 
@@ -3350,35 +3404,6 @@ bool AudacityProject::ProgressIsShown()
 {
    return mProgressDialog[mProgressCurrent] &&
           mProgressDialog[mProgressCurrent]->IsShown();
-}
-
-wxString AudacityProject::GetImportFilesFilter()
-{
-   FormatList l;
-   wxString filter;
-   wxString all;
-
-   wxGetApp().mImporter->GetSupportedImportFormats(&l);
-
-   FormatList::Node *n = l.GetFirst();
-   while (n) {
-      Format *f = n->GetData();
-
-      filter += f->formatName + wxT("|");
-      for (size_t i = 0; i < f->formatExtensions.GetCount(); i++) {
-         filter += wxT("*.") + f->formatExtensions[i] + wxT(";");
-         all += wxT("*.") + f->formatExtensions[i] + wxT(";");
-      }
-      filter.RemoveLast(1);
-
-      filter += wxT("|");
-
-      n = n->GetNext();
-   }
-   all.RemoveLast(1);
-   filter.RemoveLast(1);
-
-   return _("All files|*.*|All supported files|") + all + wxT("|") + filter;
 }
 
 bool AudacityProject::GetCacheBlockFiles()
