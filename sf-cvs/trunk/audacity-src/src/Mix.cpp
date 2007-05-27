@@ -337,6 +337,10 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
       it = it->GetNext();
    }
 
+   if (last > lrint(trackRate * mT1)) {
+      last = lrint(trackRate * mT1);
+   }
+
    while(out < mMaxOut) {
       if (*queueLen < mProcessLen) {
          memmove(queue, &queue[*queueStart], (*queueLen)*sampleSize);
