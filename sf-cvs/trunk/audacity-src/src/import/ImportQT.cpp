@@ -90,7 +90,7 @@ class QTImportPlugin : public ImportPlugin
 {
 public:
    QTImportPlugin():
-      ImportPlugin(wxArrayString(4, exts))
+      ImportPlugin(wxArrayString(WXSIZEOF(exts), exts))
    {
    }
 
