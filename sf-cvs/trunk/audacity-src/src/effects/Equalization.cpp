@@ -711,7 +711,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
    for(int i=0; i<mEnvRect.width; i++)
    {
       x = mEnvRect.x + i;
-      y = (int)(mEnvRect.height*((dBMax-values[i])/(dBMax-dBMin)));
+      y = lrint(mEnvRect.height*((dBMax-values[i])/(dBMax-dBMin)) + .25 ); //needs more optimising, along with'what you get'?
       if( y > mEnvRect.height)
       {
          y = mEnvRect.height;
