@@ -326,7 +326,7 @@ bool Tags::ShowEditDialog(wxWindow *parent, wxString title, bool modal)
       ToolBarDialog *tbd = new ToolBarDialog(parent, -1, title);
       new TagsEditor(tbd, -1, this, mEditTitle, mEditTrackNumber);
       tbd->CentreOnParent();
-      tbd->ShowModal();
+      return (tbd->ShowModal() != wxID_CANCEL);
       // No need to delete...see TagsEditor::OnClose()
    }
    else {
