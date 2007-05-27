@@ -72,6 +72,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "FileNames.h"
 #include "AutoRecovery.h"
 
+#include "import/Import.h"
 #ifdef USE_QUICKTIME
 #include "import/ImportQT.h"
 #endif
@@ -235,7 +236,7 @@ void QuitAudacity(bool bForce)
          }
       }
    }
-   
+
    if (gFreqWindow)
       gFreqWindow->Destroy();
 
@@ -726,6 +727,8 @@ bool AudacityApp::OnInit()
       QuitAudacity(true);
    }
 
+   mImporter = new Importer;
+
    //
    // Command-line parsing, but only if we didn't recover
    //
@@ -1210,6 +1213,9 @@ int AudacityApp::OnExit()
 #if defined(__WXMSW__)
    delete mIPCServ;
 #endif
+
+   if (mImporter)
+      delete mImporter;
 
    if(gPrefs)
    {

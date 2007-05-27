@@ -312,7 +312,7 @@ class AudacityProject:public wxFrame,
    static bool IsAutoSaveEnabled();
    void DeleteCurrentAutoSaveFile();
    
-   static wxString GetImportFilesFilter();
+   wxString GetImportFilesFilter();
 
    static bool GetCacheBlockFiles();
 
@@ -371,7 +371,6 @@ class AudacityProject:public wxFrame,
    AdornedRulerPanel *mRuler;
    TrackPanel *mTrackPanel;
    TrackFactory *mTrackFactory;
-   Importer *mImporter;
    wxPanel * mMainPanel;
    wxScrollBar *mHsbar;
    wxScrollBar *mVsbar;

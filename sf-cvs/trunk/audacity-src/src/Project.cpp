@@ -536,7 +536,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mDirty(false),
      mTrackPanel(NULL),
      mTrackFactory(NULL),
-     mImporter(NULL),
      mAutoScrolling(false),
      mActive(true),
      mHistoryWindow(NULL),
@@ -770,7 +769,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mTags = new Tags();
 
    mTrackFactory = new TrackFactory(mDirManager);
-   mImporter = new Importer;
    mImportingRaw = false;
 
    wxString msg = wxString::Format(_("Welcome to Audacity version %s"),
@@ -1518,9 +1516,6 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 
    DestroyChildren();
 
-   delete mImporter;
-   mImporter = NULL;
-
    delete mTrackFactory;
    mTrackFactory = NULL;
 
@@ -1628,7 +1623,7 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
 	                bCleanSpeechMode ? 
                       _("Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3")
                    :
-                   GetImportFilesFilter().c_str(),
+                   proj->GetImportFilesFilter().c_str(),
                    wxOPEN | wxMULTIPLE);
 
    int result = dlog.ShowModal();
@@ -2349,7 +2344,7 @@ bool AudacityProject::ImportProgressCallback(void *_self, float percent)
          without looking at the file header.  Same as "Import Raw" */
       description = _("Raw");
    else
-      description = self->mImporter->GetFileDescription();
+      description = wxGetApp().mImporter->GetFileDescription();
       
    wxString dialogMessage;
    dialogMessage.Printf(_("Importing %s File..."),
@@ -2441,7 +2436,7 @@ void AudacityProject::Import(wxString fileName)
 
    ProgressShow(_("Import"));
 
-   numTracks = mImporter->Import(fileName, mTrackFactory, &newTracks,
+   numTracks = wxGetApp().mImporter->Import(fileName, mTrackFactory, &newTracks,
                                  errorMessage,
                                  AudacityProject::ImportProgressCallback,
                                  this);
@@ -3359,13 +3354,31 @@ bool AudacityProject::ProgressIsShown()
 
 wxString AudacityProject::GetImportFilesFilter()
 {
-   wxString filter = _("All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|MP2/MPEG files (*.mp2;*.mpa;*.mpg;*.mpeg)|*.mp2;*.mpa;*.mpg;*.mpeg|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof");
+   FormatList l;
+   wxString filter;
+   wxString all;
 
-   #if USE_QUICKTIME
-   filter += _("|iTunes MPEG-4 Audio (*.m4a)|*.m4a");
-   #endif
+   wxGetApp().mImporter->GetSupportedImportFormats(&l);
 
-   return filter;
+   FormatList::Node *n = l.GetFirst();
+   while (n) {
+      Format *f = n->GetData();
+
+      filter += f->formatName + wxT("|");
+      for (size_t i = 0; i < f->formatExtensions.GetCount(); i++) {
+         filter += wxT("*.") + f->formatExtensions[i] + wxT(";");
+         all += wxT("*.") + f->formatExtensions[i] + wxT(";");
+      }
+      filter.RemoveLast(1);
+
+      filter += wxT("|");
+
+      n = n->GetNext();
+   }
+   all.RemoveLast(1);
+   filter.RemoveLast(1);
+
+   return _("All files|*.*|All supported files|") + all + wxT("|") + filter;
 }
 
 bool AudacityProject::GetCacheBlockFiles()

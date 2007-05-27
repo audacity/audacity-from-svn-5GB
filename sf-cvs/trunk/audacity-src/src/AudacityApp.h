@@ -19,6 +19,7 @@
 class wxLocale;
 class wxSingleInstanceChecker;
 class IPCServ;
+class Importer;
 
 void SaveWindowSize();
 
@@ -104,6 +105,7 @@ class AudacityApp:public wxApp {
                                    int flags, // wxFILE, wxDIR, or 0
                                    wxArrayString &results);
 
+   Importer *mImporter;
  private:
 
    wxLocale *mLocale;
