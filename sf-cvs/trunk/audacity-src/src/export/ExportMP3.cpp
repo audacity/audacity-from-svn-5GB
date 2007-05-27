@@ -1320,10 +1320,17 @@ public:
          return -1;
       }
 
+      if (channels > 2) {
+         return -1;
+      }
+
       lame_set_error_protection(mGF, true);
       lame_set_num_channels(mGF, channels);
       lame_set_in_samplerate(mGF, sampleRate);
       lame_set_out_samplerate(mGF, sampleRate);
+//      lame_set_disable_reservoir(mGF, true);
+//      lame_set_padding_type(mGF, PAD_NO);
+//      lame_set_bWriteVbrTag(mGF, false);
 
       // Set the VBR quality or ABR/CBR bitrate
       switch (mMode) {
@@ -1389,7 +1396,10 @@ public:
       }
       lame_set_mode(mGF, mode);
 
-      lame_init_params(mGF);
+      int rc = lame_init_params(mGF);
+      if (rc < 0) {
+         return rc;
+      }
 
 #if 0
       dump_config(mGF);
@@ -1531,7 +1541,10 @@ private:
    lame_global_flags *mGF;
 
    static const int mSamplesPerChunk = 220500;
-   static const int mOutBufferSize = int(1.25 * mSamplesPerChunk + 7200);
+   // See lame.h/lame_encode_buffer() for further explanation
+   // As coded here, this should be the worst case.
+   static const int mOutBufferSize = 
+      mSamplesPerChunk * (320 / 8) / 8 + 4 * 1152 * (320 / 8) / 8 + 512;
 };
 #endif
 
@@ -1561,7 +1574,7 @@ private:
 
    int FindValue(CHOICES *choices, int cnt, int needle, int def);
    wxString FindName(CHOICES *choices, int cnt, int needle);
-   int AskResample(int bitrate, int rate, int highrate);
+   int AskResample(int bitrate, int rate, int lowrate, int highrate);
 
 };
 
@@ -1609,6 +1622,7 @@ bool ExportMP3::Export(AudacityProject *project,
    
    // Retrieve preferences
    int highrate = 48000;
+   int lowrate = 8000;
    int bitrate = 0;
    int brate;
    int rmode;
@@ -1634,24 +1648,34 @@ bool ExportMP3::Export(AudacityProject *project,
       exporter.SetQuality(q, r);
    }
    else if (rmode == MODE_ABR) {
-      int r = FindValue(fixRates, WXSIZEOF(fixRates), brate, 128);
+      bitrate = FindValue(fixRates, WXSIZEOF(fixRates), brate, 128);
       exporter.SetMode(MODE_ABR);
-      exporter.SetBitrate(r);
+      exporter.SetBitrate(bitrate);
+
+      if (bitrate > 160) {
+         lowrate = 32000;
+      }
+      else if (bitrate < 32 || bitrate == 144) {
+         highrate = 24000;
+      }
    }
    else {
-      int r = FindValue(fixRates, WXSIZEOF(fixRates), brate, 128);
+      bitrate = FindValue(fixRates, WXSIZEOF(fixRates), brate, 128);
       exporter.SetMode(MODE_CBR);
-      exporter.SetBitrate(r);
+      exporter.SetBitrate(bitrate);
 
-      bitrate = r;
-      if (r <= 16 || r == 144) {
+      if (bitrate > 160) {
+         lowrate = 32000;
+      }
+      else if (bitrate < 32 || bitrate == 144) {
          highrate = 24000;
       }
    }
 
    // Verify sample rate
-   if (FindName(sampRates, WXSIZEOF(sampRates), rate).IsEmpty() || rate > highrate) {
-      rate = AskResample(bitrate, rate, highrate);
+   if (FindName(sampRates, WXSIZEOF(sampRates), rate).IsEmpty() ||
+      (rate < lowrate) || (rate > highrate)) {
+      rate = AskResample(bitrate, rate, lowrate, highrate);
       if (rate == 0) {
          return false;
       }
@@ -1667,10 +1691,8 @@ bool ExportMP3::Export(AudacityProject *project,
 
    // Put ID3 tags at beginning of file 
    // lda Check ShowId3Dialog flag for CleanSpeech
-   bool showId3Dialog = project->GetShowId3Dialog();
    Tags *tags = project->GetTags();
-   bool emptyTags = tags->IsEmpty();
-   if (emptyTags) {
+   if (tags->IsEmpty() && project->GetShowId3Dialog()) {
       if (!tags->ShowEditDialog(project,
                                 _("Edit the ID3 tags for the MP3 file"),
                                 true)) {
@@ -1694,6 +1716,10 @@ bool ExportMP3::Export(AudacityProject *project,
    }
 
    sampleCount inSamples = exporter.InitializeStream(channels, rate);
+   if (((int)inSamples) < 0) {
+      wxMessageBox(_("Unable to initialize MP3 stream"));
+      return false;
+   }
 
    bool cancelling = false;
    long bytes;
@@ -1756,6 +1782,13 @@ bool ExportMP3::Export(AudacityProject *project,
          else {
             bytes = exporter.EncodeBufferMono(mixed, buffer);
          }
+      }
+
+      if (bytes < 0) {
+         wxString msg;
+         msg.Printf(_("Error %d returned from MP3 encoder"), bytes);
+         wxMessageBox(msg);
+         break;
       }
 
       outFile.Write(buffer, bytes);
@@ -1822,7 +1855,7 @@ wxString ExportMP3::FindName(CHOICES *choices, int cnt, int needle)
    return wxT("");
 }
 
-int ExportMP3::AskResample(int bitrate, int rate, int highrate)
+int ExportMP3::AskResample(int bitrate, int rate, int lowrate, int highrate)
 {
    wxDialog d(NULL, wxID_ANY, wxString(_("Invalid sample rate")));
    wxChoice *choice;
@@ -1851,9 +1884,10 @@ int ExportMP3::AskResample(int bitrate, int rate, int highrate)
          wxArrayString choices;
          wxString selected = wxT("");
          for (int i = 0; i < WXSIZEOF(sampRates); i++) {
-            if (sampRates[i].label <= highrate) {
+            int label = sampRates[i].label;
+            if (label >= lowrate && label <= highrate) {
                choices.Add(sampRates[i].name);
-               if (sampRates[i].label <= rate) {
+               if (label <= rate) {
                   selected = sampRates[i].name;
                }
             }
@@ -1898,7 +1932,7 @@ int ExportMP3::AskResample(int bitrate, int rate, int highrate)
       return 0;
    }
 
-   return sampRates[choice->GetSelection()].label;
+   return wxAtoi(choice->GetStringSelection());
 }
 
 //----------------------------------------------------------------------------
