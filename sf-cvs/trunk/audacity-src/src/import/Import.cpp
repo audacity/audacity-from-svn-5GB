@@ -55,6 +55,7 @@ and ImportLOF.cpp.
 
 WX_DEFINE_LIST(ImportPluginList);
 WX_DEFINE_LIST(UnusableImportPluginList);
+WX_DEFINE_LIST(FormatList);
 
 Importer::Importer()
 {
