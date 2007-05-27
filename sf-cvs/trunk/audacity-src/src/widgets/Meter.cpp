@@ -46,6 +46,10 @@
 #include <wx/tooltip.h>
 #include <wx/msgdlg.h>
 
+#if defined(__WXMAC__)
+#include <wx/mac/uma.h>
+#endif
+
 #include <math.h>
 
 #include "Meter.h"
@@ -1032,16 +1036,26 @@ void Meter::OnFloat(wxCommandEvent &evt)
 
 void Meter::OnPreferences(wxCommandEvent &evt)
 {
-   long refreshRate = 0;
-   if (-1 <  (refreshRate = ::wxGetNumberFromUser
-              (_("This determines how often the meter is refreshed.\nIf you have a slower PC you may want to select a\nlower refresh rate (30 per second or lower), so that\naudio qualtiy is not affected by the meter display."),
-               _("Meter refresh rate per second [1-100]: "),
-               _("Meter Preferences"),
-               mMeterRefreshRate, 1, 100)))
-      mMeterRefreshRate = refreshRate;
-   gPrefs->Write(wxT("/Meter/MeterRefreshRate"), mMeterRefreshRate);
+   wxNumberEntryDialog
+      d(this,
+        _("This determines how often the meter is refreshed.\nIf you have a slower PC you may want to select a\nlower refresh rate (30 per second or lower), so that\naudio qualtiy is not affected by the meter display."),
+        _("Meter refresh rate per second [1-100]: "),
+        _("Meter Preferences"),
+        mMeterRefreshRate,
+       1,
+       100);
+
+#if defined(__WXMAC__)
+   // WXMAC doesn't support wxFRAME_FLOAT_ON_PARENT, so we do
+   SetWindowClass((WindowRef)d.MacGetWindowRef(), kFloatingWindowClass);
+#endif
+
+   if (d.ShowModal() == wxID_OK) {
+      mMeterRefreshRate = d.GetValue();
+      gPrefs->Write(wxT("/Meter/MeterRefreshRate"), mMeterRefreshRate);
+   }
    
-   mTimer.Start(1000/mMeterRefreshRate);
+   mTimer.Start(1000 / mMeterRefreshRate);
 }
 
 // Indentation settings for Vim and Emacs.
