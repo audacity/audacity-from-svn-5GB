@@ -1216,6 +1216,9 @@ void AdornedRulerPanel::OnMouseEvents(wxMouseEvent &evt)
       SetCursor(wxCursor(wxCURSOR_HAND));
       
    double mouseTime = Pos2Time(evt.GetX());
+   if (mouseTime < 0.0) {
+      mouseTime = 0.0;
+   }
    
    if (evt.LeftDown())
    {
@@ -1336,7 +1339,7 @@ void AdornedRulerPanel::DoDrawPlayRegion(wxDC *dc)
 {
    double start, end;
    GetPlayRegion(&start, &end);
-   
+
    if (start >= 0)
    {
       int x1 = Time2Pos(start) + 1;
