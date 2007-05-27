@@ -48,7 +48,7 @@ void GetMP3ImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* mp3IsUnsupported =
-      new UnusableImportPlugin(wxT("MP3"), wxArrayString(4, exts));
+      new UnusableImportPlugin(DESC, wxArrayString(wxSIZEOF(exts), exts));
 
    unusableImportPluginList->Append(mp3IsUnsupported);
 }
@@ -74,6 +74,8 @@ extern "C" {
 
 #include "../WaveTrack.h"
 
+#define DESC _("MP3 files")
+
 #define INPUT_BUFFER_SIZE 65535
 #define PROGRESS_SCALING_FACTOR 100000
 
@@ -96,7 +98,7 @@ class MP3ImportPlugin : public ImportPlugin
 {
 public:
    MP3ImportPlugin():
-      ImportPlugin(wxArrayString(4, exts))
+      ImportPlugin(wxArrayString(WXSIZEOF(exts), exts))
    {
    }
 
@@ -156,7 +158,7 @@ inline float scale(mad_fixed_t sample)
 
 wxString MP3ImportPlugin::GetPluginFormatDescription()
 {
-   return wxT("MP3");
+   return DESC;
 }
 
 ImportFileHandle *MP3ImportPlugin::Open(wxString Filename)
@@ -184,7 +186,7 @@ void MP3ImportFileHandle::SetProgressCallback(progress_callback_t function,
 
 wxString MP3ImportFileHandle::GetFileDescription()
 {
-   return wxT("MP3");
+   return DESC;
 }
 
 int MP3ImportFileHandle::GetFileUncompressedBytes()

@@ -1290,7 +1290,7 @@ void AudacityApp::OnMenuOpen(wxCommandEvent & event)
 
 
    if(gAudacityProjects.GetCount() == 0)
-      AudacityProject::ShowOpenDialog(NULL);
+      AudacityProject::OpenFiles(NULL);
    else
       event.Skip();
 

@@ -43,6 +43,8 @@
 #include "../WaveTrack.h"
 #include "ImportPlugin.h"
 
+#define DESC _("Uncompressed PCM Audio Files")
+
 class PCMImportPlugin : public ImportPlugin
 {
 public:
@@ -88,7 +90,7 @@ void GetPCMImportPlugin(ImportPluginList *importPluginList,
 
 wxString PCMImportPlugin::GetPluginFormatDescription()
 {
-    return wxT("Uncompressed PCM Audio Files");
+    return DESC;
 }
 
 ImportFileHandle *PCMImportPlugin::Open(wxString filename)

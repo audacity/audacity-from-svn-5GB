@@ -28,6 +28,8 @@
 
 #define FLAC_HEADER "fLaC"
 
+#define DESC _("FLAC files")
+
 static const wxChar *exts[] =
 {
    wxT("flac"),
@@ -40,7 +42,7 @@ void GetFLACImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* flacIsUnsupported =
-      new UnusableImportPlugin(wxT("FLAC"), wxArrayString(2, exts));
+      new UnusableImportPlugin(DESC, wxArrayString(WXSIZEOF(exts), exts));
 
    unusableImportPluginList->Append(flacIsUnsupported);
 }
@@ -93,7 +95,7 @@ class FLACImportPlugin : public ImportPlugin
 {
  public:
    FLACImportPlugin():
-      ImportPlugin(wxArrayString(2, exts))
+      ImportPlugin(wxArrayString(WXSIZEOF(exts), exts))
    {
    }
 
@@ -222,7 +224,7 @@ void GetFLACImportPlugin(ImportPluginList *importPluginList,
 
 wxString FLACImportPlugin::GetPluginFormatDescription()
 {
-    return wxT("FLAC");
+    return DESC;
 }
 
 
@@ -304,7 +306,7 @@ void FLACImportFileHandle::SetProgressCallback(progress_callback_t progressCallb
 
 wxString FLACImportFileHandle::GetFileDescription()
 {
-   return wxT("FLAC");
+   return DESC;
 }
 
 

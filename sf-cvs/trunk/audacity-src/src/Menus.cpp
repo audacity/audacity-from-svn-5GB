@@ -2075,7 +2075,7 @@ void AudacityProject::OnNew()
 
 void AudacityProject::OnOpen()
 {
-   ShowOpenDialog(this);
+   OpenFiles(this);
 }
 
 void AudacityProject::OnClose()
@@ -3507,35 +3507,20 @@ void AudacityProject::OnResetToolBars()
 
 void AudacityProject::OnImport()
 {
-   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
-
-   // TODO: Build the list of file types dynamically
-
-   FileDialog dlog(this, _("Select one or more audio files..."),
-                   path, wxT(""),
-                   GetImportFilesFilter(),
-                   wxOPEN | wxMULTIPLE);
-
-   int result = dlog.ShowModal();
-
-   if (result != wxID_OK)
+   wxArrayString selectedFiles = ShowOpenDialog(wxT(""));
+   if (selectedFiles.GetCount() == 0) {
       return;
+   }
 
-   wxArrayString selectedFiles;
-   unsigned int ff;
-
-   dlog.GetPaths(selectedFiles);
-
-   selectedFiles.Sort();
-
-   for(ff=0; ff<selectedFiles.GetCount(); ff++) {
+   for (size_t ff = 0; ff < selectedFiles.GetCount(); ff++) {
       wxString fileName = selectedFiles[ff];
 
-      path =::wxPathOnly(fileName);
+      wxString path = ::wxPathOnly(fileName);
       gPrefs->Write(wxT("/DefaultOpenPath"), path);
       
       Import(fileName);
    }
+
    HandleResize(); // Adjust scrollers for new track sizes.
 }
 
