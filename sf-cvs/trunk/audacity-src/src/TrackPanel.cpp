@@ -3887,6 +3887,9 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
    case IsZooming:
       HandleZoom(event);
       break;
+   case IsAdjustingLabel:
+      HandleLabelTrackMouseEvent((LabelTrack *)mCapturedTrack, mCapturedRect, event);
+      break;
    default: //includes case of IsUncaptured
       HandleTrackSpecificMouseEvent(event);
       break;
@@ -4036,6 +4039,9 @@ bool TrackPanel::HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMo
       if(lTrack->OverGlyph(event.m_x, event.m_y))
       {
          SetCapturedTrack(lTrack, IsAdjustingLabel);
+         mCapturedRect = r; 
+         mCapturedRect.x += kLeftInset;
+         mCapturedRect.width -= kLeftInset;
       }
    } else if (event.Dragging()) {
       ;
@@ -4043,7 +4049,7 @@ bool TrackPanel::HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMo
       SetCapturedTrack( NULL );
    }
    
-   if (lTrack->HandleMouse(event, r,//mCapturedRect,
+   if (lTrack->HandleMouse(event, mCapturedRect,
       mViewInfo->h, mViewInfo->zoom, &mViewInfo->sel0, &mViewInfo->sel1)) {
 
       MakeParentPushState(_("Modified Label"),

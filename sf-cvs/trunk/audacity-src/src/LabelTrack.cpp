@@ -1095,12 +1095,22 @@ bool LabelTrack::HandleMouse(const wxMouseEvent & evt,
       //just reset its value and redraw.
       if(mIsAdjustingLabel )  // This guard is necessary but hides another bug.  && mSelIndex != -1)
       {
+         // LL:  Constrain to inside track rectangle for now.  Should be changed
+         //      to allow scrolling while dragging labels
+         int x = evt.m_x + mxMouseDisplacement - r.x;
+         if (x < 0) {
+            x = 0;
+         }
+         else if (x > r.width - 2) {
+            x = r.width - 2;
+         }
+
          //Adjust boundary and make sure that t < t1 on any dragged labels.
          //This code pushes both of them in one direction, instead of swapping
          //bounds like happens for the selection region.
          if(mMouseOverLabelLeft>=0)
          {
-            mLabels[mMouseOverLabelLeft]->t  = h + (evt.m_x+mxMouseDisplacement - r.x)/pps;
+            mLabels[mMouseOverLabelLeft]->t  = h + x / pps;
             if( mLabels[mMouseOverLabelLeft]->t > mLabels[mMouseOverLabelLeft]->t1)
             {
                mLabels[mMouseOverLabelLeft]->t1  = mLabels[mMouseOverLabelLeft]->t;
@@ -1109,7 +1119,7 @@ bool LabelTrack::HandleMouse(const wxMouseEvent & evt,
          }
          if (mMouseOverLabelRight>=0)
          {
-            mLabels[mMouseOverLabelRight]->t1 = h + (evt.m_x+mxMouseDisplacement - r.x)/pps;
+            mLabels[mMouseOverLabelRight]->t1 = h + x / pps;
             if( mLabels[mMouseOverLabelRight]->t > mLabels[mMouseOverLabelRight]->t1)
             {
                mLabels[mMouseOverLabelRight]->t  = mLabels[mMouseOverLabelRight]->t1;
