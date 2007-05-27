@@ -39,6 +39,7 @@
 #include "Prefs.h"
 #include "Project.h"
 #include "Resample.h"
+#include "float_cast.h"
 
 bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
                   double rate, sampleFormat format,
