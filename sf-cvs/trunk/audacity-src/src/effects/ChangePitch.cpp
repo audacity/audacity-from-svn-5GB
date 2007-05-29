@@ -145,6 +145,7 @@ bool EffectChangePitch::PromptUser()
 bool EffectChangePitch::TransferParameters( Shuttle & shuttle )
 {  
    shuttle.TransferDouble(wxT("Percentage"),m_PercentChange,0.0);
+   m_SemitonesChange = (12.0 * log((100.0 + m_PercentChange) / 100.0)) / log(2.0);
    return true;
 }
 
