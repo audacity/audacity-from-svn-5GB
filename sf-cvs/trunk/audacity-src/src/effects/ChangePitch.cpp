@@ -362,7 +362,7 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
 	//v Override wxTextValidator to disallow negative values < -100.0?
    m_pTextCtrl_PercentChange = 
 		new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, wxT("0.0"), 
-							wxDefaultPosition, wxSize(40, -1), 0,
+							wxDefaultPosition, wxSize(60, -1), 0,
 							wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_PercentChange->Add(m_pTextCtrl_PercentChange, 0, 
 											wxALIGN_CENTER_VERTICAL | wxALL, 4);
