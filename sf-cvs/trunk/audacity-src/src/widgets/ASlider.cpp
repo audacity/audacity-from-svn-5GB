@@ -63,6 +63,10 @@ of an LWSlider or ASlider.
 #include <wx/popupwin.h>
 #endif
 
+#if defined(__WXMAC__)
+#include <wx/sysopt.h>
+#endif
+
 #include "ASlider.h"
 
 #include "../AColor.h"
@@ -74,8 +78,6 @@ of an LWSlider or ASlider.
 
 //#include "../../images/SliderThumb.xpm"
 //#include "../../images/SliderThumbAlpha.xpm"
-
-#include <iostream>
 
 #if defined __WXMSW__
 const int sliderFontSize = 10;
@@ -89,6 +91,12 @@ const int sliderFontSize = 12;
 
 #if USE_POPUPWIN
 class TipPanel : public wxPopupWindow
+#elif defined(__WXMAC__)
+// On the Mac, we use a wxFrame as a wxPanel will appear to fall behind
+// whatever window it is hovering above if that window is refreshed.  A frame
+// does not have this problem.  One unfortunate side effect is that a shadow
+// now appears below the tip panel.
+class TipPanel : public wxFrame
 #else
 class TipPanel : public wxPanel
 #endif
@@ -101,6 +109,10 @@ class TipPanel : public wxPanel
    void SetPos(const wxPoint &pos);
 
    void OnPaint(wxPaintEvent & event);
+
+#if defined(__WXMAC__)
+   bool Show(bool show);
+#endif
 
    wxString label;
    wxString origLabel;
@@ -145,6 +157,17 @@ void TipPanel::SetPos(const wxPoint& pos)
 
 #else
 
+#if defined(__WXMAC__)
+BEGIN_EVENT_TABLE(TipPanel, wxFrame)
+   EVT_PAINT(TipPanel::OnPaint)
+END_EVENT_TABLE()
+
+TipPanel::TipPanel(wxWindow *parent, wxWindowID id,
+                   wxString label,
+                   const wxPoint &pos):
+   wxFrame(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+           wxNO_BORDER | wxFRAME_NO_TASKBAR)
+#else
 BEGIN_EVENT_TABLE(TipPanel, wxPanel)
    EVT_PAINT(TipPanel::OnPaint)
 END_EVENT_TABLE()
@@ -153,6 +176,8 @@ TipPanel::TipPanel(wxWindow *parent, wxWindowID id,
                    wxString label,
                    const wxPoint &pos):
    wxPanel(parent, id)
+#endif
+
 {
    this->label = label;
    this->origLabel = label;
@@ -175,6 +200,25 @@ void TipPanel::SetPos(const wxPoint& pos)
    Raise();
 }
 
+#if defined(__WXMAC__)
+bool TipPanel::Show(bool show)
+{
+   // Save original transition
+   int trans = wxSystemOptions::GetOptionInt( wxMAC_WINDOW_PLAIN_TRANSITION );
+
+   // Disable window animation
+   wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
+
+   // Show/Hide the window
+   bool shown = wxFrame::Show(show);
+
+   // Disable window animation
+   wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, trans );
+
+   return shown;
+}
+#endif
+
 #endif
 
 void TipPanel::OnPaint(wxPaintEvent& event)
@@ -185,7 +229,11 @@ void TipPanel::OnPaint(wxPaintEvent& event)
    wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
    dc.SetFont(labelFont);
    GetClientSize(&width, &height);
+#if defined(__WXMAC__)
+   dc.SetPen(AColor::tooltipBrush.GetColour());
+#else
    dc.SetPen(*wxBLACK_PEN);
+#endif
    dc.SetBrush(AColor::tooltipBrush);
    dc.DrawRectangle(0, 0, width, height);
    dc.GetTextExtent(label, &textWidth, &textHeight);
@@ -436,8 +484,11 @@ void LWSlider::SetPopWinPosition()
 {
    wxPoint pt(mWidth/2 + mLeft, mHeight + mTop + 1);
    pt = mParent->ClientToScreen(pt);
+
+#if !defined(__WXMAC__)
    if (GetToolTipParent())
       pt = GetToolTipParent()->ScreenToClient(pt);
+#endif
 
    if (mPopWin)
       ((TipPanel *)mPopWin)->SetPos(pt);
@@ -702,7 +753,8 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
    else if( event.ButtonUp() )
    {
       mIsDragging = false;
-      mParent->ReleaseMouse();
+      if (mParent->HasCapture())
+         mParent->ReleaseMouse();
       mPopWin->Hide();
       ((TipPanel *)mPopWin)->SetPos(wxPoint(-1000, -1000));
    }
