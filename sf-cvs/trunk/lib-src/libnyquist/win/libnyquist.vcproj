@@ -3756,6 +3756,14 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\tran\alpasscv.c"
+				>
+			</File>
+			<File
+				RelativePath="..\tran\alpassvc.c"
+				>
+			</File>
+			<File
 				RelativePath="..\tran\amosc.c"
 				>
 				<FileConfiguration
@@ -5918,6 +5926,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\tran\sqrt.c"
+				>
+			</File>
+			<File
 				RelativePath="..\tran\tapv.c"
 				>
 				<FileConfiguration
@@ -6523,65 +6535,53 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath="winfun.c"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode_Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode_Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
 		</Filter>
-		<File
-			RelativePath="..\tran\alpasscv.c"
-			>
-		</File>
-		<File
-			RelativePath="..\tran\alpassvc.c"
-			>
-		</File>
-		<File
-			RelativePath="..\tran\sqrt.c"
-			>
-		</File>
-		<File
-			RelativePath="winfun.c"
-			>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Unicode_Debug|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Unicode_Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
