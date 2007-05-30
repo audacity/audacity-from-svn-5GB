@@ -134,7 +134,7 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 /// tell us where the MP3 library is.
 void FileFormatPrefs::OnMP3DownButton(wxCommandEvent& evt)
 {
-   wxString url = wxT("http://audacity.sourceforge.net/lame.html");
+   wxString url = wxT("http://audacity.sourceforge.net/lame");
    ::OpenInDefaultBrowser(url);
 }
 
