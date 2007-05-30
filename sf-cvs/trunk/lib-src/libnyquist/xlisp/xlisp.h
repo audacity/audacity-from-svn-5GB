@@ -225,7 +225,7 @@ extern long ptrtoabs();
 #include "xldmem.h"
 
 /* program limits */
-#define STRMAX		100		/* maximum length of a string constant */
+#define STRMAX		1024		/* maximum length of a string constant */
 #define HSIZE		1499		/* symbol hash table size */
 #define SAMPLE		1000		/* control character sample rate */
 
