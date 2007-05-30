@@ -1016,6 +1016,7 @@ void TimeTextCtrl::SetFieldFocus(int digit)
                    mLastField);
    }
 
+   mFocusedDigit = digit;
    mLastField = mDigits[mFocusedDigit].field + 1;
 
    GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_FOCUS,

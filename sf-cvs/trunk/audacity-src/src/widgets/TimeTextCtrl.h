@@ -58,6 +58,7 @@ class TimeTextCtrl: public wxControl
    virtual bool Layout();
    virtual void Fit();
 
+   void SetFieldFocus(int digit);
    void SetFormatString(wxString formatString);
    void SetSampleRate(double sampleRate);
    void SetTimeValue(double newTime);
@@ -90,7 +91,6 @@ private:
 
    void PrintDebugInfo();
 
-   void SetFieldFocus(int digit);
    void Updated();
    void Increase(int steps);
    void Decrease(int steps);

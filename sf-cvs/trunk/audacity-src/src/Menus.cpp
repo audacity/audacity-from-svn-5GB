@@ -609,7 +609,7 @@ void AudacityProject::CreateMenusAndCommands()
 			c->AddItem(wxT("NewTimeTrack"),   _("&Time Track"),                FN(OnNewTimeTrack));
 		c->EndSubMenu();
 
-      c->AddItem(wxT("SmartRecord"), _("&Timer Record"), FN(OnSmartRecord));
+      c->AddItem(wxT("SmartRecord"), _("&Timer Record..."), FN(OnSmartRecord));
 
       c->AddSeparator();
       // StereoToMono moves elsewhere in the menu when in CleanSpeech mode.
