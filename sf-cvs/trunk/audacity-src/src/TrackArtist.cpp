@@ -1093,9 +1093,10 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    wxRect drawRect = mid;
 
    #if BUFFERED_DRAWING
-
    drawRect.x = 0;
    drawRect.y = 0;
+   drawRect.width++;
+   drawRect.height++;
    wxImage *image = new wxImage(drawRect.width, drawRect.height);
    imageBuffer = image->GetData();
    #endif
