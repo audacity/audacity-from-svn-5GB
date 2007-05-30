@@ -102,9 +102,8 @@ void SmartRecordDialog::OnTimer(wxTimerEvent& event)
       m_DateTime_Start = dateTime_UNow;
       m_pDatePickerCtrl_Start->SetValue(m_DateTime_Start);
       m_pTimeTextCtrl_Start->SetTimeValue(wxDateTime_to_AudacityTime(m_DateTime_Start));
+      this->UpdateEnd(); // Keep Duration constant and update End for changed Start.
    }
-
-   this->UpdateEnd(); // Keep Duration constant and update End for changed Start.
 }
 
 void SmartRecordDialog::OnDatePicker_Start(wxDateEvent& event)
@@ -384,7 +383,7 @@ bool SmartRecordDialog::WaitForStart()
    wxLongLong llProgValue;
    int nProgValue = 0;
    while (!bDidCancel && !bIsRecording) {
-      wxMilliSleep(kTimerInterval);
+      wxMilliSleep(10);
 
       done_TimeSpan = wxDateTime::UNow() - startWait_DateTime;
       llProgValue = 
