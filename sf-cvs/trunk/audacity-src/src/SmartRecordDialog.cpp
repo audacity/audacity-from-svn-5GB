@@ -43,7 +43,7 @@ enum { // control IDs
    ID_TIMETEXT_DURATION
 };
 
-const int kTimerInterval = 1000; // every 1000 ms -> 1 update per second   
+const int kTimerInterval = 500; // every 500 ms => 2 updates per second   
 
 double wxDateTime_to_AudacityTime(wxDateTime& dateTime)
 {
@@ -68,7 +68,7 @@ SmartRecordDialog::SmartRecordDialog(wxWindow* parent)
 : wxDialog(parent, -1, _("Audacity Timer Record"), wxDefaultPosition, 
            wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
-   m_DateTime_Start = wxDateTime::Now(); 
+   m_DateTime_Start = wxDateTime::UNow(); 
    m_TimeSpan_Duration = wxTimeSpan::Minutes(5); // default 5 minute duration
    m_DateTime_End = m_DateTime_Start + m_TimeSpan_Duration;
 
@@ -83,8 +83,12 @@ SmartRecordDialog::SmartRecordDialog(wxWindow* parent)
    ShuttleGui S(this, eIsCreating);
    this->PopulateOrExchange(S);
 
+   // Set initial focus to "0" of "05m" in Duration TimeTextCtrl, instead of OK button (default).
+   m_pTimeTextCtrl_Duration->SetFocus();
+   m_pTimeTextCtrl_Duration->SetFieldFocus(4);
+
    m_timer.SetOwner(this, TIMER_ID);
-   m_timer.Start(kTimerInterval);    // 1 second interval
+   m_timer.Start(kTimerInterval); 
 }
 
 SmartRecordDialog::~SmartRecordDialog()
@@ -93,8 +97,9 @@ SmartRecordDialog::~SmartRecordDialog()
 
 void SmartRecordDialog::OnTimer(wxTimerEvent& event)
 {
-   if (m_DateTime_Start < wxDateTime::Now()) {
-      m_DateTime_Start = wxDateTime::Now();
+   wxDateTime dateTime_UNow = wxDateTime::UNow();
+   if (m_DateTime_Start < dateTime_UNow) {
+      m_DateTime_Start = dateTime_UNow;
       m_pDatePickerCtrl_Start->SetValue(m_DateTime_Start);
       m_pTimeTextCtrl_Start->SetTimeValue(wxDateTime_to_AudacityTime(m_DateTime_Start));
    }
@@ -189,15 +194,17 @@ void SmartRecordDialog::OnTimeText_Duration(wxCommandEvent& event)
 
 void SmartRecordDialog::OnOK(wxCommandEvent& event)
 {
-   m_timer.Stop();
+   m_timer.Stop(); // Don't need to keep updating m_DateTime_Start to prevent backdating.
 
    this->TransferDataFromWindow();
 
    bool bDidCancel = false;
-   if (m_DateTime_Start > wxDateTime::UNow()) bDidCancel = !this->WaitForStart(); 
+   if (m_DateTime_Start > wxDateTime::UNow()) 
+      bDidCancel = !this->WaitForStart(); 
 
-   if (!bDidCancel) { // Record for specified time. 
-      //v For now, just usual record mechanism.
+   if (!bDidCancel)  
+   {
+      // Record for specified time.
    	AudacityProject* pProject = GetActiveProject();
       pProject->OnRecord();
 
@@ -217,14 +224,21 @@ void SmartRecordDialog::OnOK(wxCommandEvent& event)
                _("Audacity Smart Record Progress"), // const wxString& title,
                strMsg); // const wxString& message
 
+      // Make sure that start and end time are updated, so we always get the full 
+      // duration, even if there's some delay getting here.
+      wxTimerEvent dummyTimerEvent;
+      this->OnTimer(dummyTimerEvent);
+
+      wxDateTime dateTime_UNow;
       wxTimeSpan done_TimeSpan;
       wxLongLong llProgValue;
       int nProgValue = 0;
       while (bIsRecording && !bDidCancel) {
          wxMilliSleep(kTimerInterval);
-
-         done_TimeSpan = wxDateTime::Now() - m_DateTime_Start;
-         // remaining_TimeSpan = m_DateTime_End - wxDateTime::Now();
+         
+         dateTime_UNow = wxDateTime::UNow();
+         done_TimeSpan = dateTime_UNow - m_DateTime_Start;
+         // remaining_TimeSpan = m_DateTime_End - dateTime_UNow;
 
          llProgValue = 
             (wxLongLong)((done_TimeSpan.GetSeconds() * (double)MAX_PROG) / 
@@ -233,7 +247,7 @@ void SmartRecordDialog::OnOK(wxCommandEvent& event)
 
          // strNewMsg = strMsg + _("\nDone: ") + done_TimeSpan.Format() + _("     Remaining: ") + remaining_TimeSpan.Format();
          bDidCancel = !pProject->ProgressUpdate(nProgValue); // , strNewMsg);
-         bIsRecording = (wxDateTime::UNow() < m_DateTime_End);
+         bIsRecording = (wxDateTime::UNow() <= m_DateTime_End);
       }
       pProject->OnStop();
       pProject->ProgressHide();
@@ -361,7 +375,7 @@ bool SmartRecordDialog::WaitForStart()
    wxString strMsg = _("Waiting to start recording at ") + m_DateTime_Start.Format() + wxT(".\n"); 
    pProject->ProgressShow(_("Audacity Smart Record - Waiting for Start"),
                           strMsg);
-   wxDateTime startWait_DateTime = wxDateTime::Now();
+   wxDateTime startWait_DateTime = wxDateTime::UNow();
    wxTimeSpan waitDuration = m_DateTime_Start - startWait_DateTime;
 
    bool bDidCancel = false;
@@ -372,7 +386,7 @@ bool SmartRecordDialog::WaitForStart()
    while (!bDidCancel && !bIsRecording) {
       wxMilliSleep(kTimerInterval);
 
-      done_TimeSpan = wxDateTime::Now() - startWait_DateTime;
+      done_TimeSpan = wxDateTime::UNow() - startWait_DateTime;
       llProgValue = 
          (wxLongLong)((done_TimeSpan.GetSeconds() * (double)MAX_PROG) / 
                         waitDuration.GetSeconds());
