@@ -121,6 +121,11 @@ void SmartRecordDialog::OnDatePicker_Start(wxDateEvent& event)
    // had a future day, set hour of day less than now's, then changed day to today.
    wxTimerEvent dummyTimerEvent;
    this->OnTimer(dummyTimerEvent);
+
+   // Always update End for changed Start, keeping Duration constant.
+   // Note that OnTimer sometimes calls UpdateEnd, so sometimes this is redundant, 
+   // but OnTimer doesn't need to always call UpdateEnd, but we must here.
+   this->UpdateEnd(); 
 }
 
 void SmartRecordDialog::OnTimeText_Start(wxCommandEvent& event)
