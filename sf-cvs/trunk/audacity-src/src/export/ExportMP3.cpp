@@ -1829,11 +1829,12 @@ bool ExportMP3::Export(AudacityProject *project,
       outFile.Write(id3buffer, id3len);
    }
 
-   free(id3buffer);
+   if (id3buffer)
+      free(id3buffer);
 
    /* Close file */
    outFile.Close();
-      
+
    delete[]buffer;
    
    return !cancelling;
