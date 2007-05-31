@@ -1111,6 +1111,9 @@ typedef int lame_set_VBR_min_bitrate_kbps_t(lame_global_flags *, int);
 typedef int lame_set_mode_t(lame_global_flags *, MPEG_mode);
 typedef int lame_set_preset_t(lame_global_flags *, int);
 typedef int lame_set_error_protection_t(lame_global_flags *, int);
+typedef int lame_set_disable_reservoir_t(lame_global_flags *, int);
+typedef int lame_set_padding_type_t(lame_global_flags *, Padding_type);
+typedef int lame_set_bWriteVbrTag_t(lame_global_flags *, int);
 
 #if 0
 // Debug routine from BladeMP3EncDLL.c in the libmp3lame distro
@@ -1267,7 +1270,13 @@ public:
           dlsym(mLib, "lame_set_preset");
       lame_set_error_protection = (lame_set_error_protection_t *)
           dlsym(mLib, "lame_set_error_protection");
-
+      lame_set_disable_reservoir = (lame_set_disable_reservoir_t *)
+          dlsym(mLib, "lame_set_disable_reservoir");
+      lame_set_padding_type = (lame_set_padding_type_t *)
+          dlsym(mLib, "lame_set_padding_type");
+      lame_set_bWriteVbrTag = (lame_set_bWriteVbrTag_t *)
+          dlsym(mLib, "lame_set_bWriteVbrTag");
+      
       /* we assume that if all the symbols are found, it's a valid library */
 
       if (!lame_init ||
@@ -1286,7 +1295,10 @@ public:
          !lame_set_VBR_q ||
          !lame_set_mode ||
          !lame_set_preset ||
-         !lame_set_error_protection) {
+         !lame_set_error_protection ||
+         !lame_set_disable_reservoir ||
+         !lame_set_padding_type ||
+         !lame_set_bWriteVbrTag) {
          return false;
       }
 
@@ -1328,9 +1340,9 @@ public:
       lame_set_num_channels(mGF, channels);
       lame_set_in_samplerate(mGF, sampleRate);
       lame_set_out_samplerate(mGF, sampleRate);
-//      lame_set_disable_reservoir(mGF, true);
-//      lame_set_padding_type(mGF, PAD_NO);
-//      lame_set_bWriteVbrTag(mGF, false);
+      lame_set_disable_reservoir(mGF, true);
+      lame_set_padding_type(mGF, PAD_NO);
+      lame_set_bWriteVbrTag(mGF, false);
 
       // Set the VBR quality or ABR/CBR bitrate
       switch (mMode) {
@@ -1537,7 +1549,10 @@ private:
    lame_set_mode_t* lame_set_mode;
    lame_set_preset_t* lame_set_preset;
    lame_set_error_protection_t* lame_set_error_protection;
-
+   lame_set_disable_reservoir_t *lame_set_disable_reservoir;
+   lame_set_padding_type_t *lame_set_padding_type;
+   lame_set_bWriteVbrTag_t *lame_set_bWriteVbrTag;
+   
    lame_global_flags *mGF;
 
    static const int mSamplesPerChunk = 220500;
@@ -1689,6 +1704,12 @@ bool ExportMP3::Export(AudacityProject *project,
       exporter.SetChannel(CHANNEL_STEREO);
    }
 
+   sampleCount inSamples = exporter.InitializeStream(channels, rate);
+   if (((int)inSamples) < 0) {
+      wxMessageBox(_("Unable to initialize MP3 stream"));
+      return false;
+   }
+
    // Put ID3 tags at beginning of file 
    // lda Check ShowId3Dialog flag for CleanSpeech
    Tags *tags = project->GetTags();
@@ -1706,19 +1727,13 @@ bool ExportMP3::Export(AudacityProject *project,
       wxMessageBox(_("Unable to open target file for writing"));
       return false;
    }
-   
+
    char *id3buffer = NULL;
    int id3len;
    bool endOfFile;
    id3len = tags->ExportID3(&id3buffer, &endOfFile);
-   if (!endOfFile) {
+   if (id3len && !endOfFile) {
      outFile.Write(id3buffer, id3len);
-   }
-
-   sampleCount inSamples = exporter.InitializeStream(channels, rate);
-   if (((int)inSamples) < 0) {
-      wxMessageBox(_("Unable to initialize MP3 stream"));
-      return false;
    }
 
    bool cancelling = false;
@@ -1810,7 +1825,7 @@ bool ExportMP3::Export(AudacityProject *project,
    
    /* Write ID3 tag if it was supposed to be at the end of the file */
    
-   if (endOfFile) {
+   if (id3len && endOfFile) {
       outFile.Write(id3buffer, id3len);
    }
 
