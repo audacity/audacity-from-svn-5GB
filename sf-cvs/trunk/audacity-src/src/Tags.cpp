@@ -558,6 +558,9 @@ int Tags::ExportID3(char **buffer, bool *endOfFile)
    struct id3_tag *tp = id3_tag_new();
 
    int i;
+
+   if (IsEmpty())
+      return 0;
    
    if (mTitle != wxT(""))
       id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_TITLE, NULL, mTitle.mb_str()));
