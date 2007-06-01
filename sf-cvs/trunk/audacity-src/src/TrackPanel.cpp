@@ -4993,13 +4993,6 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
    // Contract selection from the right to the left
    if( shift && ctrl )
    {
-      // Ensure currently focused track is selected.
-      // (Possible if mouse and keyboard are used together)
-      if( t && !t->GetSelected() )
-      {
-         mTracks->Select( t );
-      }
-
       // Reduce and constrain (counter-intuitive)
       mViewInfo->sel1 -= multiplier / mViewInfo->zoom;
       if( mViewInfo->sel1 < mViewInfo->sel0 )
@@ -5022,13 +5015,6 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
       {
          gAudioIO->SeekStream(-mSeekLong);
          return;
-      }
-      
-      // Ensure currently focused track is selected.
-      // (Possible if mouse and keyboard are used together)
-      if( t && !t->GetSelected() )
-      {
-         mTracks->Select( t );
       }
 
       // Expand and constrain
@@ -5105,13 +5091,6 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
    // Contract selection from the left to the right
    if( shift && ctrl )
    {
-      // Ensure currently focused track is selected.
-      // (Possible if mouse and keyboard are used together)
-      if( t && !t->GetSelected() )
-      {
-         mTracks->Select( t );
-      }
-
       // Reduce and constrain (counter-intuitive)
       mViewInfo->sel0 += multiplier / mViewInfo->zoom;
       if( mViewInfo->sel0 > mViewInfo->sel1 )
@@ -5134,13 +5113,6 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
       {
          gAudioIO->SeekStream(mSeekLong);
          return;
-      }
-      
-      // Ensure currently focused track is selected.
-      // (Possible if mouse and keyboard are used together)
-      if( t && !t->GetSelected() )
-      {
-         mTracks->Select( t );
       }
 
       // Expand and constrain
