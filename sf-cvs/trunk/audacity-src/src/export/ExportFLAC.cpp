@@ -220,8 +220,6 @@ bool ExportFLAC::Export(AudacityProject *project,
    wxLogNull logNo;            // temporarily disable wxWindows error messages 
    bool      cancelling = false;
 
-   Tags *tags = project->GetTags();
-
    int levelPref;
    gPrefs->Read(wxT("/FileFormats/FLACLevel"), &levelPref, 5);
 
@@ -233,6 +231,15 @@ bool ExportFLAC::Export(AudacityProject *project,
    encoder->set_channels(numChannels);
    encoder->set_sample_rate(int(rate + 0.5));
 
+   // Retrieve tags
+   Tags *tags = project->GetTags();
+   if (tags->IsEmpty() && project->GetShowId3Dialog()) {
+      if (!tags->ShowEditDialog(project,
+                                _("Edit the metadata for the FLAC file"),
+                                true)) {
+         return false;  // user selected "cancel"
+      }
+   }
    tags->ExportFLACTags(encoder);
    
    sampleFormat format;
