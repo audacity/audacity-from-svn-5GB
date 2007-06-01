@@ -201,7 +201,15 @@ bool ExportOGG::Export(AudacityProject *project,
    vorbis_encode_init_vbr(&info, numChannels, int(rate + 0.5), quality);
 
    // Retrieve tags
-   project->GetTags()->ExportOGGTags(&comment);
+   Tags *tags = project->GetTags();
+   if (tags->IsEmpty() && project->GetShowId3Dialog()) {
+      if (!tags->ShowEditDialog(project,
+                                _("Edit the metadata for the OGG file"),
+                                true)) {
+         return false;  // user selected "cancel"
+      }
+   }
+   tags->ExportOGGTags(&comment);
 
    // Set up analysis state and auxiliary encoding storage
    vorbis_analysis_init(&dsp, &info);
