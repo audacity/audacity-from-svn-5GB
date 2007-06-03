@@ -124,8 +124,6 @@ PxMixer *Px_OpenMixer(PaStream *pa_stream, int i)
       return NULL;
    }
 
-fprintf(stderr, "stream type %d\n", Pa_GetStreamHostApiType(pa_stream));
-
    switch (Pa_GetStreamHostApiType(pa_stream))
    {
 #if defined(PX_USE_WIN_MME)
@@ -330,7 +328,6 @@ void Px_SetOutputVolume(PxMixer *mixer, int i, PxVolume volume)
 int Px_GetNumInputSources(PxMixer *mixer)
 {
    px_mixer *Px = verify_mixer(mixer);
-fprintf(stderr, "px = %p\n", Px);
    if (!Px)
       return 0;
 
