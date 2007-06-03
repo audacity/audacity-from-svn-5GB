@@ -308,19 +308,18 @@ void TranscriptionToolBar::GetSamples(WaveTrack *t, sampleCount *s0, sampleCount
 
 void TranscriptionToolBar::OnPlaySpeed(wxCommandEvent & event)
 {
+   // Can't do anything without an active project
+   AudacityProject * p = GetActiveProject();
+   if (!p) {
+      return;
+   }
+
    // Pop up the button
    SetButton(false, mButtons[TTB_PlaySpeed]); 
 
    // If IO is busy, abort immediately
    if (gAudioIO->IsBusy()) {
-      SetButton(false, mButtons[TTB_PlaySpeed]);
-      return;
-   }
-
-   // Can't do anything without an active project
-   AudacityProject * p = GetActiveProject();
-   if (!p) {
-      return;
+      p->GetControlToolBar()->StopPlaying();
    }
 
    // Can't do anything without a time track
@@ -349,6 +348,11 @@ void TranscriptionToolBar::OnPlaySpeed(wxCommandEvent & event)
 void TranscriptionToolBar::OnSpeedSlider(wxCommandEvent& event)
 {
    mPlaySpeed = (mPlaySpeedSlider->Get()) * 100;
+
+   // If IO is busy, abort immediately
+   if (gAudioIO->IsBusy()) {
+      OnPlaySpeed(event);
+   }
 }
 
 void TranscriptionToolBar::OnStartOn(wxCommandEvent &event)
