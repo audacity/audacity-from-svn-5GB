@@ -175,6 +175,8 @@ int ExportMultiple::ShowModal()
 
 void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
 {
+   wxString name = mProject->GetName();
+
    S.SetBorder(5);
    S.StartMultiColumn(4, true);
    {
@@ -232,8 +234,7 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
                mFirstFileLabel = S.AddVariableText(_("First file name:"), true);
                mFirstFileName = S.Id(FirstFileNameID)
                   .TieTextBox(wxT(""),
-                              wxT("/Export/MultipleFirstName"),
-                              wxT(""),
+                              name,
                               30);
             }
             S.EndHorizontalLay();
@@ -276,8 +277,7 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
                mPrefixLabel = S.AddVariableText(_("File name prefix:"), true);
                mPrefix = S.Id(PrefixID)
                   .TieTextBox(wxT(""),
-                              wxT("/Export/MultiplePrefix"),
-                              wxT(""),
+                              name,
                               30);
             }
             S.EndHorizontalLay();
