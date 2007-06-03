@@ -89,6 +89,7 @@ ControlToolBar::ControlToolBar()
    gPrefs->Read(wxT("/GUI/ErgonomicTransportButtons"), &mErgonomicTransportButtons, true);
    gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &mCleanSpeechMode, false);
    gPrefs->Read(wxT("/GUI/AlwaysEnablePause"), &mAlwaysEnablePause, false);
+   gPrefs->Read(wxT("/GUI/AlwaysEnablePlay"), &mAlwaysEnablePlay, true);
 }
 
 ControlToolBar::~ControlToolBar()
@@ -206,6 +207,7 @@ void ControlToolBar::Populate()
 
 void ControlToolBar::UpdatePrefs()
 {
+   gPrefs->Read(wxT("/GUI/AlwaysEnablePlay"), &mAlwaysEnablePlay, true);
 #if 0
    gPrefs->Read(wxT("/GUI/AlwaysEnablePause"), &mAlwaysEnablePause, false);
 
@@ -637,12 +639,18 @@ void ControlToolBar::OnStop(wxCommandEvent &evt)
 
 void ControlToolBar::PlayDefault()
 {
+   if(mAlwaysEnablePlay)
+      StopPlaying();
+
    if(mPlay->WasControlDown())
       PlayCurrentRegion(false, true); /* play with cut preview */
    else if(mPlay->WasShiftDown())
       PlayCurrentRegion(true); /* play looped */
    else
       PlayCurrentRegion(false); /* play normal */
+
+   if(mAlwaysEnablePlay)
+      mPlay->PopUp();
 }
 
 void ControlToolBar::StopPlaying()
