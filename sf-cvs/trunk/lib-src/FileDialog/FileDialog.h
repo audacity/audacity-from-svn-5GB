@@ -17,7 +17,9 @@ custom controls.
 #ifndef _FILE_DIALOG_H_
 #define _FILE_DIALOG_H_
 
+#if defined(__WXGTK__)
 #include "config.h"
+#endif
 
 #include "wx/defs.h"
 #include "wx/filedlg.h"
@@ -41,7 +43,7 @@ typedef void (*fdCallback)(void *, int);
 // Modified by: Leland Lucius
 // Created:     8/17/99
 // Copyright:   (c) Robert Roebling
-// RCS-ID:      $Id: FileDialog.h,v 1.6 2007-06-03 03:23:47 llucius Exp $
+// RCS-ID:      $Id: FileDialog.h,v 1.7 2007-06-03 08:25:21 llucius Exp $
 // Licence:     wxWindows licence
 //
 // Modified for Audacity to support an additional button on Save dialogs
