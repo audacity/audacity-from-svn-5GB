@@ -56,6 +56,8 @@ class EffectChangeSpeed : public Effect {
 	// track related
    int    mCurTrackNum;
 	double m_maxNewLength;
+   double mCurT0;
+   double mCurT1;
 
 	// control values
    double	m_PercentChange;	// percent change to apply to tempo
