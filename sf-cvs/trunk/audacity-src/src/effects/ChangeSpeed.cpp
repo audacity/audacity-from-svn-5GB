@@ -91,24 +91,23 @@ bool EffectChangeSpeed::Process()
    WaveTrack *track = (WaveTrack *) iter.First();
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;
-	double curT0;
-	double curT1;
+
    while (track) {
       //Get start and end times from track
-      double trackStart = track->GetStartTime();
-      double trackEnd = track->GetEndTime();
+      mCurT0 = track->GetStartTime();
+      mCurT1 = track->GetEndTime();
 
       //Set the current bounds to whichever left marker is
       //greater and whichever right marker is less:
-      curT0 = mT0 < trackStart? trackStart: mT0;
-      curT1 = mT1 > trackEnd? trackEnd: mT1;
+      mCurT0 = wxMax(mT0, mCurT0);
+      mCurT1 = wxMin(mT1, mCurT1);
 
       // Process only if the right marker is to the right of the left marker
-      if (curT1 > curT0) {
+      if (mCurT1 > mCurT0) {
 
          //Transform the marker timepoints to samples
-         longSampleCount start = track->TimeToLongSamples(curT0);
-         longSampleCount end = track->TimeToLongSamples(curT1);
+         longSampleCount start = track->TimeToLongSamples(mCurT0);
+         longSampleCount end = track->TimeToLongSamples(mCurT1);
 
          //ProcessOne() (implemented below) processes a single track
          if (!ProcessOne(track, start, end))
@@ -120,7 +119,7 @@ bool EffectChangeSpeed::Process()
       mCurTrackNum++;
    }
 
-	mT1 = mT0 + m_maxNewLength; // Update selection.
+// mT1 = mT0 + m_maxNewLength; // Update selection.
    return true;
 }
 
@@ -210,8 +209,8 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
    // Take the output track and insert it in place of the original
    // sample data
 	if (bLoopSuccess) {
-		track->Clear(mT0, mT1);
-		track->Paste(mT0, outputTrack);
+		track->Clear(mCurT0, mCurT1);
+		track->Paste(mCurT0, outputTrack);
 	}
 
 	double newLength = outputTrack->GetEndTime(); 
