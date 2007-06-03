@@ -4417,8 +4417,8 @@ void AudacityProject::OnResample()
       if (t->GetSelected() && t->GetKind() == Track::Wave)
          if (!((WaveTrack*)t)->Resample(newRate, true))
             break;
+      GetActiveProject()->ProgressHide();
    }
-   GetActiveProject()->ProgressHide();
    
    PushState(_("Resampled audio track(s)"), _("Resample Track"));
    RedrawProject();
