@@ -117,7 +117,8 @@ class ControlToolBar:public ToolBar {
    // Maybe button state values shouldn't be duplicated in this toolbar?
    bool mPaused;         //Play or record is paused or not paused?
    bool mAlwaysEnablePause;
-   
+   bool mAlwaysEnablePlay;
+
    // Activate ergonomic order for transport buttons
    bool mErgonomicTransportButtons;
 
