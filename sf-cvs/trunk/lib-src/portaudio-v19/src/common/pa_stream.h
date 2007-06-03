@@ -1,7 +1,7 @@
 #ifndef PA_STREAM_H
 #define PA_STREAM_H
 /*
- * $Id: pa_stream.h,v 1.3 2006-10-02 00:29:03 llucius Exp $
+ * $Id: pa_stream.h,v 1.4 2007-06-03 08:30:30 llucius Exp $
  * Portable Audio I/O Library
  * stream interface
  *

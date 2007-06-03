@@ -216,15 +216,13 @@ int OpenMixer_Linux_ALSA(px_mixer *Px, int index)
 
    info = (PxInfo *) Px->info;
 
-   card = PaAlsa_GetInputCard(Px->pa_stream);
-   if (card >= 0) {
+   if (PaAlsa_GetStreamInputCard(Px->pa_stream, &card) == paNoError) {
       if (!open_mixer(&info->capture, card, FALSE)) {
          return cleanup(Px);
       }
    }
 
-   card = PaAlsa_GetOutputCard(Px->pa_stream);
-   if (card >= 0) {
+   if (PaAlsa_GetStreamOutputCard(Px->pa_stream, &card) == paNoError) {
       if (!open_mixer(&info->playback, card, TRUE)) {
          return cleanup(Px);
       }
