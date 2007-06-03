@@ -3,9 +3,10 @@
 #
 
 AC_INIT(FileDialog, 1.0, audacity.sourceforge.net, FileDialog)
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile config.h])
 AC_SUBST(EXTRADEPS)
 AC_SUBST(EXTRAOBJS)
+AC_SUBST(HAVE_GTK)
 
 #
 # Checks for programs.
@@ -85,7 +86,7 @@ case "${host_os}" in
 
    *)
       dnl Unix configuration
-      AM_PATH_GTK_2_0(2.8.0,
+      AM_PATH_GTK_2_0(2.4.0,
             have_gtk="yes",
             have_gtk="no")
       if [[ "$have_gtk" = "yes" ]]
@@ -93,9 +94,11 @@ case "${host_os}" in
          CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
          EXTRADEPS="gtk/FileDialogPrivate.h gtk/private.h"
          EXTRAOBJS="gtk/FileDialogPrivate.o"
+         HAVE_GTK=1
       else
          EXTRADEPS="generic/FileDialogPrivate.h"
          EXTRAOBJS="generic/FileDialogPrivate.o"
+         HAVE_GTK=0
       fi
    ;;
 esac
