@@ -2,7 +2,7 @@
 // Name:        gtk/filedlg.cpp
 // Purpose:     native implementation of FileDialog
 // Author:      Robert Roebling, Zbigniew Zagorski, Mart Raudsepp
-// Id:          $Id: FileDialogPrivate.cpp,v 1.1 2007-04-30 04:12:49 llucius Exp $
+// Id:          $Id: FileDialogPrivate.cpp,v 1.2 2007-06-03 03:19:13 llucius Exp $
 // Copyright:   (c) 1998 Robert Roebling, 2004 Zbigniew Zagorski, 2005 Mart Raudsepp
 // Licence:     wxWindows licence
 //
@@ -43,7 +43,6 @@ extern void wxapp_install_idle_handler();
 //-----------------------------------------------------------------------------
 
 extern "C" {
-
 static void SetExpanded(GtkWidget *widget, gpointer data)
 {
     if (GTK_IS_EXPANDER(widget)) {
@@ -54,6 +53,11 @@ static void SetExpanded(GtkWidget *widget, gpointer data)
     }
 
     return;
+}
+
+static void gtk_filedialog_show_callback(GtkWidget *widget, FileDialog *dialog)
+{
+   gtk_container_forall(GTK_CONTAINER(widget), SetExpanded, NULL);
 }
 }
 
@@ -230,6 +234,8 @@ FileDialog::FileDialog(wxWindow *parent, const wxString& message,
 
         g_signal_connect(G_OBJECT(m_widget), "response",
             GTK_SIGNAL_FUNC(gtk_filedialog_response_callback), (gpointer)this);
+        g_signal_connect(G_OBJECT(m_widget), "show",
+            GTK_SIGNAL_FUNC(gtk_filedialog_show_callback), (gpointer)this);
 
         SetWildcard(wildCard);
 
@@ -246,7 +252,6 @@ FileDialog::FileDialog(wxWindow *parent, const wxString& message,
             if (!gtk_check_version(2,7,3))
                 gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(m_widget), FALSE);
 #endif
-            gtk_container_forall(GTK_CONTAINER(m_widget), SetExpanded, NULL);
         }
         else
         {
