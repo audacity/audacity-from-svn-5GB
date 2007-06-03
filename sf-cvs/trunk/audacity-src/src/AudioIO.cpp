@@ -447,7 +447,7 @@ void AudioIO::HandleDeviceChange()
    captureParameters.channelCount = 2;
    if (Pa_GetDeviceInfo(recDeviceNum))
       captureParameters.suggestedLatency =
-         Pa_GetDeviceInfo(recDeviceNum)->defaultLowOutputLatency;
+         Pa_GetDeviceInfo(recDeviceNum)->defaultLowInputLatency;
    else
       captureParameters.suggestedLatency = 100; // we're just probing anyway
  
