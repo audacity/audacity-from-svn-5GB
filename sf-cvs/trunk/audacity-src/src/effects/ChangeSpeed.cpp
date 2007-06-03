@@ -363,7 +363,7 @@ ChangeSpeedDialog::ChangeSpeedDialog(EffectChangeSpeed * effect,
 
    m_pChoice_FromVinyl = 
 		new wxChoice(this, ID_CHOICE_FROMVINYL, 
-							wxDefaultPosition, wxSize(64, -1), numChoices, strArray_VinylRPM);
+							wxDefaultPosition, wxDefaultSize, numChoices, strArray_VinylRPM);
    pBoxSizer_Vinyl->Add(m_pChoice_FromVinyl, 0, wxALIGN_CENTER | wxALL, 4);
 
    pStaticText = new wxStaticText(this, -1, _("to"),
@@ -373,7 +373,7 @@ ChangeSpeedDialog::ChangeSpeedDialog(EffectChangeSpeed * effect,
 
    m_pChoice_ToVinyl = 
 		new wxChoice(this, ID_CHOICE_TOVINYL, 
-							wxDefaultPosition, wxSize(64, -1), numChoices, strArray_VinylRPM);
+							wxDefaultPosition, wxDefaultSize, numChoices, strArray_VinylRPM);
    pBoxSizer_Vinyl->Add(m_pChoice_ToVinyl, 0, wxALIGN_CENTER | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_Vinyl, 0, wxALIGN_CENTER | wxALL, 4);

@@ -274,7 +274,7 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
        wxT("F#/Gb"), wxT("G"), wxT("G#/Ab"), wxT("A"), wxT("A#/Bb"), wxT("B")};
 	const int numChoicesPitchNames = 12;
    m_pChoice_FromPitch = 
-		new wxChoice(this, ID_CHOICE_FROMPITCH, wxDefaultPosition, wxSize(64, -1), 
+		new wxChoice(this, ID_CHOICE_FROMPITCH, wxDefaultPosition, wxDefaultSize, 
 							numChoicesPitchNames, strArray_PitchNames);
    pBoxSizer_Pitch->Add(m_pChoice_FromPitch, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
@@ -291,7 +291,7 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
 								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    m_pChoice_ToPitch = 
-		new wxChoice(this, ID_CHOICE_TOPITCH, wxDefaultPosition, wxSize(64, -1), 
+		new wxChoice(this, ID_CHOICE_TOPITCH, wxDefaultPosition, wxDefaultSize, 
 							numChoicesPitchNames, strArray_PitchNames);
    pBoxSizer_Pitch->Add(m_pChoice_ToPitch, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
