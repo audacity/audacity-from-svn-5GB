@@ -164,41 +164,42 @@
   </div>
 
   <div id="adsense">
-	<script type="text/javascript">
-	var dfp_ord = Math.random()*10000000000000000;
-	var partner_clientid = 'pub-2386514291404644';
-	var unixgroupname = 'audacity';
-	</script>
-	<script type="text/javascript" src="http://genweb.ostg.com/google/sfproject.js"></script>
-	
 	<?php
 	/* 4/30/2007: Ross Turk of SourceForge says please just direct all revenue to 
 		Audacity for one month, due to error I made because of their documentation. 
 	   6/1/2007: The above is the Sourceforge code (http://downloads.sourceforge.net/sitedocs/afc_setup.pdf). 
 		This commented out stuff is the code that puts up a very similar type of ad unit, 
 		in case we ever need it again.
+	   6/3/2007: Something's wrong with their script, so we've plummeted from ~85k pageviews per day 
+		to ~35. Revert to commenting out the SourceForge scripts and doing the Google script.
 		- Vaughan
 
-		<script type="text/javascript"><!--
-		google_ad_client = "pub-2386514291404644";
-		google_ad_width = 160;
-		google_ad_height = 600;
-		google_ad_format = "160x600_as";
-		google_ad_type = "text";
-		//2007-04-30: SourceForge Project Web Ads
-		google_ad_channel = "8140479188";
-		google_color_border = "336699";
-		google_color_bg = "FFFFFF";
-		google_color_link = "0000FF";
-		google_color_text = "000000";
-		google_color_url = "008000";
-		//-->
+		<script type="text/javascript">
+		var dfp_ord = Math.random()*10000000000000000;
+		var partner_clientid = '2386514291404644';
+		var unixgroupname = 'audacity';
 		</script>
-		<script type="text/javascript"
-		  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-		</script>
+		<script type="text/javascript" src="http://genweb.ostg.com/google/sfproject.js"></script>
 	*/
 	?>
+	
+	<script type="text/javascript"><!--
+	google_ad_client = "pub-2386514291404644";
+	google_ad_width = 160;
+	google_ad_height = 600;
+	google_ad_format = "160x600_as";
+	google_ad_type = "text";
+	google_ad_channel = "";
+	google_color_border = "336699";
+	google_color_bg = "FFFFFF";
+	google_color_link = "0000FF";
+	google_color_text = "000000";
+	google_color_url = "008000";
+	//-->
+	</script>
+	<script type="text/javascript"
+	  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+	</script>
 	
 	<center>
 		<br>
