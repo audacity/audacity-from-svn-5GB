@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_util.h,v 1.2 2006-09-23 18:42:51 llucius Exp $
+ * $Id: pa_unix_util.h,v 1.3 2007-06-03 08:30:32 llucius Exp $
  * Portable Audio I/O Library
  * UNIX platform-specific support functions
  *
@@ -189,7 +189,8 @@ PaError PaUnixThreading_Initialize();
  * wait for ever, greater than 0 wait for the specified time.
  * @return: If timed out waiting on child, paTimedOut.
  */
-PaError PaUnixThread_New( PaUnixThread* self, void* (*threadFunc)( void* ), void* threadArg, PaTime waitForChild );
+PaError PaUnixThread_New( PaUnixThread* self, void* (*threadFunc)( void* ), void* threadArg, PaTime waitForChild,
+        int rtSched );
 
 /** Terminate thread.
  *

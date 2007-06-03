@@ -1,134 +1,793 @@
-diff -wruN orig/pa/configure pa/configure
---- configure	2006-09-04 17:47:10.000000000 -0500
-+++ configure	2006-09-04 18:02:35.000000000 -0500
-@@ -20432,7 +20432,7 @@
- #define PA_USE_COREAUDIO 1
- _ACEOF
- 
--	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o";
-+	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o src/hostapi/coreaudio/pa_mac_core_blocking.o src/hostapi/coreaudio/pa_mac_core_utilities.o src/hostapi/coreaudio/ringbuffer.o";
- 	LIBS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon";
- 	PADLL="libportaudio.dylib";
- 	SHARED_FLAGS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon -dynamiclib";
-diff -ruN orig/lib-src/portaudio-v19/configure.in b4build/audacity/lib-src/portaudio-v19/configure.in
---- orig/lib-src/portaudio-v19/configure.in	2006-09-23 13:42:43.000000000 -0500
-+++ b4build/audacity/lib-src/portaudio-v19/configure.in	2006-10-01 18:43:36.000000000 -0500
-@@ -136,7 +136,7 @@
- 	dnl Mac OS X configuration
- 
- 	AC_DEFINE(PA_USE_COREAUDIO)
--	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o";
-+	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o src/hostapi/coreaudio/pa_mac_core_blocking.o src/hostapi/coreaudio/pa_mac_core_utilities.o src/hostapi/coreaudio/ringbuffer.o";
- 	LIBS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon";
- 	PADLL="libportaudio.dylib";
- 	SHARED_FLAGS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon -dynamiclib";
-diff -ruN orig/lib-src/portaudio-v19/include/pa_linux_alsa.h b4build/audacity/lib-src/portaudio-v19/include/pa_linux_alsa.h
---- orig/lib-src/portaudio-v19/include/pa_linux_alsa.h	2006-09-23 13:42:45.000000000 -0500
-+++ b4build/audacity/lib-src/portaudio-v19/include/pa_linux_alsa.h	2006-10-01 18:43:36.000000000 -0500
-@@ -63,6 +63,10 @@
- 
- void PaAlsa_EnableWatchdog( PaStream *s, int enable );
- 
-+int PaAlsa_GetInputCard( PaStream *s );
-+
-+int PaAlsa_GetOutputCard( PaStream *s );
-+
- #ifdef __cplusplus
- }
- #endif
-diff -ruN orig/lib-src/portaudio-v19/include/pa_mac_core.h b4build/audacity/lib-src/portaudio-v19/include/pa_mac_core.h
---- orig/lib-src/portaudio-v19/include/pa_mac_core.h	2006-09-23 13:42:45.000000000 -0500
-+++ b4build/audacity/lib-src/portaudio-v19/include/pa_mac_core.h	2006-10-01 18:43:36.000000000 -0500
-@@ -58,14 +58,7 @@
- 
- /* Use this function to initialize a paMacCoreStreamInfo struct
-    using the requested flags. */
--void paSetupMacCoreStreamInfo( paMacCoreStreamInfo *data, unsigned long flags )
--{
--   bzero( data, sizeof( paMacCoreStreamInfo ) );
--   data->size = sizeof( paMacCoreStreamInfo );
--   data->hostApiType = paCoreAudio;
--   data->version = 0x01;
--   data->flags = flags;
--}
-+void paSetupMacCoreStreamInfo( paMacCoreStreamInfo *data, unsigned long flags );
- 
- /*
-  * The following flags alter the behaviour of PA on the mac platform.
-@@ -76,20 +69,20 @@
-  * which allows for much lower latency, but might disrupt the device
-  * if other programs are using it, even when you are just Querying
-  * the device. */
--const unsigned long paMacCore_ChangeDeviceParameters      = 0x01;
-+#define paMacCore_ChangeDeviceParameters        (0x01)
- 
- /* In combination with the above flag,
-  * causes the stream opening to fail, unless the exact sample rates
-  * are supported by the device. */
--const unsigned long paMacCore_FailIfConversionRequired    = 0x02;
-+#define paMacCore_FailIfConversionRequired      (0x02)
- 
- /* These flags set the SR conversion quality, if required. The wierd ordering
-  * allows Maximum Quality to be the default.*/
--const unsigned long paMacCore_ConversionQualityMin    = 0x0100;
--const unsigned long paMacCore_ConversionQualityMedium = 0x0200;
--const unsigned long paMacCore_ConversionQualityLow    = 0x0300;
--const unsigned long paMacCore_ConversionQualityHigh   = 0x0400;
--const unsigned long paMacCore_ConversionQualityMax    = 0x0000;
-+#define paMacCore_ConversionQualityMin          (0x0100)
-+#define paMacCore_ConversionQualityMedium       (0x0200)
-+#define paMacCore_ConversionQualityLow          (0x0300)
-+#define paMacCore_ConversionQualityHigh         (0x0400)
-+#define paMacCore_ConversionQualityMax          (0x0000)
- 
- /*
-  * Here are some "preset" combinations of flags (above) to get to some
-@@ -98,15 +91,32 @@
-  */
- /*This is the default setting: do as much sample rate conversion as possible
-  * and as little mucking with the device as possible. */
--const unsigned long paMacCorePlayNice = 0x00;
-+#define paMacCorePlayNice                       (0x00)
- /*This setting is tuned for pro audio apps. It allows SR conversion on input
-   and output, but it tries to set the appropriate SR on the device.*/
--const unsigned long paMacCorePro      = 0x01;
-+#define paMacCorePro                            (0x01)
- /*This is a setting to minimize CPU usage and still play nice.*/
--const unsigned long paMacCoreMinimizeCPUButPlayNice = 0x0100;
-+#define paMacCoreMinimizeCPUButPlayNice         (0x0100)
- /*This is a setting to minimize CPU usage, even if that means interrupting the device. */
--const unsigned long paMacCoreMinimizeCPU = 0x0101;
-+#define paMacCoreMinimizeCPU                    (0x0101)
-+
-+/*
-+ * Retrieve the AudioDeviceID of the input device assigned to an open stream
-+ *
-+ * @param s The stream to query.
-+ *
-+ * @return A valid AudioDeviceID, or NULL if an error occurred.
-+ */
-+AudioDeviceID PaMacCore_GetStreamInputDevice( PaStream* s );
- 
-+/*
-+ * Retrieve the AudioDeviceID of the output device assigned to an open stream
-+ *
-+ * @param s The stream to query.
-+ *
-+ * @return A valid AudioDeviceID, or NULL if an error occurred.
-+ */
-+AudioDeviceID PaMacCore_GetStreamOutputDevice( PaStream* s );
- 
- #ifdef __cplusplus
- }
-diff -ruN orig/lib-src/portaudio-v19/include/pa_unix_oss.h b4build/audacity/lib-src/portaudio-v19/include/pa_unix_oss.h
---- orig/lib-src/portaudio-v19/include/pa_unix_oss.h	1969-12-31 18:00:00.000000000 -0600
-+++ b4build/audacity/lib-src/portaudio-v19/include/pa_unix_oss.h	2006-10-01 18:52:20.000000000 -0500
-@@ -0,0 +1,52 @@
+#
+# This patch applies to portaudio v19 source as of 2007-jun-01.
+#
+diff -ruN pa/build/msvc/PAStaticWMMEv19.vcproj pam/build/msvc/PAStaticWMMEv19.vcproj
+--- pa/build/msvc/PAStaticWMMEv19.vcproj	1969-12-31 18:00:00.000000000 -0600
++++ pam/build/msvc/PAStaticWMMEv19.vcproj	2007-06-03 06:23:38.000000000 -0500
+@@ -0,0 +1,774 @@
++<?xml version="1.0" encoding="Windows-1252"?>
++<VisualStudioProject
++	ProjectType="Visual C++"
++	Version="8.00"
++	Name="PAStaticWMMEv19"
++	ProjectGUID="{7ABA0F80-94AE-4E82-AB89-2E1258212D59}"
++	RootNamespace="PAStaticWMMEv19"
++	>
++	<Platforms>
++		<Platform
++			Name="Win32"
++		/>
++	</Platforms>
++	<ToolFiles>
++	</ToolFiles>
++	<Configurations>
++		<Configuration
++			Name="Release|Win32"
++			OutputDirectory="$(ConfigurationName)"
++			IntermediateDirectory="$(ConfigurationName)"
++			ConfigurationType="4"
++			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
++			UseOfMFC="0"
++			ATLMinimizesCRunTimeLibraryUsage="false"
++			CharacterSet="2"
++			>
++			<Tool
++				Name="VCPreBuildEventTool"
++				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%ASIOSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_ASIO &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
++			/>
++			<Tool
++				Name="VCCustomBuildTool"
++			/>
++			<Tool
++				Name="VCXMLDataGeneratorTool"
++			/>
++			<Tool
++				Name="VCWebServiceProxyGeneratorTool"
++			/>
++			<Tool
++				Name="VCMIDLTool"
++			/>
++			<Tool
++				Name="VCCLCompilerTool"
++				AdditionalOptions="/O2"
++				Optimization="2"
++				InlineFunctionExpansion="1"
++				AdditionalIncludeDirectories="../../include;../../src/common"
++				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
++				StringPooling="true"
++				RuntimeLibrary="0"
++				EnableFunctionLevelLinking="true"
++				UsePrecompiledHeader="0"
++				PrecompiledHeaderFile=".\$(ConfigurationName)/PA19StaticWMME.pch"
++				AssemblerListingLocation=".\$(ConfigurationName)/"
++				ObjectFile=".\$(ConfigurationName)/"
++				ProgramDataBaseFileName=".\$(ConfigurationName)/"
++				WarningLevel="3"
++				SuppressStartupBanner="true"
++				CompileAs="0"
++				DisableSpecificWarnings="4996"
++				ForcedIncludeFiles="$(ProjectDir)\$(ConfigurationName)\config.h"
++			/>
++			<Tool
++				Name="VCManagedResourceCompilerTool"
++			/>
++			<Tool
++				Name="VCResourceCompilerTool"
++				PreprocessorDefinitions="NDEBUG"
++				Culture="1032"
++			/>
++			<Tool
++				Name="VCPreLinkEventTool"
++			/>
++			<Tool
++				Name="VCLibrarianTool"
++				OutputFile="$(SolutionDir)\$(ConfigurationName)\pastaticwmmev19.lib"
++				SuppressStartupBanner="true"
++			/>
++			<Tool
++				Name="VCALinkTool"
++			/>
++			<Tool
++				Name="VCXDCMakeTool"
++			/>
++			<Tool
++				Name="VCBscMakeTool"
++			/>
++			<Tool
++				Name="VCFxCopTool"
++			/>
++			<Tool
++				Name="VCPostBuildEventTool"
++				CommandLine="set CFLAGS=/I &quot;../../include&quot; /I &quot;../../src/common&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_LIB&quot; /D &quot;_MBCS&quot; /O2 /Ob1 /GF /FD /EHsc /MT /Gy /W3 /c /wd4996 /nologo /Fo&quot;.\$(OutDir)/&quot; /Fd&quot;.\$(OutDir)/&quot;&#x0D;&#x0A;set LIBS=&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto NoDX&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;&#x0D;&#x0A;set LIBS=&quot;%DXSDK_DIR%lib\x86\dxguid.lib&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoDX&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%ASIOSDK_DIR%&quot;==&quot;&quot; goto NoASIO&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\pa_asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\iasiothiscallresolver.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\common\asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\asiodrivers.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\pc\asiolist.cpp&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoASIO&#x0D;&#x0A;&#x0D;&#x0A;lib /OUT:&quot;$(TargetPath)&quot; &quot;.\$(OutDir)\*.obj&quot; %LIBS%&#x0D;&#x0A;"
++			/>
++		</Configuration>
++		<Configuration
++			Name="Debug|Win32"
++			OutputDirectory="$(ConfigurationName)"
++			IntermediateDirectory="$(ConfigurationName)"
++			ConfigurationType="4"
++			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
++			UseOfMFC="0"
++			ATLMinimizesCRunTimeLibraryUsage="false"
++			CharacterSet="2"
++			>
++			<Tool
++				Name="VCPreBuildEventTool"
++				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%ASIOSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_ASIO &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
++			/>
++			<Tool
++				Name="VCCustomBuildTool"
++			/>
++			<Tool
++				Name="VCXMLDataGeneratorTool"
++			/>
++			<Tool
++				Name="VCWebServiceProxyGeneratorTool"
++			/>
++			<Tool
++				Name="VCMIDLTool"
++			/>
++			<Tool
++				Name="VCCLCompilerTool"
++				Optimization="0"
++				AdditionalIncludeDirectories="../../include;../../src/common"
++				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
++				BasicRuntimeChecks="3"
++				RuntimeLibrary="1"
++				UsePrecompiledHeader="0"
++				PrecompiledHeaderFile=".\$(ConfigurationName)/PA19StaticWMME.pch"
++				AssemblerListingLocation=".\$(ConfigurationName)/"
++				ObjectFile=".\$(ConfigurationName)/"
++				ProgramDataBaseFileName=".\$(ConfigurationName)/"
++				WarningLevel="3"
++				SuppressStartupBanner="true"
++				DebugInformationFormat="4"
++				CompileAs="0"
++				DisableSpecificWarnings="4996"
++				ForcedIncludeFiles="$(ProjectDir)\$(ConfigurationName)\config.h"
++			/>
++			<Tool
++				Name="VCManagedResourceCompilerTool"
++			/>
++			<Tool
++				Name="VCResourceCompilerTool"
++				PreprocessorDefinitions="_DEBUG"
++				Culture="1032"
++			/>
++			<Tool
++				Name="VCPreLinkEventTool"
++			/>
++			<Tool
++				Name="VCLibrarianTool"
++				OutputFile="$(SolutionDir)\$(ConfigurationName)\pastaticwmmev19d.lib"
++				SuppressStartupBanner="true"
++			/>
++			<Tool
++				Name="VCALinkTool"
++			/>
++			<Tool
++				Name="VCXDCMakeTool"
++			/>
++			<Tool
++				Name="VCBscMakeTool"
++			/>
++			<Tool
++				Name="VCFxCopTool"
++			/>
++			<Tool
++				Name="VCPostBuildEventTool"
++				CommandLine="set CFLAGS= /I &quot;../../include&quot; /I &quot;../../src/common&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_LIB&quot; /D &quot;_MBCS&quot; /Od /FD /EHsc /RTC1 /MTd /W3 /c /ZI /wd4996 /nologo /Fo&quot;.\$(OutDir)/&quot; /Fd&quot;.\$(OutDir)/&quot;&#x0D;&#x0A;set LIBS=&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto NoDX&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;&#x0D;&#x0A;set LIBS=&quot;%DXSDK_DIR%lib\x86\dxguid.lib&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoDX&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%ASIOSDK_DIR%&quot;==&quot;&quot; goto NoASIO&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\pa_asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\iasiothiscallresolver.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\common\asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\asiodrivers.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\pc\asiolist.cpp&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoASIO&#x0D;&#x0A;&#x0D;&#x0A;lib /OUT:&quot;$(TargetPath)&quot; &quot;.\$(OutDir)\*.obj&quot; %LIBS%&#x0D;&#x0A;"
++			/>
++		</Configuration>
++		<Configuration
++			Name="Unicode_Debug|Win32"
++			OutputDirectory="$(ConfigurationName)"
++			IntermediateDirectory="$(ConfigurationName)"
++			ConfigurationType="4"
++			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
++			UseOfMFC="0"
++			ATLMinimizesCRunTimeLibraryUsage="false"
++			CharacterSet="0"
++			>
++			<Tool
++				Name="VCPreBuildEventTool"
++				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%ASIOSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_ASIO &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
++			/>
++			<Tool
++				Name="VCCustomBuildTool"
++			/>
++			<Tool
++				Name="VCXMLDataGeneratorTool"
++			/>
++			<Tool
++				Name="VCWebServiceProxyGeneratorTool"
++			/>
++			<Tool
++				Name="VCMIDLTool"
++			/>
++			<Tool
++				Name="VCCLCompilerTool"
++				Optimization="0"
++				AdditionalIncludeDirectories="../../include;../../src/common"
++				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
++				BasicRuntimeChecks="3"
++				RuntimeLibrary="1"
++				UsePrecompiledHeader="0"
++				PrecompiledHeaderFile=".\$(ConfigurationName)/PA19StaticWMME.pch"
++				AssemblerListingLocation=".\$(ConfigurationName)/"
++				ObjectFile=".\$(ConfigurationName)/"
++				ProgramDataBaseFileName=".\$(ConfigurationName)/"
++				WarningLevel="3"
++				SuppressStartupBanner="true"
++				DebugInformationFormat="4"
++				CompileAs="0"
++				DisableSpecificWarnings="4996"
++				ForcedIncludeFiles="$(ProjectDir)\$(ConfigurationName)\config.h"
++			/>
++			<Tool
++				Name="VCManagedResourceCompilerTool"
++			/>
++			<Tool
++				Name="VCResourceCompilerTool"
++				PreprocessorDefinitions="_DEBUG"
++				Culture="1032"
++			/>
++			<Tool
++				Name="VCPreLinkEventTool"
++			/>
++			<Tool
++				Name="VCLibrarianTool"
++				OutputFile="$(SolutionDir)\$(ConfigurationName)\pastaticwmmev19ud.lib"
++				SuppressStartupBanner="true"
++			/>
++			<Tool
++				Name="VCALinkTool"
++			/>
++			<Tool
++				Name="VCXDCMakeTool"
++			/>
++			<Tool
++				Name="VCBscMakeTool"
++			/>
++			<Tool
++				Name="VCFxCopTool"
++			/>
++			<Tool
++				Name="VCPostBuildEventTool"
++				CommandLine="set CFLAGS= /I &quot;../../include&quot; /I &quot;../../src/common&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_LIB&quot; /D &quot;_MBCS&quot; /Od /FD /EHsc /RTC1 /MTd /W3 /c /ZI /wd4996 /nologo /Fo&quot;.\$(OutDir)/&quot; /Fd&quot;.\$(OutDir)/&quot;&#x0D;&#x0A;set LIBS=&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto NoDX&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;&#x0D;&#x0A;set LIBS=&quot;%DXSDK_DIR%lib\x86\dxguid.lib&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoDX&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%ASIOSDK_DIR%&quot;==&quot;&quot; goto NoASIO&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\pa_asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\iasiothiscallresolver.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\common\asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\asiodrivers.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\pc\asiolist.cpp&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoASIO&#x0D;&#x0A;&#x0D;&#x0A;lib /OUT:&quot;$(TargetPath)&quot; &quot;.\$(OutDir)\*.obj&quot; %LIBS%&#x0D;&#x0A;"
++			/>
++		</Configuration>
++		<Configuration
++			Name="Unicode_Release|Win32"
++			OutputDirectory="$(ConfigurationName)"
++			IntermediateDirectory="$(ConfigurationName)"
++			ConfigurationType="4"
++			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
++			UseOfMFC="0"
++			ATLMinimizesCRunTimeLibraryUsage="false"
++			CharacterSet="0"
++			>
++			<Tool
++				Name="VCPreBuildEventTool"
++				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%ASIOSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_ASIO &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
++			/>
++			<Tool
++				Name="VCCustomBuildTool"
++			/>
++			<Tool
++				Name="VCXMLDataGeneratorTool"
++			/>
++			<Tool
++				Name="VCWebServiceProxyGeneratorTool"
++			/>
++			<Tool
++				Name="VCMIDLTool"
++			/>
++			<Tool
++				Name="VCCLCompilerTool"
++				AdditionalOptions="/O2"
++				Optimization="2"
++				InlineFunctionExpansion="1"
++				AdditionalIncludeDirectories="../../include;../../src/common"
++				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
++				StringPooling="true"
++				RuntimeLibrary="0"
++				EnableFunctionLevelLinking="true"
++				UsePrecompiledHeader="0"
++				PrecompiledHeaderFile=".\$(ConfigurationName)/PA19StaticWMME.pch"
++				AssemblerListingLocation=".\$(ConfigurationName)/"
++				ObjectFile=".\$(ConfigurationName)/"
++				ProgramDataBaseFileName=".\$(ConfigurationName)/"
++				WarningLevel="3"
++				SuppressStartupBanner="true"
++				CompileAs="0"
++				DisableSpecificWarnings="4996"
++				ForcedIncludeFiles="$(ProjectDir)\$(ConfigurationName)\config.h"
++			/>
++			<Tool
++				Name="VCManagedResourceCompilerTool"
++			/>
++			<Tool
++				Name="VCResourceCompilerTool"
++				PreprocessorDefinitions="NDEBUG"
++				Culture="1032"
++			/>
++			<Tool
++				Name="VCPreLinkEventTool"
++			/>
++			<Tool
++				Name="VCLibrarianTool"
++				OutputFile="$(SolutionDir)\$(ConfigurationName)\pastaticwmmev19u.lib"
++				SuppressStartupBanner="true"
++			/>
++			<Tool
++				Name="VCALinkTool"
++			/>
++			<Tool
++				Name="VCXDCMakeTool"
++			/>
++			<Tool
++				Name="VCBscMakeTool"
++			/>
++			<Tool
++				Name="VCFxCopTool"
++			/>
++			<Tool
++				Name="VCPostBuildEventTool"
++				CommandLine="set CFLAGS=/I &quot;../../include&quot; /I &quot;../../src/common&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_LIB&quot; /D &quot;_MBCS&quot; /O2 /Ob1 /GF /FD /EHsc /MT /Gy /W3 /c /wd4996 /nologo /Fo&quot;.\$(OutDir)/&quot; /Fd&quot;.\$(OutDir)/&quot;&#x0D;&#x0A;set LIBS=&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto NoDX&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;&#x0D;&#x0A;set LIBS=&quot;%DXSDK_DIR%lib\x86\dxguid.lib&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoDX&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%ASIOSDK_DIR%&quot;==&quot;&quot; goto NoASIO&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\pa_asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\iasiothiscallresolver.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\common\asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\asiodrivers.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\pc\asiolist.cpp&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoASIO&#x0D;&#x0A;&#x0D;&#x0A;lib /OUT:&quot;$(TargetPath)&quot; &quot;.\$(OutDir)\*.obj&quot; %LIBS%&#x0D;&#x0A;"
++			/>
++		</Configuration>
++	</Configurations>
++	<References>
++	</References>
++	<Files>
++		<Filter
++			Name="Source Files"
++			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
++			>
++			<Filter
++				Name="common"
++				>
++				<File
++					RelativePath="..\..\src\common\pa_allocation.c"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_allocation.h"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_converters.c"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_converters.h"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_cpuload.c"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_cpuload.h"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_dither.c"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_dither.h"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_endianness.h"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_front.c"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_hostapi.h"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_process.c"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_process.h"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_skeleton.c"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_stream.c"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_stream.h"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_trace.c"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_trace.h"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_types.h"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\common\pa_util.h"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="hostapi"
++				>
++				<Filter
++					Name="wmme"
++					>
++					<File
++						RelativePath="..\..\src\hostapi\wmme\pa_win_wmme.c"
++						>
++					</File>
++				</Filter>
++				<Filter
++					Name="wdmks"
++					>
++					<File
++						RelativePath="..\..\src\hostapi\wdmks\pa_win_wdmks.c"
++						>
++						<FileConfiguration
++							Name="Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++					</File>
++				</Filter>
++				<Filter
++					Name="dsound"
++					>
++					<File
++						RelativePath="..\..\src\hostapi\dsound\pa_win_ds.c"
++						>
++						<FileConfiguration
++							Name="Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++					</File>
++					<File
++						RelativePath="..\..\src\hostapi\dsound\pa_win_ds_dynlink.c"
++						>
++						<FileConfiguration
++							Name="Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++					</File>
++					<File
++						RelativePath="..\..\src\hostapi\dsound\pa_win_ds_dynlink.h"
++						>
++						<FileConfiguration
++							Name="Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCustomBuildTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCustomBuildTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCustomBuildTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCustomBuildTool"
++							/>
++						</FileConfiguration>
++					</File>
++				</Filter>
++				<Filter
++					Name="asio"
++					>
++					<File
++						RelativePath="..\..\src\hostapi\asio\iasiothiscallresolver.cpp"
++						>
++						<FileConfiguration
++							Name="Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++					</File>
++					<File
++						RelativePath="..\..\src\hostapi\asio\iasiothiscallresolver.h"
++						>
++						<FileConfiguration
++							Name="Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCustomBuildTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCustomBuildTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCustomBuildTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCustomBuildTool"
++							/>
++						</FileConfiguration>
++					</File>
++					<File
++						RelativePath="..\..\src\hostapi\asio\pa_asio.cpp"
++						>
++						<FileConfiguration
++							Name="Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Debug|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Unicode_Release|Win32"
++							ExcludedFromBuild="true"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++							/>
++						</FileConfiguration>
++					</File>
++				</Filter>
++			</Filter>
++			<Filter
++				Name="os"
++				>
++				<File
++					RelativePath="..\..\src\os\win\pa_win_hostapis.c"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\os\win\pa_win_util.c"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\os\win\pa_x86_plain_converters.c"
++					>
++				</File>
++				<File
++					RelativePath="..\..\src\os\win\pa_x86_plain_converters.h"
++					>
++				</File>
++			</Filter>
++		</Filter>
++		<Filter
++			Name="Public Headers"
++			Filter="h;hpp;hxx;hm;inl"
++			>
++			<File
++				RelativePath="..\..\include\pa_win_ds.h"
++				>
++				<FileConfiguration
++					Name="Release|Win32"
++					ExcludedFromBuild="true"
++					>
++					<Tool
++						Name="VCCustomBuildTool"
++					/>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Debug|Win32"
++					ExcludedFromBuild="true"
++					>
++					<Tool
++						Name="VCCustomBuildTool"
++					/>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Unicode_Debug|Win32"
++					ExcludedFromBuild="true"
++					>
++					<Tool
++						Name="VCCustomBuildTool"
++					/>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Unicode_Release|Win32"
++					ExcludedFromBuild="true"
++					>
++					<Tool
++						Name="VCCustomBuildTool"
++					/>
++				</FileConfiguration>
++			</File>
++			<File
++				RelativePath="..\..\include\pa_win_wmme.h"
++				>
++			</File>
++			<File
++				RelativePath="..\..\include\portaudio.h"
++				>
++			</File>
++		</Filter>
++	</Files>
++	<Globals>
++	</Globals>
++</VisualStudioProject>
+diff -ruN pa/include/pa_unix_oss.h pam/include/pa_unix_oss.h
+--- pa/include/pa_unix_oss.h	1969-12-31 18:00:00.000000000 -0600
++++ pam/include/pa_unix_oss.h	2007-06-03 06:41:57.000000000 -0500
+@@ -0,0 +1,104 @@
 +#ifndef PA_UNIX_OSS_H
 +#define PA_UNIX_OSS_H
 +
 +/*
-+ * $Id: portaudio.patch,v 1.1 2006-10-02 00:27:52 llucius Exp $
++ * $Id: portaudio.patch,v 1.2 2007-06-03 08:30:36 llucius Exp $
 + * PortAudio Portable Real-Time Audio Library
 + * OSS-specific extensions
 + *
@@ -167,23 +826,75 @@ diff -ruN orig/lib-src/portaudio-v19/include/pa_unix_oss.h b4build/audacity/lib-
 +extern "C" {
 +#endif
 +
-+const char *PaOSS_GetInputDevice( PaStream *s );
++const char *PaOSS_GetStreamInputDevice( PaStream *s );
 +
-+const char *PaOSS_GetOutputDevice( PaStream *s );
++const char *PaOSS_GetStreamOutputDevice( PaStream *s );
 +
 +#ifdef __cplusplus
 +}
 +#endif
 +
 +#endif
-diff -ruN orig/lib-src/portaudio-v19/include/pa_win_ds.h b4build/audacity/lib-src/portaudio-v19/include/pa_win_ds.h
---- orig/lib-src/portaudio-v19/include/pa_win_ds.h	1969-12-31 18:00:00.000000000 -0600
-+++ b4build/audacity/lib-src/portaudio-v19/include/pa_win_ds.h	2006-10-01 18:52:32.000000000 -0500
-@@ -0,0 +1,69 @@
++#ifndef PA_UNIX_OSS_H
++#define PA_UNIX_OSS_H
++
++/*
++ * $Id: portaudio.patch,v 1.2 2007-06-03 08:30:36 llucius Exp $
++ * PortAudio Portable Real-Time Audio Library
++ * OSS-specific extensions
++ *
++ * Copyright (c) 1999-2000 Ross Bencina and Phil Burk
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files
++ * (the "Software"), to deal in the Software without restriction,
++ * including without limitation the rights to use, copy, modify, merge,
++ * publish, distribute, sublicense, and/or sell copies of the Software,
++ * and to permit persons to whom the Software is furnished to do so,
++ * subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * Any person wishing to distribute modifications to the Software is
++ * requested to send the modifications to the original developer so that
++ * they can be incorporated into the canonical version.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
++ * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
++ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
++ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ */
++
++/** @file
++ * OSS-specific PortAudio API extension header file.
++ */
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++const char *PaOSS_GetStreamInputDevice( PaStream *s );
++
++const char *PaOSS_GetStreamOutputDevice( PaStream *s );
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif
+diff -ruN pa/include/pa_win_ds.h pam/include/pa_win_ds.h
+--- pa/include/pa_win_ds.h	1969-12-31 18:00:00.000000000 -0600
++++ pam/include/pa_win_ds.h	2007-06-03 06:41:57.000000000 -0500
+@@ -0,0 +1,138 @@
 +#ifndef PA_WIN_DS_H
 +#define PA_WIN_DS_H
 +/*
-+ * $Id: portaudio.patch,v 1.1 2006-10-02 00:27:52 llucius Exp $
++ * $Id: portaudio.patch,v 1.2 2007-06-03 08:30:36 llucius Exp $
 + * PortAudio Portable Real-Time Audio Library
 + * DirectSound specific extensions
 + *
@@ -249,10 +960,79 @@ diff -ruN orig/lib-src/portaudio-v19/include/pa_win_ds.h b4build/audacity/lib-sr
 +#endif /* __cplusplus */
 +
 +#endif /* PA_WIN_DS_H */
-diff -ruN orig/lib-src/portaudio-v19/include/portaudio.h b4build/audacity/lib-src/portaudio-v19/include/portaudio.h
---- orig/lib-src/portaudio-v19/include/portaudio.h	2006-09-23 13:42:46.000000000 -0500
-+++ b4build/audacity/lib-src/portaudio-v19/include/portaudio.h	2006-10-01 18:43:36.000000000 -0500
-@@ -1105,6 +1105,15 @@
++#ifndef PA_WIN_DS_H
++#define PA_WIN_DS_H
++/*
++ * $Id: portaudio.patch,v 1.2 2007-06-03 08:30:36 llucius Exp $
++ * PortAudio Portable Real-Time Audio Library
++ * DirectSound specific extensions
++ *
++ * Copyright (c) 1999-2000 Ross Bencina and Phil Burk
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files
++ * (the "Software"), to deal in the Software without restriction,
++ * including without limitation the rights to use, copy, modify, merge,
++ * publish, distribute, sublicense, and/or sell copies of the Software,
++ * and to permit persons to whom the Software is furnished to do so,
++ * subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * Any person wishing to distribute modifications to the Software is
++ * requested to send the modifications to the original developer so that
++ * they can be incorporated into the canonical version.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
++ * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
++ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
++ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ */
++
++/** @file
++ @brief DirectSound-specific PortAudio API extension header file.
++*/
++
++
++#include "portaudio.h"
++
++#ifdef __cplusplus
++extern "C"
++{
++#endif /* __cplusplus */
++
++
++/** Retrieve the GUID of the input device.
++
++ @param stream The stream to query.
++
++ @return A pointer to the GUID, or NULL if none.
++*/
++LPGUID PaWinDS_GetStreamInputGUID( PaStream* s );
++
++
++/** Retrieve the GUID of the output device.
++
++ @param stream The stream to query.
++
++ @return A pointer to the GUID, or NULL if none.
++*/
++LPGUID PaWinDS_GetStreamOutputGUID( PaStream* s );
++
++#ifdef __cplusplus
++}
++#endif /* __cplusplus */
++
++#endif /* PA_WIN_DS_H */
+diff -ruN pa/include/portaudio.h pam/include/portaudio.h
+--- pa/include/portaudio.h	2007-06-03 05:55:55.000000000 -0500
++++ pam/include/portaudio.h	2007-06-03 06:41:57.000000000 -0500
+@@ -1106,6 +1106,15 @@
  signed long Pa_GetStreamWriteAvailable( PaStream* stream );
  
  
@@ -268,10 +1048,10 @@ diff -ruN orig/lib-src/portaudio-v19/include/portaudio.h b4build/audacity/lib-sr
  /* Miscellaneous utilities */
  
  
-diff -ruN orig/lib-src/portaudio-v19/src/common/pa_front.c b4build/audacity/lib-src/portaudio-v19/src/common/pa_front.c
---- orig/lib-src/portaudio-v19/src/common/pa_front.c	2006-09-23 13:42:47.000000000 -0500
-+++ b4build/audacity/lib-src/portaudio-v19/src/common/pa_front.c	2006-10-01 18:43:36.000000000 -0500
-@@ -1327,8 +1327,10 @@
+diff -ruN pa/src/common/pa_front.c pam/src/common/pa_front.c
+--- pa/src/common/pa_front.c	2007-06-03 05:56:15.000000000 -0500
++++ pam/src/common/pa_front.c	2007-06-03 06:41:57.000000000 -0500
+@@ -1315,8 +1315,10 @@
                                    hostApiInputParametersPtr, hostApiOutputParametersPtr,
                                    sampleRate, framesPerBuffer, streamFlags, streamCallback, userData );
  
@@ -283,9 +1063,9 @@ diff -ruN orig/lib-src/portaudio-v19/src/common/pa_front.c b4build/audacity/lib-
  
  
  #ifdef PA_LOG_API_CALLS
-@@ -1915,6 +1917,33 @@
+@@ -1908,6 +1910,32 @@
+     return result;
  }
- 
  
 +PaHostApiTypeId Pa_GetStreamHostApiType( PaStream* stream )
 +{
@@ -313,13 +1093,12 @@ diff -ruN orig/lib-src/portaudio-v19/src/common/pa_front.c b4build/audacity/lib-
 +
 +    return result;
 +}
-+
+ 
  PaError Pa_GetSampleSize( PaSampleFormat format )
  {
-     int result;
-diff -ruN orig/lib-src/portaudio-v19/src/common/pa_stream.c b4build/audacity/lib-src/portaudio-v19/src/common/pa_stream.c
---- orig/lib-src/portaudio-v19/src/common/pa_stream.c	2006-09-23 13:42:47.000000000 -0500
-+++ b4build/audacity/lib-src/portaudio-v19/src/common/pa_stream.c	2006-10-01 18:43:36.000000000 -0500
+diff -ruN pa/src/common/pa_stream.c pam/src/common/pa_stream.c
+--- pa/src/common/pa_stream.c	2007-06-03 05:56:15.000000000 -0500
++++ pam/src/common/pa_stream.c	2007-06-03 06:41:57.000000000 -0500
 @@ -93,6 +93,8 @@
      streamRepresentation->streamInfo.inputLatency = 0.;
      streamRepresentation->streamInfo.outputLatency = 0.;
@@ -329,9 +1108,9 @@ diff -ruN orig/lib-src/portaudio-v19/src/common/pa_stream.c b4build/audacity/lib
  }
  
  
-diff -ruN orig/lib-src/portaudio-v19/src/common/pa_stream.h b4build/audacity/lib-src/portaudio-v19/src/common/pa_stream.h
---- orig/lib-src/portaudio-v19/src/common/pa_stream.h	2006-09-23 13:42:47.000000000 -0500
-+++ b4build/audacity/lib-src/portaudio-v19/src/common/pa_stream.h	2006-10-01 18:43:36.000000000 -0500
+diff -ruN pa/src/common/pa_stream.h pam/src/common/pa_stream.h
+--- pa/src/common/pa_stream.h	2007-06-03 05:56:15.000000000 -0500
++++ pam/src/common/pa_stream.h	2007-06-03 06:41:57.000000000 -0500
 @@ -152,6 +152,7 @@
      PaStreamFinishedCallback *streamFinishedCallback;
      void *userData;
@@ -340,87 +1119,22 @@ diff -ruN orig/lib-src/portaudio-v19/src/common/pa_stream.h b4build/audacity/lib
  } PaUtilStreamRepresentation;
  
  
-diff -ruN orig/lib-src/portaudio-v19/src/hostapi/alsa/pa_linux_alsa.c b4build/audacity/lib-src/portaudio-v19/src/hostapi/alsa/pa_linux_alsa.c
---- orig/lib-src/portaudio-v19/src/hostapi/alsa/pa_linux_alsa.c	2006-09-23 13:42:47.000000000 -0500
-+++ b4build/audacity/lib-src/portaudio-v19/src/hostapi/alsa/pa_linux_alsa.c	2006-10-01 18:43:36.000000000 -0500
-@@ -3321,3 +3321,40 @@
-     stream->threading.useWatchdog = enable;
+diff -ruN pa/src/hostapi/coreaudio/pa_mac_core_blocking.c pam/src/hostapi/coreaudio/pa_mac_core_blocking.c
+--- pa/src/hostapi/coreaudio/pa_mac_core_blocking.c	2007-06-03 05:56:06.000000000 -0500
++++ pam/src/hostapi/coreaudio/pa_mac_core_blocking.c	2007-06-03 06:41:57.000000000 -0500
+@@ -66,6 +66,9 @@
+ #ifdef MOSX_USE_NON_ATOMIC_FLAG_BITS
+ # define OSAtomicOr32( a, b ) ( (*(b)) |= (a) )
+ # define OSAtomicAnd32( a, b ) ( (*(b)) &= (a) )
++#elif MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_3
++# define OSAtomicOr32( a, b ) BitOrAtomic( a, (UInt32 *) b )
++# define OSAtomicAnd32( a, b ) BitAndAtomic( a, (UInt32 *) b )
+ #else
+ # include <libkern/OSAtomic.h>
  #endif
- }
-+
-+int PaAlsa_GetInputCard( PaStream *s )
-+{
-+    PaAlsaStream *stream = (PaAlsaStream *) s;
-+    snd_pcm_info_t *pcmInfo;
-+    int card = -1;
-+
-+    if( stream->capture.pcm )
-+    {
-+        snd_pcm_info_alloca( &pcmInfo );
-+        if( snd_pcm_info( stream->capture.pcm, pcmInfo ) >= 0 )
-+        {
-+            card = snd_pcm_info_get_card( pcmInfo );
-+        }
-+    }
-+
-+    return card;
-+}
-+
-+int PaAlsa_GetOutputCard( PaStream *s )
-+{
-+    PaAlsaStream *stream = (PaAlsaStream *) s;
-+    snd_pcm_info_t *pcmInfo;
-+    int card = -1;
-+
-+    if( stream->playback.pcm )
-+    {
-+        snd_pcm_info_alloca( &pcmInfo );
-+        if( snd_pcm_info( stream->playback.pcm, pcmInfo ) >= 0 )
-+        {
-+            card = snd_pcm_info_get_card( pcmInfo );
-+        }
-+    }
-+
-+    return card;
-+}
-+
-diff -ruN orig/lib-src/portaudio-v19/src/hostapi/coreaudio/pa_mac_core.c b4build/audacity/lib-src/portaudio-v19/src/hostapi/coreaudio/pa_mac_core.c
---- orig/lib-src/portaudio-v19/src/hostapi/coreaudio/pa_mac_core.c	2006-09-23 13:42:48.000000000 -0500
-+++ b4build/audacity/lib-src/portaudio-v19/src/hostapi/coreaudio/pa_mac_core.c	2006-10-01 18:43:36.000000000 -0500
-@@ -2038,3 +2038,30 @@
- 
-     return PaUtil_GetCpuLoad( &stream->cpuLoadMeasurer );
- }
-+
-+/* Use this function to initialize a paMacCoreStreamInfo struct
-+   using the requested flags. */
-+void paSetupMacCoreStreamInfo( paMacCoreStreamInfo *data, unsigned long flags )
-+{
-+   bzero( data, sizeof( paMacCoreStreamInfo ) );
-+   data->size = sizeof( paMacCoreStreamInfo );
-+   data->hostApiType = paCoreAudio;
-+   data->version = 0x01;
-+   data->flags = flags;
-+}
-+
-+AudioDeviceID PaMacCore_GetStreamInputDevice( PaStream* s )
-+{
-+    PaMacCoreStream *stream = (PaMacCoreStream*)s;
-+    VVDBUG(("PaMacCore_GetStreamInputHandle()\n"));
-+
-+    return ( stream->inputDevice );
-+}
-+
-+AudioDeviceID PaMacCore_GetStreamOutputDevice( PaStream* s )
-+{
-+    PaMacCoreStream *stream = (PaMacCoreStream*)s;
-+    VVDBUG(("PaMacCore_GetStreamOutputHandle()\n"));
-+
-+    return ( stream->outputDevice );
-+}
-diff -ruN orig/lib-src/portaudio-v19/src/hostapi/dsound/pa_win_ds.c b4build/audacity/lib-src/portaudio-v19/src/hostapi/dsound/pa_win_ds.c
---- orig/lib-src/portaudio-v19/src/hostapi/dsound/pa_win_ds.c	2006-09-23 13:42:49.000000000 -0500
-+++ b4build/audacity/lib-src/portaudio-v19/src/hostapi/dsound/pa_win_ds.c	2006-10-01 18:43:36.000000000 -0500
+diff -ruN pa/src/hostapi/dsound/pa_win_ds.c pam/src/hostapi/dsound/pa_win_ds.c
+--- pa/src/hostapi/dsound/pa_win_ds.c	2007-06-03 05:56:11.000000000 -0500
++++ pam/src/hostapi/dsound/pa_win_ds.c	2007-06-03 06:41:57.000000000 -0500
 @@ -198,6 +198,7 @@
  /* DirectSound specific data. */
  
@@ -493,14 +1207,14 @@ diff -ruN orig/lib-src/portaudio-v19/src/hostapi/dsound/pa_win_ds.c b4build/auda
 +
 +    return stream->pOutputGuid;
 +}
-diff -ruN orig/lib-src/portaudio-v19/src/hostapi/oss/pa_unix_oss.c b4build/audacity/lib-src/portaudio-v19/src/hostapi/oss/pa_unix_oss.c
---- orig/lib-src/portaudio-v19/src/hostapi/oss/pa_unix_oss.c	2006-09-23 13:42:50.000000000 -0500
-+++ b4build/audacity/lib-src/portaudio-v19/src/hostapi/oss/pa_unix_oss.c	2006-10-01 18:43:36.000000000 -0500
-@@ -1933,3 +1933,26 @@
+diff -ruN pa/src/hostapi/oss/pa_unix_oss.c pam/src/hostapi/oss/pa_unix_oss.c
+--- pa/src/hostapi/oss/pa_unix_oss.c	2007-06-03 05:55:58.000000000 -0500
++++ pam/src/hostapi/oss/pa_unix_oss.c	2007-06-03 06:41:57.000000000 -0500
+@@ -1942,3 +1942,26 @@
      return (PaOssStreamComponent_BufferSize( stream->playback ) - delay) / PaOssStreamComponent_FrameSize( stream->playback );
  }
  
-+const char *PaOSS_GetInputDevice( PaStream* s )
++const char *PaOSS_GetStreamInputDevice( PaStream* s )
 +{
 +    PaOssStream *stream = (PaOssStream*)s;
 +
@@ -512,7 +1226,7 @@ diff -ruN orig/lib-src/portaudio-v19/src/hostapi/oss/pa_unix_oss.c b4build/audac
 +   return NULL;
 +}
 +
-+const char *PaOSS_GetOutputDevice( PaStream* s )
++const char *PaOSS_GetStreamOutputDevice( PaStream* s )
 +{
 +    PaOssStream *stream = (PaOssStream*)s;
 +

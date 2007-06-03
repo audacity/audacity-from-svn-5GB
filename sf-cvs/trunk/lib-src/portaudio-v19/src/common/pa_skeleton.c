@@ -1,5 +1,5 @@
 /*
- * $Id: pa_skeleton.c,v 1.2 2006-09-23 18:42:47 llucius Exp $
+ * $Id: pa_skeleton.c,v 1.3 2007-06-03 08:30:30 llucius Exp $
  * Portable Audio I/O Library skeleton implementation
  * demonstrates how to use the common functions to implement support
  * for a host API

@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_oss.c,v 1.3 2006-10-02 00:29:04 llucius Exp $
+ * $Id: pa_unix_oss.c,v 1.4 2007-06-03 08:30:31 llucius Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * OSS implementation by:
@@ -44,7 +44,7 @@
 
 /**
  @file
- @ingroup hostaip_src
+ @ingroup hostapi_src
 */
 
 #include <stdio.h>
@@ -63,15 +63,17 @@
 #include <limits.h>
 #include <semaphore.h>
 
-#ifdef __FreeBSD__
+#ifdef HAVE_SYS_SOUNDCARD_H
 # include <sys/soundcard.h>
 # define DEVICE_NAME_BASE            "/dev/dsp"
-#elif defined __linux__
+#elif defined(HAVE_LINUX_SOUNDCARD_H)
 # include <linux/soundcard.h>
 # define DEVICE_NAME_BASE            "/dev/dsp"
-#else
+#elif defined(HAVE_MACHINE_SOUNDCARD_H)
 # include <machine/soundcard.h> /* JH20010905 */
 # define DEVICE_NAME_BASE            "/dev/audio"
+#else
+# error No sound card header file
 #endif
 
 #include "portaudio.h"
@@ -984,7 +986,7 @@ static PaError PaOssStreamComponent_Configure( PaOssStreamComponent *component, 
     int frgmt;
     int numBufs;
     int bytesPerBuf;
-    double bufSz;
+    unsigned long bufSz;
     unsigned long fragSz;
     audio_buf_info bufInfo;
 
@@ -997,20 +999,20 @@ static PaError PaOssStreamComponent_Configure( PaOssStreamComponent *component, 
          */
         if( framesPerBuffer == paFramesPerBufferUnspecified )
         { 
-            bufSz = component->latency * sampleRate;
+            bufSz = (unsigned long)(component->latency * sampleRate);
             fragSz = bufSz / 4;
         }
         else
         {
             fragSz = framesPerBuffer;
-            bufSz = component->latency * sampleRate + fragSz; /* Latency + 1 buffer */
+            bufSz = (unsigned long)(component->latency * sampleRate) + fragSz; /* Latency + 1 buffer */
         }
 
         PA_ENSURE( GetAvailableFormats( component, &availableFormats ) );
         hostFormat = PaUtil_SelectClosestAvailableFormat( availableFormats, component->userFormat );
 
         /* OSS demands at least 2 buffers, and 16 bytes per buffer */
-        numBufs = PA_MAX( bufSz / fragSz, 2 );
+        numBufs = (int)PA_MAX( bufSz / fragSz, 2 );
         bytesPerBuf = PA_MAX( fragSz * Pa_GetSampleSize( hostFormat ) * chans, 16 );
 
         /* The fragment parameters are encoded like this:
@@ -1117,7 +1119,8 @@ static PaError PaOssStream_Configure( PaOssStream *stream, double sampleRate, un
     if( stream->capture )
     {
         PaOssStreamComponent *component = stream->capture;
-        PaOssStreamComponent_Configure( component, sampleRate, framesPerBuffer, StreamMode_In, NULL );
+        PA_ENSURE( PaOssStreamComponent_Configure( component, sampleRate, framesPerBuffer, StreamMode_In,
+                    NULL ) );
 
         assert( component->hostChannelCount > 0 );
         assert( component->hostFrames > 0 );
@@ -1612,7 +1615,11 @@ static void *PaOSS_AudioThreadProc( void *userData )
             if ( stream->capture )
             {
                 PA_ENSURE( PaOssStreamComponent_Read( stream->capture, &frames ) );
-                assert( frames == framesAvail );
+                if( frames < framesAvail )
+                {
+                    PA_DEBUG(( "Read %lu less frames than requested\n", framesAvail - frames ));
+                    framesAvail = frames;
+                }
             }
 
 #if ( SOUND_VERSION >= 0x030904 )
@@ -1648,9 +1655,11 @@ static void *PaOSS_AudioThreadProc( void *userData )
                 frames = framesAvail;
 
                 PA_ENSURE( PaOssStreamComponent_Write( stream->playback, &frames ) );
-                assert( frames == framesAvail );
-
-                /* TODO: handle bytesWritten != bytesRequested (slippage?) */
+                if( frames < framesAvail )
+                {
+                    /* TODO: handle bytesWritten != bytesRequested (slippage?) */
+                    PA_DEBUG(( "Wrote %lu less frames than requested\n", framesAvail - frames ));
+                }
             }
 
             framesAvail -= framesProcessed;
@@ -1933,7 +1942,7 @@ static signed long GetStreamWriteAvailable( PaStream* s )
     return (PaOssStreamComponent_BufferSize( stream->playback ) - delay) / PaOssStreamComponent_FrameSize( stream->playback );
 }
 
-const char *PaOSS_GetInputDevice( PaStream* s )
+const char *PaOSS_GetStreamInputDevice( PaStream* s )
 {
     PaOssStream *stream = (PaOssStream*)s;
 
@@ -1945,7 +1954,7 @@ const char *PaOSS_GetInputDevice( PaStream* s )
    return NULL;
 }
 
-const char *PaOSS_GetOutputDevice( PaStream* s )
+const char *PaOSS_GetStreamOutputDevice( PaStream* s )
 {
     PaOssStream *stream = (PaOssStream*)s;
 

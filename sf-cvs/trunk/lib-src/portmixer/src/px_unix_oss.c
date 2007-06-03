@@ -113,17 +113,17 @@ static int open_mixer(PxDev *dev, int cmd)
       name[strlen(MIXER_NAME_BASE)] = 0;
    else
       name[strlen(MIXER_NAME_BASE)] = '0' + (id - 1);
-
+fprintf(stderr, "open mixer %s\n", name);
    do {
       dev->fd = open(name, O_RDWR);
       if (dev->fd < 0) {
          break;
       };
-   
+fprintf(stderr, "getting cmd %d\n", cmd);   
       if (ioctl(dev->fd, cmd, &mask) == -1) {
          break;
       }
-
+fprintf(stderr, "mask %08x\n", mask);
       dev->num = 0;
    
       for (i = 0; i < SOUND_MIXER_NRDEVICES; i++) {
@@ -131,7 +131,7 @@ static int open_mixer(PxDev *dev, int cmd)
             dev->chans[dev->num++] = i;
          }
       }
-
+fprintf(stderr, "return good %d\n", dev->num);
       return TRUE;
 
    } while (FALSE);
@@ -149,6 +149,7 @@ int OpenMixer_Unix_OSS(px_mixer *Px, int index)
    PxInfo *info;
 
    if (!initialize(Px)) {
+fprintf(stderr, "init failed\n");
       return FALSE;
    }
 
@@ -161,14 +162,15 @@ int OpenMixer_Unix_OSS(px_mixer *Px, int index)
    info->playback.num = 0;   
    
    do {
-      info->capture.name = PaOSS_GetInputDevice(Px->pa_stream);
+      info->capture.name = PaOSS_GetStreamInputDevice(Px->pa_stream);
+fprintf(stderr, "capture.name = %s\n", info->capture.name);
       if (info->capture.name) {
          if (!open_mixer(&info->capture, SOUND_MIXER_READ_RECMASK)) {
             break;
          }
       }
       
-      info->playback.name = PaOSS_GetOutputDevice(Px->pa_stream);
+      info->playback.name = PaOSS_GetStreamOutputDevice(Px->pa_stream);
       if (info->playback.name) {
          if (!open_mixer(&info->playback, SOUND_MIXER_READ_DEVMASK)) {
             break;
@@ -269,7 +271,7 @@ static int get_num_mixers(px_mixer *Px)
    PxInfo *info = (PxInfo *)Px->info;
    int i;
    int fd;
-
+fprintf(stderr, "get num mixers\n");
    info->numMixers = 0;
 
    for (i = 0; i < MIXER_COUNT_MAX; i++) {
@@ -279,15 +281,17 @@ static int get_num_mixers(px_mixer *Px)
          info->mixers[i][strlen(MIXER_NAME_BASE)] = 0;
       else
          info->mixers[i][strlen(MIXER_NAME_BASE)] = '0' + (i - 1);
-         
+fprintf(stderr, "opening %s\n", info->mixers[i]);         
       fd = open(info->mixers[i], O_RDWR);
+fprintf(stderr, "opening fd %d\n", fd);
       if (fd >= 0) {
+fprintf(stderr, "found one %d %d\n", i, info->numMixers);
          info->mixerIndexes[info->numMixers] = i;
          info->numMixers++;
          close(fd);
       }
    }
-
+fprintf(stderr, "num mixers %d\n", info->numMixers);
    return info->numMixers;
 }
 
@@ -436,7 +440,7 @@ static void set_output_volume(px_mixer *Px, int i, PxVolume volume)
 static int get_num_input_sources(px_mixer *Px)
 {
    PxInfo *info = (PxInfo *)Px->info;
-
+fprintf(stderr, "info->capture.num %d\n", info->capture.num);
    return info->capture.num;
 }
 

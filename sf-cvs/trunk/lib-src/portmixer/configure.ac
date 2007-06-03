@@ -53,10 +53,11 @@ fi
 #
 have_support=yes
 AC_EGREP_HEADER([PaWinDS_GetStreamInputGUID], [pa_win_ds.h], , [have_support=no])
-AC_EGREP_HEADER([PaAlsa_GetInputCard], [pa_linux_alsa.h], , [have_support=no])
+AC_EGREP_HEADER([PaAlsa_GetStreamInputCard], [pa_linux_alsa.h], , [have_support=no])
 AC_EGREP_HEADER([PaWinMME_GetStreamInputHandle], [pa_win_wmme.h], , [have_support=no])
 AC_EGREP_HEADER([PaMacCore_GetStreamInputDevice], [pa_mac_core.h], , [have_support=no])
-AC_EGREP_HEADER([PaOSS_GetInputDevice], [pa_unix_oss.h], , [have_support=no])
+AC_EGREP_HEADER([PaOSS_GetStreamInputDevice], [pa_unix_oss.h], , [have_support=no])
+AC_EGREP_HEADER([Pa_GetStreamHostApiType], [portaudio.h], , [have_support=no])
 if [[ $have_support = "no" ]] ; then
    AC_MSG_ERROR("You're version of portaudio does not include required functions"); 
 fi

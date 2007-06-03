@@ -70,14 +70,154 @@
 #include "pa_mac_core_utilities.h"
 #include "pa_mac_core_blocking.h"
 
-/* prototypes for functions declared in this file */
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif /* __cplusplus */
 
+/* prototypes for functions declared in this file */
+
 PaError PaMacCore_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIndex index );
+
+/*
+ * Function declared in pa_mac_core.h. Sets up a PaMacCoreStreamInfoStruct
+ * with the requested flags and initializes channel map.
+ */
+void PaMacCore_SetupStreamInfo(  PaMacCoreStreamInfo *data, const unsigned long flags )
+{
+   bzero( data, sizeof( PaMacCoreStreamInfo ) );
+   data->size = sizeof( PaMacCoreStreamInfo );
+   data->hostApiType = paCoreAudio;
+   data->version = 0x01;
+   data->flags = flags;
+   data->channelMap = NULL;
+   data->channelMapSize = 0;
+}
+
+/*
+ * Function declared in pa_mac_core.h. Adds channel mapping to a PaMacCoreStreamInfoStruct
+ */
+void PaMacCore_SetupChannelMap( PaMacCoreStreamInfo *data, const SInt32 * const channelMap, const unsigned long channelMapSize )
+{
+   data->channelMap = channelMap;
+   data->channelMapSize = channelMapSize;
+}
+static char *channelName = NULL;
+static int channelNameSize = 0;
+static bool ensureChannelNameSize( int size )
+{
+   if( size >= channelNameSize ) {
+      free( channelName );
+      channelName = (char *) malloc( ( channelNameSize = size ) + 1 );
+      if( !channelName ) {
+         channelNameSize = 0;
+         return false;
+      }
+   }
+   return true;
+}
+/*
+ * Function declared in pa_mac_core.h. retrives channel names.
+ */
+const char *PaMacCore_GetChannelName( int device, int channelIndex, bool input )
+{
+   struct PaUtilHostApiRepresentation *hostApi;
+   PaError err;
+   OSStatus error;
+   err = PaUtil_GetHostApiRepresentation( &hostApi, paCoreAudio );
+   assert(err == paNoError);
+   PaMacAUHAL *macCoreHostApi = (PaMacAUHAL*)hostApi;
+   AudioDeviceID hostApiDevice = macCoreHostApi->devIds[device];
+
+   UInt32 size = 0;
+
+   error = AudioDeviceGetPropertyInfo( hostApiDevice,
+                                       channelIndex + 1,
+                                       input,
+                                       kAudioDevicePropertyChannelName,
+                                       &size,
+                                       NULL );
+   if( error ) {
+      //try the CFString
+      CFStringRef name;
+      bool isDeviceName = false;
+      size = sizeof( name );
+      error = AudioDeviceGetProperty( hostApiDevice,
+                                      channelIndex + 1,
+                                      input,
+                                      kAudioDevicePropertyChannelNameCFString,
+                                      &size,
+                                      &name );
+      if( error ) { //as a last-ditch effort, get the device name. Later we'll append the channel number.
+         size = sizeof( name );
+         error = AudioDeviceGetProperty( hostApiDevice,
+                                      channelIndex + 1,
+                                      input,
+                                      kAudioDevicePropertyDeviceNameCFString,
+                                      &size,
+                                      &name );
+         if( error )
+            return NULL;
+         isDeviceName = true;
+      }
+      if( isDeviceName ) {
+         name = CFStringCreateWithFormat( NULL, NULL, CFSTR( "%@: %d"), name, channelIndex + 1 );
+      }
+
+      CFIndex length = CFStringGetLength(name);
+      while( ensureChannelNameSize( length * sizeof(UniChar) + 1 ) ) {
+         if( CFStringGetCString( name, channelName, channelNameSize, kCFStringEncodingUTF8 ) ) {
+            if( isDeviceName )
+               CFRelease( name );
+            return channelName;
+         }
+         if( length == 0 )
+            ++length;
+         length *= 2;
+      }
+      if( isDeviceName )
+         CFRelease( name );
+      return NULL;
+   }
+
+   //continue with C string:
+   if( !ensureChannelNameSize( size ) )
+      return NULL;
+
+   error = AudioDeviceGetProperty( hostApiDevice,
+                                   channelIndex + 1,
+                                   input,
+                                   kAudioDevicePropertyChannelName,
+                                   &size,
+                                   channelName );
+
+   if( error ) {
+      ERR( error );
+      return NULL;
+   }
+   return channelName;
+}
+
+
+
+
+
+AudioDeviceID PaMacCore_GetStreamInputDevice( PaStream* s )
+{
+    PaMacCoreStream *stream = (PaMacCoreStream*)s;
+    VVDBUG(("PaMacCore_GetStreamInputHandle()\n"));
+
+    return ( stream->inputDevice );
+}
+
+AudioDeviceID PaMacCore_GetStreamOutputDevice( PaStream* s )
+{
+    PaMacCoreStream *stream = (PaMacCoreStream*)s;
+    VVDBUG(("PaMacCore_GetStreamOutputHandle()\n"));
+
+    return ( stream->outputDevice );
+}
 
 #ifdef __cplusplus
 }
@@ -136,7 +276,6 @@ static PaError OpenAndSetupOneAudioUnit(
 /* for setting errors. */
 #define PA_AUHAL_SET_LAST_HOST_ERROR( errorCode, errorText ) \
     PaUtil_SetLastHostErrorInfo( paInDevelopment, errorCode, errorText )
-
 
 /*currently, this is only used in initialization, but it might be modified
   to be used when the list of devices changes.*/
@@ -621,6 +760,10 @@ static PaError OpenAndSetupOneAudioUnit(
     AURenderCallbackStruct rcbs;
     unsigned long macInputStreamFlags  = paMacCorePlayNice;
     unsigned long macOutputStreamFlags = paMacCorePlayNice;
+    SInt32 const *inChannelMap = NULL;
+    SInt32 const *outChannelMap = NULL;
+    unsigned long inChannelMapSize = 0;
+    unsigned long outChannelMapSize = 0;
 
     VVDBUG(("OpenAndSetupOneAudioUnit(): in chan=%d, in fmt=%ld, out chan=%d, out fmt=%ld, requestedFramesPerBuffer=%ld\n",
                 inStreamParams  ? inStreamParams->channelCount  : -1,
@@ -638,13 +781,25 @@ static PaError OpenAndSetupOneAudioUnit(
 
     /* -- get the user's api specific info, if they set any -- */
     if( inStreamParams && inStreamParams->hostApiSpecificStreamInfo )
+    {
        macInputStreamFlags=
-            ((paMacCoreStreamInfo*)inStreamParams->hostApiSpecificStreamInfo)
+            ((PaMacCoreStreamInfo*)inStreamParams->hostApiSpecificStreamInfo)
                   ->flags;
+       inChannelMap = ((PaMacCoreStreamInfo*)inStreamParams->hostApiSpecificStreamInfo)
+                  ->channelMap;
+       inChannelMapSize = ((PaMacCoreStreamInfo*)inStreamParams->hostApiSpecificStreamInfo)
+                  ->channelMapSize;
+    }
     if( outStreamParams && outStreamParams->hostApiSpecificStreamInfo )
+    {
        macOutputStreamFlags=
-            ((paMacCoreStreamInfo*)outStreamParams->hostApiSpecificStreamInfo)
+            ((PaMacCoreStreamInfo*)outStreamParams->hostApiSpecificStreamInfo)
                   ->flags;
+       outChannelMap = ((PaMacCoreStreamInfo*)outStreamParams->hostApiSpecificStreamInfo)
+                  ->channelMap;
+       outChannelMapSize = ((PaMacCoreStreamInfo*)outStreamParams->hostApiSpecificStreamInfo)
+                  ->channelMapSize; 
+    }
     /* Override user's flags here, if desired for testing. */
 
     /*
@@ -689,8 +844,7 @@ static PaError OpenAndSetupOneAudioUnit(
     /* -- if there is input, we have to explicitly enable input -- */
     if( inStreamParams )
     {
-       UInt32 enableIO;
-       enableIO = 1;
+       UInt32 enableIO = 1;
        ERR_WRAP( AudioUnitSetProperty( *audioUnit,
                  kAudioOutputUnitProperty_EnableIO,
                  kAudioUnitScope_Input,
@@ -701,8 +855,7 @@ static PaError OpenAndSetupOneAudioUnit(
     /* -- if there is no output, we must explicitly disable output -- */
     if( !outStreamParams )
     {
-       UInt32 enableIO;
-       enableIO = 0;
+       UInt32 enableIO = 0;
        ERR_WRAP( AudioUnitSetProperty( *audioUnit,
                  kAudioOutputUnitProperty_EnableIO,
                  kAudioUnitScope_Output,
@@ -710,11 +863,14 @@ static PaError OpenAndSetupOneAudioUnit(
                  &enableIO,
                  sizeof(enableIO) ) );
     }
+
     /* -- set the devices -- */
     /* make sure input and output are the same device if we are doing input and
        output. */
     if( inStreamParams && outStreamParams )
+    {
        assert( outStreamParams->device == inStreamParams->device );
+    }
     if( inStreamParams )
     {
        *audioDevice = auhalHostApi->devIds[inStreamParams->device] ;
@@ -753,9 +909,9 @@ static PaError OpenAndSetupOneAudioUnit(
                                           requestedFramesPerBuffer,
                                           actualInputFramesPerBuffer );
        if( paResult ) goto error;
-       if( macInputStreamFlags & paMacCore_ChangeDeviceParameters ) {
+       if( macInputStreamFlags & paMacCoreChangeDeviceParameters ) {
           bool requireExact;
-          requireExact=macInputStreamFlags&paMacCore_FailIfConversionRequired;
+          requireExact=macInputStreamFlags & paMacCoreFailIfConversionRequired;
           paResult = setBestSampleRateForDevice( *audioDevice, FALSE,
                                                  requireExact, sampleRate );
           if( paResult ) goto error;
@@ -771,9 +927,9 @@ static PaError OpenAndSetupOneAudioUnit(
                                           requestedFramesPerBuffer,
                                           actualOutputFramesPerBuffer );
        if( paResult ) goto error;
-       if( macOutputStreamFlags & paMacCore_ChangeDeviceParameters ) {
+       if( macOutputStreamFlags & paMacCoreChangeDeviceParameters ) {
           bool requireExact;
-          requireExact=macOutputStreamFlags&paMacCore_FailIfConversionRequired;
+          requireExact=macOutputStreamFlags & paMacCoreFailIfConversionRequired;
           paResult = setBestSampleRateForDevice( *audioDevice, TRUE,
                                                  requireExact, sampleRate );
           if( paResult ) goto error;
@@ -963,8 +1119,33 @@ static PaError OpenAndSetupOneAudioUnit(
                                &rcbs,
                                sizeof(rcbs)) );
 
-    /*IMPLEMENTME: may need to worry about channel mapping.*/
+    /* channel mapping. */
+    if(inChannelMap)
+    {
+        UInt32 mapSize = inChannelMapSize *sizeof(SInt32);
 
+        //for each channel of desired input, map the channel from
+        //the device's output channel.
+        ERR_WRAP( AudioUnitSetProperty(*audioUnit,
+                                kAudioOutputUnitProperty_ChannelMap,
+                                kAudioUnitScope_Output,
+                                INPUT_ELEMENT,
+                                inChannelMap,
+                                mapSize));
+    }
+    if(outChannelMap)
+    {
+        UInt32 mapSize = outChannelMapSize *sizeof(SInt32);
+
+        //for each channel of desired output, map the channel from
+        //the device's output channel.
+        ERR_WRAP(AudioUnitSetProperty(*audioUnit,
+                                kAudioOutputUnitProperty_ChannelMap,
+                                kAudioUnitScope_Output,
+                                OUTPUT_ELEMENT,
+                                outChannelMap,
+                                mapSize));
+    }
     /* initialize the audio unit */
     ERR_WRAP( AudioUnitInitialize(*audioUnit) );
 
@@ -1106,7 +1287,7 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
     {
         PaUtil_InitializeStreamRepresentation( &stream->streamRepresentation,
                                         &auhalHostApi->blockingStreamInterface,
-					BlioCallback, &stream->blio );
+                                        BlioCallback, &stream->blio );
     }
 
     PaUtil_InitializeCpuLoadMeasurer( &stream->cpuLoadMeasurer, sampleRate );
@@ -1275,13 +1456,12 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
           }
 
           /* now we can initialize the ring buffer */
-          assert( 0 ==
-            RingBuffer_Init( &stream->inputRingBuffer,
-                             ringSize*szfl, data ) );
+          PaUtil_InitializeRingBuffer( &stream->inputRingBuffer,
+                                   ringSize*szfl, data ) ;
           /* advance the read point a little, so we are reading from the
              middle of the buffer */
           if( stream->outputUnit )
-             RingBuffer_AdvanceWriteIndex( &stream->inputRingBuffer, ringSize*szfl / RING_BUFFER_ADVANCE_DENOMINATOR );
+             PaUtil_AdvanceRingBufferWriteIndex( &stream->inputRingBuffer, ringSize*szfl / RING_BUFFER_ADVANCE_DENOMINATOR );
        }
     }
 
@@ -1448,22 +1628,22 @@ static OSStatus ringBufferIOProc( AudioConverterRef inAudioConverter,
 {
    void *dummyData;
    long dummySize;
-   RingBuffer *rb = (RingBuffer *) inUserData;
+   PaUtilRingBuffer *rb = (PaUtilRingBuffer *) inUserData;
 
    VVDBUG(("ringBufferIOProc()\n"));
 
    assert( sizeof( UInt32 ) == sizeof( long ) );
-   if( RingBuffer_GetReadAvailable( rb ) == 0 ) {
+   if( PaUtil_GetRingBufferReadAvailable( rb ) == 0 ) {
       *outData = NULL;
       *ioDataSize = 0;
       return RING_BUFFER_EMPTY;
    }
-   RingBuffer_GetReadRegions( rb, *ioDataSize,
-                              outData, (long *)ioDataSize, 
-                              &dummyData, &dummySize );
+   PaUtil_GetRingBufferReadRegions( rb, *ioDataSize,
+                                    outData, (long *)ioDataSize, 
+                                    &dummyData, &dummySize );
       
    assert( *ioDataSize );
-   RingBuffer_AdvanceReadIndex( rb, *ioDataSize );
+   PaUtil_AdvanceRingBufferReadIndex( rb, *ioDataSize );
 
    return noErr;
 }
@@ -1671,10 +1851,10 @@ static OSStatus AudioIOProc( void *inRefCon,
                AudioConverter would otherwise handle for us. */
             void *data1, *data2;
             long size1, size2;
-            RingBuffer_GetReadRegions( &stream->inputRingBuffer,
-                                       inChan*frames*flsz,
-                                       &data1, &size1,
-                                       &data2, &size2 );
+            PaUtil_GetRingBufferReadRegions( &stream->inputRingBuffer,
+                                             inChan*frames*flsz,
+                                             &data1, &size1,
+                                             &data2, &size2 );
             if( size1 / ( flsz * inChan ) == frames ) {
                /* simplest case: all in first buffer */
                PaUtil_SetInputFrameCount( &(stream->bufferProcessor), frames );
@@ -1685,7 +1865,7 @@ static OSStatus AudioIOProc( void *inRefCon,
                framesProcessed =
                     PaUtil_EndBufferProcessing( &(stream->bufferProcessor),
                                                 &callbackResult );
-               RingBuffer_AdvanceReadIndex(&stream->inputRingBuffer, size1 );
+               PaUtil_AdvanceRingBufferReadIndex(&stream->inputRingBuffer, size1 );
             } else if( ( size1 + size2 ) / ( flsz * inChan ) < frames ) {
                /*we underflowed. take what data we can, zero the rest.*/
                float data[frames*inChan];
@@ -1703,8 +1883,8 @@ static OSStatus AudioIOProc( void *inRefCon,
                framesProcessed =
                     PaUtil_EndBufferProcessing( &(stream->bufferProcessor),
                                                 &callbackResult );
-               RingBuffer_AdvanceReadIndex( &stream->inputRingBuffer,
-                                            size1+size2 );
+               PaUtil_AdvanceRingBufferReadIndex( &stream->inputRingBuffer,
+                                                  size1+size2 );
                /* flag underflow */
                stream->xrunFlags |= paInputUnderflow;
             } else {
@@ -1724,7 +1904,7 @@ static OSStatus AudioIOProc( void *inRefCon,
                framesProcessed =
                     PaUtil_EndBufferProcessing( &(stream->bufferProcessor),
                                                 &callbackResult );
-               RingBuffer_AdvanceReadIndex(&stream->inputRingBuffer, size1+size2 );
+               PaUtil_AdvanceRingBufferReadIndex(&stream->inputRingBuffer, size1+size2 );
             }
          }
       } else {
@@ -1764,9 +1944,9 @@ static OSStatus AudioIOProc( void *inRefCon,
             into the ring buffer. */
          long bytesIn, bytesOut;
          bytesIn = sizeof( float ) * inNumberFrames * chan;
-         bytesOut = RingBuffer_Write( &stream->inputRingBuffer,
-                                stream->inputAudioBufferList.mBuffers[0].mData,
-                                bytesIn );
+         bytesOut = PaUtil_WriteRingBuffer( &stream->inputRingBuffer,
+                                            stream->inputAudioBufferList.mBuffers[0].mData,
+                                            bytesIn );
          if( bytesIn != bytesOut )
             stream->xrunFlags |= paInputOverflow ;
       }
@@ -1977,16 +2157,16 @@ static PaError StopStream( PaStream *s )
        }
     }
     if( stream->inputRingBuffer.buffer ) {
-       RingBuffer_Flush( &stream->inputRingBuffer );
+       PaUtil_FlushRingBuffer( &stream->inputRingBuffer );
        bzero( (void *)stream->inputRingBuffer.buffer,
               stream->inputRingBuffer.bufferSize );
        /* advance the write point a little, so we are reading from the
           middle of the buffer. We'll need extra at the end because
           testing has shown that this helps. */
        if( stream->outputUnit )
-          RingBuffer_AdvanceWriteIndex( &stream->inputRingBuffer,
-                                    stream->inputRingBuffer.bufferSize
-                                           / RING_BUFFER_ADVANCE_DENOMINATOR );
+          PaUtil_AdvanceRingBufferWriteIndex( &stream->inputRingBuffer,
+                                              stream->inputRingBuffer.bufferSize
+                                              / RING_BUFFER_ADVANCE_DENOMINATOR );
     }
 
     stream->xrunFlags = 0;
@@ -2037,31 +2217,4 @@ static double GetStreamCpuLoad( PaStream* s )
     VVDBUG(("GetStreamCpuLoad()\n"));
 
     return PaUtil_GetCpuLoad( &stream->cpuLoadMeasurer );
-}
-
-/* Use this function to initialize a paMacCoreStreamInfo struct
-   using the requested flags. */
-void paSetupMacCoreStreamInfo( paMacCoreStreamInfo *data, unsigned long flags )
-{
-   bzero( data, sizeof( paMacCoreStreamInfo ) );
-   data->size = sizeof( paMacCoreStreamInfo );
-   data->hostApiType = paCoreAudio;
-   data->version = 0x01;
-   data->flags = flags;
-}
-
-AudioDeviceID PaMacCore_GetStreamInputDevice( PaStream* s )
-{
-    PaMacCoreStream *stream = (PaMacCoreStream*)s;
-    VVDBUG(("PaMacCore_GetStreamInputHandle()\n"));
-
-    return ( stream->inputDevice );
-}
-
-AudioDeviceID PaMacCore_GetStreamOutputDevice( PaStream* s )
-{
-    PaMacCoreStream *stream = (PaMacCoreStream*)s;
-    VVDBUG(("PaMacCore_GetStreamOutputHandle()\n"));
-
-    return ( stream->outputDevice );
 }

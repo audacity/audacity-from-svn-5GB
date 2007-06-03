@@ -1,5 +1,5 @@
 /*
- * $Id: debug_record_reuse.c,v 1.2 2006-09-23 18:42:51 llucius Exp $
+ * $Id: debug_record_reuse.c,v 1.3 2007-06-03 08:30:33 llucius Exp $
  * debug_record_reuse.c
  * Record input into an array.
  * Save array to a file.

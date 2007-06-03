@@ -1,3 +1,5 @@
+#ifndef PA_MAC_CORE_H
+#define PA_MAC_CORE_H
 /*
  * PortAudio Portable Real-Time Audio Library
  * Macintosh Core Audio specific extensions
@@ -36,6 +38,9 @@
  * license above.
  */
 
+#include <AudioUnit/AudioUnit.h>
+//#include <AudioToolbox/AudioToolbox.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -45,60 +50,38 @@ extern "C" {
  * A pointer to a paMacCoreStreamInfo may be passed as
  * the hostApiSpecificStreamInfo in the PaStreamParameters struct
  * when opening a stream or querying the format. Use NULL, for the
- * defaults. Note that for duplex streams, both infos should be the
- * same or behaviour is undefined.
+ * defaults. Note that for duplex streams, flags for input and output
+ * should be the same or behaviour is undefined.
  */
-typedef struct paMacCoreStreamInfo
+typedef struct
 {
-    unsigned long size;         /**size of whole structure including this header */
-    PaHostApiTypeId hostApiType;/**host API for which this data is intended */
-    unsigned long version;      /**structure version */
-    unsigned long flags;        /* flags to modify behaviour */
-} paMacCoreStreamInfo;
+    unsigned long size;           /**size of whole structure including this header */
+    PaHostApiTypeId hostApiType;  /**host API for which this data is intended */
+    unsigned long version;        /**structure version */
+    unsigned long flags;          /* flags to modify behaviour */
+    SInt32 const * channelMap;    /* Channel map for HAL channel mapping , if not needed, use NULL;*/ 
+    unsigned long channelMapSize; /* Channel map size for HAL channel mapping , if not needed, use 0;*/ 
+} PaMacCoreStreamInfo;
+
+/*
+ * Functions
+ */
+
 
 /* Use this function to initialize a paMacCoreStreamInfo struct
-   using the requested flags. */
-void paSetupMacCoreStreamInfo( paMacCoreStreamInfo *data, unsigned long flags );
+ * using the requested flags. Note that channel mapping is turned
+ * off after a call to this function.
+ * @param data The datastructure to initialize
+ * @param flags The flags to initialize the datastructure with.
+*/
+void PaMacCore_SetupStreamInfo( PaMacCoreStreamInfo *data, unsigned long flags );
 
-/*
- * The following flags alter the behaviour of PA on the mac platform.
- * they can be ORed together. These should work both for opening and
- * checking a device.
+/* call this after pa_SetupMacCoreStreamInfo to use channel mapping as described in notes.txt.
+ * @param data The stream info structure to assign a channel mapping to
+ * @param channelMap The channel map array, as described in notes.txt. This array pointer will be used directly (ie the underlying data will not be copied), so the caller should not free the array until after the stream has been opened.
+ * @param channelMapSize The size of the channel map array.
  */
-/* Allows PortAudio to change things like the device's frame size,
- * which allows for much lower latency, but might disrupt the device
- * if other programs are using it, even when you are just Querying
- * the device. */
-#define paMacCore_ChangeDeviceParameters        (0x01)
-
-/* In combination with the above flag,
- * causes the stream opening to fail, unless the exact sample rates
- * are supported by the device. */
-#define paMacCore_FailIfConversionRequired      (0x02)
-
-/* These flags set the SR conversion quality, if required. The wierd ordering
- * allows Maximum Quality to be the default.*/
-#define paMacCore_ConversionQualityMin          (0x0100)
-#define paMacCore_ConversionQualityMedium       (0x0200)
-#define paMacCore_ConversionQualityLow          (0x0300)
-#define paMacCore_ConversionQualityHigh         (0x0400)
-#define paMacCore_ConversionQualityMax          (0x0000)
-
-/*
- * Here are some "preset" combinations of flags (above) to get to some
- * common configurations. THIS IS OVERKILL, but if more flags are added
- * it won't be.
- */
-/*This is the default setting: do as much sample rate conversion as possible
- * and as little mucking with the device as possible. */
-#define paMacCorePlayNice                       (0x00)
-/*This setting is tuned for pro audio apps. It allows SR conversion on input
-  and output, but it tries to set the appropriate SR on the device.*/
-#define paMacCorePro                            (0x01)
-/*This is a setting to minimize CPU usage and still play nice.*/
-#define paMacCoreMinimizeCPUButPlayNice         (0x0100)
-/*This is a setting to minimize CPU usage, even if that means interrupting the device. */
-#define paMacCoreMinimizeCPU                    (0x0101)
+void PaMacCore_SetupChannelMap( PaMacCoreStreamInfo *data, const SInt32 * const channelMap, unsigned long channelMapSize );
 
 /*
  * Retrieve the AudioDeviceID of the input device assigned to an open stream
@@ -108,7 +91,7 @@ void paSetupMacCoreStreamInfo( paMacCoreStreamInfo *data, unsigned long flags );
  * @return A valid AudioDeviceID, or NULL if an error occurred.
  */
 AudioDeviceID PaMacCore_GetStreamInputDevice( PaStream* s );
-
+ 
 /*
  * Retrieve the AudioDeviceID of the output device assigned to an open stream
  *
@@ -118,6 +101,71 @@ AudioDeviceID PaMacCore_GetStreamInputDevice( PaStream* s );
  */
 AudioDeviceID PaMacCore_GetStreamOutputDevice( PaStream* s );
 
+/*
+ * Returns a statically allocated string with the device's name
+ * for the given channel. NULL will be returned on failure.
+ *
+ * This function's implemenation is not complete!
+ *
+ * @param device The PortAudio device index.
+ * @param channel The channel number who's name is requested.
+ * @return a statically allocated string with the name of the device.
+ *         Because this string is statically allocated, it must be
+ *         coppied if it is to be saved and used by the user after
+ *         another call to this function.
+ *
+ */
+const char *PaMacCore_GetChannelName( int device, int channelIndex, bool input );
+
+/*
+ * Flags
+ */
+
+/*
+ * The following flags alter the behaviour of PA on the mac platform.
+ * they can be ORed together. These should work both for opening and
+ * checking a device.
+ */
+
+/* Allows PortAudio to change things like the device's frame size,
+ * which allows for much lower latency, but might disrupt the device
+ * if other programs are using it, even when you are just Querying
+ * the device. */
+#define paMacCoreChangeDeviceParameters (0x01)
+
+/* In combination with the above flag,
+ * causes the stream opening to fail, unless the exact sample rates
+ * are supported by the device. */
+#define paMacCoreFailIfConversionRequired (0x02)
+
+/* These flags set the SR conversion quality, if required. The wierd ordering
+ * allows Maximum Quality to be the default.*/
+#define paMacCoreConversionQualityMin    (0x0100)
+#define paMacCoreConversionQualityMedium (0x0200)
+#define paMacCoreConversionQualityLow    (0x0300)
+#define paMacCoreConversionQualityHigh   (0x0400)
+#define paMacCoreConversionQualityMax    (0x0000)
+
+/*
+ * Here are some "preset" combinations of flags (above) to get to some
+ * common configurations. THIS IS OVERKILL, but if more flags are added
+ * it won't be.
+ */
+
+/*This is the default setting: do as much sample rate conversion as possible
+ * and as little mucking with the device as possible. */
+#define paMacCorePlayNice                    (0x00)
+/*This setting is tuned for pro audio apps. It allows SR conversion on input
+  and output, but it tries to set the appropriate SR on the device.*/
+#define paMacCorePro                         (0x01)
+/*This is a setting to minimize CPU usage and still play nice.*/
+#define paMacCoreMinimizeCPUButPlayNice      (0x0100)
+/*This is a setting to minimize CPU usage, even if that means interrupting the device. */
+#define paMacCoreMinimizeCPU                 (0x0101)
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+#endif /* PA_MAC_CORE_H */

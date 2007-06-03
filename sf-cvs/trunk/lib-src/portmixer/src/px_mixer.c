@@ -68,6 +68,8 @@ int OpenMixer_Unix_OSS(px_mixer *Px, int index);
 int OpenMixer_Linux_ALSA(px_mixer *Px, int index);
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
 #if defined(_DEBUG)
 #include <stdio.h>
 #include <stdlib.h>
@@ -121,6 +123,8 @@ PxMixer *Px_OpenMixer(PaStream *pa_stream, int i)
       free(Px);
       return NULL;
    }
+
+fprintf(stderr, "stream type %d\n", Pa_GetStreamHostApiType(pa_stream));
 
    switch (Pa_GetStreamHostApiType(pa_stream))
    {
@@ -326,6 +330,7 @@ void Px_SetOutputVolume(PxMixer *mixer, int i, PxVolume volume)
 int Px_GetNumInputSources(PxMixer *mixer)
 {
    px_mixer *Px = verify_mixer(mixer);
+fprintf(stderr, "px = %p\n", Px);
    if (!Px)
       return 0;
 

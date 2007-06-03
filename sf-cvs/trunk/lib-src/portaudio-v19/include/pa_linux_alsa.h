@@ -2,7 +2,7 @@
 #define PA_LINUX_ALSA_H
 
 /*
- * $Id: pa_linux_alsa.h,v 1.3 2006-10-02 00:29:02 llucius Exp $
+ * $Id: pa_linux_alsa.h,v 1.4 2007-06-03 08:30:23 llucius Exp $
  * PortAudio Portable Real-Time Audio Library
  * ALSA-specific extensions
  *
@@ -42,6 +42,7 @@
 /** @file
  * ALSA-specific PortAudio API extension header file.
  */
+#include "portaudio.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -61,11 +62,13 @@ void PaAlsa_InitializeStreamInfo( PaAlsaStreamInfo *info );
 
 void PaAlsa_EnableRealtimeScheduling( PaStream *s, int enable );
 
+#if 0
 void PaAlsa_EnableWatchdog( PaStream *s, int enable );
+#endif
 
-int PaAlsa_GetInputCard( PaStream *s );
+int PaAlsa_GetStreamInputCard( PaStream *s, int *card );
 
-int PaAlsa_GetOutputCard( PaStream *s );
+int PaAlsa_GetStreamOutputCard( PaStream *s, int *card );
 
 #ifdef __cplusplus
 }
