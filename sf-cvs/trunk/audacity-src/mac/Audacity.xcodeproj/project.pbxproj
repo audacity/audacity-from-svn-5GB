@@ -816,6 +816,10 @@
 		2897F6F90AB3DB5A003C20C5 /* TranscriptionToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6EE0AB3DB5A003C20C5 /* TranscriptionToolBar.cpp */; };
 		2897F6FE0AB3DCD0003C20C5 /* Grabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6FC0AB3DCD0003C20C5 /* Grabber.cpp */; };
 		289F9C7E0AC671BB00797DC1 /* DeviceToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */; };
+		28A520550C12BE0300BF6811 /* pa_debugprint.c in Sources */ = {isa = PBXBuildFile; fileRef = 28A520510C12BE0300BF6811 /* pa_debugprint.c */; };
+		28A520560C12BE0300BF6811 /* pa_debugprint.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A520520C12BE0300BF6811 /* pa_debugprint.h */; };
+		28A520570C12BE0300BF6811 /* pa_ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28A520530C12BE0300BF6811 /* pa_ringbuffer.c */; };
+		28A520580C12BE0300BF6811 /* pa_ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A520540C12BE0300BF6811 /* pa_ringbuffer.h */; };
 		28D0255B0AFDA53B0035F843 /* alpasscv.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D025570AFDA53B0035F843 /* alpasscv.c */; };
 		28D0255C0AFDA53B0035F843 /* alpasscv.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D025580AFDA53B0035F843 /* alpasscv.h */; };
 		28D0255D0AFDA53B0035F843 /* alpassvc.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D025590AFDA53B0035F843 /* alpassvc.c */; };
@@ -850,8 +854,6 @@
 		28E67F890A3A1A860021D89F /* pa_trace.h in Headers */ = {isa = PBXBuildFile; fileRef = 28E822200A39FD7600DCE280 /* pa_trace.h */; };
 		28E67F8A0A3A1A870021D89F /* pa_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 28E822230A39FD7600DCE280 /* pa_types.h */; };
 		28E67F8B0A3A1A870021D89F /* pa_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 28E822240A39FD7600DCE280 /* pa_util.h */; };
-		28E67F8C0A3A1A880021D89F /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E8223E0A39FDB800DCE280 /* ringbuffer.c */; };
-		28E67F8D0A3A1A890021D89F /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28E8223F0A39FDB800DCE280 /* ringbuffer.h */; };
 		28E67FC60A3A29AE0021D89F /* pa_asio.h in Headers */ = {isa = PBXBuildFile; fileRef = 28E67FC10A3A29AE0021D89F /* pa_asio.h */; };
 		28E67FC70A3A29AE0021D89F /* pa_linux_alsa.h in Headers */ = {isa = PBXBuildFile; fileRef = 28E67FC20A3A29AE0021D89F /* pa_linux_alsa.h */; };
 		28E67FC80A3A29AE0021D89F /* pa_mac_core.h in Headers */ = {isa = PBXBuildFile; fileRef = 28E67FC30A3A29AE0021D89F /* pa_mac_core.h */; };
@@ -1968,6 +1970,10 @@
 		2897F6FD0AB3DCD0003C20C5 /* Grabber.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Grabber.h; sourceTree = "<group>"; };
 		289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = DeviceToolBar.cpp; sourceTree = "<group>"; };
 		289F9C7D0AC671BB00797DC1 /* DeviceToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = DeviceToolBar.h; sourceTree = "<group>"; };
+		28A520510C12BE0300BF6811 /* pa_debugprint.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_debugprint.c; sourceTree = "<group>"; };
+		28A520520C12BE0300BF6811 /* pa_debugprint.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_debugprint.h; sourceTree = "<group>"; };
+		28A520530C12BE0300BF6811 /* pa_ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_ringbuffer.c; sourceTree = "<group>"; };
+		28A520540C12BE0300BF6811 /* pa_ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_ringbuffer.h; sourceTree = "<group>"; };
 		28D025570AFDA53B0035F843 /* alpasscv.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = alpasscv.c; sourceTree = "<group>"; };
 		28D025580AFDA53B0035F843 /* alpasscv.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = alpasscv.h; sourceTree = "<group>"; };
 		28D025590AFDA53B0035F843 /* alpassvc.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = alpassvc.c; sourceTree = "<group>"; };
@@ -2010,8 +2016,6 @@
 		28E822380A39FDB800DCE280 /* pa_mac_core_internal.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_mac_core_internal.h; sourceTree = "<group>"; };
 		28E8223A0A39FDB800DCE280 /* pa_mac_core_utilities.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_mac_core_utilities.c; sourceTree = "<group>"; };
 		28E8223B0A39FDB800DCE280 /* pa_mac_core_utilities.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_mac_core_utilities.h; sourceTree = "<group>"; };
-		28E8223E0A39FDB800DCE280 /* ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = ringbuffer.c; sourceTree = "<group>"; };
-		28E8223F0A39FDB800DCE280 /* ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ringbuffer.h; sourceTree = "<group>"; };
 		28E822550A39FDB800DCE280 /* pa_mac_hostapis.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_mac_hostapis.c; sourceTree = "<group>"; };
 		28EB47D30AFD542100502984 /* abs.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = abs.c; sourceTree = "<group>"; };
 		28EB47D50AFD547600502984 /* sqrt.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = sqrt.c; sourceTree = "<group>"; };
@@ -3678,6 +3682,10 @@
 		28E821FE0A39FD7600DCE280 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				28A520510C12BE0300BF6811 /* pa_debugprint.c */,
+				28A520520C12BE0300BF6811 /* pa_debugprint.h */,
+				28A520530C12BE0300BF6811 /* pa_ringbuffer.c */,
+				28A520540C12BE0300BF6811 /* pa_ringbuffer.h */,
 				28E821FF0A39FD7600DCE280 /* pa_allocation.c */,
 				28E822000A39FD7600DCE280 /* pa_allocation.h */,
 				28E822030A39FD7600DCE280 /* pa_converters.c */,
@@ -3721,8 +3729,6 @@
 				28E822380A39FDB800DCE280 /* pa_mac_core_internal.h */,
 				28E8223A0A39FDB800DCE280 /* pa_mac_core_utilities.c */,
 				28E8223B0A39FDB800DCE280 /* pa_mac_core_utilities.h */,
-				28E8223E0A39FDB800DCE280 /* ringbuffer.c */,
-				28E8223F0A39FDB800DCE280 /* ringbuffer.h */,
 			);
 			path = coreaudio;
 			sourceTree = "<group>";
@@ -4174,13 +4180,14 @@
 				28E67F890A3A1A860021D89F /* pa_trace.h in Headers */,
 				28E67F8A0A3A1A870021D89F /* pa_types.h in Headers */,
 				28E67F8B0A3A1A870021D89F /* pa_util.h in Headers */,
-				28E67F8D0A3A1A890021D89F /* ringbuffer.h in Headers */,
 				28E67FC60A3A29AE0021D89F /* pa_asio.h in Headers */,
 				28E67FC70A3A29AE0021D89F /* pa_linux_alsa.h in Headers */,
 				28E67FC80A3A29AE0021D89F /* pa_mac_core.h in Headers */,
 				28E67FC90A3A29AE0021D89F /* pa_win_wmme.h in Headers */,
 				28E67FCA0A3A29AE0021D89F /* portaudio.h in Headers */,
 				2835062E0A3A88ED00EB1EBD /* pa_unix_util.h in Headers */,
+				28A520560C12BE0300BF6811 /* pa_debugprint.h in Headers */,
+				28A520580C12BE0300BF6811 /* pa_ringbuffer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5310,8 +5317,9 @@
 				28E67F850A3A1A840021D89F /* pa_skeleton.c in Sources */,
 				28E67F860A3A1A840021D89F /* pa_stream.c in Sources */,
 				28E67F880A3A1A860021D89F /* pa_trace.c in Sources */,
-				28E67F8C0A3A1A880021D89F /* ringbuffer.c in Sources */,
 				2835062D0A3A88ED00EB1EBD /* pa_unix_util.c in Sources */,
+				28A520550C12BE0300BF6811 /* pa_debugprint.c in Sources */,
+				28A520570C12BE0300BF6811 /* pa_ringbuffer.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
