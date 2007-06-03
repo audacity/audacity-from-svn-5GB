@@ -51,7 +51,7 @@ static const wxChar *headers[Col_Max] =
 {
    _("Track"),
    _("Label"),
-   _NoAcc("&Start Time"),
+   _("Start Time"),
    _("End Time")
 };
 
