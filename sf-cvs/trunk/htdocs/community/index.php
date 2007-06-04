@@ -15,6 +15,9 @@
 <p><?=_("Audacity is free software, developed by volunteers.  Here's how you can contribute to the Audacity project:")?></p>
 
 <dl>
+  <dt><a href="donate"><?=_("Donate")?></a></dt>
+  <dd><p><?=_("We welcome donations to support Audacity development.")?></p></dd>
+  
   <dt><a href="users"><?=_("Users")?></a></dt>
   <dd><p><?=_("Give us feedback, report bugs, and become part of the Audacity user community.")?></p></dd>
 
@@ -24,9 +27,6 @@
   <dt><a href="developers"><?=_("Developers")?></a></dt>
   <dd><p><?=_("If you are a C++ programmer, you can join the development team and help us improve Audacity.  We welcome documentation and other contributions too.")?></p></dd>
 </dl>
-
-<p><?=_("You may also <a href=\"donate\">donate money</a> to support Audacity
-development.")?></p>
 
 <?php
   include "../include/footer.inc.php";

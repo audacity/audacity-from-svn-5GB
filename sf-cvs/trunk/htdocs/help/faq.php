@@ -25,9 +25,10 @@
       array(
         "free" => array(
           _("Is Audacity really free?  Why?"),
-          _("<p>Yes, Audacity is <a href=\"../about/\">completely free, open source software</a>.  You are free to use this program for personal or commercial purposes.  You are also free to give it away, sell it, or modify it for your own use, under the terms of the <a href=\"../about/license\">GNU General Public License</a>.</p>
+          _("<p>Yes, Audacity is <a href=\"../about/\">completely free, open source software</a>.  You are free to use this program for any personal or commercial purposes, including installing it on as many different computers as you wish.  You are also free to give it away, sell it, or modify it for your own use, under the terms of the <a href=\"../about/license\">GNU General Public License</a>.</p>
 <p>The authors of Audacity decided to release it under the GPL for many reasons. Some of us do it out of generosity. Some of us do it for moral reasons, because we feel that all software should be free; others believe that there is a place for both free and proprietary software.</p>
-<p>One reason Audacity is free is so that it will be more popular and useful.  Yet another reason is to encourage collaboration. Because of Audacity's free license, dozens of people around the world have contributed code, bug fixes, documentation, and graphics.</p>")
+<p>One reason Audacity is free is so that it will be more popular and useful.  Yet another reason is to encourage collaboration. Because of Audacity's free license, dozens of people around the world have contributed code, bug fixes, documentation, and graphics.</p>
+<p>We welcome <a href=\"../community/donate\">donations</a> to support Audacity development.</p>")
         ),
         "spyware" => array(
           _("Does Audacity contain any spyware or adware?"),
@@ -50,7 +51,8 @@
         ),
         "time-remaining" => array(
           _("What does “time remaining” mean?  Does Audacity expire?"),
-          _("<p>Audacity does not expire.  During recording, it displays how long you can record before running out of space on your computer’s hard drive.  To record for a longer time, delete old files or save your project on a larger disk.</p>")
+          _("<p>Audacity does not expire, but the time you can record for depends on the amount of disk space you have. The message you are seeing exists only in older versions of Audacity, so please update to the <a href=\"../download\">latest version</a>. In newer versions, the message says \"Disk space remains for recording xx hours and yy minutes\".</p>
+<p>To get more recording time, delete your old files and folders (especially your old Audacity Project files and _data folders when you have finished with them), or use an alternative disk with more space on it. Or consider recording in mono instead of stereo (on the Audio I/O tab of Preferences) or in 16 bit instead of 32 bit (Quality tab of Preferences). Either of those choices will halve the disk space needed.</p>")
         ),
       )
     ),
@@ -70,10 +72,10 @@
 <h3>Mac OS 9 or X</h3>
 <ol>
   <li>Go to the <a href="%s">LAME download page</a>.</li>
-  <li>Download the version of LameLib for your operating system.</li>
+  <li>Download either libmp3lame or the version of LameLib for your operating system.</li>
   <li>When you have finished downloading, use Stuffit Expander to extract the files.  (This may happen automatically.)</li>
-  <li>Save the file called "LameLib" anywhere on your computer.</li>
-  <li>The first time you use the "Export as MP3" command, Audacity will ask you where LameLib is saved.</li>
+  <li>Save the file called "LameLib" or libmp3lame.dylib anywhere on your computer.</li>
+  <li>The first time you use the "Export as MP3" command, Audacity will ask you where LameLib or libmp3lame.dylib is saved.</li>
 </ol>'), "http://www-users.york.ac.uk/~raa110/audacity/lame.html", "lame-3.96.1", "http://spaghetticode.org/lame/")
         ),
         // TODO: Connect/replace this with documentation on plug-ins page?
@@ -89,7 +91,7 @@
         "vst-bugs" => array(
           _("Why do some VST plug-ins look wrong, or not work?"),
           _("<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not yet able to display custom interfaces for plug-ins.  Instead, it uses generic controls for all VST plug-ins.  Because of this, many plug-ins will look or act differently than they do in other programs.</p>
-<p>Other VST plug-ins may not work at all, because of bugs in the VST Enabler.  You can <a href\"../contact/\">contact us</a> to report plug-ins that do not work.</p>  
+<p>Other VST plug-ins may not work at all, because of bugs in the VST Enabler.  You can <a href=\"../contact/\">contact us</a> to report plug-ins that do not work.</p>  
 <p>Audacity also does not support VST instrument (VSTi) plug-ins.</p>")
         ),
         "download-problems" => array(
@@ -109,7 +111,10 @@
           _("How do I record from vinyl records, cassette tapes, or minidiscs?"),
           _('<p>First, set Audacity to <a href="faq?s=recording&amp;i=stereo">record in stereo</a>.</p>
 <p>Next, plug one end of a stereo cable into the “Line Out” or “Headphone” connector on your tape deck, minidisc player, or stereo system.  Plug the other end into your computer’s “Line In” connector.  If you do not have a cable that fits both of these connectors, you can find one at an electronics store.</p>
-<p>Choose “Line In” as the input source on the Audacity toolbar, and press the Record button.  While Audacity is recording, start playing your tape or disc.  When you have captured the entire recording, press the Stop button.</p>
+<p>Choose “Line In” as the input source on the Audacity toolbar, or in the Audio I/O tab of Preferences (Vista) or Apple Audio-MIDI Setup (OS X).</p>
+<p>Then press the <b>Record</b> button.  While Audacity is recording, start playing your tape or disc.  When you have captured the entire recording, press the <b>Stop</b> button.</p>
+<p>Vinyl or shellac records can also be recorded into Audacity with a special type of turntable that connects to the USB port of your computer. These turntables need to be set up differently to those that connect to your line-in port. For instructions on setting up USB turntables, see <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB_turntables</a> on the Audacity Wiki.</p>
+<p>There is also a detailed tutorial, <a href="http://audacityteam.org/wiki/index.php?title=Transferring_tapes_and_records_to_computer_or_CD">Transferring_tapes_and_records_to_computer_or_CD</a>, on the Wiki. This will guide you through the steps from recording your records, cassettes or minidiscs to exporting as an audio file and burning to CD.</p>
 <p>Notes:</p>
 <ul>
 	<li><p>Do not plug stereo equipment into your computer’s “Microphone” port, which is designed for low-powered (“mic-level”) signals only.   Use the “Line In” port instead.</p></li>
@@ -131,17 +136,26 @@
 <p>If this does not work, open the Audacity preferences.  In the “Audio I/O” section, turn on the “Software Playthrough” option.</p>
 <h3>Mac OS X</h3>
 <p>Open the Audacity preferences.  In the “Audio I/O” section, turn on the “playthrough” option.  “Hardware Playthrough” is best if it is available.  If it does not work, you can choose “Software Playthrough” instead.</p>
+<h3>Monitoring while Recording from a Microphone</h3>
+<p>Always use headphones when listening as you record from a microphone, to avoid the playthrough of the recording being picked up in the recording itself.</p>
 ")
         ),
         "multi-track" => array(
           _("Can I play a track while recording a new one on top of it?"),
           _("<p>This is called multi-track recording.  It makes it possible to record harmonies with yourself, or add new instruments or vocals to an existing recording.  To do this in Audacity, follow these instructions:</p>
 <ol>
+  <li>If on Windows or Linux, in the dropdown menu on Audacity's Mixer Toolbar, choose the correct input you are plugged into (probably microphone or line-in). On Windows Vista, choose your input on the Audio I/O tab of Preferences instead.</li>
   <li>Import or record the first track.</li>
   <li>Open the “Audio I/O” section of the Audacity preferences, and check the box labeled <b>Play other tracks while recording new one.</b></li>
-  <li>Close the preferences and press the <b>Record</b> button.</li>
+  <li>Close the preferences and press the <b>Record</b> button. If you are recording from a microphone, make sure you use headphones so that the microphone picks up only what you are recording.</li>
 </ol>
-<p>See also: <a href=\"faq?s=recording&amp;i=sync\">Why isn't my new track in sync with the previous ones?</a></p>")
+<p>See also: 
+	<ul>
+		<li><a href=\"faq?s=recording&amp;i=sync\">Why isn't my new track in sync with the previous ones?</a></li>
+		<li><a href=\"faq?s=recording&amp;i=playthrough\">Why can't I hear what I am recording?</a></li>
+		<li><a href=\"faq?s=recording&amp;i=mixer-toolbar-input\">Why is the Input selector in the Mixer Toolbar not working as expected?</a></li>
+	</ul>
+</p>")
         ),
         "sync" => array(
           _("Why isn’t my new track in sync with the previous ones?"),
@@ -152,7 +166,7 @@
           _("Can Audacity record RealAudio or other streaming audio?"),
           _("<h3>Windows and Linux</h3>
 <p>With most Windows and Linux audio devices, it is possible to record whatever sound the computer is currently playing, including internet radio streams.</p>
-<p>In the drop-down menu on Audacity's mixer toolbar, choose “Wave Out” or “Stereo Mix” as the input source.  (The exact name may be different, depending on your computer's sound drivers.)  When you press the Record button, Audacity will capture whatever sound is playing on your computer's speakers.</p>
+<p>In the drop-down menu on Audacity's mixer toolbar, choose “Wave Out” or “Stereo Mix” as the input source.  (The exact name may be different, depending on your computer's sound drivers.)  When you press the <b>Record</b> button, Audacity will capture whatever sound is playing on your computer's speakers. Note that on Windows Vista, the “stereo mix” option must be chosen in the Audio I/O tab of Preferences, in the “Recording Device” dropdown.</p>
 <p>If this doesn't work on your computer, you can instead use a cable to connect your computer's “Line Out” (speaker) port to its “Line In” port, and use Audacity to record from Line In.</p>
 <h3>Mac OS X</h3>
 <p>Mac OS X users can capture streaming audio using a program like <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>
@@ -188,14 +202,25 @@
           // i18n-hint: Sorry, these links are in English only.  If you would
           // like to make more information available, please create a page on
           // the wiki for now.
-          _("<p>You may be able to recover your project automatically with the <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Please see the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> page for more information.</p>")
+          _("<p>You may be able to recover your project automatically with the <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Please see the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> page for more information.</p>
+<p>Please note the .au files need to be numbered consecutively when input to the Crash Recovery Utility or errors will occur in the program. If this problem occurs you can open Audacity's temporary folder in your system File Manager (e.g., Windows Explorer) and try resorting the .au files by time modified and then batch renaming them using a numeric sequence whilst they are sorted by time modified. An arrangement looking something like this should work:</p>
+<ul>
+	<li>b001.au 15:56:02</li>
+	<li>b002.au 15:56:02</li>
+	<li>b003.au 15:56:10</li>
+	<li>b004.au 15:56:10</li>
+</ul>
+<p>If your file manager does not have a suitable renaming tool, you should be able to obtain suitable free tools on the Internet.</p>
+")
         ),
         "wma-proprietary" => array(
           _("Can Audacity import file formats like WMA, AAC, FLAC, etc.?"),
-          _("<p>Audacity <b>cannot</b> import or export files in <b>WMA, AAC, RealAudio, Shorten (SHN)</b>, or most other proprietary formats.  Because of licensing and patent restrictions, we are not allowed to add these formats to Audacity.  Future versions of Audacity might be able to support these formats using codecs installed in your operating system.</p>
+          _("<p>Audacity <b>cannot</b> import or export files in <b>WMA, AAC, RealAudio, Shorten (SHN)</b>, or most other proprietary formats, or any kind of protected file that was purchased online such as on iTunes or Napster.  Because of licensing and patent restrictions, we are not allowed to add these formats to Audacity.  Future versions of Audacity might be able to support these formats using codecs installed in your operating system.</p>
 <p>Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>FLAC</b>.  We hope to support these formats in future versions of Audacity.</p>
-<p>For a list of supported formats, see the <a href=\"../about/features\">feature list</a>.</p>
-<p>See also: <a href=\"faq?s=files&amp;i=midi\">Why can't I play MIDI files?</a></p>")
+<p>Audacity can currently import WAV, AIFF, AU, MP2/MP3 and OGG Vorbis files. If you cannot import your file into Audacity, you can as a workround convert it to WAV or AIFF. As long as it's not a purchased file, you could do this with iTunes&reg; or with <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> player. If it's a purchased file, you can burn it to an audio CD in the application that is licensed to play it, then rip it back to WAV or AIFF. Or you can play the file on your computer and record it – see <a href=\"faq?s=recording&amp;i=streaming\">Can Audacity record RealAudio or other streaming audio?</a>.</p>
+<p>For more detail on supported formats, see the <a href=\"../about/features\">feature list</a>.</p>
+<p>See also: <a href=\"faq?s=files&amp;i=midi\">Why can't I play MIDI files?</a></p>
+")
         ),
         "midi" => array(
           _("Why can’t I play MIDI files?"),
@@ -203,7 +228,10 @@
         ),
         "import-cd" => array(
           _("How do I import a track from an audio CD?"),
-          _("<p>Audacity cannot import a track directly from an audio CD.  You must use a separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks into a format that Audacity can read, like WAV or AIFF.</p>")
+          _("<p>Audacity cannot import a track directly from an audio CD.  You must use a separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks into a format that Audacity can read, like WAV or AIFF.</p>
+<p>On Mac OS X computers, CD tracks appear in Finder as AIFF files so can be imported directly into Audacity. For more help on importing audio from CD tracks on both Windows and OS X, see our Wiki help page on <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">How_to_import_CDs</a>.</p>
+<p>See also: <a href=\"faq?s=files&amp;i=burn-cd\">How do I save my recording on an audio CD?</a></p>
+")
         ),
         "burn-cd" => array(
           _("How do I save my recording on an audio CD?"),
@@ -212,13 +240,14 @@
   <li>Use the “Export as WAV” or “Export as AIFF” command to save your Audacity recording in a sound file.</li>
   <li>Use any CD-recording software (iTunes or Nero, for example) to burn this file to a CD.</li>
 </ol>
-<p>To make a disc you can play in normal CD players, make sure to create a “music” or “audio” CD (not a “data” CD).  Use CD-R discs, because some players cannot read CD-RW.</p>
+<p>To make a disc you can play in normal CD players, make sure to create a “music” or “audio” CD (not a “data” CD).  Use CD-R discs, because some players cannot read CD-RW. You can burn only 74 minutes or so onto an audio CD – this is a limitation of the audio CD format.</p>
 <p>Some CD software will burn only 16-bit, 44.1KHz stereo sound files.  If your CD recording software won't open your sound file, export the file again after choosing the following settings in Audacity:</p>
 <ol>
   <li>At the bottom of the Audacity window, set the Project Rate to 44100 Hz.</li>
   <li>In the File Formats preferences, choose WAV (16-bit...) or AIFF (16-bit...).</li>
   <li>If your project does not already contain a stereo track, choose “New Stereo Track” from the Project menu.  (This will make Audacity export your recording as a stereo file.)</li>
 </ol>
+<p>For helpful tips on CD burning with Windows Media Player and iTunes, and help on burning longer “data” CDs, see <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_burn_CDs\">How_to_burn_CDs</a> on the Audacity Wiki.</p>
 <p>See also: <a href=\"faq?s=files&amp;i=split\">How can I split a long recording into multiple tracks?</a></p>")
         ),
         "split" => array(
@@ -230,7 +259,8 @@
   <li>Repeat steps 1 and 2 for each song.</li>
   <li>When you are finished, choose “Export Multiple” from the File menu.  When you click the “Export” button, Audacity will save each song as a separate file, using the format and location you choose.</li>
 </ol>").
-          "<p>"._("See also:").' <a href="faq?s=files&amp;i=burn-cd">'._("How do I save my recording on an audio CD?")."</a></p>"
+"<p>"._("A detailed, illustrated tutorial explaining this process is available on the ").' <a href="http://audacityteam.org/wiki/index.php?title=Splitting_recordings_into_separate_tracks">Splitting_recordings_into_separate_tracks</a>'._(" page on the Audacity Wiki.")."</p>".
+"<p>"._("See also:").' <a href="faq?s=files&amp;i=burn-cd">'._("How do I save my recording on an audio CD?")."</a></p>"
         ),
       ),
     ),
@@ -239,7 +269,8 @@
       array(
         "menu-disabled" => array(
           _("Why can’t I use the effects or other menu items?"),
-          _("<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>")
+          _("<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>
+<p>Also, many menu items are disabled while playing, recording, or pausing a track. To enable them, press the yellow <b>Stop</b> button.</p>")
         ),
         "join" => array(
           _("How do I combine two files into one longer file?"),
@@ -247,15 +278,16 @@
 <ol>
   <li>Import both files into Audacity.</li>
   <li>Select the second one by clicking on its label (the area around the mute/solo buttons).</li>
+  <li>Choose “Find Zero Crossings” from the Edit menu.</li>
   <li>Choose “Cut” from the Edit menu.</li>
   <li>Place the cursor by clicking in the first track, after the end of the audio.</li>
   <li>Choose “Paste” from the Edit menu.</li>
 </ol>
-<p>You can press the Play button to hear the result, and use the Export commands (in the File menu) to save it as a sound file.</p>")
+<p>You can press the <b>Play</b> button to hear the result, and use the Export commands (in the File menu) to save it as a sound file.</p>")
         ),
         "mix" => array(
           _("How do I mix two tracks together?"),
-          _("<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the Play button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>")
+          _("<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the <b>Play</b> button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>")
         ),
         "remove-vocals" => array(
           _("Can I remove the vocals from a recording to make a Karaoke track?"),
@@ -268,7 +300,8 @@
   <li>Choose “Invert” from the Effects menu.</li>
   <li>Using the track menus, change each track to “Mono.”</li>
 </ol>
-<p>Press the Play button to hear the results.  If you are lucky, the voice will be gone but most of the other instruments will be unaffected, just like a karaoke track.  You can use the Export commands in the File menu to save the results.</p>
+<p>Press the <b>Play</b> button to hear the results.  If you are lucky, the voice will be gone but most of the other instruments will be unaffected, just like a karaoke track.  You can use the Export commands in the File menu to save the results.</p>
+<p>If the vocals are not exactly the same on both stereo channels, there are some other techniques or optional plugins you can try. Please see our <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Vocal_Removal</a> Wiki page for more details.</p>
 ")
         ),
       ),

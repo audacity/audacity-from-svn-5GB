@@ -38,6 +38,8 @@
 
 <p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href="http://www.mozilla.com/">Mozilla</a> web browser, the <a href="http://www.openoffice.org/">OpenOffice.org</a> office suite, and entire <a title="Ubuntu Linux" href="http://www.ubuntulinux.org/">Linux-based operating systems</a>.</p>');
 
+<p>We welcome <a href="../community/donate">donations</a> to support Audacity development.</p>
+
   echo _('<h3>Bundling, Reselling, or Distributing Audacity</h3>
 
 <p>Vendors are free to bundle Audacity with their products, or to sell or distribute copies of the program (see <a href="../download/bundlers">Vendors that Distribute Audacity</a>) under the <a href="license">GNU General Public License (GPL)</a>.</p>
