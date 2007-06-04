@@ -59,6 +59,9 @@
 <p><?=_('If you wish to compile Audacity yourself, download the <a href="source">source code</a>.')?></p>
 
 <p><?=_('You may modify, distribute, and sell Audacity under the <a href="../about/license">GNU GPL</a>.')?></p>
+
+<p><?=_('We welcome <a href="../community/donate">donations</a> to support Audacity development.')?></p>
+
 </div>
 
 <?php
