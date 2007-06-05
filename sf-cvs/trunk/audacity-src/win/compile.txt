@@ -171,37 +171,34 @@ activated optionally and must be downloaded separately. To build
 with these libs, open the file "configwin.h" and change it according 
 to the third-party libraries you have installed. 
 
-
 DirectSound (Microsoft) and ASIO (Steinberg) are sound card interface 
 protocols that are more efficient than the standard 
 WMME. Unlike WMME, not all sound card drivers support them. 
 
-Beacause DirectSound and ASIO are PROPRIETARY, closed standards, 
-we (or any third party) cannot distribute their SDK's. 
-And that means we cannot distribute builds of Audacity that support 
-DirectSound or ASIO, because Audacity is licensed under the 
+TO ADD SUPPORT FOR DIRECTSOUND: 
+Install the DirectX SDK from Microsoft (http://msdn.microsoft.com/directx).  
+The installation will automatically define the DXSDK_DIR
+environment variable and its presense will cause DirectSound
+support to be automatically included when Audacity is built.
+
+
+TO ADD SUPPORT FOR ASIO:
+Because ASIO is a PROPRIETARY, closed standard, 
+we (or any third party) cannot distribute its SDK. 
+That means we cannot distribute builds of Audacity that support 
+ASIO, because Audacity is licensed under the 
 GPL (http://audacity.sourceforge.net/about/license), which requires 
 we distribute all source code. 
 
 So, although you can build your own copies of Audacity with 
-DirectSound and/or ASIO support, for personal use, 
-you cannot distribute them without violating the Audacity license 
-and the DirectSound and/or ASIO license. If you build in 
-DirectSound or ASIO support to Audacity, do not distribute that build. 
-
-You can optionally add support for either 
-DirectSound or ASIO as follows: 
-
-If you wish DirectSound support, you must install the DirectX
-SDK from Microsoft (http://msdn.microsoft.com/directx).  The
-installation will automatically define the DXSDK_DIR
-environment variable and its presense will cause DirectSound
-support to be automatically included when Audacity is built.
+ASIO support, for personal use, you cannot distribute them without 
+violating the Audacity license and the ASIO license. 
+If you build ASIO support into Audacity, do not distribute that build. 
 
 If you wish ASIO support, install the ASIO SDK from Steinberg 
 (http://www.steinberg.net ... select Company, then 3rd Party
 Developers), then define an environment variable called
-ASIOSDK_DIR, as you did for WXWIN above. The value should be 
+ASIOSDK_DIR, as you did for WXWIN, above. The value should be 
 the full path to the base directory of the ASIO SDK, e.g., 
          set ASIOSDK_DIR=C:\ASIOSDK2
 
