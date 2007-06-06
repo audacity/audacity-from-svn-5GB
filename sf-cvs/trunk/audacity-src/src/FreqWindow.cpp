@@ -291,7 +291,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    hRuler->SetMinSize(wxSize(-1, h));
    szr->Add( hRuler, 0, wxEXPAND|wxLEFT|wxRIGHT, 1 ); //for border around graph
    szr->Add(1,1); //spacer
-   mInfoText = new wxStaticText(this, wxID_ANY, wxT(""));   //box for info text
+   mInfoText = new wxStaticText(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE);   //box for info text
    szr->Add( mInfoText, 0, wxEXPAND|wxALL, 5);
 
    vs->Add(szr, 1, wxEXPAND|wxALL, 5);
@@ -512,6 +512,7 @@ void FreqWindow::PlotMouseEvent(wxMouseEvent & event)
          mFreqPlot->SetCursor(*mArrowCursor);
 
       mFreqPlot->Refresh(false);
+      mInfoText->Refresh();
    }
 }
 
