@@ -880,15 +880,15 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
 
    double factor = 1.0;
    if (mTimeTrack) {
-      factor = mTimeTrack->GetEnvelope()->Average(0, mT1);
+      factor = mTimeTrack->GetEnvelope()->Average(mT0, mT1);
       factor = (mTimeTrack->GetRangeLower() *
                (1 - factor) +
                factor *
                mTimeTrack->GetRangeUpper()) / 
                100.0;
    }
-   mWarpedT1 = mT0 + ((mT1 - mT0) / factor);
-      
+   mWarpedT1 = factor >= 1 ? mT1 : mT0 + ((mT1 - mT0) / factor);
+
    //
    // The RingBuffer sizes, and the max amount of the buffer to
    // fill at a time, both grow linearly with the number of
@@ -1291,17 +1291,8 @@ double AudioIO::NormalizeStreamTime(double absoluteTime) const
    if (absoluteTime < mT0)
       absoluteTime = mT0;
 
-   // dmazzoni: If we're looping, we should wrap around when the
-   // stream time is past the end.  Otherwise the returned stream
-   // time is clipped to the end time.
-   if (mPlayLooped) {
-      while (absoluteTime > mT1)
-         absoluteTime -= mT1 - mT0;
-   }
-   else {
-      if (absoluteTime > mT1)
-         absoluteTime = mT1;
-   }
+   if (absoluteTime > mT1)
+      absoluteTime = mT1;
    
    if (mCutPreviewGapLen > 0)
    {
@@ -1903,8 +1894,8 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
             gAudioIO->mTime += gAudioIO->mSeek;
             if (gAudioIO->mTime < gAudioIO->mT0)
                 gAudioIO->mTime = gAudioIO->mT0;
-            else if (gAudioIO->mTime > gAudioIO->mWarpedT1)
-                gAudioIO->mTime = gAudioIO->mWarpedT1;
+            else if (gAudioIO->mTime > gAudioIO->mT1)
+                gAudioIO->mTime = gAudioIO->mT1;
             gAudioIO->mSeek = 0.0;
             
             // Reset mixer positions and flush buffers for all tracks
@@ -1977,12 +1968,6 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                callbackReturn = 1;
                gAudioIO->mInCallbackFinishedState = true;
              #endif
-            }
-
-            // Wrap to start if looping
-            if (gAudioIO->mPlayLooped && gAudioIO->mTime >= gAudioIO->mT1)
-            {
-               gAudioIO->mTime = gAudioIO->mT0 + (gAudioIO->mTime - gAudioIO->mT1);
             }
 
             if (vt->GetChannel() == Track::LeftChannel ||
@@ -2092,7 +2077,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          }
       }
 
-      // Update the current time position
+      // Calcuate the warp factor for this time position
       double factor = 1.0;
       if (gAudioIO->mTimeTrack) {
          factor = gAudioIO->mTimeTrack->GetEnvelope()->GetValue(gAudioIO->mTime);
@@ -2102,9 +2087,18 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                   gAudioIO->mTimeTrack->GetRangeUpper()) / 
                   100.0;
       }
+
+      // Wrap to start if looping
+      if (gAudioIO->mPlayLooped && gAudioIO->mTime >= gAudioIO->mT1)
+      {
+         // LL:  This is not exactly right, but I'm at my wits end trying to
+         //      figure it out.  Feel free to fix it.  :-)
+         gAudioIO->mTime = gAudioIO->mT0 - ((gAudioIO->mTime - gAudioIO->mT1) * factor);
+      }
+
+      // Update the current time position
       gAudioIO->mTime += ((framesPerBuffer / gAudioIO->mRate) * factor);
 
-      
       // Record the reported latency from PortAudio.
       // TODO: Don't recalculate this with every callback?
      #if USE_PORTAUDIO_V19
