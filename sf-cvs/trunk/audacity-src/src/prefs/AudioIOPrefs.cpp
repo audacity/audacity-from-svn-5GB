@@ -235,6 +235,13 @@ bool AudioIOPrefs::Apply()
    ShuttleGui S( this, eIsSavingToPrefs );
    PopulateOrExchange( S );
 
+#if USE_PORTAUDIO_V19
+   double latencyDuration = 100.0;
+   gPrefs->Read(wxT("/AudioIO/LatencyDuration"), &latencyDuration);
+   if (latencyDuration < 0)
+      gPrefs->Write(wxT("/AudioIO/LatencyDuration"), 100.0);
+#endif
+
 #if USE_PORTMIXER
    if (gAudioIO)
       gAudioIO->HandleDeviceChange();
