@@ -856,23 +856,22 @@ bool LabelTrack::CopySelectedText()
       return false;
 
    // swapping to make sure currentCursorPos > mInitialCursorPos always
-   if (mInitialCursorPos > mCurrentCursorPos) {
-      int temp = mCurrentCursorPos;
-      mCurrentCursorPos = mInitialCursorPos;
-      mInitialCursorPos = temp;
+   int init = mInitialCursorPos;
+   int cur = mCurrentCursorPos;
+   if (init > cur) {
+      cur = mInitialCursorPos;
+      init = mCurrentCursorPos;
    }
    
    // data for copying
-   wxString data = mLabels[mSelIndex]->title.Mid(mInitialCursorPos, mCurrentCursorPos-mInitialCursorPos);
+   wxString data = mLabels[mSelIndex]->title.Mid(init, cur-init);
 
    // copy the data on clipboard
    if (wxTheClipboard->Open()) {
       wxTheClipboard->SetData(new wxTextDataObject(data));
       wxTheClipboard->Close();
    }
-   
-   // set initialCursorPos equal to currentCursorPos
-   mInitialCursorPos = mCurrentCursorPos;
+
    return true;
 }
 
@@ -2139,7 +2138,9 @@ void LabelTrack::CreateCustomGlyphs()
 /// character.
 bool LabelTrack::IsGoodLabelFirstCharacter(int keyCode, wxChar charCode)
 {
-   return (keyCode < WXK_START && !wxIscntrl(charCode) && (keyCode != WXK_SPACE)) ||
+   // The WXK_DELETE is because Windows doesn't convert DELETE to a proper
+   // unicode value.  (Or at least one we can't use...0x46)
+   return (keyCode < WXK_START && !wxIscntrl(charCode) && (keyCode != WXK_SPACE) && (keyCode != WXK_DELETE)) ||
           keyCode > WXK_COMMAND;
 }
 
