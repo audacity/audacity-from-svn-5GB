@@ -308,7 +308,7 @@ wxMenu * CommandManager::CurrentMenu()
 /// Add a menu item to the current menu.  When the user selects it, the
 /// given functor will be called
 void CommandManager::AddItem(wxString name, wxString label,
-                             CommandFunctor *callback)
+                             CommandFunctor *callback, int checkmark)
 {
    int ID = NewIdentifier(name, label, CurrentMenu(), callback, false, 0, 0);
 
@@ -347,7 +347,13 @@ void CommandManager::AddItem(wxString name, wxString label,
       dummy = dummy + wxT("\t") + mCommandIDHash[ID]->key;
    }
 
-   CurrentMenu()->Append(ID, dummy);
+   if (checkmark >= 0) {
+      CurrentMenu()->AppendCheckItem(ID, dummy);
+      CurrentMenu()->Check(ID, checkmark);
+   }
+   else {
+      CurrentMenu()->Append(ID, dummy);
+   }
    CurrentMenu()->SetLabel(ID, newLabel);
 }
 
@@ -575,6 +581,16 @@ void CommandManager::EnableUsingFlags(wxUint32 flags, wxUint32 mask)
          Enable(entry, enable);
       }
    }
+}
+
+void CommandManager::Check(wxString name, bool checked)
+{
+   CommandListEntry *entry = mCommandNameHash[name];
+   if (!entry || !entry->menu) {
+      return;
+   }
+
+   entry->menu->Check(entry->id, checked);
 }
 
 ///Changes the label text of a menu item
