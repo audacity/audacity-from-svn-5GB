@@ -166,18 +166,6 @@ enum {
    SnapToFlag             = 0x00400000   //lll
 };
 
-wxString SHOW(const wxString &toolbarName)
-{
-   /* i18n-hint: here, %s is the name of a toolbar, e.g. "Control Toolbar" */
-   return wxString::Format(_("Show %s"), toolbarName.c_str());
-}
-
-wxString HIDE(const wxString &toolbarName)
-{
-   /* i18n-hint: here, %s is the name of a toolbar, e.g. "Control Toolbar" */
-   return wxString::Format(_("Hide %s"), toolbarName.c_str());
-}
-
 #define FN(X) new AudacityProjectCommandFunctor(this, &AudacityProject:: X )
 
 /// CreateMenusAndCommands builds the menus, and also rebuilds them after
@@ -571,14 +559,14 @@ void AudacityProject::CreateMenusAndCommands()
 #endif
    c->AddSeparator();
    c->BeginSubMenu(_("&Toolbars..."));
-   c->AddItem(wxT("ShowControlTB"),       SHOW(_("Control Toolbar")),       FN(OnShowControlToolBar));
-   c->AddItem(wxT("ShowDeviceTB"),        SHOW(_("Device Toolbar")),        FN(OnShowDeviceToolBar));
-   c->AddItem(wxT("ShowEditTB"),          SHOW(_("Edit Toolbar")),          FN(OnShowEditToolBar));
-   c->AddItem(wxT("ShowMeterTB"),         SHOW(_("Meter Toolbar")),         FN(OnShowMeterToolBar));
-   c->AddItem(wxT("ShowMixerTB"),         SHOW(_("Mixer Toolbar")),         FN(OnShowMixerToolBar));
-   c->AddItem(wxT("ShowSelectionTB"),     SHOW(_("Selection Toolbar")),     FN(OnShowSelectionToolBar));
-   c->AddItem(wxT("ShowToolsTB"),         SHOW(_("Tools Toolbar")),         FN(OnShowToolsToolBar));
-   c->AddItem(wxT("ShowTranscriptionTB"), SHOW(_("Transcription Toolbar")), FN(OnShowTranscriptionToolBar));
+   c->AddItem(wxT("ShowControlTB"),       _("Show Control Toolbar"),       FN(OnShowControlToolBar), 0);
+   c->AddItem(wxT("ShowDeviceTB"),        _("Show Device Toolbar"),        FN(OnShowDeviceToolBar), 0);
+   c->AddItem(wxT("ShowEditTB"),          _("Show Edit Toolbar"),          FN(OnShowEditToolBar), 0);
+   c->AddItem(wxT("ShowMeterTB"),         _("Show Meter Toolbar"),         FN(OnShowMeterToolBar), 0);
+   c->AddItem(wxT("ShowMixerTB"),         _("Show Mixer Toolbar"),         FN(OnShowMixerToolBar), 0);
+   c->AddItem(wxT("ShowSelectionTB"),     _("Show Selection Toolbar"),     FN(OnShowSelectionToolBar), 0);
+   c->AddItem(wxT("ShowToolsTB"),         _("Show Tools Toolbar"),         FN(OnShowToolsToolBar), 0);
+   c->AddItem(wxT("ShowTranscriptionTB"), _("Show Transcription Toolbar"), FN(OnShowTranscriptionToolBar), 0);
    c->AddSeparator();
    c->AddItem(wxT("ResetToolbars"),       _("Reset Toolbars"),              FN(OnResetToolBars));
    c->EndSubMenu();
@@ -1152,39 +1140,23 @@ void AudacityProject::SelectAllIfNone()
 
 void AudacityProject::ModifyToolbarMenus()
 {
-   mCommandManager.Modify(wxT("ShowControlTB"),
-                          mToolManager->IsVisible(ControlBarID ) ?
-                          HIDE(_("Control Toolbar")) :
-                          SHOW(_("Control Toolbar")));
-   mCommandManager.Modify(wxT("ShowDeviceTB"),
-                          mToolManager->IsVisible(DeviceBarID) ?
-                          HIDE(_("Device Toolbar")) :
-                          SHOW(_("Device Toolbar")));
-   mCommandManager.Modify(wxT("ShowEditTB"),
-                          mToolManager->IsVisible(EditBarID) ?
-                          HIDE(_("Edit Toolbar")) :
-                          SHOW(_("Edit Toolbar")));
-   mCommandManager.Modify(wxT("ShowMeterTB"),
-                          mToolManager->IsVisible(MeterBarID) ?
-                          HIDE(_("Meter Toolbar")) :
-                          SHOW(_("Meter Toolbar")));
-   mCommandManager.Modify(wxT("ShowMixerTB"),
-                          mToolManager->IsVisible(MixerBarID) ?
-                          HIDE(_("Mixer Toolbar")) :
-                          SHOW(_("Mixer Toolbar")));
-   mCommandManager.Modify(wxT("ShowSelectionTB"),
-                          mToolManager->IsVisible(SelectionBarID) ?
-                          HIDE(_("Selection Toolbar")) :
-                          SHOW(_("Selection Toolbar")));
-   mCommandManager.Modify(wxT("ShowToolsTB"),
-                          mToolManager->IsVisible(ToolsBarID) ?
-                          HIDE(_("Tools Toolbar")) :
-                          SHOW(_("Tools Toolbar")));
-   mCommandManager.Modify(wxT("ShowTranscriptionTB"),
-                          mToolManager->IsVisible(TranscriptionBarID) ?
-                          HIDE(_("Transcription Toolbar")) :
-                          SHOW(_("Transcription Toolbar")));
- }
+   mCommandManager.Check(wxT("ShowControlTB"),
+                        mToolManager->IsVisible(ControlBarID));
+   mCommandManager.Check(wxT("ShowDeviceTB"),
+                         mToolManager->IsVisible(DeviceBarID));
+   mCommandManager.Check(wxT("ShowEditTB"),
+                         mToolManager->IsVisible(EditBarID));
+   mCommandManager.Check(wxT("ShowMeterTB"),
+                         mToolManager->IsVisible(MeterBarID));
+   mCommandManager.Check(wxT("ShowMixerTB"),
+                         mToolManager->IsVisible(MixerBarID));
+   mCommandManager.Check(wxT("ShowSelectionTB"),
+                         mToolManager->IsVisible(SelectionBarID));
+   mCommandManager.Check(wxT("ShowToolsTB"),
+                         mToolManager->IsVisible(ToolsBarID));
+   mCommandManager.Check(wxT("ShowTranscriptionTB"),
+                         mToolManager->IsVisible(TranscriptionBarID));
+}
 
 void AudacityProject::UpdateMenus()
 {
