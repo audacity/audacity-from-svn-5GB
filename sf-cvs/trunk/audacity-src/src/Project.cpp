@@ -532,7 +532,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mRate((double) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate())),
      mDefaultFormat((sampleFormat) gPrefs->
            Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample)),
-     mSnapTo(0),
+     mSnapTo(0), 
      mDirty(false),
      mTrackPanel(NULL),
      mTrackFactory(NULL),
@@ -557,9 +557,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
       mProgressDialog[mProgressCurrent] = NULL;
    }
 
-   int widths[] = {-1, 150};
-   mStatusBar = CreateStatusBar(2);
-   mStatusBar->SetStatusWidths(2, widths);
+   int widths[] = {-1, 130, 100};
+   mStatusBar = CreateStatusBar(3);
+   mStatusBar->SetStatusWidths(3, widths);
 
    // MM: DirManager is created dynamically, freed on demand via ref-counting
    // MM: We don't need to Ref() here because it start with refcount=1
@@ -823,6 +823,8 @@ void AudacityProject::UpdatePrefs()
    mRate = (double) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate());
    mDefaultFormat = (sampleFormat) gPrefs->
            Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
+
+   SetSnapTo(gPrefs->Read(wxT("/SnapTo"), 0L));
 
    if (GetSelectionBar()) {
       GetSelectionBar()->UpdateRates();
@@ -3291,9 +3293,8 @@ void AudacityProject::AutoSave()
 
 void AudacityProject::OnAudioIORate(int rate)
 {
-   mStatusBar->SetStatusText(wxString::Format(_("Actual Rate %d"),
+   mStatusBar->SetStatusText(wxString::Format(_("Actual Rate: %d"),
                                               rate), 1);
-   
 }
 
 void AudacityProject::OnAudioIOStartRecording()
@@ -3411,6 +3412,28 @@ bool AudacityProject::GetCacheBlockFiles()
    bool cacheBlockFiles = false;
    gPrefs->Read(wxT("/Directories/CacheBlockFiles"), &cacheBlockFiles);
    return cacheBlockFiles;
+}
+
+void AudacityProject::SetSnapTo(bool state)
+{
+   mSnapTo = state;
+   mCommandManager.Check(wxT("Snap"), mSnapTo);
+   gPrefs->Write(wxT("/SnapTo"), mSnapTo);
+
+   wxString msg;
+   if (mSnapTo) {
+      msg.Printf(_("Snap To: On"));
+   }
+   else {
+      msg.Printf(_("Snap To: Off"));
+   }
+
+   mStatusBar->SetStatusText(msg, 2);
+}
+
+bool AudacityProject::GetSnapTo()
+{
+   return mSnapTo;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

@@ -218,6 +218,11 @@ class AudacityProject:public wxFrame,
    void EditByLabel( WaveTrack::EditFunction action ); 
    void EditClipboardByLabel( WaveTrack::EditDestFunction action );
 
+   // Snap To
+
+   void SetSnapTo(bool state);
+   bool GetSnapTo();
+
    // Scrollbars
 
    void OnScrollLeft();
@@ -259,7 +264,6 @@ class AudacityProject:public wxFrame,
    TranscriptionToolBar *GetTranscriptionToolBar();
 
  public:
-
 
    // SelectionBar callback methods
 

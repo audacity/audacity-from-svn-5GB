@@ -89,7 +89,8 @@ class CommandManager: public XMLTagHandler
    wxMenu* BeginSubMenu(wxString tName);
    void EndSubMenu();
 
-   void AddItem(wxString name, wxString label, CommandFunctor *callback);
+   void AddItem(wxString name, wxString label, CommandFunctor *callback,
+                int checkmark = -1);
    void AddItemList(wxString name, wxArrayString labels,
                     CommandFunctor *callback, bool plugins = false);
 
@@ -118,6 +119,7 @@ class CommandManager: public XMLTagHandler
 
    void EnableUsingFlags(wxUint32 flags, wxUint32 mask);
    void Enable(wxString name, bool enabled);
+   void Check(wxString name, bool checked);
    void Modify(wxString name, wxString newLabel);
 
    //

@@ -503,17 +503,12 @@ void AudacityProject::CreateMenusAndCommands()
                       wxT("SelSave"), wxT("SelRestore"), NULL);
    c->AddSeparator();
 
-   c->BeginSubMenu(_("S&nap-To..."));
-
    /* i18n-hint: Set snap-to mode on or off */
-   c->AddItem(wxT("SnapOn"),         _("On"),                        FN(OnSnapOn));
-   /* i18n-hint: Set snap-to mode on or off */
-   c->AddItem(wxT("SnapOff"),        _("Off"),                       FN(OnSnapOff));
-   c->SetCommandFlags(wxT("SnapOn"), ~SnapToFlag, SnapToFlag);
-   c->SetCommandFlags(wxT("SnapOff"), SnapToFlag, SnapToFlag);
+   c->AddItem(wxT("Snap"),        _("Snap To"),                      FN(OnSnapTo), mSnapTo);
+   c->SetCommandFlags(wxT("Snap"), TracksExistFlag, TracksExistFlag);
 
-   c->EndSubMenu();
-   
+   c->AddSeparator();
+
    c->BeginSubMenu(_("Play &Region..."));
    c->AddItem(wxT("LockPlayRegion"), _("Lock"), FN(OnLockPlayRegion));
    c->AddItem(wxT("UnlockPlayRegion"), _("Unlock"), FN(OnUnlockPlayRegion));
@@ -1585,15 +1580,14 @@ void AudacityProject::OnSeekRightLong()
 
 void AudacityProject::OnSelToStart()
 {
-   mViewInfo.sel0 = 0;
-   mTrackPanel->Refresh(false);
-
+   Rewind(true);
    ModifyState();
 }
 
 void AudacityProject::OnSelToEnd()
 {
    SkipEnd(true);
+   ModifyState();
 }
 
 void AudacityProject::OnCursorUp()
@@ -3196,7 +3190,6 @@ void AudacityProject::OnZoomIn()
    if (gAudioIO->IsStreamActive(GetAudioIOToken()) != 0) {
       Zoom(mViewInfo.zoom * 2.0);
       mTrackPanel->ScrollIntoView(gAudioIO->GetStreamTime());
-      mTrackPanel->Refresh(false);
       return;
    }
 
@@ -3366,15 +3359,9 @@ void AudacityProject::OnZoomSel()
    TP_ScrollWindow(mViewInfo.sel0);
 }
 
-void AudacityProject::OnSnapOn()
+void AudacityProject::OnSnapTo()
 {
-   mSnapTo = 1;
-   TP_DisplaySelection();
-}
-
-void AudacityProject::OnSnapOff()
-{
-   mSnapTo = 0;
+   SetSnapTo(!GetSnapTo());
    TP_DisplaySelection();
 }
 
@@ -3749,7 +3736,7 @@ void AudacityProject::OnCursorTrackStart()
    mViewInfo.sel0 = minOffset;
    mViewInfo.sel1 = minOffset;
    ModifyState();
-   mTrackPanel->Refresh(false);
+   mTrackPanel->ScrollIntoView(mViewInfo.sel0);
 }
 
 void AudacityProject::OnCursorTrackEnd()
@@ -3772,22 +3759,21 @@ void AudacityProject::OnCursorTrackEnd()
 
    mViewInfo.sel0 = maxEndOffset;
    mViewInfo.sel1 = maxEndOffset;
-   ModifyState();
-   mTrackPanel->Refresh(false);
+   mTrackPanel->ScrollIntoView(mViewInfo.sel1);
 }
 
 void AudacityProject::OnCursorSelStart()
 {
    mViewInfo.sel1 = mViewInfo.sel0;
    ModifyState();
-   mTrackPanel->Refresh(false);
+   mTrackPanel->ScrollIntoView(mViewInfo.sel0);
 }
 
 void AudacityProject::OnCursorSelEnd()
 {
    mViewInfo.sel0 = mViewInfo.sel1;
    ModifyState();
-   mTrackPanel->Refresh(false);
+   mTrackPanel->ScrollIntoView(mViewInfo.sel1);
 }
 
 void AudacityProject::HandleAlign(int index, bool moveSel)
