@@ -2135,7 +2135,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
       mCapturedClipArray.Clear();
    }
    
-   mSlideUpDownOnly = event.ControlDown() && !multiToolModeActive;
+   mSlideUpDownOnly = event.MetaDown() && !multiToolModeActive;
 
    mCapturedTrack = vt;
    mCapturedRect = r;
@@ -2251,6 +2251,11 @@ void TrackPanel::DoSlide(wxMouseEvent & event)
          desiredSlideAmount += difference;
          mSnapRight = TimeToPosition(newClipRight, GetLeftOffset());
       }
+   }
+
+   // Implement sliding within the track(s)
+   if (mSlideUpDownOnly) {
+      desiredSlideAmount = 0.0;
    }
 
    //If the mouse is over a track that isn't the captured track,
