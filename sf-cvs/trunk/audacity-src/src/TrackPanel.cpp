@@ -4967,7 +4967,7 @@ void TrackPanel::ScrollIntoView(double pos)
        ( pos > mViewInfo->h + ( ( w - 1 ) / mViewInfo->zoom ) ) )
    {
       mListener->TP_ScrollWindow( pos - ( ( w / 2 ) / mViewInfo->zoom ) );
-      mTrackPanel->Refresh(false);
+      Refresh(false);
    }
 }
 
