@@ -2414,6 +2414,8 @@ void AudacityProject::OnPaste()
    TrackListIterator iter2(mTracks);
    Track *countTrack = iter2.First();
 
+   int numSelected =0;
+
    while (countTrack) {
       if (countTrack->GetSelected()) {
          if (countTrack->GetKind() == Track::Label) {
@@ -2431,23 +2433,16 @@ void AudacityProject::OnPaste()
                return;
             }
          }
+         numSelected++;
       }
       countTrack = iter2.Next();
    }
 
-   int numSelected =0;
-
-   countTrack = iter2.First();
-   while (countTrack) {
-      if (countTrack->GetSelected())
-         numSelected++;
-      countTrack = iter2.Next();
-   }
-   
    if (numSelected == 0) {
       TrackListIterator clipIter(msClipboard);
       Track *c = clipIter.First();
       Track *n;
+      Track *f = NULL;
 
       while (c) {
          if (msClipProject != this && c->GetKind() == Track::Wave)
@@ -2476,6 +2471,9 @@ void AudacityProject::OnPaste()
             continue;
          }
 
+         if (!f)
+            f = n;
+
          n->SetTeamed(c->GetTeamed()); // do first
          n->SetLinked(c->GetLinked());
          n->SetChannel(c->GetChannel());
@@ -2498,6 +2496,9 @@ void AudacityProject::OnPaste()
       
       RedrawProject();
 
+      if (f)
+         mTrackPanel->EnsureVisible(f);
+
       return;
    }
 
@@ -2513,6 +2514,7 @@ void AudacityProject::OnPaste()
 
    Track *n = iter.First();
    Track *c = clipIter.First();
+   Track *f = NULL;
    
    bool pastedSomething = false;
 
@@ -2528,7 +2530,10 @@ void AudacityProject::OnPaste()
                _("Error"), wxICON_ERROR, this);
             break;
          }
-         
+
+         if (!f)
+            f = n;
+
          if (msClipProject != this && c->GetKind() == Track::Wave)
             ((WaveTrack *) c)->Lock();
 
@@ -2584,6 +2589,9 @@ void AudacityProject::OnPaste()
       PushState(_("Pasted from the clipboard"), _("Paste"));
 
       RedrawProject();
+
+      if (f)
+         mTrackPanel->EnsureVisible(f);
    }
 }
 
@@ -3668,6 +3676,7 @@ void AudacityProject::OnMixAndRender()
       }
 
       mTrackPanel->SetFocusedTrack(newLeft);
+      mTrackPanel->EnsureVisible(newLeft);
       RedrawProject();
    }
 }
