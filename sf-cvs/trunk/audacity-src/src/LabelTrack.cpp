@@ -1055,7 +1055,7 @@ bool LabelTrack::HandleMouse(const wxMouseEvent & evt,
                              wxRect & r, double h, double pps,
                              double *newSel0, double *newSel1)
 {
-   if(evt.ButtonUp(1))
+   if(evt.LeftUp())
    {
       bool lupd = false, rupd = false;
       if(mIsAdjustingLabel) {
