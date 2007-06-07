@@ -1479,7 +1479,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
 
    // AS: Ok, did the user just click the mouse, release the mouse,
    //  or drag?
-   if (event.ButtonDown(1)) {
+   if (event.LeftDown()) {
       // AS: Now, did they click in a track somewhere?  If so, we want
       //  to extend the current selection or start a new selection, 
       //  depending on the shift key.  If not, cancel all selections.
@@ -1490,7 +1490,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
          Refresh(false);
       }
       
-   } else if (event.ButtonUp(1) || event.ButtonUp(3)) {
+   } else if (event.LeftUp() || event.RightUp()) {
       if (mSnapManager) {
          delete mSnapManager;
          mSnapManager = NULL;
@@ -1502,7 +1502,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       //Send the new selection state to the undo/redo stack:
       MakeParentModifyState();
       
-   } else if (event.ButtonDClick(1) && !event.ShiftDown()) {
+   } else if (event.LeftDClick() && !event.ShiftDown()) {
       if (!mCapturedTrack) {
          wxRect r;
          int num;
@@ -1600,7 +1600,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
 
    // A control-click will set just the indicator to the clicked spot,
    // and turn playback on.  
-   else if(event.ControlDown())
+   else if(event.MetaDown())
       {
          AudacityProject *p = GetActiveProject();
          if (p) {
@@ -1789,6 +1789,8 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event, Track *clickedTrack)
       return;
 
    // Also fuhggeddaboudit if we're not dragging and not autoscrolling.
+   //
+   // LL:  What's the ControlDown() for?
    if ((!event.Dragging() && !mAutoScrolling)  || event.ControlDown())
       return;
 
@@ -1865,7 +1867,7 @@ wxInt64 TrackPanel::TimeToPosition(double projectTime,
 /// amplitude envelope on a track.
 void TrackPanel::HandleEnvelope(wxMouseEvent & event)
 {
-   if (event.ButtonDown(1)) {
+   if (event.LeftDown()) {
       wxRect r;
       int num;
       mCapturedTrack = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
@@ -1891,7 +1893,7 @@ void TrackPanel::HandleEnvelope(wxMouseEvent & event)
    if (mCapturedTrack)
       ForwardEventToEnvelope(event);
 
-   if (event.ButtonUp(1)) {
+   if (event.LeftUp()) {
       mCapturedTrack = NULL;
       MakeParentPushState(
          _("Adjusted envelope."),
@@ -2004,7 +2006,7 @@ void TrackPanel::ForwardEventToEnvelope(wxMouseEvent & event)
 
 void TrackPanel::HandleSlide(wxMouseEvent & event)
 {
-   if (event.ButtonDown(1))
+   if (event.LeftDown())
       StartSlide(event);
 
    if (mMouseCapture != IsSliding)
@@ -2013,7 +2015,7 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
    if (event.Dragging() && mCapturedTrack)
       DoSlide(event);
 
-   if (event.ButtonUp(1)) {
+   if (event.LeftUp()) {
       SetCapturedTrack( NULL );
 
       if (mSnapManager) {
@@ -2380,7 +2382,7 @@ void TrackPanel::DoSlide(wxMouseEvent & event)
 ///  and forcing a refresh.
 void TrackPanel::HandleZoom(wxMouseEvent & event)
 {
-   if (event.ButtonDown() || event.ButtonDClick(1)) {
+   if (event.ButtonDown() || event.LeftDClick()) {
       HandleZoomClick(event);
    }
    else if (mMouseCapture == IsZooming) {
@@ -2621,7 +2623,7 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
          }
       }
    }
-   else if (event.ShiftDown() || event.ButtonUp(3)) {
+   else if (event.ShiftDown() || event.RightUp()) {
       // Zoom OUT
       // Zoom out to -1.0...1.0 first, then, and only
       // then, if they click again, allow one more
@@ -3037,7 +3039,7 @@ void TrackPanel::HandleSampleEditingButtonUp( wxMouseEvent & event )
 ///  - mDrawingLastDragSampleValue: The value of the last 
 void TrackPanel::HandleSampleEditing(wxMouseEvent & event)
 {
-   if (event.ButtonDown(1) ) {
+   if (event.LeftDown() ) {
       HandleSampleEditingClick( event);
    } else if (mDrawingTrack && event.Dragging()) {
       HandleSampleEditingDrag( event );
@@ -3062,7 +3064,7 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
 
    if (event.Dragging())
       mTrackLabel.DrawCloseBox(&dc, r, closeRect.Inside(event.m_x, event.m_y));
-   else if (event.ButtonUp(1)) {
+   else if (event.LeftUp()) {
       mTrackLabel.DrawCloseBox(&dc, r, false);
       if (closeRect.Inside(event.m_x, event.m_y)) {
          if (!gAudioIO->IsStreamActive(p->GetAudioIOToken()))
@@ -3144,7 +3146,7 @@ void TrackPanel::HandlePopping(wxMouseEvent & event)
    if (event.Dragging()) {
       mTrackLabel.DrawTitleBar(&dc, r, t, titleRect.Inside(event.m_x, event.m_y));
    }
-   else if (event.ButtonUp(1)) {
+   else if (event.LeftUp()) {
       if (titleRect.Inside(event.m_x, event.m_y))
       {
          OnTrackMenu(t);
@@ -3177,7 +3179,7 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
          mTrackLabel.DrawMuteSolo(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y),
                    solo);
    }
-   else if (event.ButtonUp(1) )
+   else if (event.LeftUp() )
       {
          
          if (buttonRect.Inside(event.m_x, event.m_y)) 
@@ -3212,7 +3214,7 @@ void TrackPanel::HandleMinimizing(wxMouseEvent & event)
    if (event.Dragging()) {
       mTrackLabel.DrawMinimize(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y), t->GetMinimized());
    }
-   else if (event.ButtonUp(1)) {
+   else if (event.LeftUp()) {
       if (buttonRect.Inside(event.m_x, event.m_y))
       {
          t->SetMinimized(!t->GetMinimized());
@@ -3241,7 +3243,7 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
    slider->OnMouseEvent(event);
 
    //If we have a double-click, do this...
-   if(event.ButtonDClick(1))
+   if(event.LeftDClick())
       {
          mMouseCapture = IsUncaptured;
       }
@@ -3281,7 +3283,7 @@ void TrackPanel::OnContextMenu(wxContextMenuEvent & event)
 void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 {
    // AS: If not a click, ignore the mouse event.
-   if (!(event.ButtonDown(1) || event.ButtonDClick(1)))
+   if (!(event.LeftDown() || event.LeftDClick()))
       return;
 
    AudacityProject *p = GetProject();
@@ -3377,7 +3379,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 void TrackPanel::HandleRearrange(wxMouseEvent & event)
 {
    // are we finishing the drag?
-   if (event.ButtonUp(1)) {
+   if (event.LeftUp()) {
       SetCapturedTrack( NULL );
       SetCursor(*mArrowCursor);
       return;
@@ -3688,10 +3690,10 @@ void TrackPanel::HandleResizeDrag(wxMouseEvent & event)
 ///    the resize is going on)
 void TrackPanel::HandleResize(wxMouseEvent & event)
 {
-   if (event.ButtonDown(1)) {
+   if (event.LeftDown()) {
       HandleResizeClick( event );
    } 
-   else if (event.ButtonUp(1)) 
+   else if (event.LeftUp()) 
    {
       HandleResizeButtonUp( event );
    }
@@ -3823,7 +3825,7 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       mMouseMostRecentY = event.m_y;
    }
 
-   if (event.ButtonDown(1)) {
+   if (event.LeftDown()) {
       mCapturedTrack = NULL;
       
       // The activate event is used to make the 
@@ -4020,7 +4022,7 @@ bool TrackPanel::HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMo
 {
    /// \todo This function is one of a large number of functions in 
    /// TrackPanel which suitably modified belong in other classes.
-   if(event.ButtonDown(1))      
+   if(event.LeftDown())      
    {
       TrackListIterator iter(mTracks);
       Track *n = iter.First();
@@ -4045,7 +4047,7 @@ bool TrackPanel::HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMo
       }
    } else if (event.Dragging()) {
       ;
-   } else if( event.ButtonUp(1)) {
+   } else if( event.LeftUp()) {
       SetCapturedTrack( NULL );
    }
    
@@ -4058,7 +4060,7 @@ bool TrackPanel::HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMo
    }
 
    
-   if (event.ButtonDown(3)) {
+   if (event.RightDown()) {
       // popup menu for editing
       Refresh(false);
      
@@ -4152,7 +4154,7 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
    pTrack = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
 
    //call HandleResize if I'm over the border area 
-   if (event.ButtonDown(1) &&
+   if (event.LeftDown() &&
        (within(event.m_y, r.y + r.height, TRACK_RESIZE_REGION)
         || within(event.m_y, rLabel.y + rLabel.height,
                   TRACK_RESIZE_REGION))) {
@@ -4196,7 +4198,7 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
       return;
 
    int toolToUse = DetermineToolToUse(pTtb, event);
-   
+
    switch (toolToUse) {
    case selectTool:
       HandleSelect(event);
@@ -4218,7 +4220,7 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
       break;
    }
 
-   if ((event.Moving() || event.ButtonUp(1))  &&
+   if ((event.Moving() || event.LeftUp())  &&
        (mMouseCapture == IsUncaptured ))
 //       (mMouseCapture != IsSelecting ) && 
 //       (mMouseCapture != IsEnveloping) &&
@@ -4226,7 +4228,7 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
    {
       HandleCursor(event);
    }
-   if (event.ButtonUp(1)) {
+   if (event.LeftUp()) {
       mCapturedTrack = NULL;
    }
 }
@@ -4265,7 +4267,7 @@ int TrackPanel::DetermineToolToUse( ToolsToolBar * pTtb, wxMouseEvent & event)
    int trackKind = pTrack->GetKind();
    currentTool = selectTool; // the default.
 
-   if( event.ButtonIsDown(3) || event.ButtonUp(3)){
+   if( event.ButtonIsDown(3) || event.RightUp()){
       currentTool = zoomTool;
    } else if( trackKind == Track::Time ){
       currentTool = envelopeTool;
@@ -4277,7 +4279,7 @@ int TrackPanel::DetermineToolToUse( ToolsToolBar * pTtb, wxMouseEvent & event)
    // From here on the order in which we hit test determines 
    // which tool takes priority in the rare cases where it
    // could be more than one.
-   } else if (event.ControlDown()){
+   } else if (event.MetaDown()){
       // msmeyer: If control is down, slide single clip
       // msmeyer: If control and shift are down, slide all clips
       currentTool = slideTool;
