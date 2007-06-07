@@ -4009,7 +4009,7 @@ int AudacityProject::DoAddLabel(double left, double right)
 //      label track...typing a label will not clear the selections.
 //
 //   SelectNone();
-//   lt->SetSelected(true);
+   lt->SetSelected(true);
 
    int index = lt->AddLabel(left, right);
 
