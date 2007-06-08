@@ -3342,7 +3342,7 @@ void AudacityProject::OnZoomSel()
 void AudacityProject::OnSnapTo()
 {
    SetSnapTo(!GetSnapTo());
-   TP_DisplaySelection();
+   RedrawProject();
 }
 
 void AudacityProject::OnPlotSpectrum()
