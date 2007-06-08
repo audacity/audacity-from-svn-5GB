@@ -3115,7 +3115,7 @@ void AudacityProject::TP_DisplaySelection()
       mViewInfo.sel1 = GetSelectionBar()->GetRightTime();
    }
 
-   if (!mLockPlayRegion)
+   if (!gAudioIO->IsBusy() && !mLockPlayRegion)
       mRuler->SetPlayRegion(mViewInfo.sel0, mViewInfo.sel1);
 }
 
