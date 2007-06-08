@@ -3107,8 +3107,6 @@ void AudacityProject::TP_DisplaySelection()
       audioTime = gAudioIO->GetStreamTime();
    else {
       audioTime = 0;
-      if (!mLockPlayRegion)
-         mRuler->SetPlayRegion(mViewInfo.sel0, mViewInfo.sel1);
    }
 
    GetSelectionBar()->SetTimes(mViewInfo.sel0, mViewInfo.sel1, audioTime);
@@ -3116,6 +3114,9 @@ void AudacityProject::TP_DisplaySelection()
       mViewInfo.sel0 = GetSelectionBar()->GetLeftTime();
       mViewInfo.sel1 = GetSelectionBar()->GetRightTime();
    }
+
+   if (!mLockPlayRegion)
+      mRuler->SetPlayRegion(mViewInfo.sel0, mViewInfo.sel1);
 }
 
 // TrackPanel callback method
