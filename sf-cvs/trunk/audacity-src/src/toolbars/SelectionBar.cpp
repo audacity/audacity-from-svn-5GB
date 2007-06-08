@@ -90,6 +90,9 @@ void SelectionBar::Create(wxWindow * parent)
 
 void SelectionBar::Populate()
 {
+   // Squeezing is a vain attempt at trying to get the selection bar
+   // to fit on a 800x600 screen when hh:mm:ss+samples is selected.
+   bool squeeze = (wxSystemSettings::GetMetric(wxSYS_SCREEN_X) <= 800);
    int i;
 
    // This will be inherited by all children:
@@ -116,12 +119,12 @@ void SelectionBar::Populate()
    mainSizer->Add(new wxStaticText(this, -1, _("Project Rate (Hz):")),
                0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
-   mainSizer->Add(20, 10);
+   mainSizer->Add(squeeze ? 8 : 20, 10);
 
    mainSizer->Add(new wxStaticText(this, -1, _("Selection Start:")),
                0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
-   mainSizer->Add(20, 10);
+   mainSizer->Add(squeeze ? 6 : 20, 10);
 
    bool showSelectionLength = false;
    gPrefs->Read(wxT("/ShowSelectionLength"), &showSelectionLength);
@@ -151,7 +154,7 @@ void SelectionBar::Populate()
    #endif
    mainSizer->Add(hSizer, 0, wxALL, 1);
 
-   mainSizer->Add(20, 10);
+   mainSizer->Add(squeeze ? 6 : 20, 10);
 
    wxStaticText *stat = new wxStaticText(this, -1, _("Audio Position:"));
    mainSizer->Add(stat,
