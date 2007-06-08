@@ -559,14 +559,14 @@ void AudacityProject::CreateMenusAndCommands()
 #endif
    c->AddSeparator();
    c->BeginSubMenu(_("&Toolbars..."));
-   c->AddItem(wxT("ShowControlTB"),       _("Show Control Toolbar"),       FN(OnShowControlToolBar), 0);
-   c->AddItem(wxT("ShowDeviceTB"),        _("Show Device Toolbar"),        FN(OnShowDeviceToolBar), 0);
-   c->AddItem(wxT("ShowEditTB"),          _("Show Edit Toolbar"),          FN(OnShowEditToolBar), 0);
-   c->AddItem(wxT("ShowMeterTB"),         _("Show Meter Toolbar"),         FN(OnShowMeterToolBar), 0);
-   c->AddItem(wxT("ShowMixerTB"),         _("Show Mixer Toolbar"),         FN(OnShowMixerToolBar), 0);
-   c->AddItem(wxT("ShowSelectionTB"),     _("Show Selection Toolbar"),     FN(OnShowSelectionToolBar), 0);
-   c->AddItem(wxT("ShowToolsTB"),         _("Show Tools Toolbar"),         FN(OnShowToolsToolBar), 0);
-   c->AddItem(wxT("ShowTranscriptionTB"), _("Show Transcription Toolbar"), FN(OnShowTranscriptionToolBar), 0);
+   c->AddItem(wxT("ShowControlTB"),       _("Control Toolbar"),       FN(OnShowControlToolBar), 0);
+   c->AddItem(wxT("ShowDeviceTB"),        _("Device Toolbar"),        FN(OnShowDeviceToolBar), 0);
+   c->AddItem(wxT("ShowEditTB"),          _("Edit Toolbar"),          FN(OnShowEditToolBar), 0);
+   c->AddItem(wxT("ShowMeterTB"),         _("Meter Toolbar"),         FN(OnShowMeterToolBar), 0);
+   c->AddItem(wxT("ShowMixerTB"),         _("Mixer Toolbar"),         FN(OnShowMixerToolBar), 0);
+   c->AddItem(wxT("ShowSelectionTB"),     _("Selection Toolbar"),     FN(OnShowSelectionToolBar), 0);
+   c->AddItem(wxT("ShowToolsTB"),         _("Tools Toolbar"),         FN(OnShowToolsToolBar), 0);
+   c->AddItem(wxT("ShowTranscriptionTB"), _("Transcription Toolbar"), FN(OnShowTranscriptionToolBar), 0);
    c->AddSeparator();
    c->AddItem(wxT("ResetToolbars"),       _("Reset Toolbars"),              FN(OnResetToolBars));
    c->EndSubMenu();
