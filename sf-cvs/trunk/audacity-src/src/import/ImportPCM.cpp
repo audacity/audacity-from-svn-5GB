@@ -43,7 +43,7 @@
 #include "../WaveTrack.h"
 #include "ImportPlugin.h"
 
-#define DESC _("Uncompressed PCM Audio Files")
+#define DESC _("WAV, AIFF, and other uncompressed types")
 
 class PCMImportPlugin : public ImportPlugin
 {
