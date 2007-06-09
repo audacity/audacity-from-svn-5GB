@@ -145,6 +145,19 @@ void TrackArtist::DrawTracks(TrackList * tracks,
       }
    }
 
+#if defined(DEBUG_CLIENT_AREA)
+   // Change the +0 to +1 or +2 to see the bounding box
+   mInsetLeft = 1+0; mInsetTop = 5+0; mInsetRight = 6+0; mInsetBottom = 2+0;
+
+   // This just show what the passed in rectanges enclose
+   dc.SetPen(wxColour(*wxGREEN));
+   dc.SetBrush(*wxTRANSPARENT_BRUSH);
+   dc.DrawRectangle(r);
+   dc.SetPen(wxColour(*wxBLUE));
+   dc.SetBrush(*wxTRANSPARENT_BRUSH);
+   dc.DrawRectangle(clip);
+#endif
+
    t = iter.First();
    bool linkFlag = false;
    bool muted = false;
@@ -165,6 +178,15 @@ void TrackArtist::DrawTracks(TrackList * tracks,
       }
 
       trackRect.height = t->GetHeight();
+
+#if defined(DEBUG_CLIENT_AREA)
+      // Filled rectangle to show the interior of the client area
+      wxRect zr = trackRect;
+      zr.x+=1; zr.y+=5; zr.width-=7; zr.height-=7;
+      dc.SetPen(*wxCYAN_PEN);
+      dc.SetBrush(*wxRED_BRUSH);
+      dc.DrawRectangle(zr);
+#endif
 
       stereoTrackRect = trackRect;
 
@@ -605,8 +627,8 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
       GetColour(selectedPen, &r2, &g2, &b2);
       for(y=0; y<r.height; y++) {
          for(x=0; x<r.width; x++) {
-            if (y < maxtop[x] || y >= minbot[x] ||
-                (y >= mintop[x] && y < maxbot[x])) {
+            if (y < maxtop[x] || y > minbot[x] ||
+                (y > mintop[x] && y < maxbot[x])) {
                *imageBuffer++ = r0;
                *imageBuffer++ = g0;
                *imageBuffer++ = b0;
@@ -797,27 +819,11 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
 
       // JKC: This adjustment to h1[] and h2[] ensures that the drawn
       // waveform is continuous.
-      if( x>0 )
-      {
-         if( h1[x] < h2[x-1] )
+      if (x > 0) {
+         if (h1[x] < h2[x-1])
             h1[x]=h2[x-1]-1;
-         if( h2[x] > h1[x-1] )
+         if (h2[x] > h1[x-1])
             h2[x]=h1[x-1]+1;
-      }
-
-      if (imageBuffer) {
-         // Make the height at least one, otherwise the waveform can
-         // shrink to nothing.  This scenario is handled differently
-         // if we use wx to draw, instead of the image buffer - see
-         // MM comment below.
-         if( h1[x] <= h2[x]) {
-            if (h2[x] < r.height-1)
-               h1[x] = h2[x] + 1;
-            else {
-               h1[x] = h2[x];
-               h2[x]--;
-            }
-         }
       }
 
       // Make sure the rms isn't larger than the waveform
@@ -843,7 +849,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                *imageBuffer++ = gr;
                *imageBuffer++ = br;
             }
-            else if (y >= h2[x] && y < h1[x]) {
+            else if (y >= h2[x] && y < h1[x]+1) {
                *imageBuffer++ = rs;
                *imageBuffer++ = gs;
                *imageBuffer++ = bs;               
@@ -902,7 +908,7 @@ void TrackArtist::DrawEnvLine(wxDC &dc, wxRect r, int x, int y, bool top)
                      r.x + x, r.y + y + 3);
       else
          dc.DrawLine(r.x + x, r.y + y - 3,
-                     r.x + x, r.y + y );
+                     r.x + x, r.y + y);
    }
 }
 
@@ -1095,15 +1101,9 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    #if BUFFERED_DRAWING
    drawRect.x = 0;
    drawRect.y = 0;
-   drawRect.width++;
-   drawRect.height++;
    wxImage *image = new wxImage(drawRect.width, drawRect.height);
    imageBuffer = image->GetData();
    #endif
-
-
-
-
 
    // Get the values of the envelope corresponding to each pixel
    // in the display, and use these to compute the height of the
@@ -1212,9 +1212,8 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    dc.SetPen(*wxGREY_PEN);
    if (tpre < 0)
       dc.DrawLine(mid.x-1, mid.y, mid.x-1, mid.y+r.height);
-   if (tpost >= t1)
+   if (tpost > t1)
       dc.DrawLine(mid.x+mid.width, mid.y, mid.x+mid.width, mid.y+r.height);
-
 
 #if PROFILE_WAVEFORM
    gettimeofday(&tv1, NULL);
@@ -1252,7 +1251,7 @@ void TrackArtist::DrawTimeSlider(WaveTrack *track,
 
    int xLeft = rightwards ? (r.x +border -2) : (r.x + r.width + 1 - (border+width));
    int yTop  = r.y+border;
-   int yBot  = r.y+r.height-border;
+   int yBot  = r.y+r.height-border-1;
 
    AColor::Light(&dc, false);
    dc.DrawLine( xLeft,       yBot-leftTaper, xLeft,       yTop+leftTaper );
