@@ -5,6 +5,10 @@
 ; compiler-related directives
 OutputBaseFilename=Thinklabs_Phonocardiography_powered_by_Audacity-win-1.2.6
 SetupIconFile=Audacity.ico
+
+WizardImageFile=audacity_InnoWizardImage.bmp
+WizardSmallImageFile=audacity_InnoWizardSmallImage.bmp
+
 SolidCompression=yes
 
 ; installer-related directives
