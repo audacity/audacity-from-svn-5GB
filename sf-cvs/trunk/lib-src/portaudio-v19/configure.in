@@ -1,4 +1,4 @@
-	dnl
+dnl
 dnl portaudio V19 configure.in script
 dnl
 dnl Dominic Mazzoni, Arve Knudsen
@@ -41,6 +41,10 @@ dnl Mac API added for ASIO, can have other api's listed
 AC_ARG_WITH(macapi,
             [  --with-macapi ((asio/core/sm) default=core)],
             with_macapi=$withval, with_macapi="core")
+
+AC_ARG_WITH(universal_binary,
+            [  --with-universal-binary (Both Mac PPC and Intel, default=no)],
+            with_universal_binary=$withval, with_universal_binary="no")
 
 AC_ARG_WITH(asiodir,
             [  --with-asiodir (default=/usr/local/asiosdk2)],
@@ -134,16 +138,39 @@ else
    CFLAGS="$CFLAGS -DPA_LITTLE_ENDIAN"
 fi
 
+MAC_BEFORE_TIGER="no"
+case "${host_os}" in 
+  darwin6* )
+	echo "We're running on Mac OS X 10.2"
+	MAC_BEFORE_TIGER="yes"
+	;;
+  darwin7* )
+	echo "We're running on Mac OS X 10.3"
+	MAC_BEFORE_TIGER="yes"
+	;;
+esac
+
+case "${NEXT_ROOT}" in
+  /Developer/SDKs/MacOSX10.2* )
+	echo "We're compiling for Mac OS X 10.2"
+	MAC_BEFORE_TIGER="yes"
+	;;
+  /Developer/SDKs/MacOSX10.3* )
+	echo "We're compiling for Mac OS X 10.3"
+	MAC_BEFORE_TIGER="yes"
+	;;
+esac
+
 case "${host_os}" in
   darwin* )
 	dnl Mac OS X configuration
 
 	AC_DEFINE(PA_USE_COREAUDIO)
-	CFLAGS="$CFLAGS -arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.3";
+
 	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o src/hostapi/coreaudio/pa_mac_core_utilities.o src/hostapi/coreaudio/pa_mac_core_blocking.o src/common/pa_ringbuffer.o";
 	LIBS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon";
 	PADLL="libportaudio.dylib";
-	SHARED_FLAGS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon -dynamiclib  -arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.3";
+	SHARED_FLAGS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon -dynamiclib"
         if [[ $with_macapi = "asio" ]] ; then
             if [[ $with_asiodir ]] ; then
               ASIODIR="$with_asiodir";
@@ -156,6 +183,16 @@ case "${host_os}" in
             CFLAGS="$CFLAGS -I\$(top_srcdir)/pa_asio -I$ASIDIR/host/mac -I$ASIODIR/common";
             CXXFLAGS="$CFLAGS";
         fi
+
+	if [[ $with_universal_binary = "yes" ]] ; then
+	   CFLAGS="$CFLAGS -arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.3"
+	   SHARED_FLAGS="${SHARED_FLAGS} -arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.3";
+	fi
+
+	if [[ $MAC_BEFORE_TIGER = "yes" ]] ; then
+	    echo "Disabling SMP memory protection because we're on Mac OS X prior to 10.4 (Tiger)."
+	    CFLAGS="$CFLAGS -DALLOW_SMP_DANGERS=1"
+	fi
 	;;
 
   mingw* )
