@@ -1,5 +1,5 @@
 /*
- * $Id: pa_ringbuffer.c,v 1.1 2007-06-03 08:30:30 llucius Exp $
+ * $Id: pa_ringbuffer.c,v 1.2 2007-06-10 23:51:24 dmazzoni Exp $
  * Portable Audio I/O Library
  * Ring Buffer utility.
  *
@@ -71,7 +71,7 @@
  *
  ****************/
 
-#if defined(__APPLE__)
+#if defined(__APPLE__) && !defined(ALLOW_SMP_DANGERS)
 #   include <libkern/OSAtomic.h>
     /* Here are the memory barrier functions. Mac OS X only provides
        full memory barriers, so the three types of barriers are the same. */
