@@ -5,6 +5,10 @@
 ; compiler-related directives
 OutputBaseFilename=audacity-win-1.3.3
 SetupIconFile=audacity.ico
+
+WizardImageFile=audacity_InnoWizardImage.bmp
+WizardSmallImageFile=audacity_InnoWizardSmallImage.bmp
+
 SolidCompression=yes
 
 ; installer-related directives
