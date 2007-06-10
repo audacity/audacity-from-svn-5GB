@@ -7,11 +7,16 @@
 OutputBaseFilename=audacity_umixit-win
 
 SetupIconFile=Audacity.ico
+
+WizardImageFile=UmixIt_powered_by_Audacity_InnoWizardImage.bmp
+WizardSmallImageFile=audacity_InnoWizardSmallImage.bmp
+
 SolidCompression=yes
 
 ; installer-related directives
 AppName=UmixIt, powered by Audacity
 AppVerName=UmixIt, powered by Audacity 1.2.6
+AppPublisher=Audacity Team
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
