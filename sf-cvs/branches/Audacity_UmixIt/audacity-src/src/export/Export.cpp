@@ -163,6 +163,21 @@ wxString ExportCommon(AudacityProject *project,
       defaultExtension =
          defaultExtension.Right(defaultExtension.Length()-1);
 
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      // Use a different default path, i.e., the same as the file was imported from, 
+      // which has subsequently been set to the project path.
+      wxFileName fileName(project->GetFileName());
+      path = fileName.GetPath(wxPATH_GET_VOLUME);
+
+      // Append format-specific suffix to defaultName for Audiotouch.
+      if (defaultExtension == "wav") 
+         defaultName += "_A";
+      else if (defaultExtension == "ogg") 
+         defaultName += "_O";
+      else if (defaultExtension == "mp3") 
+         defaultName += "_M";
+   #endif
+
    maskString.Printf("%s files (*.%s)|*.%s|All files (*.*)|*.*", (const char *)format,
                      (const char *)defaultExtension, (const char *)defaultExtension);
 
@@ -328,6 +343,11 @@ bool Export(AudacityProject *project,
    if (success && actualName != fName)
       ::wxRenameFile(FILENAME(fName), FILENAME(actualName));
 
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      if (success)
+         project->OnClose();
+   #endif
+
    return success;
 }
 
@@ -385,6 +405,11 @@ bool ExportLossy(AudacityProject *project,
 
    if (success && actualName != fName)
       ::wxRenameFile(FILENAME(fName), FILENAME(actualName));
+
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      if (success)
+         project->OnClose();
+   #endif
 
    return success;
 }

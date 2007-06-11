@@ -55,7 +55,7 @@ BEGIN_EVENT_TABLE(MixerTrackCluster, wxPanel)
    EVT_PAINT(MixerTrackCluster::OnPaint)
    EVT_SLIDER(ID_ASLIDER_PAN, MixerTrackCluster::OnSlider_Pan)
    EVT_SLIDER(ID_SLIDER_GAIN, MixerTrackCluster::OnSlider_Gain)
-   EVT_COMMAND_SCROLL(ID_SLIDER_GAIN, MixerTrackCluster::OnSliderScroll_Gain)
+   //v EVT_COMMAND_SCROLL(ID_SLIDER_GAIN, MixerTrackCluster::OnSliderScroll_Gain)
 END_EVENT_TABLE()
 
 MixerTrackCluster::MixerTrackCluster(wxWindow* parent, 
@@ -159,7 +159,7 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
    /* i18n-hint: Title of the Gain slider, used to adjust the volume */
    mSlider_Gain = 
       new ASlider(this, ID_SLIDER_GAIN, _("Gain"), ctrlPos, ctrlSize, DB_SLIDER | NO_AQUA, wxVERTICAL);
-      ////vvvvv new wxSlider(this, ID_SLIDER_GAIN, // wxWindow* parent, wxWindowID id, 
+      //v new wxSlider(this, ID_SLIDER_GAIN, // wxWindow* parent, wxWindowID id, 
       //             this->GetGainToSliderValue(),  // int value, 
       //             #ifdef __WXMSW__
       //                -kGainSliderMax, -kGainSliderMin, // Max is at bottom for Windows! // int minValue, int maxValue, 
@@ -171,7 +171,7 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
 
    // too much color:   mSlider_Gain->SetBackgroundColour(trackColor);
    // too dark:   mSlider_Gain->SetBackgroundColour(wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW));
-  //vvvvv #ifdef __WXMAC__
+  //v #ifdef __WXMAC__
   // mSlider_Gain->SetBackgroundColour(wxColour(220, 220, 220));
   //#else
   // mSlider_Gain->SetBackgroundColour(wxColour(192, 192, 192));
@@ -199,7 +199,7 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
       mToggleButton_Solo->SetToolTip(_T("Solo"));
       // LWSlider already shows the value, so don't do this:   mSlider_Pan->SetToolTip(_T("Pan"));
       
-      //vvvvv LWSlider already shows the value, so don't do this:
+      //v LWSlider already shows the value, so don't do this:
       //wxScrollEvent dummy;
       //this->OnSliderScroll_Gain(dummy); // Set the tooltip to show the current value.
 
@@ -284,7 +284,7 @@ void MixerTrackCluster::UpdatePan()
 
 void MixerTrackCluster::UpdateGain()
 {
-   mSlider_Gain->Set(mLeftTrack->GetGain()); //vvvvv mSlider_Gain->SetValue(this->GetGainToSliderValue());
+   mSlider_Gain->Set(mLeftTrack->GetGain()); //v mSlider_Gain->SetValue(this->GetGainToSliderValue());
 }
 
 void MixerTrackCluster::UpdateMeter(double t)
@@ -486,7 +486,7 @@ void MixerTrackCluster::OnSlider_Pan(wxCommandEvent& event)
 void MixerTrackCluster::OnSlider_Gain(wxCommandEvent& event)
 {
    // Analog to LWSlider::Set() calc for DB_SLIDER. 
-   ////vvvvv int sliderValue = mSlider_Gain->GetValue();
+   //v int sliderValue = mSlider_Gain->GetValue();
 
    //#ifdef __WXMSW__
    //   // Negate because wxSlider on Windows has min at top, max at bottom. 
@@ -507,10 +507,9 @@ void MixerTrackCluster::OnSlider_Gain(wxCommandEvent& event)
    mProject->RedrawProject();
 }
 
-void MixerTrackCluster::OnSliderScroll_Gain(wxScrollEvent& event)
-{
-   //vvvvv 
-   //int sliderValue = (int)(mSlider_Gain->Get()); //vvvvv mSlider_Gain->GetValue();
+//v void MixerTrackCluster::OnSliderScroll_Gain(wxScrollEvent& event)
+//{
+   //int sliderValue = (int)(mSlider_Gain->Get()); //v mSlider_Gain->GetValue();
    //#ifdef __WXMSW__
    //   // Negate because wxSlider on Windows has min at top, max at bottom. 
    //   // mSlider_Gain->GetValue() is in [-6,36]. wxSlider has min at top, so this is [-36dB,6dB]. 
@@ -521,7 +520,7 @@ void MixerTrackCluster::OnSliderScroll_Gain(wxScrollEvent& event)
    //   str += "+";
    //str += wxString::Format("%d dB", sliderValue);
    //mSlider_Gain->SetToolTip(str);
-}
+//}
 
 
 // class MusicalInstrument
@@ -624,12 +623,6 @@ void MixerBoardScrolledWindow::OnPaint(wxPaintEvent &evt)
 
 #define MIXER_BOARD_MIN_HEIGHT 500
 #define MIXER_TRACK_CLUSTER_WIDTH 100 - kInset
-#define DEFAULT_NUM_TRACKCLUSTERS 8 // Default to fitting 8 tracks.
-const wxSize kDefaultSize = 
-   wxSize((DEFAULT_NUM_TRACKCLUSTERS * 
-               (kInset + MIXER_TRACK_CLUSTER_WIDTH)) + // left margin and width for each
-               kDoubleInset, // plus final right margin
-            MIXER_BOARD_MIN_HEIGHT); 
 
 BEGIN_EVENT_TABLE(MixerBoard, wxWindow)
    EVT_SIZE(MixerBoard::OnSize)
@@ -704,12 +697,10 @@ MixerBoard::~MixerBoard()
    mMusicalInstruments.Clear();
 }
 
-#if (AUDACITY_BRANDING != BRAND_THINKLABS)
-   void MixerBoard::SetProjectBranding(Branding* pBranding)
-   {
-      mBranding = pBranding;
-   }
-#endif
+void MixerBoard::SetProjectBranding(Branding* pBranding)
+{
+   mBranding = pBranding;
+}
 
 void MixerBoard::UpdateTrackClusters() 
 {
@@ -1300,6 +1291,11 @@ void MixerBoard::OnSize(wxSizeEvent &evt)
       EVT_SIZE(MixerBoardFrame::OnSize)
    END_EVENT_TABLE()
 
+   // Default to fitting one track.
+   const wxSize kDefaultSize = 
+      wxSize((kInset + MIXER_TRACK_CLUSTER_WIDTH) + // left margin and width for one track.
+                  kDoubleInset, // plus final right margin
+               MIXER_BOARD_MIN_HEIGHT); 
 
    MixerBoardFrame::MixerBoardFrame(AudacityProject* parent) :
       wxFrame(parent, -1,
@@ -1308,17 +1304,19 @@ void MixerBoard::OnSize(wxSizeEvent &evt)
                                     wxT("") : 
                                     wxString::Format(wxT(" - %s"),
                                                    parent->GetName().c_str()).c_str())), 
-               wxDefaultPosition, wxDefaultSize, 
+               wxDefaultPosition, kDefaultSize, 
                wxDEFAULT_FRAME_STYLE
                #ifndef __WXMAC__
                   | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT)
                #endif
                )
    {
-      mMixerBoard = new MixerBoard(parent, this);
+      mMixerBoard = new MixerBoard(parent, this, wxDefaultPosition, kDefaultSize);
      
       this->SetSizeHints(kInset + MIXER_TRACK_CLUSTER_WIDTH, // int minW=-1, // Show at least one cluster wide. 
                            MIXER_BOARD_MIN_HEIGHT); // int minH=-1, 
+
+      mMixerBoard->UpdateTrackClusters();
 
       // loads either the XPM or the windows resource, depending on the platform
       #if !defined(__WXMAC__) && !defined(__WXX11__)

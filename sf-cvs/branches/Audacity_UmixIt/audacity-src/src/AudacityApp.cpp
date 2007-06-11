@@ -466,7 +466,11 @@ bool AudacityApp::OnInit()
    // wxWindows 2.3 has a much nicer wxLocale API.  We can make this code much
    // better once we move to wx 2.3/2.4.
 
-   wxString lang = gPrefs->Read("/Locale/Language", "");
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      wxString lang = gPrefs->Read("/Locale/Language", "en");
+   #else
+      wxString lang = gPrefs->Read("/Locale/Language", "");
+   #endif
 
    // Pop up a dialog the first time the program is run
    if (lang == "")
