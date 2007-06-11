@@ -69,7 +69,7 @@
 #include "FormatSelection.h"
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
-#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+#if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
    #include "Lyrics.h"
    #include "LyricsWindow.h"
    #include "MixerBoard.h"
@@ -391,7 +391,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mAutoScrolling(false),
      mActive(true),
      mHistoryWindow(NULL),
-     #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+     #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
         mLyricsWindow(NULL),
         mMixerBoard(NULL),
         #if (AUDACITY_BRANDING != BRAND_UMIXIT)
@@ -600,7 +600,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    #if (AUDACITY_BRANDING == BRAND_UMIXIT)
       // Usually, mMixerBoard is created only when the View > Mixer Board 
-      // command is given, but we always want it for UmixIt, and not the Track Panel.
+      // command is given, but we always want it for UmixIt, 
+      // and to show it instead of the Track Panel.
       mTrackPanel->ShowRulerOnly();
       mHsbar->Hide();
       mVsbar->Hide();
@@ -1848,6 +1849,8 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       this->RedrawProject();
    }
 
+#if (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
+   // Don't ask to save changes for Audiotouch, because we're usually exporting and quitting.
    if (mUndoManager.UnsavedChanges()) {
       int result = wxMessageBox(_("Save changes before closing?"),
                                 _("Save changes?"),
@@ -1859,6 +1862,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
          return;
       }
    }
+#endif
 
    //BG: Process messages before we destroy the window
    #ifndef __WXMAC__
@@ -2217,7 +2221,8 @@ XMLTagHandler *AudacityProject::HandleXMLChild(const char *tag)
    }
 
    if (!strcmp(tag, "import")) {
-      if (mImportXMLTagHandler == NULL) mImportXMLTagHandler = new ImportXMLTagHandler(this);
+      if (mImportXMLTagHandler == NULL) 
+         mImportXMLTagHandler = new ImportXMLTagHandler(this);
       return mImportXMLTagHandler;
    }
 
@@ -2602,6 +2607,10 @@ void AudacityProject::InitialState()
    if (mImportXMLTagHandler != NULL) {
       // We processed an <import> tag, so save it as a normal project, with no <import> tags.
       this->Save();
+
+      // Shouldn't need it any more.
+      delete mImportXMLTagHandler;
+      mImportXMLTagHandler = NULL;
    }
    
    mUndoManager.ClearStates();
@@ -2620,7 +2629,7 @@ void AudacityProject::InitialState()
    ModifyUndoMenus();
 
    UpdateMenus();
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
       UpdateLyrics();
       UpdateMixerBoard();
    #endif
@@ -2648,7 +2657,7 @@ void AudacityProject::PushState(wxString desc,
    // All the different ways to add tracks funnel through here.
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
       this->EnforceTrackConstraints();
-   #else // (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #elif (AUDACITY_BRANDING != BRAND_AUDIOTOUCH) // (AUDACITY_BRANDING != BRAND_THINKLABS)
       UpdateLyrics();
       UpdateMixerBoard();
    #endif 
@@ -2662,7 +2671,7 @@ void AudacityProject::ModifyState()
 
    delete l;
    
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
       UpdateLyrics();
       UpdateMixerBoard();
    #endif
@@ -2684,7 +2693,7 @@ void AudacityProject::PopState(TrackList * l)
    HandleResize();
 
    UpdateMenus();
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
       UpdateLyrics();
       UpdateMixerBoard();
    #endif
@@ -2762,13 +2771,13 @@ void AudacityProject::SetStateTo(unsigned int n)
    HandleResize();
    mTrackPanel->Refresh(false);
    ModifyUndoMenus();
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
       UpdateLyrics();
       UpdateMixerBoard();
    #endif
 }
 
-#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+#if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
 void AudacityProject::UpdateLyrics()
 {
    LabelTrack *labelTrack = NULL;
@@ -2811,7 +2820,7 @@ void AudacityProject::UpdateMixerBoard()
    mMixerBoard->UpdateMeters(gAudioIO->GetStreamTime()); 
 }
 
-#endif // (AUDACITY_BRANDING != BRAND_THINKLABS)
+#endif // (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
 
 //
 // Clipboard methods

@@ -59,7 +59,7 @@ class ControlToolBar;
 class MixerToolBar;
 class MeterToolBar;
 class HistoryWindow;
-#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+#if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
    class LyricsWindow;
    class MixerBoard;
    class MixerBoardFrame;
@@ -144,7 +144,7 @@ class AudacityProject:public wxFrame,
    Branding* GetBranding() { return mBranding; };
    int GetAudioIOToken();
    void SetAudioIOToken(int token);
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
       LyricsWindow* GetLyricsWindow() { return mLyricsWindow; };
       MixerBoard* GetMixerBoard() { return mMixerBoard; };
    #endif
@@ -282,7 +282,7 @@ class AudacityProject:public wxFrame,
 
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
       void EnforceTrackConstraints(); // Thinklabs: Uniquely solo and a Label Track for every Wave Track
-   #else
+   #elif (AUDACITY_BRANDING != BRAND_AUDIOTOUCH) // (AUDACITY_BRANDING != BRAND_THINKLABS)
       void UpdateLyrics();
       void UpdateMixerBoard();
    #endif
@@ -362,7 +362,7 @@ class AudacityProject:public wxFrame,
    bool mIconized;
    HistoryWindow *mHistoryWindow;
    
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
       LyricsWindow *mLyricsWindow;
 
       MixerBoard* mMixerBoard;

@@ -16,7 +16,7 @@
 #include <wx/image.h>
 #include <wx/panel.h>
 #include <wx/scrolwin.h>
-//vvvvv #include <wx/slider.h>
+//v No longer using vertical wxSlider, in favor of new vertical ASlider.   #include <wx/slider.h>
 #include <wx/statbmp.h>
 #include <wx/stattext.h>
 
@@ -62,7 +62,7 @@ private:
    void OnButton_Solo(wxCommandEvent& event);
    void OnSlider_Pan(wxCommandEvent& event);
    void OnSlider_Gain(wxCommandEvent& event);
-   void OnSliderScroll_Gain(wxScrollEvent& event);
+   //v void OnSliderScroll_Gain(wxScrollEvent& event);
 
 public:
    WaveTrack* mLeftTrack;
@@ -78,7 +78,7 @@ private:
    AButton* mToggleButton_Mute;
    AButton* mToggleButton_Solo;
    ASlider* mSlider_Pan;
-   ASlider* mSlider_Gain; //vvvvv wxSlider* mSlider_Gain; //v ASlider* mSlider_Gain;
+   ASlider* mSlider_Gain; //v wxSlider* mSlider_Gain; 
    Meter* mMeter;
 
 public:
@@ -119,7 +119,7 @@ private:
 private: 
    MixerBoard* mMixerBoard;
    AudacityProject* mProject;
-   wxImage* mImage;
+   wxImage* mImage; // project branding logo
 
 public:
    DECLARE_EVENT_TABLE()
@@ -146,10 +146,8 @@ public:
                const wxSize& size = wxDefaultSize);
    ~MixerBoard();
 
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
-      Branding* GetProjectBranding() { return mBranding; }; 
-      void SetProjectBranding(Branding* pBranding); 
-   #endif
+   Branding* GetProjectBranding() { return mBranding; }; 
+   void SetProjectBranding(Branding* pBranding); 
 
    // Add clusters for any tracks we're not yet showing.
    // Update pointers for tracks we're aleady showing. 

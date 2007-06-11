@@ -212,6 +212,10 @@ void OnBenchmark();
    void OnChangeColorScheme();
    void OnHowToCopyDisplay();
    void OnAboutBrand();
+#elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   void OnAboutBrand();
+   void OnDifferences();
+   void OnGetAudiotouch();
 #endif
 
        //

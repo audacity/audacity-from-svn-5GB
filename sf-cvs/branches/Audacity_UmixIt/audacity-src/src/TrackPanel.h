@@ -30,7 +30,7 @@ class Ruler;
 class AdornedRulerPanel;
 class LWSlider;
 class ControlToolBar; //Needed because state of controls can affect what gets drawn.
-#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+#if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
    class MixerBoard;
 #endif
 
@@ -165,7 +165,7 @@ class TrackPanel:public wxWindow {
    void HandleShiftKey(bool down);
 
  private:
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
       MixerBoard* GetMixerBoard();
    #endif
 

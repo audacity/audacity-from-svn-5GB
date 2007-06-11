@@ -96,7 +96,7 @@
 #include "ControlToolBar.h"
 #include "Envelope.h"
 #include "LabelTrack.h"
-#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+#if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
    #include "Branding.h"
    #include "Lyrics.h"
    #include "LyricsWindow.h"
@@ -1264,7 +1264,7 @@ void TrackPanel::OnTimer()
 
    wxCommandEvent dummyEvent;
    AudacityProject *p = (AudacityProject*)GetParent();
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
       MixerBoard* pMixerBoard = p->GetMixerBoard();
 
       if (p->GetAudioIOToken()>0) {
@@ -1285,7 +1285,7 @@ void TrackPanel::OnTimer()
    if (p->GetAudioIOToken()>0 &&
        !gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
       p->GetControlToolBar()->OnStop(dummyEvent);  
-      #if (AUDACITY_BRANDING != BRAND_THINKLABS)    
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
          if (pMixerBoard) 
             pMixerBoard->ResetMeters();
       #endif
@@ -2867,7 +2867,7 @@ void TrackPanel::RemoveTrack(Track * toRemove)
    while (t) {
       if (t == toRemove || t == partner) 
       {
-      	 #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      	 #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
             if (t->GetKind() == Track::Wave)
             {
                MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
@@ -2917,7 +2917,6 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
 
       if (buttonRect.Inside(event.m_x, event.m_y)) {
       #if (AUDACITY_BRANDING != BRAND_THINKLABS) // For Thinklabs, ALWAYS uniquely solo.
-         MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
          if (event.ShiftDown()) {
             // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
       #endif
@@ -2939,25 +2938,34 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
                i = iter.Next();
             }
       #if (AUDACITY_BRANDING != BRAND_THINKLABS) // For Thinklabs, ALWAYS uniquely solo.
+         #if (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
+            MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
             if (pMixerBoard) 
             {
                pMixerBoard->UpdateMute(); // Update for all tracks.
                pMixerBoard->UpdateSolo(); // Update for all tracks.
             }
+         #endif // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
          }
          else {
             // Normal click just toggles this track.
             if (solo)
             {
                t->SetSolo(!t->GetSolo());
-               if (pMixerBoard) 
-                  pMixerBoard->UpdateSolo((WaveTrack*)t);
-            }
+               #if (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
+                  MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
+                  if (pMixerBoard) 
+                     pMixerBoard->UpdateSolo((WaveTrack*)t);
+               #endif // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
+               }
             else
             {
                t->SetMute(!t->GetMute());
-               if (pMixerBoard) 
-                  pMixerBoard->UpdateMute((WaveTrack*)t);
+               #if (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
+                  MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
+                  if (pMixerBoard) 
+                     pMixerBoard->UpdateMute((WaveTrack*)t);
+               #endif // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
             }
          }
       #endif // (AUDACITY_BRANDING != BRAND_THINKLABS)
@@ -2988,7 +2996,7 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
    float newValue = slider->Get();
 
    WaveTrack *link = (WaveTrack *)mTracks->GetLink(mCapturedTrack);
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
       MixerBoard* pMixerBoard = this->GetMixerBoard();
    #endif
    
@@ -2996,7 +3004,7 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
       ((WaveTrack *)mCapturedTrack)->SetPan(newValue);
       if (link)
          link->SetPan(newValue);
-      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
          if (pMixerBoard) 
             pMixerBoard->UpdatePan((WaveTrack*)mCapturedTrack);
       #endif
@@ -3005,7 +3013,7 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
       ((WaveTrack *)mCapturedTrack)->SetGain(newValue);
       if (link)
          link->SetGain(newValue);
-      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
          if (pMixerBoard) 
             pMixerBoard->UpdateGain((WaveTrack*)mCapturedTrack);
       #endif
@@ -3238,7 +3246,7 @@ void TrackPanel::HandleRearrange(wxMouseEvent & event)
    if (event.m_y < mMoveUpThreshold)
    {
       mTracks->MoveUp(mCapturedTrack);
-      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
          MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
          if (pMixerBoard)
             pMixerBoard->MoveTrackCluster((WaveTrack*)mCapturedTrack, true);
@@ -3247,7 +3255,7 @@ void TrackPanel::HandleRearrange(wxMouseEvent & event)
    else if (event.m_y > mMoveDownThreshold)
    {
       mTracks->MoveDown(mCapturedTrack);
-      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
          MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
          if (pMixerBoard)
             pMixerBoard->MoveTrackCluster((WaveTrack*)mCapturedTrack, false);
@@ -3618,7 +3626,7 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
    event.Skip();
 }
 
-#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+#if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
 MixerBoard* TrackPanel::GetMixerBoard()
 {
    AudacityProject *p = (AudacityProject*)GetParent();
@@ -4645,7 +4653,7 @@ void TrackPanel::OnMoveTrack(wxCommandEvent & event)
    wxASSERT(event.GetId() == OnMoveUpID || event.GetId() == OnMoveDownID);
    bool bUp = (OnMoveUpID == event.GetId());
    if (mTracks->Move(mPopupMenuTarget, bUp)) {
-      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
          MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
          if (pMixerBoard)
             pMixerBoard->MoveTrackCluster((WaveTrack*)mPopupMenuTarget, bUp);
@@ -4690,7 +4698,7 @@ void TrackPanel::OnSetName(wxCommandEvent &event)
       {
          t->SetName(newName);
          
-         #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+         #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
             MixerBoard* pMixerBoard = this->GetMixerBoard();
             if (pMixerBoard) 
                pMixerBoard->UpdateName((WaveTrack*)t);

@@ -18,15 +18,16 @@
 //   Brand_UmixIt,
 //   Brand_Thinklabs
 //} BrandIndex;
-#define BRAND_AUDACITY  0
-#define BRAND_UMIXIT    1 
-#define BRAND_THINKLABS 2
+#define BRAND_AUDACITY     0
+#define BRAND_UMIXIT       1 
+#define BRAND_THINKLABS    2
+#define BRAND_AUDIOTOUCH   3
 
+//#define AUDACITY_BRANDING BRAND_AUDACITY // standard version
 #define AUDACITY_BRANDING BRAND_UMIXIT
 //#define AUDACITY_BRANDING BRAND_THINKLABS
+//#define AUDACITY_BRANDING BRAND_AUDIOTOUCH
 
-//vvv OR do it this way:
-//#define AUDACITY_BRANDING BRAND_AUDACITY // standard version
 
 #define AUDACITY_URL wxT("http://audacity.sourceforge.net/")
 
@@ -35,4 +36,7 @@
 
 //#define AUDACITY_BRANDING_BRANDNAME "Thinklabs"
 //#define AUDACITY_BRANDING_BRANDURL wxT("http://Thinklabsmedical.com/")
+
+//#define AUDACITY_BRANDING_BRANDNAME wxT("Audacity_Audiotouch")
+//#define AUDACITY_BRANDING_BRANDURL wxT("http://www.audiotouch.com.au/")
 

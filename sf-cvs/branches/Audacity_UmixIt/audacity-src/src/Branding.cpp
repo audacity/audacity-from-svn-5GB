@@ -16,6 +16,7 @@
 #include <wx/msgdlg.h>
 
 #include "Branding.h"
+#include "Project.h"
 
 #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
 // class BrandingPanel: 
@@ -23,7 +24,6 @@
 
 #include <wx/image.h>
 
-#include "Project.h"
 #include "widgets/LinkingHtmlWindow.h"
 
 #if (AUDACITY_BRANDING == BRAND_THINKLABS)

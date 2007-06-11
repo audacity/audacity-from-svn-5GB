@@ -40,7 +40,7 @@
 #include "export/ExportMultiple.h"
 #include "prefs/PrefsDialog.h"
 #include "HistoryWindow.h"
-#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+#if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
    #include "LyricsWindow.h"
    #include "MixerBoard.h"
 #endif
@@ -152,11 +152,16 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("Open",           _("&Open...\tCtrl+O"),               FN(OnOpen));
    c->SetCommandFlags("Open", 0, 0);
    c->AddItem("Close",          _("&Close\tCtrl+W"),                 FN(OnClose));
-   c->AddItem("Save",           _("&Save Project\tCtrl+S"),          FN(OnSave));
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      c->AddItem("Save",           _("&Save Project\tCtrl+P"),             FN(OnSave));
+      c->AddItem("SaveAs",         _("Save Project &As...\tCtrl+Shift+P"), FN(OnSaveAs));
+   #else // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
+      c->AddItem("Save",           _("&Save Project\tCtrl+S"),          FN(OnSave));
+      c->AddItem("SaveAs",         _("Save Project &As..."),            FN(OnSaveAs));
+   #endif
    c->SetCommandFlags("Save",
-                      AudioIONotBusyFlag | UnsavedChangesFlag,
-                      AudioIONotBusyFlag | UnsavedChangesFlag);
-   c->AddItem("SaveAs",         _("Save Project &As..."),            FN(OnSaveAs));
+                     AudioIONotBusyFlag | UnsavedChangesFlag,
+                     AudioIONotBusyFlag | UnsavedChangesFlag);
    c->AddSeparator();
 
    // Recent Files and Recent Projects menus
@@ -170,16 +175,29 @@ void AudacityProject::CreateMenusAndCommands()
    gPrefs->SetPath("..");
    c->AddSeparator();
 
-   c->AddItem("Export",         _("Export As..."),                   FN(OnExportMix));
-   c->AddItem("ExportSel",      _("Export Selection As..."),         FN(OnExportSelection));
-   c->AddSeparator();
-   c->AddItem("ExportMP3",      _("Export As MP3..."),               FN(OnExportMP3Mix));
-   c->AddItem("ExportMP3Sel",   _("Export Selection As MP3..."),     FN(OnExportMP3Selection));
-
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      // For Audiotouch, export commands renamed to "save as" commands, re-ordered, given new key codes.
+      c->AddItem("Export",         _("Save As...\tCtrl+S"),                         FN(OnExportMix));
+      c->AddItem("ExportSel",      _("Save Selection As...\tCtrl+Shift+S"),         FN(OnExportSelection));
       c->AddSeparator();
-      c->AddItem("ExportOgg",      _("Export As Ogg Vorbis..."),        FN(OnExportOggMix));
-      c->AddItem("ExportOggSel",   _("Export Selection As Ogg Vorbis..."), FN(OnExportOggSelection));
+      c->AddItem("ExportOgg",      _("Save As Ogg Vorbis...\tCtrl+G"),              FN(OnExportOggMix));
+      c->AddItem("ExportOggSel",   _("Save Selection As Ogg Vorbis...\tCtrl+Shift+G"), FN(OnExportOggSelection));
+      c->AddSeparator();
+      c->AddItem("ExportMP3",      _("Save As MP3...\tCtrl+M"),                     FN(OnExportMP3Mix));
+      c->AddItem("ExportMP3Sel",   _("Save Selection As MP3...\tCtrl+Shift+M"),     FN(OnExportMP3Selection));
+
+   #else // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
+      c->AddItem("Export",         _("Export As..."),                   FN(OnExportMix));
+      c->AddItem("ExportSel",      _("Export Selection As..."),         FN(OnExportSelection));
+      c->AddSeparator();
+      c->AddItem("ExportMP3",      _("Export As MP3..."),               FN(OnExportMP3Mix));
+      c->AddItem("ExportMP3Sel",   _("Export Selection As MP3..."),     FN(OnExportMP3Selection));
+
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
+         c->AddSeparator();
+         c->AddItem("ExportOgg",      _("Export As Ogg Vorbis..."),        FN(OnExportOggMix));
+         c->AddItem("ExportOggSel",   _("Export Selection As Ogg Vorbis..."), FN(OnExportOggSelection));
+      #endif
    #endif
 
    c->AddSeparator();
@@ -337,16 +355,26 @@ void AudacityProject::CreateMenusAndCommands()
  #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
    // Leave these menus out entirely...
  #else
-   c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) 
+      // Audiotouch uses Ctrl+P for Save Project.
+      c->AddItem("Preferences",    _("&Preferences..."),          FN(OnPreferences));
+   #else // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
+      c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),  FN(OnPreferences));
+   #endif
    c->SetCommandFlags("Preferences", AudioIONotBusyFlag, AudioIONotBusyFlag);
 
  #endif
 #else
    c->AddSeparator();
-   c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) 
+      // Audiotouch uses Ctrl+P for Save Project.
+      c->AddItem("Preferences",    _("&Preferences..."),          FN(OnPreferences));
+   #else // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
+      c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),  FN(OnPreferences));
+   #endif
    c->SetCommandFlags("Preferences", AudioIONotBusyFlag, AudioIONotBusyFlag);
    /* enabled whenever transport isn't running */
-  #endif
+#endif
 
    
    c->EndMenu();
@@ -378,13 +406,15 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem("UndoHistory",    _("&History..."),               FN(OnHistory));
    #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
-      c->AddSeparator();
+      #if (AUDACITY_BRANDING != BRAND_AUDIOTOUCH) // no Lyrics or MixerBoard yet
+         c->AddSeparator();
 
-      c->AddItem("Lyrics",         _("&Lyrics..."),                FN(OnLyrics));
-      #if (AUDACITY_BRANDING == BRAND_UMIXIT)
-         c->AddItem("MixerBoard",    _("&Track Panel"),           FN(OnMixerBoard));
-      #else
-         c->AddItem("MixerBoard",    _("&Mixer Board..."),           FN(OnMixerBoard));
+         c->AddItem("Lyrics",         _("&Lyrics..."),                FN(OnLyrics));
+         #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+            c->AddItem("MixerBoard",    _("&Track Panel"),           FN(OnMixerBoard));
+         #else
+            c->AddItem("MixerBoard",    _("&Mixer Board..."),           FN(OnMixerBoard));
+         #endif
       #endif
 
       c->AddSeparator();
@@ -466,7 +496,12 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();   
    c->AddItem("AddLabel",       _("Add Label At Selection\tCtrl+B"), FN(OnAddLabel));
-   c->AddItem("AddLabelPlaying",       _("Add Label At Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      // Audiotouch uses Ctrl+M for Save as MP3 (ExportMP3).
+      c->AddItem("AddLabelPlaying",       _("Add Label At Playback Position"), FN(OnAddLabelPlaying));
+   #else
+      c->AddItem("AddLabelPlaying",       _("Add Label At Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
+   #endif
    c->SetCommandFlags("AddLabel", 0, 0);
    c->SetCommandFlags("AddLabelPlaying", 0, AudioIONotBusyFlag);
    c->EndMenu();
@@ -569,13 +604,18 @@ void AudacityProject::CreateMenusAndCommands()
    #endif
    /* i18n-hint: The option to read the installed help file */
    c->AddSeparator();   
-   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS) || (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       c->AddItem(
          wxString::Format("AboutBrand", AUDACITY_BRANDING_BRANDNAME), 
          wxString::Format(_("About %s..."), AUDACITY_BRANDING_BRANDNAME), 
          FN(OnAboutBrand));
    #endif
    c->AddItem("About",          _("&About Audacity..."),          FN(OnAbout));
+   
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      c->AddItem("Help", _("Differences in Audacity_Audiotouch..."), FN(OnDifferences));
+      c->AddItem("Help", _("Get Audiotouch 2.2 ..."), FN(OnGetAudiotouch));
+   #endif
 
 #if 0 // No Benchmark in stable release
    c->AddSeparator();   
@@ -709,12 +749,22 @@ void AudacityProject::ModifyExportMenus()
    int format = ReadExportFormatPref();
    wxString pcmFormat = sf_header_shortname(format & SF_FORMAT_TYPEMASK);
 
-   mCommandManager.Modify("Export",
-                          wxString::Format(_("&Export As %s..."),
-                                           (const char *)pcmFormat));
-   mCommandManager.Modify("ExportSel",
-                          wxString::Format(_("&Export Selection As %s..."),
-                                           (const char *)pcmFormat));
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      // For Audiotouch, export commands renamed to "save as" commands, re-ordered, given new key codes.
+      mCommandManager.Modify("Export",
+                           wxString::Format(_("&Save As %s..."),
+                                             (const char *)pcmFormat));
+      mCommandManager.Modify("ExportSel",
+                           wxString::Format(_("&Save Selection As %s..."),
+                                             (const char *)pcmFormat));
+   #else // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
+      mCommandManager.Modify("Export",
+                           wxString::Format(_("&Export As %s..."),
+                                             (const char *)pcmFormat));
+      mCommandManager.Modify("ExportSel",
+                           wxString::Format(_("&Export Selection As %s..."),
+                                             (const char *)pcmFormat));
+   #endif
 }
 
 void AudacityProject::ModifyUndoMenus()
@@ -1438,11 +1488,17 @@ void AudacityProject::OnClose()
 void AudacityProject::OnSave()
 {
    Save();
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      this->OnClose();
+   #endif
 }
 
 void AudacityProject::OnSaveAs()
 {
    SaveAs();
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      this->OnClose();
+   #endif
 }
 
 void AudacityProject::OnExit()
@@ -2235,7 +2291,7 @@ void AudacityProject::OnSelectAll()
    mViewInfo.sel1 = mTracks->GetEndTime();
 
    mTrackPanel->Refresh(false);
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
       mMixerBoard->Refresh(false);
    #endif
 }
@@ -2710,7 +2766,7 @@ void AudacityProject::OnFloatMeterToolBar()
    }
 }
 
-#if (AUDACITY_BRANDING != BRAND_THINKLABS)
+#if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
    void AudacityProject::OnLyrics()
    {
       if (mLyricsWindow)
@@ -2744,7 +2800,7 @@ void AudacityProject::OnFloatMeterToolBar()
          mMixerBoardFrame->Show();
       #endif
    }
-#endif // (AUDACITY_BRANDING != BRAND_THINKLABS)
+#endif // (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
 
 
 //
@@ -3279,7 +3335,7 @@ void AudacityProject::OnRemoveTracks()
 
    while (t) {
       if (t->GetSelected()) {
-         #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+         #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
             if (t->GetKind() == Track::Wave)
                mMixerBoard->RemoveTrackCluster((WaveTrack*)t);
          #endif
@@ -3293,7 +3349,7 @@ void AudacityProject::OnRemoveTracks()
    PushState(_("Removed audio track(s)"), _("Remove Track"));
 
    mTrackPanel->Refresh(false);
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
       mMixerBoard->Refresh(true);
    #endif
 }
@@ -3363,6 +3419,41 @@ void AudacityProject::OnBenchmark()
    {
       wxHtmlLinkInfo link(AUDACITY_BRANDING_BRANDURL);
       OpenInDefaultBrowser(link);
+   }
+
+#elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   #include "AudacityApp.h"
+
+   void LinkToPathlistHTM(const wxString strHTMfilename) 
+   {
+      wxArrayString files;
+      wxGetApp().FindFilesInPathList(strHTMfilename,
+                                     wxGetApp().audacityPathList,
+                                     wxFILE,
+                                     files);
+
+      wxString href;
+      if (files.GetCount() > 0) 
+         href = files[0];
+      else
+         href = FROMFILENAME(strHTMfilename);
+      wxHtmlLinkInfo link(href);
+      OpenInDefaultBrowser(link);
+   }
+
+   void AudacityProject::OnAboutBrand()
+   {
+      LinkToPathlistHTM(FROMFILENAME("Audacity_Audiotouch-about.htm"));
+   }
+
+   void AudacityProject::OnDifferences()
+   {
+      LinkToPathlistHTM(FROMFILENAME("Audacity_Audiotouch-diffs.htm"));
+   }
+
+   void AudacityProject::OnGetAudiotouch()
+   {
+      LinkToPathlistHTM(FROMFILENAME("Audacity_Audiotouch-download.htm"));
    }
 #endif
 

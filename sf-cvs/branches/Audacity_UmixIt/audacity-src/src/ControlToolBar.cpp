@@ -41,9 +41,6 @@
 #include "AudioIO.h"
 #include "ImageManipulation.h"
 #include "MeterToolBar.h"
-#if (AUDACITY_BRANDING != BRAND_THINKLABS)
-   #include "MixerBoard.h"
-#endif
 #include "Prefs.h"
 #include "Project.h"
 #include "Track.h"

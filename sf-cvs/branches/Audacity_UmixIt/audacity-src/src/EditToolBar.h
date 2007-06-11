@@ -31,6 +31,7 @@
 #include <wx/minifram.h>
 #include <wx/object.h>
 
+#include "AudacityBranding.h"
 #include "ToolBar.h"
 
 class AButton;
@@ -62,7 +63,9 @@ enum {
 
    ETBZoomSelID,
    ETBZoomFitID,
-   ETBZoomFitVertID,
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      ETBZoomFitVertID,
+   #endif
 
    ETBNumButtons
 };
