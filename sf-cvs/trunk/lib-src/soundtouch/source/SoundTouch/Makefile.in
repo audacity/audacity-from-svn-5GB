@@ -197,7 +197,7 @@ libSoundTouch_la_SOURCES = AAFilter.cpp FIRFilter.cpp FIFOSampleBuffer.cpp mmx_o
 
 # ??? test for -fcheck-new in configure.ac
 # other compiler flags to add
-AM_CXXFLAGS = -O3 -fcheck-new -I../../include
+AM_CXXFLAGS = -O3 @FLAG_SSE@ -fcheck-new -I../../include
 all: all-am
 
 .SUFFIXES:

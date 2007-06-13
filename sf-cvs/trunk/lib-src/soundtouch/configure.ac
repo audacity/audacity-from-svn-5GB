@@ -1,6 +1,6 @@
 dnl SoundTouch configure.ac, by David W. Durham
 dnl
-dnl $Id: configure.ac,v 1.5 2006-10-04 23:00:56 llucius Exp $
+dnl $Id: configure.ac,v 1.6 2007-06-13 02:51:36 llucius Exp $
 dnl
 dnl This file is part of SoundTouch, an audio processing library for pitch/time adjustments
 dnl 
@@ -89,6 +89,14 @@ else
         AC_DEFINE(FLOAT_SAMPLES,1,[Use Float as Sample type])
 fi
 
+dnl LLL: Added to choose whether to use -msse or not
+AC_SUBST(FLAG_SSE)
+FLAG_SSE=
+saveflags=$CXXFLAGS
+CXXFLAGS="$CXXFLAGS -msse"
+AC_TRY_COMPILE([],[],[FLAG_SSE="-msse"])
+CXXFLAGS="$saveflags"
+dnl LLL: Added to choose whether to use -msse or not
 
 
 
