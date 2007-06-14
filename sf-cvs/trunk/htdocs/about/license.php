@@ -40,7 +40,7 @@ echo _('<h3>Advice for Vendors</h3>
 
 <p>We would appreciate your linking to our website: <a href="http://audacity.sourceforge.net">http://audacity.sourceforge.net</a> so your users can download updated versions of Audacity when released. Also, please subscribe to the notifications list at the bottom of <a href="http://audacity.sourceforge.net">http://audacity.sourceforge.net</a> to ensure you are notified of and can distribute the latest version of Audacity.</p>
 
-<p>If the distribution is on CD we would also appreciate it if you put the Audacity documentation from <a href="http://audacity.sourceforge.net/help/documentation">http://audacity.sourceforge.net/help/documentation</a> on the CD to reduce the number of queries we receive, and make it clear in your documentation that we (the Audacity Team) cannot offer support on your own your product, only on Audacity. </p>
+<p>If possible, please include the Audacity documentation from <a href="http://audacity.sourceforge.net/help/documentation">http://audacity.sourceforge.net/help/documentation</a> with your distribution, to reduce the number of queries we receive. Also, please make it clear in your documentation that the Audacity Team cannot offer support on your own your product, only on Audacity. </p>
 
 <p>IMPORTANT: If you write your own documentation on Audacity, please let us review it for possible errors, <em>before</em> you publish it.</p>
    
@@ -63,8 +63,8 @@ echo _('<h3>Advice for Vendors</h3>
     <h4>For vendors who wish to resell or distribute Audacity:</h4>
   </dd></dl>
   <ol>
-    <li>If you are reselling Audacity unmodified, your advertising should make it clear that Audacity is available for free on the Internet, and make it clear what the customer is paying for when they purchase Audacity from you.  Possiblilties include the convenience of Audacity on CD-ROM, other bundled software or music files, a printed manual, or more.</li>
-    <li>If you are distributing Audacity unmodified, we expect you to provide your own technical support wherever possible in support of your own customers. If you have any concerns or we can help you in this, please contact us.</li>
+    <li>If you are reselling Audacity unmodified, your advertising should make it clear that Audacity is available for free on the Internet, and make it clear what the customer is paying for when they purchase Audacity from you.  Possibilities include the convenience of Audacity on CD-ROM, other bundled software or music files, a printed manual, or more.</li>
+    <li>If you are reselling Audacity unmodified, we expect you to provide your own technical support wherever possible, in support of your own customers. If you have any concerns or we can help you in this, please contact us.</li>
     <li>You may not advertise your business as an authorized distributor of Audacity.  The name Audacity is a registered trademark of Dominic Mazzoni.</li>
   </ol>
 </p>
