@@ -34,7 +34,7 @@ echo _('<h3>License</h3>
 
 echo _('<h3>Advice for Vendors</h3>
 
-<p>Several vendors bundle Audacity with their products, resell, or distribute Audacity (see <a href="../download/bundlers">Vendors that Distribute Audacity</a>). Here are guidelines for bundling or reselling Audacity. If you adhere to these guidelines, please contact us for possible inclusion at <a href="../download/bundlers">Vendors that Distribute Audacity</a> (per instructions there).</p>
+<p>Several vendors bundle Audacity with their products, resell, or distribute Audacity (see <a href="../download/bundlers">Vendors that Distribute Audacity</a>). Here are guidelines for bundling or reselling Audacity. If you adhere to these guidelines, please <a href="../contact/">contact us</a> for possible inclusion at <a href="../download/bundlers">Vendors that Distribute Audacity</a> (per instructions there).</p>
 
 <p>You must include (1) a copy of the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GPL</a> and (2) the <a href="http://audacity.sourceforge.net/download/source">Audacity source code</a> (or if you are distributing a modified version, then that source code), or make a written offer to supply both, in line with Section 3 of the GPL. If you distribute our installers and do not modify them, this will comply with both requirements as these include the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GPL</a> and an offer in README.txt for users to obtain the source code from us.</p>
 
@@ -51,8 +51,8 @@ echo _('<h3>Advice for Vendors</h3>
     <h4>For vendors selling a hardware product, with Audacity included:</h4>
   </dd></dl>
   <ol>
-    <li>Thank you for choosing to distribute Audacity with your product! Please contact us early so that we can work together to help make your product a success.</li>
-    <li>Please distribute Audacity unmodified. If you need to modify it to work with your device, please contact us first.</li>
+    <li>Thank you for choosing to distribute Audacity with your product! Please <a href="../contact/">contact us</a> early so that we can work together to help make your product a success.</li>
+    <li>Please distribute Audacity unmodified. If you need to modify it to work with your device, please <a href="../contact/">contact us</a> first.</li>
     <li>Please test your device with Audacity thoroughly.  If there are any specific configuration instructions that users need to follow in order for your device to work with Audacity, make sure they are included with your device.</li>
     <li>Please do not refer customers to Audacity technical support when they are having difficulties using your device.  If you are selling a commercial product, you should provide your own technical support.  When users are having Audacity-specific issues that are not related to your specific device, we will of course be happy to assist them.</li>
   </ol>
@@ -64,7 +64,7 @@ echo _('<h3>Advice for Vendors</h3>
   </dd></dl>
   <ol>
     <li>If you are reselling Audacity unmodified, your advertising should make it clear that Audacity is available for free on the Internet, and make it clear what the customer is paying for when they purchase Audacity from you.  Possibilities include the convenience of Audacity on CD-ROM, other bundled software or music files, a printed manual, or more.</li>
-    <li>If you are reselling Audacity unmodified, we expect you to provide your own technical support wherever possible, in support of your own customers. If you have any concerns or we can help you in this, please contact us.</li>
+    <li>If you are reselling Audacity unmodified, we expect you to provide your own technical support wherever possible, in support of your own customers. If you have any concerns or we can help you in this, please <a href="../contact/">contact us</a>.</li>
     <li>You may not advertise your business as an authorized distributor of Audacity.  The name Audacity is a registered trademark of Dominic Mazzoni.</li>
   </ol>
 </p>
