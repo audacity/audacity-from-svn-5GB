@@ -162,8 +162,7 @@ enum {
    AudioIOBusyFlag        = 0x00040000,  //lll
    PlayRegionLockedFlag   = 0x00080000,  //msmeyer
    PlayRegionNotLockedFlag= 0x00100000,  //msmeyer
-   CutCopyAvailableFlag   = 0x00200000,  //lll
-   SnapToFlag             = 0x00400000   //lll
+   CutCopyAvailableFlag   = 0x00200000
 };
 
 #define FN(X) new AudacityProjectCommandFunctor(this, &AudacityProject:: X )
@@ -489,12 +488,6 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("SelRestore"),     _("Selection Restore"),              FN(OnSelectionRestore));
    c->SetCommandFlags(TracksExistFlag, TracksExistFlag,
                       wxT("SelSave"), wxT("SelRestore"), NULL);
-   c->AddSeparator();
-
-   /* i18n-hint: Set snap-to mode on or off */
-   c->AddItem(wxT("Snap"),        _("Snap To"),                      FN(OnSnapTo), mSnapTo);
-   c->SetCommandFlags(wxT("Snap"), TracksExistFlag, TracksExistFlag);
-
    c->AddSeparator();
 
    c->BeginSubMenu(_("Play &Region..."));
@@ -865,6 +858,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("TrackSolo"),     _("Solo/Unsolo focused track\tShift+S"),              FN(OnTrackSolo));
    c->AddCommand(wxT("TrackClose"),    _("Close focused track\tShift+C"),                    FN(OnTrackClose));
 
+   c->AddCommand(wxT("SnapToOn"),      _("Snap To On"),           FN(OnSnapToOn));
+   c->AddCommand(wxT("SnapToOff"),     _("Snap To Off"),          FN(OnSnapToOff));
+
    mLastFlags = 0;
 
    mSel0save = 0;
@@ -1109,10 +1105,6 @@ wxUint32 AudacityProject::GetUpdateFlags()
       flags |= ZoomOutAvailableFlag;
 
    flags |= GetFocusedFrame();
-
-   if (mSnapTo) {
-      flags |= SnapToFlag;
-   }
 
    if (IsPlayRegionLocked())
       flags |= PlayRegionLockedFlag;
@@ -3339,12 +3331,6 @@ void AudacityProject::OnZoomSel()
    TP_ScrollWindow(mViewInfo.sel0);
 }
 
-void AudacityProject::OnSnapTo()
-{
-   SetSnapTo(!GetSnapTo());
-   RedrawProject();
-}
-
 void AudacityProject::OnPlotSpectrum()
 {
    int selcount = 0;
@@ -4392,6 +4378,16 @@ void AudacityProject::OnResample()
    
    // Need to reset
    FinishAutoScroll();
+}
+
+void AudacityProject::OnSnapToOn()
+{
+   SetSnapTo(true);
+}
+
+void AudacityProject::OnSnapToOff()
+{
+   SetSnapTo(false);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

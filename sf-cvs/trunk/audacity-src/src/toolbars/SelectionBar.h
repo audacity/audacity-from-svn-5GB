@@ -16,6 +16,7 @@
 #include "ToolBar.h"
 
 class wxBitmap;
+class wxCheckBox;
 class wxComboBox;
 class wxCommandEvent;
 class wxDC;
@@ -33,6 +34,8 @@ class SelectionBarListener {
 
    virtual void AS_SetRate(double rate) = 0;
    virtual void AS_ModifySelection(double &start, double &end) = 0;
+   virtual bool AS_GetSnapTo() = 0;
+   virtual void AS_SetSnapTo(bool state) = 0;
 };
 
 class SelectionBar:public ToolBar {
@@ -52,8 +55,9 @@ class SelectionBar:public ToolBar {
    double GetLeftTime();
    double GetRightTime();
    void SetField(const wxChar *msg, int fieldNum);
+   void SetSnapTo(bool state);
    void SetRate(double rate);
-   void SetListener(SelectionBarListener *l) {mListener = l;};
+   void SetListener(SelectionBarListener *l);
 
    // msmeyer: Call this to enable/disable menu items
    // in the "rate" menu, f.e. if sound card selection
@@ -71,8 +75,11 @@ class SelectionBar:public ToolBar {
    void OnLengthRadio(wxCommandEvent &evt);
 
    void OnRate(wxCommandEvent & event);
-   void OnRateFocus(wxFocusEvent &event);
-   void OnRateCaptureKey(wxCommandEvent &event);
+
+   void OnSnapTo(wxCommandEvent & event);
+
+   void OnFocus(wxFocusEvent &event);
+   void OnCaptureKey(wxCommandEvent &event);
 
    void OnSize(wxSizeEvent &evt);
 
@@ -91,6 +98,7 @@ class SelectionBar:public ToolBar {
    TimeTextCtrl   *mAudioTime;
 
    wxComboBox     *mRateBox;
+   wxCheckBox     *mSnapTo;
 
  public:
 
