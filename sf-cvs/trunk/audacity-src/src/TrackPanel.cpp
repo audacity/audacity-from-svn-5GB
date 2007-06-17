@@ -1600,7 +1600,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
 
    // A control-click will set just the indicator to the clicked spot,
    // and turn playback on.  
-   else if(event.MetaDown())
+   else if(event.CmdDown())
       {
          AudacityProject *p = GetActiveProject();
          if (p) {
@@ -2135,7 +2135,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
       mCapturedClipArray.Clear();
    }
    
-   mSlideUpDownOnly = event.MetaDown() && !multiToolModeActive;
+   mSlideUpDownOnly = event.CmdDown() && !multiToolModeActive;
 
    mCapturedTrack = vt;
    mCapturedRect = r;
@@ -3719,7 +3719,7 @@ void TrackPanel::HandleWheelRotation(wxMouseEvent & event)
       mListener->TP_ScrollWindow(
          mViewInfo->h +
          50.0 * -steps / mViewInfo->zoom);
-   } else if (event.ControlDown())
+   } else if (event.CmdDown())
    {
       // MM: Zoom in/out when used with Control key down
       // MM: I don't understand what trackLeftEdge does
@@ -4284,7 +4284,7 @@ int TrackPanel::DetermineToolToUse( ToolsToolBar * pTtb, wxMouseEvent & event)
    // From here on the order in which we hit test determines 
    // which tool takes priority in the rare cases where it
    // could be more than one.
-   } else if (event.MetaDown()){
+   } else if (event.CmdDown()){
       // msmeyer: If control is down, slide single clip
       // msmeyer: If control and shift are down, slide all clips
       currentTool = slideTool;
