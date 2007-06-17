@@ -114,6 +114,9 @@ double GetTime(Track *t);
 void OnSortTime();
 void OnSortName();
 
+void OnSnapToOn();
+void OnSnapToOff();
+
         // File Menu
 
 void OnNew();
@@ -194,7 +197,6 @@ void OnExpandAllTracks();
 void OnCollapseAllTracks();
 
 void OnSelectionFormat(int index);
-void OnSnapTo();
 
 void OnPlotSpectrum();
 

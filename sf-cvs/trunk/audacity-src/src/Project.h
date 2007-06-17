@@ -269,6 +269,8 @@ class AudacityProject:public wxFrame,
 
    virtual void AS_SetRate(double rate);
    virtual void AS_ModifySelection(double &start, double &end);
+   virtual void AS_SetSnapTo(bool state);
+   virtual bool AS_GetSnapTo();
 
    void SetStateTo(unsigned int n);
 

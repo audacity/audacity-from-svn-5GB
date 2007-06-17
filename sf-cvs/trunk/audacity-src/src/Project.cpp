@@ -557,9 +557,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
       mProgressDialog[mProgressCurrent] = NULL;
    }
 
-   int widths[] = {-1, 130, 100};
-   mStatusBar = CreateStatusBar(3);
-   mStatusBar->SetStatusWidths(3, widths);
+   int widths[] = {-1, 130};
+   mStatusBar = CreateStatusBar(2);
+   mStatusBar->SetStatusWidths(2, widths);
 
    // MM: DirManager is created dynamically, freed on demand via ref-counting
    // MM: We don't need to Ref() here because it start with refcount=1
@@ -922,6 +922,17 @@ void AudacityProject::SetProjectTitle()
    }
 
    SetTitle( name );
+}
+
+void AudacityProject::AS_SetSnapTo(bool state)
+{
+   SetSnapTo(state);
+   RedrawProject();
+}
+
+bool AudacityProject::AS_GetSnapTo()
+{
+   return GetSnapTo();
 }
 
 void AudacityProject::AS_SetRate(double rate)
@@ -3421,15 +3432,9 @@ void AudacityProject::SetSnapTo(bool state)
    mCommandManager.Check(wxT("Snap"), mSnapTo);
    gPrefs->Write(wxT("/SnapTo"), mSnapTo);
 
-   wxString msg;
-   if (mSnapTo) {
-      msg.Printf(_("Snap To: On"));
+   if (GetSelectionBar()) {
+      GetSelectionBar()->SetSnapTo(state);
    }
-   else {
-      msg.Printf(_("Snap To: Off"));
-   }
-
-   mStatusBar->SetStatusText(msg, 2);
 }
 
 bool AudacityProject::GetSnapTo()

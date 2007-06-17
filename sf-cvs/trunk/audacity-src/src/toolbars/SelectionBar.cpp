@@ -33,14 +33,15 @@ with changes in the SelectionBar.
 
 #ifndef WX_PRECOMP
 #include <wx/button.h>
+#include <wx/checkbox.h>
 #include <wx/combobox.h>
 #include <wx/intl.h>
 #include <wx/radiobut.h>
 #include <wx/settings.h>
 #include <wx/sizer.h>
-#include <wx/statline.h>
 #include <wx/valtext.h>
 #endif
+#include <wx/statline.h>
 
 #include "SelectionBar.h"
 
@@ -55,6 +56,7 @@ IMPLEMENT_CLASS(SelectionBar, ToolBar);
 enum {
    SelectionBarFirstID = 2700,
    OnRateID,
+   OnSnapToID,
    OnLengthRadioID,
    OnEndRadioID,
    OnLeftTimeID,
@@ -67,10 +69,11 @@ BEGIN_EVENT_TABLE(SelectionBar, ToolBar)
    EVT_TEXT(OnRightTimeID, SelectionBar::OnRightTime)
    EVT_RADIOBUTTON(OnLengthRadioID, SelectionBar::OnLengthRadio)
    EVT_RADIOBUTTON(OnEndRadioID, SelectionBar::OnEndRadio)
+   EVT_CHECKBOX(OnSnapToID, SelectionBar::OnSnapTo)
    EVT_COMBOBOX(OnRateID, SelectionBar::OnRate)
    EVT_TEXT(OnRateID, SelectionBar::OnRate)
    EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, SelectionBar::OnUpdate)
-   EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEY, SelectionBar::OnRateCaptureKey)
+   EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEY, SelectionBar::OnCaptureKey)
 END_EVENT_TABLE()
 
 SelectionBar::SelectionBar()
@@ -91,9 +94,6 @@ void SelectionBar::Create(wxWindow * parent)
 
 void SelectionBar::Populate()
 {
-   // Squeezing is a vain attempt at trying to get the selection bar
-   // to fit on a 800x600 screen when hh:mm:ss+samples is selected.
-   bool squeeze = (wxSystemSettings::GetMetric(wxSYS_SCREEN_X) <= 800);
    int i;
 
    // This will be inherited by all children:
@@ -110,22 +110,29 @@ void SelectionBar::Populate()
    formatName = TimeTextCtrl::GetBuiltinName(formatIndex);
    wxString format = TimeTextCtrl::GetBuiltinFormat(formatIndex);
 
-   mainSizer = new wxFlexGridSizer(8);
+   mainSizer = new wxFlexGridSizer(7, 1, 1);
    Add(mainSizer, 0, wxALIGN_CENTER_VERTICAL);
 
    //
    // Top row (mostly labels)
    //
 
-   mainSizer->Add(new wxStaticText(this, -1, _("Project Rate (Hz):")),
-               0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
+   mainSizer->Add(new wxStaticText(this, -1, _("Project Rate (Hz):"),
+   // LLL:  On my Ubuntu 7.04 install, the label wraps to two lines
+   //       and I could not figure out why.  Thus...hackage.
+#if defined(__WXGTK__)
+                  wxDefaultPosition, wxSize(110, -1)),
+#else
+                  wxDefaultPosition, wxDefaultSize),
+#endif
+               0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 
-   mainSizer->Add(squeeze ? 8 : 20, 10);
+   mainSizer->Add(5, 1);
+
+   mainSizer->Add(5, 1);
 
    mainSizer->Add(new wxStaticText(this, -1, _("Selection Start:")),
-               0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
-
-   mainSizer->Add(squeeze ? 6 : 20, 10);
+               0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 
    bool showSelectionLength = false;
    gPrefs->Read(wxT("/ShowSelectionLength"), &showSelectionLength);
@@ -136,12 +143,12 @@ void SelectionBar::Populate()
                                        wxRB_GROUP);
    mRightEndButton->SetValue(!showSelectionLength);
    hSizer->Add(mRightEndButton,
-               1, wxALL | wxALIGN_CENTER_VERTICAL, 0);
+               0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 5);
    mRightLengthButton = new wxRadioButton(this, OnLengthRadioID, _("Length"));
    mRightLengthButton->SetValue(showSelectionLength);
    hSizer->Add(mRightLengthButton,
-               1, wxALL | wxALIGN_CENTER_VERTICAL, 0);
-   #if defined(__WXMSW__)
+               0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+#if defined(__WXMSW__)
       // Refer to Microsoft KB article 261192 for an explanation as
       // to why this is needed.  We've only experienced it under Win2k
       // so it's probably been fixed.  But, it doesn't hurt to have this
@@ -152,16 +159,13 @@ void SelectionBar::Populate()
                            wxRB_GROUP);
       dummyButton->Disable();
       dummyButton->Hide();
-   #endif
-   mainSizer->Add(hSizer, 0, wxALL, 1);
+#endif
+   mainSizer->Add(hSizer, 0,  wxALIGN_CENTER_VERTICAL | wxRIGHT, 0);
 
-   mainSizer->Add(squeeze ? 6 : 20, 10);
+   mainSizer->Add(5, 1);
 
-   wxStaticText *stat = new wxStaticText(this, -1, _("Audio Position:"));
-   mainSizer->Add(stat,
-                  0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
-
-   mainSizer->Add(2, 10);
+   mainSizer->Add(new wxStaticText(this, -1, _("Audio Position:")),
+                  0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 0);
 
    //
    // Middle row (mostly time controls)
@@ -195,56 +199,58 @@ void SelectionBar::Populate()
 #endif
 
    ctrl->Connect(wxEVT_SET_FOCUS,
-                 wxFocusEventHandler(SelectionBar::OnRateFocus),
+                 wxFocusEventHandler(SelectionBar::OnFocus),
                  NULL,
                  this);
    ctrl->Connect(wxEVT_KILL_FOCUS,
-                 wxFocusEventHandler(SelectionBar::OnRateFocus),
+                 wxFocusEventHandler(SelectionBar::OnFocus),
                  NULL,
                  this);
 
-   mainSizer->Add(mRateBox, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
+   mainSizer->Add(mRateBox, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 
-#if __WXMSW__ /* As of wx 2.6.2, wxStaticLine is broken for Windows*/
-   mainSizer->Add( 1, 1 );
-#else
-   mainSizer->Add(new wxStaticLine(this, -1, wxDefaultPosition, wxDefaultSize,
+   mainSizer->Add(new wxStaticLine(this, -1, wxDefaultPosition,
+                                   wxSize(1, toolbarSingle),
                                    wxLI_VERTICAL),
-                  0, wxEXPAND | wxALL, 1);
-#endif
+                  0,  wxRIGHT, 5);
+
+   mSnapTo = new wxCheckBox(this, OnSnapToID, wxT("Snap To"),
+                            wxDefaultPosition, wxDefaultSize,
+                            wxALIGN_RIGHT);
+   mainSizer->Add(mSnapTo,
+                  0, wxALIGN_CENTER_VERTICAL | wxALIGN_CENTER | wxRIGHT, 5);
+   mSnapTo->SetName(_("Snap To"));
+
+   mSnapTo->Connect(wxEVT_SET_FOCUS,
+                    wxFocusEventHandler(SelectionBar::OnFocus),
+                    NULL,
+                    this);
+   mSnapTo->Connect(wxEVT_KILL_FOCUS,
+                    wxFocusEventHandler(SelectionBar::OnFocus),
+                    NULL,
+                    this);
 
    mLeftTime = new TimeTextCtrl(this, OnLeftTimeID, format, 0.0, mRate);
    mLeftTime->SetName(_("Selection Start:"));
    mLeftTime->EnableMenu();
-   mainSizer->Add(mLeftTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
-
-#if __WXMSW__ /* As of wx 2.6.2, wxStaticLine is broken for Windows*/
-   mainSizer->Add( 1, 1 );
-#else
-   mainSizer->Add(new wxStaticLine(this, -1, wxDefaultPosition, wxDefaultSize,
-                                   wxLI_VERTICAL),
-                  0, wxEXPAND | wxALL, 1);
-#endif
+   mainSizer->Add(mLeftTime, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 
    mRightTime = new TimeTextCtrl(this, OnRightTimeID, format, 0.0, mRate);
    mRightTime->SetName(wxString(_("Selection ")) + (showSelectionLength ?
                                                    _("Length") :
                                                    _("End")));
    mRightTime->EnableMenu();
-   mainSizer->Add(mRightTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
+   mainSizer->Add(mRightTime, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 
-#if __WXMSW__ /* As of wx 2.6.2, wxStaticLine is broken for Windows*/
-   mainSizer->Add( 1, 1 );
-#else
-   mainSizer->Add(new wxStaticLine(this, -1, wxDefaultPosition, wxDefaultSize,
+   mainSizer->Add(new wxStaticLine(this, -1, wxDefaultPosition,
+                                   wxSize(1, toolbarSingle),
                                    wxLI_VERTICAL),
-                  0, wxEXPAND | wxALL, 1);
-#endif
+                  0, wxRIGHT, 5);
 
    mAudioTime = new TimeTextCtrl(this, -1, format, 0.0, mRate);
    mAudioTime->SetName(_("Audio Position:"));
    mAudioTime->EnableMenu();
-   mainSizer->Add(mAudioTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
+   mainSizer->Add(mAudioTime, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 0);
 
    mainSizer->Layout();
 
@@ -252,6 +258,11 @@ void SelectionBar::Populate()
 
    SetMinSize( GetSizer()->GetMinSize() );
 }
+
+void SelectionBar::SetListener(SelectionBarListener *l)
+{
+   mListener = l;
+};
 
 void SelectionBar::OnSize(wxSizeEvent &evt)
 {
@@ -400,6 +411,11 @@ void SelectionBar::SetField(const wxChar *msg, int fieldNum)
    }
 }
 
+void SelectionBar::SetSnapTo(bool state)
+{
+   mSnapTo->SetValue(state);
+}
+
 void SelectionBar::SetRate(double rate)
 {
    if (rate != mRate) {
@@ -432,7 +448,7 @@ void SelectionBar::UpdateRates()
    mRateBox->SetValue(oldValue);
 }
 
-void SelectionBar::OnRateFocus(wxFocusEvent &event)
+void SelectionBar::OnFocus(wxFocusEvent &event)
 {
    wxCommandEvent e(EVT_CAPTURE_KEYBOARD);
 
@@ -447,10 +463,15 @@ void SelectionBar::OnRateFocus(wxFocusEvent &event)
    event.Skip();
 }
 
-void SelectionBar::OnRateCaptureKey(wxCommandEvent &event)
+void SelectionBar::OnCaptureKey(wxCommandEvent &event)
 {
    wxKeyEvent *kevent = (wxKeyEvent *)event.GetEventObject();
    int keyCode = kevent->GetKeyCode();
+
+   // Pass the SPACE through for SnapTo
+   if (FindFocus() == mSnapTo && keyCode == WXK_SPACE) {
+      return;
+   }
 
    // Convert numeric keypad entries.
    if ((keyCode >= WXK_NUMPAD0) && (keyCode <= WXK_NUMPAD9))
@@ -460,6 +481,13 @@ void SelectionBar::OnRateCaptureKey(wxCommandEvent &event)
       return;
 
    event.Skip();
+
+   return;
+}
+
+void SelectionBar::OnSnapTo(wxCommandEvent & event)
+{
+   mListener->AS_SetSnapTo(mSnapTo->GetValue());
 
    return;
 }
