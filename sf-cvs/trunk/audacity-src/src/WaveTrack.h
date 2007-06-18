@@ -43,7 +43,7 @@ WX_DEFINE_ARRAY( Region*, Regions );
 
 class Envelope;
 
-class WaveTrack: public Track {
+class AUDACITY_DLL_API WaveTrack: public Track {
 
  private:
 

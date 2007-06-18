@@ -189,7 +189,7 @@ unsigned char ImageCacheAsData[] = {
 };
 
 // theTheme is a global variable.
-Theme theTheme;
+AUDACITY_DLL_API Theme theTheme;
 
 Theme::Theme(void)
 {
@@ -207,6 +207,11 @@ void Theme::EnsureInitialised()
       return;
    RegisterImages();
    RegisterColours();
+
+#ifdef EXPERIMENTAL_EXTRA_THEME_RESOURCES
+   extern void RegisterExtraThemeResources();
+   RegisterExtraThemeResources();
+#endif
 
    bool bLoadThemeAtStart;
    gPrefs->Read( wxT("/Theme/LoadAtStart"), &bLoadThemeAtStart, false );

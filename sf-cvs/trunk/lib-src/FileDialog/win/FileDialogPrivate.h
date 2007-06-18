@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.h,v 1.1 2007-04-30 04:12:57 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.h,v 1.2 2007-06-18 16:10:50 jamescrook Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -19,7 +19,7 @@
 // wxFileDialog
 //-------------------------------------------------------------------------
 
-class WXDLLEXPORT FileDialog: public wxFileDialogBase
+class DLL_LINKAGE FileDialog: public wxFileDialogBase
 {
 public:
     FileDialog(wxWindow *parent,

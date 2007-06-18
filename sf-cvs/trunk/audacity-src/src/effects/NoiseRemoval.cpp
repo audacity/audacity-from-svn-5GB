@@ -83,7 +83,7 @@ EffectNoiseRemoval::EffectNoiseRemoval()
    gPrefs->Read(wxT("/CsPresets/NoiseAttackDecayTime"),
                 &mAttackDecayTime, 0.15);
 
-   mMinSignalTime = 0.05;
+   mMinSignalTime = 0.05f;
    mHasProfile = false;
    mDoProfile = true;
 

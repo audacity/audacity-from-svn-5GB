@@ -33,8 +33,8 @@ const wxChar *GetSampleFormatStr(sampleFormat format);
 // Allocating/Freeing Samples
 //
 
-samplePtr NewSamples(int count, sampleFormat format);
-void      DeleteSamples(samplePtr p);
+AUDACITY_DLL_API samplePtr NewSamples(int count, sampleFormat format);
+AUDACITY_DLL_API void DeleteSamples(samplePtr p);
 
 //
 // Copying, Converting and Clearing Samples

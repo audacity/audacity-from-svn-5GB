@@ -25,7 +25,7 @@ class wxSizeEvent;
 
 class TimeTextCtrl;
 
-class SelectionBarListener {
+class AUDACITY_DLL_API SelectionBarListener {
 
  public:
 

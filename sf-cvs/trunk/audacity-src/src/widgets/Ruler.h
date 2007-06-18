@@ -21,7 +21,7 @@
 struct ViewInfo;
 class AudacityProject;
 
-class Ruler {
+class AUDACITY_DLL_API Ruler {
  public:
 
    enum RulerFormat {
@@ -153,7 +153,7 @@ class Ruler {
    wxString     mUnits;
 };
 
-class RulerPanel : public wxPanel {
+class AUDACITY_DLL_API RulerPanel : public wxPanel {
    DECLARE_DYNAMIC_CLASS(RulerPanel)
 
  public:
@@ -183,7 +183,7 @@ private:
 // Once TrackPanel uses wxSizers, we will derive it from some 
 // wxWindow and the GetSize and SetSize functions
 // will then be wxWindows functions instead.
-class AdornedRulerPanel : public wxPanel
+class AUDACITY_DLL_API AdornedRulerPanel : public wxPanel
 {
 public:
    AdornedRulerPanel(wxWindow* parent,

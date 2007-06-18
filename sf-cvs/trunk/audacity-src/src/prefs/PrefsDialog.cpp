@@ -31,6 +31,7 @@
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
 #include <wx/sizer.h>
+#include <wx/treebook.h>
 
 #include "../Project.h"
 
@@ -51,7 +52,7 @@
 #include "MousePrefs.h"
 
 //JKC: Experimental treebook, backported from wxWidgets 2.7.x
-#include "../widgets/treebook.h"
+//#include "../widgets/treebook.h"
 
 
 enum {

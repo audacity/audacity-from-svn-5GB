@@ -39,7 +39,7 @@ struct ViewInfo;
 typedef unsigned char uchar;
 #endif
 
-class TrackArtist {
+class AUDACITY_DLL_API TrackArtist {
 
  public:
    TrackArtist();

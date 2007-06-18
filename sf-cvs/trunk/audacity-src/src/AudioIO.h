@@ -42,7 +42,7 @@ void InitAudioIO();
 void DeinitAudioIO();
 wxString DeviceName(const PaDeviceInfo* info);
 
-class AudioIOListener {
+class AUDACITY_DLL_API AudioIOListener {
 public:
    AudioIOListener() {}
    virtual ~AudioIOListener() {}

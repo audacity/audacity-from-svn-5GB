@@ -13,7 +13,6 @@
 custom controls.
 
 *//*******************************************************************/
-
 #include "FileDialog.h"
 
 void FileDialog::EnableButton(wxString label, fdCallback cb, void *data)
@@ -37,7 +36,7 @@ void FileDialog::ClickButton(int index)
 // Author:      John Labenski
 // Modified by: Leland Lucius
 // Created:     14.06.03 (extracted from src/*/filedlg.cpp)
-// RCS-ID:      $Id: FileDialog.cpp,v 1.5 2007-04-30 04:12:42 llucius Exp $
+// RCS-ID:      $Id: FileDialog.cpp,v 1.6 2007-06-18 16:10:50 jamescrook Exp $
 // Copyright:   (c) Robert Roebling
 // Licence:     wxWindows licence
 //
@@ -49,7 +48,7 @@ void FileDialog::ClickButton(int index)
 // FileDialog convenience functions
 //----------------------------------------------------------------------------
 
-wxString FileSelector(const wxChar *title,
+DLL_LINKAGE wxString FileSelector(const wxChar *title,
                       const wxChar *defaultDir,
                       const wxChar *defaultFileName,
                       const wxChar *defaultExtension,

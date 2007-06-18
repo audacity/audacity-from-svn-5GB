@@ -1,13 +1,11 @@
 /**********************************************************************
 
-  Audacity: A Digital Audio Editor
-
   WrappedType.h
 
   James Crook
+  (C) Audacity Developers, 2007
 
-  Audacity is free software.
-  This file is licensed under the wxWindows license, see License.txt
+  wxWidgets license. See Licensing.txt
 
 *************************************************************************/
 

@@ -45,11 +45,15 @@ enum teResourceFlags
    resFlagInternal = 0x08  // For image manipulation.  Don't save or load.
 };
 
+//WX_DECLARE_EXPORTED_OBJARRAY(wxImage,  ArrayOfImages);
+//WX_DECLARE_EXPORTED_OBJARRAY(wxBitmap, ArrayOfBitmaps);
+//WX_DECLARE_EXPORTED_OBJARRAY(wxColour, ArrayOfColours);
+
 WX_DECLARE_OBJARRAY(wxImage,  ArrayOfImages);
 WX_DECLARE_OBJARRAY(wxBitmap, ArrayOfBitmaps);
 WX_DECLARE_OBJARRAY(wxColour, ArrayOfColours);
 
-class FlowPacker 
+class AUDACITY_DLL_API FlowPacker 
 {
 public:
    FlowPacker(){;};
@@ -79,7 +83,7 @@ private:
 
 };
 
-class ThemeBase
+class AUDACITY_DLL_API ThemeBase
 {
 public:
    ThemeBase(void);
@@ -114,6 +118,7 @@ public:
 
    void SetBrushColour( wxBrush & Brush, int iIndex );
    void SetPenColour(   wxPen & Pen, int iIndex );
+   void SetFlags( int flags ){ mFlow.mFlags = flags;};
 
    // Utility function that combines a bitmap and a mask, both in XPM format.
    wxImage MaskedImage( char const ** pXpm, char const ** pMask );
@@ -132,7 +137,7 @@ protected:
 };
 
 
-class Theme : public ThemeBase
+class AUDACITY_DLL_API Theme : public ThemeBase
 {
 public:
    Theme(void);
@@ -146,6 +151,6 @@ public:
    bool mbInitialised;
 };
 
-extern Theme theTheme;
+extern AUDACITY_DLL_API Theme theTheme;
 
 #endif // __AUDACITY_THEME__
