@@ -31,7 +31,12 @@
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
 #include <wx/sizer.h>
+
+#if wxCHECK_VERSION(2, 8, 4)
 #include <wx/treebook.h>
+#else
+#include "../widgets/treebook.h"
+#endif
 
 #include "../Project.h"
 
