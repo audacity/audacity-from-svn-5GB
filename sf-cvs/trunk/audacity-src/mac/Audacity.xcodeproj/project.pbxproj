@@ -5633,7 +5633,10 @@
 		1790AFB509883B6E008A330A /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "USE_PORTAUDIO_V19=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"AUDACITY_DLL_API=",
+					"USE_PORTAUDIO_V19=1",
+				);
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5790,7 +5793,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
-				GCC_PREPROCESSOR_DEFINITIONS = "USE_PORTAUDIO_V19=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"AUDACITY_DLL_API=",
+					"USE_PORTAUDIO_V19=1",
+				);
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5967,7 +5973,10 @@
 		17CAEBB5098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "USE_PORTAUDIO_V19=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"AUDACITY_DLL_API=",
+					"USE_PORTAUDIO_V19=1",
+				);
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6236,7 +6245,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
-				GCC_PREPROCESSOR_DEFINITIONS = "USE_PORTAUDIO_V19=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"AUDACITY_DLL_API=",
+					"USE_PORTAUDIO_V19=1",
+				);
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
