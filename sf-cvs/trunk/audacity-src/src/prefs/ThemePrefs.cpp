@@ -36,6 +36,7 @@ Provides:
 #include "../Project.h"
 #include "../ShuttleGui.h"
 #include "ThemePrefs.h"
+#include "../AColor.h"
 
 enum eThemePrefsIds {
    idLoadThemeCache=7000,
@@ -168,6 +169,7 @@ void ThemePrefs::OnSaveThemeComponents(wxCommandEvent &event)
 void ThemePrefs::OnLoadThemeCache(wxCommandEvent &event)
 {
    theTheme.ReadImageCache();
+   AColor::ReInit();
    theTheme.ApplyUpdatedImages();
 }
 

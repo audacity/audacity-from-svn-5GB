@@ -21,7 +21,7 @@
 
 struct ViewInfo;
 
-class AttachableScrollBar :
+class AUDACITY_DLL_API AttachableScrollBar :
 	public wxScrollBar
 {
 public:

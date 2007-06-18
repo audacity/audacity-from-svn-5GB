@@ -211,6 +211,12 @@ void AColor::Solo(wxDC * dc, bool on, bool selected)
    }
 }
 
+void AColor::ReInit()
+{
+   inited=false;
+   Init();
+}
+
 void AColor::Init()
 {
    if (inited)

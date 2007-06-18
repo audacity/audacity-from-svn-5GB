@@ -547,9 +547,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetCommandFlags(wxT("UndoHistory"),
                       AudioIONotBusyFlag | UndoAvailableFlag,
                       AudioIONotBusyFlag | UndoAvailableFlag);
-#ifdef EXPERIMENTAL_TRACK_PANEL
-   c->AddItem(wxT("NewTrackPanel"),  _("&Experimental Display..."),  FN(OnExperimentalTrackPanel));
-#endif
+
    c->AddSeparator();
    c->BeginSubMenu(_("&Toolbars..."));
    c->AddItem(wxT("ShowControlTB"),       _("Control Toolbar"),       FN(OnShowControlToolBar), 0);
@@ -2233,31 +2231,6 @@ void AudacityProject::OnHistory()
    mHistoryWindow->Show(true);
    mHistoryWindow->UpdateDisplay();
 }
-
-void AudacityProject::OnExperimentalTrackPanel()
-{
-#ifdef EXPERIMENTAL_TRACK_PANEL
-   // Parasite Track Panel.
-   // Takes over the display...
-   TrackPanel2 * pDlg = new TrackPanel2(NULL) ;
-   wxTopLevelWindow * pOldWindow =  ((wxTopLevelWindow*)wxTheApp->GetTopWindow());
-   pOldWindow->Show(false);
-// Dlg.Maximize();
-//   Dlg.ShowModal();
-
-   wxTheApp->SetTopWindow(pDlg);
-   pDlg->Show( true );
-#define RETURN_TO_AUDACITY
-#ifdef RETURN_TO_AUDACITY
-   wxTheApp->SetTopWindow(pOldWindow);
-   pOldWindow->Show(true);
-//   ((wxTopLevelWindow*)wxTheApp->GetTopWindow())->Show(true);
-#else
-   QuitAudacity( false );
-#endif
-#endif
-}
-
 
 void AudacityProject::OnCut()
 {

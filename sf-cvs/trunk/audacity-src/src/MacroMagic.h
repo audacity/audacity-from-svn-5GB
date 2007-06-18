@@ -41,28 +41,28 @@ THEME_INITS or THEME_DECLARATIONS or neither of these.
 
 #ifdef THEME_INITS
 #define DEFINE_IMAGE( name, initialiser, textual_name ) \
-   RegisterImage( name, initialiser, textual_name );
+   theTheme.RegisterImage( name, initialiser, textual_name );
 #define DEFINE_COLOUR( name, initialiser, textual_name )\
-   RegisterColour( name, initialiser, textual_name );
+   theTheme.RegisterColour( name, initialiser, textual_name );
 #define DEFINE_FONT( name, initialiser, textual_name )  \
-   RegisterFont( name, initialiser, textual_name );
-#define SET_THEME_FLAGS( flags ) mFlow.mFlags = flags;
+   theTheme.RegisterFont( name, initialiser, textual_name );
+#define SET_THEME_FLAGS( flags ) theTheme.SetFlags(  flags );
 #undef THEME_DECLARATIONS
 #undef THEME_EXTERNS
 #endif
 
 #ifdef THEME_DECLARATIONS
-#define DEFINE_IMAGE( name, initialiser, textual_name )  teBmps name=-1;
-#define DEFINE_COLOUR( name, initialiser, textual_name )  int name=-1;
-#define DEFINE_FONT( name, initialiser, textual_name )  int name=-1;
+#define DEFINE_IMAGE( name, initialiser, textual_name )  AUDACITY_DLL_API teBmps name=-1;
+#define DEFINE_COLOUR( name, initialiser, textual_name ) AUDACITY_DLL_API int name=-1;
+#define DEFINE_FONT( name, initialiser, textual_name )  AUDACITY_DLL_API int name=-1;
 #define SET_THEME_FLAGS( flags )
 #undef THEME_INITS
 #undef THEME_EXTERNS
 #endif
 
 #ifdef THEME_EXTERNS
-#define DEFINE_IMAGE( name, initialiser, textual_name )  extern teBmps name;
-#define DEFINE_COLOUR( name, initialiser, textual_name ) extern int name;
-#define DEFINE_FONT( name, initialiser, textual_name ) extern int name;
+#define DEFINE_IMAGE( name, initialiser, textual_name )  extern AUDACITY_DLL_API teBmps name;
+#define DEFINE_COLOUR( name, initialiser, textual_name ) extern AUDACITY_DLL_API int name;
+#define DEFINE_FONT( name, initialiser, textual_name ) extern AUDACITY_DLL_API int name;
 #define SET_THEME_FLAGS( flags )
 #endif

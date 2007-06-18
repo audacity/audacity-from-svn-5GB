@@ -74,12 +74,12 @@ const wxChar *GetSampleFormatStr(sampleFormat format)
    return wxT("Unknown format"); // compiler food
 }
 
-samplePtr NewSamples(int count, sampleFormat format)
+AUDACITY_DLL_API samplePtr NewSamples(int count, sampleFormat format)
 {
    return (samplePtr)malloc(count * SAMPLE_SIZE(format));
 }
 
-void DeleteSamples(samplePtr p)
+AUDACITY_DLL_API void DeleteSamples(samplePtr p)
 {
    free(p);
 }

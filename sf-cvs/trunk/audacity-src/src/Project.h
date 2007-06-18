@@ -71,10 +71,10 @@ class AudacityProject;
 class RecordingRecoveryHandler;
 
 AudacityProject *CreateNewAudacityProject(wxWindow * parentFrame);
-AudacityProject *GetActiveProject();
+AUDACITY_DLL_API AudacityProject *GetActiveProject();
 void RedrawAllProjects();
 void RefreshCursorForAllProjects();
-void CloseAllProjects();
+AUDACITY_DLL_API void CloseAllProjects();
 
 void GetDefaultWindowRect(wxRect *defRect);
 void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized);
@@ -92,11 +92,11 @@ enum PlayMode {
    loopedPlay
 };
 
-class AudacityProject:public wxFrame,
-                      public TrackPanelListener,
-                      public SelectionBarListener,
-                      public XMLTagHandler,
-                      public AudioIOListener
+class AUDACITY_DLL_API AudacityProject:  public wxFrame,
+                                     public TrackPanelListener,
+                                     public SelectionBarListener,
+                                     public XMLTagHandler,
+                                     public AudioIOListener
 {
  public:
 

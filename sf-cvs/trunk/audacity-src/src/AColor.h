@@ -23,6 +23,7 @@ class wxRect;
 class AColor {
  public:
    static void Init();
+   static void ReInit();
 
    static void DrawFocus(wxDC & dc, wxRect & r);
    static void Bevel(wxDC & dc, bool up, wxRect & r);

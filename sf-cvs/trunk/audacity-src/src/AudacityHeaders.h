@@ -40,7 +40,6 @@
 #include <wx/mac/private.h>
 #endif
 
-
 #include "AColor.h"
 #include "AudacityApp.h"
 #include "AudioIO.h"

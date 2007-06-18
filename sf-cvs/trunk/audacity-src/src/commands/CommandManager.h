@@ -64,7 +64,7 @@ WX_DEFINE_ARRAY(CommandListEntry *, CommandList);
 WX_DECLARE_STRING_HASH_MAP(CommandListEntry *, CommandNameHash);
 WX_DECLARE_HASH_MAP(int, CommandListEntry *, wxIntegerHash, wxIntegerEqual, CommandIDHash);
 
-class CommandManager: public XMLTagHandler
+class AUDACITY_DLL_API CommandManager: public XMLTagHandler
 {
  public:
 

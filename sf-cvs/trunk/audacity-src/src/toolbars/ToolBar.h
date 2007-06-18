@@ -17,7 +17,7 @@
 #include <wx/panel.h>
 #include <wx/sizer.h>
 
-#include <../Theme.h>
+#include "../Theme.h"
 
 class wxDC;
 class wxEraseEvent;

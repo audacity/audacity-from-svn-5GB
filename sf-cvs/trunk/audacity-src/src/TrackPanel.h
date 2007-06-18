@@ -68,7 +68,7 @@ class TrackClip
 
 WX_DECLARE_OBJARRAY(TrackClip, TrackClipArray);
 
-class TrackPanelListener {
+class AUDACITY_DLL_API TrackPanelListener {
 
  public:
    TrackPanelListener(){};

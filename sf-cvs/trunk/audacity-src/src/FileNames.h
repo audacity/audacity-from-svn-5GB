@@ -16,7 +16,7 @@
 
 // Uh, this is really a namespace rather than a class,
 // since all the functions are static.
-class FileNames
+class AUDACITY_DLL_API FileNames
 {
 public:
    static wxString MkDir(const wxString &Str);

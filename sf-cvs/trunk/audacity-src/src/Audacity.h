@@ -71,6 +71,17 @@ void QuitAudacity();
 #include "configwin.h"
 #endif
 
+#ifdef BUILDING_AUDACITY
+#define AUDACITY_DLL_API _declspec(dllexport)
+#else
+#ifdef _DLL
+#define AUDACITY_DLL_API _declspec(dllimport)
+#else
+#define AUDACITY_DLL_API
+#endif
+#endif
+
+
 // For compilers that support precompilation, includes "wx/wx.h".
 // Mainly for MSVC developers.
 //

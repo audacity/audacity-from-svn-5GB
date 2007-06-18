@@ -197,7 +197,7 @@ AProjectArray gAudacityProjects;
 /* Declare Static functions */
 static void SetActiveProject(AudacityProject * project);
 
-AudacityProject *GetActiveProject()
+AUDACITY_DLL_API AudacityProject *GetActiveProject()
 {
    return gActiveProject;
 }
@@ -364,7 +364,7 @@ void RefreshCursorForAllProjects()
       gAudacityProjects[i]->RefreshCursor();
 }
 
-void CloseAllProjects()
+AUDACITY_DLL_API void CloseAllProjects()
 {
    size_t len = gAudacityProjects.GetCount();
    for (size_t i = 0; i < len; i++)

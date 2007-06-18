@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.3 2007-05-12 06:14:29 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.4 2007-06-18 16:10:50 jamescrook Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -191,6 +191,7 @@ FileDialog::FileDialog(wxWindow *parent,
     m_callback = NULL;
     m_cbdata = NULL;
 }
+
 void FileDialog::GetPaths(wxArrayString& paths) const
 {
     paths.Empty();

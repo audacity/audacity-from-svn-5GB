@@ -28,7 +28,7 @@ class WaveTrack;
 #endif
 WX_DEFINE_ARRAY(WaveTrack*, WaveTrackArray);
 
-class Track: public XMLTagHandler {
+class AUDACITY_DLL_API Track: public XMLTagHandler {
 
  // To be TrackDisplay
  protected:
@@ -159,7 +159,7 @@ struct TrackListNode {
 
 class TrackList;
 
-class TrackListIterator {
+class AUDACITY_DLL_API TrackListIterator {
  public:
   TrackListIterator(TrackList * val = NULL);
   
@@ -175,7 +175,7 @@ class TrackListIterator {
   TrackListNode *cur;
 };
 
-class TrackList {
+class AUDACITY_DLL_API TrackList {
  public:
   // Create an empty TrackList
   TrackList();
@@ -250,7 +250,7 @@ class TrackList {
   TrackListNode *tail;
 };
 
-class ConstTrackListIterator {
+class AUDACITY_DLL_API ConstTrackListIterator {
  public:
     ConstTrackListIterator(const TrackList * val) : l(val), cur(NULL) {}
 
@@ -282,7 +282,7 @@ class LabelTrack;
 class TimeTrack;
 class DirManager;
 
-class TrackFactory
+class AUDACITY_DLL_API TrackFactory
 {
  private:
    TrackFactory(DirManager *dirManager):

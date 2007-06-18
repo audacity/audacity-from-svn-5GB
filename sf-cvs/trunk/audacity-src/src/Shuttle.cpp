@@ -1,11 +1,11 @@
 /**********************************************************************
 
-  Audacity: A Digital Audio Editor
-
   Shuttle.cpp
 
-  Dominic Mazzoni
   James Crook
+  (C) Audacity Developers, 2007
+
+  wxWidgets license. See Licensing.txt
 
 *******************************************************************//**
 
@@ -13,7 +13,6 @@
 \brief Implements Shuttle, ShuttleCli and Enums.
 
 *//****************************************************************//**
-
 
 \class Shuttle
 \brief Moves data from one place to another, converting it as required.
@@ -51,7 +50,7 @@ preferences.
 
 *//*******************************************************************/
 
-#include "Audacity.h"
+//#include "Audacity.h"
 
 #include <wx/defs.h>
 #include <wx/checkbox.h>
@@ -65,11 +64,11 @@ preferences.
 #include <wx/radiobut.h>
 #include <wx/button.h>
 
-#include "Project.h"
+//#include "Project.h"
 #include "Shuttle.h"
 #include "WrappedType.h"
-#include "commands/CommandManager.h"
-#include "effects/Effect.h"
+//#include "commands/CommandManager.h"
+//#include "effects/Effect.h"
 
 const int Enums::NumDbChoices = 14;
 
