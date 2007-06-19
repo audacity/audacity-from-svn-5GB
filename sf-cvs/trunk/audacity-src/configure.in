@@ -370,6 +370,9 @@ dnl Gather wx arguments
 LIBS="$LIBS `$WX_CONFIG $static_preference $unicode_preference $debug_preference $wx_preference --libs`"
 CPPFLAGS="$CPPFLAGS `$WX_CONFIG $static_preference $unicode_preference $debug_preference $wx_preference --cxxflags`"
 
+dnl API define is only needed on Windows
+CPPFLAGS="$CPPFLAGS -DAUDACITY_DLL_API=''"
+
 AC_CANONICAL_HOST
 
 dnl OS-specific configuration
