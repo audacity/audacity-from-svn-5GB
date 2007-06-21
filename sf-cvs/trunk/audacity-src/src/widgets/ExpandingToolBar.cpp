@@ -773,7 +773,12 @@ ToolBarFrame::ToolBarFrame(wxWindow* parent,
                            wxWindowID id,
                            const wxString& name,
                            const wxPoint& pos):
-   wxMiniFrame(parent, id, name, pos, wxSize(1, 1), wxCAPTION|wxCLOSE_BOX),
+   wxMiniFrame(parent, id, name, pos, wxSize(1, 1),
+// Workaround for bug in __WXMSW__.  No close box on a miniframe unless wxSYSTEM_MENU is used.
+#ifdef __WXMSW__
+      wxSYSTEM_MENU |
+#endif
+      wxCAPTION|wxCLOSE_BOX),
    mChild(NULL)
 {
 }
