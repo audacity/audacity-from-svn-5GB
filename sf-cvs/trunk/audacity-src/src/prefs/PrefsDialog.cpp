@@ -129,12 +129,14 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 #endif
                                 );
 
+#if !wxCHECK_VERSION(2, 8, 4)
    // The list width is determined by the width of the images.
    // If you don't add some images the list will be too narrow.
    wxImageList *pImages = new wxImageList(64,1);
    wxBitmap bmpTrial(TrialImage);
    pImages->Add( bmpTrial );
    mCategories->SetImageList(pImages);
+#endif
 
    //These two lines were an attempt to size the list correctly.
    //They don't work (in wxWidgets 2.6.1/XP)
@@ -155,7 +157,11 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName(),false,0);
    w = new DirectoriesPrefs(mCategories); mCategories->AddPage(w, w->GetName(),false,0);
    w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName(),false,0);
+
+#ifdef EXPERIMENTAL_THEME_PREFS
    w = new ThemePrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
+#endif
+
    w = new BatchPrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
    w = new KeyConfigPrefs(mCategories);   mCategories->AddPage(w, w->GetName(),false,0);
    w = new MousePrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
