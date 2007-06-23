@@ -3135,6 +3135,7 @@ void AudacityProject::OnZoomIn()
    if (gAudioIO->IsStreamActive(GetAudioIOToken()) != 0) {
       Zoom(mViewInfo.zoom * 2.0);
       mTrackPanel->ScrollIntoView(gAudioIO->GetStreamTime());
+      mTrackPanel->Refresh(false);
       return;
    }
 
