@@ -68,7 +68,7 @@ public:
    void AddUnits(const wxString &Prompt);
    void AddTitle(const wxString &Prompt);
    wxWindow * AddWindow(wxWindow * pWindow );
-   wxSlider * AddSlider(const wxString &Prompt, int pos, int Max);
+   wxSlider * AddSlider(const wxString &Prompt, int pos, int Max, int Min = 0);
 	wxTreeCtrl * AddTree();
 	wxRadioButton * AddRadioButton( const wxString & Prompt );
 	wxRadioButton * AddRadioButtonToGroup( const wxString & Prompt);
@@ -147,8 +147,8 @@ public:
    wxChoice * TieChoice( const wxString &Prompt, wxString &Selected, const wxArrayString * pChoices );
    wxChoice * TieChoice( const wxString &Prompt, int &Selected, const wxArrayString * pChoices );
    
-   wxSlider * TieSlider( const wxString &Prompt, WrappedType & WrappedRef, const int max );
-   wxSlider * TieSlider( const wxString &Prompt, int &pos, const int max );
+   wxSlider * TieSlider( const wxString &Prompt, WrappedType & WrappedRef, const int max, const int min = 0 );
+   wxSlider * TieSlider( const wxString &Prompt, int &pos, const int max, const int min = 0);
 
    wxRadioButton * TieRadioButton( const wxString & Prompt, WrappedType &WrappedRef);
    wxRadioButton * TieRadioButton( const wxString &Prompt, const int iValue);
@@ -181,6 +181,12 @@ public:
       const wxString & SettingName, 
       const double & Default,
       const int nChars);
+   wxSlider * TieSlider(
+      const wxString & Prompt, 
+      const wxString & SettingName, 
+      const int iDefault,
+      const int max,
+      const int min = 0);
 //-- End of variants.
    void EnableCtrl( bool bEnable );
    void SetSizeHints( int minX, int minY );

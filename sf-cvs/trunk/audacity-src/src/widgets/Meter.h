@@ -103,6 +103,8 @@ class Meter : public wxPanel
    bool IsMeterDisabled();
    // End thread-safe methods
    //
+   
+   float GetMaxPeak();
 
    //
    // Event handlers

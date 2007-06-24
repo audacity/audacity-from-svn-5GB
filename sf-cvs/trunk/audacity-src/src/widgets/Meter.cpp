@@ -559,6 +559,17 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
       RepaintBarsNow();
 }
 
+float Meter::GetMaxPeak()
+{
+   int j;
+   float maxPeak = 0.;
+
+   for(j=0; j<mNumBars; j++)
+      maxPeak = mBar[j].peak > maxPeak ? mBar[j].peak : maxPeak;
+
+   return(maxPeak);
+}
+
 wxFont Meter::GetFont()
 {
    int fontSize = 10;
@@ -576,10 +587,10 @@ void Meter::ResetBar(MeterBar *b, bool resetClipping)
    b->peakHold = 0.0;
    b->peakHoldTime = 0.0;
    if (resetClipping)
-      {
+   {
       b->clipping = false;
       b->peakPeakHold =0.0;
-      }
+   }
    b->tailPeakCount = 0;
 }
 

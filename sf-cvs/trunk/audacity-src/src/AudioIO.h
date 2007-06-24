@@ -230,6 +230,8 @@ private:
    volatile bool       mInCallbackFinishedState;
 #endif
    bool                mSoftwarePlaythrough;
+   bool                mPauseRec;
+   float               mSilenceLevel;
    unsigned int        mNumCaptureChannels;
    unsigned int        mNumPlaybackChannels;
    sampleFormat        mCaptureFormat;
