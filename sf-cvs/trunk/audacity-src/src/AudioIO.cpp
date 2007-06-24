@@ -64,6 +64,7 @@ writing audio.
 #include "RingBuffer.h"
 #include "Prefs.h"
 #include "Project.h"
+#include "toolbars/ControlToolBar.h"
 
 #include "widgets/Meter.h"
 
@@ -860,6 +861,10 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    #endif
 
    gPrefs->Read(wxT("/AudioIO/SWPlaythrough"), &mSoftwarePlaythrough, false);
+   gPrefs->Read(wxT("/AudioIO/PauseRecOnSilence"), &mPauseRec, false);
+   int silenceLevelDB;
+   gPrefs->Read(wxT("/AudioIO/SilenceLevel"), &silenceLevelDB, -30);
+   mSilenceLevel = (silenceLevelDB + 60.)/60.;  // meter goes -60dB -> 0dB
 
    mTimeTrack = timeTrack;
    mListener = listener;
@@ -1835,6 +1840,64 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
    unsigned int i;
    int t;
 
+   // Send data to VU meters
+
+   // It's critical that we don't update the meters while
+   // StopStream is trying to stop PortAudio, otherwise it can
+   // lead to a freeze.  We use two variables to synchronize:
+   // mUpdatingMeters tells StopStream when the callback is about
+   // to enter the code where it might update the meters, and
+   // mUpdateMeters is how the rest of the code tells the callback
+   // when it is allowed to actually do the updating.  Note that
+   // mUpdatingMeters must be set first to avoid a race condition.
+   gAudioIO->mUpdatingMeters = true;
+   if (gAudioIO->mUpdateMeters) {
+
+      if (gAudioIO->mOutputMeter && 
+          !gAudioIO->mOutputMeter->IsMeterDisabled() &&
+          outputBuffer) {
+         gAudioIO->mOutputMeter->UpdateDisplay(numPlaybackChannels,
+                                               framesPerBuffer,
+                                               (float *)outputBuffer);
+      }
+
+      if (gAudioIO->mInputMeter &&
+          !gAudioIO->mInputMeter->IsMeterDisabled() &&
+          inputBuffer) {
+         if (gAudioIO->mCaptureFormat == floatSample)
+            gAudioIO->mInputMeter->UpdateDisplay(numCaptureChannels,
+                                                 framesPerBuffer,
+                                                 (float *)inputBuffer);
+         else {
+            CopySamples((samplePtr)inputBuffer, gAudioIO->mCaptureFormat,
+                        (samplePtr)tempFloats, floatSample,
+                        framesPerBuffer * numCaptureChannels);
+            gAudioIO->mInputMeter->UpdateDisplay(numCaptureChannels,
+                                                 framesPerBuffer,
+                                                 tempFloats);
+         }
+      }
+   }
+   gAudioIO->mUpdatingMeters = false;
+
+   // Stop recording if 'silence' is detected
+   if(gAudioIO->mPauseRec && inputBuffer) {
+      if(gAudioIO->mInputMeter->GetMaxPeak() < gAudioIO->mSilenceLevel ) {
+         if(!gAudioIO->IsPaused()) {
+            AudacityProject *p = GetActiveProject();
+            wxCommandEvent dummyEvt;
+            p->GetControlToolBar()->OnPause(dummyEvt);
+         }
+      }
+      else {
+         if(gAudioIO->IsPaused()) {
+            AudacityProject *p = GetActiveProject();
+            wxCommandEvent dummyEvt;
+            p->GetControlToolBar()->OnPause(dummyEvt);
+         }
+      }
+   }
+
    if( gAudioIO->mPaused )
    {
       if (outputBuffer && numPlaybackChannels > 0)
@@ -2146,46 +2209,6 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          }
       }
    }
-
-   // Send data to VU meters
-
-   // It's critical that we don't update the meters while
-   // StopStream is trying to stop PortAudio, otherwise it can
-   // lead to a freeze.  We use two variables to synchronize:
-   // mUpdatingMeters tells StopStream when the callback is about
-   // to enter the code where it might update the meters, and
-   // mUpdateMeters is how the rest of the code tells the callback
-   // when it is allowed to actually do the updating.  Note that
-   // mUpdatingMeters must be set first to avoid a race condition.
-   gAudioIO->mUpdatingMeters = true;
-   if (gAudioIO->mUpdateMeters) {
-
-      if (gAudioIO->mOutputMeter && 
-          !gAudioIO->mOutputMeter->IsMeterDisabled() &&
-          outputBuffer) {
-         gAudioIO->mOutputMeter->UpdateDisplay(numPlaybackChannels,
-                                               framesPerBuffer,
-                                               (float *)outputBuffer);
-      }
-
-      if (gAudioIO->mInputMeter &&
-          !gAudioIO->mInputMeter->IsMeterDisabled() &&
-          inputBuffer) {
-         if (gAudioIO->mCaptureFormat == floatSample)
-            gAudioIO->mInputMeter->UpdateDisplay(numCaptureChannels,
-                                                 framesPerBuffer,
-                                                 (float *)inputBuffer);
-         else {
-            CopySamples((samplePtr)inputBuffer, gAudioIO->mCaptureFormat,
-                        (samplePtr)tempFloats, floatSample,
-                        framesPerBuffer * numCaptureChannels);
-            gAudioIO->mInputMeter->UpdateDisplay(numCaptureChannels,
-                                                 framesPerBuffer,
-                                                 tempFloats);
-         }
-      }
-   }
-   gAudioIO->mUpdatingMeters = false;
 
    return callbackReturn;
 }
