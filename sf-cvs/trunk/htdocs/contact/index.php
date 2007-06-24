@@ -26,13 +26,13 @@
 <p>
   <?php echo _('If you still have a general question about how to use Audacity, please use the ');?>
   <a href="http://audacityteam.org/forum/"><?php 
-  // i18n-hint: this is the link text to the Forum
+  // i18n-hint: This is the link text to the Forum.
   echo _('Audacity Forum');?>
-  </a>.<?php 
-  // i18n-hint: this is instructions on how to use the forum. The name of the
+  </a><?php 
+  // i18n-hint: These are instructions on how to use the forum. The name of the
   // link probably shouldn't be translated unless the forum interface supports
   // your language - currently German I think
-  echo _('You can search the Forum and may well be able to find an immediate answer. If not, you can register and then post your question to other users. Log in and use the "Create New Thread" link.');?>
+  echo _('. There are foreign language Subforums for French, German, Russian, and Spanish. You can search the Forum and may well be able to find an immediate answer. If not, you can register and then post your question to other users. Log in and use the "Create New Thread" link.');?>
 </p>
 <p><?=_('You might also find helpful information by searching the <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=audacity-help">Help list archive</a>, also available at <a href="http://www.nabble.com/audacity-help-f4506.html">Nabble</a> with an easier search interface.')?></p>
 
@@ -45,6 +45,7 @@
   <li><?=_('Tell us what version of Audacity you are using (for example, 1.2.6).')?></li>
   <li><?=_('Tell us what operating system you are using (for example, Windows XP Service Pack 2 or Mac OS X 10.4).')?></li>
   <li><?=_('Include details of what you are trying to do, and any error messages or other problems you experience.')?></li>
+  <li><?=_('Please ask your question in English if possible. Questions sent in languages other than English and French tend to get answered more slowly, because the Audacity Team members who handle the majority of the questions are English and French speakers.')?></li>
 </ol>
 
 
