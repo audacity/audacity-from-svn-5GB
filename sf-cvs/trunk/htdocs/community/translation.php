@@ -30,7 +30,7 @@
   // leave them untranslated if you like.
   printf(_('<h3>Translation Instructions</h3>
 
-<p>To start a new translation, download POT file above.  Rename it "audacity.po" before you begin translating.  To edit an existing translation, download the PO file for your language:</p>
+<p>To start a new translation, download POT file above.  Rename it "audacity.po" (or "audacity_website.po" if doing website translation) before you begin translating.  To edit an existing translation, download the PO file for your language:</p>
 <ul>
   <li><a href="%s">Audacity translations</a></li>
   <li><a href="%s">Audacity web site translations</a></li>
@@ -41,6 +41,19 @@
   <li><a href="http://poedit.sourceforge.net/">poEdit</a> for Windows and Unix.</li>
   <li><a href="http://i18n.kde.org/tools/kbabel/">KBabel</a> for KDE.</li>
   <li><a href="http://www.gnu.org/software/gettext/">GNU gettext</a> is standard on most Unix systems.  It includes a PO mode for the Emacs text editor.</li>
+</ul>
+
+<p>To start a new translation using poEdit, after the above steps:</p>
+<ul>
+  <li><b>Catalog > Settings</b>: Fill in the settings. Set the target language in the <b>Language</b> menu.</li>
+  <li>When you <b>File > Save</b>, it writes both the PO and MO files.</li>
+</ul>
+
+<p>For a new Audacity translation, when you are ready to test it in Audacity:</p>
+<ul>
+  <li>Create a new directory in audacity/languages named the code for the target language. The abbreviations are shown at <a href="http://www.poedit.net/translations.php">http://www.poedit.net/translations.php</a>. For example, the code for Tamil is "ta", so create "audacity/languages/ta".</li>
+  <li>Copy audacity.mo into that new directory, e.g., into "audacity/languages/ta". </li>
+  <li>Open Audacity and in <b>Preferences > Interface</b>, the new language should now appear in the Language menu. Choose it, quit, then restart and you should see your translations. </li>
 </ul>
 
 <p>Send completed PO files to Dominic Mazzoni <a href="mailto:dominic@audacityteam.org">dominic@audacityteam.org</a>.</p>
