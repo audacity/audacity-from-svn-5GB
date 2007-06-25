@@ -14,6 +14,7 @@
 #ifndef __AUDACITY_THEME__
 #define __AUDACITY_THEME__
 
+#include "../Audacity.h"
 #include <wx/defs.h>
 #include <wx/dynarray.h>
 #include <wx/bitmap.h>

@@ -18,6 +18,7 @@
 #ifndef __AUDACITY_XML_TAG_HANDLER__
 #define __AUDACITY_XML_TAG_HANDLER__
 
+#include "../Audacity.h"
 #include <wx/string.h>
 #include <stdio.h>
 

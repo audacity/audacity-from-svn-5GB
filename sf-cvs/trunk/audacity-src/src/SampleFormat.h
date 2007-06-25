@@ -11,6 +11,7 @@
 #ifndef __AUDACITY_SAMPLE_FORMAT__
 #define __AUDACITY_SAMPLE_FORMAT__
 
+#include "Audacity.h"
 #include <wx/defs.h>
 
 //
