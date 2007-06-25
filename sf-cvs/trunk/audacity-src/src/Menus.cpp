@@ -3678,6 +3678,7 @@ void AudacityProject::OnCursorTrackStart()
    mViewInfo.sel1 = minOffset;
    ModifyState();
    mTrackPanel->ScrollIntoView(mViewInfo.sel0);
+   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnCursorTrackEnd()
@@ -3700,7 +3701,9 @@ void AudacityProject::OnCursorTrackEnd()
 
    mViewInfo.sel0 = maxEndOffset;
    mViewInfo.sel1 = maxEndOffset;
+   ModifyState();
    mTrackPanel->ScrollIntoView(mViewInfo.sel1);
+   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnCursorSelStart()
@@ -3812,7 +3815,7 @@ void AudacityProject::HandleAlign(int index, bool moveSel)
 
    PushState(action, _("Align"));
 
-   mTrackPanel->Refresh(false);
+   RedrawProject();
 }
 
 void AudacityProject::OnAlign(int index)
