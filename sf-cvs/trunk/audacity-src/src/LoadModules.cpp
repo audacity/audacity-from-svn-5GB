@@ -114,7 +114,7 @@ void RegisterAndRun(  )
 
 void LoadModule(wxString fname)
 {
-   wxLogDebug("About to load %s", fname );
+   wxLogDebug(wxT("About to load %s"), fname );
    wxLogNull logNo;
    tModuleInit mainFn = NULL;
 
