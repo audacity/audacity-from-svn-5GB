@@ -809,7 +809,11 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
                    wxALIGN_CENTER_VERTICAL | wxALL, 5);
       }
          
-      if( ctrl->type != NYQ_CTRL_CHOICE )
+      if( ctrl->type == NYQ_CTRL_CHOICE )
+      {
+         grid->Add( 10, 10 );
+      }
+      else
       {
          item = new wxStaticText(this, -1, ctrl->label);
          grid->Add(item, 0, wxALIGN_LEFT | 
