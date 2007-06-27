@@ -38,6 +38,8 @@
 
 <p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href="http://www.mozilla.com/">Mozilla</a> web browser, the <a href="http://www.openoffice.org/">OpenOffice.org</a> office suite, and entire <a title="Ubuntu Linux" href="http://www.ubuntulinux.org/">Linux-based operating systems</a>.</p>
 
+<p><a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development. &nbsp; <SCRIPT type="text/javascript" language="JavaScript" src="http://www.ohloh.net/projects/59;badge_js"></SCRIPT></p>
+
 <p>We welcome <a href="../community/donate">donations</a> to support Audacity development.</p>');
 
   echo _('<h3>Bundling, Reselling, or Distributing Audacity</h3>
