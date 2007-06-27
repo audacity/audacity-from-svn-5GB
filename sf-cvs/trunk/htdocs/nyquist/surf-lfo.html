@@ -1,0 +1,80 @@
+surf-lfo.ny: LFO Surf generator 
+<p>
+LFO: low frequency oscillator. A signal whose frequency is
+below the human ear's ability to hear as a tone,
+generally below 20 cycles per second [Hertz or hz].
+<p>
+Generates mono or stereo surf which sweeps between a lower and
+upper filter frequency. Stereo surf also sweeps back-and-forth
+somewhere between the left and right audio channels.
+<p>
+To generate stereo surf, first open a blank stereo track [alt+p, s
+in Audacity pre-1.3, alt+t, n, s in 1.3 and later]. Open the
+generate menu. Click on 'Surf [LFO]'.
+<p>
+Variables with instructions:
+<p>
+1. Mono or stereo surf [1=mono 2=stereo]<br>
+Mono surf is heard only in the center between the two speakers, or
+in the middle of your head when wearing headphones. Stereo surf
+also sweeps back-and-forth somewhere between the two audio
+channels, depending on the next setting, Stereo Spread.
+<p>
+2. Stereo spread [stereo only: percent]<br>
+The larger this value, the more widely the stereo surf will move
+back-and-forth between the left and right audio channels. 
+When this value is above zero, the deeper section of the surf sweep
+will be heard more in the left channel; below zero, the deeper
+section of the surf sweep will be heard mor in the right channel.
+<p>
+3. Fade-in and fade-out times [seconds]<br>
+To smoothly fade in and fade out the volume at the start and end of
+the surf.
+<p>
+4. Surf duration [minutes]<br>
+Up to sixty minutes of LFO surf.
+<p>
+5. Surf type [0=white noise 1=pink noise]<br>
+White noise is more of a 'hissing' sound, whereas pink noise is a
+lower 'rushing' sound.
+Technically, white noise is 'equal energy per frequency', whereas
+pink noise is 'equal energy per octave'.
+<p>
+6. Surf sweep frequency [hz]<br>
+Sets how slow or fast the surf sweeps between the lower and upper
+filter frequencies, and the left and right channels [for stereo
+surf].
+<p>
+The next two variables<br>
+7. Lower filter frequency [hz]<br>
+8. Upper filter frequency [hz]<br>
+determine how low and how high the lowpass filter sweeps the surf
+noise.
+<p>
+9. Bass frequency to boost [hz]<br>
+You can boost [increase the volume of] frequencies of the surf
+sound below this setting, to get a deeper-sounding surf. Somewhat
+analogous to the bass knob on your stereo.
+<p>
+10. Bass boost [db]<br>
+Sets how much to boost the above bass frequency. 0db means no
+boost, 6db means double the amplitude of the bass frequency, and so
+on.
+<p>
+<i>Note</i>
+<p>
+If you get an error message 'Nyquist returned too many audio
+channels', this means you tried to generate stereo surf without
+first having opened a blank stereo track in audacity. See
+instructions at the start of this help file for instructions on how
+to do this.
+<p>
+Written by David R. Sky, June 17, 2007.<br>
+<a href="http://www.shellworld.net/~davidsky/nyquist.htm">
+http://www.shellworld.net/~davidsky/nyquist.htm</a><br>
+Thanks to Steven Jones for pink noise generator code.<br>
+Released under terms of the GNU Public License<br>
+<a href="http://www.opensource.org/licenses/gpl-license.php"> 
+http://www.opensource.org/licenses/gpl-license.php</a> 
+<p>
+
