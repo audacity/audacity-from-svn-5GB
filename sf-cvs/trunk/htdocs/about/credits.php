@@ -19,6 +19,8 @@
 
 <p><?=_("Audacity was started by Dominic Mazzoni and Roger Dannenberg in the fall of 1999 at Carnegie Mellon University.  It was released as open-source software at SourceForge.net in May of 2000.")?></p>
 
+<p><a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development, including <a href="http://www.ohloh.net/projects/59/analyses/latest">the progress of code development</a>. &nbsp; <SCRIPT type="text/javascript" language="JavaScript" src="http://www.ohloh.net/projects/59;badge_js"></SCRIPT></p>
+
 <h3><?=_("Audacity Team Members")?></h3>
 <ul>
   <li>Gale Andrews, <?=_("documentation and support")?></li>
@@ -157,8 +159,6 @@
   <li>Verilogix, Inc.</li>
   <li><?=_("(Let us know if we're forgetting anyone!)")?></li>
 </ul>
-
-<p><a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development, including <a href="http://www.ohloh.net/projects/59/analyses/latest">the progress of code development</a>. &nbsp; <SCRIPT type="text/javascript" language="JavaScript" src="http://www.ohloh.net/projects/59;badge_js"></SCRIPT></p>
 
 <?php
   include "../include/footer.inc.php";
