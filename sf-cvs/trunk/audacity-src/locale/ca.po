@@ -7085,3 +7085,4 @@ msgstr "Error: %s a la línia %d"
 #: xml/XMLFileReader.cpp:80
 msgid "Unable to open project file."
 msgstr "No s'ha pogut obrir el fitxer de projecte."
+
