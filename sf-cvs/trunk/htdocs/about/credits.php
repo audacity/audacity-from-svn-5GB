@@ -158,6 +158,8 @@
   <li><?=_("(Let us know if we're forgetting anyone!)")?></li>
 </ul>
 
+<p><a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development, including <a href="http://www.ohloh.net/projects/59/analyses/latest">the progress of code development</a>. &nbsp; <SCRIPT type="text/javascript" language="JavaScript" src="http://www.ohloh.net/projects/59;badge_js"></SCRIPT></p>
+
 <?php
   include "../include/footer.inc.php";
 ?>
