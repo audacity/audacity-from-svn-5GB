@@ -109,9 +109,7 @@ double EffectNyquist::GetCtrlValue(wxString s)
       return ((WaveTrack *)iter.First())->GetRate();
    }
    else {
-      double d;
-      s.ToDouble(&d);
-      return d;
+      return Internat::CompatibleToDouble(s);
    }
 }
 
@@ -870,11 +868,11 @@ void NyquistDialog::OnSlider(wxCommandEvent & /* event */)
       wxString valStr;
       if (ctrl->type == NYQ_CTRL_REAL) {
          if (ctrl->high - ctrl->low < 1)
-            valStr.Printf(wxT("%.3f"), ctrl->val);
+            valStr = Internat::ToDisplayString(ctrl->val, 3);
          else if (ctrl->high - ctrl->low < 10)
-            valStr.Printf(wxT("%.2f"), ctrl->val);
+            valStr = Internat::ToDisplayString(ctrl->val, 2);
          else if (ctrl->high - ctrl->low < 100)
-            valStr.Printf(wxT("%.1f"), ctrl->val);
+            valStr = Internat::ToDisplayString(ctrl->val, 1);
          else
             valStr.Printf(wxT("%d"), (int)floor(ctrl->val + 0.5));
       }
@@ -926,14 +924,16 @@ void NyquistDialog::OnText(wxCommandEvent &event)
       wxSlider *slider = (wxSlider *)FindWindow(ID_NYQ_SLIDER + ctrlId);
       wxASSERT(slider);
 
-      ctrl->valStr.ToDouble(&ctrl->val);
-      int pos = (int)floor((ctrl->val - ctrl->low) /
-                           (ctrl->high - ctrl->low) * ctrl->ticks + 0.5);
-      if (pos < 0)
-         pos = 0;
-      if (pos > ctrl->ticks)
-         pos = ctrl->ticks;
-      slider->SetValue(pos);
+      if (ctrl->valStr.ToDouble(&ctrl->val))
+      {
+         int pos = (int)floor((ctrl->val - ctrl->low) /
+                              (ctrl->high - ctrl->low) * ctrl->ticks + 0.5);
+         if (pos < 0)
+            pos = 0;
+         if (pos > ctrl->ticks)
+            pos = ctrl->ticks;
+         slider->SetValue(pos);
+      }
    }   
 
    mInHandler = false;   
