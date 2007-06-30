@@ -596,16 +596,16 @@ wxSizer *CreatePhaserDialog(wxWindow * parent, bool call_fit,
    item23->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 5);
    item23->Add(20, 10); // horizontal spacer
 
+   wxButton *item25 =
+       new wxButton(parent, wxID_CANCEL, _("&Cancel"), wxDefaultPosition,
+                    wxDefaultSize, 0);
+   item23->Add(item25, 0, wxALIGN_CENTRE | wxALL, 5);
+
    wxButton *item24 =
        new wxButton(parent, wxID_OK, _("&OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item24->SetDefault();
    item23->Add(item24, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxButton *item25 =
-       new wxButton(parent, wxID_CANCEL, _("&Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item23->Add(item25, 0, wxALIGN_CENTRE | wxALL, 5);
 
    item0->Add(item23, 0, wxALIGN_CENTRE | wxALL, 5);
 

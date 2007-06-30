@@ -1247,11 +1247,11 @@ void EqualizationDialog::MakeEqualizationDialog()
 
    szrJ->Add(80, 4); // horizontal spacer
 
-   btn = new wxButton(this, wxID_OK, _("&OK"));
-   btn->SetDefault();
+   btn = new wxButton(this, wxID_CANCEL, _("&Cancel"));
    szrJ->Add( btn, 0, wxALIGN_RIGHT | wxALL, 4 );
 
-   btn = new wxButton(this, wxID_CANCEL, _("&Cancel"));
+   btn = new wxButton(this, wxID_OK, _("&OK"));
+   btn->SetDefault();
    szrJ->Add( btn, 0, wxALIGN_RIGHT | wxALL, 4 );
 
    szrV->Add( szrJ, 0, wxALIGN_CENTER );
