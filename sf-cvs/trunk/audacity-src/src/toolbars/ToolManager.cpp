@@ -609,7 +609,10 @@ void ToolManager::ReadConfig()
       }
 
       // Change back to the bar root
-      gPrefs->SetPath( wxT("..") );
+      //gPrefs->SetPath( wxT("..") );  <-- Causes a warning...
+      // May or may not have gone into a subdirectory,
+      // so use an absolute path.
+      gPrefs->SetPath( wxT("/GUI/ToolBars") );
    }
 
    // Add all toolbars to their target dock
