@@ -90,7 +90,7 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieCheckBox( _("&Present track number to accessibility aid"), 
          wxT("/GUI/PresentTrackNumber"), true );
       S.TieCheckBox( _("Editing a &clip can move other clips"),
-         wxT("/GUI/EditClipCanMove"), true );
+         wxT("/GUI/EditClipCanMove"), false );
    }
    S.EndStatic();
    S.StartStatic( _("Show / Hide"),1 );
