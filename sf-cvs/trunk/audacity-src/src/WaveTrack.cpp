@@ -397,11 +397,16 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
          {
             //printf("paste: CreateFromCopy(%f, %f, %i) returns false, quitting\n",
             //   clip_t0, clip_t1, (int)clip);
-
-            return false;
+            // JKC: July 2007, previously we did 'return false' here which
+            // could leave *dest undefined.
+            // I think this is dealing with clips that don't have any sequence content
+            // i.e. we don't copy cut lines and such - anyone like to explain more?
+            delete newClip;
          }
-
-         newTrack->mClips.Append(newClip);
+         else
+         {
+            newTrack->mClips.Append(newClip);
+         }
       }
    }
 
@@ -412,7 +417,7 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
 
 bool WaveTrack::Paste(double t0, Track *src)
 {
-   bool editClipCanMove = true;
+   bool editClipCanMove = false;
    gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
    
    //printf("paste: entering WaveTrack::Paste\n");
@@ -579,7 +584,7 @@ bool WaveTrack::HandleClear(double t0, double t1,
    if (t1 < t0)
       return false;
 
-   bool editClipCanMove = true;
+   bool editClipCanMove = false;
    gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
 
    WaveClipList::Node* it;
@@ -1572,7 +1577,7 @@ void WaveTrack::UpdateLocationsCache()
 bool WaveTrack::ExpandCutLine(double cutLinePosition, double* cutlineStart,
                               double* cutlineEnd)
 {
-   bool editClipCanMove = true;
+   bool editClipCanMove = false;
    gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
 
    // Find clip which contains this cut line   
