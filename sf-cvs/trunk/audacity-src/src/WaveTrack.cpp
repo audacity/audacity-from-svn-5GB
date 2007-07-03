@@ -417,7 +417,7 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
 
 bool WaveTrack::Paste(double t0, Track *src)
 {
-   bool editClipCanMove = false;
+   bool editClipCanMove = true;
    gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
    
    //printf("paste: entering WaveTrack::Paste\n");
@@ -462,10 +462,24 @@ bool WaveTrack::Paste(double t0, Track *src)
    // Make room for the pasted data, unless the space being pasted in is empty of
    // any clips
    if (!IsEmpty(t0, t0+insertDuration-1.0/mRate) && editClipCanMove) {
-      Track *tmp = NULL;
-      Cut(t0, GetEndTime()+1.0/mRate, &tmp);
-      Paste(t0 + insertDuration, tmp);
-      delete tmp;
+      if (other->GetNumClips() > 1) {
+         // We need to insert multiple clips, so split the current clip and
+         // move everything to the right, then try to paste again
+         Track *tmp = NULL;
+         Cut(t0, GetEndTime()+1.0/mRate, &tmp);
+         Paste(t0 + insertDuration, tmp);
+         delete tmp;
+      } else
+      {
+         // We only need to insert one single clip, so just move all clips
+         // to the right of the paste point out of the way
+         for (it=GetClipIterator(); it; it=it->GetNext())
+         {
+            WaveClip* clip = it->GetData();
+            if (clip->GetStartTime() > t0-(1.0/mRate))
+               clip->Offset(insertDuration);
+         }
+      }
    }
 
    if (other->GetNumClips() == 1)
@@ -584,7 +598,7 @@ bool WaveTrack::HandleClear(double t0, double t1,
    if (t1 < t0)
       return false;
 
-   bool editClipCanMove = false;
+   bool editClipCanMove = true;
    gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
 
    WaveClipList::Node* it;
@@ -1577,7 +1591,7 @@ void WaveTrack::UpdateLocationsCache()
 bool WaveTrack::ExpandCutLine(double cutLinePosition, double* cutlineStart,
                               double* cutlineEnd)
 {
-   bool editClipCanMove = false;
+   bool editClipCanMove = true;
    gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
 
    // Find clip which contains this cut line   

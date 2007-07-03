@@ -331,7 +331,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
       return;
    }
 
-   bool editClipCanMove = false;
+   bool editClipCanMove = true;
    gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
    gPrefs->Write(wxT("/GUI/EditClipCanMove"), false);
 
