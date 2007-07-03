@@ -396,7 +396,7 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
    for(i=0; i<effLen; i++) {
       int ID = NewIdentifier(name, labels[i], CurrentMenu(), callback,
                              true, i, effLen);
-
+                             
       CurrentMenu()->Append(ID, labels[i]);
      
       if(((i+1) % MAX_SUBMENU_LEN) == 0 && i != (effLen - 1)) {
@@ -485,7 +485,7 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    tmpEntry->flags = mDefaultFlags;
    tmpEntry->mask = mDefaultMask;
    tmpEntry->enabled = true;
-
+   
    // Key from preferences overridse the default key given
    gPrefs->SetPath(wxT("/NewKeys"));
    if (gPrefs->HasEntry(name)) {
@@ -543,12 +543,21 @@ void CommandManager::Enable(CommandListEntry *entry, bool enabled)
       
       for(i=1; i<entry->count; i++) {
          ID = NextIdentifier(ID);
-         wxMenuItem *item = entry->menu->FindItem(ID);
-         if (item) {
-            item->Enable(enabled);
+
+         // This menu item is not necessarily in the same menu, because
+         // multi-items can be spread across multiple sub menus
+         CommandListEntry *multiEntry = mCommandIDHash[ID];
+         if (multiEntry) {
+            wxMenuItem *item = multiEntry->menu->FindItem(ID);
+
+            if (item) {
+               item->Enable(enabled);
+            } else {
+               wxLogDebug(wxT("Warning: Menu entry with id %i in %s not found"),
+                   ID, (const wxChar*)entry->name);
+            }
          } else {
-            wxLogDebug(wxT("Warning: Menu entry with id %i in %s not found"),
-                ID, (const wxChar*)entry->name);
+            wxLogDebug(wxT("Warning: Menu entry with id %i not in hash"), ID);
          }
       }
    }
@@ -558,7 +567,8 @@ void CommandManager::Enable(wxString name, bool enabled)
 {
    CommandListEntry *entry = mCommandNameHash[name];
    if (!entry || !entry->menu) {
-      //printf("WARNING: Unknown command enabled: '%s'\n", (const char *)name.mb_str());
+      wxLogDebug(wxT("Warning: Unknown command enabled: '%s'"),
+                 (const wxChar*)name);
       return;
    }
 
@@ -573,7 +583,7 @@ void CommandManager::EnableUsingFlags(wxUint32 flags, wxUint32 mask)
       CommandListEntry *entry = mCommandList[i];
       if (entry->multi && entry->index != 0)
          continue;
-
+         
       wxUint32 combinedMask = (mask & entry->mask);
       if (combinedMask) {
          bool enable = ((flags & combinedMask) ==
