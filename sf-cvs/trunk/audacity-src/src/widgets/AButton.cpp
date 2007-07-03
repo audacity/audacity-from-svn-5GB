@@ -164,7 +164,7 @@ AButton::AButtonState AButton::GetState()
 {
    AButtonState state;
 
-   if (!mEnabled && !mToggle)
+   if (!mEnabled && (!mToggle || !mButtonIsDown))
       return AButtonDis;
 
    if (mCursorIsInWindow) {
@@ -260,7 +260,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
 
    //If the mouse button is released, the following stuff happens
    if (mEnabled) {
-      if (event.ButtonUp()) {
+      if (event.ButtonUp() && mIsClicking) {
          mIsClicking = false;
 
          if (HasCapture())
