@@ -183,7 +183,12 @@ AButton::AButtonState AButton::GetState()
          }
       }
       else {
-         state = mIsClicking ? AButtonDown : AButtonOver;
+         if (mIsClicking) {
+            state = mButtonIsDown ? AButtonOver : AButtonDown;
+         }
+         else {
+            state = mButtonIsDown ? AButtonDown : AButtonUp;
+         }
       }
    }
    else {
@@ -191,7 +196,7 @@ AButton::AButtonState AButton::GetState()
          state = mButtonIsDown ? AButtonDown : AButtonUp;
       }
       else {
-         state = AButtonUp;
+         state = mButtonIsDown ? AButtonDown : AButtonUp;
       }
    }
          
@@ -264,7 +269,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
          if (mCursorIsInWindow && (mToggle || !mButtonIsDown)) {
             SetFocus();
                
-            if(mToggle)
+            if (mToggle)
                mButtonIsDown = !mButtonIsDown;
             else
                mButtonIsDown = true;
