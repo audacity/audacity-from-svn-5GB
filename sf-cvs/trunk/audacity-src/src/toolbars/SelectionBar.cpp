@@ -220,6 +220,7 @@ void SelectionBar::Populate()
    mainSizer->Add(mSnapTo,
                   0, wxALIGN_CENTER_VERTICAL | wxALIGN_CENTER | wxRIGHT, 5);
    mSnapTo->SetName(_("Snap To"));
+   mSnapTo->SetValue(gPrefs->Read(wxT("/SnapTo"), 0L));
 
    mSnapTo->Connect(wxEVT_SET_FOCUS,
                     wxFocusEventHandler(SelectionBar::OnFocus),
