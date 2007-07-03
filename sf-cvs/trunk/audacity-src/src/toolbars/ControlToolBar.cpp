@@ -176,7 +176,7 @@ void ControlToolBar::Populate()
       ID_PAUSE_BUTTON,  true,  _("Pause"), _("Pause"));
 
    mPlay = MakeButton( bmpPlay, bmpPlayDisabled, 
-      ID_PLAY_BUTTON, false, _("Play"), _("Play (Shift for loop-play)"));
+      ID_PLAY_BUTTON, true, _("Play"), _("Play (Shift for loop-play)"));
 
    MakeLoopImage();
 
@@ -190,7 +190,7 @@ void ControlToolBar::Populate()
       ID_FF_BUTTON, false, _("End"), _("Skip to End"));
 
    mRecord = MakeButton(bmpRecord, bmpRecordDisabled,
-      ID_RECORD_BUTTON, false, _("Record"), _("Record"));
+      ID_RECORD_BUTTON, true, _("Record"), _("Record"));
 
    mBatch = MakeButton(bmpCleanSpeech,bmpCleanSpeechDisabled,
       ID_BATCH_BUTTON, false, _("Clean Speech"), _("Clean Speech"));
@@ -208,21 +208,7 @@ void ControlToolBar::Populate()
 void ControlToolBar::UpdatePrefs()
 {
    gPrefs->Read(wxT("/GUI/AlwaysEnablePlay"), &mAlwaysEnablePlay, true);
-#if 0
    gPrefs->Read(wxT("/GUI/AlwaysEnablePause"), &mAlwaysEnablePause, false);
-
-   if(mAlwaysEnablePause)
-      mPause->Enable();
-   else if(!mAlwaysEnablePause && !gAudioIO->IsBusy())
-   {
-      mPause->PopUp();
-      mPause->Disable();
-      mPaused = false;
-      gAudioIO->SetPaused(false);
-   }
-
-   gAudioIO->SetAlwaysEnablePause(mAlwaysEnablePause);
-#endif
 
    bool updated = false;
    bool active;
@@ -343,40 +329,38 @@ void ControlToolBar::EnableDisableButtons()
    size_t numProjects = gAudacityProjects.Count();
    bool tracks = false;
    bool cleaningSpeech = mBatch->IsDown();
-   bool busy = gAudioIO->IsBusy();
+   bool playing = mPlay->IsDown();
    bool recording = mRecord->IsDown();
+   bool busy = gAudioIO->IsBusy() || playing || recording;
 
    // Only interested in audio type tracks
-   if( p )
-   {
+   if (p) {
       TrackListIterator iter( p->GetTracks() );
 
-      for( Track *t = iter.First(); t; t = iter.Next() )
-      {
-         if( t->GetKind() == Track::Wave )
-         {
+      for (Track *t = iter.First(); t; t = iter.Next()) {
+         if (t->GetKind() == Track::Wave) {
             tracks = true;
             break;
          }
       }
    }
 
-   //mPlay->SetEnabled(tracks && !busy);
-   mPlay->SetEnabled(tracks && !recording && !cleaningSpeech);
-   
-   if (p && GetActiveProject()->GetCleanSpeechMode())
-   {
+   mPlay->SetEnabled((mAlwaysEnablePlay && !recording) || (tracks && !busy && !cleaningSpeech));
+   mRecord->SetEnabled(!busy && !playing);
+
+   if (p && GetActiveProject()->GetCleanSpeechMode()) {
        bool canRecord = !tracks;
-        canRecord &= !cleaningSpeech;
+       canRecord &= !cleaningSpeech;
        canRecord &= !busy;
        canRecord &= ((numProjects == 0) || ((numProjects == 1) && !tracks));
        mRecord->SetEnabled(canRecord);
        mBatch->SetEnabled(!busy && !recording);
    }
-   
+
    mStop->SetEnabled(busy && !cleaningSpeech);
    mRewind->SetEnabled(tracks && !busy);
    mFF->SetEnabled(tracks && !busy);
+   mPause->SetEnabled(busy || mAlwaysEnablePause);
 }
 
 void ControlToolBar::SetPlay(bool down)
@@ -387,6 +371,7 @@ void ControlToolBar::SetPlay(bool down)
       mPlay->PopUp();
       mPlay->SetAlternate(false);
    }
+   EnableDisableButtons();
 }
 
 void ControlToolBar::SetStop(bool down)
@@ -397,23 +382,18 @@ void ControlToolBar::SetStop(bool down)
       if(FindFocus() == mStop)
          mPlay->SetFocus();
       mStop->PopUp();
-      mStop->Disable();
-      mBatch->Enable();
-      mRecord->Enable();
-      mPlay->Enable();
-      if(!mAlwaysEnablePause)
-         mPause->Disable();
-      mRewind->Enable();
-      mFF->Enable();
    }
+   EnableDisableButtons();
 }
 
 void ControlToolBar::SetRecord(bool down)
 {
    if (down)
       mRecord->PushDown();
-   else
+   else {
       mRecord->PopUp();
+   }
+   EnableDisableButtons();
 }
 
 void ControlToolBar::PlayPlayRegion(double t0, double t1,
@@ -421,130 +401,147 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
                                     bool cutpreview /* = false */,
                                     TimeTrack *timetrack /* = NULL */)
 {
+   SetPlay(true);
+
    if (gAudioIO->IsBusy()) {
-      mPlay->PopUp();
+      SetPlay(false);
       return;
    }
    
    if (cutpreview && t0==t1) {
-      mPlay->PopUp();
+      SetPlay(false);
       return; /* msmeyer: makes no sense */
    }
 
-   mStop->Enable();
-   mRewind->Disable();
-   mBatch->Disable();
-   mRecord->Disable();
-   mFF->Disable();
-   mPause->Enable();
-   
    AudacityProject *p = GetActiveProject();
-   if (p) {
-      TrackList *t = p->GetTracks();
-      double maxofmins,minofmaxs;
-      
-      // JS: clarified how the final play region is computed;
-      if (t1 == t0) {
-         // msmeyer: When playing looped, we play the whole file, if
-         // no range is selected. Otherwise, we play from t0 to end
-         if (looped) {
-            // msmeyer: always play from start
+   if (!p) {
+      SetPlay(false);
+      return;  // Should never happen, but...
+   }
+
+   TrackList *t = p->GetTracks();
+   if (!t) {
+      mPlay->PopUp();
+      return;  // Should never happen, but...
+   }
+
+   bool hasaudio = false;
+   TrackListIterator iter(t);
+   for (Track *trk = iter.First(); trk; trk = iter.Next()) {
+      if (trk->GetKind() == Track::Wave) {
+         hasaudio = true;
+         break;
+      }
+   }
+
+   if (!hasaudio) {
+      SetPlay(false);
+      return;  // No need to continue without audio tracks
+   }
+
+   double maxofmins,minofmaxs;
+   
+   // JS: clarified how the final play region is computed;
+   if (t1 == t0) {
+      // msmeyer: When playing looped, we play the whole file, if
+      // no range is selected. Otherwise, we play from t0 to end
+      if (looped) {
+         // msmeyer: always play from start
+         t0 = t->GetStartTime();
+      } else {
+         // move t0 to valid range
+         if (t0 < 0)
             t0 = t->GetStartTime();
-         } else {
-            // move t0 to valid range
-            if (t0 < 0)
-               t0 = t->GetStartTime();
-            if (t0 > t->GetEndTime())
-               t0 = t->GetEndTime();
-         }
-         
-         // always play to end
-         t1 = t->GetEndTime();
+         if (t0 > t->GetEndTime())
+            t0 = t->GetEndTime();
+      }
+      
+      // always play to end
+      t1 = t->GetEndTime();
+   }
+   else {
+      // always t0 < t1 right?
+
+      // the set intersection between the play region and the
+      // valid range maximum of lower bounds
+      if (t0 < t->GetStartTime())
+         maxofmins = t->GetStartTime();
+      else
+         maxofmins = t0;
+      
+      // minimum of upper bounds
+      if (t1 > t->GetEndTime())
+         minofmaxs = t->GetEndTime();
+      else
+         minofmaxs = t1;
+
+      // we test if the intersection has no volume 
+      if (minofmaxs <= maxofmins) {
+         // no volume; play nothing
+         return;
       }
       else {
-         // always t0 < t1 right?
+         t0 = maxofmins;
+         t1 = minofmaxs;
+      }
+   }
 
-         // the set intersection between the play region and the
-         // valid range maximum of lower bounds
-         if (t0 < t->GetStartTime())
-            maxofmins = t->GetStartTime();
-         else
-            maxofmins = t0;
-         
-         // minimum of upper bounds
-         if (t1 > t->GetEndTime())
-            minofmaxs = t->GetEndTime();
-         else
-            minofmaxs = t1;
-
-         // we test if the intersection has no volume 
-         if (minofmaxs <= maxofmins) {
-            // no volume; play nothing
+   // Can't play before 0...either shifted or latencey corrected tracks
+   if (t0 < 0.0) {
+      t0 = 0.0;
+   }
+   
+   bool success = false;
+   if (t1 > t0) {
+      int token;
+      if (cutpreview) {
+         double beforeLen, afterLen;
+         gPrefs->Read(wxT("/AudioIO/CutPreviewBeforeLen"), &beforeLen, 1.0);
+         gPrefs->Read(wxT("/AudioIO/CutPreviewAfterLen"), &afterLen, 1.0);
+         double tcp0 = t0-beforeLen;
+         double tcp1 = (t1+afterLen) - (t1-t0);
+         SetupCutPreviewTracks(tcp0, t0, t1, tcp1);
+         if (mCutPreviewTracks)
+         {
+            token = gAudioIO->StartStream(
+               mCutPreviewTracks->GetWaveTrackArray(false),
+               WaveTrackArray(), NULL, p->GetRate(), tcp0, tcp1, p, false,
+               t0, t1-t0);
+         } else
+         {
+            // Cannot create cut preview tracks, clean up and exit
+            SetPlay(false);
+            SetStop(false);
+            SetRecord(false);
             return;
          }
-         else {
-            t0 = maxofmins;
-            t1 = minofmaxs;
+      } else {
+         if (!timetrack) {
+            timetrack = t->GetTimeTrack();
          }
+         token = gAudioIO->StartStream(t->GetWaveTrackArray(false),
+                               WaveTrackArray(), timetrack,
+                               p->GetRate(), t0, t1, p, looped);
       }
+      if (token != 0) {
+         success = true;
+         p->SetAudioIOToken(token);
+         mBusyProject = p;
+         SetVUMeters(p);
+      }
+      else {
+         // msmeyer: Show error message if stream could not be opened
+         wxMessageBox(_(
+            "Error while opening sound device. "
+            wxT("Please check the output device settings and the project sample rate.")),
+            _("Error"), wxOK | wxICON_EXCLAMATION, this);
+      }
+   }
 
-      // Can't play before 0...either shifted or latencey corrected tracks
-      if (t0 < 0.0) {
-         t0 = 0.0;
-      }
-      
-      bool success = false;
-      if (t1 > t0) {
-         int token;
-         if (cutpreview) {
-            double beforeLen, afterLen;
-            gPrefs->Read(wxT("/AudioIO/CutPreviewBeforeLen"), &beforeLen, 1.0);
-            gPrefs->Read(wxT("/AudioIO/CutPreviewAfterLen"), &afterLen, 1.0);
-            double tcp0 = t0-beforeLen;
-            double tcp1 = (t1+afterLen) - (t1-t0);
-            SetupCutPreviewTracks(tcp0, t0, t1, tcp1);
-            if (mCutPreviewTracks)
-            {
-               token = gAudioIO->StartStream(
-                  mCutPreviewTracks->GetWaveTrackArray(false),
-                  WaveTrackArray(), NULL, p->GetRate(), tcp0, tcp1, p, false,
-                  t0, t1-t0);
-            } else
-            {
-               // Cannot create cut preview tracks, clean up and exit
-               SetPlay(false);
-               SetStop(false);
-               SetRecord(false);
-               return;
-            }
-         } else {
-            if (!timetrack) {
-               timetrack = t->GetTimeTrack();
-            }
-            token = gAudioIO->StartStream(t->GetWaveTrackArray(false),
-                                  WaveTrackArray(), timetrack,
-                                  p->GetRate(), t0, t1, p, looped);
-         }
-         if (token != 0) {
-            success = true;
-            p->SetAudioIOToken(token);
-            mBusyProject = p;
-            SetVUMeters(p);
-         }
-         else {
-            // msmeyer: Show error message if stream could not be opened
-            wxMessageBox(_(
-               "Error while opening sound device. "
-               wxT("Please check the output device settings and the project sample rate.")),
-               _("Error"), wxOK | wxICON_EXCLAMATION, this);
-         }
-      }
-
-      if (!success) {
-         SetPlay(false);
-         SetStop(false);
-         SetRecord(false);
-      }
+   if (!success) {
+      SetPlay(false);
+      SetStop(false);
+      SetRecord(false);
    }
 }
 
@@ -706,14 +703,8 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
          return;
       }
    }
-   mPlay->Disable();
-   mStop->Enable();
-   mRewind->Disable();
-   mFF->Disable();
-   mPause->Enable();
-   mBatch->Enable();
 
-   mRecord->PushDown();
+   SetRecord(true);
 
    if (p) {
       TrackList *t = p->GetTracks();
