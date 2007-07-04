@@ -927,8 +927,12 @@ void TrackPanel::DoDrawIndicator(wxDC & dc)
        !gAudioIO->IsPaused() )
    {
       mListener->TP_ScrollWindow( pos );
-      MakeParentRedrawScrollbars();
    }
+
+   // Always update scrollbars even if not scrolling the window. This is
+   // important when new audio is recorded, because this can change the
+   // length of the project and therefore the appearance of the scrollbar.
+   MakeParentRedrawScrollbars();
 
    mIndicatorShowing = ( onScreen && audioActive );
 
