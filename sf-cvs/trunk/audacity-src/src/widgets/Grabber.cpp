@@ -29,6 +29,7 @@ around to new positions.
 #include <wx/window.h>
 
 #include "Grabber.h"
+#include "../Experimental.h"
 
 #include "../AColor.h"
 
@@ -93,9 +94,25 @@ void Grabber::DrawGrabber( wxDC & dc )
    wxRect r = GetRect();
    int y, left, right, top, bottom;
 
-   // Paint the background
+#ifndef EXPERIMENTAL_THEMING
    AColor::Medium(&dc, mOver);
    dc.DrawRectangle(r);
+#else
+   // Paint the background
+   if( mOver )
+   {
+   AColor::Medium(&dc, mOver);
+   dc.DrawRectangle(r);
+   }
+   else
+   {
+      // Get colour from parent... 
+      // when parent colour changes, child colour might not!
+      wxBrush brush( GetParent()->GetBackgroundColour() );
+      dc.SetBrush( brush );
+      dc.DrawRectangle(r);
+   }
+#endif
 
 #ifndef __WXMAC__
 

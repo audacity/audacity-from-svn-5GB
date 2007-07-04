@@ -41,6 +41,7 @@ in which buttons can be placed.
 #endif  /*  */
 
 #include "ToolBar.h"
+#include "../Experimental.h"
 
 #include "../AllThemeResources.h"
 #include "../AColor.h"
@@ -502,8 +503,47 @@ void ToolBar::OnPaint( wxPaintEvent & event )
    dc.Clear();
 #endif
 
-   // Go repaint the rest
+// EXPERIMENTAL_THEMING is set to not apply the gradient
+// on wxMAC builds.  on wxMAC we have the AQUA_THEME.
+#ifdef USE_AQUA_THEME
    Repaint( &dc );
+#else
+
+#ifdef EXPERIMENTAL_THEMING
+   wxImage * mpBackGradient =   &theTheme.Image( bmpRecoloredUpLarge  );
+
+   if( mpBackGradient != NULL )
+   {
+      wxSize imSz( mpBackGradient->GetWidth(), mpBackGradient->GetHeight() );
+      wxSize sz = GetSize();
+      int y;
+      for(y=0;y<sz.y;y++)
+      {
+         int yPix = ((float)y * imSz.y - 0.0001f)/(sz.y-1);
+         wxColour col( 
+            mpBackGradient->GetRed( 0, yPix),
+            mpBackGradient->GetGreen( 0, yPix),
+            mpBackGradient->GetBlue( 0, yPix));
+
+         // Set background colour so that controls placed on this
+         // toolbar such as radio buttons will draw reasonably.
+         // It's a little tacky setting the background colour 
+         // here, but we can't do it in the constructor as the gradient
+         // may not be available yet.
+         // Better than this would be to set the colour when the image 
+         // is loaded.
+         // We use the colour at the half way point as a suitable 'average'.
+         if( y==(sz.y/2) )
+         {
+            SetBackgroundColour( col );
+         }
+         wxPen Pen( col );
+         dc.SetPen(Pen );
+         dc.DrawLine( 0, y, sz.x, y );
+      }
+   }
+#endif
+#endif
 
    if( IsResizable() && IsDocked() )
    {

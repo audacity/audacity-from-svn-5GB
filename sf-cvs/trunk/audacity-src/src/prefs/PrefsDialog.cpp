@@ -55,6 +55,7 @@
 #include "QualityPrefs.h"
 #include "SpectrumPrefs.h"
 #include "MousePrefs.h"
+#include "../Experimental.h"
 
 //JKC: Experimental treebook, backported from wxWidgets 2.7.x
 //#include "../widgets/treebook.h"
@@ -169,6 +170,15 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    long selected = gPrefs->Read(wxT("/Prefs/PrefsCategory"), 0L);
    if (selected < 0 || selected >= (int)mCategories->GetPageCount())
       mSelected = 0;
+
+
+// This doesn't work...
+#if 0
+   wxTreeCtrl * pTree = mCategories->GetTreeCtrl();
+   long Style = pTree->GetWindowStyle();
+   Style |= wxTR_HIDE_ROOT;
+   pTree->SetWindowStyle(Style);
+#endif
 
    mCategories->SetSelection(selected);
 
