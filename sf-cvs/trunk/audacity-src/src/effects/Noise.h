@@ -93,7 +93,6 @@ class NoiseDialog:public EffectDialog {
 
  private:
    void OnTimeCtrlUpdate(wxCommandEvent & event);
-   void OnNoiseDurationText(wxCommandEvent & event);
    DECLARE_EVENT_TABLE()
 
  public:
@@ -106,7 +105,7 @@ class NoiseDialog:public EffectDialog {
    bool nIsSelection;
 
  private:
-  TimeTextCtrl *mNoiseDurationT;
+   TimeTextCtrl *mNoiseDurationT;
 };
 
 #endif

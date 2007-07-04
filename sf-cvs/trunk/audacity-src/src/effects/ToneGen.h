@@ -101,16 +101,10 @@ class ToneGenDialog:public EffectDialog {
    bool TransferDataFromWindow();
 
  private:
-   void PopulateOrExchangeStandard( ShuttleGui & S );
-   void PopulateOrExchangeExtended( ShuttleGui & S );
+   void PopulateOrExchangeStandard(ShuttleGui & S);
+   void PopulateOrExchangeExtended(ShuttleGui & S);
    void OnTimeCtrlUpdate(wxCommandEvent & event);
-   void OnToneGenDurationText(wxCommandEvent & event);
    DECLARE_EVENT_TABLE()
-
-//   wxChoice *mWaveform;
-//   wxTextCtrl *mFreq;
-//   wxTextCtrl *mAmp;
-//   wxTextCtrl *mLength;
 
  public:
    bool mbChirp;
