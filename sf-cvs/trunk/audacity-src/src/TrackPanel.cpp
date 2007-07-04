@@ -4785,7 +4785,6 @@ void TrackPanel::OnPrevTrack( bool shift )
          else
          {
             EnsureVisible( t );
-            wxLogDebug(wxT("On last track, %s"),t->GetName().c_str());
             return;
          }
       }
@@ -4885,7 +4884,6 @@ void TrackPanel::OnNextTrack( bool shift )
          else
          {
             EnsureVisible( t );
-            wxLogDebug(wxT("On last track, %s"),t->GetName().c_str());
             return;
          }
       }
