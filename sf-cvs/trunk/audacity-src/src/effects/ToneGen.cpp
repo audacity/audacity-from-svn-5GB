@@ -270,18 +270,15 @@ bool EffectToneGen::Process()
 #define AMP_MIN 0
 #define AMP_MAX 1
 
-#define ID_TONE_DURATION_TEXT 10001
-
 BEGIN_EVENT_TABLE(ToneGenDialog, EffectDialog)
     EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, ToneGenDialog::OnTimeCtrlUpdate)
-    EVT_TEXT(ID_TONE_DURATION_TEXT, ToneGenDialog::OnToneGenDurationText)
 END_EVENT_TABLE()
-
 
 ToneGenDialog::ToneGenDialog(wxWindow * parent, const wxString & title)
 : EffectDialog(parent, title, INSERT_EFFECT)
 {
-   mbChirp=false;
+   mToneDurationT = NULL;
+   mbChirp = false;
 }
 
 /// Populates simple dialog that has a single tone.
@@ -289,22 +286,25 @@ void ToneGenDialog::PopulateOrExchangeStandard( ShuttleGui & S )
 {
    S.StartMultiColumn(2, wxCENTER);
    {
-      S.TieChoice( _("Waveform") + wxString(wxT(":")), waveform,  waveforms);
-      S.SetSizeHints(-1,-1);
-      S.TieTextBox( _("Frequency (Hz)"),frequency[0], 5);
-      S.TieTextBox( _("Amplitude (0-1)"),amplitude[0], 5);
+      S.TieChoice(_("Waveform") + wxString(wxT(":")), waveform,  waveforms);
+      S.SetSizeHints(-1, -1);
+      S.TieTextBox(_("Frequency (Hz)"),frequency[0], 5);
+      S.TieTextBox(_("Amplitude (0-1)"),amplitude[0], 5);
       S.AddFixedText(_("Length"), false);
-      mToneDurationT = new
-      TimeTextCtrl(this,
-                   ID_TONE_DURATION_TEXT,
-                   TimeTextCtrl::GetBuiltinFormat(isSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
-                   length,
-                   44100,
-                   wxDefaultPosition,
-                   wxDefaultSize,
-                   true);
+      if (mToneDurationT == NULL)
+      {
+         mToneDurationT = new
+         TimeTextCtrl(this,
+                      wxID_ANY,
+                      TimeTextCtrl::GetBuiltinFormat(isSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
+                      length,
+                      44100,
+                      wxDefaultPosition,
+                      wxDefaultSize,
+                      true);
+         mToneDurationT->EnableMenu();
+      }
       S.AddWindow(mToneDurationT);
-      mToneDurationT->EnableMenu();
    }
    S.EndMultiColumn();
 }
@@ -314,35 +314,38 @@ void ToneGenDialog::PopulateOrExchangeExtended( ShuttleGui & S )
 {
    S.StartMultiColumn(2, wxCENTER);
    {
-      S.TieChoice( _("Waveform:"), waveform,  waveforms);
-      S.SetSizeHints(-1,-1);
+      S.TieChoice(_("Waveform:"), waveform,  waveforms);
+      S.SetSizeHints(-1, -1);
    }
    S.EndMultiColumn();
    S.StartMultiColumn(3, wxCENTER);
    {
       S.AddFixedText(wxT(""));
-      S.AddTitle( _("Start"));
-      S.AddTitle( _("End") );
-      S.TieTextBox( _("Frequency / Hz"),frequency[0], 10);
-      S.TieTextBox( wxT(""),frequency[1], 10);
-      S.TieTextBox( _("Amplitude (0-1)"),amplitude[0], 10);
-      S.TieTextBox( wxT(""),amplitude[1], 10);
+      S.AddTitle(_("Start"));
+      S.AddTitle(_("End"));
+      S.TieTextBox(_("Frequency / Hz"),frequency[0], 10);
+      S.TieTextBox(wxT(""), frequency[1], 10);
+      S.TieTextBox(_("Amplitude (0-1)"),amplitude[0], 10);
+      S.TieTextBox(wxT(""), amplitude[1], 10);
    }
    S.EndMultiColumn();
    S.StartMultiColumn(2, wxCENTER);
    {
       S.AddFixedText(_("Length"), false);
-      mToneDurationT = new
-      TimeTextCtrl(this,
-                   ID_TONE_DURATION_TEXT,
-                   TimeTextCtrl::GetBuiltinFormat(isSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
-                   length,
-                   44100,
-                   wxDefaultPosition,
-                   wxDefaultSize,
-                   true);
+      if (mToneDurationT == NULL)
+      {
+         mToneDurationT = new
+         TimeTextCtrl(this,
+                      wxID_ANY,
+                      TimeTextCtrl::GetBuiltinFormat(isSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
+                      length,
+                      44100,
+                      wxDefaultPosition,
+                      wxDefaultSize,
+                      true);
+         mToneDurationT->EnableMenu();
+      }
       S.AddWindow(mToneDurationT);
-      mToneDurationT->EnableMenu();
    }
    S.EndMultiColumn();
 }
@@ -357,36 +360,31 @@ void ToneGenDialog::PopulateOrExchange(ShuttleGui & S)
 
 bool ToneGenDialog::TransferDataToWindow()
 {
-//  if you don't remove these, there will be a double
-//  timetextctrl in the dialog. Don't know why...
-//   ShuttleGui S( this, eIsSettingToDialog );
-//   PopulateOrExchange( S );
+   EffectDialog::TransferDataToWindow();
 
+   // Must handle this ourselves since ShuttleGui doesn't know about it
    mToneDurationT->SetTimeValue(length);
-   mToneDurationT->SetFocus();
-   mToneDurationT->Fit();
 
    return true;
 }
 
 bool ToneGenDialog::TransferDataFromWindow()
 {
-   ShuttleGui S( this, eIsGettingFromDialog );
-   PopulateOrExchange( S );
+   EffectDialog::TransferDataFromWindow();
 
    amplitude[0] = TrapDouble(amplitude[0], AMP_MIN, AMP_MAX);
    frequency[0] = TrapDouble(frequency[0], FREQ_MIN, FREQ_MAX);
    amplitude[1] = TrapDouble(amplitude[1], AMP_MIN, AMP_MAX);
    frequency[1] = TrapDouble(frequency[1], FREQ_MIN, FREQ_MAX);
+
+   // Must handle this ourselves since ShuttleGui doesn't know about it
+   length = mToneDurationT->GetTimeValue();
+
    return true;
 }
 
-void ToneGenDialog::OnToneGenDurationText(wxCommandEvent & event) {
-   length = mToneDurationT->GetTimeValue();
-}
-
 void ToneGenDialog::OnTimeCtrlUpdate(wxCommandEvent & event) {
-   this->Fit();
+   Fit();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

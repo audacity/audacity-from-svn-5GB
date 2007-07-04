@@ -198,16 +198,13 @@ bool EffectNoise::Process()
 #define AMP_MIN 0
 #define AMP_MAX 1
 
-#define ID_NOISE_DURATION_TEXT 10001
-
 BEGIN_EVENT_TABLE(NoiseDialog, EffectDialog)
     EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, NoiseDialog::OnTimeCtrlUpdate)
-    EVT_TEXT(ID_NOISE_DURATION_TEXT, NoiseDialog::OnNoiseDurationText)
 END_EVENT_TABLE()
-
 
 NoiseDialog::NoiseDialog(wxWindow * parent, const wxString & title): EffectDialog(parent, title, INSERT_EFFECT)
 {
+   mNoiseDurationT = NULL;
    /* // already initialized in EffectNoise::PromptUser
    nDuration = noiseDuration;
    nAmplitude = noiseAmplitude;
@@ -220,58 +217,56 @@ void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
    S.StartMultiColumn(2, wxCENTER);
    {
       S.AddFixedText(_("Noise duration"), false);
-      mNoiseDurationT = new
-      TimeTextCtrl(this,
-                   ID_NOISE_DURATION_TEXT,
-                   /*
-                   use this instead of "seconds" because if a selection is passed to the effect,
-                   I want it (nDuration) to be used as the duration, and with "seconds" this does
-                   not always work properly. For example, it rounds down to zero...
-                   */
-                   TimeTextCtrl::GetBuiltinFormat(nIsSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
-                   nDuration,
-                   44100,
-                   wxDefaultPosition,
-                   wxDefaultSize,
-                   true);
+      if (mNoiseDurationT == NULL)
+      {
+         mNoiseDurationT = new
+         TimeTextCtrl(this,
+                      wxID_ANY,
+                      /*
+                      use this instead of "seconds" because if a selection is passed to the effect,
+                      I want it (nDuration) to be used as the duration, and with "seconds" this does
+                      not always work properly. For example, it rounds down to zero...
+                      */
+                      TimeTextCtrl::GetBuiltinFormat(nIsSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
+                      nDuration,
+                      44100,
+                      wxDefaultPosition,
+                      wxDefaultSize,
+                      true);
+         mNoiseDurationT->EnableMenu();
+      }
       S.AddWindow(mNoiseDurationT);
-      mNoiseDurationT->EnableMenu();
-      S.TieTextBox( _("Amplitude"),  nAmplitude, 10);
-      S.TieChoice( _("Noise type:"), nType, nTypeList);
-      S.SetSizeHints(-1,-1);
+      S.TieTextBox(_("Amplitude"),  nAmplitude, 10);
+      S.TieChoice(_("Noise type"), nType, nTypeList);
+      S.SetSizeHints(-1, -1);
    }
    S.EndMultiColumn();
 }
 
 bool NoiseDialog::TransferDataToWindow()
 {
-//  if you don't remove these, there will be a double
-//  timetextctrl in the dialog. Don't know why...
-//
-//    ShuttleGui S( this, eIsSettingToDialog );
-//    PopulateOrExchange( S );
+   EffectDialog::TransferDataToWindow();
 
+   // Must handle this ourselves since ShuttleGui doesn't know about it
    mNoiseDurationT->SetTimeValue(nDuration);
-   mNoiseDurationT->SetFocus();
-   mNoiseDurationT->Fit();
+
    return true;
 }
 
 bool NoiseDialog::TransferDataFromWindow()
 {
-   ShuttleGui S( this, eIsGettingFromDialog );
-   PopulateOrExchange( S );
+   EffectDialog::TransferDataFromWindow();
 
    nAmplitude = TrapDouble(nAmplitude, AMP_MIN, AMP_MAX);
+
+   // Must handle this ourselves since ShuttleGui doesn't know about it
+   nDuration = mNoiseDurationT->GetTimeValue();
+
    return true;
 }
 
-void NoiseDialog::OnNoiseDurationText(wxCommandEvent & event) {
-   nDuration = mNoiseDurationT->GetTimeValue();
-}
-
 void NoiseDialog::OnTimeCtrlUpdate(wxCommandEvent & event) {
-   this->Fit();
+   Fit();
 }
 
 
