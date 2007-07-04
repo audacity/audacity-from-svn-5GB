@@ -422,6 +422,10 @@ bool WaveTrack::Paste(double t0, Track *src)
    
    //printf("paste: entering WaveTrack::Paste\n");
    
+   // JKC Added...
+   if( src == NULL )
+      return false;
+
    if (src->GetKind() != Track::Wave)
       return false;
       

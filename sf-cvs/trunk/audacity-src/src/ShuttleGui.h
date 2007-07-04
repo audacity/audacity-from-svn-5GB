@@ -45,12 +45,16 @@ class wxTextCtrl;
 class wxSlider;
 class wxTreeListCtrl;
 class wxNotebook;
+typedef wxWindow wxNotebookPage;  // so far, any window can be a page
 class wxButton;
 class wxBitmapButton;
 class wxRadioButton;
 class wxBitmap;
 class wxPanel;
 class wxSizer;
+class wxStaticBox;
+class wxMenuBar;
+class wxMenu;
 class Shuttle;
 
 class WrappedType;
@@ -67,8 +71,9 @@ public:
    void AddPrompt(const wxString &Prompt);
    void AddUnits(const wxString &Prompt);
    void AddTitle(const wxString &Prompt);
-   wxWindow * AddWindow(wxWindow * pWindow );
+   wxWindow * AddWindow(wxWindow * pWindow, int Flags = wxALIGN_CENTRE | wxALL );
    wxSlider * AddSlider(const wxString &Prompt, int pos, int Max, int Min = 0);
+   wxSlider * AddVSlider(const wxString &Prompt, int pos, int Max);
 	wxTreeCtrl * AddTree();
 	wxRadioButton * AddRadioButton( const wxString & Prompt );
 	wxRadioButton * AddRadioButtonToGroup( const wxString & Prompt);
@@ -83,6 +88,8 @@ public:
    wxCheckBox * AddCheckBoxOnRight( const wxString &Prompt, const wxString &Selected);
    wxComboBox * AddCombo( const wxString &Prompt, const wxString &Selected,const wxArrayString * pChoices );
    wxChoice   * AddChoice( const wxString &Prompt, const wxString &Selected, const wxArrayString * pChoices );
+   wxMenuBar  * AddMenuBar( );
+   wxMenu     * AddMenu( const wxString & Title );
 	void AddIcon( wxBitmap * pBmp);
 	void AddIconButton( const wxString & Command, const wxString & Params,wxBitmap * pBmp );
 	void AddFixedText( const wxString & Str, bool bCenter = false );
@@ -106,12 +113,13 @@ public:
    void StartThreeColumn(){StartMultiColumn(3);};
    void EndThreeColumn(){EndMultiColumn();};
 
-   void StartStatic( const wxString & Str, int iProp=0 );
+   wxStaticBox * StartStatic( const wxString & Str, int iProp=0 );
    void EndStatic();
 
    wxNotebook * StartNotebook();
    void EndNotebook();
-   void StartNotebookPage( const wxString Name );
+   wxNotebookPage * StartNotebookPage( const wxString Name );
+   void StartNotebookPage( const wxString Name, wxNotebookPage * pPage );
    void EndNotebookPage();
    wxPanel * StartInvisiblePanel();
    void EndInvisiblePanel();
@@ -149,6 +157,8 @@ public:
    
    wxSlider * TieSlider( const wxString &Prompt, WrappedType & WrappedRef, const int max, const int min = 0 );
    wxSlider * TieSlider( const wxString &Prompt, int &pos, const int max, const int min = 0);
+   wxSlider * TieSlider( const wxString &Prompt, float &pos, const float fMin, const float fMax);
+   wxSlider * TieVSlider( const wxString &Prompt, float &pos, const float fMin, const float fMax);
 
    wxRadioButton * TieRadioButton( const wxString & Prompt, WrappedType &WrappedRef);
    wxRadioButton * TieRadioButton( const wxString &Prompt, const int iValue);
@@ -197,8 +207,14 @@ public:
    void SetStretchyCol( int i );
    void SetStretchyRow( int i );
 
-protected:
+//--Some Additions since June 2007 that don't fit in elsewhere...
+   wxWindow * GetParent() {return mpParent;};
+   ShuttleGuiBase & Prop( int iProp );
+   int GetId() {return miIdNext;};
    void UseUpId();
+
+protected:
+   void SetProportions( int Default );
    void PushSizer();
 	void PopSizer();
 
@@ -238,11 +254,15 @@ protected:
    int miId;
    int miIdNext;
    int miIdSetByUser;
+   // Proportion set by user rather than default.
+   int miPropSetByUser;
 
    wxSizer * mpSubSizer;
    wxSizer * mpSizer;
    wxWindow * mpParent;
    wxWindow * mpWind;
+   wxMenuBar * mpMenuBar;
+   wxMenu * mpMenu;
 };
 
 // A rarely used helper function that sets a pointer
@@ -266,6 +286,7 @@ public:
    ~ShuttleGui(void);
 public:
    ShuttleGui & Id(int id );
+   ShuttleGui & Prop( int iProp ){ ShuttleGuiBase::Prop(iProp); return *this;}; // Has to be here too, to return a ShuttleGui and not a ShuttleGuiBase.
    GuiWaveTrack * AddGuiWaveTrack( const wxString & Name);
    AdornedRulerPanel * AddAdornedRuler( ViewInfo *pViewInfo );
    RulerPanel * AddRulerVertical( float low, float hi, const wxString & Units );

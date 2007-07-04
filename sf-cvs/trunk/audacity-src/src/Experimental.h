@@ -30,9 +30,15 @@
 //Uncomment the next #define to enable experimental features.
 //#define EXPERIMENTAL_FEATURES
 
-//#define EXPERIMENTAL_MODULES
-//#define EXPERIMENTAL_THEME_PREFS
+// JKC July-2007: We're temporarily using EXPERIMENTAL_MODULES to 
+// switch on all experimental features.
+#ifdef EXPERIMENTAL_MODULES
+#define EXPERIMENTAL_THEMING
+#define EXPERIMENTAL_THEME_PREFS
+#endif
+
 //#define RIGHT_ALIGNED_TEXTBOXES
+//#define EXPERIMENTAL_VOICE_DETECTION
 
 #ifdef EXPERIMENTAL_FEATURES
    // The first experimental feature is a notebook that adds

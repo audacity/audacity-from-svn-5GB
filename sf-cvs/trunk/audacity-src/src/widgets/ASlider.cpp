@@ -68,6 +68,7 @@ of an LWSlider or ASlider.
 #endif
 
 #include "ASlider.h"
+#include "../Experimental.h"
 
 #include "../AColor.h"
 #include "../ImageManipulation.h"
@@ -1101,6 +1102,11 @@ void ASlider::OnErase(wxEraseEvent &event)
 void ASlider::OnPaint(wxPaintEvent &event)
 {
    wxPaintDC dc(this);
+
+#ifdef EXPERIMENTAL_THEMING
+   wxColour Col(GetParent()->GetBackgroundColour());
+   this->SetBackgroundColour( Col );
+#endif
 
    mLWSlider->OnPaint(dc, false);
 

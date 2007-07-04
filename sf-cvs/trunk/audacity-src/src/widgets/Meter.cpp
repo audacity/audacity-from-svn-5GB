@@ -64,6 +64,7 @@
 
 #include "../Theme.h"
 #include "../AllThemeResources.h"
+#include "../Experimental.h"
 
 //
 // The Meter passes itself messages via this queue so that it can
@@ -761,6 +762,13 @@ void Meter::HandlePaint(wxDC &dc)
       HandleLayout();
 
 #ifndef USE_AQUA_THEME
+#ifdef EXPERIMENTAL_THEMING
+   if( !mMeterDisabled )
+   {
+      mBkgndBrush.SetColour( GetParent()->GetBackgroundColour() );
+   }
+#endif
+
    dc.SetPen(*wxTRANSPARENT_PEN);
    dc.SetBrush(mBkgndBrush);
    dc.DrawRectangle(0, 0, mWidth, mHeight);

@@ -106,12 +106,6 @@ for registering for changes.
 #include "Shuttle.h"
 #include "WrappedType.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
-
-
 ShuttleGuiBase::ShuttleGuiBase(wxWindow * pParent, teShuttleMode ShuttleMode )
 {
    wxASSERT( (pParent != NULL ) || ( ShuttleMode != eIsCreating));
@@ -139,6 +133,7 @@ void ShuttleGuiBase::Init()
    miBorder = 5;
    miStyle = 0;
    miProp=0;
+   miPropSetByUser=-1;
    miSizerProp=0;
    mSizerDepth=-1;
 
@@ -252,12 +247,13 @@ void ShuttleGuiBase::AddTitle(const wxString &Prompt)
 
 /// Very generic 'Add' function.  We can add anything we like.
 /// Useful for unique controls
-wxWindow * ShuttleGuiBase::AddWindow(wxWindow * pWindow )
+wxWindow * ShuttleGuiBase::AddWindow(wxWindow * pWindow, int Flags )
 {
    if( mShuttleMode != eIsCreating )
       return pWindow;
    mpWind = pWindow;
-   UpdateSizersC();
+   SetProportions( 0 );
+   UpdateSizersCore(false, Flags);
    return pWindow;
 }
 
@@ -491,7 +487,7 @@ wxTextCtrl * ShuttleGuiBase::AddTextWindow(const wxString &Value)
    if( mShuttleMode != eIsCreating )
       return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wxTextCtrl);
    wxTextCtrl * pTextCtrl;
-   miProp=1;
+   SetProportions( 1 );
    mpWind = pTextCtrl = new wxTextCtrl(mpParent, miId, Value,
       wxDefaultPosition, wxDefaultSize, Style( wxTE_MULTILINE ));
    UpdateSizers();
@@ -520,7 +516,7 @@ wxListCtrl * ShuttleGuiBase::AddListControl()
    if( mShuttleMode != eIsCreating )
       return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wxListCtrl);
    wxListCtrl * pListCtrl;
-   miProp=1;
+   SetProportions( 1 );
    mpWind = pListCtrl = new wxListCtrl(mpParent, miId,
       wxDefaultPosition, wxDefaultSize, Style( wxLC_ICON ));
    pListCtrl->SetMinSize( wxSize( 120,150 ));
@@ -534,7 +530,7 @@ wxListCtrl * ShuttleGuiBase::AddListControlReportMode()
    if( mShuttleMode != eIsCreating )
       return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wxListCtrl);
    wxListCtrl * pListCtrl;
-   miProp=1;
+   SetProportions( 1 );
    mpWind = pListCtrl = new wxListCtrl(mpParent, miId,
       wxDefaultPosition, wxSize(230,120),//wxDefaultSize,
       Style( wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxSUNKEN_BORDER ));
@@ -549,7 +545,7 @@ wxTreeCtrl * ShuttleGuiBase::AddTree()
    if( mShuttleMode != eIsCreating )
       return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wxTreeCtrl);
    wxTreeCtrl * pTreeCtrl;
-   miProp=1;
+   SetProportions( 1 );
    mpWind = pTreeCtrl = new wxTreeCtrl(mpParent, miId, wxDefaultPosition, wxDefaultSize,
       Style( wxTR_HAS_BUTTONS ));
    pTreeCtrl->SetMinSize( wxSize( 120,650 ));
@@ -570,23 +566,52 @@ void ShuttleGuiBase::AddIcon(wxBitmap *pBmp)
    UpdateSizersC();
 }
 
+ShuttleGuiBase & ShuttleGuiBase::Prop( int iProp )
+{
+   miPropSetByUser = iProp;
+   return *this;
+}
+
+wxMenuBar * ShuttleGuiBase::AddMenuBar( )
+{
+   mpMenuBar = new wxMenuBar( );
+
+   wxFrame * pFrame = (wxFrame*)mpParent;
+   pFrame->SetThemeEnabled( true );
+   mpMenuBar->SetThemeEnabled( true );
+   pFrame->SetMenuBar(mpMenuBar);
+
+   return mpMenuBar; 
+}
+
+wxMenu * ShuttleGuiBase::AddMenu( const wxString & Title )
+{  
+   mpMenu = new wxMenu;
+   mpMenuBar->Append( mpMenu, Title );
+   return mpMenu;
+}
+
+
+
 /// Starts a static box around a number of controls.
 ///  @param Str   The text of the title for the box.
 ///  @param iProp The resizing proportion value.  
 /// Use iProp == 0 for a minimum sized static box.
 /// Use iProp == 1 for a box that grows if there is space to spare.
-void ShuttleGuiBase::StartStatic(const wxString &Str, int iProp)
+wxStaticBox * ShuttleGuiBase::StartStatic(const wxString &Str, int iProp)
 {
    UseUpId();
    mBoxName = Str;
    if( mShuttleMode != eIsCreating )
-      return;
+      return NULL;
+   wxStaticBox * pBox = new wxStaticBox(mpParent, miId, 
+      Str );
    mpSubSizer = new wxStaticBoxSizer( 
-      new wxStaticBox(mpParent, miId, 
-      Str ),
+      pBox,
       wxVERTICAL );
    miSizerProp = iProp;
    UpdateSizers();
+   return pBox;
 }
 
 void ShuttleGuiBase::EndStatic()
@@ -617,10 +642,10 @@ wxScrolledWindow * ShuttleGuiBase::StartScroller(int iStyle)
 
    mpWind->SetBackgroundColour( 
       iStyle==0 
-      ? wxColour( 190,200,230) :
+      ? wxColour( 245,244,240) :
       wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW) 
       );
-   miProp=1;
+   SetProportions( 1 );
    if( iStyle==2 )
    {
       UpdateSizersAtStart();
@@ -699,7 +724,7 @@ wxNotebook * ShuttleGuiBase::StartNotebook()
    wxNotebook * pNotebook;
    mpWind = pNotebook = new wxNotebook(mpParent, 
       miId, wxDefaultPosition, wxDefaultSize, Style( 0 ));
-   miProp=1;
+   SetProportions( 1 );
    UpdateSizers();
    mpParent = pNotebook;
    return pNotebook;
@@ -712,10 +737,10 @@ void ShuttleGuiBase::EndNotebook()
 }
 
 
-void ShuttleGuiBase::StartNotebookPage( const wxString Name )
+wxNotebookPage * ShuttleGuiBase::StartNotebookPage( const wxString Name )
 {
    if( mShuttleMode != eIsCreating )
-      return;
+      return NULL;
 //      return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wx);
    wxNotebook * pNotebook = (wxNotebook*)mpParent;
    wxNotebookPage * pPage = new wxPanel(mpParent ); 
@@ -724,7 +749,30 @@ void ShuttleGuiBase::StartNotebookPage( const wxString Name )
       Name);
    PushSizer();
 
-   miProp=1;
+   SetProportions( 1 );
+   mpParent = pPage;
+   mpSizer = new wxBoxSizer( wxVERTICAL );
+   mpSizer->SetMinSize(250,500);
+   pPage->SetSizer( mpSizer );
+//   UpdateSizers();
+   return pPage;
+}
+
+void ShuttleGuiBase::StartNotebookPage( const wxString Name, wxNotebookPage * pPage )
+{
+   if( mShuttleMode != eIsCreating )
+      return;
+//      return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wx);
+   wxNotebook * pNotebook = (wxNotebook*)mpParent;
+//   wxNotebookPage * pPage = new wxPanel(mpParent ); 
+   pPage->Create( mpParent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, wxT("panel"));
+
+   pNotebook->AddPage( 
+      pPage, 
+      Name);
+   PushSizer();
+
+   SetProportions( 1 );
    mpParent = pPage;
    mpSizer = new wxBoxSizer( wxVERTICAL );
    mpSizer->SetMinSize(250,500);
@@ -756,7 +804,7 @@ public:
    };
    ~InvisiblePanel(){;};
    void OnPaint( wxPaintEvent &event );
-   void OnErase(wxEraseEvent &evt){;};
+   void OnErase(wxEraseEvent &/*evt*/){;};
    DECLARE_EVENT_TABLE()  
 };
 
@@ -786,7 +834,7 @@ wxPanel * ShuttleGuiBase::StartInvisiblePanel()
    mpWind->SetBackgroundColour( 
       wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE) 
       );
-   miProp=1;
+   SetProportions( 1 );
    miBorder=0;
    UpdateSizers();  // adds window in to current sizer.
 
@@ -1159,6 +1207,27 @@ wxSlider * ShuttleGuiBase::TieSlider( const wxString &Prompt, int &pos, const in
    return TieSlider( Prompt, WrappedRef, max, min );
 }
 
+wxSlider * ShuttleGuiBase::TieSlider( const wxString &Prompt, float &pos, const float fMin, const float fMax)
+{
+   const float RoundFix=0.0000001f;
+   int iVal=(pos-fMin+RoundFix)*100.0/(fMax-fMin);
+   wxSlider * pWnd = TieSlider( Prompt, iVal, 100 );
+   pos = iVal*(fMax-fMin)*0.01+fMin; 
+   return pWnd;
+}
+
+wxSlider * ShuttleGuiBase::TieVSlider( const wxString &Prompt, float &pos, const float fMin, const float fMax)
+{
+   int iVal=(pos-fMin)*100.0/(fMax-fMin);
+//   if( mShuttleMode == eIsCreating )
+//   {
+//      return AddVSlider( Prompt, iVal, 100 );
+//   }
+   wxSlider * pWnd = TieSlider( Prompt, iVal, 100 );
+   pos = iVal*(fMax-fMin)*0.01+fMin; 
+   return pWnd;
+}
+
 wxChoice * ShuttleGuiBase::TieChoice( 
    const wxString &Prompt, 
    wxString &Selected, 
@@ -1385,7 +1454,7 @@ wxChoice * ShuttleGuiBase::TieChoice(
 {
    wxChoice * pChoice=(wxChoice*)NULL;
  
-   int TempIndex;
+   int TempIndex=0;
 //   int TempIndex = TranslateToIndex( Default, TranslatedChoices );
    wxString TempStr = Default;
    WrappedType WrappedRef( TempStr );
@@ -1405,7 +1474,7 @@ wxChoice * ShuttleGuiBase::TieChoice(
 /// are integers, not Strings.
 ///   @param Prompt             The prompt shown beside the control.
 ///   @param SettingName        The setting name as stored in gPrefs
-///   @parsm Default            The default value for this control (translated)
+///   @param Default            The default value for this control (translated)
 ///   @param Choices            An array of choices that appear on screen.
 ///   @param TranslatedChoices  The correcponding values (as an integer array)
 wxChoice * ShuttleGuiBase::TieChoice( 
@@ -1494,6 +1563,18 @@ void ShuttleGuiBase::UseUpId()
    }
    miId = miIdNext++;
 }
+
+void ShuttleGuiBase::SetProportions( int Default )
+{
+   if( miPropSetByUser >=0 )
+   {
+      miProp = miPropSetByUser;
+      miPropSetByUser =-1;
+      return;
+   }
+   miProp = Default;
+}
+
 
 void ShuttleGuiBase::UpdateSizersCore(bool bPrepend, int Flags)
 {
