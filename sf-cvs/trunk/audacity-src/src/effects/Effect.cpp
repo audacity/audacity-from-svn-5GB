@@ -427,11 +427,17 @@ void EffectDialog::PopulateOrExchange(ShuttleGui & S)
 
 bool EffectDialog::TransferDataToWindow()
 {
+   ShuttleGui S(this, eIsSettingToDialog);
+   PopulateOrExchange(S);
+
    return true;
 }
 
 bool EffectDialog::TransferDataFromWindow()
 {
+   ShuttleGui S(this, eIsGettingFromDialog);
+   PopulateOrExchange(S);
+
    return true;
 }
 
