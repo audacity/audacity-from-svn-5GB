@@ -16,6 +16,7 @@
 class wxBoxSizer;
 class wxStaticBitmap;
 class wxBitmap;
+class ShuttleGui;
 
 struct AboutDialogCreditItem {
    wxString description;
@@ -52,6 +53,8 @@ class AboutDialog:public wxDialog {
    };
    
    AboutDialogCreditItemsList creditItems;
+   void PopulateAudacityPage( ShuttleGui & S );
+   void PopulateLicensePage( ShuttleGui & S );
 
    void CreateCreditsList();
    void AddCredit(const wxString& description, Role role);
