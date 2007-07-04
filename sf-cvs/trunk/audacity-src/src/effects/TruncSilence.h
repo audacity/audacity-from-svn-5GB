@@ -10,7 +10,6 @@
   //ToDo ... BlendFrames on "fade-out"
   //ToDo ... BlendFrameCount is a user-selectable parameter
   //ToDo ... Detect transient signals that are too short to interrupt the TruncatableSilence
-  //ToDo ... Extend from mono-only to stereo or n-channels
 
 **********************************************************************/
 
@@ -26,7 +25,7 @@ public:
    EffectTruncSilence();
 
    virtual wxString GetEffectName() {
-      return wxString(_("Truncate Silence..."));
+      return wxString(_("Truncate Silence"));
    }
 
    virtual wxString GetEffectIdentifier() {
@@ -45,17 +44,13 @@ public:
    virtual bool Process();
 
  private:
-   bool ProcessOne();
-
    //ToDo ... put BlendFrames in Effects, Project, or other class
    void BlendFrames(float* buffer, int leftIndex, int rightIndex, int blendFrameCount);
 
  private:
-   int             mTruncDbChoiceIndex;
-   WaveTrack       *mTrack;
-   longSampleCount mTruncLongestAllowedSilentMs;
-   bool            mUserPrompted;
-   sampleCount     mBlendFrameCount;
+   sampleCount mBlendFrameCount;
+   int mTruncLongestAllowedSilentMs;
+   int mTruncDbChoiceIndex;
 
 friend class TruncSilenceDialog;
 };
@@ -64,25 +59,18 @@ friend class TruncSilenceDialog;
 // TruncSilenceDialog
 //----------------------------------------------------------------------------
 
-class TruncSilenceDialog: public wxDialog
+class TruncSilenceDialog: public EffectDialog
 {
 public:
    // constructors and destructors
-   TruncSilenceDialog(wxWindow *parent, wxWindowID id, const wxString &title);
+   TruncSilenceDialog(EffectTruncSilence * effect,
+                      wxWindow * parent);
 
-   virtual bool TransferDataToWindow();
-   virtual bool TransferDataFromWindow();
-
-   int  mTruncLongestAllowedSilentMs;
-   int  mTruncDbChoiceIndex;
-   int  mBlendFrameCount;
+   void PopulateOrExchange(ShuttleGui & S);
+   void OnPreview(wxCommandEvent & event);
 
 private:
-   wxTextCtrl *mTruncLongestAllowedSilentMsText;
-   wxChoice   *mTruncDbSilenceThresholdChoice;
-
-   void OnOk( wxCommandEvent &event );
-   void OnCancel( wxCommandEvent &event );
+   EffectTruncSilence *mEffect;
 
 private:
    DECLARE_EVENT_TABLE()
