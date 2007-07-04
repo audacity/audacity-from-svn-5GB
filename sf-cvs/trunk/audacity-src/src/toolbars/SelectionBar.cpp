@@ -79,7 +79,7 @@ END_EVENT_TABLE()
 SelectionBar::SelectionBar()
 : ToolBar(SelectionBarID, _("Selection"), wxT("Selection")),
   mStart(0.0), mEnd(0.0), mAudio(0.0),
-  mModifyingSelection(false), mLeftTime(NULL)  
+  mLeftTime(NULL)  
 {
 }
 
@@ -286,9 +286,7 @@ void SelectionBar::ModifySelection()
    else
       mEnd = mStart + right;
 
-   mModifyingSelection = true;
    mListener->AS_ModifySelection(mStart, mEnd);
-   mModifyingSelection = false;
 }
 
 void SelectionBar::OnLeftTime(wxCommandEvent &evt)
@@ -374,13 +372,6 @@ void SelectionBar::ValuesToControls()
 
 void SelectionBar::SetTimes(double start, double end, double audio)
 {
-   if (mModifyingSelection) {
-      // This event is directly a result of the user typing a change,
-      // so we ignore it - otherwise every time they type it changes the
-      // field out from under them!
-      return;
-   }
-
    mStart = start;
    mEnd = end;
    mAudio = audio;
