@@ -38,6 +38,7 @@ hold information about one contributor to Audacity.
 #include "AboutDialog.h"
 #include "FileNames.h"
 #include "Internat.h"
+#include "ShuttleGui.h"
 #include "widgets/LinkingHtmlWindow.h"
 
 #include "portaudio.h"
