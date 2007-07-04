@@ -11,7 +11,6 @@
 \class EffectTruncSilence
 \brief An Effect.
 
-  \todo Only works on complete mono track for now
   \todo mBlendFrameCount only retrieved from prefs ... not using dialog
         Only way to change (for windows) is thru registry
         The values should be figured dynamically ... too many frames could be invalid
@@ -32,7 +31,7 @@
 #include "../Project.h"
 #include "TruncSilence.h"
 
-EffectTruncSilence::EffectTruncSilence() : mUserPrompted(false)
+EffectTruncSilence::EffectTruncSilence()
 {
    Init();
 }
@@ -42,37 +41,27 @@ bool EffectTruncSilence::Init()
    mTruncLongestAllowedSilentMs = gPrefs->Read(wxT("/CsPresets/TruncLongestAllowedSilentMs"), 200L);
    if ((mTruncLongestAllowedSilentMs < 0) || (mTruncLongestAllowedSilentMs >= 9999999)) {  // corrupted Prefs?
       mTruncLongestAllowedSilentMs = SKIP_EFFECT_MILLISECOND;
-      gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), (int)mTruncLongestAllowedSilentMs);
+      gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), mTruncLongestAllowedSilentMs);
    }
    mTruncDbChoiceIndex = gPrefs->Read(wxT("/CsPresets/TruncDbChoiceIndex"), 4L);
    if ((mTruncDbChoiceIndex < 0) || (mTruncDbChoiceIndex >= Enums::NumDbChoices)) {  // corrupted Prefs?
       mTruncDbChoiceIndex = Enums::NumDbChoices - 1;  // Off-Skip
       gPrefs->Write(wxT("/CsPresets/TruncDbChoiceIndex"), mTruncDbChoiceIndex);
       mTruncLongestAllowedSilentMs = SKIP_EFFECT_MILLISECOND;
-      gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), (int)mTruncLongestAllowedSilentMs);
+      gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), mTruncLongestAllowedSilentMs);
    }
    mBlendFrameCount = gPrefs->Read(wxT("/CsPresets/BlendFrameCount"), 100L);
    if ((mBlendFrameCount < 0) || (mBlendFrameCount >= 5000)) {  // corrupted Prefs?
       mBlendFrameCount = 100;
       gPrefs->Write(wxT("/CsPresets/BlendFrameCount"), 100);
    }
-   TrackListIterator iter(mWaveTracks);
-   mTrack = (WaveTrack *) iter.First();
-   if (mTrack != 0) {
-      int numTracks = GetNumWaveTracks();
-      if (numTracks != 1) {
-          wxMessageBox(_("Sorry. Truncate Silence only valid with mono track"));
-          return false;
-      }
-   }
    return true;
 }
 
 bool EffectTruncSilence::CheckWhetherSkipEffect()
 {
-   bool rc = ((mTruncDbChoiceIndex >= (Enums::NumDbChoices - 1))
+   return ((mTruncDbChoiceIndex >= (Enums::NumDbChoices - 1))
           ||  (mTruncLongestAllowedSilentMs >= SKIP_EFFECT_MILLISECOND));
-   return rc;
 }
 
 void EffectTruncSilence::End()
@@ -81,22 +70,15 @@ void EffectTruncSilence::End()
 
 bool EffectTruncSilence::PromptUser()
 {
-   TruncSilenceDialog dlog(mParent, -1, _NoAcc("Truncate Silence..."));
-   dlog.mTruncLongestAllowedSilentMs = mTruncLongestAllowedSilentMs;
-   dlog.mTruncDbChoiceIndex = mTruncDbChoiceIndex;
-   dlog.TransferDataToWindow();
+   TruncSilenceDialog dlog(this, mParent);
 
    dlog.CentreOnParent();
    dlog.ShowModal();
 
-   if (!dlog.GetReturnCode()) {
+   if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
-   }
-   mUserPrompted = true;
-   mTruncLongestAllowedSilentMs = dlog.mTruncLongestAllowedSilentMs;
-   gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), (long)mTruncLongestAllowedSilentMs);
 
-   mTruncDbChoiceIndex = dlog.mTruncDbChoiceIndex;
+   gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), mTruncLongestAllowedSilentMs);
    gPrefs->Write(wxT("/CsPresets/TruncDbChoiceIndex"), mTruncDbChoiceIndex);
    
    return true;
@@ -104,116 +86,197 @@ bool EffectTruncSilence::PromptUser()
 
 bool EffectTruncSilence::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferEnum(wxT("Db"),mTruncDbChoiceIndex,Enums::NumDbChoices,Enums::GetDbChoices());
-   shuttle.TransferLongLong(wxT("Duration"),mTruncLongestAllowedSilentMs,200);
-   return true;
-}
-
-bool EffectTruncSilence::Process()
-{
-   ProcessOne();
-
-   mUserPrompted = false;
+   shuttle.TransferEnum(wxT("Db"), mTruncDbChoiceIndex, Enums::NumDbChoices, Enums::GetDbChoices());
+   shuttle.TransferInt(wxT("Duration"), mTruncLongestAllowedSilentMs, 200);
    return true;
 }
 
 #define QUARTER_SECOND_MS 250
-bool EffectTruncSilence::ProcessOne()
+bool EffectTruncSilence::Process()
 {
-   float  curFrame;
-   float  fabsCurFrame;
-   int    consecutiveSilentFrames = 0;
-   int    samplesCleared = 0;
-   int    truncIndex = 0;
-   double curRate = mTrack->GetRate();
-   int    quarterSecondFrames = (int)((curRate * QUARTER_SECOND_MS)/ 1000.0);
-   int    truncLongestAllowedSilentSamples = int((mTruncLongestAllowedSilentMs * curRate) / 1000.0);
+   TrackListIterator iter(mWaveTracks);
+   WaveTrack *t;
+   double t0 = mT0;
+   double t1 = mT1;
+   int tndx; 
+   int tcount = 0;
+
+   // Init using first track
+   t = (WaveTrack *) iter.First();
+   double rate = t->GetRate();
+   sampleCount blockLen = t->GetMaxBlockSize();
+
+   // Get the left and right bounds for all tracks
+   while (t) {
+      // Make sure all tracks have the same sample rate
+      if (rate != t->GetRate()) {
+         wxMessageBox(_("All tracks must have the same sample rate"), _("Truncate Silence"));
+         return false;
+      }
+
+      // Count the tracks
+      tcount++;
+
+      // Set the current bounds to whichever left marker is
+      // greater and whichever right marker is less
+      t0 = wxMax(mT0, t->GetStartTime());
+      t1 = wxMin(mT1, t->GetEndTime());
+
+      // Use the smallest block size of all the tracks
+      blockLen = wxMin(blockLen, t->GetMaxBlockSize());
+
+      // Iterate to the next track
+      t = (WaveTrack*) iter.Next();
+   }
+
+   // Transform the marker timepoints to samples
+   t = (WaveTrack *) iter.First();
+   longSampleCount start = t->TimeToLongSamples(t0);
+   longSampleCount end = t->TimeToLongSamples(t1);
+
+   // Bigger buffers reduce 'reset'
+   blockLen *= 8;
+
+   // Allocate buffers
+   float **buffer = new float*[tcount];
+   for (tndx = 0; tndx < tcount; tndx++) {
+      buffer[tndx] = new float[blockLen];
+   }
+
+   // Set thresholds
    double truncDbSilenceThreshold = Enums::Db2Signal[mTruncDbChoiceIndex];
-   bool   ignoringFrames = false;
+   int truncLongestAllowedSilentSamples = int((mTruncLongestAllowedSilentMs * rate) / 1000.0);
 
-   double selectionEnd = mT1;
-   double trackEnd = mTrack->GetEndTime();
-   longSampleCount selectionStartLongSampleCount = mTrack->TimeToLongSamples(mT0);
-   longSampleCount selectionEndLongSampleCount = mTrack->TimeToLongSamples(mT1);
-   sampleCount selectionStartSampleCount = selectionStartLongSampleCount;
-   sampleCount selectionEndSampleCount = selectionEndLongSampleCount;
-
-   sampleCount idealBlockLen = mTrack->GetMaxBlockSize() * 8;   // bigger buffer reduces 'reset'
-   sampleCount index = selectionStartSampleCount;
-   sampleCount indexAtLoopStart = index;
-   sampleCount outTrackOffset = selectionStartSampleCount;
-   float *buffer = new float[idealBlockLen];
-   bool rc;
-
+   // Figure out number of frames for ramping
+   int quarterSecondFrames = int((rate * QUARTER_SECOND_MS) / 1000.0);
    int rampInFrames = (truncLongestAllowedSilentSamples / 4);
    if (rampInFrames > quarterSecondFrames) {
       rampInFrames = quarterSecondFrames;
    }
-   while (index < selectionEndSampleCount) {
-      rc = mTrack->Get((samplePtr)buffer, floatSample, index, idealBlockLen);
-      truncIndex = 0;
-      indexAtLoopStart = index;
-      ignoringFrames = false;       // may be unneccesary to reset, but safer
-      consecutiveSilentFrames = 0;  // may be unneccesary to reset, but safer
-      sampleCount limit = idealBlockLen;
-      if ((index + idealBlockLen) > selectionEndSampleCount) {
-         limit = selectionEndSampleCount - index; 
-      }
-      for (sampleCount i = 0; i < limit; ++i) {
-         index++;
-         curFrame = buffer[i];
-         fabsCurFrame = (float)fabs(curFrame);
 
-         if (fabsCurFrame < truncDbSilenceThreshold) {
+   // Start processing
+   longSampleCount index = start;
+   longSampleCount outTrackOffset = start;
+   bool cancelled = false;
+   while (index < end) {
+
+      // Limit size of current block if we've reached the end
+      sampleCount limit = blockLen;
+      if ((index + blockLen) > end) {
+         limit = end - index; 
+      }
+
+      // Fill the buffers
+      tndx = 0;
+      t = (WaveTrack *) iter.First();
+      while (t) {
+         t->Get((samplePtr)buffer[tndx++], floatSample, index, blockLen);
+         t = (WaveTrack *) iter.Next();
+      }
+
+      // Reset
+      bool ignoringFrames = false;
+      sampleCount consecutiveSilentFrames = 0;
+      sampleCount truncIndex = 0;
+
+      // Look for silences in current block
+      for (sampleCount i = 0; i < limit; i++) {
+
+         // Is current frame in all tracks below threshold
+         bool below = true;
+         for (tndx = 0; tndx < tcount; tndx++) {
+            if (fabs(buffer[tndx][i]) >= truncDbSilenceThreshold) {
+               below = false;
+               break;
+            }
+         }
+
+         // Count frame if it's below threshold
+         if (below) {
             consecutiveSilentFrames++;
+
+            // Ignore this frame (equivalent to cutting it)
+            // otherwise, keep sample to be part of allowed silence
             if (consecutiveSilentFrames > truncLongestAllowedSilentSamples) {
                ignoringFrames = true;
-               continue;  // ignore this frame (equivalent to cutting it)
-            }             // otherwise, keep sample to be part of allowed silence
+               continue;
+            }
          }
          else {
             if (ignoringFrames == true) {
                sampleCount curOffset = i - rampInFrames;
                truncIndex -= rampInFrames; // backup into ignored frames
-               wxASSERT((truncIndex < idealBlockLen) && (curOffset > 0) && ((curOffset + rampInFrames) < idealBlockLen));
-               for (int fr = 0; fr < rampInFrames; ++fr) {
-                  buffer[truncIndex] = buffer[curOffset + fr];
-                  truncIndex++;
+
+               for (tndx = 0; tndx < tcount; tndx++) {
+                  sampleCount trunci = truncIndex;
+                  for (int fr = 0; fr < rampInFrames; fr++) {
+                     buffer[tndx][trunci++] = buffer[tndx][curOffset + fr];
+                  }
+                  if(((trunci - rampInFrames) - mBlendFrameCount) >= 0) {
+                     BlendFrames(buffer[tndx], mBlendFrameCount,
+                             ((trunci - rampInFrames) - mBlendFrameCount), 
+                             ((i - rampInFrames) - mBlendFrameCount));
+                  }
                }
-               if(((truncIndex - rampInFrames) - mBlendFrameCount) >= 0)
-                  BlendFrames(buffer, mBlendFrameCount,
-                          ((truncIndex - rampInFrames) - mBlendFrameCount), 
-                          ((i - rampInFrames) - mBlendFrameCount));
+               truncIndex += rampInFrames;
             }
             consecutiveSilentFrames = 0;
             ignoringFrames = false;
          }
-         wxASSERT(truncIndex < idealBlockLen);
-         buffer[truncIndex] = curFrame;  // Can get here either because > dbThreshold
-         truncIndex++;                   // or silence duration isn't longer than allowed
-      }
-      samplesCleared += (limit - truncIndex);
-      rc = mTrack->Set((samplePtr)buffer, floatSample, outTrackOffset, truncIndex);
-      outTrackOffset += truncIndex;
-      bool cancellingFlag = TrackProgress(0, ((double)index / (double)selectionEndSampleCount));
-      if (cancellingFlag == true) {
-         delete [] buffer;
-         return false;
-      }
-   }
-   double lenToCut = (samplesCleared / curRate);
-   double middle =  selectionEnd - lenToCut;
-   mTrack->Cut(middle, selectionEnd, (Track**)&mTrack);
 
-   mT0 = 0.0;
-   mT1 = trackEnd - lenToCut;
-   if (mUserPrompted == true) {
-      AudacityProject *proj = GetActiveProject();
-      proj->OnZoomFit();
+         // Can get here either because > dbThreshold
+         // or silence duration isn't longer than allowed
+         for (tndx = 0; tndx < tcount; tndx++) {
+            buffer[tndx][truncIndex] = buffer[tndx][i];
+         }
+         truncIndex++;
+      }
+
+      // Update tracks if any samples were removed
+      if (truncIndex < limit) {
+
+         // Put updated sample back into track
+         tndx = 0;
+         t = (WaveTrack *) iter.First();
+         while (t) {
+            t->Set((samplePtr)buffer[tndx++], floatSample, outTrackOffset, truncIndex);
+            t = (WaveTrack *) iter.Next();
+         }
+      }
+
+      // Maintain output index
+      outTrackOffset += truncIndex;
+
+      // Update progress and bail if user cancelled
+      cancelled = TrackProgress(0, ((double)index / (double)end));
+      if (cancelled) {
+         break;
+      }
+
+      // Bump to next block
+      index += limit;
    }
-   gPrefs->Write(wxT("/Validate/TruncSamplesCleared"), samplesCleared);
+
+   // Remove stale data at end of track
+   if (!cancelled && (outTrackOffset < end)) {
+      t = (WaveTrack *) iter.First();
+      while (t) {
+         t->Clear(outTrackOffset / rate, t1);
+         t = (WaveTrack *) iter.Next();
+      }
+      t1 = outTrackOffset / rate;
+   }
+
+   // Free buffers
+   for (tndx = 0; tndx < tcount; tndx++) {
+      delete [] buffer[tndx];
+   }
    delete [] buffer;
-   return true;
+
+   mT0 = t0;
+   mT1 = t1;
+
+   return !cancelled;
 }
 
 void EffectTruncSilence::BlendFrames(float* buffer, int blendFrameCount, int leftIndex, int rightIndex)
@@ -225,9 +288,9 @@ void EffectTruncSilence::BlendFrames(float* buffer, int blendFrameCount, int lef
    double afterFactor  = 0.0;
    double adjFactor = 1.0 / (double)blendFrameCount;
    for (int j = 0; j < blendFrameCount; ++j) {
-	  bufOutput[j] = (float)((bufBefore[j] * beforeFactor) + (bufAfter[j] * afterFactor));
-	  beforeFactor -= adjFactor;
-	  afterFactor  += adjFactor;
+      bufOutput[j] = (float)((bufBefore[j] * beforeFactor) + (bufAfter[j] * afterFactor));
+      beforeFactor -= adjFactor;
+      afterFactor  += adjFactor;
    }
 }
 
@@ -238,85 +301,50 @@ void EffectTruncSilence::BlendFrames(float* buffer, int blendFrameCount, int lef
 #define ID_LONGEST_SILENCE_TEXT   7000
 #define ID_DB_SILENCE_THRESHOLD_CHOICE 7001
 
-BEGIN_EVENT_TABLE(TruncSilenceDialog,wxDialog)
-   EVT_BUTTON( wxID_OK, TruncSilenceDialog::OnOk )
-   EVT_BUTTON( wxID_CANCEL, TruncSilenceDialog::OnCancel )
+BEGIN_EVENT_TABLE(TruncSilenceDialog, EffectDialog)
+    EVT_BUTTON(ID_EFFECT_PREVIEW, TruncSilenceDialog::OnPreview)
 END_EVENT_TABLE()
 
-TruncSilenceDialog::TruncSilenceDialog(wxWindow *parent, wxWindowID id, const wxString &title) :
-   wxDialog( parent, id, title )
+TruncSilenceDialog::TruncSilenceDialog(EffectTruncSilence * effect,
+                                       wxWindow * parent)
+:  EffectDialog(parent, _("Truncate Silence"), PROCESS_EFFECT),
+   mEffect(effect)
 {
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-   wxStaticText *statText = new wxStaticText(this, -1,
-                           _("Truncate Silence by Lynn Allan"));
-   mainSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   statText = new wxStaticText(this, -1, _("Max Silent Duration (milliseconds): \n(99999 or greater is off)"));
-   hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
-   
-   wxString truncLongestAllowedSilentMsStr;
-   truncLongestAllowedSilentMsStr.Printf(wxT("%d"), mTruncLongestAllowedSilentMs);
-   mTruncLongestAllowedSilentMsText = new wxTextCtrl(this, ID_LONGEST_SILENCE_TEXT, 
-                     truncLongestAllowedSilentMsStr, wxDefaultPosition,
-                     wxSize(60, -1), 0,
-                     wxTextValidator(wxFILTER_NUMERIC));
-   hSizer->Add(mTruncLongestAllowedSilentMsText, 0, wxALL, 5);
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   statText = new wxStaticText(this, -1, _("Theshold for silence: "));
-   hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   mTruncDbSilenceThresholdChoice = new wxChoice(this, ID_DB_SILENCE_THRESHOLD_CHOICE,
-      wxDefaultPosition, wxSize(64, -1), Enums::NumDbChoices,Enums::GetDbChoices());
-   hSizer->Add(mTruncDbSilenceThresholdChoice, 0, wxALIGN_CENTER | wxALL, 4);
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("&Cancel"));
-   hSizer->Add(cancel, 0, wxALIGN_CENTRE|wxALL, 5);
-
-   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
-   ok->SetDefault();
-   hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
-
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-   SetAutoLayout(true);
-   SetSizer(mainSizer);
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
+   Init();
 }
 
-bool TruncSilenceDialog::TransferDataToWindow()
+void TruncSilenceDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   mTruncLongestAllowedSilentMsText->SetValue(wxString::Format(wxT("%d"), mTruncLongestAllowedSilentMs));
-   mTruncDbSilenceThresholdChoice->SetSelection(mTruncDbChoiceIndex);
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      S.AddTitle(_("by Lynn Allan"));
+   }
+   S.EndHorizontalLay();
 
-   return true;
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      // Add a little space
+   }
+   S.EndHorizontalLay();
+
+   S.StartThreeColumn();
+   {
+      wxArrayString choices(Enums::NumDbChoices, Enums::GetDbChoices());
+
+      S.TieTextBox(_("Max silence duration (milliseconds):\n"),
+                   mEffect->mTruncLongestAllowedSilentMs,
+                   10);
+      S.AddUnits(_("(9999999 or greater is off)"));
+      S.TieChoice(_("Threshold for silence:"),
+                  mEffect->mTruncDbChoiceIndex,
+                  &choices);
+   }
+   S.EndTwoColumn();
 }
 
-bool TruncSilenceDialog::TransferDataFromWindow()
-{
-   long ms;
-   mTruncLongestAllowedSilentMsText->GetValue().ToLong(&ms);
-   mTruncLongestAllowedSilentMs = ms;
-
-   mTruncDbChoiceIndex = mTruncDbSilenceThresholdChoice->GetSelection();
-
-   return true;
-}
-
-void TruncSilenceDialog::OnOk(wxCommandEvent &event)
+void TruncSilenceDialog::OnPreview(wxCommandEvent & event)
 {
    TransferDataFromWindow();
-
-   EndModal(true);
+   mEffect->Preview();
 }
 
-void TruncSilenceDialog::OnCancel(wxCommandEvent &event)
-{
-   EndModal(false);
-}
