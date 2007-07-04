@@ -89,7 +89,6 @@ class SelectionBar:public ToolBar {
    double mRate;
    double mStart, mEnd, mAudio;
    wxString mField[10];
-   bool mModifyingSelection;
 
    TimeTextCtrl   *mLeftTime;
    TimeTextCtrl   *mRightTime;
