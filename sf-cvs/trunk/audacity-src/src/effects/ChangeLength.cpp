@@ -27,7 +27,7 @@
 #include "../Project.h"
 #include "ChangeLength.h"
 
-EffectChangeLength::EffectChangeLength() : mUserPrompted(false)
+EffectChangeLength::EffectChangeLength()
 {
    Init();
 }
@@ -65,7 +65,7 @@ bool EffectChangeLength::PromptUser()
    if (!dlog.GetReturnCode()) {
       return false;
    }
-   mUserPrompted = true;
+
    mToLength = dlog.mToLength;
    gPrefs->Write(wxT("/CsPresets/ChangeLengthTo"), mToLength);
    
@@ -82,7 +82,6 @@ bool EffectChangeLength::Process()
    TrackListIterator iter(mWaveTracks);
    mTrack = (WaveTrack *) iter.First();
 
-   mUserPrompted = false;
    return true;
 }
 

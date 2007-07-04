@@ -44,7 +44,6 @@ public:
    WaveTrack   *mTrack;
    double      mFromLength;
    double      mToLength;
-   bool        mUserPrompted;
 
 friend class ChangeLengthDialog;
 };
