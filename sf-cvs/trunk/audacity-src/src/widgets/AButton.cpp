@@ -245,7 +245,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
 {
    wxSize clientSize = GetClientSize();
    AButtonState prevState = GetState();
-   
+
    if (event.Entering())
       mCursorIsInWindow = true;
    else if (event.Leaving())
@@ -258,9 +258,13 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
    if (HasAlternateImages() && !mButtonIsDown)
       mAlternate = event.ShiftDown();
 
-   //If the mouse button is released, the following stuff happens
-   if (mEnabled) {
-      if (event.ButtonUp() && mIsClicking) {
+   if (mEnabled && event.IsButton()) {
+      if (event.ButtonIsDown(wxMOUSE_BTN_ANY)) {
+         SetFocus();
+         mIsClicking = true;
+         CaptureMouse();
+      }
+      else if (mIsClicking) {
          mIsClicking = false;
 
          if (HasCapture())
@@ -279,11 +283,6 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
             
             Click();
          }
-      }
-      else if (event.ButtonDown()) {
-         SetFocus();
-         mIsClicking = true;
-         CaptureMouse();
       }
    }
    
