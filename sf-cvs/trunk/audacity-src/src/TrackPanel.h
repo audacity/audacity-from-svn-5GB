@@ -92,11 +92,11 @@ class AUDACITY_DLL_API TrackPanelListener {
 };
 
 
-class TrackLabel
+class TrackInfo
 {
 public:
-   TrackLabel(wxWindow * pParentIn);
-   ~TrackLabel();
+   TrackInfo(wxWindow * pParentIn);
+   ~TrackInfo();
 
    int GetTitleWidth() const { return 100; }
 private:
@@ -104,6 +104,7 @@ private:
    void EnsureSufficientSliders(int index);
 
    void DrawBackground(wxDC * dc, const wxRect r, bool bSelected, const int labelw);
+   void DrawBordersWithin(wxDC * dc, const wxRect r );
    void DrawCloseBox(wxDC * dc, const wxRect r, bool down);
    void DrawTitleBar(wxDC * dc, const wxRect r, Track * t, bool down);
    void DrawMuteSolo(wxDC * dc, const wxRect r, Track * t, bool down, bool solo);
@@ -359,8 +360,8 @@ class TrackPanel:public wxPanel {
 //   int GetTitleWidth() const { return 100; }
    int GetTitleOffset() const { return 0; }
    int GetVRulerWidth() const { return 36;}
-   int GetVRulerOffset() const { return GetTitleOffset() + mTrackLabel.GetTitleWidth();}
-   int GetLabelWidth() const { return mTrackLabel.GetTitleWidth() + GetVRulerWidth();}
+   int GetVRulerOffset() const { return GetTitleOffset() + mTrackInfo.GetTitleWidth();}
+   int GetLabelWidth() const { return mTrackInfo.GetTitleWidth() + GetVRulerWidth();}
 
 private:
    void DrawTracks(wxDC * dc);
@@ -388,7 +389,7 @@ private:
 
    bool MoveClipToTrack(WaveClip *clip, WaveTrack* src, WaveTrack* dst);
 
-   TrackLabel mTrackLabel;
+   TrackInfo mTrackInfo;
 
    TrackPanelListener *mListener;
 
@@ -555,7 +556,7 @@ private:
    wxMenu *mLabelTrackMenu;
    wxMenu *mRateMenu;
    wxMenu *mFormatMenu;
-   wxMenu *mLabelTrackLabelMenu;
+   wxMenu *mLabelTrackInfoMenu;
 
    Track *mPopupMenuTarget;
 

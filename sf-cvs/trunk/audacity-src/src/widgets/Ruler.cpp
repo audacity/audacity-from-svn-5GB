@@ -68,6 +68,7 @@ array of Ruler::Label.
 #include "../toolbars/ControlToolBar.h"
 #include "../Theme.h"
 #include "../AllThemeResources.h"
+#include "../Experimental.h"
 
 #define max(a,b)  ( (a<b)?b:a )
 
@@ -99,6 +100,10 @@ Ruler::Ruler()
    mTop = -1;
    mRight = -1;
    mBottom = -1;
+   mbTicksOnly = true;
+   mbTicksAtExtremes = false;
+   mTickColour = wxColour(153,153,153);
+   mPen.SetColour(mTickColour);
 
    // Note: the font size is now adjusted automatically whenever
    // Invalidate is called on a horizontal Ruler, unless the user
@@ -647,9 +652,9 @@ void Ruler::Tick(int pos, double d, bool major)
          mMaxHeight = max(mMaxHeight, strH + 4);
       }
       else {
-         strTop = mBottom - strH - 6;
+         strTop = mBottom - strH -6;
          // Still leaves room for an umlaut or whatever above normal character
-         strTop = mTop- mLead;
+         strTop = mTop- mLead+4;// More space was needed...
          mMaxHeight = max(mMaxHeight, strH + 6);
       }
    }
@@ -920,7 +925,7 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
 
 void Ruler::Draw(wxDC& dc)
 {
-   Draw( dc, NULL, 0, 0 );
+   Draw( dc, NULL, 0, 0);
 }
 
 void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
@@ -933,44 +938,62 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
    if (!mValid)
       Update( speedEnv, minSpeed, maxSpeed );
 
+#ifdef EXPERIMENTAL_THEMING
+   mDC->SetPen(mPen);
+   mDC->SetTextForeground(mTickColour);
+#else
    mDC->SetPen(*wxBLACK_PEN);
    mDC->SetTextForeground(*wxBLACK);
+#endif
 
-   if (mOrientation == wxHORIZONTAL) {
-      if (mFlip)
-         mDC->DrawLine(mLeft, mTop, mRight+1, mTop);
-      else
-         mDC->DrawLine(mLeft, mBottom, mRight+1, mBottom);
-   }
-   else {
-      if (mFlip)
-         mDC->DrawLine(mLeft, mTop, mLeft, mBottom+1);
-      else
-         mDC->DrawLine(mRight, mTop, mRight, mBottom+1);
+   // Draws a long line the length of the ruler.
+   if( !mbTicksOnly )
+   {
+      if (mOrientation == wxHORIZONTAL) {
+         if (mFlip)
+            mDC->DrawLine(mLeft, mTop, mRight+1, mTop);
+         else
+            mDC->DrawLine(mLeft, mBottom, mRight+1, mBottom);
+      }
+      else {
+         if (mFlip)
+            mDC->DrawLine(mLeft, mTop, mLeft, mBottom+1);
+         else
+            mDC->DrawLine(mRight, mTop, mRight, mBottom+1);
+      }
    }
 
    int i;
 
    mDC->SetFont(*mMajorFont);
 
+   // We may want to not show the ticks at the extremes,
+   // though still showing the labels.
+   // This gives a better look when the ruler is on a bevelled
+   // button, since otherwise the tick is drawn on the bevel.
+   int iMaxPos = (mOrientation==wxHORIZONTAL)? mRight : mBottom-5;
+
    for(i=0; i<mNumMajor; i++) {
       int pos = mMajorLabels[i].pos;
 
-      if (mOrientation == wxHORIZONTAL) {
-         if (mFlip)
-            mDC->DrawLine(mLeft + pos, mTop,
-                          mLeft + pos, mTop + 4);
-         else
-            mDC->DrawLine(mLeft + pos, mBottom - 4,
-                          mLeft + pos, mBottom);
-      }
-      else {
-         if (mFlip)
-            mDC->DrawLine(mLeft, mTop + pos,
-                          mLeft + 4, mTop + pos);
-         else
-            mDC->DrawLine(mRight - 4, mTop + pos,
-                          mRight, mTop + pos);
+      if( mbTicksAtExtremes || ((pos!=0)&&(pos!=iMaxPos)))
+      {
+         if (mOrientation == wxHORIZONTAL) {
+            if (mFlip)
+               mDC->DrawLine(mLeft + pos, mTop,
+                             mLeft + pos, mTop + 4);
+            else
+               mDC->DrawLine(mLeft + pos, mBottom - 4,
+                             mLeft + pos, mBottom);
+         }
+         else {
+            if (mFlip)
+               mDC->DrawLine(mLeft, mTop + pos,
+                             mLeft + 4, mTop + pos);
+            else
+               mDC->DrawLine(mRight - 4, mTop + pos,
+                             mRight, mTop + pos);
+         }
       }
 
       if (mMajorLabels[i].text != wxT(""))
@@ -984,21 +1007,26 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
    for(i=0; i<mNumMinor; i++) {
       int pos = mMinorLabels[i].pos;
 
-      if (mOrientation == wxHORIZONTAL) {
-         if (mFlip)
-            mDC->DrawLine(mLeft + pos, mTop,
-                          mLeft + pos, mTop + 2);
-         else
-            mDC->DrawLine(mLeft + pos, mBottom - 2,
-                          mLeft + pos, mBottom);
-      }
-      else {
-         if (mFlip)
-            mDC->DrawLine(mLeft, mTop + pos,
-                          mLeft + 2, mTop + pos);
-         else
-            mDC->DrawLine(mRight - 2, mTop + pos,
-                          mRight, mTop + pos);
+      if( mbTicksAtExtremes || ((pos!=0)&&(pos!=iMaxPos)))
+      {
+         if (mOrientation == wxHORIZONTAL) 
+         {
+            if (mFlip)
+               mDC->DrawLine(mLeft + pos, mTop,
+                             mLeft + pos, mTop + 2);
+            else
+               mDC->DrawLine(mLeft + pos, mBottom - 2,
+                             mLeft + pos, mBottom);
+         }
+         else 
+         {
+            if (mFlip)
+               mDC->DrawLine(mLeft, mTop + pos,
+                             mLeft + 2, mTop + pos);
+            else
+               mDC->DrawLine(mRight - 2, mTop + pos,
+                             mRight, mTop + pos);
+         }
       }
 
       if (mMinorLabels[i].text != wxT(""))
@@ -1394,13 +1422,13 @@ void AdornedRulerPanel::DoDrawPlayRegion(wxDC *dc)
 void AdornedRulerPanel::DoDrawBorder(wxDC * dc)
 {
    // Draw AdornedRulerPanel border
-   AColor::Medium( dc, false );
+   AColor::MediumTrackInfo( dc, false );
    dc->DrawRectangle( mInner );
 
    wxRect r = mOuter;
    r.width -= 1;                 // -1 for bevel
    r.height -= 2;                // -2 for bevel and for bottom line
-   AColor::Bevel( *dc, true, r );
+   AColor::BevelTrackInfo( *dc, true, r );
 
    dc->SetPen( *wxBLACK_PEN );
    dc->DrawLine( mOuter.x,
@@ -1413,7 +1441,8 @@ void AdornedRulerPanel::DoDrawMarks(wxDC * dc, bool /*text */ )
 {
    double min = mViewInfo->h - mLeftOffset / mViewInfo->zoom;
    double max = min + mInner.width / mViewInfo->zoom;
-
+   
+   ruler.SetTickColour( theTheme.Colour( clrTrackPanelText ) );
    ruler.SetRange( min, max );
    ruler.Draw( *dc );
 }

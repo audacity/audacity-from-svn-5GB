@@ -23,6 +23,7 @@ It is also a place to document colour usage policy in Audacity
 
 #include "AColor.h"
 #include "Theme.h"
+#include "../Experimental.h"
 #include "AllThemeResources.h"
 
 bool AColor::inited = false;
@@ -57,6 +58,12 @@ wxPen AColor::trackFocusPens[3];
 wxPen AColor::snapGuidePen;
 
 wxBrush AColor::tooltipBrush;
+
+// The spare pen and brush possibly help us cut down on the
+// number of pens and brushes we need.
+wxPen AColor::sparePen;
+wxBrush AColor::spareBrush;
+
 
 //
 // Draws a focus rectangle (Taken directly from wxWidgets source)
@@ -115,6 +122,50 @@ void AColor::Bevel(wxDC & dc, bool up, wxRect & r)
    dc.DrawLine(r.x, r.y + r.height, r.x + r.width + 1, r.y + r.height);
 }
 
+wxColour Blend( const wxColour & c1, wxColour & c2 )
+{
+   wxColour c3(
+      (c1.Red() + c2.Red())/2,
+      (c1.Green() + c2.Green())/2,
+      (c1.Blue() + c2.Blue())/2);
+   return c3;
+}
+
+void AColor::BevelTrackInfo(wxDC & dc, bool up, wxRect & r)
+{
+#ifndef EXPERIMENTAL_THEMING
+   Bevel( dc, up, r );
+#else
+   wxColour col;
+   col = Blend( theTheme.Colour( clrTrackInfo ), up ? wxColour( 255,255,255):wxColour(0,0,0));
+
+   wxPen pen( col );
+   dc.SetPen( pen );
+
+   dc.DrawLine(r.x, r.y, r.x + r.width, r.y);
+   dc.DrawLine(r.x, r.y, r.x, r.y + r.height);
+
+   col = Blend( theTheme.Colour( clrTrackInfo ), up ? wxColour(0,0,0): wxColour(255,255,255));
+
+   pen.SetColour( col );
+   dc.SetPen( pen );
+
+   dc.DrawLine(r.x + r.width, r.y, r.x + r.width, r.y + r.height);
+   dc.DrawLine(r.x, r.y + r.height, r.x + r.width + 1, r.y + r.height);
+#endif
+}
+
+void AColor::UseThemeColour( wxDC * dc, int iIndex )
+{
+   if (!inited)
+      Init();
+   wxColour col = theTheme.Colour( iIndex );
+   spareBrush.SetColour( col );
+   dc->SetBrush( spareBrush );
+   sparePen.SetColour( col );
+   dc->SetPen( sparePen );
+}
+
 void AColor::Light(wxDC * dc, bool selected)
 {
    if (!inited)
@@ -133,6 +184,25 @@ void AColor::Medium(wxDC * dc, bool selected)
    dc->SetPen(mediumPen[index]);
 }
 
+#if 0
+#ifdef EXPERIMENTAL_THEMING
+   UseThemeColour( dc, selected ? clrMediumSelected : clrMedium);
+#endif
+#ifdef EXPERIMENTAL_THEMING
+   UseThemeColour( dc, selected ? clrLightSelected : clrLight);
+#endif
+#endif
+
+void AColor::MediumTrackInfo(wxDC * dc, bool selected)
+{
+#ifdef EXPERIMENTAL_THEMING
+   UseThemeColour( dc, selected ? clrTrackInfoSelected : clrTrackInfo);
+#else
+   Medium( dc, selected );
+#endif
+}
+
+
 void AColor::Dark(wxDC * dc, bool selected)
 {
    if (!inited)
@@ -141,6 +211,16 @@ void AColor::Dark(wxDC * dc, bool selected)
    dc->SetBrush(darkBrush[index]);
    dc->SetPen(darkPen[index]);
 }
+
+void AColor::TrackPanelBackground(wxDC * dc, bool selected)
+{
+#ifdef EXPERIMENTAL_THEMING
+   UseThemeColour( dc, selected ? clrDarkSelected : clrDark);
+#else
+   Dark( dc, selected );
+#endif
+}
+
 
 void AColor::CursorColor(wxDC * dc)
 {
@@ -263,13 +343,13 @@ void AColor::Init()
    tooltipBrush.SetColour( wxSystemSettingsNative::GetColour(wxSYS_COLOUR_INFOBK) );
 
    // A tiny gradient of yellow surrounding the current focused track
-   trackFocusPens[0].SetColour(255, 255, 128);
-   trackFocusPens[1].SetColour(215, 215, 138);
-   trackFocusPens[2].SetColour(185, 185, 142);
+   theTheme.SetPenColour(   trackFocusPens[0],  clrTrackFocus0);
+   theTheme.SetPenColour(   trackFocusPens[1],  clrTrackFocus1);
+   theTheme.SetPenColour(   trackFocusPens[2],  clrTrackFocus2);
 
    // A vertical line indicating that the selection or sliding has
    // been snapped to the nearest boundary.
-   snapGuidePen.SetColour(255, 255, 0);
+   theTheme.SetPenColour(   snapGuidePen,      clrSnapGuide);
 
 #if defined(__WXMSW__) || defined(__WXGTK__)
    // unselected

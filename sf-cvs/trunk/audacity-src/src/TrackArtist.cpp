@@ -261,12 +261,19 @@ void TrackArtist::DrawTracks(TrackList * tracks,
 
 void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 {
+   // All waves have a ruler in the info panel
+   // The ruler needs a bevelled surround.
+   if (t->GetKind() == Track::Wave )
+   {
+      wxRect bev = r;
+      bev.Inflate(-1, -1);
+      bev.width  +=1;
+      AColor::BevelTrackInfo(*dc, true, bev);
+   }
+
    if (t->GetKind() == Track::Wave
        && ((WaveTrack *) t)->GetDisplay() == WaveTrack::WaveformDisplay) {
       // Waveform
-      wxRect bev = r;
-      bev.Inflate(-1, -1);
-      AColor::Bevel(*dc, true, bev);
       float min, max;
 
       ((WaveTrack *)t)->GetDisplayBounds(&min, &max);
@@ -282,9 +289,6 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
    if (t->GetKind() == Track::Wave
        && ((WaveTrack *) t)->GetDisplay() == WaveTrack::WaveformDBDisplay) {
       // Waveform (db)
-      wxRect bev = r;
-      bev.Inflate(-1, -1);
-      AColor::Bevel(*dc, true, bev);
       vruler->SetUnits(wxT(""));
 
       float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
@@ -328,10 +332,6 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
    if (t->GetKind() == Track::Wave
        && ((WaveTrack *) t)->GetDisplay() == WaveTrack::SpectrumDisplay) {
       // Spectrum
-      wxRect bev = r;
-      bev.Inflate(-1, -1);
-      AColor::Bevel(*dc, true, bev);
-
       if (r.height < 60)
          return;
 
@@ -371,11 +371,9 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
    if (t->GetKind() == Track::Wave
        && ((WaveTrack *) t)->GetDisplay() == WaveTrack::PitchDisplay) {
       // Pitch
-      wxRect bev = r;
-      bev.Inflate(-1, -1);
-      AColor::Bevel(*dc, true, bev);
    }
 
+   // The note track isn't drawing a ruler at all!
    if (t->GetKind() == Track::Note) {
 
       dc->SetPen(*wxTRANSPARENT_PEN);

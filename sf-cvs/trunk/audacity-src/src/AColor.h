@@ -27,9 +27,14 @@ class AColor {
 
    static void DrawFocus(wxDC & dc, wxRect & r);
    static void Bevel(wxDC & dc, bool up, wxRect & r);
+   static void BevelTrackInfo(wxDC & dc, bool up, wxRect & r);
+
+   static void UseThemeColour( wxDC * dc, int iIndex );
+   static void TrackPanelBackground(wxDC * dc, bool selected);
 
    static void Light(wxDC * dc, bool selected);
    static void Medium(wxDC * dc, bool selected);
+   static void MediumTrackInfo(wxDC * dc, bool selected);
    static void Dark(wxDC * dc, bool selected);
 
    static void CursorColor(wxDC * dc);
@@ -54,7 +59,7 @@ class AColor {
    static wxPen lightPen[2];
    static wxPen mediumPen[2];
    static wxPen darkPen[2];
-   
+
    static wxPen cursorPen;
    static wxPen indicatorPen[2];
    static wxBrush indicatorBrush[2];
@@ -81,8 +86,9 @@ class AColor {
 
    static wxBrush tooltipBrush;
 
-
  private:
+   static wxPen sparePen;
+   static wxBrush spareBrush;
    static bool inited;
 
 };
