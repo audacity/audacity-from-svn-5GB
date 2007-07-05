@@ -46,7 +46,7 @@
 #include "PrefsPanel.h"
 
 #include "AudioIOPrefs.h"
-//#include "SmartRecordPrefs.h"
+#include "SmartRecordPrefs.h"
 #include "DirectoriesPrefs.h"
 #include "FileFormatPrefs.h"
 #include "GUIPrefs.h"
