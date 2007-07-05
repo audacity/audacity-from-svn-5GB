@@ -67,6 +67,7 @@ writing audio.
 #include "toolbars/ControlToolBar.h"
 
 #include "widgets/Meter.h"
+#include "../Experimental.h"
 
 #define NO_STABLE_INDICATOR -1000000000
 
@@ -861,10 +862,13 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    #endif
 
    gPrefs->Read(wxT("/AudioIO/SWPlaythrough"), &mSoftwarePlaythrough, false);
+
+#ifdef EXPERIMENTAL_SMART_RECORD
    gPrefs->Read(wxT("/AudioIO/PauseRecOnSilence"), &mPauseRec, false);
    int silenceLevelDB;
-   gPrefs->Read(wxT("/AudioIO/SilenceLevel"), &silenceLevelDB, -30);
+   gPrefs->Read(wxT("/AudioIO/SilenceLevel"), &silenceLevelDB, -50);
    mSilenceLevel = (silenceLevelDB + 60.)/60.;  // meter goes -60dB -> 0dB
+#endif
 
    mTimeTrack = timeTrack;
    mListener = listener;
@@ -1880,6 +1884,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
    }
    gAudioIO->mUpdatingMeters = false;
 
+#ifdef EXPERIMENTAL_SMART_RECORD
    // Stop recording if 'silence' is detected
    if(gAudioIO->mPauseRec && inputBuffer) {
       if(gAudioIO->mInputMeter->GetMaxPeak() < gAudioIO->mSilenceLevel ) {
@@ -1897,7 +1902,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          }
       }
    }
-
+#endif
    if( gAudioIO->mPaused )
    {
       if (outputBuffer && numPlaybackChannels > 0)

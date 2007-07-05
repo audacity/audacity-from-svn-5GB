@@ -6076,6 +6076,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\prefs\SmartRecordPrefs.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\prefs\SpectrumPrefs.cpp"
 				>
 				<FileConfiguration
@@ -7949,6 +7953,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\src\prefs\SmartRecordPrefs.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

@@ -154,15 +154,6 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("SWPlaythrough"),false);
    }
    S.EndStatic();
-   S.StartStatic( _("Pause Recording on Silence") );
-   {
-      S.TieCheckBox( _("Pause Recording on Silence"), wxT("PauseRecOnSilence"),false);
-      S.StartMultiColumn(2, wxEXPAND);
-         S.SetStretchyCol(1);
-         S.TieSlider(_("Silence level (dB):"), wxT("SilenceLevel"), -30, 0, -60);
-      S.EndMultiColumn();
-   }
-   S.EndStatic();
    S.StartHorizontalLay( wxEXPAND, 0 );
    S.StartStatic( _("Cut Preview"),1 );
    {
