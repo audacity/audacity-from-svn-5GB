@@ -39,6 +39,7 @@
 
 //#define RIGHT_ALIGNED_TEXTBOXES
 //#define EXPERIMENTAL_VOICE_DETECTION
+//#define EXPERIMENTAL_SMART_RECORD
 
 #ifdef EXPERIMENTAL_FEATURES
    // The first experimental feature is a notebook that adds

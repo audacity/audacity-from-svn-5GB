@@ -46,6 +46,7 @@
 #include "PrefsPanel.h"
 
 #include "AudioIOPrefs.h"
+#include "SmartRecordPrefs.h"
 #include "DirectoriesPrefs.h"
 #include "FileFormatPrefs.h"
 #include "GUIPrefs.h"
@@ -153,6 +154,11 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
    // Parameters are: AppPage( page, name, IsSelected, imageId)
    w = new AudioIOPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
+
+#ifdef EXPERIMENTAL_SMART_RECORD
+   w = new SmartRecordPrefs(mCategories); mCategories->AddPage(w, w->GetName(),false,0);
+#endif
+
    w = new QualityPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
    w = new FileFormatPrefs(mCategories);  mCategories->AddPage(w, w->GetName(),false,0);
    w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName(),false,0);
