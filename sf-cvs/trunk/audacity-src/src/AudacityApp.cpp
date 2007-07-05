@@ -711,6 +711,7 @@ bool AudacityApp::OnInit()
 
    SetExitOnFrameDelete(true);
 
+
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
 
 #ifdef EXPERIMENTAL_MODULES

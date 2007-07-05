@@ -663,6 +663,12 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
       wxNO_BORDER);
    mMainPanel->SetSizer( new wxBoxSizer(wxVERTICAL) );
    pPage = mMainPanel;
+   // Set the colour here to the track panel background to avoid
+   // flicker when Audacity starts up.
+   // However, that leads to areas next to the horizontal scroller
+   // being painted in background colour and not scroller background
+   // colour, so suppress this for now.
+   //pPage->SetBackgroundColour( theTheme.Colour( clrDark ));
 #endif
 
    wxBoxSizer *bs = new wxBoxSizer( wxVERTICAL );

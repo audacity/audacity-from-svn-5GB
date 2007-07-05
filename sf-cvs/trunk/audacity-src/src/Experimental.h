@@ -30,11 +30,17 @@
 //Uncomment the next #define to enable experimental features.
 //#define EXPERIMENTAL_FEATURES
 
+// In standard builds, enable the next two lines if you want to 
+// see 'experimental theming'.  Work in progress, 05-July-2007.
+//#define EXPERIMENTAL_THEMING
+//#define EXPERIMENTAL_THEME_PREFS
+
 // JKC July-2007: We're temporarily using EXPERIMENTAL_MODULES to 
 // switch on all experimental features.
 #ifdef EXPERIMENTAL_MODULES
 #define EXPERIMENTAL_THEMING
 #define EXPERIMENTAL_THEME_PREFS
+#define EXPERIMENTAL_SMART_RECORD
 #endif
 
 //#define RIGHT_ALIGNED_TEXTBOXES

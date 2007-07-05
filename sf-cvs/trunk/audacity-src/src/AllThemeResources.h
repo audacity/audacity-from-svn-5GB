@@ -202,6 +202,7 @@ from there.  Audacity will look for a file called "Pause.png".
    DEFINE_IMAGE( bmpAudacityLogo, wxImage( 215, 190 ), wxT("AudacityLogo"));
    DEFINE_IMAGE( bmpAudacityLogo48x48, wxImage( 48, 48 ), wxT("AudacityLogo48x48"));
 
+#ifdef OLD_COLOURS
    DEFINE_COLOUR( clrBlank,      wxColour(214, 214, 214), wxT("Blank"));
    DEFINE_COLOUR( clrUnselected, wxColour(192, 192, 192), wxT("Unselected"));
    DEFINE_COLOUR( clrSelected,   wxColour(148, 148, 170), wxT("Selected"));
@@ -213,9 +214,23 @@ from there.  Audacity will look for a file called "Pause.png".
    DEFINE_COLOUR( clrRms,        wxColour(100, 100, 220), wxT("Rms"));
    DEFINE_COLOUR( clrMuteRms,    wxColour(136, 136, 144), wxT("MuteRms"));
    DEFINE_COLOUR( clrShadow,     wxColour(148, 148, 148), wxT("Shadow"));
+#endif
+   DEFINE_COLOUR( clrBlank,      wxColour( 64,  64,  64), wxT("Blank"));
+   DEFINE_COLOUR( clrUnselected, wxColour( 30,  30,  30), wxT("Unselected"));
+   DEFINE_COLOUR( clrSelected,   wxColour( 93,  65,  93), wxT("Selected"));
+   DEFINE_COLOUR( clrSample,     wxColour( 63,  77, 155), wxT("Sample"));
+   DEFINE_COLOUR( clrSelSample,  wxColour( 50,  50, 200), wxT("SelSample"));
+   DEFINE_COLOUR( clrDragSample, wxColour(  0, 100,   0), wxT("DragSample"));
+                                                                
+   DEFINE_COLOUR( clrMuteSample, wxColour(136, 136, 144), wxT("MuteSample"));
+   DEFINE_COLOUR( clrRms,        wxColour(107, 154, 247), wxT("Rms"));
+   DEFINE_COLOUR( clrMuteRms,    wxColour(136, 136, 144), wxT("MuteRms"));
+   DEFINE_COLOUR( clrShadow,     wxColour(148, 148, 148), wxT("Shadow"));
+
+
 
    DEFINE_COLOUR( clrAboutBoxBackground,  wxColour(255, 255, 255),  wxT("AboutBackground"));
-   DEFINE_COLOUR( clrTrackPanelText,      wxColour(  0,   0,   0),  wxT("TrackPanelText"));
+   DEFINE_COLOUR( clrTrackPanelText,      wxColour(153, 153, 153),  wxT("TrackPanelText"));
    DEFINE_COLOUR( clrLabelTrackText,      wxColour(  0,   0,   0),  wxT("LabelTrackText"));
 
    
@@ -237,7 +252,7 @@ from there.  Audacity will look for a file called "Pause.png".
    DEFINE_COLOUR( clrMeterOutputLightPen,  wxColour(153, 255, 153),   wxT("MeterOutputLightPen") );
    DEFINE_COLOUR( clrMeterOutputDarkPen,   wxColour(61, 164, 61),     wxT("MeterOutputDarkPen") );
 
-   DEFINE_COLOUR( clrRulerBackground,      wxColour(148, 148, 170),   wxT("RulerBackground") );
+   DEFINE_COLOUR( clrRulerBackground,      wxColour( 93,  65,  93),   wxT("RulerBackground") );
    DEFINE_COLOUR( clrAxisLines,            wxColour(0, 0, 255),       wxT("AxisLines") );
    DEFINE_COLOUR( clrGraphLines,           wxColour(110, 110, 220),   wxT("GraphLines") );
    DEFINE_COLOUR( clrResponseLines,        wxColour(0, 255, 0),       wxT("ResponseLines") );
@@ -272,6 +287,29 @@ from there.  Audacity will look for a file called "Pause.png".
    DEFINE_COLOUR( clrLabelUnselectedPen,   wxColour(   192,192,192),  wxT("LabelUnselectedPen") );
    DEFINE_COLOUR( clrLabelSelectedPen,     wxColour(   148,148,170),  wxT("LabelSelectedPen") );
    DEFINE_COLOUR( clrLabelSurroundPen,     wxColour(     0,  0,  0),  wxT("LabelSurroundPen") );
+
+#ifdef EXPERIMENTAL_THEMING
+   DEFINE_COLOUR( clrTrackFocus0,          wxColour( 200, 200, 200),  wxT("TrackFocus0") );
+   DEFINE_COLOUR( clrTrackFocus1,          wxColour( 180, 180, 180),  wxT("TrackFocus1") );
+   DEFINE_COLOUR( clrTrackFocus2,          wxColour( 160, 160, 160),  wxT("TrackFocus2") );
+#else
+   DEFINE_COLOUR( clrTrackFocus0,          wxColour( 255, 255, 128),  wxT("TrackFocus0") );
+   DEFINE_COLOUR( clrTrackFocus1,          wxColour( 215, 215, 138),  wxT("TrackFocus1") );
+   DEFINE_COLOUR( clrTrackFocus2,          wxColour( 185, 185, 142),  wxT("TrackFocus2") );
+#endif
+
+   DEFINE_COLOUR( clrSnapGuide,            wxColour( 255, 255,   0),  wxT("SnapGuide") );
+   DEFINE_COLOUR( clrTrackInfo,            wxColour(  64,  64,  64),  wxT("TrackInfo") );
+   DEFINE_COLOUR( clrTrackInfoSelected,    wxColour(  93,  65,  93),  wxT("TrackInfoSelected") );
+
+   DEFINE_COLOUR( clrLight,                wxColour(  60,  60,  60),  wxT("Light") );
+   DEFINE_COLOUR( clrMedium,               wxColour(  43,  43,  43),  wxT("Medium") );
+   DEFINE_COLOUR( clrDark,                 wxColour(  20,  20,  20),  wxT("Dark") );
+
+   DEFINE_COLOUR( clrLightSelected,        wxColour(  93,  65,  93),  wxT("LightSelected") );
+   DEFINE_COLOUR( clrMediumSelected,       wxColour(  93,  43,  93),  wxT("MediumSelected") );
+   DEFINE_COLOUR( clrDarkSelected,         wxColour(  93,  20,  93),  wxT("DarkSelected") );
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

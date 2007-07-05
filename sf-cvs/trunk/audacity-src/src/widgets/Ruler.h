@@ -100,6 +100,10 @@ class AUDACITY_DLL_API Ruler {
    void Draw(wxDC& dc);
    void Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed);
 
+   // So we can have white ticks on black...
+   void SetTickColour( const wxColour & colour)
+   { mTickColour = colour; mPen.SetColour( colour );}
+
  private:
    void Invalidate();
    void Update();
@@ -109,8 +113,14 @@ class AUDACITY_DLL_API Ruler {
    wxString LabelString(double d, bool major);
    void Tick(int pos, double d, bool major);
 
+public:
+   bool mbTicksOnly;
+   bool mbTicksAtExtremes;
 
- private:
+private:
+   wxColour mTickColour;
+   wxPen mPen;
+ 
    int          mMaxWidth, mMaxHeight;
    int          mLeft, mTop, mRight, mBottom, mLead;
    int          mLength;

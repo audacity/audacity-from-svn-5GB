@@ -66,6 +66,7 @@ and use it for toolbar and window layouts too.
 #include "toolbars/ControlToolBar.h"
 #include "ImageManipulation.h"
 #include "Theme.h"
+#include "Experimental.h"
 #include "AllThemeResources.h"  // can remove this later, only needed for 'XPMS_RETIRED'.
 #include "FileNames.h"
 #include "Prefs.h"
@@ -836,6 +837,7 @@ bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
       }
    }
 
+//   return true; //To not load colours..
    // Now load the colours.
    int x,y;
    mFlow.SetNewGroup(1);

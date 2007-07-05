@@ -46,7 +46,7 @@
 #include "PrefsPanel.h"
 
 #include "AudioIOPrefs.h"
-#include "SmartRecordPrefs.h"
+//#include "SmartRecordPrefs.h"
 #include "DirectoriesPrefs.h"
 #include "FileFormatPrefs.h"
 #include "GUIPrefs.h"
@@ -72,22 +72,6 @@ BEGIN_EVENT_TABLE(PrefsDialog, wxDialog)
 END_EVENT_TABLE()
 
 bool gPrefsDialogVisible = false;
-
-
-#ifdef NOT_USED
-// This is just a test image for the preference dialog image list.
-// We'll replace it in due course with nicer images.
-static const char * TrialImage[] = {
-"64 5 3 1",
-"+	c #004010",
-".	c None", // mask color = RGB:255,0,0
-"#	c #00AA30",
-"###+.......+###.###+.......+###.###+.......+###.###+.......+###.",
-"+###+.....+###+.+###+.....+###+.+###+.....+###+.+###+.....+###+.",
-".+###+...+###+...+###+...+###+...+###+...+###+...+###+...+###+..",
-"..+###+.+###+.....+###+.+###+.....+###+.+###+.....+###+.+###+...",
-"...+###+###+.......+###+###+.......+###+###+.......+###+###+...."};
-#endif
 
 // wxListBook doesn't let you use report mode for the list.
 // We don't want images, we do want a single column, 
