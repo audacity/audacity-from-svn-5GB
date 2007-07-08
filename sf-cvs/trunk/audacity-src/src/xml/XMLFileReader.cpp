@@ -46,7 +46,6 @@ bool XMLFileReader::Parse(XMLTagHandler *baseHandler,
 {
    wxFFile theXMLFile(fname, wxT("rb"));
    if (!theXMLFile.IsOpened()) {
-      wxString errStr;
       mErrorStr.Printf(_("Could not open file: \"%s\""), fname.c_str());
       return false;
    }
@@ -77,7 +76,7 @@ bool XMLFileReader::Parse(XMLTagHandler *baseHandler,
    if (mHandler[0])
       return true;
    else {
-      mErrorStr.Printf(_("Unable to open project file."));
+      mErrorStr.Printf(_("Could not load file: \"%s\""), fname.c_str());
       return false;
    }
 }
