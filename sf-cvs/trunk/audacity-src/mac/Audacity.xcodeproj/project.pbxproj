@@ -874,6 +874,7 @@
 		28F1D81E0A2D0019005506A7 /* ExpandingToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D8190A2D0018005506A7 /* ExpandingToolBar.cpp */; };
 		28F1D81F0A2D0019005506A7 /* ImageRoll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */; };
 		28F5C1110BE5886A00D17341 /* FileDialogPrivate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F5C10F0BE5886A00D17341 /* FileDialogPrivate.cpp */; };
+		28FB20350C415D9500F769E7 /* SmartRecordPrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FB20330C415D9500F769E7 /* SmartRecordPrefs.cpp */; };
 		28FC1AFB0A47762C00A188AE /* WrappedType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FC1AF90A47762C00A188AE /* WrappedType.cpp */; };
 		28FE4A080ABF4E960056F5C4 /* mmx_optimized.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FE4A060ABF4E960056F5C4 /* mmx_optimized.cpp */; };
 		28FE4A090ABF4E960056F5C4 /* sse_optimized.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FE4A070ABF4E960056F5C4 /* sse_optimized.cpp */; };
@@ -2040,6 +2041,8 @@
 		28F5C1100BE5886A00D17341 /* FileDialogPrivate.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FileDialogPrivate.h; sourceTree = "<group>"; };
 		28FB121F0A3790A8006F0917 /* MacroMagic.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = MacroMagic.h; sourceTree = "<group>"; };
 		28FB12230A3790DF006F0917 /* AllThemeResources.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AllThemeResources.h; sourceTree = "<group>"; };
+		28FB20330C415D9500F769E7 /* SmartRecordPrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SmartRecordPrefs.cpp; sourceTree = "<group>"; };
+		28FB20340C415D9500F769E7 /* SmartRecordPrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SmartRecordPrefs.h; sourceTree = "<group>"; };
 		28FC1AF90A47762C00A188AE /* WrappedType.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = WrappedType.cpp; sourceTree = "<group>"; };
 		28FC1AFA0A47762C00A188AE /* WrappedType.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = WrappedType.h; sourceTree = "<group>"; };
 		28FE4A060ABF4E960056F5C4 /* mmx_optimized.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = mmx_optimized.cpp; sourceTree = "<group>"; };
@@ -3117,6 +3120,8 @@
 				1790B0C709883BFD008A330A /* PrefsPanel.h */,
 				1790B0C809883BFD008A330A /* QualityPrefs.cpp */,
 				1790B0C909883BFD008A330A /* QualityPrefs.h */,
+				28FB20330C415D9500F769E7 /* SmartRecordPrefs.cpp */,
+				28FB20340C415D9500F769E7 /* SmartRecordPrefs.h */,
 				1790B0CA09883BFD008A330A /* SpectrumPrefs.cpp */,
 				1790B0CB09883BFD008A330A /* SpectrumPrefs.h */,
 				28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */,
@@ -5271,6 +5276,7 @@
 				285DE1FA0BF03C7800A20DF0 /* Screenshot.cpp in Sources */,
 				2801A6460BF9268700648258 /* ImportQT.cpp in Sources */,
 				2801A6470BF9268700648258 /* ImportQTWrapper.cpp in Sources */,
+				28FB20350C415D9500F769E7 /* SmartRecordPrefs.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
