@@ -156,6 +156,7 @@ OBJS = \
 	prefs/MousePrefs.o \
 	prefs/PrefsDialog.o \
 	prefs/QualityPrefs.o \
+	prefs/SmartRecordPrefs.o \
 	prefs/SpectrumPrefs.o \
 	prefs/ThemePrefs.o \
    toolbars/ControlToolBar.o \
