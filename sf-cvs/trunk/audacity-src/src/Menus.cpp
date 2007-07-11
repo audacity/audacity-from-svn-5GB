@@ -770,6 +770,8 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("Screenshot"),     _("&Screenshot Tools..."),        FN(OnScreenshot));
       c->AddSeparator();   
       c->AddItem(wxT("Benchmark"),      _("&Run Benchmark..."),           FN(OnBenchmark));
+      c->AddSeparator();   
+      c->AddItem(wxT("DeviceInfo"),     _("&Audio Device Info..."),       FN(OnAudioDeviceInfo));
    }
 #endif 
 
@@ -3569,8 +3571,9 @@ void AudacityProject::OnImportRaw()
 
 void AudacityProject::OnEditMetadata()
 {
-   if (mTags->ShowEditDialog(this, _("Edit the metadata tags")))
+   if (mTags->ShowEditDialog(this, _("Edit the metadata tags")) == wxID_OK) {
       PushState(_("Edit Metadata tags"), _("Edit Metadata"));
+   }
 }
 
 void AudacityProject::OnMixAndRender()
@@ -4263,6 +4266,35 @@ void AudacityProject::OnBenchmark()
 void AudacityProject::OnScreenshot()
 {
    ::OpenScreenshotTools();
+}
+
+void AudacityProject::OnAudioDeviceInfo()
+{
+   wxString info = gAudioIO->GetDeviceInfo();
+   wxTextCtrl *tc;
+
+   wxDialog dlg(this, wxID_ANY,
+                wxString(wxT("Audio Device Info")),
+                wxDefaultPosition, wxDefaultSize,
+                wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER );
+
+   ShuttleGui S(&dlg, eIsCreating);
+
+   S.StartHorizontalLay(wxEXPAND, true);
+   {
+      tc = S.AddTextWindow(wxT(""));
+      tc->WriteText(info);
+   }
+   S.EndHorizontalLay();
+   
+   S.StartHorizontalLay(wxALIGN_RIGHT, false);
+   {
+      S.Id(wxID_OK).AddButton(wxT("OK"));
+   }
+   S.EndHorizontalLay();
+
+   dlg.Center();
+   dlg.ShowModal();
 }
 
 //
