@@ -55,6 +55,8 @@ writing audio.
 #include <wx/timer.h>
 #include <wx/intl.h>
 #include <wx/debug.h>
+#include <wx/sstream.h>
+#include <wx/txtstrm.h>
 
 #include "AudacityApp.h"
 #include "AudioIO.h"
@@ -1187,8 +1189,9 @@ void AudioIO::StopStream()
             {
                delete mCaptureBuffers[i];
                mCaptureTracks[i]->Flush();
-               mCaptureTracks[i]->Offset(mLastRecordingOffset +
-                                         latencyCorrection/1000.0);
+               mCaptureTracks[i]->Trim(mLastRecordingOffset +
+                                       latencyCorrection/1000.0,
+                                       mCaptureTracks[i]->GetEndTime());
             }
          
          delete[] mCaptureBuffers;
@@ -1636,6 +1639,247 @@ int AudioIO::GetCommonlyAvailCapture()
    }
 
    return commonlyAvail;
+}
+
+wxString AudioIO::GetDeviceInfo()
+{
+   wxStringOutputStream o;
+   wxTextOutputStream s(o, wxEOL_UNIX);
+   wxString e(wxT("\n"));
+
+   if (IsStreamActive()) {
+      return wxT("Stream is active ... unable to gather information.");
+   }
+
+#if defined(USE_PORTMIXER)
+   const PaDeviceInfo* info;
+
+#if USE_PORTAUDIO_V19
+   int recDeviceNum = Pa_GetDefaultInputDevice();
+   int playDeviceNum = Pa_GetDefaultOutputDevice();
+#else
+   int recDeviceNum = Pa_GetDefaultInputDeviceID();
+   int playDeviceNum = Pa_GetDefaultOutputDeviceID();
+#endif
+
+   s << wxT("==============================") << e;
+   s << wxT("Default capture device number: ") << recDeviceNum << e;
+   s << wxT("Default playback device number: ") << playDeviceNum << e;
+
+   // Sometimes PortAudio returns -1 if it cannot find a suitable default
+   // device, so we just use the first one available
+   if (recDeviceNum < 0)
+      recDeviceNum = 0;
+   if (playDeviceNum < 0)
+      playDeviceNum = 0;
+      
+   wxString recDevice = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
+   wxString playDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
+   int j;
+
+   // msmeyer: This tries to open the device with the highest samplerate
+   // available on this device, using 44.1kHz as the default, if the info
+   // cannot be fetched.
+
+#if USE_PORTAUDIO_V19
+   int cnt = Pa_GetDeviceCount();
+#else
+   int cnt = Pa_CountDevices();
+#endif
+
+   if (cnt <= 0) {
+      s << wxT("No devices found\n");
+      return o.GetString();
+   }
+      
+   for (j = 0; j < cnt; j++) {
+      s << wxT("==============================") << e;
+
+      info = Pa_GetDeviceInfo(j);
+      if (!info) {
+         s << wxT("Device info unavailable for: ") << j << wxT("\n");
+         continue;
+      }
+
+      wxString name = DeviceName(info);
+
+      s << wxT("Device ID: ") << j << e;
+      s << wxT("Device name: ") << name << e;
+      s << wxT("Input channels: ") << info->maxInputChannels << e;
+      s << wxT("Output channels: ") << info->maxOutputChannels << e;
+      s << wxT("Low Input Latency: ") << info->defaultLowInputLatency << e;
+      s << wxT("Low Output Latency: ") << info->defaultLowOutputLatency << e;
+      s << wxT("High Input Latency: ") << info->defaultHighInputLatency << e;
+      s << wxT("High Output Latency: ") << info->defaultHighOutputLatency << e;
+
+      wxArrayLong rates = GetSupportedPlaybackRates(name, 0.0);
+
+      s << wxT("Supported Rates:") << e;
+      for (int k = 0; k < (int) rates.GetCount(); k++) {
+         s << wxT("    ") << (int)rates[k] << e;
+      }
+
+      if (name == playDevice && info->maxOutputChannels > 0)
+         playDeviceNum = j;
+
+      if (name == recDevice && info->maxInputChannels > 0)
+         recDeviceNum = j;
+   }
+
+   s << wxT("==============================") << e;
+   s << wxT("Selected capture device: ") << recDeviceNum << wxT(" - ") << recDevice << e;
+   s << wxT("Selected playback device: ") << playDeviceNum << wxT(" - ") << playDevice << e;
+
+   wxArrayLong supportedSampleRates = GetSupportedSampleRates(playDevice, recDevice);
+
+   s << wxT("Supported Rates:");
+   for (int k = 0; k < (int) supportedSampleRates.GetCount(); k++) {
+      s << wxT("    ") << (int)supportedSampleRates[k] << e;
+   }
+
+   int highestSampleRate = supportedSampleRates[supportedSampleRates.GetCount() - 1];
+   bool EmulateMixerInputVol = true;
+   bool EmulateMixerOutputVol = true;
+   float MixerInputVol = 1.0;
+   float MixerOutputVol = 1.0;
+
+   int error;
+
+#if USE_PORTAUDIO_V19
+
+   PaStream *stream;
+
+   PaStreamParameters playbackParameters;
+
+   playbackParameters.device = playDeviceNum;
+   playbackParameters.sampleFormat = paFloat32;
+   playbackParameters.hostApiSpecificStreamInfo = NULL;
+   playbackParameters.channelCount = 2;
+   if (Pa_GetDeviceInfo(playDeviceNum))
+      playbackParameters.suggestedLatency =
+         Pa_GetDeviceInfo(playDeviceNum)->defaultLowOutputLatency;
+   else
+      playbackParameters.suggestedLatency = 100; // we're just probing anyway
+
+   PaStreamParameters captureParameters;
+ 
+   captureParameters.device = recDeviceNum;
+   captureParameters.sampleFormat = paFloat32;;
+   captureParameters.hostApiSpecificStreamInfo = NULL;
+   captureParameters.channelCount = 2;
+   if (Pa_GetDeviceInfo(recDeviceNum))
+      captureParameters.suggestedLatency =
+         Pa_GetDeviceInfo(recDeviceNum)->defaultLowInputLatency;
+   else
+      captureParameters.suggestedLatency = 100; // we're just probing anyway
+ 
+   error = Pa_OpenStream(&stream,
+                         &captureParameters, &playbackParameters,
+                         highestSampleRate, paFramesPerBufferUnspecified,
+                         paClipOff | paDitherOff,
+                         audacityAudioCallback, NULL);
+
+   if (error) {
+      error = Pa_OpenStream(&stream,
+                            &captureParameters, NULL,
+                            highestSampleRate, paFramesPerBufferUnspecified,
+                            paClipOff | paDitherOff,
+                            audacityAudioCallback, NULL);
+   }
+  
+#else
+
+   PortAudioStream *stream;
+
+   error = Pa_OpenStream(&stream, recDeviceNum, 2, paFloat32, NULL,
+                         playDeviceNum, 2, paFloat32, NULL,
+                         highestSampleRate, 512, 1, paClipOff | paDitherOff,
+                         audacityAudioCallback, NULL);
+
+   if (error) {
+      error = Pa_OpenStream(&stream, recDeviceNum, 2, paFloat32, NULL,
+                            paNoDevice, 0, paFloat32, NULL,
+                            highestSampleRate, 512, 1, paClipOff | paDitherOff,
+                            audacityAudioCallback, NULL);
+   }
+
+#endif
+
+   if (error) {
+      s << wxT("Recieved ") << error << wxT(" while opening devices") << e;
+      return o.GetString();
+   }
+
+   PxMixer *PortMixer = Px_OpenMixer(stream, 0);
+
+   if (!PortMixer) {
+      s << wxT("Unable to open Portmixer") << e;
+      Pa_CloseStream(stream);
+      return o.GetString();
+   }
+
+   s << wxT("==============================") << e;
+   s << wxT("Available mixers:") << e;
+
+   cnt = Px_GetNumMixers(stream);
+   for (int i = 0; i < cnt; i++) {
+      wxString name(Px_GetMixerName(stream, i), wxConvLocal);
+      s << i << wxT(" - ") << name << e;
+   }
+
+   s << wxT("==============================") << e;
+   s << wxT("Available capture sources:") << e;
+   cnt = Px_GetNumInputSources(PortMixer);
+   for (int i = 0; i < cnt; i++) {
+      wxString name(Px_GetInputSourceName(PortMixer, i), wxConvLocal);
+      s << i << wxT(" - ") << name << e;
+   }
+
+   s << wxT("==============================") << e;
+   s << wxT("Available playback volumes:") << e;
+   cnt = Px_GetNumOutputVolumes(PortMixer);
+   for (int i = 0; i < cnt; i++) {
+      wxString name(Px_GetOutputVolumeName(PortMixer, i), wxConvLocal);
+      s << i << wxT(" - ") << name << e;
+   }
+
+   // Determine mixer capabilities - it it doesn't support either
+   // input or output, we emulate them (by multiplying this value
+   // by all incoming/outgoing samples)
+
+   MixerOutputVol = Px_GetPCMOutputVolume(PortMixer);
+   EmulateMixerOutputVol = false;
+   Px_SetPCMOutputVolume(PortMixer, 0.0);
+   if (Px_GetPCMOutputVolume(PortMixer) > 0.1)
+      EmulateMixerOutputVol = true;
+   Px_SetPCMOutputVolume(PortMixer, 0.2f);
+   if (Px_GetPCMOutputVolume(PortMixer) < 0.1 ||
+       Px_GetPCMOutputVolume(PortMixer) > 0.3)
+      EmulateMixerOutputVol = true;
+   Px_SetPCMOutputVolume(PortMixer, MixerOutputVol);
+
+   MixerInputVol = Px_GetInputVolume(PortMixer);
+   EmulateMixerInputVol = false;
+   Px_SetInputVolume(PortMixer, 0.0);
+   if (Px_GetInputVolume(PortMixer) > 0.1)
+      EmulateMixerInputVol = true;
+   Px_SetInputVolume(PortMixer, 0.2f);
+   if (Px_GetInputVolume(PortMixer) < 0.1 ||
+       Px_GetInputVolume(PortMixer) > 0.3)
+      EmulateMixerInputVol = true;
+   Px_SetInputVolume(PortMixer, MixerInputVol);
+
+   Pa_CloseStream(stream);
+
+   s << wxT("==============================") << e;
+   s << wxT("Capture volume is ") << (EmulateMixerInputVol? wxT("emulated"): wxT("native")) << e;
+   s << wxT("Capture volume is ") << (EmulateMixerOutputVol? wxT("emulated"): wxT("native")) << e;
+
+   Px_CloseMixer(PortMixer);
+
+#endif
+
+   return o.GetString();
 }
 
 // This method is the data gateway between the audio thread (which

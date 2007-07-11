@@ -185,6 +185,9 @@ class AudioIO {
    static const int StandardRates[];
    static const int NumStandardRates;
 
+   // Diagnostic information
+   wxString GetDeviceInfo();
+
 private:
    long GetBestRate(bool capturing, double sampleRate);
 
