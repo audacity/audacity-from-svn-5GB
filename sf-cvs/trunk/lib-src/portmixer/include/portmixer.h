@@ -53,17 +53,6 @@ typedef float PxVolume; /* 0.0 (min) --> 1.0 (max) */
 typedef float PxBalance; /* -1.0 (left) --> 1.0 (right) */
 
 /*
- Px_GetNumMixers returns the number of mixers which could be
- used with the given PortAudio device.  On most systems, there
- will be only one mixer for each device; however there may be
- multiple mixers for each device, or possibly multiple mixers
- which are independent of any particular PortAudio device.
-*/
-
-int Px_GetNumMixers( void *pa_stream );
-const char *Px_GetMixerName( void *pa_stream, int i );
-
-/*
  Px_OpenMixer() returns a mixer which will work with the given PortAudio
  audio device.  Pass 0 as the index for the first (default) mixer.
 */
@@ -75,7 +64,18 @@ PxMixer *Px_OpenMixer( void *pa_stream, int i );
  memory associated with it. 
 */
 
-void Px_CloseMixer(PxMixer *mixer);
+void Px_CloseMixer( PxMixer *mixer );
+
+/*
+ Px_GetNumMixers returns the number of mixers which could be
+ used with the given PortAudio device.  On most systems, there
+ will be only one mixer for each device; however there may be
+ multiple mixers for each device, or possibly multiple mixers
+ which are independent of any particular PortAudio device.
+*/
+
+int Px_GetNumMixers( PxMixer *mixer );
+const char *Px_GetMixerName( PxMixer *mixer, int i );
 
 /*
  Master (output) volume

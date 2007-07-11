@@ -186,9 +186,9 @@ void Px_CloseMixer(PxMixer *mixer)
 /*
 || Mixer info
 */
-int Px_GetNumMixers( void *pa_stream )
+int Px_GetNumMixers(PxMixer *mixer)
 {
-   px_mixer *Px = verify_mixer(Px_OpenMixer(pa_stream, 0));
+   px_mixer *Px = verify_mixer(mixer);
    int cnt;
 
    if (!Px) {
@@ -197,14 +197,12 @@ int Px_GetNumMixers( void *pa_stream )
 
    cnt = Px->GetNumMixers(Px);
 
-   Px_CloseMixer((PxMixer *)Px);
-
    return cnt;
 }
 
-const char *Px_GetMixerName( void *pa_stream, int i )
+const char *Px_GetMixerName(PxMixer *mixer, int i)
 {
-   px_mixer *Px = verify_mixer(Px_OpenMixer(pa_stream, 0));
+   px_mixer *Px = verify_mixer(mixer);
    const char *name;
 
    if (!Px) {
@@ -212,8 +210,6 @@ const char *Px_GetMixerName( void *pa_stream, int i )
    }
 
    name = Px->GetMixerName(Px, i);
-
-   Px_CloseMixer((PxMixer *)Px);
 
    return name;
 }
@@ -231,7 +227,7 @@ PxVolume Px_GetMasterVolume(PxMixer *mixer)
    return Px->GetMasterVolume(Px);
 }
 
-void Px_SetMasterVolume( PxMixer *mixer, PxVolume volume )
+void Px_SetMasterVolume(PxMixer *mixer, PxVolume volume)
 {
    px_mixer *Px = verify_mixer(mixer);
    if (!Px)
