@@ -70,10 +70,14 @@
 ?>
 
 <div align="right">
+	<a href="http://sourceforge.net/community/index.php/landing-pages/cca07/">
+		<img src="../images/Vote_SourceForge_CCA.jpg" alt="<?=_('Vote_SourceForge_CCA.jpg')?>"></img>
+	</a>
+	&nbsp;&nbsp;&nbsp;
 	<a href="http://audacitystore.com/">
 	<img src="../images/Audacity Store_banner_50pct.jpg" alt="<?=_('Audacity Store')?>"></img>
 	</a>
-	<br>
+	<br><br><br>
 </div>
 
 <div id="sitenav">
