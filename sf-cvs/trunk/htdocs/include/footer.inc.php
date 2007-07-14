@@ -14,8 +14,10 @@
     | <a href="<?=$sitePath?>/copyright"><?=_("Copyright")?></a>
     | <a href="<?=$sitePath?>/site-map"><?=_("Site Map")?></a>
   </p>
-  <p><a title="<?=_("Creative Commons Attribution license")?>" href="http://creativecommons.org/licenses/by/2.0/"><img alt="<?=_("Creative Commons: Some rights reserved.")?>" src="<?=$sitePath?>/images/creative-commons.gif"></a>
-  <a title="<?=_("Development hosted by SourceForge")?>" href="http://sourceforge.net/projects/audacity/"><img alt="SourceForge.net" src="http://sflogo.sourceforge.net/sflogo.php?group_id=6235&amp;type=1"></a></p>
+  <p>
+    <SCRIPT type="text/javascript" language="JavaScript" src="http://www.ohloh.net/projects/59;badge_js"></SCRIPT>
+    <a title="<?=_("Creative Commons Attribution license")?>" href="http://creativecommons.org/licenses/by/2.0/"><img alt="<?=_("Creative Commons: Some rights reserved.")?>" src="<?=$sitePath?>/images/creative-commons.gif"></a>
+    <a title="<?=_("Development hosted by SourceForge")?>" href="http://sourceforge.net/projects/audacity/"><img alt="SourceForge.net" src="http://sflogo.sourceforge.net/sflogo.php?group_id=6235&amp;type=1"></a></p>
   <h2><?=_("View this page in a different language")?></h2>
   <p>
     <?php
