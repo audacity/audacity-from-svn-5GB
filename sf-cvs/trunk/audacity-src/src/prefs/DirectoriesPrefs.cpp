@@ -152,6 +152,7 @@ void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
       tempDir = tempDir.BeforeLast(wxFILE_SEP_PATH);
 
    //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
+   wxLogNull nolog;
    wxGetDiskSpace(tempDir, NULL, &space);
    mFreeSpace->SetLabel(Internat::FormatSize(space));
 }
