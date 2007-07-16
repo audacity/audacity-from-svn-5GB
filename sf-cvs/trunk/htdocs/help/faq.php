@@ -25,7 +25,7 @@
       array(
         "free" => array(
           _("Is Audacity really free?  Why?"),
-          _("<p>Yes, Audacity is <a href=\"../about/\">completely free, open source software</a>.  You are free to use this program for any personal or commercial purposes, including installing it on as many different computers as you wish.  You are also free to give it away, sell it, or modify it for your own use, under the terms of the <a href=\"../about/license\">GNU General Public License</a>.</p>
+          _("<p>Yes, Audacity is <a href=\"../about/\">completely free, open source software</a>.  You are free to use this program for any personal, commercial, or educational purposes, including installing it on as many different computers as you wish. You are also free to give it away, sell it, or modify it for your own use, under the terms of the <a href=\"../about/license\">GNU General Public License</a>.</p>
 <p>The authors of Audacity decided to release it under the GPL for many reasons. Some of us do it out of generosity. Some of us do it for moral reasons, because we feel that all software should be free; others believe that there is a place for both free and proprietary software.</p>
 <p>One reason Audacity is free is so that it will be more popular and useful.  Yet another reason is to encourage collaboration. Because of Audacity's free license, dozens of people around the world have contributed code, bug fixes, documentation, and graphics.</p>
 <p>We welcome <a href=\"../community/donate\">donations</a> to support Audacity development.</p>")

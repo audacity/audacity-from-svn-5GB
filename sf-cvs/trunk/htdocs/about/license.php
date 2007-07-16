@@ -7,7 +7,7 @@
  */
   require_once "main.inc.php";
   $pageId = "license";
-  $pageTitle = _("License, and Advice for Vendors");
+  $pageTitle = _("License, and Advice for Vendors and Distributors");
   include "../include/header.inc.php";
 ?>
 
@@ -25,18 +25,25 @@
 //
 echo _('<h3>License</h3>
 
-<p>Audacity is free software; you can redistribute it and/or modify it under the terms of the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GNU General Public License (GPL)</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.</p>
+<p>Audacity is free software; you can use it for any personal, commercial, or educational purpose, including installing it on as many different computers as you wish.</p>
 
-<p>This license gives you the permission to modify, copy, distribute, and sell Audacity, as long as the code you distribute is available under the GPL.  If you have questions, please <a href="../contact/">contact us</a>.
+<p>You can also copy, redistribute, modify, or resell it and/or modify it under the terms of the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GNU General Public License (GPL)</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the same GPL. If you have questions, please <a href="../contact/">contact us</a>.</p>
 
 <p>See also: <a href="http://www.gnu.org/licenses/gpl-faq.html">Frequently Asked Questions about the GNU GPL</a>.</p>');
 
 
-echo _('<h3>Advice for Vendors</h3>
+echo _('<h3>Advice for Vendors and Distributors</h3>
 
-<p>Several vendors bundle Audacity with their products, resell, or distribute Audacity (see <a href="../download/bundlers">Vendors that Distribute Audacity</a>). Here are guidelines for bundling or reselling Audacity. If you adhere to these guidelines, please <a href="../contact/">contact us</a> for possible inclusion at <a href="../download/bundlers">Vendors that Distribute Audacity</a> (per instructions there).</p>
+<p>Several third parties bundle Audacity with their products, resell, or distribute Audacity (see <a href="../download/bundlers">Vendors that Distribute Audacity</a>). Here are guidelines for bundling, reselling, or distributing Audacity. If you adhere to these guidelines, please <a href="../contact/">contact us</a> for possible inclusion at <a href="../download/bundlers">Vendors that Distribute Audacity</a> (per instructions there).</p>
 
-<p>You must include (1) a copy of the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GPL</a> and (2) the <a href="http://audacity.sourceforge.net/download/source">Audacity source code</a> (or if you are distributing a modified version, then that source code), or make a written offer to supply both, in line with Section 3 of the GPL. If you distribute our installers and do not modify them, this will comply with both requirements as these include the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GPL</a> and an offer in README.txt for users to obtain the source code from us.</p>
+<p>You must include, in accordance with Section 3 of the GPL:
+  <ol>
+    <li>a copy of the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GPL</a> and </li>
+    <li>the <a href="http://audacity.sourceforge.net/download/source">Audacity source code</a> (or if you are distributing a modified version, then that source code), or make a written offer to supply the code.</li>
+  </ol>
+</p>
+
+<p>If you distribute our installers and do not modify them, this will comply with both requirements as these include the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GPL</a> and an offer in README.txt for users to obtain the source code from us. Versions of Audacity after 1.3.3 also include the GPL in the application itself, in the About Audacity dialog.</p>
 
 <p>We would appreciate your linking to our website: <a href="http://audacity.sourceforge.net">http://audacity.sourceforge.net</a> so your users can download updated versions of Audacity when released. Also, please subscribe to the notifications list at the bottom of <a href="http://audacity.sourceforge.net">http://audacity.sourceforge.net</a> to ensure you are notified of and can distribute the latest version of Audacity.</p>
 
@@ -65,9 +72,10 @@ echo _('<h3>Advice for Vendors</h3>
   <ol>
     <li>If you are reselling Audacity unmodified, your advertising should make it clear that Audacity is available for free on the Internet, and make it clear what the customer is paying for when they purchase Audacity from you.  Possibilities include the convenience of Audacity on CD-ROM, other bundled software or music files, a printed manual, or more.</li>
     <li>If you are reselling Audacity unmodified, we expect you to provide your own technical support wherever possible, in support of your own customers. If you have any concerns or we can help you in this, please <a href="../contact/">contact us</a>.</li>
-    <li>You may not advertise your business as an authorized distributor of Audacity.  The name Audacity is a registered trademark of Dominic Mazzoni.</li>
   </ol>
 </p>
+
+<p>You may not advertise yourself or your business as an authorized distributor of Audacity. The name Audacity is a registered trademark of Dominic Mazzoni.</p>
 
 <p>See <a href="http://audacityteam.org/wiki/index.php?title=AudacityVendors#Advice_for_Vendors">Advice for Vendors</a> on the <a href="http://audacityteam.org/wiki">Audacity Wiki</a> for further advice.</p>');
 ?>

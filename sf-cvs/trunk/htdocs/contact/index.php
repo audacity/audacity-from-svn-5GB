@@ -45,7 +45,7 @@
   <li><?=_('Tell us what version of Audacity you are using (for example, 1.2.6).')?></li>
   <li><?=_('Tell us what operating system you are using (for example, Windows XP Service Pack 2 or Mac OS X 10.4).')?></li>
   <li><?=_('Include details of what you are trying to do, and any error messages or other problems you experience.')?></li>
-  <li><?=_('Please ask your question in English if possible. Questions sent in languages other than English and French tend to get answered more slowly, because the Audacity Team members who handle the majority of the questions are English and French speakers.')?></li>
+  <li><?=_('Please ask your question in English if possible. Questions sent in languages other than English tend to get answered more slowly, because the Audacity Team members who handle the majority of the questions are English speakers.')?></li>
 </ol>
 
 
