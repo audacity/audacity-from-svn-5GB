@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+# Visual C++ Express 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Audacity", "audacity.vcproj", "{1D64095C-F936-4FCF-B609-56E9DDF941FA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8A1C2514-85DD-4AE2-9CF3-3183B66C537D} = {8A1C2514-85DD-4AE2-9CF3-3183B66C537D}
@@ -276,10 +276,8 @@ Global
 		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Debug wx284|Win32.ActiveCfg = Debug wx284|Win32
 		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Debug wx284|Win32.Build.0 = Debug wx284|Win32
 		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Debug|Win32.ActiveCfg = Debug wx284|Win32
-		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Debug|Win32.Build.0 = Debug wx284|Win32
 		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Release|Win32.ActiveCfg = Debug wx284|Win32
 		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Unicode_Debug|Win32.ActiveCfg = Debug wx284|Win32
-		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Unicode_Debug|Win32.Build.0 = Debug wx284|Win32
 		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Unicode_Release|Win32.ActiveCfg = Debug wx284|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
