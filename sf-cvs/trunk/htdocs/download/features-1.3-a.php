@@ -14,6 +14,10 @@
 <h2><?=$pageTitle?></h2>
 <?php include "betawarning.inc.php" ?>
 
+<h3><?=_("New features in Audacity 1.3.3")?></h3>
+<p>See the <a href="http://audacity.sourceforge.net/">Audacity home page</a> news item for new features in 1.3.3 beyond 1.3.2.</p>
+
+
 <h3><?=_("New features in Audacity 1.3.1 and 1.3.2")?></h3>
 
 <ol>

@@ -145,7 +145,20 @@
     <td>
       <a href="http://www.diamondmm.com/XS71.php">XS71DDL</a>
     </td>
-    <td><?=_("XtremeSound 7.1/24 bit Sound Card with Dolby Digital Live")?></td>
+    <td>
+      <?=_("XtremeSound 7.1/24 bit Sound Card with Dolby Digital Live")?>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.kam.co.uk">KAM</a>
+    </td>
+    <td>
+      <a href="http://www.djsuperstore.co.uk/item/computer-hardware-software/645868-kam-usbh100-audio-capture-device-%C2%A349.99">USBH100</a>
+    </td>
+    <td>
+      <?=_("Audio Capture Device")?>
+    </td>
   </tr>
   <tr>
     <td>
@@ -297,7 +310,7 @@
   </tr>
   <tr>
     <td>
-      <a href="http://www.kam.co.uk">Kam</a>
+      <a href="http://www.kam.co.uk">KAM</a>
     </td>
     <td>
       <a href="http://www.kam.co.uk/products/turntables/bx900usb.htm">BDX900 USB</a>
