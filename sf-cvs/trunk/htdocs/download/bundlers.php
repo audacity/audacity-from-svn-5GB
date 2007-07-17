@@ -7,7 +7,7 @@
  */
   require_once "main.inc.php";
   $pageId = "bundlers";
-  $pageTitle = _("Vendors that Distribute Audacity");
+  $pageTitle = _("Vendors and Distributors of Audacity");
   include "../include/header.inc.php";
 ?>
 
