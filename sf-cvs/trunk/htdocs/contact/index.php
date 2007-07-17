@@ -48,6 +48,8 @@
   <li><?=_('Please ask your question in English if possible. Questions sent in languages other than English tend to get answered more slowly, because the Audacity Team members who handle the majority of the questions are English speakers.')?></li>
 </ol>
 
+<p>Please note, if you need to add attachments, there is a 15KB limit to the size of emails on the <a href="mailto:audacity-help@lists.sourceforge.net">Help list, audacity-help@lists.sourceforge.net</a>. Emails bigger than that will be rejected.</p>
+
 
 <h3><?=_('Suggestions and Comments for Audacity Developers')?></h3>
 <p>
