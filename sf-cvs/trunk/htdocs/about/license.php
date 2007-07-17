@@ -34,7 +34,7 @@ echo _('<h3>License</h3>
 
 echo _('<h3>Advice for Vendors and Distributors</h3>
 
-<p>Several third parties bundle Audacity with their products, resell, or distribute Audacity (see <a href="../download/bundlers">Vendors that Distribute Audacity</a>). Here are guidelines for bundling, reselling, or distributing Audacity. If you adhere to these guidelines, please <a href="../contact/">contact us</a> for possible inclusion at <a href="../download/bundlers">Vendors that Distribute Audacity</a> (per instructions there).</p>
+<p>Several third parties bundle Audacity with their products, resell, or distribute Audacity (see <a href="../download/bundlers">Vendors that Distribute Audacity</a>). Here are guidelines for bundling, reselling, or distributing Audacity. If you adhere to these guidelines, please <a href="../contact/">contact us</a> for possible inclusion at <a href="../download/bundlers">Vendors and Distributors of Audacity</a> (per instructions there).</p>
 
 <p>You must include, in accordance with Section 3 of the GPL:
   <ol>
@@ -67,7 +67,7 @@ echo _('<h3>Advice for Vendors and Distributors</h3>
 
 <p>
   <dl><dt></dt><dd><!-- indent cheat -->
-    <h4>For vendors who wish to resell or distribute Audacity:</h4>
+    <h4>For those who wish to resell or distribute Audacity:</h4>
   </dd></dl>
   <ol>
     <li>If you are reselling Audacity unmodified, your advertising should make it clear that Audacity is available for free on the Internet, and make it clear what the customer is paying for when they purchase Audacity from you.  Possibilities include the convenience of Audacity on CD-ROM, other bundled software or music files, a printed manual, or more.</li>
