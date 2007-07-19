@@ -25,9 +25,9 @@
 //
 echo _('<h3>License</h3>
 
-<p>Audacity is free software; you may use it for any personal, commercial, or educational purpose, including installing it on as many different computers as you wish.</p>
+<p>Audacity is <a href="../help/faq?s=general&amp;i=free">free software</a>; you may use it for any personal, commercial, or educational purpose, including installing it on as many different computers as you wish.</p>
 
-<p>You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GNU General Public License (GPL)</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the same GPL. If you have questions, please <a href="../contact/">contact us</a>.</p>
+<p>You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GNU General Public License (GPL)</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the same GPL. If you have questions, please email us at the <a href="mailto:audacity-help@lists.sourceforge.net">Help list, audacity-help@lists.sourceforge.net</a>. (This is a public mailing list. For details, see our <a href="../contact/privacy">privacy policy</a>.)</p>
 
 <p>See also: <a href="http://www.gnu.org/licenses/gpl-faq.html">Frequently Asked Questions about the GNU GPL</a>.</p>');
 

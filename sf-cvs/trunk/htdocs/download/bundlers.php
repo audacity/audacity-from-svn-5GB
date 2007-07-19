@@ -17,7 +17,7 @@
 
 <p><?=_('Two of these vendors, <a href="http://umixit.com">UmixIt</a> and <a href="http://www.thinklabsmedical.com">Thinklabs</a>, have additionally supported Audacity by sponsoring custom versions. The first <a href="http://umixit.com"><em>UmixIt, powered by Audacity</em></a> Enhanced CD was <a href="http://www.bnlmusic.com/">"Barenaked Ladies Are Men"</a>, released February 2007. Both custom versions will soon be available for download.')?></p>
 
-<p><?=_('To be considered for addition to this list, please first review our <a href="../about/license">License, and Advice for Vendors and Distributors</a> page. If you are distributing Audacity under those terms and would like to be on this list, contact Vaughan Johnson (vaughan (at) audacityteam.org) or write to the <a href="mailto:audacity-help@lists.sourceforge.net?subject=bundlers">audacity-help</a> list.')?></p>
+<p><?=_('To be considered for addition to this list, please first review our <a href="../about/license">License, and Advice for Vendors and Distributors</a> page. If you are distributing Audacity under those terms and would like to be on this list, contact Vaughan Johnson (vaughan (at) audacityteam.org).')?></p>
 
 <ul>
   <li>
