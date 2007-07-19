@@ -865,6 +865,17 @@ bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
       return false;
    }
 
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      wxString prompt =
+         _("Safety Warning: When recording patients directly to your computer, \n"
+            "your computer must be \"floating\", i.e., disconnected from Mains Power, \n"
+            "Wired Networks, or Mains-Powered Peripherals such as printers. \n\n"
+            "You can display, playback, and edit sounds with Mains-Powered connections. \n\n"
+            "See http://www.thinklabsmedical.com/safety/ for more information.\n\n"
+         );
+      wxMessageBox(prompt, _("Safety Warning: Mains Power"), wxOK | wxICON_EXCLAMATION);
+   #endif
+
    return true;
 }
 
