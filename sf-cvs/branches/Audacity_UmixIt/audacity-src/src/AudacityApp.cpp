@@ -12,6 +12,7 @@
 
 #include <wx/defs.h>
 #include <wx/app.h>
+#include <wx/artprov.h>
 #include <wx/docview.h>
 #include <wx/log.h>
 #include <wx/window.h>
@@ -20,6 +21,7 @@
 #include <wx/msgdlg.h>
 #include <wx/snglinst.h>
 
+#include <wx/fs_mem.h>
 #include <wx/fs_zip.h>
 #include <wx/image.h>
 
@@ -63,6 +65,7 @@
 #include "WaveTrack.h"
 #include "Internat.h"
 #include "prefs/PrefsDialog.h"
+#include "widgets/LinkingHtmlWindow.h"
 
 class ToolBar;
 class ControlToolBar;
@@ -270,6 +273,7 @@ typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 #define globalOpenID 4751
 #define globalPrefsID 4752
 #define globalAboutID 4753
+#define globalSafetyID 4754
 
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
 #ifdef __WXMAC__
@@ -840,7 +844,7 @@ bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
          "This folder may be in use by another copy of Audacity.\n"
          "Running two copies of Audacity simultaneously may cause\n"
          "data loss or cause your system to crash.\n\n"
-         "Do you still want to start Audacity?");
+         "Do you still   want to start Audacity?");
       int action = wxMessageBox(prompt,
                                 _("Error locking temporary folder"),
                                 wxYES_NO | wxICON_EXCLAMATION,
@@ -866,19 +870,63 @@ bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
    }
 
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
-      wxString prompt =
-         _("Safety Warning: When recording patients directly to your computer, \n"
-            "your computer must be \"floating\", i.e., disconnected from Mains Power, \n"
-            "Wired Networks, or Mains-Powered Peripherals such as printers. \n\n"
-            "You can display, playback, and edit sounds with Mains-Powered connections. \n\n"
-            "See http://www.thinklabsmedical.com/safety/ for more information.\n\n"
-         );
-      wxMessageBox(prompt, _("Safety Warning: Mains Power"), wxOK | wxICON_EXCLAMATION);
+   {
+      wxBitmap bmp = wxArtProvider::GetBitmap(wxART_WARNING);
+
+      #if defined(__WXGTK__) && defined(wxUSE_UNICODE) && !wxCHECK_VERSION(2, 5, 0)
+      // HTML Charsets are broken in wxGTK 2.4.x with unicode turned on
+      wxString metaTag = "";
+      #else
+      wxString metaTag = "<META http-equiv=\"Content-Type\" content=\"text/html; charset="
+                       + wxLocale::GetSystemEncodingName()
+                       + "\">";
+      #endif
+
+      wxColour bg = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+      wxString page;
+      page << wxT("<html><head>") + metaTag + wxT("</head><body bgcolor=\"#");
+      page << wxString::Format(wxT("%02x%02x%02x"),
+              bg.Red(), bg.Green(), bg.Blue());
+      page << wxT("\">");
+      page << wxT("<font size=\"3\">");
+      page << _("Safety Warning: When recording patients directly to your computer, "
+                "your computer must be \"floating\", i.e., disconnected from Mains Power, "
+                "Wired Networks, or Mains-Powered Peripherals such as printers.");
+      page << wxT("<br /><br />");
+      page << _("You can display, playback, and edit sounds with Mains-Powered connections.");
+      page << wxT("<br /><br />");
+      page << _("Click ");
+      page << wxT("<a href=\"http://www.thinklabsmedical.com/safety\">");
+      page << _("here");
+      page << wxT("</a>");
+      page << _(" for more information.");
+      page << wxT("</font></body></html>");
+
+      wxDialog dlg(NULL, wxID_ANY, wxString(_("Safety Warning: Mains Power")));
+      wxStaticBitmap *b = new wxStaticBitmap(&dlg, wxID_ANY, bmp);
+      LinkingHtmlWindow *w = new LinkingHtmlWindow(&dlg, wxID_ANY, wxDefaultPosition, wxSize(500, 200), wxHW_SCROLLBAR_NEVER);
+      w->SetPage(page);
+      w->SetSize(w->GetInternalRepresentation()->GetWidth(),
+                 w->GetInternalRepresentation()->GetHeight());
+      wxButton *o = new wxButton(&dlg, wxID_CANCEL, _("Ok"));  // CANCEL so you can use ESC key
+      o->SetDefault();
+
+      wxBoxSizer *v = new wxBoxSizer(wxVERTICAL);
+      wxBoxSizer *h = new wxBoxSizer(wxHORIZONTAL);
+      h->Add(10, 0);
+      h->Add(b, 0, wxTOP, 10);
+      h->Add(w, 1, wxEXPAND);
+      v->Add(h, 1, wxEXPAND);
+      v->Add(o, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+      dlg.SetSizerAndFit(v);
+      dlg.Layout();
+      dlg.Center();
+      dlg.ShowModal();
+   }
    #endif
 
    return true;
 }
-
 
 // static
 void AudacityApp::AddUniquePathToPathList(wxString path,
