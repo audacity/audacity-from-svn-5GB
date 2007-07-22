@@ -842,7 +842,7 @@ bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
          "This folder may be in use by another copy of Audacity.\n"
          "Running two copies of Audacity simultaneously may cause\n"
          "data loss or cause your system to crash.\n\n"
-         "Do you still   want to start Audacity?");
+         "Do you still want to start Audacity?");
       int action = wxMessageBox(prompt,
                                 _("Error locking temporary folder"),
                                 wxYES_NO | wxICON_EXCLAMATION,
@@ -893,20 +893,19 @@ bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
       page << wxT("<br /><br />");
       page << _("You can display, playback, and edit sounds with Mains-Powered connections.");
       page << wxT("<br /><br />");
-      page << _("Click ");
-      page << wxT("<a href=\"http://www.thinklabsmedical.com/safety\">");
-      page << _("here");
-      page << wxT("</a>");
+      page << _("See ");
+      page << wxT("<a href=\"http://www.thinklabsmedical.com/safety\">http://www.thinklabsmedical.com/safety</a>");
       page << _(" for more information.");
+      page << wxT("<br />");
       page << wxT("</font></body></html>");
 
-      wxDialog dlg(NULL, wxID_ANY, wxString(_("Safety Warning: Mains Power")));
+      wxDialog dlg(NULL, wxID_ANY, wxString(_("Thinklabs Safety Warning: Mains Power")));
       wxStaticBitmap *b = new wxStaticBitmap(&dlg, wxID_ANY, bmp);
       LinkingHtmlWindow *w = new LinkingHtmlWindow(&dlg, wxID_ANY, wxDefaultPosition, wxSize(500, 200), wxHW_SCROLLBAR_NEVER);
       w->SetPage(page);
       w->SetSize(w->GetInternalRepresentation()->GetWidth(),
                  w->GetInternalRepresentation()->GetHeight());
-      wxButton *o = new wxButton(&dlg, wxID_CANCEL, _("Ok"));  // CANCEL so you can use ESC key
+      wxButton *o = new wxButton(&dlg, wxID_CANCEL, _("OK"));  // CANCEL so you can use ESC key
       o->SetDefault();
 
       wxBoxSizer *v = new wxBoxSizer(wxVERTICAL);
