@@ -21,7 +21,6 @@
 #include <wx/msgdlg.h>
 #include <wx/snglinst.h>
 
-#include <wx/fs_mem.h>
 #include <wx/fs_zip.h>
 #include <wx/image.h>
 
@@ -273,7 +272,6 @@ typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 #define globalOpenID 4751
 #define globalPrefsID 4752
 #define globalAboutID 4753
-#define globalSafetyID 4754
 
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
 #ifdef __WXMAC__
