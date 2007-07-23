@@ -52,7 +52,7 @@ END_EVENT_TABLE()
 /// 
 ExportCLOptions::ExportCLOptions(wxWindow *parent)
 :  wxDialog(NULL, wxID_ANY,
-   wxString(_("Specify Command Line Options")),
+   wxString(_("Specify Command Line Encoder")),
    wxDefaultPosition, wxDefaultSize,
    wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
 {
@@ -84,7 +84,7 @@ void ExportCLOptions::PopulateOrExchange(ShuttleGui & S)
          S.EndMultiColumn();
 
 
-         S.AddFixedText(_("Include \"%f\" where the output filename should be substituted."));
+         S.AddFixedText(_("Data will be piped to standard in. \"%f\" will be replaced with output filename selected."));
       }
       S.EndStatic();
    }
