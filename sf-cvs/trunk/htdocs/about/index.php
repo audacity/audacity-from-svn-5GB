@@ -44,9 +44,9 @@
 
   echo _('<h3>Bundling, Reselling, or Distributing Audacity</h3>
 
-<p>Vendors are free to bundle Audacity with their products, or to sell or distribute copies of the program (see <a href="../download/bundlers">Vendors that Distribute Audacity</a>) under the <a href="license">GNU General Public License (GPL)</a>.</p>
+<p>Vendors are free to bundle Audacity with their products, or to sell or distribute copies of Audacity (see <a href="../download/bundlers">Vendors and Distributors of Audacity</a>) under the <a href="license">GNU General Public License (GPL)</a>.</p>
 
-<p>If you are a vendor interested in distributing Audacity, please see the <a href="../about/license">License, and Advice for Vendors</a> page.</p>');
+<p>If you are interested in distributing Audacity, please see the <a href="../about/license">License, and Advice for Vendors</a> page.</p>');
 
   include "../include/footer.inc.php";
 ?>
