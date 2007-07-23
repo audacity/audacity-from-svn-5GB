@@ -61,7 +61,7 @@ END_EVENT_TABLE()
 /// 
 ExportOGGOptions::ExportOGGOptions(wxWindow *parent)
 :  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify OGG Options")),
+            wxString(_("Specify Ogg Vorbis Options")),
             wxDefaultPosition, wxDefaultSize,
             wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
 {
@@ -78,7 +78,7 @@ void ExportOGGOptions::PopulateOrExchange(ShuttleGui & S)
 {
    S.StartHorizontalLay(wxEXPAND, 0);
    {
-      S.StartStatic(_("OGG Export Setup"), 1);
+      S.StartStatic(_("Ogg Vorbis Export Setup"), 1);
       {
          S.StartMultiColumn(2, wxEXPAND);
          {
@@ -155,7 +155,7 @@ ExportOGG::ExportOGG()
    SetExtension(wxT("ogg"));
    SetMaxChannels(255);
    SetCanMetaData(true);
-   SetDescription(_("OGG Files"));
+   SetDescription(_("Ogg Vorbis Files"));
 }
 
 void ExportOGG::Destroy()
