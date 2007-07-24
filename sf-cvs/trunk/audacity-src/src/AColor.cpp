@@ -43,6 +43,8 @@ wxBrush AColor::playRegionBrush[2];
 wxBrush AColor::muteBrush[2];
 wxBrush AColor::soloBrush;
 
+wxPen AColor::clippingPen;
+
 wxBrush AColor::envelopeBrush;
 wxPen AColor::envelopePen;
 wxPen AColor::WideEnvelopePen;
@@ -307,6 +309,8 @@ void AColor::Init()
    wxColour med = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
    wxColour dark =
        wxSystemSettings::GetColour(wxSYS_COLOUR_3DSHADOW);
+
+   clippingPen.SetColour(0xCC, 0x11, 0x00);
 
    theTheme.SetPenColour(   envelopePen,     clrEnvelope );
    theTheme.SetPenColour(   WideEnvelopePen, clrEnvelope );

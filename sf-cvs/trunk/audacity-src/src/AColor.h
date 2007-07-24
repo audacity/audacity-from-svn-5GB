@@ -69,6 +69,8 @@ class AColor {
    static wxBrush muteBrush[2];
    static wxBrush soloBrush;
 
+   static wxPen clippingPen;
+
    static wxPen envelopePen;
    static wxPen WideEnvelopePen;
    static wxBrush envelopeBrush;
