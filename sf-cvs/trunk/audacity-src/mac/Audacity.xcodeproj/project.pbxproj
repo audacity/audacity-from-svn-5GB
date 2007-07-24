@@ -804,6 +804,7 @@
 		287F9F3D0A69748F00F025FA /* TimeDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 287F9F3C0A69748F00F025FA /* TimeDialog.cpp */; };
 		2882177B0A35D8730029AF41 /* ShuttlePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288217790A35D8730029AF41 /* ShuttlePrefs.cpp */; };
 		2882178C0A35D90C0029AF41 /* treebook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2882178A0A35D90C0029AF41 /* treebook.cpp */; };
+		2891B2870C531D2C0044FBE3 /* FindClipping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2891B2850C531D2C0044FBE3 /* FindClipping.cpp */; };
 		2897F6F00AB3DB5A003C20C5 /* ControlToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6DC0AB3DB5A003C20C5 /* ControlToolBar.cpp */; };
 		2897F6F10AB3DB5A003C20C5 /* EditToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6DE0AB3DB5A003C20C5 /* EditToolBar.cpp */; };
 		2897F6F20AB3DB5A003C20C5 /* MeterToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6E00AB3DB5A003C20C5 /* MeterToolBar.cpp */; };
@@ -1947,6 +1948,8 @@
 		2882177A0A35D8730029AF41 /* ShuttlePrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ShuttlePrefs.h; sourceTree = "<group>"; };
 		2882178A0A35D90C0029AF41 /* treebook.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = treebook.cpp; sourceTree = "<group>"; };
 		2882178B0A35D90C0029AF41 /* treebook.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = treebook.h; sourceTree = "<group>"; };
+		2891B2850C531D2C0044FBE3 /* FindClipping.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FindClipping.cpp; sourceTree = "<group>"; };
+		2891B2860C531D2C0044FBE3 /* FindClipping.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FindClipping.h; sourceTree = "<group>"; };
 		2897F6DC0AB3DB5A003C20C5 /* ControlToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ControlToolBar.cpp; sourceTree = "<group>"; };
 		2897F6DD0AB3DB5A003C20C5 /* ControlToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ControlToolBar.h; sourceTree = "<group>"; };
 		2897F6DE0AB3DB5A003C20C5 /* EditToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = EditToolBar.cpp; sourceTree = "<group>"; };
@@ -2960,6 +2963,8 @@
 				1790B01C09883BFD008A330A /* Equalization.h */,
 				1790B01D09883BFD008A330A /* Fade.cpp */,
 				1790B01E09883BFD008A330A /* Fade.h */,
+				2891B2850C531D2C0044FBE3 /* FindClipping.cpp */,
+				2891B2860C531D2C0044FBE3 /* FindClipping.h */,
 				1790B02109883BFD008A330A /* Invert.cpp */,
 				1790B02209883BFD008A330A /* Invert.h */,
 				1790B02A09883BFD008A330A /* Leveller.cpp */,
@@ -5277,6 +5282,7 @@
 				2801A6460BF9268700648258 /* ImportQT.cpp in Sources */,
 				2801A6470BF9268700648258 /* ImportQTWrapper.cpp in Sources */,
 				28FB20350C415D9500F769E7 /* SmartRecordPrefs.cpp in Sources */,
+				2891B2870C531D2C0044FBE3 /* FindClipping.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
