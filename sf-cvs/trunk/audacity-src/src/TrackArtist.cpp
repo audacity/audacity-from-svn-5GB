@@ -1181,6 +1181,35 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
       }
    }
 
+   // Draw clipping indicators if requested
+   bool showclipping = gPrefs->Read(wxT("/GUI/ShowClipping"), 0L);
+   if (showclipping) {
+      dc.SetPen(AColor::clippingPen);
+
+      sampleCount s0 = (sampleCount) (t0 * rate + 0.5);
+      sampleCount slen = (sampleCount) (r.width * rate / pps + 0.5);
+      sampleCount snSamples = clip->GetNumSamples(); 
+
+      if (s0 + slen > snSamples) {
+         slen = snSamples - s0;
+      }
+
+      float *buffer = new float[slen];
+      clip->GetSamples((samplePtr)buffer, floatSample, s0, slen);
+
+      for (sampleCount s = 0; s < slen; s++) {
+         float v = floor(buffer[s]);
+         if (buffer[s] <= -1.0) {
+            int x = (int)rint((s / rate + s0 / rate - t0) * pps);
+            dc.DrawLine(r.x + x, r.y + (r.height / 2), r.x + x, r.y + r.height);
+         }
+         else if (buffer[s] >= 1.0) {
+            int x = (int)rint((s / rate + s0 / rate - t0) * pps);
+            dc.DrawLine(r.x + x, r.y, r.x + x, r.y + (r.height / 2));
+         }
+      }
+      delete [] buffer;
+   }
 
    // Draw arrows on the left side if the track extends to the left of the
    // beginning of time.  :)

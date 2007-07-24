@@ -538,6 +538,10 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("ExpandAllTracks"), _("E&xpand All Tracks\tCtrl+Shift+X"), FN(OnExpandAllTracks));
 
    c->AddSeparator();
+   c->AddItem(wxT("ShowClipping"), _("Show Clipping"), FN(OnShowClipping),
+              gPrefs->Read(wxT("/GUI/ShowClipping"), 0L));
+
+   c->AddSeparator();
 //   c->BeginSubMenu(_("Set Selection Format"));
 //   c->AddItemList(wxT("SelectionFormat"), GetSelectionFormats(), FN(OnSelectionFormat));
 //   c->EndSubMenu();
@@ -3305,6 +3309,14 @@ void AudacityProject::OnZoomSel()
 
    Zoom(mViewInfo.zoom * mViewInfo.screen / (mViewInfo.sel1 - mViewInfo.sel0));
    TP_ScrollWindow(mViewInfo.sel0);
+}
+
+void AudacityProject::OnShowClipping()
+{
+   bool checked = !gPrefs->Read(wxT("/GUI/ShowClipping"), 0L);
+   gPrefs->Write(wxT("/GUI/ShowClipping"), checked);
+   mCommandManager.Check(wxT("ShowClipping"), checked);
+   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnPlotSpectrum()

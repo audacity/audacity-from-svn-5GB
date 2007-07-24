@@ -194,6 +194,8 @@ void OnZoomSel();
 void OnExpandAllTracks();
 void OnCollapseAllTracks();
 
+void OnShowClipping();
+
 void OnSelectionFormat(int index);
 
 void OnPlotSpectrum();
