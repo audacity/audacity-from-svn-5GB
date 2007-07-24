@@ -40,13 +40,11 @@
 #include "TruncSilence.h"
 #include "Wahwah.h"
 
+#include "FindClipping.h"
+
 #ifdef USE_SOUNDTOUCH
 #include "ChangePitch.h"
 #include "ChangeTempo.h"
-#endif
-
-#ifdef USE_WAVELET
-#include "WaveletDenoise.h"
 #endif
 
 #ifdef USE_NYQUIST
@@ -56,11 +54,6 @@
 #ifdef USE_AUDIO_UNITS
 #include "audiounits/LoadAudioUnits.h"
 #endif
-
-// VST is separate now
-//#ifdef __WXMAC__
-//#include "VST/LoadVSTMac.h"
-//#endif
 
 #if defined(__WXMSW__) && !defined(__CYGWIN__)
 #include "VST/LoadVSTWin.h"
@@ -118,21 +111,11 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectWahwah());
 
    // Analyze menu
-   // [nothing built-in, but plug-ins might go here]
-
-
-#ifdef USE_WAVELET
-   Effect::RegisterEffect(new EffectWaveletDenoise());
-#endif
+   Effect::RegisterEffect(new EffectFindClipping(), ANALYZE_EFFECT);
 
 #ifdef USE_NYQUIST
    LoadNyquistPlugins();
 #endif
-
-   // VST is separate now
-   //#if defined(__WXMAC__) || defined(__WXMSW__)  && !defined(__CYGWIN__)
-   //LoadVSTPlugins();
-   //#endif
 
 #ifdef USE_LADSPA
    LoadLadspaPlugins();

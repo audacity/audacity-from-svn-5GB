@@ -114,6 +114,7 @@ OBJS = \
 	effects/Echo.o \
 	effects/Equalization.o \
 	effects/Fade.o \
+	effects/FindClipping.o \
 	effects/Invert.o \
 	effects/Leveller.o \
 	effects/Noise.o \
