@@ -6282,6 +6282,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\widgets\ErrorDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\widgets\ErrorDialog.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\widgets\ExpandingToolBar.cpp"
 				>
 			</File>
