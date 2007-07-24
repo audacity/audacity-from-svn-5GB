@@ -1232,7 +1232,12 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
    if (format != mSampleFormat)
       DeleteSamples(temp);
 
+// JKC: During generate we use Append again and again.
+// If generating a long sequence this test would give O(n^2) 
+// performance - not good!
+#ifdef VERY_SLOW_CHECKING
    ConsistencyCheck(wxT("Append"));
+#endif
 
    return true;
 }
@@ -1540,6 +1545,11 @@ void Sequence::SetMaxDiskBlockSize(int bytes)
    sMaxDiskBlockSize = bytes;
 }
 
+int Sequence::GetMaxDiskBlockSize()
+{
+   return sMaxDiskBlockSize;
+}
+
 void Sequence::AppendBlockFile(BlockFile* blockFile)
 {
    SeqBlock *w = new SeqBlock();
@@ -1548,7 +1558,9 @@ void Sequence::AppendBlockFile(BlockFile* blockFile)
    mBlock->Add(w);
    mNumSamples += blockFile->GetLength();
 
+#ifdef VERY_SLOW_CHECKING
    ConsistencyCheck(wxT("AppendBlockFile"));
+#endif
 }
 
 

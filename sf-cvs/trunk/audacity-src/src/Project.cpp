@@ -53,6 +53,7 @@ scroll information.  It also has some status flags.
 #include <stdio.h>
 #include <iostream>
 #include <wx/wxprec.h>
+#include <wx/apptrait.h>
 
 #include <wx/defs.h>
 #include <wx/app.h>
@@ -107,6 +108,7 @@ scroll information.  It also has some status flags.
 #include "DirManager.h"
 #include "effects/Effect.h"
 #include "prefs/PrefsDialog.h"
+#include "widgets/ErrorDialog.h"
 #include "widgets/Ruler.h"
 #include "widgets/Warning.h"
 #include "xml/XMLFileReader.h"
@@ -806,7 +808,7 @@ void AudacityProject::UpdateGuiPrefs()
 
 void AudacityProject::UpdateBatchPrefs()
 {
-   gPrefs->Read(wxT("/Batch/EmptyCanBeDirty"), &mEmptyCanBeDirty, false );
+   gPrefs->Read(wxT("/Batch/EmptyCanBeDirty"), &mEmptyCanBeDirty, true );
    gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &mCleanSpeechMode, false);
    gPrefs->Read(wxT("/Batch/ShowId3Dialog"), &mShowId3Dialog, false);
    gPrefs->Read(wxT("/Batch/NormalizeOnLoad"),&mNormalizeOnLoad, false);
@@ -2520,9 +2522,14 @@ void AudacityProject::Import(wxString fileName)
       return;
 
    if (numTracks <= 0) {
+// Old code, without the help button.
+#if 0
       wxMessageBox(errorMessage,
                    _("Error importing"),
                    wxOK | wxCENTRE, this);
+#endif	   
+	   ShowErrorDialog(this, _("Error importing"),
+					  errorMessage, wxT("http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary"));	
       return;
    }
 
@@ -3290,7 +3297,11 @@ void AudacityProject::AutoSave()
       WriteXML(saveFile);
    }
 
-   saveFile.Close();
+   // JKC Calling XMLFileWriter::Close will close the <project> scope.
+   // We certainly don't want to do that, if we're doing recordingrecovery,
+   // because the recordingrecovery tags need to be inside <project></project>
+   // So instead we close the file directly.
+   saveFile.wxFFile::Close();
    
    // Now that we have a new auto-save file, delete the old one
    DeleteCurrentAutoSaveFile();
@@ -3364,6 +3375,8 @@ void AudacityProject::OnAudioIONewBlockFiles(const wxString& blockFileLog)
 //      the last three wxProgressDialogs displayed.  This gives Jaws a chance to get the
 //      last update without accessing freed storage.
 
+static void *cookie = NULL;
+
 void AudacityProject::ProgressShow(const wxString &title, const wxString &message)
 {
    if (mProgressDialog[mProgressCurrent]) {
@@ -3379,9 +3392,17 @@ void AudacityProject::ProgressShow(const wxString &title, const wxString &messag
       mProgressDialog[mProgressCurrent] = NULL;
    }
 
+#if 0
+   wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : NULL;
+   wxASSERT( traits );//"no wxAppTraits in RunInThread()?"
+   // disable all app windows while waiting for the child process to finish
+   cookie = traits->BeforeChildWaitLoop();
+#endif
+
    wxStartTimer();
    wxBeginBusyCursor();
    wxSafeYield(this, true);
+//   wxSafeYield( mProgressDialog[mProgressCurrent] );  //Only progress dialog active - for the cancel button?
 }
    
 void AudacityProject::ProgressHide()
@@ -3393,6 +3414,15 @@ void AudacityProject::ProgressHide()
    if (wxIsBusy()) {
       wxEndBusyCursor();
    }
+#if 0
+   if( cookie != NULL )
+   {
+      wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : NULL;
+      wxASSERT( traits );//"no wxAppTraits in RunInThread()?"
+      traits->AfterChildWaitLoop(cookie);
+      cookie=NULL;
+   }
+#endif
 }
 
 bool AudacityProject::ProgressUpdate(int value, const wxString &message)

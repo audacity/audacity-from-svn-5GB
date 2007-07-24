@@ -308,7 +308,6 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    // This code will become part of libaudacity,
    // and this class will be phased out.
-
    long blockSize, numEdits, dataSize, randSeed;
 
    mBlockSizeStr.ToLong(&blockSize);
@@ -335,6 +334,8 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
    gPrefs->Write(wxT("/GUI/EditClipCanMove"), false);
 
+   // Rememebr the old blocksize, so that we can restore it later.
+   int oldBlockSize = Sequence::GetMaxDiskBlockSize();
    Sequence::SetMaxDiskBlockSize(blockSize * 1024);
 
    wxBusyCursor busy;
@@ -350,24 +351,28 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    srand(randSeed);
 
-   int len, scale;
-   //scale = 7500 + (rand() % 1000);
-   scale = 200 + (rand() % 100);
-   len = (dataSize * 1048576) / (scale*sizeof(short));
-   while(len < 20 || scale > (blockSize*1024)/4) {
-      scale = (scale / 2) + (rand() % 100);
-      len = (dataSize * 1048576) / (scale*sizeof(short));
+   int nChunks, chunkSize;
+   //chunkSize = 7500 + (rand() % 1000);
+   chunkSize = 200 + (rand() % 100);
+   nChunks = (dataSize * 1048576) / (chunkSize*sizeof(short));
+   while(nChunks < 20 || chunkSize > (blockSize*1024)/4) {
+      chunkSize = (chunkSize / 2) + (rand() % 100);
+      nChunks = (dataSize * 1048576) / (chunkSize*sizeof(short));
    }
 
-   Printf(wxT("Using %d blocks of %d samples each, for a total of ")
+   // The chunks are the pieces we move around in the test.
+   // They are (and are supposed to be) a different size to 
+   // the blocks that make the blockfiles.  That way we get to
+   // do some testing of when edit chunks cross blockfile boundaries.
+   Printf(wxT("Using %d chunks of %d samples each, for a total of ")
           wxT("%.1f MB.\n"),
-          len, scale, len*scale*sizeof(short)/1048576.0);
+          nChunks, chunkSize, nChunks*chunkSize*sizeof(short)/1048576.0);
 
    int trials = numEdits;
 
-   short *small1 = new short[len];
-   short *small2 = new short[len];
-   short *block = new short[scale];
+   short *small1 = new short[nChunks];
+   short *small2 = new short[nChunks];
+   short *block = new short[chunkSize];
 
    Printf(wxT("Preparing...\n"));
 
@@ -381,13 +386,13 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    wxString tempStr;
    wxStopWatch timer;
 
-   for (i = 0; i < len; i++) {
+   for (i = 0; i < nChunks; i++) {
       v = short(rand());
       small1[i] = v;
-      for (b = 0; b < scale; b++)
+      for (b = 0; b < chunkSize; b++)
          block[b] = v;
 
-      t->Append((samplePtr)block, int16Sample, scale);
+      t->Append((samplePtr)block, int16Sample, chunkSize);
    }
    t->Flush();
 
@@ -396,8 +401,8 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    // as we're about to do).
    t->GetEndTime();
 
-   if (t->GetClipByIndex(0)->GetSequence()->GetNumSamples() != (sampleCount)len * scale) {
-      Printf(wxT("Expected len %d, track len %d.\n"), len * scale,
+   if (t->GetClipByIndex(0)->GetSequence()->GetNumSamples() != (sampleCount)nChunks * chunkSize) {
+      Printf(wxT("Expected len %d, track len %d.\n"), nChunks * chunkSize,
              t->GetClipByIndex(0)->GetSequence()->GetNumSamples());
       goto fail;
    }
@@ -409,30 +414,30 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    timer.Start();
    for (z = 0; z < trials; z++) {
-      int x0 = rand() % len;
-      int xlen = 1 + (rand() % (len - x0));
+      int x0 = rand() % nChunks;
+      int xlen = 1 + (rand() % (nChunks - x0));
       if (mEditDetail)
-         Printf(wxT("Cut: %d - %d \n"), x0 * scale, (x0 + xlen) * scale);
+         Printf(wxT("Cut: %d - %d \n"), x0 * chunkSize, (x0 + xlen) * chunkSize);
 
-      t->Cut(double (x0 * scale), double ((x0 + xlen) * scale), &tmp);
+      t->Cut(double (x0 * chunkSize), double ((x0 + xlen) * chunkSize), &tmp);
       if (!tmp) {
          Printf(wxT("Trial %d\n"), z);
-         Printf(wxT("Cut (%d, %d) failed.\n"), (x0 * scale),
-                (x0 + xlen) * scale);
-         Printf(wxT("Expected len %d, track len %d.\n"), len * scale,
+         Printf(wxT("Cut (%d, %d) failed.\n"), (x0 * chunkSize),
+                (x0 + xlen) * chunkSize);
+         Printf(wxT("Expected len %d, track len %d.\n"), nChunks * chunkSize,
                 t->GetClipByIndex(0)->GetSequence()->GetNumSamples());
          goto fail;
       }
 
-      int y0 = rand() % (len - xlen);
+      int y0 = rand() % (nChunks - xlen);
       if (mEditDetail)
-         Printf(wxT("Paste: %d\n"), y0 * scale);
+         Printf(wxT("Paste: %d\n"), y0 * chunkSize);
 
-      t->Paste(double (y0 * scale), tmp);
+      t->Paste(double (y0 * chunkSize), tmp);
 
-      if (t->GetClipByIndex(0)->GetSequence()->GetNumSamples() != (sampleCount) len * scale) {
+      if (t->GetClipByIndex(0)->GetSequence()->GetNumSamples() != (sampleCount) nChunks * chunkSize) {
          Printf(wxT("Trial %d\n"), z);
-         Printf(wxT("Expected len %d, track len %d.\n"), len * scale,
+         Printf(wxT("Expected len %d, track len %d.\n"), nChunks * chunkSize,
                 t->GetClipByIndex(0)->GetSequence()->GetNumSamples());
          goto fail;
       }
@@ -440,11 +445,11 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
       for (i = 0; i < xlen; i++)
          small2[i] = small1[x0 + i];
       // Delete
-      for (i = 0; i < (len - x0 - xlen); i++)
+      for (i = 0; i < (nChunks - x0 - xlen); i++)
          small1[x0 + i] = small1[x0 + xlen + i];
       // Insert
-      for (i = 0; i < (len - xlen - y0); i++)
-         small1[len - i - 1] = small1[len - i - 1 - xlen];
+      for (i = 0; i < (nChunks - xlen - y0); i++)
+         small1[nChunks - i - 1] = small1[nChunks - i - 1 - xlen];
       // Paste
       for (i = 0; i < xlen; i++)
          small1[y0 + i] = small2[i];
@@ -474,21 +479,21 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    bad = 0;
    timer.Start();
-   for (i = 0; i < len; i++) {
+   for (i = 0; i < nChunks; i++) {
       v = small1[i];
-      t->Get((samplePtr)block, int16Sample, i * scale, scale);
-      for (b = 0; b < scale; b++)
+      t->Get((samplePtr)block, int16Sample, i * chunkSize, chunkSize);
+      for (b = 0; b < chunkSize; b++)
          if (block[b] != v) {
             bad++;
             if (bad < 10)
-               Printf(wxT("Bad: block %d sample %d\n"), i, b);
-            b = scale;
+               Printf(wxT("Bad: chunk %d sample %d\n"), i, b);
+            b = chunkSize;
          }
    }
    if (bad == 0)
       Printf(wxT("Passed correctness check!\n"));
    else
-      Printf(wxT("Errors in %d/%d blocks\n"), bad, len);
+      Printf(wxT("Errors in %d/%d chunks\n"), bad, nChunks);
 
    elapsed = timer.Time();
 
@@ -500,10 +505,10 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    timer.Start();
 
-   for (i = 0; i < len; i++) {
+   for (i = 0; i < nChunks; i++) {
       v = small1[i];
-      t->Get((samplePtr)block, int16Sample, i * scale, scale);
-      for (b = 0; b < scale; b++)
+      t->Get((samplePtr)block, int16Sample, i * chunkSize, chunkSize);
+      for (b = 0; b < chunkSize; b++)
          if (block[b] != v)
             bad++;
    }
@@ -514,7 +519,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    
    Printf(wxT("At 44100 Hz, 16-bits per sample, the estimated number of\n")
           wxT("simultaneous tracks that could be played at once: %.1f\n"),
-          (len*scale/44100.0)/(elapsed/1000.0));
+          (nChunks*chunkSize/44100.0)/(elapsed/1000.0));
 
    goto success;
 
@@ -534,7 +539,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    delete fact;
    d->Deref();
 
-   Sequence::SetMaxDiskBlockSize(1048576);
+   Sequence::SetMaxDiskBlockSize(oldBlockSize);
    HoldPrint(false);
 
    gPrefs->Write(wxT("/GUI/EditClipCanMove"), editClipCanMove);

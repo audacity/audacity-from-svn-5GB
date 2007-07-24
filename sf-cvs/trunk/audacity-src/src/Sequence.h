@@ -42,6 +42,7 @@ class Sequence: public XMLTagHandler {
    //
 
    static void SetMaxDiskBlockSize(int bytes);
+   static int GetMaxDiskBlockSize();
 
    //
    // Constructor / Destructor / Duplicator

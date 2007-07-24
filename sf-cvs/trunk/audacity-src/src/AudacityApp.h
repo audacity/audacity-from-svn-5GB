@@ -38,6 +38,36 @@ DECLARE_EVENT_TYPE(EVT_CAPTURE_KEYBOARD, -1);
 DECLARE_EVENT_TYPE(EVT_RELEASE_KEYBOARD, -1);
 DECLARE_EVENT_TYPE(EVT_CAPTURE_KEY, -1);
 
+// Flags used in command handling.
+
+// These flags represent the majority of the states that affect
+// whether or not items in menus are enabled or disabled.
+enum {
+   AudioIONotBusyFlag     = 0x00000001,
+   TimeSelectedFlag       = 0x00000002,
+   TracksSelectedFlag     = 0x00000004,
+   TracksExistFlag        = 0x00000008,
+   LabelTracksExistFlag   = 0x00000010,
+   WaveTracksSelectedFlag = 0x00000020,
+   ClipboardFlag          = 0x00000040,
+   TextClipFlag           = 0x00000040, // Same as Clipboard flag for now.
+   UnsavedChangesFlag     = 0x00000080,
+   HasLastEffectFlag      = 0x00000100,
+   UndoAvailableFlag      = 0x00000200,
+   RedoAvailableFlag      = 0x00000400,
+   ZoomInAvailableFlag    = 0x00000800,
+   ZoomOutAvailableFlag   = 0x00001000,
+   StereoRequiredFlag     = 0x00002000,  //lda
+   TopDockHasFocus        = 0x00004000,  //lll
+   TrackPanelHasFocus     = 0x00008000,  //lll
+   BotDockHasFocus        = 0x00010000,  //lll
+   LabelsSelectedFlag     = 0x00020000,
+   AudioIOBusyFlag        = 0x00040000,  //lll
+   PlayRegionLockedFlag   = 0x00080000,  //msmeyer
+   PlayRegionNotLockedFlag= 0x00100000,  //msmeyer
+   CutCopyAvailableFlag   = 0x00200000
+};
+
 class AudacityApp:public wxApp {
  public:
    virtual bool OnInit(void);
