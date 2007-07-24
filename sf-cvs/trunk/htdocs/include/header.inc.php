@@ -73,7 +73,7 @@
 	<a href="http://audacitystore.com/">
 	<img src="../images/Audacity Store_banner_50pct.jpg" alt="<?=_('Audacity Store')?>"></img>
 	</a>
-	<br><br><br>
+	<br>
 </div>
 
 <div id="sitenav">
