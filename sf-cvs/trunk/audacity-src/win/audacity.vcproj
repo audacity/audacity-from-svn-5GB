@@ -3756,6 +3756,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\effects\FindClipping.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\effects\FindClipping.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\effects\Invert.cpp"
 				>
 				<FileConfiguration
