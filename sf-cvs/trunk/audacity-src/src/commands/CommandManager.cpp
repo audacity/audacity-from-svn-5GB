@@ -396,7 +396,7 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
    for(i=0; i<effLen; i++) {
       int ID = NewIdentifier(name, labels[i], CurrentMenu(), callback,
                              true, i, effLen);
-                             
+
       CurrentMenu()->Append(ID, labels[i]);
      
       if(((i+1) % MAX_SUBMENU_LEN) == 0 && i != (effLen - 1)) {
@@ -485,7 +485,7 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    tmpEntry->flags = mDefaultFlags;
    tmpEntry->mask = mDefaultMask;
    tmpEntry->enabled = true;
-   
+
    // Key from preferences overridse the default key given
    gPrefs->SetPath(wxT("/NewKeys"));
    if (gPrefs->HasEntry(name)) {
@@ -550,12 +550,12 @@ void CommandManager::Enable(CommandListEntry *entry, bool enabled)
          if (multiEntry) {
             wxMenuItem *item = multiEntry->menu->FindItem(ID);
 
-            if (item) {
-               item->Enable(enabled);
-            } else {
-               wxLogDebug(wxT("Warning: Menu entry with id %i in %s not found"),
-                   ID, (const wxChar*)entry->name);
-            }
+         if (item) {
+            item->Enable(enabled);
+         } else {
+            wxLogDebug(wxT("Warning: Menu entry with id %i in %s not found"),
+                ID, (const wxChar*)entry->name);
+         }
          } else {
             wxLogDebug(wxT("Warning: Menu entry with id %i not in hash"), ID);
          }
@@ -583,7 +583,7 @@ void CommandManager::EnableUsingFlags(wxUint32 flags, wxUint32 mask)
       CommandListEntry *entry = mCommandList[i];
       if (entry->multi && entry->index != 0)
          continue;
-         
+
       wxUint32 combinedMask = (mask & entry->mask);
       if (combinedMask) {
          bool enable = ((flags & combinedMask) ==
@@ -711,7 +711,26 @@ void CommandManager::ToggleAccels(wxMenu *m, bool show)
 
    return;
 }
- 
+
+void CommandManager::TellUserWhyDisallowed( wxUint32 flagsGot, wxUint32 flagsRequired )
+{
+   // The default string for 'reason' is a catch all.  I hope it won't ever be seen
+   // and that we will get something more specific.
+   wxString reason = _("Disallowed for some reason.  Try selecting some Audio first?");
+
+   wxUint32 missingFlags = flagsRequired & (~flagsGot );
+   if( missingFlags & AudioIONotBusyFlag )
+      reason= _("You can only do this when playing and recording are\n stopped.  [Pausing is not sufficient.]");
+   else if( missingFlags & StereoRequiredFlag )
+      reason = _("You must first select some stereo audio for this\n to use.  [You can't use this with mono.]");
+   else if( missingFlags & TimeSelectedFlag )
+      reason = _("You must first select some audio for this to use.");
+   else if( missingFlags & WaveTracksSelectedFlag)
+      reason = _("You must first select some audio for this\n to use. [Selecting other kinds of track won't work.]");
+
+   wxMessageBox(reason, _("Message"),  wxICON_WARNING | wxOK ); 
+}
+
 /// HandleCommandEntry() takes a CommandListEntry and executes it
 /// returning true iff successful.  If you pass any flags,
 ///the command won't be executed unless the flags are compatible
@@ -726,7 +745,11 @@ bool CommandManager::HandleCommandEntry(CommandListEntry * entry, wxUint32 flags
       bool allowed = ((flags & combinedMask) ==
                       (entry->flags & combinedMask));
       if (!allowed)
+      {
+         TellUserWhyDisallowed( 
+            flags & combinedMask, entry->flags & combinedMask);
          return false;
+      }
    }
 
    (*(entry->callback))(entry->index);

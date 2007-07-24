@@ -74,12 +74,14 @@ void BatchPrefs::PopulateOrExchange( ShuttleGui & S )
    S.SetBorder( 2 );
    S.StartStatic( _("Behaviors"),1 );
    {
-      S.TieCheckBox( _("&Batch debug mode"),  
+#ifdef __WXDEBUG__
+      S.TieCheckBox( _("&Don't apply effects in batch mode"),  
          wxT("/Batch/Debug"), false);
+#endif
       S.TieCheckBox( _("&Normalize on load"), 
          wxT("/Batch/NormalizeOnLoad"), false );
       S.TieCheckBox( _("&Prompt to save, even if empty"),    
-         wxT("/Batch/EmptyCanBeDirty"), false );
+         wxT("/Batch/EmptyCanBeDirty"), true );
       S.TieCheckBox( _("Cl&eanSpeech Mode (Customized GUI)"), 
          wxT("/Batch/CleanSpeechMode"), false);
    }

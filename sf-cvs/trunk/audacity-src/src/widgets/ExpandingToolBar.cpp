@@ -75,6 +75,7 @@ ExpandingToolBar.
 #include "ExpandingToolBar.h"
 #include "AButton.h"
 #include "../AllThemeResources.h"
+#include "../Experimental.h"
 
 const int kToggleButtonHeight = 8;
 const int kTimerInterval = 50; // every 50 ms -> ~20 updates per second   
@@ -259,11 +260,13 @@ void ExpandingToolBar::TryAutoExpand()
 
 void ExpandingToolBar::TryAutoCollapse()
 {
+#ifdef EXPERIMENTAL_ROLL_UP_DIALOG
    if (mIsAutoExpanded == true && mIsManualExpanded == false) {
       mToggleButton->PopUp();
       mIsAutoExpanded = false;
       Fit();
    }
+#endif
 }
 
 class ExpandingToolBarEvtHandler : public wxEvtHandler
@@ -343,7 +346,11 @@ bool ExpandingToolBar::Layout()
 
 void ExpandingToolBar::Fit()
 {
+#ifdef EXPERIMENTAL_ROLL_UP_DIALOG
    mIsExpanded = (mIsAutoExpanded || mIsManualExpanded);
+#else
+   mIsExpanded = true;// JKC - Wedge it open at all times.
+#endif
 
    int width = mButtonSize.x + mGrabberSize.x;
 
@@ -726,7 +733,12 @@ ToolBarDialog::ToolBarDialog(wxWindow* parent,
                            wxWindowID id,
                            const wxString& name,
                            const wxPoint& pos):
-   wxDialog(parent, id, name, pos, wxSize(1, 1), wxCAPTION|wxCLOSE_BOX),
+   wxDialog(parent, id, name, pos, wxSize(1, 1), 
+// Workaround for bug in __WXMSW__.  No close box on a wxDialog unless wxSYSTEM_MENU is used.
+#ifdef __WXMSW__
+      wxSYSTEM_MENU |
+#endif
+      wxCAPTION|wxCLOSE_BOX),      
    mChild(NULL)
 {
 }

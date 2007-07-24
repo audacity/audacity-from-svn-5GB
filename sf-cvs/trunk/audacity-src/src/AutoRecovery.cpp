@@ -1,3 +1,17 @@
+/**********************************************************************
+
+  Audacity: A Digital Audio Editor
+
+  AutoRecovery.cpp
+
+*******************************************************************//**
+
+\class AutoRecoveryDialog
+\brief The AutoRecoveryDialog prompts the user whether to 
+recover previous Audacity projects that were closed incorrectly.
+
+*//********************************************************************/
+
 #include "AutoRecovery.h"
 #include "Audacity.h"
 #include "AudacityApp.h"
@@ -307,7 +321,7 @@ bool RecordingRecoveryHandler::HandleXMLTag(const wxChar *tag,
             if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&nValue) || 
                   (nValue < 1))
                return false;
-            mChannel = nValue;
+            mNumChannels = nValue;
          }
       }
    }

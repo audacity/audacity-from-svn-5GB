@@ -135,7 +135,7 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
    bool HandleMenuID(int id, wxUint32 flags, wxUint32 mask);
    bool HandleKey(wxKeyEvent &evt, wxUint32 flags, wxUint32 mask);
    bool HandleTextualCommand(wxString & Str, wxUint32 flags, wxUint32 mask);
-
+   void TellUserWhyDisallowed( wxUint32 flagsGot, wxUint32 flagsRequired );
    //
    // Accessing
    //
