@@ -4,9 +4,9 @@ Instructions for comiling audacity with Visual C++ 8.0 are contained in the file
 [install-dir]\win\compile.txt
 
 There are wiki pages with more information at:
-http://audacityteam.org/wiki/index.pl?CompilingAudacity
+http://audacityteam.org/wiki/index.php?title=CompilingAudacity
 
-http://audacityteam.org/wiki/index.pl?action=edit&id=CommittingChangesWithTortoiseCVS
+http://audacityteam.org/wiki/index.php?title=CommittingChangesWithTortoiseCVS
 
 This file also serves as a "sandbox" for learning how to use CVS (including command line,
 TortoiseCVS, and WinCVS)
