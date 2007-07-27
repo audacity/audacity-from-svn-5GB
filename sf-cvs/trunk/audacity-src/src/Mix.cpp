@@ -354,6 +354,11 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
             getLen = last - *pos;
          }
 
+         // Nothing to do if past end of track
+         if (getLen <= 0) {
+            break;
+         }
+
          track->Get((samplePtr)&queue[*queueLen], floatSample,
                     *pos, getLen);
 
