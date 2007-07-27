@@ -43,15 +43,15 @@ function updsln  {
 	if [ $1 -eq 1 ]
 	then	#verbose mode
 		shift
-		echo "sed -e '/$*/,/EndProject/d' win/Audacity.sln >win/Audacity.sln.new"
-		sed -e "/$*/,/EndProject/d" win/Audacity.sln >win/Audacity.sln.new
-		echo "mv win/Audacity.sln.new win/Audacity.sln"
-      mv win/Audacity.sln.new win/Audacity.sln
+		echo "sed -e '/$*/,/EndProject/d' win/audacity.sln >win/audacity.sln.new"
+		sed -e "/$*/,/EndProject/d" win/audacity.sln >win/audacity.sln.new
+		echo "mv win/audacity.sln.new win/audacity.sln"
+      mv win/audacity.sln.new win/audacity.sln
 	else
 		# quietly
 		shift
-		sed -e "/$*/,/EndProject/d" win/Audacity.sln >win/Audacity.sln.new
-      mv win/Audacity.sln.new win/Audacity.sln
+		sed -e "/$*/,/EndProject/d" win/audacity.sln >win/audacity.sln.new
+      mv win/audacity.sln.new win/audacity.sln
 	fi
 	}
 
@@ -142,7 +142,7 @@ printf "removing scripts ... ";
 myrmrvf $mode scripts
 printf "Done\n"
 
-printf "removing libraries that should be installed locally...\n"
+printf "removing libraries that should be installed locally..."
 myrmrvf $mode lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib;
 myrmrvf $mode lib-src/libid3tag;
 myrmrvf $mode lib-src/iAVC lib-src/libsamplerate;
