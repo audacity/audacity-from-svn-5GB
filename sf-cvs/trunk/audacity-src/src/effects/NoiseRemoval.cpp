@@ -232,7 +232,7 @@ bool EffectNoiseRemoval::Process()
    // This should only happen in CleanSpeech.
    if(!mDoProfile && !mHasProfile) {
       wxMessageBox(
-        _("Attempt to run Noise Removal without a noise profile\n."));
+        _("Attempt to run Noise Removal without a noise profile.\n"));
       return false;
    }
 
