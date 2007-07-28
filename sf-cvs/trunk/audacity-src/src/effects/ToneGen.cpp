@@ -224,6 +224,7 @@ bool EffectToneGen::Process()
 
    mPositionInCycles = 0.0;
    //Iterate over each track
+   int ntrack = 0;
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
@@ -242,6 +243,10 @@ bool EffectToneGen::Process()
          MakeTone(data, block);
          tmp->Append((samplePtr)data, floatSample, block);
          i += block;
+
+         //Update the Progress meter
+         if (TrackProgress(ntrack, (double)i / numSamples))
+            return false;
       }
       delete[] data;
 
@@ -251,6 +256,7 @@ bool EffectToneGen::Process()
       delete tmp;
 
       //Iterate to the next track
+      ntrack++;
       track = (WaveTrack *)iter.Next();
    }
 

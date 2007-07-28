@@ -143,6 +143,7 @@ bool EffectNoise::Process()
       noiseDuration = sDefaultGenerateLen;
 
    //Iterate over each track
+   int ntrack = 0;
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
@@ -161,6 +162,10 @@ bool EffectNoise::Process()
 
          tmp->Append((samplePtr)data, floatSample, block);
          i += block;
+
+         //Update the Progress meter
+         if (TrackProgress(ntrack, (double)i / numSamples))
+            return false;
       }
       delete[] data;
 
@@ -170,6 +175,7 @@ bool EffectNoise::Process()
       delete tmp;
 
       //Iterate to the next track
+      ntrack++;
       track = (WaveTrack *)iter.Next();
    }
 
