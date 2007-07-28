@@ -344,30 +344,30 @@ IMPLEMENT_APP(AudacityApp)
 
 #ifdef __WXMAC__
 
+#include <wx/recguard.h>
+
 // in response of an open-document apple event
 void AudacityApp::MacOpenFile(const wxString &fileName)
 {
-   if (!gInited)
+   if (!gInited) {
       return;
-
-   AudacityProject *project = GetActiveProject();
-   if (project == NULL || !project->GetTracks()->IsEmpty()) {
-      project = CreateNewAudacityProject(gParentWindow);
    }
-   project->OpenFile(fileName);
+
+   wxCommandEvent e(EVT_OPEN_AUDIO_FILE);
+   e.SetString(fileName);
+   AddPendingEvent(e);
 }
 
 // in response of a print-document apple event
 void AudacityApp::MacPrintFile(const wxString &fileName)
 {
-   if (!gInited)
+   if (!gInited) {
       return;
-
-   AudacityProject *project = GetActiveProject();
-   if (project == NULL || !project->GetTracks()->IsEmpty()) {
-      project = CreateNewAudacityProject(gParentWindow);
    }
-   project->OpenFile(fileName);
+
+   wxCommandEvent e(EVT_OPEN_AUDIO_FILE);
+   e.SetString(fileName);
+   AddPendingEvent(e);
 }
 
 // in response of a open-application apple event
@@ -379,14 +379,36 @@ void AudacityApp::MacNewFile()
    // This method should only be used on the Mac platform
    // when no project windows are open.
  
-   if(gAudacityProjects.GetCount() == 0)
+   if (gAudacityProjects.GetCount() == 0) {
       CreateNewAudacityProject(gParentWindow);
+   }
 }
 
 // in response of a reopen-application apple event
 void AudacityApp::MacReopenApp()
 {
    // Not sure what to do here...bring it to the foreground???
+}
+
+void AudacityApp::OnMacOpenFile(wxCommandEvent & event)
+{
+   // Add name to queue
+   static wxArrayString ofqueue;
+   ofqueue.Add(event.GetString());
+
+   // Do not attempt to load more than one file at a time
+   static wxRecursionGuardFlag guardflag;
+   wxRecursionGuard guard(guardflag);
+   if (guard.IsInside()) {
+      return;
+   }
+
+   // Load each file on the queue
+   while (ofqueue.GetCount()) {
+      wxString name(ofqueue[0]);
+      ofqueue.RemoveAt(0);
+      MRUOpen(name);
+   }
 }
 #endif
 
@@ -402,6 +424,8 @@ BEGIN_EVENT_TABLE(AudacityApp, wxApp)
    EVT_MENU(wxID_ABOUT, AudacityApp::OnMenuAbout)
    EVT_MENU(wxID_PREFERENCES, AudacityApp::OnMenuPreferences)
    EVT_MENU(wxID_EXIT, AudacityApp::OnMenuExit)
+
+   EVT_COMMAND(wxID_ANY, EVT_OPEN_AUDIO_FILE, AudacityApp::OnMacOpenFile)
 #endif
    // Recent file event handlers.  
    EVT_MENU_RANGE(wxID_FILE1, wxID_FILE9, AudacityApp::OnMRUFile)
