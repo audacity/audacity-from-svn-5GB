@@ -1535,6 +1535,14 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    delete mToolManager;
    mToolManager = NULL;
 
+   // Delete the progress dialogs
+   for (mProgressCurrent = 2; mProgressCurrent >= 0; mProgressCurrent--) {
+      if (mProgressDialog[mProgressCurrent]) {
+         delete mProgressDialog[mProgressCurrent];
+         mProgressDialog[mProgressCurrent] = NULL;
+      }
+   }
+
    DestroyChildren();
 
    delete mTrackFactory;
@@ -1563,14 +1571,6 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    // LL: All objects with references to the DirManager should
    //     have been deleted before this.
    mDirManager->Deref();
-
-   // Delete the progress dialogs
-   for (mProgressCurrent = 2; mProgressCurrent >= 0; mProgressCurrent--) {
-      if (mProgressDialog[mProgressCurrent]) {
-         delete mProgressDialog[mProgressCurrent];
-         mProgressDialog[mProgressCurrent] = NULL;
-      }
-   }
 
    gAudacityProjects.Remove(this);
    if (gActiveProject == this) {
@@ -3392,17 +3392,9 @@ void AudacityProject::ProgressShow(const wxString &title, const wxString &messag
       mProgressDialog[mProgressCurrent] = NULL;
    }
 
-#if 0
-   wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : NULL;
-   wxASSERT( traits );//"no wxAppTraits in RunInThread()?"
-   // disable all app windows while waiting for the child process to finish
-   cookie = traits->BeforeChildWaitLoop();
-#endif
-
    wxStartTimer();
    wxBeginBusyCursor();
    wxSafeYield(this, true);
-//   wxSafeYield( mProgressDialog[mProgressCurrent] );  //Only progress dialog active - for the cancel button?
 }
    
 void AudacityProject::ProgressHide()
@@ -3414,15 +3406,6 @@ void AudacityProject::ProgressHide()
    if (wxIsBusy()) {
       wxEndBusyCursor();
    }
-#if 0
-   if( cookie != NULL )
-   {
-      wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : NULL;
-      wxASSERT( traits );//"no wxAppTraits in RunInThread()?"
-      traits->AfterChildWaitLoop(cookie);
-      cookie=NULL;
-   }
-#endif
 }
 
 bool AudacityProject::ProgressUpdate(int value, const wxString &message)
@@ -3432,7 +3415,7 @@ bool AudacityProject::ProgressUpdate(int value, const wxString &message)
          new wxProgressDialog(mProgressTitle,
                               mProgressMessage,
                               1000,
-                              NULL,
+                              this,
                               wxPD_CAN_ABORT |
                               wxPD_ELAPSED_TIME |
                               wxPD_REMAINING_TIME |
