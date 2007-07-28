@@ -1186,8 +1186,8 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    if (showclipping) {
       dc.SetPen(AColor::clippingPen);
 
-      sampleCount s0 = (sampleCount) (t0 * rate + 0.5);
-      sampleCount slen = (sampleCount) (r.width * rate / pps + 0.5);
+      sampleCount s0 = (sampleCount) lrint(t0 * rate);
+      sampleCount slen = (sampleCount) lrint(mid.width * rate / pps);
       sampleCount snSamples = clip->GetNumSamples(); 
 
       if (s0 + slen > snSamples) {
@@ -1200,12 +1200,12 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
       for (sampleCount s = 0; s < slen; s++) {
          float v = floor(buffer[s]);
          if (buffer[s] <= -1.0) {
-            int x = (int)rint((s / rate + s0 / rate - t0) * pps);
-            dc.DrawLine(r.x + x, r.y + (r.height / 2), r.x + x, r.y + r.height);
+            int x = lrint((s / rate + s0 / rate - t0) * pps);
+            dc.DrawLine(mid.x + x, mid.y + (mid.height / 2), mid.x + x, mid.y + mid.height);
          }
          else if (buffer[s] >= 1.0) {
-            int x = (int)rint((s / rate + s0 / rate - t0) * pps);
-            dc.DrawLine(r.x + x, r.y, r.x + x, r.y + (r.height / 2));
+            int x = lrint((s / rate + s0 / rate - t0) * pps);
+            dc.DrawLine(mid.x + x, mid.y, mid.x + x, mid.y + (mid.height / 2));
          }
       }
       delete [] buffer;
