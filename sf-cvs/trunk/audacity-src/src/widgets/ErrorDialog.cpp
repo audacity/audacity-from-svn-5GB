@@ -23,6 +23,7 @@ Gives an Error message with an option for help.
 #include <wx/stattext.h>
 #include <wx/utils.h>
 
+#include "LinkingHtmlWindow.h"
 #include "../ShuttleGui.h"
 
 class ErrorDialog : public wxDialog
@@ -116,7 +117,11 @@ void ErrorDialog::OnOk(wxCommandEvent &event)
 
 void ErrorDialog::OnHelp(wxCommandEvent &event)
 {
-	wxLaunchDefaultBrowser(dhelpURL);	
+#if defined(__WXMSW__) || defined(__WXMAC__)
+   OpenInDefaultBrowser(dhelpURL);
+#else
+   wxLaunchDefaultBrowser(dhelpURL);
+#endif
 	EndModal(true);
 }
 
