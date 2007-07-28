@@ -214,6 +214,7 @@ bool EffectDtmf::Process()
       return false;
 
    //Iterate over each track
+   int ntrack = 0;
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
@@ -308,6 +309,10 @@ bool EffectDtmf::Process()
          }
          // flip flag
          isTone=!isTone;
+
+         //Update the Progress meter
+         if (TrackProgress(ntrack, (double)i / numSamplesSequence))
+            return false;
       } // finished the whole dtmf sequence
 
       delete[] data;
@@ -318,6 +323,7 @@ bool EffectDtmf::Process()
       delete tmp;
 
       //Iterate to the next track
+      ntrack++;
       track = (WaveTrack *)iter.Next();
    }
 
