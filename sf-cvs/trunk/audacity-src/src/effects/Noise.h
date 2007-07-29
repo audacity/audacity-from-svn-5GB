@@ -38,7 +38,7 @@ class EffectNoise:public Effect {
    }
 
    virtual wxString GetEffectName() {
-      return wxString(_("&Noise..."));
+      return wxString(_("Noise..."));
    }
 
    virtual wxString GetEffectIdentifier() {

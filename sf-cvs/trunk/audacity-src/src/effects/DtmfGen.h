@@ -38,7 +38,7 @@ class EffectDtmf:public Effect {
    }
 
    virtual wxString GetEffectName() {
-      return wxString(_("&DTMF Tones..."));
+      return wxString(_("DTMF Tones..."));
    }
 
    virtual wxString GetEffectIdentifier() {
