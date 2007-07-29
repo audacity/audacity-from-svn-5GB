@@ -144,13 +144,14 @@ void LabelTrack::ResetFont()
 {
    mFontHeight = -1;
    wxString facename = gPrefs->Read(wxT("/GUI/LabelFontFacename"), wxT(""));
+   int size = gPrefs->Read(wxT("/GUI/LabelFontSize"), 12);
    if (facename != wxT("")) {
-      msFont = wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+      msFont = wxFont(size, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
                       wxFONTWEIGHT_NORMAL, FALSE, facename,
                       wxFONTENCODING_SYSTEM);
    }
    else {
-      msFont = wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+      msFont = wxFont(size, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
                       wxFONTWEIGHT_NORMAL);
    }
 }
@@ -777,7 +778,7 @@ void LabelTrack::calculateFontHeight(wxDC & dc)
    int charLeading;
 
    // Calculate the width of the substring and add it to Xpos
-   dc.GetTextExtent(wxT("Test String"), NULL, &mFontHeight, &charDescent, &charLeading);
+   dc.GetTextExtent(wxT("(Test String)|[yp]"), NULL, &mFontHeight, &charDescent, &charLeading);
 
    // The cursor will have height charHeight.  We don't include the descender as 
    // part of the height because for phonetic fonts this leads to cursors which are
@@ -795,7 +796,7 @@ bool LabelTrack::IsTextSelected()
       return false;
    if (!mLabels[mSelIndex]->highlighted)
       return false;
-   if( mCurrentCursorPos == mInitialCursorPos ) 
+   if (mCurrentCursorPos == mInitialCursorPos)
       return false;
    return true;
 }
@@ -804,7 +805,7 @@ bool LabelTrack::IsTextSelected()
 ///  @return true if text is selected in text box, false otherwise
 bool LabelTrack::CutSelectedText() 
 {
-   if( !IsTextSelected() )
+   if (!IsTextSelected())
       return false;
 
    wxString left=wxT("");
@@ -1276,9 +1277,11 @@ bool LabelTrack::CaptureKey(wxKeyEvent & event)
       }
    }
 
+#if 0
    if (IsGoodLabelFirstCharacter(keyCode, charCode) && !event.CmdDown()) {
       return true;
    }
+#endif
 
    return false;
 }
@@ -1529,7 +1532,7 @@ bool LabelTrack::OnChar(double & newSel0, double & newSel1, wxKeyEvent & event)
       else
          event.Skip();
    }
-   else if( !IsGoodLabelFirstCharacter(keyCode, charCode))
+   else //if( !IsGoodLabelFirstCharacter(keyCode, charCode))
    {
       // Don't automatically start a label unless its one of the accepted 
       // characters.
@@ -1537,6 +1540,7 @@ bool LabelTrack::OnChar(double & newSel0, double & newSel1, wxKeyEvent & event)
       // as our first character.
       event.Skip();
    }
+#if 0
    else
    {
       // Create new label
@@ -1559,7 +1563,7 @@ bool LabelTrack::OnChar(double & newSel0, double & newSel1, wxKeyEvent & event)
       mSelIndex = pos;
       updated = true;
    }
-
+#endif
    // Make sure the caret is visible
    mDrawCursor = true;
 

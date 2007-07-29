@@ -103,12 +103,6 @@ subset of the TrackPanel functions from all over the place.
 \brief Timer class dedicated to infomring the TrackPanel that it 
 is time to refresh some aspect of the screen.
 
-*//**************************************************************//**
-
-\class MyFontEnumerator
-\brief MyFontEnumerator, derived from wxFontEnumerator, creates 
-a list of fonts.
-
 *//*****************************************************************//**
 
 \page TrackPanelRefactor Track Panel Refactor
@@ -182,6 +176,8 @@ a list of fonts.
 #include <wx/textdlg.h>
 #include <wx/numdlg.h>
 #include <wx/choicdlg.h>
+#include <wx/spinctrl.h>
+#include <wx/listbox.h>
 #include <wx/textctrl.h>
 #include <wx/intl.h>
 #include <wx/image.h>
@@ -5571,17 +5567,19 @@ void TrackPanel::DrawBordersAroundTrack(Track * t, wxDC * dc,
                                         const wxRect r, const int vrul,
                                         const int labelw)
 {
+   int h1 = r.y + t->GetHeight() - kTopInset;
+
    // Borders around track and label area
    dc->SetPen(*wxBLACK_PEN);
    dc->DrawLine(r.x, r.y, r.x + r.width - 1, r.y);      // top
    dc->DrawLine(r.x, r.y, r.x, r.y + r.height - 1);     // left
    dc->DrawLine(r.x, r.y + r.height - 2, r.x + r.width - 1, r.y + r.height - 2);        // bottom
    dc->DrawLine(r.x + r.width - 2, r.y, r.x + r.width - 2, r.y + r.height - 1); // right
-//   dc->DrawLine(vrul, r.y, vrul, r.y + r.height - 1); // between vrulr and track.
+   // LL:  This is needed for label, time, and midi tracks
+   dc->DrawLine(vrul, r.y, vrul, h1 - 2);                       // between vrulr and track.
    dc->DrawLine(labelw, r.y, labelw, r.y + r.height - 1);       // between vruler and TrackInfo
 
    if (t->GetLinked()) {
-      int h1 = r.y + t->GetHeight() - kTopInset;
       dc->DrawLine(vrul, h1 - 2, r.x + r.width - 1, h1 - 2);
       dc->DrawLine(vrul, h1 + kTopInset, r.x + r.width - 1,
                    h1 + kTopInset);
@@ -5993,42 +5991,60 @@ void TrackPanel::OnPasteSelectedText(wxCommandEvent &event)
    RefreshTrack(lt, true);
 }
 
-class MyFontEnumerator : public wxFontEnumerator
-{
-  public:
-   wxArrayString facenames;
-   
-  protected:
-   virtual bool OnFacename(const wxString& facename)
-   {
-      facenames.Add(facename);
-      return true;
-   }
-};
-
 void TrackPanel::OnSetFont(wxCommandEvent &event)
 {
-   MyFontEnumerator fontEnumerator;
+   wxFontEnumerator fontEnumerator;
    
    fontEnumerator.EnumerateFacenames(wxFONTENCODING_SYSTEM, false);
-   int nFacenames = fontEnumerator.facenames.GetCount();
-   wxString *facenames = new wxString[nFacenames];
-   int i;
-   for (i = 0; i < nFacenames; i++)
-      facenames[i] = fontEnumerator.facenames[i];
-   
-   i = wxGetSingleChoiceIndex(_("Choose a font for Label Tracks"),
-                              _("Label Track Font"),
-                              nFacenames, facenames, this);
+   wxArrayString *facenames = fontEnumerator.GetFacenames();
 
-   delete [] facenames;
-   
-   if ( i == -1 )
+   wxString facename = gPrefs->Read(wxT("/GUI/LabelFontFacename"), wxT(""));
+   long fontsize = gPrefs->Read(wxT("/GUI/LabelFontSize"), 12);
+
+   wxDialog dlg(this, wxID_ANY, wxString(_("Label Track Font")));
+   ShuttleGui S(&dlg, eIsCreating);
+   wxListBox *lb;
+   wxSpinCtrl *sc;
+
+   S.StartVerticalLay(true);
+   {
+      S.StartMultiColumn(2, wxEXPAND);
+      {
+         S.SetStretchyRow(0);
+         S.SetStretchyCol(1);
+
+         S.AddPrompt(_("Face name"));
+         lb = new wxListBox(&dlg, wxID_ANY,
+                            wxDefaultPosition,
+                            wxDefaultSize,
+                            *facenames,
+                            wxLB_SINGLE);
+         lb->SetSelection(facenames->Index(facename));
+         S.AddWindow(lb, wxALIGN_LEFT | wxEXPAND | wxALL);
+
+         S.AddPrompt(_("Face size"));
+         sc = new wxSpinCtrl(&dlg, wxID_ANY,
+                             wxString::Format(wxT("%d"), fontsize),
+                             wxDefaultPosition,
+                             wxDefaultSize,
+                             wxSP_ARROW_KEYS,
+                             8, 48, fontsize);
+         S.AddWindow(sc, wxALIGN_LEFT | wxALL);
+      }
+      S.EndMultiColumn();
+      S.AddStandardButtons();
+   }
+   S.EndVerticalLay();
+
+   dlg.Layout();
+   dlg.Fit();
+   dlg.CenterOnParent();
+   if (dlg.ShowModal() == wxID_CANCEL) {
       return;
-
-   wxString facename = fontEnumerator.facenames[i];
-
-   gPrefs->Write(wxT("/GUI/LabelFontFacename"), facename);
+   }
+   
+   gPrefs->Write(wxT("/GUI/LabelFontFacename"), lb->GetStringSelection());
+   gPrefs->Write(wxT("/GUI/LabelFontSize"), sc->GetValue());
 
    LabelTrack::ResetFont();
 
