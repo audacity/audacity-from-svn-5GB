@@ -266,7 +266,6 @@ private:
       ID_SAVEAS,
       ID_DELETE,
       ID_CLEAR,
-      ID_PREVIEW,
       drawRadioID,
       sliderRadioID,
       ID_INTERP,

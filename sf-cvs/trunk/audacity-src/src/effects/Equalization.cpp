@@ -61,6 +61,7 @@ various graphing code, such as provided by FreqWindow and FilterPanel.
 
 #include "../Audacity.h"
 #include "Equalization.h"
+#include "../ShuttleGui.h"
 #include "../PlatformCompatibility.h"
 #include "../FileNames.h"
 #include "../Envelope.h"
@@ -848,7 +849,7 @@ BEGIN_EVENT_TABLE(EqualizationDialog,wxDialog)
    EVT_BUTTON( ID_DELETE, EqualizationDialog::OnDelete )
    EVT_BUTTON( ID_CLEAR, EqualizationDialog::OnClear )
 
-   EVT_BUTTON( ID_PREVIEW, EqualizationDialog::OnPreview )
+   EVT_BUTTON( ID_EFFECT_PREVIEW, EqualizationDialog::OnPreview )
    EVT_BUTTON( wxID_OK, EqualizationDialog::OnOk )
    EVT_BUTTON( wxID_CANCEL, EqualizationDialog::OnCancel )
    EVT_RADIOBUTTON(drawRadioID, EqualizationDialog::OnDrawRadio)
@@ -1043,7 +1044,6 @@ void EqualizationDialog::SaveCurves()
 //
 void EqualizationDialog::MakeEqualizationDialog()
 {
-   wxBoxSizer *szrJ;
    wxStaticText *txt;
    wxButton *btn;
 
@@ -1240,21 +1240,7 @@ void EqualizationDialog::MakeEqualizationDialog()
    // -------------------------------------------------------------------
    // ROW 6: Preview, OK, & Cancel buttons
    // -------------------------------------------------------------------
-   szrJ = new wxBoxSizer(wxHORIZONTAL);
-
-   btn = new wxButton(this, ID_PREVIEW, m_pEffect->GetPreviewName());
-   szrJ->Add( btn, 0, wxALIGN_LEFT | wxALL, 4 );
-
-   szrJ->Add(80, 4); // horizontal spacer
-
-   btn = new wxButton(this, wxID_CANCEL, _("&Cancel"));
-   szrJ->Add( btn, 0, wxALIGN_RIGHT | wxALL, 4 );
-
-   btn = new wxButton(this, wxID_OK, _("&OK"));
-   btn->SetDefault();
-   szrJ->Add( btn, 0, wxALIGN_RIGHT | wxALL, 4 );
-
-   szrV->Add( szrJ, 0, wxALIGN_CENTER );
+   szrV->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
 
    // -------------------------------------------------------------------
    // Display now

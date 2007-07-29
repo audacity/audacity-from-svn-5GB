@@ -23,6 +23,7 @@
 
 #include "ChangeSpeed.h"
 
+#include "../ShuttleGui.h"
 #include "../Envelope.h"
 #include "../Prefs.h"
 
@@ -245,8 +246,7 @@ enum {
    ID_TEXT_PERCENTCHANGE = 10001,
    ID_SLIDER_PERCENTCHANGE,
    ID_CHOICE_FROMVINYL,
-   ID_CHOICE_TOVINYL,
-	ID_BUTTON_PREVIEW
+   ID_CHOICE_TOVINYL
 };
 
 
@@ -261,7 +261,7 @@ BEGIN_EVENT_TABLE(ChangeSpeedDialog, wxDialog)
     EVT_CHOICE(ID_CHOICE_FROMVINYL, ChangeSpeedDialog::OnChoice_FromVinyl)
     EVT_CHOICE(ID_CHOICE_TOVINYL, ChangeSpeedDialog::OnChoice_ToVinyl)
 
-    EVT_BUTTON(ID_BUTTON_PREVIEW, ChangeSpeedDialog::OnPreview)
+    EVT_BUTTON(ID_EFFECT_PREVIEW, ChangeSpeedDialog::OnPreview)
 END_EVENT_TABLE()
 
 ChangeSpeedDialog::ChangeSpeedDialog(EffectChangeSpeed * effect,
@@ -377,28 +377,8 @@ ChangeSpeedDialog::ChangeSpeedDialog(EffectChangeSpeed * effect,
 
    pBoxSizer_Dialog->Add(pBoxSizer_Vinyl, 0, wxALIGN_CENTER | wxALL, 4);
 
-
-	// Preview, OK, & Cancel buttons
-   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
-
-   wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton * pButton_Preview = 
-		new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
-   pBoxSizer_OK->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 4);
-   pBoxSizer_OK->Add(32, 8); // horizontal spacer
-
-   wxButton * pButton_Cancel =
-       new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_CENTER | wxALL, 4);
-
-   wxButton * pButton_OK =
-       new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
-   pButton_OK->SetDefault();
-   pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_CENTER | wxALL, 4);
-
-   pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 8);
-
+   // Preview, OK, & Cancel buttons
+   pBoxSizer_Dialog->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
 
    this->SetAutoLayout(true);
    this->SetSizer(pBoxSizer_Dialog);

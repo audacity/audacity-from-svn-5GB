@@ -437,7 +437,7 @@ bool EffectAutoDuck::ApplyDuckFade(int trackNumber, WaveTrack* t,
 
 BEGIN_EVENT_TABLE(EffectAutoDuckDialog, wxDialog)
    EVT_BUTTON(wxID_OK, EffectAutoDuckDialog::OnOk)
-   EVT_BUTTON(wxID_OK, EffectAutoDuckDialog::OnCancel)
+   EVT_BUTTON(wxID_CANCEL, EffectAutoDuckDialog::OnCancel)
    EVT_TEXT(ID_DUCK_AMOUNT_DB, EffectAutoDuckDialog::OnValueChanged)
    EVT_TEXT(ID_THRESHOLD_DB, EffectAutoDuckDialog::OnValueChanged)
    EVT_TEXT(ID_INNER_FADE_DOWN_LEN, EffectAutoDuckDialog::OnValueChanged)
@@ -522,21 +522,11 @@ EffectAutoDuckDialog::EffectAutoDuckDialog(EffectAutoDuck* effect,
       }
       S.EndMultiColumn();
 
-      S.StartHorizontalLay(wxALIGN_CENTER, false);
-      {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-#else
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-      }
-      S.EndHorizontalLay();
    }
    S.EndVerticalLay();
 
-   GetSizer()->AddSpacer(5);
+   S.AddStandardButtons();
+
    Layout();
    Fit();
    SetMinSize(GetSize());

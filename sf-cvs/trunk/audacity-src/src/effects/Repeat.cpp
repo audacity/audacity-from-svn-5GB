@@ -23,6 +23,7 @@
 #include "../Audacity.h"
 
 #include "Repeat.h"
+#include "../ShuttleGui.h"
 #include "../WaveTrack.h"
 
 #include <wx/button.h>
@@ -266,16 +267,8 @@ RepeatDialog::RepeatDialog(wxWindow *parent, wxWindowID id,
    hSizer->Add(mTotalTime, 1, wxALL | wxEXPAND, 5);
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("&Cancel"));
-   hSizer->Add(cancel, 0, wxALIGN_CENTRE|wxALL, 5);
-
-   wxButton *ok = new wxButton(this, wxID_OK, _("&OK"));
-   ok->SetDefault();
-   hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
-
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+   // OK & Cancel buttons
+   mainSizer->Add(CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND);
 
    SetAutoLayout(true);
    SetSizer(mainSizer);

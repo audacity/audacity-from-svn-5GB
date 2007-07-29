@@ -282,7 +282,7 @@ class Effect {
 // Base dialog for generate effect
 class wxDialog;
 
-#define ID_EFFECT_PREVIEW wxID_APPLY
+#define ID_EFFECT_PREVIEW ePreviewID
 
 // Base dialog for regular effect
 class EffectDialog:public wxDialog

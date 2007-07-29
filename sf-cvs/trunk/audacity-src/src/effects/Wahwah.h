@@ -79,7 +79,6 @@ friend class WahwahDialog;
 
 // Declare window functions
 
-#define ID_BUTTON_PREVIEW 10000
 #define ID_FREQTEXT 10003
 #define ID_FREQSLIDER 10004
 #define ID_PHASETEXT 10005
@@ -90,9 +89,6 @@ friend class WahwahDialog;
 #define ID_RESONANCESLIDER 10010
 #define ID_FREQOFFTEXT 10011
 #define ID_FREQOFFSLIDER 10012
-
-wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit =
-                            TRUE, bool set_sizer = TRUE);
 
 // WDR: class declarations
 

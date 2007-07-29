@@ -57,6 +57,7 @@
 #include <wx/intl.h>
 
 #include "ClickRemoval.h"
+#include "../ShuttleGui.h"
 #include "../Envelope.h"
 // #include "../FFT.h"
 #include "../WaveTrack.h"
