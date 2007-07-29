@@ -175,24 +175,11 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 #if defined(__WXGTK__)
    mCategories->GetTreeCtrl()->EnsureVisible(mCategories->GetTreeCtrl()->GetRootItem());
 #endif
-
-   mOK = new wxButton(this,
-                      wxID_OK, _("&OK"));
-   mOK->SetDefault();
-
-   mCancel = new wxButton(this,
-                          wxID_CANCEL,
-                          _("&Cancel"));
-
-   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   buttonSizer->Add(mCancel, 0, wxALL, 7);
-   buttonSizer->Add(mOK, 0, wxALL, 7);
    
-   topSizer->Add(buttonSizer, 0, wxALIGN_RIGHT);
+   topSizer->Add(CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND);
 
    wxBoxSizer *outSizer = new wxBoxSizer( wxVERTICAL );
-   outSizer->Add(topSizer, 1, wxGROW|wxALL, TOP_LEVEL_BORDER);
+   outSizer->Add(topSizer, 1, wxGROW|wxTOP, TOP_LEVEL_BORDER);
 
    SetAutoLayout(true);
    SetSizer(outSizer);

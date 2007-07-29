@@ -100,7 +100,7 @@ void BatchCommandDialog::PopulateOrExchange(ShuttleGui &S)
    }
    S.EndVerticalLay();
 
-   GetSizer()->Add(CreateButtonSizer(wxOK | wxCANCEL), 0, wxALIGN_RIGHT | wxBOTTOM, 10);
+   S.AddStandardButtons();
 
    for(int i=0;i<99;i++)
    {

@@ -27,6 +27,7 @@ of languages for Audacity.
 
 #include "LangChoice.h"
 #include "Languages.h"
+#include "ShuttleGui.h"
 
 class LangChoiceDialog:public wxDialog {
 public:
@@ -100,9 +101,7 @@ LangChoiceDialog::LangChoiceDialog(wxWindow * parent,
    mainSizer->Add(hSizer,
                   0, wxALL, 8);
 
-   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
-   ok->SetDefault();
-   mainSizer->Add(ok, 0, wxALIGN_CENTRE | wxALL, 8);
+   mainSizer->Add(CreateStdButtonSizer(this, eOkButton), 0, wxEXPAND);
 
    SetAutoLayout(true);
    SetSizer(mainSizer);

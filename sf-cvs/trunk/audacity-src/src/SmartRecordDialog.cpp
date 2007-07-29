@@ -313,10 +313,7 @@ void SmartRecordDialog::PopulateOrExchange(ShuttleGui& S)
    }
    S.EndVerticalLay();
    
-   GetSizer()->Add(CreateStdDialogButtonSizer(wxOK | wxCANCEL),
-                   0,
-                   wxCENTER | wxBOTTOM,
-                   10);
+   S.AddStandardButtons();
 
    Layout();
    Fit();

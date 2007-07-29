@@ -468,7 +468,7 @@ void EditChainsDialog::PopulateOrExchange(ShuttleGui & S)
    }
    S.EndHorizontalLay();
 
-   GetSizer()->Add(CreateButtonSizer(wxOK | wxCANCEL), 0, wxALIGN_RIGHT | wxBOTTOM | wxRIGHT, 10);
+   S.AddStandardButtons();
 
    return;
 }

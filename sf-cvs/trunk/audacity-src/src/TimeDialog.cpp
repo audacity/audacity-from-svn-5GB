@@ -67,10 +67,7 @@ void TimeDialog::PopulateOrExchange(ShuttleGui &S)
       S.EndStatic();
    }
    S.EndVerticalLay();
-   GetSizer()->Add(CreateButtonSizer(wxOK | wxCANCEL),
-                   0,
-                   wxCENTER | wxBOTTOM,
-                   10);
+   S.AddStandardButtons();
 
    TransferDataToWindow();
 

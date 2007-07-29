@@ -36,6 +36,7 @@ of an LWSlider or ASlider.
 
 
 #include "../Audacity.h"
+#include "../Shuttle.h"
 
 #include <math.h>
 
@@ -276,7 +277,7 @@ SliderDialog::SliderDialog(wxWindow * parent, wxWindowID id,
    vs->Add(mSlider, 0, wxEXPAND | wxLEFT | wxRIGHT, 5 );
    
    //Create buttons 
-   vs->Add(CreateStdDialogButtonSizer(wxOK|wxCANCEL),0,wxEXPAND|wxALL,5);
+   vs->Add(CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND);
       
    //lay it out
    SetSizerAndFit(vs);

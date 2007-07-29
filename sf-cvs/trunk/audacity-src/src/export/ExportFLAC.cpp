@@ -108,17 +108,9 @@ void ExportFLACOptions::PopulateOrExchange(ShuttleGui & S)
       S.EndStatic();
    }
    S.EndHorizontalLay();
-   S.StartHorizontalLay(wxALIGN_CENTER, false);
-   {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-#else
-      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-   }
-   GetSizer()->AddSpacer(5);
+
+   S.AddStandardButtons();
+
    Layout();
    Fit();
    SetMinSize(GetSize());

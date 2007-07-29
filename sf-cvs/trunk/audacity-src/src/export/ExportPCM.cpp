@@ -111,7 +111,7 @@ END_EVENT_TABLE()
 /// 
 ExportPCMOptions::ExportPCMOptions(wxWindow *parent)
 :  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify WAV Options")),
+            wxString(_("Specify PCM Options")),
             wxDefaultPosition, wxDefaultSize,
             wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
 {
@@ -156,7 +156,6 @@ ExportPCMOptions::ExportPCMOptions(wxWindow *parent)
 
    PopulateOrExchange(S);
 
-   GetSizer()->AddSpacer(5);
    Layout();
    Fit();
    Center();
@@ -192,17 +191,9 @@ void ExportPCMOptions::PopulateOrExchange(ShuttleGui & S)
       S.EndStatic();
    }
    S.EndHorizontalLay();
-   S.StartHorizontalLay(wxALIGN_CENTER, false);
-   {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-      mOk = S.Id(wxID_OK).AddButton(_("&OK"));
-#else
-      mOk = S.Id(wxID_OK).AddButton(_("&OK"));
-      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-      mOk->SetDefault();
-   }
+
+   S.AddStandardButtons();
+   mOk = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
 
    ValidateChoices();
 
