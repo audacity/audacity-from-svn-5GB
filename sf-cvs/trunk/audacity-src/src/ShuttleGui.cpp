@@ -1798,3 +1798,90 @@ AttachableScrollBar * ShuttleGui::AddAttachableScrollBar( long style )
    UpdateSizers();
    return pAttachableScrollBar;
 }
+
+wxSizer *CreateStdButtonSizer(wxWindow *parent, long buttons)
+{
+   wxButton *b = new wxButton( parent, 0, wxEmptyString );
+   int margin;
+
+#if defined(__WXMAC__)
+   margin = 12;
+#elif defined(__WXGTK20__)
+   margin = 12;
+#elif defined(__WXMSW__)
+   margin = b->ConvertDialogToPixels( wxSize( 2, 0 ) ).x;
+#else
+   margin = b->ConvertDialogToPixels( wxSize( 4, 0 ) ).x;
+#endif
+
+   delete b;
+
+   wxStdDialogButtonSizer *bs = new wxStdDialogButtonSizer();
+
+   if( buttons & eOkButton )
+   {
+      b = new wxButton( parent, wxID_OK );
+      b->SetDefault();
+      bs->AddButton( b );
+   }
+
+   if( buttons & eCancelButton )
+   {
+      bs->AddButton( new wxButton( parent, wxID_CANCEL ) );
+   }
+
+   if( buttons & eYesButton )
+   {
+      b = new wxButton( parent, wxID_YES );
+      b->SetDefault();
+      bs->AddButton( b );
+   }
+
+   if( buttons & eNoButton )
+   {
+      bs->AddButton( new wxButton( parent, wxID_NO ) );
+   }
+
+   if( buttons & eHelpButton )
+   {
+      bs->AddButton( new wxButton( parent, wxID_HELP ) );
+   }
+
+   if( buttons & ePreviewButton )
+   {
+      b = new wxButton( parent, ePreviewID, _("Pre&view") );
+      bs->Add( b, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, margin );
+      bs->Add(40,0);
+   }
+
+   if( buttons & eDebugButton )
+   {
+      b = new wxButton( parent, eDebugID, _("&Debug") );
+      bs->Add( b, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, margin );
+      bs->Add(40,0);
+   }
+
+   bs->AddStretchSpacer();
+   bs->Realize();
+   wxSizer * s;
+   s = new wxBoxSizer( wxVERTICAL );
+   s->Add(bs, 1, wxEXPAND | wxALL, 7);
+   s->Add(0, 3);   // a little extra space
+
+   return s;
+}
+
+void ShuttleGui::AddStandardButtons(long buttons)
+{
+   if( mShuttleMode != eIsCreating )
+      return;
+
+   StartVerticalLay(false);
+   
+   miSizerProp = false;
+   mpSubSizer = CreateStdButtonSizer( mpParent, buttons );
+   UpdateSizers();
+   PopSizer();
+
+   EndVerticalLay();
+}

@@ -151,7 +151,7 @@ bool EffectFindClipping::ProcessOne(LabelTrack * l,
       }
 
       float v = fabs(*ptr++);
-      if (v >= 1.0) {
+      if (v >= 1.0) {   //0.99996948
          if (startrun == 0) {
             startTime = t->LongSamplesToTime(start + s);
             samps = 0;
@@ -195,7 +195,7 @@ bool EffectFindClipping::ProcessOne(LabelTrack * l,
 //----------------------------------------------------------------------------
 
 FindClippingDialog::FindClippingDialog(EffectFindClipping * effect, wxWindow * parent)
-: EffectDialog(parent, _("Find Clipping"), ANALYZE_EFFECT)
+: EffectDialog(parent, _("Find Clipping"), INSERT_EFFECT)
 {
    mEffect = effect;
 

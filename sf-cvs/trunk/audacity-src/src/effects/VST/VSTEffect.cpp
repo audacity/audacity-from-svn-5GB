@@ -62,7 +62,7 @@ private:
 BEGIN_EVENT_TABLE(VSTEffectGUIDialog,wxDialog)
    EVT_BUTTON( wxID_OK, VSTEffectGUIDialog::OnOk )
    EVT_BUTTON( wxID_CANCEL, VSTEffectGUIDialog::OnCancel )
-   EVT_BUTTON( PREVIEW_ID, VSTEffectGUIDialog::OnPreview )
+   EVT_BUTTON( ID_EFFECT_PREVIEW, VSTEffectGUIDialog::OnPreview )
    EVT_IDLE( VSTEffectGUIDialog::OnIdle )
 END_EVENT_TABLE()
 
@@ -84,22 +84,8 @@ VSTEffectGUIDialog::VSTEffectGUIDialog(wxWindow *parent, wxWindowID id,
 
    mainSizer->Add(rect->right-rect->left, rect->bottom-rect->top);
 
-   wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton *preview =
-      new wxButton(this, PREVIEW_ID, mEffect->GetPreviewName());
-   hSizer->Add(preview, 0, wxALIGN_CENTRE|wxALL, 5);
-
-   hSizer->Add(20, 10); // horizontal spacer
-
-   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("&Cancel"));
-   hSizer->Add(cancel, 0, wxALIGN_CENTRE|wxALL, 5);
-
-   wxButton *ok = new wxButton(this, wxID_OK, _("&OK"));
-   ok->SetDefault();
-   hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
-
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+   // Preview, OK, & Cancel buttons
+   mainSizer->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
 
    SetAutoLayout(true);
    SetSizer(mainSizer);

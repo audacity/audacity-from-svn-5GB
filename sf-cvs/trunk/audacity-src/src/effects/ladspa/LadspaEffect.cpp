@@ -506,13 +506,12 @@ BEGIN_EVENT_TABLE(TextCtrl, wxTextCtrl)
     EVT_SET_FOCUS(TextCtrl::OnSetFocus)
 END_EVENT_TABLE()
 
-const int LADSPA_PREVIEW_ID = 13100;
 const int LADSPA_SECONDS_ID = 13101;
 
 BEGIN_EVENT_TABLE(LadspaEffectDialog, wxDialog)
     EVT_BUTTON(wxID_OK, LadspaEffectDialog::OnOK)
     EVT_BUTTON(wxID_CANCEL, LadspaEffectDialog::OnCancel)
-    EVT_BUTTON(LADSPA_PREVIEW_ID, LadspaEffectDialog::OnPreview)
+    EVT_BUTTON(ID_EFFECT_PREVIEW, LadspaEffectDialog::OnPreview)
     EVT_SLIDER(wxID_ANY, LadspaEffectDialog::OnSlider)
     EVT_TEXT(wxID_ANY, LadspaEffectDialog::OnTextCtrl)
     EVT_CHECKBOX(wxID_ANY, LadspaEffectDialog::OnCheckBox)
@@ -599,21 +598,8 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
    w->SetScrollRate(0, 20);
    vSizer->Add(w, 1, wxEXPAND|wxALL, 5);
 
-   wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton *button;
-
-   button = new wxButton(this, LADSPA_PREVIEW_ID, effect->GetPreviewName());
-   okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   button = new wxButton(this, wxID_CANCEL, _("&Cancel"));
-   okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   button = new wxButton(this, wxID_OK, _("&OK"));
-   button->SetDefault();
-   okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   vSizer->Add(okSizer, 0, wxALIGN_CENTRE | wxALL, 5);
+   // Preview, OK, & Cancel buttons
+   vSizer->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
 
    SetSizer(vSizer);
 

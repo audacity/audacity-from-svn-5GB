@@ -41,6 +41,7 @@
 #include <wx/dcmemory.h>
 
 #include "Compressor.h"
+#include "../ShuttleGui.h"
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
 #include "../AColor.h"
@@ -440,14 +441,13 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
 enum {
    ThresholdID = 7100,
    RatioID,
-   AttackID,
-   PreviewID
+   AttackID
 };
 
 BEGIN_EVENT_TABLE(CompressorDialog,wxDialog)
    EVT_BUTTON( wxID_OK, CompressorDialog::OnOk )
    EVT_BUTTON( wxID_CANCEL, CompressorDialog::OnCancel )
-   EVT_BUTTON( PreviewID, CompressorDialog::OnPreview )
+   EVT_BUTTON( ID_EFFECT_PREVIEW, CompressorDialog::OnPreview )
    EVT_SIZE( CompressorDialog::OnSize )
    EVT_SLIDER( ThresholdID, CompressorDialog::OnSlider )
    EVT_SLIDER( RatioID, CompressorDialog::OnSlider )
@@ -507,20 +507,8 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
 
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton *preview = new wxButton(this, PreviewID, mEffect->GetPreviewName());
-   hSizer->Add(preview, 0, wxALIGN_CENTRE|wxALL, 5);
-   hSizer->Add(40, 10);
-
-   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("&Cancel"));
-   hSizer->Add(cancel, 0, wxALIGN_CENTRE|wxALL, 5);
-
-   wxButton *ok = new wxButton(this, wxID_OK, _("&OK"));
-   ok->SetDefault();
-   hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
-
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+   // Preview, OK, & Cancel buttons
+   mainSizer->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
 
    SetAutoLayout(true);
    SetSizer(mainSizer);

@@ -26,6 +26,8 @@
 
 #include "ChangeTempo.h"
 
+#include "../ShuttleGui.h"
+
 #include <math.h>
 
 #include <wx/button.h>
@@ -119,7 +121,6 @@ bool EffectChangeTempo::Process()
 #define ID_TEXT_TOBPM 10004
 #define ID_TEXT_FROMLENGTH 10005
 #define ID_TEXT_TOLENGTH 10006
-#define ID_BUTTON_PREVIEW 10009
 
 // event table for ChangeTempoDialog
 
@@ -133,7 +134,7 @@ BEGIN_EVENT_TABLE(ChangeTempoDialog, wxDialog)
     EVT_TEXT(ID_TEXT_TOBPM, ChangeTempoDialog::OnText_ToBPM)
     EVT_TEXT(ID_TEXT_TOLENGTH, ChangeTempoDialog::OnText_ToLength)
 
-    EVT_BUTTON(ID_BUTTON_PREVIEW, ChangeTempoDialog::OnPreview)
+    EVT_BUTTON(ID_EFFECT_PREVIEW, ChangeTempoDialog::OnPreview)
 END_EVENT_TABLE()
 
 ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect, 
@@ -280,28 +281,8 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
 
    pBoxSizer_Dialog->Add(pBoxSizer_Length, 0, wxALIGN_CENTER | wxALL, 4);
 
-
-	// Preview, OK, & Cancel buttons
-   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
-
-   wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton * pButton_Preview = 
-		new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
-   pBoxSizer_OK->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 4);
-   pBoxSizer_OK->Add(32, 8); // horizontal spacer
-
-   wxButton * pButton_Cancel =
-       new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_CENTER | wxALL, 4);
-
-   wxButton * pButton_OK =
-       new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
-   pButton_OK->SetDefault();
-   pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_CENTER | wxALL, 4);
-
-   pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 8);
-
+   // Preview, OK, & Cancel buttons
+   pBoxSizer_Dialog->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
 
    this->SetAutoLayout(true);
    this->SetSizer(pBoxSizer_Dialog);

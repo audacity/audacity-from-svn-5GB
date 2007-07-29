@@ -28,6 +28,7 @@
 
 #include "Phaser.h"
 
+#include "../ShuttleGui.h"
 #include "../WaveTrack.h"
 #include "../FFT.h"
 
@@ -38,8 +39,6 @@
 #include <wx/stattext.h>
 
 #include <math.h>
-
-#define ID_BUTTON_PREVIEW 10000
 
 //
 // EffectPhaser
@@ -200,7 +199,7 @@ BEGIN_EVENT_TABLE(PhaserDialog, wxDialog)
     EVT_SLIDER(ID_PHASESLIDER, PhaserDialog::OnPhaseSlider)
     EVT_SLIDER(ID_DEPTHSLIDER, PhaserDialog::OnDepthSlider)
     EVT_SLIDER(ID_FEEDBACKSLIDER, PhaserDialog::OnFeedbackSlider)
-    EVT_BUTTON(ID_BUTTON_PREVIEW, PhaserDialog::OnPreview)
+    EVT_BUTTON(ID_EFFECT_PREVIEW, PhaserDialog::OnPreview)
 END_EVENT_TABLE()
 
 PhaserDialog::PhaserDialog(EffectPhaser * effect, 
@@ -209,7 +208,131 @@ PhaserDialog::PhaserDialog(EffectPhaser * effect,
 wxDialog(parent, id, title, position, size, style)
 {
 	m_pEffect = effect;
-   CreatePhaserDialog(this, TRUE);
+
+   wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
+
+   wxStaticText *item1 =
+       new wxStaticText(this, -1, _("Phaser by Nasca Octavian Paul"),
+                        wxDefaultPosition, wxDefaultSize, 0);
+   item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxBoxSizer *item2 = new wxBoxSizer(wxHORIZONTAL);
+
+   wxStaticText *item3 =
+       new wxStaticText(this, -1, _("Stages:"), wxDefaultPosition,
+                        wxDefaultSize, 0);
+   item2->Add(item3, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxSpinCtrl *item4 =
+       new wxSpinCtrl(this, ID_STAGES, wxT("2"), wxDefaultPosition,
+                      wxSize(80, -1), 0, 2, 24, 2);
+   item2->Add(item4, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxBoxSizer *item5 = new wxBoxSizer(wxVERTICAL);
+
+   wxSlider *item6 =
+       new wxSlider(this, ID_DRYWET, 0, DRYWET_MIN, DRYWET_MAX,
+                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
+   item5->Add(item6, 1,
+              wxGROW | wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT | wxTOP,
+              5);
+
+   wxBoxSizer *item7 = new wxBoxSizer(wxHORIZONTAL);
+
+   wxStaticText *item8 =
+       new wxStaticText(this, -1, _("DRY"), wxDefaultPosition,
+                        wxDefaultSize, 0);
+   item7->Add(item8, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   item7->Add(10, 10, 1, wxALIGN_CENTRE | wxLEFT | wxRIGHT | wxTOP, 5);
+
+   wxStaticText *item9 =
+       new wxStaticText(this, -1, _("WET"), wxDefaultPosition,
+                        wxDefaultSize, 0);
+   item7->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   item5->Add(item7, 1,
+              wxGROW | wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+
+   item2->Add(item5, 1, wxALIGN_CENTRE | wxALL, 5);
+
+   item0->Add(item2, 0, wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+   wxFlexGridSizer *item10 = new wxFlexGridSizer(3, 0, 0);
+
+   wxStaticText *item11 =
+       new wxStaticText(this, -1, _("LFO Frequency (Hz):"),
+                        wxDefaultPosition, wxDefaultSize, 0);
+   item10->Add(item11, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+               5);
+
+   wxTextCtrl *item12 =
+       new wxTextCtrl(this, ID_FREQTEXT, wxT(""), wxDefaultPosition,
+                      wxSize(40, -1), 0);
+   item10->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxSlider *item13 =
+       new wxSlider(this, ID_FREQSLIDER, 100, FREQ_MIN, FREQ_MAX,
+                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
+   item10->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxStaticText *item14 =
+       new wxStaticText(this, -1, _("LFO Start Phase (deg.):"),
+                        wxDefaultPosition, wxDefaultSize, 0);
+   item10->Add(item14, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+               5);
+
+   wxTextCtrl *item15 =
+       new wxTextCtrl(this, ID_PHASETEXT, wxT(""), wxDefaultPosition,
+                      wxSize(40, -1), 0);
+   item10->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxSlider *item16 =
+       new wxSlider(this, ID_PHASESLIDER, 0, PHASE_MIN, PHASE_MAX,
+                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
+   item10->Add(item16, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxStaticText *item17 =
+       new wxStaticText(this, -1, _("Depth:"), wxDefaultPosition,
+                        wxDefaultSize, wxALIGN_RIGHT);
+   item10->Add(item17, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+               5);
+
+   wxTextCtrl *item18 =
+       new wxTextCtrl(this, ID_DEPTHTEXT, wxT(""), wxDefaultPosition,
+                      wxSize(40, -1), 0);
+   item10->Add(item18, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxSlider *item19 =
+       new wxSlider(this, ID_DEPTHSLIDER, 0, DEPTH_MIN, DEPTH_MAX,
+                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
+   item10->Add(item19, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxStaticText *item20 =
+       new wxStaticText(this, -1, _("Feedback (%):"),
+                        wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
+   item10->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+               5);
+
+   wxTextCtrl *item21 =
+       new wxTextCtrl(this, ID_FEEDBACKTEXT, wxT(""), wxDefaultPosition,
+                      wxSize(40, -1), 0);
+   item10->Add(item21, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxSlider *item22 =
+       new wxSlider(this, ID_FEEDBACKSLIDER, 0, FB_MIN, FB_MAX,
+                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
+   item10->Add(item22, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   item0->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   // Preview, OK, & Cancel buttons
+   item0->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
+
+   SetAutoLayout(TRUE);
+   SetSizer(item0);
+   item0->Fit(this);
+   item0->SetSizeHints(this);
 }
 
 bool PhaserDialog::Validate()
@@ -464,161 +587,6 @@ void PhaserDialog::OnOk(wxCommandEvent & event)
 void PhaserDialog::OnCancel(wxCommandEvent & event)
 {
    EndModal(false);
-}
-
-// Implement window functions
-
-wxSizer *CreatePhaserDialog(wxWindow * parent, bool call_fit,
-                            bool set_sizer)
-{
-   wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
-
-   wxStaticText *item1 =
-       new wxStaticText(parent, -1, _("Phaser by Nasca Octavian Paul"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxBoxSizer *item2 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxStaticText *item3 =
-       new wxStaticText(parent, -1, _("Stages:"), wxDefaultPosition,
-                        wxDefaultSize, 0);
-   item2->Add(item3, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSpinCtrl *item4 =
-       new wxSpinCtrl(parent, ID_STAGES, wxT("2"), wxDefaultPosition,
-                      wxSize(80, -1), 0, 2, 24, 2);
-   item2->Add(item4, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxBoxSizer *item5 = new wxBoxSizer(wxVERTICAL);
-
-   wxSlider *item6 =
-       new wxSlider(parent, ID_DRYWET, 0, DRYWET_MIN, DRYWET_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item5->Add(item6, 1,
-              wxGROW | wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT | wxTOP,
-              5);
-
-   wxBoxSizer *item7 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxStaticText *item8 =
-       new wxStaticText(parent, -1, _("DRY"), wxDefaultPosition,
-                        wxDefaultSize, 0);
-   item7->Add(item8, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item7->Add(10, 10, 1, wxALIGN_CENTRE | wxLEFT | wxRIGHT | wxTOP, 5);
-
-   wxStaticText *item9 =
-       new wxStaticText(parent, -1, _("WET"), wxDefaultPosition,
-                        wxDefaultSize, 0);
-   item7->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item5->Add(item7, 1,
-              wxGROW | wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-
-   item2->Add(item5, 1, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item2, 0, wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-   wxFlexGridSizer *item10 = new wxFlexGridSizer(3, 0, 0);
-
-   wxStaticText *item11 =
-       new wxStaticText(parent, -1, _("LFO Frequency (Hz):"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item10->Add(item11, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item12 =
-       new wxTextCtrl(parent, ID_FREQTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item13 =
-       new wxSlider(parent, ID_FREQSLIDER, 100, FREQ_MIN, FREQ_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item14 =
-       new wxStaticText(parent, -1, _("LFO Start Phase (deg.):"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item10->Add(item14, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item15 =
-       new wxTextCtrl(parent, ID_PHASETEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item16 =
-       new wxSlider(parent, ID_PHASESLIDER, 0, PHASE_MIN, PHASE_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item16, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item17 =
-       new wxStaticText(parent, -1, _("Depth:"), wxDefaultPosition,
-                        wxDefaultSize, wxALIGN_RIGHT);
-   item10->Add(item17, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item18 =
-       new wxTextCtrl(parent, ID_DEPTHTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item18, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item19 =
-       new wxSlider(parent, ID_DEPTHSLIDER, 0, DEPTH_MIN, DEPTH_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item19, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item20 =
-       new wxStaticText(parent, -1, _("Feedback (%):"),
-                        wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
-   item10->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item21 =
-       new wxTextCtrl(parent, ID_FEEDBACKTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item21, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item22 =
-       new wxSlider(parent, ID_FEEDBACKSLIDER, 0, FB_MIN, FB_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item22, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxBoxSizer *item23 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton * pButton_Preview = 
-		new wxButton(parent, ID_BUTTON_PREVIEW, 
-							_("Pre&view")); //v Should be m_pEffect->GetPreviewName().
-   item23->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 5);
-   item23->Add(20, 10); // horizontal spacer
-
-   wxButton *item25 =
-       new wxButton(parent, wxID_CANCEL, _("&Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item23->Add(item25, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxButton *item24 =
-       new wxButton(parent, wxID_OK, _("&OK"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item24->SetDefault();
-   item23->Add(item24, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item23, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   if (set_sizer) {
-      parent->SetAutoLayout(TRUE);
-      parent->SetSizer(item0);
-      if (call_fit) {
-         item0->Fit(parent);
-         item0->SetSizeHints(parent);
-      }
-   }
-
-   return item0;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

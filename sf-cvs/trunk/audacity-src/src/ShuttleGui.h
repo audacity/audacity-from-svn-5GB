@@ -278,6 +278,26 @@ class AttachableScrollBar;
 struct ViewInfo;
 #include <wx/scrolbar.h>  // to get wxSB_HORIZONTAL
 
+// CreateStdButtonSizer defs...should probably move to widgets subdir
+enum
+{
+   eOkButton      = 0x0001,
+   eCancelButton  = 0x0002,
+   eYesButton     = 0x0004,
+   eNoButton      = 0x0008,
+   eHelpButton    = 0x0010,
+   ePreviewButton = 0x0020,
+   eDebugButton   = 0x0040
+};
+
+enum
+{
+   ePreviewID     = wxID_LOWEST - 1,
+   eDebugID       = wxID_LOWEST - 2
+};
+
+wxSizer *CreateStdButtonSizer( wxWindow *parent, long buttons );
+
 // ShuttleGui extends ShuttleGuiBase with Audacity specific extensions.
 class ShuttleGui : public ShuttleGuiBase
 {
@@ -291,6 +311,6 @@ public:
    AdornedRulerPanel * AddAdornedRuler( ViewInfo *pViewInfo );
    RulerPanel * AddRulerVertical( float low, float hi, const wxString & Units );
    AttachableScrollBar * AddAttachableScrollBar( long style = wxSB_HORIZONTAL );
+   void AddStandardButtons( long buttons = eOkButton | eCancelButton );
 };
-
 #endif

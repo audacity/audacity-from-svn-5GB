@@ -17,6 +17,7 @@
 
 #include "ChangePitch.h"
 
+#include "../ShuttleGui.h"
 #include "../PitchName.h"
 #include "../Spectrum.h"
 #include "../WaveTrack.h"
@@ -172,8 +173,7 @@ enum {
    ID_CHOICE_TOPITCH,
    ID_TEXT_SEMITONESCHANGE,
    ID_TEXT_FROMFREQUENCY,
-   ID_TEXT_TOFREQUENCY,
-	ID_BUTTON_PREVIEW
+   ID_TEXT_TOFREQUENCY
 };
 
 // event table for ChangePitchDialog
@@ -194,7 +194,7 @@ BEGIN_EVENT_TABLE(ChangePitchDialog, wxDialog)
 	EVT_TEXT(ID_TEXT_PERCENTCHANGE, ChangePitchDialog::OnText_PercentChange)
 	EVT_SLIDER(ID_SLIDER_PERCENTCHANGE, ChangePitchDialog::OnSlider_PercentChange)
 
-	EVT_BUTTON(ID_BUTTON_PREVIEW, ChangePitchDialog::OnPreview)
+	EVT_BUTTON(ID_EFFECT_PREVIEW, ChangePitchDialog::OnPreview)
 END_EVENT_TABLE()
 
 
@@ -379,28 +379,8 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
 
    pBoxSizer_Dialog->Add(0, 8, 0); // spacer
 
-
-	// Preview, OK, & Cancel buttons
-   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
-
-   wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton * pButton_Preview = 
-		new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
-   pBoxSizer_OK->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 4);
-   pBoxSizer_OK->Add(32, 8); // horizontal spacer
-
-   wxButton * pButton_Cancel =
-       new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_CENTER | wxALL, 4);
-
-   wxButton * pButton_OK =
-       new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
-   pButton_OK->SetDefault();
-   pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_CENTER | wxALL, 4);
-
-   pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 8);
-
+   // Preview, OK, & Cancel buttons
+   pBoxSizer_Dialog->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
 
    this->SetAutoLayout(true);
    this->SetSizer(pBoxSizer_Dialog);

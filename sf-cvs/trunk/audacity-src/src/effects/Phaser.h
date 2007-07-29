@@ -102,8 +102,6 @@ friend class PhaserDialog;
 #define ID_DEPTHSLIDER 10008
 #define ID_FEEDBACKTEXT 10009
 #define ID_FEEDBACKSLIDER 10010
-wxSizer *CreatePhaserDialog(wxWindow * parent, bool call_fit =
-                            TRUE, bool set_sizer = TRUE);
 
 //----------------------------------------------------------------------------
 // PhaserDialog

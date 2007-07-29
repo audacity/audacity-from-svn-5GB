@@ -28,6 +28,7 @@
 #include "../Audacity.h"
 
 #include "Wahwah.h"
+#include "../ShuttleGui.h"
 #include "../WaveTrack.h"
 #include "../FFT.h"
 
@@ -197,7 +198,7 @@ BEGIN_EVENT_TABLE(WahwahDialog, wxDialog)
     EVT_SLIDER(ID_PHASESLIDER, WahwahDialog::OnPhaseSlider)
     EVT_SLIDER(ID_DEPTHSLIDER, WahwahDialog::OnDepthSlider)
     EVT_SLIDER(ID_RESONANCESLIDER, WahwahDialog::OnResonanceSlider)
-    EVT_BUTTON(ID_BUTTON_PREVIEW, WahwahDialog::OnPreview)
+    EVT_BUTTON(ID_EFFECT_PREVIEW, WahwahDialog::OnPreview)
 END_EVENT_TABLE()
 
 WahwahDialog::WahwahDialog(EffectWahwah * effect, 
@@ -206,7 +207,105 @@ WahwahDialog::WahwahDialog(EffectWahwah * effect,
 wxDialog(parent, id, title, position, size, style)
 {
 	m_pEffect = effect;
-   CreateWahwahDialog(this, TRUE);
+
+   wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
+
+   wxStaticText *item1 =
+       new wxStaticText(this, -1, _("Wahwah by Nasca Octavian Paul"),
+                        wxDefaultPosition, wxDefaultSize, 0);
+   item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxFlexGridSizer *item10 = new wxFlexGridSizer(3, 0, 0);
+
+   wxStaticText *item11 =
+       new wxStaticText(this, -1, _("LFO Frequency (Hz):"),
+                        wxDefaultPosition, wxDefaultSize, 0);
+   item10->Add(item11, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+               5);
+
+   wxTextCtrl *item12 =
+       new wxTextCtrl(this, ID_FREQTEXT, wxT(""), wxDefaultPosition,
+                      wxSize(40, -1), 0);
+   item10->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxSlider *item13 =
+       new wxSlider(this, ID_FREQSLIDER, 100, FREQ_MIN, FREQ_MAX,
+                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
+   item10->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxStaticText *item14 =
+       new wxStaticText(this, -1, _("LFO Start Phase (deg.):"),
+                        wxDefaultPosition, wxDefaultSize, 0);
+   item10->Add(item14, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+               5);
+
+   wxTextCtrl *item15 =
+       new wxTextCtrl(this, ID_PHASETEXT, wxT(""), wxDefaultPosition,
+                      wxSize(40, -1), 0);
+   item10->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxSlider *item16 =
+       new wxSlider(this, ID_PHASESLIDER, 0, PHASE_MIN, PHASE_MAX,
+                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
+   item10->Add(item16, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxStaticText *item17 =
+       new wxStaticText(this, -1, _("Depth (%):"), wxDefaultPosition,
+                        wxDefaultSize, wxALIGN_RIGHT);
+   item10->Add(item17, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+               5);
+
+   wxTextCtrl *item18 =
+       new wxTextCtrl(this, ID_DEPTHTEXT, wxT(""), wxDefaultPosition,
+                      wxSize(40, -1), 0);
+   item10->Add(item18, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxSlider *item19 =
+       new wxSlider(this, ID_DEPTHSLIDER, 0, DEPTH_MIN, DEPTH_MAX,
+                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
+   item10->Add(item19, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxStaticText *item20 =
+       new wxStaticText(this, -1, _("Resonance:"), wxDefaultPosition,
+                        wxDefaultSize, wxALIGN_RIGHT);
+   item10->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+               5);
+
+   wxTextCtrl *item21 =
+       new wxTextCtrl(this, ID_RESONANCETEXT, wxT(""), wxDefaultPosition,
+                      wxSize(40, -1), 0);
+   item10->Add(item21, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxSlider *item22 =
+       new wxSlider(this, ID_RESONANCESLIDER, 0, RES_MIN, RES_MAX,
+                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
+   item10->Add(item22, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxStaticText *item30 =
+       new wxStaticText(this, -1, _("Wah Frequency Offset (%):"),
+                        wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
+   item10->Add(item30, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+               5);
+
+   wxTextCtrl *item31 =
+       new wxTextCtrl(this, ID_FREQOFFTEXT, wxT(""), wxDefaultPosition,
+                      wxSize(40, -1), 0);
+   item10->Add(item31, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxSlider *item32 =
+       new wxSlider(this, ID_FREQOFFSLIDER, 0, FREQOFF_MIN, FREQOFF_MAX,
+                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
+   item10->Add(item32, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   item0->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   // Preview, OK, & Cancel buttons
+   item0->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
+
+   SetAutoLayout(TRUE);
+   SetSizer(item0);
+   item0->Fit(this);
+   item0->SetSizeHints(this);
 }
 
 bool WahwahDialog::Validate()
@@ -477,135 +576,6 @@ void WahwahDialog::OnOk(wxCommandEvent & event)
 void WahwahDialog::OnCancel(wxCommandEvent & event)
 {
    EndModal(false);
-}
-
-// Implement window functions
-
-wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
-                            bool set_sizer)
-{
-   wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
-
-   wxStaticText *item1 =
-       new wxStaticText(parent, -1, _("Wahwah by Nasca Octavian Paul"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxFlexGridSizer *item10 = new wxFlexGridSizer(3, 0, 0);
-
-   wxStaticText *item11 =
-       new wxStaticText(parent, -1, _("LFO Frequency (Hz):"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item10->Add(item11, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item12 =
-       new wxTextCtrl(parent, ID_FREQTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item13 =
-       new wxSlider(parent, ID_FREQSLIDER, 100, FREQ_MIN, FREQ_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item14 =
-       new wxStaticText(parent, -1, _("LFO Start Phase (deg.):"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item10->Add(item14, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item15 =
-       new wxTextCtrl(parent, ID_PHASETEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item16 =
-       new wxSlider(parent, ID_PHASESLIDER, 0, PHASE_MIN, PHASE_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item16, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item17 =
-       new wxStaticText(parent, -1, _("Depth (%):"), wxDefaultPosition,
-                        wxDefaultSize, wxALIGN_RIGHT);
-   item10->Add(item17, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item18 =
-       new wxTextCtrl(parent, ID_DEPTHTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item18, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item19 =
-       new wxSlider(parent, ID_DEPTHSLIDER, 0, DEPTH_MIN, DEPTH_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item19, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item20 =
-       new wxStaticText(parent, -1, _("Resonance:"), wxDefaultPosition,
-                        wxDefaultSize, wxALIGN_RIGHT);
-   item10->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item21 =
-       new wxTextCtrl(parent, ID_RESONANCETEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item21, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item22 =
-       new wxSlider(parent, ID_RESONANCESLIDER, 0, RES_MIN, RES_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item22, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item30 =
-       new wxStaticText(parent, -1, _("Wah Frequency Offset (%):"),
-                        wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
-   item10->Add(item30, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item31 =
-       new wxTextCtrl(parent, ID_FREQOFFTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item31, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item32 =
-       new wxSlider(parent, ID_FREQOFFSLIDER, 0, FREQOFF_MIN, FREQOFF_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item32, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxBoxSizer *item23 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton * pButton_Preview = 
-		new wxButton(parent, ID_BUTTON_PREVIEW, 
-							_("Pre&view")); //v Should be m_pEffect->GetPreviewName().
-   item23->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 5);
-   item23->Add(20, 10); // horizontal spacer
-
-   wxButton *item25 =
-       new wxButton(parent, wxID_CANCEL, _("&Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item23->Add(item25, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxButton *item24 =
-       new wxButton(parent, wxID_OK, _("&OK"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item24->SetDefault();
-   item23->Add(item24, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item23, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   if (set_sizer) {
-      parent->SetAutoLayout(TRUE);
-      parent->SetSizer(item0);
-      if (call_fit) {
-         item0->Fit(parent);
-         item0->SetSizeHints(parent);
-      }
-   }
-
-   return item0;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

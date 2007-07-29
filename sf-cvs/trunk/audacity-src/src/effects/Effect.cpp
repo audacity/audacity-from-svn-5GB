@@ -372,45 +372,20 @@ void EffectDialog::Init()
    {
       PopulateOrExchange(S);
 
-      S.SetBorder(5);
-      S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_CENTER, false);
+      long buttons = eOkButton;
+
+      if (mType == PROCESS_EFFECT || mType == INSERT_EFFECT)
       {
+         buttons |= eCancelButton;
          if (mType == PROCESS_EFFECT)
          {
-            S.StartHorizontalLay(wxALIGN_LEFT, false);
-            {
-               S.Id(ID_EFFECT_PREVIEW).AddButton(_("Pre&view"));
-            }
-            S.EndHorizontalLay();
-
-            S.SetBorder(10);
-            S.StartHorizontalLay(wxALIGN_LEFT, false);
-            {
-               // Everyone needs a little space sometime
-            }
-            S.EndHorizontalLay();
-            S.SetBorder(5);
-         }
-
-         S.StartHorizontalLay(wxALIGN_CENTER, false);
-         {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-            S.Id(wxID_CANCEL)
-             .AddButton(_("&Cancel"))
-             ->Show( mType == PROCESS_EFFECT || mType == INSERT_EFFECT);
-            S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-#else
-            S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-            S.Id(wxID_CANCEL)
-             .AddButton(_("&Cancel"))
-             ->Show( mType == PROCESS_EFFECT || mType == INSERT_EFFECT);
-#endif
+            buttons |= ePreviewButton;
          }
       }
-      S.EndHorizontalLay();
+      S.AddStandardButtons(buttons);
    }
    S.EndVerticalLay();
-   GetSizer()->AddSpacer(5);
+
    Layout();
    Fit();
    SetMinSize(GetSize());

@@ -25,6 +25,7 @@
 #include <math.h>
 
 #include "Normalize.h"
+#include "../ShuttleGui.h"
 #include "../Internat.h"
 #include "../WaveTrack.h"
 #include "../Prefs.h"
@@ -289,7 +290,6 @@ void EffectNormalize::ProcessData(float *buffer, sampleCount len)
 // NormalizeDialog
 //----------------------------------------------------------------------------
 
-#define ID_BUTTON_PREVIEW 10001
 #define ID_NORMALIZE_AMPLITUDE 10002
 #define ID_LEVEL_STATIC_MINUS 10003
 #define ID_LEVEL_STATIC_DB 10004
@@ -298,7 +298,7 @@ void EffectNormalize::ProcessData(float *buffer, sampleCount len)
 BEGIN_EVENT_TABLE(NormalizeDialog,wxDialog)
    EVT_BUTTON( wxID_OK, NormalizeDialog::OnOk )
    EVT_BUTTON( wxID_CANCEL, NormalizeDialog::OnCancel )
-	EVT_BUTTON(ID_BUTTON_PREVIEW, NormalizeDialog::OnPreview)
+	EVT_BUTTON(ID_EFFECT_PREVIEW, NormalizeDialog::OnPreview)
 	EVT_CHECKBOX(ID_NORMALIZE_AMPLITUDE, NormalizeDialog::OnUpdateUI)
 END_EVENT_TABLE()
 
@@ -343,21 +343,8 @@ NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
                    wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
    mainSizer->Add(levelSizer, 0, wxALIGN_LEFT|wxALIGN_TOP|wxALL, 0);
 
-   wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton * pButton_Preview = 
-		new wxButton(this, ID_BUTTON_PREVIEW, mEffect->GetPreviewName());
-   hSizer->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 5);
-   hSizer->Add(20, 10); // horizontal spacer
-
-   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("&Cancel"));
-   hSizer->Add(cancel, 0, wxALIGN_CENTRE|wxALL, 5);
-
-   wxButton *ok = new wxButton(this, wxID_OK, _("&OK"));
-   ok->SetDefault();
-   hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
-
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+   // Preview, OK, & Cancel buttons
+   mainSizer->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
 
    SetAutoLayout(true);
    SetSizer(mainSizer);

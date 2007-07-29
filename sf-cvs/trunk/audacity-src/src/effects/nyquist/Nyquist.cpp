@@ -52,6 +52,7 @@ effects from this one class.
 #include "../../AudacityApp.h"
 #include "../../LabelTrack.h"
 #include "../../Internat.h"
+#include "../../ShuttleGui.h"
 
 #include "Nyquist.h"
 
@@ -326,7 +327,7 @@ bool EffectNyquist::PromptUser()
       if (result == wxID_CANCEL)
          return false;
 
-      if (result == wxID_MORE)
+      if (result == eDebugID)
          mDebug = true;
       else
          mDebug = false;
@@ -381,7 +382,7 @@ bool EffectNyquist::PromptUser()
    if (result == wxID_CANCEL)
       return false;
    
-   if (result == wxID_MORE)
+   if (result == eDebugID)
       mDebug = true;
    else
       mDebug = false;
@@ -713,7 +714,7 @@ bool EffectNyquist::ProcessOne()
 BEGIN_EVENT_TABLE(NyquistDialog, wxDialog)
    EVT_BUTTON(wxID_OK, NyquistDialog::OnOk)
    EVT_BUTTON(wxID_CANCEL, NyquistDialog::OnCancel)
-   EVT_BUTTON(wxID_MORE, NyquistDialog::OnDebug)
+   EVT_BUTTON(eDebugID, NyquistDialog::OnDebug)
    EVT_COMMAND_RANGE(ID_NYQ_SLIDER, ID_NYQ_SLIDER+99,
                      wxEVT_COMMAND_SLIDER_UPDATED, NyquistDialog::OnSlider)
    EVT_COMMAND_RANGE(ID_NYQ_TEXT, ID_NYQ_TEXT+99,
@@ -732,8 +733,6 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
    mInHandler = true; // prevents race condition on MSW
 
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-   wxBoxSizer *hSizer;
-   wxButton   *button;
 
    if (info.Length() > 0) {
       wxControl  *item;
@@ -820,19 +819,7 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
    }
    mainSizer->Add(grid, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   button = new wxButton(this, wxID_CANCEL, _("&Cancel"));
-   hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   button = new wxButton(this, wxID_MORE, _("&Debug"));
-   hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   button = new wxButton(this, wxID_OK, _("&OK"));
-   button->SetDefault();
-   hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
+   mainSizer->Add(CreateStdButtonSizer(this, eDebugButton|eCancelButton|eOkButton), 0, wxEXPAND);
 
    mInHandler = false;
 
@@ -955,7 +942,7 @@ void NyquistDialog::OnDebug(wxCommandEvent & /* event */)
 {
    // Transfer data
 
-   EndModal(wxID_MORE);
+   EndModal(eDebugID);
 }
 
 /**********************************************************/
@@ -963,7 +950,7 @@ void NyquistDialog::OnDebug(wxCommandEvent & /* event */)
 BEGIN_EVENT_TABLE(NyquistInputDialog, wxDialog)
    EVT_BUTTON(wxID_OK, NyquistInputDialog::OnOk)
    EVT_BUTTON(wxID_CANCEL, NyquistInputDialog::OnCancel)
-   EVT_BUTTON(wxID_MORE, NyquistInputDialog::OnDebug)
+   EVT_BUTTON(eDebugID, NyquistInputDialog::OnDebug)
 END_EVENT_TABLE()
 
 NyquistInputDialog::NyquistInputDialog(wxWindow * parent, wxWindowID id,
@@ -986,20 +973,8 @@ NyquistInputDialog::NyquistInputDialog(wxWindow * parent, wxWindowID id,
                                  wxTE_MULTILINE);
    mainSizer->Add(mCommandText, 0, wxALIGN_LEFT | wxALL, 10);
 
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   button = new wxButton(this, wxID_CANCEL, _("&Cancel"));
-   hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   button = new wxButton(this, wxID_MORE, _("&Debug"));
-   hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   button = new wxButton(this, wxID_OK, _("&OK"));
-   button->SetDefault();
-   hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE |
-                  wxLEFT | wxBOTTOM | wxRIGHT, 5);
+   // Debug, OK, & Cancel buttons
+   mainSizer->Add(CreateStdButtonSizer(this, eDebugButton|eCancelButton|eOkButton), 0, wxEXPAND);
 
    SetAutoLayout(true);
    SetSizer(mainSizer);
@@ -1028,7 +1003,7 @@ void NyquistInputDialog::OnDebug(wxCommandEvent & /* event */)
 {
    // Transfer data
 
-   EndModal(wxID_MORE);
+   EndModal(eDebugID);
 }
 
 

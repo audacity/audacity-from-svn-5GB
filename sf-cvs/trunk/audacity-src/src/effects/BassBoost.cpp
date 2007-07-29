@@ -166,7 +166,7 @@ END_EVENT_TABLE()
 
 BassBoostDialog::BassBoostDialog(EffectBassBoost *effect,
                                  wxWindow * parent):
-   EffectDialog(parent, _("BassBoost"), PROCESS_EFFECT),
+   EffectDialog(parent, _("Bass Boost"), PROCESS_EFFECT),
    mEffect(effect)
 {
    Init();

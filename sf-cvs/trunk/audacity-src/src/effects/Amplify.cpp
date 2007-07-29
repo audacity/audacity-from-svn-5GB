@@ -27,6 +27,7 @@
 
 #include "Amplify.h"
 
+#include "../ShuttleGui.h"
 #include "../WaveTrack.h"
 
 #include <math.h>
@@ -36,8 +37,6 @@
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/valtext.h>
-
-#define ID_BUTTON_PREVIEW 10005
 
 //
 // EffectAmplify
@@ -129,7 +128,7 @@ BEGIN_EVENT_TABLE(AmplifyDialog, wxDialog)
     EVT_TEXT(ID_AMP_TEXT, AmplifyDialog::OnAmpText)
     EVT_TEXT(ID_PEAK_TEXT, AmplifyDialog::OnPeakText)
     EVT_CHECKBOX(ID_CLIP_CHECKBOX, AmplifyDialog::OnClipCheckBox)
-    EVT_BUTTON(ID_BUTTON_PREVIEW, AmplifyDialog::OnPreview)
+    EVT_BUTTON(ID_EFFECT_PREVIEW, AmplifyDialog::OnPreview)
 END_EVENT_TABLE()
 
 AmplifyDialog::AmplifyDialog(EffectAmplify * effect, 
@@ -194,28 +193,8 @@ AmplifyDialog::AmplifyDialog(EffectAmplify * effect,
    
    pBoxSizer_Dialog->Add(item8b, 0, wxALIGN_CENTER | wxALL, 5);
 
-
    // Preview, OK, & Cancel buttons
-   pBoxSizer_Dialog->Add(0, 10, 0); // spacer
-
-   wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton * pButton_Preview = 
-      new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
-   pBoxSizer_OK->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 5);
-   pBoxSizer_OK->Add(25, 8); // horizontal spacer
-   
-   wxButton *item11 =
-      new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition,
-                   wxDefaultSize, 0);
-   pBoxSizer_OK->Add(item11, 0, wxALIGN_CENTER | wxALL, 5);
-   
-   wxButton *item10 =
-      new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
-   item10->SetDefault();
-   pBoxSizer_OK->Add(item10, 0, wxALIGN_CENTER | wxALL, 5);
-   
-   pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_Dialog->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
    
    SetAutoLayout(TRUE);
    SetSizer(pBoxSizer_Dialog);
