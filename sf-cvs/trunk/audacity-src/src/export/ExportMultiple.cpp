@@ -100,7 +100,6 @@ ExportMultiple::ExportMultiple(AudacityProject *project)
    PopulateOrExchange(S);
    mInitialized = true;
 
-   GetSizer()->AddSpacer(5);
    Layout();
    Fit();
    SetMinSize(GetSize());
@@ -295,19 +294,11 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
          .AddCheckBox(_("Overwrite existing files"), wxT("true"));
    }
    S.EndHorizontalLay();
-      
-   S.StartHorizontalLay(wxALIGN_CENTER, false);
-   {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-      mExport = S.Id(wxID_OK).AddButton(_("E&xport"));
-#else
-      mExport = S.Id(wxID_OK).AddButton(_("E&xport"));
-      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-      mExport->SetDefault();
-   }
-   S.EndHorizontalLay();
+
+   S.AddStandardButtons();
+   mExport = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
+   mExport->SetLabel(_("E&xport"));
+
 }
 
 void ExportMultiple::EnableControls()

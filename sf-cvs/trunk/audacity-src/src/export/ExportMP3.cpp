@@ -346,17 +346,9 @@ void ExportMP3Options::PopulateOrExchange(ShuttleGui & S)
       S.EndStatic();
    }
    S.EndHorizontalLay();
-   S.StartHorizontalLay(wxALIGN_CENTER, false);
-   {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-#else
-      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-   }
-   GetSizer()->AddSpacer(5);
+
+   S.AddStandardButtons();
+
    Layout();
    Fit();
    SetMinSize(GetSize());
@@ -527,21 +519,11 @@ public:
             S.Id(ID_DLOAD).AddButton(_("Download..."), wxALIGN_RIGHT);
          }
          S.EndMultiColumn();
-         S.SetBorder(5);
-         S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_CENTER, false);
-         {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-            S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-            S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-#else
-            S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-            S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-         }
-         S.EndHorizontalLay();
+
+         S.AddStandardButtons();
       }
       S.EndVerticalLay();
-      GetSizer()->AddSpacer(5);
+
       Layout();
       Fit();
       SetMinSize(GetSize());
@@ -1923,22 +1905,10 @@ int ExportMP3::AskResample(int bitrate, int rate, int lowrate, int highrate)
       }
       S.EndStatic();
 
-      S.SetBorder(5);
-      S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_CENTER, false);
-      {
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-#else
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-#endif
-      }
-      S.EndHorizontalLay();
+      S.AddStandardButtons();
    }
    S.EndVerticalLay();
 
-   d.GetSizer()->AddSpacer(5);
    d.Layout();
    d.Fit();
    d.SetMinSize(d.GetSize());

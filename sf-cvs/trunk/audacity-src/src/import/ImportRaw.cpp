@@ -282,7 +282,6 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
 {
    wxBoxSizer *mainSizer, *hSizer, *vSizer;
    wxFlexGridSizer *gridSizer;
-   wxButton *button;
    int selection, i;
 
    mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -327,7 +326,7 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
                    wxDefaultPosition, wxDefaultSize,
                    mNumEncodings, mEncodingString);
    mEncodingChoice->SetSelection(selection);
-   vSizer->Add(mEncodingChoice, 0, wxALIGN_LEFT | wxALL, 5);
+   vSizer->Add(mEncodingChoice, 0, wxALIGN_CENTER | wxALL, 5);
 
    // Endian choice
 
@@ -362,7 +361,7 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
       mEndianChoice->SetSelection(3);
       break;
    }
-   vSizer->Add(mEndianChoice, 0, wxALIGN_LEFT | wxALL, 5);
+   vSizer->Add(mEndianChoice, 0, wxALIGN_CENTER | wxALL, 5);
 
    // Channels choice
 
@@ -377,7 +376,7 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
                    wxDefaultPosition, wxDefaultSize,
                    16, channelStrings);
    mChannelChoice->SetSelection(mChannels-1);
-   vSizer->Add(mChannelChoice, 0, wxALIGN_LEFT | wxALL, 5);
+   vSizer->Add(mChannelChoice, 0, wxALIGN_CENTER | wxALL, 5);
 
    // Offset text
 
@@ -424,8 +423,8 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
    // Preview Pane goes here
    //
 
-   wxPanel *p = new wxPanel(this, 0, wxDefaultPosition, wxSize(100, 100));
-   hSizer->Add(p, 0, wxALIGN_TOP | wxALL, 5);
+//   wxPanel *p = new wxPanel(this, 0, wxDefaultPosition, wxSize(100, 100));
+//   hSizer->Add(p, 0, wxALIGN_TOP | wxALL, 5);
 
    mainSizer->Add(hSizer, 0, wxALIGN_CENTER | wxALL, 5);
 
@@ -433,21 +432,16 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
    // Button row
    //
 
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
 
    /*
    button = new wxButton(this, PlayID, _("Play"));
    hSizer->Add(button, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
    */
 
-   button = new wxButton(this, wxID_CANCEL, _("&Cancel"));
-   hSizer->Add(button, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-   mOK = new wxButton(this, wxID_OK, _("Import"));
-   mOK->SetDefault();
-   hSizer->Add(mOK, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTER | wxALL, 5);
+   mainSizer->Add(CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND);
+   wxButton * OKButton;
+   OKButton = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
+   OKButton->SetLabel(_("&Import"));
 
    SetAutoLayout(true);
    SetSizer(mainSizer);

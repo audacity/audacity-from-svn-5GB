@@ -734,8 +734,6 @@ void Tags::ExportOGGTags(vorbis_comment *comment)
 //
 
 enum {
-   CancelID = wxID_CANCEL,
-   CloseID = wxID_OK,
    StaticTextID = 10000,
    TitleTextID,
    ArtistTextID,
@@ -763,8 +761,8 @@ BEGIN_EVENT_TABLE(TagsEditor, ExpandingToolBar)
    EVT_TEXT(CommentsTextID, TagsEditor::OnChange)
    EVT_CHOICE(GenreID, TagsEditor::OnChange)
    EVT_RADIOBOX(FormatID, TagsEditor::OnChange)
-   EVT_BUTTON(CancelID, TagsEditor::OnCancel)
-   EVT_BUTTON(CloseID, TagsEditor::OnClose)
+   EVT_BUTTON(wxID_CANCEL, TagsEditor::OnCancel)
+   EVT_BUTTON(wxID_OK, TagsEditor::OnClose)
    EVT_BUTTON(MoreID, TagsEditor::OnMore)
    EVT_BUTTON(FewerID, TagsEditor::OnFewer)
    EVT_BUTTON(ClearID, TagsEditor::OnClear)
@@ -1376,31 +1374,10 @@ void TagsEditor::BuildExtraPanel()
 
       /***/
    
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-   wxButton *cancel =
-       new wxButton(parent, CancelID, _("&Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   hSizer->Add(cancel, 0, wxALIGN_CENTRE | wxALL, 3);
-   wxButton *close =
-       new wxButton(parent, CloseID, _("&Done"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   hSizer->Add(close, 0, wxALIGN_CENTRE | wxALL, 3);
-#else
-   wxButton *close =
-       new wxButton(parent, CloseID, _("&Done"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   hSizer->Add(close, 0, wxALIGN_CENTRE | wxALL, 3);
-   wxButton *cancel =
-       new wxButton(parent, CancelID, _("&Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   hSizer->Add(cancel, 0, wxALIGN_CENTRE | wxALL, 3);
-#endif
-
-   mainSizer->Add(hSizer, 0, wxALIGN_RIGHT | wxALL, 7);
-
-   mainSizer->Add(1, 5, wxEXPAND);
+   mainSizer->Add(CreateStdButtonSizer(parent, eCancelButton|eOkButton), 0, wxEXPAND);
+   wxButton * OKButton;
+   OKButton = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
+   OKButton->SetLabel(_("&Done"));
 
    parent->SetSizer(mainSizer);
    parent->Layout();

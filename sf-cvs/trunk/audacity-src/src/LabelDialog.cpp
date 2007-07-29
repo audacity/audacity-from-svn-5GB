@@ -72,9 +72,7 @@ enum {
    ID_INSERTB,
    ID_REMOVE,
    ID_IMPORT,
-   ID_EXPORT,
-   ID_OK,
-   ID_CANCEL
+   ID_EXPORT
 };
 
 BEGIN_EVENT_TABLE(LabelDialog, wxDialog)
@@ -85,8 +83,8 @@ BEGIN_EVENT_TABLE(LabelDialog, wxDialog)
    EVT_BUTTON(ID_REMOVE,  LabelDialog::OnRemove)
    EVT_BUTTON(ID_IMPORT,  LabelDialog::OnImport)
    EVT_BUTTON(ID_EXPORT,  LabelDialog::OnExport)
-   EVT_BUTTON(ID_OK,      LabelDialog::OnOK)
-   EVT_BUTTON(ID_CANCEL,  LabelDialog::OnCancel)
+   EVT_BUTTON(wxID_OK,      LabelDialog::OnOK)
+   EVT_BUTTON(wxID_CANCEL,  LabelDialog::OnCancel)
    EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, LabelDialog::OnUpdate)
 END_EVENT_TABLE()
 
@@ -131,15 +129,7 @@ LabelDialog::LabelDialog(wxWindow *parent,
    vs->Add(hs, 0, wxEXPAND | wxCENTER | wxALL, 5);
 
    // Create the exit buttons
-   hs = new wxBoxSizer(wxHORIZONTAL);
-#if defined(__WXGTK20__) || defined(__WXMAC__)
-   hs->Add(new wxButton(this, ID_CANCEL, _("&Cancel")), 1, wxCENTER | wxALL, 5);
-   hs->Add(new wxButton(this, wxID_OK, _("&OK")), 1, wxCENTER | wxALL, 5);
-#else
-   hs->Add(new wxButton(this, wxID_OK, _("&OK")), 1, wxCENTER | wxALL, 5);
-   hs->Add(new wxButton(this, wxID_CANCEL, _("&Cancel")), 1, wxCENTER | wxALL, 5);
-#endif
-   vs->Add(hs, 0, wxALIGN_RIGHT | wxALL, 5);
+   vs->Add(CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND);
 
    // Make it so
    SetSizer(vs);

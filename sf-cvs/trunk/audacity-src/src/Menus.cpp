@@ -4273,11 +4273,7 @@ void AudacityProject::OnAudioDeviceInfo()
    }
    S.EndHorizontalLay();
    
-   S.StartHorizontalLay(wxALIGN_RIGHT, false);
-   {
-      S.Id(wxID_OK).AddButton(wxT("OK"));
-   }
-   S.EndHorizontalLay();
+   S.AddStandardButtons(eOkButton);
 
    dlg.Center();
    dlg.ShowModal();
