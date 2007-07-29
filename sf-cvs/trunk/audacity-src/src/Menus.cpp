@@ -696,7 +696,7 @@ void AudacityProject::CreateMenusAndCommands()
       c->EndMenu();
       c->BeginMenu(_("&Analyze"));
  	   /* plot spectrum moved from view */
-      c->AddItem(wxT("PlotSpectrum"), _("&Plot Spectrum..."), FN(OnPlotSpectrum));
+      c->AddItem(wxT("PlotSpectrum"), _("Plot Spectrum..."), FN(OnPlotSpectrum));
       c->SetCommandFlags(wxT("PlotSpectrum"),
                            AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
                            AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
