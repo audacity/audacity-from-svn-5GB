@@ -380,19 +380,13 @@ AUDACITY_DLL_API void CloseAllProjects()
 // BG: The default size and position of the first window
 void GetDefaultWindowRect(wxRect *defRect)
 {
-   //the point that a new window should open at.
-   defRect->x = 10;
-   defRect->y = 10;
+   *defRect = wxGetClientDisplayRect();
 
    defRect->width = 600;
    defRect->height = 400;
 
    //These conditional values assist in improving placement and size
    //of new windows on different platforms.
-#ifdef __WXMAC__
-   defRect->y += 50;
-#endif
-
 #ifdef __WXGTK__
    defRect->height += 20;
 #endif
@@ -407,84 +401,68 @@ void GetDefaultWindowRect(wxRect *defRect)
 void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized)
 {
    wxRect defWndRect;
+   int inc = 25;
 
    GetDefaultWindowRect(&defWndRect);
 
    *bMaximized = false;
 
-   if(gAudacityProjects.IsEmpty())
-   {
+   if (gAudacityProjects.IsEmpty()) {
       //Read the values from the registry, or use the defaults
+      nextRect->SetX(gPrefs->Read(wxT("/Window/X"), defWndRect.GetX()));
+      nextRect->SetY(gPrefs->Read(wxT("/Window/Y"), defWndRect.GetY()));
       nextRect->SetWidth(gPrefs->Read(wxT("/Window/Width"), defWndRect.GetWidth()));
       nextRect->SetHeight(gPrefs->Read(wxT("/Window/Height"), defWndRect.GetHeight()));
 
       gPrefs->Read(wxT("/Window/Maximized"), bMaximized);
    }
-   else
-   {
+   else {
       //Base the values on the previous Window
       *nextRect = gAudacityProjects[gAudacityProjects.GetCount()-1]->GetRect();
 
       *bMaximized = gAudacityProjects[gAudacityProjects.GetCount()-1]->IsMaximized();
+
+      //Placement depends on the increments
+      nextRect->x += inc;
+      nextRect->y += inc;
    }
-
-   nextRect->x = defWndRect.x;
-   nextRect->y = defWndRect.y;
-
-   //Placement depends on the increments
-   nextRect->x += (gAudacityPosInc * 25) + (gAudacityOffsetInc * 25);
-   nextRect->y += gAudacityPosInc * 25;
 
    //Make sure that the Window will be completely visible
 
    //Get the size of the screen
-   wxRect screenRect;
-   wxClientDisplayRect(&screenRect.x, &screenRect.y, &screenRect.width, &screenRect.height);
+   wxRect screenRect = wxGetClientDisplayRect();
 
    //First check if we need to reset the increments
 
    //Have we hit the bottom of the screen?
-   if( (nextRect->y+nextRect->height > screenRect.y+screenRect.height) )
-   {
-      //Reset Position increment
-      gAudacityPosInc = 0;
-
-      //Increment Offset increment
-      gAudacityOffsetInc++;
-
+   if (nextRect->GetBottom() > screenRect.GetBottom()) {
       //Recalculate the position on the screen
-      nextRect->x = defWndRect.x;
+      nextRect->x = defWndRect.x + gAudacityOffsetInc;
       nextRect->y = defWndRect.y;
 
-      nextRect->x += (gAudacityPosInc * 25) + (gAudacityOffsetInc * 25);
-      nextRect->y += gAudacityPosInc * 25;
+      //Increment Offset increment
+      gAudacityOffsetInc += inc;
    }
 
    //Have we hit the right side of the screen?
-   if( (nextRect->x+nextRect->width > screenRect.x+screenRect.width) )
-   {
-      //Reset both Position and Offset increments
-      gAudacityPosInc = 0;
+   if (nextRect->GetRight() > screenRect.GetRight()) {
+      //Reset Offset increments
       gAudacityOffsetInc = 0;
 
       //Recalculate the position on the screen
       nextRect->x = defWndRect.x;
       nextRect->y = defWndRect.y;
-      //No need to compute the offset and position, just use the defaults
+      //No need to compute the offset, just use the default
    }
 
    //Next check if the screen is too small for the default Audacity width and height
    //Uses both comparisons from above
-   if( (nextRect->x+nextRect->width > screenRect.x+screenRect.width) ||
-       (nextRect->y+nextRect->height > screenRect.y+screenRect.height) )
-   {
+   if ((nextRect->GetRight() > screenRect.GetRight()) ||
+      (nextRect->GetBottom() > screenRect.GetBottom())) {
       //Resize the Audacity window to fit in the screen
       nextRect->width = screenRect.width-nextRect->x;
       nextRect->height = screenRect.height-nextRect->y;
    }
-
-   //Increment Position increment
-   gAudacityPosInc++;
 }
 
 wxString CreateUniqueName()
