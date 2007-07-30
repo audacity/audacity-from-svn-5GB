@@ -32,6 +32,7 @@ and sample size to help you importing data of an unknown format.
 #include "../FileFormats.h"
 #include "../Internat.h"
 #include "../Prefs.h"
+#include "../ShuttleGui.h"
 #include "../WaveTrack.h"
 
 #include <math.h>

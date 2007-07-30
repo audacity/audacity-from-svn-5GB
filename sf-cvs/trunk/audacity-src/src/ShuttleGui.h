@@ -34,6 +34,7 @@ enum teShuttleMode
    eIsSavingToPrefs
 };
 
+class wxArrayInt;
 class wxListCtrl;
 class wxCheckBox;
 class wxChoice;
