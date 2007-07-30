@@ -960,8 +960,6 @@ NyquistInputDialog::NyquistInputDialog(wxWindow * parent, wxWindowID id,
    :wxDialog(parent, id, title)
 {
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-   wxBoxSizer *hSizer;
-   wxButton   *button;
    wxControl  *item;
 
    item = new wxStaticText(this, -1, prompt);
