@@ -1394,7 +1394,10 @@ int WaveTrack::GetClipIndex(WaveClip* clip)
 
 WaveClip* WaveTrack::GetClipByIndex(int index)
 {
-   return mClips.Item(index)->GetData();
+   if(index < mClips.GetCount())
+      return mClips.Item(index)->GetData();
+   else
+      return NULL;
 }
 
 int WaveTrack::GetNumClips() const
@@ -1668,6 +1671,9 @@ bool WaveTrack::MergeClips(int clipidx1, int clipidx2)
 {
    WaveClip* clip1 = GetClipByIndex(clipidx1);
    WaveClip* clip2 = GetClipByIndex(clipidx2);
+
+   if(clip2 == NULL) // could happen if one track of a linked pair had a split and the other didn't
+      return false;
    
    // Append data from second clip to first clip
    if (!clip1->Paste(clip1->GetEndTime(), clip2))
