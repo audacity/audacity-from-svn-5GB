@@ -2,7 +2,7 @@
 AC_DEFUN([AUDACITY_CHECKLIB_LIBNYQUIST], [
    AC_ARG_WITH(nyquist,
                [AC_HELP_STRING([--with-nyquist],
-                               [compile with Nyquist support [default=yes]])],
+                               [enable Nyquist plug-in support [default=yes]])],
                LIBNYQUIST_ARGUMENT=$withval,
                LIBNYQUIST_ARGUMENT="unspecified")
 
@@ -12,7 +12,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBNYQUIST], [
    fi
 
    dnl Nyquist is never installed on the system
-
+   dnl nyx is home-cooked by us, so system copy is unlikely
    LIBNYQUIST_SYSTEM_AVAILABLE="no"
 
    dnl see if Nyquist is available locally
@@ -39,7 +39,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBNYQUIST], [
 AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
    AC_ARG_WITH(libtwolame,
                [AC_HELP_STRING([--with-libtwolame],
-                               [compile with libtwolame (MP2 export) support [default=yes]])],
+                               [use libtwolame for MP2 export support [default=yes]])],
                LIBTWOLAME_ARGUMENT=$withval,
                LIBTWOLAME_ARGUMENT="unspecified")
 
@@ -77,7 +77,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
 AC_DEFUN([AUDACITY_CHECKLIB_LIBSOUNDTOUCH], [
    AC_ARG_WITH(soundtouch,
                [AC_HELP_STRING([--with-soundtouch],
-                               [compile with SoundTouch [default=yes]])],
+                      [use libSoundTouch for pitch and tempo changing]],
                LIBSOUNDTOUCH_ARGUMENT=$withval,
                LIBSOUNDTOUCH_ARGUMENT="unspecified")
 
@@ -131,7 +131,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBRESAMPLE], [
 
    AC_ARG_WITH(libresample,
                [AC_HELP_STRING([--with-libresample],
-                               [use libresample: [yes no]])],
+                               [use libresample for sample rate conversion: [yes no]])],
                LIBRESAMPLE_ARGUMENT=$withval,
                LIBRESAMPLE_ARGUMENT="unspecified")
 
@@ -172,7 +172,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSAMPLERATE], [
 
    AC_ARG_WITH(libsamplerate,
                [AC_HELP_STRING([--with-libsamplerate],
-                               [use libsamplerate (instead of libresample)])],
+                               [use libsamplerate instead of libresample for sample rate conversion. Do not use in conjunction with VST plug-in support!])],
                LIBSAMPLERATE_ARGUMENT=$withval,
                LIBSAMPLERATE_ARGUMENT="unspecified")
 
@@ -223,7 +223,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSAMPLERATE], [
 AC_DEFUN([AUDACITY_CHECKLIB_LIBID3TAG], [
 
    AC_ARG_WITH(id3tag,
-               [AC_HELP_STRING([--with-id3tag],
+               [AC_HELP_STRING([--with-libid3tag],
                                [use libid3tag for mp3 id3 tag support])],
                LIBID3TAG_ARGUMENT=$withval,
                LIBID3TAG_ARGUMENT="unspecified")
@@ -281,7 +281,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSNDFILE], [
 
    AC_ARG_WITH(libsndfile,
                [AC_HELP_STRING([--with-libsndfile],
-                               [which libsndfile to use: [local system]])],
+                               [which libsndfile to use (required): [local system]])],
                LIBSNDFILE_ARGUMENT=$withval,
                LIBSNDFILE_ARGUMENT="unspecified")
 
@@ -335,43 +335,30 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBMAD], [
 
    AC_ARG_WITH(libmad,
                [AC_HELP_STRING([--with-libmad],
-                               [use libmad for mp3 decoding support])],
+                               [use libmad for mp2/3 decoding support])],
                LIBMAD_ARGUMENT=$withval,
                LIBMAD_ARGUMENT="unspecified")
 
-   dnl see if libmad is installed in the system
+   dnl see if libmad is installed in the system >= 0.14.2b
+
+   PKG_CHECK_MODULES(LIBMAD, mad >= 0.14.2b,
+                     libmad_available_system="yes",
+                     libmad_available_system="no")
+
+   dnl if we don't have the version we want, do we have any at all?
 
    AC_CHECK_LIB(mad, mad_decoder_init,
                 libmad_found="yes",
                 libmad_found="no")
 
-   AC_CHECK_HEADER(mad.h,
-                   mad_h_found="yes",
-                   mad_h_found="no")
-
-   dnl make sure libmad is at least version 0.14.2b
-
-   AC_TRY_RUN([
-#include <mad.h>
-int main() {
-#if MAD_VERSION_MAJOR == 0  && MAD_VERSION_MINOR <= 13
-   return 1; /* <= 0.13, too old */
-#elsif MAD_VERSION_MAJOR == 0  &&  MAD_VERSION_MINOR == 14  &&  MAD_VERSION_PATCH < 2
-   return 1; /* 0.14.0 <= x < 0.14.2, too old */
-#else
-   return 0;
-#endif
-}],
-              libmad_newenough="yes",
-              libmad_newenough="no")
-
-   if test "x$mad_h_found" = "xyes" && test "x$libmad_newenough" = "xno" ; then
+   if test "x$libmad_available_system" = "xyes" && test "x$libmad_found" = "xno" ; then
       AC_MSG_WARN([system installation of libmad found, but it is too old.  Upgrade to at least 0.14.2b to use with Audacity])
    fi
 
-   if test "x$libmad_found" = "xyes" && test "x$mad_h_found" = "xyes" && test "x$libmad_newenough" = "xyes" ; then
+   if test "x$libmad_available_system" = "xyes" ; then
       LIBMAD_SYSTEM_AVAILABLE="yes"
-      LIBMAD_SYSTEM_LIBS="-lmad"
+      LIBMAD_SYSTEM_LIBS="$LIBMAD_LIBS"
+	  LIBMAD_SYSTEM_CXXFLAGS="$LIBMAD_CFLAGS"
       LIBMAD_SYSTEM_CPPSYMBOLS="USE_LIBMAD"
       AC_MSG_NOTICE([libmad libraries are available as system libraries])
    else
@@ -409,8 +396,8 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVORBIS], [
    fi
 
    AC_ARG_WITH(vorbis,
-               [AC_HELP_STRING([--with-vorbis],
-                               [enable ogg vorbis support])],
+               [AC_HELP_STRING([--with-libvorbis],
+                               [use libvorbis for Ogg Vorbis support])],
                LIBVORBIS_ARGUMENT=$withval,
                LIBVORBIS_ARGUMENT="unspecified")
 
@@ -471,8 +458,8 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
    fi
 
    AC_ARG_WITH(flac,
-               [AC_HELP_STRING([--with-flac],
-                               [enable FLAC support])],
+               [AC_HELP_STRING([--with-libflac],
+                               [use libFLAC for FLAC support])],
                LIBFLAC_ARGUMENT=$withval,
                LIBFLAC_ARGUMENT="unspecified")
 
@@ -532,7 +519,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBEXPAT], [
 
    AC_ARG_WITH(expat,
                [AC_HELP_STRING([--with-expat],
-                               [use expat for XML file support])],
+                               [which expat to use for XML file support: [system, local]])],
                LIBEXPAT_ARGUMENT=$withval,
                LIBEXPAT_ARGUMENT="unspecified")
 
