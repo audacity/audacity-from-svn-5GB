@@ -21,6 +21,8 @@
 *//*******************************************************************/
 
 #include <wx/defs.h>
+#include <wx/intl.h>		// needed for _("translated stings") even if we
+							// don't have libflac available
 #include "../Audacity.h"
 
 #include "Import.h"
@@ -54,7 +56,6 @@ void GetFLACImportPlugin(ImportPluginList *importPluginList,
 
 #include <wx/string.h>
 #include <wx/utils.h>
-#include <wx/intl.h>
 #include <wx/file.h>
 #include <wx/ffile.h>
 
