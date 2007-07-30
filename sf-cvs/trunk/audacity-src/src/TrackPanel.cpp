@@ -5989,12 +5989,30 @@ void TrackPanel::OnPasteSelectedText(wxCommandEvent &event)
    RefreshTrack(lt, true);
 }
 
+// Small helper class to enumerate all fonts in the system
+// We use this because the default implementation of
+// wxFontEnumerator::GetFacenames() has changed between wx2.6 and 2.8
+class TrackPanelFontEnumerator : public wxFontEnumerator
+{
+public:
+   TrackPanelFontEnumerator(wxArrayString* fontNames) :
+      mFontNames(fontNames) {}
+   
+   virtual bool OnFacename(const wxString& font)
+   {
+      mFontNames->Add(font);
+      return true;
+   }
+   
+private:
+   wxArrayString* mFontNames;
+};
+
 void TrackPanel::OnSetFont(wxCommandEvent &event)
 {
-   wxFontEnumerator fontEnumerator;
-   
+   wxArrayString facenames;
+   TrackPanelFontEnumerator fontEnumerator(&facenames);
    fontEnumerator.EnumerateFacenames(wxFONTENCODING_SYSTEM, false);
-   wxArrayString *facenames = fontEnumerator.GetFacenames();
 
    wxString facename = gPrefs->Read(wxT("/GUI/LabelFontFacename"), wxT(""));
    long fontsize = gPrefs->Read(wxT("/GUI/LabelFontSize"), 12);
@@ -6015,9 +6033,9 @@ void TrackPanel::OnSetFont(wxCommandEvent &event)
          lb = new wxListBox(&dlg, wxID_ANY,
                             wxDefaultPosition,
                             wxDefaultSize,
-                            *facenames,
+                            facenames,
                             wxLB_SINGLE);
-         lb->SetSelection(facenames->Index(facename));
+         lb->SetSelection(facenames.Index(facename));
          S.AddWindow(lb, wxALIGN_LEFT | wxEXPAND | wxALL);
 
          S.AddPrompt(_("Face size"));
