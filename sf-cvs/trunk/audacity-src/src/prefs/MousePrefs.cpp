@@ -95,9 +95,11 @@ void MousePrefs::CreateList()
    mList->InsertColumn(ButtonsColumn, _("Buttons"),         wxLIST_FORMAT_LEFT );
    mList->InsertColumn(CommentColumn, _("Comments"),        wxLIST_FORMAT_LEFT );
 
-   AddItem( _("Left-Click"),       _("Select"),    _("Set Selection Point") );
-   AddItem( _("Left-Drag"),        _("Select"),    _("Set Selection Range") );
-   AddItem( _("Shift-Left-Click"), _("Select"),    _("Extend Selection Range") );
+   AddItem( _("Left-Click"),        _("Select"),   _("Set Selection Point") );
+   AddItem( _("Left-Drag"),         _("Select"),   _("Set Selection Range") );
+   AddItem( _("Shift-Left-Click"),  _("Select"),   _("Extend Selection Range") );
+   AddItem( _("Left-Double-Click"), _("Select"),   _("Select Clip or Entire Track") );
+   AddItem( _("Ctrl-Left-Click"),   _("Select"),   _("Set Selection Point and Play") );
 
    AddItem( _("Left-Click"),       _("Zoom"),      _("Zoom in on Point") );
    AddItem( _("Left-Drag"),        _("Zoom"),      _("Zoom in on a Range"), _("same as right-drag") );
@@ -120,8 +122,9 @@ void MousePrefs::CreateList()
    AddItem( _("Right-Click"),      _("Multi"),     _("Zoom out one step"),   _("same as zoom tool") );
    AddItem( _("Right-Drag"),       _("Multi"),     _("Zoom in on a Range"),  _("same as zoom tool") );
 
-   AddItem( _("Wheel-Rotate"),     _("Any"),       _("Scroll up or down") );
-   AddItem( _("Ctrl-Wheel-Rotate"),_("Any"),       _("Zoom in or out") );
+   AddItem( _("Wheel-Rotate"),      _("Any"),      _("Scroll up or down") );
+   AddItem( _("Shift-Wheel-Rotate"),_("Any"),      _("Scroll left or right") );
+   AddItem( _("Ctrl-Wheel-Rotate"), _("Any"),      _("Zoom in or out") );
 
    mList->SetColumnWidth( BlankColumn,  0 ); // First column width is zero, to hide it.
    mList->SetColumnWidth( ToolColumn,   wxLIST_AUTOSIZE );
