@@ -1787,13 +1787,11 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event, Track *clickedTrack)
 {
    // AS: If we're not in the process of selecting (set in
    //  the SelectionHandleClick above), fuhggeddaboudit.
-   if ( mMouseCapture!=IsSelecting)
+   if (mMouseCapture!=IsSelecting)
       return;
 
    // Also fuhggeddaboudit if we're not dragging and not autoscrolling.
-   //
-   // LL:  What's the ControlDown() for?
-   if ((!event.Dragging() && !mAutoScrolling)  || event.ControlDown())
+   if ((!event.Dragging() && !mAutoScrolling) || event.CmdDown())
       return;
 
    wxRect r      = mCapturedRect;
