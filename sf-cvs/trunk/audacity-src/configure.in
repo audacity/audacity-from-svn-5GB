@@ -131,7 +131,7 @@ AC_ARG_WITH(lib-preference,
 
 AC_ARG_WITH(wx-version,
             [AC_HELP_STRING([--with-wx-version],
-                            [override default wxWidgets version [2.6,2.8]])],
+                            [select wxWidgets version (if both installed) [2.6,2.8]])],
             wx_preference="--version=$withval",
             wx_preference="")
 
@@ -141,16 +141,16 @@ LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMP
 
 AC_MSG_NOTICE([Determining what libraries are available in this tree and on the system])
 
+AUDACITY_CHECKLIB_LIBSNDFILE
+AUDACITY_CHECKLIB_LIBEXPAT
+AUDACITY_CHECKLIB_LIBSAMPLERATE
+AUDACITY_CHECKLIB_LIBRESAMPLE
 AUDACITY_CHECKLIB_LIBVORBIS
 AUDACITY_CHECKLIB_LIBMAD
 AUDACITY_CHECKLIB_LIBFLAC
-AUDACITY_CHECKLIB_LIBSNDFILE
 AUDACITY_CHECKLIB_LIBID3TAG
-AUDACITY_CHECKLIB_LIBSAMPLERATE
-AUDACITY_CHECKLIB_LIBRESAMPLE
 AUDACITY_CHECKLIB_LIBSOUNDTOUCH
 AUDACITY_CHECKLIB_LIBNYQUIST
-AUDACITY_CHECKLIB_LIBEXPAT
 AUDACITY_CHECKLIB_LIBTWOLAME
 
 dnl Decide what libraries to build with, and whether to use system or local libraries

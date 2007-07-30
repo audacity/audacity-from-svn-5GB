@@ -1,9 +1,9 @@
 
 AC_DEFUN([AUDACITY_CHECKLIB_LIBNYQUIST], [
-   AC_ARG_WITH(nyquist,
-               [AC_HELP_STRING([--with-nyquist],
+   AC_ARG_ENABLE(nyquist,
+               [AC_HELP_STRING([--enable-nyquist],
                                [enable Nyquist plug-in support [default=yes]])],
-               LIBNYQUIST_ARGUMENT=$withval,
+               LIBNYQUIST_ARGUMENT=$enableval,
                LIBNYQUIST_ARGUMENT="unspecified")
 
    if false ; then
@@ -77,7 +77,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
 AC_DEFUN([AUDACITY_CHECKLIB_LIBSOUNDTOUCH], [
    AC_ARG_WITH(soundtouch,
                [AC_HELP_STRING([--with-soundtouch],
-                      [use libSoundTouch for pitch and tempo changing]],
+                      [use libSoundTouch for pitch and tempo changing])],
                LIBSOUNDTOUCH_ARGUMENT=$withval,
                LIBSOUNDTOUCH_ARGUMENT="unspecified")
 
@@ -131,7 +131,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBRESAMPLE], [
 
    AC_ARG_WITH(libresample,
                [AC_HELP_STRING([--with-libresample],
-                               [use libresample for sample rate conversion: [yes no]])],
+                               [use libresample for sample rate conversion: [yes,no]])],
                LIBRESAMPLE_ARGUMENT=$withval,
                LIBRESAMPLE_ARGUMENT="unspecified")
 
@@ -281,7 +281,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSNDFILE], [
 
    AC_ARG_WITH(libsndfile,
                [AC_HELP_STRING([--with-libsndfile],
-                               [which libsndfile to use (required): [local system]])],
+                               [which libsndfile to use (required): [system,local]])],
                LIBSNDFILE_ARGUMENT=$withval,
                LIBSNDFILE_ARGUMENT="unspecified")
 
@@ -519,7 +519,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBEXPAT], [
 
    AC_ARG_WITH(expat,
                [AC_HELP_STRING([--with-expat],
-                               [which expat to use for XML file support: [system, local]])],
+                               [which expat to use for XML file support: [system,local]])],
                LIBEXPAT_ARGUMENT=$withval,
                LIBEXPAT_ARGUMENT="unspecified")
 
