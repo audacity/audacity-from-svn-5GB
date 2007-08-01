@@ -988,7 +988,7 @@ void EqualizationDialog::LoadDefaultCurves()
          mCurves[ curve ].points.Add( EQPoint( freq, db ) );
       }
    }
-   mCurves.Add( _("Custom") );
+   mCurves.Add( _("custom") );
 
    SaveCurves();
 
