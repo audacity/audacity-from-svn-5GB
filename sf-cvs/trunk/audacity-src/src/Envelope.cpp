@@ -70,6 +70,7 @@ Envelope::Envelope()
 
 Envelope::~Envelope()
 {
+   mDragPoint = -1;
    WX_CLEAR_ARRAY(mEnv);
 }
 
