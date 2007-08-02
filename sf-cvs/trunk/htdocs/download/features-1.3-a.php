@@ -15,8 +15,62 @@
 <?php include "betawarning.inc.php" ?>
 
 <h3><?=_("New features in Audacity 1.3.3")?></h3>
-<p>See the <a href="http://audacity.sourceforge.net/">Audacity home page</a> news item for new features in 1.3.3 beyond 1.3.2.</p>
-
+<dl>
+  <dt></dt>
+  <dd>
+    <!-- indent cheat -->
+    <dl>
+      <dt> Opening/saving formats </dt>
+      <dd>
+        Import
+        <ul>
+          <li>Import of audio from QuickTime (mov, aac, m4a) files now supported on OSX.</li>
+          <li>Broadcast Wave Format (BWF) wave files can now be imported.</li>
+        </ul>
+      </dd>
+      <dd>
+        Export
+        <ul>
+          <li>Metadata can be added to OGG files.</li>
+          <li>Improved Export option selection.</li>
+          <li>Additional export options added to MP3 and FLAC file formats.</li>
+          <li>Command line exporter now supported on Windows and OSX.</li>
+        </ul>
+      </dd>
+      <dt> Effects </dt>
+      <dd>
+        EQ effect
+        <ul>
+          <li>Responsiveness improved.</li>
+          <li>Several enhancements added.</li>
+          <li>Batch support added.</li>
+        </ul>
+      </dd>
+      <dd> New Auto Duck effect </dd>
+      <dd> Added previewing to AudioUnit effects. </dd>
+      <dd> Much improved Noise Removal effect </dd>
+      <dd> Effects previewing can now be canceled. </dd>
+      <dd> New DTMF Tone Generator effect </dd>
+      <dd> Additional options available in Noise effect. </dd>
+      <dd> Improved the Tone Generation effects. </dd>
+      <dt> Other features </dt>
+      <dd> New built-in screen capture utility </dd>
+      <dd> Major speed improvement in Spectrogram rendering </dd>
+      <dd> Increased support for drag and drop on OSX. </dd>
+      <dd> Support added for building against wxWidgets 2.8.x. </dd>
+      <dd> Can now open multiple Audacity Projects at once from Explorer on Windows. </dd>
+      <dd> Improved main window sliders. </dd>
+      <dd> New support for snapping while selecting and sliding </dd>
+      <dd> Improved track focus handling and visual feedback. </dd>
+      <dd> Speed improvements and handling of resizing/zooming in tracks </dd>
+      <dd> Spectrum view can now be zoomed. </dd>
+      <dd> New internal file cache to improve handling of project files over networks </dd>
+      <dt> Also </dt>
+      <dd> Many improvements to language specific translations </dd>
+      <dd> Numerous stability improvements </dd>
+    </dl>
+  </dd>
+</dl>
 
 <h3><?=_("New features in Audacity 1.3.1 and 1.3.2")?></h3>
 

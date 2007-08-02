@@ -39,6 +39,39 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "July 26, 2007",
+        "SourceForge_CCA_2007",
+  _("SourceForge Community Choice Awards 2007"),
+  _("
+<p>
+Audacity won the 
+<a href=\"http://sourceforge.net/community/index.php/landing-pages/cca07/\">
+	SourceForge Community Choice Awards 2007 -- Multimedia Category
+</a>!
+Congratulations to the other finalists. 
+<b>Big</b> thanks to SourceForge, to everyone who voted, and to all 
+who contribute to making Audacity great! 
+</p>
+
+<p>
+The latest release of Audacity is 
+<a href=\"/download\">1.3.3 (beta)</a>, which
+contains numerous new features and capabilities beyond the 1.3.2 (beta) release.
+Because it is a work 
+in progress and does not yet come with complete documentation or translations
+into foreign languages, it is recommended for more advanced users.
+See <a href=\"/download/features-1.3-a\">New Features in 1.3</a>
+for more information about the 1.3.x beta series.
+</p>
+
+<p>
+For all users, <a href=\"/download\">Audacity 1.2.6</a>
+is a stable release, complete and fully documented.  You can have
+both Audacity 1.2.6 and 1.3.3 installed simultaneously.
+</p>
+"));
+
+add_news_item(
   "May 18, 2007",
         "1.3.3-release",
   _("Audacity 1.3.3 Released"),
