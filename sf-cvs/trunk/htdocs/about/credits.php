@@ -26,6 +26,7 @@
   <li>Gale Andrews, <?=_("documentation and support")?></li>
   <li>Richard Ash, <?=_("documentation and support")?></li>
   <li>Christian Brochec, <?=_("documentation and support")?>, <?=_("French")?></li>
+  <li>Arturo "Buanzo" Busleiman, <?=_("system administration")?></li>
   <li>James Crook, <?=_("developer")?></li>
   <li>Vaughan Johnson, <?=_("developer")?></li>
   <li>Leland Lucius, <?=_("developer")?></li>
