@@ -76,7 +76,7 @@
   <li>When you have finished downloading, use Stuffit Expander to extract the files.  (This may happen automatically.)</li>
   <li>Save the file called "LameLib" or libmp3lame.dylib anywhere on your computer.</li>
   <li>The first time you use the "Export as MP3" command, Audacity will ask you where LameLib or libmp3lame.dylib is saved.</li>
-</ol>'), "http://www-users.york.ac.uk/~raa110/audacity/lame.html", "lame-3.96.1", "http://spaghetticode.org/lame/")
+</ol>'), "http://lame.buanzo.com.ar/", "lame-3.96.1", "http://spaghetticode.org/lame/")
         ),
         // TODO: Connect/replace this with documentation on plug-ins page?
         "vst-enabler" => array(
