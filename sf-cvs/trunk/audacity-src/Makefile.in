@@ -67,10 +67,11 @@ install-extra-data:
 	$(INSTALL) -m 644 src/audacity.xml $(DESTDIR)$(DATADIR)/mime/packages
 
 uninstall: $(EXTRAUNINSTALLTARGETS)
-	rm -rf $(BINDIR)/$(AUDACITY_NAME)
-	rm -rf $(DATADIR)/doc/$(AUDACITY_NAME)
-	rm -rf $(DATADIR)/$(AUDACITY_NAME)
-	rm -rf $(MANDIR)/man1/$(AUDACITY_NAME).1.gz
+	rm -rf $(DESTDIR)$(BINDIR)/$(AUDACITY_NAME)
+	rm -rf $(DESTDIR)$(DATADIR)/doc/$(AUDACITY_NAME)
+	rm -rf $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)
+	rm -rf $(DESTDIR)$(MANDIR)/man1/$(AUDACITY_NAME).1.gz
+	rm -rf $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/audacity.xpm
 
 	$(MAKE) -C locale uninstall
 
