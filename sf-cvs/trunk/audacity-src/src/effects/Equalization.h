@@ -124,6 +124,7 @@ private:
    double mdBMin;
    bool mDrawMode;
    int mInterp;
+   bool mPrompting;
 
 public:
    enum curveType {
