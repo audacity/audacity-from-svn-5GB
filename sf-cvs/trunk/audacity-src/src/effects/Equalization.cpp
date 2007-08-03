@@ -322,6 +322,8 @@ EffectEqualization::EffectEqualization()
    }
    gPrefs->Read(wxT("/CsPresets/EQDrawMode"), &mDrawMode, true);
    gPrefs->Read(wxT("/CsPresets/EQInterp"), &mInterp, 0);
+
+   mPrompting = false;
 }
 
 
@@ -359,7 +361,10 @@ bool EffectEqualization::PromptUser()
    // not required here - called automatically
    // dlog.TransferDataToWindow();
    dlog.CentreOnParent();
+
+   mPrompting = true;
    dlog.ShowModal();
+   mPrompting = false;
 
    if (!dlog.GetReturnCode())
       return false;
@@ -420,7 +425,9 @@ bool EffectEqualization::TransferParameters( Shuttle & shuttle )
 
 bool EffectEqualization::Process()
 {
-   DontPromptUser();
+   if (!mPrompting) {
+      DontPromptUser();
+   }
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
