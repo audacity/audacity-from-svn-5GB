@@ -11,16 +11,24 @@ PROGNAME=audacity
 LINGUAS=af ar bn bg ca cs cy da de el es eu fi fr ga gl hu it ja ko lt mk nb nl oc pl pt ro ru sk sl sv tr uk zh zh_TW
 
 prefix=@prefix@
-# this defaults to /usr/share
 DATADIR=@datadir@
-top_srcdir=@top_srcdir@
+# This is an intermediate directory that all files destined for installation
+# get put into on the way (make DESTDIR=/foo install).
+DESTDIR=@destdir@
+# this is where locale-dependant stuff (i.e. .mo files) goes
+LOCALEDIR=@localedir@
 INSTALL=@INSTALL@
 AUDACITY_NAME=@AUDACITY_NAME@
-ifdef DESTDIR
-   INSTALL_PATH=$(top_srcdir)/$(DESTDIR)
-else
-   INSTALL_PATH=
-endif
+
+# because we are in a subdirectory setting DESTDIR to a relative path doesn't
+# work - it gets interpreted relative to the locale directory in the source
+# tree. This is because relative DESTDIRs aren't supported. It could be worked
+# around by something along the lines of
+#  if (DESTDIR is relative)
+#  	DESTDIR=$top_srcdir/DESTDIR
+#  fi
+#  but I can't see how to implement this. So for the moment stick to absolute
+#  paths in DESTDIR
 
 all: allmo
 
@@ -86,13 +94,13 @@ FORCE:
 
 install: allmo
 	linguas='$(LINGUAS)'; for lang in $$linguas ; do \
-	   $(INSTALL) -d $(INSTALL_PATH)$(DATADIR)/locale/$$lang/LC_MESSAGES ; \
-	   $(INSTALL) -m 644 $$lang/audacity.mo $(INSTALL_PATH)$(DATADIR)/locale/$$lang/LC_MESSAGES/$(AUDACITY_NAME).mo ; \
+	   $(INSTALL) -d $(DESTDIR)$(LOCALEDIR)/$$lang/LC_MESSAGES ; \
+	   $(INSTALL) -m 644 $$lang/audacity.mo $(DESTDIR)$(LOCALEDIR)/$$lang/LC_MESSAGES/$(AUDACITY_NAME).mo ; \
 	done
 
 uninstall:
 	linguas='$(LINGUAS)'; for lang in $$linguas ; do \
-	   rm -f $(DATADIR)/locale/$$lang/LC_MESSAGES/$(AUDACITY_NAME).mo ; \
+	   rm -f $(DESTDIR)$(LOCALEDIR)/$$lang/LC_MESSAGES/$(AUDACITY_NAME).mo ; \
 	done
 
 clean:
