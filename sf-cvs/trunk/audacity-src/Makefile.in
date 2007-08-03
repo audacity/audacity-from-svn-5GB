@@ -52,6 +52,10 @@ install: audacity $(EXTRAINSTALLTARGETS)
 	# install locales
 	$(MAKE) -C locale install
 
+	# install an icon for audacity
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/
+	$(INSTALL) -m 644 images/AudacityLogo48x48.xpm $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/audacity.xpm
+
 .PHONY: install-extra-data
 install-extra-data:
 	# install desktop file
