@@ -1,92 +1,22 @@
 todo.txt
 
-No one uses this file.  Should we delete it?  [I am
-just testing audacity-cvs@sourceforge.net]
+See the release checklist on the wiki:
+  http://www.audacityteam.org/wiki/index.php?title=Release_Checklist
 
-This file contains a list of current features being
-worked on, possible ideas, and ideas for the future.
-Last updated June 27, 2003.  Please check the
-Audacity-devel list to see who's working on what,
-and for updates.  This file is likely to be updated 
-only about every 2-3 months.
-
-------------------------------------------------------
- Definitely in 1.2.0 - high priority
-------------------------------------------------------
-
-* Some improvements to Save / Export - not a full
-  refactoring, but some of the ideas below.
+Residual things still in the file from 2003 but not yet done:
 
 * Allow the user to create keyboard shortcuts for Effects
 
 * Support custom cursors on Mac.
 
-* New waveform-drawing code that I half-finished  Speeds up
-  drawing in Mac OS X by 2-3x minimum, also should help on
-  older PCs.
-
 * A master gain control, if at all possible
 
-------------------------------------------------------
- Ideas - need further discussion
-------------------------------------------------------
-
-* Resize window to a larger size, including to full screen, also does
-  a fit-to-window if we were fitted to window before the resize.
-  I think that tracks should expand proportionally.
-
-  I think that when you open a project, auto-track-resizing should
-  be on by default.  It only goes off if you specifically drag the
-  _bottommost_ track and make it bigger or smaller.  (Then, how
-  should you turn it back on again?)
-
-* Improved Save / Export
-
-  I think we all agree on this:
-
-  - Unified Export commands that let you save in any
-    format (except AUP) using a choice control in the
-    file selection dialog.
-
-  - The Save As dialog should let you save in any format,
-    AUP or one of the PCM/compressed audio formats.
-
-  - If you choose a format that does not support all of the
-    features of the project (e.g. multiple tracks, envelopes,
-    etc.) then it warns you that saving in this format will
-    result in a mixdown.
-
-  Ideas (not yet agreed upon):
-
-  - When saving/exporting, don't display formats that can't
-    support the project?  (I don't like this idea...
-    I think that all formats should be available, and it
-    warns you if it needs to do some sort of reduction
-    in order to save in that format.  It should tell the
-    user exactly what will be lost.)
-
   - Exporting should take into account mute and solo?
-
-  - Does export depend on what tracks are selected?  I didn't
-    think it did...Juhana, could you test this and clarify the
-    problem?
 
 * Zooming using mousewheel - obviously this shouldn't
   be the only way to do it, since not everyone has a
   mousewheel.  When should it be used, then?
 
-* Allow the user to create keyboard shortcuts for Effects.
-* Normalize Effect that removes DC bias and sets maximum
-  amplitude to some standard value like -6 dB
-
-* Resize window to a larger size, including to full screen, also does
-  a fit-to-window if we were fitted-to-window before the resize -JKC.
-
-ALTERNATIVELY:
-
-  Remember window size, position and maximized/normal state when 
-  Audacity closes and apply when we open Audacity.  This deals 
-  with a common case where the feature is useful -JKC.
 
 * Automatic Vertical resizing of tracks.
 
@@ -99,14 +29,6 @@ ALTERNATIVELY:
 
 * Add an Audio menu with items like Play, Stop, Record, Pause,
   Loop, etc.?
-
-* It is possible to extend the selection out of the track display
-(when the view is scrolled to end), but then the end edge of the
-selection cannot be grabbed and dragged. Solution: selection can
-be made only up to the end of the track.
-
-  (I'm not sure this is a good idea... DM)
-
 * When a selection is readjusted by grab&drag, the release of the
 button at outside of the track panel could mean "undo".
 Similar for all other operations.
@@ -115,14 +37,6 @@ Similar for all other operations.
 wave, but moving could start 100 or so pixels before the display
 edge so that the coming wave can be seen
 
-------------------------------------------------------
- OK for 1.2.0 but not necessary
-------------------------------------------------------
-
-(If you want to do these, go ahead, but if nobody volunteers
-and I don't have time, I think it's okay if they slip...
-Note that some of them might make it into 1.2.1 even as we
-continue with a new unstable branch...)
 
 * "Smart Record"
 
@@ -151,28 +65,6 @@ use, IMHO.   JS]
 * When drag selecting the tracks out of track window, the window should
 scroll and reveal more tracks.
 
-------------------------------------------------------
- Should wait for next unstable branch
-------------------------------------------------------
-
-* One-click preview for 'cut selection'.  Plays (configurable)
-  3 seconds around the selection, _excluding_ the selection itself.
-
-  Compared to most other ideas, this is pretty complicated and
-  would require either some hacks, or some major changes to the
-  AudioIO code.  I'd rather avoid it.  If someone who understands
-  all of the details of AudioIO wants to do this, I won't object,
-  but I'll be wary of a patch.  IMHO, this will be more difficult
-  than adding looping if we want to implement it the cleanest and
-  most general way.  DM
-
-  The suggestion of a general mechanism for 'preview in context'
-  with this as a special case makes a lot of sense, so I'm now happy 
-  for this to be post 1.2.0.  JKC.
-  N.B. It would make sense to combine this with a fade-in, fade-out
-  for preview which has been requested for playing short samples,
-  which can click at start/end otherwise.
-  Question: Is this what pre-roll and post-roll mean?
 
 * Maybe post 1.2 we also need multiple projects in the same window
 feature: either by (i) subwindows inside the main window, a common
@@ -312,19 +204,15 @@ UI::
   the play marker.
    
 Import/Export::
-- Support ID3 tags in Ogg files
 - Import/Export markers in WAV files (like Goldwave does - 
   see email from Shane M.  - Please add date so can check archives.)
 
 Effects::
-- Show spectrum in FFT filter
 - Add real-time effects directly to tracks (see Ezequiel 5/10/2002)
 - Freeverb 3.0 (and better interface)
 - Smart Mix (like Quick Mix but guarantees no clipping)
 - Cross-fade (smooth between two tracks)
 - Native port of Freeverb (ideally optimized)
-- Auto find track boundaries
-- Pop/click removal
 - Save VST plug-in parameters to a file, or at least
   remember the last settings
 
@@ -334,16 +222,12 @@ Future:
 
 - Speed issues when you have a project of 5 or more tracks
 - Edit markers
-- "Fit in window" also works vertically
 - discontiguous selection
 - visualization window: VU meters, equalizer, continuous waveform, oscilloscope
 - Mouse scroller should vertically scroll project (Um, isn't it assigned
   to zoom-in/-out now?)
 - User-adjustable fonts so I don't have to recompile just to get the
   ruler looking decent and the track label fitting.
-
------------------------------------------
-
 
 arch-tag: 391c81dc-d7dc-48ea-9aec-98f4c9728be7
 
