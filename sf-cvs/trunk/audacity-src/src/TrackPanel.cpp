@@ -3969,6 +3969,7 @@ bool TrackPanel::HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxM
             WaveTrack* linked = (WaveTrack*)mTracks->GetLink(track);
             if (linked)
                linked->MergeClips(mCapturedTrackLocation.clipidx1, mCapturedTrackLocation.clipidx2);
+            MakeParentPushState(_("Merged Clips"),_("Merge"), true );
             handled = true;
          }
          Refresh(false);
