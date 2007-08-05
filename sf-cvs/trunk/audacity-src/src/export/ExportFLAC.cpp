@@ -32,6 +32,7 @@ and libvorbis examples, Monty <monty@xiph.org>
 #include <vorbis/vorbisenc.h>
 #include "FLAC++/encoder.h"
 
+#include "../float_cast.h"
 #include "../Project.h"
 #include "../Mix.h"
 #include "../Prefs.h"
@@ -179,6 +180,12 @@ public:
                double t0,
                double t1,
                MixerSpec *mixerSpec = NULL);
+
+private:
+
+   bool GetMetadata(AudacityProject *project);
+
+   FLAC__StreamMetadata *mMetadata;
 };
 
 //----------------------------------------------------------------------------
@@ -218,52 +225,55 @@ bool ExportFLAC::Export(AudacityProject *project,
    wxString bitDepthPref =
       gPrefs->Read(wxT("/FileFormats/FLACBitDepth"), wxT("16"));
 
-   FLAC::Encoder::File *encoder= new FLAC::Encoder::File();
-   encoder->set_filename(OSFILENAME(fName));
-   encoder->set_channels(numChannels);
-   encoder->set_sample_rate(int(rate + 0.5));
+   FLAC::Encoder::File encoder;
 
-   // Retrieve tags
-   Tags *tags = project->GetTags();
-   if (tags->IsEmpty() && project->GetShowId3Dialog()) {
-      if (!tags->ShowEditDialog(project,
-                                _("Edit the metadata for the FLAC file"),
-                                true)) {
-         return false;  // user selected "cancel"
+   encoder.set_filename(OSFILENAME(fName));
+   encoder.set_channels(numChannels);
+   encoder.set_sample_rate(lrint(rate));
+
+   // See note in GetMetadata() about a bug in libflac++ 1.1.2
+   if (!GetMetadata(project)) {
+      return false;
       }
+
+   if (mMetadata) {
+      encoder.set_metadata(&mMetadata, 1);
    }
-   tags->ExportFLACTags(encoder);
    
    sampleFormat format;
    if (bitDepthPref == wxT("24")) {
    	format = int24Sample;
-   	encoder->set_bits_per_sample(24);
+   	encoder.set_bits_per_sample(24);
    } else { //convert float to 16 bits*/
     	format = int16Sample;
-   	encoder->set_bits_per_sample(16);
+   	encoder.set_bits_per_sample(16);
    }
 
    // Duplicate the flac command line compression levels
    if (levelPref < 0 || levelPref > 8) {
       levelPref = 5;
    }
-   encoder->set_do_exhaustive_model_search(flacLevels[levelPref].do_exhaustive_model_search);
-   encoder->set_do_escape_coding(flacLevels[levelPref].do_escape_coding);
+   encoder.set_do_exhaustive_model_search(flacLevels[levelPref].do_exhaustive_model_search);
+   encoder.set_do_escape_coding(flacLevels[levelPref].do_escape_coding);
    if (numChannels != 2) {
-      encoder->set_do_mid_side_stereo(false);
-      encoder->set_loose_mid_side_stereo(false);
+      encoder.set_do_mid_side_stereo(false);
+      encoder.set_loose_mid_side_stereo(false);
    }
    else {
-      encoder->set_do_mid_side_stereo(flacLevels[levelPref].do_mid_side_stereo);
-      encoder->set_loose_mid_side_stereo(flacLevels[levelPref].loose_mid_side_stereo);
+      encoder.set_do_mid_side_stereo(flacLevels[levelPref].do_mid_side_stereo);
+      encoder.set_loose_mid_side_stereo(flacLevels[levelPref].loose_mid_side_stereo);
    }
-   encoder->set_qlp_coeff_precision(flacLevels[levelPref].qlp_coeff_precision);
-   encoder->set_min_residual_partition_order(flacLevels[levelPref].min_residual_partition_order);
-   encoder->set_max_residual_partition_order(flacLevels[levelPref].max_residual_partition_order);
-   encoder->set_rice_parameter_search_dist(flacLevels[levelPref].rice_parameter_search_dist);
-   encoder->set_max_lpc_order(flacLevels[levelPref].max_lpc_order);
+   encoder.set_qlp_coeff_precision(flacLevels[levelPref].qlp_coeff_precision);
+   encoder.set_min_residual_partition_order(flacLevels[levelPref].min_residual_partition_order);
+   encoder.set_max_residual_partition_order(flacLevels[levelPref].max_residual_partition_order);
+   encoder.set_rice_parameter_search_dist(flacLevels[levelPref].rice_parameter_search_dist);
+   encoder.set_max_lpc_order(flacLevels[levelPref].max_lpc_order);
 
-   encoder->init();
+   encoder.init();
+
+   if (mMetadata) {
+      ::FLAC__metadata_object_delete(mMetadata);
+   }
 
    int numWaveTracks;
    WaveTrack **waveTracks;
@@ -304,13 +314,13 @@ bool ExportFLAC::Export(AudacityProject *project,
                }
             }
          }
-         encoder->process(tmpsmplbuf, samplesThisRun);
+         encoder.process(tmpsmplbuf, samplesThisRun);
       }
       int progressvalue = int(1000 * ((mixer->MixGetCurrentTime()-t0) /
                                       (t1-t0)));
       cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
    }
-   encoder->finish();
+   encoder.finish();
 
    GetActiveProject()->ProgressHide();
 
@@ -318,7 +328,6 @@ bool ExportFLAC::Export(AudacityProject *project,
    	free(tmpsmplbuf[i]);
    }
    delete mixer;
-   delete encoder;
    
    delete[] tmpsmplbuf;
    
@@ -330,6 +339,37 @@ bool ExportFLAC::DisplayOptions(AudacityProject *project)
    ExportFLACOptions od(project);
 
    od.ShowModal();
+
+   return true;
+}
+
+// LL:  There's a bug in libflac++ 1.1.2 that prevents us from using 
+//      FLAC::Metadata::VorbisComment directly.  The set_metadata()
+//      function allocates an array on the stack, but the base library
+//      expects that array to be valid until the stream is initialized.
+//      
+//      This has been fixed in 1.1.4.
+bool ExportFLAC::GetMetadata(AudacityProject *project)
+{
+   // Retrieve tags
+   Tags *tags = project->GetTags();
+   if (!tags->ShowEditDialog(project,
+                             _("Edit the metadata for the FLAC file"))) {
+      return false;  // user selected "cancel"
+   }
+
+   mMetadata = ::FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
+
+   FLAC::Metadata::VorbisComment::Entry entry;
+
+   wxString n, v;
+   for (bool cont = tags->GetFirst(n, v); cont; cont = tags->GetNext(n, v)) {
+      FLAC::Metadata::VorbisComment::Entry entry(n.mb_str(wxConvUTF8),
+                                                 v.mb_str(wxConvUTF8));
+      ::FLAC__metadata_object_vorbiscomment_append_comment(mMetadata,
+                                                           entry.get_entry(),
+                                                           true);
+   }
 
    return true;
 }
