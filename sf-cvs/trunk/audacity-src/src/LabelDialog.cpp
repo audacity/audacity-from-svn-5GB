@@ -269,6 +269,19 @@ bool LabelDialog::TransferDataToWindow()
    return true;
 }
 
+bool LabelDialog::Show(bool show)
+{
+   bool ret = wxDialog::Show(show);
+
+   // Set initial row
+   // (This will not work until the grid is actually displayed)
+   if (mInitialRow != -1) {
+      mGrid->SetGridCursor(mInitialRow, Col_Label);
+   }
+
+   return ret;
+}
+
 bool LabelDialog::TransferDataFromWindow()
 {
    int cnt = mData.GetCount();
@@ -365,6 +378,8 @@ void LabelDialog::FindAllLabels()
    TrackListIterator iter(mTracks);
    Track *t;
 
+   mInitialRow = -1;
+
    // Add labels from all label tracks
    for (t = iter.First(); t; t = iter.Next()) {
       if (t->GetKind() == Track::Label) {
@@ -398,6 +413,10 @@ void LabelDialog::AddLabels(LabelTrack *t)
       rd->title = ls->title;
 
       mData.Add(rd);
+
+      if (i == t->getSelectedIndex()) {
+         mInitialRow = mData.GetCount() - 1;
+      }
    }
 }
 
@@ -715,6 +734,10 @@ void LabelDialog::OnChangeStime(wxGridEvent &event, int row, RowData *rd)
 {
    // Remember the value...no need to repopulate
    mGrid->GetCellValue(row, Col_Stime).ToDouble(&rd->stime);
+   if (rd->etime < rd->stime) {
+      rd->etime = rd->stime;
+      mGrid->SetCellValue(row, Col_Etime, wxString::Format(wxT("%g"), rd->etime));
+   }
 
    return;
 }
@@ -723,12 +746,22 @@ void LabelDialog::OnChangeEtime(wxGridEvent &event, int row, RowData *rd)
 {
    // Remember the value...no need to repopulate
    mGrid->GetCellValue(row, Col_Etime).ToDouble(&rd->etime);
+   if (rd->etime < rd->stime) {
+      rd->stime = rd->etime;
+      mGrid->SetCellValue(row, Col_Stime, wxString::Format(wxT("%g"), rd->stime));
+   }
 
    return;
 }
 
 void LabelDialog::OnOK(wxCommandEvent &event)
 {
+   if (mGrid->IsCellEditControlShown()) {
+      mGrid->SaveEditControlValue();
+      mGrid->HideCellEditControl();
+      return;
+   }
+
    // Standard handling
    if (Validate() && TransferDataFromWindow()) {
       EndModal(wxID_OK);
@@ -739,6 +772,14 @@ void LabelDialog::OnOK(wxCommandEvent &event)
 
 void LabelDialog::OnCancel(wxCommandEvent &event)
 {
+   if (mGrid->IsCellEditControlShown()) {
+      mGrid->GetCellEditor(mGrid->GetGridCursorRow(),
+                           mGrid->GetGridCursorCol())
+                           ->Reset();
+      mGrid->HideCellEditControl();
+      return;
+   }
+
    // Standard handling
    EndModal(wxID_CANCEL);
 

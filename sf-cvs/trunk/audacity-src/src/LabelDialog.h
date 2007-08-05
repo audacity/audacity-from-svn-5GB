@@ -40,6 +40,8 @@ class LabelDialog:public wxDialog
                double rate);
    ~LabelDialog();
 
+    virtual bool Show(bool show = true);
+
  private:
 
    bool TransferDataToWindow();
@@ -77,6 +79,8 @@ class LabelDialog:public wxDialog
    wxArrayString mTrackNames;
    wxString mFormat;
    double mRate;
+
+   int mInitialRow;
 
    DECLARE_EVENT_TABLE();
 };
