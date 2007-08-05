@@ -909,14 +909,14 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mWaveTrackMenu->Append(OnWaveformAndSpectrumID, _("Waveform and Spectrum"));
 
    mWaveTrackMenu->AppendSeparator();
-   mWaveTrackMenu->Append(OnChannelMonoID, _("Mono"));
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      mWaveTrackMenu->Append(OnSplitStereoID, _("Split Stereo to Mono"));
+   #else // (AUDACITY_BRANDING != BRAND_THINKLABS)
+      mWaveTrackMenu->Append(OnChannelMonoID, _("Mono"));
       mWaveTrackMenu->Append(OnChannelLeftID, _("Left Channel"));
       mWaveTrackMenu->Append(OnChannelRightID, _("Right Channel"));
       mWaveTrackMenu->Append(OnMergeStereoID, _("Make Stereo Track"));
-   #endif
-   mWaveTrackMenu->Append(OnSplitStereoID, _("Split Stereo Track"));
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+      mWaveTrackMenu->Append(OnSplitStereoID, _("Split Stereo Track"));
       mWaveTrackMenu->AppendSeparator();
       mWaveTrackMenu->Append(0, _("Set Sample Format"), mFormatMenu);
       mWaveTrackMenu->AppendSeparator();
@@ -3058,12 +3058,10 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
           && next->GetKind() == Track::Wave)
          canMakeStereo = true;
 
+      theMenu->Enable(OnSplitStereoID, t->GetLinked());
       #if (AUDACITY_BRANDING != BRAND_THINKLABS)
          theMenu->Enable(OnMergeStereoID, canMakeStereo);
-      #endif
-      theMenu->Enable(OnSplitStereoID, t->GetLinked());
-      theMenu->Enable(OnChannelMonoID, !t->GetLinked());
-      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+         theMenu->Enable(OnChannelMonoID, !t->GetLinked());
          theMenu->Enable(OnChannelLeftID, !t->GetLinked());
          theMenu->Enable(OnChannelRightID, !t->GetLinked());
       #endif
@@ -4399,11 +4397,26 @@ void TrackPanel::OnChannelChange(wxCommandEvent & event)
 void TrackPanel::OnSplitStereo(wxCommandEvent &event)
 {
    wxASSERT(mPopupMenuTarget);
-   mPopupMenuTarget->SetLinked(false);
-   MakeParentPushState(wxString::Format(_("Split stereo track '%s'"),
-                                        mPopupMenuTarget->GetName().
-                                        c_str()),
-                       _("Split"));
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      // Command for Thinklabs is "Split Stereo to Mono", so split, then make each mono.
+      Track* linkedTrack = mTracks->GetLink(mPopupMenuTarget);
+      mPopupMenuTarget->SetLinked(false);
+      mPopupMenuTarget->SetChannel(Track::MonoChannel);
+      if (linkedTrack != NULL)
+         linkedTrack->SetChannel(Track::MonoChannel);
+      MakeParentPushState(wxString::Format(_("Split stereo track '%s' to mono tracks"),
+                                          mPopupMenuTarget->GetName().
+                                          c_str()),
+                        _("Split"));
+      mPopupMenuTarget = NULL; // as in TrackPanel::OnChannelChange
+
+   #else // (AUDACITY_BRANDING != BRAND_THINKLABS)
+      mPopupMenuTarget->SetLinked(false);
+      MakeParentPushState(wxString::Format(_("Split stereo track '%s'"),
+                                          mPopupMenuTarget->GetName().
+                                          c_str()),
+                        _("Split"));
+   #endif
 
    Refresh(false);
 }
