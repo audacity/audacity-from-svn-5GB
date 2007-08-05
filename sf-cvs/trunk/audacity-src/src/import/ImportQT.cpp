@@ -13,6 +13,7 @@
 **********************************************************************/
 
 #include "../Audacity.h"
+#include "../Tags.h"
 #include "ImportQT.h"
 #include "ImportPlugin.h"
 #include "wx/intl.h"
@@ -120,8 +121,10 @@ public:
                             void *userData);
 
    bool Import(TrackFactory *trackFactory, Track ***outTracks,
-               int *outNumTracks);
+               int *outNumTracks, Tags *tags);
 private:
+   void AddMetadata(Tags *tags);
+
    Movie mMovie;
    Media mMedia;
    progress_callback_t mProgressCallback;
@@ -219,7 +222,7 @@ void QTImportFileHandle::SetProgressCallback(progress_callback_t function,
 }
 
 bool QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
-                                  int *outNumTracks)
+                                  int *outNumTracks, Tags *tags)
 {
    OSErr err = noErr;
 
@@ -283,8 +286,7 @@ bool QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    // Create the Audacity WaveTracks to house the new data
    //
 
-   *outNumTracks = outputFormat.numChannels;
-   WaveTrack **channels = new WaveTrack *[*outNumTracks];
+   WaveTrack **channels = new WaveTrack *[outputFormat.numChannels];
 
    // determine sample format
 
@@ -315,12 +317,12 @@ bool QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    }
 
    int c;
-   for (c = 0; c < *outNumTracks; c++)
+   for (c = 0; c < outputFormat.numChannels; c++)
    {
       channels[c] = trackFactory->NewWaveTrack(format);
       channels[c]->SetRate(outputFormat.sampleRate / 65536.0);
 
-      if(*outNumTracks == 2)
+      if(outputFormat.numChannels == 2)
       {
          if(c == 0)
          {
@@ -427,11 +429,11 @@ bool QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       if((outputFlags & kSoundConverterHasLeftOverData) == false)
          done = true;
 
-      for(c = 0; c < *outNumTracks; c++)
+      for(c = 0; c < outputFormat.numChannels; c++)
          channels[c]->Append(outputBuffer + (c*bytesPerSample),
                              format,
                              outputFrames,
-                             *outNumTracks);
+                             outputFormat.numChannels);
 
       samplesSinceLastCallback += outputFrames;
       if( samplesSinceLastCallback > SAMPLES_PER_CALLBACK )
@@ -452,13 +454,22 @@ bool QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    // the buffer is big.
    SoundConverterEndConversion(soundConverter, outputBuffer, &outputFrames, &outputBytes);
 
-   for(c = 0; c < *outNumTracks; c++)
+   for(c = 0; c < outputFormat.numChannels; c++)
    {
        channels[c]->Append(outputBuffer + (c*bytesPerSample),
                            format,
                            outputFrames,
-                           *outNumTracks);
+                          outputFormat.numChannels);
       channels[c]->Flush();
+   }
+
+   bool res = (!cancelled && err == noErr);
+
+   //
+   // Extract any metadata
+   //
+   if (res) {
+      AddMetadata(tags);
    }
 
    delete[] outputBuffer;
@@ -466,21 +477,153 @@ bool QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    SoundConverterClose(soundConverter);
    DisposeMovie(mMovie);
 
-   if (cancelled || err != noErr) {
-      for (c = 0; c < *outNumTracks; c++)
+   if (!res) {
+      for (c = 0; c < outputFormat.numChannels; c++)
          delete channels[c];
       delete[] channels;
 
       return false;
    }
-   else {
-      *outTracks = new Track *[*outNumTracks];
-      for(c = 0; c < *outNumTracks; c++)
+
+   *outNumTracks = outputFormat.numChannels;
+   *outTracks = new Track *[outputFormat.numChannels];
+   for(c = 0; c < outputFormat.numChannels; c++)
          (*outTracks)[c] = channels[c];
       delete[] channels;
 
       return true;
    }
+
+static const struct
+{
+   OSType key;
+   wxChar *name;
+}
+names[] =
+{
+   {  kQTMetaDataCommonKeyAuthor,         wxT("Author")           },
+   {  kQTMetaDataCommonKeyComment,        TAG_COMMENTS            },
+   {  kQTMetaDataCommonKeyCopyright,      wxT("Copyright")        },
+   {  kQTMetaDataCommonKeyDirector,       wxT("Director")         },
+   {  kQTMetaDataCommonKeyDisplayName,    wxT("Full Name")        },
+   {  kQTMetaDataCommonKeyInformation,    wxT("Information")      },
+   {  kQTMetaDataCommonKeyKeywords,       wxT("Keywords")         },
+   {  kQTMetaDataCommonKeyProducer,       wxT("Producer")         },
+   {  kQTMetaDataCommonKeyAlbum,          TAG_ALBUM               },
+   {  kQTMetaDataCommonKeyArtist,         TAG_ARTIST              },
+   {  kQTMetaDataCommonKeyChapterName,    wxT("Chapter")          },
+   {  kQTMetaDataCommonKeyComposer,       wxT("Composer")         },
+   {  kQTMetaDataCommonKeyDescription,    wxT("Description")      },
+   {  kQTMetaDataCommonKeyGenre,          TAG_GENRE               },
+   {  kQTMetaDataCommonKeyOriginalFormat, wxT("Original Format")  },
+   {  kQTMetaDataCommonKeyOriginalSource, wxT("Original Source")  },
+   {  kQTMetaDataCommonKeyPerformers,     wxT("Performers")       },
+   {  kQTMetaDataCommonKeySoftware,       wxT("Software")         },
+   {  kQTMetaDataCommonKeyWriter,         wxT("Writer")           },
+};
+
+void QTImportFileHandle::AddMetadata(Tags *tags)
+{
+   QTMetaDataRef metaDataRef = NULL;
+   OSErr err; 
+
+   err = QTCopyMovieMetaData(mMovie, &metaDataRef);
+   if (err != noErr) {
+      return;
+   }
+
+   for (int i = 0; i < WXSIZEOF(names); i++) {
+      QTMetaDataItem item = kQTMetaDataItemUninitialized;
+      OSType key = names[i].key;
+
+      err = QTMetaDataGetNextItem(metaDataRef,
+                                  kQTMetaDataStorageFormatWildcard,
+                                  kQTMetaDataItemUninitialized,
+                                  kQTMetaDataKeyFormatCommon,
+                                  (const UInt8 *) &names[i].key,
+                                  sizeof(names[i].key),
+                                  &item);
+      if (err != noErr) {
+         continue;
+      }
+
+      if (item == kQTMetaDataItemUninitialized) {
+         continue;
+      }
+
+      QTPropertyValuePtr outValPtr = nil;
+      QTPropertyValueType outPropType;
+      ByteCount outPropValueSize;
+      ByteCount outPropValueSizeUsed = 0;
+      UInt32 outPropFlags;
+      UInt32 dataType;
+      
+      // Get data type
+      err =  QTMetaDataGetItemProperty(metaDataRef,
+                                       item,
+                                       kPropertyClass_MetaDataItem,
+                                       kQTMetaDataItemPropertyID_DataType,
+                                       sizeof(dataType),
+                                       &dataType,
+                                       &outPropValueSizeUsed);
+      if (err != noErr) {
+         continue;
+      }
+
+      // Get the data length
+      err = QTMetaDataGetItemPropertyInfo(metaDataRef,
+                                          item,
+                                          kPropertyClass_MetaDataItem,
+                                          kQTMetaDataItemPropertyID_Value,
+                                          &outPropType,
+                                          &outPropValueSize,
+                                          &outPropFlags );
+      if (err != noErr) {
+         continue;
+      }
+
+      // Alloc memory for it
+      outValPtr = malloc(outPropValueSize);
+      
+      // Retrieve the data
+      err =  QTMetaDataGetItemProperty(metaDataRef,
+                                       item,
+                                       kPropertyClass_MetaDataItem,
+                                       kQTMetaDataItemPropertyID_Value,
+                                       outPropValueSize,
+                                       outValPtr,
+                                       &outPropValueSizeUsed);
+      if (err != noErr) {
+         free(outValPtr);
+         continue;
+      }
+
+      wxString v = wxT("");
+
+      switch (dataType)
+      {
+         case kQTMetaDataTypeUTF8:
+            v = wxString((char *)outValPtr, wxConvUTF8);
+         break;
+         case kQTMetaDataTypeUTF16BE:
+         {
+            wxMBConvUTF16BE conv;
+            v = wxString((char *)outValPtr, conv);
+         }
+         break;
+      }
+
+      if (!v.IsEmpty()) {
+         tags->SetTag(names[i].name, v);
+      }
+
+      free(outValPtr);
+   }      
+
+   // we are done so release our metadata object
+   QTMetaDataRelease(metaDataRef);
+
+   return;
 }
 
 static pascal Boolean
