@@ -122,7 +122,7 @@ public:
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
    bool Import(TrackFactory *trackFactory, Track ***outTracks,
-               int *outNumTracks);
+               int *outNumTracks, Tags *tags);
 
 private:
    // Takes a line of text in lof file and interprets it and opens files
@@ -181,7 +181,7 @@ ImportFileHandle *LOFImportPlugin::Open(wxString filename)
    if (!binaryFile.Open(filename))
       return NULL; // File not found
 
-   char* buf = new char[BINARY_FILE_CHECK_BUFFER_SIZE];
+   char buf[BINARY_FILE_CHECK_BUFFER_SIZE];
    int count = binaryFile.Read(buf, BINARY_FILE_CHECK_BUFFER_SIZE);
 
    for (int i = 0; i < count; i++)
@@ -230,7 +230,7 @@ int LOFImportFileHandle::GetFileUncompressedBytes()
 }
 
 bool LOFImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
-                                 int *outNumTracks)
+                                 int *outNumTracks, Tags *tags)
 {
    wxASSERT(mTextFile->IsOpened());
 
@@ -259,8 +259,7 @@ bool LOFImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    if(mTextFile->Close())
       return true;
 
-   else
-      return false;
+   return false;
 }
 
 static int CountNumTracks(AudacityProject *proj)
@@ -475,8 +474,8 @@ LOFImportFileHandle::~LOFImportFileHandle()
    if(mTextFile)
    {
       if (mTextFile->IsOpened())
-         if (mTextFile->Close())
-            delete mTextFile;
+         mTextFile->Close();
+      delete mTextFile;
    }
 }
 
