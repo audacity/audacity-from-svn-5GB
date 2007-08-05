@@ -46,66 +46,206 @@
 #include "Internat.h"
 #include "Prefs.h"
 #include "ShuttleGui.h"
+#include "widgets/Grid.h"
 #include "xml/XMLFileReader.h"
 
 #include <wx/button.h>
 #include <wx/choice.h>
 #include <wx/filename.h>
 #include <wx/intl.h>
+#include <wx/listctrl.h>
 #include <wx/msgdlg.h>
-#include <wx/radiobox.h>
+#include <wx/notebook.h>
+#include <wx/radiobut.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/string.h>
 #include <wx/textctrl.h>
+#include <wx/textfile.h>
 
-#ifdef USE_LIBID3TAG 
-   #include <id3tag.h>
-   // DM: the following functions were supposed to have been
-   // included in id3tag.h - should be fixed in the next release
-   // of mad.
-   extern "C" {
-      struct id3_frame *id3_frame_new(char const *);
-      id3_length_t id3_latin1_length(id3_latin1_t const *);
-      void id3_latin1_decode(id3_latin1_t const *, id3_ucs4_t *);
-   } 
-#endif
+static const wxChar *DefaultGenres[] =
+{
+   wxT("Blues"),
+   wxT("Classic Rock"),
+   wxT("Country"),
+   wxT("Dance"),
+   wxT("Disco"),
+   wxT("Funk"),
+   wxT("Grunge"),
+   wxT("Hip-Hop"),
+   wxT("Jazz"),
+   wxT("Metal"),
+   wxT("New Age"),
+   wxT("Oldies"),
+   wxT("Other"),
+   wxT("Pop"),
+   wxT("R&B"),
+   wxT("Rap"),
+   wxT("Reggae"),
+   wxT("Rock"),
+   wxT("Techno"),
+   wxT("Industrial"),
+   wxT("Alternative"),
+   wxT("Ska"),
+   wxT("Death Metal"),
+   wxT("Pranks"),
+   wxT("Soundtrack"),
+   wxT("Euro-Techno"),
+   wxT("Ambient"),
+   wxT("Trip-Hop"),
+   wxT("Vocal"),
+   wxT("Jazz+Funk"),
+   wxT("Fusion"),
+   wxT("Trance"),
+   wxT("Classical"),
+   wxT("Instrumental"),
+   wxT("Acid"),
+   wxT("House"),
+   wxT("Game"),
+   wxT("Sound Clip"),
+   wxT("Gospel"),
+   wxT("Noise"),
+   wxT("Alt. Rock"),
+   wxT("Bass"),
+   wxT("Soul"),
+   wxT("Punk"),
+   wxT("Space"),
+   wxT("Meditative"),
+   wxT("Instrumental Pop"),
+   wxT("Instrumental Rock"),
+   wxT("Ethnic"),
+   wxT("Gothic"),
+   wxT("Darkwave"),
+   wxT("Techno-Industrial"),
+   wxT("Electronic"),
+   wxT("Pop-Folk"),
+   wxT("Eurodance"),
+   wxT("Dream"),
+   wxT("Southern Rock"),
+   wxT("Comedy"),
+   wxT("Cult"),
+   wxT("Gangsta Rap"),
+   wxT("Top 40"),
+   wxT("Christian Rap"),
+   wxT("Pop/Funk"),
+   wxT("Jungle"),
+   wxT("Native American"),
+   wxT("Cabaret"),
+   wxT("New Wave"),
+   wxT("Psychedelic"),
+   wxT("Rave"),
+   wxT("Showtunes"),
+   wxT("Trailer"),
+   wxT("Lo-Fi"),
+   wxT("Tribal"),
+   wxT("Acid Punk"),
+   wxT("Acid Jazz"),
+   wxT("Polka"),
+   wxT("Retro"),
+   wxT("Musical"),
+   wxT("Rock & Roll"),
+   wxT("Hard Rock"),
+   wxT("Folk"),
+   wxT("Folk/Rock"),
+   wxT("National Folk"),
+   wxT("Swing"),
+   wxT("Fast-Fusion"),
+   wxT("Bebob"),
+   wxT("Latin"),
+   wxT("Revival"),
+   wxT("Celtic"),
+   wxT("Bluegrass"),
+   wxT("Avantgarde"),
+   wxT("Gothic Rock"),
+   wxT("Progressive Rock"),
+   wxT("Psychedelic Rock"),
+   wxT("Symphonic Rock"),
+   wxT("Slow Rock"),
+   wxT("Big Band"),
+   wxT("Chorus"),
+   wxT("Easy Listening"),
+   wxT("Acoustic"),
+   wxT("Humour"),
+   wxT("Speech"),
+   wxT("Chanson"),
+   wxT("Opera"),
+   wxT("Chamber Music"),
+   wxT("Sonata"),
+   wxT("Symphony"),
+   wxT("Booty Bass"),
+   wxT("Primus"),
+   wxT("Porn Groove"),
+   wxT("Satire"),
+   wxT("Slow Jam"),
+   wxT("Club"),
+   wxT("Tango"),
+   wxT("Samba"),
+   wxT("Folklore"),
+   wxT("Ballad"),
+   wxT("Power Ballad"),
+   wxT("Rhythmic Soul"),
+   wxT("Freestyle"),
+   wxT("Duet"),
+   wxT("Punk Rock"),
+   wxT("Drum Solo"),
+   wxT("A Cappella"),
+   wxT("Euro-House"),
+   wxT("Dance Hall"),
+   wxT("Goa"),
+   wxT("Drum & Bass"),
+   wxT("Club-House"),
+   wxT("Hardcore"),
+   wxT("Terror"),
+   wxT("Indie"),
+   wxT("BritPop"),
+   wxT("Negerpunk"),
+   wxT("Polsk Punk"),
+   wxT("Beat"),
+   wxT("Christian Gangsta Rap"),
+   wxT("Heavy Metal"),
+   wxT("Black Metal"),
+   wxT("Crossover"),
+   wxT("Contemporary Christian"),
+   wxT("Christian Rock"),
+   wxT("Merengue"),
+   wxT("Salsa"),
+   wxT("Thrash Metal"),
+   wxT("Anime"),
+   wxT("JPop"),
+   wxT("Synthpop")
+};
 
 Tags::Tags()
 {
-   mTrackNum = -1;
-   mGenre = -1;
-   
    mID3V2 = true;
 
    mEditTitle = true;
    mEditTrackNumber = true;
 
-   mTagsEditor = NULL;
-   mTagsEditorFrame = NULL;
-
-#ifdef USE_LIBFLAC
-   mFLACMeta = new ::FLAC__StreamMetadata*[1];
-   mFLACMeta[0] = NULL;
-#endif
-
    LoadDefaults();
+   LoadGenres();
 }
 
 Tags::~Tags()
 {
-   if (mTagsEditorFrame) {
-      mTagsEditorFrame->Destroy();
-   }
-#ifdef USE_LIBFLAC
-   if (mFLACMeta[0])
-   {
-      ::FLAC__metadata_object_delete(mFLACMeta[0]);
-      mFLACMeta[0] = NULL;
-   }
-   delete[] mFLACMeta;
-#endif
+}
 
+Tags & Tags::operator=(const Tags & src)
+{
+   mID3V2 = src.mID3V2;
+
+   mEditTitle = src.mEditTitle;
+   mEditTrackNumber = src.mEditTrackNumber;
+
+   mXref.clear();
+   mXref = src.mXref;
+   mMap.clear();
+   mMap = src.mMap;
+
+   mGenres.clear();
+   mGenres = src.mGenres;
+
+   return *this;
 }
 
 void Tags::LoadDefaults()
@@ -126,36 +266,10 @@ void Tags::LoadDefaults()
       gPrefs->Read(name, &value, wxT(""));
 
       if (name == wxT("ID3V2")) {
-         mID3V2 = wxAtoi(value) != 0;
-      }
-      else if (name == wxT("Title")) {
-         mTitle = value;
-      }
-      else if (name == wxT("Artist")) {
-         mArtist = value;
-      }
-      else if (name == wxT("Album")) {
-         mAlbum = value;
-      }
-      else if (name == wxT("Year")) {
-         mYear = value;
-      }
-      else if (name == wxT("Comments")) {
-         mComments = value;
-      }
-      else if (name == wxT("TrackNumber")) {
-         long num;
-         value.ToLong(&num);
-         mTrackNum = num;
-      }
-      else if (name == wxT("Genre")) {
-         long num;
-         value.ToLong(&num);
-         mGenre = num;
+         mID3V2 = value == wxT("1");
       }
       else {
-         mExtraNames.Add(name);
-         mExtraValues.Add(value);
+         SetTag(name, value);
       }
 
       cont = gPrefs->GetNextEntry(name, ndx);
@@ -169,12 +283,28 @@ bool Tags::IsEmpty()
 {
    // At least one of these should be filled in, otherwise
    // it's assumed that the tags have not been set...
-   if (mTitle.Length()==0 &&
-       mArtist.Length()==0 &&
-       mAlbum.Length()==0)
-      return true;
-   else
+   if (HasTag(TAG_TITLE) || HasTag(TAG_ARTIST) || HasTag(TAG_ALBUM)) {
       return false;
+   }
+
+   return true;
+}
+
+void Tags::Clear()
+{
+   mID3V2 = true;
+   mXref.clear();
+   mMap.clear();
+}
+
+void Tags::SetID3V2(bool id3v2)
+{
+   mID3V2 = id3v2;
+}
+
+bool Tags::GetID3V2()
+{
+   return mID3V2;
 }
 
 void Tags::AllowEditTitle(bool editTitle)
@@ -182,87 +312,193 @@ void Tags::AllowEditTitle(bool editTitle)
    mEditTitle = editTitle;
 }
 
-void Tags::SetTitle(wxString title)
-{
-   mTitle = title;
-}
-
-wxString Tags::GetTitle()
-{
-   return mTitle;
-}
-
 void Tags::AllowEditTrackNumber(bool editTrackNumber)
 {
    mEditTrackNumber = editTrackNumber;
 }
 
-void Tags::SetTrackNumber(int num)
+int Tags::GetNumGenres()
 {
-   mTrackNum = num;
+   return mGenres.GetCount();
 }
 
-int Tags::GetTrackNumber()
+void Tags::LoadDefaultGenres()
 {
-   return mTrackNum;
+   mGenres.Clear();
+   for (int i = 0; i < WXSIZEOF(DefaultGenres); i++) {
+      mGenres.Add(DefaultGenres[i]);
+   }
+}
+
+void Tags::LoadGenres()
+{
+   wxFileName fn(FileNames::DataDir(), wxT("genres.txt"));
+   wxTextFile tf(fn.GetFullPath());
+
+   if (!tf.Exists() || !tf.Open()) {
+      LoadDefaultGenres();
+      return;
+   }
+
+   mGenres.Clear();
+
+   int cnt = tf.GetLineCount();
+   for (int i = 0; i < cnt; i++) {
+      mGenres.Add(tf.GetLine(i));
+   }
+}
+
+wxString Tags::GetGenre(int i)
+{
+   if (i >= 0 && i < GetNumGenres()) {
+      return mGenres[i];
+   }
+
+   return wxT("");
+}
+
+int Tags::GetGenre(const wxString & name)
+{
+   int cnt = WXSIZEOF(DefaultGenres);
+
+   for (int i = 0; i < cnt; i++) {
+      if (name.CmpNoCase(DefaultGenres[i])) {
+         return i;
+      }
+   }
+
+   return 0;
+}
+
+bool Tags::HasTag(const wxString & name)
+{
+   wxString key = name;
+   key.UpperCase();
+
+   TagMap::iterator iter = mXref.find(key);
+   return (iter != mXref.end());
+}
+
+wxString Tags::GetTag(const wxString & name)
+{
+   wxString key = name;
+   key.UpperCase();
+
+   TagMap::iterator iter = mXref.find(key);
+
+   if (iter == mXref.end()) {
+      return wxEmptyString;
+   }
+
+   return mMap[iter->second];
+}
+
+bool Tags::GetFirst(wxString & name, wxString & value)
+{
+   mIter = mMap.begin();
+   if (mIter == mMap.end()) {
+      return false;
+   }
+
+   name = mIter->first;
+   value = mIter->second;
+
+   return true;
+}
+
+bool Tags::GetNext(wxString & name, wxString & value)
+{
+   mIter++;
+   if (mIter == mMap.end()) {
+      return false;
+   }
+
+   name = mIter->first;
+   value = mIter->second;
+
+   return true;
+}
+
+void Tags::SetTag(const wxString & name, const wxString & value)
+{
+   // We don't like empty names
+   if (name.IsEmpty()) {
+      return;
+   }
+
+   // All keys are uppercase
+   wxString key = name;
+   key.UpperCase();
+
+   // Look it up
+   TagMap::iterator iter = mXref.find(key);
+
+   // Didn't find the tag
+   if (iter == mXref.end()) {
+      // Intention was to delete so no need to add it
+      if (value.IsEmpty()) {
+         return;
+      }
+
+      // Add a new tag
+      mXref[key] = name;
+      mMap[name] = value;
+      return;
+   }
+
+   // Intention was to delete
+   if (value.IsEmpty()) {
+      mMap.erase(iter->second);
+      mXref.erase(iter);
+      return;
+   }
+
+   // Update the value
+   mMap[iter->second] = value;
+}
+
+void Tags::SetTag(const wxString & name, const int & value)
+{
+   SetTag(name, wxString::Format(wxT("%d"), value));
 }
 
 bool Tags::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
    if (wxStrcmp(tag, wxT("tags")) == 0) {
-      // loop through attrs, which is a null-terminated list of
-      // attribute-value pairs
-      long nValue;
-      while(*attrs) {
-         const wxChar *attr = *attrs++;
-         const wxChar *value = *attrs++;
-
-         if (!value)
-            break;
-
-         const wxString strValue = value;
-         if (!wxStrcmp(attr, wxT("title")) && XMLValueChecker::IsGoodString(strValue))
-            mTitle = strValue;
-         else if (!wxStrcmp(attr, wxT("artist")) && XMLValueChecker::IsGoodString(strValue))
-            mArtist = strValue;
-         else if (!wxStrcmp(attr, wxT("album")) && XMLValueChecker::IsGoodString(strValue))
-            mAlbum = strValue;
-         else if (!wxStrcmp(attr, wxT("track")) && XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
-            mTrackNum = nValue;
-         else if (!wxStrcmp(attr, wxT("year")) && XMLValueChecker::IsGoodString(strValue))
-            mYear = strValue;
-         else if (!wxStrcmp(attr, wxT("genre")) && XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
-            mGenre = nValue;
-         else if (!wxStrcmp(attr, wxT("comments")) && XMLValueChecker::IsGoodString(strValue))
-            mComments = strValue;
-         else if (!wxStrcmp(attr, wxT("id3v2")) && XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
-            mID3V2 = (nValue != 0);
-         else if (XMLValueChecker::IsGoodString(strValue) && 
-                  XMLValueChecker::IsGoodString(wxString(attr))) {
-            mExtraNames.Add(wxString(attr));
-            mExtraValues.Add(strValue);
-         }
-      } // while
-
       return true;
    }
 
    if (wxStrcmp(tag, wxT("tag")) == 0) {
-      // loop through attrs, which is a null-terminated list of
-      // attribute-value pairs
-      while(*attrs) {
-         const wxChar *attr = *attrs++;
-         const wxChar *value = *attrs++;
+      wxString n, v;
 
-         if (!value)
+      while (*attrs) {
+         wxString attr = *attrs++;
+         if (!*attr)
             break;
+         wxString value = *attrs++;
 
-         const wxString strValue = value;
-         if (!wxStrcmp(attr, wxT("name")) && XMLValueChecker::IsGoodString(strValue))
-            mExtraNames.Add(strValue);
-         else if (!wxStrcmp(attr, wxT("value")) && XMLValueChecker::IsGoodString(strValue))
-            mExtraValues.Add(strValue);
-      } // while
+         if (!XMLValueChecker::IsGoodString(attr) ||
+             !XMLValueChecker::IsGoodString(value)) {
+            break;
+         }
+
+         if (attr == wxT("name")) {
+            n = value;
+         }
+         else if (attr == wxT("value")) {
+            v = value;
+         }
+      }
+
+      if (n == wxT("id3v2")) {
+         long nValue;
+         if (XMLValueChecker::IsGoodInt(v) && v.ToLong(&nValue)) {
+            mID3V2 = (nValue != 0);
+         }
+      }
+      else {
+         SetTag(n, v);
+      }
 
       return true;
    }
@@ -272,769 +508,546 @@ bool Tags::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 
 XMLTagHandler *Tags::HandleXMLChild(const wxChar *tag)
 {
-   if (wxStrcmp(tag, wxT("tag")) == 0)
+   if (wxStrcmp(tag, wxT("tags")) == 0) {
       return this;
+   }
+
+   if (wxStrcmp(tag, wxT("tag")) == 0) {
+      return this;
+   }
 
    return NULL;
 }
 
 void Tags::WriteXML(XMLWriter &xmlFile)
 {
-   int j;
-
    xmlFile.StartTag(wxT("tags"));
-   xmlFile.WriteAttr(wxT("title"), mTitle);
-   xmlFile.WriteAttr(wxT("artist"), mArtist);
-   xmlFile.WriteAttr(wxT("album"), mAlbum);
-   xmlFile.WriteAttr(wxT("track"), mTrackNum);
-   xmlFile.WriteAttr(wxT("year"), mYear);
-   xmlFile.WriteAttr(wxT("genre"), mGenre);
-   xmlFile.WriteAttr(wxT("comments"), mComments);
-   xmlFile.WriteAttr(wxT("id3v2"), mID3V2);
 
-   if (mExtraNames.GetCount() == 0) {
-      xmlFile.EndTag(wxT("tags"));
-      return;
-   }
+   xmlFile.StartTag(wxT("tag"));
+   xmlFile.WriteAttr(wxT("name"), wxT("id3v2"));
+   xmlFile.WriteAttr(wxT("value"), mID3V2);
+   xmlFile.EndTag(wxT("tag"));
 
-   for(j=0; j<(int)mExtraNames.GetCount(); j++) {
+   wxString n, v;
+   for (bool cont = GetFirst(n, v); cont; cont = GetNext(n, v)) {
       xmlFile.StartTag(wxT("tag"));
-      xmlFile.WriteAttr(wxT("name"), mExtraNames[j]);
-      xmlFile.WriteAttr(wxT("value"), mExtraValues[j]);
+      xmlFile.WriteAttr(wxT("name"), n);
+      xmlFile.WriteAttr(wxT("value"), v);
       xmlFile.EndTag(wxT("tag"));
    }
 
    xmlFile.EndTag(wxT("tags"));
 }
 
-bool Tags::ShowEditDialog(wxWindow *parent, wxString title, bool modal)
+bool Tags::ShowEditDialog(wxWindow *parent, wxString title, bool force)
 {
-   // If the window is already open, just bring it to front
-   if (mTagsEditor && mTagsEditorFrame) {
-      if (!modal) {
-         mTagsEditorFrame->Raise();
-         return true;
-      }
+   if (force || IsEmpty()) {
+      TagsEditor dlg(parent, title, this, mEditTitle, mEditTrackNumber);
 
-      // We must kill an existing modeless editor since we don't want
-      // to have two on the screen at once.
-      mTagsEditorFrame->Destroy();
-      mTagsEditor = NULL;
-      mTagsEditorFrame = NULL;
-   }
-
-   if (modal) {
-      ToolBarDialog *tbd = new ToolBarDialog(parent, -1, title);
-      new TagsEditor(tbd, -1, this, mEditTitle, mEditTrackNumber);
-      tbd->CentreOnParent();
-      return (tbd->ShowModal() != wxID_CANCEL);
-      // No need to delete...see TagsEditor::OnClose()
-   }
-   else {
-      mTagsEditorFrame = new ToolBarFrame(parent, -1, title);
-      mTagsEditor = new TagsEditor(mTagsEditorFrame, -1, this,
-                                   mEditTitle, mEditTrackNumber);
-      mTagsEditorFrame->CentreOnParent();
-      mTagsEditorFrame->Show();
+      return dlg.ShowModal() == wxID_OK;
    }
 
    return true;
 }
 
-void Tags::EditorIsClosing()
+bool Tags::ShowEditDialog1(wxWindow *parent, wxString title, bool force)
 {
-   mTagsEditor = NULL;
-   mTagsEditorFrame = NULL;
+   if (force || IsEmpty()) {
+      TagsEditor1 dlg(parent, title, this, mEditTitle, mEditTrackNumber);
+
+      return dlg.ShowModal() == wxID_OK;
+   }
+
+   return true;
 }
 
-#ifdef USE_LIBID3TAG
-
-/* Declare Static functions */
-static wxString GetID3FieldStr(struct id3_tag *tp, const char *name);
-static int GetNumGenres();
-static wxString GetGenreNum(int i);
-
-wxString GetID3FieldStr(struct id3_tag *tp, const char *name)
+bool Tags::ShowEditDialog2(wxWindow *parent, wxString title, bool force)
 {
-   struct id3_frame *frame;
+   if (force || IsEmpty()) {
+      TagsEditor2 dlg(parent, title, this, mEditTitle, mEditTrackNumber);
 
-   frame = id3_tag_findframe(tp, name, 0);
-   if (frame) {
-      const id3_ucs4_t *ustr;
-
-      if (strcmp(name, ID3_FRAME_COMMENT) == 0)
-	 ustr = id3_field_getfullstring(&frame->fields[3]);
-      else
-	 ustr = id3_field_getstrings(&frame->fields[1], 0);
-
-      if (ustr) {
-	 char *str = (char *)id3_ucs4_utf8duplicate(ustr);
-	 wxString s = UTF8CTOWX(str);
-	 free(str);
-	 return s;
-      }
+      return dlg.ShowModal() == wxID_OK;
    }
 
-   return wxT("");
+   return true;
 }
-
-#endif // ifdef USE_LIBID3TAG 
-
-int GetNumGenres()
-{
-   return 148;
-}
-
-wxString GetGenreNum(int i)
-{
-#ifdef USE_LIBID3TAG
-  id3_latin1_t      i_latin1[50];
-  id3_ucs4_t       *i_ucs4;
-  const id3_ucs4_t *genre_ucs4;
-
-  sprintf((char *)i_latin1, "%d", i);
-  i_ucs4 =
-     (id3_ucs4_t *)malloc((id3_latin1_length(i_latin1) + 1) *
-                          sizeof(*i_ucs4));
-  if (i_ucs4) {
-    id3_latin1_decode(i_latin1, i_ucs4);
-    genre_ucs4 = id3_genre_name(i_ucs4);
-    char *genre_char = (char *)id3_ucs4_utf8duplicate(genre_ucs4);
-    wxString genreStr = UTF8CTOWX(genre_char);
-    free(genre_char);
-    free(i_ucs4);
-    return genreStr;    
-  }   
-
-#endif // ifdef USE_LIBID3TAG 
-
-  return wxT("");
-}
-
-void Tags::ImportID3(wxString fileName)
-{
-#ifdef USE_LIBID3TAG 
-
-   struct id3_file *fp = id3_file_open(OSFILENAME(fileName),
-                                          ID3_FILE_MODE_READONLY);
-   if (!fp) return;
-
-   struct id3_tag *tp = id3_file_tag(fp);
-   if (!tp) return;
-
-   mTitle = GetID3FieldStr(tp, ID3_FRAME_TITLE);
-   mArtist = GetID3FieldStr(tp, ID3_FRAME_ARTIST);
-   mAlbum = GetID3FieldStr(tp, ID3_FRAME_ALBUM);   
-   mYear = GetID3FieldStr(tp, ID3_FRAME_YEAR);
-   mComments = GetID3FieldStr(tp, ID3_FRAME_COMMENT);
-
-   long l;
-   wxString s;
-   if ((s = GetID3FieldStr(tp, ID3_FRAME_TRACK)).ToLong(&l))
-      mTrackNum = l;
-
-   mID3V2 = ( tp->options & ID3_TAG_OPTION_ID3V1 ) ? false : true;
-   
-   s = GetID3FieldStr(tp, ID3_FRAME_GENRE);
-
-   if( mID3V2 ) {
-      int numGenres = GetNumGenres();
-      for(int i=0; i<numGenres; i++)
-         if (0 == s.CmpNoCase(GetGenreNum(i)))
-            mGenre = i;
-   }
-   else {
-      if( s.ToLong( &l ) )
-         mGenre = l;
-   }
-
-   // Loop through all remaining frames
-   int i;
-   for(i=0; i<(int)tp->nframes; i++) {
-      struct id3_frame *frame = tp->frames[i];
-
-      //printf("ID: %08x '%4s'\n", (int) *(int *)frame->id, frame->id);
-      //printf("Desc: %s\n", frame->description);
-      //printf("Num fields: %d\n", frame->nfields);
-      
-      if (!strcmp(frame->id, ID3_FRAME_TITLE) ||
-          !strcmp(frame->id, ID3_FRAME_ARTIST) ||
-          !strcmp(frame->id, ID3_FRAME_ALBUM) ||
-          !strcmp(frame->id, ID3_FRAME_YEAR) ||
-          !strcmp(frame->id, ID3_FRAME_COMMENT) ||
-          !strcmp(frame->id, ID3_FRAME_GENRE) ||
-          !strcmp(frame->id, ID3_FRAME_TRACK)) {
-         continue;
-      }
-
-      const id3_ucs4_t *ustr;
-
-      if (frame->nfields>=2) {
-         ustr = id3_field_getstrings(&frame->fields[1], 0);
-         if (ustr) {
-            wxString name = UTF8CTOWX(frame->description);
-            
-            char *str = (char *)id3_ucs4_utf8duplicate(ustr);
-            wxString value = UTF8CTOWX(str);
-            free(str);
-            
-            mExtraNames.Add(name);
-            mExtraValues.Add(value);
-         }
-      }
-
-      if (frame->nfields==3) {
-         wxString name, value;
-
-         ustr = id3_field_getstring(&frame->fields[2]);
-         if (ustr) {
-            char *str = (char *)id3_ucs4_utf8duplicate(ustr);
-            value = UTF8CTOWX(str);
-            free(str);
-         }
-
-         ustr = id3_field_getstring(&frame->fields[1]);
-         if (ustr) {
-            char *str = (char *)id3_ucs4_utf8duplicate(ustr);
-            name = UTF8CTOWX(str);
-            free(str);
-         }
-
-         mExtraNames.Add(name);
-         mExtraValues.Add(value);
-      }
-
-   }
-
-   id3_file_close(fp);
-#endif // ifdef USE_LIBID3TAG 
-}
-
-#ifdef USE_LIBID3TAG 
-
-/* Declare Static functions */
-static struct id3_frame *MakeID3Frame(const char *name, const char *data0, const char *data1);
-
-struct id3_frame *MakeID3Frame(const char *name, const char *data0, const char *data1)
-{
-  struct id3_frame *frame;
-  id3_latin1_t     *latin1;
-  id3_ucs4_t       *ucs4;
-
-  frame = id3_frame_new(name);
-
-  latin1 = (id3_latin1_t *)data1;
-  ucs4 = (id3_ucs4_t *)malloc((id3_latin1_length(latin1) + 1) * sizeof(*ucs4));
-  id3_latin1_decode(latin1, ucs4);     
-  
-  if (strcmp(name, ID3_FRAME_COMMENT) == 0) {
-     id3_field_setfullstring(&frame->fields[3], ucs4);
-  }
-  else if (strcmp(name, "TXXX") == 0) {
-     id3_field_setstring(&frame->fields[2], ucs4);
-     if (data0) {
-        free(ucs4);
-        latin1 = (id3_latin1_t *)data0;
-        ucs4 = (id3_ucs4_t *)malloc((id3_latin1_length(latin1) + 1) * sizeof(*ucs4));
-        
-        id3_latin1_decode(latin1, ucs4);     
-        
-        id3_field_setstring(&frame->fields[1], ucs4);
-     }
-  }
-  else
-     id3_field_setstrings(&frame->fields[1], 1, &ucs4);
-
-  free(ucs4);
-  
-  return frame;
-} 
-
-#endif //ifdef USE_LIBID3TAG 
-
-// returns buffer len; caller frees
-int Tags::ExportID3(char **buffer, bool *endOfFile)
-{
-#ifdef USE_LIBID3TAG 
-   struct id3_tag *tp = id3_tag_new();
-
-   int i;
-
-   if (IsEmpty())
-      return 0;
-   
-   if (mTitle != wxT(""))
-      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_TITLE, NULL, mTitle.mb_str()));
-
-   if (mArtist != wxT(""))
-      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_ARTIST, NULL, mArtist.mb_str()));
-
-   if (mAlbum != wxT(""))
-      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_ALBUM, NULL, mAlbum.mb_str()));
-
-   if (mYear != wxT(""))
-      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_YEAR, NULL, mYear.mb_str()));
-
-   if (mComments != wxT(""))
-      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_COMMENT, NULL, mComments.mb_str()));
-
-   if (mTrackNum >= 0) {
-      wxString trackNumStr;
-      trackNumStr.Printf(wxT("%d"), mTrackNum);
-      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_TRACK, NULL, trackNumStr.mb_str()));
-   }
-
-   if (mGenre >= 0) {
-      if (mID3V2) {
-         wxString genreStr = GetGenreNum(mGenre);
-         id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_GENRE, NULL, genreStr.mb_str()));
-      }
-      else {
-         wxString genreStr;
-         genreStr.Printf(wxT("%d"), mGenre);
-         id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_GENRE, NULL, genreStr.mb_str()));
-      }
-   }
-
-   for(i=0; i<(int)mExtraNames.GetCount(); i++) {
-      id3_tag_attachframe(tp, 
-                          MakeID3Frame("TXXX", /* Unknown text field */
-                                       mExtraNames[i].mb_str(),
-                                       mExtraValues[i].mb_str()));
-   }
-
-   if (mID3V2) {
-      tp->options &= (~ID3_TAG_OPTION_COMPRESSION); // No compression
-
-      // If this version of libid3tag supports it, use v2.3 ID3
-      // tags instead of the newer, but less well supported, v2.4
-      // that libid3tag uses by default.
-      #ifdef ID3_TAG_HAS_TAG_OPTION_ID3V2_3
-      tp->options |= ID3_TAG_OPTION_ID3V2_3;
-      #endif
-
-      *endOfFile = false;
-   }
-   else {
-      tp->options |= ID3_TAG_OPTION_ID3V1;
-      *endOfFile = true;
-   }
-
-   id3_length_t len;
-   
-   len = id3_tag_render(tp, 0);
-   *buffer = (char *)malloc(len);
-   len = id3_tag_render(tp, (id3_byte_t *)*buffer);
-
-   id3_tag_delete(tp);
-
-   return len;
-#else //ifdef USE_LIBID3TAG 
-   return 0;
-#endif
-}
-
-#ifdef USE_LIBFLAC
-void Tags::ExportFLACTags(FLAC::Encoder::File *encoder)
-{
-   /* Somehow I can't get the hang of the libFLAC++ API for metadata, 
-      so we mix things a little with the 'pure' C API instead - JAPJ */
-
-   if (mFLACMeta[0])
-   {
-      /* first cleanup any previous metadata */
-      ::FLAC__metadata_object_delete(mFLACMeta[0]);
-      mFLACMeta[0] = NULL;
-   }
-
-   if (mFLACMeta[0] == NULL)
-   {
-      mFLACMeta[0] = ::FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
-   }
-
-   if (mTitle != wxT(""))
-   {
-      FLAC::Metadata::VorbisComment::Entry entry("TITLE", mTitle.mb_str());
-      ::FLAC__metadata_object_vorbiscomment_append_comment(mFLACMeta[0], entry.get_entry(), true);
-   }
-
-   if (mArtist != wxT(""))
-   {
-      FLAC::Metadata::VorbisComment::Entry entry("ARTIST", mArtist.mb_str());
-      ::FLAC__metadata_object_vorbiscomment_append_comment(mFLACMeta[0], entry.get_entry(), true);
-   }
-
-   if (mAlbum != wxT(""))
-   {
-      FLAC::Metadata::VorbisComment::Entry entry("ALBUM", mAlbum.mb_str());
-      ::FLAC__metadata_object_vorbiscomment_append_comment(mFLACMeta[0], entry.get_entry(), true);
-   }
-
-   if (mTrackNum >= 0) {
-      wxString trackNumStr;
-      trackNumStr.Printf(wxT("%d"), mTrackNum);
-      FLAC::Metadata::VorbisComment::Entry entry("TRACKNUMBER", trackNumStr.mb_str());
-      ::FLAC__metadata_object_vorbiscomment_append_comment(mFLACMeta[0], entry.get_entry(), true);
-   }
-
-   if (mGenre >= 0) {
-      wxString genreStr = GetGenreNum(mGenre);
-      FLAC::Metadata::VorbisComment::Entry entry("GENRE", genreStr.mb_str());
-      ::FLAC__metadata_object_vorbiscomment_append_comment(mFLACMeta[0], entry.get_entry(), true);
-   }
-
-   encoder->set_metadata(mFLACMeta,1);
-}
-#endif
-
-#ifdef USE_LIBVORBIS
-void Tags::ExportOGGTags(vorbis_comment *comment)
-{
-   vorbis_comment_init(comment);
-// ((char *) (const char *)(X).mb_str())
-   if (mTitle != wxT("")) {
-      vorbis_comment_add_tag(comment, "TITLE", (char *) (const char *) mTitle.mb_str());
-   }
-
-   if (mArtist != wxT("")) {
-      vorbis_comment_add_tag(comment, "ARTIST", (char *) (const char *) mArtist.mb_str());
-   }
-
-   if (mAlbum != wxT("")) {
-      vorbis_comment_add_tag(comment, "ALBUM", (char *) (const char *) mAlbum.mb_str());
-   }
-
-   if (mYear != wxT("")) {
-      vorbis_comment_add_tag(comment, "YEAR", (char *) (const char *) mYear.mb_str());
-   }
-
-   if (mComments != wxT("")) {
-      vorbis_comment_add_tag(comment, "COMMENT", (char *) (const char *) mComments.mb_str());
-   }
-
-   if (mTrackNum >= 0) {
-      wxString trackNumStr;
-      trackNumStr.Printf(wxT("%d"), mTrackNum);
-      vorbis_comment_add_tag(comment, "TRACKNUMBER", (char *) (const char *) trackNumStr.mb_str());
-   }
-
-   if (mGenre >= 0) {
-      vorbis_comment_add_tag(comment, "GENRE", (char *) (const char *) GetGenreNum(mGenre).mb_str());
-   }
-
-   for (size_t i = 0; i < mExtraNames.GetCount(); i++) {
-      vorbis_comment_add_tag(comment,
-                             (char *) (const char *) mExtraNames[i].mb_str(),
-                             (char *) (const char *) mExtraValues[i].mb_str());
-   }
-}
-#endif
 
 //
-// TagsEditor
+// ComboEditor - Wrapper to prevent unwanted background erasure
 //
+
+class ComboEditor:public wxGridCellChoiceEditor
+{
+public:
+   ComboEditor(const wxArrayString& choices, bool allowOthers = false)
+   :  wxGridCellChoiceEditor(choices, allowOthers)
+   {
+   }
+
+   virtual void PaintBackground(const wxRect& rectCell, wxGridCellAttr *attr)
+   {
+      // Ignore it (a must on the Mac as the erasure causes problems.)
+   }
+
+   void SetParameters(const wxString& params)
+   {
+      wxGridCellChoiceEditor::SetParameters(params);
+
+      // Refresh the wxComboBox with new values
+      if (Combo()) {
+         Combo()->Clear();
+         Combo()->Append(m_choices);
+      }
+   }
+
+   void SetSize(const wxRect& rectOrig)
+   {
+      wxRect rect(rectOrig);
+      wxRect r = Combo()->GetRect();
+
+      // Center the combo box in or over the cell
+      rect.y -= (r.GetHeight() - rect.GetHeight()) / 2;
+      rect.height = r.GetHeight();
+
+      wxGridCellChoiceEditor::SetSize(rect);
+   }
+};
+
+//
+// Editor
+//
+
+#define LABEL_ARTIST    _("Artist Name")
+#define LABEL_TITLE     _("Track Title")
+#define LABEL_ALBUM     _("Album Title")
+#define LABEL_TRACK     _("Track Number")
+#define LABEL_YEAR      _("Year")
+#define LABEL_GENRE     _("Genre")
+#define LABEL_COMMENTS  _("Comments")
+
+static const wxChar *names[] =
+{
+   LABEL_ARTIST,
+   LABEL_TITLE,
+   LABEL_ALBUM,
+   LABEL_TRACK,
+   LABEL_YEAR,
+   LABEL_GENRE,
+   LABEL_COMMENTS
+};
+
+static const struct
+{
+   const wxChar *label;
+   const wxChar *name;
+}
+labelmap[] =
+{
+   {  LABEL_ARTIST,     TAG_ARTIST     },
+   {  LABEL_TITLE,      TAG_TITLE      },
+   {  LABEL_ALBUM,      TAG_ALBUM      },
+   {  LABEL_TRACK,      TAG_TRACK      },
+   {  LABEL_YEAR,       TAG_YEAR       },
+   {  LABEL_GENRE,      TAG_GENRE      },
+   {  LABEL_COMMENTS,   TAG_COMMENTS   }
+};
+#define STATICCNT WXSIZEOF(labelmap)
 
 enum {
-   StaticTextID = 10000,
-   TitleTextID,
-   ArtistTextID,
-   AlbumTextID,
-   TrackNumTextID,
-   YearTextID,
-   CommentsTextID,
-   GenreID,
-   FormatID,
-   MoreID,
-   FewerID,
-   ClearID,
+   ClearID = 10000,
+   EditID,
+   ResetID,
    LoadID,
    SaveID,
    SaveDefaultsID,
-   FirstExtraID
+   AddID,
+   RemoveID
 };
 
-BEGIN_EVENT_TABLE(TagsEditor, ExpandingToolBar)
-   EVT_TEXT(TitleTextID, TagsEditor::OnChange)
-   EVT_TEXT(ArtistTextID, TagsEditor::OnChange)
-   EVT_TEXT(AlbumTextID, TagsEditor::OnChange)
-   EVT_TEXT(TrackNumTextID, TagsEditor::OnChange)
-   EVT_TEXT(YearTextID, TagsEditor::OnChange)
-   EVT_TEXT(CommentsTextID, TagsEditor::OnChange)
-   EVT_CHOICE(GenreID, TagsEditor::OnChange)
-   EVT_RADIOBOX(FormatID, TagsEditor::OnChange)
-   EVT_BUTTON(wxID_CANCEL, TagsEditor::OnCancel)
-   EVT_BUTTON(wxID_OK, TagsEditor::OnClose)
-   EVT_BUTTON(MoreID, TagsEditor::OnMore)
-   EVT_BUTTON(FewerID, TagsEditor::OnFewer)
+BEGIN_EVENT_TABLE(TagsEditor, wxDialog)
+   EVT_GRID_CELL_CHANGE(TagsEditor::OnChange)
+   EVT_BUTTON(EditID, TagsEditor::OnEdit)
+   EVT_BUTTON(ResetID, TagsEditor::OnReset)
    EVT_BUTTON(ClearID, TagsEditor::OnClear)
    EVT_BUTTON(LoadID, TagsEditor::OnLoad)
    EVT_BUTTON(SaveID, TagsEditor::OnSave)
    EVT_BUTTON(SaveDefaultsID, TagsEditor::OnSaveDefaults)
-   EVT_COMMAND_RANGE(FirstExtraID, FirstExtraID+1000,
-                     wxEVT_COMMAND_TEXT_UPDATED, TagsEditor::OnChange)
+   EVT_BUTTON(AddID, TagsEditor::OnAdd)
+   EVT_BUTTON(RemoveID, TagsEditor::OnRemove)
+   EVT_BUTTON(wxID_CANCEL, TagsEditor::OnCancel)
+   EVT_BUTTON(wxID_OK, TagsEditor::OnOk)
 END_EVENT_TABLE()
 
-TagsEditor::TagsEditor(wxWindow * parent, wxWindowID id,
+TagsEditor::TagsEditor(wxWindow * parent,
+                       wxString title,
                        Tags * tags,
-                       bool editTitle, bool editTrackNumber):
-   ExpandingToolBar(parent, id),
-   mTags(tags)
+                       bool editTitle,
+                       bool editTrack)
+:  wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
+            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
+   mTags(tags),
+   mEditTitle(editTitle),
+   mEditTrack(editTrack)
 {
-   mTransfering = true; // avoid endless update loop
+   mGrid = NULL;
 
-   // Make local backup copies of metadata
-   mTitle       = mTags->mTitle;
-   mArtist      = mTags->mArtist;
-   mAlbum       = mTags->mAlbum;
-   mTrackNum    = mTags->mTrackNum;
-   mYear        = mTags->mYear;
-   mGenre       = mTags->mGenre;
-   mComments    = mTags->mComments;
-   mID3V2       = mTags->mID3V2;
-   mExtraNames  = mTags->mExtraNames;
-   mExtraValues = mTags->mExtraValues;
+   // Make a local copy of the passed in tags
+   mLocal = *mTags;
 
-   BuildMainPanel();
-   BuildExtraPanel();
-   GetMainPanel()->Layout();
-   GetMainPanel()->Fit();
-   Layout();
-   Fit();
-
-   GetExtraPanel()->SetSize(GetMainPanel()->GetSize().GetWidth(), -1);
-
-   if (!editTitle)
-      mTitleText->Enable(false);
-
-   if (!editTrackNumber)
-      mTrackNumText->Enable(false);
+   // Build, size, and position the dialog
+   ShuttleGui S(this, eIsCreating);
+   PopulateOrExchange(S);
 
    TransferDataToWindow();
 
-   mTransfering = false;
+   Layout();
+   Fit();
+   Center();
+   SetSizeHints(GetSize());
+
+   // Restore the original tags because TransferDataToWindow() will be called again
+   mLocal.Clear();
+   mLocal = *mTags;
+
+   // Override size and position with last saved
+   wxRect r = GetRect();
+   gPrefs->Read(wxT("/TagsEditor/x"), &r.x, r.x);
+   gPrefs->Read(wxT("/TagsEditor/y"), &r.y, r.y);
+   gPrefs->Read(wxT("/TagsEditor/width"), &r.width, r.width);
+   gPrefs->Read(wxT("/TagsEditor/height"), &r.height, r.height);
+   Move(r.GetPosition());
+//   SetSize(r.GetSize());
+
+   // Resize value column width based on width of columns and the vertical scrollbar
+   wxScrollBar sb(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
+   r = mGrid->GetClientRect();
+   r.width -= mGrid->GetColSize(0);
+   r.width -= sb.GetSize().GetWidth();
+   r.width -= 10;
+   r.width -= r.x;
+   mGrid->SetColSize(1, r.width);
+
+   // Load the genres
+   PopulateGenres();
 }
 
 TagsEditor::~TagsEditor()
 {
-   if (mExtraNameTexts) {
-      delete[] mExtraNameTexts;
-   }
-
-   if (mExtraValueTexts) {
-      delete[] mExtraValueTexts;
-   }
-
-   mTags->EditorIsClosing();
 }
 
-bool TagsEditor::Validate()
+void TagsEditor::PopulateOrExchange(ShuttleGui & S)
 {
-   wxString errorString =
-      _("Maximum length of attribute '%s' is %d characters. Data was truncated.");
-
-   if(!mTags->mID3V2)
+   S.StartVerticalLay();
    {
-      if(mTags->mTitle.Length() > 30)
+      S.StartHorizontalLay(wxALIGN_LEFT, false);
       {
-         wxMessageBox(wxString::Format(errorString, _("Title"), 30));
-
-         mTags->mTitle = mTags->mTitle.Left(30);
-         TransferDataToWindow();
-
-         return FALSE;
+         S.AddUnits(_("Press F2 or double click to edit."));
       }
+      S.EndHorizontalLay();
 
-      if(mTags->mArtist.Length() > 30)
+      if (mGrid == NULL) {
+         mGrid = new Grid(S.GetParent(),
+                          wxID_ANY,
+                          wxDefaultPosition,
+                          wxDefaultSize,
+                          wxSUNKEN_BORDER);
+
+         mGrid->RegisterDataType(wxT("Combo"),
+                                 new wxGridCellStringRenderer,
+                                 new ComboEditor(wxArrayString(), true));
+
+         mGrid->SetColLabelSize(mGrid->GetDefaultRowSize());
+
+         wxArrayString cs(WXSIZEOF(names), names);
+
+         // Build the initial (empty) grid
+         mGrid->CreateGrid(0, 2); 
+         mGrid->SetRowLabelSize(0);
+         mGrid->SetDefaultCellAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
+         mGrid->SetDefaultCellBackgroundColour(*wxWHITE);
+         mGrid->SetColLabelValue(0, _("Tag Name"));
+         mGrid->SetColLabelValue(1, _("Tag Value"));
+
+         // Resize the name column and set default row height.
+         wxComboBox tc(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, cs);
+         mGrid->SetColSize(0, tc.GetSize().x);
+         mGrid->SetColMinimalWidth(0, tc.GetSize().x);
+      }
+      S.Prop(true);
+      S.AddWindow(mGrid, wxEXPAND | wxALL);
+
+      S.StartMultiColumn(4, wxALIGN_CENTER);
       {
-         wxMessageBox(wxString::Format(errorString, _("Artist"), 30));
-
-         mTags->mArtist = mTags->mArtist.Left(30);
-         TransferDataToWindow();
-
-         return FALSE;
+         S.Id(AddID).AddButton(_("&Add"));
+         S.Id(RemoveID).AddButton(_("&Remove"));
+         S.AddTitle(wxT(" "));
+         S.Id(ClearID).AddButton(_("&Clear"));
       }
+      S.EndMultiColumn();
 
-      if(mTags->mAlbum.Length() > 30)
+      S.StartHorizontalLay(wxALIGN_CENTRE, false);
       {
-         wxMessageBox(wxString::Format(errorString, _("Album"), 30));
-
-         mTags->mAlbum = mTags->mAlbum.Left(30);
-         TransferDataToWindow();
-
-         return FALSE;
+         S.StartStatic(_("Genres"));
+         {
+            S.StartMultiColumn(4, wxALIGN_CENTER);
+            {
+               S.Id(EditID).AddButton(_("Edit"));
+               S.Id(ResetID).AddButton(_("Reset"));
+            }
+            S.EndMultiColumn();
+         }
+         S.EndStatic();
+         S.StartStatic(_("Template"));
+         {
+            S.StartMultiColumn(4, wxALIGN_CENTER);
+            {
+               S.Id(LoadID).AddButton(_("&Load..."));
+               S.Id(SaveID).AddButton(_("&Save..."));
+               S.AddTitle(wxT(" "));
+               S.Id(SaveDefaultsID).AddButton(_("S&et default"));
+            }
+            S.EndMultiColumn();
+         }
+         S.EndStatic();
       }
-
-      if(mTags->mYear.Length() > 4)
-      {
-         wxMessageBox(wxString::Format(errorString, _("Year"), 4));
-
-         mTags->mYear = mTags->mYear.Left(4);
-         TransferDataToWindow();
-
-         return FALSE;
-      }
-
-      if(mTags->mComments.Length() > 30)
-      {
-         wxMessageBox(wxString::Format(errorString, _("Comments"), 30));
-
-         mTags->mComments = mTags->mComments.Left(30);
-         TransferDataToWindow();
-
-         return FALSE;
-      }
+      S.EndHorizontalLay();
    }
+   S.EndVerticalLay();
 
-   return TRUE;
-}
-
-bool TagsEditor::TransferDataToWindow()
-{
-   mTitleText->SetValue(mTags->mTitle);
-   mArtistText->SetValue(mTags->mArtist);   
-   mAlbumText->SetValue(mTags->mAlbum);
-   mYearText->SetValue(mTags->mYear);
-   mCommentsText->SetValue(mTags->mComments);
-   
-   if (mTags->mTrackNum != -1) {
-      wxString numStr;
-      numStr.Printf(wxT("%d"), mTags->mTrackNum);
-      mTrackNumText->SetValue(numStr);
-   }
-   
-   if (mTags->mGenre >= 0 && mTags->mGenre < GetNumGenres())
-   	mGenreChoice->SetStringSelection(GetGenreNum(mTags->mGenre));
-   
-   mFormatRadioBox->SetSelection((int)mTags->mID3V2);
-
-   int i;
-
-   for(i=0; i<(int)mTags->mExtraNames.GetCount(); i++) {
-      mExtraNameTexts[i]->SetValue(mTags->mExtraNames[i]);
-      mExtraValueTexts[i]->SetValue(mTags->mExtraValues[i]);
-   }
-
-   return TRUE;
+   S.AddStandardButtons(eOkButton | eCancelButton);
 }
 
 bool TagsEditor::TransferDataFromWindow()
 {
-   mTags->mTitle = mTitleText->GetValue();
-   mTags->mArtist = mArtistText->GetValue();
-   mTags->mAlbum = mAlbumText->GetValue();
+   int i, cnt = mGrid->GetNumberRows();
 
-   wxString str = mTrackNumText->GetValue();
-   if (str == wxT(""))
-      mTags->mTrackNum = -1;
-   else {
-      long i;
-      str.ToLong(&i);
-      mTags->mTrackNum = i;
+   if (mGrid->IsCellEditControlShown()) {
+      mGrid->SaveEditControlValue();
+      mGrid->HideCellEditControl();
    }
 
-   mTags->mYear = mYearText->GetValue();
-   mTags->mComments = mCommentsText->GetValue();
-   mTags->mID3V2 = (mFormatRadioBox->GetSelection())?true:false;
+   mLocal.Clear();
+   for (i = 0; i < cnt; i++) {
+      wxString n = mGrid->GetCellValue(i, 0);
+      wxString v = mGrid->GetCellValue(i, 1);
 
+      if (n.IsEmpty()) {
+         continue;
+      }
+
+      if (n.CmpNoCase(LABEL_ARTIST) == 0) {
+         n = TAG_ARTIST;
+      }
+      else if (n.CmpNoCase(LABEL_TITLE) == 0) {
+         n = TAG_TITLE;
+      }
+      else if (n.CmpNoCase(LABEL_ALBUM) == 0) {
+         n = TAG_ALBUM;
+      }
+      else if (n.CmpNoCase(LABEL_TRACK) == 0) {
+         n = TAG_TRACK;
+      }
+      else if (n.CmpNoCase(LABEL_YEAR) == 0) {
+         n = TAG_YEAR;
+      }
+      else if (n.CmpNoCase(LABEL_GENRE) == 0) {
+         n = TAG_GENRE;
+      }
+      else if (n.CmpNoCase(LABEL_COMMENTS) == 0) {
+         n = TAG_COMMENTS;
+      }
+
+      mLocal.SetTag(n, v);
+   }
+
+   return true;
+}
+
+bool TagsEditor::TransferDataToWindow()
+{
    int i;
-   
-   for(i=0; i<GetNumGenres(); i++)
-   	if (GetGenreNum(i) == mGenreChoice->GetStringSelection()) {
-   		mTags->mGenre = i;
-   		break;
-   	}
-	
-   for(i=0; i<(int)mTags->mExtraNames.GetCount(); i++) {
-      mTags->mExtraNames[i] = mExtraNameTexts[i]->GetValue();
-      mTags->mExtraValues[i] = mExtraValueTexts[i]->GetValue();
+   wxString n;
+   wxString v;
+
+   // Disable redrawing until we're done
+   mGrid->BeginBatch();
+
+   // Delete all rows
+   if (mGrid->GetNumberRows()) {
+      mGrid->DeleteRows(0, mGrid->GetNumberRows());
    }
 
-   return TRUE;
-}
+   // Populate the static rows
+   for (i = 0; i < STATICCNT; i++) {
+      mGrid->AppendRows();
 
-void TagsEditor::OnChange(wxCommandEvent & event)
-{
-   if (!mTransfering) { // avoid endless update loop
-      mTransfering = true;
-      TransferDataFromWindow();
-      mTransfering = false;
+      mGrid->SetReadOnly(i, 0);
+      mGrid->SetCellValue(i, 0, labelmap[i].label);
+      mGrid->SetCellValue(i, 1, mLocal.GetTag(labelmap[i].name));
+
+      if (!mEditTitle && mGrid->GetCellValue(i, 0).CmpNoCase(LABEL_TITLE) == 0) {
+         mGrid->SetReadOnly(i, 1);
+      }
+
+      if (!mEditTrack && mGrid->GetCellValue(i, 0).CmpNoCase(LABEL_TRACK) == 0) {
+         mGrid->SetReadOnly(i, 1);
+      }
+
+      mLocal.SetTag(labelmap[i].name, wxEmptyString);
    }
+
+   // Populate the rest
+   for (bool cont = mLocal.GetFirst(n, v); cont; cont = mLocal.GetNext(n, v)) {
+      mGrid->AppendRows();
+
+      mGrid->SetCellValue(i, 0, n);
+      mGrid->SetCellValue(i, 1, v);
+      i++;
+   }
+
+   // Add an extra one to help with initial sizing and to show it can be done
+   mGrid->AppendRows(1);
+
+   // We're done, so allow the grid to redraw
+   mGrid->EndBatch();
+
+   // Set the editors
+   SetEditors();
+
+   return true;
 }
 
-void TagsEditor::OnCancel(wxCommandEvent & event)
+void TagsEditor::OnChange(wxGridEvent & event)
 {
-   // Restore original values
-   mTags->mExtraNames.Clear();
-   mTags->mExtraValues.Clear();
-   mTags->mTitle       = mTitle;
-   mTags->mArtist      = mArtist;
-   mTags->mAlbum       = mAlbum;
-   mTags->mTrackNum    = mTrackNum;
-   mTags->mYear        = mYear;
-   mTags->mGenre       = mGenre;
-   mTags->mComments    = mComments;
-   mTags->mID3V2       = mID3V2;
-   mTags->mExtraNames  = mExtraNames;
-   mTags->mExtraValues = mExtraValues;
+   static bool ischanging = false;
 
-   GetParent()->Destroy();
-}
-
-void TagsEditor::OnClose(wxCommandEvent & event)
-{
-   if (!TransferDataFromWindow()) {
+   // Prevent recursion
+   if (ischanging) {
       return;
    }
 
-   GetParent()->Destroy();
-}
+   event.Skip();
 
-void TagsEditor::OnMore(wxCommandEvent & event)
-{
-   TransferDataFromWindow();
-
-   mTags->mExtraNames.Add(wxT(""));
-   mTags->mExtraValues.Add(wxT(""));
-
-   RebuildMainPanel();
-}
-
-void TagsEditor::OnFewer(wxCommandEvent & event)
-{
-   TransferDataFromWindow();
-
-   int len = (int)mTags->mExtraNames.GetCount();
-   if (len > 0) {
-      mTags->mExtraNames.RemoveAt(len-1);
-      mTags->mExtraValues.RemoveAt(len-1);
-
-      RebuildMainPanel();
+   if (event.GetCol() != 0) {
+      return;
    }
+
+   wxString n = mGrid->GetCellValue(event.GetRow(), 0);
+   for (int i = 0; i < STATICCNT; i++) {
+      if (n.CmpNoCase(labelmap[i].label) == 0) {
+         ischanging = true;
+         wxBell();
+         mGrid->SetGridCursor(i, 0);
+         event.Veto();
+         ischanging = false;
+         break;
+      }
+   }
+
+   return;
+}
+
+void TagsEditor::OnEdit(wxCommandEvent & event)
+{
+   if (mGrid->IsCellEditControlShown()) {
+      mGrid->SaveEditControlValue();
+      mGrid->HideCellEditControl();
+   }
+
+   wxDialog dlg(this, wxID_ANY, _("Edit Genres"),
+                wxDefaultPosition, wxDefaultSize,
+                wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+   wxTextCtrl *tc;
+
+   ShuttleGui S(&dlg, eIsCreating);
+
+   S.StartVerticalLay(true);
+   {
+      tc = S.AddTextWindow(wxT(""));
+   }
+   S.EndVerticalLay();
+
+   S.AddStandardButtons();
+
+   wxSortedArrayString g;
+   int cnt = mLocal.GetNumGenres();
+   for (int i = 0; i < cnt; i++) {
+      g.Add(mLocal.GetGenre(i));
+   }
+
+   for (int i = 0; i < cnt; i++) {
+      tc->AppendText(g[i] + wxT("\n"));
+   }
+
+   dlg.Center();
+   if (dlg.ShowModal() == wxID_CANCEL) {
+      return;
+   }
+
+   wxFileName fn(FileNames::DataDir(), wxT("genres.txt"));
+   wxFile f(fn.GetFullPath(), wxFile::write);
+   if (!f.IsOpened() || !f.Write(tc->GetValue())) {
+      wxMessageBox(_("Unable to save genre file."), _("Reset Genres"));
+      return;
+   }
+
+   mLocal.LoadGenres();
+
+   PopulateGenres();
+}
+
+void TagsEditor::OnReset(wxCommandEvent & event)
+{
+   int id = wxMessageBox(_("Are you sure you want to reset the genre list to defaults?"),
+                         _("Reset Genres"),
+                         wxYES_NO);
+
+   if (id == wxNO) {
+      return;
+   }
+   mLocal.LoadDefaultGenres();
+
+   wxFileName fn(FileNames::DataDir(), wxT("genres.txt"));
+   wxTextFile tf(fn.GetFullPath());
+
+   bool saved = false;
+   bool open = (tf.Exists() && tf.Open()) ||
+               (!tf.Exists() && tf.Create());
+
+   if (!open) {
+      wxMessageBox(_("Unable to open genre file."), _("Reset Genres"));
+      mLocal.LoadGenres();
+      return;
+   }
+
+   tf.Clear();
+   int cnt = mLocal.GetNumGenres();
+   for (int i = 0; i < cnt; i++) {
+      tf.AddLine(mLocal.GetGenre(i));
+   }
+
+   tf.Write();
+   if (!tf.Write()) {
+      wxMessageBox(_("Unable to save genre file."), _("Reset Genres"));
+      mLocal.LoadGenres();
+      return;
+   }
+
+   mLocal.LoadGenres();
+
+   PopulateGenres();
 }
 
 void TagsEditor::OnClear(wxCommandEvent & event)
 {
-   mTags->mTitle.Clear();
-   mTags->mArtist.Clear();
-   mTags->mAlbum.Clear();
-   mTags->mTrackNum = -1;
-   mTags->mYear.Clear();
-   mTags->mGenre = -1;
-   mTags->mComments.Clear();
-   mTags->mID3V2 = true;;
-   mTags->mExtraNames.Clear();
-   mTags->mExtraValues.Clear();
+   mLocal.Clear();
 
-   RebuildMainPanel();
+   TransferDataToWindow();
 }
 
 void TagsEditor::OnLoad(wxCommandEvent & event)
 {
    wxString fn;
-
-   // For drawer to remain visible while dialog is displayed since the mouse
-   // position is still tracked.
-   Expand();
 
    // Ask the user for the real name
    fn = FileSelector(_("Save Metadata As:"),
@@ -1045,31 +1058,21 @@ void TagsEditor::OnLoad(wxCommandEvent & event)
                      wxOPEN,
                      this);
 
-   // Now, allow the drawer to be active again.
-   Collapse();
-   TryAutoExpand();
-   Fit();
-
    // User canceled...
    if (fn.IsEmpty()) {
       return;
    }
 
+   // Remember title and track in case they're read only
+   wxString title = mLocal.GetTag(TAG_TITLE);
+   wxString track = mLocal.GetTag(TAG_TRACK);
+
    // Clear current contents
-   mTags->mTitle.Clear();
-   mTags->mArtist.Clear();
-   mTags->mAlbum.Clear();
-   mTags->mTrackNum = -1;
-   mTags->mYear.Clear();
-   mTags->mGenre = -1;
-   mTags->mComments.Clear();
-   mTags->mID3V2 = true;;
-   mTags->mExtraNames.Clear();
-   mTags->mExtraValues.Clear();
+   mLocal.Clear();
 
    // Load the metadata
    XMLFileReader reader;
-   if (!reader.Parse(mTags, fn)) {
+   if (!reader.Parse(&mLocal, fn)) {
       // Inform user of load failure
       wxMessageBox(reader.GetErrorStr(),
                    _("Error loading metadata"),
@@ -1077,8 +1080,18 @@ void TagsEditor::OnLoad(wxCommandEvent & event)
                    this);
    }
 
-   // Refresh the dialog
-   RebuildMainPanel();
+   // Restore title
+   if (!mEditTitle) {
+      mLocal.SetTag(TAG_TITLE, title);
+   }
+
+   // Restore track
+   if (!mEditTrack) {
+      mLocal.SetTag(TAG_TRACK, track);
+   }
+
+   // Go fill up the window
+   TransferDataToWindow();
 
    return;
 }
@@ -1087,9 +1100,8 @@ void TagsEditor::OnSave(wxCommandEvent & event)
 {
    wxString fn;
 
-   // For drawer to remain visible while dialog is displayed since the mouse
-   // position is still tracked.
-   Expand();
+   // Refresh tags
+   TransferDataFromWindow();
 
    // Ask the user for the real name
    fn = FileSelector(_("Save Metadata As:"),
@@ -1100,10 +1112,1365 @@ void TagsEditor::OnSave(wxCommandEvent & event)
                      wxSAVE | wxOVERWRITE_PROMPT,
                      this);
 
-   // Now, allow the drawer to be active again.
-   Collapse();
-   TryAutoExpand();
+   // User canceled...
+   if (fn.IsEmpty()) {
+      return;
+   }
+
+   // Create/Open the file
+   XMLFileWriter writer;
+   writer.Open(fn, wxT("wb"));
+
+   // Complain if open failed
+   if (!writer.IsOpened())
+   {
+      // Constructor will emit message
+      return;
+   }
+
+   // Remember title and track in case they're read only
+   wxString title = mLocal.GetTag(TAG_TITLE);
+   wxString track = mLocal.GetTag(TAG_TRACK);
+
+   // Clear title
+   if (!mEditTitle) {
+      mLocal.SetTag(TAG_TITLE, wxEmptyString);
+   }
+
+   // Clear track
+   if (!mEditTrack) {
+      mLocal.SetTag(TAG_TRACK, wxEmptyString);
+   }
+
+   // Write the metadata
+   mLocal.WriteXML(writer);
+
+   // Restore title
+   if (!mEditTitle) {
+      mLocal.SetTag(TAG_TITLE, title);
+   }
+
+   // Restore track
+   if (!mEditTrack) {
+      mLocal.SetTag(TAG_TRACK, track);
+   }
+
+   // Close the file
+   writer.Close();
+
+   return;
+}
+
+void TagsEditor::OnSaveDefaults(wxCommandEvent & event)
+{
+   // Refresh tags
+   TransferDataFromWindow();
+
+   // Remember title and track in case they're read only
+   wxString title = mLocal.GetTag(TAG_TITLE);
+   wxString track = mLocal.GetTag(TAG_TRACK);
+
+   // Clear title
+   if (!mEditTitle) {
+      mLocal.SetTag(TAG_TITLE, wxEmptyString);
+   }
+
+   // Clear track
+   if (!mEditTrack) {
+      mLocal.SetTag(TAG_TRACK, wxEmptyString);
+   }
+
+   // Remove any previous defaults
+   gPrefs->DeleteGroup(wxT("/Tags"));
+
+   // Write out each tag
+   wxString n, v;
+   for (bool cont = mLocal.GetFirst(n, v); cont; cont = mLocal.GetNext(n, v)) {
+      gPrefs->Write(wxT("/Tags/") + n, v);
+   }
+
+   // Restore title
+   if (!mEditTitle) {
+      mLocal.SetTag(TAG_TITLE, title);
+   }
+
+   // Restore track
+   if (!mEditTrack) {
+      mLocal.SetTag(TAG_TRACK, track);
+   }
+}
+
+void TagsEditor::OnAdd(wxCommandEvent & event)
+{
+   mGrid->AppendRows();
+}
+
+void TagsEditor::OnRemove(wxCommandEvent & event)
+{
+   int row = mGrid->GetCursorRow();
+
+   if (!mEditTitle && mGrid->GetCellValue(row, 0).CmpNoCase(LABEL_TITLE) == 0) {
+      return;
+   }
+   else if (!mEditTrack && mGrid->GetCellValue(row, 0).CmpNoCase(LABEL_TRACK) == 0) {
+      return;
+   }
+   else if (row < STATICCNT - 1) {
+      mGrid->SetCellValue(row, 1, wxEmptyString);
+   }
+   else if (row >= STATICCNT) {
+      mGrid->DeleteRows(row, 1);
+   }
+}
+
+void TagsEditor::OnOk(wxCommandEvent & event)
+{
+   if (mGrid->IsCellEditControlShown()) {
+      mGrid->SaveEditControlValue();
+      mGrid->HideCellEditControl();
+      return;
+   }
+
+   if (!Validate() || !TransferDataFromWindow()) {
+      return;
+   }
+
+   *mTags = mLocal;
+
+   wxRect r = GetRect();
+   gPrefs->Write(wxT("/TagsEditor/x"), r.x);
+   gPrefs->Write(wxT("/TagsEditor/y"), r.y);
+   gPrefs->Write(wxT("/TagsEditor/width"), r.width);
+   gPrefs->Write(wxT("/TagsEditor/height"), r.height);
+
+   EndModal(wxID_OK);
+}
+
+void TagsEditor::OnCancel(wxCommandEvent & event)
+{
+   if (mGrid->IsCellEditControlShown()) {
+      mGrid->GetCellEditor(mGrid->GetGridCursorRow(),
+                           mGrid->GetGridCursorCol())
+                           ->Reset();
+      mGrid->HideCellEditControl();
+      return;
+   }
+
+   EndModal(wxID_CANCEL);
+}
+
+void TagsEditor::SetEditors()
+{
+   int cnt = mGrid->GetNumberRows();
+
+   for (int i = 0; i < cnt; i++) {
+      wxString label = mGrid->GetCellValue(i, 0);
+      if (label.CmpNoCase(LABEL_GENRE) == 0) {
+         mGrid->SetCellEditor(i, 1, mGrid->GetDefaultEditorForType(wxT("Combo")));
+      }
+      else {
+         mGrid->SetCellEditor(i, 1, NULL); //mGrid->GetDefaultEditor());
+      }
+   }
+}
+
+void TagsEditor::PopulateGenres()
+{
+   int cnt = mLocal.GetNumGenres();
+   int i;
+   wxString parm;
+   wxSortedArrayString g;
+
+   for (i = 0; i < cnt; i++) {
+      g.Add(mLocal.GetGenre(i));
+   }
+
+   for (i = 0; i < cnt; i++) {
+      parm = parm + (i == 0 ? wxT("") : wxT(",")) + g[i];
+   }
+
+   mGrid->GetDefaultEditorForType(wxT("Combo"))->SetParameters(parm);
+}
+
+BEGIN_EVENT_TABLE(TagsEditor1, wxDialog)
+   EVT_BUTTON(EditID, TagsEditor1::OnEdit)
+   EVT_BUTTON(ClearID, TagsEditor1::OnClear)
+   EVT_BUTTON(LoadID, TagsEditor1::OnLoad)
+   EVT_BUTTON(SaveID, TagsEditor1::OnSave)
+   EVT_BUTTON(SaveDefaultsID, TagsEditor1::OnSaveDefaults)
+   EVT_BUTTON(AddID, TagsEditor1::OnAdd)
+   EVT_BUTTON(RemoveID, TagsEditor1::OnRemove)
+   EVT_BUTTON(wxID_CANCEL, TagsEditor1::OnCancel)
+   EVT_BUTTON(wxID_OK, TagsEditor1::OnOk)
+END_EVENT_TABLE()
+
+TagsEditor1::TagsEditor1(wxWindow * parent,
+                       wxString title,
+                       Tags * tags,
+                       bool editTitle,
+                       bool editTrack)
+:  wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
+            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
+   mTags(tags),
+   mEditTitle(editTitle),
+   mEditTrack(editTrack)
+{
+   // Make a local copy of the passed in tags
+   mLocal = *mTags;
+
+   // Make local backup copies of metadata
+   mTitle    = mLocal.GetTag(TAG_TITLE);
+   mArtist   = mLocal.GetTag(TAG_ARTIST);
+   mAlbum    = mLocal.GetTag(TAG_ALBUM);
+   mTrackNum = mLocal.GetTag(TAG_TRACK);
+   mYear     = mLocal.GetTag(TAG_YEAR);
+   mGenre    = mLocal.GetTag(TAG_GENRE);
+   mComments = mLocal.GetTag(TAG_COMMENTS);
+   mID3V2    = mLocal.GetID3V2();
+
+   Rebuild();
+}
+
+TagsEditor1::~TagsEditor1()
+{
+}
+
+void TagsEditor1::Rebuild()
+{
+   SetSizer(NULL);
+   DestroyChildren();
+   mClear = NULL;
+
+   mTransfering = true; // avoid endless update loop
+
+   // Build, size, and position the dialog
+   SetSizeHints(0, 0);
+   ShuttleGui S(this, eIsCreating);
+   PopulateOrExchange(S);
+   PopulateGenres();
+   GetSizer()->AddSpacer(5);
+   Layout();
    Fit();
+   Center();
+   SetSizeHints(GetSize());
+
+   // Populate all the controls
+   TransferDataToWindow();
+
+   // Done building
+   mTransfering = false;
+}
+
+void TagsEditor1::PopulateOrExchange(ShuttleGui & S)
+{
+   S.StartVerticalLay();
+   {
+      S.SetStyle(wxNO_BORDER);
+      S.StartScroller(1);
+      {
+         S.StartMultiColumn(2, wxALIGN_LEFT | wxEXPAND);
+         {
+            S.SetBorder(3);
+            S.SetStretchyCol(1);
+            S.TieTextBox(_("Title:"), mTitle, 20)->Enable(mEditTitle);
+            S.TieTextBox(_("Artist:"), mArtist, 20);
+            S.TieTextBox(_("Album:"), mAlbum, 20);
+            S.TieTextBox(_("Composer:"), mComposer, 20);
+            S.TieTextBox(_("Lyricist:"), mLyricist, 20);
+            S.TieTextBox(_("Comments:"), mComments, 20);
+
+            S.AddPrompt(_("Encoded By:"));
+            S.StartHorizontalLay(wxALIGN_LEFT);
+            {
+               S.TieTextBox(wxT(""), mCopyright, 20);
+               S.TieTextBox(_("Copyright:"), mEncodedBy, 20);
+            }
+            S.EndHorizontalLay();
+
+            S.AddPrompt(_("Track Number:"));
+            S.StartHorizontalLay(wxALIGN_LEFT);
+            {
+               S.TieTextBox(wxT(""), mTrackNum, 0)->Enable(mEditTrack);
+               S.TieTextBox(_("Year:"), mYear, 0);
+            }
+            S.EndHorizontalLay();
+
+            S.AddPrompt(_("Genre:"));
+            S.StartMultiColumn(2, wxALIGN_LEFT | wxEXPAND);
+            {
+               S.SetStretchyCol(0);
+               wxArrayString dummy;
+               S.SetStyle(wxCB_SORT);
+               mGenreCombo = S.AddCombo(wxT(""), mGenre, &dummy);
+               S.Id(EditID).AddButton(_("Edit"));
+            }
+            S.EndMultiColumn();
+
+            for (int i = 0; i < mCustomTags.GetCount(); i++) {
+               S.TieTextBox(mCustomTags[i], mCustomTags[i], 0);
+               S.TieTextBox(mCustomVals[i], mCustomVals[i], 0);
+            }
+            S.SetBorder(5);
+         }
+         S.EndMultiColumn();
+      }
+      S.EndScroller();
+
+      S.StartMultiColumn(2, wxALIGN_CENTER);
+      {
+         S.Id(AddID).AddButton(_("&Add"));
+         S.Id(RemoveID).AddButton(_("&Remove"));
+      }
+      S.EndMultiColumn();
+
+      S.StartStatic(_("Template"));
+      {
+         S.StartMultiColumn(4, wxALIGN_CENTER);
+         {
+            S.Id(LoadID).AddButton(_("&Load..."));
+            S.Id(SaveID).AddButton(_("&Save..."));
+            S.AddTitle(wxT(" "));
+            S.Id(SaveDefaultsID).AddButton(_("S&et default"));
+         }
+         S.EndMultiColumn();
+      }
+      S.EndStatic();
+   }
+   S.EndVerticalLay();
+
+   if (mClear == NULL) {
+      mClear = new wxButton(this, ClearID, _("&Clear"));
+   }
+
+   S.AddStandardButtons(eOkButton | eCancelButton, mClear);
+}
+
+void TagsEditor1::PopulateGenres()
+{
+   mGenreCombo->Clear();
+   int cnt = mLocal.GetNumGenres();
+
+   // This fixes a problem on the Mac where the popup menu actually pops up,
+   // but you can't see it.
+   if (cnt == 0) {
+      mGenreCombo->Append(_("No Genres"));
+      return;
+   }
+
+   for (int i = 0; i < cnt; i++) {
+      mGenreCombo->Append(mLocal.GetGenre(i));
+   }
+}
+
+bool TagsEditor1::TransferDataFromWindow()
+{
+   ShuttleGui S(this, eIsGettingFromDialog);
+   PopulateOrExchange(S);
+
+   // These aren't handled by ShuttleGui
+   mGenre = mGenreCombo->GetValue();
+
+   // Store
+   mLocal.SetTag(TAG_TITLE, mTitle);
+   mLocal.SetTag(TAG_ARTIST, mArtist);
+   mLocal.SetTag(TAG_ALBUM, mAlbum);
+   mLocal.SetTag(TAG_TRACK, mTrackNum);
+   mLocal.SetTag(TAG_YEAR, mYear);
+   mLocal.SetTag(TAG_GENRE, mGenre);
+   mLocal.SetTag(TAG_COMMENTS, mComments);
+   mLocal.SetID3V2(mID3V2);
+#if 0
+   mLocal.Clear();
+   for (i = 0; i < cnt; i++) {
+      wxString n = mGrid->GetCellValue(i, 0);
+      wxString v = mGrid->GetCellValue(i, 1);
+
+      if (n.IsEmpty()) {
+         continue;
+      }
+
+      if (n.CmpNoCase(LABEL_ARTIST) == 0) {
+         n = TAG_ARTIST;
+      }
+      else if (n.CmpNoCase(LABEL_TITLE) == 0) {
+         n = TAG_TITLE;
+      }
+      else if (n.CmpNoCase(LABEL_ALBUM) == 0) {
+         n = TAG_ALBUM;
+      }
+      else if (n.CmpNoCase(LABEL_TRACK) == 0) {
+         n = TAG_TRACK;
+      }
+      else if (n.CmpNoCase(LABEL_YEAR) == 0) {
+         n = TAG_YEAR;
+      }
+      else if (n.CmpNoCase(LABEL_GENRE) == 0) {
+         n = TAG_GENRE;
+      }
+      else if (n.CmpNoCase(LABEL_COMMENTS) == 0) {
+         n = TAG_COMMENTS;
+      }
+
+      mLocal.SetTag(n, v);
+   }
+#endif
+   return true;
+}
+
+bool TagsEditor1::TransferDataToWindow()
+{
+   mTitle    = mLocal.GetTag(TAG_TITLE);
+   mArtist   = mLocal.GetTag(TAG_ARTIST);
+   mAlbum    = mLocal.GetTag(TAG_ALBUM);
+   mTrackNum = mLocal.GetTag(TAG_TRACK);
+   mYear     = mLocal.GetTag(TAG_YEAR);
+   mGenre    = mLocal.GetTag(TAG_GENRE);
+   mComments = mLocal.GetTag(TAG_COMMENTS);
+   mID3V2    = mLocal.GetID3V2();
+
+   ShuttleGui S(this, eIsSettingToDialog);
+   PopulateOrExchange(S);
+
+   // These aren't handled by ShuttleGui
+   mGenreCombo->SetValue(mGenre);
+
+#if 0
+   int i = 0;
+   wxString n, v;
+
+   // Disable redrawing until we're done
+   mGrid->BeginBatch();
+
+   // Delete all rows
+   if (mGrid->GetNumberRows()) {
+      mGrid->DeleteRows(0, mGrid->GetNumberRows());
+   }
+
+   // Populate the rows
+   for (bool cont = mLocal.GetFirst(n, v); cont; cont = mLocal.GetNext(n, v)) {
+      mGrid->AppendRows(1);
+
+      if (n.CmpNoCase(TAG_ARTIST) == 0) {
+         n = LABEL_ARTIST;
+      }
+      else if (n.CmpNoCase(TAG_TITLE) == 0) {
+         n = LABEL_TITLE;
+      }
+      else if (n.CmpNoCase(TAG_ALBUM) == 0) {
+         n = LABEL_ALBUM;
+      }
+      else if (n.CmpNoCase(TAG_TRACK) == 0) {
+         n = LABEL_TRACK;
+      }
+      else if (n.CmpNoCase(TAG_YEAR) == 0) {
+         n = LABEL_YEAR;
+      }
+      else if (n.CmpNoCase(TAG_COMMENTS) == 0) {
+         n = LABEL_COMMENTS;
+      }
+      else if (n.CmpNoCase(TAG_GENRE) == 0) {
+         n = LABEL_GENRE;
+
+         wxSortedArrayString g;
+         int cnt = mLocal.GetNumGenres();
+         for (int i = 0; i < cnt; i++) {
+            g.Add(mLocal.GetGenre(i));
+         }
+
+         mGrid->SetCellEditor(mGrid->GetNumberRows() - 1, 1, new ComboEditor(g, true));
+      }
+
+      mGrid->SetCellValue(i, 0, n);
+      mGrid->SetCellValue(i, 1, v);
+      i++;
+   }
+
+   // We're done, so allow the grid to redraw
+   mGrid->EndBatch();
+#endif
+   return true;
+}
+
+void TagsEditor1::OnEdit(wxCommandEvent & event)
+{
+   wxDialog dlg(this, wxID_ANY, _("Edit Genres"),
+                wxDefaultPosition, wxDefaultSize,
+                wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+
+   ShuttleGui S(&dlg, eIsCreating);
+
+   S.StartVerticalLay(true);
+   {
+      mEdit = S.AddTextWindow(wxT(""));
+   }
+   S.EndVerticalLay();
+
+   S.AddStandardButtons(eOkButton | eCancelButton,
+                        new wxButton(&dlg, ResetID, _("Reset to Defaults")));
+   dlg.Connect(ResetID,
+               wxEVT_COMMAND_BUTTON_CLICKED,
+               wxCommandEventHandler(TagsEditor1::OnReset),
+               NULL,
+               this);
+
+   wxSortedArrayString g;
+   int cnt = mLocal.GetNumGenres();
+   for (int i = 0; i < cnt; i++) {
+      g.Add(mLocal.GetGenre(i));
+   }
+
+   for (int i = 0; i < cnt; i++) {
+      mEdit->AppendText(g[i] + wxT("\n"));
+   }
+
+   dlg.Center();
+   if (dlg.ShowModal() == wxID_CANCEL) {
+      return;
+   }
+
+   wxFileName fn(FileNames::DataDir(), wxT("genres.txt"));
+   wxFile f(fn.GetFullPath(), wxFile::write);
+   if (!f.IsOpened() || !f.Write(mEdit->GetValue())) {
+      wxMessageBox(_("Unable to save genre file."), _("Reset Genres"));
+      return;
+   }
+
+   mLocal.LoadGenres();
+
+   PopulateGenres();
+}
+
+void TagsEditor1::OnReset(wxCommandEvent & event)
+{
+   int id = wxMessageBox(_("Are you sure you want to reset the genre list to defaults?"),
+                         _("Reset Genres"),
+                         wxYES_NO);
+
+   if (id == wxNO) {
+      return;
+   }
+   mLocal.LoadDefaultGenres();
+
+   wxFileName fn(FileNames::DataDir(), wxT("genres.txt"));
+   wxTextFile tf(fn.GetFullPath());
+
+   bool saved = false;
+   bool open = (tf.Exists() && tf.Open()) ||
+               (!tf.Exists() && tf.Create());
+
+   if (!open) {
+      wxMessageBox(_("Unable to open genre file."), _("Reset Genres"));
+      mLocal.LoadGenres();
+      return;
+   }
+
+   tf.Clear();
+   int cnt = mLocal.GetNumGenres();
+   for (int i = 0; i < cnt; i++) {
+      tf.AddLine(mLocal.GetGenre(i));
+   }
+
+   tf.Write();
+   if (!tf.Write()) {
+      wxMessageBox(_("Unable to save genre file."), _("Reset Genres"));
+      mLocal.LoadGenres();
+      return;
+   }
+
+   mLocal.LoadGenres();
+
+   PopulateGenres();
+
+   wxSortedArrayString g;
+   cnt = mLocal.GetNumGenres();
+   for (int i = 0; i < cnt; i++) {
+      g.Add(mLocal.GetGenre(i));
+   }
+
+   mEdit->SetValue(wxT(""));
+   for (int i = 0; i < cnt; i++) {
+      mEdit->AppendText(g[i] + wxT("\n"));
+   }
+}
+
+void TagsEditor1::OnClear(wxCommandEvent & event)
+{
+   mLocal.Clear();
+
+   TransferDataToWindow();
+}
+
+void TagsEditor1::OnLoad(wxCommandEvent & event)
+{
+   wxString fn;
+
+   // Ask the user for the real name
+   fn = FileSelector(_("Save Metadata As:"),
+                     FileNames::DataDir(),
+                     wxT("Tags.xml"),
+                     wxT("xml"),
+                     wxT("*.xml"),
+                     wxOPEN,
+                     this);
+
+   // User canceled...
+   if (fn.IsEmpty()) {
+      return;
+   }
+
+   // Clear current contents
+   mLocal.Clear();
+
+   // Load the metadata
+   XMLFileReader reader;
+   if (!reader.Parse(&mLocal, fn)) {
+      // Inform user of load failure
+      wxMessageBox(reader.GetErrorStr(),
+                   _("Error loading metadata"),
+                   wxOK | wxCENTRE,
+                   this);
+   }
+
+   TransferDataToWindow();
+
+   return;
+}
+
+void TagsEditor1::OnSave(wxCommandEvent & event)
+{
+   wxString fn;
+
+   // Ask the user for the real name
+   fn = FileSelector(_("Save Metadata As:"),
+                     FileNames::DataDir(),
+                     wxT("Tags.xml"),
+                     wxT("xml"),
+                     wxT("*.xml"),
+                     wxSAVE | wxOVERWRITE_PROMPT,
+                     this);
+
+   // User canceled...
+   if (fn.IsEmpty()) {
+      return;
+   }
+
+   // Create/Open the file
+   XMLFileWriter writer;
+   writer.Open(fn, wxT("wb"));
+
+   // Complain if open failed
+   if (!writer.IsOpened()) {
+      // Constructor will emit message
+      return;
+   }
+
+   // Write the metadata
+   mLocal.WriteXML(writer);
+
+   // Close the file
+   writer.Close();
+
+   return;
+}
+
+void TagsEditor1::OnSaveDefaults(wxCommandEvent & event)
+{
+   TransferDataFromWindow();
+
+   gPrefs->DeleteGroup(wxT("/Tags"));
+   gPrefs->Write(wxT("/Tags/ID3V2"), mLocal.GetID3V2());
+
+   wxString n, v;
+   for (bool cont = mLocal.GetFirst(n, v); cont; cont = mLocal.GetNext(n, v)) {
+      gPrefs->Write(wxT("/Tags/") + n, v);
+   }
+}
+
+void TagsEditor1::OnAdd(wxCommandEvent & event)
+{
+   mCustomTags.Add(wxT(""));
+   mCustomVals.Add(wxT(""));
+   Rebuild();
+}
+
+void TagsEditor1::OnRemove(wxCommandEvent & event)
+{
+   int cnt = mCustomTags.GetCount();
+
+   if (cnt > 0) {
+      mCustomTags.RemoveAt(cnt - 1);
+      mCustomVals.RemoveAt(cnt - 1);
+   }
+
+   Rebuild();
+}
+
+void TagsEditor1::OnOk(wxCommandEvent & event)
+{
+   if (!Validate() || !TransferDataFromWindow()) {
+      return;
+   }
+
+   *mTags = mLocal;
+
+   wxRect r = GetRect();
+   gPrefs->Write(wxT("/TagsEditor1/x"), r.x);
+   gPrefs->Write(wxT("/TagsEditor1/y"), r.y);
+   gPrefs->Write(wxT("/TagsEditor1/width"), r.width);
+   gPrefs->Write(wxT("/TagsEditor1/height"), r.height);
+
+   EndModal(wxID_OK);
+}
+
+void TagsEditor1::OnCancel(wxCommandEvent & event)
+{
+   EndModal(wxID_CANCEL);
+}
+
+BEGIN_EVENT_TABLE(TagsEditor2, wxDialog)
+   EVT_NOTEBOOK_PAGE_CHANGING(wxID_ANY, TagsEditor2::OnPage)
+   EVT_BUTTON(EditID, TagsEditor2::OnEdit)
+   EVT_BUTTON(ResetID, TagsEditor2::OnReset)
+   EVT_BUTTON(ClearID, TagsEditor2::OnClear)
+   EVT_BUTTON(LoadID, TagsEditor2::OnLoad)
+   EVT_BUTTON(SaveID, TagsEditor2::OnSave)
+   EVT_BUTTON(SaveDefaultsID, TagsEditor2::OnSaveDefaults)
+   EVT_BUTTON(AddID, TagsEditor2::OnAdd)
+   EVT_BUTTON(RemoveID, TagsEditor2::OnRemove)
+   EVT_BUTTON(wxID_CANCEL, TagsEditor2::OnCancel)
+   EVT_BUTTON(wxID_OK, TagsEditor2::OnOk)
+END_EVENT_TABLE()
+
+TagsEditor2::TagsEditor2(wxWindow * parent,
+                       wxString title,
+                       Tags * tags,
+                       bool editTitle,
+                       bool editTrack)
+:  wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
+            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
+   mTags(tags),
+   mEditTitle(editTitle),
+   mEditTrack(editTrack)
+{
+   mTransfering = true; // avoid endless update loop
+   mGrid = NULL;
+   mBasic = NULL;
+   mAdvanced = NULL;
+
+   // Make a local copy of the passed in tags
+   mLocal = *mTags;
+
+   // Make local backup copies of metadata
+   mTitle    = mLocal.GetTag(TAG_TITLE);
+   mArtist   = mLocal.GetTag(TAG_ARTIST);
+   mAlbum    = mLocal.GetTag(TAG_ALBUM);
+   mTrackNum = mLocal.GetTag(TAG_TRACK);
+   mYear     = mLocal.GetTag(TAG_YEAR);
+   mGenre    = mLocal.GetTag(TAG_GENRE);
+   mComments = mLocal.GetTag(TAG_COMMENTS);
+   mID3V2    = mLocal.GetID3V2();
+
+   // Build, size, and position the dialog
+   ShuttleGui S(this, eIsCreating);
+   PopulateOrExchange(S);
+   PopulateGenres();
+   GetSizer()->AddSpacer(5);
+   Layout();
+   Fit();
+   Center();
+   SetSizeHints(GetSize());
+
+   // Override size and position with last saved
+   wxRect r = GetRect();
+   gPrefs->Read(wxT("/TagsEditor2/x"), &r.x, r.x);
+   gPrefs->Read(wxT("/TagsEditor2/y"), &r.y, r.y);
+   gPrefs->Read(wxT("/TagsEditor2/width"), &r.width, r.width);
+   gPrefs->Read(wxT("/TagsEditor2/height"), &r.height, r.height);
+   Move(r.GetPosition());
+   SetSize(r.GetSize());
+
+   // Show the user the last page viewed
+   mNotebook->SetSelection(gPrefs->Read(wxT("/TagsEditor2/page"), 0l));
+
+   // Resize value column width based on width of columns and the vertical scrollbar
+   wxScrollBar sb(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
+   r = mGrid->GetClientRect();
+   r.width -= mGrid->GetColSize(0);
+   r.width -= sb.GetSize().GetWidth();
+   r.width -= 10;
+   r.width -= r.x;
+   mGrid->SetColSize(1, r.width);
+
+   // Populate all the controls
+   TransferDataToWindow();
+
+   // Done building
+   mTransfering = false;
+}
+
+TagsEditor2::~TagsEditor2()
+{
+}
+
+void TagsEditor2::PopulateOrExchange(ShuttleGui & S)
+{
+   mNotebook = S.StartNotebook();
+   {
+      /***/
+
+      if (mBasic == NULL) {
+         mBasic = S.StartNotebookPage(_("Basic"));
+         mBasic->GetSizer()->SetMinSize(wxDefaultSize);
+      }
+
+      // "Basic" notebook page
+      {
+         S.StartVerticalLay();
+         {
+            S.StartMultiColumn(2, wxALIGN_LEFT | wxEXPAND);
+            {
+               S.SetBorder(3);
+               S.SetStretchyCol(1);
+               S.TieTextBox(_("Title:"), mTitle, 32)->Enable(mEditTitle);
+               S.TieTextBox(_("Artist:"), mArtist, 32);
+               S.TieTextBox(_("Album:"), mAlbum, 32);
+               S.TieTextBox(_("Track Number:"), mTrackNum, 4)->Enable(mEditTrack);
+               S.TieTextBox(_("Year:"), mYear, 4);
+               S.TieTextBox(_("Comments:"), mComments, 32);
+               S.AddPrompt(_("Genre:"));
+               S.StartHorizontalLay();
+               {
+                  wxArrayString dummy;
+                  S.SetStyle(wxCB_SORT);
+                  mGenreCombo = S.AddCombo(wxT(""), mGenre, &dummy);
+                  S.Id(EditID).AddButton(_("Edit"));
+                  S.Id(ResetID).AddButton(_("Reset"));
+               }
+               S.EndHorizontalLay();
+               S.SetBorder(5);
+            }
+            S.EndMultiColumn();
+
+            S.StartStatic(_("Template"));
+            {
+               S.StartMultiColumn(4, wxALIGN_CENTER);
+               {
+                  S.Id(LoadID).AddButton(_("&Load..."));
+                  S.Id(SaveID).AddButton(_("&Save..."));
+                  S.AddTitle(wxT(" "));
+                  S.Id(SaveDefaultsID).AddButton(_("S&et default"));
+               }
+               S.EndMultiColumn();
+            }
+            S.EndStatic();
+         }
+         S.EndVerticalLay();
+      }
+      S.EndNotebookPage();
+
+      /***/
+
+      if (mAdvanced == NULL) {
+         mAdvanced = S.StartNotebookPage(_("Advanced"));
+         mAdvanced->GetSizer()->SetMinSize(wxDefaultSize);
+      }
+
+      // "Advanced" notebook page
+      {
+         S.StartVerticalLay();
+         {
+            S.StartHorizontalLay(wxALIGN_LEFT, false);
+            {
+               S.AddUnits(_("Press F2 or double click to edit."));
+            }
+            S.EndHorizontalLay();
+
+            if (mGrid == NULL) {
+               mGrid = new Grid(S.GetParent(), wxID_ANY);
+
+               wxArrayString cs(WXSIZEOF(names), names);
+               mCombo = new ComboEditor(cs, true);
+
+               // Build the initial (empty) grid
+               mGrid->CreateGrid(0, 2);
+               mGrid->SetRowLabelSize(0);
+               mGrid->SetDefaultCellAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
+               mGrid->SetColLabelValue(0, _("Name"));
+               mGrid->SetColLabelValue(1, _("Value"));
+
+               wxGridCellAttr *attr = new wxGridCellAttr();
+               attr->SetEditor(mCombo);
+               attr->SetBackgroundColour(*wxWHITE);
+               mGrid->SetColAttr(0, attr);
+
+               attr = new wxGridCellAttr();
+               attr->SetBackgroundColour(*wxWHITE);
+               mGrid->SetColAttr(1, attr);
+
+               // Resize the name column and set default row height.
+               wxComboBox tc(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, cs);
+               mGrid->SetColSize(0, tc.GetSize().x);
+               mGrid->SetColMinimalWidth(0, tc.GetSize().x);
+               mGrid->SetDefaultRowSize(tc.GetSize().y);
+            }
+            S.Prop(true);
+            S.AddWindow(mGrid, wxEXPAND);
+
+            S.StartMultiColumn(2, wxALIGN_CENTER);
+            {
+               S.Id(AddID).AddButton(_("&Add"));
+               S.Id(RemoveID).AddButton(_("&Remove"));
+            }
+            S.EndMultiColumn();
+         }
+         S.EndVerticalLay();
+      }
+      S.EndNotebookPage();
+   }
+   S.EndNotebook();
+
+   S.StartMultiColumn(3, wxALIGN_LEFT | wxEXPAND);
+   {
+      S.SetStretchyCol(0);
+      S.Id(ClearID).AddButton(_("Clea&r"), wxALIGN_LEFT);
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+   }
+   S.EndMultiColumn();
+}
+
+void TagsEditor2::PopulateGenres()
+{
+   mGenreCombo->Clear();
+   int cnt = mLocal.GetNumGenres();
+
+   // This fixes a problem on the Mac where the popup menu actually pops up,
+   // but you can't see it.
+   if (cnt == 0) {
+      mGenreCombo->Append(_("No Genres"));
+      return;
+   }
+
+   for (int i = 0; i < cnt; i++) {
+      mGenreCombo->Append(mLocal.GetGenre(i));
+   }
+}
+
+bool TagsEditor2::Validate()
+{
+#if 0
+   wxString errorString =
+      _("Maximum length of attribute '%s' is %d characters. Data was truncated.");
+
+   if(!mLocal.mID3V2)
+   {
+      if(mLocal.mTitle.Length() > 30)
+      {
+         wxMessageBox(wxString::Format(errorString, _("Title"), 30));
+
+         mLocal.mTitle = mLocal.mTitle.Left(30);
+         TransferDataToWindow();
+
+         return FALSE;
+      }
+
+      if(mLocal.mArtist.Length() > 30)
+      {
+         wxMessageBox(wxString::Format(errorString, _("Artist"), 30));
+
+         mLocal.mArtist = mLocal.mArtist.Left(30);
+         TransferDataToWindow();
+
+         return FALSE;
+      }
+
+      if(mLocal.mAlbum.Length() > 30)
+      {
+         wxMessageBox(wxString::Format(errorString, _("Album"), 30));
+
+         mLocal.mAlbum = mLocal.mAlbum.Left(30);
+         TransferDataToWindow();
+
+         return FALSE;
+      }
+
+      if(mLocal.mYear.Length() > 4)
+      {
+         wxMessageBox(wxString::Format(errorString, _("Year"), 4));
+
+         mLocal.mYear = mLocal.mYear.Left(4);
+         TransferDataToWindow();
+
+         return FALSE;
+      }
+
+      if(mLocal.mComments.Length() > 30)
+      {
+         wxMessageBox(wxString::Format(errorString, _("Comments"), 30));
+
+         mLocal.mComments = mLocal.mComments.Left(30);
+         TransferDataToWindow();
+
+         return FALSE;
+      }
+   }
+#endif
+   return true;
+}
+
+bool TagsEditor2::TransferDataFromWindow()
+{
+   switch (mNotebook->GetSelection())
+   {
+      case 0:
+         return TransferDataFromBasic();
+      break;
+
+      case 1:
+         return TransferDataFromAdvanced();
+      break;
+   }
+
+   return true;
+}
+
+bool TagsEditor2::TransferDataToWindow()
+{
+   switch (mNotebook->GetSelection())
+   {
+      case 0:
+         return TransferDataToBasic();
+      break;
+
+      case 1:
+         return TransferDataToAdvanced();
+      break;
+   }
+
+   return true;
+}
+
+bool TagsEditor2::TransferDataFromBasic()
+{
+   ShuttleGui S(this, eIsGettingFromDialog);
+   PopulateOrExchange(S);
+
+   // These aren't handled by ShuttleGui
+   mGenre = mGenreCombo->GetValue();
+
+   // Store
+   mLocal.SetTag(TAG_TITLE, mTitle);
+   mLocal.SetTag(TAG_ARTIST, mArtist);
+   mLocal.SetTag(TAG_ALBUM, mAlbum);
+   mLocal.SetTag(TAG_TRACK, mTrackNum);
+   mLocal.SetTag(TAG_YEAR, mYear);
+   mLocal.SetTag(TAG_GENRE, mGenre);
+   mLocal.SetTag(TAG_COMMENTS, mComments);
+   mLocal.SetID3V2(mID3V2);
+
+   return true;
+}
+
+bool TagsEditor2::TransferDataFromAdvanced()
+{
+   int i, cnt = mGrid->GetNumberRows();
+
+   mLocal.Clear();
+   for (i = 0; i < cnt; i++) {
+      wxString n = mGrid->GetCellValue(i, 0);
+      wxString v = mGrid->GetCellValue(i, 1);
+
+      if (n.IsEmpty()) {
+         continue;
+      }
+
+      if (n.CmpNoCase(LABEL_ARTIST) == 0) {
+         n = TAG_ARTIST;
+      }
+      else if (n.CmpNoCase(LABEL_TITLE) == 0) {
+         n = TAG_TITLE;
+      }
+      else if (n.CmpNoCase(LABEL_ALBUM) == 0) {
+         n = TAG_ALBUM;
+      }
+      else if (n.CmpNoCase(LABEL_TRACK) == 0) {
+         n = TAG_TRACK;
+      }
+      else if (n.CmpNoCase(LABEL_YEAR) == 0) {
+         n = TAG_YEAR;
+      }
+      else if (n.CmpNoCase(LABEL_GENRE) == 0) {
+         n = TAG_GENRE;
+      }
+      else if (n.CmpNoCase(LABEL_COMMENTS) == 0) {
+         n = TAG_COMMENTS;
+      }
+
+      mLocal.SetTag(n, v);
+   }
+
+   return true;
+}
+
+bool TagsEditor2::TransferDataToBasic()
+{
+   mTitle    = mLocal.GetTag(TAG_TITLE);
+   mArtist   = mLocal.GetTag(TAG_ARTIST);
+   mAlbum    = mLocal.GetTag(TAG_ALBUM);
+   mTrackNum = mLocal.GetTag(TAG_TRACK);
+   mYear     = mLocal.GetTag(TAG_YEAR);
+   mGenre    = mLocal.GetTag(TAG_GENRE);
+   mComments = mLocal.GetTag(TAG_COMMENTS);
+   mID3V2    = mLocal.GetID3V2();
+
+   ShuttleGui S(this, eIsSettingToDialog);
+   PopulateOrExchange(S);
+
+   // These aren't handled by ShuttleGui
+   mGenreCombo->SetValue(mGenre);
+
+   return true;
+}
+
+bool TagsEditor2::TransferDataToAdvanced()
+{
+   int i = 0;
+   wxString n, v;
+
+   // Disable redrawing until we're done
+   mGrid->BeginBatch();
+
+   // Delete all rows
+   if (mGrid->GetNumberRows()) {
+      mGrid->DeleteRows(0, mGrid->GetNumberRows());
+   }
+
+   // Populate the rows
+   for (bool cont = mLocal.GetFirst(n, v); cont; cont = mLocal.GetNext(n, v)) {
+      mGrid->AppendRows(1);
+
+      if (n.CmpNoCase(TAG_ARTIST) == 0) {
+         n = LABEL_ARTIST;
+      }
+      else if (n.CmpNoCase(TAG_TITLE) == 0) {
+         n = LABEL_TITLE;
+      }
+      else if (n.CmpNoCase(TAG_ALBUM) == 0) {
+         n = LABEL_ALBUM;
+      }
+      else if (n.CmpNoCase(TAG_TRACK) == 0) {
+         n = LABEL_TRACK;
+      }
+      else if (n.CmpNoCase(TAG_YEAR) == 0) {
+         n = LABEL_YEAR;
+      }
+      else if (n.CmpNoCase(TAG_COMMENTS) == 0) {
+         n = LABEL_COMMENTS;
+      }
+      else if (n.CmpNoCase(TAG_GENRE) == 0) {
+         n = LABEL_GENRE;
+
+         wxSortedArrayString g;
+         int cnt = mLocal.GetNumGenres();
+         for (int i = 0; i < cnt; i++) {
+            g.Add(mLocal.GetGenre(i));
+         }
+
+         mGrid->SetCellEditor(mGrid->GetNumberRows() - 1, 1, new ComboEditor(g, true));
+      }
+
+      mGrid->SetCellValue(i, 0, n);
+      mGrid->SetCellValue(i, 1, v);
+      i++;
+   }
+
+   // We're done, so allow the grid to redraw
+   mGrid->EndBatch();
+
+   return true;
+}
+
+void TagsEditor2::OnPage(wxNotebookEvent & event)
+{
+   if (mTransfering) { // avoid endless update loop
+      return;
+   }
+
+   if (mGrid->IsCellEditControlShown()) {
+      mGrid->HideCellEditControl();
+      mGrid->SaveEditControlValue();
+   }
+
+   switch (event.GetOldSelection())
+   {
+      case 0:
+         TransferDataFromBasic();
+         TransferDataToAdvanced();
+      break;
+
+      case 1:
+         TransferDataFromAdvanced();
+         TransferDataToBasic();
+      break;
+   }
+}
+
+void TagsEditor2::OnEdit(wxCommandEvent & event)
+{
+   wxDialog dlg(this, wxID_ANY, _("Edit Genres"),
+                wxDefaultPosition, wxDefaultSize,
+                wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+   wxTextCtrl *tc;
+
+   ShuttleGui S(&dlg, eIsCreating);
+
+   S.StartVerticalLay(true);
+   {
+      tc = S.AddTextWindow(wxT(""));
+   }
+   S.EndVerticalLay();
+
+   S.StartHorizontalLay(wxALIGN_RIGHT, false);
+   {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+      S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+      S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+#endif
+   }
+   S.EndHorizontalLay();
+
+   wxSortedArrayString g;
+   int cnt = mLocal.GetNumGenres();
+   for (int i = 0; i < cnt; i++) {
+      g.Add(mLocal.GetGenre(i));
+   }
+
+   for (int i = 0; i < cnt; i++) {
+      tc->AppendText(g[i] + wxT("\n"));
+   }
+
+   dlg.Center();
+   if (dlg.ShowModal() == wxID_CANCEL) {
+      return;
+   }
+
+   wxFileName fn(FileNames::DataDir(), wxT("genres.txt"));
+   wxFile f(fn.GetFullPath(), wxFile::write);
+   if (!f.IsOpened() || !f.Write(tc->GetValue())) {
+      wxMessageBox(_("Unable to save genre file."), _("Reset Genres"));
+      return;
+   }
+
+   mLocal.LoadGenres();
+
+   PopulateGenres();
+}
+
+void TagsEditor2::OnReset(wxCommandEvent & event)
+{
+   int id = wxMessageBox(_("Are you sure you want to reset the genre list to defaults?"),
+                         _("Reset Genres"),
+                         wxYES_NO);
+
+   if (id == wxNO) {
+      return;
+   }
+   mLocal.LoadDefaultGenres();
+
+   wxFileName fn(FileNames::DataDir(), wxT("genres.txt"));
+   wxTextFile tf(fn.GetFullPath());
+
+   bool saved = false;
+   bool open = (tf.Exists() && tf.Open()) ||
+               (!tf.Exists() && tf.Create());
+
+   if (!open) {
+      wxMessageBox(_("Unable to open genre file."), _("Reset Genres"));
+      mLocal.LoadGenres();
+      return;
+   }
+
+   tf.Clear();
+   int cnt = mLocal.GetNumGenres();
+   for (int i = 0; i < cnt; i++) {
+      tf.AddLine(mLocal.GetGenre(i));
+   }
+
+   tf.Write();
+   if (!tf.Write()) {
+      wxMessageBox(_("Unable to save genre file."), _("Reset Genres"));
+      mLocal.LoadGenres();
+      return;
+   }
+
+   mLocal.LoadGenres();
+
+   PopulateGenres();
+}
+
+void TagsEditor2::OnClear(wxCommandEvent & event)
+{
+   mLocal.Clear();
+
+   TransferDataToWindow();
+}
+
+void TagsEditor2::OnLoad(wxCommandEvent & event)
+{
+   wxString fn;
+
+   // Ask the user for the real name
+   fn = FileSelector(_("Save Metadata As:"),
+                     FileNames::DataDir(),
+                     wxT("Tags.xml"),
+                     wxT("xml"),
+                     wxT("*.xml"),
+                     wxOPEN,
+                     this);
+
+   // User canceled...
+   if (fn.IsEmpty()) {
+      return;
+   }
+
+   // Clear current contents
+   mLocal.Clear();
+
+   // Load the metadata
+   XMLFileReader reader;
+   if (!reader.Parse(&mLocal, fn)) {
+      // Inform user of load failure
+      wxMessageBox(reader.GetErrorStr(),
+                   _("Error loading metadata"),
+                   wxOK | wxCENTRE,
+                   this);
+   }
+
+   TransferDataToWindow();
+
+   return;
+}
+
+void TagsEditor2::OnSave(wxCommandEvent & event)
+{
+   wxString fn;
+
+   // Ask the user for the real name
+   fn = FileSelector(_("Save Metadata As:"),
+                     FileNames::DataDir(),
+                     wxT("Tags.xml"),
+                     wxT("xml"),
+                     wxT("*.xml"),
+                     wxSAVE | wxOVERWRITE_PROMPT,
+                     this);
 
    // User canceled...
    if (fn.IsEmpty()) {
@@ -1122,7 +2489,7 @@ void TagsEditor::OnSave(wxCommandEvent & event)
    }
 
    // Write the metadata
-   mTags->WriteXML(writer);
+   mLocal.WriteXML(writer);
 
    // Close the file
    writer.Close();
@@ -1130,259 +2497,54 @@ void TagsEditor::OnSave(wxCommandEvent & event)
    return;
 }
 
-void TagsEditor::OnSaveDefaults(wxCommandEvent & event)
+void TagsEditor2::OnSaveDefaults(wxCommandEvent & event)
 {
+   TransferDataFromWindow();
+
    gPrefs->DeleteGroup(wxT("/Tags"));
-   gPrefs->Write(wxT("/Tags/ID3V2"), mTags->mID3V2);
-   gPrefs->Write(wxT("/Tags/Title"), mTags->mTitle);
-   gPrefs->Write(wxT("/Tags/Artist"), mTags->mArtist);
-   gPrefs->Write(wxT("/Tags/Album"), mTags->mAlbum);
-   gPrefs->Write(wxT("/Tags/Year"), mTags->mYear);
-   gPrefs->Write(wxT("/Tags/Comments"), mTags->mComments);
-   gPrefs->Write(wxT("/Tags/TrackNumber"), mTags->mTrackNum);
-   gPrefs->Write(wxT("/Tags/Genre"), mTags->mGenre);
+   gPrefs->Write(wxT("/Tags/ID3V2"), mLocal.GetID3V2());
 
-   for (size_t i = 0; i < mTags->mExtraNames.GetCount(); i++) {
-      gPrefs->Write(wxT("/Tags/") + mTags->mExtraNames[i],
-                    mTags->mExtraValues[i]);
+   wxString n, v;
+   for (bool cont = mLocal.GetFirst(n, v); cont; cont = mLocal.GetNext(n, v)) {
+      gPrefs->Write(wxT("/Tags/") + n, v);
    }
 }
 
-void TagsEditor::RebuildMainPanel()
+void TagsEditor2::OnAdd(wxCommandEvent & event)
 {
-   GetMainPanel()->DestroyChildren();
-
-   if (mExtraNameTexts) {
-      delete[] mExtraNameTexts;
-      mExtraNameTexts = NULL;
-   }
-
-   if (mExtraNameTexts) {
-      delete[] mExtraValueTexts;
-      mExtraValueTexts = NULL;
-   }
-
-   BuildMainPanel();
-   GetMainPanel()->Layout();
-   GetMainPanel()->Fit();
-   Layout();
-   Fit();
-
-   GetExtraPanel()->SetSize(GetMainPanel()->GetSize().GetWidth(), -1);
-
-   TryAutoExpand();
-
-   mTransfering = true;
-   TransferDataToWindow();
-   mTransfering = false;
+   mGrid->AppendRows();
 }
 
-void TagsEditor::BuildMainPanel()
+void TagsEditor2::OnRemove(wxCommandEvent & event)
 {
-   wxPanel *parent = GetMainPanel();
+   int row = mGrid->GetCursorRow();
 
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-
-   /***/
-
-   wxString formats[2];
-   formats[0] = _("ID3v1 (more compatible)");
-   formats[1] = _("ID3v2 (more flexible)");
-
-   mFormatRadioBox = new wxRadioBox(parent, FormatID, wxString(_("Format")) + wxT(":"),
-                                    wxDefaultPosition, wxDefaultSize,
-                                    2, formats,
-                                    0, wxRA_VERTICAL);
-   mainSizer->Add(mFormatRadioBox, 1, wxEXPAND | wxALL, 7);
-
-   /***/
-   
-   wxFlexGridSizer *gridSizer = new wxFlexGridSizer(2, 0, 0);
-
-   wxStaticText *item3 =
-       new wxStaticText(parent, StaticTextID, wxString(_("Title")) + wxT(":"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   gridSizer->Add(item3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 3);
-
-   mTitleText =
-       new wxTextCtrl(parent, TitleTextID, wxT(""), wxDefaultPosition,
-                      wxSize(200, -1), 0);
-   gridSizer->Add(mTitleText, 1, wxEXPAND | wxALL, 3);
-
-   wxStaticText *item5 =
-       new wxStaticText(parent, StaticTextID, wxString(_("Artist")) + wxT(":"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   gridSizer->Add(item5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 3);
-
-   mArtistText =
-       new wxTextCtrl(parent, ArtistTextID, wxT(""), wxDefaultPosition,
-                      wxSize(200, -1), 0);
-   gridSizer->Add(mArtistText, 1, wxEXPAND | wxALL, 3);
-
-   wxStaticText *item7 =
-       new wxStaticText(parent, StaticTextID, wxString(_("Album")) + wxT(":"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   gridSizer->Add(item7, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 3);
-
-   mAlbumText =
-       new wxTextCtrl(parent, AlbumTextID, wxT(""), wxDefaultPosition,
-                      wxSize(200, -1), 0);
-   gridSizer->Add(mAlbumText, 1, wxEXPAND | wxALL, 3);
-
-   mainSizer->Add(gridSizer, 0, wxALIGN_CENTRE | wxALL, 7);
-
-   /***/
-   
-   wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   wxStaticText *item9 =
-       new wxStaticText(parent, StaticTextID, wxString(_("Track Number")) + wxT(":"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   hSizer->Add(item9, 0, wxALIGN_CENTRE | wxALL, 3);
-
-   mTrackNumText = 
-       new wxTextCtrl(parent, TrackNumTextID, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   hSizer->Add(mTrackNumText, 0, wxALIGN_CENTRE | wxALL, 3);
-
-   wxStaticText *item11 =
-       new wxStaticText(parent, StaticTextID, wxString(_("Year")) + wxT(":"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   hSizer->Add(item11, 0, wxALIGN_CENTRE | wxALL, 3);
-
-   mYearText =
-       new wxTextCtrl(parent, YearTextID, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   hSizer->Add(mYearText, 0, wxALIGN_CENTRE | wxALL, 3);
-   
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 7);
-
-   /***/
-
-   gridSizer = new wxFlexGridSizer(2, 0, 0);
-
-   wxStaticText *item20 =
-       new wxStaticText(parent, StaticTextID, wxString(_("Genre")) + wxT(":"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   gridSizer->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 3);
-
-	wxArrayString sortedGenres;
-	for(int i=0; i<GetNumGenres(); i++)
-		sortedGenres.Add(GetGenreNum(i));
-	sortedGenres.Sort();
-
-   mGenreChoice =
-       new wxChoice(parent, GenreID,
-                    wxDefaultPosition, wxSize(-1, -1),
-                    sortedGenres);
-   mGenreChoice->SetStringSelection(wxT("Pop")); // sensible default
-   gridSizer->Add(mGenreChoice, 1, wxEXPAND | wxALL, 3);
-   
-   wxStaticText *item22 =
-       new wxStaticText(parent, StaticTextID, wxString(_("Comments")) + wxT(":"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   gridSizer->Add(item22, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 3);
-
-   mCommentsText =
-       new wxTextCtrl(parent, CommentsTextID, wxT(""), wxDefaultPosition,
-                      wxSize(200, -1), 0);
-   gridSizer->Add(mCommentsText, 1, wxEXPAND | wxALL, 3);
-   
-   mainSizer->Add(gridSizer, 0, wxALIGN_CENTRE | wxALL, 7);
-
-   /***/
-
-   int len = (int)mTags->mExtraNames.GetCount();
-   int i;
-
-   mExtraNameTexts = new wxTextCtrl*[len];
-   mExtraValueTexts = new wxTextCtrl*[len];
-
-   gridSizer = new wxFlexGridSizer(2, 0, 0);
-   
-   for(i=0; i<len; i++) {
-      mExtraNameTexts[i] =
-         new wxTextCtrl(parent, FirstExtraID+(2*i)+0, wxT(""),
-                        wxDefaultPosition, wxSize(100, -1));
-      gridSizer->Add(mExtraNameTexts[i], 0, wxEXPAND | wxALL, 3);
-
-      mExtraValueTexts[i] =
-         new wxTextCtrl(parent, FirstExtraID+(2*i)+1, wxT(""),
-                        wxDefaultPosition, wxSize(200, -1));
-      gridSizer->Add(mExtraValueTexts[i], 1, wxEXPAND | wxALL, 3);
+   if (row >= 0) {
+      mGrid->DeleteRows(row, 1);
    }
-
-   mainSizer->Add(gridSizer, 0, wxEXPAND | wxALL, 7);
-
-   parent->SetSizer(mainSizer);
-   parent->Layout();
-   parent->Fit();
 }
 
-void TagsEditor::BuildExtraPanel()
+void TagsEditor2::OnOk(wxCommandEvent & event)
 {
-   wxPanel *parent = GetExtraPanel();
+   if (!Validate() || !TransferDataFromWindow()) {
+      return;
+   }
 
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+   *mTags = mLocal;
 
-      /***/
+   wxRect r = GetRect();
+   gPrefs->Write(wxT("/TagsEditor2/x"), r.x);
+   gPrefs->Write(wxT("/TagsEditor2/y"), r.y);
+   gPrefs->Write(wxT("/TagsEditor2/width"), r.width);
+   gPrefs->Write(wxT("/TagsEditor2/height"), r.height);
+   gPrefs->Write(wxT("/TagsEditor2/page"), mNotebook->GetSelection());
 
-   wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
+   EndModal(wxID_OK);
+}
 
-   wxButton *fewer =
-       new wxButton(parent, FewerID, _("&Fewer"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   hSizer->Add(fewer, 0, wxALIGN_CENTRE | wxALL, 3);
-
-   wxButton *more =
-       new wxButton(parent, MoreID, _("&More"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   hSizer->Add(more, 0, wxALIGN_CENTRE | wxALL, 3);
-
-   hSizer->Add(10, 1, wxEXPAND);
-
-   wxButton *clear =
-       new wxButton(parent, ClearID, _("&Clear"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   hSizer->Add(clear, 0, wxALIGN_CENTRE | wxALL, 3);
-
-   mainSizer->Add(hSizer, 0, wxEXPAND | wxALL, 7);
-
-      /***/
-   
-   wxStaticBoxSizer *staticBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL,
-                                                     parent,
-                                                     _("Template"));
-
-   wxButton *load =
-       new wxButton(parent, LoadID, _("&Load..."), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   staticBoxSizer->Add(load, 0, wxALIGN_CENTRE | wxALL, 3);
-
-   wxButton *save =
-       new wxButton(parent, SaveID, _("&Save..."), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   staticBoxSizer->Add(save, 0, wxALIGN_CENTRE | wxALL, 3);
-
-   staticBoxSizer->Add(1, 1, wxEXPAND);
-
-   wxButton *defaultButton =
-       new wxButton(parent, SaveDefaultsID, _("S&et default"),
-                    wxDefaultPosition, wxDefaultSize, 0);
-   staticBoxSizer->Add(defaultButton, 0, wxALIGN_CENTRE | wxALL, 3);
-
-   mainSizer->Add(staticBoxSizer, 0, wxEXPAND | wxALL, 7);
-
-      /***/
-   
-   mainSizer->Add(CreateStdButtonSizer(parent, eCancelButton|eOkButton), 0, wxEXPAND);
-   wxButton * OKButton;
-   OKButton = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
-   OKButton->SetLabel(_("&Done"));
-
-   parent->SetSizer(mainSizer);
-   parent->Layout();
-   parent->Fit();
+void TagsEditor2::OnCancel(wxCommandEvent & event)
+{
+   EndModal(wxID_CANCEL);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
@@ -1394,6 +2556,6 @@ void TagsEditor::BuildExtraPanel()
 // End:
 //
 // vim: et sts=3 sw=3
-// arch-tag: 94f72c32-970b-4f4e-bbf3-3880fce7b965
+// arch-tag: 94f72c20-970b-4f4e-bbf3-3880fce7b965
 
 

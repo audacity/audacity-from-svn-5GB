@@ -30,158 +30,292 @@
 #define __AUDACITY_TAGS__
 
 #include "Audacity.h"
-#include "widgets/ExpandingToolBar.h"
+#include "widgets/Grid.h"
 #include "xml/XMLTagHandler.h"
 
-#include <wx/string.h>
 #include <wx/dialog.h>
+#include <wx/hashmap.h>
+#include <wx/notebook.h>
+#include <wx/string.h>
 
-#ifdef USE_LIBFLAC
-#include "FLAC++/encoder.h"
-#endif
-
-#ifdef USE_LIBVORBIS
-#include <vorbis/vorbisenc.h>
-#endif
-
-class wxRadioBox;
-class wxTextCtrl;
+class wxButton;
 class wxChoice;
+class wxComboBox;
+class wxGridCellChoiceEditor;
+class wxRadioButton;
+class wxTextCtrl;
 
+class Grid;
+class ShuttleGui;
 class TagsEditor;
+
+WX_DECLARE_STRING_HASH_MAP(wxString, TagMap);
+
+#define TAG_TITLE     wxT("TITLE")
+#define TAG_ARTIST   wxT("ARTIST")
+#define TAG_ALBUM    wxT("ALBUM")
+#define TAG_TRACK    wxT("TRACKNUMBER")
+#define TAG_YEAR     wxT("YEAR")
+#define TAG_GENRE    wxT("GENRE")
+#define TAG_COMMENTS wxT("COMMENTS")
 
 class Tags: public XMLTagHandler {
 
-   friend class TagsEditor;
-
-public:
+ public:
    Tags();  // constructor
    virtual ~Tags();
+
+   Tags & operator= (const Tags & src );
    
-   bool ShowEditDialog(wxWindow *parent, wxString title, bool model = false);
+   bool ShowEditDialog(wxWindow *parent, wxString title, bool force = false);
+   bool ShowEditDialog1(wxWindow *parent, wxString title, bool force = false);
+   bool ShowEditDialog2(wxWindow *parent, wxString title, bool force = false);
    
    virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(XMLWriter &xmlFile);
 
-   // Import any ID3 tags from this file   
-   void ImportID3(wxString fileName);
-   
-   // returns buffer len; caller frees
-   // if endOfFile is true, should put the ID3 tags at
-   // the END, rather than the beginning, of the MP3 file
-   int ExportID3(char **buffer, bool *endOfFile);
-
-#ifdef USE_LIBFLAC
-   void ExportFLACTags(FLAC::Encoder::File *encoder);
-#endif
-   
-#ifdef USE_LIBVORBIS
-   void ExportOGGTags(vorbis_comment *comment);
-#endif
+   void SetID3V2(bool id3v2);
+   bool GetID3V2();
 
    void AllowEditTitle(bool editTitle);
-   void SetTitle(wxString title);
-   wxString GetTitle();
-
    void AllowEditTrackNumber(bool editTrackNumber);
-   void SetTrackNumber(int trackNumber);
-   int GetTrackNumber();
-   
+
+   void LoadDefaultGenres();
+   void LoadGenres();
+
+   int GetNumGenres();
+   int GetGenre(const wxString & name);
+   wxString GetGenre(int value);
+
+   bool HasTag(const wxString & name);
+   wxString GetTag(const wxString & name);
+
+   bool GetFirst(wxString & name, wxString & value);
+   bool GetNext(wxString & name, wxString & value);
+
+   void SetTag(const wxString & name, const wxString & value);
+   void SetTag(const wxString & name, const int & value);
+
    bool IsEmpty();
+   void Clear();
 
-private:
+ private:
    void LoadDefaults();
-   void EditorIsClosing();
 
-   wxString      mTitle;
-   wxString      mArtist;
-   wxString      mAlbum;
-   int           mTrackNum;
-   wxString      mYear;
-   int           mGenre;
-   wxString      mComments;
-   bool          mID3V2;
+   bool mID3V2;
 
-   wxArrayString mExtraNames;
-   wxArrayString mExtraValues;
+   TagMap::iterator mIter;
+   TagMap mXref;
+   TagMap mMap;
 
-   bool          mEditTitle;
-   bool          mEditTrackNumber;
+   wxArrayString mGenres;
 
-   TagsEditor   *mTagsEditor;
-   ToolBarFrame *mTagsEditorFrame;
-
-#ifdef USE_LIBFLAC
-   ::FLAC__StreamMetadata **mFLACMeta;
-#endif
+   bool mEditTitle;
+   bool mEditTrackNumber;
 };
 
-class TagsEditor: public ExpandingToolBar
+class TagsEditor: public wxDialog
 {
  public:
    // constructors and destructors
-   TagsEditor(wxWindow * parent, wxWindowID id,
+   TagsEditor(wxWindow * parent,
+              wxString title,
               Tags * tags,
-              bool editTitle, bool editTrackNumber);
+              bool editTitle,
+              bool editTrackNumber);
 
    virtual ~TagsEditor();
 
-   void BuildMainPanel();
-   void BuildExtraPanel();
+   void PopulateOrExchange(ShuttleGui & S);
 
-   void RebuildMainPanel();
-
-   virtual bool Validate();
    virtual bool TransferDataToWindow();
    virtual bool TransferDataFromWindow();
 
  private:
-   void OnChange(wxCommandEvent & event);
+   void PopulateGenres();
+   void SetEditors();
 
-   void OnCancel(wxCommandEvent & event);
-   void OnClose(wxCommandEvent & event);
+   void OnChange(wxGridEvent & event);
 
-   void OnMore(wxCommandEvent & event);
-   void OnFewer(wxCommandEvent & event);
+   void OnEdit(wxCommandEvent & event);
+   void OnReset(wxCommandEvent & event);
+
    void OnClear(wxCommandEvent & event);
 
    void OnLoad(wxCommandEvent & event);
    void OnSave(wxCommandEvent & event);
    void OnSaveDefaults(wxCommandEvent & event);
 
-   wxTextCtrl  *mTitleText;
-   wxTextCtrl  *mArtistText;
-   wxTextCtrl  *mAlbumText;
-   wxTextCtrl  *mTrackNumText;
-   wxTextCtrl  *mYearText;
-   wxTextCtrl  *mCommentsText;
-   wxChoice    *mGenreChoice;
-   wxRadioBox  *mFormatRadioBox;
+   void OnAdd(wxCommandEvent & event);
+   void OnRemove(wxCommandEvent & event);
 
-   int          mNumExtras;
-   wxTextCtrl **mExtraNameTexts;
-   wxTextCtrl **mExtraValueTexts;
-
-   wxString      mTitle;
-   wxString      mArtist;
-   wxString      mAlbum;
-   int           mTrackNum;
-   wxString      mYear;
-   int           mGenre;
-   wxString      mComments;
-   bool          mID3V2;
-
-   wxArrayString mExtraNames;
-   wxArrayString mExtraValues;
-
-   bool         mTransfering;
+   void OnOk(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
 
  private:
-   DECLARE_EVENT_TABLE()
-
- public:
    Tags *mTags;
+   bool mEditTitle;
+   bool mEditTrack;
+
+   Tags mLocal;
+
+   Grid *mGrid;
+
+   DECLARE_EVENT_TABLE()
+};
+
+class TagsEditor1: public wxDialog
+{
+ public:
+   // constructors and destructors
+   TagsEditor1(wxWindow * parent,
+              wxString title,
+              Tags * tags,
+              bool editTitle,
+              bool editTrackNumber);
+
+   virtual ~TagsEditor1();
+
+//   virtual bool Validate();
+   virtual bool TransferDataToWindow();
+   virtual bool TransferDataFromWindow();
+
+ private:
+   void Rebuild();
+   void PopulateOrExchange(ShuttleGui & S);
+
+   void PopulateGenres();
+
+   void OnEdit(wxCommandEvent & event);
+   void OnReset(wxCommandEvent & event);
+
+   void OnClear(wxCommandEvent & event);
+
+   void OnLoad(wxCommandEvent & event);
+   void OnSave(wxCommandEvent & event);
+   void OnSaveDefaults(wxCommandEvent & event);
+
+   void OnAdd(wxCommandEvent & event);
+   void OnRemove(wxCommandEvent & event);
+
+   void OnOk(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
+
+ private:
+   Tags *mTags;
+   bool mEditTitle;
+   bool mEditTrack;
+
+   Tags mLocal;
+
+   wxScrolledWindow *mScroller;
+
+   wxTextCtrl *mTitleText;
+   wxTextCtrl *mTrackNumText;
+   wxComboBox *mGenreCombo;
+   wxButton *mClear;
+   wxTextCtrl *mEdit;
+
+   wxString mTitle;
+   wxString mArtist;
+   wxString mAlbum;
+   wxString mTrackNum;
+   wxString mYear;
+   wxString mGenre;
+   wxString mComments;
+
+   wxString mCopyright;
+   wxString mEncodedBy;
+   wxString mComposer;
+   wxString mLyricist;
+
+   wxArrayString mCustomTags;
+   wxArrayString mCustomVals;
+
+   bool mID3V2;
+
+   bool mTransfering;
+
+   DECLARE_EVENT_TABLE()
+};
+
+class TagsEditor2: public wxDialog
+{
+ public:
+   // constructors and destructors
+   TagsEditor2(wxWindow * parent,
+              wxString title,
+              Tags * tags,
+              bool editTitle,
+              bool editTrackNumber);
+
+   virtual ~TagsEditor2();
+
+   void PopulateOrExchange(ShuttleGui & S);
+
+   virtual bool Validate();
+   virtual bool TransferDataToWindow();
+   virtual bool TransferDataFromWindow();
+
+ private:
+   void PopulateGenres();
+
+   bool TransferDataFromBasic();
+   bool TransferDataFromAdvanced();
+   bool TransferDataToBasic();
+   bool TransferDataToAdvanced();
+
+   void OnPage(wxNotebookEvent & event);
+
+   void OnEdit(wxCommandEvent & event);
+   void OnReset(wxCommandEvent & event);
+
+   void OnClear(wxCommandEvent & event);
+
+   void OnLoad(wxCommandEvent & event);
+   void OnSave(wxCommandEvent & event);
+   void OnSaveDefaults(wxCommandEvent & event);
+
+   void OnAdd(wxCommandEvent & event);
+   void OnRemove(wxCommandEvent & event);
+
+   void OnOk(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
+
+ private:
+   Tags *mTags;
+   bool mEditTitle;
+   bool mEditTrack;
+
+   Tags mLocal;
+
+   wxNotebook *mNotebook;
+   wxNotebookPage *mBasic;
+   wxNotebookPage *mAdvanced;
+   wxButton *mClear;
+
+   ChoiceEditor *mChoice;
+   wxGridCellChoiceEditor *mCombo;
+
+   wxTextCtrl *mTitleText;
+   wxTextCtrl *mTrackNumText;
+   wxComboBox *mGenreCombo;
+   Grid *mGrid;
+
+   wxString mTitle;
+   wxString mArtist;
+   wxString mAlbum;
+   wxString mTrackNum;
+   wxString mYear;
+   wxString mGenre;
+   wxString mComments;
+
+   bool mID3V2;
+
+   bool mTransfering;
+
+   DECLARE_EVENT_TABLE()
 };
 
 #endif
