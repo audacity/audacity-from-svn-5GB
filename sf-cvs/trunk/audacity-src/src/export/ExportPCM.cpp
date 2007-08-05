@@ -26,6 +26,7 @@
 #include "../Mix.h"
 #include "../Prefs.h"
 #include "../Project.h"
+#include "../Tags.h"
 #include "../Track.h"
 #include "../WaveTrack.h"
 
@@ -303,12 +304,18 @@ public:
    wxString GetExtension();
    wxArrayString GetExtensions();
    bool IsExtension(wxString & ext);
+
+private:
+
+   bool AddStrings(AudacityProject *project, SNDFILE *sf);
+
 };
 
 ExportPCM::ExportPCM()
 :  ExportPlugin()
 {
    SetFormat(wxT("WAV"));
+   SetCanMetaData(true);
    SetDescription(_("WAV, AIFF, and other uncompressed types"));
 }
 
@@ -357,6 +364,11 @@ bool ExportPCM::Export(AudacityProject *project,
    if (!sf) {
       wxMessageBox(wxString::Format(_("Cannot export audio to %s"),
                                     fName.c_str()));
+      return false;
+   }
+
+   if (!AddStrings(project, sf)) {
+      sf_close(sf);
       return false;
    }
 
@@ -436,6 +448,42 @@ bool ExportPCM::Export(AudacityProject *project,
 #endif
 
    return !cancelling;
+}
+
+bool ExportPCM::AddStrings(AudacityProject *project, SNDFILE *sf)
+{
+   // Retrieve tags
+   Tags *tags = project->GetTags();
+   if (!tags->ShowEditDialog(project,
+                             _("Edit the metadata for the uncompressed file"))) {
+      return false;  // user selected "cancel"
+   }
+
+   if (tags->HasTag(TAG_TITLE)) {
+      sf_set_string(sf, SF_STR_TITLE, tags->GetTag(TAG_TITLE).mb_str(wxConvUTF8));
+   }
+
+   if (tags->HasTag(TAG_ARTIST)) {
+      sf_set_string(sf, SF_STR_ARTIST, tags->GetTag(TAG_ARTIST).mb_str(wxConvUTF8));
+   }
+
+   if (tags->HasTag(TAG_COMMENTS)) {
+      sf_set_string(sf, SF_STR_COMMENT, tags->GetTag(TAG_COMMENTS).mb_str(wxConvUTF8));
+   }
+
+   if (tags->HasTag(TAG_YEAR)) {
+      sf_set_string(sf, SF_STR_DATE, tags->GetTag(TAG_YEAR).mb_str(wxConvUTF8));
+   }
+
+   if (tags->HasTag(wxT("Copyright"))) {
+      sf_set_string(sf, SF_STR_COPYRIGHT, tags->GetTag(wxT("Copyright")).mb_str(wxConvUTF8));
+   }
+
+   if (tags->HasTag(wxT("Software"))) {
+      sf_set_string(sf, SF_STR_SOFTWARE, tags->GetTag(wxT("Software")).mb_str(wxConvUTF8));
+   }
+
+   return true;
 }
 
 bool ExportPCM::DisplayOptions(AudacityProject *project)
