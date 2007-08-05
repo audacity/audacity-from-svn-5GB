@@ -430,20 +430,18 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
       Tags *tags = mProject->GetTags();
 
       if (tags->IsEmpty()) {
-         wxString saveTitle = tags->GetTitle();
-         int saveTrackNumber = tags->GetTrackNumber();
-         tags->SetTitle(wxT("(automatic)"));
-         tags->SetTrackNumber(0);
+         tags->SetTag(TAG_TITLE, wxT("(automatic)"));
+         tags->SetTag(TAG_TRACK, wxT("0"));
          tags->AllowEditTitle(false);
          tags->AllowEditTrackNumber(false);
          bool rval = tags->ShowEditDialog(mProject,
                                           _("Edit the metadata"),
                                           true);
+         tags->SetTag(TAG_TITLE, wxT(""));
+         tags->SetTag(TAG_TRACK, wxT(""));
          tags->AllowEditTitle(true);
          tags->AllowEditTrackNumber(true);
          if (!rval) {
-            tags->SetTitle(saveTitle);
-            tags->SetTrackNumber(saveTrackNumber);
             return;
          }
       }
@@ -753,19 +751,30 @@ bool ExportMultiple::DoExport(bool stereo,
    }
 
    // If the format supports tags, then set the name and track number
+   Tags *tags = NULL;
+   wxString oldTitle;
+   wxString oldTrack;
    if (mPlugins[mFormatIndex]->GetCanMetaData()) {
-      Tags *tags = mProject->GetTags();
-      tags->SetTitle(name);
-      tags->SetTrackNumber(trackNumber);
+      tags = mProject->GetTags();
+      oldTitle = tags->GetTag(TAG_TITLE);
+      oldTrack = tags->GetTag(TAG_TRACK);
+      tags->SetTag(TAG_TITLE, name);
+      tags->SetTag(TAG_TRACK, trackNumber);
    }
 
    // Call the format export routine
-   return mPlugins[mFormatIndex]->Export(mProject,
-                                         stereo ? 2 : 1,
-                                         fn.GetFullPath(),
-                                         selectedOnly,
-                                         t0,
-                                         t1);
+   bool rc = mPlugins[mFormatIndex]->Export(mProject,
+                                            stereo ? 2 : 1,
+                                            fn.GetFullPath(),
+                                            selectedOnly,
+                                            t0,
+                                            t1);
+   if (tags) {
+      tags->SetTag(TAG_TITLE, oldTitle);
+      tags->SetTag(TAG_TRACK, oldTrack);
+   }
+
+   return rc;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
