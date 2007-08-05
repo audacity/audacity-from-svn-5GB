@@ -628,7 +628,7 @@ void AudacityProject::CreateMenusAndCommands()
       //
       // Thinklabs Menu
       //
-      c->BeginMenu(wxT("Thinklabs"));
+      c->BeginMenu(wxT("&Thinklabs"));
       c->SetDefaultFlags(AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
                            AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag);
 
