@@ -1615,6 +1615,7 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
    wxString all = extra.AfterFirst(wxT('|')).BeforeFirst(wxT('|'));
 
    // Construct the filter
+   l.DeleteContents(true);
    wxGetApp().mImporter->GetSupportedImportFormats(&l);
 
    for (FormatList::Node *n = l.GetFirst(); n; n = n->GetNext()) {
@@ -2489,15 +2490,26 @@ void AudacityProject::Import(wxString fileName)
 
    ProgressShow(_("Import"));
 
-   numTracks = wxGetApp().mImporter->Import(fileName, mTrackFactory, &newTracks,
+   numTracks = wxGetApp().mImporter->Import(fileName,
+                                            mTrackFactory,
+                                            &newTracks,
+                                            mTags,
                                  errorMessage,
                                  AudacityProject::ImportProgressCallback,
                                  this);
 
    ProgressHide();
 
-   if (mUserCanceledProgress)
+   if (mUserCanceledProgress) {
+      // Get rid of any created tracks
+      if (numTracks > 0) {
+         for (int i = 0; i < numTracks; i++) {
+            delete newTracks[i];
+         }
+         delete[] newTracks;
+      }
       return;
+   }
 
    if (numTracks <= 0) {
 // Old code, without the help button.
@@ -2511,17 +2523,9 @@ void AudacityProject::Import(wxString fileName)
       return;
    }
 
-   // If the project is empty, import ID3 tags from the file.
-   // Yes, these are normally only in MP3 files, but they could
-   // be in another file, why not?
-   if (mTracks->IsEmpty()) {
-      mTags->ImportID3(fileName);
-   }
-
    // for LOF ("list of files") files, do not import the file as if it
    // were an audio file itself
-   if (fileName.AfterLast('.').IsSameAs(wxT("lof"), false))
-   {
+   if (fileName.AfterLast('.').IsSameAs(wxT("lof"), false)) {
       return;
    }
 
