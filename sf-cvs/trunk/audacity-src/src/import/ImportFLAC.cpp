@@ -28,6 +28,8 @@
 #include "Import.h"
 #include "ImportPlugin.h"
 
+#include "../Tags.h"
+
 #define FLAC_HEADER "fLaC"
 
 #define DESC _("FLAC files")
@@ -84,6 +86,7 @@ class MyFLACFile : public FLAC::Decoder::File
    friend class FLACImportFileHandle;
    FLACImportFileHandle *mFile;
    bool                  mWasError;
+   wxArrayString         mComments;
  protected:
    virtual FLAC__StreamDecoderWriteStatus write_callback(const FLAC__Frame *frame,
 							 const FLAC__int32 * const buffer[]);
@@ -121,7 +124,7 @@ public:
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
    bool Import(TrackFactory *trackFactory, Track ***outTracks,
-               int *outNumTracks);
+               int *outNumTracks, Tags *tags);
 private:
    wxString              mName;
    sampleFormat          mFormat;
@@ -140,22 +143,34 @@ private:
 
 void MyFLACFile::metadata_callback(const FLAC__StreamMetadata *metadata)
 {
-   if (metadata->type != FLAC__METADATA_TYPE_STREAMINFO)
-      return;			// ignore
-   mFile->mSampleRate=metadata->data.stream_info.sample_rate;
-   mFile->mNumChannels=metadata->data.stream_info.channels;
-   mFile->mBitsPerSample=metadata->data.stream_info.bits_per_sample;
-   mFile->mNumSamples=metadata->data.stream_info.total_samples;
+   switch (metadata->type)
+   {
+      case FLAC__METADATA_TYPE_VORBIS_COMMENT:
+         for (FLAC__uint32 i = 0; i < metadata->data.vorbis_comment.num_comments; i++) {
+            mComments.Add(UTF8CTOWX((char *)metadata->data.vorbis_comment.comments[i].entry));
+         }
+      break;
 
-   if (mFile->mBitsPerSample<=16) {
-      if (mFile->mFormat<int16Sample)
-	 mFile->mFormat=int16Sample;
-   } else if (mFile->mBitsPerSample<=24) {
-      if (mFile->mFormat<int24Sample)
-	 mFile->mFormat=int24Sample;
-   } else
-      mFile->mFormat=floatSample;
-   mFile->mStreamInfoDone=true;
+      case FLAC__METADATA_TYPE_STREAMINFO:
+         mFile->mSampleRate=metadata->data.stream_info.sample_rate;
+         mFile->mNumChannels=metadata->data.stream_info.channels;
+         mFile->mBitsPerSample=metadata->data.stream_info.bits_per_sample;
+         mFile->mNumSamples=metadata->data.stream_info.total_samples;
+
+         if (mFile->mBitsPerSample<=16) {
+            if (mFile->mFormat<int16Sample) {
+               mFile->mFormat=int16Sample;
+            }
+         } else if (mFile->mBitsPerSample<=24) {
+            if (mFile->mFormat<int24Sample) {
+               mFile->mFormat=int24Sample;
+            }
+         } else {
+            mFile->mFormat=floatSample;
+         }
+         mFile->mStreamInfoDone=true;
+      break;
+   }
 }
 
 void MyFLACFile::error_callback(FLAC__StreamDecoderErrorStatus status)
@@ -280,6 +295,8 @@ bool FLACImportFileHandle::Init()
    if (!success) {
       return false;
    }
+   mFile->set_metadata_respond(FLAC__METADATA_TYPE_STREAMINFO);
+   mFile->set_metadata_respond(FLAC__METADATA_TYPE_VORBIS_COMMENT);
    FLAC::Decoder::File::State state = mFile->init();
    if (state != FLAC__FILE_DECODER_OK) {
       return false;
@@ -289,8 +306,7 @@ bool FLACImportFileHandle::Init()
    if (state != FLAC__FILE_DECODER_OK) {
       return false;
    }
-   if (!mFile->is_valid() || mFile->get_was_error())
-   {
+   if (!mFile->is_valid() || mFile->get_was_error()) {
       // This probably is not a FLAC file at all
       return false;
    }
@@ -320,46 +336,59 @@ int FLACImportFileHandle::GetFileUncompressedBytes()
 
 bool FLACImportFileHandle::Import(TrackFactory *trackFactory,
 				  Track ***outTracks,
-				  int *outNumTracks)
+				  int *outNumTracks,
+              Tags *tags)
 {
    wxASSERT(mStreamInfoDone);
    
-   *outNumTracks = mNumChannels;
+   mChannels = new WaveTrack *[mNumChannels];
 
-   mChannels = new WaveTrack *[*outNumTracks];
-
-   int c;
-   for (c = 0; c < *outNumTracks; c++) {
+   unsigned long c;
+   for (c = 0; c < mNumChannels; c++) {
       mChannels[c] = trackFactory->NewWaveTrack(mFormat, mSampleRate);
       
-      if (*outNumTracks == 2)
+      if (mNumChannels == 2) {
          switch (c) {
          case 0:
             mChannels[c]->SetChannel(Track::LeftChannel);
+            mChannels[c]->SetLinked(true);
             break;
          case 1:
             mChannels[c]->SetChannel(Track::RightChannel);
+            mChannels[c]->SetTeamed(true);
             break;
-         default:
-            mChannels[c]->SetChannel(Track::MonoChannel);
          }
-      else
-	 mChannels[c]->SetChannel(Track::MonoChannel);
+      }
+      else {
+         mChannels[c]->SetChannel(Track::MonoChannel);
+      }
    }
 
-   if (*outNumTracks == 2) {
-      mChannels[0]->SetLinked(true);
-      mChannels[1]->SetTeamed(true);
-   }
+   bool res = (mFile->process_until_end_of_file() != 0);
 
-   mFile->process_until_end_of_file();
+   if (!res) {
+      for(c = 0; c < mNumChannels; c++) {
+         delete mChannels[c];
+      }
+      delete[] mChannels;
+
+      return false;
+   }
    
-   *outTracks = new Track *[*outNumTracks];
-   for(c = 0; c < *outNumTracks; c++) {
+   *outNumTracks = mNumChannels;
+   *outTracks = new Track *[mNumChannels];
+   for (c = 0; c < mNumChannels; c++) {
       mChannels[c]->Flush();
       (*outTracks)[c] = mChannels[c];
    }
    delete[] mChannels;
+
+   tags->Clear();
+   size_t cnt = mFile->mComments.GetCount();
+   for (c = 0; c < cnt; c++) {
+      tags->SetTag(mFile->mComments[c].BeforeFirst(wxT('=')),
+                   mFile->mComments[c].AfterFirst(wxT('=')));
+   }
 
    return true;
 }
