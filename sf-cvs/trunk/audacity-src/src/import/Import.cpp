@@ -100,6 +100,7 @@ void Importer::GetSupportedImportFormats(FormatList *formatList)
 int Importer::Import(wxString fName,
                      TrackFactory *trackFactory,
                      Track *** tracks,
+                     Tags *tags,
                      wxString &errorMessage,
                      progress_callback_t progressCallback,
                      void *userData)
@@ -120,7 +121,11 @@ int Importer::Import(wxString fName,
          if( mInFile != NULL )
          {
             mInFile->SetProgressCallback(progressCallback, userData);
-            if( mInFile->Import(trackFactory, tracks, &numTracks) == true )
+            int res = (mInFile->Import(trackFactory, tracks, &numTracks, tags) == true );
+
+            delete mInFile;
+
+            if( res )
             {
                // LOF ("list-of-files") has different semantics
                if (extension.IsSameAs(wxT("lof"), false))
@@ -128,11 +133,9 @@ int Importer::Import(wxString fName,
 
                if (numTracks > 0) {
                   // success!
-                  delete mInFile;
                   return numTracks;
                }
             }
-            delete mInFile;
          }
       }
       importPluginNode = importPluginNode->GetNext();
@@ -151,7 +154,7 @@ int Importer::Import(wxString fName,
       {
          mInFile->SetProgressCallback(progressCallback, userData);
          numTracks = 0;
-         if(mInFile->Import(trackFactory, tracks, &numTracks))
+         if(mInFile->Import(trackFactory, tracks, &numTracks, tags))
          {
             if (numTracks > 0) {
                // success!
