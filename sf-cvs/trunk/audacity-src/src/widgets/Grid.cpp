@@ -21,6 +21,7 @@
 #include <wx/grid.h>
 #include <wx/intl.h>
 #include <wx/settings.h>
+#include <wx/toplevel.h>
 
 #include "Grid.h"
 #include "TimeTextCtrl.h"
@@ -395,6 +396,24 @@ void Grid::OnKeyDown(wxKeyEvent &event)
          Navigate(flags);
       }
       break;
+
+      case WXK_RETURN:
+      case WXK_NUMPAD_ENTER:
+      {
+         if (!IsCellEditControlShown()) {
+            wxTopLevelWindow *tlw = wxDynamicCast(wxGetTopLevelParent(this), wxTopLevelWindow);
+            wxWindow *def = tlw->GetDefaultItem();
+            if (def && def->IsEnabled()) {
+               wxCommandEvent cevent(wxEVT_COMMAND_BUTTON_CLICKED,
+                                     def->GetId());
+               GetParent()->ProcessEvent(cevent);
+            }
+         }
+         else {
+            wxGrid::OnKeyDown(event);
+         }
+         break;
+      }
 
       default:
          wxGrid::OnKeyDown(event);
