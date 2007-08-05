@@ -33,6 +33,7 @@
 #include "ImportMP3.h"
 #include "ImportPlugin.h"
 #include "../Internat.h"
+#include "../Tags.h"
 
 static const wxChar *exts[] =
 {
@@ -111,8 +112,9 @@ public:
 class MP3ImportFileHandle : public ImportFileHandle
 {
 public:
-   MP3ImportFileHandle(wxFile *file):
+   MP3ImportFileHandle(wxFile *file, wxString filename):
       mFile(file),
+      mFilename(filename),
       mUserData(NULL)
    {
       mPrivateData.progressCallback = NULL;
@@ -125,8 +127,11 @@ public:
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
    bool Import(TrackFactory *trackFactory, Track ***outTracks,
-               int *outNumTracks);
+               int *outNumTracks, Tags *tags);
 private:
+   void ImportID3(Tags *tags);
+
+   wxString mFilename;
    wxFile *mFile;
    void *mUserData;
    struct private_data mPrivateData;
@@ -173,7 +178,7 @@ ImportFileHandle *MP3ImportPlugin::Open(wxString Filename)
    /* There's no way to tell if this is a valid mp3 file before actually
     * decoding, so we return a valid FileHandle. */
 
-   return new MP3ImportFileHandle(file);
+   return new MP3ImportFileHandle(file, Filename);
 }
 
 
@@ -196,7 +201,7 @@ int MP3ImportFileHandle::GetFileUncompressedBytes()
 }
 
 bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
-                                 int *outNumTracks)
+                                 int *outNumTracks, Tags *tags)
 {
    int chn;
 
@@ -214,52 +219,159 @@ bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
    /* and send the decoder on its way! */
 
-   if(mad_decoder_run(&mDecoder, MAD_DECODER_MODE_SYNC) == 0)
-   {
-      /* success */
-      /* printf("success\n"); */
+   bool res = (mad_decoder_run(&mDecoder, MAD_DECODER_MODE_SYNC) == 0) &&
+              (mPrivateData.numChannels > 0) &&
+              (!mPrivateData.cancelled);
 
       mad_decoder_finish(&mDecoder);
 
+   delete[] mPrivateData.inputBuffer;
+
+   if (!res) {
+      /* failure */
+      /* printf("failure\n"); */
+
+      /* delete everything */
+      for (chn = 0; chn < mPrivateData.numChannels; chn++) {
+         delete mPrivateData.channels[chn];
+      }
+      delete[] mPrivateData.channels;
+
+      return false;
+   }
+
+   /* success */
+   /* printf("success\n"); */
+
       /* copy the WaveTrack pointers into the Track pointer list that
        * we are expected to fill */
+   *outNumTracks = mPrivateData.numChannels;
       *outTracks = new Track* [mPrivateData.numChannels];
       for(chn = 0; chn < mPrivateData.numChannels; chn++) {
          mPrivateData.channels[chn]->Flush();
          (*outTracks)[chn] = mPrivateData.channels[chn];
       }
-      *outNumTracks = mPrivateData.numChannels;
-
-      delete mPrivateData.inputBuffer;
       delete[] mPrivateData.channels;
+
+   /* Read in any metadata */
+   ImportID3(tags);
 
       return true;
    }
-   else {
-
-      /* failure */
-      /* printf("failure\n"); */
-
-      mad_decoder_finish(&mDecoder);
-
-      /* delete everything */
-      for(chn = 0; chn < mPrivateData.numChannels; chn++)
-         delete mPrivateData.channels[chn];
-
-      delete[] mPrivateData.channels;
-      delete mPrivateData.inputBuffer;
-
-      return false;
-   }
-}
 
 MP3ImportFileHandle::~MP3ImportFileHandle()
 {
    if(mFile) {
-      if (mFile->IsOpened())
+      if (mFile->IsOpened()) {
          mFile->Close();
+      }
       delete mFile;
    }
+}
+
+void MP3ImportFileHandle::ImportID3(Tags *tags)
+{
+#ifdef USE_LIBID3TAG 
+   struct id3_file *fp = id3_file_open(OSFILENAME(mFilename), ID3_FILE_MODE_READONLY);
+   if (!fp) {
+      return;
+   }
+
+   struct id3_tag *tp = id3_file_tag(fp);
+   if (!tp) {
+      id3_file_close(fp);
+      return;
+   }
+
+   tags->Clear();
+   tags->SetID3V2( tp->options & ID3_TAG_OPTION_ID3V1 ? false : true );
+
+   // Loop through all frames
+   for (int i = 0; i < (int) tp->nframes; i++) {
+      struct id3_frame *frame = tp->frames[i];
+
+      // printf("ID: %08x '%4s'\n", (int) *(int *)frame->id, frame->id);
+      // printf("Desc: %s\n", frame->description);
+      // printf("Num fields: %d\n", frame->nfields);
+
+      // for (int j = 0; j < (int) frame->nfields; j++) {
+      //    printf("field %d type %d\n", j, frame->fields[j].type );
+      //    if (frame->fields[j].type == ID3_FIELD_TYPE_STRINGLIST) {
+      //       printf("num strings %d\n", frame->fields[j].stringlist.nstrings);
+      //    }
+      // }
+
+      wxString n, v;
+
+      // Determine the tag name
+      if (strcmp(frame->id, ID3_FRAME_TITLE) == 0) {
+         n = TAG_TITLE;
+      }
+      else if (strcmp(frame->id, ID3_FRAME_ARTIST) == 0) {
+         n = TAG_ARTIST;
+      }
+      else if (strcmp(frame->id, ID3_FRAME_ALBUM) == 0) {
+         n = TAG_ALBUM;
+      }
+      else if (strcmp(frame->id, ID3_FRAME_TRACK) == 0) {
+         n = TAG_TRACK;
+      }
+      else if (strcmp(frame->id, ID3_FRAME_YEAR) == 0) {
+         n = TAG_YEAR;
+      }
+      else if (strcmp(frame->id, ID3_FRAME_COMMENT) == 0) {
+         n = TAG_COMMENTS;
+      }
+      else if (strcmp(frame->id, ID3_FRAME_GENRE) == 0) {
+         n = TAG_GENRE;
+      }
+   else {
+         // Use frame description as default tag name.  The descriptions
+         // may include several "meanings" separated by "/" characters, so
+         // we just use the first meaning
+         n = UTF8CTOWX(frame->description).BeforeFirst(wxT('/'));
+      }
+
+      const id3_ucs4_t *ustr = NULL;
+
+      if (n == TAG_COMMENTS) {
+         ustr = id3_field_getfullstring(&frame->fields[3]);
+      }
+      else if (frame->nfields == 3) {
+         ustr = id3_field_getstring(&frame->fields[1]);
+         if (ustr) {
+            char *str = (char *)id3_ucs4_utf8duplicate(ustr);
+            n = UTF8CTOWX(str);
+            free(str);
+         }
+
+         ustr = id3_field_getstring(&frame->fields[2]);
+      }
+      else if (frame->nfields >= 2) {
+         ustr = id3_field_getstrings(&frame->fields[1], 0);
+      }
+
+      if (ustr) {
+         char *str = (char *)id3_ucs4_utf8duplicate(ustr);
+         v = UTF8CTOWX(str);
+         free(str);
+      }
+
+      if (!n.IsEmpty() && !v.IsEmpty()) {
+         tags->SetTag(n, v);
+   }
+}
+
+   // Convert v1 genre to name
+   if (tags->HasTag(TAG_GENRE)) {
+      long g = -1;
+      if (tags->GetTag(TAG_GENRE).ToLong(&g)) {
+         tags->SetTag(TAG_GENRE, tags->GetGenre(g));
+   }
+}
+
+   id3_file_close(fp);
+#endif // ifdef USE_LIBID3TAG 
 }
 
 //
