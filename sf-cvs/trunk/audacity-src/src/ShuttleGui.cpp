@@ -637,13 +637,13 @@ wxScrolledWindow * ShuttleGuiBase::StartScroller(int iStyle)
       
    wxScrolledWindow * pScroller;
    mpWind = pScroller = new wxScrolledWindow( mpParent, miId, wxDefaultPosition, wxDefaultSize,
-      wxSUNKEN_BORDER);
+      Style( wxSUNKEN_BORDER ) );
    pScroller->SetScrollRate( 20,20 );
 
    mpWind->SetBackgroundColour( 
       iStyle==0 
       ? wxColour( 245,244,240) :
-      wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW) 
+      wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE) 
       );
    SetProportions( 1 );
    if( iStyle==2 )
@@ -1799,7 +1799,7 @@ AttachableScrollBar * ShuttleGui::AddAttachableScrollBar( long style )
    return pAttachableScrollBar;
 }
 
-wxSizer *CreateStdButtonSizer(wxWindow *parent, long buttons)
+wxSizer *CreateStdButtonSizer(wxWindow *parent, long buttons, wxButton *extra)
 {
    wxButton *b = new wxButton( parent, 0, wxEmptyString );
    int margin;
@@ -1851,35 +1851,41 @@ wxSizer *CreateStdButtonSizer(wxWindow *parent, long buttons)
    {
       b = new wxButton( parent, ePreviewID, _("Pre&view") );
       bs->Add( b, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, margin );
-      bs->Add(40,0);
+      bs->Add( 40, 0 );
    }
 
    if( buttons & eDebugButton )
    {
       b = new wxButton( parent, eDebugID, _("&Debug") );
       bs->Add( b, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, margin );
-      bs->Add(40,0);
+      bs->Add( 40, 0 );
+   }
+
+   if( extra )
+   {
+      bs->Add( extra, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, margin );
+      bs->Add( 40, 0 );
    }
 
    bs->AddStretchSpacer();
    bs->Realize();
    wxSizer * s;
    s = new wxBoxSizer( wxVERTICAL );
-   s->Add(bs, 1, wxEXPAND | wxALL, 7);
-   s->Add(0, 3);   // a little extra space
+   s->Add( bs, 1, wxEXPAND | wxALL, 7 );
+   s->Add( 0, 3 );   // a little extra space
 
    return s;
 }
 
-void ShuttleGui::AddStandardButtons(long buttons)
+void ShuttleGui::AddStandardButtons(long buttons, wxButton *extra)
 {
    if( mShuttleMode != eIsCreating )
       return;
 
-   StartVerticalLay(false);
+   StartVerticalLay( false );
    
    miSizerProp = false;
-   mpSubSizer = CreateStdButtonSizer( mpParent, buttons );
+   mpSubSizer = CreateStdButtonSizer( mpParent, buttons, extra );
    UpdateSizers();
    PopSizer();
 
