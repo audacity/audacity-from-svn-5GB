@@ -21,6 +21,7 @@
 #include "../Audacity.h"
 #include "../AudacityApp.h"
 #include "../Internat.h"
+#include "../Tags.h"
 #include "ImportPCM.h"
 
 #include <wx/string.h>
@@ -72,7 +73,7 @@ public:
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
    bool Import(TrackFactory *trackFactory, Track ***outTracks,
-               int *outNumTracks);
+               int *outNumTracks, Tags *tags);
 private:
    wxString              mName;
    SNDFILE              *mFile;
@@ -155,18 +156,18 @@ int PCMImportFileHandle::GetFileUncompressedBytes()
 
 bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
                                  Track ***outTracks,
-                                 int *outNumTracks)
+                                 int *outNumTracks,
+                                 Tags *tags)
 {
    wxASSERT(mFile);
 
-   *outNumTracks = mInfo.channels;
-   WaveTrack **channels = new WaveTrack *[*outNumTracks];
+   WaveTrack **channels = new WaveTrack *[mInfo.channels];
 
    int c;
-   for (c = 0; c < *outNumTracks; c++) {
+   for (c = 0; c < mInfo.channels; c++) {
       channels[c] = trackFactory->NewWaveTrack(mFormat, mInfo.samplerate);
 
-      if (*outNumTracks > 1)
+      if (mInfo.channels > 1)
          switch (c) {
          case 0:
             channels[c]->SetChannel(Track::LeftChannel);
@@ -179,7 +180,7 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
          }
    }
 
-   if (*outNumTracks == 2) {
+   if (mInfo.channels == 2) {
       channels[0]->SetLinked(true);
       channels[1]->SetTeamed(true);
    }
@@ -213,7 +214,7 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
          if (i + blockLen > fileTotalFrames)
             blockLen = fileTotalFrames - i;
 
-         for(c=0; c<(*outNumTracks); c++)
+         for (c = 0; c < mInfo.channels; c++)
             channels[c]->AppendAlias(mName, i, blockLen, c);
 
          if( mProgressCallback )
@@ -228,7 +229,7 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
       // samples from the file and store our own local copy of the
       // samples in the tracks.
       
-      samplePtr srcbuffer = NewSamples(maxBlockSize * (*outNumTracks),
+      samplePtr srcbuffer = NewSamples(maxBlockSize * mInfo.channels,
                                        mFormat);
       samplePtr buffer = NewSamples(maxBlockSize, mFormat);
 
@@ -244,16 +245,16 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
             block = sf_readf_float(mFile, (float *)srcbuffer, block);
          
          if (block) {
-            for(c=0; c<(*outNumTracks); c++) {
+            for(c=0; c<mInfo.channels; c++) {
                if (mFormat==int16Sample) {
                   for(int j=0; j<block; j++)
                      ((short *)buffer)[j] =
-                        ((short *)srcbuffer)[(*outNumTracks)*j+c];
+                        ((short *)srcbuffer)[mInfo.channels*j+c];
                }
                else {
                   for(int j=0; j<block; j++)
                      ((float *)buffer)[j] =
-                        ((float *)srcbuffer)[(*outNumTracks)*j+c];
+                        ((float *)srcbuffer)[mInfo.channels*j+c];
                }
                
                channels[c]->Append(buffer, mFormat, block);
@@ -272,22 +273,54 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
    }
 
    if (cancelled) {
-      for (c = 0; c < *outNumTracks; c++)
+      for (c = 0; c < mInfo.channels; c++)
          delete channels[c];
       delete[] channels;
 
       return false;
    }
-   else {
-      *outTracks = new Track *[*outNumTracks];
-      for(c = 0; c < *outNumTracks; c++) {
+
+   *outNumTracks = mInfo.channels;
+   *outTracks = new Track *[mInfo.channels];
+   for(c = 0; c < mInfo.channels; c++) {
          channels[c]->Flush();
          (*outTracks)[c] = channels[c];
       }
       delete[] channels;
 
-      return true;
+   const char *str;
+
+   str = sf_get_string(mFile, SF_STR_TITLE);
+   if (str) {
+      tags->SetTag(TAG_TITLE, UTF8CTOWX(str));
    }
+
+   str = sf_get_string(mFile, SF_STR_ARTIST);
+   if (str) {
+      tags->SetTag(TAG_ARTIST, UTF8CTOWX(str));
+   }
+
+   str = sf_get_string(mFile, SF_STR_COMMENT);
+   if (str) {
+      tags->SetTag(TAG_COMMENTS, UTF8CTOWX(str));
+   }
+
+   str = sf_get_string(mFile, SF_STR_DATE);
+   if (str) {
+      tags->SetTag(TAG_YEAR, UTF8CTOWX(str));
+   }
+
+   str = sf_get_string(mFile, SF_STR_COPYRIGHT);
+   if (str) {
+      tags->SetTag(wxT("Copyright"), UTF8CTOWX(str));
+   }
+
+   str = sf_get_string(mFile, SF_STR_SOFTWARE);
+   if (str) {
+      tags->SetTag(wxT("Software"), UTF8CTOWX(str));
+   }
+
+   return true;
 }
 
 PCMImportFileHandle::~PCMImportFileHandle()
