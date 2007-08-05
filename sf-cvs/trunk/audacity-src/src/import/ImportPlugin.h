@@ -65,6 +65,7 @@ but little else.
 
 class TrackFactory;
 class Track;
+class Tags;
 
 typedef bool (*progress_callback_t)( void *userData, float percent );
 
@@ -129,7 +130,7 @@ public:
    // the TrackFactory and calling the progress callback every iteration
    // through the importing loop
    virtual bool Import(TrackFactory *trackFactory, Track ***outTracks,
-                       int *outNumTracks) = 0;
+                       int *outNumTracks, Tags *tags) = 0;
 
    virtual ~ImportFileHandle() { }
 };
