@@ -89,6 +89,10 @@
 
 #include "Export.h"
 
+#ifdef USE_LIBID3TAG 
+#include <id3tag.h>
+#endif
+
 //----------------------------------------------------------------------------
 // ExportMP3Options
 //----------------------------------------------------------------------------
@@ -1572,6 +1576,7 @@ private:
    int FindValue(CHOICES *choices, int cnt, int needle, int def);
    wxString FindName(CHOICES *choices, int cnt, int needle);
    int AskResample(int bitrate, int rate, int lowrate, int highrate);
+   int AddTags(AudacityProject *project, char **buffer, bool *endOfFile, Tags *tags);
 
 };
 
@@ -1693,14 +1698,10 @@ bool ExportMP3::Export(AudacityProject *project,
    }
 
    // Put ID3 tags at beginning of file 
-   // lda Check ShowId3Dialog flag for CleanSpeech
    Tags *tags = project->GetTags();
-   if (tags->IsEmpty() && project->GetShowId3Dialog()) {
-      if (!tags->ShowEditDialog(project,
-                                _("Edit the ID3 tags for the MP3 file"),
-                                true)) {
-         return false;  // user selected "cancel"
-      }
+   if (!tags->ShowEditDialog(project,
+                             _("Edit the ID3 tags for the MP3 file"))) {
+      return false;  // user selected "cancel"
    }
 
    // Open file for writing
@@ -1713,7 +1714,7 @@ bool ExportMP3::Export(AudacityProject *project,
    char *id3buffer = NULL;
    int id3len;
    bool endOfFile;
-   id3len = tags->ExportID3(&id3buffer, &endOfFile);
+   id3len = AddTags(project, &id3buffer, &endOfFile, tags);
    if (id3len && !endOfFile) {
      outFile.Write(id3buffer, id3len);
    }
@@ -1811,8 +1812,9 @@ bool ExportMP3::Export(AudacityProject *project,
       outFile.Write(id3buffer, id3len);
    }
 
-   if (id3buffer)
+   if (id3buffer) {
       free(id3buffer);
+   }
 
    /* Close file */
    outFile.Close();
@@ -1919,6 +1921,115 @@ int ExportMP3::AskResample(int bitrate, int rate, int lowrate, int highrate)
    }
 
    return wxAtoi(choice->GetStringSelection());
+}
+
+// returns buffer len; caller frees
+int ExportMP3::AddTags(AudacityProject *project, char **buffer, bool *endOfFile, Tags *tags)
+{
+#ifdef USE_LIBID3TAG 
+   struct id3_tag *tp = id3_tag_new();
+
+   bool v2 = tags->GetID3V2();
+
+   wxString n, v;
+   for (bool cont = tags->GetFirst(n, v); cont; cont = tags->GetNext(n, v)) {
+      char *name = "TXXX";
+
+      if (n.CmpNoCase(TAG_TITLE) == 0) {
+         name = ID3_FRAME_TITLE;
+      }
+      else if (n.CmpNoCase(TAG_ARTIST) == 0) {
+         name = ID3_FRAME_ARTIST;
+      }
+      else if (n.CmpNoCase(TAG_ALBUM) == 0) {
+         name = ID3_FRAME_ALBUM;
+      }
+      else if (n.CmpNoCase(TAG_YEAR) == 0) {
+         name = ID3_FRAME_YEAR;
+      }
+      else if (n.CmpNoCase(TAG_GENRE) == 0) {
+         name = ID3_FRAME_GENRE;
+         if (!v2) {
+            v.Printf(wxT("%d"), tags->GetGenre(v));
+         }
+      }
+      else if (n.CmpNoCase(TAG_COMMENTS) == 0) {
+         name = ID3_FRAME_COMMENT;
+      }
+      else if (n.CmpNoCase(TAG_TRACK) == 0) {
+         name = ID3_FRAME_TRACK;
+      }
+
+      struct id3_frame *frame = id3_frame_new(name);
+
+      if (v2) {
+         if (!n.IsAscii() || !v.IsAscii()) {
+            id3_field_settextencoding(id3_frame_field(frame, 0), ID3_FIELD_TEXTENCODING_UTF_16);
+         }
+         else {
+            id3_field_settextencoding(id3_frame_field(frame, 0), ID3_FIELD_TEXTENCODING_ISO_8859_1);
+         }
+      }
+
+      id3_ucs4_t *ucs4 =
+         id3_utf8_ucs4duplicate((id3_utf8_t *) (const char *) v.mb_str(wxConvUTF8));
+
+      if (strcmp(name, ID3_FRAME_COMMENT) == 0) {
+         // A hack to get around iTunes not recognizing the comment.  The
+         // language defaults to XXX and, since it's not a valid language,
+         // iTunes just ignores the tag.  So, either set it to a valid language
+         // (which one???) or just clear it.  Unfortunately, there's no supported
+         // way of clearing the field, so do it directly.
+         id3_field *f = id3_frame_field(frame, 1);
+         memset(f->immediate.value, 0, sizeof(f->immediate.value));
+         id3_field_setfullstring(id3_frame_field(frame, 3), ucs4);
+      }
+      else if (strcmp(name, "TXXX") == 0) {
+         id3_field_setstring(id3_frame_field(frame, 2), ucs4);
+         free(ucs4);
+
+         ucs4 = id3_utf8_ucs4duplicate((id3_utf8_t *) (const char *) n.mb_str(wxConvUTF8));
+           
+         id3_field_setstring(id3_frame_field(frame, 1), ucs4);
+      }
+      else {
+         id3_field_setstrings(id3_frame_field(frame, 1), 1, &ucs4);
+      }
+
+      free(ucs4);
+
+      id3_tag_attachframe(tp, frame);
+   }
+
+   if (v2) {
+      tp->options &= (~ID3_TAG_OPTION_COMPRESSION); // No compression
+
+      // If this version of libid3tag supports it, use v2.3 ID3
+      // tags instead of the newer, but less well supported, v2.4
+      // that libid3tag uses by default.
+      #ifdef ID3_TAG_HAS_TAG_OPTION_ID3V2_3
+      tp->options |= ID3_TAG_OPTION_ID3V2_3;
+      #endif
+
+      *endOfFile = false;
+   }
+   else {
+      tp->options |= ID3_TAG_OPTION_ID3V1;
+      *endOfFile = true;
+   }
+
+   id3_length_t len;
+   
+   len = id3_tag_render(tp, 0);
+   *buffer = (char *)malloc(len);
+   len = id3_tag_render(tp, (id3_byte_t *)*buffer);
+
+   id3_tag_delete(tp);
+
+   return len;
+#else //ifdef USE_LIBID3TAG 
+   return 0;
+#endif
 }
 
 //----------------------------------------------------------------------------
