@@ -138,6 +138,10 @@ public:
                double t0,
                double t1,
                MixerSpec *mixerSpec = NULL);
+
+private:
+
+   bool FillComment(AudacityProject *project, vorbis_comment *comment);
 };
 
 ExportOGG::ExportOGG()
@@ -193,15 +197,9 @@ bool ExportOGG::Export(AudacityProject *project,
    vorbis_encode_init_vbr(&info, numChannels, int(rate + 0.5), quality);
 
    // Retrieve tags
-   Tags *tags = project->GetTags();
-   if (tags->IsEmpty() && project->GetShowId3Dialog()) {
-      if (!tags->ShowEditDialog(project,
-                                _("Edit the metadata for the OGG file"),
-                                true)) {
-         return false;  // user selected "cancel"
-      }
+   if (!FillComment(project, &comment)) {
+      return false;
    }
-   tags->ExportOGGTags(&comment);
 
    // Set up analysis state and auxiliary encoding storage
    vorbis_analysis_init(&dsp, &info);
@@ -323,6 +321,7 @@ bool ExportOGG::Export(AudacityProject *project,
 	vorbis_block_clear(&block);
 	vorbis_dsp_clear(&dsp);
 	vorbis_info_clear(&info);
+   vorbis_comment_clear(&comment);
 
    outFile.Close();
 
@@ -334,6 +333,27 @@ bool ExportOGG::DisplayOptions(AudacityProject *project)
    ExportOGGOptions od(project);
 
    od.ShowModal();
+
+   return true;
+}
+
+bool ExportOGG::FillComment(AudacityProject *project, vorbis_comment *comment)
+{
+   // Retrieve tags
+   Tags *tags = project->GetTags();
+   if (!tags->ShowEditDialog(project,
+                             _("Edit the metadata for the OGG file"))) {
+      return false;  // user selected "cancel"
+   }
+
+   vorbis_comment_init(comment);
+
+   wxString n, v;
+   for (bool cont = tags->GetFirst(n, v); cont; cont = tags->GetNext(n, v)) {
+      vorbis_comment_add_tag(comment,
+                             (char *) (const char *) n.mb_str(wxConvUTF8),
+                             (char *) (const char *) v.mb_str(wxConvUTF8));
+   }
 
    return true;
 }
