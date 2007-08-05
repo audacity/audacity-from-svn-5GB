@@ -239,21 +239,21 @@ int ImportRaw(wxWindow *parent, wxString fileName,
 
    sf_close(sndFile);
 
-   if (cancelled) {
+   bool res = (!cancelled && block >= 0);
+
+   if (!res) {
       for (c = 0; c < numChannels; c++)
          delete channels[c];
       delete[] channels;
 
       return 0;
    }
-   else {
-      for (c = 0; c < numChannels; c++)
-         channels[c]->Flush();
 
-      *outTracks = (Track **)channels;
+   for (c = 0; c < numChannels; c++)
+      channels[c]->Flush();
+   *outTracks = (Track **)channels;
 
-      return numChannels;
-   }
+   return numChannels;
 }
 
 //
