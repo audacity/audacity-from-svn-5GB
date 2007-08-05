@@ -30,6 +30,7 @@
 #include "../Audacity.h"
 #include "ImportOGG.h"
 #include "../Internat.h"
+#include "../Tags.h"
 
 #define DESC _("Ogg Vorbis files")
 
@@ -99,7 +100,7 @@ public:
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
    bool Import(TrackFactory *trackFactory, Track ***outTracks,
-               int *outNumTracks);
+               int *outNumTracks, Tags *tags);
 private:
    wxFFile *mFile;
    OggVorbis_File *mVorbisFile;
@@ -182,36 +183,35 @@ int OggImportFileHandle::GetFileUncompressedBytes()
 }
 
 bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
-                                 int *outNumTracks)
+                                 int *outNumTracks, Tags *tags)
 {
    wxASSERT(mFile->IsOpened());
 
    /* -1 is for the current logical bitstream */
    vorbis_info *vi = ov_info(mVorbisFile, -1);
+   vorbis_comment *vc = ov_comment(mVorbisFile, -1);
 
-   *outNumTracks = vi->channels;
-   WaveTrack **channels = new WaveTrack *[*outNumTracks];
+   WaveTrack **channels = new WaveTrack *[vi->channels];
 
    int c;
-   for (c = 0; c < *outNumTracks; c++) {
+   for (c = 0; c < vi->channels; c++) {
       channels[c] = trackFactory->NewWaveTrack(int16Sample, vi->rate);
 
-      if (*outNumTracks > 1)
+      if (vi->channels == 2) {
          switch (c) {
          case 0:
             channels[c]->SetChannel(Track::LeftChannel);
+            channels[c]->SetLinked(true);
             break;
          case 1:
             channels[c]->SetChannel(Track::RightChannel);
+            channels[c]->SetTeamed(true);
             break;
-         default:
-            channels[c]->SetChannel(Track::MonoChannel);
          }
    }
-
-   if (*outNumTracks == 2) {
-      channels[0]->SetLinked(true);
-      channels[1]->SetTeamed(true);
+      else {
+         channels[c]->SetChannel(Track::MonoChannel);
+      }
    }
 
 /* The number of bytes to get from the codec in each run */
@@ -260,18 +260,17 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
          break;
       }
 
-      samplesRead = bytesRead / *outNumTracks / sizeof(short);
+      samplesRead = bytesRead / vi->channels / sizeof(short);
 
       /* give the data to the wavetracks */
-      for(c = 0; c < *outNumTracks; c++)
+      for (c = 0; c < vi->channels; c++)
           channels[c]->Append((char *)(mainBuffer + c),
                               int16Sample,
                               samplesRead,
-                              *outNumTracks);
+                              vi->channels);
 
       samplesSinceLastCallback += samplesRead;
-      if( samplesSinceLastCallback > SAMPLES_PER_CALLBACK )
-      {
+      if (samplesSinceLastCallback > SAMPLES_PER_CALLBACK) {
           if( mProgressCallback )
              cancelled = mProgressCallback(mUserData,
                                            ov_time_tell(mVorbisFile) /
@@ -281,27 +280,37 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
    } while (!cancelled && bytesRead != 0 && bitstream == 0);
 
-   for(c = 0; c < *outNumTracks; c++)
-      channels[c]->Flush();
-
-   /* ...the rest is de-allocation */
    delete[]mainBuffer;
 
-   if (cancelled) {
-      for (c = 0; c < *outNumTracks; c++)
+   bool res = (!cancelled && bytesRead >= 0);
+
+   if (!res) {
+      for(c = 0; c < vi->channels; c++) {
          delete channels[c];
+      }
       delete[] channels;
 
       return false;
    }
-   else {
-      *outTracks = new Track *[*outNumTracks];
-      for(c = 0; c < *outNumTracks; c++)
+
+   *outNumTracks = vi->channels;
+   *outTracks = new Track *[vi->channels];
+   for (c = 0; c < vi->channels; c++) {
+      channels[c]->Flush();
          (*outTracks)[c] = channels[c];
+   }
       delete[] channels;
 
-      return true;
+   if (vc) {
+      tags->Clear();
+      for (c = 0; c < vc->comments; c++) {
+         wxString comment = UTF8CTOWX(vc->user_comments[c]);
+         tags->SetTag(comment.BeforeFirst(wxT('=')),
+                      comment.AfterFirst(wxT('=')));
+      }
    }
+
+   return true;
 }
 
 OggImportFileHandle::~OggImportFileHandle()
