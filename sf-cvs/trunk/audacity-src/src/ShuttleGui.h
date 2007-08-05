@@ -297,7 +297,9 @@ enum
    eDebugID       = wxID_LOWEST - 2
 };
 
-wxSizer *CreateStdButtonSizer( wxWindow *parent, long buttons );
+wxSizer *CreateStdButtonSizer( wxWindow *parent,
+                               long buttons = eOkButton | eCancelButton,
+                               wxButton *extra = NULL );
 
 // ShuttleGui extends ShuttleGuiBase with Audacity specific extensions.
 class ShuttleGui : public ShuttleGuiBase
@@ -312,6 +314,6 @@ public:
    AdornedRulerPanel * AddAdornedRuler( ViewInfo *pViewInfo );
    RulerPanel * AddRulerVertical( float low, float hi, const wxString & Units );
    AttachableScrollBar * AddAttachableScrollBar( long style = wxSB_HORIZONTAL );
-   void AddStandardButtons( long buttons = eOkButton | eCancelButton );
+   void AddStandardButtons( long buttons = eOkButton | eCancelButton, wxButton *extra = NULL );
 };
 #endif
