@@ -16,6 +16,7 @@
 #include <wx/list.h>
 #include <wx/listimpl.cpp>
 
+class Tags;
 class TrackFactory;
 class Track;
 class ImportPlugin;
@@ -53,6 +54,7 @@ public:
    int Import(wxString fName,
               TrackFactory *trackFactory,
               Track *** tracks,
+              Tags *tags,
               wxString &errorMessage,
               progress_callback_t progressCallback,
               void *userData);
