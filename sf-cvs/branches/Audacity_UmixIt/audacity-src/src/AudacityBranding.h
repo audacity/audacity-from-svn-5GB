@@ -13,6 +13,9 @@
 
 #pragma once
 
+#if !defined(__AUDACITY_BRANDING_H__)
+#define __AUDACITY_BRANDING_H__
+
 //enum {
 //   Brand_Audacity,
 //   Brand_UmixIt,
@@ -28,15 +31,23 @@
 //#define AUDACITY_BRANDING BRAND_THINKLABS
 //#define AUDACITY_BRANDING BRAND_AUDIOTOUCH
 
-
 #define AUDACITY_URL wxT("http://audacity.sourceforge.net/")
 
-#define AUDACITY_BRANDING_BRANDNAME wxT("UmixIt")
-#define AUDACITY_BRANDING_BRANDURL wxT("http://www.umixit.com/")
+#if AUDACITY_BRANDING = BRAND_UMIXIT
 
-//#define AUDACITY_BRANDING_BRANDNAME "Thinklabs"
-//#define AUDACITY_BRANDING_BRANDURL wxT("http://Thinklabsmedical.com/")
+   #define AUDACITY_BRANDING_BRANDNAME wxT("UmixIt")
+   #define AUDACITY_BRANDING_BRANDURL wxT("http://www.umixit.com/")
 
-//#define AUDACITY_BRANDING_BRANDNAME wxT("Audacity_Audiotouch")
-//#define AUDACITY_BRANDING_BRANDURL wxT("http://www.audiotouch.com.au/")
+#elif AUDACITY_BRANDING = BRAND_THINKLABS
 
+   #define AUDACITY_BRANDING_BRANDNAME "Thinklabs"
+   #define AUDACITY_BRANDING_BRANDURL wxT("http://Thinklabsmedical.com/")
+
+#elif AUDACITY_BRANDING = BRAND_AUDIOTOUCH
+
+   #define AUDACITY_BRANDING_BRANDNAME wxT("Audacity_Audiotouch")
+   #define AUDACITY_BRANDING_BRANDURL wxT("http://www.audiotouch.com.au/")
+
+#endif
+
+#endif
