@@ -620,12 +620,19 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
       for(x=0; x<r.width; x++)
          sel[x] = (ssel0 <= where[x] && where[x + 1] < ssel1);
 
+      int mid = (int) ((zoomMax/(zoomMax-zoomMin))*r.height);
+
       GetColour(blankPen, &r0, &g0, &b0);
       GetColour(unselectedPen, &r1, &g1, &b1);
       GetColour(selectedPen, &r2, &g2, &b2);
       for(y=0; y<r.height; y++) {
          for(x=0; x<r.width; x++) {
-            if (y < maxtop[x] || y > minbot[x] ||
+            if (y == mid) {
+               *imageBuffer++ = 0;
+               *imageBuffer++ = 0;
+               *imageBuffer++ = 0;
+            }
+            else if (y < maxtop[x] || y > minbot[x] ||
                 (y > mintop[x] && y < maxbot[x])) {
                *imageBuffer++ = r0;
                *imageBuffer++ = g0;
@@ -1118,20 +1125,17 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    DrawWaveformBackground(dc, drawRect, imageBuffer, where, ssel0, ssel1,
                           envValues, zoomMin, zoomMax, dB, drawEnvelope);
 
-   float trackmin, trackmax;
-   track->GetDisplayBounds(&trackmin, &trackmax);
-
    //OK, the display bounds are between min and max, which
    //is spread across r.height.  Draw the line at the proper place.
 
-   if(trackmin < 0 && trackmax > 0)
-   {
-         float height = (trackmax/(trackmax-trackmin))*mid.height;
-         dc.SetPen(*wxBLACK_PEN);
-         dc.DrawLine(mid.x, (int) (mid.y+height), mid.x+mid.width,
-               (int) (mid.y+height));
+   #if !BUFFERED_DRAWING
+   if (zoomMin < 0 && zoomMax > 0) {
+      float height = (zoomMax/(zoomMax-zoomMin))*mid.height;
+      dc.SetPen(*wxBLACK_PEN);
+      dc.DrawLine(mid.x, (int) (mid.y+height), mid.x+mid.width,
+            (int) (mid.y+height));
    }
-
+   #endif
 
    if (!showIndividualSamples)
       DrawMinMaxRMS(dc, drawRect, imageBuffer, zoomMin, zoomMax,
