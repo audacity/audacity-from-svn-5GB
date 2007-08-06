@@ -1,7 +1,7 @@
 <?php
 // ** MySQL settings ** //
 define('DB_NAME', 'a6235_main');    // The name of the database
-define('DB_USER', 'a6235_admin');     // Your MySQL username
+define('DB_USER', 'a6235admin');     // Your MySQL username
 define('DB_PASSWORD', 'n9ine0Klok'); // ...and password
 define('DB_HOST', 'mysql4-a.sourceforge.net');    // 99% chance you won't need to change this value
 define('DB_CHARSET', 'utf8');
