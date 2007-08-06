@@ -136,8 +136,6 @@ private:
    progress_callback_t  mProgressCallback;
    AudacityProject     *mProject;
 
-   NoteTrack*        nTrack;
-
    // In order to know whether or not to create a new window
    bool              windowCalledOnce;
 
@@ -363,10 +361,12 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
       if (targetfile.AfterLast(wxT('.')).IsSameAs(wxT("mid"), false)
           ||  targetfile.AfterLast(wxT('.')).IsSameAs(wxT("midi"), false))
       {
-         nTrack = new NoteTrack(mProject->GetDirManager());
+         NoteTrack *nTrack = new NoteTrack(mProject->GetDirManager());
          
          if (::ImportMIDI(targetfile, nTrack))
             mProject->GetTracks()->Add(nTrack);
+         else
+            delete nTrack;
       }
       
       // If not a midi, open audio file
