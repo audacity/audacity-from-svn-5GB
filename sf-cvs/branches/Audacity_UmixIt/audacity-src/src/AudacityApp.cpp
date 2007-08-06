@@ -13,6 +13,7 @@
 #include <wx/defs.h>
 #include <wx/app.h>
 #include <wx/artprov.h>
+#include <wx/button.h>
 #include <wx/docview.h>
 #include <wx/log.h>
 #include <wx/window.h>
@@ -20,6 +21,8 @@
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/snglinst.h>
+#include <wx/statbmp.h>
+#include <wx/sizer.h>
 
 #include <wx/fs_zip.h>
 #include <wx/image.h>
