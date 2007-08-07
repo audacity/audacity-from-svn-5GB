@@ -65,9 +65,11 @@
 <h3>Windows</h3>
 <ol>
   <li>Go to the <a href="%s">LAME download page</a>.</li>
-  <li>Click on any link from the list of identical "%s" links.</li>
-  <li>When you have finished downloading LAME, unzip it and save the file <b>lame_enc.dll</b> anywhere on your computer.</li>
+  <li>Under "For Audacity 1.2.6 and 1.3.3 on Windows", left-click on the link "%s" and save the zip folder to anywhere on your computer.</li>
+  <li>When you have finished downloading the ZIP folder, unzip it and save the file <b>lame_enc.dll</b> that it contains to anywhere on your computer.</li>
   <li>The first time you use the "Export as MP3" command, Audacity will ask you where lame_enc.dll is saved.</li>
+  <li>In case of difficulty, please view our more detailed instructions at the
+  <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#Windows_Instructions">Audacity Wiki</a>.</li>
 </ol>
 <h3>Mac OS 9 or X</h3>
 <ol>
@@ -76,7 +78,7 @@
   <li>When you have finished downloading, use Stuffit Expander to extract the files.  (This may happen automatically.)</li>
   <li>Save the file called "LameLib" or libmp3lame.dylib anywhere on your computer.</li>
   <li>The first time you use the "Export as MP3" command, Audacity will ask you where LameLib or libmp3lame.dylib is saved.</li>
-</ol>'), "http://lame.buanzo.com.ar/", "lame-3.96.1", "http://spaghetticode.org/lame/")
+</ol>'), "http://lame.buanzo.com.ar/", "libmp3lame-win-3.97.zip", "http://spaghetticode.org/lame/")
         ),
         // TODO: Connect/replace this with documentation on plug-ins page?
         "vst-enabler" => array(
