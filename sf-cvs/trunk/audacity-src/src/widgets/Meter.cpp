@@ -34,6 +34,7 @@
 *//******************************************************************/
 
 #include "../Audacity.h"
+#include "../AudacityApp.h"
 
 #include <wx/defs.h>
 #include <wx/dcmemory.h>
@@ -475,7 +476,7 @@ void Meter::UpdateDisplay(int numChannels, int numFrames, float *sampleData)
          // Send the number of peaked samples at the head and tail,
          // in case there's a run of peaked samples that crosses
          // block boundaries
-         if (fabs(sptr[j])>=1.0) {
+         if (fabs(sptr[j])>=MAX_AUDIO) {
             if (msg.headPeakCount[j]==i)
                msg.headPeakCount[j]++;
             msg.tailPeakCount[j]++;
