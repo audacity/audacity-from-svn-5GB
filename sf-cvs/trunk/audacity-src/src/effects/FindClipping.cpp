@@ -20,6 +20,7 @@
 
 
 #include "../Audacity.h"
+#include "../AudacityApp.h"
 
 #include <wx/defs.h>
 #include <wx/button.h>
@@ -151,7 +152,7 @@ bool EffectFindClipping::ProcessOne(LabelTrack * l,
       }
 
       float v = fabs(*ptr++);
-      if (v >= 1.0) {   //0.99996948
+      if (v >= MAX_AUDIO) {
          if (startrun == 0) {
             startTime = t->LongSamplesToTime(start + s);
             samps = 0;

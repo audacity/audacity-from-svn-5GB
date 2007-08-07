@@ -21,6 +21,7 @@
 *//*******************************************************************/
 
 #include "Audacity.h"
+#include "AudacityApp.h"
 #include "TrackArtist.h"
 #include "float_cast.h"
 
@@ -1203,11 +1204,11 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
 
       for (sampleCount s = 0; s < slen; s++) {
          float v = floor(buffer[s]);
-         if (buffer[s] <= -1.0) {
+         if (buffer[s] <= -MAX_AUDIO) {
             int x = lrint((s / rate + s0 / rate - t0) * pps);
             dc.DrawLine(mid.x + x, mid.y + (mid.height / 2), mid.x + x, mid.y + mid.height);
          }
-         else if (buffer[s] >= 1.0) {
+         else if (buffer[s] >= MAX_AUDIO) {
             int x = lrint((s / rate + s0 / rate - t0) * pps);
             dc.DrawLine(mid.x + x, mid.y, mid.x + x, mid.y + (mid.height / 2));
          }
