@@ -122,6 +122,7 @@ class Envelope : public XMLTagHandler {
    void CopyFrom(const Envelope * e, double t0, double t1);
    void Paste(double t0, Envelope *e);
    void InsertSpace(double t0, double tlen);
+   void RemoveUnneededPoints(double tolerence = 0.001);
 
    // Control
 
