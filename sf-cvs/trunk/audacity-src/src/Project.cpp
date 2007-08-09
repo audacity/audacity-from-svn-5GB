@@ -1513,10 +1513,16 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    delete mToolManager;
    mToolManager = NULL;
 
-   // Delete the progress dialogs
+   // Get rid of the history window
+   if (mHistoryWindow) {
+      mHistoryWindow->Destroy();
+      mHistoryWindow = NULL;
+   }
+
+   // Destroy the progress dialogs
    for (mProgressCurrent = 2; mProgressCurrent >= 0; mProgressCurrent--) {
       if (mProgressDialog[mProgressCurrent]) {
-         delete mProgressDialog[mProgressCurrent];
+         mProgressDialog[mProgressCurrent]->Destroy();
          mProgressDialog[mProgressCurrent] = NULL;
       }
    }
@@ -3356,9 +3362,6 @@ void AudacityProject::OnAudioIONewBlockFiles(const wxString& blockFileLog)
 //      the work around is to not delete the guage right away.  So, we keep a backlog of
 //      the last three wxProgressDialogs displayed.  This gives Jaws a chance to get the
 //      last update without accessing freed storage.
-
-static void *cookie = NULL;
-
 void AudacityProject::ProgressShow(const wxString &title, const wxString &message)
 {
    if (mProgressDialog[mProgressCurrent]) {
