@@ -864,6 +864,9 @@ bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
          "data loss or cause your system to crash, so is not allowed.\n\n"
          "Use the New or Open commands in the currently running Audacity\n"
          "process to open multiple projects simultaneously.\n");
+      #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+         prompt.Prepend(_("SAVE AND CLOSE YOUR EXISTING AUDACITY FILE!\n\n"));
+      #endif
       wxMessageBox(prompt, _("Audacity is already running"),
             wxOK | wxICON_ERROR);
       delete mChecker;
