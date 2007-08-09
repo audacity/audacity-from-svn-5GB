@@ -128,7 +128,7 @@ WaveClip::WaveClip(WaveClip& orig, DirManager *projDirManager)
    mEnvelope = new Envelope();
    mEnvelope->Paste(0.0, orig.mEnvelope);
    mEnvelope->SetOffset(orig.GetOffset());
-   mEnvelope->SetTrackLen(orig.mSequence->GetNumSamples() / orig.mRate);
+   mEnvelope->SetTrackLen(((double)orig.mSequence->GetNumSamples()) / orig.mRate);
    mWaveCache = new WaveCache(1);
    mSpecCache = new SpecCache(1, 1, false);
    mSpecPxCache = new SpecPxCache(1);
@@ -766,6 +766,7 @@ bool WaveClip::Paste(double t0, WaveClip* other)
    {
       MarkChanged();
       mEnvelope->Paste(t0, other->mEnvelope);
+      mEnvelope->RemoveUnneededPoints();
       OffsetCutLines(t0, other->GetEndTime()-other->GetStartTime());
       
       // Paste cut lines contained in pasted clip
@@ -814,7 +815,7 @@ bool WaveClip::Clear(double t0, double t1)
 
    TimeToSamplesClip(t0, &s0);
    TimeToSamplesClip(t1, &s1);
-   
+
    if (GetSequence()->Delete(s0, s1-s0))
    {
       // msmeyer

@@ -1500,6 +1500,9 @@ bool WaveTrack::SplitAt(double t)
       WaveClip* c = it->GetData();
       if (t > c->GetStartTime() && t < c->GetEndTime())
       {
+         double val;
+         t = LongSamplesToTime(TimeToLongSamples(t)); // put t on a sample
+         val = c->GetEnvelope()->GetValue(t);
          WaveClip* newClip = new WaveClip(*c, mDirManager);
          if (!c->Clear(t, c->GetEndTime()))
          {
@@ -1511,6 +1514,8 @@ bool WaveTrack::SplitAt(double t)
             delete newClip;
             return false;
          }
+         c->GetEnvelope()->Insert(c->GetEndTime() - c->GetOffset() - 1.0/c->GetRate(), val);
+         newClip->GetEnvelope()->Insert(0.0, val);
          longSampleCount here = llrint(floor(((t - c->GetStartTime() - mOffset) * mRate) + 0.5));
          newClip->Offset((double)here/(double)mRate);
          mClips.Append(newClip);

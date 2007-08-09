@@ -649,6 +649,26 @@ void Envelope::Paste(double t0, Envelope *e)
       pos=Insert(t0 + e->mEnv[i]->t, e->mEnv[i]->val);
 }
 
+void Envelope::RemoveUnneededPoints(double tolerence)
+{
+   unsigned int len = mEnv.Count();
+   unsigned int i;
+   double when, val, val1;
+
+   for (i = 0; i < len; i++) {
+      when = mEnv[i]->t;
+      val = mEnv[i]->val;
+      Delete(i);  // try it to see if it's doing anything
+      val1 = GetValue(when);
+      if( fabs(val -val1) > tolerence )
+         Insert(when,val); // put it back, we needed it
+      else {   // it made no difference so leave it out
+         len--;
+         i--;
+      }
+   }
+}
+
 void Envelope::InsertSpace(double t0, double tlen)
 {
    unsigned int len = mEnv.Count();
