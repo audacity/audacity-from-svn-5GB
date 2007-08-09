@@ -219,8 +219,6 @@ void OnImportMIDI();
 void OnImportRaw();
 
 void OnEditMetadata();
-void OnEditMetadata1();
-void OnEditMetadata2();
 
 void OnMixAndRender();
 

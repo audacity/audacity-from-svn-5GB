@@ -748,10 +748,6 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("Benchmark"),      _("&Run Benchmark..."),           FN(OnBenchmark));
       c->AddSeparator();   
       c->AddItem(wxT("DeviceInfo"),     _("&Audio Device Info..."),       FN(OnAudioDeviceInfo));
-
-      c->AddSeparator();   
-      c->AddItem(wxT("EditMetaData1"),  _("Open Metadata Editor 1"),      FN(OnEditMetadata1));
-      c->AddItem(wxT("EditMetaData2"),  _("Open Metadata Editor 2"),      FN(OnEditMetadata2));
    }
 #endif 
 
@@ -3562,20 +3558,6 @@ void AudacityProject::OnImportRaw()
 void AudacityProject::OnEditMetadata()
 {
    if (mTags->ShowEditDialog(this, _("Edit the metadata tags"), true)) {
-      PushState(_("Edit Metadata tags"), _("Edit Metadata"));
-   }
-}
-
-void AudacityProject::OnEditMetadata1()
-{
-   if (mTags->ShowEditDialog1(this, _("Edit the metadata tags"), true)) {
-      PushState(_("Edit Metadata tags"), _("Edit Metadata"));
-   }
-}
-
-void AudacityProject::OnEditMetadata2()
-{
-   if (mTags->ShowEditDialog2(this, _("Edit the metadata tags"), true)) {
       PushState(_("Edit Metadata tags"), _("Edit Metadata"));
    }
 }
