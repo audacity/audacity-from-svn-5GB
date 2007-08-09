@@ -391,7 +391,10 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mAutoScrolling(false),
      mActive(true),
      mHistoryWindow(NULL),
-     #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
+     #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+        m_bWantPlayAfterOpen(true),
+        m_bWantPlayAfterRecord(true),
+     #elif (AUDACITY_BRANDING != BRAND_THINKLABS) // && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
         mLyricsWindow(NULL),
         mMixerBoard(NULL),
         #if (AUDACITY_BRANDING != BRAND_UMIXIT)
@@ -2555,6 +2558,11 @@ void AudacityProject::Import(wxString fileName)
    }
 
    AddImportedTracks(fileName, newTracks, numTracks);
+
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      if (m_bWantPlayAfterOpen)
+         this->OnPlayStop();
+   #endif
 }
 
 bool AudacityProject::SaveAs()

@@ -1299,6 +1299,10 @@ void TrackPanel::OnTimer()
    if (p->GetAudioIOToken()>0 &&
        !gAudioIO->IsAudioTokenActive(p->GetAudioIOToken())) {
 
+      #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+         bool bWantPlay = false; // Will be set to true only if we were recording and p->m_bWantPlayAfterRecord.
+      #endif
+
       if (gAudioIO->GetNumCaptureChannels() > 0) {
          // Tracks are buffered during recording.  This flushes
          // them so that there's nothing left in the append
@@ -1310,11 +1314,19 @@ void TrackPanel::OnTimer()
             }
          }
          MakeParentPushState(_("Recorded Audio"), _("Record"));
+
+         #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+            bWantPlay = p->m_bWantPlayAfterRecord;
+         #endif
       }
 
       MakeParentRedrawScrollbars();
       p->SetAudioIOToken(0);
       p->RedrawProject();         
+      #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+         if (bWantPlay)
+            p->GetControlToolBar()->PlayCurrentRegion(false);
+      #endif
    }
 
    // AS: The "indicator" is the little graphical mark shown in the ruler

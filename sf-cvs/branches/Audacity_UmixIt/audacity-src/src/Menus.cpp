@@ -6,7 +6,7 @@
 
   Dominic Mazzoni
   Brian Gunlogson
-  et. al.
+  et al.
 
   This file implements the method that creates the menu bar, plus
   all of the methods that get called when you select an item
@@ -147,21 +147,50 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->BeginMenu(_("&File"));
    c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
+#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   // For Audiotouch, commands re-ordered, and 
+   // export commands renamed to "save as" commands and given new key codes.
+   c->AddItem("Export",         _("Save As...\tCtrl+S"),                         FN(OnExportMix));
+   c->AddItem("ExportSel",      _("Save Selection As...\tCtrl+Shift+S"),         FN(OnExportSelection));
+   c->AddItem("Open",           _("&Open...\tCtrl+O"),               FN(OnOpen));
+   c->AddItem("[blank]",        _(""),                               NULL);
+   c->AddSeparator();
+   // Recent Files and Recent Projects menus
+   wxMenu* pm = c->BeginSubMenu(_("&Recent Files...")); 
+   c->EndSubMenu();
+   // TODO - read the number of files to store in history from preferences
+   mRecentFiles = new wxFileHistory();
+   mRecentFiles->UseMenu(pm);
+   gPrefs->SetPath("/RecentFiles");
+   mRecentFiles->Load(*gPrefs);
+   gPrefs->SetPath("..");
+   c->AddSeparator();
+   c->AddItem("ExportOgg",      _("Save As Ogg Vorbis...\tCtrl+G"),              FN(OnExportOggMix));
+   c->AddItem("ExportOggSel",   _("Save Selection As Ogg Vorbis...\tCtrl+Shift+G"), FN(OnExportOggSelection));
+   c->AddSeparator();
+   c->AddItem("ExportMP3",      _("Save As MP3...\tCtrl+M"),                     FN(OnExportMP3Mix));
+   c->AddItem("ExportMP3Sel",   _("Save Selection As MP3...\tCtrl+Shift+M"),     FN(OnExportMP3Selection));
+   c->AddSeparator();
+   c->AddItem("Save",           _("&Save Project\tCtrl+P"),             FN(OnSave));
+   c->SetCommandFlags("Save",
+                     AudioIONotBusyFlag | UnsavedChangesFlag,
+                     AudioIONotBusyFlag | UnsavedChangesFlag);
+   c->AddItem("SaveAs",         _("Save Project &As...\tCtrl+Shift+P"), FN(OnSaveAs));
+   c->AddSeparator();
+   c->AddItem("New",            _("&New\tCtrl+N"),                   FN(OnNew));
+   c->SetCommandFlags("New", 0, 0);
+   c->AddItem("Close",          _("&Close\tCtrl+W"),                 FN(OnClose));
+#else // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
    c->AddItem("New",            _("&New\tCtrl+N"),                   FN(OnNew));
    c->SetCommandFlags("New", 0, 0);
    c->AddItem("Open",           _("&Open...\tCtrl+O"),               FN(OnOpen));
    c->SetCommandFlags("Open", 0, 0);
    c->AddItem("Close",          _("&Close\tCtrl+W"),                 FN(OnClose));
-   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      c->AddItem("Save",           _("&Save Project\tCtrl+P"),             FN(OnSave));
-      c->AddItem("SaveAs",         _("Save Project &As...\tCtrl+Shift+P"), FN(OnSaveAs));
-   #else // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
-      c->AddItem("Save",           _("&Save Project\tCtrl+S"),          FN(OnSave));
-      c->AddItem("SaveAs",         _("Save Project &As..."),            FN(OnSaveAs));
-   #endif
+   c->AddItem("Save",           _("&Save Project\tCtrl+S"),          FN(OnSave));
    c->SetCommandFlags("Save",
-                     AudioIONotBusyFlag | UnsavedChangesFlag,
-                     AudioIONotBusyFlag | UnsavedChangesFlag);
+                      AudioIONotBusyFlag | UnsavedChangesFlag,
+                      AudioIONotBusyFlag | UnsavedChangesFlag);
+   c->AddItem("SaveAs",         _("Save Project &As..."),            FN(OnSaveAs));
    c->AddSeparator();
 
    // Recent Files and Recent Projects menus
@@ -175,30 +204,18 @@ void AudacityProject::CreateMenusAndCommands()
    gPrefs->SetPath("..");
    c->AddSeparator();
 
-   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      // For Audiotouch, export commands renamed to "save as" commands, re-ordered, given new key codes.
-      c->AddItem("Export",         _("Save As...\tCtrl+S"),                         FN(OnExportMix));
-      c->AddItem("ExportSel",      _("Save Selection As...\tCtrl+Shift+S"),         FN(OnExportSelection));
-      c->AddSeparator();
-      c->AddItem("ExportOgg",      _("Save As Ogg Vorbis...\tCtrl+G"),              FN(OnExportOggMix));
-      c->AddItem("ExportOggSel",   _("Save Selection As Ogg Vorbis...\tCtrl+Shift+G"), FN(OnExportOggSelection));
-      c->AddSeparator();
-      c->AddItem("ExportMP3",      _("Save As MP3...\tCtrl+M"),                     FN(OnExportMP3Mix));
-      c->AddItem("ExportMP3Sel",   _("Save Selection As MP3...\tCtrl+Shift+M"),     FN(OnExportMP3Selection));
+   c->AddItem("Export",         _("Export As..."),                   FN(OnExportMix));
+   c->AddItem("ExportSel",      _("Export Selection As..."),         FN(OnExportSelection));
+   c->AddSeparator();
+   c->AddItem("ExportMP3",      _("Export As MP3..."),               FN(OnExportMP3Mix));
+   c->AddItem("ExportMP3Sel",   _("Export Selection As MP3..."),     FN(OnExportMP3Selection));
 
-   #else // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
-      c->AddItem("Export",         _("Export As..."),                   FN(OnExportMix));
-      c->AddItem("ExportSel",      _("Export Selection As..."),         FN(OnExportSelection));
+   #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
       c->AddSeparator();
-      c->AddItem("ExportMP3",      _("Export As MP3..."),               FN(OnExportMP3Mix));
-      c->AddItem("ExportMP3Sel",   _("Export Selection As MP3..."),     FN(OnExportMP3Selection));
-
-      #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
-         c->AddSeparator();
-         c->AddItem("ExportOgg",      _("Export As Ogg Vorbis..."),        FN(OnExportOggMix));
-         c->AddItem("ExportOggSel",   _("Export Selection As Ogg Vorbis..."), FN(OnExportOggSelection));
-      #endif
+      c->AddItem("ExportOgg",      _("Export As Ogg Vorbis..."),        FN(OnExportOggMix));
+      c->AddItem("ExportOggSel",   _("Export Selection As Ogg Vorbis..."), FN(OnExportOggSelection));
    #endif
+#endif
 
    c->AddSeparator();
    c->AddItem("ExportLabels",   _("Export &Labels..."),              FN(OnExportLabels));
@@ -378,6 +395,19 @@ void AudacityProject::CreateMenusAndCommands()
 
    
    c->EndMenu();
+
+#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   //
+   // Play Menu
+   //
+
+   c->BeginMenu(_("&Play"));
+   c->SetDefaultFlags(0, 0);
+   // Start with "Do Not" versions because default for both is TRUE.
+   c->AddItem("PlayAfterOpen", _("Do Not Play after File Open"),  FN(OnPlayAfterOpen));
+   c->AddItem("PlayAfterRecord", _("Do Not Play after Record"),  FN(OnPlayAfterRecord));
+   c->EndMenu();
+#endif
 
    //
    // View Menu
@@ -964,6 +994,10 @@ void AudacityProject::UpdateMenus()
 
    mLastFlags = flags;
    mCommandManager.EnableUsingFlags(flags, 0xFFFFFFFF);
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      // Blank line -- never enabled. Only one occurrence, so do it this way rather than adding another flag.
+      mCommandManager.Enable("[blank]", false);
+   #endif
    
    //Now, go through each toolbar, and and call EnableDisableButtons()
    unsigned int i;
@@ -1478,6 +1512,10 @@ void AudacityProject::OnNew()
 void AudacityProject::OnOpen()
 {
    ShowOpenDialog(this);
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      if (m_bWantPlayAfterOpen)
+         this->OnPlayStop();
+   #endif
 }
 
 void AudacityProject::OnClose()
@@ -1487,17 +1525,23 @@ void AudacityProject::OnClose()
 
 void AudacityProject::OnSave()
 {
-   Save();
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      this->OnClose();
+      // Close only if actually completed Save, i.e., user didn't cancel.
+      if (this->Save())
+         this->OnClose();
+   #else
+      Save();
    #endif
 }
 
 void AudacityProject::OnSaveAs()
 {
-   SaveAs();
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      this->OnClose();
+      // Close only if actually completed Save, i.e., user didn't cancel.
+      if (this->SaveAs())
+         this->OnClose();
+   #else
+      SaveAs();
    #endif
 }
 
@@ -3422,6 +3466,24 @@ void AudacityProject::OnBenchmark()
    }
 
 #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   // Play menu
+   void AudacityProject::OnPlayAfterOpen()
+   {
+      m_bWantPlayAfterOpen = !m_bWantPlayAfterOpen;
+      mCommandManager.Modify(
+         "PlayAfterOpen", 
+         m_bWantPlayAfterOpen ? _("Do Not Play after File Open") : _("Play after File Open"));
+   }
+
+   void AudacityProject::OnPlayAfterRecord()
+   {
+      m_bWantPlayAfterRecord = !m_bWantPlayAfterRecord;
+      mCommandManager.Modify(
+         "PlayAfterRecord", 
+         m_bWantPlayAfterRecord ? _("Do Not Play after Record") : _("Play after Record"));
+   }
+
+   // Help menu
    #include "AudacityApp.h"
 
    void LinkToPathlistHTM(const wxString strHTMfilename) 
