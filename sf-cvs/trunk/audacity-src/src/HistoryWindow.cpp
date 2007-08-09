@@ -200,21 +200,26 @@ void HistoryWindow::OnDiscard(wxCommandEvent &event)
 
 void HistoryWindow::OnItemSelected(wxListEvent &event)
 {
+   int selected = event.GetIndex();
    int i;
-
-   mSelected = event.GetIndex();
 
    for (i = 0; i < mList->GetItemCount(); i++) {
       mList->SetItemImage(i, 0);
 
-      if (i > mSelected)
+      if (i > selected)
          mList->SetItemTextColour(i, *wxLIGHT_GREY);
       else
          mList->SetItemTextColour(i, mList->GetTextColour());
    }
-   mList->SetItemImage(mSelected, 1);
+   mList->SetItemImage(selected, 1);
 
-   mProject->SetStateTo(mSelected + 1);
+   // Do not do a SetStateTo() if we're not actually changing the selected
+   // entry.  Doing so can cause unnecessary delays upon initial load or while
+   // clicking the same entry over and over.
+   if (selected != mSelected) {
+      mProject->SetStateTo(selected + 1);
+   }
+   mSelected = selected;
 
    UpdateLevels();
 }
