@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dwsync>
+<file name="Address.php" server="ftp.shiftthis.net//var/www/22/" local="128207722200000000" remote="128258161800000000" />
+<file name="AddressContainer.php" server="ftp.shiftthis.net//var/www/22/" local="128168297060000000" remote="128258161800000000" />
+<file name="Authenticator.php" server="ftp.shiftthis.net//var/www/22/" local="128207722200000000" remote="128258161800000000" />
+<file name="BadResponseException.php" server="ftp.shiftthis.net//var/www/22/" local="128221763940000000" remote="128258161800000000" />
+<file name="BatchMailer.php" server="ftp.shiftthis.net//var/www/22/" local="128239082000000000" remote="128258161800000000" />
+<file name="Cache.php" server="ftp.shiftthis.net//var/www/22/" local="128207722200000000" remote="128258161800000000" />
+<file name="CacheFactory.php" server="ftp.shiftthis.net//var/www/22/" local="128207722200000000" remote="128258161800000000" />
+<file name="ClassLoader.php" server="ftp.shiftthis.net//var/www/22/" local="128207722200000000" remote="128258161800000000" />
+<file name="Connection.php" server="ftp.shiftthis.net//var/www/22/" local="128228900760000000" remote="128258161800000000" />
+<file name="ConnectionBase.php" server="ftp.shiftthis.net//var/www/22/" local="128228900760000000" remote="128258161800000000" />
+<file name="Errors.php" server="ftp.shiftthis.net//var/www/22/" local="128207722200000000" remote="128258161800000000" />
+<file name="Events.php" server="ftp.shiftthis.net//var/www/22/" local="128207722200000000" remote="128258162400000000" />
+<file name="Exception.php" server="ftp.shiftthis.net//var/www/22/" local="128207722200000000" remote="128258162400000000" />
+<file name="File.php" server="ftp.shiftthis.net//var/www/22/" local="128213750980000000" remote="128258162400000000" />
+<file name="FileException.php" server="ftp.shiftthis.net//var/www/22/" local="128221763940000000" remote="128258162400000000" />
+<file name="Log.php" server="ftp.shiftthis.net//var/www/22/" local="128207722200000000" remote="128258162400000000" />
+<file name="Message.php" server="ftp.shiftthis.net//var/www/22/" local="128236340880000000" remote="128258162400000000" />
+<file name="RecipientList.php" server="ftp.shiftthis.net//var/www/22/" local="128231998500000000" remote="128258162400000000" />
+</dwsync>
