@@ -2523,11 +2523,11 @@ void EqualizationDialog::OnDelete(wxCommandEvent &event)
 
 void EqualizationDialog::OnClear(wxCommandEvent &event)
 {
+   EnvelopeUpdated();
    mLogEnvelope->Flatten(0.);
    mLogEnvelope->SetTrackLen(1.0);
    mLinEnvelope->Flatten(0.);
    mLinEnvelope->SetTrackLen(1.0);
-   EnvelopeUpdated();
    mPanel->RecalcRequired = true;
    mPanel->Refresh(false);
    if( !drawMode )
