@@ -4,7 +4,7 @@
 	@author Phil Burk  http://www.softsynth.com
 */
 /*
- * $Id: patest_many.c,v 1.3 2007-06-03 08:30:34 llucius Exp $
+ * $Id: patest_many.c,v 1.4 2007-08-15 19:55:54 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com

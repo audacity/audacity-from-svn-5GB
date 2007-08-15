@@ -1,11 +1,11 @@
 /*
- * $Id: pa_linux_alsa.c,v 1.5 2007-06-03 08:30:30 llucius Exp $
+ * $Id: pa_linux_alsa.c,v 1.6 2007-08-15 19:55:41 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * ALSA implementation by Joshua Haberman and Arve Knudsen
  *
  * Copyright (c) 2002 Joshua Haberman <joshua@haberman.com>
- * Copyright (c) 2005-2006 Arve Knudsen <aknuds-1@broadpark.no>
+ * Copyright (c) 2005-2007 Arve Knudsen <aknuds-1@broadpark.no>
  *
  * Based on the Open Source API proposed by Ross Bencina
  * Copyright (c) 1999-2002 Ross Bencina, Phil Burk
@@ -71,6 +71,7 @@
 #include "pa_cpuload.h"
 #include "pa_process.h"
 #include "pa_endianness.h"
+#include "pa_debugprint.h"
 
 #include "pa_linux_alsa.h"
 
@@ -97,6 +98,13 @@
     assert( success == aErr_ );
 
 static int aErr_;               /* Used with ENSURE_ */
+static int numPeriods_ = 4;
+
+int PaAlsa_SetNumPeriods( int numPeriods )
+{
+    numPeriods_ = numPeriods;
+    return paNoError;
+}
 
 typedef enum
 {
@@ -613,8 +621,12 @@ static PaError FillInDevInfo( PaAlsaHostApiRepresentation *alsaApi, HwDevInfo* d
     if( baseDeviceInfo->maxInputChannels > 0 || baseDeviceInfo->maxOutputChannels > 0 )
     {
         /* Make device default if there isn't already one or it is the ALSA "default" device */
-        if( baseApi->info.defaultInputDevice == paNoDevice && baseDeviceInfo->maxInputChannels > 0 )
+        if( (baseApi->info.defaultInputDevice == paNoDevice || !strcmp(deviceName->alsaName,
+                        "default" )) && baseDeviceInfo->maxInputChannels > 0 )
+        {
             baseApi->info.defaultInputDevice = *devIdx;
+            PA_DEBUG(("Default input device: %s\n", deviceName->name));
+        }
         if( (baseApi->info.defaultOutputDevice == paNoDevice || !strcmp(deviceName->alsaName,
                         "default" )) && baseDeviceInfo->maxOutputChannels > 0 )
         {
@@ -1019,10 +1031,6 @@ static PaError AlsaOpen( const PaUtilHostApiRepresentation *hostApi, const PaStr
     {
         /* Not to be closed */
         *pcm = NULL;
-        if( -EBUSY == ret )
-        {
-            PA_DEBUG(( "%s: Device is busy\n", __FUNCTION__ ));
-        }
         ENSURE_( ret, -EBUSY == ret ? paDeviceUnavailable : paBadIODeviceCombination );
     }
     ENSURE_( snd_pcm_nonblock( *pcm, 0 ), paUnanticipatedHostError );
@@ -1316,7 +1324,7 @@ static PaError PaAlsaStreamComponent_FinishConfigure( PaAlsaStreamComponent *sel
 
     snd_pcm_sw_params_alloca( &swParams );
 
-    bufSz = (params->suggestedLatency * sampleRate) + self->framesPerBuffer;    /* One period does not count as latency */
+    bufSz = params->suggestedLatency * sampleRate;
     ENSURE_( snd_pcm_hw_params_set_buffer_size_near( self->pcm, hwParams, &bufSz ), paUnanticipatedHostError );
 
     /* Set the parameters! */
@@ -1333,8 +1341,8 @@ static PaError PaAlsaStreamComponent_FinishConfigure( PaAlsaStreamComponent *sel
         ENSURE_(r, paUnanticipatedHostError );
     }
     ENSURE_( snd_pcm_hw_params_get_buffer_size( hwParams, &self->bufferSize ), paUnanticipatedHostError );
-    /* Latency in seconds, one period is not counted as latency */
-    *latency = (self->bufferSize - self->framesPerBuffer) / sampleRate;
+    /* Latency in seconds */
+    *latency = self->bufferSize / sampleRate;
 
     /* Now software parameters... */
     ENSURE_( snd_pcm_sw_params_current( self->pcm, swParams ), paUnanticipatedHostError );
@@ -1513,26 +1521,30 @@ static PaError PaAlsaStreamComponent_DetermineFramesPerBuffer( PaAlsaStreamCompo
         }
     }
 
-    /* Using 5 as a base number of periods, we try to approximate the suggested latency (+1 period),
+    /* Using the base number of periods, we try to approximate the suggested latency (+1 period),
        finding a combination of period/buffer size which best fits these constraints */
     {
-        unsigned numPeriods = 4, maxPeriods = 0;
+        unsigned numPeriods = numPeriods_, maxPeriods = 0;
         /* It may be that the device only supports 2 periods for instance */
         dir = 0;
         ENSURE_( snd_pcm_hw_params_get_periods_max( hwParams, &maxPeriods, &dir ), paUnanticipatedHostError );
         assert( maxPeriods > 1 );
-        /* One period is not counted as latency */
-        maxPeriods -= 1;
         numPeriods = PA_MIN( maxPeriods, numPeriods );
 
         if( framesPerUserBuffer != paFramesPerBufferUnspecified )
         {
+            /* Try to get a power-of-two of the user buffer size. */
             framesPerHostBuffer = framesPerUserBuffer;
             if( framesPerHostBuffer < bufferSize )
             {
                 while( bufferSize / framesPerHostBuffer > numPeriods )
                 {
                     framesPerHostBuffer *= 2;
+                }
+                /* One extra period is preferrable to one less (should be more robust) */
+                if( bufferSize / framesPerHostBuffer < numPeriods )
+                {
+                    framesPerHostBuffer /= 2;
                 }
             }
             else
@@ -1654,15 +1666,15 @@ static PaError PaAlsaStream_DetermineFramesPerBuffer( PaAlsaStream* self, double
     unsigned long framesPerHostBuffer = 0;
     int dir = 0;
     int accurate = 1;
+    unsigned numPeriods = numPeriods_;
 
     if( self->capture.pcm && self->playback.pcm )
     {
         if( framesPerUserBuffer == paFramesPerBufferUnspecified )
         {
-            snd_pcm_uframes_t desiredLatency, e, minPeriodSize, maxPeriodSize, optimalPeriodSize, periodSize,
-                              minCapture, minPlayback, maxCapture, maxPlayback;
-
             /* Come up with a common desired latency */
+            snd_pcm_uframes_t desiredBufSz, e, minPeriodSize, maxPeriodSize, optimalPeriodSize, periodSize,
+                              minCapture, minPlayback, maxCapture, maxPlayback;
 
             dir = 0;
             ENSURE_( snd_pcm_hw_params_get_period_size_min( hwParamsCapture, &minCapture, &dir ), paUnanticipatedHostError );
@@ -1676,9 +1688,9 @@ static PaError PaAlsaStream_DetermineFramesPerBuffer( PaAlsaStream* self, double
             maxPeriodSize = PA_MIN( maxPlayback, maxCapture );
             PA_UNLESS( minPeriodSize <= maxPeriodSize, paBadIODeviceCombination );
 
-            desiredLatency = (snd_pcm_uframes_t)(PA_MIN( outputParameters->suggestedLatency, inputParameters->suggestedLatency )
+            desiredBufSz = (snd_pcm_uframes_t)(PA_MIN( outputParameters->suggestedLatency, inputParameters->suggestedLatency )
                     * sampleRate);
-            /* Clamp desiredLatency */
+            /* Clamp desiredBufSz */
             {
                 snd_pcm_uframes_t maxBufferSize;
                 snd_pcm_uframes_t maxBufferSizeCapture, maxBufferSizePlayback;
@@ -1686,7 +1698,7 @@ static PaError PaAlsaStream_DetermineFramesPerBuffer( PaAlsaStream* self, double
                 ENSURE_( snd_pcm_hw_params_get_buffer_size_max( hwParamsPlayback, &maxBufferSizePlayback ), paUnanticipatedHostError );
                 maxBufferSize = PA_MIN( maxBufferSizeCapture, maxBufferSizePlayback );
 
-                desiredLatency = PA_MIN( desiredLatency, maxBufferSize );
+                desiredBufSz = PA_MIN( desiredBufSz, maxBufferSize );
             }
 
             /* Find the closest power of 2 */
@@ -1699,13 +1711,15 @@ static PaError PaAlsaStream_DetermineFramesPerBuffer( PaAlsaStream* self, double
             {
                 if( snd_pcm_hw_params_test_period_size( self->playback.pcm, hwParamsPlayback, periodSize, 0 ) >= 0 &&
                         snd_pcm_hw_params_test_period_size( self->capture.pcm, hwParamsCapture, periodSize, 0 ) >= 0 )
-                    break;  /* Ok! */
+                {
+                    /* OK! */
+                    break;
+                }
 
                 periodSize *= 2;
             }
 
-            /* 4 periods considered optimal */
-            optimalPeriodSize = PA_MAX( desiredLatency / 4, minPeriodSize );
+            optimalPeriodSize = PA_MAX( desiredBufSz / numPeriods, minPeriodSize );
             optimalPeriodSize = PA_MIN( optimalPeriodSize, maxPeriodSize );
 
             /* Find the closest power of 2 */
@@ -1716,12 +1730,15 @@ static PaError PaAlsaStream_DetermineFramesPerBuffer( PaAlsaStream* self, double
 
             while( optimalPeriodSize >= periodSize )
             {
-                if( snd_pcm_hw_params_test_period_size( self->capture.pcm, hwParamsCapture, optimalPeriodSize, 0 ) < 0 )
-                    continue;
-                if( snd_pcm_hw_params_test_period_size( self->playback.pcm, hwParamsPlayback, optimalPeriodSize, 0 ) >= 0 )
+                if( snd_pcm_hw_params_test_period_size( self->capture.pcm, hwParamsCapture, optimalPeriodSize, 0 )
+                        >= 0 && snd_pcm_hw_params_test_period_size( self->playback.pcm, hwParamsPlayback,
+                            optimalPeriodSize, 0 ) >= 0 )
+                {
                     break;
+                }
                 optimalPeriodSize /= 2;
             }
+        
             if( optimalPeriodSize > periodSize )
                 periodSize = optimalPeriodSize;
 
@@ -1738,7 +1755,7 @@ static PaError PaAlsaStream_DetermineFramesPerBuffer( PaAlsaStream* self, double
             else
             {
                 /* Unable to find a common period size, oh well */
-                optimalPeriodSize = PA_MAX( desiredLatency / 4, minPeriodSize );
+                optimalPeriodSize = PA_MAX( desiredBufSz / numPeriods, minPeriodSize );
                 optimalPeriodSize = PA_MIN( optimalPeriodSize, maxPeriodSize );
 
                 self->capture.framesPerBuffer = optimalPeriodSize;
@@ -1766,7 +1783,7 @@ static PaError PaAlsaStream_DetermineFramesPerBuffer( PaAlsaStream* self, double
 
             dir = 0;
             ENSURE_( snd_pcm_hw_params_get_periods_max( hwParamsPlayback, &maxPeriods, &dir ), paUnanticipatedHostError );
-            if( maxPeriods < 4 )
+            if( maxPeriods < numPeriods )
             {
                 /* The playback component is trickier to get right, try that first */
                 first = &self->playback;
@@ -3488,7 +3505,6 @@ error:
 
 /* Extensions */
 
-/** Initialize host API specific structure, call this before setting relevant attributes. */
 void PaAlsa_InitializeStreamInfo( PaAlsaStreamInfo *info )
 {
     info->size = sizeof (PaAlsaStreamInfo);
@@ -3497,11 +3513,6 @@ void PaAlsa_InitializeStreamInfo( PaAlsaStreamInfo *info )
     info->deviceString = NULL;
 }
 
-/** Instruct whether to enable real-time priority when starting the audio thread.
- *
- * If this is turned on by the stream is started, the audio callback thread will be created
- * with the FIFO scheduling policy, which is suitable for realtime operation.
- **/
 void PaAlsa_EnableRealtimeScheduling( PaStream *s, int enable )
 {
     PaAlsaStream *stream = (PaAlsaStream *) s;
@@ -3516,7 +3527,6 @@ void PaAlsa_EnableWatchdog( PaStream *s, int enable )
 }
 #endif
 
-/** Get the ALSA-lib card index of this stream's input device. */
 PaError PaAlsa_GetStreamInputCard(PaStream* s, int* card) {
     PaAlsaStream *stream = (PaAlsaStream *) s;
     snd_pcm_info_t* pcmInfo;
@@ -3533,7 +3543,6 @@ error:
     return result;
 }
 
-/** Get the ALSA-lib card index of this stream's output device. */
 PaError PaAlsa_GetStreamOutputCard(PaStream* s, int* card) {
     PaAlsaStream *stream = (PaAlsaStream *) s;
     snd_pcm_info_t* pcmInfo;

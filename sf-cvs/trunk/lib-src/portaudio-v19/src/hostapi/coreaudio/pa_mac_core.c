@@ -2120,6 +2120,20 @@ static PaError StartStream( PaStream *s )
 #undef ERR_WRAP
 }
 
+// it's not clear from appl's docs that this really waits
+// until all data is flushed.
+static ComponentResult BlockWhileAudioUnitIsRunning( AudioUnit audioUnit, AudioUnitElement element )
+{
+    Boolean isRunning = 1;
+    while( isRunning ) {
+       UInt32 s = sizeof( isRunning );
+       ComponentResult err = AudioUnitGetProperty( audioUnit, kAudioOutputUnitProperty_IsRunning, kAudioUnitScope_Global, element,  &isRunning, &s );
+       if( err )
+          return err;
+       Pa_Sleep( 100 );
+    }
+    return noErr;
+}
 
 static PaError StopStream( PaStream *s )
 {
@@ -2140,6 +2154,8 @@ static PaError StopStream( PaStream *s )
     if( stream->inputUnit == stream->outputUnit && stream->inputUnit )
     {
        ERR_WRAP( AudioOutputUnitStop(stream->inputUnit) );
+       ERR_WRAP( BlockWhileAudioUnitIsRunning(stream->inputUnit,0) );
+       ERR_WRAP( BlockWhileAudioUnitIsRunning(stream->inputUnit,1) );
        ERR_WRAP( AudioUnitReset(stream->inputUnit, kAudioUnitScope_Global, 1) );
        ERR_WRAP( AudioUnitReset(stream->inputUnit, kAudioUnitScope_Global, 0) );
     }
@@ -2148,11 +2164,13 @@ static PaError StopStream( PaStream *s )
        if( stream->inputUnit )
        {
           ERR_WRAP(AudioOutputUnitStop(stream->inputUnit) );
+          ERR_WRAP( BlockWhileAudioUnitIsRunning(stream->inputUnit,1) );
           ERR_WRAP(AudioUnitReset(stream->inputUnit,kAudioUnitScope_Global,1));
        }
        if( stream->outputUnit )
        {
           ERR_WRAP(AudioOutputUnitStop(stream->outputUnit));
+          ERR_WRAP( BlockWhileAudioUnitIsRunning(stream->outputUnit,0) );
           ERR_WRAP(AudioUnitReset(stream->outputUnit,kAudioUnitScope_Global,0));
        }
     }

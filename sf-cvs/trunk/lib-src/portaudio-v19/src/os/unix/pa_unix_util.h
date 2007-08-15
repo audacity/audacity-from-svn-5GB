@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_util.h,v 1.3 2007-06-03 08:30:32 llucius Exp $
+ * $Id: pa_unix_util.h,v 1.4 2007-08-15 19:55:51 richardash1981 Exp $
  * Portable Audio I/O Library
  * UNIX platform-specific support functions
  *
@@ -187,6 +187,7 @@ PaError PaUnixThreading_Initialize();
  * @param threadFunc: The function to be executed in the child thread.
  * @param waitForChild: If not 0, wait for child thread to call PaUnixThread_NotifyParent. Less than 0 means
  * wait for ever, greater than 0 wait for the specified time.
+ * @param rtSched: Enable realtime scheduling?
  * @return: If timed out waiting on child, paTimedOut.
  */
 PaError PaUnixThread_New( PaUnixThread* self, void* (*threadFunc)( void* ), void* threadArg, PaTime waitForChild,

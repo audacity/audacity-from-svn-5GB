@@ -7,7 +7,7 @@
    @author Phil Burk <philburk@softsynth.com>
 */
 /*
- * $Id: patest_sine_channelmaps.c,v 1.1 2007-06-03 08:30:35 llucius Exp $
+ * $Id: patest_sine_channelmaps.c,v 1.2 2007-08-15 19:55:55 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com/

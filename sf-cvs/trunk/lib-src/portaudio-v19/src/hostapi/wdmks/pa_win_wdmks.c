@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_wdmks.c,v 1.3 2007-06-03 08:30:32 llucius Exp $
+ * $Id: pa_win_wdmks.c,v 1.4 2007-08-15 19:55:50 richardash1981 Exp $
  * PortAudio Windows WDM-KS interface
  *
  * Author: Andrew Baldwin
@@ -73,6 +73,7 @@
 #include "pa_cpuload.h"
 #include "pa_process.h"
 #include "portaudio.h"
+#include "pa_debugprint.h"
 
 #include <windows.h>
 #include <winioctl.h>

@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_ds.c,v 1.4 2007-06-03 08:30:31 llucius Exp $
+ * $Id: pa_win_ds.c,v 1.5 2007-08-15 19:55:49 richardash1981 Exp $
  * Portable Audio I/O Library DirectSound implementation
  *
  * Authors: Phil Burk, Robert Marsanyi & Ross Bencina
@@ -76,6 +76,7 @@
 #include "pa_stream.h"
 #include "pa_cpuload.h"
 #include "pa_process.h"
+#include "pa_debugprint.h"
 
 #include "pa_win_ds_dynlink.h"
 
@@ -198,7 +199,6 @@ typedef struct PaWinDsStream
 /* DirectSound specific data. */
 
 /* Output */
-    LPGUID               pOutputGuid;
     LPDIRECTSOUND        pDirectSound;
     LPDIRECTSOUNDBUFFER  pDirectSoundOutputBuffer;
     DWORD                outputBufferWriteOffsetBytes;     /* last write position */
@@ -214,7 +214,6 @@ typedef struct PaWinDsStream
     double               dsw_framesWritten;
     double               framesPlayed;
 /* Input */
-    LPGUID               pInputGuid;
     LPDIRECTSOUNDCAPTURE pDirectSoundCapture;
     LPDIRECTSOUNDCAPTUREBUFFER   pDirectSoundInputBuffer;
     INT                  bytesPerInputFrame;
@@ -1269,8 +1268,8 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
     PaWinDsHostApiRepresentation *winDsHostApi = (PaWinDsHostApiRepresentation*)hostApi;
     PaWinDsStream *stream = 0;
     int inputChannelCount, outputChannelCount;
-    PaSampleFormat inputSampleFormat = 0, outputSampleFormat = 0;
-    PaSampleFormat hostInputSampleFormat = 0, hostOutputSampleFormat = 0;
+    PaSampleFormat inputSampleFormat, outputSampleFormat;
+    PaSampleFormat hostInputSampleFormat, hostOutputSampleFormat;
     unsigned long suggestedInputLatencyFrames, suggestedOutputLatencyFrames;
 
     if( inputParameters )
@@ -1488,11 +1487,6 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
                 goto error;
             }
 
-            stream->pOutputGuid = winDsHostApi->winDsDeviceInfos[outputParameters->device].lpGUID;
-            if( stream->pOutputGuid == NULL )
-            {
-               stream->pOutputGuid = (GUID *) &DSDEVID_DefaultPlayback;
-            }
 
             hr = paWinDsDSoundEntryPoints.DirectSoundCreate( winDsHostApi->winDsDeviceInfos[outputParameters->device].lpGUID,
                         &stream->pDirectSound, NULL );
@@ -1537,12 +1531,6 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
             {
                 result = paBufferTooBig;
                 goto error;
-            }
-
-            stream->pInputGuid = winDsHostApi->winDsDeviceInfos[inputParameters->device].lpGUID;
-            if( stream->pInputGuid == NULL )
-            {
-               stream->pInputGuid = (GUID *)&DSDEVID_DefaultCapture;
             }
 
             hr = paWinDsDSoundEntryPoints.DirectSoundCaptureCreate( winDsHostApi->winDsDeviceInfos[inputParameters->device].lpGUID,
@@ -2206,19 +2194,4 @@ static signed long GetStreamWriteAvailable( PaStream* s )
 }
 
 
-/***********************************************************************************/
-LPGUID PaWinDS_GetStreamInputGUID( PaStream* s )
-{
-    PaWinDsStream *stream = (PaWinDsStream*)s;
 
-   return stream->pInputGuid;
-}
-
-
-/***********************************************************************************/
-LPGUID PaWinDS_GetStreamOutputGUID( PaStream* s )
-{
-    PaWinDsStream *stream = (PaWinDsStream*)s;
-
-    return stream->pOutputGuid;
-}
