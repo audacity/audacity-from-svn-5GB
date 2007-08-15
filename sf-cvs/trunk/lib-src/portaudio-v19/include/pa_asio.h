@@ -1,7 +1,7 @@
 #ifndef PA_ASIO_H
 #define PA_ASIO_H
 /*
- * $Id: pa_asio.h,v 1.3 2007-06-03 08:30:23 llucius Exp $
+ * $Id: pa_asio.h,v 1.4 2007-08-15 19:55:36 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * ASIO specific extensions
  *

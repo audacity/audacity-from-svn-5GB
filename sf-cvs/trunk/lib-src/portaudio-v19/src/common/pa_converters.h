@@ -1,7 +1,7 @@
 #ifndef PA_CONVERTERS_H
 #define PA_CONVERTERS_H
 /*
- * $Id: pa_converters.h,v 1.3 2007-06-03 08:30:24 llucius Exp $
+ * $Id: pa_converters.h,v 1.4 2007-08-15 19:55:39 richardash1981 Exp $
  * Portable Audio I/O Library sample conversion mechanism
  *
  * Based on the Open Source API proposed by Ross Bencina

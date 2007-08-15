@@ -7,7 +7,7 @@ extern "C"
 #endif /* __cplusplus */
 
 /*
- * $Id: pablio.h,v 1.5 2007-06-03 08:30:24 llucius Exp $
+ * $Id: pablio.h,v 1.6 2007-08-15 19:55:37 richardash1981 Exp $
  * PABLIO.h
  * Portable Audio Blocking read/write utility.
  *

@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_util.c,v 1.3 2007-06-03 08:30:32 llucius Exp $
+ * $Id: pa_win_util.c,v 1.4 2007-08-15 19:55:52 richardash1981 Exp $
  * Portable Audio I/O Library
  * Win32 platform-specific support functions
  *

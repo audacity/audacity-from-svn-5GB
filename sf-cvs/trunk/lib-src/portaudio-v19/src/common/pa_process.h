@@ -1,7 +1,7 @@
 #ifndef PA_PROCESS_H
 #define PA_PROCESS_H
 /*
- * $Id: pa_process.h,v 1.3 2007-06-03 08:30:30 llucius Exp $
+ * $Id: pa_process.h,v 1.4 2007-08-15 19:55:40 richardash1981 Exp $
  * Portable Audio I/O Library callback buffer processing adapters
  *
  * Based on the Open Source API proposed by Ross Bencina

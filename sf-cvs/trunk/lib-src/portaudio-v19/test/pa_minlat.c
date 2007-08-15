@@ -5,7 +5,7 @@
 	@author Phil Burk  http://www.softsynth.com
 */
 /*
- * $Id: pa_minlat.c,v 1.3 2007-06-03 08:30:34 llucius Exp $
+ * $Id: pa_minlat.c,v 1.4 2007-08-15 19:55:53 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
