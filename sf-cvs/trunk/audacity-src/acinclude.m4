@@ -457,7 +457,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
                 [Define if the FLAC library is present])
    fi
 
-   AC_ARG_WITH(flac,
+   AC_ARG_WITH(libflac,
                [AC_HELP_STRING([--with-libflac],
                                [use libFLAC for FLAC support])],
                LIBFLAC_ARGUMENT=$withval,
