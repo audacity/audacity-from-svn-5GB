@@ -1,5 +1,5 @@
 /*
- * $Id: pa_linux_alsa.c,v 1.6 2007-08-15 19:55:41 richardash1981 Exp $
+ * $Id: pa_linux_alsa.c,v 1.7 2007-08-16 20:45:35 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * ALSA implementation by Joshua Haberman and Arve Knudsen

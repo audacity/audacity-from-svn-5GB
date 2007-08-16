@@ -1,7 +1,7 @@
 #ifndef PA_ENDIANNESS_H
 #define PA_ENDIANNESS_H
 /*
- * $Id: pa_endianness.h,v 1.4 2007-08-15 19:55:40 richardash1981 Exp $
+ * $Id: pa_endianness.h,v 1.5 2007-08-16 20:45:35 richardash1981 Exp $
  * Portable Audio I/O Library current platform endianness macros
  *
  * Based on the Open Source API proposed by Ross Bencina

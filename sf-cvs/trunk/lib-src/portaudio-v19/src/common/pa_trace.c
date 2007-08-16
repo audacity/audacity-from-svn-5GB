@@ -1,5 +1,5 @@
 /*
- * $Id: pa_trace.c,v 1.4 2007-08-15 19:55:41 richardash1981 Exp $
+ * $Id: pa_trace.c,v 1.5 2007-08-16 20:45:35 richardash1981 Exp $
  * Portable Audio I/O Library Trace Facility
  * Store trace information in real-time for later printing.
  *
