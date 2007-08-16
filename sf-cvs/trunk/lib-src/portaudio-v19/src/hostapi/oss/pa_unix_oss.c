@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_oss.c,v 1.5 2007-08-15 19:55:50 richardash1981 Exp $
+ * $Id: pa_unix_oss.c,v 1.6 2007-08-16 19:24:48 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * OSS implementation by:
@@ -1944,3 +1944,26 @@ static signed long GetStreamWriteAvailable( PaStream* s )
     return (PaOssStreamComponent_BufferSize( stream->playback ) - delay) / PaOssStreamComponent_FrameSize( stream->playback );
 }
 
+const char *PaOSS_GetStreamInputDevice( PaStream* s )
+{
+    PaOssStream *stream = (PaOssStream*)s;
+
+    if( stream->capture )
+    {
+      return stream->capture->devName;
+    }
+
+   return NULL;
+}
+
+const char *PaOSS_GetStreamOutputDevice( PaStream* s )
+{
+    PaOssStream *stream = (PaOssStream*)s;
+
+    if( stream->playback )
+    {
+      return stream->playback->devName;
+    }
+
+   return NULL;
+}

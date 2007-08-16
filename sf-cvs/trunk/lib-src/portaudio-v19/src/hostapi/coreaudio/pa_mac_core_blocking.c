@@ -66,6 +66,9 @@
 #ifdef MOSX_USE_NON_ATOMIC_FLAG_BITS
 # define OSAtomicOr32( a, b ) ( (*(b)) |= (a) )
 # define OSAtomicAnd32( a, b ) ( (*(b)) &= (a) )
+#elif MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_3
+# define OSAtomicOr32( a, b ) BitOrAtomic( a, (UInt32 *) b )
+# define OSAtomicAnd32( a, b ) BitAndAtomic( a, (UInt32 *) b )
 #else
 # include <libkern/OSAtomic.h>
 #endif
