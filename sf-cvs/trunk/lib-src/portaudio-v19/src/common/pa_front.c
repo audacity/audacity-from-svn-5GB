@@ -1,5 +1,5 @@
 /*
- * $Id: pa_front.c,v 1.5 2007-08-15 19:55:40 richardash1981 Exp $
+ * $Id: pa_front.c,v 1.6 2007-08-16 19:24:47 richardash1981 Exp $
  * Portable Audio I/O Library Multi-Host API front end
  * Validate function parameters and manage multiple host APIs.
  *
@@ -1206,8 +1206,10 @@ PaError Pa_OpenStream( PaStream** stream,
                                   hostApiInputParametersPtr, hostApiOutputParametersPtr,
                                   sampleRate, framesPerBuffer, streamFlags, streamCallback, userData );
 
-    if( result == paNoError )
+    if( result == paNoError ) {
         AddOpenStream( *stream );
+        PA_STREAM_REP(*stream)->hostApiType = hostApi->info.type;
+    }
 
 
     PA_LOGAPI(("Pa_OpenStream returned:\n" ));
@@ -1719,6 +1721,32 @@ signed long Pa_GetStreamWriteAvailable( PaStream* stream )
     return result;
 }
 
+PaHostApiTypeId Pa_GetStreamHostApiType( PaStream* stream )
+{
+    PaError error = PaUtil_ValidateStreamPointer( stream );
+    PaHostApiTypeId result;
+
+#ifdef PA_LOG_API_CALLS
+    PaUtil_DebugPrint("Pa_GetStreamHostApiType called:\n" );
+    PaUtil_DebugPrint("\tPaStream* stream: 0x%p\n", stream );
+#endif
+
+    if( error == paNoError )
+    {
+        result = PA_STREAM_REP(stream)->hostApiType;
+    }
+    else
+    {
+        result = (PaHostApiTypeId) error;
+    }
+
+#ifdef PA_LOG_API_CALLS
+    PaUtil_DebugPrint("Pa_GetStreamHostApiType returned:\n" );
+    PaUtil_DebugPrint("\tPaError: %d ( %s )\n\n", result, Pa_GetErrorText( result ) );
+#endif
+
+    return result;
+}
 
 PaError Pa_GetSampleSize( PaSampleFormat format )
 {

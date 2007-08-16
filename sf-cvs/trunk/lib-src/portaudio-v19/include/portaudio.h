@@ -1,7 +1,7 @@
 #ifndef PORTAUDIO_H
 #define PORTAUDIO_H
 /*
- * $Id: portaudio.h,v 1.5 2007-08-15 19:55:36 richardash1981 Exp $
+ * $Id: portaudio.h,v 1.6 2007-08-16 19:24:46 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * PortAudio API Header File
  * Latest version available at: http://www.portaudio.com/
@@ -1103,6 +1103,15 @@ signed long Pa_GetStreamReadAvailable( PaStream* stream );
  error is encountered.
 */
 signed long Pa_GetStreamWriteAvailable( PaStream* stream );
+
+
+/** Retrieve the host type handling an open stream.
+
+ @return Returns a non-negative value representing the host API type
+ handling an open stream or, a PaErrorCode (which are always negative)
+ if PortAudio is not initialized or an error is encountered.
+*/
+PaHostApiTypeId Pa_GetStreamHostApiType( PaStream* stream );
 
 
 /* Miscellaneous utilities */
