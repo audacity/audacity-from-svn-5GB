@@ -59,7 +59,7 @@ AC_EGREP_HEADER([PaMacCore_GetStreamInputDevice], [pa_mac_core.h], , [have_suppo
 AC_EGREP_HEADER([PaOSS_GetStreamInputDevice], [pa_unix_oss.h], , [have_support=no])
 AC_EGREP_HEADER([Pa_GetStreamHostApiType], [portaudio.h], , [have_support=no])
 if [[ $have_support = "no" ]] ; then
-   AC_MSG_ERROR("You're version of portaudio does not include required functions"); 
+   AC_MSG_ERROR("Your version of portaudio does not include required functions"); 
 fi
 
 #
