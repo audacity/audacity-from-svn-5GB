@@ -1,5 +1,5 @@
 /*
- * $Id: pa_mac_hostapis.c,v 1.4 2007-08-15 19:55:51 richardash1981 Exp $
+ * $Id: pa_mac_hostapis.c,v 1.5 2007-08-16 20:45:37 richardash1981 Exp $
  * Portable Audio I/O Library Macintosh initialization table
  *
  * Based on the Open Source API proposed by Ross Bencina

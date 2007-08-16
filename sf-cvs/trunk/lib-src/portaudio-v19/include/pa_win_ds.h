@@ -1,7 +1,7 @@
 #ifndef PA_WIN_DS_H
 #define PA_WIN_DS_H
 /*
- * $Id: pa_win_ds.h,v 1.2 2007-06-03 08:30:23 llucius Exp $
+ * $Id: pa_win_ds.h,v 1.3 2007-08-16 20:45:34 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * DirectSound specific extensions
  *
@@ -70,7 +70,7 @@ LPGUID PaWinDS_GetStreamOutputGUID( PaStream* s );
 #ifndef PA_WIN_DS_H
 #define PA_WIN_DS_H
 /*
- * $Id: pa_win_ds.h,v 1.2 2007-06-03 08:30:23 llucius Exp $
+ * $Id: pa_win_ds.h,v 1.3 2007-08-16 20:45:34 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * DirectSound specific extensions
  *

@@ -13,7 +13,7 @@
 
 */
 /*
- * $Id: patest_wire.c,v 1.4 2007-08-15 19:55:56 richardash1981 Exp $
+ * $Id: patest_wire.c,v 1.5 2007-08-16 20:45:38 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com

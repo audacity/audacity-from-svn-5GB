@@ -1,7 +1,7 @@
 #ifndef PA_RINGBUFFER_H
 #define PA_RINGBUFFER_H
 /*
- * $Id: pa_ringbuffer.h,v 1.2 2007-08-15 19:55:40 richardash1981 Exp $
+ * $Id: pa_ringbuffer.h,v 1.3 2007-08-16 20:45:35 richardash1981 Exp $
  * Portable Audio I/O Library
  * Ring Buffer utility.
  *

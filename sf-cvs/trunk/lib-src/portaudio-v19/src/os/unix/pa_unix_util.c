@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_util.c,v 1.7 2007-08-15 19:55:51 richardash1981 Exp $
+ * $Id: pa_unix_util.c,v 1.8 2007-08-16 20:45:37 richardash1981 Exp $
  * Portable Audio I/O Library
  * UNIX platform-specific support functions
  *
