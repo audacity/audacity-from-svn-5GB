@@ -84,12 +84,11 @@ portaudio-v19
 http://portaudio.com/
 cross-platform audio I/O library version 19, used for 1.3.2 onwards releases
 Version in audacity cvs: 1st July 2007 CVS snapshot
-Changes in local copy:
-		configure.in		patch by Dominic to make Universal Binray optional
-		configure			and make build work on OS X 10.3
-		testcvs					junk dir can be deleted
-		V19-devel-readme.txt	old, obselete notes from upstream
-		config.[sub,guess]		portaudio's copies of this are very old
+Patches:
+		buildoptions-osx.patch			patch by Dominic to make Universal
+					Binary optional and make build work on OS X 10.3
+		../portmixer/portaudio.patch	add features needed to make portmixer
+					work. Will need updating as upstream portaudio moves
 
 portburn
 --------
@@ -123,20 +122,31 @@ disused?
 
 Crib notes on upgrading lib-src trees:
 ======================================
-
+1 Remove old files
+------------------
 find . -not -wholename '*CVS*' -delete
 will remove all the source files but not any directories or the CVS files, so
 after this you have an empty place into which you can unpack the new tarball
 
+2 Bring in new files
+--------------------
 Next unpack the tarball. If you want to unpack within a package directory,
 then tar --strip-components 1 will remove the un-needed top level directory.
 
+3 Apply patches and updates
+---------------------------
 Now we have a new file tree. This is the point at which to clean out any
 un-needed files, re-apply and local patches so on.
+
+* Copy in newer config.sub and config.guess if needed.
+* run autoreconf if we have modified configure.in or configure.ac
+* run libtoolize --copy --force to update ltmain.sh
 
 By doing it this way we have already updated the mtime on all files, so we
 don't need to do a recusive touch.
 
+4 Add new files to CVS and remove old ones
+------------------------------------------
 CVS will list files with a ? if they are new and need to be added to the
 repository. To get a list, run 
 cvs st 2>/dev/null | grep '?'
@@ -145,6 +155,8 @@ cvs st 2>/dev/null | grep 'Status: Needs Checkout'
 gives file names but not their paths, so you have to go back and grep each
 file name to find them and do cvs rm on them.
 
+5 Commit the lot to CVS
+-----------------------
 Run cvs ci -f -R to commit all the files in the new library tree. Use an
 appropriate message that says what library version this is. This should do
 all the required changes and add / remove files.
