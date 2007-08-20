@@ -62,6 +62,7 @@
 #include <wx/string.h>
 #include <wx/textctrl.h>
 #include <wx/textfile.h>
+#include <wx/combobox.h>
 
 static const wxChar *DefaultGenres[] =
 {
