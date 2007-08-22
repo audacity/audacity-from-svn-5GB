@@ -2490,7 +2490,7 @@ void AudacityProject::Import(wxString fileName)
 {
    Track **newTracks;
    int numTracks;
-   wxString errorMessage;
+   wxString errorMessage=wxT("");
 
    mUserCanceledProgress = false;
 
@@ -2517,7 +2517,7 @@ void AudacityProject::Import(wxString fileName)
       return;
    }
 
-   if (numTracks <= 0) {
+   if (!errorMessage.IsEmpty()) {
 // Old code, without the help button.
 #if 0
       wxMessageBox(errorMessage,
@@ -2526,8 +2526,9 @@ void AudacityProject::Import(wxString fileName)
 #endif	   
 	   ShowErrorDialog(this, _("Error importing"),
 					  errorMessage, wxT("http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary"));	
-      return;
    }
+   if( numTracks<=0)
+      return;
 
    // for LOF ("list of files") files, do not import the file as if it
    // were an audio file itself
