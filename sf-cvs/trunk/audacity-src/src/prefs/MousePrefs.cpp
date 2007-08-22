@@ -105,6 +105,8 @@ void MousePrefs::CreateList()
    AddItem( _("Left-Drag"),        _("Zoom"),      _("Zoom in on a Range"), _("same as right-drag") );
    AddItem( _("Right-Click"),      _("Zoom"),      _("Zoom out one step") );
    AddItem( _("Right-Drag"),       _("Zoom"),      _("Zoom in on a Range"), _("same as left-drag") );
+   AddItem( _("Shift-Drag"),       _("Zoom"),      _("Zoom out on a Range"));
+   AddItem( _("Middle-Click"),     _("Zoom"),      _("Zoom default"));
 
    AddItem( _("Left-Drag"),        _("Time-Shift"),_("Time shift clip or move up/down between tracks") );
    AddItem( _("Shift-Left-Drag"),  _("Time-Shift"),_("Time shift all clips in track") );
