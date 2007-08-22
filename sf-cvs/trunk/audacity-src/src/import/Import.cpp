@@ -141,38 +141,6 @@ int Importer::Import(wxString fName,
       importPluginNode = importPluginNode->GetNext();
    }
 
-   // no importPlugin that recognized the extension succeeded.  However, the
-   // file might be misnamed.  So this time we try all the importPlugins
-   //in order and see if any of them can handle the file
-   importPluginNode = mImportPluginList->GetFirst();
-   while(importPluginNode)
-   {
-      ImportPlugin *plugin = importPluginNode->GetData();
-
-      mInFile = plugin->Open(fName);
-      if( mInFile != NULL )
-      {
-         mInFile->SetProgressCallback(progressCallback, userData);
-         numTracks = 0;
-         if(mInFile->Import(trackFactory, tracks, &numTracks, tags))
-         {
-            if (numTracks > 0) {
-               // success!
-               delete mInFile;
-               return numTracks;
-            }
-         }
-         delete mInFile;
-
-         // This will happen if the user cancelled, or if we
-         // tried and got an error partially through.  Either way,
-         // no need to try any other formats at this point!
-         if (numTracks > 0)
-            return 0;
-      }
-      importPluginNode = importPluginNode->GetNext();
-   }
-
    // None of our plugins can handle this file.  It might be that
    // Audacity supports this format, but support was not compiled in.
    // If so, notify the user of this fact
@@ -229,6 +197,40 @@ int Importer::Import(wxString fName,
       errorMessage = wxT("\"") + fName + wxT("\"") + 
          _(" is a RealPlayer media file. \nAudacity cannot open this proprietary format.\nYou need to convert it to a supported audio format.");
       return 0;
+   }
+
+
+   // no importPlugin that recognized the extension succeeded.  However, the
+   // file might be misnamed.  So this time we try all the importPlugins
+   //in order and see if any of them can handle the file
+   importPluginNode = mImportPluginList->GetFirst();
+   while(importPluginNode)
+   {
+      ImportPlugin *plugin = importPluginNode->GetData();
+
+      mInFile = plugin->Open(fName);
+      if( mInFile != NULL )
+      {
+         mInFile->SetProgressCallback(progressCallback, userData);
+         numTracks = 0;
+         if(mInFile->Import(trackFactory, tracks, &numTracks, tags))
+         {
+            if (numTracks > 0) {
+               // success!
+               delete mInFile;
+               errorMessage = _( "Audacity had to make a guess at the type of file.\nThe Audio may be bogus.\n\nIf the audio is bogus, try renaming the file\nso that it has the correct extension before opening it.");
+               return numTracks;
+            }
+         }
+         delete mInFile;
+
+         // This will happen if the user cancelled, or if we
+         // tried and got an error partially through.  Either way,
+         // no need to try any other formats at this point!
+         if (numTracks > 0)
+            return 0;
+      }
+      importPluginNode = importPluginNode->GetNext();
    }
 
    // we were not able to recognize the file type
