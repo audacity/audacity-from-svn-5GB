@@ -264,8 +264,10 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("EditChains"), _("Edit C&hains..."), FN(OnEditChains));
    }
 
+#ifdef EXPERIMENTAL_FTP
    c->AddSeparator();
    c->AddItem(wxT("Upload File"),      _("&Upload File..."),            FN(OnUpload));
+#endif
 
    if( !mCleanSpeechMode )
 	{
