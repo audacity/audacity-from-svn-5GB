@@ -4685,7 +4685,9 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    mLastDrawnTrackRect = r;
 
    dc->SetTextForeground(theTheme.Colour( clrTrackPanelText ));
-   mTrackInfo.DrawBackground(dc, r, t->GetSelected(), labelw);
+   bool bIsWave = (t->GetKind() == Track::Wave);
+   mTrackInfo.DrawBackground(dc, r, t->GetSelected(), bIsWave, labelw );
+
    DrawBordersAroundTrack(t, dc, r, labelw, vrul);
    DrawShadow(t, dc, r);
 
@@ -4694,7 +4696,7 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    mTrackInfo.DrawTitleBar(dc, r, t, (mMouseCapture==IsPopping));
 
    mTrackInfo.DrawMinimize(dc, r, t, (mMouseCapture==IsMinimizing), t->GetMinimized());
-   mTrackInfo.DrawBordersWithin( dc, r );
+   mTrackInfo.DrawBordersWithin( dc, r, bIsWave );
 
    if (t->GetKind() == Track::Wave) {
       mTrackInfo.DrawMuteSolo(dc, r, t, (mMouseCapture == IsMuting), false);
@@ -6359,6 +6361,7 @@ void TrackInfo::GetTitleBarRect(const wxRect r, wxRect & dest) const
 
 void TrackInfo::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
 {
+#ifdef NOT_USED
    dest.x = r.x + 8;
    dest.y = r.y + 50;
    dest.width = 36;
@@ -6366,6 +6369,16 @@ void TrackInfo::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
 
    if (solo)
       dest.x += 36 + 8;
+#else
+   dest.x = r.x ;
+   dest.y = r.y + 50;
+   dest.width = 48;
+   dest.height = 16;
+
+   if (solo)
+      dest.x += 48;
+#endif
+
 }
 
 void TrackInfo::GetGainRect(const wxRect r, wxRect & dest) const
@@ -6392,25 +6405,45 @@ void TrackInfo::GetMinimizeRect(const wxRect r, wxRect &dest, bool minimized) co
    dest.height = 15;
 }
 
-void TrackInfo::DrawBordersWithin(wxDC * dc, const wxRect r )
+void TrackInfo::DrawBordersWithin(wxDC * dc, const wxRect r, bool bHasMuteSolo )
 {
    dc->SetPen(*wxBLACK_PEN);
    // These black lines are actually within TrackInfo...
    dc->DrawLine(r.x, r.y + 16, GetTitleWidth(), r.y + 16);      // title bar
    dc->DrawLine(r.x + 16, r.y, r.x + 16, r.y + 16);     // close box
+
+   if( bHasMuteSolo && (r.height > (66+18) ))
+   {
+      dc->DrawLine(r.x, r.y + 50, GetTitleWidth(), r.y + 50);  // bevel above mute/solo
+      dc->DrawLine(r.x+48 , r.y+50, r.x+48, r.y + 66);         // line between mute/solo
+      dc->DrawLine(r.x, r.y + 66, GetTitleWidth(), r.y + 66);  // bevel below mute/solo
+   }
+
    dc->DrawLine(r.x, r.y + r.height - 19, GetTitleWidth(), r.y + r.height - 19);  // minimize bar
 }
 
 void TrackInfo::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
-                             const int labelw)
+   bool bHasMuteSolo, const int labelw)
 {
    // fill in label
    wxRect fill = r;
-   fill.width = labelw - r.x;
+   fill.width = labelw - r.x+1;
    AColor::MediumTrackInfo(dc, bSelected);
    dc->DrawRectangle(fill); 
-   fill=wxRect( r.x+1, r.y+17, fill.width - 38, fill.height-37); 
-   AColor::BevelTrackInfo( *dc, true, fill );
+
+   if( bHasMuteSolo )
+   {
+      fill=wxRect( r.x+1, r.y+17, fill.width - 39, 32); 
+      AColor::BevelTrackInfo( *dc, true, fill );
+
+      fill=wxRect( r.x+1, r.y+67, fill.width, r.height-87); 
+      AColor::BevelTrackInfo( *dc, true, fill );
+   }
+   else
+   {
+      fill=wxRect( r.x+1, r.y+17, fill.width - 39, r.height-37); 
+      AColor::BevelTrackInfo( *dc, true, fill );
+   }
 }
 
 void TrackInfo::GetTrackControlsRect(const wxRect r, wxRect & dest) const

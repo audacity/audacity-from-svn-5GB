@@ -80,8 +80,6 @@ void BatchPrefs::PopulateOrExchange( ShuttleGui & S )
 #endif
       S.TieCheckBox( _("&Normalize on load"), 
          wxT("/Batch/NormalizeOnLoad"), false );
-      S.TieCheckBox( _("&Prompt to save, even if empty"),    
-         wxT("/Batch/EmptyCanBeDirty"), true );
       S.TieCheckBox( _("Cl&eanSpeech Mode (Customized GUI)"), 
          wxT("/Batch/CleanSpeechMode"), false);
    }

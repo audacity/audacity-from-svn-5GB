@@ -103,8 +103,8 @@ private:
    void MakeMoreSliders();
    void EnsureSufficientSliders(int index);
 
-   void DrawBackground(wxDC * dc, const wxRect r, bool bSelected, const int labelw);
-   void DrawBordersWithin(wxDC * dc, const wxRect r );
+   void DrawBackground(wxDC * dc, const wxRect r, bool bSelected, bool bHasMuteSolo, const int labelw);
+   void DrawBordersWithin(wxDC * dc, const wxRect r, bool bHasMuteSolo );
    void DrawCloseBox(wxDC * dc, const wxRect r, bool down);
    void DrawTitleBar(wxDC * dc, const wxRect r, Track * t, bool down);
    void DrawMuteSolo(wxDC * dc, const wxRect r, Track * t, bool down, bool solo);

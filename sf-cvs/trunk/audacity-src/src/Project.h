@@ -342,7 +342,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    TrackList *mTracks;
 //   ViewInfo mViewInfo;
 
-   int mSnapTo;
+   bool mSnapTo;
 
    TrackList *mLastSavedTracks;
 

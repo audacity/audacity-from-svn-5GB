@@ -99,6 +99,9 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("/GUI/EnableCutLines"), false);
       S.TieCheckBox( _("Show warnings about &temp files"), 
          wxT("/GUI/WarnAboutTempFiles"), true );
+      S.TieCheckBox( _("&Show prompt to save, even if empty"),    
+         wxT("/GUI/EmptyCanBeDirty"), true );
+
    }
    S.EndStatic();
    S.EndHorizontalLay();
