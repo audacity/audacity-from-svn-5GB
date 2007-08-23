@@ -142,11 +142,14 @@ printf "removing scripts ... ";
 myrmrvf $mode scripts
 printf "Done\n"
 
+printf "removing unused libraries from CVS tree ..."
+myrmrvf $mode lib-src/id3lib lib-src/iAVC lib-src/wave++;
+myrmrvf $mode lib-src/rtaudio lib-src/portburn lib-src/mod-script-pipe; 
+printf "Done\n"
+
 printf "removing libraries that should be installed locally..."
-myrmrvf $mode lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib;
-myrmrvf $mode lib-src/libid3tag;
-myrmrvf $mode lib-src/iAVC lib-src/libsamplerate;
-myrmrvf $mode lib-src/wave++ lib-src/libflac;
+myrmrvf $mode lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/libid3tag;
+myrmrvf $mode lib-src/libsamplerate lib-src/libflac;
 myrmrvf $mode lib-src/twolame;
 printf "Done\n"
 
