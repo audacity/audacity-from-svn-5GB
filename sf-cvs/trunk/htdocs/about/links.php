@@ -13,7 +13,7 @@
 <h2><?=$pageTitle?></h2>
 <h3><?=_("Other Things Named “Audacity” (not related to us)")?></h3>
 <ul>
-  <li><?=_('<a href="http://www.audiost.com/advr.htm">Audacity DVR</a> is a digital voice recorder for Palm OS and Treo handheld computers')?></li>
+  <li><?=_('<a href="http://audacityaudio.com/index.htm">Audacity DVR</a> is a digital voice recorder for Palm OS and Treo handheld computers')?></li>
   <li><?=_('<a href="http://www.audacity.org">Audacity.org</a> is a research company for construction industry professionals.')?></li>
   <li><?=_('<a href="http://kotinetti.suomi.net/jakke/audacity/">Audacity</a> is a street-rock band from Finland.')?></li>
   <li><?=_('<a href="http://www.audacity.com/">Audacity, Inc.</a> provides janitorial services for businesses and individuals in the Seattle, WA metro area.')?></li>
