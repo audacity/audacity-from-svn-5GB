@@ -119,11 +119,11 @@ portmixer/px_unix_oss/portmixer.a:
 portmixer/px_mac_core/portmixer.a:
 	$(MAKE) -C portmixer/px_mac_core PA_VER=$(findstring -v19,@BUILDLIBS@)
 
-# RTAudio
-librtaudio-recursive:
-	$(MAKE) -C rtaudio
-rtaudio/librtaudio.a: librtaudio-recursive
-	ln -sf rtaudio/librtaudio.a .
+# RTAudio not supported 23/08/2007 R.A.
+# librtaudio-recursive:
+#	$(MAKE) -C rtaudio
+#rtaudio/librtaudio.a: librtaudio-recursive
+#	ln -sf rtaudio/librtaudio.a .
 
 # Utility rules
 clean:
@@ -146,7 +146,6 @@ clean:
 	-$(MAKE) -C portmixer clean
 	-$(MAKE) -C portmixer/px_unix_oss clean
 	-$(MAKE) -C portmixer/px_mac_core clean
-	-$(MAKE) -C rtaudio clean
 	-$(MAKE) -C soundtouch clean
 	-$(MAKE) -C twolame clean
 	-rm -rf @LOCAL_LIBS@
@@ -171,7 +170,6 @@ distclean:
 	-$(MAKE) -C portmixer distclean
 	-$(MAKE) -C portmixer/px_unix_oss distclean
 	-$(MAKE) -C portmixer/px_mac_core distclean
-	-$(MAKE) -C rtaudio distclean
 	-$(MAKE) -C soundtouch distclean
 	-$(MAKE) -C twolame distclean
 	-rm -f @LOCAL_LIBS@
@@ -179,6 +177,6 @@ distclean:
 .PHONY: allegro-recursive expat-recursive FileDialog-recursive libogg-recursive \
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
 	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
-	libresample-recursive libsamplerate-recursive librtaudio-recursive \
+	libresample-recursive libsamplerate-recursive \
 	portaudio-v19-recursive portmixer-recursive libtwolame-recursive
 
