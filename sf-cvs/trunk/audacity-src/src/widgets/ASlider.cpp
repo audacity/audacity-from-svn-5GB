@@ -562,11 +562,63 @@ void LWSlider::Draw()
    // mask creation.  And garbage can be displayed if it isn't
    // cleared.
    dc->SelectObject(*mBitmap);
-   dc->SetBackground( wxBrush( wxColour( 255, 254, 255 ) ) );// DONT-THEME Mask colour.
+
+   wxColour TransparentColour = wxColour( 255, 254, 255 ); 
+   // DO-THEME Mask colour!!  JC-Aug-2007
+   // Needed with experimental theming!
+   //  ... because windows blends against this colour.
+#ifdef EXPERIMENTAL_THEMING
+   TransparentColour = theTheme.Colour( clrTrackInfo );
+#endif
+
+   dc->SetBackground( wxBrush( TransparentColour  ) );
    dc->Clear();
 
    AColor::Dark(dc, false);
    dc->DrawLine(mLeftX, mCenterY+1, mRightX+2, mCenterY+1);
+
+   // Draw +/- or L/R first.  We need to draw these before the tick marks.
+   if (mStyle == PAN_SLIDER)
+   {
+      // sliderFontSize is for the tooltip.
+      // we need something smaller here...
+      wxFont labelFont(sliderFontSize-3, wxSWISS, wxNORMAL, wxNORMAL);
+      dc->SetFont(labelFont);
+
+#ifdef EXPERIMENTAL_THEMING
+      dc->SetTextForeground( theTheme.Colour( clrTrackPanelText ));
+      // TransparentColour should be same as clrTrackInfo.
+      dc->SetTextBackground( theTheme.Colour( clrTrackInfo ) );
+      dc->SetBackground( theTheme.Colour( clrTrackInfo ) );
+      // HAVE to use solid and not transparent here,
+      // otherwise windows will do it's clever font optimisation trick, 
+      // but against a default colour of white, which is not OK on a dark
+      // background.
+      dc->SetBackgroundMode( wxSOLID );
+#else
+      dc->SetTextForeground( wxColour( 0,0,0) );
+      dc->SetTextBackground( wxColour( 255,255,255));
+#endif
+
+      /* i18n-hint: One-letter abbreviation for Left, in the Pan slider */
+      dc->DrawText(_("L"), mLeftX, 0);
+
+      /* i18n-hint: One-letter abbreviation for Right, in the Pan slider */
+      dc->DrawText(_("R"), mRightX-6,0);
+   } else
+   {
+      // draw the '-' and the '+'
+#ifdef EXPERIMENTAL_THEMING
+      wxPen pen( theTheme.Colour( clrTrackPanelText ));
+      dc->SetPen( pen );
+#else
+      dc->SetPen(*wxBLACK_PEN);
+#endif
+      dc->DrawLine(mLeftX, mCenterY-10, mLeftX+5, mCenterY-10);
+      dc->DrawLine(mRightX-5, mCenterY-10, mRightX, mCenterY-10);
+      dc->DrawLine(mRightX-3, mCenterY-12, mRightX-3, mCenterY-7);
+   }
+
 
    int divs = 10;
    double upp = divs / (double)(mWidthX-1);
@@ -584,30 +636,12 @@ void LWSlider::Draw()
       d += upp;
    }
 
-   if (mStyle == PAN_SLIDER)
-   {
-      wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
-      dc->SetFont(labelFont);
-
-      /* i18n-hint: One-letter abbreviation for Left, in the Pan slider */
-      dc->DrawText(_("L"), mLeftX, 1);
-
-      /* i18n-hint: One-letter abbreviation for Right, in the Pan slider */
-      dc->DrawText(_("R"), mRightX-7, 1);
-   } else
-   {
-      // draw the '-' and the '+'
-      dc->SetPen(*wxBLACK_PEN);
-      dc->DrawLine(mLeftX, mCenterY-10, mLeftX+5, mCenterY-10);
-      dc->DrawLine(mRightX-7, mCenterY-10, mRightX-2, mCenterY-10);
-      dc->DrawLine(mRightX-5, mCenterY-12, mRightX-5, mCenterY-7);
-   }
    
    // Must preceed creating the mask as that will attempt to
    // select the bitmap into another DC.
    delete dc;
 
-   mBitmap->SetMask( new wxMask( *mBitmap, wxColour( 255, 254, 255 ) ) );
+   mBitmap->SetMask( new wxMask( *mBitmap, TransparentColour ) );
 }
 
 

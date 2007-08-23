@@ -779,6 +779,7 @@ AudacityProject::~AudacityProject()
 
 void AudacityProject::UpdateGuiPrefs()
 {
+   gPrefs->Read(wxT("/GUI/EmptyCanBeDirty"), &mEmptyCanBeDirty, true );
    gPrefs->Read(wxT("/GUI/UpdateSpectrogram"), &mViewInfo.bUpdateSpectrogram, true);
    gPrefs->Read(wxT("/GUI/AutoScroll"), &mViewInfo.bUpdateTrackIndicator, true);
    gPrefs->Read(wxT("/GUI/TracksFitVerticallyZoomed"), &mTracksFitVerticallyZoomed, false);
@@ -786,7 +787,6 @@ void AudacityProject::UpdateGuiPrefs()
 
 void AudacityProject::UpdateBatchPrefs()
 {
-   gPrefs->Read(wxT("/Batch/EmptyCanBeDirty"), &mEmptyCanBeDirty, true );
    gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &mCleanSpeechMode, false);
    gPrefs->Read(wxT("/Batch/ShowId3Dialog"), &mShowId3Dialog, false);
    gPrefs->Read(wxT("/Batch/NormalizeOnLoad"),&mNormalizeOnLoad, false);
@@ -1450,7 +1450,13 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    // project is now empty.
 	if (event.CanVeto() && (mEmptyCanBeDirty || bHasTracks)) {
       if (mUndoManager.UnsavedChanges()) {
-         int result = wxMessageBox(_("Save changes before closing?"),
+
+         wxString Message = _("Save changes before closing?");
+         if( !bHasTracks )
+         {
+            Message += _("\n\nSaved project will be empty!!\n\nTo save the tracks you previously\nhad, click cancel, restore the tracks\nusing undo, and then save.");
+         }
+         int result = wxMessageBox( Message,
                                    _("Save changes?"),
                                    wxYES_NO | wxCANCEL | wxICON_QUESTION,
                                    this);

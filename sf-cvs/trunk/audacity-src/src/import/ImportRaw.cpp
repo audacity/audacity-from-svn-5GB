@@ -440,9 +440,11 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
    */
 
    mainSizer->Add(CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND);
-   wxButton * OKButton;
-   OKButton = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
-   OKButton->SetLabel(_("&Import"));
+
+   // Find the OK button, and change its text to 'Import'.
+   // We MUST set mOK because it is used later.
+   mOK = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
+   mOK->SetLabel(_("&Import"));
 
    SetAutoLayout(true);
    SetSizer(mainSizer);
@@ -509,6 +511,7 @@ void ImportRawDialog::OnChoice(wxCommandEvent & WXUNUSED(event))
    info.channels = mChannelChoice->GetSelection() + 1;
    info.samplerate = 44100;
 
+   //mOK = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
    if (sf_format_check(&info)) {
       mOK->Enable(true);
       return;
