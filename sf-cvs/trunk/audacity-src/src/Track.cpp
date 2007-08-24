@@ -515,24 +515,37 @@ bool TrackList::MoveDown(Track * t)
 {
    TrackListNode *p = head;
    while (p) {
+      // this while loop iterates over all tracks looking for the passed
+      // argument, t
       if (p->t == t) {
+         // this if triggers when we find the track we were passed
          TrackListNode *first = p;
+         // if there is a previous track, and that track is linked to this one,
+         // move current track pointer back to that track. This avoids trying
+         // to move the bottom track of a linked pair.
          if (first->prev && first->prev->t->GetLinked())
             first = first->prev;
 
          TrackListNode *second;
          if (!p->next)
-            return false;
+            return false;  // exit if there is no next track
          if (p->t->GetLinked())
-            second = p->next->next;
+            {  // if next track is part of linked pair
+            if (p->next->next)
+               {  // if track after next exists
+               second = p->next->next; // use it
+               }
+            else
+               {  // there isn't anything after the linked track!
+               return false;
+               }
+            }
          else
-            second = p->next;
+            second = p->next; // Just normal next track exists, so move down one
 
          // Second could be NULL if we've tried to move down a track
          // and there wasn't a track below.
          wxASSERT( second );
-         if( !second )
-            return false;
 
          Swap(first, second);
          return true;
