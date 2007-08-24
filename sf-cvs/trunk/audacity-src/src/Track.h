@@ -211,6 +211,7 @@ class AUDACITY_DLL_API TrackList {
   
   Track *GetPrev(Track * t, bool linked = false) const;
   Track *GetNext(Track * t, bool linked = false) const;
+  int GetGroupHeight( Track*t ) const;
   
   bool CanMoveUp(Track * t) const;
   bool CanMoveDown(Track * t) const;

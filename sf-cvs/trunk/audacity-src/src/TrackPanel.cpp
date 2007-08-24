@@ -3401,7 +3401,9 @@ void TrackPanel::HandleRearrange(wxMouseEvent & event)
       dir = _("down");
    }
    else
+   {
       return;
+   }
 
    MakeParentPushState(wxString::Format(_("Moved '%s' %s"),
                                         mCapturedTrack->GetName().c_str(),
@@ -3424,15 +3426,17 @@ void TrackPanel::CalculateRearrangingThresholds(wxMouseEvent & event)
    //   user.
    if (mTracks->CanMoveUp(mCapturedTrack))
       mMoveUpThreshold =
-          event.m_y - mTracks->GetPrev(mCapturedTrack)->GetHeight();
+          event.m_y - mTracks->GetGroupHeight( mTracks->GetPrev(mCapturedTrack,true) );
    else
       mMoveUpThreshold = INT_MIN;
 
    if (mTracks->CanMoveDown(mCapturedTrack))
       mMoveDownThreshold =
-          event.m_y + mTracks->GetNext(mCapturedTrack)->GetHeight();
+          event.m_y + mTracks->GetGroupHeight( mTracks->GetNext(mCapturedTrack,true) );
    else
       mMoveDownThreshold = INT_MAX;
+//   wxLogDebug(wxT("Y:%i, Up:%i, Down:%i"),
+//      event.m_y, mMoveUpThreshold-event.m_y, mMoveDownThreshold-event.m_y );
 }
 
 bool TrackPanel::GainFunc(Track * t, wxRect r, wxMouseEvent &event,

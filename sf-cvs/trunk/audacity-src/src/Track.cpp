@@ -383,6 +383,28 @@ Track *TrackList::GetPrev(Track * t, bool linked ) const
    return NULL;
 }
 
+/// For mono track height of track
+/// For stereo track combined height of track and linked track.
+/// Assumes we are on the first track of the pair.
+int TrackList::GetGroupHeight( Track*t ) const
+{
+   wxASSERT( t );
+   int height=t->GetHeight();
+   if( !t->GetLinked() )
+      return height;
+
+   TrackListNode *p = head;
+   while (p) {
+      if (p->t == t) {
+         if( p->next )
+            return height + p->next->t->GetHeight();
+      }
+      p = p->next;
+   }
+   wxASSERT( false );
+   return 0;
+}
+
 bool TrackList::CanMoveUp(Track * t) const
 {
    TrackListNode *p = head;
@@ -474,6 +496,12 @@ bool TrackList::MoveUp(Track * t)
          if (first->prev && first->prev->t->GetLinked())
             first = first->prev;
 
+         // first could be NULL if we've tried to move up a track
+         // and there wasn't a track above.
+         wxASSERT( first );
+         if( !first )
+            return false;
+
          Swap(first, second);
 
          return true;
@@ -499,6 +527,12 @@ bool TrackList::MoveDown(Track * t)
             second = p->next->next;
          else
             second = p->next;
+
+         // Second could be NULL if we've tried to move down a track
+         // and there wasn't a track below.
+         wxASSERT( second );
+         if( !second )
+            return false;
 
          Swap(first, second);
          return true;
