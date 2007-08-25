@@ -450,6 +450,10 @@ void TrackList::Swap(TrackListNode * s1, TrackListNode * s2)
    Track *source[4];
    TrackListNode *target[4];
 
+   // if a null pointer is passed in, we want to know about it
+   wxASSERT(s1);
+   wxASSERT(s2);
+
    target[0] = s1;
    source[0] = target[0]->t;
    if (source[0]->GetLinked()) {
@@ -485,23 +489,24 @@ bool TrackList::MoveUp(Track * t)
 {
    TrackListNode *p = head;
    while (p) {
+      // iterate over all tracks in the list
       if (p->t == t) {
+         // this is the track passed in
          TrackListNode *second = p;
+         // handle the case where the track passed is second of a linked pair
+         // by changing second to be the first of the pair
          if (second->prev && second->prev->t->GetLinked())
             second = second->prev;
 
          TrackListNode *first = second->prev;
          if (!first)
-            return false;
+            return false;  // if no previous track
          if (first->prev && first->prev->t->GetLinked())
-            first = first->prev;
-
-         // first could be NULL if we've tried to move up a track
-         // and there wasn't a track above.
-         wxASSERT( first );
-         if( !first )
-            return false;
-
+            first = first->prev; // if previous is 2nd of linked pair, then
+            // move before first of linked pair. Must always work because
+            // previous can only be second of linked pair if there is a first
+            // track in the linked pair.
+         // swap the two tracks over in the list
          Swap(first, second);
 
          return true;
@@ -542,10 +547,6 @@ bool TrackList::MoveDown(Track * t)
             }
          else
             second = p->next; // Just normal next track exists, so move down one
-
-         // Second could be NULL if we've tried to move down a track
-         // and there wasn't a track below.
-         wxASSERT( second );
 
          Swap(first, second);
          return true;
