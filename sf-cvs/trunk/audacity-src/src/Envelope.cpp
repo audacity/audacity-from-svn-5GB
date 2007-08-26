@@ -598,55 +598,141 @@ void Envelope::Paste(double t0, Envelope *e)
       return;
    }
    
-   t0 = wxMin(t0 - mOffset, mTrackLen);
+   t0 = wxMin(t0 - mOffset, mTrackLen);   // t0 now has origin of zero
    double deltat = e->mTrackLen;
 
    unsigned int i;
+   unsigned int pos = 0;
+   bool someToShift = false;
+   bool atStart = false;
+   bool beforeStart = false;
+   bool atEnd = false;
+   bool afterEnd = false;
+   bool onPoint = false;
    unsigned int len = mEnv.Count();
 
    // get values to perform framing of the insertion 
    double splitval = GetValue(t0 + mOffset);
    double leftval  = e->GetValue(0+e->mOffset);
    double rightval = e->GetValue(e->mTrackLen+e->mOffset);
-   int pos = 0;
 
+   if(len != 0) {   // Not case 10: there are point/s in the envelope
 
-   // Shift existing points to the right
-   for (i = 0; i < len; i++)
-      if (mEnv[i]->t > t0)
-         mEnv[i]->t += deltat;
-   
-   // unless insert point is end of track, we need to frame the right
-   // boundary.  Do it before modifying mTrackLen.
-   len = e->mEnv.Count();
-   if(t0  < mTrackLen) {
-      mTrackLen += deltat;
-      // was the last inserted controlpoint at the end of insertion?
-      if(len && e->mEnv[len-1]->t == e->mTrackLen){
-         // it both must be shifted and functions as the framing point 
-         mEnv[pos]->t-=mTrackEpsilon;
+/*
+Cases:
+(see discussions on audacity-devel around 19/8/7 - 23/8/7 and beyond, "Envelopes and 'Join'")
+1  9     11  2    3 5  7   8   6 4   13              12
+0-----0--0---0    -----0---0------       --(0)----
+
+1   The insert point is at the beginning of the current env, and it is a control point.
+2   The insert point is at the end of the current env, and it is a control point.
+3   The insert point is at the beginning of the current env, and it is not a control point.
+4   The insert point is at the end of the current env, and it is not a control point.
+5   The insert point is not at a control point, and there is space either side.
+6   As 5.
+7   The insert point is at a control point, and there is space either side.
+8   Same as 7.
+9   Same as 5.
+10  There are no points in the current envelope (commonly called by the 'undo' stuff, and not in the diagrams).
+11  As 7.
+12  Insert beyond the RH end of the current envelope (should not happen, at the moment)
+13  Insert beyond the LH end of the current envelope (should not happen, at the moment)
+*/
+
+      // See if existing points need shifting to the right, and what Case we are in
+      for (i = 0; i < len; i++) {
+         if (mEnv[i]->t > t0)
+            someToShift = true;
+         else {
+            pos = i; // last point not moved
+            if ( fabs(mEnv[i]->t - t0) - 1/500000.0 < 0.0 ) // close enough to a point
+               onPoint = true;
+         }
+      }
+
+      // In theses statement, remember we subtracted mOffset from t0
+      if( t0 < mTrackEpsilon )
+         atStart = true;
+      if( (mTrackLen - t0) < mTrackEpsilon )
+         atEnd = true;
+      if(0 > t0)
+         beforeStart = true;  // Case 13
+      if(mTrackLen < t0)
+         afterEnd = true;  // Case 12
+
+      // Now test for the various Cases, and try to do the right thing
+      if(atStart) {   // insertion at the beginning
+         if(onPoint) {  // first env point is at LH end
+            mEnv[0]->t +=mTrackEpsilon;   // Case 1: move it R slightly to avoid duplicate point
+            someToShift = true;  // there is now, even if there wasn't before
+            //wxLogDebug(wxT("Case 1"));
+         }
+         else {
+            Insert(t0 + mTrackEpsilon, splitval);   // Case 3: insert a point to maintain the envelope
+            someToShift = true;
+            //wxLogDebug(wxT("Case 3"));
+         }
       }
       else {
-         Insert(t0 + e->mTrackLen - mTrackEpsilon, rightval);
+         if(atEnd) { // insertion at the end
+            if(onPoint) {  // last env point is at RH end, Case 2: 
+               mEnv[0]->t -= mTrackEpsilon;  // move it L slightly to avoid duplicate point
+               //wxLogDebug(wxT("Case 2"));
+            }
+            else {   // Case 4:
+               Insert(t0 - mTrackEpsilon, splitval);   // insert a point to maintain the envelope
+               //wxLogDebug(wxT("Case 4"));
+            }
+         }
+         else {
+            if(onPoint) {  // Case 7: move the point L and insert a new one to the R
+               mEnv[pos]->t -= mTrackEpsilon;
+               Insert(t0 + mTrackEpsilon, splitval);
+               someToShift = true;
+               //wxLogDebug(wxT("Case 7"));
+            }
+            else {
+               if( !beforeStart && !afterEnd ) {// Case 5: Insert points to L and R
+                  Insert(t0 - mTrackEpsilon, splitval);
+                  Insert(t0 + mTrackEpsilon, splitval);
+                  someToShift = true;
+                  //wxLogDebug(wxT("Case 5"));
+               }
+               else {
+                  if( beforeStart ) {  // Case 13:
+                     //wxLogDebug(wxT("Case 13"));
+                  }
+                  else {   // Case 12:
+                     //wxLogDebug(wxT("Case 12"));
+                  }
+               }
+            }
+         }
       }
 
-      Insert(t0 + e->mTrackLen, splitval);
-   }
-   else {
+      // Now shift existing points to the right, if required
+      if(someToShift) {
+         len = mEnv.Count();  // it may well have changed
+         for (i = 0; i < len; i++)
+            if (mEnv[i]->t > t0)
+               mEnv[i]->t += deltat;
+      }
       mTrackLen += deltat;
    }
-
-   // unless t0 = 0.0, we need to frame the left boundary
-   if(t0 > 0) {
-      // shift the last point before the cut left by epsilon 
-      Insert(t0 - mTrackEpsilon, splitval);
-      Insert(t0, leftval); // if this duplicates the first point below,
-                           // it will be replaced
+   else {   // Case 10:
+      mTrackLen = e->mTrackLen;
+      mOffset = e->mOffset;
+      //wxLogDebug(wxT("Case 10: mTrackLen %f mOffset %f t0 %f"), mTrackLen, mOffset, t0);
    }
 
    // Copy points from inside the selection
+   len = e->mEnv.Count();
    for (i = 0; i < len; i++)
       pos=Insert(t0 + e->mEnv[i]->t, e->mEnv[i]->val);
+
+/*   if(len != 0)
+      for (i = 0; i < mEnv.Count(); i++)
+         wxLogDebug(wxT("Fixed i %d when %.18f val %f"),i,mEnv[i]->t,mEnv[i]->val); */
 }
 
 void Envelope::RemoveUnneededPoints(double tolerence)
@@ -655,11 +741,14 @@ void Envelope::RemoveUnneededPoints(double tolerence)
    unsigned int i;
    double when, val, val1;
 
+   if(mEnv.Count() == 0)
+      return;
+
    for (i = 0; i < len; i++) {
       when = mEnv[i]->t;
       val = mEnv[i]->val;
       Delete(i);  // try it to see if it's doing anything
-      val1 = GetValue(when);
+      val1 = GetValue(when + mOffset);
       if( fabs(val -val1) > tolerence )
          Insert(when,val); // put it back, we needed it
       else {   // it made no difference so leave it out
@@ -732,6 +821,10 @@ void Envelope::GetPoints(double *bufferWhen,
 // Although this renders the name a slight misnomer, a duplicate
 // 'replaces' the current control point.
 
+// Envelopes start at zero and are offset by other things by mOffset.
+// This is worth remembering.
+// If you call 'Insert' from WaveClip, subtract mOffset from the time.
+// If you call it from Envelope, don't. Kind of makes sense. MJS.
 int Envelope::Insert(double when, double value)
 {
    int len = mEnv.Count();
