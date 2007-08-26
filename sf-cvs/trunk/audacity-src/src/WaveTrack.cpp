@@ -627,7 +627,7 @@ bool WaveTrack::HandleClear(double t0, double t1,
       }
    }   
 
-   for (it=GetClipIterator(); it; it=it->GetNext())
+   for (it=GetClipIterator(); it; it=it->GetNext())   // main loop through clips
    {
       WaveClip *clip = it->GetData();
 
@@ -674,6 +674,14 @@ bool WaveTrack::HandleClear(double t0, double t1,
                }
             }
             else {
+               // frame clip envelope points here
+               // clip->Clear keeps points < t0 and >= t1 via Envelope::CollapseRegion
+               double val;
+               val = clip->GetEnvelope()->GetValue(t0);
+               clip->GetEnvelope()->Insert(t0 - clip->GetOffset() - 1.0/clip->GetRate(), val);
+               val = clip->GetEnvelope()->GetValue(t1);
+               clip->GetEnvelope()->Insert(t1 - clip->GetOffset(), val);
+
                if (!clip->Clear(t0,t1))
                   return false;
             }
@@ -1503,6 +1511,8 @@ bool WaveTrack::SplitAt(double t)
          double val;
          t = LongSamplesToTime(TimeToLongSamples(t)); // put t on a sample
          val = c->GetEnvelope()->GetValue(t);
+         c->GetEnvelope()->Insert(t - c->GetOffset() - 1.0/c->GetRate(), val);  // frame end points
+         c->GetEnvelope()->Insert(t - c->GetOffset(), val);
          WaveClip* newClip = new WaveClip(*c, mDirManager);
          if (!c->Clear(t, c->GetEndTime()))
          {
@@ -1514,8 +1524,6 @@ bool WaveTrack::SplitAt(double t)
             delete newClip;
             return false;
          }
-         c->GetEnvelope()->Insert(c->GetEndTime() - c->GetOffset() - 1.0/c->GetRate(), val);
-         newClip->GetEnvelope()->Insert(0.0, val);
          longSampleCount here = llrint(floor(((t - c->GetStartTime() - mOffset) * mRate) + 0.5));
          newClip->Offset((double)here/(double)mRate);
          mClips.Append(newClip);
