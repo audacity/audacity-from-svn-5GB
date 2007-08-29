@@ -613,8 +613,10 @@ void Envelope::Paste(double t0, Envelope *e)
 
    // get values to perform framing of the insertion 
    double splitval = GetValue(t0 + mOffset);
-   double leftval  = e->GetValue(0+e->mOffset);
-   double rightval = e->GetValue(e->mTrackLen+e->mOffset);
+// the following two lines were in the old code.  They may be useful in the future but
+// I 'think' that 'e' always has L and R points at it's ends - it certainly should! - MJS
+//   double leftval  = e->GetValue(0+e->mOffset);
+//   double rightval = e->GetValue(e->mTrackLen+e->mOffset);
 
    if(len != 0) {   // Not case 10: there are point/s in the envelope
 
