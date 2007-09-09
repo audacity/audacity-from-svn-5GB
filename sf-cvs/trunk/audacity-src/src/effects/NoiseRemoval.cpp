@@ -131,7 +131,7 @@ void EffectNoiseRemoval::CleanSpeechMayReadNoisegate()
    int count = noiseGateFile.Read(mNoiseThreshold, expectedCount);
    noiseGateFile.Close();
    if (count == expectedCount) {
-      for (int i = halfWindowSize; i < mWindowSize; ++i) {
+      for (int i = halfWindowSize; i < mSpectrumSize; ++i) {
          mNoiseThreshold[i] = float(0.0);  // only half filled by Read
       }
       mHasProfile = true;
