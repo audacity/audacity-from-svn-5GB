@@ -164,9 +164,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("Open"),           _("&Open...\tCtrl+O"),               FN(OnOpen));
    c->SetCommandFlags(wxT("Open"), 0, 0);
 
-   #ifndef __WXMSW__
    CreateRecentFilesMenu(c);
-   #endif
 
    c->AddItem(wxT("Close"),          _("&Close\tCtrl+W"),                 FN(OnClose));
    if( !mCleanSpeechMode )
@@ -279,10 +277,6 @@ void AudacityProject::CreateMenusAndCommands()
 	}
    
    c->AddSeparator();
-
-   #ifdef __WXMSW__
-   CreateRecentFilesMenu(c);
-   #endif
 
    // On the Mac, the Exit item doesn't actually go here...wxMac will pull it out
    // and put it in the Audacity menu for us based on its ID.
