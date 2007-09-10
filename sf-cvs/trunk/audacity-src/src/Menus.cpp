@@ -280,13 +280,8 @@ void AudacityProject::CreateMenusAndCommands()
 
    // On the Mac, the Exit item doesn't actually go here...wxMac will pull it out
    // and put it in the Audacity menu for us based on its ID.
-  #ifdef __WXMAC__
    c->AddItem(wxT("Exit"),           _("E&xit\tCtrl+Q"),                          FN(OnExit));
    c->SetCommandFlags(wxT("Exit"), 0, 0);
-  #else
-   c->AddItem(wxT("Exit"),           _("E&xit\tCtrl+Q"),                          FN(OnExit));
-   c->SetCommandFlags(wxT("Exit"), 0, 0);
-  #endif
    c->EndMenu();
 
    //
