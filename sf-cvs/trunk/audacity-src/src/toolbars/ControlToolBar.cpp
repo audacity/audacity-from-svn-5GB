@@ -88,8 +88,6 @@ ControlToolBar::ControlToolBar()
 
    gPrefs->Read(wxT("/GUI/ErgonomicTransportButtons"), &mErgonomicTransportButtons, true);
    gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &mCleanSpeechMode, false);
-   gPrefs->Read(wxT("/GUI/AlwaysEnablePause"), &mAlwaysEnablePause, false);
-   gPrefs->Read(wxT("/GUI/AlwaysEnablePlay"), &mAlwaysEnablePlay, true);
 }
 
 ControlToolBar::~ControlToolBar()
@@ -207,9 +205,6 @@ void ControlToolBar::Populate()
 
 void ControlToolBar::UpdatePrefs()
 {
-   gPrefs->Read(wxT("/GUI/AlwaysEnablePlay"), &mAlwaysEnablePlay, true);
-   gPrefs->Read(wxT("/GUI/AlwaysEnablePause"), &mAlwaysEnablePause, false);
-
    bool updated = false;
    bool active;
 
@@ -345,7 +340,7 @@ void ControlToolBar::EnableDisableButtons()
       }
    }
 
-   mPlay->SetEnabled((mAlwaysEnablePlay && !recording) || (tracks && !busy && !cleaningSpeech));
+   mPlay->SetEnabled((!recording) || (tracks && !busy && !cleaningSpeech));
    mRecord->SetEnabled(!busy && !playing);
 
    if (p && GetActiveProject()->GetCleanSpeechMode()) {
@@ -360,7 +355,7 @@ void ControlToolBar::EnableDisableButtons()
    mStop->SetEnabled(busy && !cleaningSpeech);
    mRewind->SetEnabled(tracks && !busy);
    mFF->SetEnabled(tracks && !busy);
-   mPause->SetEnabled(busy || mAlwaysEnablePause);
+   mPause->SetEnabled(true);
 }
 
 void ControlToolBar::SetPlay(bool down)
@@ -636,8 +631,7 @@ void ControlToolBar::OnStop(wxCommandEvent &evt)
 
 void ControlToolBar::PlayDefault()
 {
-   if(mAlwaysEnablePlay)
-      StopPlaying();
+   StopPlaying();
 
    if(mPlay->WasControlDown())
       PlayCurrentRegion(false, true); /* play with cut preview */
@@ -646,8 +640,7 @@ void ControlToolBar::PlayDefault()
    else
       PlayCurrentRegion(false); /* play normal */
 
-   if(mAlwaysEnablePlay)
-      mPlay->PopUp();
+   mPlay->PopUp();
 }
 
 void ControlToolBar::StopPlaying()

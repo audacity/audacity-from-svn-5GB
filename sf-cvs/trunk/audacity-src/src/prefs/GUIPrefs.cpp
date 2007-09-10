@@ -71,10 +71,6 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       S.TieCheckBox( _("&Autoscroll while playing"),
          wxT("/GUI/AutoScroll"), true);
-      S.TieCheckBox( _("Al&ways allow pausing"),
-         wxT("/GUI/AlwaysEnablePause"), false);
-      S.TieCheckBox( _("Alwa&ys allow playing"),
-         wxT("/GUI/AlwaysEnablePlay"), false);
       S.TieCheckBox( _("&Update spectrogram while playing"),
          wxT("/GUI/UpdateSpectrogram"), true);
       S.TieCheckBox( _("&Quit Audacity upon closing last window"),
