@@ -164,10 +164,6 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("Open"),           _("&Open...\tCtrl+O"),               FN(OnOpen));
    c->SetCommandFlags(wxT("Open"), 0, 0);
 
-	// On the Mac, the Preferences item doesn't actually go here...wxMac will pull it out
-   // and put it in the Audacity menu for us based on its ID.
-   // Moved Preferences to Edit Menu 02/09/05 Richard Ash.
-
    #ifndef __WXMSW__
    CreateRecentFilesMenu(c);
    #endif
