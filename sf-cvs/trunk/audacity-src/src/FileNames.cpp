@@ -97,6 +97,16 @@ wxString FileNames::ChainDir()
    return FileNames::MkDir( wxFileName( DataDir(), wxT("Chains") ).GetFullPath() );
 }
 
+wxString FileNames::NRPDir()
+{
+   return FileNames::MkDir( wxFileName( DataDir(), wxT("NRP") ).GetFullPath() );
+}
+
+wxString FileNames::NRPFile()
+{
+   return wxFileName( NRPDir(), wxT("noisegate.nrp") ).GetFullPath();
+}
+
 wxString FileNames::ThemeDir()
 {
    return FileNames::MkDir( wxFileName( DataDir(), wxT("Theme") ).GetFullPath() );
