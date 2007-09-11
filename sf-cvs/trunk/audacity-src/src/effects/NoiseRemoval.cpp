@@ -47,6 +47,7 @@
 #include "../WaveTrack.h"
 #include "../Prefs.h"
 #include "../Project.h"
+#include "../FileNames.h"
 
 #include <math.h>
 
@@ -70,6 +71,7 @@
 #include <wx/textctrl.h>
 
 #include "../AudacityApp.h"
+#include "../PlatformCompatibility.h"
 
 EffectNoiseRemoval::EffectNoiseRemoval()
 {
@@ -116,12 +118,17 @@ void EffectNoiseRemoval::CleanSpeechMayReadNoisegate()
          return;
       }
    }
+
    // Try to open the file.
-   wxString filename = wxT("noisegate.nrp");
-   // if file doesn't exist, return quietly.
-   if( !wxFile::Exists( filename ))
+   if( !wxDirExists( FileNames::NRPDir() ))
       return;
-   wxFFile noiseGateFile(filename, wxT("rb"));
+
+   // if file doesn't exist, return quietly.
+   wxString fileName = FileNames::NRPFile();
+   if( !wxFileExists( fileName ))
+      return;
+
+   wxFFile noiseGateFile(fileName, wxT("rb"));
    bool flag = noiseGateFile.IsOpened();
    if (flag != true)
       return;
@@ -132,7 +139,7 @@ void EffectNoiseRemoval::CleanSpeechMayReadNoisegate()
    noiseGateFile.Close();
    if (count == expectedCount) {
       for (int i = halfWindowSize; i < mSpectrumSize; ++i) {
-         mNoiseThreshold[i] = float(0.0);  // only half filled by Read
+         mNoiseThreshold[i] = float(0.0);  // only partly filled by Read?
       }
       mHasProfile = true;
       mDoProfile = false;
@@ -144,13 +151,46 @@ void EffectNoiseRemoval::CleanSpeechMayWriteNoiseGate()
    AudacityProject * project = GetActiveProject();
    if( !project || !project->GetCleanSpeechMode() )
       return;
-   wxFFile noiseGateFile(wxT("noisegate.nrp"), wxT("wb"));
+
+   // code borrowed from ThemeBase::SaveComponents() - MJS
+   // IF directory doesn't exist THEN create it
+   if( !wxDirExists( FileNames::NRPDir() ))
+   {
+      /// \bug 1 in wxWidgets documentation; wxMkDir returns false if 
+      /// directory didn't exist, even if it successfully creates it.
+      /// so we create and then test if it exists instead.
+      /// \bug 2 in wxWidgets documentation; wxMkDir has only one argument
+      /// under MSW
+#ifdef __WXMSW__
+      wxMkDir( FileNames::NRPDir().fn_str() );
+#else
+      wxMkDir( FileNames::NRPDir().fn_str(), 0700 );
+#endif
+      if( !wxDirExists( FileNames::NRPDir() ))
+      {
+         wxMessageBox(
+            wxString::Format( 
+            _("Could not create directory:\n  %s"),
+               FileNames::NRPDir().c_str() ));
+         return;
+      }
+   }
+
+   wxString fileName = FileNames::NRPFile();
+   fileName = PlatformCompatibility::GetLongFileName(fileName);
+   wxFFile noiseGateFile(fileName, wxT("wb"));
    bool flag = noiseGateFile.IsOpened();
    if (flag == true) {
       int expectedCount = (mWindowSize / 2) * sizeof(float);
       // FIX-ME: Should we check return value on Write?
       noiseGateFile.Write(mNoiseThreshold, expectedCount);
       noiseGateFile.Close();
+   }
+   else {
+      wxMessageBox(
+         wxString::Format( 
+         _("Could not open file:\n  %s"), fileName ));
+      return;
    }
 }
 

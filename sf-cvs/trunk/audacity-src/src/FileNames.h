@@ -24,6 +24,8 @@ public:
    static wxString DataDir();
    static wxString AutoSaveDir();
    static wxString ChainDir();
+   static wxString NRPDir();
+   static wxString NRPFile();
    static wxString ThemeDir();
    static wxString ThemeComponentsDir();
    static wxString ThemeCachePng();
