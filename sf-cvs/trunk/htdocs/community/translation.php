@@ -56,7 +56,7 @@
   <li>Open Audacity and in <b>Preferences > Interface</b>, the new language should now appear in the Language menu. Choose it, quit, then restart and you should see your translations. </li>
 </ul>
 
-<p>Send completed PO files to Buanzoi <a href="mailto:buanzo@audacityteam.org">buanzo@audacityteam.org</a>.</p>
+<p>Send completed PO files to Buanzo <a href="mailto:buanzo@audacityteam.org">buanzo@audacityteam.org</a>.</p>
 
 <h3>Notes</h3>
 
