@@ -27,6 +27,8 @@
 #include "../Project.h"
 #include "../BatchCommandDialog.h"
 #include "../ShuttleGui.h"
+#include "../Menus.h"
+#include "../toolbars/ToolManager.h"
 
 #define ChainsListID             7005
 #define AddButtonID              7006
@@ -112,6 +114,16 @@ bool BatchPrefs::Apply()
    ShuttleGui S( this, eIsSavingToPrefs );
    PopulateOrExchange( S );
 
+   unsigned mode;
+   mode = gPrefs->Read(wxT("/Batch/CleanSpeechMode"), 1L);
+   for(unsigned i=0; i<gAudacityProjects.GetCount(); i++)
+      if(gAudacityProjects[i])
+      {
+         AudacityProject *proj = GetActiveProject();
+         proj->SetCleanSpeechMode(mode == 1);
+         gAudacityProjects[i]->RebuildMenuBar();
+         gAudacityProjects[i]->mToolManager->LayoutToolBars(); // Just to add/remove the CleanSpeech button.
+      }
    return true;
 }
 
