@@ -2356,12 +2356,6 @@ void TrackPanel::DoSlide(wxMouseEvent & event)
                track->Offset(mHSlideAmount);
          }
       }
-
-      if (mCapturedClipIsSelection) {
-         // Slide the selection, too
-         mViewInfo->sel0 += mHSlideAmount;
-         mViewInfo->sel1 += mHSlideAmount;
-      }
    }
    else {
       // For non wavetracks...
@@ -2369,6 +2363,11 @@ void TrackPanel::DoSlide(wxMouseEvent & event)
       Track* link = mTracks->GetLink(mCapturedTrack);
       if (link)
          link->Offset(mHSlideAmount);
+   }
+   if (mCapturedClipIsSelection) {
+      // Slide the selection, too
+      mViewInfo->sel0 += mHSlideAmount;
+      mViewInfo->sel1 += mHSlideAmount;
    }
 
    Refresh(false);
