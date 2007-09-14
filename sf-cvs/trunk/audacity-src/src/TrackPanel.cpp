@@ -632,8 +632,6 @@ void TrackPanel::UpdatePrefs()
    mdBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    gPrefs->Read(wxT("/GUI/AutoScroll"), &mViewInfo->bUpdateTrackIndicator,
                true);
-   gPrefs->Read(wxT("/GUI/UpdateSpectrogram"), &mViewInfo->bUpdateSpectrogram,
-               true);
    gPrefs->Read(wxT("/GUI/AdjustSelectionEdges"), &mAdjustSelectionEdges,
                true);
    gPrefs->Read(wxT("/GUI/CircularTrackNavigation"), &mCircularTrackNavigation,

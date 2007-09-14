@@ -1322,7 +1322,7 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
    dc.SetBrush(blankBrush);
    dc.DrawRectangle(r);
 
-   if(!viewInfo->bUpdateSpectrogram && viewInfo->bIsPlaying)
+   if(!viewInfo->bUpdateTrackIndicator && viewInfo->bIsPlaying)
    {
       // BG: Draw (undecorated) waveform instead of spectrum
       DrawWaveform(track, dc, r, viewInfo, false, false, false, false, false);
