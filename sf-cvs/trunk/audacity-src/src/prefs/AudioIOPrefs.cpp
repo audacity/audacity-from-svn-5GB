@@ -147,30 +147,45 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieCheckBox( _("&Play other tracks while recording new one"),
          wxT("Duplex"),true);
 #ifdef __MACOSX__
-      S.TieCheckBox( _("&Hardware Playthrough (Play new track while recording it)"),
+      S.TieCheckBox( _("&Hardware Playthrough: Play new track while recording it"),
          wxT("Playthrough"),false);
-#endif
-      S.TieCheckBox( _("&Software Playthrough (Play new track while recording it)"),
+      S.TieCheckBox( _("&Software Playthrough: Play new track while recording it"),
          wxT("SWPlaythrough"),false);
+#else
+      S.TieCheckBox( _("&Software Playthrough: Play new track while recording it (uncheck when recording \"stereo mix\")"),
+         wxT("SWPlaythrough"),false);
+#endif
+
    }
    S.EndStatic();
    S.StartHorizontalLay( wxEXPAND, 0 );
+   S.StartStatic( _("Effects Preview"),1 );
+   {
+      S.StartThreeColumn();
+      S.TieTextBox( _("Length of preview:"), wxT("EffectsPreviewLen"), 3.0,9);
+      S.AddUnits( _("seconds") );
+      S.EndThreeColumn();
+   }
+   S.EndStatic();
    S.StartStatic( _("Cut Preview"),1 );
    {
       S.StartThreeColumn();
-      S.TieTextBox( _("Play before cut region:"), wxT("CutPreviewBeforeLen"),1.0,9);
+      S.TieTextBox( _("Preview before cut region:"), wxT("CutPreviewBeforeLen"),1.0,9);
       S.AddUnits(  _("seconds") );
-      S.TieTextBox( _("Play after cut region:"),wxT("CutPreviewAfterLen"), 1.0,9);
+      S.TieTextBox( _("Preview after cut region:"),wxT("CutPreviewAfterLen"), 1.0,9);
       S.AddUnits(  _("seconds") );
       S.EndThreeColumn();
    }
    S.EndStatic();
+   S.EndHorizontalLay();
+   S.StartHorizontalLay( wxEXPAND, 0 );
+
    S.StartStatic( _("Latency"),1 );
    {
       S.StartThreeColumn();
 #if USE_PORTAUDIO_V19
       // only show the following controls if we use Portaudio v19, because
-      // for Portaudio v19 we always use default buffer sizes
+      // for Portaudio v18 we always use default buffer sizes
       S.TieTextBox( _("Audio to buffer:"),wxT("LatencyDuration"),100.0,9);
       S.AddUnits(  _("milliseconds") );
 #endif
@@ -179,9 +194,7 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
       S.EndThreeColumn();
    }
    S.EndStatic();
-   S.EndHorizontalLay();
-   S.StartHorizontalLay( wxEXPAND, 0 );
-   S.StartStatic( _("Seek Time"),1 );
+   S.StartStatic( _("Seek Time when playing"),1 );
    {
       S.StartThreeColumn();
       S.TieTextBox( _("Short period:"), wxT("SeekShortPeriod"),1.0,9);
@@ -191,13 +204,6 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
       S.EndThreeColumn();
    }
    S.EndStatic();
-   S.StartStatic( _("Effects Preview"),1 );
-   {
-      S.StartThreeColumn();
-      S.TieTextBox( _("Play when previewing:"), wxT("EffectsPreviewLen"), 3.0,9);
-      S.AddUnits( _("seconds") );
-      S.EndThreeColumn();
-   }
 
    gPrefs->SetPath(wxT("/"));
 }
