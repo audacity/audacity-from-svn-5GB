@@ -109,7 +109,7 @@ void DirectoriesPrefs::PopulateOrExchange( ShuttleGui & S )
    
    S.StartStatic( _("Audio cache"),0);
    {
-      S.TieCheckBox( _("Always hold all audio data in memory"),
+      S.TieCheckBox( _("Hold recorded data in memory until recording is stopped"),
                      wxT("/Directories/CacheBlockFiles"), false);
    }
    S.EndStatic();

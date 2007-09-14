@@ -94,7 +94,7 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       S.StartRadioButtonGroup( wxT("/FileFormats/ExportDownMix" ), true );
       S.TieRadioButton( _("A&lways mix all tracks down to Stereo or Mono channel(s)."), true);
-      S.TieRadioButton( _("&Use Advanced Mixing Options"),false );
+      S.TieRadioButton( _("&Use custom mix (for example to export a 5.1 multichannel file)"),false );
       S.EndRadioButtonGroup();
    }
    S.EndStatic();
