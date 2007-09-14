@@ -69,10 +69,8 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
    S.StartHorizontalLay( wxEXPAND, 0 );
    S.StartStatic( _("Behaviors"),1 );
    {
-      S.TieCheckBox( _("&Autoscroll while playing"),
+      S.TieCheckBox( _("&Update display while playing"),
          wxT("/GUI/AutoScroll"), true);
-      S.TieCheckBox( _("&Update spectrogram while playing"),
-         wxT("/GUI/UpdateSpectrogram"), true);
       S.TieCheckBox( _("&Quit Audacity upon closing last window"),
          wxT("/GUI/QuitOnClose"), bQuitOnCloseDefault );
       S.TieCheckBox( _("&Dragging of left and right selection edges"),
@@ -95,7 +93,7 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("/GUI/EnableCutLines"), false);
       S.TieCheckBox( _("Show warnings about &temp files"), 
          wxT("/GUI/WarnAboutTempFiles"), true );
-      S.TieCheckBox( _("&Show prompt to save, even if empty"),    
+      S.TieCheckBox( _("&Show prompt to save, even if project is empty"),    
          wxT("/GUI/EmptyCanBeDirty"), true );
 
    }
