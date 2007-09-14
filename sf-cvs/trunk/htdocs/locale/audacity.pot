@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.3.3\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-09-14 11:04-0300\n"
+"POT-Creation-Date: 2007-09-14 11:20-0300\n"
 "PO-Revision-Date: 1999 and beyond-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <audacity-translation@lists.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -474,7 +474,7 @@ msgid "&Add"
 msgstr ""
 
 #: BatchProcessDialog.cpp:436 LabelDialog.cpp:126 Tags.cpp:783 Tags.cpp:1423
-#: Tags.cpp:2023 TrackPanel.cpp:3988
+#: Tags.cpp:2023 TrackPanel.cpp:3987
 msgid "&Remove"
 msgstr ""
 
@@ -2060,7 +2060,7 @@ msgstr ""
 msgid "Disjoined labeled regions"
 msgstr ""
 
-#: Menus.cpp:2834 TrackPanel.cpp:5673
+#: Menus.cpp:2834 TrackPanel.cpp:5672
 msgid "Split"
 msgstr ""
 
@@ -2947,15 +2947,15 @@ msgstr ""
 msgid "Pitch (EAC)"
 msgstr ""
 
-#: TrackPanel.cpp:510 TrackPanel.cpp:5643
+#: TrackPanel.cpp:510 TrackPanel.cpp:5642
 msgid "Mono"
 msgstr ""
 
-#: TrackPanel.cpp:511 TrackPanel.cpp:5642
+#: TrackPanel.cpp:511 TrackPanel.cpp:5641
 msgid "Left Channel"
 msgstr ""
 
-#: TrackPanel.cpp:512 TrackPanel.cpp:5642
+#: TrackPanel.cpp:512 TrackPanel.cpp:5641
 msgid "Right Channel"
 msgstr ""
 
@@ -2971,7 +2971,7 @@ msgstr ""
 msgid "Set Sample Format"
 msgstr ""
 
-#: TrackPanel.cpp:518 TrackPanel.cpp:5860
+#: TrackPanel.cpp:518 TrackPanel.cpp:5859
 msgid "Set Rate"
 msgstr ""
 
@@ -3039,13 +3039,13 @@ msgstr ""
 msgid "Click and drag to move right selection boundary."
 msgstr ""
 
-#: TrackPanel.cpp:1671 TrackPanel.cpp:3780 TrackPanel.cpp:3812
-#: TrackPanel.cpp:4067 TrackPanel.cpp:5972 TrackPanel.cpp:5992
+#: TrackPanel.cpp:1671 TrackPanel.cpp:3779 TrackPanel.cpp:3811
+#: TrackPanel.cpp:4066 TrackPanel.cpp:5971 TrackPanel.cpp:5991
 msgid "Modified Label"
 msgstr ""
 
-#: TrackPanel.cpp:1672 TrackPanel.cpp:3781 TrackPanel.cpp:3813
-#: TrackPanel.cpp:4068 TrackPanel.cpp:5973 TrackPanel.cpp:5993
+#: TrackPanel.cpp:1672 TrackPanel.cpp:3780 TrackPanel.cpp:3812
+#: TrackPanel.cpp:4067 TrackPanel.cpp:5972 TrackPanel.cpp:5992
 msgid "Label Edit"
 msgstr ""
 
@@ -3080,219 +3080,219 @@ msgstr ""
 msgid "Time-Shift"
 msgstr ""
 
-#: TrackPanel.cpp:2740
+#: TrackPanel.cpp:2739
 msgid "Draw currently only works with linear-view waveforms."
 msgstr ""
 
-#: TrackPanel.cpp:2757
+#: TrackPanel.cpp:2756
 msgid ""
 "You are not zoomed in enough. Zoom in until you can see the individual "
 "samples."
 msgstr ""
 
-#: TrackPanel.cpp:3028
+#: TrackPanel.cpp:3027
 msgid "Moved Sample"
 msgstr ""
 
-#: TrackPanel.cpp:3029
+#: TrackPanel.cpp:3028
 msgid "Sample Edit"
 msgstr ""
 
-#: TrackPanel.cpp:3128
+#: TrackPanel.cpp:3127
 #, c-format
 msgid "Removed track '%s.'"
 msgstr ""
 
-#: TrackPanel.cpp:3130
+#: TrackPanel.cpp:3129
 msgid "Track Remove"
 msgstr ""
 
-#: TrackPanel.cpp:3271
+#: TrackPanel.cpp:3270
 msgid "Moved gain slider"
 msgstr ""
 
-#: TrackPanel.cpp:3271
+#: TrackPanel.cpp:3270
 msgid "Moved pan slider"
 msgstr ""
 
 #. i18n-hint: Title of the Gain slider, used to adjust the volume
-#: TrackPanel.cpp:3272 TrackPanel.cpp:5309 TrackPanel.cpp:6641
+#: TrackPanel.cpp:3271 TrackPanel.cpp:5308 TrackPanel.cpp:6640
 msgid "Gain"
 msgstr ""
 
 #. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#: TrackPanel.cpp:3272 TrackPanel.cpp:5247 TrackPanel.cpp:6648
+#: TrackPanel.cpp:3271 TrackPanel.cpp:5246 TrackPanel.cpp:6647
 msgid "Pan"
 msgstr ""
 
-#: TrackPanel.cpp:3397 TrackPanel.cpp:5925 effects/ChangePitch.cpp:282
+#: TrackPanel.cpp:3396 TrackPanel.cpp:5924 effects/ChangePitch.cpp:282
 msgid "up"
 msgstr ""
 
-#: TrackPanel.cpp:3401 TrackPanel.cpp:5926 effects/ChangePitch.cpp:282
+#: TrackPanel.cpp:3400 TrackPanel.cpp:5925 effects/ChangePitch.cpp:282
 msgid "down"
 msgstr ""
 
-#: TrackPanel.cpp:3408 TrackPanel.cpp:5921
+#: TrackPanel.cpp:3407 TrackPanel.cpp:5920
 #, c-format
 msgid "Moved '%s' %s"
 msgstr ""
 
-#: TrackPanel.cpp:3411 TrackPanel.cpp:5927
+#: TrackPanel.cpp:3410 TrackPanel.cpp:5926
 msgid "Move Track"
 msgstr ""
 
-#: TrackPanel.cpp:3967
+#: TrackPanel.cpp:3966
 msgid "Expand"
 msgstr ""
 
-#: TrackPanel.cpp:3967
+#: TrackPanel.cpp:3966
 msgid "Expanded Cut Line"
 msgstr ""
 
-#: TrackPanel.cpp:3976
+#: TrackPanel.cpp:3975
 msgid "Merge"
 msgstr ""
 
-#: TrackPanel.cpp:3976
+#: TrackPanel.cpp:3975
 msgid "Merged Clips"
 msgstr ""
 
-#: TrackPanel.cpp:3988
+#: TrackPanel.cpp:3987
 msgid "Removed Cut Line"
 msgstr ""
 
-#: TrackPanel.cpp:5247
+#: TrackPanel.cpp:5246
 msgid "Adjusted Pan"
 msgstr ""
 
-#: TrackPanel.cpp:5309
+#: TrackPanel.cpp:5308
 msgid "Adjusted gain"
 msgstr ""
 
-#: TrackPanel.cpp:5470
+#: TrackPanel.cpp:5469
 msgid "Can't delete track with active audio"
 msgstr ""
 
-#: TrackPanel.cpp:5623
+#: TrackPanel.cpp:5622
 msgid "Stereo, "
 msgstr ""
 
-#: TrackPanel.cpp:5626
+#: TrackPanel.cpp:5625
 msgid "Mono, "
 msgstr ""
 
-#: TrackPanel.cpp:5628
+#: TrackPanel.cpp:5627
 msgid "Left, "
 msgstr ""
 
-#: TrackPanel.cpp:5630
+#: TrackPanel.cpp:5629
 msgid "Right, "
 msgstr ""
 
-#: TrackPanel.cpp:5652 TrackPanel.cpp:5765
+#: TrackPanel.cpp:5651 TrackPanel.cpp:5764
 #, c-format
 msgid "Changed '%s' to %s"
 msgstr ""
 
-#: TrackPanel.cpp:5657
+#: TrackPanel.cpp:5656
 msgid "Channel"
 msgstr ""
 
-#: TrackPanel.cpp:5670
+#: TrackPanel.cpp:5669
 #, c-format
 msgid "Split stereo track '%s'"
 msgstr ""
 
-#: TrackPanel.cpp:5691
+#: TrackPanel.cpp:5690
 #, c-format
 msgid "Made '%s' a stereo track"
 msgstr ""
 
-#: TrackPanel.cpp:5694
+#: TrackPanel.cpp:5693
 msgid "Make Stereo"
 msgstr ""
 
-#: TrackPanel.cpp:5729
+#: TrackPanel.cpp:5728
 #, c-format
 msgid "Changed '%s' to %d Hz"
 msgstr ""
 
-#: TrackPanel.cpp:5731
+#: TrackPanel.cpp:5730
 msgid "Rate Change"
 msgstr ""
 
-#: TrackPanel.cpp:5769
+#: TrackPanel.cpp:5768
 msgid "Format Change"
 msgstr ""
 
-#: TrackPanel.cpp:5859
+#: TrackPanel.cpp:5858
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
 msgstr ""
 
-#: TrackPanel.cpp:5869
+#: TrackPanel.cpp:5868
 msgid "Invalid rate."
 msgstr ""
 
-#: TrackPanel.cpp:5889
+#: TrackPanel.cpp:5888
 msgid "Change lower speed limit (%) to:"
 msgstr ""
 
-#: TrackPanel.cpp:5890 TrackPanel.cpp:5891
+#: TrackPanel.cpp:5889 TrackPanel.cpp:5890
 msgid "Lower speed limit"
 msgstr ""
 
-#: TrackPanel.cpp:5896
+#: TrackPanel.cpp:5895
 msgid "Change upper speed limit (%) to:"
 msgstr ""
 
-#: TrackPanel.cpp:5897 TrackPanel.cpp:5898
+#: TrackPanel.cpp:5896 TrackPanel.cpp:5897
 msgid "Upper speed limit"
 msgstr ""
 
-#: TrackPanel.cpp:5906
+#: TrackPanel.cpp:5905
 #, c-format
 msgid "Set range to '%d' - '%d'"
 msgstr ""
 
-#: TrackPanel.cpp:5909
+#: TrackPanel.cpp:5908
 msgid "Set Range"
 msgstr ""
 
-#: TrackPanel.cpp:5954
+#: TrackPanel.cpp:5953
 msgid "Change track name to:"
 msgstr ""
 
-#: TrackPanel.cpp:5955
+#: TrackPanel.cpp:5954
 msgid "Track Name"
 msgstr ""
 
-#: TrackPanel.cpp:5958
+#: TrackPanel.cpp:5957
 #, c-format
 msgid "Renamed '%s' to '%s'"
 msgstr ""
 
-#: TrackPanel.cpp:5961
+#: TrackPanel.cpp:5960
 msgid "Name Change"
 msgstr ""
 
-#: TrackPanel.cpp:6027
+#: TrackPanel.cpp:6026
 msgid "Label Track Font"
 msgstr ""
 
-#: TrackPanel.cpp:6039
+#: TrackPanel.cpp:6038
 msgid "Face name"
 msgstr ""
 
-#: TrackPanel.cpp:6048
+#: TrackPanel.cpp:6047
 msgid "Face size"
 msgstr ""
 
-#: TrackPanel.cpp:6568
+#: TrackPanel.cpp:6567
 msgid "Mute"
 msgstr ""
 
-#: TrackPanel.cpp:6568
+#: TrackPanel.cpp:6567
 msgid "Solo"
 msgstr ""
 
@@ -5640,31 +5640,31 @@ msgstr ""
 msgid "Play when previewing:"
 msgstr ""
 
-#: prefs/BatchPrefs.cpp:53 prefs/BatchPrefs.cpp:54
+#: prefs/BatchPrefs.cpp:55 prefs/BatchPrefs.cpp:56
 msgid "Batch"
 msgstr ""
 
-#: prefs/BatchPrefs.cpp:75 prefs/GUIPrefs.cpp:70
+#: prefs/BatchPrefs.cpp:77 prefs/GUIPrefs.cpp:70
 msgid "Behaviors"
 msgstr ""
 
-#: prefs/BatchPrefs.cpp:78
+#: prefs/BatchPrefs.cpp:80
 msgid "&Don't apply effects in batch mode"
 msgstr ""
 
-#: prefs/BatchPrefs.cpp:81
+#: prefs/BatchPrefs.cpp:83
 msgid "&Normalize on load"
 msgstr ""
 
-#: prefs/BatchPrefs.cpp:83
+#: prefs/BatchPrefs.cpp:85
 msgid "Cl&eanSpeech Mode (Customized GUI)"
 msgstr ""
 
-#: prefs/BatchPrefs.cpp:87 prefs/GUIPrefs.cpp:92
+#: prefs/BatchPrefs.cpp:89 prefs/GUIPrefs.cpp:92
 msgid "Show / Hide"
 msgstr ""
 
-#: prefs/BatchPrefs.cpp:89
+#: prefs/BatchPrefs.cpp:91
 msgid "S&how MP3-ID3 Dialog"
 msgstr ""
 
