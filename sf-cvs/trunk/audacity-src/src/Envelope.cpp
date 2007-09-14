@@ -972,7 +972,7 @@ void Envelope::GetValues(double *buffer, int bufferLen,
          if (dt > 0.0)
             v = (vprev * (dt - to) + vnext * to) / dt;
          else
-            v = tnext;
+            v = vnext;
 
          if (mDB) {
             buffer[b] = pow(10.0, v);
