@@ -138,24 +138,25 @@ typedef struct
 
 static CHOICES fixRates[] =
 {
-   {  _("8 kbps"),   8     },
-   {  _("16 kbps"),  16    },
-   {  _("24 kbps"),  24    },
-   {  _("32 kbps"),  32    },
-   {  _("40 kbps"),  40    },
-   {  _("48 kbps"),  48    },
-   {  _("56 kbps"),  56    },
-   {  _("64 kbps"),  64    },
-   {  _("80 kbps"),  80    },
-   {  _("96 kbps"),  96    },
-   {  _("112 kbps"), 112   },
-   {  _("128 kbps"), 128   },
-   {  _("144 kbps"), 144   },
-   {  _("160 kbps"), 160   },
-   {  _("192 kbps"), 192   },
-   {  _("224 kbps"), 224   },
-   {  _("256 kbps"), 256   },
-   {  _("320 kbps"), 320   }
+   /* i18n-hint: kbps is the bitrate of the MP3 file, kilobits per second*/
+   {  wxString(wxT("8 "))+_("kbps"),   8     },
+   {  wxString(wxT("16 "))+_("kbps"),  16    },
+   {  wxString(wxT("24 "))+_("kbps"),  24    },
+   {  wxString(wxT("32 "))+_("kbps"),  32    },
+   {  wxString(wxT("40 "))+_("kbps"),  40    },
+   {  wxString(wxT("48 "))+_("kbps"),  48    },
+   {  wxString(wxT("56 "))+_("kbps"),  56    },
+   {  wxString(wxT("64 "))+_("kbps"),  64    },
+   {  wxString(wxT("80 "))+_("kbps"),  80    },
+   {  wxString(wxT("96 "))+_("kbps"),  96    },
+   {  wxString(wxT("112 "))+_("kbps"), 112   },
+   {  wxString(wxT("128 "))+_("kbps"), 128   },
+   {  wxString(wxT("144 "))+_("kbps"), 144   },
+   {  wxString(wxT("160 "))+_("kbps"), 160   },
+   {  wxString(wxT("192 "))+_("kbps"), 192   },
+   {  wxString(wxT("224 "))+_("kbps"), 224   },
+   {  wxString(wxT("256 "))+_("kbps"), 256   },
+   {  wxString(wxT("320 "))+_("kbps"), 320   }
 };
 
 static CHOICES varRates[] =
@@ -188,15 +189,15 @@ static CHOICES setRates[] =
 
 static CHOICES sampRates[] =
 {
-   {  _("8000"),  8000     },
-   {  _("11025"), 11025    },
-   {  _("12000"), 12000    },
-   {  _("16000"), 16000    },
-   {  _("22050"), 22050    },
-   {  _("24000"), 24000    },
-   {  _("32000"), 32000    },
-   {  _("44100"), 44100    },
-   {  _("48000"), 48000    },
+   {  wxT("8000"),  8000     },
+   {  wxT("11025"), 11025    },
+   {  wxT("12000"), 12000    },
+   {  wxT("16000"), 16000    },
+   {  wxT("22050"), 22050    },
+   {  wxT("24000"), 24000    },
+   {  wxT("32000"), 32000    },
+   {  wxT("44100"), 44100    },
+   {  wxT("48000"), 48000    },
 };
 
 #define ID_SET 7000
