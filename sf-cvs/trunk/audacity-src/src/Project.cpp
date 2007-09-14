@@ -2412,7 +2412,7 @@ bool AudacityProject::ImportProgressCallback(void *_self, float percent)
       description = wxGetApp().mImporter->GetFileDescription();
       
    wxString dialogMessage;
-   dialogMessage.Printf(_("Importing %s File..."),
+   dialogMessage.Printf(_("Importing %s..."),
                         description.c_str());
 
    bool keepGoing = self->ProgressUpdate((int)(percent * 1000), dialogMessage);
