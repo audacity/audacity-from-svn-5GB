@@ -63,7 +63,9 @@ public:
                        bool selectedOnly,
                        double t0,
                        double t1,
-                       MixerSpec *mixerSpec = NULL);
+                       MixerSpec *mixerSpec = NULL,
+                       bool use_meta=true);
+
    virtual bool DoExport(AudacityProject *project,
                          int channels,
                          wxString fName,

@@ -296,7 +296,8 @@ public:
                bool selectedOnly,
                double t0,
                double t1,
-               MixerSpec *mixerSpec = NULL);
+               MixerSpec *mixerSpec = NULL,
+               bool use_meta=true); 
 
    // Overrides
 
@@ -330,7 +331,8 @@ bool ExportPCM::Export(AudacityProject *project,
                        bool selectionOnly,
                        double t0,
                        double t1,
-                       MixerSpec *mixerSpec)
+                       MixerSpec *mixerSpec,
+                       bool use_meta) 
 {
    double       rate = project->GetRate();
    TrackList   *tracks = project->GetTracks();
@@ -367,10 +369,12 @@ bool ExportPCM::Export(AudacityProject *project,
       return false;
    }
 
-   if (!AddStrings(project, sf)) {
-      sf_close(sf);
-      return false;
-   }
+   if (use_meta == true) { // meta data flag check
+      if (!AddStrings(project, sf)) { // meta data presence check
+         sf_close(sf);
+         return false;
+      }
+   } 
 
    sampleFormat format;
    if (sf_subtype_more_than_16_bits(info.format))
