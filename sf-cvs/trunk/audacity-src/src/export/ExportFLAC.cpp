@@ -179,7 +179,8 @@ public:
                bool selectedOnly,
                double t0,
                double t1,
-               MixerSpec *mixerSpec = NULL);
+               MixerSpec *mixerSpec = NULL,
+               bool use_meta=true);
 
 private:
 
@@ -211,7 +212,8 @@ bool ExportFLAC::Export(AudacityProject *project,
                         bool selectionOnly,
                         double t0,
                         double t1,
-                        MixerSpec *mixerSpec)
+                        MixerSpec *mixerSpec,
+                        bool use_meta)
 {
    double    rate    = project->GetRate();
    TrackList *tracks = project->GetTracks();

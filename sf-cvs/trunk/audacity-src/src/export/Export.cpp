@@ -205,7 +205,8 @@ bool ExportPlugin::Export(AudacityProject *project,
                           bool selectedOnly,
                           double t0,
                           double t1,
-                          MixerSpec *mixerSpec)
+                          MixerSpec *mixerSpec,
+                          bool use_meta)
 {
    if (project == NULL) {
       project = GetActiveProject();
