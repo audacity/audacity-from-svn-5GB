@@ -46,7 +46,7 @@ LinkingHtmlWindow::LinkingHtmlWindow(wxWindow *parent, wxWindowID id /*= -1*/,
 void LinkingHtmlWindow::OnLinkClicked(const wxHtmlLinkInfo& link)
 {
    wxString href = link.GetHref();
-   if( href.StartsWith("innerlink:") )
+   if( href.StartsWith(wxT("innerlink:")) )
    {
       this->SetPage( HelpText( href.Mid( 10 )));
       this->GetParent()->SetLabel( TitleText( href.Mid( 10 )));
