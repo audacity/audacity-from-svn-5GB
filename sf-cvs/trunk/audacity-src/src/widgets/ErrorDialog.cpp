@@ -118,7 +118,7 @@ void ErrorDialog::OnOk(wxCommandEvent &event)
 
 void ErrorDialog::OnHelp(wxCommandEvent &event)
 {
-   if( dhelpURL.StartsWith("innerlink:") )
+   if( dhelpURL.StartsWith(wxT("innerlink:")) )
    {
       wxDialog Dlg(this, -1, _NoAcc(TitleText(dhelpURL.Mid( 10 )) ),
                wxDefaultPosition, wxDefaultSize);
