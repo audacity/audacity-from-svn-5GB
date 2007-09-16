@@ -85,7 +85,8 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("/GUI/PresentTrackNumber"), true );
       S.TieCheckBox( _("Editing a &clip can move other clips"),
          wxT("/GUI/EditClipCanMove"), true );
-   }
+      S.TieCheckBox( _("&Select all audio, if none selected, on applying effect"),    
+         wxT("/GUI/SelectAllOnNone"), true );   }
    S.EndStatic();
    S.StartStatic( _("Show / Hide"),1 );
    {
@@ -95,7 +96,8 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("/GUI/WarnAboutTempFiles"), true );
       S.TieCheckBox( _("&Show prompt to save, even if project is empty"),    
          wxT("/GUI/EmptyCanBeDirty"), true );
-
+      S.TieCheckBox( _("Show Splash Screen at program start up"),    
+         wxT("/GUI/ShowSplashScreen"), true );
    }
    S.EndStatic();
    S.EndHorizontalLay();

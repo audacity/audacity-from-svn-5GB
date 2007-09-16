@@ -1072,6 +1072,16 @@ XMLTagHandler *WaveTrack::HandleXMLChild(const wxChar *tag)
          return GetLastOrCreateClip()->GetEnvelope();
    }
    
+   // JKC... for 1.1.0, one step better than what we had, but still badly broken.
+   //If we see a waveblock at this level, we'd better generate a sequence.
+   if( !wxStrcmp( tag, wxT("waveblock" )))
+   {
+      // This is a legacy project, so set the cached offset
+      GetLastOrCreateClip()->SetOffset(mLegacyProjectFileOffset);
+      Sequence *pSeq = GetLastOrCreateClip()->GetSequence();
+      return pSeq;
+   }
+
    //
    // This is for the new file format (post-1.2)
    //

@@ -138,11 +138,11 @@ class Meter : public wxPanel
    void OnPreferences(wxCommandEvent &evt);
 
    
+   void StartMonitoring();
  private:
    void DrawMeterBar(wxDC &dc, MeterBar *meterBar);
    void ResetBar(MeterBar *bar, bool resetClipping);
    void RepaintBarsNow();
-   void StartMonitoring();
    void CreateIcon(int aquaOffset);
    wxFont GetFont();
 

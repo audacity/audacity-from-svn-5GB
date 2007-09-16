@@ -35,13 +35,21 @@
 //#define EXPERIMENTAL_THEMING
 //#define EXPERIMENTAL_THEME_PREFS
 
-// JKC July-2007: We're temporarily using EXPERIMENTAL_MODULES to 
-// switch on all experimental features.
+// JKC July-2007: I'm temporarily using EXPERIMENTAL_MODULES to 
+// switch on all experimental features that I am interested in.  
+// I have it defined in the debug284 build of audacity.
 #ifdef EXPERIMENTAL_MODULES
+// These are all quite OK for Beta builds.
 #define EXPERIMENTAL_THEMING
 #define EXPERIMENTAL_THEME_PREFS
 #define EXPERIMENTAL_SMART_RECORD
 #endif
+
+//Next line enables Mic monitoring at times when it was previously off.
+//More work is needed as after recording or playing it results in an 
+//unwanted record-cursor on the wave track.
+//#define EXPERIMENTAL_EXTRA_MONITORING
+
 
 //#define EXPERIMENTAL_ROLL_UP_DIALOG
 //#define RIGHT_ALIGNED_TEXTBOXES

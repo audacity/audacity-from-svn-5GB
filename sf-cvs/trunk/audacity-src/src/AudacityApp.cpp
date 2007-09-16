@@ -71,6 +71,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "PlatformCompatibility.h"
 #include "FileNames.h"
 #include "AutoRecovery.h"
+#include "SplashDialog.h"
 
 #ifdef EXPERIMENTAL_MODULES
 #include "LoadModules.h"
@@ -756,6 +757,9 @@ bool AudacityApp::OnInit()
    }
 
    delete temporarywindow;
+   
+   if( project->mShowSplashScreen )
+      project->OnHelpWelcome();//ShowSplashScreen( project );
 
    //
    // Auto-recovery
@@ -768,6 +772,13 @@ bool AudacityApp::OnInit()
       DirManager::SetDontDeleteTempFiles();
       QuitAudacity(true);
    }
+
+   // JKC 10-Sep-2007: Enable monitoring from the start.
+   // (recommended by lprod.org).
+   // Monitoring stops again after any 
+   // PLAY or RECORD completes.  
+   // So we also call StartMonitoring when STOP is called.
+   project->MayStartMonitoring();
 
    mImporter = new Importer;
 

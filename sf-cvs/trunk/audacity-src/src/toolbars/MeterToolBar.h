@@ -38,6 +38,7 @@ class MeterToolBar:public ToolBar {
    virtual void EnableDisableButtons() {};
 
    void GetMeters(Meter **playMeter, Meter **recordMeter);
+   void StartMonitoring();
 
    virtual void OnSize(wxSizeEvent & event);
 

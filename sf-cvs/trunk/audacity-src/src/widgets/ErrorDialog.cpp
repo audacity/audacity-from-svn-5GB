@@ -25,6 +25,7 @@ Gives an Error message with an option for help.
 
 #include "LinkingHtmlWindow.h"
 #include "../ShuttleGui.h"
+#include "../HelpText.h"
 
 class ErrorDialog : public wxDialog
 {
@@ -117,6 +118,29 @@ void ErrorDialog::OnOk(wxCommandEvent &event)
 
 void ErrorDialog::OnHelp(wxCommandEvent &event)
 {
+   if( dhelpURL.StartsWith("innerlink:") )
+   {
+      wxDialog Dlg(this, -1, _NoAcc(TitleText(dhelpURL.Mid( 10 )) ),
+               wxDefaultPosition, wxDefaultSize);
+      ShuttleGui S( &Dlg, eIsCreating );
+      S.StartVerticalLay();
+      {
+         wxHtmlWindow *html = new LinkingHtmlWindow(&Dlg, -1,
+                                            wxDefaultPosition,
+                                            wxSize(480, 240),
+                                            wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
+         html->SetPage( HelpText( dhelpURL.Mid( 10 )));
+
+         S.Prop(1).AddWindow( html, wxEXPAND );
+         S.Id( wxID_OK).AddButton( _("Close") );
+      }
+      S.EndVerticalLay();
+      Dlg.Fit();
+      Dlg.Centre();
+      Dlg.ShowModal();
+      return;
+   }
+
 #if defined(__WXMSW__) || defined(__WXMAC__)
    OpenInDefaultBrowser(dhelpURL);
 #else

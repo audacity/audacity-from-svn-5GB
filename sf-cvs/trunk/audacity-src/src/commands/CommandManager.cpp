@@ -743,8 +743,16 @@ bool CommandManager::HandleCommandEntry(CommandListEntry * entry, wxUint32 flags
 
    wxUint32 combinedMask = (mask & entry->mask);
    if (combinedMask) {
-      bool allowed = ((flags & combinedMask) ==
-                      (entry->flags & combinedMask));
+
+      AudacityProject * proj;
+      proj = GetActiveProject();
+      wxASSERT( proj );
+      if( !proj )
+         return false;     
+
+      // NB: The call may have the side effect of changing flags.
+      bool allowed = proj->TryToMakeActionAllowed( flags, entry->flags, combinedMask );
+
       if (!allowed)
       {
          TellUserWhyDisallowed( 
