@@ -74,13 +74,13 @@ void SplashDialog::Populate( ShuttleGui & S )
                                          wxDefaultPosition,
                                          wxSize(480, 240),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
-   html->SetPage(HelpText( "welcome" ));
+   html->SetPage(HelpText( wxT("welcome") ));
    S.Prop(1).AddWindow( html, wxEXPAND );
    S.Prop(0).StartMultiColumn(2, wxEXPAND);
    S.SetStretchyCol( 1 );// Column 1 is stretchy...
    {
       S.SetBorder( 5 );
-      S.Id( DontShowID).AddCheckBox( "Don't show this again at start up", bShow ? "false" : "true" );
+      S.Id( DontShowID).AddCheckBox( _("Don't show this again at start up"), bShow ? wxT("false") : wxT("true") );
       wxButton *ok = new wxButton(S.GetParent(), wxID_OK, _("Audacious!"));
       ok->SetDefault();
       ok->SetFocus();
