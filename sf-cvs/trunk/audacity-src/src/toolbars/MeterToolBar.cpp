@@ -173,6 +173,15 @@ void MeterToolBar::GetMeters(Meter **playMeter, Meter **recordMeter)
    *recordMeter = mRecordMeter;
 }
 
+void MeterToolBar::StartMonitoring()
+{
+   wxASSERT( mRecordMeter );
+   mRecordMeter->StartMonitoring();
+   //wxASSERT( mPlayMeter );
+   //mPlayMeter->StartMonitoring();
+
+}
+
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //

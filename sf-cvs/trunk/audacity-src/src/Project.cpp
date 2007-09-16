@@ -775,13 +775,19 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
 AudacityProject::~AudacityProject()
 {
+   // JKC: this rather odd looking call gets rid of any window disabler
+   // that would otherwise be a memory leak.
+   SetEnabledWindow( this );
 }
 
 void AudacityProject::UpdateGuiPrefs()
 {
    gPrefs->Read(wxT("/GUI/EmptyCanBeDirty"), &mEmptyCanBeDirty, true );
+//   gPrefs->Read(wxT("/GUI/UpdateSpectrogram"), &mViewInfo.bUpdateSpectrogram, true);
    gPrefs->Read(wxT("/GUI/AutoScroll"), &mViewInfo.bUpdateTrackIndicator, true);
    gPrefs->Read(wxT("/GUI/TracksFitVerticallyZoomed"), &mTracksFitVerticallyZoomed, false);
+   gPrefs->Read(wxT("/GUI/SelectAllOnNone"), &mSelectAllOnNone, true);
+   gPrefs->Read(wxT("/GUI/ShowSplashScreen"), &mShowSplashScreen, true);
 }
 
 void AudacityProject::UpdateBatchPrefs()
@@ -1345,8 +1351,37 @@ void AudacityProject::OnMenuEvent(wxMenuEvent & event)
    }
 }
 
+/// Determines if flags for command are compatible with current state.
+/// If not, then try some recovery action to make it so.
+/// @return whether compatible or not after any actions taken.
+bool AudacityProject::TryToMakeActionAllowed( wxUint32 & flags, wxUint32 flagsRqd, wxUint32 mask )
+{
+   bool bAllowed;
+   
+   bAllowed = ((flags & mask) == (flagsRqd & mask));
+   if( bAllowed )
+      return true;
+   
+   // Action is not allowed 
+   // IF not set up to select all audio in that case, THEN return with failure.
+   if( !mSelectAllOnNone )
+      return false;
+
+   wxUint32 MissingFlags = (flags & ~flagsRqd) & mask;
+
+   // IF selecting all audio won't do any good, THEN return with failure.
+   if( (MissingFlags & ~( TimeSelectedFlag | WaveTracksSelectedFlag))!=0)
+      return false;
+
+   OnSelectAll();
+   flags = GetUpdateFlags();
+   bAllowed = ((flags & mask) == (flagsRqd & mask));
+   return bAllowed;
+}
+
 void AudacityProject::OnMenu(wxCommandEvent & event)
 {
+
    bool handled = mCommandManager.HandleMenuID(event.GetId(),
                                                GetUpdateFlags(),
                                                0xFFFFFFFF);
@@ -2088,12 +2123,23 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
    // Specifically detect older versions of Audacity
    if (fileVersion < wxT(AUDACITY_FILE_FORMAT_VERSION)) {
       wxString msg;
-      msg.Printf(_("This file was saved by Audacity %s and the format\nhas changed.  This version of Audacity can try to\nopen it, but there may be problems.  You should back up\nyour project first, to be safe.\n\nWould you like to open this file right now anyway?"),
+      int icon_choice = wxICON_EXCLAMATION;
+      if(fileVersion < wxT("1.1.9" ))
+      {
+         msg.Printf(_("This file was saved by Audacity %s, a much\nolder version of Audacity.  The format has changed.\nAudacity will probably destroy the file in trying\nto open it.  You must back up your project\nfirst, to be safe.\n\nWould you like to try to open this file\nright now anyway?"),
                  audacityVersion.c_str());
+         // Stop icon, and choose 'NO' by default.
+         icon_choice = wxICON_STOP | wxNO_DEFAULT;
+      }
+      else
+      {
+         msg.Printf(_("This file was saved by Audacity %s and the format\nhas changed.  This version of Audacity can try to\nopen it, but there may be problems.  You should back up\nyour project first, to be safe.\n\nAfter you save the file with this version of Audacity,\nyou will not be able to open the file in the older\nversion anymore.  Would you like to open\nthis file right now anyway?"),
+                 audacityVersion.c_str());
+      }
       int action;
       action = wxMessageBox(msg,
                             _("Opening old project file"),
-                            wxYES_NO | wxICON_EXCLAMATION | wxCENTRE,
+                            wxYES_NO | icon_choice | wxCENTRE,
                             this);
       if (action == wxNO)
          return false;
@@ -2529,8 +2575,13 @@ void AudacityProject::Import(wxString fileName)
                    _("Error importing"),
                    wxOK | wxCENTRE, this);
 #endif	   
+
+// Version that goes to internet...
+//	   ShowErrorDialog(this, _("Error importing"),
+//					  errorMessage, wxT("http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary"));	
+// Version that looks locally for the text.
 	   ShowErrorDialog(this, _("Error importing"),
-					  errorMessage, wxT("http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary"));	
+					  errorMessage, wxT("innerlink:wma-proprietary"));	
    }
    if( numTracks<=0)
       return;
@@ -3314,6 +3365,21 @@ void AudacityProject::AutoSave()
    mLastAutoSaveTime = wxGetLocalTime();
 }
 
+void AudacityProject::MayStartMonitoring()
+{
+#ifdef EXPERIMENTAL_EXTRA_MONITORING
+   bool bAlwaysMonitor;
+   gPrefs->Read( "GUI/AlwaysMonitor", &bAlwaysMonitor, true );
+   if( !bAlwaysMonitor )
+      return;
+
+   MeterToolBar * pToolBar = GetMeterToolBar();
+   if( pToolBar == NULL )
+      return;
+   pToolBar->StartMonitoring();
+#endif
+}
+
 void AudacityProject::OnAudioIORate(int rate)
 {
    mStatusBar->SetStatusText(wxString::Format(_("Actual Rate: %d"),
@@ -3358,6 +3424,32 @@ void AudacityProject::OnAudioIONewBlockFiles(const wxString& blockFileLog)
    }
 }
 
+// JKC: During progress reporting we want to disable 
+// everything but the progress dialog.
+// Normally we'd use a ShowModal(), but we can't do that
+// because of Jaws screen reader.
+// So we explicitly disable all windows apart from the
+// progress dialog using a wxWindowDisabler.
+void AudacityProject::SetEnabledWindow( wxWindow * pWindow)
+{
+   static wxWindowDisabler * pDisabler=NULL;
+
+   // If we're already disabling some windows, then get rid of the disabler.
+   if( pDisabler != NULL )
+   {
+      delete pDisabler;
+      pDisabler = NULL;
+   }
+
+   // If the project window is to be enabled, then we don't disable 
+   // anything.
+   if( pWindow == this )
+      return;
+
+   // Disable all windows except pWindow.
+   pDisabler = new wxWindowDisabler( pWindow );
+}
+
 // LLL: There is an issue between the Jaws screen reader and the wxWidgets accessibility
 //      support.  When a wxGuage is displayed, Jaws will monitor its progress by querying
 //      the current value.  But, because it doesn't necessarily know when the control
@@ -3385,7 +3477,15 @@ void AudacityProject::ProgressShow(const wxString &title, const wxString &messag
 
    wxStartTimer();
    wxBeginBusyCursor();
-   wxSafeYield(this, true);
+
+   // All new actions should be forbidden.
+   // We don't yet have a progress dialog.
+   // So NO windows are enabled.
+   SetEnabledWindow( NULL );
+
+   // This is legacy and seems not to be needed at all.
+   // It only disables windows for a moment.
+   // wxSafeYield(this, true);
 }
    
 void AudacityProject::ProgressHide()
@@ -3397,6 +3497,9 @@ void AudacityProject::ProgressHide()
    if (wxIsBusy()) {
       wxEndBusyCursor();
    }
+
+   // Enabling the project window enables all windows again.
+   SetEnabledWindow( this );
 }
 
 bool AudacityProject::ProgressUpdate(int value, const wxString &message)
@@ -3411,6 +3514,11 @@ bool AudacityProject::ProgressUpdate(int value, const wxString &message)
                               wxPD_ELAPSED_TIME |
                               wxPD_REMAINING_TIME |
                               wxPD_AUTO_HIDE);
+
+      // We've just created the progress dialog.
+      // We want to be able to click its cancel button
+      // So we enable it, whilst disabling everything else.
+      SetEnabledWindow( mProgressDialog[mProgressCurrent] );
    }
 
    if (mProgressDialog[mProgressCurrent]) {

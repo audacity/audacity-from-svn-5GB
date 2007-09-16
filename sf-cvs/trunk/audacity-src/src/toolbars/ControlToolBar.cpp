@@ -660,6 +660,12 @@ void ControlToolBar::StopPlaying()
    ClearCutPreviewTracks();
 
    mBusyProject = NULL;
+
+   // So that we continue monitoring after playing or recording.
+   AudacityProject *project = GetActiveProject();
+   if( project )
+      project->MayStartMonitoring();
+
 }
 
 void ControlToolBar::OnBatch(wxCommandEvent &evt)

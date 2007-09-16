@@ -63,6 +63,11 @@
 #include "ladspa/LoadLadspa.h"
 #endif
 
+#ifdef USE_VAMP
+#include "vamp/LoadVamp.h"
+#endif
+
+
 void LoadEffects()
 {
    // Generate menu
@@ -124,6 +129,11 @@ void LoadEffects()
 #ifdef USE_AUDIO_UNITS
    LoadAudioUnits();
 #endif
+
+#ifdef USE_VAMP
+   LoadVampPlugins();
+#endif
+
 }
 
 void UnloadEffects()

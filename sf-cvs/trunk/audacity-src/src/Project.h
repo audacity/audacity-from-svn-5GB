@@ -172,6 +172,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    CommandManager *GetCommandManager() { return &mCommandManager; }
 
    void RebuildMenuBar();
+   void MayStartMonitoring();
 
  public:
 
@@ -296,10 +297,15 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    virtual void OnAudioIONewBlockFiles(const wxString& blockFileLog);
 
    // Progress dialog methods
+   void SetEnabledWindow( wxWindow * pWindow);
    void ProgressShow(const wxString &title, const wxString &message = wxT(""));
    void ProgressHide();
    bool ProgressUpdate(int value, const wxString &message = wxT(""));
    bool ProgressIsShown();
+
+   // Command Handling
+   bool TryToMakeActionAllowed( wxUint32 & flags, wxUint32 flagsRqd, wxUint32 mask );
+
 
  private:
 
@@ -392,6 +398,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
 
  public:
    ToolManager *mToolManager;
+   bool mShowSplashScreen;
 
  private:
    int  mAudioIOToken;
@@ -402,7 +409,8 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    bool mCleanSpeechMode;  //lda
    bool mShowId3Dialog; //lda
    bool mEmptyCanBeDirty;
-   
+   bool mSelectAllOnNone;
+
    bool mLockPlayRegion;
 
    wxWindow *mKeyboardCaptured;

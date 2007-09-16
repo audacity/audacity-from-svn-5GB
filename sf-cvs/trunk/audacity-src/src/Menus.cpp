@@ -89,6 +89,7 @@ simplifies construction of menu items.
 #include "LabelDialog.h"
 
 #include "FileDialog.h"
+#include "SplashDialog.h"
 
 enum {
    kAlignZero=0,
@@ -726,11 +727,16 @@ void AudacityProject::CreateMenusAndCommands()
    else
       c->AddItem(wxT("About"),          _("&About Audacity..."),          FN(OnAbout));
 
+   c->AddItem(wxT("Welcome"),          _("&Start Up Message..."),          FN(OnHelpWelcome));
+
+
 #if 1 // Debugging tools are enabled in unstable builds
    if( !mCleanSpeechMode )
    {
+#ifdef __WXDEBUG__
       c->AddSeparator();   
       c->AddItem(wxT("Screenshot"),     _("&Screenshot Tools..."),        FN(OnScreenshot));
+#endif
       c->AddSeparator();   
       c->AddItem(wxT("Benchmark"),      _("&Run Benchmark..."),           FN(OnBenchmark));
       c->AddSeparator();   
@@ -1127,14 +1133,17 @@ void AudacityProject::UpdateMenus()
    // Return from this function if nothing's changed since
    // the last time we were here.
    wxUint32 flags = GetUpdateFlags();
+
+   // JKC change to grey out effects less often...
+   if( mSelectAllOnNone )
+      flags |= /*AudioIONotBusyFlag |*/ TimeSelectedFlag | WaveTracksSelectedFlag;
+
    if (flags == mLastFlags)
       return;
 
    mLastFlags = flags;
-   //mCommandManager.EnableUsingFlags(flags, 0xFFFFFFFF);
-   // JKC change to grey out effects less often...
-   mCommandManager.EnableUsingFlags(flags | AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
-      0xFFFFFFFF);
+
+   mCommandManager.EnableUsingFlags(flags , 0xFFFFFFFF);
    if (flags & CutCopyAvailableFlag) {
       mCommandManager.Enable(wxT("Copy"), true);
       mCommandManager.Enable(wxT("Cut"), true);
@@ -4228,6 +4237,12 @@ void AudacityProject::OnRemoveTracks()
 void AudacityProject::OnAbout()
 {
    AboutDialog dlog(this);
+   dlog.ShowModal();
+}
+
+void AudacityProject::OnHelpWelcome()
+{
+   SplashDialog dlog(this);
    dlog.ShowModal();
 }
 
