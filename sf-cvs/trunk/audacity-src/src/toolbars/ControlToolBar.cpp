@@ -687,7 +687,7 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       size_t numProjects = gAudacityProjects.Count();
       bool tracks = (p && !p->GetTracks()->IsEmpty());
       if (tracks || (numProjects > 1)) {
-         wxMessageBox(_("CleanSpeech only allows recording mono tracks.\nRecording is not possible when more than one window is open."),
+         wxMessageBox(_("Recording in CleanSpeech mode is not possible when a track, or more than one project, is already open."),
             _("Recording not permitted"),
             wxOK | wxICON_INFORMATION,
             this);
