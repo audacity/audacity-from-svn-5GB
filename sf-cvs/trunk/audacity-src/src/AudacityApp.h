@@ -146,6 +146,9 @@ class AudacityApp:public wxApp {
    bool InitTempDir();
    bool CreateSingleInstanceChecker(wxString dir);
 
+   /* utility method for printing the command line help message */
+   void PrintCommandLineHelp(void);
+
 //LDA - Until we have a better way to save/restore binary data.
 //      ToDo: ... look into how wxConfig works.
 //      ToDo: NoiseGate is an array of 1024 floats that is the "persistent result" 
