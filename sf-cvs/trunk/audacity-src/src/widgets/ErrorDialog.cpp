@@ -26,6 +26,7 @@ Gives an Error message with an option for help.
 #include "LinkingHtmlWindow.h"
 #include "../ShuttleGui.h"
 #include "../HelpText.h"
+#include "../Internat.h"
 
 class ErrorDialog : public wxDialog
 {
