@@ -40,7 +40,7 @@ wxString Link( const wxString &Key, const wxString& Text )
 wxString WikiLink( const wxString& Text )
 {
    return wxString(wxT("")) +
-      wxT("<a href='http://www.audacityteam.org/index.php?") +
+      wxT("<a href='http://www.audacityteam.org/wiki/index.php?title=") +
       Text + 
       wxT("'>") + 
       Text +
@@ -119,10 +119,10 @@ _("Welcome to Audacity.")
       return WrapText(
 wxString(wxT(""))+
 _("You can import files into Audacity by dragging them in, or use the File > ")+
-_("Import > Audio command. File > Open does the same, but opens a new ")+
-_("Audacity window. These are the main formats Audacity will import for ")+
+_("Import > Audio command.<br><br>File > Open does the same, but opens a new ")+
+_("Audacity window.<br><br>These are the main formats Audacity will import for ")+
 _("you: AIFF, AU, FLAC, [M4A (only on a Mac)], MP2/MP3, OGG Vorbis, WAV. ")+
-_("If your file is in some other format see (format help). If you want to import an ")+
+_("If your file is in some other format see (format help).<br><br>If you want to import an ")+
 _("audio CD, see ")+ WikiLink( wxT("how to import CDs")) + _(". To start playing your imported audio, ")+
 _("press the green Play button. ")+
 wxT("<br><br>")+
