@@ -1370,6 +1370,8 @@ bool AudacityProject::TryToMakeActionAllowed( wxUint32 & flags, wxUint32 flagsRq
    wxUint32 MissingFlags = (flags & ~flagsRqd) & mask;
 
    // IF selecting all audio won't do any good, THEN return with failure.
+   if( (flags & WaveTracksExistFlag) == 0 )
+      return false;
    if( (MissingFlags & ~( TimeSelectedFlag | WaveTracksSelectedFlag))!=0)
       return false;
 

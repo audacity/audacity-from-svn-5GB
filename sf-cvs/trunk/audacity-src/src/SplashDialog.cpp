@@ -55,7 +55,7 @@ IMPLEMENT_CLASS(SplashDialog, wxDialog)
 
 SplashDialog::SplashDialog(wxWindow * parent)
    :  wxDialog(parent, -1, _NoAcc("&Welcome!"),
-               wxDefaultPosition, wxDefaultSize)
+               wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
    this->SetBackgroundColour(theTheme.Colour( clrAboutBoxBackground ));
    ShuttleGui S( this, eIsCreating );
@@ -72,8 +72,8 @@ void SplashDialog::Populate( ShuttleGui & S )
    S.StartVerticalLay(1);
    wxHtmlWindow *html = new LinkingHtmlWindow(S.GetParent(), -1,
                                          wxDefaultPosition,
-                                         wxSize(480, 240),
-                                         wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
+                                         wxSize(480, 300),
+                                         wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER );
    html->SetPage(HelpText( wxT("welcome") ));
    S.Prop(1).AddWindow( html, wxEXPAND );
    S.Prop(0).StartMultiColumn(2, wxEXPAND);
@@ -107,12 +107,14 @@ void SplashDialog::OnOK(wxCommandEvent & WXUNUSED(event))
 }
 
 
+#if 0
 void ShowSplashScreen( AudacityProject * pProj )
 {
 
    SplashDialog dlog(pProj);
    dlog.ShowModal();
 }
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

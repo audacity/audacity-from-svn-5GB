@@ -1039,6 +1039,7 @@ wxUint32 AudacityProject::GetUpdateFlags()
          }
       }
       else if (t->GetKind() == Track::Wave) {
+         flags |= WaveTracksExistFlag;
          if (t->GetSelected()) {
             flags |= TracksSelectedFlag;
             if (t->GetLinked()) {
@@ -1135,7 +1136,7 @@ void AudacityProject::UpdateMenus()
    wxUint32 flags = GetUpdateFlags();
 
    // JKC change to grey out effects less often...
-   if( mSelectAllOnNone )
+   if( mSelectAllOnNone && ((flags & WaveTracksExistFlag) != 0 ))
       flags |= /*AudioIONotBusyFlag |*/ TimeSelectedFlag | WaveTracksSelectedFlag;
 
    if (flags == mLastFlags)

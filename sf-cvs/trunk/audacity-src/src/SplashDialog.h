@@ -36,7 +36,7 @@ private:
 
 };
 
-void ShowSplashScreen( AudacityProject * pProj );
+//void ShowSplashScreen( AudacityProject * pProj );
 
 #endif
 
