@@ -12,13 +12,15 @@
 \brief Given a key, returns some html.
 *//********************************************************************/
 
+#include <wx/string.h>
+#include <wx/intl.h>
 
 #include "Audacity.h"
 #include "HelpText.h"
 
 wxString WrapText( const wxString & Text )
 {
-   return wxString("")+
+   return wxString(wxT(""))+
       wxT("<html><head></head>") + 
       wxT("<body bgcolor=\"#ffffff\">") + 
       wxT("<p>") + Text +
@@ -27,7 +29,7 @@ wxString WrapText( const wxString & Text )
 
 wxString Link( const wxString &Key, const wxString& Text )
 {
-   return wxString("") +
+   return wxString(wxT("")) +
       wxT("<a href='innerlink:") +
       Key + 
       wxT("'>") + 
@@ -37,7 +39,7 @@ wxString Link( const wxString &Key, const wxString& Text )
 
 wxString WikiLink( const wxString& Text )
 {
-   return wxString("") +
+   return wxString(wxT("")) +
       wxT("<a href='http://www.audacityteam.org/index.php?") +
       Text + 
       wxT("'>") + 
@@ -47,34 +49,34 @@ wxString WikiLink( const wxString& Text )
 
 wxString ToWelcome( )
 {
-   return wxString("") +
+   return wxString(wxT("")) +
 _("Back to ") + Link( wxT("welcome"), _("Welcome") ) + _(" page.");
 }
 
 wxString TitleText( const wxString & Key )
 {
-   if(Key=="welcome")
+   if(Key==wxT("welcome"))
    {
       return _("Welcome!");
    }
 
-   if(Key =="play" )
+   if(Key ==wxT("play") )
    {
       return _("Playing Audio");
    }
-   if((Key =="record" ) || (Key =="norecord" ))
+   if((Key ==wxT("record") ) || (Key ==wxT("norecord") ))
    {
       return _("Recording Audio");
    }
-   if((Key =="edit" ) || (Key=="grey"))
+   if((Key ==wxT("edit") ) || (Key==wxT("grey")))
    {
       return _("Greyed Out Items");
    }
-   if(Key =="export" )
+   if(Key ==wxT("export") )
    {
       return _("Export");
    }
-   if(Key =="wma-proprietary" )
+   if(Key ==wxT("wma-proprietary") )
    {
       return _("Supported Formats");
    }
@@ -83,10 +85,10 @@ wxString TitleText( const wxString & Key )
 
 wxString HelpTextBuiltIn( const wxString & Key )
 {
-   if(Key=="welcome")
+   if(Key==wxT("welcome"))
    {
       return WrapText( 
-wxString("") + 
+wxString(wxT("")) + 
 wxT("<p>") +
 _("Welcome to Audacity 1.4.0! Let's get started!") +
 wxT("<p>") +
@@ -112,10 +114,10 @@ _("Welcome to Audacity.")
          );
    }
 
-   if(Key =="play" )
+   if(Key ==wxT("play") )
    {
       return WrapText(
-wxString("")+
+wxString(wxT(""))+
 _("You can import files into Audacity by dragging them in, or use the File > ")+
 _("Import > Audio command. File > Open does the same, but opens a new ")+
 _("Audacity window. These are the main formats Audacity will import for ")+
@@ -127,10 +129,10 @@ wxT("<br><br>")+
 ToWelcome()
          );
    }
-   if((Key =="record" ) || (Key =="norecord" ))
+   if((Key ==wxT("record") ) || (Key ==wxT("norecord") ))
    {
       return WrapText(
-wxString("")+
+wxString(wxT(""))+
 _("To start recording, press the red Record button. Of course it's not quite ")+
 _("that easy. There are three crucial settings you need to make:" )+
 wxT("<br><br>")+
@@ -145,7 +147,7 @@ _("stereo mix]. [If you're on Vista, choose your source in the \"Recording ")+
 _("Device\" on the Audio I/O tab as above.] [Mac info]. Otherwise, choose ")+
 _("your input in the dropdown selector on the right of the Mixer Toolbar. ")+
 _("Note: many USB or Firewire devices won't have a choice of inputs, so ")+
-_("you can ignore this step – see the documentation for your device. ")+
+_("you can ignore this step - see the documentation for your device. ")+
 wxT("<br><br>")+
 _("(3) Input Volume: Before recording for real, make a test recording to set ")+
 _("the input level of your recording so that it's neither too soft or too loud. ")+
@@ -161,10 +163,10 @@ wxT("<br><br>")+
 ToWelcome()
          );
    }
-   if((Key =="edit" ) || (Key=="grey"))
+   if((Key ==wxT("edit") ) || (Key==wxT("grey")))
    {
       return WrapText(
-wxString("")+
+wxString(wxT(""))+
 _("Editing: Audacity is a powerful editor, so you'll want to see what it can do with ")+
 _("your imported file or recording.  The main commands you will use are under ")+
 _("the Edit menu (such as cut, copy and paste) and under the Effect menu (you ")+
@@ -178,27 +180,27 @@ _("(2) You'll see that on occasion some of the menus or buttons are greyed out o
 _("\"Disabled\", according to what you are trying to do. This is normal. For example ")+
 _("because you can't edit the audio while playing or recording, we grey out or ")+
 _("disable commands until you press Stop.  Commands can sometimes be greyed ")+
-_("out or disabled for other reasons  – for example you can't run effects until ")+ 
+_("out or disabled for other reasons - for example you can't run effects until ")+ 
 _("you have audio on the screen, and you obviously cannot paste audio until you've ")+
 _("cut or copied it to Audacity's clipboard. ")+
 wxT("<br><br>")+
 ToWelcome()
          );
    }
-   if(Key =="export" )
+   if(Key ==wxT("export") )
    {
       return WrapText(
-         wxString("") + 
+         wxString(wxT(""))+ 
 // FIX-ME: We need some text here!
 _("Text about exporting still to be written...")+
 wxT("<br><br>")+
 ToWelcome()
          );
    }
-   if(Key =="wma-proprietary" )
+   if(Key ==wxT("wma-proprietary") )
    {
       return WrapText(
-         wxString("")+
+         wxString(wxT(""))+
 
 #ifdef EXACTLY_AS_IN_FAQ
 _("<h2>Can Audacity import file formats like WMA, AAC, FLAC, etc.?</h2> ") +
@@ -246,7 +248,7 @@ _("<a href=\"http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary\
 #endif
          );
    }
-   return "";
+   return wxT("");
 }
 
 wxString HelpText( const wxString & Key )
