@@ -344,6 +344,7 @@ public:
 #endif
 
 IMPLEMENT_APP(AudacityApp)
+/* make the application class known to wxWidgets for dynamic construction */
 
 #ifdef __WXMAC__
 
@@ -795,25 +796,8 @@ bool AudacityApp::OnInit()
             continue;
          bool handled = false;
 
-// JKC: In order to have long strings that span multiple lines,
-// and for this to work with i18n, use the magic formula
-// of wrapping continuations with wxT() but not the first
-// part of the string.
-// Why does it work?  Because in unicode _(s) and wxT(s) both
-// prepend an L to s.  That's why you don't want a wxT on the 
-// first string.
-
          if (!wxString(wxT("-help")).CmpNoCase(argv[option])) {
-            wxPrintf(/* i18n-hint: '-help', '-version', '-test' and
-                      '-blocksize' need to stay in English. */
-                   _(
-                    "Command-line options supported:\n"
-                    wxT("  -help (this message)\n")
-                    wxT("  -version (display Audacity version)\n")
-                    wxT("  -test (run self diagnostics)\n")
-                    wxT("  -blocksize ### (set max disk block size in bytes)\n\n")
-                    wxT("In addition, specify the name of an audio file or Audacity project\n")
-                    wxT("to open it.\n\n")));
+            PrintCommandLineHelp(); // print the help message out
             exit(0);
          }
 
@@ -890,15 +874,7 @@ bool AudacityApp::OnInit()
          wxString fileToOpen;
 			
          if (!wxString(wxT("-help")).CmpNoCase(argv[option])) {
-            wxPrintf(/* i18n-hint: '-help', '-test' and
-                      '-blocksize' need to stay in English. */
-                   _("Command-line options supported:\n"
-                     "  -help (this message)\n"
-                     "  -test (run self diagnostics)\n"
-                     "  -blocksize ### (set max disk block size in bytes)\n"
-                     "\n"
-                     "In addition, specify the name of an audio file or "
-                     "Audacity project\n" "to open it.\n" "\n"));
+            PrintCommandLineHelp(); // print the help message out
             exit(0);
          }
 
@@ -1144,6 +1120,28 @@ bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
 #endif
 
    return true;
+}
+
+void  AudacityApp::PrintCommandLineHelp(void)
+{
+            wxPrintf(wxT("%s\n%s\n%s\n%s\n%s\n\n%s\n"),
+                   _("Command-line options supported:"),
+                   /*i18n-hint: '-help' is the option and needs to stay in
+                    * English. This displays a list of available options */
+                   _("\t-help (this message)"),
+                   /*i18n-hint '-version' needs to stay in English. */
+                   _("\t-version (display Audacity version)"),
+                   /*i18n-hint '-test' is the option and needs to stay in
+                    * English. This runs a set of automatic tests on audacity
+                    * itself */
+                   _("\t-test (run self diagnostics)"),
+                   /*i18n-hint '-blocksize' is the option and needs to stay in
+                    * English. 'nnn' is any integer number. This controls the
+                    * size pieces that audacity uses when writing files to the
+                    * disk */
+                   _("\t-blocksize nnn (set max disk block size in bytes)"),
+                   _("In addition, specify the name of an audio file or Audacity project to open it."));
+
 }
 
 // static
