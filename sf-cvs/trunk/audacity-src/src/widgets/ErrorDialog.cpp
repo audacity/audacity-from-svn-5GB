@@ -121,7 +121,7 @@ void ErrorDialog::OnHelp(wxCommandEvent &event)
 {
    if( dhelpURL.StartsWith(wxT("innerlink:")) )
    {
-      wxDialog Dlg(this, -1, _NoAcc(TitleText(dhelpURL.Mid( 10 )) ),
+      wxDialog Dlg(this, -1, TitleText(dhelpURL.Mid( 10 ) ),
                wxDefaultPosition, wxDefaultSize);
       ShuttleGui S( &Dlg, eIsCreating );
       S.StartVerticalLay();
