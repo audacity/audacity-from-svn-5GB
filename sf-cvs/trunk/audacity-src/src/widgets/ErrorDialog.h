@@ -21,6 +21,19 @@ void ShowErrorDialog(wxWindow *parent,
                      const wxString &message, 
                      const wxString &helpURL);                  
 
+/// Displays a new window with wxHTML help.
+void ShowHtmlText( wxWindow * pParent, 
+                  const wxString &Title, 
+                  const wxString &HtmlText );
+
+/// Displays a file in your browser, if it's available locally,
+/// OR else links to the internet.
+void ShowHelpDialog(wxWindow *parent,
+                     const wxString &localFileName,
+                     const wxString &remoteURL);
+
+
+
 #endif // __AUDACITY_ERRORDIALOG__
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

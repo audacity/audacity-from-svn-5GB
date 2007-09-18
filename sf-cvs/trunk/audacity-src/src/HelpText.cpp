@@ -80,6 +80,10 @@ wxString TitleText( const wxString & Key )
    {
       return _("Supported Formats");
    }
+   if(Key ==  wxT("remotehelp") )
+   {
+      return _("No Local Help");
+   }
    return Key;
 }
 
@@ -202,35 +206,6 @@ ToWelcome()
       return WrapText(
          wxString(wxT(""))+
 
-#ifdef EXACTLY_AS_IN_FAQ
-_("<h2>Can Audacity import file formats like WMA, AAC, FLAC, etc.?</h2> ") +
-_("<p>Audacity <b>cannot</b> import or export files in ") +
-_("<b>WMA, AAC, RealAudio, Shorten (SHN)</b>, ") +
-_("or most other proprietary formats, or any kind of Digital Rights ") +
-_("Management (DRM) protected file, including many purchased online such ") +
-_("as on iTunes or Napster. Because of licensing and patent restrictions, ") +
-_("we are not allowed to add these formats to Audacity. Future versions of ") +
-_("Audacity might be able to support these formats using codecs installed ") +
-_("in your operating system.</p> ") +
-_("<p>Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> ") +
-_("and <b>FLAC</b>.  We hope to support these formats in future versions of Audacity.</p> ") +
-_("<p>Audacity can currently import WAV, AIFF, AU, MP2/MP3 and OGG Vorbis ") +
-_("files. If you cannot import your file into Audacity, you can as a ") +
-_("workround convert it to WAV or AIFF. As long as it's not a ") +
-_("DRM-protected file, you could do this with iTunes® or with ") +
-_("<a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> ") +
-_("player. If it's a DRM-protected file, you can burn it to an audio CD in ") +
-_("the application that is licensed to play it, then extract (rip) the CD ") +
-_("track to WAV or AIFF. On Windows, you can use Windows Media Player 11, ") +
-_("iTunes, or <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> to ") +
-_("extract to WAV. Or you can play the file on your computer and record it – ") +
-_("see <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\"> ") +
-_("Can Audacity record RealAudio or other streaming audio?</a>.</p> ") +
-_("<p>For more detail on supported formats, see the ") +
-_("<a href=\"http://audacity.sourceforge.net/about/features\">feature list</a>.</p> ") +
-_("<p>See also: <a href=\"http://audacity.sourceforge.net/help/faq?s=files&amp;i=midi\"> ") +
-_("Why can't I play MIDI files?</a></p>")
-#else
 _("<p>Audacity can currently import WAV, AIFF, AU, MP2/MP3 and OGG Vorbis ") +
 _("files.") +
 _("<p>Audacity <b>cannot</b> import or export files in ") +
@@ -245,7 +220,17 @@ _("<p>Some open formats are not yet supported by Audacity, including <b>Ogg Spee
 _("and <b>FLAC</b>.") +
 _("<p>More information is available on line ") +
 _("<a href=\"http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary\">here</a> ")
-#endif
+         );
+   }
+   if(Key ==  wxT("remotehelp") )
+   {
+// *URL* will be replaced by whatever URL we are looking for.
+      return WrapText(
+         wxString(wxT(""))+
+_("<p>You don't appear to have Audacity help files on your machine. ") +
+_("You can download the help files and then access them from ") +
+_("Audacity or you can click <a href=\"*URL*\">here</a> to read ") +
+_("the help online.")
          );
    }
    return wxT("");

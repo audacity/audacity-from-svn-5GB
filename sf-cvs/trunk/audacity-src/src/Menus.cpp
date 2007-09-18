@@ -90,6 +90,7 @@ simplifies construction of menu items.
 
 #include "FileDialog.h"
 #include "SplashDialog.h"
+#include "widgets/ErrorDialog.h"
 
 enum {
    kAlignZero=0,
@@ -728,6 +729,7 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("About"),          _("&About Audacity..."),          FN(OnAbout));
 
    c->AddItem(wxT("Welcome"),          _("&Start Up Message..."),          FN(OnHelpWelcome));
+   c->AddItem(wxT("Help"),             _("&Index..."),                      FN(OnHelp));
 
 
 #if 1 // Debugging tools are enabled in unstable builds
@@ -4245,6 +4247,14 @@ void AudacityProject::OnHelpWelcome()
 {
    SplashDialog dlog(this);
    dlog.ShowModal();
+}
+
+void AudacityProject::OnHelp()
+{
+   ShowHelpDialog( 
+      this, 
+      FileNames::HtmlHelpIndexFile(), 
+      wxT("http://audacity.sourceforge.net/help/documentation"  ));
 }
 
 void AudacityProject::OnBenchmark()
