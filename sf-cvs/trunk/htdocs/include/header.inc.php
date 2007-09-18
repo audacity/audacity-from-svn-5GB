@@ -26,9 +26,11 @@
 <img src="http://www.google.com/logos/Logo_25wht.gif" border="0" alt="Google" align="middle"></img></a>
 </td>
 <td nowrap="nowrap">
-<input type="hidden" name="domains" value="audacity.sourceforge.net"></input>
-<input type="text" name="q" size="31" maxlength="255" value=""></input>
-<input type="submit" name="sa" value="<?=_('Search')?>"></input>
+<input type="hidden" name="domains" value="audacity.sourceforge.net;audacityteam.org"></input>
+<label for="sbi" style="display: none">Enter your search terms</label>
+<input type="text" name="q" size="45" maxlength="255" value="" id="sbi"></input>
+<label for="sbb" style="display: none">Submit search form</label>
+<input type="submit" name="sa" value="Search" id="sbb"></input>
 </td></tr>
 <tr>
 <td>&nbsp;</td>
@@ -36,18 +38,18 @@
 <table>
 <tr>
 <td>
-<input type="radio" name="sitesearch" value=""></input>
-<font size="-1" color="#000000"><?=_('Web')?></font>
-</td>
+<input type="radio" name="sitesearch" value="audacity.sourceforge.net" checked id="ss1"></input>
+<label for="ss1" title="Search audacity.sourceforge.net"><font size="-1" color="#000000">audacity.sourceforge.net</font></label></td>
 <td>
-<input type="radio" name="sitesearch" value="audacity.sourceforge.net" checked="checked"></input>
-<font size="-1" color="#000000">audacity.sourceforge.net</font>
-</td>
+<input type="radio" name="sitesearch" value="audacityteam.org" id="ss2"></input>
+<label for="ss2" title="Search audacityteam.org"><font size="-1" color="#000000">audacityteam.org</font></label></td>
+<td>
+<input type="radio" name="sitesearch" value="" id="ss0"></input>
+<label for="ss0" title="Search the Web"><font size="-1" color="#000000">Web</font></label></td>
 </tr>
 </table>
 <input type="hidden" name="client" value="pub-2386514291404644"></input>
 <input type="hidden" name="forid" value="1"></input>
-<input type="hidden" name="channel" value="1707102428"></input>
 <input type="hidden" name="ie" value="ISO-8859-1"></input>
 <input type="hidden" name="oe" value="ISO-8859-1"></input>
 <input type="hidden" name="safe" value="active"></input>
