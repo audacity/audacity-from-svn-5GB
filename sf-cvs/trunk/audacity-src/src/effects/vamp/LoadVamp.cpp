@@ -8,9 +8,6 @@
 
 **********************************************************************/
 
-//#include <vamp-sdk/hostext/PluginLoader.h>
-#include "../../../lib-src/libvamp/vamp-sdk/hostext/PluginLoader.h"
-
 #include "VampEffect.h"
 
 #include <iostream>
