@@ -28,7 +28,7 @@
 <td nowrap="nowrap">
 <input type="hidden" name="domains" value="audacity.sourceforge.net;audacityteam.org"></input>
 <label for="sbi" style="display: none">Enter your search terms</label>
-<input type="text" name="q" size="45" maxlength="255" value="" id="sbi"></input>
+<input type="text" name="q" size="31" maxlength="255" value="" id="sbi"></input>
 <label for="sbb" style="display: none">Submit search form</label>
 <input type="submit" name="sa" value="Search" id="sbb"></input>
 </td></tr>
@@ -39,10 +39,10 @@
 <tr>
 <td>
 <input type="radio" name="sitesearch" value="audacity.sourceforge.net" checked id="ss1"></input>
-<label for="ss1" title="Search audacity.sourceforge.net"><font size="-1" color="#000000">audacity.sourceforge.net</font></label></td>
+<label for="ss1" title="Search audacity.sourceforge.net"><font size="-1" color="#000000">this site</font></label></td>
 <td>
 <input type="radio" name="sitesearch" value="audacityteam.org" id="ss2"></input>
-<label for="ss2" title="Search audacityteam.org"><font size="-1" color="#000000">audacityteam.org</font></label></td>
+<label for="ss2" title="Search audacityteam.org"><font size="-1" color="#000000">Wiki/Forum/Team site</font></label></td>
 <td>
 <input type="radio" name="sitesearch" value="" id="ss0"></input>
 <label for="ss0" title="Search the Web"><font size="-1" color="#000000">Web</font></label></td>
