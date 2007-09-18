@@ -137,7 +137,7 @@ AC_ARG_WITH(wx-version,
 
 AC_CONFIG_SUBDIRS([lib-src/FileDialog])
 
-LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBEXPAT LIBTWOLAME"
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME"
 
 AC_MSG_NOTICE([Determining what libraries are available in this tree and on the system])
 
@@ -151,6 +151,7 @@ AUDACITY_CHECKLIB_LIBFLAC
 AUDACITY_CHECKLIB_LIBID3TAG
 AUDACITY_CHECKLIB_LIBSOUNDTOUCH
 AUDACITY_CHECKLIB_LIBNYQUIST
+AUDACITY_CHECKLIB_LIBVAMP
 AUDACITY_CHECKLIB_LIBTWOLAME
 
 dnl Decide what libraries to build with, and whether to use system or local libraries
@@ -600,7 +601,8 @@ esac
 
 AC_CONFIG_FILES([Makefile src/Makefile lib-src/Makefile \
                  lib-src/allegro/Makefile lib-src/expat/Makefile \
-                 lib-src/libnyquist/Makefile lib-src/portaudio/pa_unix_oss/Makefile \
+                 lib-src/libnyquist/Makefile lib-src/libvamp/Makefile \
+                 lib-src/portaudio/pa_unix_oss/Makefile \
                  locale/Makefile tests/Makefile])
 
 AC_OUTPUT
