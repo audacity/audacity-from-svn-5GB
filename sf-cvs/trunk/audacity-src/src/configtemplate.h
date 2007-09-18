@@ -73,6 +73,9 @@
 /* Define if LADSPA plug-ins are enabled */
 #undef USE_LADSPA
 
+/* Define if VAMP plug-ins are enabled */
+#undef USE_VAMP
+
 /* Define if the FLAC library is present */
 #undef USE_LIBFLAC
 

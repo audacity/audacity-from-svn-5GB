@@ -691,6 +691,8 @@ LIBMAD_CFLAGS
 LIBMAD_LIBS
 SOUNDTOUCH_CFLAGS
 SOUNDTOUCH_LIBS
+VAMP_CFLAGS
+VAMP_LIBS
 WX_CONFIG
 build
 build_cpu
@@ -727,6 +729,8 @@ LIBMAD_CFLAGS
 LIBMAD_LIBS
 SOUNDTOUCH_CFLAGS
 SOUNDTOUCH_LIBS
+VAMP_CFLAGS
+VAMP_LIBS
 JACK_CFLAGS
 JACK_LIBS'
 ac_subdirs_all='lib-src/FileDialog
@@ -1314,6 +1318,7 @@ Optional Features:
   --enable-unicode        enable unicode support [default=no]
   --enable-debug          enable debug support [default=no]
   --enable-nyquist        enable Nyquist plug-in support [default=yes]
+  --enable-vamp           enable Vamp plug-in support [default=yes]
   --enable-ladspa         enable LADSPA plug-in support [default=yes]
   --enable-audiounits     enable audio unit plug-in support (Mac OS X only)
                           [default=auto]
@@ -1372,6 +1377,8 @@ Some influential environment variables:
               C compiler flags for SOUNDTOUCH, overriding pkg-config
   SOUNDTOUCH_LIBS
               linker flags for SOUNDTOUCH, overriding pkg-config
+  VAMP_CFLAGS C compiler flags for VAMP, overriding pkg-config
+  VAMP_LIBS   linker flags for VAMP, overriding pkg-config
   JACK_CFLAGS C compiler flags for JACK, overriding pkg-config
   JACK_LIBS   linker flags for JACK, overriding pkg-config
 
@@ -3979,7 +3986,7 @@ fi
 subdirs="$subdirs lib-src/FileDialog"
 
 
-LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBEXPAT LIBTWOLAME"
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME"
 
 { echo "$as_me:$LINENO: Determining what libraries are available in this tree and on the system" >&5
 echo "$as_me: Determining what libraries are available in this tree and on the system" >&6;}
@@ -5511,9 +5518,9 @@ _ACEOF
    fi
 
 
-# Check whether --with-flac was given.
-if test "${with_flac+set}" = set; then
-  withval=$with_flac; LIBFLAC_ARGUMENT=$withval
+# Check whether --with-libflac was given.
+if test "${with_libflac+set}" = set; then
+  withval=$with_libflac; LIBFLAC_ARGUMENT=$withval
 else
   LIBFLAC_ARGUMENT="unspecified"
 fi
@@ -6296,6 +6303,156 @@ echo "$as_me: nyquist libraries are available in the local tree" >&6;}
       { echo "$as_me:$LINENO: nyquist libraries are NOT available in the local tree" >&5
 echo "$as_me: nyquist libraries are NOT available in the local tree" >&6;}
    fi
+
+
+   # Check whether --enable-vamp was given.
+if test "${enable_vamp+set}" = set; then
+  enableval=$enable_vamp; LIBVAMP_ARGUMENT=$enableval
+else
+  LIBVAMP_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_VAMP 1
+_ACEOF
+
+   fi
+
+
+
+pkg_failed=no
+{ echo "$as_me:$LINENO: checking for VAMP" >&5
+echo $ECHO_N "checking for VAMP... $ECHO_C" >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$VAMP_CFLAGS"; then
+        pkg_cv_VAMP_CFLAGS="$VAMP_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"vamp-hostsdk >= 1.1.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "vamp-hostsdk >= 1.1.0") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_VAMP_CFLAGS=`$PKG_CONFIG --cflags "vamp-hostsdk >= 1.1.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$VAMP_LIBS"; then
+        pkg_cv_VAMP_LIBS="$VAMP_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"vamp-hostsdk >= 1.1.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "vamp-hostsdk >= 1.1.0") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_VAMP_LIBS=`$PKG_CONFIG --libs "vamp-hostsdk >= 1.1.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        VAMP_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "vamp-hostsdk >= 1.1.0"`
+        else
+	        VAMP_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "vamp-hostsdk >= 1.1.0"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$VAMP_PKG_ERRORS" >&5
+
+	{ echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+                vamp_available_system="no"
+elif test $pkg_failed = untried; then
+	vamp_available_system="no"
+else
+	VAMP_CFLAGS=$pkg_cv_VAMP_CFLAGS
+	VAMP_LIBS=$pkg_cv_VAMP_LIBS
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+	vamp_available_system="yes"
+fi
+
+   if test "x$vamp_available_system" = "xyes" ; then
+      LIBVAMP_SYSTEM_AVAILABLE="yes"
+      LIBVAMP_SYSTEM_LIBS=$VAMP_LIBS
+      LIBVAMP_SYSTEM_CXXFLAGS=$VAMP_CFLAGS
+      LIBVAMP_SYSTEM_CPPSYMBOLS="USE_VAMP"
+      LIBVAMP_LOCAL_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
+      { echo "$as_me:$LINENO: Vamp libraries are available as system libraries" >&5
+echo "$as_me: Vamp libraries are available as system libraries" >&6;}
+   else
+      LIBVAMP_SYSTEM_AVAILABLE="no"
+      { echo "$as_me:$LINENO: Vamp libraries are NOT available as system libraries" >&5
+echo "$as_me: Vamp libraries are NOT available as system libraries" >&6;}
+   fi
+
+
+   as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/libvamp/vamp-sdk/hostext/PluginLoader.h" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libvamp/vamp-sdk/hostext/PluginLoader.h" >&5
+echo $ECHO_N "checking for ${srcdir}/lib-src/libvamp/vamp-sdk/hostext/PluginLoader.h... $ECHO_C" >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libvamp/vamp-sdk/hostext/PluginLoader.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval echo '${'$as_ac_File'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_File'}'` = yes; then
+  vamp_h_found="yes"
+else
+  vamp_h_found="no"
+fi
+
+
+   if test "x$vamp_h_found" = "xyes" ; then
+      LIBVAMP_LOCAL_AVAILABLE="yes"
+      LIBVAMP_LOCAL_LIBS="libvamp-hostsdk.a"
+      LIBVAMP_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libvamp'
+      LIBVAMP_LOCAL_CPPSYMBOLS="USE_VAMP"
+      LIBVAMP_LOCAL_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
+
+      if test ! -f lib-src/libvamp/Makefile ; then
+         LIBVAMP_LOCAL_CONFIG_SUBDIRS="lib-src/libvamp"
+      fi
+      { echo "$as_me:$LINENO: Vamp libraries are available in the local tree" >&5
+echo "$as_me: Vamp libraries are available in the local tree" >&6;}
+   else
+      LIBVAMP_LOCAL_AVAILABLE="no"
+      { echo "$as_me:$LINENO: Vamp libraries are NOT available in the local tree" >&5
+echo "$as_me: Vamp libraries are NOT available in the local tree" >&6;}
+   fi
+
 
 
 
@@ -7595,7 +7752,7 @@ case "${host_os}" in
       ;;
 esac
 
-ac_config_files="$ac_config_files Makefile src/Makefile lib-src/Makefile lib-src/allegro/Makefile lib-src/expat/Makefile lib-src/libnyquist/Makefile lib-src/portaudio/pa_unix_oss/Makefile locale/Makefile tests/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile lib-src/Makefile lib-src/allegro/Makefile lib-src/expat/Makefile lib-src/libnyquist/Makefile lib-src/libvamp/Makefile lib-src/portaudio/pa_unix_oss/Makefile locale/Makefile tests/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -8159,6 +8316,7 @@ do
     "lib-src/allegro/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/allegro/Makefile" ;;
     "lib-src/expat/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/expat/Makefile" ;;
     "lib-src/libnyquist/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/libnyquist/Makefile" ;;
+    "lib-src/libvamp/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/libvamp/Makefile" ;;
     "lib-src/portaudio/pa_unix_oss/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/portaudio/pa_unix_oss/Makefile" ;;
     "locale/Makefile") CONFIG_FILES="$CONFIG_FILES locale/Makefile" ;;
     "tests/Makefile") CONFIG_FILES="$CONFIG_FILES tests/Makefile" ;;
@@ -8300,6 +8458,8 @@ LIBMAD_CFLAGS!$LIBMAD_CFLAGS$ac_delim
 LIBMAD_LIBS!$LIBMAD_LIBS$ac_delim
 SOUNDTOUCH_CFLAGS!$SOUNDTOUCH_CFLAGS$ac_delim
 SOUNDTOUCH_LIBS!$SOUNDTOUCH_LIBS$ac_delim
+VAMP_CFLAGS!$VAMP_CFLAGS$ac_delim
+VAMP_LIBS!$VAMP_LIBS$ac_delim
 WX_CONFIG!$WX_CONFIG$ac_delim
 build!$build$ac_delim
 build_cpu!$build_cpu$ac_delim
@@ -8315,7 +8475,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 90; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 92; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
