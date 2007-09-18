@@ -45,6 +45,8 @@ private:
    DECLARE_EVENT_TABLE()
 	   
 };
+void ShowHtmlInBrowser( const wxString &Url );
+
 
 BEGIN_EVENT_TABLE(ErrorDialog, wxDialog)
    EVT_BUTTON( wxID_OK, ErrorDialog::OnOk)
@@ -117,36 +119,48 @@ void ErrorDialog::OnOk(wxCommandEvent &event)
    EndModal(true);
 }
 
+void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &HtmlText )
+{
+   wxDialog Dlg(pParent, -1, Title, wxDefaultPosition, wxDefaultSize);
+   ShuttleGui S( &Dlg, eIsCreating );
+   S.StartVerticalLay();
+   {
+      wxHtmlWindow *html = new LinkingHtmlWindow(&Dlg, -1,
+                                         wxDefaultPosition,
+                                         wxSize(480, 240),
+                                         wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
+      html->SetPage( HtmlText);
+
+      S.Prop(1).AddWindow( html, wxEXPAND );
+      S.Id( wxID_OK).AddButton( _("Close") );
+   }
+   S.EndVerticalLay();
+   Dlg.Fit();
+   Dlg.Centre();
+   Dlg.ShowModal();
+   return;
+}
+
+void ShowHtmlInBrowser( const wxString &Url )
+{
+#if defined(__WXMSW__) || defined(__WXMAC__)
+   OpenInDefaultBrowser(Url);
+#else
+   wxLaunchDefaultBrowser(Url);
+#endif
+}
+
 void ErrorDialog::OnHelp(wxCommandEvent &event)
 {
    if( dhelpURL.StartsWith(wxT("innerlink:")) )
    {
-      wxDialog Dlg(this, -1, TitleText(dhelpURL.Mid( 10 ) ),
-               wxDefaultPosition, wxDefaultSize);
-      ShuttleGui S( &Dlg, eIsCreating );
-      S.StartVerticalLay();
-      {
-         wxHtmlWindow *html = new LinkingHtmlWindow(&Dlg, -1,
-                                            wxDefaultPosition,
-                                            wxSize(480, 240),
-                                            wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
-         html->SetPage( HelpText( dhelpURL.Mid( 10 )));
-
-         S.Prop(1).AddWindow( html, wxEXPAND );
-         S.Id( wxID_OK).AddButton( _("Close") );
-      }
-      S.EndVerticalLay();
-      Dlg.Fit();
-      Dlg.Centre();
-      Dlg.ShowModal();
+      ShowHtmlText(
+         this, 
+         TitleText(dhelpURL.Mid( 10 ) ),
+         HelpText( dhelpURL.Mid( 10 )) );
       return;
    }
-
-#if defined(__WXMSW__) || defined(__WXMAC__)
-   OpenInDefaultBrowser(dhelpURL);
-#else
-   wxLaunchDefaultBrowser(dhelpURL);
-#endif
+   ShowHtmlInBrowser( dhelpURL );
 	EndModal(true);
 }
 
@@ -158,6 +172,23 @@ void ShowErrorDialog(wxWindow *parent,
    ErrorDialog dlog(parent, dlogTitle, message, helpURL);
    dlog.CentreOnParent();
    dlog.ShowModal();
+}
+
+
+void ShowHelpDialog(wxWindow *parent,
+                     const wxString &localFileName,
+                     const wxString &remoteURL)
+{
+   if( wxFileExists( localFileName ))
+   {
+      ShowHtmlInBrowser( wxString(wxT("file:"))+localFileName );
+   }
+   else
+   {
+      wxString Text = HelpText( wxT("remotehelp") );
+      Text.Replace( wxT("*URL*"), remoteURL );
+      ShowHtmlText( parent, _("Help on the Internet"), Text );
+   }
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
