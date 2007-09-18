@@ -9,7 +9,7 @@ HOSTEXTDIR      = vamp-sdk/hostext
 EXAMPLEDIR	= examples
 HOSTDIR		= host
 
-CXX		= g++
+CXX		= @CXX@
 
 ###
 ### Start of user-serviceable parts
