@@ -144,8 +144,15 @@ bool EffectTruncSilence::Process()
    }
 
    // Set thresholds
+   // We have a lower bound on the amount of silence we chop out at a time
+   // to avoid chopping up low frequency sounds.  We're good down to 10Hz
+   // if we use 100ms.
+   const float minTruncMs = 100.0f;
    double truncDbSilenceThreshold = Enums::Db2Signal[mTruncDbChoiceIndex];
-   int truncLongestAllowedSilentSamples = int((mTruncLongestAllowedSilentMs * rate) / 1000.0);
+   int truncLongestAllowedSilentSamples = 
+      int((wxMax( mTruncLongestAllowedSilentMs, minTruncMs) * rate) / 1000.0);
+
+   
 
    // Figure out number of frames for ramping
    int quarterSecondFrames = int((rate * QUARTER_SECOND_MS) / 1000.0);
@@ -331,10 +338,11 @@ void TruncSilenceDialog::PopulateOrExchange(ShuttleGui & S)
    {
       wxArrayString choices(Enums::NumDbChoices, Enums::GetDbChoices());
 
-      S.TieTextBox(_("Max silence duration (milliseconds):\n"),
+      S.TieTextBox(_("Max silence duration:"),
                    mEffect->mTruncLongestAllowedSilentMs,
                    10);
-      S.AddUnits(_("(9999999 or greater is off)"));
+      S.AddUnits( _("milliseconds") );
+      //S.AddUnits(_("(9999999 or greater is off)"));
       S.TieChoice(_("Threshold for silence:"),
                   mEffect->mTruncDbChoiceIndex,
                   &choices);
