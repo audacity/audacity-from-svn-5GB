@@ -1180,18 +1180,48 @@ void AudioIO::StopStream()
       //
       // Offset all recorded tracks to account for latency
       //
-      double latencyCorrection = 0;
-      gPrefs->Read(wxT("/AudioIO/LatencyCorrection"), &latencyCorrection);
-      
       if( mCaptureTracks.GetCount() > 0 )
       {
+         //
+         // Note: Latency correction > 0 means there is more latency than
+         // expected. This means, more recorded audio must be thrown away
+         // to get it in sync with played back audio. Latency correction < 0
+         // means there is less latency than expected, this means, less
+         // recorded audio must be thrown away to get it in sync with played
+         // back audio.
+         //
+         // We also allow for the case of total latency being below zero, i.e.
+         // a negative latency. In this case, silence is inserted into the
+         // recorded track to bring it in sync with played back audio.
+         // However, it is unclear if there ever would be a technical reason
+         // for a negative latency.
+         //
+         // We also only apply latency correction when we actually played back
+         // tracks during the recording. If we did not play back tracks,
+         // there's nothing we could be out of sync with. This also covers the
+         // case that we do not apply latency correction when recording the
+         // first track in a project.
+         //
+         double latencyCorrection = 0;
+         gPrefs->Read(wxT("/AudioIO/LatencyCorrection"), &latencyCorrection);
+         
+         double recordingOffset =
+            mLastRecordingOffset - latencyCorrection / 1000.0;
+
          for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
             {
                delete mCaptureBuffers[i];
-               mCaptureTracks[i]->Flush();
-               mCaptureTracks[i]->Trim(mLastRecordingOffset +
-                                       latencyCorrection/1000.0,
-                                       mCaptureTracks[i]->GetEndTime());
+               
+               WaveTrack* track = mCaptureTracks[i];
+               track->Flush();
+               
+               if (mPlaybackTracks.GetCount() > 0)
+               {
+                  if (recordingOffset < 0)
+                     track->Clear(0, -recordingOffset);
+                  else
+                     track->InsertSilence(0, recordingOffset);
+               }
             }
          
          delete[] mCaptureBuffers;
