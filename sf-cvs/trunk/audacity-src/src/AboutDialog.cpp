@@ -201,6 +201,13 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
    # endif
    informationStr += wxT("<br>\n");
 
+   # if USE_VAMP
+   informationStr += wxT("Vamp") + enabled;
+   # else
+   informationStr += wxT("Vamp") + disabled;
+   # endif
+   informationStr += wxT("<br>\n");
+
    #if USE_LIBRESAMPLE
    informationStr += wxT("Libresample") + enabled;
    #elif USE_LIBSAMPLERATE
