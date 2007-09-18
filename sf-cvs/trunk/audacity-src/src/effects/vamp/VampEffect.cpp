@@ -13,12 +13,15 @@
 
 #include "VampEffect.h"
 
-//#include <vamp-sdk/Plugin.h>
-//#include <vamp-sdk/hostext/PluginChannelAdapter.h>
-//#include <vamp-sdk/hostext/PluginInputDomainAdapter.h>
+#ifdef _WIN32
 #include "../../../lib-src/libvamp/vamp-sdk/Plugin.h"
 #include "../../../lib-src/libvamp/vamp-sdk/hostext/PluginChannelAdapter.h"
 #include "../../../lib-src/libvamp/vamp-sdk/hostext/PluginInputDomainAdapter.h"
+#else
+#include <vamp-sdk/Plugin.h>
+#include <vamp-sdk/hostext/PluginChannelAdapter.h>
+#include <vamp-sdk/hostext/PluginInputDomainAdapter.h>
+#endif
 
 #include <wx/wxprec.h>
 #include <wx/button.h>
@@ -100,7 +103,7 @@ bool VampEffect::Init()
          WaveTrack *right = (WaveTrack *)iter.Next();
          
          if (left->GetRate() != right->GetRate()) {
-            wxMessageBox(_("Sorry, Vamp Plug-ins cannot be run on stereo tracks where the individual channels of he track do not match."));
+            wxMessageBox(_("Sorry, Vamp Plug-ins cannot be run on stereo tracks where the individual channels of the track do not match."));
             return false;
          }
       }
@@ -198,6 +201,14 @@ bool VampEffect::Process()
 
       bool initialiseRequired = true;
 
+      if (block == 0) {
+         if (step != 0) block = step;
+         else block = 1024;
+      }
+      if (step == 0) {
+         step = block;
+      }
+
       if (prevTrackChannels > 0) {
          // Plugin has already been initialised, so if the number of
          // channels remains the same, we only need to do a reset.
@@ -207,6 +218,7 @@ bool VampEffect::Process()
             mPlugin->reset();
             initialiseRequired = false;
          } else {
+            //!!! todo: retain parameters previously set
             Init();
          }
       }
@@ -276,6 +288,8 @@ bool VampEffect::Process()
 
       Vamp::Plugin::FeatureSet features = mPlugin->getRemainingFeatures();
       AddFeatures(ltrack, features);
+
+      prevTrackChannels = channels;
 
       left = (WaveTrack *)iter.Next();
    }
