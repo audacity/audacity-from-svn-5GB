@@ -22,8 +22,11 @@ class wxComboBox;
 
 #include <wx/dialog.h>
 
-//#include <vamp-sdk/hostext/PluginLoader.h>
+#ifdef _WIN32
 #include "../../../lib-src/libvamp/vamp-sdk/hostext/PluginLoader.h"
+#else
+#include <vamp-sdk/hostext/PluginLoader.h>
+#endif
 
 void LoadVampPlugins();
 
