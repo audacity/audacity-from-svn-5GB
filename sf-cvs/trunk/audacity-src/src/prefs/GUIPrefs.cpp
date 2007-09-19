@@ -86,7 +86,10 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieCheckBox( _("Editing a &clip can move other clips"),
          wxT("/GUI/EditClipCanMove"), true );
       S.TieCheckBox( _("&Select all audio, if none selected, on applying effect"),    
-         wxT("/GUI/SelectAllOnNone"), true );   }
+         wxT("/GUI/SelectAllOnNone"), true );   
+      S.TieCheckBox( _("&Beep on completion of longer activities"),    
+         wxT("/GUI/BeepOnCompletion"), false );   
+   }
    S.EndStatic();
    S.StartStatic( _("Show / Hide"),1 );
    {

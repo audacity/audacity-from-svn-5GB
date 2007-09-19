@@ -3493,6 +3493,15 @@ void AudacityProject::ProgressShow(const wxString &title, const wxString &messag
 void AudacityProject::ProgressHide()
 {
    if (mProgressDialog[mProgressCurrent]) {
+      if( wxIsBusy() )
+      {
+         bool bBeepOnCompletion;
+         gPrefs->Read(wxT("/GUI/BeepOnCompletion"), &bBeepOnCompletion, false);
+         if( bBeepOnCompletion )
+         {
+            wxBell();
+         }
+      }
       mProgressDialog[mProgressCurrent]->Hide();
    }
 
@@ -3520,6 +3529,7 @@ bool AudacityProject::ProgressUpdate(int value, const wxString &message)
       // We've just created the progress dialog.
       // We want to be able to click its cancel button
       // So we enable it, whilst disabling everything else.
+      mProgressDialog[mProgressCurrent]->Show();
       SetEnabledWindow( mProgressDialog[mProgressCurrent] );
    }
 
