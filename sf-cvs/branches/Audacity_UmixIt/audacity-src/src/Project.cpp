@@ -265,6 +265,10 @@ void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized)
 
    GetDefaultWindowRect(&defWndRect);
 
+#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   *bMaximized = true;
+   *nextRect = defWndRect;
+#else // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
    *bMaximized = false;
 
    if(gAudacityProjects.IsEmpty())
@@ -340,6 +344,7 @@ void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized)
 
    //Increment Position increment
    gAudacityPosInc++;
+#endif // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
 }
 
 enum {
@@ -2665,7 +2670,10 @@ void AudacityProject::PushState(wxString desc,
    // All the different ways to add tracks funnel through here.
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
       this->EnforceTrackConstraints();
-   #elif (AUDACITY_BRANDING != BRAND_AUDIOTOUCH) // (AUDACITY_BRANDING != BRAND_THINKLABS)
+   #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) 
+      this->OnZoomFitV();
+      this->OnZoomFit();
+   #else // (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH) 
       UpdateLyrics();
       UpdateMixerBoard();
    #endif 
