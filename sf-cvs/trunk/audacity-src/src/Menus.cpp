@@ -3229,7 +3229,7 @@ void AudacityProject::OnZoomFit()
    TP_ScrollWindow(0.0);
 }
 
-void AudacityProject::OnZoomFitV_Calc()
+void AudacityProject::DoZoomFitV()
 {
    int width, height, count;
 
@@ -3268,7 +3268,7 @@ void AudacityProject::OnZoomFitV_Calc()
 
 void AudacityProject::OnZoomFitV()
 {
-   OnZoomFitV_Calc();
+   this->DoZoomFitV();
 
    mVsbar->SetThumbPosition(0);
    RedrawProject();

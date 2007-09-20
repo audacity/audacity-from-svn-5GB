@@ -2689,11 +2689,6 @@ void AudacityProject::PushState(wxString desc,
                                 bool consolidate)
 {
    TrackList *l = new TrackList(mTracks);
-
-	//ANSWER-ME: What's the zoom-fit calc for?  
-   if (GetTracksFitVerticallyZoomed() == true) {
-      OnZoomFitV_Calc();
-   }
    mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1,
                           desc, shortDesc, consolidate);
    delete l;
@@ -2707,6 +2702,9 @@ void AudacityProject::PushState(wxString desc,
 
    UpdateMenus();
    
+   if (GetTracksFitVerticallyZoomed())
+      this->DoZoomFitV();
+
    AutoSaveIfNeeded();
 }
 
