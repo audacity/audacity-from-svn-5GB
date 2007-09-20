@@ -6,6 +6,7 @@
 
   Dominic Mazzoni
   Shane T. Mueller
+  Vaughan Johnson
  
   See EditToolBar.h for details
 
@@ -174,7 +175,7 @@ void EditToolBar::MakeButtons()
              _("Fit selection in window"));
    AddButton(ZoomFit, ZoomFitDisabled, ZoomFitAlpha, ETBZoomFitID,
              _("Fit project in window"));
-   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS) || (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       AddButton(ZoomFitV, ZoomFitVDisabled, ZoomFitVAlpha, ETBZoomFitVertID, 
                _("Fit project vertically in window"));
    #endif
@@ -188,7 +189,7 @@ void EditToolBar::MakeButtons()
 
    mButtons[ETBZoomSelID]->SetEnabled(false);
    mButtons[ETBZoomFitID]->SetEnabled(false);
-   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS) || (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       mButtons[ETBZoomFitVertID]->SetEnabled(false);
    #endif
    mButtons[ETBPasteID]->SetEnabled(false);
@@ -261,7 +262,7 @@ void EditToolBar::OnButton(wxCommandEvent &event)
       case ETBZoomFitID:
          p->OnZoomFit();
          break;
-      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS) || (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
          case ETBZoomFitVertID:
             p->OnZoomFitV();
             break;
@@ -319,7 +320,7 @@ void EditToolBar::EnableDisableButtons()
 
    mButtons[ETBZoomSelID]->SetEnabled(selection);
    mButtons[ETBZoomFitID]->SetEnabled(tracks);
-   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS) || (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       mButtons[ETBZoomFitVertID]->SetEnabled(tracks);
    #endif
 

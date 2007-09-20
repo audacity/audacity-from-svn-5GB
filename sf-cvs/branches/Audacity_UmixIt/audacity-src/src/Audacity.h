@@ -20,7 +20,7 @@
 
 // Increment this every time you release a new version
 #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-   #define AUDACITY_VERSION_STRING "1.2.6a3"
+   #define AUDACITY_VERSION_STRING "1.2.6a4"
 #else
    #define AUDACITY_VERSION_STRING "1.2.6"
 #endif

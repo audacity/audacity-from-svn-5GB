@@ -306,7 +306,12 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("Trim",           _("&Trim\tCtrl+T"),                  FN(OnTrim));
    c->AddSeparator();
    c->AddItem("Delete",         _("&Delete\tCtrl+K"),                FN(OnDelete));
-   c->AddItem("Silence",        _("&Silence\tCtrl+L"),               FN(OnSilence));
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      // Audiotouch uses Ctrl+L for "Add Label At Playback Position" instead of Silence.
+      c->AddItem("Silence",        _("&Silence"),               FN(OnSilence));
+   #else
+      c->AddItem("Silence",        _("&Silence\tCtrl+L"),       FN(OnSilence));
+   #endif
    c->AddSeparator();
    c->AddItem("Split",          _("Spl&it"),                         FN(OnSplit));
    c->AddItem("Duplicate",      _("D&uplicate\tCtrl+D"),             FN(OnDuplicate));
@@ -527,10 +532,11 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();   
    c->AddItem("AddLabel",       _("Add Label At Selection\tCtrl+B"), FN(OnAddLabel));
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      // Audiotouch uses Ctrl+M for Save as MP3 (ExportMP3).
-      c->AddItem("AddLabelPlaying",       _("Add Label At Playback Position"), FN(OnAddLabelPlaying));
+      // Audiotouch uses Ctrl+M for Save as MP3 (ExportMP3)
+      // and Ctrl+L for "Add Label At Playback Position" instead of Silence.
+      c->AddItem("AddLabelPlaying", _("Add Label At Playback Position\tCtrl+L"), FN(OnAddLabelPlaying));
    #else
-      c->AddItem("AddLabelPlaying",       _("Add Label At Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
+      c->AddItem("AddLabelPlaying", _("Add Label At Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
    #endif
    c->SetCommandFlags("AddLabel", 0, 0);
    c->SetCommandFlags("AddLabelPlaying", 0, AudioIONotBusyFlag);
