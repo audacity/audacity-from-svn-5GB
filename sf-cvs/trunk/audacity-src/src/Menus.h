@@ -188,7 +188,7 @@ void OnZoomToggle();
 void OnZoomNormal();
 void OnZoomFit();
 void OnZoomFitV();
-void OnZoomFitV_Calc();
+void DoZoomFitV();
 void OnZoomSel();
 
 void OnExpandAllTracks();
