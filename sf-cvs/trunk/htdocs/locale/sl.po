@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity Website - 1.2\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2007-09-15 14:04+0100\n"
+"PO-Revision-Date: 2007-09-22 14:34+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Martin Srebotnjak <miles@filmsi.net>\n"
 "MIME-Version: 1.0\n"
@@ -479,25 +479,17 @@ msgstr "Audacity"
 msgid "Jump to page content"
 msgstr "Skoči na vsebino strani"
 
-#: include/header.inc.php:31
-msgid "Search"
-msgstr "Poišči"
-
-#: include/header.inc.php:40
-msgid "Web"
-msgstr "splet"
-
-#: include/header.inc.php:61
+#: include/header.inc.php:63
 msgid "Audacity: Free Sound Editor and Recording Software"
 msgstr "Audacity: prostokodni program za urejanje in snemanje zvoka"
 
-#: include/header.inc.php:74
+#: include/header.inc.php:76
 #: community/donate.php:74
 #: community/donate.php:76
 msgid "Audacity Store"
 msgstr "Trgovina Audacity"
 
-#: include/header.inc.php:80
+#: include/header.inc.php:82
 msgid "Site Navigation"
 msgstr "Krmarjenje po straneh"
 
@@ -1794,6 +1786,8 @@ msgid ""
 "<p>Audacity does not expire, but the time you can record for depends on the amount of disk space you have. The message you are seeing exists only in older versions of Audacity, so please update to the <a href=\"../download\">latest version</a>. In newer versions, the message says \"Disk space remains for recording xx hours and yy minutes\".</p>\n"
 "<p>To get more recording time, delete your old files and folders (especially your old Audacity Project files and _data folders when you have finished with them), or use an alternative disk with more space on it. Or consider recording in mono instead of stereo (on the Audio I/O tab of Preferences) or in 16 bit instead of 32 bit (Quality tab of Preferences). Either of those choices will halve the disk space needed.</p>"
 msgstr ""
+"<p>Audacity ne poteče čas delovanja, vendar pa je časovni obseg snemanja odvisen od količine prostora na pogonih. Sporočilo, ki ga vidite, je prisotno le v starejših različicah, zato, prosim, Audacity posodobite na <a href=\"../download\">najnovejšo različico</a>. V novejših različicah se pojavlja naslednje sporočilo: \"Preostali prostor na disku zadostuje za snemanje xx ur in yy minut\".</p>\n"
+"<p>Da bi zagotovili več snemalnega časa, izbrišite stare datoteke in mape (še posebej stare projektne datoteke Audacity in _podatkovne mape, ko ste z njimi opravili) ali uporabite dodaten pogon z več prostora. Razmislite tudi o snemanju v tehniki mono namesto stereo (na zavihku Zvočni V/I Nastavitev) ali v 16-bitnem namesto 32-bitnem načinu (zavihek Kakovost v Nastavitvah). Sleherna od teh izbir bo razpolovila potrebni prostor na pogonih.</p>"
 
 #: help/faq.php:60
 msgid "Installation and Plug-Ins"
@@ -1952,6 +1946,8 @@ msgid ""
 "<p>The Input selector may be greyed-out, lacking the expected choices, or apparently not recording from the indicated source.</p>\n"
 "<p>The causes of these problems vary by operating system and sound card driver. For a complete discussion, see the <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixer Toolbar Issues</a> page on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>\n"
 msgstr ""
+"<p>Izbirnik Vhod je lahko posivel, v njem lahko manjkajo pričakovane izbire ali pa program očitno ne snema iz navedenega vira.</p>\n"
+"<p>Vzrok teh težav se razlikuje med operacijskimi sistemi in gonilniki za zvočni vmesnik. Za popolno razpravo si oglejte stran <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Težave z orodno vrstico Mešanje</a> na <a href=\"http://audacityteam.org/wiki\">Wikiju Audacity</a>.</p>\n"
 
 #: help/faq.php:135
 msgid "Why can’t I hear what I’m recording?"
@@ -2106,6 +2102,15 @@ msgid ""
 "</ul>\n"
 "<p>If your file manager does not have a suitable renaming tool, you should be able to obtain suitable free tools on the Internet.</p>\n"
 msgstr ""
+"<p>Svoj projekt boste morda lahko obnovili samodejno z <a href=\"http://www.mesw.de/audacity/recovery/\">orodjem Obnovitev po sesutju</a>. Za več informacij si oglejte stran <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Obnovitev po sesutju</a>.</p>\n"
+"<p>Upoštevajte, da morajo biti datoteke .au zaporedno oštevilčene za orodje Obnovitev po sesutju, sicer bo prišlo do napak v izvajanju programa. Če se pojavi ta problem, lahko odprete začasno mapo Audacity s sistemskim raziskovalcem (npr. Raziskovalec v okolju Windows) in poskusite prerazvrstiti datoteke .au glede na čas sprememb in jih nato paketno preimenujete z uporabo številskega zaporedja (ob razvrščenosti po času zadnje spremembe). Razporeditev, podobna spodnji, bi morala delovati pravilno:</p>\n"
+"<ul>\n"
+"\t<li>b001.au 15:56:02</li>\n"
+"\t<li>b002.au 15:56:02</li>\n"
+"\t<li>b003.au 15:56:10</li>\n"
+"\t<li>b004.au 15:56:10</li>\n"
+"</ul>\n"
+"<p>Če vaš upravitelj datotek nima ustreznega orodja za preimenovanje datotek, lahko primerna prosta orodja najdete na spletu.</p>\n"
 
 #: help/faq.php:219
 msgid "Can Audacity import file formats like WMA, AAC, FLAC, etc.?"
@@ -2119,6 +2124,11 @@ msgid ""
 "<p>For more detail on supported formats, see the <a href=\"../about/features\">feature list</a>.</p>\n"
 "<p>See also: <a href=\"faq?s=files&amp;i=midi\">Why can't I play MIDI files?</a></p>\n"
 msgstr ""
+"<p>Audacity <b>ne more</b> uvoziti ali izvoziti datotek v <b>WMA, AAC, RealAudio, Shorten (SHN)</b> ali večini drugih zaklenjenih zapisih, kot tudi nobene vrste datotek z zaščito Digital Rights Management (DRM), vključno s številnimi nakupi v spletnih trgovinah, kot sta iTunes in Napster. Zaradi licenc in patentnih omejitev podpore tem zapisom ne smemo dodati v Audacity. Prihodnje različice Audacity bodo morda podpirale te zapise z uporabo kodekov, nameščenih v sam operacijski sistem.</p>\n"
+"<p>Nekateri odprti zapisi v Audacity še niso podprti, vključno z <b>Ogg Speex</b> in <b>FLAC</b>.  Upamo, da bomo ta zapisa podprli v naslednjih različicah Audacity.</p>\n"
+"<p>Audacity lahko trenutno uvozi datoteke WAV, AIFF, AU, MP2/MP3 in OGG Vorbis. Če ne morete svoje datoteke neposredno uvoziti v Audacity, jo lahko namesto tega najprej pretvorite v WAV ali AIFF. Dokler ne gre za datoteko z zaščito DRM, lahko to storite z iTunes&reg; ali s predvajalnikom <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. Če je datoteka zaščitena z DRM, jo lahko zapečete na zvočni CD z aplikacijo, ki ima licenco za njeno predvajanje, nato shranite posnetek s CD-ja v zapis WAV ali AIFF. V okolju Windows lahko uporabite Windows Media Player 11, iTunes ali <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> za shranjevanje v WAV. Lahko pa tudi datoteko predvajate na računalniku in jo posnamete – oglejte si <a href=\"faq?s=recording&amp;i=streaming\">Lahko z Audacity snemam RealAudio ali drugi pretočni zvok?</a>.</p>\n"
+"<p>Za več podrobnosti o podprtih zapisih si oglejte <a href=\"../about/features\">seznam odlik</a>.</p>\n"
+"<p>Oglejte si tudi: <a href=\"faq?s=files&amp;i=midi\">Zakaj ne morem predvajati datotek MIDI?</a></p>\n"
 
 #: help/faq.php:228
 msgid "Why can’t I play MIDI files?"
@@ -4312,7 +4322,7 @@ msgstr "zvočni vmesnik USB, 8-vhodna mešalna miza, slušalke, studijski mikrof
 #: download/bundlers.php:74
 #: download/bundlers.php:83
 msgid "hardware and software to record, edit and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand. NOTE: Currently Podcast Factory will not work with Windows XP Media Center Edition (XP Home and Pro are not affected). Audacity itself does work with Media Center Edition, subject to your computer having suitable sound device drivers specific to your hardware."
-msgstr ""
+msgstr "strojna in programska oprema za snemanje, montažo in objavo podcastov: 24-bitni/48kHz zvočni vmesnik, dinamični profesionalni mikrofon z namiznim stojalom. OPOMBA: Trenutno Podcast Factory ne deluje z Windows XP Media Center Edition (XP Home in Pro nista prizadeta). Audacity sam deluje z Media Center Edition, v kolikor ima vaš računalnik ustrezne gonilnike za uporabljeno zvočno napravo."
 
 #: download/bundlers.php:103
 msgid "interface for analog or digital audio source into computer via USB"
@@ -4385,7 +4395,7 @@ msgstr "navidezni kitarski ojačevalec s simulacijo žarnice in 24-bitnimi učin
 #: download/bundlers.php:309
 #: download/bundlers.php:336
 msgid "USB turntable. NOTE: On January 21, 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> (now available for a price) appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what the article stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and export the multiple files together based on split points. ION and Numark have corrected their documentation, and they are apparently still bundling Audacity. Please see our Wiki page on <a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">USB turntables</a> for more information."
-msgstr ""
+msgstr "Gramofon USB. OPOMBA: 21. januarja 2007 je v časopisu New York Times izšel <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">članek o teh gramofonih</a> (zdaj na voljo le kot plačljiv članek), ki je vseboval napačne trditve o omejitvah Audacity. Kljub zapisanemu v članku pa Audacity lahko posname celo ploščo LP, zazna prekinitve med posnetki na plošči glede na vmesno tišino in naenkrat izvozi posamične datoteke, razdeljene glede na prekinitvene točke. ION in Numark sta popravila svojo dokumentacijo in očitno še naprej prilagata Audacity svojim izdelkom. Za več informacij si oglejte našo stran Wiki <a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">Gramofoni USB</a>."
 
 #: download/bundlers.php:318
 #: download/bundlers.php:327
@@ -4402,7 +4412,7 @@ msgstr "zbirka visoko kakovostnih prostih in odprto-kodnih programskih aplikacij
 
 #: download/bundlers.php:370
 msgid "Digital Stethoscopes: enhanced sound quality, with 50X amplification. Adjust volume for faint heart sounds, obese patients, noisy work environments. Examine the waveforms and spectrograms in a customized version of Audacity."
-msgstr ""
+msgstr "Digitalni stetoskopi: izboljšana zvočna kakovost, z 50-kratno ojačitvijo. Prilagodite jakost za šibke zvoke bitja srca, paciente z močnejšo postavo, glasna delovna okolja. Raziščite zvočne krivulje in spektrograme s prilagojeno različico Audacity."
 
 #: download/bundlers.php:379
 msgid "portable recording studio or (DAW) digital audio workstation, featuring \"walk and mix\" technology"
@@ -4410,7 +4420,7 @@ msgstr "prenosni snemalni studio ali digitalna zvočna delovna postaja (DAW), ki
 
 #: download/bundlers.php:388
 msgid "&quot;Share the studio experience&quot; with favorite recording artists, with the ability to remix, record, sing karaoke, add effects, and edit original artist's recordings track-by-track, in a customized version of Audacity."
-msgstr ""
+msgstr "&quot;Delite studijske izkušnje&quot; z najbolj priljubljenimi glasbenimi izvajalci, z možnostjo ponovnega mešanja, snemanja, petja karaok, dodajanja učinkov in montaže izvornih večslednih posnetkov izvajalca s prilagojeno različico Audacity."
 
 #: download/bundlers.php:397
 msgid "mirror site for Audacity downloads, from webzine about Windows software at Impress Watch Corporation, Tokyo, Japan"
