@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.3.3\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-09-15 16:36+0100\n"
+"POT-Creation-Date: 2007-09-16 09:39-0300\n"
 "PO-Revision-Date: 1999 and beyond-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <audacity-translation@lists.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -161,8 +161,8 @@ msgstr ""
 msgid "Output Meter"
 msgstr ""
 
-#. i18n-hint: Mac OS X shortcut should be Ctrl+,
 #. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
+#. i18n-hint: Mac OS X shortcut should be Ctrl+,
 #: AudacityApp.cpp:726 Menus.cpp:468
 msgid "&Preferences...\tCtrl+,"
 msgstr ""
@@ -6294,8 +6294,8 @@ msgstr ""
 
 #: toolbars/ControlToolBar.cpp:690
 msgid ""
-"Recording in CleanSpeech mode is not possible when a track, or more than one "
-"project, is already open."
+"CleanSpeech only allows recording mono tracks.\n"
+"Recording is not possible when more than one window is open."
 msgstr ""
 
 #: toolbars/ControlToolBar.cpp:691
