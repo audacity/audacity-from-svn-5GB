@@ -590,12 +590,24 @@ void Envelope::CollapseRegion(double t0, double t1)
 
 void Envelope::Paste(double t0, Envelope *e)
 {
-   if (e->mEnv.Count() == 0 && e->mDefaultValue == this->mDefaultValue)
+   bool pointsAdded = false;
+
+   if (e->mEnv.Count() == 0 && this->mEnv.Count() == 0 && e->mDefaultValue == this->mDefaultValue)
    {
       // msmeyer: The envelope is empty and has the same default value, so
       // there is nothing that must be inserted, just return. This avoids
       // the creation of unnecessary duplicate control points
       return;
+   }
+   if (this->mEnv.Count() != 0)
+   {
+      // inserting a clip with a possibly empty envelope into one with an envelope
+      // so add end points to e, in case they are not there
+      double leftval  = e->GetValue(0+e->mOffset);
+      double rightval = e->GetValue(e->mTrackLen+e->mOffset);
+      e->Insert(0, leftval);
+      e->Insert(e->mTrackLen, rightval);
+      pointsAdded = true;  // we need to delete them later so's not to corrupt 'e' for later use
    }
    
    t0 = wxMin(t0 - mOffset, mTrackLen);   // t0 now has origin of zero
@@ -613,10 +625,6 @@ void Envelope::Paste(double t0, Envelope *e)
 
    // get values to perform framing of the insertion 
    double splitval = GetValue(t0 + mOffset);
-// the following two lines were in the old code.  They may be useful in the future but
-// I 'think' that 'e' always has L and R points at it's ends - it certainly should! - MJS
-//   double leftval  = e->GetValue(0+e->mOffset);
-//   double rightval = e->GetValue(e->mTrackLen+e->mOffset);
 
    if(len != 0) {   // Not case 10: there are point/s in the envelope
 
@@ -735,6 +743,10 @@ Cases:
 /*   if(len != 0)
       for (i = 0; i < mEnv.Count(); i++)
          wxLogDebug(wxT("Fixed i %d when %.18f val %f"),i,mEnv[i]->t,mEnv[i]->val); */
+
+   if(pointsAdded)
+      while(e->mEnv.Count() != 0)
+         e->Delete(0);  // they were not there when we entered this
 }
 
 void Envelope::RemoveUnneededPoints(double tolerence)
