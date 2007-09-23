@@ -68,9 +68,11 @@ public:
 
    void PopulateOrExchange(ShuttleGui & S);
    void OnPreview(wxCommandEvent & event);
+   void OnDurationChange(wxCommandEvent & event);
 
 private:
    EffectTruncSilence *mEffect;
+   wxStaticText * pWarning;
 
 private:
    DECLARE_EVENT_TABLE()
