@@ -73,6 +73,7 @@ various graphing code, such as provided by FreqWindow and FilterPanel.
 #include "../xml/XMLFileReader.h"
 #include "../Theme.h"
 #include "../AllThemeResources.h"
+#include "../WaveTrack.h"
 #include "float_cast.h"
 
 #include <wx/bitmap.h>
@@ -457,6 +458,10 @@ bool EffectEqualization::Process()
 bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
                                  sampleCount start, sampleCount len)
 {
+   // create a new WaveTrack to hold all of the output, including 'tails' each end
+   AudacityProject *p = GetActiveProject();
+   WaveTrack *output = p->GetTrackFactory()->NewWaveTrack(floatSample, t->GetRate());
+
    int L = windowSize - (mM - 1);   //Process L samples at a go
    sampleCount s = start;
    sampleCount idealBlockLen = t->GetMaxBlockSize() * 4;
@@ -477,7 +482,6 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
       lastWindow[i] = 0;
 
    TrackProgress(count, 0.);
-
    int wcopy = 0;
    int offset = (mM - 1)/2;
 
@@ -499,46 +503,42 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
          for(j=0; j<wcopy; j++)
             thisWindow[j] = buffer[i+j];   //copy the L (or remaining) samples
          for(j=wcopy; j<windowSize; j++)
-         {
             thisWindow[j] = 0;   //this includes the padding
-         }
 
          Filter(windowSize, thisWindow);
 
-         //when copying samples from the output of the filter back to the buffer,
-         //offset them by half the filter length.  This makes the filter acausal
-         //but eliminates the delay.
-         //This means we start 'offset' samples into the filter's output.
-         if(i == 0)
-         {
-            for(j=offset; j<wcopy; j++)
-               buffer[i+j-offset] = thisWindow[j];
-         }
-         else
-         {
-            for(j=0; j<mM-1; j++)
-               buffer[i+j-offset] = thisWindow[j] + lastWindow[L + j];
-            for(j=mM-1; j<wcopy; j++)
-               buffer[i+j-offset] = thisWindow[j];
-         }
+         // Overlap - Add
+         for(j=0; j<mM-1; j++)
+            buffer[i+j] = thisWindow[j] + lastWindow[L + j];
+         for(j=mM-1; j<wcopy; j++)
+            buffer[i+j] = thisWindow[j];
 
          float *tempP = thisWindow;
          thisWindow = lastWindow;
          lastWindow = tempP;
-      }   //next i, lump of size L or less
-      i -= L;  //put pointer back where it was
-      for(; j<wcopy+offset; j++)   //fill the last 'offset' samples from the filter
-         buffer[i+j-offset] = lastWindow[j];
+      }  //next i, lump of this block
 
-      t->Set((samplePtr)buffer, floatSample, s, block);
-
+      output->Append((samplePtr)buffer, floatSample, block);
       len -= block;
       s += block;
 
       TrackProgress(count, (s-start)/(double)originalLen);
    }
 
+   // mM-1 samples of 'tail' left in lastWindow, get them now
+   for(int j=0; j<mM-1; j++)
+      buffer[j] = lastWindow[wcopy + j];
+   output->Append((samplePtr)buffer, floatSample, mM-1);
+   output->Flush();
+
+   // now move the appropriate bit of the output back to the track
+   // (this could be enhanced in the future to use the tails)
+   float *bigBuffer = new float[originalLen];
+   output->Get((samplePtr)bigBuffer, floatSample, offset, originalLen);
+   t->Set((samplePtr)bigBuffer, floatSample, start, originalLen);
+
    delete[] buffer;
+   delete[] bigBuffer;
    delete[] window1;
    delete[] window2;
 
