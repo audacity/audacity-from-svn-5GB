@@ -147,7 +147,7 @@ bool EffectTruncSilence::Process()
    // We have a lower bound on the amount of silence we chop out at a time
    // to avoid chopping up low frequency sounds.  We're good down to 10Hz
    // if we use 100ms.
-   const float minTruncMs = 100.0f;
+   const float minTruncMs = 1.0f;
    double truncDbSilenceThreshold = Enums::Db2Signal[mTruncDbChoiceIndex];
    int truncLongestAllowedSilentSamples = 
       int((wxMax( mTruncLongestAllowedSilentMs, minTruncMs) * rate) / 1000.0);
@@ -310,6 +310,7 @@ void EffectTruncSilence::BlendFrames(float* buffer, int blendFrameCount, int lef
 
 BEGIN_EVENT_TABLE(TruncSilenceDialog, EffectDialog)
     EVT_BUTTON(ID_EFFECT_PREVIEW, TruncSilenceDialog::OnPreview)
+    EVT_TEXT( ID_LONGEST_SILENCE_TEXT, TruncSilenceDialog::OnDurationChange )
 END_EVENT_TABLE()
 
 TruncSilenceDialog::TruncSilenceDialog(EffectTruncSilence * effect,
@@ -338,7 +339,7 @@ void TruncSilenceDialog::PopulateOrExchange(ShuttleGui & S)
    {
       wxArrayString choices(Enums::NumDbChoices, Enums::GetDbChoices());
 
-      S.TieTextBox(_("Max silence duration:"),
+      S.Id( ID_LONGEST_SILENCE_TEXT ).TieTextBox(_("Max silence duration:"),
                    mEffect->mTruncLongestAllowedSilentMs,
                    10);
       S.AddUnits( _("milliseconds") );
@@ -348,6 +349,7 @@ void TruncSilenceDialog::PopulateOrExchange(ShuttleGui & S)
                   &choices);
    }
    S.EndTwoColumn();
+   pWarning = S.AddVariableText( wxT("") );
 }
 
 void TruncSilenceDialog::OnPreview(wxCommandEvent & event)
@@ -356,3 +358,22 @@ void TruncSilenceDialog::OnPreview(wxCommandEvent & event)
    mEffect->Preview();
 }
 
+void TruncSilenceDialog::OnDurationChange(wxCommandEvent & event)
+{
+   // We may even get called during the constructor.
+   // This test saves us from calling unsafe functions.
+   if( !IsShown() )
+      return;
+   TransferDataFromWindow();
+   bool bOk =  mEffect->mTruncLongestAllowedSilentMs > 0.9f ;
+   pWarning->SetLabel( bOk ? 
+      wxT("") : 
+      _("   Duration must be at least 1 millisecond")
+         );
+   wxWindow *pWnd;
+   pWnd = FindWindowById( wxID_OK, this );
+   pWnd->Enable( bOk );
+   pWnd = FindWindowById( ID_EFFECT_PREVIEW, this );
+   pWnd->Enable( bOk );
+
+}

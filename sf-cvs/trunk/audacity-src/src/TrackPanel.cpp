@@ -5401,22 +5401,43 @@ void TrackPanel::OnTrackMute(bool shiftDown, Track *t)
 
    if (shiftDown) 
       {
-         // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
+         // Cosmetic...  
+         // Shift-click mutes this track and unmutes other tracks.
          TrackListIterator iter(mTracks);
          Track *i = iter.First();
          while (i) {
             if (i == t) {
                i->SetMute(true);
+               i->SetSolo(false);
             }
             else {
                i->SetMute(false);
+               i->SetSolo(false);
             }
             i = iter.Next();
          }
       }
    else {
-      // Normal click just toggles this track.
+      // Normal click toggles this track.
       t->SetMute(!t->GetMute());
+
+      TrackListIterator iter(mTracks);
+      Track *i = iter.First();
+      int nPlaying=0;
+
+      // We also set a solo indicator if we have just one track playing.
+      // otherwise clear solo on everything.
+      while (i) {
+         if( !i->GetMute())
+            nPlaying += 1;
+         i = iter.Next();
+      }
+
+      i = iter.First();
+      while (i) {
+         i->SetSolo( (nPlaying==1) && !i->GetMute() );
+         i = iter.Next();
+      }
    }
 
    Refresh(false);
@@ -5432,25 +5453,23 @@ void TrackPanel::OnTrackSolo(bool shiftDown, Track *t)
 
    if (shiftDown) 
       {
-         // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
-         TrackListIterator iter(mTracks);
-         Track *i = iter.First();
-         while (i) {
-            if (i == t) {
-               i->SetSolo(true);
-
-            }
-            else {
-               i->SetSolo(false);
-               
-            }
-            i = iter.Next();
-         }
+         // A cosmetic feature - we can solo more than one by shift clicking.
+         // on additional tracks.
+         t->SetSolo( true );
+         t->SetMute( false );
       }
    else {
-      // Normal click just toggles this track.
-
-      t->SetSolo(!t->GetSolo());
+      // Normal click solo this track only, mute everything else.
+      // OR unmute and unsolo everything.
+      TrackListIterator iter(mTracks);
+      Track *i = iter.First();
+      bool bWasSolo = t->GetSolo();
+      while (i) {
+         i->SetSolo( (i==t) && !bWasSolo);
+         i->SetMute( (i!=t) && !bWasSolo);
+         i = iter.Next();
+      }
+      //t->SetSolo(!t->GetSolo());
    }
 
    Refresh(false);
