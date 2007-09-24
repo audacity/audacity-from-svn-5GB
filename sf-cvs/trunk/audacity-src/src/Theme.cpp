@@ -174,7 +174,8 @@ WX_DEFINE_OBJARRAY( ArrayOfColours )
 #include "../images/GlyphImages.h"
 #include "../images/UploadImages.h"
 
-#include "../images/AudacityLogo.xpm"
+#include "../images/AudacityLogoWithName.xpm"
+//#include "../images/AudacityLogo.xpm"
 #include "../images/AudacityLogo48x48.xpm"
 #endif
 
@@ -531,7 +532,10 @@ SourceOutputStream::~SourceOutputStream()
 }
 
 
-const int ImageCacheWidth = 440;// Must be wide enough for Audacity logo which is 215, use double width.
+// Must be wide enough for AudacityLogoWithName. Use double width + 10.
+//vvv    const int ImageCacheWidth = (2 * LOGOWITHNAME_WIDTH) + 10; 
+const int ImageCacheWidth = 440;// Must be wide enough for AudacityLogo which is 215, use double width.
+
 const int ImageCacheHeight = 836;
 
 void ThemeBase::CreateImageCache( bool bBinarySave )

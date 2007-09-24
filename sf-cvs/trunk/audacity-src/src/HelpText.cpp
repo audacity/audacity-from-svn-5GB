@@ -57,7 +57,7 @@ wxString TitleText( const wxString & Key )
 {
    if(Key==wxT("welcome"))
    {
-      return _("Welcome!");
+      return _("Welcome to Audacity!");
    }
 
    if(Key ==wxT("play") )
@@ -112,7 +112,7 @@ Link( wxT("grey"), _("menus are greyed out"))+_(" or why Audacity ") +
 Link( wxT("norecord"), _("isn't recording anything"))+ _( " when ")+
 _("you expect it to.  Or you may prefer to just try using Audacity and see ")+ 
 _("what you can do.  You can always get back to these instructions by using ")+
-_("the 'Help' option in the menus, and then clicking on 'Start Up Message' ")+
+_("the 'Help' option in the menus, and then 'Show Welcome Message...' ")+
 wxT("<br><br>")+
 _("Welcome to Audacity.")
          );
