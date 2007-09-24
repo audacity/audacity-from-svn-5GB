@@ -54,10 +54,12 @@ END_EVENT_TABLE()
 IMPLEMENT_CLASS(SplashDialog, wxDialog)
 
 SplashDialog::SplashDialog(wxWindow * parent)
-   :  wxDialog(parent, -1, _NoAcc("&Welcome!"),
+   :  wxDialog(parent, -1, _NoAcc("&Welcome to Audacity!"),
                wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
    this->SetBackgroundColour(theTheme.Colour( clrAboutBoxBackground ));
+   m_pIcon = NULL;
+   m_pLogo = NULL; //vvv
    ShuttleGui S( this, eIsCreating );
    Populate( S );
    Fit();
@@ -70,9 +72,18 @@ void SplashDialog::Populate( ShuttleGui & S )
    bool bShow;
    gPrefs->Read(wxT("/GUI/ShowSplashScreen"), &bShow, true );
    S.StartVerticalLay(1);
+
+   //vvv For now, change to AudacityLogoWithName via old-fashioned ways, not Theme.
+   m_pLogo = new wxBitmap((const char **) AudacityLogoWithName_xpm); //vvv
+   m_pIcon =
+       new wxStaticBitmap(S.GetParent(), -1, 
+                          *m_pLogo, //vvv theTheme.Bitmap(bmpAudacityLogoWithName), 
+                          wxDefaultPosition, wxSize(LOGOWITHNAME_WIDTH, LOGOWITHNAME_HEIGHT));
+   S.Prop(0).AddWindow( m_pIcon );
+
    wxHtmlWindow *html = new LinkingHtmlWindow(S.GetParent(), -1,
                                          wxDefaultPosition,
-                                         wxSize(480, 300),
+                                         wxSize(LOGOWITHNAME_WIDTH, 280),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER );
    html->SetPage(HelpText( wxT("welcome") ));
    S.Prop(1).AddWindow( html, wxEXPAND );
@@ -92,7 +103,7 @@ void SplashDialog::Populate( ShuttleGui & S )
 
 SplashDialog::~SplashDialog()
 {
-//   delete icon;
+   delete m_pLogo;
 }
 
 void SplashDialog::OnDontShow( wxCommandEvent & Evt )

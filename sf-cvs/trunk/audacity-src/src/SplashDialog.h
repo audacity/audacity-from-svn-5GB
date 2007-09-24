@@ -34,6 +34,8 @@ private:
    void Populate( ShuttleGui & S );
    void OnDontShow( wxCommandEvent & Evt );
 
+   wxStaticBitmap* m_pIcon;
+   wxBitmap* m_pLogo; //vvv
 };
 
 //void ShowSplashScreen( AudacityProject * pProj );

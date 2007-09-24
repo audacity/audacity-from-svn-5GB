@@ -37,7 +37,7 @@ class AboutDialog:public wxDialog {
 
    wxBoxSizer *topsizer;
    wxStaticBitmap *icon;
-//   wxBitmap *logo;
+   wxBitmap *logo; //vvv
 
     DECLARE_EVENT_TABLE()
     

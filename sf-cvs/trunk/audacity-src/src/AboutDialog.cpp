@@ -130,8 +130,7 @@ void AboutDialog::CreateCreditsList()
 }
 
 // ----------------------------------------------------------------------------
-// icons
-// ----------------------------------------------------------------------------
+
 BEGIN_EVENT_TABLE(AboutDialog, wxDialog)
    EVT_BUTTON(wxID_OK, AboutDialog::OnOK)
 END_EVENT_TABLE()
@@ -320,14 +319,20 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
    // New way to add to About box....
    S.StartNotebookPage( _("Audacity") );
    S.StartVerticalLay(1);
+
+   //vvv For now, change to AudacityLogoWithName via old-fashioned way, not Theme.
+   logo = new wxBitmap((const char **) AudacityLogoWithName_xpm); //vvv
    icon =
-       new wxStaticBitmap(S.GetParent(), -1, theTheme.Bitmap(bmpAudacityLogo), wxPoint(93, 10),
-                          wxSize(215, 190));
+       new wxStaticBitmap(S.GetParent(), -1, 
+                          *logo, //vvv
+                          //vvv theTheme.Bitmap(bmpAudacityLogo), wxPoint(93, 10), wxSize(215, 190));
+                          //vvv theTheme.Bitmap(bmpAudacityLogoWithName), 
+                          wxDefaultPosition, wxSize(LOGOWITHNAME_WIDTH, LOGOWITHNAME_HEIGHT));
    S.Prop(0).AddWindow( icon );
 
    wxHtmlWindow *html = new LinkingHtmlWindow(S.GetParent(), -1,
                                          wxDefaultPosition,
-                                         wxSize(480, 240),
+                                         wxSize(LOGOWITHNAME_WIDTH, 264), // wxSize(480, 240),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
    html->SetPage(creditStr);
    S.Prop(1).AddWindow( html, wxEXPAND );
@@ -384,7 +389,7 @@ void AboutDialog::PopulateLicensePage( ShuttleGui & S )
    S.StartVerticalLay(1);
    wxHtmlWindow *html = new wxHtmlWindow(S.GetParent(), -1,
                                          wxDefaultPosition,
-                                         wxSize(480, 240),
+                                         wxSize(LOGOWITHNAME_WIDTH, 264), // wxSize(480, 240),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
 
 // I tried using <pre> here to get a monospaced font,

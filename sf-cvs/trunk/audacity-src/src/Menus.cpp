@@ -728,7 +728,7 @@ void AudacityProject::CreateMenusAndCommands()
    else
       c->AddItem(wxT("About"),          _("&About Audacity..."),          FN(OnAbout));
 
-   c->AddItem(wxT("Welcome"),          _("&Start Up Message..."),          FN(OnHelpWelcome));
+   c->AddItem(wxT("Welcome"),          _("&Show Welcome Message..."),      FN(OnHelpWelcome));
    c->AddItem(wxT("Help"),             _("&Index..."),                      FN(OnHelp));
 
 
