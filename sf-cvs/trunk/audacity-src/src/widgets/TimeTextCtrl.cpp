@@ -195,6 +195,9 @@ struct BuiltinFormatString {
 
 BuiltinFormatString BuiltinFormatStrings[] =
    {{_("seconds"),
+/* i18n-hint: These strings control the formatting of time units in the 
+ * display. They are fairly complex, see the comments in
+ * widgets/TimeTextCtrl.cpp for how they work */
      _("01000,01000 seconds")},
     {_("hh:mm:ss"),
      _("0100 h 060 m 060 s")},
