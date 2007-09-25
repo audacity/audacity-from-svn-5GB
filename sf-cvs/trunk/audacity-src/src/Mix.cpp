@@ -338,9 +338,9 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
       it = it->GetNext();
    }
 
-   if (last > lrint(trackRate * mT1)) {
-      last = lrint(trackRate * mT1);
-   }
+   longSampleCount max = trackRate * mT1;
+   if (last > max)
+      last = max;
 
    while(out < mMaxOut) {
       if (*queueLen < mProcessLen) {
