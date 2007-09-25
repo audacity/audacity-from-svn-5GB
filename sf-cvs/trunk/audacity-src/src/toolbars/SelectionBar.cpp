@@ -214,7 +214,7 @@ void SelectionBar::Populate()
                                    wxLI_VERTICAL),
                   0,  wxRIGHT, 5);
 
-   mSnapTo = new wxCheckBox(this, OnSnapToID, wxT("Snap To"),
+   mSnapTo = new wxCheckBox(this, OnSnapToID, _("Snap To"),
                             wxDefaultPosition, wxDefaultSize,
                             wxALIGN_RIGHT);
    mainSizer->Add(mSnapTo,
