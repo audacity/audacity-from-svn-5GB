@@ -103,6 +103,7 @@ void SplashDialog::Populate( ShuttleGui & S )
 
 SplashDialog::~SplashDialog()
 {
+   delete m_pIcon;
    delete m_pLogo;
 }
 
