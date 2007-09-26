@@ -1217,10 +1217,18 @@ void AudioIO::StopStream()
                
                if (mPlaybackTracks.GetCount() > 0)
                {
-                  if (recordingOffset < 0)
+                  track->SetOffset(recordingOffset);
+                  if(track->GetEndTime() < 0.)
+                  {
+                     wxMessageDialog m(NULL, _("Latency setting has caused the recorded audio to be hidden before zero.\nI have brought it back to start at zero.\nYou may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."), _("Latency problem"), wxOK);
+                     m.ShowModal();
+                     track->SetOffset(0.);
+                  }
+
+/*                  if (recordingOffset < 0)
                      track->Clear(0, -recordingOffset);
                   else
-                     track->InsertSilence(0, recordingOffset);
+                     track->InsertSilence(0, recordingOffset);*/
                }
             }
          
