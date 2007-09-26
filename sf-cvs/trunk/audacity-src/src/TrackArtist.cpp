@@ -542,11 +542,11 @@ int TrackArtist::GetWaveYPosUnclipped(float value, int height, bool dB,
 
 void TrackArtist::DrawNegativeOffsetTrackArrows(wxDC &dc, wxRect &r)
 {
-   // Draws two white arrows on the left side of the track to
+   // Draws two black arrows on the left side of the track to
    // indicate the user that the track has been time-shifted
    // to the left beyond t=0.0.
 
-   dc.SetPen(*wxWHITE_PEN);
+   dc.SetPen(*wxBLACK_PEN);
    dc.DrawLine(r.x + 2, r.y + 6, r.x + 8, r.y + 6);
    dc.DrawLine(r.x + 2, r.y + 6, r.x + 6, r.y + 2);
    dc.DrawLine(r.x + 2, r.y + 6, r.x + 6, r.y + 10);
