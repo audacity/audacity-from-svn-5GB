@@ -1183,20 +1183,7 @@ void AudioIO::StopStream()
       if( mCaptureTracks.GetCount() > 0 )
       {
          //
-         // Note: Latency correction > 0 means there is more latency than
-         // expected. This means, more recorded audio must be thrown away
-         // to get it in sync with played back audio. Latency correction < 0
-         // means there is less latency than expected, this means, less
-         // recorded audio must be thrown away to get it in sync with played
-         // back audio.
-         //
-         // We also allow for the case of total latency being below zero, i.e.
-         // a negative latency. In this case, silence is inserted into the
-         // recorded track to bring it in sync with played back audio.
-         // However, it is unclear if there ever would be a technical reason
-         // for a negative latency.
-         //
-         // We also only apply latency correction when we actually played back
+         // We only apply latency correction when we actually played back
          // tracks during the recording. If we did not play back tracks,
          // there's nothing we could be out of sync with. This also covers the
          // case that we do not apply latency correction when recording the
@@ -1206,7 +1193,7 @@ void AudioIO::StopStream()
          gPrefs->Read(wxT("/AudioIO/LatencyCorrection"), &latencyCorrection);
          
          double recordingOffset =
-            mLastRecordingOffset - latencyCorrection / 1000.0;
+            mLastRecordingOffset + latencyCorrection / 1000.0;
 
          for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
             {
