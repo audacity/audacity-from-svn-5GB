@@ -84,6 +84,7 @@ class LabelTrack:public Track {
    LabelTrack(const LabelTrack &orig);
 
    virtual ~ LabelTrack();
+   virtual void SetOffset(double dOffset);
 
    static void ResetFont();
 
