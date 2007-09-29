@@ -222,6 +222,8 @@ void OnImportRaw();
 void OnEditMetadata();
 
 void OnMixAndRender();
+void OnMixAndRenderToNewTrack();
+void HandleMixAndRender(bool toNewTrack);
 
 void OnSelectionSave();
 void OnSelectionRestore();
