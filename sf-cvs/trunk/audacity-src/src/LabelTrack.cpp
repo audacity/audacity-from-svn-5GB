@@ -130,6 +130,16 @@ LabelTrack::~LabelTrack()
       delete mLabels[i];
 }
 
+void LabelTrack::SetOffset(double dOffset)
+{
+   int len = mLabels.Count();
+   for (int i = 0; i < len; i++)
+   {
+      mLabels[i]->t += dOffset;
+      mLabels[i]->t1 += dOffset;
+   }
+}
+
 void LabelTrack::ResetFlags()
 {
    mMouseXPos = -1;
