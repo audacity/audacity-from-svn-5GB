@@ -138,6 +138,13 @@ void ExportFLACOptions::OnOK(wxCommandEvent& event)
 
 #define SAMPLES_PER_RUN 8192
 
+/* FLACPP_API_VERSION_CURRENT is 6 for libFLAC++ from flac-1.1.3 (see <FLAC++/export.h>) */
+#if !defined FLACPP_API_VERSION_CURRENT || FLACPP_API_VERSION_CURRENT < 6
+#define LEGACY_FLAC
+#else
+#undef LEGACY_FLAC
+#endif
+
 static struct
 {
    bool        do_exhaustive_model_search;
@@ -229,7 +236,9 @@ bool ExportFLAC::Export(AudacityProject *project,
 
    FLAC::Encoder::File encoder;
 
+#ifdef LEGACY_FLAC
    encoder.set_filename(OSFILENAME(fName));
+#endif
    encoder.set_channels(numChannels);
    encoder.set_sample_rate(lrint(rate));
 
@@ -271,7 +280,11 @@ bool ExportFLAC::Export(AudacityProject *project,
    encoder.set_rice_parameter_search_dist(flacLevels[levelPref].rice_parameter_search_dist);
    encoder.set_max_lpc_order(flacLevels[levelPref].max_lpc_order);
 
+#ifdef LEGACY_FLAC
    encoder.init();
+#else
+   encoder.init(OSFILENAME(fName));
+#endif
 
    if (mMetadata) {
       ::FLAC__metadata_object_delete(mMetadata);
@@ -384,7 +397,7 @@ ExportPlugin *New_ExportFLAC()
    return new ExportFLAC();
 }
 
-#endif // USE_LIBVORBIS
+#endif // USE_LIBFLAC
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

@@ -68,6 +68,13 @@ void GetFLACImportPlugin(ImportPluginList *importPluginList,
 #include "../WaveTrack.h"
 #include "ImportPlugin.h"
 
+/* FLACPP_API_VERSION_CURRENT is 6 for libFLAC++ from flac-1.1.3 (see <FLAC++/export.h>) */
+#if !defined FLACPP_API_VERSION_CURRENT || FLACPP_API_VERSION_CURRENT < 6
+#define LEGACY_FLAC
+#else
+#undef LEGACY_FLAC
+#endif
+
 class FLACImportFileHandle;
 
 class MyFLACFile : public FLAC::Decoder::File
@@ -291,6 +298,7 @@ FLACImportFileHandle::FLACImportFileHandle(wxString name):
 
 bool FLACImportFileHandle::Init()
 {
+#ifdef LEGACY_FLAC
    bool success = mFile->set_filename(OSFILENAME(mName));
    if (!success) {
       return false;
@@ -301,11 +309,25 @@ bool FLACImportFileHandle::Init()
    if (state != FLAC__FILE_DECODER_OK) {
       return false;
    }
+#else
+   if (mFile->init(OSFILENAME(mName)) != FLAC__STREAM_DECODER_INIT_STATUS_OK) {
+      return false;
+   }
+#endif
    mFile->process_until_end_of_metadata();
+
+#ifdef LEGACY_FLAC
    state = mFile->get_state();
    if (state != FLAC__FILE_DECODER_OK) {
       return false;
    }
+#else
+   // not necessary to check state, error callback will catch errors, but here's how:
+   if (mFile->get_state() > FLAC__STREAM_DECODER_READ_FRAME) {
+      return false;
+   }
+#endif
+
    if (!mFile->is_valid() || mFile->get_was_error()) {
       // This probably is not a FLAC file at all
       return false;
@@ -364,7 +386,11 @@ bool FLACImportFileHandle::Import(TrackFactory *trackFactory,
       }
    }
 
+#ifdef LEGACY_FLAC
    bool res = (mFile->process_until_end_of_file() != 0);
+#else
+   bool res = (mFile->process_until_end_of_stream() != 0);
+#endif
 
    if (!res) {
       for(c = 0; c < mNumChannels; c++) {
