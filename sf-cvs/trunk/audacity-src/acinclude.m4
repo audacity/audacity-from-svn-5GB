@@ -520,7 +520,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
    dnl See if FLAC is installed in the system
 
    AC_CHECK_LIB(FLAC,
-                FLAC__file_decoder_new,
+                FLAC__stream_decoder_new,
                 lib_found="yes",
                 lib_found="no",
                 -lFLAC++ -lFLAC)
