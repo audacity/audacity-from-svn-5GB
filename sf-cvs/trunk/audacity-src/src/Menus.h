@@ -65,6 +65,7 @@ void OnSeekRightLong();
 
 bool MakeReadyToPlay(); // Helper function that sets button states etc.
 void OnPlayStop();
+void OnPlayStopSelect();
 void OnPlayOneSecond();
 void OnPlayToSelection();
 void OnPlayLooped();
