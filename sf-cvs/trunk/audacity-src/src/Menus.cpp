@@ -561,6 +561,10 @@ void AudacityProject::CreateMenusAndCommands()
       c->SetCommandFlags(wxT("MixAndRender"),
                          AudioIONotBusyFlag | WaveTracksSelectedFlag,
                          AudioIONotBusyFlag | WaveTracksSelectedFlag);
+      c->AddCommand(wxT("MixAndRenderToNewTrack"), _("Mix and Render to New Track\tCtrl+Shift+M"), FN(OnMixAndRenderToNewTrack));
+      c->SetCommandFlags(wxT("MixAndRenderToNewTrack"),
+                         AudioIONotBusyFlag | WaveTracksSelectedFlag,
+                         AudioIONotBusyFlag | WaveTracksSelectedFlag);
       c->AddItem(wxT("Resample"), _("&Resample..."), FN(OnResample));
       c->SetCommandFlags(wxT("Resample"),
                          AudioIONotBusyFlag | WaveTracksSelectedFlag,
@@ -3590,7 +3594,7 @@ void AudacityProject::OnEditMetadata()
    }
 }
 
-void AudacityProject::OnMixAndRender()
+void AudacityProject::HandleMixAndRender(bool toNewTrack)
 {
    WaveTrack *newLeft = NULL;
    WaveTrack *newRight = NULL;
@@ -3615,8 +3619,12 @@ void AudacityProject::OnMixAndRender()
             if (t->GetLinked() || !mTracks->GetLink(t))
                 selectedCount++;
 
-            delete t;
-            t = iter.RemoveCurrent();
+                if (!toNewTrack) {
+                   delete t;
+                   t = iter.RemoveCurrent();
+                } else {
+                   t = iter.Next();
+                };
          }
          else
             t = iter.Next();
@@ -3656,6 +3664,16 @@ void AudacityProject::OnMixAndRender()
       mTrackPanel->EnsureVisible(newLeft);
       RedrawProject();
    }
+}
+
+void AudacityProject::OnMixAndRender()
+{
+   HandleMixAndRender(false);
+}
+
+void AudacityProject::OnMixAndRenderToNewTrack()
+{
+   HandleMixAndRender(true);
 }
 
 void AudacityProject::OnSelectionSave()
