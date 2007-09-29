@@ -1,4 +1,4 @@
-﻿[Desktop Entry]
+[Desktop Entry]
 Encoding=UTF-8
 
 Name=Audacity Sound Editor
@@ -14,7 +14,7 @@ Comment[ru]=Запись и редактирование звуковых фай
 Icon=/usr/share/audacity/audacity.xpm
 
 Type=Application
-Categories=Application;AudioVideo;Audio;Multimedia;
+Categories=Application;AudioVideo;Audio;AudioVideoEditing;
 
 Exec=audacity
 StartupNotify=false
