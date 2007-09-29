@@ -313,12 +313,6 @@ AC_ARG_ENABLE(quicktime,
    use_quicktime=$enableval,
    use_quicktime="auto")
 
-AC_ARG_ENABLE(vamp,
-   [AC_HELP_STRING([--enable-vamp],
-      [enable VAMP analysis plugin support [default=auto]])],
-   use_vamp=$enableval,
-   use_vamp="auto")
-
 dnl In-tree libraries (ones we write, so only options are off and local)
 
 AC_ARG_WITH(portmixer,
@@ -576,14 +570,6 @@ if [[ "$use_ladspa" = "yes" ]] ; then
              [Define if LADSPA plug-ins are enabled])
 fi
 
-if [[ "$use_vamp" = "yes" ]] ; then
-   OPTOBJS="$OPTOBJS effects/vamp/LoadVamp.o"
-   OPTOBJS="$OPTOBJS effects/vamp/VampEffect.o"
-
-   AC_DEFINE(USE_LADSPA, 1,
-             [Define if LADSPA plug-ins are enabled])
-fi
-
 if [[ "$use_audiounits" = "yes" ]] ; then
    OPTOBJS="$OPTOBJS effects/audiounits/LoadAudioUnits.o"
    OPTOBJS="$OPTOBJS effects/audiounits/AudioUnitEffect.o"
@@ -657,12 +643,6 @@ if [[ "$use_ladspa" = "yes" ]] ; then
    echo "ladspa: enabled"
 else
    echo "ladspa: disabled"        
-fi
-
-if [[ "$use_vamp" = "yes" ]] ; then
-   echo "VAMP: enabled"
-else
-   echo "VAMP: disabled"        
 fi
 
 if [[ "$use_audiounits" = "yes" ]] ; then
