@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity Website - 1.2\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2007-09-22 14:34+0100\n"
+"PO-Revision-Date: 2007-09-29 12:16+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Martin Srebotnjak <miles@filmsi.net>\n"
 "MIME-Version: 1.0\n"
@@ -1140,7 +1140,7 @@ msgid "About Audacity"
 msgstr "O Audacity"
 
 #: about/news.php:21
-#: index.php:84
+#: index.php:85
 msgid "More news items..."
 msgstr "Več novic ..."
 
@@ -1269,6 +1269,52 @@ msgid ""
 "\n"
 "<p>See <a href=\"http://audacityteam.org/wiki/index.php?title=AudacityVendors#Advice_for_Vendors\">Advice for Vendors</a> on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a> for further advice.</p>"
 msgstr ""
+"<h3>Nasvet za prodajalce in distributerje</h3>\n"
+"\n"
+"<p>Več tretjih strank prilaga Audacity svojim izdelkom, preprodaja ali distribuira Audacity (oglejte si <a href=\"../download/bundlers\">Prodajalci, ki distribuirajo Audacity</a>). Tukaj so navodila za prilaganje, prodajanje ali distribucijo Audacity. Če upoštevate ta navodila, prosimo, <a href=\"../contact/\">stopite z nami v stik</a> za možnost vključitve na seznam <a href=\"../download/bundlers\">Prodajalcev in distributerjev Audacity</a> (navodila najdete na tej strani).</p>\n"
+"\n"
+"<p>Vključiti morate (skladno s tretjim razdelkom GPL):\n"
+"  <ol>\n"
+"    <li>kopijo licence <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> in </li>\n"
+"    <li>a href=\"http://audacity.sourceforge.net/download/source\">izvorno kodo Audacity</a> (če pa razširjate spremenjeno različico, njeno izvorno kodo), ali pa pisno ponudite dostavo te kode.</li>\n"
+"  </ol>\n"
+"</p>\n"
+"\n"
+"<p>Če razširjate naše namestitvene datoteke in jih ne spreminjate, s tem spoštujete obe zahtevi, saj te datoteke vsebujejo <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">licenco GPL</a> in v datoteki README.txt uporabnikom ponujajo dostop do izvorne kode. Različice Audacity po 1.3.3 vključujejo tudi GPL v sami aplikaciji - v pogovornem oknu O Audacity.</p>\n"
+"\n"
+"<p>Veseli bomo vaše povezave na našo spletno stran: <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a>, da lahko vaši uporabniki prenesejo posodobljene različice Audacity, ko bodo na voljo. Prav tako prosimo, da se prijavite na poštni seznam obvestil na dnu <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a>, da si zagotovite obveščanje in s tem distribucijo najnovejših različic Audacity.</p>\n"
+"\n"
+"<p>Če je mogoče, prosimo, da v svojo distribucijo vključite dokumentacijo Audacity z <a href=\"http://audacity.sourceforge.net/help/documentation\">http://audacity.sourceforge.net/help/documentation</a>, da tako zmanjšate število povpraševanj, ki jih prejemamo. Prav tako prosimo, da v svoji dokumentaciji razložite, da ekipa Audacity ne more ponujati pomoči za vaš lasten izdelek, le za Audacity.</p>\n"
+"\n"
+"<p>POMEMBNO: Če pišete lastno dokumentacijo za Audacity, nam jo, prosimo, pošljite v pregled za odkrivanje morebitnih napak, <em>preden</em> jo objavite.</p>\n"
+"   \n"
+"<p>Če spremenite Audacity brez izrecnega dovoljenja ekipe Audacity, nimate pravice uporabljati ime Audacity, ki je zaščitena blagovna znamka Dominica Mazzonija.  Izdelek morate preimenovati in zagotoviti lastno tehnično podporo.</p>\n"
+"\n"
+"<p>\n"
+"  <dl><dt></dt><dd><!-- indent cheat -->\n"
+"    <h4>Za prodajalce strojne opreme, ki priložijo Audacity:</h4>\n"
+"  </dd></dl>\n"
+"  <ol>\n"
+"    <li>Hvala, ker ste se odločili za distribucijo Audacity s svojimi izdelki! Prosimo, <a href=\"../contact/\">stopite v stik z nami</a> pravočasno, da lahko skupaj naredimo vaš izdelek še bolj uspešen.</li>\n"
+"    <li>Prosimo, distribuirajte Audacity nespremenjen. Če ga želite spremeniti, da bi deloval z vašo napravo, prosim, najprej <a href=\"../contact/\">stopite v stik z nami</a>.</li>\n"
+"    <li>Prosimo, temeljito preizkusite svojo napravo z Audacity.  Če so potrebna kakšna posebna navodila nastavitev, ki jim morajo uporabniki slediti, da bi naprava delovala z Audacity, preverite, da so ta napravi priložena.</li>\n"
+"    <li>Prosimo, ne usmerjajte stranke na tehnično podporo Audacity, če imajo težave pri uporabi vaše naprave.  Če prodajate komercialen izdelek, morate zagotavljati lastno tehnično podporo.  Če imajo uporabniki težave, ki so omejene na Audacity in ne na napravo, bomo seveda z veseljem priskočili na pomoč.</li>\n"
+"  </ol>\n"
+"</p>\n"
+"\n"
+"<p>\n"
+"  <dl><dt></dt><dd><!-- indent cheat -->\n"
+"    <h4>Za tiste, ki želijo prodajati ali distribuirati Audacity:</h4>\n"
+"  </dd></dl>\n"
+"  <ol>\n"
+"    <li>Če prodajate nespremenjen Audacity, morate pri oglaševanju jasno navesti, da je Audacity na voljo brezplačno prek spleta, kot tudi, kaj kupec plačuje, ko od vas kupi Audacity.  Možnosti vključujejo Audacity na nosilcu CD-ROM, drugo priloženo programsko opremo ali glasbene datoteke, natisnjen priročnik in podobno.</li>\n"
+"    <li>Če prodajate nespremenjen Audacity, od vas pričakujemo, da sami zagotovite svojim strankam lastno tehnično podporo povsod, kjer je to mogoče. Če imate zadržke ali vam pri tem lahko pomagamo, <a href=\"../contact/\">stopite z nami v stik</a>.</li>\n"
+"  </ol>\n"
+"</p>\n"
+"\n"
+"<p>Ne smete se predstavljati sebe ali svojega podjetja kot pooblaščenega distributerja Audacity. Ime Audacity je zaščitena blagovna znamka Dominica Mazzonija.</p>\n"
+"\n"
+"<p>Oglejte si <a href=\"http://audacityteam.org/wiki/index.php?title=AudacityVendors#Advice_for_Vendors\">Nasvet za prodajalce</a> na <a href=\"http://audacityteam.org/wiki\">wikiju Audacity</a> za dodatne nasvete.</p>"
 
 #: about/index.php:14
 msgid ""
@@ -1677,7 +1723,7 @@ msgstr "Opombe ob izdaji"
 
 #: main.inc.php:39
 #: download/index.php:41
-#: index.php:59
+#: index.php:60
 msgid "Beta"
 msgstr "Beta"
 
@@ -4864,33 +4910,33 @@ msgstr "Za okolja Windows, Mac ali GNU/Linux"
 msgid "The Free, Cross-Platform Sound Editor"
 msgstr "Brezplačni večplatformni urejevalnik zvoka"
 
-#: index.php:50
-msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
-msgstr "Audacity je brezplačna odprto-kodna aplikacija za snemanje in urejanje zvoka.  Na voljo je za Mac OS X, Microsoft Windows, GNU/Linux in druge operacijske sisteme.  <a href=\"about/\">Izvedite več o Audacity ...</a>"
+#: index.php:51
+msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href=\"about/\">Learn more about Audacity...</a> Also check our <a href=\"http://audacityteam.org/wiki/\">Wiki</a> and <a href=\"http://audacityteam.org/forum/\">Forum</a> for more information."
+msgstr "Audacity je brezplačna odprto-kodna aplikacija za snemanje in urejanje zvoka.  Na voljo je za Mac OS X, Microsoft Windows, GNU/Linux in druge operacijske sisteme.  <a href=\"about/\">Izvedite več o Audacity ...</a> Prav tako za več informacij obiščite naša <a href=\"http://audacityteam.org/wiki/\">wiki</a> in <a href=\"http://audacityteam.org/forum/\">forum</a>."
 
-#: index.php:55
-#: index.php:59
+#: index.php:56
+#: index.php:60
 #, php-format
 msgid "Download Audacity %s"
 msgstr "Prenesi Audacity %s"
 
-#: index.php:67
+#: index.php:68
 msgid "Other downloads"
 msgstr "Drugi prenosi"
 
-#: index.php:88
+#: index.php:89
 msgid "Get Notified of New Versions"
 msgstr "Bodite obveščeni o novih različicah"
 
-#: index.php:100
+#: index.php:101
 msgid "Email address"
 msgstr "E-poštni naslov"
 
-#: index.php:101
+#: index.php:102
 msgid "Add"
 msgstr "Dodaj"
 
-#: index.php:102
+#: index.php:103
 msgid "Remove"
 msgstr "Odstrani"
 
