@@ -770,6 +770,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("Pause"),       _("Pause\tP"),                    FN(OnPause));
    c->AddCommand(wxT("Record"),      _("Record\tR"),                   FN(OnRecord));
    
+   c->AddCommand(wxT("PlayStopSelect"),  _("Play/Stop and Select\tShift+Return"),    FN(OnPlayStopSelect));
    c->AddCommand(wxT("StopSelect"),  _("Stop and Select\tShift+A"),    FN(OnStopSelect));
 
    c->AddCommand(wxT("PlayOneSec"),     _("Play One Second\t1"),       FN(OnPlayOneSecond));
@@ -1375,6 +1376,34 @@ void AudacityProject::OnRecord()
    wxCommandEvent evt;
 
    GetControlToolBar()->OnRecord(evt);
+}
+
+// The code for "OnPlayStopSelect" is simply the code of "OnPlayStop" and "OnStopSelect" merged.
+void AudacityProject::OnPlayStopSelect()
+{
+   wxCommandEvent evt;
+   ControlToolBar *toolbar = GetControlToolBar();
+
+   //If busy, stop playing, make sure everything is unpaused.
+   if (gAudioIO->IsStreamActive(GetAudioIOToken())) {
+      toolbar->SetPlay(false);        //Pops
+      toolbar->SetStop(true);         //Pushes stop down
+//    toolbar->StopPlaying();
+      mViewInfo.sel0 = gAudioIO->GetStreamTime();
+      if( mViewInfo.sel1 < mViewInfo.sel0 ) {
+         mViewInfo.sel1 = mViewInfo.sel0;
+      }
+      GetControlToolBar()->OnStop(evt);
+      ModifyState();
+   }
+   else if (!gAudioIO->IsBusy()) {
+      //Otherwise, start playing (assuming audio I/O isn't busy)
+      toolbar->SetPlay(true);
+      toolbar->SetStop(false);
+
+      // Will automatically set mLastPlayMode
+      toolbar->PlayCurrentRegion(false);
+   }
 }
 
 void AudacityProject::OnStopSelect()
