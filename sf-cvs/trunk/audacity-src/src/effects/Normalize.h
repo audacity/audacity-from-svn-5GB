@@ -41,6 +41,8 @@ public:
       return wxString(_("Normalizing..."));
    }
    
+   virtual wxString GetEffectDescription(); // useful only after parameter values have been set
+
    virtual bool PromptUser();
    virtual bool TransferParameters( Shuttle & shuttle );
 

@@ -61,6 +61,20 @@ bool EffectNormalize::Init()
    return true;
 }
 
+wxString EffectNormalize::GetEffectDescription() // useful only after parameter values have been set
+{ 
+   // Note: This is useful only after ratio has been set. 
+   wxString strResult = 
+      wxString::Format(_("Applied effect: %s remove dc offset = %s, normalize amplitude = %s"), 
+                        this->GetEffectName().c_str(), 
+                        mDC ? _("true") : _("false"), 
+                        mGain ? _("true") : _("false"));
+   if (mGain)
+      strResult += wxString::Format(_(", maximum amplitude = %.1f dB"), -mLevel); 
+
+   return strResult;
+} 
+
 bool EffectNormalize::TransferParameters( Shuttle & shuttle )
 {
    shuttle.TransferBool( wxT("ApplyGain"), mGain, true );
