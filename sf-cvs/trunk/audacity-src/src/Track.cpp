@@ -591,7 +591,7 @@ void TrackList::GetWaveTracks(bool selectionOnly,
 
    TrackListNode *p = head;
    while (p) {
-      if (p->t->GetKind() == Track::Wave &&
+      if (p->t->GetKind() == Track::Wave && !(p->t->GetMute()) &&
           (p->t->GetSelected() || !selectionOnly))
          (*num)++;
       p = p->next;
@@ -601,7 +601,7 @@ void TrackList::GetWaveTracks(bool selectionOnly,
    p = head;
    i = 0;
    while (p) {
-      if (p->t->GetKind() == Track::Wave &&
+      if (p->t->GetKind() == Track::Wave && !(p->t->GetMute()) &&
           (p->t->GetSelected() || !selectionOnly))
          (*tracks)[i++] = (WaveTrack *)p->t;
       p = p->next;
