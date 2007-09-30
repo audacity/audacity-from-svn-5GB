@@ -693,6 +693,8 @@ SOUNDTOUCH_CFLAGS
 SOUNDTOUCH_LIBS
 VAMP_CFLAGS
 VAMP_LIBS
+TWOLAME_CFLAGS
+TWOLAME_LIBS
 WX_CONFIG
 build
 build_cpu
@@ -731,6 +733,8 @@ SOUNDTOUCH_CFLAGS
 SOUNDTOUCH_LIBS
 VAMP_CFLAGS
 VAMP_LIBS
+TWOLAME_CFLAGS
+TWOLAME_LIBS
 JACK_CFLAGS
 JACK_LIBS'
 ac_subdirs_all='lib-src/FileDialog
@@ -1319,9 +1323,9 @@ Optional Features:
   --enable-debug          enable debug support [default=no]
   --enable-nyquist        enable Nyquist plug-in support [default=yes]
   --enable-vamp           enable Vamp plug-in support [default=yes]
-  --enable-ladspa         enable LADSPA plug-in support [default=yes]
   --enable-audiounits     enable audio unit plug-in support (Mac OS X only)
                           [default=auto]
+  --enable-ladspa         enable LADSPA plug-in support [default=yes]
   --enable-quicktime      enable QuickTime import support (Mac OS X only)
                           [default=auto]
 
@@ -1344,7 +1348,7 @@ Optional Packages:
   --with-libflac          use libFLAC for FLAC support
   --with-libid3tag        use libid3tag for mp3 id3 tag support
   --with-soundtouch       use libSoundTouch for pitch and tempo changing
-  --with-libtwolame       use libtwolame for MP2 export support [default=yes]
+  --with-libtwolame       use libtwolame for MP2 export support
   --with-portmixer        compile with PortMixer [default=yes]
   --with-portaudio        which version of PortAudio to use (=[v18,v19])
                           [default=v19]
@@ -1379,6 +1383,10 @@ Some influential environment variables:
               linker flags for SOUNDTOUCH, overriding pkg-config
   VAMP_CFLAGS C compiler flags for VAMP, overriding pkg-config
   VAMP_LIBS   linker flags for VAMP, overriding pkg-config
+  TWOLAME_CFLAGS
+              C compiler flags for TWOLAME, overriding pkg-config
+  TWOLAME_LIBS
+              linker flags for TWOLAME, overriding pkg-config
   JACK_CFLAGS C compiler flags for JACK, overriding pkg-config
   JACK_LIBS   linker flags for JACK, overriding pkg-config
 
@@ -5527,9 +5535,9 @@ fi
 
 
 
-   { echo "$as_me:$LINENO: checking for FLAC__file_decoder_new in -lFLAC" >&5
-echo $ECHO_N "checking for FLAC__file_decoder_new in -lFLAC... $ECHO_C" >&6; }
-if test "${ac_cv_lib_FLAC_FLAC__file_decoder_new+set}" = set; then
+   { echo "$as_me:$LINENO: checking for FLAC__stream_decoder_new in -lFLAC" >&5
+echo $ECHO_N "checking for FLAC__stream_decoder_new in -lFLAC... $ECHO_C" >&6; }
+if test "${ac_cv_lib_FLAC_FLAC__stream_decoder_new+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   ac_check_lib_save_LIBS=$LIBS
@@ -5547,11 +5555,11 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef __cplusplus
 extern "C"
 #endif
-char FLAC__file_decoder_new ();
+char FLAC__stream_decoder_new ();
 int
 main ()
 {
-return FLAC__file_decoder_new ();
+return FLAC__stream_decoder_new ();
   ;
   return 0;
 }
@@ -5574,21 +5582,21 @@ eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
 	 test ! -s conftest.err
        } && test -s conftest$ac_exeext &&
        $as_test_x conftest$ac_exeext; then
-  ac_cv_lib_FLAC_FLAC__file_decoder_new=yes
+  ac_cv_lib_FLAC_FLAC__stream_decoder_new=yes
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-	ac_cv_lib_FLAC_FLAC__file_decoder_new=no
+	ac_cv_lib_FLAC_FLAC__stream_decoder_new=no
 fi
 
 rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
       conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_FLAC_FLAC__file_decoder_new" >&5
-echo "${ECHO_T}$ac_cv_lib_FLAC_FLAC__file_decoder_new" >&6; }
-if test $ac_cv_lib_FLAC_FLAC__file_decoder_new = yes; then
+{ echo "$as_me:$LINENO: result: $ac_cv_lib_FLAC_FLAC__stream_decoder_new" >&5
+echo "${ECHO_T}$ac_cv_lib_FLAC_FLAC__stream_decoder_new" >&6; }
+if test $ac_cv_lib_FLAC_FLAC__stream_decoder_new = yes; then
   lib_found="yes"
 else
   lib_found="no"
@@ -6472,7 +6480,90 @@ _ACEOF
 
    fi
 
-         LIBTWOLAME_SYSTEM_AVAILABLE="no"
+
+
+pkg_failed=no
+{ echo "$as_me:$LINENO: checking for TWOLAME" >&5
+echo $ECHO_N "checking for TWOLAME... $ECHO_C" >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$TWOLAME_CFLAGS"; then
+        pkg_cv_TWOLAME_CFLAGS="$TWOLAME_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"twolame >= 0.3.9\"") >&5
+  ($PKG_CONFIG --exists --print-errors "twolame >= 0.3.9") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_TWOLAME_CFLAGS=`$PKG_CONFIG --cflags "twolame >= 0.3.9" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$TWOLAME_LIBS"; then
+        pkg_cv_TWOLAME_LIBS="$TWOLAME_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"twolame >= 0.3.9\"") >&5
+  ($PKG_CONFIG --exists --print-errors "twolame >= 0.3.9") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_TWOLAME_LIBS=`$PKG_CONFIG --libs "twolame >= 0.3.9" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        TWOLAME_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "twolame >= 0.3.9"`
+        else
+	        TWOLAME_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "twolame >= 0.3.9"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$TWOLAME_PKG_ERRORS" >&5
+
+	{ echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+                twolame_available_system="no"
+elif test $pkg_failed = untried; then
+	twolame_available_system="no"
+else
+	TWOLAME_CFLAGS=$pkg_cv_TWOLAME_CFLAGS
+	TWOLAME_LIBS=$pkg_cv_TWOLAME_LIBS
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+	twolame_available_system="yes"
+fi
+
+   if test "x$twolame_available_system" = "xyes" ; then
+      LIBTWOLAME_SYSTEM_AVAILABLE="yes"
+      LIBTWOLAME_SYSTEM_LIBS=$TWOLAME_LIBS
+      LIBTWOLAME_SYSTEM_CXXFLAGS=$TWOLAME_CFLAGS
+      { echo "$as_me:$LINENO: Libtwolame library available as system library" >&5
+echo "$as_me: Libtwolame library available as system library" >&6;}
+   else
+      LIBTWOLAME_SYSTEM_AVAILABLE="no"
+      { echo "$as_me:$LINENO: Libtwolame library NOT available as system library" >&5
+echo "$as_me: Libtwolame library NOT available as system library" >&6;}
+   fi
 
 
    as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/twolame/libtwolame/twolame.h" | $as_tr_sh`
@@ -6668,19 +6759,19 @@ CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/FileDialog"
 
 
 
-# Check whether --enable-ladspa was given.
-if test "${enable_ladspa+set}" = set; then
-  enableval=$enable_ladspa; use_ladspa=$enableval
-else
-  use_ladspa="yes"
-fi
-
-
 # Check whether --enable-audiounits was given.
 if test "${enable_audiounits+set}" = set; then
   enableval=$enable_audiounits; use_audiounits=$enableval
 else
   use_audiounits="auto"
+fi
+
+
+# Check whether --enable-ladspa was given.
+if test "${enable_ladspa+set}" = set; then
+  enableval=$enable_ladspa; use_ladspa=$enableval
+else
+  use_ladspa="yes"
 fi
 
 
@@ -8460,6 +8551,8 @@ SOUNDTOUCH_CFLAGS!$SOUNDTOUCH_CFLAGS$ac_delim
 SOUNDTOUCH_LIBS!$SOUNDTOUCH_LIBS$ac_delim
 VAMP_CFLAGS!$VAMP_CFLAGS$ac_delim
 VAMP_LIBS!$VAMP_LIBS$ac_delim
+TWOLAME_CFLAGS!$TWOLAME_CFLAGS$ac_delim
+TWOLAME_LIBS!$TWOLAME_LIBS$ac_delim
 WX_CONFIG!$WX_CONFIG$ac_delim
 build!$build$ac_delim
 build_cpu!$build_cpu$ac_delim
@@ -8475,7 +8568,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 92; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 94; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
