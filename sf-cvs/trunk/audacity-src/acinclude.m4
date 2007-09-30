@@ -105,7 +105,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
    dnl Check for a system copy of libtwolame to use, which needs to be
    dnl pretty current to work
 
-   PKG_CHECK_MODULES(TWOLAME, twolame >= 0.3.9,
+   PKG_CHECK_MODULES(LIBTWOLAME, twolame >= 0.3.9,
                      twolame_available_system="yes",
                      twolame_available_system="no")
 
@@ -113,6 +113,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
       LIBTWOLAME_SYSTEM_AVAILABLE="yes"
       LIBTWOLAME_SYSTEM_LIBS=$TWOLAME_LIBS
       LIBTWOLAME_SYSTEM_CXXFLAGS=$TWOLAME_CFLAGS
+      LIBTWOLAME_SYSTEM_CPPSYMBOLS="USE_LIBTWOLAME"
       AC_MSG_NOTICE([Libtwolame library available as system library])
    else
       LIBTWOLAME_SYSTEM_AVAILABLE="no"

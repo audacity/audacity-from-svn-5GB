@@ -693,8 +693,8 @@ SOUNDTOUCH_CFLAGS
 SOUNDTOUCH_LIBS
 VAMP_CFLAGS
 VAMP_LIBS
-TWOLAME_CFLAGS
-TWOLAME_LIBS
+LIBTWOLAME_CFLAGS
+LIBTWOLAME_LIBS
 WX_CONFIG
 build
 build_cpu
@@ -733,8 +733,8 @@ SOUNDTOUCH_CFLAGS
 SOUNDTOUCH_LIBS
 VAMP_CFLAGS
 VAMP_LIBS
-TWOLAME_CFLAGS
-TWOLAME_LIBS
+LIBTWOLAME_CFLAGS
+LIBTWOLAME_LIBS
 JACK_CFLAGS
 JACK_LIBS'
 ac_subdirs_all='lib-src/FileDialog
@@ -1383,10 +1383,10 @@ Some influential environment variables:
               linker flags for SOUNDTOUCH, overriding pkg-config
   VAMP_CFLAGS C compiler flags for VAMP, overriding pkg-config
   VAMP_LIBS   linker flags for VAMP, overriding pkg-config
-  TWOLAME_CFLAGS
-              C compiler flags for TWOLAME, overriding pkg-config
-  TWOLAME_LIBS
-              linker flags for TWOLAME, overriding pkg-config
+  LIBTWOLAME_CFLAGS
+              C compiler flags for LIBTWOLAME, overriding pkg-config
+  LIBTWOLAME_LIBS
+              linker flags for LIBTWOLAME, overriding pkg-config
   JACK_CFLAGS C compiler flags for JACK, overriding pkg-config
   JACK_LIBS   linker flags for JACK, overriding pkg-config
 
@@ -6483,12 +6483,12 @@ _ACEOF
 
 
 pkg_failed=no
-{ echo "$as_me:$LINENO: checking for TWOLAME" >&5
-echo $ECHO_N "checking for TWOLAME... $ECHO_C" >&6; }
+{ echo "$as_me:$LINENO: checking for LIBTWOLAME" >&5
+echo $ECHO_N "checking for LIBTWOLAME... $ECHO_C" >&6; }
 
 if test -n "$PKG_CONFIG"; then
-    if test -n "$TWOLAME_CFLAGS"; then
-        pkg_cv_TWOLAME_CFLAGS="$TWOLAME_CFLAGS"
+    if test -n "$LIBTWOLAME_CFLAGS"; then
+        pkg_cv_LIBTWOLAME_CFLAGS="$LIBTWOLAME_CFLAGS"
     else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"twolame >= 0.3.9\"") >&5
@@ -6496,7 +6496,7 @@ if test -n "$PKG_CONFIG"; then
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_TWOLAME_CFLAGS=`$PKG_CONFIG --cflags "twolame >= 0.3.9" 2>/dev/null`
+  pkg_cv_LIBTWOLAME_CFLAGS=`$PKG_CONFIG --cflags "twolame >= 0.3.9" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -6505,8 +6505,8 @@ else
 	pkg_failed=untried
 fi
 if test -n "$PKG_CONFIG"; then
-    if test -n "$TWOLAME_LIBS"; then
-        pkg_cv_TWOLAME_LIBS="$TWOLAME_LIBS"
+    if test -n "$LIBTWOLAME_LIBS"; then
+        pkg_cv_LIBTWOLAME_LIBS="$LIBTWOLAME_LIBS"
     else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"twolame >= 0.3.9\"") >&5
@@ -6514,7 +6514,7 @@ if test -n "$PKG_CONFIG"; then
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_TWOLAME_LIBS=`$PKG_CONFIG --libs "twolame >= 0.3.9" 2>/dev/null`
+  pkg_cv_LIBTWOLAME_LIBS=`$PKG_CONFIG --libs "twolame >= 0.3.9" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -6533,12 +6533,12 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        TWOLAME_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "twolame >= 0.3.9"`
+	        LIBTWOLAME_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "twolame >= 0.3.9"`
         else
-	        TWOLAME_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "twolame >= 0.3.9"`
+	        LIBTWOLAME_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "twolame >= 0.3.9"`
         fi
 	# Put the nasty error message in config.log where it belongs
-	echo "$TWOLAME_PKG_ERRORS" >&5
+	echo "$LIBTWOLAME_PKG_ERRORS" >&5
 
 	{ echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6; }
@@ -6546,8 +6546,8 @@ echo "${ECHO_T}no" >&6; }
 elif test $pkg_failed = untried; then
 	twolame_available_system="no"
 else
-	TWOLAME_CFLAGS=$pkg_cv_TWOLAME_CFLAGS
-	TWOLAME_LIBS=$pkg_cv_TWOLAME_LIBS
+	LIBTWOLAME_CFLAGS=$pkg_cv_LIBTWOLAME_CFLAGS
+	LIBTWOLAME_LIBS=$pkg_cv_LIBTWOLAME_LIBS
         { echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6; }
 	twolame_available_system="yes"
@@ -6557,6 +6557,7 @@ fi
       LIBTWOLAME_SYSTEM_AVAILABLE="yes"
       LIBTWOLAME_SYSTEM_LIBS=$TWOLAME_LIBS
       LIBTWOLAME_SYSTEM_CXXFLAGS=$TWOLAME_CFLAGS
+      LIBTWOLAME_SYSTEM_CPPSYMBOLS="USE_LIBTWOLAME"
       { echo "$as_me:$LINENO: Libtwolame library available as system library" >&5
 echo "$as_me: Libtwolame library available as system library" >&6;}
    else
@@ -8551,8 +8552,8 @@ SOUNDTOUCH_CFLAGS!$SOUNDTOUCH_CFLAGS$ac_delim
 SOUNDTOUCH_LIBS!$SOUNDTOUCH_LIBS$ac_delim
 VAMP_CFLAGS!$VAMP_CFLAGS$ac_delim
 VAMP_LIBS!$VAMP_LIBS$ac_delim
-TWOLAME_CFLAGS!$TWOLAME_CFLAGS$ac_delim
-TWOLAME_LIBS!$TWOLAME_LIBS$ac_delim
+LIBTWOLAME_CFLAGS!$LIBTWOLAME_CFLAGS$ac_delim
+LIBTWOLAME_LIBS!$LIBTWOLAME_LIBS$ac_delim
 WX_CONFIG!$WX_CONFIG$ac_delim
 build!$build$ac_delim
 build_cpu!$build_cpu$ac_delim
