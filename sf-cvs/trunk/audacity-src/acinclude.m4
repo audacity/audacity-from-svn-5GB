@@ -93,7 +93,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVAMP], [
 AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
    AC_ARG_WITH(libtwolame,
                [AC_HELP_STRING([--with-libtwolame],
-                               [use libtwolame for MP2 export support [default=yes]])],
+                               [use libtwolame for MP2 export support ])],
                LIBTWOLAME_ARGUMENT=$withval,
                LIBTWOLAME_ARGUMENT="unspecified")
 
@@ -102,9 +102,22 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
                 [Define if libtwolame (MP2 export) support should be enabled])
    fi
 
-   dnl Libtwolame is so new, we should really use our patched local version for now
-   dnl FIXME: Might want to change this at some point of time in the future...
-   LIBTWOLAME_SYSTEM_AVAILABLE="no"
+   dnl Check for a system copy of libtwolame to use, which needs to be
+   dnl pretty current to work
+
+   PKG_CHECK_MODULES(TWOLAME, twolame >= 0.3.9,
+                     twolame_available_system="yes",
+                     twolame_available_system="no")
+
+   if test "x$twolame_available_system" = "xyes" ; then
+      LIBTWOLAME_SYSTEM_AVAILABLE="yes"
+      LIBTWOLAME_SYSTEM_LIBS=$TWOLAME_LIBS
+      LIBTWOLAME_SYSTEM_CXXFLAGS=$TWOLAME_CFLAGS
+      AC_MSG_NOTICE([Libtwolame library available as system library])
+   else
+      LIBTWOLAME_SYSTEM_AVAILABLE="no"
+      AC_MSG_NOTICE([Libtwolame library NOT available as system library])
+   fi
 
    dnl see if libtwolame is available locally
 
