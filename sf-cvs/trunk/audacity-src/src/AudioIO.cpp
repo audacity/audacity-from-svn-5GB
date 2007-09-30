@@ -1201,21 +1201,40 @@ void AudioIO::StopStream()
                
                WaveTrack* track = mCaptureTracks[i];
                track->Flush();
-               
-               if (mPlaybackTracks.GetCount() > 0)
-               {
-                  track->SetOffset(track->GetStartTime() + recordingOffset);
-                  if(track->GetEndTime() < 0.)
-                  {
-                     wxMessageDialog m(NULL, _("Latency setting has caused the recorded audio to be hidden before zero.\nI have brought it back to start at zero.\nYou may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."), _("Latency problem"), wxOK);
-                     m.ShowModal();
-                     track->SetOffset(0.);
-                  }
 
-/*                  if (recordingOffset < 0)
-                     track->Clear(0, -recordingOffset);
+               if (mPlaybackTracks.GetCount() > 0)
+               {  // only do latency correction if some tracks are being played back
+                  WaveTrackArray playbackTracks;
+                  AudacityProject *p = GetActiveProject();
+                  // we need to get this as mPlaybackTracks does not contain tracks being recorded into
+                  playbackTracks = p->GetTracks()->GetWaveTrackArray(false);
+                  bool appendRecord = false;
+                  for( unsigned int j = 0; j < playbackTracks.GetCount(); j++)
+                  {  // find if we are recording into an existing track (append-record)
+                     WaveTrack* trackP = playbackTracks[j];
+                     if( track == trackP )
+                     {
+                        appendRecord = true;
+                        break;
+                     }
+                  }
+                  if( appendRecord )
+                  {  // append-recording
+                     if (recordingOffset < 0)
+                        track->Clear(mT0, mT0 - recordingOffset); // cut the latency out
+                     else
+                        track->InsertSilence(mT0, recordingOffset); // put silence in
+                  }
                   else
-                     track->InsertSilence(0, recordingOffset);*/
+                  {  // recording into a new track
+                     track->SetOffset(track->GetStartTime() + recordingOffset);
+                     if(track->GetEndTime() < 0.)
+                     {
+                        wxMessageDialog m(NULL, _("Latency setting has caused the recorded audio to be hidden before zero.\nAudacity has brought it back to start at zero.\nYou may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."), _("Latency problem"), wxOK);
+                        m.ShowModal();
+                        track->SetOffset(0.);
+                     }
+                  }
                }
             }
          
