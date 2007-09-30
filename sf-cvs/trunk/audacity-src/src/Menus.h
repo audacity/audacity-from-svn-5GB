@@ -100,6 +100,13 @@ void OnSelExtendRight();
 void OnSelContractLeft();
 void OnSelContractRight();
 
+void OnCursorShortJumpLeft();
+void OnCursorShortJumpRight();
+void OnCursorLongJumpLeft();
+void OnCursorLongJumpRight();
+void OnSelSetExtendLeft();
+void OnSelSetExtendRight();
+
 void OnSetLeftSelection();
 void OnSetRightSelection();
 

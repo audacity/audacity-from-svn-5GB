@@ -5183,6 +5183,178 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
    MakeParentModifyState();
 }
 
+void TrackPanel::OnBoundaryMove(bool left, bool boundaryContract)
+{
+  // Move the left/right selection boundary, to either expand or contract the selection
+  // left=true: operate on left boundary; left=false: operate on right boundary
+  // boundaryContract=true: contract region; boundaryContract=false: expand region.
+
+   Track *t;
+
+   // If the last adjustment was very recent, we are
+   // holding the key down and should move faster.
+   wxLongLong curtime = ::wxGetLocalTimeMillis();
+   int multiplier = 1;
+   if( curtime - mLastSelectionAdjustment < 50 )
+   {
+      multiplier = 4;
+   }
+   mLastSelectionAdjustment = curtime;
+
+   int token = GetProject()->GetAudioIOToken();
+   if( token > 0 && gAudioIO->IsStreamActive( token ) )
+   {
+      double indicator = gAudioIO->GetStreamTime();
+      if (left) {
+         mViewInfo->sel0 = indicator;
+         if(mViewInfo->sel1 < mViewInfo->sel0)
+            mViewInfo->sel1 = mViewInfo->sel0;
+      } 
+      else
+      {
+         mViewInfo->sel1 = indicator;
+      };
+
+      MakeParentModifyState();
+      Refresh(false);
+   }
+   else
+   { 
+      // Get currently focused track if there is one
+      t = GetFocusedTrack();
+
+      // BOUNDARY MOVEMENT
+      // Contract selection from the right to the left
+      if( boundaryContract )
+      {
+         if (left) {
+            // Reduce and constrain left boundary (counter-intuitive)
+            mViewInfo->sel0 += multiplier / mViewInfo->zoom;
+            if( mViewInfo->sel0 > mViewInfo->sel1 )
+            {
+               mViewInfo->sel0 = mViewInfo->sel1;
+            }
+            // Make sure it's visible
+            ScrollIntoView( mViewInfo->sel0 );
+         } 
+         else 
+         {
+            // Reduce and constrain right boundary (counter-intuitive)
+            mViewInfo->sel1 -= multiplier / mViewInfo->zoom;
+            if( mViewInfo->sel1 < mViewInfo->sel0 )
+            {
+               mViewInfo->sel1 = mViewInfo->sel0;
+            }
+            // Make sure it's visible
+            ScrollIntoView( mViewInfo->sel1 );
+         }
+      }
+      // BOUNDARY MOVEMENT
+      // Extend selection toward the left
+      else 
+      {
+         if (left) {
+            // Expand and constrain left boundary
+            mViewInfo->sel0 -= multiplier / mViewInfo->zoom;
+            if( mViewInfo->sel0 < 0.0 )
+            {
+               mViewInfo->sel0 = 0.0;
+            }
+            // Make sure it's visible
+            ScrollIntoView( mViewInfo->sel0 );
+         }
+         else
+         {
+            // Expand and constrain right boundary
+            mViewInfo->sel1 += multiplier/mViewInfo->zoom;
+            double end = mTracks->GetEndTime();
+            if( mViewInfo->sel1 > end )
+            {
+               mViewInfo->sel1 = end;
+            }
+         };
+      }
+      // Make it happen
+      Refresh( false );
+      MakeParentModifyState();
+   }
+}
+
+void TrackPanel::OnCursorMove(bool forward, bool jump, bool longjump )
+   // Move the cursor forward or backward, while paused or while playing. 
+   // forward=true: Move cursor forward; forward=false: Move cursor backwards
+   // jump=false: Move cursor determined by zoom; jump=true: Use seek times
+   // longjump=false: Use mSeekShort; longjump=true: Use mSeekLong
+   {
+   // If the last adjustment was very recent, we are
+   // holding the key down and should move faster.
+   wxLongLong curtime = ::wxGetLocalTimeMillis();
+   int multiplier = 1;
+   if( curtime - mLastSelectionAdjustment < 50 )
+   {
+      multiplier = 4;
+   }
+   mLastSelectionAdjustment = curtime;
+
+   float direction = -1;
+   if (forward) {
+     direction = 1;
+   };
+
+   float mSeek;
+   if (jump) {
+     if (!longjump) {
+       mSeek = mSeekShort;
+     } else {
+       mSeek = mSeekLong;
+     };
+   } else {
+     mSeek = multiplier / mViewInfo->zoom;
+   };
+   mSeek *= direction;
+
+   // If playing, reposition a short amount of time
+   int token = GetProject()->GetAudioIOToken();
+   if( token > 0 && gAudioIO->IsStreamActive( token ) )
+   {
+      gAudioIO->SeekStream(mSeek);
+   } 
+   else 
+   {      
+      // Already in cursor mode?
+      if( mViewInfo->sel0 == mViewInfo->sel1 )
+      {
+         // Move and constrain
+	mViewInfo->sel0 += mSeek;
+	if( !forward && mViewInfo->sel0 < 0.0 )
+	{
+            mViewInfo->sel0 = 0.0;
+	}
+	double end = mTracks->GetEndTime();
+	if( forward && mViewInfo->sel0 > end)
+	{
+            mViewInfo->sel0 = end;
+	}
+        mViewInfo->sel1 = mViewInfo->sel0;
+
+	// Move the visual cursor
+	DrawCursor();
+      }
+      else
+      {
+         // Transition to cursor mode
+         mViewInfo->sel1 = mViewInfo->sel0;
+
+         // Make it happen
+         Refresh( false );
+      }
+
+      // Make sure it's visible
+      ScrollIntoView( mViewInfo->sel0 );
+      MakeParentModifyState();
+   };
+}
+
 //The following functions operate controls on specified tracks,
 //This will pop up the track panning dialog for specified track
 void TrackPanel::OnTrackPan()
