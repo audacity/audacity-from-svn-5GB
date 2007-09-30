@@ -114,6 +114,9 @@ twolame
 -------
 http://www.twolame.org/
 MPEG I layer 2 audio encoding library used for MP2 exports
+Version in audacity cvs: 0.3.8
+Patches: some critical ones, sent upstream and incorportated.
+TODO: Update to 0.3.10 release
 
 wave++
 ------
