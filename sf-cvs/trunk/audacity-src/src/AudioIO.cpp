@@ -1214,8 +1214,11 @@ void AudioIO::StopStream()
                      WaveTrack* trackP = playbackTracks[j];
                      if( track == trackP )
                      {
-                        appendRecord = true;
-                        break;
+                        if( track->GetStartTime() != mT0 )  // in a new track if these are equal
+                        {
+                           appendRecord = true;
+                           break;
+                        }
                      }
                   }
                   if( appendRecord )
