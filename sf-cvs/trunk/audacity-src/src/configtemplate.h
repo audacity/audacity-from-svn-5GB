@@ -67,14 +67,8 @@
 /* Define if Audio Unit plug-ins are enabled (Mac OS X only) */
 #undef USE_AUDIO_UNITS
 
-/* Define if QuickTime importing is enabled (Mac OS X only) */
-#undef USE_QUICKTIME
-
 /* Define if LADSPA plug-ins are enabled */
 #undef USE_LADSPA
-
-/* Define if VAMP plug-ins are enabled */
-#undef USE_VAMP
 
 /* Define if the FLAC library is present */
 #undef USE_LIBFLAC
@@ -106,14 +100,17 @@
 /* Define if PortMixer support should be enabled */
 #undef USE_PORTMIXER
 
-/* Define if RTAudio support should be enabled */
-#undef USE_RTAUDIO
+/* Define if QuickTime importing is enabled (Mac OS X only) */
+#undef USE_QUICKTIME
 
 /* Define if SoundTouch support should be enabled */
 #undef USE_SOUNDTOUCH
 
 /* Use system Expat library */
 #undef USE_SYSTEM_EXPAT
+
+/* Define if Vamp analysis plugin support should be enabled */
+#undef USE_VAMP
 
 /* Placeholder for large file support */
 #undef _FILE_OFFSET_BITS
@@ -124,5 +121,5 @@
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
-/* Define to `unsigned' if <sys/types.h> does not define. */
+/* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t
