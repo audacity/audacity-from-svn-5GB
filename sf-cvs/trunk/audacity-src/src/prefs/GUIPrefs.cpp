@@ -77,7 +77,7 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("/GUI/AdjustSelectionEdges"), true);
       S.TieCheckBox( _("&Ergonomic order of audio I/O buttons"),
          wxT("/GUI/ErgonomicTransportButtons"), true);
-      S.TieCheckBox( _("Tracks &fit vertically zoomed"), 
+      S.TieCheckBox( _("Automatically &fit tracks vertically zoomed"), 
          wxT("/GUI/TracksFitVerticallyZoomed"), false );
       S.TieCheckBox( _("&Circular track keyboard navigation"), 
          wxT("/GUI/CircularTrackNavigation"), false );
