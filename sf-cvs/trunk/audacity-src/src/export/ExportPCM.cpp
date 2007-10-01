@@ -395,7 +395,7 @@ bool ExportPCM::Export(AudacityProject *project,
                             info.channels, maxBlockLen, true,
                             rate, format, true, mixerSpec);
 
-   GetActiveProject()->ProgressShow(_("Export"),
+   GetActiveProject()->ProgressShow(wxFileName(fName).GetName(),
       selectionOnly ?
       wxString::Format(_("Exporting the selected audio as %s"),
                        formatStr.c_str()) :
