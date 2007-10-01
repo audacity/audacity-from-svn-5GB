@@ -269,10 +269,10 @@ bool ExportMP2::Export(AudacityProject *project,
                             stereo? 2: 1, pcmBufferSize, true,
                             rate, int16Sample, true, mixerSpec);
 
-   GetActiveProject()->ProgressShow(selectionOnly ?
+   GetActiveProject()->ProgressShow(wxFileName(fName).GetName(),
+       selectionOnly ?
       wxString::Format(_("Exporting selected audio at %d kbps"), bitrate) :
-      wxString::Format(_("Exporting entire file at %d kbps"), bitrate),
-      wxFileName(fName).GetName());
+      wxString::Format(_("Exporting entire file at %d kbps"), bitrate));
 
    bool cancelling = false;
    while(!cancelling) {
