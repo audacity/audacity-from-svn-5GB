@@ -742,7 +742,8 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
             
                if (tt->GetSelected()) {
                   sel = true;
-                  playbackTracks.Remove(wt);
+                  if (duplex)
+                     playbackTracks.Remove(wt);
                   if (wt->GetEndTime() > t0) {
                      t0 = wt->GetEndTime();
                   }
