@@ -1757,7 +1757,7 @@ bool ExportMP3::Export(AudacityProject *project,
                    _("Exporting entire file at %d Kbps"),
                    brate);
    }
-   GetActiveProject()->ProgressShow(title, wxFileName(fName).GetName());
+   GetActiveProject()->ProgressShow(wxFileName(fName).GetName(), title);
 
    while (!cancelling) {
       sampleCount blockLen = mixer->Process(inSamples);
