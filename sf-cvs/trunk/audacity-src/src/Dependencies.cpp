@@ -302,7 +302,7 @@ void DependencyDialog::PopulateOrExchange(ShuttleGui& S)
       {
          if (mIsSaving) {
             S.Id(wxID_CANCEL).AddButton(_("Cancel Save"));
-            S.Id(wxID_NO).AddButton(_("Skip"));
+            S.Id(wxID_NO).AddButton(_("Don't Copy any Audio"));
          }
          else {
             S.Id(wxID_NO).AddButton(_("Close"));
