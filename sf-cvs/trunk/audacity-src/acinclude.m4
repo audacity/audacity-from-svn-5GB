@@ -78,7 +78,6 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVAMP], [
       LIBVAMP_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libvamp'
       LIBVAMP_LOCAL_CPPSYMBOLS="USE_VAMP"
       LIBVAMP_LOCAL_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
-
       if test ! -f lib-src/libvamp/Makefile ; then
          LIBVAMP_LOCAL_CONFIG_SUBDIRS="lib-src/libvamp"
       fi
@@ -87,6 +86,8 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVAMP], [
       LIBVAMP_LOCAL_AVAILABLE="no"
       AC_MSG_NOTICE([Vamp libraries are NOT available in the local tree])
    fi
+   
+   OPTOBJS="$OPTOBJS $LIBVAMP_LOCAL_OPTOBJS"
 
 ])
 
