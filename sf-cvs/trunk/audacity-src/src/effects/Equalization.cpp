@@ -482,6 +482,7 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
       lastWindow[i] = 0;
 
    TrackProgress(count, 0.);
+	bool bLoopSuccess = true;
    int wcopy = 0;
    int offset = (mM - 1)/2;
 
@@ -522,27 +523,34 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
       len -= block;
       s += block;
 
-      TrackProgress(count, (s-start)/(double)originalLen);
+      if (TrackProgress(count, (s-start)/(double)originalLen))
+      {
+			bLoopSuccess = false;
+			break;
+		}
    }
 
-   // mM-1 samples of 'tail' left in lastWindow, get them now
-   for(int j=0; j<mM-1; j++)
-      buffer[j] = lastWindow[wcopy + j];
-   output->Append((samplePtr)buffer, floatSample, mM-1);
-   output->Flush();
+   if(bLoopSuccess)
+   {
+      // mM-1 samples of 'tail' left in lastWindow, get them now
+      for(int j=0; j<mM-1; j++)
+         buffer[j] = lastWindow[wcopy + j];
+      output->Append((samplePtr)buffer, floatSample, mM-1);
+      output->Flush();
 
-   // now move the appropriate bit of the output back to the track
-   // (this could be enhanced in the future to use the tails)
-   float *bigBuffer = new float[originalLen];
-   output->Get((samplePtr)bigBuffer, floatSample, offset, originalLen);
-   t->Set((samplePtr)bigBuffer, floatSample, start, originalLen);
+      // now move the appropriate bit of the output back to the track
+      // (this could be enhanced in the future to use the tails)
+      float *bigBuffer = new float[originalLen];
+      output->Get((samplePtr)bigBuffer, floatSample, offset, originalLen);
+      t->Set((samplePtr)bigBuffer, floatSample, start, originalLen);
+      delete[] bigBuffer;
+   }
 
    delete[] buffer;
-   delete[] bigBuffer;
    delete[] window1;
    delete[] window2;
 
-   return true;
+   return bLoopSuccess;
 }
 
 void EffectEqualization::Filter(sampleCount len,
