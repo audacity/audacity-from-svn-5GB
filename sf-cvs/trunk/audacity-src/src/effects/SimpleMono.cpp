@@ -29,13 +29,27 @@
 bool EffectSimpleMono::Process()
 {
    //Iterate over each track
-   TrackListIterator iter(mWaveTracks);
-   WaveTrack *track = (WaveTrack *) iter.First();
+   // Copy the mWaveTracks, to process the copies.
+   TrackListIterator iterIn(mWaveTracks);
+   WaveTrack* pInWaveTrack = (WaveTrack*)(iterIn.First());
+   TrackList* pOutputWaveTracks = new TrackList();
+   WaveTrack* pOutWaveTrack = NULL;
+   while (pInWaveTrack != NULL)
+   {
+      pOutWaveTrack = mFactory->DuplicateWaveTrack(*(WaveTrack*)pInWaveTrack);
+      pOutputWaveTracks->Add(pOutWaveTrack);
+      pInWaveTrack = (WaveTrack*)(iterIn.Next());
+   }
+
+   TrackListIterator iterOut(pOutputWaveTracks);
+   pOutWaveTrack = (WaveTrack*)(iterOut.First());
    mCurTrackNum = 0;
-   while (track) {
+   bool bGoodResult = true;
+   while ((pOutWaveTrack != NULL) && bGoodResult)
+   {
       //Get start and end times from track
-      double trackStart = track->GetStartTime();
-      double trackEnd = track->GetEndTime();
+      double trackStart = pOutWaveTrack->GetStartTime();
+      double trackEnd = pOutWaveTrack->GetEndTime();
 
       //Set the current bounds to whichever left marker is
       //greater and whichever right marker is less:
@@ -46,28 +60,63 @@ bool EffectSimpleMono::Process()
       if (mCurT1 > mCurT0) {
 
          //Transform the marker timepoints to samples
-         longSampleCount start = track->TimeToLongSamples(mCurT0);
-         longSampleCount end = track->TimeToLongSamples(mCurT1);
+         longSampleCount start = pOutWaveTrack->TimeToLongSamples(mCurT0);
+         longSampleCount end = pOutWaveTrack->TimeToLongSamples(mCurT1);
          
          //Get the track rate and samples
-         mCurRate = track->GetRate();
-         mCurChannel = track->GetChannel();
+         mCurRate = pOutWaveTrack->GetRate();
+         mCurChannel = pOutWaveTrack->GetChannel();
 
          //NewTrackSimpleMono() will returns true by default
          if (!NewTrackSimpleMono())
-            return false;
+            bGoodResult = false;
 
          //ProcessOne() (implemented below) processes a single track
-         if (!ProcessOne(track, start, end))
-            return false;
+         if (!ProcessOne(pOutWaveTrack, start, end))
+            bGoodResult = false;
       }
       
       //Iterate to the next track
-      track = (WaveTrack *) iter.Next();
+      pOutWaveTrack = (WaveTrack*)(iterOut.Next());
       mCurTrackNum++;
    }
 
-   return true;
+   if (bGoodResult)
+   {
+      // Success. Circular replacement of the input wave tracks with the processed tracks. 
+      // But mWaveTracks is temporary, so replace in mTracks. More bookkeeping.
+      pInWaveTrack = (WaveTrack*)(iterIn.First());
+      pOutWaveTrack = (WaveTrack*)(iterOut.First());
+      TrackListIterator iterAllTracks(mTracks);
+      Track* pFirstTrack = iterAllTracks.First();
+      Track* pTrack = pFirstTrack;
+      do
+      {
+         if (pTrack == pInWaveTrack)
+         {
+            // Replace pInWaveTrack with processed pOutWaveTrack, at end of list.
+            mTracks->Add(pOutWaveTrack);
+            delete pInWaveTrack;
+            if (pTrack == pFirstTrack)
+               pFirstTrack = pOutWaveTrack; // We replaced the first track, so update stop condition.
+
+            pInWaveTrack = (WaveTrack*)(iterIn.Next());
+            pOutWaveTrack = (WaveTrack*)(iterOut.Next());
+         }
+         else
+            mTracks->Add(pTrack); // Add pTrack back to end of list.
+
+         // Remove former pTrack from front of list and set pTrack to next.
+         pTrack = iterAllTracks.RemoveCurrent(); 
+      } while (pTrack != pFirstTrack);
+   } 
+   else 
+      // Failed, so get rid of the processed tracks. 
+      pOutputWaveTracks->Clear(true); // true => delete the tracks
+
+   delete pOutputWaveTracks;
+
+   return bGoodResult;
 }
 
 

@@ -299,7 +299,7 @@ class AUDACITY_DLL_API TrackFactory
  public:
    // These methods are defined in WaveTrack.cpp, NoteTrack.cpp,
    // LabelTrack.cpp, and TimeTrack.cpp respectively
-   // and LabelTrack.cpp respectively
+   WaveTrack* DuplicateWaveTrack(WaveTrack &orig);
    WaveTrack *NewWaveTrack(sampleFormat format = (sampleFormat)0,
                            double rate = 0);
    NoteTrack *NewNoteTrack();

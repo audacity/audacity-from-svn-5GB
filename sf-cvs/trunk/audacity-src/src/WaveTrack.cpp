@@ -47,6 +47,12 @@ Track classes.
 #include "AudioIO.h"
 #include "Prefs.h"
 
+WaveTrack* TrackFactory::DuplicateWaveTrack(WaveTrack &orig)
+{
+   return (WaveTrack*)(orig.Duplicate());
+}
+
+
 WaveTrack *TrackFactory::NewWaveTrack(sampleFormat format, double rate)
 {
    return new WaveTrack(mDirManager, format, rate);
