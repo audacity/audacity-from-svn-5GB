@@ -88,15 +88,18 @@ bool EffectChangeSpeed::Process()
 	// Similar to EffectSoundTouch::Process()
 
    //Iterate over each track
-   TrackListIterator iter(mWaveTracks);
-   WaveTrack *track = (WaveTrack *) iter.First();
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+
+   TrackListIterator iterOut(m_pOutputWaveTracks);
+   WaveTrack* pOutWaveTrack = (WaveTrack*)(iterOut.First());
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;
-
-   while (track) {
+   bool bGoodResult = true;
+   while ((pOutWaveTrack != NULL) && bGoodResult)
+   {
       //Get start and end times from track
-      mCurT0 = track->GetStartTime();
-      mCurT1 = track->GetEndTime();
+      mCurT0 = pOutWaveTrack->GetStartTime();
+      mCurT1 = pOutWaveTrack->GetEndTime();
 
       //Set the current bounds to whichever left marker is
       //greater and whichever right marker is less:
@@ -107,21 +110,24 @@ bool EffectChangeSpeed::Process()
       if (mCurT1 > mCurT0) {
 
          //Transform the marker timepoints to samples
-         longSampleCount start = track->TimeToLongSamples(mCurT0);
-         longSampleCount end = track->TimeToLongSamples(mCurT1);
+         longSampleCount start = pOutWaveTrack->TimeToLongSamples(mCurT0);
+         longSampleCount end = pOutWaveTrack->TimeToLongSamples(mCurT1);
 
          //ProcessOne() (implemented below) processes a single track
-         if (!ProcessOne(track, start, end))
-            return false;
+         if (!ProcessOne(pOutWaveTrack, start, end))
+            bGoodResult = false;
       }
       
       //Iterate to the next track
-      track = (WaveTrack *) iter.Next();
+      pOutWaveTrack = (WaveTrack*)(iterOut.Next());
       mCurTrackNum++;
    }
 
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+
 // mT1 = mT0 + m_maxNewLength; // Update selection.
-   return true;
+
+   return bGoodResult;
 }
 
 // ProcessOne() takes a track, transforms it to bunch of buffer-blocks,
