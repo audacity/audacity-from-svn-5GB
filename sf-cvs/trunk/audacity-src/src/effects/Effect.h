@@ -217,6 +217,7 @@ class Effect {
    TrackList    *mTracks;      // the complete list of all tracks
    TrackList    *mWaveTracks;  // effects which do not add or remove tracks
                                // should use this
+   TrackList* m_pOutputWaveTracks; // used only if CopyInputWaveTracks() is called.
    double      mT0;
    double      mT1;
 
@@ -256,6 +257,14 @@ class Effect {
  //
  // private methods
  //
+   // Use these two methods to copy the input tracks to m_pOutputWaveTracks, if 
+   // doing the processing on them, and replacing the originals only on success (and not cancel).
+   void CopyInputWaveTracks();
+   
+   // If bGoodResult, replace mWaveTracks tracks in mTracks with successfully processed 
+   // m_pOutputWaveTracks copies. Else clear and delete m_pOutputWaveTracks copies.
+   void ReplaceProcessedWaveTracks(const bool bGoodResult);
+
  // Used only by the base Effect class
  //
  private:
@@ -269,7 +278,7 @@ class Effect {
  private:
    static EffectArray mEffects;
    
-   int mNumTracks;
+   int mNumTracks; //v This is really mNumWaveTracks, per CountWaveTracks() and GetNumWaveTracks().
    int mNumGroups;
 
    int mID;

@@ -29,20 +29,10 @@
 bool EffectSimpleMono::Process()
 {
    //Iterate over each track
-   // Copy the mWaveTracks, to process the copies.
-   TrackListIterator iterIn(mWaveTracks);
-   WaveTrack* pInWaveTrack = (WaveTrack*)(iterIn.First());
-   TrackList* pOutputWaveTracks = new TrackList();
-   WaveTrack* pOutWaveTrack = NULL;
-   while (pInWaveTrack != NULL)
-   {
-      pOutWaveTrack = mFactory->DuplicateWaveTrack(*(WaveTrack*)pInWaveTrack);
-      pOutputWaveTracks->Add(pOutWaveTrack);
-      pInWaveTrack = (WaveTrack*)(iterIn.Next());
-   }
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
 
-   TrackListIterator iterOut(pOutputWaveTracks);
-   pOutWaveTrack = (WaveTrack*)(iterOut.First());
+   TrackListIterator iterOut(m_pOutputWaveTracks);
+   WaveTrack* pOutWaveTrack = (WaveTrack*)(iterOut.First());
    mCurTrackNum = 0;
    bool bGoodResult = true;
    while ((pOutWaveTrack != NULL) && bGoodResult)
@@ -81,41 +71,7 @@ bool EffectSimpleMono::Process()
       mCurTrackNum++;
    }
 
-   if (bGoodResult)
-   {
-      // Success. Circular replacement of the input wave tracks with the processed tracks. 
-      // But mWaveTracks is temporary, so replace in mTracks. More bookkeeping.
-      pInWaveTrack = (WaveTrack*)(iterIn.First());
-      pOutWaveTrack = (WaveTrack*)(iterOut.First());
-      TrackListIterator iterAllTracks(mTracks);
-      Track* pFirstTrack = iterAllTracks.First();
-      Track* pTrack = pFirstTrack;
-      do
-      {
-         if (pTrack == pInWaveTrack)
-         {
-            // Replace pInWaveTrack with processed pOutWaveTrack, at end of list.
-            mTracks->Add(pOutWaveTrack);
-            delete pInWaveTrack;
-            if (pTrack == pFirstTrack)
-               pFirstTrack = pOutWaveTrack; // We replaced the first track, so update stop condition.
-
-            pInWaveTrack = (WaveTrack*)(iterIn.Next());
-            pOutWaveTrack = (WaveTrack*)(iterOut.Next());
-         }
-         else
-            mTracks->Add(pTrack); // Add pTrack back to end of list.
-
-         // Remove former pTrack from front of list and set pTrack to next.
-         pTrack = iterAllTracks.RemoveCurrent(); 
-      } while (pTrack != pFirstTrack);
-   } 
-   else 
-      // Failed, so get rid of the processed tracks. 
-      pOutputWaveTracks->Clear(true); // true => delete the tracks
-
-   delete pOutputWaveTracks;
-
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
    return bGoodResult;
 }
 

@@ -120,6 +120,8 @@ EffectArray *Effect::GetEffects(int flags /* = ALL_EFFECTS */)
 Effect::Effect()
 {
    mWaveTracks = NULL;
+   m_pOutputWaveTracks = NULL;
+
    // Can change effect flags later (this is the new way)
    // OR using the old way, over-ride GetEffectFlags().
    mFlags = BUILTIN_EFFECT | PROCESS_EFFECT | ADVANCED_EFFECT ;
@@ -136,6 +138,11 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
    if (mWaveTracks) {
       delete mWaveTracks;
       mWaveTracks = NULL;
+   }
+
+   if (m_pOutputWaveTracks) {
+      delete m_pOutputWaveTracks;
+      m_pOutputWaveTracks = NULL;
    }
 
    mFactory = factory;
@@ -172,6 +179,9 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
    delete mWaveTracks;
    mWaveTracks = NULL;
 
+   delete m_pOutputWaveTracks;
+   m_pOutputWaveTracks = NULL;
+
    if (returnVal) {
       *t0 = mT0;
       *t1 = mT1;
@@ -193,6 +203,71 @@ bool Effect::TrackProgress(int whichTrack, double frac)
 bool Effect::TrackGroupProgress(int whichGroup, double frac)
 {
    return TotalProgress((whichGroup+frac)/mNumGroups);
+}
+
+//
+// private methods
+//
+// Use these two methods to copy the input tracks to m_pOutputWaveTracks, if 
+// doing the processing on them, and replacing the originals only on success (and not cancel).
+void Effect::CopyInputWaveTracks()
+{
+   if (this->GetNumWaveTracks() <= 0)
+      return;
+
+   // Copy the mWaveTracks, to process the copies.
+   TrackListIterator iterIn(mWaveTracks);
+   WaveTrack* pInWaveTrack = (WaveTrack*)(iterIn.First());
+   m_pOutputWaveTracks = new TrackList();
+   WaveTrack* pOutWaveTrack = NULL;
+   while (pInWaveTrack != NULL)
+   {
+      pOutWaveTrack = mFactory->DuplicateWaveTrack(*(WaveTrack*)pInWaveTrack);
+      m_pOutputWaveTracks->Add(pOutWaveTrack);
+      pInWaveTrack = (WaveTrack*)(iterIn.Next());
+   }
+}
+
+
+// Replace mWaveTracks tracks in mTracks with successfully processed m_pOutputWaveTracks copies. 
+void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
+{
+   if (bGoodResult)
+   {
+      // Circular replacement of the input wave tracks with the processed m_pOutputWaveTracks tracks. 
+      // But mWaveTracks is temporary, so replace in mTracks. More bookkeeping.
+      TrackListIterator iterIn(mWaveTracks);
+      WaveTrack* pInWaveTrack = (WaveTrack*)(iterIn.First());
+
+      TrackListIterator iterOut(m_pOutputWaveTracks);
+      WaveTrack* pOutWaveTrack = (WaveTrack*)(iterOut.First());
+
+      TrackListIterator iterAllTracks(mTracks);
+      Track* pFirstTrack = iterAllTracks.First();
+      Track* pTrack = pFirstTrack;
+      do
+      {
+         if (pTrack == pInWaveTrack)
+         {
+            // Replace pInWaveTrack with processed pOutWaveTrack, at end of list.
+            mTracks->Add(pOutWaveTrack);
+            delete pInWaveTrack;
+            if (pTrack == pFirstTrack)
+               pFirstTrack = pOutWaveTrack; // We replaced the first track, so update stop condition.
+
+            pInWaveTrack = (WaveTrack*)(iterIn.Next());
+            pOutWaveTrack = (WaveTrack*)(iterOut.Next());
+         }
+         else
+            mTracks->Add(pTrack); // Add pTrack back to end of list.
+
+         // Remove former pTrack from front of list and set pTrack to next.
+         pTrack = iterAllTracks.RemoveCurrent(); 
+      } while (pTrack != pFirstTrack);
+   }
+   else
+      // Processing failed or was cancelled so throw away the processed tracks.
+      m_pOutputWaveTracks->Clear(true); // true => delete the tracks
 }
 
 void Effect::CountWaveTracks()

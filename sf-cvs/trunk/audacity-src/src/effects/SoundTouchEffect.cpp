@@ -28,11 +28,14 @@ bool EffectSoundTouch::Process()
    // by the subclass for subclass-specific parameters.
    
    //Iterate over each track
-   TrackListIterator iter(mWaveTracks);
-   WaveTrack* leftTrack = (WaveTrack*)(iter.First());
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+
+   TrackListIterator iterOut(m_pOutputWaveTracks);
+   WaveTrack* leftTrack = (WaveTrack*)(iterOut.First());
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;
-   while (leftTrack) {
+   bool bGoodResult = true;
+   while ((leftTrack != NULL) && bGoodResult) {
       //Get start and end times from track
       mCurT0 = leftTrack->GetStartTime();
       mCurT1 = leftTrack->GetEndTime();
@@ -48,7 +51,7 @@ bool EffectSoundTouch::Process()
          
          if (leftTrack->GetLinked()) {
             double t;
-            WaveTrack* rightTrack = (WaveTrack*)(iter.Next());
+            WaveTrack* rightTrack = (WaveTrack*)(iterOut.Next());
 
             //Adjust bounds by the right tracks markers
             t = rightTrack->GetStartTime();
@@ -67,7 +70,7 @@ bool EffectSoundTouch::Process()
 
             //ProcessStereo() (implemented below) processes a stereo track
             if (!ProcessStereo(leftTrack, rightTrack, start, end))
-               return false;
+               bGoodResult = false;
 
             mCurTrackNum++; // Increment for rightTrack, too.
          } else {
@@ -80,21 +83,24 @@ bool EffectSoundTouch::Process()
 
             //ProcessOne() (implemented below) processes a single track
             if (!ProcessOne(leftTrack, start, end))
-               return false;
+               bGoodResult = false;
          }
       }
       
       //Iterate to the next track
-      leftTrack = (WaveTrack*)(iter.Next());
+      leftTrack = (WaveTrack*)(iterOut.Next());
       mCurTrackNum++;
    }
-   
+
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+
    delete mSoundTouch;
    mSoundTouch = NULL;
    
 //   mT0 = mCurT0;
 //   mT1 = mCurT0 + m_maxNewLength; // Update selection.
-   return true;
+
+   return bGoodResult;
 }
 
 //ProcessOne() takes a track, transforms it to bunch of buffer-blocks,
