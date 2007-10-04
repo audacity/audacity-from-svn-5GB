@@ -24,9 +24,8 @@
 (pwl 0 1 dur 0 dur)))
 ; if dur is 0, perform default duration of pluck,
 ; otherwise generate pluck for dur duration
-(if (= dur 0)
-(pluck p)
-(pluck p dur)))
-
+(highpass8 (if (= dur 0)
+(pluck p) 
+(pluck p dur)) 1.0))
 
 ; arch-tag: bebc6cb8-3bb0-42d5-a467-df6bd1a7f1e4
