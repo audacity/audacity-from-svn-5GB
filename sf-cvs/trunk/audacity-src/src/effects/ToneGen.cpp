@@ -225,7 +225,10 @@ bool EffectToneGen::Process()
    mPositionInCycles = 0.0;
    //Iterate over each track
    int ntrack = 0;
-   TrackListIterator iter(mWaveTracks);
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
+
+   TrackListIterator iter(m_pOutputWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
       mSample = 0;
@@ -246,7 +249,10 @@ bool EffectToneGen::Process()
 
          //Update the Progress meter
          if (TrackProgress(ntrack, (double)i / numSamples))
-            return false;
+         {
+            bGoodResult = false;
+            break;
+         }
       }
       delete[] data;
 
@@ -255,14 +261,19 @@ bool EffectToneGen::Process()
       track->Paste(mT0, tmp);
       delete tmp;
 
+      if (!bGoodResult)
+         break;
+
       //Iterate to the next track
       ntrack++;
       track = (WaveTrack *)iter.Next();
    }
 
-	mT1 = mT0 + length; // Update selection.
+   if (bGoodResult)
+	   mT1 = mT0 + length; // Update selection.
 
-   return true;
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   return bGoodResult;
 }
 
 // WDR: class implementations

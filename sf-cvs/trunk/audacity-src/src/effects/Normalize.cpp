@@ -135,8 +135,11 @@ bool EffectNormalize::Process()
       return true;
 
    //Iterate over each track
-   TrackListIterator iter(mWaveTracks);
-   WaveTrack *track = (WaveTrack *) iter.First();
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
+
+   TrackListIterator iter(m_pOutputWaveTracks);
+    WaveTrack *track = (WaveTrack *) iter.First();
    mCurTrackNum = 0;
    while (track) {
       //Get start and end times from track
@@ -161,7 +164,10 @@ bool EffectNormalize::Process()
 
          //ProcessOne() (implemented below) processes a single track
          if (!ProcessOne(track, start, end))
-            return false;
+         {
+            bGoodResult = false;
+            break;
+         }
       }
       
       //Iterate to the next track
@@ -169,7 +175,8 @@ bool EffectNormalize::Process()
       mCurTrackNum++;
    }
 
-   return true;
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   return bGoodResult;
 }
 
 //ProcessOne() takes a track, transforms it to bunch of buffer-blocks,

@@ -214,8 +214,10 @@ bool EffectDtmf::Process()
       return false;
 
    //Iterate over each track
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
    int ntrack = 0;
-   TrackListIterator iter(mWaveTracks);
+   TrackListIterator iter(m_pOutputWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
       // new tmp track, to fill with dtmf sequence
@@ -312,7 +314,7 @@ bool EffectDtmf::Process()
 
          //Update the Progress meter
          if (TrackProgress(ntrack, (double)i / numSamplesSequence))
-            return false;
+            bGoodResult = false;
       } // finished the whole dtmf sequence
 
       delete[] data;
@@ -322,28 +324,35 @@ bool EffectDtmf::Process()
       track->Paste(mT0, tmp);
       delete tmp;
 
+      if (!bGoodResult)
+         break;
+
       //Iterate to the next track
       ntrack++;
       track = (WaveTrack *)iter.Next();
    }
 
-   /*
-      save last used values
-      save duration unless value was got from selection, so we save only
-      when user explicitely setup a value
-   */
-   if (mT1 == mT0)
-      gPrefs->Write(wxT("/CsPresets/DtmfGen_SequenceDuration"), dtmfDuration);
+   if (bGoodResult)
+      {
+      /*
+         save last used values
+         save duration unless value was got from selection, so we save only
+         when user explicitely setup a value
+      */
+      if (mT1 == mT0)
+         gPrefs->Write(wxT("/CsPresets/DtmfGen_SequenceDuration"), dtmfDuration);
 
-   gPrefs->Write(wxT("/CsPresets/DtmfGen_String"), dtmfString);
-   gPrefs->Write(wxT("/CsPresets/DtmfGen_DutyCycle"), dtmfDutyCycle);
+      gPrefs->Write(wxT("/CsPresets/DtmfGen_String"), dtmfString);
+      gPrefs->Write(wxT("/CsPresets/DtmfGen_DutyCycle"), dtmfDutyCycle);
 
-   // Update selection: this is not accurate if my calculations are wrong.
-   // To validate, once the effect is done, unselect, and select all, then
-   // see what the selection length is being reported (in sec,ms,samples)
-   mT1 = mT0 + dtmfDuration;
+      // Update selection: this is not accurate if my calculations are wrong.
+      // To validate, once the effect is done, unselect, and select all, then
+      // see what the selection length is being reported (in sec,ms,samples)
+      mT1 = mT0 + dtmfDuration;
+   }
 
-   return true;
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   return bGoodResult;
 }
 
 //----------------------------------------------------------------------------

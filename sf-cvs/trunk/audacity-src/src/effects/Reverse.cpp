@@ -31,7 +31,10 @@ EffectReverse::EffectReverse()
 
 bool EffectReverse::Process()
 {
-   TrackListIterator iter(mWaveTracks);
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
+
+   TrackListIterator iter(m_pOutputWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {
@@ -46,14 +49,18 @@ bool EffectReverse::Process()
          sampleCount len = (sampleCount)(end - start);
 
          if (!ProcessOne(count, track, start, len))
-            return false;
+         {
+            bGoodResult = false;
+            break;
+         }
       }
 
       track = (WaveTrack *) iter.Next();
       count++;
    }
 
-   return true;
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   return bGoodResult;
 }
 
 bool EffectReverse::ProcessOne(int count, WaveTrack *track,
