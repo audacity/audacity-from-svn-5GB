@@ -175,7 +175,7 @@ myrmrvf $mode locale/wxstd
 
 printf "removing Nyquist plug-ins that are just for show ... "
 myrmvf $mode plug-ins/analyze.ny plug-ins/fadein.ny plug-ins/fadeout.ny
-myrmvf $mode plug-ins/beat.ny plug-ins/undcbias.ny
+myrmvf $mode plug-ins/undcbias.ny
 printf "Done\n"
 
 printf "Giving VC++ project/workspace files DOS line endings ... "
