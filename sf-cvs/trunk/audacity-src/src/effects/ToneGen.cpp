@@ -239,7 +239,7 @@ bool EffectToneGen::Process()
       float *data = new float[tmp->GetMaxBlockSize()];
       sampleCount block;
 
-      while(i < numSamples) {
+      while ((i < numSamples) && bGoodResult) {
          block = tmp->GetBestBlockSize(i);
          if (block > (numSamples - i))
              block = numSamples - i;
@@ -249,10 +249,7 @@ bool EffectToneGen::Process()
 
          //Update the Progress meter
          if (TrackProgress(ntrack, (double)i / numSamples))
-         {
             bGoodResult = false;
-            break;
-         }
       }
       delete[] data;
 

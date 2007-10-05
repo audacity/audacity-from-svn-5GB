@@ -62,7 +62,7 @@ bool EffectStereoToMono::CheckWhetherSkipEffect()
    return true;
 }
 
-void EffectStereoToMono::ProcessOne()
+bool EffectStereoToMono::ProcessOne()
 {
    float  curLeftFrame;
    float  curRightFrame;
@@ -91,7 +91,8 @@ void EffectStereoToMono::ProcessOne()
       }
       rc = mLeftTrack->Set((samplePtr)leftBuffer, floatSample, outTrackOffset, limit);
       outTrackOffset += limit;
-      TrackProgress(0, ((double)index / (double)mLeftTrackLen));
+      if (TrackProgress(0, ((double)index / (double)mLeftTrackLen)))
+         return false;
    }
 
    mLeftTrack->SetLinked(false);
@@ -102,13 +103,18 @@ void EffectStereoToMono::ProcessOne()
 
    delete [] leftBuffer;
    delete [] rightBuffer;
+
+   return true;
 }
 
 bool EffectStereoToMono::Process()
 {
    // Do not use mWaveTracks here.  We will possibly delete tracks,
    // so we must use the "real" tracklist.
-   TrackListIterator iter(mTracks);
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
+
+   TrackListIterator iter(m_pOutputWaveTracks);
    mLeftTrack = (WaveTrack *)iter.First();
    bool refreshIter = false;
 
@@ -124,7 +130,9 @@ bool EffectStereoToMono::Process()
          long diff = abs((long)mRightTrackLen - (long)mLeftTrackLen);
          
          if ((diff <= 2) && (mLeftTrack->GetRate() == mRightTrack->GetRate())) {
-            ProcessOne();
+            bGoodResult = ProcessOne();
+            if (!bGoodResult)
+               break;
 
             // The right channel has been deleted, so we must restart from the beginning
             refreshIter = true;
@@ -140,5 +148,6 @@ bool EffectStereoToMono::Process()
       }
    }
          
-   return true;
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   return bGoodResult;
 }

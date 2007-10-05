@@ -246,7 +246,10 @@ void LadspaEffect::GetSamples(WaveTrack *track,
 
 bool LadspaEffect::Process()
 {
-   TrackListIterator iter(mWaveTracks);
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
+
+   TrackListIterator iter(m_pOutputWaveTracks);
    int count = 0;
    Track *left = iter.First();
    Track *right;
@@ -261,28 +264,26 @@ bool LadspaEffect::Process()
          GetSamples((WaveTrack *)right, &rstart, &len);
       }
 
-      bool success = false;
-
       if (inputs < 2 && right) {
          // If the effect is mono, apply to each channel separately
 
-         success = ProcessStereo(count, (WaveTrack *)left, NULL,
-                                 lstart, 0, len);
-         if (success)
-            success = ProcessStereo(count, (WaveTrack *)right, NULL,
+         bGoodResult = ProcessStereo(count, (WaveTrack *)left, NULL,
+                                 lstart, 0, len) && 
+                        ProcessStereo(count, (WaveTrack *)right, NULL,
                                     rstart, 0, len);
       }
-      else success = ProcessStereo(count,
+      else bGoodResult = ProcessStereo(count,
                                    (WaveTrack *)left, (WaveTrack *)right,
                                    lstart, rstart, len);
-      if (!success)
-         return false;
+      if (!bGoodResult)
+         break;
    
       left = iter.Next();
       count++;
    }
 
-   return true;
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   return bGoodResult;
 }
 
 bool LadspaEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
