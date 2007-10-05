@@ -162,6 +162,9 @@ bool EffectTruncSilence::Process()
    }
 
    // Start processing
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   TrackListIterator iterOut(m_pOutputWaveTracks);
+
    longSampleCount index = start;
    longSampleCount outTrackOffset = start;
    bool cancelled = false;
@@ -242,12 +245,12 @@ bool EffectTruncSilence::Process()
       // Update tracks if any samples were removed
       if (truncIndex < limit) {
 
-         // Put updated sample back into track
+         // Put updated sample back into output tracks.
          tndx = 0;
-         t = (WaveTrack *) iter.First();
+         t = (WaveTrack *) iterOut.First();
          while (t) {
             t->Set((samplePtr)buffer[tndx++], floatSample, outTrackOffset, truncIndex);
-            t = (WaveTrack *) iter.Next();
+            t = (WaveTrack *) iterOut.Next();
          }
       }
 
@@ -264,12 +267,12 @@ bool EffectTruncSilence::Process()
       index += limit;
    }
 
-   // Remove stale data at end of track
+   // Remove stale data at end of output tracks.
    if (!cancelled && (outTrackOffset < end)) {
-      t = (WaveTrack *) iter.First();
+      t = (WaveTrack *) iterOut.First();
       while (t) {
          t->Clear(outTrackOffset / rate, t1);
-         t = (WaveTrack *) iter.Next();
+         t = (WaveTrack *) iterOut.Next();
       }
       t1 = outTrackOffset / rate;
    }
@@ -283,6 +286,7 @@ bool EffectTruncSilence::Process()
    mT0 = t0;
    mT1 = t1;
 
+   this->ReplaceProcessedWaveTracks(!cancelled); 
    return !cancelled;
 }
 

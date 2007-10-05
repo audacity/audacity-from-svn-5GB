@@ -394,7 +394,8 @@ bool EffectNyquist::Process()
 {
    bool success = true;
    
-   TrackListIterator iter(mWaveTracks);
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   TrackListIterator iter(m_pOutputWaveTracks);
    mCurTrack[0] = (WaveTrack *) iter.First();
    mOutputTime = mT1 - mT0;
    mCount = 0;
@@ -411,7 +412,8 @@ bool EffectNyquist::Process()
                wxMessageBox(_("Sorry, cannot apply effect on stereo tracks where the tracks don't match."), 
                             wxT("Nyquist"),
                             wxOK | wxCENTRE, mParent);
-               return false;
+               success = false;
+               goto finish;
             }
             mCurStart[1] = mCurTrack[1]->TimeToLongSamples(mT0);
          }
@@ -442,6 +444,7 @@ bool EffectNyquist::Process()
       dlog.ShowModal();
    }
 
+   this->ReplaceProcessedWaveTracks(success); 
    return success;
 }
 

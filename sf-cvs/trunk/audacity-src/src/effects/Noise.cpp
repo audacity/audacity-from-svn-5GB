@@ -156,7 +156,7 @@ bool EffectNoise::Process()
       float *data = new float[tmp->GetMaxBlockSize()];
       sampleCount block;
 
-      while(i < numSamples) {
+      while ((i < numSamples) && bGoodResult) {
          block = tmp->GetBestBlockSize(i);
          if (block > (numSamples - i))
              block = numSamples - i;

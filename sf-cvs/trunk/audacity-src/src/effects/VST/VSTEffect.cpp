@@ -246,7 +246,10 @@ void VSTEffect::GetSamples(WaveTrack *track,
 
 bool VSTEffect::Process()
 {
-   TrackListIterator iter(mWaveTracks);
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
+
+   TrackListIterator iter(m_pOutputWaveTracks);
    int count = 0;
    Track *left = iter.First();
    Track *right;
@@ -264,18 +267,19 @@ bool VSTEffect::Process()
       // Reset the effect
       callDispatcher(aEffect, effOpen, 0, 0, NULL, 0.0);
       
-      bool success = ProcessStereo(count,
+      bGoodResult = ProcessStereo(count,
                                    (WaveTrack *)left, (WaveTrack *)right,
                                    lstart, rstart, len);
 
-      if (!success)
-         return false;
+      if (!bGoodResult)
+         break;
    
       left = iter.Next();
       count++;
    }
    
-   return true;
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   return bGoodResult;
 }
 
 bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,

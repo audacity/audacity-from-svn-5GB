@@ -272,7 +272,7 @@ bool EffectDtmf::Process()
       // to generate an 11 tone DTMF sequence, in 4 seconds, and with DutyCycle=75%: after generation
       // you ended up with 3.999s or in other units: 3 seconds and 44097 samples.
       //
-      while(i < numSamplesSequence) {
+      while ((i < numSamplesSequence) && bGoodResult) {
          if (isTone)
          // generate tone
          {
