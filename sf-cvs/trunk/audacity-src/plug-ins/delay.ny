@@ -7,7 +7,7 @@
 
 ;control decay "Decay amount [db, negative value increases volume]" int "" 6 -12 24
 ;control delay "Delay time [seconds]" real "" 0.5 0.0 5.0
-;control count "Number of echos" int "" 5 1 30
+;control count "Number of echoes" int "" 5 1 30
 
 ; Delay by Roger B. Dannenberg
 ; updated by David R. Sky October 2007
