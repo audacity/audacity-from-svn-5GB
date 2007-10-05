@@ -29,13 +29,13 @@ bool EffectSoundTouch::Process()
    
    //Iterate over each track
    this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
 
-   TrackListIterator iterOut(m_pOutputWaveTracks);
-   WaveTrack* leftTrack = (WaveTrack*)(iterOut.First());
+   TrackListIterator iter(m_pOutputWaveTracks);
+   WaveTrack* leftTrack = (WaveTrack*)(iter.First());
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;
-   bool bGoodResult = true;
-   while ((leftTrack != NULL) && bGoodResult) {
+   while (leftTrack != NULL) {
       //Get start and end times from track
       mCurT0 = leftTrack->GetStartTime();
       mCurT1 = leftTrack->GetEndTime();
@@ -51,7 +51,7 @@ bool EffectSoundTouch::Process()
          
          if (leftTrack->GetLinked()) {
             double t;
-            WaveTrack* rightTrack = (WaveTrack*)(iterOut.Next());
+            WaveTrack* rightTrack = (WaveTrack*)(iter.Next());
 
             //Adjust bounds by the right tracks markers
             t = rightTrack->GetStartTime();
@@ -70,7 +70,10 @@ bool EffectSoundTouch::Process()
 
             //ProcessStereo() (implemented below) processes a stereo track
             if (!ProcessStereo(leftTrack, rightTrack, start, end))
+            {
                bGoodResult = false;
+               break;
+            }
 
             mCurTrackNum++; // Increment for rightTrack, too.
          } else {
@@ -83,12 +86,15 @@ bool EffectSoundTouch::Process()
 
             //ProcessOne() (implemented below) processes a single track
             if (!ProcessOne(leftTrack, start, end))
+            {
                bGoodResult = false;
+               break;
+            }
          }
       }
       
       //Iterate to the next track
-      leftTrack = (WaveTrack*)(iterOut.Next());
+      leftTrack = (WaveTrack*)(iter.Next());
       mCurTrackNum++;
    }
 

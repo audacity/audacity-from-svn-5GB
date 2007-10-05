@@ -144,7 +144,10 @@ bool EffectNoise::Process()
 
    //Iterate over each track
    int ntrack = 0;
-   TrackListIterator iter(mWaveTracks);
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
+
+   TrackListIterator iter(m_pOutputWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
       WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(), track->GetRate());
@@ -165,7 +168,7 @@ bool EffectNoise::Process()
 
          //Update the Progress meter
          if (TrackProgress(ntrack, (double)i / numSamples))
-            return false;
+            bGoodResult = false;
       }
       delete[] data;
 
@@ -174,25 +177,32 @@ bool EffectNoise::Process()
       track->Paste(mT0, tmp);
       delete tmp;
 
+      if (!bGoodResult)
+         break;
+
       //Iterate to the next track
       ntrack++;
       track = (WaveTrack *)iter.Next();
    }
 
-   /*
-      save last used values
-      save duration unless value was got from selection, so we save only
-      when user explicitely setup a value
-   */
-   if (mT1 == mT0)
-      gPrefs->Write(wxT("/CsPresets/NoiseGen_Duration"), noiseDuration);
+   if (bGoodResult)
+   {
+      /*
+         save last used values
+         save duration unless value was got from selection, so we save only
+         when user explicitely setup a value
+      */
+      if (mT1 == mT0)
+         gPrefs->Write(wxT("/CsPresets/NoiseGen_Duration"), noiseDuration);
 
-   gPrefs->Write(wxT("/CsPresets/NoiseGen_Type"), noiseType);
-   gPrefs->Write(wxT("/CsPresets/NoiseGen_Amp"), noiseAmplitude);
+      gPrefs->Write(wxT("/CsPresets/NoiseGen_Type"), noiseType);
+      gPrefs->Write(wxT("/CsPresets/NoiseGen_Amp"), noiseAmplitude);
 
-   mT1 = mT0 + noiseDuration; // Update selection.
+      mT1 = mT0 + noiseDuration; // Update selection.
+   }
 
-   return true;
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   return bGoodResult;
 }
 
 //----------------------------------------------------------------------------

@@ -107,7 +107,10 @@ bool EffectRepeat::TransferParameters( Shuttle & shuttle )
 
 bool EffectRepeat::Process()
 {
-   TrackListIterator iter(mWaveTracks);
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
+
+   TrackListIterator iter(m_pOutputWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
 	double maxDestLen = 0.0; // used to change selection to generated bit
    while (track) {
@@ -133,7 +136,10 @@ bool EffectRepeat::Process()
       for(int j=0; j<repeatCount; j++)
       {
          if(!track->Paste(tc, dest))
+         {
+            bGoodResult = false;
             break;
+         }
          tc += tLen;
       }
       if (tc > maxDestLen)
@@ -142,10 +148,16 @@ bool EffectRepeat::Process()
 
       track = (WaveTrack *) iter.Next();
    }
-   // Change selection to just the generated bits.
-   mT0 = mT1;
-	mT1 = maxDestLen;
-   return true;
+
+   if (bGoodResult)
+   {
+      // Change selection to just the generated bits.
+      mT0 = mT1;
+	   mT1 = maxDestLen;
+   }
+
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   return bGoodResult;
 }
 
 //----------------------------------------------------------------------------

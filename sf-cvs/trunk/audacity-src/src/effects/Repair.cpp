@@ -54,7 +54,12 @@ bool EffectRepair::TransferParameters( Shuttle & shuttle )
 
 bool EffectRepair::Process()
 {
-   TrackListIterator iter(mWaveTracks);
+   //v This may be too much copying for EffectRepair. To support Cancel, may be able to copy much less.
+   //  But for now, Cancel isn't supported without this.
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks. //v This may be too much copying for EffectRepair.
+   bool bGoodResult = true;
+
+   TrackListIterator iter(m_pOutputWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {
@@ -92,19 +97,22 @@ bool EffectRepair::Process()
 
       if (repairLen > 128) {
          ::wxMessageBox(_("The Repair effect is intended to be used on very short sections of damaged audio (up to 128 samples).\n\nZoom in and select a tiny fraction of a second to repair."));
-         return false;
+            bGoodResult = false;
+            break;
       }
       
       if (!ProcessOne(count, track,
                       s0, len, repairStart, repairLen)) {
-         return false;
+         bGoodResult = false;
+         break;
       }
 
       track = (WaveTrack *) iter.Next();
       count++;
    }
 
-   return true;
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   return bGoodResult;
 }
 
 bool EffectRepair::ProcessOne(int count, WaveTrack * track,

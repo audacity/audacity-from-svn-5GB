@@ -89,13 +89,13 @@ bool EffectChangeSpeed::Process()
 
    //Iterate over each track
    this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
 
-   TrackListIterator iterOut(m_pOutputWaveTracks);
-   WaveTrack* pOutWaveTrack = (WaveTrack*)(iterOut.First());
+   TrackListIterator iter(m_pOutputWaveTracks);
+   WaveTrack* pOutWaveTrack = (WaveTrack*)(iter.First());
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;
-   bool bGoodResult = true;
-   while ((pOutWaveTrack != NULL) && bGoodResult)
+   while (pOutWaveTrack != NULL)
    {
       //Get start and end times from track
       mCurT0 = pOutWaveTrack->GetStartTime();
@@ -115,11 +115,14 @@ bool EffectChangeSpeed::Process()
 
          //ProcessOne() (implemented below) processes a single track
          if (!ProcessOne(pOutWaveTrack, start, end))
+         {
             bGoodResult = false;
+            break;
+         }
       }
       
       //Iterate to the next track
-      pOutWaveTrack = (WaveTrack*)(iterOut.Next());
+      pOutWaveTrack = (WaveTrack*)(iter.Next());
       mCurTrackNum++;
    }
 

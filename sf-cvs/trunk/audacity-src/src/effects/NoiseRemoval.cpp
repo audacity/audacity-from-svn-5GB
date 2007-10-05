@@ -280,7 +280,10 @@ bool EffectNoiseRemoval::Process()
 
    // This same code will both remove noise and profile it,
    // depending on 'mDoProfile'
-   TrackListIterator iter(mWaveTracks);
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
+
+   TrackListIterator iter(m_pOutputWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {
@@ -296,21 +299,23 @@ bool EffectNoiseRemoval::Process()
 
          if (!ProcessOne(count, track, start, len)) {
             Cleanup();
-            return false;
+            bGoodResult = false;
+            break;
          }
       }
       track = (WaveTrack *) iter.Next();
       count++;
    }
 
-   if (mDoProfile) {
+   if (bGoodResult && mDoProfile) {
       CleanSpeechMayWriteNoiseGate();
       mHasProfile = true;
       mDoProfile = false;
    }
 
    Cleanup();
-   return true;
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   return bGoodResult;
 }
 
 void EffectNoiseRemoval::ApplyFreqSmoothing(float *spec)

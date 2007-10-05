@@ -429,7 +429,10 @@ bool EffectEqualization::Process()
    if (!mPrompting) {
       DontPromptUser();
    }
-   TrackListIterator iter(mWaveTracks);
+   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   bool bGoodResult = true;
+
+   TrackListIterator iter(m_pOutputWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {
@@ -444,14 +447,18 @@ bool EffectEqualization::Process()
          sampleCount len = (sampleCount)(end - start);
 
          if (!ProcessOne(count, track, start, len))
-            return false;
+         {
+            bGoodResult = false;
+            break;
+         }
       }
 
       track = (WaveTrack *) iter.Next();
       count++;
    }
 
-   return true;
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   return bGoodResult;
 }
 
 

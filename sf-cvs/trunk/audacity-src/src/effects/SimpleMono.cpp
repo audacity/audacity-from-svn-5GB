@@ -30,12 +30,12 @@ bool EffectSimpleMono::Process()
 {
    //Iterate over each track
    this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
-
-   TrackListIterator iterOut(m_pOutputWaveTracks);
-   WaveTrack* pOutWaveTrack = (WaveTrack*)(iterOut.First());
-   mCurTrackNum = 0;
    bool bGoodResult = true;
-   while ((pOutWaveTrack != NULL) && bGoodResult)
+
+   TrackListIterator iter(m_pOutputWaveTracks);
+   WaveTrack* pOutWaveTrack = (WaveTrack*)(iter.First());
+   mCurTrackNum = 0;
+   while (pOutWaveTrack != NULL)
    {
       //Get start and end times from track
       double trackStart = pOutWaveTrack->GetStartTime();
@@ -58,16 +58,16 @@ bool EffectSimpleMono::Process()
          mCurChannel = pOutWaveTrack->GetChannel();
 
          //NewTrackSimpleMono() will returns true by default
-         if (!NewTrackSimpleMono())
+         //ProcessOne() processes a single track
+         if (!NewTrackSimpleMono() || !ProcessOne(pOutWaveTrack, start, end))
+         {
             bGoodResult = false;
-
-         //ProcessOne() (implemented below) processes a single track
-         if (!ProcessOne(pOutWaveTrack, start, end))
-            bGoodResult = false;
+            break;
+         }
       }
       
       //Iterate to the next track
-      pOutWaveTrack = (WaveTrack*)(iterOut.Next());
+      pOutWaveTrack = (WaveTrack*)(iter.Next());
       mCurTrackNum++;
    }
 
