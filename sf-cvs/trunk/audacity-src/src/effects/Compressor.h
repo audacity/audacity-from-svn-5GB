@@ -125,6 +125,7 @@ public:
    double threshold;
    double ratio;
    double attack;
+   double decay;
    bool useGain;
    
    virtual bool TransferDataToWindow();
@@ -142,10 +143,12 @@ private:
    wxSlider *mThresholdSlider;
    wxSlider *mRatioSlider;
    wxSlider *mAttackSlider;
+   wxSlider *mDecaySlider;
    wxCheckBox *mGainCheckBox;
    wxStaticText *mThresholdText;
    wxStaticText *mRatioText;
    wxStaticText *mAttackText;
+   wxStaticText *mDecayText;
    
 private:
    DECLARE_EVENT_TABLE()

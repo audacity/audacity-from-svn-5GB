@@ -64,6 +64,7 @@ bool EffectCompressor::TransferParameters( Shuttle & shuttle )
    shuttle.TransferDouble( wxT("Threshold"), mThresholdDB, -12.0f );
    shuttle.TransferDouble( wxT("Ratio"), mRatio, 2.0f );
    shuttle.TransferDouble( wxT("AttackTime"), mAttackTime, 0.2f );
+   shuttle.TransferDouble( wxT("DecayTime"), mDecayTime, 0.2f );
    shuttle.TransferBool( wxT("Normalize"), mNormalize, true );
    return true;
 }
@@ -74,6 +75,7 @@ bool EffectCompressor::PromptUser()
    dlog.threshold = mThresholdDB;
    dlog.ratio = mRatio;
    dlog.attack = mAttackTime;
+   dlog.decay = mDecayTime;
    dlog.useGain = mNormalize;
    dlog.TransferDataToWindow();
 
@@ -86,6 +88,7 @@ bool EffectCompressor::PromptUser()
    mThresholdDB = dlog.threshold;
    mRatio = dlog.ratio;
    mAttackTime = dlog.attack;
+   mDecayTime = dlog.decay;
    mNormalize = dlog.useGain;
 
    return true;
@@ -441,7 +444,8 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
 enum {
    ThresholdID = 7100,
    RatioID,
-   AttackID
+   AttackID,
+   DecayID
 };
 
 BEGIN_EVENT_TABLE(CompressorDialog,wxDialog)
@@ -452,6 +456,7 @@ BEGIN_EVENT_TABLE(CompressorDialog,wxDialog)
    EVT_SLIDER( ThresholdID, CompressorDialog::OnSlider )
    EVT_SLIDER( RatioID, CompressorDialog::OnSlider )
    EVT_SLIDER( AttackID, CompressorDialog::OnSlider )
+   EVT_SLIDER( DecayID, CompressorDialog::OnSlider )
 END_EVENT_TABLE()
 
 CompressorDialog::CompressorDialog(EffectCompressor *effect,
@@ -497,6 +502,13 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
                                 wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
    gridSizer->Add(mAttackSlider, 1, wxEXPAND|wxALL, 5);
 
+   mDecayText = new wxStaticText(this, -1, wxString(_("Decay Time: ")) + wxT("XXXX secs"));
+   gridSizer->Add(mDecayText, 0, wxALIGN_LEFT|wxALL, 5);
+
+   mDecaySlider = new wxSlider(this, DecayID, 2, 1, 10,
+                                wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
+   gridSizer->Add(mDecaySlider, 1, wxEXPAND|wxALL, 5);
+
    mainSizer->Add(gridSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -527,6 +539,7 @@ bool CompressorDialog::TransferDataToWindow()
    mThresholdSlider->SetValue((int)rint(threshold));
    mRatioSlider->SetValue((int)rint(ratio*2));
    mAttackSlider->SetValue((int)rint(attack*10));
+   mDecaySlider->SetValue((int)rint(attack));
    mGainCheckBox->SetValue(useGain);
 
    TransferDataFromWindow();
@@ -539,6 +552,7 @@ bool CompressorDialog::TransferDataFromWindow()
    threshold = (double)mThresholdSlider->GetValue();
    ratio = (double)(mRatioSlider->GetValue() / 2.0);
    attack = (double)(mAttackSlider->GetValue() / 10.0);
+   decay = (double)(mDecaySlider->GetValue());
    useGain = mGainCheckBox->GetValue();
 
    mPanel->threshold = threshold;
@@ -552,6 +566,8 @@ bool CompressorDialog::TransferDataFromWindow()
       mRatioText->SetLabel(wxString::Format(_("Ratio: %.1f:1"), ratio));
 
    mAttackText->SetLabel(wxString::Format(_("Attack Time: %.1f secs"), attack));
+
+   mDecayText->SetLabel(wxString::Format(_("Decay Time: %.1f secs"), decay));
 
    mPanel->Refresh(false);
 
@@ -577,11 +593,13 @@ void CompressorDialog::OnPreview(wxCommandEvent &event)
 
 	// Save & restore parameters around Preview, because we didn't do OK.
    double    oldAttackTime = mEffect->mAttackTime;
+   double    oldDecayTime = mEffect->mDecayTime;
    double    oldThresholdDB = mEffect->mThresholdDB;
    double    oldRatio = mEffect->mRatio;
    bool      oldUseGain = mEffect->mNormalize;
 
    mEffect->mAttackTime = attack;
+   mEffect->mDecayTime = decay;
    mEffect->mThresholdDB = threshold;
    mEffect->mRatio = ratio;
    mEffect->mNormalize = useGain;
@@ -589,6 +607,7 @@ void CompressorDialog::OnPreview(wxCommandEvent &event)
    mEffect->Preview();
 
    mEffect->mAttackTime = oldAttackTime;
+   mEffect->mDecayTime = oldDecayTime;
    mEffect->mThresholdDB = oldThresholdDB;
    mEffect->mRatio = oldRatio;
    mEffect->mNormalize = oldUseGain;
