@@ -1,7 +1,7 @@
 ;nyquist plug-in
-;version 1
+;version 3
 ;type generate
-;name "Click Track ..."
+;name "Click Track..."
 ;action "Generating click track..."
 ;info "Written by Dominic Mazzoni, modified by David R. Sky\nReleased under terms of the GNU General Public License version 2\nGenerates a click track at the given tempo and beats per measure, using the\nclick sound type you choose below. To start the click track after time zero,\nenter the starting point in start-time-offset.\nTo create metronome-like click track, set beats-per-measure value to 1 or 2. \nPitches are set using MIDI numbers for example:\nC notes: 48, 60 [middle C], 72, 84, 96."
 
@@ -9,7 +9,7 @@
 ;control sig "Beats per measure [bar]" int "" 4 1 20
 ;control measures "Number of measures [bars]" int "" 16 1 1000
 ;control offset "Start time offset [seconds]" real "" 0 0 30
-;control click-type "Click track sound [1=ping 2=noise 3=tick]" int "" 1 1 3
+;control click-type "Click sound type" choice "ping,noise,tick" 0
 ;control q "Noise click resonance [q] [higher gives more defined pitch]" int "" 1 1 20
 ;control high "MIDI pitch of strong click" int "" 92 18 116
 ;control low "MIDI pitch of weak click" int "" 80 18 116
@@ -27,6 +27,8 @@
 ; for such things as negative value inputs
 ; Drip sound generator by Paul Beach,
 ; used with permission.
+
+(setf click-type (+ click-type 1))
 
 
 ; function to return error value of 0 
@@ -47,64 +49,50 @@
 (if 
 (and (= (error-check tempo) 0)
 (> tempo 29) (< tempo 301))
-(progn (setf error 0) (setf tempo-msg "OK    - "))
-(progn (setf error  1) (setf tempo-msg "ERROR - ")))
+(progn (setf error 0) (setf tempo-msg "          OK      - "))
+(progn (setf error  1) (setf tempo-msg "=> => ERROR - ")))
 (if (and (= (error-check sig) 0)
 (> sig 0) (< sig 21))
-(progn (setf error error) (setf sig-msg "OK    - "))
-(progn (setf error  1) (setf sig-msg "ERROR - ")))
+(progn (setf error error) (setf sig-msg "          OK      - "))
+(progn (setf error  1) (setf sig-msg "=> => ERROR - ")))
 (if 
 (and (= (error-check measures ) 0)
 (> measures 0) (< measures 1001))
-(progn (setf error error) (setf measures-msg "OK    - "))
-(progn (setf error  1) (setf measures-msg "ERROR - ")))
+(progn (setf error error) (setf measures-msg "          OK      - "))
+(progn (setf error  1) (setf measures-msg "=> => ERROR - ")))
 (if 
 (and (= (error-check offset 1) 0)
 (<= offset 30.0))
-(progn (setf error error) (setf offset-msg "OK    - "))
-(progn (setf error  1) (setf offset-msg "ERROR - ")))
-(if (and 
-(= (error-check click-type) 0)
-(> click-type 0)
-(< click-type 4))
-(progn (setf error error) (setf click-type-msg "OK    - "))
-(progn (setf error  1) (setf click-type-msg "ERROR - ")))
+(progn (setf error error) (setf offset-msg "          OK      - "))
+(progn (setf error  1) (setf offset-msg "=> => ERROR - ")))
 (if
 (and (= (error-check q) 0)
 (> q 0))
-(progn (setf error error) (setf q-msg "OK    - "))
-(progn (setf error  1) (setf q-msg "ERROR - ")))
+(progn (setf error error) (setf q-msg "          OK      - "))
+(progn (setf error  1) (setf q-msg "=> => ERROR - ")))
 (if
 (and (>= high 18) (<= high 116))
-(progn (setf error error) (setf high-msg "OK    - "))
-(progn (setf error  1) (setf high-msg "ERROR - ")))
+(progn (setf error error) (setf high-msg "          OK        - "))
+(progn (setf error  1) (setf high-msg "=> => ERROR - ")))
 (if
 (and (>= low 18) (<= low 116))
-(progn (setf error error) (setf low-msg "OK    - "))
-(progn (setf error  1) (setf low-msg "ERROR - ")))
+(progn (setf error error) (setf low-msg "          OK      - "))
+(progn (setf error  1) (setf low-msg "=> => ERROR - ")))
 
 (cond
 ; if error value is 1, give error message
 ((= error 1) 
 (format nil "Error - ~%
 One or more of your input values is incorrect.\nValid input values are listed above the values you\nentered, and each one shown as ERROR or OK ~%
-        Tempo - positive integer 30 to 300 
-~a ~a beats per minute
-        Beats per measure - positive value 1 to 20 
-~a ~a beats per measure [bar]
-        Number of measures [bars] - positive integer 1 to 1000
-~a ~a measures [bars]
-        Time offset - 30.0 seconds or lower
-~a ~a seconds
-        Click sound type - 1 ping 2 noise 3 tick
-~a ~a
-        Noise click resonance [q] - value above 0
-~a ~a
-        MIDI pitches of clicks - values between 18 and 116
-~a ~a high MIDI pitch
+Tempo - positive integer 30 to 300\n~a ~a beats per minute
+Beats per measure - positive value 1 to 20\n~a ~a beats per measure [bar]
+Number of measures [bars] - positive integer 1 to 1000\n~a ~a measures [bars]
+Time offset - 30.0 seconds or lower\n~a ~a seconds
+Noise click resonance [q] - value above 0\n~a ~a
+MIDI pitches of clicks - values between 18 and 116\n~a ~a high MIDI pitch
 ~a ~a low MIDI pitch ~%"
 tempo-msg tempo sig-msg sig measures-msg measures offset-msg offset 
-click-type-msg click-type q-msg q high-msg high low-msg low ))
+q-msg q high-msg high low-msg low ))
 
 ; no error so generate click track
 (t
