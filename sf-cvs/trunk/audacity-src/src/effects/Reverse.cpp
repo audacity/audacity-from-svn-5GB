@@ -66,6 +66,7 @@ bool EffectReverse::Process()
 bool EffectReverse::ProcessOne(int count, WaveTrack *track,
                                longSampleCount start, sampleCount len)
 {
+   bool rc = true;
    // keep track of two blocks whose data we will swap
    longSampleCount first = start;
    longSampleCount second;
@@ -96,13 +97,16 @@ bool EffectReverse::ProcessOne(int count, WaveTrack *track,
       len -= 2 * block;
       first += block;
       
-      TrackProgress(count, 2*(first-start) / (double) originalLen);
+      if( TrackProgress(count, 2*(first-start) / (double) originalLen) ) {
+         rc = false;
+         break;
+      }
    }
 
    delete[] buffer1;
    delete[] buffer2;
 
-   return true;
+   return rc;
 }
 
 
