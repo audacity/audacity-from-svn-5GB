@@ -198,11 +198,10 @@ bool EffectClickRemoval::ProcessOne(int count, WaveTrack * track,
          for(j=wcopy; j<windowSize; j++)
             datawindow[j] = 0;
 
-   RemoveClicks(windowSize, datawindow);
+         RemoveClicks(windowSize, datawindow);
 
-   for(j=0; j<wcopy; j++)
-     buffer[i+j] = datawindow[j];
-
+         for(j=0; j<wcopy; j++)
+           buffer[i+j] = datawindow[j];
       }
 
       track->Set((samplePtr) buffer, floatSample, start + s, block);
@@ -218,7 +217,7 @@ bool EffectClickRemoval::ProcessOne(int count, WaveTrack * track,
    delete[] buffer;
    delete[] datawindow;
 
-   return true;
+   return rc;
 }
 
 void EffectClickRemoval::RemoveClicks(sampleCount len, float *buffer)

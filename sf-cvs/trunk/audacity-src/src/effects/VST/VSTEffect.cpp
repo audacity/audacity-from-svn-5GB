@@ -286,6 +286,7 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
                               longSampleCount lstart,
                               longSampleCount rstart, sampleCount len)
 {
+   bool rc = true;
    if (mBlockSize == 0) {
       mBlockSize = left->GetMaxBlockSize() * 2;
 
@@ -341,16 +342,20 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
       rs += block;
       
       if (inputs > 1) {      
-         if (TrackGroupProgress(count, (ls-lstart)/(double)originalLen))
+         if (TrackGroupProgress(count, (ls-lstart)/(double)originalLen)) {
+            rc = false;
             break;
+         }
       }
       else {
-         if (TrackProgress(count, (ls-lstart)/(double)originalLen))
+         if (TrackProgress(count, (ls-lstart)/(double)originalLen)) {
+            rc = false;
             break;
+         }
       }
    }
 
-   return true;
+   return rc;
 }
 
 void VSTEffect::End()
