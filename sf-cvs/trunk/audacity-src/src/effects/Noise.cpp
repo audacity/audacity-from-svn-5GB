@@ -252,7 +252,7 @@ void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
          mNoiseDurationT->EnableMenu();
       }
       S.AddWindow(mNoiseDurationT);
-      S.TieTextBox(_("Amplitude"),  nAmplitude, 10);
+      S.TieTextBox(_("Amplitude (0-1)"),  nAmplitude, 10);
       S.TieChoice(_("Noise type"), nType, nTypeList);
       S.SetSizeHints(-1, -1);
    }
