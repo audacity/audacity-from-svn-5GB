@@ -1,21 +1,21 @@
 ;nyquist plug-in
-;version 1
+;version 3
 ;type process
 ;name "Vocoder"
-;action "Processing Vocoder ..."
-;info "by Edgar-RFT, David R. Sky - Released under terms of the GPL"
+;action "Processing Vocoder..."
+;info "by Edgar-RFT and David R. Sky\nReleased under terms of the GNU General Public License version 2\nNote: Vocoder works only on * stereo * tracks. Setting channel processing\nto '1 (right channel)' processes only the right channel of your stereo track."
 
-;control dst "Distance: from 1 to 120 - standard 20" real "Distance" 20 1 120
-;control mst "Channels: 1 or 2 - standard 2" int "Channels" 2 1 2
-;control bands "Number of vocoder bands" int "Bands" 40 10 240
-;control track-vl "Volume of Audacity Track" real "Percent" 100 0 100
-;control noise-vl "Volume of White Noise" real "Percent" 0 0 100
-;control radar-vl "Volume of Radar Needles" real "Percent" 0 0 100
-;control radar-f "Frequency of Radar Needles" real "Hertz" 30 1 100
+;control dst "Distance: [1 to 120, default = 20]" real "" 20 1 120
+;control mst "Channel processing" choice " 2 (both channels), 1 (right channel)" 0
+;control bands "Number of vocoder bands" int "" 40 10 240
+;control track-vl "Amplitude of original audio [percent]" real "" 100 0 100
+;control noise-vl "Amplitude of white noise [percent]" real "" 0 0 100
+;control radar-vl "Amplitude of Radar Needles [percent]" real "" 0 0 100
+;control radar-f "Frequency of Radar Needles [Hz]" real "" 30 1 100
 
 ; vocoder by Edgar-RFT
 ; a bit of code added by David R. Sky
-; Released under terms of the GNU Public License
+; Released under terms of the GNU Public License version 2
 ; http://www.opensource.org/licenses/gpl-license.php
 
 ; maybe the code once again has to be changed into _one_ local let-binding
@@ -103,11 +103,11 @@
 
 (if (arrayp s) (let ()
   (cond ((= mst 1) (vector (aref s 0) (setf (aref s 1) (vocoder))))
-        ((= mst 2) (setf s (vocoder))))
+        ((= mst 0) (setf s (vocoder))))
   (cond ((= mst 1) (setq peakamp (peak (aref s 1) ny:all)))
-        ((= mst 2) (setq peakamp (peak s ny:all))))
+        ((= mst 0) (setq peakamp (peak s ny:all))))
   (cond ((= mst 1) (vector (aref s 0) (setf (aref s 1)
                                         (scale (/ 1.0 peakamp) (aref s 1)))))
-        ((= mst 2) (setf s (scale (/ 1.0 peakamp) s))))
+        ((= mst 0) (setf s (scale (/ 1.0 peakamp) s))))
 s))
 
