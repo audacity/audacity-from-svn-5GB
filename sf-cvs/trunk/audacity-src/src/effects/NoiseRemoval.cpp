@@ -220,7 +220,9 @@ bool EffectNoiseRemoval::PromptUser()
 
    if( !mHasProfile )
    {
-      CleanSpeechMayReadNoisegate();
+      AudacityProject * p = GetActiveProject();
+      if (p->GetCleanSpeechMode())
+         CleanSpeechMayReadNoisegate();
    }
 
    // We may want to twiddle the levels if we are setting
