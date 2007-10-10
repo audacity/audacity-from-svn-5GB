@@ -337,7 +337,7 @@ void ToneGenDialog::PopulateOrExchangeExtended( ShuttleGui & S )
       S.AddFixedText(wxT(""));
       S.AddTitle(_("Start"));
       S.AddTitle(_("End"));
-      S.TieTextBox(_("Frequency / Hz"),frequency[0], 10);
+      S.TieTextBox(_("Frequency (Hz)"),frequency[0], 10);
       S.TieTextBox(wxT(""), frequency[1], 10);
       S.TieTextBox(_("Amplitude (0-1)"),amplitude[0], 10);
       S.TieTextBox(wxT(""), amplitude[1], 10);
