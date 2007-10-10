@@ -313,7 +313,8 @@ bool EffectNoiseRemoval::Process()
       mDoProfile = false;
    }
 
-   Cleanup();
+   if (bGoodResult)
+      Cleanup();
    this->ReplaceProcessedWaveTracks(bGoodResult); 
    return bGoodResult;
 }
