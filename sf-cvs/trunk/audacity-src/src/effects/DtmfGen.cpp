@@ -36,7 +36,8 @@
 #define DUTY_MAX 1000
 #define DUTY_SCALE (DUTY_MAX/100.0) // ensure float division
 #define FADEINOUT 250.0    // used for fadein/out needed to remove clicking noise
-
+#define AMP_MIN 0
+#define AMP_MAX 1
 
 //
 // EffectDtmf
@@ -60,12 +61,13 @@ bool EffectDtmf::PromptUser()
       dlog.dIsSelection = true;
    } else {
       // retrieve last used values
-      gPrefs->Read(wxT("/CsPresets/DtmfGen_SequenceDuration"), &dtmfDuration, 2L);
+      gPrefs->Read(wxT("/CsPresets/DtmfGen_SequenceDuration"), &dtmfDuration, 1L);
       dlog.dIsSelection = false;
    }
 
-   gPrefs->Read(wxT("/CsPresets/DtmfGen_String"), &dtmfString, wxT("12345"));
-   gPrefs->Read(wxT("/CsPresets/DtmfGen_DutyCycle"), &dtmfDutyCycle, 750L);
+   gPrefs->Read(wxT("/CsPresets/DtmfGen_String"), &dtmfString, wxT("audacity"));
+   gPrefs->Read(wxT("/CsPresets/DtmfGen_DutyCycle"), &dtmfDutyCycle, 550L);
+   gPrefs->Read(wxT("/CsPresets/DtmfGen_Amplitude"), &dtmfAmplitude, 1);
 
    dtmfNTones = wxStrlen(dtmfString);
 
@@ -73,6 +75,7 @@ bool EffectDtmf::PromptUser()
    dlog.dString = dtmfString;
    dlog.dDutyCycle = dtmfDutyCycle;
    dlog.dDuration = dtmfDuration;
+   dlog.dAmplitude = dtmfAmplitude;
 
    // start dialog
    dlog.Init();
@@ -85,6 +88,7 @@ bool EffectDtmf::PromptUser()
    dtmfString = dlog.dString;
    dtmfDutyCycle = dlog.dDutyCycle;
    dtmfDuration = dlog.dDuration;
+   dtmfAmplitude = dlog.dAmplitude;
    
    dtmfNTones = dlog.dNTones;
    dtmfTone = dlog.dTone;
@@ -100,7 +104,7 @@ bool EffectDtmf::TransferParameters( Shuttle & shuttle )
 }
 
 
-bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar tone, sampleCount last, longSampleCount total)
+bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar tone, sampleCount last, longSampleCount total, float amplitude)
 {
 
 /*
@@ -113,7 +117,7 @@ bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar t
                   GHI     JKL     MNO
    770 Hz          4       5       6       B
 
-                  PRS     TUV     WXY
+                  PQRS     TUV     WXYZ
    852 Hz          7       8       9       C
 
                           oper
@@ -130,6 +134,11 @@ bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar t
      B= 2*pi*f2/fs
 
   And use two switch statements to select the frequency
+
+  Note: added support for letters, like those on the keypad
+        This support is only for lowercase letters: uppercase
+        are still considered to be the 'military'/carrier extra
+        tones.
 */
 
    float f1, f2=0.0;
@@ -137,16 +146,24 @@ bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar t
 
    // select low tone: left column
    switch (tone) {
-      case '1':   case '2':   case '3':   case 'A':   case 'a':
+      case '1':   case '2':   case '3':   case 'A': 
+      case 'a':   case 'b':   case 'c':
+      case 'd':   case 'e':   case 'f':
          f1=697;
          break;
-      case '4':   case '5':   case '6':   case 'B':   case 'b':
+      case '4':   case '5':   case '6':   case 'B':   
+      case 'g':   case 'h':   case 'i':
+      case 'j':   case 'k':   case 'l':
+      case 'm':   case 'n':   case 'o':
          f1=770;
          break;
-      case '7':   case '8':   case '9':   case 'C':   case 'c':
+      case '7':   case '8':   case '9':   case 'C':   
+      case 'p':   case 'q':   case 'r':   case 's':
+      case 't':   case 'u':   case 'v':
+      case 'w':   case 'x':   case 'y':   case 'z':
          f1=852;
          break;
-      case '*':   case '0':   case '#':   case 'D':   case 'd':
+      case '*':   case '0':   case '#':   case 'D':   
          f1=941;
          break;
       default:
@@ -156,16 +173,23 @@ bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar t
    // select high tone: top row
    switch (tone) {
       case '1':   case '4':   case '7':   case '*':
+      case 'g':   case 'h':   case 'i':
+      case 'p':   case 'q':   case 'r':   case 's':
          f2=1209;
          break;
       case '2':   case '5':   case '8':   case '0':
+      case 'a':   case 'b':   case 'c':
+      case 'j':   case 'k':   case 'l':
+      case 't':   case 'u':   case 'v':
          f2=1336;
          break;
       case '3':   case '6':   case '9':   case '#':
+      case 'd':   case 'e':   case 'f':
+      case 'm':   case 'n':   case 'o':
+      case 'w':   case 'x':   case 'y':   case 'z':
          f2=1477;
          break;
       case 'A':   case 'B':   case 'C':   case 'D':
-      case 'a':   case 'b':   case 'c':   case 'd':
          f2=1633;
          break;
       default:
@@ -180,7 +204,7 @@ bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar t
    // now generate the wave: 'last' is used to avoid phase errors
    // when inside the inner for loop of the Process() function.
    for(sampleCount i=0; i<len; i++) {
-      buffer[i]=0.5*(sin(A*(i+last))+sin(B*(i+last)));
+      buffer[i]=amplitude*0.5*(sin(A*(i+last))+sin(B*(i+last)));
    }
 
    // generate a fade-in of duration 1/250th of second
@@ -285,7 +309,7 @@ bool EffectDtmf::Process()
                    block = numSamplesTone+extra - j;
 
                // generate the tone and append
-               MakeDtmfTone(data, block, track->GetRate(), dtmfString[n], j, numSamplesTone);
+               MakeDtmfTone(data, block, track->GetRate(), dtmfString[n], j, numSamplesTone, dtmfAmplitude);
                tmp->Append((samplePtr)data, floatSample, block);
             }
             i += numSamplesTone;
@@ -344,6 +368,7 @@ bool EffectDtmf::Process()
 
       gPrefs->Write(wxT("/CsPresets/DtmfGen_String"), dtmfString);
       gPrefs->Write(wxT("/CsPresets/DtmfGen_DutyCycle"), dtmfDutyCycle);
+      gPrefs->Write(wxT("/CsPresets/DtmfGen_Amplitude"), dtmfAmplitude);
 
       // Update selection: this is not accurate if my calculations are wrong.
       // To validate, once the effect is done, unselect, and select all, then
@@ -365,7 +390,13 @@ const static wxChar *dtmfSymbols[] =
    wxT("4"), wxT("5"), wxT("6"), wxT("7"),
    wxT("8"), wxT("9"), wxT("*"), wxT("#"),
    wxT("A"), wxT("B"), wxT("C"), wxT("D"),
-   wxT("a"), wxT("b"), wxT("c"), wxT("d")
+   wxT("a"), wxT("b"), wxT("c"), wxT("d"),
+   wxT("e"), wxT("f"), wxT("g"), wxT("h"),
+   wxT("i"), wxT("j"), wxT("k"), wxT("l"),
+   wxT("m"), wxT("n"), wxT("o"), wxT("p"),
+   wxT("q"), wxT("r"), wxT("s"), wxT("t"),
+   wxT("u"), wxT("v"), wxT("w"), wxT("x"),
+   wxT("y"), wxT("z")
 };
 
 #define ID_DTMF_DUTYCYCLE_SLIDER 10001
@@ -401,7 +432,7 @@ DtmfDialog::DtmfDialog(wxWindow * parent, const wxString & title): EffectDialog(
 void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
 {
    wxTextValidator vldDtmf(wxFILTER_INCLUDE_CHAR_LIST);
-   vldDtmf.SetIncludes(wxArrayString(20, dtmfSymbols));
+   vldDtmf.SetIncludes(wxArrayString(42, dtmfSymbols));
 
    S.AddTitle(_("by Salvo Ventura (2006)"));
 
@@ -409,6 +440,8 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
    {
       mDtmfStringT = S.Id(ID_DTMF_STRING_TEXT).AddTextBox(_("DTMF sequence:"), wxT(""), 10);
       mDtmfStringT->SetValidator(vldDtmf);
+
+      S.TieTextBox(_("Amplitude (0-1)"),  dAmplitude, 10);
 
       S.AddPrompt(_("DTMF duration:"));
       mDtmfDurationT = new
@@ -460,6 +493,8 @@ bool DtmfDialog::TransferDataToWindow()
 
 bool DtmfDialog::TransferDataFromWindow()
 {
+   EffectDialog::TransferDataFromWindow();
+   dAmplitude = TrapDouble(dAmplitude, AMP_MIN, AMP_MAX);
    // recalculate to make sure all values are up-to-date. This is especially
    // important if the user did not change any values in the dialog
    Recalculate();

@@ -70,12 +70,12 @@ class EffectDtmf:public Effect {
    double dtmfSilence;        // duration of silence between tones in ms
    double dtmfDuration;       // duration of the whole dtmf tone sequence in seconds
    double dtmfDutyCycle;      // ratio of dtmfTone/(dtmfTone+dtmfSilence)
-
+   double dtmfAmplitude;      // amplitude of dtmf tone sequence, restricted to (0-1)
 
  protected:
    virtual bool MakeDtmfTone(float *buffer, sampleCount len, float fs,
                              wxChar tone, sampleCount last,
-                             longSampleCount total);
+                             longSampleCount total, float amplitude);
 
  // friendship ...
  friend class DtmfDialog;
@@ -122,6 +122,7 @@ class DtmfDialog:public EffectDialog {
    double dSilence;        // duration of silence between tones
    double dDuration;       // duration of the whole dtmf tone sequence
    double dDutyCycle;      // ratio of dTone/(dTone+dSilence)
+   double dAmplitude;      // amplitude of dtmf tone sequence, restricted to (0-1)
    bool   dIsSelection;    // true if duration comes from selection
 
 };
