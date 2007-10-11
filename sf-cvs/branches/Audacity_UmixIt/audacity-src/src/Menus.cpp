@@ -3422,7 +3422,7 @@ void AudacityProject::OnHelp()
 #if (AUDACITY_BRANDING == BRAND_THINKLABS)
    void AudacityProject::OnThinklabsHelp()
    {
-      wxHtmlLinkInfo link(wxT("thinklabsmedical.com/phonocardiography_help/"));
+      wxHtmlLinkInfo link(wxT("http://www.thinklabsmedical.com/phonocardiography_help"));
       OpenInDefaultBrowser(link);
    }
 #endif
