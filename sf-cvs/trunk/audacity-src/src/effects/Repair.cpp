@@ -126,7 +126,7 @@ bool EffectRepair::ProcessOne(int count, WaveTrack * track,
    track->Set((samplePtr)&buffer[repairStart], floatSample,
               start + repairStart, repairLen);
    delete[] buffer;
-   return true;
+   return !TrackProgress(count, 1.0); // TrackProgress returns true on Cancel.
 }
 
 // Indentation settings for Vim and Emacs.

@@ -256,7 +256,18 @@ bool EffectSoundTouch::ProcessStereo(WaveTrack* leftTrack, WaveTrack* rightTrack
       sourceSampleCount += blockSize;
       
       //Update the Progress meter
-      if (TrackProgress(mCurTrackNum, (sourceSampleCount - start) / len))
+      // mCurTrackNum is left track. Include right track. 
+      int nWhichTrack = mCurTrackNum;
+      double frac = (sourceSampleCount - start) / len;
+      if (frac < 0.5)
+         frac *= 2.0; // Show twice as far for each track, because we're doing 2 at once. 
+      else 
+      {
+         nWhichTrack++;
+         frac -= 0.5;
+         frac *= 2.0; // Show twice as far for each track, because we're doing 2 at once. 
+      }
+      if (TrackProgress(nWhichTrack, frac))
          return false;
    }
    
