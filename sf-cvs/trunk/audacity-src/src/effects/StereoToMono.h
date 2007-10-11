@@ -38,7 +38,7 @@ public:
     virtual bool Process();
 
 private:
-   bool ProcessOne();
+   bool ProcessOne(int);
 
    longSampleCount mLeftTrackLen;
    longSampleCount mRightTrackLen;
