@@ -112,8 +112,9 @@ bool EffectRepeat::Process()
 
    TrackListIterator iter(m_pOutputWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
+   int nTrack = 0;
 	double maxDestLen = 0.0; // used to change selection to generated bit
-   while (track) {
+   while ((track != NULL) && bGoodResult) {
       double trackStart = track->GetStartTime();
       double trackEnd = track->GetEndTime();
       double t0 = mT0 < trackStart? trackStart: mT0;
@@ -135,7 +136,8 @@ bool EffectRepeat::Process()
       track->Copy(t0, t1, &dest);
       for(int j=0; j<repeatCount; j++)
       {
-         if(!track->Paste(tc, dest))
+         if (!track->Paste(tc, dest) || 
+               TrackProgress(nTrack, j / repeatCount)) // TrackProgress returns true on Cancel.
          {
             bGoodResult = false;
             break;
@@ -147,6 +149,7 @@ bool EffectRepeat::Process()
       delete dest;
 
       track = (WaveTrack *) iter.Next();
+      nTrack++;
    }
 
    if (bGoodResult)
