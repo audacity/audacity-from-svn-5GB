@@ -72,11 +72,16 @@ bool EffectFindClipping::TransferParameters(Shuttle & shuttle)
 bool EffectFindClipping::Process()
 {
    LabelTrack *l = NULL;
+   Track *original = NULL;
 
    TrackListIterator iter(mTracks);
    for (Track *t = iter.First(); t && !l; t = iter.Next()) {
       if (t->GetKind() == Track::Label && t->GetName() == wxT("Clipping")) {
          l = (LabelTrack *) t;
+         // copy LabelTrack here, so it can be undone on cancel
+         l->Copy(l->GetStartTime(), l->GetEndTime(), &original);
+         original->SetOffset(l->GetStartTime());
+         original->SetName(wxT("Clipping"));
          l->Clear(l->GetStartTime(), l->GetEndTime());
       }
    }
@@ -103,6 +108,11 @@ bool EffectFindClipping::Process()
          sampleCount len = (sampleCount)(end - start);
 
          if (!ProcessOne(l, count, t, start, len)) {
+            //put it back how it was
+            mTracks->Remove((Track *) l);
+            if(original) {
+               mTracks->Add((Track *) original);
+            }
             return false;
          }
       }
@@ -120,6 +130,7 @@ bool EffectFindClipping::ProcessOne(LabelTrack * l,
                                     longSampleCount start,
                                     sampleCount len)
 {
+   bool bGoodResult = true;
    sampleCount s = 0;
    sampleCount blockSize = (sampleCount) (mStart * 1000);
    
@@ -142,7 +153,8 @@ bool EffectFindClipping::ProcessOne(LabelTrack * l,
    while (s < len) {
       if (block == 0) {
          if (TrackProgress(count, s / (double) len)) {
-            return false;
+            bGoodResult = false;
+            break;
          }
 
          block = s + blockSize > len ? len - s : blockSize;
@@ -188,7 +200,7 @@ bool EffectFindClipping::ProcessOne(LabelTrack * l,
 
    delete [] buffer;
 
-   return true;
+   return bGoodResult;
 }
 
 //----------------------------------------------------------------------------
