@@ -3,7 +3,9 @@
 ;type analyze
 ;name "Beat Finder..."
 ;action "Finding beats..."
-;control thresval "Threshold" int "%" 85 50 100
+;info "Released under terms of the GNU General Public License version 2"
+
+;control thresval "Threshold Percentage" int "" 65 5 100
 (setf s1 (if (arrayp s) (snd-add (aref s 0) (aref s 1)) s))
 (defun signal () (force-srate 1000 (lp (snd-follow (lp s1 50) 0.001 0.01 0.1 512) 10)))
 (setq max (peak (signal) NY:ALL))

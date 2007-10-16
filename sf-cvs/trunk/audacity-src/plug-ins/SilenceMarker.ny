@@ -3,10 +3,10 @@
 ;type analyze
 ;name "Silence Finder..."
 ;action "Finding silence..."
-;info "Silence finder written by Alex S. Brown, PMP (http://www.alexsbrown.com)\nVersion 1.0 released Apr 3 2005 under the GPL license\n(http://www.opensource.org/licenses/gpl-license.php)
-;control sil-lev "Silence level" real "dB" 26 0 100
-;control sil-dur "Minimum silence duration" real "seconds" 1.5 0.1 5.0
-;control labelbeforedur "Place label" real "seconds before silence ends" 0.3 0.0 1.0
+;info "Written by Alex S. Brown, PMP (http://www.alexsbrown.com)\n\Released under terms of the GNU General Public License version 2\nPlaces labels at areas of silence according to the level and\nduration of silence you specify. If too many silences are detected,\nincrease the silence level and duration, and if too few are detected,\nreduce the level and duration."
+;control sil-lev "Treat audio below this level as silence [ -dB]" real "" 26 0 100
+;control sil-dur "Minimum duration of silence [seconds]" real "" 1.0 0.1 5.0
+;control labelbeforedur "Label placement [seconds before silence ends]" real "" 0.3 0.0 1.0
 
 ;Create a function to make the sum the two channels if they are stereo
 (defun mono-s (s-in) (if (arrayp s-in) (snd-add (aref s-in 0) (aref s-in 1))
@@ -101,6 +101,6 @@ s-in))
 
 ;If no silence markers were found, return a message
 (if (null l)
- (setq l "No silence found, no passages marked")
+ (setq l "No silences found. Try reducing the silence\nlevel and minimum silence duration")
 )
 l
