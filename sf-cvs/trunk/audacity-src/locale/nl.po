@@ -14,11 +14,13 @@
 # playthrough  playthrough
 # summary file overzichtbestand
 # -
+# TODO:
+# specify xx options - xx opties kiezen/specificeren
 msgid ""
 msgstr "Project-Id-Version: Audacity 1.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-10-31 15:03+0100\n"
-"PO-Revision-Date: 2007-05-02 04:32+0200\n"
+"PO-Revision-Date: 2007-10-09 03:58+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +29,7 @@ msgstr "Project-Id-Version: Audacity 1.3\n"
 
 #: ../src/Menus.cpp:526
 msgid "&About Audacity..."
-msgstr "&Over Audacity..."
+msgstr "&Over Audacity…"
 
 # geactiveerd/ingeschakeld
 #: ../src/effects/AvcCompressor.cpp:652
@@ -113,9 +115,22 @@ msgstr "Audacity maakt gebruik van computercode van de volgende projecten:"
 msgid "Special thanks:"
 msgstr "Bijzondere dank aan:"
 
+#: AboutDialog.cpp:314
+msgid "Audacity"
+msgstr "Audacity"
+
 #: ../src/AboutDialog.cpp:271
 msgid "Audacious!"
 msgstr "Audacious!"
+
+#: AboutDialog.cpp:376
+msgid "GPL License"
+msgstr "GPL-licentie"
+
+#: ../src/Benchmark.cpp:223 ../src/FreqWindow.cpp:123
+#: ../src/effects/ClickRemoval.cpp:371 ../src/effects/NoiseRemoval.cpp:463
+msgid "Close"
+msgstr "Sluiten"
 
 #: ../src/AudacityApp.cpp:304 ../src/Project.cpp:1770
 #, c-format
@@ -152,11 +167,7 @@ msgstr "Uitgangsmeter"
 #. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
 #: AudacityApp.cpp:534 Menus.cpp:575
 msgid "&Preferences...\tCtrl+,"
-msgstr "&Voorkeuren...\tCtrl+,"
-
-#: AudacityApp.cpp:601
-msgid "Command-line options supported:\n"
-msgstr "Mogelijke opties voor de opdrachtregel:\n"
+msgstr "&Voorkeuren…\tCtrl+,"
 
 #: ../src/AudacityApp.cpp:626 ../src/AudacityApp.cpp:696
 #, c-format
@@ -167,26 +178,6 @@ msgstr "Gebruik blokgrootte van %ld\n"
 #, c-format
 msgid "Unknown command line option: %s\n"
 msgstr "Onbekende opdrachtregel-optie: %s\n"
-
-#. i18n-hint: '-help', '-test' and
-#. '-blocksize' need to stay in English.
-#: ../src/AudacityApp.cpp:610 ../src/AudacityApp.cpp:680
-#, c-format
-msgid "Command-line options supported:\n"
-"  -help (this message)\n"
-"  -test (run self diagnostics)\n"
-"  -blocksize ### (set max disk block size in bytes)\n"
-"\n"
-"In addition, specify the name of an audio file or Audacity project\n"
-"to open it.\n"
-"\n"
-msgstr "Ondersteunde opdrachtregelopties:\n"
-" -help (dit bericht)\n"
-" -test (zelfdiagnostiek uitvoeren)\n"
-" -blocksize ### (de maximum blokgrootte instellen in bytes)\n"
-"\n"
-"U kunt daarnaast ook de naam van een audiobestand of Audacity-project opgeven\n"
-"om deze te openen.\n"
 
 #: ../src/AudacityApp.cpp:773
 msgid "Audacity could not find a place to store temporary files.\n"
@@ -235,6 +226,40 @@ msgstr "Om aan meerdere projecten gelijktijdig te werken gebruikt u de\n"
 msgid "Audacity is already running"
 msgstr "Audacity is al opgestart"
 
+#: AudacityApp.cpp:1128
+msgid "Command-line options supported:"
+msgstr "Mogelijke opties voor de opdrachtregel:"
+
+#. i18n-hint: '-help' is the option and needs to stay in
+#. * English. This displays a list of available options
+#: AudacityApp.cpp:1131
+msgid "\t-help (this message)"
+msgstr "\t-help (deze hulptekst)"
+
+#. i18n-hint '-version' needs to stay in English.
+#: AudacityApp.cpp:1133
+msgid "\t-version (display Audacity version)"
+msgstr "\t-version (Toon de versie van Audacity)"
+
+#. i18n-hint '-test' is the option and needs to stay in
+#. * English. This runs a set of automatic tests on audacity
+#. * itself
+#: AudacityApp.cpp:1137
+msgid "\t-test (run self diagnostics)"
+msgstr "\t-test (diagnosetesten uitvoeren)"
+
+#. i18n-hint '-blocksize' is the option and needs to stay in
+#. * English. 'nnn' is any integer number. This controls the
+#. * size pieces that audacity uses when writing files to the
+#. * disk
+#: AudacityApp.cpp:1142
+msgid "\t-blocksize nnn (set max disk block size in bytes)"
+msgstr "\t-blocksize nnn  (max blokgrootte in bytes instellen)"
+
+#: AudacityApp.cpp:1143
+msgid "In addition, specify the name of an audio file or Audacity project to open it."
+msgstr "Geef daarnaast de naam van een audiobestand of Audacity-project om te openen."
+
 #: ../src/AudacityApp.cpp:1099
 msgid "Audacity project (.AUP) files are not currently \n"
 "associated with Audacity. \n"
@@ -266,6 +291,20 @@ msgstr "Fout: "
 #: ../src/AudioIO.cpp:173
 msgid "Error Initializing Audio"
 msgstr "Fout bij het initialiseren van Audio"
+
+# tijdsvertraging/geluidsvertraging
+#: AudioIO.cpp:1236
+msgid "Latency problem"
+msgstr "Probleem met tijdsvertraging"
+
+#: AudioIO.cpp:1236
+msgid "Latency setting has caused the recorded audio to be hidden before zero.\n"
+"Audacity has brought it back to start at zero.\n"
+"You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."
+msgstr ""
+"De instelling voor tijdsvertraging veroorzaakt dat de opgenomen audio verborgen is voor het tijdpunt nul.\n"
+"Audacity heeft het teruggehaald zodat het bij nul begint.\n"
+"Mogelijk moet u de Tijdverschuiving (<---> of F5) gebruiken om het spoor naar de juiste plaats te slepen."
 
 #: AutoRecovery.cpp:40
 msgid "Automatic Crash Recovery"
@@ -412,7 +451,7 @@ msgstr "Opdrachtenreeks op huidige &project toepassen"
 
 #: BatchProcessDialog.cpp:105
 msgid "Apply to &Files..."
-msgstr "Toepassen op &bestanden..."
+msgstr "Toepassen op &bestanden…"
 
 #: BatchProcessDialog.cpp:106 BatchProcessDialog.cpp:245 LabelDialog.cpp:134
 #: LabelDialog.cpp:138 UploadDialog.cpp:178 effects/Amplify.cpp:209
@@ -450,7 +489,7 @@ msgstr "Sla eerst het huidige project op en sluit het af."
 # in meervoud gehouden
 #: BatchProcessDialog.cpp:205
 msgid "Select file(s) for batch processing..."
-msgstr "Selecteer de bestand die verwerkt moeten worden..."
+msgstr "Selecteer de bestand die verwerkt moeten worden…"
 
 #: BatchProcessDialog.cpp:208
 msgid "All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac"
@@ -458,7 +497,7 @@ msgstr "Alle bestanden (*.*)|*.*|Wav-bestanden (*.wav)|*.wav|Aiff-bestanden (*.a
 
 #: BatchProcessDialog.cpp:229
 msgid "Applying..."
-msgstr "Toepassen..."
+msgstr "Toepassen…"
 
 #: BatchProcessDialog.cpp:239
 msgid "File"
@@ -554,7 +593,7 @@ msgstr "Afhankelijkheden verwijderen"
 
 #: Dependencies.cpp:140
 msgid "Copying audio data into project..."
-msgstr "Audiogegevens worden naar het project gekopieerd..."
+msgstr "Audiogegevens worden naar het project gekopieerd…"
 
 # onafhankelijk/zelfomvattend/zelfstandig
 #: Dependencies.cpp:219
@@ -589,14 +628,9 @@ msgstr "Geselecteerde audio naar het project kopiëren"
 msgid "Cancel Save"
 msgstr "Opslaan annuleren"
 
-#: Dependencies.cpp:305
-msgid "Skip"
-msgstr "Overslaan"
-
-#: ../src/Benchmark.cpp:223 ../src/FreqWindow.cpp:123
-#: ../src/effects/ClickRemoval.cpp:371 ../src/effects/NoiseRemoval.cpp:463
-msgid "Close"
-msgstr "Sluiten"
+#: Dependencies.cpp:306
+msgid "Don't Copy any Audio"
+msgstr "Geen audio kopiëren"
 
 #: Dependencies.cpp:311
 msgid "Copy All Audio Into Project (safer)"
@@ -606,13 +640,13 @@ msgstr "Alle audio naar het project kopiëren (veiliger)"
 msgid "Ask me"
 msgstr "Vragen"
 
-#: Dependencies.cpp:321 prefs/FileFormatPrefs.cpp:136
-msgid "Always &copy all audio (safest)"
-msgstr "Altijd alle audio &kopiëren (veiligst)"
+#: Dependencies.cpp:321
+msgid "Always copy all audio (safest)"
+msgstr "Altijd alle audio kopiëren (veiligst)"
 
-#: Dependencies.cpp:322 prefs/FileFormatPrefs.cpp:137
-msgid "&Never copy any audio"
-msgstr "&Nooit audio kopiëren"
+#: Dependencies.cpp:322
+msgid "Never copy any audio"
+msgstr "Nooit audio kopiëren"
 
 # afhankelijk is/afhangt
 #: Dependencies.cpp:324
@@ -699,7 +733,7 @@ msgstr "Kon ‘%s’ niet naar ‘%s’ hernoemen"
 # vrij vertaald
 #: DirManager.cpp:1115 DirManager.cpp:1403
 msgid "Inspecting project file data..."
-msgstr "Projectbestanden worden geïnspecteerd..."
+msgstr "Projectbestanden worden geïnspecteerd…"
 
 #: DirManager.cpp:1128
 #, c-format
@@ -824,7 +858,7 @@ msgstr "Ontbrekende data upvullen met stilte [definitief onmiddellijk]"
 
 #: DirManager.cpp:1375
 msgid "Cleaning up unused directories in project data..."
-msgstr "Ongebruikte mappen in project-data worden opgeruimd..."
+msgstr "Ongebruikte mappen in project-data worden opgeruimd…"
 
 #: DirManager.cpp:1448
 msgid "Caching audio"
@@ -832,7 +866,7 @@ msgstr "Audio bufferen"
 
 #: DirManager.cpp:1449
 msgid "Caching audio into memory..."
-msgstr "Audio bufferen naar het geheugen..."
+msgstr "Audio bufferen naar het geheugen…"
 
 # vrij vertaald
 #: DirManager.cpp:1486
@@ -841,7 +875,7 @@ msgstr "Opname wordt opgeslagen"
 
 #: DirManager.cpp:1487
 msgid "Saving recorded audio to disk..."
-msgstr "Opname wordt op de harde schijf opgeslagen..."
+msgstr "Opname wordt op de harde schijf opgeslagen…"
 
 #: ../src/FFT.cpp:364
 msgid "Rectangular"
@@ -914,7 +948,7 @@ msgstr "Frequentie-as:"
 
 #: FreqWindow.cpp:204 LabelDialog.cpp:128
 msgid "&Export..."
-msgstr "&Exporteren..."
+msgstr "&Exporteren…"
 
 #: ../src/effects/Compressor.cpp:385 ../src/effects/Compressor.cpp:393
 #: ../src/widgets/Meter.cpp:293
@@ -966,6 +1000,391 @@ msgstr "Frequentie (Hz)\tGeluidsniveau (dB)"
 #: ../src/FreqWindow.cpp:1025
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
 msgstr "Vertraging (seconden)\tFrequentie (Hz) Niveau"
+
+#: HelpText.cpp:53
+msgid " page."
+msgstr "."
+
+#: HelpText.cpp:53
+msgid "Back to "
+msgstr "Terug naar de "
+
+#: HelpText.cpp:53
+msgid "Welcome"
+msgstr "Welkomstpagina"
+
+#: HelpText.cpp:60
+msgid "Welcome to Audacity!"
+msgstr "Welkom bij Audacity!"
+
+#: HelpText.cpp:65
+msgid "Playing Audio"
+msgstr "Audio afspelen"
+
+#: HelpText.cpp:69
+msgid "Recording Audio"
+msgstr "Audio opnemen"
+
+#: HelpText.cpp:73
+msgid "Greyed Out Items"
+msgstr "Grijze menu-items"
+
+#: export/ExportCL.cpp:188 export/ExportOGG.cpp:121 export/ExportPCM.cpp:114
+msgid "Export"
+msgstr "Exporteren"
+
+#: HelpText.cpp:81
+msgid "Supported Formats"
+msgstr "Ondersteunde formats"
+
+#: HelpText.cpp:85
+msgid "No Local Help"
+msgstr "Geen lokale hulp"
+
+#: HelpText.cpp:97
+msgid "Welcome to Audacity 1.4.0! Let's get started!"
+msgstr "Welkom bij Audacity 1.4.0! Laten we beginnen!"
+
+#: HelpText.cpp:100
+msgid "You may want to click on the hyperlinks below to read:"
+msgstr "U kunt op de onderstaande hyperlinks klikken voor uitleg over:"
+
+# DIT IS ZO ONVRIENDELIJK VOOR VERTALERS, ZINNEN IN STUKJES HAKKEN MAG ECHT NOOIT
+# GEBEUREN!!!!!!!!!!, maar ja, voorlopig kunnen we niet anders. 
+# We zullen het beste er van moeten maken. De volgende vertalingen moeten
+# dus niet letterlijk worden genomen. Het zal er heel raar en fout uitzien,
+# maar het kan niet anders, anders wordt de zinsconstructie heel bizar.
+#: HelpText.cpp:103
+msgid " an existing sound file."
+msgstr " van een bestaand geluidsbestand."
+
+#: HelpText.cpp:103 HelpText.cpp:105 HelpText.cpp:107
+msgid "How to "
+msgstr "Het "
+
+#: HelpText.cpp:103
+msgid "play back"
+msgstr "afspelen"
+
+#: HelpText.cpp:105
+msgid " a new sound file."
+msgstr " een nieuw geluidsbestand."
+
+#: HelpText.cpp:105
+msgid "record"
+msgstr "opnemen"
+
+#: HelpText.cpp:107
+msgid " sound and "
+msgstr " van geluid en het "
+
+#: HelpText.cpp:107
+msgid "edit"
+msgstr "bewerken"
+
+#: HelpText.cpp:108
+msgid " for an mp3 player."
+msgstr " voor gebruik op een mp3-speler."
+
+#: HelpText.cpp:108
+msgid "export"
+msgstr "exporteren"
+
+#: HelpText.cpp:110
+msgid "This could save you from puzzling over why some functions in the "
+msgstr "Dit om te voorkomen dat u zich gaat afvragen waarom bepaalde functies in de "
+
+#: HelpText.cpp:111
+msgid " or why Audacity "
+msgstr " of waarom Audacity "
+
+#: HelpText.cpp:111
+msgid "menus are greyed out"
+msgstr "menu's uitgegrijst zijn"
+
+#: HelpText.cpp:112
+msgid " when "
+msgstr " wanneer "
+
+#: HelpText.cpp:112
+msgid "isn't recording anything"
+msgstr "niets opneemt"
+
+#: HelpText.cpp:113
+msgid "you expect it to.  Or you may prefer to just try using Audacity and see "
+msgstr "u dit wel zou verwachten. Of misschien wilt u Audacity alleen uitproberen om te zien wat het kan doen."
+
+#: HelpText.cpp:114
+msgid "what you can do.  You can always get back to these instructions by using "
+msgstr " U kunt altijd teruggaan naar deze hulptekst via"
+
+#: HelpText.cpp:115
+msgid "the 'Help' option in the menus, and then 'Show Welcome Message...' "
+msgstr " de optie ‘Hulp’ in het menu en dan te kiezen voor ‘Welkomstbericht tonen…’ "
+
+#: HelpText.cpp:117
+msgid "Welcome to Audacity."
+msgstr "Welkom bij Audacity."
+
+#: HelpText.cpp:125
+msgid "You can import files into Audacity by dragging them in, or use the File > "
+msgstr "U kunt bestanden in Audacity importeren door ze naar binnen te slepen, of via het menu Bestand > Importeren > Audio…"
+
+#: HelpText.cpp:126
+msgid "Import > Audio command.<br><br>File > Open does the same, but opens a new "
+msgstr "<br><br>Bestand > Openen doet hetzelfde, maar opent in een nieuw Audacity-venster."
+
+#: HelpText.cpp:127
+msgid "Audacity window.<br><br>These are the main formats Audacity will import for "
+msgstr "<br><br>Audacity kan de volgende geluidsformaten importeren: "
+
+#: HelpText.cpp:128
+msgid "you: AIFF, AU, FLAC, [M4A (only on a Mac)], MP2/MP3, OGG Vorbis, WAV. "
+msgstr "<br>aiff, au, flac, [m4a (alleen op een Mac)], mp2/mp3, ogg vorbis, wav. "
+
+#: HelpText.cpp:129
+msgid "If your file is in some other format see (format help).<br><br>If you want to import an "
+msgstr "<br><br>Wanneer u een audio-cd wilt importeren, "
+
+#: HelpText.cpp:130
+msgid ". To start playing your imported audio, "
+msgstr ".<br>Om de geïmporteerde audio af te spelen, "
+
+#: HelpText.cpp:130
+msgid "audio CD, see "
+msgstr "kijkt u bij "
+
+#: HelpText.cpp:131
+msgid "press the green Play button. "
+msgstr "klikt u op de groene afspeelknop. "
+
+#: HelpText.cpp:140
+msgid "To start recording, press the red Record button. Of course it's not quite "
+msgstr ""
+
+#: HelpText.cpp:141
+msgid "that easy. There are three crucial settings you need to make:"
+msgstr ""
+
+#: HelpText.cpp:143
+msgid "(1) The \"Recording Device\", set in the Audio I/O tab of Preferences. "
+msgstr ""
+
+#: HelpText.cpp:144
+msgid "By default Audacity will choose the current system device, usually your "
+msgstr ""
+
+#: HelpText.cpp:145
+msgid "inbuilt sound device, so you may not need to set this. But if you're using an "
+msgstr ""
+
+#: HelpText.cpp:146
+msgid "external USB or Firewire device such as a USB turntable, please check this "
+msgstr ""
+
+#: HelpText.cpp:147
+msgid "device is selected as your recording device. "
+msgstr ""
+
+#: HelpText.cpp:149
+msgid "(2) The input source for your device, such as microphone, line-in [or "
+msgstr ""
+
+#: HelpText.cpp:150
+msgid "stereo mix]. [If you're on Vista, choose your source in the \"Recording "
+msgstr ""
+
+#: HelpText.cpp:151
+msgid "Device\" on the Audio I/O tab as above.] [Mac info]. Otherwise, choose "
+msgstr ""
+
+#: HelpText.cpp:152
+msgid "your input in the dropdown selector on the right of the Mixer Toolbar. "
+msgstr ""
+
+#: HelpText.cpp:153
+msgid "Note: many USB or Firewire devices won't have a choice of inputs, so "
+msgstr ""
+
+#: HelpText.cpp:154
+msgid "you can ignore this step - see the documentation for your device. "
+msgstr ""
+
+#: HelpText.cpp:156
+msgid "(3) Input Volume: Before recording for real, make a test recording to set "
+msgstr ""
+
+#: HelpText.cpp:157
+msgid "the input level of your recording so that it's neither too soft or too loud. "
+msgstr ""
+
+#: HelpText.cpp:158
+msgid "To do this, adjust the input volume slider on the Mixer Toolbar (by the "
+msgstr ""
+
+#: HelpText.cpp:159
+msgid "microphone symbol) so that when you record, the levels on the red VU "
+msgstr ""
+
+#: HelpText.cpp:160
+msgid "recording meter in the Meter Toolbar are close to (but not touching) "
+msgstr ""
+
+#: HelpText.cpp:161
+msgid "the right edge of the scale. "
+msgstr ""
+
+#: HelpText.cpp:163
+msgid "There is more help if you're stuck: our Recording FAQs, our Tutorial  \"Your "
+msgstr ""
+
+#: HelpText.cpp:164
+msgid " especially "
+msgstr ""
+
+#: HelpText.cpp:164
+msgid "First Recording\" in the Manual, and our Wiki "
+msgstr ""
+
+#: HelpText.cpp:165
+msgid " section. "
+msgstr ""
+
+#: HelpText.cpp:165
+msgid "the "
+msgstr ""
+
+#: HelpText.cpp:174
+msgid "Editing: Audacity is a powerful editor, so you'll want to see what it can do with "
+msgstr ""
+
+#: HelpText.cpp:175
+msgid "your imported file or recording.  The main commands you will use are under "
+msgstr ""
+
+#: HelpText.cpp:176
+msgid "the Edit menu (such as cut, copy and paste) and under the Effect menu (you "
+msgstr ""
+
+#: HelpText.cpp:177
+msgid "can do things like boost the bass, change pitch or tempo, or remove noise). "
+msgstr ""
+
+#: HelpText.cpp:178
+msgid "There are two rules when editing:"
+msgstr ""
+
+#: HelpText.cpp:180
+msgid "(1) if you're still playing or recording, use "
+msgstr ""
+
+#: HelpText.cpp:181
+msgid "the yellow Stop button, because you can't edit a moving track! "
+msgstr ""
+
+#: HelpText.cpp:183
+msgid "(2) You'll see that on occasion some of the menus or buttons are greyed out or say "
+msgstr ""
+
+#: HelpText.cpp:184
+msgid "\"Disabled\", according to what you are trying to do. This is normal. For example "
+msgstr ""
+
+#: HelpText.cpp:185
+msgid "because you can't edit the audio while playing or recording, we grey out or "
+msgstr ""
+
+#: HelpText.cpp:186
+msgid "disable commands until you press Stop.  Commands can sometimes be greyed "
+msgstr ""
+
+#: HelpText.cpp:187
+msgid "out or disabled for other reasons - for example you can't run effects until "
+msgstr ""
+
+#: HelpText.cpp:188
+msgid "you have audio on the screen, and you obviously cannot paste audio until you've "
+msgstr ""
+
+#: HelpText.cpp:189
+msgid "cut or copied it to Audacity's clipboard. "
+msgstr ""
+
+#: HelpText.cpp:199
+msgid "Text about exporting still to be written..."
+msgstr "De uitleg over exporteren moet nog geschreven worden…"
+
+#: HelpText.cpp:209
+msgid "<p>Audacity can currently import WAV, AIFF, AU, MP2/MP3 and OGG Vorbis "
+msgstr ""
+
+#: HelpText.cpp:210
+msgid "files."
+msgstr ""
+
+#: HelpText.cpp:211
+msgid "<p>Audacity <b>cannot</b> import or export files in "
+msgstr ""
+
+#: HelpText.cpp:212
+msgid "<b>WMA, AAC, RealAudio, Shorten (SHN)</b>, "
+msgstr ""
+
+#: HelpText.cpp:213
+msgid "or most other proprietary formats, or any kind of Digital Rights "
+msgstr ""
+
+#: HelpText.cpp:214
+msgid "Management (DRM) protected file, including many purchased online such "
+msgstr ""
+
+#: HelpText.cpp:215
+msgid "as on iTunes or Napster. Because of licensing and patent restrictions, "
+msgstr ""
+
+#: HelpText.cpp:216
+msgid "we are not allowed to add these formats to Audacity. Future versions of "
+msgstr ""
+
+#: HelpText.cpp:217
+msgid "Audacity might be able to support these formats using codecs installed "
+msgstr ""
+
+#: HelpText.cpp:218
+msgid "in your operating system.</p> "
+msgstr ""
+
+#: HelpText.cpp:219
+msgid "<p>Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> "
+msgstr ""
+
+#: HelpText.cpp:220
+msgid "and <b>FLAC</b>."
+msgstr ""
+
+#: HelpText.cpp:221
+msgid "<p>More information is available on line "
+msgstr ""
+
+#: HelpText.cpp:222
+msgid "<a href=\"http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary\">here</a> "
+msgstr ""
+
+#: HelpText.cpp:230
+msgid "<p>You don't appear to have Audacity help files on your machine. "
+msgstr ""
+
+#: HelpText.cpp:231
+msgid "You can download the help files and then access them from "
+msgstr ""
+
+#: HelpText.cpp:232
+msgid "Audacity or you can click <a href=\"*URL*\">here</a> to read "
+msgstr ""
+
+#: HelpText.cpp:233
+msgid "the help online."
+msgstr ""
 
 # Actiegeschiedenis hier duidelijker dan Herstelgeschiedenis
 #: ../src/HistoryWindow.cpp:44
@@ -1042,9 +1461,9 @@ msgid "Label"
 msgstr "Label"
 
 # begintijd/starttijd
-#: LabelDialog.cpp:52
-msgid "&Start Time"
-msgstr "&Begintijd"
+#: LabelDialog.cpp:54
+msgid "Start Time"
+msgstr "Begintijd"
 
 #: LabelDialog.cpp:53
 msgid "End Time"
@@ -1070,11 +1489,11 @@ msgstr "&Vooraan invoegen"
 # niet ideaal om de _i te gebruiken, maar het is even niet anders.
 #: LabelDialog.cpp:127 Menus.cpp:234
 msgid "&Import..."
-msgstr "&Importeren..."
+msgstr "&Importeren…"
 
 #: LabelDialog.cpp:163
 msgid "New..."
-msgstr "Nieuw..."
+msgstr "Nieuw…"
 
 #: LabelDialog.cpp:347
 msgid "You have left blank label names.  These will be\n"
@@ -1092,7 +1511,7 @@ msgstr "Bevestigen"
 
 #: ../src/Menus.cpp:2628
 msgid "Select a text file containing labels..."
-msgstr "Selecteer een tekstbestand met labels..."
+msgstr "Selecteer een tekstbestand met labels…"
 
 #: ../src/Menus.cpp:2632
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
@@ -1137,23 +1556,6 @@ msgstr "Audacity eerste keer opgestart"
 msgid "Choose Language for Audacity to use:"
 msgstr "Kies de taal die Audacity moet gebruiken:"
 
-#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:721
-#: ../src/effects/VST/VSTEffect.cpp:98 ../src/effects/VST/VSTEffect.cpp:455
-#: ../src/effects/Amplify.cpp:187 ../src/effects/AvcCompressor.cpp:716
-#: ../src/effects/BassBoost.cpp:332 ../src/effects/ChangePitch.cpp:393
-#: ../src/effects/ChangeSpeed.cpp:379 ../src/effects/ChangeTempo.cpp:284
-#: ../src/effects/Compressor.cpp:484 ../src/effects/Echo.cpp:242
-#: ../src/effects/Equalization.cpp:731 ../src/effects/Filter.cpp:482
-#: ../src/effects/Normalize.cpp:258 ../src/effects/Phaser.cpp:576
-#: ../src/effects/Repeat.cpp:251 ../src/effects/Wahwah.cpp:563
-#: ../src/effects/ladspa/LadspaEffect.cpp:498
-#: ../src/effects/nyquist/Nyquist.cpp:736
-#: ../src/effects/nyquist/Nyquist.cpp:883
-#: ../src/effects/nyquist/Nyquist.cpp:949 ../src/prefs/FileFormatPrefs.cpp:471
-#: ../src/prefs/PrefsDialog.cpp:100 ../src/widgets/Warning.cpp:56
-msgid "OK"
-msgstr "OK"
-
 #: ../src/Legacy.cpp:337
 #, c-format
 msgid "Converted a 1.0 project file to the new format.\n"
@@ -1165,18 +1567,6 @@ msgstr "Een versie 1.0 projectbestand is omgezet naar het nieuwe format.\n"
 msgid "Opening Audacity Project"
 msgstr "Audacity-project wordt geopend"
 
-#. i18n-hint: here, %s is the name of a toolbar, e.g. "Control Toolbar"
-#: Menus.cpp:169
-#, c-format
-msgid "Show %s"
-msgstr "%s tonen"
-
-#. i18n-hint: here, %s is the name of a toolbar, e.g. "Control Toolbar"
-#: Menus.cpp:175
-#, c-format
-msgid "Hide %s"
-msgstr "%s verbergen"
-
 #: ../src/Menus.cpp:139
 msgid "&File"
 msgstr "&Bestand"
@@ -1187,7 +1577,7 @@ msgstr "&Nieuw\tCtrl+N"
 
 #: ../src/Menus.cpp:143
 msgid "&Open...\tCtrl+O"
-msgstr "&Openen...\tCtrl+O"
+msgstr "&Openen…\tCtrl+O"
 
 # de 's' werd al gebruikt voor op_slaan
 #: ../src/Menus.cpp:145
@@ -1200,64 +1590,64 @@ msgstr "Project op&slaan\tCtrl+S"
 
 #: ../src/Menus.cpp:150
 msgid "Save Project &As..."
-msgstr "Project opslaan &als..."
+msgstr "Project opslaan &als…"
 
 #: Menus.cpp:223
 msgid "Chec&k Dependencies..."
-msgstr "Afhankelijkheids&controle..."
+msgstr "Afhankelijkheids&controle…"
 
-#: Menus.cpp:227
-msgid "Open Me&tadata Editor"
-msgstr "Me&tadata-editor openen"
+#: Menus.cpp:183
+msgid "Open Me&tadata Editor..."
+msgstr "Me&tadata-editor openen…"
 
 #: Menus.cpp:236
 msgid "&Audio...\tCtrl+Shift+I"
-msgstr "&Audio...\tCtrl+Shift+I"
+msgstr "&Audio…\tCtrl+Shift+I"
 
 #: Menus.cpp:237
 msgid "&Labels..."
-msgstr "&Labels..."
+msgstr "&Labels…"
 
 #: Menus.cpp:238
 msgid "&MIDI..."
-msgstr "&MIDI..."
+msgstr "&MIDI…"
 
 #: Menus.cpp:239
 msgid "&Raw Data..."
-msgstr "&Raw data..."
+msgstr "&Raw data…"
 
 #: Menus.cpp:251 Menus.cpp:280
 msgid "Expo&rt Selection..."
-msgstr "Selectie expo&rteren..."
+msgstr "Selectie expo&rteren…"
 
 #: ../src/Menus.cpp:173
 msgid "Export &Labels..."
-msgstr "&Labels exporteren..."
+msgstr "&Labels exporteren…"
 
 # meerdere sporen tegelijk exporteren naar verschillende bestanden.
 #: ../src/Menus.cpp:174
 msgid "Export &Multiple..."
-msgstr "&Meervoudig exporteren..."
+msgstr "&Meervoudig exporteren…"
 
 #: Menus.cpp:340 Menus.cpp:354
 msgid "Edit C&hains..."
-msgstr "Opdrachtenreeksen be&werken..."
+msgstr "Opdrachtenreeksen be&werken…"
 
 #: Menus.cpp:352
 msgid "Appl&y Chain..."
-msgstr "Opdrachtenreeks toe&passen..."
+msgstr "Opdrachtenreeks toe&passen…"
 
 #: Menus.cpp:358
 msgid "&Upload File..."
-msgstr "&Bestand uploaden..."
+msgstr "&Bestand uploaden…"
 
 #: Menus.cpp:363
 msgid "Pa&ge Setup..."
-msgstr "Pa&ginainstelling..."
+msgstr "Pa&ginainstelling…"
 
 #: Menus.cpp:364
 msgid "&Print..."
-msgstr "Af&drukken..."
+msgstr "Af&drukken…"
 
 #: Menus.cpp:382 Menus.cpp:385
 msgid "E&xit\tCtrl+Q"
@@ -1342,7 +1732,7 @@ msgstr "&Van stereo naar mono"
 # gebieden met labels/gelabelde gebieden
 #: Menus.cpp:458
 msgid "Labeled Re&gions..."
-msgstr "&Gelabelde gebieden..."
+msgstr "&Gelabelde gebieden…"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:460
@@ -1393,7 +1783,7 @@ msgstr "&Losmaken\tShift+Alt+J"
 
 #: Menus.cpp:464
 msgid "&Select..."
-msgstr ""
+msgstr "&Selecteren…"
 
 #: ../src/Menus.cpp:269
 msgid "&All\tCtrl+A"
@@ -1428,7 +1818,7 @@ msgstr "Nulpunten &zoeken\tZ"
 
 #: Menus.cpp:527
 msgid "Mo&ve Cursor..."
-msgstr "Cursor &verplaatsen..."
+msgstr "Cursor &verplaatsen…"
 
 #: ../src/Menus.cpp:292
 msgid "to Selection Start"
@@ -1455,24 +1845,10 @@ msgstr "Selectie opslaan"
 msgid "Selection Restore"
 msgstr "Selectie herstellen"
 
-#: Menus.cpp:548
-msgid "S&nap-To..."
-msgstr "&Raster..."
-
-#. i18n-hint: Set snap-to mode on or off
-#: Menus.cpp:551
-msgid "On"
-msgstr "Aan"
-
-#. i18n-hint: Set snap-to mode on or off
-#: Menus.cpp:553 effects/ClickRemoval.cpp:376 effects/ClickRemoval.cpp:405
-msgid "Off"
-msgstr "Uit"
-
 # &Afspeelgebied...
 #: Menus.cpp:559
 msgid "Play &Region..."
-msgstr "&Afspeelgebied..."
+msgstr "&Afspeelgebied…"
 
 # vastzetten/begrenzen/beveiligen/vergrendelen
 #: Menus.cpp:560
@@ -1502,7 +1878,7 @@ msgstr "Raster uitzetten"
 
 #: ../src/Menus.cpp:327 ../src/Menus.cpp:333
 msgid "&Preferences...\tCtrl+P"
-msgstr "&Voorkeuren...\tCtrl+P"
+msgstr "&Voorkeuren…\tCtrl+P"
 
 #: ../src/Menus.cpp:345
 msgid "&View"
@@ -1541,18 +1917,19 @@ msgstr "&Alle sporen opvouwen\tCtrl+Shift+C"
 msgid "E&xpand All Tracks\tCtrl+Shift+X"
 msgstr "Alle &sporen uitvouwen\tCtrl+Shift+X"
 
+# Sta geen oversturing toe (S. Alkemade)
+#: Menus.cpp:500
+msgid "Show Clipping"
+msgstr "Oversturing opsporen"
+
 # Bewerkingen/bewerkingsgeschiedenis/geschiedenis
 #: ../src/Menus.cpp:364
 msgid "&History..."
-msgstr "&Geschiedenis..."
-
-#: Menus.cpp:614
-msgid "&Experimental Display..."
-msgstr "&Experimentele weergave..."
+msgstr "&Geschiedenis…"
 
 #: Menus.cpp:617
 msgid "&Toolbars..."
-msgstr "&Werkbalken..."
+msgstr "&Werkbalken…"
 
 # Control Toolbar tonen/verbergen
 # De bedieningsbalk/De bedieningsknoppen/Werkbalk met bedieningsknoppen/
@@ -1595,6 +1972,11 @@ msgstr "De tools-werkbalk"
 msgid "Transcription Toolbar"
 msgstr "De snelheidsinstellingen"
 
+# resetten/herstellen
+#: Menus.cpp:525
+msgid "Reset Toolbars"
+msgstr "Werkbalken herstellen"
+
 #: Menus.cpp:635
 msgid "&Tracks"
 msgstr "&Sporen"
@@ -1603,7 +1985,7 @@ msgstr "&Sporen"
 # Sporen->Toevoegen... -> audiospoor/labelspoor/stereospoor
 #: Menus.cpp:642
 msgid "Add &New..."
-msgstr "&Toevoegen..."
+msgstr "&Toevoegen…"
 
 #: Menus.cpp:643
 msgid "&Audio Track\tCtrl+Shift+N"
@@ -1618,9 +2000,9 @@ msgid "&Time Track"
 msgstr "&Tijdspoor"
 
 # Opname tijdsklok/inplannen/plannen/timer/inplannen
-#: Menus.cpp:649
-msgid "&Timer Record"
-msgstr "&Opname inplannen"
+#: Menus.cpp:549
+msgid "&Timer Record..."
+msgstr "&Opname inplannen…"
 
 # Mixen/mix uitvoeren/mixen en berekenen/mixen en opmaken
 # mixen en wegschrijven/mixen en doorrekenen
@@ -1628,10 +2010,14 @@ msgstr "&Opname inplannen"
 msgid "&Mix and Render"
 msgstr "&Mixen en doorrekenen"
 
+#: Menus.cpp:564
+msgid "Mix and Render to New Track\tCtrl+Shift+M"
+msgstr "Mixen en doorrekenen naar nieuw spoor\tCtrl+Shift+M"
+
 # resampelen
 #: Menus.cpp:662
 msgid "&Resample..."
-msgstr "&Resampelen..."
+msgstr "&Resampelen…"
 
 #: ../src/Menus.cpp:398
 msgid "Remo&ve Tracks"
@@ -1671,11 +2057,11 @@ msgstr "Sporen op elkaar uitlijnen"
 
 #: Menus.cpp:688
 msgid "&Align Tracks..."
-msgstr "Sporen &uitlijnen..."
+msgstr "Sporen &uitlijnen…"
 
 #: Menus.cpp:697
 msgid "Ali&gn And Move Cursor..."
-msgstr "Uitlijnen en &cursor verplaatsen..."
+msgstr "Uitlijnen en &cursor verplaatsen…"
 
 #: Menus.cpp:705
 msgid "Add &Label At Selection\tCtrl+B"
@@ -1687,7 +2073,7 @@ msgstr "Label toevoegen bij afs&peelpositie\tCtrl+M"
 
 #: Menus.cpp:712
 msgid "S&ort tracks by..."
-msgstr "Sp&oren sorteren op..."
+msgstr "Sp&oren sorteren op…"
 
 #: Menus.cpp:713
 msgid "&Start time"
@@ -1714,9 +2100,10 @@ msgstr "Laatste effect herhalen\tCtrl+R"
 msgid "&Analyze"
 msgstr "&Analyseren"
 
-#: Menus.cpp:786
-msgid "&Plot Spectrum..."
-msgstr "&Spectrum berekenen..."
+# berekenen/tonen
+#: Menus.cpp:686
+msgid "Plot Spectrum..."
+msgstr "Spectrum tonen…"
 
 #. i18n-hint: The name of the Help menu
 #: ../src/Menus.cpp:521 ../src/Menus.cpp:537
@@ -1725,16 +2112,28 @@ msgstr "&Hulp"
 
 #: Menus.cpp:829
 msgid "&About Audacity CleanSpeech..."
-msgstr "&Informatie over Audacity CleanSpeech..."
+msgstr "&Informatie over Audacity CleanSpeech…"
+
+#: Menus.cpp:735
+msgid "&Show Welcome Message..."
+msgstr "&Welkomstbericht tonen…"
+
+#: Menus.cpp:736
+msgid "&Index..."
+msgstr "&Index…"
 
 #: Menus.cpp:790
 msgid "&Screenshot Tools..."
-msgstr ""
+msgstr "&Schermafdrukken…"
 
 # prestatietest/benchmark uitvoeren
 #: ../src/Menus.cpp:530
 msgid "&Run Benchmark..."
-msgstr "&Prestaties testen..."
+msgstr "&Prestaties testen…"
+
+#: Menus.cpp:737
+msgid "&Audio Device Info..."
+msgstr "&Audio-apparaat info…"
 
 #: Menus.cpp:848
 msgid "Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"
@@ -1800,6 +2199,10 @@ msgstr "Pauzeren\tP"
 #: ../src/Menus.cpp:559
 msgid "Record\tR"
 msgstr "Opnemen\tR"
+
+#: Menus.cpp:777
+msgid "Play/Stop and Select\tShift+Return"
+msgstr "Afspelen/Stopen en Selecteren\tShift+Enter"
 
 #: Menus.cpp:867
 msgid "Stop and Select\tShift+A"
@@ -1883,9 +2286,10 @@ msgstr "Focus naar volgende spoor\tPijl neer"
 msgid "Move Focus to Next and Change Selection\tShift+Down"
 msgstr "Focus naar volgende spoor en wijzig selectie\tShift+Pijl neer"
 
+# return = enter
 #: Menus.cpp:903
 msgid "Toggle Focused Track\tReturn"
-msgstr "Focus op spoor aan/uit\tReturn"
+msgstr "Focus op spoor aan/uit\tEnter"
 
 #: Menus.cpp:904
 msgid "Toggle Focused Track\tNUMPAD_ENTER"
@@ -1903,6 +2307,22 @@ msgstr "Cursor links\tLinks"
 msgid "Cursor Right\tRight"
 msgstr "Cursor rechts\tRechts"
 
+#: Menus.cpp:820
+msgid "Cursor Short Jump Left\t,"
+msgstr ""
+
+#: Menus.cpp:821
+msgid "Cursor Short Jump Right\t."
+msgstr ""
+
+#: Menus.cpp:822
+msgid "Cursor Long Jump Left\tShift+,"
+msgstr ""
+
+#: Menus.cpp:823
+msgid "Cursor Long Jump Right\tShift+."
+msgstr ""
+
 #: ../src/Menus.cpp:584
 msgid "Selection Extend Left\tShift+Left"
 msgstr "Selectie naar links vergroten\tShift+Links"
@@ -1910,6 +2330,14 @@ msgstr "Selectie naar links vergroten\tShift+Links"
 #: ../src/Menus.cpp:585
 msgid "Selection Extend Right\tShift+Right"
 msgstr "Selectie naar rechts vergroten\tShift+Rechts"
+
+#: Menus.cpp:828
+msgid "Set (or Extend) Left Selection"
+msgstr ""
+
+#: Menus.cpp:829
+msgid "Set (or Extend) Right Selection"
+msgstr ""
 
 #: ../src/Menus.cpp:586
 msgid "Selection Contract Left\tCtrl+Shift+Right"
@@ -1960,6 +2388,14 @@ msgstr "Zet ‘solo’ aan/uit op het spoor met focus\tShift+S"
 msgid "Close focused track\tShift+C"
 msgstr "Sluit het spoor met focus\tShift+C"
 
+#: Menus.cpp:824
+msgid "Snap To On"
+msgstr "Raster (Snap-To) aanzetten"
+
+#: Menus.cpp:825
+msgid "Snap To Off"
+msgstr "Raster (Snap-To) uitzetten"
+
 #. i18n-hint: This is the name of the menu item on Mac OS X only
 #: Menus.cpp:939
 msgid "Open Recent"
@@ -1967,7 +2403,7 @@ msgstr "Recent project openen"
 
 #: ../src/Menus.cpp:154
 msgid "Recent &Files..."
-msgstr "&Recente bestanden..."
+msgstr "&Recente bestanden…"
 
 #: ../src/Menus.cpp:617
 #, c-format
@@ -2224,10 +2660,6 @@ msgstr "Om het spectrum te tekenen moeten alle sporen dezelfde samplefrequentie 
 msgid "Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."
 msgstr "Er was teveel audio geselecteerd.  Alleen de eerste %.1f seconden audio worden geanaliseerd."
 
-#: ../src/Menus.cpp:2592 ../src/Project.cpp:1738
-msgid "Select one or more audio files..."
-msgstr "Selecteer een of meerdere audiobestanden..."
-
 #: ../src/Menus.cpp:2657
 #, c-format
 msgid "Imported labels from '%s'"
@@ -2239,7 +2671,7 @@ msgstr "Labels importeren"
 
 #: ../src/Menus.cpp:2669
 msgid "Select a MIDI file..."
-msgstr "Selecteer een MIDI-bestand..."
+msgstr "Selecteer een MIDI-bestand…"
 
 #: ../src/Menus.cpp:2673
 msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
@@ -2256,7 +2688,7 @@ msgstr "MIDI importeren"
 
 #: ../src/Menus.cpp:2706
 msgid "Select any uncompressed audio file..."
-msgstr "Selecteer een audiobestand zonder compressie..."
+msgstr "Selecteer een audiobestand zonder compressie…"
 
 #: ../src/Menus.cpp:2710
 msgid "All files (*)|*"
@@ -2268,17 +2700,17 @@ msgstr "Alle bestanden (*)|*"
 msgid "Import"
 msgstr "Importeren"
 
-#: ../src/Menus.cpp:2748
-msgid "Edit ID3 Tags (for MP3 exporting)"
-msgstr "ID3-tags bewerken (voor MP3-export)"
+#: Menus.cpp:3547
+msgid "Edit the metadata tags"
+msgstr "De metadata-tags bewerken"
 
-#: ../src/Menus.cpp:2749
-msgid "Edit ID3 Tags"
-msgstr "ID3-tags bewerken"
+#: Menus.cpp:3548
+msgid "Edit Metadata"
+msgstr "Metadata bewerken"
 
-#: ../src/Menus.cpp:2749
-msgid "Edit ID3 tags"
-msgstr "ID3-tags bewerken"
+#: Menus.cpp:3548
+msgid "Edit Metadata tags"
+msgstr "Metadata-tags bewerken"
 
 # doorgerekend/berekend
 #: Menus.cpp:3749
@@ -2476,13 +2908,38 @@ msgstr "Geluid opgenomen"
 msgid "Save changes before closing?"
 msgstr "Wijzigingen opslaan voor afsluiten?"
 
+#: Project.cpp:1457
+msgid "\n"
+"\n"
+"Saved project will be empty!!\n"
+"\n"
+"To save the tracks you previously\n"
+"had, click cancel, restore the tracks\n"
+"using undo, and then save."
+msgstr "\n"
+"\n"
+"Het opgeslagen project zal leeg zijn!!\n"
+"\n"
+"Om de sporen die u eerst had op te slaan,\n"
+"klikt u op Annuleren, herstelt u de\n"
+"sporen met Herstellen, waarna u kunt opslaan."
+
 #: ../src/Project.cpp:1717
 msgid "Save changes?"
 msgstr "Wijzigingen opslaan?"
 
-#: Project.cpp:1496
-msgid "Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3"
-msgstr "Muziekbestanden (*.wav;*.mp3)|*.wav;*.mp3|Wav-bestanden (*.wav)|*.wav|Mp3-bestanden (*.mp3)|*.mp3"
+# alle ondersteunde bestanden/bestandsformaten
+#: Project.cpp:1648
+msgid "All files|*.*|All supported files|"
+msgstr "Alle bestanden|*.*|Alle ondersteunde bestanden|"
+
+#: ../src/Menus.cpp:2592 ../src/Project.cpp:1738
+msgid "Select one or more audio files..."
+msgstr "Selecteer een of meerdere audiobestanden…"
+
+#: Project.cpp:1700
+msgid "Audacity projects|*.aup|"
+msgstr "Audacity-projecten|*.aup|"
 
 #: ../src/Project.cpp:1821 ../src/Project.cpp:1829
 msgid "Error opening file"
@@ -2542,21 +2999,30 @@ msgstr "Dit bestand is opgeslagen met Audacity %s.\n"
 msgid "Can't open project file"
 msgstr "Kan projectbestand niet openen"
 
-#: Project.cpp:1898
+#: Project.cpp:2131
+#, c-format
+msgid "This file was saved by Audacity %s, a much\n"
+"older version of Audacity.  The format has changed.\n"
+"Audacity will probably destroy the file in trying\n"
+"to open it.  You must back up your project\n"
+"first, to be safe.\n"
+"\n"
+"Would you like to try to open this file\n"
+"right now anyway?"
+msgstr ""
+
+#: Project.cpp:2138
 #, c-format
 msgid "This file was saved by Audacity %s and the format\n"
 "has changed.  This version of Audacity can try to\n"
 "open it, but there may be problems.  You should back up\n"
 "your project first, to be safe.\n"
 "\n"
-"Would you like to open this file right now anyway?"
-msgstr "Dit bestand is opgeslagen met Audacity %s maar het format\n"
-"is inmiddels gewijzigd. Deze versie van Audacity kan \n"
-"poging wagen het te openen maar er kunnen zich problemen\n"
-"voordoen. U moet eigenlijk voor de zekerheid eerst een\n"
-"backup maken van uw project.\n"
-"\n"
-"Wilt u dit bestand nu toch meteen openen?"
+"After you save the file with this version of Audacity,\n"
+"you will not be able to open the file in the older\n"
+"version anymore.  Would you like to open\n"
+"this file right now anyway?"
+msgstr ""
 
 #: Project.cpp:1902
 msgid "Opening old project file"
@@ -2583,11 +3049,10 @@ msgstr "%s Opgeslagen"
 msgid "Raw"
 msgstr "Raw"
 
-# Importing MP3 file...
-#: ../src/Project.cpp:2233
+#: Project.cpp:2463
 #, c-format
-msgid "Importing %s File..."
-msgstr "Het %s-bestand wordt geïmporteerd..."
+msgid "Importing %s..."
+msgstr "Importeren van %s…"
 
 #: ../src/Project.cpp:2282
 #, c-format
@@ -2618,7 +3083,7 @@ msgid "Audacity project files (.aup) let you save everything you're working on e
 msgstr "In Audacity-projectbestanden (.aup) wordt alle informatie opgeslagen, precies zoals die op het scherm\n"
 "te zien is. Andere programma's kunnen echter de projectbestanden van Audacity vaak niet openen.\n"
 "\n"
-"Als u het bestand ook in andere programma's wilt kunnen openen moet u ‘Exporteren als...’ gebruiken."
+"Als u het bestand ook in andere programma's wilt kunnen openen moet u ‘Exporteren als…’ gebruiken."
 
 #: ../src/Project.cpp:2378
 msgid "Audacity projects (*.aup)|*.aup"
@@ -2678,16 +3143,12 @@ msgid "Could not create autosave file: "
 msgstr "Kon het autosave-bestand niet aanmaken: "
 
 #  =statusbalkmelding
-# feitelijke/werkelijke snelheid/frequentie
+# feitelijke/werkelijke/daadwerkelijke snelheid/frequentie
 # het gaat hier om de samplefrequentie
-#: Project.cpp:3113
+#: Project.cpp:3320
 #, c-format
-msgid "Actual Rate %d"
-msgstr "Werkelijke frequentie %d"
-
-#: Project.cpp:3230
-msgid "All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|MP2/MPEG files (*.mp2;*.mpa;*.mpg;*.mpeg)|*.mp2;*.mpa;*.mpg;*.mpeg|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof"
-msgstr "Alle bestanden (*.*)|*.*|Audacity-projecten (*.aup)|*.aup|Wav-bestanden (*.wav)|*.wav|Aiff-bestanden (*.aif)|*.aif|Au-bestanden (*.au)|*.au|Mp3-bestanden (*.mp3)|*.mp3|Mp2/Mpeg-bestanden (*.mp2;*.mpa;*.mpg;*.mpeg)|*.mp2;*.mpa;*.mpg;*.mpeg|Ogg Vorbis-bestanden (*.ogg)|*.ogg|Flac-bestanden (*.flac)|*.flac|Bestandenlijst (*.lof)|*.lof"
+msgid "Actual Rate: %d"
+msgstr "Werkelijke frequentie: %d"
 
 #: ../src/Resample.cpp:35
 msgid "Libresample by Dominic Mazzoni and Julius Smith"
@@ -2718,29 +3179,38 @@ msgstr "Resampling is uitgeschakeld."
 #. i18n-hint: Audio data bit depth (precison): 16-bit integers
 #: SampleFormat.cpp:66
 msgid "16-bit PCM"
-msgstr ""
+msgstr "16-bit PCM"
 
 #. i18n-hint: Audio data bit depth (precison): 24-bit integers
 #: SampleFormat.cpp:69
 msgid "24-bit PCM"
-msgstr ""
+msgstr "24-bit PCM"
 
 #. i18n-hint: Audio data bit depth (precison): 32-bit floating point
 #: SampleFormat.cpp:72
 msgid "32-bit float"
-msgstr ""
+msgstr "32-bit float"
 
 #: Screenshot.cpp:186
 msgid "Saved "
-msgstr ""
+msgstr "Opgeslagen"
 
 #: Screenshot.cpp:189
 msgid "Error trying to save file: "
-msgstr ""
+msgstr "Fout bij het opslaan van het bestand: "
 
 #: Sequence.cpp:732 Sequence.cpp:742 Sequence.cpp:749
 msgid "Gap detected in project file\n"
 msgstr "Gat ontdekt in projectbestand\n"
+
+#: effects/Effect.cpp:254 effects/Effect.cpp:370 effects/Phaser.cpp:595
+#: effects/Wahwah.cpp:582 effects/audiounits/AudioUnitEffect.cpp:852
+msgid "Pre&view"
+msgstr "&Voorbeeld"
+
+#: effects/nyquist/Nyquist.cpp:826 effects/nyquist/Nyquist.cpp:990
+msgid "&Debug"
+msgstr "&Debuggen"
 
 #  =venstertitel
 #: SmartRecordDialog.cpp:68
@@ -2791,6 +3261,193 @@ msgstr "Wachten met opnemen tot "
 msgid "Audacity Smart Record - Waiting for Start"
 msgstr "Audacity ingeplande opname - Wachten op begin opname"
 
+#: SplashDialog.cpp:57
+msgid "&Welcome to Audacity!"
+msgstr "&Welkom bij Audacity!"
+
+# dit niet meer tonen/verberg dit
+#: SplashDialog.cpp:94
+msgid "Don't show this again at start up"
+msgstr "Dit niet meer tonen bij het opstarten"
+
+#: Tags.cpp:621
+msgid "Artist Name"
+msgstr "Naam artiest"
+
+#: Tags.cpp:622
+msgid "Track Title"
+msgstr "Songtitel"
+
+#: Tags.cpp:623
+msgid "Album Title"
+msgstr "Album"
+
+#: Tags.cpp:953
+msgid "Track Number"
+msgstr "Spoornummer"
+
+#: ../src/Tags.cpp:465
+msgid "Year"
+msgstr "Jaar"
+
+#: Tags.cpp:979
+msgid "Genre"
+msgstr "Genre"
+
+#: ../src/Tags.cpp:475
+msgid "Comments"
+msgstr "Opmerkingen"
+
+# F2/op F2
+# om de inhoud van de cel te bewerken/om te bewerken
+#: Tags.cpp:745 Tags.cpp:1985
+msgid "Press F2 or double click to edit."
+msgstr "Toets F2 of dubbelklik om te bewerken."
+
+#: Tags.cpp:769
+msgid "Tag Name"
+msgstr "Tagnaam"
+
+#: Tags.cpp:770
+msgid "Tag Value"
+msgstr "Tagwaarde"
+
+#: prefs/KeyConfigPrefs.cpp:114
+msgid "&Clear"
+msgstr "&Wissen"
+
+#: Tags.cpp:791
+msgid "Genres"
+msgstr "Genres"
+
+#: Tags.cpp:795 Tags.cpp:1406 Tags.cpp:1947
+msgid "Edit"
+msgstr "Bewerken"
+
+# Resetten/herstellen
+#: Tags.cpp:796 Tags.cpp:1948
+msgid "Reset"
+msgstr "Herstellen"
+
+#: Tags.cpp:1070
+msgid "Template"
+msgstr "Sjabloon"
+
+#: Tags.cpp:1073 prefs/KeyConfigPrefs.cpp:124
+msgid "&Load..."
+msgstr "&Laden…"
+
+#: Tags.cpp:1078 prefs/KeyConfigPrefs.cpp:123
+msgid "&Save..."
+msgstr "Op&slaan…"
+
+#: Tags.cpp:1085
+msgid "S&et default"
+msgstr "&Standaard instellen"
+
+#: Tags.cpp:958 Tags.cpp:1597 Tags.cpp:2326
+msgid "Edit Genres"
+msgstr "Genres bewerken"
+
+#: Tags.cpp:991 Tags.cpp:1003 Tags.cpp:1019 Tags.cpp:1032 Tags.cpp:1635
+#: Tags.cpp:1647 Tags.cpp:1663 Tags.cpp:1676 Tags.cpp:2369 Tags.cpp:2381
+#: Tags.cpp:2397 Tags.cpp:2410
+msgid "Reset Genres"
+msgstr "Genres herstellen"
+
+#: Tags.cpp:991 Tags.cpp:1032 Tags.cpp:1635 Tags.cpp:1676 Tags.cpp:2369
+#: Tags.cpp:2410
+msgid "Unable to save genre file."
+msgstr "Niet in staat het genrebestand op te slaan."
+
+#: Tags.cpp:1002 Tags.cpp:1646 Tags.cpp:2380
+msgid "Are you sure you want to reset the genre list to defaults?"
+msgstr "Weet u zeker dat u de genrelijst naar de standaardlijst wilt herstellen?"
+
+#: Tags.cpp:1019 Tags.cpp:1663 Tags.cpp:2397
+msgid "Unable to open genre file."
+msgstr "Niet in staat het genrebestand te openen."
+
+#: Tags.cpp:1054 Tags.cpp:1108 Tags.cpp:1709 Tags.cpp:1745 Tags.cpp:2432
+#: Tags.cpp:2468
+msgid "Save Metadata As:"
+msgstr "Metadata opslaan als:"
+
+#: Tags.cpp:1079 Tags.cpp:1730 Tags.cpp:2453
+msgid "Error loading metadata"
+msgstr "Fout bij het laden van de metadata"
+
+#: Tags.cpp:1376 Tags.cpp:1935
+msgid "Title:"
+msgstr "Titel:"
+
+#: Tags.cpp:1377 Tags.cpp:1936
+msgid "Artist:"
+msgstr "Artiest:"
+
+#: Tags.cpp:1378 Tags.cpp:1937
+msgid "Album:"
+msgstr "Album:"
+
+#: Tags.cpp:1379
+msgid "Composer:"
+msgstr "Componist:"
+
+#: Tags.cpp:1380
+msgid "Lyricist:"
+msgstr "Tekstschrijver:"
+
+#: Tags.cpp:1381 Tags.cpp:1940
+msgid "Comments:"
+msgstr "Opmerkingen:"
+
+#: Tags.cpp:1383
+msgid "Encoded By:"
+msgstr "Gecodeerd met:"
+
+#: Tags.cpp:1387
+msgid "Copyright:"
+msgstr "Copyright:"
+
+#: Tags.cpp:1391 Tags.cpp:1938
+msgid "Track Number:"
+msgstr "Spoornummer:"
+
+#: Tags.cpp:1395 Tags.cpp:1939
+msgid "Year:"
+msgstr "Jaar:"
+
+#: Tags.cpp:1399 Tags.cpp:1941
+msgid "Genre:"
+msgstr "Genre:"
+
+#: Tags.cpp:1457 Tags.cpp:2056
+msgid "No Genres"
+msgstr "Geen genres"
+
+#: Tags.cpp:1610
+msgid "Reset to Defaults"
+msgstr "H&erstellen naar standaardlijst"
+
+# eenvoudig/simpel
+#: Tags.cpp:1923
+msgid "Basic"
+msgstr "Eenvoudig"
+
+# extra/geavanceerd
+#: Tags.cpp:1975
+msgid "Advanced"
+msgstr "Geavanceerd"
+
+# bitrate is variabel of contstant
+#: Tags.cpp:2000
+msgid "Value"
+msgstr "Waarde"
+
+#: Tags.cpp:2036
+msgid "Clea&r"
+msgstr "&Wissen"
+
 #: ../src/Tags.cpp:429
 #, c-format
 msgid "Maximum length of attribute '%s' is %d characters. Data was truncated."
@@ -2807,64 +3464,6 @@ msgstr "Artiest"
 #: ../src/Tags.cpp:455
 msgid "Album"
 msgstr "Album"
-
-#: ../src/Tags.cpp:465
-msgid "Year"
-msgstr "Jaar"
-
-#: ../src/Tags.cpp:475
-msgid "Comments"
-msgstr "Opmerkingen"
-
-#: ../src/Tags.cpp:607
-msgid "ID3v1 (more compatible)"
-msgstr "ID3v1 (betere compatibiliteit)"
-
-#: ../src/Tags.cpp:608
-msgid "ID3v2 (more flexible)"
-msgstr "ID3v2 (meer flexibiliteit)"
-
-# formaat/format
-#: Tags.cpp:906
-msgid "Format"
-msgstr "Format"
-
-#: Tags.cpp:953
-msgid "Track Number"
-msgstr "Spoornummer"
-
-#: Tags.cpp:979
-msgid "Genre"
-msgstr "Genre"
-
-#: Tags.cpp:1048
-msgid "&Fewer"
-msgstr "Mi&nder"
-
-#: Tags.cpp:1053
-msgid "&More"
-msgstr "&Meer"
-
-# voltooid/klaar/gereed
-#: Tags.cpp:1060
-msgid "&Done"
-msgstr "&Voltooid"
-
-#: Tags.cpp:1070
-msgid "Template"
-msgstr "Sjabloon"
-
-#: Tags.cpp:1073 prefs/KeyConfigPrefs.cpp:124
-msgid "&Load..."
-msgstr "&Laden..."
-
-#: Tags.cpp:1078 prefs/KeyConfigPrefs.cpp:123
-msgid "&Save..."
-msgstr "Op&slaan..."
-
-#: Tags.cpp:1085
-msgid "S&et default"
-msgstr "&Standaard instellen"
 
 #: Theme.cpp:629
 #, c-format
@@ -2963,14 +3562,14 @@ msgstr "Sporenpaneel"
 #: ../src/AStatus.cpp:81 ../src/TrackPanel.cpp:822
 #: ../src/prefs/FileFormatPrefs.cpp:105 ../src/prefs/QualityPrefs.cpp:91
 msgid "Other..."
-msgstr "Andere..."
+msgstr "Andere…"
 
 # Benoemen/Titel/Naam/Benaming/Nieuwe naam
 # het brengt een dialoog op waarin je een spoor een naam/titel kunt geven
 #: ../src/TrackPanel.cpp:830 ../src/TrackPanel.cpp:851
 #: ../src/TrackPanel.cpp:860 ../src/TrackPanel.cpp:868
 msgid "Name..."
-msgstr "Nieuwe naam..."
+msgstr "Nieuwe naam…"
 
 #: ../src/TrackPanel.cpp:832 ../src/TrackPanel.cpp:853
 #: ../src/TrackPanel.cpp:864 ../src/TrackPanel.cpp:870
@@ -3032,11 +3631,11 @@ msgstr "Octaaf naar beneden"
 
 #: ../src/TrackPanel.cpp:862
 msgid "Font..."
-msgstr "Lettertype..."
+msgstr "Lettertype…"
 
 #: ../src/TrackPanel.cpp:873
 msgid "Set Range..."
-msgstr "Bereik instellen..."
+msgstr "Bereik instellen…"
 
 #: ../src/EditToolBar.cpp:150
 msgid "Copy"
@@ -3201,6 +3800,15 @@ msgstr "Uitvouwen"
 msgid "Expanded Cut Line"
 msgstr "Snijlijn uitgebreid"
 
+# vastplakken/samenvoegen
+#: TrackPanel.cpp:3975
+msgid "Merge"
+msgstr "Samenvoegen"
+
+#: TrackPanel.cpp:3975
+msgid "Merged Clips"
+msgstr "Samengevoegde clips"
+
 #: TrackPanel.cpp:3925
 msgid "Removed Cut Line"
 msgstr "Snijlijn verwijderd"
@@ -3324,21 +3932,26 @@ msgstr "Spoornaam"
 #: ../src/TrackPanel.cpp:4420
 #, c-format
 msgid "Renamed '%s' to '%s'"
-msgstr "‘%s’ hernoemd naar ‘%s’"
+msgstr "‘%s’ is hernoemd naar ‘%s’"
 
 # naamsverandering/naamwijziging
 #: ../src/TrackPanel.cpp:4423
 msgid "Name Change"
 msgstr "Naamwijziging"
 
-#: ../src/TrackPanel.cpp:4453
-msgid "Choose a font for Label Tracks"
-msgstr "Kies een lettertype voor de labelsporen"
-
 # Labelspoor lettertype
 #: ../src/TrackPanel.cpp:4454
 msgid "Label Track Font"
 msgstr "Lettertype labelspoor"
+
+# typeface?
+#: TrackPanel.cpp:6038
+msgid "Face name"
+msgstr "Lettertype"
+
+#: TrackPanel.cpp:6047
+msgid "Face size"
+msgstr "Grootte"
 
 # Dimmen is net iets te lang voor het label
 #: ../src/TrackPanel.cpp:4701
@@ -3422,6 +4035,36 @@ msgstr "Plugins 1 tot %i"
 msgid "Plugins %i to %i"
 msgstr "Plugins %i tot %i"
 
+#: commands/CommandManager.cpp:720
+msgid "Disallowed for some reason.  Try selecting some Audio first?"
+msgstr "Niet toegestaan door een of andere oorzaak. Probeer eerst wat audio te selecteren."
+
+#: commands/CommandManager.cpp:724
+msgid "You can only do this when playing and recording are\n"
+" stopped.  [Pausing is not sufficient.]"
+msgstr "Dit kunt u alleen doen wanneer afspelen en opname\n"
+"gestopt zijn.  [Pauzeren is niet voldoende]"
+
+#: commands/CommandManager.cpp:726
+msgid "You must first select some stereo audio for this\n"
+" to use.  [You can't use this with mono.]"
+msgstr "U moet hiervoor eerst wat stereo-geluid selecteren.\n"
+"[U kunt dit niet gebruiken met mono-geluid]"
+
+#: commands/CommandManager.cpp:728
+msgid "You must first select some audio for this to use."
+msgstr "U moet hiervoor eerst wat audio selecteren"
+
+#: commands/CommandManager.cpp:730
+msgid "You must first select some audio for this\n"
+" to use. [Selecting other kinds of track won't work.]"
+msgstr "U moet hiervoor eerst wat audio selecteren.\n"
+"[U kunt dit niet bij andere soorten tracks gebruiken.]"
+
+#: commands/CommandManager.cpp:732
+msgid "Message"
+msgstr "Bericht"
+
 #: ../src/commands/CommandManager.cpp:640
 #, c-format
 msgid "Loaded %d keyboard shortcuts\n"
@@ -3459,7 +4102,7 @@ msgstr "Oversturing toestaan"
 
 #: ../src/effects/Amplify.h:47
 msgid "Amplify..."
-msgstr "Versterken..."
+msgstr "Versterken…"
 
 # bezig met
 #: ../src/effects/Amplify.h:51
@@ -3534,11 +4177,28 @@ msgstr "Luistervoorbeeld niet beschikbaar"
 
 #: effects/AutoDuck.h:97
 msgid "Auto Duck..."
-msgstr "Automatsch dempen..."
+msgstr "Automatsch dempen…"
 
 #: effects/AutoDuck.h:102
 msgid "Processing Auto Duck..."
-msgstr "Automatisch dempen verwerken..."
+msgstr "Automatisch dempen verwerken…"
+
+#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:721
+#: ../src/effects/VST/VSTEffect.cpp:98 ../src/effects/VST/VSTEffect.cpp:455
+#: ../src/effects/Amplify.cpp:187 ../src/effects/AvcCompressor.cpp:716
+#: ../src/effects/BassBoost.cpp:332 ../src/effects/ChangePitch.cpp:393
+#: ../src/effects/ChangeSpeed.cpp:379 ../src/effects/ChangeTempo.cpp:284
+#: ../src/effects/Compressor.cpp:484 ../src/effects/Echo.cpp:242
+#: ../src/effects/Equalization.cpp:731 ../src/effects/Filter.cpp:482
+#: ../src/effects/Normalize.cpp:258 ../src/effects/Phaser.cpp:576
+#: ../src/effects/Repeat.cpp:251 ../src/effects/Wahwah.cpp:563
+#: ../src/effects/ladspa/LadspaEffect.cpp:498
+#: ../src/effects/nyquist/Nyquist.cpp:736
+#: ../src/effects/nyquist/Nyquist.cpp:883
+#: ../src/effects/nyquist/Nyquist.cpp:949 ../src/prefs/FileFormatPrefs.cpp:471
+#: ../src/prefs/PrefsDialog.cpp:100 ../src/widgets/Warning.cpp:56
+msgid "OK"
+msgstr "OK"
 
 #: ../src/effects/BassBoost.cpp:36
 #, c-format
@@ -3547,8 +4207,8 @@ msgstr "Effect toegepast: %s frequentie = %.0f Hz, boost = %.0f dB"
 
 # bas versterken
 #: effects/BassBoost.cpp:169
-msgid "BassBoost"
-msgstr "BassenVersterken"
+msgid "Bass Boost"
+msgstr "Bassen versterken"
 
 #: effects/BassBoost.cpp:182
 msgid "by Nasca Octavian Paul"
@@ -3566,7 +4226,7 @@ msgstr "Boost (dB):"
 # bassen versterken
 #: effects/BassBoost.h:35
 msgid "BassBoost..."
-msgstr "Bassen versterken..."
+msgstr "Bassen versterken…"
 
 # bezig met
 #: ../src/effects/BassBoost.h:48
@@ -3576,12 +4236,12 @@ msgstr "Basfrequenties worden opgepept"
 # bezig met
 #: effects/ChangeLength.h:26
 msgid "Change Length..."
-msgstr "Lengte wijzigen..."
+msgstr "Lengte wijzigen…"
 
 # bezig met
 #: effects/ChangeLength.h:30
 msgid "Changing Length..."
-msgstr "Lengte wordt gewijzigd..."
+msgstr "Lengte wordt gewijzigd…"
 
 # moet eigenlijk omgekeerd:
 # %.2f halve tonen %s (%s = naar boven/naar beneden)
@@ -3635,7 +4295,7 @@ msgstr "Percentage verandering:"
 # aanpassen/wijzigen (aanpassen hier mooier)
 #: ../src/effects/ChangePitch.h:31
 msgid "Change Pitch..."
-msgstr "Toonhoogte aanpassen..."
+msgstr "Toonhoogte aanpassen…"
 
 # bezig met/toonhoogte aanpassen/wijzigen/wordt gewijzigd
 #: ../src/effects/ChangePitch.h:35
@@ -3680,7 +4340,7 @@ msgstr "Standaard vinyl RPM:   van"
 
 #: ../src/effects/ChangeSpeed.h:37
 msgid "Change Speed..."
-msgstr "Snelheid wijzigen..."
+msgstr "Snelheid wijzigen…"
 
 # bezig met
 #: ../src/effects/ChangeSpeed.h:40
@@ -3705,7 +4365,7 @@ msgstr "Lengte (seconden):   Van"
 
 #: ../src/effects/ChangeTempo.h:40
 msgid "Change Tempo..."
-msgstr "Tempo wijzigen..."
+msgstr "Tempo wijzigen…"
 
 # bezig met
 #: ../src/effects/ChangeTempo.h:44
@@ -3714,7 +4374,7 @@ msgstr "Tempo wordt aangepast"
 
 #: effects/ClickRemoval.cpp:316
 msgid "ClickRemoval"
-msgstr ""
+msgstr "ClickRemoval"
 
 #: ../src/effects/ClickRemoval.cpp:317
 msgid "Click and Pop Removal by Craig DeForest"
@@ -3722,22 +4382,22 @@ msgstr "Click en pop verwijderen door Craig DeForest"
 
 #: effects/ClickRemoval.cpp:343
 msgid "Select threshold (lower is more sensitive):"
-msgstr ""
+msgstr "Drempelwaarde selecteren (lager is gevoeliger):"
 
 #: effects/ClickRemoval.cpp:355
 msgid "Max spike width (higher is more sensitive):"
-msgstr ""
+msgstr "Maximum piekbreedte (hoger is gevoeliger):"
 
 # betere vertaling?
 # tikken, geknetter, butsen, statische electriciteit
 # knarsen, kliks, klikken, clicks ...
 #: ../src/effects/ClickRemoval.h:42
 msgid "Click Removal..."
-msgstr "Click verwijderen..."
+msgstr "Click verwijderen…"
 
 #: ../src/effects/ClickRemoval.h:46
 msgid "Removing clicks and pops..."
-msgstr "Clicks en pops worden verwijderd..."
+msgstr "Clicks en pops worden verwijderd…"
 
 # Was eerst: Dynamische bereik-compressor
 # Ik zou deze niet vertalen, het betekent namelijk zoiets als 
@@ -3787,16 +4447,16 @@ msgstr "Invalstijd: %.1f sec"
 
 #: ../src/effects/Compressor.h:36
 msgid "Compressor..."
-msgstr "Compressor..."
+msgstr "Compressor…"
 
 # bezig met
 #: ../src/effects/Compressor.h:40
 msgid "Applying Dynamic Range Compression..."
-msgstr "Dynamische bereik-compressie wordt toegepast..."
+msgstr "Dynamische bereik-compressie wordt toegepast…"
 
 #: effects/DtmfGen.cpp:47
 msgid "DTMF Tone Generator"
-msgstr "DTMF-geluidtonen genereren"
+msgstr "DTMF-geluidstonen genereren"
 
 #: effects/DtmfGen.cpp:382
 msgid "by Salvo Ventura (2006)"
@@ -3839,8 +4499,8 @@ msgid "Silence duration:"
 msgstr "Tijdsduur stilte:"
 
 #: effects/DtmfGen.h:41
-msgid "&DTMF Tones..."
-msgstr "&DTMF geluidstonen..."
+msgid "DTMF Tones..."
+msgstr "DTMF geluidstonen…"
 
 #: effects/DtmfGen.h:45
 #, c-format
@@ -3875,17 +4535,12 @@ msgstr "Dempingsfactor:"
 
 #: ../src/effects/Echo.h:36
 msgid "Echo..."
-msgstr "Echo..."
+msgstr "Echo…"
 
 # bezig met echo
 #: ../src/effects/Echo.h:40
 msgid "Performing Echo"
 msgstr "Echo wordt uitgevoerd"
-
-#: effects/Effect.cpp:254 effects/Effect.cpp:370 effects/Phaser.cpp:595
-#: effects/Wahwah.cpp:582 effects/audiounits/AudioUnitEffect.cpp:852
-msgid "Pre&view"
-msgstr "&Voorbeeld"
 
 #: effects/Effect.cpp:303
 msgid "Preparing preview"
@@ -3905,6 +4560,18 @@ msgstr "Fout bij het openen van het geluidsapparaat. Controleer de uitgangs-inst
 msgid "Applied effect: %s"
 msgstr "Effect toegepast: %s"
 
+#: effects/Equalization.cpp:1119
+msgid "B-spline"
+msgstr "B-spline"
+
+#: effects/Equalization.cpp:1119
+msgid "Cosine"
+msgstr "Cosinus"
+
+#: effects/Equalization.cpp:1119
+msgid "Cubic"
+msgstr "Kubisch"
+
 #: ../src/effects/Equalization.cpp:156
 msgid "Equalization"
 msgstr "Toonregeling"
@@ -3914,9 +4581,9 @@ msgid "Error loading EQ curve"
 msgstr "Fout bij het laden van de toonregelingscurve"
 
 # zelfgemaakt/aangepast
-#: effects/Equalization.cpp:904
-msgid "Custom"
-msgstr "Zelfgemaakt"
+#: effects/Equalization.cpp:998
+msgid "custom"
+msgstr "zelfgemaakt"
 
 # equaliseren
 #: effects/Equalization.cpp:971
@@ -3945,18 +4612,6 @@ msgstr "Lijnen tonen"
 msgid "Graphic EQ"
 msgstr "Schuifjes"
 
-#: effects/Equalization.cpp:1119
-msgid "B-spline"
-msgstr "B-spline"
-
-#: effects/Equalization.cpp:1119
-msgid "Cosine"
-msgstr "Cosinus"
-
-#: effects/Equalization.cpp:1119
-msgid "Cubic"
-msgstr "Kubisch"
-
 #: effects/Equalization.cpp:1131
 msgid "Linear frequency scale"
 msgstr "Lineaire frequentieschaal"
@@ -3972,7 +4627,7 @@ msgstr "Curve selecteren:"
 
 #: effects/Equalization.cpp:1058 effects/Equalization.cpp:2244
 msgid "Save As..."
-msgstr "Opslaan als..."
+msgstr "Opslaan als…"
 
 #: effects/Equalization.cpp:1064
 msgid "Flat"
@@ -3989,7 +4644,7 @@ msgstr "Verwijderen bevestigen"
 # toon bijregeling (sander)
 #: ../src/effects/Equalization.h:38
 msgid "Equalization..."
-msgstr "Toonregeling..."
+msgstr "Toonregeling…"
 
 #: ../src/effects/Equalization.h:42
 msgid "Performing Equalization"
@@ -4012,6 +4667,43 @@ msgstr "Fade-out"
 #: ../src/effects/Fade.h:47
 msgid "Fading Out"
 msgstr "Bezig met Fade-out"
+
+# opsporen/detecteren
+#: effects/FindClipping.cpp:49
+msgid "Detect clipping"
+msgstr "Oversturing detecteren"
+
+#: effects/FindClipping.cpp:86
+msgid "Clipping"
+msgstr "Oversturing"
+
+#: effects/FindClipping.cpp:199
+msgid "Find Clipping"
+msgstr "Oversturing opsporen"
+
+#: effects/FindClipping.cpp:210
+msgid "by Leland Lucius"
+msgstr "door Leland Lucius"
+
+#: effects/FindClipping.cpp:222
+msgid "Start threshold (samples):"
+msgstr "Start drempelwaarde (samples):"
+
+#: effects/FindClipping.cpp:226
+msgid "Stop threshold (samples):"
+msgstr "Stop drempelwaarde (samples):"
+
+#: effects/FindClipping.cpp:238
+msgid "Start and stop must be positive and greater than 0."
+msgstr "Start en stop moeten groter zijn dan 0."
+
+#: effects/FindClipping.h:37
+msgid "Find Clipping..."
+msgstr "Oversturing opsporen…"
+
+#: effects/FindClipping.h:47
+msgid "Detecting clipping"
+msgstr "Oversturing detecteren"
 
 # dit is spiegelen in de x-as in tegenstelling tot spiegelen in de de y-as
 # wat vertaald wordt met omkeren (vertaling voor reverse)
@@ -4075,12 +4767,12 @@ msgstr "Drempelwaarde voor ruis: "
 
 #: effects/Leveller.h:28
 msgid "Leveller..."
-msgstr "Nivelleren..."
+msgstr "Nivelleren…"
 
 # toepassen kan hier weggelaten worden
 #: effects/Leveller.h:32
 msgid "Applying Leveller..."
-msgstr "Nivelleren..."
+msgstr "Nivelleren…"
 
 # witte (ruis)
 #: effects/Noise.cpp:37
@@ -4110,13 +4802,13 @@ msgstr "Tijdsduur"
 msgid "Amplitude"
 msgstr "Amplitude"
 
-#: effects/Noise.cpp:240
-msgid "Noise type:"
-msgstr "Type ruis:"
+#: effects/Noise.cpp:246
+msgid "Noise type"
+msgstr "Type ruis"
 
 #: effects/Noise.h:41
-msgid "&Noise..."
-msgstr "&Ruis..."
+msgid "Noise..."
+msgstr "Ruis…"
 
 #: effects/Noise.h:45
 #, c-format
@@ -4127,12 +4819,16 @@ msgstr "Effect toegepast: Ruis genereren, %.6lf seconden"
 msgid "Generating Noise"
 msgstr "Ruis genereren"
 
+#: effects/NoiseRemoval.cpp:192
+#, c-format
+msgid "Could not open file:\n"
+"  %s"
+msgstr "Kon bestand: ‘%s’ niet openen"
+
 # ruisonderdrukking/ruis verwijderen
-#: effects/NoiseRemoval.cpp:235
-msgid "Attempt to run Noise Removal without a noise profile\n"
-"."
-msgstr "Probeer ruis te verwijderen zonder een ruisprofiel\n"
-"."
+#: effects/NoiseRemoval.cpp:275
+msgid "Attempt to run Noise Removal without a noise profile.\n"
+msgstr "Probeer ruis te verwijderen zonder een ruisprofiel.\n"
 
 #: ../src/effects/NoiseRemoval.cpp:69
 msgid "Noise Removal"
@@ -4186,7 +4882,7 @@ msgstr "Attack/decay tijd (seconden):"
 # noise suppression/reduction
 #: ../src/effects/NoiseRemoval.h:38
 msgid "Noise Removal..."
-msgstr "Ruis verwijderen..."
+msgstr "Ruis verwijderen…"
 
 #: ../src/effects/NoiseRemoval.h:43
 msgid "Creating Noise Profile"
@@ -4195,6 +4891,25 @@ msgstr "Bezig met het maken van een ruisprofiel"
 #: ../src/effects/NoiseRemoval.h:45
 msgid "Removing Noise"
 msgstr "Ruis wordt verwijderd"
+
+#: effects/Normalize.cpp:68
+#, c-format
+msgid "Applied effect: %s remove dc offset = %s, normalize amplitude = %s"
+msgstr "Effect toegepast: %s dc offset verwijderen = %s, genormaliseerde amplitude = %s"
+
+# mag dit vertaald worden?
+#: effects/Normalize.cpp:70 effects/Normalize.cpp:71
+msgid "false"
+msgstr ""
+
+#: effects/Normalize.cpp:70 effects/Normalize.cpp:71
+msgid "true"
+msgstr ""
+
+#: effects/Normalize.cpp:73
+#, c-format
+msgid ", maximum amplitude = %.1f dB"
+msgstr ", maximum amplitude = %.1f dB"
 
 # Volume maximaliseren zonder clippen (sander)
 # is helaas te lang voor de vertaling van een menuonderdeel
@@ -4221,11 +4936,11 @@ msgstr "-"
 
 #: ../src/effects/Normalize.h:34
 msgid "Normalize..."
-msgstr "Normaliseren..."
+msgstr "Normaliseren…"
 
 #: ../src/effects/Normalize.h:38
 msgid "Normalizing..."
-msgstr "Normaliseren..."
+msgstr "Normaliseren…"
 
 #: ../src/effects/Phaser.cpp:47
 #, c-format
@@ -4276,7 +4991,7 @@ msgstr "Feedback (%):"
 
 #: ../src/effects/Phaser.h:41
 msgid "Phaser..."
-msgstr "Phaser..."
+msgstr "Phaser…"
 
 # Phaser wordt nu toegepast
 #: ../src/effects/Phaser.h:45
@@ -4332,7 +5047,7 @@ msgstr "%d seconden"
 
 #: ../src/effects/Repeat.h:34
 msgid "Repeat..."
-msgstr "Herhalen..."
+msgstr "Herhalen…"
 
 # bezig met herhalen
 #: ../src/effects/Repeat.h:38
@@ -4353,8 +5068,8 @@ msgid "Silence Generator"
 msgstr "Stilte genereren"
 
 #: effects/Silence.h:34
-msgid "&Silence..."
-msgstr "&Stilte..."
+msgid "Silence..."
+msgstr "Stilte…"
 
 #: ../src/effects/Silence.h:37
 msgid "Generating Silence"
@@ -4366,8 +5081,8 @@ msgid "Applied effect: Generate Silence, %.6lf seconds"
 msgstr "Effect toegepast: Stilte genereren, %.6lf seconden"
 
 #: effects/SimplePairedTwoTrack.h:120
-msgid "Sorry, This effect cannot be performed on stereo tracks where the individual channels of the track do not match."
-msgstr "Sorry, Dit effect kan niet worden toegepast op stereosporen waarvan de individuele kanalen van het spoor niet overeenkomen."
+msgid "Sorry, this effect cannot be performed on stereo tracks where the individual channels of the track do not match."
+msgstr "Sorry, dit effect kan niet toegepast worden op stereosporen waarvan de afzonderlijke kanalen van het spoor niet overeenkomen."
 
 # spaken/pieken/uitschieters
 # opruimen/wissen/verwijderen/schoonmaken/weghalen
@@ -4391,11 +5106,11 @@ msgstr "Drempelwaarde voor stilte: "
 
 #: effects/SpikeCleaner.h:27
 msgid "Spike Cleaner..."
-msgstr "Pieken verwijderen..."
+msgstr "Pieken verwijderen…"
 
 #: effects/SpikeCleaner.h:31
 msgid "Applying Spike Cleaner..."
-msgstr "‘Pieken verwijderen’ toepassen..."
+msgstr "‘Pieken verwijderen’ toepassen…"
 
 #: effects/StereoToMono.h:32
 msgid "Applying Stereo To Mono"
@@ -4465,42 +5180,58 @@ msgstr "Frequentie / Hz"
 
 # Chirp/Tjirp
 #: effects/ToneGen.h:39
-msgid "&Chirp..."
-msgstr "&Tjirp..."
+msgid "Chirp..."
+msgstr "Chirptoon…"
 
 #: effects/ToneGen.h:39
-msgid "&Tone..."
-msgstr "&Geluidstoon..."
+msgid "Tone..."
+msgstr "Geluidstoon…"
 
 #: effects/ToneGen.h:43
 msgid "Generating Chirp"
-msgstr "Tjirp genereren"
+msgstr "Chirptoon genereren"
 
 #: ../src/effects/ToneGen.h:44
 msgid "Generating Tone"
-msgstr "Toon wordt gegenereerd"
+msgstr "Geluidstoon wordt gegenereerd"
 
-#: effects/TruncSilence.cpp:64
-msgid "Sorry. Truncate Silence only valid with mono track"
-msgstr "‘Stilte afkappen’ is alleen toepasbaar op een monospoor"
+#: effects/TruncSilence.cpp:113
+msgid "All tracks must have the same sample rate"
+msgstr "Alle sporen moeten dezelfde samplefrequentie hebben"
+
+#: effects/TruncSilence.cpp:113 effects/TruncSilence.cpp:310
+msgid "Truncate Silence"
+msgstr "Stilte afkappen"
+
+# egaliseren/nivelleren
+#: effects/TruncSilence.cpp:320
+msgid "by Lynn Allan"
+msgstr "door Lynn Allan"
+
+# maximale tijdsduur/lengte stilte
+#: effects/TruncSilence.cpp:342
+msgid "Max silence duration:"
+msgstr "Max. tijdsduur stilte:"
+
+#: prefs/AudioIOPrefs.cpp:175 prefs/AudioIOPrefs.cpp:178
+msgid "milliseconds"
+msgstr "milliseconden"
+
+#: effects/TruncSilence.cpp:338
+msgid "Threshold for silence:"
+msgstr "Drempelwaarde voor stilte:"
+
+#: effects/TruncSilence.cpp:371
+msgid "   Duration must be at least 1 millisecond"
+msgstr "   Tijdsduur moet minstens 1 milliseconde zijn"
 
 #: BatchCommands.cpp:236 effects/TruncSilence.cpp:84 effects/TruncSilence.h:29
 msgid "Truncate Silence..."
-msgstr "Stilte afkappen..."
-
-#: effects/TruncSilence.cpp:251
-msgid "Truncate Silence by Lynn Allan"
-msgstr "Stilte afkappen door Lynn Allan"
-
-#: effects/TruncSilence.cpp:256
-msgid "Max Silent Duration (milliseconds): \n"
-"(99999 or greater is off)"
-msgstr "Maximale tijdsduur van stilte (milliseconden): \n"
-"(99999 of groter betekent: uit)"
+msgstr "Stilte afkappen…"
 
 #: effects/TruncSilence.h:33
 msgid "Truncating Silence..."
-msgstr "Stilte afkappen..."
+msgstr "Stilte afkappen…"
 
 # waarvan/waarin
 #: ../src/effects/VST/VSTEffect.cpp:180
@@ -4545,7 +5276,7 @@ msgstr "Wahwah Frequentieverschuiving (%):"
 
 #: ../src/effects/Wahwah.h:39
 msgid "Wahwah..."
-msgstr "Wahwah..."
+msgstr "Wahwah…"
 
 #: ../src/effects/Wahwah.h:43
 msgid "Applying Wahwah"
@@ -4580,11 +5311,11 @@ msgstr "Lengte (seconden)"
 
 #: ../src/effects/nyquist/Nyquist.cpp:217
 msgid "Applying Nyquist Effect..."
-msgstr "Nyquist-effect toepassen...."
+msgstr "Nyquist-effect toepassen…."
 
 #: ../src/effects/nyquist/Nyquist.cpp:224
 msgid "Nyquist Prompt..."
-msgstr "Nyquist prompt..."
+msgstr "Nyquist prompt…"
 
 #: ../src/effects/nyquist/Nyquist.cpp:282
 msgid "Enter Nyquist Command: "
@@ -4615,15 +5346,11 @@ msgstr "Nyquist gaf geen audio terug.\n"
 msgid "Nyquist returned too many audio channels.\n"
 msgstr "Nyquist gaf te veel audiokanalen terug.\n"
 
-#: effects/nyquist/Nyquist.cpp:826 effects/nyquist/Nyquist.cpp:990
-msgid "&Debug"
-msgstr "&Debuggen"
-
 #: export/Export.cpp:135
 msgid "No tracks are selected! Use Ctrl-A (Select All)\n"
 "Choose Export... to export all tracks."
 msgstr "Er zijn geen sporen geselecteerd! Gebruik Ctrl-A (Alles selecteren)\n"
-"En kies dan Exporteren... om alle sporen te exporteren."
+"En kies dan Exporteren… om alle sporen te exporteren."
 
 #: export/Export.cpp:333
 msgid "Export File"
@@ -4631,7 +5358,7 @@ msgstr "Bestand exporteren"
 
 #: export/Export.cpp:427
 msgid "&Options..."
-msgstr "&Opties..."
+msgstr "&Opties…"
 
 #: ../src/export/Export.cpp:202
 msgid "Are you sure you want to save the file as \""
@@ -4686,9 +5413,9 @@ msgstr " - Rechts"
 msgid "Output Channels: %2d"
 msgstr "Uitgangskanalen: %2d"
 
-#: export/ExportCL.cpp:289
-msgid "Specify Command Line Options"
-msgstr "Opdrachtregelopties specificeren"
+#: export/ExportCL.cpp:55
+msgid "Specify Command Line Encoder"
+msgstr "Coderingsprogramma specificeren"
 
 #: export/ExportCL.cpp:303
 msgid "Command Line Export Setup"
@@ -4702,11 +5429,10 @@ msgstr "Opdracht:"
 msgid "Show output"
 msgstr "Uitvoer tonen"
 
-# voegen bij de naam van het bestand
-#: export/ExportCL.cpp:320
+#: export/ExportCL.cpp:87
 #, c-format
-msgid "Include \"%f\" where the output filename should be substituted."
-msgstr "‘%f’ bijvoegen waar de naam van het bestand ingevuld moet worden."
+msgid "Data will be piped to standard in. \"%f\" will be replaced with output filename selected."
+msgstr "Data zal naar de standaard invoer worden gevoerd. ‘%f’ zal vervangen worden door de naam van het uitvoerbestand."
 
 #: export/Export.cpp:264
 msgid "(external program)"
@@ -4716,10 +5442,6 @@ msgstr "(extern programma)"
 #, c-format
 msgid "Cannot export audio to %s"
 msgstr "Kan audio niet exporteren naar %s"
-
-#: export/ExportCL.cpp:188 export/ExportOGG.cpp:121 export/ExportPCM.cpp:114
-msgid "Export"
-msgstr "Exporteren"
 
 #: ../src/export/ExportCL.cpp:144
 msgid "Exporting the selected audio using command-line encoder"
@@ -4736,7 +5458,7 @@ msgstr "Opdrachtregel uitvoer"
 
 #: export/ExportFLAC.cpp:139
 msgid "Specify FLAC Options"
-msgstr "FLAC-opties kiezen"
+msgstr "FLAC-opties specificeren"
 
 #: export/ExportFLAC.cpp:193
 msgid "0 (fastest)"
@@ -4808,9 +5530,14 @@ msgstr "De geselecteerde audio wordt geëxporteerd als FLAC"
 msgid "Exporting the entire project as FLAC"
 msgstr "Het gehele project wordt geëxporteerd als FLAC"
 
+# voor/van
+#: export/ExportFLAC.cpp:357
+msgid "Edit the metadata for the FLAC file"
+msgstr "De metadata van het FLAC-bestand bewerken"
+
 #: export/ExportMP2.cpp:228 export/ExportOGG.cpp:207
 msgid "Specify MP2 Options"
-msgstr "MP2-opties kiezen"
+msgstr "MP2-opties specificeren"
 
 #: prefs/FileFormatPrefs.cpp:204
 msgid "MP2 Export Setup"
@@ -4828,9 +5555,9 @@ msgstr "Mp2-bestanden"
 msgid "Cannot export MP2 with this sample rate and bit rate"
 msgstr "Kan niet naar MP2 exporteren met deze samplefrequentie en bitrate"
 
-#: ../src/export/ExportMP3.cpp:1354
-msgid "Edit the ID3 tags for the MP3 file"
-msgstr "De ID3-tags van het MP3-bestand bewerken"
+#: export/ExportMP2.cpp:236
+msgid "Edit the ID3 tags for the MP2 file"
+msgstr "De ID3-tags van het MP2-bestand bewerken"
 
 #: ../src/export/ExportMP3.cpp:1345 ../src/export/ExportOGG.cpp:53
 msgid "Unable to open target file for writing"
@@ -4846,69 +5573,15 @@ msgstr "Geselecteerde audio exporteren in %d kbps"
 msgid "Exporting entire file at %d kbps"
 msgstr "Hele bestand exporteren in %d kbps"
 
-#: export/ExportMP3.cpp:141
-msgid "16 kbps"
-msgstr "16 kbps"
-
-#: export/ExportMP3.cpp:142
-msgid "24 kbps"
-msgstr "24 kbps"
-
-#: export/ExportMP3.cpp:143
-msgid "32 kbps"
-msgstr "32 kbps"
-
-#: export/ExportMP3.cpp:144
-msgid "40 kbps"
-msgstr "40 kbps"
-
-#: export/ExportMP3.cpp:145
-msgid "48 kbps"
-msgstr "48 kbps"
-
-#: export/ExportMP3.cpp:146
-msgid "56 kbps"
-msgstr "56 kbps"
-
-#: export/ExportMP3.cpp:147
-msgid "64 kbps"
-msgstr "64 kbps"
-
-#: export/ExportMP3.cpp:148
-msgid "80 kbps"
-msgstr "80 kbps"
-
-#: export/ExportMP3.cpp:149
-msgid "96 kbps"
-msgstr "96 kbps"
-
-#: export/ExportMP3.cpp:150
-msgid "112 kbps"
-msgstr "112 kbps"
-
-#: export/ExportMP3.cpp:151
-msgid "128 kbps"
-msgstr "128 kbps"
-
-#: export/ExportMP3.cpp:152
-msgid "160 kbps"
-msgstr "160 kbps"
-
-#: export/ExportMP3.cpp:153
-msgid "192 kbps"
-msgstr "192 kbps"
-
-#: export/ExportMP3.cpp:154
-msgid "224 kbps"
-msgstr "224 kbps"
-
-#: export/ExportMP3.cpp:155
-msgid "256 kbps"
-msgstr "256 kbps"
-
-#: export/ExportMP3.cpp:156
-msgid "320 kbps"
-msgstr "320 kbps"
+#. i18n-hint: kbps is the bitrate of the MP3 file, kilobits per second
+#: export/ExportMP3.cpp:142 export/ExportMP3.cpp:143 export/ExportMP3.cpp:144
+#: export/ExportMP3.cpp:145 export/ExportMP3.cpp:146 export/ExportMP3.cpp:147
+#: export/ExportMP3.cpp:148 export/ExportMP3.cpp:149 export/ExportMP3.cpp:150
+#: export/ExportMP3.cpp:151 export/ExportMP3.cpp:152 export/ExportMP3.cpp:153
+#: export/ExportMP3.cpp:154 export/ExportMP3.cpp:155 export/ExportMP3.cpp:156
+#: export/ExportMP3.cpp:157 export/ExportMP3.cpp:158 export/ExportMP3.cpp:159
+msgid "kbps"
+msgstr "kbps"
 
 #: export/ExportMP3.cpp:161
 msgid "0, 220-260 kbps (Best Quality)"
@@ -4976,7 +5649,7 @@ msgstr "Gemiddeld, 145-185 kbps"
 
 #: export/ExportMP3.cpp:1135
 msgid "Specify MP3 Options"
-msgstr "MP3-opties kiezen"
+msgstr "MP3-opties specificeren"
 
 #: ../src/prefs/FileFormatPrefs.cpp:172
 msgid "MP3 Export Setup"
@@ -5028,7 +5701,7 @@ msgstr "Lame opzoeken"
 #: export/ExportMP3.cpp:633
 #, c-format
 msgid "Audacity needs the file %s to create MP3s."
-msgstr "Audacity heeft het bestand %s nodig om MP3s aan te kunnen maken."
+msgstr "Audacity heeft het bestand %s nodig om MP3S aan te kunnen maken."
 
 #: export/ExportMP3.cpp:639
 #, c-format
@@ -5042,7 +5715,7 @@ msgstr "Om %s op te zoeken, klik hier -->"
 
 #: export/ExportMP3.cpp:654
 msgid "Browse..."
-msgstr "Bladeren..."
+msgstr "Bladeren…"
 
 #: export/ExportMP3.cpp:655
 msgid "To get a free copy of Lame, click here -->"
@@ -5050,7 +5723,7 @@ msgstr "Voor een gratis kopie van Lame, klik hier -->"
 
 #: export/ExportMP3.cpp:656
 msgid "Download..."
-msgstr "Downloaden..."
+msgstr "Downloaden…"
 
 #. i18n-hint: It's asking for the location of a file, for
 #. example, "Where is lame_enc.dll?" - you could translate
@@ -5084,35 +5757,74 @@ msgstr "Kon de MP3-coderingsbibliotheek niet openen!"
 msgid "Not a valid or supported MP3 encoding library!"
 msgstr "Geen geldige of ondersteunde MP3-coderingsbibliotheek!"
 
+#: export/ExportMP3.cpp:1696
+msgid "Unable to initialize MP3 stream"
+msgstr "Niet is staat de MP3-stroom te initialiseren"
+
+#: ../src/export/ExportMP3.cpp:1354
+msgid "Edit the ID3 tags for the MP3 file"
+msgstr "De ID3-tags van het MP3-bestand bewerken"
+
 #: export/ExportMP3.cpp:1684
 #, c-format
 msgid "Exporting selected audio with %s preset"
-msgstr ""
+msgstr "De geselecteerde audio exporteren met %s voorinstelling"
 
 #: export/ExportMP3.cpp:1685
 #, c-format
 msgid "Exporting entire file with %s preset"
-msgstr ""
+msgstr "Het gehele bestand exporteren met %s voorinstelling"
 
 #: export/ExportMP3.cpp:1690
 #, c-format
 msgid "Exporting selected audio with VBR quality %s"
-msgstr ""
+msgstr "De geselecteerde audio exporteren met vbr-kwaliteit %s"
 
 #: export/ExportMP3.cpp:1691
 #, c-format
 msgid "Exporting entire file with VBR quality %s"
-msgstr ""
+msgstr "Het gehele bestand exporteren met vbr-kwaliteit %s"
 
 #: export/ExportMP3.cpp:1696
 #, c-format
 msgid "Exporting selected audio at %d Kbps"
-msgstr ""
+msgstr "De geselecteerde audio exporteren met %d Kbps"
 
 #: export/ExportMP3.cpp:1697
 #, c-format
 msgid "Exporting entire file at %d Kbps"
+msgstr "Het gehele bestand exporteren met %d Kbps"
+
+#: export/ExportMP3.cpp:1787
+#, c-format
+msgid "Error %d returned from MP3 encoder"
+msgstr "Foutmelding %d teruggekregen van mp3-codeerprogramma"
+
+#: export/ExportMP3.cpp:1860
+msgid "Invalid sample rate"
+msgstr "Ongeldige samplefrequentie"
+
+#: export/ExportMP3.cpp:1873
+#, c-format
+msgid "The project sample rate (%d) is not supported by the MP3\n"
+"file format.  "
 msgstr ""
+"De project-samplerate (%d) is niet mogelijk in het mp3\n"
+"bestandsformaat"
+
+#: export/ExportMP3.cpp:1876
+#, c-format
+msgid "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
+"supported by the MP3 file format.  "
+msgstr ""
+
+#: export/ExportMP3.cpp:1879
+msgid "You may resample to one of the rates below."
+msgstr ""
+
+#: export/ExportMP3.cpp:1902
+msgid "Sample Rates"
+msgstr "Samplefrequenties"
 
 # exportplugin/export plugin
 #: ../src/prefs/FileFormatPrefs.cpp:261
@@ -5149,7 +5861,7 @@ msgstr "Exportformat:"
 
 #: export/Export.cpp:341 export/ExportMultiple.cpp:725
 msgid "Options..."
-msgstr "Opties..."
+msgstr "Opties…"
 
 #: ../src/export/ExportMultiple.cpp:594
 msgid "Export location:"
@@ -5157,7 +5869,7 @@ msgstr "Exportlocatie:"
 
 #: ../src/export/ExportMultiple.cpp:600 ../src/prefs/DirectoriesPrefs.cpp:82
 msgid "Choose..."
-msgstr "Kiezen..."
+msgstr "Kiezen…"
 
 #: export/ExportMultiple.cpp:204
 msgid "Create"
@@ -5224,10 +5936,9 @@ msgstr "‘%s’ is succesvol aangemaakt."
 msgid "Choose a location to save the exported files"
 msgstr "Kies een locatie voor de geëxporteerde bestanden"
 
-# van alle mp3 bestanden bewerken?
-#: ../src/export/ExportMultiple.cpp:521
-msgid "Edit the ID3 tags for all MP3 files"
-msgstr "De Id3-tags voor alle Mp3-bestanden bewerken"
+#: export/ExportMultiple.cpp:438
+msgid "Edit the metadata"
+msgstr "De metadata bewerken"
 
 #: export/ExportMultiple.cpp:491
 #, c-format
@@ -5249,21 +5960,21 @@ msgid "Something went wrong after exporting %d file(s)."
 msgstr "Er ging iets mis nadat %d bestanden geëxporteerd waren."
 
 # aangeven/specificeren
-#: export/ExportOGG.cpp:206
-msgid "Specify OGG Options"
-msgstr "Ogg-opties specificeren"
+#: export/ExportOGG.cpp:64
+msgid "Specify Ogg Vorbis Options"
+msgstr "Ogg Vorbis-opties specificeren"
 
-#: ../src/prefs/FileFormatPrefs.cpp:138
-msgid "OGG Export Setup"
-msgstr "Ogg-export instellingen"
+#: export/ExportOGG.cpp:81
+msgid "Ogg Vorbis Export Setup"
+msgstr "Ogg Vorbis exportinstellingen"
 
 #: prefs/FileFormatPrefs.cpp:219
 msgid "Quality:"
 msgstr "Kwaliteit:"
 
-#: export/Export.cpp:249
-msgid "OGG Files"
-msgstr "Ogg-bestanden"
+#: export/ExportOGG.cpp:154
+msgid "Ogg Vorbis Files"
+msgstr "Ogg Vorbis-bestanden"
 
 #: ../src/export/ExportOGG.cpp:191
 msgid "Exporting the selected audio as Ogg Vorbis"
@@ -5273,10 +5984,14 @@ msgstr "De geselecteerde audio wordt als Ogg Vorbis geëxporteerd"
 msgid "Exporting the entire project as Ogg Vorbis"
 msgstr "Het gehele project wordt als Ogg Vorbis geëxporteerd"
 
-# aangeven/specificeren
-#: export/ExportPCM.cpp:184
-msgid "Specify WAV Options"
-msgstr "Wav-opties specificeren"
+# Ogg ipv OGG
+#: export/ExportOGG.cpp:345
+msgid "Edit the metadata for the OGG file"
+msgstr "De metadata van het Ogg-bestand bewerken"
+
+#: export/ExportPCM.cpp:115
+msgid "Specify PCM Options"
+msgstr "PCM-opties specificeren"
 
 #: export/ExportPCM.cpp:240
 msgid "Uncompressed Export Setup"
@@ -5306,21 +6021,28 @@ msgstr "Wav, Aiff, en andere types zonder compressie"
 msgid "Cannot export audio in this format."
 msgstr "Kan audio niet in dit format exporteren."
 
-#: ../src/export/ExportPCM.cpp:127
+#: export/ExportPCM.cpp:400
 #, c-format
-msgid "Exporting the selected audio as a %s file"
-msgstr "De geselecteerde audio wordt als een %s bestand geëxporteerd"
+msgid "Exporting the selected audio as %s"
+msgstr "De geselecteerde audio exporteren als %s"
 
-#: ../src/export/ExportPCM.cpp:132
+#: export/ExportPCM.cpp:402
 #, c-format
-msgid "Exporting the entire project as a %s file"
-msgstr "Het gehele project wordt als een %s-bestand geëxporteerd"
+msgid "Exporting the entire project as %s"
+msgstr "Het gehele project exporteren als %s"
 
 #: export/ExportPCM.cpp:140
 #, c-format
 msgid "Error (file may not have been written): %hs"
 msgstr "Fout (bestand is mogelijk nog niet geschreven): %hs"
 
+# ruwe/ongecompresseerde
+# Wordt hier bijv. wav-bestand of .au bedoeld?
+#: export/ExportPCM.cpp:458
+msgid "Edit the metadata for the uncompressed file"
+msgstr "De metadata van het ruwe bestand bewerken"
+
+# is er geen ondersteuning voor %s
 #: ../src/import/Import.cpp:159
 #, c-format
 msgid "This version of Audacity was not compiled with %s support."
@@ -5376,11 +6098,23 @@ msgstr " is een RealPlayer mediabestand. \n"
 "Audacity kan dit soort bestanden in bedrijfseigen format niet openen.\n"
 "U zult het bestand moeten omzetten naar een ondersteund audioformat."
 
+#: import/Import.cpp:221
+msgid "Audacity had to make a guess at the type of file.\n"
+"The Audio may be bogus.\n"
+"\n"
+"If the audio is bogus, try renaming the file\n"
+"so that it has the correct extension before opening it."
+msgstr ""
+
 #: ../src/import/Import.cpp:170
 msgid "Audacity did not recognize the type of this file.\n"
 "If it is uncompressed, try importing it using \"Import Raw\""
 msgstr "Audacity herkende het type bestand niet.\n"
 "Als het geen compressie-bestand is, probeer het dan te importeren met \"Raw importeren\""
+
+#: import/ImportFLAC.cpp:35
+msgid "FLAC files"
+msgstr "Flac-bestanden"
 
 #: ../src/import/ImportLOF.cpp:151 ../src/import/ImportLOF.cpp:177
 msgid "List of Files in basic text format"
@@ -5419,6 +6153,14 @@ msgstr "Fout bij verwerken Allegro-bestand."
 msgid "Error parsing MIDI file."
 msgstr "Fout bij verwerken MIDI-bestand."
 
+#: import/ImportMP3.cpp:78
+msgid "MP3 files"
+msgstr "MP3-bestanden"
+
+#: import/ImportOGG.cpp:35
+msgid "Ogg Vorbis files"
+msgstr "Ogg Vorbis-bestanden"
+
 #: ../src/import/ImportOGG.cpp:124
 msgid "Media read error"
 msgstr "Media leesfout"
@@ -5438,6 +6180,16 @@ msgstr "Ongeldige Vorbis bitstream header"
 #: ../src/import/ImportOGG.cpp:136
 msgid "Internal logic fault"
 msgstr "Interne logische fout"
+
+# Importing MP3 file...
+#: ../src/Project.cpp:2233
+#, c-format
+msgid "Importing %s File..."
+msgstr "Het %s-bestand wordt geïmporteerd…"
+
+#: import/ImportQT.cpp:21
+msgid "QuickTime files"
+msgstr "QuickTime-bestanden"
 
 #: ../src/import/ImportRaw.cpp:256
 msgid "Import Raw Data"
@@ -5492,6 +6244,10 @@ msgstr "Hoeveelheid te importeren:"
 msgid "Sample rate:"
 msgstr "Samplefrequentie:"
 
+#: import/ImportRaw.cpp:447
+msgid "&Import"
+msgstr "I&mporteren"
+
 #: ../src/prefs/PrefsDialog.cpp:84
 msgid "Audio I/O"
 msgstr "Audio in/uit"
@@ -5545,30 +6301,45 @@ msgid "&Play other tracks while recording new one"
 msgstr "&Bij het opnemen van een spoor, gelijktijdig de andere sporen afspelen"
 
 #: prefs/AudioIOPrefs.cpp:150
-msgid "&Hardware Playthrough (Play new track while recording it)"
-msgstr "&Hardwarematig playthrough (Tijdens de opname, nieuw spoor afspelen)"
+msgid "&Hardware Playthrough: Play new track while recording it"
+msgstr "&Hardwarematig playthrough: Nieuw spoor afspelen tijdens opname"
 
-#: prefs/AudioIOPrefs.cpp:153
-msgid "&Software Playthrough (Play new track while recording it)"
-msgstr "&Softwarematig playthrough (Tijdens de opname, nieuw spoor afspelen)"
+#: prefs/AudioIOPrefs.cpp:152
+msgid "&Software Playthrough: Play new track while recording it"
+msgstr "&Softwarematig playthrough: Nieuw spoor afspelen tijdens opname"
 
+#: prefs/AudioIOPrefs.cpp:155
+msgid "&Software Playthrough: Play new track while recording it (uncheck when recording \"stereo mix\")"
+msgstr "&Softwarematig playthrough: Nieuw spoor afspelen tijdens opname (uitvinken bij ‘stereo mix’ opname)"
+
+# luistervoorbeeld/luisterproeve
+#: prefs/AudioIOPrefs.cpp:194
+msgid "Effects Preview"
+msgstr "Luistervoorbeeld bij effecten"
+
+#: prefs/AudioIOPrefs.cpp:165
+msgid "Length of preview:"
+msgstr "Tijdsduur van luistervoorbeeld"
+
+# Dit is de titel van het kader.
 # snede/snijpunt/snijlijn luistervoorbeeld/luisterproeve/hoorproeve
 #: prefs/AudioIOPrefs.cpp:158
 msgid "Cut Preview"
-msgstr "Luistervoorbeeld bij snijpunt"
+msgstr "Luistervoorbeeld bij knippen"
 
-#: prefs/AudioIOPrefs.cpp:161
-msgid "Play before cut region:"
-msgstr "Voor het snijpunt afspelen:"
+#: prefs/AudioIOPrefs.cpp:173
+msgid "Preview before cut region:"
+msgstr "Tijdsduur voor snijpunt:"
 
-#: prefs/AudioIOPrefs.cpp:163
-msgid "Play after cut region:"
-msgstr "Na het snijpunt afspelen:"
+#: prefs/AudioIOPrefs.cpp:175
+msgid "Preview after cut region:"
+msgstr "Tijdsduur na snijpunt:"
 
-# vertraging/latentie/geluidsvertraging
+# vertraging/latentie/geluidsvertraging/tijdsvertraging.
+# (de waardes worden in milliseconden gegeven)
 #: prefs/AudioIOPrefs.cpp:168
 msgid "Latency"
-msgstr "Vertraging"
+msgstr "Tijdsvertraging (Latency)"
 
 # dit is hier: de hoeveelheid audio die gebufferd wordt
 # (100 milliseconden)
@@ -5576,19 +6347,16 @@ msgstr "Vertraging"
 msgid "Audio to buffer:"
 msgstr "Audiobuffer:"
 
-#: prefs/AudioIOPrefs.cpp:175 prefs/AudioIOPrefs.cpp:178
-msgid "milliseconds"
-msgstr "milliseconden"
-
 #: prefs/AudioIOPrefs.cpp:177
 msgid "Latency correction:"
 msgstr "Vertragingscorrectie:"
 
-# 'seek' is het snel voor/achteruitspringen tijdens het afspelen
-# spoelen/vooruit/achteruitspoelen
-#: prefs/AudioIOPrefs.cpp:184
-msgid "Seek Time"
-msgstr "Snel terug/vooruit spoelen"
+# dit is de titel van het kader
+# letterlijk zoektijd, maar het gaat om het springen door het audiobestand
+# in grote of kleine stappen.
+#: prefs/AudioIOPrefs.cpp:197
+msgid "Seek Time when playing"
+msgstr "Zoektijdssprong bij afspelen"
 
 # kopje='snel vooruit/achteruit spoelen' -> 
 # Short period: 1 sec, long period 15 sec.
@@ -5601,16 +6369,6 @@ msgstr "Kleine stappen:"
 msgid "Long period:"
 msgstr "Grote stappen:"
 
-# luistervoorbeeld/luisterproeve
-#: prefs/AudioIOPrefs.cpp:194
-msgid "Effects Preview"
-msgstr "Luistervoorbeeld bij effecten"
-
-# Play when previewing 3 seconds
-#: prefs/AudioIOPrefs.cpp:197
-msgid "Play when previewing:"
-msgstr "Afspeeltijd:"
-
 # opdrachtenreeks/serie/opdrachtenreeksen/series
 #: prefs/BatchPrefs.cpp:53 prefs/BatchPrefs.cpp:54
 msgid "Batch"
@@ -5621,17 +6379,13 @@ msgstr "Opdrachtenreeksen"
 msgid "Behaviors"
 msgstr "Gedrag"
 
-#: prefs/BatchPrefs.cpp:77
-msgid "&Batch debug mode"
-msgstr "&Opdrachtenreeksen debugmodus"
+#: prefs/BatchPrefs.cpp:80
+msgid "&Don't apply effects in batch mode"
+msgstr "&Effecten niet toepassen in batch-modus"
 
 #: prefs/BatchPrefs.cpp:79
 msgid "&Normalize on load"
 msgstr "&Normaliseren bij laden"
-
-#: prefs/BatchPrefs.cpp:81
-msgid "&Prompt to save, even if empty"
-msgstr "&Vragen om op te slaan, zelfs indien leeg"
 
 #: prefs/BatchPrefs.cpp:83
 msgid "Cl&eanSpeech Mode (Customized GUI)"
@@ -5686,17 +6440,17 @@ msgid "Audio cache"
 msgstr "Audio-buffer"
 
 #: prefs/DirectoriesPrefs.cpp:112
-msgid "Always hold all audio data in memory"
-msgstr "Altijd alle audio in het geheugen bewaren"
+msgid "Hold recorded data in memory until recording is stopped"
+msgstr "Opnamedata in het geheugen houden totdat de opname stopt"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:135
 msgid "Choose a location to place the temporary directory"
-msgstr "Kies map voor tijdelijke bestanden"
+msgstr "Kies een map voor tijdelijke bestanden"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:181
 #, c-format
 msgid "Directory %s does not exist. Create it?"
-msgstr "Map %s bestaat niet. Aanmaken?"
+msgstr "De map %s bestaat niet. Aanmaken?"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:183
 msgid "New Temporary Directory"
@@ -5705,11 +6459,11 @@ msgstr "Nieuwe tijdelijke map"
 #: ../src/prefs/DirectoriesPrefs.cpp:202
 #, c-format
 msgid "Directory %s is not writable"
-msgstr "Map %s is niet beschrijfbaar"
+msgstr "De map %s is niet beschrijfbaar"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:214
 msgid "Changes to temporary directory will not take effect until Audacity is restarted"
-msgstr "Wijzigingen in de tijdelijke map zullen niet worden toegepast totdat Audacity is herstart."
+msgstr "Wijzigingen aan de tijdelijke map zullen pas van kracht zijn nadat Audacity herstart is."
 
 #: ../src/prefs/PrefsDialog.cpp:86
 msgid "File Formats"
@@ -5738,6 +6492,14 @@ msgstr "Bij het opslaan van een project dat van andere audiobestanden afhangt"
 msgid "&Ask user"
 msgstr "&Gebruiker vragen"
 
+#: Dependencies.cpp:321 prefs/FileFormatPrefs.cpp:136
+msgid "Always &copy all audio (safest)"
+msgstr "Altijd alle audio &kopiëren (veiligst)"
+
+#: Dependencies.cpp:322 prefs/FileFormatPrefs.cpp:137
+msgid "&Never copy any audio"
+msgstr "&Nooit audio kopiëren"
+
 #: prefs/FileFormatPrefs.cpp:141
 msgid "When exporting tracks"
 msgstr "Bij het exporteren van sporen"
@@ -5746,9 +6508,9 @@ msgstr "Bij het exporteren van sporen"
 msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
 msgstr "Altijd alle sporen &downmixen naar stereo of monokanalen."
 
-#: prefs/FileFormatPrefs.cpp:145
-msgid "&Use Advanced Mixing Options"
-msgstr "Geavanceerde &mix-opties gebruiken"
+#: prefs/FileFormatPrefs.cpp:97
+msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
+msgstr ""
 
 #: ../src/prefs/FileFormatPrefs.cpp:180
 msgid "MP3 Library Version:"
@@ -5768,16 +6530,8 @@ msgid "Interface"
 msgstr "Bediening"
 
 #: prefs/GUIPrefs.cpp:72
-msgid "&Autoscroll while playing"
-msgstr "&Meeschuiven tijdens afspelen"
-
-#: prefs/GUIPrefs.cpp:74
-msgid "Al&ways allow pausing"
-msgstr "&Pauzeren altijd toestaan"
-
-#: prefs/GUIPrefs.cpp:76
-msgid "&Update spectrogram while playing"
-msgstr "&Spectogram tijdens afspelen bijwerken"
+msgid "&Update display while playing"
+msgstr ""
 
 #: prefs/GUIPrefs.cpp:78
 msgid "&Quit Audacity upon closing last window"
@@ -5793,9 +6547,9 @@ msgstr "Selectie&randen kunnen versleept worden"
 msgid "&Ergonomic order of audio I/O buttons"
 msgstr "&Ergonomische volgorde van de bedieningsknoppen"
 
-#: prefs/GUIPrefs.cpp:84
-msgid "Tracks &fit vertically zoomed"
-msgstr "Sporen &zoomen zodat ze verticaal in het venster passen"
+#: prefs/GUIPrefs.cpp:80
+msgid "Automatically &fit tracks vertically zoomed"
+msgstr ""
 
 # doorlopende/circulaire
 #: prefs/GUIPrefs.cpp:86
@@ -5811,6 +6565,14 @@ msgstr "Spoornummer &doorgeven aan toegankelijkheidshulp"
 msgid "Editing a &clip can move other clips"
 msgstr "Het bewerken van een &clip kan andere clips verschuiven"
 
+#: prefs/GUIPrefs.cpp:88
+msgid "&Select all audio, if none selected, on applying effect"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:90
+msgid "&Beep on completion of longer activities"
+msgstr ""
+
 #: prefs/GUIPrefs.cpp:96
 msgid "Enable cut &lines"
 msgstr "S&nijlijnen inschakelen"
@@ -5818,6 +6580,14 @@ msgstr "S&nijlijnen inschakelen"
 #: prefs/GUIPrefs.cpp:98
 msgid "Show warnings about &temp files"
 msgstr "&Waarschuwen voor tijdelijke bestanden"
+
+#: prefs/GUIPrefs.cpp:100
+msgid "&Show prompt to save, even if project is empty"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:102
+msgid "Show Splash Screen at program start up"
+msgstr "Introductiescherm tonen bij opstarten"
 
 #: prefs/GUIPrefs.cpp:103
 msgid "Language"
@@ -5863,10 +6633,6 @@ msgstr "Toetsbindingen"
 #: prefs/KeyConfigPrefs.cpp:113
 msgid "S&et"
 msgstr "I&nstellen"
-
-#: prefs/KeyConfigPrefs.cpp:114
-msgid "&Clear"
-msgstr "&Wissen"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:115
 msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
@@ -5969,6 +6735,22 @@ msgstr "Selectie vergroten"
 msgid "Shift-Left-Click"
 msgstr "Shift-links-klikken"
 
+#: prefs/MousePrefs.cpp:101
+msgid "Left-Double-Click"
+msgstr "Links-dubbelklikken"
+
+#: prefs/MousePrefs.cpp:101
+msgid "Select Clip or Entire Track"
+msgstr "Een clip of een geheel spoor selecteren"
+
+#: prefs/MousePrefs.cpp:102
+msgid "Ctrl-Left-Click"
+msgstr "Ctrl-links-dubbelklikken"
+
+#: prefs/MousePrefs.cpp:102
+msgid "Set Selection Point and Play"
+msgstr "Selectiepunt plaatsen en afspelen"
+
 #: ../src/prefs/MousePrefs.cpp:92 ../src/prefs/MousePrefs.cpp:93
 #: ../src/prefs/MousePrefs.cpp:94 ../src/prefs/MousePrefs.cpp:95
 msgid "Zoom"
@@ -6002,6 +6784,24 @@ msgstr "Rechts-slepen"
 #: prefs/MousePrefs.cpp:105
 msgid "same as left-drag"
 msgstr "hetzelfde als links-slepen"
+
+#: prefs/MousePrefs.cpp:108
+msgid "Shift-Drag"
+msgstr "Shift-slepen"
+
+# bereik, selectie
+#: prefs/MousePrefs.cpp:108
+msgid "Zoom out on a Range"
+msgstr "Uitzoomen op gebied"
+
+# midden/middel
+#: prefs/MousePrefs.cpp:109
+msgid "Middle-Click"
+msgstr "Middel-klikken"
+
+#: prefs/MousePrefs.cpp:109
+msgid "Zoom default"
+msgstr "Standaard zoom"
 
 #: prefs/MousePrefs.cpp:107
 msgid "Time shift clip or move up/down between tracks"
@@ -6079,6 +6879,14 @@ msgstr "Naar boven of onderen schuiven"
 #: ../src/prefs/MousePrefs.cpp:110
 msgid "Wheel-Rotate"
 msgstr "Wiel-draaien"
+
+#: prefs/MousePrefs.cpp:128
+msgid "Scroll left or right"
+msgstr "Naar links of rechts schuiven"
+
+#: prefs/MousePrefs.cpp:128
+msgid "Shift-Wheel-Rotate"
+msgstr "Shift-wiel-draaien"
 
 #: ../src/prefs/MousePrefs.cpp:111
 msgid "Ctrl-Wheel-Rotate"
@@ -6161,6 +6969,20 @@ msgstr "Real-time:"
 #: prefs/QualityPrefs.cpp:171
 msgid "High-quality:"
 msgstr "Hoge-kwaliteit:"
+
+# slimme opname/slim opnemen/exclusief opnemen/intelligent opnemen
+#: prefs/SmartRecordPrefs.cpp:54 prefs/SmartRecordPrefs.cpp:55
+msgid "Smart Recording"
+msgstr "Slim opnemen"
+
+#: prefs/SmartRecordPrefs.cpp:81 prefs/SmartRecordPrefs.cpp:83
+msgid "Pause Recording on Silence"
+msgstr "Opname pauzeren bij stilte"
+
+# labels stil/stil maken/stiltelabels/
+#: prefs/SmartRecordPrefs.cpp:86
+msgid "Silence level (dB):"
+msgstr "Stilteniveau (dB):"
 
 #: ../src/prefs/PrefsDialog.cpp:87
 msgid "Spectrograms"
@@ -6359,11 +7181,9 @@ msgstr "Clean Speech"
 msgid "Error while opening sound device. "
 msgstr "Fout bij het openen van het geluidsapparaat."
 
-#: toolbars/ControlToolBar.cpp:683
-msgid "CleanSpeech only allows recording mono tracks.\n"
-"Recording is not possible when more than one window is open."
-msgstr "Met CleanSpeech kunt u alleen in mono opnemen.\n"
-"Opname is niet mogelijk wanneer meerdere vensters geopend zijn."
+#: toolbars/ControlToolBar.cpp:696
+msgid "Recording in CleanSpeech mode is not possible when a track, or more than one project, is already open."
+msgstr ""
 
 # niet mogelijk/toegestaan
 # opnemen/opname
@@ -6499,6 +7319,10 @@ msgstr "verborgen"
 msgid "Audio Position:"
 msgstr "Audiopositie:"
 
+#: toolbars/SelectionBar.cpp:222
+msgid "Snap To"
+msgstr "Raster"
+
 # dit wordt: Audacity %s-werkbalk.
 #: toolbars/SelectionBar.cpp:224
 msgid "Selection "
@@ -6544,6 +7368,7 @@ msgstr "Klik voor Inzoomen, Shift-Klik voor Uitzoomen."
 msgid "Drag to Zoom Into Region, Right-Click to Zoom Out"
 msgstr "Slepen om in te zoomen, Rechts-klikken om uit te zoomen"
 
+# midden/middel
 #: ../src/ControlToolBar.cpp:84
 msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
 msgstr "Links=Inzoomen, Rechts=Uitzoomen, Middel=Normaal"
@@ -6768,6 +7593,14 @@ msgstr "Links"
 msgid "Right"
 msgstr "Rechts"
 
+#: widgets/ErrorDialog.cpp:69 widgets/ErrorDialog.cpp:93
+msgid "Help"
+msgstr "Hulp"
+
+#: widgets/ErrorDialog.cpp:190
+msgid "Help on the Internet"
+msgstr "Hulp op het internet"
+
 # aangrijpen/greep
 #: widgets/Grabber.cpp:61
 msgid "Grabber"
@@ -6819,7 +7652,7 @@ msgstr "Lineaire schaal"
 
 #: widgets/Meter.cpp:365
 msgid "Preferences..."
-msgstr "Voorkeuren..."
+msgstr "Voorkeuren…"
 
 # engels BUG: qualtiy moet quality zijn
 #: widgets/Meter.cpp:1037
@@ -6994,7 +7827,8 @@ msgstr "Kon bestand ‘%s’ niet openen"
 msgid "Error: %hs at line %d"
 msgstr "Fout: %hs op regel %d"
 
-#: ../src/xml/XMLFileReader.cpp:83
-msgid "Unable to open project file."
-msgstr "Niet in staat het projectbestand te openen."
+#: xml/XMLFileReader.cpp:79
+#, c-format
+msgid "Could not load file: \"%s\""
+msgstr "Kon het bestand: ‘%s’ niet laden"
 
