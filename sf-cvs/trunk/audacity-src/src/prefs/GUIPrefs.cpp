@@ -71,7 +71,7 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       S.TieCheckBox( _("&Update display while playing"),
          wxT("/GUI/AutoScroll"), true);
-      S.TieCheckBox( _("&Quit Audacity upon closing last window"),
+      S.TieCheckBox( _("Any Close/Exit command completely &quits Audacity"),
          wxT("/GUI/QuitOnClose"), bQuitOnCloseDefault );
       S.TieCheckBox( _("&Dragging of left and right selection edges"),
          wxT("/GUI/AdjustSelectionEdges"), true);
@@ -79,13 +79,13 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("/GUI/ErgonomicTransportButtons"), true);
       S.TieCheckBox( _("Automatically &fit tracks vertically zoomed"), 
          wxT("/GUI/TracksFitVerticallyZoomed"), false );
-      S.TieCheckBox( _("&Circular track keyboard navigation"), 
+      S.TieCheckBox( _("\"Move track focus\" &cycles repeatedly through tracks"), 
          wxT("/GUI/CircularTrackNavigation"), false );
       S.TieCheckBox( _("&Present track number to accessibility aid"), 
          wxT("/GUI/PresentTrackNumber"), true );
       S.TieCheckBox( _("Editing a &clip can move other clips"),
          wxT("/GUI/EditClipCanMove"), true );
-      S.TieCheckBox( _("&Select all audio, if none selected, on applying effect"),    
+      S.TieCheckBox( _("&Select all audio in project, if none selected"),    
          wxT("/GUI/SelectAllOnNone"), true );   
       S.TieCheckBox( _("&Beep on completion of longer activities"),    
          wxT("/GUI/BeepOnCompletion"), false );   

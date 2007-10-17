@@ -573,7 +573,9 @@ bool AudacityApp::OnInit()
    // * The user's .audacity-files directory in their home directory
    // * The "share" and "share/doc" directories in their install path
    #ifdef __WXGTK__
-   defaultTempDir.Printf(wxT("/tmp/audacity1.2-%s"), wxGetUserId().c_str());
+   defaultTempDir.Printf(wxT("/tmp/audacity%d.%d-%s"), 
+                         AUDACITY_VERSION, AUDACITY_RELEASE, wxGetUserId().c_str());
+   
    wxString pathVar = wxGetenv(wxT("AUDACITY_PATH"));
    if (pathVar != wxT(""))
       AddMultiPathsToPathList(pathVar, audacityPathList);
@@ -614,7 +616,9 @@ bool AudacityApp::OnInit()
    wxString progPath = wxPathOnly(argv[0]);
    AddUniquePathToPathList(progPath, audacityPathList);
    AddUniquePathToPathList(progPath+wxT("\\Languages"), audacityPathList);
-   defaultTempDir.Printf(wxT("%s\\audacity_1_2_temp"), tmpDirLoc.c_str());
+   
+   defaultTempDir.Printf(wxT("%s\\audacity_%d_%d_temp"), 
+                         tmpDirLoc.c_str(), AUDACITY_VERSION, AUDACITY_RELEASE);
    #endif
    #ifdef __MACOSX__
    // On Mac OS X, the path to the Audacity program is in argv[0]
@@ -627,8 +631,9 @@ bool AudacityApp::OnInit()
 
    AddUniquePathToPathList(progPath+wxT("/Languages"), audacityPathList);
    AddUniquePathToPathList(progPath+wxT("/../../../Languages"), audacityPathList);
-   defaultTempDir.Printf(wxT("%s/audacity1.2-%s"),
+   defaultTempDir.Printf(wxT("%s/audacity%d.%d-%s"), 
                          tmpDirLoc.c_str(),
+                         AUDACITY_VERSION, AUDACITY_RELEASE, 
                          wxGetUserId().c_str());
    #endif
    #ifdef __MACOS9__
@@ -637,7 +642,8 @@ bool AudacityApp::OnInit()
    wxString progPath = wxGetCwd();
    AddUniquePathToPathList(progPath, audacityPathList);
    AddUniquePathToPathList(progPath+wxT(":Languages"), audacityPathList);
-   defaultTempDir.Printf(wxT("%s/audacity_1_2_temp"), tmpDirLoc.c_str());
+   defaultTempDir.Printf(wxT("%s/audacity_%d_%d_temp"), 
+                         tmpDirLoc.c_str(), AUDACITY_VERSION, AUDACITY_RELEASE, );
    #endif
 
    // BG: Create a temporary window to set as the top window
