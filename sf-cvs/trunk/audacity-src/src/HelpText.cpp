@@ -94,7 +94,7 @@ wxString HelpTextBuiltIn( const wxString & Key )
       return WrapText( 
 wxString(wxT("")) + 
 wxT("<p>") +
-_("Welcome to Audacity 1.4.0! Let's get started!") +
+_("Welcome to Audacity ") + AUDACITY_VERSION_STRING + _("! Let's get started!") +
 wxT("<p>") +
 wxT("<p>") +
 _("You may want to click on the hyperlinks below to read:") +
