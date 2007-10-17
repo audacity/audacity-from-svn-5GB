@@ -13,7 +13,7 @@
 \class AboutDialog
 \brief The AboutDialog shows the program version and developer credits.
 
-It is a simple scrolling window with an 'Audacious' button to
+It is a simple scrolling window with an 'OK... Audacious!' button to
 close it.
 
 *//*****************************************************************//**
@@ -337,7 +337,7 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
    html->SetPage(creditStr);
    S.Prop(1).AddWindow( html, wxEXPAND );
 
-   wxButton *ok = new wxButton(S.GetParent(), wxID_OK, _("Audacious!"));
+   wxButton *ok = new wxButton(S.GetParent(), wxID_OK, _("OK... Audacious!"));
    ok->SetDefault();
    ok->SetFocus();
 
@@ -368,7 +368,7 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
    /* i18n-hint: Rather than a literal translation, consider adding the
    appropriate suffix or prefix to create a word meaning 'something which
    has Audacity' */
-   wxButton *ok = new wxButton(this, wxID_OK, _("Audacious!"));
+   wxButton *ok = new wxButton(this, wxID_OK, _("OK... Audacious!"));
    ok->SetDefault();
    ok->SetFocus();
    pBoxSizer->Add(ok, 0, wxALIGN_CENTER | wxALL, 8);
