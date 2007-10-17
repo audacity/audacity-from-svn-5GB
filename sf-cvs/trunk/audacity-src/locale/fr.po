@@ -6219,7 +6219,7 @@ msgid ""
 "Audacity cannot open this file because it only contains links to other files.\n"
 "You may be able to open it in a text editor and download the actual audio files."
 msgstr ""
-"est une liste de lecture (playlist). \Audacity ne peut ouvrir ce fichier car il ne contient que des liens vers d'autres fichiers. \n"
+"est une liste de lecture (playlist). Audacity ne peut ouvrir ce fichier car il ne contient que des liens vers d'autres fichiers. \n"
 "Vous pouvez l'ouvrir dans un traitement de texte et télécharger les ficheirs audio concernés."
 
 #: import/Import.cpp:180
@@ -6482,7 +6482,7 @@ msgstr "Passage audio logiciel : Lire la nouvelle piste pendant son enregistreme
 
 #: prefs/AudioIOPrefs.cpp:155
 msgid "&Software Playthrough: Play new track while recording it (uncheck when recording \"stereo mix\")"
-msgstr "Passage audio logiciel : Lire la nouvelle piste pendant son enregistrement (décocher en cas d'enregistrement de \"Stéréo mix\"\)"
+msgstr "Passage audio logiciel : Lire la nouvelle piste pendant son enregistrement (décocher en cas d'enregistrement de \"Stéréo mix\")"
 
 #: prefs/AudioIOPrefs.cpp:162
 msgid "Effects Preview"
