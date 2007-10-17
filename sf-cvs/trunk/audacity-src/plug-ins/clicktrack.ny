@@ -72,7 +72,7 @@
 (progn (setf error  1) (setf q-msg "=> => ERROR - ")))
 (if
 (and (>= high 18) (<= high 116))
-(progn (setf error error) (setf high-msg "          OK        - "))
+(progn (setf error error) (setf high-msg "          OK      - "))
 (progn (setf error  1) (setf high-msg "=> => ERROR - ")))
 (if
 (and (>= low 18) (<= low 116))
@@ -83,7 +83,7 @@
 ; if error value is 1, give error message
 ((= error 1) 
 (format nil "Error - ~%
-One or more of your input values is incorrect.\nValid input values are listed above the values you\nentered, and each one shown as ERROR or OK ~%
+One or more of your input values is invalid.\nValid input values are listed above the values you\nentered, and each one shown as ERROR or OK ~%
 Tempo - positive integer 30 to 300\n~a ~a beats per minute
 Beats per measure - positive value 1 to 20\n~a ~a beats per measure [bar]
 Number of measures [bars] - positive integer 1 to 1000\n~a ~a measures [bars]
