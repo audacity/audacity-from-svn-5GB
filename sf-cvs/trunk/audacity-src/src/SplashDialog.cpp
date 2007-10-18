@@ -56,7 +56,8 @@ IMPLEMENT_CLASS(SplashDialog, wxDialog)
 
 SplashDialog::SplashDialog(wxWindow * parent)
    :  wxDialog(parent, -1, _NoAcc("&Welcome to Audacity!"),
-               wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
+      wxPoint( -1, 60 ), // default x position, y position 60 pixels from top of screen.
+      wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
    this->SetBackgroundColour(theTheme.Colour( clrAboutBoxBackground ));
    m_pIcon = NULL;
@@ -65,6 +66,9 @@ SplashDialog::SplashDialog(wxWindow * parent)
    Populate( S );
    Fit();
    this->Centre();
+   int x,y;
+   GetPosition( &x, &y );
+   Move( x, 60 );
 }
 
 void SplashDialog::Populate( ShuttleGui & S )
