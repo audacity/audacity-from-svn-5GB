@@ -107,9 +107,9 @@ msgstr "جُرأة"
 #. i18n-hint: Rather than a literal translation, consider adding the
 #. appropriate suffix or prefix to create a word meaning 'something which
 #. has Audacity'
-#: AboutDialog.cpp:328 AboutDialog.cpp:359
-msgid "Audacious!"
-msgstr "جريء! "
+#: AboutDialog.cpp:340 AboutDialog.cpp:371 SplashDialog.cpp:111
+msgid "OK... Audacious!"
+msgstr ""
 
 #: AboutDialog.cpp:376
 msgid "GPL License"
@@ -156,10 +156,6 @@ msgstr "عداد المخرج "
 msgid "&Preferences...\tCtrl+,"
 msgstr "&تفضيلات...\tCtrl+,"
 
-#: AudacityApp.cpp:773
-msgid "Command-line options supported:\n"
-msgstr "خيارات سطر الأوامر المتوفرة: \n"
-
 #: AudacityApp.cpp:789 AudacityApp.cpp:874
 #, c-format
 msgid "Using block size of %ld\n"
@@ -169,26 +165,6 @@ msgstr "استخدام حجم الكتلة %ld\n"
 #, c-format
 msgid "Unknown command line option: %s\n"
 msgstr "خيار سطر اﻷوامر غير معروف: %s\n"
-
-#. i18n-hint: '-help', '-test' and
-#. '-blocksize' need to stay in English.
-#: AudacityApp.cpp:858
-msgid "Command-line options supported:\n"
-"  -help (this message)\n"
-"  -test (run self diagnostics)\n"
-"  -blocksize ### (set max disk block size in bytes)\n"
-"\n"
-"In addition, specify the name of an audio file or Audacity project\n"
-"to open it.\n"
-"\n"
-msgstr "خيارات سطر اﻷوامر المتوفرة:\n"
-"  -help (هذا النص)\n"
-"  -test (تشغيل الفحوصات الذاتية)\n"
-"  -blocksize ### (تحديد الحجم الأقصى لكتل القرص بالبايت)\n"
-"\n"
-"أضف إلى الخيارات اسم ملف صوتي أو مشروع جُرأة\n"
-"لفتحه.\n"
-"\n"
 
 #: AudacityApp.cpp:1008
 msgid "Audacity could not find a place to store temporary files.\n"
@@ -236,6 +212,40 @@ msgstr "استعمل الأمر جديد أو فتح في برنامج جُرأ�
 msgid "Audacity is already running"
 msgstr "إن جُرأة تشتغل من قبل "
 
+#: AudacityApp.cpp:1134
+msgid "Command-line options supported:"
+msgstr ""
+
+#. i18n-hint: '-help' is the option and needs to stay in
+#. * English. This displays a list of available options
+#: AudacityApp.cpp:1137
+msgid "\t-help (this message)"
+msgstr ""
+
+#. i18n-hint '-version' needs to stay in English.
+#: AudacityApp.cpp:1139
+msgid "\t-version (display Audacity version)"
+msgstr ""
+
+#. i18n-hint '-test' is the option and needs to stay in
+#. * English. This runs a set of automatic tests on audacity
+#. * itself
+#: AudacityApp.cpp:1143
+msgid "\t-test (run self diagnostics)"
+msgstr ""
+
+#. i18n-hint '-blocksize' is the option and needs to stay in
+#. * English. 'nnn' is any integer number. This controls the
+#. * size pieces that audacity uses when writing files to the
+#. * disk
+#: AudacityApp.cpp:1148
+msgid "\t-blocksize nnn (set max disk block size in bytes)"
+msgstr ""
+
+#: AudacityApp.cpp:1149
+msgid "In addition, specify the name of an audio file or Audacity project to open it."
+msgstr ""
+
 #: AudacityApp.cpp:1380
 msgid "Audacity project (.AUP) files are not currently \n"
 "associated with Audacity. \n"
@@ -267,6 +277,16 @@ msgstr "خطأ: "
 #: AudioIO.cpp:226
 msgid "Error Initializing Audio"
 msgstr "خطأ في تهيئة نظام الصوت "
+
+#: AudioIO.cpp:1236
+msgid "Latency problem"
+msgstr ""
+
+#: AudioIO.cpp:1236
+msgid "Latency setting has caused the recorded audio to be hidden before zero.\n"
+"Audacity has brought it back to start at zero.\n"
+"You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."
+msgstr ""
 
 #: AutoRecovery.cpp:54
 msgid "Automatic Crash Recovery"
@@ -587,9 +607,9 @@ msgstr "نسخ الصوت المختار إلى المشروع"
 msgid "Cancel Save"
 msgstr "إلغاء الحفظ "
 
-#: Dependencies.cpp:305
-msgid "Skip"
-msgstr "تخطي"
+#: Dependencies.cpp:306
+msgid "Don't Copy any Audio"
+msgstr ""
 
 #: Dependencies.cpp:311
 msgid "Copy All Audio Into Project (safer)"
@@ -945,6 +965,410 @@ msgstr "التردد (هرتز)\t  المستوى (ديسيبل) "
 #: FreqWindow.cpp:1088
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
 msgstr "تخلف (ثانية)\tتردد (هرتز)\tمستوى "
+
+#: HelpText.cpp:53
+msgid " page."
+msgstr ""
+
+#: HelpText.cpp:53
+msgid "Back to "
+msgstr ""
+
+#: HelpText.cpp:53
+msgid "Welcome"
+msgstr ""
+
+#: HelpText.cpp:60
+msgid "Welcome!"
+msgstr ""
+
+#: HelpText.cpp:65
+msgid "Playing Audio"
+msgstr ""
+
+#: HelpText.cpp:69
+msgid "Recording Audio"
+msgstr ""
+
+#: HelpText.cpp:73
+msgid "Greyed Out Items"
+msgstr ""
+
+#: export/ExportCL.cpp:328 export/ExportOGG.cpp:260 export/ExportPCM.cpp:391
+msgid "Export"
+msgstr "تصدير"
+
+#: HelpText.cpp:81
+msgid "Supported Formats"
+msgstr ""
+
+#: HelpText.cpp:85
+msgid "Burn to CD"
+msgstr ""
+
+#: HelpText.cpp:89
+msgid "No Local Help"
+msgstr ""
+
+#: HelpText.cpp:101
+msgid "Welcome to Audacity "
+msgstr ""
+
+#: HelpText.cpp:102
+msgid "Let's get started!"
+msgstr ""
+
+#: HelpText.cpp:104
+msgid "You can click on the links below to learn how to:"
+msgstr ""
+
+#: HelpText.cpp:106
+msgid " an existing sound file."
+msgstr ""
+
+#: HelpText.cpp:106
+msgid "play back"
+msgstr ""
+
+#: HelpText.cpp:108
+msgid " a new sound file."
+msgstr ""
+
+#: HelpText.cpp:108 HelpText.cpp:110
+msgid "How to "
+msgstr ""
+
+#: HelpText.cpp:108
+msgid "record"
+msgstr ""
+
+#: HelpText.cpp:110
+msgid " sound and "
+msgstr ""
+
+#: HelpText.cpp:110
+msgid "edit"
+msgstr ""
+
+#: HelpText.cpp:111
+msgid " to a sound file like MP3."
+msgstr ""
+
+#: HelpText.cpp:111
+msgid "export"
+msgstr ""
+
+#: HelpText.cpp:113
+msgid "Those links will help if you find a problem such as a "
+msgstr ""
+
+#: HelpText.cpp:114
+msgid " or that Audacity "
+msgstr ""
+
+#: HelpText.cpp:114
+msgid "menu option greyed out"
+msgstr ""
+
+#: HelpText.cpp:115
+msgid " or that you "
+msgstr ""
+
+#: HelpText.cpp:115
+msgid "isn't recording properly"
+msgstr ""
+
+#: HelpText.cpp:116
+msgid "burn to a CD"
+msgstr ""
+
+#: HelpText.cpp:116
+msgid "can't "
+msgstr ""
+
+#: HelpText.cpp:117
+msgid ". You can always get back to these instructions by clicking the 'Help' menu, then 'Show Welcome Message.' "
+msgstr ""
+
+#: HelpText.cpp:119
+msgid "Welcome again to Audacity."
+msgstr ""
+
+#: HelpText.cpp:127
+msgid "You can either drag existing files into Audacity, or use the File > Import > Audio command."
+msgstr ""
+
+#: HelpText.cpp:128
+msgid "File > Open does the same, but opens a new Audacity window for any file after the first."
+msgstr ""
+
+#: HelpText.cpp:130
+msgid "These are the main formats Audacity will import for you: <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis, WAV</b>."
+msgstr ""
+
+#: HelpText.cpp:131
+msgid "If your file is in some other format see (format help). If you want to import an audio CD, see "
+msgstr ""
+
+#: HelpText.cpp:133
+msgid "To start playing your audio, press the green Play button. "
+msgstr ""
+
+#: HelpText.cpp:134
+msgid "To stop, press the yellow Stop button. "
+msgstr ""
+
+#: HelpText.cpp:135
+msgid "You can also use spacebar to either play or stop. "
+msgstr ""
+
+#: HelpText.cpp:136
+msgid "When you start playing again after stopping, playback resumes from its previous starting point."
+msgstr ""
+
+#: HelpText.cpp:137
+msgid "To change the starting point, use the |<< and |>> buttons to skip to the start or end respectively, or click anywhere in the track to restart from that point."
+msgstr ""
+
+#: HelpText.cpp:149
+msgid "<b>To start recording, press the red Record button</b>. Before doing so however, there are three crucial settings you must check:"
+msgstr ""
+
+#: HelpText.cpp:152
+msgid "(1) The <b>Recording Device</b>, set in the Audio I/O tab of Preferences. "
+msgstr ""
+
+#: HelpText.cpp:153
+msgid "By default Audacity will use the current system device, which is usually your inbuilt sound device, so you may not need to set this. "
+msgstr ""
+
+#: HelpText.cpp:154
+msgid "But if you're using an external USB or Firewire device such as a USB turntable, make sure this device is selected as your recording device. "
+msgstr ""
+
+#. i18n-hint: 2nd item in the list
+#: HelpText.cpp:157
+msgid "(2) The <b>input source</b> for your device, such as microphone or line-in. "
+msgstr ""
+
+#: HelpText.cpp:159
+msgid "<b>On Windows</b>, you normally choose your input in the dropdown selector on the right of the <b>Mixer Toolbar<b> <i>note: on Vista, you must do so at Recording Device on the Audio I/O Preferences tab.</i>"
+msgstr ""
+
+#: HelpText.cpp:161
+msgid "<b>On a Mac</b>, you normally choose input sources outside Audacity, in Apple Audio-MIDI Setup."
+msgstr ""
+
+#: HelpText.cpp:163
+msgid "<i>Note: many USB or Firewire devices don't have a choice of inputs, so you can ignore this step - see the documentation for your device. "
+msgstr ""
+
+#. i18n-hint: Third and final item in list
+#: HelpText.cpp:166
+msgid "(3) <b>Input volume</b>. Before recording for real, make a test recording to set the input level, so that it's neither too soft or too loud."
+msgstr ""
+
+#. i18n-hint: introduction to a set of steps to do something we have already
+#. * talked about
+#: HelpText.cpp:169
+msgid "To do this: "
+msgstr ""
+
+#: HelpText.cpp:171
+msgid "Turn on <b>monitoring</b>, by either double-clicking over the right-hand of the two VU Meters, or right-clicking over it and choosing \"Start Monitoring\". "
+msgstr ""
+
+#: HelpText.cpp:172
+msgid "If you do not see the meters, click View > Toolbars and check \"Meter Toolbar\". "
+msgstr ""
+
+#: HelpText.cpp:174
+msgid "Press Record, and adjust the input volume slider on the Mixer Toolbar (by the microphone symbol), so that the red bars in the meter come close to (but do not touch) the right edge of the scale. "
+msgstr ""
+
+#: HelpText.cpp:175
+msgid "If you can't hear the sound, go to the Audio I/O tab of Preferences and check \"Software Playthrough\". "
+msgstr ""
+
+#: HelpText.cpp:177
+msgid "There is more help if you're stuck: our Recording FAQs, our Tutorial  <b>Your First Recording </b> in the Manual, and our Wiki "
+msgstr ""
+
+#: HelpText.cpp:178
+msgid " section. "
+msgstr ""
+
+#: HelpText.cpp:178
+msgid ", especially the "
+msgstr ""
+
+#: HelpText.cpp:187
+msgid "Editing: Audacity is a powerful editor, so you'll want to see what it can do with your imported file or recording.  "
+msgstr ""
+
+#: HelpText.cpp:188
+msgid "The main commands you will use are under the Edit menu (such as cut, copy and paste) and under the Effect menu (you can do things like boost the bass, change pitch or tempo, or remove noise). "
+msgstr ""
+
+#: HelpText.cpp:190
+msgid "Audacity applies edits to areas of the audio track. You can select a particular area of audio by clicking in the track and dragging the shaded area with your mouse. "
+msgstr ""
+
+#: HelpText.cpp:191
+msgid "If you don't select any audio, Audacity will select all that you have on the screen."
+msgstr ""
+
+#: HelpText.cpp:193
+msgid "Two important points when editing:"
+msgstr ""
+
+#: HelpText.cpp:195
+msgid "(1) If you're still playing or recording, use the yellow Stop button, because you can't edit or export a moving track! "
+msgstr ""
+
+#: HelpText.cpp:197
+msgid "(2) On occasion, some of the menus or buttons are greyed out or say \"Disabled\" -  this is normal. "
+msgstr ""
+
+#: HelpText.cpp:198
+msgid "For example, because you can't edit audio while playing or recording, we grey out or disable commands until you press Stop. "
+msgstr ""
+
+#: HelpText.cpp:199
+msgid "Commands can sometimes be unavailable for other reasons - for example you can't run effects until you have audio on the screen, and you obviously can't paste audio until you've cut or copied it to Audacity's clipboard. "
+msgstr ""
+
+#: HelpText.cpp:208
+msgid "Exporting and Saving. have different purposes."
+msgstr ""
+
+#: HelpText.cpp:209
+msgid "You \" save\" an Audacity project file when you want to return to your work in Audacity later."
+msgstr ""
+
+#: HelpText.cpp:210
+msgid "This means you don't then have to re-import or re-record audio, or redo editing you have done so far."
+msgstr ""
+
+#: HelpText.cpp:211
+msgid "When you want to listen to your work in other computer programs or burn it to CD, you \"export\" it as an audio file such as a WAV, AIFF or MP3. "
+msgstr ""
+
+#: HelpText.cpp:213
+msgid "To save an Audacity project, use <b>File > Save Project</b>. This will save an <b>.aup</b> Project file, plus a <b>_data</b> folder containing the actual audio. "
+msgstr ""
+
+#: HelpText.cpp:214
+msgid "Make sure you don't rename or move either of these, because Audacity needs to refer to both."
+msgstr ""
+
+#: HelpText.cpp:215
+msgid "Only use File > Save Project As. when you either need to save an empty Project, or if you want to save an existing Project to a <i> new</i> name. "
+msgstr ""
+
+#: HelpText.cpp:216
+msgid "When you want to re-open a saved Project, simply click File > Open and open the .aup file. "
+msgstr ""
+
+#: HelpText.cpp:218
+msgid "When you want to export your work to an audio file, use <b>File > Export</b> and choose your desired format in the \"Save as type\" dropdown."
+msgstr ""
+
+#: HelpText.cpp:219
+msgid "Click the Options button for advanced choices, such as the bit rate to use for MP3 export."
+msgstr ""
+
+#: HelpText.cpp:220
+msgid "There are two other Export commands under the File menu."
+msgstr ""
+
+#: HelpText.cpp:221
+msgid "\"Export Selection\" exports only a selected area of audio."
+msgstr ""
+
+#: HelpText.cpp:222
+msgid "\"Export Multiple\" exports multiple files, for example where you have more than one track on screen and want to export each as a separate file. "
+msgstr ""
+
+#: HelpText.cpp:224
+msgid "Before you can export as <b>MP3</b>, you need to add the LAME MP3 encoder to your computer."
+msgstr ""
+
+#: HelpText.cpp:225
+msgid "For help with LAME, see "
+msgstr ""
+
+#: HelpText.cpp:227
+msgid "There is also some help on how to "
+msgstr ""
+
+#: HelpText.cpp:227
+msgid "burn to a CD."
+msgstr ""
+
+#: HelpText.cpp:239
+msgid "Can Audacity import file formats like WMA, AAC, RealAudio  etc.?"
+msgstr ""
+
+#: HelpText.cpp:241
+msgid "Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)</b>, or most other proprietary formats, because of licensing and patent restrictions."
+msgstr ""
+
+#: HelpText.cpp:242
+msgid "Audacity also cannot import any kind of Digital Rights Management (DRM) protected file, including most purchased online such as from iTunes or Napster."
+msgstr ""
+
+#: HelpText.cpp:243
+msgid "If you are on a Mac, you can import <b>AAC</b>  encoded files (such as <b>M4A</b>) as long as they are not DRM protected, but you cannot export to these formats."
+msgstr ""
+
+#: HelpText.cpp:245
+msgid "Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>Musepack</b>."
+msgstr ""
+
+#: HelpText.cpp:246
+msgid "We hope to support these formats in future versions of Audacity."
+msgstr ""
+
+#: HelpText.cpp:248
+msgid "If you cannot import your file into Audacity, you can as a workround convert it to WAV or AIFF."
+msgstr ""
+
+#: HelpText.cpp:251
+msgid "As long as it's not a DRM-protected file, you could do this with iTunes or with "
+msgstr ""
+
+#: HelpText.cpp:253
+msgid "If it's a DRM-protected file, you can burn it to an audio CD in the application that is licensed to play it, then extract (rip) the CD track to WAV or AIFF."
+msgstr ""
+
+#: HelpText.cpp:254
+msgid "You can use iTunes to extract to WAV or AIFF, plus Windows Media Player 11 or <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> on Windows."
+msgstr ""
+
+#: HelpText.cpp:255
+msgid "Or you can play the file on your computer and record it - see <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">. "
+msgstr ""
+
+#: HelpText.cpp:263
+msgid "If you want to burn your work to an audio CD, you must first "
+msgstr ""
+
+#: HelpText.cpp:264
+msgid "export as WAV or AIFF"
+msgstr ""
+
+#: HelpText.cpp:265
+msgid " and then burn that file to CD - for more help, see "
+msgstr ""
+
+#: HelpText.cpp:279
+msgid "<p>You don't appear to have Audacity help files on your machine. "
+msgstr ""
+
+#: HelpText.cpp:280
+msgid "You can download the help files and then access them from Audacity or you can click <a href=\"*URL*\">here</a> to read the help online."
+msgstr ""
 
 #: HistoryWindow.cpp:53
 msgid "Undo History"
@@ -1525,6 +1949,10 @@ msgstr "&تسجيل الوقت..."
 msgid "&Mix and Render"
 msgstr "&مزج و تقديم..."
 
+#: Menus.cpp:564
+msgid "Mix and Render to New Track\tCtrl+Shift+M"
+msgstr ""
+
 #: Menus.cpp:575
 msgid "&Resample..."
 msgstr "إعادة أ&خذ العينات..."
@@ -1622,6 +2050,14 @@ msgstr "م&ساعدة"
 msgid "&About Audacity CleanSpeech..."
 msgstr "&حول الخطاب النظيف لجُرأة..."
 
+#: Menus.cpp:735
+msgid "&Show Welcome Message..."
+msgstr ""
+
+#: Menus.cpp:736
+msgid "&Index..."
+msgstr ""
+
 #: Menus.cpp:746
 msgid "&Screenshot Tools..."
 msgstr "أدوات &تصوير الشاشة..."
@@ -1689,6 +2125,10 @@ msgstr "توقف مؤقت\tP"
 #: Menus.cpp:776
 msgid "Record\tR"
 msgstr "تسجيل\tR"
+
+#: Menus.cpp:777
+msgid "Play/Stop and Select\tShift+Return"
+msgstr ""
 
 #: Menus.cpp:778
 msgid "Stop and Select\tShift+A"
@@ -1791,12 +2231,36 @@ msgid "Cursor Right\tRight"
 msgstr "يمين المؤشر \tRight"
 
 #: Menus.cpp:820
+msgid "Cursor Short Jump Left\t,"
+msgstr ""
+
+#: Menus.cpp:821
+msgid "Cursor Short Jump Right\t."
+msgstr ""
+
+#: Menus.cpp:822
+msgid "Cursor Long Jump Left\tShift+,"
+msgstr ""
+
+#: Menus.cpp:823
+msgid "Cursor Long Jump Right\tShift+."
+msgstr ""
+
+#: Menus.cpp:820
 msgid "Selection Extend Left\tShift+Left"
 msgstr "تمديد الإختيار نحو اليسار\tShift+Left"
 
 #: Menus.cpp:821
 msgid "Selection Extend Right\tShift+Right"
 msgstr "تمديد الإختيار نحو اليمين\tShift+Right"
+
+#: Menus.cpp:828
+msgid "Set (or Extend) Left Selection"
+msgstr ""
+
+#: Menus.cpp:829
+msgid "Set (or Extend) Right Selection"
+msgstr ""
 
 #: Menus.cpp:823
 msgid "Selection Contract Left\tCtrl+Shift+Right"
@@ -2345,14 +2809,14 @@ msgstr "صوت مسجل"
 msgid "Save changes before closing?"
 msgstr "حفظ التغييرات قبل الإغلاق؟"
 
-#: Project.cpp:1457
+#: Project.cpp:1493
 msgid "\n"
 "\n"
 "Saved project will be empty!!\n"
 "\n"
-"To save the tracks you previously\n"
-"had, click cancel, restore the tracks\n"
-"using undo, and then save."
+"To save the tracks that were previously\n"
+"open, click Cancel, Edit > Undo until all your\n"
+"tracks are open, then File > Save Project."
 msgstr ""
 
 #: Project.cpp:1476
@@ -2428,20 +2892,30 @@ msgstr "تم حفظ هذا الملف ببرنامج جُرأة %s.\n"
 msgid "Can't open project file"
 msgstr "لا أستطيع فتح ملف المشروع"
 
-#: Project.cpp:2101
+#: Project.cpp:2131
+#, c-format
+msgid "This file was saved by Audacity %s, a much\n"
+"older version of Audacity.  The format has changed.\n"
+"Audacity will probably destroy the file in trying\n"
+"to open it.  You must back up your project\n"
+"first, to be safe.\n"
+"\n"
+"Would you like to try to open this file\n"
+"right now anyway?"
+msgstr ""
+
+#: Project.cpp:2138
 #, c-format
 msgid "This file was saved by Audacity %s and the format\n"
 "has changed.  This version of Audacity can try to\n"
 "open it, but there may be problems.  You should back up\n"
 "your project first, to be safe.\n"
 "\n"
-"Would you like to open this file right now anyway?"
-msgstr "تم حفظ هذا الملف ببرنامج جُرأة %s لكن الصيغة تغيرت.\n"
-"يمكن لهذا الإصدار من جُرأة أن يحاول فتحه و لكن قد يكون \n"
-"هناك مشاكل. ينبغي أولا أن تقوم بحفظ نسخة من مشروعك\n"
-"في موضع آمن .\n"
-"\n"
-"هل تريد فتح هذا الملف الآن مهما حدث؟"
+"After you save the file with this version of Audacity,\n"
+"you will not be able to open the file in the older\n"
+"version anymore.  Would you like to open\n"
+"this file right now anyway?"
+msgstr ""
 
 #: Project.cpp:2105
 msgid "Opening old project file"
@@ -2469,10 +2943,10 @@ msgstr "تم حفظ %s"
 msgid "Raw"
 msgstr "خام"
 
-#: Project.cpp:2425 import/ImportPCM.cpp:363
+#: Project.cpp:2463
 #, c-format
-msgid "Importing %s File..."
-msgstr "استيراد ملف %s..."
+msgid "Importing %s..."
+msgstr ""
 
 #: Project.cpp:2486
 #, c-format
@@ -2670,6 +3144,14 @@ msgstr "انتظار لبدأ التسجيل عند"
 #: SmartRecordDialog.cpp:380
 msgid "Audacity Smart Record - Waiting for Start"
 msgstr "التسجيل الذكي لجُرأة - انتظار البدأ"
+
+#: SplashDialog.cpp:58
+msgid "&Welcome to Audacity!"
+msgstr ""
+
+#: SplashDialog.cpp:110
+msgid "Don't show this again at start up"
+msgstr ""
 
 #: Tags.cpp:621
 msgid "Artist Name"
@@ -3728,6 +4210,10 @@ msgstr "النسبة: "
 msgid "Attack Time: "
 msgstr "وقت الهجمة:  "
 
+#: effects/Compressor.cpp:505
+msgid "Decay Time: "
+msgstr ""
+
 #: effects/Compressor.cpp:504
 msgid "Normalize to 0dB after compressing"
 msgstr "تطبيع لـ 0 ديسيبل بعد الضغط"
@@ -3752,6 +4238,11 @@ msgstr "النسبة: %.1f:1"
 msgid "Attack Time: %.1f secs"
 msgstr "وقت الهجمة:  %.1f ثانية"
 
+#: effects/Compressor.cpp:570
+#, c-format
+msgid "Decay Time: %.1f secs"
+msgstr ""
+
 #: effects/Compressor.h:36
 msgid "Compressor..."
 msgstr "الضاغط..."
@@ -3771,6 +4262,10 @@ msgstr "من طرف صالفو فانتورا (2006)"
 #: effects/DtmfGen.cpp:395
 msgid "DTMF sequence:"
 msgstr "متتالية دي.تي.أم.أف:"
+
+#: effects/ToneGen.cpp:292 effects/ToneGen.cpp:328
+msgid "Amplitude (0-1)"
+msgstr "السعة (0-1)"
 
 #: effects/DtmfGen.cpp:398
 msgid "DTMF duration:"
@@ -3982,9 +4477,9 @@ msgstr "بداية العتبة (عيّنات):"
 msgid "Stop threshold (samples):"
 msgstr "نهاية العتبة (عيّنات):"
 
-#: effects/FindClipping.cpp:237
-msgid "Start and stop must be postive and greater than 0."
-msgstr "يجب أن تكون البداية و النهاية موجبتان و أكبر من 0."
+#: effects/FindClipping.cpp:250
+msgid "Start and stop must be greater than 0."
+msgstr ""
 
 #: effects/FindClipping.h:37
 msgid "Find Clipping..."
@@ -4078,10 +4573,6 @@ msgstr "مولد الضجيج"
 msgid "Noise duration"
 msgstr "مدة الضجيج"
 
-#: effects/Noise.cpp:239
-msgid "Amplitude"
-msgstr "السعة"
-
 #: effects/Noise.cpp:240
 msgid "Noise type"
 msgstr "نوع الضجيج"
@@ -4098,6 +4589,12 @@ msgstr "التأثير المُطبق: مولد الضجيج، %.6lf ثانية"
 #: effects/Noise.h:53
 msgid "Generating Noise"
 msgstr "توليد الضجيج"
+
+#: effects/NoiseRemoval.cpp:192
+#, c-format
+msgid "Could not open file:\n"
+"  %s"
+msgstr ""
 
 #: effects/NoiseRemoval.cpp:235
 msgid "Attempt to run Noise Removal without a noise profile.\n"
@@ -4158,6 +4655,24 @@ msgstr "إنشاء وصف للضجيج "
 #: effects/NoiseRemoval.h:46
 msgid "Removing Noise"
 msgstr "حذف الضجيج"
+
+#: effects/Normalize.cpp:68
+#, c-format
+msgid "Applied effect: %s remove dc offset = %s, normalize amplitude = %s"
+msgstr ""
+
+#: effects/Normalize.cpp:70 effects/Normalize.cpp:71
+msgid "false"
+msgstr ""
+
+#: effects/Normalize.cpp:70 effects/Normalize.cpp:71
+msgid "true"
+msgstr ""
+
+#: effects/Normalize.cpp:73
+#, c-format
+msgid ", maximum amplitude = %.1f dB"
+msgstr ""
 
 #: effects/Normalize.cpp:94
 msgid "Normalize"
@@ -4383,10 +4898,6 @@ msgstr "مربع، دون كنية"
 msgid "Frequency (Hz)"
 msgstr "تردد (هرتز)"
 
-#: effects/ToneGen.cpp:292 effects/ToneGen.cpp:328
-msgid "Amplitude (0-1)"
-msgstr "السعة (0-1)"
-
 #: effects/ToneGen.cpp:293 effects/ToneGen.cpp:334
 #: toolbars/SelectionBar.cpp:147 toolbars/SelectionBar.cpp:241
 msgid "Length"
@@ -4404,10 +4915,6 @@ msgstr "بداية"
 #: toolbars/SelectionBar.cpp:141 toolbars/SelectionBar.cpp:242
 msgid "End"
 msgstr "نهاية"
-
-#: effects/ToneGen.cpp:326
-msgid "Frequency / Hz"
-msgstr "التردد / هرتز"
 
 #: effects/ToneGen.h:39
 msgid "Chirp..."
@@ -4438,17 +4945,21 @@ msgstr "قطع الصمت"
 msgid "by Lynn Allan"
 msgstr "من طرف لين ألان"
 
-#: effects/TruncSilence.cpp:334
-msgid "Max silence duration (milliseconds):\n"
-msgstr "المدة القصوى للصمت (بالملي ثانية):\n"
+#: effects/TruncSilence.cpp:346
+msgid "Max silence duration:"
+msgstr ""
 
-#: effects/TruncSilence.cpp:337
-msgid "(9999999 or greater is off)"
-msgstr "(9999999 أو أكبر تعني الغلق)"
+#: prefs/AudioIOPrefs.cpp:175 prefs/AudioIOPrefs.cpp:178
+msgid "milliseconds"
+msgstr "ملي ثانية"
 
 #: effects/TruncSilence.cpp:338
 msgid "Threshold for silence:"
 msgstr "عتبة الصمت: "
+
+#: effects/TruncSilence.cpp:375
+msgid "   Duration must be at least 1 millisecond"
+msgstr ""
 
 #: effects/TruncSilence.h:28
 msgid "Truncate Silence..."
@@ -4566,6 +5077,40 @@ msgstr "نايكويست لم يرجع أي صوت.\n"
 msgid "Nyquist returned too many audio channels.\n"
 msgstr "نايكويست أرجع قنوات صوتية كثيرة جدا.\n"
 
+#: effects/vamp/LoadVamp.cpp:53 effects/vamp/VampEffect.cpp:238
+#, c-format
+msgid "%s: %s"
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:75
+#, c-format
+msgid "Extracting features: %s"
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:106
+msgid "Sorry, Vamp Plug-ins cannot be run on stereo tracks where the individual channels of the track do not match."
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:120
+msgid "Sorry, failed to load Vamp Plug-in."
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:228
+msgid "Sorry, Vamp Plug-in failed to initialize."
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:376
+msgid " - Vamp audio analysis plugin"
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:423
+msgid "Plugin Settings"
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:446
+msgid "Program"
+msgstr ""
+
 #: export/Export.cpp:400
 msgid "No tracks are selected! Use Ctrl-A (Select All)\n"
 "Choose Export... to export all tracks."
@@ -4661,10 +5206,6 @@ msgstr "(برنامج خارجي)"
 #, c-format
 msgid "Cannot export audio to %s"
 msgstr "لا أستطيع تصدير الصوت إلى %s"
-
-#: export/ExportCL.cpp:328 export/ExportOGG.cpp:260 export/ExportPCM.cpp:391
-msgid "Export"
-msgstr "تصدير"
 
 #: export/ExportCL.cpp:330
 msgid "Exporting the selected audio using command-line encoder"
@@ -4792,77 +5333,15 @@ msgstr "تصدير الصوت المختار بـسرعة %d ك.ب.ف.ث"
 msgid "Exporting entire file at %d kbps"
 msgstr "تصدير كامل الملف بـسرعة %d ك.ب.ف.ث"
 
-#: export/ExportMP3.cpp:137
-msgid "8 kbps"
-msgstr "8 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:138
-msgid "16 kbps"
-msgstr "16 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:139
-msgid "24 kbps"
-msgstr "24 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:140
-msgid "32 kbps"
-msgstr "32 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:141
-msgid "40 kbps"
-msgstr "40 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:142
-msgid "48 kbps"
-msgstr "48 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:143
-msgid "56 kbps"
-msgstr "56 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:144
-msgid "64 kbps"
-msgstr "64 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:145
-msgid "80 kbps"
-msgstr "80 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:146
-msgid "96 kbps"
-msgstr "96 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:147
-msgid "112 kbps"
-msgstr "112 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:148
-msgid "128 kbps"
-msgstr "128 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:149
-msgid "144 kbps"
-msgstr "144 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:150
-msgid "160 kbps"
-msgstr "160 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:151
-msgid "192 kbps"
-msgstr "192 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:152
-msgid "224 kbps"
-msgstr "224 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:153
-msgid "256 kbps"
-msgstr "256 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:154
-msgid "320 kbps"
-msgstr "320 ك.ب.ف.ث"
+#. i18n-hint: kbps is the bitrate of the MP3 file, kilobits per second
+#: export/ExportMP3.cpp:142 export/ExportMP3.cpp:143 export/ExportMP3.cpp:144
+#: export/ExportMP3.cpp:145 export/ExportMP3.cpp:146 export/ExportMP3.cpp:147
+#: export/ExportMP3.cpp:148 export/ExportMP3.cpp:149 export/ExportMP3.cpp:150
+#: export/ExportMP3.cpp:151 export/ExportMP3.cpp:152 export/ExportMP3.cpp:153
+#: export/ExportMP3.cpp:154 export/ExportMP3.cpp:155 export/ExportMP3.cpp:156
+#: export/ExportMP3.cpp:157 export/ExportMP3.cpp:158 export/ExportMP3.cpp:159
+msgid "kbps"
+msgstr ""
 
 #: export/ExportMP3.cpp:159
 msgid "0, 220-260 kbps (Best Quality)"
@@ -4927,42 +5406,6 @@ msgstr "قياسي، 170-210 ك.ب.ف.ث"
 #: export/ExportMP3.cpp:182
 msgid "Medium, 145-185 kbps"
 msgstr "متوسط، 145-185 ك.ب.ف.ث"
-
-#: export/ExportMP3.cpp:187
-msgid "8000"
-msgstr "8000"
-
-#: export/ExportMP3.cpp:188
-msgid "11025"
-msgstr "11025"
-
-#: export/ExportMP3.cpp:189
-msgid "12000"
-msgstr "12000"
-
-#: export/ExportMP3.cpp:190
-msgid "16000"
-msgstr "1600"
-
-#: export/ExportMP3.cpp:191
-msgid "22050"
-msgstr "22050"
-
-#: export/ExportMP3.cpp:192
-msgid "24000"
-msgstr "24000"
-
-#: export/ExportMP3.cpp:193
-msgid "32000"
-msgstr "32000"
-
-#: export/ExportMP3.cpp:194
-msgid "44100"
-msgstr "44100"
-
-#: export/ExportMP3.cpp:195
-msgid "48000"
-msgstr "48000"
 
 #: export/ExportMP3.cpp:244
 msgid "Specify MP3 Options"
@@ -5319,15 +5762,15 @@ msgstr "وايف، آيف، و الأنواع الأخرى غير المضغوط
 msgid "Cannot export audio in this format."
 msgstr "لا أستطيع تصدير الصوت  بهذه الصيغة."
 
-#: export/ExportPCM.cpp:393
+#: export/ExportPCM.cpp:400
 #, c-format
-msgid "Exporting the selected audio as a %s file"
-msgstr "تصدير الصوت المختار كملف %s"
+msgid "Exporting the selected audio as %s"
+msgstr ""
 
-#: export/ExportPCM.cpp:395
+#: export/ExportPCM.cpp:402
 #, c-format
-msgid "Exporting the entire project as a %s file"
-msgstr "تصدير كل المشروع كملف %s"
+msgid "Exporting the entire project as %s"
+msgstr ""
 
 #: export/ExportPCM.cpp:428
 #, c-format
@@ -5343,53 +5786,46 @@ msgstr ""
 msgid "This version of Audacity was not compiled with %s support."
 msgstr "هذا الإصدار من جُرأة لم يُبنى مع دعم %s."
 
-#: import/Import.cpp:196
-msgid " is an audio CD file. \n"
-"Audacity does not open this type of file.\n"
-"Try ripping it to a native audio format that Audacity can import."
-msgstr "هو ملف قرص مضغوط صوتي.  \n"
-"جُرأة لا تفتح هذا النوع من الملفات. \n"
-"حاول أن تنقله إلى صيغة تستطيع جُرأة إستيرادها."
+#: import/Import.cpp:167
+msgid " is an audio CD track. \n"
+"Audacity cannot open audio CDs directly. \n"
+"Extract (rip) the CD tracks to an audio format that \n"
+"Audacity can import, such as WAV or AIFF."
+msgstr ""
 
-#: import/Import.cpp:203
-msgid " is a playlist file.\n"
-"Audacity cannot open this file because it only contains links to other files.\n"
+#: import/Import.cpp:174
+#, fuzzy
+msgid " is a playlist file. \n"
+"Audacity cannot open this file because it only contains links to other files. \n"
 "You may be able to open it in a text editor and download the actual audio files."
 msgstr "هو ملف قائمة قراءة.  \n"
 "جُرأة لا تستطيع فتح هذا الملف لأنه يحتوي فقط على روابط لملفات أخرى. \n"
 "يمكنك فتحه في برنامج لتحرير النصوص ثم تنزيل الملفات الصوتية الموجودة."
 
-#: import/Import.cpp:209
+#: import/Import.cpp:180
 msgid " is a Windows Media Audio file. \n"
-"Audacity cannot open this type of file to due to patent restrictions.\n"
-"You need to convert it to a supported audio format."
-msgstr "هو ملف وسيط صوتي لويندوز.  \n"
-"جُرأة لا تستطيع فتح هذا النوع من الملفات بسبب قيود براءة الاختراع. \n"
-"أنت بحاجة لتحويله إلى صيغة مدعومة في جُرأة."
+"Audacity cannot open this type of file due to patent restrictions. \n"
+"You need to convert it to a supported audio format, such as WAV or AIFF."
+msgstr ""
 
-#: import/Import.cpp:215
+#: import/Import.cpp:186
 msgid " is an Advanced Audio Coding file. \n"
-"Audacity cannot open this type of file.\n"
-"You need to convert it to a supported audio format."
-msgstr "هو ملف تشفير صوتي متطور.  \n"
-"جُرأة لا تستطيع فتح هذا النوع من الملفات. \n"
-"أنت بحاجة لتحويله إلى صيغة مدعومة في جُرأة."
+"Audacity cannot open this type of file. \n"
+"You need to convert it to a supported audio format, such as WAV or AIFF."
+msgstr ""
 
-#: import/Import.cpp:221
-msgid " is an encrypted audio file, typically from an online music store. \n"
-"Audacity cannot open this type of file due to the encryption.\n"
-"You need to convert it to a supported, unencrypted audio format."
-msgstr "هو ملف صوتي مُشفر.  \n"
-"جُرأة لا تستطيع فتح هذا النوع من الملفات بسبب التشفير. \n"
-"أنت بحاجة لتحويله إلى صيغة مدعومة غير مُشفرة."
+#: import/Import.cpp:192
+msgid " is an encrypted audio file. These typically are from an online music store. \n"
+"Audacity cannot open this type of file due to the encryption. \n"
+"Try recording the file into Audacity, or burn it to audio CD then \n"
+"extract the CD track to a supported audio format such as WAV or AIFF."
+msgstr ""
 
-#: import/Import.cpp:227
+#: import/Import.cpp:198
 msgid " is a RealPlayer media file. \n"
-"Audacity cannot open this proprietary format.\n"
-"You need to convert it to a supported audio format."
-msgstr "هو ملف وسيط ريلبلاير.  \n"
-"جُرأة لا تستطيع فتح هذه الصيغة المملوكة. \n"
-"أنت بحاجة لتحويله إلى صيغة مدعومة في جُرأة."
+"Audacity cannot open this proprietary format. \n"
+"You need to convert it to a supported audio format, such as WAV or AIFF."
+msgstr ""
 
 #: import/Import.cpp:221
 msgid "Audacity had to make a guess at the type of file.\n"
@@ -5473,6 +5909,11 @@ msgstr "رأسية تيار بِت فوربيس غير صالحة"
 #: import/ImportOGG.cpp:152
 msgid "Internal logic fault"
 msgstr "خطأ منطقي داخلي"
+
+#: Project.cpp:2425 import/ImportPCM.cpp:363
+#, c-format
+msgid "Importing %s File..."
+msgstr "استيراد ملف %s..."
 
 #: import/ImportQT.cpp:20
 msgid "QuickTime files"
@@ -5581,24 +6022,36 @@ msgid "&Play other tracks while recording new one"
 msgstr "&قراءة المسارات الأخرى أثناء تسجيل مسار جديد"
 
 #: prefs/AudioIOPrefs.cpp:150
-msgid "&Hardware Playthrough (Play new track while recording it)"
-msgstr "قراءة بواسطة الآ&لة (قراءة المسار الجديد أثناء تسجيله)"
+msgid "&Hardware Playthrough: Play new track while recording it"
+msgstr ""
 
-#: prefs/AudioIOPrefs.cpp:153
-msgid "&Software Playthrough (Play new track while recording it)"
-msgstr "قراءة بواسطة ال&برنامج (قراءة المسار الجديد أثناء تسجيله)"
+#: prefs/AudioIOPrefs.cpp:152
+msgid "&Software Playthrough: Play new track while recording it"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:155
+msgid "&Software Playthrough: Play new track while recording it (uncheck when recording \"stereo mix\")"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:194
+msgid "Effects Preview"
+msgstr "عرض مسبق للتأثيرات"
+
+#: prefs/AudioIOPrefs.cpp:165
+msgid "Length of preview:"
+msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:158
 msgid "Cut Preview"
 msgstr "قص العرض المسبق"
 
-#: prefs/AudioIOPrefs.cpp:161
-msgid "Play before cut region:"
-msgstr "قراءة قبل منطقة القص:"
+#: prefs/AudioIOPrefs.cpp:173
+msgid "Preview before cut region:"
+msgstr ""
 
-#: prefs/AudioIOPrefs.cpp:163
-msgid "Play after cut region:"
-msgstr "قراءة بعد منطقة القص:"
+#: prefs/AudioIOPrefs.cpp:175
+msgid "Preview after cut region:"
+msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:168
 msgid "Latency"
@@ -5608,17 +6061,13 @@ msgstr "الكمون"
 msgid "Audio to buffer:"
 msgstr "الصوت إلى الواق:"
 
-#: prefs/AudioIOPrefs.cpp:175 prefs/AudioIOPrefs.cpp:178
-msgid "milliseconds"
-msgstr "ملي ثانية"
-
 #: prefs/AudioIOPrefs.cpp:177
 msgid "Latency correction:"
 msgstr "تصحيح الكمون:"
 
-#: prefs/AudioIOPrefs.cpp:184
-msgid "Seek Time"
-msgstr "وقت البحث"
+#: prefs/AudioIOPrefs.cpp:197
+msgid "Seek Time when playing"
+msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:187
 msgid "Short period:"
@@ -5627,14 +6076,6 @@ msgstr "مدة قصيرة:"
 #: prefs/AudioIOPrefs.cpp:189
 msgid "Long period:"
 msgstr "مدة طويلة:"
-
-#: prefs/AudioIOPrefs.cpp:194
-msgid "Effects Preview"
-msgstr "عرض مسبق للتأثيرات"
-
-#: prefs/AudioIOPrefs.cpp:197
-msgid "Play when previewing:"
-msgstr "قراءة أثناء العرض المسبق:"
 
 #: prefs/BatchPrefs.cpp:53 prefs/BatchPrefs.cpp:54
 msgid "Batch"
@@ -5702,8 +6143,8 @@ msgid "Audio cache"
 msgstr "مخبأ تلقائي"
 
 #: prefs/DirectoriesPrefs.cpp:112
-msgid "Always hold all audio data in memory"
-msgstr "أبقي كل البيانات الصوتية في الذاكرة دائما"
+msgid "Hold recorded data in memory until recording is stopped"
+msgstr ""
 
 #: prefs/DirectoriesPrefs.cpp:121
 msgid "Choose a location to place the temporary directory"
@@ -5768,8 +6209,8 @@ msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
 msgstr "&مزج كل المسارات إلى قناة ثنائية أو أحادية دائما."
 
 #: prefs/FileFormatPrefs.cpp:97
-msgid "&Use Advanced Mixing Options"
-msgstr "&استخدام خيارات المزج المقدمة"
+msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
+msgstr ""
 
 #: prefs/FileFormatPrefs.cpp:104
 msgid "MP3 Library Version:"
@@ -5788,24 +6229,12 @@ msgid "Interface"
 msgstr "الواجهة"
 
 #: prefs/GUIPrefs.cpp:72
-msgid "&Autoscroll while playing"
-msgstr "&تدرج تلقائي أثناء القراءة"
+msgid "&Update display while playing"
+msgstr ""
 
 #: prefs/GUIPrefs.cpp:74
-msgid "Al&ways allow pausing"
-msgstr "ا&سمح بالتوقف المؤقت دائما"
-
-#: prefs/GUIPrefs.cpp:76
-msgid "Alwa&ys allow playing"
-msgstr "اس&مح بالقراءة دائما"
-
-#: prefs/GUIPrefs.cpp:78
-msgid "&Update spectrogram while playing"
-msgstr "&تحديث الصورة الطيفية أثناء القراءة"
-
-#: prefs/GUIPrefs.cpp:80
-msgid "&Quit Audacity upon closing last window"
-msgstr "ال&خروج من جُرأة عند غلق آخر نافذة"
+msgid "Any Close/Exit command completely &quits Audacity"
+msgstr ""
 
 #: prefs/GUIPrefs.cpp:82
 msgid "&Dragging of left and right selection edges"
@@ -5815,13 +6244,13 @@ msgstr "&سحب حافتي الاختيار اليسرى و اليمنى"
 msgid "&Ergonomic order of audio I/O buttons"
 msgstr "ترتيب &مريح لأزرار منافذ الصوت"
 
-#: prefs/GUIPrefs.cpp:86
-msgid "Tracks &fit vertically zoomed"
-msgstr "تغيير &حجم المسارات عموديا"
+#: prefs/GUIPrefs.cpp:80
+msgid "Automatically &fit tracks vertically zoomed"
+msgstr ""
 
-#: prefs/GUIPrefs.cpp:88
-msgid "&Circular track keyboard navigation"
-msgstr "إ&بحار دائري بلوحة المفاتيح بين المسارات"
+#: prefs/GUIPrefs.cpp:82
+msgid "\"Move track focus\" &cycles repeatedly through tracks"
+msgstr ""
 
 #: prefs/GUIPrefs.cpp:90
 msgid "&Present track number to accessibility aid"
@@ -5831,6 +6260,14 @@ msgstr "&عرض رقم المسار في مساعد الوصول"
 msgid "Editing a &clip can move other clips"
 msgstr "تحرير &مقطع يمكن أن يحرك مقاطع أخرى"
 
+#: prefs/GUIPrefs.cpp:88
+msgid "&Select all audio in project, if none selected"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:90
+msgid "&Beep on completion of longer activities"
+msgstr ""
+
 #: prefs/GUIPrefs.cpp:98
 msgid "Enable cut &lines"
 msgstr "تفعيل &خطوط القطع"
@@ -5839,8 +6276,12 @@ msgstr "تفعيل &خطوط القطع"
 msgid "Show warnings about &temp files"
 msgstr "أظهر الإنذارات حول الملفات ال&مؤقتة"
 
+#: prefs/GUIPrefs.cpp:100
+msgid "&Show prompt to save, even if project is empty"
+msgstr ""
+
 #: prefs/GUIPrefs.cpp:102
-msgid "&Show prompt to save, even if empty"
+msgid "Show Welcome Message at program start up"
 msgstr ""
 
 #: prefs/GUIPrefs.cpp:105
@@ -6399,11 +6840,9 @@ msgstr "الخطاب النظيف"
 msgid "Error while opening sound device. "
 msgstr "حدث خطأ أثناء فتح جهاز الصوت. "
 
-#: toolbars/ControlToolBar.cpp:697
-msgid "CleanSpeech only allows recording mono tracks.\n"
-"Recording is not possible when more than one window is open."
-msgstr "الخطاب النظيف يسمح فقط بتسجيل المسارات الأحادية.\n"
-"التسجيل غير ممكن إذا كان هناك أكثر من نافذة واحدة مفتوحة."
+#: toolbars/ControlToolBar.cpp:696
+msgid "Recording in CleanSpeech mode is not possible when a track, or more than one project, is already open."
+msgstr ""
 
 #: toolbars/ControlToolBar.cpp:698
 msgid "Recording not permitted"
@@ -6773,6 +7212,10 @@ msgstr "أيمن"
 #: widgets/ErrorDialog.cpp:68 widgets/ErrorDialog.cpp:92
 msgid "Help"
 msgstr "مساعدة"
+
+#: widgets/ErrorDialog.cpp:190
+msgid "Help on the Internet"
+msgstr ""
 
 #: widgets/Grabber.cpp:62
 msgid "Grabber"
