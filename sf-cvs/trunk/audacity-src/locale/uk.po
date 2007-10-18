@@ -6,8 +6,7 @@
 # Maxim Dziumanenko <mvd@mylinux.com.ua>, 2004-2005.
 # Yuri Chornoivan <yurchor@ukr.net>, 2007.
 msgid ""
-msgstr ""
-"Project-Id-Version: uk\n"
+msgstr "Project-Id-Version: uk\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
 "POT-Creation-Date: 2007-05-05 18:29+0100\n"
 "PO-Revision-Date: 2007-06-13 22:51+0300\n"
@@ -39,41 +38,16 @@ msgid "Settings folder: "
 msgstr "Тека з параметрами: "
 
 #: AboutDialog.cpp:215
-msgid ""
-"Audacity is a free program written by a team of volunteer developers around "
-"the world. Coordination happens thanks to SourceForge.net, an online service "
-"that provides free tools to open-source software projects. Audacity is "
-"available for Windows 98 and newer, Mac OS X, Linux, and other Unix-like "
-"operating systems. Older versions of Audacity are available for Mac OS 9."
-msgstr ""
-"Audacity - вільна програма, написана групою програмістів з усього світу, "
-"скоординованих завдяки SourceForge.net − службі, для програмних проектів з "
-"відкритим кодом. Audacity доступна на платформах Windows 98 та новіше, Mac "
-"OS X, Linux, та інших Unix-системах. Більш ранні версії доступні на "
-"платформі Mac OS 9."
+msgid "Audacity is a free program written by a team of volunteer developers around the world. Coordination happens thanks to SourceForge.net, an online service that provides free tools to open-source software projects. Audacity is available for Windows 98 and newer, Mac OS X, Linux, and other Unix-like operating systems. Older versions of Audacity are available for Mac OS 9."
+msgstr "Audacity - вільна програма, написана групою програмістів з усього світу, скоординованих завдяки SourceForge.net − службі, для програмних проектів з відкритим кодом. Audacity доступна на платформах Windows 98 та новіше, Mac OS X, Linux, та інших Unix-системах. Більш ранні версії доступні на платформі Mac OS 9."
 
 #: AboutDialog.cpp:219
-msgid ""
-"This is a beta version of the program.  It may contain bugs and unfinished "
-"features.  We depend on your feedback, so please visit our website and give "
-"us your bug reports and feature requests."
-msgstr ""
-"Це - тестова версія програми. Вона може містити помилки та нереалізовану "
-"функціональність. Продуктивність нашої роботи залежить від ваших відгуків, "
-"тому відвідайте наш сайт та залиште повідомлення про усі знайдені помилки та "
-"запити на реалізацію функціональності."
+msgid "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
+msgstr "Це - тестова версія програми. Вона може містити помилки та нереалізовану функціональність. Продуктивність нашої роботи залежить від ваших відгуків, тому відвідайте наш сайт та залиште повідомлення про усі знайдені помилки та запити на реалізацію функціональності."
 
 #: AboutDialog.cpp:222
-msgid ""
-"This is a stable, completed release of Audacity. However, if you find a bug "
-"or have a suggestion, please contact us. We depend on feedback from users in "
-"order to continue to improve Audacity. For more information, visit our "
-"website."
-msgstr ""
-"Це - стабільна, завершена версія Audacity. Проте, зверніться до нас, якщо ви "
-"знайдете помилку, або у вас є пропозиція. Нам потрібен зворотній зв'язок з "
-"користувачами для продовження вдосконалення Audacity. Щоб дізнатися "
-"більше, відвідайте нашу веб-сторінку."
+msgid "This is a stable, completed release of Audacity. However, if you find a bug or have a suggestion, please contact us. We depend on feedback from users in order to continue to improve Audacity. For more information, visit our website."
+msgstr "Це - стабільна, завершена версія Audacity. Проте, зверніться до нас, якщо ви знайдете помилку, або у вас є пропозиція. Нам потрібен зворотній зв'язок з користувачами для продовження вдосконалення Audacity. Щоб дізнатися більше, відвідайте нашу веб-сторінку."
 
 #. i18n-hint: The translation of "translator_credits" will appear
 #. in the credits in the About Audacity window.  Use this to add
@@ -83,8 +57,7 @@ msgstr ""
 #.
 #: AboutDialog.cpp:232 AboutDialog.cpp:234
 msgid "translator_credits"
-msgstr ""
-"Максим Дзюманенко <dziumanenko@gmail.com>\n"
+msgstr "Максим Дзюманенко <dziumanenko@gmail.com>\n"
 "Андрій Лагуш <Andrew Lahush alahush@yahoo.com>\n"
 "Юрій Чорноіван <yurchor@ukr.net>"
 
@@ -130,12 +103,24 @@ msgstr "Audacity використовує код наступних проект
 msgid "Special thanks:"
 msgstr "Особливі подяки:"
 
+#: AboutDialog.cpp:320
+msgid "Audacity"
+msgstr ""
+
 #. i18n-hint: Rather than a literal translation, consider adding the
 #. appropriate suffix or prefix to create a word meaning 'something which
 #. has Audacity'
-#: AboutDialog.cpp:313
-msgid "Audacious!"
-msgstr "Сміливо!"
+#: AboutDialog.cpp:340 AboutDialog.cpp:371 SplashDialog.cpp:111
+msgid "OK... Audacious!"
+msgstr ""
+
+#: AboutDialog.cpp:388
+msgid "GPL License"
+msgstr ""
+
+#: Dependencies.cpp:308 FreqWindow.cpp:209
+msgid "Close"
+msgstr "Закрити"
 
 #: AudacityApp.cpp:418 Project.cpp:1654
 #, c-format
@@ -149,12 +134,10 @@ msgstr "Помилка при відкриванні файлу проекту"
 
 #: AudacityApp.cpp:452
 #, c-format
-msgid ""
-"%s does not exist and could not be opened.\n"
+msgid "%s does not exist and could not be opened.\n"
 "\n"
 "It has been removed from the history list."
-msgstr ""
-"%s не існує та не може бути відкритий.\n"
+msgstr "%s не існує та не може бути відкритий.\n"
 "\n"
 "Його видалено зі списку історії."
 
@@ -176,10 +159,6 @@ msgstr "Індикатор рівня на виході"
 msgid "&Preferences...\tCtrl+,"
 msgstr "&Параметри...\tCtrl+,"
 
-#: AudacityApp.cpp:743
-msgid "Command-line options supported:\n"
-msgstr "Підтримувані параметри командного рядка:\n"
-
 #: AudacityApp.cpp:759 AudacityApp.cpp:844
 #, c-format
 msgid "Using block size of %ld\n"
@@ -190,60 +169,28 @@ msgstr "Використовуються блоки розміром %ld\n"
 msgid "Unknown command line option: %s\n"
 msgstr "Невідомий параметр командного рядка: %s\n"
 
-#. i18n-hint: '-help', '-test' and
-#. '-blocksize' need to stay in English.
-#: AudacityApp.cpp:828
-msgid ""
-"Command-line options supported:\n"
-"  -help (this message)\n"
-"  -test (run self diagnostics)\n"
-"  -blocksize ### (set max disk block size in bytes)\n"
-"\n"
-"In addition, specify the name of an audio file or Audacity project\n"
-"to open it.\n"
-"\n"
-msgstr ""
-"Параметри командного рядка, що підтримуються:\n"
-"  -help (виводить це повідомлення)\n"
-"  -test (запуск самотестування)\n"
-"  -blocksize ### (встановлює макс. розмір дискових блоків у байтах)\n"
-"\n"
-"Додатково, вкажіть назву фалу проекту Audacity,\n"
-"який відкриватиметься на початку.\n"
-"\n"
-
 #: AudacityApp.cpp:978
-msgid ""
-"Audacity could not find a place to store temporary files.\n"
+msgid "Audacity could not find a place to store temporary files.\n"
 "Please enter an appropriate directory in the preferences dialog."
-msgstr ""
-"Програмі не вдається знайти каталог для зберігання тимчасових файлів.\n"
+msgstr "Програмі не вдається знайти каталог для зберігання тимчасових файлів.\n"
 "Вкажіть відповідний каталог у діалоговому вікні уподобань."
 
 #: AudacityApp.cpp:984
-msgid ""
-"Audacity is now going to exit. Please launch Audacity again to use the new "
-"temporary directory."
-msgstr ""
-"Audacity готується до завершення. Повторно завантажте програму для "
-"використання нової теки тимчасових файлів."
+msgid "Audacity is now going to exit. Please launch Audacity again to use the new temporary directory."
+msgstr "Audacity готується до завершення. Повторно завантажте програму для використання нової теки тимчасових файлів."
 
 #: AudacityApp.cpp:1016
-msgid ""
-"Running two copies of Audacity simultaneously may cause\n"
+msgid "Running two copies of Audacity simultaneously may cause\n"
 "data loss or cause your system to crash.\n"
 "\n"
-msgstr ""
-"Запуск двох копій Audacity одночасно може призвести\n"
+msgstr "Запуск двох копій Audacity одночасно може призвести\n"
 "до втрати даних або краху системи.\n"
 "\n"
 
 #: AudacityApp.cpp:1023
-msgid ""
-"Audacity was not able to lock the temporary files directory.\n"
+msgid "Audacity was not able to lock the temporary files directory.\n"
 "This folder may be in use by another copy of Audacity.\n"
-msgstr ""
-"Audacity не може заблокувати теку з тимчасовими файлами.\n"
+msgstr "Audacity не може заблокувати теку з тимчасовими файлами.\n"
 "Можливо цю теку вже використовує інша копія Audacity.\n"
 
 #: AudacityApp.cpp:1025
@@ -259,11 +206,9 @@ msgid "The system has detected that another copy of Audacity is running.\n"
 msgstr "Система визначила, що вже запущено іншу копію Audacity.\n"
 
 #: AudacityApp.cpp:1067
-msgid ""
-"Use the New or Open commands in the currently running Audacity\n"
+msgid "Use the New or Open commands in the currently running Audacity\n"
 "process to open multiple projects simultaneously.\n"
-msgstr ""
-"Щоб відкрити одночасно декілька проектів використовуйте\n"
+msgstr "Щоб відкрити одночасно декілька проектів використовуйте\n"
 "команди \"Створити\" або \"Відкрити\" у копії\n"
 "Audacity, що зараз виконується.\n"
 
@@ -271,14 +216,46 @@ msgstr ""
 msgid "Audacity is already running"
 msgstr "Audacity вже запущено"
 
+#: AudacityApp.cpp:1134
+msgid "Command-line options supported:"
+msgstr ""
+
+#. i18n-hint: '-help' is the option and needs to stay in
+#. * English. This displays a list of available options
+#: AudacityApp.cpp:1137
+msgid "\t-help (this message)"
+msgstr ""
+
+#. i18n-hint '-version' needs to stay in English.
+#: AudacityApp.cpp:1139
+msgid "\t-version (display Audacity version)"
+msgstr ""
+
+#. i18n-hint '-test' is the option and needs to stay in
+#. * English. This runs a set of automatic tests on audacity
+#. * itself
+#: AudacityApp.cpp:1143
+msgid "\t-test (run self diagnostics)"
+msgstr ""
+
+#. i18n-hint '-blocksize' is the option and needs to stay in
+#. * English. 'nnn' is any integer number. This controls the
+#. * size pieces that audacity uses when writing files to the
+#. * disk
+#: AudacityApp.cpp:1148
+msgid "\t-blocksize nnn (set max disk block size in bytes)"
+msgstr ""
+
+#: AudacityApp.cpp:1149
+msgid "In addition, specify the name of an audio file or Audacity project to open it."
+msgstr ""
+
 #: AudacityApp.cpp:1347
-msgid ""
-"Audacity project (.AUP) files are not currently \n"
+msgid "Audacity project (.AUP) files are not currently \n"
 "associated with Audacity. \n"
 "\n"
 "Associate them, so they open on double-click?"
-msgstr ""
-"Файли проектів Audacity (.AUP) зараз\n"
+msgstr "Файли проектів Audacity (.AUP) зараз\n"
 "не пов'язані з Audacity. \n"
 "\n"
 "Пов'язати їх з програмою подвійним клацанням?"
@@ -292,11 +269,9 @@ msgid "Could not find any audio devices.\n"
 msgstr "Неможливо знайти жодного звукового пристрою.\n"
 
 #: AudioIO.cpp:216
-msgid ""
-"You will not be able to play or record audio.\n"
+msgid "You will not be able to play or record audio.\n"
 "\n"
-msgstr ""
-"Ви не зможете відтворювати та записувати звук.\n"
+msgstr "Ви не зможете відтворювати та записувати звук.\n"
 "\n"
 
 #: AudioIO.cpp:219
@@ -307,16 +282,24 @@ msgstr "Помилка: "
 msgid "Error Initializing Audio"
 msgstr "Помилка при ініціалізації звуку"
 
+#: AudioIO.cpp:1236
+msgid "Latency problem"
+msgstr ""
+
+#: AudioIO.cpp:1236
+msgid "Latency setting has caused the recorded audio to be hidden before zero.\n"
+"Audacity has brought it back to start at zero.\n"
+"You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."
+msgstr ""
+
 #: AutoRecovery.cpp:40
 msgid "Automatic Crash Recovery"
 msgstr "Автоматичне відновлення після краху"
 
 #: AutoRecovery.cpp:59
-msgid ""
-"Some projects were not saved properly the last time Audacity was run.\n"
+msgid "Some projects were not saved properly the last time Audacity was run.\n"
 "Fortunately, the following projects can automatically be recovered:"
-msgstr ""
-"Під час останнього використання Audacity деякі проекти не було належним\n"
+msgstr "Під час останнього використання Audacity деякі проекти не було належним\n"
 "чином збережено. На щастя, нижчезазначені проекти можна відновити:"
 
 #: AutoRecovery.cpp:61
@@ -328,11 +311,8 @@ msgid "Name"
 msgstr "Назва"
 
 #: AutoRecovery.cpp:70
-msgid ""
-"Recovering a project will not change any files on disk before you save it."
-msgstr ""
-"Відновлення проекту не змінить жодних файлів на диску до того, як Ви його "
-"збережете."
+msgid "Recovering a project will not change any files on disk before you save it."
+msgstr "Відновлення проекту не змінить жодних файлів на диску до того, як Ви його збережете."
 
 #: AutoRecovery.cpp:74
 msgid "Quit Audacity"
@@ -347,14 +327,8 @@ msgid "Recover projects"
 msgstr "Відновити проекти"
 
 #: AutoRecovery.cpp:113
-msgid ""
-"You have chosen not to recover any projects. You will not be able to recover "
-"those projects later if you change your mind. Do you really want to continue "
-"without recovering?"
-msgstr ""
-"Ви обрали варіант без відновлення проектів. Ви вже не зможете відновити "
-"ці проекти пізніше, якщо раптом передумаєте. Бажаєте продовжити без "
-"відновлення?"
+msgid "You have chosen not to recover any projects. You will not be able to recover those projects later if you change your mind. Do you really want to continue without recovering?"
+msgstr "Ви обрали варіант без відновлення проектів. Ви вже не зможете відновити ці проекти пізніше, якщо раптом передумаєте. Бажаєте продовжити без відновлення?"
 
 #: AutoRecovery.cpp:114
 msgid "Question"
@@ -414,11 +388,9 @@ msgstr "Команда %s ще не діє"
 
 #: BatchCommands.cpp:521
 #, c-format
-msgid ""
-"Could not set parameters of effect %s\n"
+msgid "Could not set parameters of effect %s\n"
 " to %s."
-msgstr ""
-"Неможливо встановити параметри ефекту %s\n"
+msgstr "Неможливо встановити параметри ефекту %s\n"
 " у значення %s."
 
 #: BatchCommands.cpp:575
@@ -428,12 +400,10 @@ msgstr "Вашу пакетну команду %s не було розпізна
 
 #: BatchCommands.cpp:666
 #, c-format
-msgid ""
-"Apply %s with parameter(s)\n"
+msgid "Apply %s with parameter(s)\n"
 "\n"
 "%s"
-msgstr ""
-"Застосувати %s з параметрами\n"
+msgstr "Застосувати %s з параметрами\n"
 "\n"
 "%s"
 
@@ -509,14 +479,8 @@ msgid "Select file(s) for batch processing..."
 msgstr "Оберіть файл(и) для пакетної обробки..."
 
 #: BatchProcessDialog.cpp:210
-msgid ""
-"All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU "
-"files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|"
-"FLAC files (*.flac)|*.flac"
-msgstr ""
-"Всі файли (*.*)|*.*|Файли WAV (*.wav)|*.wav|Файли AIFF (*.aif)|*.aif|Файли "
-"AU (*.au)|*.au|Файли MP3 (*.mp3)|*.mp3|Файли Ogg Vorbis (*.ogg)|*.ogg|Файли "
-"FLAC (*.flac)|*.flac"
+msgid "All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac"
+msgstr "Всі файли (*.*)|*.*|Файли WAV (*.wav)|*.wav|Файли AIFF (*.aif)|*.aif|Файли AU (*.au)|*.au|Файли MP3 (*.mp3)|*.mp3|Файли Ogg Vorbis (*.ogg)|*.ogg|Файли FLAC (*.flac)|*.flac"
 
 #: BatchProcessDialog.cpp:231
 msgid "Applying..."
@@ -616,15 +580,11 @@ msgid "Copying audio data into project..."
 msgstr "Копіювання аудіо-даних до проекту..."
 
 #: Dependencies.cpp:219
-msgid ""
-"Your project currently depends on the presence of other files.\n"
-"Copy audio from the following files into your project to make it self-"
-"contained?\n"
+msgid "Your project currently depends on the presence of other files.\n"
+"Copy audio from the following files into your project to make it self-contained?\n"
 "This will need more disc space but is safer."
-msgstr ""
-"Зараз Ваш проект залежить від наявності інших файлів.\n"
-"Копіювати аудіо з нижчезазначених файлів до проекту для його "
-"самодостатності?\n"
+msgstr "Зараз Ваш проект залежить від наявності інших файлів.\n"
+"Копіювати аудіо з нижчезазначених файлів до проекту для його самодостатності?\n"
 "Це потребуватиме більшого простору на диску, але буде безпечнішим."
 
 #: Dependencies.cpp:266
@@ -651,13 +611,9 @@ msgstr "Копіювати виділену область аудіо до пр�
 msgid "Cancel Save"
 msgstr "Скасувати збереження"
 
-#: Dependencies.cpp:305
-msgid "Skip"
-msgstr "Пропустити"
-
-#: Dependencies.cpp:308 FreqWindow.cpp:209
-msgid "Close"
-msgstr "Закрити"
+#: Dependencies.cpp:306
+msgid "Don't Copy any Audio"
+msgstr ""
 
 #: Dependencies.cpp:311
 msgid "Copy All Audio Into Project (safer)"
@@ -667,42 +623,34 @@ msgstr "Копіювати всі звукові дані до проекту (�
 msgid "Ask me"
 msgstr "Перепитувати"
 
-#: Dependencies.cpp:321 prefs/FileFormatPrefs.cpp:88
-msgid "Always &copy all audio (safest)"
-msgstr "Завжди &копіювати всі звукові дані (найбезпечніше)"
+#: Dependencies.cpp:318
+msgid "Always copy all audio (safest)"
+msgstr ""
 
-#: Dependencies.cpp:322 prefs/FileFormatPrefs.cpp:89
-msgid "&Never copy any audio"
-msgstr "&Ніколи нічого не копіювати"
+#: Dependencies.cpp:319
+msgid "Never copy any audio"
+msgstr ""
 
 #: Dependencies.cpp:324
 msgid "Whenever a project depends on other files:"
 msgstr "Чи залежить проект від інших файлів:"
 
 #: Dependencies.cpp:412
-msgid ""
-"If you proceed, your project will not be saved to disk. Is this what you "
-"want?"
-msgstr ""
-"Якщо продовжити, проект не буде збережено на диск. Ви цього хочете?"
+msgid "If you proceed, your project will not be saved to disk. Is this what you want?"
+msgstr "Якщо продовжити, проект не буде збережено на диск. Ви цього хочете?"
 
 #: Dependencies.cpp:452
-msgid ""
-"Your project is self-contained; it does not depend on any external audio "
-"files."
-msgstr ""
-"Ваш проект є самодостатнім і не залежить від зовнішніх звукових файлів."
+msgid "Your project is self-contained; it does not depend on any external audio files."
+msgstr "Ваш проект є самодостатнім і не залежить від зовнішніх звукових файлів."
 
 #: Dependencies.cpp:453
 msgid "Dependency check"
 msgstr "Перевірка залежності"
 
 #: DirManager.cpp:136
-msgid ""
-"Warning: there is very little free disk space left on this volume.\n"
+msgid "Warning: there is very little free disk space left on this volume.\n"
 "Please select another temporary directory in your preferences."
-msgstr ""
-"Попередження: на даному розділі лишилось замало вільного простору. Виберіть\n"
+msgstr "Попередження: на даному розділі лишилось замало вільного простору. Виберіть\n"
 "іншу теку для тимчасових файлів у діалозі налаштовування програми."
 
 #: DirManager.cpp:221 DirManager.cpp:251 DirManager.cpp:332
@@ -723,14 +671,10 @@ msgstr "Очищення тек кешування"
 
 #: DirManager.cpp:493
 #, c-format
-msgid ""
-"Audacity found an orphaned blockfile %s! \n"
-"Please consider saving and reloading the project to perform a complete "
-"project check.\n"
-msgstr ""
-"Audacity знайшов незв'язаний блок-файл %s! \n"
-"Збережіть та перезавантажте проект, щоб здійснити повну "
-"перевірку \n"
+msgid "Audacity found an orphaned blockfile %s! \n"
+"Please consider saving and reloading the project to perform a complete project check.\n"
+msgstr "Audacity знайшов незв'язаний блок-файл %s! \n"
+"Збережіть та перезавантажте проект, щоб здійснити повну перевірку \n"
 "проекту.\n"
 
 #. i18n-hint: This is the pattern for filenames that are created
@@ -790,23 +734,18 @@ msgid "Missing data file: (%s.au)"
 msgstr "Відсутній файл даних: (%s.au)"
 
 #: DirManager.cpp:1207
-msgid ""
-"Project check found inconsistencies inspecting the loaded project data;\n"
-"click 'Details' for a complete list of errors, or 'OK' to proceed to more "
-"options."
-msgstr ""
-"Перевірка проекту виявила неточності під час вивчення завантажених даних\n"
+msgid "Project check found inconsistencies inspecting the loaded project data;\n"
+"click 'Details' for a complete list of errors, or 'OK' to proceed to more options."
+msgstr "Перевірка проекту виявила неточності під час вивчення завантажених даних\n"
 "проекту; натисніть кнопку 'Докладніше', щоб побачити повний список помилок,\n"
 "або 'Гаразд', щоб ознайомитися зі шляхами їх виправлення."
 
 #: DirManager.cpp:1219
 #, c-format
-msgid ""
-"Project check found %d orphaned blockfile[s]. These files are\n"
+msgid "Project check found %d orphaned blockfile[s]. These files are\n"
 "unused and probably left over from a crash or some other bug.\n"
 "They should be deleted to avoid disk contention."
-msgstr ""
-"Перевірка проекту виявила %d нез'єднані блок-файли. Ці файли\n"
+msgstr "Перевірка проекту виявила %d нез'єднані блок-файли. Ці файли\n"
 "не використовуються і ймовірно залишилися після краху або іншої помилки.\n"
 "Їх слід видалити, щоб уникнути засмічення диска."
 
@@ -830,15 +769,13 @@ msgstr "Попередження"
 
 #: DirManager.cpp:1254
 #, c-format
-msgid ""
-"Project check detected %d input file[s] being used in place\n"
+msgid "Project check detected %d input file[s] being used in place\n"
 "('alias files') are now missing.  There is no way for Audacity\n"
 "to recover these files automatically; you may choose to\n"
 "permanently fill in silence for the missing files, temporarily\n"
 "fill in silence for this session only, or close the project now\n"
 "and try to restore the missing files by hand."
-msgstr ""
-"Перевірка проекту виявила %d вхідні файли, що використовуються\n"
+msgstr "Перевірка проекту виявила %d вхідні файли, що використовуються\n"
 "('файли підстановок') і зараз відсутні.  Audacity не зможе\n"
 "відновити файли автоматично; Ви можете або назавжди\n"
 "заповнити відсутні файли тишею, тимчасово заповнити\n"
@@ -859,12 +796,10 @@ msgstr "Закрити проект негайно без подальших з�
 
 #: DirManager.cpp:1300
 #, c-format
-msgid ""
-"Project check detected %d missing summary file[s] (.auf).\n"
+msgid "Project check detected %d missing summary file[s] (.auf).\n"
 "Audacity can fully regenerate these summary files from the\n"
 "original audio data in the project."
-msgstr ""
-"Перевірка проекту виявила %d відсутні файли резюме (.auf).\n"
+msgstr "Перевірка проекту виявила %d відсутні файли резюме (.auf).\n"
 "Audacity може повністю перегенерувати ті файли резюме з \n"
 "початкових аудіо даних у проекті."
 
@@ -878,16 +813,14 @@ msgstr "Заповнити тишею відсутні дані відображ
 
 #: DirManager.cpp:1342
 #, c-format
-msgid ""
-"Project check detected %d missing audio data blockfile[s] (.au), \n"
+msgid "Project check detected %d missing audio data blockfile[s] (.au), \n"
 "probably due to a bug, system crash or accidental deletion.\n"
 "There is no way for Audacity to recover this lost data\n"
 "automatically; you may choose to permanently fill in silence\n"
 "for the missing data, temporarily fill in silence for this\n"
 "session only, or close the project now and try to restore the\n"
 "missing data by hand."
-msgstr ""
-"Перевірка проекту виявила %d відсутні блок-файлів аудіо даних (.au), \n"
+msgstr "Перевірка проекту виявила %d відсутні блок-файлів аудіо даних (.au), \n"
 "можливо через помилку, крах системи або випадкове видалення.\n"
 "Audacity не може відновити втрачені дані автоматично; Ви можете\n"
 "обрати заповнення тишею назавжди відсутні дані,\n"
@@ -1016,10 +949,8 @@ msgstr "Курсор: %d Гц (%s) = %d дБ    Пік: %d Гц (%s) = %.1f дБ
 
 #: FreqWindow.cpp:780
 #, c-format
-msgid ""
-"Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s) = %.3f"
-msgstr ""
-"Курсор: %.4f сек (%d Гц) (%s) = %f,    Пік: %.4f сек (%d Гц) (%s) = %.3f"
+msgid "Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s) = %.3f"
+msgstr "Курсор: %.4f сек (%d Гц) (%s) = %f,    Пік: %.4f сек (%d Гц) (%s) = %.3f"
 
 #: FreqWindow.cpp:1051
 msgid "spectrum.txt"
@@ -1041,6 +972,410 @@ msgstr "Частота (Гц)\tРівень (дБ)"
 #: FreqWindow.cpp:1080
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
 msgstr "Відставання (сек)\tЧастота (Гц)\tРівень"
+
+#: HelpText.cpp:53
+msgid " page."
+msgstr ""
+
+#: HelpText.cpp:53
+msgid "Back to "
+msgstr ""
+
+#: HelpText.cpp:53
+msgid "Welcome"
+msgstr ""
+
+#: HelpText.cpp:60
+msgid "Welcome!"
+msgstr ""
+
+#: HelpText.cpp:65
+msgid "Playing Audio"
+msgstr ""
+
+#: HelpText.cpp:69
+msgid "Recording Audio"
+msgstr ""
+
+#: HelpText.cpp:73
+msgid "Greyed Out Items"
+msgstr ""
+
+#: export/ExportCL.cpp:188 export/ExportOGG.cpp:121 export/ExportPCM.cpp:114
+msgid "Export"
+msgstr "Експорт"
+
+#: HelpText.cpp:81
+msgid "Supported Formats"
+msgstr ""
+
+#: HelpText.cpp:85
+msgid "Burn to CD"
+msgstr ""
+
+#: HelpText.cpp:89
+msgid "No Local Help"
+msgstr ""
+
+#: HelpText.cpp:101
+msgid "Welcome to Audacity "
+msgstr ""
+
+#: HelpText.cpp:102
+msgid "Let's get started!"
+msgstr ""
+
+#: HelpText.cpp:104
+msgid "You can click on the links below to learn how to:"
+msgstr ""
+
+#: HelpText.cpp:106
+msgid " an existing sound file."
+msgstr ""
+
+#: HelpText.cpp:106
+msgid "play back"
+msgstr ""
+
+#: HelpText.cpp:108
+msgid " a new sound file."
+msgstr ""
+
+#: HelpText.cpp:108 HelpText.cpp:110
+msgid "How to "
+msgstr ""
+
+#: HelpText.cpp:108
+msgid "record"
+msgstr ""
+
+#: HelpText.cpp:110
+msgid " sound and "
+msgstr ""
+
+#: HelpText.cpp:110
+msgid "edit"
+msgstr ""
+
+#: HelpText.cpp:111
+msgid " to a sound file like MP3."
+msgstr ""
+
+#: HelpText.cpp:111
+msgid "export"
+msgstr ""
+
+#: HelpText.cpp:113
+msgid "Those links will help if you find a problem such as a "
+msgstr ""
+
+#: HelpText.cpp:114
+msgid " or that Audacity "
+msgstr ""
+
+#: HelpText.cpp:114
+msgid "menu option greyed out"
+msgstr ""
+
+#: HelpText.cpp:115
+msgid " or that you "
+msgstr ""
+
+#: HelpText.cpp:115
+msgid "isn't recording properly"
+msgstr ""
+
+#: HelpText.cpp:116
+msgid "burn to a CD"
+msgstr ""
+
+#: HelpText.cpp:116
+msgid "can't "
+msgstr ""
+
+#: HelpText.cpp:117
+msgid ". You can always get back to these instructions by clicking the 'Help' menu, then 'Show Welcome Message.' "
+msgstr ""
+
+#: HelpText.cpp:119
+msgid "Welcome again to Audacity."
+msgstr ""
+
+#: HelpText.cpp:127
+msgid "You can either drag existing files into Audacity, or use the File > Import > Audio command."
+msgstr ""
+
+#: HelpText.cpp:128
+msgid "File > Open does the same, but opens a new Audacity window for any file after the first."
+msgstr ""
+
+#: HelpText.cpp:130
+msgid "These are the main formats Audacity will import for you: <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis, WAV</b>."
+msgstr ""
+
+#: HelpText.cpp:131
+msgid "If your file is in some other format see (format help). If you want to import an audio CD, see "
+msgstr ""
+
+#: HelpText.cpp:133
+msgid "To start playing your audio, press the green Play button. "
+msgstr ""
+
+#: HelpText.cpp:134
+msgid "To stop, press the yellow Stop button. "
+msgstr ""
+
+#: HelpText.cpp:135
+msgid "You can also use spacebar to either play or stop. "
+msgstr ""
+
+#: HelpText.cpp:136
+msgid "When you start playing again after stopping, playback resumes from its previous starting point."
+msgstr ""
+
+#: HelpText.cpp:137
+msgid "To change the starting point, use the |<< and |>> buttons to skip to the start or end respectively, or click anywhere in the track to restart from that point."
+msgstr ""
+
+#: HelpText.cpp:149
+msgid "<b>To start recording, press the red Record button</b>. Before doing so however, there are three crucial settings you must check:"
+msgstr ""
+
+#: HelpText.cpp:152
+msgid "(1) The <b>Recording Device</b>, set in the Audio I/O tab of Preferences. "
+msgstr ""
+
+#: HelpText.cpp:153
+msgid "By default Audacity will use the current system device, which is usually your inbuilt sound device, so you may not need to set this. "
+msgstr ""
+
+#: HelpText.cpp:154
+msgid "But if you're using an external USB or Firewire device such as a USB turntable, make sure this device is selected as your recording device. "
+msgstr ""
+
+#. i18n-hint: 2nd item in the list
+#: HelpText.cpp:157
+msgid "(2) The <b>input source</b> for your device, such as microphone or line-in. "
+msgstr ""
+
+#: HelpText.cpp:159
+msgid "<b>On Windows</b>, you normally choose your input in the dropdown selector on the right of the <b>Mixer Toolbar<b> <i>note: on Vista, you must do so at Recording Device on the Audio I/O Preferences tab.</i>"
+msgstr ""
+
+#: HelpText.cpp:161
+msgid "<b>On a Mac</b>, you normally choose input sources outside Audacity, in Apple Audio-MIDI Setup."
+msgstr ""
+
+#: HelpText.cpp:163
+msgid "<i>Note: many USB or Firewire devices don't have a choice of inputs, so you can ignore this step - see the documentation for your device. "
+msgstr ""
+
+#. i18n-hint: Third and final item in list
+#: HelpText.cpp:166
+msgid "(3) <b>Input volume</b>. Before recording for real, make a test recording to set the input level, so that it's neither too soft or too loud."
+msgstr ""
+
+#. i18n-hint: introduction to a set of steps to do something we have already
+#. * talked about
+#: HelpText.cpp:169
+msgid "To do this: "
+msgstr ""
+
+#: HelpText.cpp:171
+msgid "Turn on <b>monitoring</b>, by either double-clicking over the right-hand of the two VU Meters, or right-clicking over it and choosing \"Start Monitoring\". "
+msgstr ""
+
+#: HelpText.cpp:172
+msgid "If you do not see the meters, click View > Toolbars and check \"Meter Toolbar\". "
+msgstr ""
+
+#: HelpText.cpp:174
+msgid "Press Record, and adjust the input volume slider on the Mixer Toolbar (by the microphone symbol), so that the red bars in the meter come close to (but do not touch) the right edge of the scale. "
+msgstr ""
+
+#: HelpText.cpp:175
+msgid "If you can't hear the sound, go to the Audio I/O tab of Preferences and check \"Software Playthrough\". "
+msgstr ""
+
+#: HelpText.cpp:177
+msgid "There is more help if you're stuck: our Recording FAQs, our Tutorial  <b>Your First Recording </b> in the Manual, and our Wiki "
+msgstr ""
+
+#: HelpText.cpp:178
+msgid " section. "
+msgstr ""
+
+#: HelpText.cpp:178
+msgid ", especially the "
+msgstr ""
+
+#: HelpText.cpp:187
+msgid "Editing: Audacity is a powerful editor, so you'll want to see what it can do with your imported file or recording.  "
+msgstr ""
+
+#: HelpText.cpp:188
+msgid "The main commands you will use are under the Edit menu (such as cut, copy and paste) and under the Effect menu (you can do things like boost the bass, change pitch or tempo, or remove noise). "
+msgstr ""
+
+#: HelpText.cpp:190
+msgid "Audacity applies edits to areas of the audio track. You can select a particular area of audio by clicking in the track and dragging the shaded area with your mouse. "
+msgstr ""
+
+#: HelpText.cpp:191
+msgid "If you don't select any audio, Audacity will select all that you have on the screen."
+msgstr ""
+
+#: HelpText.cpp:193
+msgid "Two important points when editing:"
+msgstr ""
+
+#: HelpText.cpp:195
+msgid "(1) If you're still playing or recording, use the yellow Stop button, because you can't edit or export a moving track! "
+msgstr ""
+
+#: HelpText.cpp:197
+msgid "(2) On occasion, some of the menus or buttons are greyed out or say \"Disabled\" -  this is normal. "
+msgstr ""
+
+#: HelpText.cpp:198
+msgid "For example, because you can't edit audio while playing or recording, we grey out or disable commands until you press Stop. "
+msgstr ""
+
+#: HelpText.cpp:199
+msgid "Commands can sometimes be unavailable for other reasons - for example you can't run effects until you have audio on the screen, and you obviously can't paste audio until you've cut or copied it to Audacity's clipboard. "
+msgstr ""
+
+#: HelpText.cpp:208
+msgid "Exporting and Saving. have different purposes."
+msgstr ""
+
+#: HelpText.cpp:209
+msgid "You \" save\" an Audacity project file when you want to return to your work in Audacity later."
+msgstr ""
+
+#: HelpText.cpp:210
+msgid "This means you don't then have to re-import or re-record audio, or redo editing you have done so far."
+msgstr ""
+
+#: HelpText.cpp:211
+msgid "When you want to listen to your work in other computer programs or burn it to CD, you \"export\" it as an audio file such as a WAV, AIFF or MP3. "
+msgstr ""
+
+#: HelpText.cpp:213
+msgid "To save an Audacity project, use <b>File > Save Project</b>. This will save an <b>.aup</b> Project file, plus a <b>_data</b> folder containing the actual audio. "
+msgstr ""
+
+#: HelpText.cpp:214
+msgid "Make sure you don't rename or move either of these, because Audacity needs to refer to both."
+msgstr ""
+
+#: HelpText.cpp:215
+msgid "Only use File > Save Project As. when you either need to save an empty Project, or if you want to save an existing Project to a <i> new</i> name. "
+msgstr ""
+
+#: HelpText.cpp:216
+msgid "When you want to re-open a saved Project, simply click File > Open and open the .aup file. "
+msgstr ""
+
+#: HelpText.cpp:218
+msgid "When you want to export your work to an audio file, use <b>File > Export</b> and choose your desired format in the \"Save as type\" dropdown."
+msgstr ""
+
+#: HelpText.cpp:219
+msgid "Click the Options button for advanced choices, such as the bit rate to use for MP3 export."
+msgstr ""
+
+#: HelpText.cpp:220
+msgid "There are two other Export commands under the File menu."
+msgstr ""
+
+#: HelpText.cpp:221
+msgid "\"Export Selection\" exports only a selected area of audio."
+msgstr ""
+
+#: HelpText.cpp:222
+msgid "\"Export Multiple\" exports multiple files, for example where you have more than one track on screen and want to export each as a separate file. "
+msgstr ""
+
+#: HelpText.cpp:224
+msgid "Before you can export as <b>MP3</b>, you need to add the LAME MP3 encoder to your computer."
+msgstr ""
+
+#: HelpText.cpp:225
+msgid "For help with LAME, see "
+msgstr ""
+
+#: HelpText.cpp:227
+msgid "There is also some help on how to "
+msgstr ""
+
+#: HelpText.cpp:227
+msgid "burn to a CD."
+msgstr ""
+
+#: HelpText.cpp:239
+msgid "Can Audacity import file formats like WMA, AAC, RealAudio  etc.?"
+msgstr ""
+
+#: HelpText.cpp:241
+msgid "Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)</b>, or most other proprietary formats, because of licensing and patent restrictions."
+msgstr ""
+
+#: HelpText.cpp:242
+msgid "Audacity also cannot import any kind of Digital Rights Management (DRM) protected file, including most purchased online such as from iTunes or Napster."
+msgstr ""
+
+#: HelpText.cpp:243
+msgid "If you are on a Mac, you can import <b>AAC</b>  encoded files (such as <b>M4A</b>) as long as they are not DRM protected, but you cannot export to these formats."
+msgstr ""
+
+#: HelpText.cpp:245
+msgid "Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>Musepack</b>."
+msgstr ""
+
+#: HelpText.cpp:246
+msgid "We hope to support these formats in future versions of Audacity."
+msgstr ""
+
+#: HelpText.cpp:248
+msgid "If you cannot import your file into Audacity, you can as a workround convert it to WAV or AIFF."
+msgstr ""
+
+#: HelpText.cpp:251
+msgid "As long as it's not a DRM-protected file, you could do this with iTunes or with "
+msgstr ""
+
+#: HelpText.cpp:253
+msgid "If it's a DRM-protected file, you can burn it to an audio CD in the application that is licensed to play it, then extract (rip) the CD track to WAV or AIFF."
+msgstr ""
+
+#: HelpText.cpp:254
+msgid "You can use iTunes to extract to WAV or AIFF, plus Windows Media Player 11 or <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> on Windows."
+msgstr ""
+
+#: HelpText.cpp:255
+msgid "Or you can play the file on your computer and record it - see <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">. "
+msgstr ""
+
+#: HelpText.cpp:263
+msgid "If you want to burn your work to an audio CD, you must first "
+msgstr ""
+
+#: HelpText.cpp:264
+msgid "export as WAV or AIFF"
+msgstr ""
+
+#: HelpText.cpp:265
+msgid " and then burn that file to CD - for more help, see "
+msgstr ""
+
+#: HelpText.cpp:279
+msgid "<p>You don't appear to have Audacity help files on your machine. "
+msgstr ""
+
+#: HelpText.cpp:280
+msgid "You can download the help files and then access them from Audacity or you can click <a href=\"*URL*\">here</a> to read the help online."
+msgstr ""
 
 #: HistoryWindow.cpp:53
 msgid "Undo History"
@@ -1114,7 +1449,8 @@ msgid "Label"
 msgstr "Позначка"
 
 #: LabelDialog.cpp:54
-msgid "&Start Time"
+#, fuzzy
+msgid "Start Time"
 msgstr "Час &початку"
 
 #: LabelDialog.cpp:55
@@ -1146,13 +1482,11 @@ msgid "New..."
 msgstr "Створити..."
 
 #: LabelDialog.cpp:349
-msgid ""
-"You have left blank label names.  These will be\n"
+msgid "You have left blank label names.  These will be\n"
 "skipped when repopulating the Label Tracks.\n"
 "\n"
 "Would you like to go back and provide names?"
-msgstr ""
-"Ви залишили порожніми назви позначок.  Їх буде\n"
+msgstr "Ви залишили порожніми назви позначок.  Їх буде\n"
 "пропущено під час повторного заповнення доріжок для позначок.\n"
 "\n"
 "Бажаєте повернутися та визначити назви?"
@@ -1206,37 +1540,16 @@ msgstr "Перший запуск Audacity"
 msgid "Choose Language for Audacity to use:"
 msgstr "Виберіть мову інтерфейсу для Audacity:"
 
-#: LangChoice.cpp:103 effects/AvcCompressor.cpp:738
-#: effects/TruncSilence.cpp:281 effects/VST/VSTEffect.cpp:453
-#: effects/audiounits/AudioUnitEffect.cpp:877 effects/nyquist/Nyquist.cpp:993
-#: effects/nyquist/Nyquist.cpp:1059 widgets/Warning.cpp:67
-msgid "OK"
-msgstr "Гаразд"
-
 #: Legacy.cpp:356
 #, c-format
-msgid ""
-"Converted a 1.0 project file to the new format.\n"
+msgid "Converted a 1.0 project file to the new format.\n"
 "The old file has been saved as '%s'"
-msgstr ""
-"Проект формату 1.0 перетворено у проект нового формату.\n"
+msgstr "Проект формату 1.0 перетворено у проект нового формату.\n"
 "Старий файл збережено з назвою \"%s\""
 
 #: Legacy.cpp:357
 msgid "Opening Audacity Project"
 msgstr "Відкривається проект Audacity"
-
-#. i18n-hint: here, %s is the name of a toolbar, e.g. "Control Toolbar"
-#: Menus.cpp:170
-#, c-format
-msgid "Show %s"
-msgstr "Показати %s"
-
-#. i18n-hint: here, %s is the name of a toolbar, e.g. "Control Toolbar"
-#: Menus.cpp:176
-#, c-format
-msgid "Hide %s"
-msgstr "Сховати %s"
 
 #: Menus.cpp:199
 msgid "&File"
@@ -1266,9 +1579,9 @@ msgstr "Зберегти проект &як..."
 msgid "Chec&k Dependencies..."
 msgstr "Перевір&ити залежності..."
 
-#: Menus.cpp:228
-msgid "Open Me&tadata Editor"
-msgstr "Відкрити вікно редактора ме&таданих"
+#: Menus.cpp:185
+msgid "Open Me&tadata Editor..."
+msgstr ""
 
 #: Menus.cpp:237
 msgid "&Audio...\tCtrl+Shift+I"
@@ -1499,20 +1812,6 @@ msgstr "Запам'ятати виділене"
 msgid "Selection Restore"
 msgstr "Відновлення виділення"
 
-#: Menus.cpp:504
-msgid "S&nap-To..."
-msgstr "Прив'&язка до..."
-
-#. i18n-hint: Set snap-to mode on or off
-#: Menus.cpp:507
-msgid "On"
-msgstr "Увімкнути"
-
-#. i18n-hint: Set snap-to mode on or off
-#: Menus.cpp:509 effects/ClickRemoval.cpp:376 effects/ClickRemoval.cpp:405
-msgid "Off"
-msgstr "Вимкнути"
-
 #: Menus.cpp:515
 msgid "Play &Region..."
 msgstr "Відтворити &частину..."
@@ -1581,13 +1880,13 @@ msgstr "&Згорнути всі доріжки\tCtrl+Shift+C"
 msgid "E&xpand All Tracks\tCtrl+Shift+X"
 msgstr "Роз&горнути всі доріжки\tCtrl+Shift+X"
 
+#: Menus.cpp:502
+msgid "Show Clipping"
+msgstr ""
+
 #: Menus.cpp:568
 msgid "&History..."
 msgstr "&Історія..."
-
-#: Menus.cpp:570
-msgid "&Experimental Display..."
-msgstr "&Експериментальне відображення..."
 
 #: Menus.cpp:573
 msgid "&Toolbars..."
@@ -1625,6 +1924,10 @@ msgstr "Панель інструментів"
 msgid "Transcription Toolbar"
 msgstr "Панель перезапису"
 
+#: Menus.cpp:527
+msgid "Reset Toolbars"
+msgstr ""
+
 #: Menus.cpp:591
 msgid "&Tracks"
 msgstr "&Доріжки"
@@ -1645,13 +1948,17 @@ msgstr "&Стерео доріжку"
 msgid "&Time Track"
 msgstr "&Доріжку відліку часу"
 
-#: Menus.cpp:605
-msgid "&Timer Record"
-msgstr "&Таймер запису"
+#: Menus.cpp:551
+msgid "&Timer Record..."
+msgstr ""
 
 #: Menus.cpp:614 Menus.cpp:3698 Mix.cpp:119
 msgid "&Mix and Render"
 msgstr "&Мікшувати і перетворити"
+
+#: Menus.cpp:564
+msgid "Mix and Render to New Track\tCtrl+Shift+M"
+msgstr ""
 
 #: Menus.cpp:618
 msgid "&Resample..."
@@ -1737,8 +2044,9 @@ msgstr "Повторити останній ефект\tCtrl+R"
 msgid "&Analyze"
 msgstr "&Аналіз"
 
-#: Menus.cpp:742
-msgid "&Plot Spectrum..."
+#: Menus.cpp:692
+#, fuzzy
+msgid "Plot Spectrum..."
 msgstr "&Намалювати спектр..."
 
 #: Menus.cpp:775 Menus.cpp:778
@@ -1749,22 +2057,33 @@ msgstr "&Довідка"
 msgid "&About Audacity CleanSpeech..."
 msgstr "&Про програму Audacity CleanSpeech..."
 
+#: Menus.cpp:735
+msgid "&Show Welcome Message..."
+msgstr ""
+
+#: Menus.cpp:736
+msgid "&Index..."
+msgstr ""
+
+#: Menus.cpp:744
+msgid "&Screenshot Tools..."
+msgstr ""
+
 #: Menus.cpp:791
 msgid "&Run Benchmark..."
 msgstr "&Тестування швидкодії..."
 
-#: Menus.cpp:800
-msgid ""
-"Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"
+#: Menus.cpp:749
+msgid "&Audio Device Info..."
 msgstr ""
-"Циклічний перехід між доком, переглядом доріжки та панеллю вибору\tCtrl+Shift"
-"+F6"
+
+#: Menus.cpp:800
+msgid "Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"
+msgstr "Циклічний перехід між доком, переглядом доріжки та панеллю вибору\tCtrl+Shift+F6"
 
 #: Menus.cpp:801
 msgid "Cycle forward through Dock, Track View, and Selection Bar\tCtrl+F6"
-msgstr ""
-"Циклічний перехід вперед між доком, переглядом доріжки та панеллю вибору"
-"\tCtrl+F6"
+msgstr "Циклічний перехід вперед між доком, переглядом доріжки та панеллю вибору\tCtrl+F6"
 
 #: Menus.cpp:804
 msgid "Selection Tool\tF1"
@@ -1813,6 +2132,10 @@ msgstr "Призупинити\tP"
 #: Menus.cpp:817
 msgid "Record\tR"
 msgstr "Записати\tR"
+
+#: Menus.cpp:777
+msgid "Play/Stop and Select\tShift+Return"
+msgstr ""
 
 #: Menus.cpp:819
 msgid "Stop and Select\tShift+A"
@@ -1868,18 +2191,15 @@ msgstr "Під час програвання переходити на коро�
 
 #: Menus.cpp:845
 msgid "Seek right short period during playback\tRight"
-msgstr ""
-"Під час програвання переходити на короткий відрізок праворуч\tПраворуч"
+msgstr "Під час програвання переходити на короткий відрізок праворуч\tПраворуч"
 
 #: Menus.cpp:846
 msgid "Seek left long period during playback\tShift+Left"
-msgstr ""
-"Під час програвання переходити на довгий відрізок ліворуч\tShift+Ліовруч"
+msgstr "Під час програвання переходити на довгий відрізок ліворуч\tShift+Ліовруч"
 
 #: Menus.cpp:847
 msgid "Seek right long period during playback\tShift+Right"
-msgstr ""
-"Під час програвання переходити на довгий відрізок праворуч \tShift+Праворуч"
+msgstr "Під час програвання переходити на довгий відрізок праворуч \tShift+Праворуч"
 
 #: Menus.cpp:851
 msgid "Move Focus to Previous Track\tUp"
@@ -1917,6 +2237,22 @@ msgstr "Курсор ліворуч\tЛіворуч"
 msgid "Cursor Right\tRight"
 msgstr "Курсор праворуч\tПраворуч"
 
+#: Menus.cpp:820
+msgid "Cursor Short Jump Left\t,"
+msgstr ""
+
+#: Menus.cpp:821
+msgid "Cursor Short Jump Right\t."
+msgstr ""
+
+#: Menus.cpp:822
+msgid "Cursor Long Jump Left\tShift+,"
+msgstr ""
+
+#: Menus.cpp:823
+msgid "Cursor Long Jump Right\tShift+."
+msgstr ""
+
 #: Menus.cpp:861
 msgid "Selection Extend Left\tShift+Left"
 msgstr "Розтягнути виділення ліворуч\tShift+Стрілка ліворуч"
@@ -1924,6 +2260,14 @@ msgstr "Розтягнути виділення ліворуч\tShift+Стріл
 #: Menus.cpp:862
 msgid "Selection Extend Right\tShift+Right"
 msgstr "Розтягнути виділення праворуч\tShift+Стрілка праворуч"
+
+#: Menus.cpp:828
+msgid "Set (or Extend) Left Selection"
+msgstr ""
+
+#: Menus.cpp:829
+msgid "Set (or Extend) Right Selection"
+msgstr ""
 
 #: Menus.cpp:864
 msgid "Selection Contract Left\tCtrl+Shift+Right"
@@ -1972,6 +2316,14 @@ msgstr "Перемикання соло/несоло для доріжки\tShif
 #: Menus.cpp:876
 msgid "Close focused track\tShift+C"
 msgstr "Закрити активну доріжку\tShift+C"
+
+#: Menus.cpp:845
+msgid "Snap To On"
+msgstr ""
+
+#: Menus.cpp:846
+msgid "Snap To Off"
+msgstr ""
 
 #. i18n-hint: This is the name of the menu item on Mac OS X only
 #: Menus.cpp:890
@@ -2221,21 +2573,12 @@ msgstr "Розділити за позначками"
 
 #: Menus.cpp:3390
 msgid "To plot the spectrum, all selected tracks must be the same sample rate."
-msgstr ""
-"Для побудови спектрограми, усі вибрані доріжки повинні мати однакову частоту."
+msgstr "Для побудови спектрограми, усі вибрані доріжки повинні мати однакову частоту."
 
 #: Menus.cpp:3416
 #, c-format
-msgid ""
-"Too much audio was selected.  Only the first %.1f seconds of audio will be "
-"analyzed."
-msgstr ""
-"Виділено надто велику звукову ділянку. Будуть проаналізовані лише перші %.1f "
-"секунд звуку."
-
-#: Menus.cpp:3489 Project.cpp:1626
-msgid "Select one or more audio files..."
-msgstr "Виберіть один чи більше звукових файлів..."
+msgid "Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."
+msgstr "Виділено надто велику звукову ділянку. Будуть проаналізовані лише перші %.1f секунд звуку."
 
 #: Menus.cpp:3551
 #, c-format
@@ -2251,11 +2594,8 @@ msgid "Select a MIDI file..."
 msgstr "Вибрати MIDI-файл..."
 
 #: Menus.cpp:3566
-msgid ""
-"All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
-msgstr ""
-"Усі файли (*.*)|*.*|Файли MIDI (*.mid)|*.mid|Файли формату Allegro (*.gro)|*."
-"gro"
+msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
+msgstr "Усі файли (*.*)|*.*|Файли MIDI (*.mid)|*.mid|Файли формату Allegro (*.gro)|*.gro"
 
 #: Menus.cpp:3582
 #, c-format
@@ -2279,17 +2619,17 @@ msgstr "Усі файли (*)|*"
 msgid "Import"
 msgstr "Імпорт"
 
-#: Menus.cpp:3635
-msgid "Edit ID3 Tags (for MP3 exporting)"
-msgstr "Правка ID3 тегів (для експортування MP3)"
+#: Menus.cpp:3630
+msgid "Edit the metadata tags"
+msgstr ""
 
-#: Menus.cpp:3636
-msgid "Edit ID3 Tags"
-msgstr "Правка ID3 тегів"
+#: Menus.cpp:3631
+msgid "Edit Metadata"
+msgstr ""
 
-#: Menus.cpp:3636
-msgid "Edit ID3 tags"
-msgstr "Правка ID3-тегів"
+#: Menus.cpp:3631
+msgid "Edit Metadata tags"
+msgstr ""
 
 #: Menus.cpp:3687
 #, c-format
@@ -2363,11 +2703,8 @@ msgid "Created new label track"
 msgstr "Створено нову доріжку для позначок"
 
 #: Menus.cpp:3946
-msgid ""
-"The version of Audacity you are using does not support multiple time tracks."
-msgstr ""
-"Запущена версія Audacity не може використовувати декілька доріжок у одному "
-"проекті."
+msgid "The version of Audacity you are using does not support multiple time tracks."
+msgstr "Запущена версія Audacity не може використовувати декілька доріжок у одному проекті."
 
 #: Menus.cpp:3957
 msgid "Created new time track"
@@ -2479,17 +2816,31 @@ msgstr "Записано звук"
 msgid "Save changes before closing?"
 msgstr "Зберегти зміни перед закриттям?"
 
+#: Project.cpp:1493
+msgid "\n"
+"\n"
+"Saved project will be empty!!\n"
+"\n"
+"To save the tracks that were previously\n"
+"open, click Cancel, Edit > Undo until all your\n"
+"tracks are open, then File > Save Project."
+msgstr ""
+
 #: Project.cpp:1457
 msgid "Save changes?"
 msgstr "Зберегти зміни?"
 
-#: Project.cpp:1629
-msgid ""
-"Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*."
-"mp3)|*.mp3"
+#: Project.cpp:1684
+msgid "All files|*.*|All supported files|"
 msgstr ""
-"Музичні файли (*.wav;*.mp3)|*.wav;*.mp3|Файли WAV (*.wav)|*.wav|Файли MP3 (*."
-"mp3)|*.mp3"
+
+#: Menus.cpp:3489 Project.cpp:1626
+msgid "Select one or more audio files..."
+msgstr "Виберіть один чи більше звукових файлів..."
+
+#: Project.cpp:1736
+msgid "Audacity projects|*.aup|"
+msgstr ""
 
 #: Project.cpp:1704 Project.cpp:1712
 msgid "Error opening file"
@@ -2497,11 +2848,9 @@ msgstr "Помилка при відкриванні файлу"
 
 #: Project.cpp:1718
 #, c-format
-msgid ""
-"File may be invalid or corrupted: \n"
+msgid "File may be invalid or corrupted: \n"
 "%s"
-msgstr ""
-"Можливо файл є некоректним або пошкодженим: \n"
+msgstr "Можливо файл є некоректним або пошкодженим: \n"
 "%s"
 
 #: Project.cpp:1719
@@ -2509,12 +2858,8 @@ msgid "Error opening file or project"
 msgstr "Помилка під час відкриття файла або проекту"
 
 #: Project.cpp:1736
-msgid ""
-"Audacity was unable to convert an Audacity 1.0 project to the new project "
-"format."
-msgstr ""
-"Audacity не вдається перетворити проект формату Audacity 1.0 у проект нового "
-"формату."
+msgid "Audacity was unable to convert an Audacity 1.0 project to the new project format."
+msgstr "Audacity не вдається перетворити проект формату Audacity 1.0 у проект нового формату."
 
 #: Project.cpp:1839
 msgid "Could not remove old auto save file"
@@ -2543,12 +2888,10 @@ msgstr "Не вдається знайти теку з даними проект
 
 #: Project.cpp:2019
 #, c-format
-msgid ""
-"This file was saved using Audacity %s.\n"
+msgid "This file was saved using Audacity %s.\n"
 "You are using Audacity %s - you need to upgrade to\n"
 "a newer version to open this file."
-msgstr ""
-"Файл збережений програмою Audacity версії %s.\n"
+msgstr "Файл збережений програмою Audacity версії %s.\n"
 "Ви використовуєте Audacity версії %s. Щоб відкрити цей файл\n"
 "слід оновити  версію програми."
 
@@ -2556,22 +2899,30 @@ msgstr ""
 msgid "Can't open project file"
 msgstr "Не вдається відкрити файл проекту"
 
-#: Project.cpp:2031
+#: Project.cpp:2131
 #, c-format
-msgid ""
-"This file was saved by Audacity %s and the format\n"
+msgid "This file was saved by Audacity %s, a much\n"
+"older version of Audacity.  The format has changed.\n"
+"Audacity will probably destroy the file in trying\n"
+"to open it.  You must back up your project\n"
+"first, to be safe.\n"
+"\n"
+"Would you like to try to open this file\n"
+"right now anyway?"
+msgstr ""
+
+#: Project.cpp:2138
+#, c-format
+msgid "This file was saved by Audacity %s and the format\n"
 "has changed.  This version of Audacity can try to\n"
 "open it, but there may be problems.  You should back up\n"
 "your project first, to be safe.\n"
 "\n"
-"Would you like to open this file right now anyway?"
+"After you save the file with this version of Audacity,\n"
+"you will not be able to open the file in the older\n"
+"version anymore.  Would you like to open\n"
+"this file right now anyway?"
 msgstr ""
-"Цей файл було збережено Audacity %s, за цей час формат\n"
-"змінився.  Ця версія Audacity може спробувати відкрити,\n"
-"але можуть бути проблеми.  Спочатку слід зберегти\n"
-"копію проекту, задля безпеки.\n"
-"\n"
-"Відкрити цей файл попри все?"
 
 #: Project.cpp:2035
 msgid "Opening old project file"
@@ -2579,11 +2930,9 @@ msgstr "Відкриття старого файла проекту"
 
 #: Project.cpp:2258
 #, c-format
-msgid ""
-"Could not save project. Perhaps %s is not writeable,\n"
+msgid "Could not save project. Perhaps %s is not writeable,\n"
 "or the disk is full."
-msgstr ""
-"Не вдається зберегти проект. Можливо, відсутні права запису на %s,\n"
+msgstr "Не вдається зберегти проект. Можливо, відсутні права запису на %s,\n"
 "або не вистачає вільного простору диску."
 
 #: Project.cpp:2260 Project.cpp:2274
@@ -2601,10 +2950,10 @@ msgstr "Збережено %s"
 msgid "Raw"
 msgstr "Необроблені дані"
 
-#: Project.cpp:2357 import/ImportPCM.cpp:361
+#: Project.cpp:2463
 #, c-format
-msgid "Importing %s File..."
-msgstr "Імпортується файл %s..."
+msgid "Importing %s..."
+msgstr ""
 
 #: Project.cpp:2418
 #, c-format
@@ -2624,19 +2973,13 @@ msgid "Windows PCM Audio file (*.wav)|*.wav"
 msgstr "Файл звуку Windows PCM (*.wav)|*.wav"
 
 #: Project.cpp:2507
-msgid ""
-"Audacity project files (.aup) let you save everything you're working on "
-"exactly as it\n"
-"appears on the screen, but most other programs can't open Audacity project "
-"files.\n"
+msgid "Audacity project files (.aup) let you save everything you're working on exactly as it\n"
+"appears on the screen, but most other programs can't open Audacity project files.\n"
 "\n"
-"When you want to save a file that can be opened by other programs, select "
-"one of the\n"
+"When you want to save a file that can be opened by other programs, select one of the\n"
 "Export commands."
-msgstr ""
-"У файлах проектів Audacity (.aup) ви можете зберегти робочий проект так,\n"
-"як він виглядає на екрані, проте більшість інших програм не здатні "
-"відкривати\n"
+msgstr "У файлах проектів Audacity (.aup) ви можете зберегти робочий проект так,\n"
+"як він виглядає на екрані, проте більшість інших програм не здатні відкривати\n"
 "файли проектів Audacity.\n"
 "\n"
 "Якщо ви бажаєте зберегти результат роботи у файл, який підтримується іншими\n"
@@ -2700,22 +3043,11 @@ msgstr "Помилка під час запису файла автозбере�
 msgid "Could not create autosave file: "
 msgstr "Неможливо створити файл автозбереження: "
 
-#: Project.cpp:3247
+#: Project.cpp:3385
 #, c-format
-msgid "Actual Rate %d"
+#, fuzzy
+msgid "Actual Rate: %d"
 msgstr "Фактична частота %d"
-
-#: Project.cpp:3364
-msgid ""
-"All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|"
-"AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|MP2/"
-"MPEG files (*.mp2;*.mpa;*.mpg;*.mpeg)|*.mp2;*.mpa;*.mpg;*.mpeg|Ogg Vorbis "
-"files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof"
-msgstr ""
-"Всі файли (*.*)|*.*|Проекти Audacity (*.aup)|*.aup|Файли WAV (*.wav)|*.wav|"
-"Файли AIFF (*.aif)|*.aif|Файли AU (*.au)|*.au|Файли MP3 (*.mp3)|*.mp3|Файли "
-"MP2/MPEG (*.mp2;*.mpa;*.mpg;*.mpeg)|*.mp2;*.mpa;*.mpg;*.mpeg|Файли Ogg "
-"Vorbis (*.ogg)|*.ogg|Файли FLAC (*.flac)|*.flac|Список файлів (*.lof)|*.lof"
 
 #: Resample.cpp:42
 msgid "Libresample by Dominic Mazzoni and Julius Smith"
@@ -2757,9 +3089,26 @@ msgstr "24-бітний PCM"
 msgid "32-bit float"
 msgstr "32-бітний з плаваючою комою"
 
+#: Screenshot.cpp:384
+msgid "Saved "
+msgstr ""
+
+#: Screenshot.cpp:387
+msgid "Error trying to save file: "
+msgstr ""
+
 #: Sequence.cpp:732 Sequence.cpp:742 Sequence.cpp:749
 msgid "Gap detected in project file\n"
 msgstr "У файлі проекту виявлено прогалину\n"
+
+#: effects/Effect.cpp:255 effects/Effect.cpp:382 effects/Phaser.cpp:595
+#: effects/Wahwah.cpp:582 effects/audiounits/AudioUnitEffect.cpp:872
+msgid "Pre&view"
+msgstr "&Прослухати"
+
+#: effects/nyquist/Nyquist.cpp:826 effects/nyquist/Nyquist.cpp:990
+msgid "&Debug"
+msgstr "&Налагодження"
 
 #: SmartRecordDialog.cpp:68
 msgid "Audacity Timer Record"
@@ -2770,12 +3119,10 @@ msgid "Recording start: "
 msgstr "Початок запису: "
 
 #: SmartRecordDialog.cpp:213
-msgid ""
-"\n"
+msgid "\n"
 "\n"
 "Recording end:   "
-msgstr ""
-"\n"
+msgstr "\n"
 "\n"
 "Кінець запису:   "
 
@@ -2807,63 +3154,69 @@ msgstr "Очікування початку запису у "
 msgid "Audacity Smart Record - Waiting for Start"
 msgstr "Запис Audacity - Очікування початку"
 
-#: Tags.cpp:701
-#, c-format
-msgid "Maximum length of attribute '%s' is %d characters. Data was truncated."
+#: SplashDialog.cpp:58
+msgid "&Welcome to Audacity!"
 msgstr ""
-"Максимальна довжина атрибуту '%s' складає %d символів. Дані було обрізано."
 
-#: Tags.cpp:707 Tags.cpp:917
-msgid "Title"
-msgstr "Заголовок"
+#: SplashDialog.cpp:110
+msgid "Don't show this again at start up"
+msgstr ""
 
-#: Tags.cpp:717 Tags.cpp:927
-msgid "Artist"
-msgstr "Виконавець"
+#: Tags.cpp:621
+msgid "Artist Name"
+msgstr ""
 
-#: Tags.cpp:727 Tags.cpp:937
-msgid "Album"
-msgstr "Альбом"
+#: Tags.cpp:622
+msgid "Track Title"
+msgstr ""
 
-#: Tags.cpp:737 Tags.cpp:963
-msgid "Year"
-msgstr "Рік"
-
-#: Tags.cpp:747 Tags.cpp:996 prefs/MousePrefs.cpp:96
-msgid "Comments"
-msgstr "Коментарі"
-
-#: Tags.cpp:903
-msgid "ID3v1 (more compatible)"
-msgstr "ID3v1 (більш поширений)"
-
-#: Tags.cpp:904
-msgid "ID3v2 (more flexible)"
-msgstr "ID3v2 (більш функціональний)"
-
-#: Tags.cpp:906
-msgid "Format"
-msgstr "Формат"
+#: Tags.cpp:623
+msgid "Album Title"
+msgstr ""
 
 #: Tags.cpp:953
 msgid "Track Number"
 msgstr "Номер доріжки"
 
+#: Tags.cpp:737 Tags.cpp:963
+msgid "Year"
+msgstr "Рік"
+
 #: Tags.cpp:979
 msgid "Genre"
 msgstr "Жанр"
 
-#: Tags.cpp:1048
-msgid "&Fewer"
-msgstr "&Менше"
+#: Tags.cpp:747 Tags.cpp:996 prefs/MousePrefs.cpp:96
+msgid "Comments"
+msgstr "Коментарі"
 
-#: Tags.cpp:1053
-msgid "&More"
-msgstr "&Більше"
+#: Tags.cpp:745 Tags.cpp:1985
+msgid "Press F2 or double click to edit."
+msgstr ""
 
-#: Tags.cpp:1060
-msgid "&Done"
-msgstr "&Завершено"
+#: Tags.cpp:769
+msgid "Tag Name"
+msgstr ""
+
+#: Tags.cpp:770
+msgid "Tag Value"
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:116
+msgid "&Clear"
+msgstr "&Очистити"
+
+#: Tags.cpp:791
+msgid "Genres"
+msgstr ""
+
+#: Tags.cpp:795 Tags.cpp:1406 Tags.cpp:1947
+msgid "Edit"
+msgstr ""
+
+#: Tags.cpp:796 Tags.cpp:1948
+msgid "Reset"
+msgstr ""
 
 #: Tags.cpp:1070
 msgid "Template"
@@ -2881,102 +3234,199 @@ msgstr "З&берегти..."
 msgid "S&et default"
 msgstr "Зробити &типовими"
 
+#: Tags.cpp:958 Tags.cpp:1597 Tags.cpp:2326
+msgid "Edit Genres"
+msgstr ""
+
+#: Tags.cpp:991 Tags.cpp:1003 Tags.cpp:1019 Tags.cpp:1032 Tags.cpp:1635
+#: Tags.cpp:1647 Tags.cpp:1663 Tags.cpp:1676 Tags.cpp:2369 Tags.cpp:2381
+#: Tags.cpp:2397 Tags.cpp:2410
+msgid "Reset Genres"
+msgstr ""
+
+#: Tags.cpp:991 Tags.cpp:1032 Tags.cpp:1635 Tags.cpp:1676 Tags.cpp:2369
+#: Tags.cpp:2410
+msgid "Unable to save genre file."
+msgstr ""
+
+#: Tags.cpp:1002 Tags.cpp:1646 Tags.cpp:2380
+msgid "Are you sure you want to reset the genre list to defaults?"
+msgstr ""
+
+#: Tags.cpp:1019 Tags.cpp:1663 Tags.cpp:2397
+msgid "Unable to open genre file."
+msgstr ""
+
+#: Tags.cpp:1054 Tags.cpp:1108 Tags.cpp:1709 Tags.cpp:1745 Tags.cpp:2432
+#: Tags.cpp:2468
+msgid "Save Metadata As:"
+msgstr ""
+
+#: Tags.cpp:1079 Tags.cpp:1730 Tags.cpp:2453
+msgid "Error loading metadata"
+msgstr ""
+
+#: Tags.cpp:1376 Tags.cpp:1935
+msgid "Title:"
+msgstr ""
+
+#: Tags.cpp:1377 Tags.cpp:1936
+msgid "Artist:"
+msgstr ""
+
+#: Tags.cpp:1378 Tags.cpp:1937
+msgid "Album:"
+msgstr ""
+
+#: Tags.cpp:1379
+msgid "Composer:"
+msgstr ""
+
+#: Tags.cpp:1380
+msgid "Lyricist:"
+msgstr ""
+
+#: Tags.cpp:1381 Tags.cpp:1940
+msgid "Comments:"
+msgstr ""
+
+#: Tags.cpp:1383
+msgid "Encoded By:"
+msgstr ""
+
+#: Tags.cpp:1387
+msgid "Copyright:"
+msgstr ""
+
+#: Tags.cpp:1391 Tags.cpp:1938
+msgid "Track Number:"
+msgstr ""
+
+#: Tags.cpp:1395 Tags.cpp:1939
+msgid "Year:"
+msgstr ""
+
+#: Tags.cpp:1399 Tags.cpp:1941
+msgid "Genre:"
+msgstr ""
+
+#: Tags.cpp:1457 Tags.cpp:2056
+msgid "No Genres"
+msgstr ""
+
+#: Tags.cpp:1610
+msgid "Reset to Defaults"
+msgstr ""
+
+#: Tags.cpp:1923
+msgid "Basic"
+msgstr ""
+
+#: Tags.cpp:1975
+msgid "Advanced"
+msgstr ""
+
+#: Tags.cpp:2000
+msgid "Value"
+msgstr ""
+
+#: Tags.cpp:2036
+msgid "Clea&r"
+msgstr ""
+
+#: Tags.cpp:701
+#, c-format
+msgid "Maximum length of attribute '%s' is %d characters. Data was truncated."
+msgstr "Максимальна довжина атрибуту '%s' складає %d символів. Дані було обрізано."
+
+#: Tags.cpp:707 Tags.cpp:917
+msgid "Title"
+msgstr "Заголовок"
+
+#: Tags.cpp:717 Tags.cpp:927
+msgid "Artist"
+msgstr "Виконавець"
+
+#: Tags.cpp:727 Tags.cpp:937
+msgid "Album"
+msgstr "Альбом"
+
 #: Theme.cpp:628
 #, c-format
-msgid ""
-"Audacity could not write file:\n"
+msgid "Audacity could not write file:\n"
 "  %s."
-msgstr ""
-"Audacity не може записати файл:\n"
+msgstr "Audacity не може записати файл:\n"
 "  %s."
 
 #: Theme.cpp:646
 #, c-format
-msgid ""
-"Audacity could not open file:\n"
+msgid "Audacity could not open file:\n"
 "  %s\n"
 "for writing."
-msgstr ""
-"Audacity не може відкрити файл:\n"
+msgstr "Audacity не може відкрити файл:\n"
 "  %s\n"
 "для запису."
 
 #: Theme.cpp:654
 #, c-format
-msgid ""
-"Audacity could not write images to file:\n"
+msgid "Audacity could not write images to file:\n"
 "  %s."
-msgstr ""
-"Audacity не може записати зображення у файл:\n"
+msgstr "Audacity не може записати зображення у файл:\n"
 "  %s."
 
 #: Theme.cpp:789
 #, c-format
-msgid ""
-"Audacity could not find file:\n"
+msgid "Audacity could not find file:\n"
 "  %s.\n"
 "Theme not loaded."
-msgstr ""
-"Audacity не може знайти файл:\n"
+msgstr "Audacity не може знайти файл:\n"
 "  %s.\n"
 "Тему не завантажено."
 
 #: Theme.cpp:797 Theme.cpp:885
 #, c-format
-msgid ""
-"Audacity could not load file:\n"
+msgid "Audacity could not load file:\n"
 "  %s.\n"
 "Bad png format perhaps?"
-msgstr ""
-"Audacity не може завантажити файл:\n"
+msgstr "Audacity не може завантажити файл:\n"
 "  %s.\n"
 "Можливо неправильний формат png?"
 
 #: Theme.cpp:813
-msgid ""
-"Audacity could not read its default theme.\n"
+msgid "Audacity could not read its default theme.\n"
 "Please report the problem."
-msgstr ""
-"Audacity не може прочитати свою типову тему.\n"
+msgstr "Audacity не може прочитати свою типову тему.\n"
 "Будь ласка, повідомте авторів про проблему."
 
 #: Theme.cpp:907
 #, c-format
-msgid ""
-"None of the expected theme component files\n"
+msgid "None of the expected theme component files\n"
 " were found in:\n"
 "  %s."
-msgstr ""
-"Не знайдено жодного з вхідних файлів,\n"
+msgstr "Не знайдено жодного з вхідних файлів,\n"
 "які мали знаходитися у:\n"
 "  %s."
 
 #: Theme.cpp:931
 #, c-format
-msgid ""
-"Could not create directory:\n"
+msgid "Could not create directory:\n"
 "  %s"
-msgstr ""
-"Неможливо створити теку:\n"
+msgstr "Неможливо створити теку:\n"
 "  %s"
 
 #: Theme.cpp:952
 #, c-format
-msgid ""
-"Audacity could not save file:\n"
+msgid "Audacity could not save file:\n"
 "  %s"
-msgstr ""
-"Audacity не може зберегти файл:\n"
+msgstr "Audacity не може зберегти файл:\n"
 "  %s"
 
 #: Theme.cpp:964
 #, c-format
-msgid ""
-"All required files in:\n"
+msgid "All required files in:\n"
 "  %s\n"
 "were already present."
-msgstr ""
-"Всі потрібні файли у:\n"
+msgstr "Всі потрібні файли у:\n"
 "  %s\n"
 "вже були присутні."
 
@@ -3065,24 +3515,16 @@ msgid "Copy"
 msgstr "Копіювати"
 
 #: TrackPanel.cpp:1239
-msgid ""
-"Click to vertically zoom in, Shift-click to zoom out, Drag to create a "
-"particular zoom region."
-msgstr ""
-"Використовуйте клацання для наближення по-вертикалі, Shift+клацання - для "
-"віддалення, перетягування з натиснутою кнопкою - для виділення області "
-"масштабування."
+msgid "Click to vertically zoom in, Shift-click to zoom out, Drag to create a particular zoom region."
+msgstr "Використовуйте клацання для наближення по-вертикалі, Shift+клацання - для віддалення, перетягування з натиснутою кнопкою - для виділення області масштабування."
 
 #: TrackPanel.cpp:1244
 msgid "Drag the label vertically to change the order of the tracks."
-msgstr ""
-"Щоб змінити порядок представлення доріжок, перетягніть цю доріжку вгору/вниз."
+msgstr "Щоб змінити порядок представлення доріжок, перетягніть цю доріжку вгору/вниз."
 
 #: TrackPanel.cpp:1264
 msgid "Click and drag to adjust relative size of stereo tracks."
-msgstr ""
-"Клацніть та перетягніть позначку для корегування відносного розміру стерео-"
-"доріжок."
+msgstr "Клацніть та перетягніть позначку для корегування відносного розміру стерео-доріжок."
 
 #: TrackPanel.cpp:1267
 msgid "Click and drag to resize the track."
@@ -3099,16 +3541,12 @@ msgstr "Перетягнути межу позначки"
 #. i18n-hint: This string is for the Mac OS, which uses Command-, as the shortcut for Preferences
 #: TrackPanel.cpp:1315
 msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
-msgstr ""
-"Багатоінструментальний режим: натисніть Cmd-, для налаштовування миші та "
-"клавіатури"
+msgstr "Багатоінструментальний режим: натисніть Cmd-, для налаштовування миші та клавіатури"
 
 #. i18n-hint: This string is for Windows and Linux, which uses Control-P as the shortcut for Preferences
 #: TrackPanel.cpp:1318
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
-msgstr ""
-"Багатоінструментальний режим: натисніть Ctrl-P, для налаштовування миші та "
-"клавіатури"
+msgstr "Багатоінструментальний режим: натисніть Ctrl-P, для налаштовування миші та клавіатури"
 
 #: TrackPanel.cpp:1338
 msgid "Click and drag to move left selection boundary."
@@ -3164,12 +3602,8 @@ msgid "Draw currently only works with linear-view waveforms."
 msgstr "Відображення зараз працює лише з лінійним представленням сигналу."
 
 #: TrackPanel.cpp:2717
-msgid ""
-"You are not zoomed in enough. Zoom in until you can see the individual "
-"samples."
-msgstr ""
-"Ви недостатньо наблизили відображення сигналу. Продовжуйте наближати, доки "
-"не побачите окремі семпли."
+msgid "You are not zoomed in enough. Zoom in until you can see the individual samples."
+msgstr "Ви недостатньо наблизили відображення сигналу. Продовжуйте наближати, доки не побачите окремі семпли."
 
 #: TrackPanel.cpp:2988
 msgid "Moved Sample"
@@ -3230,6 +3664,14 @@ msgstr "Розгорнути"
 #: TrackPanel.cpp:3917
 msgid "Expanded Cut Line"
 msgstr "Розширена лінія розрізу"
+
+#: TrackPanel.cpp:3973
+msgid "Merge"
+msgstr ""
+
+#: TrackPanel.cpp:3973
+msgid "Merged Clips"
+msgstr ""
 
 #: TrackPanel.cpp:3937
 msgid "Removed Cut Line"
@@ -3349,13 +3791,17 @@ msgstr "Назва змінена з '%s' на '%s'"
 msgid "Name Change"
 msgstr "Зміна назви"
 
-#: TrackPanel.cpp:5986
-msgid "Choose a font for Label Tracks"
-msgstr "Виберіть шрифт доріжки для позначок"
-
 #: TrackPanel.cpp:5987
 msgid "Label Track Font"
 msgstr "Шрифт доріжки для позначок"
+
+#: TrackPanel.cpp:6227
+msgid "Face name"
+msgstr ""
+
+#: TrackPanel.cpp:6236
+msgid "Face size"
+msgstr ""
 
 #: TrackPanel.cpp:6427
 msgid "Mute"
@@ -3435,6 +3881,33 @@ msgstr "Модулі від 1 до %i"
 msgid "Plugins %i to %i"
 msgstr "Модулі від %i до %i"
 
+#: commands/CommandManager.cpp:720
+msgid "Disallowed for some reason.  Try selecting some Audio first?"
+msgstr ""
+
+#: commands/CommandManager.cpp:724
+msgid "You can only do this when playing and recording are\n"
+" stopped.  [Pausing is not sufficient.]"
+msgstr ""
+
+#: commands/CommandManager.cpp:726
+msgid "You must first select some stereo audio for this\n"
+" to use.  [You can't use this with mono.]"
+msgstr ""
+
+#: commands/CommandManager.cpp:728
+msgid "You must first select some audio for this to use."
+msgstr ""
+
+#: commands/CommandManager.cpp:730
+msgid "You must first select some audio for this\n"
+" to use. [Selecting other kinds of track won't work.]"
+msgstr ""
+
+#: commands/CommandManager.cpp:735
+msgid "Message"
+msgstr ""
+
 #: commands/CommandManager.cpp:854
 #, c-format
 msgid "Loaded %d keyboard shortcuts\n"
@@ -3478,12 +3951,8 @@ msgid "Amplifying"
 msgstr "Триває підсилення сигналу"
 
 #: effects/AutoDuck.cpp:125
-msgid ""
-"You selected a track which does not contain audio. AutoDuck can only process "
-"audio tracks."
-msgstr ""
-"Ви обрали доріжку, яка не містить звуку. Приглушення музики може застосовуватись лише до "
-"існуючих доріжок."
+msgid "You selected a track which does not contain audio. AutoDuck can only process audio tracks."
+msgstr "Ви обрали доріжку, яка не містить звуку. Приглушення музики може застосовуватись лише до існуючих доріжок."
 
 #: effects/AutoDuck.cpp:126 effects/AutoDuck.cpp:138 effects/AutoDuck.cpp:451
 #: effects/AutoDuck.cpp:578
@@ -3491,12 +3960,8 @@ msgid "Auto Duck"
 msgstr "Приглушення музики"
 
 #: effects/AutoDuck.cpp:137
-msgid ""
-"Auto Duck needs a control track which must be placed below the selected track"
-"(s)."
-msgstr ""
-"Для ефекту приглушення музики потрібна контрольна доріжка, яка має бути розташована "
-"під обраними доріжками."
+msgid "Auto Duck needs a control track which must be placed below the selected track(s)."
+msgstr "Для ефекту приглушення музики потрібна контрольна доріжка, яка має бути розташована під обраними доріжками."
 
 #: effects/AutoDuck.cpp:463
 msgid "Auto Duck by Markus Meyer"
@@ -3554,14 +4019,21 @@ msgstr "Приглушення музики..."
 msgid "Processing Auto Duck..."
 msgstr "Приглушення музики..."
 
+#: LangChoice.cpp:103 effects/AvcCompressor.cpp:738
+#: effects/TruncSilence.cpp:281 effects/VST/VSTEffect.cpp:453
+#: effects/audiounits/AudioUnitEffect.cpp:877 effects/nyquist/Nyquist.cpp:993
+#: effects/nyquist/Nyquist.cpp:1059 widgets/Warning.cpp:67
+msgid "OK"
+msgstr "Гаразд"
+
 #: effects/BassBoost.cpp:52
 #, c-format
 msgid "Applied effect: %s frequency = %.0f Hz, boost = %.0f dB"
 msgstr "Застосовано ефект : %s частота = %.0f Гц, підвищення = %.0f дБ"
 
 #: effects/BassBoost.cpp:169
-msgid "BassBoost"
-msgstr "Підсилення басових частот..."
+msgid "Bass Boost"
+msgstr ""
 
 #: effects/BassBoost.cpp:182
 msgid "by Nasca Octavian Paul"
@@ -3705,45 +4177,21 @@ msgstr "Зміна темпу..."
 msgid "Changing Tempo"
 msgstr "Змінюється темп"
 
-#: effects/ClickRemoval.cpp:104
-msgid "Click and Pop Removal"
-msgstr "Видалення клацання та тріску"
+#: effects/ClickRemoval.cpp:323
+msgid "ClickRemoval"
+msgstr ""
 
 #: effects/ClickRemoval.cpp:359
 msgid "Click and Pop Removal by Craig DeForest"
 msgstr "Видалення клацання та тріску, автор Craig DeForest"
 
-#: effects/ClickRemoval.cpp:365
-msgid "Settings"
-msgstr "Параметри"
+#: effects/ClickRemoval.cpp:350
+msgid "Select threshold (lower is more sensitive):"
+msgstr ""
 
-#: effects/ClickRemoval.cpp:368
-msgid ""
-"\n"
-"Select threshold (lower is more sensitive)"
-msgstr "\n"
-"Оберіть поріг (чим нижче, тим більша чутливість)"
-
-#: effects/ClickRemoval.cpp:379 effects/ClickRemoval.cpp:408
-msgid "Medium"
-msgstr "Середній"
-
-#: effects/ClickRemoval.cpp:382 effects/ClickRemoval.cpp:411
-msgid "Max"
-msgstr "Максимальний"
-
-#: effects/ClickRemoval.cpp:389
-msgid ""
-"\n"
-"\n"
-"Max spike width (higher is more sensitive)"
-msgstr "\n"
-"\n"
-"Максимальна ширина піку (чим вища, ти більша чутливість):"
-
-#: effects/ClickRemoval.cpp:422
-msgid "&Remove clicks"
-msgstr "В&идалити клацання"
+#: effects/ClickRemoval.cpp:362
+msgid "Max spike width (higher is more sensitive):"
+msgstr ""
 
 #: effects/ClickRemoval.h:42
 msgid "Click Removal..."
@@ -3769,6 +4217,10 @@ msgstr "Коефіцієнт: "
 msgid "Attack Time: "
 msgstr "Час наростання:"
 
+#: effects/Compressor.cpp:505
+msgid "Decay Time: "
+msgstr ""
+
 #: effects/Compressor.cpp:504
 msgid "Normalize to 0dB after compressing"
 msgstr "Нормалізувати до 0dB після стискання"
@@ -3793,6 +4245,11 @@ msgstr "Коефіцієнт: %.1f:1"
 msgid "Attack Time: %.1f secs"
 msgstr "Час атаки: %.1f секунд"
 
+#: effects/Compressor.cpp:570
+#, c-format
+msgid "Decay Time: %.1f secs"
+msgstr ""
+
 #: effects/Compressor.h:36
 msgid "Compressor..."
 msgstr "Компресор..."
@@ -3812,6 +4269,10 @@ msgstr "Автор - Salvo Ventura (2006)"
 #: effects/DtmfGen.cpp:390
 msgid "DTMF sequence:"
 msgstr "Тонова послідовність:"
+
+#: effects/ToneGen.cpp:295 effects/ToneGen.cpp:328
+msgid "Amplitude (0-1)"
+msgstr "Амплітуда (0-1)"
 
 #: effects/DtmfGen.cpp:393
 msgid "DTMF duration:"
@@ -3839,7 +4300,8 @@ msgid "Silence duration:"
 msgstr "Тривалість тиші:"
 
 #: effects/DtmfGen.h:41
-msgid "&DTMF Tones..."
+#, fuzzy
+msgid "DTMF Tones..."
 msgstr "&Тонові сигнали телефону..."
 
 #: effects/DtmfGen.h:49
@@ -3880,11 +4342,6 @@ msgstr "Відлуння..."
 msgid "Performing Echo"
 msgstr "Застосовується ефект \"Відлуння\""
 
-#: effects/Effect.cpp:255 effects/Effect.cpp:382 effects/Phaser.cpp:595
-#: effects/Wahwah.cpp:582 effects/audiounits/AudioUnitEffect.cpp:872
-msgid "Pre&view"
-msgstr "&Прослухати"
-
 #: effects/Effect.cpp:303
 msgid "Preparing preview"
 msgstr "Підготовка прослуховування"
@@ -3894,17 +4351,25 @@ msgid "Previewing"
 msgstr "Прослуховування"
 
 #: effects/Effect.cpp:345
-msgid ""
-"Error while opening sound device. Please check the output device settings "
-"and the project sample rate."
-msgstr ""
-"Помилка при відкриванні звукового пристрою. Перевірте параметри пристрою "
-"виводу та частоту дискретизації проекту."
+msgid "Error while opening sound device. Please check the output device settings and the project sample rate."
+msgstr "Помилка при відкриванні звукового пристрою. Перевірте параметри пристрою виводу та частоту дискретизації проекту."
 
 #: effects/Effect.h:107
 #, c-format
 msgid "Applied effect: %s"
 msgstr "Застосовано ефект: %s"
+
+#: effects/Equalization.cpp:1171
+msgid "B-spline"
+msgstr "B-сплайн"
+
+#: effects/Equalization.cpp:1171
+msgid "Cosine"
+msgstr "Синусоїда"
+
+#: effects/Equalization.cpp:1171
+msgid "Cubic"
+msgstr "Кубічний"
 
 #: effects/Equalization.cpp:332 effects/Equalization.cpp:367
 msgid "Equalization"
@@ -3914,8 +4379,9 @@ msgstr "Еквалайзер"
 msgid "Error loading EQ curve"
 msgstr "Помилка під час завантаження кривої EQ"
 
-#: effects/Equalization.cpp:956
-msgid "Custom"
+#: effects/Equalization.cpp:1013
+#, fuzzy
+msgid "custom"
 msgstr "Інша"
 
 #: effects/Equalization.cpp:1023
@@ -3930,18 +4396,6 @@ msgstr "Макс дБ"
 msgid "Min dB"
 msgstr "Мін дБ"
 
-#: effects/Equalization.cpp:1100
-msgid "Select curve:"
-msgstr "Обрати криву:"
-
-#: effects/Equalization.cpp:1110 effects/Equalization.cpp:2322
-msgid "Save As..."
-msgstr "Зберегти як..."
-
-#: effects/Equalization.cpp:1116
-msgid "Flat"
-msgstr "Все до нуля"
-
 #: effects/Equalization.cpp:1145
 msgid "kHz"
 msgstr "КГц"
@@ -3954,18 +4408,6 @@ msgstr "Криві"
 msgid "Graphic EQ"
 msgstr "Графічний EQ"
 
-#: effects/Equalization.cpp:1171
-msgid "B-spline"
-msgstr "B-сплайн"
-
-#: effects/Equalization.cpp:1171
-msgid "Cosine"
-msgstr "Синусоїда"
-
-#: effects/Equalization.cpp:1171
-msgid "Cubic"
-msgstr "Кубічний"
-
 #: effects/Equalization.cpp:1183
 msgid "Linear frequency scale"
 msgstr "Лінійна шкала частот"
@@ -3973,6 +4415,18 @@ msgstr "Лінійна шкала частот"
 #: effects/Equalization.cpp:1192
 msgid "Length of filter:"
 msgstr "Тривалість фільтра:"
+
+#: effects/Equalization.cpp:1100
+msgid "Select curve:"
+msgstr "Обрати криву:"
+
+#: effects/Equalization.cpp:1110 effects/Equalization.cpp:2322
+msgid "Save As..."
+msgstr "Зберегти як..."
+
+#: effects/Equalization.cpp:1116
+msgid "Flat"
+msgstr "Все до нуля"
 
 #: effects/Equalization.cpp:2321
 msgid "Enter the desired name of the curve"
@@ -4005,6 +4459,42 @@ msgstr "Повільне загасання"
 #: effects/Fade.h:56
 msgid "Fading Out"
 msgstr "Застосовується \"Повільне загасання\""
+
+#: effects/FindClipping.cpp:49
+msgid "Detect clipping"
+msgstr ""
+
+#: effects/FindClipping.cpp:91
+msgid "Clipping"
+msgstr ""
+
+#: effects/FindClipping.cpp:211
+msgid "Find Clipping"
+msgstr ""
+
+#: effects/FindClipping.cpp:222
+msgid "by Leland Lucius"
+msgstr ""
+
+#: effects/FindClipping.cpp:234
+msgid "Start threshold (samples):"
+msgstr ""
+
+#: effects/FindClipping.cpp:238
+msgid "Stop threshold (samples):"
+msgstr ""
+
+#: effects/FindClipping.cpp:250
+msgid "Start and stop must be greater than 0."
+msgstr ""
+
+#: effects/FindClipping.h:37
+msgid "Find Clipping..."
+msgstr ""
+
+#: effects/FindClipping.h:47
+msgid "Detecting clipping"
+msgstr ""
 
 #: effects/Invert.h:27
 msgid "Invert"
@@ -4090,17 +4580,14 @@ msgstr "Генератор шумів"
 msgid "Noise duration"
 msgstr "Тривалість шуму"
 
-#: effects/Noise.cpp:239
-msgid "Amplitude"
-msgstr "Амплітуда"
-
-#: effects/Noise.cpp:240
-msgid "Noise type:"
+#: effects/Noise.cpp:256
+#, fuzzy
+msgid "Noise type"
 msgstr "Тип шуму:"
 
 #: effects/Noise.h:41
-msgid "&Noise..."
-msgstr "&Шум..."
+msgid "Noise..."
+msgstr ""
 
 #: effects/Noise.h:49
 #, c-format
@@ -4111,13 +4598,17 @@ msgstr "Застосований ефект: Генерувати шум, %.6lf 
 msgid "Generating Noise"
 msgstr "Генерування шуму"
 
-#: effects/NoiseRemoval.cpp:235
-msgid ""
-"Attempt to run Noise Removal without a noise profile\n"
-"."
+#: effects/NoiseRemoval.cpp:192
+#, c-format
+msgid "Could not open file:\n"
+"  %s"
 msgstr ""
-"Спроба запустити Видалення шуму без профілю шуму\n"
-"."
+
+#: effects/NoiseRemoval.cpp:277
+#, fuzzy
+msgid "Attempt to run Noise Removal without a noise profile.\n"
+msgstr "Спроба запустити Видалення шуму без профілю шуму\n"
+".\n"
 
 #: effects/NoiseRemoval.cpp:675
 msgid "Noise Removal"
@@ -4128,11 +4619,9 @@ msgid "Step 1"
 msgstr "Крок 1"
 
 #: effects/NoiseRemoval.cpp:765
-msgid ""
-"Select a few seconds of just noise so Audacity knows what to filter out,\n"
+msgid "Select a few seconds of just noise so Audacity knows what to filter out,\n"
 "then click Get Noise Profile:"
-msgstr ""
-"Оберіть декілька секунд чистого шуму, щоб Audacity знала що фільтрувати,\n"
+msgstr "Оберіть декілька секунд чистого шуму, щоб Audacity знала що фільтрувати,\n"
 "а потім натисніть кнопку Отримати профіль шуму:"
 
 #: effects/NoiseRemoval.cpp:766
@@ -4140,11 +4629,9 @@ msgid "Step 2"
 msgstr "Крок 2"
 
 #: effects/NoiseRemoval.cpp:767
-msgid ""
-"Select all of the audio you want filtered, choose how much noise you want\n"
+msgid "Select all of the audio you want filtered, choose how much noise you want\n"
 "filtered out, and then click 'OK' to remove noise.\n"
-msgstr ""
-"Оберіть весь звук, який має бути профільтровано, оберіть ступінь\n"
+msgstr "Оберіть весь звук, який має бути профільтровано, оберіть ступінь\n"
 "фільтрації шуму, а потім натисніть 'Гаразд' щоб видалити шум.\n"
 
 #: effects/NoiseRemoval.cpp:772
@@ -4179,6 +4666,24 @@ msgstr "Створюється модель шуму"
 msgid "Removing Noise"
 msgstr "Видаляється шум"
 
+#: effects/Normalize.cpp:68
+#, c-format
+msgid "Applied effect: %s remove dc offset = %s, normalize amplitude = %s"
+msgstr ""
+
+#: effects/Normalize.cpp:70 effects/Normalize.cpp:71
+msgid "false"
+msgstr ""
+
+#: effects/Normalize.cpp:70 effects/Normalize.cpp:71
+msgid "true"
+msgstr ""
+
+#: effects/Normalize.cpp:73
+#, c-format
+msgid ", maximum amplitude = %.1f dB"
+msgstr ""
+
 #: effects/Normalize.cpp:94
 msgid "Normalize"
 msgstr "Нормалізація"
@@ -4209,12 +4714,8 @@ msgstr "Нормалізація..."
 
 #: effects/Phaser.cpp:66
 #, c-format
-msgid ""
-"Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = "
-"%.0f deg, depth = %d, feedback = %.0f%%"
-msgstr ""
-"Застосовано ефект: %s %d етапів, %.0f%% оброблено, частота = %.1f Гц, "
-"початкова фаза = %.0f град, глибина = %d, зворотний зв'язок = %.0f%%"
+msgid "Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = %.0f deg, depth = %d, feedback = %.0f%%"
+msgstr "Застосовано ефект: %s %d етапів, %.0f%% оброблено, частота = %.1f Гц, початкова фаза = %.0f град, глибина = %d, зворотний зв'язок = %.0f%%"
 
 #: effects/Phaser.cpp:78
 msgid "Phaser"
@@ -4261,14 +4762,10 @@ msgid "Applying Phaser"
 msgstr "Застосовується ефект \"Фазер\""
 
 #: effects/Repair.cpp:94
-msgid ""
-"The Repair effect is intended to be used on very short sections of damaged "
-"audio (up to 128 samples).\n"
+msgid "The Repair effect is intended to be used on very short sections of damaged audio (up to 128 samples).\n"
 "\n"
 "Zoom in and select a tiny fraction of a second to repair."
-msgstr ""
-"Ефект відновлення спрямований на використання на дуже коротких відрізках "
-"аудіо (до 128 фрагментів).\n"
+msgstr "Ефект відновлення спрямований на використання на дуже коротких відрізках аудіо (до 128 фрагментів).\n"
 "\n"
 "Збільшіть масштаб та оберіть частинку запису для відновлення."
 
@@ -4332,7 +4829,8 @@ msgid "Silence Generator"
 msgstr "Генератор тиші"
 
 #: effects/Silence.h:34
-msgid "&Silence..."
+#, fuzzy
+msgid "Silence..."
 msgstr "&Тиша..."
 
 #: effects/Silence.h:42
@@ -4345,12 +4843,9 @@ msgid "Applied effect: Generate Silence, %.6lf seconds"
 msgstr "Застосовано ефект: Створення тиші, %.6lf секунд"
 
 #: effects/SimplePairedTwoTrack.h:120
-msgid ""
-"Sorry, This effect cannot be performed on stereo tracks where the individual "
-"channels of the track do not match."
-msgstr ""
-"Цей ефект не можна виконувати на стерео доріжках, для яких окремі "
-"канали доріжки не відповідають одна одній."
+#, fuzzy
+msgid "Sorry, this effect cannot be performed on stereo tracks where the individual channels of the track do not match."
+msgstr "Цей ефект не можна виконувати на стерео доріжках, для яких окремі канали доріжки не відповідають одна одній."
 
 #: effects/SpikeCleaner.cpp:69
 msgid "Spike Cleaner"
@@ -4361,11 +4856,9 @@ msgid "SpikeCleaner by Lynn Allan"
 msgstr "Вилучення піків від Lynn Allan"
 
 #: effects/SpikeCleaner.cpp:165
-msgid ""
-"Max Spike Duration (milliseconds): \n"
+msgid "Max Spike Duration (milliseconds): \n"
 "(99999 or greater is off)"
-msgstr ""
-"Максимальна тривалість піку (мілісекунд): \n"
+msgstr "Максимальна тривалість піку (мілісекунд): \n"
 "(99999 або більше − вимикає)"
 
 #: effects/SpikeCleaner.cpp:178 effects/TruncSilence.cpp:269
@@ -4386,12 +4879,8 @@ msgstr "Застосування ефекту \"Стерео у Моно\""
 
 #: effects/ToneGen.cpp:59
 #, c-format
-msgid ""
-"Applied effect: Generate %s wave %s, frequency = %.2f Hz, amplitude = %.2f, "
-"%.6lf seconds"
-msgstr ""
-"Застосовано ефект: Генерувати %s хвилю %s, частоти = %.2f Гц, амплітуди = "
-"%.2f, %.6lf секунд"
+msgid "Applied effect: Generate %s wave %s, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"
+msgstr "Застосовано ефект: Генерувати %s хвилю %s, частоти = %.2f Гц, амплітуди = %.2f, %.6lf секунд"
 
 #: effects/ToneGen.cpp:66
 msgid "Chirp Generator"
@@ -4421,10 +4910,6 @@ msgstr "Квадратична, без переходів"
 msgid "Frequency (Hz)"
 msgstr "Частота (Гц)"
 
-#: effects/ToneGen.cpp:295 effects/ToneGen.cpp:328
-msgid "Amplitude (0-1)"
-msgstr "Амплітуда (0-1)"
-
 #: effects/ToneGen.cpp:296 effects/ToneGen.cpp:334
 #: toolbars/SelectionBar.cpp:136 toolbars/SelectionBar.cpp:227
 msgid "Length"
@@ -4443,17 +4928,13 @@ msgstr "Початок"
 msgid "End"
 msgstr "Кінець"
 
-#: effects/ToneGen.cpp:326
-msgid "Frequency / Hz"
-msgstr "Частота / Гц"
+#: effects/ToneGen.h:39
+msgid "Chirp..."
+msgstr ""
 
 #: effects/ToneGen.h:39
-msgid "&Chirp..."
-msgstr "&Щебетання..."
-
-#: effects/ToneGen.h:39
-msgid "&Tone..."
-msgstr "&Тон..."
+msgid "Tone..."
+msgstr ""
 
 #: effects/ToneGen.h:47
 msgid "Generating Chirp"
@@ -4463,37 +4944,45 @@ msgstr "Створення щебетання"
 msgid "Generating Tone"
 msgstr "Створення хвилі"
 
-#: effects/TruncSilence.cpp:64
-msgid "Sorry. Truncate Silence only valid with mono track"
-msgstr "Обрізання тихих областей може застосовуватись лише для моно-доріжок"
+#: effects/TruncSilence.cpp:113
+msgid "All tracks must have the same sample rate"
+msgstr ""
+
+#: effects/TruncSilence.cpp:113 effects/TruncSilence.cpp:322
+msgid "Truncate Silence"
+msgstr ""
+
+#: effects/TruncSilence.cpp:332
+msgid "by Lynn Allan"
+msgstr ""
+
+#: effects/TruncSilence.cpp:346
+msgid "Max silence duration:"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:175 prefs/AudioIOPrefs.cpp:178
+msgid "milliseconds"
+msgstr "мілісекунд"
+
+#: effects/TruncSilence.cpp:351
+msgid "Threshold for silence:"
+msgstr ""
+
+#: effects/TruncSilence.cpp:375
+msgid "   Duration must be at least 1 millisecond"
+msgstr ""
 
 #: effects/TruncSilence.cpp:84 effects/TruncSilence.h:29
 msgid "Truncate Silence..."
 msgstr "Обрізання тихих ділянок..."
-
-#: effects/TruncSilence.cpp:251
-msgid "Truncate Silence by Lynn Allan"
-msgstr "Обрізання тихих ділянок від Lynn Allan"
-
-#: effects/TruncSilence.cpp:256
-msgid ""
-"Max Silent Duration (milliseconds): \n"
-"(99999 or greater is off)"
-msgstr ""
-"Максимальна тривалість тиші (у мілісекундах): \n"
-"(99999 та більше вимикає функцію)"
 
 #: effects/TruncSilence.h:37
 msgid "Truncating Silence..."
 msgstr "Обрізання тиші..."
 
 #: effects/VST/VSTEffect.cpp:179
-msgid ""
-"Sorry, VST Effects cannot be performed on stereo tracks where the individual "
-"channels of the track do not match."
-msgstr ""
-"VST-ефекти не можуть застосовуватись до стерео-доріжок з невідповідними "
-"індивідуальними каналами."
+msgid "Sorry, VST Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
+msgstr "VST-ефекти не можуть застосовуватись до стерео-доріжок з невідповідними індивідуальними каналами."
 
 #: effects/VST/VSTEffect.cpp:194
 msgid "Can't process replacing"
@@ -4505,12 +4994,8 @@ msgstr "Параметри модуля VST:"
 
 #: effects/Wahwah.cpp:60
 #, c-format
-msgid ""
-"Applied effect: %s frequency = %.1f Hz, start phase = %.0f deg, depth = %.0f%"
-"%, resonance = %.1f, frequency offset = %.0f%%"
-msgstr ""
-"Застосовано ефект: %s частота = %.1f Гц, початкова фаза = %.0f град, глибина "
-"= %.0f%%, резонанс = %.1f, зсув частоти = %.0f%%"
+msgid "Applied effect: %s frequency = %.1f Hz, start phase = %.0f deg, depth = %.0f%%, resonance = %.1f, frequency offset = %.0f%%"
+msgstr "Застосовано ефект: %s частота = %.1f Гц, початкова фаза = %.0f град, глибина = %.0f%%, резонанс = %.1f, зсув частоти = %.0f%%"
 
 #: effects/Wahwah.cpp:71
 msgid "Wahwah"
@@ -4547,12 +5032,8 @@ msgid "Performing Effect: %s"
 msgstr "Застосовується ефект: %s"
 
 #: effects/ladspa/LadspaEffect.cpp:189
-msgid ""
-"Sorry, Plug-in Effects cannot be performed on stereo tracks where the "
-"individual channels of the track do not match."
-msgstr ""
-"Цей модуль не можна виконувати на стерео доріжках, на яких "
-"окремі канали доріжки не відповідають одна одній."
+msgid "Sorry, Plug-in Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
+msgstr "Цей модуль не можна виконувати на стерео доріжках, на яких окремі канали доріжки не відповідають одна одній."
 
 #: effects/ladspa/LadspaEffect.cpp:573 effects/ladspa/LadspaEffect.cpp:581
 #: prefs/QualityPrefs.cpp:72
@@ -4584,11 +5065,8 @@ msgid "Enter Nyquist Command: "
 msgstr "Введіть Найквіст-команду:"
 
 #: effects/nyquist/Nyquist.cpp:412
-msgid ""
-"Sorry, cannot apply effect on stereo tracks where the tracks don't match."
-msgstr ""
-"Ефект неможливо застосувати до стерео-доріжок з невідповідними "
-"індивідуальним каналами."
+msgid "Sorry, cannot apply effect on stereo tracks where the tracks don't match."
+msgstr "Ефект неможливо застосувати до стерео-доріжок з невідповідними індивідуальним каналами."
 
 #: effects/nyquist/Nyquist.cpp:439
 msgid "Nyquist"
@@ -4610,40 +5088,44 @@ msgstr "Модуль Найквіста не повернув звукові д�
 msgid "Nyquist returned too many audio channels.\n"
 msgstr "Модуль Найквіста повернув занадто багато звукових каналів.\n"
 
-#: effects/nyquist/Nyquist.cpp:826 effects/nyquist/Nyquist.cpp:990
-msgid "&Debug"
-msgstr "&Налагодження"
+#: effects/vamp/LoadVamp.cpp:53 effects/vamp/VampEffect.cpp:238
+#, c-format
+msgid "%s: %s"
+msgstr ""
 
-#: export/Export.cpp:242
-msgid "WAV, AIFF, and other uncompressed types"
-msgstr "WAV, AIFF, та інші типи без стискання"
+#: effects/vamp/VampEffect.cpp:75
+#, c-format
+msgid "Extracting features: %s"
+msgstr ""
 
-#: export/Export.cpp:245
-msgid "MP3 Files"
-msgstr "Файли MP3"
+#: effects/vamp/VampEffect.cpp:106
+msgid "Sorry, Vamp Plug-ins cannot be run on stereo tracks where the individual channels of the track do not match."
+msgstr ""
 
-#: export/Export.cpp:249
-msgid "OGG Files"
-msgstr "Файли OGG"
+#: effects/vamp/VampEffect.cpp:120
+msgid "Sorry, failed to load Vamp Plug-in."
+msgstr ""
 
-#: export/Export.cpp:254
-msgid "FLAC Files"
-msgstr "Файли FLAC"
+#: effects/vamp/VampEffect.cpp:228
+msgid "Sorry, Vamp Plug-in failed to initialize."
+msgstr ""
 
-#: export/Export.cpp:259
-msgid "MP2 Files"
-msgstr "Файли MP2"
+#: effects/vamp/VampEffect.cpp:376
+msgid " - Vamp audio analysis plugin"
+msgstr ""
 
-#: export/Export.cpp:264
-msgid "(external program)"
-msgstr "(зовнішня програма)"
+#: effects/vamp/VampEffect.cpp:423
+msgid "Plugin Settings"
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:446
+msgid "Program"
+msgstr ""
 
 #: export/Export.cpp:370
-msgid ""
-"No tracks are selected! Use Ctrl-A (Select All)\n"
+msgid "No tracks are selected! Use Ctrl-A (Select All)\n"
 "Choose Export... to export all tracks."
-msgstr ""
-"Не обрано жодної доріжки! Використайте Ctrl-A (Обрати все)\n"
+msgstr "Не обрано жодної доріжки! Використайте Ctrl-A (Обрати все)\n"
 "Оберіть Експорт... щоб експортувати всі доріжки."
 
 #: export/Export.cpp:414
@@ -4660,18 +5142,14 @@ msgstr "Ви дійсно бажаєте зберегти файл як \""
 
 #: export/Export.cpp:469
 #, c-format
-msgid ""
-"You are about to save a %s file with the name \"%s\".\n"
+msgid "You are about to save a %s file with the name \"%s\".\n"
 "\n"
-"Normally these files end in \".%s\", and some programs will not open files "
-"with nonstandard extensions.\n"
+"Normally these files end in \".%s\", and some programs will not open files with nonstandard extensions.\n"
 "\n"
 "Are you sure you want to save the file under this name?"
-msgstr ""
-"Ви збираєтесь зберегти файл %s з назвою \"%s\".\n"
+msgstr "Ви збираєтесь зберегти файл %s з назвою \"%s\".\n"
 "\n"
-"Зазвичай ці файли мають суфікс \".%s\", деякі програми не відкриватимуть "
-"файли з нестандартними розширеннями.\n"
+"Зазвичай ці файли мають суфікс \".%s\", деякі програми не відкриватимуть файли з нестандартними розширеннями.\n"
 "\n"
 "Ви справді бажаєте зберегти файл з цією назвою?"
 
@@ -4681,13 +5159,11 @@ msgid "A file named \"%s\" already exists.  Replace?"
 msgstr "Файл названий \"%s\" вже існує.  Замінити?"
 
 #: export/Export.cpp:579
-msgid ""
-"Your tracks will be mixed down to two stereo channels in the exported file."
+msgid "Your tracks will be mixed down to two stereo channels in the exported file."
 msgstr "У експортованому файлі доріжки будуть зведені у два стереоканали."
 
 #: export/Export.cpp:584
-msgid ""
-"Your tracks will be mixed down to a single mono channel in the exported file."
+msgid "Your tracks will be mixed down to a single mono channel in the exported file."
 msgstr "У експортованому файлі доріжки будуть зведені у один моноканал."
 
 #: export/Export.cpp:594
@@ -4712,30 +5188,9 @@ msgstr " - Праворуч"
 msgid "Output Channels: %2d"
 msgstr "Вихідні канали: %2d"
 
-#: export/ExportCL.cpp:116 export/ExportPCM.cpp:90
-#, c-format
-msgid "Cannot export audio to %s"
-msgstr "Не вдається експортувати дані у %s"
-
-#: export/ExportCL.cpp:188 export/ExportOGG.cpp:121 export/ExportPCM.cpp:114
-msgid "Export"
-msgstr "Експорт"
-
-#: export/ExportCL.cpp:190
-msgid "Exporting the selected audio using command-line encoder"
-msgstr "Виділене експортується через консольний кодувальник"
-
-#: export/ExportCL.cpp:191
-msgid "Exporting the entire project using command-line encoder"
-msgstr "Весь проект експортується через консольний кодувальник"
-
-#: export/ExportCL.cpp:255
-msgid "Command Output"
-msgstr "Виведення команди"
-
-#: export/ExportCL.cpp:289
-msgid "Specify Command Line Options"
-msgstr "Вкажіть параметри командного рядка"
+#: export/ExportCL.cpp:55
+msgid "Specify Command Line Encoder"
+msgstr ""
 
 #: export/ExportCL.cpp:303
 msgid "Command Line Export Setup"
@@ -4749,18 +5204,31 @@ msgstr "Команда:"
 msgid "Show output"
 msgstr "Показати вивід"
 
-#: export/ExportCL.cpp:320
+#: export/ExportCL.cpp:87
 #, c-format
-msgid "Include \"%f\" where the output filename should be substituted."
-msgstr "Включіть \"%f\", там де повинна бути вказана назва файлу."
+msgid "Data will be piped to standard in. \"%f\" will be replaced with output filename selected."
+msgstr ""
 
-#: export/ExportFLAC.cpp:134
-msgid "Exporting the selected audio as FLAC"
-msgstr "Експорт виділеного аудіо як FLAC"
+#: export/Export.cpp:264
+msgid "(external program)"
+msgstr "(зовнішня програма)"
 
-#: export/ExportFLAC.cpp:135
-msgid "Exporting the entire project as FLAC"
-msgstr "Експорт всього проекту до FLAC"
+#: export/ExportCL.cpp:116 export/ExportPCM.cpp:90
+#, c-format
+msgid "Cannot export audio to %s"
+msgstr "Не вдається експортувати дані у %s"
+
+#: export/ExportCL.cpp:190
+msgid "Exporting the selected audio using command-line encoder"
+msgstr "Виділене експортується через консольний кодувальник"
+
+#: export/ExportCL.cpp:191
+msgid "Exporting the entire project using command-line encoder"
+msgstr "Весь проект експортується через консольний кодувальник"
+
+#: export/ExportCL.cpp:255
+msgid "Command Output"
+msgstr "Виведення команди"
 
 #: export/ExportFLAC.cpp:180
 msgid "Specify FLAC Options"
@@ -4822,14 +5290,45 @@ msgstr "Рівень:"
 msgid "Bit depth:"
 msgstr "Бітова глибина:"
 
+#: export/Export.cpp:254
+msgid "FLAC Files"
+msgstr "Файли FLAC"
+
+#: export/ExportFLAC.cpp:134
+msgid "Exporting the selected audio as FLAC"
+msgstr "Експорт виділеного аудіо як FLAC"
+
+#: export/ExportFLAC.cpp:135
+msgid "Exporting the entire project as FLAC"
+msgstr "Експорт всього проекту до FLAC"
+
+#: export/ExportFLAC.cpp:372
+msgid "Edit the metadata for the FLAC file"
+msgstr ""
+
+#: export/ExportMP2.cpp:201
+msgid "Specify MP2 Options"
+msgstr "Визначення параметрів MP2"
+
+#: export/ExportMP2.cpp:221
+msgid "MP2 Export Setup"
+msgstr "Налаштування експорту до MP2"
+
+#: export/ExportMP2.cpp:225
+msgid "Bit Rate:"
+msgstr "Частота бітів:"
+
+#: export/Export.cpp:259
+msgid "MP2 Files"
+msgstr "Файли MP2"
+
 #: export/ExportMP2.cpp:82
 msgid "Cannot export MP2 with this sample rate and bit rate"
-msgstr ""
-"Неможливо експортувати MP2 з цією частотою дискретизації та бітовою частотою"
+msgstr "Неможливо експортувати MP2 з цією частотою дискретизації та бітовою частотою"
 
-#: export/ExportMP2.cpp:94 export/ExportMP3.cpp:1260
-msgid "Edit the ID3 tags for the MP3 file"
-msgstr "Правка ID3 тегів для MP3-файлу"
+#: export/ExportMP2.cpp:237
+msgid "Edit the ID3 tags for the MP2 file"
+msgstr ""
 
 #: export/ExportMP2.cpp:102 export/ExportMP3.cpp:1249 export/ExportOGG.cpp:53
 msgid "Unable to open target file for writing"
@@ -4845,81 +5344,15 @@ msgstr "Експорт виділеного аудіо на %d кб/с"
 msgid "Exporting entire file at %d kbps"
 msgstr "Експорт всього файла на %d кб/с"
 
-#: export/ExportMP2.cpp:201
-msgid "Specify MP2 Options"
-msgstr "Визначення параметрів MP2"
-
-#: export/ExportMP2.cpp:221
-msgid "MP2 Export Setup"
-msgstr "Налаштування експорту до MP2"
-
-#: export/ExportMP2.cpp:225
-msgid "Bit Rate:"
-msgstr "Частота бітів:"
-
-#: export/ExportMP3.cpp:141
-msgid "16 kbps"
-msgstr "16 кб/с"
-
-#: export/ExportMP3.cpp:142
-msgid "24 kbps"
-msgstr "24 кб/с"
-
-#: export/ExportMP3.cpp:143
-msgid "32 kbps"
-msgstr "32 кб/с"
-
-#: export/ExportMP3.cpp:144
-msgid "40 kbps"
-msgstr "40 кб/с"
-
-#: export/ExportMP3.cpp:145
-msgid "48 kbps"
-msgstr "48 кб/с"
-
-#: export/ExportMP3.cpp:146
-msgid "56 kbps"
-msgstr "56 кб/с"
-
-#: export/ExportMP3.cpp:147
-msgid "64 kbps"
-msgstr "64 кб/с"
-
-#: export/ExportMP3.cpp:148
-msgid "80 kbps"
-msgstr "80 кб/с"
-
-#: export/ExportMP3.cpp:149
-msgid "96 kbps"
-msgstr "96 кб/с"
-
-#: export/ExportMP3.cpp:150
-msgid "112 kbps"
-msgstr "112 кб/с"
-
-#: export/ExportMP3.cpp:151
-msgid "128 kbps"
-msgstr "128 кб/с"
-
-#: export/ExportMP3.cpp:152
-msgid "160 kbps"
-msgstr "160 кб/с"
-
-#: export/ExportMP3.cpp:153
-msgid "192 kbps"
-msgstr "192 кб/с"
-
-#: export/ExportMP3.cpp:154
-msgid "224 kbps"
-msgstr "224 кб/с"
-
-#: export/ExportMP3.cpp:155
-msgid "256 kbps"
-msgstr "256 кб/с"
-
-#: export/ExportMP3.cpp:156
-msgid "320 kbps"
-msgstr "320 кб/с"
+#. i18n-hint: kbps is the bitrate of the MP3 file, kilobits per second
+#: export/ExportMP3.cpp:142 export/ExportMP3.cpp:143 export/ExportMP3.cpp:144
+#: export/ExportMP3.cpp:145 export/ExportMP3.cpp:146 export/ExportMP3.cpp:147
+#: export/ExportMP3.cpp:148 export/ExportMP3.cpp:149 export/ExportMP3.cpp:150
+#: export/ExportMP3.cpp:151 export/ExportMP3.cpp:152 export/ExportMP3.cpp:153
+#: export/ExportMP3.cpp:154 export/ExportMP3.cpp:155 export/ExportMP3.cpp:156
+#: export/ExportMP3.cpp:157 export/ExportMP3.cpp:158 export/ExportMP3.cpp:159
+msgid "kbps"
+msgstr ""
 
 #: export/ExportMP3.cpp:161
 msgid "0, 220-260 kbps (Best Quality)"
@@ -4985,87 +5418,6 @@ msgstr "Стандартна, 170-210 кб/с"
 msgid "Medium, 145-185 kbps"
 msgstr "Помірна, 145-185 кб/с"
 
-#: export/ExportMP3.cpp:527
-msgid ""
-"Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|"
-"All Files (*.*)|*"
-msgstr ""
-"Лише lame_enc.dll|lame_enc.dll|Динамічні бібліотеки (*.dll)|*.dll|Усі файли "
-"(*.*)|*"
-
-#: export/ExportMP3.cpp:870
-msgid ""
-"Only libmp3lame.dylib|libmp3lame.dylib|Dynamic Libraries (*.dylib)|*.dylib|"
-"All Files (*)|*"
-msgstr ""
-"Тільки libmp3lame.dylib|libmp3lame.dylib|Динамічні бібліотеки (*.dylib)|*."
-"dylib|Всі файли (*)|*"
-
-#: export/ExportMP3.cpp:887
-msgid ""
-"Only libmp3lame.so|libmp3lame.so|Primary Shared Object files (*.so)|*.so|"
-"Extended Libraries (*.so*)|*.so*|All Files (*)|*"
-msgstr ""
-"Лише libmp3lame.so|libmp3lame.so|Первинні спільні бібліотеки (*.so)|*.so|"
-"Розширені бібліотеки (*.so*)|*.so*|Усі файли (*)|*"
-
-#: export/ExportMP3.cpp:932
-msgid "Locate Lame"
-msgstr "Знайти Lame"
-
-#: export/ExportMP3.cpp:952
-#, c-format
-msgid "Audacity needs the file %s to create MP3s."
-msgstr "Audacity потребує файла %s для створення MP3."
-
-#: export/ExportMP3.cpp:958
-#, c-format
-msgid "Location of %s:"
-msgstr "Розташування %s:"
-
-#: export/ExportMP3.cpp:967
-#, c-format
-msgid "To find %s, click here -->"
-msgstr "Щоб знайти %s, клацніть тут -->"
-
-#: export/ExportMP3.cpp:973
-msgid "Browse..."
-msgstr "Огляд..."
-
-#: export/ExportMP3.cpp:974
-msgid "To get a free copy of Lame, click here -->"
-msgstr "Щоб дістати вільну копію Lame, клацніть тут -->"
-
-#: export/ExportMP3.cpp:975
-msgid "Download..."
-msgstr "Звантаження..."
-
-#. i18n-hint: It's asking for the location of a file, for
-#. example, "Where is lame_enc.dll?" - you could translate
-#. "Where would I find the file %s" instead if you want.
-#: export/ExportMP3.cpp:1011
-#, c-format
-msgid "Where is %s?"
-msgstr "Де знаходиться %s?"
-
-#: export/ExportMP3.cpp:1233
-msgid "Could not open MP3 encoding library!"
-msgstr "Не вдається відкрити бібліотеку для експорту у MP3!"
-
-#: export/ExportMP3.cpp:1240
-msgid "Not a valid or supported MP3 encoding library!"
-msgstr "Неправильна, або непідтримувана бібліотека стиснення MP3!"
-
-#: export/ExportMP3.cpp:1342
-#, fuzzy, c-format
-msgid "Exporting selected audio at quality %d"
-msgstr "Експорт виділеного аудіо з якістю VBR %s"
-
-#: export/ExportMP3.cpp:1343
-#, fuzzy, c-format
-msgid "Exporting entire file at quality %d"
-msgstr "Експорт всього файла з якістю VBR %s"
-
 #: export/ExportMP3.cpp:1417
 msgid "Specify MP3 Options"
 msgstr "Визначити параметри MP3"
@@ -5110,27 +5462,154 @@ msgstr "З'єднане стерео"
 msgid "Stereo"
 msgstr "Стерео"
 
+#: export/ExportMP3.cpp:932
+msgid "Locate Lame"
+msgstr "Знайти Lame"
+
+#: export/ExportMP3.cpp:952
+#, c-format
+msgid "Audacity needs the file %s to create MP3s."
+msgstr "Audacity потребує файла %s для створення MP3."
+
+#: export/ExportMP3.cpp:958
+#, c-format
+msgid "Location of %s:"
+msgstr "Розташування %s:"
+
+#: export/ExportMP3.cpp:967
+#, c-format
+msgid "To find %s, click here -->"
+msgstr "Щоб знайти %s, клацніть тут -->"
+
+#: export/ExportMP3.cpp:973
+msgid "Browse..."
+msgstr "Огляд..."
+
+#: export/ExportMP3.cpp:974
+msgid "To get a free copy of Lame, click here -->"
+msgstr "Щоб дістати вільну копію Lame, клацніть тут -->"
+
+#: export/ExportMP3.cpp:975
+msgid "Download..."
+msgstr "Звантаження..."
+
+#. i18n-hint: It's asking for the location of a file, for
+#. example, "Where is lame_enc.dll?" - you could translate
+#. "Where would I find the file %s" instead if you want.
+#: export/ExportMP3.cpp:1011
+#, c-format
+msgid "Where is %s?"
+msgstr "Де знаходиться %s?"
+
+#: export/ExportMP3.cpp:527
+msgid "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
+msgstr "Лише lame_enc.dll|lame_enc.dll|Динамічні бібліотеки (*.dll)|*.dll|Усі файли (*.*)|*"
+
+#: export/ExportMP3.cpp:870
+msgid "Only libmp3lame.dylib|libmp3lame.dylib|Dynamic Libraries (*.dylib)|*.dylib|All Files (*)|*"
+msgstr "Тільки libmp3lame.dylib|libmp3lame.dylib|Динамічні бібліотеки (*.dylib)|*.dylib|Всі файли (*)|*"
+
+#: export/ExportMP3.cpp:887
+msgid "Only libmp3lame.so|libmp3lame.so|Primary Shared Object files (*.so)|*.so|Extended Libraries (*.so*)|*.so*|All Files (*)|*"
+msgstr "Лише libmp3lame.so|libmp3lame.so|Первинні спільні бібліотеки (*.so)|*.so|Розширені бібліотеки (*.so*)|*.so*|Усі файли (*)|*"
+
+#: export/Export.cpp:245
+msgid "MP3 Files"
+msgstr "Файли MP3"
+
+#: export/ExportMP3.cpp:1233
+msgid "Could not open MP3 encoding library!"
+msgstr "Не вдається відкрити бібліотеку для експорту у MP3!"
+
+#: export/ExportMP3.cpp:1240
+msgid "Not a valid or supported MP3 encoding library!"
+msgstr "Неправильна, або непідтримувана бібліотека стиснення MP3!"
+
+#: export/ExportMP3.cpp:1699
+msgid "Unable to initialize MP3 stream"
+msgstr ""
+
+#: export/ExportMP2.cpp:94 export/ExportMP3.cpp:1260
+msgid "Edit the ID3 tags for the MP3 file"
+msgstr "Правка ID3 тегів для MP3-файлу"
+
+#: export/ExportMP3.cpp:1744
+#, c-format
+msgid "Exporting selected audio with %s preset"
+msgstr ""
+
+#: export/ExportMP3.cpp:1745
+#, c-format
+msgid "Exporting entire file with %s preset"
+msgstr ""
+
+#: export/ExportMP3.cpp:1750
+#, c-format
+msgid "Exporting selected audio with VBR quality %s"
+msgstr ""
+
+#: export/ExportMP3.cpp:1751
+#, c-format
+msgid "Exporting entire file with VBR quality %s"
+msgstr ""
+
+#: export/ExportMP3.cpp:1756
+#, c-format
+msgid "Exporting selected audio at %d Kbps"
+msgstr ""
+
+#: export/ExportMP3.cpp:1757
+#, c-format
+msgid "Exporting entire file at %d Kbps"
+msgstr ""
+
+#: export/ExportMP3.cpp:1790
+#, c-format
+msgid "Error %d returned from MP3 encoder"
+msgstr ""
+
+#: export/ExportMP3.cpp:1863
+msgid "Invalid sample rate"
+msgstr ""
+
+#: export/ExportMP3.cpp:1876
+#, c-format
+msgid "The project sample rate (%d) is not supported by the MP3\n"
+"file format.  "
+msgstr ""
+
+#: export/ExportMP3.cpp:1879
+#, c-format
+msgid "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
+"supported by the MP3 file format.  "
+msgstr ""
+
+#: export/ExportMP3.cpp:1882
+msgid "You may resample to one of the rates below."
+msgstr ""
+
+#: export/ExportMP3.cpp:1905
+msgid "Sample Rates"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:123
+msgid "MP3 exporting plugin not found"
+msgstr "Не знайдено модуль експорту у MP3"
+
 #: export/ExportMultiple.cpp:88 export/ExportMultiple.cpp:371
 #: export/ExportMultiple.cpp:620 export/ExportMultiple.cpp:728
 msgid "Export Multiple"
 msgstr "Експорту у декілька файлів"
 
 #: export/ExportMultiple.cpp:153
-msgid ""
-"If you have more than one Audio Track, you can export each track as a "
-"separate file,\n"
+msgid "If you have more than one Audio Track, you can export each track as a separate file,\n"
 "or if you have a Label Track, you can export a new file for each label.\n"
 "\n"
-"This project does not have multiple tracks or a Label Track, so you cannot "
-"export multiple files."
-msgstr ""
-"Якщо у вашому проекті більш ніж одна доріжка, ви можете експортувати кожну з "
-"них у окремий файл,\n"
-"або, за наявності доріжки для позначок, - експортувати по новому файлу для "
-"кожної позначки.\n"
+"This project does not have multiple tracks or a Label Track, so you cannot export multiple files."
+msgstr "Якщо у вашому проекті більш ніж одна доріжка, ви можете експортувати кожну з них у окремий файл,\n"
+"або, за наявності доріжки для позначок, - експортувати по новому файлу для кожної позначки.\n"
 "\n"
-"Проект не містить ані кількох доріжок, ані доріжки для позначок, тому що "
-"функція, що ви викликали, працювати не буде."
+"Проект не містить ані кількох доріжок, ані доріжки для позначок, тому що функція, що ви викликали, працювати не буде."
 
 #: export/ExportMultiple.cpp:154
 msgid "Can't export multiple files"
@@ -5209,18 +5688,16 @@ msgstr "\"%s\" успішно створено."
 msgid "Choose a location to save the exported files"
 msgstr "Виберіть каталог для експортування файлів"
 
-#: export/ExportMultiple.cpp:449
-msgid "Edit the ID3 tags for all MP3 files"
-msgstr "Правка ID3-тегів для усіх MP3-файлів"
+#: export/ExportMultiple.cpp:438
+msgid "Edit the metadata"
+msgstr ""
 
 #: export/ExportMultiple.cpp:491
 #, c-format
-msgid ""
-"\"%s\" doesn't exist.\n"
+msgid "\"%s\" doesn't exist.\n"
 "\n"
 "Would you like to create it?"
-msgstr ""
-"\"%s\" не існує.\n"
+msgstr "\"%s\" не існує.\n"
 "\n"
 "Створити?"
 
@@ -5234,6 +5711,22 @@ msgstr "Успішно експортовано %d файл(ів)."
 msgid "Something went wrong after exporting %d file(s)."
 msgstr "Після експорту %d файла(ів) щось пішло не так."
 
+#: export/ExportOGG.cpp:64
+msgid "Specify Ogg Vorbis Options"
+msgstr ""
+
+#: export/ExportOGG.cpp:81
+msgid "Ogg Vorbis Export Setup"
+msgstr ""
+
+#: export/ExportOGG.cpp:227
+msgid "Quality:"
+msgstr "Якість:"
+
+#: export/ExportOGG.cpp:155
+msgid "Ogg Vorbis Files"
+msgstr ""
+
 #: export/ExportOGG.cpp:123
 msgid "Exporting the selected audio as Ogg Vorbis"
 msgstr "Виділене експортується у файл Ogg Vorbis"
@@ -5242,40 +5735,13 @@ msgstr "Виділене експортується у файл Ogg Vorbis"
 msgid "Exporting the entire project as Ogg Vorbis"
 msgstr "Весь проект експортується у файл Ogg Vorbis"
 
-#: export/ExportOGG.cpp:206
-msgid "Specify OGG Options"
-msgstr "Визначити параметри OGG"
+#: export/ExportOGG.cpp:347
+msgid "Edit the metadata for the OGG file"
+msgstr ""
 
-#: export/ExportOGG.cpp:222
-msgid "OGG Export Setup"
-msgstr "Параметри експортування OGG"
-
-#: export/ExportOGG.cpp:227
-msgid "Quality:"
-msgstr "Якість:"
-
-#: export/ExportPCM.cpp:84
-msgid "Cannot export audio in this format."
-msgstr "Не вдається експортувати дані у цьому форматі."
-
-#: export/ExportPCM.cpp:116
-#, c-format
-msgid "Exporting the selected audio as a %s file"
-msgstr "Виділене експортується у файл %s"
-
-#: export/ExportPCM.cpp:118
-#, c-format
-msgid "Exporting the entire project as a %s file"
-msgstr "Весь проект експортується у файл %s"
-
-#: export/ExportPCM.cpp:151
-#, c-format
-msgid "Error (file may not have been written): %hs"
-msgstr "Помилка (можливо, файл не записано): %s"
-
-#: export/ExportPCM.cpp:184
-msgid "Specify WAV Options"
-msgstr "Визначити параметри WAV"
+#: export/ExportPCM.cpp:115
+msgid "Specify PCM Options"
+msgstr ""
 
 #: export/ExportPCM.cpp:240
 msgid "Uncompressed Export Setup"
@@ -5297,83 +5763,96 @@ msgstr "Кодування:"
 msgid "(Not all combinations of headers and encodings are possible.)"
 msgstr "(Не усі комбінації заголовків та кодувань є припустимими.)"
 
+#: export/Export.cpp:242
+msgid "WAV, AIFF, and other uncompressed types"
+msgstr "WAV, AIFF, та інші типи без стискання"
+
+#: export/ExportPCM.cpp:84
+msgid "Cannot export audio in this format."
+msgstr "Не вдається експортувати дані у цьому форматі."
+
+#: export/ExportPCM.cpp:400
+#, c-format
+msgid "Exporting the selected audio as %s"
+msgstr ""
+
+#: export/ExportPCM.cpp:402
+#, c-format
+msgid "Exporting the entire project as %s"
+msgstr ""
+
+#: export/ExportPCM.cpp:151
+#, c-format
+msgid "Error (file may not have been written): %hs"
+msgstr "Помилка (можливо, файл не записано): %s"
+
+#: export/ExportPCM.cpp:462
+msgid "Edit the metadata for the uncompressed file"
+msgstr ""
+
 #: import/Import.cpp:177
 #, c-format
 msgid "This version of Audacity was not compiled with %s support."
 msgstr "Ця версія Audacity була зібрана без підтримки %s."
 
-#: import/Import.cpp:190
-msgid ""
-" is an audio CD file. \n"
-"Audacity does not open this type of file.\n"
-"Try ripping it to a native audio format that Audacity can import."
+#: import/Import.cpp:167
+msgid " is an audio CD track. \n"
+"Audacity cannot open audio CDs directly. \n"
+"Extract (rip) the CD tracks to an audio format that \n"
+"Audacity can import, such as WAV or AIFF."
 msgstr ""
-" є файлом аудіо-CD. \n"
-"Audacity не відкриває файли цього формату.\n"
-"Спробуйте перетворити його у файл, формат якого підтримується Audacity."
 
-#: import/Import.cpp:197
-msgid ""
-" is a playlist file.\n"
-"Audacity cannot open this file because it only contains links to other "
-"files.\n"
-"You may be able to open it in a text editor and download the actual audio "
-"files."
-msgstr ""
-" є файлом списку програвання.\n"
-"Audacity не може відкрити цей файл, оскільки він містить тільки посилання на "
-"файли.\n"
-"Ви можете відкрити його у текстовому редакторі та звантажити справжні "
-"звукові файли."
+#: import/Import.cpp:174
+#, fuzzy
+msgid " is a playlist file. \n"
+"Audacity cannot open this file because it only contains links to other files. \n"
+"You may be able to open it in a text editor and download the actual audio files."
+msgstr " є файлом списку програвання.\n"
+"Audacity не може відкрити цей файл, оскільки він містить тільки посилання на файли.\n"
+"Ви можете відкрити його у текстовому редакторі та звантажити справжні звукові файли."
 
-#: import/Import.cpp:203
-msgid ""
-" is a Windows Media Audio file. \n"
-"Audacity cannot open this type of file to due to patent restrictions.\n"
-"You need to convert it to a supported audio format."
+#: import/Import.cpp:180
+msgid " is a Windows Media Audio file. \n"
+"Audacity cannot open this type of file due to patent restrictions. \n"
+"You need to convert it to a supported audio format, such as WAV or AIFF."
 msgstr ""
-" є файлом Windows Media Audio. \n"
-"Audacity не може відкривати цей тип файлів через патентні обмеження.\n"
-"Треба перетворити файл у підтримуваний формат."
 
-#: import/Import.cpp:209
-msgid ""
-" is an Advanced Audio Coding file. \n"
-"Audacity cannot open this type of file.\n"
-"You need to convert it to a supported audio format."
+#: import/Import.cpp:186
+msgid " is an Advanced Audio Coding file. \n"
+"Audacity cannot open this type of file. \n"
+"You need to convert it to a supported audio format, such as WAV or AIFF."
 msgstr ""
-" є файлом Advanced Audio Coding. \n"
-"Audacity не може відкривати цей тип файлів.\n"
-"Треба перетворити файл у підтримуваний формат."
 
-#: import/Import.cpp:215
-msgid ""
-" is an encrypted audio file, typically from an online music store. \n"
-"Audacity cannot open this type of file due to the encryption.\n"
-"You need to convert it to a supported, unencrypted audio format."
+#: import/Import.cpp:192
+msgid " is an encrypted audio file. These typically are from an online music store. \n"
+"Audacity cannot open this type of file due to the encryption. \n"
+"Try recording the file into Audacity, or burn it to audio CD then \n"
+"extract the CD track to a supported audio format such as WAV or AIFF."
 msgstr ""
-" є шифрованим звуковим файлом, зазвичай з музичного магазину. \n"
-"Audacity не може відкрити цей тип файлів через шифрування.\n"
-"Ви маєте перетворити його у підтримуваний, нешифрований формат."
+
+#: import/Import.cpp:198
+msgid " is a RealPlayer media file. \n"
+"Audacity cannot open this proprietary format. \n"
+"You need to convert it to a supported audio format, such as WAV or AIFF."
+msgstr ""
 
 #: import/Import.cpp:221
-msgid ""
-" is a RealPlayer media file. \n"
-"Audacity cannot open this proprietary format.\n"
-"You need to convert it to a supported audio format."
+msgid "Audacity had to make a guess at the type of file.\n"
+"The Audio may be bogus.\n"
+"\n"
+"If the audio is bogus, try renaming the file\n"
+"so that it has the correct extension before opening it."
 msgstr ""
-" є файлом звуку RealPlayer. \n"
-"Audacity не може відкривати цей патентований формат.\n"
-"Треба перетворити файл у підтримуваний формат."
 
 #: import/Import.cpp:226
-msgid ""
-"Audacity did not recognize the type of this file.\n"
+msgid "Audacity did not recognize the type of this file.\n"
 "If it is uncompressed, try importing it using \"Import Raw\""
+msgstr "Програмі не вдається розпізнати тип цього файлу.\n"
+"Якщо цей файл не є стисненим, спробуйте імпортувати його як файл необроблених даних."
+
+#: import/ImportFLAC.cpp:35
+msgid "FLAC files"
 msgstr ""
-"Програмі не вдається розпізнати тип цього файлу.\n"
-"Якщо цей файл не є стисненим, спробуйте імпортувати його як файл "
-"необроблених даних."
 
 #: import/ImportLOF.cpp:172 import/ImportLOF.cpp:222
 msgid "List of Files in basic text format"
@@ -5397,9 +5876,7 @@ msgstr "Неправильна тривалість LOF-файлі."
 
 #: import/ImportLOF.cpp:413
 msgid "MIDI tracks cannot be offset individually, only audio files can be."
-msgstr ""
-"Для MIDI-доріжок окремий відступ неможливий, таке можна робити лише з "
-"звуковими файлами."
+msgstr "Для MIDI-доріжок окремий відступ неможливий, таке можна робити лише з звуковими файлами."
 
 #. i18n-hint: You do not need to translate "LOF"
 #: import/ImportLOF.cpp:433
@@ -5413,6 +5890,14 @@ msgstr "Помилка при розборі файлу у форматі Allegr
 #: import/ImportMIDI.cpp:76
 msgid "Error parsing MIDI file."
 msgstr "Помилка при розборі MIDI файлу."
+
+#: import/ImportMP3.cpp:78
+msgid "MP3 files"
+msgstr ""
+
+#: import/ImportOGG.cpp:35
+msgid "Ogg Vorbis files"
+msgstr ""
 
 #: import/ImportOGG.cpp:138
 msgid "Media read error"
@@ -5433,6 +5918,15 @@ msgstr "Помилковий заголовок потоку Vorbis"
 #: import/ImportOGG.cpp:150
 msgid "Internal logic fault"
 msgstr "Внутрішня логічна помилка"
+
+#: Project.cpp:2357 import/ImportPCM.cpp:361
+#, c-format
+msgid "Importing %s File..."
+msgstr "Імпортується файл %s..."
+
+#: import/ImportQT.cpp:21
+msgid "QuickTime files"
+msgstr ""
 
 #: import/ImportRaw.cpp:277
 msgid "Import Raw Data"
@@ -5487,6 +5981,10 @@ msgstr "Величина яку імпортувати:"
 msgid "Sample rate:"
 msgstr "Частота дискретизації:"
 
+#: import/ImportRaw.cpp:447
+msgid "&Import"
+msgstr ""
+
 #: prefs/AudioIOPrefs.cpp:41 prefs/AudioIOPrefs.cpp:42
 msgid "Audio I/O"
 msgstr "Ввід/вивід звуку"
@@ -5533,25 +6031,36 @@ msgid "&Play other tracks while recording new one"
 msgstr "Від&творювати інші доріжки при записі нової"
 
 #: prefs/AudioIOPrefs.cpp:150
-msgid "&Hardware Playthrough (Play new track while recording it)"
-msgstr "&Наскрізний канал (відтворювати нову доріжку під час її запису)"
-
-#: prefs/AudioIOPrefs.cpp:153
-msgid "&Software Playthrough (Play new track while recording it)"
+msgid "&Hardware Playthrough: Play new track while recording it"
 msgstr ""
-"&Програмний Наскрізний канал (відтворювати нову доріжку під час її запису)"
+
+#: prefs/AudioIOPrefs.cpp:152
+msgid "&Software Playthrough: Play new track while recording it"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:155
+msgid "&Software Playthrough: Play new track while recording it (uncheck when recording \"stereo mix\")"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:194
+msgid "Effects Preview"
+msgstr "Прослуховування ефекту"
+
+#: prefs/AudioIOPrefs.cpp:165
+msgid "Length of preview:"
+msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:158
 msgid "Cut Preview"
 msgstr "Прослуховування результату вирізання"
 
-#: prefs/AudioIOPrefs.cpp:161
-msgid "Play before cut region:"
-msgstr "Область програвання до вирізання:"
+#: prefs/AudioIOPrefs.cpp:173
+msgid "Preview before cut region:"
+msgstr ""
 
-#: prefs/AudioIOPrefs.cpp:163
-msgid "Play after cut region:"
-msgstr "Область програвання після вирізання:"
+#: prefs/AudioIOPrefs.cpp:175
+msgid "Preview after cut region:"
+msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:168
 msgid "Latency"
@@ -5561,17 +6070,13 @@ msgstr "Затримка"
 msgid "Audio to buffer:"
 msgstr "Аудіо для буферизації:"
 
-#: prefs/AudioIOPrefs.cpp:175 prefs/AudioIOPrefs.cpp:178
-msgid "milliseconds"
-msgstr "мілісекунд"
-
 #: prefs/AudioIOPrefs.cpp:177
 msgid "Latency correction:"
 msgstr "Коригування затримки:"
 
-#: prefs/AudioIOPrefs.cpp:184
-msgid "Seek Time"
-msgstr "Крок прокрутки"
+#: prefs/AudioIOPrefs.cpp:197
+msgid "Seek Time when playing"
+msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:187
 msgid "Short period:"
@@ -5581,14 +6086,6 @@ msgstr "Короткий проміжок:"
 msgid "Long period:"
 msgstr "Довгий проміжок:"
 
-#: prefs/AudioIOPrefs.cpp:194
-msgid "Effects Preview"
-msgstr "Прослуховування ефекту"
-
-#: prefs/AudioIOPrefs.cpp:197
-msgid "Play when previewing:"
-msgstr "Відтворювати при прослуховуванні:"
-
 #: prefs/BatchPrefs.cpp:53 prefs/BatchPrefs.cpp:54
 msgid "Batch"
 msgstr "Пакет"
@@ -5597,17 +6094,13 @@ msgstr "Пакет"
 msgid "Behaviors"
 msgstr "Поведінка"
 
-#: prefs/BatchPrefs.cpp:77
-msgid "&Batch debug mode"
-msgstr "&Налагодження пакетного режиму"
+#: prefs/BatchPrefs.cpp:80
+msgid "&Don't apply effects in batch mode"
+msgstr ""
 
 #: prefs/BatchPrefs.cpp:79
 msgid "&Normalize on load"
 msgstr "&Нормалізувати під час завантаження"
-
-#: prefs/BatchPrefs.cpp:81
-msgid "&Prompt to save, even if empty"
-msgstr "&Підказувати про збереження, навіть якщо нічого"
 
 #: prefs/BatchPrefs.cpp:83
 msgid "Cl&eanSpeech Mode (Customized GUI)"
@@ -5659,8 +6152,8 @@ msgid "Audio cache"
 msgstr "Кеш аудіо"
 
 #: prefs/DirectoriesPrefs.cpp:112
-msgid "Always hold all audio data in memory"
-msgstr "Завжди тримати всі аудіо дані у пам'яті"
+msgid "Hold recorded data in memory until recording is stopped"
+msgstr ""
 
 #: prefs/DirectoriesPrefs.cpp:121
 msgid "Choose a location to place the temporary directory"
@@ -5681,12 +6174,8 @@ msgid "Directory %s is not writable"
 msgstr "Немає прав на запис у каталог %s"
 
 #: prefs/DirectoriesPrefs.cpp:198
-msgid ""
-"Changes to temporary directory will not take effect until Audacity is "
-"restarted"
-msgstr ""
-"Зміни каталогу для зберігання тимчасових файлів не наберуть сили, доки "
-"програму Audacity не буде перезавантажено."
+msgid "Changes to temporary directory will not take effect until Audacity is restarted"
+msgstr "Зміни каталогу для зберігання тимчасових файлів не наберуть сили, доки програму Audacity не буде перезавантажено."
 
 #: prefs/FileFormatPrefs.cpp:47 prefs/FileFormatPrefs.cpp:48
 msgid "File Formats"
@@ -5712,6 +6201,14 @@ msgstr "Збереження проекту, що залежить від інш
 msgid "&Ask user"
 msgstr "&Питати користувача"
 
+#: Dependencies.cpp:321 prefs/FileFormatPrefs.cpp:88
+msgid "Always &copy all audio (safest)"
+msgstr "Завжди &копіювати всі звукові дані (найбезпечніше)"
+
+#: Dependencies.cpp:322 prefs/FileFormatPrefs.cpp:89
+msgid "&Never copy any audio"
+msgstr "&Ніколи нічого не копіювати"
+
 #: prefs/FileFormatPrefs.cpp:93
 msgid "When exporting tracks"
 msgstr "Експорт доріжок"
@@ -5721,8 +6218,8 @@ msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
 msgstr "Зав&жди мікшувати всі доріжки до стерео або моно каналів."
 
 #: prefs/FileFormatPrefs.cpp:97
-msgid "&Use Advanced Mixing Options"
-msgstr "&Використовувати додаткові параметри мікшування"
+msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
+msgstr ""
 
 #: prefs/FileFormatPrefs.cpp:104
 msgid "MP3 Library Version:"
@@ -5736,29 +6233,17 @@ msgstr "&Знайти бібліотеку"
 msgid "&Download free copy of LAME"
 msgstr "&Звантажити вільну копію LAME"
 
-#: prefs/FileFormatPrefs.cpp:123
-msgid "MP3 exporting plugin not found"
-msgstr "Не знайдено модуль експорту у MP3"
-
 #: prefs/GUIPrefs.cpp:33 prefs/GUIPrefs.cpp:34
 msgid "Interface"
 msgstr "Інтерфейс"
 
 #: prefs/GUIPrefs.cpp:72
-msgid "&Autoscroll while playing"
-msgstr "&Автопрокручування при відтворенні"
+msgid "&Update display while playing"
+msgstr ""
 
 #: prefs/GUIPrefs.cpp:74
-msgid "Al&ways allow pausing"
-msgstr "Зав&жди дозволяти паузи"
-
-#: prefs/GUIPrefs.cpp:76
-msgid "&Update spectrogram while playing"
-msgstr "&Оновлювати спектрограму під час відтворення"
-
-#: prefs/GUIPrefs.cpp:78
-msgid "&Quit Audacity upon closing last window"
-msgstr "Ви&ходити з Audacity після закриття останнього вікна"
+msgid "Any Close/Exit command completely &quits Audacity"
+msgstr ""
 
 #: prefs/GUIPrefs.cpp:80
 msgid "&Dragging of left and right selection edges"
@@ -5768,13 +6253,13 @@ msgstr "&Перетягування лівого та правого обмеж�
 msgid "&Ergonomic order of audio I/O buttons"
 msgstr "&Ергономічний порядок кнопок аудіо введення/виведення"
 
-#: prefs/GUIPrefs.cpp:84
-msgid "Tracks &fit vertically zoomed"
-msgstr "Вертикально масштабовані доріжки"
+#: prefs/GUIPrefs.cpp:80
+msgid "Automatically &fit tracks vertically zoomed"
+msgstr ""
 
-#: prefs/GUIPrefs.cpp:86
-msgid "&Circular track keyboard navigation"
-msgstr "Кругове пересування доріжками з клавіатури"
+#: prefs/GUIPrefs.cpp:82
+msgid "\"Move track focus\" &cycles repeatedly through tracks"
+msgstr ""
 
 #: prefs/GUIPrefs.cpp:88
 msgid "&Present track number to accessibility aid"
@@ -5784,6 +6269,14 @@ msgstr "&Номер поточної доріжки для зручності д
 msgid "Editing a &clip can move other clips"
 msgstr "Редагування відрізку може пересувати інші"
 
+#: prefs/GUIPrefs.cpp:88
+msgid "&Select all audio in project, if none selected"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:90
+msgid "&Beep on completion of longer activities"
+msgstr ""
+
 #: prefs/GUIPrefs.cpp:96
 msgid "Enable cut &lines"
 msgstr "Дозволити &лінії розрізання"
@@ -5791,6 +6284,14 @@ msgstr "Дозволити &лінії розрізання"
 #: prefs/GUIPrefs.cpp:98
 msgid "Show warnings about &temp files"
 msgstr "Показати попередження про &тимчасові файли"
+
+#: prefs/GUIPrefs.cpp:100
+msgid "&Show prompt to save, even if project is empty"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:102
+msgid "Show Welcome Message at program start up"
+msgstr ""
 
 #: prefs/GUIPrefs.cpp:103
 msgid "Language"
@@ -5836,15 +6337,9 @@ msgstr "Прив'язка до клавіш"
 msgid "S&et"
 msgstr "В&становити"
 
-#: prefs/KeyConfigPrefs.cpp:116
-msgid "&Clear"
-msgstr "&Очистити"
-
 #: prefs/KeyConfigPrefs.cpp:120
 msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
-msgstr ""
-"Примітка: натиснення комбінації клавіш Cmd+Q призведе до завершення. Усі "
-"інші комбінації є дійсними."
+msgstr "Примітка: натиснення комбінації клавіш Cmd+Q призведе до завершення. Усі інші комбінації є дійсними."
 
 #: prefs/KeyConfigPrefs.cpp:124 prefs/ThemePrefs.cpp:102
 msgid "&Defaults"
@@ -5876,12 +6371,10 @@ msgstr "Помилка при завантаженні комбінацій кл
 
 #: prefs/KeyConfigPrefs.cpp:241
 #, c-format
-msgid ""
-"The keyboard shortcut '%s' is already assigned to:\n"
+msgid "The keyboard shortcut '%s' is already assigned to:\n"
 "\n"
 "'%s'"
-msgstr ""
-"Гарячу клавішу '%s' уже призначено для:\n"
+msgstr "Гарячу клавішу '%s' уже призначено для:\n"
 "\n"
 "'%s'"
 
@@ -5939,6 +6432,22 @@ msgstr "Розширити виділену область"
 msgid "Shift-Left-Click"
 msgstr "Shift-Стрілка ліворуч-Клацання"
 
+#: prefs/MousePrefs.cpp:101
+msgid "Left-Double-Click"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:101
+msgid "Select Clip or Entire Track"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:102
+msgid "Ctrl-Left-Click"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:102
+msgid "Set Selection Point and Play"
+msgstr ""
+
 #: prefs/MousePrefs.cpp:102 prefs/MousePrefs.cpp:103 prefs/MousePrefs.cpp:104
 #: prefs/MousePrefs.cpp:105
 msgid "Zoom"
@@ -5971,6 +6480,22 @@ msgstr "Права клавіша - Перетягування"
 #: prefs/MousePrefs.cpp:105
 msgid "same as left-drag"
 msgstr "теж, що і клацання лівою і перетаскування"
+
+#: prefs/MousePrefs.cpp:108
+msgid "Shift-Drag"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:108
+msgid "Zoom out on a Range"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:109
+msgid "Middle-Click"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:109
+msgid "Zoom default"
+msgstr ""
 
 #: prefs/MousePrefs.cpp:107
 msgid "Time shift clip or move up/down between tracks"
@@ -6045,6 +6570,14 @@ msgstr "Прокрутити вгору чи вниз"
 #: prefs/MousePrefs.cpp:123
 msgid "Wheel-Rotate"
 msgstr "Обертання колеса"
+
+#: prefs/MousePrefs.cpp:128
+msgid "Scroll left or right"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:128
+msgid "Shift-Wheel-Rotate"
+msgstr ""
 
 #: prefs/MousePrefs.cpp:124
 msgid "Ctrl-Wheel-Rotate"
@@ -6121,6 +6654,18 @@ msgstr "У реальному часу:"
 #: prefs/QualityPrefs.cpp:171
 msgid "High-quality:"
 msgstr "Висока якість:"
+
+#: prefs/SmartRecordPrefs.cpp:54 prefs/SmartRecordPrefs.cpp:55
+msgid "Smart Recording"
+msgstr ""
+
+#: prefs/SmartRecordPrefs.cpp:81 prefs/SmartRecordPrefs.cpp:83
+msgid "Pause Recording on Silence"
+msgstr ""
+
+#: prefs/SmartRecordPrefs.cpp:86
+msgid "Silence level (dB):"
+msgstr ""
 
 #: prefs/SpectrumPrefs.cpp:36 prefs/SpectrumPrefs.cpp:37
 msgid "Spectrograms"
@@ -6215,8 +6760,7 @@ msgid "Info"
 msgstr "Інформація"
 
 #: prefs/ThemePrefs.cpp:126
-msgid ""
-"Themability is an experimental feature.\n"
+msgid "Themability is an experimental feature.\n"
 "\n"
 "To try it out, click \"Save Theme Cache\" then\n"
 "find and modify the images and colors in \n"
@@ -6229,8 +6773,7 @@ msgid ""
 "[Only the control toolbar and the colors on the \n"
 "wavetrack are currently affected, even though the\n"
 "image file shows other icons too.]\n"
-msgstr ""
-"Зміна тем є експериментальною.\n"
+msgstr "Зміна тем є експериментальною.\n"
 "\n"
 "Щоб спробувати її, клацніть \"Зберегти Кеш Тем\" потім\n"
 "знайдіть та змініть зображення та кольори у \n"
@@ -6245,35 +6788,29 @@ msgstr ""
 "зображень показують також інші значки.]\n"
 
 #: prefs/ThemePrefs.cpp:131
-msgid ""
-"You have compiled Audacity with an extra button, \n"
+msgid "You have compiled Audacity with an extra button, \n"
 "'Output Sourcery'.  This will save a C version of \n"
 "the image cache that can be compiled in as a default.\n"
-msgstr ""
-"Ви зібрали Audacity з додатковою кнопкою, \n"
+msgstr "Ви зібрали Audacity з додатковою кнопкою, \n"
 "'Чарівник виведення'.  Він збереже C-версію \n"
 "кешу зображень, який потім може бути зібраний як типовий.\n"
 
 #: prefs/ThemePrefs.cpp:136
-msgid ""
-"If 'Load Theme Cache At Startup' is checked, then \n"
+msgid "If 'Load Theme Cache At Startup' is checked, then \n"
 "the Theme Cache will be loaded when the program \n"
 "starts up.\n"
 "\n"
-msgstr ""
-"Якщо обрано 'Завантажити кеш тем під час запуску', \n"
+msgstr "Якщо обрано 'Завантажити кеш тем під час запуску', \n"
 "кеш тем буде завантажено, коли програма \n"
 "запускатиметься.\n"
 "\n"
 
 #: prefs/ThemePrefs.cpp:139
-msgid ""
-"Saving and loading individual theme files uses a \n"
+msgid "Saving and loading individual theme files uses a \n"
 "separate file for each image, but is otherwise the \n"
 "same idea.\n"
 "\n"
-msgstr ""
-"Зберігання та завантаження файлів окремої теми \n"
+msgstr "Зберігання та завантаження файлів окремої теми \n"
 "використовує окремий файл для кожного зображення, \n"
 "але інакше ту ж ідею.\n"
 "\n"
@@ -6314,13 +6851,9 @@ msgstr "Clean Speech"
 msgid "Error while opening sound device. "
 msgstr "Помилка під час відкриття звукового пристрою. "
 
-#: toolbars/ControlToolBar.cpp:687
-msgid ""
-"CleanSpeech only allows recording mono tracks.\n"
-"Recording is not possible when more than one window is open."
+#: toolbars/ControlToolBar.cpp:696
+msgid "Recording in CleanSpeech mode is not possible when a track, or more than one project, is already open."
 msgstr ""
-"CleanSpeech дозволяє запис моно доріжок.\n"
-"Запис не можливий, коли відкрито більше за одне вікно."
 
 #: toolbars/ControlToolBar.cpp:688
 msgid "Recording not permitted"
@@ -6442,6 +6975,10 @@ msgstr "заховано"
 msgid "Audio Position:"
 msgstr "Позиція у аудіо:"
 
+#: toolbars/SelectionBar.cpp:217 toolbars/SelectionBar.cpp:222
+msgid "Snap To"
+msgstr ""
+
 #: toolbars/SelectionBar.cpp:226
 msgid "Selection "
 msgstr "Виділена область"
@@ -6481,9 +7018,7 @@ msgstr "Клацніть, щоб наблизити. Shift+клацання, щ�
 
 #: toolbars/ToolsToolBar.cpp:69
 msgid "Drag to Zoom Into Region, Right-Click to Zoom Out"
-msgstr ""
-"Перетягнути для наближення області, клацнути правою кнопкою миші для "
-"віддалення"
+msgstr "Перетягнути для наближення області, клацнути правою кнопкою миші для віддалення"
 
 #: toolbars/ToolsToolBar.cpp:71
 msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
@@ -6685,6 +7220,14 @@ msgstr "Ліворуч"
 msgid "Right"
 msgstr "Праворуч"
 
+#: widgets/ErrorDialog.cpp:73 widgets/ErrorDialog.cpp:97
+msgid "Help"
+msgstr ""
+
+#: widgets/ErrorDialog.cpp:190
+msgid "Help on the Internet"
+msgstr ""
+
 #: widgets/Grabber.cpp:61
 msgid "Grabber"
 msgstr "Захоплювач"
@@ -6736,13 +7279,11 @@ msgid "Preferences..."
 msgstr "Уподобання..."
 
 #: widgets/Meter.cpp:1037
-msgid ""
-"This determines how often the meter is refreshed.\n"
+msgid "This determines how often the meter is refreshed.\n"
 "If you have a slower PC you may want to select a\n"
 "lower refresh rate (30 per second or lower), so that\n"
 "audio qualtiy is not affected by the meter display."
-msgstr ""
-"Це визначає як часто оновлюється інжикатор.\n"
+msgstr "Це визначає як часто оновлюється інжикатор.\n"
 "Якщо Ви маєте слабкий ПК, Ви можливо захочете\n"
 "обрати нижчу чаастоту оновлення (30 за секунду \n"
 "чи нижчу), так щоб це не вплинуло на якість звуку."
@@ -6881,8 +7422,7 @@ msgstr "01000,01000 кадри|75"
 
 #: widgets/TimeTextCtrl.cpp:363
 msgid "Use right mouse button or context key to change format"
-msgstr ""
-"Використовуйте праву кнопку миші або контекстну клавішу для зміни формату"
+msgstr "Використовуйте праву кнопку миші або контекстну клавішу для зміни формату"
 
 #: widgets/TimeTextCtrl.cpp:1376
 msgid "Time Control"
@@ -6902,8 +7442,8 @@ msgstr "Не вдається відкрити файл: \"%s\""
 msgid "Error: %hs at line %d"
 msgstr "Помилка: %s у рядку %d"
 
-#: xml/XMLFileReader.cpp:80
-msgid "Unable to open project file."
-msgstr "Не вдається відкрити файл проекту."
-
+#: xml/XMLFileReader.cpp:79
+#, c-format
+msgid "Could not load file: \"%s\""
+msgstr ""
 
