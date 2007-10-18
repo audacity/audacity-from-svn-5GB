@@ -30,6 +30,7 @@
 #include "TranscriptionToolBar.h"
 
 #include "ControlToolBar.h"
+#include "../AudacityApp.h"
 #include "../AllThemeResources.h"
 #include "../AudioIO.h"
 #include "../Experimental.h"
@@ -74,6 +75,7 @@ BEGIN_EVENT_TABLE(TranscriptionToolBar, ToolBar)
    EVT_SLIDER(TTB_SensitivitySlider, TranscriptionToolBar::OnSensitivitySlider)
 
    EVT_CHOICE(TTB_KeyType, TranscriptionToolBar::SetKeyType)
+   EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEY, TranscriptionToolBar::OnCaptureKey)
 END_EVENT_TABLE()
    ;   //semicolon enforces  proper automatic indenting in emacs.
 
@@ -174,6 +176,14 @@ void TranscriptionToolBar::Populate()
    mPlaySpeedSlider->Set(1.0);
    mPlaySpeedSlider->SetLabel(_("Playback Speed"));
    Add( mPlaySpeedSlider, 0, wxALIGN_CENTER );
+   mPlaySpeedSlider->Connect(wxEVT_SET_FOCUS,
+                 wxFocusEventHandler(TranscriptionToolBar::OnFocus),
+                 NULL,
+                 this);
+   mPlaySpeedSlider->Connect(wxEVT_KILL_FOCUS,
+                 wxFocusEventHandler(TranscriptionToolBar::OnFocus),
+                 NULL,
+                 this);
 
 #ifdef EXPERIMENTAL_VOICE_DETECTION
    AddButton(bmpTnStartOn,     bmpTnStartOnDisabled,  TTB_StartOn,
@@ -235,6 +245,38 @@ void TranscriptionToolBar::Populate()
 
    // Add a little space
    Add(2, -1);
+}
+
+void TranscriptionToolBar::OnFocus(wxFocusEvent &event)
+{
+   wxCommandEvent e(EVT_CAPTURE_KEYBOARD);
+
+   if (event.GetEventType() == wxEVT_KILL_FOCUS) {
+      e.SetEventType(EVT_RELEASE_KEYBOARD);
+   }
+   e.SetEventObject(this);
+   GetParent()->GetEventHandler()->ProcessEvent(e);
+
+   Refresh(false);
+
+   event.Skip();
+}
+
+void TranscriptionToolBar::OnCaptureKey(wxCommandEvent &event)
+{
+   wxKeyEvent *kevent = (wxKeyEvent *)event.GetEventObject();
+   int keyCode = kevent->GetKeyCode();
+
+   // Pass LEFT/RIGHT/UP/DOWN/PAGEUP/PAGEDOWN through for input/output sliders
+   if (FindFocus() == mPlaySpeedSlider && (keyCode == WXK_LEFT || keyCode == WXK_RIGHT
+                                    || keyCode == WXK_UP || keyCode == WXK_DOWN
+                                    || keyCode == WXK_PAGEUP || keyCode == WXK_PAGEDOWN)) {
+      return;
+   }
+
+   event.Skip();
+
+   return;
 }
 
 //This handles key-stroke events????
