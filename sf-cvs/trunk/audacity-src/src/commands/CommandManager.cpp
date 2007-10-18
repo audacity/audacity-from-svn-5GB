@@ -728,6 +728,9 @@ void CommandManager::TellUserWhyDisallowed( wxUint32 flagsGot, wxUint32 flagsReq
       reason = _("You must first select some audio for this to use.");
    else if( missingFlags & WaveTracksSelectedFlag)
       reason = _("You must first select some audio for this\n to use. [Selecting other kinds of track won't work.]");
+   // If the only thing wrong was no tracks, we do nothing and don't report a problem
+   else if( missingFlags == TracksExistFlag )
+      return;
 
    wxMessageBox(reason, _("Message"),  wxICON_WARNING | wxOK ); 
 }
