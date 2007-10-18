@@ -247,7 +247,7 @@ bool FindClippingDialog::TransferDataFromWindow()
    EffectDialog::TransferDataFromWindow();
 
    if (mEffect->mStart <= 0 || mEffect->mStop <= 0) {
-      wxMessageBox(_("Start and stop must be positive and greater than 0."));
+      wxMessageBox(_("Start and stop must be greater than 0."));
       return false;
    }
 

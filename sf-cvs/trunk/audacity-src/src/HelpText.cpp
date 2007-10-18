@@ -162,7 +162,7 @@ _("the right edge of the scale. ")+
 wxT("<br><br>")+
 _("There is more help if you're stuck: our Recording FAQs, our Tutorial  \"Your ")+
 _("First Recording\" in the Manual, and our Wiki ")+WikiLink(wxT("Recording Tips"))+ _(" especially ")+
-_("the ")+ WikiLink(wxT("Troubleshooting"))+ _(" section. ")+
+_("the ")+ WikiLink(wxT("Troubleshooting Recordings"))+ _(" section. ")+
 wxT("<br><br>")+
 ToWelcome()
          );
