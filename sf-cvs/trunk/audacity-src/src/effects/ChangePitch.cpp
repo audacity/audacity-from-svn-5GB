@@ -249,6 +249,8 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxALL, 8);
 
    pStaticText = new wxStaticText(this, -1, 
+         /* i18n-hint: && in here is an escape character to get a single & on
+          * screen, so keep it as is */
 												_("by Vaughan Johnson && Dominic Mazzoni"),
 												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxTOP | wxLEFT | wxRIGHT, 8);

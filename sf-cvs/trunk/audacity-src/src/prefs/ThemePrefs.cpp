@@ -88,6 +88,8 @@ void ThemePrefs::PopulateOrExchange( ShuttleGui & S)
 {
    S.StartHorizontalLay(wxEXPAND,1);
    S.StartVerticalLay(0);
+   /* i18n-hint: && in here is an escape character to get a single & on screen,
+	* so keep it as is */
    S.StartStatic( _("Theme Cache - Images && Color"));
    {
       S.Id( idSaveThemeCache ).AddButton( _("Save Theme Cache"));
