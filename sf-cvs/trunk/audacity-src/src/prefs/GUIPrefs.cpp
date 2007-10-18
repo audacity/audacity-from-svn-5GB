@@ -99,7 +99,7 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("/GUI/WarnAboutTempFiles"), true );
       S.TieCheckBox( _("&Show prompt to save, even if project is empty"),    
          wxT("/GUI/EmptyCanBeDirty"), true );
-      S.TieCheckBox( _("Show Splash Screen at program start up"),    
+      S.TieCheckBox( _("Show Welcome Message at program start up"),    
          wxT("/GUI/ShowSplashScreen"), true );
    }
    S.EndStatic();

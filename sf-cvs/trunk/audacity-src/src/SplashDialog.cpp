@@ -29,6 +29,7 @@ most commonly asked questions about Audacity.
 #include <wx/sizer.h>
 #include <wx/statbmp.h>
 #include <wx/intl.h>
+#include <wx/image.h>
 
 #include "SplashDialog.h"
 #include "FileNames.h"
@@ -75,10 +76,21 @@ void SplashDialog::Populate( ShuttleGui & S )
 
    //vvv For now, change to AudacityLogoWithName via old-fashioned ways, not Theme.
    m_pLogo = new wxBitmap((const char **) AudacityLogoWithName_xpm); //vvv
+
+   // JKC: Resize to 50% of size.  Later we may use a smaller xpm as
+   // our source, but this allows us to tweak the size - if we want to.
+   // It also makes it easier to revert to full size if we decide to.
+   const float fScale=0.5f;// smaller size.
+   wxImage RescaledImage( m_pLogo->ConvertToImage() );
+   // wxIMAGE_QUALITY_HIGH not supported by wxWidgets 2.6.1, or we would use it here.
+   RescaledImage.Rescale( LOGOWITHNAME_WIDTH * fScale, LOGOWITHNAME_HEIGHT *fScale );
+   wxBitmap RescaledBitmap( RescaledImage );
    m_pIcon =
        new wxStaticBitmap(S.GetParent(), -1, 
-                          *m_pLogo, //vvv theTheme.Bitmap(bmpAudacityLogoWithName), 
-                          wxDefaultPosition, wxSize(LOGOWITHNAME_WIDTH, LOGOWITHNAME_HEIGHT));
+                          //*m_pLogo, //vvv theTheme.Bitmap(bmpAudacityLogoWithName), 
+                          RescaledBitmap,
+                          wxDefaultPosition, wxSize(LOGOWITHNAME_WIDTH*fScale, LOGOWITHNAME_HEIGHT*fScale));
+
    S.Prop(0).AddWindow( m_pIcon );
 
    wxHtmlWindow *html = new LinkingHtmlWindow(S.GetParent(), -1,
