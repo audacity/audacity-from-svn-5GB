@@ -38,6 +38,9 @@ class MixerToolBar:public ToolBar {
    virtual void Repaint(wxDC *dc) {};
    virtual void EnableDisableButtons() {};
 
+   void OnFocus(wxFocusEvent &event);
+   void OnCaptureKey(wxCommandEvent &event);
+
    void OnSlider(wxCommandEvent & event);
 
  private:

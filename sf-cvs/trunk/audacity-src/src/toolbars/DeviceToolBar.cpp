@@ -29,6 +29,8 @@
 #include <wx/tooltip.h>
 #endif
 
+#include "../AudacityApp.h"
+
 #include "DeviceToolBar.h"
 
 #include "../AColor.h"
@@ -47,6 +49,7 @@ IMPLEMENT_CLASS(DeviceToolBar, ToolBar);
 
 BEGIN_EVENT_TABLE(DeviceToolBar, ToolBar)
    EVT_CHOICE(wxID_ANY, DeviceToolBar::OnChoice)
+   EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEY, DeviceToolBar::OnCaptureKey)
 END_EVENT_TABLE()
 
 //Standard contructor
@@ -136,11 +139,62 @@ void DeviceToolBar::Populate()
    mInput->SetToolTip(_("Input Device"));
 #endif
    Add(mInput, 0, wxALIGN_CENTER);
-
    if (inputs.GetCount() == 0)
       mInput->Enable(false);
 
+   mOutput->Connect(wxEVT_SET_FOCUS,
+                 wxFocusEventHandler(DeviceToolBar::OnFocus),
+                 NULL,
+                 this);
+   mOutput->Connect(wxEVT_KILL_FOCUS,
+                 wxFocusEventHandler(DeviceToolBar::OnFocus),
+                 NULL,
+                 this);
+   mInput->Connect(wxEVT_SET_FOCUS,
+                 wxFocusEventHandler(DeviceToolBar::OnFocus),
+                 NULL,
+                 this);
+   mInput->Connect(wxEVT_KILL_FOCUS,
+                 wxFocusEventHandler(DeviceToolBar::OnFocus),
+                 NULL,
+                 this);
+
    UpdatePrefs();
+}
+
+void DeviceToolBar::OnFocus(wxFocusEvent &event)
+{
+   wxCommandEvent e(EVT_CAPTURE_KEYBOARD);
+
+   if (event.GetEventType() == wxEVT_KILL_FOCUS) {
+      e.SetEventType(EVT_RELEASE_KEYBOARD);
+   }
+   e.SetEventObject(this);
+   GetParent()->GetEventHandler()->ProcessEvent(e);
+
+   Refresh(false);
+
+   event.Skip();
+}
+
+void DeviceToolBar::OnCaptureKey(wxCommandEvent &event)
+{
+   wxKeyEvent *kevent = (wxKeyEvent *)event.GetEventObject();
+   int keyCode = kevent->GetKeyCode();
+
+   // Pass UP/DOWN/LEFT/RIGHT through for input/output choice
+   if (FindFocus() == mOutput && (keyCode == WXK_LEFT || keyCode == WXK_RIGHT
+                                 || keyCode == WXK_UP || keyCode == WXK_DOWN)) {
+      return;
+   }
+   if (FindFocus() == mInput && (keyCode == WXK_LEFT || keyCode == WXK_RIGHT
+                                 || keyCode == WXK_UP || keyCode == WXK_DOWN)) {
+      return;
+   }
+
+   event.Skip();
+
+   return;
 }
 
 void DeviceToolBar::UpdatePrefs()

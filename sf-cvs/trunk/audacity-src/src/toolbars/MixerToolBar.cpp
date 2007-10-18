@@ -31,6 +31,7 @@
 
 #include "MixerToolBar.h"
 
+#include "../AudacityApp.h"
 #include "../AColor.h"
 #include "../AllThemeResources.h"
 #include "../AudioIO.h"
@@ -51,6 +52,7 @@ BEGIN_EVENT_TABLE(MixerToolBar, ToolBar)
    EVT_SLIDER(wxID_ANY, MixerToolBar::SetMixer)
    EVT_SLIDER(wxID_ANY, MixerToolBar::SetMixer)
    EVT_CHOICE(wxID_ANY, MixerToolBar::SetMixer)
+   EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEY, MixerToolBar::OnCaptureKey)
 END_EVENT_TABLE()
 
 //Standard contructor
@@ -106,6 +108,24 @@ void MixerToolBar::Populate()
 
    mInputSourceChoice = NULL;
 
+   // this bit taken from SelectionBar::Populate()
+   mOutputSlider->Connect(wxEVT_SET_FOCUS,
+                 wxFocusEventHandler(MixerToolBar::OnFocus),
+                 NULL,
+                 this);
+   mOutputSlider->Connect(wxEVT_KILL_FOCUS,
+                 wxFocusEventHandler(MixerToolBar::OnFocus),
+                 NULL,
+                 this);
+   mInputSlider->Connect(wxEVT_SET_FOCUS,
+                 wxFocusEventHandler(MixerToolBar::OnFocus),
+                 NULL,
+                 this);
+   mInputSlider->Connect(wxEVT_KILL_FOCUS,
+                 wxFocusEventHandler(MixerToolBar::OnFocus),
+                 NULL,
+                 this);
+
 #if USE_PORTMIXER
    wxArrayString inputSources = gAudioIO->GetInputSourceNames();
 
@@ -116,6 +136,10 @@ void MixerToolBar::Populate()
                                      inputSources);
    mInputSourceChoice->SetName(_("Input Source"));
    Add(mInputSourceChoice, 0, wxALIGN_CENTER | wxLEFT, 2);
+   mInputSourceChoice->Connect(wxEVT_SET_FOCUS,
+                 wxFocusEventHandler(MixerToolBar::OnFocus),
+                 NULL,
+                 this);
 
    // Set choice control to default value
    float inputVolume;
@@ -133,6 +157,49 @@ void MixerToolBar::Populate()
 
    // Add a little space
    Add(2, -1);
+}
+
+//Also from SelectionBar;
+void MixerToolBar::OnFocus(wxFocusEvent &event)
+{
+   wxCommandEvent e(EVT_CAPTURE_KEYBOARD);
+
+   if (event.GetEventType() == wxEVT_KILL_FOCUS) {
+      e.SetEventType(EVT_RELEASE_KEYBOARD);
+   }
+   e.SetEventObject(this);
+   GetParent()->GetEventHandler()->ProcessEvent(e);
+
+   Refresh(false);
+
+   event.Skip();
+}
+
+void MixerToolBar::OnCaptureKey(wxCommandEvent &event)
+{
+   wxKeyEvent *kevent = (wxKeyEvent *)event.GetEventObject();
+   int keyCode = kevent->GetKeyCode();
+
+   // Pass LEFT/RIGHT/UP/DOWN/PAGEUP/PAGEDOWN through for input/output sliders
+   if (FindFocus() == mOutputSlider && (keyCode == WXK_LEFT || keyCode == WXK_RIGHT
+                                    || keyCode == WXK_UP || keyCode == WXK_DOWN
+                                    || keyCode == WXK_PAGEUP || keyCode == WXK_PAGEDOWN)) {
+      return;
+   }
+   if (FindFocus() == mInputSlider && (keyCode == WXK_LEFT || keyCode == WXK_RIGHT
+                                    || keyCode == WXK_UP || keyCode == WXK_DOWN
+                                    || keyCode == WXK_PAGEUP || keyCode == WXK_PAGEDOWN)) {
+      return;
+   }
+   // Pass LEFT/RIGHT/UP/DOWN through for SourceChoice
+   if (FindFocus() == mInputSourceChoice && (keyCode == WXK_LEFT || keyCode == WXK_RIGHT
+                                    || keyCode == WXK_UP || keyCode == WXK_DOWN)) {
+      return;
+   }
+
+   event.Skip();
+
+   return;
 }
 
 void MixerToolBar::UpdatePrefs()

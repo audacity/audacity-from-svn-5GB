@@ -34,6 +34,9 @@ class DeviceToolBar:public ToolBar {
    virtual void Repaint(wxDC *dc) {};
    virtual void EnableDisableButtons() {};
 
+   void OnFocus(wxFocusEvent &event);
+   void OnCaptureKey(wxCommandEvent &event);
+
    void OnChoice(wxCommandEvent & event);
 
  private:

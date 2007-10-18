@@ -472,6 +472,12 @@ void SelectionBar::OnCaptureKey(wxCommandEvent &event)
    if (keyCode >= '0' && keyCode <= '9')
       return;
 
+   // UP/DOWN/LEFT/RIGHT for mRateBox
+   if (FindFocus() == mRateBox && (keyCode == WXK_LEFT || keyCode == WXK_RIGHT
+                                 || keyCode == WXK_UP || keyCode == WXK_DOWN)) {
+      return;
+   }
+   
    event.Skip();
 
    return;
