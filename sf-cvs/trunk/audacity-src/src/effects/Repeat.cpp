@@ -183,6 +183,8 @@ RepeatDialog::RepeatDialog(wxWindow *parent, wxWindowID id,
 
    wxStaticText *statText =
       new wxStaticText(this, -1,
+                        /* i18n-hint: && in here is an escape character to get
+                         * a single & on screen, so keep it as is */
                        _("Repeat by Dominic Mazzoni && Vaughan Johnson"));
    mainSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
 

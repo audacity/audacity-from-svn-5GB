@@ -1076,6 +1076,8 @@ void EqualizationDialog::MakeEqualizationDialog()
    // ROW 1: Banner
    // -------------------------------------------------------------------
    txt = new wxStaticText(this, wxID_ANY,
+         /* i18n-hint: && in here is an escape character to get a single & 
+          * on screen, so keep it as is */
                           _("Equalization, by Martyn Shaw && Mitch Golden"));
    szrV->Add( txt, 0, wxALIGN_CENTRE|wxALL, 4 );
 
