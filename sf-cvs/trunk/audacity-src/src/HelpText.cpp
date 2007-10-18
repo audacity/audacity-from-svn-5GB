@@ -159,10 +159,10 @@ _("an external USB or Firewire device such as a USB turntable, make sure this ")
 _("device is selected as your recording device. ")+
 wxT("<br><br>")+
 _("(2) The <b>input source</b> for your device, such as microphone or line-in. ")+
-_("On Windows, you normally choose your input in the dropdown selector on ")+
+_("<ul><li><b>On Windows</b>, you normally choose your input in the dropdown selector on ")+
 _("the right of the <b>Mixer Toolbar<b> <i>note: on Vista, you must do so at ")+
-_("Recording Device on the Audio I/O Preferences tab.</i> On a Mac, you normally ")+
-_("choose input sources outside Audacity, in Apple Audio-MIDI Setup. <i>Note: many ")+
+_("Recording Device on the Audio I/O Preferences tab.</i></li><li><b>On a Mac</b>, you normally ")+
+_("choose input sources outside Audacity, in Apple Audio-MIDI Setup.</li></ul><i>Note: many ")+
 _("USB or Firewire devices don't have a choice of inputs, so you can ignore this step - ")+
 _("see the documentation for your device. ")+
 wxT("<br><br>")+
@@ -174,7 +174,7 @@ _("Turn on <b>monitoring</b>, by either double-clicking over the right-hand of t
 _("VU Meters, or right-clicking over it and choosing \"Start Monitoring\". If you do not see ")+
 _("the meters, click View > Toolbars and check \"Meter Toolbar\". ")+
 wxT("<li>" )+
-_("Press Record, and adjust the input volume slider on the Mixer Toolbar (by the )")+
+_("Press Record, and adjust the input volume slider on the Mixer Toolbar (by the ")+
 _("microphone symbol), so that the red bars in the meter come close to (but do not touch) ")+
 _("the right edge of the scale. If you can't hear the sound, go to the Audio I/O tab of ")+
 _("Preferences and check \"Software Playthrough\". ")+
