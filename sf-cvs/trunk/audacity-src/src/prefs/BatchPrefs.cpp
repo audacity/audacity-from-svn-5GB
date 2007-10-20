@@ -80,7 +80,7 @@ void BatchPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieCheckBox( _("&Don't apply effects in batch mode"),  
          wxT("/Batch/Debug"), false);
 #endif
-      S.TieCheckBox( _("&Normalize on load"), 
+      S.TieCheckBox( _("&When importing audio, normalize all tracks"), 
          wxT("/Batch/NormalizeOnLoad"), false );
       S.TieCheckBox( _("Cl&eanSpeech Mode (Customized GUI)"), 
          wxT("/Batch/CleanSpeechMode"), false);
