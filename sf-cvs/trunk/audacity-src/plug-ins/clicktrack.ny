@@ -1,8 +1,8 @@
 ;nyquist plug-in
 ;version 3
 ;type generate
-;name "Click Track..."
-;action "Generating click track..."
+;name "Click Track finished..."
+;action "Generating Click Track..."
 ;info "Written by Dominic Mazzoni, modified by David R. Sky\nReleased under terms of the GNU General Public License version 2\nGenerates a click track at the given tempo and beats per measure, using the\nclick sound type you choose below. To start the click track after time zero,\nenter the starting point in start-time-offset.\nTo create metronome-like click track, set beats-per-measure value to 1 or 2. \nPitches are set using MIDI numbers for example:\nC notes: 48, 60 [middle C], 72, 84, 96."
 
 ;control tempo "Tempo [beats per minute]" int "" 120 30 300
@@ -31,68 +31,74 @@
 (setf click-type (+ click-type 1))
 
 
-; function to return error value of 0 
-; if no error detected,
-; otherwise returns 1 for later error message
-(defun error-check (arg &optional (flonum 0))
-(if (= flonum 0)
-(if
-(= arg (abs (truncate arg))) 0 1)
-(if 
-(= arg (abs arg)) 0 1)))
+; check function: returns 1 on error
+; min and max are allowable min and max values for arg
+(defun check (arg min max)
+(if (and (>= arg min) (<= arg max))
+0 1))
 
+
+; initialize blank error-msg
+(setf error-msg "")
 
 ; input values error checks
-; important note: for any future development,
-; the following error check code must have the error check for 
-; tempo be first
-(if 
-(and (= (error-check tempo) 0)
-(> tempo 29) (< tempo 301))
-(progn (setf error 0) (setf tempo-msg "          OK      - "))
-(progn (setf error  1) (setf tempo-msg "=> => ERROR - ")))
-(if (and (= (error-check sig) 0)
-(> sig 0) (< sig 21))
-(progn (setf error error) (setf sig-msg "          OK      - "))
-(progn (setf error  1) (setf sig-msg "=> => ERROR - ")))
-(if 
-(and (= (error-check measures ) 0)
-(> measures 0) (< measures 1001))
-(progn (setf error error) (setf measures-msg "          OK      - "))
-(progn (setf error  1) (setf measures-msg "=> => ERROR - ")))
-(if 
-(and (= (error-check offset 1) 0)
-(<= offset 30.0))
-(progn (setf error error) (setf offset-msg "          OK      - "))
-(progn (setf error  1) (setf offset-msg "=> => ERROR - ")))
-(if
-(and (= (error-check q) 0)
-(> q 0))
-(progn (setf error error) (setf q-msg "          OK      - "))
-(progn (setf error  1) (setf q-msg "=> => ERROR - ")))
-(if
-(and (>= high 18) (<= high 116))
-(progn (setf error error) (setf high-msg "          OK      - "))
-(progn (setf error  1) (setf high-msg "=> => ERROR - ")))
-(if
-(and (>= low 18) (<= low 116))
-(progn (setf error error) (setf low-msg "          OK      - "))
-(progn (setf error  1) (setf low-msg "=> => ERROR - ")))
+; tempo
+(setf error-msg (if 
+(= (check tempo 30 300) 0)
+error-msg
+(strcat error-msg (format nil
+"Tempo ~a outside valid range 30 to 300 bpm
+" tempo))))
+; beats per measure
+(setf error-msg (if
+(= (check sig 1 20) 0)
+error-msg
+(strcat error-msg (format nil
+"Beats per measure ~a outside valid range 1 to 20
+" sig))))
+; number of measures
+(setf error-msg (if
+(= (check measures 1 1000) 0)
+error-msg
+(strcat error-msg (format nil
+"Number of measures ~a outside valid range 1 to 1000
+" measures))))
+; time start offset
+(setf error-msg (if
+(= (check offset 0 30) 0)
+error-msg
+(strcat error-msg (format nil
+"Time offset ~a outside valid range 0 to 30 seconds
+" offset))))
+; q
+(setf error-msg (if
+(= (check q 1 20) 0)
+error-msg
+(strcat error-msg (format nil
+"Filter quality q ~a outside valid range 1 to 20
+" q))))
+; high MIDI pitch
+(setf error-msg (if
+(= (check high 18 116) 0)
+error-msg
+(strcat error-msg (format nil
+"High MIDI pitch ~a outside valid range 18 to 116
+" high))))
+; low MIDI pitch
+(setf error-msg (if
+(= (check low 18 116) 0)
+error-msg
+(strcat error-msg (format nil
+"Low MIDI pitch ~a outside valid range 18 to 116
+" low))))
+
 
 (cond
-; if error value is 1, give error message
-((= error 1) 
-(format nil "Error - ~%
-One or more of your input values is invalid.\nValid input values are listed above the values you\nentered, and each one shown as ERROR or OK ~%
-Tempo - positive integer 30 to 300\n~a ~a beats per minute
-Beats per measure - positive value 1 to 20\n~a ~a beats per measure [bar]
-Number of measures [bars] - positive integer 1 to 1000\n~a ~a measures [bars]
-Time offset - 30.0 seconds or lower\n~a ~a seconds
-Noise click resonance [q] - value above 0\n~a ~a
-MIDI pitches of clicks - values between 18 and 116\n~a ~a high MIDI pitch
-~a ~a low MIDI pitch ~%"
-tempo-msg tempo sig-msg sig measures-msg measures offset-msg offset 
-q-msg q high-msg high low-msg low ))
+; if error-msg is not blank, give error msg
+((> (length error-msg) 0)
+(setf error-msg (strcat (format nil
+"Error - \n\nYou have entered at least one invalid value:
+") error-msg))) ; end error msg
 
 ; no error so generate click track
 (t
@@ -169,6 +175,7 @@ result
 ) ; end t
 ) ; end cond
 
+; from previous commit:
 ; arch-tag: 73fbc0e9-548b-4143-b8ac-13437b9154a7
 
 
