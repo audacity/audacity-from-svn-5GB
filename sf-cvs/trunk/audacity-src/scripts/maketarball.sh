@@ -100,6 +100,8 @@ cp -r . "../audacity-src-${version}"
 printf "Done\n"
 cd "../audacity-src-${version}"
 
+printf "Done\n"
+
 printf "making distclean... "
 if [ $mode -eq 1 ]; then
 	make distclean;
@@ -143,15 +145,18 @@ myrmrvf $mode scripts
 printf "Done\n"
 
 printf "removing unused libraries from CVS tree ..."
-myrmrvf $mode lib-src/id3lib lib-src/iAVC lib-src/wave++;
-myrmrvf $mode lib-src/rtaudio lib-src/portburn lib-src/mod-script-pipe;
-myrmrvf $mode lib-src/lib-widget-extra;
+myrmrvf $mode lib-src/iAVC lib-src/id3lib lib-src/lib-widget-extra;
+myrmrvf $mode lib-src/mod-script-pipe lib-src/portburn lib-src/rtaudio; 
+myrmrvf $mode lib-src/wave++;
+# mod-script-pipe only builds on win32 with an unstable audacity configuration
+# so I'm not including it.
+myrmrvf $mode lib-src/mod-script-pipe;
 printf "Done\n"
 
 printf "removing libraries that should be installed locally..."
-myrmrvf $mode lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/libid3tag;
-myrmrvf $mode lib-src/libsamplerate lib-src/libflac;
-myrmrvf $mode lib-src/twolame;
+myrmrvf $mode lib-src/libflac lib-src/libid3tag lib-src/libmad;
+myrmrvf $mode lib-src/libogg lib-src/libsamplerate lib-src/libsndfile;
+myrmrvf $mode lib-src/libvorbis lib-src/twolame;
 printf "Done\n"
 
 printf "removing qa ... ";
@@ -168,6 +173,8 @@ myrmrvf $mode lib-src/portaudio-v19/docs
 myrmrvf $mode lib-src/portaudio-v19/pa_asio
 myrmrvf $mode lib-src/portaudio-v19/pa_sgi
 myrmrvf $mode lib-src/portaudio-v19/pa_mac_sm
+myrmrvf $mode lib-src/portaudio-v19/test
+myrmrvf $mode lib-src/portaudio-v19/testcvs
 printf "Done\n"
 
 printf "removing wxstd locale files (since they come with wxWidgets)\n";
