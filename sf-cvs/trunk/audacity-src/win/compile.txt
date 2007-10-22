@@ -1,4 +1,4 @@
-Compiling Audacity for Microsoft Windows (TM)
+Compiling Audacity (R) for Microsoft Windows (TM)
 
 Authors:
   Asger Ottar Alstrup
