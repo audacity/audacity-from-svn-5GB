@@ -1,0 +1,82 @@
+How to Build Audacity(R) Releases for Microsoft Windows(R)
+Vaughan Johnson
+22 October 2007
+
+========================================================================
+This version is currently accurate for Audacity version 1.3.4.
+If the advice here is inaccurate or incomplete, please
+email audacity-devel@lists.sourceforge.net.
+See also "http://audacityteam.org/wiki/index.pl?CompilingAudacity".
+========================================================================
+
+See "compile.txt" for how to build the executables.
+
+There are currently two types of release builds for Windows, contained 
+in the MSVC project configurations Release (for Windows 98/ME) and 
+Unicode_Release (for 2000/XP/Vista). These instructions apply for 
+either one, but example values are for Unicode_Release. 
+
+1. Build the release executable. It's a good idea to not only do a 
+	Build > Clean Solution 	beforehand, but to also delete the 
+	directory (e.g., audacity\win\unicode_release).
+	When you build, make sure to build the "locale" project, either 
+	separately or as part of Build > Batch Build. 
+
+
+2. Copy other necessities to release build folder.
+
+	a. Copy the audacity\nyquist and audacity\plug-ins folders to 
+		the build folder, e.g., audacity\win\unicode_release.
+		Don't copy the hidden CVS subfolders.
+	
+	b. We are still keeping some of the LADSPA plug-ins in the 
+		Audacity installer, so build these via the 
+		audacity\win\LADSPA_plugins-win project, or if there's 
+		no new code version for them, get them from a previous 
+		install, and copy them to the plug-ins folder 
+		(e.g., audacity\win\unicode_release\plug-ins):
+		
+		* gverb_1216.dll
+		* hard_limiter_1413.dll
+		* sc4_1882.dll
+	
+	<Not including Help file for 1.3.4, so no instructions 
+		for that.>
+
+
+3. Build the Installer.
+
+	a. Install the latest Inno Setup 
+		(http://www.jrsoftware.org/isinfo.php).
+
+	b. Open the appropriate Inno Setup script, 
+		audacity\win\audacity.iss for Release or 
+		audacity\win\audacity_unicode.iss for Unicode_Release. 
+		
+	c. Change the version strings as necessary. 
+		These are current for Unicode_Release:
+	
+		* OutputBaseFilename=audacity-win-unicode-1.3.4
+		
+		* AppName=Audacity 1.3 Beta (Unicode)
+			For stable releases, this should just be 
+			"Audacity (Unicode)"
+		
+		* AppVerName=Audacity 1.3.4 (Unicode)
+		
+		* DefaultDirName={pf}\Audacity 1.3 Beta (Unicode)
+			For stable releases, this should just be 
+			"Audacity (Unicode)"
+	
+	d. Compile and test the installer. 
+		The result appears in audacity\win\Output.
+
+	e. Rename it as necessary, e.g., 
+		"audacity-win-unicode-1.3.4rc0.1.exe".
+
+
+4. To create the zip version, go to the installed version, 
+	e.g., "C:\Program Files\Audacity 1.3 Beta (Unicode)", 
+	and remove the unins*.* files, then zip and rename that folder.
+
+=======
