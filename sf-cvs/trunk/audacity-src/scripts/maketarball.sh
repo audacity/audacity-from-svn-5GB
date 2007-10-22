@@ -156,7 +156,7 @@ printf "Done\n"
 printf "removing libraries that should be installed locally..."
 myrmrvf $mode lib-src/libflac lib-src/libid3tag lib-src/libmad;
 myrmrvf $mode lib-src/libogg lib-src/libsamplerate lib-src/libsndfile;
-myrmrvf $mode lib-src/libvorbis lib-src/twolame;
+myrmrvf $mode lib-src/libvorbis lib-src/soundtouch lib-src/twolame;
 printf "Done\n"
 
 printf "removing qa ... ";
