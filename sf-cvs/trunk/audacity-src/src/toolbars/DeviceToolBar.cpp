@@ -98,9 +98,6 @@ void DeviceToolBar::Populate()
       }
    }
 
-   wxColour backgroundColour =
-      wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
-
    // Output device
    mPlayBitmap = new wxBitmap(theTheme.Bitmap(bmpSpeaker));
 

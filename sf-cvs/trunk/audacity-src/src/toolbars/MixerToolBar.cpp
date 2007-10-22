@@ -81,9 +81,6 @@ void MixerToolBar::RecreateTipWindows()
 
 void MixerToolBar::Populate()
 {
-   wxColour backgroundColour =
-      wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
-
    mPlayBitmap = new wxBitmap(theTheme.Bitmap(bmpSpeaker));
 
    Add(new wxStaticBitmap(this,
