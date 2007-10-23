@@ -1,15 +1,15 @@
 ;nyquist plug-in
-;version 1
+;version 3
 ;type generate
 ;name "Risset Drum..."
 ;action "Generating Risset Drum..."
-;info "Risset Drum generator by Steven Jones pluto@swbell.net\n- After Jean Claude Risset."
+;info "Risset Drum generator by Steven Jones, after Jean Claude Risset\nReleased under terms of the GNU General Public License version 2\nProduces a realistic drum sound consisting of three components;\na sine wave ring-modulated by narrow band noise, an enharmonic\ntone, and a relatively strong sine wave at the fundamental"
 
-;control frq "Frequency" real "Hz" 100 50 2000
-;control decay "Decay" real "seconds" 2 0.125 10
-;control cf "Noise center frequency" real "Hz" 500 100 5000
-;control bw "Noise band width" real "Hz" 400 10 1000
-;control noise "Noise mix" real "percent" 50 0 100
+;control frq "Frequency [Hz]" real "" 100 50 2000
+;control decay "Decay [seconds]" real "" 2 0.125 10
+;control cf "Center frequency of noise [Hz]" real "" 500 100 5000
+;control bw "Width of noise band [Hz]" real "" 400 10 1000
+;control noise "Amount of noise in mix [percent]" real "" 50 0 100
 
 (if (not (boundp '*rdrum-wtabsize*))
     (progn
