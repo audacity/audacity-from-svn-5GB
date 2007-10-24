@@ -16,11 +16,19 @@ in the MSVC project configurations Release (for Windows 98/ME) and
 Unicode_Release (for 2000/XP/Vista). These instructions apply for 
 either one, but example values are for Unicode_Release. 
 
-1. Build the release executable. It's a good idea to not only do a 
-	Build > Clean Solution 	beforehand, but to also delete the 
-	directory (e.g., audacity\win\unicode_release).
-	When you build, make sure to build the "locale" project, either 
-	separately or as part of Build > Batch Build. 
+1. Build the release executable. 
+
+	a. Make sure to turn off ASIO support (see compile.txt) if you are 
+		creating the installer for public release. 
+		We cannot publicly post a build that supports ASIO, for 
+		licensing reasons (more detail in compile.txt). 
+
+	b. It's a good idea to not only do a Build > Clean Solution
+		beforehand, but to also delete the directory 
+		(e.g., audacity\win\unicode_release).
+	
+	c. Make sure to build the "locale" project, either 
+		separately or as part of Build > Batch Build. 
 
 
 2. Copy other necessities to release build folder.
@@ -30,16 +38,23 @@ either one, but example values are for Unicode_Release.
 		Don't copy the hidden CVS subfolders.
 	
 	b. We are still keeping some of the LADSPA plug-ins in the 
-		Audacity installer, so build these via the 
-		audacity\win\LADSPA_plugins-win project, or if there's 
-		no new code version for them, get them from a previous 
-		install, and copy them to the plug-ins folder 
-		(e.g., audacity\win\unicode_release\plug-ins):
-		
+		Audacity installer, even though we are now offering a 
+		separate installer that includes all the LADSPA plug-ins 
+		built from version 0.4.15. These are the ones we include
+
 		* gverb_1216.dll
 		* hard_limiter_1413.dll
 		* sc4_1882.dll
-	
+		
+		Check "http://plugin.org.uk/" for updates. 
+		If none, just grab the below from a previous release. 
+		If updated, build these via the 
+		audacity\win\LADSPA_plugins-win project (see 
+		audacity\win\LADSPA_plugins-win\readme_LADSPA_plugins-win.txt). 
+		
+		Once you have these DLL files, put them in the plug-ins 
+		folder, e.g., audacity\win\unicode_release\plug-ins.
+			
 	<Not including Help file for 1.3.4, so no instructions 
 		for that.>
 
