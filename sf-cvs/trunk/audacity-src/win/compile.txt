@@ -15,7 +15,7 @@ Authors:
 This version is currently accurate for Audacity version 1.3.4.
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
-See also "http://audacityteam.org/wiki/index.pl?CompilingAudacity".
+See also "http://audacityteam.org/wiki/index.php?title=Developing_On_Windows".
 ========================================================================
 
 Audacity releases are now built with Microsoft Visual C++ 8, 
