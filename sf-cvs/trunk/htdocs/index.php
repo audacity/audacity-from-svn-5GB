@@ -72,19 +72,6 @@
 
 </div>
 
-<div id="news">
-  <?php
-    global $news_items;
-    $item = array_shift($news_items);
-    $dateStr = $item->dateStr();
-  ?>
-  <div class="newsitem">
-    <h3><?="$dateStr: $item->title"?></h3>
-    <?=$item->body?>
-  </div>
-  <h4><a href="about/news"><?=_("More news items...")?></a></h4>
-</div>
-
 <form id="notify" method="post" action="http://scripts.dreamhost.com/add_list.cgi">
   <h3><?=_("Get Notified of New Versions")?></h3>
   <p>
@@ -103,6 +90,26 @@
   <input type="submit" name="unsub" value="<?=_("Remove")?>">
   </p>
 </form>
+
+<div id="news">
+  <?php
+    global $news_items;
+    $item = array_shift($news_items);
+    $dateStr = $item->dateStr();
+  ?>
+  <div class="newsitem">
+    <h3>
+      <?="$dateStr: $item->title"?>
+    </h3>
+    <?=$item->body?>
+  </div>
+  <h4>
+    <a href="about/news">
+      <?=_("More news items...")?>
+    </a>
+  </h4>
+</div>
+
 <?php
   include "include/footer.inc.php";
 ?>
