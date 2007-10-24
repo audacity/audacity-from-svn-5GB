@@ -18,17 +18,21 @@ either one, but example values are for Unicode_Release.
 
 1. Build the release executable. 
 
-	a. Make sure to turn off ASIO support (see compile.txt) if you are 
+	a. Make sure you have got a current source version from CVS.
+	
+	b. Make sure to turn off ASIO support (see compile.txt) if you are 
 		creating the installer for public release. 
 		We cannot publicly post a build that supports ASIO, for 
 		licensing reasons (more detail in compile.txt). 
 
-	b. It's a good idea to not only do a Build > Clean Solution
+	c. It's a good idea to not only do a Build > Clean Solution
 		beforehand, but to also delete the directory 
 		(e.g., audacity\win\unicode_release).
 	
-	c. Make sure to build the "locale" project, either 
-		separately or as part of Build > Batch Build. 
+	d. Make sure to build the "locale" project, either 
+		separately or as part of Build > Batch Build. You will need
+		msgfmt.zip in your PATH for that. Get it from
+		http://audacity.sourceforge.net/files/msgfmt.zip
 
 
 2. Copy other necessities to release build folder.
@@ -47,7 +51,7 @@ either one, but example values are for Unicode_Release.
 		* sc4_1882.dll
 		
 		Check "http://plugin.org.uk/" for updates. 
-		If none, just grab the below from a previous release. 
+		If none, just grab the dlls from a previous release. 
 		If updated, build these via the 
 		audacity\win\LADSPA_plugins-win project (see 
 		audacity\win\LADSPA_plugins-win\readme_LADSPA_plugins-win.txt). 
