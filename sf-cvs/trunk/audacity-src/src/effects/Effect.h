@@ -262,7 +262,8 @@ class Effect {
    void CopyInputWaveTracks();
    
    // If bGoodResult, replace mWaveTracks tracks in mTracks with successfully processed 
-   // m_pOutputWaveTracks copies. Else clear and delete m_pOutputWaveTracks copies.
+   // m_pOutputWaveTracks copies, get rid of old mWaveTracks, and set mWaveTracks to m_pOutputWaveTracks. 
+   // Else clear and delete m_pOutputWaveTracks copies.
    void ReplaceProcessedWaveTracks(const bool bGoodResult);
 
  // Used only by the base Effect class
