@@ -805,7 +805,7 @@ void TagsEditor::PopulateOrExchange(ShuttleGui & S)
                S.Id(LoadID).AddButton(_("&Load..."));
                S.Id(SaveID).AddButton(_("&Save..."));
                S.AddTitle(wxT(" "));
-               S.Id(SaveDefaultsID).AddButton(_("S&et default"));
+               S.Id(SaveDefaultsID).AddButton(_("S&et Default"));
             }
             S.EndMultiColumn();
          }
@@ -1431,7 +1431,7 @@ void TagsEditor1::PopulateOrExchange(ShuttleGui & S)
             S.Id(LoadID).AddButton(_("&Load..."));
             S.Id(SaveID).AddButton(_("&Save..."));
             S.AddTitle(wxT(" "));
-            S.Id(SaveDefaultsID).AddButton(_("S&et default"));
+            S.Id(SaveDefaultsID).AddButton(_("S&et Default"));
          }
          S.EndMultiColumn();
       }
@@ -1959,7 +1959,7 @@ void TagsEditor2::PopulateOrExchange(ShuttleGui & S)
                   S.Id(LoadID).AddButton(_("&Load..."));
                   S.Id(SaveID).AddButton(_("&Save..."));
                   S.AddTitle(wxT(" "));
-                  S.Id(SaveDefaultsID).AddButton(_("S&et default"));
+                  S.Id(SaveDefaultsID).AddButton(_("S&et Default"));
                }
                S.EndMultiColumn();
             }
