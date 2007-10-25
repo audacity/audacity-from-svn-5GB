@@ -109,7 +109,7 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
             wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
          S.Id( ID_MP3_FIND_BUTTON ).AddButton( _("&Find Library"), 
             wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
-         S.Id( ID_MP3_DOWN_BUTTON ).AddButton( _("&Download free copy of LAME"), 
+         S.Id( ID_MP3_DOWN_BUTTON ).AddButton( _("&Download Free Copy of LAME"), 
             wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
       S.EndHorizontalLay();
    }

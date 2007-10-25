@@ -303,9 +303,9 @@ void DependencyDialog::PopulateOrExchange(ShuttleGui& S)
          if (mIsSaving) {
             S.Id(wxID_CANCEL).AddButton(_("Cancel Save"));
          }
-         S.Id(wxID_NO).AddButton(_("Don't Copy any Audio"));
+         S.Id(wxID_NO).AddButton(_("Do Not Copy Any Audio"));
 
-         S.Id(wxID_YES).AddButton(_("Copy All Audio Into Project (safer)"));
+         S.Id(wxID_YES).AddButton(_("Copy All Audio into Project (Safer)"));
       }
       S.EndHorizontalLay();
       
