@@ -177,9 +177,9 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
    End();
 
    delete mWaveTracks;
+   if (m_pOutputWaveTracks != mWaveTracks) // If processing completed successfully, they should be the same.
+      delete m_pOutputWaveTracks;
    mWaveTracks = NULL;
-
-   delete m_pOutputWaveTracks;
    m_pOutputWaveTracks = NULL;
 
    if (returnVal) {
@@ -229,7 +229,9 @@ void Effect::CopyInputWaveTracks()
 }
 
 
-// Replace mWaveTracks tracks in mTracks with successfully processed m_pOutputWaveTracks copies. 
+// If bGoodResult, replace mWaveTracks tracks in mTracks with successfully processed 
+// m_pOutputWaveTracks copies, get rid of old mWaveTracks, and set mWaveTracks to m_pOutputWaveTracks. 
+// Else clear and delete m_pOutputWaveTracks copies.
 void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
 {
    if (bGoodResult)
@@ -239,6 +241,7 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
       TrackListIterator iterIn(mWaveTracks);
       WaveTrack* pInWaveTrack = (WaveTrack*)(iterIn.First());
 
+      wxASSERT(m_pOutputWaveTracks != NULL); // Make sure we at least did the CopyInputWaveTracks().
       TrackListIterator iterOut(m_pOutputWaveTracks);
       WaveTrack* pOutWaveTrack = (WaveTrack*)(iterOut.First());
 
@@ -264,10 +267,16 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
          // Remove former pTrack from front of list and set pTrack to next.
          pTrack = iterAllTracks.RemoveCurrent(); 
       } while (pTrack != pFirstTrack);
+
+      // Also need to clean up mWaveTracks, primarily because Preview uses it as the processed tracks. 
+      delete mWaveTracks;
+      mWaveTracks = m_pOutputWaveTracks;
    }
    else
+   {
       // Processing failed or was cancelled so throw away the processed tracks.
       m_pOutputWaveTracks->Clear(true); // true => delete the tracks
+   }
 }
 
 void Effect::CountWaveTracks()
@@ -386,10 +395,13 @@ void Effect::Preview()
 
    WaveTrackArray playbackTracks;
    WaveTrackArray recordingTracks;
+   // Probably not the same tracks post-processing, so can't rely on previous values of mixLeft & mixRight.
+   TrackListIterator iter(mWaveTracks); 
+   mixLeft = (WaveTrack*)(iter.First());
+   mixRight = (WaveTrack*)(iter.Next());
    playbackTracks.Add(mixLeft);
    if (mixRight)
       playbackTracks.Add(mixRight);
-
 
    // Start audio playing
 
@@ -421,10 +433,10 @@ void Effect::Preview()
                    _("Error"), wxOK | wxICON_EXCLAMATION, mParent);
    }
 
+   if (mWaveTracks == m_pOutputWaveTracks) // typical case, but depends on descendant implementation
+      m_pOutputWaveTracks = NULL; 
+   mWaveTracks->Clear(true); // true => delete the tracks
    delete mWaveTracks;
-   delete mixLeft;
-   if (mixRight)
-      delete mixRight;
 
    mWaveTracks = saveWaveTracks;
 }
