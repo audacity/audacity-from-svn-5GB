@@ -86,8 +86,8 @@ void AutoRecoveryDialog::PopulateOrExchange(ShuttleGui& S)
       S.StartHorizontalLay(true);
       {
          S.Id(ID_QUIT_AUDACITY).AddButton(_("Quit Audacity"));
-         S.Id(ID_RECOVER_NONE).AddButton(_("Don't recover"));
-         S.Id(ID_RECOVER_ALL).AddButton(_("Recover projects"));
+         S.Id(ID_RECOVER_NONE).AddButton(_("Do Not Recover"));
+         S.Id(ID_RECOVER_ALL).AddButton(_("Recover Projects"));
       }
       S.EndHorizontalLay();
    }
@@ -125,7 +125,7 @@ void AutoRecoveryDialog::OnRecoverNone(wxCommandEvent &evt)
 {
    int ret = wxMessageBox(
       _("You have chosen not to recover any projects. You will not be able to recover those projects later if you change your mind. Do you really want to continue without recovering?"),
-      _("Question"), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT, this);
+      _("Really not recover projects?"), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT, this);
 
    if (ret == wxYES)
       EndModal(ID_RECOVER_NONE);
