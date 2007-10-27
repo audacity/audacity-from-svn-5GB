@@ -101,7 +101,7 @@ void DirectoriesPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieCheckBox( _("Auto save a copy of the project in a separate folder"),
                      wxT("/Directories/AutoSaveEnabled"), true);
       S.StartThreeColumn();
-      S.TieTextBox( _("Auto save every:"), wxT("/Directories/AutoSaveMinutes"), 5.0, 9);
+      S.TieTextBox( _("Auto save interval:"), wxT("/Directories/AutoSaveMinutes"), 5.0, 9);
       S.AddUnits(  _("minutes") );
       S.EndThreeColumn();
    }
