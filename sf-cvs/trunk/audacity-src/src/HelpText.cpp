@@ -144,7 +144,7 @@ Those links will help if you find a problem such as a \
 can't [[burncd|burn to a CD]]. You can always get back to these \
 instructions by clicking the 'Help' menu, then 'Show Welcome Message.' \
 For more detailed reading, please read our full Help by clicking the \
-'Help' menu, then 'Index', or <a href=\"*URL*\">download our Manual</a> \
+'Help' menu, then 'Index', or <a href=\"http://audacity.sourceforge.net/help/documentation\">download our Manual</a> \
 in PDF format.\
 <br><br>\
 Welcome again to Audacity.")
@@ -329,7 +329,7 @@ ToWelcome()
 // *URL* will be replaced by whatever URL we are looking for.
       return WrapText(
 _("<p>You don't appear to have Audacity help files on your machine. \
-You can <a href=\"*URL*\">download</a> the help files and then access \
+You can <a href=\"http://audacity.sourceforge.net/help/documentation\">download</a> the help files and then access \
 them from Audacity as you have just attempted, or you can \
 click <a href=\"*URL*\">here</a> to read the help online.")
          );
@@ -346,7 +346,9 @@ wxString HelpText( const wxString & Key )
    // if( wxFileExists( Path+Key ) )
    // ...
 
-   wxString Text = HelpTextBuiltIn( Key );
+   wxString Text;
+   Text = HelpTextBuiltIn( Key );
+
    if( !Text.IsEmpty())
       return LinkExpand( Text );
 

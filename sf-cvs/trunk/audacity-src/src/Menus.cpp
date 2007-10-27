@@ -4339,8 +4339,9 @@ void AudacityProject::OnHelp()
 {
    ShowHelpDialog( 
       this, 
-      FileNames::HtmlHelpIndexFile(), 
-      wxT("http://audacity.sourceforge.net/help/documentation"  ));
+      FileNames::HtmlHelpIndexFile(),
+      wxT("http://audacityteam.org/manual/index.php?title=Main_Page" ));
+      //wxT("http://audacity.sourceforge.net/help/documentation"  ));
 }
 
 void AudacityProject::OnBenchmark()
