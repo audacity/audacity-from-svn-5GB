@@ -4330,8 +4330,9 @@ void AudacityProject::OnAbout()
 
 void AudacityProject::OnHelpWelcome()
 {
-   SplashDialog dlog(this);
-   dlog.ShowModal();
+   SplashDialog::Show2( this );
+//   SplashDialog dlog(this);
+//   dlog.ShowModal();
 }
 
 void AudacityProject::OnHelp()

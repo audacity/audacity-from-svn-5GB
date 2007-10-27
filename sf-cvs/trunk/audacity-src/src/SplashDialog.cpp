@@ -42,6 +42,8 @@ most commonly asked questions about Audacity.
 #include "Prefs.h"
 #include "HelpText.h"
 
+SplashDialog * SplashDialog::pSelf=NULL;
+
 enum 
 {
    DontShowID=1000,
@@ -97,12 +99,12 @@ void SplashDialog::Populate( ShuttleGui & S )
 
    S.Prop(0).AddWindow( m_pIcon );
 
-   wxHtmlWindow *html = new LinkingHtmlWindow(S.GetParent(), -1,
+   mpHtml = new LinkingHtmlWindow(S.GetParent(), -1,
                                          wxDefaultPosition,
                                          wxSize(LOGOWITHNAME_WIDTH, 280),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER );
-   html->SetPage(HelpText( wxT("welcome") ));
-   S.Prop(1).AddWindow( html, wxEXPAND );
+   mpHtml->SetPage(HelpText( wxT("welcome") ));
+   S.Prop(1).AddWindow( mpHtml, wxEXPAND );
    S.Prop(0).StartMultiColumn(2, wxEXPAND);
    S.SetStretchyCol( 1 );// Column 1 is stretchy...
    {
@@ -131,18 +133,20 @@ void SplashDialog::OnDontShow( wxCommandEvent & Evt )
 
 void SplashDialog::OnOK(wxCommandEvent & WXUNUSED(event))
 {
-   EndModal(wxID_OK);
+   Show( false );
+
 }
 
-
-#if 0
-void ShowSplashScreen( AudacityProject * pProj )
+void SplashDialog::Show2( wxWindow * pParent )
 {
-
-   SplashDialog dlog(pProj);
-   dlog.ShowModal();
+   if( pSelf == NULL )
+   {
+      pSelf = new SplashDialog( pParent );
+   }
+   pSelf->mpHtml->SetPage(HelpText( wxT("welcome") ));
+   pSelf->Show( true );
 }
-#endif
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
