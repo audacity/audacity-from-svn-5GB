@@ -44,8 +44,8 @@ END_EVENT_TABLE()
 FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
    PrefsPanel(parent)
 {
-   SetLabel(_("File Formats"));         // Provide visual label
-   SetName(_("File Formats"));          // Provide audible label
+   SetLabel(_("Audio Files"));         // Provide visual label
+   SetName(_("Audio Files"));          // Provide audible label
    Populate( );
 }
 
@@ -73,7 +73,7 @@ void FileFormatPrefs::Populate( )
 void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
 {
    S.SetBorder( 2 );
-   S.StartStatic( _("When importing uncompressed audio files into Audacity"));
+   S.StartStatic( _("When importing uncompressed audio files"));
    {
       S.StartRadioButtonGroup(wxT("/FileFormats/CopyOrEditUncompressedData"),wxT("edit"));
       S.TieRadioButton( _("&Make a copy of the file before editing (safer)"),wxT("copy"));
@@ -84,13 +84,13 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
    S.StartStatic( _("When saving a project that depends on other audio files"));
    {
       S.StartRadioButtonGroup(wxT("/FileFormats/SaveProjectWithDependencies"),wxT("ask"));
+      S.TieRadioButton( _("Always &copy all audio into project (safest)"), wxT("copy"));
+      S.TieRadioButton( _("&Do not copy any audio"), wxT("never"));
       S.TieRadioButton( _("&Ask user"), wxT("ask"));
-      S.TieRadioButton( _("Always &copy all audio (safest)"), wxT("copy"));
-      S.TieRadioButton( _("&Never copy any audio"), wxT("never"));
       S.EndRadioButtonGroup();
    }
    S.EndStatic();
-   S.StartStatic( _("When exporting tracks"));
+   S.StartStatic( _("When exporting tracks to an audio file"));
    {
       S.StartRadioButtonGroup( wxT("/FileFormats/ExportDownMix" ), true );
       S.TieRadioButton( _("A&lways mix all tracks down to Stereo or Mono channel(s)."), true);
@@ -98,7 +98,7 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
       S.EndRadioButtonGroup();
    }
    S.EndStatic();
-   S.StartStatic( _("MP3 Export Setup"));
+   S.StartStatic( _("MP3 Export Library Location"));
    {
       S.StartHorizontalLay(wxEXPAND, true);
          S.AddVariableText( _("MP3 Library Version:"),

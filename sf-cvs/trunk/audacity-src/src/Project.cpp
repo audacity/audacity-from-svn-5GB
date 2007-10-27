@@ -2110,6 +2110,11 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
    } // while
 
    // Specifically detect newer versions of Audacity
+   // WARNING: This will need review/revision if we ever have a version string 
+   // such as 1.5.10, i.e. with 2 digit numbers.
+   // We're able to do a shortcut and use string comparison because we know 
+   // that does not happen.
+
    if (fileVersion.Length() != 5 || // expecting '1.1.0', for example
        fileVersion > wxT(AUDACITY_FILE_FORMAT_VERSION)) {
       wxString msg;
@@ -2121,6 +2126,16 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
                    wxOK | wxICON_EXCLAMATION | wxCENTRE, this);
       return false;
    }
+
+   // NOTE: It looks as if there was some confusion about fileversion and audacityversion.
+   // fileversion NOT being increased when file formats changed, so unfortunately we're 
+   // using audacityversion to rescue the situation.
+
+   // KLUDGE: guess the true 'fileversion' by stripping away any '-beta-Rc' stuff on 
+   // audacityVersion.
+   // It's fairly safe to do this as it has already been established that the 
+   // puported file version was five chars long.
+   fileVersion = audacityVersion.Mid(0,5);
 
    // Specifically detect older versions of Audacity
    if (fileVersion < wxT(AUDACITY_FILE_FORMAT_VERSION)) {
