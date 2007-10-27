@@ -34,7 +34,7 @@ void OpenInDefaultBrowser(const wxHtmlLinkInfo& link)
          ::wxExecute(openCmd);
          delete pFileType;
       #else
-         wxLaunchDefaultBrowser(Url);
+         wxLaunchDefaultBrowser(link.GetHref());
       #endif
    #endif
 };
