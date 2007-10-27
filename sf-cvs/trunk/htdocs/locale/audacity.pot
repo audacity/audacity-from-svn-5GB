@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.3.3\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-10-18 22:39+0100\n"
+"POT-Creation-Date: 2007-10-27 14:50+0100\n"
 "PO-Revision-Date: 1999 and beyond\n"
 "Last-Translator: FULL NAME <audacity-translation@lists.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -330,11 +330,11 @@ msgid "Quit Audacity"
 msgstr ""
 
 #: AutoRecovery.cpp:89
-msgid "Don't recover"
+msgid "Do Not Recover"
 msgstr ""
 
 #: AutoRecovery.cpp:90
-msgid "Recover projects"
+msgid "Recover Projects"
 msgstr ""
 
 #: AutoRecovery.cpp:127
@@ -345,7 +345,7 @@ msgid ""
 msgstr ""
 
 #: AutoRecovery.cpp:128
-msgid "Question"
+msgid "Really not recover projects?"
 msgstr ""
 
 #: AutoRecovery.cpp:146 AutoRecovery.cpp:183
@@ -354,7 +354,7 @@ msgstr ""
 
 #: AutoRecovery.cpp:147 AutoRecovery.cpp:184 Menus.cpp:2545 Menus.cpp:4443
 #: Project.cpp:1937 Project.cpp:3281 Project.cpp:3360 WaveTrack.cpp:548
-#: WaveTrack.cpp:567 WaveTrack.cpp:1656 effects/Effect.cpp:421
+#: WaveTrack.cpp:567 WaveTrack.cpp:1656 effects/Effect.cpp:433
 #: export/ExportMP2.cpp:230 prefs/DirectoriesPrefs.cpp:189
 #: prefs/KeyConfigPrefs.cpp:245 toolbars/ControlToolBar.cpp:532
 #: toolbars/ControlToolBar.cpp:841
@@ -613,11 +613,11 @@ msgid "Cancel Save"
 msgstr ""
 
 #: Dependencies.cpp:306
-msgid "Don't Copy any Audio"
+msgid "Do Not Copy Any Audio"
 msgstr ""
 
 #: Dependencies.cpp:308
-msgid "Copy All Audio Into Project (safer)"
+msgid "Copy All Audio into Project (Safer)"
 msgstr ""
 
 #: Dependencies.cpp:317 Dependencies.cpp:322
@@ -968,515 +968,193 @@ msgstr ""
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
 msgstr ""
 
-#: HelpText.cpp:53
-msgid " page."
+#: HelpText.cpp:85
+msgid "Back to [[welcome|Welcome]] page."
 msgstr ""
 
-#: HelpText.cpp:53
-msgid "Back to "
-msgstr ""
-
-#: HelpText.cpp:53
-msgid "Welcome"
-msgstr ""
-
-#: HelpText.cpp:60
+#: HelpText.cpp:92
 msgid "Welcome!"
 msgstr ""
 
-#: HelpText.cpp:65
+#: HelpText.cpp:97
 msgid "Playing Audio"
 msgstr ""
 
-#: HelpText.cpp:69
+#: HelpText.cpp:101
 msgid "Recording Audio"
 msgstr ""
 
-#: HelpText.cpp:73
-msgid "Greyed Out Items"
+#: HelpText.cpp:105
+msgid "Editing and Greyed out Menus"
 msgstr ""
 
-#: HelpText.cpp:77 export/ExportCL.cpp:320
+#: HelpText.cpp:109 export/ExportCL.cpp:320
 msgid "Export"
 msgstr ""
 
-#: HelpText.cpp:81
+#: HelpText.cpp:113
 msgid "Supported Formats"
 msgstr ""
 
-#: HelpText.cpp:85
+#: HelpText.cpp:117
 msgid "Burn to CD"
 msgstr ""
 
-#: HelpText.cpp:89
+#: HelpText.cpp:121
 msgid "No Local Help"
 msgstr ""
 
-#: HelpText.cpp:101
-msgid "Welcome to Audacity "
-msgstr ""
-
-#: HelpText.cpp:102
-msgid "Let's get started!"
-msgstr ""
-
-#: HelpText.cpp:104
-msgid "You can click on the links below to learn how to:"
-msgstr ""
-
-#: HelpText.cpp:106
-msgid " an existing sound file."
-msgstr ""
-
-#: HelpText.cpp:106
-msgid "play back"
-msgstr ""
-
-#: HelpText.cpp:108
-msgid " a new sound file."
-msgstr ""
-
-#: HelpText.cpp:108 HelpText.cpp:110
-msgid "How to "
-msgstr ""
-
-#: HelpText.cpp:108
-msgid "record"
-msgstr ""
-
-#: HelpText.cpp:110
-msgid " sound and "
-msgstr ""
-
-#: HelpText.cpp:110
-msgid "edit"
-msgstr ""
-
-#: HelpText.cpp:111
-msgid " to a sound file like MP3."
-msgstr ""
-
-#: HelpText.cpp:111
-msgid "export"
-msgstr ""
-
-#: HelpText.cpp:113
-msgid "Those links will help if you find a problem such as a "
-msgstr ""
-
-#: HelpText.cpp:114
-msgid " or that Audacity "
-msgstr ""
-
-#: HelpText.cpp:114
-msgid "menu option greyed out"
-msgstr ""
-
-#: HelpText.cpp:115
-msgid " or that you "
-msgstr ""
-
-#: HelpText.cpp:115
-msgid "isn't recording properly"
-msgstr ""
-
-#: HelpText.cpp:116
-msgid "burn to a CD"
-msgstr ""
-
-#: HelpText.cpp:116
-msgid "can't "
-msgstr ""
-
-#: HelpText.cpp:117
-msgid ""
-". You can always get back to these instructions by clicking the 'Help' menu, "
-"then 'Show Welcome Message.' "
-msgstr ""
-
-#: HelpText.cpp:119
-msgid "Welcome again to Audacity."
-msgstr ""
-
-#: HelpText.cpp:127
-msgid ""
-"You can either drag existing files into Audacity, or use the File > Import > "
-"Audio command."
-msgstr ""
-
-#: HelpText.cpp:128
-msgid ""
-"File > Open does the same, but opens a new Audacity window for any file "
-"after the first."
-msgstr ""
-
-#: HelpText.cpp:130
-msgid ""
-"These are the main formats Audacity will import for you: <b>AIFF, AU, FLAC, "
-"M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis, WAV</b>."
-msgstr ""
-
-#: HelpText.cpp:131
-msgid ""
-"If your file is in some other format see (format help). If you want to "
-"import an audio CD, see "
-msgstr ""
-
-#: HelpText.cpp:133
-msgid "To start playing your audio, press the green Play button. "
+#: HelpText.cpp:132
+msgid "<p>Welcome to Audacity "
 msgstr ""
 
 #: HelpText.cpp:134
-msgid "To stop, press the yellow Stop button. "
-msgstr ""
-
-#: HelpText.cpp:135
-msgid "You can also use spacebar to either play or stop. "
-msgstr ""
-
-#: HelpText.cpp:136
 msgid ""
-"When you start playing again after stopping, playback resumes from its "
-"previous starting point."
+"Let's get started!</p><p>You can click on the links below to learn how to:"
+"<ul><li>[[play|play back]] an existing sound file.<li>How to [[record|"
+"record]] a new sound file.<li>How to [[edit|edit]] sound and [[export|"
+"export]] to a sound file like MP3.</ul><br><br>Those links will help if you "
+"find a problem such as a [[grey|menu option greyed out]] or that Audacity "
+"[[norecord|isn't recording properly]] or that you can't [[burncd|burn to a "
+"CD]]. You can always get back to these instructions by clicking the 'Help' "
+"menu, then 'Show Welcome Message.' <br><br>Welcome again to Audacity."
 msgstr ""
 
-#: HelpText.cpp:137
-msgid ""
-"To change the starting point, use the |<< and |>> buttons to skip to the "
-"start or end respectively, or click anywhere in the track to restart from "
-"that point."
-msgstr ""
-
-#: HelpText.cpp:149
-msgid ""
-"<b>To start recording, press the red Record button</b>. Before doing so "
-"however, there are three crucial settings you must check:"
-msgstr ""
-
-#: HelpText.cpp:152
-msgid ""
-"(1) The <b>Recording Device</b>, set in the Audio I/O tab of Preferences. "
-msgstr ""
-
-#: HelpText.cpp:153
-msgid ""
-"By default Audacity will use the current system device, which is usually "
-"your inbuilt sound device, so you may not need to set this. "
-msgstr ""
-
-#: HelpText.cpp:154
-msgid ""
-"But if you're using an external USB or Firewire device such as a USB "
-"turntable, make sure this device is selected as your recording device. "
-msgstr ""
-
-#. i18n-hint: 2nd item in the list
 #: HelpText.cpp:157
 msgid ""
-"(2) The <b>input source</b> for your device, such as microphone or line-in. "
+"You can either drag existing files into Audacity, or use the File > Import > "
+"Audio command. File > Open does the same, but opens a new Audacity window "
+"for any file after the first.<br/><br/>These are the main formats Audacity "
+"will import for you: <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, "
+"OGG Vorbis, WAV</b>.  If your file is in some other format see (format "
+"help). If you want to import an audio CD, see [[wiki:How to import CDs|How "
+"to import CDs]]<br><br>To start playing your audio, press the green Play "
+"button. To stop, press the yellow Stop button. You can also use spacebar to "
+"either play or stop. When you start playing again after stopping, playback "
+"resumes from its previous starting point. To change the starting point, use "
+"the |<< and |>> buttons to skip to the start or end respectively, or click "
+"anywhere in the track to restart from that point.<br><br>"
 msgstr ""
 
-#: HelpText.cpp:159
+#: HelpText.cpp:179
 msgid ""
-"<b>On Windows</b>, you normally choose your input in the dropdown selector "
-"on the right of the <b>Mixer Toolbar<b> <i>note: on Vista, you must do so at "
-"Recording Device on the Audio I/O Preferences tab.</i>"
+"<b>To start recording, press the red Record button</b>. Before doing so "
+"however, there are three crucial settings you must check:<br><br>(1) The "
+"<b>Recording Device</b>, set in the Audio I/O tab of Preferences. By default "
+"Audacity will use the current system device, which is usually your inbuilt "
+"sound device, so you may not need to set this. But if you're using an "
+"external USB or Firewire device such as a USB turntable, make sure this "
+"device is selected as your recording device. <br><br>(2) The <b>input "
+"source</b> for your device, such as microphone or line-in. <ul><li><b>On "
+"Windows</b>, you normally choose your input in the dropdown selector on the "
+"right of the <b>Mixer Toolbar<b> <i>note: on Vista, you must do so at "
+"Recording Device on the Audio I/O Preferences tab.</i></li><li><b>On a Mac</"
+"b>, you normally choose input sources outside Audacity, in Apple Audio-MIDI "
+"Setup.</li></ul><i>Note: many USB or Firewire devices don't have a choice of "
+"inputs, so you can ignore this step - see the documentation for your device. "
+"<br><br>(3) <b>Input volume</b>. Before recording for real, make a test "
+"recording to set the input level, so that it's neither too soft or too loud."
+"To do this: <ol><li>Turn on <b>monitoring</b>, by either double-clicking "
+"over the right-hand of the two VU Meters, or right-clicking over it and "
+"choosing \"Start Monitoring\". If you do not see the meters, click View > "
+"Toolbars and check \"Meter Toolbar\". <li>Press Record, and adjust the input "
+"volume slider on the Mixer Toolbar (by the microphone symbol), so that the "
+"red bars in the meter come close to (but do not touch) the right edge of the "
+"scale. If you can't hear the sound, go to the Audio I/O tab of Preferences "
+"and check \"Software Playthrough\". </ol><br><br>There is more help if "
+"you're stuck: our Recording FAQs, our Tutorial  <b>Your First Recording </b> "
+"in the Manual, and our Wiki [[wiki:Recording Tips|Recordin Tips]], "
+"especially the [[wiki:Troubleshooting Recordings|Troubleshooting "
+"Recordings]] section. <br><br>"
 msgstr ""
 
-#: HelpText.cpp:161
-msgid ""
-"<b>On a Mac</b>, you normally choose input sources outside Audacity, in "
-"Apple Audio-MIDI Setup."
-msgstr ""
-
-#: HelpText.cpp:163
-msgid ""
-"<i>Note: many USB or Firewire devices don't have a choice of inputs, so you "
-"can ignore this step - see the documentation for your device. "
-msgstr ""
-
-#. i18n-hint: Third and final item in list
-#: HelpText.cpp:166
-msgid ""
-"(3) <b>Input volume</b>. Before recording for real, make a test recording to "
-"set the input level, so that it's neither too soft or too loud."
-msgstr ""
-
-#. i18n-hint: introduction to a set of steps to do something we have already
-#. * talked about
-#: HelpText.cpp:169
-msgid "To do this: "
-msgstr ""
-
-#: HelpText.cpp:171
-msgid ""
-"Turn on <b>monitoring</b>, by either double-clicking over the right-hand of "
-"the two VU Meters, or right-clicking over it and choosing \"Start Monitoring"
-"\". "
-msgstr ""
-
-#: HelpText.cpp:172
-msgid ""
-"If you do not see the meters, click View > Toolbars and check \"Meter Toolbar"
-"\". "
-msgstr ""
-
-#: HelpText.cpp:174
-msgid ""
-"Press Record, and adjust the input volume slider on the Mixer Toolbar (by "
-"the microphone symbol), so that the red bars in the meter come close to (but "
-"do not touch) the right edge of the scale. "
-msgstr ""
-
-#: HelpText.cpp:175
-msgid ""
-"If you can't hear the sound, go to the Audio I/O tab of Preferences and "
-"check \"Software Playthrough\". "
-msgstr ""
-
-#: HelpText.cpp:177
-msgid ""
-"There is more help if you're stuck: our Recording FAQs, our Tutorial  "
-"<b>Your First Recording </b> in the Manual, and our Wiki "
-msgstr ""
-
-#: HelpText.cpp:178
-msgid " section. "
-msgstr ""
-
-#: HelpText.cpp:178
-msgid ", especially the "
-msgstr ""
-
-#: HelpText.cpp:187
+#: HelpText.cpp:221
 msgid ""
 "Editing: Audacity is a powerful editor, so you'll want to see what it can do "
 "with your imported file or recording.  "
 msgstr ""
 
-#: HelpText.cpp:188
+#: HelpText.cpp:222
 msgid ""
 "The main commands you will use are under the Edit menu (such as cut, copy "
 "and paste) and under the Effect menu (you can do things like boost the bass, "
-"change pitch or tempo, or remove noise). "
-msgstr ""
-
-#: HelpText.cpp:190
-msgid ""
-"Audacity applies edits to areas of the audio track. You can select a "
-"particular area of audio by clicking in the track and dragging the shaded "
-"area with your mouse. "
-msgstr ""
-
-#: HelpText.cpp:191
-msgid ""
-"If you don't select any audio, Audacity will select all that you have on the "
-"screen."
-msgstr ""
-
-#: HelpText.cpp:193
-msgid "Two important points when editing:"
-msgstr ""
-
-#: HelpText.cpp:195
-msgid ""
-"(1) If you're still playing or recording, use the yellow Stop button, "
-"because you can't edit or export a moving track! "
-msgstr ""
-
-#: HelpText.cpp:197
-msgid ""
-"(2) On occasion, some of the menus or buttons are greyed out or say "
-"\"Disabled\" -  this is normal. "
-msgstr ""
-
-#: HelpText.cpp:198
-msgid ""
-"For example, because you can't edit audio while playing or recording, we "
-"grey out or disable commands until you press Stop. "
-msgstr ""
-
-#: HelpText.cpp:199
-msgid ""
-"Commands can sometimes be unavailable for other reasons - for example you "
-"can't run effects until you have audio on the screen, and you obviously "
-"can't paste audio until you've cut or copied it to Audacity's clipboard. "
-msgstr ""
-
-#: HelpText.cpp:208
-msgid "Exporting and Saving. have different purposes."
-msgstr ""
-
-#: HelpText.cpp:209
-msgid ""
-"You \" save\" an Audacity project file when you want to return to your work "
-"in Audacity later."
-msgstr ""
-
-#: HelpText.cpp:210
-msgid ""
-"This means you don't then have to re-import or re-record audio, or redo "
-"editing you have done so far."
-msgstr ""
-
-#: HelpText.cpp:211
-msgid ""
-"When you want to listen to your work in other computer programs or burn it "
-"to CD, you \"export\" it as an audio file such as a WAV, AIFF or MP3. "
-msgstr ""
-
-#: HelpText.cpp:213
-msgid ""
-"To save an Audacity project, use <b>File > Save Project</b>. This will save "
-"an <b>.aup</b> Project file, plus a <b>_data</b> folder containing the "
-"actual audio. "
-msgstr ""
-
-#: HelpText.cpp:214
-msgid ""
-"Make sure you don't rename or move either of these, because Audacity needs "
-"to refer to both."
-msgstr ""
-
-#: HelpText.cpp:215
-msgid ""
-"Only use File > Save Project As. when you either need to save an empty "
-"Project, or if you want to save an existing Project to a <i> new</i> name. "
-msgstr ""
-
-#: HelpText.cpp:216
-msgid ""
-"When you want to re-open a saved Project, simply click File > Open and open "
-"the .aup file. "
-msgstr ""
-
-#: HelpText.cpp:218
-msgid ""
-"When you want to export your work to an audio file, use <b>File > Export</b> "
-"and choose your desired format in the \"Save as type\" dropdown."
-msgstr ""
-
-#: HelpText.cpp:219
-msgid ""
-"Click the Options button for advanced choices, such as the bit rate to use "
-"for MP3 export."
-msgstr ""
-
-#: HelpText.cpp:220
-msgid "There are two other Export commands under the File menu."
-msgstr ""
-
-#: HelpText.cpp:221
-msgid "\"Export Selection\" exports only a selected area of audio."
-msgstr ""
-
-#: HelpText.cpp:222
-msgid ""
-"\"Export Multiple\" exports multiple files, for example where you have more "
-"than one track on screen and want to export each as a separate file. "
-msgstr ""
-
-#: HelpText.cpp:224
-msgid ""
-"Before you can export as <b>MP3</b>, you need to add the LAME MP3 encoder to "
-"your computer."
-msgstr ""
-
-#: HelpText.cpp:225
-msgid "For help with LAME, see "
-msgstr ""
-
-#: HelpText.cpp:227
-msgid "There is also some help on how to "
-msgstr ""
-
-#: HelpText.cpp:227
-msgid "burn to a CD."
-msgstr ""
-
-#: HelpText.cpp:239
-msgid "Can Audacity import file formats like WMA, AAC, RealAudio  etc.?"
-msgstr ""
-
-#: HelpText.cpp:241
-msgid ""
-"Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)</"
-"b>, or most other proprietary formats, because of licensing and patent "
-"restrictions."
-msgstr ""
-
-#: HelpText.cpp:242
-msgid ""
-"Audacity also cannot import any kind of Digital Rights Management (DRM) "
-"protected file, including most purchased online such as from iTunes or "
-"Napster."
-msgstr ""
-
-#: HelpText.cpp:243
-msgid ""
-"If you are on a Mac, you can import <b>AAC</b>  encoded files (such as "
-"<b>M4A</b>) as long as they are not DRM protected, but you cannot export to "
-"these formats."
-msgstr ""
-
-#: HelpText.cpp:245
-msgid ""
-"Some open formats are not yet supported by Audacity, including <b>Ogg Speex</"
-"b> and <b>Musepack</b>."
+"change pitch or tempo, or remove noise). <br><br>Audacity applies edits to "
+"areas of the audio track. You can select a particular area of audio by "
+"clicking in the track and dragging the shaded area with your mouse. If you "
+"don't select any audio, Audacity will select all that you have on the screen."
+"<br><br>Two important points when editing:<br><br>(1) If you're still "
+"playing or recording, use the yellow Stop button, because you can't edit or "
+"export a moving track! <br><br>(2) On occasion, some of the menus or buttons "
+"are greyed out or say \"Disabled\" -  this is normal. For example, because "
+"you can't edit audio while playing or recording, we grey out or disable "
+"commands until you press Stop. Commands can sometimes be unavailable for "
+"other reasons - for example you can't run effects until you have audio on "
+"the screen, and you obviously can't paste audio until you've cut or copied "
+"it to Audacity's clipboard. <br><br>"
 msgstr ""
 
 #: HelpText.cpp:246
-msgid "We hope to support these formats in future versions of Audacity."
-msgstr ""
-
-#: HelpText.cpp:248
 msgid ""
-"If you cannot import your file into Audacity, you can as a workround convert "
-"it to WAV or AIFF."
-msgstr ""
-
-#: HelpText.cpp:251
-msgid ""
-"As long as it's not a DRM-protected file, you could do this with iTunes or "
-"with "
-msgstr ""
-
-#: HelpText.cpp:253
-msgid ""
-"If it's a DRM-protected file, you can burn it to an audio CD in the "
-"application that is licensed to play it, then extract (rip) the CD track to "
-"WAV or AIFF."
-msgstr ""
-
-#: HelpText.cpp:254
-msgid ""
-"You can use iTunes to extract to WAV or AIFF, plus Windows Media Player 11 "
-"or <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> on Windows."
-msgstr ""
-
-#: HelpText.cpp:255
-msgid ""
-"Or you can play the file on your computer and record it - see <a href="
-"\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">. "
-msgstr ""
-
-#: HelpText.cpp:263
-msgid "If you want to burn your work to an audio CD, you must first "
-msgstr ""
-
-#: HelpText.cpp:264
-msgid "export as WAV or AIFF"
-msgstr ""
-
-#: HelpText.cpp:265
-msgid " and then burn that file to CD - for more help, see "
-msgstr ""
-
-#: HelpText.cpp:279
-msgid "<p>You don't appear to have Audacity help files on your machine. "
+"Exporting and Saving have different purposes.You \"save\" an Audacity "
+"project file when you want to return to your work in Audacity later.This "
+"means you don't then have to re-import or re-record audio, or redo editing "
+"you have done so far.When you want to listen to your work in other computer "
+"programs or burn it to CD, you \"export\" it as an audio file such as a WAV, "
+"AIFF or MP3. <br><br>To save an Audacity project, use <b>File > Save "
+"Project</b>. This will save an <b>.aup</b> Project file, plus a <b>_data</b> "
+"folder containing the actual audio. Make sure you don't rename or move "
+"either of these, because Audacity needs to refer to both.Only use File > "
+"Save Project As... when you either need to save an empty Project, or if you "
+"want to save an existing Project to a <i> new</i> name. When you want to re-"
+"open a saved Project, simply click File > Open and open the .aup file. "
+"<br><br>When you want to export your work to an audio file, use <b>File > "
+"Export</b> and choose your desired format in the \"Save as type\" dropdown."
+"Click the Options button for advanced choices, such as the bit rate to use "
+"for MP3 export.There are two other Export commands under the File menu."
+"\"Export Selection\" exports only a selected area of audio.\"Export Multiple"
+"\" exports multiple files, for example where you have more than one track on "
+"screen and want to export each as a separate file. <br><br>Before you can "
+"export as <b>MP3</b>, you need to add the LAME MP3 encoder to your computer."
+"For help with LAME, see [[wiki:Lame_Installation|Lame Installation]]. There "
+"is also some help on how to [[burncd|burn to a CD]].<br><br>"
 msgstr ""
 
 #: HelpText.cpp:280
+msgid ""
+"<h2>Can Audacity import file formats like WMA, AAC, RealAudio  etc.?</h2> "
+"<p>Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)"
+"</b>, or most other proprietary formats, because of licensing and patent "
+"restrictions.Audacity also cannot import any kind of Digital Rights "
+"Management (DRM) protected file, including most purchased online such as "
+"from iTunes or Napster.If you are on a Mac, you can import <b>AAC</b>  "
+"encoded files (such as <b>M4A</b>) as long as they are not DRM protected, "
+"but you cannot export to these formats.</p> <p>Some open formats are not yet "
+"supported by Audacity, including <b>Ogg Speex</b> and <b>Musepack</b>.We "
+"hope to support these formats in future versions of Audacity.</p> <p>If you "
+"cannot import your file into Audacity, you can as a workround convert it to "
+"WAV or AIFF.As long as it's not a DRM-protected file, you could do this with "
+"iTunes or with <a href=\"http://www.erightsoft.com/SUPER.html#Dnload"
+"\">SUPER</a> player.If it's a DRM-protected file, you can burn it to an "
+"audio CD in the application that is licensed to play it, then extract (rip) "
+"the CD track to WAV or AIFF.You can use iTunes to extract to WAV or AIFF, "
+"plus Windows Media Player 11 or <a href=\"http://cdexos.sourceforge.net/?"
+"q=download\">CDex</a> on Windows.Or you can play the file on your computer "
+"and record it - see <a href=\"http://audacity.sourceforge.net/help/faq?"
+"s=recording&amp;i=streaming\">."
+msgstr ""
+
+#: HelpText.cpp:301
+msgid ""
+"If you want to burn your work to an audio CD, you must first [[export|export "
+"as WAV or AIFF]] and then burn that file to CD - for more help, see [[wiki:"
+"How to burn CDs|How to burn CDs]].<br><br>"
+msgstr ""
+
+#: HelpText.cpp:315
+msgid "<p>You don't appear to have Audacity help files on your machine. "
+msgstr ""
+
+#: HelpText.cpp:316
 msgid ""
 "You can download the help files and then access them from Audacity or you "
 "can click <a href=\"*URL*\">here</a> to read the help online."
@@ -3196,7 +2874,7 @@ msgstr ""
 msgid "Gap detected in project file\n"
 msgstr ""
 
-#: ShuttleGui.cpp:1852 effects/Effect.cpp:330
+#: ShuttleGui.cpp:1852 effects/Effect.cpp:339
 #: effects/audiounits/AudioUnitEffect.cpp:872
 msgid "Pre&view"
 msgstr ""
@@ -3325,7 +3003,7 @@ msgid "&Save..."
 msgstr ""
 
 #: Tags.cpp:808 Tags.cpp:1434 Tags.cpp:1962
-msgid "S&et default"
+msgid "S&et Default"
 msgstr ""
 
 #: Tags.cpp:958 Tags.cpp:1597 Tags.cpp:2326
@@ -4446,15 +4124,15 @@ msgstr ""
 msgid "Performing Echo"
 msgstr ""
 
-#: effects/Effect.cpp:378
+#: effects/Effect.cpp:387
 msgid "Preparing preview"
 msgstr ""
 
-#: effects/Effect.cpp:404
+#: effects/Effect.cpp:416
 msgid "Previewing"
 msgstr ""
 
-#: effects/Effect.cpp:420
+#: effects/Effect.cpp:432
 msgid ""
 "Error while opening sound device. Please check the output device settings "
 "and the project sample rate."
@@ -6139,7 +5817,7 @@ msgid "Playback"
 msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:119 prefs/AudioIOPrefs.cpp:137
-#: toolbars/DeviceToolBar.cpp:54
+#: toolbars/DeviceToolBar.cpp:57
 msgid "Device"
 msgstr ""
 
@@ -6238,7 +5916,7 @@ msgid "&Don't apply effects in batch mode"
 msgstr ""
 
 #: prefs/BatchPrefs.cpp:83
-msgid "&Normalize on load"
+msgid "&When importing audio, normalize all tracks"
 msgstr ""
 
 #: prefs/BatchPrefs.cpp:85
@@ -6371,7 +6049,7 @@ msgid "&Find Library"
 msgstr ""
 
 #: prefs/FileFormatPrefs.cpp:112
-msgid "&Download free copy of LAME"
+msgid "&Download Free Copy of LAME"
 msgstr ""
 
 #: prefs/GUIPrefs.cpp:33 prefs/GUIPrefs.cpp:34
@@ -7060,27 +6738,27 @@ msgstr ""
 msgid "Input level meter - click to monitor input"
 msgstr ""
 
-#: toolbars/MixerToolBar.cpp:58
+#: toolbars/MixerToolBar.cpp:60
 msgid "Mixer"
 msgstr ""
 
-#: toolbars/MixerToolBar.cpp:91
+#: toolbars/MixerToolBar.cpp:90
 msgid "Output Volume"
 msgstr ""
 
-#: toolbars/MixerToolBar.cpp:93
+#: toolbars/MixerToolBar.cpp:92
 msgid "Slider-Output"
 msgstr ""
 
-#: toolbars/MixerToolBar.cpp:102
+#: toolbars/MixerToolBar.cpp:101
 msgid "Input Volume"
 msgstr ""
 
-#: toolbars/MixerToolBar.cpp:104
+#: toolbars/MixerToolBar.cpp:103
 msgid "Slider-Input"
 msgstr ""
 
-#: toolbars/MixerToolBar.cpp:117
+#: toolbars/MixerToolBar.cpp:134
 msgid "Input Source"
 msgstr ""
 
@@ -7193,123 +6871,123 @@ msgstr ""
 msgid "Multi Tool"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:82
+#: toolbars/TranscriptionToolBar.cpp:84
 msgid "Transcription"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:163
+#: toolbars/TranscriptionToolBar.cpp:165
 msgid "Play at selected speed"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:164
+#: toolbars/TranscriptionToolBar.cpp:166
 msgid "Play-at-speed"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:170 toolbars/TranscriptionToolBar.cpp:175
+#: toolbars/TranscriptionToolBar.cpp:172 toolbars/TranscriptionToolBar.cpp:177
 msgid "Playback Speed"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:180
+#: toolbars/TranscriptionToolBar.cpp:190
 msgid "Adjust left selection to next onset"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:181
+#: toolbars/TranscriptionToolBar.cpp:191
 msgid "Left-to-On"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:183
+#: toolbars/TranscriptionToolBar.cpp:193
 msgid "Adjust right selection to previous offset"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:184
+#: toolbars/TranscriptionToolBar.cpp:194
 msgid "Right-to-Off"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:186
+#: toolbars/TranscriptionToolBar.cpp:196
 msgid "Adjust left selection to next offset"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:187
+#: toolbars/TranscriptionToolBar.cpp:197
 msgid "Left-to-Off"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:189
+#: toolbars/TranscriptionToolBar.cpp:199
 msgid "Adjust right selection to previous onset"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:190
+#: toolbars/TranscriptionToolBar.cpp:200
 msgid "Right-to-On"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:192
+#: toolbars/TranscriptionToolBar.cpp:202
 msgid "Select region of sound around cursor"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:193
+#: toolbars/TranscriptionToolBar.cpp:203
 msgid "Select-Sound"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:195
+#: toolbars/TranscriptionToolBar.cpp:205
 msgid "Select region of silence around cursor"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:196
+#: toolbars/TranscriptionToolBar.cpp:206
 msgid "Select-Silence"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:198
+#: toolbars/TranscriptionToolBar.cpp:208
 msgid "Automatically make labels from words"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:199
+#: toolbars/TranscriptionToolBar.cpp:209
 msgid "Make Labels"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:201
+#: toolbars/TranscriptionToolBar.cpp:211
 msgid "Add label at selection"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:202
+#: toolbars/TranscriptionToolBar.cpp:212
 msgid "Add Label"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:204
+#: toolbars/TranscriptionToolBar.cpp:214
 msgid "Calibrate voicekey"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:205
+#: toolbars/TranscriptionToolBar.cpp:215
 msgid "Calibrate"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:209
+#: toolbars/TranscriptionToolBar.cpp:219
 msgid "Adjust Sensitivity"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:214
+#: toolbars/TranscriptionToolBar.cpp:224
 msgid "Sensitivity"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:219
+#: toolbars/TranscriptionToolBar.cpp:229
 msgid "Energy"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:220
+#: toolbars/TranscriptionToolBar.cpp:230
 msgid "Sign Changes (Low Threshold)"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:221
+#: toolbars/TranscriptionToolBar.cpp:231
 msgid "Sign Changes (High Threshold)"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:222
+#: toolbars/TranscriptionToolBar.cpp:232
 msgid "Direction Changes (Low Threshold)"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:223
+#: toolbars/TranscriptionToolBar.cpp:233
 msgid "Direction Changes (High Threshold)"
 msgstr ""
 
-#: toolbars/TranscriptionToolBar.cpp:231
+#: toolbars/TranscriptionToolBar.cpp:241
 msgid "Key type"
 msgstr ""
 
