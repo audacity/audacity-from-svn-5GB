@@ -3,9 +3,10 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: Audacity 1.4\n"
+msgstr ""
+"Project-Id-Version: Audacity 1.4\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2007-09-29 12:32+0100\n"
+"PO-Revision-Date: 2007-10-27 14:14+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Martin Srebotnjak <miles@filmsi.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,8 +18,8 @@ msgstr "Project-Id-Version: Audacity 1.4\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
 
 #: AboutDialog.cpp:141
-#: AudacityApp.cpp:726
-#: Menus.cpp:729
+#: AudacityApp.cpp:732
+#: Menus.cpp:733
 msgid "&About Audacity..."
 msgstr "&O programu Audacity ..."
 
@@ -33,7 +34,7 @@ msgstr "Onemogoèeno"
 
 #: AboutDialog.cpp:229
 msgid "Program build date: "
-msgstr "Datum izdelanega programa: "
+msgstr "Datum izdelave programa: "
 
 #: AboutDialog.cpp:234
 msgid "Settings folder: "
@@ -111,16 +112,17 @@ msgstr "Audacity"
 #. i18n-hint: Rather than a literal translation, consider adding the
 #. appropriate suffix or prefix to create a word meaning 'something which
 #. has Audacity'
-#: AboutDialog.cpp:340 AboutDialog.cpp:371 SplashDialog.cpp:111
+#: AboutDialog.cpp:340
+#: AboutDialog.cpp:371
+#: SplashDialog.cpp:111
 msgid "OK... Audacious!"
-msgstr ""
+msgstr "Audaciozno!"
 
 #: AboutDialog.cpp:388
 msgid "GPL License"
 msgstr "Licenca GPL"
 
 #: AboutDialog.cpp:688
-#: Dependencies.cpp:308
 #: FreqWindow.cpp:209
 #: widgets/ErrorDialog.cpp:135
 msgid "Close"
@@ -142,10 +144,12 @@ msgstr "Napaka pri odpiranju projekta"
 
 #: AudacityApp.cpp:492
 #, c-format
-msgid "%s does not exist and could not be opened.\n"
+msgid ""
+"%s does not exist and could not be opened.\n"
 "\n"
 "It has been removed from the history list."
-msgstr "%s ne obstaja in je ni mogoèe odpreti.\n"
+msgstr ""
+"%s ne obstaja in je ni mogoèe odpreti.\n"
 "\n"
 "Odstranjeno s seznama zgodovine."
 
@@ -163,88 +167,96 @@ msgstr "Merilo izhoda"
 
 #. i18n-hint: Mac OS X shortcut should be Ctrl+,
 #. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
-#: AudacityApp.cpp:728
+#: AudacityApp.cpp:734
 #: Menus.cpp:470
 msgid "&Preferences...\tCtrl+,"
 msgstr "&Nastavitve ...\tCtrl+,"
 
-#: AudacityApp.cpp:810
-#: AudacityApp.cpp:887
+#: AudacityApp.cpp:816
+#: AudacityApp.cpp:893
 #, c-format
 msgid "Using block size of %ld\n"
 msgstr "Uporaba velikosti gruèe %ld\n"
 
-#: AudacityApp.cpp:832
-#: AudacityApp.cpp:902
+#: AudacityApp.cpp:838
+#: AudacityApp.cpp:908
 #, c-format
 msgid "Unknown command line option: %s\n"
 msgstr "Neznan ukaz v opravilni vrstici: %s\n"
 
-#: AudacityApp.cpp:1021
-msgid "Audacity could not find a place to store temporary files.\n"
+#: AudacityApp.cpp:1027
+msgid ""
+"Audacity could not find a place to store temporary files.\n"
 "Please enter an appropriate directory in the preferences dialog."
-msgstr "Audacity ni na¹el prostora za zaèasne datoteke.\n"
+msgstr ""
+"Audacity ni na¹el prostora za zaèasne datoteke.\n"
 "Prosimo, da vnesete primerno pot do mape v dialogu nastavitev."
 
-#: AudacityApp.cpp:1027
+#: AudacityApp.cpp:1033
 msgid "Audacity is now going to exit. Please launch Audacity again to use the new temporary directory."
 msgstr "Audacity se zapira. Prosimo, znova za¾enite Audacity, da boste lahko uporabljali novo zaèasno mapo."
 
-#: AudacityApp.cpp:1059
-msgid "Running two copies of Audacity simultaneously may cause\n"
+#: AudacityApp.cpp:1065
+msgid ""
+"Running two copies of Audacity simultaneously may cause\n"
 "data loss or cause your system to crash.\n"
 "\n"
-msgstr "Poganjanje dveh kopij Audacity hkrati lahko povzroèi\n"
+msgstr ""
+"Poganjanje dveh kopij Audacity hkrati lahko povzroèi\n"
 "izgubo podatkov ali sesuje va¹ sistem.\n"
 "\n"
 
-#: AudacityApp.cpp:1066
-msgid "Audacity was not able to lock the temporary files directory.\n"
+#: AudacityApp.cpp:1072
+msgid ""
+"Audacity was not able to lock the temporary files directory.\n"
 "This folder may be in use by another copy of Audacity.\n"
-msgstr "Audacity ne more zakleniti mape zaèasnih datotek.\n"
+msgstr ""
+"Audacity ne more zakleniti mape zaèasnih datotek.\n"
 "To mapo morda uporablja drugi Audacity.\n"
 
-#: AudacityApp.cpp:1068
+#: AudacityApp.cpp:1074
 msgid "Do you still want to start Audacity?"
 msgstr "®elite vseeno zagnati Audacity?"
 
-#: AudacityApp.cpp:1070
+#: AudacityApp.cpp:1076
 msgid "Error locking temporary folder"
 msgstr "Napaka pri zaklepanju zaèasne mape"
 
-#: AudacityApp.cpp:1108
+#: AudacityApp.cpp:1114
 msgid "The system has detected that another copy of Audacity is running.\n"
 msgstr "Sistem je zaznal, da Audacity ¾e teèe.\n"
 
-#: AudacityApp.cpp:1110
-msgid "Use the New or Open commands in the currently running Audacity\n"
+#: AudacityApp.cpp:1116
+msgid ""
+"Use the New or Open commands in the currently running Audacity\n"
 "process to open multiple projects simultaneously.\n"
-msgstr "Uporabite ukaza Nov ali Odpri v trenutno zagnanem procesu Audacity,\n"
+msgstr ""
+"Uporabite ukaza Nov ali Odpri v trenutno zagnanem procesu Audacity,\n"
 "da odprete veè projektov hkrati.\n"
 
-#: AudacityApp.cpp:1111
+#: AudacityApp.cpp:1117
 msgid "Audacity is already running"
 msgstr "Audacity je ¾e zagnan."
 
-#: AudacityApp.cpp:1128
+#: AudacityApp.cpp:1134
 msgid "Command-line options supported:"
 msgstr "Podprte mo¾nosti ukazne vrstice:"
 
 #. i18n-hint: '-help' is the option and needs to stay in
 #. * English. This displays a list of available options
-#: AudacityApp.cpp:1131
+#: AudacityApp.cpp:1137
 msgid "\t-help (this message)"
 msgstr "\t-help (to sporoèilo)"
 
 #. i18n-hint '-version' needs to stay in English.
-#: AudacityApp.cpp:1133
+#: AudacityApp.cpp:1139
 msgid "\t-version (display Audacity version)"
 msgstr "\t-version (prika¾i razlièico Audacity)"
 
 #. i18n-hint '-test' is the option and needs to stay in
 #. * English. This runs a set of automatic tests on audacity
 #. * itself
-#: AudacityApp.cpp:1137
+#: AudacityApp.cpp:1143
 msgid "\t-test (run self diagnostics)"
 msgstr "\t-test (za¾eni samodiagnostiko)"
 
@@ -252,25 +264,27 @@ msgstr "\t-test (za¾eni samodiagnostiko)"
 #. * English. 'nnn' is any integer number. This controls the
 #. * size pieces that audacity uses when writing files to the
 #. * disk
-#: AudacityApp.cpp:1142
+#: AudacityApp.cpp:1148
 msgid "\t-blocksize nnn (set max disk block size in bytes)"
 msgstr "\t-blocksize nnn (nastavite najveèjo velikost diskovnega bloka v bajtih)"
 
-#: AudacityApp.cpp:1143
+#: AudacityApp.cpp:1149
 msgid "In addition, specify the name of an audio file or Audacity project to open it."
 msgstr "Dodatno navedite ime ime zvoène datoteke ali projekta Audacity, ki ga ¾elite odpreti."
 
-#: AudacityApp.cpp:1415
-msgid "Audacity project (.AUP) files are not currently \n"
+#: AudacityApp.cpp:1421
+msgid ""
+"Audacity project (.AUP) files are not currently \n"
 "associated with Audacity. \n"
 "\n"
 "Associate them, so they open on double-click?"
-msgstr "Projektne datoteke Audacity (.AUP) trenutno \n"
+msgstr ""
+"Projektne datoteke Audacity (.AUP) trenutno \n"
 "niso povezane z Audacity.\n"
 "\n"
 "Jih ¾elite povezati, tako da jih boste odpirali z dvojnim klikom?"
 
-#: AudacityApp.cpp:1416
+#: AudacityApp.cpp:1422
 msgid "Audacity Project Files"
 msgstr "Projektne datoteke Audacity"
 
@@ -279,9 +293,11 @@ msgid "Could not find any audio devices.\n"
 msgstr "Nobene zvoène naprave ni mogoèe najti.\n"
 
 #: AudioIO.cpp:220
-msgid "You will not be able to play or record audio.\n"
+msgid ""
+"You will not be able to play or record audio.\n"
 "\n"
-msgstr "Ne boste mogli predvajati ali snemati zvoka.\n"
+msgstr ""
+"Ne boste mogli predvajati ali snemati zvoka.\n"
 "\n"
 
 #: AudioIO.cpp:223
@@ -294,22 +310,28 @@ msgstr "Napaka pri inicializaciji zvoka"
 
 #: AudioIO.cpp:1236
 msgid "Latency problem"
-msgstr ""
+msgstr "Te¾ava z latenco"
 
 #: AudioIO.cpp:1236
-msgid "Latency setting has caused the recorded audio to be hidden before zero.\n"
+msgid ""
+"Latency setting has caused the recorded audio to be hidden before zero.\n"
 "Audacity has brought it back to start at zero.\n"
 "You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."
 msgstr ""
+"Nastavitev latence je povzroèila, da je posneti zvok skrit pred vrednostjo niè.\n"
+"Audacity je posnetek vrnil nazaj na vrednost niè.\n"
+"Morda boste morali uporabiti orodje Èasovni zamik (<---> ali F5), da povleèete sled na pravo mesto."
 
 #: AutoRecovery.cpp:54
 msgid "Automatic Crash Recovery"
 msgstr "Samodejna obnovitev po sesutju"
 
 #: AutoRecovery.cpp:73
-msgid "Some projects were not saved properly the last time Audacity was run.\n"
+msgid ""
+"Some projects were not saved properly the last time Audacity was run.\n"
 "Fortunately, the following projects can automatically be recovered:"
-msgstr "Zadnjiè, ko ste uporabljali Audacity, nekateri projekti niso bili pravilno shranjeni.\n"
+msgstr ""
+"Zadnjiè, ko ste uporabljali Audacity, nekateri projekti niso bili pravilno shranjeni.\n"
 "Na sreèo lahko naslednje projekte obnovite samodejno:"
 
 #: AutoRecovery.cpp:75
@@ -352,20 +374,20 @@ msgstr "Datotek v mapi samodejnega shranjevanja ni mogoèe o¹tevilèiti"
 
 #: AutoRecovery.cpp:147
 #: AutoRecovery.cpp:184
-#: Menus.cpp:2474
-#: Menus.cpp:4358
+#: Menus.cpp:2545
+#: Menus.cpp:4443
 #: Project.cpp:1937
 #: Project.cpp:3281
 #: Project.cpp:3360
-#: WaveTrack.cpp:542
-#: WaveTrack.cpp:561
-#: WaveTrack.cpp:1650
-#: effects/Effect.cpp:346
+#: WaveTrack.cpp:548
+#: WaveTrack.cpp:567
+#: WaveTrack.cpp:1656
+#: effects/Effect.cpp:421
 #: export/ExportMP2.cpp:230
 #: prefs/DirectoriesPrefs.cpp:189
 #: prefs/KeyConfigPrefs.cpp:245
 #: toolbars/ControlToolBar.cpp:532
-#: toolbars/ControlToolBar.cpp:839
+#: toolbars/ControlToolBar.cpp:841
 msgid "Error"
 msgstr "Napaka"
 
@@ -413,9 +435,11 @@ msgstr "Ukaz %s ¹e ni implementiran"
 
 #: BatchCommands.cpp:529
 #, c-format
-msgid "Could not set parameters of effect %s\n"
+msgid ""
+"Could not set parameters of effect %s\n"
 " to %s."
-msgstr "Parametre uèinka %s ni mogoèe nastaviti\n"
+msgstr ""
+"Parametre uèinka %s ni mogoèe nastaviti\n"
 " na %s."
 
 #: BatchCommands.cpp:583
@@ -425,10 +449,12 @@ msgstr "Va¹ paketni ukaz za %s ni bil prepoznan."
 
 #: BatchCommands.cpp:674
 #, c-format
-msgid "Apply %s with parameter(s)\n"
+msgid ""
+"Apply %s with parameter(s)\n"
 "\n"
 "%s"
-msgstr "Uporabi %s s parametri\n"
+msgstr ""
+"Uporabi %s s parametri\n"
 "\n"
 "%s"
 
@@ -474,7 +500,7 @@ msgstr "Uporabi na &datotekah ..."
 #: effects/AvcCompressor.cpp:732
 #: effects/ChangeLength.cpp:183
 #: effects/SpikeCleaner.cpp:188
-#: effects/VST/VSTEffect.cpp:437
+#: effects/VST/VSTEffect.cpp:446
 #: effects/audiounits/AudioUnitEffect.cpp:882
 #: effects/vamp/VampEffect.cpp:411
 msgid "&Cancel"
@@ -609,10 +635,12 @@ msgid "Copying audio data into project..."
 msgstr "Kopiranje zvoènih podatkov v projekt ..."
 
 #: Dependencies.cpp:219
-msgid "Your project currently depends on the presence of other files.\n"
+msgid ""
+"Your project currently depends on the presence of other files.\n"
 "Copy audio from the following files into your project to make it self-contained?\n"
 "This will need more disc space but is safer."
-msgstr "Va¹ projekt je trenutno odvisen od prisotnosti drugih datotek.\n"
+msgstr ""
+"Va¹ projekt je trenutno odvisen od prisotnosti drugih datotek.\n"
 "®elite kopirati zvok naslednjih datotek v svoj projekt, da ga naredite samozadostnega?\n"
 "Zahteva veè prostora na disku, vendar je varneje."
 
@@ -637,51 +665,53 @@ msgid "Copy Selected Audio Into Project"
 msgstr "Kopiraj izbrane zvoke v projekt"
 
 #: Dependencies.cpp:304
-#: Dependencies.cpp:413
+#: Dependencies.cpp:410
 msgid "Cancel Save"
 msgstr "Preklièi shranjevanje"
 
 #: Dependencies.cpp:306
 msgid "Don't Copy any Audio"
-msgstr ""
+msgstr "Ne kopiraj nobenega zvoka"
 
-#: Dependencies.cpp:311
+#: Dependencies.cpp:308
 msgid "Copy All Audio Into Project (safer)"
 msgstr "Kopiraj ves zvok v projekt (varneje)"
 
-#: Dependencies.cpp:320
-#: Dependencies.cpp:325
+#: Dependencies.cpp:317
+#: Dependencies.cpp:322
 msgid "Ask me"
 msgstr "Vpra¹aj me"
 
-#: Dependencies.cpp:321
+#: Dependencies.cpp:318
 msgid "Always copy all audio (safest)"
 msgstr "Vedno kopiraj vse zvoke (najbolj varno)"
 
-#: Dependencies.cpp:322
+#: Dependencies.cpp:319
 msgid "Never copy any audio"
 msgstr "Nikoli ne kopiraj zvokov"
 
-#: Dependencies.cpp:324
+#: Dependencies.cpp:321
 msgid "Whenever a project depends on other files:"
 msgstr "Vsakokrat, ko je projekt odvisen od drugih datotek:"
 
-#: Dependencies.cpp:412
+#: Dependencies.cpp:409
 msgid "If you proceed, your project will not be saved to disk. Is this what you want?"
 msgstr "Èe nadaljujete, va¹ projekt ne bo shranjen na disk. Res to ¾elite storiti?"
 
-#: Dependencies.cpp:452
+#: Dependencies.cpp:449
 msgid "Your project is self-contained; it does not depend on any external audio files."
 msgstr "Va¹ projekt samozadosten; ni odvisen od nobene zunanje zvoène datoteke."
 
-#: Dependencies.cpp:453
+#: Dependencies.cpp:450
 msgid "Dependency check"
 msgstr "Preverjanje odvisnosti"
 
 #: DirManager.cpp:136
-msgid "Warning: there is very little free disk space left on this volume.\n"
+msgid ""
+"Warning: there is very little free disk space left on this volume.\n"
 "Please select another temporary directory in your preferences."
-msgstr "Opozorilo: zmanjkuje prostora na tem disku.\n"
+msgstr ""
+"Opozorilo: zmanjkuje prostora na tem disku.\n"
 "Prosimo, da izberete drugo zaèasno mapo v oknu Nastavitve."
 
 #: DirManager.cpp:221
@@ -704,9 +734,11 @@ msgstr "Èi¹èenje map medpomnilnika"
 
 #: DirManager.cpp:493
 #, c-format
-msgid "Audacity found an orphaned blockfile %s! \n"
+msgid ""
+"Audacity found an orphaned blockfile %s! \n"
 "Please consider saving and reloading the project to perform a complete project check.\n"
-msgstr "Preveritev projekta je na¹la osirotelo blokovno datoteko %s! \n"
+msgstr ""
+"Preveritev projekta je na¹la osirotelo blokovno datoteko %s! \n"
 "Predlagamo shranitev in ponovno odprtje projekta, da izvedete popolno preveritev projekta.\n"
 
 #. i18n-hint: This is the pattern for filenames that are created
@@ -767,17 +799,21 @@ msgid "Missing data file: (%s.au)"
 msgstr "Manjkajoèa podatkovna datoteka: (%s.au)"
 
 #: DirManager.cpp:1207
-msgid "Project check found inconsistencies inspecting the loaded project data;\n"
+msgid ""
+"Project check found inconsistencies inspecting the loaded project data;\n"
 "click 'Details' for a complete list of errors, or 'OK' to proceed to more options."
-msgstr "Preveritev projekta je pokazala na nekonsistentnost pri nalo¾enih podatkih projekta;\n"
+msgstr ""
+"Preveritev projekta je pokazala na nekonsistentnost pri nalo¾enih podatkih projekta;\n"
 "kliknite 'Podrobnosti' za popoln seznam napak ali 'V redu' za nadaljevanje k veè mo¾nostim."
 
 #: DirManager.cpp:1219
 #, c-format
-msgid "Project check found %d orphaned blockfile[s]. These files are\n"
+msgid ""
+"Project check found %d orphaned blockfile[s]. These files are\n"
 "unused and probably left over from a crash or some other bug.\n"
 "They should be deleted to avoid disk contention."
-msgstr "Preveritev projekta je na¹la %d osirotelih blokovnih datotek. Te datoteke\n"
+msgstr ""
+"Preveritev projekta je na¹la %d osirotelih blokovnih datotek. Te datoteke\n"
 "niso v rabi in so najbr¾ ostale od sesutja ali kak¹nega drugega hro¹èa.\n"
 "Najbolje bi jih bilo izbrisati, da se izognete te¾avam v prihodnje."
 
@@ -806,13 +842,15 @@ msgstr "Opozorilo"
 
 #: DirManager.cpp:1254
 #, c-format
-msgid "Project check detected %d input file[s] being used in place\n"
+msgid ""
+"Project check detected %d input file[s] being used in place\n"
 "('alias files') are now missing.  There is no way for Audacity\n"
 "to recover these files automatically; you may choose to\n"
 "permanently fill in silence for the missing files, temporarily\n"
 "fill in silence for this session only, or close the project now\n"
 "and try to restore the missing files by hand."
-msgstr "Preveritev projekta je zaznala, da %d nadomestnih vhodnih datotek\n"
+msgstr ""
+"Preveritev projekta je zaznala, da %d nadomestnih vhodnih datotek\n"
 "('psevdo-datoteke') manjkajo.  Audacity na noben naèin ne more\n"
 "teh datotek samodejno obnoviti; izberete lahko, da se manjkajoèe\n"
 "datoteke za vedno zapolnijo s ti¹ino, zaèasno zapolnijo\n"
@@ -836,10 +874,12 @@ msgstr "Takoj zapri projekt brez nadaljnjih sprememb"
 
 #: DirManager.cpp:1300
 #, c-format
-msgid "Project check detected %d missing summary file[s] (.auf).\n"
+msgid ""
+"Project check detected %d missing summary file[s] (.auf).\n"
 "Audacity can fully regenerate these summary files from the\n"
 "original audio data in the project."
-msgstr "Preveritev projekta je zaznala %d manjkajoèih datotek povzetkov (.auf).\n"
+msgstr ""
+"Preveritev projekta je zaznala %d manjkajoèih datotek povzetkov (.auf).\n"
 "Audacity lahko v celoti regenerira te datoteke povzetkov iz\n"
 "izvornih zvoènih podatkov projekta."
 
@@ -853,14 +893,16 @@ msgstr "Zapolni s ti¹ino manjkajoèe podatke za prikaz [samo za to sejo]"
 
 #: DirManager.cpp:1342
 #, c-format
-msgid "Project check detected %d missing audio data blockfile[s] (.au), \n"
+msgid ""
+"Project check detected %d missing audio data blockfile[s] (.au), \n"
 "probably due to a bug, system crash or accidental deletion.\n"
 "There is no way for Audacity to recover this lost data\n"
 "automatically; you may choose to permanently fill in silence\n"
 "for the missing data, temporarily fill in silence for this\n"
 "session only, or close the project now and try to restore the\n"
 "missing data by hand."
-msgstr "Preveritev projekta je zaznala, da manjka %d zvoènih podatkovnih blokov (.au), \n"
+msgstr ""
+"Preveritev projekta je zaznala, da manjka %d zvoènih podatkovnih blokov (.au), \n"
 "najverjetneje zaradi hro¹èev, sesutja sistema ali izbrisa po nesreèi.\n"
 "Audacity na noben naèin ne more obnoviti izgubljenih podatkov\n"
 "samodejno; izberete lahko trajno zapolnitev manjkajoèih podatkov\n"
@@ -964,18 +1006,18 @@ msgstr "&Izvozi ..."
 
 #: FreqWindow.cpp:272
 #: FreqWindow.cpp:402
-#: effects/AutoDuck.cpp:487
-#: effects/AutoDuck.cpp:521
-#: effects/AutoDuck.cpp:789
-#: effects/Compressor.cpp:349
-#: effects/Compressor.cpp:357
-#: effects/Equalization.cpp:1086
-#: effects/Equalization.cpp:1088
-#: effects/Equalization.cpp:1096
-#: effects/Equalization.cpp:1162
-#: effects/Equalization.cpp:1371
-#: effects/Equalization.cpp:1382
-#: effects/Normalize.cpp:340
+#: effects/AutoDuck.cpp:489
+#: effects/AutoDuck.cpp:523
+#: effects/AutoDuck.cpp:791
+#: effects/Compressor.cpp:352
+#: effects/Compressor.cpp:360
+#: effects/Equalization.cpp:1103
+#: effects/Equalization.cpp:1105
+#: effects/Equalization.cpp:1113
+#: effects/Equalization.cpp:1179
+#: effects/Equalization.cpp:1388
+#: effects/Equalization.cpp:1399
+#: effects/Normalize.cpp:361
 #: widgets/Meter.cpp:363
 msgid "dB"
 msgstr "dB"
@@ -984,8 +1026,8 @@ msgstr "dB"
 #. cycles per second.
 #: FreqWindow.cpp:287
 #: FreqWindow.cpp:442
-#: effects/Equalization.cpp:1127
-#: effects/Equalization.cpp:1158
+#: effects/Equalization.cpp:1144
+#: effects/Equalization.cpp:1175
 #: import/ImportRaw.cpp:416
 msgid "Hz"
 msgstr "Hz"
@@ -995,7 +1037,7 @@ msgid "Not enough data selected."
 msgstr "Oznaka je premajhna."
 
 #: FreqWindow.cpp:450
-#: effects/AutoDuck.cpp:791
+#: effects/AutoDuck.cpp:793
 msgid "s"
 msgstr "s"
 
@@ -1019,7 +1061,7 @@ msgstr "Izvozi grafiène podatke kot:"
 
 #: FreqWindow.cpp:1077
 #: LabelDialog.cpp:599
-#: Menus.cpp:2106
+#: Menus.cpp:2177
 #: Project.cpp:2379
 #: Project.cpp:3333
 #: prefs/KeyConfigPrefs.cpp:180
@@ -1048,7 +1090,7 @@ msgstr "Dobrodo¹li"
 
 #: HelpText.cpp:60
 msgid "Welcome!"
-msgstr ""
+msgstr "Dobrodo¹li!"
 
 #: HelpText.cpp:65
 msgid "Playing Audio"
@@ -1064,8 +1106,6 @@ msgstr "Osivele izbire"
 
 #: HelpText.cpp:77
 #: export/ExportCL.cpp:320
-#: export/ExportOGG.cpp:252
-#: export/ExportPCM.cpp:398
 msgid "Export"
 msgstr "Izvozi"
 
@@ -1075,374 +1115,372 @@ msgstr "Podprte vrste datotek"
 
 #: HelpText.cpp:85
 msgid "Burn to CD"
-msgstr ""
+msgstr "Zapeci na CD"
 
-#: HelpText.cpp:85
+#: HelpText.cpp:89
 msgid "No Local Help"
 msgstr "Ni krajevne pomoèi"
 
 #: HelpText.cpp:101
-#, fuzzy
 msgid "Welcome to Audacity "
-msgstr "Dobrodo¹li v Audacity!"
+msgstr "Dobrodo¹li v Audacity "
 
 #: HelpText.cpp:102
 msgid "Let's get started!"
-msgstr ""
+msgstr "Pa zaènimo!"
 
 #: HelpText.cpp:104
 msgid "You can click on the links below to learn how to:"
-msgstr ""
+msgstr "Kliknite na spodnje hiperpovezave, da si preberete:"
 
-#: HelpText.cpp:103
+#: HelpText.cpp:106
 msgid " an existing sound file."
 msgstr " obstojeèo zvoèno datoteko."
 
-#: HelpText.cpp:103
+#: HelpText.cpp:106
 msgid "play back"
 msgstr "predvajamo"
 
-#: HelpText.cpp:105
+#: HelpText.cpp:108
 msgid " a new sound file."
 msgstr " novo zvoèno datoteko."
 
-#: HelpText.cpp:103
-#: HelpText.cpp:105
-#: HelpText.cpp:107
+#: HelpText.cpp:108
+#: HelpText.cpp:110
 msgid "How to "
 msgstr "Kako "
 
-#: HelpText.cpp:105
+#: HelpText.cpp:108
 msgid "record"
 msgstr "posnamemo"
 
-#: HelpText.cpp:107
+#: HelpText.cpp:110
 msgid " sound and "
 msgstr " zvok in ga "
 
-#: HelpText.cpp:107
+#: HelpText.cpp:110
 msgid "edit"
 msgstr "uredimo"
 
 #: HelpText.cpp:111
 msgid " to a sound file like MP3."
-msgstr ""
+msgstr " v zvoèno datoteko, kot je MP3."
 
-#: HelpText.cpp:108
+#: HelpText.cpp:111
 msgid "export"
 msgstr "izvozimo"
 
 #: HelpText.cpp:113
 msgid "Those links will help if you find a problem such as a "
-msgstr ""
+msgstr "Te povezave vam bodo pomagale, èe naletite na te¾avo, kot je "
 
 #: HelpText.cpp:114
 msgid " or that Audacity "
-msgstr ""
+msgstr " ali zakaj Audacity "
 
 #: HelpText.cpp:114
 msgid "menu option greyed out"
-msgstr ""
+msgstr "v menijih osivele"
 
 #: HelpText.cpp:115
 msgid " or that you "
-msgstr ""
+msgstr " ali zakaj "
 
 #: HelpText.cpp:115
 msgid "isn't recording properly"
-msgstr ""
+msgstr "ne posname nièesar"
 
 #: HelpText.cpp:116
 msgid "burn to a CD"
-msgstr ""
+msgstr "zapeèi na CD"
 
 #: HelpText.cpp:116
 msgid "can't "
-msgstr ""
+msgstr "ne morete "
 
 #: HelpText.cpp:117
 msgid ". You can always get back to these instructions by clicking the 'Help' menu, then 'Show Welcome Message.' "
-msgstr ""
+msgstr ". Vedno se lahko vrnete k tem navodilom, èe izberete meni 'Pomoè', nato 'Poka¾i sporoèilo dobrodo¹lice'."
 
 #: HelpText.cpp:119
 msgid "Welcome again to Audacity."
-msgstr ""
+msgstr "Dobrodo¹li znova v Audacity."
 
 #: HelpText.cpp:127
 msgid "You can either drag existing files into Audacity, or use the File > Import > Audio command."
-msgstr ""
+msgstr "Obstojeèe datoteke lahko povleèete v Audacity ali pa odprete z ukazom Datoteka > Uvozi > Zvok."
 
 #: HelpText.cpp:128
 msgid "File > Open does the same, but opens a new Audacity window for any file after the first."
-msgstr ""
+msgstr "Datoteka > Odpre ima enak uèinek, le da odpre novo okno Audacity za vsako datoteko po prvi."
 
 #: HelpText.cpp:130
 msgid "These are the main formats Audacity will import for you: <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis, WAV</b>."
-msgstr ""
+msgstr "Naslednje vrste zvoènih datotek lahko uvozite v Audacity: <b>AIFF, AU, FLAC, M4A</b> (le na Macih), <b>MP2/MP3, OGG Vorbis, WAV</b>."
 
 #: HelpText.cpp:131
 msgid "If your file is in some other format see (format help). If you want to import an audio CD, see "
-msgstr ""
+msgstr "Èe je va¹a datoteka v kak¹nem drugem zapisu, si oglejte (pomoè o vrstah zapisov).<br><br>Èe ¾elite uvoziti glasbeni CD, si oglejte "
 
 #: HelpText.cpp:133
 msgid "To start playing your audio, press the green Play button. "
-msgstr ""
+msgstr "Za zaèetek predvajanja zvoka pritisnite zeleni gumb Predvajaj. "
 
 #: HelpText.cpp:134
 msgid "To stop, press the yellow Stop button. "
-msgstr ""
+msgstr "Za ustavitev pritisnite rumeni gumb Ustavi. "
 
 #: HelpText.cpp:135
 msgid "You can also use spacebar to either play or stop. "
-msgstr ""
+msgstr "Za zaèetek ali ustavitev predvajanja lahko uporabite tudi preslednico. "
 
 #: HelpText.cpp:136
 msgid "When you start playing again after stopping, playback resumes from its previous starting point."
-msgstr ""
+msgstr "Ko zaènete predvajati po prekinitvi, se predvajanje nadaljuje s prej¹njega mesta."
 
 #: HelpText.cpp:137
 msgid "To change the starting point, use the |<< and |>> buttons to skip to the start or end respectively, or click anywhere in the track to restart from that point."
-msgstr ""
+msgstr "Da spremenite zaèetno toèko, uporabite gumba |<< in |>>, da gumbu ustrezno preskoèite na zaèetek oz. konec, ali kliknite kamor koli na sledi za zaèetek iz te toèke."
 
 #: HelpText.cpp:149
 msgid "<b>To start recording, press the red Record button</b>. Before doing so however, there are three crucial settings you must check:"
-msgstr ""
+msgstr "<b>Za prièetek snemanja pritisnite rdeèi gumb Snemaj.<b> Pred tem pa morate preveriti tri kljuène nastavitve:"
 
 #: HelpText.cpp:152
 msgid "(1) The <b>Recording Device</b>, set in the Audio I/O tab of Preferences. "
-msgstr ""
+msgstr "(1) \"Snemalna naprava\", kot je doloèena v zavihku Zvoèni V/I v Nastavitvah. "
 
 #: HelpText.cpp:153
 msgid "By default Audacity will use the current system device, which is usually your inbuilt sound device, so you may not need to set this. "
-msgstr ""
+msgstr "Audacity privzeto prevzame trenutno sistemsko napravo, ponavadi kar vgrajeno zvoèno napravo, tako da morate najverjetneje to nastavitev spremeniti. "
 
 #: HelpText.cpp:154
 msgid "But if you're using an external USB or Firewire device such as a USB turntable, make sure this device is selected as your recording device. "
-msgstr ""
+msgstr "Èe pa uporabljate zunanjo napravo USB ali Firewire, kot je gramofon USB, prosim, preverite, da je ta naprava nastavljena kot naprava za snemanje. "
 
 #. i18n-hint: 2nd item in the list
 #: HelpText.cpp:157
 msgid "(2) The <b>input source</b> for your device, such as microphone or line-in. "
-msgstr ""
+msgstr "(2) <b>Vhodni vir</b> svoje naprave, kot je mikrofon ali linijski vhod. "
 
 #: HelpText.cpp:159
 msgid "<b>On Windows</b>, you normally choose your input in the dropdown selector on the right of the <b>Mixer Toolbar<b> <i>note: on Vista, you must do so at Recording Device on the Audio I/O Preferences tab.</i>"
-msgstr ""
+msgstr "<b>V okolju Windows</b> obièajno izberete vhod v spustnem izbirniku na desni strani <b>vrstice me¹anja<b>. <i>Opomba: v okolju Vista morate to storiti pri nastavitvah snemalne naprave v zavihku Nastavitev Zvoèni V/I.</i>"
 
 #: HelpText.cpp:161
 msgid "<b>On a Mac</b>, you normally choose input sources outside Audacity, in Apple Audio-MIDI Setup."
-msgstr ""
+msgstr "<b>V okolju OS X</b> obièajno izberete vhodne vire zunaj Audacity, v nastavitvah Apple Audio-MIDI."
 
 #: HelpText.cpp:163
 msgid "<i>Note: many USB or Firewire devices don't have a choice of inputs, so you can ignore this step - see the documentation for your device. "
-msgstr ""
+msgstr "<i>Opomba: Veliko naprav USB in Firewire nima mo¾nosti izbiranja vhodov, tako da lahko ta korak prezrete - oglejte si dokumentacijo svoje naprave. "
 
 #. i18n-hint: Third and final item in list
 #: HelpText.cpp:166
 msgid "(3) <b>Input volume</b>. Before recording for real, make a test recording to set the input level, so that it's neither too soft or too loud."
-msgstr ""
+msgstr "(3) <b>Vhodna jakost<b>. Preden zaènete resno snemati, opravite poskusno snemanje, da nastavite vhodno jakost, da ne bo preglasna ali pretiha."
 
 #. i18n-hint: introduction to a set of steps to do something we have already
 #. * talked about
 #: HelpText.cpp:169
 msgid "To do this: "
-msgstr ""
+msgstr "Da bi lahko to storili, naredite sledeèe:"
 
 #: HelpText.cpp:171
 msgid "Turn on <b>monitoring</b>, by either double-clicking over the right-hand of the two VU Meters, or right-clicking over it and choosing \"Start Monitoring\". "
-msgstr ""
+msgstr "Vkljuèite <b>opazovanje</b> z dvoklikom na desni rob obeh merilnikov VU ali z desnim klikom nad njimi in izbiro \"Za¾eni opazovanje\". "
 
 #: HelpText.cpp:172
 msgid "If you do not see the meters, click View > Toolbars and check \"Meter Toolbar\". "
-msgstr ""
+msgstr "Èe ne vidite merilnikov, kliknite Pogled > Orodne vrstice in oznaèite \"Vrstica merjenja\"."
 
 #: HelpText.cpp:174
 msgid "Press Record, and adjust the input volume slider on the Mixer Toolbar (by the microphone symbol), so that the red bars in the meter come close to (but do not touch) the right edge of the scale. "
-msgstr ""
+msgstr "Pritisnite Snemaj in prilagodite drsnik za jakost vhoda na vrstici me¹anja (ob simbolu mikrofona), da se rdeèi stolpci v merilniku pribli¾ujejo (vendar ne dotikajo) rdeèega roba merila. "
 
 #: HelpText.cpp:175
 msgid "If you can't hear the sound, go to the Audio I/O tab of Preferences and check \"Software Playthrough\". "
-msgstr ""
+msgstr "Èe nièesar ne slièice, pojdite na zavihek Zvoèni V/I v Nastavitvah in oznaèite \"Programsko predvajanje skozi\"."
 
 #: HelpText.cpp:177
 msgid "There is more help if you're stuck: our Recording FAQs, our Tutorial  <b>Your First Recording </b> in the Manual, and our Wiki "
-msgstr ""
+msgstr "Èe se vam zatika, je na voljo ¹e veè pomoèi: na¹a PZV (FAQ) o snemanju, na¹ vodnik <b>Va¹ prvi posnetek </b> v priroèniku ter na¹ wiki "
 
-#: HelpText.cpp:165
+#: HelpText.cpp:178
 msgid " section. "
 msgstr " na¹ega wikija. "
 
 #: HelpText.cpp:178
 msgid ", especially the "
-msgstr ""
+msgstr ", ¹e posebej "
 
 #: HelpText.cpp:187
 msgid "Editing: Audacity is a powerful editor, so you'll want to see what it can do with your imported file or recording.  "
-msgstr ""
+msgstr "Urejanje (monta¾a): Audacity je zelo uporaben program za zvoèno monta¾o, zato si splaèa ogledati, kaj zmore z uvo¾enimi datotekami ali dejanskimi posnetki."
 
 #: HelpText.cpp:188
 msgid "The main commands you will use are under the Edit menu (such as cut, copy and paste) and under the Effect menu (you can do things like boost the bass, change pitch or tempo, or remove noise). "
-msgstr ""
+msgstr "Glavni ukazi, ki jih boste potrebovali, se nahajajo v meniju Uredi (kot so izre¾i, kopiraj in prilepi) ter v meniju Uèinek (tam lahko npr. okrepite base, spremenite ton ali tempo, odstranite ¹um)."
 
 #: HelpText.cpp:190
 msgid "Audacity applies edits to areas of the audio track. You can select a particular area of audio by clicking in the track and dragging the shaded area with your mouse. "
-msgstr ""
+msgstr "Audacity izvede monta¾o oz. urejanje na izbranem podroèju zvoène sledi. Doloèeno podroèje zvoka izberete s klikom na sled in vleko osivelega podroèja z mi¹ko v levo ali desno stran. "
 
 #: HelpText.cpp:191
 msgid "If you don't select any audio, Audacity will select all that you have on the screen."
-msgstr ""
+msgstr "Èe ne izberete nobenega zvoka, bo Audacity izbral vse, ki so na zaslonu."
 
 #: HelpText.cpp:193
 msgid "Two important points when editing:"
-msgstr ""
+msgstr "Pri monta¾i ne pozabite pomembni dejstvi:"
 
 #: HelpText.cpp:195
 msgid "(1) If you're still playing or recording, use the yellow Stop button, because you can't edit or export a moving track! "
-msgstr ""
+msgstr "(1) Èe ¹e vedno predvajate ali snemate, uporabite rumeni gumb Ustavi, kajti premikajoèe sledi ni mogoèe spreminjati! "
 
 #: HelpText.cpp:197
 msgid "(2) On occasion, some of the menus or buttons are greyed out or say \"Disabled\" -  this is normal. "
-msgstr ""
+msgstr "(2) Opazili boste, da so vèasih nekateri meniji ali ukazi osiveli ali tam pi¹e \"Onemogoèeno\" - to je povsem obièajno. "
 
 #: HelpText.cpp:198
 msgid "For example, because you can't edit audio while playing or recording, we grey out or disable commands until you press Stop. "
-msgstr ""
+msgstr "Ker npr. ne morete urejati zvoka med njegovim predvajanjem ali snemanjem, osivimo ali onemogoèimo te ukaze, dokler ne pritisnete Ustavi. "
 
 #: HelpText.cpp:199
 msgid "Commands can sometimes be unavailable for other reasons - for example you can't run effects until you have audio on the screen, and you obviously can't paste audio until you've cut or copied it to Audacity's clipboard. "
-msgstr ""
+msgstr "Ukazi vèasih niso na voljo zaradi drugih razlogov - tako npr. uèinkov ne morete izvajati, dokler nimate zvokov na zaslonu, in oèitno ne morete prilepiti zvoka, dokler ga niste prej kopirali v odlo¾i¹èe Audacity."
 
 #: HelpText.cpp:208
 msgid "Exporting and Saving. have different purposes."
-msgstr ""
+msgstr "Izva¾anje in shranjevanje imata razlièen namen."
 
 #: HelpText.cpp:209
 msgid "You \" save\" an Audacity project file when you want to return to your work in Audacity later."
-msgstr ""
+msgstr "Projekt Audacity \"shranite\", ko se ¾elite k svojemu delu v Audacity ¹e vrniti kasneje."
 
 #: HelpText.cpp:210
 msgid "This means you don't then have to re-import or re-record audio, or redo editing you have done so far."
-msgstr ""
+msgstr "To pomeni, da ni potrebno ponovno uvoziti ali posneti zvokov ali ponoviti doslej opravljene monta¾e in urejanja."
 
 #: HelpText.cpp:211
 msgid "When you want to listen to your work in other computer programs or burn it to CD, you \"export\" it as an audio file such as a WAV, AIFF or MP3. "
-msgstr ""
+msgstr "Ko ¾elite prisluhniti svojemu delu z drugimi raèunalni¹kimi programi ali ga zapeèi na CD, ga \"izvozite\" kot zvoèno datoteko WAV, AIFF ali MP3. "
 
 #: HelpText.cpp:213
 msgid "To save an Audacity project, use <b>File > Save Project</b>. This will save an <b>.aup</b> Project file, plus a <b>_data</b> folder containing the actual audio. "
-msgstr ""
+msgstr "Projekt v Audacity shranite s ukazom <b>Datoteka > Shrani projekt</b>. Tako shranite projektno datoteko s konènico <b>.aup</b>, zraven pa ¹e mapo <b>_data</b>, ki vsebuje dejanske zvoène datoteke. "
 
 #: HelpText.cpp:214
 msgid "Make sure you don't rename or move either of these, because Audacity needs to refer to both."
-msgstr ""
+msgstr "Preprièajte se, da ne preimenujete ali premaknete katere koli izmed njiju, kajti Audacity potrebuje oboje na istem mestu."
 
 #: HelpText.cpp:215
 msgid "Only use File > Save Project As. when you either need to save an empty Project, or if you want to save an existing Project to a <i> new</i> name. "
-msgstr ""
+msgstr "Datoteka > Shrani projekt kot uporabite le takrat, ko ¾elite shraniti prazen projekt ali ko ¾elite shraniti obstojeèi projekt pod <i>novim</i> imenom. "
 
 #: HelpText.cpp:216
 msgid "When you want to re-open a saved Project, simply click File > Open and open the .aup file. "
-msgstr ""
+msgstr "Ko ¾elite ponovno odpreti shranjen projekt, zgolj kliknite Datoteka > Odpri in odprite datoteko .aup. "
 
 #: HelpText.cpp:218
 msgid "When you want to export your work to an audio file, use <b>File > Export</b> and choose your desired format in the \"Save as type\" dropdown."
-msgstr ""
+msgstr "Ko ¾elite izvoziti svoje delo v zvoèno datoteko, uporabite <b>Datoteka > Izvozi</b> in izberite ¾eleno vrsto datoteke v spustnem meniju \"Shrani kot vrsto\"."
 
 #: HelpText.cpp:219
 msgid "Click the Options button for advanced choices, such as the bit rate to use for MP3 export."
-msgstr ""
+msgstr "Za napredne mo¾nosti, kot je uporabljena bitna hitrost za izvoz v MP3, kliknite gumb Mo¾nosti."
 
 #: HelpText.cpp:220
 msgid "There are two other Export commands under the File menu."
-msgstr ""
+msgstr "V meniju Datoteka sta ¹e dva ukaza za izvoz."
 
 #: HelpText.cpp:221
 msgid "\"Export Selection\" exports only a selected area of audio."
-msgstr ""
+msgstr "\"Izvozi izbor\" izvozi le izbrano zvokovno podroèje."
 
 #: HelpText.cpp:222
 msgid "\"Export Multiple\" exports multiple files, for example where you have more than one track on screen and want to export each as a separate file. "
-msgstr ""
+msgstr "\"Izvozi veè datotek\" izvozi veè posameznih datotek, npr. ko imate na zaslonu veè sledi in ¾elite vsako izvoziti kot loèeno datoteko."
 
 #: HelpText.cpp:224
 msgid "Before you can export as <b>MP3</b>, you need to add the LAME MP3 encoder to your computer."
-msgstr ""
+msgstr "Preden lahko izvozite posnetek kot <b>MP3</b>, morate na raèunalniku namestiti kodirnik LAME MP3."
 
 #: HelpText.cpp:225
 msgid "For help with LAME, see "
-msgstr ""
+msgstr "Za pomoè pri LAME si oglejte "
 
 #: HelpText.cpp:227
 msgid "There is also some help on how to "
-msgstr ""
+msgstr "Tam najdete pomoè, kako "
 
 #: HelpText.cpp:227
 msgid "burn to a CD."
-msgstr ""
+msgstr "zapeèete CD."
 
 #: HelpText.cpp:239
 msgid "Can Audacity import file formats like WMA, AAC, RealAudio  etc.?"
-msgstr ""
+msgstr "Lahko Audacity uvozi vrste datotek WMA, AAC, RealAudio in podobne?"
 
 #: HelpText.cpp:241
 msgid "Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)</b>, or most other proprietary formats, because of licensing and patent restrictions."
-msgstr ""
+msgstr "Audacity ne more uvoziti ali izvoziti datotek <b>WMA, RealAudio, Shorten (SHN)</b> kot tudi ne veèine drugih licenènih vrst datotek zaradi licenènih in patentnih omejitev."
 
 #: HelpText.cpp:242
 msgid "Audacity also cannot import any kind of Digital Rights Management (DRM) protected file, including most purchased online such as from iTunes or Napster."
-msgstr ""
+msgstr "Audacity prav tako ne zna uvoziti datotek, za¹èitenih z DRM (Digital Rights Management), najpogosteje kupljenih v spletnih trgovinah iTunes ali Napster."
 
 #: HelpText.cpp:243
 msgid "If you are on a Mac, you can import <b>AAC</b>  encoded files (such as <b>M4A</b>) as long as they are not DRM protected, but you cannot export to these formats."
-msgstr ""
+msgstr "Èe uporabljate Mac, lahko uvozite datoteke, kodirane z <b>AAC</b> (kot so <b>M4A</b>), èe niso za¹èitene z DRM, lahko pa izva¾ate v te vrste datotek."
 
 #: HelpText.cpp:245
 msgid "Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>Musepack</b>."
-msgstr ""
+msgstr "Nekateri odprte vrste datotek v Audacity ¹e niso podprte, vkljuèno z <b>Ogg Speex</b> in <b>Musepack</b>."
 
 #: HelpText.cpp:246
 msgid "We hope to support these formats in future versions of Audacity."
-msgstr ""
+msgstr "Upamo, da bomo te formate podprli v prihodnjih razlièicah Audacity."
 
 #: HelpText.cpp:248
 msgid "If you cannot import your file into Audacity, you can as a workround convert it to WAV or AIFF."
-msgstr ""
+msgstr "Èe datoteke ne morete uvoziti v Audacity, jo lahko posredno prej pretvorite v WAV ali AIFF."
 
 #: HelpText.cpp:251
 msgid "As long as it's not a DRM-protected file, you could do this with iTunes or with "
-msgstr ""
+msgstr "V kolikor datoteka ni za¹èitena z DRM, lahko to storite s programom iTunes ali z "
 
 #: HelpText.cpp:253
 msgid "If it's a DRM-protected file, you can burn it to an audio CD in the application that is licensed to play it, then extract (rip) the CD track to WAV or AIFF."
-msgstr ""
+msgstr "Èe je datoteka za¹èitena z DRM, jo lahko zapeèete na zvoèni CD z aplikacijo, ki ima licenco za njeno predvajanje, nato pa sled s CD-ja prepi¹ete v WAV ali AIFF."
 
 #: HelpText.cpp:254
 msgid "You can use iTunes to extract to WAV or AIFF, plus Windows Media Player 11 or <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> on Windows."
-msgstr ""
+msgstr "Za prepis v WAV ali AIFF lahko uporabite iTunes, v okolju Windows pa tudi Windows Media Player 11 ali <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a>."
 
 #: HelpText.cpp:255
 msgid "Or you can play the file on your computer and record it - see <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">. "
-msgstr ""
+msgstr "Ali pa lahko datoteko predvajate na raèunalniku in jo hkrati posnamete - oglejte si <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">. "
 
 #: HelpText.cpp:263
 msgid "If you want to burn your work to an audio CD, you must first "
-msgstr ""
+msgstr "Èe ¾elite zapeèi svoje delo na zvoèni CD, morate najprej "
 
 #: HelpText.cpp:264
 msgid "export as WAV or AIFF"
-msgstr ""
+msgstr "izvoziti kot WAV ali AIFF"
 
 #: HelpText.cpp:265
 msgid " and then burn that file to CD - for more help, see "
-msgstr ""
+msgstr " in nato to datoteko zapeèi na CD - za veè pomoèi si oglejte "
 
-#: HelpText.cpp:230
+#: HelpText.cpp:279
 msgid "<p>You don't appear to have Audacity help files on your machine. "
 msgstr "<p>Datotek pomoèi za Audacity nimate na svojem raèunalniku. "
 
 #: HelpText.cpp:280
 msgid "You can download the help files and then access them from Audacity or you can click <a href=\"*URL*\">here</a> to read the help online."
-msgstr ""
+msgstr "Prenesete lahko datoteke pomoèi in do njih dostopate iz Audacity ali pa lahko kliknete <a href=\"*URL*\">sem</a>, da si preberete spletno pomoè."
 
 #: HistoryWindow.cpp:53
 msgid "Undo History"
@@ -1506,8 +1544,8 @@ msgid "Track"
 msgstr "Sled"
 
 #: LabelDialog.cpp:53
-#: Menus.cpp:3934
-#: Menus.cpp:3962
+#: Menus.cpp:4019
+#: Menus.cpp:4047
 msgid "Label"
 msgstr "Naslov"
 
@@ -1520,7 +1558,7 @@ msgid "End Time"
 msgstr "Konèni èas"
 
 #: LabelDialog.cpp:98
-#: Menus.cpp:611
+#: Menus.cpp:615
 msgid "&Edit Labels"
 msgstr "&Uredi oznake"
 
@@ -1546,11 +1584,13 @@ msgid "New..."
 msgstr "Nov ..."
 
 #: LabelDialog.cpp:352
-msgid "You have left blank label names.  These will be\n"
+msgid ""
+"You have left blank label names.  These will be\n"
 "skipped when repopulating the Label Tracks.\n"
 "\n"
 "Would you like to go back and provide names?"
-msgstr "Pustili ste prazna imena oznak.  Te bodo\n"
+msgstr ""
+"Pustili ste prazna imena oznak.  Te bodo\n"
 "preskoèene pri ponaselitvi sledi z oznakami.\n"
 "\n"
 "Se ¾elite vrniti in vnesti imena?"
@@ -1560,17 +1600,17 @@ msgid "Confirm"
 msgstr "Potrdi"
 
 #: LabelDialog.cpp:514
-#: Menus.cpp:3446
+#: Menus.cpp:3517
 msgid "Select a text file containing labels..."
 msgstr "Izberite datoteko z naslovi ..."
 
 #: LabelDialog.cpp:518
-#: Menus.cpp:3450
+#: Menus.cpp:3521
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "Datoteke z besedilom (*.txt)|*.txt|Vse datoteke (*.*)|*.*"
 
 #: LabelDialog.cpp:532
-#: Menus.cpp:3462
+#: Menus.cpp:3533
 #: Project.cpp:1800
 #: Project.cpp:1808
 #: import/ImportMIDI.cpp:31
@@ -1582,12 +1622,12 @@ msgid "No labels to export."
 msgstr "Ni naslovov za izvoz."
 
 #: LabelDialog.cpp:564
-#: Menus.cpp:2071
+#: Menus.cpp:2142
 msgid "Export Labels As:"
 msgstr "Izvozi naslove kot:"
 
 #: LabelDialog.cpp:566
-#: Menus.cpp:2069
+#: Menus.cpp:2140
 msgid "labels.txt"
 msgstr "naslovi.txt"
 
@@ -1616,9 +1656,11 @@ msgstr "Izberite jezik programa Audacity:"
 
 #: Legacy.cpp:356
 #, c-format
-msgid "Converted a 1.0 project file to the new format.\n"
+msgid ""
+"Converted a 1.0 project file to the new format.\n"
 "The old file has been saved as '%s'"
-msgstr "Datoteka projekta 1.0 je shranjena v novem zapisu.\n"
+msgstr ""
+"Datoteka projekta 1.0 je shranjena v novem zapisu.\n"
 "Stara datoteka je shranjena pod imenom '%s'"
 
 #: Legacy.cpp:357
@@ -2036,679 +2078,679 @@ msgid "&Timer Record..."
 msgstr "&Èasovno snemanje ..."
 
 #: Menus.cpp:560
-#: Menus.cpp:3623
+#: Menus.cpp:3698
 #: Mix.cpp:120
 msgid "&Mix and Render"
 msgstr "&Zme¹aj in izdelaj"
 
 #: Menus.cpp:564
 msgid "Mix and Render to New Track\tCtrl+Shift+M"
-msgstr ""
+msgstr "Zme¹aj in izdelaj v novo sled\tCtrl+Shift+M"
 
-#: Menus.cpp:564
+#: Menus.cpp:568
 msgid "&Resample..."
 msgstr "&Prevzorèi ..."
 
-#: Menus.cpp:574
+#: Menus.cpp:578
 msgid "Remo&ve Tracks"
 msgstr "O&dstrani sledi:"
 
-#: Menus.cpp:581
+#: Menus.cpp:585
 msgid "Align with &Zero"
 msgstr "&Zdru¾i z nièlo"
 
-#: Menus.cpp:582
+#: Menus.cpp:586
 msgid "Align with &Cursor"
 msgstr "Poravnaj s &kazalko"
 
-#: Menus.cpp:583
+#: Menus.cpp:587
 msgid "Align with Selection &Start"
 msgstr "Poravnaj z &zaèetkom izbora"
 
-#: Menus.cpp:584
+#: Menus.cpp:588
 msgid "Align with Selection &End"
 msgstr "Poravnaj s &koncem izbora"
 
-#: Menus.cpp:585
+#: Menus.cpp:589
 msgid "Align End with Cursor"
 msgstr "Poravnaj konec s kazalko"
 
-#: Menus.cpp:586
+#: Menus.cpp:590
 msgid "Align End with Selection Start"
 msgstr "Poravnaj konec z zaèetkom izbora"
 
-#: Menus.cpp:587
+#: Menus.cpp:591
 msgid "Align End with Selection End"
 msgstr "Poravnaj konec s koncem izbora"
 
-#: Menus.cpp:588
+#: Menus.cpp:592
 msgid "Align Tracks Together"
 msgstr "Zdru¾i posnetke"
 
-#: Menus.cpp:590
+#: Menus.cpp:594
 msgid "&Align Tracks..."
 msgstr "&Poravnaj sledi ..."
 
-#: Menus.cpp:599
+#: Menus.cpp:603
 msgid "Ali&gn And Move Cursor..."
 msgstr "Poravnaj in premakni &kazalko ..."
 
-#: Menus.cpp:607
+#: Menus.cpp:611
 msgid "Add &Label At Selection\tCtrl+B"
 msgstr "Dodaj &naslov izboru\tCtrl+B"
 
-#: Menus.cpp:608
+#: Menus.cpp:612
 msgid "Add Label At &Playback Position\tCtrl+M"
 msgstr "Dodaj naslov na mestu &predvajanja\tCtrl+M"
 
-#: Menus.cpp:614
+#: Menus.cpp:618
 msgid "S&ort tracks by..."
 msgstr "&Razvrsti sledi po ..."
 
-#: Menus.cpp:615
+#: Menus.cpp:619
 msgid "&Start time"
 msgstr "&Zaèetni èas"
 
-#: Menus.cpp:617
+#: Menus.cpp:621
 msgid "&Name"
 msgstr "&Ime"
 
-#: Menus.cpp:627
+#: Menus.cpp:631
 msgid "&Generate"
 msgstr "&Tvori"
 
-#: Menus.cpp:650
+#: Menus.cpp:654
 msgid "Effe&ct"
 msgstr "U&èinek"
 
-#: Menus.cpp:654
+#: Menus.cpp:658
 msgid "Repeat Last Effect\tCtrl+R"
 msgstr "Ponovi zadnji uèinek\tCtrl+R"
 
-#: Menus.cpp:686
+#: Menus.cpp:690
 msgid "&Analyze"
 msgstr "&Analiziraj"
 
-#: Menus.cpp:688
+#: Menus.cpp:692
 msgid "Plot Spectrum..."
 msgstr "Izri¹i spekter ..."
 
-#: Menus.cpp:721
-#: Menus.cpp:724
+#: Menus.cpp:725
+#: Menus.cpp:728
 msgid "&Help"
 msgstr "&Pomoè"
 
-#: Menus.cpp:727
+#: Menus.cpp:731
 msgid "&About Audacity CleanSpeech..."
 msgstr "&O Audacity CleanSpeech ..."
 
-#: Menus.cpp:731
+#: Menus.cpp:735
 msgid "&Show Welcome Message..."
 msgstr "&Poka¾i sporoèilo dobrodo¹lice ..."
 
-#: Menus.cpp:732
+#: Menus.cpp:736
 msgid "&Index..."
 msgstr "&Kazalo ..."
 
-#: Menus.cpp:740
+#: Menus.cpp:744
 msgid "&Screenshot Tools..."
 msgstr "&Zajem slike namizja ..."
 
-#: Menus.cpp:743
+#: Menus.cpp:747
 msgid "&Run Benchmark..."
 msgstr "&Po¾eni preizkus hitrosti ..."
 
-#: Menus.cpp:745
+#: Menus.cpp:749
 msgid "&Audio Device Info..."
 msgstr "Podatki o zvo&èni napravi ..."
 
-#: Menus.cpp:754
+#: Menus.cpp:758
 msgid "Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"
 msgstr "Kro¾i nazaj prek sidri¹èa, pogleda sledi in izbirne vrstice\tCtrl+Shift+F6"
 
-#: Menus.cpp:755
+#: Menus.cpp:759
 msgid "Cycle forward through Dock, Track View, and Selection Bar\tCtrl+F6"
 msgstr "Kro¾i naprej prek sidri¹èa, pogleda sledi in izbirne vrstice\tCtrl+F6"
 
-#: Menus.cpp:758
+#: Menus.cpp:762
 msgid "Selection Tool\tF1"
 msgstr "Orodje za izbiranje\tF1"
 
-#: Menus.cpp:759
+#: Menus.cpp:763
 msgid "Envelope Tool\tF2"
 msgstr "Orodje za ovojnico\tF2"
 
-#: Menus.cpp:760
+#: Menus.cpp:764
 msgid "Draw Tool\tF3"
 msgstr "Orodje za risanje\tF3"
 
-#: Menus.cpp:761
+#: Menus.cpp:765
 msgid "Zoom Tool\tF4"
 msgstr "Orodje za poveèavo\tF4"
 
-#: Menus.cpp:762
+#: Menus.cpp:766
 msgid "Time Shift Tool\tF5"
 msgstr "Orodje za èasovni zamik\tF5"
 
-#: Menus.cpp:763
+#: Menus.cpp:767
 msgid "Multi Tool\tF6"
 msgstr "Veèorodni naèin\tF6"
 
-#: Menus.cpp:765
+#: Menus.cpp:769
 msgid "Next Tool\tD"
 msgstr "Naslednje orodje\tD"
 
-#: Menus.cpp:766
+#: Menus.cpp:770
 msgid "Previous Tool\tA"
 msgstr "Predhodno orodje\tA"
 
-#: Menus.cpp:768
+#: Menus.cpp:772
 msgid "Play/Stop\tSpacebar"
 msgstr "Predvajaj/ustavi\tSpacebar"
 
-#: Menus.cpp:769
+#: Menus.cpp:773
 msgid "Stop\tS"
 msgstr "Ustavi\tS"
 
-#: Menus.cpp:770
+#: Menus.cpp:774
 msgid "Pause\tP"
 msgstr "Prekinitev\tP"
 
-#: Menus.cpp:771
+#: Menus.cpp:775
 msgid "Record\tR"
 msgstr "Posnemi\tR"
 
 #: Menus.cpp:777
 msgid "Play/Stop and Select\tShift+Return"
-msgstr ""
+msgstr "Predvajaj/ustavi in izberi\tShift+Enter"
 
-#: Menus.cpp:773
+#: Menus.cpp:778
 msgid "Stop and Select\tShift+A"
 msgstr "Ustavi in izberi\tShift+A"
 
-#: Menus.cpp:775
+#: Menus.cpp:780
 msgid "Play One Second\t1"
 msgstr "Predvajaj eno sekundo\t1"
 
-#: Menus.cpp:776
+#: Menus.cpp:781
 msgid "Play To Selection\tB"
 msgstr "Predvajaj do izbora\tB"
 
-#: Menus.cpp:777
+#: Menus.cpp:782
 msgid "Play Looped\tL"
 msgstr "Predvajaj v zanki\tZ"
 
-#: Menus.cpp:778
+#: Menus.cpp:783
 msgid "Play Looped\tShift+Spacebar"
 msgstr "Predvajaj v zanki\tShift+Spacebar"
 
-#: Menus.cpp:779
+#: Menus.cpp:784
 msgid "Play Cut Preview\tC"
 msgstr "Predvajaj predposlu¹anje reza\tC"
 
-#: Menus.cpp:781
+#: Menus.cpp:786
 msgid "Skip to Start\tHome"
 msgstr "Skoci na zaèetek\tDomov"
 
-#: Menus.cpp:782
+#: Menus.cpp:787
 msgid "Skip to End\tEnd"
 msgstr "Skoèi na konec\tKonec"
 
-#: Menus.cpp:784
+#: Menus.cpp:789
 msgid "Selection to Start\tShift+Home"
 msgstr "Izberi do zaèetka\tShift+Home"
 
-#: Menus.cpp:785
+#: Menus.cpp:790
 msgid "Selection to End\tShift+End"
 msgstr "Izberi do konca\tShift+End"
 
-#: Menus.cpp:787
+#: Menus.cpp:792
 msgid "DeleteKey\tBackspace"
 msgstr "Tipka Delete\tBackspace"
 
-#: Menus.cpp:792
+#: Menus.cpp:797
 msgid "DeleteKey2\tDelete"
 msgstr "Tipka Delete2\tDelete"
 
-#: Menus.cpp:798
+#: Menus.cpp:803
 msgid "Seek left short period during playback\tLeft"
 msgstr "Poi¹èi levo kratko periodo med predvajanjem\tLevo"
 
-#: Menus.cpp:799
+#: Menus.cpp:804
 msgid "Seek right short period during playback\tRight"
 msgstr "Poi¹èi desno kratko periodo med predvajanjem\tDesno"
 
-#: Menus.cpp:800
-msgid "Seek left long period during playback\tShift+Left"
-msgstr "Poi¹èi levo dolgo periodo med predvajanjem\tShift+Levo"
-
-#: Menus.cpp:801
-msgid "Seek right long period during playback\tShift+Right"
-msgstr "Poi¹èi desno dolgo periodo med predvajanjem\tShift+Desno"
-
 #: Menus.cpp:805
+msgid "Seek left long period during playback\tShift+Left"
+msgstr "Poi¹èi levo dolgo periodo med predvajanjem\tShift+levo"
+
+#: Menus.cpp:806
+msgid "Seek right long period during playback\tShift+Right"
+msgstr "Poi¹èi desno dolgo periodo med predvajanjem\tShift+desno"
+
+#: Menus.cpp:810
 msgid "Move Focus to Previous Track\tUp"
 msgstr "Premakni pozornost na prej¹njo sled\tUp"
 
-#: Menus.cpp:806
+#: Menus.cpp:811
 msgid "Move Focus to Previous and Change Selection\tShift+Up"
 msgstr "Premakni pozornost na prej¹njo in spremeni izbor\tShift+Up"
 
-#: Menus.cpp:807
+#: Menus.cpp:812
 msgid "Move Focus to Next Track\tDown"
 msgstr "Premakni pozornost na naslednjo sled\tDown"
 
-#: Menus.cpp:808
+#: Menus.cpp:813
 msgid "Move Focus to Next and Change Selection\tShift+Down"
 msgstr "Premakni pozornost na naslednjo in spremeni izbor\tShift+Down"
 
-#: Menus.cpp:809
+#: Menus.cpp:814
 msgid "Toggle Focused Track\tReturn"
 msgstr "Vkljuèi/izkljuèi pozornost sledi\tReturn"
 
-#: Menus.cpp:810
+#: Menus.cpp:815
 msgid "Toggle Focused Track\tNUMPAD_ENTER"
 msgstr "Vkljuèi/izkljuèi pozornost sledi\tNUMPAD_ENTER"
 
-#: Menus.cpp:811
+#: Menus.cpp:816
 msgid "Toggle Focused Track\tCtrl+Spacebar"
 msgstr "Vkljuèi/izkljuèi pozornost sledi\tCtrl+preslednica"
 
-#: Menus.cpp:813
+#: Menus.cpp:818
 msgid "Cursor Left\tLeft"
 msgstr "Leva kazalka\tLevo"
 
-#: Menus.cpp:814
+#: Menus.cpp:819
 msgid "Cursor Right\tRight"
 msgstr "Desna kazalka\tDesno"
 
 #: Menus.cpp:820
 msgid "Cursor Short Jump Left\t,"
-msgstr ""
+msgstr "Kratek skok kazalke levo\t,"
 
 #: Menus.cpp:821
 msgid "Cursor Short Jump Right\t."
-msgstr ""
+msgstr "Kratek skok kazalke desno\t."
 
 #: Menus.cpp:822
 msgid "Cursor Long Jump Left\tShift+,"
-msgstr ""
+msgstr "Dolg skok kazalke levo\tShift+,"
 
 #: Menus.cpp:823
 msgid "Cursor Long Jump Right\tShift+."
-msgstr ""
+msgstr "Dolg skok kazalke desno\tShift+."
 
-#: Menus.cpp:815
+#: Menus.cpp:825
 msgid "Selection Extend Left\tShift+Left"
-msgstr "Razpostri izbor na levo\tShift+Left"
+msgstr "Razpostri izbor na levo\tShift+levo"
 
-#: Menus.cpp:816
+#: Menus.cpp:826
 msgid "Selection Extend Right\tShift+Right"
-msgstr "Razpostri izbor na desno\tShift+Right"
+msgstr "Razpostri izbor na desno\tShift+desno"
 
 #: Menus.cpp:828
 msgid "Set (or Extend) Left Selection"
-msgstr ""
+msgstr "Nastavi (ali razpostri) levo mejo izbora"
 
 #: Menus.cpp:829
 msgid "Set (or Extend) Right Selection"
-msgstr ""
+msgstr "Nastavi (ali razpostri) desno mejo izbora"
 
-#: Menus.cpp:818
+#: Menus.cpp:831
 msgid "Selection Contract Left\tCtrl+Shift+Right"
-msgstr "Pomanj¹aj izbor z leve\tCtrl+Shift+Right"
+msgstr "Pomanj¹aj izbor z leve\tCtrl+Shift+desno"
 
-#: Menus.cpp:819
+#: Menus.cpp:832
 msgid "Selection Contract Right\tCtrl+Shift+Left"
-msgstr "Pomanj¹aj izbor z desne\tCtrl+Shift+Left"
+msgstr "Pomanj¹aj izbor z desne\tCtrl+Shift+levo"
 
-#: Menus.cpp:821
+#: Menus.cpp:834
 msgid "Change pan on focused track\tShift+P"
 msgstr "Spremeni zasuk na sledi s pozornostjo\tShift+P"
 
-#: Menus.cpp:822
+#: Menus.cpp:835
 msgid "Pan left on focused track\tAlt+Shift+Left"
-msgstr "Zasukaj levo na sledi s pozornostjo\tAlt+Shift+Levo"
+msgstr "Zasukaj levo na sledi s pozornostjo\tAlt+Shift+levo"
 
-#: Menus.cpp:823
+#: Menus.cpp:836
 msgid "Pan right on focused track\tAlt+Shift+Right"
-msgstr "Zasukaj desno na sledi s pozornostjo\tAlt+Shift+Desno"
+msgstr "Zasukaj desno na sledi s pozornostjo\tAlt+Shift+desno"
 
-#: Menus.cpp:824
+#: Menus.cpp:837
 msgid "Change gain on focused track\tShift+G"
 msgstr "Spremeni ojaèitev na sledi s pozornostjo\tShift+G"
 
-#: Menus.cpp:825
+#: Menus.cpp:838
 msgid "Increase gain on focused track\tAlt+Shift+Up"
 msgstr "Poveèaj ojaèitev na sledi s pozornostjo\tAlt+Shift+Up"
 
-#: Menus.cpp:826
+#: Menus.cpp:839
 msgid "Decrease gain on focused track\tAlt+Shift+Down"
 msgstr "Zmanj¹aj ojaèitev na sledi s pozornostjo\tAlt+Shift+Down"
 
-#: Menus.cpp:827
+#: Menus.cpp:840
 msgid "Open menu on focused track\tShift+M"
 msgstr "Odpri meni na sledi s pozornostjo\tShift+M"
 
-#: Menus.cpp:828
+#: Menus.cpp:841
 msgid "Mute/Unmute focused track\tShift+U"
 msgstr "Uti¹aj/Odti¹aj sled s pozornostjo\tShift+U"
 
-#: Menus.cpp:829
+#: Menus.cpp:842
 msgid "Solo/Unsolo focused track\tShift+S"
 msgstr "Soliraj/Odsoliraj sled s pozornostjo\tShift+S"
 
-#: Menus.cpp:830
+#: Menus.cpp:843
 msgid "Close focused track\tShift+C"
 msgstr "Zapri sled s pozornostjo\tShift+C"
 
-#: Menus.cpp:832
+#: Menus.cpp:845
 msgid "Snap To On"
 msgstr "Vkljuèi Skoèi-na"
 
-#: Menus.cpp:833
+#: Menus.cpp:846
 msgid "Snap To Off"
 msgstr "Izkljuèi Skoèi-na"
 
 #. i18n-hint: This is the name of the menu item on Mac OS X only
-#: Menus.cpp:847
+#: Menus.cpp:860
 msgid "Open Recent"
 msgstr "Odpri nedavne"
 
 #. i18n-hint: This is the name of the menu item on Windows and Linux
-#: Menus.cpp:850
+#: Menus.cpp:863
 msgid "Recent &Files..."
 msgstr "Zadnje &datoteke ..."
 
-#: Menus.cpp:897
+#: Menus.cpp:910
 #, c-format
 msgid "&Undo %s"
 msgstr "Razveljavi %s"
 
-#: Menus.cpp:923
+#: Menus.cpp:936
 msgid "Can't Undo"
 msgstr "Ni mogoèe razveljaviti"
 
-#: Menus.cpp:932
+#: Menus.cpp:945
 #, c-format
 msgid "&Redo %s"
 msgstr "P&onovi %s"
 
-#: Menus.cpp:938
+#: Menus.cpp:951
 msgid "Can't Redo"
 msgstr "Ni mogoèe ponoviti"
 
-#: Menus.cpp:1457
+#: Menus.cpp:1498
 msgid "Sort By Time"
 msgstr "Razvrsti po èasu"
 
-#: Menus.cpp:1457
+#: Menus.cpp:1498
 msgid "Tracks sorted by time"
 msgstr "Sledi, razvr¹èene po èasu"
 
-#: Menus.cpp:1483
+#: Menus.cpp:1524
 msgid "Sort By Name"
 msgstr "Razvrsti po imenu"
 
-#: Menus.cpp:1483
+#: Menus.cpp:1524
 msgid "Tracks sorted by name"
 msgstr "Sledi, razvr¹èene po imenu"
 
-#: Menus.cpp:1604
+#: Menus.cpp:1675
 msgid "Set Left Selection Bound"
 msgstr "Nastavi levo mejo izbora"
 
-#: Menus.cpp:1638
+#: Menus.cpp:1709
 msgid "Set Right Selection Bound"
 msgstr "Nastavi desno mejo izbora"
 
-#: Menus.cpp:1905
+#: Menus.cpp:1976
 msgid "You must select a track first."
 msgstr "Prosimo, da najprej izberete sled."
 
-#: Menus.cpp:1934
+#: Menus.cpp:2005
 #, c-format
 msgid "Repeat %s\tCtrl+R"
 msgstr "Ponovi %s\tCtrl+R"
 
-#: Menus.cpp:2065
+#: Menus.cpp:2136
 msgid "There are no label tracks to export."
 msgstr "Posnetki z naslovi za izvoz ne obstajajo."
 
-#: Menus.cpp:2170
+#: Menus.cpp:2241
 msgid "Nothing to undo"
 msgstr "Razveljavitev ni izvedljiva"
 
-#: Menus.cpp:2190
+#: Menus.cpp:2261
 msgid "Nothing to redo"
 msgstr "Ponovitev ni izvedljiva"
 
-#: Menus.cpp:2265
+#: Menus.cpp:2336
 #: TrackPanel.cpp:546
 #: toolbars/EditToolBar.cpp:133
 msgid "Cut"
 msgstr "Izre¾i"
 
-#: Menus.cpp:2265
+#: Menus.cpp:2336
 msgid "Cut to the clipboard"
 msgstr "Izre¾i v odlo¾i¹ce"
 
-#: Menus.cpp:2303
+#: Menus.cpp:2374
 msgid "Split Cut"
 msgstr "Razdvoji in izre¾i"
 
-#: Menus.cpp:2303
+#: Menus.cpp:2374
 msgid "Split-cut to the clipboard"
 msgstr "Razdvoji in izre¾i v odlo¾i¹èe"
 
-#: Menus.cpp:2368
 #: Menus.cpp:2439
-#: Menus.cpp:2533
+#: Menus.cpp:2510
+#: Menus.cpp:2604
 #: TrackPanel.cpp:548
 #: toolbars/EditToolBar.cpp:137
 msgid "Paste"
 msgstr "Prilepi"
 
-#: Menus.cpp:2368
+#: Menus.cpp:2439
 msgid "Pasted text from the clipboard"
 msgstr "Prilepljeno besedilo z odlo¾i¹èa"
 
-#: Menus.cpp:2439
-#: Menus.cpp:2533
+#: Menus.cpp:2510
+#: Menus.cpp:2604
 msgid "Pasted from the clipboard"
 msgstr "Prilepljeno iz odlo¾i¹èa"
 
-#: Menus.cpp:2473
+#: Menus.cpp:2544
 msgid "Copying stereo audio into a mono track is not allowed."
 msgstr "Kopiranje stereo zvoka v mono sled ni dovoljeno."
 
-#: Menus.cpp:2569
+#: Menus.cpp:2640
 #: toolbars/EditToolBar.cpp:139
 msgid "Trim"
 msgstr "Pore¾i"
 
-#: Menus.cpp:2569
+#: Menus.cpp:2640
 msgid "Trim file to selection"
 msgstr "Pore¾i datoteko na izbor"
 
-#: Menus.cpp:2598
+#: Menus.cpp:2669
 #, c-format
 msgid "Split-deleted %.2f seconds at t=%.2f"
 msgstr "Razdvojeno z brisanjem %.2f sekund pri t=%.2f"
 
-#: Menus.cpp:2601
+#: Menus.cpp:2672
 msgid "Split Delete"
 msgstr "Razdvoji z brisanjem"
 
-#: Menus.cpp:2622
+#: Menus.cpp:2693
 #, c-format
 msgid "Disjoined %.2f seconds at t=%.2f"
 msgstr "Razdru¾enih %.2f sekund pri t=%.2f"
 
-#: Menus.cpp:2625
+#: Menus.cpp:2696
 msgid "Disjoin"
 msgstr "Razdru¾i"
 
-#: Menus.cpp:2646
+#: Menus.cpp:2717
 #, c-format
 msgid "Joined %.2f seconds at t=%.2f"
 msgstr "Zdru¾enih %.2f sekund pri t=%.2f"
 
-#: Menus.cpp:2649
+#: Menus.cpp:2720
 msgid "Join"
 msgstr "Zdru¾i"
 
-#: Menus.cpp:2668
+#: Menus.cpp:2739
 #, c-format
 msgid "Silenced selected tracks for %.2f seconds at %.2f"
 msgstr "Sti¹ani izbrani posnetki za %.2f sekund pri %.2f"
 
-#: Menus.cpp:2670
+#: Menus.cpp:2741
 #: toolbars/EditToolBar.cpp:141
 msgid "Silence"
 msgstr "Ti¹ina"
 
-#: Menus.cpp:2704
+#: Menus.cpp:2775
 msgid "Duplicate"
 msgstr "Podvoji"
 
-#: Menus.cpp:2704
+#: Menus.cpp:2775
 msgid "Duplicated"
 msgstr "Podvojeno"
 
-#: Menus.cpp:2723
+#: Menus.cpp:2794
 msgid "Cut Labels"
 msgstr "Izre¾i oznaèeno"
 
-#: Menus.cpp:2723
+#: Menus.cpp:2794
 msgid "Cut labeled regions to the clipboard"
 msgstr "Izre¾i oznaèena obmoèja v odlo¾i¹èe"
 
-#: Menus.cpp:2737
+#: Menus.cpp:2808
 msgid "SplitCut labeled regions to the clipboard"
 msgstr "Razvoji z izrezovanjem oznaèena podroèja na odlo¾i¹èe"
 
-#: Menus.cpp:2738
+#: Menus.cpp:2809
 msgid "Split Cut Labels"
 msgstr "Oznake razdvojenega z izrezom"
 
-#: Menus.cpp:2752
+#: Menus.cpp:2823
 msgid "Copied labeled regions to the clipboard"
 msgstr "Skopirana oznaèena podroèja v odlo¾i¹èe"
 
-#: Menus.cpp:2752
+#: Menus.cpp:2823
 msgid "Copy Labels"
 msgstr "Kopiraj oznake"
 
-#: Menus.cpp:2764
+#: Menus.cpp:2835
 msgid "Delete Labels"
 msgstr "Izbri¹i oznake"
 
-#: Menus.cpp:2764
+#: Menus.cpp:2835
 msgid "Deleted labeled regions"
 msgstr "Izbrisana oznaèena podroèja"
 
-#: Menus.cpp:2776
+#: Menus.cpp:2847
 msgid "Split Delete Labels"
 msgstr "Razdvoji z brisanjem oznaèeno"
 
-#: Menus.cpp:2776
+#: Menus.cpp:2847
 msgid "Split Deleted labeled regions"
 msgstr "Razdvoji z brisanjem oznaèena podroèja"
 
-#: Menus.cpp:2788
+#: Menus.cpp:2859
 msgid "Silence Labels"
 msgstr "Oznake uti¹anega"
 
-#: Menus.cpp:2788
+#: Menus.cpp:2859
 msgid "Silenced labeled regions"
 msgstr "Oznaèena podroèja uti¹anja"
 
-#: Menus.cpp:2800
+#: Menus.cpp:2871
 msgid "Split Labels"
 msgstr "Oznake razdvojenega"
 
-#: Menus.cpp:2800
+#: Menus.cpp:2871
 msgid "Split labeled regions"
 msgstr "Oznaèena podroèja razdvojitve"
 
-#: Menus.cpp:2812
+#: Menus.cpp:2883
 msgid "Join Labels"
 msgstr "Oznake zdru¾enega"
 
-#: Menus.cpp:2812
+#: Menus.cpp:2883
 msgid "Joined labeled regions"
 msgstr "Oznaèena podroèja zdru¾evanja"
 
-#: Menus.cpp:2824
+#: Menus.cpp:2895
 msgid "Disjoin Labels"
 msgstr "Oznake razdru¾enega"
 
-#: Menus.cpp:2824
+#: Menus.cpp:2895
 msgid "Disjoined labeled regions"
 msgstr "Oznaèena podroèja razdru¾evanja"
 
-#: Menus.cpp:2846
-#: TrackPanel.cpp:5689
+#: Menus.cpp:2917
+#: TrackPanel.cpp:5861
 msgid "Split"
 msgstr "Razdvoji"
 
-#: Menus.cpp:2940
+#: Menus.cpp:3011
 msgid "Split New"
 msgstr "Razdvoji v novo"
 
-#: Menus.cpp:2940
+#: Menus.cpp:3011
 msgid "Split to new track"
 msgstr "Razdvoji v novo sled"
 
-#: Menus.cpp:3023
+#: Menus.cpp:3094
 msgid "Split at labels"
 msgstr "Razdvoji po naslovih"
 
-#: Menus.cpp:3323
+#: Menus.cpp:3394
 msgid "To plot the spectrum, all selected tracks must be the same sample rate."
 msgstr "Za risanje spektra morajo imeti vse izbrane sledi enako mero vzorèenja."
 
-#: Menus.cpp:3349
+#: Menus.cpp:3420
 #, c-format
 msgid "Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."
 msgstr "Izbranega je preveè zvoka. Analiziranih bo le prvih %.1f sekund zvoka."
 
-#: Menus.cpp:3475
+#: Menus.cpp:3546
 #, c-format
 msgid "Imported labels from '%s'"
 msgstr "Uvo¾eni naslovi iz '%s'"
 
-#: Menus.cpp:3476
+#: Menus.cpp:3547
 msgid "Import Labels"
 msgstr "Uvozi naslove"
 
-#: Menus.cpp:3486
+#: Menus.cpp:3557
 msgid "Select a MIDI file..."
 msgstr "Izberite datoteko MIDI ..."
 
-#: Menus.cpp:3490
+#: Menus.cpp:3561
 msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
 msgstr "Vse datoteke (*.*)|*.*|MIDI datoteke (*.mid)|*.mid|Allegro datoteke (*.gro)|*.gro"
 
-#: Menus.cpp:3506
+#: Menus.cpp:3577
 #, c-format
 msgid "Imported MIDI from '%s'"
 msgstr "Uvo¾en MIDI iz '%s'"
 
-#: Menus.cpp:3508
+#: Menus.cpp:3579
 msgid "Import MIDI"
 msgstr "Uvozi MIDI"
 
-#: Menus.cpp:3521
+#: Menus.cpp:3592
 msgid "Select any uncompressed audio file..."
 msgstr "Izberite katero koli nestisnjeno zvoèno datoteko ..."
 
-#: Menus.cpp:3525
+#: Menus.cpp:3596
 msgid "All files (*)|*"
 msgstr "Vse datoteke (*)|*"
 
-#: Menus.cpp:3540
+#: Menus.cpp:3611
 #: Project.cpp:2525
 #: Project.cpp:2550
 #: import/ImportPCM.cpp:440
@@ -2716,162 +2758,162 @@ msgstr "Vse datoteke (*)|*"
 msgid "Import"
 msgstr "Uvozi"
 
-#: Menus.cpp:3559
+#: Menus.cpp:3630
 msgid "Edit the metadata tags"
 msgstr "Uredi metapodatkovne oznake"
 
-#: Menus.cpp:3560
+#: Menus.cpp:3631
 msgid "Edit Metadata"
 msgstr "Uredi metapodatke"
 
-#: Menus.cpp:3560
+#: Menus.cpp:3631
 msgid "Edit Metadata tags"
 msgstr "Uredi metazaznamke"
 
-#: Menus.cpp:3612
+#: Menus.cpp:3687
 #, c-format
 msgid "Rendered all audio in track '%s'"
 msgstr "Ves zvok je bil izdelan v sledi '%s'"
 
-#: Menus.cpp:3613
+#: Menus.cpp:3688
 msgid "Render"
 msgstr "Izdelaj"
 
-#: Menus.cpp:3618
+#: Menus.cpp:3693
 #, c-format
 msgid "Mixed and rendered %d tracks into one new stereo track"
 msgstr "V novo stereo sled je bilo zme¹anih in izdelanih %d sledi"
 
-#: Menus.cpp:3621
+#: Menus.cpp:3696
 #, c-format
 msgid "Mixed and rendered %d tracks into one new mono track"
 msgstr "V novo mono sled je bilo zme¹anih in izdelanih %d sledi"
 
-#: Menus.cpp:3743
+#: Menus.cpp:3828
 msgid "Aligned with zero"
 msgstr "Zdru¾eni z nièlo"
 
-#: Menus.cpp:3747
+#: Menus.cpp:3832
 msgid "Aligned cursor"
 msgstr "Poravnana kazalka"
 
-#: Menus.cpp:3751
+#: Menus.cpp:3836
 msgid "Aligned with selection start"
 msgstr "Poravnano z zaèetkom izbora"
 
-#: Menus.cpp:3755
+#: Menus.cpp:3840
 msgid "Aligned with selection end"
 msgstr "Poravnano s koncem izbora"
 
-#: Menus.cpp:3759
+#: Menus.cpp:3844
 msgid "Aligned end with cursor"
 msgstr "Konec poravnan s kazalko"
 
-#: Menus.cpp:3763
+#: Menus.cpp:3848
 msgid "Aligned end with selection start"
 msgstr "Konec poravnan z zaèetkom izbora"
 
-#: Menus.cpp:3767
+#: Menus.cpp:3852
 msgid "Aligned end with selection end"
 msgstr "Konec poravnan s koncem izbora"
 
-#: Menus.cpp:3771
+#: Menus.cpp:3856
 msgid "Aligned"
 msgstr "Poravnano"
 
-#: Menus.cpp:3804
+#: Menus.cpp:3889
 msgid "Align"
 msgstr "Poravnaj"
 
-#: Menus.cpp:3827
+#: Menus.cpp:3912
 msgid "Created new audio track"
 msgstr "Ustvarjen nov posnetek"
 
-#: Menus.cpp:3827
-#: Menus.cpp:3850
-#: Menus.cpp:3865
-#: Menus.cpp:3885
+#: Menus.cpp:3912
+#: Menus.cpp:3935
+#: Menus.cpp:3950
+#: Menus.cpp:3970
 msgid "New Track"
 msgstr "Nova sled"
 
-#: Menus.cpp:3850
+#: Menus.cpp:3935
 msgid "Created new stereo audio track"
 msgstr "Ustvarjena nova stereo zvoèna sled"
 
-#: Menus.cpp:3865
+#: Menus.cpp:3950
 msgid "Created new label track"
 msgstr "Ustvarjena nova datoteka z naslovi"
 
-#: Menus.cpp:3874
+#: Menus.cpp:3959
 msgid "The version of Audacity you are using does not support multiple time tracks."
 msgstr "Razlièica programa Audacity, ki jo uporabljate, ne podpira veè èasovnih sledi."
 
-#: Menus.cpp:3885
+#: Menus.cpp:3970
 msgid "Created new time track"
 msgstr "Ustvarjena nova èasovna sled"
 
-#: Menus.cpp:3934
+#: Menus.cpp:4019
 msgid "Added label"
 msgstr "Naslov dodan"
 
-#: Menus.cpp:3962
+#: Menus.cpp:4047
 msgid "Edited labels"
 msgstr "Urejene oznake"
 
-#: Menus.cpp:3989
+#: Menus.cpp:4074
 msgid "Save CleanSpeech Preset File As:"
 msgstr "Shrani datoteko prednastavitev CleanSpeech kot:"
 
-#: Menus.cpp:3993
+#: Menus.cpp:4078
 msgid "CleanSpeech Presets (*.csp)|*.csp"
 msgstr "Prednastavitve CleanSpeech (*.csp)|*.csp"
 
-#: Menus.cpp:4000
+#: Menus.cpp:4085
 #: export/Export.cpp:509
 msgid "Sorry, pathnames longer than 256 characters not supported."
 msgstr "Oprostite, poti do datotek ne smejo presegati 256 znakov."
 
-#: Menus.cpp:4046
+#: Menus.cpp:4131
 msgid "Problem encountered exporting presets."
 msgstr "Nastopila je te¾ava pri izvozu prednastavitev."
 
-#: Menus.cpp:4047
+#: Menus.cpp:4132
 #: export/Export.cpp:402
 msgid "Unable to export"
 msgstr "Ni mogoèe izvoziti"
 
-#: Menus.cpp:4231
+#: Menus.cpp:4316
 msgid "Remove Track"
 msgstr "Odstrani sled"
 
-#: Menus.cpp:4231
+#: Menus.cpp:4316
 msgid "Removed audio track(s)"
 msgstr "Odstrani zvoèni(e) posnetek(e)"
 
-#: Menus.cpp:4352
+#: Menus.cpp:4437
 msgid "Enter new samplerate:"
 msgstr "Vnesite novo frekvenco vzorèenja:"
 
-#: Menus.cpp:4352
-#: Menus.cpp:4371
+#: Menus.cpp:4437
+#: Menus.cpp:4456
 #: export/ExportMP3.cpp:1871
 msgid "Resample"
 msgstr "Prevzorèi"
 
-#: Menus.cpp:4358
+#: Menus.cpp:4443
 msgid "The entered value is invalid"
 msgstr "Vnesena vrednost ni veljavna"
 
-#: Menus.cpp:4369
+#: Menus.cpp:4454
 #, c-format
 msgid "Resampling track %d"
 msgstr "Prevzorèenje sledi %d"
 
-#: Menus.cpp:4380
+#: Menus.cpp:4465
 msgid "Resample Track"
 msgstr "Prevzorèi sled"
 
-#: Menus.cpp:4380
+#: Menus.cpp:4465
 msgid "Resampled audio track(s)"
 msgstr "Prevzorèene zvoène sledi"
 
@@ -2925,7 +2967,8 @@ msgid "Save changes before closing?"
 msgstr "®elite shraniti spremembe pred izhodom?"
 
 #: Project.cpp:1493
-msgid "\n"
+msgid ""
+"\n"
 "\n"
 "Saved project will be empty!!\n"
 "\n"
@@ -2933,6 +2976,13 @@ msgid "\n"
 "open, click Cancel, Edit > Undo until all your\n"
 "tracks are open, then File > Save Project."
 msgstr ""
+"\n"
+"\n"
+"Shranjen projekt bo prazen!!\n"
+"\n"
+"Za shranjevanje sledi, ki ste jih imeli\n"
+"prej odprte, kliknite Preklièi, Uredi > Razveljavi,\n"
+"dokler niso odprte vse sledi, nato Datoteka > Shrani projekt."
 
 #: Project.cpp:1496
 msgid "Save changes?"
@@ -2957,9 +3007,11 @@ msgstr "Napaka pri odpiranju datoteke."
 
 #: Project.cpp:1815
 #, c-format
-msgid "File may be invalid or corrupted: \n"
+msgid ""
+"File may be invalid or corrupted: \n"
 "%s"
-msgstr "Datoteka je morda neveljavna ali okvarjena: \n"
+msgstr ""
+"Datoteka je morda neveljavna ali okvarjena: \n"
 "%s"
 
 #: Project.cpp:1816
@@ -2998,10 +3050,12 @@ msgstr "Mape s projektnimi podatki ni mogoèe najti: \"%s\""
 
 #: Project.cpp:2116
 #, c-format
-msgid "This file was saved using Audacity %s.\n"
+msgid ""
+"This file was saved using Audacity %s.\n"
 "You are using Audacity %s - you need to upgrade to\n"
 "a newer version to open this file."
-msgstr "To datoteko ste shranili z Audacity %s.\n"
+msgstr ""
+"To datoteko ste shranili z Audacity %s.\n"
 "Uporabljate Audacity %s - da bi lahko odprli to datoteko,\n"
 "morate nadgraditi program na novej¹o razlièice."
 
@@ -3011,7 +3065,8 @@ msgstr "Ni mogoèe odpreti datoteke projekta"
 
 #: Project.cpp:2131
 #, c-format
-msgid "This file was saved by Audacity %s, a much\n"
+msgid ""
+"This file was saved by Audacity %s, a much\n"
 "older version of Audacity.  The format has changed.\n"
 "Audacity will probably destroy the file in trying\n"
 "to open it.  You must back up your project\n"
@@ -3019,7 +3074,8 @@ msgid "This file was saved by Audacity %s, a much\n"
 "\n"
 "Would you like to try to open this file\n"
 "right now anyway?"
-msgstr "Datoteko ste shranili z veliko starej¹o razlièico\n"
+msgstr ""
+"Datoteko ste shranili z veliko starej¹o razlièico\n"
 "Audacity %s. Zapis se je medtem spremenil.\n"
 "Ta razlièica Audacity jo bo najverjetneje unièila\n"
 "ob poskusu odpiranja. Pametno je, da prej\n"
@@ -3029,7 +3085,8 @@ msgstr "Datoteko ste shranili z veliko starej¹o razlièico\n"
 
 #: Project.cpp:2138
 #, c-format
-msgid "This file was saved by Audacity %s and the format\n"
+msgid ""
+"This file was saved by Audacity %s and the format\n"
 "has changed.  This version of Audacity can try to\n"
 "open it, but there may be problems.  You should back up\n"
 "your project first, to be safe.\n"
@@ -3038,7 +3095,8 @@ msgid "This file was saved by Audacity %s and the format\n"
 "you will not be able to open the file in the older\n"
 "version anymore.  Would you like to open\n"
 "this file right now anyway?"
-msgstr "Datoteko je shranil Audacity %s in zapis se je\n"
+msgstr ""
+"Datoteko je shranil Audacity %s in zapis se je\n"
 "medtem spremenil.  Ta razlièica Audacity jo lahko poskusi\n"
 "odpreti, vendar lahko pride do te¾av.  Smiselno je, da prej\n"
 "varnostno kopirate svoj projekt.\n"
@@ -3054,9 +3112,11 @@ msgstr "Odpiranje datoteko starega projekta"
 
 #: Project.cpp:2364
 #, c-format
-msgid "Could not save project. Perhaps %s is not writeable,\n"
+msgid ""
+"Could not save project. Perhaps %s is not writeable,\n"
 "or the disk is full."
-msgstr "Napaka pri shranjevanju projekta.  Mogoèe v %s ni mo¾no pisati,\n"
+msgstr ""
+"Napaka pri shranjevanju projekta.  Mogoèe v %s ni mo¾no pisati,\n"
 "ali pa je disk poln."
 
 #: Project.cpp:2366
@@ -3099,12 +3159,14 @@ msgid "Windows PCM Audio file (*.wav)|*.wav"
 msgstr "Zvoèna datoteka Windows PCM (*.wav)|*.wav"
 
 #: Project.cpp:2627
-msgid "Audacity project files (.aup) let you save everything you're working on exactly as it\n"
+msgid ""
+"Audacity project files (.aup) let you save everything you're working on exactly as it\n"
 "appears on the screen, but most other programs can't open Audacity project files.\n"
 "\n"
 "When you want to save a file that can be opened by other programs, select one of the\n"
 "Export commands."
-msgstr "Projektne datoteke Audacity (.aup) shranijo vse, kar v programu poènete, tako,\n"
+msgstr ""
+"Projektne datoteke Audacity (.aup) shranijo vse, kar v programu poènete, tako,\n"
 "kot to vidite na zaslonu, a veèina drugih programov ne zna odpreti projektnih datotek Audacity.\n"
 "\n"
 "Èe ¾elite shraniti datoteko, ki jo lahko odprejo drugi programi, izberite enega od\n"
@@ -3124,8 +3186,8 @@ msgid "Deleted %.2f seconds at t=%.2f"
 msgstr "Izbrisanih %.2f sekund v t=%.2f"
 
 #: Project.cpp:2797
-#: effects/Equalization.cpp:1239
-#: effects/Equalization.cpp:2494
+#: effects/Equalization.cpp:1256
+#: effects/Equalization.cpp:2511
 msgid "Delete"
 msgstr "Izbri¹i"
 
@@ -3230,7 +3292,7 @@ msgid "Gap detected in project file\n"
 msgstr "V projektni datoteki je opa¾ena luknja/razmik\n"
 
 #: ShuttleGui.cpp:1852
-#: effects/Effect.cpp:255
+#: effects/Effect.cpp:330
 #: effects/audiounits/AudioUnitEffect.cpp:872
 msgid "Pre&view"
 msgstr "Pre&dogled"
@@ -3248,10 +3310,12 @@ msgid "Recording start: "
 msgstr "Zaèetek snemanja: "
 
 #: SmartRecordDialog.cpp:224
-msgid "\n"
+msgid ""
+"\n"
 "\n"
 "Recording end:   "
-msgstr "\n"
+msgstr ""
+"\n"
 "\n"
 "Konec snemanja:   "
 
@@ -3283,11 +3347,11 @@ msgstr "Èakajoè na zaèetek snemanja ob "
 msgid "Audacity Smart Record - Waiting for Start"
 msgstr "Pametno snemanje Audacity - Èakanje na zaèetek"
 
-#: SplashDialog.cpp:57
+#: SplashDialog.cpp:58
 msgid "&Welcome to Audacity!"
 msgstr "&Dobrodo¹li v Audacity!"
 
-#: SplashDialog.cpp:94
+#: SplashDialog.cpp:110
 msgid "Don't show this again at start up"
 msgstr "Tega ob zagonu ne prika¾i veè"
 
@@ -3534,82 +3598,102 @@ msgstr "Album"
 
 #: Theme.cpp:638
 #, c-format
-msgid "Audacity could not write file:\n"
+msgid ""
+"Audacity could not write file:\n"
 "  %s."
-msgstr "Z Audacity ni mogoèe pisati v datoteko:\n"
+msgstr ""
+"Z Audacity ni mogoèe pisati v datoteko:\n"
 "  %s."
 
 #: Theme.cpp:656
 #, c-format
-msgid "Audacity could not open file:\n"
+msgid ""
+"Audacity could not open file:\n"
 "  %s\n"
 "for writing."
-msgstr "Z Audacity ni mogoèe odpreti datoteke\n"
+msgstr ""
+"Z Audacity ni mogoèe odpreti datoteke\n"
 "  %s\n"
 "za pisanje."
 
 #: Theme.cpp:664
 #, c-format
-msgid "Audacity could not write images to file:\n"
+msgid ""
+"Audacity could not write images to file:\n"
 "  %s."
-msgstr "Z Audacity ni mogoèe zapisati slik v datoteko:\n"
+msgstr ""
+"Z Audacity ni mogoèe zapisati slik v datoteko:\n"
 "  %s."
 
 #: Theme.cpp:799
 #, c-format
-msgid "Audacity could not find file:\n"
+msgid ""
+"Audacity could not find file:\n"
 "  %s.\n"
 "Theme not loaded."
-msgstr "Z Audacity ni mogoèe najti datoteke:\n"
+msgstr ""
+"Z Audacity ni mogoèe najti datoteke:\n"
 "  %s.\n"
 "Tema ni bila nalo¾ena."
 
 #: Theme.cpp:807
 #: Theme.cpp:896
 #, c-format
-msgid "Audacity could not load file:\n"
+msgid ""
+"Audacity could not load file:\n"
 "  %s.\n"
 "Bad png format perhaps?"
-msgstr "Z Audacity ni mogoèe nalo¾iti datoteke:\n"
+msgstr ""
+"Z Audacity ni mogoèe nalo¾iti datoteke:\n"
 "  %s.\n"
 "Morda gre za nepravilen zapis png?"
 
 #: Theme.cpp:823
-msgid "Audacity could not read its default theme.\n"
+msgid ""
+"Audacity could not read its default theme.\n"
 "Please report the problem."
-msgstr "Z Audacity ni bilo mogoèe prebrati privzete teme.\n"
+msgstr ""
+"Z Audacity ni bilo mogoèe prebrati privzete teme.\n"
 "Prosim, sporoèite te¾avo."
 
 #: Theme.cpp:918
 #, c-format
-msgid "None of the expected theme component files\n"
+msgid ""
+"None of the expected theme component files\n"
 " were found in:\n"
 "  %s."
-msgstr "Nobene od prièakovanih datotek komponent teme\n"
+msgstr ""
+"Nobene od prièakovanih datotek komponent teme\n"
 " ni bilo mogoèe najti v:\n"
 "  %s."
 
 #: Theme.cpp:942
 #: effects/NoiseRemoval.cpp:173
 #, c-format
-msgid "Could not create directory:\n"
+msgid ""
+"Could not create directory:\n"
 "  %s"
-msgstr "Mape ni mogoèe ustvariti:\n"
+msgstr ""
+"Mape ni mogoèe ustvariti:\n"
 "  %s"
 
 #: Theme.cpp:963
 #, c-format
-msgid "Audacity could not save file:\n"
+msgid ""
+"Audacity could not save file:\n"
 "  %s"
-msgstr "Ni mogoèe shraniti datoteke:\n"
+msgstr ""
+"Ni mogoèe shraniti datoteke:\n"
 "  %s"
 
 #: Theme.cpp:975
 #, c-format
-msgid "All required files in:\n"
+msgid ""
+"All required files in:\n"
 "  %s\n"
 "were already present."
-msgstr "Vse potrebne datoteke v:\n"
+msgstr ""
+"Vse potrebne datoteke v:\n"
 "  %s\n"
 "so bile ¾e prisotne."
 
@@ -3650,7 +3734,7 @@ msgid "Move Track Down"
 msgstr "Premakni sled navzdol"
 
 #: TrackPanel.cpp:505
-#: effects/ToneGen.cpp:295
+#: effects/ToneGen.cpp:303
 msgid "Waveform"
 msgstr "Signalna oblika"
 
@@ -3663,17 +3747,17 @@ msgid "Pitch (EAC)"
 msgstr "Vi¹ina tona (EAC)"
 
 #: TrackPanel.cpp:510
-#: TrackPanel.cpp:5659
+#: TrackPanel.cpp:5831
 msgid "Mono"
 msgstr "Mono"
 
 #: TrackPanel.cpp:511
-#: TrackPanel.cpp:5658
+#: TrackPanel.cpp:5830
 msgid "Left Channel"
 msgstr "Levi kanal"
 
 #: TrackPanel.cpp:512
-#: TrackPanel.cpp:5658
+#: TrackPanel.cpp:5830
 msgid "Right Channel"
 msgstr "Desni kanal"
 
@@ -3690,7 +3774,7 @@ msgid "Set Sample Format"
 msgstr "Nastavi obliko vzorcev"
 
 #: TrackPanel.cpp:518
-#: TrackPanel.cpp:5876
+#: TrackPanel.cpp:6048
 msgid "Set Rate"
 msgstr "Nastavi frekvenco"
 
@@ -3761,8 +3845,8 @@ msgstr "Kliknite in povlecite, da bi premaknili desni okvir izbora."
 #: TrackPanel.cpp:3777
 #: TrackPanel.cpp:3809
 #: TrackPanel.cpp:4064
-#: TrackPanel.cpp:5988
-#: TrackPanel.cpp:6008
+#: TrackPanel.cpp:6160
+#: TrackPanel.cpp:6180
 msgid "Modified Label"
 msgstr "Spremenjen naslov"
 
@@ -3770,8 +3854,8 @@ msgstr "Spremenjen naslov"
 #: TrackPanel.cpp:3778
 #: TrackPanel.cpp:3810
 #: TrackPanel.cpp:4065
-#: TrackPanel.cpp:5989
-#: TrackPanel.cpp:6009
+#: TrackPanel.cpp:6161
+#: TrackPanel.cpp:6181
 msgid "Label Edit"
 msgstr "Uredi naslov"
 
@@ -3844,38 +3928,38 @@ msgstr "Premaknjeni drsnik zasuka"
 
 #. i18n-hint: Title of the Gain slider, used to adjust the volume
 #: TrackPanel.cpp:3269
-#: TrackPanel.cpp:5306
-#: TrackPanel.cpp:6657
+#: TrackPanel.cpp:5478
+#: TrackPanel.cpp:6829
 msgid "Gain"
 msgstr "Okrepitev"
 
 #. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
 #: TrackPanel.cpp:3269
-#: TrackPanel.cpp:5244
-#: TrackPanel.cpp:6664
+#: TrackPanel.cpp:5416
+#: TrackPanel.cpp:6836
 msgid "Pan"
 msgstr "Zasuk"
 
 #: TrackPanel.cpp:3394
-#: TrackPanel.cpp:5941
-#: effects/ChangePitch.cpp:282
+#: TrackPanel.cpp:6113
+#: effects/ChangePitch.cpp:284
 msgid "up"
 msgstr "navzgor"
 
 #: TrackPanel.cpp:3398
-#: TrackPanel.cpp:5942
-#: effects/ChangePitch.cpp:282
+#: TrackPanel.cpp:6114
+#: effects/ChangePitch.cpp:284
 msgid "down"
 msgstr "navzdol"
 
 #: TrackPanel.cpp:3405
-#: TrackPanel.cpp:5937
+#: TrackPanel.cpp:6109
 #, c-format
 msgid "Moved '%s' %s"
 msgstr "Premaknjeno '%s' %s"
 
 #: TrackPanel.cpp:3408
-#: TrackPanel.cpp:5943
+#: TrackPanel.cpp:6115
 msgid "Move Track"
 msgstr "Premakni sled"
 
@@ -3899,140 +3983,140 @@ msgstr "Spojeni posnetki"
 msgid "Removed Cut Line"
 msgstr "Èrta reza odstranjena"
 
-#: TrackPanel.cpp:5244
+#: TrackPanel.cpp:5416
 msgid "Adjusted Pan"
 msgstr "Prilagojeni zasuk"
 
-#: TrackPanel.cpp:5306
+#: TrackPanel.cpp:5478
 msgid "Adjusted gain"
 msgstr "Prilagojena ojaèitev"
 
-#: TrackPanel.cpp:5486
+#: TrackPanel.cpp:5658
 msgid "Can't delete track with active audio"
 msgstr "Sledi z aktivnim zvokom ni mogoèe izbrisati"
 
-#: TrackPanel.cpp:5639
+#: TrackPanel.cpp:5811
 msgid "Stereo, "
 msgstr "Stereo, "
 
-#: TrackPanel.cpp:5642
+#: TrackPanel.cpp:5814
 msgid "Mono, "
 msgstr "Mono, "
 
-#: TrackPanel.cpp:5644
+#: TrackPanel.cpp:5816
 msgid "Left, "
 msgstr "Levo, "
 
-#: TrackPanel.cpp:5646
+#: TrackPanel.cpp:5818
 msgid "Right, "
 msgstr "Desno, "
 
-#: TrackPanel.cpp:5668
-#: TrackPanel.cpp:5781
+#: TrackPanel.cpp:5840
+#: TrackPanel.cpp:5953
 #, c-format
 msgid "Changed '%s' to %s"
 msgstr "Spremenjeno: '%s' v %s"
 
-#: TrackPanel.cpp:5673
+#: TrackPanel.cpp:5845
 msgid "Channel"
 msgstr "Kanal"
 
-#: TrackPanel.cpp:5686
+#: TrackPanel.cpp:5858
 #, c-format
 msgid "Split stereo track '%s'"
 msgstr "Razdvoji stereo sled '%s'"
 
-#: TrackPanel.cpp:5707
+#: TrackPanel.cpp:5879
 #, c-format
 msgid "Made '%s' a stereo track"
 msgstr "Stereo posnetek '%s' narejen."
 
-#: TrackPanel.cpp:5710
+#: TrackPanel.cpp:5882
 msgid "Make Stereo"
 msgstr "Naredi stereo"
 
-#: TrackPanel.cpp:5745
+#: TrackPanel.cpp:5917
 #, c-format
 msgid "Changed '%s' to %d Hz"
 msgstr "Spremenjeno: '%s' v %d Hz"
 
-#: TrackPanel.cpp:5747
+#: TrackPanel.cpp:5919
 msgid "Rate Change"
 msgstr "Sprememba mere"
 
-#: TrackPanel.cpp:5785
+#: TrackPanel.cpp:5957
 msgid "Format Change"
 msgstr "Sprememba formata:"
 
-#: TrackPanel.cpp:5875
+#: TrackPanel.cpp:6047
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
 msgstr "Vnesite frekvenco vzorèenja v Hz (na sekundo) med 1 in 100000:"
 
-#: TrackPanel.cpp:5885
+#: TrackPanel.cpp:6057
 msgid "Invalid rate."
 msgstr "Nepravilna frekvenca."
 
-#: TrackPanel.cpp:5905
+#: TrackPanel.cpp:6077
 msgid "Change lower speed limit (%) to:"
 msgstr "Spremeni spodnjo mejo hitrosti (%) na:"
 
-#: TrackPanel.cpp:5906
-#: TrackPanel.cpp:5907
+#: TrackPanel.cpp:6078
+#: TrackPanel.cpp:6079
 msgid "Lower speed limit"
 msgstr "Spodnja meja hitrosti"
 
-#: TrackPanel.cpp:5912
+#: TrackPanel.cpp:6084
 msgid "Change upper speed limit (%) to:"
 msgstr "Spremeni zgornjo mejo hitrosti (%) na:"
 
-#: TrackPanel.cpp:5913
-#: TrackPanel.cpp:5914
+#: TrackPanel.cpp:6085
+#: TrackPanel.cpp:6086
 msgid "Upper speed limit"
 msgstr "Zgornja meja hitrosti"
 
-#: TrackPanel.cpp:5922
+#: TrackPanel.cpp:6094
 #, c-format
 msgid "Set range to '%d' - '%d'"
 msgstr "Nastavi obmoèje na '%d' - '%d'"
 
-#: TrackPanel.cpp:5925
+#: TrackPanel.cpp:6097
 msgid "Set Range"
 msgstr "Nastavi podroèje"
 
-#: TrackPanel.cpp:5970
+#: TrackPanel.cpp:6142
 msgid "Change track name to:"
 msgstr "Spremeni naslov posnetka v:"
 
-#: TrackPanel.cpp:5971
+#: TrackPanel.cpp:6143
 msgid "Track Name"
 msgstr "Ime sledi"
 
-#: TrackPanel.cpp:5974
+#: TrackPanel.cpp:6146
 #, c-format
 msgid "Renamed '%s' to '%s'"
 msgstr "Preimenovano '%s' v '%s'"
 
-#: TrackPanel.cpp:5977
+#: TrackPanel.cpp:6149
 msgid "Name Change"
 msgstr "Sprememba imena"
 
-#: TrackPanel.cpp:6043
+#: TrackPanel.cpp:6215
 msgid "Label Track Font"
 msgstr "Pisava naslova sledi"
 
-#: TrackPanel.cpp:6055
+#: TrackPanel.cpp:6227
 msgid "Face name"
 msgstr "Ime pisave"
 
-#: TrackPanel.cpp:6064
+#: TrackPanel.cpp:6236
 msgid "Face size"
 msgstr "Velikost pisave"
 
-#: TrackPanel.cpp:6584
+#: TrackPanel.cpp:6756
 msgid "Mute"
 msgstr "Uti¹aj"
 
-#: TrackPanel.cpp:6584
+#: TrackPanel.cpp:6756
 msgid "Solo"
 msgstr "Solo"
 
@@ -4087,16 +4171,16 @@ msgstr "Spremembe predznaka    -- sr.vred: %1.4f  st.dev.: (%1.4f)\n"
 msgid "Direction Changes  -- mean: %1.4f  sd: (%1.4f)\n"
 msgstr "Spremembe smeri    -- sr.vred.: %1.4f  st.dev.: (%1.4f)\n"
 
-#: WaveTrack.cpp:75
+#: WaveTrack.cpp:81
 msgid "Audio Track"
 msgstr "Zvoèna sled"
 
-#: WaveTrack.cpp:541
-#: WaveTrack.cpp:560
+#: WaveTrack.cpp:547
+#: WaveTrack.cpp:566
 msgid "There is not enough room available to paste the selection"
 msgstr "Ni dovolj prostora, da bi prilepili izbor"
 
-#: WaveTrack.cpp:1649
+#: WaveTrack.cpp:1655
 msgid "There is not enough room available to expand the cut line"
 msgstr "Ni dovolj prostora, da bi razpostrli èrto reza"
 
@@ -4115,15 +4199,19 @@ msgid "Disallowed for some reason.  Try selecting some Audio first?"
 msgstr "Iz neznanega razloga to ni dovoljeno.  Ste prej izbrali kak zvok?"
 
 #: commands/CommandManager.cpp:724
-msgid "You can only do this when playing and recording are\n"
+msgid ""
+"You can only do this when playing and recording are\n"
 " stopped.  [Pausing is not sufficient.]"
-msgstr "To lahko izvedete le, ko sta predvajanje in snemanje\n"
+msgstr ""
+"To lahko izvedete le, ko sta predvajanje in snemanje\n"
 " ustavljena.  [Premor oz. prekinitev ne zadostuje.]"
 
 #: commands/CommandManager.cpp:726
-msgid "You must first select some stereo audio for this\n"
+msgid ""
+"You must first select some stereo audio for this\n"
 " to use.  [You can't use this with mono.]"
-msgstr "Za to morate najprej izbrati kak stereo-zvok.\n"
+msgstr ""
+"Za to morate najprej izbrati kak stereo-zvok.\n"
 " [Tega ne morete uporabiti za mono posnetke.]"
 
 #: commands/CommandManager.cpp:728
@@ -4131,21 +4219,23 @@ msgid "You must first select some audio for this to use."
 msgstr "Prosimo, da najprej izberete kak zvoèni posnetek."
 
 #: commands/CommandManager.cpp:730
-msgid "You must first select some audio for this\n"
+msgid ""
+"You must first select some audio for this\n"
 " to use. [Selecting other kinds of track won't work.]"
-msgstr "Za to morate najprej izbrati kak zvok.\n"
+msgstr ""
+"Za to morate najprej izbrati kak zvok.\n"
 " [Izbiranje drugih vrst sledi ne bo delovalo.]"
 
-#: commands/CommandManager.cpp:732
+#: commands/CommandManager.cpp:735
 msgid "Message"
 msgstr "Sporoèilo"
 
-#: commands/CommandManager.cpp:912
+#: commands/CommandManager.cpp:915
 #, c-format
 msgid "Loaded %d keyboard shortcuts\n"
 msgstr "Nalo¾enih %d bli¾njic\n"
 
-#: commands/CommandManager.cpp:914
+#: commands/CommandManager.cpp:917
 msgid "Loading keyboard shortcuts"
 msgstr "Nalaganje bli¾njic"
 
@@ -4188,8 +4278,8 @@ msgstr "Izbrali ste sled, ki ne vsebuje zvoka. Samodejno spusti lahko procesira 
 
 #: effects/AutoDuck.cpp:126
 #: effects/AutoDuck.cpp:138
-#: effects/AutoDuck.cpp:451
-#: effects/AutoDuck.cpp:568
+#: effects/AutoDuck.cpp:453
+#: effects/AutoDuck.cpp:570
 msgid "Auto Duck"
 msgstr "Samodejno spusti"
 
@@ -4197,23 +4287,23 @@ msgstr "Samodejno spusti"
 msgid "Auto Duck needs a control track which must be placed below the selected track(s)."
 msgstr "Samodejno spusti potrebuje nadzorno sled, ki se mora nahajati pod izbrano/imi sledjo/mi."
 
-#: effects/AutoDuck.cpp:463
+#: effects/AutoDuck.cpp:465
 msgid "Auto Duck by Markus Meyer"
 msgstr "Samodejno spusti avtorja Markusa Meyerja"
 
-#: effects/AutoDuck.cpp:485
+#: effects/AutoDuck.cpp:487
 msgid "Duck amount:"
 msgstr "Kolièina spusta:"
 
-#: effects/AutoDuck.cpp:490
+#: effects/AutoDuck.cpp:492
 msgid "Maximum pause:"
 msgstr "Najveèji premor:"
 
-#: effects/AutoDuck.cpp:492
-#: effects/AutoDuck.cpp:497
-#: effects/AutoDuck.cpp:502
-#: effects/AutoDuck.cpp:507
-#: effects/AutoDuck.cpp:512
+#: effects/AutoDuck.cpp:494
+#: effects/AutoDuck.cpp:499
+#: effects/AutoDuck.cpp:504
+#: effects/AutoDuck.cpp:509
+#: effects/AutoDuck.cpp:514
 #: prefs/AudioIOPrefs.cpp:166
 #: prefs/AudioIOPrefs.cpp:174
 #: prefs/AudioIOPrefs.cpp:176
@@ -4223,32 +4313,32 @@ msgstr "Najveèji premor:"
 msgid "seconds"
 msgstr "sekund"
 
-#: effects/AutoDuck.cpp:495
+#: effects/AutoDuck.cpp:497
 msgid "Outer fade down length:"
 msgstr "Dol¾ina zunanjega pojemanja:"
 
-#: effects/AutoDuck.cpp:500
+#: effects/AutoDuck.cpp:502
 msgid "Outer fade up length:"
 msgstr "Dol¾ina zunanjega nara¹èanja:"
 
-#: effects/AutoDuck.cpp:505
+#: effects/AutoDuck.cpp:507
 msgid "Inner fade down length:"
 msgstr "Dol¾ina notranjega pojemanja:"
 
-#: effects/AutoDuck.cpp:510
+#: effects/AutoDuck.cpp:512
 msgid "Inner fade up length:"
 msgstr "Dol¾ina notranjega nara¹èanja:"
 
-#: effects/AutoDuck.cpp:519
-#: effects/Compressor.cpp:479
+#: effects/AutoDuck.cpp:521
+#: effects/Compressor.cpp:484
 msgid "Threshold:"
 msgstr "Prag:"
 
-#: effects/AutoDuck.cpp:568
+#: effects/AutoDuck.cpp:570
 msgid "Please enter valid values."
 msgstr "Prosim, vnesite veljavne vrednosti."
 
-#: effects/AutoDuck.cpp:702
+#: effects/AutoDuck.cpp:704
 msgid "Preview not available"
 msgstr "Predposlu¹anje ni na voljo"
 
@@ -4261,9 +4351,9 @@ msgid "Processing Auto Duck..."
 msgstr "Procesiranje samodejnega spu¹èanja ..."
 
 #: effects/AvcCompressor.cpp:738
-#: effects/VST/VSTEffect.cpp:439
+#: effects/VST/VSTEffect.cpp:448
 #: effects/audiounits/AudioUnitEffect.cpp:877
-#: effects/nyquist/Nyquist.cpp:1037
+#: effects/nyquist/Nyquist.cpp:1040
 #: widgets/ErrorDialog.cpp:74
 #: widgets/ErrorDialog.cpp:100
 #: widgets/Warning.cpp:67
@@ -4320,39 +4410,41 @@ msgstr "Spremeni vi¹ino tona"
 msgid "Change Pitch without Changing Tempo"
 msgstr "Spremeni vi¹ino tona brez spremembe tempa"
 
-#: effects/ChangePitch.cpp:252
-#: effects/ChangeSpeed.cpp:304
+#. i18n-hint: && in here is an escape character to get a single & on
+#. * screen, so keep it as is
+#: effects/ChangePitch.cpp:254
+#: effects/ChangeSpeed.cpp:313
 #: effects/ChangeTempo.cpp:180
 msgid "by Vaughan Johnson && Dominic Mazzoni"
 msgstr "avtorja Vauhgan Johnson in Dominic Mazzoni"
 
-#: effects/ChangePitch.cpp:257
+#: effects/ChangePitch.cpp:259
 #: effects/ChangeTempo.cpp:185
 msgid "using SoundTouch, by Olli Parviainen"
 msgstr "uporabljen SoundTouch Ollija Parvianena"
 
-#: effects/ChangePitch.cpp:267
+#: effects/ChangePitch.cpp:269
 msgid "Pitch:   from"
 msgstr "Vi¹ina tona:   od"
 
-#: effects/ChangePitch.cpp:289
-#: effects/ChangePitch.cpp:335
-#: effects/ChangeSpeed.cpp:368
+#: effects/ChangePitch.cpp:291
+#: effects/ChangePitch.cpp:337
+#: effects/ChangeSpeed.cpp:377
 #: effects/ChangeTempo.cpp:239
 #: effects/ChangeTempo.cpp:270
 msgid "to"
 msgstr "do"
 
-#: effects/ChangePitch.cpp:304
+#: effects/ChangePitch.cpp:306
 msgid "Semitones (half-steps):"
 msgstr "Poltoni:"
 
-#: effects/ChangePitch.cpp:323
+#: effects/ChangePitch.cpp:325
 msgid "Frequency (Hz):   from"
 msgstr "Frekvenca (Hz): od"
 
-#: effects/ChangePitch.cpp:358
-#: effects/ChangeSpeed.cpp:322
+#: effects/ChangePitch.cpp:360
+#: effects/ChangeSpeed.cpp:331
 #: effects/ChangeTempo.cpp:198
 msgid "Percent Change:"
 msgstr "Sprememba v odstotkih"
@@ -4375,11 +4467,11 @@ msgstr "Dodan uèinek: %s %1f%%"
 msgid "Change Speed"
 msgstr "Spremeni hitrost"
 
-#: effects/ChangeSpeed.cpp:299
+#: effects/ChangeSpeed.cpp:308
 msgid "Change Speed, affecting both Tempo and Pitch"
 msgstr "Spremeni hitrost z vplivom na tempo in vi¹ino tona"
 
-#: effects/ChangeSpeed.cpp:309
+#: effects/ChangeSpeed.cpp:318
 msgid "using SampleRate, by Erik de Castro Lopo"
 msgstr "uporabljen SampleRate Erika de Castro Lopoja"
 
@@ -4387,11 +4479,11 @@ msgstr "uporabljen SampleRate Erika de Castro Lopoja"
 #. abbreviation meaning "not
 #. applicable" (in other words,
 #. unimportant, not relevant).
-#: effects/ChangeSpeed.cpp:355
+#: effects/ChangeSpeed.cpp:364
 msgid "n/a"
 msgstr "ni na voljo"
 
-#: effects/ChangeSpeed.cpp:358
+#: effects/ChangeSpeed.cpp:367
 msgid "Standard Vinyl RPM:   from"
 msgstr "Standardni vinilni RPM:   od"
 
@@ -4427,19 +4519,19 @@ msgstr "Spremeni tempo ..."
 msgid "Changing Tempo"
 msgstr "Spreminjanje tempa"
 
-#: effects/ClickRemoval.cpp:317
+#: effects/ClickRemoval.cpp:323
 msgid "ClickRemoval"
 msgstr "Odstranitev presketa"
 
-#: effects/ClickRemoval.cpp:330
+#: effects/ClickRemoval.cpp:336
 msgid "Click and Pop Removal by Craig DeForest"
 msgstr "Odstranitev presketa avtorja Craiga DeForesta"
 
-#: effects/ClickRemoval.cpp:344
+#: effects/ClickRemoval.cpp:350
 msgid "Select threshold (lower is more sensitive):"
 msgstr "Izberite prag (ni¾ji pomeni veèjo obèutljivost):"
 
-#: effects/ClickRemoval.cpp:356
+#: effects/ClickRemoval.cpp:362
 msgid "Max spike width (higher is more sensitive):"
 msgstr "Najveèja ¹irina konice (veèja pomeni veèjo obèutljivost):"
 
@@ -4451,46 +4543,46 @@ msgstr "Odstranitev presketa ..."
 msgid "Removing clicks and pops..."
 msgstr "Odstranjevanje presketa ..."
 
-#: effects/Compressor.cpp:73
+#: effects/Compressor.cpp:74
 msgid "Dynamic Range Compressor"
 msgstr "Stiskalnik obsega dinamike"
 
-#: effects/Compressor.cpp:468
+#: effects/Compressor.cpp:473
 msgid "Dynamic Range Compressor by Dominic Mazzoni"
 msgstr "Kompresor dinamiènega obsega Dominica Mazzonija"
 
-#: effects/Compressor.cpp:486
+#: effects/Compressor.cpp:491
 msgid "Ratio: "
 msgstr "Razmerje:"
 
-#: effects/Compressor.cpp:493
+#: effects/Compressor.cpp:498
 msgid "Attack Time: "
 msgstr "Napadalni èas:"
 
 #: effects/Compressor.cpp:505
 msgid "Decay Time: "
-msgstr ""
+msgstr "Èas upadanja: "
 
-#: effects/Compressor.cpp:504
+#: effects/Compressor.cpp:516
 msgid "Normalize to 0dB after compressing"
 msgstr "Po stiskanju normaliziraj na 0dB"
 
-#: effects/Compressor.cpp:547
+#: effects/Compressor.cpp:561
 #, c-format
 msgid "Threshold: %d dB"
 msgstr "Prag: %d dB"
 
-#: effects/Compressor.cpp:550
+#: effects/Compressor.cpp:564
 #, c-format
 msgid "Ratio: %.0f:1"
 msgstr "Razmerje: %.0f:1"
 
-#: effects/Compressor.cpp:552
+#: effects/Compressor.cpp:566
 #, c-format
 msgid "Ratio: %.1f:1"
 msgstr "Razmerje: %.1f:1"
 
-#: effects/Compressor.cpp:554
+#: effects/Compressor.cpp:568
 #, c-format
 msgid "Attack Time: %.1f secs"
 msgstr "Trajanje napada: %.1f s"
@@ -4498,7 +4590,7 @@ msgstr "Trajanje napada: %.1f s"
 #: effects/Compressor.cpp:570
 #, c-format
 msgid "Decay Time: %.1f secs"
-msgstr ""
+msgstr "Èas upadanja: %.1f s"
 
 #: effects/Compressor.h:36
 msgid "Compressor..."
@@ -4508,47 +4600,49 @@ msgstr "Stiskalnik ..."
 msgid "Applying Dynamic Range Compression..."
 msgstr "Uporaba stiskanja obsega dinamike ..."
 
-#: effects/DtmfGen.cpp:47
+#: effects/DtmfGen.cpp:48
 msgid "DTMF Tone Generator"
 msgstr "Ustvari ton DTMF"
 
-#: effects/DtmfGen.cpp:397
+#: effects/DtmfGen.cpp:437
 msgid "by Salvo Ventura (2006)"
 msgstr "avtor Salvo Ventura (2006)"
 
-#: effects/DtmfGen.cpp:401
+#: effects/DtmfGen.cpp:441
 msgid "DTMF sequence:"
 msgstr "Zaporedje DTMF:"
 
-#: effects/ToneGen.cpp:298
-#: effects/ToneGen.cpp:334
+#: effects/DtmfGen.cpp:444
+#: effects/Noise.cpp:255
+#: effects/ToneGen.cpp:306
+#: effects/ToneGen.cpp:342
 msgid "Amplitude (0-1)"
 msgstr "Amplituda (0-1)"
 
-#: effects/DtmfGen.cpp:404
+#: effects/DtmfGen.cpp:446
 msgid "DTMF duration:"
 msgstr "Trajanje DTMF:"
 
-#: effects/DtmfGen.cpp:422
+#: effects/DtmfGen.cpp:464
 msgid "Tone/silence ratio:"
 msgstr "Razmerje ton/ti¹ina:"
 
-#: effects/DtmfGen.cpp:433
+#: effects/DtmfGen.cpp:475
 msgid "Duty cycle:"
 msgstr "Cikel delovanja:"
 
-#: effects/DtmfGen.cpp:435
+#: effects/DtmfGen.cpp:477
 msgid "Tone duration:"
 msgstr "Trajanje tona:"
 
-#: effects/DtmfGen.cpp:436
-#: effects/DtmfGen.cpp:438
-#: effects/DtmfGen.cpp:512
-#: effects/DtmfGen.cpp:513
+#: effects/DtmfGen.cpp:478
+#: effects/DtmfGen.cpp:480
+#: effects/DtmfGen.cpp:556
+#: effects/DtmfGen.cpp:557
 msgid "ms"
 msgstr "ms"
 
-#: effects/DtmfGen.cpp:437
+#: effects/DtmfGen.cpp:479
 msgid "Silence duration:"
 msgstr "Trajanje ti¹ine:"
 
@@ -4570,19 +4664,21 @@ msgstr "Ustvarjanje tonov DTMF"
 msgid "Applied effect: %s delay = %f seconds, decay factor = %f"
 msgstr "Uporabljen uèinek: zamuda %s = %f sekund, faktor razkroja = %f"
 
-#: effects/Echo.cpp:163
+#: effects/Echo.cpp:170
 msgid "Echo"
 msgstr "Odmev"
 
-#: effects/Echo.cpp:186
+#. i18n-hint: && in here is an escape character to get a single & on
+#. * screen, so keep it as is
+#: effects/Echo.cpp:195
 msgid "by Dominic Mazzoni && Vaughan Johnson"
 msgstr "avtorja Dominic Mazzoni in Vaughan Johnson"
 
-#: effects/Echo.cpp:198
+#: effects/Echo.cpp:207
 msgid "Delay time (seconds):"
 msgstr "Zakasnitev (sekund):"
 
-#: effects/Echo.cpp:203
+#: effects/Echo.cpp:212
 msgid "Decay factor:"
 msgstr "Faktor krnitve: "
 
@@ -4594,15 +4690,15 @@ msgstr "Odmev ..."
 msgid "Performing Echo"
 msgstr "Izvajanje odmeva"
 
-#: effects/Effect.cpp:303
+#: effects/Effect.cpp:378
 msgid "Preparing preview"
 msgstr "Priprava predposlu¹anja"
 
-#: effects/Effect.cpp:329
+#: effects/Effect.cpp:404
 msgid "Previewing"
 msgstr "Predposlu¹anje"
 
-#: effects/Effect.cpp:345
+#: effects/Effect.cpp:420
 msgid "Error while opening sound device. Please check the output device settings and the project sample rate."
 msgstr "Napaka pri odpiranju zvoène naprave. Prosimo preverite nastavitve izhodne naprave in mero vzorèenja projekta."
 
@@ -4628,64 +4724,66 @@ msgstr "kubièni"
 msgid "Equalization"
 msgstr "Izenaèevanje"
 
-#: effects/Equalization.cpp:959
+#: effects/Equalization.cpp:974
 msgid "Error loading EQ curve"
 msgstr "Napaka pri nalaganju krivulje izenaèevalnika (EQ)"
 
-#: effects/Equalization.cpp:998
+#: effects/Equalization.cpp:1013
 msgid "custom"
 msgstr "Po meri"
 
-#: effects/Equalization.cpp:1064
+#. i18n-hint: && in here is an escape character to get a single &
+#. * on screen, so keep it as is
+#: effects/Equalization.cpp:1081
 msgid "Equalization, by Martyn Shaw && Mitch Golden"
 msgstr "Izenaèevanje, avtorja Martyn Shaw in Mitch Golden"
 
-#: effects/Equalization.cpp:1085
+#: effects/Equalization.cpp:1102
 msgid "Max dB"
 msgstr "Najveèji dB"
 
-#: effects/Equalization.cpp:1087
+#: effects/Equalization.cpp:1104
 msgid "Min dB"
 msgstr "Najmanj¹i dB"
 
-#: effects/Equalization.cpp:1160
+#: effects/Equalization.cpp:1177
 msgid "kHz"
 msgstr "kHz"
 
-#: effects/Equalization.cpp:1177
+#: effects/Equalization.cpp:1194
 msgid "Draw curves"
 msgstr "Nari¹i krivulje"
 
-#: effects/Equalization.cpp:1182
+#: effects/Equalization.cpp:1199
 msgid "Graphic EQ"
 msgstr "Grafièni izenaèevalnik"
 
-#: effects/Equalization.cpp:1196
+#: effects/Equalization.cpp:1213
 msgid "Linear frequency scale"
 msgstr "Linearna lestvica frekvenc"
 
-#: effects/Equalization.cpp:1205
+#: effects/Equalization.cpp:1222
 msgid "Length of filter:"
 msgstr "Dol¾ina filtra:"
 
-#: effects/Equalization.cpp:1226
+#: effects/Equalization.cpp:1243
 msgid "Select curve:"
 msgstr "Izberite krivuljo:"
 
-#: effects/Equalization.cpp:1236
-#: effects/Equalization.cpp:2399
+#: effects/Equalization.cpp:1253
+#: effects/Equalization.cpp:2416
 msgid "Save As..."
 msgstr "Shrani kot ..."
 
-#: effects/Equalization.cpp:1242
+#: effects/Equalization.cpp:1259
 msgid "Flat"
 msgstr "raven"
 
-#: effects/Equalization.cpp:2398
+#: effects/Equalization.cpp:2415
 msgid "Enter the desired name of the curve"
 msgstr "Vnesite ¾eleno ime krivulje"
 
-#: effects/Equalization.cpp:2498
+#: effects/Equalization.cpp:2515
 msgid "Confirm Deletion"
 msgstr "Potrditev brisanja"
 
@@ -4717,29 +4815,29 @@ msgstr "Ni¾anje glasnosti"
 msgid "Detect clipping"
 msgstr "Razpoznaj rezanje"
 
-#: effects/FindClipping.cpp:86
+#: effects/FindClipping.cpp:91
 msgid "Clipping"
 msgstr "Rezanje"
 
-#: effects/FindClipping.cpp:199
+#: effects/FindClipping.cpp:211
 msgid "Find Clipping"
 msgstr "Najdi porezano"
 
-#: effects/FindClipping.cpp:210
+#: effects/FindClipping.cpp:222
 msgid "by Leland Lucius"
 msgstr "avtorja Lelanda Luciusa"
 
-#: effects/FindClipping.cpp:222
+#: effects/FindClipping.cpp:234
 msgid "Start threshold (samples):"
 msgstr "Zaèetni prag (vzorci):"
 
-#: effects/FindClipping.cpp:226
+#: effects/FindClipping.cpp:238
 msgid "Stop threshold (samples):"
 msgstr "Zakljuèni prag (vzorci):"
 
 #: effects/FindClipping.cpp:250
 msgid "Start and stop must be greater than 0."
-msgstr ""
+msgstr "Zaèetek in konec morata biti veèja od 0."
 
 #: effects/FindClipping.h:37
 msgid "Find Clipping..."
@@ -4830,11 +4928,11 @@ msgstr "rjavo"
 msgid "Noise Generator"
 msgstr "Ustvari ¹um"
 
-#: effects/Noise.cpp:225
+#: effects/Noise.cpp:235
 msgid "Noise duration"
 msgstr "Trajanje ¹uma"
 
-#: effects/Noise.cpp:246
+#: effects/Noise.cpp:256
 msgid "Noise type"
 msgstr "Vrsta ¹uma"
 
@@ -4853,56 +4951,62 @@ msgstr "Ustvarjanje ¹uma"
 
 #: effects/NoiseRemoval.cpp:192
 #, c-format
-msgid "Could not open file:\n"
+msgid ""
+"Could not open file:\n"
 "  %s"
-msgstr "Datoteke ni mogoèe odpreti:\n"
+msgstr ""
+"Datoteke ni mogoèe odpreti:\n"
 " %s"
 
-#: effects/NoiseRemoval.cpp:275
+#: effects/NoiseRemoval.cpp:277
 msgid "Attempt to run Noise Removal without a noise profile.\n"
 msgstr "Poskus odstranjevanja ¹uma brez profila ¹uma.\n"
 
-#: effects/NoiseRemoval.cpp:715
+#: effects/NoiseRemoval.cpp:723
 msgid "Noise Removal"
 msgstr "Odstranjevanje ¹uma"
 
-#: effects/NoiseRemoval.cpp:804
+#: effects/NoiseRemoval.cpp:812
 msgid "Step 1"
 msgstr "1. korak"
 
-#: effects/NoiseRemoval.cpp:805
-msgid "Select a few seconds of just noise so Audacity knows what to filter out,\n"
+#: effects/NoiseRemoval.cpp:813
+msgid ""
+"Select a few seconds of just noise so Audacity knows what to filter out,\n"
 "then click Get Noise Profile:"
-msgstr "Izberite nekaj sekund zgolj ¹uma, da Audacity ve, kaj naj odstrani,\n"
+msgstr ""
+"Izberite nekaj sekund zgolj ¹uma, da Audacity ve, kaj naj odstrani,\n"
 "nato kliknite Dobi profil ¹uma:"
 
-#: effects/NoiseRemoval.cpp:806
+#: effects/NoiseRemoval.cpp:814
 msgid "Step 2"
 msgstr "2. korak"
 
-#: effects/NoiseRemoval.cpp:807
-msgid "Select all of the audio you want filtered, choose how much noise you want\n"
+#: effects/NoiseRemoval.cpp:815
+msgid ""
+"Select all of the audio you want filtered, choose how much noise you want\n"
 "filtered out, and then click 'OK' to remove noise.\n"
-msgstr "Izberite ves zvok, ki ga ¾elite prefiltrirati, izberite koliko ¹uma ¾elite\n"
+msgstr ""
+"Izberite ves zvok, ki ga ¾elite prefiltrirati, izberite koliko ¹uma ¾elite\n"
 "odstraniti in nato kliknite 'V redu', da odstranite ¹um.\n"
 
-#: effects/NoiseRemoval.cpp:812
+#: effects/NoiseRemoval.cpp:820
 msgid "Noise Removal by Dominic Mazzoni"
 msgstr "Odstranjevanje ¹uma Dominica Mazzonija"
 
-#: effects/NoiseRemoval.cpp:820
+#: effects/NoiseRemoval.cpp:828
 msgid "Get Noise Profile"
 msgstr "Dobi profil ¹uma"
 
-#: effects/NoiseRemoval.cpp:831
+#: effects/NoiseRemoval.cpp:839
 msgid "Noise reduction (dB):"
 msgstr "Odstranjevanje ¹uma (dB):"
 
-#: effects/NoiseRemoval.cpp:839
+#: effects/NoiseRemoval.cpp:847
 msgid "Frequency smoothing (Hz):"
 msgstr "Glajenje frekvenc (Hz):"
 
-#: effects/NoiseRemoval.cpp:847
+#: effects/NoiseRemoval.cpp:855
 msgid "Attack/decay time (secs):"
 msgstr "Èas napada/upada (v sekundah):"
 
@@ -4921,38 +5025,40 @@ msgstr "Odstranjevanje ¹uma"
 #: effects/Normalize.cpp:68
 #, c-format
 msgid "Applied effect: %s remove dc offset = %s, normalize amplitude = %s"
-msgstr ""
+msgstr "Uporabljen uèinek: %s odstrani odmik DC = %s, normaliziraj amplitudo = %s"
 
-#: effects/Normalize.cpp:70 effects/Normalize.cpp:71
+#: effects/Normalize.cpp:70
+#: effects/Normalize.cpp:71
 msgid "false"
-msgstr ""
+msgstr "ne velja"
 
-#: effects/Normalize.cpp:70 effects/Normalize.cpp:71
+#: effects/Normalize.cpp:70
+#: effects/Normalize.cpp:71
 msgid "true"
-msgstr ""
+msgstr "velja"
 
 #: effects/Normalize.cpp:73
 #, c-format
 msgid ", maximum amplitude = %.1f dB"
-msgstr ""
+msgstr ", najveèja amplituda = %.1f dB"
 
-#: effects/Normalize.cpp:95
+#: effects/Normalize.cpp:109
 msgid "Normalize"
 msgstr "Normaliziraj"
 
-#: effects/Normalize.cpp:316
+#: effects/Normalize.cpp:337
 msgid "Normalize by Dominic Mazzoni\n"
 msgstr "Normaliziraj avtorja Dominica Mazzonija\n"
 
-#: effects/Normalize.cpp:323
+#: effects/Normalize.cpp:344
 msgid "Remove any DC offset (center on 0 vertically)"
 msgstr "Odstrani vsakr¹en odmik DC (sredina na 0 navpièno)"
 
-#: effects/Normalize.cpp:328
+#: effects/Normalize.cpp:349
 msgid "Normalize maximum amplitude to"
 msgstr "Normaliziraj najveèjo amplitudo na"
 
-#: effects/Normalize.cpp:336
+#: effects/Normalize.cpp:357
 msgid "-"
 msgstr "-"
 
@@ -5015,11 +5121,13 @@ msgstr "Faznik ..."
 msgid "Applying Phaser"
 msgstr "Dodajanje Faznika"
 
-#: effects/Repair.cpp:94
-msgid "The Repair effect is intended to be used on very short sections of damaged audio (up to 128 samples).\n"
+#: effects/Repair.cpp:99
+msgid ""
+"The Repair effect is intended to be used on very short sections of damaged audio (up to 128 samples).\n"
 "\n"
 "Zoom in and select a tiny fraction of a second to repair."
-msgstr "Uèinek Popravi je namenjen za uporabo na zelo kratkih odsekih okvarjenega zvoka (do 128 vzorcev).\n"
+msgstr ""
+"Uèinek Popravi je namenjen za uporabo na zelo kratkih odsekih okvarjenega zvoka (do 128 vzorcev).\n"
 "\n"
 "Poveèajte izbor in izberite majhen delèek sekunde za popravilo."
 
@@ -5041,25 +5149,27 @@ msgstr "Sledi so predolge za ponovitev izbora."
 msgid "Repeat"
 msgstr "Ponovi"
 
-#: effects/Repeat.cpp:171
+#. i18n-hint: && in here is an escape character to get
+#. * a single & on screen, so keep it as is
+#: effects/Repeat.cpp:188
 msgid "Repeat by Dominic Mazzoni && Vaughan Johnson"
 msgstr "Ponavljalec, Dominic Mazzoni &&  Vaughan Johnson"
 
-#: effects/Repeat.cpp:178
+#: effects/Repeat.cpp:195
 msgid "Number of times to repeat: "
 msgstr "©tevilo ponovitev:"
 
-#: effects/Repeat.cpp:190
-#: effects/Repeat.cpp:220
+#: effects/Repeat.cpp:207
+#: effects/Repeat.cpp:237
 msgid "New selection length: "
 msgstr "Nova dol¾ina izbora:"
 
-#: effects/Repeat.cpp:222
+#: effects/Repeat.cpp:239
 #, c-format
 msgid "%d minutes, %d seconds"
 msgstr "%d minut, %d sekund"
 
-#: effects/Repeat.cpp:225
+#: effects/Repeat.cpp:242
 #, c-format
 msgid "%d seconds"
 msgstr "%d sekund"
@@ -5110,9 +5220,11 @@ msgid "SpikeCleaner by Lynn Allan"
 msgstr "Èistilec konic avtorja Lynna Allana"
 
 #: effects/SpikeCleaner.cpp:165
-msgid "Max Spike Duration (milliseconds): \n"
+msgid ""
+"Max Spike Duration (milliseconds): \n"
 "(99999 or greater is off)"
-msgstr "Najveèje trajanje konice (v milisekundah): \n"
+msgstr ""
+"Najveèje trajanje konice (v milisekundah): \n"
 "(99999 ali veè pomeni izkljuèeno)"
 
 #: effects/SpikeCleaner.cpp:178
@@ -5160,27 +5272,28 @@ msgstr "Zobati"
 msgid "Square, no alias"
 msgstr "Kvadratni, brez aliasa"
 
-#: effects/ToneGen.cpp:297
+#: effects/ToneGen.cpp:305
+#: effects/ToneGen.cpp:340
 msgid "Frequency (Hz)"
 msgstr "Frekvenca (Hz)"
 
-#: effects/ToneGen.cpp:299
-#: effects/ToneGen.cpp:340
+#: effects/ToneGen.cpp:307
+#: effects/ToneGen.cpp:348
 #: toolbars/SelectionBar.cpp:147
 #: toolbars/SelectionBar.cpp:241
 msgid "Length"
 msgstr "Dol¾ina"
 
-#: effects/ToneGen.cpp:323
+#: effects/ToneGen.cpp:331
 msgid "Waveform:"
 msgstr "Signalna oblika:"
 
-#: effects/ToneGen.cpp:330
+#: effects/ToneGen.cpp:338
 #: toolbars/ControlToolBar.cpp:185
 msgid "Start"
 msgstr "Zaèetek"
 
-#: effects/ToneGen.cpp:331
+#: effects/ToneGen.cpp:339
 #: toolbars/ControlToolBar.cpp:188
 #: toolbars/SelectionBar.cpp:141
 #: toolbars/SelectionBar.cpp:242
@@ -5208,29 +5321,29 @@ msgid "All tracks must have the same sample rate"
 msgstr "Vse sledi morajo imeti enako mero vzorèenja."
 
 #: effects/TruncSilence.cpp:113
-#: effects/TruncSilence.cpp:318
+#: effects/TruncSilence.cpp:322
 msgid "Truncate Silence"
 msgstr "Pore¾i ti¹ino"
 
-#: effects/TruncSilence.cpp:328
+#: effects/TruncSilence.cpp:332
 msgid "by Lynn Allan"
 msgstr "avtorja Lynna Allana"
 
-#: effects/TruncSilence.cpp:342
+#: effects/TruncSilence.cpp:346
 msgid "Max silence duration:"
 msgstr "Najveèje trajanje ti¹ine:"
 
-#: effects/TruncSilence.cpp:345
+#: effects/TruncSilence.cpp:349
 #: prefs/AudioIOPrefs.cpp:190
 #: prefs/AudioIOPrefs.cpp:193
 msgid "milliseconds"
 msgstr "milisekund"
 
-#: effects/TruncSilence.cpp:347
+#: effects/TruncSilence.cpp:351
 msgid "Threshold for silence:"
 msgstr "Prag ti¹ine:"
 
-#: effects/TruncSilence.cpp:371
+#: effects/TruncSilence.cpp:375
 msgid "   Duration must be at least 1 millisecond"
 msgstr "   Trajanje mora obsegati najmanj 1 milisekundo."
 
@@ -5250,7 +5363,7 @@ msgstr "Oprostite, uèinki VST se ne morejo izvesti na stereo posnetkih, kjer se 
 msgid "Can't process replacing"
 msgstr "Zamenjave ni mogoèe izvesti"
 
-#: effects/VST/VSTEffect.cpp:394
+#: effects/VST/VSTEffect.cpp:403
 msgid "VST Plug-in parameters:"
 msgstr "Parametri vtiènika VST:"
 
@@ -5297,22 +5410,22 @@ msgstr "Izvajanje uèinka: %s"
 msgid "Sorry, Plug-in Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
 msgstr "Oprostite, uèinki vstavkov se ne morejo izvesti na stereo posnetkih, kjer se posamezni kanali ne skladajo."
 
-#: effects/ladspa/LadspaEffect.cpp:572
-#: effects/ladspa/LadspaEffect.cpp:580
+#: effects/ladspa/LadspaEffect.cpp:573
+#: effects/ladspa/LadspaEffect.cpp:581
 #: prefs/QualityPrefs.cpp:72
 msgid "None"
 msgstr "Prazno"
 
-#: effects/ladspa/LadspaEffect.cpp:574
+#: effects/ladspa/LadspaEffect.cpp:575
 #: effects/vamp/VampEffect.cpp:384
 msgid "Author: "
 msgstr "Avtor: "
 
-#: effects/ladspa/LadspaEffect.cpp:607
+#: effects/ladspa/LadspaEffect.cpp:608
 msgid "Effect Settings"
 msgstr "Nastavitve uèinka"
 
-#: effects/ladspa/LadspaEffect.cpp:698
+#: effects/ladspa/LadspaEffect.cpp:699
 msgid "Length (seconds)"
 msgstr "Dol¾ina (v sekundah)"
 
@@ -5329,28 +5442,28 @@ msgstr "Pozornik Nyquist ..."
 msgid "Enter Nyquist Command: "
 msgstr "Vnesi ukaz Nyquist:"
 
-#: effects/nyquist/Nyquist.cpp:411
+#: effects/nyquist/Nyquist.cpp:412
 msgid "Sorry, cannot apply effect on stereo tracks where the tracks don't match."
 msgstr "Oprostite, uèinka ni mogoèe izvesti na stereo sledeh, kjer se posamezne sledi ne skladajo."
 
-#: effects/nyquist/Nyquist.cpp:438
+#: effects/nyquist/Nyquist.cpp:440
 msgid "Nyquist"
 msgstr "Nyquist"
 
-#: effects/nyquist/Nyquist.cpp:439
+#: effects/nyquist/Nyquist.cpp:441
 msgid "Nyquist Output: "
 msgstr "Izhod Nyquista:"
 
-#: effects/nyquist/Nyquist.cpp:593
-#: effects/nyquist/Nyquist.cpp:604
+#: effects/nyquist/Nyquist.cpp:596
+#: effects/nyquist/Nyquist.cpp:607
 msgid "Nyquist returned the value:"
 msgstr "Nyquist je vrnil vrednost:"
 
-#: effects/nyquist/Nyquist.cpp:646
+#: effects/nyquist/Nyquist.cpp:649
 msgid "Nyquist did not return audio.\n"
 msgstr "Nyquist ne vrne zvoka.\n"
 
-#: effects/nyquist/Nyquist.cpp:657
+#: effects/nyquist/Nyquist.cpp:660
 msgid "Nyquist returned too many audio channels.\n"
 msgstr "Nyquist je vrnil preveè zvoènih kanalov.\n"
 
@@ -5390,9 +5503,11 @@ msgid "Program"
 msgstr "Program"
 
 #: export/Export.cpp:401
-msgid "No tracks are selected! Use Ctrl-A (Select All)\n"
+msgid ""
+"No tracks are selected! Use Ctrl-A (Select All)\n"
 "Choose Export... to export all tracks."
-msgstr "Nobena sled ni izbrana! Uporabite Ctrl-A (Izberi vse)\n"
+msgstr ""
+"Nobena sled ni izbrana! Uporabite Ctrl-A (Izberi vse)\n"
 "Izberite Izvozi ..., da izvozite vse sledi."
 
 #: export/Export.cpp:445
@@ -5409,12 +5524,14 @@ msgstr "Ste preprièani, da ¾elite datoteko shraniti kot \""
 
 #: export/Export.cpp:495
 #, c-format
-msgid "You are about to save a %s file with the name \"%s\".\n"
+msgid ""
+"You are about to save a %s file with the name \"%s\".\n"
 "\n"
 "Normally these files end in \".%s\", and some programs will not open files with nonstandard extensions.\n"
 "\n"
 "Are you sure you want to save the file under this name?"
-msgstr "Datoteko %s boste shranili pod imenom \"%s\".\n"
+msgstr ""
+"Datoteko %s boste shranili pod imenom \"%s\".\n"
 "\n"
 "Obièajno imajo te datoteke konènico \".%s\" in nekatere aplikacije ne odpirajo datotek z nestandardnimi konènicami.\n"
 "\n"
@@ -5559,19 +5676,19 @@ msgstr "Raven:"
 msgid "Bit depth:"
 msgstr "Bitna globina:"
 
-#: export/ExportFLAC.cpp:201
+#: export/ExportFLAC.cpp:208
 msgid "FLAC Files"
 msgstr "Datoteke FLAC"
 
-#: export/ExportFLAC.cpp:296
+#: export/ExportFLAC.cpp:310
 msgid "Exporting the selected audio as FLAC"
 msgstr "Izva¾anje izbranega zvoka kot FLAC"
 
-#: export/ExportFLAC.cpp:297
+#: export/ExportFLAC.cpp:311
 msgid "Exporting the entire project as FLAC"
 msgstr "Izva¾anje celotnega projekta kot FLAC"
 
-#: export/ExportFLAC.cpp:359
+#: export/ExportFLAC.cpp:372
 msgid "Edit the metadata for the FLAC file"
 msgstr "Uredi metapodatke za datoteko FLAC"
 
@@ -5605,12 +5722,12 @@ msgstr "Spremeni oznake ID3 za datoteko MP2"
 msgid "Unable to open target file for writing"
 msgstr "Datoteke za zapisovanje ni mogoèe odpreti"
 
-#: export/ExportMP2.cpp:273
+#: export/ExportMP2.cpp:274
 #, c-format
 msgid "Exporting selected audio at %d kbps"
 msgstr "Izva¾anje izbranega zvoka pri %d kb/s"
 
-#: export/ExportMP2.cpp:274
+#: export/ExportMP2.cpp:275
 #, c-format
 msgid "Exporting entire file at %d kbps"
 msgstr "Izva¾anje celotne datoteke pri %d kb/s"
@@ -5858,15 +5975,18 @@ msgstr "Neveljavna mera vzorèenja"
 
 #: export/ExportMP3.cpp:1876
 #, c-format
-msgid "The project sample rate (%d) is not supported by the MP3\n"
+msgid ""
+"The project sample rate (%d) is not supported by the MP3\n"
 "file format.  "
 msgstr "Mere vzorèenja projekta (%d) zapis MP3 ne podpira."
 
 #: export/ExportMP3.cpp:1879
 #, c-format
-msgid "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
+msgid ""
+"The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
 "supported by the MP3 file format.  "
-msgstr "Kombinacije mer vzorèenja projekta (%d) in bitnega vzorèenja (%d kb/s)\n"
+msgstr ""
+"Kombinacije mer vzorèenja projekta (%d) in bitnega vzorèenja (%d kb/s)\n"
 "zapis MP3 ne podpira.  "
 
 #: export/ExportMP3.cpp:1882
@@ -5889,11 +6009,13 @@ msgid "Export Multiple"
 msgstr "Izvoz veèih"
 
 #: export/ExportMultiple.cpp:152
-msgid "If you have more than one Audio Track, you can export each track as a separate file,\n"
+msgid ""
+"If you have more than one Audio Track, you can export each track as a separate file,\n"
 "or if you have a Label Track, you can export a new file for each label.\n"
 "\n"
 "This project does not have multiple tracks or a Label Track, so you cannot export multiple files."
-msgstr "Èe imate veè kot eno zvoèno sled, lahko izvozite vsako sled kot loèeno datoteko,\n"
+msgstr ""
+"Èe imate veè kot eno zvoèno sled, lahko izvozite vsako sled kot loèeno datoteko,\n"
 "ali pa èe imate poimenovano sled, lahko izvozite novo datoteko za vsak naslov.\n"
 "\n"
 "Ta projekt nima veè sledi niti poimenovane sledi, zato ne morete izvoziti veè datotek naenkrat."
@@ -5982,10 +6104,12 @@ msgstr "Uredi metapodatke"
 
 #: export/ExportMultiple.cpp:480
 #, c-format
-msgid "\"%s\" doesn't exist.\n"
+msgid ""
+"\"%s\" doesn't exist.\n"
 "\n"
 "Would you like to create it?"
-msgstr "\"%s\" ne obstaja.\n"
+msgstr ""
+"\"%s\" ne obstaja.\n"
 "\n"
 "Jo ¾elite ustvariti?"
 
@@ -6065,12 +6189,12 @@ msgstr "Ne morem izvoziti posnetka v tem zapisu."
 #: export/ExportPCM.cpp:400
 #, c-format
 msgid "Exporting the selected audio as %s"
-msgstr ""
+msgstr "Izva¾anje izbranega zvoka kot %s"
 
 #: export/ExportPCM.cpp:402
 #, c-format
 msgid "Exporting the entire project as %s"
-msgstr ""
+msgstr "Izva¾anje celotnega projekta kot %s"
 
 #: export/ExportPCM.cpp:435
 #, c-format
@@ -6087,62 +6211,89 @@ msgid "This version of Audacity was not compiled with %s support."
 msgstr "V tej razlièici Audacity podpora za %s ni prevedena."
 
 #: import/Import.cpp:167
-msgid " is an audio CD track. \n"
+msgid ""
+" is an audio CD track. \n"
 "Audacity cannot open audio CDs directly. \n"
 "Extract (rip) the CD tracks to an audio format that \n"
 "Audacity can import, such as WAV or AIFF."
 msgstr ""
+" je datoteka (sled) glasbenega CD.\n"
+"Te vrste datotek Audacity neposredno ne odpira.\n"
+"Poskusite jo sneti v zvoèni zapis, ki ga\n"
+"Audacity lahko odpre, kot sta npr. WAV ali AIFF."
 
 #: import/Import.cpp:174
-#, fuzzy
-msgid " is a playlist file. \n"
+msgid ""
+" is a playlist file. \n"
 "Audacity cannot open this file because it only contains links to other files. \n"
 "You may be able to open it in a text editor and download the actual audio files."
-msgstr " je datoteka seznama predvajanja datotek.\n"
+msgstr ""
+" je datoteka seznama predvajanja datotek.\n"
 "Audacity te datoteke ne more odpreti, ker vsebuje le povezave na druge datoteke.\n"
 "Morda jo lahko odprete v urejevalniku besedila in nato prenesete navedene dejanske zvoène datoteke."
 
 #: import/Import.cpp:180
-msgid " is a Windows Media Audio file. \n"
+msgid ""
+" is a Windows Media Audio file. \n"
 "Audacity cannot open this type of file due to patent restrictions. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
 msgstr ""
+" je zvoèna datoteka Windows Media Audio. \n"
+"Audacity te vrste datotek ne more odpreti zaradi patentnih omejitev.\n"
+"Pretvoriti jo morate v podprti zvoèni zapis, kot sta WAV in AIFF."
 
 #: import/Import.cpp:186
-msgid " is an Advanced Audio Coding file. \n"
+msgid ""
+" is an Advanced Audio Coding file. \n"
 "Audacity cannot open this type of file. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
 msgstr ""
+" je datoteka Advanced Audio Coding. \n"
+"Audacity ne more odpreti te vrste datotek.\n"
+"Pretvoriti jo morate v podprto vrsto zvoènih datotek, kot sta WAV in AIFF."
 
 #: import/Import.cpp:192
-msgid " is an encrypted audio file. These typically are from an online music store. \n"
+msgid ""
+" is an encrypted audio file. These typically are from an online music store. \n"
 "Audacity cannot open this type of file due to the encryption. \n"
 "Try recording the file into Audacity, or burn it to audio CD then \n"
 "extract the CD track to a supported audio format such as WAV or AIFF."
 msgstr ""
+" je ¹ifrirana zvoèna datoteka, ponavadi iz spletne trgovine z glasbo. \n"
+"Audacity ne more odpreti te vrste datotek zaradi ¹ifriranja.\n"
+"Poskusite datoteko posneti v Audacity ali jo zapeèi na zvoèni CD,\n"
+"sled CD prenesti v podprto vrsto zvoène datoteke, kot sta WAV in AIFF."
 
 #: import/Import.cpp:198
-msgid " is a RealPlayer media file. \n"
+msgid ""
+" is a RealPlayer media file. \n"
 "Audacity cannot open this proprietary format. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
 msgstr ""
+" je medijska datoteka RealPlayer. \n"
+"Audacity ne more odpreti tega licenènega zapisa.\n"
+"Najprej ga morate pretvoriti v enega od podprtih zvoènih zapisov, kot sta WAV in AIFF."
 
 #: import/Import.cpp:221
-msgid "Audacity had to make a guess at the type of file.\n"
+msgid ""
+"Audacity had to make a guess at the type of file.\n"
 "The Audio may be bogus.\n"
 "\n"
 "If the audio is bogus, try renaming the file\n"
 "so that it has the correct extension before opening it."
-msgstr "Audacity je moral uganiti vrsto datoteke.\n"
+msgstr ""
+"Audacity je moral uganiti vrsto datoteke.\n"
 "Zvoki bodo morda napaèni.\n"
 "\n"
 "Èe se je to zgodilo, poskusite preimenovati\n"
 "datoteko, da bo imela ustrezno konènico."
 
 #: import/Import.cpp:237
-msgid "Audacity did not recognize the type of this file.\n"
+msgid ""
+"Audacity did not recognize the type of this file.\n"
 "If it is uncompressed, try importing it using \"Import Raw\""
-msgstr "Ta vrsta datoteke je neznana.\n"
+msgstr ""
+"Ta vrsta datoteke je neznana.\n"
 "Èe ni stisnjena, jo poskusite uvoziti z \"Uvozi surovo\"."
 
 #: import/ImportFLAC.cpp:35
@@ -6548,7 +6699,7 @@ msgstr "&Posodobi zaslon med predvajanjem"
 
 #: prefs/GUIPrefs.cpp:74
 msgid "Any Close/Exit command completely &quits Audacity"
-msgstr ""
+msgstr "Vsakr¹en ukaz Zapri/Izhod povsem &zapre Audacity."
 
 #: prefs/GUIPrefs.cpp:76
 msgid "&Dragging of left and right selection edges"
@@ -6560,11 +6711,11 @@ msgstr "&Ergonomski razpored gumbov zvoènega V/I"
 
 #: prefs/GUIPrefs.cpp:80
 msgid "Automatically &fit tracks vertically zoomed"
-msgstr ""
+msgstr "Samodejno &umeri sledi na navpièno poveèavo"
 
 #: prefs/GUIPrefs.cpp:82
 msgid "\"Move track focus\" &cycles repeatedly through tracks"
-msgstr ""
+msgstr "\"Premakni pozornost po sledeh\" &ciklièno kro¾i po sledeh"
 
 #: prefs/GUIPrefs.cpp:84
 msgid "&Present track number to accessibility aid"
@@ -6576,7 +6727,7 @@ msgstr "Urejanje &posnetka lahko premakne druge posnetke"
 
 #: prefs/GUIPrefs.cpp:88
 msgid "&Select all audio in project, if none selected"
-msgstr ""
+msgstr "&Èe ni niè izbrano, izberi vse zvoke projekta."
 
 #: prefs/GUIPrefs.cpp:90
 msgid "&Beep on completion of longer activities"
@@ -6596,7 +6747,7 @@ msgstr "&Vpra¹aj za shranjevanje, tudi èe je projekt prazen"
 
 #: prefs/GUIPrefs.cpp:102
 msgid "Show Welcome Message at program start up"
-msgstr ""
+msgstr "Poka¾i pozdravno sporoèilo ob zagonu programa"
 
 #: prefs/GUIPrefs.cpp:107
 msgid "Language"
@@ -6648,7 +6799,7 @@ msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
 msgstr "Opomba: s pritiskom na Cmd+Q konèate delo s programom. Vse druge tipke so veljavne."
 
 #: prefs/KeyConfigPrefs.cpp:124
-#: prefs/ThemePrefs.cpp:103
+#: prefs/ThemePrefs.cpp:105
 msgid "&Defaults"
 msgstr "&Privzeto"
 
@@ -6678,10 +6829,12 @@ msgstr "Napaka pri nalaganju bli¾njic"
 
 #: prefs/KeyConfigPrefs.cpp:241
 #, c-format
-msgid "The keyboard shortcut '%s' is already assigned to:\n"
+msgid ""
+"The keyboard shortcut '%s' is already assigned to:\n"
 "\n"
 "'%s'"
-msgstr "Tipka za bli¾njico '%s' je ¾e dodeljena k:\n"
+msgstr ""
+"Tipka za bli¾njico '%s' je ¾e dodeljena k:\n"
 "\n"
 "'%s'"
 
@@ -7071,40 +7224,43 @@ msgstr "Najmanj¹a frekvenca mora biti vsaj 0 Hz"
 msgid "Theme"
 msgstr "Tema"
 
-#: prefs/ThemePrefs.cpp:91
+#. i18n-hint: && in here is an escape character to get a single & on screen,
+#. * so keep it as is
+#: prefs/ThemePrefs.cpp:93
 msgid "Theme Cache - Images && Color"
 msgstr "Medpomnilnik tem - Slike in barve"
 
-#: prefs/ThemePrefs.cpp:93
+#: prefs/ThemePrefs.cpp:95
 msgid "Save Theme Cache"
 msgstr "Shrani medpomnilnik tem"
 
-#: prefs/ThemePrefs.cpp:94
+#: prefs/ThemePrefs.cpp:96
 msgid "Load Theme Cache"
 msgstr "Nalo¾i medpomnilnik tem"
 
-#: prefs/ThemePrefs.cpp:104
+#: prefs/ThemePrefs.cpp:106
 msgid "Load Theme Cache At Startup"
 msgstr "Nalo¾i medpomnilnik tem ob zagonu"
 
-#: prefs/ThemePrefs.cpp:116
+#: prefs/ThemePrefs.cpp:118
 msgid "Individual Theme Files"
 msgstr "Posamiène datoteke tem"
 
-#: prefs/ThemePrefs.cpp:118
+#: prefs/ThemePrefs.cpp:120
 msgid "Save Files"
 msgstr "Shrani datoteke"
 
-#: prefs/ThemePrefs.cpp:119
+#: prefs/ThemePrefs.cpp:121
 msgid "Load Files"
 msgstr "Nalo¾i datoteke"
 
-#: prefs/ThemePrefs.cpp:124
+#: prefs/ThemePrefs.cpp:126
 msgid "Info"
 msgstr "Podatki"
 
-#: prefs/ThemePrefs.cpp:127
-msgid "Themability is an experimental feature.\n"
+#: prefs/ThemePrefs.cpp:129
+msgid ""
+"Themability is an experimental feature.\n"
 "\n"
 "To try it out, click \"Save Theme Cache\" then\n"
 "find and modify the images and colors in \n"
@@ -7117,7 +7273,8 @@ msgid "Themability is an experimental feature.\n"
 "[Only the control toolbar and the colors on the \n"
 "wavetrack are currently affected, even though the\n"
 "image file shows other icons too.]\n"
-msgstr "Teme so v eksperimentalni fazi.\n"
+msgstr ""
+"Teme so v eksperimentalni fazi.\n"
 "\n"
 "Da jih preizkusite, kliknite \"Shrani medpomnilnik tem\",\n"
 "nato poi¹èite in spremenite slike in barve v \n"
@@ -7131,29 +7288,35 @@ msgstr "Teme so v eksperimentalni fazi.\n"
 "sledi so trenutno prizadete, èeprav slika\n"
 "prikazuje tudi druge ikone.]\n"
 
-#: prefs/ThemePrefs.cpp:132
-msgid "You have compiled Audacity with an extra button, \n"
+#: prefs/ThemePrefs.cpp:134
+msgid ""
+"You have compiled Audacity with an extra button, \n"
 "'Output Sourcery'.  This will save a C version of \n"
 "the image cache that can be compiled in as a default.\n"
-msgstr "Audacity je preveden z dodatnim gumbom, \n"
+msgstr ""
+"Audacity je preveden z dodatnim gumbom, \n"
 "'Output Sourcery'.  S tem boste shranili C-razlièico \n"
 "slikovnega medpomnilnika, ki ga ni mogoèe privzeto prevesti.\n"
 
-#: prefs/ThemePrefs.cpp:137
-msgid "If 'Load Theme Cache At Startup' is checked, then \n"
+#: prefs/ThemePrefs.cpp:139
+msgid ""
+"If 'Load Theme Cache At Startup' is checked, then \n"
 "the Theme Cache will be loaded when the program \n"
 "starts up.\n"
 "\n"
-msgstr "Èe je vkljuèen 'Nalo¾i medpomnilnik tem ob zagonu', bo \n"
+msgstr ""
+"Èe je vkljuèen 'Nalo¾i medpomnilnik tem ob zagonu', bo \n"
 "medpomnilnik tem nalo¾en, ko za¾enete program.\n"
 "\n"
 
-#: prefs/ThemePrefs.cpp:140
-msgid "Saving and loading individual theme files uses a \n"
+#: prefs/ThemePrefs.cpp:142
+msgid ""
+"Saving and loading individual theme files uses a \n"
 "separate file for each image, but is otherwise the \n"
 "same idea.\n"
 "\n"
-msgstr "Shranjevanje in nalaganje posamezne datoteke teme \n"
+msgstr ""
+"Shranjevanje in nalaganje posamezne datoteke teme \n"
 "uporablja loèeno datoteko za vsako sliko, a je sicer \n"
 "zami¹ljeno na enak naèin.\n"
 "\n"
@@ -7191,7 +7354,7 @@ msgid "Clean Speech"
 msgstr "Poèisti govor"
 
 #: toolbars/ControlToolBar.cpp:530
-#: toolbars/ControlToolBar.cpp:837
+#: toolbars/ControlToolBar.cpp:839
 msgid "Error while opening sound device. "
 msgstr "Napaka pri odpiranju zvoène naprave."
 
@@ -7639,11 +7802,13 @@ msgid "Preferences..."
 msgstr "Nastavitve ..."
 
 #: widgets/Meter.cpp:1061
-msgid "This determines how often the meter is refreshed.\n"
+msgid ""
+"This determines how often the meter is refreshed.\n"
 "If you have a slower PC you may want to select a\n"
 "lower refresh rate (30 per second or lower), so that\n"
 "audio qualtiy is not affected by the meter display."
-msgstr "S tem doloèite, kako pogosto je osve¾en merilnik.\n"
+msgstr ""
+"S tem doloèite, kako pogosto je osve¾en merilnik.\n"
 "Èe imate poèasnej¹i raèunalnik, je bolje izbrati\n"
 "manj¹o frekvenco osve¾evanja (30 na sekundo ali manj),\n"
 "tako da kakovost zvoka ni ogro¾ena zaradi prikaza merilnika."
