@@ -64,9 +64,13 @@ bool EffectNormalize::Init()
 wxString EffectNormalize::GetEffectDescription() // useful only after parameter values have been set
 { 
    // Note: This is useful only after ratio has been set. 
-   wxString strResult = 
+   wxString strResult =
+      /* i18n-hint: First %s is the effect name, 2nd and 3rd are either true or
+       * false (translated below) if those options were selected */
       wxString::Format(_("Applied effect: %s remove dc offset = %s, normalize amplitude = %s"), 
                         this->GetEffectName().c_str(), 
+                        /* i18n-hint: true here means that the option was
+                         * selected. Opposite false if not selected */
                         mDC ? _("true") : _("false"), 
                         mGain ? _("true") : _("false"));
    if (mGain)
@@ -334,7 +338,7 @@ NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
    mainSizer->Add(new wxStaticText(this, -1,
-                                   _("Normalize by Dominic Mazzoni\n"
+                                   _("Normalize by Dominic Mazzoni"
 												),
                                    wxDefaultPosition, wxDefaultSize,
                                    wxALIGN_CENTRE),
