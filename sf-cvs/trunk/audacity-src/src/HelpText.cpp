@@ -255,7 +255,7 @@ _("Exporting and Saving have different purposes.\
 You \"save\" an Audacity project file when you want to return to your work in Audacity later.\
 This means you don't then have to re-import or re-record audio, or redo editing you have done so far.\
 When you want to listen to your work in other computer programs you \"export\" it as an audio file such as \
-a WAV, AIFF or MP3. When burning to CD, you export as WAV or AIFF.\
+a WAV, AIFF or MP3. If burning to an audio CD for standalone CD players, you must export as WAV or AIFF.\
 <br><br>\
 To save an Audacity project, use <b>File > Save Project</b>. This will save an <b>.aup</b> Project file, \
 plus a <b>_data</b> folder containing the actual audio. \
@@ -313,7 +313,7 @@ see <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streami
    {
       return WrapText(
          wxString(wxT(""))+
-_("If you want to burn your work to an audio CD, you must first \
+_("If you want to burn your work to an audio CD for standalone CD players, you must first \
 [[export|export as WAV or AIFF]] \
 and then burn that file to CD with a CD burning program like \
 iTunes - for more help, see [[wiki:How to burn CDs|How to burn CDs]].\

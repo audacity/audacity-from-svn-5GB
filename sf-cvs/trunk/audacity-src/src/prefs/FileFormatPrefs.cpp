@@ -96,6 +96,8 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieRadioButton( _("A&lways mix all tracks down to Stereo or Mono channel(s)."), true);
       S.TieRadioButton( _("&Use custom mix (for example to export a 5.1 multichannel file)"),false );
       S.EndRadioButtonGroup();
+      S.AddFixedText( _("\nNote: Export quality options for WAV, AIFF, MP3 and other \
+formats can be chosen by \nclicking the Options button at time of export."));
    }
    S.EndStatic();
    S.StartStatic( _("MP3 Export Library Location"));
