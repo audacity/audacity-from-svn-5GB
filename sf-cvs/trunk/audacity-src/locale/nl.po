@@ -335,23 +335,22 @@ msgstr "Bij het herstellen van een project zullen de bestanden op de harde schij
 msgid "Quit Audacity"
 msgstr "Audacity afsluiten"
 
-#: AutoRecovery.cpp:75
-msgid "Don't recover"
-msgstr "Niet herstellen"
+#: AutoRecovery.cpp:89
+msgid "Do Not Recover"
+msgstr ""
 
-#: AutoRecovery.cpp:76
-msgid "Recover projects"
+#: AutoRecovery.cpp:90
+#, fuzzy
+msgid "Recover Projects"
 msgstr "Projecten herstellen"
 
 #: AutoRecovery.cpp:113
 msgid "You have chosen not to recover any projects. You will not be able to recover those projects later if you change your mind. Do you really want to continue without recovering?"
 msgstr "U heeft gekozen om geen van de projecten te herstellen. U zult geen mogelijkheid meer hebben om die projecten later nog te herstellen. Wilt u doorgaan zonder te herstellen?"
 
-# titel van venster
-# verkleinwoord is hier mooier
-#: AutoRecovery.cpp:114
-msgid "Question"
-msgstr "Vraagje"
+#: AutoRecovery.cpp:128
+msgid "Really not recover projects?"
+msgstr ""
 
 #: AutoRecovery.cpp:132 AutoRecovery.cpp:169
 msgid "Could not enumerate files in auto save directory"
@@ -631,12 +630,12 @@ msgid "Cancel Save"
 msgstr "Opslaan annuleren"
 
 #: Dependencies.cpp:306
-msgid "Don't Copy any Audio"
-msgstr "Geen audio kopiëren"
+msgid "Do Not Copy Any Audio"
+msgstr ""
 
-#: Dependencies.cpp:311
-msgid "Copy All Audio Into Project (safer)"
-msgstr "Alle audio naar het project kopiëren (veiliger)"
+#: Dependencies.cpp:308
+msgid "Copy All Audio into Project (Safer)"
+msgstr ""
 
 #: Dependencies.cpp:320 Dependencies.cpp:325
 msgid "Ask me"
@@ -1023,9 +1022,9 @@ msgstr "Audio opnemen"
 msgid "Editing and Greyed out Menus"
 msgstr "Bewerken en onbruikbare grijze menu's"
 
-#: export/ExportCL.cpp:188 export/ExportOGG.cpp:121 export/ExportPCM.cpp:114
-msgid "Export"
-msgstr "Exporteren"
+#: HelpText.cpp:109
+msgid "Export and Saving"
+msgstr ""
 
 #: HelpText.cpp:81
 msgid "Supported Formats"
@@ -1044,47 +1043,36 @@ msgid "<p>Welcome to Audacity "
 msgstr "<p>Welkom bij Audacity "
 
 #: HelpText.cpp:134
-msgid "Let's get started!</p><p>You can click on the links below to learn how to:<ul><li>[[play|play back]] an existing sound file.<li>How to [[record|record]] a new sound file.<li>How to [[edit|edit]] sound and [[export|export]] to a sound file like MP3.</ul><br><br>Those links will help if you find a problem such as a [[grey|menu option greyed out]] or that Audacity [[norecord|isn't recording properly]] or that you can't [[burncd|burn to a CD]]. You can always get back to these instructions by clicking the 'Help' menu, then 'Show Welcome Message.' <br><br>Welcome again to Audacity."
-msgstr "Laten we beginnen!</p><p>U kunt op onderstaande hyperlinks klikken voor uitleg over:<ul><li>Het [[play|afspelen]] Het afspelen van een geluidsbestand.<li>Het [[record|opnemen]] van een nieuw geluidsbestand.<li>Het [[edit|bewerken]] van geluid en het [[export|exporteren]] naar een ander bestandsformaat zoals mp3.</ul><br><br>De volgende hyperlinks bevatten uitleg over wat u kunt doen wanneer [[grey|menu-opties grijs]] zijn of wanneer Audacity [[norecord|niet meer goed opneemt]] of wanneer u niet [[burncd|naar een cd branden]] kunt. U kunt altijd terugkeren naar deze hulptekst via de optie ‘Hulp’ in het menu waarna u ‘Welkomstbericht tonen…’ kiest."
-
-#: HelpText.cpp:157
-msgid "You can either drag existing files into Audacity, or use the File > Import > Audio command. File > Open does the same, but opens a new Audacity window for any file after the first.<br/><br/>These are the main formats Audacity will import for you: <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis, WAV</b>.  If your file is in some other format see (format help). If you want to import an audio CD, see [[wiki:How to import CDs|How to import CDs]]<br><br>To start playing your audio, press the green Play button. To stop, press the yellow Stop button. You can also use spacebar to either play or stop. When you start playing again after stopping, playback resumes from its previous starting point. To change the starting point, use the |<< and |>> buttons to skip to the start or end respectively, or click anywhere in the track to restart from that point.<br><br>"
-msgstr "U kunt bestanden naar Audacity toeslepen, of bestanden importeren via Bestand > Importeren… > Audio…. <br>Bestand > Openen… doet hetzelfde, maar opent in een nieuw Audacity-venster voor elk bestand na het eerste. Audacity kan de volgende geluidsformaten importeren: <br><b>aiff, au, flac, m4a </b> (alleen op een Mac), <b>mp2/mp3, ogg vorbis, wav</b>. Wanneer uw bestand in een ander formaat staat, zie (hulp bij formaten). Wanneer u een audio-cd wilt importeren, zie [[wiki:How to import CDs|Hoe cd's te importeren]]<br><br>Om geluid af te spelen klikt u op de groene afspeelknop. Om te stoppen klikt u op de gele stopknop. U kunt ook de spatiebalk gebruiken om het afspelen te stoppen/starten. Wanneer u, nadat u op de stopknop heeft gedrukt, weer gaat afspelen, zal begonnen worden bij het vorige beginpunt. Om het beginpunt te wijzigen, gebuikt u de knoppen ‘|«’ en ‘|»’ om naar het begin of eind te springen, of klikt u ergens in het spoor om te herstarten vanaf dat punt.<br><br>"
-
-# nog niet helemaal vertaald
-#: HelpText.cpp:179
-msgid "<b>To start recording, press the red Record button</b>. Before doing so however, there are three crucial settings you must check:<br><br>(1) The <b>Recording Device</b>, set in the Audio I/O tab of Preferences. By default Audacity will use the current system device, which is usually your inbuilt sound device, so you may not need to set this. But if you're using an external USB or Firewire device such as a USB turntable, make sure this device is selected as your recording device. <br><br>(2) The <b>input source</b> for your device, such as microphone or line-in. <ul><li><b>On Windows</b>, you normally choose your input in the dropdown selector on the right of the <b>Mixer Toolbar<b> <i>note: on Vista, you must do so at Recording Device on the Audio I/O Preferences tab.</i></li><li><b>On a Mac</b>, you normally choose input sources outside Audacity, in Apple Audio-MIDI Setup.</li></ul><i>Note: many USB or Firewire devices don't have a choice of inputs, so you can ignore this step - see the documentation for your device. <br><br>(3) <b>Input volume</b>. Before recording for real, make a test recording to set the input level, so that it's neither too soft or too loud.To do this: <ol><li>Turn on <b>monitoring</b>, by either double-clicking over the right-hand of the two VU Meters, or right-clicking over it and choosing \"Start Monitoring\". If you do not see the meters, click View > Toolbars and check \"Meter Toolbar\". <li>Press Record, and adjust the input volume slider on the Mixer Toolbar (by the microphone symbol), so that the red bars in the meter come close to (but do not touch) the right edge of the scale. If you can't hear the sound, go to the Audio I/O tab of Preferences and check \"Software Playthrough\". </ol><br><br>There is more help if you're stuck: our Recording FAQs, our Tutorial  <b>Your First Recording </b> in the Manual, and our Wiki [[wiki:Recording Tips|Recordin Tips]], especially the [[wiki:Troubleshooting Recordings|Troubleshooting Recordings]] section. <br><br>"
-msgstr ""
-"<b>Om een opname te starten klikt u op de rode opnameknop</b>. Echter voordat u begint moet u eerst drie cruciale instellingen controleren: <br><br>(1) Het <b>Opnameapparaat</b>, dat ingesteld wordt bij de voorkeuren in het onderdeel ‘Audio in/uit’. Standaard maakt Audacity gebruik van het huidige systeemapparaat dat normaal gesproken u ingebouwde geluidsapparaat is. Dus mogelijkerwijs hoeft u dit niet in te stellen. Indien u echter een extern USB- of Firewire-apparaat gebruikt zoals een USB-draaitafel, zorg dan dat dit apparaat geselecteerd wordt als opnameapparaat. <br><br>(2) De <b>ingangsbron</b> voor uw apparaat, zoals microfoon of line-in. <ul><li><b>Op Windows</b> kiest u normaal gesproken de juiste ingang in de dropdown-keuzelijst rechts van de <b>Mixer werkbalk<b> <i>merk op: op Vista doet u dit bij ‘Opnameapparaat’ in het voorkeurentabblad ‘Audio I\\\\O’.</i></li><li><b>Op een Mac</b> kiest u normaal gesproken ingangsbronnen buiten Audacity, in Apple Audio-MIDI Instellingen. .</li></ul><i>Merk op: veel USB- of Firewire-apparaten hebben geen keuze van ingang, dus kunt u deze stap overslaan. Zie de documentatie voor uw apparaat.  <br><br>(3) <b>Opnamevolume</b>. Voordat u daadwerkelijk begint met opnemen moet u een testopname maken om het ingangsniveau in te stellen, zodat het niet te zacht of the luid is. Hiervoor doet u het volgende: <ol><li> Zet de <b>geluidsmeting</b> aan door op de rechter VU-meter te klikken. (U kunt ook met de rechter muisknop klikken en kiezen voor ‘Start Monitoring’). Wanneer u geen VU-meters ziet gaat u eerst naar Beeld > Werkbalken en vinkt u ‘De VU-meters’ aan. <li>Klik op de rode opnameknop en pas het opnameniveau aan met de schuifknop op de mixerwerkbalk (bij het microfoonsymbool) zodat de rode balken in de VU-meter dicht bij de rechterzijde van schaal komen, maar deze net niet raken. \n"
-"If you can't hear the sound, go to the Audio I/O tab of Preferences and check \\\"Software Playthrough\\\". </ol><br><br>There is more help if you're stuck: our Recording FAQs, our Tutorial  <b>Your First Recording </b> in the Manual, and our Wiki [[wiki:Recording Tips|Recordin Tips]], especially the [[wiki:Troubleshooting Recordings|Troubleshooting Recordings]] section. <br><br>\""
-
-#: HelpText.cpp:187
-msgid "Editing: Audacity is a powerful editor, so you'll want to see what it can do with your imported file or recording.  "
-msgstr "Bewerken: Audacity is een krachtige editor, dus u wilt wellicht aanschouwen wat het met uw geïmporteerd bestand of opname kan doen."
-
-#: HelpText.cpp:222
-msgid "The main commands you will use are under the Edit menu (such as cut, copy and paste) and under the Effect menu (you can do things like boost the bass, change pitch or tempo, or remove noise). <br><br>Audacity applies edits to areas of the audio track. You can select a particular area of audio by clicking in the track and dragging the shaded area with your mouse. If you don't select any audio, Audacity will select all that you have on the screen.<br><br>Two important points when editing:<br><br>(1) If you're still playing or recording, use the yellow Stop button, because you can't edit or export a moving track! <br><br>(2) On occasion, some of the menus or buttons are greyed out or say \"Disabled\" -  this is normal. For example, because you can't edit audio while playing or recording, we grey out or disable commands until you press Stop. Commands can sometimes be unavailable for other reasons - for example you can't run effects until you have audio on the screen, and you obviously can't paste audio until you've cut or copied it to Audacity's clipboard. <br><br>"
-msgstr "De belangrijkste functies die u zult uitvoeren staan onder het menu: Bewerken (zoals knippen, kopiëren en plakken), en onder het menu Effecten (u kunt bijvoorbeeld de bassen versterken, toonhoogte of tempo wijzigen of ruis verwijderen). <br><br>Audacity voert bewerkingen uit op gedeeltes van het geluidsspoor. U kunt een gedeelte selecteren door met uw muis in het spoor te klikken en te slepen. Wanneer u geen audio selecteert, zal Audacity alles op het scherm selecteren. <br><br>Twee belangrijke punten om te onthouden voor het bewerken: <br><br>(1) U kunt geen bewerkingen uitvoeren wanneer u nog aan het afspelen of opnemen bent. U moet dan eerst op de gele stopknop drukken! <br><br>(2) Af en toe zijn bepaalde menuonderdelen of knoppen grijs ten teken dat ze niet gebruikt kunnen worden. Dit is normaal. Bijvoorbeeld: omdat u geen bewerkingen kunt uitvoeren tijdens het afspelen op tijdens een opname, worden de menuonderdelen voor bewerkingen grijs getoond totdat u op de Stopknop klikt. Soms zijn functies niet beschikbaar vanwege een andere reden. Zo kunt u bijvoorbeeld geen effecten gebruiken eerdat u audio op het scherm heeft, en u kunt natuurlijk geen audio plakken voordat u het geknipt of gekopieerd heeft naar het klembord van Audacity. <br><br>"
-
-#: HelpText.cpp:246
-msgid "Exporting and Saving have different purposes.You \"save\" an Audacity project file when you want to return to your work in Audacity later.This means you don't then have to re-import or re-record audio, or redo editing you have done so far.When you want to listen to your work in other computer programs or burn it to CD, you \"export\" it as an audio file such as a WAV, AIFF or MP3. <br><br>To save an Audacity project, use <b>File > Save Project</b>. This will save an <b>.aup</b> Project file, plus a <b>_data</b> folder containing the actual audio. Make sure you don't rename or move either of these, because Audacity needs to refer to both.Only use File > Save Project As... when you either need to save an empty Project, or if you want to save an existing Project to a <i> new</i> name. When you want to re-open a saved Project, simply click File > Open and open the .aup file. <br><br>When you want to export your work to an audio file, use <b>File > Export</b> and choose your desired format in the \"Save as type\" dropdown.Click the Options button for advanced choices, such as the bit rate to use for MP3 export.There are two other Export commands under the File menu.\"Export Selection\" exports only a selected area of audio.\"Export Multiple\" exports multiple files, for example where you have more than one track on screen and want to export each as a separate file. <br><br>Before you can export as <b>MP3</b>, you need to add the LAME MP3 encoder to your computer.For help with LAME, see [[wiki:Lame_Installation|Lame Installation]]. There is also some help on how to [[burncd|burn to a CD]].<br><br>"
+msgid "Let's get started!</p><p>You can click on the links below to learn how to:<ul><li>[[play|play back]] an existing sound file.<li>How to [[record|record]] a new sound file.<li>How to [[edit|edit]] sound and [[export|export]] to a sound file like MP3.</ul><br><br>Those links will help if you find a problem such as a [[grey|menu option greyed out]] or that Audacity [[norecord|isn't recording properly]] or that you can't [[burncd|burn to a CD]]. You can always get back to these instructions by clicking the 'Help' menu, then 'Show Welcome Message.' For more detailed reading, please read our full Help by clicking the 'Help' menu, then 'Index', or <a href=\"http://audacity.sourceforge.net/help/documentation\">download our Manual</a> in PDF format.<br><br>Welcome again to Audacity."
 msgstr ""
 
-#: HelpText.cpp:280
-msgid "<h2>Can Audacity import file formats like WMA, AAC, RealAudio  etc.?</h2> <p>Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)</b>, or most other proprietary formats, because of licensing and patent restrictions.Audacity also cannot import any kind of Digital Rights Management (DRM) protected file, including most purchased online such as from iTunes or Napster.If you are on a Mac, you can import <b>AAC</b>  encoded files (such as <b>M4A</b>) as long as they are not DRM protected, but you cannot export to these formats.</p> <p>Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>Musepack</b>.We hope to support these formats in future versions of Audacity.</p> <p>If you cannot import your file into Audacity, you can as a workround convert it to WAV or AIFF.As long as it's not a DRM-protected file, you could do this with iTunes or with <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> player.If it's a DRM-protected file, you can burn it to an audio CD in the application that is licensed to play it, then extract (rip) the CD track to WAV or AIFF.You can use iTunes to extract to WAV or AIFF, plus Windows Media Player 11 or <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> on Windows.Or you can play the file on your computer and record it - see <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">."
+#: HelpText.cpp:158
+msgid "You can either drag existing files into Audacity, or use the <b>File > Import > Audio</b> command. <b>File > Open</b> does the same, but opens a new Audacity window for any file after the first.<br/><br/>These are the main formats Audacity will play: <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis, WAV</b>.  If your file is in some other format see (format help). If you want to import an audio CD, see [[wiki:How to import CDs|How to import CDs]]<br><br>To start playing your audio, press the green Play button. To stop, press the yellow Stop button. You can also use spacebar to either play or stop. When you start playing again after stopping, playback resumes from its previous starting point. To change the starting point, use the <b>|&lt;&lt;</b> and <b>&gt;&gt;|</b> buttons to skip to the start or end respectively, or click anywhere in the track to restart from that point.<br><br>"
 msgstr ""
 
-#: HelpText.cpp:301
-msgid "If you want to burn your work to an audio CD, you must first [[export|export as WAV or AIFF]] and then burn that file to CD - for more help, see [[wiki:How to burn CDs|How to burn CDs]].<br><br>"
-msgstr "\"Wanneer u uw werk naar een audio-cd wilt branden, moet u het eerst [[export|exporteren naar wav of aiff]] en daarna dat bestand op cd branden. Voor meer hulp zie: [[wiki:How to burn CDs|Hoe cd's te branden]].<br><br>"
+#: HelpText.cpp:181
+msgid "<b>To start recording, press the red Record button</b>. Before doing so however, there are three crucial settings you must check:<br><br>(1) The <b>Recording Device</b>, set in the Audio I/O tab of Preferences. By default Audacity will use the current system device, which is usually your inbuilt sound device, so you may not need to set this. But if you're using an external USB or Firewire device such as a USB turntable, make sure this device is selected as your recording device. <br><br>(2) The <b>input source</b> for your device, such as microphone or line-in. <ul><li><b>On Windows</b>, you normally choose your input in the dropdown selector on the right of the <b>Mixer Toolbar<b> <i>note: on Vista, you must do so at Recording Device on the Audio I/O Preferences tab.</i></li><li><b>On a Mac</b>, you normally choose input sources outside Audacity, in Apple Audio-MIDI Setup.</li></ul><i>Note: many USB or Firewire devices don't have a choice of inputs, so you can ignore this step - see the documentation for your device. <br><br>(3) <b>Input volume</b>. Before recording for real, make a test recording to set the input level, so that it's neither too soft or too loud.To do this, see this [[wiki:Recording levels|illustrated guide]] or follow these two steps: <ol><li>Turn on <b>monitoring</b>, by either double-clicking over the right-hand of the two VU Meters, or right-clicking over it and choosing \"Start Monitoring\". If you do not see the meters, click View > Toolbars and check \"Meter Toolbar\". <li>Press Record, and adjust the input volume slider on the Mixer Toolbar (by the microphone symbol), so that the red bars in the meter come close to (but do not touch) the right edge of the scale. If you can't hear the sound, go to the Audio I/O tab of Preferences and check \"Software Playthrough\". </ol><br><br>There is more help if you're stuck: our Recording FAQs, our Tutorial  <b>Your First Recording </b> in the Manual, and our Wiki [[wiki:Recording Tips|Recording Tips]], especially the [[wiki:Troubleshooting Recordings|Troubleshooting Recordings]] section. <br><br>"
+msgstr ""
 
-#: HelpText.cpp:230
-msgid "<p>You don't appear to have Audacity help files on your machine. "
-msgstr "<p>Kennelijk zijn de hulpbestanden van Audacity niet op uw computer geïnstalleerd."
+#: HelpText.cpp:223
+msgid "Editing: Audacity is a powerful editor, so you'll want to see what it can do with your imported file or recording.  The main commands you will use are under the <b>Edit</b> menu (such as cut, copy and paste) and under the <b>Effect</b> menu (you can do things like boost the bass, change pitch or tempo, or remove noise). <br><br>Audacity applies edits to areas of the audio track. You can select a particular area of audio by clicking in the track and dragging the shaded area with your mouse. If you don't select any audio, Audacity will select all that you have on the screen.<br><br>Two important points when editing:<br><br>(1) If you're still playing or recording, use the yellow Stop button, because you can't edit or export a moving track! <br><br>(2) On occasion, some of the menus or buttons are greyed out or say \"Disabled\" -  this is normal. For example, because you can't edit audio while playing or recording, we grey out or disable commands until you press Stop. Commands can sometimes be unavailable for other reasons - for example you can't run effects until you have audio on the screen, and you obviously can't paste audio until you've cut or copied it to Audacity's clipboard. <br><br>"
+msgstr ""
 
-#: HelpText.cpp:280
-msgid "You can download the help files and then access them from Audacity or you can click <a href=\"*URL*\">here</a> to read the help online."
-msgstr "U kunt de hulpbestanden downloaden en inzien vanuit Audacity of u kunt <a href=\"*URL*\">hier</a> klikken om de hulp on-line te lezen."
+#: HelpText.cpp:254
+msgid "Exporting and Saving have different purposes.You \"save\" an Audacity project file when you want to return to your work in Audacity later.This means you don't then have to re-import or re-record audio, or redo editing you have done so far.When you want to listen to your work in other computer programs you \"export\" it as an audio file such as a WAV, AIFF or MP3. When burning to CD, you export as WAV or AIFF.<br><br>To save an Audacity project, use <b>File > Save Project</b>. This will save an <b>.aup</b> Project file, plus a <b>_data</b> folder containing the actual audio. Make sure you don't rename or move either of these, because Audacity needs to refer to both.Only use File > Save Project As... when you either need to save an empty Project, or if you want to save an existing Project to a <i> new</i> name. When you want to re-open a saved Project, simply click File > Open and open the .aup file. <br><br>When you want to export your work to an audio file, use <b>File > Export</b> and choose your desired format in the \"Save as type\" dropdown.Click the Options button for advanced choices, such as the bit rate to use for MP3 export.There are two other Export commands under the File menu.\"Export Selection\" exports only a selected area of audio.\"Export Multiple\" exports multiple files, for example where you have more than one track on screen and want to export each as a separate file. If exporting tracks from a recorded LP or tape to multiple files, use [[wiki:Splitting recordings into separate tracks|labels with Export Multiple]]. <br><br>Before you can export as <b>MP3</b>, you may need to add the LAME MP3 encoder to your computer.For help with LAME, see [[wiki:Lame_Installation|Lame Installation]]. There is also some help on how to [[burncd|burn to a CD]].<br><br>"
+msgstr ""
+
+#: HelpText.cpp:289
+msgid "<h2>Can Audacity import file formats like WMA, AAC, RealAudio  etc.?</h2> <p>Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)</b>, ormost other proprietary formats, because of licensing and patent restrictions. Audacity also cannot import any kind of Digital Rights Management (DRM) protected file, including most purchased online such as from iTunes or Napster.If you are on a Mac, you can import <b>AAC</b>  encoded files (such as <b>M4A</b>) as long as they are not DRM protected, but you cannot export to these formats.</p> <p>Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>Musepack</b>.We hope to support these formats in future versions of Audacity.</p> <p>If you cannot import your file into Audacity, you can as a workround convert it to WAV or AIFF.As long as it's not a DRM-protected file, you could do this with iTunes or with <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> player.If it's a DRM-protected file, you can burn it to an audio CD in the application that is licensed to play it, then extract (rip) the CD track to WAV or AIFF.You can use iTunes to extract to WAV or AIFF, plus Windows Media Player 11 or <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> on Windows.Or you can play the file on your computer and record it - see <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">."
+msgstr ""
+
+#: HelpText.cpp:316
+msgid "If you want to burn your work to an audio CD, you must first [[export|export as WAV or AIFF]] and then burn that file to CD with a CD burning program like iTunes - for more help, see [[wiki:How to burn CDs|How to burn CDs]].<br><br>"
+msgstr ""
+
+#: HelpText.cpp:331
+msgid "<p>You don't appear to have Audacity help files on your machine. You can <a href=\"http://audacity.sourceforge.net/help/documentation\">download</a> the help files and then access them from Audacity as you have just attempted, or you can click <a href=\"*URL*\">here</a> to read the help online."
+msgstr ""
 
 # Actiegeschiedenis hier duidelijker dan Herstelgeschiedenis
 #: ../src/HistoryWindow.cpp:44
@@ -2620,8 +2608,7 @@ msgid "\n"
 "To save the tracks that were previously\n"
 "open, click Cancel, Edit > Undo until all your\n"
 "tracks are open, then File > Save Project."
-msgstr ""
-"\n"
+msgstr "\n"
 "\n"
 "Het opgeslagen project zal leeg zijn.!!\n"
 "\n"
@@ -2715,8 +2702,7 @@ msgid "This file was saved by Audacity %s, a much\n"
 "\n"
 "Would you like to try to open this file\n"
 "right now anyway?"
-msgstr ""
-"Dit bestand is opgeslagen met Audacity %s, een veel\n"
+msgstr "Dit bestand is opgeslagen met Audacity %s, een veel\n"
 "oudere versie van Audacity. Het programma-eigen\n"
 "bestandsformat is intussen gewijzigd. Audacity zal\n"
 "het bestand waarschijnlijk beschadigen wanneer het geopend\n"
@@ -2736,8 +2722,7 @@ msgid "This file was saved by Audacity %s and the format\n"
 "you will not be able to open the file in the older\n"
 "version anymore.  Would you like to open\n"
 "this file right now anyway?"
-msgstr ""
-"Dit bestand is opgeslagen met Audacity %s maar het\n"
+msgstr "Dit bestand is opgeslagen met Audacity %s maar het\n"
 "programma-eigen bestandsformat is intussen gewijzigd.\n"
 "Audacity kan proberen het bestand te openen, maar er\n"
 "kunnen problemen optreden. U moet voor de zekerheid \n"
@@ -2942,21 +2927,18 @@ msgstr "&Debuggen"
 msgid "Audacity Timer Record"
 msgstr "Audacity opname inplannen"
 
-#: SmartRecordDialog.cpp:212
-msgid "Recording start: "
-msgstr "Begin opname: "
+#: SmartRecordDialog.cpp:223
+msgid "Recording start"
+msgstr ""
 
-#: SmartRecordDialog.cpp:213
-msgid "\n"
-"\n"
-"Recording end:   "
-msgstr "\n"
-"\n"
-"Einde opname: "
+#: SmartRecordDialog.cpp:224
+msgid "Recording end"
+msgstr ""
 
-#: SmartRecordDialog.cpp:214
-msgid "          Duration: "
-msgstr "      Tijdsduur: "
+# tijdsduur
+#: SmartRecordDialog.cpp:285
+msgid "Duration"
+msgstr "Tijdsduur"
 
 #  =venstertitel
 # 'smart' niet meevertaald
@@ -2972,15 +2954,12 @@ msgstr "Begindatum en tijd"
 msgid "End Date and Time"
 msgstr "Einddatum en tijd"
 
-# tijdsduur
-#: SmartRecordDialog.cpp:285
-msgid "Duration"
-msgstr "Tijdsduur"
-
-# moet relatief kort zijn.
-#: SmartRecordDialog.cpp:361
-msgid "Waiting to start recording at "
-msgstr "Wachten met opnemen tot "
+#. i18n-hint: A time specification like "Sunday 28th October 2007 15:16:17 GMT"
+#. * but hopefully translated by wxwidgets will be inserted into this
+#: SmartRecordDialog.cpp:380
+#, c-format
+msgid "Waiting to start recording at %s.\n"
+msgstr ""
 
 #: SmartRecordDialog.cpp:362
 msgid "Audacity Smart Record - Waiting for Start"
@@ -3066,8 +3045,9 @@ msgstr "&Laden…"
 msgid "&Save..."
 msgstr "Op&slaan…"
 
-#: Tags.cpp:1085
-msgid "S&et default"
+#: Tags.cpp:808 Tags.cpp:1434 Tags.cpp:1962
+#, fuzzy
+msgid "S&et Default"
 msgstr "&Standaard instellen"
 
 #: Tags.cpp:958 Tags.cpp:1597 Tags.cpp:2326
@@ -4654,9 +4634,9 @@ msgstr ", maximum amplitude = %.1f dB"
 msgid "Normalize"
 msgstr "Normaliseren"
 
-#: effects/Normalize.cpp:316
-msgid "Normalize by Dominic Mazzoni\n"
-msgstr "Normaliseren door Dominic Mazzoni\n"
+#: effects/Normalize.cpp:341
+msgid "Normalize by Dominic Mazzoni"
+msgstr ""
 
 #: ../src/effects/Normalize.cpp:239
 msgid "Remove any DC offset (center on 0 vertically)"
@@ -5075,11 +5055,6 @@ msgstr "Nyquist gaf geen audio terug.\n"
 msgid "Nyquist returned too many audio channels.\n"
 msgstr "Nyquist gaf te veel audiokanalen terug.\n"
 
-#: effects/vamp/LoadVamp.cpp:53 effects/vamp/VampEffect.cpp:238
-#, c-format
-msgid "%s: %s"
-msgstr "%s: %s"
-
 #: effects/vamp/VampEffect.cpp:75
 #, c-format
 msgid "Extracting features: %s"
@@ -5206,6 +5181,10 @@ msgstr "(extern programma)"
 #, c-format
 msgid "Cannot export audio to %s"
 msgstr "Kan audio niet exporteren naar %s"
+
+#: export/ExportCL.cpp:188 export/ExportOGG.cpp:121 export/ExportPCM.cpp:114
+msgid "Export"
+msgstr "Exporteren"
 
 #: ../src/export/ExportCL.cpp:144
 msgid "Exporting the selected audio using command-line encoder"
@@ -5572,16 +5551,14 @@ msgstr "Ongeldige samplefrequentie"
 #, c-format
 msgid "The project sample rate (%d) is not supported by the MP3\n"
 "file format.  "
-msgstr ""
-"De project-samplefrequentie (%d) is niet mogelijk in het mp3\n"
+msgstr "De project-samplefrequentie (%d) is niet mogelijk in het mp3\n"
 "bestandsformaat"
 
 #: export/ExportMP3.cpp:1876
 #, c-format
 msgid "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
 "supported by the MP3 file format.  "
-msgstr ""
-"De combinatie van samplefrequentie (%d) en bit-rate (%d kbps) binnen \n"
+msgstr "De combinatie van samplefrequentie (%d) en bit-rate (%d kbps) binnen \n"
 "het project is niet mogelijk in het mp3-bestandsformaat."
 
 #: export/ExportMP3.cpp:1879
@@ -5797,9 +5774,11 @@ msgstr "De geselecteerde audio exporteren als %s"
 msgid "Exporting the entire project as %s"
 msgstr "Het gehele project exporteren als %s"
 
-#: export/ExportPCM.cpp:140
+#. i18n-hint: %s will be the error message from libsndfile
+#: export/ExportPCM.cpp:436
 #, c-format
-msgid "Error (file may not have been written): %hs"
+#, fuzzy
+msgid "Error (file may not have been written): %s"
 msgstr "Fout (bestand is mogelijk nog niet geschreven): %hs"
 
 # ruwe/ongecompresseerde
@@ -5814,20 +5793,23 @@ msgstr "De metadata van het ruwe bestand bewerken"
 msgid "This version of Audacity was not compiled with %s support."
 msgstr "In deze versie van Audacity is ondersteuning voor %s niet meegecompileerd."
 
+#. i18n-hint: %s will be the filename
 #: import/Import.cpp:167
-msgid " is an audio CD track. \n"
+#, c-format
+#, fuzzy
+msgid "\"%s\" is an audio CD track. \n"
 "Audacity cannot open audio CDs directly. \n"
 "Extract (rip) the CD tracks to an audio format that \n"
 "Audacity can import, such as WAV or AIFF."
-msgstr ""
-" is een audio-cd bestand.\n"
+msgstr " is een audio-cd bestand.\n"
 "Audacity kan audio-cd's niet rechtstreeks openen.\n"
 "U moet nummers op de cd rippen naar een audioformaat\n"
 "dat Audacity kan importeren zoals wav or aiff."
 
-# feitelijke/eigenlijke
-#: import/Import.cpp:174
-msgid " is a playlist file. \n"
+#: import/Import.cpp:173
+#, c-format
+#, fuzzy
+msgid "\"%s\" is a playlist file. \n"
 "Audacity cannot open this file because it only contains links to other files. \n"
 "You may be able to open it in a text editor and download the actual audio files."
 msgstr " is een afspeellijst-bestand.\n"
@@ -5835,43 +5817,47 @@ msgstr " is een afspeellijst-bestand.\n"
 "andere bestanden bevat. Misschien kunt u het openen in een teksteditor en \n"
 "zelf de eigenlijke audiobestanden downloaden."
 
-#: import/Import.cpp:180
-msgid " is a Windows Media Audio file. \n"
+#: import/Import.cpp:178
+#, c-format
+#, fuzzy
+msgid "\"%s\" is a Windows Media Audio file. \n"
 "Audacity cannot open this type of file due to patent restrictions. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
-msgstr ""
-" is een Windows Media audio-bestand.\n"
+msgstr " is een Windows Media audio-bestand.\n"
 "Audacity kan dit type bestand niet openen vanwege octrooirechten.\n"
 "U moet het omzetten naar een ondersteund audioformaat zoals wav or aiff."
 
-#: import/Import.cpp:186
-msgid " is an Advanced Audio Coding file. \n"
+#: import/Import.cpp:183
+#, c-format
+#, fuzzy
+msgid "\"%s\" is an Advanced Audio Coding file. \n"
 "Audacity cannot open this type of file. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
-msgstr ""
-" is een Advanced Audio Coding bestand. \n"
+msgstr " is een Advanced Audio Coding bestand. \n"
 "Audacity kan dit soort bestanden niet openen. \n"
 "U moet het omzetten naar een ondersteund audioformaat zoals wav of aiff."
 
-#: import/Import.cpp:192
-msgid " is an encrypted audio file. These typically are from an online music store. \n"
+#: import/Import.cpp:188
+#, c-format
+#, fuzzy
+msgid "\"%s\" is an encrypted audio file. These typically are from an online music store. \n"
 "Audacity cannot open this type of file due to the encryption. \n"
 "Try recording the file into Audacity, or burn it to audio CD then \n"
 "extract the CD track to a supported audio format such as WAV or AIFF."
-msgstr ""
-" is een versleuteld audio-bestand.\n"
+msgstr " is een versleuteld audio-bestand.\n"
 "Deze gewoonlijk afkomstig van een on-line muziekwinkel. \n"
 "Audacity kan dit type bestanden niet openen vanwege de versleuteling.\n"
 "U kunt proberen een opname van het bestand te maken met Audacity, of \n"
 "het naar een cd te branden en de cd vervolgens te rippen naar een\n"
 "ondersteund bestandsformaat zoals wav of aiff."
 
-#: import/Import.cpp:198
-msgid " is a RealPlayer media file. \n"
+#: import/Import.cpp:193
+#, c-format
+#, fuzzy
+msgid "\"%s\" is a RealPlayer media file. \n"
 "Audacity cannot open this proprietary format. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
-msgstr ""
-" is een RealPlayer media-bestand.\n"
+msgstr " is een RealPlayer media-bestand.\n"
 "Audacity kan dit bedrijfseigen formaat niet openen.\n"
 "U moet het omzetten naar een ondersteund audioformaat zoals wav or aiff."
 
@@ -5881,8 +5867,7 @@ msgid "Audacity had to make a guess at the type of file.\n"
 "\n"
 "If the audio is bogus, try renaming the file\n"
 "so that it has the correct extension before opening it."
-msgstr ""
-"Audacity moest het type van het bestand raden.\n"
+msgstr "Audacity moest het type van het bestand raden.\n"
 "Hierdoor is het resultaat van de audio mogelijk onzin.\n"
 "\n"
 "Wanneer de audio onzinnig klinkt, probeer dan het bestand te\n"
@@ -5891,8 +5876,7 @@ msgstr ""
 #: ../src/import/Import.cpp:170
 msgid "Audacity did not recognize the type of this file.\n"
 "If it is uncompressed, try importing it using \"Import Raw\""
-msgstr ""
-"Audacity herkende het type bestand niet.\n"
+msgstr "Audacity herkende het type bestand niet.\n"
 "Als het geen compressie-bestand is, probeer het dan te importeren met ‘Raw importeren’"
 
 #: import/ImportFLAC.cpp:35
@@ -6167,8 +6151,8 @@ msgid "&Don't apply effects in batch mode"
 msgstr "&Effecten niet toepassen in batch-modus"
 
 #: prefs/BatchPrefs.cpp:83
-msgid "&When importing audio, normalize all tracks"
-msgstr "Bij het i&mporteren van audio, alle sporen normaliseren"
+msgid "&When importing audio, normalize all tracks in project"
+msgstr ""
 
 #: prefs/BatchPrefs.cpp:83
 msgid "Cl&eanSpeech Mode (Customized GUI)"
@@ -6178,9 +6162,9 @@ msgstr "Cl&eanSpeech modus (aangepaste bediening)"
 msgid "Show / Hide"
 msgstr "Tonen / Verbergen"
 
-#: prefs/BatchPrefs.cpp:89
-msgid "S&how MP3-ID3 Dialog"
-msgstr "&MP3-ID3 dialog tonen"
+#: prefs/BatchPrefs.cpp:91
+msgid "S&how Metadata Editor prior to export step"
+msgstr ""
 
 #: ../src/prefs/PrefsDialog.cpp:88 ../src/prefs/PrefsDialog.cpp:216
 msgid "Directories"
@@ -6207,10 +6191,9 @@ msgstr "Automatische opslag"
 msgid "Auto save a copy of the project in a separate folder"
 msgstr "Automatisch een kopie van het project opslaan in een afzonderlijke map"
 
-# Automatisch opslaan elke/om de:
 #: prefs/DirectoriesPrefs.cpp:104
-msgid "Auto save every:"
-msgstr "Automatisch opslaan elke:"
+msgid "Auto save interval:"
+msgstr ""
 
 #: prefs/DirectoriesPrefs.cpp:105
 msgid "minutes"
@@ -6248,15 +6231,13 @@ msgstr "De map %s is niet beschrijfbaar"
 msgid "Changes to temporary directory will not take effect until Audacity is restarted"
 msgstr "Wijzigingen aan de tijdelijke map zullen pas van kracht zijn nadat Audacity herstart is."
 
-#: ../src/prefs/PrefsDialog.cpp:86
-msgid "File Formats"
-msgstr "Bestandsformaten"
+#: prefs/FileFormatPrefs.cpp:47 prefs/FileFormatPrefs.cpp:48
+msgid "Audio Files"
+msgstr ""
 
-# audiobestanden zonder compressie/compressieloze bestanden/
-# /niet gecomprimeerde
-#: ../src/prefs/FileFormatPrefs.cpp:68
-msgid "When importing uncompressed audio files into Audacity"
-msgstr "Bij het importeren van niet gecomprimeerde audiobestanden"
+#: prefs/FileFormatPrefs.cpp:76
+msgid "When importing uncompressed audio files"
+msgstr ""
 
 # maak een kopie van het bestand voor het bewerken
 #: prefs/FileFormatPrefs.cpp:127
@@ -6271,21 +6252,21 @@ msgstr "&Met het originele bestand werken (sneller)"
 msgid "When saving a project that depends on other audio files"
 msgstr "Bij het opslaan van een project dat van andere audiobestanden afhangt"
 
+#: prefs/FileFormatPrefs.cpp:87
+msgid "Always &copy all audio into project (safest)"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:88
+msgid "&Do not copy any audio"
+msgstr ""
+
 #: prefs/FileFormatPrefs.cpp:135
 msgid "&Ask user"
 msgstr "&Gebruiker vragen"
 
-#: Dependencies.cpp:321 prefs/FileFormatPrefs.cpp:136
-msgid "Always &copy all audio (safest)"
-msgstr "Altijd alle audio &kopiëren (veiligst)"
-
-#: Dependencies.cpp:322 prefs/FileFormatPrefs.cpp:137
-msgid "&Never copy any audio"
-msgstr "&Nooit audio kopiëren"
-
-#: prefs/FileFormatPrefs.cpp:141
-msgid "When exporting tracks"
-msgstr "Bij het exporteren van sporen"
+#: prefs/FileFormatPrefs.cpp:93
+msgid "When exporting tracks to an audio file"
+msgstr ""
 
 #: prefs/FileFormatPrefs.cpp:144
 msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
@@ -6294,6 +6275,10 @@ msgstr "Altijd alle sporen &downmixen naar stereo of monokanalen."
 #: prefs/FileFormatPrefs.cpp:97
 msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
 msgstr "&Aangepaste mix (voor bijv. export naar 5.1 kanaals geluid)"
+
+#: prefs/FileFormatPrefs.cpp:101
+msgid "MP3 Export Library Location"
+msgstr ""
 
 #: ../src/prefs/FileFormatPrefs.cpp:180
 msgid "MP3 Library Version:"
@@ -6305,8 +6290,8 @@ msgid "&Find Library"
 msgstr "&Bibliotheek opzoeken"
 
 #: prefs/FileFormatPrefs.cpp:112
-msgid "&Download free copy of LAME"
-msgstr "&Gratis kopie van LAME downloaden"
+msgid "&Download Free Copy of LAME"
+msgstr ""
 
 #: ../src/prefs/PrefsDialog.cpp:89
 msgid "Interface"
@@ -6320,9 +6305,9 @@ msgstr "&Meeschuiven tijdens afspelen"
 msgid "Any Close/Exit command completely &quits Audacity"
 msgstr "Bij Sl&uiten/Afsluiten wordt Audacity volledig afgesloten"
 
-#: prefs/GUIPrefs.cpp:80
-msgid "&Dragging of left and right selection edges"
-msgstr "Selectie&randen kunnen worden versleept"
+#: prefs/GUIPrefs.cpp:76
+msgid "Enable &dragging of left and right selection edges"
+msgstr ""
 
 # het gaat niet specifiek om de i/o knoppen, maar ook de bedieningsknoppen
 # zoals 'naar het begin/einde'
