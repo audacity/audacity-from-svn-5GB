@@ -1418,7 +1418,7 @@ int WaveTrack::GetClipIndex(WaveClip* clip)
 
 WaveClip* WaveTrack::GetClipByIndex(int index)
 {
-   if(index < mClips.GetCount())
+   if(index < (int)mClips.GetCount())
       return mClips.Item(index)->GetData();
    else
       return NULL;

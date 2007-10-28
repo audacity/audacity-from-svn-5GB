@@ -1187,7 +1187,7 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    }
 
    // Draw clipping indicators if requested
-   bool showclipping = gPrefs->Read(wxT("/GUI/ShowClipping"), 0L);
+   bool showclipping = gPrefs->Read(wxT("/GUI/ShowClipping"), 0L)!=0;
    if (showclipping) {
       dc.SetPen(AColor::clippingPen);
 
