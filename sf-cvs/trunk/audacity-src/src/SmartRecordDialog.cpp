@@ -220,9 +220,10 @@ void SmartRecordDialog::OnOK(wxCommandEvent& event)
             wxString strNewMsg;
          */
       wxString strMsg = 
-         _("Recording start: ") + m_DateTime_Start.Format() + 
-         _("\n\nRecording end:   ") + m_DateTime_End.Format() + 
-         _("          Duration: ") + m_TimeSpan_Duration.Format() + wxT("\n"); 
+         _("Recording start") + (wxString)wxT(":  ")
+		 + m_DateTime_Start.Format() + wxT("\n\n") + _("Recording end")
+		 + wxT(":   ") + m_DateTime_End.Format() + wxT("\t\t")
+		 + _("Duration") + wxT(": ") + m_TimeSpan_Duration.Format() + wxT("\n"); 
 
       pProject->ProgressShow(
                _("Audacity Smart Record Progress"), // const wxString& title,
