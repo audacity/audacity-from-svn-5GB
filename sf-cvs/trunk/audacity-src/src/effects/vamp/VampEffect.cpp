@@ -235,7 +235,7 @@ bool VampEffect::Process()
       if (!multiple) {
          ltrack->SetName(GetEffectName());
       } else {
-         ltrack->SetName(wxString::Format(_("%s: %s"),
+         ltrack->SetName(wxString::Format(wxT("%s: %s"),
                                           left->GetName().c_str(),
                                           GetEffectName().c_str()));
       }
