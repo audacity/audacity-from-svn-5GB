@@ -50,7 +50,7 @@ void LoadVampPlugins()
                // unless the output name is the same as the plugin name
                wxString outputName = LAT1CTOWX(j->name.c_str());
                if (outputName != name) {
-                  name = wxString::Format(_("%s: %s"),
+                  name = wxString::Format(wxT("%s: %s"),
                                           name.c_str(), outputName.c_str());
                }
             }
