@@ -186,10 +186,10 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
 #if USE_PORTAUDIO_V19
       // only show the following controls if we use Portaudio v19, because
       // for Portaudio v18 we always use default buffer sizes
-      S.TieTextBox( _("Audio to buffer:"),wxT("LatencyDuration"),100.0,9);
+      S.TieTextBox( _("Audio to buffer:\n(higher = more latency)"),wxT("LatencyDuration"),100.0,9);
       S.AddUnits(  _("milliseconds") );
 #endif
-      S.TieTextBox( _("Latency correction:"),wxT("LatencyCorrection"),0.0,9);
+      S.TieTextBox( _("Latency correction:\n(negative = backwards)"),wxT("LatencyCorrection"),0.0,9);
       S.AddUnits(  _("milliseconds") );
       S.EndThreeColumn();
    }
