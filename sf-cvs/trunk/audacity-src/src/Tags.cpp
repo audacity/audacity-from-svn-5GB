@@ -1407,7 +1407,7 @@ void TagsEditor1::PopulateOrExchange(ShuttleGui & S)
             }
             S.EndMultiColumn();
 
-            for (int i = 0; i < mCustomTags.GetCount(); i++) {
+            for (int i = 0; i < (int)mCustomTags.GetCount(); i++) {
                S.TieTextBox(mCustomTags[i], mCustomTags[i], 0);
                S.TieTextBox(mCustomVals[i], mCustomVals[i], 0);
             }

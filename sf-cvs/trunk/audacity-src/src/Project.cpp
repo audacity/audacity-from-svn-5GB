@@ -815,7 +815,7 @@ void AudacityProject::UpdatePrefs()
    mDefaultFormat = (sampleFormat) gPrefs->
            Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
 
-   SetSnapTo(gPrefs->Read(wxT("/SnapTo"), 0L));
+   SetSnapTo(gPrefs->Read(wxT("/SnapTo"), 0L)!=0);
 
    if (GetSelectionBar()) {
       GetSelectionBar()->UpdateRates();

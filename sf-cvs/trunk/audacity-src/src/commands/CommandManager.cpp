@@ -350,7 +350,7 @@ void CommandManager::AddItem(wxString name, wxString label,
 
    if (checkmark >= 0) {
       CurrentMenu()->AppendCheckItem(ID, dummy);
-      CurrentMenu()->Check(ID, checkmark);
+      CurrentMenu()->Check(ID, checkmark !=0);
    }
    else {
       CurrentMenu()->Append(ID, dummy);

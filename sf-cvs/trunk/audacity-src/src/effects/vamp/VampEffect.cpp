@@ -257,9 +257,9 @@ bool VampEffect::Process()
          if (left) left->Get((samplePtr)data[0], floatSample, ls, request);
          if (right) right->Get((samplePtr)data[1], floatSample, rs, request);
 
-         if (request < block) {
+         if (request < (int)block) {
             for (int c = 0; c < channels; ++c) {
-               for (int i = request; i < block; ++i) {
+               for (int i = request; i < (int)block; ++i) {
                   data[c][i] = 0.f;
                }
             }
@@ -271,7 +271,7 @@ bool VampEffect::Process()
          Vamp::Plugin::FeatureSet features = mPlugin->process(data, timestamp);
          AddFeatures(ltrack, features);
 
-         if (len > step) len -= step;
+         if (len > (int)step) len -= step;
          else len = 0;
 
          ls += step;
