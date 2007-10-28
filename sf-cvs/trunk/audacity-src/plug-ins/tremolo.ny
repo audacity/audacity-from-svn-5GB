@@ -3,12 +3,12 @@
 ;type process
 ;name "Tremolo..."
 ;action "Applying Tremolo..."
-;info "by Dominic Mazzoni, modified by David R. Sky\nReleased under terms of the GNU General Public License Version 2\n'Starting phase' sets where to start tremolo in the waveform cycle.\n'Wetness level' sets depth of tremolo -\n0 percent no tremolo, 100 percent volume sweeps between zero and maximum volume.\n'Frequency' controls the rapidity of the oscillation, higher frequencies\nbeing more rapid."
+;info "by Dominic Mazzoni, modified by David R. Sky\nReleased under terms of the GNU General Public License Version 2\n'Starting phase' sets where to start tremolo in the waveform cycle.\n'Wetness level' sets depth of tremolo - 0 percent is no tremolo,\n100 percent sweeps between zero and maximum volume.\n'Frequency' controls the speed of the oscillation - use higher\nfrequencies for faster oscillation."
 
-;control wave "tremolo waveform" choice "sine, triangle, sawtooth, inverse sawtooth, square" 0
-;control phase "Waveform starting phase [degrees]" int "" 0 -180 180
-;control amount "Wetness level [%]" int "" 40 0 100
-;control lfo "Frequency [Hz]" real "" 4.0 0.1 10.0
+;control wave "Waveform type" choice "sine,triangle,sawtooth,inverse sawtooth,square" 0
+;control phase "      Starting phase [degrees]" int "" 0 -180 180
+;control amount "      Wetness level [percent]" int "" 40 0 100
+;control lfo "      Frequency [Hz]" real "" 4.0 0.1 10.0
 
 ; set tremolo *waveform* 
 (setq *waveform* (cond
@@ -27,8 +27,8 @@
 ; check for negative [invalid] frequency value
 (cond ((<= lfo 0)
 (format nil 
-"You have entered ~ahz for your tremolo frequency.
-Please re-apply with a frequency greater than 0." lfo))
+"Error\n\nYou have entered an invalid frequency of ~a Hz.   
+Please enter a frequency above 0 Hz." lfo))
 ;
 (t
 ; apply tremolo
