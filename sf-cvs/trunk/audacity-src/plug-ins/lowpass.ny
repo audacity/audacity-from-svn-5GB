@@ -3,11 +3,11 @@
 ;type process
 ;name "Low Pass Filter..."
 ;action "Performing Low Pass Filter..."
-;info "by Dominic Mazzoni, modified by David R. Sky\nReleased under terms of the GNU General Public License Version 2\nAttenuates high frequencies above your specified cutoff frequency\nThe higher the rolloff value, the more frequencies above cutoff frequency value are attenuated.\nApplying q value greater than default 0.7071 increases resonance ['ringing'] of cutoff frequency \n[for 6db per octave rolloff], and could result in clipping."
+;info "by Dominic Mazzoni, modified by David R. Sky\nReleased under terms of the GNU General Public License Version 2\nAttenuates high frequencies above your specified cutoff frequency.\nHigher rolloff values give a sharper attenuation of frequencies above\nthe cutoff frequency. If using a rolloff of 6 dB, a [q] value greater than\ndefault 0.7 increases resonance ['ringing'] of the cutoff frequency and\ncould result in clipping.""
 
-;control rolloff-choice "Rolloff [db per octave]" choice "3db, 6db, 12db, 18db, 24db" 0
-;control q "Filter quality [q] for 6db rolloff" real "" 0.7071 .1 20
-;control f "Cutoff frequency [Hz]" real "" 1000 1 20000
+;control rolloff-choice "     Rolloff [dB per octave]" choice " 3 dB, 6 dB,12 dB,18 dB,24 dB" 0
+;control q "     Filter quality [q] for 6 dB rolloff" real "" 0.7071 .1 20
+;control f "     Cutoff frequency [Hz]" real "" 1000 1 20000
 
 ; note that all Nyquist lowpass functions 
 ; [lp, lowpass2, lowpass4, lowpass6, lowpass8]
@@ -16,32 +16,32 @@
 ; to deal with stereo selection,
 ; and dummy q arg for all but lowpass2 
 
-; 3db/octave
+; 3dB/octave
 (defun lp-s (s f q) ; dummy q arg
 (lp s f))
 
-; 6db/octave
+; 6dB/octave
 (defun lowpass2-s (s f q)
 (if (arrayp s)
 (vector (lowpass2 (aref s 0) f q)
 (lowpass2 (aref s 1) f q))
 (lowpass2 s f q)))
 
-; 12db/octave
+; 12dB/octave
 (defun lowpass4-s (s f q) ; dummy q arg
 (if (arrayp s)
 (vector (lowpass4 (aref s 0) f)
 (lowpass4 (aref s 1) f))
 (lowpass4 s f)))
 
-; 18db/octave
+; 18dB/octave
 (defun lowpass6-s (s f q) ; dummy q arg
 (if (arrayp s)
 (vector (lowpass6 (aref s 0) f)
 (lowpass6 (aref s 1) f))
 (lowpass6 s f)))
 
-; 24db/octave
+; 24dB/octave
 (defun lowpass8-s (s f q) ; dummy q arg
 (if (arrayp s)
 (vector (lowpass8 (aref s 0) f)
@@ -62,8 +62,8 @@
 (and (= rolloff-choice 1)
 (= (check q 0.1 20) 1))
 (strcat error-msg (format nil
-"Q value ~a lies outside valid range 0.1 to 20
-for your chosen rolloff of 6db per octave.
+"q value ~a lies outside valid range 0.1 to 20     
+for your chosen rolloff of 6 dB per octave.
 " q))
 error-msg))
 
@@ -72,7 +72,7 @@ error-msg))
 (= (check f 1 20000) 0)
 error-msg
 (strcat error-msg (format nil
-"Cutoff frequency ~ahz lies outside valid range 1 to 20000.
+"Cutoff frequency ~a Hz lies outside valid range 1 to 20000.     
 " f))))
 
 
