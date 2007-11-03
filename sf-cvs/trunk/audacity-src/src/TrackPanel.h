@@ -528,7 +528,6 @@ private:
    bool mAdjustSelectionEdges;
    bool mSlideUpDownOnly;
    bool mCircularTrackNavigation;
-   bool mPresentTrackNumber;
    float mdBr;
 
    // JH: if the user is dragging a track, at what y
