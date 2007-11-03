@@ -636,8 +636,6 @@ void TrackPanel::UpdatePrefs()
                true);
    gPrefs->Read(wxT("/GUI/CircularTrackNavigation"), &mCircularTrackNavigation,
                false);
-   gPrefs->Read(wxT("/GUI/PresentTrackNumber"), &mPresentTrackNumber,
-               true);
    gPrefs->Read(wxT("/AudioIO/SeekShortPeriod"), &mSeekShort,
                1.0);
    gPrefs->Read(wxT("/AudioIO/SeekLongPeriod"), &mSeekLong,
