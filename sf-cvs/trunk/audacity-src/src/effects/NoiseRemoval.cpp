@@ -189,7 +189,7 @@ void EffectNoiseRemoval::CleanSpeechMayWriteNoiseGate()
    else {
       wxMessageBox(
          wxString::Format( 
-         _("Could not open file:\n  %s"), fileName ));
+         _("Could not open file:\n  %s"), fileName.c_str() ));
       return;
    }
 }
