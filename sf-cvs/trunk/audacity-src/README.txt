@@ -293,6 +293,59 @@ Known issues/problems:
     but will install alongside them.
 
 -------------------------------------------------------------
+Changes in 1.3.4:
+
+New Features
+	* New Splash Screen with introduction to Audacity
+	* Enhanced Windows Shell integration, so Audacity shows up in lots of
+		Windows places such as "Open With".
+	* New keyboard command: 'Mix and Render to New Track'
+		(bound to Ctrl+Shift+M).
+	* New keyboard shortcut: "Shift-Return" starts playback when stopped,
+		"Stop and Select" when playing.
+	* Added support for VAMP audio analysis plug-ins.
+
+Interface:
+	* Keyboard shortcuts for making short/long jumps along the timeline.
+	* Added 'Snap To' in the SelectionBar.
+	* Made keyboard navigation easier when multiple menu items with the same
+		first letter exist.
+	* Enhanced interface for label editing.
+	* Layout of OK/Cancel buttons consistency improved.
+	* Preferences cleaned up and explanations improved.
+	* Envelopes: Many fixes when copying / pasting / repeating.
+	* Many translation updates.
+	* Track height fixed in several cases.
+	* CleanSpeech mode switching without closing and re-opening fixed.
+
+Opening/saving formats:
+	* Metadata editor added for OGG and FLAC exports, and general improvements
+		in this area.
+	* Import of metadata improved.
+	* Muted tracks are no longer audible in the exported mix.
+
+Effects:
+	* Truncate Silence: support for multiple tracks.
+	* Dtmf Generator:
+		* added support	for keypad letters
+		* added an amplitude control.
+	* Compressor: variable decay time added.
+	* Equalization:
+		* Clicks at start / end removed
+		* Improvements to saved curves being found
+		* Preview works correctly
+	* 'Merge' command appears in Undo history.
+	* Clipping detected more reliably.
+	* Nyquist plug-ins reviewed and enhanced.
+	* Added a 'Beep' on completion of longer activities (system bell, not main output).
+	* Better (and more) progress bars.
+	* Cancelling effect always restores previous audio.
+	* Several improvement to effects in batch mode.
+
+Recording / Playback:
+	* Improvements to latency correction.
+	* Added new SmartRecordPrefs, along with improvements.
+	* Updated vserion of portaudio-v19 library.
 
 Changes in 1.3.3:
 
