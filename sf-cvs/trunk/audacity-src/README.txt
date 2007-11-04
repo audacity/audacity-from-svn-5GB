@@ -5,7 +5,7 @@ For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
 
-Email: audacity-help@lists.sourceforge.net
+Email: audacity-devel@lists.sourceforge.net
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
@@ -31,6 +31,7 @@ Contributors:
    Lynn Allan (CleanSpeech)
    Richard Ash
    William Bland (Time Tracks)
+   Chris Cannam (VAMP)
    Roger Dannenberg
    Brian Gunlogson
    Greg Mekkes
@@ -302,50 +303,54 @@ New Features
 	* New keyboard command: 'Mix and Render to New Track'
 		(bound to Ctrl+Shift+M).
 	* New keyboard shortcut: "Shift-Return" starts playback when stopped,
-		"Stop and Select" when playing.
+		or performs "Stop and Select" when playing.
 	* Added support for VAMP audio analysis plug-ins.
+	* Solo button solos only one track at a time, and a track cannot be both
+		mute and solo.
 
 Interface:
 	* Keyboard shortcuts for making short/long jumps along the timeline.
-	* Added 'Snap To' in the SelectionBar.
+	* Added 'Snap To' in the Selection Bar.
 	* Made keyboard navigation easier when multiple menu items with the same
 		first letter exist.
 	* Enhanced interface for label editing.
 	* Layout of OK/Cancel buttons consistency improved.
-	* Preferences cleaned up and explanations improved.
+	* Preferences:
+		* "Select all audio in project, if none selected" (on by default)
+		* "Beep on completion of longer activities" (system bell, not main
+			output).
+		* Other preferences cleaned up and explanations improved.
 	* Envelopes: Many fixes when copying / pasting / repeating.
 	* Many translation updates.
 	* Track height fixed in several cases.
 	* CleanSpeech mode switching without closing and re-opening fixed.
 
 Opening/saving formats:
-	* Metadata editor added for OGG and FLAC exports, and general improvements
-		in this area.
+	* Metadata editor added for OGG, FLAC and WAV/AIFF exports, and general
+		improvements in this area.
 	* Import of metadata improved.
 	* Muted tracks are no longer audible in the exported mix.
 
 Effects:
-	* Truncate Silence: support for multiple tracks.
+	* Truncate Silence: support for multiple and stereo tracks.
 	* Dtmf Generator:
 		* added support	for keypad letters
 		* added an amplitude control.
 	* Compressor: variable decay time added.
 	* Equalization:
-		* Clicks at start / end removed
+		* Clicks at start / end prevented
 		* Improvements to saved curves being found
 		* Preview works correctly
 	* 'Merge' command appears in Undo history.
 	* Clipping detected more reliably.
 	* Nyquist plug-ins reviewed and enhanced.
-	* Added a 'Beep' on completion of longer activities (system bell, not main output).
 	* Better (and more) progress bars.
 	* Cancelling effect always restores previous audio.
 	* Several improvement to effects in batch mode.
 
 Recording / Playback:
 	* Improvements to latency correction.
-	* Added new SmartRecordPrefs, along with improvements.
-	* Updated vserion of portaudio-v19 library.
+	* Updated version of portaudio-v19 library.
 
 Changes in 1.3.3:
 
