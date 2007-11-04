@@ -6406,7 +6406,8 @@ fi
       LIBVAMP_SYSTEM_AVAILABLE="yes"
       LIBVAMP_SYSTEM_LIBS=$VAMP_LIBS
       LIBVAMP_SYSTEM_CXXFLAGS=$VAMP_CFLAGS
-      LIBVAMP_LOCAL_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
+      LIBVAMP_SYSTEM_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
+      LIBVAMP_SYSTEM_CPPSYMBOLS="USE_VAMP"
       { echo "$as_me:$LINENO: Vamp libraries are available as system libraries" >&5
 echo "$as_me: Vamp libraries are available as system libraries" >&6;}
    else
@@ -6447,6 +6448,7 @@ fi
       LIBVAMP_LOCAL_LIBS="libvamp-hostsdk.a"
       LIBVAMP_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libvamp'
       LIBVAMP_LOCAL_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
+      LIBVAMP_LOCAL_CPPSYMBOLS="USE_VAMP"
       if test ! -f lib-src/libvamp/Makefile ; then
          LIBVAMP_LOCAL_CONFIG_SUBDIRS="lib-src/libvamp"
       fi
@@ -7633,16 +7635,6 @@ if [ "$use_ladspa" = "yes" ] ; then
 
 cat >>confdefs.h <<\_ACEOF
 #define USE_LADSPA 1
-_ACEOF
-
-fi
-
-if [ "$use_vamp" = "yes" ] ; then
-   OPTOBJS="$OPTOBJS $LIBVAMP_LOCAL_OPTOBJS"
-
-
-cat >>confdefs.h <<\_ACEOF
-#define USE_VAMP 1
 _ACEOF
 
 fi

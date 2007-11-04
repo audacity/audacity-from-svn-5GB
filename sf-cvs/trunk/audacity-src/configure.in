@@ -570,13 +570,6 @@ if [[ "$use_ladspa" = "yes" ]] ; then
              [Define if LADSPA plug-ins are enabled])
 fi
 
-if [[ "$use_vamp" = "yes" ]] ; then
-   OPTOBJS="$OPTOBJS $LIBVAMP_LOCAL_OPTOBJS"
-
-   AC_DEFINE(USE_VAMP, 1,
-             [Define if Vamp analysis plug-ins are enabled])
-fi
-
 if [[ "$use_audiounits" = "yes" ]] ; then
    OPTOBJS="$OPTOBJS effects/audiounits/LoadAudioUnits.o"
    OPTOBJS="$OPTOBJS effects/audiounits/AudioUnitEffect.o"
