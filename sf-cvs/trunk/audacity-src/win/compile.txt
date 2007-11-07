@@ -88,6 +88,10 @@ versions.
    if you plan to build Unicode Release Audacity, you need to 
    have built Unicode Release wxWidgets.
 
+5. At this point, if you want to save some disk space,
+   you can safely delete the directory:
+   "C:\wxWidgets-2.6.3\build"
+
 
 --------------------------
 MSVC++ STEP 3:  Download Audacity
