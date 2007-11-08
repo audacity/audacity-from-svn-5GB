@@ -1,9 +1,15 @@
 ;nyquist plug-in
+
 ;version 3
+
 ;type generate
+
 ;name "Pluck..."
+
 ;action "Generating pluck sound..."
-;info "modified by David R. Sky\nReleased under terms of the GNU General Public License version 2 \nMIDI values for C notes: 36, 48, 60 [middle C], 72, 84, 96 \nIf duration is set to 0, pluck is default 1 second, otherwise user-set duration."
+
+;info "modified by David R. Sky\nReleased under terms of the GNU General Public License version 2 \nMIDI values for C notes: 36, 48, 60 [middle C], 72, 84, 96"
+
 
 ;control p "Pluck MIDI pitch" int "" 60 1 127
 ;control fade "Fade-out type" choice "abrupt,gradual" 0

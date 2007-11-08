@@ -1,9 +1,16 @@
 ;nyquist plug-in
+
 ;version 3
+
 ;type generate
+
 ;name "Click Track..."
+
 ;action "Generating Click Track..."
+
 ;info "Written by Dominic Mazzoni, modified by David R. Sky\nReleased under terms of the GNU General Public License version 2\nGenerates a click track at the given tempo and beats per measure, using the\nclick sound type you choose below. To start the click track after time zero,\nenter the starting point in start-time-offset.\nTo create metronome-like click track, set beats-per-measure value to 1 or 2. \nPitches are set using MIDI numbers for example:\nC notes: 48, 60 [middle C], 72, 84, 96."
+
+
 
 ;control tempo "Tempo [beats per minute]" int "" 120 30 300
 ;control sig "Beats per measure [bar]" int "" 4 1 20
