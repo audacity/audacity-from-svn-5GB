@@ -774,7 +774,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("Pause"),       _("Pause\tP"),                    FN(OnPause));
    c->AddCommand(wxT("Record"),      _("Record\tR"),                   FN(OnRecord));
    
-   c->AddCommand(wxT("PlayStopSelect"),  _("Play/Stop and Select\tShift+A"),    FN(OnPlayStopSelect));
+   c->AddCommand(wxT("PlayStopSelect"),  _("Play/Stop and Set Cursor\tShift+A"),    FN(OnPlayStopSelect));
 //   c->AddCommand(wxT("StopSelect"),  _("Stop and Select\tShift+A"),    FN(OnStopSelect));
 
    c->AddCommand(wxT("PlayOneSec"),     _("Play One Second\t1"),       FN(OnPlayOneSecond));
