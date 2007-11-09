@@ -266,11 +266,6 @@ Known issues/problems:
   * Audacity can import and display MIDI files, but they cannot be played
     or edited.
 
-  * Recording in Mono in full duplex (play existing tracks while recording) on
-    some Linux systems causes the recording to sound slowed-down. This is due
-    to a bug in the ALSA OSS emulation, and can be worked around be recording
-    in Stereo
-
   * MacOS X only: Some users find that after running Audacity other media
     players don't produce any sound or crash. Audacity tries to select the best
     quality settings your system is capable of, to give the best recordings
@@ -289,6 +284,15 @@ Known issues/problems:
     sound card your default when using Audacity, but please let
     us know if this affects you so that we can track down and
     solve the problem.
+
+  * Linux only: Audacity now supports interfacing with Jack, however this has
+    not been tested, and is known to have a number of issues with both 
+	reliability and useability. Patches to improve both will be welcomed.
+
+  * Linux only: If the Audacity project rate is set to a sample rate that your
+    sound card does not support, then Audacity will try to choose a supported
+	sample rate and use that for recording and playback, resampling on the
+	fly. This does not always work correctly, however.
 
     Also note that the Windows installer will not replace 1.2.x installations,
     but will install alongside them.
