@@ -128,8 +128,8 @@ fi
 printf "Done\n"
 
 printf "removing executable and other intermediate files... ";
-myrmvf $mode audacity .depend obj  config.status config.log Makefile
-myrmrvf $mode config.cache
+myrmvf $mode audacity src/.depend config.status config.log Makefile
+myrmrvf $mode config.cache autom4te.cache
 printf "Done\n"
 
 printf "removing orphaned symlinks in lib-src/ ... ";
