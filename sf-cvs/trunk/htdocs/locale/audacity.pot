@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacity 1.3.3\n"
+"Project-Id-Version: Audacity 1.3.4\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-10-28 17:18+0000\n"
+"POT-Creation-Date: 2007-11-10 18:58+0000\n"
 "PO-Revision-Date: 1999 and beyond\n"
 "Last-Translator: FULL NAME <audacity-translation@lists.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,27 +16,27 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: AboutDialog.cpp:141 AudacityApp.cpp:732 Menus.cpp:733
+#: AboutDialog.cpp:142 AudacityApp.cpp:732 Menus.cpp:733
 msgid "&About Audacity..."
 msgstr ""
 
-#: AboutDialog.cpp:165 effects/AvcCompressor.cpp:674
+#: AboutDialog.cpp:166 effects/AvcCompressor.cpp:674
 msgid "Enabled"
 msgstr ""
 
-#: AboutDialog.cpp:166
+#: AboutDialog.cpp:167
 msgid "Disabled"
 msgstr ""
 
-#: AboutDialog.cpp:229
+#: AboutDialog.cpp:230
 msgid "Program build date: "
 msgstr ""
 
-#: AboutDialog.cpp:234
+#: AboutDialog.cpp:235
 msgid "Settings folder: "
 msgstr ""
 
-#: AboutDialog.cpp:239
+#: AboutDialog.cpp:240
 msgid ""
 "Audacity is a free program written by a team of volunteer developers around "
 "the world. Coordination happens thanks to SourceForge.net, an online service "
@@ -45,14 +45,14 @@ msgid ""
 "operating systems. Older versions of Audacity are available for Mac OS 9."
 msgstr ""
 
-#: AboutDialog.cpp:243
+#: AboutDialog.cpp:244
 msgid ""
 "This is a beta version of the program.  It may contain bugs and unfinished "
 "features.  We depend on your feedback, so please visit our website and give "
 "us your bug reports and feature requests."
 msgstr ""
 
-#: AboutDialog.cpp:246
+#: AboutDialog.cpp:247
 msgid ""
 "This is a stable, completed release of Audacity. However, if you find a bug "
 "or have a suggestion, please contact us. We depend on feedback from users in "
@@ -66,68 +66,68 @@ msgstr ""
 #.
 #. For example:  "English translation by Dominic Mazzoni."
 #.
-#: AboutDialog.cpp:256 AboutDialog.cpp:258
+#: AboutDialog.cpp:257 AboutDialog.cpp:259
 msgid "translator_credits"
 msgstr ""
 
-#: AboutDialog.cpp:271
+#: AboutDialog.cpp:272
 msgid "A Free Digital Audio Editor"
 msgstr ""
 
-#: AboutDialog.cpp:275
+#: AboutDialog.cpp:276
 msgid "Information"
 msgstr ""
 
-#: AboutDialog.cpp:277
+#: AboutDialog.cpp:278
 msgid "Credits"
 msgstr ""
 
-#: AboutDialog.cpp:281
+#: AboutDialog.cpp:282
 #, c-format
 msgid "Audacity %s Development Team"
 msgstr ""
 
-#: AboutDialog.cpp:286
+#: AboutDialog.cpp:287
 #, c-format
 msgid "Audacity %s Support Team"
 msgstr ""
 
-#: AboutDialog.cpp:291
+#: AboutDialog.cpp:292
 msgid "Emeritus Developers"
 msgstr ""
 
-#: AboutDialog.cpp:296
+#: AboutDialog.cpp:297
 msgid "Other Emeritus Team Members"
 msgstr ""
 
-#: AboutDialog.cpp:301
+#: AboutDialog.cpp:302
 msgid "Other Contributors"
 msgstr ""
 
-#: AboutDialog.cpp:306
+#: AboutDialog.cpp:307
 msgid "Audacity is based on code from the following projects:"
 msgstr ""
 
-#: AboutDialog.cpp:311
+#: AboutDialog.cpp:312
 msgid "Special thanks:"
 msgstr ""
 
-#: AboutDialog.cpp:320
+#: AboutDialog.cpp:321
 msgid "Audacity"
 msgstr ""
 
 #. i18n-hint: Rather than a literal translation, consider adding the
 #. appropriate suffix or prefix to create a word meaning 'something which
 #. has Audacity'
-#: AboutDialog.cpp:340 AboutDialog.cpp:371 SplashDialog.cpp:113
+#: AboutDialog.cpp:341 AboutDialog.cpp:372 SplashDialog.cpp:113
 msgid "OK... Audacious!"
 msgstr ""
 
-#: AboutDialog.cpp:388
+#: AboutDialog.cpp:389
 msgid "GPL License"
 msgstr ""
 
-#: AboutDialog.cpp:688 FreqWindow.cpp:209 widgets/ErrorDialog.cpp:135
+#: AboutDialog.cpp:689 FreqWindow.cpp:209 widgets/ErrorDialog.cpp:135
 msgid "Close"
 msgstr ""
 
@@ -504,7 +504,7 @@ msgid "&Add"
 msgstr ""
 
 #: BatchProcessDialog.cpp:436 LabelDialog.cpp:126 Tags.cpp:783 Tags.cpp:1423
-#: Tags.cpp:2023 TrackPanel.cpp:3985
+#: Tags.cpp:2023 TrackPanel.cpp:3983
 msgid "&Remove"
 msgstr ""
 
@@ -1100,27 +1100,28 @@ msgid ""
 "project file when you want to return to your work in Audacity later.This "
 "means you don't then have to re-import or re-record audio, or redo editing "
 "you have done so far.When you want to listen to your work in other computer "
-"programs you \"export\" it as an audio file such as a WAV, AIFF or MP3. When "
-"burning to CD, you export as WAV or AIFF.<br><br>To save an Audacity "
-"project, use <b>File > Save Project</b>. This will save an <b>.aup</b> "
-"Project file, plus a <b>_data</b> folder containing the actual audio. Make "
-"sure you don't rename or move either of these, because Audacity needs to "
-"refer to both.Only use File > Save Project As... when you either need to "
-"save an empty Project, or if you want to save an existing Project to a <i> "
-"new</i> name. When you want to re-open a saved Project, simply click File > "
-"Open and open the .aup file. <br><br>When you want to export your work to an "
-"audio file, use <b>File > Export</b> and choose your desired format in the "
-"\"Save as type\" dropdown.Click the Options button for advanced choices, "
-"such as the bit rate to use for MP3 export.There are two other Export "
-"commands under the File menu.\"Export Selection\" exports only a selected "
-"area of audio.\"Export Multiple\" exports multiple files, for example where "
-"you have more than one track on screen and want to export each as a separate "
-"file. If exporting tracks from a recorded LP or tape to multiple files, use "
-"[[wiki:Splitting recordings into separate tracks|labels with Export "
-"Multiple]]. <br><br>Before you can export as <b>MP3</b>, you may need to add "
-"the LAME MP3 encoder to your computer.For help with LAME, see [[wiki:"
-"Lame_Installation|Lame Installation]]. There is also some help on how to "
-"[[burncd|burn to a CD]].<br><br>"
+"programs you \"export\" it as an audio file such as a WAV, AIFF or MP3. If "
+"burning to an audio CD for standalone CD players, you must export as WAV or "
+"AIFF.<br><br>To save an Audacity project, use <b>File > Save Project</b>. "
+"This will save an <b>.aup</b> Project file, plus a <b>_data</b> folder "
+"containing the actual audio. Make sure you don't rename or move either of "
+"these, because Audacity needs to refer to both.Only use File > Save Project "
+"As... when you either need to save an empty Project, or if you want to save "
+"an existing Project to a <i> new</i> name. When you want to re-open a saved "
+"Project, simply click File > Open and open the .aup file. <br><br>When you "
+"want to export your work to an audio file, use <b>File > Export</b> and "
+"choose your desired format in the \"Save as type\" dropdown.Click the "
+"Options button for advanced choices, such as the bit rate to use for MP3 "
+"export.There are two other Export commands under the File menu.\"Export "
+"Selection\" exports only a selected area of audio.\"Export Multiple\" "
+"exports multiple files, for example where you have more than one track on "
+"screen and want to export each as a separate file. If exporting tracks from "
+"a recorded LP or tape to multiple files, use [[wiki:Splitting recordings "
+"into separate tracks|labels with Export Multiple]]. <br><br>Before you can "
+"export as <b>MP3</b>, you may need to add the LAME MP3 encoder to your "
+"computer.For help with LAME, see [[wiki:Lame_Installation|Lame "
+"Installation]]. There is also some help on how to [[burncd|burn to a CD]]."
+"<br><br>"
 msgstr ""
 
 #: HelpText.cpp:289
@@ -1149,10 +1150,10 @@ msgstr ""
 
 #: HelpText.cpp:316
 msgid ""
-"If you want to burn your work to an audio CD, you must first [[export|export "
-"as WAV or AIFF]] and then burn that file to CD with a CD burning program "
-"like iTunes - for more help, see [[wiki:How to burn CDs|How to burn CDs]]."
-"<br><br>"
+"If you want to burn your work to an audio CD for standalone CD players, you "
+"must first [[export|export as WAV or AIFF]] and then burn that file to CD "
+"with a CD burning program like iTunes - for more help, see [[wiki:How to "
+"burn CDs|How to burn CDs]].<br><br>"
 msgstr ""
 
 #: HelpText.cpp:331
@@ -1904,11 +1905,7 @@ msgid "Record\tR"
 msgstr ""
 
 #: Menus.cpp:777
-msgid "Play/Stop and Select\tShift+Return"
-msgstr ""
-
-#: Menus.cpp:778
-msgid "Stop and Select\tShift+A"
+msgid "Play/Stop and Set Cursor\tShift+A"
 msgstr ""
 
 #: Menus.cpp:780
@@ -2325,7 +2322,7 @@ msgstr ""
 msgid "Disjoined labeled regions"
 msgstr ""
 
-#: Menus.cpp:2917 TrackPanel.cpp:5861
+#: Menus.cpp:2917 TrackPanel.cpp:5859
 msgid "Split"
 msgstr ""
 
@@ -2578,11 +2575,11 @@ msgstr ""
 msgid "(Recovered)"
 msgstr ""
 
-#: Project.cpp:1472 TrackPanel.cpp:772 toolbars/ControlToolBar.cpp:191
+#: Project.cpp:1472 TrackPanel.cpp:770 toolbars/ControlToolBar.cpp:191
 msgid "Record"
 msgstr ""
 
-#: Project.cpp:1472 TrackPanel.cpp:772
+#: Project.cpp:1472 TrackPanel.cpp:770
 msgid "Recorded Audio"
 msgstr ""
 
@@ -3232,15 +3229,15 @@ msgstr ""
 msgid "Pitch (EAC)"
 msgstr ""
 
-#: TrackPanel.cpp:510 TrackPanel.cpp:5831
+#: TrackPanel.cpp:510 TrackPanel.cpp:5829
 msgid "Mono"
 msgstr ""
 
-#: TrackPanel.cpp:511 TrackPanel.cpp:5830
+#: TrackPanel.cpp:511 TrackPanel.cpp:5828
 msgid "Left Channel"
 msgstr ""
 
-#: TrackPanel.cpp:512 TrackPanel.cpp:5830
+#: TrackPanel.cpp:512 TrackPanel.cpp:5828
 msgid "Right Channel"
 msgstr ""
 
@@ -3256,7 +3253,7 @@ msgstr ""
 msgid "Set Sample Format"
 msgstr ""
 
-#: TrackPanel.cpp:518 TrackPanel.cpp:6048
+#: TrackPanel.cpp:518 TrackPanel.cpp:6046
 msgid "Set Rate"
 msgstr ""
 
@@ -3280,304 +3277,304 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
-#: TrackPanel.cpp:1239
+#: TrackPanel.cpp:1237
 msgid ""
 "Click to vertically zoom in, Shift-click to zoom out, Drag to create a "
 "particular zoom region."
 msgstr ""
 
-#: TrackPanel.cpp:1244
+#: TrackPanel.cpp:1242
 msgid "Drag the label vertically to change the order of the tracks."
 msgstr ""
 
-#: TrackPanel.cpp:1264
+#: TrackPanel.cpp:1262
 msgid "Click and drag to adjust relative size of stereo tracks."
 msgstr ""
 
-#: TrackPanel.cpp:1267
+#: TrackPanel.cpp:1265
 msgid "Click and drag to resize the track."
 msgstr ""
 
-#: TrackPanel.cpp:1298
+#: TrackPanel.cpp:1296
 msgid "Drag one or more label boundaries"
 msgstr ""
 
-#: TrackPanel.cpp:1299
+#: TrackPanel.cpp:1297
 msgid "Drag label boundary"
 msgstr ""
 
 #. i18n-hint: This string is for the Mac OS, which uses Command-, as the shortcut for Preferences
-#: TrackPanel.cpp:1315
+#: TrackPanel.cpp:1313
 msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
 msgstr ""
 
 #. i18n-hint: This string is for Windows and Linux, which uses Control-P as the shortcut for Preferences
-#: TrackPanel.cpp:1318
+#: TrackPanel.cpp:1316
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
 msgstr ""
 
-#: TrackPanel.cpp:1338
+#: TrackPanel.cpp:1336
 msgid "Click and drag to move left selection boundary."
 msgstr ""
 
-#: TrackPanel.cpp:1343
+#: TrackPanel.cpp:1341
 msgid "Click and drag to move right selection boundary."
 msgstr ""
 
-#: TrackPanel.cpp:1669 TrackPanel.cpp:3777 TrackPanel.cpp:3809
-#: TrackPanel.cpp:4064 TrackPanel.cpp:6160 TrackPanel.cpp:6180
+#: TrackPanel.cpp:1667 TrackPanel.cpp:3775 TrackPanel.cpp:3807
+#: TrackPanel.cpp:4062 TrackPanel.cpp:6158 TrackPanel.cpp:6178
 msgid "Modified Label"
 msgstr ""
 
-#: TrackPanel.cpp:1670 TrackPanel.cpp:3778 TrackPanel.cpp:3810
-#: TrackPanel.cpp:4065 TrackPanel.cpp:6161 TrackPanel.cpp:6181
+#: TrackPanel.cpp:1668 TrackPanel.cpp:3776 TrackPanel.cpp:3808
+#: TrackPanel.cpp:4063 TrackPanel.cpp:6159 TrackPanel.cpp:6179
 msgid "Label Edit"
 msgstr ""
 
-#: TrackPanel.cpp:1897
+#: TrackPanel.cpp:1895
 msgid "Adjusted envelope."
 msgstr ""
 
-#: TrackPanel.cpp:1898 prefs/MousePrefs.cpp:115
+#: TrackPanel.cpp:1896 prefs/MousePrefs.cpp:115
 msgid "Envelope"
 msgstr ""
 
-#: TrackPanel.cpp:2034
+#: TrackPanel.cpp:2032
 msgid "Moved clip to another track"
 msgstr ""
 
-#: TrackPanel.cpp:2038
+#: TrackPanel.cpp:2036
 msgid "left"
 msgstr ""
 
-#: TrackPanel.cpp:2038
+#: TrackPanel.cpp:2036
 msgid "right"
 msgstr ""
 
 #. i18n-hint: %s is a direction like left or right
-#: TrackPanel.cpp:2040
+#: TrackPanel.cpp:2038
 #, c-format
 msgid "Time shifted tracks/clips %s %.02f seconds"
 msgstr ""
 
-#: TrackPanel.cpp:2044 prefs/MousePrefs.cpp:111 prefs/MousePrefs.cpp:112
+#: TrackPanel.cpp:2042 prefs/MousePrefs.cpp:111 prefs/MousePrefs.cpp:112
 #: prefs/MousePrefs.cpp:113
 msgid "Time-Shift"
 msgstr ""
 
-#: TrackPanel.cpp:2737
+#: TrackPanel.cpp:2735
 msgid "Draw currently only works with linear-view waveforms."
 msgstr ""
 
-#: TrackPanel.cpp:2754
+#: TrackPanel.cpp:2752
 msgid ""
 "You are not zoomed in enough. Zoom in until you can see the individual "
 "samples."
 msgstr ""
 
-#: TrackPanel.cpp:3025
+#: TrackPanel.cpp:3023
 msgid "Moved Sample"
 msgstr ""
 
-#: TrackPanel.cpp:3026
+#: TrackPanel.cpp:3024
 msgid "Sample Edit"
 msgstr ""
 
-#: TrackPanel.cpp:3125
+#: TrackPanel.cpp:3123
 #, c-format
 msgid "Removed track '%s.'"
 msgstr ""
 
-#: TrackPanel.cpp:3127
+#: TrackPanel.cpp:3125
 msgid "Track Remove"
 msgstr ""
 
-#: TrackPanel.cpp:3268
+#: TrackPanel.cpp:3266
 msgid "Moved gain slider"
 msgstr ""
 
-#: TrackPanel.cpp:3268
+#: TrackPanel.cpp:3266
 msgid "Moved pan slider"
 msgstr ""
 
 #. i18n-hint: Title of the Gain slider, used to adjust the volume
-#: TrackPanel.cpp:3269 TrackPanel.cpp:5478 TrackPanel.cpp:6829
+#: TrackPanel.cpp:3267 TrackPanel.cpp:5476 TrackPanel.cpp:6827
 msgid "Gain"
 msgstr ""
 
 #. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#: TrackPanel.cpp:3269 TrackPanel.cpp:5416 TrackPanel.cpp:6836
+#: TrackPanel.cpp:3267 TrackPanel.cpp:5414 TrackPanel.cpp:6834
 msgid "Pan"
 msgstr ""
 
-#: TrackPanel.cpp:3394 TrackPanel.cpp:6113 effects/ChangePitch.cpp:284
+#: TrackPanel.cpp:3392 TrackPanel.cpp:6111 effects/ChangePitch.cpp:284
 msgid "up"
 msgstr ""
 
-#: TrackPanel.cpp:3398 TrackPanel.cpp:6114 effects/ChangePitch.cpp:284
+#: TrackPanel.cpp:3396 TrackPanel.cpp:6112 effects/ChangePitch.cpp:284
 msgid "down"
 msgstr ""
 
-#: TrackPanel.cpp:3405 TrackPanel.cpp:6109
+#: TrackPanel.cpp:3403 TrackPanel.cpp:6107
 #, c-format
 msgid "Moved '%s' %s"
 msgstr ""
 
-#: TrackPanel.cpp:3408 TrackPanel.cpp:6115
+#: TrackPanel.cpp:3406 TrackPanel.cpp:6113
 msgid "Move Track"
 msgstr ""
 
-#: TrackPanel.cpp:3964
+#: TrackPanel.cpp:3962
 msgid "Expand"
 msgstr ""
 
-#: TrackPanel.cpp:3964
+#: TrackPanel.cpp:3962
 msgid "Expanded Cut Line"
 msgstr ""
 
-#: TrackPanel.cpp:3973
+#: TrackPanel.cpp:3971
 msgid "Merge"
 msgstr ""
 
-#: TrackPanel.cpp:3973
+#: TrackPanel.cpp:3971
 msgid "Merged Clips"
 msgstr ""
 
-#: TrackPanel.cpp:3985
+#: TrackPanel.cpp:3983
 msgid "Removed Cut Line"
 msgstr ""
 
-#: TrackPanel.cpp:5416
+#: TrackPanel.cpp:5414
 msgid "Adjusted Pan"
 msgstr ""
 
-#: TrackPanel.cpp:5478
+#: TrackPanel.cpp:5476
 msgid "Adjusted gain"
 msgstr ""
 
-#: TrackPanel.cpp:5658
+#: TrackPanel.cpp:5656
 msgid "Can't delete track with active audio"
 msgstr ""
 
-#: TrackPanel.cpp:5811
+#: TrackPanel.cpp:5809
 msgid "Stereo, "
 msgstr ""
 
-#: TrackPanel.cpp:5814
+#: TrackPanel.cpp:5812
 msgid "Mono, "
 msgstr ""
 
-#: TrackPanel.cpp:5816
+#: TrackPanel.cpp:5814
 msgid "Left, "
 msgstr ""
 
-#: TrackPanel.cpp:5818
+#: TrackPanel.cpp:5816
 msgid "Right, "
 msgstr ""
 
-#: TrackPanel.cpp:5840 TrackPanel.cpp:5953
+#: TrackPanel.cpp:5838 TrackPanel.cpp:5951
 #, c-format
 msgid "Changed '%s' to %s"
 msgstr ""
 
-#: TrackPanel.cpp:5845
+#: TrackPanel.cpp:5843
 msgid "Channel"
 msgstr ""
 
-#: TrackPanel.cpp:5858
+#: TrackPanel.cpp:5856
 #, c-format
 msgid "Split stereo track '%s'"
 msgstr ""
 
-#: TrackPanel.cpp:5879
+#: TrackPanel.cpp:5877
 #, c-format
 msgid "Made '%s' a stereo track"
 msgstr ""
 
-#: TrackPanel.cpp:5882
+#: TrackPanel.cpp:5880
 msgid "Make Stereo"
 msgstr ""
 
-#: TrackPanel.cpp:5917
+#: TrackPanel.cpp:5915
 #, c-format
 msgid "Changed '%s' to %d Hz"
 msgstr ""
 
-#: TrackPanel.cpp:5919
+#: TrackPanel.cpp:5917
 msgid "Rate Change"
 msgstr ""
 
-#: TrackPanel.cpp:5957
+#: TrackPanel.cpp:5955
 msgid "Format Change"
 msgstr ""
 
-#: TrackPanel.cpp:6047
+#: TrackPanel.cpp:6045
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
 msgstr ""
 
-#: TrackPanel.cpp:6057
+#: TrackPanel.cpp:6055
 msgid "Invalid rate."
 msgstr ""
 
-#: TrackPanel.cpp:6077
+#: TrackPanel.cpp:6075
 msgid "Change lower speed limit (%) to:"
 msgstr ""
 
-#: TrackPanel.cpp:6078 TrackPanel.cpp:6079
+#: TrackPanel.cpp:6076 TrackPanel.cpp:6077
 msgid "Lower speed limit"
 msgstr ""
 
-#: TrackPanel.cpp:6084
+#: TrackPanel.cpp:6082
 msgid "Change upper speed limit (%) to:"
 msgstr ""
 
-#: TrackPanel.cpp:6085 TrackPanel.cpp:6086
+#: TrackPanel.cpp:6083 TrackPanel.cpp:6084
 msgid "Upper speed limit"
 msgstr ""
 
-#: TrackPanel.cpp:6094
+#: TrackPanel.cpp:6092
 #, c-format
 msgid "Set range to '%d' - '%d'"
 msgstr ""
 
-#: TrackPanel.cpp:6097
+#: TrackPanel.cpp:6095
 msgid "Set Range"
 msgstr ""
 
-#: TrackPanel.cpp:6142
+#: TrackPanel.cpp:6140
 msgid "Change track name to:"
 msgstr ""
 
-#: TrackPanel.cpp:6143
+#: TrackPanel.cpp:6141
 msgid "Track Name"
 msgstr ""
 
-#: TrackPanel.cpp:6146
+#: TrackPanel.cpp:6144
 #, c-format
 msgid "Renamed '%s' to '%s'"
 msgstr ""
 
-#: TrackPanel.cpp:6149
+#: TrackPanel.cpp:6147
 msgid "Name Change"
 msgstr ""
 
-#: TrackPanel.cpp:6215
+#: TrackPanel.cpp:6213
 msgid "Label Track Font"
 msgstr ""
 
-#: TrackPanel.cpp:6227
+#: TrackPanel.cpp:6225
 msgid "Face name"
 msgstr ""
 
-#: TrackPanel.cpp:6236
+#: TrackPanel.cpp:6234
 msgid "Face size"
 msgstr ""
 
-#: TrackPanel.cpp:6756
+#: TrackPanel.cpp:6754
 msgid "Mute"
 msgstr ""
 
-#: TrackPanel.cpp:6756
+#: TrackPanel.cpp:6754
 msgid "Solo"
 msgstr ""
 
@@ -5591,13 +5588,12 @@ msgstr ""
 msgid "Exporting the entire project as %s"
 msgstr ""
 
-#. i18n-hint: %s will be the error message from libsndfile
-#: export/ExportPCM.cpp:436
+#: export/ExportPCM.cpp:435
 #, c-format
-msgid "Error (file may not have been written): %s"
+msgid "Error (file may not have been written): %hs"
 msgstr ""
 
-#: export/ExportPCM.cpp:463
+#: export/ExportPCM.cpp:462
 msgid "Edit the metadata for the uncompressed file"
 msgstr ""
 
@@ -5894,11 +5890,15 @@ msgid "Latency"
 msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:189
-msgid "Audio to buffer:"
+msgid ""
+"Audio to buffer:\n"
+"(higher = more latency)"
 msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:192
-msgid "Latency correction:"
+msgid ""
+"Latency correction:\n"
+"(negative = backwards)"
 msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:197
@@ -5933,7 +5933,7 @@ msgstr ""
 msgid "Cl&eanSpeech Mode (Customized GUI)"
 msgstr ""
 
-#: prefs/BatchPrefs.cpp:89 prefs/GUIPrefs.cpp:94
+#: prefs/BatchPrefs.cpp:89 prefs/GUIPrefs.cpp:92
 msgid "Show / Hide"
 msgstr ""
 
@@ -6050,19 +6050,26 @@ msgstr ""
 msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
 msgstr ""
 
-#: prefs/FileFormatPrefs.cpp:101
+#: prefs/FileFormatPrefs.cpp:100
+msgid ""
+"Note: Export quality options for WAV, AIFF, MP3 and other formats can be "
+"chosen by \n"
+"clicking the Options button in the Export dialogue."
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:103
 msgid "MP3 Export Library Location"
 msgstr ""
 
-#: prefs/FileFormatPrefs.cpp:104
+#: prefs/FileFormatPrefs.cpp:106
 msgid "MP3 Library Version:"
 msgstr ""
 
-#: prefs/FileFormatPrefs.cpp:110
+#: prefs/FileFormatPrefs.cpp:112
 msgid "&Find Library"
 msgstr ""
 
-#: prefs/FileFormatPrefs.cpp:112
+#: prefs/FileFormatPrefs.cpp:114
 msgid "&Download Free Copy of LAME"
 msgstr ""
 
@@ -6095,66 +6102,62 @@ msgid "\"Move track focus\" &cycles repeatedly through tracks"
 msgstr ""
 
 #: prefs/GUIPrefs.cpp:84
-msgid "&Present track number to accessibility aid"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:86
 msgid "Editing a &clip can move other clips"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:88
+#: prefs/GUIPrefs.cpp:86
 msgid "&Select all audio in project, if none selected"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:90
+#: prefs/GUIPrefs.cpp:88
 msgid "&Beep on completion of longer activities"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:96
+#: prefs/GUIPrefs.cpp:94
 msgid "Enable cut &lines"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:98
+#: prefs/GUIPrefs.cpp:96
 msgid "Show warnings about &temp files"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:100
+#: prefs/GUIPrefs.cpp:98
 msgid "&Show prompt to save, even if project is empty"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:102
+#: prefs/GUIPrefs.cpp:100
 msgid "Show Welcome Message at program start up"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:107
+#: prefs/GUIPrefs.cpp:105
 msgid "Language"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:109
+#: prefs/GUIPrefs.cpp:107
 msgid "Language:"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:112
+#: prefs/GUIPrefs.cpp:110
 msgid "Minimum of dB mode display range"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:115
+#: prefs/GUIPrefs.cpp:113
 msgid "-36 dB (shallow range for high-amplitude editing)"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:116
+#: prefs/GUIPrefs.cpp:114
 msgid "-48 dB (PCM range of 8 bit samples)"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:117
+#: prefs/GUIPrefs.cpp:115
 msgid "-96 dB (PCM range of 16 bit samples)"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:118
+#: prefs/GUIPrefs.cpp:116
 msgid "-120 dB (approximate limit of human hearing)"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:119
+#: prefs/GUIPrefs.cpp:117
 msgid "-145 dB (PCM range of 24 bit samples)"
 msgstr ""
 
