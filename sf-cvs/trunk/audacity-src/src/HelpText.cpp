@@ -287,7 +287,7 @@ ToWelcome()
 
 //#ifdef NOT EXACTLY_AS_IN_FAQ_AS_FAQ_INCORRECT_FOR_1.4._TRY_THIS_LOCALLY?  
 _("<h2>Can Audacity import file formats like WMA, AAC, RealAudio  etc.?</h2> <p>\
-Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)</b>, or\
+Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)</b>, or \
 most other proprietary formats, because of licensing and patent restrictions. \
 Audacity also cannot import any kind of Digital Rights Management (DRM) protected \
 file, including most purchased online such as from iTunes or Napster.\
