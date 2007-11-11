@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.3.4\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-11-10 18:58+0000\n"
+"POT-Creation-Date: 2007-11-11 16:17+0000\n"
 "PO-Revision-Date: 1999 and beyond\n"
 "Last-Translator: FULL NAME <audacity-translation@lists.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1011,19 +1011,21 @@ msgstr ""
 #: HelpText.cpp:134
 msgid ""
 "Let's get started!</p><p>You can click on the links below to learn how to:"
-"<ul><li>[[play|play back]] an existing sound file.<li>How to [[record|"
-"record]] a new sound file.<li>How to [[edit|edit]] sound and [[export|"
-"export]] to a sound file like MP3.</ul><br><br>Those links will help if you "
-"find a problem such as a [[grey|menu option greyed out]] or that Audacity "
-"[[norecord|isn't recording properly]] or that you can't [[burncd|burn to a "
-"CD]]. You can always get back to these instructions by clicking the 'Help' "
-"menu, then 'Show Welcome Message.' For more detailed reading, please read "
-"our full Help by clicking the 'Help' menu, then 'Index', or <a href=\"http://"
-"audacity.sourceforge.net/help/documentation\">download our Manual</a> in PDF "
-"format.<br><br>Welcome again to Audacity."
+"<ul><li>[[play|play back]] an existing sound file.<li>[[record|record]] a "
+"new sound file.<li>[[edit|edit]] sound and [[export|export]] to a sound file "
+"like MP3. <li>[[burnCD|burn to a CD]] </ul><br><br>"
 msgstr ""
 
-#: HelpText.cpp:158
+#: HelpText.cpp:142
+msgid ""
+"You can always get back to these instructions by clicking the 'Help' menu, "
+"then 'Show Welcome Message.' For more detailed reading, please read our full "
+"Help by clicking the 'Help' menu, then 'Index', or <a href=\"http://audacity."
+"sourceforge.net/help/documentation\">download our Manual</a> in PDF format."
+"<br><br>Welcome again to Audacity."
+msgstr ""
+
+#: HelpText.cpp:156
 msgid ""
 "You can either drag existing files into Audacity, or use the <b>File > "
 "Import > Audio</b> command. <b>File > Open</b> does the same, but opens a "
@@ -1040,7 +1042,7 @@ msgid ""
 "restart from that point.<br><br>"
 msgstr ""
 
-#: HelpText.cpp:181
+#: HelpText.cpp:179
 msgid ""
 "<b>To start recording, press the red Record button</b>. Before doing so "
 "however, there are three crucial settings you must check:<br><br>(1) The "
@@ -1073,7 +1075,7 @@ msgid ""
 "Recordings]] section. <br><br>"
 msgstr ""
 
-#: HelpText.cpp:223
+#: HelpText.cpp:221
 msgid ""
 "Editing: Audacity is a powerful editor, so you'll want to see what it can do "
 "with your imported file or recording.  The main commands you will use are "
@@ -1094,7 +1096,7 @@ msgid ""
 "Audacity's clipboard. <br><br>"
 msgstr ""
 
-#: HelpText.cpp:254
+#: HelpText.cpp:252
 msgid ""
 "Exporting and Saving have different purposes.You \"save\" an Audacity "
 "project file when you want to return to your work in Audacity later.This "
@@ -1124,11 +1126,11 @@ msgid ""
 "<br><br>"
 msgstr ""
 
-#: HelpText.cpp:289
+#: HelpText.cpp:287
 msgid ""
 "<h2>Can Audacity import file formats like WMA, AAC, RealAudio  etc.?</h2> "
 "<p>Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)"
-"</b>, ormost other proprietary formats, because of licensing and patent "
+"</b>, or most other proprietary formats, because of licensing and patent "
 "restrictions. Audacity also cannot import any kind of Digital Rights "
 "Management (DRM) protected file, including most purchased online such as "
 "from iTunes or Napster.If you are on a Mac, you can import <b>AAC</b>  "
@@ -1148,7 +1150,7 @@ msgid ""
 "s=recording&amp;i=streaming\">."
 msgstr ""
 
-#: HelpText.cpp:316
+#: HelpText.cpp:314
 msgid ""
 "If you want to burn your work to an audio CD for standalone CD players, you "
 "must first [[export|export as WAV or AIFF]] and then burn that file to CD "
@@ -1156,7 +1158,7 @@ msgid ""
 "burn CDs|How to burn CDs]].<br><br>"
 msgstr ""
 
-#: HelpText.cpp:331
+#: HelpText.cpp:329
 msgid ""
 "<p>You don't appear to have Audacity help files on your machine. You can <a "
 "href=\"http://audacity.sourceforge.net/help/documentation\">download</a> the "
@@ -6050,27 +6052,26 @@ msgstr ""
 msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
 msgstr ""
 
-#: prefs/FileFormatPrefs.cpp:100
-msgid ""
-"Note: Export quality options for WAV, AIFF, MP3 and other formats can be "
-"chosen by \n"
-"clicking the Options button in the Export dialogue."
-msgstr ""
-
-#: prefs/FileFormatPrefs.cpp:103
+#: prefs/FileFormatPrefs.cpp:102
 msgid "MP3 Export Library Location"
 msgstr ""
 
-#: prefs/FileFormatPrefs.cpp:106
+#: prefs/FileFormatPrefs.cpp:105
 msgid "MP3 Library Version:"
 msgstr ""
 
-#: prefs/FileFormatPrefs.cpp:112
+#: prefs/FileFormatPrefs.cpp:111
 msgid "&Find Library"
 msgstr ""
 
-#: prefs/FileFormatPrefs.cpp:114
+#: prefs/FileFormatPrefs.cpp:113
 msgid "&Download Free Copy of LAME"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:118
+msgid ""
+"Note: Export quality options can be chosen by clicking the Options button in "
+"the Export dialogue."
 msgstr ""
 
 #: prefs/GUIPrefs.cpp:33 prefs/GUIPrefs.cpp:34
