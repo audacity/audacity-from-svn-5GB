@@ -245,7 +245,7 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("ApplyChain"), _("CleanSpeech C&hain..."),   FN(OnApplyChain));
       c->AddItem(wxT("EditChains"), _("Edit C&hains..."), FN(OnEditChains));
       c->AddItem(wxT("ExportCcSettings"), _("Export CleanSpeech &Presets..."),   FN(OnExportCleanSpeechPresets));
-      c->AddItem(wxT("ImportCcSettings"), ("I&mport CleanSpeech Presets..."),   FN(OnImportCleanSpeechPresets));
+      c->AddItem(wxT("ImportCcSettings"), _("I&mport CleanSpeech Presets..."),   FN(OnImportCleanSpeechPresets));
       c->SetCommandFlags(wxT("BatchProcess"), AudioIONotBusyFlag, AudioIONotBusyFlag);
 #ifdef __WXDEBUG__
 	   gPrefs->Write(wxT("/Validate/DebugBuild"), "Y");
