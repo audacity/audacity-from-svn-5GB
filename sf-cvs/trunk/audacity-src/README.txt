@@ -266,7 +266,7 @@ Known issues/problems:
   * Audacity can import and display MIDI files, but they cannot be played
     or edited.
 
-  * MacOS X only: Some users find that after running Audacity other media
+  * Mac OS X only: Some users find that after running Audacity other media
     players don't produce any sound or crash. Audacity tries to select the best
     quality settings your system is capable of, to give the best recordings
     possible. Some sound drivers also retain these settings as defaults for
@@ -277,6 +277,12 @@ Known issues/problems:
     device is set up (in the Apple Sound and Midi Setup utility) to work in
     stereo, 16bits, with a sample rate of 44100Hz or 48000Hz.  See also 
       http://docs.info.apple.com/article.html?artnum=300832
+
+  * Mac OS X only: In the OS X version of Audacity, portable settings aren't
+    picked up, and the default settings (in the default location) are always
+	used. If you want to use Audacity with portable settings under OS X, see
+	this page on the wiki for a work-around:
+      http://audacityteam.org/wiki/index.php?title=Portable_Audacity
 
   * Windows only: Audacity is incompatible with some professional
     sound cards and may crash if one of these cards is the default
