@@ -29,6 +29,143 @@ msgstr "Audacity nutzt ein offenes XML Datei Format um die Interoperartionalitä
 msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr "Demnächst kommen mehr Dokumentationen zum Audacity Dateiprojektformat."
 
+#: blog/wp-includes/class-pop3.php:82 blog/wp-includes/class-pop3.php:90
+#: blog/wp-includes/class-pop3.php:102
+msgid "POP3 connect:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:82
+msgid "No server specified"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:90 blog/wp-includes/class-pop3.php:102
+#: blog/wp-includes/class-pop3.php:123 blog/wp-includes/class-pop3.php:246
+#: blog/wp-includes/class-pop3.php:300 blog/wp-includes/class-pop3.php:311
+#: blog/wp-includes/class-pop3.php:359 blog/wp-includes/class-pop3.php:397
+#: blog/wp-includes/class-pop3.php:430 blog/wp-includes/class-pop3.php:529
+#: blog/wp-includes/class-pop3.php:552
+msgid "Error "
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:115 blog/wp-includes/class-pop3.php:118
+#: blog/wp-includes/class-pop3.php:123
+msgid "POP3 user:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:115
+msgid "no login ID submitted"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:118 blog/wp-includes/class-pop3.php:138
+msgid "connection not established"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:135 blog/wp-includes/class-pop3.php:138
+#: blog/wp-includes/class-pop3.php:143
+msgid "POP3 pass:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:135 blog/wp-includes/class-pop3.php:171
+msgid "No password submitted"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:143
+msgid "Authentication failed "
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:162 blog/wp-includes/class-pop3.php:168
+#: blog/wp-includes/class-pop3.php:171 blog/wp-includes/class-pop3.php:176
+#: blog/wp-includes/class-pop3.php:186
+msgid "POP3 apop:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:162 blog/wp-includes/class-pop3.php:205
+#: blog/wp-includes/class-pop3.php:230 blog/wp-includes/class-pop3.php:272
+#: blog/wp-includes/class-pop3.php:346 blog/wp-includes/class-pop3.php:390
+#: blog/wp-includes/class-pop3.php:420 blog/wp-includes/class-pop3.php:454
+#: blog/wp-includes/class-pop3.php:517 blog/wp-includes/class-pop3.php:585
+msgid "No connection to server"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:168
+msgid "No login ID submitted"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:176
+msgid "No server banner"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:176 blog/wp-includes/class-pop3.php:186
+msgid "abort"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:186
+msgid "apop authentication failed"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:205
+msgid "POP3 login:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:230 blog/wp-includes/class-pop3.php:246
+msgid "POP3 top:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:272 blog/wp-includes/class-pop3.php:300
+#: blog/wp-includes/class-pop3.php:311 blog/wp-includes/class-pop3.php:323
+msgid "POP3 pop_list:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:323
+msgid "Premature end of list"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:346 blog/wp-includes/class-pop3.php:359
+msgid "POP3 get:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:390 blog/wp-includes/class-pop3.php:397
+msgid "POP3 last:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:420 blog/wp-includes/class-pop3.php:430
+msgid "POP3 reset:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:454 blog/wp-includes/class-pop3.php:460
+msgid "POP3 send_cmd:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:460
+msgid "Empty command string"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:480
+msgid "POP3 quit:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:480
+msgid "connection does not exist"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:517 blog/wp-includes/class-pop3.php:529
+#: blog/wp-includes/class-pop3.php:552
+msgid "POP3 uidl:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:585 blog/wp-includes/class-pop3.php:590
+#: blog/wp-includes/class-pop3.php:596
+msgid "POP3 delete:"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:590
+msgid "No msg number submitted"
+msgstr ""
+
+#: blog/wp-includes/class-pop3.php:596
+msgid "Command failed "
+msgstr ""
+
 #: help/faq.php:23
 #: about/index.php:9
 #: about/main.inc.php:11
@@ -1600,6 +1737,105 @@ msgstr "Entwickler können Sich in dieser Mailingliste einschreiben um automatis
 msgid "Send a message to this list if you have questions or comments for the Audacity developers.  You do not need to subscribe to this list to send a message."
 msgstr "<p>Als erste Anlaufstelle für deutschsprachige Nutzer empfehlen wir das <b><a href=\"http://audacity.fuchsi.de\">deutschsprachige Audacity Forum</a></b></p><p>Schreibe eine Nachricht an die Entwickler von Audacity. Man muß nicht in die Liste eingeschrieben sein, um eine Nachricht zu senden.</p>"
 
+#: about/license_t.php:10 about/license.php:10 main.inc.php:26
+msgid "License, and Advice for Vendors and Distributors"
+msgstr ""
+
+#. i18n-hint:  These gnu.org web pages are available in several languages.
+#. Please link to the version in your language, if possible.  For example:
+#.
+#. http://www.gnu.org/licenses/licenses.es.html#GPL
+#. http://www.gnu.org/licenses/gpl-faq.cs.html
+#.
+#. See the bottom of each page for versions in other languages.
+#.
+#: about/license_t.php:26
+msgid "<h3>License</h3>"
+msgstr ""
+
+#: about/license_t.php:28
+msgid "<p>Audacity is <a href=\"../help/faq?s=general&amp;i=free\">free software</a>; you may use it for any personal, commercial, or educational purpose, including installing it on as many different computers as you wish.</p>"
+msgstr ""
+
+#: about/license_t.php:30
+msgid "<p>You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License (GPL)</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the same GPL. If you have questions, please email us at the <a href=\"mailto:audacity-help@lists.sourceforge.net\">Help list, audacity-help@lists.sourceforge.net</a>. (This is a public mailing list. For details, see our <a href=\"../contact/privacy\">privacy policy</a>.)</p>"
+msgstr ""
+
+#: about/license_t.php:32
+msgid "<p>See also: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Frequently Asked Questions about the GNU GPL</a>.</p>"
+msgstr ""
+
+#: about/license_t.php:35
+msgid "<h3>Advice for Vendors and Distributors</h3>"
+msgstr ""
+
+#: about/license_t.php:37
+msgid "<p>Several third parties bundle Audacity with their products, resell, or distribute Audacity (see <a href=\"../download/bundlers\">Vendors that Distribute Audacity</a>). Here are guidelines for bundling, reselling, or distributing Audacity. If you adhere to these guidelines, please <a href=\"../contact/\">contact us</a> for possible inclusion at <a href=\"../download/bundlers\">Vendors and Distributors of Audacity</a> (per instructions there).</p>"
+msgstr ""
+
+#: about/license_t.php:39
+msgid "<p>You must include, in accordance with Section 3 of the GPL:\n"
+"  <ol>\n"
+"    <li>a copy of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> and </li>\n"
+"    <li>the <a href=\"http://audacity.sourceforge.net/download/source\">Audacity source code</a> (or if you are distributing a modified version, then that source code), or make a written offer to supply the code.</li>\n"
+"  </ol>\n"
+"</p>"
+msgstr ""
+
+#: about/license_t.php:46
+msgid "<p>If you distribute our installers and do not modify them, this will comply with both requirements as these include the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> and an offer in README.txt for users to obtain the source code from us. Versions of Audacity after 1.3.3 also include the GPL in the application itself, in the About Audacity dialog.</p>"
+msgstr ""
+
+#: about/license_t.php:48
+msgid "<p>We would appreciate your linking to our website: <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> so your users can download updated versions of Audacity when released. Also, please subscribe to the notifications list at the bottom of <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> to ensure you are notified of and can distribute the latest version of Audacity.</p>"
+msgstr ""
+
+#: about/license_t.php:50
+msgid "<p>If possible, please include the Audacity documentation from <a href=\"http://audacity.sourceforge.net/help/documentation\">http://audacity.sourceforge.net/help/documentation</a> with your distribution, to reduce the number of queries we receive. Also, please make it clear in your documentation that the Audacity Team cannot offer support on your own your product, only on Audacity. </p>"
+msgstr ""
+
+#: about/license_t.php:52
+msgid "<p>IMPORTANT: If you write your own documentation on Audacity, please let us review it for possible errors, <em>before</em> you publish it.</p>"
+msgstr ""
+
+#: about/license_t.php:54
+msgid "<p>If you modify Audacity without the express permission of the Audacity Team, you do not have the right to use the name Audacity, which is registered trademark of Dominic Mazzoni.  You must rename the product and provide all of your own technical support.</p>"
+msgstr ""
+
+#: about/license_t.php:56
+msgid "<p>\n"
+"  <dl><dt></dt><dd><!-- indent cheat -->\n"
+"    <h4>For vendors selling a hardware product, with Audacity included:</h4>\n"
+"  </dd></dl>\n"
+"  <ol>\n"
+"    <li>Thank you for choosing to distribute Audacity with your product! Please <a href=\"../contact/\">contact us</a> early so that we can work together to help make your product a success.</li>\n"
+"    <li>Please distribute Audacity unmodified. If you need to modify it to work with your device, please <a href=\"../contact/\">contact us</a> first.</li>\n"
+"    <li>Please test your device with Audacity thoroughly.  If there are any specific configuration instructions that users need to follow in order for your device to work with Audacity, make sure they are included with your device.</li>\n"
+"    <li>Please do not refer customers to Audacity technical support when they are having difficulties using your device.  If you are selling a commercial product, you should provide your own technical support.  When users are having Audacity-specific issues that are not related to your specific device, we will of course be happy to assist them.</li>\n"
+"  </ol>\n"
+"</p>"
+msgstr ""
+
+#: about/license_t.php:68
+msgid "<p>\n"
+"  <dl><dt></dt><dd><!-- indent cheat -->\n"
+"    <h4>For those who wish to resell or distribute Audacity:</h4>\n"
+"  </dd></dl>\n"
+"  <ol>\n"
+"    <li>If you are reselling Audacity unmodified, your advertising should make it clear that Audacity is available for free on the Internet, and make it clear what the customer is paying for when they purchase Audacity from you.  Possibilities include the convenience of Audacity on CD-ROM, other bundled software or music files, a printed manual, or more.</li>\n"
+"    <li>If you are reselling Audacity unmodified, we expect you to provide your own technical support wherever possible, in support of your own customers. If you have any concerns or we can help you in this, please <a href=\"../contact/\">contact us</a>.</li>\n"
+"  </ol>\n"
+"</p>"
+msgstr ""
+
+#: about/license_t.php:78
+msgid "<p>You may not advertise yourself or your business as an authorized distributor of Audacity. The name Audacity is a registered trademark of Dominic Mazzoni.</p>"
+msgstr ""
+
+#: about/license_t.php:80
+msgid "<p>See <a href=\"http://audacityteam.org/wiki/index.php?title=AudacityVendors#Advice_for_Vendors\">Advice for Vendors</a> on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a> for further advice.</p>"
+msgstr ""
+
 #: about/credits.php:10
 #: main.inc.php:27
 msgid "Credits"
@@ -1738,13 +1974,15 @@ msgid "<h3>About Free Software</h3>\n"
 "\n"
 "<p>Audacity is free software, developed by a group of volunteers and distributed under the <a href=\"license\">GNU General Public License (GPL)</a>.</p>\n"
 "\n"
-"<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specfic development, i.e., including none of the code libraries Audacity uses.</p>\n"
-"\n"
 "<p>Free software is not just free of cost (like “free beer”).  It is <b>free as in freedom</b> (like “free speech”).  Free software gives you the freedom to use a program, study how it works, improve it, and share it with others.  For more information, visit the <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>\n"
 "\n"
 "<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href=\"http://www.mozilla.com/\">Mozilla</a> web browser, the <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> office suite, and entire <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-based operating systems</a>.</p>\n"
 "\n"
 "<p>We welcome <a href=\"../community/donate\">donations</a> to support Audacity development.</p>"
+msgstr ""
+
+#: about/index.php:43 about/index_t.php:38
+msgid "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specfic development, i.e., including none of the code libraries Audacity uses.</p>"
 msgstr ""
 
 #: about/index.php:45
@@ -1753,6 +1991,46 @@ msgid "<h3>Bundling, Reselling, or Distributing Audacity</h3>\n"
 "<p>Vendors are free to bundle Audacity with their products, or to sell or distribute copies of Audacity (see <a href=\"../download/bundlers\">Vendors and Distributors of Audacity</a>) under the <a href=\"license\">GNU General Public License (GPL)</a>.</p>\n"
 "\n"
 "<p>If you are interested in distributing Audacity, please see the <a href=\"../about/license\">License, and Advice for Vendors</a> page.</p>"
+msgstr ""
+
+#. i18n-hint: You may change the link addresses below, if there is a
+#. version of the page in your language at a different location.
+#.
+#. For official translations of the phrase "free software", please see:
+#. http://www.fsf.org/philosophy/fs-translations.html
+#.
+#. Also check the translations of this web page:
+#. http://www.fsf.org/philosophy/free-sw.html
+#: about/index_t.php:33
+msgid "<h3>About Free Software</h3>"
+msgstr ""
+
+#: about/index_t.php:34
+msgid "<p>Audacity is free software, developed by a group of volunteers and distributed under the <a href=\"license\">GNU General Public License (GPL)</a>.</p>"
+msgstr ""
+
+#: about/index_t.php:36
+msgid "<p>Free software is not just free of cost (like “free beer”).  It is <b>free as in freedom</b> (like “free speech”).  Free software gives you the freedom to use a program, study how it works, improve it, and share it with others.  For more information, visit the <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>"
+msgstr ""
+
+#: about/index_t.php:40
+msgid "<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href=\"http://www.mozilla.com/\">Mozilla</a> web browser, the <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> office suite, and entire <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-based operating systems</a>.</p>"
+msgstr ""
+
+#: about/index_t.php:42
+msgid "<p>We welcome <a href=\"../community/donate\">donations</a> to support Audacity development.</p>"
+msgstr ""
+
+#: about/index_t.php:44
+msgid "<h3>Bundling, Reselling, or Distributing Audacity</h3>"
+msgstr ""
+
+#: about/index_t.php:46
+msgid "<p>Vendors are free to bundle Audacity with their products, or to sell or distribute copies of Audacity (see <a href=\"../download/bundlers\">Vendors and Distributors of Audacity</a>) under the <a href=\"license\">GNU General Public License (GPL)</a>.</p>"
+msgstr ""
+
+#: about/index_t.php:48
+msgid "<p>If you are interested in distributing Audacity, please see the <a href=\"../about/license\">License, and Advice for Vendors</a> page.</p>"
 msgstr ""
 
 #: about/news.php:21
@@ -2019,10 +2297,6 @@ msgstr "Audio Aufnahme"
 #: about/links.php:30
 msgid "Audio Analysis"
 msgstr "Audioanalyse"
-
-#: about/license.php:10 main.inc.php:26
-msgid "License, and Advice for Vendors and Distributors"
-msgstr ""
 
 #. i18n-hint:  These gnu.org web pages are available in several languages.
 #. Please link to the version in your language, if possible.  For example:
