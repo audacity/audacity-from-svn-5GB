@@ -135,13 +135,11 @@ _("Let's get started!</p><p>\
 You can click on the links below to learn how to:\
 <ul><li>\
 [[play|play back]] an existing sound file.\
-<li>How to [[record|record]] a new sound file.\
-<li>How to [[edit|edit]] sound and [[export|export]] to a sound file like MP3.\
-</ul><br><br>\
-Those links will help if you find a problem such as a \
-[[grey|menu option greyed out]] or that Audacity \
-[[norecord|isn't recording properly]] or that you \
-can't [[burncd|burn to a CD]]. You can always get back to these \
+<li>[[record|record]] a new sound file.\
+<li>[[edit|edit]] sound and [[export|export]] to a sound file like MP3. \
+<li>[[burnCD|burn to a CD]] \
+</ul><br><br>") + 
+_("You can always get back to these \
 instructions by clicking the 'Help' menu, then 'Show Welcome Message.' \
 For more detailed reading, please read our full Help by clicking the \
 'Help' menu, then 'Index', or <a href=\"http://audacity.sourceforge.net/help/documentation\">download our Manual</a> \
