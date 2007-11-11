@@ -166,6 +166,7 @@ printf "Done\n"
 printf "removing doxygen files (unfinished) ... ";
 myrmvf $mode audacity.dox
 myrmrvf $mode dox2-src 
+myrmrvf $mode dox 
 printf "Done\n"
 
 printf "removing unused portaudio-v19 directories ... ";
