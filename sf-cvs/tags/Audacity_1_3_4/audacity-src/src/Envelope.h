@@ -1,0 +1,221 @@
+/**********************************************************************
+
+  Audacity: A Digital Audio Editor
+
+  Envelope.h
+
+  Dominic Mazzoni
+
+**********************************************************************/
+
+#ifndef __AUDACITY_ENVELOPE__
+#define __AUDACITY_ENVELOPE__
+
+#include <stdlib.h>
+
+#include <wx/dynarray.h>
+#include <wx/brush.h>
+#include <wx/pen.h>
+
+#include "xml/XMLTagHandler.h"
+#include "Internat.h"
+
+class wxRect;
+class wxDC;
+class wxMouseEvent;
+class wxTextFile;
+
+class DirManager;
+
+#define ENV_DB_RANGE 36
+
+struct EnvPoint : public XMLTagHandler {
+   double t;
+   double val;
+
+   bool HandleXMLTag(const wxChar *tag, const wxChar **attrs)
+   {
+      if (!wxStrcmp(tag, wxT("controlpoint"))) {
+         while (*attrs) {
+            const wxChar *attr = *attrs++;
+            const wxChar *value = *attrs++;
+            if (!wxStrcmp(attr, wxT("t")))
+               t = Internat::CompatibleToDouble(value);
+            else if (!wxStrcmp(attr, wxT("val")))
+               val = Internat::CompatibleToDouble(value);
+         }
+         return true;
+      }
+      else
+         return false;
+   }
+
+   XMLTagHandler *HandleXMLChild(const wxChar *tag)
+   {
+      return NULL;
+   }
+
+   void WriteXML(XMLWriter &xmlFile)
+   {
+      xmlFile.StartTag(wxT("controlpoint"));
+      xmlFile.WriteAttr(wxT("t"), t, 8);
+      xmlFile.WriteAttr(wxT("val"), val);
+      xmlFile.EndTag(wxT("controlpoint"));
+   }
+};
+
+WX_DEFINE_ARRAY(EnvPoint *, EnvArray);
+
+class Envelope : public XMLTagHandler {
+ public:
+   Envelope();
+   void Initialize(int numPoints);
+
+   virtual ~ Envelope();
+
+   void SetInterpolateDB(bool db);
+   void Mirror(bool mirror);
+
+   void Flatten(double value);
+   void SetDefaultValue(double value) {mDefaultValue=value;}
+
+#if LEGACY_PROJECT_FILE_SUPPORT
+   // File I/O
+
+   virtual bool Load(wxTextFile * in, DirManager * dirManager);
+   virtual bool Save(wxTextFile * out, bool overwrite);
+#endif
+
+   // Newfangled XML file I/O
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
+   virtual void WriteXML(XMLWriter &xmlFile);
+
+
+   // Event Handlers
+
+   void Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
+             float zoomMin=-1.0, float zoomMax=1.0);
+
+   // Each ofthese returns true if parents needs to be redrawn
+
+   bool MouseEvent(wxMouseEvent & event, wxRect & r,
+                   double h, double pps, bool dB,
+                   float zoomMin=-1.0, float zoomMax=1.0, float eMin=0., float eMax=2.);
+
+   bool HandleMouseButtonDown( wxMouseEvent & event, wxRect & r,
+                               double h, double pps, bool dB,
+                               float zoomMin=-1.0, float zoomMax=1.0, float eMin=0., float eMax=2.);
+   bool HandleDragging( wxMouseEvent & event, wxRect & r,
+                        double h, double pps, bool dB,
+                        float zoomMin=-1.0, float zoomMax=1.0, float eMin=0., float eMax=2.);
+   bool HandleMouseButtonUp( wxMouseEvent & event, wxRect & r,
+                             double h, double pps, bool dB,
+                             float zoomMin=-1.0, float zoomMax=1.0);
+
+   void GetEventParams( int &height, bool &upper, bool dB,
+                        wxMouseEvent & event, wxRect & r,
+                        float &zoomMin, float &zoomMax);
+
+   // Handling Cut/Copy/Paste events
+   void CollapseRegion(double t0, double t1);
+   void CopyFrom(const Envelope * e, double t0, double t1);
+   void Paste(double t0, Envelope *e);
+   void InsertSpace(double t0, double tlen);
+   void RemoveUnneededPoints(double tolerence = 0.001);
+
+   // Control
+
+   void SetOffset(double newOffset);
+   void SetTrackLen(double trackLen);
+
+   // Accessors
+
+   double GetValue(double t) const; // value at time.
+   double GetValueAtX( int x, wxRect & r, double h, double pps); // value at pixel X
+
+   // This is much faster than calling GetValue() multiple times
+   // if you need more than one value in a row.
+   void GetValues(double *buffer, int len, double t0, double tstep) const;
+
+   int NumberOfPointsAfter(double t);
+   double NextPointAfter(double t);
+
+   double Average( double t0, double t1 );
+   double Integral( double t0, double t1 );
+   double Integral( double t0, double t1, double minY, double maxY );
+
+   void print();
+   void testMe();
+
+   bool IsDirty() const;
+
+   // Add a point at a particular spot
+   int Insert(double when, double value);
+
+   // Move a point at when to value
+   // Returns 0 if point moved, -1 if not found.
+   int Move(double when, double value);
+
+   // delete a point by it's position in array
+   void Delete(int point);
+
+   // Return number of points
+   int GetNumberOfPoints() const;
+
+   // Returns the sets of when and value pairs
+   void GetPoints(double *bufferWhen,
+                  double *bufferValue,
+                  int bufferLen) const;
+
+ private:
+
+   bool mMirror;
+
+   double fromDB(double x) const;
+   double toDB(double x);
+
+   EnvArray mEnv;
+   double mOffset;
+   double mTrackLen;
+   double mTrackEpsilon;
+   double mDefaultValue;
+
+   int mDragPoint;
+   int mInitialX;
+   int mInitialY;
+   int mContourOffset; // Number of pixels contour is from the true envelope.
+   double mInitialWhen;
+   double mInitialVal;
+   bool mUpper;
+   bool mIsDeleting;
+   int mButton;
+
+   bool mDB;
+   bool mDirty;
+
+   // These are memoizing variables for Integral()
+   double lastIntegral_t0;
+   double lastIntegral_t1;
+   double lastIntegral_result;
+   // and this function resets them (call whenever the Envelope changes)
+   void resetIntegralMemoizer() { lastIntegral_t0=0; lastIntegral_t1=0; lastIntegral_result=0; }
+
+   float ValueOfPixel( int y, int height, bool upper, bool dB,
+                       float zoomMin, float zoomMax, float eMin=-10000. );
+};
+
+#endif
+
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: ab815f84-1f8c-4560-a165-271d3bae377e
+
