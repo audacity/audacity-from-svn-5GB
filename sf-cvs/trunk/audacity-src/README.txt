@@ -312,7 +312,7 @@ New Features
 		Windows places such as "Open With".
 	* New keyboard command: 'Mix and Render to New Track'
 		(bound to Ctrl+Shift+M).
-	* New keyboard shortcut: "Shift-Return" starts playback when stopped,
+	* New keyboard shortcut: "Shift-A" starts playback when stopped,
 		or performs "Stop and Select" when playing.
 	* Added support for VAMP audio analysis plug-ins.
 	* Solo button solos only one track at a time, and a track cannot be both
@@ -321,14 +321,14 @@ New Features
 Interface:
 	* Keyboard shortcuts for making short/long jumps along the timeline.
 	* Added 'Snap To' in the Selection Bar.
-	* Made keyboard navigation easier when multiple menu items with the same
-		first letter exist.
+	* Made keyboard navigation easier when multiple menu items with the
+		same first letter exist.
 	* Enhanced interface for label editing.
 	* Layout of OK/Cancel buttons consistency improved.
 	* Preferences:
 		* "Select all audio in project, if none selected" (on by default)
-		* "Beep on completion of longer activities" (system bell, not main
-			output).
+		* "Beep on completion of longer activities" (system bell, not
+			main output).
 		* Other preferences cleaned up and explanations improved.
 	* Envelopes: Many fixes when copying / pasting / repeating.
 	* Many translation updates.
@@ -336,15 +336,15 @@ Interface:
 	* CleanSpeech mode switching without closing and re-opening fixed.
 
 Opening/saving formats:
-	* Metadata editor added for OGG, FLAC and WAV/AIFF exports, and general
-		improvements in this area.
+	* Metadata editor added for OGG, FLAC and WAV/AIFF exports, and
+		general improvements in this area.
 	* Import of metadata improved.
 	* Muted tracks are no longer audible in the exported mix.
 
 Effects:
 	* Truncate Silence: support for multiple and stereo tracks.
 	* Dtmf Generator:
-		* added support	for keypad letters
+		* added support for keypad letters
 		* added an amplitude control.
 	* Compressor: variable decay time added.
 	* Equalization:
@@ -389,7 +389,6 @@ Effects:
    * Improved the Tone Generation effects
 
 Other features:
-   * New built-in screen capture utility
    * Major speed improvement in Spectrogram rendering
    * Increased support for drag and drop on OSX
    * Support added for building against wxWidgets 2.8
