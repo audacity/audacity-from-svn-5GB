@@ -1,0 +1,7115 @@
+# translation of audacity.po to arabic
+# Audacity Strings for Translation.
+# Copyright (C) 1999 and beyond Audacity Development Team
+# This file is distributed under the same license as Audacity.
+# Audacity Team <audacity-translation@lists.sourceforge.net>, 1999 and beyond.
+# djalel chefrour <cdjalel@gmail.com>, 2007.
+msgid ""
+msgstr "Project-Id-Version: Audacity 1.3.3\n"
+"Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
+"POT-Creation-Date: 2007-07-27 19:41+0100\n"
+"PO-Revision-Date: 2007-08-18 16:43+0200\n"
+"Last-Translator: djalel chefrour <cdjalel@gmail.com>\n"
+"Language-Team: arabic <ar@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: AboutDialog.cpp:142 AudacityApp.cpp:698 Menus.cpp:740
+msgid "&About Audacity..."
+msgstr "&حول جُرأة..."
+
+#: AboutDialog.cpp:166 effects/AvcCompressor.cpp:674
+msgid "Enabled"
+msgstr "مُفعل "
+
+#: AboutDialog.cpp:167
+msgid "Disabled"
+msgstr "غير مُفعل"
+
+#: AboutDialog.cpp:223
+msgid "Program build date: "
+msgstr "تاريخ بناء البرنامج:"
+
+#: AboutDialog.cpp:228
+msgid "Settings folder: "
+msgstr "مجلد الإعدادات "
+
+#: AboutDialog.cpp:233
+msgid "Audacity is a free program written by a team of volunteer developers around the world. Coordination happens thanks to SourceForge.net, an online service that provides free tools to open-source software projects. Audacity is available for Windows 98 and newer, Mac OS X, Linux, and other Unix-like operating systems. Older versions of Audacity are available for Mac OS 9."
+msgstr "جُرأة برنامج مجاني كتبه فريق من المُطورين المتطوعين حول العالم. التنسيق بينهم يتم عن طريق SourceForge.net، و هو موقع على الشبكة يوفر أدوات مجانية لمشاريع البرمجة ذات المصادر المفتوحة. جُرأة تعمل علىأنظمة ويندوز98 وما بعده، ماك أواس أكس، لينيكس، و على أنظمة تشغيل أخرى شبيهة بـيونيكس. هناك إصدارات قديمة لجُرأة من أجل ماك أواس 9."
+
+#: AboutDialog.cpp:237
+msgid "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
+msgstr "هذا إصدار تجريبي للبرنامج، يمكن أن يحتوي على أعطاب أو خدماتغير مكتملة. نحن نعتمد على مساعدتك لتطويره، فمن فضلك زر موقعنا على الشبكة و أخبرنا عن اﻷعطاب و خدمات البرنامج التي ترغب فيها. "
+
+#: AboutDialog.cpp:240
+msgid "This is a stable, completed release of Audacity. However, if you find a bug or have a suggestion, please contact us. We depend on feedback from users in order to continue to improve Audacity. For more information, visit our website."
+msgstr "هذا إصدار ثابت و كامل لبرنامج  جُرأة. لكن إذا وجدت خلل أو كان لديك اقتراح، من فضلك اتصل بنا. نحن نعتمد على مساعدات المستخدمين لتحسين البرنامج. للمزيد من المعلومات، زُر موقعنا على الشبكة."
+
+#. i18n-hint: The translation of "translator_credits" will appear
+#. in the credits in the About Audacity window.  Use this to add
+#. your own name(s) to the credits.
+#.
+#. For example:  "English translation by Dominic Mazzoni."
+#.
+#: AboutDialog.cpp:250 AboutDialog.cpp:252
+msgid "translator_credits"
+msgstr "المترجم إلى العربية: جلال شفرور"
+
+#: AboutDialog.cpp:265
+msgid "A Free Digital Audio Editor"
+msgstr "محرر مجاني للأصوات الرقمية "
+
+#: AboutDialog.cpp:269
+msgid "Information"
+msgstr "معلومة "
+
+#: AboutDialog.cpp:271
+msgid "Credits"
+msgstr "الحقوق"
+
+#: AboutDialog.cpp:275
+#, c-format
+msgid "Audacity %s Development Team"
+msgstr "فريق مطوري جُرأة %s"
+
+#: AboutDialog.cpp:280
+#, c-format
+msgid "Audacity %s Support Team"
+msgstr "فريق دعم جُرأة %s"
+
+#: AboutDialog.cpp:285
+msgid "Emeritus Developers"
+msgstr "المطورين القدماء"
+
+#: AboutDialog.cpp:290
+msgid "Other Emeritus Team Members"
+msgstr "أعضاء آخرين قدماء من الفريق"
+
+#: AboutDialog.cpp:295
+msgid "Other Contributors"
+msgstr "مساهمين آخرين"
+
+#: AboutDialog.cpp:300
+msgid "Audacity is based on code from the following projects:"
+msgstr "جُرأة تستخدم نصوص برامج من المشاريع التالية:"
+
+#: AboutDialog.cpp:305
+msgid "Special thanks:"
+msgstr "شكر خاص:"
+
+#: AboutDialog.cpp:314
+msgid "Audacity"
+msgstr "جُرأة"
+
+#. i18n-hint: Rather than a literal translation, consider adding the
+#. appropriate suffix or prefix to create a word meaning 'something which
+#. has Audacity'
+#: AboutDialog.cpp:340 AboutDialog.cpp:371 SplashDialog.cpp:111
+msgid "OK... Audacious!"
+msgstr ""
+
+#: AboutDialog.cpp:376
+msgid "GPL License"
+msgstr "رخصة جي.بي.أل"
+
+#: AboutDialog.cpp:676 Dependencies.cpp:308 FreqWindow.cpp:209
+msgid "Close"
+msgstr "إغلاق"
+
+#: AudacityApp.cpp:430 Project.cpp:1724
+#, c-format
+msgid "%s is already open in another window."
+msgstr "%s مفتوح من قبل في نافذة أخرى. "
+
+#: AudacityApp.cpp:432 Project.cpp:1726 Project.cpp:1807 Project.cpp:1951
+#: Project.cpp:2053
+msgid "Error opening project"
+msgstr "خطأ في فتح المشروع "
+
+#: AudacityApp.cpp:464
+#, c-format
+msgid "%s does not exist and could not be opened.\n"
+"\n"
+"It has been removed from the history list."
+msgstr "%s غير موجود و لا يمكن فتحه.\n"
+"\n"
+"تم حذفه من قائمة التاريخ. "
+
+#: AudacityApp.cpp:516
+msgid "Master Gain Control"
+msgstr "التحكم الرئيسي في مستوى الصوت "
+
+#: AudacityApp.cpp:517
+msgid "Input Meter"
+msgstr "عداد المدخل "
+
+#: AudacityApp.cpp:518
+msgid "Output Meter"
+msgstr "عداد المخرج "
+
+#. i18n-hint: Mac OS X shortcut should be Ctrl+,
+#. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
+#: AudacityApp.cpp:700 Menus.cpp:481
+msgid "&Preferences...\tCtrl+,"
+msgstr "&تفضيلات...\tCtrl+,"
+
+#: AudacityApp.cpp:789 AudacityApp.cpp:874
+#, c-format
+msgid "Using block size of %ld\n"
+msgstr "استخدام حجم الكتلة %ld\n"
+
+#: AudacityApp.cpp:811 AudacityApp.cpp:889
+#, c-format
+msgid "Unknown command line option: %s\n"
+msgstr "خيار سطر اﻷوامر غير معروف: %s\n"
+
+#: AudacityApp.cpp:1008
+msgid "Audacity could not find a place to store temporary files.\n"
+"Please enter an appropriate directory in the preferences dialog."
+msgstr "جُرأة لم تجد مكان لتخزين الملفات المؤقتة.\n"
+"من فضلك أدخل دليل مناسب لهذا في علبة حوار الخيارات. "
+
+#: AudacityApp.cpp:1014
+msgid "Audacity is now going to exit. Please launch Audacity again to use the new temporary directory."
+msgstr "سيتم توقيف جُرأة الآن. من فضلك أعد تشغيل جُرأة لكي تستخدم الدليل المؤقت الجديد."
+
+#: AudacityApp.cpp:1046
+msgid "Running two copies of Audacity simultaneously may cause\n"
+"data loss or cause your system to crash.\n"
+"\n"
+msgstr "قد يؤدي تشغيل نسختين من جُرأة في نفس الوقت\n"
+"إلى فقدان البيانات أو إلى تحطم النظام.\n"
+"\n"
+
+#: AudacityApp.cpp:1053
+msgid "Audacity was not able to lock the temporary files directory.\n"
+"This folder may be in use by another copy of Audacity.\n"
+msgstr "لم تتمكن جُرأة من إقفال دليل الملفات المؤقتة.\n"
+"يُحتمل أن نسخة أخرى من جُرأة تستخدم هذا الدليل.\n"
+
+#: AudacityApp.cpp:1055
+msgid "Do you still want to start Audacity?"
+msgstr "هل لا زلت تريد بدء تشغيل جُرأة؟"
+
+#: AudacityApp.cpp:1057
+msgid "Error locking temporary folder"
+msgstr "خطأ في إقفال المجلد المؤقت "
+
+#: AudacityApp.cpp:1095
+msgid "The system has detected that another copy of Audacity is running.\n"
+msgstr "هناك نسخة أخرى من برنامج جُرأة قيد الإستخدام.\n"
+
+#: AudacityApp.cpp:1097
+msgid "Use the New or Open commands in the currently running Audacity\n"
+"process to open multiple projects simultaneously.\n"
+msgstr "استعمل الأمر جديد أو فتح في برنامج جُرأة المستخدم حاليا \n"
+"لفتح عدة مشاريع في نفس الوقت.\n"
+
+#: AudacityApp.cpp:1098
+msgid "Audacity is already running"
+msgstr "إن جُرأة تشتغل من قبل "
+
+#: AudacityApp.cpp:1134
+msgid "Command-line options supported:"
+msgstr ""
+
+#. i18n-hint: '-help' is the option and needs to stay in
+#. * English. This displays a list of available options
+#: AudacityApp.cpp:1137
+msgid "\t-help (this message)"
+msgstr ""
+
+#. i18n-hint '-version' needs to stay in English.
+#: AudacityApp.cpp:1139
+msgid "\t-version (display Audacity version)"
+msgstr ""
+
+#. i18n-hint '-test' is the option and needs to stay in
+#. * English. This runs a set of automatic tests on audacity
+#. * itself
+#: AudacityApp.cpp:1143
+msgid "\t-test (run self diagnostics)"
+msgstr ""
+
+#. i18n-hint '-blocksize' is the option and needs to stay in
+#. * English. 'nnn' is any integer number. This controls the
+#. * size pieces that audacity uses when writing files to the
+#. * disk
+#: AudacityApp.cpp:1148
+msgid "\t-blocksize nnn (set max disk block size in bytes)"
+msgstr ""
+
+#: AudacityApp.cpp:1149
+msgid "In addition, specify the name of an audio file or Audacity project to open it."
+msgstr ""
+
+#: AudacityApp.cpp:1380
+msgid "Audacity project (.AUP) files are not currently \n"
+"associated with Audacity. \n"
+"\n"
+"Associate them, so they open on double-click?"
+msgstr "حاليا ملفات مشاريع جُرأة (.AUP) ليست \n"
+"مرتبطة بجُرأة. \n"
+"\n"
+"هل تريد ربطها حتى يمكن فتحها بنقرة مزدوجة؟"
+
+#: AudacityApp.cpp:1381
+msgid "Audacity Project Files"
+msgstr "ملفات مشاريع جُرأة "
+
+#: AudioIO.cpp:219
+msgid "Could not find any audio devices.\n"
+msgstr "لا يمكن العثور على أية أجهزة صوتية.\n"
+
+#: AudioIO.cpp:220
+msgid "You will not be able to play or record audio.\n"
+"\n"
+msgstr "لن يكون بإمكانك قراءة أو تسجيل الصوت.\n"
+"\n"
+
+#: AudioIO.cpp:223
+msgid "Error: "
+msgstr "خطأ: "
+
+#: AudioIO.cpp:226
+msgid "Error Initializing Audio"
+msgstr "خطأ في تهيئة نظام الصوت "
+
+#: AudioIO.cpp:1236
+msgid "Latency problem"
+msgstr ""
+
+#: AudioIO.cpp:1236
+msgid "Latency setting has caused the recorded audio to be hidden before zero.\n"
+"Audacity has brought it back to start at zero.\n"
+"You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."
+msgstr ""
+
+#: AutoRecovery.cpp:54
+msgid "Automatic Crash Recovery"
+msgstr "استعادة تلقائية بعد التحطم"
+
+#: AutoRecovery.cpp:73
+msgid "Some projects were not saved properly the last time Audacity was run.\n"
+"Fortunately, the following projects can automatically be recovered:"
+msgstr "بعض المشاريع  لم تُحفظ بشكل نظيف عند آخر  استخدام لجُرأة.\n"
+"لحسن الحظ، يمكن استرجاع المشاريع التالية تلقائيا:"
+
+#: AutoRecovery.cpp:75
+msgid "Recoverable projects"
+msgstr "المشاريع المُسترجعة"
+
+#: AutoRecovery.cpp:78
+msgid "Name"
+msgstr "الإسم"
+
+#: AutoRecovery.cpp:84
+msgid "Recovering a project will not change any files on disk before you save it."
+msgstr "استرجاع مشروع لن يغير أي ملف على القرص قبل أن تقوم بحفظه."
+
+#: AutoRecovery.cpp:88
+msgid "Quit Audacity"
+msgstr "الخروج من جُرأة"
+
+#: AutoRecovery.cpp:89
+msgid "Do Not Recover"
+msgstr ""
+
+#: AutoRecovery.cpp:90
+#, fuzzy
+msgid "Recover Projects"
+msgstr "استرجع المشاريع"
+
+#: AutoRecovery.cpp:127
+msgid "You have chosen not to recover any projects. You will not be able to recover those projects later if you change your mind. Do you really want to continue without recovering?"
+msgstr "لقد اخترت أن لا تسترجع أي مشروع, لن يكون بإمكانك استرجاع هذه المشاريع لاحقا إذا ما غيرت رأيك. هل تريد حقا الإستمرار دون الإسترجاع؟"
+
+#: AutoRecovery.cpp:128
+msgid "Really not recover projects?"
+msgstr ""
+
+#: AutoRecovery.cpp:146 AutoRecovery.cpp:183
+msgid "Could not enumerate files in auto save directory"
+msgstr "لا يمكن تعداد الملفات في مجلد الحفظ التلقائي"
+
+#: AutoRecovery.cpp:147 AutoRecovery.cpp:184 Menus.cpp:2475 Menus.cpp:4349
+#: Project.cpp:1910 Project.cpp:3236 Project.cpp:3315 WaveTrack.cpp:542
+#: WaveTrack.cpp:561 WaveTrack.cpp:1624 effects/Effect.cpp:346
+#: export/ExportMP2.cpp:220 prefs/DirectoriesPrefs.cpp:189
+#: prefs/KeyConfigPrefs.cpp:245 toolbars/ControlToolBar.cpp:537
+#: toolbars/ControlToolBar.cpp:840
+msgid "Error"
+msgstr "خطأ "
+
+#: BatchCommandDialog.cpp:56 BatchCommandDialog.cpp:60
+#: BatchCommandDialog.cpp:61
+msgid "Select Command"
+msgstr "اختيار أمر "
+
+#: BatchCommandDialog.cpp:80 BatchProcessDialog.cpp:454
+#: prefs/KeyConfigPrefs.cpp:142
+msgid "&Command"
+msgstr "&أمر "
+
+#: BatchCommandDialog.cpp:82
+msgid "&Edit Parameters"
+msgstr "&تحرير المتغيرات"
+
+#: BatchCommandDialog.cpp:89 BatchProcessDialog.cpp:455
+msgid "&Parameters"
+msgstr "ال&متغيرات"
+
+#: BatchCommandDialog.cpp:94
+msgid "C&hoose command"
+msgstr "ا&ختيار أمر "
+
+#: BatchCommands.cpp:477
+msgid "Stereo To Mono Effect not found"
+msgstr "التأثير من الثنائي إلى الأحادي غير موجود"
+
+#: BatchCommands.cpp:497
+msgid "Ogg Vorbis support is not included in this build of Audacity"
+msgstr "هذه النسخة من جُرأة لا تحتوي على دعم أوق فوربيس "
+
+#: BatchCommands.cpp:509
+msgid "FLAC support is not included in this build of Audacity"
+msgstr "هذه النسخة من جُرأة لا تحتوي على دعم فلاك"
+
+#: BatchCommands.cpp:513
+#, c-format
+msgid "Command %s not implemented yet"
+msgstr "الأمر %s ليس مُبرمج بعد"
+
+#: BatchCommands.cpp:529
+#, c-format
+msgid "Could not set parameters of effect %s\n"
+" to %s."
+msgstr "لا يمكن تبديل متغيرات التأثير %s \n"
+"  إلى %s."
+
+#: BatchCommands.cpp:583
+#, c-format
+msgid "Your batch command of %s was not recognised."
+msgstr "لا يمكن التعرف على مجموعة أوامرك %s."
+
+#: BatchCommands.cpp:674
+#, c-format
+msgid "Apply %s with parameter(s)\n"
+"\n"
+"%s"
+msgstr "تطبيق %s بالمتغيرات \n"
+"\n"
+"%s"
+
+#: BatchCommands.cpp:675 BatchCommands.cpp:680
+msgid "Test Mode"
+msgstr "النمط التجريبي"
+
+#: BatchCommands.cpp:679
+#, c-format
+msgid "Apply %s"
+msgstr "تطبيق %s"
+
+#: BatchProcessDialog.cpp:60 BatchProcessDialog.cpp:70
+#: BatchProcessDialog.cpp:71
+msgid "Apply Chain"
+msgstr "تطبيق السلسلة"
+
+#: BatchProcessDialog.cpp:94
+msgid "&Select chain"
+msgstr "ا&ختيار السلسلة"
+
+#: BatchProcessDialog.cpp:99
+msgid "Chain"
+msgstr "السلسلة "
+
+#: BatchProcessDialog.cpp:106
+msgid "Apply to Current &Project"
+msgstr "تطبيق على المشروع ال&حالي"
+
+#: BatchProcessDialog.cpp:107
+msgid "Apply to &Files..."
+msgstr "تطبيق على ال&ملفات..."
+
+#: BatchProcessDialog.cpp:108 BatchProcessDialog.cpp:247 LabelDialog.cpp:136
+#: LabelDialog.cpp:140 Tags.cpp:1383 Tags.cpp:1396 UploadDialog.cpp:180
+#: effects/Amplify.cpp:209 effects/AutoDuck.cpp:528 effects/AutoDuck.cpp:532
+#: effects/AvcCompressor.cpp:732 effects/ChangeLength.cpp:183
+#: effects/ChangePitch.cpp:394 effects/ChangeSpeed.cpp:392
+#: effects/ChangeTempo.cpp:295 effects/Compressor.cpp:516
+#: effects/Effect.cpp:399 effects/Effect.cpp:405 effects/Equalization.cpp:1250
+#: effects/Leveller.cpp:250 effects/Normalize.cpp:353 effects/Phaser.cpp:600
+#: effects/Repeat.cpp:271 effects/SpikeCleaner.cpp:188
+#: effects/VST/VSTEffect.cpp:95 effects/VST/VSTEffect.cpp:451
+#: effects/Wahwah.cpp:587 effects/audiounits/AudioUnitEffect.cpp:882
+#: effects/ladspa/LadspaEffect.cpp:609 effects/nyquist/Nyquist.cpp:825
+#: effects/nyquist/Nyquist.cpp:991 export/Export.cpp:973
+#: export/ExportCL.cpp:95 export/ExportCL.cpp:99 export/ExportFLAC.cpp:114
+#: export/ExportFLAC.cpp:118 export/ExportMP2.cpp:132 export/ExportMP2.cpp:136
+#: export/ExportMP3.cpp:352 export/ExportMP3.cpp:356 export/ExportMP3.cpp:534
+#: export/ExportMP3.cpp:538 export/ExportMP3.cpp:1930
+#: export/ExportMP3.cpp:1934 export/ExportMultiple.cpp:302
+#: export/ExportMultiple.cpp:306 export/ExportOGG.cpp:96
+#: export/ExportOGG.cpp:100 export/ExportPCM.cpp:198 export/ExportPCM.cpp:202
+#: import/ImportRaw.cpp:443 prefs/PrefsDialog.cpp:185
+msgid "&Cancel"
+msgstr "إل&غاء"
+
+#: BatchProcessDialog.cpp:146 BatchProcessDialog.cpp:191
+msgid "No chain selected"
+msgstr "لم يتم اختيار سلسلة"
+
+#: BatchProcessDialog.cpp:159
+#, c-format
+msgid "Applying '%s' to current project"
+msgstr "تطبيق '%s' على المشروع الحالي"
+
+#: BatchProcessDialog.cpp:200
+msgid "Please save and close the current project first."
+msgstr "من فضلك احفظ و اغلق المشروع الحالي أولا."
+
+#: BatchProcessDialog.cpp:207
+msgid "Select file(s) for batch processing..."
+msgstr "اختيار الملفات للمعالجة في دفعة واحدة..."
+
+#: BatchProcessDialog.cpp:210
+msgid "All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac"
+msgstr "كل الملفات (*.*)|*.*|  ملفات وايف (*.wav)|*.wav ملفات آيف (*.aif)|*.aif| ملفات آيو (*.au)|*.au| ملفات أم.بي.3 (*.mp3)|*.mp3|ملفات أوق فوربيس (*.ogg)|*.ogg|ملفات فلاك (*.flac)|*.flacc"
+
+#: BatchProcessDialog.cpp:231
+msgid "Applying..."
+msgstr "تطبيق..."
+
+#: BatchProcessDialog.cpp:241
+msgid "File"
+msgstr "ملف"
+
+#: BatchProcessDialog.cpp:356 BatchProcessDialog.cpp:360
+#: BatchProcessDialog.cpp:361
+msgid "Edit Chains"
+msgstr "تحرير السلاسل"
+
+#: BatchProcessDialog.cpp:416
+msgid "&Chains"
+msgstr "ال&سلاسل"
+
+#: BatchProcessDialog.cpp:435
+msgid "&Add"
+msgstr "ا&ضافة"
+
+#: BatchProcessDialog.cpp:436 LabelDialog.cpp:128 TrackPanel.cpp:3989
+msgid "&Remove"
+msgstr "&حذف"
+
+#: BatchProcessDialog.cpp:437
+msgid "Re&name"
+msgstr "ا&عادة تسمية"
+
+#: BatchProcessDialog.cpp:443
+msgid "C&hain (Double-Click or press SPACE to edit)"
+msgstr "&سلسلة (نقرة مزدوجة أو ضغط على SPACE للتحرير)"
+
+#. i18n-hint: This is the number of the command in the list
+#: BatchProcessDialog.cpp:453
+msgid "No"
+msgstr "لا"
+
+#: BatchProcessDialog.cpp:459
+msgid "&Insert"
+msgstr "إ&دخال"
+
+#: BatchProcessDialog.cpp:460
+msgid "De&lete"
+msgstr "ح&ذف"
+
+#: BatchProcessDialog.cpp:461
+msgid "Move &Up"
+msgstr "تحريك ل&فوق"
+
+#: BatchProcessDialog.cpp:462
+msgid "Move &Down"
+msgstr "تحريك ل&تحت"
+
+#: BatchProcessDialog.cpp:463
+msgid "De&faults"
+msgstr "ال&قيم الافتراضية"
+
+#: BatchProcessDialog.cpp:507
+msgid "- END -"
+msgstr "- النهاية -"
+
+#: BatchProcessDialog.cpp:540
+#, c-format
+msgid "%s changed"
+msgstr "تم تغيير %s"
+
+#: BatchProcessDialog.cpp:541
+msgid "Do you want to save the changes?"
+msgstr "هل تريد حفظ التغييرات؟"
+
+#: BatchProcessDialog.cpp:623
+msgid "Enter name of new chain"
+msgstr "ادخل اسم السلسلة الجديدة"
+
+#: BatchProcessDialog.cpp:634
+msgid "Name must not be blank"
+msgstr "يجب أن لا يكون الإسم أبيضا"
+
+#: BatchProcessDialog.cpp:643
+#, c-format
+msgid "Names may not contain '%c' and '%c'"
+msgstr "لا يمن أن تحوي الأسماء '%c' و '%c'"
+
+#: BatchProcessDialog.cpp:673
+#, c-format
+msgid "Are you sure you want to delete %s?"
+msgstr "هل أنت متأكد أنك تريد حذف %s؟"
+
+#: Dependencies.cpp:139
+msgid "Removing Dependencies"
+msgstr "حذف المتعلقات"
+
+#: Dependencies.cpp:140
+msgid "Copying audio data into project..."
+msgstr "نسخ الصوت إلى المشروع..."
+
+#: Dependencies.cpp:219
+msgid "Your project currently depends on the presence of other files.\n"
+"Copy audio from the following files into your project to make it self-contained?\n"
+"This will need more disc space but is safer."
+msgstr "إن مشروعك يعتمد حاليا على وجود ملفات أخرى.\n"
+"انسخ الصوت من الملفات التالية إلى مشروعك حتى تجعله مستقل بذاته؟\n"
+"سيتطلب هذا مساحة  أكبر على القرص و لكنه أسلم."
+
+#: Dependencies.cpp:266
+msgid "Project depends on other audio files"
+msgstr "مشروع يعتمد على ملفات صوتية أخرى."
+
+#: Dependencies.cpp:287
+msgid "Project Dependencies"
+msgstr "ارتباطات المشروع"
+
+#: Dependencies.cpp:290
+msgid "Audio file"
+msgstr "ملف صوتي"
+
+#: Dependencies.cpp:292
+msgid "Disk space"
+msgstr "مساحة القرص"
+
+#: Dependencies.cpp:297
+msgid "Copy Selected Audio Into Project"
+msgstr "نسخ الصوت المختار إلى المشروع"
+
+#: Dependencies.cpp:304 Dependencies.cpp:413
+msgid "Cancel Save"
+msgstr "إلغاء الحفظ "
+
+#: Dependencies.cpp:306
+msgid "Do Not Copy Any Audio"
+msgstr ""
+
+#: Dependencies.cpp:308
+msgid "Copy All Audio into Project (Safer)"
+msgstr ""
+
+#: Dependencies.cpp:320 Dependencies.cpp:325
+msgid "Ask me"
+msgstr "إسألني"
+
+#: Dependencies.cpp:321
+msgid "Always copy all audio (safest)"
+msgstr "انسخ كل الصوت دائما (الأسلم)"
+
+#: Dependencies.cpp:322
+msgid "Never copy any audio"
+msgstr "لا تنسخ أي صوت أبدا"
+
+#: Dependencies.cpp:324
+msgid "Whenever a project depends on other files:"
+msgstr "كلما كان المشروع يعتمد على ملفات أخرى:"
+
+#: Dependencies.cpp:412
+msgid "If you proceed, your project will not be saved to disk. Is this what you want?"
+msgstr "إذا واصلت فلن يتم حفظ المشروع على القرص. هل هذا ما تريده؟"
+
+#: Dependencies.cpp:452
+msgid "Your project is self-contained; it does not depend on any external audio files."
+msgstr "إن مشروعك مستقل بذاته و لا يعتمد على أي ملفات صوتية خارجية."
+
+#: Dependencies.cpp:453
+msgid "Dependency check"
+msgstr "فحص الارتباطات"
+
+#: DirManager.cpp:136
+msgid "Warning: there is very little free disk space left on this volume.\n"
+"Please select another temporary directory in your preferences."
+msgstr "إنذار: المساحة الفارغة على هذا القرص ضئيلة جدا.\n"
+"من فضلك إختر دليلا مؤقتا آخر في التفضيلات."
+
+#: DirManager.cpp:221 DirManager.cpp:251 DirManager.cpp:332
+msgid "Progress"
+msgstr "تقدم "
+
+#: DirManager.cpp:285
+msgid "Cleaning up temporary files"
+msgstr "تنظيف الملفات المؤقتة"
+
+#: DirManager.cpp:333
+msgid "Saving project data files"
+msgstr "حفظ ملفات بيانات المشروع"
+
+#: DirManager.cpp:406
+msgid "Cleaning up cache directories"
+msgstr "تنظيف الأدلة المخبئية"
+
+#: DirManager.cpp:493
+#, c-format
+msgid "Audacity found an orphaned blockfile %s! \n"
+"Please consider saving and reloading the project to perform a complete project check.\n"
+msgstr "لقد عثر جُرأة على كتلة ملف يتيمة %s! \n"
+"من فضلك فكر في حفظ المشروع ثم إعادة تحميله ليتم فحصه بالكامل.\n"
+
+#. i18n-hint: This is the pattern for filenames that are created
+#. when a file needs to be backed up to a different name.  For
+#. example, mysong would become mysong-old1, mysong-old2, etc.
+#: DirManager.cpp:985
+#, c-format
+msgid "%s-old%d"
+msgstr "%s-قديم%d "
+
+#: DirManager.cpp:993
+msgid "Unable to open/create test file"
+msgstr "غير قادر على فتحِ/إنشاء ملف تجريبي"
+
+#: DirManager.cpp:1002
+#, c-format
+msgid "Unable to remove '%s'"
+msgstr "غير قادر على حذف '%s'"
+
+#: DirManager.cpp:1007
+#, c-format
+msgid "Renamed file: %s\n"
+msgstr "تم إعادة تسمية الملف: %s\n"
+
+#: DirManager.cpp:1023
+#, c-format
+msgid "Changing block %s\n"
+msgstr "تغيير الكتلة %s\n"
+
+#: DirManager.cpp:1051
+#, c-format
+msgid "Unable to rename '%s' to '%s'"
+msgstr "غير قادر على إعادة تسمية '%s' إلى  '%s'"
+
+#: DirManager.cpp:1115 DirManager.cpp:1403
+msgid "Inspecting project file data..."
+msgstr "تفتيش بيانات ملف المشروع..."
+
+#: DirManager.cpp:1128
+#, c-format
+msgid "Orphaned blockfile: (%s)"
+msgstr "كتلة ملف يتيمة: (%s)"
+
+#: DirManager.cpp:1153
+#, c-format
+msgid "Missing alias file: (%s)"
+msgstr "ملف الكنية مفقود: (%s)"
+
+#: DirManager.cpp:1173
+#, c-format
+msgid "Missing summary file: (%s.auf)"
+msgstr "ملف الملخص مفقود: (%s.auf)"
+
+#: DirManager.cpp:1193
+#, c-format
+msgid "Missing data file: (%s.au)"
+msgstr "ملف البيانات مفقود: (%s.au)"
+
+#: DirManager.cpp:1207
+msgid "Project check found inconsistencies inspecting the loaded project data;\n"
+"click 'Details' for a complete list of errors, or 'OK' to proceed to more options."
+msgstr "أظهر الفحص وجود أخطاء في بيانات المشروع المُحمل.\n"
+"انقر 'تفاصيل' لإظهار القائمة الكاملة للأخطاء، أو انقر 'نعم' للتنقل إلى خيارات أخرى. "
+
+#: DirManager.cpp:1219
+#, c-format
+msgid "Project check found %d orphaned blockfile[s]. These files are\n"
+"unused and probably left over from a crash or some other bug.\n"
+"They should be deleted to avoid disk contention."
+msgstr "أدى فحص المشروع إلى العثور على  %d  كتل ملفات يتيمة،\n"
+"إنها غير مستخدمة و مُحتمل أن تكون بقايا تحطم البرنامج أو خلل ما.\n"
+"يجب حذف هذه الكتل لتفادي حشو القرص بها."
+
+#: DirManager.cpp:1224
+msgid "Delete orphaned files [safe and recommended]"
+msgstr "حذف الملفات اليتيمة [عملية آمنة نوصى بها]"
+
+#: DirManager.cpp:1225
+msgid "Continue without deleting; silently work around the extra files"
+msgstr "مواصلة دون الحذف، مع تجنب الملفات الزائدة في صمت"
+
+#: DirManager.cpp:1226
+msgid "Close project immediately with no changes"
+msgstr "إغلاق المشروع فورا دون أي تغيير"
+
+#: DirManager.cpp:1228 DirManager.cpp:1263 DirManager.cpp:1309
+#: DirManager.cpp:1351 export/Export.cpp:483 export/Export.cpp:500
+#: export/Export.cpp:519 widgets/Warning.cpp:55
+msgid "Warning"
+msgstr "إنذار "
+
+#: DirManager.cpp:1254
+#, c-format
+msgid "Project check detected %d input file[s] being used in place\n"
+"('alias files') are now missing.  There is no way for Audacity\n"
+"to recover these files automatically; you may choose to\n"
+"permanently fill in silence for the missing files, temporarily\n"
+"fill in silence for this session only, or close the project now\n"
+"and try to restore the missing files by hand."
+msgstr "أدى فحص المشروع إلى العثور على %d ملف دخول في طور الإستخدام،\n"
+"ملفات الكنية مفقودة الآن. لا يسنطيع جُرأة أن يسترجع هذه الملفات\n"
+"تلقائيا. يمكنك اختيار تعويض الملفات المفقودة بالصمت بشكل دائم،\n"
+"أو بشكل مؤقت لهذه الجلسة فقط، أو إغلاق المشروع الآن و محاولة \n"
+"إسترجاع هذه الملفات يدويا."
+
+#: DirManager.cpp:1259
+msgid "Replace missing data with silence [permanent upon save]"
+msgstr "تعويض البيانات المفقودة بالصمت [بشكل دائم عند الحفظ]"
+
+#: DirManager.cpp:1260 DirManager.cpp:1348
+msgid "Temporarily replace missing data with silence [this session only]"
+msgstr "تعويض البيانات المفقودة بالصمت مؤقتا [لهذه الجلسة فقط]"
+
+#: DirManager.cpp:1261 DirManager.cpp:1307 DirManager.cpp:1349
+msgid "Close project immediately with no further changes"
+msgstr "إغلاق المشروع فورا دون أي تغيير"
+
+#: DirManager.cpp:1300
+#, c-format
+msgid "Project check detected %d missing summary file[s] (.auf).\n"
+"Audacity can fully regenerate these summary files from the\n"
+"original audio data in the project."
+msgstr "أظهر فحص المشروع أن هناك %d ملف مُلخص (.auf)\n"
+" مفقود. يسنطيع جُرأة إعادة إنشاء هذه الملفات الملخصة\n"
+"كاملة إنطلاقا من البيانات الصوتية اﻷصلية في المشروع."
+
+#: DirManager.cpp:1305
+msgid "Regenerate summary files [safe and recommended]"
+msgstr "إعادة إنشاء الملفات الملخصة [عملية آمنة نوصى بها]"
+
+#: DirManager.cpp:1306
+msgid "Fill in silence for missing display data [this session only]"
+msgstr "تعويض بيانات العرض المفقودة بالصمت [لهذه الجلسة فقط]"
+
+#: DirManager.cpp:1342
+#, c-format
+msgid "Project check detected %d missing audio data blockfile[s] (.au), \n"
+"probably due to a bug, system crash or accidental deletion.\n"
+"There is no way for Audacity to recover this lost data\n"
+"automatically; you may choose to permanently fill in silence\n"
+"for the missing data, temporarily fill in silence for this\n"
+"session only, or close the project now and try to restore the\n"
+"missing data by hand."
+msgstr "أظهر فحص المشروع أن هناك %d كتل ملفات لبيانات\n"
+"صوتية (.auf)، يُحتمل أن تكون بقايا تحطم البرنامج\n"
+"   أو خلل ما أو حذف عن طريق الخطأ. لا يسنطيع جُرأة \n"
+" أن يسترجع هذه البيانات المفقودة تلقائيا. يمكنك اختيار\n"
+"تعويض البيانات المفقودة بالصمت بشكل دائم، أو بشكل\n"
+" مؤقت لهذه  الجلسة فقط، أو إغلاق المشروع الآن و محاولة \n"
+"إسترجاع هذه البيانات يدويا. "
+
+#: DirManager.cpp:1347
+msgid "Replace missing data with silence [permanent immediately]"
+msgstr "تعويض البيانات المفقودة بالصمت [بشكل دائم فورا]"
+
+#: DirManager.cpp:1375
+msgid "Cleaning up unused directories in project data..."
+msgstr "تنظيف الأدلة غير المستخدمة في بيانات المشروع..."
+
+#: DirManager.cpp:1448
+msgid "Caching audio"
+msgstr "تخبئة الصوت"
+
+#: DirManager.cpp:1449
+msgid "Caching audio into memory..."
+msgstr "تخبئة الصوت في الذاكرة..."
+
+#: DirManager.cpp:1486
+msgid "Saving recorded audio"
+msgstr "حفظ الصوت المسجل"
+
+#: DirManager.cpp:1487
+msgid "Saving recorded audio to disk..."
+msgstr "حفظ الصوت المسجل في القرص..."
+
+#: FFT.cpp:379
+msgid "Rectangular"
+msgstr "مستطيل "
+
+#: FreqWindow.cpp:104
+msgid "Frequency Analysis"
+msgstr "تحليل التردد "
+
+#: FreqWindow.cpp:140 TrackPanel.cpp:511
+msgid "Spectrum"
+msgstr "طيف "
+
+#: FreqWindow.cpp:141
+msgid "Standard Autocorrelation"
+msgstr "علاقة تلقائية قياسية "
+
+#: FreqWindow.cpp:142
+msgid "Cuberoot Autocorrelation"
+msgstr "ارتباط ذاتي بجذر المكعب "
+
+#: FreqWindow.cpp:143
+msgid "Enhanced Autocorrelation"
+msgstr "ارتباط  ذاتي مطور "
+
+#. i18n-hint: This is a technical term, derived from the word
+#. "spectrum".  Do not translate it unless you are sure you
+#. know the correct technical word in your language.
+#: FreqWindow.cpp:147
+msgid "Cepstrum"
+msgstr "كابستروم "
+
+#: FreqWindow.cpp:150
+msgid "Algorithm:"
+msgstr "خوارزم:"
+
+#: FreqWindow.cpp:168 HistoryWindow.cpp:79
+msgid "Size"
+msgstr "حجم "
+
+#. i18n-hint: This refers to a "window function", used in the
+#. Frequency analyze dialog box.
+#: FreqWindow.cpp:181
+msgid " window"
+msgstr "نافذة "
+
+#: FreqWindow.cpp:184
+msgid "Function:"
+msgstr "دالة:"
+
+#: FreqWindow.cpp:192
+msgid "Linear frequency"
+msgstr "تردد خطي "
+
+#: FreqWindow.cpp:193
+msgid "Log frequency"
+msgstr "انشر التردد"
+
+#: FreqWindow.cpp:196
+msgid "Axis:"
+msgstr "محور:"
+
+#: FreqWindow.cpp:206 LabelDialog.cpp:130 Menus.cpp:206 Menus.cpp:235
+msgid "&Export..."
+msgstr "ت&صدير..."
+
+#: FreqWindow.cpp:272 FreqWindow.cpp:402 effects/AutoDuck.cpp:487
+#: effects/AutoDuck.cpp:521 effects/AutoDuck.cpp:799
+#: effects/Compressor.cpp:348 effects/Compressor.cpp:356
+#: effects/Equalization.cpp:1079 effects/Equalization.cpp:1081
+#: effects/Equalization.cpp:1089 effects/Equalization.cpp:1155
+#: effects/Equalization.cpp:1378 effects/Equalization.cpp:1389
+#: effects/Normalize.cpp:340 widgets/Meter.cpp:362
+msgid "dB"
+msgstr "ديسيبل "
+
+#. i18n-hint: This is the abbreviation for "Hertz", or
+#. cycles per second.
+#: FreqWindow.cpp:287 FreqWindow.cpp:442 effects/Equalization.cpp:1120
+#: effects/Equalization.cpp:1151 import/ImportRaw.cpp:416
+msgid "Hz"
+msgstr "هرتز "
+
+#: FreqWindow.cpp:386
+msgid "Not enough data selected."
+msgstr "البيانات المختارة غير كافية. "
+
+#: FreqWindow.cpp:450 effects/AutoDuck.cpp:801
+msgid "s"
+msgstr "ثا"
+
+#: FreqWindow.cpp:779
+#, c-format
+msgid "Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s) = %.1f dB"
+msgstr "المؤشر: %d هرتز (%s) = %d ديسيبل    الذروة: %d هرتز (%s) = %.1f ديسيبل"
+
+#: FreqWindow.cpp:788
+#, c-format
+msgid "Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s) = %.3f"
+msgstr "المؤشر: %.4f ثا (%d هرتز) (%s) = %f،       الذروة: %.4f ثا (%d هرتز) (%s) = %.3f"
+
+#: FreqWindow.cpp:1059
+msgid "spectrum.txt"
+msgstr "طيف.txt "
+
+#: FreqWindow.cpp:1061
+msgid "Export Spectral Data As:"
+msgstr "تصدير بيانات الطيف كـ: "
+
+#: FreqWindow.cpp:1077 LabelDialog.cpp:590 Menus.cpp:2107 Project.cpp:2341
+#: Project.cpp:3288 prefs/KeyConfigPrefs.cpp:180
+msgid "Couldn't write to file: "
+msgstr "لم أتمكن من الكتابة في الملف: "
+
+#: FreqWindow.cpp:1082
+msgid "Frequency (Hz)\tLevel (dB)"
+msgstr "التردد (هرتز)\t  المستوى (ديسيبل) "
+
+#: FreqWindow.cpp:1088
+msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
+msgstr "تخلف (ثانية)\tتردد (هرتز)\tمستوى "
+
+#: HelpText.cpp:85
+msgid "Back to [[welcome|Welcome]] page."
+msgstr ""
+
+#: HelpText.cpp:60
+msgid "Welcome!"
+msgstr ""
+
+#: HelpText.cpp:65
+msgid "Playing Audio"
+msgstr ""
+
+#: HelpText.cpp:69
+msgid "Recording Audio"
+msgstr ""
+
+#: HelpText.cpp:105
+msgid "Editing and Greyed out Menus"
+msgstr ""
+
+#: HelpText.cpp:109
+msgid "Export and Saving"
+msgstr ""
+
+#: HelpText.cpp:81
+msgid "Supported Formats"
+msgstr ""
+
+#: HelpText.cpp:85
+msgid "Burn to CD"
+msgstr ""
+
+#: HelpText.cpp:89
+msgid "No Local Help"
+msgstr ""
+
+#: HelpText.cpp:132
+msgid "<p>Welcome to Audacity "
+msgstr ""
+
+#: HelpText.cpp:134
+msgid "Let's get started!</p><p>You can click on the links below to learn how to:<ul><li>[[play|play back]] an existing sound file.<li>How to [[record|record]] a new sound file.<li>How to [[edit|edit]] sound and [[export|export]] to a sound file like MP3.</ul><br><br>Those links will help if you find a problem such as a [[grey|menu option greyed out]] or that Audacity [[norecord|isn't recording properly]] or that you can't [[burncd|burn to a CD]]. You can always get back to these instructions by clicking the 'Help' menu, then 'Show Welcome Message.' For more detailed reading, please read our full Help by clicking the 'Help' menu, then 'Index', or <a href=\"http://audacity.sourceforge.net/help/documentation\">download our Manual</a> in PDF format.<br><br>Welcome again to Audacity."
+msgstr ""
+
+#: HelpText.cpp:158
+msgid "You can either drag existing files into Audacity, or use the <b>File > Import > Audio</b> command. <b>File > Open</b> does the same, but opens a new Audacity window for any file after the first.<br/><br/>These are the main formats Audacity will play: <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis, WAV</b>.  If your file is in some other format see (format help). If you want to import an audio CD, see [[wiki:How to import CDs|How to import CDs]]<br><br>To start playing your audio, press the green Play button. To stop, press the yellow Stop button. You can also use spacebar to either play or stop. When you start playing again after stopping, playback resumes from its previous starting point. To change the starting point, use the <b>|&lt;&lt;</b> and <b>&gt;&gt;|</b> buttons to skip to the start or end respectively, or click anywhere in the track to restart from that point.<br><br>"
+msgstr ""
+
+#: HelpText.cpp:181
+msgid "<b>To start recording, press the red Record button</b>. Before doing so however, there are three crucial settings you must check:<br><br>(1) The <b>Recording Device</b>, set in the Audio I/O tab of Preferences. By default Audacity will use the current system device, which is usually your inbuilt sound device, so you may not need to set this. But if you're using an external USB or Firewire device such as a USB turntable, make sure this device is selected as your recording device. <br><br>(2) The <b>input source</b> for your device, such as microphone or line-in. <ul><li><b>On Windows</b>, you normally choose your input in the dropdown selector on the right of the <b>Mixer Toolbar<b> <i>note: on Vista, you must do so at Recording Device on the Audio I/O Preferences tab.</i></li><li><b>On a Mac</b>, you normally choose input sources outside Audacity, in Apple Audio-MIDI Setup.</li></ul><i>Note: many USB or Firewire devices don't have a choice of inputs, so you can ignore this step - see the documentation for your device. <br><br>(3) <b>Input volume</b>. Before recording for real, make a test recording to set the input level, so that it's neither too soft or too loud.To do this, see this [[wiki:Recording levels|illustrated guide]] or follow these two steps: <ol><li>Turn on <b>monitoring</b>, by either double-clicking over the right-hand of the two VU Meters, or right-clicking over it and choosing \"Start Monitoring\". If you do not see the meters, click View > Toolbars and check \"Meter Toolbar\". <li>Press Record, and adjust the input volume slider on the Mixer Toolbar (by the microphone symbol), so that the red bars in the meter come close to (but do not touch) the right edge of the scale. If you can't hear the sound, go to the Audio I/O tab of Preferences and check \"Software Playthrough\". </ol><br><br>There is more help if you're stuck: our Recording FAQs, our Tutorial  <b>Your First Recording </b> in the Manual, and our Wiki [[wiki:Recording Tips|Recording Tips]], especially the [[wiki:Troubleshooting Recordings|Troubleshooting Recordings]] section. <br><br>"
+msgstr ""
+
+#: HelpText.cpp:223
+msgid "Editing: Audacity is a powerful editor, so you'll want to see what it can do with your imported file or recording.  The main commands you will use are under the <b>Edit</b> menu (such as cut, copy and paste) and under the <b>Effect</b> menu (you can do things like boost the bass, change pitch or tempo, or remove noise). <br><br>Audacity applies edits to areas of the audio track. You can select a particular area of audio by clicking in the track and dragging the shaded area with your mouse. If you don't select any audio, Audacity will select all that you have on the screen.<br><br>Two important points when editing:<br><br>(1) If you're still playing or recording, use the yellow Stop button, because you can't edit or export a moving track! <br><br>(2) On occasion, some of the menus or buttons are greyed out or say \"Disabled\" -  this is normal. For example, because you can't edit audio while playing or recording, we grey out or disable commands until you press Stop. Commands can sometimes be unavailable for other reasons - for example you can't run effects until you have audio on the screen, and you obviously can't paste audio until you've cut or copied it to Audacity's clipboard. <br><br>"
+msgstr ""
+
+#: HelpText.cpp:254
+msgid "Exporting and Saving have different purposes.You \"save\" an Audacity project file when you want to return to your work in Audacity later.This means you don't then have to re-import or re-record audio, or redo editing you have done so far.When you want to listen to your work in other computer programs you \"export\" it as an audio file such as a WAV, AIFF or MP3. When burning to CD, you export as WAV or AIFF.<br><br>To save an Audacity project, use <b>File > Save Project</b>. This will save an <b>.aup</b> Project file, plus a <b>_data</b> folder containing the actual audio. Make sure you don't rename or move either of these, because Audacity needs to refer to both.Only use File > Save Project As... when you either need to save an empty Project, or if you want to save an existing Project to a <i> new</i> name. When you want to re-open a saved Project, simply click File > Open and open the .aup file. <br><br>When you want to export your work to an audio file, use <b>File > Export</b> and choose your desired format in the \"Save as type\" dropdown.Click the Options button for advanced choices, such as the bit rate to use for MP3 export.There are two other Export commands under the File menu.\"Export Selection\" exports only a selected area of audio.\"Export Multiple\" exports multiple files, for example where you have more than one track on screen and want to export each as a separate file. If exporting tracks from a recorded LP or tape to multiple files, use [[wiki:Splitting recordings into separate tracks|labels with Export Multiple]]. <br><br>Before you can export as <b>MP3</b>, you may need to add the LAME MP3 encoder to your computer.For help with LAME, see [[wiki:Lame_Installation|Lame Installation]]. There is also some help on how to [[burncd|burn to a CD]].<br><br>"
+msgstr ""
+
+#: HelpText.cpp:289
+msgid "<h2>Can Audacity import file formats like WMA, AAC, RealAudio  etc.?</h2> <p>Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)</b>, ormost other proprietary formats, because of licensing and patent restrictions. Audacity also cannot import any kind of Digital Rights Management (DRM) protected file, including most purchased online such as from iTunes or Napster.If you are on a Mac, you can import <b>AAC</b>  encoded files (such as <b>M4A</b>) as long as they are not DRM protected, but you cannot export to these formats.</p> <p>Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>Musepack</b>.We hope to support these formats in future versions of Audacity.</p> <p>If you cannot import your file into Audacity, you can as a workround convert it to WAV or AIFF.As long as it's not a DRM-protected file, you could do this with iTunes or with <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> player.If it's a DRM-protected file, you can burn it to an audio CD in the application that is licensed to play it, then extract (rip) the CD track to WAV or AIFF.You can use iTunes to extract to WAV or AIFF, plus Windows Media Player 11 or <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> on Windows.Or you can play the file on your computer and record it - see <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">."
+msgstr ""
+
+#: HelpText.cpp:316
+msgid "If you want to burn your work to an audio CD, you must first [[export|export as WAV or AIFF]] and then burn that file to CD with a CD burning program like iTunes - for more help, see [[wiki:How to burn CDs|How to burn CDs]].<br><br>"
+msgstr ""
+
+#: HelpText.cpp:331
+msgid "<p>You don't appear to have Audacity help files on your machine. You can <a href=\"http://audacity.sourceforge.net/help/documentation\">download</a> the help files and then access them from Audacity as you have just attempted, or you can click <a href=\"*URL*\">here</a> to read the help online."
+msgstr ""
+
+#: HistoryWindow.cpp:53
+msgid "Undo History"
+msgstr "تاريخ التراجع "
+
+#: HistoryWindow.cpp:72
+msgid "Manage History"
+msgstr "تسيير التاريخ"
+
+#: HistoryWindow.cpp:78
+msgid "Action"
+msgstr "فعل "
+
+#: HistoryWindow.cpp:86
+msgid "&Undo Levels Available"
+msgstr "&مستويات التراجع المتوفرة"
+
+#: HistoryWindow.cpp:92
+msgid "Levels To Discard"
+msgstr "مستويات الحذف"
+
+#: HistoryWindow.cpp:102
+msgid "&Discard"
+msgstr "&حذف"
+
+#: HistoryWindow.cpp:111 LabelDialog.cpp:137 LabelDialog.cpp:139
+#: effects/Amplify.cpp:214 effects/AutoDuck.cpp:529 effects/AutoDuck.cpp:531
+#: effects/ChangeLength.cpp:186 effects/ChangePitch.cpp:398
+#: effects/ChangeSpeed.cpp:396 effects/ChangeTempo.cpp:299
+#: effects/Compressor.cpp:519 effects/Effect.cpp:401 effects/Effect.cpp:403
+#: effects/Equalization.cpp:1253 effects/Leveller.cpp:253
+#: effects/Normalize.cpp:356 effects/Phaser.cpp:605 effects/Repeat.cpp:274
+#: effects/SpikeCleaner.cpp:191 effects/VST/VSTEffect.cpp:98
+#: effects/Wahwah.cpp:592 effects/ladspa/LadspaEffect.cpp:612
+#: effects/nyquist/Nyquist.cpp:831 effects/nyquist/Nyquist.cpp:997
+#: export/Export.cpp:976 export/ExportCL.cpp:96 export/ExportCL.cpp:98
+#: export/ExportCL.cpp:404 export/ExportFLAC.cpp:115 export/ExportFLAC.cpp:117
+#: export/ExportMP2.cpp:133 export/ExportMP2.cpp:135 export/ExportMP3.cpp:353
+#: export/ExportMP3.cpp:355 export/ExportMP3.cpp:535 export/ExportMP3.cpp:537
+#: export/ExportMP3.cpp:1931 export/ExportMP3.cpp:1933 export/ExportOGG.cpp:97
+#: export/ExportOGG.cpp:99 export/ExportPCM.cpp:199 export/ExportPCM.cpp:201
+#: prefs/PrefsDialog.cpp:180
+msgid "&OK"
+msgstr "&موافق"
+
+#: Internat.cpp:176
+msgid "Unable to determine"
+msgstr "غير قادر على تحديد"
+
+#: Internat.cpp:180 import/ImportRaw.cpp:392
+msgid "bytes"
+msgstr "بايتات "
+
+#: Internat.cpp:182
+msgid "KB"
+msgstr "كيلوبايت"
+
+#: Internat.cpp:185
+msgid "MB"
+msgstr "ميقابايت"
+
+#: Internat.cpp:188
+msgid "GB"
+msgstr "قيقابايت"
+
+#: LabelDialog.cpp:52
+msgid "Track"
+msgstr "مسار"
+
+#: LabelDialog.cpp:53 Menus.cpp:3935 Menus.cpp:3963
+msgid "Label"
+msgstr "علامة "
+
+#: LabelDialog.cpp:54
+msgid "Start Time"
+msgstr "وقت البداية"
+
+#: LabelDialog.cpp:55
+msgid "End Time"
+msgstr "وقت النهاية"
+
+#: LabelDialog.cpp:100 Menus.cpp:622
+msgid "&Edit Labels"
+msgstr "ت&حرير العلامات"
+
+#: LabelDialog.cpp:115
+msgid "Press F2 or double click to edit cell contents."
+msgstr "اضغط على F2 أو انقر مرتين لتحرير محتويات الخلية."
+
+#: LabelDialog.cpp:126
+msgid "Insert &After"
+msgstr "إدخال &بعد"
+
+#: LabelDialog.cpp:127
+msgid "Insert &Before"
+msgstr "إدخال &قبل"
+
+#: LabelDialog.cpp:129 Menus.cpp:196
+msgid "&Import..."
+msgstr "ا&ستيراد..."
+
+#: LabelDialog.cpp:165
+msgid "New..."
+msgstr "جديد..."
+
+#: LabelDialog.cpp:349
+msgid "You have left blank label names.  These will be\n"
+"skipped when repopulating the Label Tracks.\n"
+"\n"
+"Would you like to go back and provide names?"
+msgstr "لقد تركت أسماء العلامة بيضاء. سوف يتم تخطيها\n"
+"عند إعادة تأهيل مسارات العلامة.\n"
+"\n"
+"هل تريد الرجوع لإدخال الأسماء؟"
+
+#: LabelDialog.cpp:350
+msgid "Confirm"
+msgstr "تأكيد "
+
+#: LabelDialog.cpp:505 Menus.cpp:3447
+msgid "Select a text file containing labels..."
+msgstr "اختر ملف نصي يحتوي على علامات... "
+
+#: LabelDialog.cpp:509 Menus.cpp:3451
+msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
+msgstr "ملفات نصية (*.txt)|*.txt| كل الملفات (*.*)|*.* "
+
+#: LabelDialog.cpp:523 Menus.cpp:3463 Project.cpp:1773 Project.cpp:1781
+#: import/ImportMIDI.cpp:31
+msgid "Could not open file: "
+msgstr "لم أتمكن فتح ملف: "
+
+#: LabelDialog.cpp:549
+msgid "No labels to export."
+msgstr "لايوجد علامات للتصدير."
+
+#: LabelDialog.cpp:555 Menus.cpp:2072
+msgid "Export Labels As:"
+msgstr "تصدير العلامات كـ: "
+
+#: LabelDialog.cpp:557 Menus.cpp:2070
+msgid "labels.txt"
+msgstr "علامات.txt "
+
+#: LabelDialog.cpp:690
+msgid "New Label Track"
+msgstr "مسار علامة جديد"
+
+#: LabelDialog.cpp:691
+msgid "Enter track name"
+msgstr "أدخل إسم المسار"
+
+#: LabelDialog.cpp:692 LabelDialog.h:50 LabelTrack.cpp:88 Menus.cpp:558
+msgid "&Label Track"
+msgstr "مسار &علامة"
+
+#: LangChoice.cpp:56
+msgid "Audacity First Run"
+msgstr "أول تشغيل لجُرأة "
+
+#: LangChoice.cpp:83
+msgid "Choose Language for Audacity to use:"
+msgstr "اختر اللغة التي تستخدمها جُرأة: "
+
+#: Legacy.cpp:356
+#, c-format
+msgid "Converted a 1.0 project file to the new format.\n"
+"The old file has been saved as '%s'"
+msgstr "تم تحويل ملف مشروع 1.0 إلى الصيغة الجديدة.\n"
+"الملف القديم محفوظ تحت اسم '%s' "
+
+#: Legacy.cpp:357
+msgid "Opening Audacity Project"
+msgstr "فتح مشروع  جُرأة "
+
+#: Menus.cpp:160
+msgid "&File"
+msgstr "&ملف "
+
+#: Menus.cpp:162
+msgid "&New\tCtrl+N"
+msgstr "&جديد\tCtrl+N "
+
+#: Menus.cpp:164
+msgid "&Open...\tCtrl+O"
+msgstr "&فتح...\tCtrl+O "
+
+#: Menus.cpp:175
+msgid "&Close\tCtrl+W"
+msgstr "&غلق\tCtrl+W "
+
+#: Menus.cpp:178
+msgid "&Save Project\tCtrl+S"
+msgstr "حف&ظ المشروع\tCtrl+S "
+
+#: Menus.cpp:182 Project.cpp:2581
+msgid "Save Project &As..."
+msgstr "حف&ظ المشروع باسم... "
+
+#: Menus.cpp:185
+msgid "Chec&k Dependencies..."
+msgstr "فح&ص الإرتباطات..."
+
+#: Menus.cpp:189
+msgid "Open Me&tadata Editor..."
+msgstr ""
+
+#: Menus.cpp:198
+msgid "&Audio...\tCtrl+Shift+I"
+msgstr "ال&صوت...\tCtrl+Shift+I"
+
+#: Menus.cpp:199
+msgid "&Labels..."
+msgstr "&علامات..."
+
+#: Menus.cpp:200
+msgid "&MIDI..."
+msgstr "&ميدي..."
+
+#: Menus.cpp:201
+msgid "&Raw Data..."
+msgstr "بيانات &خام..."
+
+#: Menus.cpp:212 Menus.cpp:241
+msgid "Expo&rt Selection..."
+msgstr "ت&صدير الإختيار..."
+
+#: Menus.cpp:219
+msgid "Export &Labels..."
+msgstr "تصدير ال&علامات... "
+
+#: Menus.cpp:220
+msgid "Export &Multiple..."
+msgstr "تصدير متعـ&دد..."
+
+#: Menus.cpp:250 Menus.cpp:264
+msgid "Edit C&hains..."
+msgstr "تحرير ال&سلاسل..."
+
+#: Menus.cpp:262
+msgid "Appl&y Chain..."
+msgstr "&تطبيق السلسلة..."
+
+#: Menus.cpp:268
+msgid "&Upload File..."
+msgstr "ت&حميل ملف..."
+
+#: Menus.cpp:273
+msgid "Pa&ge Setup..."
+msgstr "إعداد ال&صفحة..."
+
+#: Menus.cpp:274
+msgid "&Print..."
+msgstr "&طباعة..."
+
+#: Menus.cpp:292 Menus.cpp:295
+msgid "E&xit\tCtrl+Q"
+msgstr "&خروج\tCtrl+Q"
+
+#: Menus.cpp:304 toolbars/EditToolBar.cpp:76
+msgid "&Edit"
+msgstr "&تحرير "
+
+#: Menus.cpp:308
+msgid "&Undo\tCtrl+Z"
+msgstr "ت&راجع\tCtrl+Z "
+
+#: Menus.cpp:316 prefs/KeyConfigPrefs.cpp:369 toolbars/EditToolBar.cpp:146
+msgid "&Redo"
+msgstr "ت&كرار "
+
+#: Menus.cpp:329
+msgid "Cu&t\tCtrl+X"
+msgstr "ق&ص\tCtrl+X "
+
+#: Menus.cpp:333
+msgid "Spl&it Cut\tCtrl+Alt+X"
+msgstr "ت&قسيم و قص\tCtrl+Alt+X"
+
+#: Menus.cpp:334
+msgid "&Copy\tCtrl+C"
+msgstr "&نسخ\tCtrl+C "
+
+#: Menus.cpp:338
+msgid "&Paste\tCtrl+V"
+msgstr "ل&صق\tCtrl+V "
+
+#: Menus.cpp:342
+msgid "Tri&m\tCtrl+T"
+msgstr "تق&ليم\tCtrl+T"
+
+#: Menus.cpp:344
+msgid "&Delete\tCtrl+K"
+msgstr "&حذف\tCtrl+K "
+
+#: Menus.cpp:345
+msgid "Split D&elete\tCtrl+Alt+K"
+msgstr "تقسيم و &حذف\tCtrl+Alt+K"
+
+#: Menus.cpp:346
+msgid "&Silence\tCtrl+L"
+msgstr "&صمت\tCtrl+L"
+
+#: Menus.cpp:348
+msgid "Sp&lit\tCtrl+I"
+msgstr "ت&قسيم\tCtrl+I"
+
+#: Menus.cpp:353
+msgid "Split Ne&w\tCtrl+Alt+I"
+msgstr "تقسيم &جديد\tCtrl+Alt+I"
+
+#: Menus.cpp:358
+msgid "&Join\tCtrl+J"
+msgstr "&ضمّ\tCtrl+J"
+
+#: Menus.cpp:359
+msgid "Disj&oin\tCtrl+Alt+J"
+msgstr "&فصل\tCtrl+Alt+J"
+
+#: Menus.cpp:361
+msgid "Duplic&ate\tCtrl+D"
+msgstr "م&ضاعفة\tCtrl+D"
+
+#: Menus.cpp:367 Menus.cpp:567 effects/StereoToMono.h:23
+msgid "&Stereo To Mono"
+msgstr "&ثنائي إلى أحادي"
+
+#: Menus.cpp:374
+msgid "Labeled Re&gions..."
+msgstr "منا&طق مُعلَّمة..."
+
+#. i18n-hint: Labeled Regions submenu
+#: Menus.cpp:376
+msgid "&Cut\tAlt+X"
+msgstr "ق&ص\tAlt+X"
+
+#. i18n-hint: Labeled Regions submenu
+#: Menus.cpp:381
+msgid "&Split Cut\tShift+Alt+X"
+msgstr "ت&قسيم و قص\tShift+Alt+X"
+
+#. i18n-hint: Labeled Regions submenu
+#: Menus.cpp:386
+msgid "Co&py\tShift+Alt+C"
+msgstr "&نسخ\tShift+Alt+C"
+
+#. i18n-hint: Labeled Regions submenu
+#: Menus.cpp:392
+msgid "&Delete\tAlt+K"
+msgstr "&حذف\tAlt+K"
+
+#. i18n-hint: Labeled Regions submenu
+#: Menus.cpp:397
+msgid "Sp&lit Delete\tShift+Alt+K"
+msgstr "ت&قسيم و حذف\tShift+Alt+K"
+
+#. i18n-hint: Labeled Regions submenu
+#: Menus.cpp:402
+msgid "Sile&nce\tAlt+L"
+msgstr "&صمت\tAlt+L"
+
+#. i18n-hint: Labeled Regions submenu
+#: Menus.cpp:408
+msgid "Spli&t\tAlt+I"
+msgstr "تق&سيم\tAlt+I"
+
+#. i18n-hint: Labeled Regions submenu
+#: Menus.cpp:413
+msgid "&Join\tAlt+J"
+msgstr "&ضمّ\tAlt+J"
+
+#. i18n-hint: Labeled Regions submenu
+#: Menus.cpp:418
+msgid "Disj&oin\tShift+Alt+J"
+msgstr "&فصل\tShift+Alt+J"
+
+#: Menus.cpp:424
+msgid "&Select..."
+msgstr "ا&ختيار..."
+
+#: Menus.cpp:425
+msgid "&All\tCtrl+A"
+msgstr "ال&كل\tCtrl+A "
+
+#: Menus.cpp:426
+msgid "&None\tCtrl+Shift+A"
+msgstr "لا &شيئ\tCtrl+Shift+A"
+
+#: Menus.cpp:430
+msgid "Left at Playback Position\t["
+msgstr "يسار موضع القراءة\t["
+
+#: Menus.cpp:431
+msgid "Right at Playback Position\t]"
+msgstr "يمين موضع القراءة\t]"
+
+#: Menus.cpp:435
+msgid "Start to Cursor"
+msgstr "من البداية إلى المؤشر "
+
+#: Menus.cpp:436
+msgid "Cursor to End"
+msgstr "من المؤشر إلى النهاية "
+
+#: Menus.cpp:442
+msgid "Find &Zero Crossings\tZ"
+msgstr "البحث عن التقاطعات مع ال&صفر\tZ"
+
+#: Menus.cpp:444
+msgid "Mo&ve Cursor..."
+msgstr "ت&حريك المُؤشر..."
+
+#: Menus.cpp:446
+msgid "to Selection Start"
+msgstr "إلى بداية الإختيار "
+
+#: Menus.cpp:447
+msgid "to Selection End"
+msgstr "إلى نهاية الإختيار "
+
+#: Menus.cpp:451
+msgid "to Track Start"
+msgstr "إلى أول المسار"
+
+#: Menus.cpp:452
+msgid "to Track End"
+msgstr "إلى أول المسار"
+
+#: Menus.cpp:459
+msgid "Selection Save"
+msgstr "حفظ الإختيار"
+
+#: Menus.cpp:460
+msgid "Selection Restore"
+msgstr "استرجاع الإختيار"
+
+#: Menus.cpp:465
+msgid "Play &Region..."
+msgstr "قراءة &منطقة..."
+
+#: Menus.cpp:466
+msgid "Lock"
+msgstr "إقفال"
+
+#: Menus.cpp:467
+msgid "Unlock"
+msgstr "فتح القفل"
+
+#: Menus.cpp:473
+msgid "Turn Snap-To On"
+msgstr "تشغيل الحصر "
+
+#: Menus.cpp:474
+msgid "Turn Snap-To Off"
+msgstr "إيقاف الحصر "
+
+#: Menus.cpp:475
+msgid "Turn Grid Snap On"
+msgstr "تشغيل شبكة الحصر "
+
+#: Menus.cpp:476
+msgid "Turn Grid Snap Off"
+msgstr "إيقاف شبكة الحصر "
+
+#: Menus.cpp:485
+msgid "&Preferences...\tCtrl+P"
+msgstr "تف&ضيلات...\tCtrl+P "
+
+#: Menus.cpp:495
+msgid "&View"
+msgstr "&عرض "
+
+#: Menus.cpp:497
+msgid "Zoom &In\tCtrl+1"
+msgstr "ت&كبير\tCtrl+1 "
+
+#: Menus.cpp:500
+msgid "Zoom &Normal\tCtrl+2"
+msgstr "ال&حجم العادي \tCtrl+2 "
+
+#: Menus.cpp:501
+msgid "Zoom &Out\tCtrl+3"
+msgstr "ت&صغير \tCtrl+3 "
+
+#: Menus.cpp:504
+msgid "&Fit in Window\tCtrl+F"
+msgstr "&مناسب للنافذة\tCtrl+F "
+
+#: Menus.cpp:505
+msgid "Fit &Vertically\tCtrl+Shift+F"
+msgstr "مناسب &عموديا\tCtrl+Shift+F "
+
+#: Menus.cpp:506
+msgid "&Zoom to Selection\tCtrl+E"
+msgstr "&تكبير الإختيار \t Ctrl+E "
+
+#: Menus.cpp:509
+msgid "&Collapse All Tracks\tCtrl+Shift+C"
+msgstr "إن&زال كل المسارات\tCtrl+Shift+C"
+
+#: Menus.cpp:510
+msgid "E&xpand All Tracks\tCtrl+Shift+X"
+msgstr "تو&سيع كل المسارات\tCtrl+Shift+X"
+
+#: Menus.cpp:513
+msgid "Show Clipping"
+msgstr "عرض القطع"
+
+#: Menus.cpp:522
+msgid "&History..."
+msgstr "&تاريخ..."
+
+#: Menus.cpp:528
+msgid "&Toolbars..."
+msgstr "&أشرطة الأدوات..."
+
+#: Menus.cpp:529
+msgid "Control Toolbar"
+msgstr "شريط التحكم"
+
+#: Menus.cpp:530
+msgid "Device Toolbar"
+msgstr "شريط الأجهزة"
+
+#: Menus.cpp:531
+msgid "Edit Toolbar"
+msgstr "شريط التحرير"
+
+#: Menus.cpp:532
+msgid "Meter Toolbar"
+msgstr "شريط العداد"
+
+#: Menus.cpp:533
+msgid "Mixer Toolbar"
+msgstr "شريط المزج"
+
+#: Menus.cpp:534
+msgid "Selection Toolbar"
+msgstr "شريط الإختيار"
+
+#: Menus.cpp:535
+msgid "Tools Toolbar"
+msgstr "شريط الأدوات"
+
+#: Menus.cpp:536
+msgid "Transcription Toolbar"
+msgstr "شريط النسخ"
+
+#: Menus.cpp:538
+msgid "Reset Toolbars"
+msgstr "إعادة أشرطة الأدوات"
+
+#: Menus.cpp:548
+msgid "&Tracks"
+msgstr "&مسارات "
+
+#: Menus.cpp:555
+msgid "Add &New..."
+msgstr "إضافة &جديد..."
+
+#: Menus.cpp:556
+msgid "&Audio Track\tCtrl+Shift+N"
+msgstr "&مسار صوتي\tCtrl+Shift+N"
+
+#: Menus.cpp:557
+msgid "&Stereo Track"
+msgstr "م&سار ثنائي "
+
+#: Menus.cpp:559 TimeTrack.cpp:44
+msgid "&Time Track"
+msgstr "مسار الو&قت"
+
+#: Menus.cpp:562
+msgid "&Timer Record..."
+msgstr "&تسجيل الوقت..."
+
+#: Menus.cpp:571 Menus.cpp:3624 Mix.cpp:120
+msgid "&Mix and Render"
+msgstr "&مزج و تقديم..."
+
+#: Menus.cpp:564
+msgid "Mix and Render to New Track\tCtrl+Shift+M"
+msgstr ""
+
+#: Menus.cpp:575
+msgid "&Resample..."
+msgstr "إعادة أ&خذ العينات..."
+
+#: Menus.cpp:585
+msgid "Remo&ve Tracks"
+msgstr "ح&ذف المسارات "
+
+#: Menus.cpp:592
+msgid "Align with &Zero"
+msgstr "صف مع ال&صفر "
+
+#: Menus.cpp:593
+msgid "Align with &Cursor"
+msgstr "صف مع ال&مؤشر"
+
+#: Menus.cpp:594
+msgid "Align with Selection &Start"
+msgstr "صف مع أ&ول الاختيار"
+
+#: Menus.cpp:595
+msgid "Align with Selection &End"
+msgstr "صف مع آ&خر الاختيار"
+
+#: Menus.cpp:596
+msgid "Align End with Cursor"
+msgstr "صف النهاية مع المؤشر"
+
+#: Menus.cpp:597
+msgid "Align End with Selection Start"
+msgstr "صف البداية مع أول الإختيار"
+
+#: Menus.cpp:598
+msgid "Align End with Selection End"
+msgstr "صف النهاية مع آخر الإختيار"
+
+#: Menus.cpp:599
+msgid "Align Tracks Together"
+msgstr "صف المسارات مع بعضها البعض"
+
+#: Menus.cpp:601
+msgid "&Align Tracks..."
+msgstr "&صف مسارات..."
+
+#: Menus.cpp:610
+msgid "Ali&gn And Move Cursor..."
+msgstr "ص&ف و تحريك المؤشر..."
+
+#: Menus.cpp:618
+msgid "Add &Label At Selection\tCtrl+B"
+msgstr "إضافة &علامة عند الإختيار\tCtrl+B"
+
+#: Menus.cpp:619
+msgid "Add Label At &Playback Position\tCtrl+M"
+msgstr "إضافة &علامة عند موضع القراءة\tCtrl+M"
+
+#: Menus.cpp:625
+msgid "S&ort tracks by..."
+msgstr "&رتب المسارات حسب..."
+
+#: Menus.cpp:626
+msgid "&Start time"
+msgstr "&وقت البداية"
+
+#: Menus.cpp:628
+msgid "&Name"
+msgstr "الإ&سم"
+
+#: Menus.cpp:638
+msgid "&Generate"
+msgstr "&انتاج"
+
+#: Menus.cpp:661
+msgid "Effe&ct"
+msgstr "تأ&ثير"
+
+#: Menus.cpp:665
+msgid "Repeat Last Effect\tCtrl+R"
+msgstr "إعادة التأثير الأخير\tCtrl+R"
+
+#: Menus.cpp:697
+msgid "&Analyze"
+msgstr "ت&حليل"
+
+#: Menus.cpp:701
+#, fuzzy
+msgid "Plot Spectrum..."
+msgstr "&رسم منحنى الطيف..."
+
+#: Menus.cpp:732 Menus.cpp:735
+msgid "&Help"
+msgstr "م&ساعدة"
+
+#: Menus.cpp:738
+msgid "&About Audacity CleanSpeech..."
+msgstr "&حول الخطاب النظيف لجُرأة..."
+
+#: Menus.cpp:735
+msgid "&Show Welcome Message..."
+msgstr ""
+
+#: Menus.cpp:736
+msgid "&Index..."
+msgstr ""
+
+#: Menus.cpp:746
+msgid "&Screenshot Tools..."
+msgstr "أدوات &تصوير الشاشة..."
+
+#: Menus.cpp:748
+msgid "&Run Benchmark..."
+msgstr "تشغيل الم&قارن..."
+
+#: Menus.cpp:750
+msgid "&Audio Device Info..."
+msgstr "معلومات جهاز ال&صوت"
+
+#: Menus.cpp:759
+msgid "Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"
+msgstr "دوران إلى الخلف عبر المرفأ، عرض المسار و شريط الإختيار\tCtrl+Shift+F6"
+
+#: Menus.cpp:760
+msgid "Cycle forward through Dock, Track View, and Selection Bar\tCtrl+F6"
+msgstr "دوران إلى الأمام عبر المرفأ، عرض المسار و شريط الإختيار\tCtrl+F6"
+
+#: Menus.cpp:763
+msgid "Selection Tool\tF1"
+msgstr "أداة الإختيار\tF1"
+
+#: Menus.cpp:764
+msgid "Envelope Tool\tF2"
+msgstr "أداة الغلاف\tF2"
+
+#: Menus.cpp:765
+msgid "Draw Tool\tF3"
+msgstr "أداة الرسم\tF3"
+
+#: Menus.cpp:766
+msgid "Zoom Tool\tF4"
+msgstr "أداة التكبير و التصغير\tF4"
+
+#: Menus.cpp:767
+msgid "Time Shift Tool\tF5"
+msgstr "أداة تحريك الوقت\tF5"
+
+#: Menus.cpp:768
+msgid "Multi Tool\tF6"
+msgstr "أدوات متعددة\tF6"
+
+#: Menus.cpp:770
+msgid "Next Tool\tD"
+msgstr "الأداة التالية\tD"
+
+#: Menus.cpp:771
+msgid "Previous Tool\tA"
+msgstr "الأداة السابقة\tA"
+
+#: Menus.cpp:773
+msgid "Play/Stop\tSpacebar"
+msgstr "قراءة/توقف\tSpacebar"
+
+#: Menus.cpp:774
+msgid "Stop\tS"
+msgstr "توقف\tS"
+
+#: Menus.cpp:775
+msgid "Pause\tP"
+msgstr "توقف مؤقت\tP"
+
+#: Menus.cpp:776
+msgid "Record\tR"
+msgstr "تسجيل\tR"
+
+#: Menus.cpp:777
+msgid "Play/Stop and Select\tShift+Return"
+msgstr ""
+
+#: Menus.cpp:778
+msgid "Stop and Select\tShift+A"
+msgstr "توقف و اختيار\tShift+A"
+
+#: Menus.cpp:780
+msgid "Play One Second\t1"
+msgstr "قراءة ثانية واحدة\t1"
+
+#: Menus.cpp:781
+msgid "Play To Selection\tB"
+msgstr "قراءة حتى الإختيار\tB"
+
+#: Menus.cpp:782
+msgid "Play Looped\tL"
+msgstr "القراءة متكررة\tL"
+
+#: Menus.cpp:783
+msgid "Play Looped\tShift+Spacebar"
+msgstr "القراءة متكررة\tShift+Spacebar"
+
+#: Menus.cpp:784
+msgid "Play Cut Preview\tC"
+msgstr "قراءة العرض المسبق للقص\tC"
+
+#: Menus.cpp:786
+msgid "Skip to Start\tHome"
+msgstr "تخطي إلى البداية\tHome"
+
+#: Menus.cpp:787
+msgid "Skip to End\tEnd"
+msgstr "تخطي إلى النهاية\tEnd"
+
+#: Menus.cpp:789
+msgid "Selection to Start\tShift+Home"
+msgstr "إختيار إلى البداية\tShift+Home"
+
+#: Menus.cpp:790
+msgid "Selection to End\tShift+End"
+msgstr "إختيار إلى النهاية\tShift+End"
+
+#: Menus.cpp:792
+msgid "DeleteKey\tBackspace"
+msgstr "زر الحذف\tBackspace"
+
+#: Menus.cpp:797
+msgid "DeleteKey2\tDelete"
+msgstr "زر الحذف 2\tDelete"
+
+#: Menus.cpp:803
+msgid "Seek left short period during playback\tLeft"
+msgstr "بحث عن مدة قصيرة من اليسار خلال القراءة\tLeft"
+
+#: Menus.cpp:804
+msgid "Seek right short period during playback\tRight"
+msgstr "بحث عن مدة قصيرة من اليمين خلال القراءة\tRight"
+
+#: Menus.cpp:805
+msgid "Seek left long period during playback\tShift+Left"
+msgstr "بحث عن مدة طويلة من اليسار خلال القراءة\tShift+Left"
+
+#: Menus.cpp:806
+msgid "Seek right long period during playback\tShift+Right"
+msgstr "بحث عن مدة طويلة من اليمين خلال القراءة\tShift+Right"
+
+#: Menus.cpp:810
+msgid "Move Focus to Previous Track\tUp"
+msgstr "نقل التركيز إلى المسار السابق \tUp"
+
+#: Menus.cpp:811
+msgid "Move Focus to Previous and Change Selection\tShift+Up"
+msgstr "نقل التركيز إلى المسار السابق و تغيير الإختيار\tShift+Up"
+
+#: Menus.cpp:812
+msgid "Move Focus to Next Track\tDown"
+msgstr "نقل التركيز إلى المسار التالي\tDown"
+
+#: Menus.cpp:813
+msgid "Move Focus to Next and Change Selection\tShift+Down"
+msgstr "نقل التركيز إلى المسار التالي و تغيير الإختيار\tShift+Down"
+
+#: Menus.cpp:814
+msgid "Toggle Focused Track\tReturn"
+msgstr "قلب المسار الذي عليه التركيز\tReturn"
+
+#: Menus.cpp:815
+msgid "Toggle Focused Track\tNUMPAD_ENTER"
+msgstr "قلب المسار الذي عليه التركيز\tNUMPAD_ENTER"
+
+#: Menus.cpp:816
+msgid "Toggle Focused Track\tCtrl+Spacebar"
+msgstr "قلب المسار الذي عليه التركيز\tCtrl+Spacebar"
+
+#: Menus.cpp:818
+msgid "Cursor Left\tLeft"
+msgstr "يسار المؤشر\tLeft"
+
+#: Menus.cpp:819
+msgid "Cursor Right\tRight"
+msgstr "يمين المؤشر \tRight"
+
+#: Menus.cpp:820
+msgid "Cursor Short Jump Left\t,"
+msgstr ""
+
+#: Menus.cpp:821
+msgid "Cursor Short Jump Right\t."
+msgstr ""
+
+#: Menus.cpp:822
+msgid "Cursor Long Jump Left\tShift+,"
+msgstr ""
+
+#: Menus.cpp:823
+msgid "Cursor Long Jump Right\tShift+."
+msgstr ""
+
+#: Menus.cpp:820
+msgid "Selection Extend Left\tShift+Left"
+msgstr "تمديد الإختيار نحو اليسار\tShift+Left"
+
+#: Menus.cpp:821
+msgid "Selection Extend Right\tShift+Right"
+msgstr "تمديد الإختيار نحو اليمين\tShift+Right"
+
+#: Menus.cpp:828
+msgid "Set (or Extend) Left Selection"
+msgstr ""
+
+#: Menus.cpp:829
+msgid "Set (or Extend) Right Selection"
+msgstr ""
+
+#: Menus.cpp:823
+msgid "Selection Contract Left\tCtrl+Shift+Right"
+msgstr "تقليص الإختيار نحو اليسار\tCtrl+Shift+Right"
+
+#: Menus.cpp:824
+msgid "Selection Contract Right\tCtrl+Shift+Left"
+msgstr "تقليص الإختيار نحو اليمين\tCtrl+Shift+Left"
+
+#: Menus.cpp:826
+msgid "Change pan on focused track\tShift+P"
+msgstr "تغيير البانوراما على المسار الذي عليه التركيز\tShift+P"
+
+#: Menus.cpp:827
+msgid "Pan left on focused track\tAlt+Shift+Left"
+msgstr "بانوراما أيسر على المسار الذي عليه التركيز\tAlt+Shift+Left"
+
+#: Menus.cpp:828
+msgid "Pan right on focused track\tAlt+Shift+Right"
+msgstr "بانوراما أيمن على المسار الذي عليه التركيز\tAlt+Shift+Right"
+
+#: Menus.cpp:829
+msgid "Change gain on focused track\tShift+G"
+msgstr "تغيير المستوى على المسار الذي عليه التركيز\tShift+G"
+
+#: Menus.cpp:830
+msgid "Increase gain on focused track\tAlt+Shift+Up"
+msgstr "رفع المستوى على المسار الذي عليه التركيز\tAlt+Shift+Up"
+
+#: Menus.cpp:831
+msgid "Decrease gain on focused track\tAlt+Shift+Down"
+msgstr "تخفيض المستوى على المسار الذي عليه التركيز\tAlt+Shift+Down"
+
+#: Menus.cpp:832
+msgid "Open menu on focused track\tShift+M"
+msgstr "فتح قائمة الخيارات على المسار الذي عليه التركيز\tShift+M"
+
+#: Menus.cpp:833
+msgid "Mute/Unmute focused track\tShift+U"
+msgstr "كتم/إلغاء كتم المسار الذي عليه التركيز\tShift+U"
+
+#: Menus.cpp:834
+msgid "Solo/Unsolo focused track\tShift+S"
+msgstr "إفراد/إلغاء إفراد المسار الذي عليه التركيز\tShift+S"
+
+#: Menus.cpp:835
+msgid "Close focused track\tShift+C"
+msgstr "إغلاق المسار الذي عليه التركيز\tShift+C"
+
+#: Menus.cpp:837
+msgid "Snap To On"
+msgstr "تشغيل الحصر"
+
+#: Menus.cpp:838
+msgid "Snap To Off"
+msgstr "توقيف الحصر"
+
+#. i18n-hint: This is the name of the menu item on Mac OS X only
+#: Menus.cpp:852
+msgid "Open Recent"
+msgstr "فتح الحديث"
+
+#. i18n-hint: This is the name of the menu item on Windows and Linux
+#: Menus.cpp:855
+msgid "Recent &Files..."
+msgstr "&ملفات حديثة..."
+
+#: Menus.cpp:902
+#, c-format
+msgid "&Undo %s"
+msgstr "ت&راجع عن %s"
+
+#: Menus.cpp:928
+msgid "Can't Undo"
+msgstr "لا أستطيع التراجع"
+
+#: Menus.cpp:937
+#, c-format
+msgid "&Redo %s"
+msgstr "ت&كرار %s"
+
+#: Menus.cpp:943
+msgid "Can't Redo"
+msgstr "لا أستطيع التكرار"
+
+#: Menus.cpp:1458
+msgid "Sort By Time"
+msgstr "رتب حسب الوقت"
+
+#: Menus.cpp:1458
+msgid "Tracks sorted by time"
+msgstr "مسارات مرتبة حسب الوقت"
+
+#: Menus.cpp:1484
+msgid "Sort By Name"
+msgstr "رتب حسب الإسم"
+
+#: Menus.cpp:1484
+msgid "Tracks sorted by name"
+msgstr "مسارات مرتبة حسب الإسم"
+
+#: Menus.cpp:1605
+msgid "Set Left Selection Bound"
+msgstr "وضع حد أيسر للاختيار"
+
+#: Menus.cpp:1639
+msgid "Set Right Selection Bound"
+msgstr "وضع حد أيمن للاختيار"
+
+#: Menus.cpp:1906
+msgid "You must select a track first."
+msgstr "أولا، يجب أن تختار مسار."
+
+#: Menus.cpp:1935
+#, c-format
+msgid "Repeat %s\tCtrl+R"
+msgstr "إعادة %s\tCtrl+R"
+
+#: Menus.cpp:2066
+msgid "There are no label tracks to export."
+msgstr "ليس هناك مسارات علامات للتصدير."
+
+#: Menus.cpp:2171
+msgid "Nothing to undo"
+msgstr "لا شئ يُتراجع عنه"
+
+#: Menus.cpp:2191
+msgid "Nothing to redo"
+msgstr "لا شئ يُكرر"
+
+#: Menus.cpp:2266 TrackPanel.cpp:550 toolbars/EditToolBar.cpp:133
+msgid "Cut"
+msgstr "قص"
+
+#: Menus.cpp:2266
+msgid "Cut to the clipboard"
+msgstr "قص إلى لوحة الحفظ"
+
+#: Menus.cpp:2304
+msgid "Split Cut"
+msgstr "تقسيم و قص"
+
+#: Menus.cpp:2304
+msgid "Split-cut to the clipboard"
+msgstr "تقسيم و قص إلى لوحة الحفظ"
+
+#: Menus.cpp:2369 Menus.cpp:2440 Menus.cpp:2534 TrackPanel.cpp:552
+#: toolbars/EditToolBar.cpp:137
+msgid "Paste"
+msgstr "لصق"
+
+#: Menus.cpp:2369
+msgid "Pasted text from the clipboard"
+msgstr "تم لصق نص من لوحة الحفظ"
+
+#: Menus.cpp:2440 Menus.cpp:2534
+msgid "Pasted from the clipboard"
+msgstr "تم اللصق من لوحة الحفظ"
+
+#: Menus.cpp:2474
+msgid "Copying stereo audio into a mono track is not allowed."
+msgstr "لا يسمح بنسخ صوت الثنائي إلى مسار إحادي."
+
+#: Menus.cpp:2570 toolbars/EditToolBar.cpp:139
+msgid "Trim"
+msgstr "تقليم "
+
+#: Menus.cpp:2570
+msgid "Trim file to selection"
+msgstr "تقليم الملف إلى الجزء المختار"
+
+#: Menus.cpp:2599
+#, c-format
+msgid "Split-deleted %.2f seconds at t=%.2f"
+msgstr "تم حذف التقسيم %.2f عند ز=%.2f"
+
+#: Menus.cpp:2602
+msgid "Split Delete"
+msgstr "حذف التقسيم"
+
+#: Menus.cpp:2623
+#, c-format
+msgid "Disjoined %.2f seconds at t=%.2f"
+msgstr "تم فصل %.2f ثانية عند ز=%.2f"
+
+#: Menus.cpp:2626
+msgid "Disjoin"
+msgstr "فصل"
+
+#: Menus.cpp:2647
+#, c-format
+msgid "Joined %.2f seconds at t=%.2f"
+msgstr "تم ضم %.2f ثانية عند ز=%.2f"
+
+#: Menus.cpp:2650
+msgid "Join"
+msgstr "ضم"
+
+#: Menus.cpp:2669
+#, c-format
+msgid "Silenced selected tracks for %.2f seconds at %.2f"
+msgstr "تخفيض صوت المسارات المختارة إلى %.2f ثانية عند %.2f"
+
+#: Menus.cpp:2671 toolbars/EditToolBar.cpp:141
+msgid "Silence"
+msgstr "تسكين"
+
+#: Menus.cpp:2705
+msgid "Duplicate"
+msgstr "تضعيف"
+
+#: Menus.cpp:2705
+msgid "Duplicated"
+msgstr "مُضعف"
+
+#: Menus.cpp:2724
+msgid "Cut Labels"
+msgstr "قص علامات"
+
+#: Menus.cpp:2724
+msgid "Cut labeled regions to the clipboard"
+msgstr "قص المناطق المُعلمة إلى لوحة الحفظ"
+
+#: Menus.cpp:2738
+msgid "SplitCut labeled regions to the clipboard"
+msgstr "تقسيم و قص المناطق المُعلمة إلى لوحة الحفظ"
+
+#: Menus.cpp:2739
+msgid "Split Cut Labels"
+msgstr "تقسيم و قص العلامات"
+
+#: Menus.cpp:2753
+msgid "Copied labeled regions to the clipboard"
+msgstr "تم نسخ المناطق المُعلمة إلى لوحة الحفظ"
+
+#: Menus.cpp:2753
+msgid "Copy Labels"
+msgstr "نسخ علامات"
+
+#: Menus.cpp:2765
+msgid "Delete Labels"
+msgstr "حذف علامات"
+
+#: Menus.cpp:2765
+msgid "Deleted labeled regions"
+msgstr "تم حذف المناطق المُعلمة"
+
+#: Menus.cpp:2777
+msgid "Split Delete Labels"
+msgstr "تقسيم و حذف العلامات"
+
+#: Menus.cpp:2777
+msgid "Split Deleted labeled regions"
+msgstr "تم تقسيم و حذف المناطق المُعلمة"
+
+#: Menus.cpp:2789
+msgid "Silence Labels"
+msgstr "تسكيت العلامات"
+
+#: Menus.cpp:2789
+msgid "Silenced labeled regions"
+msgstr "تم تسكيت المناطق المُعلمة"
+
+#: Menus.cpp:2801
+msgid "Split Labels"
+msgstr "تقسيم العلامات"
+
+#: Menus.cpp:2801
+msgid "Split labeled regions"
+msgstr "تم تقسيم المناطق المُعلمة"
+
+#: Menus.cpp:2813
+msgid "Join Labels"
+msgstr "ضم العلامات"
+
+#: Menus.cpp:2813
+msgid "Joined labeled regions"
+msgstr "تم ضم المناطق المُعلمة"
+
+#: Menus.cpp:2825
+msgid "Disjoin Labels"
+msgstr "فصل العلامات"
+
+#: Menus.cpp:2825
+msgid "Disjoined labeled regions"
+msgstr "تم فصل المناطق المُعلمة"
+
+#: Menus.cpp:2847 TrackPanel.cpp:5670
+msgid "Split"
+msgstr "تقسيم"
+
+#: Menus.cpp:2941
+msgid "Split New"
+msgstr "تقسيم جديد"
+
+#: Menus.cpp:2941
+msgid "Split to new track"
+msgstr "تقسيم إلى مسار جديد"
+
+#: Menus.cpp:3024
+msgid "Split at labels"
+msgstr "تقسيم عند العلامات"
+
+#: Menus.cpp:3324
+msgid "To plot the spectrum, all selected tracks must be the same sample rate."
+msgstr "لرسم منحنى الطيف، يجب أن يكون لكل المسارات المختارة نفس معدل العيّنة."
+
+#: Menus.cpp:3350
+#, c-format
+msgid "Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."
+msgstr "الجزء المختار من الصوت كبير جدا. سوف تُحلّل منه الثواني %.1f اﻷولى فقط."
+
+#: Menus.cpp:3476
+#, c-format
+msgid "Imported labels from '%s'"
+msgstr "تم استيراد علامات من '%s'"
+
+#: Menus.cpp:3477
+msgid "Import Labels"
+msgstr "استيراد علامات"
+
+#: Menus.cpp:3487
+msgid "Select a MIDI file..."
+msgstr "اختيار ملف ميدي..."
+
+#: Menus.cpp:3491
+msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
+msgstr "كل الملفات (*.*)|*.*| ملفات ميدي (*.mid)|*.mid| ملفات ألقرو (*.gro)|*.gro"
+
+#: Menus.cpp:3507
+#, c-format
+msgid "Imported MIDI from '%s'"
+msgstr "تم استيراد ميدي من '%s'"
+
+#: Menus.cpp:3509
+msgid "Import MIDI"
+msgstr "استيراد ميدي"
+
+#: Menus.cpp:3522
+msgid "Select any uncompressed audio file..."
+msgstr "اختر أي ملف صوتي غير مضغوط..."
+
+#: Menus.cpp:3526
+msgid "All files (*)|*"
+msgstr "كل الملفات (*)|*"
+
+#: Menus.cpp:3541 Project.cpp:2487 Project.cpp:2512 import/ImportPCM.cpp:407
+#: import/ImportPCM.cpp:451 import/ImportRaw.cpp:446
+msgid "Import"
+msgstr "استيراد"
+
+#: Menus.cpp:3560
+msgid "Edit the metadata tags"
+msgstr "تحرير علامات الميتابيانات"
+
+#: Menus.cpp:3561
+msgid "Edit Metadata"
+msgstr "تحرير الميتابيانات"
+
+#: Menus.cpp:3561
+msgid "Edit Metadata tags"
+msgstr "تحرير علامات الميتابيانات"
+
+#: Menus.cpp:3613
+#, c-format
+msgid "Rendered all audio in track '%s'"
+msgstr "تم تقديم كل الصوت في المسار '%s'"
+
+#: Menus.cpp:3614
+msgid "Render"
+msgstr "تقديم"
+
+#: Menus.cpp:3619
+#, c-format
+msgid "Mixed and rendered %d tracks into one new stereo track"
+msgstr "تم مزج و تقديم %d مسارات إلى مسار واحد ثنائي جديد"
+
+#: Menus.cpp:3622
+#, c-format
+msgid "Mixed and rendered %d tracks into one new mono track"
+msgstr "تم مزج و تقديم %d مسارات إلى مسار واحد أحادي جديد"
+
+#: Menus.cpp:3744
+msgid "Aligned with zero"
+msgstr "مصفوفة مع الصفر"
+
+#: Menus.cpp:3748
+msgid "Aligned cursor"
+msgstr "مؤشر مصفوف"
+
+#: Menus.cpp:3752
+msgid "Aligned with selection start"
+msgstr "مصفوفة مع أول الاختيار"
+
+#: Menus.cpp:3756
+msgid "Aligned with selection end"
+msgstr "مصفوفة مع آخر الاختيار"
+
+#: Menus.cpp:3760
+msgid "Aligned end with cursor"
+msgstr "نهاية مصفوفة مع المؤشر "
+
+#: Menus.cpp:3764
+msgid "Aligned end with selection start"
+msgstr "نهاية مصفوفة مع أول الاختيار"
+
+#: Menus.cpp:3768
+msgid "Aligned end with selection end"
+msgstr "نهاية مصفوفة مع آخر الاختيار"
+
+#: Menus.cpp:3772
+msgid "Aligned"
+msgstr "مصفوف"
+
+#: Menus.cpp:3805
+msgid "Align"
+msgstr "صف"
+
+#: Menus.cpp:3828
+msgid "Created new audio track"
+msgstr "تم إنشاء مسار صوتي جديد"
+
+#: Menus.cpp:3828 Menus.cpp:3851 Menus.cpp:3866 Menus.cpp:3886
+msgid "New Track"
+msgstr "مسار جديد "
+
+#: Menus.cpp:3851
+msgid "Created new stereo audio track"
+msgstr "تم إنشاء مسار صوتي ثنائي جديد"
+
+#: Menus.cpp:3866
+msgid "Created new label track"
+msgstr "تم إنشاء مسار علامة جديد"
+
+#: Menus.cpp:3875
+msgid "The version of Audacity you are using does not support multiple time tracks."
+msgstr "إصدار برنامج جُرأة الذي تستخدمه لا يدعم المسارات الوقت المتعددة."
+
+#: Menus.cpp:3886
+msgid "Created new time track"
+msgstr "تم إنشاء مسار وقت جديد "
+
+#: Menus.cpp:3935
+msgid "Added label"
+msgstr "العلامة المضافة"
+
+#: Menus.cpp:3963
+msgid "Edited labels"
+msgstr "العلامات المحررة"
+
+#: Menus.cpp:3990
+msgid "Save CleanSpeech Preset File As:"
+msgstr "حفظ ملف المجموعات القبلية للخطاب النظيف ك:"
+
+#: Menus.cpp:3994
+msgid "CleanSpeech Presets (*.csp)|*.csp"
+msgstr "المجموعات القبلية للخطاب النظيف (*.csp)|*.csp"
+
+#: Menus.cpp:4001 export/Export.cpp:508
+msgid "Sorry, pathnames longer than 256 characters not supported."
+msgstr "عفوا، الملفات بأسماء أطول من 256 حرف غير مدعومة. "
+
+#: Menus.cpp:4047
+msgid "Problem encountered exporting presets."
+msgstr "حصل مشكل أثناء تصدير المجموعات القبلية."
+
+#: Menus.cpp:4048 export/Export.cpp:401
+msgid "Unable to export"
+msgstr "غير قادر على التصدير"
+
+#: Menus.cpp:4232
+msgid "Remove Track"
+msgstr "حذف المسار"
+
+#: Menus.cpp:4232
+msgid "Removed audio track(s)"
+msgstr "المسارات الصوتية المحذوفة"
+
+#: Menus.cpp:4343
+msgid "Enter new samplerate:"
+msgstr "ادخل معدل العيّنة الجديد:"
+
+#: Menus.cpp:4343 Menus.cpp:4362 export/ExportMP3.cpp:1884
+msgid "Resample"
+msgstr "إعادة أخذ العيّنات"
+
+#: Menus.cpp:4349
+msgid "The entered value is invalid"
+msgstr "القيمة المُدخلة ليست صحيحة"
+
+#: Menus.cpp:4360
+#, c-format
+msgid "Resampling track %d"
+msgstr "إعادة أخذ عيّنات المسار %d"
+
+#: Menus.cpp:4371
+msgid "Resample Track"
+msgstr "إعادة أخذ عيّنات المسار"
+
+#: Menus.cpp:4371
+msgid "Resampled audio track(s)"
+msgstr "تم إعادة أخذ عيّنات المسارات الصوتية"
+
+#: Mix.cpp:94 Mix.cpp:101
+msgid "Mix"
+msgstr "مزج"
+
+#: Mix.cpp:121
+msgid "Mixing and rendering tracks"
+msgstr "مزج و تقديم المسارات"
+
+#: NoteTrack.cpp:36
+msgid "Note Track"
+msgstr "مسار نغمة"
+
+#: Printing.cpp:187
+msgid "There was a problem printing."
+msgstr "حصل مشكل في الطباعة."
+
+#: Printing.cpp:188
+msgid "Print"
+msgstr "طباعة"
+
+#: Project.cpp:657
+msgid "Main Mix"
+msgstr "مزج رئيسي"
+
+#: Project.cpp:782
+#, c-format
+msgid "Welcome to Audacity version %s"
+msgstr "مرحبا بك في إصدار جُرأة %s "
+
+#: Project.cpp:929
+msgid "(Recovered)"
+msgstr "(مُسترجع)"
+
+#: Project.cpp:1458 TrackPanel.cpp:778 toolbars/ControlToolBar.cpp:193
+msgid "Record"
+msgstr "تسجيل"
+
+#: Project.cpp:1458 TrackPanel.cpp:778
+msgid "Recorded Audio"
+msgstr "صوت مسجل"
+
+#: Project.cpp:1475
+msgid "Save changes before closing?"
+msgstr "حفظ التغييرات قبل الإغلاق؟"
+
+#: Project.cpp:1493
+msgid "\n"
+"\n"
+"Saved project will be empty!!\n"
+"\n"
+"To save the tracks that were previously\n"
+"open, click Cancel, Edit > Undo until all your\n"
+"tracks are open, then File > Save Project."
+msgstr ""
+
+#: Project.cpp:1476
+msgid "Save changes?"
+msgstr "حفظ التغييرات؟"
+
+#: Project.cpp:1657
+msgid "All files|*.*|All supported files|"
+msgstr "كل الملفات|*.*|كل الملفات المدعومة|"
+
+#: Project.cpp:1682
+msgid "Select one or more audio files..."
+msgstr "اختر ملف أو عدة ملفات صوتية..."
+
+#: Project.cpp:1709
+msgid "Audacity projects|*.aup|"
+msgstr "مشاريع جُرأة|*.aup|"
+
+#: Project.cpp:1774 Project.cpp:1782
+msgid "Error opening file"
+msgstr "خطأ في فتح الملف"
+
+#: Project.cpp:1788
+#, c-format
+msgid "File may be invalid or corrupted: \n"
+"%s"
+msgstr "يحتمل أن الملف غير صحيح أو أن محتواه فاسد: \n"
+"%s"
+
+#: Project.cpp:1789
+msgid "Error opening file or project"
+msgstr "خطأ في فتح الملف أو المشروع"
+
+#: Project.cpp:1806
+msgid "Audacity was unable to convert an Audacity 1.0 project to the new project format."
+msgstr "لم يتمكن البرنامج من تحويل مشروع جُرأة إصدار 1.0 إلى الصيغة الجديدة  للمشاريع."
+
+#: Project.cpp:1909
+msgid "Could not remove old auto save file"
+msgstr "لم أتمكن من حذف ملف حفظ تلقائي قديم"
+
+#: Project.cpp:1911
+msgid "Project was recovered"
+msgstr "تم استرجاع المشروع"
+
+#: Project.cpp:1911
+msgid "Recover"
+msgstr "استرجاع"
+
+#: Project.cpp:1940
+msgid "Project checker repaired file"
+msgstr "قام فاحص المشاريع بإصلاح الملف"
+
+#: Project.cpp:1940 effects/Repair.h:29
+msgid "Repair"
+msgstr "إصلاح"
+
+#: Project.cpp:2051
+#, c-format
+msgid "Couldn't find the project data folder: \"%s\""
+msgstr "لم أتمكن من العثور على مجلد بيانات المشروع: \"%s\""
+
+#: Project.cpp:2089
+#, c-format
+msgid "This file was saved using Audacity %s.\n"
+"You are using Audacity %s - you need to upgrade to\n"
+"a newer version to open this file."
+msgstr "تم حفظ هذا الملف ببرنامج جُرأة %s.\n"
+"أنت اﻵن تستخدم برنامج جُرأة %s، فأنت بحاجة إلى تحديثه إلى\n"
+"إصدار جديد لتتمكن من فتح هذا الملف."
+
+#: Project.cpp:2093
+msgid "Can't open project file"
+msgstr "لا أستطيع فتح ملف المشروع"
+
+#: Project.cpp:2131
+#, c-format
+msgid "This file was saved by Audacity %s, a much\n"
+"older version of Audacity.  The format has changed.\n"
+"Audacity will probably destroy the file in trying\n"
+"to open it.  You must back up your project\n"
+"first, to be safe.\n"
+"\n"
+"Would you like to try to open this file\n"
+"right now anyway?"
+msgstr ""
+
+#: Project.cpp:2138
+#, c-format
+msgid "This file was saved by Audacity %s and the format\n"
+"has changed.  This version of Audacity can try to\n"
+"open it, but there may be problems.  You should back up\n"
+"your project first, to be safe.\n"
+"\n"
+"After you save the file with this version of Audacity,\n"
+"you will not be able to open the file in the older\n"
+"version anymore.  Would you like to open\n"
+"this file right now anyway?"
+msgstr ""
+
+#: Project.cpp:2105
+msgid "Opening old project file"
+msgstr "فتح ملف مشروع قديم"
+
+#: Project.cpp:2326
+#, c-format
+msgid "Could not save project. Perhaps %s is not writeable,\n"
+"or the disk is full."
+msgstr "لم أتمكن من حفظ المشروع. ربما %s محمي ضد الكتابة، \n"
+"أو قد يكون القرص ممتلئ."
+
+#: Project.cpp:2328 Project.cpp:2342
+msgid "Error saving project"
+msgstr "خطأ في حفظ المشروع"
+
+#: Project.cpp:2404
+#, c-format
+msgid "Saved %s"
+msgstr "تم حفظ %s"
+
+#. i18n-hint: This refers to files that are opened directly
+#. without looking at the file header.  Same as "Import Raw"
+#: Project.cpp:2420
+msgid "Raw"
+msgstr "خام"
+
+#: Project.cpp:2463
+#, c-format
+msgid "Importing %s..."
+msgstr ""
+
+#: Project.cpp:2486
+#, c-format
+msgid "Imported '%s'"
+msgstr "تم استيراد '%s'"
+
+#: Project.cpp:2528 Project.cpp:2531
+msgid "Error importing"
+msgstr "خطأ استيراد"
+
+#: Project.cpp:2572
+msgid "Save Speech As:"
+msgstr "حفظ الخطاب كـ:"
+
+#: Project.cpp:2574
+msgid "Windows PCM Audio file (*.wav)|*.wav"
+msgstr "ملف صوت ويندوز بي.سي.أم (*.wav)|*.wav"
+
+#: Project.cpp:2580
+msgid "Audacity project files (.aup) let you save everything you're working on exactly as it\n"
+"appears on the screen, but most other programs can't open Audacity project files.\n"
+"\n"
+"When you want to save a file that can be opened by other programs, select one of the\n"
+"Export commands."
+msgstr "ملفات مشاريع جُرأة (.aup) تمكنك من حفظ كل شيء اشتغلت  عليه تماما\n"
+" كما يظهر على الشاشة، و لكن أغلب البرامج اﻷخرى لا يمكنها قراءة هذه الملفات.\n"
+"\n"
+"إذا أردت حفظ ملف يمكن فتحه ببرامج أخرى، اختر إحدى\n"
+"أوامر التصدير."
+
+#: Project.cpp:2583
+msgid "Audacity projects (*.aup)|*.aup"
+msgstr "مشاريع جُرأة (*.aup)|*.aup"
+
+#: Project.cpp:2627
+msgid "Created new project"
+msgstr "تم إنشاء مشروع جديد "
+
+#: Project.cpp:2749
+#, c-format
+msgid "Deleted %.2f seconds at t=%.2f"
+msgstr "تم حذف %.2f ثانية عند اللحظة %.2f"
+
+#: Project.cpp:2752 effects/Equalization.cpp:1232
+#: effects/Equalization.cpp:2501
+msgid "Delete"
+msgstr "حذف"
+
+#: Project.cpp:2945
+#, c-format
+msgid "Disk space remains for recording %d hours and %d minutes."
+msgstr "يبقى في القرص مساحة لتسجيل %d ساعة و %d دقيقة."
+
+#: Project.cpp:2948
+#, c-format
+msgid "Disk space remains for recording 1 hour and %d minutes."
+msgstr "يبقى في القرص مساحة لتسجيل ساعة و %d دقيقة."
+
+#: Project.cpp:2951
+#, c-format
+msgid "Disk space remains for recording %d minutes."
+msgstr "يبقى في القرص مساحة لتسجيل %d دقيقة."
+
+#: Project.cpp:2954
+#, c-format
+msgid "Disk space remains for recording %d seconds."
+msgstr "يبقى في القرص مساحة لتسجيل %d ثانية."
+
+#: Project.cpp:2957
+msgid "Out of disk space"
+msgstr "لقد نفذت مساحة القرص"
+
+#: Project.cpp:3235
+msgid "Could not remove old autosave file: "
+msgstr "لم أتمكن من حذف ملف حفظ تلقائي قديم"
+
+#: Project.cpp:3276
+msgid "New Project"
+msgstr "مشروع جديد"
+
+#: Project.cpp:3289
+msgid "Error writing autosave file"
+msgstr "خطأ في كتابة ملف الحفظ التلقائي"
+
+#: Project.cpp:3314
+msgid "Could not create autosave file: "
+msgstr "لم أتمكن من إنشاء ملف حفظ تلقائي:"
+
+#: Project.cpp:3325
+#, c-format
+msgid "Actual Rate: %d"
+msgstr "المعدل الحالي: %d"
+
+#: Resample.cpp:42
+msgid "Libresample by Dominic Mazzoni and Julius Smith"
+msgstr "مكتبة إعادة أخذ العيّنات لدومينيك مازوني و جوليوس سميث"
+
+#: Resample.cpp:53
+msgid "High-quality Sinc Interpolation"
+msgstr "استقراء سينك ذو جودة عالية"
+
+#: Resample.cpp:55
+msgid "Fast Sinc Interpolation"
+msgstr "استقراء سينك سريع"
+
+#: Resample.cpp:125
+msgid "Libsamplerate by Erik de Castro Lopo"
+msgstr "مكتبة معدل العينة لإريك دي كاسترو  لوبو"
+
+#: Resample.cpp:218
+#, c-format
+msgid "Libsamplerate error: %d\n"
+msgstr "خطأ من مكتبة معدل العينة: %d\n"
+
+#: Resample.cpp:240 Resample.cpp:250
+msgid "Resampling disabled."
+msgstr "إعادة أخذ العيّنات غير مُفعل."
+
+#. i18n-hint: Audio data bit depth (precison): 16-bit integers
+#: SampleFormat.cpp:66
+msgid "16-bit PCM"
+msgstr "16-بِت بي.سي.أم"
+
+#. i18n-hint: Audio data bit depth (precison): 24-bit integers
+#: SampleFormat.cpp:69
+msgid "24-bit PCM"
+msgstr "24-بِت بي.سي.أم"
+
+#. i18n-hint: Audio data bit depth (precison): 32-bit floating point
+#: SampleFormat.cpp:72
+msgid "32-bit float"
+msgstr "32-بِت فلوت"
+
+#: Screenshot.cpp:384
+msgid "Saved "
+msgstr "تم حفظه"
+
+#: Screenshot.cpp:387
+msgid "Error trying to save file: "
+msgstr "خطأ في محاولة حفظ الملف:"
+
+#: Sequence.cpp:732 Sequence.cpp:742 Sequence.cpp:749
+msgid "Gap detected in project file\n"
+msgstr "تم اكتشاف فراغ في ملف المشروع\n"
+
+#: effects/Effect.cpp:255 effects/Effect.cpp:382 effects/Phaser.cpp:595
+#: effects/Wahwah.cpp:582 effects/audiounits/AudioUnitEffect.cpp:872
+msgid "Pre&view"
+msgstr "ع&رض مسبق"
+
+#: effects/nyquist/Nyquist.cpp:828 effects/nyquist/Nyquist.cpp:994
+msgid "&Debug"
+msgstr "إ&صلاح الخلل"
+
+#: SmartRecordDialog.cpp:68
+msgid "Audacity Timer Record"
+msgstr "مسجل مُؤقت جُرأة"
+
+#: SmartRecordDialog.cpp:223
+msgid "Recording start"
+msgstr ""
+
+#: SmartRecordDialog.cpp:224
+msgid "Recording end"
+msgstr ""
+
+#: SmartRecordDialog.cpp:303
+msgid "Duration"
+msgstr "المدة"
+
+#: SmartRecordDialog.cpp:228
+msgid "Audacity Smart Record Progress"
+msgstr "تَقدم التسجيل الذكي لجُرأة"
+
+#: SmartRecordDialog.cpp:269
+msgid "Start Date and Time"
+msgstr "يوم و ساعة البداية"
+
+#: SmartRecordDialog.cpp:286
+msgid "End Date and Time"
+msgstr "يوم و ساعة النهاية"
+
+#. i18n-hint: A time specification like "Sunday 28th October 2007 15:16:17 GMT"
+#. * but hopefully translated by wxwidgets will be inserted into this
+#: SmartRecordDialog.cpp:380
+#, c-format
+msgid "Waiting to start recording at %s.\n"
+msgstr ""
+
+#: SmartRecordDialog.cpp:380
+msgid "Audacity Smart Record - Waiting for Start"
+msgstr "التسجيل الذكي لجُرأة - انتظار البدأ"
+
+#: SplashDialog.cpp:58
+msgid "&Welcome to Audacity!"
+msgstr ""
+
+#: SplashDialog.cpp:110
+msgid "Don't show this again at start up"
+msgstr ""
+
+#: Tags.cpp:621
+msgid "Artist Name"
+msgstr ""
+
+#: Tags.cpp:622
+msgid "Track Title"
+msgstr ""
+
+#: Tags.cpp:623
+msgid "Album Title"
+msgstr ""
+
+#: Tags.cpp:1240
+msgid "Track Number"
+msgstr "رقم المسار"
+
+#: Tags.cpp:870 Tags.cpp:1250
+msgid "Year"
+msgstr "عام"
+
+#: Tags.cpp:1266
+msgid "Genre"
+msgstr "نوع"
+
+#: Tags.cpp:880 Tags.cpp:1283 prefs/MousePrefs.cpp:96
+msgid "Comments"
+msgstr "تعليقات"
+
+#: Tags.cpp:745 Tags.cpp:1985
+msgid "Press F2 or double click to edit."
+msgstr ""
+
+#: Tags.cpp:769
+msgid "Tag Name"
+msgstr ""
+
+#: Tags.cpp:770
+msgid "Tag Value"
+msgstr ""
+
+#: Tags.cpp:1346 prefs/KeyConfigPrefs.cpp:116
+msgid "&Clear"
+msgstr "&تنظيف"
+
+#: Tags.cpp:791
+msgid "Genres"
+msgstr ""
+
+#: Tags.cpp:795 Tags.cpp:1406 Tags.cpp:1947
+msgid "Edit"
+msgstr ""
+
+#: Tags.cpp:796 Tags.cpp:1948
+msgid "Reset"
+msgstr ""
+
+#: Tags.cpp:1356
+msgid "Template"
+msgstr "قالب"
+
+#: Tags.cpp:1359 prefs/KeyConfigPrefs.cpp:126
+msgid "&Load..."
+msgstr "تح&ميل..."
+
+#: Tags.cpp:1364 prefs/KeyConfigPrefs.cpp:125
+msgid "&Save..."
+msgstr "&حفظ..."
+
+#: Tags.cpp:808 Tags.cpp:1434 Tags.cpp:1962
+#, fuzzy
+msgid "S&et Default"
+msgstr "حدد الا&فتراضي"
+
+#: Tags.cpp:958 Tags.cpp:1597 Tags.cpp:2326
+msgid "Edit Genres"
+msgstr ""
+
+#: Tags.cpp:991 Tags.cpp:1003 Tags.cpp:1019 Tags.cpp:1032 Tags.cpp:1635
+#: Tags.cpp:1647 Tags.cpp:1663 Tags.cpp:1676 Tags.cpp:2369 Tags.cpp:2381
+#: Tags.cpp:2397 Tags.cpp:2410
+msgid "Reset Genres"
+msgstr ""
+
+#: Tags.cpp:991 Tags.cpp:1032 Tags.cpp:1635 Tags.cpp:1676 Tags.cpp:2369
+#: Tags.cpp:2410
+msgid "Unable to save genre file."
+msgstr ""
+
+#: Tags.cpp:1002 Tags.cpp:1646 Tags.cpp:2380
+msgid "Are you sure you want to reset the genre list to defaults?"
+msgstr ""
+
+#: Tags.cpp:1019 Tags.cpp:1663 Tags.cpp:2397
+msgid "Unable to open genre file."
+msgstr ""
+
+#: Tags.cpp:1041 Tags.cpp:1096
+msgid "Save Metadata As:"
+msgstr "حفظ الميتابيانات كـ:"
+
+#: Tags.cpp:1076
+msgid "Error loading metadata"
+msgstr "خطأ في تحميل الميتابيانات"
+
+#: Tags.cpp:1376 Tags.cpp:1935
+msgid "Title:"
+msgstr ""
+
+#: Tags.cpp:1377 Tags.cpp:1936
+msgid "Artist:"
+msgstr ""
+
+#: Tags.cpp:1378 Tags.cpp:1937
+msgid "Album:"
+msgstr ""
+
+#: Tags.cpp:1379
+msgid "Composer:"
+msgstr ""
+
+#: Tags.cpp:1380
+msgid "Lyricist:"
+msgstr ""
+
+#: Tags.cpp:1381 Tags.cpp:1940
+msgid "Comments:"
+msgstr ""
+
+#: Tags.cpp:1383
+msgid "Encoded By:"
+msgstr ""
+
+#: Tags.cpp:1387
+msgid "Copyright:"
+msgstr ""
+
+#: Tags.cpp:1391 Tags.cpp:1938
+msgid "Track Number:"
+msgstr ""
+
+#: Tags.cpp:1395 Tags.cpp:1939
+msgid "Year:"
+msgstr ""
+
+#: Tags.cpp:1399 Tags.cpp:1941
+msgid "Genre:"
+msgstr ""
+
+#: Tags.cpp:1457 Tags.cpp:2056
+msgid "No Genres"
+msgstr ""
+
+#: Tags.cpp:1610
+msgid "Reset to Defaults"
+msgstr ""
+
+#: Tags.cpp:1923
+msgid "Basic"
+msgstr ""
+
+#: Tags.cpp:1975
+msgid "Advanced"
+msgstr ""
+
+#: Tags.cpp:2000
+msgid "Value"
+msgstr ""
+
+#: Tags.cpp:2036
+msgid "Clea&r"
+msgstr ""
+
+#: Tags.cpp:834
+#, c-format
+msgid "Maximum length of attribute '%s' is %d characters. Data was truncated."
+msgstr "الحد الأقصى لطول الصفة '%s' هو %d حرفا. لقد تم بتر البيانات."
+
+#: Tags.cpp:840 Tags.cpp:1204
+msgid "Title"
+msgstr "عنوان"
+
+#: Tags.cpp:850 Tags.cpp:1214
+msgid "Artist"
+msgstr "فنان"
+
+#: Tags.cpp:860 Tags.cpp:1224
+msgid "Album"
+msgstr "ألبوم"
+
+#: Theme.cpp:634
+#, c-format
+msgid "Audacity could not write file:\n"
+"  %s."
+msgstr "لم يتمكن جُرأة من كتابة الملف:\n"
+"  %s."
+
+#: Theme.cpp:652
+#, c-format
+msgid "Audacity could not open file:\n"
+"  %s\n"
+"for writing."
+msgstr "لم يتمكن جُرأة من فتح الملف:\n"
+"  %s\n"
+"للكتابة."
+
+#: Theme.cpp:660
+#, c-format
+msgid "Audacity could not write images to file:\n"
+"  %s."
+msgstr "لم يتمكن جُرأة من كتابة الصور في الملف:\n"
+"  %s."
+
+#: Theme.cpp:795
+#, c-format
+msgid "Audacity could not find file:\n"
+"  %s.\n"
+"Theme not loaded."
+msgstr "لم يتمكن جُرأة من العثور على الملف:\n"
+"  %s.\n"
+"لم يتم تحميل الموضوع."
+
+#: Theme.cpp:803 Theme.cpp:892
+#, c-format
+msgid "Audacity could not load file:\n"
+"  %s.\n"
+"Bad png format perhaps?"
+msgstr "لم يتمكن جُرأة من تحميل الملف:\n"
+"  %s.\n"
+"ربما تكون صيغة بي.أن.جي سيئة؟ "
+
+#: Theme.cpp:819
+msgid "Audacity could not read its default theme.\n"
+"Please report the problem."
+msgstr "لم يتمكن جُرأة من قراءة الموضوع الافتراضي.\n"
+"من فضلك أخبر عن هذا المشكل."
+
+#: Theme.cpp:914
+#, c-format
+msgid "None of the expected theme component files\n"
+" were found in:\n"
+"  %s."
+msgstr "لم أعثر على أي من ملفات مكونات \n"
+"المواضيع المتوقعة في:\n"
+" %s."
+
+#: Theme.cpp:938
+#, c-format
+msgid "Could not create directory:\n"
+"  %s"
+msgstr "لم أتمكن من إنشاء الدليل:\n"
+"  %s"
+
+#: Theme.cpp:959
+#, c-format
+msgid "Audacity could not save file:\n"
+"  %s"
+msgstr "لم يتمكن جُرأة من حفظ الملف:\n"
+"  %s"
+
+#: Theme.cpp:971
+#, c-format
+msgid "All required files in:\n"
+"  %s\n"
+"were already present."
+msgstr "كل الملفات المطلوبة في:\n"
+"  %s\n"
+"كانت موجودة من قبل."
+
+#: TimeDialog.cpp:53
+msgid "Specify Time"
+msgstr "حدد الوقت"
+
+#: TrackPanel.cpp:452 TrackPanel.cpp:453
+msgid "Track Panel"
+msgstr "لوح المسار"
+
+#: TrackPanel.cpp:496 export/ExportPCM.cpp:132 prefs/QualityPrefs.cpp:97
+msgid "Other..."
+msgstr "آخر..."
+
+#: TrackPanel.cpp:504 TrackPanel.cpp:525 TrackPanel.cpp:534 TrackPanel.cpp:542
+msgid "Name..."
+msgstr "إسم..."
+
+#: TrackPanel.cpp:506 TrackPanel.cpp:527 TrackPanel.cpp:538 TrackPanel.cpp:544
+msgid "Move Track Up"
+msgstr "تحريك المسار إلى فوق"
+
+#: TrackPanel.cpp:507 TrackPanel.cpp:528 TrackPanel.cpp:539 TrackPanel.cpp:545
+msgid "Move Track Down"
+msgstr "تحريك المسار إلى أسفل"
+
+#: TrackPanel.cpp:509 effects/ToneGen.cpp:289
+msgid "Waveform"
+msgstr "شكل الموجة"
+
+#: TrackPanel.cpp:510
+msgid "Waveform (dB)"
+msgstr "شكل الموجة (ديسيبل)"
+
+#: TrackPanel.cpp:512
+msgid "Pitch (EAC)"
+msgstr "حدّة (EAC)"
+
+#: TrackPanel.cpp:514 TrackPanel.cpp:5640
+msgid "Mono"
+msgstr "أحادي"
+
+#: TrackPanel.cpp:515 TrackPanel.cpp:5639
+msgid "Left Channel"
+msgstr "القناة اليسرى"
+
+#: TrackPanel.cpp:516 TrackPanel.cpp:5639
+msgid "Right Channel"
+msgstr "القناة اليمنى"
+
+#: TrackPanel.cpp:517
+msgid "Make Stereo Track"
+msgstr "انتاج مسار ثنائي"
+
+#: TrackPanel.cpp:518
+msgid "Split Stereo Track"
+msgstr "تقسيم المسار الثنائي"
+
+#: TrackPanel.cpp:520
+msgid "Set Sample Format"
+msgstr "تحديد صيغة العيّنة"
+
+#: TrackPanel.cpp:522 TrackPanel.cpp:5857
+msgid "Set Rate"
+msgstr "تحديد المعدل"
+
+#: TrackPanel.cpp:530
+msgid "Up Octave"
+msgstr "أوكتاف فوق"
+
+#: TrackPanel.cpp:531
+msgid "Down Octave"
+msgstr "أوكتاف أسفل"
+
+#: TrackPanel.cpp:536
+msgid "Font..."
+msgstr "الخط..."
+
+#: TrackPanel.cpp:547
+msgid "Set Range..."
+msgstr "تحديد المجال..."
+
+#: TrackPanel.cpp:551 toolbars/EditToolBar.cpp:135
+msgid "Copy"
+msgstr "نسخ"
+
+#: TrackPanel.cpp:1245
+msgid "Click to vertically zoom in, Shift-click to zoom out, Drag to create a particular zoom region."
+msgstr "انقر للتكبير العمودي، انقر و اضغط على Shift للتصغير، اسحب لإنشاء منطقة تكبير أو تصغير خاصة."
+
+#: TrackPanel.cpp:1250
+msgid "Drag the label vertically to change the order of the tracks."
+msgstr "اسحب العلامة عموديا لتغيير ترتيب المسارات."
+
+#: TrackPanel.cpp:1270
+msgid "Click and drag to adjust relative size of stereo tracks."
+msgstr "انقر و اسحب لتعديل الحجم النسبي للمسارات الثنائية."
+
+#: TrackPanel.cpp:1273
+msgid "Click and drag to resize the track."
+msgstr "انقر و اسحب لتغيير حجم المسار."
+
+#: TrackPanel.cpp:1304
+msgid "Drag one or more label boundaries"
+msgstr "اسحب حد واحد أو أكثر من حدود العلامة"
+
+#: TrackPanel.cpp:1305
+msgid "Drag label boundary"
+msgstr "اسحب حد العلامة"
+
+#. i18n-hint: This string is for the Mac OS, which uses Command-, as the shortcut for Preferences
+#: TrackPanel.cpp:1321
+msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
+msgstr "نمط الأدوات المتعددة: Cmd-، لخيارات الفأرة و لوحة المفاتيح"
+
+#. i18n-hint: This string is for Windows and Linux, which uses Control-P as the shortcut for Preferences
+#: TrackPanel.cpp:1324
+msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
+msgstr "نمط الأدوات المتعددة: Ctrl-P لخيارات الفأرة و لوحة المفاتيح"
+
+#: TrackPanel.cpp:1344
+msgid "Click and drag to move left selection boundary."
+msgstr "انقر و اسحب لتحريك الحد اﻷيسر للإختيار."
+
+#: TrackPanel.cpp:1349
+msgid "Click and drag to move right selection boundary."
+msgstr "انقر و اسحب لتحريك الحد اﻷيمن للإختيار."
+
+#: TrackPanel.cpp:1675 TrackPanel.cpp:3782 TrackPanel.cpp:3814
+#: TrackPanel.cpp:4068 TrackPanel.cpp:5969 TrackPanel.cpp:5989
+msgid "Modified Label"
+msgstr "علامة تم تعديلها"
+
+#: TrackPanel.cpp:1676 TrackPanel.cpp:3783 TrackPanel.cpp:3815
+#: TrackPanel.cpp:4069 TrackPanel.cpp:5970 TrackPanel.cpp:5990
+msgid "Label Edit"
+msgstr "تحرير علامة"
+
+#: TrackPanel.cpp:1905
+msgid "Adjusted envelope."
+msgstr "الغلاف المُعدل."
+
+#: TrackPanel.cpp:1906 prefs/MousePrefs.cpp:111
+msgid "Envelope"
+msgstr "غلاف"
+
+#: TrackPanel.cpp:2042
+msgid "Moved clip to another track"
+msgstr "حرك المقطع إلى مسار آخر"
+
+#: TrackPanel.cpp:2046
+msgid "left"
+msgstr "يسار"
+
+#: TrackPanel.cpp:2046
+msgid "right"
+msgstr "يمين"
+
+#. i18n-hint: %s is a direction like left or right
+#: TrackPanel.cpp:2048
+#, c-format
+msgid "Time shifted tracks/clips %s %.02f seconds"
+msgstr "تم نقل المسارات/المقاطع إلى %s بـ %.02f ثانية"
+
+#: TrackPanel.cpp:2052 prefs/MousePrefs.cpp:107 prefs/MousePrefs.cpp:108
+#: prefs/MousePrefs.cpp:109
+msgid "Time-Shift"
+msgstr "تحويل الوقت"
+
+#: TrackPanel.cpp:2746
+msgid "Draw currently only works with linear-view waveforms."
+msgstr "حاليا، الرسم يعمل فقط مع أشكال الموجات التي منظرها خطي."
+
+#: TrackPanel.cpp:2763
+msgid "You are not zoomed in enough. Zoom in until you can see the individual samples."
+msgstr "التكبير ليس كاف. قم بالتكبير حتى تظهر العيّنات الفردية."
+
+#: TrackPanel.cpp:3034
+msgid "Moved Sample"
+msgstr "تم تحريك العيّنة"
+
+#: TrackPanel.cpp:3035
+msgid "Sample Edit"
+msgstr "تحرير العيّنة "
+
+#: TrackPanel.cpp:3134
+#, c-format
+msgid "Removed track '%s.'"
+msgstr "مسار محذوف '%s.'"
+
+#: TrackPanel.cpp:3136
+msgid "Track Remove"
+msgstr "حذف المسار"
+
+#: TrackPanel.cpp:3277
+msgid "Moved gain slider"
+msgstr "تم تحريك متزحلق مستوى الصوت"
+
+#: TrackPanel.cpp:3277
+msgid "Moved pan slider"
+msgstr "تم تحريك متزحلق البانوراما"
+
+#. i18n-hint: Title of the Gain slider, used to adjust the volume
+#: TrackPanel.cpp:3278 TrackPanel.cpp:5308 TrackPanel.cpp:6571
+msgid "Gain"
+msgstr "مستوى الصوت"
+
+#. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
+#: TrackPanel.cpp:3278 TrackPanel.cpp:5246 TrackPanel.cpp:6578
+msgid "Pan"
+msgstr "بانوراما"
+
+#: TrackPanel.cpp:3403 TrackPanel.cpp:5922 effects/ChangePitch.cpp:282
+msgid "up"
+msgstr "فوق"
+
+#: TrackPanel.cpp:3407 TrackPanel.cpp:5923 effects/ChangePitch.cpp:282
+msgid "down"
+msgstr "أسفل"
+
+#: TrackPanel.cpp:3412 TrackPanel.cpp:5918
+#, c-format
+msgid "Moved '%s' %s"
+msgstr "تم تحريك '%s' %s"
+
+#: TrackPanel.cpp:3415 TrackPanel.cpp:5924
+msgid "Move Track"
+msgstr "تحريك المسار"
+
+#: TrackPanel.cpp:3969
+msgid "Expand"
+msgstr "توسيع"
+
+#: TrackPanel.cpp:3969
+msgid "Expanded Cut Line"
+msgstr "تم توسيع خط القص"
+
+#: TrackPanel.cpp:3976
+msgid "Merge"
+msgstr ""
+
+#: TrackPanel.cpp:3976
+msgid "Merged Clips"
+msgstr ""
+
+#: TrackPanel.cpp:3989
+msgid "Removed Cut Line"
+msgstr "تم حذف خط القص"
+
+#: TrackPanel.cpp:5246
+msgid "Adjusted Pan"
+msgstr "تم تعديل البانوراما"
+
+#: TrackPanel.cpp:5308
+msgid "Adjusted gain"
+msgstr "تم تعديل مستوى الصوت"
+
+#: TrackPanel.cpp:5469
+msgid "Can't delete track with active audio"
+msgstr "لا يمكن حذف مسار الصوت الفعّال"
+
+#: TrackPanel.cpp:5620
+msgid "Stereo, "
+msgstr "ثنائي، "
+
+#: TrackPanel.cpp:5623
+msgid "Mono, "
+msgstr "أحادي، "
+
+#: TrackPanel.cpp:5625
+msgid "Left, "
+msgstr "يسار، "
+
+#: TrackPanel.cpp:5627
+msgid "Right, "
+msgstr "يمين، "
+
+#: TrackPanel.cpp:5649 TrackPanel.cpp:5762
+#, c-format
+msgid "Changed '%s' to %s"
+msgstr "تم تغيير '%s' إلى %s"
+
+#: TrackPanel.cpp:5654
+msgid "Channel"
+msgstr "القناة"
+
+#: TrackPanel.cpp:5667
+#, c-format
+msgid "Split stereo track '%s'"
+msgstr "تقسيم المسار الثنائي '%s'"
+
+#: TrackPanel.cpp:5688
+#, c-format
+msgid "Made '%s' a stereo track"
+msgstr "تم تحويل '%s' إلى مسار ثنائي"
+
+#: TrackPanel.cpp:5691
+msgid "Make Stereo"
+msgstr "تحويل إلى ثنائي"
+
+#: TrackPanel.cpp:5726
+#, c-format
+msgid "Changed '%s' to %d Hz"
+msgstr "تم تغيير '%s ' إلى %d هرتز"
+
+#: TrackPanel.cpp:5728
+msgid "Rate Change"
+msgstr "تغيير المعدل"
+
+#: TrackPanel.cpp:5766
+msgid "Format Change"
+msgstr "تغيير الصيغة "
+
+#: TrackPanel.cpp:5856
+msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
+msgstr "أدخل معدل العيّنة بالهرتز (في الثانية) بين 1 و 100000:"
+
+#: TrackPanel.cpp:5866
+msgid "Invalid rate."
+msgstr "معدل غير صحيح."
+
+#: TrackPanel.cpp:5886
+msgid "Change lower speed limit (%) to:"
+msgstr "تغيير حد السرعة الدنيا (%) إلى:"
+
+#: TrackPanel.cpp:5887 TrackPanel.cpp:5888
+msgid "Lower speed limit"
+msgstr "حد السرعة الدنيا"
+
+#: TrackPanel.cpp:5893
+msgid "Change upper speed limit (%) to:"
+msgstr "تغيير حد السرعة القصوى (%) إلى:"
+
+#: TrackPanel.cpp:5894 TrackPanel.cpp:5895
+msgid "Upper speed limit"
+msgstr "حد السرعة القصوى"
+
+#: TrackPanel.cpp:5903
+#, c-format
+msgid "Set range to '%d' - '%d'"
+msgstr "تحديد المجال إلى '%d' - '%d'"
+
+#: TrackPanel.cpp:5906
+msgid "Set Range"
+msgstr "تحديد المجال"
+
+#: TrackPanel.cpp:5951
+msgid "Change track name to:"
+msgstr "تغيير اسم المسار إلى:"
+
+#: TrackPanel.cpp:5952
+msgid "Track Name"
+msgstr "اسم المسار"
+
+#: TrackPanel.cpp:5955
+#, c-format
+msgid "Renamed '%s' to '%s'"
+msgstr "إعادة تسمية '%s' إلى '%s'"
+
+#: TrackPanel.cpp:5958
+msgid "Name Change"
+msgstr "تغيير الإسم"
+
+#: TrackPanel.cpp:6021
+msgid "Label Track Font"
+msgstr "خط مسار العلامة"
+
+#: TrackPanel.cpp:6039
+msgid "Face name"
+msgstr ""
+
+#: TrackPanel.cpp:6048
+msgid "Face size"
+msgstr ""
+
+#: TrackPanel.cpp:6498
+msgid "Mute"
+msgstr "مكتوم"
+
+#: TrackPanel.cpp:6498
+msgid "Solo"
+msgstr "منفرد"
+
+#: TrackPanelAx.cpp:265
+msgid "TrackView"
+msgstr "منظر المسار"
+
+#: TrackPanelAx.cpp:273
+msgid "Track Accessible out of sync"
+msgstr "المسار الذي يمكن الوصول اليه غير متزامن"
+
+#: TrackPanelAx.cpp:281
+#, c-format
+msgid "Track %d"
+msgstr "المسار %d"
+
+#: TrackPanelAx.cpp:287
+msgid " Mute On"
+msgstr "تشغيل الماكوم "
+
+#: TrackPanelAx.cpp:292
+msgid " Solo On"
+msgstr "تشغيّل المنفرد"
+
+#: TrackPanelAx.cpp:296
+msgid " Select On"
+msgstr "تشغيّلال اختيار"
+
+#: VoiceKey.cpp:88 VoiceKey.cpp:238 VoiceKey.cpp:376 VoiceKey.cpp:517
+msgid "Selection is too small to use voice key."
+msgstr "لا يمكن استخدام مفتاح الصوت لأن الاختيار صغير جدا."
+
+#: VoiceKey.cpp:843
+msgid "Calibration Results\n"
+msgstr "نتائج التقويم\n"
+
+#: VoiceKey.cpp:844
+#, c-format
+msgid "Energy                  -- mean: %1.4f  sd: (%1.4f)\n"
+msgstr "الطاقة                  -- المعدل: %1.4f  الانحراف المعياري: (%1.4f)\n"
+
+#: VoiceKey.cpp:845
+#, c-format
+msgid "Sign Changes        -- mean: %1.4f  sd: (%1.4f)\n"
+msgstr "تغيرات الإشارة        -- المعدل: %1.4f  الانحراف المعياري: (%1.4f)\n"
+
+#: VoiceKey.cpp:846
+#, c-format
+msgid "Direction Changes  -- mean: %1.4f  sd: (%1.4f)\n"
+msgstr "تغيرات الإتجاه  -- المعدل: %1.4f  الانحراف المعياري: (%1.4f)\n"
+
+#: WaveTrack.cpp:75
+msgid "Audio Track"
+msgstr "مسار صوتي"
+
+#: WaveTrack.cpp:541 WaveTrack.cpp:560
+msgid "There is not enough room available to paste the selection"
+msgstr "ليس هناك مكان متوفر للصق الاختيار"
+
+#: WaveTrack.cpp:1623
+msgid "There is not enough room available to expand the cut line"
+msgstr "ليس هناك مكان متوفر لتوسيع الخط المقطوع"
+
+#: commands/CommandManager.cpp:395
+#, c-format
+msgid "Plugins 1 to %i"
+msgstr "البرامج المساعدة من 1 إلى %i"
+
+#: commands/CommandManager.cpp:409
+#, c-format
+msgid "Plugins %i to %i"
+msgstr "البرامج المساعدة من %i إلى %i"
+
+#: commands/CommandManager.cpp:720
+msgid "Disallowed for some reason.  Try selecting some Audio first?"
+msgstr "ممنوع لسبب ما. حاول اختيار بعض الصوت أولا؟"
+
+#: commands/CommandManager.cpp:724
+msgid "You can only do this when playing and recording are\n"
+" stopped.  [Pausing is not sufficient.]"
+msgstr "يمكنك فقط فعل هذا إذا كانت القراءة و التسجيل متوقفان.\n"
+"[التوقف المؤقت لا يكفي.]"
+
+#: commands/CommandManager.cpp:726
+msgid "You must first select some stereo audio for this\n"
+" to use.  [You can't use this with mono.]"
+msgstr "يجب أولا أن تختار بعض الصوت الثنائي لاستخدامه.\n"
+"[لا يمكن استخدام هذا مع الأحادي.]"
+
+#: commands/CommandManager.cpp:728
+msgid "You must first select some audio for this to use."
+msgstr "يجب أولا أن تختار بعض الصوت لاستخدامه."
+
+#: commands/CommandManager.cpp:730
+msgid "You must first select some audio for this\n"
+" to use. [Selecting other kinds of track won't work.]"
+msgstr "يجب أولا أن تختار بعض الصوت لاستخدامه.\n"
+"[اختيار نوع آخر من المسارات لن يعمل.]"
+
+#: commands/CommandManager.cpp:732
+msgid "Message"
+msgstr "رسالة"
+
+#: commands/CommandManager.cpp:904
+#, c-format
+msgid "Loaded %d keyboard shortcuts\n"
+msgstr "تم تحميل %d اختصار للوحة المفاتيح \n"
+
+#: commands/CommandManager.cpp:906
+msgid "Loading keyboard shortcuts"
+msgstr "تحميل اختصارات لوحة المفاتيح "
+
+#: effects/Amplify.cpp:53
+#, c-format
+msgid "Applied effect: %s %.1f dB"
+msgstr "التأثير المُطبق: %s %.1f ديسيبل"
+
+#: effects/Amplify.cpp:88
+msgid "Amplify"
+msgstr "توسيع "
+
+#: effects/Amplify.cpp:153
+msgid "Amplify by Dominic Mazzoni"
+msgstr "توسيع من طرف دومينيك مازوني"
+
+#: effects/Amplify.cpp:160
+msgid "Amplification (dB):"
+msgstr "توسيع (ديسيبل):"
+
+#: effects/Amplify.cpp:180
+msgid "New Peak Amplitude (dB):"
+msgstr "ذروة سِعة جديدة (ديسيبل):"
+
+#: effects/Amplify.cpp:192
+msgid "Allow clipping"
+msgstr "السماح بالقطع"
+
+#: effects/Amplify.h:46
+msgid "Amplify..."
+msgstr "توسيع..."
+
+#: effects/Amplify.h:54
+msgid "Amplifying"
+msgstr "توسيع"
+
+#: effects/AutoDuck.cpp:125
+msgid "You selected a track which does not contain audio. AutoDuck can only process audio tracks."
+msgstr "لقد اخترت مسار ليس فيه صوت. تأثير الغمر التلقائي يعمل فقط على المسارات الصوتية."
+
+#: effects/AutoDuck.cpp:126 effects/AutoDuck.cpp:138 effects/AutoDuck.cpp:451
+#: effects/AutoDuck.cpp:578
+msgid "Auto Duck"
+msgstr "غمر تلقائي للصوت"
+
+#: effects/AutoDuck.cpp:137
+msgid "Auto Duck needs a control track which must be placed below the selected track(s)."
+msgstr "تأثير الغمر التلقائي يحتاج إلى مسار تحكم يجب وضعه تحت المسار أو المسارات المختارة."
+
+#: effects/AutoDuck.cpp:463
+msgid "Auto Duck by Markus Meyer"
+msgstr "تأثير الغمر التلقائي من طرف ماركوس مايار"
+
+#: effects/AutoDuck.cpp:485
+msgid "Duck amount:"
+msgstr "مقدار الغمر:"
+
+#: effects/AutoDuck.cpp:490
+msgid "Maximum pause:"
+msgstr "أقصى توقف مؤقت:"
+
+#: effects/AutoDuck.cpp:492 effects/AutoDuck.cpp:497 effects/AutoDuck.cpp:502
+#: effects/AutoDuck.cpp:507 effects/AutoDuck.cpp:512
+#: prefs/AudioIOPrefs.cpp:162 prefs/AudioIOPrefs.cpp:164
+#: prefs/AudioIOPrefs.cpp:188 prefs/AudioIOPrefs.cpp:190
+#: prefs/AudioIOPrefs.cpp:198 widgets/TimeTextCtrl.cpp:197
+msgid "seconds"
+msgstr "ثواني"
+
+#: effects/AutoDuck.cpp:495
+msgid "Outer fade down length:"
+msgstr "طول الظهور السفلي:"
+
+#: effects/AutoDuck.cpp:500
+msgid "Outer fade up length:"
+msgstr "طول الظهور العلوي:"
+
+#: effects/AutoDuck.cpp:505
+msgid "Inner fade down length:"
+msgstr "طول الخفوت السفلي:"
+
+#: effects/AutoDuck.cpp:510
+msgid "Inner fade up length:"
+msgstr "طول الخفوت العلوي:"
+
+#: effects/AutoDuck.cpp:519 effects/Compressor.cpp:479
+msgid "Threshold:"
+msgstr "العتبة:"
+
+#: effects/AutoDuck.cpp:578
+msgid "Please enter valid values."
+msgstr "من فضلك أدخل قيم صحيحة."
+
+#: effects/AutoDuck.cpp:712
+msgid "Preview not available"
+msgstr "العرض المسبق غير متوفر"
+
+#: effects/AutoDuck.h:97
+msgid "Auto Duck..."
+msgstr "الغمر التلقائي..."
+
+#: effects/AutoDuck.h:107
+msgid "Processing Auto Duck..."
+msgstr "معالجة الغمر التلقائي..."
+
+#: LangChoice.cpp:103 effects/AvcCompressor.cpp:738
+#: effects/VST/VSTEffect.cpp:453 effects/audiounits/AudioUnitEffect.cpp:877
+#: effects/nyquist/Nyquist.cpp:1064 widgets/ErrorDialog.cpp:69
+#: widgets/ErrorDialog.cpp:95 widgets/Warning.cpp:67
+msgid "OK"
+msgstr "موافق "
+
+#: effects/BassBoost.cpp:52
+#, c-format
+msgid "Applied effect: %s frequency = %.0f Hz, boost = %.0f dB"
+msgstr "التأثير المُطبق: %s  تردد = %.0f هرتز، دعم = %.0f ديسيبل"
+
+#: effects/BassBoost.cpp:169
+msgid "Bass Boost"
+msgstr ""
+
+#: effects/BassBoost.cpp:182
+msgid "by Nasca Octavian Paul"
+msgstr "من طرف نناسكا أوكتلفيان بول"
+
+#: effects/BassBoost.cpp:196
+msgid "Frequency (Hz):"
+msgstr "التردد (هرتز):"
+
+#: effects/BassBoost.cpp:208
+msgid "Boost (dB):"
+msgstr "الرفع (ديسيبل):"
+
+#: effects/BassBoost.h:35
+msgid "BassBoost..."
+msgstr "رفع الباس..."
+
+#: effects/BassBoost.h:43
+msgid "Boosting Bass Frequencies"
+msgstr "تدعيم ترددات الباس"
+
+#: effects/ChangeLength.h:26
+msgid "Change Length..."
+msgstr "تغيير الطول..."
+
+#: effects/ChangeLength.h:34
+msgid "Changing Length..."
+msgstr "تغيير الطول..."
+
+#: effects/ChangePitch.cpp:54
+#, c-format
+msgid "Applied effect: %s %.2f semitones"
+msgstr "التأثير المُطبق: %s %.2f نصف نبرة"
+
+#: effects/ChangePitch.cpp:117
+msgid "Change Pitch"
+msgstr "تغيير حدّة الصوت"
+
+#: effects/ChangePitch.cpp:247
+msgid "Change Pitch without Changing Tempo"
+msgstr "تغيير الحدّة دون تغيير الإيقاع"
+
+#: effects/ChangePitch.cpp:252 effects/ChangeSpeed.cpp:304
+#: effects/ChangeTempo.cpp:179
+msgid "by Vaughan Johnson && Dominic Mazzoni"
+msgstr "من طرف فوغان جونسون و دومينيك مازوني"
+
+#: effects/ChangePitch.cpp:257 effects/ChangeTempo.cpp:184
+msgid "using SoundTouch, by Olli Parviainen"
+msgstr "استخدام  لمسة الصوت، من طرف أولي بارفاينين"
+
+#: effects/ChangePitch.cpp:267
+msgid "Pitch:   from"
+msgstr "حدّة:   من"
+
+#: effects/ChangePitch.cpp:289 effects/ChangePitch.cpp:335
+#: effects/ChangeSpeed.cpp:368 effects/ChangeTempo.cpp:238
+#: effects/ChangeTempo.cpp:269
+msgid "to"
+msgstr "إلى"
+
+#: effects/ChangePitch.cpp:304
+msgid "Semitones (half-steps):"
+msgstr "أنصاف نبرات (أنصاف خطوات):"
+
+#: effects/ChangePitch.cpp:323
+msgid "Frequency (Hz):   from"
+msgstr "التردد (هرتز):  من"
+
+#: effects/ChangePitch.cpp:358 effects/ChangeSpeed.cpp:322
+#: effects/ChangeTempo.cpp:197
+msgid "Percent Change:"
+msgstr "تغيير بنسبة:"
+
+#: effects/ChangePitch.h:31
+msgid "Change Pitch..."
+msgstr "تغيير الحدّة..."
+
+#: effects/ChangePitch.h:39
+msgid "Changing Pitch"
+msgstr "تغيير الحدّة"
+
+#: effects/ChangeSpeed.cpp:52 effects/ChangeTempo.cpp:53
+#, c-format
+msgid "Applied effect: %s %.1f%%"
+msgstr "التأثير المُطبق:  %s %.1f%%"
+
+#: effects/ChangeSpeed.cpp:59
+msgid "Change Speed"
+msgstr "تغيير السرعة"
+
+#: effects/ChangeSpeed.cpp:299
+msgid "Change Speed, affecting both Tempo and Pitch"
+msgstr "تغيير السرعة، يؤثر على الإيقاع و الحدّة معا"
+
+#: effects/ChangeSpeed.cpp:309
+msgid "using SampleRate, by Erik de Castro Lopo"
+msgstr "استخدام معدل العينة، من طرف إيريك دي كاسترو لوبو"
+
+#. i18n-hint: n/a is an English
+#. abbreviation meaning "not
+#. applicable" (in other words,
+#. unimportant, not relevant).
+#: effects/ChangeSpeed.cpp:355
+msgid "n/a"
+msgstr "غير متوفر"
+
+#: effects/ChangeSpeed.cpp:358
+msgid "Standard Vinyl RPM:   from"
+msgstr "قياس فينيل أر.بي.أم:   من "
+
+#: effects/ChangeSpeed.h:32
+msgid "Change Speed..."
+msgstr "تغيير السرعة..."
+
+#: effects/ChangeSpeed.h:40
+msgid "Changing Speed"
+msgstr "تغيير السرعة"
+
+#: effects/ChangeTempo.cpp:72
+msgid "Change Tempo"
+msgstr "تغيير الإيقاع"
+
+#: effects/ChangeTempo.cpp:174
+msgid "Change Tempo without Changing Pitch"
+msgstr "تغيير الإيقاع دون تغيير الحدّة"
+
+#: effects/ChangeTempo.cpp:226
+msgid "Beats per Minute (BPM):   from"
+msgstr "نبضة في الدقيقة (ن.ف.د):   من"
+
+#: effects/ChangeTempo.cpp:256
+msgid "Length (seconds):   from"
+msgstr "الطول (بالثانية):  من"
+
+#: effects/ChangeTempo.h:35
+msgid "Change Tempo..."
+msgstr "تغيير الإيقاع..."
+
+#: effects/ChangeTempo.h:43
+msgid "Changing Tempo"
+msgstr "تغيير الإيقاع"
+
+#: effects/ClickRemoval.cpp:316
+msgid "ClickRemoval"
+msgstr "حذف النقرة"
+
+#: effects/ClickRemoval.cpp:329
+msgid "Click and Pop Removal by Craig DeForest"
+msgstr "حذف النقرة و الفرقعة من طرف كريغ ديفوراست"
+
+#: effects/ClickRemoval.cpp:343
+msgid "Select threshold (lower is more sensitive):"
+msgstr "اختيار العتبة (العتبة الأقل هي اﻷكثر حساسية):"
+
+#: effects/ClickRemoval.cpp:355
+msgid "Max spike width (higher is more sensitive):"
+msgstr "أقصى عرض للشوكة (العرض اﻷعلى هو اﻷكثر حساسية):"
+
+#: effects/ClickRemoval.h:42
+msgid "Click Removal..."
+msgstr "حذف النقرة..."
+
+#: effects/ClickRemoval.h:50
+msgid "Removing clicks and pops..."
+msgstr "حذف النقرة و الفرقعة..."
+
+#: effects/Compressor.cpp:72
+msgid "Dynamic Range Compressor"
+msgstr "ضاغط المجال الديناميكي"
+
+#: effects/Compressor.cpp:468
+msgid "Dynamic Range Compressor by Dominic Mazzoni"
+msgstr "ضاغط المجال الديناميكي من طرف دومينيك مازوني"
+
+#: effects/Compressor.cpp:486
+msgid "Ratio: "
+msgstr "النسبة: "
+
+#: effects/Compressor.cpp:493
+msgid "Attack Time: "
+msgstr "وقت الهجمة:  "
+
+#: effects/Compressor.cpp:505
+msgid "Decay Time: "
+msgstr ""
+
+#: effects/Compressor.cpp:504
+msgid "Normalize to 0dB after compressing"
+msgstr "تطبيع لـ 0 ديسيبل بعد الضغط"
+
+#: effects/Compressor.cpp:559
+#, c-format
+msgid "Threshold: %d dB"
+msgstr "العتبة: %d ديسيبل"
+
+#: effects/Compressor.cpp:562
+#, c-format
+msgid "Ratio: %.0f:1"
+msgstr "النسبة: %.0f:1"
+
+#: effects/Compressor.cpp:564
+#, c-format
+msgid "Ratio: %.1f:1"
+msgstr "النسبة: %.1f:1"
+
+#: effects/Compressor.cpp:566
+#, c-format
+msgid "Attack Time: %.1f secs"
+msgstr "وقت الهجمة:  %.1f ثانية"
+
+#: effects/Compressor.cpp:570
+#, c-format
+msgid "Decay Time: %.1f secs"
+msgstr ""
+
+#: effects/Compressor.h:36
+msgid "Compressor..."
+msgstr "الضاغط..."
+
+#: effects/Compressor.h:44
+msgid "Applying Dynamic Range Compression..."
+msgstr "تطبيق ضغط المجال الديناميكي..."
+
+#: effects/DtmfGen.cpp:47
+msgid "DTMF Tone Generator"
+msgstr "مُولد نبرة دي.تي.أم.أف "
+
+#: effects/DtmfGen.cpp:391
+msgid "by Salvo Ventura (2006)"
+msgstr "من طرف صالفو فانتورا (2006)"
+
+#: effects/DtmfGen.cpp:395
+msgid "DTMF sequence:"
+msgstr "متتالية دي.تي.أم.أف:"
+
+#: effects/ToneGen.cpp:292 effects/ToneGen.cpp:328
+msgid "Amplitude (0-1)"
+msgstr "السعة (0-1)"
+
+#: effects/DtmfGen.cpp:398
+msgid "DTMF duration:"
+msgstr "مدة الدي.تي.أم.أف:"
+
+#: effects/DtmfGen.cpp:416
+msgid "Tone/silence ratio:"
+msgstr "نسبة النبرة أو الصمت:"
+
+#: effects/DtmfGen.cpp:427
+msgid "Duty cycle:"
+msgstr "دورة الخدمة:"
+
+#: effects/DtmfGen.cpp:429
+msgid "Tone duration:"
+msgstr "مدة النبرة:"
+
+#: effects/DtmfGen.cpp:430 effects/DtmfGen.cpp:432 effects/DtmfGen.cpp:506
+#: effects/DtmfGen.cpp:507
+msgid "ms"
+msgstr "ملي ثانية"
+
+#: effects/DtmfGen.cpp:431
+msgid "Silence duration:"
+msgstr "مدة الصمت:"
+
+#: effects/DtmfGen.h:41
+#, fuzzy
+msgid "DTMF Tones..."
+msgstr "نبرات &دي.تي.أم.أف..."
+
+#: effects/DtmfGen.h:49
+#, c-format
+msgid "Applied effect: Generate DTMF tones, %.6lf seconds"
+msgstr "التأثير المُطبق: توليد نبرات دي.تي.أم.أف،  %.6lf ثانية"
+
+#: effects/DtmfGen.h:53
+msgid "Generating DTMF tones"
+msgstr "توليد نبرات دي.تي.أم.أف"
+
+#: effects/Echo.cpp:48
+#, c-format
+msgid "Applied effect: %s delay = %f seconds, decay factor = %f"
+msgstr "التأثير المُطبق: %s تأخير = %f ثانية، مُعامل الإنحطاط = %f"
+
+#: effects/Echo.cpp:163
+msgid "Echo"
+msgstr "صدى"
+
+#: effects/Echo.cpp:186
+msgid "by Dominic Mazzoni && Vaughan Johnson"
+msgstr "من طرف دومينيك مازوني و فوغان جونسون"
+
+#: effects/Echo.cpp:198
+msgid "Delay time (seconds):"
+msgstr "وقت التأخير (بالثانية):"
+
+#: effects/Echo.cpp:203
+msgid "Decay factor:"
+msgstr "مُعامل الإنحطاط:"
+
+#: effects/Echo.h:34
+msgid "Echo..."
+msgstr "صدى..."
+
+#: effects/Echo.h:42
+msgid "Performing Echo"
+msgstr "إجراء صدى"
+
+#: effects/Effect.cpp:303
+msgid "Preparing preview"
+msgstr "تحضير العرض المسبق"
+
+#: effects/Effect.cpp:329
+msgid "Previewing"
+msgstr "عرض مسبق"
+
+#: effects/Effect.cpp:345
+msgid "Error while opening sound device. Please check the output device settings and the project sample rate."
+msgstr "خطأ عند فتح جهاز الصوت. من فضلك تفقد إعدادات جهاز المخرج و معدل العيّنة في هذا المشروع."
+
+#: effects/Effect.h:107
+#, c-format
+msgid "Applied effect: %s"
+msgstr "التأثير المُطبق: %s"
+
+#: effects/Equalization.cpp:298
+msgid "B-spline"
+msgstr "شريحة - ب"
+
+#: effects/Equalization.cpp:298
+msgid "Cosine"
+msgstr "جيب التمام"
+
+#: effects/Equalization.cpp:298
+msgid "Cubic"
+msgstr "مكعب"
+
+#: effects/Equalization.cpp:349 effects/Equalization.cpp:397
+msgid "Equalization"
+msgstr "تسوية"
+
+#: effects/Equalization.cpp:951
+msgid "Error loading EQ curve"
+msgstr "خطأ في تحميل منحنى التسوية"
+
+#: effects/Equalization.cpp:998
+#, fuzzy
+msgid "custom"
+msgstr "مصنوع بحسب الطلب"
+
+#: effects/Equalization.cpp:1057
+msgid "Equalization, by Martyn Shaw && Mitch Golden"
+msgstr "التسوية، من طرف مارتن شاو و ميتش قولدن"
+
+#: effects/Equalization.cpp:1078
+msgid "Max dB"
+msgstr "أقصى ديسيبل"
+
+#: effects/Equalization.cpp:1080
+msgid "Min dB"
+msgstr "أدنى ديسيبل"
+
+#: effects/Equalization.cpp:1153
+msgid "kHz"
+msgstr "كيلو هرتز"
+
+#: effects/Equalization.cpp:1170
+msgid "Draw curves"
+msgstr "رسم المنحنيات"
+
+#: effects/Equalization.cpp:1175
+msgid "Graphic EQ"
+msgstr "رسم التسوية"
+
+#: effects/Equalization.cpp:1189
+msgid "Linear frequency scale"
+msgstr "درجة تردد خطي"
+
+#: effects/Equalization.cpp:1198
+msgid "Length of filter:"
+msgstr "طول المصفاة:"
+
+#: effects/Equalization.cpp:1219
+msgid "Select curve:"
+msgstr "اختيار المنحنى:"
+
+#: effects/Equalization.cpp:1229 effects/Equalization.cpp:2406
+msgid "Save As..."
+msgstr "حفظ كـ..."
+
+#: effects/Equalization.cpp:1235
+msgid "Flat"
+msgstr "مُسطح"
+
+#: effects/Equalization.cpp:2405
+msgid "Enter the desired name of the curve"
+msgstr "أدخل الإسم الذي تريده للمنحنى"
+
+#: effects/Equalization.cpp:2505
+msgid "Confirm Deletion"
+msgstr "تأكيد الحذف "
+
+#: effects/Equalization.h:87
+msgid "Equalization..."
+msgstr "تسوية..."
+
+#: effects/Equalization.h:95
+msgid "Performing Equalization"
+msgstr "إجراء التسوية"
+
+#: effects/Fade.h:24
+msgid "Fade In"
+msgstr "خفوت"
+
+#: effects/Fade.h:32
+msgid "Fading In"
+msgstr "خفوت"
+
+#: effects/Fade.h:48
+msgid "Fade Out"
+msgstr "ظهور"
+
+#: effects/Fade.h:56
+msgid "Fading Out"
+msgstr "ظهور"
+
+#: effects/FindClipping.cpp:48
+msgid "Detect clipping"
+msgstr "اكتشاف القطع"
+
+#: effects/FindClipping.cpp:85
+msgid "Clipping"
+msgstr "القطع"
+
+#: effects/FindClipping.cpp:198
+msgid "Find Clipping"
+msgstr "البحث عن القطع"
+
+#: effects/FindClipping.cpp:209
+msgid "by Leland Lucius"
+msgstr "من طرف ليلاند لوكيوس"
+
+#: effects/FindClipping.cpp:221
+msgid "Start threshold (samples):"
+msgstr "بداية العتبة (عيّنات):"
+
+#: effects/FindClipping.cpp:225
+msgid "Stop threshold (samples):"
+msgstr "نهاية العتبة (عيّنات):"
+
+#: effects/FindClipping.cpp:250
+msgid "Start and stop must be greater than 0."
+msgstr ""
+
+#: effects/FindClipping.h:37
+msgid "Find Clipping..."
+msgstr "البحث عن القطع..."
+
+#: effects/FindClipping.h:47
+msgid "Detecting clipping"
+msgstr "اكتشاف القطع"
+
+#: effects/Invert.h:27
+msgid "Invert"
+msgstr "عكس"
+
+#: effects/Invert.h:35
+msgid "Inverting"
+msgstr "عكس"
+
+#: effects/Leveller.cpp:47
+msgid "Heavier"
+msgstr "أثقل"
+
+#: effects/Leveller.cpp:47
+msgid "Heaviest"
+msgstr "اﻷثقل"
+
+#: effects/Leveller.cpp:47
+msgid "Heavy"
+msgstr "ثقيل"
+
+#: effects/Leveller.cpp:47
+msgid "Light"
+msgstr "خفيف"
+
+#: effects/Leveller.cpp:47
+msgid "Moderate"
+msgstr "متوسط"
+
+#: effects/Leveller.cpp:47
+msgid "None-Skip"
+msgstr " لا شيئ - تخطي"
+
+#: effects/Leveller.cpp:129
+msgid "Leveller"
+msgstr "المُسوي"
+
+#: effects/Leveller.cpp:213
+msgid "Leveller by Lynn Allan"
+msgstr "المُسوي من طرف لين آلن"
+
+#: effects/Leveller.cpp:216
+msgid "Equalize soft and loud sections"
+msgstr "تسوية القطع الخافتة و الصاخبة"
+
+#: effects/Leveller.cpp:219 effects/Leveller.cpp:224
+msgid "Degree of Leveling"
+msgstr "درجة المُساوات"
+
+#: effects/Leveller.cpp:235
+msgid "Noise Threshold (Hiss/Hum/Ambient Noise)"
+msgstr "عتبة الضجيج (هسهسة/دندنة/ضجيج مطيف)"
+
+#: effects/Leveller.cpp:238
+msgid "Threshold for Noise: "
+msgstr "عتبة الضجيج: "
+
+#: effects/Leveller.h:28
+msgid "Leveller..."
+msgstr "المُسوي..."
+
+#: effects/Leveller.h:36
+msgid "Applying Leveller..."
+msgstr "تطبيق المُسوي..."
+
+#: effects/Noise.cpp:37
+msgid "White"
+msgstr "أبيض"
+
+#: effects/Noise.cpp:38
+msgid "Pink"
+msgstr "وردي"
+
+#: effects/Noise.cpp:39
+msgid "Brown"
+msgstr "بني"
+
+#: effects/Noise.cpp:41
+msgid "Noise Generator"
+msgstr "مولد الضجيج"
+
+#: effects/Noise.cpp:219
+msgid "Noise duration"
+msgstr "مدة الضجيج"
+
+#: effects/Noise.cpp:240
+msgid "Noise type"
+msgstr "نوع الضجيج"
+
+#: effects/Noise.h:41
+msgid "Noise..."
+msgstr ""
+
+#: effects/Noise.h:49
+#, c-format
+msgid "Applied effect: Generate Noise, %.6lf seconds"
+msgstr "التأثير المُطبق: مولد الضجيج، %.6lf ثانية"
+
+#: effects/Noise.h:53
+msgid "Generating Noise"
+msgstr "توليد الضجيج"
+
+#: effects/NoiseRemoval.cpp:192
+#, c-format
+msgid "Could not open file:\n"
+"  %s"
+msgstr ""
+
+#: effects/NoiseRemoval.cpp:235
+msgid "Attempt to run Noise Removal without a noise profile.\n"
+msgstr "محاولة حذف الضجيج من دون وصف له.\n"
+
+#: effects/NoiseRemoval.cpp:675
+msgid "Noise Removal"
+msgstr "حذف الضجيج"
+
+#: effects/NoiseRemoval.cpp:764
+msgid "Step 1"
+msgstr "خطوة 1"
+
+#: effects/NoiseRemoval.cpp:765
+msgid "Select a few seconds of just noise so Audacity knows what to filter out,\n"
+"then click Get Noise Profile:"
+msgstr "اختر بضعة ثواني من الضجيج فقط حتي يعرف البرنامج ماذا يصفي،\n"
+"ثم انقر طلب وصف الضجيج:"
+
+#: effects/NoiseRemoval.cpp:766
+msgid "Step 2"
+msgstr "خطوة 2"
+
+#: effects/NoiseRemoval.cpp:767
+msgid "Select all of the audio you want filtered, choose how much noise you want\n"
+"filtered out, and then click 'OK' to remove noise.\n"
+msgstr "اختر كل الصوت الذي تريد تصفيته، و اختر كمية الضجيج الذي ترغب في حذفه،\n"
+"ثم انقر 'موافق' لحذف الضجيج.\n"
+
+#: effects/NoiseRemoval.cpp:772
+msgid "Noise Removal by Dominic Mazzoni"
+msgstr "حذف الضجيج من طرف دومينيك مازوني"
+
+#: effects/NoiseRemoval.cpp:780
+msgid "Get Noise Profile"
+msgstr "طلب وصف الضجيج"
+
+#: effects/NoiseRemoval.cpp:791
+msgid "Noise reduction (dB):"
+msgstr "خَفظ الضجيج (ديسيبل):"
+
+#: effects/NoiseRemoval.cpp:799
+msgid "Frequency smoothing (Hz):"
+msgstr "تنعيم التردد (هرتز):"
+
+#: effects/NoiseRemoval.cpp:807
+msgid "Attack/decay time (secs):"
+msgstr "وقت الهجمة/الإنحطاط (بالثانية):"
+
+#: effects/NoiseRemoval.h:35
+msgid "Noise Removal..."
+msgstr "حذف الضجيج..."
+
+#: effects/NoiseRemoval.h:44
+msgid "Creating Noise Profile"
+msgstr "إنشاء وصف للضجيج "
+
+#: effects/NoiseRemoval.h:46
+msgid "Removing Noise"
+msgstr "حذف الضجيج"
+
+#: effects/Normalize.cpp:68
+#, c-format
+msgid "Applied effect: %s remove dc offset = %s, normalize amplitude = %s"
+msgstr ""
+
+#: effects/Normalize.cpp:70 effects/Normalize.cpp:71
+msgid "false"
+msgstr ""
+
+#: effects/Normalize.cpp:70 effects/Normalize.cpp:71
+msgid "true"
+msgstr ""
+
+#: effects/Normalize.cpp:73
+#, c-format
+msgid ", maximum amplitude = %.1f dB"
+msgstr ""
+
+#: effects/Normalize.cpp:94
+msgid "Normalize"
+msgstr "تطبيع "
+
+#: effects/Normalize.cpp:341
+msgid "Normalize by Dominic Mazzoni"
+msgstr ""
+
+#: effects/Normalize.cpp:323
+msgid "Remove any DC offset (center on 0 vertically)"
+msgstr "حذف أي فرع دي.سي (تركيز على 0 عموديا)"
+
+#: effects/Normalize.cpp:328
+msgid "Normalize maximum amplitude to"
+msgstr "تطبيع السعة القصوى إلى"
+
+#: effects/Normalize.cpp:336
+msgid "-"
+msgstr "-"
+
+#: effects/Normalize.h:32
+msgid "Normalize..."
+msgstr "تطبيع..."
+
+#: effects/Normalize.h:41
+msgid "Normalizing..."
+msgstr "جاري التطبيع..."
+
+#: effects/Phaser.cpp:66
+#, c-format
+msgid "Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = %.0f deg, depth = %d, feedback = %.0f%%"
+msgstr "التأثير المُطبق: %s %d طور، %.0f%% ندي، تردد = %.1f هرتز، المرحلة الأولى  = %.0f درجة، عمق = %d، تغذية خلفية = %.0f%%"
+
+#: effects/Phaser.cpp:78
+msgid "Phaser"
+msgstr "إشارة إلكترونية صوتية "
+
+#: effects/Phaser.cpp:477
+msgid "Phaser by Nasca Octavian Paul"
+msgstr "إشارة إلكترونية صوتية من طرف ناسكا أوكتافيان بول"
+
+#: effects/Phaser.cpp:484
+msgid "Stages:"
+msgstr "أطوار:"
+
+#: effects/Phaser.cpp:505
+msgid "DRY"
+msgstr "جاف"
+
+#: effects/Phaser.cpp:512
+msgid "WET"
+msgstr "ندي"
+
+#: effects/Phaser.cpp:526 effects/Wahwah.cpp:497
+msgid "LFO Frequency (Hz):"
+msgstr "تردد ألفو (هرتز):"
+
+#: effects/Phaser.cpp:542 effects/Wahwah.cpp:513
+msgid "LFO Start Phase (deg.):"
+msgstr "مرحلة بداية ألفو (درجة):"
+
+#: effects/Phaser.cpp:558
+msgid "Depth:"
+msgstr "العمق:"
+
+#: effects/Phaser.cpp:574
+msgid "Feedback (%):"
+msgstr "تغذية خلفية (%):"
+
+#: effects/Phaser.h:38
+msgid "Phaser..."
+msgstr "إشارة إلكترونية صوتية..."
+
+#: effects/Phaser.h:46
+msgid "Applying Phaser"
+msgstr "تطبيق إشارة إلكترونية صوتية"
+
+#: effects/Repair.cpp:94
+msgid "The Repair effect is intended to be used on very short sections of damaged audio (up to 128 samples).\n"
+"\n"
+"Zoom in and select a tiny fraction of a second to repair."
+msgstr "تأثير الإصلاح مخصص للمقاطع الصوتية المتضررة القصيرة جدا (حتى 128 عينة).\n"
+"قم بالتكبير و اختر جزء ضئيل من الثانية لإصلاحه."
+
+#: effects/Repair.h:37
+msgid "Repairing damaged audio"
+msgstr "إصلاح الصوت المتضرر"
+
+#: effects/Repeat.cpp:48
+#, c-format
+msgid "Repeated %d times"
+msgstr "مُعاد %d مرة"
+
+#: effects/Repeat.cpp:74
+msgid "Tracks are too long to repeat the selection."
+msgstr "لا يمكن إعادة الإختيار لأن المسارات طويلة جدًا."
+
+#: effects/Repeat.cpp:75 effects/Repeat.cpp:79
+msgid "Repeat"
+msgstr "إعادة"
+
+#: effects/Repeat.cpp:245
+msgid "Repeat by Dominic Mazzoni && Vaughan Johnson"
+msgstr "إعادة من طرف دومينيك مازوني و فوغان جونسون"
+
+#: effects/Repeat.cpp:252
+msgid "Number of times to repeat: "
+msgstr "عدد مرات التكرار: "
+
+#: effects/Repeat.cpp:264 effects/Repeat.cpp:302
+msgid "New selection length: "
+msgstr "طول جديد للإختيار: "
+
+#: effects/Repeat.cpp:304
+#, c-format
+msgid "%d minutes, %d seconds"
+msgstr "%d دقيقة، %d ثانية"
+
+#: effects/Repeat.cpp:307
+#, c-format
+msgid "%d seconds"
+msgstr "%d ثانية"
+
+#: effects/Repeat.h:32
+msgid "Repeat..."
+msgstr "إعادة..."
+
+#: effects/Repeat.h:40
+msgid "Performing Repeat"
+msgstr "إجراء إعادة"
+
+#: effects/Reverse.h:30
+msgid "Reverse"
+msgstr "تقليب"
+
+#: effects/Reverse.h:38
+msgid "Reversing"
+msgstr "تقليب"
+
+#: effects/Silence.cpp:32
+msgid "Silence Generator"
+msgstr "مولد الصمت"
+
+#: effects/Silence.h:34
+#, fuzzy
+msgid "Silence..."
+msgstr "ال&صمت..."
+
+#: effects/Silence.h:42
+msgid "Generating Silence"
+msgstr "إنتاج الصمت"
+
+#: effects/Silence.h:47
+#, c-format
+msgid "Applied effect: Generate Silence, %.6lf seconds"
+msgstr "التأثير المُطبق: إنتاج الصمت، %.6lf ثانية"
+
+#: effects/SimplePairedTwoTrack.h:120
+msgid "Sorry, this effect cannot be performed on stereo tracks where the individual channels of the track do not match."
+msgstr "عفوا، لا يمكن إجراء هذا التأثير على المسارات الثنائية التي تكون فيها القنوات الفردية للمسار غير متوافقة."
+
+#: effects/SpikeCleaner.cpp:69
+msgid "Spike Cleaner"
+msgstr "ماسح الشوكة"
+
+#: effects/SpikeCleaner.cpp:160
+msgid "SpikeCleaner by Lynn Allan"
+msgstr "ماسح الشوكة من طرف لين ألان"
+
+#: effects/SpikeCleaner.cpp:165
+msgid "Max Spike Duration (milliseconds): \n"
+"(99999 or greater is off)"
+msgstr "المدة القصوى للشوكة (بالملي ثانية): \n"
+"(99999 أو أكبر تعني الغلق)"
+
+#: effects/SpikeCleaner.cpp:178
+msgid "Theshold for silence: "
+msgstr "عتبة الصمت: "
+
+#: effects/SpikeCleaner.h:27
+msgid "Spike Cleaner..."
+msgstr "ماسح الشوكة..."
+
+#: effects/SpikeCleaner.h:35
+msgid "Applying Spike Cleaner..."
+msgstr "تطبيق ماسح الشوكة..."
+
+#: effects/StereoToMono.h:32
+msgid "Applying Stereo To Mono"
+msgstr "تطبيق من الثنائي إلى الأحادي"
+
+#: effects/ToneGen.cpp:59
+#, c-format
+msgid "Applied effect: Generate %s wave %s, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"
+msgstr "التأثير المُطبق: توليد %s موجة %s، تردد = %.2f هرتز، سعة = %.2f، %.6lf ثانية"
+
+#: effects/ToneGen.cpp:66
+msgid "Chirp Generator"
+msgstr "مُولِد الزقزقة"
+
+#: effects/ToneGen.cpp:66
+msgid "Tone Generator"
+msgstr "مُولِد النبرة"
+
+#: effects/ToneGen.cpp:67
+msgid "Sine"
+msgstr "جيب"
+
+#: effects/ToneGen.cpp:68
+msgid "Square"
+msgstr "مربع"
+
+#: effects/ToneGen.cpp:69
+msgid "Sawtooth"
+msgstr "أسنان منشار"
+
+#: effects/ToneGen.cpp:70
+msgid "Square, no alias"
+msgstr "مربع، دون كنية"
+
+#: effects/ToneGen.cpp:291
+msgid "Frequency (Hz)"
+msgstr "تردد (هرتز)"
+
+#: effects/ToneGen.cpp:293 effects/ToneGen.cpp:334
+#: toolbars/SelectionBar.cpp:147 toolbars/SelectionBar.cpp:241
+msgid "Length"
+msgstr "الطول"
+
+#: effects/ToneGen.cpp:317
+msgid "Waveform:"
+msgstr "شكل الموجة:"
+
+#: effects/ToneGen.cpp:324 toolbars/ControlToolBar.cpp:187
+msgid "Start"
+msgstr "بداية"
+
+#: effects/ToneGen.cpp:325 toolbars/ControlToolBar.cpp:190
+#: toolbars/SelectionBar.cpp:141 toolbars/SelectionBar.cpp:242
+msgid "End"
+msgstr "نهاية"
+
+#: effects/ToneGen.h:39
+msgid "Chirp..."
+msgstr ""
+
+#: effects/ToneGen.h:39
+msgid "Tone..."
+msgstr ""
+
+#: effects/ToneGen.h:47
+msgid "Generating Chirp"
+msgstr "توليد زقزقة "
+
+#: effects/ToneGen.h:47
+msgid "Generating Tone"
+msgstr "توليد نبرة"
+
+#: effects/TruncSilence.cpp:113
+msgid "All tracks must have the same sample rate"
+msgstr "يجب أن يكون لكل المسارات نفس معدل العيّنة."
+
+#: effects/TruncSilence.cpp:113 effects/TruncSilence.cpp:310
+#: effects/TruncSilence.h:28
+msgid "Truncate Silence"
+msgstr "قطع الصمت"
+
+#: effects/TruncSilence.cpp:320
+msgid "by Lynn Allan"
+msgstr "من طرف لين ألان"
+
+#: effects/TruncSilence.cpp:346
+msgid "Max silence duration:"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:175 prefs/AudioIOPrefs.cpp:178
+msgid "milliseconds"
+msgstr "ملي ثانية"
+
+#: effects/TruncSilence.cpp:338
+msgid "Threshold for silence:"
+msgstr "عتبة الصمت: "
+
+#: effects/TruncSilence.cpp:375
+msgid "   Duration must be at least 1 millisecond"
+msgstr ""
+
+#: effects/TruncSilence.h:28
+msgid "Truncate Silence..."
+msgstr ""
+
+#: effects/TruncSilence.h:36
+msgid "Truncating Silence..."
+msgstr "قطع الصمت..."
+
+#: effects/VST/VSTEffect.cpp:179
+msgid "Sorry, VST Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
+msgstr "عفوا، لايمكن إجراء تأثيرات في.أس.تي على المسارات الثنائية التي تكون فيها القنوات الفردية للمسار غير متوافقة."
+
+#: effects/VST/VSTEffect.cpp:194
+msgid "Can't process replacing"
+msgstr "لا أستطيع القيام بالتبديل"
+
+#: effects/VST/VSTEffect.cpp:408
+msgid "VST Plug-in parameters:"
+msgstr "متغيرات البرنامج المساعد في.أس.تي:"
+
+#: effects/Wahwah.cpp:60
+#, c-format
+msgid "Applied effect: %s frequency = %.1f Hz, start phase = %.0f deg, depth = %.0f%%, resonance = %.1f, frequency offset = %.0f%%"
+msgstr "التأثير المُطبق: %s  تردد = %.1f هرتز، المرحلة اﻷولى =  %.0f درجة، عُمق = %.0f%%،  رنين = %.1f، تعديل التردد = %.0f%%"
+
+#: effects/Wahwah.cpp:71
+msgid "Wahwah"
+msgstr "واه واه"
+
+#: effects/Wahwah.cpp:490
+msgid "Wahwah by Nasca Octavian Paul"
+msgstr "واه واه من طرف ناسكا أوكتافيان بول"
+
+#: effects/Wahwah.cpp:529
+msgid "Depth (%):"
+msgstr "العمق (%):"
+
+#: effects/Wahwah.cpp:545
+msgid "Resonance:"
+msgstr "رنين:"
+
+#: effects/Wahwah.cpp:561
+msgid "Wah Frequency Offset (%):"
+msgstr "فرع تردد واه (%):"
+
+#: effects/Wahwah.h:34
+msgid "Wahwah..."
+msgstr "واه واه..."
+
+#: effects/Wahwah.h:42
+msgid "Applying Wahwah"
+msgstr "تطبيق واه واه"
+
+#: effects/audiounits/AudioUnitEffect.cpp:133
+#: effects/ladspa/LadspaEffect.cpp:169
+#, c-format
+msgid "Performing Effect: %s"
+msgstr "إجراء تأثير: %s"
+
+#: effects/ladspa/LadspaEffect.cpp:189
+msgid "Sorry, Plug-in Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
+msgstr "عفوا، لايمكن إجراء تأثيرات البرامج المساعدة على المسارات الثنائية التي تكون فيها القنوات الفردية للمسار غير متوافقة."
+
+#: effects/ladspa/LadspaEffect.cpp:573 effects/ladspa/LadspaEffect.cpp:581
+#: prefs/QualityPrefs.cpp:72
+msgid "None"
+msgstr "لا شيئ"
+
+#: effects/ladspa/LadspaEffect.cpp:575
+msgid "Author: "
+msgstr "المؤلف: "
+
+#: effects/ladspa/LadspaEffect.cpp:621
+msgid "Effect Settings"
+msgstr "إعدادات التأثير"
+
+#: effects/ladspa/LadspaEffect.cpp:712
+msgid "Length (seconds)"
+msgstr "الطول (بالثانية)"
+
+#: effects/nyquist/Nyquist.cpp:251
+msgid "Applying Nyquist Effect..."
+msgstr " تطبيق تأثير نايكويست..."
+
+#: effects/nyquist/Nyquist.cpp:258 effects/nyquist/Nyquist.cpp:320
+msgid "Nyquist Prompt..."
+msgstr "ملقن نايكويست..."
+
+#: effects/nyquist/Nyquist.cpp:321
+msgid "Enter Nyquist Command: "
+msgstr "أدخل أمر نايكويست: "
+
+#: effects/nyquist/Nyquist.cpp:410
+msgid "Sorry, cannot apply effect on stereo tracks where the tracks don't match."
+msgstr "عفوا، لايمكن إجراء التأثير على المسارات الثنائية إذا كانت المسارات غير متطابقة."
+
+#: effects/nyquist/Nyquist.cpp:437
+msgid "Nyquist"
+msgstr "نايكويست"
+
+#: effects/nyquist/Nyquist.cpp:438
+msgid "Nyquist Output: "
+msgstr "مخرج نايكويست: "
+
+#: effects/nyquist/Nyquist.cpp:592 effects/nyquist/Nyquist.cpp:603
+msgid "Nyquist returned the value:"
+msgstr "القيمة المُرجعة لنايكويست:"
+
+#: effects/nyquist/Nyquist.cpp:645
+msgid "Nyquist did not return audio.\n"
+msgstr "نايكويست لم يرجع أي صوت.\n"
+
+#: effects/nyquist/Nyquist.cpp:656
+msgid "Nyquist returned too many audio channels.\n"
+msgstr "نايكويست أرجع قنوات صوتية كثيرة جدا.\n"
+
+#: effects/vamp/VampEffect.cpp:75
+#, c-format
+msgid "Extracting features: %s"
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:106
+msgid "Sorry, Vamp Plug-ins cannot be run on stereo tracks where the individual channels of the track do not match."
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:120
+msgid "Sorry, failed to load Vamp Plug-in."
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:228
+msgid "Sorry, Vamp Plug-in failed to initialize."
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:376
+msgid " - Vamp audio analysis plugin"
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:423
+msgid "Plugin Settings"
+msgstr ""
+
+#: effects/vamp/VampEffect.cpp:446
+msgid "Program"
+msgstr ""
+
+#: export/Export.cpp:400
+msgid "No tracks are selected! Use Ctrl-A (Select All)\n"
+"Choose Export... to export all tracks."
+msgstr "ليس هناك مسارات مختارة! استخدم أمر إختيار الكل\n"
+"اختر تصدير... لتصدير كل المسارات."
+
+#: export/Export.cpp:444
+msgid "Export File"
+msgstr "تصدير ملف"
+
+#: export/Export.cpp:452
+msgid "&Options..."
+msgstr "&خيارات..."
+
+#: export/Export.cpp:478
+msgid "Are you sure you want to save the file as \""
+msgstr "هل أنت متأكد من حفظ الملف كـ \""
+
+#: export/Export.cpp:494
+#, c-format
+msgid "You are about to save a %s file with the name \"%s\".\n"
+"\n"
+"Normally these files end in \".%s\", and some programs will not open files with nonstandard extensions.\n"
+"\n"
+"Are you sure you want to save the file under this name?"
+msgstr "أنت على وشك حفظ ملف %s بالإسم  \"%s\".\n"
+"\n"
+"من المفروض أن تختم هذه الملفات بـ \".%s\"، بعض البرامج لا تفتح الملفات بدون زيادة قياسية.\n"
+"\n"
+"هل أنت متأكد من حفظ الملف بهذا الإسم؟"
+
+#: export/Export.cpp:515
+#, c-format
+msgid "A file named \"%s\" already exists.  Replace?"
+msgstr "هناك ملف إسمه \"%s\" موجود من قبل. هل تريد تعويضه؟"
+
+#: export/Export.cpp:597
+msgid "Your tracks will be mixed down to two stereo channels in the exported file."
+msgstr "سوف يتم مزج مساراتك في قناتان ثنائيتان في الملف المُصدَر."
+
+#: export/Export.cpp:602
+msgid "Your tracks will be mixed down to a single mono channel in the exported file."
+msgstr "سوف يتم مزج مساراتك في قناة أحادية في الملف المُصدَر."
+
+#: export/Export.cpp:612
+msgid "Advanced Mixing Options"
+msgstr "خيارات مزج متقدمة"
+
+#: export/Export.cpp:814
+#, c-format
+msgid "Channel: %2d"
+msgstr "القناة: %2d"
+
+#: export/Export.cpp:937
+msgid " - Left"
+msgstr "- يسار"
+
+#: export/Export.cpp:938
+msgid " - Right"
+msgstr "- يمين"
+
+#: export/Export.cpp:960 export/Export.cpp:1014
+#, c-format
+msgid "Output Channels: %2d"
+msgstr "قنوات المخرج: %2d"
+
+#: export/ExportCL.cpp:55
+msgid "Specify Command Line Encoder"
+msgstr "حدد مُشفر سطر الأوامر"
+
+#: export/ExportCL.cpp:70
+msgid "Command Line Export Setup"
+msgstr "إعداد سطر أوامر التصدير"
+
+#: export/ExportCL.cpp:75
+msgid "Command:"
+msgstr "أمر:"
+
+#: export/ExportCL.cpp:80
+msgid "Show output"
+msgstr "عرض المخرج"
+
+#: export/ExportCL.cpp:87
+#, c-format
+msgid "Data will be piped to standard in. \"%f\" will be replaced with output filename selected."
+msgstr "سيتم ارسال البيانات عبر أنبوب ألى المدخل القياسي. سيتم تعويض \"%f\" باسم ملف المخرج المختار."
+
+#: export/ExportCL.cpp:227
+msgid "(external program)"
+msgstr "(برنامج خارجي)"
+
+#: export/ExportCL.cpp:256 export/ExportPCM.cpp:367
+#, c-format
+msgid "Cannot export audio to %s"
+msgstr "لا أستطيع تصدير الصوت إلى %s"
+
+#: export/ExportCL.cpp:328 export/ExportOGG.cpp:260 export/ExportPCM.cpp:391
+msgid "Export"
+msgstr "تصدير"
+
+#: export/ExportCL.cpp:330
+msgid "Exporting the selected audio using command-line encoder"
+msgstr "تصدير الصوت المختار باستخدام مُشفِر في سطر اﻷوامر"
+
+#: export/ExportCL.cpp:331
+msgid "Exporting the entire project using command-line encoder"
+msgstr "تصدير كل المشروع باستخدام مُشفِر في سطر اﻷوامر"
+
+#: export/ExportCL.cpp:395
+msgid "Command Output"
+msgstr "أمر المخرج"
+
+#: export/ExportFLAC.cpp:67
+msgid "Specify FLAC Options"
+msgstr "حدد خيارات صيغة فلاك"
+
+#: export/ExportFLAC.cpp:81
+msgid "0 (fastest)"
+msgstr "0 (الأسرع)"
+
+#: export/ExportFLAC.cpp:82
+msgid "1"
+msgstr "1"
+
+#: export/ExportFLAC.cpp:83
+msgid "2"
+msgstr "2"
+
+#: export/ExportFLAC.cpp:84
+msgid "3"
+msgstr "3"
+
+#: export/ExportFLAC.cpp:85
+msgid "4"
+msgstr "4"
+
+#: export/ExportFLAC.cpp:86
+msgid "5"
+msgstr "5"
+
+#: export/ExportFLAC.cpp:87
+msgid "6"
+msgstr "6"
+
+#: export/ExportFLAC.cpp:88
+msgid "7"
+msgstr "7"
+
+#: export/ExportFLAC.cpp:89
+msgid "8 (best)"
+msgstr "8 (اﻷفضل)"
+
+#: export/ExportFLAC.cpp:92
+msgid "16 bit"
+msgstr "16 بت"
+
+#: export/ExportFLAC.cpp:93
+msgid "24 bit"
+msgstr "24 بت"
+
+#: export/ExportFLAC.cpp:97
+msgid "FLAC Export Setup"
+msgstr "إعداد تصدير فلاك"
+
+#: export/ExportFLAC.cpp:101
+msgid "Level:"
+msgstr "المستوى:"
+
+#: export/ExportFLAC.cpp:103
+msgid "Bit depth:"
+msgstr "عمق البٍت:"
+
+#: export/ExportFLAC.cpp:201
+msgid "FLAC Files"
+msgstr "ملفات فلاك"
+
+#: export/ExportFLAC.cpp:292
+msgid "Exporting the selected audio as FLAC"
+msgstr "تصدير الصوت المختار بصيغة فلاك"
+
+#: export/ExportFLAC.cpp:293
+msgid "Exporting the entire project as FLAC"
+msgstr "تصدير كامل المشروع بصيغة فلاك"
+
+#: export/ExportFLAC.cpp:238
+msgid "Edit the metadata for the FLAC file"
+msgstr "تحرير ميتابيانات ملفات فلاك"
+
+#: export/ExportMP2.cpp:96
+msgid "Specify MP2 Options"
+msgstr "حدد خيارات أم.بي.2"
+
+#: export/ExportMP2.cpp:117
+msgid "MP2 Export Setup"
+msgstr "إعداد تصدير أم.بي.2"
+
+#: export/ExportMP2.cpp:121
+msgid "Bit Rate:"
+msgstr "معدل البِت:"
+
+#: export/ExportMP2.cpp:190
+msgid "MP2 Files"
+msgstr "ملفات أم.بي.2"
+
+#: export/ExportMP2.cpp:219
+msgid "Cannot export MP2 with this sample rate and bit rate"
+msgstr "لا أستطيع تصدير أم.بي.2 بمعدل العينة و معدل البت هاذين. "
+
+#: export/ExportMP2.cpp:231
+msgid "Edit the ID3 tags for the MP2 file"
+msgstr "تحرير علامات آي.دي.3 لملف أم.بي.2"
+
+#: export/ExportMP2.cpp:239 export/ExportMP3.cpp:1727 export/ExportOGG.cpp:185
+msgid "Unable to open target file for writing"
+msgstr "غير قادر على فتح الملف المُحدد للكتابة"
+
+#: export/ExportMP2.cpp:269
+#, c-format
+msgid "Exporting selected audio at %d kbps"
+msgstr "تصدير الصوت المختار بـسرعة %d ك.ب.ف.ث"
+
+#: export/ExportMP2.cpp:270
+#, c-format
+msgid "Exporting entire file at %d kbps"
+msgstr "تصدير كامل الملف بـسرعة %d ك.ب.ف.ث"
+
+#. i18n-hint: kbps is the bitrate of the MP3 file, kilobits per second
+#: export/ExportMP3.cpp:142 export/ExportMP3.cpp:143 export/ExportMP3.cpp:144
+#: export/ExportMP3.cpp:145 export/ExportMP3.cpp:146 export/ExportMP3.cpp:147
+#: export/ExportMP3.cpp:148 export/ExportMP3.cpp:149 export/ExportMP3.cpp:150
+#: export/ExportMP3.cpp:151 export/ExportMP3.cpp:152 export/ExportMP3.cpp:153
+#: export/ExportMP3.cpp:154 export/ExportMP3.cpp:155 export/ExportMP3.cpp:156
+#: export/ExportMP3.cpp:157 export/ExportMP3.cpp:158 export/ExportMP3.cpp:159
+msgid "kbps"
+msgstr ""
+
+#: export/ExportMP3.cpp:159
+msgid "0, 220-260 kbps (Best Quality)"
+msgstr "0, 220-260 ك.ب.ف.ث (أحسن جودة)"
+
+#: export/ExportMP3.cpp:160
+msgid "1, 200-250 kbps"
+msgstr "1, 200-250 ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:161
+msgid "2, 170-210 kbps"
+msgstr "2, 170-210 ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:162
+msgid "3, 155-195 kbps"
+msgstr "3, 155-195 ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:163
+msgid "4, 145-185 kbps"
+msgstr "4, 145-185 ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:164
+msgid "5, 110-150 kbps"
+msgstr "5, 110-150 ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:165
+msgid "6, 95-135 kbps"
+msgstr "6, 95-135 ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:166
+msgid "7, 80-120 kbps"
+msgstr "7, 80-120 ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:167
+msgid "8, 65-105 kbps"
+msgstr "8, 65-105 ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:168
+msgid "9, 45-85 kbps (Smaller files)"
+msgstr "9, 45-85 ك.ب.ف.ث (ملفات أصغر)"
+
+#: export/ExportMP3.cpp:173
+msgid "Fast"
+msgstr "سريع"
+
+#: export/ExportMP3.cpp:174
+msgid "Standard"
+msgstr "قياسي"
+
+#: export/ExportMP3.cpp:179
+msgid "Insane, 320 kbps"
+msgstr "مجنون، 320 ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:180
+msgid "Extreme, 220-260 kbps"
+msgstr "متشدد، 220-260 ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:181
+msgid "Standard, 170-210 kbps"
+msgstr "قياسي، 170-210 ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:182
+msgid "Medium, 145-185 kbps"
+msgstr "متوسط، 145-185 ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:244
+msgid "Specify MP3 Options"
+msgstr "حدد خيارات أم.بي.3"
+
+#: export/ExportMP3.cpp:259 prefs/FileFormatPrefs.cpp:101
+msgid "MP3 Export Setup"
+msgstr "إعداد تصدير أم.بي.3"
+
+#: export/ExportMP3.cpp:266
+msgid "Bit Rate Mode:"
+msgstr "نمط معدل البِت:"
+
+#: export/ExportMP3.cpp:271
+msgid "Preset"
+msgstr "مُحدد مُسبقا"
+
+#: export/ExportMP3.cpp:272
+msgid "Variable"
+msgstr "متغير"
+
+#: export/ExportMP3.cpp:273
+msgid "Average"
+msgstr "معدل"
+
+#: export/ExportMP3.cpp:274
+msgid "Constant"
+msgstr "ثابت"
+
+#: export/ExportMP3.cpp:319
+msgid "Variable Speed:"
+msgstr "سرعة متغيرة:"
+
+#: export/ExportMP3.cpp:326
+msgid "Channel Mode:"
+msgstr "نمط القناة:"
+
+#: export/ExportMP3.cpp:331
+msgid "Joint Stereo"
+msgstr "ثنائي مشترك"
+
+#: export/ExportMP3.cpp:332
+msgid "Stereo"
+msgstr "ثنائي"
+
+#: export/ExportMP3.cpp:484
+msgid "Locate Lame"
+msgstr "حدد مكان لايم Lame"
+
+#: export/ExportMP3.cpp:504
+#, c-format
+msgid "Audacity needs the file %s to create MP3s."
+msgstr "جُرأة يحتاج الملف %s لإنتاج أم.بي.3."
+
+#: export/ExportMP3.cpp:510
+#, c-format
+msgid "Location of %s:"
+msgstr "مكان %s:"
+
+#: export/ExportMP3.cpp:519
+#, c-format
+msgid "To find %s, click here -->"
+msgstr "للبحث على %s، أنقر هنا -->"
+
+#: export/ExportMP3.cpp:525
+msgid "Browse..."
+msgstr "تصفح..."
+
+#: export/ExportMP3.cpp:526
+msgid "To get a free copy of Lame, click here -->"
+msgstr "للحصول على نسخة مجانية من لايم (Lame)، أنقر هنا -->"
+
+#: export/ExportMP3.cpp:527
+msgid "Download..."
+msgstr "تنزيل..."
+
+#. i18n-hint: It's asking for the location of a file, for
+#. example, "Where is lame_enc.dll?" - you could translate
+#. "Where would I find the file %s" instead if you want.
+#: export/ExportMP3.cpp:559
+#, c-format
+msgid "Where is %s?"
+msgstr "أين هو %s؟"
+
+#: export/ExportMP3.cpp:1051
+msgid "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
+msgstr "فقط lame_enc.dll|lame_enc.dll|المكتبات المربوطة ديناميكيا (*.dll)|*.dll|كل الملفات (*.*)|*"
+
+#: export/ExportMP3.cpp:1506
+msgid "Only libmp3lame.dylib|libmp3lame.dylib|Dynamic Libraries (*.dylib)|*.dylib|All Files (*)|*"
+msgstr "فقط libmp3lame.dylib|libmp3lame.dylib|المكتبات المربوطة ديناميكيا (*.dylib)|*.dylib|كل الملفات (*)|*"
+
+#: export/ExportMP3.cpp:1523
+msgid "Only libmp3lame.so|libmp3lame.so|Primary Shared Object files (*.so)|*.so|Extended Libraries (*.so*)|*.so*|All Files (*)|*"
+msgstr "فقط libmp3lame.so|libmp3lame.so| ملفات اﻷشياء المشتركة اﻷولية (*.so)|*.so|المكتبات الممدودة  (*.so*)|*.so*| كل الملفات (*)|*"
+
+#: export/ExportMP3.cpp:1603
+msgid "MP3 Files"
+msgstr "ملفات  أم.بي.3"
+
+#: export/ExportMP3.cpp:1625
+msgid "Could not open MP3 encoding library!"
+msgstr "لم أتمكن من فتح مكتبة تشفير أم.بي.3!"
+
+#: export/ExportMP3.cpp:1632
+msgid "Not a valid or supported MP3 encoding library!"
+msgstr "مكتبة تشفير أم.بي.3 غير صالحة أو غير مدعومة!"
+
+#: export/ExportMP3.cpp:1709
+msgid "Unable to initialize MP3 stream"
+msgstr "غير قادر على بدأ تيار أم.بي.3 "
+
+#: export/ExportMP3.cpp:1718
+msgid "Edit the ID3 tags for the MP3 file"
+msgstr "تحرير علامات آي.دي.3 لملف أم.بي.3"
+
+#: export/ExportMP3.cpp:1758
+#, c-format
+msgid "Exporting selected audio with %s preset"
+msgstr "تصدير الصوت المختار بـ %s المُحدد مُسبقا"
+
+#: export/ExportMP3.cpp:1759
+#, c-format
+msgid "Exporting entire file with %s preset"
+msgstr "تصدير كامل الملف بـ %s المُحدد مُسبقا"
+
+#: export/ExportMP3.cpp:1764
+#, c-format
+msgid "Exporting selected audio with VBR quality %s"
+msgstr "تصدير الصوت المختار بـجودة في.بي.آر  %s"
+
+#: export/ExportMP3.cpp:1765
+#, c-format
+msgid "Exporting entire file with VBR quality %s"
+msgstr "تصدير كامل الملف بـجودة في.بي.آر  %s"
+
+#: export/ExportMP3.cpp:1770
+#, c-format
+msgid "Exporting selected audio at %d Kbps"
+msgstr "تصدير الصوت المختار بــ %d ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:1771
+#, c-format
+msgid "Exporting entire file at %d Kbps"
+msgstr "تصدير كامل الملف  بــ %d ك.ب.ف.ث"
+
+#: export/ExportMP3.cpp:1804
+#, c-format
+msgid "Error %d returned from MP3 encoder"
+msgstr "مُشفِر أم.بي.3 أرجع الخطأ %d"
+
+#: export/ExportMP3.cpp:1876
+msgid "Invalid sample rate"
+msgstr "معدل عيّنة غير صحيح"
+
+#: export/ExportMP3.cpp:1889
+#, c-format
+msgid "The project sample rate (%d) is not supported by the MP3\n"
+"file format.  "
+msgstr "معدل العيّنة للمشروع (%d) غير مدعوم في صيغة\n"
+"ملف أم.بي.3."
+
+#: export/ExportMP3.cpp:1892
+#, c-format
+msgid "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
+"supported by the MP3 file format.  "
+msgstr "تركيبة معدل العيّنة (%d) و معدل البِت (%d) في المشروع غير\n"
+" مدعومة في صيغة ملف أم.بي.3."
+
+#: export/ExportMP3.cpp:1895
+msgid "You may resample to one of the rates below."
+msgstr "يمكن إعادة أخذ العيّنة بأحد المعدلات في اﻷسفل."
+
+#: export/ExportMP3.cpp:1918
+msgid "Sample Rates"
+msgstr "معدلات العيّنة"
+
+#: export/ExportMP3.cpp:1969
+msgid "MP3 exporting plugin not found"
+msgstr "لم أعثر على البرنامج المساعد لتصدير أم.بي.3"
+
+#: export/ExportMultiple.cpp:88 export/ExportMultiple.cpp:371
+#: export/ExportMultiple.cpp:620 export/ExportMultiple.cpp:728
+msgid "Export Multiple"
+msgstr "تصدير متعدد"
+
+#: export/ExportMultiple.cpp:153
+msgid "If you have more than one Audio Track, you can export each track as a separate file,\n"
+"or if you have a Label Track, you can export a new file for each label.\n"
+"\n"
+"This project does not have multiple tracks or a Label Track, so you cannot export multiple files."
+msgstr "لديك عدة مسارات صوتية، يمكنك تصدير كل مسار في ملف منفصل،\n"
+"إذا كان لديك مسار علامة، يمكنك تصدير ملف جديد لكل علامة.\n"
+"\n"
+"هذا المشروع ليس فيه عدة مسارات أو ليس فيه مسار علامة، لذلك لا يمكن تصدير عدة ملفات."
+
+#: export/ExportMultiple.cpp:154
+msgid "Can't export multiple files"
+msgstr "لا أستطيع تصدير ملفات متعددة"
+
+#: export/ExportMultiple.cpp:189
+msgid "Export format:"
+msgstr "صيغة التصدير:"
+
+#: export/ExportMultiple.cpp:196
+msgid "Options..."
+msgstr "خيارات..."
+
+#: export/ExportMultiple.cpp:199
+msgid "Export location:"
+msgstr "مكان التصدير:"
+
+#: export/ExportMultiple.cpp:205 prefs/DirectoriesPrefs.cpp:92
+msgid "Choose..."
+msgstr "اختيار..."
+
+#: export/ExportMultiple.cpp:206
+msgid "Create"
+msgstr "إنشاء"
+
+#: export/ExportMultiple.cpp:213
+msgid "Split files based on:"
+msgstr "تقسيم الملفات بالإعتماد على:"
+
+#: export/ExportMultiple.cpp:223
+msgid "Labels"
+msgstr "علامات"
+
+#: export/ExportMultiple.cpp:228
+msgid "Include audio before first label"
+msgstr "تضمين الصوت قبل العلامة الأولى"
+
+#: export/ExportMultiple.cpp:234
+msgid "First file name:"
+msgstr "اسم الملف اﻷول:"
+
+#: export/ExportMultiple.cpp:247
+msgid "Tracks"
+msgstr "مسارات"
+
+#: export/ExportMultiple.cpp:254
+msgid "Name files:"
+msgstr "تسمية الملفات:"
+
+#: export/ExportMultiple.cpp:264
+msgid "Using Label/Track Name"
+msgstr "استخدام اسم العلامة/المسار"
+
+#: export/ExportMultiple.cpp:271
+msgid "Numbering consecutively"
+msgstr "تعداد متتالي"
+
+#: export/ExportMultiple.cpp:277
+msgid "File name prefix:"
+msgstr "الجزء اﻷول من اسم الملف:"
+
+#: export/ExportMultiple.cpp:295
+msgid "Overwrite existing files"
+msgstr "استبدال الملفات الموجودة"
+
+#: export/ExportMultiple.cpp:303 export/ExportMultiple.cpp:305
+msgid "E&xport"
+msgstr "ت&صدير"
+
+#: export/ExportMultiple.cpp:369
+#, c-format
+msgid "\"%s\" successfully created."
+msgstr "تم إنشاء \"%s\" بنجاح."
+
+#: export/ExportMultiple.cpp:378
+msgid "Choose a location to save the exported files"
+msgstr "اختيار مكان لحفظ الملفات المُصدّرة"
+
+#: export/ExportMultiple.cpp:449
+msgid "Edit the metadata"
+msgstr "تحرير الميتابيانات"
+
+#: export/ExportMultiple.cpp:491
+#, c-format
+msgid "\"%s\" doesn't exist.\n"
+"\n"
+"Would you like to create it?"
+msgstr "\"%s\" غير موجود.\n"
+"\n"
+"هل تريد إنشائه؟"
+
+#: export/ExportMultiple.cpp:617 export/ExportMultiple.cpp:725
+#, c-format
+msgid "Successfully exported %d file(s)."
+msgstr "تم تصدير %d ملف بنجاح."
+
+#: export/ExportMultiple.cpp:618 export/ExportMultiple.cpp:726
+#, c-format
+msgid "Something went wrong after exporting %d file(s)."
+msgstr "حدث خطأ بعد تصدير %d ملف."
+
+#: export/ExportOGG.cpp:64
+msgid "Specify Ogg Vorbis Options"
+msgstr "حدد خيارات أوق فوربيس"
+
+#: export/ExportOGG.cpp:81
+msgid "Ogg Vorbis Export Setup"
+msgstr "إعداد تصدير أوق فوربيس"
+
+#: export/ExportOGG.cpp:86
+msgid "Quality:"
+msgstr "الجودة:"
+
+#: export/ExportOGG.cpp:158
+msgid "Ogg Vorbis Files"
+msgstr "ملفات أوق فوربيس"
+
+#: export/ExportOGG.cpp:262
+msgid "Exporting the selected audio as Ogg Vorbis"
+msgstr "تصدير الصوت المختار بصيغة أوق فوربيس"
+
+#: export/ExportOGG.cpp:263
+msgid "Exporting the entire project as Ogg Vorbis"
+msgstr "تصدير كل المشروع بصيغة أوق فوربيس"
+
+#: export/ExportOGG.cpp:207
+msgid "Edit the metadata for the OGG file"
+msgstr "تحرير ميتابيانات ملف أوق"
+
+#: export/ExportPCM.cpp:115
+msgid "Specify PCM Options"
+msgstr ""
+
+#: export/ExportPCM.cpp:171
+msgid "Uncompressed Export Setup"
+msgstr "إعداد التصدير غير المضغوط"
+
+#: export/ExportPCM.cpp:177
+msgid "Format:"
+msgstr "الصيغة:"
+
+#: export/ExportPCM.cpp:181
+msgid "Header:"
+msgstr "الرأسية:"
+
+#: export/ExportPCM.cpp:185
+msgid "Encoding:"
+msgstr "التشفير:"
+
+#: export/ExportPCM.cpp:190
+msgid "(Not all combinations of headers and encodings are possible.)"
+msgstr "(ليس كل تركيب للرأسيات و التشفيرات ممكن.)"
+
+#: export/ExportPCM.cpp:321 import/ImportPCM.cpp:46
+msgid "WAV, AIFF, and other uncompressed types"
+msgstr "وايف، آيف، و الأنواع الأخرى غير المضغوطة"
+
+#: export/ExportPCM.cpp:361
+msgid "Cannot export audio in this format."
+msgstr "لا أستطيع تصدير الصوت  بهذه الصيغة."
+
+#: export/ExportPCM.cpp:400
+#, c-format
+msgid "Exporting the selected audio as %s"
+msgstr ""
+
+#: export/ExportPCM.cpp:402
+#, c-format
+msgid "Exporting the entire project as %s"
+msgstr ""
+
+#. i18n-hint: %s will be the error message from libsndfile
+#: export/ExportPCM.cpp:436
+#, c-format
+#, fuzzy
+msgid "Error (file may not have been written): %s"
+msgstr "خطأ (يحتمل أن الملف لم يُكتب): %hs"
+
+#: export/ExportPCM.cpp:458
+msgid "Edit the metadata for the uncompressed file"
+msgstr ""
+
+#: import/Import.cpp:183
+#, c-format
+msgid "This version of Audacity was not compiled with %s support."
+msgstr "هذا الإصدار من جُرأة لم يُبنى مع دعم %s."
+
+#. i18n-hint: %s will be the filename
+#: import/Import.cpp:167
+#, c-format
+msgid "\"%s\" is an audio CD track. \n"
+"Audacity cannot open audio CDs directly. \n"
+"Extract (rip) the CD tracks to an audio format that \n"
+"Audacity can import, such as WAV or AIFF."
+msgstr ""
+
+#: import/Import.cpp:173
+#, c-format
+#, fuzzy
+msgid "\"%s\" is a playlist file. \n"
+"Audacity cannot open this file because it only contains links to other files. \n"
+"You may be able to open it in a text editor and download the actual audio files."
+msgstr "هو ملف قائمة قراءة.  \n"
+"جُرأة لا تستطيع فتح هذا الملف لأنه يحتوي فقط على روابط لملفات أخرى. \n"
+"يمكنك فتحه في برنامج لتحرير النصوص ثم تنزيل الملفات الصوتية الموجودة."
+
+#: import/Import.cpp:178
+#, c-format
+msgid "\"%s\" is a Windows Media Audio file. \n"
+"Audacity cannot open this type of file due to patent restrictions. \n"
+"You need to convert it to a supported audio format, such as WAV or AIFF."
+msgstr ""
+
+#: import/Import.cpp:183
+#, c-format
+msgid "\"%s\" is an Advanced Audio Coding file. \n"
+"Audacity cannot open this type of file. \n"
+"You need to convert it to a supported audio format, such as WAV or AIFF."
+msgstr ""
+
+#: import/Import.cpp:188
+#, c-format
+msgid "\"%s\" is an encrypted audio file. These typically are from an online music store. \n"
+"Audacity cannot open this type of file due to the encryption. \n"
+"Try recording the file into Audacity, or burn it to audio CD then \n"
+"extract the CD track to a supported audio format such as WAV or AIFF."
+msgstr ""
+
+#: import/Import.cpp:193
+#, c-format
+msgid "\"%s\" is a RealPlayer media file. \n"
+"Audacity cannot open this proprietary format. \n"
+"You need to convert it to a supported audio format, such as WAV or AIFF."
+msgstr ""
+
+#: import/Import.cpp:221
+msgid "Audacity had to make a guess at the type of file.\n"
+"The Audio may be bogus.\n"
+"\n"
+"If the audio is bogus, try renaming the file\n"
+"so that it has the correct extension before opening it."
+msgstr ""
+
+#: import/Import.cpp:232
+msgid "Audacity did not recognize the type of this file.\n"
+"If it is uncompressed, try importing it using \"Import Raw\""
+msgstr "جُرأة لم تتعرف على نوع هذا الملف.\n"
+"إذا كان غير مضغوط، حاول استيراده بواسطة \"استيراد خام \""
+
+#: import/ImportFLAC.cpp:31
+msgid "FLAC files"
+msgstr "ملفات فلاك"
+
+#: import/ImportLOF.cpp:92
+msgid "List of Files in basic text format"
+msgstr "قائمة الملفات ذات الصيغة النصية الأساسية"
+
+#. i18n-hint: You do not need to translate "LOF"
+#: import/ImportLOF.cpp:321
+msgid "Invalid window offset in LOF file."
+msgstr "فرع نافذة غير صالحة في ملف لوف."
+
+#. i18n-hint: You do not need to translate "LOF"
+#: import/ImportLOF.cpp:323 import/ImportLOF.cpp:344 import/ImportLOF.cpp:416
+#: import/ImportLOF.cpp:436
+msgid "LOF Error"
+msgstr "خطأ لوف"
+
+#. i18n-hint: You do not need to translate "LOF"
+#: import/ImportLOF.cpp:342
+msgid "Invalid duration in LOF file."
+msgstr "مدة غير صالحة في ملف لوف."
+
+#: import/ImportLOF.cpp:415
+msgid "MIDI tracks cannot be offset individually, only audio files can be."
+msgstr "لايمكن تفريع مسارات ميدي على إنفراد، هذا ممكن مع الملفات الصوتية فقط."
+
+#. i18n-hint: You do not need to translate "LOF"
+#: import/ImportLOF.cpp:435
+msgid "Invalid track offset in LOF file."
+msgstr "فرع مسار غير صالح في ملف لوف."
+
+#: import/ImportMIDI.cpp:46
+msgid "Error parsing Allegro file."
+msgstr "خطأ في قراءة ملف ألقرو."
+
+#: import/ImportMIDI.cpp:76
+msgid "Error parsing MIDI file."
+msgstr "خطأ في قراءة ملف ميدي."
+
+#: import/ImportMP3.cpp:77
+msgid "MP3 files"
+msgstr "ملفات أم.بي.3"
+
+#: import/ImportOGG.cpp:34
+msgid "Ogg Vorbis files"
+msgstr "ملفات أوق فوربيس"
+
+#: import/ImportOGG.cpp:140
+msgid "Media read error"
+msgstr "خطأ في قراءة الوسيط"
+
+#: import/ImportOGG.cpp:143
+msgid "Not an Ogg Vorbis file"
+msgstr "ليس بملف أوق فوربيس"
+
+#: import/ImportOGG.cpp:146
+msgid "Vorbis version mismatch"
+msgstr "عدم توافق إصدار فوربيس"
+
+#: import/ImportOGG.cpp:149
+msgid "Invalid Vorbis bitstream header"
+msgstr "رأسية تيار بِت فوربيس غير صالحة"
+
+#: import/ImportOGG.cpp:152
+msgid "Internal logic fault"
+msgstr "خطأ منطقي داخلي"
+
+#: Project.cpp:2425 import/ImportPCM.cpp:363
+#, c-format
+msgid "Importing %s File..."
+msgstr "استيراد ملف %s..."
+
+#: import/ImportQT.cpp:20
+msgid "QuickTime files"
+msgstr "ملفات كويك تايم"
+
+#: import/ImportRaw.cpp:277
+msgid "Import Raw Data"
+msgstr "استيراد بيانات خام"
+
+#. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
+#. know the correct technical word.
+#: import/ImportRaw.cpp:337
+msgid "No endianness"
+msgstr "ليس هناك ترتيب للبايت "
+
+#. i18n-hint: Refers to byte-order.  Don't translate this if you don't
+#. know the correct technical word.
+#: import/ImportRaw.cpp:340
+msgid "Little-endian"
+msgstr "ترتيب البايت صغير"
+
+#. i18n-hint: Refers to byte-order.  Don't translate this if you don't
+#. know the correct technical word.
+#: import/ImportRaw.cpp:343
+msgid "Big-endian"
+msgstr "ترتيب البايت كبير"
+
+#. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
+#. know the correct technical word.
+#: import/ImportRaw.cpp:346
+msgid "Default endianness"
+msgstr "الترتيب الافتراضي للبايت:"
+
+#: import/ImportRaw.cpp:370
+msgid "1 Channel (Mono)"
+msgstr "قناة (أحادي)"
+
+#: import/ImportRaw.cpp:371
+msgid "2 Channels (Stereo)"
+msgstr " قناتان (ثنائي)"
+
+#: import/ImportRaw.cpp:373
+#, c-format
+msgid "%d Channels"
+msgstr "%d قنوات"
+
+#: import/ImportRaw.cpp:386
+msgid "Start offset:"
+msgstr "فرع البداية:"
+
+#: import/ImportRaw.cpp:397
+msgid "Amount to import:"
+msgstr "المقدار الذي سيستورد:"
+
+#: import/ImportRaw.cpp:408
+msgid "Sample rate:"
+msgstr "معدل العيّنة:"
+
+#: import/ImportRaw.cpp:447
+msgid "&Import"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:41 prefs/AudioIOPrefs.cpp:42
+msgid "Audio I/O"
+msgstr "منفذ صوتي"
+
+#: prefs/AudioIOPrefs.cpp:100
+msgid "1 (Mono)"
+msgstr "1 (أحادي)"
+
+#: prefs/AudioIOPrefs.cpp:101
+msgid "2 (Stereo)"
+msgstr "2 (ثنائي)"
+
+#: prefs/AudioIOPrefs.cpp:115
+msgid "Playback"
+msgstr "قراءة"
+
+#: prefs/AudioIOPrefs.cpp:119 prefs/AudioIOPrefs.cpp:137
+#: toolbars/DeviceToolBar.cpp:54
+msgid "Device"
+msgstr "جهاز"
+
+#: prefs/AudioIOPrefs.cpp:122
+msgid "Using:"
+msgstr "استخدام:"
+
+#: prefs/AudioIOPrefs.cpp:123
+msgid "Portaudio v"
+msgstr "باب صوتي v"
+
+#: prefs/AudioIOPrefs.cpp:133
+msgid "Recording"
+msgstr "تسجيل"
+
+#: prefs/AudioIOPrefs.cpp:139
+msgid "Channels"
+msgstr "قنوات"
+
+#: prefs/AudioIOPrefs.cpp:145
+msgid "Playthrough"
+msgstr "قراءة بواسطة"
+
+#: prefs/AudioIOPrefs.cpp:147
+msgid "&Play other tracks while recording new one"
+msgstr "&قراءة المسارات الأخرى أثناء تسجيل مسار جديد"
+
+#: prefs/AudioIOPrefs.cpp:150
+msgid "&Hardware Playthrough: Play new track while recording it"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:152
+msgid "&Software Playthrough: Play new track while recording it"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:155
+msgid "&Software Playthrough: Play new track while recording it (uncheck when recording \"stereo mix\")"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:194
+msgid "Effects Preview"
+msgstr "عرض مسبق للتأثيرات"
+
+#: prefs/AudioIOPrefs.cpp:165
+msgid "Length of preview:"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:158
+msgid "Cut Preview"
+msgstr "قص العرض المسبق"
+
+#: prefs/AudioIOPrefs.cpp:173
+msgid "Preview before cut region:"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:175
+msgid "Preview after cut region:"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:168
+msgid "Latency"
+msgstr "الكمون"
+
+#: prefs/AudioIOPrefs.cpp:174
+msgid "Audio to buffer:"
+msgstr "الصوت إلى الواق:"
+
+#: prefs/AudioIOPrefs.cpp:177
+msgid "Latency correction:"
+msgstr "تصحيح الكمون:"
+
+#: prefs/AudioIOPrefs.cpp:197
+msgid "Seek Time when playing"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:187
+msgid "Short period:"
+msgstr "مدة قصيرة:"
+
+#: prefs/AudioIOPrefs.cpp:189
+msgid "Long period:"
+msgstr "مدة طويلة:"
+
+#: prefs/BatchPrefs.cpp:53 prefs/BatchPrefs.cpp:54
+msgid "Batch"
+msgstr "الدفعة"
+
+#: prefs/BatchPrefs.cpp:75 prefs/GUIPrefs.cpp:70
+msgid "Behaviors"
+msgstr "السلوكات"
+
+#: prefs/BatchPrefs.cpp:78
+msgid "&Don't apply effects in batch mode"
+msgstr "لا &تطبق التأثيرات في نمط الدفعة"
+
+#: prefs/BatchPrefs.cpp:83
+msgid "&When importing audio, normalize all tracks in project"
+msgstr ""
+
+#: prefs/BatchPrefs.cpp:85
+msgid "Cl&eanSpeech Mode (Customized GUI)"
+msgstr "نمط الخطاب ال&نظيف (الواجهة الرسومية حسب طلب المستخدم)"
+
+#: prefs/BatchPrefs.cpp:89 prefs/GUIPrefs.cpp:96
+msgid "Show / Hide"
+msgstr "عرض / إخفاء"
+
+#: prefs/BatchPrefs.cpp:91
+msgid "S&how Metadata Editor prior to export step"
+msgstr ""
+
+#: prefs/DirectoriesPrefs.cpp:55 prefs/DirectoriesPrefs.cpp:56
+#: prefs/PrefsDialog.cpp:292
+msgid "Directories"
+msgstr "أدلة"
+
+#: prefs/DirectoriesPrefs.cpp:87
+msgid "Temporary files directory"
+msgstr "دليل الملفات المؤقتة"
+
+#: prefs/DirectoriesPrefs.cpp:91
+msgid "Location:"
+msgstr "المكان:"
+
+#: prefs/DirectoriesPrefs.cpp:93
+msgid "Free Space:"
+msgstr "المساحة الفارغة:"
+
+#: prefs/DirectoriesPrefs.cpp:99
+msgid "Auto save"
+msgstr "حفظ تلقائي"
+
+#: prefs/DirectoriesPrefs.cpp:101
+msgid "Auto save a copy of the project in a separate folder"
+msgstr "حفظ نسخة من المشروع تلقائيا في مجلد منفصل"
+
+#: prefs/DirectoriesPrefs.cpp:104
+msgid "Auto save interval:"
+msgstr ""
+
+#: prefs/DirectoriesPrefs.cpp:105
+msgid "minutes"
+msgstr "دقائق"
+
+#: prefs/DirectoriesPrefs.cpp:110
+msgid "Audio cache"
+msgstr "مخبأ تلقائي"
+
+#: prefs/DirectoriesPrefs.cpp:112
+msgid "Hold recorded data in memory until recording is stopped"
+msgstr ""
+
+#: prefs/DirectoriesPrefs.cpp:121
+msgid "Choose a location to place the temporary directory"
+msgstr "اختيار مكان لوضع الدليل المؤقت"
+
+#: prefs/DirectoriesPrefs.cpp:166
+#, c-format
+msgid "Directory %s does not exist. Create it?"
+msgstr "الدليل %s غير موجود. هل تريد إنشائه؟"
+
+#: prefs/DirectoriesPrefs.cpp:168
+msgid "New Temporary Directory"
+msgstr "دليل مؤقت جديد"
+
+#: prefs/DirectoriesPrefs.cpp:187
+#, c-format
+msgid "Directory %s is not writable"
+msgstr "لا يمن الكتابة في الدليل %s"
+
+#: prefs/DirectoriesPrefs.cpp:199
+msgid "Changes to temporary directory will not take effect until Audacity is restarted"
+msgstr "تغيير الدليل المؤقت سيكون فعّالا عند إعادة تشغيل جُرأة من جديد"
+
+#: prefs/FileFormatPrefs.cpp:47 prefs/FileFormatPrefs.cpp:48
+msgid "Audio Files"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:76
+msgid "When importing uncompressed audio files"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:79
+msgid "&Make a copy of the file before editing (safer)"
+msgstr "&إنشاء نسخة من الملف قبل تحريره (أسلم)"
+
+#: prefs/FileFormatPrefs.cpp:80
+msgid "&Read directly from the original file (faster)"
+msgstr "&قراءة مباشرة من الملف اﻷصلي (أسرع)"
+
+#: prefs/FileFormatPrefs.cpp:84
+msgid "When saving a project that depends on other audio files"
+msgstr "عند حفظ مشروع يعتمد على ملفات صوتية أخرى"
+
+#: prefs/FileFormatPrefs.cpp:87
+msgid "Always &copy all audio into project (safest)"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:88
+msgid "&Do not copy any audio"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:87
+msgid "&Ask user"
+msgstr "&استشر المستخدم"
+
+#: prefs/FileFormatPrefs.cpp:93
+msgid "When exporting tracks to an audio file"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:96
+msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
+msgstr "&مزج كل المسارات إلى قناة ثنائية أو أحادية دائما."
+
+#: prefs/FileFormatPrefs.cpp:97
+msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:101
+msgid "MP3 Export Library Location"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:104
+msgid "MP3 Library Version:"
+msgstr "إصدار مكتبة أم.بي.3:"
+
+#: prefs/FileFormatPrefs.cpp:110
+msgid "&Find Library"
+msgstr "&بحث عن مكتبة"
+
+#: prefs/FileFormatPrefs.cpp:112
+msgid "&Download Free Copy of LAME"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:33 prefs/GUIPrefs.cpp:34
+msgid "Interface"
+msgstr "الواجهة"
+
+#: prefs/GUIPrefs.cpp:72
+msgid "&Update display while playing"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:74
+msgid "Any Close/Exit command completely &quits Audacity"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:76
+msgid "Enable &dragging of left and right selection edges"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:84
+msgid "&Ergonomic order of audio I/O buttons"
+msgstr "ترتيب &مريح لأزرار منافذ الصوت"
+
+#: prefs/GUIPrefs.cpp:80
+msgid "Automatically &fit tracks vertically zoomed"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:82
+msgid "\"Move track focus\" &cycles repeatedly through tracks"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:90
+msgid "&Present track number to accessibility aid"
+msgstr "&عرض رقم المسار في مساعد الوصول"
+
+#: prefs/GUIPrefs.cpp:92
+msgid "Editing a &clip can move other clips"
+msgstr "تحرير &مقطع يمكن أن يحرك مقاطع أخرى"
+
+#: prefs/GUIPrefs.cpp:88
+msgid "&Select all audio in project, if none selected"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:90
+msgid "&Beep on completion of longer activities"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:98
+msgid "Enable cut &lines"
+msgstr "تفعيل &خطوط القطع"
+
+#: prefs/GUIPrefs.cpp:100
+msgid "Show warnings about &temp files"
+msgstr "أظهر الإنذارات حول الملفات ال&مؤقتة"
+
+#: prefs/GUIPrefs.cpp:100
+msgid "&Show prompt to save, even if project is empty"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:102
+msgid "Show Welcome Message at program start up"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:105
+msgid "Language"
+msgstr "اللغة"
+
+#: prefs/GUIPrefs.cpp:107
+msgid "Language:"
+msgstr "اللغة:"
+
+#: prefs/GUIPrefs.cpp:110
+msgid "Minimum of dB mode display range"
+msgstr "الحد الأدنى لمجال عرض شكل الديسيبل"
+
+#: prefs/GUIPrefs.cpp:113
+msgid "-36 dB (shallow range for high-amplitude editing)"
+msgstr "-36 ديسيبل (مجال ضحل لتحرير السعات العالية)"
+
+#: prefs/GUIPrefs.cpp:114
+msgid "-48 dB (PCM range of 8 bit samples)"
+msgstr "-48 ديسيبل (مجال بي.سي.أم لعيّنات 8 بت) "
+
+#: prefs/GUIPrefs.cpp:115
+msgid "-96 dB (PCM range of 16 bit samples)"
+msgstr "-96 ديسيبل (مجال بي.سي.أم لعيّنات 16 بت) "
+
+#: prefs/GUIPrefs.cpp:116
+msgid "-120 dB (approximate limit of human hearing)"
+msgstr "-120 ديسيبل (الحد التقريبي للسمع عند الإنسان)"
+
+#: prefs/GUIPrefs.cpp:117
+msgid "-145 dB (PCM range of 24 bit samples)"
+msgstr "- 145 ديسيبل (مجال بي.سي.أم لعيّنات 24 بت) "
+
+#: prefs/KeyConfigPrefs.cpp:64 prefs/KeyConfigPrefs.cpp:65
+msgid "Keyboard"
+msgstr "لوحة المفاتيح"
+
+#: prefs/KeyConfigPrefs.cpp:95
+msgid "Key Bindings"
+msgstr "ارتباطات المفاتيح"
+
+#: prefs/KeyConfigPrefs.cpp:115
+msgid "S&et"
+msgstr "&حدد"
+
+#: prefs/KeyConfigPrefs.cpp:120
+msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
+msgstr "ملاحظة: الضغط على Cmd+Q يؤدي إلى الخروج. كل المفاتيح اﻷخرى صالحة."
+
+#: prefs/KeyConfigPrefs.cpp:124 prefs/ThemePrefs.cpp:103
+msgid "&Defaults"
+msgstr "القيم ال&افتراضية"
+
+#: prefs/KeyConfigPrefs.cpp:143
+msgid "Key Combination"
+msgstr "مجموعة مفاتيح"
+
+#: prefs/KeyConfigPrefs.cpp:163
+msgid "Export Keyboard Shortcuts As:"
+msgstr "تصدير اختصارات لوحة المفاتيح كـ:"
+
+#: prefs/KeyConfigPrefs.cpp:181
+msgid "Error saving keyboard shortcuts"
+msgstr "خطأ  في حفظ اختصارات لوحة المفاتيح"
+
+#: prefs/KeyConfigPrefs.cpp:196
+msgid "Select an XML file containing Audacity keyboard shortcuts..."
+msgstr "اختر ملف أكس.أم.أل يحتوي على اختصارات لوحة مفاتيح جُرأة..."
+
+#: prefs/KeyConfigPrefs.cpp:200
+msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*"
+msgstr "ملفات أكس.أم.أل (*.xml)|*.xml| كل الملفات (*.*)|*.*"
+
+#: prefs/KeyConfigPrefs.cpp:213
+msgid "Error loading keyboard shortcuts"
+msgstr "خطأ في تحميل اختصارات لوحة المفاتيح"
+
+#: prefs/KeyConfigPrefs.cpp:241
+#, c-format
+msgid "The keyboard shortcut '%s' is already assigned to:\n"
+"\n"
+"'%s'"
+msgstr "اختصار لوحة المفاتيح '%s' مخصص من قبل:\n"
+"\n"
+"'%s'"
+
+#: prefs/KeyConfigPrefs.cpp:367 toolbars/EditToolBar.cpp:144
+msgid "Undo"
+msgstr "تراجع"
+
+#: prefs/MousePrefs.cpp:55 prefs/MousePrefs.cpp:56
+msgid "Mouse"
+msgstr "الفأرة"
+
+#: prefs/MousePrefs.cpp:78
+msgid "Mouse Bindings (default values, not configurable)"
+msgstr "ارتباطات الفأرة (قيم افتراضية، لا يمكن تغييرها)"
+
+#: prefs/MousePrefs.cpp:93
+msgid "Tool"
+msgstr "أداة"
+
+#: prefs/MousePrefs.cpp:94
+msgid "Command Action"
+msgstr "تنفيذ اﻷمر"
+
+#: prefs/MousePrefs.cpp:95
+msgid "Buttons"
+msgstr "أزرار"
+
+#: prefs/MousePrefs.cpp:98 prefs/MousePrefs.cpp:102 prefs/MousePrefs.cpp:113
+#: prefs/MousePrefs.cpp:118
+msgid "Left-Click"
+msgstr "نقرة يسرى"
+
+#: prefs/MousePrefs.cpp:98 prefs/MousePrefs.cpp:99 prefs/MousePrefs.cpp:100
+msgid "Select"
+msgstr "اختيار"
+
+#: prefs/MousePrefs.cpp:98 prefs/MousePrefs.cpp:118
+msgid "Set Selection Point"
+msgstr "تحديد نقطة الإختيار"
+
+#: prefs/MousePrefs.cpp:99 prefs/MousePrefs.cpp:103 prefs/MousePrefs.cpp:107
+#: prefs/MousePrefs.cpp:111 prefs/MousePrefs.cpp:115 prefs/MousePrefs.cpp:119
+msgid "Left-Drag"
+msgstr "سحب أيسر"
+
+#: prefs/MousePrefs.cpp:99 prefs/MousePrefs.cpp:119
+msgid "Set Selection Range"
+msgstr "تحديد مجال الإختيار"
+
+#: prefs/MousePrefs.cpp:100
+msgid "Extend Selection Range"
+msgstr "تمديد مجال الإختيار"
+
+#: prefs/MousePrefs.cpp:100
+msgid "Shift-Left-Click"
+msgstr "انقر الأيسر-Shift"
+
+#: prefs/MousePrefs.cpp:101
+msgid "Left-Double-Click"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:101
+msgid "Select Clip or Entire Track"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:102
+msgid "Ctrl-Left-Click"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:102
+msgid "Set Selection Point and Play"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:102 prefs/MousePrefs.cpp:103 prefs/MousePrefs.cpp:104
+#: prefs/MousePrefs.cpp:105
+msgid "Zoom"
+msgstr "تكبير و تصغير"
+
+#: prefs/MousePrefs.cpp:102
+msgid "Zoom in on Point"
+msgstr "تكبير عند النقطة"
+
+#: prefs/MousePrefs.cpp:103 prefs/MousePrefs.cpp:105 prefs/MousePrefs.cpp:121
+msgid "Zoom in on a Range"
+msgstr "تكبير عند المجال"
+
+#: prefs/MousePrefs.cpp:103
+msgid "same as right-drag"
+msgstr "مثل السحب الأيمن"
+
+#: prefs/MousePrefs.cpp:104 prefs/MousePrefs.cpp:120
+msgid "Right-Click"
+msgstr "أنقر اﻷيمن"
+
+#: prefs/MousePrefs.cpp:104 prefs/MousePrefs.cpp:120
+msgid "Zoom out one step"
+msgstr "تصغير بخطوة واحدة"
+
+#: prefs/MousePrefs.cpp:105 prefs/MousePrefs.cpp:121
+msgid "Right-Drag"
+msgstr "اسحب الأيمن"
+
+#: prefs/MousePrefs.cpp:105
+msgid "same as left-drag"
+msgstr "مثل السحب الأيسر"
+
+#: prefs/MousePrefs.cpp:108
+msgid "Shift-Drag"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:108
+msgid "Zoom out on a Range"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:109
+msgid "Middle-Click"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:109
+msgid "Zoom default"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:107
+msgid "Time shift clip or move up/down between tracks"
+msgstr "تحريك وقت المقطع أو  تحريك المقطع إلى أعلى أو أسفل بين المسارات"
+
+#: prefs/MousePrefs.cpp:108
+msgid "Shift-Left-Drag"
+msgstr "سحب-أيسر-Shift"
+
+#: prefs/MousePrefs.cpp:108
+msgid "Time shift all clips in track"
+msgstr "تحريك وقت كل المقاطع في المسار"
+
+#: prefs/MousePrefs.cpp:109 prefs/MousePrefs.cpp:116
+msgid "Ctrl-Left-Drag"
+msgstr "سحب-أيسر-Ctrl"
+
+#: prefs/MousePrefs.cpp:109
+msgid "Move clip up/down between tracks"
+msgstr "تحريك المقطع إلى أعلى أو أسفل بين المسارات"
+
+#: prefs/MousePrefs.cpp:111
+msgid "Change Amplification Envelope"
+msgstr "تغيير غلاف التوسيع"
+
+#: prefs/MousePrefs.cpp:113
+msgid "Change Sample"
+msgstr "تغيير عيّنة"
+
+#: prefs/MousePrefs.cpp:113 prefs/MousePrefs.cpp:114 prefs/MousePrefs.cpp:115
+#: prefs/MousePrefs.cpp:116
+msgid "Pencil"
+msgstr "قلم"
+
+#: prefs/MousePrefs.cpp:114
+msgid "Alt-Left-Click"
+msgstr "نقرة-يسرى-Alt"
+
+#: prefs/MousePrefs.cpp:114
+msgid "Smooth at Sample"
+msgstr "تنعيم عند العيّنة"
+
+#: prefs/MousePrefs.cpp:115
+msgid "Change Several Samples"
+msgstr "تغيير عدة عيّنات"
+
+#: prefs/MousePrefs.cpp:116
+msgid "Change ONE Sample only"
+msgstr "تغيير عيّنة واحدة فقط"
+
+#: prefs/MousePrefs.cpp:118 prefs/MousePrefs.cpp:119 prefs/MousePrefs.cpp:120
+#: prefs/MousePrefs.cpp:121
+msgid "Multi"
+msgstr "متعدد"
+
+#: prefs/MousePrefs.cpp:118 prefs/MousePrefs.cpp:119
+msgid "same as select tool"
+msgstr "مثل أداة الاختيار"
+
+#: prefs/MousePrefs.cpp:120 prefs/MousePrefs.cpp:121
+msgid "same as zoom tool"
+msgstr "مثل أداة التصغير و التكبير"
+
+#: prefs/MousePrefs.cpp:123 prefs/MousePrefs.cpp:124
+msgid "Any"
+msgstr "أيما"
+
+#: prefs/MousePrefs.cpp:123
+msgid "Scroll up or down"
+msgstr "تحريك لأعلى أو لأسفل"
+
+#: prefs/MousePrefs.cpp:123
+msgid "Wheel-Rotate"
+msgstr "تدوير العجلة"
+
+#: prefs/MousePrefs.cpp:128
+msgid "Scroll left or right"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:128
+msgid "Shift-Wheel-Rotate"
+msgstr ""
+
+#: prefs/MousePrefs.cpp:124
+msgid "Ctrl-Wheel-Rotate"
+msgstr "تدوير-العجلة-Ctrl"
+
+#: prefs/MousePrefs.cpp:124
+msgid "Zoom in or out"
+msgstr "تكبير أو تصغير"
+
+#: prefs/PrefsDialog.cpp:89
+msgid "Audacity Preferences"
+msgstr "خيارات جُرأة"
+
+#: prefs/QualityPrefs.cpp:42 prefs/QualityPrefs.cpp:43
+msgid "Quality"
+msgstr "الجودة"
+
+#: prefs/QualityPrefs.cpp:73
+msgid "Rectangle"
+msgstr "مستطيل"
+
+#: prefs/QualityPrefs.cpp:74
+msgid "Triangle"
+msgstr "مثلث"
+
+#: prefs/QualityPrefs.cpp:75
+msgid "Shaped"
+msgstr "مُشَكّلة"
+
+#: prefs/QualityPrefs.cpp:122
+msgid "Sampling"
+msgstr "أخذ العيّنات"
+
+#: prefs/QualityPrefs.cpp:125
+msgid "Default Sample Rate:"
+msgstr "المعدل الافتراضي للعيّنة:"
+
+#: prefs/QualityPrefs.cpp:127
+msgid "Default Sample Format:"
+msgstr "الصيغة الافتراضية للعيّنة:"
+
+#: prefs/QualityPrefs.cpp:136
+msgid "Real-time sample rate converter:"
+msgstr "مُحوّل معدل العيّنة بالوقت الحقيقي:"
+
+#: prefs/QualityPrefs.cpp:139
+msgid "High-quality sample rate converter:"
+msgstr "مُحوّل معدل العيّنة بجودة عالية:"
+
+#: prefs/QualityPrefs.cpp:142
+msgid "Real-time dither:"
+msgstr "ارتجاف بالوقت الحقيقي:"
+
+#: prefs/QualityPrefs.cpp:145
+msgid "High-quality dither:"
+msgstr "ارتجاف جودة عالية:"
+
+#: prefs/QualityPrefs.cpp:157
+msgid "Conversion"
+msgstr "تحويل"
+
+#: prefs/QualityPrefs.cpp:163
+msgid "Sample Rate Converter"
+msgstr "مُحوّل معدل العيّنة"
+
+#: prefs/QualityPrefs.cpp:164
+msgid "Dither"
+msgstr "ارتجاف "
+
+#: prefs/QualityPrefs.cpp:165
+msgid "Real-time:"
+msgstr "الوقت الحقيقي:"
+
+#: prefs/QualityPrefs.cpp:171
+msgid "High-quality:"
+msgstr "جودة عالية:"
+
+#: prefs/SmartRecordPrefs.cpp:54 prefs/SmartRecordPrefs.cpp:55
+msgid "Smart Recording"
+msgstr "التسجيل الذكي"
+
+#: prefs/SmartRecordPrefs.cpp:81 prefs/SmartRecordPrefs.cpp:83
+msgid "Pause Recording on Silence"
+msgstr "توقف مؤقت للتسجيل عند الصمت"
+
+#: prefs/SmartRecordPrefs.cpp:86
+msgid "Silence level (dB):"
+msgstr "مستوى الصمت (ديسيبل): "
+
+#: prefs/SpectrumPrefs.cpp:36 prefs/SpectrumPrefs.cpp:37
+msgid "Spectrograms"
+msgstr "الصور الطيفية"
+
+#: prefs/SpectrumPrefs.cpp:72
+msgid "FFT Size"
+msgstr "مقاس تحويل فورييه السريع"
+
+#: prefs/SpectrumPrefs.cpp:75
+msgid "8 - most wideband"
+msgstr "8 - أعرض موجة"
+
+#: prefs/SpectrumPrefs.cpp:80
+msgid "256 - default"
+msgstr "256 - افتراضي"
+
+#: prefs/SpectrumPrefs.cpp:84
+msgid "4096 - most narrowband"
+msgstr "4096 - أقصر موجة"
+
+#: prefs/SpectrumPrefs.cpp:90
+msgid "Window type:"
+msgstr "نوع النافذة:"
+
+#: prefs/SpectrumPrefs.cpp:96
+msgid "Display"
+msgstr "عرض"
+
+#: prefs/SpectrumPrefs.cpp:100
+msgid "&Grayscale"
+msgstr "&درجات الرمادي"
+
+#: prefs/SpectrumPrefs.cpp:103
+msgid "Minimum Frequency (Hz):"
+msgstr "الحد اﻷدنى للتردد (هرتز):"
+
+#: prefs/SpectrumPrefs.cpp:108
+msgid "Maximum Frequency (Hz):"
+msgstr "الحد الأقصى للتردد (هرتز):"
+
+#: prefs/SpectrumPrefs.cpp:134
+msgid "The maximum frequency must be an integer"
+msgstr "يجب أن يكون الحد الأقصى للتردد عددا صحيحا"
+
+#: prefs/SpectrumPrefs.cpp:138
+msgid "Maximum frequency must be in the range 100 Hz - 100,000 Hz"
+msgstr "يجب أن يكون الحد الأقصى للتردد داخل المجال 100 هرتز - 100,000 هرتز"
+
+#: prefs/SpectrumPrefs.cpp:146
+msgid "The minimum frequency must be an integer"
+msgstr "يجب أن يكون الحد الأدنى للتردد عددا صحيحا"
+
+#: prefs/SpectrumPrefs.cpp:150
+msgid "Minimum frequency must be at least 0 Hz"
+msgstr "يجب أن يكون الحد الأدنى للتردد على اﻷقل 0 هرتز"
+
+#: prefs/ThemePrefs.cpp:62 prefs/ThemePrefs.cpp:63
+msgid "Theme"
+msgstr "الموضوع"
+
+#: prefs/ThemePrefs.cpp:91
+msgid "Theme Cache - Images && Color"
+msgstr "مخبأ الموضوع - الصور و اللون"
+
+#: prefs/ThemePrefs.cpp:93
+msgid "Save Theme Cache"
+msgstr "حفظ مخبأ الموضوع"
+
+#: prefs/ThemePrefs.cpp:94
+msgid "Load Theme Cache"
+msgstr "تحميل مخبأ الموضوع"
+
+#: prefs/ThemePrefs.cpp:104
+msgid "Load Theme Cache At Startup"
+msgstr "تحميل مخبأ الموضوع عند البدأ"
+
+#: prefs/ThemePrefs.cpp:116
+msgid "Individual Theme Files"
+msgstr "ملفات مواضيع فردية"
+
+#: prefs/ThemePrefs.cpp:118
+msgid "Save Files"
+msgstr "حفظ الملفات"
+
+#: prefs/ThemePrefs.cpp:119
+msgid "Load Files"
+msgstr "تحميل الملفات"
+
+#: prefs/ThemePrefs.cpp:124
+msgid "Info"
+msgstr "معلومة"
+
+#: prefs/ThemePrefs.cpp:127
+msgid "Themability is an experimental feature.\n"
+"\n"
+"To try it out, click \"Save Theme Cache\" then\n"
+"find and modify the images and colors in \n"
+"ImageCacheVxx.png using an image editor such \n"
+"as the Gimp.\n"
+"\n"
+"Click \"Load Theme Cache\" to load the changed images\n"
+"and colors back into Audacity.\n"
+"\n"
+"[Only the control toolbar and the colors on the \n"
+"wavetrack are currently affected, even though the\n"
+"image file shows other icons too.]\n"
+msgstr "الموضوعية خدمة تجريبية.\n"
+"\n"
+"لتجريبها، انقر \"حفظ مخبأ الموضوع\" ثم\n"
+"ابحث عن الصور و اﻷلوان في \n"
+"ImageCacheVxx.png و غيرها باستخدام برنامج لتحرير الصور \n"
+"مثل جيمب (Gimp).\n"
+"\n"
+"انقر \"تحميل مخبأ الموضوع\" لتحميل الصور المُبدلة\n"
+"و اﻷلوان في برنامج جُرأة من جديد.\n"
+"\n"
+"[حاليا يمكن فقط تبديل شريط التحكم و اﻷلوان على \n"
+"مسار الموجة، حتى و لو كان ملف الصور\n"
+"يحتوي على أيكونات أخرى.]\n"
+
+#: prefs/ThemePrefs.cpp:132
+msgid "You have compiled Audacity with an extra button, \n"
+"'Output Sourcery'.  This will save a C version of \n"
+"the image cache that can be compiled in as a default.\n"
+msgstr "لقد قمت ببناء جُرأة مع زر إضافي، \n"
+"'ناتج سوركيري'. سيقوم هذا بحفظ نسخة سي C من \n"
+" مخبأ الصورة يمكن دمجها في البناء كصورة افتراضية.\n"
+
+#: prefs/ThemePrefs.cpp:137
+msgid "If 'Load Theme Cache At Startup' is checked, then \n"
+"the Theme Cache will be loaded when the program \n"
+"starts up.\n"
+"\n"
+msgstr "إذا كان 'تحميل مخبأ الموضوع مع إنطلاق البرنامج' مُفعّل،\n"
+"فإن مخبأ الموضوع سيُحمل عند بدأ البرنامج.\n"
+"\n"
+
+#: prefs/ThemePrefs.cpp:140
+msgid "Saving and loading individual theme files uses a \n"
+"separate file for each image, but is otherwise the \n"
+"same idea.\n"
+"\n"
+msgstr "حفظ و تحميل ملفات مواضيع فردية يستخدم \n"
+"ملف منفصل لكل صورة، عدا هذا فالفكرة هي نفسها.\n"
+"\n"
+
+#: toolbars/ControlToolBar.cpp:82
+msgid "Control"
+msgstr "تحكم"
+
+#: toolbars/ControlToolBar.cpp:176
+msgid "Pause"
+msgstr "توقف مؤقت"
+
+#: toolbars/ControlToolBar.cpp:179
+msgid "Play"
+msgstr "قراءة"
+
+#: toolbars/ControlToolBar.cpp:179
+msgid "Play (Shift for loop-play)"
+msgstr "قراءة (Shift للقراءة المتكررة)"
+
+#: toolbars/ControlToolBar.cpp:184
+msgid "Stop"
+msgstr "توقف"
+
+#: toolbars/ControlToolBar.cpp:187
+msgid "Skip to Start"
+msgstr "تخطي إلى البداية"
+
+#: toolbars/ControlToolBar.cpp:190
+msgid "Skip to End"
+msgstr "تخطي إلى النهاية"
+
+#: toolbars/ControlToolBar.cpp:196
+msgid "Clean Speech"
+msgstr "الخطاب النظيف"
+
+#: toolbars/ControlToolBar.cpp:535 toolbars/ControlToolBar.cpp:838
+msgid "Error while opening sound device. "
+msgstr "حدث خطأ أثناء فتح جهاز الصوت. "
+
+#: toolbars/ControlToolBar.cpp:696
+msgid "Recording in CleanSpeech mode is not possible when a track, or more than one project, is already open."
+msgstr ""
+
+#: toolbars/ControlToolBar.cpp:698
+msgid "Recording not permitted"
+msgstr "التسجيل غير مسموح"
+
+#: toolbars/DeviceToolBar.cpp:113 toolbars/DeviceToolBar.cpp:115
+msgid "Output Device"
+msgstr "جهاز المخرج"
+
+#: toolbars/DeviceToolBar.cpp:134 toolbars/DeviceToolBar.cpp:136
+msgid "Input Device"
+msgstr "جهاز المدخل"
+
+#: toolbars/EditToolBar.cpp:139
+msgid "Trim outside selection"
+msgstr "تقليم خارج الجزء المختار"
+
+#: toolbars/EditToolBar.cpp:141
+msgid "Silence selection"
+msgstr "كتم الاختيار"
+
+#: toolbars/EditToolBar.cpp:150
+msgid "Zoom In"
+msgstr "تكبير"
+
+#: toolbars/EditToolBar.cpp:152
+msgid "Zoom Out"
+msgstr "تصغير"
+
+#: toolbars/EditToolBar.cpp:156
+msgid "Zoom Toggle"
+msgstr "قلب التكبير و التصغير"
+
+#: toolbars/EditToolBar.cpp:160
+msgid "Fit Selection"
+msgstr "جعل الاختيار ملائم"
+
+#: toolbars/EditToolBar.cpp:160
+msgid "Fit selection in window"
+msgstr "جعل الاختيار ملائم للنافذة"
+
+#: toolbars/EditToolBar.cpp:162
+msgid "Fit Project"
+msgstr "جعل المشروع ملائم"
+
+#: toolbars/EditToolBar.cpp:162
+msgid "Fit project in window"
+msgstr "جعل المشروع ملائم للنافذة"
+
+#: toolbars/MeterToolBar.cpp:50
+msgid "Meter"
+msgstr "العداد"
+
+#: toolbars/MeterToolBar.cpp:80
+msgid "Play Meter"
+msgstr "عداد القراءة"
+
+#: toolbars/MeterToolBar.cpp:81
+msgid "Meter-Play"
+msgstr "عداد-القراءة"
+
+#: toolbars/MeterToolBar.cpp:89
+msgid "Record Meter"
+msgstr "عداد التسجيل"
+
+#: toolbars/MeterToolBar.cpp:90
+msgid "Meter-Record"
+msgstr "عداد-التسجيل"
+
+#: toolbars/MeterToolBar.cpp:94
+msgid "Output level meter"
+msgstr "عداد مستوى المخرج"
+
+#: toolbars/MeterToolBar.cpp:95
+msgid "Input level meter - click to monitor input"
+msgstr "عداد مستوى المدخل - انقر لمراقبة المدخل"
+
+#: toolbars/MixerToolBar.cpp:58
+msgid "Mixer"
+msgstr "المازج"
+
+#: toolbars/MixerToolBar.cpp:91
+msgid "Output Volume"
+msgstr "مستوى المخرج"
+
+#: toolbars/MixerToolBar.cpp:93
+msgid "Slider-Output"
+msgstr "متزلج-المخرج"
+
+#: toolbars/MixerToolBar.cpp:102
+msgid "Input Volume"
+msgstr "مستوى المدخل"
+
+#: toolbars/MixerToolBar.cpp:104
+msgid "Slider-Input"
+msgstr "متزلج-المدخل"
+
+#: toolbars/MixerToolBar.cpp:117
+msgid "Input Source"
+msgstr "مصدر المدخل "
+
+#: toolbars/SelectionBar.cpp:80
+msgid "Selection"
+msgstr "اختيار"
+
+#: toolbars/SelectionBar.cpp:120 toolbars/SelectionBar.cpp:177
+msgid "Project Rate (Hz):"
+msgstr "معدل المشروع (هرتز):"
+
+#: toolbars/SelectionBar.cpp:134 toolbars/SelectionBar.cpp:235
+msgid "Selection Start:"
+msgstr "بداية الإختيار:"
+
+#: toolbars/SelectionBar.cpp:157
+msgid "hidden"
+msgstr "مخفي"
+
+#: toolbars/SelectionBar.cpp:167 toolbars/SelectionBar.cpp:252
+msgid "Audio Position:"
+msgstr "مكان الصوت:"
+
+#: toolbars/SelectionBar.cpp:222
+msgid "Snap To"
+msgstr "حصر إلى"
+
+#: toolbars/SelectionBar.cpp:240
+msgid "Selection "
+msgstr "اختيار"
+
+#: toolbars/SelectionBar.cpp:305
+msgid "Selection Length"
+msgstr "طول الاختيار"
+
+#: toolbars/SelectionBar.cpp:313
+msgid "Selection End"
+msgstr "نهاية الاختيار"
+
+#: toolbars/ToolBar.cpp:97
+#, c-format
+msgid "Audacity %s ToolBar"
+msgstr "شريط أدوات %s جُرأة"
+
+#: toolbars/ToolDock.cpp:74 toolbars/ToolDock.cpp:75
+msgid "ToolDock"
+msgstr "مرفأ اﻷداة"
+
+#: toolbars/ToolsToolBar.cpp:63
+msgid "Click and drag to select audio"
+msgstr "انقر و اسحب لاختيار الصوت"
+
+#: toolbars/ToolsToolBar.cpp:64
+msgid "Click and drag to edit the amplitude envelope"
+msgstr "انقر و اسحب لتحرير غلاف السِعة "
+
+#: toolbars/ToolsToolBar.cpp:65
+msgid "Click and drag to edit the samples"
+msgstr "انقر و اسحب لتحرير العيّنات"
+
+#: toolbars/ToolsToolBar.cpp:67
+msgid "Click to Zoom In, Shift-Click to Zoom Out"
+msgstr "انقر للتكبير، انقر مع Shift للتصغير"
+
+#: toolbars/ToolsToolBar.cpp:69
+msgid "Drag to Zoom Into Region, Right-Click to Zoom Out"
+msgstr "اسحب لتكبير المنطقة، انقر الزر الأيمن للتصغير"
+
+#: toolbars/ToolsToolBar.cpp:71
+msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
+msgstr "أيسر=تكبير، أيمن=تصغير، أوسط=عادي "
+
+#: toolbars/ToolsToolBar.cpp:73
+msgid "Click and drag to move a track in time"
+msgstr "انقر و اسحب لتحريك المسار في الوقت"
+
+#: toolbars/ToolsToolBar.cpp:90
+msgid "Tools"
+msgstr "أدوات"
+
+#: toolbars/ToolsToolBar.cpp:147 toolbars/ToolsToolBar.cpp:182
+msgid "Selection Tool"
+msgstr "أداة الإختيار"
+
+#: toolbars/ToolsToolBar.cpp:148
+msgid "Envelope Tool"
+msgstr " أداة الغلاف "
+
+#: toolbars/ToolsToolBar.cpp:149 toolbars/ToolsToolBar.cpp:183
+msgid "Time Shift Tool"
+msgstr "أداة تحريك الوقت"
+
+#: toolbars/ToolsToolBar.cpp:150 toolbars/ToolsToolBar.cpp:185
+msgid "Zoom Tool"
+msgstr "أداة التكبير و التصغير"
+
+#: toolbars/ToolsToolBar.cpp:151 toolbars/ToolsToolBar.cpp:184
+msgid "Draw Tool"
+msgstr "أداة الرسم"
+
+#: toolbars/ToolsToolBar.cpp:152
+msgid "Multi-Tool Mode"
+msgstr "نمط الأدوات المتعددة"
+
+#: toolbars/ToolsToolBar.cpp:186
+msgid "Slide Tool"
+msgstr "أداة التزلج"
+
+#: toolbars/ToolsToolBar.cpp:187
+msgid "Multi Tool"
+msgstr "أدوات متعددة"
+
+#: toolbars/TranscriptionToolBar.cpp:82
+msgid "Transcription"
+msgstr "النسخ"
+
+#: toolbars/TranscriptionToolBar.cpp:163
+msgid "Play at selected speed"
+msgstr "قراءة بالسرعة المختارة"
+
+#: toolbars/TranscriptionToolBar.cpp:164
+msgid "Play-at-speed"
+msgstr "قراءة بسرعة"
+
+#: toolbars/TranscriptionToolBar.cpp:170 toolbars/TranscriptionToolBar.cpp:175
+msgid "Playback Speed"
+msgstr "سرعة القراءة"
+
+#: toolbars/TranscriptionToolBar.cpp:180
+msgid "Adjust left selection to next onset"
+msgstr "تعديل الاختيار الأيسر إلى البداية التالية"
+
+#: toolbars/TranscriptionToolBar.cpp:181
+msgid "Left-to-On"
+msgstr "الأيسر للتشغيل"
+
+#: toolbars/TranscriptionToolBar.cpp:183
+msgid "Adjust right selection to previous offset"
+msgstr "تعديل الاختيار الأيمن إلى الفرع السابق"
+
+#: toolbars/TranscriptionToolBar.cpp:184
+msgid "Right-to-Off"
+msgstr "الأيمن للتوقيف"
+
+#: toolbars/TranscriptionToolBar.cpp:186
+msgid "Adjust left selection to next offset"
+msgstr "تعديل الاختيار الأيسر إلى الفرع التالي"
+
+#: toolbars/TranscriptionToolBar.cpp:187
+msgid "Left-to-Off"
+msgstr "الأيسر للتوقيف"
+
+#: toolbars/TranscriptionToolBar.cpp:189
+msgid "Adjust right selection to previous onset"
+msgstr "تعديل الاختيار الأيمن إلى البداية السابقة"
+
+#: toolbars/TranscriptionToolBar.cpp:190
+msgid "Right-to-On"
+msgstr "الأيمن للتشغيل"
+
+#: toolbars/TranscriptionToolBar.cpp:192
+msgid "Select region of sound around cursor"
+msgstr "اختيار منطقة الصوت حول المؤشر"
+
+#: toolbars/TranscriptionToolBar.cpp:193
+msgid "Select-Sound"
+msgstr "اختيار-الصوت"
+
+#: toolbars/TranscriptionToolBar.cpp:195
+msgid "Select region of silence around cursor"
+msgstr "اختيار منطقة الصمت حول المؤشر"
+
+#: toolbars/TranscriptionToolBar.cpp:196
+msgid "Select-Silence"
+msgstr "اختيار-الصمت"
+
+#: toolbars/TranscriptionToolBar.cpp:198
+msgid "Automatically make labels from words"
+msgstr "انتاج العلامات من الكلمات تلقائيا"
+
+#: toolbars/TranscriptionToolBar.cpp:199
+msgid "Make Labels"
+msgstr "انتاج العلامات"
+
+#: toolbars/TranscriptionToolBar.cpp:201
+msgid "Add label at selection"
+msgstr "اضافة علامة عند الاختيار"
+
+#: toolbars/TranscriptionToolBar.cpp:202
+msgid "Add Label"
+msgstr "اضافة علامة"
+
+#: toolbars/TranscriptionToolBar.cpp:204
+msgid "Calibrate voicekey"
+msgstr "معايرة مفتاح الصوت"
+
+#: toolbars/TranscriptionToolBar.cpp:205
+msgid "Calibrate"
+msgstr "معايرة"
+
+#: toolbars/TranscriptionToolBar.cpp:209
+msgid "Adjust Sensitivity"
+msgstr "تعديل الحساسية"
+
+#: toolbars/TranscriptionToolBar.cpp:214
+msgid "Sensitivity"
+msgstr " الحساسية"
+
+#: toolbars/TranscriptionToolBar.cpp:219
+msgid "Energy"
+msgstr "الطاقة"
+
+#: toolbars/TranscriptionToolBar.cpp:220
+msgid "Sign Changes (Low Threshold)"
+msgstr "تغيرات الإشارة (العتبة الدنيا)"
+
+#: toolbars/TranscriptionToolBar.cpp:221
+msgid "Sign Changes (High Threshold)"
+msgstr "تغيرات الإشارة (العتبة القصوى)"
+
+#: toolbars/TranscriptionToolBar.cpp:222
+msgid "Direction Changes (Low Threshold)"
+msgstr "تغيرات الإتجاه (العتبة الدنيا)"
+
+#: toolbars/TranscriptionToolBar.cpp:223
+msgid "Direction Changes (High Threshold)"
+msgstr "تغيرات الإتجاه (العتبة القصوى)"
+
+#: toolbars/TranscriptionToolBar.cpp:231
+msgid "Key type"
+msgstr "نوع المفتاح"
+
+#: widgets/AButton.cpp:302
+msgid " (disabled)"
+msgstr " (غير مُفعل)"
+
+#: widgets/AButton.cpp:447
+msgid "Press"
+msgstr "اضغط"
+
+#: widgets/AButton.cpp:526
+msgid "Button"
+msgstr "زر"
+
+#. i18n-hint: One-letter abbreviation for Left, in VU Meter
+#. i18n-hint: One-letter abbreviation for Left, in the Pan slider
+#: widgets/ASlider.cpp:592 widgets/Meter.cpp:210
+msgid "L"
+msgstr "يسار"
+
+#. i18n-hint: One-letter abbreviation for Right, in VU Meter
+#. i18n-hint: One-letter abbreviation for Right, in the Pan slider
+#: widgets/ASlider.cpp:595 widgets/Meter.cpp:212
+msgid "R"
+msgstr "يمين"
+
+#: widgets/ASlider.cpp:635
+msgid "Center"
+msgstr "مركز"
+
+#: widgets/ASlider.cpp:639
+msgid "Left"
+msgstr "أيسر"
+
+#: widgets/ASlider.cpp:642
+msgid "Right"
+msgstr "أيمن"
+
+#: widgets/ErrorDialog.cpp:68 widgets/ErrorDialog.cpp:92
+msgid "Help"
+msgstr "مساعدة"
+
+#: widgets/ErrorDialog.cpp:190
+msgid "Help on the Internet"
+msgstr ""
+
+#: widgets/Grabber.cpp:62
+msgid "Grabber"
+msgstr "المُنتزع"
+
+#: widgets/Grid.cpp:616
+#, c-format
+msgid "%d rows, %d columns"
+msgstr "%d سطر, %d عمود"
+
+#: widgets/Grid.cpp:622 widgets/Grid.cpp:749
+#, c-format
+msgid "Row %d"
+msgstr "سطر %d"
+
+#: widgets/Grid.cpp:764
+msgid "Empty"
+msgstr "فارغ"
+
+#: widgets/Meter.cpp:341
+msgid "Enable Meter"
+msgstr "تفعيل العداد"
+
+#: widgets/Meter.cpp:343
+msgid "Disable Meter"
+msgstr "وقف تفعيل العداد"
+
+#: widgets/Meter.cpp:346
+msgid "Stop Monitoring"
+msgstr "وقف المراقبة"
+
+#: widgets/Meter.cpp:348
+msgid "Start Monitoring"
+msgstr "بدأ المراقبة"
+
+#: widgets/Meter.cpp:352
+msgid "Horizontal Stereo"
+msgstr "ثنائي أفقي"
+
+#: widgets/Meter.cpp:353
+msgid "Vertical Stereo"
+msgstr "ثنائي عمودي"
+
+#: widgets/Meter.cpp:361
+msgid "Linear"
+msgstr "خطي"
+
+#: widgets/Meter.cpp:370
+msgid "Preferences..."
+msgstr "تفضيلات..."
+
+#: widgets/Meter.cpp:1060
+msgid "This determines how often the meter is refreshed.\n"
+"If you have a slower PC you may want to select a\n"
+"lower refresh rate (30 per second or lower), so that\n"
+"audio qualtiy is not affected by the meter display."
+msgstr "هذا يحدد كم مرة يتم فيها تجديد العداد.\n"
+"أذا كان حاسوبك بطيئ يمكنك اختيار \n"
+"معدل تجديد صغير (30 في الثانية أو أقل)، حتى\n"
+" لا تتأثر جودة الصوت بعرض العداد."
+
+#: widgets/Meter.cpp:1061
+msgid "Meter refresh rate per second [1-100]: "
+msgstr "معدل تجديد العداد في الثانية [1-100]: "
+
+#: widgets/Meter.cpp:1062
+msgid "Meter Preferences"
+msgstr "تفضيلات العداد"
+
+#: widgets/MultiDialog.cpp:82
+msgid " Please select an action "
+msgstr "من فضلك اختر عملية"
+
+#: widgets/Ruler.cpp:1138 widgets/Ruler.cpp:1139
+msgid "Vertical Ruler"
+msgstr "مسطرة عمودية"
+
+#: widgets/TimeTextCtrl.cpp:198
+msgid "01000,01000 seconds"
+msgstr "01000,01000 ثانية"
+
+#: widgets/TimeTextCtrl.cpp:199
+msgid "hh:mm:ss"
+msgstr "سا:دق:ثا"
+
+#: widgets/TimeTextCtrl.cpp:200
+msgid "0100 h 060 m 060 s"
+msgstr "0100 سا 060 دق 060 ثا"
+
+#: widgets/TimeTextCtrl.cpp:201
+msgid "dd:hh:mm:ss"
+msgstr "يوم:سا:دق:ثا"
+
+#: widgets/TimeTextCtrl.cpp:202
+msgid "0100 days 024 h 060 m 060 s"
+msgstr "0100 يوم 024 سا 060 دق 060 ثا"
+
+#: widgets/TimeTextCtrl.cpp:203
+msgid "hh:mm:ss + milliseconds"
+msgstr "سا:دق:ثا + ملي ثانية"
+
+#: widgets/TimeTextCtrl.cpp:204
+msgid "0100 h 060 m 060.01000 s"
+msgstr "0100 سا 060 دق 060.01000 ثا"
+
+#: widgets/TimeTextCtrl.cpp:205
+msgid "hh:mm:ss + samples"
+msgstr "سا:دق:ثا + عيّنات"
+
+#: widgets/TimeTextCtrl.cpp:206
+msgid "0100 h 060 m 060 s+.# samples"
+msgstr "0100 سا 060 دق 060  ثا+.# عيّنات"
+
+#: widgets/TimeTextCtrl.cpp:207
+msgid "samples"
+msgstr "عيّنات"
+
+#: widgets/TimeTextCtrl.cpp:208
+msgid "01000,01000,01000 samples|#"
+msgstr "01000,01000,01000 عيّنات|#"
+
+#: widgets/TimeTextCtrl.cpp:209
+msgid "hh:mm:ss + film frames (24 fps)"
+msgstr "سا:دق:ثا + إطارات الفيلم (24 ط.ف.ث)"
+
+#: widgets/TimeTextCtrl.cpp:210
+msgid "0100 h 060 m 060 s+.24 frames"
+msgstr "0100 سا 060 دق 060 ثا+.24 إطار"
+
+#: widgets/TimeTextCtrl.cpp:211
+msgid "film frames (24 fps)"
+msgstr "إطارات الفيلم (24 ط.ف.ث)"
+
+#: widgets/TimeTextCtrl.cpp:212
+msgid "01000,01000 frames|24"
+msgstr "01000,01000 إطار|24"
+
+#: widgets/TimeTextCtrl.cpp:213
+msgid "hh:mm:ss + NTSC drop frames"
+msgstr "سا:دق:ثا + حذف إطارات أن.تي.أس.سي NTSC "
+
+#: widgets/TimeTextCtrl.cpp:214
+msgid "0100 h 060 m 060 s+.30 frames|N"
+msgstr "0100 سا 060 دق 060 ثا+.30 إطار|N"
+
+#: widgets/TimeTextCtrl.cpp:215
+msgid "hh:mm:ss + NTSC non-drop frames"
+msgstr "سا:دق:ثا + دون حذف إطارات أن.تي.أس.سي NTSC "
+
+#: widgets/TimeTextCtrl.cpp:216
+msgid "0100 h 060 m 060 s+.030 frames| .999000999"
+msgstr "0100 سا 060 دق 060 ثا+.030 إطار| .999000999"
+
+#: widgets/TimeTextCtrl.cpp:217
+msgid "NTSC frames"
+msgstr "إطارات أن.تي.أس.سي NTSC "
+
+#: widgets/TimeTextCtrl.cpp:218
+msgid "01000,01000 frames|29.97002997"
+msgstr "01000,01000 إطار|29.97002997"
+
+#: widgets/TimeTextCtrl.cpp:219
+msgid "hh:mm:ss + PAL frames (25 fps)"
+msgstr "سا:دق:ثا + إطارات بال PAL (25 ط.ف.ث)"
+
+#: widgets/TimeTextCtrl.cpp:220
+msgid "0100 h 060 m 060 s+.25 frames"
+msgstr "0100 سا 060 دق 060 ثا+.25 إطار"
+
+#: widgets/TimeTextCtrl.cpp:221
+msgid "PAL frames (25 fps)"
+msgstr " إطارات بال PAL (25 ط.ف.ث)"
+
+#: widgets/TimeTextCtrl.cpp:222
+msgid "01000,01000 frames|25"
+msgstr "01000,01000 إطار|25"
+
+#: widgets/TimeTextCtrl.cpp:223
+msgid "hh:mm:ss + CDDA frames (75 fps)"
+msgstr "سا:دق:ثا + CDDA إطار (75 ط.ف.ث)"
+
+#: widgets/TimeTextCtrl.cpp:224
+msgid "0100 h 060 m 060 s+.75 frames"
+msgstr "0100 سا 060 دق 060 ثا+.75 إطار"
+
+#: widgets/TimeTextCtrl.cpp:225
+msgid "CDDA frames (75 fps)"
+msgstr "إطارات سي.دي.دي.آي CDDA (75 ط.ف.ث)"
+
+#: widgets/TimeTextCtrl.cpp:226
+msgid "01000,01000 frames|75"
+msgstr "01000,01000 إطار|75"
+
+#: widgets/TimeTextCtrl.cpp:363
+msgid "Use right mouse button or context key to change format"
+msgstr "استخدم زر الفأرة الأيمن أو المفتاح المناسب لتغيير الصيغة"
+
+#: widgets/TimeTextCtrl.cpp:1377
+msgid "Time Control"
+msgstr "التحكم في الوقت"
+
+#: widgets/Warning.cpp:64
+msgid "Don't show this warning again"
+msgstr "لا تظهر هذا الإنذار مرة أخرى"
+
+#: xml/XMLFileReader.cpp:49
+#, c-format
+msgid "Could not open file: \"%s\""
+msgstr "لم أتمكن من فتح ملف: \"%s\""
+
+#: xml/XMLFileReader.cpp:63
+#, c-format
+msgid "Error: %hs at line %d"
+msgstr "خطأ:  %hs في السطر %d"
+
+#: xml/XMLFileReader.cpp:79
+#, c-format
+msgid "Could not load file: \"%s\""
+msgstr "لم أتمكن من تحميل الملف: \"%s\""
+
