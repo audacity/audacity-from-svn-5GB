@@ -1,51 +1,49 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.3.3 (beta)
-For changelog, see the bottom of this document.
+Version 1.3.4 (beta)
+The change log is at the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
 
-Email: audacity-devel@lists.sourceforge.net
-
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Founding Developers:
-   Dominic Mazzoni
-   Roger Dannenberg
-
-Lead Developers of Audacity version 1.3:
-   Dominic Mazzoni
-   Matt Brubeck
+Lead Developers:
    James Crook
    Vaughan Johnson
+   Dominic Mazzoni
    Markus Meyer
    Leland Lucius
+   Martyn Shaw
 
-Developers:
+Support Team:
+   Gale Andrews
+   Richard Ash
+   Christian Brochec
+   Alexandre Prokoudine
+   
+Emeritus Developers:
+   Matt Brubeck
+   Roger Dannenberg
    Joshua Haberman
    Monty Montgomery
    Shane Mueller
-   Martyn Shaw
 
-Contributors:
+Other Contributors:
    Lynn Allan (CleanSpeech)
-   Richard Ash
    William Bland (Time Tracks)
    Chris Cannam (VAMP)
-   Roger Dannenberg
    Brian Gunlogson
+   Arun Kishore
+   Harvey Lubin (Audacity logo, http://www.agrapha.com/)
    Greg Mekkes
    Abe Milde
    Paul Nasca
    Tony Oetzmann
    Augustus Saunders
    Mike Underwood
+   Jun Wan
    Tom Woodhams
    Wing Yu
-
-The Audacity Logo:
-   Harvey Lubin
-   http://www.agrapha.com/
 
 Audacity is based on code from the following projects::
    expat
@@ -82,6 +80,7 @@ Special Thanks:
    David Topper
    Rudy Trubitt
    StreetIQ.com
+   UmixIt (http://www.umixit.com)
    Verilogix, Inc.
 
 -------------------------------------------------------------
@@ -304,10 +303,12 @@ Known issues/problems:
     but will install alongside them.
 
 -------------------------------------------------------------
+CHANGE LOG
+
 Changes in 1.3.4:
 
 New Features
-	* New Splash Screen with introduction to Audacity
+	* New Welcome Screen with introduction to Audacity
 	* Enhanced Windows Shell integration, so Audacity shows up in lots of
 		Windows places such as "Open With".
 	* New keyboard command: 'Mix and Render to New Track'
@@ -362,6 +363,10 @@ Recording / Playback:
 	* Improvements to latency correction.
 	* Updated version of portaudio-v19 library.
 
+Note that Help is no longer built in, but accessible on the Web via links 
+in Audacity.
+
+
 Changes in 1.3.3:
 
 Opening/saving formats:
@@ -406,6 +411,7 @@ Also:
    * Many improvements to language specific translations
    * Numerous stability improvements
 
+
 Changes in 1.3.1 and 1.3.2:
 
 o Improved accessibility for the visually impaired
@@ -427,6 +433,7 @@ o Improved batch processing
 o File format export improvements
 o Timer recording
 o Intel Mac support
+
 
 Changes in 1.3.0:
 
@@ -523,6 +530,7 @@ Changes in 1.2.4:
     Hungarian (hu), Japanese (ja), Norwegian (nb), Slovenian (sl), 
     Simplified Chinese (zh_CN), Traditional Chinese (zh_TW).
 
+
 Changes in 1.2.3:
 
   * Fixed a bug that caused recording to stop or display incorrectly
@@ -557,6 +565,7 @@ Changes in 1.2.3:
   * New or updated translations: Italian (it), Hungarian (hu),
     Ukrainian (uk), Spanish (es). Polish (pl), Simplified Chinese (zh),
     Norsk-Bokmal (nb), French (fr).
+
 
 Changes in 1.2.2:
 
@@ -628,6 +637,7 @@ Changes in 1.2.2:
 
   * Other minor bug fixes and performance improvements.
 
+
 Changes in 1.2.1:
 
   * The following translations have been added or updated:  Finnish,
@@ -668,6 +678,7 @@ Changes in 1.2.1:
   
   * Other minor bug-fixes.
 
+
 Changes in 1.2.0:
 
   * New cross-fade effects.
@@ -694,6 +705,7 @@ Changes in 1.2.0:
     compile out of the box on Windows.
 
   * Many new/updated translations.
+
 
 Changes in 1.2.0-pre4:
 
@@ -753,6 +765,7 @@ Changes in 1.2.0-pre4:
   * Updated translations.  Added translator credits to the
     "About" window in localized versions.
 
+
 Changes in 1.2.0-pre3:
 
   * Fixed bug where Export is grayed out when nothing is
@@ -809,6 +822,7 @@ Changes in 1.2.0-pre3:
     three open source LADSPA plug-ins ported to Windows
     (GVerb reverb, SC4 compressor, and Hard Limiter)
 
+
 Changes in 1.2.0-pre2:
 
   * Online help completed.  The full manual is nearly complete
@@ -853,6 +867,7 @@ Changes in 1.2.0-pre2:
     compatible with more MP3 players.
 
   * Minor improvements to build system on Unix systems.
+
 
 New features in Audacity 1.2:
   * User Interface
@@ -901,6 +916,7 @@ New features in Audacity 1.2:
       notes.
     - Several memory leaks are fixed.
 
+
 New features in Audacity 1.1.3:
   * User Interface
     - New Mixer toolbar allows you to control the output
@@ -937,6 +953,7 @@ New features in Audacity 1.1.3:
 
   * Many more bug fixes and new features
 
+
 New features in Audacity 1.1.2:
   * User Interface
     - Fixed bug in Windows version, for track menu commands 
@@ -945,6 +962,7 @@ New features in Audacity 1.1.2:
     - Nyquist support on Windows (supports plug-ins written 
 	  in Nyquist, an interpreted functional language based 
 	  on Lisp).
+
 
 New features in Audacity 1.1.1:
 
@@ -992,6 +1010,7 @@ New features in Audacity 1.1.1:
       in <prefix>/share/audacity and also in any paths in
       the AUDACITY_PATH environment variable
 
+
 New features in Audacity 1.1.0:
 
   * Core audio processing:
@@ -1022,6 +1041,7 @@ New features in Audacity 1.1.0:
   * Localization
     - Audacity can now be localized to different foreign
       languages.
+
 
 New libraries in Audacity 1.1:
 
