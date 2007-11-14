@@ -15,6 +15,7 @@
 
 #include "Effect.h"
 #include "../widgets/TimeTextCtrl.h"
+#include "../Experimental.h"
 
 #include <wx/dialog.h>
 
@@ -78,6 +79,9 @@ class EffectToneGen:public Effect {
    double length;
    float logFrequency[2];
    double mCurRate;
+#ifdef LOGARITHMIC_TONE_CHIRP
+   int interpolation;
+#endif
 
    // mSample is an external placeholder to remember the last "buffer"
    // position so we use it to reinitialize from where we left
@@ -114,6 +118,10 @@ class ToneGenDialog:public EffectDialog {
    double amplitude[2];
    double length;
    bool isSelection;
+#ifdef LOGARITHMIC_TONE_CHIRP
+   int interpolation;
+   wxArrayString *interpolations;
+#endif
 
  private:
    TimeTextCtrl *mToneDurationT;
