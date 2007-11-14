@@ -39,6 +39,40 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "November 13, 2007",
+        "1.3.4-release",
+  _("Audacity 1.3.4 Released"),
+  _("
+<p>
+The Audacity Team is pleased to announce the release of 
+<a href=\"/download\">Audacity 1.3.4 (beta)</a>, which includes several 
+new features and user interface improvements, such as:
+<ul>
+	<li>New Welcome Screen with introduction to Audacity.</li>
+	<li>New 'Mix and Render to New Track' command.</li>
+	<li>Support for VAMP audio analysis plug-ins.</li>
+	<li>More keyboard shortcuts and navigation.</li>
+	<li>Reworked solo/mute handling.</li>
+	<li>New preference: "Select all audio in project, if none selected" (on by default).</li>
+	<li>New preference: "Beep on completion of longer activities".</li>
+	<li>Envelopes: Many fixes when copying, pasting, or repeating.</li>
+	<li>Many translation updates.</li>
+	<li>Metadata editor added for OGG, FLAC and WAV/AIFF exports. Metadata import improved.</li>
+	<li>Muted tracks are no longer audible in the exported mix.</li>
+	<li>Improvements to latency correction.</li>
+</ul>
+</p>
+<p>
+Note that this release is for Windows and Linux/Unix only. 
+The latest Audacity beta for Mac OS is version 1.3.3.
+</p>
+<p>
+See <a href=\"/download/features-1.3-a\">New Features in 1.3</a>
+for more information about 1.3.4 and the 1.3.x beta series.
+</p>
+"));
+
+add_news_item(
   "July 26, 2007",
         "SourceForge_CCA_2007",
   _("SourceForge Community Choice Awards 2007"),
@@ -51,23 +85,6 @@ Audacity won the
 Congratulations to the other finalists. 
 <b>Big</b> thanks to SourceForge, to everyone who voted, and to all 
 who contribute to making Audacity great! 
-</p>
-
-<p>
-The latest release of Audacity is 
-<a href=\"/download\">1.3.3 (beta)</a>, which
-contains numerous new features and capabilities beyond the 1.3.2 (beta) release.
-Because it is a work 
-in progress and does not yet come with complete documentation or translations
-into foreign languages, it is recommended for more advanced users.
-See <a href=\"/download/features-1.3-a\">New Features in 1.3</a>
-for more information about the 1.3.x beta series.
-</p>
-
-<p>
-For all users, <a href=\"/download\">Audacity 1.2.6</a>
-is a stable release, complete and fully documented.  You can have
-both Audacity 1.2.6 and 1.3.3 installed simultaneously.
 </p>
 "));
 
