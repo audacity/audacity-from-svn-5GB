@@ -29,7 +29,7 @@
   <li><p><?=_('Use this command to check out the latest Audacity stable source code from CVS:')?> (1.2)</p>
   <p><kbd>cvs -d:pserver:anonymous@audacity.cvs.sourceforge.net:/cvsroot/audacity checkout -r AUDACITY_1_2 audacity</kbd></p></li>
 
-  <li><p><?=_('Or use this command to check out the latest Audacity unstable/development source code from CVS:')?> (1.3)</p>
+  <li><p><?=_('Or use this command to check out the latest Audacity beta/development source code from CVS:')?> (1.3)</p>
   <p><kbd>cvs -d:pserver:anonymous@audacity.cvs.sourceforge.net:/cvsroot/audacity checkout audacity</kbd></p></li>
 </ul>
 <p><?=_('For more information, read the <a href="http://sourceforge.net/cvs/?group_id=6235">SourceForge CVS instructions</a>.')?></p>
