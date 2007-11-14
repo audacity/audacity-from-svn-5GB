@@ -72,7 +72,7 @@ for more information about 1.3.4 and the 1.3.x beta series.
 </p>
 <p>
 Check out the new e-book on 
-<a href="http://www.informit.com/store/product.aspx?isbn=0132366576&rl=1">Podcasting with Audacity</a>.
+<a href=\"http://www.informit.com/store/product.aspx?isbn=0132366576&rl=1\">Podcasting with Audacity</a>.
 </p>
 "));
 
