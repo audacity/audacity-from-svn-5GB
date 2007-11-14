@@ -56,6 +56,11 @@
 //#define EXPERIMENTAL_VOICE_DETECTION
 //#define EXPERIMENTAL_SMART_RECORD
 
+//Changes thanks to Andreas Micheler
+//This one looks pretty good and uses existing code for the log chirp, just adds an interface.
+//Perhaps it should not be included in the mainstream until the log spectrogram scale is ready as well
+//#define LOGARITHMIC_TONE_CHIRP
+
 #ifdef EXPERIMENTAL_FEATURES
    // The first experimental feature is a notebook that adds
    // a tabbed divider to the project.
