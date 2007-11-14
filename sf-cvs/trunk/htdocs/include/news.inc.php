@@ -53,8 +53,8 @@ new features and user interface improvements, such as:
 	<li>Support for VAMP audio analysis plug-ins.</li>
 	<li>More keyboard shortcuts and navigation.</li>
 	<li>Reworked solo/mute handling.</li>
-	<li>New preference: "Select all audio in project, if none selected" (on by default).</li>
-	<li>New preference: "Beep on completion of longer activities".</li>
+	<li>New preference: Select all audio in project, if none selected (on by default).</li>
+	<li>New preference: Beep on completion of longer activities.</li>
 	<li>Envelopes: Many fixes when copying, pasting, or repeating.</li>
 	<li>Many translation updates.</li>
 	<li>Metadata editor added for OGG, FLAC and WAV/AIFF exports. Metadata import improved.</li>
