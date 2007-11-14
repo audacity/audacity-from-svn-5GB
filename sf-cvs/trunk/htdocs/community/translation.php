@@ -15,7 +15,7 @@
 
 <p><?=_('A group of volunteers is translating the free Audacity sound editor into several languages.  If you would like to help, please join the <a href="../contact/lists#translation">audacity-translation mailing list</a> and introduce yourself.')?></p>
 
-<p><?=_('The translation effort is now focused on Audacity 1.3.3 and beyond.  Translations from previous versions of Audacity have been imported and need to be updated.')?></p>
+<p><?=_('The translation effort is now focused on Audacity 1.3.  Translations from previous versions of Audacity have been imported and need to be updated.')?></p>
 
 <h3><?=_("Resources for Translators")?></h3>
 <ul>

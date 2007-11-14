@@ -14,6 +14,82 @@
 <h2><?=$pageTitle?></h2>
 <?php include "betawarning.inc.php" ?>
 
+<h3><?=_("New in Audacity 1.3.4")?></h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <!-- indent cheat -->
+    <dl>
+      <dt> New features </dt>
+      <dd>New Welcome Screen with introduction to Audacity.</dd>
+      <dd>Enhanced Windows Shell integration, so Audacity shows up in lots of 
+          Windows places such as "Open With".</dd>
+      <dd>New keyboard command: 'Mix and Render to New Track' (bound to Ctrl+Shift+M).</dd>
+      <dd>New keyboard shortcut: "Shift-A" starts playback when stopped,
+          or performs "Stop and Select" when playing.</dd>
+      <dd>Added support for VAMP audio analysis plug-ins.</dd>
+      <dd>Solo button solos only one track at a time, and a track cannot be both mute and solo.</dd>
+
+      <dt> Interface </dt>
+      <dd>Keyboard shortcuts for making short/long jumps along the timeline.</dd>
+      <dd>Added 'Snap To' in the Selection Bar.</dd>
+      <dd>Made keyboard navigation easier when multiple menu items with the same first letter exist.</dd>
+      <dd>Enhanced interface for label editing.</dd>
+      <dd>Layout of OK/Cancel buttons consistency improved.</dd>
+      <dd>
+        Preferences:
+        <ul>
+          <li>"Select all audio in project, if none selected" (on by default).</li>
+          <li>"Beep on completion of longer activities" (system bell, not main output).</li>
+          <li>Other preferences cleaned up and explanations improved.</li>
+        </ul>
+      </dd>
+      <dd>Envelopes: Many fixes when copying / pasting / repeating.</dd>
+      <dd>Many translation updates.</dd>
+      <dd>Track height fixed in several cases.</dd>
+      <dd>CleanSpeech mode switching without closing and re-opening fixed.</dd>
+
+      <dt> Opening/Saving Formats </dt>
+      <dd>Metadata editor added for OGG, FLAC and WAV/AIFF exports, and general improvements.</dd>
+      <dd>Metadata import improved.</dd>
+      <dd>Muted tracks are no longer audible in the exported mix.</dd>
+
+      <dt> Effects </dt>
+      <dd>Truncate Silence: support for multiple and stereo tracks.</dd>
+      <dd>
+        Dtmf Generator:
+        <ul>
+          <li>Added support for keypad letters.</li>
+          <li>Added an amplitude control.</li>
+        </ul>
+      </dd>
+      <dd>Compressor: variable decay time added.</dd>
+      <dd>
+        Equalization:
+        <ul>
+          <li>Clicks at start / end prevented.</li>
+          <li>Improvements to saved curves being found.</li>
+          <li>Preview works correctly.</li>
+        </ul>
+      </dd>
+      <dd>'Merge' command appears in Undo history.</dd>
+      <dd>Clipping detected more reliably.</dd>
+      <dd>Nyquist plug-ins reviewed and enhanced.</dd>
+      <dd>Better (and more) progress bars.</dd>
+      <dd>Cancelling effect always restores previous audio.</dd>
+      <dd>Several improvement to effects in batch mode.</dd>
+
+      <dt> Recording/Playback </dt>
+      <dd>Improvements to latency correction.</dd>
+      <dd>Updated version of portaudio-v19 library.</dd>
+
+      <dt>
+        Note that Help is no longer built in, but accessible on the Web via links in Audacity.
+      </dt>
+    </dl>
+  </dd>
+</dl>
+
 <h3><?=_("New features in Audacity 1.3.3")?></h3>
 <dl>
   <dt></dt>

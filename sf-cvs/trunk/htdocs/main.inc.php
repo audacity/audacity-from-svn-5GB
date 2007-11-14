@@ -36,7 +36,7 @@ $siteNavItems = array(
       array($ind._("Linux/Unix"), "linux"),
       array($ind._("Source Code"), "source"),
       array($ind._("Release Notes"), "release-notes"),
-      array(_("Beta").": 1.3.3", ""),
+      array(_("Beta").": 1.3.4", ""),
       array($ind._("New Features in 1.3"), "features-1.3-a"),
       array($ind._("Windows"), "beta_windows"),
       array($ind._("Mac"), "beta_mac"),

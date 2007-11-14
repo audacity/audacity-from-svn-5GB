@@ -65,7 +65,7 @@
 <h3>Windows</h3>
 <ol>
   <li>Go to the <a href="%s">LAME download page</a>.</li>
-  <li>Under "For Audacity 1.2.6 and 1.3.3 on Windows", left-click on the link "%s" and save the zip folder to anywhere on your computer.</li>
+  <li>Under "For Audacity on Windows", left-click on the link "%s" and save the zip folder to anywhere on your computer.</li>
   <li>When you have finished downloading the ZIP folder, unzip it and save the file <b>lame_enc.dll</b> that it contains to anywhere on your computer.</li>
   <li>The first time you use the "Export as MP3" command, Audacity will ask you where lame_enc.dll is saved.</li>
   <li>In case of difficulty, please view our more detailed instructions at the
