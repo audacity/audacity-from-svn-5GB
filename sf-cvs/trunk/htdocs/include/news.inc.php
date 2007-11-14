@@ -70,6 +70,10 @@ The latest Audacity beta for Mac OS is version 1.3.3.
 See <a href=\"/download/features-1.3-a\">New Features in 1.3</a>
 for more information about 1.3.4 and the 1.3.x beta series.
 </p>
+<p>
+Check out the new e-book on 
+<a href="http://www.informit.com/store/product.aspx?isbn=0132366576&rl=1">Podcasting with Audacity</a>.
+</p>
 "));
 
 add_news_item(
