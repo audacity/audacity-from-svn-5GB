@@ -137,7 +137,7 @@ You can click on the links below to learn how to:\
 [[play|play back]] an existing sound file.\
 <li>[[record|record]] a new sound file.\
 <li>[[edit|edit]] sound and [[export|export]] to a sound file like MP3. \
-<li>[[burnCD|burn to a CD]] \
+<li>[[burncd|burn to a CD]] \
 </ul><br><br>") + 
 _("You can always get back to these \
 instructions by clicking the 'Help' menu, then 'Show Welcome Message.' \
