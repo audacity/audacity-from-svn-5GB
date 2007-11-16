@@ -353,8 +353,8 @@ void AudacityProject::CreateMenusAndCommands()
    // which doesn't have a Project menu, but they are under Project for normal Audacity.
    if( mCleanSpeechMode )
 	{
-      c->AddItem(wxT("Stereo To Mono"),      _("&Stereo To Mono"),            FN(OnStereoToMono));
-      c->SetCommandFlags(wxT("Stereo To Mono"),
+      c->AddItem(wxT("Stereo to Mono"),      _("&Stereo to Mono"),            FN(OnStereoToMono));
+      c->SetCommandFlags(wxT("Stereo to Mono"),
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag,
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag);
 	}
@@ -553,8 +553,8 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddSeparator();
       // StereoToMono moves elsewhere in the menu when in CleanSpeech mode.
       // It belongs here normally, because it is a kind of mix-down.
-      c->AddItem(wxT("Stereo To Mono"),      _("&Stereo To Mono"),            FN(OnStereoToMono));
-      c->SetCommandFlags(wxT("Stereo To Mono"),
+      c->AddItem(wxT("Stereo to Mono"),      _("&Stereo to Mono"),            FN(OnStereoToMono));
+      c->SetCommandFlags(wxT("Stereo to Mono"),
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag,
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag);
       c->AddItem(wxT("MixAndRender"),       _("&Mix and Render"),             FN(OnMixAndRender));
