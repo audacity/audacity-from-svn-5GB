@@ -35,6 +35,8 @@
 #include "../Internat.h"
 #include "../Tags.h"
 
+#define DESC _("MP3 files")
+
 static const wxChar *exts[] =
 {
    wxT("mp3"),
@@ -49,7 +51,7 @@ void GetMP3ImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* mp3IsUnsupported =
-      new UnusableImportPlugin(DESC, wxArrayString(wxSIZEOF(exts), exts));
+      new UnusableImportPlugin(DESC, wxArrayString(WXSIZEOF(exts), exts));
 
    unusableImportPluginList->Append(mp3IsUnsupported);
 }
@@ -74,8 +76,6 @@ extern "C" {
 }
 
 #include "../WaveTrack.h"
-
-#define DESC _("MP3 files")
 
 #define INPUT_BUFFER_SIZE 65535
 #define PROGRESS_SCALING_FACTOR 100000
