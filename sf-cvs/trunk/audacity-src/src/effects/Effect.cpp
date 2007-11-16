@@ -253,10 +253,13 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
          if (pTrack == pInWaveTrack)
          {
             // Replace pInWaveTrack with processed pOutWaveTrack, at end of list.
-            mTracks->Add(pOutWaveTrack);
+            if (pOutWaveTrack != NULL) // Can be NULL as result of Tracks > Stereo to Mono.
+            {
+               mTracks->Add(pOutWaveTrack);
+               if (pTrack == pFirstTrack)
+                  pFirstTrack = pOutWaveTrack; // We replaced the first track, so update stop condition.
+            }
             delete pInWaveTrack;
-            if (pTrack == pFirstTrack)
-               pFirstTrack = pOutWaveTrack; // We replaced the first track, so update stop condition.
 
             pInWaveTrack = (WaveTrack*)(iterIn.Next());
             pOutWaveTrack = (WaveTrack*)(iterOut.Next());
