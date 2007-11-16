@@ -474,7 +474,7 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
       if (f != NULL) {
          return ApplyEffectCommand(f, command, params);
       }
-      wxMessageBox(_("Stereo To Mono Effect not found"));
+      wxMessageBox(_("Stereo to Mono Effect not found"));
       return false;
    } else if (command == wxT("ExportMp3")) {
       return WriteMp3File(filename, 0); // 0 bitrate means use default/current
