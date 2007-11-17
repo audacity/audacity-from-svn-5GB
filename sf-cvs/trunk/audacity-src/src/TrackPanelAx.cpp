@@ -338,14 +338,17 @@ wxAccStatus TrackPanelAx::GetState( int childId, long* state )
    {
       Track *t = FindTrack( childId );
 
-      if( t && ( t == mFocusedTrack ) )
+      if (t)
       {
-         *state |= wxACC_STATE_SYSTEM_FOCUSED;
-      }
+         if( t == mFocusedTrack )
+         {
+            *state |= wxACC_STATE_SYSTEM_FOCUSED;
+         }
 
-      if( t->GetSelected() )
-      {
-         *state |= wxACC_STATE_SYSTEM_SELECTED;
+         if( t->GetSelected() )
+         {
+            *state |= wxACC_STATE_SYSTEM_SELECTED;
+         }
       }
    }
 
