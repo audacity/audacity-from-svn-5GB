@@ -377,7 +377,7 @@ bool SmartRecordDialog::WaitForStart()
    wxString strMsg;
    /* i18n-hint: A time specification like "Sunday 28th October 2007 15:16:17 GMT"
 	* but hopefully translated by wxwidgets will be inserted into this */
-   strMsg.Printf(_("Waiting to start recording at %s.\n"), m_DateTime_Start.Format()); 
+   strMsg.Printf(_("Waiting to start recording at %s.\n"), m_DateTime_Start.Format().c_str()); 
    pProject->ProgressShow(_("Audacity Smart Record - Waiting for Start"),
                           strMsg);
    wxDateTime startWait_DateTime = wxDateTime::UNow();
