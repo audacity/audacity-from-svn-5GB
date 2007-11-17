@@ -799,6 +799,25 @@
 		2840CFA80AEB883500F49FC3 /* libtwolame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2840CF220AEB803C00F49FC3 /* libtwolame.a */; };
 		28456AC20A2C180E00C23C1E /* ThemePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */; };
 		2849B4620A7444BE00ECF12D /* Dependencies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2849B4600A7444BE00ECF12D /* Dependencies.cpp */; };
+		28501EA10CEECEF80029ABAA /* HelpText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501E9D0CEECEF80029ABAA /* HelpText.cpp */; };
+		28501EA20CEECEF80029ABAA /* SplashDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501E9F0CEECEF80029ABAA /* SplashDialog.cpp */; };
+		28501EAA0CEED0670029ABAA /* LoadVamp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501E970CEECE910029ABAA /* LoadVamp.cpp */; };
+		28501EAB0CEED0680029ABAA /* VampEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501E990CEECE920029ABAA /* VampEffect.cpp */; };
+		28501F0B0CEED2980029ABAA /* PluginHostAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F090CEED2980029ABAA /* PluginHostAdapter.cpp */; };
+		28501F0C0CEED2980029ABAA /* PluginHostAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F0A0CEED2980029ABAA /* PluginHostAdapter.h */; };
+		28501F170CEED2C50029ABAA /* PluginChannelAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F0F0CEED2C50029ABAA /* PluginChannelAdapter.cpp */; };
+		28501F180CEED2C50029ABAA /* PluginChannelAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F100CEED2C50029ABAA /* PluginChannelAdapter.h */; };
+		28501F190CEED2C50029ABAA /* PluginInputDomainAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F110CEED2C50029ABAA /* PluginInputDomainAdapter.cpp */; };
+		28501F1A0CEED2C50029ABAA /* PluginInputDomainAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F120CEED2C50029ABAA /* PluginInputDomainAdapter.h */; };
+		28501F1B0CEED2C50029ABAA /* PluginLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F130CEED2C50029ABAA /* PluginLoader.cpp */; };
+		28501F1C0CEED2C50029ABAA /* PluginLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F140CEED2C50029ABAA /* PluginLoader.h */; };
+		28501F1D0CEED2C50029ABAA /* PluginWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F150CEED2C50029ABAA /* PluginWrapper.cpp */; };
+		28501F1E0CEED2C50029ABAA /* PluginWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F160CEED2C50029ABAA /* PluginWrapper.h */; };
+		28501F330CEED8C70029ABAA /* libvamp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28501F060CEED1F00029ABAA /* libvamp.a */; };
+		28501F4B0CEED9560029ABAA /* PluginAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F470CEED9560029ABAA /* PluginAdapter.cpp */; };
+		28501F4C0CEED9560029ABAA /* PluginAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F480CEED9560029ABAA /* PluginAdapter.h */; };
+		28501F4D0CEED9560029ABAA /* RealTime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F490CEED9560029ABAA /* RealTime.cpp */; };
+		28501F4E0CEED9560029ABAA /* RealTime.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F4A0CEED9560029ABAA /* RealTime.h */; };
 		28560C910A75E40F00A3429E /* AutoRecovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */; };
 		285D8BA10AAEFDFD00E0B5BE /* SmartRecordDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D8B9F0AAEFDFD00E0B5BE /* SmartRecordDialog.cpp */; };
 		285DE1FA0BF03C7800A20DF0 /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285DE1F80BF03C7800A20DF0 /* Screenshot.cpp */; };
@@ -995,6 +1014,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2840CECB0AEB803C00F49FC3;
 			remoteInfo = twolame;
+		};
+		28501F520CEED9A80029ABAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1790ABE309883346008A330A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 28501EAF0CEED1F00029ABAA /* libvamp */;
+			remoteInfo = libvamp;
 		};
 		28E67F630A3A16AA0021D89F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1939,6 +1965,29 @@
 		28456AC10A2C180E00C23C1E /* ThemePrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ThemePrefs.h; sourceTree = "<group>"; };
 		2849B4600A7444BE00ECF12D /* Dependencies.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Dependencies.cpp; sourceTree = "<group>"; };
 		2849B4610A7444BE00ECF12D /* Dependencies.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Dependencies.h; sourceTree = "<group>"; };
+		28501E970CEECE910029ABAA /* LoadVamp.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = LoadVamp.cpp; path = vamp/LoadVamp.cpp; sourceTree = "<group>"; };
+		28501E980CEECE920029ABAA /* LoadVamp.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = LoadVamp.h; path = vamp/LoadVamp.h; sourceTree = "<group>"; };
+		28501E990CEECE920029ABAA /* VampEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = VampEffect.cpp; path = vamp/VampEffect.cpp; sourceTree = "<group>"; };
+		28501E9A0CEECE920029ABAA /* VampEffect.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = VampEffect.h; path = vamp/VampEffect.h; sourceTree = "<group>"; };
+		28501E9D0CEECEF80029ABAA /* HelpText.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = HelpText.cpp; sourceTree = "<group>"; };
+		28501E9E0CEECEF80029ABAA /* HelpText.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = HelpText.h; sourceTree = "<group>"; };
+		28501E9F0CEECEF80029ABAA /* SplashDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SplashDialog.cpp; sourceTree = "<group>"; };
+		28501EA00CEECEF80029ABAA /* SplashDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SplashDialog.h; sourceTree = "<group>"; };
+		28501F060CEED1F00029ABAA /* libvamp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvamp.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		28501F090CEED2980029ABAA /* PluginHostAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginHostAdapter.cpp; path = "libvamp/vamp-sdk/PluginHostAdapter.cpp"; sourceTree = "<group>"; };
+		28501F0A0CEED2980029ABAA /* PluginHostAdapter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginHostAdapter.h; path = "libvamp/vamp-sdk/PluginHostAdapter.h"; sourceTree = "<group>"; };
+		28501F0F0CEED2C50029ABAA /* PluginChannelAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginChannelAdapter.cpp; path = "libvamp/vamp-sdk/hostext/PluginChannelAdapter.cpp"; sourceTree = "<group>"; };
+		28501F100CEED2C50029ABAA /* PluginChannelAdapter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginChannelAdapter.h; path = "libvamp/vamp-sdk/hostext/PluginChannelAdapter.h"; sourceTree = "<group>"; };
+		28501F110CEED2C50029ABAA /* PluginInputDomainAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginInputDomainAdapter.cpp; path = "libvamp/vamp-sdk/hostext/PluginInputDomainAdapter.cpp"; sourceTree = "<group>"; };
+		28501F120CEED2C50029ABAA /* PluginInputDomainAdapter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginInputDomainAdapter.h; path = "libvamp/vamp-sdk/hostext/PluginInputDomainAdapter.h"; sourceTree = "<group>"; };
+		28501F130CEED2C50029ABAA /* PluginLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginLoader.cpp; path = "libvamp/vamp-sdk/hostext/PluginLoader.cpp"; sourceTree = "<group>"; };
+		28501F140CEED2C50029ABAA /* PluginLoader.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginLoader.h; path = "libvamp/vamp-sdk/hostext/PluginLoader.h"; sourceTree = "<group>"; };
+		28501F150CEED2C50029ABAA /* PluginWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginWrapper.cpp; path = "libvamp/vamp-sdk/hostext/PluginWrapper.cpp"; sourceTree = "<group>"; };
+		28501F160CEED2C50029ABAA /* PluginWrapper.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginWrapper.h; path = "libvamp/vamp-sdk/hostext/PluginWrapper.h"; sourceTree = "<group>"; };
+		28501F470CEED9560029ABAA /* PluginAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginAdapter.cpp; path = "libvamp/vamp-sdk/PluginAdapter.cpp"; sourceTree = "<group>"; };
+		28501F480CEED9560029ABAA /* PluginAdapter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginAdapter.h; path = "libvamp/vamp-sdk/PluginAdapter.h"; sourceTree = "<group>"; };
+		28501F490CEED9560029ABAA /* RealTime.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = RealTime.cpp; path = "libvamp/vamp-sdk/RealTime.cpp"; sourceTree = "<group>"; };
+		28501F4A0CEED9560029ABAA /* RealTime.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = RealTime.h; path = "libvamp/vamp-sdk/RealTime.h"; sourceTree = "<group>"; };
 		28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = AutoRecovery.cpp; sourceTree = "<group>"; };
 		28560C900A75E40F00A3429E /* AutoRecovery.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AutoRecovery.h; sourceTree = "<group>"; };
 		285D8B9F0AAEFDFD00E0B5BE /* SmartRecordDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SmartRecordDialog.cpp; sourceTree = "<group>"; };
@@ -2083,6 +2132,7 @@
 				28E67FEF0A3A2B160021D89F /* libFLAC.a in Frameworks */,
 				28E67FF00A3A2B190021D89F /* libportaudio.a in Frameworks */,
 				2840CFA80AEB883500F49FC3 /* libtwolame.a in Frameworks */,
+				28501F330CEED8C70029ABAA /* libvamp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2101,6 +2151,7 @@
 				170731EB0988D6AA008541CC /* libogg */,
 				170733DB0988D6AC008541CC /* libresample */,
 				170733FC0988D6AC008541CC /* libsndfile */,
+				28501EAC0CEED0740029ABAA /* libvamp */,
 				1707357C0988D6AD008541CC /* libvorbis */,
 				17C8BA11098B398C00216F16 /* libnyquist */,
 				28E821F50A39FC1300DCE280 /* portaudio-v19 */,
@@ -2741,22 +2792,23 @@
 			isa = PBXGroup;
 			children = (
 				1790AFB009883B6D008A330A /* Audacity.app */,
+				170741430988FDB3008541CC /* intgen */,
 				17073EE80988DBDD008541CC /* liballegro.a */,
 				17073F480988E04A008541CC /* libexpat.a */,
+				176EEBEA09A2F16200188F3B /* libFLAC.a */,
+				176EEC1E09A2F2DD00188F3B /* libFLAC++.a */,
 				17073F620988E121008541CC /* libid3tag.a */,
 				17073FC40988E561008541CC /* libmad.a */,
-				17073FFE0988EA60008541CC /* libogg.a */,
 				176A1A5B098B7B8D00DC73B4 /* libnyquist.a */,
+				17073FFE0988EA60008541CC /* libogg.a */,
+				28E67F5F0A3A160D0021D89F /* libportaudio.a */,
 				170740960988F2F7008541CC /* libportmixer.a */,
 				1707400D0988EB90008541CC /* libresample.a */,
 				1707401E0988EEAA008541CC /* libsndfile.a */,
 				1707407A0988F1BB008541CC /* libsoundtouch.a */,
-				170740D40988F820008541CC /* libvorbis.a */,
-				170741430988FDB3008541CC /* intgen */,
-				176EEBEA09A2F16200188F3B /* libFLAC.a */,
-				176EEC1E09A2F2DD00188F3B /* libFLAC++.a */,
-				28E67F5F0A3A160D0021D89F /* libportaudio.a */,
 				2840CF220AEB803C00F49FC3 /* libtwolame.a */,
+				28501F060CEED1F00029ABAA /* libvamp.a */,
+				170740D40988F820008541CC /* libvorbis.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2821,6 +2873,8 @@
 				1790B07409883BFD008A330A /* float_cast.h */,
 				1790B07509883BFD008A330A /* FreqWindow.cpp */,
 				1790B07609883BFD008A330A /* FreqWindow.h */,
+				28501E9D0CEECEF80029ABAA /* HelpText.cpp */,
+				28501E9E0CEECEF80029ABAA /* HelpText.h */,
 				1790B07909883BFD008A330A /* HistoryWindow.cpp */,
 				1790B07A09883BFD008A330A /* HistoryWindow.h */,
 				1790B07B09883BFD008A330A /* ImageManipulation.cpp */,
@@ -2880,6 +2934,8 @@
 				282D474B0B9E8D900034BC49 /* Snap.h */,
 				1790B0DE09883BFD008A330A /* Spectrum.cpp */,
 				1790B0DF09883BFD008A330A /* Spectrum.h */,
+				28501E9F0CEECEF80029ABAA /* SplashDialog.cpp */,
+				28501EA00CEECEF80029ABAA /* SplashDialog.h */,
 				1790B0E009883BFD008A330A /* Tags.cpp */,
 				1790B0E109883BFD008A330A /* Tags.h */,
 				283A11A80A2C0E15004372C4 /* Theme.cpp */,
@@ -2938,6 +2994,7 @@
 				1790B00009883BFD008A330A /* audiounits */,
 				1790B02309883BFD008A330A /* ladspa */,
 				1790B03409883BFD008A330A /* nyquist */,
+				28501E960CEECE4B0029ABAA /* vamp */,
 				1790AFFE09883BFD008A330A /* Amplify.cpp */,
 				1790AFFF09883BFD008A330A /* Amplify.h */,
 				28D65C700B97E54B000E001A /* AutoDuck.cpp */,
@@ -3641,6 +3698,54 @@
 			name = build;
 			sourceTree = "<group>";
 		};
+		28501E960CEECE4B0029ABAA /* vamp */ = {
+			isa = PBXGroup;
+			children = (
+				28501E970CEECE910029ABAA /* LoadVamp.cpp */,
+				28501E980CEECE920029ABAA /* LoadVamp.h */,
+				28501E990CEECE920029ABAA /* VampEffect.cpp */,
+				28501E9A0CEECE920029ABAA /* VampEffect.h */,
+			);
+			name = vamp;
+			sourceTree = "<group>";
+		};
+		28501EAC0CEED0740029ABAA /* libvamp */ = {
+			isa = PBXGroup;
+			children = (
+				28501EAD0CEED1480029ABAA /* vamp-sdk */,
+			);
+			name = libvamp;
+			sourceTree = "<group>";
+		};
+		28501EAD0CEED1480029ABAA /* vamp-sdk */ = {
+			isa = PBXGroup;
+			children = (
+				28501EAE0CEED1A50029ABAA /* hostext */,
+				28501F470CEED9560029ABAA /* PluginAdapter.cpp */,
+				28501F480CEED9560029ABAA /* PluginAdapter.h */,
+				28501F090CEED2980029ABAA /* PluginHostAdapter.cpp */,
+				28501F0A0CEED2980029ABAA /* PluginHostAdapter.h */,
+				28501F490CEED9560029ABAA /* RealTime.cpp */,
+				28501F4A0CEED9560029ABAA /* RealTime.h */,
+			);
+			name = "vamp-sdk";
+			sourceTree = "<group>";
+		};
+		28501EAE0CEED1A50029ABAA /* hostext */ = {
+			isa = PBXGroup;
+			children = (
+				28501F0F0CEED2C50029ABAA /* PluginChannelAdapter.cpp */,
+				28501F100CEED2C50029ABAA /* PluginChannelAdapter.h */,
+				28501F110CEED2C50029ABAA /* PluginInputDomainAdapter.cpp */,
+				28501F120CEED2C50029ABAA /* PluginInputDomainAdapter.h */,
+				28501F130CEED2C50029ABAA /* PluginLoader.cpp */,
+				28501F140CEED2C50029ABAA /* PluginLoader.h */,
+				28501F150CEED2C50029ABAA /* PluginWrapper.cpp */,
+				28501F160CEED2C50029ABAA /* PluginWrapper.h */,
+			);
+			name = hostext;
+			sourceTree = "<group>";
+		};
 		2897F6DB0AB3DB5A003C20C5 /* toolbars */ = {
 			isa = PBXGroup;
 			children = (
@@ -4177,6 +4282,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		28501EB00CEED1F00029ABAA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28501F0C0CEED2980029ABAA /* PluginHostAdapter.h in Headers */,
+				28501F180CEED2C50029ABAA /* PluginChannelAdapter.h in Headers */,
+				28501F1A0CEED2C50029ABAA /* PluginInputDomainAdapter.h in Headers */,
+				28501F1C0CEED2C50029ABAA /* PluginLoader.h in Headers */,
+				28501F1E0CEED2C50029ABAA /* PluginWrapper.h in Headers */,
+				28501F4C0CEED9560029ABAA /* PluginAdapter.h in Headers */,
+				28501F4E0CEED9560029ABAA /* RealTime.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		28E67F520A3A160D0021D89F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -4460,6 +4579,7 @@
 				17C99D4B098970800041B1BC /* PBXTargetDependency */,
 				17C99D49098970800041B1BC /* PBXTargetDependency */,
 				17C99D47098970800041B1BC /* PBXTargetDependency */,
+				28501F530CEED9A80029ABAA /* PBXTargetDependency */,
 				17C99D3F098970800041B1BC /* PBXTargetDependency */,
 				28E67F640A3A16AA0021D89F /* PBXTargetDependency */,
 				17C99D43098970800041B1BC /* PBXTargetDependency */,
@@ -4485,6 +4605,22 @@
 			name = twolame;
 			productName = libsndfile;
 			productReference = 2840CF220AEB803C00F49FC3 /* libtwolame.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		28501EAF0CEED1F00029ABAA /* libvamp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28501F010CEED1F00029ABAA /* Build configuration list for PBXNativeTarget "libvamp" */;
+			buildPhases = (
+				28501EB00CEED1F00029ABAA /* Headers */,
+				28501EBE0CEED1F00029ABAA /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libvamp;
+			productName = libsndfile;
+			productReference = 28501F060CEED1F00029ABAA /* libvamp.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		28E67F510A3A160D0021D89F /* portaudio-v19 */ = {
@@ -4527,6 +4663,7 @@
 				17073FFD0988EA60008541CC /* libogg */,
 				1707400C0988EB90008541CC /* libresample */,
 				1707401D0988EEAA008541CC /* libsndfile */,
+				28501EAF0CEED1F00029ABAA /* libvamp */,
 				28E67F510A3A160D0021D89F /* portaudio-v19 */,
 				170740950988F2F7008541CC /* portmixer */,
 				170740790988F1BB008541CC /* soundtouch */,
@@ -5289,6 +5426,10 @@
 				28FB20350C415D9500F769E7 /* SmartRecordPrefs.cpp in Sources */,
 				2891B2870C531D2C0044FBE3 /* FindClipping.cpp in Sources */,
 				283AA0EB0C56ED08002CBD34 /* ErrorDialog.cpp in Sources */,
+				28501EA10CEECEF80029ABAA /* HelpText.cpp in Sources */,
+				28501EA20CEECEF80029ABAA /* SplashDialog.cpp in Sources */,
+				28501EAA0CEED0670029ABAA /* LoadVamp.cpp in Sources */,
+				28501EAB0CEED0680029ABAA /* VampEffect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5315,6 +5456,20 @@
 				2840CF710AEB807E00F49FC3 /* subband.c in Sources */,
 				2840CF730AEB807E00F49FC3 /* twolame.c in Sources */,
 				2840CF750AEB807E00F49FC3 /* util.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28501EBE0CEED1F00029ABAA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28501F0B0CEED2980029ABAA /* PluginHostAdapter.cpp in Sources */,
+				28501F170CEED2C50029ABAA /* PluginChannelAdapter.cpp in Sources */,
+				28501F190CEED2C50029ABAA /* PluginInputDomainAdapter.cpp in Sources */,
+				28501F1B0CEED2C50029ABAA /* PluginLoader.cpp in Sources */,
+				28501F1D0CEED2C50029ABAA /* PluginWrapper.cpp in Sources */,
+				28501F4B0CEED9560029ABAA /* PluginAdapter.cpp in Sources */,
+				28501F4D0CEED9560029ABAA /* RealTime.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5423,6 +5578,11 @@
 			isa = PBXTargetDependency;
 			target = 2840CECB0AEB803C00F49FC3 /* twolame */;
 			targetProxy = 2840CF7F0AEB822100F49FC3 /* PBXContainerItemProxy */;
+		};
+		28501F530CEED9A80029ABAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 28501EAF0CEED1F00029ABAA /* libvamp */;
+			targetProxy = 28501F520CEED9A80029ABAA /* PBXContainerItemProxy */;
 		};
 		28E67F640A3A16AA0021D89F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5690,7 +5850,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Debug Static";
 		};
@@ -5850,7 +6010,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Release Static";
 		};
@@ -6030,7 +6190,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Debug Static Unicode";
 		};
@@ -6090,6 +6250,42 @@
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
 				PRODUCT_NAME = twolame;
+			};
+			name = "Release Static Unicode";
+		};
+		28501F020CEED1F00029ABAA /* Debug Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
+				PRODUCT_NAME = vamp;
+			};
+			name = "Debug Static";
+		};
+		28501F030CEED1F00029ABAA /* Debug Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
+				PRODUCT_NAME = vamp;
+			};
+			name = "Debug Static Unicode";
+		};
+		28501F040CEED1F00029ABAA /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
+				PRODUCT_NAME = vamp;
+			};
+			name = "Release Static";
+		};
+		28501F050CEED1F00029ABAA /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
+				PRODUCT_NAME = vamp;
 			};
 			name = "Release Static Unicode";
 		};
@@ -6302,7 +6498,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Release Static Unicode";
 		};
@@ -6603,6 +6799,17 @@
 				2840CF1F0AEB803C00F49FC3 /* Debug Static Unicode */,
 				2840CF200AEB803C00F49FC3 /* Release Static */,
 				2840CF210AEB803C00F49FC3 /* Release Static Unicode */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug Static";
+		};
+		28501F010CEED1F00029ABAA /* Build configuration list for PBXNativeTarget "libvamp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28501F020CEED1F00029ABAA /* Debug Static */,
+				28501F030CEED1F00029ABAA /* Debug Static Unicode */,
+				28501F040CEED1F00029ABAA /* Release Static */,
+				28501F050CEED1F00029ABAA /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
