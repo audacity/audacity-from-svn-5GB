@@ -15,6 +15,7 @@
 #include "SampleFormat.h"
 #include "Sequence.h"
 #include "WaveClip.h"
+#include "Experimental.h"
 
 #include <wx/gdicmn.h>
 #include <wx/longlong.h>
@@ -310,6 +311,9 @@ class AUDACITY_DLL_API WaveTrack: public Track {
       WaveformDisplay,
       WaveformDBDisplay,
       SpectrumDisplay,
+#ifdef LOGARITHMIC_SPECTRUM
+		SpectrumLogDisplay,
+#endif
       PitchDisplay
    } WaveTrackDisplay;
 

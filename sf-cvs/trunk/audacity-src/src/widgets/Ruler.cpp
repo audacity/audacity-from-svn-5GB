@@ -144,7 +144,7 @@ Ruler::~Ruler()
 
 void Ruler::SetFormat(RulerFormat format)
 {
-   // IntFormat, RealFormat, TimeFormat, or LinearDBFormat
+   // IntFormat, RealFormat, RealLogFormat, TimeFormat, or LinearDBFormat
 
    if (mFormat != format) {
       mFormat = format;
@@ -500,6 +500,34 @@ void Ruler::FindLinearTickSizes(double UPP)
       mMajor = d * 2.0;
       break;
 
+#ifdef LOGARITHMIC_SPECTRUM
+   case RealLogFormat:
+      d = 0.000001;
+      // mDigits is number of digits after the decimal point.
+      mDigits = 6;
+      for(;;) {
+         if (units < d) {
+            mMinor = d;
+            mMajor = d*5.0;
+            return;
+         }
+         d *= 5.0;
+         if (units < d) {
+            mMinor = d;
+            mMajor = d*2.0;
+            return;
+         }
+         d *= 2.0;
+         mDigits--;
+         // More than 10 digit numbers?  Something is badly wrong.
+         // Probably units is coming in with too high a value.
+         wxASSERT( mDigits >= -10 );
+      }
+      mDigits++;
+      mMinor = d;
+      mMajor = d * 2.0;
+      break;
+#endif
    }
 
 }
@@ -535,6 +563,15 @@ wxString Ruler::LabelString(double d, bool major)
          s.Printf(wxString::Format(wxT("%%.%df"), mDigits), d);
       }
       break;
+#ifdef LOGARITHMIC_SPECTRUM
+   case RealLogFormat:
+      if (mMinor >= 1.0)
+         s.Printf(wxT("%d"), (int)floor(d+0.5));
+      else {
+         s.Printf(wxString::Format(wxT("%%.%df"), mDigits), d);
+      }
+      break;
+#endif
    case TimeFormat:
       if (major) {
          if (d < 0) {
@@ -606,7 +643,11 @@ wxString Ruler::LabelString(double d, bool major)
    }
    
    if (mUnits != wxT(""))
+#ifdef LOGARITHMIC_SPECTRUM
+      s = (s + mUnits);
+#else
       s = (s + wxT(" ") + mUnits);
+#endif
 
    return s;
 }
@@ -882,7 +923,9 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
    }
    else {
       // log case
-      
+#ifdef LOGARITHMIC_SPECTRUM
+      mDigits=2;	//TODO: implement dynamic digit computation
+#endif
       double loLog = log10(mMin);
       double hiLog = log10(mMax);
       double scale = mLength/(hiLog - loLog);
@@ -894,6 +937,22 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
       double startDecade = pow(10., (double)loDecade);
       
       // Major ticks are the decades
+#ifdef LOGARITHMIC_SPECTRUM
+      double decade = startDecade;
+		int delta=hiDecade-loDecade, steps=abs(delta);
+		double step = delta>=0 ? 10 : 0.1;
+		double rMin=wxMin(mMin, mMax), rMax=wxMax(mMin, mMax);
+		for(i=0; i<=steps; i++) 
+		{  // if(i!=0) 
+			{  val = decade;
+            if(val > rMin && val < rMax) {
+               pos = (int)(((log10(val) - loLog)*scale)+0.5);
+               Tick(pos, val, true);
+            }
+         }
+         decade *= step;
+      }
+#else
       double decade = startDecade;
       for(i=loDecade; i<hiDecade; i++) {
          if(i!=loDecade) {
@@ -905,8 +964,34 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
          }
          decade *= 10.;
       }
-      
+#endif
+
       // Minor ticks are multiples of decades
+#ifdef LOGARITHMIC_SPECTRUM
+      decade = startDecade;
+		int start, end, mstep;
+      if (delta > 0) {
+		   start=2;
+         end=10;
+         mstep=1;
+      }
+      else {
+		   start=9;
+         end=1;
+         mstep=-1;
+      }
+		steps++;
+      for(i=0; i<=steps; i++) {
+         for(j=start; j!=end; j+=mstep) {
+            val = decade * j;
+            if(val >= rMin && val < rMax) {
+               pos = (int)(((log10(val) - loLog)*scale)+0.5);
+               Tick(pos, val, false);
+            }
+         }
+         decade *= step;
+      }
+#else
       decade = startDecade;
       for(i=loDecade; i<hiDecade; i++) {
          for(j=2; j<=9; j++) {
@@ -918,6 +1003,7 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
          }
          decade *= 10.;
       }
+#endif
    }
    
    mValid = true;
