@@ -302,6 +302,9 @@ enum {
    OnWaveformID,
    OnWaveformDBID,
    OnSpectrumID,
+#ifdef LOGARITHMIC_SPECTRUM
+   OnSpectrumLogID,
+#endif
    OnPitchID,
 
    OnSplitStereoID,
@@ -505,6 +508,9 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mWaveTrackMenu->Append(OnWaveformID, _("Waveform"));
    mWaveTrackMenu->Append(OnWaveformDBID, _("Waveform (dB)"));
    mWaveTrackMenu->Append(OnSpectrumID, _("Spectrum"));
+#ifdef LOGARITHMIC_SPECTRUM
+   mWaveTrackMenu->Append(OnSpectrumLogID, _("Spectrum log(f)"));
+#endif
    mWaveTrackMenu->Append(OnPitchID, _("Pitch (EAC)"));
    mWaveTrackMenu->AppendSeparator();
    mWaveTrackMenu->AppendCheckItem(OnChannelMonoID, _("Mono"));
@@ -1231,9 +1237,16 @@ bool TrackPanel::SetCursorByActivity( )
 void TrackPanel::SetCursorAndTipWhenInLabel( Track * t,
          wxMouseEvent &event, const wxChar ** ppTip )
 {
+#ifdef LOGARITHMIC_SPECTRUM
+   if (event.m_x >= GetVRulerOffset() &&
+      t->GetKind() == Track::Wave &&
+      (((WaveTrack *) t)->GetDisplay() <= WaveTrack::SpectrumDisplay
+		||((WaveTrack *) t)->GetDisplay() <= WaveTrack::SpectrumLogDisplay)) {
+#else
    if (event.m_x >= GetVRulerOffset() &&
       t->GetKind() == Track::Wave &&
       ((WaveTrack *) t)->GetDisplay() <= WaveTrack::SpectrumDisplay) {
+#endif
       *ppTip = _("Click to vertically zoom in, Shift-click to zoom out, Drag to create a particular zoom region.");
       SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
    }
@@ -2527,11 +2540,17 @@ void TrackPanel::HandleVZoomClick( wxMouseEvent & event )
    if (!mCapturedTrack)
       return;
 
+#ifdef LOGARITHMIC_SPECTRUM
+   // don't do anything if track is not wave or Spectrum/log Spectrum
+   if (mCapturedTrack->GetKind() != Track::Wave
+      || ((WaveTrack *) mCapturedTrack)->GetDisplay() > WaveTrack::SpectrumLogDisplay)
+      return;
+#else
    // don't do anything if track is not wave or Spectrum
    if (mCapturedTrack->GetKind() != Track::Wave
       || ((WaveTrack *) mCapturedTrack)->GetDisplay() > WaveTrack::SpectrumDisplay)
       return;
-
+#endif
    mMouseCapture = IsVZooming;
    mZoomStart = event.m_y;
    mZoomEnd = event.m_y;
@@ -2575,10 +2594,17 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
    }
 
    float min, max, c, l, binSize = 0.0;
+#ifdef LOGARITHMIC_SPECTRUM
+   bool spectrum, spectrumLog;
+#else
    bool spectrum;
+#endif
    int windowSize, minBins = 0;
    double rate = ((WaveTrack *)track)->GetRate();
    ((WaveTrack *) track)->GetDisplay() == WaveTrack::SpectrumDisplay ? spectrum = true : spectrum = false;
+#ifdef LOGARITHMIC_SPECTRUM
+   spectrumLog=(((WaveTrack *) track)->GetDisplay() == WaveTrack::SpectrumLogDisplay);
+#endif
    if(spectrum) {
       min = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
       if(min < 0)
@@ -2591,8 +2617,23 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       minBins = wxMin(10, windowSize/2); //minimum 10 freq bins, unless there are less
    }
    else
+#ifdef LOGARITHMIC_SPECTRUM
+      if(spectrumLog) {
+         min = gPrefs->Read(wxT("/SpectrumLog/MinFreq"), rate/2000.0);
+         if(min < 1)
+            min = 1;
+         max = gPrefs->Read(wxT("/SpectrumLog/MaxFreq"), rate/2.);
+         if(max > rate/2.)
+            max = rate/2.;
+         windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
+         binSize = rate / windowSize;
+         minBins = wxMin(10, windowSize/2); //minimum 10 freq bins, unless there are less
+      }
+      else
+         track->GetDisplayBounds(&min, &max);
+#else
       track->GetDisplayBounds(&min, &max);
-
+#endif
    if (IsDragZooming()) {
       // Drag Zoom
       float p1, p2, tmin, tmax;
@@ -2606,6 +2647,12 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
 
       // Enforce maximum vertical zoom
       if(spectrum) {
+#ifdef LOGARITHMIC_SPECTRUM
+         p1 = (mZoomStart - ypos) / (float)height;
+         p2 = (mZoomEnd - ypos) / (float)height;
+         max = (tmax * (1.0-p1) + tmin * p1);
+         min = (tmax * (1.0-p2) + tmin * p2);
+#endif
          if(min < 0.)
             min = 0.;
          if(max < min + minBins * binSize)
@@ -2615,6 +2662,28 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
             min = max - minBins * binSize;
          }
       }
+#ifdef LOGARITHMIC_SPECTRUM
+      else
+         if(spectrumLog) {
+            double xmin = 1-(mZoomEnd - ypos) / (float)height;
+            double xmax = 1-(mZoomStart - ypos) / (float)height;
+			   double lmin=log10(min), lmax=log10(max);
+			   double d=lmax-lmin;
+			   min=wxMax(1.0, pow(10, xmin*d+lmin));
+			   max=wxMin(rate/2.0, pow(10, xmax*d+lmin));
+         }
+         else {
+			   p1 = (mZoomStart - ypos) / (float)height;
+			   p2 = (mZoomEnd - ypos) / (float)height;
+			   max = (tmax * (1.0-p1) + tmin * p1);
+			   min = (tmax * (1.0-p2) + tmin * p2);
+            if (max - min < 0.2) {
+               c = (min+max)/2;
+               min = c-0.1;
+               max = c+0.1;
+            }
+         }
+#else
       else {
          if (max - min < 0.2) {
             c = (min+max)/2;
@@ -2622,6 +2691,7 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
             max = c+0.1;
          }
       }
+#endif
    }
    else if (event.ShiftDown() || event.RightUp()) {
       // Zoom OUT
@@ -2640,6 +2710,31 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
             max = wxMin( rate/2., c + 2*l);
          }
       }
+#ifdef LOGARITHMIC_SPECTRUM
+      else {
+         if(spectrumLog)
+		   {  c = 0.5;
+            double xmin = c-1;
+            double xmax = c+1;
+			   double lmin=log10(min), lmax=log10(max);
+			   double d=lmax-lmin;
+			   min=wxMax(1.0, pow(10, xmin*d+lmin));
+			   max=wxMin(rate/2.0, pow(10, xmax*d+lmin));
+         }
+         else {
+            if (min <= -1.0 && max >= 1.0) {
+               min = -2.0;
+               max = 2.0;
+            }
+            else {
+               c = 0.5*(min+max);
+               l = (c - min);
+               min = wxMax( -1.0, c - 2*l);
+               max = wxMin(  1.0, c + 2*l);
+            }
+         }
+      }
+#else
       else {
          if (min <= -1.0 && max >= 1.0) {
             min = -2.0;
@@ -2652,6 +2747,7 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
             max = wxMin(  1.0, c + 2*l);
          }
       }
+#endif
    }
    else {
       // Zoom IN
@@ -2667,7 +2763,39 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
          max = wxMin( rate/2., min + l);
       }
       else {
+#ifdef LOGARITHMIC_SPECTRUM
+         if(spectrumLog) {
+            c = 0.5*(min+max);
+            // Enforce maximum vertical zoom
+            l = wxMax( 10. * binSize, (c - min));   //is this a sensible min? MJS
 
+            p1 = (mZoomStart - ypos) / (float)height;
+            c = 1.0-p1;
+            double xmin = wxMax(0, c-0.25);
+            double xmax = wxMin(1, c+0.25);
+			   double lmin=log10(min), lmax=log10(max);
+			   double d=lmax-lmin;
+			   min=pow(10, xmin*d+lmin);
+			   max=pow(10, xmax*d+lmin);
+         }
+         else {
+            // Zoom in centered on cursor
+            if (min < -1.0 || max > 1.0) {
+               min = -1.0;
+               max = 1.0;
+            }
+            else {
+               c = 0.5*(min+max);
+               // Enforce maximum vertical zoom
+               l = wxMax( 0.1, (c - min));
+
+               p1 = (mZoomStart - ypos) / (float)height;
+               c = (max * (1.0-p1) + min * p1);
+               min = c - 0.5*l;
+               max = c + 0.5*l;
+            }
+         }
+#else
          // Zoom in centered on cursor
          if (min < -1.0 || max > 1.0) {
             min = -1.0;
@@ -2683,6 +2811,7 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
             min = c - 0.5*l;
             max = c + 0.5*l;
          }
+#endif
       }
    }
 
@@ -2703,6 +2832,26 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
          t = iter.Next();
       }
    }
+#ifdef LOGARITHMIC_SPECTRUM
+   else
+      if(spectrumLog) {
+         gPrefs->Write(wxT("/SpectrumLog/MaxFreq"), (long)max);
+         gPrefs->Write(wxT("/SpectrumLog/MinFreq"), (long)min);
+         TrackListIterator iter(mTracks);
+         Track *t = iter.First();
+         while (t) {
+            if (t->GetKind() == Track::Wave) {
+               WaveTrack *wt = (WaveTrack *)t;
+               WaveClipList::Node* it;
+               for(it=wt->GetClipIterator(); it; it=it->GetNext()) {
+                  WaveClip *clip = it->GetData();
+                  clip->mSpecPxCache->valid = false;
+               }
+            }
+            t = iter.Next();
+         }
+      }
+#endif
    else {
       track->SetDisplayBounds(min, max);
       if (partner)
@@ -5516,6 +5665,9 @@ void TrackPanel::OnTrackMenu(Track *t)
       theMenu->Enable(OnWaveformDBID,
                         display != WaveTrack::WaveformDBDisplay);
       theMenu->Enable(OnSpectrumID, display != WaveTrack::SpectrumDisplay);
+#ifdef LOGARITHMIC_SPECTRUM
+      theMenu->Enable(OnSpectrumLogID, display != WaveTrack::SpectrumLogDisplay);
+#endif
       theMenu->Enable(OnPitchID, display != WaveTrack::PitchDisplay);
       
       WaveTrack * track = (WaveTrack *)t;
@@ -5895,7 +6047,19 @@ void TrackPanel::OnSetDisplay(wxCommandEvent & event)
    wxASSERT(mPopupMenuTarget
             && mPopupMenuTarget->GetKind() == Track::Wave);
 
+#ifdef LOGARITHMIC_SPECTRUM
+   WaveTrack *wt = (WaveTrack *) mPopupMenuTarget;
+   if (wt->GetDisplay()!= id - OnWaveformID) {
+      WaveClipList::Node* it;
+      for(it=wt->GetClipIterator(); it; it=it->GetNext()) {
+         WaveClip *clip = it->GetData();
+         clip->mSpecPxCache->valid = false;
+      }
+      wt->SetDisplay(id - OnWaveformID);
+    }
+#else
    ((WaveTrack *) mPopupMenuTarget)->SetDisplay(id - OnWaveformID);
+#endif
    Track *partner = mTracks->GetLink(mPopupMenuTarget);
    if (partner)
       ((WaveTrack *) partner)->SetDisplay(id - OnWaveformID);

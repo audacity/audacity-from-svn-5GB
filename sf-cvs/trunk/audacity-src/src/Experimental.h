@@ -60,6 +60,7 @@
 //This one looks pretty good and uses existing code for the log chirp, just adds an interface.
 //Perhaps it should not be included in the mainstream until the log spectrogram scale is ready as well
 //#define LOGARITHMIC_TONE_CHIRP
+//#define LOGARITHMIC_SPECTRUM
 
 #ifdef EXPERIMENTAL_FEATURES
    // The first experimental feature is a notebook that adds

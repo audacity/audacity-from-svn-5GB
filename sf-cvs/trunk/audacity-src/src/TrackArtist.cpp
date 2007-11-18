@@ -57,11 +57,11 @@
 
 #undef PROFILE_WAVEFORM
 #ifdef PROFILE_WAVEFORM
-	#ifdef __WXMSW__
-		#include <time.h>
-	#else
-		#include <sys/time.h>
-	#endif
+   #ifdef __WXMSW__
+      #include <time.h>
+   #else
+      #include <sys/time.h>
+   #endif
 double gWaveformTimeTotal = 0;
 int gWaveformTimeCount = 0;
 #endif
@@ -236,10 +236,23 @@ void TrackArtist::DrawTracks(TrackList * tracks,
                             drawEnvelope,  drawSamples, drawSliders, true, muted);
                break;
             case WaveTrack::SpectrumDisplay:
+#ifdef LOGARITHMIC_SPECTRUM
+               DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, false, false);
+#else
                DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, false);
+#endif
                break;
+#ifdef LOGARITHMIC_SPECTRUM
+            case WaveTrack::SpectrumLogDisplay:
+               DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, false, true);
+               break;
+#endif
             case WaveTrack::PitchDisplay:
+#ifdef LOGARITHMIC_SPECTRUM
+               DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, true, false);
+#else
                DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, true);
+#endif
                break;
             }
             break;              // case Wave
@@ -284,6 +297,9 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       vruler->SetFormat(Ruler::RealFormat);
       vruler->SetUnits(wxT(""));
       vruler->SetLabelEdges(false);
+#ifdef LOGARITHMIC_SPECTRUM
+      vruler->SetLog(false);
+#endif
       vruler->Draw(*dc);
    }
 
@@ -325,6 +341,9 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
             vruler->SetRange(topval, botval);
             vruler->SetFormat(Ruler::RealFormat);
             vruler->SetLabelEdges(true);
+#ifdef LOGARITHMIC_SPECTRUM
+            vruler->SetLog(false);
+#endif
             vruler->Draw(*dc);
          }
       }
@@ -336,6 +355,9 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       if (r.height < 60)
          return;
 
+#ifdef LOGARITHMIC_SPECTRUM
+      bool logF = ((WaveTrack *) t)->GetDisplay() == WaveTrack::SpectrumLogDisplay;
+#endif
       double rate = ((WaveTrack *) t)->GetRate();
       int freq = lrint(rate/2.);
       int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), freq);
@@ -365,9 +387,43 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
          vruler->SetRange(int(maxFreq), int(minFreq));
          vruler->SetUnits(wxT(""));
       }
-
+#ifdef LOGARITHMIC_SPECTRUM
+      vruler->SetLog(false);
+#endif
       vruler->Draw(*dc);
    }
+
+#ifdef LOGARITHMIC_SPECTRUM
+   if (t->GetKind() == Track::Wave
+   && ((WaveTrack *) t)->GetDisplay() == WaveTrack::SpectrumLogDisplay)
+    {  // SpectrumLog
+      if (r.height < 10)
+         return;
+      double rate = ((WaveTrack *) t)->GetRate();
+      int freq = lrint(rate/2.);
+        int maxFreq = gPrefs->Read(wxT("/SpectrumLog/MaxFreq"), freq);
+       if(maxFreq > freq)
+            maxFreq = freq;
+      int minFreq = gPrefs->Read(wxT("/SpectrumLog/MinFreq"), freq/1000.0);
+       if(minFreq < 1) {
+          minFreq = 1;
+           gPrefs->Write(wxT("/SpectrumLog/MinFreq"), 1L);
+        }
+      /*
+         draw the ruler
+         we will use Hz if maxFreq is < 2000, otherwise we represent kHz,
+         and append to the numbers a "k"
+      */
+      vruler->SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-1);
+      vruler->SetOrientation(wxVERTICAL);
+      vruler->SetFormat(Ruler::IntFormat);
+      vruler->SetLabelEdges(true);
+      vruler->SetRange(maxFreq, minFreq);
+      vruler->SetUnits(wxT(""));
+      vruler->SetLog(true);
+      vruler->Draw(*dc);
+   }
+#endif
 
    if (t->GetKind() == Track::Wave
        && ((WaveTrack *) t)->GetDisplay() == WaveTrack::PitchDisplay) {
@@ -487,8 +543,8 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB, float dBr)
 /// then use the zoomMin, zoomMax and height values without having 
 /// to have them passed in to it??
 int GetWaveYPosNew(float value, float min, float max,
-		   int height, bool dB, bool outer,
-		   float dBr, bool clip)
+         int height, bool dB, bool outer,
+         float dBr, bool clip)
 {
    float sign = (value >= 0 ? 1 : -1);
 
@@ -523,7 +579,7 @@ int GetWaveYPosNew(float value, float min, float max,
 // This function isn't used anymore.  Use GetWaveYPosNew instead.
 // (and pass in clip=false)
 int TrackArtist::GetWaveYPosUnclipped(float value, int height, bool dB, 
-				      float dBr)
+                  float dBr)
 {
    float sign = (value >= 0 ? 1 : -1);
 
@@ -1315,7 +1371,11 @@ void TrackArtist::DrawTimeSlider(WaveTrack *track,
 
 void TrackArtist::DrawSpectrum(WaveTrack *track,
                                wxDC & dc, wxRect & r,
+#ifdef LOGARITHMIC_SPECTRUM
+                               ViewInfo * viewInfo, bool autocorrelation, bool logF)
+#else
                                ViewInfo * viewInfo, bool autocorrelation)
+#endif
 {
    // MM: Draw background. We should optimize that a bit more.
    dc.SetPen(*wxTRANSPARENT_PEN);
@@ -1336,12 +1396,20 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
    }
 
    for (WaveClipList::Node* it=track->GetClipIterator(); it; it=it->GetNext())
+#ifdef LOGARITHMIC_SPECTRUM
+      DrawClipSpectrum(track, it->GetData(), dc, r, viewInfo, autocorrelation, logF);
+#else
       DrawClipSpectrum(track, it->GetData(), dc, r, viewInfo, autocorrelation);
+#endif
 }
 
 void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
                                wxDC & dc, wxRect & r,
+#ifdef LOGARITHMIC_SPECTRUM
+                               ViewInfo * viewInfo, bool autocorrelation, bool logF)
+#else
                                ViewInfo * viewInfo, bool autocorrelation)
+#endif
 {
    double h = viewInfo->h;
    double pps = viewInfo->zoom;
@@ -1457,6 +1525,30 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    bool isGrayscale = false;
    gPrefs->Read(wxT("/Spectrum/Grayscale"), &isGrayscale, false);
    int ifreq = lrint(rate/2);
+#ifdef LOGARITHMIC_SPECTRUM
+   int maxFreq;
+   if (!logF)
+      maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), ifreq);
+   else
+      maxFreq = gPrefs->Read(wxT("/SpectrumLog/MaxFreq"), ifreq);
+   if(maxFreq > ifreq)
+      maxFreq = ifreq;
+   int minFreq;
+   if (!logF) {
+      minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
+      if(minFreq < 0) {
+         minFreq = 0;
+         gPrefs->Write(wxT("/Spectrum/MinFreq"), 0L);
+      }
+   }
+   else {
+      minFreq = gPrefs->Read(wxT("/SpectrumLog/MinFreq"), ifreq/1000.0);
+      if(minFreq < 1) {
+         minFreq = ifreq/1000.0;
+         gPrefs->Write(wxT("/SpectrumLog/MinFreq"), ifreq/1000.0);
+      }
+   }
+#else
    int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), ifreq);
    if(maxFreq > ifreq)
       maxFreq = ifreq;
@@ -1465,6 +1557,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
       minFreq = 0;
       gPrefs->Write(wxT("/Spectrum/MinFreq"), 0L);
    }
+#endif
    bool usePxCache = false;
 
    if( !updated && clip->mSpecPxCache->valid && (clip->mSpecPxCache->len == mid.height * mid.width) ) {
@@ -1487,6 +1580,120 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
       sampleCount w0 = w1;
       w1 = (sampleCount) ((t0*rate + (x+1) *rate *tstep) + .5);
 
+#ifdef LOGARITHMIC_SPECTRUM
+      if (!logF)
+      {
+         for (int yy = 0; yy < mid.height; yy++) {
+            bool selflag = (ssel0 <= w0 && w1 < ssel1);
+            unsigned char rv, gv, bv;
+            float value;
+
+            if(!usePxCache) {
+               float bin0 = float (yy) * binPerPx + minSamples;
+               float bin1 = float (yy + 1) * binPerPx + minSamples;
+
+
+               if (int (bin1) == int (bin0))
+                  value = freq[half * x + int (bin0)];
+               else {
+                  float binwidth= bin1 - bin0;
+                  value = freq[half * x + int (bin0)] * (1.f - bin0 + (int)bin0);
+
+                  bin0 = 1 + int (bin0);
+                  while (bin0 < int (bin1)) {
+                     value += freq[half * x + int (bin0)];
+                     bin0 += 1.0;
+                  }
+                  value += freq[half * x + int (bin1)] * (bin1 - int (bin1));
+
+                  value /= binwidth;
+               }
+
+               if (!autocorrelation) {
+                  // Last step converts dB to a 0.0-1.0 range
+                  value = (value + 80.0) / 80.0;
+               }
+
+               if (value > 1.0)
+                  value = float(1.0);
+               if (value < 0.0)
+                  value = float(0.0);
+               clip->mSpecPxCache->values[x * mid.height + yy] = value;
+            }
+            else
+               value = clip->mSpecPxCache->values[x * mid.height + yy];
+
+            GetColorGradient(value, selflag, isGrayscale, &rv, &gv, &bv);
+
+            int px = ((mid.height - 1 - yy) * mid.width + x) * 3;
+            data[px++] = rv;
+            data[px++] = gv;
+            data[px] = bv;
+         }
+      }
+      else
+      {
+         int x0=x*half;
+         double e=exp(1.0f), f=rate/2/half, 
+            lmin=log(double(minFreq)),
+            lmax=log(double(maxFreq)),
+            scale=lmax-lmin, 
+            expo=exp(scale);
+         for (int yy = 0; yy < mid.height; yy++) {
+            bool selflag = (ssel0 <= w0 && w1 < ssel1);
+            unsigned char rv, gv, bv;
+            float value;
+
+            if(!usePxCache) 
+            {
+               float h=double(yy)/mid.height, 
+                  yy2=exp(h*scale+lmin)/f;
+               if (int(yy2)>=half)
+                  yy2=half-1;
+               if (yy2<0)
+                  yy2=0;
+               float bin0 = float (yy2);// * binPerPx + minSamples;
+               float bin1 = float (yy2 + 1);// * binPerPx + minSamples;
+
+               if (int (bin1) == int (bin0))
+                  value = freq[x0 + int (bin0)];
+               else {
+                  float binwidth= bin1 - bin0;
+                  value = freq[x0 + int (bin0)] * (1.f - bin0 + (int)bin0);
+
+                  bin0 = 1 + int (bin0);
+                  while (bin0 < int (bin1)) {
+                     value += freq[x0 + int (bin0)];
+                     bin0 += 1.0;
+                  }
+                  value += freq[x0 + int (bin1)] * (bin1 - int (bin1));
+
+                  value /= binwidth;
+               }
+
+               if (!autocorrelation) {
+                  // Last step converts dB to a 0.0-1.0 range
+                  value = (value + 80.0) / 80.0;
+               }
+
+               if (value > 1.0)
+                  value = float(1.0);
+               if (value < 0.0)
+                  value = float(0.0);
+               clip->mSpecPxCache->values[x * mid.height + yy] = value;
+            }
+            else
+               value = clip->mSpecPxCache->values[x * mid.height + yy];
+
+            GetColorGradient(value, selflag, isGrayscale, &rv, &gv, &bv);
+
+            int px = ((mid.height - 1 - yy) * mid.width + x) * 3;
+            data[px++] = rv;
+            data[px++] = gv;
+            data[px] = bv;
+         }
+      }
+#else
       for (int yy = 0; yy < mid.height; yy++) {
          bool selflag = (ssel0 <= w0 && w1 < ssel1);
          unsigned char rv, gv, bv;
@@ -1534,6 +1741,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
          data[px++] = gv;
          data[px] = bv;
       }
+#endif
       x++;
    }
 

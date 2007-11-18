@@ -17,6 +17,7 @@
 #include <wx/panel.h>
 #include <wx/window.h>
 #include "../Envelope.h"
+#include "../Experimental.h"
 
 struct ViewInfo;
 class AudacityProject;
@@ -27,6 +28,9 @@ class AUDACITY_DLL_API Ruler {
    enum RulerFormat {
       IntFormat,
       RealFormat,
+#ifdef LOGARITHMIC_SPECTRUM
+      RealLogFormat,
+#endif
       TimeFormat,
       LinearDBFormat,
    };
