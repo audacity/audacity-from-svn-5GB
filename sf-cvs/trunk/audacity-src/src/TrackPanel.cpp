@@ -2640,6 +2640,41 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       tmin=min;
       tmax=max;
 
+#ifdef LOGARITHMIC_SPECTRUM
+      if(spectrumLog) {
+         double xmin = 1-(mZoomEnd - ypos) / (float)height;
+         double xmax = 1-(mZoomStart - ypos) / (float)height;
+		   double lmin=log10(tmin), lmax=log10(tmax);
+		   double d=lmax-lmin;
+		   min=wxMax(1.0, pow(10, xmin*d+lmin));
+		   max=wxMin(rate/2.0, pow(10, xmax*d+lmin));
+      }
+      else {
+         p1 = (mZoomStart - ypos) / (float)height;
+         p2 = (mZoomEnd - ypos) / (float)height;
+         max = (tmax * (1.0-p1) + tmin * p1);
+         min = (tmax * (1.0-p2) + tmin * p2);
+
+         // Enforce maximum vertical zoom
+         if(spectrum) {
+            if(min < 0.)
+               min = 0.;
+            if(max < min + minBins * binSize)
+               max = min + minBins * binSize;
+            if(max > rate/2.) {
+               max = rate/2.;
+               min = max - minBins * binSize;
+            }
+         }
+         else {
+            if (max - min < 0.2) {
+               c = (min+max)/2;
+               min = c-0.1;
+               max = c+0.1;
+            }
+         }
+      }
+#else
       p1 = (mZoomStart - ypos) / (float)height;
       p2 = (mZoomEnd - ypos) / (float)height;
       max = (tmax * (1.0-p1) + tmin * p1);
@@ -2647,12 +2682,6 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
 
       // Enforce maximum vertical zoom
       if(spectrum) {
-#ifdef LOGARITHMIC_SPECTRUM
-         p1 = (mZoomStart - ypos) / (float)height;
-         p2 = (mZoomEnd - ypos) / (float)height;
-         max = (tmax * (1.0-p1) + tmin * p1);
-         min = (tmax * (1.0-p2) + tmin * p2);
-#endif
          if(min < 0.)
             min = 0.;
          if(max < min + minBins * binSize)
@@ -2662,28 +2691,6 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
             min = max - minBins * binSize;
          }
       }
-#ifdef LOGARITHMIC_SPECTRUM
-      else
-         if(spectrumLog) {
-            double xmin = 1-(mZoomEnd - ypos) / (float)height;
-            double xmax = 1-(mZoomStart - ypos) / (float)height;
-			   double lmin=log10(min), lmax=log10(max);
-			   double d=lmax-lmin;
-			   min=wxMax(1.0, pow(10, xmin*d+lmin));
-			   max=wxMin(rate/2.0, pow(10, xmax*d+lmin));
-         }
-         else {
-			   p1 = (mZoomStart - ypos) / (float)height;
-			   p2 = (mZoomEnd - ypos) / (float)height;
-			   max = (tmax * (1.0-p1) + tmin * p1);
-			   min = (tmax * (1.0-p2) + tmin * p2);
-            if (max - min < 0.2) {
-               c = (min+max)/2;
-               min = c-0.1;
-               max = c+0.1;
-            }
-         }
-#else
       else {
          if (max - min < 0.2) {
             c = (min+max)/2;
@@ -2713,13 +2720,16 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
 #ifdef LOGARITHMIC_SPECTRUM
       else {
          if(spectrumLog)
-		   {  c = 0.5;
-            double xmin = c-1;
-            double xmax = c+1;
-			   double lmin=log10(min), lmax=log10(max);
-			   double d=lmax-lmin;
-			   min=wxMax(1.0, pow(10, xmin*d+lmin));
-			   max=wxMin(rate/2.0, pow(10, xmax*d+lmin));
+		   {
+            float p1;
+            p1 = (mZoomStart - ypos) / (float)height;
+            c = 1.0-p1;
+            double xmin = c - 1.;
+            double xmax = c + 1.;
+            double lmin = log10(min), lmax = log10(max);
+            double d = lmax-lmin;
+            min = wxMax(1,pow(10, xmin*d+lmin));
+            max = wxMin(rate/2., pow(10, xmax*d+lmin));
          }
          else {
             if (min <= -1.0 && max >= 1.0) {
@@ -2765,18 +2775,21 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       else {
 #ifdef LOGARITHMIC_SPECTRUM
          if(spectrumLog) {
-            c = 0.5*(min+max);
-            // Enforce maximum vertical zoom
-            l = wxMax( 10. * binSize, (c - min));   //is this a sensible min? MJS
-
             p1 = (mZoomStart - ypos) / (float)height;
             c = 1.0-p1;
-            double xmin = wxMax(0, c-0.25);
-            double xmax = wxMin(1, c+0.25);
-			   double lmin=log10(min), lmax=log10(max);
-			   double d=lmax-lmin;
-			   min=pow(10, xmin*d+lmin);
-			   max=pow(10, xmax*d+lmin);
+            double xmin = c - 0.25;
+            double xmax = c + 0.25;
+            double lmin = log10(min), lmax = log10(max);
+            double d = lmax-lmin;
+            min = wxMax(1,pow(10, xmin*d+lmin));
+            max = wxMin(rate/2., pow(10, xmax*d+lmin));
+            // Enforce maximum vertical zoom
+            if( (max - min) < (10. * binSize) ) {
+               lmin=log10(min);
+               lmax=log10(max);
+               min = wxMax(1, pow(10, (lmax + lmin)/2.) - 5. * binSize);
+               max = min + 10. * binSize;
+            }
          }
          else {
             // Zoom in centered on cursor
@@ -6554,7 +6567,6 @@ wxRect TrackPanel::FindTrackRect(Track * target, bool label)
       }
    return r;
 }
-
 
 /// Displays the bounds of the selection in the status bar.
 void TrackPanel::DisplaySelection()
