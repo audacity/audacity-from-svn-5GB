@@ -27,7 +27,12 @@
 
 enum {
    ID_MINFREQUENCY = 8000,
-   ID_MAXFREQUENCY
+   ID_MAXFREQUENCY,
+#ifdef EXPERIMENTAL_FIND_NOTES
+   ID_FIND_NOTES_MIN_A,
+   ID_FIND_NOTES_N,
+   ID_FIND_NOTES_QUANTIZE,
+#endif //EXPERIMENTAL_FIND_NOTES
 };
 
 SpectrumPrefs::SpectrumPrefs(wxWindow * parent):
@@ -48,6 +53,14 @@ void SpectrumPrefs::Populate( )
    gPrefs->Read(wxT("/Spectrum/MaxFreq"), &maxFreq, 8000L);
    gPrefs->Read(wxT("/Spectrum/MinFreq"), &minFreq, 0L);
    gPrefs->Read(wxT("/Spectrum/WindowType"), &windowType, 3L);
+#ifdef EXPERIMENTAL_FIND_NOTES
+   gPrefs->Read(wxT("/Spectrum/FFTFindNotes"), &fftFindNotes, false);
+   gPrefs->Read(wxT("/Spectrum/FindNotesMinA"), &findNotesMinA, -30L);
+   findNotesMinAStr.Printf(wxT("%d"), findNotesMinA);
+   gPrefs->Read(wxT("/Spectrum/FindNotesN"), &findNotesN, 5L);
+   findNotesNStr.Printf(wxT("%d"), findNotesN);
+   gPrefs->Read(wxT("/Spectrum/FindNotes"), &findNotesQuantize, false);
+#endif //EXPERIMENTAL_FIND_NOTES
 
    minFreqStr.Printf(wxT("%d"), minFreq);
    maxFreqStr.Printf(wxT("%d"), maxFreq);
@@ -81,7 +94,14 @@ void SpectrumPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieRadioButton( wxT("512"),                 512);
       S.TieRadioButton( wxT("1024"),                1024);
       S.TieRadioButton( wxT("2048"),                2048);
+#ifdef LOGARITHMIC_SPECTRUM
+      S.TieRadioButton( wxT("4096"),                4096);
+      S.TieRadioButton( wxT("8192"),                8192);
+      S.TieRadioButton( wxT("16384"),               16384);
+      S.TieRadioButton( _("32768 - most narrowband"),32768);
+#else
       S.TieRadioButton( _("4096 - most narrowband"),4096);
+#endif //LOGARITHMIC_SPECTRUM
       S.EndRadioButtonGroup();
 
       // add choice for windowtype
@@ -110,6 +130,22 @@ void SpectrumPrefs::PopulateOrExchange( ShuttleGui & S )
          12 // max number of characters (used to size the control).
          );
       S.EndTwoColumn();
+#ifdef EXPERIMENTAL_FIND_NOTES
+      S.TieCheckBox( _("&Find Notes"), wxT("/Spectrum/FFTFindNotes"), false);
+      S.TieCheckBox( _("&Quantize Notes"), wxT("/Spectrum/FindNotesQuantize"), false);
+      S.StartTwoColumn(); // 2 cols because we have a control with a separate label.
+      S.Id(ID_FIND_NOTES_MIN_A).TieTextBox(
+         _("Minimum Amplitude (dB):"), // prompt
+         findNotesMinAStr, // String to exchange with
+         8 // max number of characters (used to size the control).
+         );
+      S.Id(ID_FIND_NOTES_N).TieTextBox(
+         _("Max. Number of Notes (1..128):"), // prompt
+         findNotesNStr, // String to exchange with
+         8 // max number of characters (used to size the control).
+         );
+      S.EndTwoColumn();
+#endif //EXPERIMENTAL_FIND_NOTES
    }
    S.EndStatic();
    S.EndHorizontalLay();
@@ -151,6 +187,24 @@ bool SpectrumPrefs::Apply()
       return false;
    }
    //---- End of validation of maxFreqStr.
+#ifdef EXPERIMENTAL_FIND_NOTES
+   long findNotesMinA;
+   if (!findNotesMinAStr.ToLong(&findNotesMinA)) {
+      wxMessageBox(_("The minimum amplitude (dB) must be an integer"));
+      return false;
+   }
+   gPrefs->Write(wxT("/Spectrum/FindNotesMinA"), findNotesMinA);
+   long findNotesN;
+   if (!findNotesNStr.ToLong(&findNotesN)) {
+      wxMessageBox(_("The Maximum Number of Notes must be an integer in the range 1..128"));
+      return false;
+   }
+   if (findNotesN < 1 || findNotesN > 128) {
+      wxMessageBox(_("The Maximum Number of Notes must be an integer in the range 1..128"));
+      return false;
+   }
+   gPrefs->Write(wxT("/Spectrum/FindNotesN"), findNotesN);
+#endif //EXPERIMENTAL_FIND_NOTES
 
    gPrefs->Write(wxT("/Spectrum/MinFreq"), minFreq);
    gPrefs->Write(wxT("/Spectrum/MaxFreq"), maxFreq);

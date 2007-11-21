@@ -62,6 +62,15 @@
 //#define LOGARITHMIC_TONE_CHIRP
 //#define LOGARITHMIC_SPECTRUM
 
+
+#ifdef LOGARITHMIC_SPECTRUM
+// AM, 20.Nov 2007: 
+// A spectrumLogF-like view mode with notes quantization.
+// Just select the "Find Notes" checkbox in the spectrum prefs 
+// to activate it instead of the Spectrum log(f) mode.
+//#define EXPERIMENTAL_FIND_NOTES
+#endif
+
 #ifdef EXPERIMENTAL_FEATURES
    // The first experimental feature is a notebook that adds
    // a tabbed divider to the project.

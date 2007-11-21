@@ -86,6 +86,10 @@ TrackArtist::TrackArtist()
 
    SetColours();
    vruler = new Ruler();
+
+#ifdef EXPERIMENTAL_FIND_NOTES
+   fftFindNotesOld=false;
+#endif
 }
 
 TrackArtist::~TrackArtist()
@@ -1403,6 +1407,26 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
 #endif
 }
 
+float sumFreqValues(float *freq, int x0, float bin0, float bin1)
+{
+   float value;
+   if (int(bin1) == int(bin0)) {
+      value = freq[x0+int(bin0)];
+   } else {
+      float binwidth= bin1 - bin0;
+      value = freq[x0 + int(bin0)] * (1.f - bin0 + (int)bin0);
+
+      bin0 = 1 + int (bin0);
+      while (bin0 < int(bin1)) {
+         value += freq[x0 + int(bin0)];
+         bin0 += 1.0;
+      }
+      value += freq[x0 + int(bin1)] * (bin1 - int(bin1));
+      value /= binwidth;
+   }
+   return value;
+}
+
 void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
                                wxDC & dc, wxRect & r,
 #ifdef LOGARITHMIC_SPECTRUM
@@ -1558,9 +1582,22 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
       gPrefs->Write(wxT("/Spectrum/MinFreq"), 0L);
    }
 #endif
+#ifdef EXPERIMENTAL_FIND_NOTES
+   bool fftFindNotes = (gPrefs->Read(wxT("/Spectrum/FFTFindNotes"), 0L) != 0);
+   int findNotesMinA = gPrefs->Read(wxT("/Spectrum/FindNotesMinA"), -30.0);
+   int numberOfMaxima = gPrefs->Read(wxT("/Spectrum/FindNotesN"), 5L);
+   bool findNotesQuantize = (gPrefs->Read(wxT("/Spectrum/FindNotesQuantize"), 0L) != 0);
+#endif //EXPERIMENTAL_FIND_NOTES
    bool usePxCache = false;
 
-   if( !updated && clip->mSpecPxCache->valid && (clip->mSpecPxCache->len == mid.height * mid.width) ) {
+   if( !updated && clip->mSpecPxCache->valid && (clip->mSpecPxCache->len == mid.height * mid.width) 
+#ifdef EXPERIMENTAL_FIND_NOTES
+   && fftFindNotes==fftFindNotesOld
+   && findNotesMinA==findNotesMinAOld
+   && numberOfMaxima==findNotesNOld
+   && findNotesQuantize==findNotesQuantizeOld
+#endif
+   ) {
       usePxCache = true;
    }
    else {
@@ -1568,6 +1605,12 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
       clip->mSpecPxCache = new SpecPxCache(mid.width * mid.height);
       usePxCache = false;
       clip->mSpecPxCache->valid = true;
+#ifdef EXPERIMENTAL_FIND_NOTES
+      fftFindNotesOld=fftFindNotes;
+      findNotesMinAOld=findNotesMinA;
+      findNotesNOld=numberOfMaxima;
+      findNotesQuantizeOld=findNotesQuantize;
+#endif
    }
 
    int minSamples = int (minFreq * windowSize / rate + 0.5);   // units are fft bins
@@ -1576,7 +1619,46 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
 
    int x = 0;
    sampleCount w1 = (sampleCount) ((t0*rate + x *rate *tstep) + .5);
-   while (x < mid.width) {
+ 
+#ifdef LOGARITHMIC_SPECTRUM
+   const float e=exp(1.0f), f=rate/2.0f/half, 
+      lmin=log(float(minFreq)),
+      lmax=log(float(maxFreq)),
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+      lmins=log(float(minFreq)/(fftSkipPoints+1)),
+      lmaxs=log(float(maxFreq)/(fftSkipPoints+1)),
+#else
+      lmins=lmin,
+      lmaxs=lmax,
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
+      scale=lmax-lmin, 
+      scale2=(lmax-lmin)/log(2.0), 
+      lmin2=lmin/log(2.0),
+      expo=exp(scale);
+   int midHeight12 = mid.height/12;
+#endif //LOGARITHMIC_SPECTRUM
+
+#ifdef EXPERIMENTAL_FIND_NOTES
+   int maxima[128];
+   float maxima0[128], maxima1[128];
+   const float 
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+      f2bin = half/(rate/2.0f/(fftSkipPoints+1)),
+#else
+      f2bin = half/(rate/2.0f),
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
+      bin2f = 1.0f/f2bin,
+      log2=log(2.0f),
+      minDistance = pow(2.0f, 2.0f/12.0f),
+      i0=exp(lmin)/f,
+      i1=exp(scale+lmin)/f,
+      minColor=0.1f;
+   const int maxTableSize=64;
+   int *indexes=new int[maxTableSize];
+#endif //EXPERIMENTAL_FIND_NOTES
+
+   while (x < mid.width) 
+   {
       sampleCount w0 = w1;
       w1 = (sampleCount) ((t0*rate + (x+1) *rate *tstep) + .5);
 
@@ -1631,51 +1713,126 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
             data[px] = bv;
          }
       }
-      else
+      else //logF
       {
+         bool selflag = (ssel0 <= w0 && w1 < ssel1);
+         unsigned char rv, gv, bv;
+         float value;
          int x0=x*half;
-         double e=exp(1.0f), f=rate/2/half, 
-            lmin=log(double(minFreq)),
-            lmax=log(double(maxFreq)),
-            scale=lmax-lmin, 
-            expo=exp(scale);
-         for (int yy = 0; yy < mid.height; yy++) {
-            bool selflag = (ssel0 <= w0 && w1 < ssel1);
-            unsigned char rv, gv, bv;
-            float value;
+#ifdef EXPERIMENTAL_FIND_NOTES
+         int maximas=0;
+         if (!usePxCache && fftFindNotes) {
+            for (int i = maxTableSize-1; i >= 0; i--)
+               indexes[i]=-1;
+            
+            // Build a table of (most) values, put the index in it.
+            for (int i = int(i0); i < int(i1); i++) {
+               float freqi=freq[x0+int(i)];
+               int value=int((freqi+80.0f)/80.0f*(maxTableSize-1));
+               if (value < 0)
+                  value=0;
+               if (value >= maxTableSize)
+                  value=maxTableSize-1;
+               indexes[value]=i;
+            }
+            // Build from the indices an array of maxima.
+            for (int i = maxTableSize-1; i >= 0; i--) {
+               int index=indexes[i];
+               if (index >= 0) {
+                  float freqi=freq[x0+index];
+                  if (freqi < findNotesMinA) 
+                     break;
 
-            if(!usePxCache) 
-            {
-               float h=double(yy)/mid.height, 
-                  yy2=exp(h*scale+lmin)/f;
+                  bool ok=true;
+                  for (int m=0; m < maximas; m++) {
+                     // Avoid to store very close maxima.
+                     float maxm = maxima[m];
+                     if (maxm/index < minDistance && index/maxm < minDistance) {
+                        ok=false;
+                        break;
+                     }
+                  }
+                  if (ok) {
+                     maxima[maximas++] = index;
+                     if (maximas >= numberOfMaxima)
+                        break;
+                  }
+               }
+            }
+
+// The f2pix helper macro converts a frequency into a pixel coordinate.
+#define f2pix(f) (log(f)-lmins)/(lmaxs-lmins)*mid.height
+
+            // Possibly quantize the maxima frequencies and create the pixel block limits.
+            for (int i=0; i < maximas; i++) {
+               int index=maxima[i];
+               float f = float(index)*bin2f;
+               if (findNotesQuantize)
+               {  f = exp(int(log(f/440)/log2*12-0.5)/12.0f*log2)*440;
+                  maxima[i] = f*f2bin;
+               }
+               float f0 = exp((log(f/440)/log2*24-1)/24.0f*log2)*440;
+               maxima0[i] = f2pix(f0);
+               float f1 = exp((log(f/440)/log2*24+1)/24.0f*log2)*440;
+               maxima1[i] = f2pix(f1);
+            }
+         }
+         int it=0;
+         int oldBin0=-1;
+         bool inMaximum = false;
+#endif //EXPERIMENTAL_FIND_NOTES
+
+         for (int yy = 0; yy < mid.height; yy++) {
+            if(!usePxCache) {
+               float h=float(yy)/mid.height; 
+               float yy2=exp(h*scale+lmin)/f;
                if (int(yy2)>=half)
                   yy2=half-1;
                if (yy2<0)
                   yy2=0;
-               float bin0 = float (yy2);// * binPerPx + minSamples;
-               float bin1 = float (yy2 + 1);// * binPerPx + minSamples;
+               float bin0 = float(yy2);
+               float h1=float(yy+1)/mid.height; 
+               float yy3=exp(h1*scale+lmin)/f;
+               if (int(yy3)>=half)
+                  yy3=half-1;
+               if (yy3<0)
+                  yy3=0;
+               float bin1 = float(yy3);
 
-               if (int (bin1) == int (bin0))
-                  value = freq[x0 + int (bin0)];
-               else {
-                  float binwidth= bin1 - bin0;
-                  value = freq[x0 + int (bin0)] * (1.f - bin0 + (int)bin0);
+#ifdef EXPERIMENTAL_FIND_NOTES
+               if (fftFindNotes) {
+                  if (it < maximas) {
+                     float i0=maxima0[it];
+                     if (yy >= i0)
+                        inMaximum = true;
 
-                  bin0 = 1 + int (bin0);
-                  while (bin0 < int (bin1)) {
-                     value += freq[x0 + int (bin0)];
-                     bin0 += 1.0;
+                     if (inMaximum) {
+                        float i1=maxima1[it];
+                        if (yy+1 <= i1) {
+                           value=sumFreqValues(freq, x0, bin0, bin1);
+                           if (value < findNotesMinA)
+                              value = minColor;
+                           else
+                              value = (value + 80.0) / 80.0;
+                        } else {
+                           it++;
+                           inMaximum = false;
+                           value = minColor;
+                        }
+                     } else {
+                        value = minColor;
+                     }
+                  } else
+                     value = minColor;
+               } else
+#endif //EXPERIMENTAL_FIND_NOTES
+               {
+                  value=sumFreqValues(freq, x0, bin0, bin1);
+                  if (!autocorrelation) {
+                     // Last step converts dB to a 0.0-1.0 range
+                     value = (value + 80.0) / 80.0;
                   }
-                  value += freq[x0 + int (bin1)] * (bin1 - int (bin1));
-
-                  value /= binwidth;
                }
-
-               if (!autocorrelation) {
-                  // Last step converts dB to a 0.0-1.0 range
-                  value = (value + 80.0) / 80.0;
-               }
-
                if (value > 1.0)
                   value = float(1.0);
                if (value < 0.0)
@@ -1692,8 +1849,8 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
             data[px++] = gv;
             data[px] = bv;
          }
-      }
-#else
+         }
+#else //!LOGARITHMIC_SPECTRUM
       for (int yy = 0; yy < mid.height; yy++) {
          bool selflag = (ssel0 <= w0 && w1 < ssel1);
          unsigned char rv, gv, bv;
@@ -1741,7 +1898,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
          data[px++] = gv;
          data[px] = bv;
       }
-#endif
+#endif //LOGARITHMIC_SPECTRUM
       x++;
    }
 
@@ -1760,6 +1917,9 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    delete image;
    delete[] where;
    delete[] freq;
+#ifdef EXPERIMENTAL_FIND_NOTES
+   delete[] indexes;
+#endif //EXPERIMENTAL_FIND_NOTES
 }
 
 /*
@@ -1952,7 +2112,7 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
   int visibleChannels = track->mVisibleChannels;
 
   if (!track->GetSelected())
-	sel0 = sel1 = 0.0;
+   sel0 = sel1 = 0.0;
 
   int ctrpitch = 60;
   int pitch0;
@@ -2221,11 +2381,11 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
               // now do justification
               const char *s = LookupStringAttribute(note, texts, "");
               #ifdef __WXMAC__
-		      long textWidth, textHeight;
+            long textWidth, textHeight;
               #else
-		      int textWidth, textHeight;
+            int textWidth, textHeight;
               #endif
-		      dc.GetTextExtent(LAT1CTOWX(s), &textWidth, &textHeight);
+            dc.GetTextExtent(LAT1CTOWX(s), &textWidth, &textHeight);
               long hoffset = 0;
               long voffset = -textHeight; // default should be baseline of text
 
@@ -2280,7 +2440,7 @@ void TrackArtist::DrawTimeTrack(TimeTrack *track,
    wxRect envRect = r;
    envRect.height -= 2;
    track->GetEnvelope()->Draw(dc, envRect, viewInfo->h, viewInfo->zoom, 
-			      false,0.0,1.0);
+               false,0.0,1.0);
 }
 
 
