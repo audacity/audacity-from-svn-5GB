@@ -140,6 +140,12 @@ class AUDACITY_DLL_API TrackArtist {
    wxPen shadowPen;
 
    Ruler *vruler;
+#ifdef EXPERIMENTAL_FIND_NOTES
+   bool fftFindNotesOld;
+   int findNotesMinAOld;
+   int findNotesNOld;
+   bool findNotesQuantizeOld;
+#endif
 
    // Waveform utility functions
 

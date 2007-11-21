@@ -43,6 +43,14 @@ private:
    wxString maxFreqStr;
    int windowType;
 
+#ifdef EXPERIMENTAL_FIND_NOTES
+   bool fftFindNotes;
+   bool findNotesQuantize;
+   wxString findNotesMinAStr;
+   int findNotesMinA;
+   wxString findNotesNStr;
+   int findNotesN;
+#endif
 };
 
 #endif
