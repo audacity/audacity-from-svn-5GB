@@ -115,17 +115,27 @@ Ruler::Ruler()
    fontSize = 8;
 #endif
 
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   mMinorMinorFont = new wxFont(fontSize-1, wxSWISS, wxNORMAL, wxNORMAL);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
    mMinorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
    mMajorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxBOLD);
    mUserFonts = false;
 
    #ifdef __WXMAC__
+   #ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   mMinorMinorFont->SetNoAntiAliasing(true);
+   #endif //EXPERIMENTAL_RULER_AUTOSIZE
    mMinorFont->SetNoAntiAliasing(true);
    mMajorFont->SetNoAntiAliasing(true);
    #endif
 
    mMajorLabels = 0;
    mMinorLabels = 0;
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   mMinorMinorLabels = 0;
+   mLengthOld = 0;
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
    mBits = NULL;
    mUserBits = NULL;
    mUserBitLen = 0;
@@ -140,6 +150,16 @@ Ruler::~Ruler()
       delete [] mUserBits;//JKC
    delete mMinorFont;
    delete mMajorFont;
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   delete mMinorMinorFont;
+
+   if (mMajorLabels)
+      delete[] mMajorLabels;
+   if (mMinorLabels)
+      delete[] mMinorLabels;
+   if (mMinorMinorLabels)
+      delete[] mMinorMinorLabels;
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 }
 
 void Ruler::SetFormat(RulerFormat format)
@@ -241,12 +261,22 @@ void Ruler::SetFlip(bool flip)
    }
 }
 
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+void Ruler::SetFonts(const wxFont &minorFont, const wxFont &majorFont, const wxFont &minorMinorFont)
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
 void Ruler::SetFonts(const wxFont &minorFont, const wxFont &majorFont)
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 {
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   *mMinorMinorFont = minorMinorFont;
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
    *mMinorFont = minorFont;
    *mMajorFont = majorFont;
 
    #ifdef __WXMAC__
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   mMinorMinorFont->SetNoAntiAliasing(true);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
    mMinorFont->SetNoAntiAliasing(true);
    mMajorFont->SetNoAntiAliasing(true);
    #endif
@@ -309,6 +339,8 @@ void Ruler::Invalidate()
    else
       mLength = mBottom-mTop;
 
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
    if (mMajorLabels) {
       delete [] mMajorLabels;
       mMajorLabels = NULL;
@@ -317,6 +349,7 @@ void Ruler::Invalidate()
       delete [] mMinorLabels;
       mMinorLabels = NULL;
    }
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
    if (mBits) {
       delete [] mBits;
       mBits = NULL;
@@ -652,7 +685,11 @@ wxString Ruler::LabelString(double d, bool major)
    return s;
 }
 
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+void Ruler::Tick(int pos, double d, bool major, bool minor)
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
 void Ruler::Tick(int pos, double d, bool major)
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 {
    wxString l;
    wxCoord strW, strH, strD, strL;
@@ -660,6 +697,10 @@ void Ruler::Tick(int pos, double d, bool major)
 
    // FIXME: We don't draw a tick if of end of our label arrays
    // But we shouldn't have an array of labels.
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   if( mNumMinorMinor >= mLength )
+      return;
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
    if( mNumMinor >= mLength )
       return;
    if( mNumMajor >= mLength )
@@ -668,15 +709,26 @@ void Ruler::Tick(int pos, double d, bool major)
    Label *label;
    if (major)
       label = &mMajorLabels[mNumMajor++];
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   else if (minor)
+      label = &mMinorLabels[mNumMinor++];
+   else
+      label = &mMinorMinorLabels[mNumMinorMinor++];
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
    else
       label = &mMinorLabels[mNumMinor++];
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
    label->pos = pos;
    label->lx = mLeft - 1000; // don't display
    label->ly = mTop - 1000;  // don't display
    label->text = wxT("");
 
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   mDC->SetFont(major? *mMajorFont: minor? *mMinorFont : *mMinorMinorFont);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
    mDC->SetFont(major? *mMajorFont: *mMinorFont);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
    l = LabelString(d, major);
    mDC->GetTextExtent(l, &strW, &strH, &strD, &strL);
 
@@ -693,9 +745,13 @@ void Ruler::Tick(int pos, double d, bool major)
          mMaxHeight = max(mMaxHeight, strH + 4);
       }
       else {
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+         strTop =-strH-mLead;
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
          strTop = mBottom - strH -6;
          // Still leaves room for an umlaut or whatever above normal character
          strTop = mTop- mLead+4;// More space was needed...
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
          mMaxHeight = max(mMaxHeight, strH + 6);
       }
    }
@@ -712,8 +768,12 @@ void Ruler::Tick(int pos, double d, bool major)
          mMaxWidth = max(mMaxWidth, strW + 5);
       }
       else {
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+         strLeft =-strW-6;
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
          strLeft = mRight - strW - 6;
          mMaxWidth = max(mMaxWidth, strW + 6);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
       }
    }
 
@@ -753,6 +813,11 @@ void Ruler::Tick(int pos, double d, bool major)
 
    for(i=0; i<strLen; i++)
       mBits[strPos+i] = 1;
+
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   wxRect r(strLeft, strTop, strW, strH);
+   mRect.Union(r);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 }
 
 void Ruler::Update()
@@ -780,8 +845,13 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
      else
        desiredPixelHeight = (mRight-mLeft)/2;
 
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+     if (desiredPixelHeight < 10)//8)
+       desiredPixelHeight = 10;//8;
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
      if (desiredPixelHeight < 8)
        desiredPixelHeight = 8;
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
      if (desiredPixelHeight > 12)
        desiredPixelHeight = 12;
 
@@ -798,13 +868,19 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
       mDC->GetTextExtent(exampleText, &strW, &strH, &strD, &strL);
       mLead = strL;
 
+     if (mMajorFont)
+        delete mMajorFont;
+     mMajorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxBOLD);
+
      if (mMinorFont)
         delete mMinorFont;
      mMinorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
 
-     if (mMajorFont)
-        delete mMajorFont;
-     mMajorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxBOLD);
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+     if (mMinorMinorFont)
+        delete mMinorMinorFont;
+     mMinorMinorFont = new wxFont(fontSize-1, wxSWISS, wxNORMAL, wxNORMAL);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
    }
 
    // If ruler is being resized, we could end up with it being too small.
@@ -817,18 +893,40 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
    if (mOrientation == wxHORIZONTAL) {
       mMaxWidth = mLength;
       mMaxHeight = 0;
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+      mRect = wxRect(0,0, mLength,0);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
    }
    else {
       mMaxWidth = 0;
       mMaxHeight = mLength;
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+      mRect = wxRect(0,0, 0,mLength);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
    }
 
    // FIXME: Surely we do not need to allocate storage for the labels?
    // We can just recompute them as we need them?
    mNumMajor = 0;
-   mMajorLabels = new Label[mLength+1];
    mNumMinor = 0;
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   mNumMinorMinor = 0;
+   if (mLength!=mLengthOld) {
+      if (mMajorLabels)
+         delete[] mMajorLabels;
+      mMajorLabels = new Label[mLength+1];
+      if (mMinorLabels)
+         delete[] mMinorLabels;
+      mMinorLabels = new Label[mLength+1];
+      if (mMinorMinorLabels)
+         delete[] mMinorMinorLabels;
+      mMinorMinorLabels = new Label[mLength+1];
+      mLengthOld = mLength;
+   }
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
+   mMajorLabels = new Label[mLength+1];
    mMinorLabels = new Label[mLength+1];
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
    
    if (mBits)
       delete[] mBits;
@@ -848,14 +946,23 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
       
       // Left and Right Edges
       if (mLabelEdges) {
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+         Tick(0, mMin, true, false);
+         Tick(0, mMin, true, false);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
          Tick(0, mMin, true);
          Tick(mLength, mMax, true);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
       }
       
       // Zero (if it's in the middle somewhere)
       if (mMin * mMax < 0.0) {
          int mid = (int)(mLength*(mMin/(mMin-mMax)) + 0.5);
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+         Tick(mid, 0.0, true, false);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
          Tick(mid, 0.0, true);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
       }
       
       double sg = UPP > 0.0? 1.0: -1.0;
@@ -883,7 +990,11 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
          
          if ((int)floor(sg * d / mMajor) > majorInt) {
             majorInt = (int)floor(sg * d / mMajor);
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+            Tick(i, sg * majorInt * mMajor, true, false);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
             Tick(i, sg * majorInt * mMajor, true);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
          }
       }
          
@@ -910,14 +1021,23 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
          
          if ((int)floor(sg * d / mMinor) > minorInt) {
             minorInt = (int)floor(sg * d / mMinor);
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+            Tick(i, sg * minorInt * mMinor, false, true);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
             Tick(i, sg * minorInt * mMinor, false);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
          }
       }
       
       // Left and Right Edges
       if (mLabelEdges) {
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+         Tick(0, mMin, true, false);
+         Tick(mLength, mMax, true, false);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
          Tick(0, mMin, true);
          Tick(mLength, mMax, true);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
       }
       
    }
@@ -939,15 +1059,19 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
       // Major ticks are the decades
 #ifdef LOGARITHMIC_SPECTRUM
       double decade = startDecade;
-		int delta=hiDecade-loDecade, steps=abs(delta);
-		double step = delta>=0 ? 10 : 0.1;
-		double rMin=wxMin(mMin, mMax), rMax=wxMax(mMin, mMax);
-		for(i=0; i<=steps; i++) 
-		{  // if(i!=0) 
-			{  val = decade;
+      int delta=hiDecade-loDecade, steps=abs(delta);
+      double step = delta>=0 ? 10 : 0.1;
+      double rMin=wxMin(mMin, mMax), rMax=wxMax(mMin, mMax);
+      for(i=0; i<=steps; i++) 
+      {  // if(i!=0) 
+         {  val = decade;
             if(val > rMin && val < rMax) {
                pos = (int)(((log10(val) - loLog)*scale)+0.5);
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+               Tick(pos, val, true, false);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
                Tick(pos, val, true);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
             }
          }
          decade *= step;
@@ -959,7 +1083,11 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
             val = decade;
             if(val > mMin && val < mMax) {
                pos = (int)(((log10(val) - loLog)*scale)+0.5);
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+               Tick(pos, val, true, false);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
                Tick(pos, val, true);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
             }
          }
          decade *= 10.;
@@ -969,24 +1097,48 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
       // Minor ticks are multiples of decades
 #ifdef LOGARITHMIC_SPECTRUM
       decade = startDecade;
-		int start, end, mstep;
-      if (delta > 0) {
-		   start=2;
-         end=10;
-         mstep=1;
+      float start, end, mstep;
+      if (delta > 0)
+      {  start=2; end=10; mstep=1;
+      }else
+      {  start=9; end=1; mstep=-1;
       }
-      else {
-		   start=9;
-         end=1;
-         mstep=-1;
-      }
-		steps++;
+      steps++;
       for(i=0; i<=steps; i++) {
          for(j=start; j!=end; j+=mstep) {
             val = decade * j;
             if(val >= rMin && val < rMax) {
                pos = (int)(((log10(val) - loLog)*scale)+0.5);
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+               Tick(pos, val, false, true);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
                Tick(pos, val, false);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
+            }
+         }
+         decade *= step;
+      }
+
+      // MinorMinor ticks are multiples of decades
+      decade = startDecade;
+      if (delta > 0)
+      {  start= 1; end=10; mstep= 0.1f;
+      }else
+      {  start=10; end= 1; mstep=-0.1f;
+      }
+      steps++;
+      for(i=0; i<=steps; i++) {
+         for(float f=start; f<=end; f+=mstep) {
+            if (int(f)!=f) {
+               val = decade * f;
+               if(val >= rMin && val < rMax) {
+                  pos = (int)(((log10(val) - loLog)*scale)+0.5);
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+               Tick(pos, val, false, false);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
+               Tick(pos, val, false);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
+               }
             }
          }
          decade *= step;
@@ -998,14 +1150,52 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
             val = decade * j;
             if(val >= mMin && val < mMax) {
                pos = (int)(((log10(val) - loLog)*scale)+0.5);
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+               Tick(pos, val, false, true);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
                Tick(pos, val, false);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
             }
          }
          decade *= 10.;
       }
 #endif
    }
-   
+
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   int displacementx=0, displacementy=0;
+   if (!mFlip) {
+      if (mOrientation==wxHORIZONTAL) {
+         int d=mTop+mRect.GetHeight()+5;
+         mRect.Offset(0,d);
+         mRect.Inflate(0,5);
+         displacementx=0; 
+         displacementy=d;
+      }
+      else {
+         int d=mLeft-mRect.GetLeft()+5;
+         mRect.Offset(d,0);
+         mRect.Inflate(5,0);
+         displacementx=d;
+         displacementy=0;
+      }
+   }
+   for(i=0; i<mNumMajor; i++) {
+      mMajorLabels[i].lx+= displacementx;
+      mMajorLabels[i].ly+= displacementy;
+   }
+   for(i=0; i<mNumMinor; i++) {
+      mMinorLabels[i].lx+= displacementx;
+      mMinorLabels[i].ly+= displacementy;
+   }
+   for(i=0; i<mNumMinorMinor; i++) {
+      mMinorMinorLabels[i].lx+= displacementx;
+      mMinorMinorLabels[i].ly+= displacementy;
+   }
+   mMaxWidth = mRect.GetWidth ();
+   mMaxHeight= mRect.GetHeight();
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
+
    mValid = true;
 }
 
@@ -1045,7 +1235,11 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
          if (mFlip)
             mDC->DrawLine(mLeft, mTop, mLeft, mBottom+1);
          else
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+            mDC->DrawLine(mRect.x-mRect.width, mTop, mRect.x-mRect.width, mBottom+1);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
             mDC->DrawLine(mRight, mTop, mRight, mBottom+1);
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
       }
    }
 
@@ -1120,6 +1314,41 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
                        mMinorLabels[i].lx,
                        mMinorLabels[i].ly);
    }
+
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   mDC->SetFont(*mMinorMinorFont);
+
+   for(i=0; i<mNumMinorMinor; i++) {
+      int pos = mMinorMinorLabels[i].pos;
+
+      if( mbTicksAtExtremes || ((pos!=0)&&(pos!=iMaxPos)))
+      {
+         if (mOrientation == wxHORIZONTAL) 
+         {
+            if (mFlip)
+               mDC->DrawLine(mLeft + pos, mTop,
+                             mLeft + pos, mTop + 2);
+            else
+               mDC->DrawLine(mLeft + pos, mBottom - 2,
+                             mLeft + pos, mBottom);
+         }
+         else 
+         {
+            if (mFlip)
+               mDC->DrawLine(mLeft, mTop + pos,
+                             mLeft + 2, mTop + pos);
+            else
+               mDC->DrawLine(mRight - 2, mTop + pos,
+                             mRight, mTop + pos);
+         }
+      }
+
+      if (mMinorMinorLabels[i].text != wxT(""))
+         mDC->DrawText(mMinorMinorLabels[i].text,
+                       mMinorMinorLabels[i].lx,
+                       mMinorMinorLabels[i].ly);
+   }
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 }
 
 void Ruler::GetMaxSize(wxCoord *width, wxCoord *height)
@@ -1134,10 +1363,18 @@ void Ruler::GetMaxSize(wxCoord *width, wxCoord *height)
    }
 
    if (width)
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+      *width = mRect.GetWidth(); //mMaxWidth;
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
       *width = mMaxWidth;
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
    if (height)
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+      *height = mRect.GetHeight(); //mMaxHeight;
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
       *height = mMaxHeight;
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 }
 
 
@@ -1691,6 +1928,13 @@ void AdornedRulerPanel::GetPlayRegion(double* playRegionStart,
       *playRegionEnd = mPlayRegionEnd;
    }
 }
+
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+void AdornedRulerPanel::GetMaxSize(wxCoord *width, wxCoord *height)
+{
+   ruler.GetMaxSize(width, height);
+}
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

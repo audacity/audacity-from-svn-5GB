@@ -444,6 +444,10 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
      mBacking(NULL),
      mRefreshBacking(false),
      mAutoScrolling(false)
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+     ,
+     vrulerSize(36,0)
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 #ifndef __WXGTK__   //Get rid if this pragma for gtk
 #pragma warning( default: 4355 )
 #endif
@@ -4794,6 +4798,9 @@ void TrackPanel::DrawEverythingElse(Track * t, wxDC * dc, wxRect & r,
       r.width = GetVRulerWidth();
       r.height -= (kTopInset + 2);
       mTrackArtist->DrawVRuler(t, dc, r);
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+      UpdateVRulerRect();
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
    }
 
    trackRect.y += t->GetHeight();
@@ -4857,7 +4864,12 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
 
    dc->SetTextForeground(theTheme.Colour( clrTrackPanelText ));
    bool bIsWave = (t->GetKind() == Track::Wave);
+
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   mTrackInfo.DrawBackground(dc, r, t->GetSelected(), bIsWave, labelw, vrul);
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
    mTrackInfo.DrawBackground(dc, r, t->GetSelected(), bIsWave, labelw );
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
    DrawBordersAroundTrack(t, dc, r, labelw, vrul);
    DrawShadow(t, dc, r);
@@ -4921,6 +4933,30 @@ void TrackPanel::DrawOutsideOfTrack(Track * t, wxDC * dc, const wxRect r)
       dc->DrawRectangle(side);
    }
 }
+
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+void TrackPanel::UpdateVRulerRect()
+{
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+   if (t) {
+      wxSize s=t->vrulerSize;
+      while (t) {
+         if (s.x < t->vrulerSize.x)
+            s.x = t->vrulerSize.x;
+         if (s.y < t->vrulerSize.y)
+            s.y = t->vrulerSize.y;
+         t = iter.Next();
+      }
+      if (vrulerSize != s) {
+         vrulerSize = s;
+         Refresh();
+         mRuler->SetLeftOffset(GetLeftOffset()-1);  // bevel on AdornedRuler
+         mRuler->Refresh();
+      }
+   }
+}
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
 /// The following function moves to the previous track
 /// selecting and unselecting depending if you are on the start of a
@@ -6578,6 +6614,14 @@ wxRect TrackPanel::FindTrackRect(Track * target, bool label)
    return r;
 }
 
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+int TrackPanel::GetVRulerWidth() const 
+{
+//return 36;
+   return vrulerSize.x;
+}
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
+
 /// Displays the bounds of the selection in the status bar.
 void TrackPanel::DisplaySelection()
 {
@@ -6719,6 +6763,13 @@ TrackInfo::~TrackInfo()
       delete mPans[i];
 }
 
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+int TrackInfo::GetTitleWidth() const 
+{
+   return 100;
+}
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
+
 void TrackInfo::GetCloseBoxRect(const wxRect r, wxRect & dest) const
 {
    dest.x = r.x;
@@ -6798,6 +6849,31 @@ void TrackInfo::DrawBordersWithin(wxDC * dc, const wxRect r, bool bHasMuteSolo )
    dc->DrawLine(r.x, r.y + r.height - 19, GetTitleWidth(), r.y + r.height - 19);  // minimize bar
 }
 
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+void TrackInfo::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
+   bool bHasMuteSolo, const int labelw, const int vrul)
+{
+   // fill in label
+   wxRect fill = r;
+   fill.width = labelw-4;
+   AColor::MediumTrackInfo(dc, bSelected);
+   dc->DrawRectangle(fill); 
+
+   if( bHasMuteSolo )
+   {
+      fill=wxRect( r.x+1, r.y+17, vrul-6, 32); 
+      AColor::BevelTrackInfo( *dc, true, fill );
+
+      fill=wxRect( r.x+1, r.y+67, fill.width, r.height-87); 
+      AColor::BevelTrackInfo( *dc, true, fill );
+   }
+   else
+   {
+      fill=wxRect( r.x+1, r.y+17, vrul-6, r.height-37); 
+      AColor::BevelTrackInfo( *dc, true, fill );
+   }
+}
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
 void TrackInfo::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
    bool bHasMuteSolo, const int labelw)
 {
@@ -6821,6 +6897,7 @@ void TrackInfo::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
       AColor::BevelTrackInfo( *dc, true, fill );
    }
 }
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
 void TrackInfo::GetTrackControlsRect(const wxRect r, wxRect & dest) const
 {
