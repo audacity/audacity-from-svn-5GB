@@ -46,6 +46,9 @@ private:
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
    int fftSkipPoints;
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+   bool fftYGrid;
+#endif //EXPERIMENTAL_FFT_Y_GRID
 #ifdef EXPERIMENTAL_FIND_NOTES
    bool fftFindNotes;
    bool findNotesQuantize;

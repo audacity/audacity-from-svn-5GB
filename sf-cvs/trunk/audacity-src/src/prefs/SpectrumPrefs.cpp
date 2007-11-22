@@ -56,6 +56,9 @@ void SpectrumPrefs::Populate( )
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
    gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), &fftSkipPoints, 0L);
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+   gPrefs->Read(wxT("/Spectrum/FFTYGrid"), &fftYGrid, false);
+#endif //EXPERIMENTAL_FFT_Y_GRID
 #ifdef EXPERIMENTAL_FIND_NOTES
    gPrefs->Read(wxT("/Spectrum/FFTFindNotes"), &fftFindNotes, false);
    gPrefs->Read(wxT("/Spectrum/FindNotesMinA"), &findNotesMinA, -30L);
@@ -151,6 +154,9 @@ void SpectrumPrefs::PopulateOrExchange( ShuttleGui & S )
          12 // max number of characters (used to size the control).
          );
       S.EndTwoColumn();
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+      S.TieCheckBox( _("&Y-Grid"), wxT("/Spectrum/FFTYGrid"), false);
+#endif //EXPERIMENTAL_FFT_Y_GRID
 #ifdef EXPERIMENTAL_FIND_NOTES
       S.TieCheckBox( _("&Find Notes"), wxT("/Spectrum/FFTFindNotes"), false);
       S.TieCheckBox( _("&Quantize Notes"), wxT("/Spectrum/FindNotesQuantize"), false);

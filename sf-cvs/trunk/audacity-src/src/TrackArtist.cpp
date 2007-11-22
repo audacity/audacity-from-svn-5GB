@@ -87,6 +87,10 @@ TrackArtist::TrackArtist()
    SetColours();
    vruler = new Ruler();
 
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+   fftYGridOld=true;
+#endif //EXPERIMENTAL_FFT_Y_GRID
+
 #ifdef EXPERIMENTAL_FIND_NOTES
    fftFindNotesOld=false;
 #endif
@@ -1561,6 +1565,9 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
    int fftSkipPoints = gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), 0L);
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+   bool fftYGrid = (gPrefs->Read(wxT("/Spectrum/FFTYGrid"), 0L) != 0);
+#endif //EXPERIMENTAL_FFT_Y_GRID
    int half = windowSize/2;
    float *freq = new float[mid.width * half];
    sampleCount *where = new sampleCount[mid.width+1];
@@ -1612,6 +1619,9 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    bool usePxCache = false;
 
    if( !updated && clip->mSpecPxCache->valid && (clip->mSpecPxCache->len == mid.height * mid.width) 
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+   && fftYGrid==fftYGridOld
+#endif //EXPERIMENTAL_FFT_Y_GRID
 #ifdef EXPERIMENTAL_FIND_NOTES
    && fftFindNotes==fftFindNotesOld
    && findNotesMinA==findNotesMinAOld
@@ -1854,6 +1864,11 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
                      value = (value + 80.0) / 80.0;
                   }
                }
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+               if (fftYGrid && (fabs(fmod(h*scale2-lmin2-1/24.0, 1/12.0)) <=0.01))
+               {  value /= 1.2f;
+               }
+#endif //EXPERIMENTAL_FFT_Y_GRID
                if (value > 1.0)
                   value = float(1.0);
                if (value < 0.0)
