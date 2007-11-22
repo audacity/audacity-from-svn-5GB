@@ -140,6 +140,11 @@ class AUDACITY_DLL_API TrackArtist {
    wxPen shadowPen;
 
    Ruler *vruler;
+
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+   bool fftYGridOld;
+#endif //EXPERIMENTAL_FFT_Y_GRID
+
 #ifdef EXPERIMENTAL_FIND_NOTES
    bool fftFindNotesOld;
    int findNotesMinAOld;
