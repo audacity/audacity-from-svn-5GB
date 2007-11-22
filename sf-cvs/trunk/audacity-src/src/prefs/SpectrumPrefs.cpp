@@ -94,7 +94,7 @@ void SpectrumPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieRadioButton( wxT("512"),                 512);
       S.TieRadioButton( wxT("1024"),                1024);
       S.TieRadioButton( wxT("2048"),                2048);
-#ifdef LOGARITHMIC_SPECTRUM
+#ifdef EXPERIMENTAL_FIND_NOTES
       S.TieRadioButton( wxT("4096"),                4096);
       S.TieRadioButton( wxT("8192"),                8192);
       S.TieRadioButton( wxT("16384"),               16384);
