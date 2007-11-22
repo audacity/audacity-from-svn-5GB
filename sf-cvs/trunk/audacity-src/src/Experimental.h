@@ -64,11 +64,15 @@
 
 
 #ifdef LOGARITHMIC_SPECTRUM
-// AM, 20.Nov 2007: 
-// A spectrumLogF-like view mode with notes quantization.
-// Just select the "Find Notes" checkbox in the spectrum prefs 
-// to activate it instead of the Spectrum log(f) mode.
-//#define EXPERIMENTAL_FIND_NOTES
+   // AM, 20.Nov 2007: 
+   // A spectrumLogF-like view mode with notes quantization.
+   // Just select the "Find Notes" checkbox in the spectrum prefs 
+   // to activate it instead of the Spectrum log(f) mode.
+   //#define EXPERIMENTAL_FIND_NOTES
+
+   // AM, 22.Nov 2007
+   // Skip Points support in the spectrum view mode.
+   //#define EXPERIMENTAL_FFT_SKIP_POINTS
 #endif
 
 #ifdef EXPERIMENTAL_FEATURES
