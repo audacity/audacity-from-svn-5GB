@@ -247,7 +247,11 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    }
 
    CreateIcon(2);
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+   mRuler.SetFonts(GetFont(), GetFont(), GetFont());
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
    mRuler.SetFonts(GetFont(), GetFont());
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
    mTimer.SetOwner(this, OnMeterUpdateID);
    Reset(44100.0, true);

@@ -62,6 +62,11 @@
 //#define LOGARITHMIC_TONE_CHIRP
 //#define LOGARITHMIC_SPECTRUM
 
+// AM, 22 Nov.2007
+// Some fixes for the rulers.
+// If activated, the ruler's labels don't spill over,
+// instead all rulers are resized to fit the biggest ruler.
+//#define EXPERIMENTAL_RULER_AUTOSIZE
 
 #ifdef LOGARITHMIC_SPECTRUM
    // AM, 20.Nov 2007: 
