@@ -53,6 +53,9 @@ void SpectrumPrefs::Populate( )
    gPrefs->Read(wxT("/Spectrum/MaxFreq"), &maxFreq, 8000L);
    gPrefs->Read(wxT("/Spectrum/MinFreq"), &minFreq, 0L);
    gPrefs->Read(wxT("/Spectrum/WindowType"), &windowType, 3L);
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+   gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), &fftSkipPoints, 0L);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
 #ifdef EXPERIMENTAL_FIND_NOTES
    gPrefs->Read(wxT("/Spectrum/FFTFindNotes"), &fftFindNotes, false);
    gPrefs->Read(wxT("/Spectrum/FindNotesMinA"), &findNotesMinA, -30L);
@@ -113,6 +116,24 @@ void SpectrumPrefs::PopulateOrExchange( ShuttleGui & S )
       S.EndMultiColumn();
    }
    S.EndStatic();
+
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+   S.StartHorizontalLay(wxEXPAND, 0 );
+   S.StartStatic( _("FFT Skip Points"), 0 );
+   {
+      S.StartRadioButtonGroup(wxT("/Spectrum/FFTSkipPoints"), 0);
+      S.TieRadioButton(wxT("0"), 0);
+      S.TieRadioButton(wxT("1"), 1);
+      S.TieRadioButton(wxT("3"), 3);
+      S.TieRadioButton(wxT("7"), 7);
+      S.TieRadioButton(wxT("15"), 15);
+      S.TieRadioButton(wxT("31"), 31);
+      S.TieRadioButton(wxT("63"), 63);
+      S.EndRadioButtonGroup();
+   }
+   S.EndStatic();
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
+
    S.StartStatic( _("Display"),1 );
    {
       // JC: For layout of mixtures of controls I prefer checkboxes on the right,

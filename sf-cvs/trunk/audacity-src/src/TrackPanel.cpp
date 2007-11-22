@@ -2599,7 +2599,11 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
 #else
    bool spectrum;
 #endif
-   int windowSize, minBins = 0;
+   int windowSize, 
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+      fftSkipPoints=0, 
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
+      minBins = 0;
    double rate = ((WaveTrack *)track)->GetRate();
    ((WaveTrack *) track)->GetDisplay() == WaveTrack::SpectrumDisplay ? spectrum = true : spectrum = false;
 #ifdef LOGARITHMIC_SPECTRUM
@@ -2613,6 +2617,9 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       if(max > rate/2.)
          max = rate/2.;
       windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+      fftSkipPoints = gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), 0L);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
       binSize = rate / windowSize;
       minBins = wxMin(10, windowSize/2); //minimum 10 freq bins, unless there are less
    }
@@ -2626,6 +2633,9 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
          if(max > rate/2.)
             max = rate/2.;
          windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+         fftSkipPoints = gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), 0L);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
          binSize = rate / windowSize;
          minBins = wxMin(10, windowSize/2); //minimum 10 freq bins, unless there are less
       }

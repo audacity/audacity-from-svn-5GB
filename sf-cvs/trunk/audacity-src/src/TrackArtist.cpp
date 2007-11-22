@@ -363,11 +363,20 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       bool logF = ((WaveTrack *) t)->GetDisplay() == WaveTrack::SpectrumLogDisplay;
 #endif
       double rate = ((WaveTrack *) t)->GetRate();
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+      int fftSkipPoints = gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), 0L);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
       int freq = lrint(rate/2.);
       int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), freq);
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+      maxFreq/=(fftSkipPoints+1);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
       if(maxFreq > freq)
          maxFreq = freq;
       int minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+      minFreq/=(fftSkipPoints+1);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
       if(minFreq < 0) {
          minFreq = 0;
          gPrefs->Write(wxT("/Spectrum/MinFreq"), 0L);
@@ -400,19 +409,28 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 #ifdef LOGARITHMIC_SPECTRUM
    if (t->GetKind() == Track::Wave
    && ((WaveTrack *) t)->GetDisplay() == WaveTrack::SpectrumLogDisplay)
-    {  // SpectrumLog
+   {  // SpectrumLog
       if (r.height < 10)
          return;
       double rate = ((WaveTrack *) t)->GetRate();
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+      int fftSkipPoints = gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), 0L);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
       int freq = lrint(rate/2.);
-        int maxFreq = gPrefs->Read(wxT("/SpectrumLog/MaxFreq"), freq);
-       if(maxFreq > freq)
-            maxFreq = freq;
+      int maxFreq = gPrefs->Read(wxT("/SpectrumLog/MaxFreq"), freq);
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+      maxFreq/=(fftSkipPoints+1);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
+      if(maxFreq > freq)
+         maxFreq = freq;
       int minFreq = gPrefs->Read(wxT("/SpectrumLog/MinFreq"), freq/1000.0);
-       if(minFreq < 1) {
-          minFreq = 1;
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+      minFreq/=(fftSkipPoints+1);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
+      if(minFreq < 1) {
+         minFreq = 1;
            gPrefs->Write(wxT("/SpectrumLog/MinFreq"), 1L);
-        }
+      }
       /*
          draw the ruler
          we will use Hz if maxFreq is < 2000, otherwise we represent kHz,
@@ -1540,6 +1558,9 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    unsigned char *data = image->GetData();
 
    int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+   int fftSkipPoints = gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), 0L);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
    int half = windowSize/2;
    float *freq = new float[mid.width * half];
    sampleCount *where = new sampleCount[mid.width+1];
@@ -1627,7 +1648,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
       lmins=log(float(minFreq)/(fftSkipPoints+1)),
       lmaxs=log(float(maxFreq)/(fftSkipPoints+1)),
-#else
+#else //!EXPERIMENTAL_FFT_SKIP_POINTS
       lmins=lmin,
       lmaxs=lmax,
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
@@ -1644,7 +1665,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    const float 
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
       f2bin = half/(rate/2.0f/(fftSkipPoints+1)),
-#else
+#else //!EXPERIMENTAL_FFT_SKIP_POINTS
       f2bin = half/(rate/2.0f),
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
       bin2f = 1.0f/f2bin,

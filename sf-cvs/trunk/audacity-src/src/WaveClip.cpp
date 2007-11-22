@@ -76,6 +76,9 @@ public:
    {
       windowTypeOld = -1;
       windowSizeOld = -1;
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+      fftSkipPointsOld = -1;
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
       dirty = -1;
       start = -1.0;
       pps = 0.0;
@@ -93,6 +96,9 @@ public:
 
    int          windowTypeOld;
    int          windowSizeOld;
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+   int          fftSkipPointsOld;
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
    int          dirty;
    bool         ac;
    sampleCount  len;
@@ -381,12 +387,19 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
 {
    int windowType;
    int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+   int fftSkipPoints = gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), 0L);
+   int fftSkipPoints1 = fftSkipPoints+1;
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
    int half = windowSize/2;
    gPrefs->Read(wxT("/Spectrum/WindowType"), &windowType, 3);
 
    if (mSpecCache &&
        mSpecCache->windowTypeOld == windowType &&
        mSpecCache->windowSizeOld == windowSize &&
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+       mSpecCache->fftSkipPointsOld == fftSkipPoints &&
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
        mSpecCache->dirty == mDirty &&
        mSpecCache->start == t0 &&
        mSpecCache->ac == autocorrelation &&
@@ -421,6 +434,9 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
    if (oldCache->dirty == mDirty &&
        oldCache->windowTypeOld == windowType &&
        oldCache->windowSizeOld == windowSize &&
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+       oldCache->fftSkipPointsOld == fftSkipPoints &&
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
        oldCache->pps == pixelsPerSecond &&
        oldCache->ac == autocorrelation &&
        oldCache->where[0] < mSpecCache->where[mSpecCache->len] &&
@@ -446,7 +462,12 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
          }
    }
 
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+   float *buffer = new float[windowSize*fftSkipPoints1];
+   mSpecCache->fftSkipPointsOld = fftSkipPoints;
+#else //!EXPERIMENTAL_FFT_SKIP_POINTS
    float *buffer = new float[windowSize];
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
    mSpecCache->windowTypeOld = windowType;
    mSpecCache->windowSizeOld = windowSize;
 
@@ -474,14 +495,32 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
                len += start;
                start = 0;
             }
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+            if (start + len*fftSkipPoints1 > mSequence->GetNumSamples()) {
+               len = (mSequence->GetNumSamples() - start)/fftSkipPoints1;
+               for (i = len*fftSkipPoints1; i < (sampleCount)windowSize; i++)
+#else //!EXPERIMENTAL_FFT_SKIP_POINTS
             if (start + len > mSequence->GetNumSamples()) {
                len = mSequence->GetNumSamples() - start;
                for (i = len; i < (sampleCount)windowSize; i++)
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
                   adj[i] = 0;
             }
 
             if (len > 0)
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+               mSequence->Get((samplePtr)adj, floatSample, start, len*fftSkipPoints1);
+            if (fftSkipPoints) {
+               // TODO: (maybe) alternatively change Get to include skipping of points
+               int j=0;
+               for (int i=0; i < len; i++) {
+                  adj[i]=adj[j];
+                  j+=fftSkipPoints1;
+               }
+            }
+#else //!EXPERIMENTAL_FFT_SKIP_POINTS
                mSequence->Get((samplePtr)adj, floatSample, start, len);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
 
             ComputeSpectrum(buffer, windowSize, windowSize,
                             mRate, &mSpecCache->freq[half * x],

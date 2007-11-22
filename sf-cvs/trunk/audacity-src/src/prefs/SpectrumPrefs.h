@@ -43,6 +43,9 @@ private:
    wxString maxFreqStr;
    int windowType;
 
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+   int fftSkipPoints;
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
 #ifdef EXPERIMENTAL_FIND_NOTES
    bool fftFindNotes;
    bool findNotesQuantize;
