@@ -34,6 +34,10 @@ private:
 
    wxArrayString mLangCodes;
    wxArrayString mLangNames;
+
+#ifdef EXPERIMENTAL_SAVE_DEFAULT_VIEW
+   int mDefaultViewMode;
+#endif //EXPERIMENTAL_SAVE_DEFAULT_VIEW
 };
 
 #endif

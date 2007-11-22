@@ -44,6 +44,9 @@ void GUIPrefs::Populate( )
    mLangCodes.Add("kg");   mLangNames.Add("Klingon");
    mLangCodes.Add("ep");   mLangNames.Add("Esperanto");
 #endif
+#ifdef EXPERIMENTAL_SAVE_DEFAULT_VIEW
+   gPrefs->Read(wxT("/DefaultViewMode"), &mDefaultViewMode, 0L);
+#endif //EXPERIMENTAL_SAVE_DEFAULT_VIEW
 
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
@@ -118,6 +121,22 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
       S.EndRadioButtonGroup();
    }
    S.EndStatic();
+
+#ifdef EXPERIMENTAL_SAVE_DEFAULT_VIEW
+   S.StartStatic( _("Default View Mode") );
+   {
+      S.StartRadioButtonGroup( wxT("/GUI/DefaultViewMode"), mDefaultViewMode );
+      S.TieRadioButton( _("WaveformDisplay"), 0);
+      S.TieRadioButton( _("WaveformDBDisplay"), 1);
+      S.TieRadioButton( _("SpectrumDisplay"), 2);
+#ifdef LOGARITHMIC_SPECTRUM
+      S.TieRadioButton( _("SpectrumLogDisplay"), 3);
+#endif //LOGARITHMIC_SPECTRUM
+      S.TieRadioButton( _("PitchDisplay"), 4);
+      S.EndRadioButtonGroup();
+   }
+   S.EndStatic();
+#endif //EXPERIMENTAL_SAVE_DEFAULT_VIEW
 }
 
 bool GUIPrefs::Apply()
