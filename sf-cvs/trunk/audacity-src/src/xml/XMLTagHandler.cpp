@@ -110,28 +110,32 @@ bool XMLValueChecker::IsGoodInt(const wxString strInt)
    const size_t lenMAXABS = strlen("2147483647");
    const size_t lenStrInt = strInt.Length();
 
-   unsigned long nTest;
-   wxString strTest;
-
    if (lenStrInt > (lenMAXABS + 1))
       return false;
    else if ((lenStrInt == (lenMAXABS + 1)) && (strInt[0] == '-'))
    {
-      const unsigned long digitsMAXABS[] = {2, 1, 4, 7, 4, 8, 3, 6, 4, 8};
-      for (unsigned int i = 0; i < lenMAXABS; i++) {
-         strTest = strInt[i+1];
-         if (!strTest.ToULong(&nTest) || (nTest > digitsMAXABS[i]))
-            return false;
-      }
+      const int digitsMAXABS[] = {2, 1, 4, 7, 4, 8, 3, 6, 4, 9};
+      unsigned int i;
+      for (i = 0; i < lenMAXABS; i++)
+         if (strInt[i+1] < '0' || strInt[i+1] > '9')
+            return false; // not a digit
+            
+      for (i = 0; i < lenMAXABS; i++)
+         if (strInt[i+1] - '0' < digitsMAXABS[i])
+            return true; // number is small enough
+      return false;
    }
    else if (lenStrInt == lenMAXABS)
    {
-      const unsigned long digitsMAXABS[] = {2, 1, 4, 7, 4, 8, 3, 6, 4, 7};
-      for (unsigned int i = 0; i < lenMAXABS; i++) {
-         strTest = strInt[i];
-         if (!strTest.ToULong(&nTest) || (nTest > digitsMAXABS[i]))
-            return false;
-      }
+      const int digitsMAXABS[] = {2, 1, 4, 7, 4, 8, 3, 6, 4, 8};
+      unsigned int i;
+      for (i = 0; i < lenMAXABS; i++)
+         if (strInt[i] < '0' || strInt[i+1] > '9')
+            return false; // not a digit
+      for (i = 0; i < lenMAXABS; i++)
+         if (strInt[i] - '0' < digitsMAXABS[i])
+            return true; // number is small enough
+      return false;
    }
    return true;
 }
