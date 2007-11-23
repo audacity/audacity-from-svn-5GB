@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacity Website - 1.2\n"
+"Project-Id-Version: Audacity Website - 1.3\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2007-11-15 00:17+0100\n"
+"PO-Revision-Date: 2007-11-23 12:32+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Martin Srebotnjak <miles@filmsi.net>\n"
 "MIME-Version: 1.0\n"
@@ -1295,10 +1295,16 @@ msgid ""
 "  </ol>\n"
 "</p>"
 msgstr ""
+"<p>V skladu z razdelkom 3 licence GPL morate vključiti:\n"
+"  <ol>\n"
+"    <li>kopijo <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">licence GPL</a> in </li>\n"
+"    <li><a href=\"http://audacity.sourceforge.net/download/source\">izvorno kodo Audacity</a> (če razširjate spremenjeno različico, pa njeno izvorno kodo) ali pisno ponuditi oskrbo s kodo.</li>\n"
+"  </ol>\n"
+"</p>"
 
 #: about/license_t.php:46
 msgid "<p>If you distribute our installers and do not modify them, this will comply with both requirements as these include the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> and an offer in README.txt for users to obtain the source code from us. Versions of Audacity after 1.3.3 also include the GPL in the application itself, in the About Audacity dialog.</p>"
-msgstr ""
+msgstr "<p>Če razširjate naše namestitvene datoteke in jih ne spreminjate, s tem ustrežete obema zahtevama, saj vključujejo licenco <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> in ponudbo uporabnikom v datoteki README.txt, da od nas pridobijo izvorno kodo. Novejše različice Audacity od 1.3.3 vključujejo tudi GPL v sami aplikaciji, v pogovornem oknu O Audacity.</p>"
 
 #: about/license_t.php:48
 msgid "<p>We would appreciate your linking to our website: <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> so your users can download updated versions of Audacity when released. Also, please subscribe to the notifications list at the bottom of <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> to ensure you are notified of and can distribute the latest version of Audacity.</p>"
@@ -1306,15 +1312,15 @@ msgstr ""
 
 #: about/license_t.php:50
 msgid "<p>If possible, please include the Audacity documentation from <a href=\"http://audacity.sourceforge.net/help/documentation\">http://audacity.sourceforge.net/help/documentation</a> with your distribution, to reduce the number of queries we receive. Also, please make it clear in your documentation that the Audacity Team cannot offer support on your own your product, only on Audacity. </p>"
-msgstr ""
+msgstr "<p>Če je le mogoče, vključite v svojo distribucijo dokumentacijo Audacity z naslova <a href=\"http://audacity.sourceforge.net/help/documentation\">http://audacity.sourceforge.net/help/documentation</a>, tako da zmanjšate število povpraševanj, ki jih prejemamo. Prav tako vas prosimo, da v svoji dokumentaciji jasno razložite, da ekipa Audacity ne more zagotoviti podpore za vaš lasten izdelek, le za Audacity. </p>"
 
 #: about/license_t.php:52
 msgid "<p>IMPORTANT: If you write your own documentation on Audacity, please let us review it for possible errors, <em>before</em> you publish it.</p>"
-msgstr ""
+msgstr "<p>POMEMBNO: Če pišete lastno dokumentacijo o Audacity, nam jo, prosimo, dajte v pregled za odpravo morebitnih napak, <em>preden</em> jo objavite.</p>"
 
 #: about/license_t.php:54
 msgid "<p>If you modify Audacity without the express permission of the Audacity Team, you do not have the right to use the name Audacity, which is registered trademark of Dominic Mazzoni.  You must rename the product and provide all of your own technical support.</p>"
-msgstr ""
+msgstr "<p>Če spreminjate Audacity brez izrecnega dovoljenja ekipe Audacity, nimate pravice uporabljati imena Audacity, ki je registrirana blagovna znamka Dominica Mazzonija.  Izdelek morate poimenovati drugače in ponuditi lastno tehnično pomoč.</p>"
 
 #: about/license_t.php:56
 msgid ""
@@ -1346,11 +1352,11 @@ msgstr ""
 
 #: about/license_t.php:78
 msgid "<p>You may not advertise yourself or your business as an authorized distributor of Audacity. The name Audacity is a registered trademark of Dominic Mazzoni.</p>"
-msgstr ""
+msgstr "<p>Sebe ali svojega podjetja ne smete oglaševati kot avtoriziranega distributerja Audacity. Ime Audacity je registrirana blagovna znamka Dominica Mazzonija.</p>"
 
 #: about/license_t.php:80
 msgid "<p>See <a href=\"http://audacityteam.org/wiki/index.php?title=AudacityVendors#Advice_for_Vendors\">Advice for Vendors</a> on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a> for further advice.</p>"
-msgstr ""
+msgstr "<p>Oglejte si <a href=\"http://audacityteam.org/wiki/index.php?title=AudacityVendors#Advice_for_Vendors\">Nasvet za prodajalce</a> na <a href=\"http://audacityteam.org/wiki\">wikiju Audacity</a> za nadaljnje nasvete.</p>"
 
 #: about/news.php:21
 #: index.php:112
@@ -5100,7 +5106,7 @@ msgstr "Audacity je brezplačna odprto-kodna aplikacija za snemanje in urejanje 
 
 #: index.php:53
 msgid "The latest release of Audacity is <a href=\"/download\">1.3.4 (beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x beta series."
-msgstr ""
+msgstr "Najnovejša različica Audacity je <a href=\"/download\">1.3.4 (beta)</a>. Ker gre za delo v nastajanju in ker še nima popolne dokumentacije ali prevodov v druge jezike, jo svetujemo le naprednejšim uporabnikom. Oglejte si <a href=\"/download/features-1.3-a\">Nove odlike v 1.3</a> za več podatkov o nizu izdaj 1.3.x beta."
 
 #: index.php:55
 msgid "For all users, <a href=\"/download\">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have both Audacity 1.2.6 and 1.3.3 installed simultaneously."
