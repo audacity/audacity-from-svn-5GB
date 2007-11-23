@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.4\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2007-11-14 23:53+0100\n"
+"PO-Revision-Date: 2007-11-23 12:33+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Martin Srebotnjak <miles@filmsi.net>\n"
 "MIME-Version: 1.0\n"
@@ -165,8 +165,8 @@ msgstr "Vhodno merilo"
 msgid "Output Meter"
 msgstr "Merilo izhoda"
 
-#. i18n-hint: Mac OS X shortcut should be Ctrl+,
 #. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
+#. i18n-hint: Mac OS X shortcut should be Ctrl+,
 #: AudacityApp.cpp:734
 #: Menus.cpp:470
 msgid "&Preferences...\tCtrl+,"
@@ -382,7 +382,7 @@ msgstr "Datotek v mapi samodejnega shranjevanja ni mogoèe o¹tevilèiti"
 #: WaveTrack.cpp:548
 #: WaveTrack.cpp:567
 #: WaveTrack.cpp:1656
-#: effects/Effect.cpp:433
+#: effects/Effect.cpp:436
 #: export/ExportMP2.cpp:230
 #: prefs/DirectoriesPrefs.cpp:189
 #: prefs/KeyConfigPrefs.cpp:245
@@ -417,7 +417,7 @@ msgid "C&hoose command"
 msgstr "&Izberi ukaz"
 
 #: BatchCommands.cpp:477
-msgid "Stereo To Mono Effect not found"
+msgid "Stereo to Mono Effect not found"
 msgstr "Uèinka Stereo v mono ni mogoèe najti"
 
 #: BatchCommands.cpp:497
@@ -558,7 +558,7 @@ msgstr "&Dodaj"
 #: Tags.cpp:783
 #: Tags.cpp:1423
 #: Tags.cpp:2023
-#: TrackPanel.cpp:3983
+#: TrackPanel.cpp:4145
 msgid "&Remove"
 msgstr "&Odstrani"
 
@@ -943,7 +943,7 @@ msgid "Frequency Analysis"
 msgstr "Analiza frekvence"
 
 #: FreqWindow.cpp:140
-#: TrackPanel.cpp:507
+#: TrackPanel.cpp:510
 msgid "Spectrum"
 msgstr "Spekter"
 
@@ -1117,8 +1117,8 @@ msgid "<p>Welcome to Audacity "
 msgstr "<p>Dobrodo¹li v Audacity "
 
 #: HelpText.cpp:134
-msgid "Let's get started!</p><p>You can click on the links below to learn how to:<ul><li>[[play|play back]] an existing sound file.<li>[[record|record]] a new sound file.<li>[[edit|edit]] sound and [[export|export]] to a sound file like MP3. <li>[[burnCD|burn to a CD]] </ul><br><br>"
-msgstr "Pa zaènimo!</p><p>Kliknite na spodnje povezave, da izveste:<ul><li>kako [[play|predvajamo]] obstojeèo zvoèno datoteko,<li>kako [[record|posnamemo]] novo zvoèno datoteko,<li>kako [[edit|zmontiramo]] zvoke in [[export|izvozimo]] v zvoèno datoteko, kot je MP3,<li>kako jih [[burncd|zapeèemo na CD]]. </ul><br><br>"
+msgid "Let's get started!</p><p>You can click on the links below to learn how to:<ul><li>[[play|play back]] an existing sound file.<li>[[record|record]] a new sound file.<li>[[edit|edit]] sound and [[export|export]] to a sound file like MP3. <li>[[burncd|burn to a CD]] </ul><br><br>"
+msgstr "Pa zaènimo!</p><p>Kliknite na spodnje povezave, da izveste:<ul><li>kako [[play|predvajamo]] obstojeèo zvoèno datoteko;<li>kako [[record|posnamemo]] novo zvoèno datoteko;<li>kako [[edit|zmontiramo]] zvoke in jih [[export|izvozimo]] v zvoèno datoteko, kot je MP3;<li>kako jih [[burncd|zapeèemo na CD]]; </ul><br><br>"
 
 #: HelpText.cpp:142
 msgid "You can always get back to these instructions by clicking the 'Help' menu, then 'Show Welcome Message.' For more detailed reading, please read our full Help by clicking the 'Help' menu, then 'Index', or <a href=\"http://audacity.sourceforge.net/help/documentation\">download our Manual</a> in PDF format.<br><br>Welcome again to Audacity."
@@ -1126,7 +1126,7 @@ msgstr "Vedno se lahko vrnete k tem napotkom z izbiro menija 'Pomoè', nato 'Poka
 
 #: HelpText.cpp:156
 msgid "You can either drag existing files into Audacity, or use the <b>File > Import > Audio</b> command. <b>File > Open</b> does the same, but opens a new Audacity window for any file after the first.<br/><br/>These are the main formats Audacity will play: <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis, WAV</b>.  If your file is in some other format see (format help). If you want to import an audio CD, see [[wiki:How to import CDs|How to import CDs]]<br><br>To start playing your audio, press the green Play button. To stop, press the yellow Stop button. You can also use spacebar to either play or stop. When you start playing again after stopping, playback resumes from its previous starting point. To change the starting point, use the <b>|&lt;&lt;</b> and <b>&gt;&gt;|</b> buttons to skip to the start or end respectively, or click anywhere in the track to restart from that point.<br><br>"
-msgstr ""
+msgstr "Obstojeèe datoteke lahko povleèete v Audacity ali pa uporabite ukaz <b>File > Uvozi > Zvok</b>. <b>Datoteka > Odpri</b> naredi enako, vendar odpre novo okno Audacity za vsako novo datoteko po prvi.<br/><br/>Sledijo glavne vrste datotek, ki jih predvaja Audacity: <b>AIFF, AU, FLAC, M4A</b> (samo na Macih), <b>MP2/MP3, OGG Vorbis, WAV</b>.  Èe je va¹a datoteka v kak¹nem drugem zapisu, si oglejte pomoè. Èe ¾elite uvoziti zvoèni CD, si oglejte [[wiki:How to import CDs|Kako uvozimo CD]]<br><br>Za zaèetek predvajanja zvoka pritisnite zeleni gumb Predvajaj. Za ustavitev predvajanja pritisnite rumeni gumb Ustavi. Uporabite lahko tudi preslednico - za predvajanje ali njegovo ustavitev. Ko po prekinitvi zaènete znova predvajati, se le-to nadaljuje od prej¹nje zaèetne toèke. Za spremembo zaèetne toèke uporabite gumba <b>|&lt;&lt;</b> in <b>&gt;&gt;|</b>, da skoèite na zaèetek oz. konec, ali pa kliknite kamor koli na sledi, da zaènete s te toèke.<br><br>"
 
 #: HelpText.cpp:179
 msgid "<b>To start recording, press the red Record button</b>. Before doing so however, there are three crucial settings you must check:<br><br>(1) The <b>Recording Device</b>, set in the Audio I/O tab of Preferences. By default Audacity will use the current system device, which is usually your inbuilt sound device, so you may not need to set this. But if you're using an external USB or Firewire device such as a USB turntable, make sure this device is selected as your recording device. <br><br>(2) The <b>input source</b> for your device, such as microphone or line-in. <ul><li><b>On Windows</b>, you normally choose your input in the dropdown selector on the right of the <b>Mixer Toolbar<b> <i>note: on Vista, you must do so at Recording Device on the Audio I/O Preferences tab.</i></li><li><b>On a Mac</b>, you normally choose input sources outside Audacity, in Apple Audio-MIDI Setup.</li></ul><i>Note: many USB or Firewire devices don't have a choice of inputs, so you can ignore this step - see the documentation for your device. <br><br>(3) <b>Input volume</b>. Before recording for real, make a test recording to set the input level, so that it's neither too soft or too loud.To do this, see this [[wiki:Recording levels|illustrated guide]] or follow these two steps: <ol><li>Turn on <b>monitoring</b>, by either double-clicking over the right-hand of the two VU Meters, or right-clicking over it and choosing \"Start Monitoring\". If you do not see the meters, click View > Toolbars and check \"Meter Toolbar\". <li>Press Record, and adjust the input volume slider on the Mixer Toolbar (by the microphone symbol), so that the red bars in the meter come close to (but do not touch) the right edge of the scale. If you can't hear the sound, go to the Audio I/O tab of Preferences and check \"Software Playthrough\". </ol><br><br>There is more help if you're stuck: our Recording FAQs, our Tutorial  <b>Your First Recording </b> in the Manual, and our Wiki [[wiki:Recording Tips|Recording Tips]], especially the [[wiki:Troubleshooting Recordings|Troubleshooting Recordings]] section. <br><br>"
@@ -1506,7 +1506,7 @@ msgstr "Po&dvoji\tCtrl+D"
 #: Menus.cpp:356
 #: Menus.cpp:556
 #: effects/StereoToMono.h:23
-msgid "&Stereo To Mono"
+msgid "&Stereo to Mono"
 msgstr "&Stereo v mono"
 
 #: Menus.cpp:363
@@ -2204,7 +2204,7 @@ msgid "Nothing to redo"
 msgstr "Ponovitev ni izvedljiva"
 
 #: Menus.cpp:2336
-#: TrackPanel.cpp:546
+#: TrackPanel.cpp:552
 #: toolbars/EditToolBar.cpp:133
 msgid "Cut"
 msgstr "Izre¾i"
@@ -2224,7 +2224,7 @@ msgstr "Razdvoji in izre¾i v odlo¾i¹èe"
 #: Menus.cpp:2439
 #: Menus.cpp:2510
 #: Menus.cpp:2604
-#: TrackPanel.cpp:548
+#: TrackPanel.cpp:554
 #: toolbars/EditToolBar.cpp:137
 msgid "Paste"
 msgstr "Prilepi"
@@ -2369,7 +2369,7 @@ msgid "Disjoined labeled regions"
 msgstr "Oznaèena podroèja razdru¾evanja"
 
 #: Menus.cpp:2917
-#: TrackPanel.cpp:5859
+#: TrackPanel.cpp:6024
 msgid "Split"
 msgstr "Razdvoji"
 
@@ -2608,11 +2608,11 @@ msgstr "Me¹anje in izdelava sledi"
 msgid "Note Track"
 msgstr "Notiraj sled"
 
-#: Printing.cpp:187
+#: Printing.cpp:198
 msgid "There was a problem printing."
 msgstr "Pri tiskanju je pri¹lo do te¾av."
 
-#: Printing.cpp:188
+#: Printing.cpp:199
 msgid "Print"
 msgstr "Natisni"
 
@@ -2630,13 +2630,13 @@ msgid "(Recovered)"
 msgstr "(obnovljeno)"
 
 #: Project.cpp:1472
-#: TrackPanel.cpp:770
+#: TrackPanel.cpp:776
 #: toolbars/ControlToolBar.cpp:191
 msgid "Record"
 msgstr "Posnemi"
 
 #: Project.cpp:1472
-#: TrackPanel.cpp:770
+#: TrackPanel.cpp:776
 msgid "Recorded Audio"
 msgstr "Posneti zvok"
 
@@ -2970,7 +2970,7 @@ msgid "Gap detected in project file\n"
 msgstr "V projektni datoteki je opa¾ena luknja/razmik\n"
 
 #: ShuttleGui.cpp:1852
-#: effects/Effect.cpp:339
+#: effects/Effect.cpp:342
 #: effects/audiounits/AudioUnitEffect.cpp:872
 msgid "Pre&view"
 msgstr "Pre&dogled"
@@ -3373,422 +3373,426 @@ msgstr ""
 msgid "Specify Time"
 msgstr "Doloèite èas"
 
-#: TrackPanel.cpp:448
-#: TrackPanel.cpp:449
+#: TrackPanel.cpp:451
+#: TrackPanel.cpp:452
 msgid "Track Panel"
 msgstr "Podokno sledi"
 
-#: TrackPanel.cpp:492
+#: TrackPanel.cpp:495
 #: export/ExportPCM.cpp:133
 #: prefs/QualityPrefs.cpp:97
 msgid "Other..."
 msgstr "Drugo ..."
 
-#: TrackPanel.cpp:500
-#: TrackPanel.cpp:521
-#: TrackPanel.cpp:530
-#: TrackPanel.cpp:538
+#: TrackPanel.cpp:503
+#: TrackPanel.cpp:527
+#: TrackPanel.cpp:536
+#: TrackPanel.cpp:544
 msgid "Name..."
 msgstr "Ime ..."
 
-#: TrackPanel.cpp:502
-#: TrackPanel.cpp:523
-#: TrackPanel.cpp:534
+#: TrackPanel.cpp:505
+#: TrackPanel.cpp:529
 #: TrackPanel.cpp:540
+#: TrackPanel.cpp:546
 msgid "Move Track Up"
 msgstr "Premakni sled navzgor"
 
-#: TrackPanel.cpp:503
-#: TrackPanel.cpp:524
-#: TrackPanel.cpp:535
+#: TrackPanel.cpp:506
+#: TrackPanel.cpp:530
 #: TrackPanel.cpp:541
+#: TrackPanel.cpp:547
 msgid "Move Track Down"
 msgstr "Premakni sled navzdol"
 
-#: TrackPanel.cpp:505
-#: effects/ToneGen.cpp:303
+#: TrackPanel.cpp:508
+#: effects/ToneGen.cpp:325
 msgid "Waveform"
 msgstr "Signalna oblika"
 
-#: TrackPanel.cpp:506
+#: TrackPanel.cpp:509
 msgid "Waveform (dB)"
 msgstr "Signalna oblika (dB)"
 
-#: TrackPanel.cpp:508
+#: TrackPanel.cpp:512
+msgid "Spectrum log(f)"
+msgstr "Spektralni logaritem(f)"
+
+#: TrackPanel.cpp:514
 msgid "Pitch (EAC)"
 msgstr "Vi¹ina tona (EAC)"
 
-#: TrackPanel.cpp:510
-#: TrackPanel.cpp:5829
+#: TrackPanel.cpp:516
+#: TrackPanel.cpp:5994
 msgid "Mono"
 msgstr "Mono"
 
-#: TrackPanel.cpp:511
-#: TrackPanel.cpp:5828
+#: TrackPanel.cpp:517
+#: TrackPanel.cpp:5993
 msgid "Left Channel"
 msgstr "Levi kanal"
 
-#: TrackPanel.cpp:512
-#: TrackPanel.cpp:5828
+#: TrackPanel.cpp:518
+#: TrackPanel.cpp:5993
 msgid "Right Channel"
 msgstr "Desni kanal"
 
-#: TrackPanel.cpp:513
+#: TrackPanel.cpp:519
 msgid "Make Stereo Track"
 msgstr "Naredi stereo sled"
 
-#: TrackPanel.cpp:514
+#: TrackPanel.cpp:520
 msgid "Split Stereo Track"
 msgstr "Razdvoji stereo sled"
 
-#: TrackPanel.cpp:516
+#: TrackPanel.cpp:522
 msgid "Set Sample Format"
 msgstr "Nastavi obliko vzorcev"
 
-#: TrackPanel.cpp:518
-#: TrackPanel.cpp:6046
+#: TrackPanel.cpp:524
+#: TrackPanel.cpp:6223
 msgid "Set Rate"
 msgstr "Nastavi frekvenco"
 
-#: TrackPanel.cpp:526
+#: TrackPanel.cpp:532
 msgid "Up Octave"
 msgstr "Zvi¹aj za oktavo"
 
-#: TrackPanel.cpp:527
+#: TrackPanel.cpp:533
 msgid "Down Octave"
 msgstr "Zni¾aj za oktavo"
 
-#: TrackPanel.cpp:532
+#: TrackPanel.cpp:538
 msgid "Font..."
 msgstr "Pisava ..."
 
-#: TrackPanel.cpp:543
+#: TrackPanel.cpp:549
 msgid "Set Range..."
 msgstr "Nastavi podroèje ..."
 
-#: TrackPanel.cpp:547
+#: TrackPanel.cpp:553
 #: toolbars/EditToolBar.cpp:135
 msgid "Copy"
 msgstr "Kopiraj"
 
-#: TrackPanel.cpp:1237
+#: TrackPanel.cpp:1250
 msgid "Click to vertically zoom in, Shift-click to zoom out, Drag to create a particular zoom region."
 msgstr "Kliknite za navpièno poveèavo, kliknite s Shift-om za pomanj¹anje, povlecite za ustvarjanje doloèenega podroèja za poveèavo."
 
-#: TrackPanel.cpp:1242
+#: TrackPanel.cpp:1255
 msgid "Drag the label vertically to change the order of the tracks."
 msgstr "Povlecite naslov vertikalno, da boste spremenili vrstni red posnetkov."
 
-#: TrackPanel.cpp:1262
+#: TrackPanel.cpp:1275
 msgid "Click and drag to adjust relative size of stereo tracks."
 msgstr "Kliknite in povlecite, da izbolj¹ate relativno velikost stereo posnetkov."
 
-#: TrackPanel.cpp:1265
+#: TrackPanel.cpp:1278
 msgid "Click and drag to resize the track."
 msgstr "Kliknite in povlecite, da bi spremenili velikost posnetka."
 
-#: TrackPanel.cpp:1296
+#: TrackPanel.cpp:1309
 msgid "Drag one or more label boundaries"
 msgstr "Povlecite eno ali veè mej oznak"
 
-#: TrackPanel.cpp:1297
+#: TrackPanel.cpp:1310
 msgid "Drag label boundary"
 msgstr "Povlecite mejo oznake"
 
 #. i18n-hint: This string is for the Mac OS, which uses Command-, as the shortcut for Preferences
-#: TrackPanel.cpp:1313
+#: TrackPanel.cpp:1326
 msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
 msgstr "Veèorodni naèin: Cmd-, za nastavitve mi¹ke in tipkovnice"
 
 #. i18n-hint: This string is for Windows and Linux, which uses Control-P as the shortcut for Preferences
-#: TrackPanel.cpp:1316
+#: TrackPanel.cpp:1329
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
 msgstr "Veèorodni naèin: Ctrl-P za nastavitve mi¹ke in tipkovnice"
 
-#: TrackPanel.cpp:1336
+#: TrackPanel.cpp:1349
 msgid "Click and drag to move left selection boundary."
 msgstr "Kliknite in povlecite, da bi premaknili levi okvir izbora."
 
-#: TrackPanel.cpp:1341
+#: TrackPanel.cpp:1354
 msgid "Click and drag to move right selection boundary."
 msgstr "Kliknite in povlecite, da bi premaknili desni okvir izbora."
 
-#: TrackPanel.cpp:1667
-#: TrackPanel.cpp:3775
-#: TrackPanel.cpp:3807
-#: TrackPanel.cpp:4062
-#: TrackPanel.cpp:6158
-#: TrackPanel.cpp:6178
+#: TrackPanel.cpp:1680
+#: TrackPanel.cpp:3937
+#: TrackPanel.cpp:3969
+#: TrackPanel.cpp:4224
+#: TrackPanel.cpp:6335
+#: TrackPanel.cpp:6355
 msgid "Modified Label"
 msgstr "Spremenjen naslov"
 
-#: TrackPanel.cpp:1668
-#: TrackPanel.cpp:3776
-#: TrackPanel.cpp:3808
-#: TrackPanel.cpp:4063
-#: TrackPanel.cpp:6159
-#: TrackPanel.cpp:6179
+#: TrackPanel.cpp:1681
+#: TrackPanel.cpp:3938
+#: TrackPanel.cpp:3970
+#: TrackPanel.cpp:4225
+#: TrackPanel.cpp:6336
+#: TrackPanel.cpp:6356
 msgid "Label Edit"
 msgstr "Uredi naslov"
 
-#: TrackPanel.cpp:1895
+#: TrackPanel.cpp:1908
 msgid "Adjusted envelope."
 msgstr "Optimirana kuverta."
 
-#: TrackPanel.cpp:1896
+#: TrackPanel.cpp:1909
 #: prefs/MousePrefs.cpp:115
 msgid "Envelope"
 msgstr "Ovojnica"
 
-#: TrackPanel.cpp:2032
+#: TrackPanel.cpp:2045
 msgid "Moved clip to another track"
 msgstr "Posnetek premaknjen na drugo sled"
 
-#: TrackPanel.cpp:2036
+#: TrackPanel.cpp:2049
 msgid "left"
 msgstr "levo"
 
-#: TrackPanel.cpp:2036
+#: TrackPanel.cpp:2049
 msgid "right"
 msgstr "desno"
 
 #. i18n-hint: %s is a direction like left or right
-#: TrackPanel.cpp:2038
+#: TrackPanel.cpp:2051
 #, c-format
 msgid "Time shifted tracks/clips %s %.02f seconds"
 msgstr "Èasovno %s zamaknjene sledi/posnetki %.02f sekund"
 
-#: TrackPanel.cpp:2042
+#: TrackPanel.cpp:2055
 #: prefs/MousePrefs.cpp:111
 #: prefs/MousePrefs.cpp:112
 #: prefs/MousePrefs.cpp:113
 msgid "Time-Shift"
 msgstr "Èasovni zamik"
 
-#: TrackPanel.cpp:2735
+#: TrackPanel.cpp:2897
 msgid "Draw currently only works with linear-view waveforms."
 msgstr "Risanje trenutno deluje le z linearno prikazanimi signalnimi oblikami."
 
-#: TrackPanel.cpp:2752
+#: TrackPanel.cpp:2914
 msgid "You are not zoomed in enough. Zoom in until you can see the individual samples."
 msgstr "Niste dovolj poveèali pogleda. Poveèajte pogled, dokler ne vidite posameznih vzorcev."
 
-#: TrackPanel.cpp:3023
+#: TrackPanel.cpp:3185
 msgid "Moved Sample"
 msgstr "Premaknjeni vzorec"
 
-#: TrackPanel.cpp:3024
+#: TrackPanel.cpp:3186
 msgid "Sample Edit"
 msgstr "Urejanje vzorcev"
 
-#: TrackPanel.cpp:3123
+#: TrackPanel.cpp:3285
 #, c-format
 msgid "Removed track '%s.'"
 msgstr "Odstranjen posnetek '%s.'"
 
-#: TrackPanel.cpp:3125
+#: TrackPanel.cpp:3287
 msgid "Track Remove"
 msgstr "Odstrani sled"
 
-#: TrackPanel.cpp:3266
+#: TrackPanel.cpp:3428
 msgid "Moved gain slider"
 msgstr "Premaknjeni drsnik ojaèitve"
 
-#: TrackPanel.cpp:3266
+#: TrackPanel.cpp:3428
 msgid "Moved pan slider"
 msgstr "Premaknjeni drsnik zasuka"
 
 #. i18n-hint: Title of the Gain slider, used to adjust the volume
-#: TrackPanel.cpp:3267
-#: TrackPanel.cpp:5476
-#: TrackPanel.cpp:6827
+#: TrackPanel.cpp:3429
+#: TrackPanel.cpp:5638
+#: TrackPanel.cpp:7003
 msgid "Gain"
 msgstr "Okrepitev"
 
 #. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#: TrackPanel.cpp:3267
-#: TrackPanel.cpp:5414
-#: TrackPanel.cpp:6834
+#: TrackPanel.cpp:3429
+#: TrackPanel.cpp:5576
+#: TrackPanel.cpp:7010
 msgid "Pan"
 msgstr "Zasuk"
 
-#: TrackPanel.cpp:3392
-#: TrackPanel.cpp:6111
+#: TrackPanel.cpp:3554
+#: TrackPanel.cpp:6288
 #: effects/ChangePitch.cpp:284
 msgid "up"
 msgstr "navzgor"
 
-#: TrackPanel.cpp:3396
-#: TrackPanel.cpp:6112
+#: TrackPanel.cpp:3558
+#: TrackPanel.cpp:6289
 #: effects/ChangePitch.cpp:284
 msgid "down"
 msgstr "navzdol"
 
-#: TrackPanel.cpp:3403
-#: TrackPanel.cpp:6107
+#: TrackPanel.cpp:3565
+#: TrackPanel.cpp:6284
 #, c-format
 msgid "Moved '%s' %s"
 msgstr "Premaknjeno '%s' %s"
 
-#: TrackPanel.cpp:3406
-#: TrackPanel.cpp:6113
+#: TrackPanel.cpp:3568
+#: TrackPanel.cpp:6290
 msgid "Move Track"
 msgstr "Premakni sled"
 
-#: TrackPanel.cpp:3962
+#: TrackPanel.cpp:4124
 msgid "Expand"
 msgstr "Razpostri"
 
-#: TrackPanel.cpp:3962
+#: TrackPanel.cpp:4124
 msgid "Expanded Cut Line"
 msgstr "Èrta reza raz¹irjena"
 
-#: TrackPanel.cpp:3971
+#: TrackPanel.cpp:4133
 msgid "Merge"
 msgstr "Spoji"
 
-#: TrackPanel.cpp:3971
+#: TrackPanel.cpp:4133
 msgid "Merged Clips"
 msgstr "Spojeni posnetki"
 
-#: TrackPanel.cpp:3983
+#: TrackPanel.cpp:4145
 msgid "Removed Cut Line"
 msgstr "Èrta reza odstranjena"
 
-#: TrackPanel.cpp:5414
+#: TrackPanel.cpp:5576
 msgid "Adjusted Pan"
 msgstr "Prilagojeni zasuk"
 
-#: TrackPanel.cpp:5476
+#: TrackPanel.cpp:5638
 msgid "Adjusted gain"
 msgstr "Prilagojena ojaèitev"
 
-#: TrackPanel.cpp:5656
+#: TrackPanel.cpp:5821
 msgid "Can't delete track with active audio"
 msgstr "Sledi z aktivnim zvokom ni mogoèe izbrisati"
 
-#: TrackPanel.cpp:5809
+#: TrackPanel.cpp:5974
 msgid "Stereo, "
 msgstr "Stereo, "
 
-#: TrackPanel.cpp:5812
+#: TrackPanel.cpp:5977
 msgid "Mono, "
 msgstr "Mono, "
 
-#: TrackPanel.cpp:5814
+#: TrackPanel.cpp:5979
 msgid "Left, "
 msgstr "Levo, "
 
-#: TrackPanel.cpp:5816
+#: TrackPanel.cpp:5981
 msgid "Right, "
 msgstr "Desno, "
 
-#: TrackPanel.cpp:5838
-#: TrackPanel.cpp:5951
+#: TrackPanel.cpp:6003
+#: TrackPanel.cpp:6128
 #, c-format
 msgid "Changed '%s' to %s"
 msgstr "Spremenjeno: '%s' v %s"
 
-#: TrackPanel.cpp:5843
+#: TrackPanel.cpp:6008
 msgid "Channel"
 msgstr "Kanal"
 
-#: TrackPanel.cpp:5856
+#: TrackPanel.cpp:6021
 #, c-format
 msgid "Split stereo track '%s'"
 msgstr "Razdvoji stereo sled '%s'"
 
-#: TrackPanel.cpp:5877
+#: TrackPanel.cpp:6042
 #, c-format
 msgid "Made '%s' a stereo track"
 msgstr "Stereo posnetek '%s' narejen."
 
-#: TrackPanel.cpp:5880
+#: TrackPanel.cpp:6045
 msgid "Make Stereo"
 msgstr "Naredi stereo"
 
-#: TrackPanel.cpp:5915
+#: TrackPanel.cpp:6092
 #, c-format
 msgid "Changed '%s' to %d Hz"
 msgstr "Spremenjeno: '%s' v %d Hz"
 
-#: TrackPanel.cpp:5917
+#: TrackPanel.cpp:6094
 msgid "Rate Change"
 msgstr "Sprememba mere"
 
-#: TrackPanel.cpp:5955
+#: TrackPanel.cpp:6132
 msgid "Format Change"
 msgstr "Sprememba formata:"
 
-#: TrackPanel.cpp:6045
+#: TrackPanel.cpp:6222
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
 msgstr "Vnesite frekvenco vzorèenja v Hz (na sekundo) med 1 in 100000:"
 
-#: TrackPanel.cpp:6055
+#: TrackPanel.cpp:6232
 msgid "Invalid rate."
 msgstr "Nepravilna frekvenca."
 
-#: TrackPanel.cpp:6075
+#: TrackPanel.cpp:6252
 msgid "Change lower speed limit (%) to:"
 msgstr "Spremeni spodnjo mejo hitrosti (%) na:"
 
-#: TrackPanel.cpp:6076
-#: TrackPanel.cpp:6077
+#: TrackPanel.cpp:6253
+#: TrackPanel.cpp:6254
 msgid "Lower speed limit"
 msgstr "Spodnja meja hitrosti"
 
-#: TrackPanel.cpp:6082
+#: TrackPanel.cpp:6259
 msgid "Change upper speed limit (%) to:"
 msgstr "Spremeni zgornjo mejo hitrosti (%) na:"
 
-#: TrackPanel.cpp:6083
-#: TrackPanel.cpp:6084
+#: TrackPanel.cpp:6260
+#: TrackPanel.cpp:6261
 msgid "Upper speed limit"
 msgstr "Zgornja meja hitrosti"
 
-#: TrackPanel.cpp:6092
+#: TrackPanel.cpp:6269
 #, c-format
 msgid "Set range to '%d' - '%d'"
 msgstr "Nastavi obmoèje na '%d' - '%d'"
 
-#: TrackPanel.cpp:6095
+#: TrackPanel.cpp:6272
 msgid "Set Range"
 msgstr "Nastavi podroèje"
 
-#: TrackPanel.cpp:6140
+#: TrackPanel.cpp:6317
 msgid "Change track name to:"
 msgstr "Spremeni naslov posnetka v:"
 
-#: TrackPanel.cpp:6141
+#: TrackPanel.cpp:6318
 msgid "Track Name"
 msgstr "Ime sledi"
 
-#: TrackPanel.cpp:6144
+#: TrackPanel.cpp:6321
 #, c-format
 msgid "Renamed '%s' to '%s'"
 msgstr "Preimenovano '%s' v '%s'"
 
-#: TrackPanel.cpp:6147
+#: TrackPanel.cpp:6324
 msgid "Name Change"
 msgstr "Sprememba imena"
 
-#: TrackPanel.cpp:6213
+#: TrackPanel.cpp:6390
 msgid "Label Track Font"
 msgstr "Pisava naslova sledi"
 
-#: TrackPanel.cpp:6225
+#: TrackPanel.cpp:6402
 msgid "Face name"
 msgstr "Ime pisave"
 
-#: TrackPanel.cpp:6234
+#: TrackPanel.cpp:6411
 msgid "Face size"
 msgstr "Velikost pisave"
 
-#: TrackPanel.cpp:6754
+#: TrackPanel.cpp:6930
 msgid "Mute"
 msgstr "Uti¹aj"
 
-#: TrackPanel.cpp:6754
+#: TrackPanel.cpp:6930
 msgid "Solo"
 msgstr "Solo"
 
@@ -4286,8 +4290,8 @@ msgstr "Zaporedje DTMF:"
 
 #: effects/DtmfGen.cpp:444
 #: effects/Noise.cpp:255
-#: effects/ToneGen.cpp:306
-#: effects/ToneGen.cpp:342
+#: effects/ToneGen.cpp:328
+#: effects/ToneGen.cpp:364
 msgid "Amplitude (0-1)"
 msgstr "Amplituda (0-1)"
 
@@ -4362,15 +4366,15 @@ msgstr "Odmev ..."
 msgid "Performing Echo"
 msgstr "Izvajanje odmeva"
 
-#: effects/Effect.cpp:387
+#: effects/Effect.cpp:390
 msgid "Preparing preview"
 msgstr "Priprava predposlu¹anja"
 
-#: effects/Effect.cpp:416
+#: effects/Effect.cpp:419
 msgid "Previewing"
 msgstr "Predposlu¹anje"
 
-#: effects/Effect.cpp:432
+#: effects/Effect.cpp:435
 msgid "Error while opening sound device. Please check the output device settings and the project sample rate."
 msgstr "Napaka pri odpiranju zvoène naprave. Prosimo preverite nastavitve izhodne naprave in mero vzorèenja projekta."
 
@@ -4916,79 +4920,92 @@ msgid "Applying Spike Cleaner..."
 msgstr "Izvajanje Èistilca konic ..."
 
 #: effects/StereoToMono.h:32
-msgid "Applying Stereo To Mono"
-msgstr "Pretvorba sterea v mono"
+msgid "Applying Stereo to Mono"
+msgstr "Izvajanje pretvorbe sterea v mono"
 
-#: effects/ToneGen.cpp:59
+#: effects/ToneGen.cpp:65
 #, c-format
 msgid "Applied effect: Generate %s wave %s, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"
 msgstr "Uporabljen uèinek: Ustvari %s valovanja %s, frekvenca = %.2f Hz, amplituda = %.2f, %.6lf sekund"
 
-#: effects/ToneGen.cpp:66
+#: effects/ToneGen.cpp:74
+#: widgets/Meter.cpp:362
+msgid "Linear"
+msgstr "Linearno"
+
+#: effects/ToneGen.cpp:75
+msgid "Logarithmic"
+msgstr "Logaritemsko"
+
+#: effects/ToneGen.cpp:77
 msgid "Chirp Generator"
 msgstr "Ustvari pisk"
 
-#: effects/ToneGen.cpp:66
+#: effects/ToneGen.cpp:77
 msgid "Tone Generator"
 msgstr "Ustvari ton"
 
-#: effects/ToneGen.cpp:67
+#: effects/ToneGen.cpp:78
 msgid "Sine"
 msgstr "Sinusni"
 
-#: effects/ToneGen.cpp:68
+#: effects/ToneGen.cpp:79
 msgid "Square"
 msgstr "Kvadratni"
 
-#: effects/ToneGen.cpp:69
+#: effects/ToneGen.cpp:80
 msgid "Sawtooth"
 msgstr "Zobati"
 
-#: effects/ToneGen.cpp:70
+#: effects/ToneGen.cpp:81
 msgid "Square, no alias"
 msgstr "Kvadratni, brez aliasa"
 
-#: effects/ToneGen.cpp:305
-#: effects/ToneGen.cpp:340
+#: effects/ToneGen.cpp:327
+#: effects/ToneGen.cpp:362
 msgid "Frequency (Hz)"
 msgstr "Frekvenca (Hz)"
 
-#: effects/ToneGen.cpp:307
-#: effects/ToneGen.cpp:348
+#: effects/ToneGen.cpp:329
+#: effects/ToneGen.cpp:373
 #: toolbars/SelectionBar.cpp:147
 #: toolbars/SelectionBar.cpp:241
 msgid "Length"
 msgstr "Dol¾ina"
 
-#: effects/ToneGen.cpp:331
+#: effects/ToneGen.cpp:353
 msgid "Waveform:"
 msgstr "Signalna oblika:"
 
-#: effects/ToneGen.cpp:338
+#: effects/ToneGen.cpp:360
 #: toolbars/ControlToolBar.cpp:185
 msgid "Start"
 msgstr "Zaèetek"
 
-#: effects/ToneGen.cpp:339
+#: effects/ToneGen.cpp:361
 #: toolbars/ControlToolBar.cpp:188
 #: toolbars/SelectionBar.cpp:141
 #: toolbars/SelectionBar.cpp:242
 msgid "End"
 msgstr "Konec"
 
-#: effects/ToneGen.h:39
+#: effects/ToneGen.cpp:371
+msgid "Interpolation:"
+msgstr "Interpolacija:"
+
+#: effects/ToneGen.h:40
 msgid "Chirp..."
 msgstr "Pisk ..."
 
-#: effects/ToneGen.h:39
+#: effects/ToneGen.h:40
 msgid "Tone..."
 msgstr "Ton ..."
 
-#: effects/ToneGen.h:47
+#: effects/ToneGen.h:48
 msgid "Generating Chirp"
 msgstr "Ustvarjanje piska"
 
-#: effects/ToneGen.h:47
+#: effects/ToneGen.h:48
 msgid "Generating Tone"
 msgstr "Ustvarjanje tona"
 
@@ -6019,7 +6036,7 @@ msgstr "Napaka pri branju datoteke Allegro."
 msgid "Error parsing MIDI file."
 msgstr "Napaka pri branju datoteke MIDI."
 
-#: import/ImportMP3.cpp:78
+#: import/ImportMP3.cpp:38
 msgid "MP3 files"
 msgstr "Datoteke MP3"
 
@@ -6854,62 +6871,91 @@ msgstr "Zaèasno ustavi snemanje ob ti¹ini"
 msgid "Silence level (dB):"
 msgstr "Raven ti¹ine (dB):"
 
-#: prefs/SpectrumPrefs.cpp:36
-#: prefs/SpectrumPrefs.cpp:37
+#: prefs/SpectrumPrefs.cpp:41
+#: prefs/SpectrumPrefs.cpp:42
 msgid "Spectrograms"
 msgstr "Spektogrami"
 
-#: prefs/SpectrumPrefs.cpp:72
+#: prefs/SpectrumPrefs.cpp:85
 msgid "FFT Size"
 msgstr "Velikost FFT"
 
-#: prefs/SpectrumPrefs.cpp:75
+#: prefs/SpectrumPrefs.cpp:88
 msgid "8 - most wideband"
 msgstr "8 - naj¹ir¹e"
 
-#: prefs/SpectrumPrefs.cpp:80
+#: prefs/SpectrumPrefs.cpp:93
 msgid "256 - default"
 msgstr "256 - privzeto"
 
-#: prefs/SpectrumPrefs.cpp:84
+#: prefs/SpectrumPrefs.cpp:101
+msgid "32768 - most narrowband"
+msgstr "32768 - najo¾je"
+
+#: prefs/SpectrumPrefs.cpp:103
 msgid "4096 - most narrowband"
 msgstr "4096 - najo¾je"
 
-#: prefs/SpectrumPrefs.cpp:90
+#: prefs/SpectrumPrefs.cpp:110
 msgid "Window type:"
 msgstr "Vrsta okna:"
 
-#: prefs/SpectrumPrefs.cpp:96
+#: prefs/SpectrumPrefs.cpp:116
 msgid "Display"
 msgstr "Prikaz"
 
-#: prefs/SpectrumPrefs.cpp:100
+#: prefs/SpectrumPrefs.cpp:120
 msgid "&Grayscale"
 msgstr "&sivinsko"
 
-#: prefs/SpectrumPrefs.cpp:103
+#: prefs/SpectrumPrefs.cpp:123
 msgid "Minimum Frequency (Hz):"
 msgstr "Najmanj¹a frekvenca (Hz):"
 
-#: prefs/SpectrumPrefs.cpp:108
+#: prefs/SpectrumPrefs.cpp:128
 msgid "Maximum Frequency (Hz):"
 msgstr "Najvi¹ja frekvenca (Hz):"
 
 #: prefs/SpectrumPrefs.cpp:134
+msgid "&Find Notes"
+msgstr "&Najdi note"
+
+#: prefs/SpectrumPrefs.cpp:135
+msgid "&Quantize Notes"
+msgstr "&Kvantiziraj note"
+
+#: prefs/SpectrumPrefs.cpp:138
+msgid "Minimum Amplitude (dB):"
+msgstr "Najmanj¹a amplituda (dB):"
+
+#: prefs/SpectrumPrefs.cpp:143
+msgid "Max. Number of Notes (1..128):"
+msgstr "Najv. ¹tevilo not (1..128):"
+
+#: prefs/SpectrumPrefs.cpp:170
 msgid "The maximum frequency must be an integer"
 msgstr "Maksimalna frekvenca mora biti ¹tevilo"
 
-#: prefs/SpectrumPrefs.cpp:138
+#: prefs/SpectrumPrefs.cpp:174
 msgid "Maximum frequency must be in the range 100 Hz - 100,000 Hz"
 msgstr "Najvi¹ja frekvenca mora biti med 100 Hz - 100,000 Hz"
 
-#: prefs/SpectrumPrefs.cpp:146
+#: prefs/SpectrumPrefs.cpp:182
 msgid "The minimum frequency must be an integer"
 msgstr "Najmanj¹a frekvenca mora biti pozitivno celo ¹tevilo"
 
-#: prefs/SpectrumPrefs.cpp:150
+#: prefs/SpectrumPrefs.cpp:186
 msgid "Minimum frequency must be at least 0 Hz"
 msgstr "Najmanj¹a frekvenca mora biti vsaj 0 Hz"
+
+#: prefs/SpectrumPrefs.cpp:193
+msgid "The minimum amplitude (dB) must be an integer"
+msgstr "Najmanj¹a amplituda (dB) mora biti celo ¹tevilo"
+
+#: prefs/SpectrumPrefs.cpp:199
+#: prefs/SpectrumPrefs.cpp:203
+msgid "The Maximum Number of Notes must be an integer in the range 1..128"
+msgstr "Najveèje ¹tevilo not mora biti celo ¹tevilo v obsegu 1..128"
 
 #: prefs/ThemePrefs.cpp:62
 #: prefs/ThemePrefs.cpp:63
@@ -7485,10 +7531,6 @@ msgstr "Vodoravni stereo"
 msgid "Vertical Stereo"
 msgstr "Navpièni stereo"
 
-#: widgets/Meter.cpp:362
-msgid "Linear"
-msgstr "Linearen"
-
 #: widgets/Meter.cpp:371
 msgid "Preferences..."
 msgstr "Nastavitve ..."
@@ -7517,8 +7559,8 @@ msgstr "Nastavitve merilnika"
 msgid " Please select an action "
 msgstr " Prosimo, izberite dejanje"
 
-#: widgets/Ruler.cpp:1138
-#: widgets/Ruler.cpp:1139
+#: widgets/Ruler.cpp:1224
+#: widgets/Ruler.cpp:1225
 msgid "Vertical Ruler"
 msgstr "Navpièno ravnilo"
 
