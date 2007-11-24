@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Audacity 1.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-10-14 09:03+0200\n"
-"PO-Revision-Date: 2007-11-11 15:54-0300\n"
+"PO-Revision-Date: 2007-11-21 06:27-0300\n"
 "Last-Translator: Cleber Tavano <clebertavano@gmail.com>\n"
 "Language-Team: Cleber Tavano <clebertavano@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -165,8 +165,8 @@ msgstr "Medidor de entrada"
 msgid "Output Meter"
 msgstr "Medidor de saída"
 
-#. i18n-hint: Mac OS X shortcut should be Ctrl+,
 #. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
+#. i18n-hint: Mac OS X shortcut should be Ctrl+,
 #: AudacityApp.cpp:734
 #: Menus.cpp:470
 msgid "&Preferences...\tCtrl+,"
@@ -1411,10 +1411,22 @@ msgstr "Exportar títulos"
 msgid "Export &Multiple..."
 msgstr "Exportar &múltiplos..."
 
+#: Menus.cpp:245
+msgid "CleanSpeech C&hain..."
+msgstr "Cadeias do Clean Speec&h..."
+
 #: Menus.cpp:246
 #: Menus.cpp:260
 msgid "Edit C&hains..."
 msgstr "Editar arquivos de &lote..."
+
+#: Menus.cpp:247
+msgid "Export CleanSpeech &Presets..."
+msgstr "E&xportar ajustes do CleanSpeech..."
+
+#: Menus.cpp:248
+msgid "I&mport CleanSpeech Presets..."
+msgstr "Im&portar ajustes do CleanSpeech..."
 
 #: Menus.cpp:258
 msgid "Appl&y Chain..."
@@ -7123,7 +7135,7 @@ msgstr "Alterar Zoom"
 
 #: toolbars/EditToolBar.cpp:160
 msgid "Fit Selection"
-msgstr "Ajustar à seleção"
+msgstr "Ajustar zoom à seleção"
 
 #: toolbars/EditToolBar.cpp:160
 msgid "Fit selection in window"
@@ -7131,7 +7143,7 @@ msgstr "Ajustar seleção à janela"
 
 #: toolbars/EditToolBar.cpp:162
 msgid "Fit Project"
-msgstr "Ajustar ao projeto"
+msgstr "Ajustar zoom ao projeto"
 
 #: toolbars/EditToolBar.cpp:162
 msgid "Fit project in window"
