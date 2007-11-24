@@ -1655,7 +1655,10 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    sampleCount w1 = (sampleCount) ((t0*rate + x *rate *tstep) + .5);
  
 #ifdef LOGARITHMIC_SPECTRUM
-   const float e=exp(1.0f), f=rate/2.0f/half, 
+   const float 
+      e=exp(1.0f), 
+      log2=log(2.0f),
+      f=rate/2.0f/half, 
       lmin=log(float(minFreq)),
       lmax=log(float(maxFreq)),
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
@@ -1666,10 +1669,26 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
       lmaxs=lmax,
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
       scale=lmax-lmin, 
-      scale2=(lmax-lmin)/log(2.0), 
-      lmin2=lmin/log(2.0),
+      scale2=(lmax-lmin)/log2, 
+      lmin2=lmin/log2,
       expo=exp(scale);
-   int midHeight12 = mid.height/12;
+
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+   bool *yGrid;
+   yGrid=new bool[mid.height];
+   for (int y = 0; y < mid.height; y++) {
+      float n =(float(y  )/mid.height*scale2-lmin2)*12; 
+      float n2=(float(y+1)/mid.height*scale2-lmin2)*12; 
+      float f =float(minFreq)/(fftSkipPoints+1)*pow(2.0f, n /12.0f+lmin2);
+      float f2=float(minFreq)/(fftSkipPoints+1)*pow(2.0f, n2/12.0f+lmin2);
+      n =log(f /440)/log2*12;
+      n2=log(f2/440)/log2*12;
+      if (floor(n) < floor(n2))
+         yGrid[y]=true;
+      else
+         yGrid[y]=false;
+   }
+#endif //EXPERIMENTAL_FFT_Y_GRID
 #endif //LOGARITHMIC_SPECTRUM
 
 #ifdef EXPERIMENTAL_FIND_NOTES
@@ -1682,12 +1701,11 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
       f2bin = half/(rate/2.0f),
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
       bin2f = 1.0f/f2bin,
-      log2=log(2.0f),
       minDistance = pow(2.0f, 2.0f/12.0f),
       i0=exp(lmin)/f,
       i1=exp(scale+lmin)/f,
-      minColor=0.1f;
-   const int maxTableSize=64;
+      minColor=0.0f;
+   const int maxTableSize=1024;
    int *indexes=new int[maxTableSize];
 #endif //EXPERIMENTAL_FIND_NOTES
 
@@ -1753,6 +1771,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
          unsigned char rv, gv, bv;
          float value;
          int x0=x*half;
+
 #ifdef EXPERIMENTAL_FIND_NOTES
          int maximas=0;
          if (!usePxCache && fftFindNotes) {
@@ -1867,11 +1886,6 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
                      value = (value + 80.0) / 80.0;
                   }
                }
-#ifdef EXPERIMENTAL_FFT_Y_GRID
-               if (fftYGrid && (fabs(fmod(h*scale2-lmin2-1/24.0, 1/12.0)) <=0.01))
-               {  value /= 1.2f;
-               }
-#endif //EXPERIMENTAL_FFT_Y_GRID
                if (value > 1.0)
                   value = float(1.0);
                if (value < 0.0)
@@ -1882,6 +1896,14 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
                value = clip->mSpecPxCache->values[x * mid.height + yy];
 
             GetColorGradient(value, selflag, isGrayscale, &rv, &gv, &bv);
+
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+            if (fftYGrid && yGrid[yy]) {
+               rv /= 1.1f;
+               gv /= 1.1f;
+               bv /= 1.1f;
+            }
+#endif //EXPERIMENTAL_FFT_Y_GRID
 
             int px = ((mid.height - 1 - yy) * mid.width + x) * 3;
             data[px++] = rv;
@@ -1956,6 +1978,9 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    delete image;
    delete[] where;
    delete[] freq;
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+   delete[] yGrid;
+#endif //EXPERIMENTAL_FFT_Y_GRID
 #ifdef EXPERIMENTAL_FIND_NOTES
    delete[] indexes;
 #endif //EXPERIMENTAL_FIND_NOTES
