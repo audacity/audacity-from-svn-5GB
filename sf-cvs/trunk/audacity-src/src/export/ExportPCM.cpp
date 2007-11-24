@@ -432,7 +432,8 @@ bool ExportPCM::Export(AudacityProject *project,
       char buffer[1000];
       sf_error_str(sf, buffer, 1000);
       wxMessageBox(wxString::Format
-                   (_("Error (file may not have been written): %hs"),
+            /* i18n-hint: %s will be the error message from libsndfile */
+                   (_("Error (file may not have been written): %s"),
                     buffer));
    }
 
