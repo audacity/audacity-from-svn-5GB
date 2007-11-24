@@ -55,10 +55,14 @@ class AboutDialog:public wxDialog {
    AboutDialogCreditItemsList creditItems;
    void PopulateAudacityPage( ShuttleGui & S );
    void PopulateLicensePage( ShuttleGui & S );
+   void PopulateInformationPage (ShuttleGui & S );
 
    void CreateCreditsList();
    void AddCredit(const wxString& description, Role role);
    wxString GetCreditsByRole(AboutDialog::Role role);
+
+   void AddBuildinfoRow( wxString* htmlstring, const wxChar * libname, const wxChar * libdesc, wxString status);
+   void AddBuildinfoRow( wxString* htmlstring, const wxChar * libname, const wxChar * libdesc);
 };
 
 #endif

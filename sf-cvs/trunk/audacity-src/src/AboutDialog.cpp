@@ -148,9 +148,16 @@ AboutDialog::AboutDialog(wxWindow * parent)
    S.StartNotebook();
    {
       PopulateAudacityPage( S );
+      PopulateInformationPage( S );
       PopulateLicensePage( S );
    }
    S.EndNotebook();
+   
+   wxButton *ok = new wxButton(S.GetParent(), wxID_OK, _("OK... Audacious!"));
+   ok->SetDefault();
+   ok->SetFocus();
+   S.Prop(0).AddWindow( ok );
+
    Fit();
    this->Centre();
 }
@@ -158,83 +165,11 @@ AboutDialog::AboutDialog(wxWindow * parent)
 void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
 {
    wxString versionStr = AUDACITY_VERSION_STRING;
-   wxString informationStr;
+
 
    creditItems.DeleteContents(true); // switchon automatic deletion of list items
    CreateCreditsList();
    
-   wxString enabled = wxString(wxT(": ")) + _("Enabled");
-   wxString disabled = wxString(wxT(": ")) + _("Disabled");
-
-   #ifdef USE_LIBMAD
-   informationStr += wxT("Libmad") + enabled;
-   #else
-   informationStr += wxT("Libmad") + disabled;
-   #endif
-   informationStr += wxT("<br>\n");
-
-   #ifdef USE_LIBVORBIS
-   informationStr += wxT("Ogg Vorbis") + enabled;
-   #else
-   informationStr += wxT("Ogg Vorbis") + disabled;
-   #endif
-   informationStr += wxT("<br>\n");
-
-   #ifdef USE_LIBID3TAG
-   informationStr += wxT("LibID3Tag") + enabled;
-   #else
-   informationStr += wxT("LibID3Tag") + disabled;
-   #endif
-   informationStr += wxT("<br>\n");
-
-   # if USE_LIBFLAC
-   informationStr += wxT("FLAC") + enabled;
-   # else
-   informationStr += wxT("FLAC") + disabled;
-   # endif
-   informationStr += wxT("<br>\n");
-
-   # if USE_LADSPA
-   informationStr += wxT("LADSPA") + enabled;
-   # else
-   informationStr += wxT("LADSPA") + disabled;
-   # endif
-   informationStr += wxT("<br>\n");
-
-   # if USE_VAMP
-   informationStr += wxT("Vamp") + enabled;
-   # else
-   informationStr += wxT("Vamp") + disabled;
-   # endif
-   informationStr += wxT("<br>\n");
-
-   #if USE_LIBRESAMPLE
-   informationStr += wxT("Libresample") + enabled;
-   #elif USE_LIBSAMPLERATE
-   informationStr += wxT("Libsamplerate") + enabled;
-   #endif
-   informationStr += wxT("<br>\n");
-
-   #if USE_PORTAUDIO_V19
-   informationStr += wxT("PortAudio v19");
-   #else
-   informationStr += wxT("PortAudio v18");
-   #endif
-   informationStr += wxT("<br>\n");
-
-   // wxWindows version:
-   informationStr += wxVERSION_STRING;
-   informationStr += wxT("<br>\n");
-
-   // Current date
-   informationStr += _("Program build date: ");
-   informationStr += __TDATE__;
-   informationStr += wxT("<br>\n");
-   
-   // Location of settings
-   informationStr += _("Settings folder: ");
-   informationStr += FileNames::DataDir();
-   informationStr += wxT("<br>\n");
 
    wxString par1Str = _(
      "Audacity is a free program written by a team of volunteer developers around the world. Coordination happens thanks to SourceForge.net, an online service that provides free tools to open-source software projects. Audacity is available for Windows 98 and newer, Mac OS X, Linux, and other Unix-like operating systems. Older versions of Audacity are available for Mac OS 9.");
@@ -273,8 +208,6 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
       wxT("</center><p>") + par1Str +
       wxT("<p>") + par2Str +
       wxT("<p><center><a href=\"http://audacity.sourceforge.net/\">http://audacity.sourceforge.net/</a></center>") + 
-      wxT("<p><center><b>") + _("Information") + wxT("</b></center>") + 
-      wxT("<p><br>") + informationStr + 
       wxT("<p><center><b>") + _("Credits") + wxT("</b></center>")
       + translatorCredits +
       wxT("<p><center><b>") +
@@ -336,51 +269,212 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
                                          wxSize(LOGOWITHNAME_WIDTH, 264), // wxSize(480, 240),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
    html->SetPage(creditStr);
-   S.Prop(1).AddWindow( html, wxEXPAND );
 
-   wxButton *ok = new wxButton(S.GetParent(), wxID_OK, _("OK... Audacious!"));
-   ok->SetDefault();
-   ok->SetFocus();
+   /* locate the html renderer where it fits in the dialogue */
+   S.Prop(0).AddWindow( html, wxEXPAND );
 
-   S.Prop(0).AddWindow( ok );
    S.EndVerticalLay();
    S.EndNotebookPage();
+}
+
+/** \brief: Fills out the "Information" tab of the preferences dialogue 
+ * Provides as much information as possible about build-time options and
+ * the libraries used, to try and make Linux support easier. Basically anything
+ * about the build we might wish to know should be visible here */
+void AboutDialog::PopulateInformationPage( ShuttleGui & S )
+{
+   wxString informationStr;   // string to build up list of information in
+   S.StartNotebookPage( _("Build Information") );  // start the tab
+   S.StartVerticalLay(2);  // create the window
+   wxHtmlWindow *html = new wxHtmlWindow(S.GetParent(), -1, wxDefaultPosition,
+                           wxSize(LOGOWITHNAME_WIDTH, 264), 
+                           wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
+   // create a html pane in it to put the content in.
+   wxString enabled = _("Enabled");
+   wxString disabled = _("Disabled");
+   wxString blank = wxT("");
+   
+   /* this builds up the list of information to go in the window in the string
+    * informationStr */
+   informationStr = wxT("<h2><center>");
+   informationStr += _("Build Information");
+   informationStr += wxT("</center></h2>\n");
+   // top level heading 
+   informationStr += wxT("<h3>");
+   informationStr += _("File Format Support");
+   informationStr += wxT("</h3>\n<p>");
+   // 2nd level headings to split things up a bit
 
 
-   // Old way to add to about box (for comparison).  Remove this once we're
-   // happy with the new way.
-#if 0
-   wxBoxSizer * pBoxSizer = new wxBoxSizer(wxVERTICAL);
+   informationStr += wxT("<table>");   // start table of libraries
 
-//   logo = new wxBitmap((const char **) AudacityLogo_xpm);
-   icon =
-       new wxStaticBitmap(this, -1, theTheme.Bitmap(bmpAudacityLogo), wxPoint(93, 10),
-                          wxSize(215, 190));
-   pBoxSizer->Add(icon, 0, wxALIGN_CENTER | wxALL, 8);
 
-   wxHtmlWindow *html = 
-      new LinkingHtmlWindow(this, -1,
-                             wxDefaultPosition,
-                             wxSize(480, 240),
-                             wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
-   html->SetPage(creditStr);
-   pBoxSizer->Add(html, 0, wxALIGN_CENTER | wxALL, 8);
+   #ifdef USE_LIBMAD
+   /* i18n-hint: This is what the library (libmad) does - imports MP3 files */
+   AddBuildinfoRow(&informationStr, wxT("libmad"), _("MP3 Importing"), enabled);
+   #else
+   AddBuildinfoRow(&informationStr, wxT("libmad"), _("MP3 Importing"), disable);
+   #endif
 
-   /* i18n-hint: Rather than a literal translation, consider adding the
-   appropriate suffix or prefix to create a word meaning 'something which
-   has Audacity' */
-   wxButton *ok = new wxButton(this, wxID_OK, _("OK... Audacious!"));
-   ok->SetDefault();
-   ok->SetFocus();
-   pBoxSizer->Add(ok, 0, wxALIGN_CENTER | wxALL, 8);
+   /* i18n-hint: Ogg is the container format. Vorbis is the compression codec. 
+    * Both are proper nouns and shouldn't be translated */
+   #ifdef USE_LIBVORBIS
+   AddBuildinfoRow(&informationStr, wxT("libvorbis"),
+         _("Ogg Vorbis Import and Export"), enabled);
+   #else
+   AddBuildinfoRow(&informationStr, wxT("libvorbis"),
+         _("Ogg Vorbis Import and Export"), disabled);
+   #endif
 
-   this->SetAutoLayout(true);
-   this->SetSizer(pBoxSizer);
-   pBoxSizer->Fit(this);
-   pBoxSizer->SetSizeHints(this);
+   #ifdef USE_LIBID3TAG
+   AddBuildinfoRow(&informationStr, wxT("libid3tag"), _("ID3 tag support"),
+         enabled);
+   #else
+   AddBuildinfoRow(&informationStr, wxT("libid3tag"), _("ID3 tag support"),
+         disabled);
+   #endif
+   
+   /* i18n-hint: FLAC stands for Free Lossless Audio Codec, but is effectively
+    * a proper noun and so shouldn't be translated */
+   # if USE_LIBFLAC
+   AddBuildinfoRow(&informationStr, wxT("libflac"), _("FLAC import and export"),
+         enabled);
+   # else
+   AddBuildinfoRow(&informationStr, wxT("libflac"), _("FLAC import and export"),
+         disabled);
+   # endif
 
-   this->Centre();
-#endif
+   # if USE_LIBTWOLAME
+   AddBuildinfoRow(&informationStr, wxT("libtwolame"), _("MP2 export"),
+         enabled);
+   # else
+   AddBuildinfoRow(&informationStr, wxT("libtwolame"), _("MP2 export"),
+         disabled);
+   # endif
+
+   # if USE_QUICKTIME
+   AddBuildinfoRow(&informationStr, wxT("QuickTime"), _("Import via QuickTime"),
+         enabled);
+   # else
+   AddBuildinfoRow(&informationStr, wxT("QuickTime"), _("Import via QuickTime"),
+         disabled);
+   # endif
+
+   informationStr += wxT("</table>\n");  //end table of file format libraries
+   informationStr += wxT("<h3>");
+   /* i18n-hint: Libraries that are essential to audacity */
+   informationStr += _("Core Libraries");
+   informationStr += wxT("</h3>\n<table>");  // start table of features
+
+
+   #if USE_LIBRESAMPLE
+   AddBuildinfoRow(&informationStr, wxT("libresample"),
+         _("Sample rate conversion"), enabled);
+   #elif USE_LIBSAMPLERATE
+   AddBuildinfoRow(&informationStr, wxT("libsamplerate"),
+         _("Sample rate conversion"), enabled);
+   #else
+   AddBuildinfoRow(&informationStr, wxT("libresample"),
+         _("Sample rate conversion"), disabled);
+   AddBuildinfoRow(&informationStr, wxT("libsamplerate"),
+         _("Sample rate conversion"), disabled);
+   #endif
+   
+   #if USE_PORTAUDIO_V19
+   AddBuildinfoRow(&informationStr, wxT("PortAudio"),
+         _("Audio playback and recording"), wxString(wxT("v19")));
+   #else
+   AddBuildinfoRow(&informationStr, wxT("PortAudio"),
+         _("Audio playback and recording"), wxString(wxT("v18")));
+   #endif
+
+   informationStr += wxT("<tr><td>");  // start new row
+   // wxWindows version:
+   informationStr += wxVERSION_STRING;
+   informationStr += wxT("</td><td/><td>");
+   /* unicode or not? */
+   informationStr += wxUSE_UNICODE ? wxT("(Unicode)") : wxT("(ANSI)");
+   informationStr += wxT("</td></tr>\n");   // end of row
+
+   informationStr += wxT("</table>\n");  //end table of libraries
+   informationStr += wxT("<h3>");
+   informationStr += _("Features");
+   informationStr += wxT("</h3>\n<table>");  // start table of features
+
+   # if USE_NYQUIST
+   AddBuildinfoRow(&informationStr, wxT("Nyquist"), _("Plug-in support"),
+         enabled);
+   # else
+   AddBuildinfoRow(&informationStr, wxT("Nyquist"), _("Plug-in support"),
+         disabled);
+   # endif
+
+   # if USE_LADSPA
+   AddBuildinfoRow(&informationStr, wxT("LADSPA"), _("Plug-in support"),
+         enabled);
+   # else
+   AddBuildinfoRow(&informationStr, wxT("LADSPA"), _("Plug-in support"),
+         disabled);
+   # endif
+
+   # if USE_VAMP
+   AddBuildinfoRow(&informationStr, wxT("Vamp"), _("Plug-in support"),
+         enabled);
+   # else
+   AddBuildinfoRow(&informationStr, wxT("Vamp"), _("Plug-in support"),
+         disabled);
+   # endif
+
+   # if USE_AUDIO_UNITS
+   AddBuildinfoRow(&informationStr, wxT("Audio Units"), _("Plug-in support"),
+         enabled);
+   # else
+   AddBuildinfoRow(&informationStr, wxT("Audio Units"), _("Plug-in support"),
+         disabled);
+   # endif
+
+   # if USE_PORTMIXER
+   AddBuildinfoRow(&informationStr, wxT("PortMixer"), _("Sound card mixer support"),
+         enabled);
+   # else
+   AddBuildinfoRow(&informationStr, wxT("PortMixer"), _("Sound card mixer support"),
+         disabled);
+   # endif
+
+   # if USE_SOUNDTOUCH
+   AddBuildinfoRow(&informationStr, wxT("SoundTouch"), _("Pitch and Tempo Change support"),
+         enabled);
+   # else
+   AddBuildinfoRow(&informationStr, wxT("SoundTouch"), _("Pitch and Tempo Change support"),
+         disabled);
+   # endif
+
+   informationStr += wxT("</table>\n");   // end of table of features
+
+   informationStr += wxT("<h3>");
+   /* i18n-hint: Information about when audacity was compiled */
+   informationStr += _("Build Information");
+   informationStr += wxT("</h3>\n<table>");
+
+   // Current date
+   AddBuildinfoRow(&informationStr, _("Program build date: "), __TDATE__);
+  
+   // Install prefix
+   /* i18n-hint: The directory audacity is installed into (on *nix systems) */
+   AddBuildinfoRow(&informationStr, _("Installation Prefix: "), \
+         wxT(INSTALL_PREFIX));
+
+   // Location of settings
+   AddBuildinfoRow(&informationStr,_("Settings folder: "), \
+      FileNames::DataDir());
+   // end of table
+   informationStr += wxT("</table>\n");
+
+   html->SetPage(informationStr);   // push the page into the html renderer
+   S.Prop(2).AddWindow( html, wxEXPAND ); // make it fill the page
+   // I think the 2 here goes with the StartVerticalLay() call above?
+   S.EndVerticalLay();     // end window
+   S.EndNotebookPage(); // end the tab
 }
 
 
@@ -686,7 +780,6 @@ wxT("POSSIBILITY OF SUCH DAMAGES.\n");
    html->SetPage( PageText );
 
    S.Prop(1).AddWindow( html, wxEXPAND );
-   S.Id( wxID_OK).AddButton( _("Close") );
 
    S.EndVerticalLay();
    S.EndNotebookPage();
@@ -720,6 +813,35 @@ wxString AboutDialog::GetCreditsByRole(AboutDialog::Role role)
 
    return s;
 }
+
+/** \brief Add a table row saying if a library is used or not
+ *
+ * Used when creating the build information tab to show if each optional
+ * library is enabled or not, and what it does */
+void AboutDialog::AddBuildinfoRow( wxString* htmlstring, const wxChar * libname, const wxChar * libdesc, wxString status)
+{
+   *htmlstring += wxT("<tr><td>");
+   *htmlstring += libname;
+   *htmlstring += wxT("</td><td>(");
+   *htmlstring += libdesc;
+   *htmlstring += wxT(")</td><td>");
+   *htmlstring += status;
+   *htmlstring += wxT("</td></tr>");
+}
+
+/** \brief Add a table row saying if a library is used or not
+ *
+ * Used when creating the build information tab to show build dates and
+ * file paths */
+void AboutDialog::AddBuildinfoRow( wxString* htmlstring, const wxChar * libname, const wxChar * libdesc)
+{
+   *htmlstring += wxT("<tr><td>");
+   *htmlstring += libname;
+   *htmlstring += wxT("</td><td>");
+   *htmlstring += libdesc;
+   *htmlstring += wxT("</td></tr>");
+}
+
 
 AboutDialog::~AboutDialog()
 {
