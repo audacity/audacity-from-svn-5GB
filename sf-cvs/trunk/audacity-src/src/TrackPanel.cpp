@@ -2576,6 +2576,7 @@ void TrackPanel::HandleVZoomDrag( wxMouseEvent & event )
 ///   - Zoom in; ensure we don't go too large.
 void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
 {
+   int minBins;
    if (!mCapturedTrack)
       return;
 
@@ -2603,11 +2604,10 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
 #else
    bool spectrum;
 #endif
-   int windowSize, 
+   int windowSize; 
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
-      fftSkipPoints=0, 
+   int fftSkipPoints=0; 
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
-      minBins = 0;
    double rate = ((WaveTrack *)track)->GetRate();
    ((WaveTrack *) track)->GetDisplay() == WaveTrack::SpectrumDisplay ? spectrum = true : spectrum = false;
 #ifdef LOGARITHMIC_SPECTRUM
@@ -2658,10 +2658,18 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       if(spectrumLog) {
          double xmin = 1-(mZoomEnd - ypos) / (float)height;
          double xmax = 1-(mZoomStart - ypos) / (float)height;
-		   double lmin=log10(tmin), lmax=log10(tmax);
-		   double d=lmax-lmin;
-		   min=wxMax(1.0, pow(10, xmin*d+lmin));
-		   max=wxMin(rate/2.0, pow(10, xmax*d+lmin));
+         double lmin=log10(tmin), lmax=log10(tmax);
+         double d=lmax-lmin;
+         min=wxMax(1.0, pow(10, xmin*d+lmin));
+         max=wxMin(rate/2.0, pow(10, xmax*d+lmin));
+         // Enforce vertical zoom limits
+         // done in the linear freq domain for now, but not too far out
+         if(max < min + minBins * binSize)
+            max = min + minBins * binSize;
+         if(max > rate/2.) {
+            max = rate/2.;
+            min = max - minBins * binSize;
+         }
       }
       else {
          p1 = (mZoomStart - ypos) / (float)height;
@@ -2669,7 +2677,7 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
          max = (tmax * (1.0-p1) + tmin * p1);
          min = (tmax * (1.0-p2) + tmin * p2);
 
-         // Enforce maximum vertical zoom
+         // Enforce vertical zoom limits
          if(spectrum) {
             if(min < 0.)
                min = 0.;
@@ -2694,7 +2702,7 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       max = (tmax * (1.0-p1) + tmin * p1);
       min = (tmax * (1.0-p2) + tmin * p2);
 
-      // Enforce maximum vertical zoom
+      // Enforce vertical zoom limits
       if(spectrum) {
          if(min < 0.)
             min = 0.;
@@ -2779,7 +2787,7 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
       if(spectrum) {
          c = 0.5*(min+max);
          // Enforce maximum vertical zoom
-         l = wxMax( 10. * binSize, (c - min));   //is this a sensible min? MJS
+         l = wxMax( minBins * binSize, (c - min));
 
          p1 = (mZoomStart - ypos) / (float)height;
          c = (max * (1.0-p1) + min * p1);
@@ -2797,12 +2805,13 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
             double d = lmax-lmin;
             min = wxMax(1,pow(10, xmin*d+lmin));
             max = wxMin(rate/2., pow(10, xmax*d+lmin));
-            // Enforce maximum vertical zoom
-            if( (max - min) < (10. * binSize) ) {
-               lmin=log10(min);
-               lmax=log10(max);
-               min = wxMax(1, pow(10, (lmax + lmin)/2.) - 5. * binSize);
-               max = min + 10. * binSize;
+            // Enforce vertical zoom limits
+            // done in the linear freq domain for now, but not too far out
+            if(max < min + minBins * binSize)
+               max = min + minBins * binSize;
+            if(max > rate/2.) {
+               max = rate/2.;
+               min = max - minBins * binSize;
             }
          }
          else {
