@@ -25,7 +25,7 @@
 #include <wx/string.h>
 
 #include "PrefsPanel.h"
-#include "Experimental.h"
+#include "../Experimental.h"
 
 class wxWindow;
 class ShuttleGui;
