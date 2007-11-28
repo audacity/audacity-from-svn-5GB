@@ -1910,7 +1910,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
             data[px++] = gv;
             data[px] = bv;
          }
-         }
+      }
 #else //!LOGARITHMIC_SPECTRUM
       for (int yy = 0; yy < mid.height; yy++) {
          bool selflag = (ssel0 <= w0 && w1 < ssel1);

@@ -4436,7 +4436,7 @@ void AudacityProject::OnResample()
    
    while (true) {
       wxTextEntryDialog* dlg = new wxTextEntryDialog(this,
-         _("Enter new samplerate:"), _("Resample"), wxT(""));
+         _("New sample rate (Hz):"), _("Resample"), wxT(""));
       if (dlg->ShowModal() != wxID_OK)
          return; // user cancelled dialog
       newRate = atoi(dlg->GetValue().mb_str());

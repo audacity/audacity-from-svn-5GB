@@ -110,7 +110,7 @@ void SplashDialog::Populate( ShuttleGui & S )
    {
       S.SetBorder( 5 );
       S.Id( DontShowID).AddCheckBox( _("Don't show this again at start up"), bShow ? wxT("false") : wxT("true") );
-      wxButton *ok = new wxButton(S.GetParent(), wxID_OK, _("OK... Audacious!"));
+      wxButton *ok = new wxButton(S.GetParent(), wxID_OK);
       ok->SetDefault();
       ok->SetFocus();
       S.SetBorder( 5 );
