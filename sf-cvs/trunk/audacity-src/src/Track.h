@@ -19,6 +19,9 @@
 #include "SampleFormat.h"
 #include "xml/XMLTagHandler.h"
 #include "Experimental.h"
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+#include <wx/gdicmn.h>
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
 class wxTextFile;
 class DirManager;
