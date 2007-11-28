@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacity site\n"
 "POT-Creation-Date: 2005-01-07 15:43-0800\n"
-"PO-Revision-Date: 2007-11-21 05:50-0300\n"
+"PO-Revision-Date: 2007-11-26 20:43-0300\n"
 "Last-Translator: Cleber Tavano <clebertavano@gmail.com>\n"
 "Language-Team: Cleber Tavano <clebertavano@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -985,7 +985,7 @@ msgstr "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFil
 
 #: about/links.php:26
 msgid "More free software at SourceForge.net:"
-msgstr "Outros programas gratuitos no Sourceforge.net:"
+msgstr "Outros programas livres no Sourceforge.net:"
 
 #: about/links.php:28
 msgid "Audio Editors"
@@ -4106,12 +4106,12 @@ msgstr "Componentes recomendados"
 #: download/mac.php:21
 #, php-format
 msgid "For Mac OS X (PPC): <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor."
-msgstr "Para Mac OS X (PowerPC): <a href=\"%s\">Audacity %s</a> (arquivo .dmg, %.1lf MB) - A versão mais recente do editor de áudio gratuito Audacity."
+msgstr "Para Mac OS X (PowerPC): <a href=\"%s\">Audacity %s</a> (arquivo .dmg, %.1lf MB) - A versão mais recente do editor de áudio livre Audacity."
 
 #: download/mac.php:23
 #, php-format
 msgid "For Mac OS X (Intel): <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor."
-msgstr "Para Mac OS X (Intel): <a href=\"%s\">Audacity %s</a> (arquivo .dmg, %.1lf MB) - A versão mais recente do editor de áudio gratuito Audacity."
+msgstr "Para Mac OS X (Intel): <a href=\"%s\">Audacity %s</a> (arquivo .dmg, %.1lf MB) - A versão mais recente do editor de áudio livre Audacity."
 
 #: download/mac.php:27
 #, php-format
@@ -4466,7 +4466,7 @@ msgstr "Compre o Audacity em CD"
 
 #: download/buy.php:13
 msgid "Audacity is free to download, but vendors are also free to sell copies of the program (see <a href=\"../download/bundlers\">Vendors that Distribute Audacity</a>), thanks to the <a href=\"../about/license\">GNU General Public License</a>.  If you want a copy of Audacity on CD-ROM, we encourage you to buy from a vendor listed below."
-msgstr "O Audacity é gratuito para ser copiado e instalado via Internet. No entanto, revendedores podem vender o programa  graças à licença <a href=\"../about/license\">GNU General Public License</a>.  Caso queira comprar uma cópia em CD do programa, visite um dos sites abaixo:"
+msgstr "O Audacity é livre para ser copiado e instalado via Internet. No entanto, revendedores podem vender o programa  graças à licença <a href=\"../about/license\">GNU General Public License</a>.  Caso queira comprar uma cópia em CD do programa, visite um dos sites abaixo:"
 
 #: download/buy.php:15
 msgid ""
@@ -4474,7 +4474,7 @@ msgid ""
 "  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a collection of high-quality free software for Microsoft Windows, including Audacity.  You can <a href=\"http://www.theopencd.org/purchase\">purchase a copy of TheOpenCD</a> from several different vendors.</p>"
 msgstr ""
 "<h3>TheOpenCD (Windows)</h3>\n"
-"  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> é uma coleção de programas gratuitos para Microsoft Windows, que inclui o Audacity. <a href=\"http://www.theopencd.org/purchase\">Clique aqui </a> e compre um cópia do TheOpenCD. </p>"
+"  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> é uma coleção de programas livres para Microsoft Windows, que inclui o Audacity. <a href=\"http://www.theopencd.org/purchase\">Clique aqui </a> e compre um cópia do TheOpenCD. </p>"
 
 #: download/features-1.3-g.php:9
 msgid "Audacity 1.3: Other features"
@@ -4540,7 +4540,7 @@ msgstr "Integradores que revendem o Audacity"
 
 #: download/bundlers2.php:14
 msgid "Audacity is free to download, but vendors are also free to bundle copies of the program with their products, thanks to the <a href=\"../about/license\">GNU General Public License</a>. The following are legitimate, legal offerings. We are happy and proud that they chose to bundle Audacity with their products."
-msgstr "O Audacity é gratuito para ser copiado e instalado via Internet, assim como revendedores podem incluir o Audacity aos seus produtos, graças à licença <a href=\"../about/license\">GNU General Public License</a>.  Estas ofetas são legítimas e estamos bastante satisfeitos em saber que o Audacity foi escolhido para ser incluído nestes produtos."
+msgstr "O Audacity é livre para ser copiado e instalado via Internet, assim como revendedores podem incluir o Audacity aos seus produtos, graças à licença <a href=\"../about/license\">GNU General Public License</a>.  Estas ofetas são legítimas e estamos bastante satisfeitos em saber que o Audacity foi escolhido para ser incluído nestes produtos."
 
 #: download/bundlers2.php:16
 msgid "<h3><b>Podcast Factory</b>&trade; from M-Audio (U.S.) and Pinnacle/Avid (Europe)</h3>"
@@ -4588,7 +4588,7 @@ msgstr "Comandos para exibir ou ocultar as barras de ferramentas estão disponí
 
 #: download/bundlers.php:16
 msgid "Audacity is free to download, but vendors are also free to bundle copies of the program with their product, or resell or distribute Audacity, thanks to the <a href=\"../about/license\">GNU General Public License</a>. The following are legitimate, legal offerings. We are happy and proud that they chose to bundle Audacity with their products."
-msgstr "O Audacity é gratuito para ser copiado e instalado via Internet, assim como revendedores podem incluir o Audacity aos seus produtos, graças à licença <a href=\"../about/license\">GNU General Public License</a>.  Estas ofetas são legítimas e estamos bastante satisfeitos em saber que o Audacity foi escolhido para ser incluído nestes produtos."
+msgstr "O Audacity é livre para ser copiado e instalado via Internet, assim como revendedores podem incluir o Audacity aos seus produtos, graças à licença <a href=\"../about/license\">GNU General Public License</a>.  Estas ofetas são legítimas e estamos bastante satisfeitos em saber que o Audacity foi escolhido para ser incluído nestes produtos."
 
 #: download/bundlers.php:18
 msgid "Two of these vendors, <a href=\"http://umixit.com\">UmixIt</a> and <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>, have additionally supported Audacity by sponsoring custom versions. The first <a href=\"http://umixit.com\"><em>UmixIt, powered by Audacity</em></a> Enhanced CD was <a href=\"http://www.bnlmusic.com/\">\"Barenaked Ladies Are Men\"</a>, released February 2007. Both custom versions will soon be available for download."
@@ -5157,7 +5157,7 @@ msgstr "Instale efeitos e filtros adicionais."
 
 #: index.php:9
 msgid "Free Audio Editor and Recorder"
-msgstr "Editor de áudio gratuito"
+msgstr "Editor e gravador de áudio livre"
 
 #: index.php:18
 msgid "for Microsoft Windows"
@@ -5177,7 +5177,7 @@ msgstr "O editor de áudio livre e fácil de usar!"
 
 #: index.php:51
 msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href=\"about/\">Learn more about Audacity...</a> Also check our <a href=\"http://audacityteam.org/wiki/\">Wiki</a> and <a href=\"http://audacityteam.org/forum/\">Forum</a> for more information."
-msgstr "O Audacity é um programa gratuito, de código fonte aberto, para edição de áudio digital. Está disponível para Mac OS X, Microsoft Windows, GNU/Linux e outros sistemas operacionais. <a href=\"about/\">Conheça mais sobre o Audacity...</a> Também conheça o nosso <a href=\"http://audacityteam.org/wiki/\">Wiki</a> e o <a href=\"http://audacityteam.org/forum/\">Forum</a> para maiores informações."
+msgstr "O Audacity é um programa livre e gratuito, de código fonte aberto, para edição de áudio digital. Está disponível para Mac OS X, Microsoft Windows, GNU/Linux e outros sistemas operacionais. <a href=\"about/\">Conheça mais sobre o Audacity...</a> Também conheça o nosso <a href=\"http://audacityteam.org/wiki/\">Wiki</a> e o <a href=\"http://audacityteam.org/forum/\">Forum</a> para maiores informações."
 
 #: index.php:53
 msgid "The latest release of Audacity is <a href=\"/download\">1.3.4 (beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x beta series."
