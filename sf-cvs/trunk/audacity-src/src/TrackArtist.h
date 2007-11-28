@@ -20,6 +20,7 @@
 
 #include <wx/brush.h>
 #include <wx/pen.h>
+#include "Experimental.h"
 
 class wxDC;
 class wxRect;

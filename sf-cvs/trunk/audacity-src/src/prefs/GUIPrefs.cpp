@@ -110,7 +110,7 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
    S.TieChoice(_("Language:"),wxT("/Locale/Language"),wxT("en"),mLangNames, mLangCodes );  
    S.EndTwoColumn();
    S.EndStatic();
-   S.StartStatic( _("Minimum of dB mode display range") );
+   S.StartStatic( _("Display range minimum for 'Waveform (dB)' view") );
    {
       S.StartRadioButtonGroup( wxT("/GUI/EnvdBRange"), ENV_DB_RANGE );
       S.TieRadioButton( _("-36 dB (shallow range for high-amplitude editing)"),36);

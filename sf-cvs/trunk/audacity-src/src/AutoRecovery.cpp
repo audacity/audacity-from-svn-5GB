@@ -124,8 +124,8 @@ void AutoRecoveryDialog::OnQuitAudacity(wxCommandEvent &evt)
 void AutoRecoveryDialog::OnRecoverNone(wxCommandEvent &evt)
 {
    int ret = wxMessageBox(
-      _("You have chosen not to recover any projects. You will not be able to recover those projects later if you change your mind. Do you really want to continue without recovering?"),
-      _("Really not recover projects?"), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT, this);
+      _("Are you sure you don't want to recover any projects?\nThey can't be recovered later."),
+      _("Confirm?"), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT, this);
 
    if (ret == wxYES)
       EndModal(ID_RECOVER_NONE);
