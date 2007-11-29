@@ -158,7 +158,7 @@ _("You can either drag existing files into Audacity, or use the <b>File > Import
 <br/><br/>\
 These are the main formats Audacity will play: <b>AIFF, AU, FLAC, M4A</b> (only on a \
 Mac), <b>MP2/MP3, OGG Vorbis, WAV</b>.  If your file is in some other format see (format help). \
-If you want to import an audio CD, see [[wiki:How to import CDs|How to import CDs]]<br><br>\
+If you want to import an audio CD, see [[wiki:How_to_import_CDs|How to import CDs]]<br><br>\
 To start playing your audio, press the green Play button. \
 To stop, press the yellow Stop button. \
 You can also use spacebar to either play or stop. \
@@ -198,7 +198,7 @@ Device on the Audio I/O Preferences tab.</i>\
 <br><br>\
 (3) <b>Input volume</b>. Before recording for real, make a test recording to set the input level, \
 so that it's neither too soft or too loud.\
-To do this, see this [[wiki:Recording levels|illustrated guide]] or follow these two steps: \
+To do this, see this [[wiki:Recording_levels|illustrated guide]] or follow these two steps: \
 <ol><li>\
 Turn on <b>monitoring</b>, by either double-clicking over the right-hand of the two VU Meters, or \
 right-clicking over it and choosing \"Start Monitoring\". \
@@ -208,8 +208,8 @@ symbol), so that the red bars in the meter come close to (but do not touch) the 
 If you can't hear the sound, go to the Audio I/O tab of Preferences and check \"Software Playthrough\". \
 </ol><br><br>\
 There is more help if you're stuck: our Recording FAQs, our Tutorial  <b>Your First Recording </b> in the \
-Manual, and our Wiki [[wiki:Recording Tips|Recording Tips]], especially the \
-[[wiki:Troubleshooting Recordings|Troubleshooting Recordings]] section. \
+Manual, and our Wiki [[wiki:Recording_Tips|Recording Tips]], especially the \
+[[wiki:Troubleshooting_Recordings|Troubleshooting Recordings]] section. \
 <br><br>") +
 ToWelcome()
          );
@@ -269,7 +269,7 @@ There are two other Export commands under the File menu.\
 \"Export Selection\" exports only a selected area of audio.\
 \"Export Multiple\" exports multiple files, for example where you have more than one track on \
 screen and want to export each as a separate file. If exporting tracks from a recorded LP or tape to multiple files, \
-use [[wiki:Splitting recordings into separate tracks|labels with Export Multiple]]. \
+use [[wiki:Splitting_recordings_into_separate_tracks|labels with Export Multiple]]. \
 <br><br>\
 Before you can export as <b>MP3</b>, you may need to add the LAME MP3 encoder to your computer.\
 For help with LAME, see [[wiki:Lame_Installation|Lame Installation]]. \
@@ -314,7 +314,7 @@ see <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streami
 _("If you want to burn your work to an audio CD for standalone CD players, you must first \
 [[export|export as WAV or AIFF]] \
 and then burn that file to CD with a CD burning program like \
-iTunes - for more help, see [[wiki:How to burn CDs|How to burn CDs]].\
+iTunes - for more help, see [[wiki:How_to_burn_CDs|How to burn CDs]].\
 <br><br>")+
 ToWelcome()
          );
