@@ -167,7 +167,7 @@ private:
 #ifdef EXPERIMENTAL_RULER_AUTOSIZE
    class Label {
     public:
-#else !//EXPERIMENTAL_RULER_AUTOSIZE
+#else //!EXPERIMENTAL_RULER_AUTOSIZE
    struct Label {
 #endif //EXPERIMENTAL_RULER_AUTOSIZE
       int pos;
