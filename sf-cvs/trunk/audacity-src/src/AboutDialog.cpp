@@ -313,7 +313,7 @@ void AboutDialog::PopulateInformationPage( ShuttleGui & S )
    /* i18n-hint: This is what the library (libmad) does - imports MP3 files */
    AddBuildinfoRow(&informationStr, wxT("libmad"), _("MP3 Importing"), enabled);
    #else
-   AddBuildinfoRow(&informationStr, wxT("libmad"), _("MP3 Importing"), disable);
+   AddBuildinfoRow(&informationStr, wxT("libmad"), _("MP3 Importing"), disabled);
    #endif
 
    /* i18n-hint: Ogg is the container format. Vorbis is the compression codec. 
