@@ -27,6 +27,7 @@
 
 *//*******************************************************************/
 
+#include <wx/intl.h>
 #include "../Audacity.h"
 #include "ImportOGG.h"
 #include "../Internat.h"
