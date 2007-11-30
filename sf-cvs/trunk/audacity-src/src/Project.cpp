@@ -2143,7 +2143,7 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       int icon_choice = wxICON_EXCLAMATION;
       if(fileVersion < wxT("1.1.9" ))
       {
-         msg.Printf(_("This file was saved by Audacity %s, a much\nolder version of Audacity.  The format has changed.\nAudacity will probably destroy the file in trying\nto open it.  You must back up your project\nfirst, to be safe.\n\nWould you like to try to open this file\nright now anyway?"),
+         msg.Printf(_("This file was saved by Audacity %s, a much\nolder version.  The format has changed.\n\nAudacity could corrupt the file in opening\nit, so you must back it up first.\n\nOpen this file now?"),
                  audacityVersion.c_str());
          // Stop icon, and choose 'NO' by default.
          icon_choice = wxICON_STOP | wxNO_DEFAULT;
