@@ -54,7 +54,9 @@ Audio sample rate conversion library. Maintained by audacity project
 
 libsamplerate
 -------------
-Erik de Castro Lopo's high quality sample rate conversion library
+Erik de Castro Lopo's high quality sample rate conversion library. Not used
+in release builds, could probably be removed altogther except for comparision
+purposes.
 
 libsndfile
 ----------
@@ -92,6 +94,7 @@ Patches:
 
 portburn
 --------
+Doesn't do anything yet
 
 portmixer
 ---------
