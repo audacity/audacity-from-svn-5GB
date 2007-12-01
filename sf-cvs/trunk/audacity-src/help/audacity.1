@@ -9,6 +9,10 @@ audacity \- Graphical cross-platform audio editor
 -help
 .br
 .B audacity
+-version
+.br
+
+.B audacity
 [-blocksize nnn] -test
 .br
 .B audacity
@@ -40,10 +44,6 @@ and
 .B libtwolame
 provide facilities to export files to all these formats as well.
 
-If you specify multiple files on the command-line, Audacity
-will import all of them into the same project, which is
-convenient if you want to mix them.
-
 Audacity is an interactive, graphical editor, not a
 batch-processing tool.  There are no options that make
 it easy to perform an operation on a set of files.
@@ -71,7 +71,7 @@ set the audacity block size for writing files to disk to nnn bytes
 Per user configuration file.
 .RE
 
-.I /tmp/audacity1.2-<user>/
+.I /tmp/audacity-<user>/
 .RS
 Default location of Audacity's temp directory, where <user> is your
 username.  If this location is not suitable (not enough space in
@@ -141,7 +141,7 @@ in a
 directory on the search path if you choose to create one.
 
 .SH VERSION
-This man page documents audacity version 1.3.4
+This man page documents audacity version 1.3.5
 
 .SH LICENSE
 
