@@ -573,8 +573,7 @@ bool AudacityApp::OnInit()
    // * The user's .audacity-files directory in their home directory
    // * The "share" and "share/doc" directories in their install path
    #ifdef __WXGTK__
-   defaultTempDir.Printf(wxT("/tmp/audacity%d.%d-%s"), 
-                         AUDACITY_VERSION, AUDACITY_RELEASE, wxGetUserId().c_str());
+   defaultTempDir.Printf(wxT("/tmp/audacity-%s"), wxGetUserId().c_str());
    
    wxString pathVar = wxGetenv(wxT("AUDACITY_PATH"));
    if (pathVar != wxT(""))
@@ -617,8 +616,8 @@ bool AudacityApp::OnInit()
    AddUniquePathToPathList(progPath, audacityPathList);
    AddUniquePathToPathList(progPath+wxT("\\Languages"), audacityPathList);
    
-   defaultTempDir.Printf(wxT("%s\\audacity_%d_%d_temp"), 
-                         tmpDirLoc.c_str(), AUDACITY_VERSION, AUDACITY_RELEASE);
+   defaultTempDir.Printf(wxT("%s\\audacity_temp"), 
+                         tmpDirLoc.c_str());
    #endif
    #ifdef __MACOSX__
    // On Mac OS X, the path to the Audacity program is in argv[0]
@@ -631,9 +630,8 @@ bool AudacityApp::OnInit()
 
    AddUniquePathToPathList(progPath+wxT("/Languages"), audacityPathList);
    AddUniquePathToPathList(progPath+wxT("/../../../Languages"), audacityPathList);
-   defaultTempDir.Printf(wxT("%s/audacity%d.%d-%s"), 
+   defaultTempDir.Printf(wxT("%s/audacity-%s"), 
                          tmpDirLoc.c_str(),
-                         AUDACITY_VERSION, AUDACITY_RELEASE, 
                          wxGetUserId().c_str());
    #endif
    #ifdef __MACOS9__
@@ -642,8 +640,8 @@ bool AudacityApp::OnInit()
    wxString progPath = wxGetCwd();
    AddUniquePathToPathList(progPath, audacityPathList);
    AddUniquePathToPathList(progPath+wxT(":Languages"), audacityPathList);
-   defaultTempDir.Printf(wxT("%s/audacity_%d_%d_temp"), 
-                         tmpDirLoc.c_str(), AUDACITY_VERSION, AUDACITY_RELEASE, );
+   defaultTempDir.Printf(wxT("%s/audacity_temp"), 
+                         tmpDirLoc.c_str());
    #endif
 
    // BG: Create a temporary window to set as the top window
