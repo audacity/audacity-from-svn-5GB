@@ -26,6 +26,7 @@
 *//*******************************************************************/
 
 #include <wx/defs.h>
+#include <wx/intl.h>
 #include "../Audacity.h"
 
 #include "../Prefs.h"
