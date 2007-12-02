@@ -44,11 +44,18 @@ EffectLeveller::EffectLeveller()
 }
 
 #define NUM_PASSES_CHOICES 6
-static wxString numPasses[] = { _("None-Skip"), _("Light"), _("Moderate"), _("Heavy"), _("Heavier"), _("Heaviest") };
+static wxString numPasses[NUM_PASSES_CHOICES];
 static double gFrameSum; // odd ... having this as member var crashed on exit
 
 bool EffectLeveller::Init()
 {
+   numPasses[0] = _("None-Skip");
+   numPasses[1] = _("Light");
+   numPasses[2] = _("Moderate");
+   numPasses[3] = _("Heavy");
+   numPasses[4] = _("Heavier");
+   numPasses[5] = _("Heaviest");
+
    mLevellerNumPasses = gPrefs->Read(wxT("/CsPresets/LevellerNumPasses"), 2L);
    if ((mLevellerNumPasses < 0) || (mLevellerNumPasses >= NUM_PASSES_CHOICES)) {  // corrupted Prefs?
       mLevellerNumPasses = 0;

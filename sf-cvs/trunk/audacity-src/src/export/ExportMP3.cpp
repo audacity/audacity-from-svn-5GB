@@ -139,65 +139,65 @@ typedef struct
 static CHOICES fixRates[] =
 {
    /* i18n-hint: kbps is the bitrate of the MP3 file, kilobits per second*/
-   {  wxString(wxT("8 "))+_("kbps"),   8     },
-   {  wxString(wxT("16 "))+_("kbps"),  16    },
-   {  wxString(wxT("24 "))+_("kbps"),  24    },
-   {  wxString(wxT("32 "))+_("kbps"),  32    },
-   {  wxString(wxT("40 "))+_("kbps"),  40    },
-   {  wxString(wxT("48 "))+_("kbps"),  48    },
-   {  wxString(wxT("56 "))+_("kbps"),  56    },
-   {  wxString(wxT("64 "))+_("kbps"),  64    },
-   {  wxString(wxT("80 "))+_("kbps"),  80    },
-   {  wxString(wxT("96 "))+_("kbps"),  96    },
-   {  wxString(wxT("112 "))+_("kbps"), 112   },
-   {  wxString(wxT("128 "))+_("kbps"), 128   },
-   {  wxString(wxT("144 "))+_("kbps"), 144   },
-   {  wxString(wxT("160 "))+_("kbps"), 160   },
-   {  wxString(wxT("192 "))+_("kbps"), 192   },
-   {  wxString(wxT("224 "))+_("kbps"), 224   },
-   {  wxString(wxT("256 "))+_("kbps"), 256   },
-   {  wxString(wxT("320 "))+_("kbps"), 320   }
+   {wxT(""),   8},
+   {wxT(""),  16},
+   {wxT(""),  24},
+   {wxT(""),  32},
+   {wxT(""),  40},
+   {wxT(""),  48},
+   {wxT(""),  56},
+   {wxT(""),  64},
+   {wxT(""),  80},
+   {wxT(""),  96},
+   {wxT(""), 112},
+   {wxT(""), 128},
+   {wxT(""), 144},
+   {wxT(""), 160},
+   {wxT(""), 192},
+   {wxT(""), 224},
+   {wxT(""), 256},
+   {wxT(""), 320}
 };
 
 static CHOICES varRates[] =
 {
-   {  _("0, 220-260 kbps (Best Quality)"),   QUALITY_0   },
-   {  _("1, 200-250 kbps"),                  QUALITY_1   },
-   {  _("2, 170-210 kbps"),                  QUALITY_2   },
-   {  _("3, 155-195 kbps"),                  QUALITY_3   },
-   {  _("4, 145-185 kbps"),                  QUALITY_4   },
-   {  _("5, 110-150 kbps"),                  QUALITY_5   },
-   {  _("6, 95-135 kbps"),                   QUALITY_6   },
-   {  _("7, 80-120 kbps"),                   QUALITY_7   },
-   {  _("8, 65-105 kbps"),                   QUALITY_8   },
-   {  _("9, 45-85 kbps (Smaller files)"),    QUALITY_9   }
+   {wxT(""), QUALITY_0},
+   {wxT(""), QUALITY_1},
+   {wxT(""), QUALITY_2},
+   {wxT(""), QUALITY_3},
+   {wxT(""), QUALITY_4},
+   {wxT(""), QUALITY_5},
+   {wxT(""), QUALITY_6},
+   {wxT(""), QUALITY_7},
+   {wxT(""), QUALITY_8},
+   {wxT(""), QUALITY_9},
 };
 
 static CHOICES varModes[] =
 {
-   {  _("Fast"),     ROUTINE_FAST      },
-   {  _("Standard"), ROUTINE_STANDARD  }
+   {wxT(""), ROUTINE_FAST    },
+   {wxT(""), ROUTINE_STANDARD}
 };
 
 static CHOICES setRates[] =
 {
-   {  _("Insane, 320 kbps"),        PRESET_INSANE     },
-   {  _("Extreme, 220-260 kbps"),   PRESET_EXTREME    },
-   {  _("Standard, 170-210 kbps"),  PRESET_STANDARD   },
-   {  _("Medium, 145-185 kbps"),    PRESET_MEDIUM     },
+   {wxT(""), PRESET_INSANE  },
+   {wxT(""), PRESET_EXTREME },
+   {wxT(""), PRESET_STANDARD},
+   {wxT(""), PRESET_MEDIUM  },
 };
 
 static CHOICES sampRates[] =
 {
-   {  wxT("8000"),  8000     },
-   {  wxT("11025"), 11025    },
-   {  wxT("12000"), 12000    },
-   {  wxT("16000"), 16000    },
-   {  wxT("22050"), 22050    },
-   {  wxT("24000"), 24000    },
-   {  wxT("32000"), 32000    },
-   {  wxT("44100"), 44100    },
-   {  wxT("48000"), 48000    },
+   {wxT(""),  8000     },
+   {wxT(""), 11025    },
+   {wxT(""), 12000    },
+   {wxT(""), 16000    },
+   {wxT(""), 22050    },
+   {wxT(""), 24000    },
+   {wxT(""), 32000    },
+   {wxT(""), 44100    },
+   {wxT(""), 48000    },
 };
 
 #define ID_SET 7000
@@ -250,6 +250,49 @@ ExportMP3Options::ExportMP3Options(wxWindow *parent)
             wxDefaultPosition, wxDefaultSize,
             wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
 {
+   for (int i=0; i < WXSIZEOF(fixRates); i++)
+   {
+      fixRates[i].name = wxT("");
+      fixRates[i].name << fixRates[i].label << wxT(" ") << _("kbps");
+   }
+   for (int i=0; i < WXSIZEOF(varRates); i++)
+   {
+      varRates[i].name = wxT("");
+      varRates[i].name << i << wxT(", ");
+   }
+   varRates[0].name << wxT("220-260");
+   varRates[1].name << wxT("200-250");
+   varRates[2].name << wxT("170-210");
+   varRates[3].name << wxT("155-195");
+   varRates[4].name << wxT("145-185");
+   varRates[5].name << wxT("110-150");
+   varRates[6].name << wxT("95-135");
+   varRates[7].name << wxT("80-120");
+   varRates[8].name << wxT("65-105");
+   varRates[9].name << wxT("45-85");
+   for (int i=0; i < WXSIZEOF(varRates); i++)
+      varRates[i].name << wxT(" ") << _("kbps");
+   varRates[0].name << wxT(" ") << _("(Best Quality)");
+   varRates[9].name << wxT(" ") << _("(Smaller files)");
+
+   varModes[0].name = _("Fast");
+   varModes[1].name = _("Standard");
+
+   for (int i=0; i < WXSIZEOF(setRates); i++)
+      setRates[i].name = wxT("");
+   setRates[0].name << _("Insane"  ) << wxT(", ") << 320;
+   setRates[1].name << _("Extreme" ) << wxT(", ") << 220 << wxT("-") << 260;
+   setRates[2].name << _("Standard") << wxT(", ") << 170 << wxT("-") << 210;
+   setRates[3].name << _("Medium"  ) << wxT(", ") << 145 << wxT("-") << 185;
+   for (int i=0; i < WXSIZEOF(setRates); i++)
+      setRates[i].name << wxT(" ") << _("kbps");
+
+   for (int i=0; i < WXSIZEOF(sampRates); i++)
+   {
+      sampRates[i].name = wxT("");
+      sampRates[i].name << sampRates[i].label;
+   }
+
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
    PopulateOrExchange(S);

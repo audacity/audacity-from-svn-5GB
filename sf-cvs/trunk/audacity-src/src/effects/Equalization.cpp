@@ -297,7 +297,7 @@ const wxChar * EffectEqualization::curveNames[] =
   };
 
 #define NUM_INTERP_CHOICES 3
-static wxString interpChoiceStrings[NUM_INTERP_CHOICES] = { _("B-spline"), _("Cosine"), _("Cubic") };
+static wxString interpChoiceStrings[NUM_INTERP_CHOICES];
 
 EffectEqualization::EffectEqualization()
 {
@@ -325,6 +325,10 @@ EffectEqualization::EffectEqualization()
    gPrefs->Read(wxT("/CsPresets/EQInterp"), &mInterp, 0);
 
    mPrompting = false;
+
+   interpChoiceStrings[0] = _("B-spline");
+   interpChoiceStrings[1] = _("Cosine");
+   interpChoiceStrings[2] = _("Cubic");
 }
 
 
