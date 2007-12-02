@@ -626,7 +626,7 @@ public:
 #define LABEL_GENRE     _("Genre")
 #define LABEL_COMMENTS  _("Comments")
 
-static const wxChar *names[] =
+static wxString names[] =
 {
    LABEL_ARTIST,
    LABEL_TITLE,
@@ -637,10 +637,10 @@ static const wxChar *names[] =
    LABEL_COMMENTS
 };
 
-static const struct
+static struct
 {
-   const wxChar *label;
-   const wxChar *name;
+   wxString label;
+   wxString name;
 }
 labelmap[] =
 {
@@ -652,6 +652,7 @@ labelmap[] =
    {  LABEL_GENRE,      TAG_GENRE      },
    {  LABEL_COMMENTS,   TAG_COMMENTS   }
 };
+
 #define STATICCNT WXSIZEOF(labelmap)
 
 enum {
@@ -690,6 +691,30 @@ TagsEditor::TagsEditor(wxWindow * parent,
    mEditTitle(editTitle),
    mEditTrack(editTrack)
 {
+   names[0] = LABEL_ARTIST;
+   names[1] = LABEL_TITLE;
+   names[2] = LABEL_ALBUM;
+   names[3] = LABEL_TRACK;
+   names[4] = LABEL_YEAR;
+   names[5] = LABEL_GENRE;
+   names[6] = LABEL_COMMENTS;
+
+   labelmap[0].label = LABEL_ARTIST;
+   labelmap[1].label = LABEL_TITLE;
+   labelmap[2].label = LABEL_ALBUM;
+   labelmap[3].label = LABEL_TRACK;
+   labelmap[4].label = LABEL_YEAR;
+   labelmap[5].label = LABEL_GENRE;
+   labelmap[6].label = LABEL_COMMENTS;
+
+   labelmap[0].name = TAG_ARTIST;
+   labelmap[1].name = TAG_TITLE;
+   labelmap[2].name = TAG_ALBUM;
+   labelmap[3].name = TAG_TRACK;
+   labelmap[4].name = TAG_YEAR;
+   labelmap[5].name = TAG_GENRE;
+   labelmap[6].name = TAG_COMMENTS;
+
    mGrid = NULL;
 
    // Make a local copy of the passed in tags
