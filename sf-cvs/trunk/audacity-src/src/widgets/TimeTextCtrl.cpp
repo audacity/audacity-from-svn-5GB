@@ -168,6 +168,14 @@ different formats.
 #include <wx/tooltip.h>
 #include <wx/toplevel.h>
 
+#ifdef _DEBUG
+    #ifdef _MSC_VER
+        #undef THIS_FILE
+        static char*THIS_FILE= __FILE__;
+        #define new new(_NORMAL_BLOCK, THIS_FILE, __LINE__)
+    #endif
+#endif
+
 #define ID_MENU 9800
 
 // Custom events
@@ -189,8 +197,8 @@ END_EVENT_TABLE()
 IMPLEMENT_CLASS(TimeTextCtrl, wxControl)
 
 struct BuiltinFormatString {
-   const wxChar *name;
-   const wxChar *formatStr;
+   wxString name;
+   wxString formatStr;
 };
 
 BuiltinFormatString BuiltinFormatStrings[] =
@@ -294,6 +302,38 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    mFocusedDigit(0),
    mLastField(-1)
 {
+   BuiltinFormatString *fs=BuiltinFormatStrings;
+   fs[0].name = _("seconds");
+   fs[0].formatStr = wxString(wxT("01000"))+_(",")+wxT("01000 ")+_("seconds");
+   fs[1].name = _("hh:mm:ss");
+   fs[1].formatStr = wxString(wxT("0100 "))+_("h")+wxT(" 060 ")+_("m")+wxT(" 060 ")+_("s");
+   fs[2].name = _("dd:hh:mm:ss");
+   fs[2].formatStr = wxString(wxT("0100 "))+_("days")+wxT(" 024 ")+_("h")+wxT(" 060 ")+_("m")+wxT(" 060 ")+_("s");
+   fs[3].name = _("hh:mm:ss + milliseconds");
+   fs[3].formatStr = wxString(wxT("0100 "))+_("h")+wxT(" 060 ")+_("m")+wxT(" 060.01000 ")+_("s");
+   fs[4].name = _("hh:mm:ss + samples");
+   fs[4].formatStr = wxString(wxT("0100 "))+_("h")+wxT(" 060 ")+_("m")+wxT(" 060 ")+_("s")+wxT("+.# ")+_("samples");
+   fs[5].name = _("samples");
+   fs[5].formatStr = wxString(wxT("01000"))+_(",")+wxT("01000")+_(",")+wxT("01000 ")+_("samples")+wxT("|#");
+   fs[6].name = _("hh:mm:ss + film frames (24 fps)");
+   fs[6].formatStr = wxString(wxT("0100 "))+_("h")+wxT(" 060 ")+_("m")+wxT(" 060 ")+_("s")+wxT("+.24 ")+_("frames");
+   fs[7].name = _("film frames (24 fps)");
+   fs[7].formatStr = wxString(wxT("01000"))+_(",")+wxT("01000 ")+_("frames")+wxT("|24");
+   fs[8].name = _("hh:mm:ss + NTSC drop frames");
+   fs[8].formatStr = wxString(wxT("0100 "))+_("h")+wxT(" 060 ")+_("m")+wxT(" 060 ")+_("s")+wxT("+.30 ")+_("frames")+wxT("|N");
+   fs[9].name = _("hh:mm:ss + NTSC non-drop frames");
+   fs[9].formatStr = wxString(wxT("0100 "))+_("h")+wxT(" 060 ")+_("m")+wxT(" 060 ")+_("s")+wxT("+.030 ")+_("frames")+wxT("| .999000999");
+   fs[10].name = _("NTSC frames");
+   fs[10].formatStr = wxString(wxT("01000"))+_(",")+wxT("01000 ")+_("frames")+wxT("|29.97002997");
+   fs[11].name = _("hh:mm:ss + PAL frames (25 fps)");
+   fs[11].formatStr = wxString(wxT("0100 "))+_("h")+wxT(" 060 ")+_("m")+wxT(" 060 ")+_("s")+wxT("+.25 ")+_("frames");
+   fs[12].name = _("PAL frames (25 fps)");
+   fs[12].formatStr = wxString(wxT("01000"))+_(",")+wxT("01000 ")+_("frames")+wxT("|25");
+   fs[13].name = _("hh:mm:ss + CDDA frames (75 fps)");
+   fs[13].formatStr = wxString(wxT("0100 "))+_("h")+wxT(" 060 ")+_("m")+wxT(" 060 ")+_("s")+wxT("+.75 ")+_("frames");
+   fs[14].name = _("CDDA frames (75 fps)");
+   fs[14].formatStr = wxString(wxT("01000"))+_(",")+wxT("01000 ")+_("frames")+wxT("|75");
+
    mDigitBoxW = 10;
    mDigitBoxH = 16;
 

@@ -108,6 +108,16 @@ void InitFFT()
    }
 }
 
+void DeinitFFT()
+{
+   if (gFFTBitTable) {
+      for (int b = 1; b <= MaxFastBits; b++) {
+         delete[] gFFTBitTable[b-1];
+      }
+      delete[] gFFTBitTable;
+   }
+}
+
 inline int FastReverseBits(int i, int NumBits)
 {
    if (NumBits <= MaxFastBits)
