@@ -84,6 +84,8 @@ SummaryInfo::SummaryInfo(sampleCount samples)
    totalSummaryBytes = offset256 + (frames256 * bytesPerFrame);
 }
 
+char *BlockFile::fullSummary = 0;
+
 /// Initializes the base BlockFile data.  The block is initially
 /// unlocked and its reference count is 1.
 ///
@@ -168,6 +170,11 @@ bool BlockFile::Deref()
       return false;
 }
 
+void BlockFile::Deinit()
+{
+   if(fullSummary)delete[] fullSummary;
+}
+
 /// Get a buffer containing a summary block describing this sample
 /// data.  This must be called by derived classes when they
 /// are constructed, to allow them to construct their summary data,
@@ -185,7 +192,6 @@ bool BlockFile::Deref()
 void *BlockFile::CalcSummary(samplePtr buffer, sampleCount len,
                              sampleFormat format)
 {
-   static char *fullSummary = 0;
    if(fullSummary)delete[] fullSummary;
    fullSummary = new char[mSummaryInfo.totalSummaryBytes];
 

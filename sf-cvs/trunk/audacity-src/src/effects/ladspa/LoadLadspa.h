@@ -9,6 +9,7 @@
 **********************************************************************/
 
 void LoadLadspaPlugins();
+void UnloadLadspaPlugins();
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

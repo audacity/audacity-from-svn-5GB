@@ -68,6 +68,7 @@ ExpandingToolBar.
 #include "../Theme.h"
 
 #include <wx/dcmemory.h>
+#include <wx/log.h>
 #include <wx/dragimag.h>
 #include <wx/arrimpl.cpp>
 #include <wx/dialog.h>

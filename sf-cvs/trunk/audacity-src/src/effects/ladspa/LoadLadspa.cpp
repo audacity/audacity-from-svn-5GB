@@ -30,7 +30,12 @@
 #include "../../Internat.h"
 #include "LadspaEffect.h"
 
-void LoadLadspaEffect(wxSortedArrayString &uniq, wxString fname)
+WX_DEFINE_ARRAY(wxDynamicLibrary*, DL_Array);
+
+DL_Array ladspa_dls;
+
+void LoadLadspaEffect(wxSortedArrayString &uniq, wxString fname,
+DL_Array &dls)
 {
    wxLogNull logNo;
    LADSPA_Descriptor_Function mainFn = NULL;
@@ -44,6 +49,7 @@ void LoadLadspaEffect(wxSortedArrayString &uniq, wxString fname)
    ::wxSetWorkingDirectory(prefix);
 
    wxDynamicLibrary* pDLL = new wxDynamicLibrary();
+   dls.push_back(pDLL);
    if (pDLL && pDLL->Load(fname, wxDL_LAZY)) {
       mainFn = (LADSPA_Descriptor_Function)(pDLL->GetSymbol(wxT(descriptorFnName)));
    }
@@ -112,7 +118,16 @@ void LoadLadspaPlugins()
    #endif
 
    for(i=0; i<files.GetCount(); i++)
-      LoadLadspaEffect(uniq, files[i]);
+      LoadLadspaEffect(uniq, files[i], ladspa_dls);
+}
+
+void UnloadLadspaPlugins()
+{
+   int count=ladspa_dls.GetCount();
+   for (int i=0; i<count; i++) 
+   {
+      delete ladspa_dls[i];
+   }
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

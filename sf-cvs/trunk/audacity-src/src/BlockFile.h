@@ -48,6 +48,8 @@ class BlockFile {
    BlockFile(wxFileName fileName, sampleCount samples);
    virtual ~BlockFile();
 
+   static void Deinit();
+
    // Reading
 
    /// Retrieves audio data from this BlockFile
@@ -128,6 +130,8 @@ class BlockFile {
  private:
    int mLockCount;
    int mRefCount;
+
+   static char *fullSummary;
 
  protected:
    wxFileName mFileName;

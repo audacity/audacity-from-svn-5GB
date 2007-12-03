@@ -139,6 +139,14 @@ void LoadEffects()
 void UnloadEffects()
 {
    Effect::UnregisterEffects();
+
+#ifdef USE_LADSPA
+   UnloadLadspaPlugins();
+#endif
+
+#ifdef USE_VAMP
+   UnloadVampPlugins();
+#endif
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

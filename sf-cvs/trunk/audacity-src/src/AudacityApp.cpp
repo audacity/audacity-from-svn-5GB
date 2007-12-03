@@ -82,6 +82,14 @@ It handles initialization and termination by subclassing wxApp.
 #include "import/ImportQT.h"
 #endif
 
+#ifdef _DEBUG
+    #ifdef _MSC_VER
+        #undef THIS_FILE
+        static char*THIS_FILE= __FILE__;
+        #define new new(_NORMAL_BLOCK, THIS_FILE, __LINE__)
+    #endif
+#endif
+
 // Windows specific linker control...only needed once so
 // this is a good place (unless we want to add another file).
 #if defined(__WXMSW__)
@@ -1287,9 +1295,14 @@ int AudacityApp::OnExit()
 
    UnloadEffects();
 
+   DeinitFFT();
+   BlockFile::Deinit();
+
    DeinitAudioIO();
    Internat::CleanUp();// JKC
 
+   if (mLocale)
+      delete mLocale;
    delete mChecker;
 
    return 0;

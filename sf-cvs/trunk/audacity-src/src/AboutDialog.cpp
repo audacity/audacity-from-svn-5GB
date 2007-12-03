@@ -262,6 +262,7 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
                           //vvv theTheme.Bitmap(bmpAudacityLogo), wxPoint(93, 10), wxSize(215, 190));
                           //vvv theTheme.Bitmap(bmpAudacityLogoWithName), 
                           wxDefaultPosition, wxSize(LOGOWITHNAME_WIDTH, LOGOWITHNAME_HEIGHT));
+   delete logo;
    S.Prop(0).AddWindow( icon );
 
    wxHtmlWindow *html = new LinkingHtmlWindow(S.GetParent(), -1,
