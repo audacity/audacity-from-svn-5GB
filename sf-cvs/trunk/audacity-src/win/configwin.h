@@ -83,5 +83,11 @@ extern const wxChar *overrideSliderNameStr;
 #undef _PTR_
 #endif
 
+#ifdef _DEBUG
+    #ifdef _MSC_VER
+        #include <crtdbg.h>
+    #endif
+#endif
+
 // arch-tag: dcb2defc-1c07-4bae-a9ca-c5377cb470e4
 
