@@ -615,7 +615,7 @@ TrackPanel::~TrackPanel()
       mBackingDC.SelectObject( wxNullBitmap );
       delete mBacking;
    }
-   delete mAx;
+//   delete mAx;
    delete mTrackArtist;
 
    delete mArrowCursor;
