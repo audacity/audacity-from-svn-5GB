@@ -213,6 +213,52 @@ static CHOICES sampRates[] =
 #define ID_ABR 7002
 #define ID_CBR 7003
 
+void InitMP3_Statics()
+{
+   for (int i=0; i < WXSIZEOF(fixRates); i++)
+   {
+      fixRates[i].name = wxT("");
+      fixRates[i].name << fixRates[i].label << wxT(" ") << _("kbps");
+   }
+   for (int i=0; i < WXSIZEOF(varRates); i++)
+   {
+      varRates[i].name = wxT("");
+      varRates[i].name << i << wxT(", ");
+   }
+   varRates[0].name << wxT("220-260");
+   varRates[1].name << wxT("200-250");
+   varRates[2].name << wxT("170-210");
+   varRates[3].name << wxT("155-195");
+   varRates[4].name << wxT("145-185");
+   varRates[5].name << wxT("110-150");
+   varRates[6].name << wxT("95-135");
+   varRates[7].name << wxT("80-120");
+   varRates[8].name << wxT("65-105");
+   varRates[9].name << wxT("45-85");
+   for (int i=0; i < WXSIZEOF(varRates); i++)
+      varRates[i].name << wxT(" ") << _("kbps");
+   varRates[0].name << wxT(" ") << _("(Best Quality)");
+   varRates[9].name << wxT(" ") << _("(Smaller files)");
+
+   varModes[0].name = _("Fast");
+   varModes[1].name = _("Standard");
+
+   for (int i=0; i < WXSIZEOF(setRates); i++)
+      setRates[i].name = wxT("");
+   setRates[0].name << _("Insane"  ) << wxT(", ") << 320;
+   setRates[1].name << _("Extreme" ) << wxT(", ") << 220 << wxT("-") << 260;
+   setRates[2].name << _("Standard") << wxT(", ") << 170 << wxT("-") << 210;
+   setRates[3].name << _("Medium"  ) << wxT(", ") << 145 << wxT("-") << 185;
+   for (int i=0; i < WXSIZEOF(setRates); i++)
+      setRates[i].name << wxT(" ") << _("kbps");
+
+   for (int i=0; i < WXSIZEOF(sampRates); i++)
+   {
+      sampRates[i].name = wxT("");
+      sampRates[i].name << sampRates[i].label;
+   }
+}
+
 class ExportMP3Options : public wxDialog
 {
 public:
@@ -258,49 +304,7 @@ ExportMP3Options::ExportMP3Options(wxWindow *parent)
             wxDefaultPosition, wxDefaultSize,
             wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
 {
-   for (int i=0; i < WXSIZEOF(fixRates); i++)
-   {
-      fixRates[i].name = wxT("");
-      fixRates[i].name << fixRates[i].label << wxT(" ") << _("kbps");
-   }
-   for (int i=0; i < WXSIZEOF(varRates); i++)
-   {
-      varRates[i].name = wxT("");
-      varRates[i].name << i << wxT(", ");
-   }
-   varRates[0].name << wxT("220-260");
-   varRates[1].name << wxT("200-250");
-   varRates[2].name << wxT("170-210");
-   varRates[3].name << wxT("155-195");
-   varRates[4].name << wxT("145-185");
-   varRates[5].name << wxT("110-150");
-   varRates[6].name << wxT("95-135");
-   varRates[7].name << wxT("80-120");
-   varRates[8].name << wxT("65-105");
-   varRates[9].name << wxT("45-85");
-   for (int i=0; i < WXSIZEOF(varRates); i++)
-      varRates[i].name << wxT(" ") << _("kbps");
-   varRates[0].name << wxT(" ") << _("(Best Quality)");
-   varRates[9].name << wxT(" ") << _("(Smaller files)");
-
-   varModes[0].name = _("Fast");
-   varModes[1].name = _("Standard");
-
-   for (int i=0; i < WXSIZEOF(setRates); i++)
-      setRates[i].name = wxT("");
-   setRates[0].name << _("Insane"  ) << wxT(", ") << 320;
-   setRates[1].name << _("Extreme" ) << wxT(", ") << 220 << wxT("-") << 260;
-   setRates[2].name << _("Standard") << wxT(", ") << 170 << wxT("-") << 210;
-   setRates[3].name << _("Medium"  ) << wxT(", ") << 145 << wxT("-") << 185;
-   for (int i=0; i < WXSIZEOF(setRates); i++)
-      setRates[i].name << wxT(" ") << _("kbps");
-
-   for (int i=0; i < WXSIZEOF(sampRates); i++)
-   {
-      sampRates[i].name = wxT("");
-      sampRates[i].name << sampRates[i].label;
-   }
-
+   InitMP3_Statics();
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
    PopulateOrExchange(S);
@@ -1636,6 +1640,7 @@ private:
 ExportMP3::ExportMP3()
 :  ExportPlugin()
 {
+   InitMP3_Statics();
    SetFormat(wxT("MP3"));
    SetExtension(wxT("mp3"));
    SetMaxChannels(2);
