@@ -1059,7 +1059,7 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
       // Major ticks are the decades
 #ifdef LOGARITHMIC_SPECTRUM
       double decade = startDecade;
-      int delta=hiDecade-loDecade, steps=abs(delta);
+      double delta=hiLog-loLog, steps=fabs(delta);
       double step = delta>=0 ? 10 : 0.1;
       double rMin=wxMin(mMin, mMax), rMax=wxMax(mMin, mMax);
       for(i=0; i<=steps; i++) 
@@ -1122,15 +1122,15 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
       // MinorMinor ticks are multiples of decades
       decade = startDecade;
       if (delta > 0)
-      {  start= 1; end=10; mstep= 0.1f;
+      {  start= 10; end=100; mstep= 1;
       }else
-      {  start=10; end= 1; mstep=-0.1f;
+      {  start=100; end= 10; mstep=-1;
       }
       steps++;
       for(i=0; i<=steps; i++) {
-         for(float f=start; f<=end; f+=mstep) {
-            if (int(f)!=f) {
-               val = decade * f;
+         for(int f=start; f!=int(end); f+=mstep) {
+            if (int(f/10)!=f/10.0f) {
+               val = decade * f/10;
                if(val >= rMin && val < rMax) {
                   pos = (int)(((log10(val) - loLog)*scale)+0.5);
 #ifdef EXPERIMENTAL_RULER_AUTOSIZE
@@ -1319,34 +1319,35 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
    mDC->SetFont(*mMinorMinorFont);
 
    for(i=0; i<mNumMinorMinor; i++) {
-      int pos = mMinorMinorLabels[i].pos;
-
-      if( mbTicksAtExtremes || ((pos!=0)&&(pos!=iMaxPos)))
-      {
-         if (mOrientation == wxHORIZONTAL) 
-         {
-            if (mFlip)
-               mDC->DrawLine(mLeft + pos, mTop,
-                             mLeft + pos, mTop + 2);
-            else
-               mDC->DrawLine(mLeft + pos, mBottom - 2,
-                             mLeft + pos, mBottom);
-         }
-         else 
-         {
-            if (mFlip)
-               mDC->DrawLine(mLeft, mTop + pos,
-                             mLeft + 2, mTop + pos);
-            else
-               mDC->DrawLine(mRight - 2, mTop + pos,
-                             mRight, mTop + pos);
-         }
-      }
-
       if (mMinorMinorLabels[i].text != wxT(""))
+      {
+         int pos = mMinorMinorLabels[i].pos;
+
+         if( mbTicksAtExtremes || ((pos!=0)&&(pos!=iMaxPos)))
+         {
+            if (mOrientation == wxHORIZONTAL) 
+            {
+               if (mFlip)
+                  mDC->DrawLine(mLeft + pos, mTop,
+                                mLeft + pos, mTop + 2);
+               else
+                  mDC->DrawLine(mLeft + pos, mBottom - 2,
+                                mLeft + pos, mBottom);
+            }
+            else 
+            {
+               if (mFlip)
+                  mDC->DrawLine(mLeft, mTop + pos,
+                                mLeft + 2, mTop + pos);
+               else
+                  mDC->DrawLine(mRight - 2, mTop + pos,
+                                mRight, mTop + pos);
+            }
+         }
          mDC->DrawText(mMinorMinorLabels[i].text,
                        mMinorMinorLabels[i].lx,
                        mMinorMinorLabels[i].ly);
+      }
    }
 #endif //EXPERIMENTAL_RULER_AUTOSIZE
 }
