@@ -12,7 +12,8 @@ dlcompat
 
 expat
 -----
-XML parser library used to parse project files and so on.
+XML parser library used to parse project files and so on. By default the
+system copy is prefered over this one
 
 FileDialogue
 ------------
@@ -26,6 +27,7 @@ disused?
 
 id3lib
 ------
+disused?
 
 libflac
 -------
@@ -34,6 +36,7 @@ Free Lossless Audio Codec encoding and decoding library
 
 libid3tag
 ---------
+MP3 tag manipulation library. Comes with libmad (below)
 
 libmad
 ------
@@ -60,7 +63,8 @@ purposes.
 
 libsndfile
 ----------
-Erik de Castro Lopo's uncompressed audio file I/O library
+Erik de Castro Lopo's uncompressed audio file I/O library. Core and essential
+to audacity
 
 libvorbis
 ---------
@@ -85,7 +89,7 @@ portaudio-v19
 -------------
 http://portaudio.com/
 cross-platform audio I/O library version 19, used for 1.3.2 onwards releases
-Version in audacity cvs: 1st July 2007 CVS snapshot
+Version in audacity cvs: 9th December 2007 CVS snapshot
 Patches:
 		buildoptions-osx.patch			patch by Dominic to make Universal
 					Binary optional and make build work on OS X 10.3
@@ -111,6 +115,7 @@ soundtouch
 ----------
 http://www.surina.net/soundtouch/
 Independant Pitch and Tempo changing library.
+Version in audacity cvs: 1.3.1
 Some patches inserted to make it build on PPC?
 
 twolame
@@ -142,7 +147,7 @@ then tar --strip-components 1 will remove the un-needed top level directory.
 3 Apply patches and updates
 ---------------------------
 Now we have a new file tree. This is the point at which to clean out any
-un-needed files, re-apply and local patches so on.
+un-needed files, re-apply any local patches so on.
 
 * Copy in newer config.sub and config.guess if needed.
 * run autoreconf if we have modified configure.in or configure.ac
