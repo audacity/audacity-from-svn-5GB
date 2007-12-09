@@ -1,5 +1,5 @@
 /*
- * $Id: debug_sine_formats.c,v 1.5 2007-08-16 20:45:37 richardash1981 Exp $
+ * $Id: debug_sine_formats.c,v 1.6 2007-12-09 21:51:04 richardash1981 Exp $
  * patest_sine_formats.c
  * Play a sine wave using the Portable Audio api for several seconds.
  * Test various data formats.

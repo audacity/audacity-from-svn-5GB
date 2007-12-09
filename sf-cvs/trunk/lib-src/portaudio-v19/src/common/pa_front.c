@@ -1,5 +1,5 @@
 /*
- * $Id: pa_front.c,v 1.7 2007-08-16 20:45:35 richardash1981 Exp $
+ * $Id: pa_front.c,v 1.8 2007-12-09 21:50:55 richardash1981 Exp $
  * Portable Audio I/O Library Multi-Host API front end
  * Validate function parameters and manage multiple host APIs.
  *

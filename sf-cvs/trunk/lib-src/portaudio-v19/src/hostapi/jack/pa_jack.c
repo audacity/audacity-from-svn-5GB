@@ -1,5 +1,5 @@
 /*
- * $Id: pa_jack.c,v 1.6 2007-08-16 20:45:36 richardash1981 Exp $
+ * $Id: pa_jack.c,v 1.7 2007-12-09 21:51:00 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * JACK Implementation by Joshua Haberman
@@ -717,14 +717,19 @@ PaError PaJack_Initialize( PaUtilHostApiRepresentation **hostApi,
     ASSERT_CALL( pthread_cond_init( &jackHostApi->cond, NULL ), 0 );
 
     /* Try to become a client of the JACK server.  If we cannot do
-     * this, then this API cannot be used. */
+     * this, then this API cannot be used.
+     *
+     * Without the JackNoStartServer option, the jackd server is started
+     * automatically which we do not want.
+     */
 
-    jackHostApi->jack_client = jack_client_open( clientName_, 0, &jackStatus );
+    jackHostApi->jack_client = jack_client_open( clientName_, JackNoStartServer, &jackStatus );
     if( !jackHostApi->jack_client )
     {
         /* the V19 development docs say that if an implementation
          * detects that it cannot be used, it should return a NULL
          * interface and paNoError */
+        PA_DEBUG(( "%s: Couldn't connect to JACK, status: %d\n", __FUNCTION__, jackStatus ));
         result = paNoError;
         goto error;
     }
@@ -737,7 +742,6 @@ PaError PaJack_Initialize( PaUtilHostApiRepresentation **hostApi,
     (*hostApi)->info.name = "JACK Audio Connection Kit";
 
     /* Build a device list by querying the JACK server */
-
     ENSURE_PA( BuildDeviceList( jackHostApi ) );
 
     /* Register functions */
@@ -1748,7 +1752,8 @@ PaError PaJack_GetClientName(const char** clientName)
 {
     PaError result = paNoError;
     PaJackHostApiRepresentation* jackHostApi = NULL;
-    ENSURE_PA( PaUtil_GetHostApiRepresentation( (PaUtilHostApiRepresentation**)&jackHostApi, paJACK ) );
+    PaJackHostApiRepresentation** ref = &jackHostApi;
+    ENSURE_PA( PaUtil_GetHostApiRepresentation( (PaUtilHostApiRepresentation**)ref, paJACK ) );
     *clientName = jack_get_client_name( jackHostApi->jack_client );
 
 error:

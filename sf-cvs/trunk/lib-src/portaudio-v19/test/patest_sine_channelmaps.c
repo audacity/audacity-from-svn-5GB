@@ -7,7 +7,7 @@
    @author Phil Burk <philburk@softsynth.com>
 */
 /*
- * $Id: patest_sine_channelmaps.c,v 1.3 2007-08-16 20:45:38 richardash1981 Exp $
+ * $Id: patest_sine_channelmaps.c,v 1.4 2007-12-09 21:51:11 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com/
@@ -109,7 +109,7 @@ int main(void)
     paTestData data;
 #ifdef __APPLE__
     PaMacCoreStreamInfo macInfo;
-    const long channelMap[4] = { -1, -1, 0, 1 };
+    const SInt32 channelMap[4] = { -1, -1, 0, 1 };
 #endif
     int i;
 

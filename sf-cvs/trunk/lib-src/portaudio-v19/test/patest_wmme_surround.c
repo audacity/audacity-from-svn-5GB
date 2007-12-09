@@ -1,5 +1,5 @@
 /*
- * $Id: patest_wmme_surround.c,v 1.2 2007-08-16 20:45:38 richardash1981 Exp $
+ * $Id: patest_wmme_surround.c,v 1.3 2007-12-09 21:51:13 richardash1981 Exp $
  * Portable Audio I/O Library
  * Windows MME surround sound output test
  *
@@ -129,7 +129,7 @@ int main(int argc, char* argv[])
     err = Pa_Initialize();
     if( err != paNoError ) goto error;
 
-	deviceIndex = Pa_GetDefaultOutputDevice();
+	deviceIndex = Pa_GetHostApiInfo( Pa_HostApiTypeIdToHostApiIndex( paMME ) )->defaultOutputDevice;
 	if( argc == 2 ){
 		sscanf( argv[1], "%d", &deviceIndex );
 	}
@@ -159,7 +159,7 @@ int main(int argc, char* argv[])
     wmmeStreamInfo.hostApiType = paMME; 
     wmmeStreamInfo.version = 1;
     wmmeStreamInfo.flags = paWinMmeUseChannelMask;
-    wmmeStreamInfo.channelMask = PAWIN_SPEAKER_5POINT1_SURROUND; /* request 5.1 output format */
+    wmmeStreamInfo.channelMask = PAWIN_SPEAKER_5POINT1; /* request 5.1 output format */
     outputParameters.hostApiSpecificStreamInfo = &wmmeStreamInfo;
 
 

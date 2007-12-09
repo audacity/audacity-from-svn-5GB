@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_wmme.c,v 1.5 2007-08-16 20:45:37 richardash1981 Exp $
+ * $Id: pa_win_wmme.c,v 1.6 2007-12-09 21:51:00 richardash1981 Exp $
  * pa_win_wmme.c
  * Implementation of PortAudio for Windows MultiMedia Extensions (WMME)       
  *                                                                                         
@@ -88,6 +88,10 @@ Non-critical stuff for the future:
     
     @todo define UNICODE and _UNICODE in the project settings and see what breaks
 
+    @todo refactor conversion of MMSYSTEM errors into PA arrors into a single function.
+
+    @todo cleanup WAVEFORMATEXTENSIBLE retry in InitializeWaveHandles to not use a for loop
+
 */
 
 /*
@@ -134,6 +138,16 @@ Non-critical stuff for the future:
 
 #include "pa_win_wmme.h"
 #include "pa_win_waveformat.h"
+
+#ifdef PAWIN_USE_WDMKS_DEVICE_INFO
+#include "pa_win_wdmks_utils.h"
+#ifndef DRV_QUERYDEVICEINTERFACE
+#define DRV_QUERYDEVICEINTERFACE     (DRV_RESERVED + 12)
+#endif
+#ifndef DRV_QUERYDEVICEINTERFACESIZE
+#define DRV_QUERYDEVICEINTERFACESIZE (DRV_RESERVED + 13)
+#endif
+#endif /* PAWIN_USE_WDMKS_DEVICE_INFO */
 
 #if (defined(UNDER_CE))
 #pragma comment(lib, "Coredll.lib")
@@ -533,12 +547,12 @@ static PaError QueryFormatSupported( PaDeviceInfo *deviceInfo,
 
     /* @todo at the moment we only query with 16 bit sample format and directout speaker config*/
     PaWin_InitializeWaveFormatExtensible( &waveFormat, channels, 
-            paInt16, sampleRate, sizeof(short), PAWIN_SPEAKER_DIRECTOUT );
+            paInt16, sampleRate, PAWIN_SPEAKER_DIRECTOUT );
 
     if( waveFormatExQueryFunction( winMmeDeviceId, (WAVEFORMATEX*)&waveFormat ) == paNoError )
         return paNoError;
 
-    PaWin_InitializeWaveFormatEx( &waveFormat, channels, paInt16, sampleRate, sizeof(short) );
+    PaWin_InitializeWaveFormatEx( &waveFormat, channels, paInt16, sampleRate );
 
     return waveFormatExQueryFunction( winMmeDeviceId, (WAVEFORMATEX*)&waveFormat );
 }
@@ -568,6 +582,40 @@ static void DetectDefaultSampleRate( PaWinMmeDeviceInfo *winMmeDeviceInfo, int w
         }
     }
 }
+
+
+#ifdef PAWIN_USE_WDMKS_DEVICE_INFO
+static int QueryWaveInKSFilterMaxChannels( int waveInDeviceId, int *maxChannels )
+{
+    void *devicePath;
+    DWORD devicePathSize;
+    int result = 0;
+
+    if( waveInMessage((HWAVEIN)waveInDeviceId, DRV_QUERYDEVICEINTERFACESIZE,
+            (DWORD_PTR)&devicePathSize, 0 ) != MMSYSERR_NOERROR )
+        return 0;
+
+    devicePath = PaUtil_AllocateMemory( devicePathSize );
+    if( !devicePath )
+        return 0;
+
+    /* apparently DRV_QUERYDEVICEINTERFACE returns a unicode interface path, although this is undocumented */
+    if( waveInMessage((HWAVEIN)waveInDeviceId, DRV_QUERYDEVICEINTERFACE,
+            (DWORD_PTR)devicePath, devicePathSize ) == MMSYSERR_NOERROR )
+    {
+        int count = PaWin_WDMKS_QueryFilterMaximumChannelCount( devicePath, /* isInput= */ 1  );
+        if( count > 0 )
+        {
+            *maxChannels = count;
+            result = 1;
+        }
+    }
+
+    PaUtil_FreeMemory( devicePath );
+
+    return result;
+}
+#endif /* PAWIN_USE_WDMKS_DEVICE_INFO */
 
 
 static PaError InitializeInputDeviceInfo( PaWinMmeHostApiRepresentation *winMmeHostApi,
@@ -642,6 +690,11 @@ static PaError InitializeInputDeviceInfo( PaWinMmeHostApiRepresentation *winMmeH
         winMmeDeviceInfo->deviceInputChannelCountIsKnown = 1;
     }
 
+#ifdef PAWIN_USE_WDMKS_DEVICE_INFO
+    winMmeDeviceInfo->deviceInputChannelCountIsKnown = 
+            QueryWaveInKSFilterMaxChannels( winMmeInputDeviceId, &deviceInfo->maxInputChannels );
+#endif /* PAWIN_USE_WDMKS_DEVICE_INFO */
+
     winMmeDeviceInfo->dwFormats = wic.dwFormats;
 
     DetectDefaultSampleRate( winMmeDeviceInfo, winMmeInputDeviceId,
@@ -654,6 +707,40 @@ error:
 }
 
 
+#ifdef PAWIN_USE_WDMKS_DEVICE_INFO
+static int QueryWaveOutKSFilterMaxChannels( int waveOutDeviceId, int *maxChannels )
+{
+    void *devicePath;
+    DWORD devicePathSize;
+    int result = 0;
+
+    if( waveOutMessage((HWAVEOUT)waveOutDeviceId, DRV_QUERYDEVICEINTERFACESIZE,
+            (DWORD_PTR)&devicePathSize, 0 ) != MMSYSERR_NOERROR )
+        return 0;
+
+    devicePath = PaUtil_AllocateMemory( devicePathSize );
+    if( !devicePath )
+        return 0;
+
+    /* apparently DRV_QUERYDEVICEINTERFACE returns a unicode interface path, although this is undocumented */
+    if( waveOutMessage((HWAVEOUT)waveOutDeviceId, DRV_QUERYDEVICEINTERFACE,
+            (DWORD_PTR)devicePath, devicePathSize ) == MMSYSERR_NOERROR )
+    {
+        int count = PaWin_WDMKS_QueryFilterMaximumChannelCount( devicePath, /* isInput= */ 0  );
+        if( count > 0 )
+        {
+            *maxChannels = count;
+            result = 1;
+        }
+    }
+
+    PaUtil_FreeMemory( devicePath );
+
+    return result;
+}
+#endif /* PAWIN_USE_WDMKS_DEVICE_INFO */
+
+
 static PaError InitializeOutputDeviceInfo( PaWinMmeHostApiRepresentation *winMmeHostApi,
         PaWinMmeDeviceInfo *winMmeDeviceInfo, UINT winMmeOutputDeviceId, int *success )
 {
@@ -662,7 +749,7 @@ static PaError InitializeOutputDeviceInfo( PaWinMmeHostApiRepresentation *winMme
     MMRESULT mmresult;
     WAVEOUTCAPS woc;
     PaDeviceInfo *deviceInfo = &winMmeDeviceInfo->inheritedDeviceInfo;
-    
+
     *success = 0;
 
     mmresult = waveOutGetDevCaps( winMmeOutputDeviceId, &woc, sizeof( WAVEOUTCAPS ) );
@@ -725,6 +812,11 @@ static PaError InitializeOutputDeviceInfo( PaWinMmeHostApiRepresentation *winMme
         deviceInfo->maxOutputChannels = woc.wChannels;
         winMmeDeviceInfo->deviceOutputChannelCountIsKnown = 1;
     }
+
+#ifdef PAWIN_USE_WDMKS_DEVICE_INFO
+    winMmeDeviceInfo->deviceOutputChannelCountIsKnown = 
+            QueryWaveOutKSFilterMaxChannels( winMmeOutputDeviceId, &deviceInfo->maxOutputChannels );
+#endif /* PAWIN_USE_WDMKS_DEVICE_INFO */
 
     winMmeDeviceInfo->dwFormats = woc.dwFormats;
 
@@ -1657,15 +1749,14 @@ static PaError InitializeWaveHandles( PaWinMmeHostApiRepresentation *winMmeHostA
 
                 /* @todo at the moment we only use 16 bit sample format */
                 PaWin_InitializeWaveFormatExtensible( &waveFormat, devices[i].channelCount, 
-                        paInt16, sampleRate, sizeof(short), channelMask );
+                        paInt16, sampleRate, channelMask );
 
             }
             else
             {
                 /* retry with WAVEFORMATEX */
 
-                PaWin_InitializeWaveFormatEx( &waveFormat, devices[i].channelCount, 
-                        paInt16, sampleRate, sizeof(short) );
+                PaWin_InitializeWaveFormatEx( &waveFormat, devices[i].channelCount, paInt16, sampleRate );
             }
 
             /* REVIEW: consider not firing an event for input when a full duplex
@@ -2501,6 +2592,7 @@ static PaError AdvanceToNextInputBuffer( PaWinMmeStream *stream )
 
     for( i=0; i < stream->input.deviceCount; ++i )
     {
+        stream->input.waveHeaders[i][ stream->input.currentBufferIndex ].dwFlags &= ~WHDR_DONE;
         mmresult = waveInAddBuffer( ((HWAVEIN*)stream->input.waveHandles)[i],
                                     &stream->input.waveHeaders[i][ stream->input.currentBufferIndex ],
                                     sizeof(WAVEHDR) );
@@ -3027,6 +3119,7 @@ static PaError StartStream( PaStream *s )
         {
             for( j=0; j<stream->input.deviceCount; ++j )
             {
+                stream->input.waveHeaders[j][i].dwFlags &= ~WHDR_DONE;
                 mmresult = waveInAddBuffer( ((HWAVEIN*)stream->input.waveHandles)[j], &stream->input.waveHeaders[j][i], sizeof(WAVEHDR) );
                 if( mmresult != MMSYSERR_NOERROR )
                 {

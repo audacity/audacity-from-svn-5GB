@@ -1,5 +1,5 @@
 /*
- * $Id: pa_debugprint.c,v 1.4 2007-08-16 20:45:35 richardash1981 Exp $
+ * $Id: pa_debugprint.c,v 1.5 2007-12-09 21:50:55 richardash1981 Exp $
  * Portable Audio I/O Library Multi-Host API front end
  * Validate function parameters and manage multiple host APIs.
  *
@@ -74,7 +74,7 @@ void PaUtil_SetDebugPrintFunction(PaUtilLogCallback cb)
  VERY dangerous alternative, vsprintf (with no n)
  */
 
-#if (_MSC_VER) && (_MSC_VER < 1400)
+#if (_MSC_VER) && (_MSC_VER <= 1400)
 #define VSNPRINTF  _vsnprintf
 #else
 #define VSNPRINTF  vsnprintf
