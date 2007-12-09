@@ -58,6 +58,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVAMP], [
       LIBVAMP_SYSTEM_AVAILABLE="yes"
       LIBVAMP_SYSTEM_LIBS=$VAMP_LIBS
       LIBVAMP_SYSTEM_CXXFLAGS=$VAMP_CFLAGS
+	  dnl still need these local objects for the support in audacity
       LIBVAMP_SYSTEM_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
       LIBVAMP_SYSTEM_CPPSYMBOLS="USE_VAMP"
       AC_MSG_NOTICE([Vamp libraries are available as system libraries])
