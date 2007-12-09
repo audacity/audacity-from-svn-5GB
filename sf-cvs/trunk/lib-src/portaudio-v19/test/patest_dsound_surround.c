@@ -1,16 +1,9 @@
-/** @file patest_timing.c
-	@ingroup test_src
-	@brief Play a sine wave for several seconds, and spits out a ton of timing info while it's at it. Based on patet_sine.c
-	@author Bjorn Roche
-	@author Ross Bencina <rossb@audiomulch.com>
-    @author Phil Burk <philburk@softsynth.com>
-*/
 /*
- * $Id: patest_timing.c,v 1.5 2007-12-09 21:51:12 richardash1981 Exp $
+ * $Id: patest_dsound_surround.c,v 1.1 2007-12-09 21:51:09 richardash1981 Exp $
+ * Portable Audio I/O Library
+ * Windows DirectSound surround sound output test
  *
- * This program uses the PortAudio Portable Audio Library.
- * For more information see: http://www.portaudio.com/
- * Copyright (c) 1999-2000 Ross Bencina and Phil Burk
+ * Copyright (c) 2007 Ross Bencina
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files
@@ -45,24 +38,33 @@
 
 #include <stdio.h>
 #include <math.h>
-#include "portaudio.h"
 
-#define NUM_SECONDS   (5)
-#define SAMPLE_RATE   (44100)
-#define FRAMES_PER_BUFFER  (64)
+#include <windows.h>    /* required when using pa_win_wmme.h */
+#include <mmsystem.h>   /* required when using pa_win_wmme.h */
+
+#include "portaudio.h"
+#include "pa_win_ds.h"
+
+#define NUM_SECONDS         (12)
+#define SAMPLE_RATE         (44100)
+#define FRAMES_PER_BUFFER   (64)
 
 #ifndef M_PI
 #define M_PI  (3.14159265)
 #endif
 
-#define TABLE_SIZE   (200)
+#define TABLE_SIZE          (100)
+
+#define CHANNEL_COUNT       (6)
+
+
+
 typedef struct
 {
-    PaStream *stream;
-    PaTime start;
     float sine[TABLE_SIZE];
-    int left_phase;
-    int right_phase;
+	int phase;
+	int currentChannel;
+	int cycleCount;
 }
 paTestData;
 
@@ -78,60 +80,93 @@ static int patestCallback( const void *inputBuffer, void *outputBuffer,
 {
     paTestData *data = (paTestData*)userData;
     float *out = (float*)outputBuffer;
-    unsigned long i;
+    unsigned long i,j;
 
     (void) timeInfo; /* Prevent unused variable warnings. */
     (void) statusFlags;
     (void) inputBuffer;
-
-    printf( "Timing info given to callback: Adc: %g, Current: %g, Dac: %g\n",
-            timeInfo->inputBufferAdcTime,
-            timeInfo->currentTime,
-            timeInfo->outputBufferDacTime );
-
-    printf( "getStreamTime() returns: %g\n", Pa_GetStreamTime(data->stream)-data->start );
     
     for( i=0; i<framesPerBuffer; i++ )
     {
-        *out++ = data->sine[data->left_phase];  /* left */
-        *out++ = data->sine[data->right_phase];  /* right */
-        data->left_phase += 1;
-        if( data->left_phase >= TABLE_SIZE ) data->left_phase -= TABLE_SIZE;
-        data->right_phase += 3; /* higher pitch so we can distinguish left and right. */
-        if( data->right_phase >= TABLE_SIZE ) data->right_phase -= TABLE_SIZE;
-    }
+		for( j = 0; j < CHANNEL_COUNT; ++j ){
+			if( j == data->currentChannel && data->cycleCount < 4410 ){
+				*out++ = data->sine[data->phase];
+				data->phase += 1 + j;	// play each channel at a different pitch so they can be distinguished
+				if( data->phase >= TABLE_SIZE ){
+					data->phase -= TABLE_SIZE;
+				}
+			}else{
+				*out++ = 0;
+			}
+		}
+    
+		data->cycleCount++;
+		if( data->cycleCount > 44100 ){
+			data->cycleCount = 0;
+
+			++data->currentChannel;
+			if( data->currentChannel >= CHANNEL_COUNT )
+				data->currentChannel -= CHANNEL_COUNT;
+		}
+	}
     
     return paContinue;
 }
 
 /*******************************************************************/
-int main(void);
-int main(void)
+int main(int argc, char* argv[])
 {
     PaStreamParameters outputParameters;
+    PaWinDirectSoundStreamInfo directSoundStreamInfo;
     PaStream *stream;
     PaError err;
     paTestData data;
     int i;
+    int deviceIndex;
 
-    
-    printf("PortAudio Test: output sine wave. SR = %d, BufSize = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER);
-    
+    printf("PortAudio Test: output a sine blip on each channel. SR = %d, BufSize = %d, Chans = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER, CHANNEL_COUNT);
+
+    err = Pa_Initialize();
+    if( err != paNoError ) goto error;
+
+	deviceIndex = Pa_GetHostApiInfo( Pa_HostApiTypeIdToHostApiIndex( paDirectSound ) )->defaultOutputDevice;
+	if( argc == 2 ){
+		sscanf( argv[1], "%d", &deviceIndex );
+	}
+
+	printf( "using device id %d (%s)\n", deviceIndex, Pa_GetDeviceInfo(deviceIndex)->name );
+
     /* initialise sinusoidal wavetable */
     for( i=0; i<TABLE_SIZE; i++ )
     {
         data.sine[i] = (float) sin( ((double)i/(double)TABLE_SIZE) * M_PI * 2. );
     }
-    data.left_phase = data.right_phase = 0;
-    
-    err = Pa_Initialize();
-    if( err != paNoError ) goto error;
 
-    outputParameters.device = Pa_GetDefaultOutputDevice(); /* default output device */
-    outputParameters.channelCount = 2;       /* stereo output */
-    outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
+	data.phase = 0;
+	data.currentChannel = 0;
+	data.cycleCount = 0;
+
+    outputParameters.device = deviceIndex;
+    outputParameters.channelCount = CHANNEL_COUNT;
+    outputParameters.sampleFormat = paFloat32; /* 32 bit floating point processing */
     outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
     outputParameters.hostApiSpecificStreamInfo = NULL;
+
+    /* it's not strictly necessary to provide a channelMask for surround sound
+       output. But if you want to be sure which channel mask PortAudio will use
+       then you should supply one */
+    directSoundStreamInfo.size = sizeof(PaWinDirectSoundStreamInfo);
+    directSoundStreamInfo.hostApiType = paDirectSound; 
+    directSoundStreamInfo.version = 1;
+    directSoundStreamInfo.flags = paWinDirectSoundUseChannelMask;
+    directSoundStreamInfo.channelMask = PAWIN_SPEAKER_5POINT1; /* request 5.1 output format */
+    outputParameters.hostApiSpecificStreamInfo = &directSoundStreamInfo;
+
+	if( Pa_IsFormatSupported( 0, &outputParameters, SAMPLE_RATE ) == paFormatIsSupported  ){
+		printf( "Pa_IsFormatSupported reports device will support %d channels.\n", CHANNEL_COUNT );
+	}else{
+		printf( "Pa_IsFormatSupported reports device will not support %d channels.\n", CHANNEL_COUNT );
+	}
 
     err = Pa_OpenStream(
               &stream,
@@ -142,12 +177,9 @@ int main(void)
               paClipOff,      /* we won't output out of range samples so don't bother clipping them */
               patestCallback,
               &data );
-    data.stream = stream;
-    data.start = Pa_GetStreamTime(stream);
     if( err != paNoError ) goto error;
 
     err = Pa_StartStream( stream );
-    data.start = Pa_GetStreamTime(stream);
     if( err != paNoError ) goto error;
 
     printf("Play for %d seconds.\n", NUM_SECONDS );
@@ -161,7 +193,6 @@ int main(void)
 
     Pa_Terminate();
     printf("Test finished.\n");
-    printf("The tone should have been heard for about 5 seconds and all the timing info above should report that about 5 seconds elapsed (except Adc, which is undefined since there was no input device opened).\n");
     
     return err;
 error:
@@ -171,3 +202,4 @@ error:
     fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
     return err;
 }
+

@@ -166,11 +166,24 @@ case "${host_os}" in
 	dnl Mac OS X configuration
 
 	AC_DEFINE(PA_USE_COREAUDIO)
-
+	dnl the SHARED_FLAGS needed regardless of 10.5 or not, and regardless of
+	dnl Universal Binary or not.
+	SHARED_FLAGS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon -dynamiclib -Werror"
+	if [[ -d /Developer/SDKs/MacOSX10.5.sdk ]] ; then
+		dnl this is stuff that is 10.5-specific
+		dnl extra SHARED_FLAGS needed for 10.5
+		UNIV_SHARED_FLAGS="-arch x86_64 -arch ppc64 -isysroot /Developer/SDKs/MacOSX10.5.sdk";
+		dnl these extra CFLAGs are only needed for Universal Binary support
+		dnl when building on 10.5 and above
+		UNIV_CFLAGS="-arch x86_64 -arch ppc64";
+	else
+		dnl anything except 10.5 goes here
+		UNIV_SHARED_FLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk";
+		UNIV_CFLAGS="";
+	fi
 	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o src/hostapi/coreaudio/pa_mac_core_utilities.o src/hostapi/coreaudio/pa_mac_core_blocking.o src/common/pa_ringbuffer.o";
 	LIBS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon";
 	PADLL="libportaudio.dylib";
-	SHARED_FLAGS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon -dynamiclib"
         if [[ $with_macapi = "asio" ]] ; then
             if [[ $with_asiodir ]] ; then
               ASIODIR="$with_asiodir";
@@ -185,8 +198,15 @@ case "${host_os}" in
         fi
 
 	if [[ $with_universal_binary = "yes" ]] ; then
-	   CFLAGS="$CFLAGS -arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.3"
-	   SHARED_FLAGS="${SHARED_FLAGS} -arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.3";
+	   dnl these are the CFLAGs needed for Universal Binary builds on
+	   dnl all OS X targets. $UNIV_CFLAGS contains extra CFLAGS needed for
+	   dnl Universal. Content depends on if 10.5 SDK is installed. Flags here
+	   dnl are needed for universal regardless of 10.5 or not
+	   CFLAGS="${CFLAGS} ${UNIV_CFLAGS} -arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.3 -Werror"
+	   dnl ${UNIV_SHARED_FLAGS} is the extra flags for universal binary builds
+	   dnl content depends on the OS X version in use. Flags listed here are
+	   dnl needed for Universal Binary regardless of the OS X version
+	   SHARED_FLAGS="${SHARED_FLAGS} ${UNIV_SHARED_FLAGS} -arch i386 -arch ppc -mmacosx-version-min=10.3";
 	fi
 
 	if [[ $MAC_BEFORE_TIGER = "yes" ]] ; then

@@ -7,7 +7,7 @@
 	@author Phil Burk  http://www.softsynth.com
 */
 /*
- * $Id: patest_dither.c,v 1.5 2007-08-16 20:45:37 richardash1981 Exp $
+ * $Id: patest_dither.c,v 1.6 2007-12-09 21:51:09 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
