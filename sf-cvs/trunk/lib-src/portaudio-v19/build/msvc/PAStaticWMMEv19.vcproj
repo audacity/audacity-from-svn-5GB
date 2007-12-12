@@ -710,6 +710,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\os\win\pa_win_waveformat.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\pa_win_waveformat.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\os\win\pa_win_wdmks_utils.c"
 					>
 				</File>
