@@ -1,7 +1,7 @@
 ;nyquist plug-in
 ;version 3
 ;type analyze
-;name "Regular interval labels..."
+;name "Regular Interval Labels..."
 ;action "Adding equally-spaced labels to the label track..."
 ;info "equalabel.ny by David R. Sky www.shellworld.net/~davidsky/ \nReleased under terms of the GNU General Public License version 2\nCreate equally spaced labels by choosing the number of labels or the interval\nbetween them. Making your final audio segment equal with others may slightly\nchange the label interval that you had set.\nNote: Equalabel.ny does not overwrite an existing label track, but adds to it.\nCode for label placement based on silencemarker.ny by Alex S.Brown."
 
