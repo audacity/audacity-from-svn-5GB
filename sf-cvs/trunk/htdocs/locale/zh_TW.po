@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: zh-TW\n"
 "Report-Msgid-Bugs-To: Audacity Translation mail-list <audacity-translation@lists.sourceforge.net>\n"
 "POT-Creation-Date: 2005-02-20 10:11-0800\n"
-"PO-Revision-Date: 2007-11-18 23:01+0800\n"
+"PO-Revision-Date: 2007-12-14 20:58+0800\n"
 "Last-Translator: \n"
 "Language-Team: Taiwan <milo@ms52.url.com.tw>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,6 @@ msgid "Audacity 1.3.4 Released"
 msgstr "Audacity 1.3.4發佈"
 
 #: include/news.inc.php:45
-#, fuzzy
 msgid ""
 "\n"
 "<p>\n"
@@ -61,33 +60,33 @@ msgstr ""
 "\n"
 "<p>\n"
 "Audacity開發者很高興的宣佈發行\n"
-"<a href=\"/download\">Audacity 1.3.4(beta)</a>，which includes several \n"
-"new features and user interface improvements, such as:\n"
+"<a href=\"/download\">Audacity 1.3.4(beta)</a>，其包含\n"
+"新功能及介面的改善，如：\n"
 "<ul>\n"
-"\t<li>New Welcome Screen with introduction to Audacity.</li>\n"
-"\t<li>New 'Mix and Render to New Track' command.</li>\n"
-"\t<li>Support for VAMP audio analysis plug-ins.</li>\n"
-"\t<li>More keyboard shortcuts and navigation.</li>\n"
-"\t<li>Reworked solo/mute handling.</li>\n"
-"\t<li>New preference: Select all audio in project, if none selected (on by default).</li>\n"
-"\t<li>New preference: Beep on completion of longer activities.</li>\n"
-"\t<li>Envelopes: Many fixes when copying, pasting, or repeating.</li>\n"
-"\t<li>Many translation updates.</li>\n"
-"\t<li>Metadata editor added for OGG, FLAC and WAV/AIFF exports. Metadata import improved.</li>\n"
-"\t<li>Muted tracks are no longer audible in the exported mix.</li>\n"
-"\t<li>Improvements to latency correction.</li>\n"
+"\t<li>新的歡迎視窗及Audacity簡介。</li>\n"
+"\t<li>新的'混音至新軌道'功能。</li>\n"
+"\t<li>支援VAMP音訊分析plug-ins。</li>\n"
+"\t<li>更多快速鍵。</li>\n"
+"\t<li>重新處理獨奏/靜音。</li>\n"
+"\t<li>新的偏好設定：若沒有選取任何音訊，則選取工程內所有音訊(預設開啟)。</li>\n"
+"\t<li>新的偏好設定：指令執行完成後以鈴聲提示。</li>\n"
+"\t<li>波封：複製、貼上、重複的指令的改善。</li>\n"
+"\t<li>更新多國語言翻譯。</li>\n"
+"\t<li>新增OGG、FLAC、WAV/AIFF標頭檔編輯器。改善標頭檔匯出功能。</li>\n"
+"\t<li>改善靜音音軌匯出時有雜音的功能。</li>\n"
+"\t<li>延遲修正功能的改善。</li>\n"
 "</ul>\n"
 "</p>\n"
 "<p>\n"
-"Note that this release is for Windows and Linux/Unix only. \n"
-"The latest Audacity beta for Mac OS is version 1.3.3.\n"
+"1.3.4版只在Windows及Linux/Unix上發佈。\n"
+"Mac OS最新測試版本仍是1.3.3。\n"
 "</p>\n"
 "<p>\n"
-"See <a href=\"/download/features-1.3-a\">New Features in 1.3</a>\n"
-"for more information about 1.3.4 and the 1.3.x beta series.\n"
+"參見<a href=\"/download/features-1.3-a\">1.3新功能</a>\n"
+"看看測試版有什麼樣的新功能。\n"
 "</p>\n"
 "<p>\n"
-"Check out the new e-book on \n"
+"新的電子書\n"
 "<a href=\"http://www.informit.com/store/product.aspx?isbn=0132366576&rl=1\">Podcasting with Audacity</a>.\n"
 "</p>\n"
 
@@ -1262,9 +1261,8 @@ msgid "<p>Audacity is <a href=\"../help/faq?s=general&amp;i=free\">free software
 msgstr "<p>Audacity是<a href=\"../help/faq?s=general&amp;i=free\">自由軟體</a>；不管是個人、商業、教育用途皆可，也可以依你所需安裝在不同的電腦上。</p>"
 
 #: about/license_t.php:30
-#, fuzzy
 msgid "<p>You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License (GPL)</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the same GPL. If you have questions, please email us at the <a href=\"mailto:audacity-help@lists.sourceforge.net\">Help list, audacity-help@lists.sourceforge.net</a>. (This is a public mailing list. For details, see our <a href=\"../contact/privacy\">privacy policy</a>.)</p>"
-msgstr "<p>Audacity是自由軟體；你可以複製、散佈、修改、銷售Audacity，但必須遵循自由軟體基金會的<a href=\"http://www.gnu.org/licenses/licenses.zh.html\">GNU通用公共許可證</a>；可以是該許可證的第二版，或者是(依您自己選擇)任何後續版本。In granting you this right, the GPL requires that the source code you distribute is itself available under the same GPL. If you have questions, please email us at the <a href=\"mailto:audacity-help@lists.sourceforge.net\">Help list, audacity-help@lists.sourceforge.net</a>. (This is a public mailing list. For details, see our <a href=\"../contact/privacy\">privacy policy</a>.)</p>"
+msgstr "<p>Audacity是自由軟體；你可以複製、散佈、修改、銷售Audacity，但必須遵循自由軟體基金會的<a href=\"http://www.gnu.org/licenses/licenses.zh.html\">GNU通用公共許可證</a>；可以是該許可證的第二版，或者是(依您自己選擇)任何後續版本。此許可證要求你在此軟體上所修改及貢獻的程式碼本身也必須依循GPL來發佈。如果你有任何問題，請email給我們至<a href=\"mailto:audacity-help@lists.sourceforge.net\">Help通信論壇，audacity-help@lists.sourceforge.net</a>。(這是公開的通信論壇。詳細資訊請見<a href=\"../contact/privacy\">隱私權政策</a>。)</p>"
 
 #: about/license_t.php:32
 msgid "<p>See also: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Frequently Asked Questions about the GNU GPL</a>.</p>"
@@ -1302,11 +1300,11 @@ msgstr ""
 
 #: about/license_t.php:52
 msgid "<p>IMPORTANT: If you write your own documentation on Audacity, please let us review it for possible errors, <em>before</em> you publish it.</p>"
-msgstr ""
+msgstr "<p>重要：如果你寫下自己的Audacity說明文件，請讓我們在您<em>出版之前</em>幫您檢查是否有改善之處。</p>"
 
 #: about/license_t.php:54
 msgid "<p>If you modify Audacity without the express permission of the Audacity Team, you do not have the right to use the name Audacity, which is registered trademark of Dominic Mazzoni.  You must rename the product and provide all of your own technical support.</p>"
-msgstr ""
+msgstr "<p>如果你修改Audacity而沒有經過Audacity團隊的認證，那麼你就沒有使用Audacity名稱的權利。Audacity是Dominic Mazzoni的註冊商標。你必需為你的程式另外取一個名稱並自行提供技術支援。</p>"
 
 #: about/license_t.php:56
 msgid ""
@@ -1338,7 +1336,7 @@ msgstr ""
 
 #: about/license_t.php:78
 msgid "<p>You may not advertise yourself or your business as an authorized distributor of Audacity. The name Audacity is a registered trademark of Dominic Mazzoni.</p>"
-msgstr ""
+msgstr "<p>你不可以用Audacity認可的名義為自己或公司作廣告。 Audacity是Dominic Mazzoni的註冊商標。</p>"
 
 #: about/license_t.php:80
 msgid "<p>See <a href=\"http://audacityteam.org/wiki/index.php?title=AudacityVendors#Advice_for_Vendors\">Advice for Vendors</a> on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a> for further advice.</p>"
@@ -1401,7 +1399,6 @@ msgstr "用Audacity錄音"
 #. See the bottom of each page for versions in other languages.
 #.
 #: about/license.php:26
-#, fuzzy
 msgid ""
 "<h3>License</h3>\n"
 "\n"
@@ -1413,14 +1410,13 @@ msgid ""
 msgstr ""
 "<h3>許可證</h3>\n"
 "\n"
-"<p>Audacity是<a href=\"../help/faq?s=general&amp;i=free\">自由軟體</a>；you may use it for any personal, commercial, or educational purpose, including installing it on as many different computers as you wish.</p>\n"
+"<p>Audacity是<a href=\"../help/faq?s=general&amp;i=free\">自由軟體</a>；不管是個人、商業、教育用途上都可以自由地使用該程式，要安裝在多台電腦上都沒問題。</p>\n"
 "\n"
-"<p>只要遵循自由軟體基金會的<a href=\"http://www.gnu.org/licenses/licenses.zh.html\">GNU通用公共許可證</a>，你就可以複製、散佈、修改、銷售Audacity。可以是該許可證的第二版，或者是(依您自己選擇)任何後續版本。In granting you this right, the GPL requires that the source code you distribute is itself available under the same GPL. If you have questions, please email us at the <a href=\"mailto:audacity-help@lists.sourceforge.net\">Help list, audacity-help@lists.sourceforge.net</a>. (This is a public mailing list. For details, see our <a href=\"../contact/privacy\">privacy policy</a>.)</p>\n"
+"<p>只要遵循自由軟體基金會的<a href=\"http://www.gnu.org/licenses/licenses.zh.html\">GNU通用公共許可證</a>，你就可以複製、散佈、修改、銷售Audacity。可以是該許可證的第二版，或者是(依您自己選擇)任何後續版本。此許可證要求你在此軟體上所修改及貢獻的程式碼本身也必須依循GPL來發佈。如果你有任何問題，請email給我們至<a href=\"mailto:audacity-help@lists.sourceforge.net\">Help通信論壇，audacity-help@lists.sourceforge.net</a>。(這是公開的通信論壇。詳細資訊請見<a href=\"../contact/privacy\">隱私權政策</a>。)</p>\n"
 "\n"
-"<p>See also: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Frequently Asked Questions about the GNU GPL</a>.</p>"
+"<p>參見：<a href=\"http://www.gnu.org/licenses/gpl-faq.html\">GNU GPL常見問題解答</a>。</p>"
 
 #: about/license.php:35
-#, fuzzy
 msgid ""
 "<h3>Advice for Vendors and Distributors</h3>\n"
 "\n"
@@ -1471,7 +1467,7 @@ msgid ""
 msgstr ""
 "<h3>給供應商的建議</h3>\n"
 "\n"
-"<p>許多供應商將Audacity附在其產品上銷售，(see <a href=\"../download/bundlers\">內含Audacity的產品供應商</a>)。 這裡是如何將Audacity附加在自身產品上的指南。If you adhere to these guidelines, please <a href=\"../contact/\">contact us</a> for possible inclusion at <a href=\"../download/bundlers\">Vendors and Distributors of Audacity</a> (per instructions there).</p>\n"
+"<p>許多供應商將Audacity附在其產品上銷售，(see <a href=\"../download/bundlers\">內含Audacity的產品供應商</a>)。 這裡是如何將Audacity附加在自身產品上的指南。如果你遵循這些指南，請<a href=\"../contact/\">聯絡我們</a>讓我們將您列入<a href=\"../download/bundlers\">內含Audacity的產品供應商</a>列表上(此頁有詳細指引)。</p>\n"
 "\n"
 "<p>依照GPL，您必須附上：\n"
 "  <ol>\n"
@@ -1480,7 +1476,7 @@ msgstr ""
 "  </ol>\n"
 "</p>\n"
 "\n"
-"<p>如果您散佈的是官方安裝程式而未經修改，則其程式已包含一份<a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a>，在README.txt內有取得程式原始碼的說明。Versions of Audacity after 1.3.3 also include the GPL in the application itself, in the About Audacity dialog.</p>\n"
+"<p>如果您散佈的是官方安裝程式而未經修改，則其程式已包含一份<a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a>，在README.txt內有取得程式原始碼的說明。在Audacity 1.3.3之後的版本將GPL放在\"關於Audacity\"的對話框內。</p>\n"
 "\n"
 "<p>我們非常感激您產品內含連結至<a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a>，如此一來您的使用者可以下載最新的Audacity。也請您訂閱在首頁<a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a>最底部的新版本通知訊息好讓我們一有新版本就可以讓您知道。</p>\n"
 "\n"
@@ -2241,7 +2237,6 @@ msgid "Can Audacity record RealAudio or other streaming audio?"
 msgstr "Audacity能錄製RealAudio或其它串流音訊嗎？"
 
 #: help/faq.php:169
-#, fuzzy
 msgid ""
 "<h3>Windows and Linux</h3>\n"
 "<p>With most Windows and Linux audio devices, it is possible to record whatever sound the computer is currently playing, including internet radio streams.</p>\n"
@@ -2252,7 +2247,7 @@ msgid ""
 msgstr ""
 "<h3>Windows和Linux</h3>\n"
 "<p>對於大多數Windows及Linux上的音訊設備，均可實現對電腦上正在播放聲音的錄製，包括網路串流音訊。</p>\n"
-"<p>在Audacity混音工具列的下拉選單裡，選擇「Wave Out(波形輸出)」或者「Stereo Mix(立體聲混音)」作為輸入源(實際確切的名稱可能不一樣，取決於您電腦的音效卡)。 當按下<b>錄音</b>按鈕時，Audacity將會擷取所有正在電腦揚聲器上播放的聲音。在Windows Vista上，「stereo mix」選項必須在「偏好設定」裡的「音訊I/O」裡選擇，在「錄音裝置」的下拉式選單裡。 On Windows, if you don't have a “Wave Out” or “Stereo Mix” option, or if it won't record, go to the system Control Panel and try to enable this option there. For instructions see: <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues#Using_the_Control_Panel\">Using the Control Panel</a> on the Wiki.</p>\n"
+"<p>在Audacity混音工具列的下拉選單裡，選擇「Wave Out(波形輸出)」或者「Stereo Mix(立體聲混音)」作為輸入源(實際確切的名稱可能不一樣，取決於您電腦的音效卡)。 當按下<b>錄音</b>按鈕時，Audacity將會擷取所有正在電腦揚聲器上播放的聲音。在Windows Vista上，「stereo mix」選項必須在「偏好設定」裡的「音訊I/O」裡選擇，在「錄音裝置」的下拉式選單裡。如果沒有“Wave Out”或“Stereo Mix” 選項，或者是有選項但還是不能錄音，請到控制台內啟動這些選項。在Wiki上有詳細的步驟說明：<a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues#Using_the_Control_Panel\">Using the Control Panel(英)</a>。</p>\n"
 "<p>如果這些步驟在您的電腦上不起作用，您可以用一條音源線將「線路輸出(Line Out)」接頭(外接音箱用的)和「線路輸入(Line In)」接頭對接起來，再將Audacity設為從「線路輸入(Line In)」錄音。</p>\n"
 "<h3>Mac OS X</h3>\n"
 "<p>Mac OS X使用者可以使用諸如<a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a>或者<a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>之類的軟體擷取串流音訊。</p>\n"
@@ -4373,7 +4368,7 @@ msgid ""
 "  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a collection of high-quality free software for Microsoft Windows, including Audacity.  You can <a href=\"http://www.theopencd.org/purchase\">purchase a copy of TheOpenCD</a> from several different vendors.</p>"
 msgstr ""
 "<h3>TheOpenCD (Windows)</h3>\n"
-"  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> 是收集了Microsoft Windows上高品質的自由軟體的CD，其軟體包括了Audacity。您可以許多的供應商裡<a href=\"http://www.theopencd.org/purchase\">購買一份TheOpenCD</a></p>"
+"  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> 是收集了Microsoft Windows上高品質的自由軟體的CD，其軟體包括了Audacity。您可以許多的供應商裡<a href=\"http://www.theopencd.org/purchase\">購買一份TheOpenCD</a>。</p>"
 
 #: download/features-1.3-g.php:9
 msgid "Audacity 1.3: Other features"
@@ -5078,11 +5073,11 @@ msgstr "Audacity是一款用於錄音和編輯聲音的、自由的開放源碼�
 
 #: index.php:53
 msgid "The latest release of Audacity is <a href=\"/download\">1.3.4 (beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x beta series."
-msgstr ""
+msgstr "最新的Audacity版本是<a href=\"/download\">1.3.4 (beta)</a>。因為此版本是公開測試版本(Beta)，它仍在開發中，因此沒有完整的說明文件及翻譯。此版本提供給喜歡嘗鮮而不注重穩定性的使用者。更多公開測試版本的訊息請參見<a href=\"/download/features-1.3-a\">1.3新功能</a>。"
 
 #: index.php:55
 msgid "For all users, <a href=\"/download\">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have both Audacity 1.2.6 and 1.3.3 installed simultaneously."
-msgstr ""
+msgstr "<a href=\"/download\">Audacity 1.2.6</a>是一穩定版本，提供給所有的使用者，包含完整的說明文件。您可以同時安裝及啟動Audacity 1.2.6版和1.3.4版。"
 
 #: index.php:60
 #: index.php:64
