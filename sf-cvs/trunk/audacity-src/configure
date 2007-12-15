@@ -5000,9 +5000,9 @@ _ACEOF
    fi
 
 
-# Check whether --with-vorbis was given.
-if test "${with_vorbis+set}" = set; then
-  withval=$with_vorbis; LIBVORBIS_ARGUMENT=$withval
+# Check whether --with-libvorbis was given.
+if test "${with_libvorbis+set}" = set; then
+  withval=$with_libvorbis; LIBVORBIS_ARGUMENT=$withval
 else
   LIBVORBIS_ARGUMENT="unspecified"
 fi
@@ -5825,9 +5825,9 @@ echo "$as_me: FLAC libraries are NOT available in this source tree" >&6;}
 
 
 
-# Check whether --with-id3tag was given.
-if test "${with_id3tag+set}" = set; then
-  withval=$with_id3tag; LIBID3TAG_ARGUMENT=$withval
+# Check whether --with-libid3tag was given.
+if test "${with_libid3tag+set}" = set; then
+  withval=$with_libid3tag; LIBID3TAG_ARGUMENT=$withval
 else
   LIBID3TAG_ARGUMENT="unspecified"
 fi
@@ -6406,7 +6406,7 @@ fi
       LIBVAMP_SYSTEM_AVAILABLE="yes"
       LIBVAMP_SYSTEM_LIBS=$VAMP_LIBS
       LIBVAMP_SYSTEM_CXXFLAGS=$VAMP_CFLAGS
-      LIBVAMP_SYSTEM_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
+	        LIBVAMP_SYSTEM_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
       LIBVAMP_SYSTEM_CPPSYMBOLS="USE_VAMP"
       { echo "$as_me:$LINENO: Vamp libraries are available as system libraries" >&5
 echo "$as_me: Vamp libraries are available as system libraries" >&6;}
