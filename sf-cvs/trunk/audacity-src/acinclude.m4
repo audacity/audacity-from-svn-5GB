@@ -289,7 +289,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSAMPLERATE], [
 
 AC_DEFUN([AUDACITY_CHECKLIB_LIBID3TAG], [
 
-   AC_ARG_WITH(id3tag,
+   AC_ARG_WITH(libid3tag,
                [AC_HELP_STRING([--with-libid3tag],
                                [use libid3tag for mp3 id3 tag support])],
                LIBID3TAG_ARGUMENT=$withval,
@@ -462,7 +462,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVORBIS], [
                 [Define if the ogg vorbis decoding library is present])
    fi
 
-   AC_ARG_WITH(vorbis,
+   AC_ARG_WITH(libvorbis,
                [AC_HELP_STRING([--with-libvorbis],
                                [use libvorbis for Ogg Vorbis support])],
                LIBVORBIS_ARGUMENT=$withval,
