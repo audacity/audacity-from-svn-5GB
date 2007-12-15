@@ -255,7 +255,7 @@ bool ExportFLAC::Export(AudacityProject *project,
    if (bitDepthPref == wxT("24")) {
    	format = int24Sample;
    	encoder.set_bits_per_sample(24);
-   } else { //convert float to 16 bits*/
+   } else { //convert float to 16 bits
     	format = int16Sample;
    	encoder.set_bits_per_sample(16);
    }
