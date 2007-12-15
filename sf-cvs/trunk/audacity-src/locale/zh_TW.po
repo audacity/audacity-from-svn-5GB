@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh-TW\n"
 "POT-Creation-Date: 2004-08-10 20:54-0700\n"
-"PO-Revision-Date: 2007-11-15 22:10+0800\n"
+"PO-Revision-Date: 2007-12-14 11:15+0800\n"
 "Last-Translator: \n"
 "Language-Team: Taiwan <milo@ms52.url.com.tw>\n"
 "MIME-Version: 1.0\n"
@@ -178,8 +178,8 @@ msgstr "輸入儀表"
 msgid "Output Meter"
 msgstr "輸出儀表"
 
-#. i18n-hint: Mac OS X shortcut should be Ctrl+,
 #. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
+#. i18n-hint: Mac OS X shortcut should be Ctrl+,
 #: AudacityApp.cpp:734
 #: Menus.cpp:470
 msgid "&Preferences...\tCtrl+,"
@@ -394,7 +394,7 @@ msgstr "無法計算自動儲存資料夾內的檔案"
 #: WaveTrack.cpp:548
 #: WaveTrack.cpp:567
 #: WaveTrack.cpp:1656
-#: effects/Effect.cpp:433
+#: effects/Effect.cpp:436
 #: export/ExportMP2.cpp:230
 #: prefs/DirectoriesPrefs.cpp:189
 #: prefs/KeyConfigPrefs.cpp:245
@@ -429,7 +429,7 @@ msgid "C&hoose command"
 msgstr "選擇命令(&H)"
 
 #: BatchCommands.cpp:477
-msgid "Stereo To Mono Effect not found"
+msgid "Stereo to Mono Effect not found"
 msgstr "找不到立體聲轉單聲道效果"
 
 #: BatchCommands.cpp:497
@@ -570,7 +570,7 @@ msgstr "新增(&A)"
 #: Tags.cpp:783
 #: Tags.cpp:1423
 #: Tags.cpp:2023
-#: TrackPanel.cpp:3983
+#: TrackPanel.cpp:4145
 msgid "&Remove"
 msgstr "移除(&R)"
 
@@ -951,7 +951,7 @@ msgid "Frequency Analysis"
 msgstr "頻率分析"
 
 #: FreqWindow.cpp:140
-#: TrackPanel.cpp:507
+#: TrackPanel.cpp:510
 msgid "Spectrum"
 msgstr "頻譜"
 
@@ -1127,7 +1127,7 @@ msgid "<p>Welcome to Audacity "
 msgstr "<p>歡迎使用Audacity"
 
 #: HelpText.cpp:134
-msgid "Let's get started!</p><p>You can click on the links below to learn how to:<ul><li>[[play|play back]] an existing sound file.<li>[[record|record]] a new sound file.<li>[[edit|edit]] sound and [[export|export]] to a sound file like MP3. <li>[[burnCD|burn to a CD]] </ul><br><br>"
+msgid "Let's get started!</p><p>You can click on the links below to learn how to:<ul><li>[[play|play back]] an existing sound file.<li>[[record|record]] a new sound file.<li>[[edit|edit]] sound and [[export|export]] to a sound file like MP3. <li>[[burncd|burn to a CD]] </ul><br><br>"
 msgstr "讓我們開始吧！</p><p>你可以點下列連結獲得更多教學文章：<ul><li>[[play|播放]]一個已存在的聲音檔案。<li>如何[[record|錄製]]一個聲音檔案。<li>如何[[edit|編輯]] 聲音然後[[export|匯出]]成如MP3的檔案。<li>[[burncd|燒錄至CD]]。</ul><br><br>"
 
 #: HelpText.cpp:142
@@ -1516,7 +1516,7 @@ msgstr "複製全部並貼上(&A)\tCtrl+D"
 #: Menus.cpp:356
 #: Menus.cpp:556
 #: effects/StereoToMono.h:23
-msgid "&Stereo To Mono"
+msgid "&Stereo to Mono"
 msgstr "立體聲至單聲道(&S)"
 
 #: Menus.cpp:363
@@ -2215,7 +2215,7 @@ msgid "Nothing to redo"
 msgstr "沒有可重做的操作"
 
 #: Menus.cpp:2336
-#: TrackPanel.cpp:546
+#: TrackPanel.cpp:552
 #: toolbars/EditToolBar.cpp:133
 msgid "Cut"
 msgstr "剪下"
@@ -2235,7 +2235,7 @@ msgstr "選取範圍變為空白並剪下至剪貼簿"
 #: Menus.cpp:2439
 #: Menus.cpp:2510
 #: Menus.cpp:2604
-#: TrackPanel.cpp:548
+#: TrackPanel.cpp:554
 #: toolbars/EditToolBar.cpp:137
 msgid "Paste"
 msgstr "貼上"
@@ -2380,7 +2380,7 @@ msgid "Disjoined labeled regions"
 msgstr "將標籤區域靜音範圍變為空白"
 
 #: Menus.cpp:2917
-#: TrackPanel.cpp:5859
+#: TrackPanel.cpp:6024
 msgid "Split"
 msgstr "分離"
 
@@ -2619,11 +2619,11 @@ msgstr "混音並提取音軌"
 msgid "Note Track"
 msgstr "MIDI 註解音軌"
 
-#: Printing.cpp:187
+#: Printing.cpp:198
 msgid "There was a problem printing."
 msgstr "列印發生錯誤。"
 
-#: Printing.cpp:188
+#: Printing.cpp:199
 msgid "Print"
 msgstr "列印"
 
@@ -2641,13 +2641,13 @@ msgid "(Recovered)"
 msgstr "(回復)"
 
 #: Project.cpp:1472
-#: TrackPanel.cpp:770
+#: TrackPanel.cpp:776
 #: toolbars/ControlToolBar.cpp:191
 msgid "Record"
 msgstr "錄音"
 
 #: Project.cpp:1472
-#: TrackPanel.cpp:770
+#: TrackPanel.cpp:776
 msgid "Recorded Audio"
 msgstr "已錄製音訊"
 
@@ -2977,7 +2977,7 @@ msgid "Gap detected in project file\n"
 msgstr "工程檔案偵測出缺口\n"
 
 #: ShuttleGui.cpp:1852
-#: effects/Effect.cpp:339
+#: effects/Effect.cpp:342
 #: effects/audiounits/AudioUnitEffect.cpp:872
 msgid "Pre&view"
 msgstr "試聽(&V)"
@@ -3376,423 +3376,427 @@ msgstr ""
 msgid "Specify Time"
 msgstr "指定時間"
 
-#: TrackPanel.cpp:448
-#: TrackPanel.cpp:449
+#: TrackPanel.cpp:451
+#: TrackPanel.cpp:452
 msgid "Track Panel"
 msgstr "音軌面板"
 
-#: TrackPanel.cpp:492
+#: TrackPanel.cpp:495
 #: export/ExportPCM.cpp:133
 #: prefs/QualityPrefs.cpp:97
 msgid "Other..."
 msgstr "其它..."
 
-#: TrackPanel.cpp:500
-#: TrackPanel.cpp:521
-#: TrackPanel.cpp:530
-#: TrackPanel.cpp:538
+#: TrackPanel.cpp:503
+#: TrackPanel.cpp:527
+#: TrackPanel.cpp:536
+#: TrackPanel.cpp:544
 msgid "Name..."
 msgstr "命名..."
 
-#: TrackPanel.cpp:502
-#: TrackPanel.cpp:523
-#: TrackPanel.cpp:534
+#: TrackPanel.cpp:505
+#: TrackPanel.cpp:529
 #: TrackPanel.cpp:540
+#: TrackPanel.cpp:546
 msgid "Move Track Up"
 msgstr "向上移動軌道"
 
-#: TrackPanel.cpp:503
-#: TrackPanel.cpp:524
-#: TrackPanel.cpp:535
+#: TrackPanel.cpp:506
+#: TrackPanel.cpp:530
 #: TrackPanel.cpp:541
+#: TrackPanel.cpp:547
 msgid "Move Track Down"
 msgstr "向下移動軌道"
 
-#: TrackPanel.cpp:505
-#: effects/ToneGen.cpp:303
+#: TrackPanel.cpp:508
+#: effects/ToneGen.cpp:325
 msgid "Waveform"
 msgstr "波形"
 
-#: TrackPanel.cpp:506
+#: TrackPanel.cpp:509
 msgid "Waveform (dB)"
 msgstr "波形 (dB)"
 
-#: TrackPanel.cpp:508
+#: TrackPanel.cpp:512
+msgid "Spectrum log(f)"
+msgstr "頻譜log(f)"
+
+#: TrackPanel.cpp:514
 msgid "Pitch (EAC)"
 msgstr "音高 (EAC)"
 
-#: TrackPanel.cpp:510
-#: TrackPanel.cpp:5829
+#: TrackPanel.cpp:516
+#: TrackPanel.cpp:5994
 msgid "Mono"
 msgstr "單聲道"
 
-#: TrackPanel.cpp:511
-#: TrackPanel.cpp:5828
+#: TrackPanel.cpp:517
+#: TrackPanel.cpp:5993
 msgid "Left Channel"
 msgstr "左聲道"
 
-#: TrackPanel.cpp:512
-#: TrackPanel.cpp:5828
+#: TrackPanel.cpp:518
+#: TrackPanel.cpp:5993
 msgid "Right Channel"
 msgstr "右聲道"
 
-#: TrackPanel.cpp:513
+#: TrackPanel.cpp:519
 msgid "Make Stereo Track"
 msgstr "合併為立體聲音軌"
 
-#: TrackPanel.cpp:514
+#: TrackPanel.cpp:520
 msgid "Split Stereo Track"
 msgstr "分離立體聲音軌為單聲道"
 
-#: TrackPanel.cpp:516
+#: TrackPanel.cpp:522
 msgid "Set Sample Format"
 msgstr "設定取樣格式"
 
-#: TrackPanel.cpp:518
-#: TrackPanel.cpp:6046
+#: TrackPanel.cpp:524
+#: TrackPanel.cpp:6223
 msgid "Set Rate"
 msgstr "設定取樣頻率"
 
-#: TrackPanel.cpp:526
+#: TrackPanel.cpp:532
 msgid "Up Octave"
 msgstr "高八度"
 
-#: TrackPanel.cpp:527
+#: TrackPanel.cpp:533
 msgid "Down Octave"
 msgstr "降一個八度"
 
-#: TrackPanel.cpp:532
+#: TrackPanel.cpp:538
 msgid "Font..."
 msgstr "字型..."
 
-#: TrackPanel.cpp:543
+#: TrackPanel.cpp:549
 msgid "Set Range..."
 msgstr "設定範圍..."
 
-#: TrackPanel.cpp:547
+#: TrackPanel.cpp:553
 #: toolbars/EditToolBar.cpp:135
 msgid "Copy"
 msgstr "複製"
 
-#: TrackPanel.cpp:1237
+#: TrackPanel.cpp:1250
 msgid "Click to vertically zoom in, Shift-click to zoom out, Drag to create a particular zoom region."
 msgstr "單擊放大垂直檢視，Shift-單擊則縮小垂直檢視，拖曳則拉出一個特定的縮放區域。"
 
-#: TrackPanel.cpp:1242
+#: TrackPanel.cpp:1255
 msgid "Drag the label vertically to change the order of the tracks."
 msgstr "垂直拖曳標籤改變音軌順序。"
 
-#: TrackPanel.cpp:1262
+#: TrackPanel.cpp:1275
 msgid "Click and drag to adjust relative size of stereo tracks."
 msgstr "單擊拖曳調整立體聲音軌的相對大小。"
 
-#: TrackPanel.cpp:1265
+#: TrackPanel.cpp:1278
 msgid "Click and drag to resize the track."
 msgstr "單擊拖曳以調整音軌大小。"
 
-#: TrackPanel.cpp:1296
+#: TrackPanel.cpp:1309
 msgid "Drag one or more label boundaries"
 msgstr "拖曳一個或多個標籤邊界"
 
-#: TrackPanel.cpp:1297
+#: TrackPanel.cpp:1310
 msgid "Drag label boundary"
 msgstr "拖曳標籤邊界"
 
 #. i18n-hint: This string is for the Mac OS, which uses Command-, as the shortcut for Preferences
-#: TrackPanel.cpp:1313
+#: TrackPanel.cpp:1326
 msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
 msgstr "複合工具模式: Cmd-，滑鼠和鍵盤設定"
 
 #. i18n-hint: This string is for Windows and Linux, which uses Control-P as the shortcut for Preferences
-#: TrackPanel.cpp:1316
+#: TrackPanel.cpp:1329
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
 msgstr "複合工具模式： Ctrl-P，滑鼠和鍵盤設定"
 
-#: TrackPanel.cpp:1336
+#: TrackPanel.cpp:1349
 msgid "Click and drag to move left selection boundary."
 msgstr "單擊拖曳以選取範圍左邊界。"
 
-#: TrackPanel.cpp:1341
+#: TrackPanel.cpp:1354
 msgid "Click and drag to move right selection boundary."
 msgstr "單擊拖曳以選取範圍右邊界。"
 
-#: TrackPanel.cpp:1667
-#: TrackPanel.cpp:3775
-#: TrackPanel.cpp:3807
-#: TrackPanel.cpp:4062
-#: TrackPanel.cpp:6158
-#: TrackPanel.cpp:6178
+#: TrackPanel.cpp:1680
+#: TrackPanel.cpp:3937
+#: TrackPanel.cpp:3969
+#: TrackPanel.cpp:4224
+#: TrackPanel.cpp:6335
+#: TrackPanel.cpp:6355
 msgid "Modified Label"
 msgstr "已修改標籤"
 
-#: TrackPanel.cpp:1668
-#: TrackPanel.cpp:3776
-#: TrackPanel.cpp:3808
-#: TrackPanel.cpp:4063
-#: TrackPanel.cpp:6159
-#: TrackPanel.cpp:6179
+#: TrackPanel.cpp:1681
+#: TrackPanel.cpp:3938
+#: TrackPanel.cpp:3970
+#: TrackPanel.cpp:4225
+#: TrackPanel.cpp:6336
+#: TrackPanel.cpp:6356
 msgid "Label Edit"
 msgstr "標籤編輯"
 
-#: TrackPanel.cpp:1895
+#: TrackPanel.cpp:1908
 msgid "Adjusted envelope."
 msgstr "已調整波封線。"
 
-#: TrackPanel.cpp:1896
+#: TrackPanel.cpp:1909
 #: prefs/MousePrefs.cpp:115
 msgid "Envelope"
 msgstr "波封"
 
-#: TrackPanel.cpp:2032
+#: TrackPanel.cpp:2045
 msgid "Moved clip to another track"
 msgstr "將剪輯移至其他音軌"
 
-#: TrackPanel.cpp:2036
+#: TrackPanel.cpp:2049
 msgid "left"
 msgstr "左"
 
-#: TrackPanel.cpp:2036
+#: TrackPanel.cpp:2049
 msgid "right"
 msgstr "右"
 
 #. i18n-hint: %s is a direction like left or right
-#: TrackPanel.cpp:2038
+#: TrackPanel.cpp:2051
 #, c-format
 msgid "Time shifted tracks/clips %s %.02f seconds"
 msgstr "時間位移音軌/片段 %s %.02f秒"
 
-#: TrackPanel.cpp:2042
+#: TrackPanel.cpp:2055
 #: prefs/MousePrefs.cpp:111
 #: prefs/MousePrefs.cpp:112
 #: prefs/MousePrefs.cpp:113
 msgid "Time-Shift"
 msgstr "時間-位移"
 
-#: TrackPanel.cpp:2735
+#: TrackPanel.cpp:2897
 msgid "Draw currently only works with linear-view waveforms."
 msgstr "拖拉僅針對線性檢視波形有效。"
 
-#: TrackPanel.cpp:2752
+#: TrackPanel.cpp:2914
 msgid "You are not zoomed in enough. Zoom in until you can see the individual samples."
 msgstr "放大不夠。請放大到您能看清楚個別取樣點。"
 
-#: TrackPanel.cpp:3023
+#: TrackPanel.cpp:3185
 msgid "Moved Sample"
 msgstr "已移動取樣"
 
-#: TrackPanel.cpp:3024
+#: TrackPanel.cpp:3186
 msgid "Sample Edit"
 msgstr "編輯樣本"
 
-#: TrackPanel.cpp:3123
+#: TrackPanel.cpp:3285
 #, c-format
 msgid "Removed track '%s.'"
 msgstr "移除'%s'音軌。"
 
-#: TrackPanel.cpp:3125
+#: TrackPanel.cpp:3287
 msgid "Track Remove"
 msgstr "移除音軌"
 
-#: TrackPanel.cpp:3266
+#: TrackPanel.cpp:3428
 msgid "Moved gain slider"
 msgstr "已移動增益滑桿"
 
-#: TrackPanel.cpp:3266
+#: TrackPanel.cpp:3428
 msgid "Moved pan slider"
 msgstr "已移動面板滑桿"
 
 #. i18n-hint: Title of the Gain slider, used to adjust the volume
-#: TrackPanel.cpp:3267
-#: TrackPanel.cpp:5476
-#: TrackPanel.cpp:6827
+#: TrackPanel.cpp:3429
+#: TrackPanel.cpp:5638
+#: TrackPanel.cpp:7003
 msgid "Gain"
 msgstr "增益"
 
 #. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#: TrackPanel.cpp:3267
-#: TrackPanel.cpp:5414
-#: TrackPanel.cpp:6834
+#: TrackPanel.cpp:3429
+#: TrackPanel.cpp:5576
+#: TrackPanel.cpp:7010
 msgid "Pan"
 msgstr "面板"
 
-#: TrackPanel.cpp:3392
-#: TrackPanel.cpp:6111
+#: TrackPanel.cpp:3554
+#: TrackPanel.cpp:6288
 #: effects/ChangePitch.cpp:284
 msgid "up"
 msgstr "上"
 
-#: TrackPanel.cpp:3396
-#: TrackPanel.cpp:6112
+#: TrackPanel.cpp:3558
+#: TrackPanel.cpp:6289
 #: effects/ChangePitch.cpp:284
 msgid "down"
 msgstr "下"
 
-#: TrackPanel.cpp:3403
-#: TrackPanel.cpp:6107
+#: TrackPanel.cpp:3565
+#: TrackPanel.cpp:6284
 #, c-format
 msgid "Moved '%s' %s"
 msgstr "已移動 '%s' %s"
 
-#: TrackPanel.cpp:3406
-#: TrackPanel.cpp:6113
+#: TrackPanel.cpp:3568
+#: TrackPanel.cpp:6290
 msgid "Move Track"
 msgstr "移動音軌"
 
-#: TrackPanel.cpp:3962
+#: TrackPanel.cpp:4124
 msgid "Expand"
 msgstr "展開"
 
-#: TrackPanel.cpp:3962
+#: TrackPanel.cpp:4124
 msgid "Expanded Cut Line"
 msgstr "展開剪切線"
 
-#: TrackPanel.cpp:3971
+#: TrackPanel.cpp:4133
 msgid "Merge"
 msgstr "合併"
 
-#: TrackPanel.cpp:3971
+#: TrackPanel.cpp:4133
 msgid "Merged Clips"
 msgstr "合併剪輯"
 
-#: TrackPanel.cpp:3983
+#: TrackPanel.cpp:4145
 msgid "Removed Cut Line"
 msgstr "移除剪切線"
 
-#: TrackPanel.cpp:5414
+#: TrackPanel.cpp:5576
 msgid "Adjusted Pan"
 msgstr "已調整篩選"
 
-#: TrackPanel.cpp:5476
+#: TrackPanel.cpp:5638
 msgid "Adjusted gain"
 msgstr "已調整增益"
 
-#: TrackPanel.cpp:5656
+#: TrackPanel.cpp:5821
 msgid "Can't delete track with active audio"
 msgstr "無法刪除正在使用的音訊"
 
-#: TrackPanel.cpp:5809
+#: TrackPanel.cpp:5974
 msgid "Stereo, "
 msgstr "立體聲，"
 
-#: TrackPanel.cpp:5812
+#: TrackPanel.cpp:5977
 msgid "Mono, "
 msgstr "單聲道，"
 
-#: TrackPanel.cpp:5814
+#: TrackPanel.cpp:5979
 msgid "Left, "
 msgstr "左聲道，"
 
-#: TrackPanel.cpp:5816
+#: TrackPanel.cpp:5981
 msgid "Right, "
 msgstr "右聲道，"
 
-#: TrackPanel.cpp:5838
-#: TrackPanel.cpp:5951
+#: TrackPanel.cpp:6003
+#: TrackPanel.cpp:6128
 #, c-format
 msgid "Changed '%s' to %s"
 msgstr "已變更的'%s' 至 %s"
 
-#: TrackPanel.cpp:5843
+#: TrackPanel.cpp:6008
 msgid "Channel"
 msgstr "聲道"
 
-#: TrackPanel.cpp:5856
+#: TrackPanel.cpp:6021
 #, c-format
 msgid "Split stereo track '%s'"
 msgstr "分離立體聲音軌'%s'"
 
-#: TrackPanel.cpp:5877
+#: TrackPanel.cpp:6042
 #, c-format
 msgid "Made '%s' a stereo track"
 msgstr "將'%s'製作為立體聲音軌"
 
-#: TrackPanel.cpp:5880
+#: TrackPanel.cpp:6045
 msgid "Make Stereo"
 msgstr "製作立體聲"
 
-#: TrackPanel.cpp:5915
+#: TrackPanel.cpp:6092
 #, c-format
 msgid "Changed '%s' to %d Hz"
 msgstr "已變更的'%s' 至 %d Hz"
 
-#: TrackPanel.cpp:5917
+#: TrackPanel.cpp:6094
 msgid "Rate Change"
 msgstr "速率變更"
 
-#: TrackPanel.cpp:5955
+#: TrackPanel.cpp:6132
 msgid "Format Change"
 msgstr "變更格式"
 
-#: TrackPanel.cpp:6045
+#: TrackPanel.cpp:6222
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
 msgstr "輸入取樣頻率(Hz，每秒的取樣數)，範圍介於1至100000："
 
-#: TrackPanel.cpp:6055
+#: TrackPanel.cpp:6232
 msgid "Invalid rate."
 msgstr "無效速率。"
 
-#: TrackPanel.cpp:6075
+#: TrackPanel.cpp:6252
 msgid "Change lower speed limit (%) to:"
 msgstr "變更最低速率限制(%)為："
 
-#: TrackPanel.cpp:6076
-#: TrackPanel.cpp:6077
+#: TrackPanel.cpp:6253
+#: TrackPanel.cpp:6254
 msgid "Lower speed limit"
 msgstr "最低速率限制"
 
-#: TrackPanel.cpp:6082
+#: TrackPanel.cpp:6259
 msgid "Change upper speed limit (%) to:"
 msgstr "變更最高速率限制(%)為："
 
-#: TrackPanel.cpp:6083
-#: TrackPanel.cpp:6084
+#: TrackPanel.cpp:6260
+#: TrackPanel.cpp:6261
 msgid "Upper speed limit"
 msgstr "最高速率限制"
 
-#: TrackPanel.cpp:6092
+#: TrackPanel.cpp:6269
 #, c-format
 msgid "Set range to '%d' - '%d'"
 msgstr "設定範圍為 '%d' - '%d"
 
-#: TrackPanel.cpp:6095
+#: TrackPanel.cpp:6272
 msgid "Set Range"
 msgstr "設定範圍"
 
-#: TrackPanel.cpp:6140
+#: TrackPanel.cpp:6317
 msgid "Change track name to:"
 msgstr "變更音軌名稱為："
 
-#: TrackPanel.cpp:6141
+#: TrackPanel.cpp:6318
 msgid "Track Name"
 msgstr "音軌名稱"
 
-#: TrackPanel.cpp:6144
+#: TrackPanel.cpp:6321
 #, c-format
 msgid "Renamed '%s' to '%s'"
 msgstr "將'%s'更名為'%s'"
 
-#: TrackPanel.cpp:6147
+#: TrackPanel.cpp:6324
 msgid "Name Change"
 msgstr "變更名稱"
 
-#: TrackPanel.cpp:6213
+#: TrackPanel.cpp:6390
 msgid "Label Track Font"
 msgstr "標籤軌字形"
 
-#: TrackPanel.cpp:6225
+#: TrackPanel.cpp:6402
 msgid "Face name"
 msgstr "封面名稱"
 
-#: TrackPanel.cpp:6234
+#: TrackPanel.cpp:6411
 msgid "Face size"
 msgstr "封面大小"
 
 # 靜音播放
-#: TrackPanel.cpp:6754
+#: TrackPanel.cpp:6930
 msgid "Mute"
 msgstr "靜音"
 
-#: TrackPanel.cpp:6754
+#: TrackPanel.cpp:6930
 msgid "Solo"
 msgstr "獨奏"
 
@@ -4294,8 +4298,8 @@ msgstr "DTMF序列："
 
 #: effects/DtmfGen.cpp:444
 #: effects/Noise.cpp:255
-#: effects/ToneGen.cpp:306
-#: effects/ToneGen.cpp:342
+#: effects/ToneGen.cpp:328
+#: effects/ToneGen.cpp:364
 msgid "Amplitude (0-1)"
 msgstr "振幅 (0-1)"
 
@@ -4370,15 +4374,15 @@ msgstr "迴音..."
 msgid "Performing Echo"
 msgstr "執行迴音"
 
-#: effects/Effect.cpp:387
+#: effects/Effect.cpp:390
 msgid "Preparing preview"
 msgstr "準備試聽"
 
-#: effects/Effect.cpp:416
+#: effects/Effect.cpp:419
 msgid "Previewing"
 msgstr "試聽中"
 
-#: effects/Effect.cpp:432
+#: effects/Effect.cpp:435
 msgid "Error while opening sound device. Please check the output device settings and the project sample rate."
 msgstr "開啟音訊裝置錯誤。請檢查輸出裝置的設置及工程取樣頻率。"
 
@@ -4932,79 +4936,92 @@ msgid "Applying Spike Cleaner..."
 msgstr "套用突刺清除器中..."
 
 #: effects/StereoToMono.h:32
-msgid "Applying Stereo To Mono"
+msgid "Applying Stereo to Mono"
 msgstr "套用立體聲至單聲道"
 
-#: effects/ToneGen.cpp:59
+#: effects/ToneGen.cpp:65
 #, c-format
 msgid "Applied effect: Generate %s wave %s, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"
 msgstr "已套用效果： 產生%s %s 波，頻率 = %.2f Hz，振幅=%.2f，%.6lf秒"
 
-#: effects/ToneGen.cpp:66
+#: effects/ToneGen.cpp:74
+#: widgets/Meter.cpp:362
+msgid "Linear"
+msgstr "線性"
+
+#: effects/ToneGen.cpp:75
+msgid "Logarithmic"
+msgstr "對數(log)"
+
+#: effects/ToneGen.cpp:77
 msgid "Chirp Generator"
 msgstr "啾啾聲產生器"
 
-#: effects/ToneGen.cpp:66
+#: effects/ToneGen.cpp:77
 msgid "Tone Generator"
 msgstr "基音產生器"
 
-#: effects/ToneGen.cpp:67
+#: effects/ToneGen.cpp:78
 msgid "Sine"
 msgstr "正弦波"
 
-#: effects/ToneGen.cpp:68
+#: effects/ToneGen.cpp:79
 msgid "Square"
 msgstr "方波"
 
-#: effects/ToneGen.cpp:69
+#: effects/ToneGen.cpp:80
 msgid "Sawtooth"
 msgstr "鋸齒波"
 
-#: effects/ToneGen.cpp:70
+#: effects/ToneGen.cpp:81
 msgid "Square, no alias"
 msgstr "平方，無別名"
 
-#: effects/ToneGen.cpp:305
-#: effects/ToneGen.cpp:340
+#: effects/ToneGen.cpp:327
+#: effects/ToneGen.cpp:362
 msgid "Frequency (Hz)"
 msgstr "頻率(Hz)"
 
-#: effects/ToneGen.cpp:307
-#: effects/ToneGen.cpp:348
+#: effects/ToneGen.cpp:329
+#: effects/ToneGen.cpp:373
 #: toolbars/SelectionBar.cpp:147
 #: toolbars/SelectionBar.cpp:241
 msgid "Length"
 msgstr "時間長度"
 
-#: effects/ToneGen.cpp:331
+#: effects/ToneGen.cpp:353
 msgid "Waveform:"
 msgstr "波形："
 
-#: effects/ToneGen.cpp:338
+#: effects/ToneGen.cpp:360
 #: toolbars/ControlToolBar.cpp:185
 msgid "Start"
 msgstr "開始"
 
-#: effects/ToneGen.cpp:339
+#: effects/ToneGen.cpp:361
 #: toolbars/ControlToolBar.cpp:188
 #: toolbars/SelectionBar.cpp:141
 #: toolbars/SelectionBar.cpp:242
 msgid "End"
 msgstr "結束時間"
 
-#: effects/ToneGen.h:39
+#: effects/ToneGen.cpp:371
+msgid "Interpolation:"
+msgstr "內插法"
+
+#: effects/ToneGen.h:40
 msgid "Chirp..."
 msgstr "啾啾聲..."
 
-#: effects/ToneGen.h:39
+#: effects/ToneGen.h:40
 msgid "Tone..."
 msgstr "基音..."
 
-#: effects/ToneGen.h:47
+#: effects/ToneGen.h:48
 msgid "Generating Chirp"
 msgstr "產生啾啾聲中"
 
-#: effects/ToneGen.h:47
+#: effects/ToneGen.h:48
 msgid "Generating Tone"
 msgstr "產生基音中"
 
@@ -6033,7 +6050,7 @@ msgstr "分析Allegro檔案出錯。"
 msgid "Error parsing MIDI file."
 msgstr "分析MIDI檔案出錯。"
 
-#: import/ImportMP3.cpp:78
+#: import/ImportMP3.cpp:38
 msgid "MP3 files"
 msgstr "MP3檔案"
 
@@ -6868,62 +6885,91 @@ msgstr "靜音時停止錄音"
 msgid "Silence level (dB):"
 msgstr "靜音等級(dB)："
 
-#: prefs/SpectrumPrefs.cpp:36
-#: prefs/SpectrumPrefs.cpp:37
+#: prefs/SpectrumPrefs.cpp:41
+#: prefs/SpectrumPrefs.cpp:42
 msgid "Spectrograms"
 msgstr "聲譜圖"
 
-#: prefs/SpectrumPrefs.cpp:72
+#: prefs/SpectrumPrefs.cpp:85
 msgid "FFT Size"
 msgstr "FFT的取樣點數"
 
-#: prefs/SpectrumPrefs.cpp:75
+#: prefs/SpectrumPrefs.cpp:88
 msgid "8 - most wideband"
 msgstr "8 - 頻寬最寬"
 
-#: prefs/SpectrumPrefs.cpp:80
+#: prefs/SpectrumPrefs.cpp:93
 msgid "256 - default"
 msgstr "256 - 預設值"
 
-#: prefs/SpectrumPrefs.cpp:84
+#: prefs/SpectrumPrefs.cpp:101
+msgid "32768 - most narrowband"
+msgstr "32768 - 頻寬最窄"
+
+#: prefs/SpectrumPrefs.cpp:103
 msgid "4096 - most narrowband"
 msgstr "4096 - 頻寬最窄"
 
-#: prefs/SpectrumPrefs.cpp:90
+#: prefs/SpectrumPrefs.cpp:110
 msgid "Window type:"
 msgstr "FFT Window類型："
 
-#: prefs/SpectrumPrefs.cpp:96
+#: prefs/SpectrumPrefs.cpp:116
 msgid "Display"
 msgstr "顯示"
 
-#: prefs/SpectrumPrefs.cpp:100
+#: prefs/SpectrumPrefs.cpp:120
 msgid "&Grayscale"
 msgstr "灰階(&G)"
 
-#: prefs/SpectrumPrefs.cpp:103
+#: prefs/SpectrumPrefs.cpp:123
 msgid "Minimum Frequency (Hz):"
 msgstr "最低頻率 (Hz)："
 
-#: prefs/SpectrumPrefs.cpp:108
+#: prefs/SpectrumPrefs.cpp:128
 msgid "Maximum Frequency (Hz):"
 msgstr "最高頻率 (Hz)："
 
 #: prefs/SpectrumPrefs.cpp:134
+msgid "&Find Notes"
+msgstr "尋找註解(&F)"
+
+#: prefs/SpectrumPrefs.cpp:135
+msgid "&Quantize Notes"
+msgstr "量化註解(&Q)"
+
+#: prefs/SpectrumPrefs.cpp:138
+msgid "Minimum Amplitude (dB):"
+msgstr "最低振幅(dB)："
+
+#: prefs/SpectrumPrefs.cpp:143
+msgid "Max. Number of Notes (1..128):"
+msgstr "註解最大數目(1-128)："
+
+#: prefs/SpectrumPrefs.cpp:170
 msgid "The maximum frequency must be an integer"
 msgstr "最大頻率值必須是整數。"
 
-#: prefs/SpectrumPrefs.cpp:138
+#: prefs/SpectrumPrefs.cpp:174
 msgid "Maximum frequency must be in the range 100 Hz - 100,000 Hz"
 msgstr "最高頻率需介於 100 Hz - 100,000 Hz"
 
-#: prefs/SpectrumPrefs.cpp:146
+#: prefs/SpectrumPrefs.cpp:182
 msgid "The minimum frequency must be an integer"
 msgstr "最低頻率值必須是整數。"
 
-#: prefs/SpectrumPrefs.cpp:150
+#: prefs/SpectrumPrefs.cpp:186
 msgid "Minimum frequency must be at least 0 Hz"
 msgstr "最低頻率最少為0 Hz"
+
+#: prefs/SpectrumPrefs.cpp:193
+msgid "The minimum amplitude (dB) must be an integer"
+msgstr "最低振幅(dB)必須是整數。"
+
+#: prefs/SpectrumPrefs.cpp:199
+#: prefs/SpectrumPrefs.cpp:203
+msgid "The Maximum Number of Notes must be an integer in the range 1..128"
+msgstr "最大頻率值必須是1-128之間的整數。"
 
 #: prefs/ThemePrefs.cpp:62
 #: prefs/ThemePrefs.cpp:63
@@ -7498,10 +7544,6 @@ msgstr "水平立體聲"
 msgid "Vertical Stereo"
 msgstr "垂直立體聲"
 
-#: widgets/Meter.cpp:362
-msgid "Linear"
-msgstr "線性"
-
 #: widgets/Meter.cpp:371
 msgid "Preferences..."
 msgstr "偏好設定..."
@@ -7530,8 +7572,8 @@ msgstr "儀表工具列偏好設定"
 msgid " Please select an action "
 msgstr "請選擇一項動作"
 
-#: widgets/Ruler.cpp:1138
-#: widgets/Ruler.cpp:1139
+#: widgets/Ruler.cpp:1224
+#: widgets/Ruler.cpp:1225
 msgid "Vertical Ruler"
 msgstr "垂直尺規"
 
