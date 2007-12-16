@@ -31,6 +31,14 @@
 
 DECLARE_EVENT_TYPE(EVT_TIMETEXTCTRL_UPDATED, -1);
 
+/** \brief struct to hold a formatting control string and it's user facing name
+ * Used in an array to hold the built-in time formats that are always available
+ * to the user */
+struct BuiltinFormatString {
+   wxString name;
+   wxString formatStr;
+};
+
 class TimeField;
 WX_DECLARE_OBJARRAY(TimeField, TimeFieldArray);
 
@@ -66,10 +74,10 @@ class TimeTextCtrl: public wxControl
 
    wxString GetTimeString();
 
-   static int GetNumBuiltins();
-   static wxString GetBuiltinName(int index);
-   static wxString GetBuiltinFormat(int index);
-   static wxString GetBuiltinFormat(const wxString &name);
+   int GetNumBuiltins();
+   wxString GetBuiltinName(const int index);
+   wxString GetBuiltinFormat(const int index);
+   wxString GetBuiltinFormat(const wxString &name);
 
    void EnableMenu(bool enable = true);
 
@@ -95,6 +103,12 @@ private:
    void Increase(int steps);
    void Decrease(int steps);
 
+   /** \brief array of formats the control knows about internally
+    *  array of string pairs for name of the format and the format string
+    *  needed to create that format output. This is used for the pop-up
+    *  list of formats to choose from in the control. Note that the size will
+    *  need adjusting if new time formats are added */
+   BuiltinFormatString BuiltinFormatStrings[15];
    double         mTimeValue;
    double         mSampleRate;
    wxString       mFormatString;

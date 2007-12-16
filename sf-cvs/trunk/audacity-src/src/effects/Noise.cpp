@@ -238,17 +238,17 @@ void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
          mNoiseDurationT = new
          TimeTextCtrl(this,
                       wxID_ANY,
-                      /*
-                      use this instead of "seconds" because if a selection is passed to the effect,
-                      I want it (nDuration) to be used as the duration, and with "seconds" this does
-                      not always work properly. For example, it rounds down to zero...
-                      */
-                      TimeTextCtrl::GetBuiltinFormat(nIsSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
+                      wxT(""),
                       nDuration,
                       44100,
                       wxDefaultPosition,
                       wxDefaultSize,
                       true);
+         /* use this instead of "seconds" because if a selection is passed to
+          * the effect, I want it (nDuration) to be used as the duration, and
+          * with "seconds" this does not always work properly. For example,
+          * it rounds down to zero... */
+         mNoiseDurationT->SetFormatString(mNoiseDurationT->GetBuiltinFormat(nIsSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))));
          mNoiseDurationT->EnableMenu();
       }
       S.AddWindow(mNoiseDurationT);
