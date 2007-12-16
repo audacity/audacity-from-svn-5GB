@@ -46,12 +46,18 @@ void TimeEditor::Create(wxWindow *parent, wxWindowID id, wxEvtHandler *handler)
 {
    m_control = new TimeTextCtrl(parent,
                                 wxID_ANY,
-                                TimeTextCtrl::GetBuiltinFormat(mFormat),
+                                wxT(""),
                                 mOld,
                                 mRate,
                                 wxDefaultPosition,
                                 wxDefaultSize,
                                 true);
+   /* look up provided format string name to a format string, then set that as
+    * the format string for the control. Unfortunately m_control is a base
+    * class pointer not a TimeTextCtrl pointer, so we have to cast it. It can't
+    * fail to cast, however unless the preceeding new operation failed, so it's
+    * reasonably safe. */
+   ((TimeTextCtrl *)m_control)->SetFormatString(((TimeTextCtrl *)m_control)->GetBuiltinFormat(mFormat));
 
    wxGridCellEditor::Create(parent, id, handler);
 }
@@ -158,12 +164,13 @@ void TimeRenderer::Draw(wxGrid &grid,
 
       TimeTextCtrl tt(&grid,
                       wxID_ANY,
-                      TimeTextCtrl::GetBuiltinFormat(te->GetFormat()),
+                      wxT(""),
                       value,
                       te->GetRate(),
                       wxPoint(10000, 10000),  // create offscreen
                       wxDefaultSize,
                       true);
+      tt.SetFormatString(tt.GetBuiltinFormat(te->GetFormat()));
       tstr = tt.GetTimeString();
 
       te->DecRef();
@@ -214,12 +221,13 @@ wxSize TimeRenderer::GetBestSize(wxGrid &grid,
       table->GetValue(row, col).ToDouble(&value);
       TimeTextCtrl tt(&grid,
                       wxID_ANY,
-                      TimeTextCtrl::GetBuiltinFormat(te->GetFormat()),
+                      wxT(""),
                       value,
                       te->GetRate(),
                       wxPoint(10000, 10000),  // create offscreen
                       wxDefaultSize,
                       true);
+      tt.SetFormatString(tt.GetBuiltinFormat(te->GetFormat()));
       sz = tt.GetSize();
 
       te->DecRef();

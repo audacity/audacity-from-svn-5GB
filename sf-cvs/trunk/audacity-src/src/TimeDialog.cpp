@@ -55,12 +55,13 @@ void TimeDialog::PopulateOrExchange(ShuttleGui &S)
          mTimeCtrl = new
             TimeTextCtrl(this,
                          wxID_ANY,
-                         TimeTextCtrl::GetBuiltinFormat(mFormat),
+                         wxT(""),
                          mTime,
                          mRate,
                          wxDefaultPosition,
                          wxDefaultSize,
                          true);
+         mTimeCtrl->SetFormatString(mTimeCtrl->GetBuiltinFormat(mFormat));
          S.AddWindow(mTimeCtrl);
          mTimeCtrl->EnableMenu();
       }
@@ -79,7 +80,7 @@ void TimeDialog::PopulateOrExchange(ShuttleGui &S)
 
 bool TimeDialog::TransferDataToWindow()
 {
-   mTimeCtrl->SetFormatString(TimeTextCtrl::GetBuiltinFormat(mFormat));
+   mTimeCtrl->SetFormatString(mTimeCtrl->GetBuiltinFormat(mFormat));
    mTimeCtrl->SetSampleRate(mRate);
    mTimeCtrl->SetTimeValue(mTime);
    mTimeCtrl->SetFocus();

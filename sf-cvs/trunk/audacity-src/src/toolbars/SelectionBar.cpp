@@ -104,11 +104,19 @@ void SelectionBar::Populate()
 
    wxString formatName = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
    int formatIndex = 1;
-   for(i=0; i<TimeTextCtrl::GetNumBuiltins(); i++)
-      if (TimeTextCtrl::GetBuiltinName(i) == formatName)
+   /* we don't actually need a control yet, but we want to use it's methods
+    * to do some look-ups, so we'll have to create one. We can't make the 
+    * look-ups static because they depend on translations which are done at
+    * runtime */
+   /* for now we don't give this a format, we'll set that later once we've
+    * done some other format-related housekeeping */
+   mLeftTime = new TimeTextCtrl(this, OnLeftTimeID, wxT(""), 0.0, mRate);
+
+   for(i=0; i<mLeftTime->GetNumBuiltins(); i++)
+      if (mLeftTime->GetBuiltinName(i) == formatName)
          formatIndex = i;
-   formatName = TimeTextCtrl::GetBuiltinName(formatIndex);
-   wxString format = TimeTextCtrl::GetBuiltinFormat(formatIndex);
+   formatName = mLeftTime->GetBuiltinName(formatIndex);
+   wxString format = mLeftTime->GetBuiltinFormat(formatIndex);
 
    mainSizer = new wxFlexGridSizer(7, 1, 1);
    Add(mainSizer, 0, wxALIGN_CENTER_VERTICAL);
@@ -230,8 +238,12 @@ void SelectionBar::Populate()
                     wxFocusEventHandler(SelectionBar::OnFocus),
                     NULL,
                     this);
-
-   mLeftTime = new TimeTextCtrl(this, OnLeftTimeID, format, 0.0, mRate);
+   
+   /* we would normally be creating a new TimeTextControl here, except that we
+    * did it near the start of the function to have an object to do look-ups on
+    * so the only thing left to do here is to set it's format to what we now
+    * know is correct */
+   mLeftTime->SetFormatString(format);
    mLeftTime->SetName(_("Selection Start:"));
    mLeftTime->EnableMenu();
    mainSizer->Add(mLeftTime, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
@@ -325,8 +337,11 @@ void SelectionBar::OnUpdate(wxCommandEvent &evt)
    
    evt.Skip(false);
 
-   wxString formatName =  TimeTextCtrl::GetBuiltinName(index);
-   wxString formatString = TimeTextCtrl::GetBuiltinFormat(index);
+   /* we need an object to call these methods on. It actually doesn't matter
+    * which as they have no effect on the object state, so we just use the first
+    * one to hand */
+   wxString formatName =  mLeftTime->GetBuiltinName(index);
+   wxString formatString = mLeftTime->GetBuiltinFormat(index);
 
    gPrefs->Write(wxT("/SelectionFormat"), formatName);
 
@@ -422,12 +437,10 @@ void SelectionBar::SetRate(double rate)
 void SelectionBar::OnRate(wxCommandEvent & WXUNUSED(event))
 {
    mRateBox->GetValue().ToDouble(&mRate);
-   if (mRate != 0.0 && mLeftTime) {
-      mLeftTime->SetSampleRate(mRate);
-      mRightTime->SetSampleRate(mRate);
-      mAudioTime->SetSampleRate(mRate);
-      mListener->AS_SetRate(mRate);
-   }
+   if (mRate != 0.0 && mLeftTime) mLeftTime->SetSampleRate(mRate);
+   if (mRate != 0.0 && mRightTime) mRightTime->SetSampleRate(mRate);
+   if (mRate != 0.0 && mAudioTime) mAudioTime->SetSampleRate(mRate);
+   if (mRate != 0.0 && mListener) mListener->AS_SetRate(mRate);
 }
 
 void SelectionBar::UpdateRates()

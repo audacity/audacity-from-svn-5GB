@@ -332,12 +332,13 @@ void ToneGenDialog::PopulateOrExchangeStandard( ShuttleGui & S )
          mToneDurationT = new
          TimeTextCtrl(this,
                       wxID_ANY,
-                      TimeTextCtrl::GetBuiltinFormat(isSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
+                      wxT(""),
                       length,
                       44100,
                       wxDefaultPosition,
                       wxDefaultSize,
                       true);
+         mToneDurationT->SetFormatString(mToneDurationT->GetBuiltinFormat(isSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))));
          mToneDurationT->EnableMenu();
       }
       S.AddWindow(mToneDurationT);
@@ -376,12 +377,13 @@ void ToneGenDialog::PopulateOrExchangeExtended( ShuttleGui & S )
          mToneDurationT = new
          TimeTextCtrl(this,
                       wxID_ANY,
-                      TimeTextCtrl::GetBuiltinFormat(isSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))),
+                      wxT(""),
                       length,
                       44100,
                       wxDefaultPosition,
                       wxDefaultSize,
                       true);
+         mToneDurationT->SetFormatString(mToneDurationT->GetBuiltinFormat(isSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))));
          mToneDurationT->EnableMenu();
       }
       S.AddWindow(mToneDurationT);
