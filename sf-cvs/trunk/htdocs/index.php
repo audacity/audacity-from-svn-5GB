@@ -76,25 +76,6 @@
 
 </div>
 
-<form id="notify" method="post" action="http://scripts.dreamhost.com/add_list.cgi">
-  <h3><?=_("Get Notified of New Versions")?></h3>
-  <p>
-  <input type="hidden" name="list" value="audacity-announce">
-  <input type="hidden" name="url" value="http://audacity.sourceforge.net/list/subscribed.php">
-  <input type="hidden" name="emailconfirmurl" value="http://audacity.sourceforge.net/list/emailconfirm.php">
-  <input type="hidden" name="unsuburl" value="http://audacity.sourceforge.net/list/unsubscribed.php">
-  <input type="hidden" name="alreadyonurl" value="http://audacity.sourceforge.net/list/alreadyon.php">
-  <input type="hidden" name="notonurl" value="http://audacity.sourceforge.net/list/noton.php">
-  <input type="hidden" name="invalidurl" value="http://audacity.sourceforge.net/list/invalid.php">
-  <input type="hidden" name="domain" value="audacityteam.org">
-  <input type="hidden" name="emailit" value="1">
-
-  <label for="address"><?=_("Email address")?></label>: <input name="address" id="address" class="text">
-  <input type="submit" name="submit" value="<?=_("Add")?>">
-  <input type="submit" name="unsub" value="<?=_("Remove")?>">
-  </p>
-</form>
-
 <div id="news">
   <?php
     global $news_items;
@@ -113,6 +94,25 @@
     </a>
   </h4>
 </div>
+
+<form id="notify" method="post" action="http://scripts.dreamhost.com/add_list.cgi">
+  <h3><?=_("Get Notified of New Versions")?></h3>
+  <p>
+  <input type="hidden" name="list" value="audacity-announce">
+  <input type="hidden" name="url" value="http://audacity.sourceforge.net/list/subscribed.php">
+  <input type="hidden" name="emailconfirmurl" value="http://audacity.sourceforge.net/list/emailconfirm.php">
+  <input type="hidden" name="unsuburl" value="http://audacity.sourceforge.net/list/unsubscribed.php">
+  <input type="hidden" name="alreadyonurl" value="http://audacity.sourceforge.net/list/alreadyon.php">
+  <input type="hidden" name="notonurl" value="http://audacity.sourceforge.net/list/noton.php">
+  <input type="hidden" name="invalidurl" value="http://audacity.sourceforge.net/list/invalid.php">
+  <input type="hidden" name="domain" value="audacityteam.org">
+  <input type="hidden" name="emailit" value="1">
+
+  <label for="address"><?=_("Email address")?></label>: <input name="address" id="address" class="text">
+  <input type="submit" name="submit" value="<?=_("Add")?>">
+  <input type="submit" name="unsub" value="<?=_("Remove")?>">
+  </p>
+</form>
 
 <?php
   include "include/footer.inc.php";
