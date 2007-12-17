@@ -21,8 +21,8 @@ Audacity is free software, developed by a group of volunteers and
 distributed under the GNU General Public License (GPL).  See
 License.txt for details.
 
-Free software is not just free of cost (like “free beer”). 
-It is free as in freedom (like “free speech”). Free software gives you 
+Free software is not just free of cost (like &quot;free beer&quot;). 
+It is free as in freedom (like &quot;free speech&quot;). Free software gives you 
 the freedom to use a program, study how it works, improve it, and share 
 it with others. For more information, visit the Free Software Foundation.
 
@@ -34,8 +34,9 @@ OpenOffice.org office suite, and entire Linux-based operating systems.
 \section src_code Understanding The Source Code
 
 To understand the GUI parts of Audacity, you will first need to familiarise 
-yourself with the wxWidgets toolkit.  Next look at classes in src/widgets
-to see how we create new widgets of our own.
+yourself with the wxWidgets toolkit. You will find \ref ShuttleSystem used very
+widely for user interface construction. See the classes in src/widgets
+for how we create new widgets of our own.
 
  - A great deal of the Audio processing in Audacity is done using libraries of
 code such as libsndfile and allegro.  Some self contained audio functions
