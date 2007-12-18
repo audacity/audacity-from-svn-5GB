@@ -118,9 +118,15 @@ void TranscriptionToolBar::Create(wxWindow * parent)
    mButtons[TTB_MakeLabel]->Enable();
 #endif
 
-   //Process a dummy event to set up the slider
-   wxCommandEvent dummy;
-   OnSpeedSlider(dummy);
+   //Old code...
+   //Process a dummy event to set up mPlaySpeed
+   //wxCommandEvent dummy;
+   //OnSpeedSlider(dummy);
+
+   //JKC: Set speed this way is better, as we don't
+   //then stop Audio if it is playing, so we can be playing
+   //audio and open a second project.
+   mPlaySpeed = (mPlaySpeedSlider->Get()) * 100;
 }
 
 /// This is a convenience function that allows for button creation in
@@ -365,6 +371,9 @@ void TranscriptionToolBar::OnPlaySpeed(wxCommandEvent & event)
    }
 
    // Can't do anything without a time track
+   // TODO: Yikes - Bad coding style.
+   // A new time track will be created each time we
+   // play-at-speed.
    TimeTrack *tt = new TimeTrack(p->GetDirManager());
 
    // Set the speed range
