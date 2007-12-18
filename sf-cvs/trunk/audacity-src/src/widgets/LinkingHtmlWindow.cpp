@@ -17,6 +17,29 @@
 #include <wx/mimetype.h>
 #include "../HelpText.h"
 
+BEGIN_EVENT_TABLE(BrowserFrame, wxFrame)
+   EVT_BUTTON( wxID_FORWARD,  BrowserFrame::OnForward)
+   EVT_BUTTON( wxID_BACKWARD, BrowserFrame::OnBackward)
+   EVT_BUTTON( wxID_CLOSE,    BrowserFrame::OnClose)
+END_EVENT_TABLE()
+
+
+void BrowserFrame::OnForward(wxCommandEvent & event)
+{
+   mpHtml->HistoryForward();
+}
+
+void BrowserFrame::OnBackward(wxCommandEvent & event)
+{
+   mpHtml->HistoryBack();
+}
+
+void BrowserFrame::OnClose(wxCommandEvent & event)
+{
+   Close();
+}
+
+
 void OpenInDefaultBrowser(const wxHtmlLinkInfo& link)
 {
    #ifdef __WXMAC__
@@ -45,6 +68,7 @@ LinkingHtmlWindow::LinkingHtmlWindow(wxWindow *parent, wxWindowID id /*= -1*/,
                                        long style /*= wxHW_SCROLLBAR_AUTO*/) :
    wxHtmlWindow(parent, id, pos, size, style)
 {
+
 }
 
 void LinkingHtmlWindow::OnLinkClicked(const wxHtmlLinkInfo& link)
@@ -52,9 +76,28 @@ void LinkingHtmlWindow::OnLinkClicked(const wxHtmlLinkInfo& link)
    wxString href = link.GetHref();
    if( href.StartsWith(wxT("innerlink:")) )
    {
-      this->SetPage( HelpText( href.Mid( 10 )));
-      this->GetParent()->SetLabel( TitleText( href.Mid( 10 )));
+      SetPage( HelpText( href.Mid( 10 )));
+      GetParent()->SetLabel( TitleText( href.Mid( 10 )));
+      return;
+   }
+   else if( !href.StartsWith( wxT("http:")))
+   {
+      wxHtmlWindow::OnLinkClicked( link );
       return;
    }
    OpenInDefaultBrowser(link);
 }
+
+#if 0
+void LinkingHtmlWindow::OnSetTitle(const wxString& title)
+{
+   wxLogDebug( wxT("Title: %s"), title );
+   BrowserDialog * pDlg = wxDynamicCast( GetParent(), BrowserDialog );
+   if( pDlg )
+   {
+      pDlg->SetTitle( title );
+   };
+   wxHtmlWindow::OnSetTitle( title );
+}
+#endif
+

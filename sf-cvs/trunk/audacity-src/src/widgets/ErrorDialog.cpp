@@ -22,6 +22,7 @@ Gives an Error message with an option for help.
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/utils.h>
+#include <wx/html/htmlwin.h>
 
 #include "LinkingHtmlWindow.h"
 #include "../ShuttleGui.h"
@@ -119,27 +120,56 @@ void ErrorDialog::OnOk(wxCommandEvent &event)
    EndModal(true);
 }
 
-void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &HtmlText )
+void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &HtmlText, bool bIsFile = false )
 {
-   wxDialog Dlg(pParent, -1, Title, wxDefaultPosition, wxDefaultSize);
-   ShuttleGui S( &Dlg, eIsCreating );
+   BrowserFrame * pWnd = new BrowserFrame();
+   pWnd->Create(pParent, -1, Title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE);// & ~wxSYSTEM_MENU);
+   ShuttleGui S( pWnd, eIsCreating );
+   LinkingHtmlWindow *html;
    S.StartVerticalLay();
    {
-      wxHtmlWindow *html = new LinkingHtmlWindow(&Dlg, -1,
+      S.StartHorizontalLay( wxEXPAND, 0);
+      {
+         S.Id( wxID_BACKWARD ).AddButton( _("<") );
+         S.Id( wxID_FORWARD  ).AddButton( _(">") );
+      }
+      S.EndHorizontalLay();
+      html = new LinkingHtmlWindow(pWnd, -1,
                                          wxDefaultPosition,
-                                         wxSize(480, 240),
+                                         bIsFile ? wxSize(500, 400) : wxSize(480, 240),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
-      html->SetPage( HtmlText);
+
+      html->SetRelatedFrame( pWnd, wxT("Help: %s") );
+      if( bIsFile )
+         html->LoadFile( HtmlText );
+      else
+         html->SetPage( HtmlText);
 
       S.Prop(1).AddWindow( html, wxEXPAND );
-      S.Id( wxID_OK).AddButton( _("Close") );
+      S.Id( wxID_CLOSE ).AddButton( _("Close") );
    }
    S.EndVerticalLay();
-   Dlg.Fit();
-   Dlg.Centre();
-   Dlg.ShowModal();
+
+   #ifdef __WXMSW__
+      wxIcon ic(wxICON(AudacityLogo));
+   #else
+      wxIcon ic;
+      ic.CopyFromBitmap(theTheme.Bitmap(bmpAudacityLogo48x48));
+   #endif
+
+   pWnd->mpHtml = html;
+   pWnd->SetIcon( ic );
+   pWnd->SetBackgroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+   pWnd->CreateStatusBar();
+   html->SetRelatedStatusBar( 0 );
+   pWnd->Fit();
+   pWnd->Centre();
+   pWnd->Show( true );
+   //Dlg.Show();
    return;
 }
+
+
 
 void ShowHtmlInBrowser( const wxString &Url )
 {
@@ -179,15 +209,36 @@ void ShowHelpDialog(wxWindow *parent,
                      const wxString &localFileName,
                      const wxString &remoteURL)
 {
-   if( wxFileExists( localFileName ))
+   AudacityProject * pProj = GetActiveProject();
+   wxString HelpMode = wxT("Standard");
+
+   if( pProj )
    {
+      HelpMode = pProj->mHelpPref;
+   }
+
+   if( HelpMode == wxT("FromInternet"))
+   {
+      // Always go to remote URL.  Use External browser.
+      ShowHtmlInBrowser( remoteURL );
+   }
+   else if( !wxFileExists( localFileName ))
+   {
+      // I can't find it'.
+      // Use Built-in browser to suggest you use the remote url.
+      wxString Text = HelpText( wxT("remotehelp") );
+      Text.Replace( wxT("*URL*"), remoteURL );
+      ShowHtmlText( parent, _("Help on the Internet"), Text );
+   }
+   else if( HelpMode == wxT("InBrowser") ) 
+   {
+      // Local file, External browser 
       ShowHtmlInBrowser( wxString(wxT("file:"))+localFileName );
    }
    else
    {
-      wxString Text = HelpText( wxT("remotehelp") );
-      Text.Replace( wxT("*URL*"), remoteURL );
-      ShowHtmlText( parent, _("Help on the Internet"), Text );
+      // Local file, Built-in browser
+      ShowHtmlText( parent, wxT(""), localFileName, true );
    }
 }
 
