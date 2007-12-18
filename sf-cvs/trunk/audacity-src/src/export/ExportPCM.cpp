@@ -112,7 +112,7 @@ END_EVENT_TABLE()
 /// 
 ExportPCMOptions::ExportPCMOptions(wxWindow *parent)
 :  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify PCM Options")),
+            wxString(_("Specify Uncompressed Options")),
             wxDefaultPosition, wxDefaultSize,
             wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
 {
