@@ -540,6 +540,8 @@ bool EffectNyquist::ProcessOne()
       nyx_set_input_audio(StaticGetCallback, (void *)this,
                           mCurNumChannels,
                           mCurLen, mCurTrack[0]->GetRate());
+   else
+      nyx_set_audio_params( mCurTrack[0]->GetRate() );
 
    wxString cmd;
 
