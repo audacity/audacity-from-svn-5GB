@@ -443,7 +443,7 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
 
       S.TieTextBox(_("Amplitude (0-1)"),  dAmplitude, 10);
 
-      S.AddPrompt(_("DTMF duration:"));
+      S.AddPrompt(_("Duration:"));
       mDtmfDurationT = new
          TimeTextCtrl(this,
                       ID_DTMF_DURATION_TEXT,
