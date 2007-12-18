@@ -232,7 +232,7 @@ void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
 {
    S.StartMultiColumn(2, wxCENTER);
    {
-      S.AddFixedText(_("Noise duration"), false);
+      S.AddFixedText(_("Duration"), false);
       if (mNoiseDurationT == NULL)
       {
          mNoiseDurationT = new

@@ -326,7 +326,7 @@ void ToneGenDialog::PopulateOrExchangeStandard( ShuttleGui & S )
       S.SetSizeHints(-1, -1);
       S.TieTextBox(_("Frequency (Hz)"),frequency[0], 5);
       S.TieTextBox(_("Amplitude (0-1)"),amplitude[0], 5);
-      S.AddFixedText(_("Length"), false);
+      S.AddFixedText(_("Duration"), false);
       if (mToneDurationT == NULL)
       {
          mToneDurationT = new
@@ -371,7 +371,7 @@ void ToneGenDialog::PopulateOrExchangeExtended( ShuttleGui & S )
 #ifdef LOGARITHMIC_TONE_CHIRP
       S.TieChoice(_("Interpolation:"), interpolation,  interpolations);
 #endif
-      S.AddFixedText(_("Length"), false);
+      S.AddFixedText(_("Duration"), false);
       if (mToneDurationT == NULL)
       {
          mToneDurationT = new
