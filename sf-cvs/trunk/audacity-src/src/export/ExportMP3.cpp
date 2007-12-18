@@ -1759,7 +1759,7 @@ bool ExportMP3::Export(AudacityProject *project,
    // Put ID3 tags at beginning of file 
    Tags *tags = project->GetTags();
    if (!tags->ShowEditDialog(project,
-                             _("Edit the ID3 tags for the MP3 file"))) {
+                             _("Edit the ID3 tags for the MP3 file"),true)) {
       return false;  // user selected "cancel"
    }
 
