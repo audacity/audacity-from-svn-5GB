@@ -2137,11 +2137,17 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
    // puported file version was five chars long.
    fileVersion = audacityVersion.Mid(0,5);
 
+   bool bIsOld = fileVersion < wxT(AUDACITY_FILE_FORMAT_VERSION);
+   bool bIsVeryOld = fileVersion < wxT("1.1.9" );
+   // Very old file versions could even have the file version starting 
+   // with text: 'AudacityProject Version 0.95'
+   // Atoi return zero in this case.
+   bIsVeryOld |= wxAtoi( fileVersion )==0;
    // Specifically detect older versions of Audacity
-   if (fileVersion < wxT(AUDACITY_FILE_FORMAT_VERSION)) {
+   if ( bIsOld | bIsVeryOld ) {
       wxString msg;
       int icon_choice = wxICON_EXCLAMATION;
-      if(fileVersion < wxT("1.1.9" ))
+      if( bIsVeryOld )
       {
          msg.Printf(_("This file was saved by Audacity %s, a much\nolder version.  The format has changed.\n\nAudacity could corrupt the file in opening\nit, so you must back it up first.\n\nOpen this file now?"),
                  audacityVersion.c_str());
