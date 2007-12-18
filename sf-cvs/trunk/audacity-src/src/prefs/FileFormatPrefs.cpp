@@ -99,23 +99,29 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
 
    }
    S.EndStatic();
-   S.StartStatic( _("MP3 Export Library Location"));
+   S.StartStatic( _("MP3 Export Library"));
    {
-      S.StartHorizontalLay(wxEXPAND, true);
+      S.StartTwoColumn();
          S.AddVariableText( _("MP3 Library Version:"),
             true,
-            wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
+            wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
          mMP3Version = S.AddVariableText( wxT("9.99"),
             true,
             wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
+         S.AddVariableText( _("MP3 Library:"),
+            true,
+            wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
          S.Id( ID_MP3_FIND_BUTTON ).AddButton( _("&Find Library"), 
             wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
-         S.Id( ID_MP3_DOWN_BUTTON ).AddButton( _("&Download Free Copy of LAME"), 
+         S.AddVariableText( _("LAME MP3 Library:"),
+            true,
+            wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
+         S.Id( ID_MP3_DOWN_BUTTON ).AddButton( _("&Download"), 
             wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
       S.EndHorizontalLay();
    }
    S.EndStatic();
-   S.AddFixedText( _("Note: Export quality options can be chosen by clicking the Options button in the Export dialogue."));
+   S.AddFixedText( _("Note: Export quality options can be chosen by clicking the Options button in the Export dialog."));
 }
 
 /// Sets the a text area on the dialog to have the name

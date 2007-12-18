@@ -43,19 +43,6 @@ class TrackPanelAx;
 
 struct ViewInfo;
 
-#ifdef OLD_CODE
-/// Holds a bitmap and its position, this is an element of a tpBitmapArray,
-/// which appears to be not used anymore.
-struct tpBitmap
-{
-   wxBitmap *bitmap;
-   wxCoord x;
-   wxCoord y;
-};
-
-WX_DEFINE_ARRAY(tpBitmap *, tpBitmapArray);
-#endif
-
 WX_DEFINE_ARRAY(LWSlider *, LWSliderArray);
 
 class TrackClip
@@ -116,7 +103,7 @@ private:
    void DrawBordersWithin(wxDC * dc, const wxRect r, bool bHasMuteSolo );
    void DrawCloseBox(wxDC * dc, const wxRect r, bool down);
    void DrawTitleBar(wxDC * dc, const wxRect r, Track * t, bool down);
-   void DrawMuteSolo(wxDC * dc, const wxRect r, Track * t, bool down, bool solo);
+   void DrawMuteSolo(wxDC * dc, const wxRect r, Track * t, bool down, bool solo, bool bHasSoloButton);
    void DrawVRuler(wxDC * dc, const wxRect r, Track * t);
    void DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index);
    void DrawMinimize(wxDC * dc, const wxRect r, Track * t, bool down, bool minimized);
@@ -124,7 +111,7 @@ private:
    void GetTrackControlsRect(const wxRect r, wxRect &dest) const;
    void GetCloseBoxRect(const wxRect r, wxRect &dest) const;
    void GetTitleBarRect(const wxRect r, wxRect &dest) const;
-   void GetMuteSoloRect(const wxRect r, wxRect &dest, bool solo) const;
+   void GetMuteSoloRect(const wxRect r, wxRect &dest, bool solo, bool bHasSoloButton) const;
    void GetGainRect(const wxRect r, wxRect &dest) const;
    void GetPanRect(const wxRect r, wxRect &dest) const;
    void GetMinimizeRect(const wxRect r, wxRect &dest, bool minimized) const;
@@ -401,6 +388,10 @@ private:
    int IdOfRate( int rate );
    int IdOfFormat( int format );
 
+   // Accessors...
+   bool IsSimpleSolo(){ return mSoloPref==wxT("Simple");};
+   bool HasSoloButton(){  return mSoloPref!=wxT("None");};
+
    //JKC: These two belong in the label track.
    int mLabelTrackStartXPos;
    int mLabelTrackStartYPos;
@@ -582,6 +573,8 @@ private:
    friend class TrackPanelAx;
 
    TrackPanelAx *mAx;
+
+   wxString mSoloPref;
 
  private:
 
