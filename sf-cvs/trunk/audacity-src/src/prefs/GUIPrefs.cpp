@@ -74,7 +74,7 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       S.TieCheckBox( _("&Update display while playing"),
          wxT("/GUI/AutoScroll"), true);
-      S.TieCheckBox( _("Any Close/Exit command completely &quits Audacity"),
+      S.TieCheckBox( _("Closing last window quits Audacity"),
          wxT("/GUI/QuitOnClose"), bQuitOnCloseDefault );
       S.TieCheckBox( _("Enable &dragging of left and right selection edges"),
          wxT("/GUI/AdjustSelectionEdges"), true);
