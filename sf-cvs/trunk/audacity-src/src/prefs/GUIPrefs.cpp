@@ -32,6 +32,23 @@ GUIPrefs::GUIPrefs(wxWindow * parent):
 {
    SetLabel(_("Interface"));         // Provide visual label
    SetName(_("Interface"));          // Provide audible label
+
+   mHtmlHelpCodes.Add(wxT("Standard"));
+   mHtmlHelpCodes.Add(wxT("InBrowser"));
+   mHtmlHelpCodes.Add(wxT("FromInternet"));
+
+   mHtmlHelpChoices.Add(_("Standard"));
+   mHtmlHelpChoices.Add(_("In Browser"));
+   mHtmlHelpChoices.Add(_("From Internet"));
+
+   mSoloCodes.Add( wxT("Standard") );
+   mSoloCodes.Add( wxT("Simple") );
+   mSoloCodes.Add( wxT("None") );
+
+   mSoloChoices.Add(_("Standard") );
+   mSoloChoices.Add(_("Simple") );
+   mSoloChoices.Add(_("None") );
+
    Populate( );
 }
 
@@ -69,7 +86,8 @@ void GUIPrefs::Populate( )
 void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
 {
    S.SetBorder( 2 );
-   S.StartHorizontalLay( wxEXPAND, 0 );
+   S.StartHorizontalLay( wxEXPAND, 1 );
+   S.StartVerticalLay();
    S.StartStatic( _("Behaviors"),1 );
    {
       S.TieCheckBox( _("&Update display while playing"),
@@ -104,13 +122,9 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("/GUI/ShowSplashScreen"), true );
    }
    S.EndStatic();
-   S.EndHorizontalLay();
-   S.StartStatic( _("Language") );
-   S.StartTwoColumn();
-   S.TieChoice(_("Language:"),wxT("/Locale/Language"),wxT("en"),mLangNames, mLangCodes );  
-   S.EndTwoColumn();
-   S.EndStatic();
-   S.StartStatic( _("Display range minimum for 'Waveform (dB)' view") );
+   S.EndVerticalLay();
+   S.StartVerticalLay();
+   S.StartStatic( _("Display range minimum for 'Waveform (dB)' view"),1 );
    {
       S.StartRadioButtonGroup( wxT("/GUI/EnvdBRange"), ENV_DB_RANGE );
       S.TieRadioButton( _("-36 dB (shallow range for high-amplitude editing)"),36);
@@ -121,7 +135,6 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
       S.EndRadioButtonGroup();
    }
    S.EndStatic();
-
 #ifdef EXPERIMENTAL_SAVE_DEFAULT_VIEW
    S.StartStatic( _("Default View Mode") );
    {
@@ -137,6 +150,17 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
    }
    S.EndStatic();
 #endif //EXPERIMENTAL_SAVE_DEFAULT_VIEW
+
+   S.StartStatic( _("Other interface choices"),1 );
+   S.StartTwoColumn();
+   S.TieChoice(_("Language:"),   wxT("/Locale/Language"),wxT("en"),mLangNames, mLangCodes );  
+   S.TieChoice(_("Help:"),       wxT("/GUI/Help"),wxT("Standard"),mHtmlHelpChoices, mHtmlHelpCodes );  
+   S.TieChoice(_("Solo Button:"),wxT("/GUI/Solo"),wxT("Standard"),mSoloChoices, mSoloCodes );  
+   S.EndTwoColumn();
+   S.EndStatic();
+
+   S.EndVerticalLay();
+   S.EndHorizontalLay();
 }
 
 bool GUIPrefs::Apply()

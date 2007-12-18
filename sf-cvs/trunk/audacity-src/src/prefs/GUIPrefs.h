@@ -35,6 +35,12 @@ private:
    wxArrayString mLangCodes;
    wxArrayString mLangNames;
 
+   wxArrayString mHtmlHelpCodes;
+   wxArrayString mHtmlHelpChoices;
+
+   wxArrayString mSoloCodes;
+   wxArrayString mSoloChoices;
+
 #ifdef EXPERIMENTAL_SAVE_DEFAULT_VIEW
    int mDefaultViewMode;
 #endif //EXPERIMENTAL_SAVE_DEFAULT_VIEW

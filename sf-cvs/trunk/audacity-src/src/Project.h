@@ -399,6 +399,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
  public:
    ToolManager *mToolManager;
    bool mShowSplashScreen;
+   wxString mHelpPref;
 
  private:
    int  mAudioIOToken;

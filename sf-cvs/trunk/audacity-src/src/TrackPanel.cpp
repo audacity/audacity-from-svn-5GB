@@ -654,6 +654,7 @@ void TrackPanel::UpdatePrefs()
                true);
    gPrefs->Read(wxT("/GUI/CircularTrackNavigation"), &mCircularTrackNavigation,
                false);
+   gPrefs->Read(wxT("/GUI/Solo"), &mSoloPref, wxT("Standard") );
    gPrefs->Read(wxT("/AudioIO/SeekShortPeriod"), &mSeekShort,
                1.0);
    gPrefs->Read(wxT("/AudioIO/SeekLongPeriod"), &mSeekLong,
@@ -3364,13 +3365,13 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
    }
 
    wxRect buttonRect;
-   mTrackInfo.GetMuteSoloRect(r, buttonRect, solo);
+   mTrackInfo.GetMuteSoloRect(r, buttonRect, solo, HasSoloButton());
 
    wxClientDC dc(this);
 
    if (event.Dragging()){
          mTrackInfo.DrawMuteSolo(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y),
-                   solo);
+                   solo, HasSoloButton());
    }
    else if (event.LeftUp() )
       {
@@ -3666,7 +3667,7 @@ bool TrackPanel::MuteSoloFunc(Track * t, wxRect r, int x, int y,
                               bool solo)
 {
    wxRect buttonRect;
-   mTrackInfo.GetMuteSoloRect(r, buttonRect, solo);
+   mTrackInfo.GetMuteSoloRect(r, buttonRect, solo, HasSoloButton());
    if (!buttonRect.Inside(x, y)) 
       return false;
 
@@ -3674,7 +3675,7 @@ bool TrackPanel::MuteSoloFunc(Track * t, wxRect r, int x, int y,
    SetCapturedTrack( t, solo ? IsSoloing : IsMuting);
    mCapturedRect = r;
 
-   mTrackInfo.DrawMuteSolo(&dc, r, t, true, solo);
+   mTrackInfo.DrawMuteSolo(&dc, r, t, true, solo, HasSoloButton());
    return true;
 }
 
@@ -4899,8 +4900,8 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    mTrackInfo.DrawBordersWithin( dc, r, bIsWave );
 
    if (t->GetKind() == Track::Wave) {
-      mTrackInfo.DrawMuteSolo(dc, r, t, (mMouseCapture == IsMuting), false);
-      mTrackInfo.DrawMuteSolo(dc, r, t, (mMouseCapture == IsSoloing), true);
+      mTrackInfo.DrawMuteSolo(dc, r, t, (mMouseCapture == IsMuting), false, HasSoloButton());
+      mTrackInfo.DrawMuteSolo(dc, r, t, (mMouseCapture == IsSoloing), true, HasSoloButton());
 
       mTrackInfo.DrawSliders(dc, (WaveTrack *)t, r, index);
    }
@@ -5806,12 +5807,11 @@ void TrackPanel::OnTrackMute(bool shiftDown, Track *t)
          while (i) {
             if (i == t) {
                i->SetMute(true);
-               i->SetSolo(false);
             }
             else {
                i->SetMute(false);
-               i->SetSolo(false);
             }
+            i->SetSolo(false);
             i = iter.Next();
          }
       }
@@ -5819,22 +5819,25 @@ void TrackPanel::OnTrackMute(bool shiftDown, Track *t)
       // Normal click toggles this track.
       t->SetMute(!t->GetMute());
 
-      TrackListIterator iter(mTracks);
-      Track *i = iter.First();
-      int nPlaying=0;
+      if( IsSimpleSolo() )
+      {
+         TrackListIterator iter(mTracks);
+         Track *i = iter.First();
+         int nPlaying=0;
 
-      // We also set a solo indicator if we have just one track playing.
-      // otherwise clear solo on everything.
-      while (i) {
-         if( !i->GetMute())
-            nPlaying += 1;
-         i = iter.Next();
-      }
+         // We also set a solo indicator if we have just one track playing.
+         // otherwise clear solo on everything.
+         while (i) {
+            if( !i->GetMute())
+               nPlaying += 1;
+            i = iter.Next();
+         }
 
-      i = iter.First();
-      while (i) {
-         i->SetSolo( (nPlaying==1) && !i->GetMute() );
-         i = iter.Next();
+         i = iter.First();
+         while (i) {
+            i->SetSolo( (nPlaying==1) && !i->GetMute() );
+            i = iter.Next();
+         }
       }
    }
 
@@ -5849,14 +5852,19 @@ void TrackPanel::OnTrackSolo(bool shiftDown, Track *t)
       if(!t) return;
    }
 
-   if (shiftDown) 
-      {
-         // A cosmetic feature - we can solo more than one by shift clicking.
-         // on additional tracks.
-         t->SetSolo( true );
-         t->SetMute( false );
-      }
-   else {
+   bool bSoloMultiple = !IsSimpleSolo() ^ shiftDown;
+
+   // Standard and Simple solo have opposite defaults:
+   //   Standard - Behaves as individual buttons, shift=radio buttons
+   //   Simple   - Behaves as radio buttons, shift=individual
+   // In addition, Simple solo will mute/unmute tracks 
+   // when in standard radio button mode.
+   if ( bSoloMultiple ) 
+   {
+      t->SetSolo( !t->GetSolo() );
+   }
+   else 
+   {
       // Normal click solo this track only, mute everything else.
       // OR unmute and unsolo everything.
       TrackListIterator iter(mTracks);
@@ -5864,11 +5872,13 @@ void TrackPanel::OnTrackSolo(bool shiftDown, Track *t)
       bool bWasSolo = t->GetSolo();
       while (i) {
          i->SetSolo( (i==t) && !bWasSolo);
-         i->SetMute( (i!=t) && !bWasSolo);
+         if( IsSimpleSolo() )
+            i->SetMute( (i!=t) && !bWasSolo);
          i = iter.Next();
       }
       //t->SetSolo(!t->GetSolo());
    }
+
 
    Refresh(false);
 
@@ -6803,7 +6813,7 @@ void TrackInfo::GetTitleBarRect(const wxRect r, wxRect & dest) const
    dest.height = 16;
 }
 
-void TrackInfo::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
+void TrackInfo::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo, bool bHasSoloButton) const
 {
 #ifdef NOT_USED
    dest.x = r.x + 8;
@@ -6819,8 +6829,14 @@ void TrackInfo::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
    dest.width = 48;
    dest.height = 16;
 
-   if (solo)
+   if( !bHasSoloButton )
+   {
+      dest.width +=48;
+   }
+   else if (solo)
+   {
       dest.x += 48;
+   }
 #endif
 
 }
@@ -7001,10 +7017,12 @@ void TrackInfo::DrawTitleBar(wxDC * dc, const wxRect r, Track * t,
 
 /// Draw the Mute or the Solo button, depending on the value of solo.
 void TrackInfo::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
-                              bool down, bool solo)
+                              bool down, bool solo, bool bHasSoloButton)
 {
    wxRect bev;
-   GetMuteSoloRect(r, bev, solo);
+   if( solo && !bHasSoloButton )
+      return;
+   GetMuteSoloRect(r, bev, solo, bHasSoloButton);
    bev.Inflate(-1, -1);
    
    if (bev.y + bev.height >= r.y + r.height - 19)
@@ -7042,7 +7060,7 @@ void TrackInfo::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
    if (solo && !down) {
       // Update the mute button, which may be grayed out depending on
       // the state of the solo button.
-      DrawMuteSolo(dc, r, t, false, false);
+      DrawMuteSolo(dc, r, t, false, false, bHasSoloButton);
    }
 }
 
