@@ -185,6 +185,12 @@ void nyx_get_captured_output(int *out_len,
    nyx_output_pos = 0;
 }
 
+void nyx_set_audio_params( double rate )
+{
+   /* Bind the sample rate to the "*sound-srate*" global */
+   setvalue(xlenter("*SOUND-SRATE*"), cvflonum(rate));
+}
+
 void nyx_set_input_audio(nyx_audio_callback callback,
                          void *userdata,
                          int num_channels,

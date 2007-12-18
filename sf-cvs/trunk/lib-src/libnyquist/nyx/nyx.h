@@ -43,6 +43,8 @@ extern "C"
    void        nyx_get_captured_output(int *out_len,
                                        const char **out_chars);
    
+   void        nyx_set_audio_params( double rate );
+
    void        nyx_set_input_audio(nyx_audio_callback callback,
                                    void *userdata,
                                    int num_channels,
