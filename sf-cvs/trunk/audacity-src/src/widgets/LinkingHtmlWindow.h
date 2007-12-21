@@ -18,6 +18,7 @@
 
 #include <wx/dialog.h>
 #include <wx/html/htmlwin.h>
+#include <wx/frame.h>
 
 void OpenInDefaultBrowser(const wxHtmlLinkInfo& link);
 
