@@ -18,10 +18,11 @@ email audacity-devel@lists.sourceforge.net.
 See also "http://audacityteam.org/wiki/index.php?title=Developing_On_Windows".
 ========================================================================
 
-Audacity releases are now built with Microsoft Visual C++ 8, 
-generically known as "VC8", but we still have the Visuall C++ 7 (VC7) 
-solution and project files in CVS. Descriptions of how to access and 
-use the VC7 files are interspersed below.
+Audacity releases are now built with Microsoft Visual C++ 8 
+(a.k.a Visual C++ 2005), generically known as "VC8", but 
+we still have the Visual C++ 7 (VC7) solution and project files 
+in CVS. Descriptions of how to access and use the VC7 files are 
+interspersed below.
 
 For instructions on compiling Audacity under the Cygwin 
 UNIX Emulation Layer, see the "Compiling Audacity under 
