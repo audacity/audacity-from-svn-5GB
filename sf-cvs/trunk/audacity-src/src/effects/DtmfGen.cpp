@@ -64,10 +64,10 @@ bool EffectDtmf::PromptUser()
       gPrefs->Read(wxT("/CsPresets/DtmfGen_SequenceDuration"), &dtmfDuration, 1L);
       dlog.dIsSelection = false;
    }
-
+   /// \todo this code shouldn't be using /CsPresets - need to review its use
    gPrefs->Read(wxT("/CsPresets/DtmfGen_String"), &dtmfString, wxT("audacity"));
    gPrefs->Read(wxT("/CsPresets/DtmfGen_DutyCycle"), &dtmfDutyCycle, 550L);
-   gPrefs->Read(wxT("/CsPresets/DtmfGen_Amplitude"), &dtmfAmplitude, 1);
+   gPrefs->Read(wxT("/CsPresets/DtmfGen_Amplitude"), &dtmfAmplitude, 0.8f);
 
    dtmfNTones = wxStrlen(dtmfString);
 
