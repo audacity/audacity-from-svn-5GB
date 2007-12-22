@@ -343,8 +343,8 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddItem(wxT("SplitNew"),      _("Split Ne&w\tCtrl+Alt+I"),       FN(OnSplitNew));
    c->SetCommandFlags(wxT("SplitNew"),
-      AudioIONotBusyFlag | WaveTracksSelectedFlag,
-      AudioIONotBusyFlag | WaveTracksSelectedFlag);
+      AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
+      AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag);
 
    c->AddItem(wxT("Join"),           _("&Join\tCtrl+J"),                  FN(OnJoin));
    c->AddItem(wxT("Disjoin"),        _("Disj&oin\tCtrl+Alt+J"),                       FN(OnDisjoin));
@@ -449,8 +449,14 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem(wxT("SelSave"),        _("Selection Save"),                 FN(OnSelectionSave));
    c->AddItem(wxT("SelRestore"),     _("Selection Restore"),              FN(OnSelectionRestore));
-   c->SetCommandFlags(TracksExistFlag, TracksExistFlag,
-                      wxT("SelSave"), wxT("SelRestore"), NULL);
+
+   c->SetCommandFlags(wxT("SelSave"),
+      TimeSelectedFlag | WaveTracksSelectedFlag,
+      TimeSelectedFlag | WaveTracksSelectedFlag);
+   c->SetCommandFlags(wxT("SelRestore"),
+      TracksExistFlag, 
+      TracksExistFlag);
+
    c->AddSeparator();
 
    c->BeginSubMenu(_("Play &Region..."));
@@ -1156,7 +1162,7 @@ void AudacityProject::UpdateMenus()
 
    // JKC change to grey out effects less often...
    if( mSelectAllOnNone && ((flags & WaveTracksExistFlag) != 0 ))
-      flags |= /*AudioIONotBusyFlag |*/ TimeSelectedFlag | WaveTracksSelectedFlag;
+      flags |= /*AudioIONotBusyFlag |*/ TimeSelectedFlag | WaveTracksSelectedFlag | CutCopyAvailableFlag;
 
    if (flags == mLastFlags)
       return;
