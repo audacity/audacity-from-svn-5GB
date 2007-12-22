@@ -181,6 +181,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("CheckDeps"),      _("Chec&k Dependencies..."),          FN(OnCheckDependencies));
 
    c->AddSeparator();
+   c->AddSeparator();
+   c->AddSeparator();
 
    c->AddItem(wxT("EditMetaData"),  _("Open Me&tadata Editor..."),          FN(OnEditMetadata));
    //c->SetCommandFlags(wxT("EditID3"), AudioIONotBusyFlag, AudioIONotBusyFlag);
@@ -526,7 +528,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem(wxT("ResetToolbars"),       _("Reset Toolbars"),              FN(OnResetToolBars));
    c->EndSubMenu();
-
+   c->AddItem(wxT("SimplifiedView"),      _("!Simplified View"),       FN(OnSimplifiedView), mCommandManager.mbHideFlaggedItems ? 1:0);
    c->EndMenu();
 
    //
@@ -864,6 +866,8 @@ void AudacityProject::CreateRecentFilesMenu(CommandManager *c)
    #endif
 
    c->EndSubMenu();
+   if( pm==NULL )
+      return;
    // TODO - read the number of files to store in history from preferences
    mRecentFiles = new wxFileHistory();
    mRecentFiles->UseMenu(pm);
@@ -3483,6 +3487,13 @@ void AudacityProject::OnResetToolBars()
 {
    mToolManager->Reset();
    ModifyToolbarMenus();
+}
+
+void AudacityProject::OnSimplifiedView()
+{
+   mCommandManager.mbHideFlaggedItems = !mCommandManager.mbHideFlaggedItems;
+   mCommandManager.Check(wxT("SimplifiedView"), mCommandManager.mbHideFlaggedItems );
+   RebuildMenuBar();
 }
 
 

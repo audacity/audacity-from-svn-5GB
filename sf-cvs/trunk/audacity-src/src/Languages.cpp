@@ -190,6 +190,28 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
       }
    }
 
+
+   // JKC: Adding language for simplified audacity.
+   {
+      wxString code;
+      wxString name;
+      code = wxT("en-simple");
+      name = wxT("Simplified");
+      if (TranslationExists(audacityPathList, code) ) {
+         tempCodes.Add(code);
+         tempNames.Add(name);
+         tempHash[code] = name;
+
+         /* for debugging
+         printf(wxT("code=%s name=%s fullCode=%s name=%s -> %s\n"),
+                code.c_str(), localLanguageName[code].c_str(),
+                fullCode.c_str(), localLanguageName[fullCode].c_str(),
+                name.c_str());
+         */
+      }
+   }
+
+
    // Sort
 
    unsigned int j;

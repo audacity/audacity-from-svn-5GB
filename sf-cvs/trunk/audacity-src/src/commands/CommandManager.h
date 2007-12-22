@@ -156,7 +156,9 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(XMLWriter &xmlFile);
 
- protected:
+   bool mbHideFlaggedItems;
+
+protected:
 
    wxMenuBar * CurrentMenuBar();
    wxMenuBar * GetMenuBar(wxString sMenu);
@@ -172,6 +174,7 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
    wxString GetKey(wxString label);
 
    void ToggleAccels(wxMenu *m, bool show);
+   bool ItemShouldBeHidden( wxString &Label );
 
 private:
    MenuBarList  mMenuBarList;
@@ -183,6 +186,10 @@ private:
    int mCurrentID;
    int mHiddenID;
    int mXMLKeysRead;
+
+   bool mbSeparatorAllowed; // false at the start of a menu and immediately after a separator.
+   int mHidingLevel;
+
    wxMenu * mCurrentMenu;
    wxMenu * mOpenMenu;
 

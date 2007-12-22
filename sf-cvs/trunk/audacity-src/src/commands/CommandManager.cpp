@@ -115,6 +115,9 @@ CommandManager::CommandManager():
    mDefaultFlags(0),
    mDefaultMask(0)
 {
+   mbSeparatorAllowed = false;
+   mbHideFlaggedItems = true;
+   mHidingLevel = 0;
 }
 
 ///
@@ -168,6 +171,7 @@ void CommandManager::PurgeData()
 /// If the menubar already exists, simply returns it.
 wxMenuBar *CommandManager::AddMenuBar(wxString sMenu)
 {
+   mHidingLevel = 0;
    wxMenuBar *menuBar = GetMenuBar(sMenu);
    if (menuBar)
       return menuBar;
@@ -216,9 +220,15 @@ wxMenuBar * CommandManager::CurrentMenuBar()
 /// If the menu already exists, all of the items in it are
 /// cleared instead.
 ///
-void CommandManager::BeginMenu(wxString tName)
+void CommandManager::BeginMenu(wxString tNameIn)
 {
    
+   wxString tName = tNameIn;
+   if( ItemShouldBeHidden( tName ) )
+   {
+      mHidingLevel++;
+      return;
+   }
 
    wxMenu *tmpMenu = new wxMenu();
 
@@ -233,6 +243,9 @@ void CommandManager::BeginMenu(wxString tName)
 /// to NULL.  It is still attached to the CurrentMenuBar()
 void CommandManager::EndMenu()
 {
+   if( mHidingLevel > 0 ) 
+      mHidingLevel--;
+
    mCurrentMenu = NULL;
 }
 
@@ -241,15 +254,23 @@ void CommandManager::EndMenu()
 ///
 /// This starts a new submenu, and names it according to
 /// the function's argument.
-wxMenu* CommandManager::BeginSubMenu(wxString tName)
+wxMenu* CommandManager::BeginSubMenu(wxString tNameIn)
 {
+   wxString tName = tNameIn;
+   if( ItemShouldBeHidden( tName ) )
+   {
+      mHidingLevel++;
+      return NULL;
+   }
+
    SubMenuListEntry *tmpEntry = new SubMenuListEntry;
 
    tmpEntry->menu = new wxMenu();
    tmpEntry->name = tName;
 
    mSubMenuList.Add(tmpEntry);
-   
+   mbSeparatorAllowed = false;
+
    return(tmpEntry->menu);
 }
 
@@ -260,6 +281,12 @@ wxMenu* CommandManager::BeginSubMenu(wxString tName)
 /// after BeginSubMenu() is called but before EndSubMenu() is called.
 void CommandManager::EndSubMenu()
 {
+   if( mHidingLevel > 0 ) 
+   {
+      mHidingLevel--;
+      return;
+   }
+
    size_t submenu_count = mSubMenuList.GetCount()-1;
 
    //Save the submenu's information
@@ -270,6 +297,7 @@ void CommandManager::EndSubMenu()
 
    //Add the submenu to the current menu
    CurrentMenu()->Append(0, tmpSubMenu->name, tmpSubMenu->menu, tmpSubMenu->name);
+   mbSeparatorAllowed = true;
 
    delete tmpSubMenu;
 }
@@ -305,12 +333,32 @@ wxMenu * CommandManager::CurrentMenu()
    return tmpCurrentSubMenu;
 }
 
+// This allows us a simplified menu that has fewer items.
+bool CommandManager::ItemShouldBeHidden( wxString &Label )
+{
+   if( Label.StartsWith(wxT("!")) )
+   {
+      Label = Label.Mid( 1 );
+      if( mbHideFlaggedItems )
+      {
+         return true;
+      }
+   }
+   if( mHidingLevel > 0 )
+      return true;
+   return false;
+}
+
 ///
 /// Add a menu item to the current menu.  When the user selects it, the
 /// given functor will be called
-void CommandManager::AddItem(wxString name, wxString label,
+void CommandManager::AddItem(wxString name, wxString label_in,
                              CommandFunctor *callback, int checkmark)
 {
+   wxString label = label_in;
+   if( ItemShouldBeHidden( label ) )
+      return;
+
    int ID = NewIdentifier(name, label, CurrentMenu(), callback, false, 0, 0);
 
    // Replace the accel key with the one from the preferences
@@ -356,6 +404,7 @@ void CommandManager::AddItem(wxString name, wxString label,
       CurrentMenu()->Append(ID, dummy);
    }
    CurrentMenu()->SetLabel(ID, newLabel);
+   mbSeparatorAllowed = true;
 }
 
 ///
@@ -374,6 +423,9 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
    plugins = false;
    #endif
 
+   if( mHidingLevel  > 0 )
+      return;
+
    if (CurrentMenu()->GetMenuItemCount() + labels.GetCount() < MAX_MENU_LEN)
       plugins = false;
 
@@ -383,6 +435,7 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
                                 true, i, labels.GetCount());
          CurrentMenu()->Append(ID, labels[i]);
       }
+      mbSeparatorAllowed = true;
       return;
    }
 
@@ -423,7 +476,11 @@ void CommandManager::AddCommand(wxString name, wxString label,
 
 void CommandManager::AddSeparator()
 {
-   CurrentMenu()->AppendSeparator();
+   if( mHidingLevel > 0 )
+      return;
+   if( mbSeparatorAllowed )
+      CurrentMenu()->AppendSeparator();
+   mbSeparatorAllowed = false; // boolean to prevent too many separators.
 }
 
 int CommandManager::NextIdentifier(int ID)
