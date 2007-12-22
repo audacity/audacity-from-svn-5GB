@@ -1282,7 +1282,16 @@ bool LabelTrack::CaptureKey(wxKeyEvent & event)
          break;
       }
 
-      if (IsGoodLabelCharacter(keyCode, charCode) && !event.CmdDown()) {
+      if( IsGoodLabelCharacter(keyCode, charCode) && !event.CmdDown()) {
+         return true;
+      }
+   }
+   else
+   {
+      if( IsGoodLabelFirstCharacter(keyCode, charCode) && !event.CmdDown() ){
+         AudacityProject * pProj = GetActiveProject();
+         if( pProj )
+            pProj->OnAddLabel();
          return true;
       }
    }
