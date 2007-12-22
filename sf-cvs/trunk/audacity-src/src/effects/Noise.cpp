@@ -56,7 +56,7 @@ bool EffectNoise::PromptUser()
    }
 
    gPrefs->Read(wxT("/CsPresets/NoiseGen_Type"), &noiseType, 0L);
-   gPrefs->Read(wxT("/CsPresets/NoiseGen_Amp"), &noiseAmplitude, 1.0);
+   gPrefs->Read(wxT("/CsPresets/NoiseGen_Amp"), &noiseAmplitude, 0.8f);
 
    // Initialize dialog locals
    dlog.nDuration = noiseDuration;
