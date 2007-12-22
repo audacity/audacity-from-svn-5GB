@@ -206,8 +206,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
 
    void UpdateMenus();
    void UpdatePrefs();
-   void UpdateGuiPrefs();
-   void UpdateBatchPrefs();
+   void UpdatePrefsVariables();
    void RedrawProject();
    void RefreshCursor();
    void SelectNone();

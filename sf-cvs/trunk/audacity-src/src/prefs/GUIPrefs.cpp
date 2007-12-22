@@ -175,7 +175,7 @@ bool GUIPrefs::Apply()
    unsigned int j;
    for(j = 0; j < gAudacityProjects.GetCount(); j++)
    {
-      gAudacityProjects[j]->UpdateGuiPrefs();
+      gAudacityProjects[j]->UpdatePrefsVariables();
       gAudacityProjects[j]->RebuildMenuBar();
    }
    return true;

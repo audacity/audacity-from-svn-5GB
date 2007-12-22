@@ -13,7 +13,8 @@
 
 \class FileFormatPrefs
 \brief A PrefsPanel used to select file format preferences and to 
-locate the MP3 encoding library.
+locate the MP3 encoding library.  Now called 'Import/Export' in the
+preferences.  Later we will rename this panel and source files.
 
 *//*******************************************************************/
 
@@ -44,8 +45,8 @@ END_EVENT_TABLE()
 FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
    PrefsPanel(parent)
 {
-   SetLabel(_("Audio Files"));         // Provide visual label
-   SetName(_("Audio Files"));          // Provide audible label
+   SetLabel(_("Import / Export"));         // Provide visual label
+   SetName(_("Import / Export"));          // Provide audible label
    Populate( );
 }
 
@@ -73,32 +74,6 @@ void FileFormatPrefs::Populate( )
 void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
 {
    S.SetBorder( 2 );
-   S.StartStatic( _("When importing uncompressed audio files"));
-   {
-      S.StartRadioButtonGroup(wxT("/FileFormats/CopyOrEditUncompressedData"),wxT("edit"));
-      S.TieRadioButton( _("&Make a copy of the file before editing (safer)"),wxT("copy"));
-      S.TieRadioButton( _("&Read directly from the original file (faster)"),wxT("edit"));
-      S.EndRadioButtonGroup();
-   }
-   S.EndStatic();
-   S.StartStatic( _("When saving a project that depends on other audio files"));
-   {
-      S.StartRadioButtonGroup(wxT("/FileFormats/SaveProjectWithDependencies"),wxT("ask"));
-      S.TieRadioButton( _("Always &copy all audio into project (safest)"), wxT("copy"));
-      S.TieRadioButton( _("&Do not copy any audio"), wxT("never"));
-      S.TieRadioButton( _("&Ask user"), wxT("ask"));
-      S.EndRadioButtonGroup();
-   }
-   S.EndStatic();
-   S.StartStatic( _("When exporting tracks to an audio file"));
-   {
-      S.StartRadioButtonGroup( wxT("/FileFormats/ExportDownMix" ), true );
-      S.TieRadioButton( _("A&lways mix all tracks down to Stereo or Mono channel(s)."), true);
-      S.TieRadioButton( _("&Use custom mix (for example to export a 5.1 multichannel file)"),false );
-      S.EndRadioButtonGroup();
-
-   }
-   S.EndStatic();
    S.StartStatic( _("MP3 Export Library"));
    {
       S.StartTwoColumn();
@@ -122,6 +97,36 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
    }
    S.EndStatic();
    S.AddFixedText( _("Note: Export quality options can be chosen by clicking the Options button in the Export dialog."));
+   S.StartStatic( _("When importing audio files"));
+   {
+      S.StartRadioButtonGroup(wxT("/FileFormats/CopyOrEditUncompressedData"),wxT("edit"));
+      S.TieRadioButton( _("&Make a copy of uncompressed audio files before editing (safer)"),wxT("copy"));
+      S.TieRadioButton( _("&Read uncompressed audio files directly from the original (faster)"),wxT("edit"));
+      S.EndRadioButtonGroup();
+      S.TieCheckBox( _("&When importing audio, normalize all tracks in project"), 
+         wxT("/AudioFiles/NormalizeOnLoad"), false );
+   }
+   S.EndStatic();
+
+   S.StartStatic( _("When saving a project that depends on other audio files"));
+   {
+      S.StartRadioButtonGroup(wxT("/FileFormats/SaveProjectWithDependencies"),wxT("ask"));
+      S.TieRadioButton( _("Always &copy all audio into project (safest)"), wxT("copy"));
+      S.TieRadioButton( _("&Do not copy any audio"), wxT("never"));
+      S.TieRadioButton( _("&Ask user"), wxT("ask"));
+      S.EndRadioButtonGroup();
+   }
+   S.EndStatic();
+   S.StartStatic( _("When exporting tracks to an audio file"));
+   {
+      S.StartRadioButtonGroup( wxT("/FileFormats/ExportDownMix" ), true );
+      S.TieRadioButton( _("A&lways mix all tracks down to Stereo or Mono channel(s)."), true);
+      S.TieRadioButton( _("&Use custom mix (for example to export a 5.1 multichannel file)"),false );
+      S.EndRadioButtonGroup();
+      S.TieCheckBox( _("S&how Metadata Editor prior to export step"), 
+         wxT("/AudioFiles/ShowId3Dialog"), false);
+   }
+   S.EndStatic();
 }
 
 /// Sets the a text area on the dialog to have the name
