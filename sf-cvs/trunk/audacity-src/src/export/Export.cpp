@@ -930,6 +930,7 @@ ExportMixerDialog::ExportMixerDialog( TrackList *tracks, bool selectedOnly,
    TrackListIterator iter( tracks );
    
    for( Track *t = iter.First(); t; t = iter.Next() )
+   {
       if( t->GetKind() == Track::Wave && ( t->GetSelected() || !selectedOnly ) )
       {
          numTracks++;
@@ -943,7 +944,15 @@ ExportMixerDialog::ExportMixerDialog( TrackList *tracks, bool selectedOnly,
          else
             mTrackNames.Add( t->GetName() );
       }
+   }
 
+   // JKC: This is an attempt to fix a 'watching brief' issue, where the slider is
+   // sometimes not slidable.  My suspicion is that a mixer may incorrectly
+   // state the number of channels - so we assume there are always at least two.
+   // The downside is that if someone is exporting to a mono device, the dialog
+   // will allow them to output to two channels. Hmm.  We may need to revisit this.
+   if (maxNumChannels < 2 )
+      maxNumChannels = 2;
    if (maxNumChannels > 32)
       maxNumChannels = 32;
 
