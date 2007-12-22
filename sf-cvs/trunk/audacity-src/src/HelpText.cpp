@@ -327,7 +327,7 @@ ToWelcome()
 // *URL* will be replaced by whatever URL we are looking for.
       return WrapText(
 _("<p>You don't appear to have Audacity help files on your machine. \
-You can <a href=\"http://audacity.sourceforge.net/help/documentation\">download</a> the help files and then access \
+You can <a href=\"http://audacityteam.org/manual/index.php?title=Main_Page\">download</a> the help files and then access \
 them from Audacity as you have just attempted, or you can \
 click <a href=\"*URL*\">here</a> to read the help online.")
          );
