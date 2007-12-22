@@ -1159,21 +1159,27 @@ void AudacityProject::UpdateMenus()
    // Return from this function if nothing's changed since
    // the last time we were here.
    wxUint32 flags = GetUpdateFlags();
+   wxUint32 flags2 = flags;
 
    // JKC change to grey out effects less often...
    if( mSelectAllOnNone && ((flags & WaveTracksExistFlag) != 0 ))
-      flags |= /*AudioIONotBusyFlag |*/ TimeSelectedFlag | WaveTracksSelectedFlag | CutCopyAvailableFlag;
+      flags2 |= /*AudioIONotBusyFlag |*/ TimeSelectedFlag | WaveTracksSelectedFlag;
+
+   if( mSelectAllOnNone && ((flags & WaveTracksExistFlag) != 0 ))
+      flags2 |= CutCopyAvailableFlag;
 
    if (flags == mLastFlags)
       return;
-
    mLastFlags = flags;
 
-   mCommandManager.EnableUsingFlags(flags , 0xFFFFFFFF);
+   mCommandManager.EnableUsingFlags(flags2 , 0xFFFFFFFF);
+
+#if 0
    if (flags & CutCopyAvailableFlag) {
       mCommandManager.Enable(wxT("Copy"), true);
       mCommandManager.Enable(wxT("Cut"), true);
    }
+#endif
 
    ModifyToolbarMenus();
 
