@@ -130,8 +130,14 @@ void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &Ht
    {
       S.StartHorizontalLay( wxEXPAND, 0);
       {
-         S.Id( wxID_BACKWARD ).AddButton( _("<") );
-         S.Id( wxID_FORWARD  ).AddButton( _(">") );
+         wxButton * pWndBackwards = S.Id( wxID_BACKWARD ).AddButton( _("<") );
+         wxButton * pWndForwards  = S.Id( wxID_FORWARD  ).AddButton( _(">") );
+         pWndForwards->Enable( false );
+         pWndBackwards->Enable( false );
+         #if wxUSE_TOOLTIPS
+         pWndForwards->SetToolTip( _("Forwards" ));
+         pWndBackwards->SetToolTip( _("Backwards" ));
+         #endif
       }
       S.EndHorizontalLay();
       html = new LinkingHtmlWindow(pWnd, -1,
@@ -217,13 +223,16 @@ void ShowHelpDialog(wxWindow *parent,
       HelpMode = pProj->mHelpPref;
    }
 
-   if( HelpMode == wxT("FromInternet"))
+   if( (HelpMode == wxT("FromInternet")) && !remoteURL.IsEmpty() )
    {
       // Always go to remote URL.  Use External browser.
       ShowHtmlInBrowser( remoteURL );
    }
    else if( !wxFileExists( localFileName ))
    {
+      // If you give an empty remote URL, you should have already ensured
+      // that the file exists!
+      wxASSERT( !remoteURL.IsEmpty() );
       // I can't find it'.
       // Use Built-in browser to suggest you use the remote url.
       wxString Text = HelpText( wxT("remotehelp") );

@@ -42,6 +42,10 @@ public:
    void OnBackward(wxCommandEvent & event);
    void OnClose(wxCommandEvent & event);
 
+   void UpdateButtons();
+   //virtual void SetLabel(const wxString& label);
+
+
    wxHtmlWindow * mpHtml;
    DECLARE_EVENT_TABLE()
 };

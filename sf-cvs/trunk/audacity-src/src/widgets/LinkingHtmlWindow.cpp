@@ -16,6 +16,8 @@
 #include "LinkingHtmlWindow.h"
 #include <wx/mimetype.h>
 #include "../HelpText.h"
+#include "../FileNames.h"
+#include "ErrorDialog.h"
 
 BEGIN_EVENT_TABLE(BrowserFrame, wxFrame)
    EVT_BUTTON( wxID_FORWARD,  BrowserFrame::OnForward)
@@ -27,11 +29,13 @@ END_EVENT_TABLE()
 void BrowserFrame::OnForward(wxCommandEvent & event)
 {
    mpHtml->HistoryForward();
+   UpdateButtons();
 }
 
 void BrowserFrame::OnBackward(wxCommandEvent & event)
 {
    mpHtml->HistoryBack();
+   UpdateButtons();
 }
 
 void BrowserFrame::OnClose(wxCommandEvent & event)
@@ -39,6 +43,18 @@ void BrowserFrame::OnClose(wxCommandEvent & event)
    Close();
 }
 
+void BrowserFrame::UpdateButtons()
+{
+   wxWindow * pWnd;
+   if( (pWnd = FindWindowById( wxID_BACKWARD, this )) != NULL )
+   {
+      pWnd->Enable(mpHtml->HistoryCanBack());
+   }
+   if( (pWnd = FindWindowById( wxID_FORWARD, this )) != NULL )
+   {
+      pWnd->Enable(mpHtml->HistoryCanForward());
+   }
+}
 
 void OpenInDefaultBrowser(const wxHtmlLinkInfo& link)
 {
@@ -76,28 +92,33 @@ void LinkingHtmlWindow::OnLinkClicked(const wxHtmlLinkInfo& link)
    wxString href = link.GetHref();
    if( href.StartsWith(wxT("innerlink:")) )
    {
-      SetPage( HelpText( href.Mid( 10 )));
-      GetParent()->SetLabel( TitleText( href.Mid( 10 )));
-      return;
+      wxString FileName = 
+         wxFileName( FileNames::HtmlHelpDir(), href.Mid( 10 ) + wxT(".htm") ).GetFullPath();
+      if( wxFileExists( FileName ) )
+      {
+         ShowHelpDialog(NULL, FileName, wxT(""));
+         return;
+      }
+      else
+      {
+         SetPage( HelpText( href.Mid( 10 )));
+         GetParent()->SetLabel( TitleText( href.Mid( 10 )));
+      }
    }
    else if( !href.StartsWith( wxT("http:")))
    {
       wxHtmlWindow::OnLinkClicked( link );
+   }
+   else
+   {
+      OpenInDefaultBrowser(link);
       return;
    }
-   OpenInDefaultBrowser(link);
-}
-
-#if 0
-void LinkingHtmlWindow::OnSetTitle(const wxString& title)
-{
-   wxLogDebug( wxT("Title: %s"), title );
-   BrowserDialog * pDlg = wxDynamicCast( GetParent(), BrowserDialog );
+   BrowserFrame * pDlg = wxDynamicCast( GetParent(), BrowserFrame );
    if( pDlg )
    {
-      pDlg->SetTitle( title );
+      pDlg->UpdateButtons();
    };
-   wxHtmlWindow::OnSetTitle( title );
 }
-#endif
+
 
