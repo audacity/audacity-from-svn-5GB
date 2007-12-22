@@ -124,7 +124,7 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieRadioButton( _("&Use custom mix (for example to export a 5.1 multichannel file)"),false );
       S.EndRadioButtonGroup();
       S.TieCheckBox( _("S&how Metadata Editor prior to export step"), 
-         wxT("/AudioFiles/ShowId3Dialog"), false);
+         wxT("/AudioFiles/ShowId3Dialog"), true);
    }
    S.EndStatic();
 }
