@@ -780,7 +780,7 @@ AudacityProject::~AudacityProject()
    SetEnabledWindow( this );
 }
 
-void AudacityProject::UpdateGuiPrefs()
+void AudacityProject::UpdatePrefsVariables()
 {
    gPrefs->Read(wxT("/GUI/EmptyCanBeDirty"), &mEmptyCanBeDirty, true );
 //   gPrefs->Read(wxT("/GUI/UpdateSpectrogram"), &mViewInfo.bUpdateSpectrogram, true);
@@ -789,24 +789,17 @@ void AudacityProject::UpdateGuiPrefs()
    gPrefs->Read(wxT("/GUI/SelectAllOnNone"), &mSelectAllOnNone, true);
    gPrefs->Read(wxT("/GUI/ShowSplashScreen"), &mShowSplashScreen, true);
    gPrefs->Read(wxT("/GUI/Help"), &mHelpPref, wxT("Standard") );
-}
 
-void AudacityProject::UpdateBatchPrefs()
-{
    gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &mCleanSpeechMode, false);
-   gPrefs->Read(wxT("/Batch/ShowId3Dialog"), &mShowId3Dialog, false);
-   gPrefs->Read(wxT("/Batch/NormalizeOnLoad"),&mNormalizeOnLoad, false);
+   gPrefs->Read(wxT("/AudioFiles/ShowId3Dialog"), &mShowId3Dialog, false);
+   gPrefs->Read(wxT("/AudioFiles/NormalizeOnLoad"),&mNormalizeOnLoad, false);
 
-   if( GetControlToolBar() )
-   {
-      GetControlToolBar()->UpdatePrefs();
-   }
 }
 
 void AudacityProject::UpdatePrefs()
 {
-   UpdateGuiPrefs();
-   UpdateBatchPrefs();
+   UpdatePrefsVariables();
+
    SetProjectTitle();
 
    if (mTrackPanel)
@@ -828,6 +821,9 @@ void AudacityProject::UpdatePrefs()
 
    if (GetMixerToolBar())
       GetMixerToolBar()->UpdatePrefs();
+
+   if( GetControlToolBar() )
+      GetControlToolBar()->UpdatePrefs();
 }
 
 void AudacityProject::RedrawProject()
@@ -2618,7 +2614,7 @@ void AudacityProject::Import(wxString fileName)
 
    AddImportedTracks(fileName, newTracks, numTracks);
 
-   int mode = gPrefs->Read(wxT("/Batch/NormalizeOnLoad"), 0L);
+   int mode = gPrefs->Read(wxT("/AudioFiles/NormalizeOnLoad"), 0L);
    if (mode == 1) {
       //TODO: All we want is a SelectAll()
       SelectNone();

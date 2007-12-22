@@ -80,16 +80,8 @@ void BatchPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieCheckBox( _("&Don't apply effects in batch mode"),  
          wxT("/Batch/Debug"), false);
 #endif
-      S.TieCheckBox( _("&When importing audio, normalize all tracks in project"), 
-         wxT("/Batch/NormalizeOnLoad"), false );
       S.TieCheckBox( _("Cl&eanSpeech Mode (Customized GUI)"), 
          wxT("/Batch/CleanSpeechMode"), false);
-   }
-   S.EndStatic();
-   S.StartStatic( _("Show / Hide"),1 );
-   {
-      S.TieCheckBox( _("S&how Metadata Editor prior to export step"), 
-         wxT("/Batch/ShowId3Dialog"), false);
    }
    S.EndStatic();
    S.EndHorizontalLay();
