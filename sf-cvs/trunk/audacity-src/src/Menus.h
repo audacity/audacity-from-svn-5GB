@@ -217,6 +217,7 @@ void OnShowSelectionToolBar();
 void OnShowToolsToolBar();
 void OnShowTranscriptionToolBar();
 void OnResetToolBars();
+void OnSimplifiedView();
 
 
         // Project Menu

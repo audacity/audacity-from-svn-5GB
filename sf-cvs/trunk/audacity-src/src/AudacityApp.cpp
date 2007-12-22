@@ -541,6 +541,33 @@ void AudacityApp::OnMRUProject(wxCommandEvent& event) {
 #endif
 
 
+void AudacityApp::InitLang( const wxString & lang )
+{
+   if( mLocale )
+      delete mLocale;
+
+   if (lang != wxT("en")) {
+      wxLogNull nolog;
+      mLocale = new wxLocale(wxT(""), lang, wxT(""), true, true);
+
+      for(unsigned int i=0; i<audacityPathList.GetCount(); i++)
+         mLocale->AddCatalogLookupPathPrefix(audacityPathList[i]);
+
+#ifdef AUDACITY_NAME
+      mLocale->AddCatalog(wxT(AUDACITY_NAME));
+#else
+      mLocale->AddCatalog(wxT("audacity"));
+#endif
+   } else
+      mLocale = NULL;
+
+   // Initialize internationalisation (number formats etc.)
+   //
+   // This must go _after_ creating the wxLocale instance because
+   // creating the wxLocale instance sets the application-wide locale.
+   Internat::Init();
+}
+
 // The `main program' equivalent, creating the windows and returning the
 // main frame
 bool AudacityApp::OnInit()
@@ -688,26 +715,8 @@ bool AudacityApp::OnInit()
 #endif
    gPrefs->Write(wxT("/Locale/Language"), lang);
 
-   if (lang != wxT("en")) {
-      wxLogNull nolog;
-      mLocale = new wxLocale(wxT(""), lang, wxT(""), true, true);
-
-      for(unsigned int i=0; i<audacityPathList.GetCount(); i++)
-         mLocale->AddCatalogLookupPathPrefix(audacityPathList[i]);
-
-#ifdef AUDACITY_NAME
-      mLocale->AddCatalog(wxT(AUDACITY_NAME));
-#else
-      mLocale->AddCatalog(wxT("audacity"));
-#endif
-   } else
-      mLocale = NULL;
-
-   // Initialize internationalisation (number formats etc.)
-   //
-   // This must go _after_ creating the wxLocale instance because
-   // creating the wxLocale instance sets the application-wide locale.
-   Internat::Init();
+   mLocale = NULL;
+   InitLang( lang );
 
    // Init DirManager, which initializes the temp directory
    // If this fails, we must exit the program.

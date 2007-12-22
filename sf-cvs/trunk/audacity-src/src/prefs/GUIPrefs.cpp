@@ -168,10 +168,15 @@ bool GUIPrefs::Apply()
    ShuttleGui S( this, eIsSavingToPrefs );
    PopulateOrExchange( S );
 
+   // If language has changed, we want to change it now, not on the next reboot.
+   wxString lang = gPrefs->Read(wxT("/Locale/Language"), wxT(""));
+   wxGetApp().InitLang( lang );
+
    unsigned int j;
    for(j = 0; j < gAudacityProjects.GetCount(); j++)
    {
       gAudacityProjects[j]->UpdateGuiPrefs();
+      gAudacityProjects[j]->RebuildMenuBar();
    }
    return true;
 }
