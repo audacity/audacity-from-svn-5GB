@@ -811,6 +811,8 @@ void AudacityProject::UpdatePrefs()
 
    SetSnapTo(gPrefs->Read(wxT("/SnapTo"), 0L)!=0);
 
+// mToolManager->LayoutToolBars(); // Just to add/remove the CleanSpeech button.
+
    if (GetSelectionBar()) {
       GetSelectionBar()->UpdateRates();
       GetSelectionBar()->SetRate(mRate);

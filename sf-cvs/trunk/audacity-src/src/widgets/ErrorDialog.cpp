@@ -16,18 +16,22 @@ Gives an Error message with an option for help.
 #include "../Audacity.h"
 
 #include <wx/button.h>
-
+#include <wx/icon.h>
 #include <wx/dialog.h>
 #include <wx/intl.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/utils.h>
 #include <wx/html/htmlwin.h>
+#include <wx/settings.h>
 
 #include "LinkingHtmlWindow.h"
+#include "../Theme.h"
+#include "../AllThemeResources.h"
 #include "../ShuttleGui.h"
 #include "../HelpText.h"
 #include "../Internat.h"
+#include "../Project.h"
 
 class ErrorDialog : public wxDialog
 {
@@ -156,15 +160,20 @@ void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &Ht
    }
    S.EndVerticalLay();
 
+   // -- START of ICON stuff -----
+   // If this section (providing an icon) causes compilation errors on linux, comment it out for now.
+   // it will just mean that the icon is missing.  Works OK on Windows.
    #ifdef __WXMSW__
       wxIcon ic(wxICON(AudacityLogo));
    #else
       wxIcon ic;
       ic.CopyFromBitmap(theTheme.Bitmap(bmpAudacityLogo48x48));
    #endif
+   pWnd->SetIcon( ic );
+   // -- END of ICON stuff -----
+
 
    pWnd->mpHtml = html;
-   pWnd->SetIcon( ic );
    pWnd->SetBackgroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
    pWnd->CreateStatusBar();
    html->SetRelatedStatusBar( 0 );

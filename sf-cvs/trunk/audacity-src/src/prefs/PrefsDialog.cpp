@@ -138,11 +138,11 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
    // Parameters are: AppPage( page, name, IsSelected, imageId)
    w = new AudioIOPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
+   w = new QualityPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
    w = new FileFormatPrefs(mCategories);  mCategories->AddPage(w, w->GetName(),false,0);
    w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName(),false,0);
    w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName(),false,0);
 
-   w = new QualityPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
    w = new DirectoriesPrefs(mCategories); mCategories->AddPage(w, w->GetName(),false,0);
 
 #ifdef EXPERIMENTAL_SMART_RECORD
@@ -153,7 +153,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    w = new ThemePrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
 #endif
 
-   w = new BatchPrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
+//   w = new BatchPrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
    w = new KeyConfigPrefs(mCategories);   mCategories->AddPage(w, w->GetName(),false,0);
    w = new MousePrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
 
