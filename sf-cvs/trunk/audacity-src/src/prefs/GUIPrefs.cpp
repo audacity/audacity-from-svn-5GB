@@ -19,6 +19,7 @@
 
 #include <wx/defs.h>
 #include "../Audacity.h"
+#include "../AudacityApp.h"
 #include "../Envelope.h"
 #include "../Languages.h"
 #include "../Prefs.h"
@@ -110,7 +111,7 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("/GUI/BeepOnCompletion"), false );   
    }
    S.EndStatic();
-   S.StartStatic( _("Show / Hide"),1 );
+   S.StartStatic( _("Show / Hide"),0 );
    {
 	   S.TieCheckBox( _("Enable cut &lines"),
          wxT("/GUI/EnableCutLines"), false);
@@ -122,9 +123,19 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("/GUI/ShowSplashScreen"), true );
    }
    S.EndStatic();
+   S.StartStatic( _("Modes"),0 );
+   {
+#ifdef __WXDEBUG__
+      S.TieCheckBox( _("&Don't apply effects in batch mode"),  
+         wxT("/Batch/Debug"), false);
+#endif
+      S.TieCheckBox( _("Cl&eanSpeech Mode (Customized GUI)"), 
+         wxT("/Batch/CleanSpeechMode"), false);
+   }
+   S.EndStatic();
    S.EndVerticalLay();
    S.StartVerticalLay();
-   S.StartStatic( _("Display range minimum for 'Waveform (dB)' view"),1 );
+   S.StartStatic( _("Display range minimum for 'Waveform (dB)' view"),0 );
    {
       S.StartRadioButtonGroup( wxT("/GUI/EnvdBRange"), ENV_DB_RANGE );
       S.TieRadioButton( _("-36 dB (shallow range for high-amplitude editing)"),36);

@@ -10,11 +10,15 @@
   utility fn and 
   descendant of wxHtmlWindow that opens links in the user's 
   default browser
-  
+
 **********************************************************************/
 
-#include "LinkingHtmlWindow.h"
+#include "../Audacity.h"
+
 #include <wx/mimetype.h>
+#include <wx/filename.h>
+
+#include "LinkingHtmlWindow.h"
 #include "../HelpText.h"
 #include "../FileNames.h"
 #include "ErrorDialog.h"
