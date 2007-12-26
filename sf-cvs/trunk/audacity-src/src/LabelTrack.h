@@ -157,6 +157,8 @@ class LabelTrack:public Track {
 
    //This returns the index of the label we just added.
    int AddLabel(double t, double t1, const wxString &title = wxT(""));
+   //And this tells us the index, if there is a label already there.
+   int GetLabelIndex(double t, double t1);
 
    //This deletes the label at given index.
    void DeleteLabel(int index);

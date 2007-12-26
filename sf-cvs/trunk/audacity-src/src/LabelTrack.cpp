@@ -1291,6 +1291,10 @@ bool LabelTrack::CaptureKey(wxKeyEvent & event)
    {
       if( IsGoodLabelFirstCharacter(keyCode, charCode) && !event.CmdDown() ){
          AudacityProject * pProj = GetActiveProject();
+         // IF Label already there, then don't add a new one on typing.
+         if( GetLabelIndex( pProj->mViewInfo.sel0,  pProj->mViewInfo.sel1) != wxNOT_FOUND )
+            return false;
+
          if( pProj )
             pProj->OnAddLabel();
          return true;
@@ -2009,6 +2013,31 @@ int LabelTrack::GetNumLabels() const
 const LabelStruct *LabelTrack::GetLabel(int index) const
 {
    return mLabels[index];
+}
+
+int LabelTrack::GetLabelIndex(double t, double t1)
+{
+   LabelStruct *l;
+
+   int len = mLabels.Count();
+   int i;
+   //We'd have liked to have times in terms of samples, 
+   //because then we're doing an intrger comparison.
+   //Never mind.  Instead we look for near enough.
+   //This level of (in)accuracy is only a problem if we 
+   //deal with sounds in the MHz range.
+   const double delta = 1.0e-7; 
+   for( i=0;i<len;i++)
+   {
+      l = mLabels[i];
+      if( fabs( l->t - t ) > delta )
+         continue;
+      if( fabs( l->t1 - t1 ) > delta )
+         continue;
+      return i;
+   }
+
+   return wxNOT_FOUND;
 }
 
 int LabelTrack::AddLabel(double t, double t1, const wxString &title)
