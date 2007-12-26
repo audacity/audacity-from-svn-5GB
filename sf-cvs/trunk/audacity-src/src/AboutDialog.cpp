@@ -256,23 +256,34 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
 
    //vvv For now, change to AudacityLogoWithName via old-fashioned way, not Theme.
    logo = new wxBitmap((const char **) AudacityLogoWithName_xpm); //vvv
+
+   // JKC: Resize to 50% of size.  Later we may use a smaller xpm as
+   // our source, but this allows us to tweak the size - if we want to.
+   // It also makes it easier to revert to full size if we decide to.
+   const float fScale=0.5f;// smaller size.
+   wxImage RescaledImage( logo->ConvertToImage() );
+   // wxIMAGE_QUALITY_HIGH not supported by wxWidgets 2.6.1, or we would use it here.
+   RescaledImage.Rescale( LOGOWITHNAME_WIDTH * fScale, LOGOWITHNAME_HEIGHT *fScale );
+   wxBitmap RescaledBitmap( RescaledImage );
+
    icon =
        new wxStaticBitmap(S.GetParent(), -1, 
-                          *logo, //vvv
+                          //*logo, //vvv
                           //vvv theTheme.Bitmap(bmpAudacityLogo), wxPoint(93, 10), wxSize(215, 190));
                           //vvv theTheme.Bitmap(bmpAudacityLogoWithName), 
-                          wxDefaultPosition, wxSize(LOGOWITHNAME_WIDTH, LOGOWITHNAME_HEIGHT));
+                          RescaledBitmap,
+                          wxDefaultPosition, wxSize(LOGOWITHNAME_WIDTH*fScale, LOGOWITHNAME_HEIGHT*fScale));
    delete logo;
    S.Prop(0).AddWindow( icon );
 
    wxHtmlWindow *html = new LinkingHtmlWindow(S.GetParent(), -1,
                                          wxDefaultPosition,
-                                         wxSize(LOGOWITHNAME_WIDTH, 264), // wxSize(480, 240),
+                                         wxSize(LOGOWITHNAME_WIDTH, 359), // wxSize(480, 240),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
    html->SetPage(creditStr);
 
    /* locate the html renderer where it fits in the dialogue */
-   S.Prop(0).AddWindow( html, wxEXPAND );
+   S.Prop(1).AddWindow( html, wxEXPAND );
 
    S.EndVerticalLay();
    S.EndNotebookPage();
@@ -459,7 +470,13 @@ void AboutDialog::PopulateInformationPage( ShuttleGui & S )
 
    // Current date
    AddBuildinfoRow(&informationStr, _("Program build date: "), __TDATE__);
-  
+
+#ifdef __WXDEBUG__
+   AddBuildinfoRow(&informationStr, _("Build type:"), _("Debug build"));
+#else
+   AddBuildinfoRow(&informationStr, _("Build type:"), _("Release build"));
+#endif
+
    // Install prefix
    /* i18n-hint: The directory audacity is installed into (on *nix systems) */
    AddBuildinfoRow(&informationStr, _("Installation Prefix: "), \
