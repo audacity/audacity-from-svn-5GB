@@ -141,6 +141,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    static wxArrayString ShowOpenDialog(wxString extra = wxEmptyString);
    static void OpenFiles(AudacityProject *proj);
    void OpenFile(wxString fileName);
+   bool WarnOfLegacyFile( );
    void Import(wxString fileName);
    void AddImportedTracks(wxString fileName,
                           Track **newTracks, int numTracks);

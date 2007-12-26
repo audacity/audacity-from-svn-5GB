@@ -1781,6 +1781,25 @@ void AudacityProject::OpenFiles(AudacityProject *proj)
    }
 }
 
+bool AudacityProject::WarnOfLegacyFile( )
+{
+   wxString msg;
+   int icon_choice = wxICON_EXCLAMATION;
+   msg.Printf(_("This file was saved by Audacity %s, a much\nolder version.  The format has changed.\n\nAudacity could corrupt the file in opening\nit, so you must back it up first.\n\nOpen this file now?"),
+              _("1.0 or earlier"));
+      // Stop icon, and choose 'NO' by default.
+      icon_choice = wxICON_STOP | wxNO_DEFAULT;
+
+   int action;
+   action = wxMessageBox(msg,
+                         _("Opening old project file"),
+                         wxYES_NO | icon_choice | wxCENTRE,
+                         this);
+   if (action == wxNO)
+      return false;
+   return true;
+}
+
 void AudacityProject::OpenFile(wxString fileName)
 {
    // On Win32, we may be given a short (DOS-compatible) file name on rare
@@ -1826,6 +1845,9 @@ void AudacityProject::OpenFile(wxString fileName)
 
    if (temp == wxT("AudacityProject")) {
       // It's an Audacity 1.0 (or earlier) project file.
+      // If they bail out, return and do no more.
+      if( !WarnOfLegacyFile() )
+         return;
       // Convert to the new format.
       bool success = ConvertLegacyProjectFile(wxFileName(fileName));
       if (!success) {
