@@ -206,7 +206,8 @@ public:
                bool selectedOnly,
                double t0,
                double t1,
-               MixerSpec *mixerSpec = NULL);
+               MixerSpec *mixerSpec = NULL,
+               bool use_meta=true);
 };
 
 ExportCL::ExportCL()
@@ -230,7 +231,8 @@ bool ExportCL::Export(AudacityProject *project,
                       bool selectionOnly,
                       double t0,
                       double t1, 
-                      MixerSpec *mixerSpec)
+                      MixerSpec *mixerSpec,
+                      bool use_meta)
 {
    ExportCLProcess *p;
    wxString output;
