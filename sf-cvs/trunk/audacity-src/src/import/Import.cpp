@@ -14,7 +14,8 @@
   any type of sampled audio file (i.e. anything except MIDI)
   and return the tracks that were imported.  This function just
   figures out which one to call; the actual importers are in
-  ImportPCM, ImportMP3, ImportOGG, ImportRawData, and ImportLOF.
+  ImportPCM, ImportMP3, ImportOGG, ImportRawData, ImportLOF, 
+  ImportQT and ImportFLAC.
 
 *//***************************************************************//**
 
@@ -179,7 +180,7 @@ int Importer::Import(wxString fName,
       return 0;
    }
    //AAC files of various forms (probably not encrypted)
-   if ((extension.IsSameAs(wxT("aac"), false))||(extension.IsSameAs(wxT("m4a"), false))||(extension.IsSameAs(wxT("mpa"), false))||(extension.IsSameAs(wxT("mp4"), false))) {
+   if ((extension.IsSameAs(wxT("aac"), false))||(extension.IsSameAs(wxT("m4a"), false))||(extension.IsSameAs(wxT("mp4"), false))) {
       errorMessage.Printf(_("\"%s\" is an Advanced Audio Coding file. \nAudacity cannot open this type of file. \nYou need to convert it to a supported audio format, such as WAV or AIFF."), fName.c_str());
       return 0;
    }

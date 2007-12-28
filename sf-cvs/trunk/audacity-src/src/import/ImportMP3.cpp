@@ -43,7 +43,8 @@ static const wxChar *exts[] =
    wxT("mp3"),
    wxT("mp2"),
    wxT("mpg"),
-   wxT("mpeg")
+   wxT("mpeg"),
+   wxT("mpa")
 };
 
 #ifndef USE_LIBMAD
@@ -114,8 +115,8 @@ class MP3ImportFileHandle : public ImportFileHandle
 {
 public:
    MP3ImportFileHandle(wxFile *file, wxString filename):
-      mFile(file),
       mFilename(filename),
+      mFile(file),
       mUserData(NULL)
    {
       mPrivateData.progressCallback = NULL;
@@ -400,7 +401,7 @@ enum mad_flow input_cb(void *_data, struct mad_stream *stream)
 
 #ifdef USE_LIBID3TAG 
    if (!data->id3checked) {
-      off_t read = data->file->Read(data->inputBuffer, ID3_TAG_QUERYSIZE);
+      data->file->Read(data->inputBuffer, ID3_TAG_QUERYSIZE);
       int len = id3_tag_query(data->inputBuffer, ID3_TAG_QUERYSIZE);
       if (len > 0) {
          data->file->Seek(len, wxFromCurrent);
