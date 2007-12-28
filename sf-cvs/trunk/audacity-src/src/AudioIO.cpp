@@ -1585,6 +1585,10 @@ wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDe
    return result;
 }
 
+/** \todo: should this take into account PortAudio's value for 
+ * PaDeviceInfo::defaultSampleRate? In principal this should let us work out
+ * which rates are "real" and which resampled in the drivers, and so prefer
+ * the real rates. */
 int AudioIO::GetOptimalSupportedSampleRate()
 {
    wxArrayLong rates = GetSupportedSampleRates();
@@ -1598,6 +1602,7 @@ int AudioIO::GetOptimalSupportedSampleRate()
    return rates[rates.GetCount() - 1];
 }
 
+// how does this differ from AudioIO::GetOptimalSupportedSampleRate?
 long AudioIO::GetBestRate(bool capturing, double sampleRate)
 {
    wxArrayLong rates;

@@ -58,10 +58,21 @@ class AudioIO {
  public:
    AudioIO();
    ~AudioIO();
-
+   
+   /** \brief Start up Portaudio for capture and recording as needed for
+    * input monitoring and software playthrough only
+    *
+    * This uses the Default project sample format, current sample rate, and 
+    * selected number of input channels to open the recording device and start
+    * reading input data. If software playthrough is enabled, it also opens
+    * the output device in stereo to play the data through */
    void StartMonitoring(double sampleRate);
 
-   /* If successful, returns a token identifying this particular stream
+   /** \brief Start recording or playing back audio
+    *
+    * Allocates buffers for recording and playback, gets the Audio thread to
+    * fill them, and sets the stream rolling.
+    * If successful, returns a token identifying this particular stream
     * instance.  For use with IsStreamActive() below */
    int StartStream(WaveTrackArray playbackTracks, WaveTrackArray captureTracks,
                    TimeTrack *timeTrack, double sampleRate,
@@ -71,40 +82,45 @@ class AudioIO {
                    double cutPreviewGapStart = 0.0,
                    double cutPreviewGapLen = 0.0);
 
+   /** \brief Stop recording, playback or input monitoring.
+    *
+    * Does quite a bit of housekeeping, including switching off monitoring,
+    * flushing recording buffers out to wave tracks, and applies latency
+    * correction to recorded tracks if necessary */
    void StopStream();
+   /** \brief Move the playback / recording position of the current stream
+    * by the specified amount from where it is now */
    void SeekStream(double seconds) { mSeek = seconds; };
    
-   /* Returns true if audio i/o is busy starting, stopping,
-      playing, or recording.  When this is
-      false, it's safe to start playing or recording */
+   /** \brief  Returns true if audio i/o is busy starting, stopping, playing,
+    * or recording.
+    *
+    * When this is false, it's safe to start playing or recording */
    bool IsBusy();
 
-   /* Returns true if the audio i/o is running at all,
-      but doesn't return true if the device has been closed
-      but some disk i/o or cleanup is still going on.
-      If you want to know if it's safe to start a new
-      stream, use IsBusy()
-   */
+   /** \brief Returns true if the audio i/o is running at all, but not during
+    * cleanup
+    *
+    * Doesn't return true if the device has been closed but some disk i/o or
+    * cleanup is still going on. If you want to know if it's safe to start a
+    * new stream, use IsBusy() */
    bool IsStreamActive();
-
-   /* Returns true if the audio i/o is still running the stream instance
-    * identified by this token, but doesn't return true if the device
-    * has been closed but some disk i/o or cleanup is still going on
-    */
    bool IsStreamActive(int token);
 
-   /* Returns true if the stream is active, or even if audio I/O is
-    * busy cleaning up its data or writing to disk.  This is used
-    * by TrackPanel to determine when a track has been completely
-    * recorded, and it's safe to flush to disk.
-   */
+   /** \brief Returns true if the stream is active, or even if audio I/O is
+    * busy cleaning up its data or writing to disk.
+    *
+    * This is used by TrackPanel to determine when a track has been completely
+    * recorded, and it's safe to flush to disk. */
    bool IsAudioTokenActive(int token);
 
-   /* Returns true if we're monitoring input (but not recording or
-      playing actual audio) */
+   /** \brief Returns true if we're monitoring input (but not recording or 
+    * playing actual audio) */
    bool IsMonitoring();
 
+   /** \brief Pause and un-pause playback and recording */
    void SetPaused(bool state);
+   /** \brief Find out if playback / recording is currently paused */
    bool IsPaused();
 
    /* Mixer services are always available.  If no stream is running, these
@@ -120,16 +136,18 @@ class AudioIO {
    wxArrayString GetInputSourceNames();
    void HandleDeviceChange();
 
-   /* Set the current VU meters - this should be done once after
-      each call to StartStream currently */
+   /** \brief Set the current VU meters - this should be done once after 
+    * each call to StartStream currently */
    void SetMeters(Meter *inputMeter, Meter *outputMeter);
    
-   /* Get a list of sample rates the current output device supports.
+   /** \brief Get a list of sample rates the current output (playback) device
+    * supports.
+    *
     * If no information about available sample rates can be fetched,
     * an empty list is returned.
     *
     * You can explicitely give the name of the device.  If you don't
-    * give it, the default device from the preferences will be used.
+    * give it, the currently selected device from the preferences will be used.
     *
     * You may also specify a rate for which to check in addition to the
     * standard rates.
@@ -137,12 +155,14 @@ class AudioIO {
    static wxArrayLong GetSupportedPlaybackRates(wxString devName = wxT(""),
                                                 double rate = 0.0);
 
-   /* Get a list of sample rates the current input device supports.
+   /** \brief Get a list of sample rates the current input (recording) device
+    * supports.
+    *
     * If no information about available sample rates can be fetched,
     * an empty list is returned.
     *
     * You can explicitely give the name of the device.  If you don't
-    * give it, the default device from the preferences will be used.
+    * give it, the currently selected device from the preferences will be used.
     *
     * You may also specify a rate for which to check in addition to the
     * standard rates.
@@ -150,14 +170,16 @@ class AudioIO {
    static wxArrayLong GetSupportedCaptureRates(wxString devName = wxT(""),
                                                double rate = 0.0);
 
-   /* Get a list of sample rates the current input/output device
-    * supports. Since there is no concept (yet) for different input/output
+   /** \brief Get a list of sample rates the current input/output device
+    * combination supports.
+    *
+    * Since there is no concept (yet) for different input/output
     * sample rates, this currently returns only sample rates that are
     * supported on both the output and input device. If no information
     * about available sample rates can be fetched, it returns a default
     * list.
     * You can explicitely give the names of the playDevice/recDevice.
-    * If you don't give them, the default devices from the preferences
+    * If you don't give them, the selected devices from the preferences
     * will be used.
     * You may also specify a rate for which to check in addition to the
     * standard rates.
@@ -166,13 +188,17 @@ class AudioIO {
                                               wxString recDevice = wxT(""),
                                               double rate = 0.0);
 
-   /* Get a supported sample rate which can be used a an optimal
-    * default. Currently, this uses the first supported rate in
-    * the list [44100, 48000, highest sample rate].
+   /** \brief Get a supported sample rate which can be used a an optimal
+    * default.
+    *
+    * Currently, this uses the first supported rate in the list
+    * [44100, 48000, highest sample rate].
     */
    static int GetOptimalSupportedSampleRate();
 
-   /* This is given in seconds based on starting at t0
+   /** \brief The time the stream has been playing for
+    *
+    * This is given in seconds based on starting at t0
     * When playing looped, this will start from t0 again,
     * too. So the returned time should be always between
     * t0 and t1
@@ -182,10 +208,17 @@ class AudioIO {
    sampleFormat GetCaptureFormat() { return mCaptureFormat; }
    int GetNumCaptureChannels() { return mNumCaptureChannels; }
 
+   /** \brief Array of common audio sample rates
+    *
+    * These are the rates we will always support, regardless of hardware support
+    * for them (by resampling in audacity if needed) */
    static const int StandardRates[];
+   /** \brief How many standard sample rates there are */
    static const int NumStandardRates;
 
-   // Diagnostic information
+   /** \brief Get diagnostic information on all the available audio I/O devices
+    *
+    */
    wxString GetDeviceInfo();
 
 private:
