@@ -77,9 +77,9 @@ BEGIN_EVENT_TABLE(SelectionBar, ToolBar)
 END_EVENT_TABLE()
 
 SelectionBar::SelectionBar()
-: ToolBar(SelectionBarID, _("Selection"), wxT("Selection")),
+: ToolBar(SelectionBarID, _("Selection"), wxT("Selection")), mRate(0),
   mStart(0.0), mEnd(0.0), mAudio(0.0),
-  mLeftTime(NULL)  
+  mLeftTime(NULL)
 {
 }
 
@@ -426,11 +426,13 @@ void SelectionBar::SetSnapTo(bool state)
 void SelectionBar::SetRate(double rate)
 {
    if (rate != mRate) {
-      mRate = rate;
+      // if the rate is actually being changed
+      mRate = rate;   // update the stored rate
       mRateBox->SetValue(wxString::Format(wxT("%d"), (int)rate));
-      mLeftTime->SetSampleRate(rate);
-      mRightTime->SetSampleRate(rate);
-      mAudioTime->SetSampleRate(rate);
+      // update the TimeTextCtrls if they exist
+      if (mLeftTime) mLeftTime->SetSampleRate(rate);
+      if (mRightTime) mRightTime->SetSampleRate(rate);
+      if (mAudioTime) mAudioTime->SetSampleRate(rate);
    }
 }
 
