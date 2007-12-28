@@ -14,7 +14,7 @@
   The first pass is done over just noise.  For each windowed sample
   of the sound, we take a FFT and then statistics are tabulated for
   each frequency band - specifically the maximum level achieved by
-  at least <n> sampling windows in a row, for various values of <n>.
+  at least (n) sampling windows in a row, for various values of (n).
 
   During the noise removal phase, we start by setting a gain control
   for each frequency band such that if the sound has exceeded the
