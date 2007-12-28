@@ -110,9 +110,9 @@ void SmartRecordDialog::OnDatePicker_Start(wxDateEvent& event)
 {
    m_DateTime_Start = m_pDatePickerCtrl_Start->GetValue();
    double dTime = m_pTimeTextCtrl_Start->GetTimeValue();
-   unsigned int hr = dTime / 3600.0;
-   unsigned int min = (dTime - (hr * 3600.0)) / 60.0;
-   unsigned int sec = dTime - (hr * 3600.0) - (min * 60.0);
+   long hr = (long)(dTime / 3600.0);
+   long min = (long)((dTime - (hr * 3600.0)) / 60.0);
+   long sec = (long)(dTime - (hr * 3600.0) - (min * 60.0));
    m_DateTime_Start.SetHour(hr);
    m_DateTime_Start.SetMinute(min);
    m_DateTime_Start.SetSecond(sec);
@@ -134,7 +134,7 @@ void SmartRecordDialog::OnTimeText_Start(wxCommandEvent& event)
    // user increments the hours past 23, it rolls over to 0 (although if you increment below 0, it stays at 0).
    // So instead, set the max to 99 and just catch hours > 24 and fix the ctrls.
    double dTime = m_pTimeTextCtrl_Start->GetTimeValue();
-   unsigned int days = dTime / (24.0 * 3600.0);
+   long days = (long)(dTime / (24.0 * 3600.0));
    if (days > 0) {
       dTime -= (double)days * 24.0 * 3600.0;
       m_DateTime_Start += wxTimeSpan::Days(days);
@@ -150,9 +150,9 @@ void SmartRecordDialog::OnDatePicker_End(wxDateEvent& event)
 {
    m_DateTime_End = m_pDatePickerCtrl_End->GetValue();
    double dTime = m_pTimeTextCtrl_End->GetTimeValue();
-   unsigned int hr = dTime / 3600.0;
-   unsigned int min = (dTime - (hr * 3600.0)) / 60.0;
-   unsigned int sec = dTime - (hr * 3600.0) - (min * 60.0);
+   long hr = (long)(dTime / 3600.0);
+   long min = (long)((dTime - (hr * 3600.0)) / 60.0);
+   long sec = (long)(dTime - (hr * 3600.0) - (min * 60.0));
    m_DateTime_End.SetHour(hr);
    m_DateTime_End.SetMinute(min);
    m_DateTime_End.SetSecond(sec);
@@ -173,7 +173,7 @@ void SmartRecordDialog::OnTimeText_End(wxCommandEvent& event)
    // user increments the hours past 23, it rolls over to 0 (although if you increment below 0, it stays at 0).
    // So instead, set the max to 99 and just catch hours > 24 and fix the ctrls.
    double dTime = m_pTimeTextCtrl_End->GetTimeValue();
-   unsigned int days = dTime / (24.0 * 3600.0);
+   long days = (long)(dTime / (24.0 * 3600.0));
    if (days > 0) {
       dTime -= (double)days * 24.0 * 3600.0;
       m_DateTime_End += wxTimeSpan::Days(days);
@@ -188,9 +188,9 @@ void SmartRecordDialog::OnTimeText_End(wxCommandEvent& event)
 void SmartRecordDialog::OnTimeText_Duration(wxCommandEvent& event)
 {
    double dTime = m_pTimeTextCtrl_Duration->GetTimeValue();
-   unsigned int hr = dTime / 3600.0;
-   unsigned int min = (dTime - (hr * 3600.0)) / 60.0;
-   unsigned int sec = dTime - (hr * 3600.0) - (min * 60.0);
+   long hr = (long)(dTime / 3600.0);
+   long min = (long)((dTime - (hr * 3600.0)) / 60.0);
+   long sec = (long)(dTime - (hr * 3600.0) - (min * 60.0));
    m_TimeSpan_Duration = wxTimeSpan(hr, min, sec); //v milliseconds?
 
    this->UpdateEnd(); // Keep Start constant and update End for changed Duration.
@@ -239,14 +239,17 @@ void SmartRecordDialog::OnOK(wxCommandEvent& event)
       wxLongLong llProgValue;
       int nProgValue = 0;
       while (bIsRecording && !bDidCancel) {
+		 // sit in this loop during the recording phase, i.e. from rec start to
+		 // recording end
          wxMilliSleep(kTimerInterval);
          
-         dateTime_UNow = wxDateTime::UNow();
+         dateTime_UNow = wxDateTime::UNow();	// get time now
          done_TimeSpan = dateTime_UNow - m_DateTime_Start;
+		 // work out how long we have been recording for
          // remaining_TimeSpan = m_DateTime_End - dateTime_UNow;
 
          llProgValue = 
-            (wxLongLong)((done_TimeSpan.GetSeconds() * (double)MAX_PROG) / 
+            (wxLongLong)((done_TimeSpan.GetSeconds() * (wxLongLong)MAX_PROG) / 
                            m_TimeSpan_Duration.GetSeconds());
          nProgValue = llProgValue.ToLong(); //v ToLong truncates, so may fail.
 
@@ -325,24 +328,24 @@ void SmartRecordDialog::PopulateOrExchange(ShuttleGui& S)
 bool SmartRecordDialog::TransferDataFromWindow()
 {
    double dTime;
-   unsigned int hr;
-   unsigned int min;
-   unsigned int sec;
+   long hr;
+   long min;
+   long sec;
 
    m_DateTime_Start = m_pDatePickerCtrl_Start->GetValue();
    dTime = m_pTimeTextCtrl_Start->GetTimeValue();
-   hr = dTime / 3600.0;
-   min = (dTime - (hr * 3600.0)) / 60.0;
-   sec = dTime - (hr * 3600.0) - (min * 60.0);
+   hr = (long)(dTime / 3600.0);
+   min = (long)((dTime - (hr * 3600.0)) / 60.0);
+   sec = (long)(dTime - (hr * 3600.0) - (min * 60.0));
    m_DateTime_Start.SetHour(hr);
    m_DateTime_Start.SetMinute(min);
    m_DateTime_Start.SetSecond(sec);
 
    m_DateTime_End = m_pDatePickerCtrl_End->GetValue();
    dTime = m_pTimeTextCtrl_End->GetTimeValue();
-   hr = dTime / 3600.0;
-   min = (dTime - (hr * 3600.0)) / 60.0;
-   sec = dTime - (hr * 3600.0) - (min * 60.0);
+   hr = (long)(dTime / 3600.0);
+   min = (long)((dTime - (hr * 3600.0)) / 60.0);
+   sec = (long)(dTime - (hr * 3600.0) - (min * 60.0));
    m_DateTime_End.SetHour(hr);
    m_DateTime_End.SetMinute(min);
    m_DateTime_End.SetSecond(sec);
@@ -393,7 +396,7 @@ bool SmartRecordDialog::WaitForStart()
 
       done_TimeSpan = wxDateTime::UNow() - startWait_DateTime;
       llProgValue = 
-         (wxLongLong)((done_TimeSpan.GetSeconds() * (double)MAX_PROG) / 
+         (wxLongLong)((done_TimeSpan.GetSeconds() * (wxLongLong)MAX_PROG) / 
                         waitDuration.GetSeconds());
       nProgValue = llProgValue.ToLong(); //v ToLong truncates, so may fail ASSERT.
       bDidCancel = !pProject->ProgressUpdate(nProgValue);
