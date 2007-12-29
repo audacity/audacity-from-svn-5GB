@@ -803,12 +803,13 @@ wxAccStatus GridAx::GetName(int childId, wxString* name)
 
             TimeTextCtrl tt(mGrid,
                             wxID_ANY,
-                            TimeTextCtrl::GetBuiltinFormat(c->GetFormat()),
+                            wxT(""),
                             value,
                             c->GetRate(),
                             wxPoint(10000, 10000),  // create offscreen
                             wxDefaultSize,
                             true);
+            tt.SetFormatString(tt.GetBuiltinFormat(c->GetFormat()));
             *name = tt.GetTimeString();
          }
 
