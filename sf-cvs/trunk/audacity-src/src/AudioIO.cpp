@@ -1759,11 +1759,12 @@ wxString AudioIO::GetDeviceInfo()
       s << wxT("Device name: ") << name << e;
       s << wxT("Input channels: ") << info->maxInputChannels << e;
       s << wxT("Output channels: ") << info->maxOutputChannels << e;
+#if USE_PORTAUDIO_V19
       s << wxT("Low Input Latency: ") << info->defaultLowInputLatency << e;
       s << wxT("Low Output Latency: ") << info->defaultLowOutputLatency << e;
       s << wxT("High Input Latency: ") << info->defaultHighInputLatency << e;
       s << wxT("High Output Latency: ") << info->defaultHighOutputLatency << e;
-
+#endif
       wxArrayLong rates = GetSupportedPlaybackRates(name, 0.0);
 
       s << wxT("Supported Rates:") << e;
