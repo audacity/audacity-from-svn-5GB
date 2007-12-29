@@ -266,6 +266,32 @@ private:
     * all record buffers without underflow). */
    int GetCommonlyAvailCapture();
 
+   /** \brief get the index of the supplied (named) recording device, or the
+    * device selected in the preferences if none given.
+    *
+    * Pure utility function, but it comes round a number of times in the code
+    * and would be neater done once. If the device isn't found, return the
+    * default device index.
+    */
+   static int getRecordDevIndex(wxString devName = wxT(""));
+
+   /** \brief get the index of the supplied (named) playback device, or the
+    * device selected in the preferences if none given.
+    *
+    * Pure utility function, but it comes round a number of times in the code
+    * and would be neater done once. If the device isn't found, return the
+    * default device index.
+    */
+   static int getPlayDevIndex(wxString devName = wxT(""));
+
+   /** \brief Array of audio sample rates to try to use
+    *
+    * These are the rates we will check if a device supports, and is as long
+    * as I can think of (to try and work out what the card can do) */
+   static const int RatesToTry[];
+   /** \brief How many sample rates to try */
+   static const int NumRatesToTry;
+
    double NormalizeStreamTime(double absoluteTime) const;
 
    AudioThread        *mThread;

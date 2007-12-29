@@ -88,6 +88,20 @@ const int AudioIO::StandardRates[] = {
 };
 const int AudioIO::NumStandardRates = sizeof(AudioIO::StandardRates) /
                                       sizeof(AudioIO::StandardRates[0]);
+const int AudioIO::RatesToTry[] = {
+   8000,
+   15000,
+   16000,
+   22050,
+   32000,
+   44100,
+   48000,
+   88200,
+   96000,
+   192000
+};
+const int AudioIO::NumRatesToTry = sizeof(AudioIO::RatesToTry) /
+                                      sizeof(AudioIO::RatesToTry[0]);
 
 #if USE_PORTAUDIO_V19
 int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
@@ -583,27 +597,11 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
    if( numPlaybackChannels > 0)
    {
       playbackParameters = new PaStreamParameters;
-      wxString playbackDeviceName = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
+      // this sets the device index to whatever is "right" based on preferences,
+      // then defaults
+      playbackParameters->device = getPlayDevIndex();
+     
       const PaDeviceInfo *playbackDeviceInfo;
-      
-      playbackParameters->device = Pa_GetDefaultOutputDevice();
-      if (playbackParameters->device < 0)
-         playbackParameters->device = 0;
-      
-      if( playbackDeviceName != wxT("") )
-      {
-         for( int i = 0; i < Pa_GetDeviceCount(); i++)
-         {
-            const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
-
-            if(!info)
-               continue;
-
-            if (DeviceName(info) == playbackDeviceName && info->maxOutputChannels > 0)
-               playbackParameters->device = i;
-         }
-      }
-      
       playbackDeviceInfo = Pa_GetDeviceInfo( playbackParameters->device );
       
       if( playbackDeviceInfo == NULL )
@@ -627,25 +625,9 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       
       captureParameters = new PaStreamParameters;
       const PaDeviceInfo *captureDeviceInfo;
-      wxString captureDeviceName = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
-
-      captureParameters->device = Pa_GetDefaultInputDevice();
-      if (captureParameters->device < 0)
-         captureParameters->device = 0;
-
-      if( captureDeviceName != wxT("") )
-      {
-         for( int i = 0; i < Pa_GetDeviceCount(); i++)
-         {
-            const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
-
-            if(!info)
-               continue;
-
-            if (DeviceName(info) == captureDeviceName && info->maxInputChannels > 0)
-               captureParameters->device = i;
-         }
-      }
+      // retrieve the index of the device set in the prefs, or a sensible
+      // default if it isn't set/valid
+      captureParameters->device = getRecordDevIndex();
 
       captureDeviceInfo = Pa_GetDeviceInfo( captureParameters->device );
 
@@ -1381,30 +1363,14 @@ wxArrayLong AudioIO::GetSupportedPlaybackRates(wxString devName, double rate)
    wxArrayLong supported;
    int irate = (int)rate;
    const PaDeviceInfo* devInfo = NULL;
-   int devIndex = -1;
+   int devIndex;
    int i;
 
-   if (devName.IsEmpty())
-   {
-      devName = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
-   }
-
-#if USE_PORTAUDIO_V19
-   for (i = 0; i < Pa_GetDeviceCount(); i++)
-#else
-   for (i = 0; i < Pa_CountDevices(); i++)
-#endif
-   {
-      const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
-
-      if (info && DeviceName(info) == devName && info->maxOutputChannels > 0)
-      {
-         devInfo = info;
-         devIndex = i;
-         break;
-      }
-   }
-
+   // sort out the index of the playback device (based on requested, then prefs,
+   // then defaults)
+   devIndex = getPlayDevIndex(devName);
+   devInfo = Pa_GetDeviceInfo(devIndex);
+   
    if (!devInfo)
    {
       return supported;
@@ -1419,11 +1385,11 @@ wxArrayLong AudioIO::GetSupportedPlaybackRates(wxString devName, double rate)
    pars.suggestedLatency = devInfo->defaultHighOutputLatency;
    pars.hostApiSpecificStreamInfo = NULL;
    
-   for (i = 0; i < NumStandardRates; i++)
+   for (i = 0; i < NumRatesToTry; i++)
    {
-      if (Pa_IsFormatSupported(NULL, &pars, StandardRates[i]) == 0)
+      if (Pa_IsFormatSupported(NULL, &pars, RatesToTry[i]) == 0)
       {
-         supported.Add(StandardRates[i]);
+         supported.Add(RatesToTry[i]);
       }
    }
 
@@ -1437,12 +1403,12 @@ wxArrayLong AudioIO::GetSupportedPlaybackRates(wxString devName, double rate)
 #else
    if (devInfo->numSampleRates == -1)
    {
-      for (i = 0; i < NumStandardRates; i++)
+      for (i = 0; i < NumRatesToTry; i++)
       {
-         if (StandardRates[i] >= devInfo->sampleRates[0] &&
-             StandardRates[i] <= devInfo->sampleRates[1])
+         if (RatesToTry[i] >= devInfo->sampleRates[0] &&
+             RatesToTry[i] <= devInfo->sampleRates[1])
          {
-            supported.Add(StandardRates[i]);
+            supported.Add(RatesToTry[i]);
          }
       }
 
@@ -1475,33 +1441,8 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(wxString devName, double rate)
    int devIndex = -1;
    int i;
 
-   if (devName.IsEmpty())
-   {
-      devName = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
-   }
-
-#if USE_PORTAUDIO_V19
-   double latencyDuration = 100.0;
-   long recordChannels = 1;
-   gPrefs->Read(wxT("/AudioIO/LatencyDuration"), &latencyDuration);
-   gPrefs->Read(wxT("/AudioIO/RecordChannels"), &recordChannels);
-#endif
-
-#if USE_PORTAUDIO_V19
-   for (i = 0; i < Pa_GetDeviceCount(); i++)
-#else
-   for (i = 0; i < Pa_CountDevices(); i++)
-#endif
-   {
-      const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
-
-      if (info && DeviceName(info) == devName && info->maxInputChannels > 0)
-      {
-         devInfo = info;
-         devIndex = i;
-         break;
-      }
-   }
+   devIndex = getRecordDevIndex(devName);
+   devInfo = Pa_GetDeviceInfo(devIndex);
 
    if (!devInfo)
    {
@@ -1509,8 +1450,10 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(wxString devName, double rate)
    }
 
 #if USE_PORTAUDIO_V19
-
-
+   double latencyDuration = 100.0;
+   long recordChannels = 1;
+   gPrefs->Read(wxT("/AudioIO/LatencyDuration"), &latencyDuration);
+   gPrefs->Read(wxT("/AudioIO/RecordChannels"), &recordChannels);
 
    PaStreamParameters pars;
 
@@ -1520,11 +1463,11 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(wxString devName, double rate)
    pars.suggestedLatency = latencyDuration / 1000.0;
    pars.hostApiSpecificStreamInfo = NULL;
    
-   for (i = 0; i < NumStandardRates; i++)
+   for (i = 0; i < NumRatesToTry; i++)
    {
-      if (Pa_IsFormatSupported(&pars, NULL, StandardRates[i]) == 0)
+      if (Pa_IsFormatSupported(&pars, NULL, RatesToTry[i]) == 0)
       {
-         supported.Add(StandardRates[i]);
+         supported.Add(RatesToTry[i]);
       }
    }
 
@@ -1538,12 +1481,12 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(wxString devName, double rate)
 #else
    if (devInfo->numSampleRates == -1)
    {
-      for (i = 0; i < NumStandardRates; i++)
+      for (i = 0; i < NumRatesToTry; i++)
       {
-         if (StandardRates[i] >= devInfo->sampleRates[0] &&
-             StandardRates[i] <= devInfo->sampleRates[1])
+         if (RatesToTry[i] >= devInfo->sampleRates[0] &&
+             RatesToTry[i] <= devInfo->sampleRates[1])
          {
-            supported.Add(StandardRates[i]);
+            supported.Add(RatesToTry[i]);
          }
       }
 
@@ -1723,6 +1666,84 @@ int AudioIO::GetCommonlyAvailCapture()
    }
 
    return commonlyAvail;
+}
+
+int AudioIO::getRecordDevIndex(wxString devName)
+{
+   // if we don't get given a device, look up the preferences
+   if (devName.IsEmpty())
+   {
+      devName = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
+   }
+
+   int i;
+#if USE_PORTAUDIO_V19
+   for (i = 0; i < Pa_GetDeviceCount(); i++)
+#else
+   for (i = 0; i < Pa_CountDevices(); i++)
+#endif
+   {
+      const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
+
+      if (info && (DeviceName(info) == devName) && (info->maxOutputChannels > 0))
+      {
+         // this device name matches the stored one, and works.
+         // So we say this is the answer and return it
+         return i;
+      }
+   }
+   // landing here, we either don't have a value in the preferences, or 
+   // the stored / supplied value doesn't exist on the system. So we need to
+   // use a default value
+#if USE_PORTAUDIO_V19
+   int recDeviceNum = Pa_GetDefaultInputDevice();
+#else
+   int recDeviceNum = Pa_GetDefaultInputDeviceID();
+#endif
+   // Sometimes PortAudio returns -1 if it cannot find a suitable default
+   // device, so we just use the first one available
+   if (recDeviceNum < 0)
+      recDeviceNum = 0;
+   return recDeviceNum;
+}
+
+int AudioIO::getPlayDevIndex(wxString devName )
+{
+   // if we don't get given a device, look up the preferences
+   if (devName.IsEmpty())
+   {
+      devName = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
+   }
+
+   int i;
+#if USE_PORTAUDIO_V19
+   for (i = 0; i < Pa_GetDeviceCount(); i++)
+#else
+   for (i = 0; i < Pa_CountDevices(); i++)
+#endif
+   {
+      const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
+
+      if (info && (DeviceName(info) == devName) && (info->maxOutputChannels > 0))
+      {
+         // this device name matches the stored one, and works.
+         // So we say this is the answer and return it
+         return i;
+      }
+   }
+   // landing here, we either don't have a value in the preferences, or 
+   // the stored / supplied value doesn't exist on the system. So we need to
+   // use a default value
+#if USE_PORTAUDIO_V19
+   int DeviceNum = Pa_GetDefaultOutputDevice();
+#else
+   int DeviceNum = Pa_GetDefaultOutputDeviceID();
+#endif
+   // Sometimes PortAudio returns -1 if it cannot find a suitable default
+   // device, so we just use the first one available
+   if (DeviceNum < 0)
+      DeviceNum = 0;
+   return DeviceNum;
 }
 
 wxString AudioIO::GetDeviceInfo()
