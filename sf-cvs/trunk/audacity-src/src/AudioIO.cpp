@@ -556,8 +556,11 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
                                    sampleFormat captureFormat)
 {
    mLastPaError = paNoError;
-   mRate = GetBestRate(numCaptureChannels > 0, sampleRate);
+   // pick a rate to do the audio I/O at, from those available. The project
+   // rate is suggested, but we may get something else if it isn't supported
+   mRate = GetBestRate(numCaptureChannels > 0, numPlaybackChannels > 0, sampleRate);
    if (mListener) {
+      // advertise the chosen I/O sample rate to the UI
       mListener->OnAudioIORate((int)mRate);
    }
    
@@ -1506,6 +1509,9 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(wxString devName, double rate)
    }
 
 #if USE_PORTAUDIO_V19
+
+
+
    PaStreamParameters pars;
 
    pars.device = devIndex;
@@ -1516,7 +1522,7 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(wxString devName, double rate)
    
    for (i = 0; i < NumStandardRates; i++)
    {
-      if (Pa_IsFormatSupported(NULL, &pars, StandardRates[i]) == 0)
+      if (Pa_IsFormatSupported(&pars, NULL, StandardRates[i]) == 0)
       {
          supported.Add(StandardRates[i]);
       }
@@ -1524,7 +1530,7 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(wxString devName, double rate)
 
    if (irate != 0 && supported.Index(irate) == wxNOT_FOUND)
    {
-      if (Pa_IsFormatSupported(NULL, &pars, irate) == 0)
+      if (Pa_IsFormatSupported(&pars, NULL, irate) == 0)
       {
          supported.Add(irate);
       }
@@ -1602,37 +1608,63 @@ int AudioIO::GetOptimalSupportedSampleRate()
    return rates[rates.GetCount() - 1];
 }
 
-// how does this differ from AudioIO::GetOptimalSupportedSampleRate?
-long AudioIO::GetBestRate(bool capturing, double sampleRate)
+double AudioIO::GetBestRate(bool capturing, bool playing, double sampleRate)
 {
    wxArrayLong rates;
 
-   if (capturing) {
+   if (capturing && !playing) {
       rates = GetSupportedCaptureRates(wxT(""), sampleRate);
    }
-   else {
+   if (playing && !capturing) {
       rates = GetSupportedPlaybackRates(wxT(""), sampleRate);
    }
-
+   else {   // we assume capturing and playing - the alternative would be a 
+            // bit odd
+      wxArrayLong playrates = GetSupportedPlaybackRates(wxT(""), sampleRate);
+      wxArrayLong caprates = GetSupportedCaptureRates(wxT(""), sampleRate);
+      int i;
+      for (i = 0; i < (int)caprates.GetCount(); i++)  // for each capture rate
+         {
+         if (playrates.Index(caprates[i]) != wxNOT_FOUND)
+            rates.Add(caprates[i]);
+         // if the capture rate is also a playback rate, then add to
+         // list of rates available
+         }
+   }
+   /* rem rates is the array of hardware-supported sample rates (in the current
+    * configuration), sampleRate is the Project Rate (desired sample rate) */
    long rate = (long)sampleRate;
    
    if (rates.Index(rate) != wxNOT_FOUND) {
       return rate;
+      /* the easy case - the suggested rate (project rate) is in the list, and
+       * we can just accept that and send back to the caller. This should be
+       * the case for most users most of the time (all of the time on
+       * Win MME as the OS does resampling) */
    }
 
-   if (rates.IsEmpty() || rate < 44100 && rates.Index(44100)) {
-      return 44100;
-   }
+   /* if we get here, there is a problem - the project rate isn't supported
+    * on our hardware, so we can't us it. Need to come up with an alternative
+    * rate to use. The process goes like this:
+    * * If there are no rates to pick from, we're stuck and return 0 (error)
+    * * If there are some rates, we pick the next one higher than the requested
+    *   rate to use.
+    * * If there aren't any higher, we use the highest available rate */
 
-   if (rate < 48000 && rates.Index(48000)) {
-      return 48000;
+   if (rates.IsEmpty()) {
+      /* we're stuck - there are no supported rates with this hardware. Error */
+      return 0;
    }
+   int i;
+   for (i = 0; i < (int)rates.GetCount(); i++)  // for each supported rate
+         {
+         if (rates[i] > rate) {
+            // supported rate is greater than requested rate
+            return rates[i];
+         }
+         }
 
-   if (rate < 96000 && rates.Index(96000)) {
-      return 96000;
-   }
-
-   return rates[rates.GetCount() - 1];
+   return rates[rates.GetCount() - 1]; // the highest available rate
 }      
 
 
