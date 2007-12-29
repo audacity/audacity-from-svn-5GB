@@ -222,8 +222,28 @@ class AudioIO {
    wxString GetDeviceInfo();
 
 private:
-   long GetBestRate(bool capturing, double sampleRate);
+   /** \brief Return a valid sample rate that is supported by the current I/O
+    * device(s).
+    *
+    * The return from this function is used to determine the sample rate that
+    * audacity actually runs the audio I/O stream at. if there is no suitable
+    * rate available from the hardware, it returns 0.
+    * The sampleRate argument gives the desired sample rate (the rate of the
+    * audio to be handeled, i.e. the currently Project Rate).
+    * capturing is true if the stream is capturing one or more audio channels,
+    * and playing is true if one or more channels are being played. */
+   double GetBestRate(bool capturing, bool playing, double sampleRate);
 
+   /** \brief Opens the portaudio stream(s) used to do playback or recording
+    * (or both) through.
+    *
+    * The sampleRate passed is the Project Rate of the active project. It may
+    * or may not be actually supported by playback or recording hardware
+    * currently in use (for many reasons). The number of Capture and Playback
+    * channels requested includes an allocation for doing software playthrough
+    * if necessary. The captureFormat is used for recording only, the playback
+    * being floating point always. Returns true if the stream opened sucessfully
+    * and false if it did not. */
    bool StartPortAudioStream(double sampleRate,
                              unsigned int numPlaybackChannels,
                              unsigned int numCaptureChannels,
@@ -231,7 +251,19 @@ private:
 
    void FillBuffers();
 
+   /** \brief Get the number of audio samples free in all of the playback
+    * buffers.
+    *
+    * Returns the smallest of the buffer free space values in the event that
+    * they are different. */
    int GetCommonlyAvailPlayback();
+
+   /** \brief Get the number of audio samples ready in all of the recording
+    * buffers.
+    *
+    * Returns the smallest of the number of samples available for storage in 
+    * the recording buffers (i.e. the number of samples that can be read from
+    * all record buffers without underflow). */
    int GetCommonlyAvailCapture();
 
    double NormalizeStreamTime(double absoluteTime) const;
