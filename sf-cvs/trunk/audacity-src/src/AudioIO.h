@@ -133,41 +133,53 @@ class AudioIO {
                  float playbackVolume);
    void GetMixer(int *inputSource, float *inputVolume,
                  float *playbackVolume);
+   /** \brief Get the list of inputs to the current mixer device
+    *
+    * Returns an array of strings giving the names of the inputs to the 
+    * soundcard mixer (driven by PortMixer) */
    wxArrayString GetInputSourceNames();
+
+   /** \Brief update state after changing what audio devices are selected 
+    *
+    * Called when the devices stored in the preferences are changed to update
+    * the audio mixer capabilities
+    *
+    * \todo: Make this do a sample rate query and store the result in the
+    * AudioIO object to avoid doing it later? */
    void HandleDeviceChange();
 
    /** \brief Set the current VU meters - this should be done once after 
     * each call to StartStream currently */
    void SetMeters(Meter *inputMeter, Meter *outputMeter);
    
-   /** \brief Get a list of sample rates the current output (playback) device
+   /** \brief Get a list of sample rates the output (playback) device
     * supports.
     *
     * If no information about available sample rates can be fetched,
     * an empty list is returned.
     *
-    * You can explicitely give the name of the device.  If you don't
+    * You can explicitely give the index of the device.  If you don't
     * give it, the currently selected device from the preferences will be used.
     *
     * You may also specify a rate for which to check in addition to the
     * standard rates.
     */
-   static wxArrayLong GetSupportedPlaybackRates(wxString devName = wxT(""),
+   static wxArrayLong GetSupportedPlaybackRates(int DevIndex = -1,
                                                 double rate = 0.0);
 
-   /** \brief Get a list of sample rates the current input (recording) device
+   /** \brief Get a list of sample rates the input (recording) device
     * supports.
     *
     * If no information about available sample rates can be fetched,
     * an empty list is returned.
     *
-    * You can explicitely give the name of the device.  If you don't
+    * You can explicitely give the index of the device.  If you don't
     * give it, the currently selected device from the preferences will be used.
     *
     * You may also specify a rate for which to check in addition to the
     * standard rates.
     */
-   static wxArrayLong GetSupportedCaptureRates(wxString devName = wxT(""),
+   static wxArrayLong GetSupportedCaptureRates(int devIndex = -1,
                                                double rate = 0.0);
 
    /** \brief Get a list of sample rates the current input/output device
@@ -178,15 +190,19 @@ class AudioIO {
     * supported on both the output and input device. If no information
     * about available sample rates can be fetched, it returns a default
     * list.
-    * You can explicitely give the names of the playDevice/recDevice.
+    * You can explicitely give the indexes of the playDevice/recDevice.
     * If you don't give them, the selected devices from the preferences
     * will be used.
     * You may also specify a rate for which to check in addition to the
     * standard rates.
     */
-   static wxArrayLong GetSupportedSampleRates(wxString playDevice = wxT(""),
-                                              wxString recDevice = wxT(""),
+   static wxArrayLong GetSupportedSampleRates(int playDevice = -1,
+                                              int recDevice = -1,
                                               double rate = 0.0);
+
+/*   static wxArrayLong GetSupportedSampleRates(wxString playDevice = wxT(""),
+                                              wxString recDevice = wxT(""),
+                                              double rate = 0.0);*/
 
    /** \brief Get a supported sample rate which can be used a an optimal
     * default.
