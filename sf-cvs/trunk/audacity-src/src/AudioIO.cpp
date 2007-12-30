@@ -1515,6 +1515,13 @@ int AudioIO::GetOptimalSupportedSampleRate()
    if (rates.Index(48000) != wxNOT_FOUND)
       return 48000;
 
+   // if there are no supported rates, the next bit crashes. So check first,
+   // and give them a "sensible" value if there are no valid values. They
+   // will still get an error later, but with any luck may have changed
+   // something by then. It's no worse than having an invalid default rate
+   // stored in the preferences, which we don't check for
+   if (rates.IsEmpty()) return 44100;
+
    return rates[rates.GetCount() - 1];
 }
 
@@ -1723,8 +1730,6 @@ wxString AudioIO::GetDeviceInfo()
       return wxT("Stream is active ... unable to gather information.");
    }
 
-#if defined(USE_PORTMIXER)
-   const PaDeviceInfo* info;
 
 #if USE_PORTAUDIO_V19
    int recDeviceNum = Pa_GetDefaultInputDevice();
@@ -1749,9 +1754,7 @@ wxString AudioIO::GetDeviceInfo()
    wxString playDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
    int j;
 
-   // msmeyer: This tries to open the device with the highest samplerate
-   // available on this device, using 44.1kHz as the default, if the info
-   // cannot be fetched.
+   // This gets info on all available audio devices (input and output)
 
 #if USE_PORTAUDIO_V19
    int cnt = Pa_GetDeviceCount();
@@ -1763,7 +1766,9 @@ wxString AudioIO::GetDeviceInfo()
       s << wxT("No devices found\n");
       return o.GetString();
    }
-      
+
+   const PaDeviceInfo* info;
+     
    for (j = 0; j < cnt; j++) {
       s << wxT("==============================") << e;
 
@@ -1810,6 +1815,7 @@ wxString AudioIO::GetDeviceInfo()
       s << wxT("    ") << (int)supportedSampleRates[k] << e;
    }
 
+#if defined(USE_PORTMIXER)
    int highestSampleRate = supportedSampleRates[supportedSampleRates.GetCount() - 1];
    bool EmulateMixerInputVol = true;
    bool EmulateMixerOutputVol = true;
