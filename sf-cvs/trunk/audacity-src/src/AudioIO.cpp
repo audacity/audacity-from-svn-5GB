@@ -372,12 +372,15 @@ void AudioIO::HandleDeviceChange()
    // This should not happen, but it would screw things up if it did.
    if (IsStreamActive())
       return;
-
+   // this function only does something (at the moment) for portmixer.
 #if defined(USE_PORTMIXER)
-   const PaDeviceInfo* info;
 
+   // if we have a PortMixer object, close it down
    if (mPortMixer) {
       #if __WXMAC__
+      // on the Mac we must make sure that we restore the hardware playthrough
+      // state of the sound device to what it was before, because there isn't
+      // a UI for this (!)
       if (Px_SupportsPlaythrough(mPortMixer) && mPreviousHWPlaythrough >= 0.0)
          Px_SetPlaythrough(mPortMixer, mPreviousHWPlaythrough);
          mPreviousHWPlaythrough = -1.0;
@@ -386,53 +389,11 @@ void AudioIO::HandleDeviceChange()
       mPortMixer = NULL;
    }
 
-#if USE_PORTAUDIO_V19
-   int recDeviceNum = Pa_GetDefaultInputDevice();
-   int playDeviceNum = Pa_GetDefaultOutputDevice();
-#else
-   int recDeviceNum = Pa_GetDefaultInputDeviceID();
-   int playDeviceNum = Pa_GetDefaultOutputDeviceID();
-#endif
+   // get the selected record and playback devices
+   int playDeviceNum = getPlayDevIndex();
+   int recDeviceNum = getRecordDevIndex();
 
-   // Sometimes PortAudio returns -1 if it cannot find a suitable default
-   // device, so we just use the first one available
-   if (recDeviceNum < 0)
-      recDeviceNum = 0;
-   if (playDeviceNum < 0)
-      playDeviceNum = 0;
-      
-   wxString recDevice = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
-   wxString playDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
-   int j;
-
-   // msmeyer: This tries to open the device with the highest samplerate
-   // available on this device, using 44.1kHz as the default, if the info
-   // cannot be fetched.
-
-#if USE_PORTAUDIO_V19
-   if (Pa_GetDeviceCount() <= 0)
-      return; // no devices found!?
-      
-   for(j=0; j<Pa_GetDeviceCount(); j++) {
-#else
-   if (Pa_CountDevices() <= 0)
-      return; // no devices found!?
-
-   for(j=0; j<Pa_CountDevices(); j++) {
-#endif
-
-      info = Pa_GetDeviceInfo(j);
-      if(!info)
-         continue;
-
-      if (DeviceName(info) == playDevice && info->maxOutputChannels > 0)
-         playDeviceNum = j;
-
-      if (DeviceName(info) == recDevice && info->maxInputChannels > 0)
-         recDeviceNum = j;
-   }
-   
-   wxArrayLong supportedSampleRates = GetSupportedSampleRates(playDevice, recDevice);
+   wxArrayLong supportedSampleRates = GetSupportedSampleRates(playDeviceNum, recDeviceNum);
    int highestSampleRate = supportedSampleRates[supportedSampleRates.GetCount() - 1];
    mEmulateMixerInputVol = true;
    mEmulateMixerOutputVol = true;
@@ -440,6 +401,9 @@ void AudioIO::HandleDeviceChange()
    mMixerOutputVol = 1.0;
 
    int error;
+   // msmeyer: This tries to open the device with the highest samplerate
+   // available on this device, using 44.1kHz as the default, if the info
+   // cannot be fetched.
 
 #if USE_PORTAUDIO_V19
 
@@ -511,7 +475,7 @@ void AudioIO::HandleDeviceChange()
       return;
    }
 
-   // Determine mixer capabilities - it it doesn't support either
+   // Determine mixer capabilities - if it doesn't support either
    // input or output, we emulate them (by multiplying this value
    // by all incoming/outgoing samples)
 
@@ -548,7 +512,7 @@ void AudioIO::HandleDeviceChange()
    mMixerInputVol = 1.0;
    mMixerOutputVol = 1.0;
 
-#endif
+#endif   // USE_PORTMIXER
 }
 
 PaSampleFormat AudacityToPortAudioSampleFormat(sampleFormat format)
@@ -1358,17 +1322,18 @@ double AudioIO::GetStreamTime()
 }
 
 
-wxArrayLong AudioIO::GetSupportedPlaybackRates(wxString devName, double rate)
+wxArrayLong AudioIO::GetSupportedPlaybackRates(int devIndex, double rate)
 {
    wxArrayLong supported;
    int irate = (int)rate;
    const PaDeviceInfo* devInfo = NULL;
-   int devIndex;
    int i;
 
-   // sort out the index of the playback device (based on requested, then prefs,
-   // then defaults)
-   devIndex = getPlayDevIndex(devName);
+   if (devIndex == -1)
+   {  // weren't given a device index, get the prefs / default one
+      devIndex = getPlayDevIndex();
+   }
+
    devInfo = Pa_GetDeviceInfo(devIndex);
    
    if (!devInfo)
@@ -1433,15 +1398,17 @@ wxArrayLong AudioIO::GetSupportedPlaybackRates(wxString devName, double rate)
    return supported;
 }
 
-wxArrayLong AudioIO::GetSupportedCaptureRates(wxString devName, double rate)
+wxArrayLong AudioIO::GetSupportedCaptureRates(int devIndex, double rate)
 {
    wxArrayLong supported;
    int irate = (int)rate;
    const PaDeviceInfo* devInfo = NULL;
-   int devIndex = -1;
    int i;
 
-   devIndex = getRecordDevIndex(devName);
+   if (devIndex == -1)
+   {  // not given a device, look up in prefs / default
+      devIndex = getRecordDevIndex();
+   }
    devInfo = Pa_GetDeviceInfo(devIndex);
 
    if (!devInfo)
@@ -1511,7 +1478,7 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(wxString devName, double rate)
    return supported;
 }
 
-wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDevice, double rate)
+wxArrayLong AudioIO::GetSupportedSampleRates(int playDevice, int recDevice, double rate)
 {
    wxArrayLong playback = GetSupportedPlaybackRates(playDevice, rate);
    wxArrayLong capture = GetSupportedCaptureRates(recDevice, rate);
@@ -1525,11 +1492,11 @@ wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDe
          result.Add(playback[i]);
 
    // If this yields no results, use the default sample rates nevertheless
-   if (result.IsEmpty())
+/*   if (result.IsEmpty())
    {
       for (i = 0; i < NumStandardRates; i++)
          result.Add(StandardRates[i]);
-   }
+   }*/
 
    return result;
 }
@@ -1556,15 +1523,15 @@ double AudioIO::GetBestRate(bool capturing, bool playing, double sampleRate)
    wxArrayLong rates;
 
    if (capturing && !playing) {
-      rates = GetSupportedCaptureRates(wxT(""), sampleRate);
+      rates = GetSupportedCaptureRates(-1, sampleRate);
    }
    if (playing && !capturing) {
-      rates = GetSupportedPlaybackRates(wxT(""), sampleRate);
+      rates = GetSupportedPlaybackRates(-1, sampleRate);
    }
    else {   // we assume capturing and playing - the alternative would be a 
             // bit odd
-      wxArrayLong playrates = GetSupportedPlaybackRates(wxT(""), sampleRate);
-      wxArrayLong caprates = GetSupportedCaptureRates(wxT(""), sampleRate);
+      wxArrayLong playrates = GetSupportedPlaybackRates(-1, sampleRate);
+      wxArrayLong caprates = GetSupportedCaptureRates(-1, sampleRate);
       int i;
       for (i = 0; i < (int)caprates.GetCount(); i++)  // for each capture rate
          {
@@ -1818,7 +1785,7 @@ wxString AudioIO::GetDeviceInfo()
       s << wxT("High Input Latency: ") << info->defaultHighInputLatency << e;
       s << wxT("High Output Latency: ") << info->defaultHighOutputLatency << e;
 #endif
-      wxArrayLong rates = GetSupportedPlaybackRates(name, 0.0);
+      wxArrayLong rates = GetSupportedPlaybackRates(j, 0.0);
 
       s << wxT("Supported Rates:") << e;
       for (int k = 0; k < (int) rates.GetCount(); k++) {
@@ -1836,7 +1803,7 @@ wxString AudioIO::GetDeviceInfo()
    s << wxT("Selected capture device: ") << recDeviceNum << wxT(" - ") << recDevice << e;
    s << wxT("Selected playback device: ") << playDeviceNum << wxT(" - ") << playDevice << e;
 
-   wxArrayLong supportedSampleRates = GetSupportedSampleRates(playDevice, recDevice);
+   wxArrayLong supportedSampleRates = GetSupportedSampleRates(playDeviceNum, recDeviceNum);
 
    s << wxT("Supported Rates:");
    for (int k = 0; k < (int) supportedSampleRates.GetCount(); k++) {

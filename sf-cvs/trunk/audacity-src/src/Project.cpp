@@ -2555,7 +2555,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       // msmeyer: Before changing rate, check if rate is supported
       // by current sound card. If it is not, don't change it,
       // otherwise playback won't work.
-      wxArrayLong rates = AudioIO::GetSupportedSampleRates(wxT(""), wxT(""), newRate);
+      wxArrayLong rates = AudioIO::GetSupportedSampleRates(-1, -1, newRate);
       if (rates.Index((int)newRate) != wxNOT_FOUND)
       {
          mRate = newRate;
