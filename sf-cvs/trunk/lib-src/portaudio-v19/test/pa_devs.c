@@ -7,7 +7,7 @@
         ASIO support.
 */
 /*
- * $Id: pa_devs.c,v 1.6 2007-12-09 21:51:05 richardash1981 Exp $
+ * $Id: pa_devs.c,v 1.7 2007-12-30 21:09:59 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -113,7 +113,7 @@ int main(void)
     numDevices = Pa_GetDeviceCount();
     if( numDevices < 0 )
     {
-        printf( "ERROR: Pa_CountDevices returned 0x%x\n", numDevices );
+        printf( "ERROR: Pa_GetDeviceCount returned 0x%x\n", numDevices );
         err = numDevices;
         goto error;
     }
