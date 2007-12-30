@@ -145,7 +145,8 @@ class AudioIO {
     * the audio mixer capabilities
     *
     * \todo: Make this do a sample rate query and store the result in the
-    * AudioIO object to avoid doing it later? */
+    * AudioIO object to avoid doing it later? Would simplify the
+    * GetSupported*Rate functions considerably */
    void HandleDeviceChange();
 
    /** \brief Set the current VU meters - this should be done once after 
@@ -200,15 +201,13 @@ class AudioIO {
                                               int recDevice = -1,
                                               double rate = 0.0);
 
-/*   static wxArrayLong GetSupportedSampleRates(wxString playDevice = wxT(""),
-                                              wxString recDevice = wxT(""),
-                                              double rate = 0.0);*/
-
    /** \brief Get a supported sample rate which can be used a an optimal
     * default.
     *
     * Currently, this uses the first supported rate in the list
-    * [44100, 48000, highest sample rate].
+    * [44100, 48000, highest sample rate]. Used in Project as a default value
+    * for project rates if one cannot be retrieved from the preferences.
+    * So all in all not that useful or important really
     */
    static int GetOptimalSupportedSampleRate();
 
