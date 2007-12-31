@@ -9,7 +9,7 @@ CC = cc $(CFLAGS)
 
 # the unix path gets us switches.h:
 # the cmt path gets us swlogic.h:
-CFLAGS = -g -I../sys -I../cmt
+CFLAGS += -I../sys -I../cmt
 
 # Directory info:
 BINPATH = .
