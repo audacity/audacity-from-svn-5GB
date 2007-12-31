@@ -4,8 +4,8 @@
 # working Makefile.
 
 CC = @CC@
-CFLAGS = @CFLAGS@ -Wall
-LDFLAGS = @LDFLAGS@
+CFLAGS += @CFLAGS@ -Wall
+LDFLAGS += @LDFLAGS@
 
 LIBS = @LIBS@ -lm
 
