@@ -53,7 +53,7 @@ OBJS = \
 	Dependencies.o \
 	Envelope.o \
 	FFT.o \
-   FileIO.o \
+	FileIO.o \
 	FileNames.o \
 	FreqWindow.o \
 	HelpText.o \
@@ -162,22 +162,22 @@ OBJS = \
 	prefs/SmartRecordPrefs.o \
 	prefs/SpectrumPrefs.o \
 	prefs/ThemePrefs.o \
-   toolbars/ControlToolBar.o \
-   toolbars/DeviceToolBar.o \
-   toolbars/EditToolBar.o \
-   toolbars/MeterToolBar.o \
-   toolbars/MixerToolBar.o \
-   toolbars/SelectionBar.o \
-   toolbars/ToolBar.o \
-   toolbars/ToolDock.o \
-   toolbars/ToolManager.o \
-   toolbars/ToolsToolBar.o \
-   toolbars/TranscriptionToolBar.o \
+	toolbars/ControlToolBar.o \
+	toolbars/DeviceToolBar.o \
+	toolbars/EditToolBar.o \
+	toolbars/MeterToolBar.o \
+	toolbars/MixerToolBar.o \
+	toolbars/SelectionBar.o \
+	toolbars/ToolBar.o \
+	toolbars/ToolDock.o \
+	toolbars/ToolManager.o \
+	toolbars/ToolsToolBar.o \
+	toolbars/TranscriptionToolBar.o \
 	widgets/treebook.o \
 	widgets/AButton.o \
 	widgets/ASlider.o \
 	widgets/AttachableScrollBar.o \
-   widgets/ErrorDialog.o \
+	widgets/ErrorDialog.o \
 	widgets/ExpandingToolBar.o \
 	widgets/Grabber.o \
 	widgets/Grid.o \
