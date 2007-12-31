@@ -6,9 +6,7 @@
 INCL = -Inyqsrc -Itran -Ixlisp -Icmt -Isys -Isnd -Ifft
 
 CC = @CC@
-override CFLAGS += -g -DCMTSTUFF -O2 -DEXT $(INCL)
-LN = $(CC)
-LFLAGS = -lm
+CFLAGS += -DCMTSTUFF -DEXT @CFLAGS@ $(INCL)
 
 INTGEN = misc/intgen
 
