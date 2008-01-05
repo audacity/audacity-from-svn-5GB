@@ -7609,7 +7609,7 @@ esac
 
 if [ "$use_ladspa" = "yes" ] ; then
    case "$host_os" in
-      darwin89*)
+      darwin[89]*)
          ;;
       darwin7*)
          LIBS="$LIBS -ldl"
