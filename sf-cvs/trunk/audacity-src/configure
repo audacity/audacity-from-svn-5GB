@@ -7609,12 +7609,10 @@ esac
 
 if [ "$use_ladspa" = "yes" ] ; then
    case "$host_os" in
-      darwin[89]*)
-         ;;
       darwin7*)
          LIBS="$LIBS -ldl"
          ;;
-      darwin* | rhapsody*)
+      darwin[123456].* | rhapsody*)
          LOCAL_LIBS="$LOCAL_LIBS libdl.a"
          CXXFLAGS="$CXXFLAGS -I$(srcdir)/lib-src/dlcompat"
          if test ! -f "lib-src/dlcompat/Makefile"; then
