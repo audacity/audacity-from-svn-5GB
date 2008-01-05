@@ -9,11 +9,14 @@ allegro
 
 dlcompat
 --------
+Support library for dynamic loading of modules on OS X 10.3 and older. Used
+for LADSPA on OS X support, and probably not any where else
 
 expat
 -----
 XML parser library used to parse project files and so on. By default the
-system copy is prefered over this one
+system copy is prefered over this one, even on OS X (where it is shipped by
+default)
 
 FileDialogue
 ------------
@@ -33,6 +36,8 @@ libflac
 -------
 http://flac.sourceforge.net/
 Free Lossless Audio Codec encoding and decoding library
+Version in audacity cvs: 1.1.2
+TODO: Update to current release version
 
 libid3tag
 ---------
