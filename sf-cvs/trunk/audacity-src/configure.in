@@ -544,7 +544,7 @@ esac
 dnl Special configuration for LADSPA on Mac OS X
 if [[ "$use_ladspa" = "yes" ]] ; then
    case "$host_os" in
-      darwin8*)
+      darwin[89]*)
          ;;
       darwin7*)
          LIBS="$LIBS -ldl"
