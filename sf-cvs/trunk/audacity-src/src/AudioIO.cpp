@@ -398,16 +398,30 @@ void AudioIO::HandleDeviceChange()
    int recDeviceNum = getRecordDevIndex();
 
    wxArrayLong supportedSampleRates = GetSupportedSampleRates(playDeviceNum, recDeviceNum);
-   int highestSampleRate = supportedSampleRates[supportedSampleRates.GetCount() - 1];
+   // that might have given us no rates whatsoever, so we have to guess an
+   // answer to do the next bit
+   int numrates = supportedSampleRates.GetCount();
+   int highestSampleRate;
+   if (numrates > 0)
+   {
+      highestSampleRate = supportedSampleRates[numrates - 1];
+   }
+   else
+   {  // we don't actually have any rates that work for Rec and Play. Guess one
+      // to use for messing with the mixer, which doesn't actually do either
+      highestSampleRate = 44100;
+      // supportedSampleRates is still empty, but it's not used again, so
+      // can ignore
+   }
    mEmulateMixerInputVol = true;
    mEmulateMixerOutputVol = true;
    mMixerInputVol = 1.0;
    mMixerOutputVol = 1.0;
 
    int error;
-   // msmeyer: This tries to open the device with the highest samplerate
-   // available on this device, using 44.1kHz as the default, if the info
-   // cannot be fetched.
+   // This tries to open the device with the samplerate worked out above, which
+   // will be the highest available for play and record on the device, or
+   // 44.1kHz if the info cannot be fetched.
 
 #if USE_PORTAUDIO_V19
 
@@ -436,13 +450,14 @@ void AudioIO::HandleDeviceChange()
          Pa_GetDeviceInfo(recDeviceNum)->defaultLowInputLatency;
    else
       captureParameters.suggestedLatency = 100; // we're just probing anyway
- 
+
+   // try opening for record and playback
    error = Pa_OpenStream(&stream,
                          &captureParameters, &playbackParameters,
                          highestSampleRate, paFramesPerBufferUnspecified,
                          paClipOff | paDitherOff,
                          audacityAudioCallback, NULL);
-
+   // if that failed, try just for record
    if( error ) {
       error = Pa_OpenStream(&stream,
                             &captureParameters, NULL,
@@ -468,10 +483,10 @@ void AudioIO::HandleDeviceChange()
    }
 
 #endif
-
+   // if it's still not working, give up
    if( error )
       return;
-
+   // set up portmixer on the open portaudio stream
    mPortMixer = Px_OpenMixer(stream, 0);
 
    if (!mPortMixer) {
