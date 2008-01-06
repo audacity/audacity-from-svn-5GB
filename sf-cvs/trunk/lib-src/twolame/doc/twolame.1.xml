@@ -45,7 +45,7 @@ then use - as the output filename.</simpara>
 </term>
 <listitem>
 <simpara>
-        Specifies that input is raw 16-bit signed PCM audio.
+        Specifies that input is raw signed PCM audio.
         If audio is stereo, than audio samples are interleaved
         between the two channels.
 </simpara>
@@ -73,6 +73,18 @@ then use - as the output filename.</simpara>
         the audio in Hz.
         Valid sample rates: 16000, 22050, 24000, 32000, 44100, 48000Hz.
         Default sample rate is 44100Hz.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--samplesize &lt;int&gt;
+</term>
+<listitem>
+<simpara>
+        Specifies the sample size (in bits) of the raw PCM audio.
+        Valid sample sizes: 8, 16, 24, 32.
+        Default sample size is 16-bit.
 </simpara>
 </listitem>
 </varlistentry>
@@ -505,7 +517,7 @@ For a full list of authors, please see the AUTHORS file.</simpara>
 </refsect1>
 <refsect1>
 <title>COPYING</title>
-<simpara>Copyright &#169; 2004-2005 The TwoLAME Project. Free use of this software is
+<simpara>Copyright &#169; 2004-2006 The TwoLAME Project. Free use of this software is
 granted under the terms of the GNU Lesser General Public License (LGPL).</simpara>
 
 </refsect1>

@@ -1,4 +1,4 @@
-/* build/config.h.in.  Generated from configure.ac by autoheader.  */
+/* Configuration header file for Win32  */
 
 #include "winutil.h"
 

@@ -2,7 +2,7 @@
  * ISO MPEG Audio Subgroup Software Simulation Group (1996)
  * ISO 13818-3 MPEG-2 Audio Encoder - Lower Sampling Frequency Extension
  *
- * $Id: commonh.txt,v 1.1 2006-10-19 09:46:19 msmeyer Exp $
+ * $Id: commonh.txt,v 1.2 2008-01-06 14:21:12 richardash1981 Exp $
  *
  * $Log: not supported by cvs2svn $
  * Revision 1.1  2005/11/15 16:04:26  nhumfrey

@@ -92,6 +92,7 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 F77 = @F77@
 FFLAGS = @FFLAGS@
+GREP = @GREP@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
@@ -113,6 +114,7 @@ PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 RANLIB = @RANLIB@
+SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 SNDFILE_CFLAGS = @SNDFILE_CFLAGS@
@@ -121,13 +123,9 @@ STRIP = @STRIP@
 TWOLAME_BIN = @TWOLAME_BIN@
 TWOLAME_SO_VERSION = @TWOLAME_SO_VERSION@
 VERSION = @VERSION@
-ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_F77 = @ac_ct_F77@
-ac_ct_RANLIB = @ac_ct_RANLIB@
-ac_ct_STRIP = @ac_ct_STRIP@
-ac_pt_PKG_CONFIG = @ac_pt_PKG_CONFIG@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -144,23 +142,30 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
+datarootdir = @datarootdir@
+docdir = $(datadir)/doc
+dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
+htmldir = $(srcdir)/html
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
+localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
+pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
+psdir = @psdir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
@@ -170,7 +175,6 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 man_MANS = twolame.1
-htmldir = $(srcdir)/html
 asciidoc = asciidoc -b xhtml11 \
 	-a revision="@PACKAGE_VERSION@" \
 	-a theme=twolame \
@@ -178,7 +182,6 @@ asciidoc = asciidoc -b xhtml11 \
 	-a stylesdir=. 
 
 doxygen = doxygen doxygen.conf
-docdir = $(datadir)/doc
 pkgdocdir = $(docdir)/$(PACKAGE)
 pkghtmldir = $(pkgdocdir)/html
 pkghtml_DATA = \
@@ -463,10 +466,11 @@ uninstall-man: uninstall-man1
 	uninstall-pkgdocDATA uninstall-pkghtmlDATA
 
 
-twolame.1.xml: twolame.1.txt
-	asciidoc -d manpage -b docbook -o twolame.1.xml twolame.1.txt
+doc: build-man build-html
 
-twolame.1: twolame.1.xml
+build-man:
+	rm -f twolame.1.xml twolame.1
+	asciidoc -d manpage -b docbook -o twolame.1.xml twolame.1.txt
 	xmlto man twolame.1.xml
 
 build-html:

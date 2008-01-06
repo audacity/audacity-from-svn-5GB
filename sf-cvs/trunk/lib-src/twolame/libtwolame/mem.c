@@ -2,7 +2,7 @@
  *  TwoLAME: an optimized MPEG Audio Layer Two encoder
  *
  *  Copyright (C) 2001-2004 Michael Cheng
- *  Copyright (C) 2004-2005 The TwoLAME Project
+ *  Copyright (C) 2004-2006 The TwoLAME Project
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -17,33 +17,30 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *  
+ *
+ *  $Id: mem.c,v 1.2 2008-01-06 14:21:15 richardash1981 Exp $
+ *
  */
 
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "mem.h"
+
 
 /*******************************************************************************
 *
-*  Allocate number of bytes of memory equal to "block".
+*  Allocate number of bytes of memory equal to "size".
 *
 *******************************************************************************/
 
-void *twolame_malloc (unsigned long block, char *item)
+void *twolame_malloc (size_t size, int line, char *file)
 {
-	
-	void *ptr;
-	
-	ptr = (void *) malloc (block);
+	void *ptr = (void *)malloc(size);
 	
 	if (ptr != NULL) {
-		memset (ptr, 0, block);
+		memset (ptr, 0, size);
 	} else {
-		fprintf (stderr, "Unable to allocate %ld bytes for %s\n", block, item);
+		fprintf (stderr, "Unable to allocate %d bytes at line %d of %s\n", (int)size, line, file);
 		return NULL;
 	}
 	
@@ -51,17 +48,5 @@ void *twolame_malloc (unsigned long block, char *item)
 }
 
 
-/****************************************************************************
-*
-*  Free memory pointed to by "*ptr_addr".
-*
-*****************************************************************************/
 
-void twolame_free (void **ptr_addr)
-{
-
-	if (*ptr_addr != NULL) {
-		free (*ptr_addr);
-		*ptr_addr = NULL;
-	}
-}
+// vim:ts=4:sw=4:nowrap: 

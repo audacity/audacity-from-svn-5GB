@@ -1,23 +1,25 @@
 /*
- *  TwoLAME: an optimized MPEG Audio Layer Two encoder
+ *	TwoLAME: an optimized MPEG Audio Layer Two encoder
  *
- *  Copyright (C) 2001-2004 Michael Cheng
- *  Copyright (C) 2004-2005 The TwoLAME Project
+ *	Copyright (C) 2001-2004 Michael Cheng
+ *	Copyright (C) 2004-2006 The TwoLAME Project
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ *	This library is free software; you can redistribute it and/or
+ *	modify it under the terms of the GNU Lesser General Public
+ *	License as published by the Free Software Foundation; either
+ *	version 2.1 of the License, or (at your option) any later version.
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ *	This library is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *	Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *  
+ *	You should have received a copy of the GNU Lesser General Public
+ *	License along with this library; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *  $Id: bitbuffer.c,v 1.2 2008-01-06 14:21:14 richardash1981 Exp $
+ *
  */
 
 
@@ -33,7 +35,7 @@
 /*create bit buffer*/
 bit_stream* buffer_init( unsigned char *buffer, int buffer_size )
 {
-	bit_stream* bs = (bit_stream *)twolame_malloc(sizeof(bit_stream),"bit_stream");
+	bit_stream* bs = (bit_stream *)TWOLAME_MALLOC( sizeof(bit_stream) );
 	
 	bs->buf = buffer;
 	bs->buf_size = buffer_size;
@@ -47,14 +49,17 @@ bit_stream* buffer_init( unsigned char *buffer, int buffer_size )
 }
 
 /* Dellocate bit buffer */
-void buffer_deinit( bit_stream ** bs )
+void buffer_deinit( bit_stream **bs )
 {
-	twolame_free( (void**)bs );
+
+	if (bs==NULL||*bs==NULL) return;
+
+	TWOLAME_FREE( *bs );
 }
 
 
 /*write 1 bit from the bit stream */
-void buffer_put1bit (bit_stream * bs, int bit)
+NO_DLL_INLINE void buffer_put1bit (bit_stream * bs, int bit)
 {
 	bs->totbit++;
 	
@@ -100,8 +105,10 @@ NO_DLL_INLINE void buffer_putbits (bit_stream * bs, unsigned int val, int N)
 }
 
 /*return the current bit stream length (in bits)*/
-unsigned long buffer_sstell (bit_stream * bs)
+NO_DLL_INLINE unsigned long buffer_sstell (bit_stream * bs)
 {
 	return (bs->totbit);
 }
 
+
+// vim:ts=4:sw=4:nowrap: 
