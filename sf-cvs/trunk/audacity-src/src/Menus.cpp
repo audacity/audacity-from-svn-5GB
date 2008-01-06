@@ -781,6 +781,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("Stop"),        _("Stop\tS"),                     FN(OnStop));
    c->AddCommand(wxT("Pause"),       _("Pause\tP"),                    FN(OnPause));
    c->AddCommand(wxT("Record"),      _("Record\tR"),                   FN(OnRecord));
+   c->AddCommand(wxT("RecordAppend"),      _("Record Append\tShift+R"),                   FN(OnRecordAppend));
    
    c->AddCommand(wxT("PlayStopSelect"),  _("Play/Stop and Set Cursor\tShift+A"),    FN(OnPlayStopSelect));
 //   c->AddCommand(wxT("StopSelect"),  _("Stop and Select\tShift+A"),    FN(OnStopSelect));
@@ -1402,6 +1403,15 @@ void AudacityProject::OnPause()
 void AudacityProject::OnRecord()
 {
    wxCommandEvent evt;
+   evt.SetInt(0);
+
+   GetControlToolBar()->OnRecord(evt);
+}
+
+void AudacityProject::OnRecordAppend()
+{
+   wxCommandEvent evt;
+   evt.SetInt(1);
 
    GetControlToolBar()->OnRecord(evt);
 }

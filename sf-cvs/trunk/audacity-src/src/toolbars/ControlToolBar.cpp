@@ -725,7 +725,7 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
 
       // If SHIFT key was down, the user wants append to tracks
       int recordingChannels = 0;
-      bool shifted = mRecord->WasShiftDown();
+      bool shifted = mRecord->WasShiftDown() | (evt.GetInt() == 1);
       if (shifted) {
          TrackListIterator it(t);
          WaveTrack *wt;
