@@ -18,7 +18,7 @@
  *	License along with this library; if not, write to the Free Software
  *	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: common.h,v 1.2 2008-01-06 14:21:15 richardash1981 Exp $
+ *  $Id: common.h,v 1.3 2008-01-06 14:25:22 richardash1981 Exp $
  *
  */
 
@@ -35,9 +35,15 @@
 # define NO_DLL_INLINE
 #else
 # include "config.h"
-# ifdef __APPLE__
-/* Same problem under Mac OS X */
-#  define NO_DLL_INLINE
+/*
+ * When building shared libraries, some functions can't be inlined otherwise
+ * link errors will occur. In a new enough  GCC version they can be declared
+ * extern inline. This fix appears earlier in Apple GCC than in main-line GCC
+ */
+#if (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3))
+#define NO_DLL_INLINE extern inline
+#elif (__APPLE_CC__ >= 5465)
+#define NO_DLL_INLINE extern inline
 # else
 #  define NO_DLL_INLINE inline
 # endif
