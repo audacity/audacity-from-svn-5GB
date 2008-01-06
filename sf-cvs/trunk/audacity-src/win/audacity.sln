@@ -1,5 +1,6 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual C++ Express 2005
+# Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Audacity", "audacity.vcproj", "{1D64095C-F936-4FCF-B609-56E9DDF941FA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8A1C2514-85DD-4AE2-9CF3-3183B66C537D} = {8A1C2514-85DD-4AE2-9CF3-3183B66C537D}
@@ -59,13 +60,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PAStaticWMMEv19", "..\lib-s
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "locale", "locale.vcproj", "{BE9F28C5-058A-45F5-B2C1-D077BC058AAE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtwolame_static", "..\lib-src\twolame\winproj\libtwolame_static.vcproj", "{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileDialog", "..\lib-src\FileDialog\FileDialog.vcproj", "{5284D863-3813-479F-BBF0-AC234E216BC6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod-script-pipe", "..\lib-src\mod-script-pipe\mod-script-pipe.vcproj", "{85774A29-EA2F-4A40-994F-6BE593D847A5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libvamp", "..\lib-src\libvamp\win\libvamp.vcproj", "{A61E2BF1-21AA-4118-B0D8-FD3D53DB892E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtwolame_static", "..\lib-src\twolame\win32\libtwolame_static.vcproj", "{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -293,18 +294,6 @@ Global
 		{BE9F28C5-058A-45F5-B2C1-D077BC058AAE}.Release|Win32.ActiveCfg = Release|Win32
 		{BE9F28C5-058A-45F5-B2C1-D077BC058AAE}.Unicode_Debug|Win32.ActiveCfg = Unicode_Debug|Win32
 		{BE9F28C5-058A-45F5-B2C1-D077BC058AAE}.Unicode_Release|Win32.ActiveCfg = Unicode_Release|Win32
-		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Debug DLL|Win32.ActiveCfg = Debug|Win32
-		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Debug DLL|Win32.Build.0 = Debug|Win32
-		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Debug wx284|Win32.ActiveCfg = Debug wx284|Win32
-		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Debug wx284|Win32.Build.0 = Debug wx284|Win32
-		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Debug|Win32.Build.0 = Debug|Win32
-		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Release|Win32.ActiveCfg = Release|Win32
-		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Release|Win32.Build.0 = Release|Win32
-		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Unicode_Debug|Win32.ActiveCfg = Unicode_Debug|Win32
-		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Unicode_Debug|Win32.Build.0 = Unicode_Debug|Win32
-		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Unicode_Release|Win32.ActiveCfg = Unicode_Release|Win32
-		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Unicode_Release|Win32.Build.0 = Unicode_Release|Win32
 		{5284D863-3813-479F-BBF0-AC234E216BC6}.Debug DLL|Win32.ActiveCfg = Debug|Win32
 		{5284D863-3813-479F-BBF0-AC234E216BC6}.Debug DLL|Win32.Build.0 = Debug|Win32
 		{5284D863-3813-479F-BBF0-AC234E216BC6}.Debug wx284|Win32.ActiveCfg = Debug wx284|Win32
@@ -321,7 +310,6 @@ Global
 		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Debug wx284|Win32.ActiveCfg = Debug wx284|Win32
 		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Debug wx284|Win32.Build.0 = Debug wx284|Win32
 		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Debug|Win32.ActiveCfg = Debug wx284|Win32
-		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Debug|Win32.Build.0 = Debug wx284|Win32
 		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Release|Win32.ActiveCfg = Debug wx284|Win32
 		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Unicode_Debug|Win32.ActiveCfg = Debug wx284|Win32
 		{85774A29-EA2F-4A40-994F-6BE593D847A5}.Unicode_Release|Win32.ActiveCfg = Debug wx284|Win32
@@ -337,6 +325,18 @@ Global
 		{A61E2BF1-21AA-4118-B0D8-FD3D53DB892E}.Unicode_Debug|Win32.Build.0 = Unicode_Debug|Win32
 		{A61E2BF1-21AA-4118-B0D8-FD3D53DB892E}.Unicode_Release|Win32.ActiveCfg = Unicode_Release|Win32
 		{A61E2BF1-21AA-4118-B0D8-FD3D53DB892E}.Unicode_Release|Win32.Build.0 = Unicode_Release|Win32
+		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Debug DLL|Win32.ActiveCfg = Debug|Win32
+		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Debug DLL|Win32.Build.0 = Debug|Win32
+		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Debug wx284|Win32.ActiveCfg = Debug|Win32
+		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Debug wx284|Win32.Build.0 = Debug|Win32
+		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Debug|Win32.Build.0 = Debug|Win32
+		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Release|Win32.ActiveCfg = Release|Win32
+		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Release|Win32.Build.0 = Release|Win32
+		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Unicode_Debug|Win32.ActiveCfg = Unicode_Debug|Win32
+		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Unicode_Debug|Win32.Build.0 = Unicode_Debug|Win32
+		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Unicode_Release|Win32.ActiveCfg = Unicode_Release|Win32
+		{8C69F7B6-684F-48D9-9057-8912CA3DAA8B}.Unicode_Release|Win32.Build.0 = Unicode_Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
