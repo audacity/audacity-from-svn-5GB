@@ -127,9 +127,9 @@ twolame
 -------
 http://www.twolame.org/
 MPEG I layer 2 audio encoding library used for MP2 exports
-Version in audacity cvs: 0.3.8
-Patches: some critical ones, sent upstream and incorportated.
-TODO: Update to 0.3.10 release
+Version in audacity cvs: 0.3.10
+Patches: Build fix for OS X Leapoard and GCC 4.3, sent upstream
+(build-gcc-4.3.patch)
 
 wave++
 ------
@@ -154,9 +154,8 @@ then tar --strip-components 1 will remove the un-needed top level directory.
 Now we have a new file tree. This is the point at which to clean out any
 un-needed files, re-apply any local patches so on.
 
-* Copy in newer config.sub and config.guess if needed.
 * run autoreconf if we have modified configure.in or configure.ac
-* run libtoolize --copy --force to update ltmain.sh
+* run libtoolize --copy --force to update ltmain.sh, config.sub, config.guess
 
 By doing it this way we have already updated the mtime on all files, so we
 don't need to do a recusive touch.
