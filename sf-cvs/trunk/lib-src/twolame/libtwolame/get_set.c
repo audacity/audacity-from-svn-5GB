@@ -2,7 +2,7 @@
  *  TwoLAME: an optimized MPEG Audio Layer Two encoder
  *
  *  Copyright (C) 2001-2004 Michael Cheng
- *  Copyright (C) 2004-2005 The TwoLAME Project
+ *  Copyright (C) 2004-2006 The TwoLAME Project
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -17,7 +17,9 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *  
+ *
+ *  $Id: get_set.c,v 1.2 2008-01-06 14:21:15 richardash1981 Exp $
+ *
  */
 
 #include <stdio.h>
@@ -27,9 +29,11 @@
 #include <assert.h>
 
 #include "twolame.h"
+#include "bitbuffer.h"
 #include "common.h"
 #include "mem.h"
 #include "util.h"
+#include "energy.h"
 
 
 
@@ -37,7 +41,7 @@
 
 int twolame_set_mode (twolame_options *glopts, TWOLAME_MPEG_mode mode)
 {
-	if (mode<0 || mode>3)
+	if (mode<TWOLAME_AUTO_MODE || mode>TWOLAME_MONO)
 	{
 		fprintf(stderr,"invalid mode %i\n",mode);
 		return(-1);
@@ -53,12 +57,12 @@ TWOLAME_MPEG_mode twolame_get_mode (twolame_options *glopts)
 
 const char *twolame_get_mode_name(twolame_options *glopts)
 {
-	static const char *mode_name[5] = { "Stereo", "J-Stereo", "Dual-Channel", "Mono", "Illegal Mode"};
+	static const char *mode_name[6] = { "Auto", "Stereo", "J-Stereo", "Dual-Channel", "Mono", "Illegal Mode"};
 	int mode = glopts->mode;
-	if (mode>=0 && mode<4)
-		return (mode_name[mode]);
+	if (mode>=TWOLAME_AUTO_MODE && mode<=TWOLAME_MONO)
+		return (mode_name[mode-1]);
 	else 
-		return (mode_name[4]);
+		return (mode_name[5]);
 }
 
 
@@ -93,8 +97,8 @@ int twolame_set_scale(twolame_options* glopts, float scale)
 		fprintf(stderr,"invalid scaling amount %f\n",scale);
 		return(-1);
 	}
-    glopts->scale = scale;
-    return 0;
+	glopts->scale = scale;
+	return 0;
 }
 
 float twolame_get_scale(twolame_options* glopts)
@@ -109,8 +113,8 @@ int twolame_set_scale_left(twolame_options* glopts, float scale)
 		fprintf(stderr,"invalid scaling amount %f\n",scale);
 		return(-1);
 	}
-    glopts->scale_left = scale;
-    return 0;
+	glopts->scale_left = scale;
+	return 0;
 }
 
 float twolame_get_scale_left(twolame_options* glopts)
@@ -126,7 +130,7 @@ int twolame_set_scale_right(twolame_options* glopts, float scale)
 		return(-1);
 	}
 	glopts->scale_right = scale;
-    return 0;
+	return 0;
 }
 
 float twolame_get_scale_right(twolame_options* glopts)
@@ -185,8 +189,8 @@ int twolame_get_bitrate (twolame_options *glopts)
 int twolame_set_emphasis (twolame_options *glopts, TWOLAME_Emphasis emphasis)
 {
 	if (emphasis!=TWOLAME_EMPHASIS_N &&
-	    emphasis!=TWOLAME_EMPHASIS_5 &&
-	    emphasis!=TWOLAME_EMPHASIS_C)     return(-1);
+		emphasis!=TWOLAME_EMPHASIS_5 &&
+		emphasis!=TWOLAME_EMPHASIS_C)	return(-1);
 	glopts->emphasis = emphasis;
 	return(0);
 }
@@ -242,7 +246,7 @@ int twolame_set_padding (twolame_options *glopts, TWOLAME_Padding padding)
 		glopts->padding = TRUE;
 	else
 		glopts->padding = FALSE;
-      
+  
 	return(0);
 }
 
@@ -375,12 +379,16 @@ int twolame_get_num_ancillary_bits (twolame_options *glopts)
 
 int twolame_set_energy_levels (twolame_options *glopts, int energylevels )
 {
-	if (energylevels)
-		glopts->do_energy_levels = TRUE;    
-	else
+	if (energylevels) {
+		glopts->do_energy_levels = TRUE;
+	} else {
 		glopts->do_energy_levels = FALSE;
+	}
+	
 	return(0);
 }
+
+
 int twolame_get_energy_levels (twolame_options *glopts)
 {
 	return(glopts->do_energy_levels);
@@ -405,8 +413,17 @@ const char *twolame_get_version_name(twolame_options *glopts)
 }
 
 
+
+
+
+
+/* WARNING: DAB support is currently broken */
+
 int twolame_set_DAB (twolame_options *glopts, int dab)
 {
+		
+	fprintf(stderr,"Warning: DAB support is currently broken in this version of TwoLAME.\n");
+
 	if (dab)
 		glopts->do_dab = TRUE;
 	else
@@ -436,7 +453,7 @@ int twolame_set_DAB_crc_length (twolame_options *glopts, int length)
 	if (length<0)
 		return(-1);
 	else
-    	glopts->dab_crc_len = length;
+		glopts->dab_crc_len = length;
 	return(0);
 }
 
@@ -445,3 +462,5 @@ int twolame_get_DAB_crc_length (twolame_options *glopts)
 	return(glopts->dab_crc_len);
 }
 
+
+// vim:ts=4:sw=4:nowrap: 

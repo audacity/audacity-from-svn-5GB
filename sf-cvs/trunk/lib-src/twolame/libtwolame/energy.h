@@ -1,8 +1,9 @@
+
 /*
  *  TwoLAME: an optimized MPEG Audio Layer Two encoder
  *
  *  Copyright (C) 2001-2004 Michael Cheng
- *  Copyright (C) 2004-2005 The TwoLAME Project
+ *  Copyright (C) 2004-2006 The TwoLAME Project
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -17,15 +18,19 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *  
+ *
+ *  $Id: energy.h,v 1.2 2008-01-06 14:21:15 richardash1981 Exp $
+ *
  */
 
 
 #ifndef	_ENERGY_H_
 #define	_ENERGY_H_
 
+int get_required_energy_bits( twolame_options *glopts );
 void do_energy_levels(twolame_options *glopts, bit_stream *bs);
-//void do_energy_levels(twolame_options *encodeOptions, unsigned char *mp2buffer, int frameEnd, short int *leftpcm, short int *rightpcm);
 
 #endif
 
+
+// vim:ts=4:sw=4:nowrap: 

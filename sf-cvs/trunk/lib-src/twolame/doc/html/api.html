@@ -11,7 +11,7 @@
 <body>
 <div id="header">
 <h1>The libtwolame API</h1>
-<span id="revision">version 0.3.8</span>
+<span id="revision">version 0.3.10</span>
 </div>
 <div id="preamble">
 <div class="sectionbody">
@@ -78,6 +78,7 @@ Encode PCM audio to MP2 by calling:
 <div class="literalblock">
 <div class="content">
 <pre><tt>This function returns the number of bytes written into mp2buffer by the library MPEG.
+One frame of MPEG audio will be returned for every 1152 samples of PCM audio.
 Multiple calls can be made to this function.
 It is the users responsibility to:</tt></pre>
 </div></div>
@@ -142,8 +143,8 @@ POST: glopts = NULL</tt></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 0.3.8<br />
-Last updated 03-Jul-2006 19:58:27 BST
+Version 0.3.10<br />
+Last updated 21-Mar-2007 00:07:31 BST
 </div>
 </div>
 </body>

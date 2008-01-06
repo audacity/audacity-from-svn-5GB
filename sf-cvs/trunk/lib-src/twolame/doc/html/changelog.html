@@ -11,7 +11,141 @@
 <body>
 <div id="header">
 <h1>What is new in TwoLAME</h1>
-<span id="revision">version 0.3.8</span>
+<span id="revision">version 0.3.10</span>
+</div>
+<h2>Version 0.3.10 (2007-03-20)</h2>
+<div class="sectionbody">
+<ul>
+<li>
+<p>
+Added win32/winutil.h to tarball - fixes bug #1629945
+</p>
+</li>
+<li>
+<p>
+Fixed presentation of &#8212;enable-debug in configure script
+</p>
+</li>
+<li>
+<p>
+Added twolame_encode_buffer_float32_interleaved()
+</p>
+</li>
+<li>
+<p>
+Fixed bug that was loosing stereo in twolame_encode_buffer_float32()
+</p>
+</li>
+<li>
+<p>
+Fixed twolame_set_mode() to accept TWOLAME_AUTO_MODE
+</p>
+</li>
+<li>
+<p>
+Added source file Ids to the top of every file
+</p>
+</li>
+<li>
+<p>
+Added -pedantic to CFLAGS for debug build
+</p>
+</li>
+</ul>
+</div>
+<h2>Version 0.3.9 (2006-12-31)</h2>
+<div class="sectionbody">
+<ul>
+<li>
+<p>
+Fix for Windows in simple frontend: open files in binary mode
+</p>
+<ul>
+<li>
+<p>
+thanks to Kurien Mathew
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+(libtwolame) Fixed energy level support
+</p>
+<ul>
+<li>
+<p>
+thanks to Staale Helleberg
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+Nows displays the version number of libsndfile in frontend
+</p>
+<ul>
+<li>
+<p>
+as suggested by Elio Blanca
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+Changed documentation build system, so you have to run it manually
+</p>
+</li>
+<li>
+<p>
+Buffer overrun fix in new_extension()
+</p>
+</li>
+<li>
+<p>
+(libtwolame) Added warning that DAB support is still broken
+</p>
+</li>
+<li>
+<p>
+(libtwolame) Added twolame_get_framelength() to return number of bytes per frame
+</p>
+</li>
+<li>
+<p>
+Added TWOLAME_SAMPLES_PER_FRAME macro, clarifying that there are
+  always 1152 samples per frame in Layer 2
+</p>
+</li>
+<li>
+<p>
+Frontend now displays extra information
+</p>
+<ul>
+<li>
+<p>
+Duration of input file (if known)
+</p>
+</li>
+<li>
+<p>
+Total number of frames to be encoded and percentage complete
+</p>
+</li>
+<li>
+<p>
+The filesize of the output file
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+Cleaned up source files so that it is consistent and all uses tabs (tab width 4)
+</p>
+</li>
+</ul>
 </div>
 <h2>Version 0.3.8 (2006-06-19)</h2>
 <div class="sectionbody">
@@ -341,8 +475,8 @@ Added toolame_encode_buffer_interleaved
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 0.3.8<br />
-Last updated 03-Jul-2006 19:58:25 BST
+Version 0.3.10<br />
+Last updated 21-Mar-2007 00:07:30 BST
 </div>
 </div>
 </body>
