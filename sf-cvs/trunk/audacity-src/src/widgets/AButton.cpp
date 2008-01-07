@@ -383,6 +383,11 @@ void AButton::Click()
    GetEventHandler()->ProcessEvent(event);
 }
 
+void AButton::SetShift(bool shift)
+{
+   mWasShiftDown = shift;
+}
+
 #if wxUSE_ACCESSIBILITY
 
 AButtonAx::AButtonAx( wxWindow *window ):

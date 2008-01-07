@@ -703,6 +703,11 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       }
    }
 
+   if( evt.GetInt() == 1 ) // used when called by keyboard shortcut. Default (0) ignored.
+      mRecord->SetShift(true);
+   if( evt.GetInt() == 2 )
+      mRecord->SetShift(false);
+
    SetRecord(true);
 
    if (p) {
@@ -725,7 +730,7 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
 
       // If SHIFT key was down, the user wants append to tracks
       int recordingChannels = 0;
-      bool shifted = mRecord->WasShiftDown() | (evt.GetInt() == 1);
+      bool shifted = mRecord->WasShiftDown();
       if (shifted) {
          TrackListIterator it(t);
          WaveTrack *wt;
