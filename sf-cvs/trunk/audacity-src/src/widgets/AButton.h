@@ -90,6 +90,7 @@ class AButton: public wxWindow {
    void SetButtonToggles( bool toggler ){ mToggle = toggler;}
    void Toggle(){ mButtonIsDown ? PopUp() : PushDown();}
    void Click();
+   void SetShift(bool shift);
 
    enum AButtonState {
       AButtonUp,

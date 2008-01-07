@@ -1403,7 +1403,7 @@ void AudacityProject::OnPause()
 void AudacityProject::OnRecord()
 {
    wxCommandEvent evt;
-   evt.SetInt(0);
+   evt.SetInt(2); // 0 is default, use 1 to set shift on, 2 to clear it
 
    GetControlToolBar()->OnRecord(evt);
 }
@@ -1411,7 +1411,7 @@ void AudacityProject::OnRecord()
 void AudacityProject::OnRecordAppend()
 {
    wxCommandEvent evt;
-   evt.SetInt(1);
+   evt.SetInt(1); // 0 is default, use 1 to set shift on, 2 to clear it
 
    GetControlToolBar()->OnRecord(evt);
 }
