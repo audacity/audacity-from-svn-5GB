@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_ds.c,v 1.8 2007-12-09 21:50:59 richardash1981 Exp $
+ * $Id: pa_win_ds.c,v 1.9 2008-01-09 05:17:53 llucius Exp $
  * Portable Audio I/O Library DirectSound implementation
  *
  * Authors: Phil Burk, Robert Marsanyi & Ross Bencina
@@ -1772,12 +1772,6 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
             PRINT(("PortAudio on DirectSound - Latency = %d frames, %d msec\n", stream->framesPerDSBuffer, msecLatency ));
         }
 
-            stream->pOutputGuid = winDsHostApi->winDsDeviceInfos[outputParameters->device].lpGUID;
-            if( stream->pOutputGuid == NULL )
-            {
-               stream->pOutputGuid = (GUID *) &DSDEVID_DefaultPlayback;
-            }
-
         /* ------------------ OUTPUT */
         if( outputParameters )
         {
@@ -1810,6 +1804,13 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
                 PA_DS_SET_LAST_DIRECTSOUND_ERROR( hr );
                 goto error;
             }
+
+            stream->pOutputGuid = outputWinDsDeviceInfo->lpGUID;
+            if( stream->pOutputGuid == NULL )
+            {
+               stream->pOutputGuid = (GUID *) &DSDEVID_DefaultPlayback;
+            }
+
             hr = InitOutputBuffer( stream,
                                        hostOutputSampleFormat,
                                        (unsigned long) (sampleRate + 0.5),
@@ -1849,7 +1850,7 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
                 goto error;
             }
 
-            stream->pInputGuid = winDsHostApi->winDsDeviceInfos[inputParameters->device].lpGUID;
+            stream->pInputGuid = inputWinDsDeviceInfo->lpGUID;
             if( stream->pInputGuid == NULL )
             {
                stream->pInputGuid = (GUID *)&DSDEVID_DefaultCapture;
