@@ -800,7 +800,7 @@ diff -ur -N --exclude CVS --exclude .svn --exclude Makefile.in --exclude Makefil
 +#define PA_UNIX_OSS_H
 +
 +/*
-+ * $Id: portaudio.patch,v 1.5 2007-12-15 19:36:31 richardash1981 Exp $
++ * $Id: portaudio.patch,v 1.6 2008-01-09 05:10:25 llucius Exp $
 + * PortAudio Portable Real-Time Audio Library
 + * OSS-specific extensions
 + *
@@ -852,7 +852,7 @@ diff -ur -N --exclude CVS --exclude .svn --exclude Makefile.in --exclude Makefil
 +#define PA_UNIX_OSS_H
 +
 +/*
-+ * $Id: portaudio.patch,v 1.5 2007-12-15 19:36:31 richardash1981 Exp $
++ * $Id: portaudio.patch,v 1.6 2008-01-09 05:10:25 llucius Exp $
 + * PortAudio Portable Real-Time Audio Library
 + * OSS-specific extensions
 + *
@@ -1058,23 +1058,25 @@ diff -ur -N --exclude CVS --exclude .svn --exclude Makefile.in --exclude Makefil
      unsigned long suggestedInputLatencyFrames, suggestedOutputLatencyFrames;
      PaWinDirectSoundStreamInfo *inputStreamInfo, *outputStreamInfo;
      PaWinWaveFormatChannelMask inputChannelMask, outputChannelMask;
-@@ -1770,6 +1772,11 @@
-             PRINT(("PortAudio on DirectSound - Latency = %d frames, %d msec\n", stream->framesPerDSBuffer, msecLatency ));
-         }
- 
-+            stream->pOutputGuid = winDsHostApi->winDsDeviceInfos[outputParameters->device].lpGUID;
+@@ -1803,6 +1804,13 @@
+                 PA_DS_SET_LAST_DIRECTSOUND_ERROR( hr );
+                 goto error;
+             }
++
++            stream->pOutputGuid = outputWinDsDeviceInfo->lpGUID;
 +            if( stream->pOutputGuid == NULL )
 +            {
 +               stream->pOutputGuid = (GUID *) &DSDEVID_DefaultPlayback;
 +            }
- 
-         /* ------------------ OUTPUT */
-         if( outputParameters )
-@@ -1842,6 +1849,12 @@
++
+             hr = InitOutputBuffer( stream,
+                                        hostOutputSampleFormat,
+                                        (unsigned long) (sampleRate + 0.5),
+@@ -1842,6 +1850,12 @@
                  goto error;
              }
  
-+            stream->pInputGuid = winDsHostApi->winDsDeviceInfos[inputParameters->device].lpGUID;
++            stream->pInputGuid = inputWinDsDeviceInfo->lpGUID;
 +            if( stream->pInputGuid == NULL )
 +            {
 +               stream->pInputGuid = (GUID *)&DSDEVID_DefaultCapture;
