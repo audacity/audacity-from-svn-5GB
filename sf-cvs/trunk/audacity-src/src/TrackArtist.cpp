@@ -1284,21 +1284,26 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
          slen = snSamples - s0;
       }
 
-      float *buffer = new float[slen];
-      clip->GetSamples((samplePtr)buffer, floatSample, s0, slen);
+      // It is possible to get here with an empty clip and "slen"
+      // will wind up being negative.  So we use that knowledge
+      // to bypass further processing of the clip.
+      if (slen > 0) {
+         float *buffer = new float[slen];
+         clip->GetSamples((samplePtr)buffer, floatSample, s0, slen);
 
-      for (sampleCount s = 0; s < slen; s++) {
-         float v = floor(buffer[s]);
-         if (buffer[s] <= -MAX_AUDIO) {
-            int x = lrint((s / rate + s0 / rate - t0) * pps);
-            dc.DrawLine(mid.x + x, mid.y + (mid.height / 2), mid.x + x, mid.y + mid.height);
+         for (sampleCount s = 0; s < slen; s++) {
+            float v = floor(buffer[s]);
+            if (buffer[s] <= -MAX_AUDIO) {
+               int x = lrint((s / rate + s0 / rate - t0) * pps);
+               dc.DrawLine(mid.x + x, mid.y + (mid.height / 2), mid.x + x, mid.y + mid.height);
+            }
+            else if (buffer[s] >= MAX_AUDIO) {
+               int x = lrint((s / rate + s0 / rate - t0) * pps);
+               dc.DrawLine(mid.x + x, mid.y, mid.x + x, mid.y + (mid.height / 2));
+            }
          }
-         else if (buffer[s] >= MAX_AUDIO) {
-            int x = lrint((s / rate + s0 / rate - t0) * pps);
-            dc.DrawLine(mid.x + x, mid.y, mid.x + x, mid.y + (mid.height / 2));
-         }
+         delete [] buffer;
       }
-      delete [] buffer;
    }
 
    // Draw arrows on the left side if the track extends to the left of the
