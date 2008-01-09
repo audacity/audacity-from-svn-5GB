@@ -544,26 +544,26 @@ void EffectAutoDuckDialog::OnOk(wxCommandEvent& evt)
 
    bool success = 
       mDuckAmountDbBox->GetValue().ToDouble(&duckAmountDb) &&
-      mEffect->mDuckAmountDb > -100 &&
-      mEffect->mDuckAmountDb < 0 &&
+      duckAmountDb > -100 &&
+      duckAmountDb < 0 &&
       mThresholdDbBox->GetValue().ToDouble(&thresholdDb) &&
-      mEffect->mThresholdDb > -100 &&
-      mEffect->mThresholdDb < 0 &&
+      thresholdDb > -100 &&
+      thresholdDb < 0 &&
       mInnerFadeDownLenBox->GetValue().ToDouble(&innerFadeDownLen) &&
-      mEffect->mInnerFadeDownLen >= 0 &&
-      mEffect->mInnerFadeDownLen < 1000 &&
+      innerFadeDownLen >= 0 &&
+      innerFadeDownLen < 1000 &&
       mInnerFadeUpLenBox->GetValue().ToDouble(&innerFadeUpLen) &&
-      mEffect->mInnerFadeUpLen >= 0 &&
-      mEffect->mInnerFadeUpLen < 1000 &&
+      innerFadeUpLen >= 0 &&
+      innerFadeUpLen < 1000 &&
       mOuterFadeDownLenBox->GetValue().ToDouble(&outerFadeDownLen) &&
-      mEffect->mOuterFadeDownLen >= 0 &&
-      mEffect->mOuterFadeDownLen < 1000 &&
+      outerFadeDownLen >= 0 &&
+      outerFadeDownLen < 1000 &&
       mOuterFadeUpLenBox->GetValue().ToDouble(&outerFadeUpLen) &&
-      mEffect->mOuterFadeUpLen >= 0 &&
-      mEffect->mOuterFadeUpLen < 1000 &&
+      outerFadeUpLen >= 0 &&
+      outerFadeUpLen < 1000 &&
       mMaximumPauseBox->GetValue().ToDouble(&maximumPause) &&
-      mEffect->mMaximumPause >= 0 &&
-      mEffect->mMaximumPause < 1000;
+      maximumPause >= 0 &&
+      maximumPause < 1000;
       
    if (!success)
    {
