@@ -370,7 +370,7 @@ void ExportMP3Options::PopulateOrExchange(ShuttleGui & S)
                   defrate = 128;
                }
 
-               mRate = S.TieChoice(wxT("Quality"),
+               mRate = S.TieChoice(_("Quality"),
                                    wxT("/FileFormats/MP3Bitrate"), 
                                    defrate,
                                    GetNames(choices, cnt),
