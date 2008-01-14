@@ -94,7 +94,7 @@ portaudio-v19
 -------------
 http://portaudio.com/
 cross-platform audio I/O library version 19, used for 1.3.2 onwards releases
-Version in audacity cvs: 6th January 2008 SVN snapshot (r1310)
+Version in audacity cvs: 14th January 2008 SVN snapshot (r1314)
 Patches:
 		buildoptions-osx.patch			patch by Dominic to make Universal
 					Binary optional and make build work on OS X 10.3
