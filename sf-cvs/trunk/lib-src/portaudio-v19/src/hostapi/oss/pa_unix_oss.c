@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_oss.c,v 1.10 2008-01-06 17:38:30 richardash1981 Exp $
+ * $Id: pa_unix_oss.c,v 1.11 2008-01-14 18:51:58 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * OSS implementation by:
@@ -97,7 +97,7 @@ static pthread_t mainThread_;
             /* PaUtil_SetLastHostErrorInfo should only be used in the main thread */ \
             if( (code) == paUnanticipatedHostError && pthread_self() == mainThread_ ) \
             { \
-                PaUtil_SetLastHostErrorInfo( paALSA, sysErr_, strerror( errno ) ); \
+                PaUtil_SetLastHostErrorInfo( paOSS, sysErr_, strerror( errno ) ); \
             } \
             \
             PaUtil_DebugPrint(( "Expression '" #expr "' failed in '" __FILE__ "', line: " STRINGIZE( __LINE__ ) "\n" )); \
@@ -405,11 +405,7 @@ static PaError QueryDirection( const char *deviceName, StreamMode mode, double *
     if( *defaultSampleRate < 0 )
     {
         sr = 44100;
-        if( ioctl( devHandle, SNDCTL_DSP_SPEED, &sr ) < 0 )
-        {
-            result = paUnanticipatedHostError;
-            goto error;
-        }
+        ENSURE_( ioctl( devHandle, SNDCTL_DSP_SPEED, &sr ), paUnanticipatedHostError );
 
         *defaultSampleRate = sr;
     }
@@ -1871,6 +1867,7 @@ static PaError ReadStream( PaStream* s,
                            void *buffer,
                            unsigned long frames )
 {
+    PaError result = paNoError;
     PaOssStream *stream = (PaOssStream*)s;
     int bytesRequested, bytesRead;
     unsigned long framesRequested;
@@ -1891,21 +1888,28 @@ static PaError ReadStream( PaStream* s,
         framesRequested = PA_MIN( frames, stream->capture->hostFrames );
 
 	bytesRequested = framesRequested * PaOssStreamComponent_FrameSize( stream->capture );
-	bytesRead = read( stream->capture->fd, stream->capture->buffer, bytesRequested );
+	ENSURE_( (bytesRead = read( stream->capture->fd, stream->capture->buffer, bytesRequested )),
+                 paUnanticipatedHostError );
 	if ( bytesRequested != bytesRead )
+	{
+	    PA_DEBUG(( "Requested %d bytes, read %d\n", bytesRequested, bytesRead ));
 	    return paUnanticipatedHostError;
+	}
 
 	PaUtil_SetInputFrameCount( &stream->bufferProcessor, stream->capture->hostFrames );
 	PaUtil_SetInterleavedInputChannels( &stream->bufferProcessor, 0, stream->capture->buffer, stream->capture->hostChannelCount );
         PaUtil_CopyInput( &stream->bufferProcessor, &userBuffer, framesRequested );
 	frames -= framesRequested;
     }
-    return paNoError;
+
+error:
+    return result;
 }
 
 
 static PaError WriteStream( PaStream *s, const void *buffer, unsigned long frames )
 {
+    PaError result = paNoError;
     PaOssStream *stream = (PaOssStream*)s;
     int bytesRequested, bytesWritten;
     unsigned long framesConverted;
@@ -1931,36 +1935,47 @@ static PaError WriteStream( PaStream *s, const void *buffer, unsigned long frame
 	frames -= framesConverted;
 
 	bytesRequested = framesConverted * PaOssStreamComponent_FrameSize( stream->playback );
-	bytesWritten = write( stream->playback->fd, stream->playback->buffer, bytesRequested );
+	ENSURE_( (bytesWritten = write( stream->playback->fd, stream->playback->buffer, bytesRequested )),
+                 paUnanticipatedHostError );
 
 	if ( bytesRequested != bytesWritten )
+	{
+	    PA_DEBUG(( "Requested %d bytes, wrote %d\n", bytesRequested, bytesWritten ));
 	    return paUnanticipatedHostError;
+	}
     }
-    return paNoError;
+
+error:
+    return result;
 }
 
 
 static signed long GetStreamReadAvailable( PaStream* s )
 {
+    PaError result = paNoError;
     PaOssStream *stream = (PaOssStream*)s;
     audio_buf_info info;
 
-    if( ioctl( stream->capture->fd, SNDCTL_DSP_GETISPACE, &info ) < 0 )
-        return paUnanticipatedHostError;
+    ENSURE_( ioctl( stream->capture->fd, SNDCTL_DSP_GETISPACE, &info ), paUnanticipatedHostError );
     return info.fragments * stream->capture->hostFrames;
+
+error:
+    return result;
 }
 
 
 /* TODO: Compute number of allocated bytes somewhere else, can we use ODELAY with capture */
 static signed long GetStreamWriteAvailable( PaStream* s )
 {
+    PaError result = paNoError;
     PaOssStream *stream = (PaOssStream*)s;
     int delay = 0;
 
-    if( ioctl( stream->playback->fd, SNDCTL_DSP_GETODELAY, &delay ) < 0 )
-        return paUnanticipatedHostError;
-
+    ENSURE_( ioctl( stream->playback->fd, SNDCTL_DSP_GETODELAY, &delay ), paUnanticipatedHostError );
     return (PaOssStreamComponent_BufferSize( stream->playback ) - delay) / PaOssStreamComponent_FrameSize( stream->playback );
+
+error:
+    return result;
 }
 
 const char *PaOSS_GetStreamInputDevice( PaStream* s )
