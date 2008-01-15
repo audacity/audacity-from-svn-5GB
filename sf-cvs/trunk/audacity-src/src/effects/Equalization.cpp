@@ -342,6 +342,11 @@ EffectEqualization::~EffectEqualization()
    mFilterFuncI = NULL;
 }
 
+void EffectEqualization::End()
+{
+   mPrompting = false;
+}
+
 bool EffectEqualization::PromptUser()
 {
    TrackListIterator iter(mWaveTracks);
@@ -369,7 +374,6 @@ bool EffectEqualization::PromptUser()
 
    mPrompting = true;
    dlog.ShowModal();
-   mPrompting = false;
 
    if (!dlog.GetReturnCode())
       return false;
@@ -409,7 +413,7 @@ bool EffectEqualization::DontPromptUser()
 
    dlog.M = mM;
    dlog.curveName = mCurveName;
-   dlog.linCheck = mLin;
+   dlog.linCheck = false;
    dlog.interp = mInterp;
    // IS required here - no call to ShowModal!
    dlog.TransferDataToWindow();
@@ -931,9 +935,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    // Create the dialog
    MakeEqualizationDialog();
 
-   // Set initial curve
-   // not needed - done in TransferDataToWindow
-   // setCurve( mLogEnvelope, curveName );
+   // Note: initial curve is set in TransferDataToWindow
 
    bandsInUse = NUMBER_OF_BANDS;
    //double loLog = log10(mLoFreq);
@@ -1356,7 +1358,7 @@ bool EqualizationDialog::TransferDataToWindow()
    dBMax = 0;                    // force refresh in TransferDataFromWindow()
 
    // Set initial curve
-   setCurve( mLogEnvelope, curveName );
+   setCurve( curveName );
 
    // Set graphic interpolation mode
    mInterpChoice->SetSelection(interp);
@@ -1548,48 +1550,97 @@ bool EqualizationDialog::CalcFilter()
 //
 // Make the passed curve index the active one
 //
-void EqualizationDialog::setCurve(Envelope *env, int currentCurve)
+void EqualizationDialog::setCurve(int currentCurve)
 {
    // Set current choice
    Select( currentCurve );
 
-   env->Flatten(0.);
-   env->SetTrackLen(1.0);
-
    wxASSERT( currentCurve < (int) mCurves.GetCount() );
+   bool changed = false;
 
-   if( mCurves[currentCurve].points.GetCount() )
+   if( mFaderOrDraw[0]->GetValue() & mLinFreq->IsChecked() )   // linear freq mode?
    {
-      double when = 0.;
-      double value = mCurves[currentCurve].points[0].dB;
-      env->Move(when, value);
-      double loLog = log10(20.);
-      double hiLog = log10(mHiFreq);
-      double denom = hiLog - loLog;
-      int i;
-      int nCurvePoints = mCurves[currentCurve].points.GetCount();
-      for(i=0;i<nCurvePoints;i++)
+      Envelope *env = mLinEnvelope;
+      env->Flatten(0.);
+      env->SetTrackLen(1.0);
+
+      if( mCurves[currentCurve].points.GetCount() )
       {
-         when = (log10(mCurves[currentCurve].points[i].Freq) - loLog)/denom;
-         value = mCurves[currentCurve].points[i].dB;
-         if(when <= 1)
+         double when, value;
+         int i;
+         int nCurvePoints = mCurves[currentCurve].points.GetCount();
+         for(i=0;i<nCurvePoints;i++)
+         {
+            when = mCurves[currentCurve].points[i].Freq / mHiFreq;
+            value = mCurves[currentCurve].points[i].dB;
+            if(when <= 1)
+               env->Insert(when, value);
+            else
+               break;
+         }
+         if ( i != nCurvePoints) // there are more points at higher freqs
+         {
+            when = 1.;  // set the RH end to the next highest point
+            value = mCurves[currentCurve].points[nCurvePoints-1].dB;
             env->Insert(when, value);
-         else
-            break;
+            changed = true;
+         }
       }
-      when = 1.;
-      value = mCurves[currentCurve].points[nCurvePoints-1].dB;
-      env->Move(when, value);
    }
+   else
+   {
+      Envelope *env = mLogEnvelope;
+      env->Flatten(0.);
+      env->SetTrackLen(1.0);
+
+      if( mCurves[currentCurve].points.GetCount() )
+      {
+         double when, value;
+         double loLog = log10(20.);
+         double hiLog = log10(mHiFreq);
+         double denom = hiLog - loLog;
+         int i;
+         int nCurvePoints = mCurves[currentCurve].points.GetCount();
+
+         for(i=0;i<nCurvePoints;i++)
+         {
+            if( mCurves[currentCurve].points[i].Freq >= 20)
+            {
+               when = (log10(mCurves[currentCurve].points[i].Freq) - loLog)/denom;
+               value = mCurves[currentCurve].points[i].dB;
+               if(when <= 1)
+                  env->Insert(when, value);
+               else
+                  break;
+            }
+            else
+            {  //get the first point as close as we can to the last point requested
+               changed = true;
+               double f = mCurves[currentCurve].points[i].Freq;
+               double v = mCurves[currentCurve].points[i].dB;
+               mLogEnvelope->Insert(0., mCurves[currentCurve].points[i].dB);
+            }
+         }
+         if ( i != nCurvePoints)
+         {
+            when = 1.;
+            value = mCurves[currentCurve].points[nCurvePoints-1].dB;
+            env->Insert(when, value);
+            changed = true;
+         }
+      }
+   }
+   if(changed) // not all points were loaded so switch to custom
+      EnvelopeUpdated();
    mPanel->RecalcRequired = true;
    mPanel->Refresh( false );
 }
-void EqualizationDialog::setCurve(Envelope *env)
+void EqualizationDialog::setCurve()
 {
-   setCurve( env, (int) mCurves.GetCount()-1);
+   setCurve((int) mCurves.GetCount()-1);
 }
 
-void EqualizationDialog::setCurve(Envelope *env, wxString curveName)
+void EqualizationDialog::setCurve(wxString curveName)
 {
    unsigned i = 0;
    for( i = 0; i < mCurves.GetCount(); i++ )
@@ -1598,10 +1649,10 @@ void EqualizationDialog::setCurve(Envelope *env, wxString curveName)
    if( i == mCurves.GetCount())
    {
       wxMessageBox( wxT("Requested curve not found, using 'custom'"), wxT("Curve not found"), wxOK|wxICON_ERROR );
-      setCurve( env, (int) mCurves.GetCount()-1);
+      setCurve((int) mCurves.GetCount()-1);
    }
    else
-      setCurve( env, i );
+      setCurve( i );
 }
 
 //
@@ -1637,10 +1688,13 @@ void EqualizationDialog::Select( int curve )
 //
 void EqualizationDialog::EnvelopeUpdated()
 {
-   EnvelopeUpdated(mLogEnvelope);
+   if( mFaderOrDraw[0]->GetValue() & mLinFreq->IsChecked() )
+      EnvelopeUpdated(mLinEnvelope, true);
+   else
+      EnvelopeUpdated(mLogEnvelope, false);
 }
 
-void EqualizationDialog::EnvelopeUpdated(Envelope *env)
+void EqualizationDialog::EnvelopeUpdated(Envelope *env, bool lin)
 {
    // Allocate and populate point arrays
    int numPoints = env->GetNumberOfPoints();
@@ -1649,28 +1703,39 @@ void EqualizationDialog::EnvelopeUpdated(Envelope *env)
    env->GetPoints( when, value, numPoints );
 
    // Clear the custom curve
-   #if wxCHECK_VERSION(2, 6, 2) && !defined(__WXX11__)
-   int curve = mCurve->GetCurrentSelection();
-   #else
-   int curve = mCurve->GetSelection();
-   #endif
+   int curve = mCurves.GetCount()-1;
    mCurves[ curve ].points.Clear();
 
-   double loLog = log10( 20. );
-   double hiLog = log10( mHiFreq );
-   double denom = hiLog - loLog;
-
-   // Copy and convert points
-   int point;
-   for( point = 0; point < numPoints; point++ )
+   if(lin)
    {
-      double freq = pow( 10., ( ( when[ point ] * denom ) + loLog ));
-      double db = value[ point ];
+      // Copy and convert points
+      int point;
+      for( point = 0; point < numPoints; point++ )
+      {
+         double freq = when[ point ] * mHiFreq;
+         double db = value[ point ];
 
-      // Add it to the curve
-      mCurves[ curve ].points.Add( EQPoint( freq, db ) );
+         // Add it to the curve
+         mCurves[ curve ].points.Add( EQPoint( freq, db ) );
+      }
    }
+   else
+   {
+      double loLog = log10( 20. );
+      double hiLog = log10( mHiFreq );
+      double denom = hiLog - loLog;
 
+      // Copy and convert points
+      int point;
+      for( point = 0; point < numPoints; point++ )
+      {
+         double freq = pow( 10., ( ( when[ point ] * denom ) + loLog ));
+         double db = value[ point ];
+
+         // Add it to the curve
+         mCurves[ curve ].points.Add( EQPoint( freq, db ) );
+      }
+   }
    // Remember that we've updated the custom curve
    mDirty = true;
 
@@ -2237,7 +2302,7 @@ void EqualizationDialog::OnLinFreq(wxCommandEvent &evt)
       mPanel->mEnvelope = mLogEnvelope;
       linCheck = false;
    }
-   CalcFilter();
+   mPanel->Recalc();
    freqRuler->Refresh(false);
    mPanel->Refresh(false);
 }
@@ -2277,13 +2342,28 @@ void EqualizationDialog::EnvLinToLog(void)
       double loLog = log10(20.);
       double hiLog = log10(mHiFreq);
       double denom = hiLog - loLog;
+      bool changed = false;
 
       for( int i=0; i < numPoints; i++)
-         mLogEnvelope->Insert((log10(when[i]*mHiFreq)-loLog)/denom , value[i]);
+      {
+         if( when[i]*mHiFreq >= 20 )
+         {
+            mLogEnvelope->Insert((log10(when[i]*mHiFreq)-loLog)/denom , value[i]);
+         }
+         else
+         {  //get the first point as close as we can to the last point requested
+            changed = true;
+            double v = value[i];
+            mLogEnvelope->Insert(0., v);
+         }
+      }
       mLogEnvelope->Move(1., value[numPoints-1]);
 
       delete [] when;
       delete [] value;
+
+      if(changed)
+         EnvelopeUpdated(mLogEnvelope, false);
 }
 
 void EqualizationDialog::ErrMin(void)
@@ -2365,7 +2445,7 @@ void EqualizationDialog::ErrMin(void)
    if( error > .0025 * bandsInUse ) // not within 0.05dB on each slider, on average
    {
       Select( (int) mCurves.GetCount()-1 );
-      EnvelopeUpdated(testEnvelope);
+      EnvelopeUpdated(testEnvelope, false);
    }
    delete testEnvelope;
    testEnvelope = NULL;
@@ -2394,12 +2474,10 @@ void EqualizationDialog::OnCurve(wxCommandEvent &event)
 {
    // Select new curve
    #if wxCHECK_VERSION(2, 6, 2) && !defined(__WXX11__)
-   setCurve( mLogEnvelope, mCurve->GetCurrentSelection() );
+   setCurve( mCurve->GetCurrentSelection() );
    #else
-   setCurve( mLogEnvelope, mCurve->GetSelection() );
+   setCurve( mCurve->GetSelection() );
    #endif
-   if( mFaderOrDraw[0]->GetValue() & mLinFreq->IsChecked() )
-      EnvLogToLin();
    if( !drawMode )
       UpdateGraphic();
 }
@@ -2537,9 +2615,7 @@ void EqualizationDialog::OnDelete(wxCommandEvent &event)
    Select( (int) mCurves.GetCount()-1 );
 
    // Reselect
-   setCurve( mLogEnvelope, mCurves.GetCount()-1 );
-   if( mFaderOrDraw[0]->GetValue() & mLinFreq->IsChecked() )
-      EnvLogToLin();
+   setCurve( mCurves.GetCount()-1 );
 }
 
 void EqualizationDialog::OnClear(wxCommandEvent &event)
@@ -2594,6 +2670,7 @@ void EqualizationDialog::OnPreview(wxCommandEvent &event)
 {
    TransferDataFromWindow();
    m_pEffect->Preview();
+   this->SetFocus();
    //v Restore previous values?
 }
 
