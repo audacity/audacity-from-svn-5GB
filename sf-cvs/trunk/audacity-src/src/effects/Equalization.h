@@ -95,6 +95,7 @@ public:
       return wxString(_("Performing Equalization"));
    }
 
+   virtual void End();
    virtual bool PromptUser();
    virtual bool DontPromptUser();
    virtual bool TransferParameters( Shuttle & shuttle );
@@ -218,7 +219,7 @@ public:
    virtual bool CalcFilter();
 
    void EnvelopeUpdated();
-   void EnvelopeUpdated(Envelope *env);
+   void EnvelopeUpdated(Envelope *env, bool lin);
    static const double thirdOct[];
    wxRadioButton *mFaderOrDraw[2];
    wxChoice *mInterpChoice;
@@ -241,9 +242,9 @@ private:
    void LoadCurves();
    void SaveCurves();
    void Select(int sel);
-   void setCurve(Envelope *env, int currentCurve);
-   void setCurve(Envelope *env, wxString curveName);
-   void setCurve(Envelope *env);
+   void setCurve(int currentCurve);
+   void setCurve(wxString curveName);
+   void setCurve(void);
    void GraphicEQ(Envelope *env);
    void spline(double x[], double y[], int n, double y2[]);
    double splint(double x[], double y[], int n, double y2[], double xr);
