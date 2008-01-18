@@ -571,6 +571,18 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
          t0 = info->t;
       }
 
+      // Test name here. Convert \ / : * ? " < > | to _ so we don't get an illegal filename
+      // We could do better here.  Warn users?  Use similar looking (but legal) characters?
+      name.Replace(wxT("\\"),wxT("_"));
+      name.Replace(wxT("/"),wxT("_"));
+      name.Replace(wxT(":"),wxT("_"));
+      name.Replace(wxT("*"),wxT("_"));
+      name.Replace(wxT("?"),wxT("_"));
+      name.Replace(wxT("\""),wxT("_"));
+      name.Replace(wxT("<"),wxT("_"));
+      name.Replace(wxT(">"),wxT("_"));
+      name.Replace(wxT("|"),wxT("_"));
+
       // Figure out the ending time
       if (info && info->t < info->t1) {
          t1 = info->t1;
