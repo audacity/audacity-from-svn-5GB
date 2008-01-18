@@ -37,6 +37,8 @@ libflac
 http://flac.sourceforge.net/
 Free Lossless Audio Codec encoding and decoding library
 Version in audacity cvs: 1.1.2
+patch added to build on OS X: mac-asm-fixes.patch. Need to review this for
+newer version before it can go upstream
 TODO: Update to current release version
 
 libid3tag
