@@ -100,6 +100,7 @@ clean:
 	$(MAKE) -C tests clean
 	rm -f audacity
 	rm -f help/audacity.1.gz
+	rm -rf Audacity.app
 
 veryclean: clean
 	rm -f Makefile src/Makefile lib-src/Makefile
