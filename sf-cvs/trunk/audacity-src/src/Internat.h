@@ -44,22 +44,39 @@ public:
    static wxString ToDisplayString(double numberToConvert,
                      int digitsAfterDecimalPoint = -1);
 
-   // Convert a number to a string while formatting it byte, KB, MB, GB
+   /** \brief Convert a number to a string while formatting it in bytes, KB,
+    * MB, GB */
    static wxString FormatSize(wxLongLong size);
    static wxString FormatSize(double size);
 
-   // Convert strings to and from UTF-8 (used for XML files).
+   /** \brief Convert string from UTF-8 to the local character encoding
+    *
+    * Used for XML files, which are always read in UTF-8 regardless of the
+    * language settings on the host OS */
    static wxString UTF8ToLocal(const wxString &s);
+   /** \brief Convert string from the local character encoding to UTF-8
+    *
+    * Used for XML files, which are always written in UTF-8 regardless of the
+    * language settings on the host OS */
    static wxString LocalToUTF8(const wxString &s);
 
+   /** \brief Convert file name to correct character encoding for host file
+    * system
+    *
+    * On Mac it converts to UTF-8, on other platforms it does nothing.*/
    static wxString ToFilename(const wxString &s);
+   /** \brief Convert file name from character encoding of host file system
+    *
+    * On Mac it converts from UTF-8, on other platforms it does nothing.*/
    static wxString FromFilename(const wxString &s);
 
-   // Utility function - takes a translatable string to be used as a
-   // menu item, for example _("&Splash...\tAlt+S"), and strips all of the
-   // menu accelerator stuff from it, to make "Splash".  That way the
-   // same translatable string can be used both when accelerators
-   // are needed and when they aren't, saving translators effort.
+   /** \brief Remove accelerator charactors from strings 
+    *
+    * Utility function - takes a translatable string to be used as a menu item,
+    * for example _("&Splash...\tAlt+S"), and strips all of the menu
+    * accelerator stuff from it, to make "Splash".  That way the same
+    * translatable string can be used both when accelerators are needed and
+    * when they aren't, saving translators effort. */
    static wxString StripAccelerators(const wxString& str);
 
 private:
