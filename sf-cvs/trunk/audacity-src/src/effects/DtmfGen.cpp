@@ -427,6 +427,8 @@ DtmfDialog::DtmfDialog(wxWindow * parent, const wxString & title): EffectDialog(
    dTone = 0;
    dSilence = 0;
    dDuration = 0;
+
+   mDtmfDurationT = NULL;
 }
 
 void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
@@ -444,27 +446,29 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
       S.TieTextBox(_("Amplitude (0-1)"),  dAmplitude, 10);
 
       S.AddPrompt(_("Duration:"));
-      mDtmfDurationT = new
-         TimeTextCtrl(this,
-                      ID_DTMF_DURATION_TEXT,
-                      wxT(""),
-                      dDuration,
-                      44100,
-                      wxDefaultPosition,
-                      wxDefaultSize,
-                      true);
-      /* use this instead of "seconds" because if a selection is passed to the
-	   * effect, I want it (dDuration) to be used as the duration, and with
-	   * "seconds" this does not always work properly. For example, it rounds
-	   * down to zero... */
-      mDtmfDurationT->SetFormatString(mDtmfDurationT->GetBuiltinFormat(dIsSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))));
+      if (mDtmfDurationT == NULL)
+      {
+         mDtmfDurationT = new
+            TimeTextCtrl(this,
+                         ID_DTMF_DURATION_TEXT,
+                         wxT(""),
+                         dDuration,
+                         44100,
+                         wxDefaultPosition,
+                         wxDefaultSize,
+                         true);
+         /* use this instead of "seconds" because if a selection is passed to the
+         * effect, I want it (dDuration) to be used as the duration, and with
+         * "seconds" this does not always work properly. For example, it rounds
+         * down to zero... */
+         mDtmfDurationT->SetFormatString(mDtmfDurationT->GetBuiltinFormat(dIsSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))));
+         mDtmfDurationT->EnableMenu();
+      }
       S.AddWindow(mDtmfDurationT);
-      mDtmfDurationT->EnableMenu();
 
       S.AddFixedText(_("Tone/silence ratio:"), false);
       S.SetStyle(wxSL_HORIZONTAL | wxEXPAND);
-      mDtmfDutyS = S.Id(ID_DTMF_DUTYCYCLE_SLIDER).AddSlider(wxT(""), (int)dDutyCycle, DUTY_MAX);
-      mDtmfDutyS->SetRange(DUTY_MIN, DUTY_MAX);
+      mDtmfDutyS = S.Id(ID_DTMF_DUTYCYCLE_SLIDER).AddSlider(wxT(""), (int)dDutyCycle, DUTY_MAX, DUTY_MIN);
 
       S.SetSizeHints(-1,-1);
    }
