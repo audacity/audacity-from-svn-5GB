@@ -40,7 +40,21 @@ private:
    // Export
    void CanExport();
    bool DirOk();
+   /** \brief Export multiple labeled regions of the project to separate files
+    *
+    * Uses a single label track in the project to split up the audio into a 
+    * series of sections, each of which is exported to a separate file.
+    * @param byName Controls whether files are named after the text in the
+    * labels that define them (true), or just numbered (false).
+    * @param prefix The string used to prefix the file number if files are being
+    * numbered rather than named */
    bool ExportMultipleByLabel(bool byName, wxString prefix);
+   /** \brief Export each track in the project to a separate file
+    *
+    * @param byName Controls whether files are named after the track names 
+    * (true), or just numbered (false).
+    * @param prefix The string used to prefix the file number if files are being
+    * numbered rather than named */
    bool ExportMultipleByTrack(bool byName, wxString prefix);
    void MakeNameUnique(wxArrayString &otherNames, wxString &newName);
    bool DoExport(bool stereo,
