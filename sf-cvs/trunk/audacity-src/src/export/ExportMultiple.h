@@ -98,7 +98,8 @@ private:
    wxChoice      *mFormat;
    wxButton      *mOptions;
 
-   wxTextCtrl    *mDir;
+   wxTextCtrl    *mDir;    /**< The directory all the exported files will end
+                             up in */
    wxButton      *mCreate;
    wxButton      *mChoose;
    
@@ -107,7 +108,8 @@ private:
 
    wxCheckBox    *mFirst;
    wxStaticText  *mFirstFileLabel;
-   wxTextCtrl    *mFirstFileName;
+   wxTextCtrl    *mFirstFileName;   /**< Name to use for exporting audio before
+                                      the first label in the file */
 
    wxRadioButton *mTrack;
    wxStaticText  *mTrackLabel;
