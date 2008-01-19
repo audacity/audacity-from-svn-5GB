@@ -1278,7 +1278,7 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
 
       sampleCount s0 = (sampleCount) lrint(t0 * rate);
       sampleCount slen = (sampleCount) lrint(mid.width * rate / pps);
-      sampleCount snSamples = clip->GetNumSamples(); 
+      sampleCount snSamples = clip->GetNumSamples();
 
       if (s0 + slen > snSamples) {
          slen = snSamples - s0;
@@ -1289,17 +1289,26 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
       // to bypass further processing of the clip.
       if (slen > 0) {
          float *buffer = new float[slen];
+         int lastx = -1;
+         double diff = s0 / rate - t0;
+         int halfheight = mid.height / 2;
+
          clip->GetSamples((samplePtr)buffer, floatSample, s0, slen);
 
          for (sampleCount s = 0; s < slen; s++) {
-            float v = floor(buffer[s]);
             if (buffer[s] <= -MAX_AUDIO) {
-               int x = lrint((s / rate + s0 / rate - t0) * pps);
-               dc.DrawLine(mid.x + x, mid.y + (mid.height / 2), mid.x + x, mid.y + mid.height);
+               int x = lrint((s / rate + diff) * pps);
+               if (x != lastx) {
+                  dc.DrawLine(mid.x + x, mid.y + halfheight, mid.x + x, mid.y + mid.height);
+                  lastx = x;
+               }
             }
             else if (buffer[s] >= MAX_AUDIO) {
-               int x = lrint((s / rate + s0 / rate - t0) * pps);
-               dc.DrawLine(mid.x + x, mid.y, mid.x + x, mid.y + (mid.height / 2));
+               int x = lrint((s / rate + diff) * pps);
+               if (x != lastx) {
+                  dc.DrawLine(mid.x + x, mid.y, mid.x + x, mid.y + halfheight);
+                  lastx = x;
+               }
             }
          }
          delete [] buffer;
