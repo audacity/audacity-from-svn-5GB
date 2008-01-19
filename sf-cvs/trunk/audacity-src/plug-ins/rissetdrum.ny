@@ -120,5 +120,5 @@
 
 ny:all))
 
-(scale (/ 1.0 peakval)(risset-drum frq decay cf bw (/ noise 100)))
+(scale (/ 0.8 peakval)(risset-drum frq decay cf bw (/ noise 100)))
 
