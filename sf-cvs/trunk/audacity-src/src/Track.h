@@ -154,11 +154,6 @@ class AUDACITY_DLL_API Track: public XMLTagHandler {
    virtual double GetEndTime() { return 0.0; }
 };
 
-/*
-  TrackList is a flat linked list of tracks supporting Add,
-  Remove, Clear, and Contains, plus serialization of the
-  list of tracks.
-*/
 struct TrackListNode {
    Track *t;
    TrackListNode *next;
@@ -183,6 +178,9 @@ class AUDACITY_DLL_API TrackListIterator {
   TrackListNode *cur;
 };
 
+/** \brief TrackList is a flat linked list of tracks supporting Add,  Remove,
+ * Clear, and Contains, plus serialization of the list of tracks.
+ */
 class AUDACITY_DLL_API TrackList {
  public:
   // Create an empty TrackList
@@ -228,6 +226,14 @@ class AUDACITY_DLL_API TrackList {
   bool Move(Track * t, bool up) { return up ? MoveUp(t) : MoveDown(t); }
 
   TimeTrack *GetTimeTrack();
+
+  /** \brief Find out how many channels this track list mixes to
+   *
+   * This is used in exports of the tracks to work out whether to export in 
+   * Mono, Stereo etc. @param selectionOnly Whether to consider the entire track
+   * list or only the selected members of it
+   */
+  int GetNumExportChannels(bool selectionOnly);
 
   WaveTrackArray GetWaveTrackArray(bool selectionOnly);
   /* Consider this function depricated in favor of the above function */
