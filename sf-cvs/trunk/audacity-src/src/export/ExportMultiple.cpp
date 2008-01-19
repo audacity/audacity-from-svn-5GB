@@ -30,6 +30,7 @@
 #include <wx/event.h>
 #include <wx/filedlg.h>
 #include <wx/filefn.h>
+#include <wx/filename.h>
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
 #include <wx/radiobut.h>
@@ -37,6 +38,7 @@
 #include <wx/statbox.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/textdlg.h>
 
 #include "Export.h"
 #include "ExportMultiple.h"
@@ -571,17 +573,41 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
          t0 = info->t;
       }
 
-      // Test name here. Convert \ / : * ? " < > | to _ so we don't get an illegal filename
-      // We could do better here.  Warn users?  Use similar looking (but legal) characters?
-      name.Replace(wxT("\\"),wxT("_"));
-      name.Replace(wxT("/"),wxT("_"));
-      name.Replace(wxT(":"),wxT("_"));
-      name.Replace(wxT("*"),wxT("_"));
-      name.Replace(wxT("?"),wxT("_"));
-      name.Replace(wxT("\""),wxT("_"));
-      name.Replace(wxT("<"),wxT("_"));
-      name.Replace(wxT(">"),wxT("_"));
-      name.Replace(wxT("|"),wxT("_"));
+      // Setup list of characters that aren't allowed
+      wxFileName tmpFile;
+      wxString forbid = tmpFile.GetForbiddenChars();
+      wxArrayString exclude;
+      for(int i=0; i < forbid.Length(); i++)
+         exclude.Add( forbid.Mid(i, 1) );
+      bool illegal = false;
+      for(unsigned i=0; i<exclude.Count(); i++)
+      {
+         if(name.Contains(exclude.Item(i)))
+         {
+            name.Replace(exclude.Item(i),wxT("_"));
+            illegal = true;
+         }
+      }
+      if(illegal)
+      {
+         // build the dialog
+         wxString msg;
+         msg.Printf(_("Label not a legal file name. You cannot use any of:   %s\nUse..."), forbid.c_str());
+         wxTextEntryDialog dlg( this, msg, _("Save As..."), name );
+
+         // And tell the validator about excluded chars
+         dlg.SetTextValidator( wxFILTER_EXCLUDE_CHAR_LIST );
+         wxTextValidator *tv = dlg.GetTextValidator();
+         tv->SetExcludes( exclude );
+
+         // Show the dialog and bail if the user cancels
+         if( dlg.ShowModal() == wxID_CANCEL )
+         {
+            return ok;
+         }
+         // Extract the name from the dialog
+         name = dlg.GetValue();
+      }
 
       // Figure out the ending time
       if (info && info->t < info->t1) {
