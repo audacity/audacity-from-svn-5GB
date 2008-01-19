@@ -3,7 +3,7 @@
 ;type process
 ;name "Delay..."
 ;action "Performing Delay Effect..."
-;info "by Roger Dannenberg, modified by David R. Sky\nReleased under terms of the GNU General Public License Version 2 \nDelay type: 'bouncing ball' makes the echoes occur increasingly close\ntogether (faster); 'reverse bouncing ball' makes them occur increasingly far\napart (slower). In either bouncing ball effect, delay time is not time between\nechoes but the * maximum * delay time in bounces."
+;info "by Roger Dannenberg, modified by David R. Sky\nReleased under terms of the GNU General Public License Version 2 \nDelay type: 'bouncing ball' makes the echoes occur increasingly close\ntogether (faster); 'reverse bouncing ball' makes them occur increasingly far\napart (slower). In either bouncing ball effect, delay time is not time between\nechoes but the * maximum * delay time in bounces.\nApplying delay can cause clipping (distortion), especially when reducing the\ndecay value and using more echoes. It's normally best to use Effect > Amplify\nto set the peak amplitude to -6 dB before using delay.     
 
 ;control delay-type "Delay type" choice "regular,bouncing ball,reverse bouncing ball" 0
 ;control decay "Decay amount [dB; negative value increases volume]" real "" 6 -1 24
@@ -12,15 +12,13 @@
 ;control count "Number of echoes" int "" 5 1 30
 
 ; Delay by Roger B. Dannenberg
-; modified by David R. Sky October 2007
-; thanks Gale Andrews for polishing suggestions
-; now includes normalization to avoid clipping
-; [first and last maximum 500000 samples are checked 
-; to avoid computer crunching];
-; added negative decay values, which gives delay effect
-; increasing volume with each delay;
-; added bouncing ball and reverse bouncing ball delay effects;
+; modified by David R. Sky October 2007, 
+; adding negative decay values, which gives delay effect
+; increasing volume with each delay; and adding
+; bouncing ball and reverse bouncing ball delay effects
 ; and pitch [semitone] change with each echo.
+; modified by Richard Ash January 2008, removing all 
+; normalization functions. 
 
 ; Note by Roger Dannenberg: this effect will use up memory proportional to
 ; delay * count, since that many samples must be buffered
@@ -83,34 +81,6 @@ error-msg))
 (/ delay count) delay))
 
 
-; function to extract maximum first and last 500000 samples of duration
-; from delay output for normalization
-(defun dual-extract-abs (start1 stop1 start2 stop2 sound)
-(seq
-(extract-abs start1 stop1 (cue sound))
-(extract-abs start2 stop2 (cue sound))))
-
-
-; actual extract function embedded within normalize function
-(defun perform-extract (sound)
-; determine duration of delay output 
-(setf dur (/ (snd-length sound ny:all) *sound-srate*))
-; set maximum duration of start and end of audio to extract
-(setf time (min (/ 500000 *sound-srate*)
-(* dur 0.5)))
-;
-(dual-extract-abs 0 time (- dur time) dur sound))
-
-
-; normalize function:
-; checks peak level for maximum 1 million samples 
-(defun normalize (sound)
-(setf x (if (arrayp sound)
-(max (peak (perform-extract (aref sound 0)) 1000000) 
-(peak (perform-extract (aref sound 1)) 1000000))
-(peak (perform-extract sound) 1000000)))
-(scale (/ 0.95 x) sound))
-
 
 ; function to stretch audio 
 (defun change (sound shift)
@@ -130,7 +100,7 @@ error-msg))
 			(loud decay (at delay (delays (change s shift) 
 decay delay (- count 1) shift))))))
 
-(normalize (stretch-abs 1 (delays s (- 0 decay) delay count shift))))
+(stretch-abs 1 (delays s (- 0 decay) delay count shift)))
 
 
 ((= delay-type 1) ; bouncing ball delay
@@ -142,7 +112,7 @@ decay delay (- count 1) shift))))))
 (bounces (change s shift) decay delay 
 (- count 1) shift)))))) 
 
-(normalize (stretch-abs 1 (bounces s (- 0 decay) delay count shift))))
+(stretch-abs 1 (bounces s (- 0 decay) delay count shift)))
 
 
 ((= delay-type 2) ; reverse bouncing ball delay
@@ -155,7 +125,7 @@ decay delay (- count 1) shift))))))
 (- count 1 ) revcount shift)))))) 
 
 (setf revcount (1+ count))
-(normalize (stretch-abs 1 (revbounces s (- 0 decay) delay count revcount shift))))
+(stretch-abs 1 (revbounces s (- 0 decay) delay count revcount shift)))
 ) ; end cond2, different delay effect choices
 ) ; end cond1 t
 ) ; end cond 1
