@@ -152,7 +152,7 @@ It handles initialization and termination by subclassing wxApp.
 #  endif
 
 #  if defined(USE_LIBTWOLAME)
-#     pragma comment(lib, "libtwolame_static" U D)
+#     pragma comment(lib, "twolame_static" U D)
 #  endif
 
 #  undef U
