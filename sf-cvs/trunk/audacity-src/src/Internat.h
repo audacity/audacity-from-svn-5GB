@@ -20,27 +20,33 @@ class Internat
 public:
    static void CleanUp();
 
-   // Initialize internationalisation support. Call this once at
-   // program start.
+   /** \brief Initialize internationalisation support. Call this once at
+    * program start. */
    static void Init();
 
-   // Get the decimal separator for the current locale. Normally, this is
-   // a decimal point ('.'), but e.g. Germany uses a comma (',').
+   /** \brief Get the decimal separator for the current locale.
+    *
+    * Normally, this is a decimal point ('.'), but e.g. Germany uses a
+    * comma (',').*/
    static wxChar GetDecimalSeparator();
 
-   // Convert a string to a number. This function will accept BOTH point
-   // and comma as a decimal separator, regardless of the current locale.
-   // Returns 'true' on success, and 'false' if an error occurs.
+   /** \brief Convert a string to a number.
+    *
+    * This function will accept BOTH point and comma as a decimal separator,
+    * regardless of the current locale.
+    * Returns 'true' on success, and 'false' if an error occurs. */
    static bool CompatibleToDouble(const wxString& stringToConvert, double* result);
 
    // Function version of above.
    static double CompatibleToDouble(const wxString& stringToConvert);
 
-   // Convert a number to a string, always uses the dot as decimal separator
+   /** \brief Convert a number to a string, always uses the dot as decimal
+    * separator*/
    static wxString ToString(double numberToConvert,
                      int digitsAfterDecimalPoint = -1);
 
-   // Convert a number to a string, uses the user's locale's decimal separator
+   /** \brief Convert a number to a string, uses the user's locale's decimal
+    * separator */
    static wxString ToDisplayString(double numberToConvert,
                      int digitsAfterDecimalPoint = -1);
 
