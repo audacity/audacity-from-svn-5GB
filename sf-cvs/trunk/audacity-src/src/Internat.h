@@ -76,6 +76,10 @@ public:
     * On Mac it converts from UTF-8, on other platforms it does nothing.*/
    static wxString FromFilename(const wxString &s);
 
+   /** \brief Check a proposed file name string for illegal characters and
+    * remove them */
+   static wxString SanitiseFilename(const wxString &name, const wxString &sub);
+
    /** \brief Remove accelerator charactors from strings 
     *
     * Utility function - takes a translatable string to be used as a menu item,
@@ -93,6 +97,10 @@ private:
    static void *mTECToUTF;
    static void *mTECFromUTF;
    #endif
+   // stuff for file name sanitisation
+   static wxString forbid;
+   static wxArrayString exclude;
+
 };
 
 #define _NoAcc(X) Internat::StripAccelerators(_(X))
