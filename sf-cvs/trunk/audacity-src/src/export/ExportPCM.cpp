@@ -458,11 +458,6 @@ bool ExportPCM::Export(AudacityProject *project,
 
 bool ExportPCM::AddStrings(AudacityProject *project, SNDFILE *sf, Tags *tags)
 {
-/*   if (!tags->ShowEditDialog(project,
-                             _("Edit the metadata for the uncompressed file"))) {
-      return false;  // user selected "cancel"
-   }
-*/
    if (tags->HasTag(TAG_TITLE)) {
       sf_set_string(sf, SF_STR_TITLE, tags->GetTag(TAG_TITLE).mb_str(wxConvUTF8));
    }
