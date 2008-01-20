@@ -504,7 +504,6 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
    setting.destfile.SetExt(mPlugins[mFormatIndex]->GetExtension());
 
    wxString name;    // used to hold file name whilst we mess with it
-//   wxString newname; // sanitised version of name
    wxString title;   // un-messed-with title of file for tagging with
 
    const LabelStruct *info = NULL;
@@ -544,9 +543,9 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
          name.Printf(wxT("%s-%d"), prefix.c_str(), l+1);
       }
 
-      
-      setting.destfile.SetName(MakeFileName(name));
       // store sanitised and user checjed name in object
+      setting.destfile.SetName(MakeFileName(name));
+
       if (setting.destfile.GetName().IsEmpty())
          {  // user cancelled dialogue, or deleted everything in feild.
          // either way, cancel
@@ -604,18 +603,23 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
                                            wxString prefix)
 {
    Track *tr, *tr2;
-   double t0, t1;
-   bool stereo;
+   int channels = 0;  // how many channels export?
+   int l = 0;     // track counter
    bool ok = true;
-   int i=0;
-   wxFileName name;
    wxArrayString otherNames;
-   wxArrayPtrVoid selected;
+   wxArrayPtrVoid selected;   /**< Array of pointers to the tracks which were
+                                selected when we started */
+   ExportKitArray exportSettings; // dynamic array we will use to store the
+                                  // settings needed to do the exports with in
+   exportSettings.Alloc(mNumLabels);   // allocated some guessed space to use
+   ExportKit setting;   // the current batch of settings
+   setting.destfile.SetPath(mDir->GetValue());
+   setting.destfile.SetExt(mPlugins[mFormatIndex]->GetExtension());
 
-   name.SetPath(mDir->GetValue());
-   name.SetExt(mPlugins[mFormatIndex]->GetExtension());
+   wxString name;    // used to hold file name whilst we mess with it
+   wxString title;   // un-messed-with title of file for tagging with
 
-   // Remember which tracks were selected and set to unselected
+   /* Remember which tracks were selected, and set them to unselected */
    for (tr = mIterator.First(mTracks); tr != NULL; tr = mIterator.Next()) {
       if (tr->GetKind() != Track::Wave) {
          continue;
@@ -627,7 +631,7 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
       }
    }
 
-   // Examine all tracks
+   /* Examine all tracks in turn, collecting export information */
    for (tr = mIterator.First(mTracks); tr != NULL; tr = mIterator.Next()) {
 
       // Only want wave tracks
@@ -636,11 +640,8 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
       }
 
       // Get the times for the track
-      t0 = tr->GetStartTime();
-      t1 = tr->GetEndTime();
-
-      // Select the track
-      tr->SetSelected(true);
+      setting.t0 = tr->GetStartTime();
+      setting.t1 = tr->GetEndTime();
 
       // Check for a linked track
       tr2 = NULL;
@@ -648,40 +649,89 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
          tr2 = mIterator.Next();
          if (tr2) {
 
-            // Select it also
-            tr2->SetSelected(true);
-
             // Make sure it gets included
-            if (tr2->GetStartTime() < t0) {
-               t0 = tr2->GetStartTime();
+            if (tr2->GetStartTime() < setting.t0) {
+               setting.t0 = tr2->GetStartTime();
             }
 
-            if (tr2->GetEndTime() > t1) {
-               t1 = tr2->GetEndTime();
+            if (tr2->GetEndTime() > setting.t1) {
+               setting.t1 = tr2->GetEndTime();
             }
          }
       }
 
-      // Stereo or mono
-      stereo = !(tr2 == NULL && 
-                 tr->GetChannel() == WaveTrack::MonoChannel &&
-                 ((WaveTrack *)tr)->GetPan() == 0.0);
+      // number of export channels?
+      if (tr2 == NULL && tr->GetChannel() == WaveTrack::MonoChannel &&
+                 ((WaveTrack *)tr)->GetPan() == 0.0)
+         channels = 1;
+      else
+         channels = 2;
 
-      // Get name base
+      // Get name and title
+      title = tr->GetName();
       if (byName) {
-         name.SetName(tr->GetName());
+         name = title;
       }
       else {
-         name.SetName(wxString::Format(wxT("%s-%d"), prefix.c_str(), i+1));
+         name = (wxString::Format(wxT("%s-%d"), prefix.c_str(), l+1));
       }
 
-      // Make sure it's unique
-      MakeNameUnique(otherNames, name);
+      // store sanitised and user checked name in object
+      setting.destfile.SetName(MakeFileName(name));
 
-      Tags dummytags;
+      if (setting.destfile.GetName().IsEmpty())
+         {  // user cancelled dialogue, or deleted everything in feild.
+         // either way, cancel
+         return false;
+         }
+      wxASSERT(setting.destfile.IsOk());     // scream if file name is broke
 
-      // Go export it
-      ok = DoExport(stereo, name, true, t0, t1, dummytags);
+      // Make sure the (final) file name is unique within the set of exports
+      MakeNameUnique(otherNames, setting.destfile);
+
+      /* do the metadata for this file */
+      // copy project metadata to start with
+      setting.filetags = *(mProject->GetTags());
+      // over-ride with values
+      setting.filetags.SetTag(TAG_TITLE, title);
+      setting.filetags.SetTag(TAG_TRACK, l+1);
+      // let the user have a crack at editing it, exit if cancelled
+      if (!setting.filetags.ShowEditDialog(mProject,_("Edit metadata"), true))
+         return false;
+
+      /* add the settings to the array of settings to be used for export */
+      exportSettings.Add(setting);
+
+      l++;  // next label, count up one
+   }
+   // end of user-interactive data gathering loop, start of export processing
+   // loop
+   int count = 0; // count the number of sucessful runs
+   ExportKit activeSetting;  // pointer to the settings in use for this export
+   for (tr = mIterator.First(mTracks); tr != NULL; tr = mIterator.Next()) {
+
+      // Only want wave tracks
+      if (tr->GetKind() != Track::Wave) {
+         continue;
+      }
+
+      /* Select the track */
+      tr->SetSelected(true);
+
+      // Check for a linked track
+      tr2 = NULL;
+      if (tr->GetLinked()) {
+         tr2 = mIterator.Next();
+         if (tr2) {
+            // Select it also
+            tr2->SetSelected(true);
+         }
+      }
+
+      /* get the settings to use for the export from the array */
+      activeSetting = exportSettings[count];
+      // export data
+      ok = DoExport(channels, activeSetting.destfile, true, activeSetting.t0, activeSetting.t1, activeSetting.filetags);
 
       // Reset selection state
       tr->SetSelected(false);
@@ -693,8 +743,9 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
       if (!ok) {
          break;
       }
+      // increment export counter
+      count++;
 
-      i++;
    }   
    
    // Restore the selection states
@@ -706,7 +757,7 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
    ::wxMessageBox(wxString::Format(ok
                                    ? _("Successfully exported %d file(s).")
                                    : _("Something went wrong after exporting %d file(s)."),
-                                   i),
+                                   count),
                   _("Export Multiple"),
                   wxOK | wxCENTRE, this);
    
