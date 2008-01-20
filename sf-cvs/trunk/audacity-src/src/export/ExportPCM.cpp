@@ -297,7 +297,7 @@ public:
                double t0,
                double t1,
                MixerSpec *mixerSpec = NULL,
-               bool use_meta=true); 
+               Tags *metadata = NULL); 
 
    // Overrides
 
@@ -308,7 +308,7 @@ public:
 
 private:
 
-   bool AddStrings(AudacityProject *project, SNDFILE *sf);
+   bool AddStrings(AudacityProject *project, SNDFILE *sf, Tags *tags);
 
 };
 
@@ -332,7 +332,7 @@ bool ExportPCM::Export(AudacityProject *project,
                        double t0,
                        double t1,
                        MixerSpec *mixerSpec,
-                       bool use_meta) 
+                       Tags *metadata) 
 {
    double       rate = project->GetRate();
    TrackList   *tracks = project->GetTracks();
@@ -368,13 +368,14 @@ bool ExportPCM::Export(AudacityProject *project,
                                     fName.c_str()));
       return false;
    }
+   // Retrieve tags if not given a set
+   if (metadata == NULL)
+      metadata = project->GetTags();
 
-   if (use_meta == true) { // meta data flag check
-      if (!AddStrings(project, sf)) { // meta data presence check
-         sf_close(sf);
-         return false;
-      }
-   } 
+   if (!AddStrings(project, sf, metadata)) { // meta data presence check
+      sf_close(sf);
+      return false;
+   }
 
    sampleFormat format;
    if (sf_subtype_more_than_16_bits(info.format))
@@ -455,15 +456,13 @@ bool ExportPCM::Export(AudacityProject *project,
    return !cancelling;
 }
 
-bool ExportPCM::AddStrings(AudacityProject *project, SNDFILE *sf)
+bool ExportPCM::AddStrings(AudacityProject *project, SNDFILE *sf, Tags *tags)
 {
-   // Retrieve tags
-   Tags *tags = project->GetTags();
-   if (!tags->ShowEditDialog(project,
+/*   if (!tags->ShowEditDialog(project,
                              _("Edit the metadata for the uncompressed file"))) {
       return false;  // user selected "cancel"
    }
-
+*/
    if (tags->HasTag(TAG_TITLE)) {
       sf_set_string(sf, SF_STR_TITLE, tags->GetTag(TAG_TITLE).mb_str(wxConvUTF8));
    }

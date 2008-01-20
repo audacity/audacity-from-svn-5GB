@@ -187,11 +187,11 @@ public:
                double t0,
                double t1,
                MixerSpec *mixerSpec = NULL,
-               bool use_meta=true);
+               Tags *metadata = NULL);
 
 private:
 
-   bool GetMetadata(AudacityProject *project);
+   bool GetMetadata(AudacityProject *project, Tags *tags);
 
    FLAC__StreamMetadata *mMetadata;
 };
@@ -220,7 +220,7 @@ bool ExportFLAC::Export(AudacityProject *project,
                         double t0,
                         double t1,
                         MixerSpec *mixerSpec,
-                        bool use_meta)
+                        Tags *metadata)
 {
    double    rate    = project->GetRate();
    TrackList *tracks = project->GetTracks();
@@ -243,7 +243,7 @@ bool ExportFLAC::Export(AudacityProject *project,
    encoder.set_sample_rate(lrint(rate));
 
    // See note in GetMetadata() about a bug in libflac++ 1.1.2
-   if (!GetMetadata(project)) {
+   if (!GetMetadata(project, metadata)) {
       return false;
       }
 
@@ -364,14 +364,11 @@ bool ExportFLAC::DisplayOptions(AudacityProject *project)
 //      expects that array to be valid until the stream is initialized.
 //      
 //      This has been fixed in 1.1.4.
-bool ExportFLAC::GetMetadata(AudacityProject *project)
+bool ExportFLAC::GetMetadata(AudacityProject *project, Tags *tags)
 {
-   // Retrieve tags
-   Tags *tags = project->GetTags();
-   if (!tags->ShowEditDialog(project,
-                             _("Edit the metadata for the FLAC file"))) {
-      return false;  // user selected "cancel"
-   }
+   // Retrieve tags if needed
+   if (tags == NULL)
+      tags = project->GetTags();
 
    mMetadata = ::FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 

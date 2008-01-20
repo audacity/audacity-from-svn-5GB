@@ -206,7 +206,7 @@ bool ExportPlugin::Export(AudacityProject *project,
                           double t0,
                           double t1,
                           MixerSpec *mixerSpec,
-                          bool use_meta)
+                          Tags *metadata)
 {
    if (project == NULL) {
       project = GetActiveProject();
@@ -290,6 +290,12 @@ bool Exporter::Process(AudacityProject *project, bool selectedOnly, double t0, d
 
    // Ask user for file name
    if (!GetFilename()) {
+      return false;
+   }
+
+   // Let user edit MetaData 
+
+   if (!(project->GetTags()->ShowEditDialog(project, _("Edit Metadata"), true))) {
       return false;
    }
 

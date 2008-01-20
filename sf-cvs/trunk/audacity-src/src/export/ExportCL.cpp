@@ -207,7 +207,7 @@ public:
                double t0,
                double t1,
                MixerSpec *mixerSpec = NULL,
-               bool use_meta=true);
+               Tags *metadata = NULL);
 };
 
 ExportCL::ExportCL()
@@ -232,7 +232,7 @@ bool ExportCL::Export(AudacityProject *project,
                       double t0,
                       double t1, 
                       MixerSpec *mixerSpec,
-                      bool use_meta)
+                      Tags *metadata)
 {
    ExportCLProcess *p;
    wxString output;

@@ -50,6 +50,11 @@
 #include "../Prefs.h"
 #include "../Tags.h"
 
+
+/* define our dynamic array of export settings */
+#include <wx/arrimpl.cpp>     // much hackery
+WX_DEFINE_OBJARRAY( ExportKitArray )
+
 enum {
    FormatID = 10001,
    OptionsID,
@@ -428,7 +433,7 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
    mFormatIndex = mFormat->GetSelection();
    bool overwrite = mOverwrite->GetValue();
 
-   if (mPlugins[mFormatIndex]->GetCanMetaData()) {
+/*   if (mPlugins[mFormatIndex]->GetCanMetaData()) {
       Tags *tags = mProject->GetTags();
 
       if (tags->IsEmpty()) {
@@ -448,7 +453,7 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
          }
       }
    }
-
+*/
    bool ok;
 
    if (mLabel->GetValue()) {
@@ -494,12 +499,11 @@ bool ExportMultiple::DirOk()
 
 bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
 {
-   Track *tr;
    int numFiles = mNumLabels;
-   int l = 0;
-   int numLeft = 0;
-   int numRight = 0;
-   int numMono = 0;
+   int l = 0;        // counter for files done
+   ExportKitArray exportSettings; // dynamic array we will use to store the
+                                  // settings needed to do the exports with in
+   exportSettings.Alloc(numFiles);   // allocated some guessed space to use
 
    // Account for exporting before first label
    if (mFirst->GetValue()) {
@@ -507,79 +511,64 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
       numFiles++;
    }
 
-   // Figure out if we're exporting stereo or mono
-   for (tr = mIterator.First(mTracks); tr != NULL; tr = mIterator.Next()) {
+   // Figure out how many channels we should export
+   int channels = (mTracks->GetNumExportChannels(false));
+   
+   wxArrayString otherNames;  // keep track of file names we will use, so we
+                              // don't duplicate them
+   ExportKit setting;   // the current batch of settings
+   setting.destfile.SetPath(mDir->GetValue());
+   setting.destfile.SetExt(mPlugins[mFormatIndex]->GetExtension());
 
-      // Only want wave tracks
-      if (tr->GetKind() != Track::Wave) {
-         continue;
-      }
+   // Setup list of characters that aren't allowed in file names
+   wxFileName tmpFile;
+   wxString forbid = tmpFile.GetForbiddenChars();
+   wxArrayString exclude;
+   for(unsigned int i=0; i < forbid.Length(); i++)
+      exclude.Add( forbid.Mid(i, 1) );
+   bool illegal;
+   wxString name;    // used to hold file name whilst we mess with it
+   wxString title;   // un-messed-with title of file for tagging with
 
-      // Found a left channel
-      if (tr->GetChannel() == Track::LeftChannel) {
-         numLeft++;
-      }
-
-      // Found a right channel
-      else if (tr->GetChannel() == Track::RightChannel) {
-         numRight++;
-      }
-
-      // Found a mono channel, but it may be panned
-      else if (tr->GetChannel() == Track::MonoChannel) {
-         float pan = ((WaveTrack*)tr)->GetPan();
-
-         // Figure out what kind of channel it should be
-         if (pan == -1.0) {
-            numLeft++;
-         }
-         else if (pan == 1.0) {
-            numRight++;
-         }
-         else if (pan == 0) {
-            numMono++;
-         }
-         else {
-            numLeft++;
-            numRight++;
-         }
-      }
-   }
-
-   // We we have a stereo or mono mix?
-   bool stereo = false;
-   if (numRight > 0 || numLeft > 0) {
-      stereo = true;
-   }
-
-   wxArrayString otherNames;
-   wxString name;
-   double t0, t1;
-   int count = 0;
-   bool ok = true;
-
-   // Examine all labels
+   const LabelStruct *info = NULL;
+   /* Examine all labels a first time, sort out all data but don't do any
+    * exporting yet (so this run is quick but interactive) */
    while (l < mNumLabels) {
-      const LabelStruct *info = NULL;
-
+   
       // Get file name and starting time
       if (l < 0) {
-         name = mFirstFileName->GetValue();
-         t0 = 0.0;
+         // create wxFileName for output file 
+         name = (mFirstFileName->GetValue());
+         setting.t0 = 0.0;
       }
       else {
          info = mLabels->GetLabel(l);
-         name = info->title;
-         t0 = info->t;
+         name = (info->title);
+         setting.t0 = info->t;
       }
 
-      // Setup list of characters that aren't allowed
-      wxFileName tmpFile;
-      wxString forbid = tmpFile.GetForbiddenChars();
-      wxArrayString exclude;
-      for(int i=0; i < forbid.Length(); i++)
-         exclude.Add( forbid.Mid(i, 1) );
-      bool illegal = false;
+      // Figure out the ending time
+      if (info && info->t < info->t1) {
+         setting.t1 = info->t1;
+      }
+      else if (l < mNumLabels-1) {
+         const LabelStruct *info1 = mLabels->GetLabel(l+1);
+         setting.t1 = info1->t;
+      }
+      else {
+         setting.t1 = mTracks->GetEndTime();
+      }
+
+      // store title of label to use in tags
+      title = name;
+
+      // Numbering files...
+      if (!byName) {
+         name.Printf(wxT("%s-%d"), prefix.c_str(), l+1);
+      }
+
+      /* do file name checking, so that the file name we have is valid to use*/
+      illegal = false;
       for(unsigned i=0; i<exclude.Count(); i++)
       {
          if(name.Contains(exclude.Item(i)))
@@ -589,10 +578,10 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
          }
       }
       if(illegal)
-      {
+      {  // need to get user to fix file name
          // build the dialog
          wxString msg;
-         msg.Printf(_("Label not a legal file name. You cannot use any of:   %s\nUse..."), forbid.c_str());
+         msg.Printf(_("Label %s is not a legal file name. You cannot use any of:   %s\nUse..."), title.c_str(), forbid.c_str());
          wxTextEntryDialog dlg( this, msg, _("Save As..."), name );
 
          // And tell the validator about excluded chars
@@ -603,42 +592,50 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
          // Show the dialog and bail if the user cancels
          if( dlg.ShowModal() == wxID_CANCEL )
          {
-            return ok;
+            return false;
          }
          // Extract the name from the dialog
          name = dlg.GetValue();
-      }
+      }  // phew - end of file name sanitisation procedure
 
-      // Figure out the ending time
-      if (info && info->t < info->t1) {
-         t1 = info->t1;
-      }
-      else if (l < mNumLabels-1) {
-         const LabelStruct *info1 = mLabels->GetLabel(l+1);
-         t1 = info1->t;
-      }
-      else {
-         t1 = mTracks->GetEndTime();
-      }
+      setting.destfile.SetName(name);  // store sanitised name in object
+      wxASSERT(setting.destfile.IsOk());     // scream if file name is broke
 
-      // Numbering files...
-      if (!byName) {
-         name.Printf(wxT("%s-%d"), prefix.c_str(), count+1);
-      }
+      // Make sure the (final) file name is unique within the set of exports
+      MakeNameUnique(otherNames, setting.destfile);
 
-      // Make sure the file name is unique within the directory
-      MakeNameUnique(otherNames, name);
-      
+      /* do the metadata for this file */
+      // copy project metadata to start with
+      setting.filetags = *(mProject->GetTags());
+      // over-ride with values
+      setting.filetags.SetTag(TAG_TITLE, title);
+      setting.filetags.SetTag(TAG_TRACK, l+1);
+      // let the user have a crack at editing it, exit if cancelled
+      if (!setting.filetags.ShowEditDialog(mProject,_("Edit metadata"), true))
+         return false;
+
+      /* add the settings to the array of settings to be used for export */
+      exportSettings.Add(setting);
+
+      l++;  // next label, count up one
+   }
+
+   bool ok = true;   // did it work?
+   int count = 0; // count the number of sucessful runs
+   ExportKit activeSetting;  // pointer to the settings in use for this export
+   /* Go round again and do the exporting (so this run is slow but
+    * non-interactive) */
+   for(count = 0; count < (numFiles); count++) {
+      /* get the settings to use for the export from the array */
+      activeSetting = exportSettings[count];
+
       // Export it
-      ok = DoExport(stereo, name, false, t0, t1, count+1);
+      ok = DoExport(channels, activeSetting.destfile, false, activeSetting.t0, activeSetting.t1, activeSetting.filetags);
       if (!ok) {
          break;
       }
-
-      count++;
-      l++;
    }
-   
+
    // Give 'em the result
    ::wxMessageBox(wxString::Format(ok
                                    ? _("Successfully exported %d file(s).")
@@ -658,10 +655,13 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
    bool stereo;
    bool ok = true;
    int i=0;
-   wxString name;
+   wxFileName name;
    wxArrayString otherNames;
    wxArrayPtrVoid selected;
-   
+
+   name.SetPath(mDir->GetValue());
+   name.SetExt(mPlugins[mFormatIndex]->GetExtension());
+
    // Remember which tracks were selected and set to unselected
    for (tr = mIterator.First(mTracks); tr != NULL; tr = mIterator.Next()) {
       if (tr->GetKind() != Track::Wave) {
@@ -716,17 +716,19 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
 
       // Get name base
       if (byName) {
-         name = tr->GetName();
+         name.SetName(tr->GetName());
       }
       else {
-         name.Printf(wxT("%s-%d"), prefix.c_str(), i+1);
+         name.SetName(wxString::Format(wxT("%s-%d"), prefix.c_str(), i+1));
       }
 
       // Make sure it's unique
       MakeNameUnique(otherNames, name);
 
+      Tags dummytags;
+
       // Go export it
-      ok = DoExport(stereo, name, true, t0, t1, i+1);
+      ok = DoExport(stereo, name, true, t0, t1, dummytags);
 
       // Reset selection state
       tr->SetSelected(false);
@@ -758,62 +760,49 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
    return ok;
 }
 
-void ExportMultiple::MakeNameUnique(wxArrayString &otherNames, wxString &newName)
+void ExportMultiple::MakeNameUnique(wxArrayString &otherNames, wxFileName &newName)
 {
-   if (otherNames.Index(newName, false) >= 0) {
+   if (otherNames.Index(newName.GetFullName(), false) >= 0) {
       int i=2;
-      wxString orig = newName;
+      wxString orig = newName.GetName();
       do {
-         newName.Printf(wxT("%s-%d"), orig.c_str(), i);
+         newName.SetName(wxString::Format(wxT("%s-%d"), orig.c_str(), i));
          i++;
-      } while (otherNames.Index(newName, false) >= 0);
+      } while (otherNames.Index(newName.GetFullName(), false) >= 0);
    }
-   otherNames.Add(newName);
+   otherNames.Add(newName.GetFullName());
 }
 
-bool ExportMultiple::DoExport(bool stereo,
-                              wxString name,
+bool ExportMultiple::DoExport(int channels,
+                              wxFileName name,
                               bool selectedOnly,
                               double t0,
                               double t1,
-                              int trackNumber)
+                              Tags tags)
 {
-   wxFileName fn(mDir->GetValue(), name, mPlugins[mFormatIndex]->GetExtension());
+
 
    // Generate a unique name if we're not allowed to overwrite
    if (!mOverwrite->GetValue()) {
       int i = 2;
-      while (fn.FileExists()) {
-         fn.SetName(wxString::Format(wxT("%s-%d"), name.c_str(), i++));
+      wxString base(name.GetName());
+      while (name.FileExists()) {
+         name.SetName(wxString::Format(wxT("%s-%d"), base.c_str(), i++));
       }
-   }
-
-   // If the format supports tags, then set the name and track number
-   Tags *tags = NULL;
-   wxString oldTitle;
-   wxString oldTrack;
-   if (mPlugins[mFormatIndex]->GetCanMetaData()) {
-      tags = mProject->GetTags();
-      oldTitle = tags->GetTag(TAG_TITLE);
-      oldTrack = tags->GetTag(TAG_TRACK);
-      tags->SetTag(TAG_TITLE, name);
-      tags->SetTag(TAG_TRACK, trackNumber);
    }
 
    // Call the format export routine
    bool rc = mPlugins[mFormatIndex]->Export(mProject,
-                                            stereo ? 2 : 1,
-                                            fn.GetFullPath(),
+                                            channels,
+                                            name.GetFullPath(),
                                             selectedOnly,
                                             t0,
-                                            t1);
-   if (tags) {
-      tags->SetTag(TAG_TITLE, oldTitle);
-      tags->SetTag(TAG_TRACK, oldTrack);
-   }
-
+                                            t1,
+                                            NULL,
+                                            &tags);
    return rc;
 }
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
