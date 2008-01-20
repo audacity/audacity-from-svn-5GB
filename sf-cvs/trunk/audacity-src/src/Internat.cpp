@@ -25,6 +25,7 @@ and on Mac OS X for the filesystem.
 
 #include <wx/log.h>
 #include <wx/intl.h>
+#include <wx/filename.h>
 
 #ifdef __WXMAC__
 #include <wx/mac/private.h>
@@ -33,8 +34,15 @@ and on Mac OS X for the filesystem.
 #include <locale.h>
 #include <math.h> // for pow()
 
+// in order for the static member variables to exist, they must appear here
+// (_outside_) the class definition, in order to be allocated some storage.
+// Otherwise, you get link errors.
+
 wxChar Internat::mDecimalSeparator = wxT('.'); // default
 wxMBConv *Internat::mConvLocal = NULL;
+wxString Internat::forbid;
+wxArrayString Internat::exclude;
+
 
 #ifdef __WXMAC__
 void *Internat::mTECToUTF = NULL;
@@ -76,6 +84,13 @@ void Internat::Init()
       mTECFromUTF = NULL;
 
    #endif
+
+   // Setup list of characters that aren't allowed in file names
+   wxFileName tmpFile;
+   forbid = tmpFile.GetForbiddenChars();
+   for(unsigned int i=0; i < forbid.Length(); i++)
+      exclude.Add( forbid.Mid(i, 1) );
+
 }
 
 // JKC: Added to fix a memory leak.
@@ -284,6 +299,19 @@ wxString Internat::FromFilename(const wxString &s)
 }
 
 #endif
+
+wxString Internat::SanitiseFilename(const wxString &name, const wxString &sub)
+{
+   wxString temp = name;
+   for(unsigned i=0; i<exclude.Count(); i++)
+   {
+      if(temp.Contains(exclude.Item(i)))
+      {
+         temp.Replace(exclude.Item(i),sub);
+      }
+   }
+   return temp;
+}
 
 wxString Internat::StripAccelerators(const wxString &s)
 {
