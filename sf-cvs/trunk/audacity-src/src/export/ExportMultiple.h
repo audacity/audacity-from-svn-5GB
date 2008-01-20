@@ -75,7 +75,10 @@ private:
                  double t0,
                  double t1,
                  Tags tags);
-
+   /** \brief Takes an arbitrary text string and converts it to a form that can
+    * be used as a file name, if necessary prompting the user to edit the file
+    * name produced */
+   wxString MakeFileName(wxString input);
    // Dialog
    void PopulateOrExchange(ShuttleGui& S); 
    void EnableControls();
@@ -108,6 +111,9 @@ private:
    wxArrayPtrVoid mSelected;
    int mFormatIndex;
    bool mInitialized;
+
+   /** Array of characters not allowed to be in file names on this platform */
+   wxArrayString exclude;
 
    wxChoice      *mFormat;
    wxButton      *mOptions;

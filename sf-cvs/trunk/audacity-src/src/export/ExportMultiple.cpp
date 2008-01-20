@@ -98,6 +98,11 @@ ExportMultiple::ExportMultiple(AudacityProject *project)
    mTracks = project->GetTracks();
    mPlugins = mExporter.GetPlugins();
 
+   // create array of characters not allowed in file names
+   wxString forbid = wxFileName::GetForbiddenChars();
+   for(unsigned int i=0; i < forbid.Length(); i++)
+      exclude.Add( forbid.Mid(i, 1) );
+
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
    // Creating some of the widgets cause cause events to fire
@@ -432,28 +437,6 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
 
    mFormatIndex = mFormat->GetSelection();
    bool overwrite = mOverwrite->GetValue();
-
-/*   if (mPlugins[mFormatIndex]->GetCanMetaData()) {
-      Tags *tags = mProject->GetTags();
-
-      if (tags->IsEmpty()) {
-         tags->SetTag(TAG_TITLE, wxT("(automatic)"));
-         tags->SetTag(TAG_TRACK, wxT("0"));
-         tags->AllowEditTitle(false);
-         tags->AllowEditTrackNumber(false);
-         bool rval = tags->ShowEditDialog(mProject,
-                                          _("Edit the metadata"),
-                                          true);
-         tags->SetTag(TAG_TITLE, wxT(""));
-         tags->SetTag(TAG_TRACK, wxT(""));
-         tags->AllowEditTitle(true);
-         tags->AllowEditTrackNumber(true);
-         if (!rval) {
-            return;
-         }
-      }
-   }
-*/
    bool ok;
 
    if (mLabel->GetValue()) {
@@ -520,14 +503,8 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
    setting.destfile.SetPath(mDir->GetValue());
    setting.destfile.SetExt(mPlugins[mFormatIndex]->GetExtension());
 
-   // Setup list of characters that aren't allowed in file names
-   wxFileName tmpFile;
-   wxString forbid = tmpFile.GetForbiddenChars();
-   wxArrayString exclude;
-   for(unsigned int i=0; i < forbid.Length(); i++)
-      exclude.Add( forbid.Mid(i, 1) );
-   bool illegal;
    wxString name;    // used to hold file name whilst we mess with it
+//   wxString newname; // sanitised version of name
    wxString title;   // un-messed-with title of file for tagging with
 
    const LabelStruct *info = NULL;
@@ -567,38 +544,14 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
          name.Printf(wxT("%s-%d"), prefix.c_str(), l+1);
       }
 
-      /* do file name checking, so that the file name we have is valid to use*/
-      illegal = false;
-      for(unsigned i=0; i<exclude.Count(); i++)
-      {
-         if(name.Contains(exclude.Item(i)))
-         {
-            name.Replace(exclude.Item(i),wxT("_"));
-            illegal = true;
+      
+      setting.destfile.SetName(MakeFileName(name));
+      // store sanitised and user checjed name in object
+      if (setting.destfile.GetName().IsEmpty())
+         {  // user cancelled dialogue, or deleted everything in feild.
+         // either way, cancel
+         return false;
          }
-      }
-      if(illegal)
-      {  // need to get user to fix file name
-         // build the dialog
-         wxString msg;
-         msg.Printf(_("Label %s is not a legal file name. You cannot use any of:   %s\nUse..."), title.c_str(), forbid.c_str());
-         wxTextEntryDialog dlg( this, msg, _("Save As..."), name );
-
-         // And tell the validator about excluded chars
-         dlg.SetTextValidator( wxFILTER_EXCLUDE_CHAR_LIST );
-         wxTextValidator *tv = dlg.GetTextValidator();
-         tv->SetExcludes( exclude );
-
-         // Show the dialog and bail if the user cancels
-         if( dlg.ShowModal() == wxID_CANCEL )
-         {
-            return false;
-         }
-         // Extract the name from the dialog
-         name = dlg.GetValue();
-      }  // phew - end of file name sanitisation procedure
-
-      setting.destfile.SetName(name);  // store sanitised name in object
       wxASSERT(setting.destfile.IsOk());     // scream if file name is broke
 
       // Make sure the (final) file name is unique within the set of exports
@@ -803,6 +756,35 @@ bool ExportMultiple::DoExport(int channels,
    return rc;
 }
 
+wxString ExportMultiple::MakeFileName(wxString input)
+{
+   wxString newname; // name we are generating
+
+   // strip out anything that isn't allowed in file names on this platform
+   newname = Internat::SanitiseFilename(input, wxT("_"));
+
+   if(!newname.IsSameAs(input))
+   {  // need to get user to fix file name
+      // build the dialog
+      wxString msg;
+      msg.Printf(_("Label %s is not a legal file name. You cannot use any of:   %s\nUse..."), input.c_str(), wxFileName::GetForbiddenChars().c_str());
+      wxTextEntryDialog dlg( this, msg, _("Save As..."), newname );
+
+      // And tell the validator about excluded chars
+      dlg.SetTextValidator( wxFILTER_EXCLUDE_CHAR_LIST );
+      wxTextValidator *tv = dlg.GetTextValidator();
+      tv->SetExcludes(exclude);
+
+      // Show the dialog and bail if the user cancels
+      if( dlg.ShowModal() == wxID_CANCEL )
+      {
+          return wxEmptyString;
+      }
+      // Extract the name from the dialog
+      newname = dlg.GetValue();
+   }  // phew - end of file name sanitisation procedure
+   return newname;
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
