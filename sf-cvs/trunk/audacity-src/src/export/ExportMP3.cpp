@@ -1626,7 +1626,7 @@ public:
                double t0,
                double t1,
                MixerSpec *mixerSpec = NULL,
-               bool use_meta=true);
+               Tags *metadata = NULL);
 
 private:
 
@@ -1660,7 +1660,7 @@ bool ExportMP3::Export(AudacityProject *project,
                        double t0,
                        double t1,
                        MixerSpec *mixerSpec,
-                       bool use_meta)
+                       Tags *metadata)
 {
    int rate = lrint(project->GetRate());
    wxWindow *parent = project;
@@ -1756,12 +1756,9 @@ bool ExportMP3::Export(AudacityProject *project,
       return false;
    }
 
-   // Put ID3 tags at beginning of file 
-   Tags *tags = project->GetTags();
-   if (!tags->ShowEditDialog(project,
-                             _("Edit the ID3 tags for the MP3 file"),true)) {
-      return false;  // user selected "cancel"
-   }
+   // Put ID3 tags at beginning of file
+   if (metadata == NULL)
+      metadata = project->GetTags();
 
    // Open file for writing
    FileIO outFile(fName, FileIO::Output);
@@ -1773,7 +1770,7 @@ bool ExportMP3::Export(AudacityProject *project,
    char *id3buffer = NULL;
    int id3len;
    bool endOfFile;
-   id3len = AddTags(project, &id3buffer, &endOfFile, tags);
+   id3len = AddTags(project, &id3buffer, &endOfFile, metadata);
    if (id3len && !endOfFile) {
      outFile.Write(id3buffer, id3len);
    }

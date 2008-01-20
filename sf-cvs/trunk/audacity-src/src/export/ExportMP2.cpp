@@ -182,7 +182,7 @@ public:
                double t0,
                double t1,
                MixerSpec *mixerSpec = NULL,
-               bool use_meta=true);
+               Tags *metadata = NULL);
 
 private:
 
@@ -207,7 +207,7 @@ void ExportMP2::Destroy()
 
 bool ExportMP2::Export(AudacityProject *project,
                int channels, wxString fName,
-               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec, bool use_meta)
+               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec, Tags *metadata)
 {
    bool stereo = (channels == 2);
    long bitrate = gPrefs->Read(wxT("/FileFormats/MP2Bitrate"), 160);
@@ -231,12 +231,9 @@ bool ExportMP2::Export(AudacityProject *project,
       return false;
    }
 
-   // Put ID3 tags at beginning of file 
-   Tags *tags = project->GetTags();
-   if (!tags->ShowEditDialog(project,
-                             _("Edit the ID3 tags for the MP2 file"))) {
-      return false;  // user selected "cancel"
-   }
+   // Put ID3 tags at beginning of file
+   if (metadata == NULL)
+      metadata = project->GetTags();
 
    FileIO outFile(fName, FileIO::Output);
    if (!outFile.IsOpened()) {
@@ -247,7 +244,7 @@ bool ExportMP2::Export(AudacityProject *project,
    char *id3buffer = NULL;
    int id3len;
    bool endOfFile;
-   id3len = AddTags(project, &id3buffer, &endOfFile, tags);
+   id3len = AddTags(project, &id3buffer, &endOfFile, metadata);
    if (id3len && !endOfFile)
      outFile.Write(id3buffer, id3len);
 

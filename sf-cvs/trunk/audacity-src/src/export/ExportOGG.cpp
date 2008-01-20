@@ -138,11 +138,11 @@ public:
                double t0,
                double t1,
                MixerSpec *mixerSpec = NULL,
-               bool use_meta=true);
+               Tags *metadata = NULL);
 
 private:
 
-   bool FillComment(AudacityProject *project, vorbis_comment *comment);
+   bool FillComment(AudacityProject *project, vorbis_comment *comment, Tags *metadata);
 };
 
 ExportOGG::ExportOGG()
@@ -167,7 +167,7 @@ bool ExportOGG::Export(AudacityProject *project,
                        double t0,
                        double t1,
                        MixerSpec *mixerSpec,
-                       bool use_meta)
+                       Tags *metadata)
 {
    double    rate    = project->GetRate();
    TrackList *tracks = project->GetTracks();
@@ -199,7 +199,7 @@ bool ExportOGG::Export(AudacityProject *project,
    vorbis_encode_init_vbr(&info, numChannels, int(rate + 0.5), quality);
 
    // Retrieve tags
-   if (!FillComment(project, &comment)) {
+   if (!FillComment(project, &comment, metadata)) {
       return false;
    }
 
@@ -339,19 +339,16 @@ bool ExportOGG::DisplayOptions(AudacityProject *project)
    return true;
 }
 
-bool ExportOGG::FillComment(AudacityProject *project, vorbis_comment *comment)
+bool ExportOGG::FillComment(AudacityProject *project, vorbis_comment *comment, Tags *metadata)
 {
-   // Retrieve tags
-   Tags *tags = project->GetTags();
-   if (!tags->ShowEditDialog(project,
-                             _("Edit the metadata for the OGG file"))) {
-      return false;  // user selected "cancel"
-   }
+   // Retrieve tags from project if not over-ridden
+   if (metadata == NULL)
+      metadata = project->GetTags();
 
    vorbis_comment_init(comment);
 
    wxString n, v;
-   for (bool cont = tags->GetFirst(n, v); cont; cont = tags->GetNext(n, v)) {
+   for (bool cont = metadata->GetFirst(n, v); cont; cont = metadata->GetNext(n, v)) {
       vorbis_comment_add_tag(comment,
                              (char *) (const char *) n.mb_str(wxConvUTF8),
                              (char *) (const char *) v.mb_str(wxConvUTF8));

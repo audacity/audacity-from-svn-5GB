@@ -15,6 +15,7 @@
 #include <wx/dynarray.h>
 #include <wx/filename.h>
 #include <wx/panel.h>
+#include "../Tags.h"
 
 class wxMemoryDC;
 class wxStaticText;
@@ -57,6 +58,11 @@ public:
    virtual bool DisplayOptions(AudacityProject *project = NULL);
    virtual bool DoDisplayOptions(AudacityProject *project);
 
+   /** \brief called to export audio into a file.
+    *
+    * @param metadata A Tags object that will over-ride the one in *project and
+    * be used to tag the file that is exported.
+    */
    virtual bool Export(AudacityProject *project,
                        int channels,
                        wxString fName,
@@ -64,7 +70,7 @@ public:
                        double t0,
                        double t1,
                        MixerSpec *mixerSpec = NULL,
-                       bool use_meta=true);
+                       Tags *metadata = NULL);
 
    virtual bool DoExport(AudacityProject *project,
                          int channels,

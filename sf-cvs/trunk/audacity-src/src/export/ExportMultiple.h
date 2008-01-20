@@ -13,9 +13,11 @@
 
 #include <wx/dialog.h>
 #include <wx/string.h>
+#include <wx/dynarray.h>   // sadly we are using wx dynamic arrays
 
 #include "Export.h"
 #include "../Track.h"
+#include "../Tags.h"       // we need to know about the Tags class for metadata
 
 class wxButton;
 class wxCheckBox;
@@ -56,13 +58,23 @@ private:
     * @param prefix The string used to prefix the file number if files are being
     * numbered rather than named */
    bool ExportMultipleByTrack(bool byName, wxString prefix);
-   void MakeNameUnique(wxArrayString &otherNames, wxString &newName);
-   bool DoExport(bool stereo,
-                 wxString name,
+   void MakeNameUnique(wxArrayString &otherNames, wxFileName &newName);
+   /** Export one file of an export multiple set
+    *
+    * Called once for each file in the list to do a (non-interactive) export
+    * @param channels Number of channels to export
+    * @param name The file name (and path) to export to
+    * @param selectecOnly Should we  export the selected tracks only?
+    * @param t0 Start time for export
+    * @param t1 End time for export
+    * @param tags Metadata to include in the file (if possible).
+    */
+   bool DoExport(int channels,
+                 wxFileName name,
                  bool selectedOnly,
                  double t0,
                  double t1,
-                 int trackNumber);
+                 Tags tags);
 
    // Dialog
    void PopulateOrExchange(ShuttleGui& S); 
@@ -86,8 +98,10 @@ private:
    Exporter mExporter;
    ExportPluginArray mPlugins;
    AudacityProject *mProject;
-   TrackList *mTracks;
-   TrackListIterator mIterator;
+   TrackList *mTracks;           /**< The list of tracks in the project that is
+                                   being exported */
+   TrackListIterator mIterator;  /**< Iterator used to work through all the
+                                   tracks in the project */
    LabelTrack *mLabels;
    int mNumLabels;
    int mNumTracks;
@@ -129,7 +143,29 @@ private:
    wxButton      *mExport;
 
    DECLARE_EVENT_TABLE()
+      
 };
+
+/** \brief A private class used to store the information needed to do an
+    * export.
+    *
+    * We create a set of these during the interactive phase of the export
+    * cycle, then use them when the actual exports are done */
+   class ExportKit
+   {
+   public:
+      Tags filetags; /**< The set of metadata to use for the export */
+      wxFileName destfile; /**< The file to export to */
+      double t0;           /**< Start time for the export */
+      double t1;           /**< End time for the export */
+   };  // end of ExportKit declaration
+   /* we are going to want an set of these kits, and don't know how many until
+    * runtime. I would dearly like to use a std::vector, but it seems that
+    * this isn't done anywhere else in Audacity, presumably for a reason?, so
+    * I'm stuck with wxArrays, which are much harder, as well as non-standard.
+    */
+   WX_DECLARE_OBJARRAY(ExportKit, ExportKitArray);
+
 
 #endif
 
