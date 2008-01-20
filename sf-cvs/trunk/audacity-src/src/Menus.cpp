@@ -3386,6 +3386,7 @@ void AudacityProject::OnShowClipping()
    bool checked = !gPrefs->Read(wxT("/GUI/ShowClipping"), 0L);
    gPrefs->Write(wxT("/GUI/ShowClipping"), checked);
    mCommandManager.Check(wxT("ShowClipping"), checked);
+   mTrackPanel->UpdatePrefs();
    mTrackPanel->Refresh(false);
 }
 

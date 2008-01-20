@@ -58,6 +58,8 @@ class AUDACITY_DLL_API TrackArtist {
 
    void SetInset(int left, int top, int right, int bottom);
 
+   void UpdatePrefs();
+
    //
    // Lower-level drawing functions
    // 
@@ -123,6 +125,9 @@ class AUDACITY_DLL_API TrackArtist {
    int mInsetRight;
    int mInsetBottom;
 
+   float mdBrange;
+   bool mShowClipping;
+
    wxBrush blankBrush;
    wxBrush unselectedBrush;
    wxBrush selectedBrush;
@@ -139,6 +144,8 @@ class AUDACITY_DLL_API TrackArtist {
    wxPen selsamplePen;
    wxPen muteSamplePen;
    wxPen shadowPen;
+   wxPen clippedPen;
+   wxPen muteClippedPen;
 
    Ruler *vruler;
 

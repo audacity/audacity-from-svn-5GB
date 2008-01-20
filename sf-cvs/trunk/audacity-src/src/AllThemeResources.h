@@ -320,6 +320,8 @@ from there.  Audacity will look for a file called "Pause.png".
    DEFINE_COLOUR( clrMediumSelected,       wxColour(  93,  43,  93),  wxT("MediumSelected") );
    DEFINE_COLOUR( clrDarkSelected,         wxColour(  93,  20,  93),  wxT("DarkSelected") );
 
+   DEFINE_COLOUR( clrClipped,    wxColour(255,   0,   0), wxT("Clipped"));
+   DEFINE_COLOUR( clrMuteClipped,wxColour(136, 136, 144), wxT("MuteClipped"));
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

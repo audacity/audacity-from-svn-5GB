@@ -84,6 +84,10 @@ TrackArtist::TrackArtist()
    mInsetRight  = 0;
    mInsetBottom = 0;
 
+   mdBrange = ENV_DB_RANGE;
+   mShowClipping = false;
+   UpdatePrefs();
+
    SetColours();
    vruler = new Ruler();
 
@@ -119,6 +123,8 @@ void TrackArtist::SetColours()
    theTheme.SetPenColour(   rmsPen,          clrRms);
    theTheme.SetPenColour(   muteRmsPen,      clrMuteRms);
    theTheme.SetPenColour(   shadowPen,       clrShadow);
+   theTheme.SetPenColour(   clippedPen,      clrClipped);
+   theTheme.SetPenColour(   muteClippedPen,  clrMuteClipped);
 }
 
 void TrackArtist::SetInset(int left, int top, int right, int bottom)
@@ -316,7 +322,6 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       // Waveform (db)
       vruler->SetUnits(wxT(""));
 
-      float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
       float min, max;
       ((WaveTrack *)t)->GetDisplayBounds(&min, &max);
 
@@ -324,7 +329,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
          int top = 0;
          float topval = 0;
          int bot = r.height;
-         float botval = -dBr;
+         float botval = -mdBrange;
 
          if (min < 0) {
             bot = top + (int)((max / (max-min))*(bot-top));
@@ -337,10 +342,10 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
          }
 
          if (max < 1)
-            topval = -((1-max)*dBr);
+            topval = -((1-max)*mdBrange);
 
          if (min > 0) {
-            botval = -((1-min)*dBr);
+            botval = -((1-min)*mdBrange);
          }
 
          if (topval > botval && bot > top+10) {
@@ -674,7 +679,6 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
    int *mintop = new int[r.width];
    int *minbot = new int[r.width];
    int x;
-   float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
 
    // First we compute the truncated shape of the waveform background.
    // If drawEnvelope is true, then we compute the lower border of the
@@ -682,14 +686,14 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
 
    for (x = 0; x < r.width; x++) {
       maxtop[x] = GetWaveYPosNew(env[x], zoomMin, zoomMax,
-                                 r.height, dB, true, dBr, true);
+                                 r.height, dB, true, mdBrange, true);
       maxbot[x] = GetWaveYPosNew(env[x], zoomMin, zoomMax,
-                                 r.height, dB, false, dBr, true);
+                                 r.height, dB, false, mdBrange, true);
 
       mintop[x] = GetWaveYPosNew(-env[x]-.000000001, zoomMin, zoomMax,
-                                 r.height, dB, false, dBr, true);
+                                 r.height, dB, false, mdBrange, true);
       minbot[x] = GetWaveYPosNew(-env[x], zoomMin, zoomMax,
-                                 r.height, dB, true, dBr, true);
+                                 r.height, dB, true, mdBrange, true);
 
       if (!drawEnvelope || maxbot[x] > mintop[x]) {
          maxbot[x] = halfHeight;
@@ -814,7 +818,6 @@ void TrackArtist::DrawIndividualClipSamples(wxDC &dc, wxRect r,
    sampleCount s0 = (sampleCount) (t0 * rate + 0.5);
    sampleCount slen = (sampleCount) (r.width * rate / pps + 0.5);
    sampleCount snSamples = clip->GetNumSamples(); 
-   float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    
    slen += 4;
 
@@ -828,8 +831,14 @@ void TrackArtist::DrawIndividualClipSamples(wxDC &dc, wxRect r,
 
    int *xpos = new int[slen];
    int *ypos = new int[slen];
+   int *clipped;
+   int clipcnt = 0;
    sampleCount s;
-   
+
+   if (mShowClipping) {
+       clipped = new int[slen];
+   }
+
    dc.SetPen(muted ? muteSamplePen : samplePen);
    
    for (s = 0; s < slen; s++) {
@@ -846,8 +855,12 @@ void TrackArtist::DrawIndividualClipSamples(wxDC &dc, wxRect r,
       
       xpos[s] = xx;
 
-      ypos[s] = GetWaveYPosNew(buffer[s] * clip->GetEnvelope()->GetValueAtX(xx+r.x, r, h, pps),
-                               zoomMin, zoomMax, r.height, dB, true, dBr, false);
+      tt = buffer[s] * clip->GetEnvelope()->GetValueAtX(xx + r.x, r, h, pps);
+      if (mShowClipping && (tt <= -MAX_AUDIO || tt >= MAX_AUDIO)) {
+         clipped[clipcnt++] = xx;
+      }
+      ypos[s] = GetWaveYPosNew(tt, zoomMin, zoomMax,
+                               r.height, dB, true, mdBrange, false);
       if (ypos[s] < -1)
          ypos[s] = -1;
       if (ypos[s] > r.height)
@@ -860,7 +873,7 @@ void TrackArtist::DrawIndividualClipSamples(wxDC &dc, wxRect r,
       dc.DrawLine(r.x + xpos[s], r.y + ypos[s],
                   r.x + xpos[s + 1], r.y + ypos[s + 1]);
    }
-   
+
    if (showPoints) {
       // Draw points
       int tickSize= drawSamples ? 4 : 3;// Bigger ellipses when draggable.
@@ -877,7 +890,20 @@ void TrackArtist::DrawIndividualClipSamples(wxDC &dc, wxRect r,
          }
       }
    }
+
+   // Draw clipping
+   if (clipcnt) {
+      dc.SetPen(muted ? muteClippedPen : clippedPen);
+      while (--clipcnt >= 0) {
+         s = clipped[clipcnt];
+         dc.DrawLine(r.x + s, r.y, r.x + s, r.y + r.height);
+      }
+   }
    
+   if (mShowClipping) {
+      delete [] clipped;
+   }
+
    delete[]buffer;
    delete[]xpos;
    delete[]ypos;
@@ -895,18 +921,39 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
    int *h2 = new int[r.width];
    int *r1 = new int[r.width];
    int *r2 = new int[r.width];
+   int *clipped;
+   int clipcnt = 0;
    int x;
-   float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
+
+   if (mShowClipping) {
+       clipped =  new int[r.width];
+   }
 
    for (x = 0; x < r.width; x++) {
-      h1[x] = GetWaveYPosNew(min[x] * envValues[x], zoomMin, zoomMax,
-                             r.height, dB, true, dBr, true);
-      h2[x] = GetWaveYPosNew(max[x] * envValues[x], zoomMin, zoomMax,
-                             r.height, dB, true, dBr, true);
+      double v;
+
+      v = min[x] * envValues[x];
+      if (mShowClipping && v <= -MAX_AUDIO) {
+         if (clipcnt == 0 || (clipcnt > 0 && clipped[clipcnt-1] != x)) {
+            clipped[clipcnt++] = x;
+         }
+      }
+      h1[x] = GetWaveYPosNew(v, zoomMin, zoomMax,
+                             r.height, dB, true, mdBrange, true);
+
+      v = max[x] * envValues[x];
+      if (mShowClipping && v >= MAX_AUDIO) {
+         if (clipcnt == 0 || (clipcnt > 0 && clipped[clipcnt-1] != x)) {
+            clipped[clipcnt++] = x;
+         }
+      }
+      h2[x] = GetWaveYPosNew(v, zoomMin, zoomMax,
+                             r.height, dB, true, mdBrange, true);
+
       r1[x] = GetWaveYPosNew(-rms[x] * envValues[x], zoomMin, zoomMax,
-                             r.height, dB, true, dBr, true);
+                             r.height, dB, true, mdBrange, true);
       r2[x] = GetWaveYPosNew(rms[x] * envValues[x], zoomMin, zoomMax,
-                             r.height, dB, true, dBr, true);
+                             r.height, dB, true, mdBrange, true);
 
       // JKC: This adjustment to h1[] and h2[] ensures that the drawn
       // waveform is continuous.
@@ -928,11 +975,13 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
    }
 
    if (imageBuffer) {
+      uchar *clipBuffer = imageBuffer;
       uchar rs, gs, bs, rr, gr, br;
       int y;
 
       GetColour(muted ? muteSamplePen : samplePen, &rs, &gs, &bs);
       GetColour(muted ? muteRmsPen : rmsPen, &rr, &gr, &br);
+
       for(y=0; y<r.height; y++) {
          for(x=0; x<r.width; x++) {
             if (y >= r2[x] && y < r1[x]) {
@@ -943,10 +992,29 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
             else if (y >= h2[x] && y < h1[x]+1) {
                *imageBuffer++ = rs;
                *imageBuffer++ = gs;
-               *imageBuffer++ = bs;               
+               *imageBuffer++ = bs;
             }
-            else
+            else {
                imageBuffer += 3;
+            }
+         }
+      }
+
+      if (clipcnt) {
+         uchar rc, gc, bc;
+         int c;
+         int w = r.width * 3;
+
+         GetColour(muted ? muteClippedPen : clippedPen, &rc, &gc, &bc);
+
+         for (c = 0; c < clipcnt; c++) {
+            x = clipped[c] * 3;
+            for (y = 0; y < r.height; y++) {
+               clipBuffer[x] = rc;
+               clipBuffer[x + 1] = gc;
+               clipBuffer[x + 2] = bc;
+               x += w;
+            }
          }
       }
    }
@@ -973,8 +1041,21 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
          if (r1[x] != r2[x])
             dc.DrawLine(r.x + x, r.y + r2[x], r.x + x, r.y + r1[x]);
       }
+
+      // Draw the clipping lines
+      if (clipcnt) {
+         dc.SetPen(muted ? muteClippedPen : clippedPen);
+         while (--clipcnt >= 0) {
+            x = clipped[clipcnt];
+            dc.DrawLine(r.x + x, r.y, r.x + x, r.y + r.height);
+         }
+      }
    }
       
+   if (mShowClipping) {
+      delete[] clipped;
+   }
+
    delete[] h1;
    delete[] h2;
    delete[] r1;
@@ -1249,15 +1330,15 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    if (drawEnvelope) {
       dc.SetPen(AColor::envelopePen);
       int x;
-      float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
+
       for (x = 0; x < mid.width; x++) {
          int envTop, envBottom;
          
          envTop = GetWaveYPosNew(envValues[x], zoomMin, zoomMax,
-                                 mid.height, dB, true, dBr, false);
+                                 mid.height, dB, true, mdBrange, false);
          
          envBottom = GetWaveYPosNew(-envValues[x], zoomMin, zoomMax,
-                                    mid.height, dB, true, dBr, false);
+                                    mid.height, dB, true, mdBrange, false);
          
          /* make the collision at zero actually look solid */
          if(envBottom-envTop < 3){
@@ -1268,50 +1349,6 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
          
          DrawEnvLine(dc, mid, x, envTop, true);
          DrawEnvLine(dc, mid, x, envBottom, false);
-      }
-   }
-
-   // Draw clipping indicators if requested
-   bool showclipping = gPrefs->Read(wxT("/GUI/ShowClipping"), 0L)!=0;
-   if (showclipping) {
-      dc.SetPen(AColor::clippingPen);
-
-      sampleCount s0 = (sampleCount) lrint(t0 * rate);
-      sampleCount slen = (sampleCount) lrint(mid.width * rate / pps);
-      sampleCount snSamples = clip->GetNumSamples();
-
-      if (s0 + slen > snSamples) {
-         slen = snSamples - s0;
-      }
-
-      // It is possible to get here with an empty clip and "slen"
-      // will wind up being negative.  So we use that knowledge
-      // to bypass further processing of the clip.
-      if (slen > 0) {
-         float *buffer = new float[slen];
-         int lastx = -1;
-         double diff = s0 / rate - t0;
-         int halfheight = mid.height / 2;
-
-         clip->GetSamples((samplePtr)buffer, floatSample, s0, slen);
-
-         for (sampleCount s = 0; s < slen; s++) {
-            if (buffer[s] <= -MAX_AUDIO) {
-               int x = lrint((s / rate + diff) * pps);
-               if (x != lastx) {
-                  dc.DrawLine(mid.x + x, mid.y + halfheight, mid.x + x, mid.y + mid.height);
-                  lastx = x;
-               }
-            }
-            else if (buffer[s] >= MAX_AUDIO) {
-               int x = lrint((s / rate + diff) * pps);
-               if (x != lastx) {
-                  dc.DrawLine(mid.x + x, mid.y, mid.x + x, mid.y + halfheight);
-                  lastx = x;
-               }
-            }
-         }
-         delete [] buffer;
       }
    }
 
@@ -2521,6 +2558,11 @@ void TrackArtist::DrawTimeTrack(TimeTrack *track,
                false,0.0,1.0);
 }
 
+void TrackArtist::UpdatePrefs()
+{
+   mdBrange = gPrefs->Read(wxT("/GUI/EnvdBRange"), mdBrange);
+   mShowClipping = gPrefs->Read(wxT("/GUI/ShowClipping"), mShowClipping);
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

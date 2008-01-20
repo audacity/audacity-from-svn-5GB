@@ -449,6 +449,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
      mTracks(tracks),
      mViewInfo(viewInfo),
      mRuler(ruler),
+     mTrackArtist(NULL),
      mBacking(NULL),
      mRefreshBacking(false),
      mAutoScrolling(false)
@@ -659,6 +660,10 @@ void TrackPanel::UpdatePrefs()
                1.0);
    gPrefs->Read(wxT("/AudioIO/SeekLongPeriod"), &mSeekLong,
                15.0);
+
+   if (mTrackArtist) {
+      mTrackArtist->UpdatePrefs();
+   }
 }
 
 void TrackPanel::SetStop(bool bStopped)
