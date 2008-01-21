@@ -12,6 +12,7 @@
 #ifndef __AUDACITY_INTERNAT__
 #define __AUDACITY_INTERNAT__
 
+#include <wx/arrstr.h>
 #include <wx/string.h>
 #include <wx/longlong.h>
 
