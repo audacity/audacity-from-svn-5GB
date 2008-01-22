@@ -482,6 +482,8 @@ bool ExportMultiple::DirOk()
 
 bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
 {
+   AudacityProject *project = GetActiveProject();
+   bool tagsPrompt = project->GetShowId3Dialog();
    int numFiles = mNumLabels;
    int l = 0;        // counter for files done
    ExportKitArray exportSettings; // dynamic array we will use to store the
@@ -563,7 +565,7 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
       setting.filetags.SetTag(TAG_TITLE, title);
       setting.filetags.SetTag(TAG_TRACK, l+1);
       // let the user have a crack at editing it, exit if cancelled
-      if (!setting.filetags.ShowEditDialog(mProject,_("Edit metadata"), true))
+      if (!setting.filetags.ShowEditDialog(mProject,_("Edit metadata"), tagsPrompt))
          return false;
 
       /* add the settings to the array of settings to be used for export */
@@ -602,6 +604,8 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
 bool ExportMultiple::ExportMultipleByTrack(bool byName,
                                            wxString prefix)
 {
+   AudacityProject *project = GetActiveProject();
+   bool tagsPrompt = project->GetShowId3Dialog();
    Track *tr, *tr2;
    int channels = 0;  // how many channels export?
    int l = 0;     // track counter
@@ -696,7 +700,7 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
       setting.filetags.SetTag(TAG_TITLE, title);
       setting.filetags.SetTag(TAG_TRACK, l+1);
       // let the user have a crack at editing it, exit if cancelled
-      if (!setting.filetags.ShowEditDialog(mProject,_("Edit metadata"), true))
+      if (!setting.filetags.ShowEditDialog(mProject,_("Edit metadata"), tagsPrompt))
          return false;
 
       /* add the settings to the array of settings to be used for export */

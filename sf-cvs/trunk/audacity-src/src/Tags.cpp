@@ -550,7 +550,7 @@ void Tags::WriteXML(XMLWriter &xmlFile)
 
 bool Tags::ShowEditDialog(wxWindow *parent, wxString title, bool force)
 {
-   if (force || IsEmpty()) {
+   if (force) {
       TagsEditor dlg(parent, title, this, mEditTitle, mEditTrackNumber);
 
       return dlg.ShowModal() == wxID_OK;
