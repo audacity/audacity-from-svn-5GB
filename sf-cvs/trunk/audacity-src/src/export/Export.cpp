@@ -295,7 +295,7 @@ bool Exporter::Process(AudacityProject *project, bool selectedOnly, double t0, d
 
    // Let user edit MetaData 
 
-   if (!(project->GetTags()->ShowEditDialog(project, _("Edit Metadata"), true))) {
+   if (!(project->GetTags()->ShowEditDialog(project, _("Edit Metadata"), mProject->GetShowId3Dialog()))) {
       return false;
    }
 
