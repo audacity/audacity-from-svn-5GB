@@ -47,6 +47,7 @@ libFLAC++.a libFLAC.a: libflac-recursive
 
 # libnyquist
 libnyquist-recursive:
+	$(MAKE) -C libnyquist/misc
 	$(MAKE) -C libnyquist
 libnyquist.a: libnyquist-recursive
 	ln -sf libnyquist/libnyquist.a libnyquist.a
