@@ -36,6 +36,8 @@ override CXXFLAGS += @CXXFLAGS@
 # CPPFLAGS are for both C and C++.
 override CPPFLAGS += -Wall -fno-strict-aliasing -I$(srcdir)/include -I. @CPPFLAGS@ 
 
+# LDFLAGS are for linking
+override LDFLAGS += @LDFLAGS@
 
 ########################################
 # ALL OBJECT FILES
@@ -228,7 +230,7 @@ libaudacity.a: $(LIBAUDACITY_OBJS)
 	ar rcs libaudacity.a $(LIBAUDACITY_OBJS)
 
 ../audacity: $(OBJS) $(LOCAL_LIBS:%=$(top_builddir)/lib-src/%) $(EXTRAOBJS) libaudacity.a Makefile
-	$(CCC) -o ../audacity $(OBJS) $(LOCAL_LIBS:%=$(top_builddir)/lib-src/%) $(EXTRAOBJS) libaudacity.a $(LIBS)
+	$(CCC) -o ../audacity $(OBJS) $(LDFLAGS) $(LOCAL_LIBS:%=$(top_builddir)/lib-src/%) $(EXTRAOBJS) libaudacity.a $(LIBS)
 	@AFTERBUILD@
 
 $(DIRS):
