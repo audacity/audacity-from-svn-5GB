@@ -6,6 +6,7 @@ srcdir=@srcdir@
 
 CFLAGS += @CFLAGS@
 CPPFLAGS += @CPPFLAGS@
+CXXFLAGS += @CXXFLAGS@
 CPPOBJ = \
 	allegro.cpp.o \
 	allegrord.cpp.o \
@@ -27,8 +28,8 @@ clean:
 	rm -f allegro.a *.o
 
 $(CPPOBJ): %.cpp.o: $(srcdir)/%.cpp Makefile
-	$(CCC) -c $(CPPFLAGS) $< -o $@
+	$(CCC) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
 
 $(COBJ): %.c.o: $(srcdir)/%.c Makefile
-	$(CC) -c $(CFLAGS) $< -o $@
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
