@@ -84,7 +84,7 @@ libsamplerate.a: libsamplerate-recursive
 
 # libresample
 libresample-recursive:
-	$(MAKE) -C libresample
+	$(MAKE) -C libresample libresample.a
 libresample.a: libresample-recursive
 	ln -sf libresample/libresample.a libresample.a
 
