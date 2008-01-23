@@ -86,7 +86,7 @@ void AboutDialog::CreateCreditsList()
    AddCredit(wxT("Brian Gunlogson"), roleContributor);
    AddCredit(wxT("Arun Kishore"), roleContributor);
    AddCredit(wxT("Harvey Lubin"), roleContributor);
-   AddCredit(wxT("Grek Mekkes"), roleContributor);
+   AddCredit(wxT("Greg Mekkes"), roleContributor);
    AddCredit(wxT("Abe Milde"), roleContributor);
    AddCredit(wxT("Paul Nasca"), roleContributor);
    AddCredit(wxT("Augustus Saunders"), roleContributor);
