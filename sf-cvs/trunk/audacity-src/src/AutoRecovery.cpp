@@ -189,11 +189,12 @@ static bool RecoverAllProjects(AudacityProject** pproj)
    wxString filename;
    AudacityProject* proj = NULL;
    
-   for (bool c = dir.GetFirst(&filename, wxT("*.autosave"), wxDIR_FILES);
-        c; c = dir.GetNext(&filename))
-   {
-      wxFileName fullPath(FileNames::AutoSaveDir(), filename);
+   wxArrayString files;
+   wxDir::GetAllFiles(FileNames::AutoSaveDir(), &files,
+                      _T("*.autosave"), wxDIR_FILES);
 
+   for (unsigned int i = 0; i < files.GetCount(); i++)
+   {
       if (*pproj)
       {
          // Reuse existing project window
@@ -208,7 +209,7 @@ static bool RecoverAllProjects(AudacityProject** pproj)
       // Open project. When an auto-save file has been opened successfully,
       // the opened auto-save file is automatically deleted and a new one
       // is created.
-      proj->OpenFile(fullPath.GetFullPath());
+      proj->OpenFile(files[i]);
    }
    
    return true;
