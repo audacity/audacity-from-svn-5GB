@@ -2283,6 +2283,13 @@ void AudacityProject::WriteXML(XMLWriter &xmlFile)
       //       all other attributes
       //
       xmlFile.WriteAttr(wxT("datadir"), mDirManager->GetDataFilesDir());
+
+      // Note that the code at the start assumes that if mFileName has a value
+      // then the file has been saved.  This is not neccessarily true when
+      // autosaving as it gets set by AddImportedTracks (presumably as a proposal).
+      // I don't think that mDirManager.projName gets set without a save so check that.
+      if( mDirManager->GetProjectName() == wxT("") )
+         projName = wxT("_data");
    }
 
    xmlFile.WriteAttr(wxT("projname"), projName);
