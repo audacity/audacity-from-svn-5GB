@@ -605,6 +605,7 @@ void CompressorDialog::OnPreview(wxCommandEvent &event)
    mEffect->mNormalize = useGain;
 
    mEffect->Preview();
+   this->SetFocus();
 
    mEffect->mAttackTime = oldAttackTime;
    mEffect->mDecayTime = oldDecayTime;

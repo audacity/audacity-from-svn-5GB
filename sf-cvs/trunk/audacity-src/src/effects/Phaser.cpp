@@ -564,6 +564,7 @@ void PhaserDialog::OnPreview(wxCommandEvent &event)
    m_pEffect->drywet = drywet;
 
    m_pEffect->Preview();
+   this->SetFocus();
 
    m_pEffect->freq = old_freq;
    m_pEffect->startphase = old_startphase;

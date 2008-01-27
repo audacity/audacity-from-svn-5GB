@@ -360,6 +360,7 @@ void TruncSilenceDialog::OnPreview(wxCommandEvent & event)
 {
    TransferDataFromWindow();
    mEffect->Preview();
+   this->SetFocus();
 }
 
 void TruncSilenceDialog::OnDurationChange(wxCommandEvent & event)

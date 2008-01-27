@@ -427,6 +427,7 @@ void ClickRemovalDialog::OnPreview(wxCommandEvent & event)
    mEffect->mThresholdLevel = mThresh;
    mEffect->mClickWidth = mWidth;
    mEffect->Preview();
+   this->SetFocus();
 }
 
 // WDR: handler implementations for NoiseRemovalDialog

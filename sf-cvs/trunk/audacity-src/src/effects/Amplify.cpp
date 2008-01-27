@@ -378,6 +378,7 @@ void AmplifyDialog::OnPreview(wxCommandEvent &event)
    m_pEffect->peak = peak;
 
    m_pEffect->Preview();
+   this->SetFocus();
 
    m_pEffect->ratio = oldRatio;
    m_pEffect->peak = oldPeak;

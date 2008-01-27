@@ -554,6 +554,7 @@ void WahwahDialog::OnPreview(wxCommandEvent &event)
    m_pEffect->depth = depth / 100;
 
    m_pEffect->Preview();
+   this->SetFocus();
 
    m_pEffect->freq = old_freq;
    m_pEffect->freqofs = old_freqofs;

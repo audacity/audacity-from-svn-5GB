@@ -845,6 +845,7 @@ void LadspaEffectDialog::OnCancel(wxCommandEvent & WXUNUSED(event))
 void LadspaEffectDialog::OnPreview(wxCommandEvent & WXUNUSED(event))
 {
    effect->Preview();
+   this->SetFocus();
 }
 
 void LadspaEffectDialog::ConnectFocus(wxControl *c)
