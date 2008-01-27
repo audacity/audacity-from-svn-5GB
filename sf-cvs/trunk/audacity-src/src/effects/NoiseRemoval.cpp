@@ -758,6 +758,7 @@ void NoiseRemovalDialog::OnPreview(wxCommandEvent &event)
    m_pEffect->mAttackDecayTime =  mTime;
    
    m_pEffect->Preview();
+   this->SetFocus();
    
    m_pEffect->mNoiseGain = oldGain;
    m_pEffect->mFreqSmoothingHz =  oldFreq;

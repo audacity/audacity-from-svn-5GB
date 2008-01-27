@@ -738,6 +738,7 @@ void ChangePitchDialog::OnPreview(wxCommandEvent &event)
 	double oldSemitonesChange = m_SemitonesChange;
 	m_pEffect->m_SemitonesChange = m_SemitonesChange;
 	m_pEffect->Preview();
+   this->SetFocus();
 	m_pEffect->m_SemitonesChange = oldSemitonesChange;
 }
 

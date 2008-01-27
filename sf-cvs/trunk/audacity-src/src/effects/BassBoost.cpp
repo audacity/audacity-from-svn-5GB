@@ -273,6 +273,7 @@ void BassBoostDialog::OnPreview(wxCommandEvent & event)
    mEffect->frequency = freq;
    mEffect->dB_boost = boost;
    mEffect->Preview();
+   this->SetFocus();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

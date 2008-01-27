@@ -423,8 +423,9 @@ void NormalizeDialog::OnPreview(wxCommandEvent &event)
    mEffect->mGain = mGain;
    mEffect->mDC = mDC;
    mEffect->mLevel = mLevel;
-   
-	mEffect->Preview();
+
+   mEffect->Preview();
+   this->SetFocus();
    
 	mEffect->mGain = oldGain;
    mEffect->mDC = oldDC;
