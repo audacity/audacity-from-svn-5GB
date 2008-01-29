@@ -231,7 +231,10 @@ bool AmplifyDialog::TransferDataToWindow()
    text = GetPeakText();
    if (text) {
       wxString str;
-      str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
+      if( ratio*peak > 0.0 )
+         str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
+      else
+         str = _("-Infinity");   // the case when the waveform is all zero
       text->SetValue(str);
    }
 
@@ -278,7 +281,10 @@ void AmplifyDialog::OnAmpText(wxCommandEvent & event)
          slider->SetValue((int)(200*log10(ratio)+0.5));
 
       wxString str;
-      str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
+      if( ratio*peak > 0.0 )
+         str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
+      else
+         str = _("-Infinity");   // the case when the waveform is all zero
       GetPeakText()->SetValue(str);
 
       mLoopDetect = false;
@@ -341,7 +347,10 @@ void AmplifyDialog::OnAmpSlider(wxCommandEvent & event)
    
    str.Printf(wxT("%.1f"), 20*log10(ratio));
    GetAmpText()->SetValue(str);
-   str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
+   if( ratio*peak > 0.0 )
+      str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
+   else
+      str = _("-Infinity");   // the case when the waveform is all zero
    GetPeakText()->SetValue(str);
 
    mLoopDetect = false;
