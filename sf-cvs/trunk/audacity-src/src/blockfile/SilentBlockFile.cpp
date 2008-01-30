@@ -14,6 +14,9 @@
 SilentBlockFile::SilentBlockFile(sampleCount sampleLen):
    BlockFile(wxFileName(), sampleLen)
 {
+   mMin = 0.;
+   mMax = 0.;
+   mRMS = 0.;
 }
 
 SilentBlockFile::~SilentBlockFile()
