@@ -2,7 +2,7 @@
 
 AUTOMAKE_OPTIONS = foreign 1.6 dist-zip
 
-SUBDIRS = src include doc win32
+SUBDIRS = src include win32
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = ogg.m4
