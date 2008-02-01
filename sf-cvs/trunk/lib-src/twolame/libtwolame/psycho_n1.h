@@ -18,7 +18,7 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: psycho_n1.h,v 1.2 2008-01-06 14:21:16 richardash1981 Exp $
+ *  $Id: psycho_n1.h,v 1.3 2008-02-01 19:44:35 richardash1981 Exp $
  *
  */
 

@@ -18,7 +18,7 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: get_set.c,v 1.2 2008-01-06 14:21:15 richardash1981 Exp $
+ *  $Id: get_set.c,v 1.3 2008-02-01 19:44:33 richardash1981 Exp $
  *
  */
 
@@ -60,7 +60,7 @@ const char *twolame_get_mode_name(twolame_options *glopts)
 	static const char *mode_name[6] = { "Auto", "Stereo", "J-Stereo", "Dual-Channel", "Mono", "Illegal Mode"};
 	int mode = glopts->mode;
 	if (mode>=TWOLAME_AUTO_MODE && mode<=TWOLAME_MONO)
-		return (mode_name[mode-1]);
+		return (mode_name[mode+1]);
 	else 
 		return (mode_name[5]);
 }

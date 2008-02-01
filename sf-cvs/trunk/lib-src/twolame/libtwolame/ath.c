@@ -18,7 +18,7 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: ath.c,v 1.2 2008-01-06 14:21:14 richardash1981 Exp $
+ *  $Id: ath.c,v 1.3 2008-02-01 19:44:27 richardash1981 Exp $
  *
  */
 
