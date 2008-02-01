@@ -67,6 +67,9 @@ Digital Audio scripting language, with our own library interface added to it
 libogg
 ------
 library to handle Xiph.org's open multimedia container format
+Version in Audacity CVS: 1.1.3
+Patches: None
+Upstream Version: 1.1.3
 
 libresample
 -----------
@@ -77,16 +80,25 @@ libsamplerate
 Erik de Castro Lopo's high quality sample rate conversion library. Not used
 in release builds, could probably be removed altogther except for comparision
 purposes.
+Version in Audacity CVS:
+Patches:
+Upstream Version:
 
 libsndfile
 ----------
 Erik de Castro Lopo's uncompressed audio file I/O library. Core and essential
-to audacity
+to audacity.
+Version in Audacity CVS:
+Patches:
+Upstream Version:
 
 libvorbis
 ---------
 library for endcoding and decoding Xiph.org's high-quality compressed audio
 format.
+Version in Audacity CVS:
+Patches:
+Upstream Version:
 
 lib-widget-extra
 ----------------
@@ -106,7 +118,7 @@ portaudio-v19
 -------------
 http://portaudio.com/
 cross-platform audio I/O library version 19, used for 1.3.2 onwards releases
-Version in audacity cvs: 14th January 2008 SVN snapshot (r1314)
+Version in audacity cvs: 02nd February 2008 SVN snapshot (r1325)
 Patches:
 		buildoptions-osx.patch			patch by Dominic to make Universal
 					Binary optional and make build work on OS X 10.3
