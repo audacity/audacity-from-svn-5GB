@@ -1,5 +1,5 @@
 /*
- * $Id: pa_front.c,v 1.8 2007-12-09 21:50:55 richardash1981 Exp $
+ * $Id: pa_front.c,v 1.9 2008-02-01 22:36:27 richardash1981 Exp $
  * Portable Audio I/O Library Multi-Host API front end
  * Validate function parameters and manage multiple host APIs.
  *
@@ -405,6 +405,8 @@ const char *Pa_GetErrorText( PaError errorCode )
     case paCanNotWriteToACallbackStream:        result = "Can't write to a callback stream"; break;
     case paCanNotReadFromAnOutputOnlyStream:    result = "Can't read from an output only stream"; break;
     case paCanNotWriteToAnInputOnlyStream:      result = "Can't write to an input only stream"; break;
+    case paIncompatibleStreamHostApi: result = "Incompatible stream host API"; break;
+    case paBadBufferPtr:             result = "Bad buffer pointer"; break;
     default:                         
 		if( errorCode > 0 )
 			result = "Invalid error code (value greater than zero)"; 
@@ -1206,10 +1208,8 @@ PaError Pa_OpenStream( PaStream** stream,
                                   hostApiInputParametersPtr, hostApiOutputParametersPtr,
                                   sampleRate, framesPerBuffer, streamFlags, streamCallback, userData );
 
-    if( result == paNoError ) {
+    if( result == paNoError )
         AddOpenStream( *stream );
-        PA_STREAM_REP(*stream)->hostApiType = hostApi->info.type;
-    }
 
 
     PA_LOGAPI(("Pa_OpenStream returned:\n" ));
