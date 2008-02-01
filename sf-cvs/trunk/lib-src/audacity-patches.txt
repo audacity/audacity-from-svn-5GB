@@ -6,6 +6,8 @@ Libraries
 =========
 allegro
 -------
+Midi handling library. Used only to load and display midi files in audacity.
+Can't find any information on origin or version?
 
 dlcompat
 --------
@@ -16,12 +18,15 @@ expat
 -----
 XML parser library used to parse project files and so on. By default the
 system copy is prefered over this one, even on OS X (where it is shipped by
-default)
+default). Build against system 2.0.1 works fine.
+Version in audacity CVS: 1.2
+Patches: None
+Upstream version: 2.0.1
 
 FileDialogue
 ------------
 The customised file saving dialogues for wxwidgets to provide the options
-button for format preferences. This is written and maintianed by us so doesn't
+button for format preferences. This is written and maintained by us so doesn't
 have and upstream at the moment.
 
 iAVC
@@ -37,8 +42,8 @@ libflac
 http://flac.sourceforge.net/
 Free Lossless Audio Codec encoding and decoding library
 Version in audacity cvs: 1.1.2
-patch added to build on OS X: mac-asm-fixes.patch. Need to review this for
-newer version before it can go upstream
+Patches: mac-asm-fixes.patch. Fixes build on OS X Intel 10.4. Need to review this for newer version before it can go upstream
+Upstream version: 1.2.1
 TODO: Update to current release version
 
 libid3tag
@@ -49,6 +54,11 @@ libmad
 ------
 http://www.underbit.com/products/mad/
 MP3 decoding library
+Version in audacity cvs: 0.15.1 (beta)
+Patches: libmad-mp2-out-of-spec.patch:	Import some forms of MP2 file that are
+theoretically out of spec but in practise work fine (msmeyer)
+** A Mac one as well needed? **
+Upstream version: 0.15.1 (beta)
 
 libnyquist
 ----------
@@ -124,14 +134,15 @@ http://www.surina.net/soundtouch/
 Independant Pitch and Tempo changing library.
 Version in audacity cvs: 1.3.1
 Some patches inserted to make it build on PPC?
+Upstream Version: 1.3.1?
 
 twolame
 -------
 http://www.twolame.org/
 MPEG I layer 2 audio encoding library used for MP2 exports
-Version in audacity cvs: 0.3.10
-Patches: Build fix for OS X Leapoard and GCC 4.3, sent upstream
-(build-gcc-4.3.patch)
+Version in audacity cvs: 0.3.12
+Patches: None
+Upstream Version: 0.3.12
 
 wave++
 ------
