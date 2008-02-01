@@ -12,7 +12,7 @@
 
  function: code raw [Vorbis] packets into framed OggSquish stream and
            decode Ogg streams back into raw packets
- last mod: $Id: framing.c,v 1.4 2004-11-13 16:47:09 mbrubeck Exp $
+ last mod: $Id: framing.c,v 1.5 2008-02-01 22:07:15 richardash1981 Exp $
 
  note: The CRC code is directly derived from public domain code by
  Ross Williams (ross@guest.adelaide.edu.au).  See docs/framing.html
@@ -336,7 +336,7 @@ int ogg_stream_flush(ogg_stream_state *os,ogg_page *og){
   int maxvals=(os->lacing_fill>255?255:os->lacing_fill);
   int bytes=0;
   long acc=0;
-  ogg_int64_t granule_pos=os->granule_vals[0];
+  ogg_int64_t granule_pos=-1;
 
   if(maxvals==0)return(0);
   
@@ -357,7 +357,8 @@ int ogg_stream_flush(ogg_stream_state *os,ogg_page *og){
     for(vals=0;vals<maxvals;vals++){
       if(acc>4096)break;
       acc+=os->lacing_vals[vals]&0x0ff;
-      granule_pos=os->granule_vals[vals];
+      if((os->lacing_vals[vals]&0xff)<255)
+        granule_pos=os->granule_vals[vals];
     }
   }
   
@@ -474,8 +475,7 @@ int ogg_stream_eos(ogg_stream_state *os){
    ogg_stream_pagein() along with the appropriate
    ogg_stream_state* (ie, matching serialno).  We then get raw
    packets out calling ogg_stream_packetout() with a
-   ogg_stream_state.  See the 'frame-prog.txt' docs for details and
-   example code. */
+   ogg_stream_state. */
 
 /* initialize the struct to a known state */
 int ogg_sync_init(ogg_sync_state *oy){
@@ -1079,9 +1079,9 @@ const int head1_4[] = {0x4f,0x67,0x67,0x53,0,0x02,
 		       0};
 
 const int head2_4[] = {0x4f,0x67,0x67,0x53,0,0x00,
-		       0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+		       0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
 		       0x01,0x02,0x03,0x04,1,0,0,0,
-		       0x34,0x24,0xd5,0x29,
+		       0x54,0x05,0x51,0xc8,
 		       17,
 		       255,255,255,255,255,255,255,255,
 		       255,255,255,255,255,255,255,255,255};
@@ -1165,9 +1165,9 @@ const int head2_6[] = {0x4f,0x67,0x67,0x53,0,0x00,
 		       255,255,255,255,255,255,255,255};
 
 const int head3_6[] = {0x4f,0x67,0x67,0x53,0,0x01,
-		       0x07,0x04,0x00,0x00,0x00,0x00,0x00,0x00,
+		       0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
 		       0x01,0x02,0x03,0x04,2,0,0,0,
-		       0xbd,0xd5,0xb5,0x8b,
+		       0x01,0xd2,0xe5,0xe5,
 		       17,
 		       255,255,255,255,255,255,255,255,
 		       255,255,255,255,255,255,255,255,255};
