@@ -31,7 +31,7 @@
 #include "float_cast.h"
 #include "utils.h"
 
-#define	BUFFER_SIZE		(1<<15)
+#define	BUFFER_SIZE		(1<<12)
 
 static void	lrintf_test (void) ;
 
@@ -43,11 +43,18 @@ static void	pcm_test_bits_32	(const char *filename, int filetype, int hash) ;
 static void pcm_test_float	(const char *filename, int filetype, int hash, int replace_float) ;
 static void pcm_test_double	(const char *filename, int filetype, int hash, int replace_float) ;
 
+typedef union
+{	double	d [BUFFER_SIZE + 1];
+	float	f [BUFFER_SIZE + 1];
+	int		i [BUFFER_SIZE + 1];
+	short	s [BUFFER_SIZE + 1];
+} BUFFER ;
+
 /* Data written to the file. */
-static	double	data_out [(BUFFER_SIZE / sizeof (double)) + 1] ;
+static	BUFFER	data_out ;
 
 /* Data read back from the file. */
-static	double	data_in	[(BUFFER_SIZE / sizeof (double)) + 1] ;
+static	BUFFER	data_in ;
 
 int
 main (void)
@@ -99,8 +106,8 @@ lrintf_test (void)
 
 	items = 1024 ;
 
-	float_data = (float*) data_out ;
-	int_data = (int*) data_in ;
+	float_data = data_out.f ;
+	int_data = data_in.i ;
 
 	for (k = 0 ; k < items ; k++)
 		float_data [k] = (k * ((k % 2) ? 333333.0 : -333333.0)) ;
@@ -133,8 +140,8 @@ pcm_test_bits_8 (const char *filename, int filetype, int hash)
 
 	items = 127 ;
 
-	short_out = (short*) data_out ;
-	short_in = (short*) data_in ;
+	short_out = data_out.s ;
+	short_in = data_in.s ;
 
 	zero_count = 0 ;
 	for (k = 0 ; k < items ; k++)
@@ -197,8 +204,8 @@ pcm_test_bits_8 (const char *filename, int filetype, int hash)
 	*/
 	zero_count = 0 ;
 
-	int_out = (int*) data_out ;
-	int_in = (int*) data_in ;
+	int_out = data_out.i ;
+	int_in = data_in.i ;
 	for (k = 0 ; k < items ; k++)
 	{	int_out [k] = ((k * ((k % 2) ? 1 : -1)) << 24) ;
 		zero_count = int_out [k] ? zero_count : zero_count + 1 ;
@@ -257,8 +264,8 @@ pcm_test_bits_8 (const char *filename, int filetype, int hash)
 	*/
 	zero_count = 0 ;
 
-	float_out = (float*) data_out ;
-	float_in = (float*) data_in ;
+	float_out = data_out.f ;
+	float_in = data_in.f ;
 	for (k = 0 ; k < items ; k++)
 	{	float_out [k] = (k * ((k % 2) ? 1 : -1)) ;
 		zero_count = (fabs (float_out [k]) > 1e-10) ? zero_count : zero_count + 1 ;
@@ -321,8 +328,8 @@ pcm_test_bits_8 (const char *filename, int filetype, int hash)
 	*/
 	zero_count = 0 ;
 
-	double_out = (double*) data_out ;
-	double_in = (double*) data_in ;
+	double_out = data_out.d ;
+	double_in = data_in.d ;
 	for (k = 0 ; k < items ; k++)
 	{	double_out [k] = (k * ((k % 2) ? 1 : -1)) ;
 		zero_count = (fabs (double_out [k]) > 1e-10) ? zero_count : zero_count + 1 ;
@@ -400,8 +407,8 @@ pcm_test_bits_16 (const char *filename, int filetype, int hash)
 
 	items = 1024 ;
 
-	short_out = (short*) data_out ;
-	short_in = (short*) data_in ;
+	short_out = data_out.s ;
+	short_in = data_in.s ;
 
 	zero_count = 0 ;
 	for (k = 0 ; k < items ; k++)
@@ -464,8 +471,8 @@ pcm_test_bits_16 (const char *filename, int filetype, int hash)
 	*/
 	zero_count = 0 ;
 
-	int_out = (int*) data_out ;
-	int_in = (int*) data_in ;
+	int_out = data_out.i ;
+	int_in = data_in.i ;
 	for (k = 0 ; k < items ; k++)
 	{	int_out [k] = ((k * ((k % 2) ? 3 : -3)) << 16) ;
 		zero_count = int_out [k] ? zero_count : zero_count + 1 ;
@@ -524,8 +531,8 @@ pcm_test_bits_16 (const char *filename, int filetype, int hash)
 	*/
 	zero_count = 0 ;
 
-	float_out = (float*) data_out ;
-	float_in = (float*) data_in ;
+	float_out = data_out.f ;
+	float_in = data_in.f ;
 	for (k = 0 ; k < items ; k++)
 	{	float_out [k] = (k * ((k % 2) ? 3 : -3)) ;
 		zero_count = (fabs (float_out [k]) > 1e-10) ? zero_count : zero_count + 1 ;
@@ -588,8 +595,8 @@ pcm_test_bits_16 (const char *filename, int filetype, int hash)
 	*/
 	zero_count = 0 ;
 
-	double_out = (double*) data_out ;
-	double_in = (double*) data_in ;
+	double_out = data_out.d ;
+	double_in = data_in.d ;
 	for (k = 0 ; k < items ; k++)
 	{	double_out [k] = (k * ((k % 2) ? 3 : -3)) ;
 		zero_count = (fabs (double_out [k]) > 1e-10) ? zero_count : zero_count + 1 ;
@@ -667,8 +674,8 @@ pcm_test_bits_24 (const char *filename, int filetype, int hash)
 
 	items = 1024 ;
 
-	short_out = (short*) data_out ;
-	short_in = (short*) data_in ;
+	short_out = data_out.s ;
+	short_in = data_in.s ;
 
 	zero_count = 0 ;
 	for (k = 0 ; k < items ; k++)
@@ -731,8 +738,8 @@ pcm_test_bits_24 (const char *filename, int filetype, int hash)
 	*/
 	zero_count = 0 ;
 
-	int_out = (int*) data_out ;
-	int_in = (int*) data_in ;
+	int_out = data_out.i ;
+	int_in = data_in.i ;
 	for (k = 0 ; k < items ; k++)
 	{	int_out [k] = ((k * ((k % 2) ? 3333 : -3333)) << 8) ;
 		zero_count = int_out [k] ? zero_count : zero_count + 1 ;
@@ -791,8 +798,8 @@ pcm_test_bits_24 (const char *filename, int filetype, int hash)
 	*/
 	zero_count = 0 ;
 
-	float_out = (float*) data_out ;
-	float_in = (float*) data_in ;
+	float_out = data_out.f ;
+	float_in = data_in.f ;
 	for (k = 0 ; k < items ; k++)
 	{	float_out [k] = (k * ((k % 2) ? 3333 : -3333)) ;
 		zero_count = (fabs (float_out [k]) > 1e-10) ? zero_count : zero_count + 1 ;
@@ -855,8 +862,8 @@ pcm_test_bits_24 (const char *filename, int filetype, int hash)
 	*/
 	zero_count = 0 ;
 
-	double_out = (double*) data_out ;
-	double_in = (double*) data_in ;
+	double_out = data_out.d ;
+	double_in = data_in.d ;
 	for (k = 0 ; k < items ; k++)
 	{	double_out [k] = (k * ((k % 2) ? 3333 : -3333)) ;
 		zero_count = (fabs (double_out [k]) > 1e-10) ? zero_count : zero_count + 1 ;
@@ -934,8 +941,8 @@ pcm_test_bits_32 (const char *filename, int filetype, int hash)
 
 	items = 1024 ;
 
-	short_out = (short*) data_out ;
-	short_in = (short*) data_in ;
+	short_out = data_out.s ;
+	short_in = data_in.s ;
 
 	zero_count = 0 ;
 	for (k = 0 ; k < items ; k++)
@@ -998,8 +1005,8 @@ pcm_test_bits_32 (const char *filename, int filetype, int hash)
 	*/
 	zero_count = 0 ;
 
-	int_out = (int*) data_out ;
-	int_in = (int*) data_in ;
+	int_out = data_out.i ;
+	int_in = data_in.i ;
 	for (k = 0 ; k < items ; k++)
 	{	int_out [k] = (k * ((k % 2) ? 333333 : -333333)) ;
 		zero_count = int_out [k] ? zero_count : zero_count + 1 ;
@@ -1058,8 +1065,8 @@ pcm_test_bits_32 (const char *filename, int filetype, int hash)
 	*/
 	zero_count = 0 ;
 
-	float_out = (float*) data_out ;
-	float_in = (float*) data_in ;
+	float_out = data_out.f ;
+	float_in = data_in.f ;
 	for (k = 0 ; k < items ; k++)
 	{	float_out [k] = (k * ((k % 2) ? 333333 : -333333)) ;
 		zero_count = (fabs (float_out [k]) > 1e-10) ? zero_count : zero_count + 1 ;
@@ -1122,8 +1129,8 @@ pcm_test_bits_32 (const char *filename, int filetype, int hash)
 	*/
 	zero_count = 0 ;
 
-	double_out = (double*) data_out ;
-	double_in = (double*) data_in ;
+	double_out = data_out.d ;
+	double_in = data_in.d ;
 	for (k = 0 ; k < items ; k++)
 	{	double_out [k] = (k * ((k % 2) ? 333333 : -333333)) ;
 		zero_count = (fabs (double_out [k]) > 1e-10) ? zero_count : zero_count + 1 ;
@@ -1200,9 +1207,9 @@ pcm_test_float (const char *filename, int filetype, int hash, int replace_float)
 
 	print_test_name ("pcm_test_float", filename) ;
 
-	items = BUFFER_SIZE / sizeof (double) ;
+	items = BUFFER_SIZE ;
 
-	data = (double*) data_out ;
+	data = data_out.d ;
 	for (sign = 1, k = 0 ; k < items ; k++)
 	{	data [k] = ((double) (k * sign)) / 100.0 ;
 		sign = (sign > 0) ? -1 : 1 ;
@@ -1324,9 +1331,9 @@ pcm_test_float (const char *filename, int filetype, int hash, int replace_float)
 		return ;
 		} ;
 
-	items = BUFFER_SIZE / sizeof (double) ;
+	items = BUFFER_SIZE ;
 
-	data = (double*) data_out ;
+	data = data_out.d ;
 	for (sign = -1, k = 0 ; k < items ; k++)
 		data [k] = ((double) k) / 100.0 * (sign *= -1) ;
 
@@ -1456,9 +1463,9 @@ pcm_test_double (const char *filename, int	filetype, int hash, int replace_float
 
 	print_test_name ("pcm_test_double", filename) ;
 
-	items = BUFFER_SIZE / sizeof (double) ;
+	items = BUFFER_SIZE ;
 
-	data = (double*) data_out ;
+	data = data_out.d ;
 	for (sign = 1, k = 0 ; k < items ; k++)
 	{	data [k] = ((double) (k * sign)) / 100.0 ;
 		sign = (sign > 0) ? -1 : 1 ;
@@ -1590,9 +1597,9 @@ pcm_test_double (const char *filename, int	filetype, int hash, int replace_float
 		return ;
 		} ;
 
-	items = BUFFER_SIZE / sizeof (double) ;
+	items = BUFFER_SIZE ;
 
-	data = (double*) data_out ;
+	data = data_out.d ;
 	for (sign = -1, k = 0 ; k < items ; k++)
 		data [k] = ((double) k) / 100.0 * (sign *= -1) ;
 

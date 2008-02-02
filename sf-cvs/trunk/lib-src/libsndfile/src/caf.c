@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2005 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2005, 2006 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -62,7 +62,7 @@
 #define MAC3_MARKER		MAKE_MARKER ('M', 'A', 'C', '3')
 #define MAC6_MARKER		MAKE_MARKER ('M', 'A', 'C', '6')
 
-#define CAF_PEAK_CHUNK_SIZE(ch) 	(sizeof (int) + ch * (sizeof (float) + 8))
+#define CAF_PEAK_CHUNK_SIZE(ch) 	((int) (sizeof (int) + ch * (sizeof (float) + 8)))
 
 #define SFE_CAF_NOT_CAF	666
 #define SFE_CAF_NO_DESC	667
@@ -269,7 +269,7 @@ caf_read_header (SF_PRIVATE *psf)
 	if (marker != desc_MARKER)
 		return SFE_CAF_NO_DESC ;
 
-	if (chunk_size < sizeof (DESC_CHUNK))
+	if (chunk_size < SIGNED_SIZEOF (DESC_CHUNK))
 	{	psf_log_printf (psf, "**** Chunk size too small. Should be > 32 bytes.\n") ;
 		return SFE_MALFORMED_FILE ;
 		} ;
@@ -282,7 +282,7 @@ caf_read_header (SF_PRIVATE *psf)
 			"  Frames / packet  : %u\n  Channels / frame : %u\n  Bits / channel   : %u\n",
 			desc.fmt_id, desc.fmt_flags, desc.pkt_bytes, desc.pkt_frames, desc.channels_per_frame, desc.bits_per_chan) ;
 
-	if (chunk_size > sizeof (DESC_CHUNK))
+	if (chunk_size > SIGNED_SIZEOF (DESC_CHUNK))
 		psf_binheader_readf (psf, "j", (int) (chunk_size - sizeof (DESC_CHUNK))) ;
 
 	psf->sf.channels = desc.channels_per_frame ;
@@ -398,7 +398,7 @@ caf_write_header (SF_PRIVATE *psf, int calc_length)
 	psf_binheader_writef (psf, "Em8", desc_MARKER, (sf_count_t) (sizeof (DESC_CHUNK))) ;
 
  	double64_be_write (1.0 * psf->sf.samplerate, psf->u.ucbuf) ;
-	psf_binheader_writef (psf, "b", psf->u.ucbuf, 8) ;
+	psf_binheader_writef (psf, "b", psf->u.ucbuf, make_size_t (8)) ;
 
 	subformat = psf->sf.format & SF_FORMAT_SUBMASK ;
 

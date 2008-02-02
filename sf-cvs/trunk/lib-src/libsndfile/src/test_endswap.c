@@ -31,6 +31,15 @@
 #include "common.h"
 #include "sfendian.h"
 
+#define	FMT_SHORT	"0x%04x\n"
+#define	FMT_INT		"0x%08x\n"
+
+#if SIZEOF_INT64_T == SIZEOF_LONG
+#define	FMT_INT64	"0x%016lx\n"
+#else
+#define	FMT_INT64	"0x%016llx\n"
+#endif
+
 static void test_endswap_short (void) ;
 static void test_endswap_int (void) ;
 static void test_endswap_int64_t (void) ;
@@ -50,13 +59,14 @@ main (void)
 ** Actual test functions.
 */
 
+
 static void
 dump_short_array (const char * name, short * data, int datalen)
 {	int k ;
 
 	printf ("%-6s : ", name) ;
 	for (k = 0 ; k < datalen ; k++)
-		printf ("0x%04x ", data [k]) ;
+		printf (FMT_SHORT, data [k]) ;
 	putchar ('\n') ;
 } /* dump_short_array */
 
@@ -109,13 +119,14 @@ test_endswap_short (void)
 
 	puts ("ok") ;
 } /* test_endswap_short */
+
 static void
 dump_int_array (const char * name, int * data, int datalen)
 {	int k ;
 
 	printf ("%-6s : ", name) ;
 	for (k = 0 ; k < datalen ; k++)
-		printf ("0x%08x ", data [k]) ;
+		printf (FMT_INT, data [k]) ;
 	putchar ('\n') ;
 } /* dump_int_array */
 
@@ -168,13 +179,14 @@ test_endswap_int (void)
 
 	puts ("ok") ;
 } /* test_endswap_int */
+
 static void
 dump_int64_t_array (const char * name, int64_t * data, int datalen)
 {	int k ;
 
 	printf ("%-6s : ", name) ;
 	for (k = 0 ; k < datalen ; k++)
-		printf ("0x%016llx ", data [k]) ;
+		printf (FMT_INT64, data [k]) ;
 	putchar ('\n') ;
 } /* dump_int64_t_array */
 

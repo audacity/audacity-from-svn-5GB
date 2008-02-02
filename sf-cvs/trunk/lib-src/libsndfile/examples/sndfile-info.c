@@ -207,9 +207,17 @@ info_dump (const char *filename)
 	SF_INFO	 	sfinfo ;
 	double		signal_max, decibels ;
 
-	sfinfo.format = 0 ;
+	memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = sf_open (filename, SFM_READ, &sfinfo) ;
+	if ((file = sf_open (filename, SFM_READ, &sfinfo)) == NULL)
+	{	printf ("Error : Not able to open input file %s.\n", filename) ;
+		fflush (stdout) ;
+		memset (data, 0, sizeof (data)) ;
+		sf_command (file, SFC_GET_LOG_INFO, strbuffer, BUFFER_LEN) ;
+		puts (strbuffer) ;
+		puts (sf_strerror (NULL)) ;
+		return ;
+		} ;
 
 	printf ("========================================\n") ;
 	sf_command (file, SFC_GET_LOG_INFO, strbuffer, BUFFER_LEN) ;
@@ -268,6 +276,8 @@ instrument_dump (const char *filename)
 	SF_INSTRUMENT inst ;
 	int got_inst, k ;
 
+	memset (&sfinfo, 0, sizeof (sfinfo)) ;
+
 	if ((file = sf_open (filename, SFM_READ, &sfinfo)) == NULL)
 	{	printf ("Error : Not able to open input file %s.\n", filename) ;
 		fflush (stdout) ;
@@ -304,6 +314,8 @@ broadcast_dump (const char *filename)
 	SF_BROADCAST_INFO bext ;
 	int got_bext ;
 
+	memset (&sfinfo, 0, sizeof (sfinfo)) ;
+
 	if ((file = sf_open (filename, SFM_READ, &sfinfo)) == NULL)
 	{	printf ("Error : Not able to open input file %s.\n", filename) ;
 		fflush (stdout) ;
@@ -322,13 +334,13 @@ broadcast_dump (const char *filename)
 		return ;
 		} ;
 
-	printf ("Description      : %.*s\n", sizeof (bext.description), bext.description) ;
-	printf ("Originator       : %.*s\n", sizeof (bext.originator), bext.originator) ;
-	printf ("Origination ref  :  %.*s\n", sizeof (bext.originator_reference), bext.originator_reference) ;
-	printf ("Origination date : %.*s\n", sizeof (bext.origination_date), bext.origination_date) ;
-	printf ("Origination time : %.*s\n", sizeof (bext.origination_time), bext.origination_time) ;
+	printf ("Description      : %.*s\n", (int) sizeof (bext.description), bext.description) ;
+	printf ("Originator       : %.*s\n", (int) sizeof (bext.originator), bext.originator) ;
+	printf ("Origination ref  : %.*s\n", (int) sizeof (bext.originator_reference), bext.originator_reference) ;
+	printf ("Origination date : %.*s\n", (int) sizeof (bext.origination_date), bext.origination_date) ;
+	printf ("Origination time : %.*s\n", (int) sizeof (bext.origination_time), bext.origination_time) ;
 	printf ("BWF version      : %d\n", bext.version) ;
-	printf ("UMID             : %.*s\n", sizeof (bext.umid), bext.umid) ;
+	printf ("UMID             : %.*s\n", (int) sizeof (bext.umid), bext.umid) ;
 	printf ("Coding history   : %.*s\n", bext.coding_history_size, bext.coding_history) ;
 
 } /* broadcast_dump */

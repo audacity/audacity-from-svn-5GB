@@ -54,9 +54,14 @@ static void	dbl_scale_clip_test_32 (const char *filename, int filetype, float ma
 static void	dbl_scale_clip_test_08 (const char *filename, int filetype, float maxval) ;
 
 
+typedef union
+{	double	dbl [BUFFER_SIZE] ;
+	float	flt [BUFFER_SIZE] ;
+} BUFFER ;
+
 /* Data buffer. */
-static	double	buffer_out	[BUFFER_SIZE] ;
-static	double	buffer_in	[BUFFER_SIZE] ;
+static	BUFFER	buffer_out ;
+static	BUFFER	buffer_in ;
 
 int
 main (void)
@@ -104,8 +109,8 @@ flt_scale_clip_test_16 (const char *filename, int filetype, float maxval)
 
 	print_test_name ("flt_scale_clip_test_16", filename) ;
 
-	data_out = (float*) buffer_out ;
-	data_in = (float*) buffer_in ;
+	data_out = buffer_out.flt ;
+	data_in = buffer_in.flt ;
 
 	for (k = 0 ; k < HALF_BUFFER_SIZE ; k++)
 	{	data_out [k] = SINE_AMP * sin (2 * M_PI * k / HALF_BUFFER_SIZE) ;
@@ -130,7 +135,7 @@ flt_scale_clip_test_16 (const char *filename, int filetype, float maxval)
 	test_write_float_or_die (file, 0, data_out + HALF_BUFFER_SIZE, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_close (file) ;
 
-	memset (buffer_in, 0, sizeof (buffer_in)) ;
+	memset (&buffer_in, 0, sizeof (buffer_in)) ;
 
 	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
@@ -234,8 +239,8 @@ flt_scale_clip_test_24 (const char *filename, int filetype, float maxval)
 
 	print_test_name ("flt_scale_clip_test_24", filename) ;
 
-	data_out = (float*) buffer_out ;
-	data_in = (float*) buffer_in ;
+	data_out = buffer_out.flt ;
+	data_in = buffer_in.flt ;
 
 	for (k = 0 ; k < HALF_BUFFER_SIZE ; k++)
 	{	data_out [k] = SINE_AMP * sin (2 * M_PI * k / HALF_BUFFER_SIZE) ;
@@ -260,7 +265,7 @@ flt_scale_clip_test_24 (const char *filename, int filetype, float maxval)
 	test_write_float_or_die (file, 0, data_out + HALF_BUFFER_SIZE, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_close (file) ;
 
-	memset (buffer_in, 0, sizeof (buffer_in)) ;
+	memset (&buffer_in, 0, sizeof (buffer_in)) ;
 
 	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
@@ -364,8 +369,8 @@ flt_scale_clip_test_32 (const char *filename, int filetype, float maxval)
 
 	print_test_name ("flt_scale_clip_test_32", filename) ;
 
-	data_out = (float*) buffer_out ;
-	data_in = (float*) buffer_in ;
+	data_out = buffer_out.flt ;
+	data_in = buffer_in.flt ;
 
 	for (k = 0 ; k < HALF_BUFFER_SIZE ; k++)
 	{	data_out [k] = SINE_AMP * sin (2 * M_PI * k / HALF_BUFFER_SIZE) ;
@@ -390,7 +395,7 @@ flt_scale_clip_test_32 (const char *filename, int filetype, float maxval)
 	test_write_float_or_die (file, 0, data_out + HALF_BUFFER_SIZE, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_close (file) ;
 
-	memset (buffer_in, 0, sizeof (buffer_in)) ;
+	memset (&buffer_in, 0, sizeof (buffer_in)) ;
 
 	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
@@ -494,8 +499,8 @@ flt_scale_clip_test_08 (const char *filename, int filetype, float maxval)
 
 	print_test_name ("flt_scale_clip_test_08", filename) ;
 
-	data_out = (float*) buffer_out ;
-	data_in = (float*) buffer_in ;
+	data_out = buffer_out.flt ;
+	data_in = buffer_in.flt ;
 
 	for (k = 0 ; k < HALF_BUFFER_SIZE ; k++)
 	{	data_out [k] = SINE_AMP * sin (2 * M_PI * k / HALF_BUFFER_SIZE) ;
@@ -520,7 +525,7 @@ flt_scale_clip_test_08 (const char *filename, int filetype, float maxval)
 	test_write_float_or_die (file, 0, data_out + HALF_BUFFER_SIZE, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_close (file) ;
 
-	memset (buffer_in, 0, sizeof (buffer_in)) ;
+	memset (&buffer_in, 0, sizeof (buffer_in)) ;
 
 	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
@@ -626,8 +631,8 @@ dbl_scale_clip_test_16 (const char *filename, int filetype, float maxval)
 
 	print_test_name ("dbl_scale_clip_test_16", filename) ;
 
-	data_out = (double*) buffer_out ;
-	data_in = (double*) buffer_in ;
+	data_out = buffer_out.dbl ;
+	data_in = buffer_in.dbl ;
 
 	for (k = 0 ; k < HALF_BUFFER_SIZE ; k++)
 	{	data_out [k] = SINE_AMP * sin (2 * M_PI * k / HALF_BUFFER_SIZE) ;
@@ -652,7 +657,7 @@ dbl_scale_clip_test_16 (const char *filename, int filetype, float maxval)
 	test_write_double_or_die (file, 0, data_out + HALF_BUFFER_SIZE, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_close (file) ;
 
-	memset (buffer_in, 0, sizeof (buffer_in)) ;
+	memset (&buffer_in, 0, sizeof (buffer_in)) ;
 
 	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
@@ -756,8 +761,8 @@ dbl_scale_clip_test_24 (const char *filename, int filetype, float maxval)
 
 	print_test_name ("dbl_scale_clip_test_24", filename) ;
 
-	data_out = (double*) buffer_out ;
-	data_in = (double*) buffer_in ;
+	data_out = buffer_out.dbl ;
+	data_in = buffer_in.dbl ;
 
 	for (k = 0 ; k < HALF_BUFFER_SIZE ; k++)
 	{	data_out [k] = SINE_AMP * sin (2 * M_PI * k / HALF_BUFFER_SIZE) ;
@@ -782,7 +787,7 @@ dbl_scale_clip_test_24 (const char *filename, int filetype, float maxval)
 	test_write_double_or_die (file, 0, data_out + HALF_BUFFER_SIZE, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_close (file) ;
 
-	memset (buffer_in, 0, sizeof (buffer_in)) ;
+	memset (&buffer_in, 0, sizeof (buffer_in)) ;
 
 	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
@@ -886,8 +891,8 @@ dbl_scale_clip_test_32 (const char *filename, int filetype, float maxval)
 
 	print_test_name ("dbl_scale_clip_test_32", filename) ;
 
-	data_out = (double*) buffer_out ;
-	data_in = (double*) buffer_in ;
+	data_out = buffer_out.dbl ;
+	data_in = buffer_in.dbl ;
 
 	for (k = 0 ; k < HALF_BUFFER_SIZE ; k++)
 	{	data_out [k] = SINE_AMP * sin (2 * M_PI * k / HALF_BUFFER_SIZE) ;
@@ -912,7 +917,7 @@ dbl_scale_clip_test_32 (const char *filename, int filetype, float maxval)
 	test_write_double_or_die (file, 0, data_out + HALF_BUFFER_SIZE, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_close (file) ;
 
-	memset (buffer_in, 0, sizeof (buffer_in)) ;
+	memset (&buffer_in, 0, sizeof (buffer_in)) ;
 
 	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
@@ -1016,8 +1021,8 @@ dbl_scale_clip_test_08 (const char *filename, int filetype, float maxval)
 
 	print_test_name ("dbl_scale_clip_test_08", filename) ;
 
-	data_out = (double*) buffer_out ;
-	data_in = (double*) buffer_in ;
+	data_out = buffer_out.dbl ;
+	data_in = buffer_in.dbl ;
 
 	for (k = 0 ; k < HALF_BUFFER_SIZE ; k++)
 	{	data_out [k] = SINE_AMP * sin (2 * M_PI * k / HALF_BUFFER_SIZE) ;
@@ -1042,7 +1047,7 @@ dbl_scale_clip_test_08 (const char *filename, int filetype, float maxval)
 	test_write_double_or_die (file, 0, data_out + HALF_BUFFER_SIZE, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_close (file) ;
 
-	memset (buffer_in, 0, sizeof (buffer_in)) ;
+	memset (&buffer_in, 0, sizeof (buffer_in)) ;
 
 	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 

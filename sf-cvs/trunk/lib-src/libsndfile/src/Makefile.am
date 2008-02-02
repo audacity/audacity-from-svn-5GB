@@ -3,14 +3,15 @@
 SUBDIRS = GSM610 G72x
 
 lib_LTLIBRARIES = libsndfile.la
-#nodist_include_HEADERS = sndfile.h     --dmazzoni
+include_HEADERS = sndfile.hh
+nodist_include_HEADERS = sndfile.h
 
 OS_SPECIFIC_CFLAGS = @OS_SPECIFIC_CFLAGS@
 OS_SPECIFIC_LINKS = @OS_SPECIFIC_LINKS@
 
 EXTRA_DIST = sndfile.h.in config.h.in test_endswap.tpl test_endswap.def \
 			Symbols.linux Symbols.darwin libsndfile.def cygsndfile.def \
-			create_symbols_file.py
+			create_symbols_file.py binheader_writef_check.py
 
 noinst_HEADERS = common.h sfconfig.h sfendian.h float_cast.h wav_w64.h sf_unistd.h
 
@@ -28,7 +29,7 @@ FILESPECIFIC = aiff.c au.c g72x.c avr.c caf.c ircam.c macbinary3.c macos.c \
 # MinGW requires -no-undefined if a DLL is to be built.
 libsndfile_la_LDFLAGS = -no-undefined -version-info @SHARED_VERSION_INFO@ @SHLIB_VERSION_ARG@
 libsndfile_la_SOURCES = $(COMMON) $(FILESPECIFIC) $(noinst_HEADERS)
-# nodist_libsndfile_la_SOURCES = $(nodist_include_HEADERS) dmazzoni
+nodist_libsndfile_la_SOURCES = $(nodist_include_HEADERS)
 libsndfile_la_LIBADD  = GSM610/libgsm.la G72x/libg72x.la -lm $(FLAC_LIBS)
 
 test_endswap_SOURCES = test_endswap.c
@@ -39,9 +40,8 @@ test_file_io_SOURCES = file_io.c test_file_io.c
 test_log_printf_CFLAGS = $(AM_CFLAGS)
 test_log_printf_SOURCES = test_log_printf.c
 
-# dmazzoni: get rid of dependency on autogen
-# test_endswap.c: test_endswap.def test_endswap.tpl
-#	autogen --writable test_endswap.def
+test_endswap.c: test_endswap.def test_endswap.tpl
+	autogen --writable test_endswap.def
 
 genfiles : test_endswap.c Symbols.linux Symbols.darwin libsndfile.def cygsndfile.def
 
@@ -54,6 +54,7 @@ check: test_endswap test_file_io test_log_printf
 	@echo
 	@echo
 	@echo "============================================================"
+	@if [ -x /usr/bin/python2.4 ]; then $(srcdir)/binheader_writef_check.py $(srcdir)/*.c ; fi
 	./test_endswap
 	./test_file_io
 	./test_log_printf

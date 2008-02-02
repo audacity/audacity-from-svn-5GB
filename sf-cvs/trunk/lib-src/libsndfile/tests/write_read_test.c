@@ -51,8 +51,16 @@ static void	pcm_test_double (const char *str, int format, int long_file_okz) ;
 
 static void empty_file_test (const char *filename, int format) ;
 
-static	double	orig_data [DATA_LENGTH] ;
-static	double	test_data [DATA_LENGTH] ;
+typedef union
+{	double d [DATA_LENGTH] ;
+	float f [DATA_LENGTH] ;
+	int i [DATA_LENGTH] ;
+	short s [DATA_LENGTH] ;
+	char c [DATA_LENGTH] ;
+} BUFFER ;
+
+static	BUFFER	orig_data ;
+static	BUFFER	test_data ;
 
 int
 main (int argc, char **argv)
@@ -84,11 +92,7 @@ main (int argc, char **argv)
 	do_all = !strcmp (argv [1], "all") ;
 
 	if (do_all || ! strcmp (argv [1], "wav"))
-	{	empty_file_test ("empty_char.wav", SF_FORMAT_WAV | SF_FORMAT_PCM_U8) ;
-		empty_file_test ("empty_short.wav", SF_FORMAT_WAV | SF_FORMAT_PCM_16) ;
-		empty_file_test ("empty_float.wav", SF_FORMAT_WAV | SF_FORMAT_FLOAT) ;
-
-		pcm_test_char	("char.wav"		, SF_FORMAT_WAV | SF_FORMAT_PCM_U8, SF_FALSE) ;
+	{	pcm_test_char	("char.wav"		, SF_FORMAT_WAV | SF_FORMAT_PCM_U8, SF_FALSE) ;
 		pcm_test_short	("short.wav"	, SF_FORMAT_WAV | SF_FORMAT_PCM_16, SF_FALSE) ;
 		pcm_test_24bit	("24bit.wav"	, SF_FORMAT_WAV | SF_FORMAT_PCM_24, SF_FALSE) ;
 		pcm_test_int	("int.wav"		, SF_FORMAT_WAV | SF_FORMAT_PCM_32, SF_FALSE) ;
@@ -111,15 +115,16 @@ main (int argc, char **argv)
 		pcm_test_float	("float.wavex"	, SF_FORMAT_WAVEX | SF_FORMAT_FLOAT , SF_FALSE) ;
 		pcm_test_double	("double.wavex"	, SF_FORMAT_WAVEX | SF_FORMAT_DOUBLE, SF_FALSE) ;
 		/* Lite remove end */
+
+		empty_file_test ("empty_char.wav", SF_FORMAT_WAV | SF_FORMAT_PCM_U8) ;
+		empty_file_test ("empty_short.wav", SF_FORMAT_WAV | SF_FORMAT_PCM_16) ;
+		empty_file_test ("empty_float.wav", SF_FORMAT_WAV | SF_FORMAT_FLOAT) ;
+
 		test_count++ ;
 		} ;
 
 	if (do_all || ! strcmp (argv [1], "aiff"))
-	{	empty_file_test ("empty_char.aiff", SF_FORMAT_AIFF | SF_FORMAT_PCM_U8) ;
-		empty_file_test ("empty_short.aiff", SF_FORMAT_AIFF | SF_FORMAT_PCM_16) ;
-		empty_file_test ("empty_float.aiff", SF_FORMAT_AIFF | SF_FORMAT_FLOAT) ;
-
-		pcm_test_char	("char_u8.aiff"	, SF_FORMAT_AIFF | SF_FORMAT_PCM_U8, SF_FALSE) ;
+	{	pcm_test_char	("char_u8.aiff"	, SF_FORMAT_AIFF | SF_FORMAT_PCM_U8, SF_FALSE) ;
 		pcm_test_char	("char_s8.aiff"	, SF_FORMAT_AIFF | SF_FORMAT_PCM_S8, SF_FALSE) ;
 		pcm_test_short	("short.aiff"	, SF_FORMAT_AIFF | SF_FORMAT_PCM_16, SF_FALSE) ;
 		pcm_test_24bit	("24bit.aiff"	, SF_FORMAT_AIFF | SF_FORMAT_PCM_24, SF_FALSE) ;
@@ -140,6 +145,11 @@ main (int argc, char **argv)
 		pcm_test_float	("float.aifc"	, SF_FORMAT_AIFF | SF_FORMAT_FLOAT , SF_FALSE) ;
 		pcm_test_double	("double.aifc"	, SF_FORMAT_AIFF | SF_FORMAT_DOUBLE, SF_FALSE) ;
 		/* Lite remove end */
+
+		empty_file_test ("empty_char.aiff", SF_FORMAT_AIFF | SF_FORMAT_PCM_U8) ;
+		empty_file_test ("empty_short.aiff", SF_FORMAT_AIFF | SF_FORMAT_PCM_16) ;
+		empty_file_test ("empty_float.aiff", SF_FORMAT_AIFF | SF_FORMAT_FLOAT) ;
+
 		test_count++ ;
 		} ;
 
@@ -217,11 +227,12 @@ main (int argc, char **argv)
 		} ;
 
 	if (do_all || ! strcmp (argv [1], "svx"))
-	{	empty_file_test ("empty_char.svx", SF_FORMAT_SVX | SF_FORMAT_PCM_S8) ;
+	{	pcm_test_char	("char.svx" , SF_FORMAT_SVX | SF_FORMAT_PCM_S8, SF_FALSE) ;
+		pcm_test_short	("short.svx", SF_FORMAT_SVX | SF_FORMAT_PCM_16, SF_FALSE) ;
+
+		empty_file_test ("empty_char.svx", SF_FORMAT_SVX | SF_FORMAT_PCM_S8) ;
 		empty_file_test ("empty_short.svx", SF_FORMAT_SVX | SF_FORMAT_PCM_16) ;
 
-		pcm_test_char	("char.svx" , SF_FORMAT_SVX | SF_FORMAT_PCM_S8, SF_FALSE) ;
-		pcm_test_short	("short.svx", SF_FORMAT_SVX | SF_FORMAT_PCM_16, SF_FALSE) ;
 		test_count++ ;
 		} ;
 
@@ -232,6 +243,7 @@ main (int argc, char **argv)
 		pcm_test_24bit	("24bit_be.nist", SF_ENDIAN_BIG		| SF_FORMAT_NIST | SF_FORMAT_PCM_24, SF_FALSE) ;
 		pcm_test_int	("int_le.nist"	, SF_ENDIAN_LITTLE	| SF_FORMAT_NIST | SF_FORMAT_PCM_32, SF_FALSE) ;
 		pcm_test_int 	("int_be.nist"	, SF_ENDIAN_BIG		| SF_FORMAT_NIST | SF_FORMAT_PCM_32, SF_FALSE) ;
+
 		test_count++ ;
 		} ;
 
@@ -242,6 +254,7 @@ main (int argc, char **argv)
 		pcm_test_int 	("int_le.ircam"		, SF_ENDIAN_LITTLE	| SF_FORMAT_IRCAM | SF_FORMAT_PCM_32, SF_FALSE) ;
 		pcm_test_float	("float_be.ircam"	, SF_ENDIAN_BIG	| SF_FORMAT_IRCAM | SF_FORMAT_FLOAT , SF_FALSE) ;
 		pcm_test_float	("float_le.ircam"	, SF_ENDIAN_LITTLE	| SF_FORMAT_IRCAM | SF_FORMAT_FLOAT , SF_FALSE) ;
+
 		test_count++ ;
 		} ;
 
@@ -253,10 +266,7 @@ main (int argc, char **argv)
 		} ;
 
 	if (do_all || ! strcmp (argv [1], "mat4"))
-	{	empty_file_test ("empty_short.mat4", SF_FORMAT_MAT4 | SF_FORMAT_PCM_16) ;
-		empty_file_test ("empty_float.mat4", SF_FORMAT_MAT4 | SF_FORMAT_FLOAT) ;
-
-		pcm_test_short	("short_be.mat4"	, SF_ENDIAN_BIG	| SF_FORMAT_MAT4 | SF_FORMAT_PCM_16, SF_FALSE) ;
+	{	pcm_test_short	("short_be.mat4"	, SF_ENDIAN_BIG	| SF_FORMAT_MAT4 | SF_FORMAT_PCM_16, SF_FALSE) ;
 		pcm_test_short	("short_le.mat4"	, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT4 | SF_FORMAT_PCM_16, SF_FALSE) ;
 		pcm_test_int	("int_be.mat4"		, SF_ENDIAN_BIG	| SF_FORMAT_MAT4 | SF_FORMAT_PCM_32, SF_FALSE) ;
 		pcm_test_int 	("int_le.mat4"		, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT4 | SF_FORMAT_PCM_32, SF_FALSE) ;
@@ -264,17 +274,14 @@ main (int argc, char **argv)
 		pcm_test_float	("float_le.mat4"	, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT4 | SF_FORMAT_FLOAT , SF_FALSE) ;
 		pcm_test_double	("double_be.mat4"	, SF_ENDIAN_BIG	| SF_FORMAT_MAT4 | SF_FORMAT_DOUBLE, SF_FALSE) ;
 		pcm_test_double	("double_le.mat4"	, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT4 | SF_FORMAT_DOUBLE, SF_FALSE) ;
+
+		empty_file_test ("empty_short.mat4", SF_FORMAT_MAT4 | SF_FORMAT_PCM_16) ;
+		empty_file_test ("empty_float.mat4", SF_FORMAT_MAT4 | SF_FORMAT_FLOAT) ;
 		test_count++ ;
 		} ;
 
 	if (do_all || ! strcmp (argv [1], "mat5"))
-	{	increment_open_file_count () ;
-
-		empty_file_test ("empty_char.mat5", SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8) ;
-		empty_file_test ("empty_short.mat5", SF_FORMAT_MAT5 | SF_FORMAT_PCM_16) ;
-		empty_file_test ("empty_float.mat5", SF_FORMAT_MAT5 | SF_FORMAT_FLOAT) ;
-
-		pcm_test_char 	("char_be.mat5"		, SF_ENDIAN_BIG	| SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8, SF_FALSE) ;
+	{	pcm_test_char 	("char_be.mat5"		, SF_ENDIAN_BIG	| SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8, SF_FALSE) ;
 		pcm_test_char 	("char_le.mat5"		, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8, SF_FALSE) ;
 		pcm_test_short	("short_be.mat5"	, SF_ENDIAN_BIG	| SF_FORMAT_MAT5 | SF_FORMAT_PCM_16, SF_FALSE) ;
 		pcm_test_short	("short_le.mat5"	, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT5 | SF_FORMAT_PCM_16, SF_FALSE) ;
@@ -284,6 +291,13 @@ main (int argc, char **argv)
 		pcm_test_float	("float_le.mat5"	, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT5 | SF_FORMAT_FLOAT , SF_FALSE) ;
 		pcm_test_double	("double_be.mat5"	, SF_ENDIAN_BIG	| SF_FORMAT_MAT5 | SF_FORMAT_DOUBLE, SF_FALSE) ;
 		pcm_test_double	("double_le.mat5"	, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT5 | SF_FORMAT_DOUBLE, SF_FALSE) ;
+
+		increment_open_file_count () ;
+
+		empty_file_test ("empty_char.mat5", SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8) ;
+		empty_file_test ("empty_short.mat5", SF_FORMAT_MAT5 | SF_FORMAT_PCM_16) ;
+		empty_file_test ("empty_float.mat5", SF_FORMAT_MAT5 | SF_FORMAT_FLOAT) ;
+
 		test_count++ ;
 		} ;
 
@@ -308,11 +322,7 @@ main (int argc, char **argv)
 	/* Lite remove end */
 
 	if (do_all || ! strcmp (argv [1], "w64"))
-	{	empty_file_test ("empty_char.w64", SF_FORMAT_W64 | SF_FORMAT_PCM_U8) ;
-		empty_file_test ("empty_short.w64", SF_FORMAT_W64 | SF_FORMAT_PCM_16) ;
-		empty_file_test ("empty_float.w64", SF_FORMAT_W64 | SF_FORMAT_FLOAT) ;
-
-		pcm_test_char	("char.w64"		, SF_FORMAT_W64 | SF_FORMAT_PCM_U8, SF_FALSE) ;
+	{	pcm_test_char	("char.w64"		, SF_FORMAT_W64 | SF_FORMAT_PCM_U8, SF_FALSE) ;
 		pcm_test_short	("short.w64"	, SF_FORMAT_W64 | SF_FORMAT_PCM_16, SF_FALSE) ;
 		pcm_test_24bit	("24bit.w64"	, SF_FORMAT_W64 | SF_FORMAT_PCM_24, SF_FALSE) ;
 		pcm_test_int	("int.w64"		, SF_FORMAT_W64 | SF_FORMAT_PCM_32, SF_FALSE) ;
@@ -320,6 +330,11 @@ main (int argc, char **argv)
 		pcm_test_float	("float.w64"	, SF_FORMAT_W64 | SF_FORMAT_FLOAT , SF_FALSE) ;
 		pcm_test_double	("double.w64"	, SF_FORMAT_W64 | SF_FORMAT_DOUBLE, SF_FALSE) ;
 		/* Lite remove end */
+
+		empty_file_test ("empty_char.w64", SF_FORMAT_W64 | SF_FORMAT_PCM_U8) ;
+		empty_file_test ("empty_short.w64", SF_FORMAT_W64 | SF_FORMAT_PCM_16) ;
+		empty_file_test ("empty_float.w64", SF_FORMAT_W64 | SF_FORMAT_FLOAT) ;
+
 		test_count++ ;
 		} ;
 
@@ -403,13 +418,13 @@ pcm_test_char (const char *filename, int format, int long_file_ok)
 	sfinfo.channels		= 1 ;
 	sfinfo.format		= format ;
 
-	gen_windowed_sine_double (orig_data, DATA_LENGTH, 32000.0) ;
+	gen_windowed_sine_double (orig_data.d, DATA_LENGTH, 32000.0) ;
 
-	orig = (short*) orig_data ;
-	test = (short*) test_data ;
+	orig = orig_data.s ;
+	test = test_data.s ;
 
 	/* Make this a macro so gdb steps over it in one go. */
-	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data.d) ;
 
 	items = DATA_LENGTH ;
 
@@ -464,8 +479,8 @@ mono_char_test (const char *filename, int format, int long_file_ok, int allow_fd
 	sfinfo.channels		= 1 ;
 	sfinfo.format		= format ;
 
-	orig = (short*) orig_data ;
-	test = (short*) test_data ;
+	orig = orig_data.s ;
+	test = test_data.s ;
 
 	items = DATA_LENGTH ;
 
@@ -600,21 +615,18 @@ stereo_char_test (const char *filename, int format, int long_file_ok, int allow_
 	short		*orig, *test ;
 	int			k, items, frames ;
 
-	orig = (short*) orig_data ;
-	test = (short*) test_data ;
-
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 2 ;
 	sfinfo.format		= format ;
 
-	gen_windowed_sine_double (orig_data, DATA_LENGTH, 32000.0) ;
+	gen_windowed_sine_double (orig_data.d, DATA_LENGTH, 32000.0) ;
 
-	orig = (short*) orig_data ;
-	test = (short*) test_data ;
+	orig = orig_data.s ;
+	test = test_data.s ;
 
 	/* Make this a macro so gdb steps over it in one go. */
-	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data.d) ;
 
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
@@ -736,8 +748,8 @@ mono_rdwr_char_test (const char *filename, int format, int long_file_ok, int all
 	short		*orig, *test ;
 	int			k, pass ;
 
-	orig = (short*) orig_data ;
-	test = (short*) test_data ;
+	orig = orig_data.s ;
+	test = test_data.s ;
 
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
@@ -861,8 +873,8 @@ new_rdwr_char_test (const char *filename, int format, int allow_fd)
 	short		*orig, *test ;
 	int		items, frames ;
 
-	orig = (short*) orig_data ;
-	test = (short*) test_data ;
+	orig = orig_data.s ;
+	test = test_data.s ;
 
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
@@ -919,13 +931,13 @@ pcm_test_short (const char *filename, int format, int long_file_ok)
 	sfinfo.channels		= 1 ;
 	sfinfo.format		= format ;
 
-	gen_windowed_sine_double (orig_data, DATA_LENGTH, 32000.0) ;
+	gen_windowed_sine_double (orig_data.d, DATA_LENGTH, 32000.0) ;
 
-	orig = (short*) orig_data ;
-	test = (short*) test_data ;
+	orig = orig_data.s ;
+	test = test_data.s ;
 
 	/* Make this a macro so gdb steps over it in one go. */
-	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data.d) ;
 
 	items = DATA_LENGTH ;
 
@@ -980,8 +992,8 @@ mono_short_test (const char *filename, int format, int long_file_ok, int allow_f
 	sfinfo.channels		= 1 ;
 	sfinfo.format		= format ;
 
-	orig = (short*) orig_data ;
-	test = (short*) test_data ;
+	orig = orig_data.s ;
+	test = test_data.s ;
 
 	items = DATA_LENGTH ;
 
@@ -1116,21 +1128,18 @@ stereo_short_test (const char *filename, int format, int long_file_ok, int allow
 	short		*orig, *test ;
 	int			k, items, frames ;
 
-	orig = (short*) orig_data ;
-	test = (short*) test_data ;
-
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 2 ;
 	sfinfo.format		= format ;
 
-	gen_windowed_sine_double (orig_data, DATA_LENGTH, 32000.0) ;
+	gen_windowed_sine_double (orig_data.d, DATA_LENGTH, 32000.0) ;
 
-	orig = (short*) orig_data ;
-	test = (short*) test_data ;
+	orig = orig_data.s ;
+	test = test_data.s ;
 
 	/* Make this a macro so gdb steps over it in one go. */
-	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data.d) ;
 
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
@@ -1252,8 +1261,8 @@ mono_rdwr_short_test (const char *filename, int format, int long_file_ok, int al
 	short		*orig, *test ;
 	int			k, pass ;
 
-	orig = (short*) orig_data ;
-	test = (short*) test_data ;
+	orig = orig_data.s ;
+	test = test_data.s ;
 
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
@@ -1377,8 +1386,8 @@ new_rdwr_short_test (const char *filename, int format, int allow_fd)
 	short		*orig, *test ;
 	int		items, frames ;
 
-	orig = (short*) orig_data ;
-	test = (short*) test_data ;
+	orig = orig_data.s ;
+	test = test_data.s ;
 
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
@@ -1435,13 +1444,13 @@ pcm_test_24bit (const char *filename, int format, int long_file_ok)
 	sfinfo.channels		= 1 ;
 	sfinfo.format		= format ;
 
-	gen_windowed_sine_double (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
+	gen_windowed_sine_double (orig_data.d, DATA_LENGTH, (1.0 * 0x7F000000)) ;
 
-	orig = (int*) orig_data ;
-	test = (int*) test_data ;
+	orig = orig_data.i ;
+	test = test_data.i ;
 
 	/* Make this a macro so gdb steps over it in one go. */
-	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data.d) ;
 
 	items = DATA_LENGTH ;
 
@@ -1496,8 +1505,8 @@ mono_24bit_test (const char *filename, int format, int long_file_ok, int allow_f
 	sfinfo.channels		= 1 ;
 	sfinfo.format		= format ;
 
-	orig = (int*) orig_data ;
-	test = (int*) test_data ;
+	orig = orig_data.i ;
+	test = test_data.i ;
 
 	items = DATA_LENGTH ;
 
@@ -1632,21 +1641,18 @@ stereo_24bit_test (const char *filename, int format, int long_file_ok, int allow
 	int		*orig, *test ;
 	int			k, items, frames ;
 
-	orig = (int*) orig_data ;
-	test = (int*) test_data ;
-
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 2 ;
 	sfinfo.format		= format ;
 
-	gen_windowed_sine_double (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
+	gen_windowed_sine_double (orig_data.d, DATA_LENGTH, (1.0 * 0x7F000000)) ;
 
-	orig = (int*) orig_data ;
-	test = (int*) test_data ;
+	orig = orig_data.i ;
+	test = test_data.i ;
 
 	/* Make this a macro so gdb steps over it in one go. */
-	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data.d) ;
 
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
@@ -1768,8 +1774,8 @@ mono_rdwr_24bit_test (const char *filename, int format, int long_file_ok, int al
 	int		*orig, *test ;
 	int			k, pass ;
 
-	orig = (int*) orig_data ;
-	test = (int*) test_data ;
+	orig = orig_data.i ;
+	test = test_data.i ;
 
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
@@ -1893,8 +1899,8 @@ new_rdwr_24bit_test (const char *filename, int format, int allow_fd)
 	int		*orig, *test ;
 	int		items, frames ;
 
-	orig = (int*) orig_data ;
-	test = (int*) test_data ;
+	orig = orig_data.i ;
+	test = test_data.i ;
 
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
@@ -1951,13 +1957,13 @@ pcm_test_int (const char *filename, int format, int long_file_ok)
 	sfinfo.channels		= 1 ;
 	sfinfo.format		= format ;
 
-	gen_windowed_sine_double (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
+	gen_windowed_sine_double (orig_data.d, DATA_LENGTH, (1.0 * 0x7F000000)) ;
 
-	orig = (int*) orig_data ;
-	test = (int*) test_data ;
+	orig = orig_data.i ;
+	test = test_data.i ;
 
 	/* Make this a macro so gdb steps over it in one go. */
-	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data.d) ;
 
 	items = DATA_LENGTH ;
 
@@ -2012,8 +2018,8 @@ mono_int_test (const char *filename, int format, int long_file_ok, int allow_fd)
 	sfinfo.channels		= 1 ;
 	sfinfo.format		= format ;
 
-	orig = (int*) orig_data ;
-	test = (int*) test_data ;
+	orig = orig_data.i ;
+	test = test_data.i ;
 
 	items = DATA_LENGTH ;
 
@@ -2148,21 +2154,18 @@ stereo_int_test (const char *filename, int format, int long_file_ok, int allow_f
 	int		*orig, *test ;
 	int			k, items, frames ;
 
-	orig = (int*) orig_data ;
-	test = (int*) test_data ;
-
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 2 ;
 	sfinfo.format		= format ;
 
-	gen_windowed_sine_double (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
+	gen_windowed_sine_double (orig_data.d, DATA_LENGTH, (1.0 * 0x7F000000)) ;
 
-	orig = (int*) orig_data ;
-	test = (int*) test_data ;
+	orig = orig_data.i ;
+	test = test_data.i ;
 
 	/* Make this a macro so gdb steps over it in one go. */
-	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data.d) ;
 
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
@@ -2284,8 +2287,8 @@ mono_rdwr_int_test (const char *filename, int format, int long_file_ok, int allo
 	int		*orig, *test ;
 	int			k, pass ;
 
-	orig = (int*) orig_data ;
-	test = (int*) test_data ;
+	orig = orig_data.i ;
+	test = test_data.i ;
 
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
@@ -2409,8 +2412,8 @@ new_rdwr_int_test (const char *filename, int format, int allow_fd)
 	int		*orig, *test ;
 	int		items, frames ;
 
-	orig = (int*) orig_data ;
-	test = (int*) test_data ;
+	orig = orig_data.i ;
+	test = test_data.i ;
 
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
@@ -2467,13 +2470,13 @@ pcm_test_float (const char *filename, int format, int long_file_ok)
 	sfinfo.channels		= 1 ;
 	sfinfo.format		= format ;
 
-	gen_windowed_sine_double (orig_data, DATA_LENGTH, 1.0) ;
+	gen_windowed_sine_double (orig_data.d, DATA_LENGTH, 1.0) ;
 
-	orig = (float*) orig_data ;
-	test = (float*) test_data ;
+	orig = orig_data.f ;
+	test = test_data.f ;
 
 	/* Make this a macro so gdb steps over it in one go. */
-	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data.d) ;
 
 	items = DATA_LENGTH ;
 
@@ -2528,8 +2531,8 @@ mono_float_test (const char *filename, int format, int long_file_ok, int allow_f
 	sfinfo.channels		= 1 ;
 	sfinfo.format		= format ;
 
-	orig = (float*) orig_data ;
-	test = (float*) test_data ;
+	orig = orig_data.f ;
+	test = test_data.f ;
 
 	items = DATA_LENGTH ;
 
@@ -2664,21 +2667,18 @@ stereo_float_test (const char *filename, int format, int long_file_ok, int allow
 	float		*orig, *test ;
 	int			k, items, frames ;
 
-	orig = (float*) orig_data ;
-	test = (float*) test_data ;
-
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 2 ;
 	sfinfo.format		= format ;
 
-	gen_windowed_sine_double (orig_data, DATA_LENGTH, 1.0) ;
+	gen_windowed_sine_double (orig_data.d, DATA_LENGTH, 1.0) ;
 
-	orig = (float*) orig_data ;
-	test = (float*) test_data ;
+	orig = orig_data.f ;
+	test = test_data.f ;
 
 	/* Make this a macro so gdb steps over it in one go. */
-	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data.d) ;
 
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
@@ -2800,8 +2800,8 @@ mono_rdwr_float_test (const char *filename, int format, int long_file_ok, int al
 	float		*orig, *test ;
 	int			k, pass ;
 
-	orig = (float*) orig_data ;
-	test = (float*) test_data ;
+	orig = orig_data.f ;
+	test = test_data.f ;
 
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
@@ -2925,8 +2925,8 @@ new_rdwr_float_test (const char *filename, int format, int allow_fd)
 	float		*orig, *test ;
 	int		items, frames ;
 
-	orig = (float*) orig_data ;
-	test = (float*) test_data ;
+	orig = orig_data.f ;
+	test = test_data.f ;
 
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
@@ -2983,13 +2983,13 @@ pcm_test_double (const char *filename, int format, int long_file_ok)
 	sfinfo.channels		= 1 ;
 	sfinfo.format		= format ;
 
-	gen_windowed_sine_double (orig_data, DATA_LENGTH, 1.0) ;
+	gen_windowed_sine_double (orig_data.d, DATA_LENGTH, 1.0) ;
 
-	orig = (double*) orig_data ;
-	test = (double*) test_data ;
+	orig = orig_data.d ;
+	test = test_data.d ;
 
 	/* Make this a macro so gdb steps over it in one go. */
-	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data.d) ;
 
 	items = DATA_LENGTH ;
 
@@ -3044,8 +3044,8 @@ mono_double_test (const char *filename, int format, int long_file_ok, int allow_
 	sfinfo.channels		= 1 ;
 	sfinfo.format		= format ;
 
-	orig = (double*) orig_data ;
-	test = (double*) test_data ;
+	orig = orig_data.d ;
+	test = test_data.d ;
 
 	items = DATA_LENGTH ;
 
@@ -3180,21 +3180,18 @@ stereo_double_test (const char *filename, int format, int long_file_ok, int allo
 	double		*orig, *test ;
 	int			k, items, frames ;
 
-	orig = (double*) orig_data ;
-	test = (double*) test_data ;
-
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 2 ;
 	sfinfo.format		= format ;
 
-	gen_windowed_sine_double (orig_data, DATA_LENGTH, 1.0) ;
+	gen_windowed_sine_double (orig_data.d, DATA_LENGTH, 1.0) ;
 
-	orig = (double*) orig_data ;
-	test = (double*) test_data ;
+	orig = orig_data.d ;
+	test = test_data.d ;
 
 	/* Make this a macro so gdb steps over it in one go. */
-	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data.d) ;
 
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
@@ -3316,8 +3313,8 @@ mono_rdwr_double_test (const char *filename, int format, int long_file_ok, int a
 	double		*orig, *test ;
 	int			k, pass ;
 
-	orig = (double*) orig_data ;
-	test = (double*) test_data ;
+	orig = orig_data.d ;
+	test = test_data.d ;
 
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
@@ -3441,8 +3438,8 @@ new_rdwr_double_test (const char *filename, int format, int allow_fd)
 	double		*orig, *test ;
 	int		items, frames ;
 
-	orig = (double*) orig_data ;
-	test = (double*) test_data ;
+	orig = orig_data.d ;
+	test = test_data.d ;
 
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
