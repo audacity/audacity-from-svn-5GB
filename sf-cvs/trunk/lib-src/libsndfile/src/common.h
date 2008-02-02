@@ -278,6 +278,9 @@ typedef struct sf_private_tag
 	/* Broadcast (EBU) Info */
 	SF_BROADCAST_INFO *broadcast_info ;
 
+	/* Channel map data (if present) : an array of ints. */
+	int				*channel_map ;
+
 	sf_count_t		filelength ;	/* Overall length of (embedded) file. */
 	sf_count_t		fileoffset ;	/* Offset in number of bytes from beginning of file. */
 
@@ -297,9 +300,13 @@ typedef struct sf_private_tag
 	sf_count_t		read_current ;
 	sf_count_t		write_current ;
 
-	void			*fdata ;		/*	This is a pointer to dynamically allocated file format
-									**	specific data.
-									*/
+	void			*container_data ;	/*	This is a pointer to dynamically allocated file
+										**	container format specific data.
+										*/
+
+	void			*codec_data ;		/*	This is a pointer to dynamically allocated file
+										**	codec format specific data.
+										*/
 
 	SF_DITHER_INFO	write_dither ;
 	SF_DITHER_INFO	read_dither ;

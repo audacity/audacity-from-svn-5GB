@@ -3,7 +3,7 @@
 dnl Require autoconf version
 AC_PREREQ(2.59)
 
-AC_INIT([libsndfile],[1.0.16],[erikd@mega-nerd.com])
+AC_INIT([libsndfile],[1.0.17],[erikd@mega-nerd.com])
 AC_CONFIG_SRCDIR([src/sndfile.c])
 AC_CANONICAL_TARGET([])
 
@@ -11,7 +11,6 @@ AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
 AC_CONFIG_HEADERS([src/config.h])
 
 AC_LANG([C])
-AM_MAINTAINER_MODE
 
 #------------------------------------------------------------------------------------
 # Rules for library version information:
@@ -29,7 +28,7 @@ AM_MAINTAINER_MODE
 #  6. If any interfaces have been removed since the last public release, then set age
 #     to 0.
 
-SHARED_VERSION_INFO="1:16:0"
+SHARED_VERSION_INFO="1:17:0"
 
 AC_PROG_CC
 AM_PROG_LIBTOOL
@@ -49,8 +48,11 @@ AC_CHECK_HEADERS(inttypes.h)
 AC_HEADER_SYS_WAIT
 
 AC_CHECK_DECLS(S_IRGRP)
-AC_DEFINE_UNQUOTED([HAVE_DECL_S_IRGRP],${HAVE_DECL_S_IRGRP},
-		[Set to 1 if S_IRGRP is defined.])
+if test x$ac_cv_have_decl_S_IRGRP = xyes ; then
+	AC_DEFINE_UNQUOTED([HAVE_DECL_S_IRGRP],1,[Set to 1 if S_IRGRP is defined.])
+else
+	AC_DEFINE_UNQUOTED([HAVE_DECL_S_IRGRP],0)
+	fi
 
 #====================================================================================
 # Check for support of the struct hack.
@@ -225,7 +227,7 @@ AC_DEFINE_UNQUOTED(CPU_IS_LITTLE_ENDIAN, ${ac_cv_c_little_endian},
 
 AC_CHECK_FUNCS(malloc calloc realloc free)
 AC_CHECK_FUNCS(open read write lseek pread pwrite)
-AC_CHECK_FUNCS(fstat ftruncate fsync fdatasync)
+AC_CHECK_FUNCS(fstat ftruncate fsync)
 AC_CHECK_FUNCS(snprintf vsnprintf)
 AC_CHECK_FUNCS(gmtime gmtime_r)
 AC_CHECK_FUNCS(mmap getpagesize)
@@ -407,15 +409,19 @@ if test x$ac_cv_c_compiler_gnu = xyes ; then
 	AC_ADD_CFLAGS(-std=gnu99)
 
 	CFLAGS="$CFLAGS -W -Wall"
+	CXXFLAGS="$CXXFLAGS -W -Wall"
 
 	AC_ADD_CFLAGS(-Wdeclaration-after-statement)
+	AC_ADD_CFLAGS(-Wpointer-arith)
 
 	if test x$enable_gcc_werror = "xyes" ; then
 		CFLAGS="-Werror $CFLAGS"
+		CXXFLAGS="-Werror $CXXFLAGS"
 		fi
 
-	CFLAGS="$CFLAGS -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wcast-qual -Wnested-externs -Wshadow -Wbad-function-cast -Wwrite-strings"
-	# -Wpointer-arith -Wundef -Wmissing-declarations -Winline -Wconversion"
+	CFLAGS="$CFLAGS -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wcast-qual -Wnested-externs -Wshadow -Wbad-function-cast -Wwrite-strings "
+	# -Wundef -Wmissing-declarations -Winline -Wconversion"
+	CXXFLAGS="$CXXFLAGS -Wcast-align -Wcast-qual -Wshadow -Wwrite-strings -Wctor-dtor-privacy -Wnon-virtual-dtor -Woverloaded-virtual -Wreorder -Wsign-promo "
 
 	if test "x$enable_gcc_opt" = "xno" ; then
 		temp_CFLAGS=`echo $CFLAGS | sed "s/O2/O0/"`

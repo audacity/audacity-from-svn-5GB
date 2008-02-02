@@ -1,3 +1,212 @@
+2006-08-31 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac docs/*.html
+    Changes for release 1.0.17.
+
+2006-08-08 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/flac.c
+    Remove inline from functions called by pointer. Thanks to Sampo Savolainen
+    for notifying me of this.
+
+2006-07-31 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.hh
+    Add writeSync method.
+    Add copy constructor and assignment operator (thanks Daniel Schmitt).
+    Add methods readRaw and writeRaw.
+    Make read/write/readf/writef simple overlaods instead of templates (thanks
+    to Trent Apted for suggesting this).
+
+    * tests/cpp_test.cc
+    Cleanup. Add tests.
+
+2006-07-30 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.hh
+    Templatize the read/write/readf/writef methods as suggested by Lars Luthman.
+    Prevent the potential leak of SNDFILE* pointers in the openRead/openWrite/
+    openReadWrite methods.
+    Add const to SF_INFO pointer in Sndfile constructor.
+    Make the destrictor call the close() method.
+
+    * tests/cpp_test.cc
+    Add more tests.
+
+2006-07-29 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/cpp_test.cc
+    Remove the generated file so "make distcheck" passes.
+
+    * src/Makefile.am
+    Add sndfile.hh to distributed header files.
+
+    * src/sndfile.hh
+    Change the license for the C++ wrapper to modified BSD.
+
+2006-07-28 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.hh
+    Complete it.
+
+    * tests/cpp_test.cc
+    Add more tests.
+
+2006-07-27 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/utils.tpl
+    Add extern C to generated header file.
+
+    * src/sndfile.hh
+    Work towards completing this.
+
+    * tests/cpp_test.cc tests/Makefile.am
+    Add a C++ test and hook into build.
+
+    * configure.ac
+    Add appropriate CXXFLAGS.
+
+2006-07-26 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Test if compiler supports -Wpointer-arith.
+
+    * src/common.c
+    Fix a warning resulting from -Wpointer-arith.
+
+2006-07-15 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-play.c
+    Explicitly set endian-ness as well as setting 16 bit output.
+
+    * examples/sndfile-info.c
+    Make sure to parse info if file fails to open.
+
+    * src/sndfile.c
+    Handle parse error a little better.
+
+    * src/wav_w64.[ch]
+    Minor clean up, add detection of IPP ITU G723.1.
+
+2006-06-23 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.c
+    Make sure psf->dataoffset gets reset to zero when openning headersless
+    files based on the file name extension.
+
+2006-06-21 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/(command|lossy_comp|pcm|scale_clip)_test.c tests/fix_this.c
+        tests/write_read_test.(tpl|def)
+    Fix gcc-4.1 compiler warnings about "dereferencing type-punned pointer will
+    break strict-aliasing rules".
+
+    * examples/cooledit-fixer.c
+    More fixes like above.
+
+2006-06-20 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    Fix a windows bug where the syserr string of SF_PRIVATE was not being set
+    correctly.
+
+    * src/sndfile.c
+    Fixed a logic bug in sf_seek(). Thanks to Paul Davis for finding this.
+
+2006-06-04 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Fixed detection of S_IRGRP.
+
+2006-05-30 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * sndfile-convert.c
+    Add conversion SF_INSTRUMENT data when present.
+
+2006-05-22 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/development.html
+    Removed references to tla on windows.
+
+    * src/common.h src/sndfile.c
+    Add separate void pointers for file containter and file codec data to
+    SF_PRIVATE struct. Still need to move all existing fdata pointers.
+
+    * tests/write_read_test.tpl
+    Change the order of some tests.
+
+    * src/aiff.c
+    When writing 'AIFC' files, make sure get an 'FVER' gets added.
+
+    * src/common.h src/(dwvw|flac|g72x|gsm610|ima_adpcm|ms_adpcm|paf|sds).c
+        src/(sndfile|voc|vox_adpcm|xi).c
+    Remove fdata field from SF_PRIVATE struct and replace it with codec_data.
+
+2006-05-10 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Win32/testprog.c Win32/Makefile.am
+    Add a minimal win32 test program.
+
+    * Win32/README-precompiled-dll.txt Mingw-make-dist.sh
+    Update readme and Mingw build script.
+
+2006-05-09 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac acinclude.m4
+    Minor fixes for Solaris.
+
+2006-05-05 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/test_endswap.(def|tpl)
+    Fix printf formatting for int64_t on 64 bit machines.
+
+2006-05-04 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/binhead_check.py
+    New file to check for bad parameters passed to psf_binheader_writef().
+
+    * src/Makefile.am
+    Hook into test suite.
+
+    * src/voc.c src/caf.c src/wav.c src/mat5.c src/mat4.c
+    Fix bugs found by new test program.
+
+    * src/double64.c
+    Clean up double64_get_capability().
+
+2006-05-03 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/wav_w64.c
+    Fix a bug on x86_64 where an int was being passed via stdargs and being
+    read using size_t which is 64 bits. Thenks to John ffitch for giving me a
+    login on his box.
+
+2006-05-02 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/caf.c src/double64.c examples/sndfile-info.c tests/virtual_io_test.c
+            tests/utils.tpl
+    Fix a couple of signed/unsigned problems.
+
+2006-05-01 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/command_test.c
+    Add channel map tests.
+
+    * src/common.h src/sndfile.c
+    Add a pointer the the SF_PRIVATE struct and make sure it gets freed in
+    sf_close().
+
+2006-04-30 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac doc/(command|index|api).html NEWS README
+    Updates for 1.0.16 release.
+
+    * src/sndfile.h.in
+    Define enums for channel mapping.
+
+    * examples/sndfile-info.c
+    Clean up usage of SF_INFO struct.
+
 2006-04-29 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/util.tpl

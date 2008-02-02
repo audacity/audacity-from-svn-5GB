@@ -53,7 +53,6 @@
 #define	M_PI		3.14159265358979323846264338
 #endif
 
-#define SIGNED_SIZEOF(x)	((int) (sizeof (x)))
 #define	LOG_BUFFER_SIZE		2048
 
 

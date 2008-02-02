@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2001-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2001-2006 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -186,10 +186,10 @@ voc_read_header	(SF_PRIVATE *psf)
 	if (version != 0x010A && version != 0x0114)
 		return SFE_VOC_BAD_VERSION ;
 
-	if (! (psf->fdata = malloc (sizeof (VOC_DATA))))
+	if (! (psf->codec_data = malloc (sizeof (VOC_DATA))))
 		return SFE_MALLOC_FAILED ;
 
-	pvoc = (VOC_DATA*) psf->fdata ;
+	pvoc = (VOC_DATA*) psf->codec_data ;
 
 	memset (pvoc, 0, sizeof (VOC_DATA)) ;
 
@@ -429,7 +429,7 @@ voc_write_header (SF_PRIVATE *psf, int calc_length)
 	psf_fseek (psf, 0, SEEK_SET) ;
 
 	/* VOC marker and 0x1A byte. */
-	psf_binheader_writef (psf, "eb1", "Creative Voice File", 19, 0x1A) ;
+	psf_binheader_writef (psf, "eb1", "Creative Voice File", make_size_t (19), 0x1A) ;
 
 	/* Data offset, version and other. */
 	psf_binheader_writef (psf, "e222", 26, 0x0114, 0x111F) ;

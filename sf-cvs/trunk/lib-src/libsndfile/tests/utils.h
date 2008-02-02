@@ -25,10 +25,15 @@
 
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif	/* __cplusplus */
+
 #include <stdarg.h>
 
 #define SF_COUNT_TO_LONG(x)	((long) (x))
 #define	ARRAY_LEN(x)		((int) (sizeof (x)) / (sizeof ((x) [0])))
+#define SIGNED_SIZEOF(x)	((int64_t) (sizeof (x)))
 
 #define	PIPE_INDEX(x)	((x) + 500)
 #define	PIPE_TEST_LEN	12345
@@ -133,6 +138,10 @@ void 	test_writef_double_or_die
 
 
 #endif
+
+#ifdef __cplusplus
+}		/* extern "C" */
+#endif	/* __cplusplus */
 
 
 
