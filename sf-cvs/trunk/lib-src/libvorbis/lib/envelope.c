@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
- * by the XIPHOPHORUS Company http://www.xiph.org/                  *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2007             *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: PCM data envelope analysis 
- last mod: $Id: envelope.c,v 1.7 2004-11-13 18:27:55 mbrubeck Exp $
+ last mod: $Id: envelope.c,v 1.8 2008-02-02 15:53:52 richardash1981 Exp $
 
  ********************************************************************/
 
@@ -278,7 +278,7 @@ long _ve_envelope_search(vorbis_dsp_state *v){
       if(ve->mark[j/ve->searchstep]){
 	if(j>centerW){
 
-	  #if 0
+#if 0
 	  if(j>ve->curmark){
 	    float *marker=alloca(v->pcm_current*sizeof(*marker));
 	    int l,m;
@@ -361,13 +361,13 @@ void _ve_envelope_shift(envelope_lookup *e,long shift){
 
   memmove(e->mark,e->mark+smallshift,(smallsize-smallshift)*sizeof(*e->mark));
   
-  #if 0
+#if 0
   for(i=0;i<VE_BANDS*e->ch;i++)
     memmove(e->filter[i].markers,
 	    e->filter[i].markers+smallshift,
 	    (1024-smallshift)*sizeof(*(*e->filter).markers));
   totalshift+=shift;
-  #endif 
+#endif 
 
   e->current-=shift;
   if(e->curmark>=0)

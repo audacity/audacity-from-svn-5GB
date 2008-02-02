@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
- * by the XIPHOPHORUS Company http://www.xiph.org/                  *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2007             *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: psychoacoustics not including preecho
- last mod: $Id: psy.c,v 1.10 2004-11-13 18:27:55 mbrubeck Exp $
+ last mod: $Id: psy.c,v 1.11 2008-02-02 15:53:53 richardash1981 Exp $
 
  ********************************************************************/
 
@@ -553,7 +553,10 @@ static void bark_noise_hybridmp(int n,const long *b,
   int i;
 
   int lo, hi;
-  float R, A, B, D;
+  float R=0.f;
+  float A=0.f;
+  float B=0.f;
+  float D=1.f;
   float w, x, y;
 
   tN = tX = tXX = tY = tXY = 0.f;

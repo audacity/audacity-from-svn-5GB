@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
- * by the XIPHOPHORUS Company http://www.xiph.org/                  *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2007             *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: 16kHz settings 
- last mod: $Id: psych_16.h,v 1.7 2004-11-13 18:27:57 mbrubeck Exp $
+ last mod: $Id: psych_16.h,v 1.8 2008-02-02 15:53:58 richardash1981 Exp $
 
  ********************************************************************/
 
@@ -110,6 +110,13 @@ static noise3 _psy_noisebias_16[4]={
   {{{-15,-15,-15,-15,-15,-12,-10, -8, -5, -5, -5, -5, -5,  0,  0,  0,  6},
     {-30,-30,-30,-30,-26,-22,-20,-14,-12,-12,-10,-10,-10,-10,-10,-10, -6},
     {-30,-30,-30,-30,-26,-26,-26,-26,-26,-26,-26,-26,-26,-24,-20,-20,-20}}},
+};
+
+static noiseguard _psy_noiseguards_16[4]={
+  {10,10,-1},
+  {10,10,-1},
+  {20,20,-1},
+  {20,20,-1},
 };
 
 static double _noise_thresh_16[4]={ .3,.5,.5,.5 };
