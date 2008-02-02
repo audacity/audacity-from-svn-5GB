@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2003             *
- * by the XIPHOPHORUS Company http://www.xiph.org/                  *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2007             *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: PCM data vector blocking, windowing and dis/reassembly
- last mod: $Id: block.c,v 1.7 2004-11-13 18:27:55 mbrubeck Exp $
+ last mod: $Id: block.c,v 1.8 2008-02-02 15:53:51 richardash1981 Exp $
 
  Handle windowing, overlap-add, etc of the PCM vectors.  This is made
  more amusing by Vorbis' current two allowed block sizes.
@@ -106,7 +106,7 @@ int vorbis_block_init(vorbis_dsp_state *v, vorbis_block *vb){
       oggpack_writeinit(vbi->packetblob[i]);
     }    
   }
-  
+
   return(0);
 }
 
@@ -293,6 +293,10 @@ int vorbis_analysis_init(vorbis_dsp_state *v,vorbis_info *vi){
 
   vorbis_bitrate_init(vi,&b->bms);
 
+  /* compressed audio packets start after the headers
+     with sequence number 3 */
+  v->sequence=3;
+
   return(0);
 }
 
@@ -322,20 +326,23 @@ void vorbis_dsp_clear(vorbis_dsp_state *v){
       }
 
       if(b->flr){
-	for(i=0;i<ci->floors;i++)
-	  _floor_P[ci->floor_type[i]]->
-	    free_look(b->flr[i]);
+	if(ci)
+	  for(i=0;i<ci->floors;i++)
+	    _floor_P[ci->floor_type[i]]->
+	      free_look(b->flr[i]);
 	_ogg_free(b->flr);
       }
       if(b->residue){
-	for(i=0;i<ci->residues;i++)
-	  _residue_P[ci->residue_type[i]]->
-	    free_look(b->residue[i]);
+	if(ci)
+	  for(i=0;i<ci->residues;i++)
+	    _residue_P[ci->residue_type[i]]->
+	      free_look(b->residue[i]);
 	_ogg_free(b->residue);
       }
       if(b->psy){
-	for(i=0;i<ci->psys;i++)
-	  _vp_psy_clear(b->psy+i);
+	if(ci)
+	  for(i=0;i<ci->psys;i++)
+	    _vp_psy_clear(b->psy+i);
 	_ogg_free(b->psy);
       }
 
@@ -348,8 +355,9 @@ void vorbis_dsp_clear(vorbis_dsp_state *v){
     }
     
     if(v->pcm){
-      for(i=0;i<vi->channels;i++)
-	if(v->pcm[i])_ogg_free(v->pcm[i]);
+      if(vi)
+	for(i=0;i<vi->channels;i++)
+	  if(v->pcm[i])_ogg_free(v->pcm[i]);
       _ogg_free(v->pcm);
       if(v->pcmret)_ogg_free(v->pcmret);
     }

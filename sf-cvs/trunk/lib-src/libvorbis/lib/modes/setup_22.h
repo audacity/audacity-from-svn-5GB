@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
- * by the XIPHOPHORUS Company http://www.xiph.org/                  *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2007             *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: 22kHz settings 
- last mod: $Id: setup_22.h,v 1.6 2004-11-13 18:27:57 mbrubeck Exp $
+ last mod: $Id: setup_22.h,v 1.7 2008-02-02 15:53:59 richardash1981 Exp $
 
  ********************************************************************/
 
@@ -44,7 +44,7 @@ ve_setup_data_template ve_setup_22_stereo={
   _vp_tonemask_adj_16,
   _vp_tonemask_adj_16,
 
-  _psy_noiseguards_8,
+  _psy_noiseguards_16,
   _psy_noisebias_16_impulse,
   _psy_noisebias_16_short,
   _psy_noisebias_16_short,

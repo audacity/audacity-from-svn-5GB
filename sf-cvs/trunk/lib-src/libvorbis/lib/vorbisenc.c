@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
- * by the XIPHOPHORUS Company http://www.xiph.org/                  *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2007             *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: simple programmatic interface for encoder mode setup
- last mod: $Id: vorbisenc.c,v 1.6 2004-11-13 18:27:55 mbrubeck Exp $
+ last mod: $Id: vorbisenc.c,v 1.7 2008-02-02 15:53:54 richardash1981 Exp $
 
  ********************************************************************/
 
@@ -1091,9 +1091,9 @@ int vorbis_encode_ctl(vorbis_info *vi,int number,void *arg){
 	if(ai==NULL)return OV_EINVAL;
 	
 	ai->management_active=hi->managed;
-	ai->bitrate_limit_min_kbps=hi->bitrate_min;
-	ai->bitrate_limit_max_kbps=hi->bitrate_max;
-	ai->bitrate_average_kbps=hi->bitrate_av;
+	ai->bitrate_limit_min_kbps=hi->bitrate_min/1000;
+	ai->bitrate_limit_max_kbps=hi->bitrate_max/1000;
+	ai->bitrate_average_kbps=hi->bitrate_av/1000;
 	ai->bitrate_average_damping=hi->bitrate_av_damp;
 	ai->bitrate_limit_reservoir_bits=hi->bitrate_reservoir;
 	ai->bitrate_limit_reservoir_bias=hi->bitrate_reservoir_bias;
@@ -1135,9 +1135,9 @@ int vorbis_encode_ctl(vorbis_info *vi,int number,void *arg){
 	    return OV_EINVAL;
 
 	  hi->managed=ai->management_active;
-	  hi->bitrate_min=ai->bitrate_limit_min_kbps;
-	  hi->bitrate_max=ai->bitrate_limit_max_kbps;
-	  hi->bitrate_av=ai->bitrate_average_kbps;
+	  hi->bitrate_min=ai->bitrate_limit_min_kbps * 1000;
+	  hi->bitrate_max=ai->bitrate_limit_max_kbps * 1000;
+	  hi->bitrate_av=ai->bitrate_average_kbps * 1000;
 	  hi->bitrate_av_damp=ai->bitrate_average_damping;
 	  hi->bitrate_reservoir=ai->bitrate_limit_reservoir_bits;
 	  hi->bitrate_reservoir_bias=ai->bitrate_limit_reservoir_bias;

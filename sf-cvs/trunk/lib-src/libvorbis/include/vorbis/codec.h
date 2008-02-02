@@ -6,12 +6,12 @@
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
- * by the XIPHOPHORUS Company http://www.xiph.org/                  *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
 
  ********************************************************************
 
  function: libvorbis codec headers
- last mod: $Id: codec.h,v 1.7 2004-11-13 18:27:55 mbrubeck Exp $
+ last mod: $Id: codec.h,v 1.8 2008-02-02 15:53:51 richardash1981 Exp $
 
  ********************************************************************/
 
@@ -198,6 +198,7 @@ extern int      vorbis_bitrate_flushpacket(vorbis_dsp_state *vd,
 					   ogg_packet *op);
 
 /* Vorbis PRIMITIVES: synthesis layer *******************************/
+extern int      vorbis_synthesis_idheader(ogg_packet *op);
 extern int      vorbis_synthesis_headerin(vorbis_info *vi,vorbis_comment *vc,
 					  ogg_packet *op);
 
