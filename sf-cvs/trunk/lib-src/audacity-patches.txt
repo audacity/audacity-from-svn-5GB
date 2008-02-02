@@ -89,9 +89,11 @@ libsndfile
 ----------
 Erik de Castro Lopo's uncompressed audio file I/O library. Core and essential
 to audacity.
-Version in Audacity CVS: 1.0.16
-Patches: ??
+Version in Audacity CVS: 1.0.17
+Patches:  wav-bext.patch: backport patch from 1.0.18 of a patch to fix reading
+bext chunks in WAV files
 Upstream Version: 1.0.17
+TODO: upgrade to 1.0.18 when it comes out in order to drop the bext patch
 
 libvorbis
 ---------
