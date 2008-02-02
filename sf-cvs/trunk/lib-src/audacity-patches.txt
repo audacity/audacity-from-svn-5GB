@@ -57,7 +57,8 @@ MP3 decoding library
 Version in audacity cvs: 0.15.1 (beta)
 Patches: libmad-mp2-out-of-spec.patch:	Import some forms of MP2 file that are
 theoretically out of spec but in practise work fine (msmeyer)
-** A Mac one as well needed? **
+osx-universal-build.patch: Makes build work on OS X for universal binary by
+using compiler-defined symbols for targets as well as hosts.
 Upstream version: 0.15.1 (beta)
 
 libnyquist
