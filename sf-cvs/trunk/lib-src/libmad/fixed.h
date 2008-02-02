@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: fixed.h,v 1.2 2005-09-12 07:01:30 dmazzoni Exp $
+ * $Id: fixed.h,v 1.3 2008-02-02 11:37:37 richardash1981 Exp $
  */
 
 # ifndef LIBMAD_FIXED_H
@@ -137,7 +137,7 @@ typedef mad_fixed_t mad_sample_t;
 
 /* --- Intel --------------------------------------------------------------- */
 
-# elif defined(FPM_INTEL)
+# elif defined(FPM_INTEL) || defined (__i386__)
 
 #  if defined(_MSC_VER)
 #   pragma warning(push)
@@ -351,7 +351,7 @@ mad_fixed_t mad_f_mul_inline(mad_fixed_t x, mad_fixed_t y)
 
 /* --- PowerPC ------------------------------------------------------------- */
 
-# elif defined(FPM_PPC)
+# elif defined(FPM_PPC) || defined(__ppc__)
 
 /*
  * This PowerPC version is fast and accurate; the disposition of the least
