@@ -81,25 +81,28 @@ libsamplerate
 Erik de Castro Lopo's high quality sample rate conversion library. Not used
 in release builds, could probably be removed altogther except for comparision
 purposes.
-Version in Audacity CVS:
-Patches:
-Upstream Version:
+Version in Audacity CVS: 0.1.2
+Patches: ??
+Upstream Version: 0.1.2
 
 libsndfile
 ----------
 Erik de Castro Lopo's uncompressed audio file I/O library. Core and essential
 to audacity.
-Version in Audacity CVS:
-Patches:
-Upstream Version:
+Version in Audacity CVS: 1.0.16
+Patches: ??
+Upstream Version: 1.0.17
 
 libvorbis
 ---------
 library for endcoding and decoding Xiph.org's high-quality compressed audio
 format.
-Version in Audacity CVS:
-Patches:
-Upstream Version:
+Version in Audacity CVS: 1.2.0
+Patches: local-libogg.patch: configure patch that lets us build against a
+local libogg if there isn't a system one.
+no-docs-examples.patch: disable building documentation and examples, so we can
+avoid shipping the files in those directories
+Upstream Version: 1.2.0
 
 lib-widget-extra
 ----------------
