@@ -1925,8 +1925,7 @@ void TrackPanel::HandleEnvelope(wxMouseEvent & event)
       MakeParentPushState(
          _("Adjusted envelope."),
          _("Envelope"),
-         true /* consolidate these actions --
-               see UndoManager */
+         false /* do not consolidate these actions */
          );
    }
 }
