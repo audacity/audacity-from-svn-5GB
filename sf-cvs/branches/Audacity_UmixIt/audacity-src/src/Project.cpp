@@ -2672,7 +2672,7 @@ void AudacityProject::PushState(wxString desc,
       this->EnforceTrackConstraints();
    #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) 
       this->OnZoomFitV();
-      this->OnZoomFit();
+      //v Robert seemed to want this at first, but not now (2/8/2008):   this->OnZoomFit();
    #else // (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH) 
       UpdateLyrics();
       UpdateMixerBoard();

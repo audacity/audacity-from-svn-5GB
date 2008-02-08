@@ -4010,7 +4010,14 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
                wxCoord bottom = y + height - 2;
 
                //Save bitmaps of the areas that we are going to overwrite
-               wxBitmap *tmpBitmap = new wxBitmap(1, bottom-top);
+               // For AudioTourch, 3-pixel wide line. Don't center it, just use x as left side.
+               const kIndicatorWidth = 
+                  #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+                     3;
+                  #else
+                     1;
+                  #endif
+               wxBitmap *tmpBitmap = new wxBitmap(kIndicatorWidth, bottom-top);
                tmpDrawDC.SelectObject(*tmpBitmap);
 
                //Copy the part of the screen into the bitmap, using the memory DC
@@ -4026,6 +4033,10 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
 
                //Draw the new indicator in its correct location
                dc->DrawLine(x, top, x, bottom);
+               #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+                  dc->DrawLine(x + 1, top, x + 1, bottom);
+                  dc->DrawLine(x + 2, top, x + 2, bottom);
+               #endif
             }
             //Increment y so you draw on the proper track
             y += height;
