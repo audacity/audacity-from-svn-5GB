@@ -407,7 +407,7 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
          else
             mContourOffset = false;
       }
-      
+
       double newVal = ValueOfPixel(clip_y, r.height, upper, dB,
                                    zoomMin, zoomMax, eMin);
       
@@ -534,7 +534,7 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
                           float zoomMin, float zoomMax, float eMin, float eMax)
 {
 
-   if (event.ButtonDown() && mButton == wxMOUSE_BTN_NONE)
+   if (event.ButtonDown())
       return HandleMouseButtonDown( event, r, h, pps,dB,
                                     zoomMin, zoomMax, eMin, eMax);
 
