@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * This file is licensed under a Creative Commons license:
+ * 2007-8 Gale Andrews, Vaughan Johnson. This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
   require_once "main.inc.php";
@@ -42,11 +42,11 @@
 
 echo _('<p><a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses.</p>');
 
-  echo _('<h3>Bundling, Reselling, or Distributing Audacity</h3>
+  echo _('<h3>Bundling, Reselling or Distributing Audacity</h3>
 
-<p>Vendors are free to bundle Audacity with their products, or to sell or distribute copies of Audacity (see <a href="../download/bundlers">Vendors and Distributors of Audacity</a>) under the <a href="license">GNU General Public License (GPL)</a>.</p>
+<p>Vendors are free to bundle Audacity with their products, or to sell or distribute copies of Audacity (see <a href="../download/bundlers">Vendors and Distributors of Audacity</a>) under the <a href="../about/license#license">GNU General Public License (GPL)</a>.</p>
 
-<p>If you are interested in distributing Audacity, please see the <a href="../about/license">License, and Advice for Vendors and Distributors</a> page.</p>');
+<p>If you are interested in bundling, selling or distributing Audacity, please review our entire <a href="../about/license">License, and Advice for Vendors and Distributors</a> page.</p>');
 
   include "../include/footer.inc.php";
 ?>
