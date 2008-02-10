@@ -103,7 +103,7 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieRadioButton( _("&Make a copy of uncompressed audio files before editing (safer)"),wxT("copy"));
       S.TieRadioButton( _("&Read uncompressed audio files directly from the original (faster)"),wxT("edit"));
       S.EndRadioButtonGroup();
-      S.TieCheckBox( _("&When importing audio, normalize all tracks in project"), 
+      S.TieCheckBox( _("&Normalize all tracks in project"), 
          wxT("/AudioFiles/NormalizeOnLoad"), false );
    }
    S.EndStatic();
