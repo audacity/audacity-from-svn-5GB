@@ -1077,7 +1077,8 @@ public:
 
       return;
    }
-
+   /* note these values are for Windows only - Mac and Unix have their own
+    * sections elsewhere */
    wxString GetLibraryPath()
    {
       return wxT("");
@@ -1109,7 +1110,7 @@ private:
    BEVERSION beVersion;
 };
 
-#else
+#else //__WXMSW__
 
 #include <dlfcn.h>
 #include "lame.h"
@@ -1245,7 +1246,7 @@ static void dump_config( 	lame_global_flags*	gfp )
 	wxPrintf(wxT("Experimental Y         =%d\n"), lame_get_experimentalY( gfp ) );
 	wxPrintf(wxT("Experimental Z         =%d\n"), lame_get_experimentalZ( gfp ) );
 }
-#endif
+#endif //!__WXMSW__ 
 
 /* --------------------------------------------------------------------------*/
 
@@ -1530,8 +1531,9 @@ public:
    {
       mEncoding = false;
    }
-
+   /* this section is for all *nixes including Mac OS X, but not windows */
 #if defined(__WXMAC__)
+   /* values for Mac OS X */
 
    wxString GetLibraryPath()
    {
@@ -1548,8 +1550,8 @@ public:
       return wxString(_("Only libmp3lame.dylib|libmp3lame.dylib|Dynamic Libraries (*.dylib)|*.dylib|All Files (*)|*"));
    }
 
-#else
-
+#else //__WXMAC__
+   /* Values for Linux / Unix systems */
    wxString GetLibraryPath()
    {
       return wxT("/usr/lib");
@@ -1557,12 +1559,12 @@ public:
 
    wxString GetLibraryName()
    {
-      return wxT("libmp3lame.so");
+      return wxT("libmp3lame.so.0");
    }
 
    wxString GetLibraryTypeString()
    {
-      return wxString(_("Only libmp3lame.so|libmp3lame.so|Primary Shared Object files (*.so)|*.so|Extended Libraries (*.so*)|*.so*|All Files (*)|*"));
+      return wxString(_("Only libmp3lame.so.0|libmp3lame.so.0|Primary Shared Object files (*.so)|*.so|Extended Libraries (*.so*)|*.so*|All Files (*)|*"));
    }
 
 #endif
