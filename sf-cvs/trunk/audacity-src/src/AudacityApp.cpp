@@ -158,7 +158,7 @@ It handles initialization and termination by subclassing wxApp.
 #  undef U
 #  undef D
 
-#endif 
+#endif //(__WXMSW__)
 
 #if wxUSE_ACCESSIBILITY
 #if wxCHECK_VERSION(2, 8, 0)
@@ -351,7 +351,7 @@ public:
    };
 };
 
-#endif
+#endif //__WXMSW__
 
 IMPLEMENT_APP(AudacityApp)
 /* make the application class known to wxWidgets for dynamic construction */
@@ -424,7 +424,7 @@ void AudacityApp::OnMacOpenFile(wxCommandEvent & event)
       MRUOpen(name);
    }
 }
-#endif
+#endif //__WXMAC__
 
 typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 
@@ -603,12 +603,12 @@ bool AudacityApp::OnInit()
    // AColor depends on theTheme.
    AColor::Init(); 
 
-   // On Unix systems, the default temp dir is in /tmp.
-   // Search path (in this order):
-   // * The AUDACITY_PATH environment variable
-   // * The current directory
-   // * The user's .audacity-files directory in their home directory
-   // * The "share" and "share/doc" directories in their install path
+   /* On Unix systems, the default temp dir is in /tmp. */
+   /* Search path (for plug-ins, translations etc) is (in this order):
+      * The AUDACITY_PATH environment variable
+      * The current directory
+      * The user's .audacity-files directory in their home directory
+      * The "share" and "share/doc" directories in their install path */
    #ifdef __WXGTK__
    defaultTempDir.Printf(wxT("/tmp/audacity-%s"), wxGetUserId().c_str());
    
@@ -626,20 +626,20 @@ bool AudacityApp::OnInit()
       AddUniquePathToPathList(wxString::Format(wxT("%s/share/doc/%s"),
                                                wxT(INSTALL_PREFIX), wxT(AUDACITY_NAME)),
                               audacityPathList);
-   #else
+   #else //AUDACITY_NAME
       AddUniquePathToPathList(wxString::Format(wxT("%s/share/audacity"),
                                                wxT(INSTALL_PREFIX)),
                               audacityPathList);
       AddUniquePathToPathList(wxString::Format(wxT("%s/share/doc/audacity"),
                                                wxT(INSTALL_PREFIX)),
                               audacityPathList);
-   #endif
+   #endif //AUDACITY_NAME
 
    AddUniquePathToPathList(wxString::Format(wxT("%s/share/locale"),
                                             wxT(INSTALL_PREFIX)),
                            audacityPathList);
 
-   #endif
+   #endif //__WXGTK__
 
    wxFileName tmpFile;
    tmpFile.AssignTempFileName(wxT("nn"));
@@ -655,7 +655,7 @@ bool AudacityApp::OnInit()
    
    defaultTempDir.Printf(wxT("%s\\audacity_temp"), 
                          tmpDirLoc.c_str());
-   #endif
+   #endif //__WXWSW__
    #ifdef __MACOSX__
    // On Mac OS X, the path to the Audacity program is in argv[0]
    wxString progPath = wxPathOnly(argv[0]);
@@ -670,7 +670,7 @@ bool AudacityApp::OnInit()
    defaultTempDir.Printf(wxT("%s/audacity-%s"), 
                          tmpDirLoc.c_str(),
                          wxGetUserId().c_str());
-   #endif
+   #endif //__MACOSX__
    #ifdef __MACOS9__
    // On Mac OS 9, the initial working directory is the one that
    // contains the program.
@@ -679,7 +679,7 @@ bool AudacityApp::OnInit()
    AddUniquePathToPathList(progPath+wxT(":Languages"), audacityPathList);
    defaultTempDir.Printf(wxT("%s/audacity_temp"), 
                          tmpDirLoc.c_str());
-   #endif
+   #endif //__MACOS9__
 
    // BG: Create a temporary window to set as the top window
    wxFrame *temporarywindow = new wxFrame(NULL, -1, wxT("temporarytopwindow"));
@@ -758,7 +758,7 @@ bool AudacityApp::OnInit()
    gParentFrame->Hide();
 
    SetTopWindow(gParentFrame);
-#endif
+#endif //__WXMAC__
 
    SetExitOnFrameDelete(true);
 
@@ -774,7 +774,7 @@ bool AudacityApp::OnInit()
       pWnd->Show( true );
    }
    else
-#endif   
+#endif  //EXPERIMENTAL_MODULES 
    {
       SetTopWindow(project);
       project->Show( true );
@@ -870,7 +870,7 @@ bool AudacityApp::OnInit()
       }                         // for option...
    }                            // if (argc>1)
 
-#else
+#else //__CYGWIN__
 	
    // Cygwin command line parser (by Dave Fancella)
    if (argc > 1 && !didRecoverAnything) {
@@ -947,7 +947,7 @@ bool AudacityApp::OnInit()
       }                         // for option...
    }                            // if (argc>1)
 
-#endif // Cygwin command-line parser
+#endif // __CYGWIN__ (Cygwin command-line parser)
 
    gInited = true;
    
@@ -963,7 +963,7 @@ bool AudacityApp::InitCleanSpeech()
    #ifdef __WXGTK__
    if (presetsFromPrefs.GetChar(0) != wxT('/'))
       presetsFromPrefs = wxT("");
-   #endif
+   #endif //__WXGTK__
 
    wxString presetsDefaultLoc =
       wxFileName(userdatadir, wxT("presets")).GetFullPath();
