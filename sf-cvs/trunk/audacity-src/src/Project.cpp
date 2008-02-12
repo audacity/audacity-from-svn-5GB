@@ -1489,7 +1489,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
          wxString Message = _("Save changes before closing?");
          if( !bHasTracks )
          { 
-            Message += _("\n\nSaved project will be empty!!\n\nTo save the tracks that were previously\nopen, click Cancel, Edit > Undo until all your\ntracks are open, then File > Save Project.");
+			 Message += _("\nIf saved, the project will have no tracks.\n\nTo save any previously open tracks:\nCancel, Edit > Undo until all tracks\nare open, then File > Save Project.");
          }
          int result = wxMessageBox( Message,
                                    _("Save changes?"),
