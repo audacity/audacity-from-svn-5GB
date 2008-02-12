@@ -2930,7 +2930,7 @@ bool TrackPanel::IsSampleEditingPossible( wxMouseEvent & event, Track * t )
    //If we aren't displaying the waveform, Display a message dialog
    if(((WaveTrack *)t)->GetDisplay() != WaveTrack::WaveformDisplay)
    {
-      wxMessageBox(_("Draw currently only works with linear-view waveforms."), wxT("Notice"));
+      wxMessageBox(_("To use Draw, choose 'Waveform' in the Track Drop-down Menu."), wxT("Draw Tool"));
       return false;
    }
    
@@ -2947,7 +2947,7 @@ bool TrackPanel::IsSampleEditingPossible( wxMouseEvent & event, Track * t )
       if (hadCapture)
          ReleaseMouse();
          
-      wxMessageBox(_("You are not zoomed in enough. Zoom in until you can see the individual samples."), wxT("Notice"));
+      wxMessageBox(_("To use Draw, zoom in further until you can see the individual samples."), wxT("Draw Tool"));
       
       // Re-aquire capture
       if (hadCapture)
