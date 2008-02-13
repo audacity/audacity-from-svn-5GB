@@ -21,11 +21,12 @@
 
 <?=_('<p>Beginning with version 1.1.1, Audacity allows you to use the Nyquist programming language to write your own plug-in effects for Audacity.  Unlike VST and LADSPA plug-ins, Nyquist plug-ins can be written using an ordinary text editor and don\'t need to be compiled.</p>
 
-<p>Nyquist was written by <a href="http://www-2.cs.cmu.edu/~rbd/">Roger B. Dannenberg</a> and was intended to be used as a complete programming language for audio synthesis and analysis, with support for MIDI, audio recording and playback, file I/O, object-oriented programming, profiling, debugging, and more.  Audacity uses only a subset of Nyquist\'s functionality, allowing you to take simple Nyquist functions and use them to process audio data.   Audacity doesn\'t include any support for debugging Nyquist code, so if you are trying to write a complicated plug-in, you may find it easier to get the full version of Nyquist and develop there, then turn it into an Audacity plug-in.  Nyquist is available from the Carnegie Mellon University Computer Music Project:</p>
+<p>Nyquist was written by <a href="http://www-2.cs.cmu.edu/~rbd/">Roger B. Dannenberg</a> and was intended to be used as a complete programming language for audio synthesis and analysis, with support for MIDI, audio recording and playback, file I/O, object-oriented programming, profiling, debugging and more.  Audacity uses only a subset of Nyquist\'s functionality, allowing you to take simple Nyquist functions and use them to process audio data.   Audacity doesn\'t include any support for debugging Nyquist code, so if you are trying to write a complicated plug-in, you may find it easier to get the full version of Nyquist and develop there, then turn it into an Audacity plug-in.  Nyquist is available from the Carnegie Mellon University Computer Music Project:</p>
 <ul>
 	<li><a href="http://www-2.cs.cmu.edu/~music/music.software.html">CMU Computer Music Project Software</a> - download the full Nyquist here</a></li>
-	<li><a href="http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html">Complete Nyquist Reference Manual at CMU</a></li>
 </ul>
+
+<p>To write plug-ins for use with Audacity, you will need the older <a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">Nyquist version 2.36 Manual</a>, not the version 3 manual available from CMU. This is because in Nyquist version 3 the code notation has changed to SAL instead of LISP. We will investigate integrating SAL with the Audacity implementation of Nyquist in the future.</p>
 
 <p>Note that you don\'t need to download Nyquist in order to write simple plug-ins to use with Audacity.  All of the instructions you need are below.</p>
 
@@ -77,9 +78,9 @@
 
 <h3>Lisp function reference</h3>
 
-<p>Here\'s a list of some of the basic lisp functions you might need.  For a complete list of Lisp / Nyquist functions, see the <a href="http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html">Nyquist Reference Manual</a>.</p>
+<p>Here\'s a list of some of the basic lisp functions you might need.  For a complete list of Lisp / Nyquist functions, see the <a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">Nyquist version 2.36 Reference Manual</a>.</p>
 
-<p><b>Note: Symbols in Nyquist(like variable names and function names) are not case sensitive.  They are converted to uppercase internally.</b></p>
+<p><b>Note: Symbols in Nyquist (like variable names and function names) are not case-sensitive.  They are converted to uppercase internally.</b></p>
 
 <h4>Math functions</h4>
 <table class="function-list" summary="List of functions and explanations">
@@ -119,7 +120,7 @@
 
 <h4>Control</h4>
 <table class="function-list" summary="List of functions and explanations">
-<tr><td><code>(if expr expr1 expr2)</code></td><td>if expr is true, evaluates expr1, otherwise evaluates expr2</td></tr> 
+<tr><td><code>(if expr expr1 expr2)</code></td><td>if expr is true, evaluates expr1, otherwise evaluates expr2</td></tr>
 </table>
 
 <h3><a href="nyquist2">Next: Programming in Nyquist</a></h3>')?>
