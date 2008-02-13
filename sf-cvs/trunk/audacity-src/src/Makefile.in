@@ -26,6 +26,10 @@ DIRS=blockfile commands effects effects/ladspa effects/nyquist effects/vamp expo
 srcdir=@srcdir@
 top_srcdir=@top_srcdir@
 top_builddir=@top_builddir@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+# used for the MP3 exporter to help find libmp3lame.so.0
 
 # CFLAGS are specific to C.
 override CFLAGS += @CFLAGS@
@@ -34,7 +38,7 @@ override CFLAGS += @CFLAGS@
 override CXXFLAGS += @CXXFLAGS@
 
 # CPPFLAGS are for both C and C++.
-override CPPFLAGS += -Wall -fno-strict-aliasing -I$(srcdir)/include -I. @CPPFLAGS@ 
+override CPPFLAGS += -Wall -fno-strict-aliasing -I$(srcdir)/include -I. -DLIBDIR=\"$(libdir)\" @CPPFLAGS@ 
 
 # LDFLAGS are for linking
 override LDFLAGS += @LDFLAGS@
