@@ -1550,11 +1550,11 @@ public:
       return wxString(_("Only libmp3lame.dylib|libmp3lame.dylib|Dynamic Libraries (*.dylib)|*.dylib|All Files (*)|*"));
    }
 
-#else //__WXMAC__
+#else //!__WXMAC__
    /* Values for Linux / Unix systems */
    wxString GetLibraryPath()
    {
-      return wxT("/usr/lib");
+      return wxT(LIBDIR);
    }
 
    wxString GetLibraryName()
