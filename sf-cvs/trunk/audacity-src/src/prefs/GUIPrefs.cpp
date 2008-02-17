@@ -188,6 +188,9 @@ bool GUIPrefs::Apply()
    {
       gAudacityProjects[j]->UpdatePrefsVariables();
       gAudacityProjects[j]->RebuildMenuBar();
+      gAudacityProjects[j]->RebuildOtherMenus();
+      if (gAudacityProjects[j]->GetSelectionBar())
+         gAudacityProjects[j]->GetSelectionBar()->ToolBar::ReCreateButtons();
    }
    return true;
 }

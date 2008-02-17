@@ -144,6 +144,7 @@ class TrackPanel:public wxPanel {
 
    virtual ~ TrackPanel();
 
+   void BuildMenus(void);
    void UpdatePrefs();
 
    void OnSize(wxSizeEvent & event);
