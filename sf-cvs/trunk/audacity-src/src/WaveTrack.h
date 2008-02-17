@@ -191,6 +191,7 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    WaveClip* GetClipAtX(int xcoord);
    Sequence* GetSequenceAtX(int xcoord);
    Envelope* GetEnvelopeAtX(int xcoord);
+   Envelope* GetActiveEnvelope(void);
 
    //
    // Getting information about the track's internal block sizes

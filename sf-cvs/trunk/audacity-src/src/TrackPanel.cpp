@@ -1993,15 +1993,31 @@ void TrackPanel::ForwardEventToWaveTrackEnvelope(wxMouseEvent & event)
          Envelope *e2 = link->GetEnvelopeAtX(event.GetX());
          // There isn't necessarily an envelope there; no guarantee a
          // linked track has the same WaveClip structure...
+         bool updateNeeded = false;
          if (e2) {
             wxRect envRect = mCapturedRect;
             envRect.y++;
             envRect.height -= 2;
             float zoomMin, zoomMax;
             pwavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
-            needUpdate |= e2->MouseEvent(event, envRect,
+            updateNeeded = e2->MouseEvent(event, envRect,
                                          mViewInfo->h, mViewInfo->zoom, dB,
                                          zoomMin, zoomMax);
+            needUpdate |= updateNeeded;
+         }
+         if(!e2 || !updateNeeded)   // no envelope found at this x point, or found but not updated
+         {
+            if(e2 = link->GetActiveEnvelope())  // search for any active DragPoint
+            {
+               wxRect envRect = mCapturedRect;
+               envRect.y++;
+               envRect.height -= 2;
+               float zoomMin, zoomMax;
+               pwavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
+               needUpdate |= e2->MouseEvent(event, envRect,
+                                            mViewInfo->h, mViewInfo->zoom, dB,
+                                            zoomMin, zoomMax);
+            }
          }
       }
    }

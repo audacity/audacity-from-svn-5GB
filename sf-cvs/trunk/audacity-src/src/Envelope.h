@@ -78,6 +78,7 @@ class Envelope : public XMLTagHandler {
 
    void Flatten(double value);
    void SetDefaultValue(double value) {mDefaultValue=value;}
+   int GetDragPoint(void)   {return mDragPoint;}
 
 #if LEGACY_PROJECT_FILE_SUPPORT
    // File I/O
