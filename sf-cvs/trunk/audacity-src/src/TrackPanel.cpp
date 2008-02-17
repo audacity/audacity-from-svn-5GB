@@ -495,6 +495,46 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mAdjustLeftSelectionCursor = new wxCursor(wxCURSOR_POINT_LEFT);
    mAdjustRightSelectionCursor = new wxCursor(wxCURSOR_POINT_RIGHT);
 
+   BuildMenus();
+
+   mTrackArtist = new TrackArtist();
+   mTrackArtist->SetInset(1, kTopInset + 1, kLeftInset + 2, 2);
+
+   mCapturedTrack = NULL;
+   mPopupMenuTarget = NULL;
+
+//   SetBackgroundColour( wxColour( 255,255,255 ));
+
+   mTimeCount = 0;
+   mTimer.parent = this;
+   mTimer.Start(50, FALSE);
+
+   //Initialize a member variable pointing to the current
+   //drawing track.
+   mDrawingTrack =NULL;
+
+   //More initializations, some of these for no other reason than
+   //to prevent runtime memory check warnings
+   mZoomStart = -1;
+   mZoomEnd = -1;
+   mPrevWidth = -1;
+   mPrevHeight = -1;
+
+   //Initialize the last selection adjustment time.
+   mLastSelectionAdjustment = ::wxGetLocalTimeMillis();
+
+   // This is used to snap the cursor to the nearest track that
+   // lines up with it.
+   mSnapManager = NULL;
+   mSnapLeft = -1;
+   mSnapRight = -1;
+
+   mLastCursor = -1;
+   mLastIndicator = -1;
+}
+
+void TrackPanel::BuildMenus(void)
+{
    // Use AppendCheckItem so we can have ticks beside the items.
    // We would use AppendRadioItem but it only currently works on windows and GTK.
    mRateMenu = new wxMenu();
@@ -565,41 +605,11 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mLabelTrackInfoMenu->Append(OnCutSelectedTextID, _("Cut"));
    mLabelTrackInfoMenu->Append(OnCopySelectedTextID, _("Copy"));
    mLabelTrackInfoMenu->Append(OnPasteSelectedTextID, _("Paste"));
+}
 
-   mTrackArtist = new TrackArtist();
-   mTrackArtist->SetInset(1, kTopInset + 1, kLeftInset + 2, 2);
-
-   mCapturedTrack = NULL;
-   mPopupMenuTarget = NULL;
-
-//   SetBackgroundColour( wxColour( 255,255,255 ));
-
-   mTimeCount = 0;
-   mTimer.parent = this;
-   mTimer.Start(50, FALSE);
-
-   //Initialize a member variable pointing to the current
-   //drawing track.
-   mDrawingTrack =NULL;
-
-   //More initializations, some of these for no other reason than
-   //to prevent runtime memory check warnings
-   mZoomStart = -1;
-   mZoomEnd = -1;
-   mPrevWidth = -1;
-   mPrevHeight = -1;
-
-   //Initialize the last selection adjustment time.
-   mLastSelectionAdjustment = ::wxGetLocalTimeMillis();
-
-   // This is used to snap the cursor to the nearest track that
-   // lines up with it.
-   mSnapManager = NULL;
-   mSnapLeft = -1;
-   mSnapRight = -1;
-
-   mLastCursor = -1;
-   mLastIndicator = -1;
+void AudacityProject::RebuildOtherMenus()
+{
+   mTrackPanel->BuildMenus();
 }
 
 TrackPanel::~TrackPanel()

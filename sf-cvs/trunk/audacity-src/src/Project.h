@@ -173,6 +173,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    CommandManager *GetCommandManager() { return &mCommandManager; }
 
    void RebuildMenuBar();
+   void RebuildOtherMenus();
    void MayStartMonitoring();
 
  public:
