@@ -1,7 +1,8 @@
 <?php
 /*
- * Copyright 2005 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
+ * Copyright 2005 Dominic Mazzoni
+ * Copyright 2008 Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -19,12 +20,25 @@
 
 <p><?=$downloadTagline?></p>
 
-<h3><?=_("Recommended Download")?></h3>
+<h3 id="recdown"><?=_("Recommended Download")?></h3>
 <?php include "recommended.inc.php"?>
 <ul>
   <li><p>Universal Binary: <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB)'), "../beta/".$macosx_ub_url, macosx_ub_version, macosx_ub_size)?></p></li>
+</ul>
 
-  <!-- TODO: Installation instructions? -->
+<p> <b>Installation instructions:</b>
+ <ol>
+   <li>Inside your Applications folder, create a folder called "Audacity"</li> 
+   <li>Double-click the downloaded .dmg to mount it</li>
+   <li>Option-drag the whole of the .dmg contents (not the .dmg itself) into the "Audacity" folder you created</li>
+   <li>Double-click Audacity.app inside the Applications folder to launch it</li> 
+ </ol>
+</p>
+
+<h3 id="optional"><?=_("Optional Downloads")?></h3>
+<ul>
+  <li><p><a href="http://ardour.org/files/releases/swh-plugins-0.4.15.dmg">LADSPA plugins installer</a> - over 90 plug-ins.</p></li>                   
+<?php include "common.inc.php"; ?>
 </ul>
 
 <h3><?=_("System Requirements")?></h3>
