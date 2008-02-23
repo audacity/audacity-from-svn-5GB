@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005 Dominic Mazzoni
+ * Copyright 2005-2008 Dominic Mazzoni, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -12,9 +12,21 @@
 ?>
 
 <h2><?=$pageTitle?></h2>
-<?php include "betawarning.inc.php" ?>
 
-<h3><?=_("New in Audacity 1.3.4")?></h3>
+<h3><?=_('Beta version')?></h3> 
+<p>
+<?=_('Audacity 1.3 Beta is our new, not quite finished, development version which will be the basis of our next "stable" version.')?></p>
+
+<p><?=_('
+ <ul>
+  <li>Contains dozens of new, exciting and finished features.</li>
+  <li>Occasionally, new features might need final polishing, or might not be retained in later versions.</li>
+  <li>Occasionally, a feature might not work as it did before, or might be temporarily disabled.</li>
+  <li>Some parts of the program are not yet documented or translated into different languages.</li>
+ </ul>
+')?></p>
+
+<h3 id="details"><?=_("New in Audacity 1.3.4")?></h3>
 <dl>
   <dt></dt>
   <dd>
