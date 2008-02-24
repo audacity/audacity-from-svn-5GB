@@ -39,6 +39,18 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "February 23, 2008",
+        "LinuxQuestions_Award_2007",
+  _("LinuxQuestions.org Audio Authoring Award 2007"),
+  _("
+<p>
+Audacity was chosen as 
+<a href=\"http://www.linuxquestions.org/questions/2007-linuxquestions.org-members-choice-awards-79/audio-authoring-application-of-the-year-610225/?s=753ec1178602a18491f741f03855304d\">
+Audio Authoring Application of the Year</a> in the 2007 LinuxQuestions.org Members Choice poll. LinuxQuestions.org is an active online Linux community. In the voting, Audacity received nearly 70% of the 444 votes cast. Thanks to everyone who voted. 
+</p>
+"));
+
+add_news_item(
   "November 13, 2007",
         "1.3.4-release",
   _("Audacity 1.3.4 Released"),
