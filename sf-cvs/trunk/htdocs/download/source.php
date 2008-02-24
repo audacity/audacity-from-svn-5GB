@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2006 Richard Ash
+ * 2006 - 8 Richard Ash, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -17,41 +17,46 @@
 <h3><?=_("Recommended Download")?></h3>
 
 <ul>
-  <li><p><?php printf(_('<a href="%s">Audacity %s source tarball</a> (%.1lf MB)'), "../latest/".$src_url, src_version, src_size)?></p></li>
+  <li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (%.1lf MB)'), "../latest/".$src_url, src_version, src_size)?></p></li>
 </ul>
 
 <h3><?=_("Optional Downloads")?></h3>
 <ul>
-  <li><p><?=_('You can also get the latest development code from <a href="../community/developers#cvs">CVS</a>.')?></p>
+  <li><p><?=_('Get the latest stable code (incorporating any changes since the release tarball) from <a href="../community/developers#cvs">CVS</a>. This is the best choice if you are compiling on Windows.')?></p></li>
   <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our <a href="%s">alternate download links</a>.'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></p></li>
 </ul>
 
-<h3 id="instructions"><?=_("How to Build Audacity")?></h3>
+<h3 id="instructions"><?=_("How to Compile Audacity")?></h3>
 
 <h4><?=_("Dependencies")?></h4>
-<p><?=_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the unicode options.  (Future versions of Audacity will support newer wxWidgets and GTK libraries.)')?></p>
-<p><?=_("You may also choose to install the following <b>optional libraries</b>, or get them by checking out Audacity from CVS.")?></p>
+<p><?=_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the unicode options. The next stable version of Audacity will support newer wxWidgets and GTK libraries.')?></p>
+<p><?=_('Installation of the following libraries is <b>optional</b> - they are included in Audacity obtained from <a href="../community/developers#cvs">CVS</a>.')?></p>
 <ul>
   <li><a href="http://www.underbit.com/products/mad/">libmad</a></li>
   <li><a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a></li>
   <li><a href="http://vorbis.com/">Ogg Vorbis</a></li>
 </ul>
-<p><?=_("If you install libraries using a package management system like Apt or RPM, make sure to install the \"dev\" (development) packages for each library.")?></p>
+<p><?=_('If you install libraries using a package management system like Apt or RPM, you need to install the "dev" (development) packages for each library.')?></p>
 
 <h4><?=_("Compilation")?></h4>
-<p><?=_("To build Audacity, run the following command in the Audacity source directory:")?></p>
+<p><?=_("To compile Audacity, run the following command in the Audacity source directory:")?></p>
 <blockquote>
-<pre>
-./configure &amp;&amp; make
-</pre>
+<i>./configure &amp;&amp; make</i>
 </blockquote>
-<p><?=_("You can type <kbd>./configure --help</kbd> to see a list of compilation options.  After Audacity is compiled, run <kbd>make install</kbd> as root to install it.")?></p>
+<p><?=_("You can type <i>./configure --help</i> to see a list of compilation options. After Audacity is compiled, run <i>make install</i> as root to install it.")?></p>
 
-<h4><?=_("Notes")?></h4>
-<p><?=_("For additional information about building Audacity on Windows or Mac OS X, see the files <b>win/compile.txt</b> and <b>mac/compile.txt</b> in the Audacity source code directory.")?></p>
-<p><?=_("More information can be found on the ")?>
-<a href="http://www.audacityteam.org/wiki/index.php?title=CompilingAudacity">
-<?=_("Audacity Wiki site")?></a>.</p>
+<h4><?=_("Further Help")?></h4>
+<p><?=_('
+<ul>
+ <li>On Windows, see the file "compile.txt" inside the "Win" folder in the source code. For OS X, see "compile.txt" inside the "Mac" folder in the code.</li>
+ <li>See our guides to compiling Audacity for <a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Windows">Windows</a>, <a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Mac">Mac</a> and <a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Linux">Linux/Unix</a> on the <a href="http://audacityteam.org/wiki/">Wiki</a>.</li>
+ <li>If you are still having difficulties, we want to help! Please join <a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel">audacity-devel</a>, our developers\' mailing list, then send us an e-mail.</li>
+</ul>
+')?></p>
+
+<p>&nbsp;</p>
+
+
 
 <?php
   include "../include/footer.inc.php";
