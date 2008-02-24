@@ -3221,7 +3221,7 @@ void AudacityProject::OnZoomIn()
 
    bool selectionIsOnscreen =
       (mViewInfo.sel0 < mViewInfo.h + mViewInfo.screen) &&
-      (mViewInfo.sel1 > mViewInfo.h);
+      (mViewInfo.sel1 >= mViewInfo.h);
 
    bool selectionFillsScreen =
       (mViewInfo.sel0 < mViewInfo.h) &&
