@@ -15,10 +15,11 @@
 
 <h2><?=$pageTitle?></h2>
 <?php
-  // i18n-hint:  If there are help resources for Audacity 
-  // in your language other than the Audacity forums or mailing
-  // list, including translated documentation, please add links to 
-  // them at the bottom of /htdocs/help/index.php
+  // i18n-hint: If there are any special sources of help (local forums, lists) for Audacity
+  // users in your language (other than our Russian, French, German and Spanish
+  // forums), please add links to them here and at the bottom of \htdocs\help\index.php.
+  // If there is any translated documentation, please add links to it at the bottom
+  // of \htdocs\help\documentation.php
   ?>
 
 <h3><?=_('Personal Support with Audacity Questions or Problems')?></h3>
@@ -26,8 +27,8 @@
 <p>
   <?php echo _('If you still need help, please visit our user');?>
   <a href="http://audacityteam.org/forum/"><?php
-  // i18n-hint: "Forum" is the link text to the Forum. Probably you should not 
-  // translate this link text unless there is a sub-forum in your language.   
+  // i18n-hint: "Forum" is the link text to the Forum. Probably you should not
+  // translate this link text unless there is a sub-forum in your language.
   echo _('Forum</a>.');?>
   <?php
   echo _(' Search the Forum to see if you can find an immediate answer. If not, <a href="http://audacityteam.org/forum/ucp.php?mode=register">register</a> at the Forum, confirm your registration and then log in. Choose the correct subforum to post to (for example, the Windows forum for Audacity 1.2.x), click "New Topic", then submit your message. Foreign language subforums are available for <a href="http://audacityteam.org/forum/viewforum.php?f=7">French</a>, <a href="http://audacity-forum.de/">German</a>, <a href="http://audacityteam.org/forum/viewforum.php?f=10">Russian</a> and <a href="http://audacityteam.org/forum/viewforum.php?f=8">Spanish.</a>');?>
