@@ -220,13 +220,13 @@
       <a href="http://www.behringer.com/IAXE629-BKLS">iAXE629-BKLS METALIEN</a>
       </td>
       <td valign="top"><?=_("Various models of electric guitar with built-in USB port, modeling amps and effects.")?></td>
-     </tr>
-     <tr>
-     <td valign="top">
+  </tr>
+  <tr>
+    <td valign="top">
       <a href="http://www.behringer.com">Behringer</a>
-	     </td>
-	     <td valign="top">
-           <a href="http://www.behringer.com/UMA25S">U-CONTROL UMA25S</a>
+    </td>
+    <td valign="top">
+      <a href="http://www.behringer.com/UMA25S">U-CONTROL UMA25S</a>
     </td>
     <td valign="top"><?=_("Ultra-slim 25-Key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition.")?></td>
   </tr>
@@ -309,9 +309,9 @@
 <h3>Others</h3>
 <table border=2 bordercolor=#E5E5E5 cellpadding=8 rules=all frame=box style="border-collapse: collapse">
   <tr>
-  <th><?=_("Vendor")?></th>
-  <th><?=_("Product")?></th>
-  <th><?=_("Description")?></th>
+    <th><?=_("Vendor")?></th>
+    <th><?=_("Product")?></th>
+    <th><?=_("Description")?></th>
   </tr>
   <tr>
     <td>
@@ -341,7 +341,7 @@
       <a href="http://releases.theopencd.org/">OpenCD downloadable CD images</a>
     </td>
     <td valign="top"><?=_('<em>TheOpenCD</em> was a collection of high quality free and open source software (including Audacity) for Microsoft Windows. The project is now discontinued, but archived CD images are still available from the link to left. Products from TheOpenCD are now in use by alternative projects including <a href="http://ubuntu.com/">Linux Ubuntu.')?></td>
-   </tr>
+  </tr>
   <tr>
     <td valign="top">
       <a href="http://theopendisc.com/">TheOpenDisc</a>
@@ -369,13 +369,13 @@
     <td valign="top"><?=_('Portable recording studio or (DAW) digital audio workstation, featuring "walk and mix" technology.')?></td>
   </tr>
   <tr>
-	<td valign="top">
-	  <a href="http://umixit.com/aboutus.html">Umixit</a>
-	</td>
-	<td valign="top">
-	  <a href="http://www.umixit.com/download.html">Umixit powered by Audacity</a>
-	</td>
-	<td valign="top"><?=_('<em>Umixit powered by Audacity</em> for Microsoft Windows and Mac OS X allows the fan to share the studio experience with an artist. Add a Umixit-enabled CD or song, then record your own vocals or instruments, create remixes, mash-ups, sing karaoke and more...')?></td>
+	  <td valign="top">
+	    <a href="http://umixit.com/aboutus.html">Umixit</a>
+	  </td>
+	  <td valign="top">
+	    <a href="http://www.umixit.com/download.html">Umixit powered by Audacity</a>
+	  </td>
+	  <td valign="top"><?=_('<em>Umixit powered by Audacity</em> for Microsoft Windows and Mac OS X allows the fan to share the studio experience with an artist. Add a Umixit-enabled CD or song, then record your own vocals or instruments, create remixes, mash-ups, sing karaoke and more...')?></td>
   </tr>
   <tr>
     <td valign="top">
