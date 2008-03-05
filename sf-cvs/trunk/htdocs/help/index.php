@@ -19,7 +19,7 @@ echo _('<p><b>Questions?</b> First, check our <a href="faq">Frequently Asked Que
  <ul>
    <li><a href="documentation">Documentation</a> - Read the user manual and quick reference.</li>
    <li><a href="http://audacityteam.org/wiki">Audacity Wiki</a> is an extensive user-editable help resource including:
-    <ul><li><a href="http://audacityteam.org/wiki/index.php?title=Tutorials">Tutorials</a> - step-by-step guides on performing common tasks using Audacity.</li>
+    <ul><li><a href="http://audacityteam.org/wiki/index.php?title=Tutorials">Tutorials</a> - step-by-step guides on performing common tasks in Audacity, such as making ringtones, removing vocals, mixing, creating podcasts and transferring tapes and records to computer. Some <a href="http://audacityteam.org/wiki/index.php?title=MultiLingual">foreign language tutorials</a> are available.</li>
      <li><a href="http://audacityteam.org/wiki/index.php?title=Tips">Tips</a> - these articles will help you work with and understand Audacity and your audio hardware.</li>
     </ul>
   </li>
