@@ -17,12 +17,12 @@
 <p><?=$downloadTagline?></p>
 
 <h3><?=_("Recommended Download")?></h3>
+<a href="#sysreq">System Requirements</a>
 <?php include "recommended.inc.php" ?>
 <ul>
-  <li><p><?php printf(_('For Mac OS X (PPC, English language): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../latest/".$macosx_url, macosx_version, macosx_size)?></p></li>
-  <li><p>For Mac OS X (PPC, other languages): <a href="http://audacity.sourceforge.net/files/audacity-macosx-ppc-1.2.6-test.dmg">Audacity 1.2.6</a> (.dmg file, 3.8 MB) - The latest version of the free Audacity audio editor</p></li>
-  <li><p><?php printf(_('For Mac OS X (Intel): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../latest/".$macosx_intel_url, macosx_intel_version, macosx_intel_size)?></p></li>
-
+  <li><p><?php printf(_('For Mac OS X (<b>Intel</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../latest/".$macosx_intel_url, macosx_intel_version, macosx_intel_size)?></p></li>
+  <li><p><?php printf(_('For Mac OS X (<b>PPC</b>, English language): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../latest/".$macosx_url, macosx_version, macosx_size)?></p></li>
+  <li><p>For Mac OS X (<b>PPC</b>, other languages): <a href="http://audacity.sourceforge.net/files/audacity-macosx-ppc-1.2.6-test.dmg">Audacity 1.2.6</a> (.dmg file, 3.8 MB) - The latest version of the free Audacity audio editor</p></li>
   <li><p><?php printf(_('For Mac OS 9: <a href="%s">Audacity %s</a> (.sit file, %.1lf MB)'), "../latest/".$mac_classic_url, mac_classic_version, mac_classic_size)?></p></li>
   <p><?=_("(Unfortunately, we no longer have the resources to provide new versions of Audacity for Mac OS 9.)")?></p></li>
 </ul>
@@ -42,7 +42,7 @@
 <?php include "common.inc.php"; ?>
 </ul>
 
-<h3><?=_("System Requirements")?></h3>
+<h3 id="sysreq"><?=_("System Requirements")?></h3>
 <ul>
   <li><?=_("Audacity 1.2 requires Mac OS X 10.1 or later.")?></li>
   <li><?=_("Audacity 1.0 requires Mac OS 9.0 or later.")?></li>
