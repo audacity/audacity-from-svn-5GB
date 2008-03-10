@@ -140,3 +140,23 @@ wxString PlatformCompatibility::GetExecutablePath()
         return path;
     }
 }
+
+wxString PlatformCompatibility::ConvertSlashInFileName(const wxString& filePath)
+{
+#ifdef __WXMAC__
+   wxString path = filePath;
+   wxString filename;
+   wxString newPath = filePath;
+   int pathLen = 1;
+   while (!wxDirExists(wxPathOnly(newPath)) && ! path.IsEmpty()) {
+      path = newPath.BeforeLast('/');
+      filename = newPath.AfterLast('/');
+      newPath = path;
+      newPath += ':';
+      newPath += filename;
+   }
+   return newPath;
+#else
+   return filePath;
+#endif
+}

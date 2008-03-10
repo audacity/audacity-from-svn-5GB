@@ -4,7 +4,7 @@
 // Author:      Stefan Csomor
 // Modified by: Leland Lucius
 // Created:     1998-01-01
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.1 2007-04-30 04:12:51 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.2 2008-03-10 22:20:18 richardash1981 Exp $
 // Copyright:   (c) Stefan Csomor
 // Licence:     wxWindows licence
 //
@@ -561,7 +561,8 @@ int FileDialog::ShowModal()
                 ::NavDisposeReply(&navReply);
                 return wxID_CANCEL;
             }
-            m_path = thePath;
+            
+            m_path = ConvertSlashInFileName(thePath);
             m_paths.Add(m_path);
             m_fileName = wxFileNameFromPath(m_path);
             m_fileNames.Add(m_fileName);
@@ -576,3 +577,22 @@ int FileDialog::ShowModal()
     return (err == noErr) ? wxID_OK : wxID_CANCEL;
 }
 
+wxString FileDialog::ConvertSlashInFileName(const wxString& filePath)
+{
+#if TARGET_API_MAC_OSX
+   wxString path = filePath;
+   wxString filename;
+   wxString newPath = filePath;
+   int pathLen = 1;
+   while (!wxDirExists(wxPathOnly(newPath)) && ! path.IsEmpty()) {
+      path = newPath.BeforeLast('/');
+      filename = newPath.AfterLast('/');
+      newPath = path;
+      newPath += ':';
+      newPath += filename;
+   }
+   return newPath;
+#else
+   return filePath;
+#endif
+}
