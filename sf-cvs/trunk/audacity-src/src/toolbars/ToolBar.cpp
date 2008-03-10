@@ -257,7 +257,7 @@ void ToolBar::ReCreateButtons()
 #undef tbs
 
    // Set the true AND minimum sizes and do final layout
-   SetBestFittingSize(sz);
+   SetBestFittingSize(sz); // update when we drop 2.6 support
    Layout();
 }
 
