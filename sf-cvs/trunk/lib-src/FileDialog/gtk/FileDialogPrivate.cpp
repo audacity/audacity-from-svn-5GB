@@ -2,7 +2,7 @@
 // Name:        gtk/filedlg.cpp
 // Purpose:     native implementation of FileDialog
 // Author:      Robert Roebling, Zbigniew Zagorski, Mart Raudsepp
-// Id:          $Id: FileDialogPrivate.cpp,v 1.2 2007-06-03 03:19:13 llucius Exp $
+// Id:          $Id: FileDialogPrivate.cpp,v 1.3 2008-03-10 21:13:21 richardash1981 Exp $
 // Copyright:   (c) 1998 Robert Roebling, 2004 Zbigniew Zagorski, 2005 Mart Raudsepp
 // Licence:     wxWindows licence
 //
@@ -68,7 +68,7 @@ static void gtk_filedialog_show_callback(GtkWidget *widget, FileDialog *dialog)
 extern "C" {
 static void gtk_filedialog_ok_callback(GtkWidget *widget, FileDialog *dialog)
 {
-    int style = dialog->GetStyle();
+    int style = dialog->GetWindowStyle();
     gchar* filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(widget));
 
     // gtk version numbers must be identical with the one in ctor (that calls set_do_overwrite_confirmation)
@@ -453,7 +453,7 @@ void FileDialog::SetFilename(const wxString& name)
 #if defined(__WXGTK24__) && (!defined(__WXGPE__))
     if (!gtk_check_version(2,4,0))
     {
-        if (GetStyle() & wxSAVE)
+        if (GetWindowStyle() & wxSAVE)
             gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(m_widget), wxConvFileName->cWX2MB(name));
         else
             SetPath(wxFileName(GetDirectory(), name).GetFullPath());
