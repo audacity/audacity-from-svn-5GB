@@ -816,7 +816,7 @@ void TimeTextCtrl::Fit()
    sz.x = mButtonWidth + mWidth + (sz.x - csz.x);
    sz.y = mHeight + (sz.y - csz.y);
 
-   SetBestFittingSize(sz);
+   SetBestFittingSize(sz); // update when we drop wx 2.6 support
 }
 
 void TimeTextCtrl::OnErase(wxEraseEvent & event)

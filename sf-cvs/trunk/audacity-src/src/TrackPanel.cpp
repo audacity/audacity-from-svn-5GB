@@ -1130,9 +1130,6 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    // early
    wxDC *dc = new wxPaintDC( this );
 
-   // Supposed to be good-to-do under Windows
-   dc->BeginDrawing();
-
    // Retrieve the damage rectangle
    wxRect box = GetUpdateRegion().GetBox();
 
@@ -1154,9 +1151,6 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
       // Copy full, possibly clipped, damage rectange
       dc->Blit( box.x, box.y, box.width, box.height, &mBackingDC, box.x, box.y );
    } 
-
-   // Supposed to be good-to-do under Windows
-   dc->EndDrawing();
 
    // Done with the clipped DC
    delete dc;
