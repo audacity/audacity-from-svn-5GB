@@ -4,7 +4,7 @@
 // Author:      Stefan Csomor
 // Modified by: Leland Lucius
 // Created:     1998-01-01
-// RCS-ID:      $Id: FileDialogPrivate.h,v 1.1 2007-04-30 04:12:52 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.h,v 1.2 2008-03-10 22:20:18 richardash1981 Exp $
 // Copyright:   (c) Stefan Csomor
 // Licence:     wxWindows licence
 //
@@ -30,7 +30,8 @@ protected:
     wxString m_buttonlabel;
     fdCallback m_callback;
     void *m_cbdata;
-
+   static wxString ConvertSlashInFileName(const wxString& filePath);
+   
 public:
     FileDialog(wxWindow *parent,
                const wxString& message = wxFileSelectorPromptStr,

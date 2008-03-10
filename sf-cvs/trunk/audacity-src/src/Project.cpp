@@ -1800,12 +1800,14 @@ bool AudacityProject::WarnOfLegacyFile( )
    return true;
 }
 
+
+
 void AudacityProject::OpenFile(wxString fileName)
 {
    // On Win32, we may be given a short (DOS-compatible) file name on rare
    // occassions (e.g. stuff like "C:\PROGRA~1\AUDACI~1\PROJEC~1.AUP"). We
    // convert these to long file name first.
-   fileName = PlatformCompatibility::GetLongFileName(fileName);
+   fileName = PlatformCompatibility::ConvertSlashInFileName(PlatformCompatibility::GetLongFileName(fileName));
 
    // We want to open projects using wxTextFile, but if it's NOT a project
    // file (but actually a WAV file, for example), then wxTextFile will spin
