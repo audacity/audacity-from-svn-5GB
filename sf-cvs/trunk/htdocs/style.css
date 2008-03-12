@@ -6,8 +6,9 @@ body {
 :link { color:#00d; }
 :visited { color:#116; }
 :link:hover, :visited:hover { color:black; }
-:target:before { content:"* "; color:red; }
-#content:target:before { content:""; }
+a.ext:link {color: #00d; font-weight: normal; }
+a.ext:visited {color: #116; font-weight:normal; }
+a.ext:link:hover, a.ext:visited:hover { color:#663300; font-weight:normal; }
 img { border:0; vertical-align: middle; }
 dt { font-weight:bold; }
 p, ul, ol { margin-top:0; margin-bottom:1em; }
@@ -17,6 +18,35 @@ h1 { font-size:1.714em; margin:.25em; padding:0; }
 h2 { font-size:1.286em; margin:.5em 0; }
 h3 { font-size:1.143em; margin:1.25em 0 .25em 0; }
 h4 { font-size:1em; margin:1em 0 .5em 0; }
+
+table.bundlers {
+       border-width: 2px;
+	border-style: solid;
+	border-color: #9F9F9F;
+	border-collapse: collapse;
+}
+
+table.bundlers th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #EEEEEE;
+       background-color: #EEEEEE;  
+}
+
+table.bundlers td {
+       border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #E5E5E5;
+       vertical-align: top;
+}
+
+
+table.bundlers td.col1 { width:15%; }  
+table.bundlers td.col2 { width:22%; }  
+table.bundlers td.col3 { width:63%; }         
+
 
 .skip {
 	position:absolute;
@@ -161,6 +191,8 @@ h4 { font-size:1em; margin:1em 0 .5em 0; }
 .download_container {  
   margin-top: 0px;
 }
+
+span.downloads_smaller { font-size:85%; font-weight:300; }
 
 .under_downloads {
   float: left;
