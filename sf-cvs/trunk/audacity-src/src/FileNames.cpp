@@ -119,6 +119,11 @@ wxString FileNames::NRPFile()
    return wxFileName( NRPDir(), wxT("noisegate.nrp") ).GetFullPath();
 }
 
+wxString FileNames::PlugInDir()
+{
+   return FileNames::MkDir( wxFileName( DataDir(), wxT("Plug-Ins") ).GetFullPath() );
+}
+
 wxString FileNames::ThemeDir()
 {
    return FileNames::MkDir( wxFileName( DataDir(), wxT("Theme") ).GetFullPath() );
