@@ -21,6 +21,11 @@ class AUDACITY_DLL_API FileNames
 public:
    static wxString MkDir(const wxString &Str);
    static wxString TempDir();
+   /** \brief Audacity user data directory 
+	*
+	* Where audacity keeps it's settings and other user data squirreled away,
+	* by default ~/.audacity-data/ on Unix, Application Data/Audacity on 
+	* windows system */
    static wxString DataDir();
    static wxString AutoSaveDir();
    static wxString HtmlHelpDir();
@@ -28,6 +33,12 @@ public:
    static wxString ChainDir();
    static wxString NRPDir();
    static wxString NRPFile();
+   /** \brief The user plug-in directory (not a system one)
+	*
+	* This returns the string path to where the user may have put plug-ins
+	* if they don't have system admin rights. Under default settings, it's 
+	* <DataDir>/Plug-Ins/ */
+   static wxString PlugInDir();
    static wxString ThemeDir();
    static wxString ThemeComponentsDir();
    static wxString ThemeCachePng();
