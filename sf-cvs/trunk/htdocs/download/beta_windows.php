@@ -16,9 +16,8 @@
 <h2><?=$pageTitle?></h2>
 
 <?php include "betawarning.inc.php" ?>
-<?php include "betafeatures.inc.php" ?>
 
-<h3><?=_("Recommended Download")?></h3>
+<h3 id="recdown"><?=_("Recommended Download")?></h3>
 <?php include "recommended.inc.php" ?>
 <ul>
 
@@ -26,8 +25,6 @@
 
   <li><p>Windows 98/ME: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.</a>'), "../beta/".$win_exe_url, win_exe_version, win_exe_size)?></p></li>
 </ul>
-
-<p>Jump to <a href="#sysreq">System Requirements</a>.</p>
 
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
 <?php

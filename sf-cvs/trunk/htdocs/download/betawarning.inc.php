@@ -1,22 +1,21 @@
 <?php
 /*
  * Copyright 2005 Dominic Mazzoni
- * Copyright 2008 Martyn Shaw, Gale Andrews 
+ * Copyright 2008 Martyn Shaw, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
 ?>
 
-<h3><?=_('Beta version')?></h3> 
-<a href="#recdown">Download</a>
+<h3><?=_('Beta version')?></h3>
+<a href="#sysreq">System Requirements</a> &nbsp; <a href="#recdown">Download</a>
 <p>
 <?=_('Audacity 1.3 Beta is our new, not quite finished, development version which will be the basis of our next "stable" version.')?></p>
 
 <p><?=_('
  <ul>
-  <li>Contains dozens of new, exciting and finished features.</li>
-  <li>Occasionally, new features might need final polishing, or might not be retained in later versions.</li>
-  <li>Occasionally, a feature might not work as it did before, or might be temporarily disabled.</li>
+  <li>Contains dozens of')?> <a href="features-1.3-a#details"><?=_('new, exciting features.')?></a> <?=_('Very occasionally, these might need final polishing or not be retained in later versions.')?></li>
+  <li><?=_('Occasionally, a feature might not work as it did before, or might be temporarily disabled.</li>
   <li>Some parts of the program are not yet documented or translated into different languages.</li>
  </ul>
 ')?></p>

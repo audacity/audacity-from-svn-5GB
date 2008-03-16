@@ -27,12 +27,12 @@
   <p><?=_("(Unfortunately, we no longer have the resources to provide new versions of Audacity for Mac OS 9.)")?></p></li>
 </ul>
 
-<p> <b>Installation instructions:</b>
+<p> <b>Installation instructions (OS X):</b>
  <ol>
-   <li>Inside your Applications folder, create a folder called "Audacity"</li>
-   <li>Double-click the downloaded .dmg to mount it</li>
-   <li>Option-drag the whole of the .dmg contents (not the .dmg itself) into the "Audacity" folder you created</li>
-   <li>Double-click Audacity.app inside the Applications folder to launch it</li>
+  <li>Inside your Applications folder, create a folder called "Audacity"</li>
+  <li>Double-click the downloaded .dmg to mount it</li>
+  <li>Option-drag the whole of the .dmg contents (not the .dmg itself) into the "Audacity" folder you created</li>
+  <li>Double-click Audacity.app inside the Applications folder to launch it</li>
  </ol>
 </p>
 

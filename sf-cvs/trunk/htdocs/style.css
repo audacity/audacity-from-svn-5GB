@@ -19,8 +19,16 @@ h2 { font-size:1.286em; margin:.5em 0; }
 h3 { font-size:1.143em; margin:1.25em 0 .25em 0; }
 h4 { font-size:1em; margin:1em 0 .5em 0; }
 
+
+.donations {
+       position:absolute; 
+       top: 0px;
+       right: 15px;
+}  
+
+
 table.bundlers {
-       border-width: 2px;
+        border-width: 2px;
 	border-style: solid;
 	border-color: #9F9F9F;
 	border-collapse: collapse;
@@ -31,21 +39,53 @@ table.bundlers th {
 	padding: 8px;
 	border-style: solid;
 	border-color: #EEEEEE;
-       background-color: #EEEEEE;  
+        background-color: #EEEEEE;  
+        vertical-align: top;   
 }
 
 table.bundlers td {
-       border-width: 1px;
+        border-width: 1px;
 	padding: 8px;
 	border-style: solid;
 	border-color: #E5E5E5;
-       vertical-align: top;
+        vertical-align: top;
 }
 
 
 table.bundlers td.col1 { width:15%; }  
 table.bundlers td.col2 { width:22%; }  
-table.bundlers td.col3 { width:63%; }         
+table.bundlers td.col3 { width:63%; }    
+     
+
+table.winsysreq {
+   	margin-left: auto;
+        margin-right: auto; 
+        border-width: 2px;
+	border-style: solid;
+	border-color: #9F9F9F;
+	border-collapse: collapse;
+}
+
+table.winsysreq th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #EEEEEE;
+        background-color: #EEEEEE;  
+        vertical-align: top;   
+}
+
+table.winsysreq td {
+        border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #E5E5E5;
+        vertical-align: top;
+}
+
+
+table.winsysreq td.version { width:56%; }  
+table.winsysreq td.ramspeed { width:22%; }  
 
 
 .skip {

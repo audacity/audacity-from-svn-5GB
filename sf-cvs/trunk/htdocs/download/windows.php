@@ -16,12 +16,11 @@
 <h2><?=$pageTitle?></h2>
 
 <h3><?=_("Recommended Download")?></h3>
+<a href="#sysreq">System Requirements</a>
 <?php include "recommended.inc.php"?>
 <ul>
   <li><p><?php printf(_('Windows 98/ME/2000/XP/Vista: <a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor. See <a href="http://audacityteam.org/wiki/index.php?title=Windows_Vista_OS">further information about Vista</a>.'), "../latest/".$win_exe_url, win_exe_version, win_exe_size)?></p></li>
 </ul>
-
-<p>Jump to <a href="#sysreq">System Requirements</a>.</p>
 
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
 <?php
