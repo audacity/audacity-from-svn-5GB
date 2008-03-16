@@ -26,6 +26,12 @@
   <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our <a href="%s">alternate download links</a>.'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></p></li>
 </ul>
 
+<h3 id="sysreq"><?=_("System Requirements")?></h3>
+ <ul>
+  <li><?=_('Audacity runs best with at least 64 MB RAM and a 300 MHz processor. Please review our operating system support for')?> <a href="./windows#sysreq">Windows</a>, <a href="./mac#sysreq">Mac</a> <?=_('or')?> <a href="./linux#sysreq">Linux</a>.</li>
+ </ul>
+
+
 <h3 id="instructions"><?=_("How to Compile Audacity")?></h3>
 
 <h4><?=_("Dependencies")?></h4>
