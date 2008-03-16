@@ -2011,7 +2011,7 @@ void TrackPanel::ForwardEventToWaveTrackEnvelope(wxMouseEvent & event)
          }
          if(!e2 || !updateNeeded)   // no envelope found at this x point, or found but not updated
          {
-            if(e2 = link->GetActiveEnvelope())  // search for any active DragPoint
+            if( (e2 = link->GetActiveEnvelope()) != 0 )  // search for any active DragPoint
             {
                wxRect envRect = mCapturedRect;
                envRect.y++;
