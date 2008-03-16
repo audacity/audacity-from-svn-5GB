@@ -13,14 +13,13 @@
 
 <h2><?=$pageTitle?></h2>
 
-<h3><?=_('Beta version')?></h3> 
+<h3><?=_('Beta version')?></h3>
 <p>
 <?=_('Audacity 1.3 Beta is our new, not quite finished, development version which will be the basis of our next "stable" version.')?></p>
 
 <p><?=_('
  <ul>
-  <li>Contains dozens of new, exciting and finished features.</li>
-  <li>Occasionally, new features might need final polishing, or might not be retained in later versions.</li>
+  <li>Contains dozens of new, exciting features. Very occasionally, these might need final polishing or not be retained in later versions.</li>
   <li>Occasionally, a feature might not work as it did before, or might be temporarily disabled.</li>
   <li>Some parts of the program are not yet documented or translated into different languages.</li>
  </ul>
@@ -34,7 +33,7 @@
     <dl>
       <dt> New features </dt>
       <dd>New Welcome Screen with introduction to Audacity.</dd>
-      <dd>Enhanced Windows Shell integration, so Audacity shows up in lots of 
+      <dd>Enhanced Windows Shell integration, so Audacity shows up in lots of
           Windows places such as "Open With".</dd>
       <dd>New keyboard command: 'Mix and Render to New Track' (bound to Ctrl+Shift+M).</dd>
       <dd>New keyboard shortcut: "Shift-A" starts playback when stopped,
