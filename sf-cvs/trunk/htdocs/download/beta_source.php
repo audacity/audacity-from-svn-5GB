@@ -15,7 +15,6 @@
 <h2><?=$pageTitle?></h2>
 
 <?php include "betawarning.inc.php" ?>
-<?php include "betafeatures.inc.php" ?>
 
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
 
@@ -28,6 +27,12 @@
   <li><p><?=_('Get the latest development code (incorporating changes since the release tarball) from <a href="../community/developers#cvs">CVS</a>. This is the best choice if you are compiling on Windows.')?></p></li>
   <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our <a href="%s">alternate download links</a>.'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></p></li>
 </ul>
+
+<h3 id="sysreq"><?=_("System Requirements")?></h3>
+ <ul>
+  <li><?=_('Audacity runs best with at least 64 MB RAM and a 300 MHz processor. Please review our operating system support for')?> <a href="./beta_windows#sysreq">Windows</a>, <a href="./beta_mac#sysreq">Mac</a> <?=_('or')?> <a href="./beta_linux#sysreq">Linux</a>.</li>
+ </ul>
+
 
 <h3 id="instructions"><?=_("How to Compile Audacity")?></h3>
 

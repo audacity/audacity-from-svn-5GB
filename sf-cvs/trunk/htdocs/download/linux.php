@@ -28,6 +28,12 @@
 
 <p><?=_('The above list is not comprehensive. If you don\'t see an up-to-date package for your own distribution, we recommend searching your distribution\'s web site for the latest information. Alternatively, you can compile Audacity from <a href="source#recdown">source code</a>.')?></p>
 
+<h3 id="sysreq"><?=_("System Requirements")?></h3>
+ <ul>
+  <li><?=_("We recommend using the latest version of Linux/Unix from your distribution that is compatible with your hardware specifications. Audacity will run best with at least 64 MB RAM and a 300 MHz processor.")?></li>
+ </ul>
+
+
 <?php
   include "../include/footer.inc.php";
 ?>
