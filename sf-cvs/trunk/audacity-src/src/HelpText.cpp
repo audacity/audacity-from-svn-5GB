@@ -22,8 +22,8 @@
 wxString WrapText( const wxString & Text )
 {
    return wxString(wxT(""))+
-      wxT("<html><head></head>") + 
-      wxT("<body bgcolor=\"#ffffff\">") + 
+      wxT("<html><head></head>") +
+      wxT("<body bgcolor=\"#ffffff\">") +
       wxT("<p>") + Text +
       wxT("</body></html>");
 }
@@ -32,8 +32,8 @@ wxString Link( const wxString &Key, const wxString& Text )
 {
    return wxString(wxT("")) +
       wxT("<a href='innerlink:") +
-      Key + 
-      wxT("'>") + 
+      Key +
+      wxT("'>") +
       Text +
       wxT("</a>");
 }
@@ -42,8 +42,8 @@ wxString WikiLink( const wxString &Key, const wxString& Text )
 {
    return wxString(wxT("")) +
       wxT("<a href='http://www.audacityteam.org/wiki/index.php?title=") +
-      Key + 
-      wxT("'>") + 
+      Key +
+      wxT("'>") +
       Text +
       wxT("</a>");
 }
@@ -54,7 +54,7 @@ wxString LinkExpand( const wxString & Text )
    int i,j,k;
    while( (i=Temp.First( wxT("[[") ))!= wxNOT_FOUND )
    {
-      wxString Key = Temp.Mid(i+2); 
+      wxString Key = Temp.Mid(i+2);
       j = Key.First( wxT("|") );
       if( j==wxNOT_FOUND )
          return Temp;
@@ -82,7 +82,7 @@ wxString LinkExpand( const wxString & Text )
 
 wxString ToWelcome( )
 {
-   return _("Back to [[welcome|Welcome]] page.");
+   return _("To [[welcome|Welcome screen]]");
 }
 
 wxString TitleText( const wxString & Key )
@@ -100,17 +100,33 @@ wxString TitleText( const wxString & Key )
    {
       return _("Recording Audio");
    }
+   if(Key ==wxT("inputdevice") )
+   {
+      return _("Recording - Choosing the Input Device");
+   }
+   if(Key ==wxT("inputsource") )
+   {
+      return _("Recording - Choosing the Input Source");
+   }
+   if(Key ==wxT("inputlevel") )
+   {
+      return _("Recording - Setting the Input Level");
+   }
    if((Key ==wxT("edit") ) || (Key==wxT("grey")))
    {
-      return _("Editing and Greyed out Menus");	
+      return _("Editing and greyed out Menus");
    }
    if(Key ==wxT("export") )
    {
-      return _("Export and Saving");
+      return _("Exporting an Audio File");
+   }
+   if(Key ==wxT("save") )
+   {
+      return _("Saving an Audacity Project");
    }
    if(Key ==wxT("wma-proprietary") )
    {
-      return _("Supported Formats");
+      return _("Unsupported Formats");
    }
    if(Key ==wxT("burncd") )
    {
@@ -127,25 +143,25 @@ wxString HelpTextBuiltIn( const wxString & Key )
 {
    if(Key==wxT("welcome"))
    {
-      return WrapText( 
-wxString(wxT("")) + 
-_("<p>Welcome to Audacity ") + AUDACITY_VERSION_STRING + wxT("! ") +
+      return WrapText(
+wxString(wxT("")) +
+_("</p><center><h3>Getting Started</h3></center><br>") +
 /** i18n-hint: where you see [[key|text]] translate 'text' and don't translate 'key' */
-_("Let's get started!</p><p>\
-You can click on the links below to learn how to:\
+_("Welcome to Audacity ") + AUDACITY_VERSION_STRING + wxT("! ") +
+_("Learn how to: \
 <ul><li>\
-[[play|play back]] an existing sound file.\
-<li>[[record|record]] a new sound file.\
-<li>[[edit|edit]] sound and [[export|export]] to a sound file like MP3. \
-<li>[[burncd|burn to a CD]] \
-</ul><br><br>") + 
-_("You can always get back to these \
-instructions by clicking the 'Help' menu, then 'Show Welcome Message.' \
-For more detailed reading, please read our full Help by clicking the \
-'Help' menu, then 'Index', or <a href=\"http://audacity.sourceforge.net/help/documentation\">download our Manual</a> \
+[[play|play]] an existing audio file \
+<li>[[record|record]] your voice, LP or tape \
+<li>[[edit|edit]] sounds \
+<li>[[save|save or open an Audacity project]] \
+<li>[[export|export]] to an MP3 or other audio file, or [[burncd|burn to a CD]]  \
+</ul></p><p>") +
+_("This screen can be viewed at any time \
+by clicking the <i>Help</i> menu, then <i>Show Welcome Message</i>. \
+For a detailed guide to all the Audacity menus and controls, click  \
+<i>Help</i> menu then <i>Index</i>, or download our <a href=\"http://audacity.sourceforge.net/help/documentation/manual_1.4.pdf\">full Manual</a> \
 in PDF format.\
-<br><br>\
-Welcome again to Audacity.")
+</p>")
          );
    }
 
@@ -153,64 +169,119 @@ Welcome again to Audacity.")
    {
       return WrapText(
 wxString(wxT(""))+
-_("You can either drag existing files into Audacity, or use the <b>File > Import > Audio</b> command. \
-<b>File > Open</b> does the same, but opens a new Audacity window for any file after the first.\
-<br/><br/>\
-These are the main formats Audacity will play: <b>AIFF, AU, FLAC, M4A</b> (only on a \
-Mac), <b>MP2/MP3, OGG Vorbis, WAV</b>.  If your file is in some other format see (format help). \
-If you want to import an audio CD, see [[wiki:How_to_import_CDs|How to import CDs]]<br><br>\
-To start playing your audio, press the green Play button. \
+_("<p><b>Opening audio files:</b> \
+Either drag the files into the current project window, or click <i>File &gt; Import &gt; Audio</i>. \
+Files can be opened into a new project window with <i>File &gt; Open</i>. \
+The main formats Audacity plays are <b>AIFF, AU, FLAC, M4A</b> (only on a \
+Mac), <b>MP2/MP3, OGG Vorbis</b> and <b>WAV</b>. Click [[wma-proprietary|here]] if your file is in some other format. \
+<b>To import a CD:</b> extract it to WAV or AIFF using iTunes, Windows Media Player 11 or similar. \
+See our online guide: [[wiki:How_to_import_CDs|importing CDs]].</p><p> \
+<p><b>Playing audio:</b> Press the green Play button to start playback. \
+Press the blue Pause button once to pause playback, and again to resume. \
 To stop, press the yellow Stop button. \
-You can also use spacebar to either play or stop. \
-When you start playing again after stopping, playback resumes from its previous starting point. \
-To change the starting point, use the <b>|&lt;&lt;</b> and <b>&gt;&gt;|</b> buttons \
-to skip to the start or end respectively, \
-or click anywhere in the track to restart from that point.\
-<br><br>")+
+Spacebar can be used to either play or stop. \
+After stopping, playback resumes from its last starting point. \
+To change the starting point, click in the track at your desired starting point. \
+The <b>|&lt;&lt;</b> and <b>&gt;&gt;|</b> buttons can be used to skip to the start or end of the track respectively. \
+</p><br><br>")+
 ToWelcome()
          );
    }
    if((Key ==wxT("record") ) || (Key ==wxT("norecord") ))
    {
       return WrapText(
+wxString(wxT(""))+ 
+_("<p><b>To record:</b> Set the recording device and input source, adjust the input level, \
+then press the red Record button.\
+</b></p><p> \
+1) [[inputdevice|Set Recording Device]] either in the <i>Audio I/O tab of Preferences</i> \
+or in <i>Device Toolbar</i>. Audio I/O Preferences lets you choose stereo recording if required.<br> \
+2) [[inputsource|Set input source]] for that device (for example, microphone or line-in) \
+in the dropdown selector of the <i>Mixer Toolbar</i>, \
+or (on some systems) at Recording Device in the <i>Audio I/O tab of Preferences</i> \
+or in <i>Device Toolbar</i>.<br> \
+3) [[inputlevel|Adjust input level]] using the right-hand slider \
+on the <i>Mixer Toolbar</i>. Correct adjustment of level before recording \
+is essential to avoid noise or distortion. \
+</p><p> \
+More help at: \"Recording\" <a href=\"http://audacity.sourceforge.net/help/faq\">FAQs</a>, \
+our Tutorial <a href=\"http://www.audacityteam.org/manual/index.php?title=Tutorial_-_Your_First_Recording\"> \
+Your First Recording</a> in the \
+<a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">Manual</a>, \
+and our Wiki [[wiki:Recording_Tips|Recording Tips]] and \
+[[wiki:Troubleshooting_Recordings|Troubleshooting Recordings]] pages. \
+</p><br><br>") +
+ToWelcome()
+         );
+   }
+   if (Key ==wxT("inputdevice") )
+   {
+      return WrapText(
+wxString(wxT(""))+ 
+_("<p>The input device is the actual physical sound device you are recording from. \
+This is chosen at \"Recording Device\" in the <i>Audio I/O tab of Preferences</i>, \
+On Windows and Linux, Preferences are at the bottom of the <i>Edit</i> Menu. \
+On a Mac, they in the <i>Audacity</i> Menu. \
+You can also conveniently select Recording Device in the <i>Device Toolbar</i>, \
+which can be enabled at <i>View &gt; Toolbars...<\i>. \
+<\p><p> \
+By default, Audacity uses the device currently being used by the system, \
+(usually your inbuilt sound device), \
+so it is often not necessary to change the input device. \
+On Windows, this current system device can be selected as \"Microsoft Sound Mapper\". \
+If you are recording from an external USB or Firewire device such as a USB turntable, \
+select it explicitly by name as recording device after conecting it. \
+</p><p> \
+Back to [[record|Recording Audio]] \
+<br></p>") +
+ToWelcome()
+         );
+   }
+   if (Key ==wxT("inputsource") ) 
+   {
+      return WrapText(
+wxString(wxT(""))+ 
+_("<p>Select the input source (such as microphone or line-in) for your [[inputdevice|recording device]]:<br> \
+- <b>On Windows (except Vista)</b> and <b>Linux</b>, in the dropdown selector on the right of the <i>Mixer Toolbar</i>.<br> \
+- <b>On Windows Vista</b> and <b>Mac</b>, at Recording Device on the \
+<i>Audio I/O tab of Preferences</i>, or in <i>Device Toolbar</i>. \
+The source will be shown as part of the parent device \
+(for example, <i>High Def Audio Card: Microphone</i>). \
+If necessary, Mac users can choose the input source at Apple Audio MIDI Setup. \
+<br><i><b>Note:</b> many USB or Firewire recording devices don't have a choice of inputs, \
+so this step is not necessary. If in doubt, see the documentation for your device. \
+</i></p><p> \
+<b>Tip:</b> To <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&i=streaming\">record audio playing on the computer</a>, \
+Windows and Linux users can choose the \"Stereo Mix\", \"Wave Out\", \"Sum\" \
+or comparable input source. \
+</p><p> \
+Back to [[record|Recording Audio]] \
+<br></p>") +
+ToWelcome()
+         );
+   }
+   if(Key ==wxT("inputlevel") )
+   {
+      return WrapText(
 wxString(wxT(""))+
-ToWelcome()+
-wxT("<br><br>")+
-_("<b>To start recording, press the red Record button</b>. \
-Before doing so however, there are three crucial settings you must check:\
-<br><br>\
-(1) The <b>Recording Device</b>, set in the Audio I/O tab of Preferences. \
-By default Audacity will use the current system device, which is usually your \
-inbuilt sound device, so you may not need to set this. \
-But if you're using an external USB or Firewire device such as a USB turntable, \
-make sure this device is selected as your recording device. \
-<br><br>\
-(2) The <b>input source</b> for your device, such as microphone or line-in. \
-<ul><li>\
-<b>On Windows</b>, you normally choose your input in the dropdown selector on \
-the right of the <b>Mixer Toolbar<b> <i>note: on Vista, you must do so at Recording \
-Device on the Audio I/O Preferences tab.</i>\
-</li><li>\
-<b>On a Mac</b>, you normally choose input sources outside Audacity, in Apple Audio-MIDI Setup.\
-</li></ul>\
-<i>Note: many USB or Firewire devices don't have a choice of inputs, so you can ignore this step \
-- see the documentation for your device. \
-<br><br>\
-(3) <b>Input volume</b>. Before recording for real, make a test recording to set the input level, \
-so that it's neither too soft or too loud.\
-To do this, see this [[wiki:Recording_levels|illustrated guide]] or follow these two steps: \
+_("<p>The input level must be set correctly. \
+If the level is too low, there will be background noise. \
+If the level is too high, there will be distortion in the loud parts. \
+</p><p>\
+To set the level, either see this [[wiki:Recording_levels|illustrated online guide]] \
+or follow these steps: \
 <ol><li>\
-Turn on <b>monitoring</b>, by either double-clicking over the right-hand of the two VU Meters, or \
-right-clicking over it and choosing \"Start Monitoring\". \
-If you do not see the meters, click View > Toolbars and check \"Meter Toolbar\". \
-<li>Press Record, and adjust the input volume slider on the Mixer Toolbar (by the microphone \
-symbol), so that the red bars in the meter come close to (but do not touch) the right edge of the scale. \
-If you can't hear the sound, go to the Audio I/O tab of Preferences and check \"Software Playthrough\". \
-</ol><br><br>\
-There is more help if you're stuck: our Recording FAQs, our Tutorial  <b>Your First Recording </b> in the \
-Manual, and our Wiki [[wiki:Recording_Tips|Recording Tips]], especially the \
-[[wiki:Troubleshooting_Recordings|Troubleshooting Recordings]] section. \
-<br><br>") +
+Turn on <b>monitoring</b>. Double-click the right-hand of the two </i>VU Meters</i> \
+(or right-click over it) and click \"Start Monitoring\". \
+If the meters are not visible, click <i>View &gt; Toolbars</i> and check \"Meter Toolbar\". \
+</li><li>Adjust the input slider on the <i>Mixer Toolbar</i> \
+(by the microphone symbol), so that the red bars in the meter come close to <b>but do not touch</b> \
+the right edge of the scale. \
+If you can't hear the monitored audio, go to the <i>Audio I/O tab of Preferences</i> \
+and check \"Software Playthrough\". \
+</li></ol></p><p> \
+Back to [[record|Recording Audio]] \
+<br></p>")+
 ToWelcome()
          );
    }
@@ -218,63 +289,65 @@ ToWelcome()
    {
       return WrapText(
 wxString(wxT(""))+
-_("Editing: Audacity is a powerful editor, so you'll want to see what \
-it can do with your imported file or recording.  \
-The main commands you will use are under the <b>Edit</b> menu (such as \
-cut, copy and paste) and under the <b>Effect</b> \
+_("<p>The main commands for editing audio are under the <i>Edit</i> menu (such as \
+cut, copy and paste) and the <i>Effect</i> \
 menu (you can do things like boost the bass, change pitch or tempo, or remove noise). \
-<br><br>\
-Audacity applies edits to areas of the audio track. You can select a particular area of \
-audio by clicking in the track and dragging the shaded area with your mouse. \
-If you don't select any audio, Audacity will select all that you have on the screen.\
-<br><br>\
-Two important points when editing:\
-<br><br>\
-(1) If you're still playing or recording, use the yellow Stop button, because you can't \
-edit or export a moving track! \
-<br><br>\
-(2) On occasion, some of the menus or buttons are greyed out or \
-say \"Disabled\" -  this is normal. \
-For example, because you can't edit audio while playing or recording, \
-we grey out or disable commands until you press Stop. \
-Commands can sometimes be unavailable for other reasons - \
-for example you can't run effects until you \
-have audio on the screen, and you obviously can't paste audio until \
-you've cut or copied it to Audacity's clipboard. \
-<br><br>")+
+</p><p>\
+Audacity applies edits to selected areas of the audio track. To select a particular area, \
+click in the track and drag the shaded area with the mouse. \
+If no audio is selected, Audacity selects all the audio in the project window.\
+</p><p>\
+When playing or recording, the Edit and Effect menus will appear greyed out, because a moving track can't be edited. \ Commands can sometimes be unavailable for other reasons too. \ For example, you can't run effects until you have audio on the screen, \
+and you can't paste audio until you've cut or copied it to Audacity's clipboard. \
+</p><br><br>")+
+ToWelcome()
+         );
+   }
+   if(Key ==wxT("save") )
+   {
+      return WrapText(
+wxString(wxT(""))+
+_("<p>To return later to your unfinished work in Audacity \
+with all tracks and edits as you left them, save an Audacity project. \
+To play your current work in other media programs or send it to others, \
+[[export|export]] an audio file such as WAV or MP3. \
+</p><p> \
+<i>File &gt; Save Project</i> saves an <b>.aup</b> project file and  \
+a <b>_data</b> folder containing the actual audio. \
+To re-open a saved project, click <i>File &gt; Open</i> and open the .aup file. \
+If you save and exit more than once, an .aup.bak backup file is created, \
+but the .aup file should always be opened if present. \
+When your final exported file is exactly as you want, delete the \
+project files and _data folder to save disc space. \
+</p><p><i>File &gt; Save Project As...</i> is for saving an empty project. \
+It also lets you save an existing Project to a <b> new</b> name. \
+This is the only safe way to rename a project. The .aup file and _data folder \
+should not be moved or renamed manually. \
+</p><p>")+
 ToWelcome()
          );
    }
    if(Key ==wxT("export") )
    {
       return WrapText(
-wxString(wxT(""))+ 
-_("Exporting and Saving have different purposes.\
-You \"save\" an Audacity project file when you want to return to your work in Audacity later.\
-This means you don't then have to re-import or re-record audio, or redo editing you have done so far.\
-When you want to listen to your work in other computer programs you \"export\" it as an audio file such as \
-a WAV, AIFF or MP3. If burning to an audio CD for standalone CD players, you must export as WAV or AIFF.\
-<br><br>\
-To save an Audacity project, use <b>File > Save Project</b>. This will save an <b>.aup</b> Project file, \
-plus a <b>_data</b> folder containing the actual audio. \
-Make sure you don't rename or move either of these, because Audacity needs to refer to both.\
-Only use File > Save Project As... when you either need to save an empty Project, or if you want \
-to save an existing Project to a <i> new</i> name. \
-When you want to re-open a saved Project, simply click File > Open and open the .aup file. \
-<br><br>\
-When you want to export your work to an audio file, use <b>File > Export</b> and choose your desired \
-format in the \"Save as type\" dropdown.\
-Click the Options button for advanced choices, such as the bit rate to use for MP3 export.\
-There are two other Export commands under the File menu.\
-\"Export Selection\" exports only a selected area of audio.\
-\"Export Multiple\" exports multiple files, for example where you have more than one track on \
-screen and want to export each as a separate file. If exporting tracks from a recorded LP or tape to multiple files, \
-use [[wiki:Splitting_recordings_into_separate_tracks|labels with Export Multiple]]. \
-<br><br>\
-Before you can export as <b>MP3</b>, you may need to add the LAME MP3 encoder to your computer.\
-For help with LAME, see [[wiki:Lame_Installation|Lame Installation]]. \
-There is also some help on how to [[burncd|burn to a CD]].\
-<br><br>")+
+wxString(wxT(""))+
+_("To hear your work in other media programs, export it to an audio file such as WAV or MP3 \
+(some formats are [[wma-proprietary|unsupported]]). \
+[[save|Saving an Audacity project]] creates a project file (and linked _data folder) \
+containing all your edited tracks, so you can return to your work later. \
+However, other programs can't read Audacity projects. </p><p> \
+To export, click <i>File &gt; Export</i> then choose the file format you want to export to \
+in the \"Save as type\" dropdown. \
+To [[burncd|burn a CD]] for standalone CD players, choose WAV or AIFF. \
+To export as MP3, the [[wiki:Lame_Installation|Lame Encoder]] must be installed. \
+</p><p> \
+<i>File &gt; Export Selection</i> exports only a selected area of audio. <i>Use File &gt; Export Multiple</i> \
+to export multiple files at the same time, either \
+one for each audio track, or one for each labeled area in a single track. \
+<i>Tracks &gt; Add Label At Selection</i> lets you \
+[[wiki:Splitting_recordings_into_separate_tracks|split the tracks]] \
+from an album for multiple export as separate files. \
+</p><br><br>")+
 ToWelcome()
          );
    }
@@ -282,40 +355,40 @@ ToWelcome()
    {
       return WrapText(
          wxString(wxT(""))+
-
-//#ifdef NOT EXACTLY_AS_IN_FAQ_AS_FAQ_INCORRECT_FOR_1.4._TRY_THIS_LOCALLY?  
-_("<h2>Can Audacity import file formats like WMA, AAC, RealAudio  etc.?</h2> <p>\
-Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)</b>, or \
-most other proprietary formats, because of licensing and patent restrictions. \
-Audacity also cannot import any kind of Digital Rights Management (DRM) protected \
-file, including most purchased online such as from iTunes or Napster.\
-If you are on a Mac, you can import <b>AAC</b>  encoded files (such as <b>M4A</b>) \
-as long as they are not DRM protected, but you cannot export to these formats.\
-</p> <p>\
-Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>Musepack</b>.\
-We hope to support these formats in future versions of Audacity.\
-</p> <p>\
-If you cannot import your file into Audacity, you can as a workround convert it to WAV or AIFF.\
-As long as it's not a DRM-protected file, you could do this with iTunes or with \
-<a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> player.\
-If it's a DRM-protected file, you can burn it to an audio CD in the application \
-that is licensed to play it, then extract (rip) the CD track to WAV or AIFF.\
-You can use iTunes to extract to WAV or AIFF, plus Windows Media Player 11 or \
-<a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> on Windows.\
-Or you can play the file on your computer and record it - \
-see <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">.")
-//#endif
+_("<p>Audacity <b>cannot</b> [[play|play]] or [[export|export]] files in <b>WMA, RealAudio, Shorten (SHN)</b> \
+or most other proprietary formats, due to licensing and patent restrictions.  \
+On a Mac computer, unprotected <b>AAC</b> formats such as <b>M4A</b> can be imported. \
+Some open formats are not yet supported, including <b>Ogg Speex</b> and <b>Musepack</b>. \
+Files protected by any kind of Digital Rights Management (DRM), including \
+most purchased online such as from iTunes or Napster, <b>cannot</b> be imported.</p><p> \
+If you can't import your file into Audacity, \
+then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> \
+to convert it to WAV or AIFF. \
+If it is protected, burn it to an audio CD in the program licensed to play it, \
+then extract the CD track to WAV or AIFF using \
+ITunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or \
+Windows Media Player 11. You could also \
+<a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. \
+<i>To export to an unsupported format, export to WAV or AIFF and \
+convert it to the desired format in iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. \
+</i></p><p>")+
+ToWelcome()
          );
-   }
+     }
    if(Key ==wxT("burncd") )
    {
       return WrapText(
          wxString(wxT(""))+
-_("If you want to burn your work to an audio CD for standalone CD players, you must first \
-[[export|export as WAV or AIFF]] \
-and then burn that file to CD with a CD burning program like \
-iTunes - for more help, see [[wiki:How_to_burn_CDs|How to burn CDs]].\
-<br><br>")+
+_("<p>To burn your work to an audio CD for standalone CD players, first \
+[[export|export]] it as WAV or AIFF. \
+The exported file should be stereo, 44100 Hz (set in the \"Project Rate\" button bottom left) \
+and 16 bit (set in the \"Options\" button in the file export dialog). \
+These are Audacity's default settings, \
+so normally you will not need to change these before exporting. \
+<p>Burn the exported file to an \"audio CD\" - not a \"data CD\" or \"MP3 CD\" - \
+with a CD burning program like iTunes or Windows Media Player. \
+For more help, see [[wiki:How_to_burn_CDs|How to burn CDs]] online. \
+</p><p>") +
 ToWelcome()
          );
    }
@@ -327,9 +400,9 @@ ToWelcome()
 // *URL* will be replaced by whatever URL we are looking for.
       return WrapText(
 _("<p>You don't appear to have Audacity help files on your machine. \
-You can <a href=\"http://audacityteam.org/manual/index.php?title=Main_Page\">download</a> the help files and then access \
-them from Audacity as you have just attempted, or you can \
-click <a href=\"*URL*\">here</a> to read the help online.")
+Either <a href=\"http://audacity.sourceforge.net/help/documentation\">download</a> the help files \
+and then access them again from Audacity by clicking <i>Help</i> then <i>Index</i>, \
+or click <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">here</a> to read the full Manual online.")
          );
    }
    return wxT("");
