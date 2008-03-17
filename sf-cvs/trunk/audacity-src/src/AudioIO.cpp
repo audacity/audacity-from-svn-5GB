@@ -115,7 +115,7 @@ const int AudioIO::NumRatesToTry = sizeof(AudioIO::RatesToTry) /
 int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
                           unsigned long framesPerBuffer,
                           const PaStreamCallbackTimeInfo *timeInfo,
-                          const PaStreamCallbackFlags statusFlags, void *userData );
+                          PaStreamCallbackFlags statusFlags, void *userData );
 #else
 int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                           unsigned long framesPerBuffer,
