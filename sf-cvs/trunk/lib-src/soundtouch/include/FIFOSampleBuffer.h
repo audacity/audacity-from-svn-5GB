@@ -15,10 +15,10 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Last changed  : $Date: 2006-09-18 22:29:21 $
-// File revision : $Revision: 1.4 $
+// Last changed  : $Date: 2008-03-17 22:29:58 $
+// File revision : $Revision: 1.5 $
 //
-// $Id: FIFOSampleBuffer.h,v 1.4 2006-09-18 22:29:21 martynshaw Exp $
+// $Id: FIFOSampleBuffer.h,v 1.5 2008-03-17 22:29:58 richardash1981 Exp $
 //
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -160,7 +160,7 @@ public:
     virtual uint numSamples() const;
 
     /// Sets number of channels, 1 = mono, 2 = stereo.
-    void setChannels(uint numChannels);
+    void setChannels(const uint numChannels);
 
     /// Returns nonzero if there aren't any samples available for outputting.
     virtual int isEmpty() const;
