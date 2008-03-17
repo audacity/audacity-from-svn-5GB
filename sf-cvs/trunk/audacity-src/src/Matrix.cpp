@@ -262,7 +262,7 @@ Matrix operator+(const Matrix &left, const Matrix &right)
    return M;
 }
 
-Matrix operator*(const Matrix &left, double right)
+Matrix operator*(const Matrix &left, const double right)
 {
    Matrix M(left.Rows(), left.Cols());
    int i, j;
