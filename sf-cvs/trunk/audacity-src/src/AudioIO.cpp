@@ -49,6 +49,10 @@ writing audio.
 #include <malloc.h>
 #endif
 
+#ifdef HAVE_ALLOCA_H
+#include <alloca.h>
+#endif
+
 #include <wx/log.h>
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>

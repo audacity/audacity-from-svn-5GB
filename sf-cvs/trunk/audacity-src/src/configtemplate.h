@@ -4,6 +4,9 @@
    so it can find the files it needs at runtime */
 #undef AUDACITY_NAME
 
+/* Define to 1 if you have the <alloca.h> header file. */
+#undef HAVE_ALLOCA_H
+
 /* Define to 1 if you have the `clock_gettime' function. */
 #undef HAVE_CLOCK_GETTIME
 
