@@ -223,8 +223,8 @@ This is chosen at \"Recording Device\" in the <i>Audio I/O tab of Preferences</i
 On Windows and Linux, Preferences are at the bottom of the <i>Edit</i> Menu. \
 On a Mac, they in the <i>Audacity</i> Menu. \
 You can also conveniently select Recording Device in the <i>Device Toolbar</i>, \
-which can be enabled at <i>View &gt; Toolbars...<\i>. \
-<\p><p> \
+which can be enabled at <i>View &gt; Toolbars...</i>. \
+</p><p> \
 By default, Audacity uses the device currently being used by the system, \
 (usually your inbuilt sound device), \
 so it is often not necessary to change the input device. \
@@ -289,17 +289,18 @@ ToWelcome()
    {
       return WrapText(
 wxString(wxT(""))+
-_("<p>The main commands for editing audio are under the <i>Edit</i> menu (such as \
-cut, copy and paste) and the <i>Effect</i> \
-menu (you can do things like boost the bass, change pitch or tempo, or remove noise). \
-</p><p>\
-Audacity applies edits to selected areas of the audio track. To select a particular area, \
-click in the track and drag the shaded area with the mouse. \
+_("<p>The main commands for editing audio are under the <i>Edit</i> menu (such \
+as cut, copy and paste) and the <i>Effect</i> menu (you can do things like \
+boost the bass, change pitch or tempo, or remove noise). </p><p> \
+Audacity applies edits to selected areas of the audio track. To select a \
+particular area, click in the track and drag the shaded area with the mouse. \
 If no audio is selected, Audacity selects all the audio in the project window.\
-</p><p>\
-When playing or recording, the Edit and Effect menus will appear greyed out, because a moving track can't be edited. \ Commands can sometimes be unavailable for other reasons too. \ For example, you can't run effects until you have audio on the screen, \
-and you can't paste audio until you've cut or copied it to Audacity's clipboard. \
-</p><br><br>")+
+</p><p> \
+When playing or recording, the Edit and Effect menus will appear greyed out, \
+because a moving track can't be edited. Commands can sometimes be unavailable \
+for other reasons too. For example, you can't run effects until you have audio \
+on the screen, and you can't paste audio until you've cut or copied it to \
+Audacity's clipboard. </p><br><br>")+
 ToWelcome()
          );
    }
