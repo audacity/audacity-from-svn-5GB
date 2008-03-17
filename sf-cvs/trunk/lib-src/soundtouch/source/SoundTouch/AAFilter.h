@@ -13,10 +13,10 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Last changed  : $Date: 2006-09-18 22:29:22 $
-// File revision : $Revision: 1.4 $
+// Last changed  : $Date: 2008-03-17 22:29:58 $
+// File revision : $Revision: 1.5 $
 //
-// $Id: AAFilter.h,v 1.4 2006-09-18 22:29:22 martynshaw Exp $
+// $Id: AAFilter.h,v 1.5 2008-03-17 22:29:58 richardash1981 Exp $
 //
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -63,14 +63,14 @@ protected:
     /// Calculate the FIR coefficients realizing the given cutoff-frequency
     void calculateCoeffs();
 public:
-    AAFilter(uint length);
+    AAFilter(const uint length);
 
     ~AAFilter();
 
     /// Sets new anti-alias filter cut-off edge frequency, scaled to sampling
     /// frequency (nyquist frequency = 0.5). The filter will cut off the
     /// frequencies than that.
-    void setCutoffFreq(double newCutoffFreq);
+    void setCutoffFreq(const double newCutoffFreq);
 
     /// Sets number of FIR filter taps, i.e. ~filter complexity
     void setLength(uint newLength);
