@@ -1,12 +1,12 @@
 #ifndef PA_UTIL_H
 #define PA_UTIL_H
 /*
- * $Id: pa_util.h,v 1.6 2007-12-09 21:50:56 richardash1981 Exp $
+ * $Id: pa_util.h,v 1.7 2008-03-18 12:36:32 richardash1981 Exp $
  * Portable Audio I/O Library implementation utilities header
  * common implementation utilities and interfaces
  *
  * Based on the Open Source API proposed by Ross Bencina
- * Copyright (c) 1999-2002 Ross Bencina, Phil Burk
+ * Copyright (c) 1999-2008 Ross Bencina, Phil Burk
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files
@@ -43,6 +43,9 @@
  @ingroup common_src
 
     @brief Prototypes for utility functions used by PortAudio implementations.
+
+    Some functions declared here are defined in pa_front.c while others
+    are implemented separately for each platform.
 
     @todo Document and adhere to the alignment guarantees provided by
     PaUtil_AllocateMemory().

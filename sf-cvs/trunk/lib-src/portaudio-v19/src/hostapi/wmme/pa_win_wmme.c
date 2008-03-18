@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_wmme.c,v 1.6 2007-12-09 21:51:00 richardash1981 Exp $
+ * $Id: pa_win_wmme.c,v 1.7 2008-03-18 12:36:40 richardash1981 Exp $
  * pa_win_wmme.c
  * Implementation of PortAudio for Windows MultiMedia Extensions (WMME)       
  *                                                                                         
@@ -62,7 +62,9 @@
 */
 
 /** @file
-	@ingroup hostaip_src
+	@ingroup hostapi_src
+
+    @brief Win32 host API implementation for the Windows MultiMedia Extensions (WMME) audio API.
 
 	@todo Fix buffer catch up code, can sometimes get stuck (perhaps fixed now,
             needs to be reviewed and tested.)
@@ -3598,7 +3600,7 @@ static PaError ReadStream( PaStream* s,
         }
         else
         {
-            userBuffer = alloca( sizeof(void*) * stream->bufferProcessor.inputChannelCount );
+            userBuffer = (void*)alloca( sizeof(void*) * stream->bufferProcessor.inputChannelCount );
             if( !userBuffer )
                 return paInsufficientMemory;
             for( i = 0; i<stream->bufferProcessor.inputChannelCount; ++i )
@@ -3702,7 +3704,7 @@ static PaError WriteStream( PaStream* s,
         }
         else
         {
-            userBuffer = alloca( sizeof(void*) * stream->bufferProcessor.outputChannelCount );
+            userBuffer = (const void*)alloca( sizeof(void*) * stream->bufferProcessor.outputChannelCount );
             if( !userBuffer )
                 return paInsufficientMemory;
             for( i = 0; i<stream->bufferProcessor.outputChannelCount; ++i )

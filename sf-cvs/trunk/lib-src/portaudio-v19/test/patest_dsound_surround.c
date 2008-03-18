@@ -1,5 +1,5 @@
 /*
- * $Id: patest_dsound_surround.c,v 1.1 2007-12-09 21:51:09 richardash1981 Exp $
+ * $Id: patest_dsound_surround.c,v 1.2 2008-03-18 12:36:48 richardash1981 Exp $
  * Portable Audio I/O Library
  * Windows DirectSound surround sound output test
  *

@@ -1,5 +1,5 @@
 /*
- * $Id: pa_converters.c,v 1.6 2007-12-09 21:50:55 richardash1981 Exp $
+ * $Id: pa_converters.c,v 1.7 2008-03-18 12:36:30 richardash1981 Exp $
  * Portable Audio I/O Library sample conversion mechanism
  *
  * Based on the Open Source API proposed by Ross Bencina
@@ -39,7 +39,7 @@
 /** @file
  @ingroup common_src
 
- @brief Conversion functions implementations.
+ @brief Conversion function implementations.
  
  If the C9x function lrintf() is available, define PA_USE_C99_LRINTF to use it
 

@@ -1,10 +1,10 @@
 /*
- * $Id: pa_front.c,v 1.9 2008-02-01 22:36:27 richardash1981 Exp $
+ * $Id: pa_front.c,v 1.10 2008-03-18 12:36:31 richardash1981 Exp $
  * Portable Audio I/O Library Multi-Host API front end
  * Validate function parameters and manage multiple host APIs.
  *
  * Based on the Open Source API proposed by Ross Bencina
- * Copyright (c) 1999-2002 Ross Bencina, Phil Burk
+ * Copyright (c) 1999-2008 Ross Bencina, Phil Burk
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files
@@ -40,17 +40,20 @@
 /** @file
  @ingroup common_src
 
- @brief Implements public PortAudio API, checks some errors, forwards to
- host API implementations.
+ @brief Implements PortAudio API functions defined in portaudio.h, checks 
+ some errors, delegates platform-specific behavior to host API implementations.
  
- Implements the functions defined in the PortAudio API, checks for
- some parameter and state inconsistencies and forwards API requests to
- specific Host API implementations (via the interface declared in
- pa_hostapi.h), and Streams (via the interface declared in pa_stream.h).
+ Implements the functions defined in the PortAudio API (portaudio.h), 
+ validates some parameters and checks for state inconsistencies before 
+ forwarding API requests to specific Host API implementations (via the 
+ interface declared in pa_hostapi.h), and Streams (via the interface 
+ declared in pa_stream.h).
 
- This file handles initialization and termination of Host API
- implementations via initializers stored in the paHostApiInitializers
- global variable.
+ This file manages initialization and termination of Host API
+ implementations via initializer functions stored in the paHostApiInitializers
+ global array (usually defined in an os-specific pa_[os]_hostapis.c file).
+
+ This file maintains a list of all open streams and closes them at Pa_Terminate().
 
  Some utility functions declared in pa_util.h are implemented in this file.
 
@@ -1208,8 +1211,10 @@ PaError Pa_OpenStream( PaStream** stream,
                                   hostApiInputParametersPtr, hostApiOutputParametersPtr,
                                   sampleRate, framesPerBuffer, streamFlags, streamCallback, userData );
 
-    if( result == paNoError )
+    if( result == paNoError ) {
         AddOpenStream( *stream );
+        PA_STREAM_REP(*stream)->hostApiType = hostApi->info.type;
+    }
 
 
     PA_LOGAPI(("Pa_OpenStream returned:\n" ));

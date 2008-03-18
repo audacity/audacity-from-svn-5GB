@@ -4,7 +4,7 @@
 	@author Ross Bencina <rossb@audiomulch.com>
 */
 /*
- * $Id: patest_callbackstop.c,v 1.6 2007-12-09 21:51:09 richardash1981 Exp $
+ * $Id: patest_callbackstop.c,v 1.7 2008-03-18 12:36:48 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com/
@@ -148,6 +148,10 @@ int main(void)
     if( err != paNoError ) goto error;
 
     outputParameters.device                    = Pa_GetDefaultOutputDevice();
+    if (outputParameters.device == paNoDevice) {
+      fprintf(stderr,"Error: No default output device.\n");
+      goto error;
+    }
     outputParameters.channelCount              = 2;               /* stereo output */
     outputParameters.sampleFormat              = paFloat32;       /* 32 bit floating point output */
     outputParameters.suggestedLatency          = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;

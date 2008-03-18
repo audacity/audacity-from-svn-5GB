@@ -4,7 +4,7 @@
 	@author Phil Burk  http://www.softsynth.com
 */
 /*
- * $Id: patest_record.c,v 1.6 2007-12-09 21:51:11 richardash1981 Exp $
+ * $Id: patest_record.c,v 1.7 2008-03-18 12:36:51 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -223,6 +223,10 @@ int main(void)
     if( err != paNoError ) goto done;
 
     inputParameters.device = Pa_GetDefaultInputDevice(); /* default input device */
+    if (inputParameters.device == paNoDevice) {
+        fprintf(stderr,"Error: No default input device.\n");
+        goto done;
+    }
     inputParameters.channelCount = 2;                    /* stereo input */
     inputParameters.sampleFormat = PA_SAMPLE_TYPE;
     inputParameters.suggestedLatency = Pa_GetDeviceInfo( inputParameters.device )->defaultLowInputLatency;
@@ -295,6 +299,10 @@ int main(void)
     data.frameIndex = 0;
 
     outputParameters.device = Pa_GetDefaultOutputDevice(); /* default output device */
+    if (outputParameters.device == paNoDevice) {
+        fprintf(stderr,"Error: No default output device.\n");
+        goto done;
+    }
     outputParameters.channelCount = 2;                     /* stereo output */
     outputParameters.sampleFormat =  PA_SAMPLE_TYPE;
     outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;

@@ -1,4 +1,4 @@
-	dnl
+dnl
 dnl portaudio V19 configure.in script
 dnl
 dnl Dominic Mazzoni, Arve Knudsen
@@ -42,10 +42,6 @@ AC_ARG_WITH(macapi,
             [  --with-macapi ((asio/core/sm) default=core)],
             with_macapi=$withval, with_macapi="core")
 
-AC_ARG_WITH(universal_binary,
-            [  --with-universal-binary (Both Mac PPC and Intel, default=no)],
-            with_universal_binary=$withval, with_universal_binary="no")
-
 AC_ARG_WITH(asiodir,
             [  --with-asiodir (default=/usr/local/asiosdk2)],
             with_asiodir=$withval, with_asiodir="/usr/local/asiosdk2")
@@ -55,19 +51,23 @@ AC_ARG_WITH(dxdir,
             with_dxdir=$withval, with_dxdir="/usr/local/dx7sdk")
 
 AC_ARG_ENABLE(debug-output,
-	[  --enable-debug-output],
-        [if test x$enableval != xno ; then
-	     AC_DEFINE(PA_ENABLE_DEBUG_OUTPUT,,[Enable debugging messages])
-          fi
-        ])
+            [  --enable-debug-output],
+            [if test x$enableval != xno ; then
+                AC_DEFINE(PA_ENABLE_DEBUG_OUTPUT,,[Enable debugging messages])
+             fi
+            ])
 
 AC_ARG_ENABLE(cxx,
-              [  --enable-cxx (default=no)],
-              enable_cxx=$enableval, enable_cxx="no")
+            [  --enable-cxx (default=no)],
+            enable_cxx=$enableval, enable_cxx="no")
 
 AC_ARG_ENABLE(mac-debug,
-              [  --enable-mac-debug (default=no)],
-              enable_mac_debug=$enableval, enable_mac_debug="no")
+            [  --enable-mac-debug (default=no)],
+            enable_mac_debug=$enableval, enable_mac_debug="no")
+
+AC_ARG_ENABLE(mac-universal,
+            [  --enable-mac-universal (default=yes)],
+            enable_mac_universal=$enableval, enable_mac_universal="yes")
 
 dnl Checks for programs.
 
@@ -78,7 +78,7 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PATH_PROG(AR, ar, no)
 if [[ $AR = "no" ]] ; then
-    AC_MSG_ERROR("Could not find ar - needed to create a library");
+    AC_MSG_ERROR("Could not find ar - needed to create a library")
 fi
 
 dnl This must be one of the first tests we do or it will fail...
@@ -89,6 +89,7 @@ dnl turn them on or off
 
 AC_CHECK_LIB(asound, snd_pcm_open, have_alsa=yes, have_alsa=no)
 AC_CHECK_LIB(hpi, HPI_SubSysCreate, have_asihpi=yes, have_asihpi=no, -lm)
+AC_CHECK_LIB(ossaudio, _oss_ioctl, have_libossaudio=yes, have_libossaudio=no)
 
 dnl Determine the host description for the subsequent test.
 dnl PKG_CHECK_MODULES seems to check and set the host variable also, but
@@ -119,7 +120,6 @@ LT_CURRENT=2
 LT_REVISION=0
 LT_AGE=0
 
-dnl AC_SUBST(LT_RELEASE)
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
 AC_SUBST(LT_AGE)
@@ -135,11 +135,12 @@ AC_SUBST(NASM)
 AC_SUBST(NASMOPT)
 
 dnl -g is optional on darwin
-if( echo "${host_os}" | grep ^darwin >> /dev/null ) ; then
-	CFLAGS="-O2 -Wall -pedantic -pipe -fPIC"
-	CXXFLAGS="-O2"
+if ( echo "${host_os}" | grep ^darwin >> /dev/null ) &&
+      [[ "$enable_mac_universal" = "yes" ] &&
+       [ "$enable_mac_debug" != "yes" ]] ; then
+   CFLAGS="-O2 -Wall -pedantic -pipe -fPIC -DNDEBUG"
 else
-	CFLAGS=${CFLAGS:-"-g -O2 -Wall -pedantic -pipe -fPIC"}
+   CFLAGS=${CFLAGS:-"-g -O2 -Wall -pedantic -pipe -fPIC"}
 fi
 
 if [[ $ac_cv_c_bigendian = "yes" ]] ; then
@@ -148,82 +149,46 @@ else
    CFLAGS="$CFLAGS -DPA_LITTLE_ENDIAN"
 fi
 
-MAC_BEFORE_TIGER="no"
-case "${host_os}" in 
-  darwin6* )
-	echo "We're running on Mac OS X 10.2"
-	MAC_BEFORE_TIGER="yes"
-	;;
-  darwin7* )
-	echo "We're running on Mac OS X 10.3"
-	MAC_BEFORE_TIGER="yes"
-	;;
-esac
-
-case "${NEXT_ROOT}" in
-  /Developer/SDKs/MacOSX10.2* )
-	echo "We're compiling for Mac OS X 10.2"
-	MAC_BEFORE_TIGER="yes"
-	;;
-  /Developer/SDKs/MacOSX10.3* )
-	echo "We're compiling for Mac OS X 10.3"
-	MAC_BEFORE_TIGER="yes"
-	;;
-esac
-
 case "${host_os}" in
   darwin* )
-	dnl Mac OS X configuration
+        dnl Mac OS X configuration
 
-	AC_DEFINE(PA_USE_COREAUDIO)
-	dnl the SHARED_FLAGS needed regardless of 10.5 or not, and regardless of
-	dnl Universal Binary or not.
-	SHARED_FLAGS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon -dynamiclib -Werror"
-	if [[ -d /Developer/SDKs/MacOSX10.5.sdk ]] ; then
-		dnl this is stuff that is 10.5-specific
-		dnl extra SHARED_FLAGS needed for 10.5
-		UNIV_SHARED_FLAGS="-arch x86_64 -arch ppc64 -isysroot /Developer/SDKs/MacOSX10.5.sdk";
-		dnl these extra CFLAGs are only needed for Universal Binary support
-		dnl when building on 10.5 and above
-		UNIV_CFLAGS="-arch x86_64 -arch ppc64";
-	else
-		dnl anything except 10.5 goes here
-		UNIV_SHARED_FLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk";
-		UNIV_CFLAGS="";
-	fi
-	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o src/hostapi/coreaudio/pa_mac_core_utilities.o src/hostapi/coreaudio/pa_mac_core_blocking.o src/common/pa_ringbuffer.o";
-	LIBS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon";
-	PADLL="libportaudio.dylib";
+        AC_DEFINE(PA_USE_COREAUDIO)
+
+        CFLAGS="$CFLAGS -Werror"
+        LIBS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon"
+
+        if test "x$enable_mac_universal" = "xyes" ; then
+           mac_version_min="-mmacosx-version-min=10.3"
+           if [[ -d /Developer/SDKs/MacOSX10.5.sdk ]] ; then
+              mac_arches="-arch i386 -arch ppc -arch x86_64 -arch ppc64"
+              mac_sysroot="-isysroot /Developer/SDKs/MacOSX10.5.sdk"
+           else
+              mac_arches="-arch i386 -arch ppc"
+              mac_sysroot="-isysroot /Developer/SDKs/MacOSX10.4u.sdk"
+           fi
+        else
+           mac_arches=""
+           mac_sysroot=""
+           mac_version=""
+        fi
+        SHARED_FLAGS="$LIBS -dynamiclib $mac_arches $mac_sysroot $mac_version_min"
+        CFLAGS="-std=c99 $CFLAGS $mac_arches $mac_sysroot $mac_version_min"
+        OTHER_OBJS="src/os/unix/pa_unix_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o src/hostapi/coreaudio/pa_mac_core_utilities.o src/hostapi/coreaudio/pa_mac_core_blocking.o src/common/pa_ringbuffer.o"
+        PADLL="libportaudio.dylib"
         if [[ $with_macapi = "asio" ]] ; then
             if [[ $with_asiodir ]] ; then
-              ASIODIR="$with_asiodir";
+              ASIODIR="$with_asiodir"
             else
-              ASIODIR="/usr/local/asiosdk2";
+              ASIODIR="/usr/local/asiosdk2"
             fi
-            echo "ASIODIR: $ASIODIR";
+            echo "ASIODIR: $ASIODIR"
 
-            OTHER_OBJS="$CFLAGS pa_asio/iasiothiscallresolver.o $ASIODIR/host/asiodrivers.o $ASIODIR/common/asio.o $ASIODIR/host/mac/asioshlib.o";
-            CFLAGS="$CFLAGS -I\$(top_srcdir)/pa_asio -I$ASIDIR/host/mac -I$ASIODIR/common";
-            CXXFLAGS="$CFLAGS";
+            OTHER_OBJS="src/hostapi/asio/iasiothiscallresolver.o $ASIODIR/host/asiodrivers.o $ASIODIR/common/asio.o $ASIODIR/host/mac/asioshlib.o"
+            CFLAGS="$CFLAGS -I\$(top_srcdir)/src/hostapi/asio -I$ASIODIR/host/mac -I$ASIODIR/common"
+            CXXFLAGS="$CFLAGS"
         fi
-
-	if [[ $with_universal_binary = "yes" ]] ; then
-	   dnl these are the CFLAGs needed for Universal Binary builds on
-	   dnl all OS X targets. $UNIV_CFLAGS contains extra CFLAGS needed for
-	   dnl Universal. Content depends on if 10.5 SDK is installed. Flags here
-	   dnl are needed for universal regardless of 10.5 or not
-	   CFLAGS="${CFLAGS} ${UNIV_CFLAGS} -arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.3 -Werror"
-	   dnl ${UNIV_SHARED_FLAGS} is the extra flags for universal binary builds
-	   dnl content depends on the OS X version in use. Flags listed here are
-	   dnl needed for Universal Binary regardless of the OS X version
-	   SHARED_FLAGS="${SHARED_FLAGS} ${UNIV_SHARED_FLAGS} -arch i386 -arch ppc -mmacosx-version-min=10.3";
-	fi
-
-	if [[ $MAC_BEFORE_TIGER = "yes" ]] ; then
-	    echo "Disabling SMP memory protection because we're on Mac OS X prior to 10.4 (Tiger)."
-	    CFLAGS="$CFLAGS -DALLOW_SMP_DANGERS=1"
-	fi
-	;;
+        ;;
 
   mingw* )
         dnl MingW configuration
@@ -231,138 +196,153 @@ case "${host_os}" in
         echo "WINAPI: $with_winapi"
         if [[ $with_winapi = "directx" ]] ; then
             if [[ $with_dxdir ]] ; then
-              DXDIR="$with_dxdir";
+              DXDIR="$with_dxdir"
             else
-              DXDIR="/usr/local/dx7sdk";
+              DXDIR="/usr/local/dx7sdk"
             fi
             echo "DXDIR: $DXDIR"
-            OTHER_OBJS="src/hostapi/dsound/pa_win_ds.o src/hostapi/dsound/pa_win_ds_dynlink.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o";
-            LIBS="-lwinmm -lm -ldsound -lole32";
-            PADLL="portaudio.dll";
-	    THREAD_CFLAGS="-mthreads"
-            SHARED_FLAGS="-shared";
-            DLL_LIBS="${DLL_LIBS} -lwinmm -lm -L./dx7sdk/lib -ldsound -lole32";
-            #VC98="\"/c/Program Files/Microsoft Visual Studio/VC98/Include\"";
-            #CFLAGS="$CFLAGS -I$VC98 -DPA_NO_WMME -DPA_NO_ASIO";
-            CFLAGS="$CFLAGS -I\$(top_srcdir)/include -I$DXDIR/include -DPA_NO_WMME -DPA_NO_ASIO" -DPA_NO_WDMKS;
+            OTHER_OBJS="src/hostapi/dsound/pa_win_ds.o src/hostapi/dsound/pa_win_ds_dynlink.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o src/os/win/pa_win_waveformat.o"
+            LIBS="-lwinmm -lm -ldsound -lole32"
+            PADLL="portaudio.dll"
+            THREAD_CFLAGS="-mthreads"
+            SHARED_FLAGS="-shared"
+            DLL_LIBS="${DLL_LIBS} -lwinmm -lm -L./dx7sdk/lib -ldsound -lole32"
+            #VC98="\"/c/Program Files/Microsoft Visual Studio/VC98/Include\""
+            #CFLAGS="$CFLAGS -I$VC98 -DPA_NO_WMME -DPA_NO_ASIO"
+            CFLAGS="$CFLAGS -I\$(top_srcdir)/include -I$DXDIR/include -DPA_NO_WMME -DPA_NO_ASIO" -DPA_NO_WDMKS
         elif [[ $with_winapi = "asio" ]] ; then
             if [[ $with_asiodir ]] ; then
-              ASIODIR="$with_asiodir";
+              ASIODIR="$with_asiodir"
             else
-              ASIODIR="/usr/local/asiosdk2";
+              ASIODIR="/usr/local/asiosdk2"
             fi
             echo "ASIODIR: $ASIODIR"
 
-            OTHER_OBJS="pa_asio/pa_asio.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o pa_asio/iasiothiscallresolver.o $ASIODIR/common/asio.o $ASIODIR/host/asiodrivers.o $ASIODIR/host/pc/asiolist.o";
-            LIBS="-lwinmm -lm -lstdc++ -lole32 -luuid";
-            PADLL="portaudio.dll";
-	    THREAD_CFLAGS="-mthreads"
-            SHARED_FLAGS="-shared";
-            DLL_LIBS="${DLL_LIBS} -lwinmm -lm -lstdc++ -lole32 -luuid";
-            CFLAGS="$CFLAGS -ffast-math -fomit-frame-pointer -I\$(top_srcdir)/src/common -I\$(top_srcdir)/pa_asio -I$ASIODIR/host/pc -I$ASIODIR/common -I$ASIODIR/host -DPA_NO_WMME -DPA_NO_DS -DPA_NO_WDMKS -DWINDOWS";
-            CXXFLAGS="$CFLAGS";
+
+            OTHER_OBJS="src/hostapi/asio/pa_asio.o src/common/pa_ringbuffer.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o src/hostapi/asio/iasiothiscallresolver.o $ASIODIR/common/asio.o $ASIODIR/host/asiodrivers.o $ASIODIR/host/pc/asiolist.o"
+            LIBS="-lwinmm -lm -lstdc++ -lole32 -luuid"
+            PADLL="portaudio.dll"
+            THREAD_CFLAGS="-mthreads"
+            SHARED_FLAGS="-shared"
+            DLL_LIBS="${DLL_LIBS} -lwinmm -lm -lstdc++ -lole32 -luuid"
+            CFLAGS="$CFLAGS -ffast-math -fomit-frame-pointer -I\$(top_srcdir)/src/common -I\$(top_srcdir)/src/hostapi/asio -I$ASIODIR/host/pc -I$ASIODIR/common -I$ASIODIR/host -DPA_NO_WMME -DPA_NO_DS -DPA_NO_WDMKS -DWINDOWS"
+            CXXFLAGS="$CFLAGS"
         elif [[ $with_winapi = "wdmks" ]] ; then
             if [[ $with_dxdir ]] ; then
-              DXDIR="$with_dxdir";
+              DXDIR="$with_dxdir"
             else
-              DXDIR="/usr/local/dx7sdk";
+              DXDIR="/usr/local/dx7sdk"
             fi
             echo "DXDIR: $DXDIR"
-            OTHER_OBJS="src/hostapi/wdmks/pa_win_wdmks.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o";
-            LIBS="-lwinmm -lm -luuid -lsetupapi -lole32";
-            PADLL="portaudio.dll";
-	    THREAD_CFLAGS="-mthreads"
-            SHARED_FLAGS="-shared";
-            DLL_LIBS="${DLL_LIBS} -lwinmm -lm -L./dx7sdk/lib -luuid -lsetupapi -lole32";
-            #VC98="\"/c/Program Files/Microsoft Visual Studio/VC98/Include\"";
-            #CFLAGS="$CFLAGS -I$VC98 -DPA_NO_WMME -DPA_NO_ASIO";
-            CFLAGS="$CFLAGS -I\$(top_srcdir)/src/common -I$DXDIR/include -DPA_NO_WMME -DPA_NO_DS -DPA_NO_ASIO";
+            OTHER_OBJS="src/hostapi/wdmks/pa_win_wdmks.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o"
+            LIBS="-lwinmm -lm -luuid -lsetupapi -lole32"
+            PADLL="portaudio.dll"
+            THREAD_CFLAGS="-mthreads"
+            SHARED_FLAGS="-shared"
+            DLL_LIBS="${DLL_LIBS} -lwinmm -lm -L./dx7sdk/lib -luuid -lsetupapi -lole32"
+            #VC98="\"/c/Program Files/Microsoft Visual Studio/VC98/Include\""
+            #CFLAGS="$CFLAGS -I$VC98 -DPA_NO_WMME -DPA_NO_ASIO"
+            CFLAGS="$CFLAGS -I\$(top_srcdir)/src/common -I$DXDIR/include -DPA_NO_WMME -DPA_NO_DS -DPA_NO_ASIO"
         else   # WMME default
-            OTHER_OBJS="src/hostapi/wmme/pa_win_wmme.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o";
-            LIBS="-lwinmm -lm -lstdc++ -lole32 -luuid";
-            PADLL="portaudio.dll";
-	    THREAD_CFLAGS="-mthreads"
-            SHARED_FLAGS="-shared";
-            DLL_LIBS="${DLL_LIBS} -lwinmm";
-            CFLAGS="$CFLAGS -I\$(top_srcdir)/src/common -DPA_NO_DS -DPA_NO_ASIO -DPA_NO_WDMKS";
+            OTHER_OBJS="src/hostapi/wmme/pa_win_wmme.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o src/os/win/pa_win_waveformat.o"
+            LIBS="-lwinmm -lm -lstdc++ -lole32 -luuid"
+            PADLL="portaudio.dll"
+            THREAD_CFLAGS="-mthreads"
+            SHARED_FLAGS="-shared"
+            DLL_LIBS="${DLL_LIBS} -lwinmm"
+            CFLAGS="$CFLAGS -I\$(top_srcdir)/src/common -DPA_NO_DS -DPA_NO_ASIO -DPA_NO_WDMKS"
         fi
         ;;
 
   cygwin* )
-	dnl Cygwin configuration
+        dnl Cygwin configuration
 
-	OTHER_OBJS="src/hostapi/wmme/pa_win_wmme.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o";
-	CFLAGS="$CFLAGS -DPA_NO_DS -DPA_NO_WDMKS -DPA_NO_ASIO -DPA_NO_WASAPI"
-	LIBS="-lwinmm -lm";
-	PADLL="portaudio.dll";
-	THREAD_CFLAGS="-mthreads"
-	SHARED_FLAGS="-shared";
-	DLL_LIBS="${DLL_LIBS} -lwinmm";
-	;;
+        OTHER_OBJS="src/hostapi/wmme/pa_win_wmme.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o src/os/win/pa_win_waveformat.o"
+        CFLAGS="$CFLAGS -DPA_NO_DS -DPA_NO_WDMKS -DPA_NO_ASIO -DPA_NO_WASAPI"
+        LIBS="-lwinmm -lm"
+        PADLL="portaudio.dll"
+        THREAD_CFLAGS="-mthreads"
+        SHARED_FLAGS="-shared"
+        DLL_LIBS="${DLL_LIBS} -lwinmm"
+        ;;
 
   irix* )
-	dnl SGI IRIX audio library (AL) configuration (Pieter, oct 2-13, 2003).
-	dnl The 'dmedia' library is needed to read the Unadjusted System Time (UST).
-    dnl
-	AC_CHECK_LIB(pthread, pthread_create, , AC_MSG_ERROR([IRIX posix thread library not found!]))
-	AC_CHECK_LIB(audio,   alOpenPort,     , AC_MSG_ERROR([IRIX audio library not found!]))
-	AC_CHECK_LIB(dmedia,  dmGetUST,       , AC_MSG_ERROR([IRIX digital media library not found!]))
+        dnl SGI IRIX audio library (AL) configuration (Pieter, oct 2-13, 2003).
+        dnl The 'dmedia' library is needed to read the Unadjusted System Time (UST).
+        dnl
+        AC_CHECK_LIB(pthread, pthread_create, , AC_MSG_ERROR([IRIX posix thread library not found!]))
+        AC_CHECK_LIB(audio,   alOpenPort,     , AC_MSG_ERROR([IRIX audio library not found!]))
+        AC_CHECK_LIB(dmedia,  dmGetUST,       , AC_MSG_ERROR([IRIX digital media library not found!]))
 
-	dnl See the '#ifdef PA_USE_SGI' in file pa_unix/pa_unix_hostapis.c
-	dnl which selects the appropriate PaXXX_Initialize() function.
-	dnl
-	AC_DEFINE(PA_USE_SGI)
+        dnl See the '#ifdef PA_USE_SGI' in file pa_unix/pa_unix_hostapis.c
+        dnl which selects the appropriate PaXXX_Initialize() function.
+        dnl
+        AC_DEFINE(PA_USE_SGI)
 
-	dnl The _REENTRANT option for pthread safety. Perhaps not necessary but it 'll do no harm.
-	dnl
-	THREAD_CFLAGS="-D_REENTRANT"
+        dnl The _REENTRANT option for pthread safety. Perhaps not necessary but it 'll do no harm.
+        dnl
+        THREAD_CFLAGS="-D_REENTRANT"
     
-	OTHER_OBJS="pa_sgi/pa_sgi.o src/os/unix/pa_unix_hostapis.o src/os/unix/pa_unix_util.o";
-	
-	dnl SGI books say -lpthread should be the last of the libs mentioned.
-	dnl
-	LIBS="-lm -ldmedia -laudio -lpthread";
-	PADLL="libportaudio.so";
-	SHARED_FLAGS="";
-	;;
+        OTHER_OBJS="pa_sgi/pa_sgi.o src/os/unix/pa_unix_hostapis.o src/os/unix/pa_unix_util.o"
+
+        dnl SGI books say -lpthread should be the last of the libs mentioned.
+        dnl
+        LIBS="-lm -ldmedia -laudio -lpthread"
+        PADLL="libportaudio.so"
+        SHARED_FLAGS=""
+        ;;
 
   *)
-	dnl Unix configuration
+        dnl Unix configuration
 
-   AC_CHECK_LIB(pthread, pthread_create,[have_pthread="yes"]
-                ,
+        AC_CHECK_LIB(pthread, pthread_create,[have_pthread="yes"],
                 AC_MSG_ERROR([libpthread not found!]))
 
-	if [[ $have_alsa = "yes" ] && [ $with_alsa != "no" ]] ; then
-		DLL_LIBS="$DLL_LIBS -lasound"
-		OTHER_OBJS="$OTHER_OBJS src/hostapi/alsa/pa_linux_alsa.o"
-                AC_DEFINE(PA_USE_ALSA)
-	fi
+        if [[ $have_alsa = "yes" ] && [ $with_alsa != "no" ]] ; then
+           DLL_LIBS="$DLL_LIBS -lasound"
+           LIBS="$LIBS -lasound"
+           OTHER_OBJS="$OTHER_OBJS src/hostapi/alsa/pa_linux_alsa.o"
+           AC_DEFINE(PA_USE_ALSA)
+        fi
 
-	if [[ $have_jack = "yes" ] && [ $with_jack != "no" ]] ; then
-		DLL_LIBS="$DLL_LIBS $JACK_LIBS"
-		CFLAGS="$CFLAGS $JACK_CFLAGS"
-		OTHER_OBJS="$OTHER_OBJS src/hostapi/jack/pa_jack.o src/common/pa_ringbuffer.o"
-                AC_DEFINE(PA_USE_JACK)
-	fi
+        if [[ $have_jack = "yes" ] && [ $with_jack != "no" ]] ; then
+           DLL_LIBS="$DLL_LIBS $JACK_LIBS"
+           CFLAGS="$CFLAGS $JACK_CFLAGS"
+           OTHER_OBJS="$OTHER_OBJS src/hostapi/jack/pa_jack.o src/common/pa_ringbuffer.o"
+           AC_DEFINE(PA_USE_JACK)
+        fi
 
-	if [[ $with_oss != "no" ]] ; then
-		OTHER_OBJS="$OTHER_OBJS src/hostapi/oss/pa_unix_oss.o"
-		AC_DEFINE(PA_USE_OSS)
-	fi
-	
-	if [[ $have_asihpi = "yes" ] && [ $with_asihpi != "no" ]] ; then
-                LIBS="$LIBS -lhpi"
-		DLL_LIBS="$DLL_LIBS -lhpi"
-		OTHER_OBJS="$OTHER_OBJS src/hostapi/asihpi/pa_linux_asihpi.o"
-                AC_DEFINE(PA_USE_ASIHPI)
-	fi
-	
-	THREAD_CFLAGS="-pthread"
-	DLL_LIBS="$DLL_LIBS -lm -lpthread";
-	LIBS="$LIBS -lm -lpthread";
-	PADLL="libportaudio.so";
-	SHARED_FLAGS="-shared -fPIC";
+        if [[ $with_oss != "no" ]] ; then
+           OTHER_OBJS="$OTHER_OBJS src/hostapi/oss/pa_unix_oss.o"
+           if [[ $have_libossaudio = "yes" ]] ; then
+                   DLL_LIBS="$DLL_LIBS -lossaudio"
+                   LIBS="$LIBS -lossaudio"
+           fi      
+           AC_DEFINE(PA_USE_OSS)
+        fi
+
+        if [[ $have_asihpi = "yes" ] && [ $with_asihpi != "no" ]] ; then
+           LIBS="$LIBS -lhpi"
+           DLL_LIBS="$DLL_LIBS -lhpi"
+           OTHER_OBJS="$OTHER_OBJS src/hostapi/asihpi/pa_linux_asihpi.o"
+           AC_DEFINE(PA_USE_ASIHPI)
+        fi
+
+        DLL_LIBS="$DLL_LIBS -lm -lpthread"
+        LIBS="$LIBS -lm -lpthread"
+        PADLL="libportaudio.so"
+
+        ## support sun cc compiler flags
+        case "${host_os}" in
+           solaris*)
+              SHARED_FLAGS="-G"
+              THREAD_CFLAGS="-mt"
+              ;;
+           *)
+              SHARED_FLAGS="-shared -fPIC"
+              THREAD_CFLAGS="-pthread"
+              ;;
+        esac
 
         OTHER_OBJS="$OTHER_OBJS src/os/unix/pa_unix_hostapis.o src/os/unix/pa_unix_util.o"
 esac
@@ -371,10 +351,10 @@ CFLAGS="$CFLAGS $THREAD_CFLAGS"
 if test "$enable_cxx" = "yes"; then
    AC_CONFIG_SUBDIRS([bindings/cpp])
    ENABLE_CXX_TRUE=""
-   ENABLE_CXX_FALE="#"
+   ENABLE_CXX_FALSE="#"
 else
    ENABLE_CXX_TRUE="#"
-   ENABLE_CXX_FALE=""
+   ENABLE_CXX_FALSE=""
 fi
 AC_SUBST(ENABLE_CXX_TRUE)
 AC_SUBST(ENABLE_CXX_FALSE)
