@@ -6,7 +6,7 @@
 	@author Ross Bencina <rossb@audiomulch.com>
 */
 /*
- * $Id: patest_stop_playout.c,v 1.6 2007-12-09 21:51:11 richardash1981 Exp $
+ * $Id: patest_stop_playout.c,v 1.7 2008-03-18 12:36:53 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com/

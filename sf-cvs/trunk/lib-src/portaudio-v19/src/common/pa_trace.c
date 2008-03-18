@@ -1,5 +1,5 @@
 /*
- * $Id: pa_trace.c,v 1.6 2007-12-09 21:50:55 richardash1981 Exp $
+ * $Id: pa_trace.c,v 1.7 2008-03-18 12:36:32 richardash1981 Exp $
  * Portable Audio I/O Library Trace Facility
  * Store trace information in real-time for later printing.
  *
@@ -40,7 +40,7 @@
 /** @file
  @ingroup common_src
 
- @brief Event trace mechanism for debugging.
+ @brief Real-time safe event trace logging facility for debugging.
 */
 
 

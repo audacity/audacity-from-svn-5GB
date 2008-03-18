@@ -1,5 +1,5 @@
 /*
- * $Id: pa_linux_alsa.c,v 1.8 2007-12-09 21:50:56 richardash1981 Exp $
+ * $Id: pa_linux_alsa.c,v 1.9 2008-03-18 12:36:33 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * ALSA implementation by Joshua Haberman and Arve Knudsen
@@ -3530,10 +3530,31 @@ void PaAlsa_EnableWatchdog( PaStream *s, int enable )
 }
 #endif
 
-PaError PaAlsa_GetStreamInputCard(PaStream* s, int* card) {
-    PaAlsaStream *stream = (PaAlsaStream *) s;
-    snd_pcm_info_t* pcmInfo;
+static PaError GetAlsaStreamPointer( PaStream* s, PaAlsaStream** stream )
+{
     PaError result = paNoError;
+    PaUtilHostApiRepresentation* hostApi;
+    PaAlsaHostApiRepresentation* alsaHostApi;
+    
+    PA_ENSURE( PaUtil_ValidateStreamPointer( s ) );
+    PA_ENSURE( PaUtil_GetHostApiRepresentation( &hostApi, paALSA ) );
+    alsaHostApi = (PaAlsaHostApiRepresentation*)hostApi;
+    
+    PA_UNLESS( PA_STREAM_REP( s )->streamInterface == &alsaHostApi->callbackStreamInterface
+            || PA_STREAM_REP( s )->streamInterface == &alsaHostApi->blockingStreamInterface,
+        paIncompatibleStreamHostApi );
+
+    *stream = (PaAlsaStream*)s;
+error:
+    return paNoError;
+}
+
+PaError PaAlsa_GetStreamInputCard(PaStream* s, int* card) {
+    PaAlsaStream *stream;
+    PaError result = paNoError;
+    snd_pcm_info_t* pcmInfo;
+
+    PA_ENSURE( GetAlsaStreamPointer( s, &stream ) );
 
     /* XXX: More descriptive error? */
     PA_UNLESS( stream->capture.pcm, paDeviceUnavailable );
@@ -3547,9 +3568,11 @@ error:
 }
 
 PaError PaAlsa_GetStreamOutputCard(PaStream* s, int* card) {
-    PaAlsaStream *stream = (PaAlsaStream *) s;
-    snd_pcm_info_t* pcmInfo;
+    PaAlsaStream *stream;
     PaError result = paNoError;
+    snd_pcm_info_t* pcmInfo;
+
+    PA_ENSURE( GetAlsaStreamPointer( s, &stream ) );
 
     /* XXX: More descriptive error? */
     PA_UNLESS( stream->playback.pcm, paDeviceUnavailable );

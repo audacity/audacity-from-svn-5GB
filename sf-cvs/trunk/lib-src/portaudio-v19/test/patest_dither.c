@@ -7,7 +7,7 @@
 	@author Phil Burk  http://www.softsynth.com
 */
 /*
- * $Id: patest_dither.c,v 1.6 2007-12-09 21:51:09 richardash1981 Exp $
+ * $Id: patest_dither.c,v 1.7 2008-03-18 12:36:48 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -112,6 +112,10 @@ PaError PlaySine( paTestData *data, PaStreamFlags flags, float amplitude )
         goto done;
 
     outputParameters.device = Pa_GetDefaultOutputDevice();  /* default output device */
+    if (outputParameters.device == paNoDevice) {
+      fprintf(stderr,"Error: No default output device.\n");
+      goto done;
+    }
     outputParameters.channelCount = 2;                      /* stereo output */
     outputParameters.hostApiSpecificStreamInfo = NULL;
     outputParameters.sampleFormat = paFloat32;      /* 32 bit floating point output. */

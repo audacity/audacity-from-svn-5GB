@@ -1,5 +1,5 @@
 /*
- * $Id: debug_dual.c,v 1.6 2007-12-09 21:51:04 richardash1981 Exp $
+ * $Id: debug_dual.c,v 1.7 2008-03-18 12:36:44 richardash1981 Exp $
  * debug_dual.c
  * Try to open TWO streams on separate cards.
  * Play a sine sweep using the Portable Audio api for several seconds.

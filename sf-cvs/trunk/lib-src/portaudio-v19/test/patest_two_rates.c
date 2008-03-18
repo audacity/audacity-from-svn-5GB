@@ -4,7 +4,7 @@
 	@author Phil Burk <philburk@softsynth.com>
 */
 /*
- * $Id: patest_two_rates.c,v 1.6 2007-12-09 21:51:12 richardash1981 Exp $
+ * $Id: patest_two_rates.c,v 1.7 2008-03-18 12:36:54 richardash1981 Exp $
  *
  * Author: Phil Burk  http://www.softsynth.com
  *

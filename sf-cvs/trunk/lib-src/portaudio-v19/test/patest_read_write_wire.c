@@ -6,7 +6,7 @@
     @author based on code by: Ross Bencina rossb@audiomulch.com
 */
 /*
- * $Id: patest_read_write_wire.c,v 1.6 2007-12-09 21:51:11 richardash1981 Exp $
+ * $Id: patest_read_write_wire.c,v 1.7 2008-03-18 12:36:50 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -45,7 +45,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 #include "portaudio.h"
 
 /* #define SAMPLE_RATE  (17932) // Test failure to open with this value. */
@@ -60,25 +60,25 @@
 #define PA_SAMPLE_TYPE  paFloat32
 #define SAMPLE_SIZE (4)
 #define SAMPLE_SILENCE  (0.0f)
-#define CLEAR(a) bzero( (a),  FRAMES_PER_BUFFER * NUM_CHANNELS * SAMPLE_SIZE )
+#define CLEAR(a) memset( (a), 0, FRAMES_PER_BUFFER * NUM_CHANNELS * SAMPLE_SIZE )
 #define PRINTF_S_FORMAT "%.8f"
 #elif 0
 #define PA_SAMPLE_TYPE  paInt16
 #define SAMPLE_SIZE (2)
 #define SAMPLE_SILENCE  (0)
-#define CLEAR(a) bzero( (a),  FRAMES_PER_BUFFER * NUM_CHANNELS * SAMPLE_SIZE )
+#define CLEAR(a) memset( (a), 0,  FRAMES_PER_BUFFER * NUM_CHANNELS * SAMPLE_SIZE )
 #define PRINTF_S_FORMAT "%d"
 #elif 1
 #define PA_SAMPLE_TYPE  paInt24
 #define SAMPLE_SIZE (3)
 #define SAMPLE_SILENCE  (0)
-#define CLEAR(a) bzero( (a),  FRAMES_PER_BUFFER * NUM_CHANNELS * SAMPLE_SIZE )
+#define CLEAR(a) memset( (a), 0,  FRAMES_PER_BUFFER * NUM_CHANNELS * SAMPLE_SIZE )
 #define PRINTF_S_FORMAT "%d"
 #elif 0
 #define PA_SAMPLE_TYPE  paInt8
 #define SAMPLE_SIZE (1)
 #define SAMPLE_SILENCE  (0)
-#define CLEAR(a) bzero( (a),  FRAMES_PER_BUFFER * NUM_CHANNELS * SAMPLE_SIZE )
+#define CLEAR(a) memset( (a), 0,  FRAMES_PER_BUFFER * NUM_CHANNELS * SAMPLE_SIZE )
 #define PRINTF_S_FORMAT "%d"
 #else
 #define PA_SAMPLE_TYPE  paUInt8

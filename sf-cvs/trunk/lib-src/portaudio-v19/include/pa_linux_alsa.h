@@ -2,7 +2,7 @@
 #define PA_LINUX_ALSA_H
 
 /*
- * $Id: pa_linux_alsa.h,v 1.7 2007-12-09 21:50:53 richardash1981 Exp $
+ * $Id: pa_linux_alsa.h,v 1.8 2008-03-18 12:36:27 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * ALSA-specific extensions
  *
@@ -40,7 +40,8 @@
  */
 
 /** @file
- * ALSA-specific PortAudio API extension header file.
+ *  @ingroup public_header
+ *  @brief ALSA-specific PortAudio API extension header file.
  */
 #include "portaudio.h"
 

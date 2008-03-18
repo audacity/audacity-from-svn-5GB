@@ -1,10 +1,10 @@
 /*
- * $Id: pa_win_util.c,v 1.6 2007-12-09 21:51:02 richardash1981 Exp $
+ * $Id: pa_win_util.c,v 1.7 2008-03-18 12:36:42 richardash1981 Exp $
  * Portable Audio I/O Library
  * Win32 platform-specific support functions
  *
  * Based on the Open Source API proposed by Ross Bencina
- * Copyright (c) 1999-2000 Ross Bencina
+ * Copyright (c) 1999-2008 Ross Bencina
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files
@@ -40,7 +40,7 @@
 /** @file
  @ingroup win_src
 
- Win32 platform-specific support functions.
+ @brief Win32 implementation of platform-specific PaUtil support functions.
 
     @todo Implement workaround for QueryPerformanceCounter() skipping forward
     bug. (see msdn kb Q274323).
