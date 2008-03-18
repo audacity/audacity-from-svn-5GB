@@ -60,7 +60,7 @@ If you are an interested student, please follow these steps:
 		especially from <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_student_apply\">'How does a student apply?'</a>).</li>
 	<li>Make sure you are <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_eligibility\">eligible</a>.</li>
 	<li>On the Audacity Wiki, check the <a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Ideas\">project ideas page</a>.</li>
-	<li>If you find an interesting idea, or have one of your own, also check the <a href=\"http://www.audacityteam.org/wiki/index.php?title=Writing_GSoC_Proposals\">Ideas page</a>.</li>
+	<li>If you find an interesting idea, or have one of your own, then check <a href=\"http://www.audacityteam.org/wiki/index.php?title=Writing_GSoC_Proposals\">Writing GSoC Proposals</a>.</li>
 	<li>Then be in touch with us -- far better to discuss plans with us before applying.</li>
 </ol>
 </p>
