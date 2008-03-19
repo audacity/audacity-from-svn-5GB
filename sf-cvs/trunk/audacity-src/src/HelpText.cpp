@@ -271,7 +271,7 @@ If the level is too high, there will be distortion in the loud parts. \
 To set the level, either see this [[wiki:Recording_levels|illustrated online guide]] \
 or follow these steps: \
 <ol><li>\
-Turn on <b>monitoring</b>. Double-click the right-hand of the two </i>VU Meters</i> \
+Turn on <b>monitoring</b>. Double-click the right-hand of the two <i>VU Meters</i> \
 (or right-click over it) and click \"Start Monitoring\". \
 If the meters are not visible, click <i>View &gt; Toolbars</i> and check \"Meter Toolbar\". \
 </li><li>Adjust the input slider on the <i>Mixer Toolbar</i> \
