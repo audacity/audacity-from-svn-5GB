@@ -38,9 +38,12 @@
 #include "PluginLoader.h"
 #include "PluginInputDomainAdapter.h"
 #include "PluginChannelAdapter.h"
+#include "PluginBufferingAdapter.h"
 
 #include <fstream>
 #include <cctype> // tolower
+
+#include <cstring>
 
 #ifdef _WIN32
 
@@ -394,6 +397,10 @@ PluginLoader::Impl::loadPlugin(PluginKey key,
                 }
             }
 
+            if (adapterFlags & ADAPT_BUFFER_SIZE) {
+                adapter = new PluginBufferingAdapter(adapter);
+            }
+
             if (adapterFlags & ADAPT_CHANNEL_COUNT) {
                 adapter = new PluginChannelAdapter(adapter);
             }
@@ -577,11 +584,9 @@ PluginLoader::Impl::listFiles(string dir, string extension)
             
     struct dirent *e = 0;
     while ((e = readdir(d))) {
-        
-        if (!(e->d_type & DT_REG) && (e->d_type != DT_UNKNOWN)) continue;
-        
+ 
         if (!e->d_name) continue;
-        
+       
         size_t len = strlen(e->d_name);
         if (len < extlen + 2 ||
             e->d_name + len - extlen - 1 != "." + extension) {
