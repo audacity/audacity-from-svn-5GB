@@ -47,7 +47,7 @@
 #include <iostream>
 #include <string>
 
-#ifndef WIN32
+#ifndef _WIN32
 struct timeval;
 #endif
 
@@ -77,7 +77,7 @@ struct RealTime
     static RealTime fromSeconds(double sec);
     static RealTime fromMilliseconds(int msec);
 
-#ifndef WIN32
+#ifndef _WIN32
     static RealTime fromTimeval(const struct timeval &);
 #endif
 
@@ -125,24 +125,32 @@ struct RealTime
 
     RealTime operator/(int d) const;
 
-    // Find the fractional difference between times
-    //
+    /**
+     * Return the ratio of two times.
+     */
     double operator/(const RealTime &r) const;
 
-    // Return a human-readable debug-type string to full precision
-    // (probably not a format to show to a user directly)
-    // 
+    /**
+     * Return a human-readable debug-type string to full precision
+     * (probably not a format to show to a user directly)
+     */ 
     std::string toString() const;
 
-    // Return a user-readable string to the nearest millisecond
-    // in a form like HH:MM:SS.mmm
-    //
+    /**
+     * Return a user-readable string to the nearest millisecond
+     * in a form like HH:MM:SS.mmm
+     */
     std::string toText(bool fixedDp = false) const;
 
-    // Convenience functions for handling sample frames
-    //
-    static long realTime2Frame(const RealTime &r, unsigned int sampleRate);
-    static RealTime frame2RealTime(long frame, unsigned int sampleRate);
+    /**
+     * Convert a RealTime into a sample frame at the given sample rate.
+     */
+    static long long realTime2Frame(const RealTime &r, unsigned int sampleRate);
+
+    /**
+     * Convert a sample frame at the given sample rate into a RealTime.
+     */
+    static RealTime frame2RealTime(long long frame, unsigned int sampleRate);
 
     static const RealTime zeroTime;
 };
