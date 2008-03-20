@@ -7,6 +7,7 @@
 
     Centre for Digital Music, Queen Mary, University of London.
     Copyright 2006-2007 Chris Cannam and QMUL.
+    This file by Mark Levy, Copyright 2007 QMUL.
   
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation
@@ -34,71 +35,63 @@
     authorization.
 */
 
-#ifndef _VAMP_PLUGIN_WRAPPER_H_
-#define _VAMP_PLUGIN_WRAPPER_H_
+#ifndef _VAMP_PLUGIN_BUFFERING_ADAPTER_H_
+#define _VAMP_PLUGIN_BUFFERING_ADAPTER_H_
 
-#include "vamp-sdk/Plugin.h"
+#include "PluginWrapper.h"
 
 namespace Vamp {
-
+	
 namespace HostExt {
-
+		
 /**
- * \class PluginWrapper PluginWrapper.h <vamp-sdk/hostext/PluginWrapper.h>
- * 
- * PluginWrapper is a simple base class for adapter plugins.  It takes
- * a pointer to a "to be wrapped" Vamp plugin on construction, and
- * provides implementations of all the Vamp plugin methods that simply
- * delegate through to the wrapped plugin.  A subclass can therefore
- * override only the methods that are meaningful for the particular
- * adapter.
+ * \class PluginBufferingAdapter PluginBufferingAdapter.h <vamp-sdk/hostext/PluginBufferingAdapter.h>
  *
- * \note This class was introduced in version 1.1 of the Vamp plugin SDK.
+ * PluginBufferingAdapter is a Vamp plugin adapter that allows plugins
+ * to be used by a host supplying an audio stream in non-overlapping
+ * buffers of arbitrary size.
+ *
+ * A host using PluginBufferingAdapter may ignore the preferred step
+ * and block size reported by the plugin, and still expect the plugin
+ * to run.  The value of blockSize and stepSize passed to initialise
+ * should be the size of the buffer which the host will supply; the
+ * stepSize should be equal to the blockSize.
+ *
+ * If the internal step size used for the plugin differs from that
+ * supplied by the host, the adapter will modify the sample type and
+ * rate specifications for the plugin outputs appropriately, and set
+ * timestamps on the output features for outputs that formerly used a
+ * different sample rate specification.  This is necessary in order to
+ * obtain correct time stamping.
+ * 
+ * In other respects, the PluginBufferingAdapter behaves identically
+ * to the plugin that it wraps. The wrapped plugin will be deleted
+ * when the wrapper is deleted.
  */
-
-class PluginWrapper : public Plugin
+		
+class PluginBufferingAdapter : public PluginWrapper
 {
 public:
-    virtual ~PluginWrapper();
+    PluginBufferingAdapter(Plugin *plugin); // I take ownership of plugin
+    virtual ~PluginBufferingAdapter();
     
     bool initialise(size_t channels, size_t stepSize, size_t blockSize);
-    void reset();
-
-    InputDomain getInputDomain() const;
-
-    unsigned int getVampApiVersion() const;
-    std::string getIdentifier() const;
-    std::string getName() const;
-    std::string getDescription() const;
-    std::string getMaker() const;
-    int getPluginVersion() const;
-    std::string getCopyright() const;
-
-    ParameterList getParameterDescriptors() const;
-    float getParameter(std::string) const;
-    void setParameter(std::string, float);
-
-    ProgramList getPrograms() const;
-    std::string getCurrentProgram() const;
-    void selectProgram(std::string);
 
     size_t getPreferredStepSize() const;
-    size_t getPreferredBlockSize() const;
-
-    size_t getMinChannelCount() const;
-    size_t getMaxChannelCount() const;
-
+    
     OutputList getOutputDescriptors() const;
 
+    void reset();
+
     FeatureSet process(const float *const *inputBuffers, RealTime timestamp);
-
+    
     FeatureSet getRemainingFeatures();
-
+    
 protected:
-    PluginWrapper(Plugin *plugin); // I take ownership of plugin
-    Plugin *m_plugin;
+    class Impl;
+    Impl *m_impl;
 };
-
+    
 }
 
 }
