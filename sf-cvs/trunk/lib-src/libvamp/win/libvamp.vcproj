@@ -502,6 +502,14 @@
 			Name="src/hostext"
 			>
 			<File
+				RelativePath="..\vamp-sdk\hostext\PluginBufferingAdapter.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\vamp-sdk\hostext\PluginBufferingAdapter.h"
+				>
+			</File>
+			<File
 				RelativePath="..\vamp-sdk\hostext\PluginChannelAdapter.cpp"
 				>
 			</File>
