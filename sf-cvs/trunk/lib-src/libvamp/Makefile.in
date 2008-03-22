@@ -99,6 +99,7 @@ HOSTSDK_HEADERS	= \
 		$(SDKDIR)/RealTime.h
 
 HOSTEXT_HEADERS = \
+		$(HOSTEXTDIR)/PluginBufferingAdapter.h \
 		$(HOSTEXTDIR)/PluginChannelAdapter.h \
 		$(HOSTEXTDIR)/PluginInputDomainAdapter.h \
 		$(HOSTEXTDIR)/PluginLoader.h \
@@ -110,6 +111,7 @@ SDK_OBJECTS	= \
 
 HOSTSDK_OBJECTS	= \
 		$(SDKDIR)/PluginHostAdapter.o \
+		$(HOSTEXTDIR)/PluginBufferingAdapter.o \
 		$(HOSTEXTDIR)/PluginChannelAdapter.o \
 		$(HOSTEXTDIR)/PluginInputDomainAdapter.o \
 		$(HOSTEXTDIR)/PluginLoader.o \
