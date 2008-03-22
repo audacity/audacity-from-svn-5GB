@@ -125,7 +125,7 @@
 
    #include	<math.h>
    
-   #define	lrint(dbl)		((int)rint(flt))
+   #define	lrint(dbl)		((int)rint(dbl))
 	#define	lrintf(flt)		((int)rint(flt))
 
 #endif
