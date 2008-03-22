@@ -39,17 +39,27 @@ AC_INIT
 dnl Check for existence of Audacity.h
 AC_CONFIG_SRCDIR([src/Audacity.h])
 
+dnl -------------------------------------------------------
 dnl Checks for programs.
+dnl -------------------------------------------------------
+dnl save $CFLAGS and c. since AC_PROG_CC likes to insert "-g -O2"
+dnl if $CFLAGS is blank and it finds GCC
+cflags_save="$CFLAGS"
+cppflags_save="$CPPLFAGS"
+cxxflags_save="$CXXFLAGS"
 AC_PROG_CC
-AC_PROG_GCC_TRADITIONAL
 AC_LANG([C++])
 AC_PROG_CXX
 AC_PROG_CXXCPP
+CFLAGS="$cflags_save"
+CPPFLAGS="$cppflags_save"
+CXXFLAGS="$cxxflags_save"
+
 AC_PROG_INSTALL
 dnl pkg-config is required for lots of things
-AC_CHECK_PROG(HAVE_PKG_CONFIG, pkg-config, yes)
-if test x$HAVE_PKG_CONFIG = xyes ; then
-   AC_MSG_ERROR([pkg-config is required to install audacity!])
+AC_CHECK_PROG(HAVE_PKG_CONFIG, pkg-config, yes, no)
+if test x$HAVE_PKG_CONFIG = xno ; then
+   AC_MSG_ERROR([pkg-config is required to compile audacity!])
 fi
 
 dnl extra variables
