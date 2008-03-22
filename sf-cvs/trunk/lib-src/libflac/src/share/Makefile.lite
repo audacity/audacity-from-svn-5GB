@@ -1,40 +1,53 @@
+#  FLAC - Free Lossless Audio Codec
+#  Copyright (C) 2001,2002,2003,2004,2005,2006,2007  Josh Coalson
 #
-# GNU makefile
+#  This file is part the FLAC project.  FLAC is comprised of several
+#  components distributed under difference licenses.  The codec libraries
+#  are distributed under Xiph.Org's BSD-like license (see the file
+#  COPYING.Xiph in this distribution).  All other programs, libraries, and
+#  plugins are distributed under the GPL (see COPYING.GPL).  The documentation
+#  is distributed under the Gnu FDL (see COPYING.FDL).  Each file in the
+#  FLAC distribution contains at the top the terms under which it may be
+#  distributed.
 #
+#  Since this particular file is relevant to all components of FLAC,
+#  it may be distributed under the Xiph.Org license, which is the least
+#  restrictive of those mentioned above.  See the file COPYING.Xiph in this
+#  distribution.
 
-LIB_NAME = libgetopt
-INCLUDES = -I../../include -I../../include/share
+.PHONY: all getopt grabbag replaygain_analysis replaygain_synthesis utf8
+all: getopt grabbag replaygain_analysis replaygain_synthesis utf8
 
-OBJS = \
-	getopt.o \
-	getopt1.o
+DEFAULT_CONFIG = release
 
-include ../../build/lib.mk
+CONFIG = $(DEFAULT_CONFIG)
 
-# Our lame Makefile.lite system has no provision for building multiple libs in
-# a directory, so we hack it:
-UTF8_LIB_NAME = libutf8
-UTF8_OBJS = charset.o iconvert.o utf8.o
-UTF8_STATIC_LIB = $(LIBPATH)/$(UTF8_LIB_NAME).$(STATIC_LIB_SUFFIX)
-UTF8_DYNAMIC_LIB = $(LIBPATH)/$(UTF8_LIB_NAME).$(DYNAMIC_LIB_SUFFIX)
+debug   : CONFIG = debug
+valgrind: CONFIG = valgrind
+release : CONFIG = release
 
-debug: $(UTF8_STATIC_LIB) $(UTF8_DYNAMIC_LIB)
+debug   : all
+valgrind: all
+release : all
 
-release: $(UTF8_STATIC_LIB) $(UTF8_DYNAMIC_LIB)
+getopt:
+	(cd $@ ; $(MAKE) -f Makefile.lite $(CONFIG))
 
-clean: utf8_clean
+grabbag:
+	(cd $@ ; $(MAKE) -f Makefile.lite $(CONFIG))
 
-utf8_clean:
-	rm -f $(UTF8_OBJS) $(UTF8_STATIC_LIB) $(UTF8_DYNAMIC_LIB)
+replaygain_analysis:
+	(cd $@ ; $(MAKE) -f Makefile.lite $(CONFIG))
 
-$(UTF8_STATIC_LIB): $(UTF8_OBJS)
-	$(LINK) $@ $(UTF8_OBJS) && ranlib $@
+replaygain_synthesis:
+	(cd $@ ; $(MAKE) -f Makefile.lite $(CONFIG))
 
-$(UTF8_DYNAMIC_LIB): $(UTF8_OBJS)
-ifeq ($(DARWIN_BUILD),yes)
-	$(LINKD) -o $@ $(UTF8_OBJS) $(LFLAGS) $(LIBS) -lc
-else
-	$(LINKD) -o $@ $(UTF8_OBJS) $(LFLAGS) $(LIBS)
-endif
+utf8:
+	(cd $@ ; $(MAKE) -f Makefile.lite $(CONFIG))
 
-# DO NOT DELETE THIS LINE -- make depend depends on it.
+clean:
+	-(cd getopt ; $(MAKE) -f Makefile.lite clean)
+	-(cd grabbag ; $(MAKE) -f Makefile.lite clean)
+	-(cd replaygain_analysis ; $(MAKE) -f Makefile.lite clean)
+	-(cd replaygain_synthesis ; $(MAKE) -f Makefile.lite clean)
+	-(cd utf8 ; $(MAKE) -f Makefile.lite clean)

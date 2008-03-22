@@ -41,10 +41,17 @@ libflac
 -------
 http://flac.sourceforge.net/
 Free Lossless Audio Codec encoding and decoding library
-Version in audacity cvs: 1.1.2
-Patches: mac-asm-fixes.patch. Fixes build on OS X Intel 10.4. Need to review this for newer version before it can go upstream
+Version in audacity cvs: 1.2.1
+Patches: mac-asm-fixes.patch. Fixes build on OS X Intel 10.4 by creating and
+object format for Mach-O. Needs to go upstream
+	gcc-4.3-includes.patch. Patch from gentoo to fix includes needed for
+		GCC 4.3. Already included in upstream CVS
+	asm-textreloc.patch. Patch from Gentoo to avoid text relocations is
+		the assembly optimisations. In upstream CVS
+	asneeded.patch. Add LDFLAGS needed for non-glibc systems. Taken from Gentoo.
+	flac-lite.diff. Remove all the things not included in audacity CVS from
+		the build system so it will build with 50% less stuff
 Upstream version: 1.2.1
-TODO: Update to current release version
 
 libid3tag
 ---------
@@ -205,6 +212,10 @@ Finding which files have been removed is a bit harder:
 cvs st 2>/dev/null | grep 'Status: Needs Checkout'
 gives file names but not their paths, so you have to go back and grep each
 file name to find them and do cvs rm on them.
+
+To remove all the files that are in the working directory but aren't under CVS
+control, you can use this incantation:
+\rm $(cvs st 2>/dev/null | grep '?' | cut -d '?' -f 2)
 
 5 Commit the lot to CVS
 -----------------------

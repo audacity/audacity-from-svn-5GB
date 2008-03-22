@@ -1,5 +1,5 @@
 #  metaflac - Command-line FLAC metadata editor
-#  Copyright (C) 2000,2001,2002  Josh Coalson
+#  Copyright (C) 2000,2001,2002,2003,2004,2005,2006,2007  Josh Coalson
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License
@@ -16,14 +16,39 @@
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 bin_PROGRAMS = metaflac
-CFLAGS = @CFLAGS@
+
+AM_CFLAGS = @OGG_CFLAGS@
 
 EXTRA_DIST = \
 	Makefile.lite \
-	Makefile.vc
+	metaflac.dsp \
+	metaflac.vcproj
 
 metaflac_SOURCES = \
-	main.c
+	main.c \
+	operations.c \
+	operations_shorthand_cuesheet.c \
+	operations_shorthand_picture.c \
+	operations_shorthand_seektable.c \
+	operations_shorthand_streaminfo.c \
+	operations_shorthand_vorbiscomment.c \
+	options.c \
+	usage.c \
+	utils.c \
+	operations.h \
+	operations_shorthand.h \
+	options.h \
+	usage.h \
+	utils.h
 metaflac_LDFLAGS = 
 
-metaflac_LDADD = $(top_builddir)/src/libFLAC/libFLAC.la @SHARE_LIBS@ -lm
+metaflac_LDADD = \
+	$(top_builddir)/src/share/grabbag/libgrabbag.la \
+	$(top_builddir)/src/share/replaygain_analysis/libreplaygain_analysis.la \
+	$(top_builddir)/src/share/getopt/libgetopt.a \
+	$(top_builddir)/src/share/utf8/libutf8.la \
+	$(top_builddir)/src/libFLAC/libFLAC.la \
+	@OGG_LIBS@ \
+	@LTLIBICONV@ \
+	@MINGW_WINSOCK_LIBS@ \
+	-lm
