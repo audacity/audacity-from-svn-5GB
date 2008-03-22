@@ -1,5 +1,5 @@
 #  FLAC - Free Lossless Audio Codec
-#  Copyright (C) 2001,2002,2003,2004,2005  Josh Coalson
+#  Copyright (C) 2001,2002,2003,2004,2005,2006,2007  Josh Coalson
 #
 #  This file is part the FLAC project.  FLAC is comprised of several
 #  components distributed under difference licenses.  The codec libraries
@@ -15,12 +15,20 @@
 #  restrictive of those mentioned above.  See the file COPYING.Xiph in this
 #  distribution.
 
-# modified for Audacity to include only the bare minimum required
-# directories...bloat is bad!
+if FLaC__HAS_XMMS
+XMMS_DIRS = plugin_common plugin_xmms
+endif
+
+if FLaC__WITH_CPPLIBS
+CPPLIBS_DIRS = libFLAC++ 
+endif
 
 SUBDIRS = \
 	libFLAC \
-	libFLAC++
+	share \
+	flac \
+	$(XMMS_DIRS) \
+	$(CPPLIBS_DIRS)
 
 EXTRA_DIST = \
 	Makefile.lite

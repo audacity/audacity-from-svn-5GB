@@ -1,26 +1,22 @@
-## Process this file with automake to produce Makefile.in
+#  FLAC - Free Lossless Audio Codec
+#  Copyright (C) 2002,2003,2004,2005,2006,2007  Josh Coalson
+#
+#  This file is part the FLAC project.  FLAC is comprised of several
+#  components distributed under difference licenses.  The codec libraries
+#  are distributed under Xiph.Org's BSD-like license (see the file
+#  COPYING.Xiph in this distribution).  All other programs, libraries, and
+#  plugins are distributed under the GPL (see COPYING.GPL).  The documentation
+#  is distributed under the Gnu FDL (see COPYING.FDL).  Each file in the
+#  FLAC distribution contains at the top the terms under which it may be
+#  distributed.
+#
+#  Since this particular file is relevant to all components of FLAC,
+#  it may be distributed under the Xiph.Org license, which is the least
+#  restrictive of those mentioned above.  See the file COPYING.Xiph in this
+#  distribution.
 
-AUTOMAKE_OPTIONS = foreign
-
-INCLUDES = -I$(top_srcdir)/include/share
-
-noinst_LIBRARIES = libutf8.a libgetopt.a
-
-libutf8_a_SOURCES = charset.c charset.h iconvert.c utf8.c
-
-libgetopt_a_SOURCES = getopt.c getopt1.c
+SUBDIRS = getopt replaygain_analysis replaygain_synthesis grabbag utf8
 
 EXTRA_DIST = \
 	Makefile.lite \
-	Makefile.vc \
-	README \
-	charmaps.h \
-	makemap.c \
-	charset_test.c \
-	charsetmap.h
-
-debug:
-	$(MAKE) all CFLAGS="@DEBUG@"
-
-profile:
-	$(MAKE) all CFLAGS="@PROFILE@"
+	README
