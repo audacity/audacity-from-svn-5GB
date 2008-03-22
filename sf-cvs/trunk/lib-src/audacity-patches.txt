@@ -124,12 +124,11 @@ portaudio-v19
 -------------
 http://portaudio.com/
 cross-platform audio I/O library version 19, used for 1.3.2 onwards releases
-Version in audacity cvs: 02nd February 2008 SVN snapshot (r1325)
+Version in audacity cvs: 18th March 2008 SVN snapshot (r1373)
 Patches:
-		buildoptions-osx.patch			patch by Dominic to make Universal
-					Binary optional and make build work on OS X 10.3
-		../portmixer/portaudio.patch	add features needed to make portmixer
-					work. Will need updating as upstream portaudio moves
+../portmixer/portaudio.patch	add features needed to make portmixer work.
+		Integration by upstream in progress. Will need updating as upstream
+		portaudio moves
 
 portburn
 --------
@@ -154,8 +153,8 @@ Version in audacity cvs: 1.3.1
 Patches:
 PPC mac build?
 correct-const-usage.patch: makes usage of const keyword consistent so it
-compiles with Sun's C++ compiler.
-Upstream Version: 1.3.1?
+compiles with Sun's C++ compiler. Patch sent upstream 17/03/2008
+Upstream Version: 1.3.1
 
 twolame
 -------
@@ -186,7 +185,10 @@ then tar --strip-components 1 will remove the un-needed top level directory.
 3 Apply patches and updates
 ---------------------------
 Now we have a new file tree. This is the point at which to clean out any
-un-needed files, re-apply any local patches so on.
+un-needed files, re-apply any local patches so on. To clean up after patching,
+run  find . -name '*.orig' -delete and  find . -name '*~' -delete. To remove
+.svn directories from projects that use SVN upstream, use
+find . -wholename '*/.svn/*' -delete and then find . -name '.svn' -delete
 
 * run autoreconf if we have modified configure.in or configure.ac
 * run libtoolize --copy --force to update ltmain.sh, config.sub, config.guess
