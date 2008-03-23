@@ -131,12 +131,15 @@ class Envelope : public XMLTagHandler {
    void SetTrackLen(double trackLen);
 
    // Accessors
+   /** \brief Get envelope value at time t */
+   double GetValue(double t) const;
+   /** \brief Get envelope value at pixel X */
+   double GetValueAtX( int x, wxRect & r, double h, double pps); 
 
-   double GetValue(double t) const; // value at time.
-   double GetValueAtX( int x, wxRect & r, double h, double pps); // value at pixel X
-
-   // This is much faster than calling GetValue() multiple times
-   // if you need more than one value in a row.
+   /** \brief Get many envelope points at once.
+    *
+    * This is much faster than calling GetValue() multiple times if you need
+    * more than one value in a row. */
    void GetValues(double *buffer, int len, double t0, double tstep) const;
 
    int NumberOfPointsAfter(double t);
@@ -151,20 +154,21 @@ class Envelope : public XMLTagHandler {
 
    bool IsDirty() const;
 
-   // Add a point at a particular spot
+   /** \brief Add a point at a particular spot */
    int Insert(double when, double value);
 
-   // Move a point at when to value
-   // Returns 0 if point moved, -1 if not found.
+   /** \brief Move a point at when to value
+    *
+    * Returns 0 if point moved, -1 if not found.*/
    int Move(double when, double value);
 
-   // delete a point by it's position in array
+   /** \brief delete a point by it's position in array */
    void Delete(int point);
 
-   // Return number of points
+   /** \brief Return number of points */
    int GetNumberOfPoints() const;
 
-   // Returns the sets of when and value pairs
+   /** \brief Returns the sets of when and value pairs */
    void GetPoints(double *bufferWhen,
                   double *bufferValue,
                   int bufferLen) const;
@@ -177,15 +181,21 @@ class Envelope : public XMLTagHandler {
    double toDB(double x);
 
    EnvArray mEnv;
+   /** \brief The time at which the envelope starts, i.e. the start offset */
    double mOffset;
+   /** \brief The length of the envelope, which is the same as the length of the
+    * underlying track (normally) */
    double mTrackLen;
+   /** \brief The shortest distance appart that points on an envelope can be
+    * before being considered the same point */
    double mTrackEpsilon;
    double mDefaultValue;
 
    int mDragPoint;
    int mInitialX;
    int mInitialY;
-   int mContourOffset; // Number of pixels contour is from the true envelope.
+   /** \brief Number of pixels contour is from the true envelope. */
+   int mContourOffset;
    double mInitialWhen;
    double mInitialVal;
    bool mUpper;
