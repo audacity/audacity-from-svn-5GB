@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-12-01 11:12+0700\n"
-"Last-Translator: Nguyễn Đình Trung <nguyendinhtrung141@gmail.com>\n"
+"PO-Revision-Date: 2008-03-19 11:22+0700\n"
+"Last-Translator: Nguyen Dinh Trung <nguyendinhtrung141@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -20,12 +20,10 @@ msgstr "&Thông tin về Audacity..."
 
 #: AboutDialog.cpp:166
 #: effects/AvcCompressor.cpp:674
-#, fuzzy
 msgid "Enabled"
 msgstr "Bật"
 
 #: AboutDialog.cpp:167
-#, fuzzy
 msgid "Disabled"
 msgstr "Tắt"
 
@@ -437,7 +435,7 @@ msgstr ""
 "cho %s"
 
 #: BatchCommands.cpp:583
-#, fuzzy, c-format
+#, c-format
 msgid "Your batch command of %s was not recognised."
 msgstr "Không hiểu được lệnh gộp bạn tạo cho %s"
 
@@ -629,7 +627,6 @@ msgid "Copying audio data into project..."
 msgstr "Đang chép dữ liệu âm thanh vào dự án..."
 
 #: Dependencies.cpp:219
-#, fuzzy
 msgid ""
 "Your project currently depends on the presence of other files.\n"
 "Copy audio from the following files into your project to make it self-contained?\n"
@@ -712,7 +709,6 @@ msgstr ""
 #: DirManager.cpp:221
 #: DirManager.cpp:251
 #: DirManager.cpp:332
-#, fuzzy
 msgid "Progress"
 msgstr "Đang tiến hành"
 
@@ -729,7 +725,7 @@ msgid "Cleaning up cache directories"
 msgstr "Xoá thư mục đệm"
 
 #: DirManager.cpp:493
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Audacity found an orphaned blockfile %s! \n"
 "Please consider saving and reloading the project to perform a complete project check.\n"
@@ -760,7 +756,7 @@ msgid "Renamed file: %s\n"
 msgstr "Tập tin đã đổi tên: %s\n"
 
 #: DirManager.cpp:1023
-#, fuzzy, c-format
+#, c-format
 msgid "Changing block %s\n"
 msgstr "Đang thay đổi khối %s\n"
 
@@ -780,7 +776,7 @@ msgid "Orphaned blockfile: (%s)"
 msgstr "Tập tin thừa: (%s)"
 
 #: DirManager.cpp:1153
-#, fuzzy, c-format
+#, c-format
 msgid "Missing alias file: (%s)"
 msgstr "Thiếu tập tin bí danh: (%s)"
 
@@ -795,7 +791,6 @@ msgid "Missing data file: (%s.au)"
 msgstr "Thiếu tập tin dữ liệu: (%s.au)"
 
 #: DirManager.cpp:1207
-#, fuzzy
 msgid ""
 "Project check found inconsistencies inspecting the loaded project data;\n"
 "click 'Details' for a complete list of errors, or 'OK' to proceed to more options."
@@ -930,7 +925,6 @@ msgid "Saving recorded audio to disk..."
 msgstr "Đang lưu dữ liệu âm thanh ghi âm được vào đĩa cứng..."
 
 #: FFT.cpp:379
-#, fuzzy
 msgid "Rectangular"
 msgstr "Chữ nhật"
 
@@ -952,7 +946,6 @@ msgid "Cuberoot Autocorrelation"
 msgstr "Tự tương quan căn bậc ba"
 
 #: FreqWindow.cpp:143
-#, fuzzy
 msgid "Enhanced Autocorrelation"
 msgstr "Tự tương quan tăng"
 
@@ -960,7 +953,6 @@ msgstr "Tự tương quan tăng"
 #. "spectrum".  Do not translate it unless you are sure you
 #. know the correct technical word in your language.
 #: FreqWindow.cpp:147
-#, fuzzy
 msgid "Cepstrum"
 msgstr "Cepstrum"
 
@@ -1050,7 +1042,6 @@ msgid "Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s) = %.3f
 msgstr "Con trỏ: %.4f sec (%d Hz) (%s) = %f,    Đỉnh: %.4f sec (%d Hz) (%s) = %.3f"
 
 #: FreqWindow.cpp:1059
-#, fuzzy
 msgid "spectrum.txt"
 msgstr "spectrum.txt"
 
@@ -1092,7 +1083,6 @@ msgid "Recording Audio"
 msgstr "Đang ghi âm"
 
 #: HelpText.cpp:105
-#, fuzzy
 msgid "Editing and Greyed out Menus"
 msgstr "Đang chỉnh sửa và vô hiệu hoá các trình đơn"
 
@@ -1165,12 +1155,10 @@ msgid "Action"
 msgstr "Hành động"
 
 #: HistoryWindow.cpp:86
-#, fuzzy
 msgid "&Undo Levels Available"
 msgstr "&Hoãn các mức cho phép"
 
 #: HistoryWindow.cpp:92
-#, fuzzy
 msgid "Levels To Discard"
 msgstr "Xoá các mức"
 
@@ -1235,7 +1223,6 @@ msgid "&Edit Labels"
 msgstr "&Sửa nhãn"
 
 #: LabelDialog.cpp:113
-#, fuzzy
 msgid "Press F2 or double click to edit cell contents."
 msgstr "Nhấn F2 hoặc nhắp đúp chuột để sửa nội dung ô..."
 
@@ -1328,7 +1315,7 @@ msgid "Choose Language for Audacity to use:"
 msgstr "Chọn ngôn ngữ sẽ dùng:"
 
 #: Legacy.cpp:356
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Converted a 1.0 project file to the new format.\n"
 "The old file has been saved as '%s'"
@@ -1642,12 +1629,10 @@ msgid "Turn Snap-To Off"
 msgstr "Tắt chế độ dính"
 
 #: Menus.cpp:464
-#, fuzzy
 msgid "Turn Grid Snap On"
 msgstr "Bật chế độ dính vào toạ độ"
 
 #: Menus.cpp:465
-#, fuzzy
 msgid "Turn Grid Snap Off"
 msgstr "Tắt chế độ dính vào toạ độ"
 
@@ -1771,12 +1756,10 @@ msgid "&Mix and Render"
 msgstr "&Trộn và Diễn tả"
 
 #: Menus.cpp:564
-#, fuzzy
 msgid "Mix and Render to New Track\tCtrl+Shift+M"
 msgstr "Trộn và Diễn tả sang Dải mới\tCtrl+Shift+M"
 
 #: Menus.cpp:568
-#, fuzzy
 msgid "&Resample..."
 msgstr "&Lấy mẫu lại..."
 
@@ -1958,7 +1941,6 @@ msgid "Play One Second\t1"
 msgstr "Phát đúng 1 giây\t1"
 
 #: Menus.cpp:781
-#, fuzzy
 msgid "Play To Selection\tB"
 msgstr "Phát đến vùng chọn\tB"
 
@@ -1991,12 +1973,10 @@ msgid "Selection to End\tShift+End"
 msgstr "Chọn đến hết\tShift+End"
 
 #: Menus.cpp:792
-#, fuzzy
 msgid "DeleteKey\tBackspace"
 msgstr "Xoá\tBackspace"
 
 #: Menus.cpp:797
-#, fuzzy
 msgid "DeleteKey2\tDelete"
 msgstr "Xoá2\tDelete"
 
@@ -2202,7 +2182,6 @@ msgid "Repeat %s\tCtrl+R"
 msgstr "Lặp lại %s\tCtrl+R"
 
 #: Menus.cpp:2136
-#, fuzzy
 msgid "There are no label tracks to export."
 msgstr "Không có nhãn dải âm nào để xuất"
 
@@ -2616,7 +2595,6 @@ msgid "Mixing and rendering tracks"
 msgstr "Trộn và diễn tả dải âm"
 
 #: NoteTrack.cpp:36
-#, fuzzy
 msgid "Note Track"
 msgstr "Đặt ghi chú cho dải âm"
 
@@ -2842,7 +2820,6 @@ msgid "Error importing"
 msgstr "Có lỗi khi nhập"
 
 #: Project.cpp:2634
-#, fuzzy
 msgid "Save Speech As:"
 msgstr "Lưu Speech thành:"
 
@@ -2924,7 +2901,7 @@ msgid "Could not create autosave file: "
 msgstr "Không thể tạo tập tin lưu tự động:"
 
 #: Project.cpp:3400
-#, fuzzy, c-format
+#, c-format
 msgid "Actual Rate: %d"
 msgstr "Tốc độ thật: %d"
 
@@ -2933,7 +2910,6 @@ msgid "Libresample by Dominic Mazzoni and Julius Smith"
 msgstr "Libresample viết bởi Dominic Mazzoni và Julius Smith"
 
 #: Resample.cpp:53
-#, fuzzy
 msgid "High-quality Sinc Interpolation"
 msgstr "Nội suy Sinc chất lượng cao"
 
@@ -2952,7 +2928,6 @@ msgstr "Lỗi thư viện Libsamplerate: %d\n"
 
 #: Resample.cpp:240
 #: Resample.cpp:250
-#, fuzzy
 msgid "Resampling disabled."
 msgstr "Không lấy mẫu lại."
 
@@ -2982,7 +2957,6 @@ msgstr "Lỗi khi cố gắng lưu tập tin:"
 #: Sequence.cpp:732
 #: Sequence.cpp:742
 #: Sequence.cpp:749
-#, fuzzy
 msgid "Gap detected in project file\n"
 msgstr "Tìm thấy thiếu sót trên dự án\n"
 
@@ -3014,17 +2988,14 @@ msgid "Duration"
 msgstr "Độ dài"
 
 #: SmartRecordDialog.cpp:229
-#, fuzzy
 msgid "Audacity Smart Record Progress"
 msgstr "Quá trình ghi âm thông minh của Audacity"
 
 #: SmartRecordDialog.cpp:270
-#, fuzzy
 msgid "Start Date and Time"
 msgstr "Ngày giờ bắt đầu"
 
 #: SmartRecordDialog.cpp:287
-#, fuzzy
 msgid "End Date and Time"
 msgstr "Ngày giờ kết thúc"
 
@@ -3224,7 +3195,6 @@ msgid "Comments:"
 msgstr "Chú thích:"
 
 #: Tags.cpp:1383
-#, fuzzy
 msgid "Encoded By:"
 msgstr "Mã hoá bởi:"
 
@@ -3513,12 +3483,10 @@ msgid "Click and drag to resize the track."
 msgstr "Click và rê chuột để điều chỉnh kích cỡ dải âm."
 
 #: TrackPanel.cpp:1309
-#, fuzzy
 msgid "Drag one or more label boundaries"
 msgstr "Rê một hoặc nhiều giới hạn nhãn"
 
 #: TrackPanel.cpp:1310
-#, fuzzy
 msgid "Drag label boundary"
 msgstr "Rê giới hạn nhãn"
 
@@ -3691,7 +3659,6 @@ msgid "Adjusted gain"
 msgstr "Đã điều chỉnh độ khuếch đại"
 
 #: TrackPanel.cpp:5821
-#, fuzzy
 msgid "Can't delete track with active audio"
 msgstr "Không thể xoá dải âm đang hoạt động"
 
@@ -3736,12 +3703,11 @@ msgid "Make Stereo"
 msgstr "Chuyển thành Stereo"
 
 #: TrackPanel.cpp:6092
-#, fuzzy, c-format
+#, c-format
 msgid "Changed '%s' to %d Hz"
 msgstr "Đã chuyển '%s' thành %d Hz"
 
 #: TrackPanel.cpp:6094
-#, fuzzy
 msgid "Rate Change"
 msgstr "Thay đổi tốc độ lấy mẫu"
 
@@ -3758,34 +3724,29 @@ msgid "Invalid rate."
 msgstr "Tốc độ này không hợp lệ"
 
 #: TrackPanel.cpp:6252
-#, fuzzy
 msgid "Change lower speed limit (%) to:"
 msgstr "Chuyển tốc độ giới hạn dưới (%) thành:"
 
 #: TrackPanel.cpp:6253
 #: TrackPanel.cpp:6254
-#, fuzzy
 msgid "Lower speed limit"
 msgstr "Tốc độ giới hạn dưới"
 
 #: TrackPanel.cpp:6259
-#, fuzzy
 msgid "Change upper speed limit (%) to:"
 msgstr "Chuyển tốc độ giới hạn trên (%) thành:"
 
 #: TrackPanel.cpp:6260
 #: TrackPanel.cpp:6261
-#, fuzzy
 msgid "Upper speed limit"
 msgstr "Tốc độ giới hạn trên"
 
 #: TrackPanel.cpp:6269
-#, fuzzy, c-format
+#, c-format
 msgid "Set range to '%d' - '%d'"
 msgstr "Đặt giới hạn thành '%d' - '%d'"
 
 #: TrackPanel.cpp:6272
-#, fuzzy
 msgid "Set Range"
 msgstr "Đặt giới hạn"
 
@@ -3831,7 +3792,6 @@ msgid "TrackView"
 msgstr "Đồ thị âm thanh"
 
 #: TrackPanelAx.cpp:273
-#, fuzzy
 msgid "Track Accessible out of sync"
 msgstr "Mất đồng bộ truy cập dải âm"
 
@@ -3856,22 +3816,20 @@ msgstr " Bật chọn"
 #: VoiceKey.cpp:238
 #: VoiceKey.cpp:376
 #: VoiceKey.cpp:517
-#, fuzzy
 msgid "Selection is too small to use voice key."
 msgstr "Vùng chọn không đủ lớn để dùng giọng."
 
 #: VoiceKey.cpp:843
-#, fuzzy
 msgid "Calibration Results\n"
 msgstr "Kết quả phân thang đo\n"
 
 #: VoiceKey.cpp:844
-#, fuzzy, c-format
+#, c-format
 msgid "Energy                  -- mean: %1.4f  sd: (%1.4f)\n"
 msgstr "Năng lượng                  -- trung bình: %1.4f  sd: (%1.4f)\n"
 
 #: VoiceKey.cpp:845
-#, fuzzy, c-format
+#, c-format
 msgid "Sign Changes        -- mean: %1.4f  sd: (%1.4f)\n"
 msgstr "Đổi dấu        -- trị trung bình: %1.4f  sd: (%1.4f)\n"
 
@@ -3904,7 +3862,6 @@ msgid "Plugins %i to %i"
 msgstr "Trình bổ sung %i đến %i"
 
 #: commands/CommandManager.cpp:720
-#, fuzzy
 msgid "Disallowed for some reason.  Try selecting some Audio first?"
 msgstr "Không cho phép vì một lý do nào đó. Có chọn âm thanh trước không?"
 
@@ -3929,7 +3886,6 @@ msgid "You must first select some audio for this to use."
 msgstr "Bạn phải chọn âm thanh để thực thi lệnh này."
 
 #: commands/CommandManager.cpp:730
-#, fuzzy
 msgid ""
 "You must first select some audio for this\n"
 " to use. [Selecting other kinds of track won't work.]"
@@ -3972,7 +3928,6 @@ msgid "New Peak Amplitude (dB):"
 msgstr "Đỉnh khuếch đại mới (dB):"
 
 #: effects/Amplify.cpp:191
-#, fuzzy
 msgid "Allow clipping"
 msgstr "Cho phép ghim đỉnh"
 
@@ -4244,7 +4199,6 @@ msgid "Select threshold (lower is more sensitive):"
 msgstr "Chọn ngưỡng (càng bé càng nhạy):"
 
 #: effects/ClickRemoval.cpp:362
-#, fuzzy
 msgid "Max spike width (higher is more sensitive):"
 msgstr "Độ rộng tối đa của đinh nhọn (càng to càng nhạy):"
 
@@ -4269,12 +4223,10 @@ msgid "Ratio: "
 msgstr "Tỉ lệ:"
 
 #: effects/Compressor.cpp:498
-#, fuzzy
 msgid "Attack Time: "
 msgstr "Thời gian nén:"
 
 #: effects/Compressor.cpp:505
-#, fuzzy
 msgid "Decay Time: "
 msgstr "Thời gian suy hao:"
 
@@ -4298,12 +4250,12 @@ msgid "Ratio: %.1f:1"
 msgstr "Tỉ lệ: %.1f:1"
 
 #: effects/Compressor.cpp:568
-#, fuzzy, c-format
+#, c-format
 msgid "Attack Time: %.1f secs"
 msgstr "Thời gian nén: %.1f giây"
 
 #: effects/Compressor.cpp:570
-#, fuzzy, c-format
+#, c-format
 msgid "Decay Time: %.1f secs"
 msgstr "Thời gian suy tàn: %.1f giây"
 
@@ -4474,7 +4426,6 @@ msgid "Graphic EQ"
 msgstr "EQ đồ hoạ"
 
 #: effects/Equalization.cpp:1213
-#, fuzzy
 msgid "Linear frequency scale"
 msgstr "Thang đo tần số tuyến tính"
 
@@ -4528,7 +4479,6 @@ msgid "Fading Out"
 msgstr "Đang giảm dần âm lượng"
 
 #: effects/FindClipping.cpp:49
-#, fuzzy
 msgid "Detect clipping"
 msgstr "Tìm điểm ghim"
 
@@ -4792,7 +4742,7 @@ msgid "Normalizing..."
 msgstr "Đang chuẩn hoá..."
 
 #: effects/Phaser.cpp:65
-#, fuzzy, c-format
+#, c-format
 msgid "Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = %.0f deg, depth = %d, feedback = %.0f%%"
 msgstr "Đã áp dụng hiệu ứng: %s %d tầng, %.0f%% làm ướt tiếng, tần số = %.1f Hz, pha ban đầu = %.0f độ, độ sâu = %d, hồi tiếp = %.0f%%"
 
@@ -5318,7 +5268,7 @@ msgid "Show output"
 msgstr "Hiển thị đầu ra"
 
 #: export/ExportCL.cpp:87
-#, fuzzy, c-format
+#, c-format
 msgid "Data will be piped to standard in. \"%f\" will be replaced with output filename selected."
 msgstr "Dữ liệu sẽ được dẫn từ đầu vào chuẩn. \"%f\" sẽ được thay thế bằng tên tập tin đầu ra được chọn."
 
@@ -5559,7 +5509,6 @@ msgid "MP3 Export Setup"
 msgstr "Thiết lập việc xuất định dạng MP3"
 
 #: export/ExportMP3.cpp:271
-#, fuzzy
 msgid "Bit Rate Mode:"
 msgstr "Chế độ bit:"
 
@@ -5907,7 +5856,6 @@ msgid "Encoding:"
 msgstr "Mã hoá:"
 
 #: export/ExportPCM.cpp:190
-#, fuzzy
 msgid "(Not all combinations of headers and encodings are possible.)"
 msgstr "(Không phải mọi phần đầu đều có thể mã hoá.)"
 
@@ -6089,7 +6037,6 @@ msgid "Ogg Vorbis files"
 msgstr "Tập tin Ogg Vorbis"
 
 #: import/ImportOGG.cpp:141
-#, fuzzy
 msgid "Media read error"
 msgstr "Lỗi đọc phương tiện"
 
@@ -6106,7 +6053,6 @@ msgid "Invalid Vorbis bitstream header"
 msgstr "Dòng bit Vorbis có Phần đầu không hợp lệ"
 
 #: import/ImportOGG.cpp:153
-#, fuzzy
 msgid "Internal logic fault"
 msgstr "Lỗi Logic bên trong"
 
@@ -6216,7 +6162,6 @@ msgid "Channels"
 msgstr "Kênh"
 
 #: prefs/AudioIOPrefs.cpp:145
-#, fuzzy
 msgid "Playthrough"
 msgstr "Phát qua"
 
@@ -6277,17 +6222,14 @@ msgstr ""
 "(nhỏ hơn không = quay lui)"
 
 #: prefs/AudioIOPrefs.cpp:197
-#, fuzzy
 msgid "Seek Time when playing"
 msgstr "Tìm thời gian khi phát"
 
 #: prefs/AudioIOPrefs.cpp:200
-#, fuzzy
 msgid "Short period:"
 msgstr "Chu kỳ ngắn:"
 
 #: prefs/AudioIOPrefs.cpp:202
-#, fuzzy
 msgid "Long period:"
 msgstr "Chu kỳ dài:"
 
@@ -6517,7 +6459,6 @@ msgid "Language:"
 msgstr "Ngôn ngữ:"
 
 #: prefs/GUIPrefs.cpp:110
-#, fuzzy
 msgid "Minimum of dB mode display range"
 msgstr "Hiển thị chế độ dB nhỏ nhất"
 
@@ -6609,7 +6550,6 @@ msgid "Mouse"
 msgstr "Chuột"
 
 #: prefs/MousePrefs.cpp:78
-#, fuzzy
 msgid "Mouse Bindings (default values, not configurable)"
 msgstr "Gán chuột (gía trị mặc định, chưa cấu hình)"
 
@@ -6886,7 +6826,6 @@ msgid "Real-time dither:"
 msgstr "Nhiễu sửa sai lượng tử hoá thời gian thực:"
 
 #: prefs/QualityPrefs.cpp:145
-#, fuzzy
 msgid "High-quality dither:"
 msgstr "Nhiễu sửa sai lượng tử hoá chất lượng cao:"
 
@@ -6958,7 +6897,6 @@ msgid "Display"
 msgstr "Hiển thị"
 
 #: prefs/SpectrumPrefs.cpp:120
-#, fuzzy
 msgid "&Grayscale"
 msgstr "&Thang xám"
 
@@ -6971,12 +6909,10 @@ msgid "Maximum Frequency (Hz):"
 msgstr "Tần số lớn nhất (Hz):"
 
 #: prefs/SpectrumPrefs.cpp:134
-#, fuzzy
 msgid "&Find Notes"
 msgstr "&Tìm nốt nhạc"
 
 #: prefs/SpectrumPrefs.cpp:135
-#, fuzzy
 msgid "&Quantize Notes"
 msgstr "&Lượng tử hoá nốt"
 
@@ -7353,7 +7289,6 @@ msgstr "Công cụ biên độ"
 
 #: toolbars/ToolsToolBar.cpp:149
 #: toolbars/ToolsToolBar.cpp:183
-#, fuzzy
 msgid "Time Shift Tool"
 msgstr "Công cụ di chuyển"
 
@@ -7372,7 +7307,6 @@ msgid "Multi-Tool Mode"
 msgstr "Chế độ đa năng"
 
 #: toolbars/ToolsToolBar.cpp:186
-#, fuzzy
 msgid "Slide Tool"
 msgstr "Công cụ trượt"
 
@@ -7389,7 +7323,6 @@ msgid "Play at selected speed"
 msgstr "Phát ở tốc độ đã chọn"
 
 #: toolbars/TranscriptionToolBar.cpp:166
-#, fuzzy
 msgid "Play-at-speed"
 msgstr "Tốc độ phát"
 
@@ -7403,7 +7336,6 @@ msgid "Adjust left selection to next onset"
 msgstr "Điều chỉnh vùng chọn trái đên onset tới"
 
 #: toolbars/TranscriptionToolBar.cpp:191
-#, fuzzy
 msgid "Left-to-On"
 msgstr "Chuột trái để bật"
 
@@ -7412,7 +7344,6 @@ msgid "Adjust right selection to previous offset"
 msgstr "Điều chỉnh vùng chọn phải đến offset trước"
 
 #: toolbars/TranscriptionToolBar.cpp:194
-#, fuzzy
 msgid "Right-to-Off"
 msgstr "Chuột phải để tắt"
 
@@ -7421,7 +7352,6 @@ msgid "Adjust left selection to next offset"
 msgstr "Điều chỉnh vùng chọn trái đến offset tới"
 
 #: toolbars/TranscriptionToolBar.cpp:197
-#, fuzzy
 msgid "Left-to-Off"
 msgstr "Chuột trái để Tắt"
 
@@ -7430,7 +7360,6 @@ msgid "Adjust right selection to previous onset"
 msgstr "Điều chỉnh vùng chọn phải đến onset trước"
 
 #: toolbars/TranscriptionToolBar.cpp:200
-#, fuzzy
 msgid "Right-to-On"
 msgstr "Chuột phải để Bật"
 
@@ -7451,7 +7380,6 @@ msgid "Select-Silence"
 msgstr "Chọn Khoảng lặng"
 
 #: toolbars/TranscriptionToolBar.cpp:208
-#, fuzzy
 msgid "Automatically make labels from words"
 msgstr "Tự động tạo nhãn từ các đoạn"
 
@@ -7504,7 +7432,6 @@ msgid "Direction Changes (High Threshold)"
 msgstr "Đổi hướng (Ngưỡng lớn)"
 
 #: toolbars/TranscriptionToolBar.cpp:241
-#, fuzzy
 msgid "Key type"
 msgstr "Loại phím"
 
@@ -7751,12 +7678,10 @@ msgid "01000,01000 frames|75"
 msgstr "01000,01000 frame|75"
 
 #: widgets/TimeTextCtrl.cpp:366
-#, fuzzy
 msgid "Use right mouse button or context key to change format"
 msgstr "Dùng nút chuột phải hoặc phím Context để thay đổi định dạng"
 
 #: widgets/TimeTextCtrl.cpp:1380
-#, fuzzy
 msgid "Time Control"
 msgstr "Điều khiển thời gian"
 
