@@ -928,6 +928,10 @@ void Envelope::GetValues(double *buffer, int bufferLen,
 
    double tprev, vprev, tnext = 0, vnext, vstep = 0;
 
+   // in debug builds, do a spot of argument checking
+   wxASSERT(t0 <= (mTrackLen + mOffset));
+   wxASSERT(t0 >= 0);
+
    for (int b = 0; b < bufferLen; b++) {
       if (len <= 0) {
          buffer[b] = mDefaultValue;
