@@ -688,13 +688,25 @@ bool WaveTrack::HandleClear(double t0, double t1,
                }
             }
             else {
-               // frame clip envelope points here
+               /* We are going to delete part of the clip here. The clip may
+                * have envelope points, and we need to ensure that the envelope
+                * outside of the cleared region is not affected. This means
+                * putting in "glue" points where the clip enters and leaves the
+                * region being cleared. If one of the ends of the clip is inside
+                * the region, then one of the glue points will be redundant. */
                // clip->Clear keeps points < t0 and >= t1 via Envelope::CollapseRegion
                double val;
-               val = clip->GetEnvelope()->GetValue(t0);
-               clip->GetEnvelope()->Insert(t0 - clip->GetOffset() - 1.0/clip->GetRate(), val);
-               val = clip->GetEnvelope()->GetValue(t1);
-               clip->GetEnvelope()->Insert(t1 - clip->GetOffset(), val);
+               if (t0 > clip->GetStartTime())
+                  {  // start of clip is before start of region to clear
+                  val = clip->GetEnvelope()->GetValue(t0);
+                  clip->GetEnvelope()->Insert(t0 - clip->GetOffset() - 1.0/clip->GetRate(), val);
+                  }
+
+               if (t1 < clip->GetEndTime())
+                  {  // end of clip is after end of region
+                  val = clip->GetEnvelope()->GetValue(t1);
+                  clip->GetEnvelope()->Insert(t1 - clip->GetOffset(), val);
+                  }
 
                if (!clip->Clear(t0,t1))
                   return false;
