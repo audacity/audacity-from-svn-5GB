@@ -133,8 +133,8 @@ AC_ARG_ENABLE(unicode,
 AC_ARG_ENABLE(debug,
             [AC_HELP_STRING([--enable-debug],
                             [enable debug support [default=no]])],
-            debug_preference="--debug=$enableval",
-            debug_preference="")
+            debug_preference="$enableval",
+            debug_preference="no")
 
 
 
@@ -149,6 +149,18 @@ AC_ARG_WITH(wx-version,
                             [select wxWidgets version (if both installed) [2.6,2.8]])],
             wx_preference="--version=$withval",
             wx_preference="")
+
+dnl ----------------------------------------------------
+dnl If user asked for debug, put debug in compiler flags
+dnl ----------------------------------------------------
+
+if test x"$debug_preference" = "xyes" ; then
+   dnl we want debuging on
+   AC_MSG_NOTICE([Adding -g for debugging to CPPFLAGS and CFLAGS ...])
+   CFLAGS="${CFLAGS} -g "
+   CXXFLAGS="${CXXFLAGS} -g "
+fi
+
 
 AC_CONFIG_SUBDIRS([lib-src/FileDialog])
 
@@ -268,7 +280,7 @@ fi
 for lib in $LIBRARIES ; do
    eval LIB_USE_LOCAL=\$${lib}_USE_LOCAL
    eval LIB_USE_SYSTEM=\$${lib}_USE_SYSTEM
-   if test "$LIB_USE_LOCAL" = "yes" ; then
+   if test "x$LIB_USE_LOCAL" = "xyes" ; then
       eval LOCAL_LIBS=\"$LOCAL_LIBS \$${lib}_LOCAL_LIBS\"
       eval OPTOBJS=\"$OPTOBJS \$${lib}_LOCAL_OPTOBJS\"
       eval CXXFLAGS=\"\$CXXFLAGS \$${lib}_LOCAL_CXXFLAGS\"
@@ -292,6 +304,7 @@ for lib in $LIBRARIES ; do
    fi
 done
 
+dnl " This is included purely to close an otherwise endless string in vim
 dnl LOCAL_LIBS="$LOCAL_LIBS expat.a"
 dnl CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/expat"
 
@@ -359,9 +372,16 @@ fi
 
 dnl Check that the wx version is at least 2.6.x
 
-wx_version=`${WX_CONFIG} $static_preference $unicode_preference $debug_preference $wx_preference --version`
+if test "x$debug_preference" = "xyes"; then
+   dnl want debug wx as well
+   wxconfigargs="--debug=yes"
+else
+   dnl normal wx
+   wxconfigargs=""
+fi
+wx_version=`${WX_CONFIG} $static_preference $unicode_preference $wxconfigargs $wx_preference --version`
 
-AC_MSG_NOTICE([Checking that the installed version of wxWidgets is at least 2.6.x])
+AC_MSG_NOTICE([Checking that the chosen version of wxWidgets is 2.6.x or 2.8.x])
 
 case "${wx_version}" in
   2.6.*|2.8.*)
