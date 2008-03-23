@@ -841,6 +841,10 @@ void Envelope::GetPoints(double *bufferWhen,
 // If you call it from Envelope, don't. Kind of makes sense. MJS.
 int Envelope::Insert(double when, double value)
 {
+   // in debug builds, do a spot of argument checking
+   wxASSERT(when <= (mTrackLen + mOffset));
+   wxASSERT(when >= 0);
+
    int len = mEnv.Count();
 
    if (len && when < 0.0)
