@@ -469,6 +469,26 @@ const double TimeTextCtrl::GetTimeValue()
    return mTimeValue;
 }
 
+wxString TimeTextCtrl::GetFormatString()
+{
+   return mFormatString;
+}
+
+int TimeTextCtrl::GetFormatIndex()
+{
+   int ndx = 1;
+   int i;
+
+   for (i = 0; i < TimeTextCtrl::GetNumBuiltins(); i++) {
+      if (mFormatString == TimeTextCtrl::GetBuiltinFormat(i)) {
+         ndx = i;
+         break;
+      }
+   }
+
+   return ndx;
+}
+   
 int TimeTextCtrl::GetNumBuiltins()
 {
    return (sizeof(BuiltinFormatStrings) / sizeof(BuiltinFormatStrings[0]));

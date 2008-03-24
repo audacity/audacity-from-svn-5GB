@@ -74,6 +74,9 @@ class TimeTextCtrl: public wxControl
 
    wxString GetTimeString();
 
+   wxString GetFormatString();
+   int GetFormatIndex();
+
    int GetNumBuiltins();
    wxString GetBuiltinName(const int index);
    wxString GetBuiltinFormat(const int index);

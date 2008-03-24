@@ -360,6 +360,10 @@ void SelectionBar::OnUpdate(wxCommandEvent &evt)
 
    ValuesToControls();
 
+   mLeftTime->SetFormatString(formatString);
+   mRightTime->SetFormatString(formatString);
+   mAudioTime->SetFormatString(formatString);
+
    if (leftFocus) {
       mLeftTime->SetFocus();
    }
@@ -371,6 +375,13 @@ void SelectionBar::OnUpdate(wxCommandEvent &evt)
    }
 
    Updated();
+}
+
+void SelectionBar::UpdateDisplay()
+{
+   wxCommandEvent e;
+   e.SetInt(mLeftTime->GetFormatIndex());
+   OnUpdate(e);
 }
 
 void SelectionBar::ValuesToControls()
