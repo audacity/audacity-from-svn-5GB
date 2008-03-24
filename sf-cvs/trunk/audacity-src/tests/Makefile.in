@@ -9,7 +9,7 @@ override CFLAGS += @CFLAGS@
 override CXXFLAGS += @CXXFLAGS@
 
 # CPPFLAGS are for both C and C++.
-override CPPFLAGS += -Wall -I../src @CPPFLAGS@ 
+override CPPFLAGS += -I../src @CPPFLAGS@ 
 
 all: run_tests
 check: run_tests
