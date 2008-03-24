@@ -39,6 +39,48 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "March 24, 2008",
+        "GSoC_2008",
+  _("Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer of Code (GSoC) 2008 "),
+  _("
+<p>
+	Students! Interested in supporting Audacity and earning a stipend this summer? 
+	<em><a href=\"http://groups.google.com/group/google-summer-of-code-announce/web/guide-to-the-gsoc-web-app-for-student-applicants\">
+		Apply by 5:00 PM PDT, March 31, 2008!</a></em>
+</p>
+<p>
+	Audacity is a mentoring organization 
+	for the <a href=\"http://code.google.com/soc/2008/\">Google Summer of Code 2008</a>! 
+	GSoC offers student developers $4,500 stipends to write code for various open source projects.
+</p>
+<p align=\"center\">
+	<a href=\"http://code.google.com/soc/2008/\">
+	  <img src=\"http://code.google.com/images/code_sm.png\" alt=\"Google Summer of Code 2008\"></img>
+	</a>
+</p>
+<p>
+	We are now seeking student participants. 
+	We look for evidence that the student has a real interest in 
+	our project, 'Do they actually use it?' rather than just choosing some project that is part of GSoC.
+</p>
+<p>
+	If you are an interested student, please follow these steps:
+	<ol>
+		<li>Review the <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html\">GSoC FAQ</a>, 
+			especially from <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_student_apply\">'How does a student apply?'</a>).</li>
+		<li>Make sure you are <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_eligibility\">eligible</a>.</li>
+		<li>On the Audacity Wiki, check the <a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Ideas\">project ideas page</a>.</li>
+		<li>If you find an interesting idea, or have one of your own, then check <a href=\"http://www.audacityteam.org/wiki/index.php?title=Writing_GSoC_Proposals\">Writing GSoC Proposals</a>.</li>
+		<li>Then <a href=\"mailto:summerofcode@audacityteam.org\">email us</a>. Far better to discuss plans with us before applying.</li>
+	</ol>
+</p>
+<p>
+If you know any students who might be interested, possibly those already involved in music/audio 
+research, please point them to our <a href=\"http://audacity.sourceforge.net/\">website</a> for this information.
+</p>
+"));
+
+add_news_item(
   "March 17, 2008",
         "GSoC_2008",
   _("Audacity and Google Summer of Code (GSoC) 2008 "),
