@@ -1,7 +1,7 @@
 
 AC_DEFUN([AUDACITY_CHECKLIB_LIBNYQUIST], [
    AC_ARG_ENABLE(nyquist,
-               [AC_HELP_STRING([--enable-nyquist],
+               [AS_HELP_STRING([--enable-nyquist],
                                [enable Nyquist plug-in support [default=yes]])],
                LIBNYQUIST_ARGUMENT=$enableval,
                LIBNYQUIST_ARGUMENT="unspecified")
@@ -38,7 +38,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBNYQUIST], [
 
 AC_DEFUN([AUDACITY_CHECKLIB_LIBVAMP], [
    AC_ARG_ENABLE(vamp,
-               [AC_HELP_STRING([--enable-vamp],
+               [AS_HELP_STRING([--enable-vamp],
                                [enable Vamp plug-in support [default=yes]])],
                LIBVAMP_ARGUMENT=$enableval,
                LIBVAMP_ARGUMENT="unspecified")
@@ -91,7 +91,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVAMP], [
 
 AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
    AC_ARG_WITH(libtwolame,
-               [AC_HELP_STRING([--with-libtwolame],
+               [AS_HELP_STRING([--with-libtwolame],
                                [use libtwolame for MP2 export support ])],
                LIBTWOLAME_ARGUMENT=$withval,
                LIBTWOLAME_ARGUMENT="unspecified")
@@ -143,7 +143,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
 
 AC_DEFUN([AUDACITY_CHECKLIB_LIBSOUNDTOUCH], [
    AC_ARG_WITH(soundtouch,
-               [AC_HELP_STRING([--with-soundtouch],
+               [AS_HELP_STRING([--with-soundtouch],
                       [use libSoundTouch for pitch and tempo changing])],
                LIBSOUNDTOUCH_ARGUMENT=$withval,
                LIBSOUNDTOUCH_ARGUMENT="unspecified")
@@ -197,7 +197,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSOUNDTOUCH], [
 AC_DEFUN([AUDACITY_CHECKLIB_LIBRESAMPLE], [
 
    AC_ARG_WITH(libresample,
-               [AC_HELP_STRING([--with-libresample],
+               [AS_HELP_STRING([--with-libresample],
                                [use libresample for sample rate conversion: [yes,no]])],
                LIBRESAMPLE_ARGUMENT=$withval,
                LIBRESAMPLE_ARGUMENT="unspecified")
@@ -238,7 +238,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBRESAMPLE], [
 AC_DEFUN([AUDACITY_CHECKLIB_LIBSAMPLERATE], [
 
    AC_ARG_WITH(libsamplerate,
-               [AC_HELP_STRING([--with-libsamplerate],
+               [AS_HELP_STRING([--with-libsamplerate],
                                [use libsamplerate instead of libresample for sample rate conversion. Do not use in conjunction with VST plug-in support!])],
                LIBSAMPLERATE_ARGUMENT=$withval,
                LIBSAMPLERATE_ARGUMENT="unspecified")
@@ -290,7 +290,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSAMPLERATE], [
 AC_DEFUN([AUDACITY_CHECKLIB_LIBID3TAG], [
 
    AC_ARG_WITH(libid3tag,
-               [AC_HELP_STRING([--with-libid3tag],
+               [AS_HELP_STRING([--with-libid3tag],
                                [use libid3tag for mp3 id3 tag support])],
                LIBID3TAG_ARGUMENT=$withval,
                LIBID3TAG_ARGUMENT="unspecified")
@@ -347,7 +347,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBID3TAG], [
 AC_DEFUN([AUDACITY_CHECKLIB_LIBSNDFILE], [
 
    AC_ARG_WITH(libsndfile,
-               [AC_HELP_STRING([--with-libsndfile],
+               [AS_HELP_STRING([--with-libsndfile],
                                [which libsndfile to use (required): [system,local]])],
                LIBSNDFILE_ARGUMENT=$withval,
                LIBSNDFILE_ARGUMENT="unspecified")
@@ -401,7 +401,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBMAD], [
    fi
 
    AC_ARG_WITH(libmad,
-               [AC_HELP_STRING([--with-libmad],
+               [AS_HELP_STRING([--with-libmad],
                                [use libmad for mp2/3 decoding support])],
                LIBMAD_ARGUMENT=$withval,
                LIBMAD_ARGUMENT="unspecified")
@@ -463,7 +463,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVORBIS], [
    fi
 
    AC_ARG_WITH(libvorbis,
-               [AC_HELP_STRING([--with-libvorbis],
+               [AS_HELP_STRING([--with-libvorbis],
                                [use libvorbis for Ogg Vorbis support])],
                LIBVORBIS_ARGUMENT=$withval,
                LIBVORBIS_ARGUMENT="unspecified")
@@ -525,7 +525,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
    fi
 
    AC_ARG_WITH(libflac,
-               [AC_HELP_STRING([--with-libflac],
+               [AS_HELP_STRING([--with-libflac],
                                [use libFLAC for FLAC support])],
                LIBFLAC_ARGUMENT=$withval,
                LIBFLAC_ARGUMENT="unspecified")
@@ -585,7 +585,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
 AC_DEFUN([AUDACITY_CHECKLIB_LIBEXPAT], [
 
    AC_ARG_WITH(expat,
-               [AC_HELP_STRING([--with-expat],
+               [AS_HELP_STRING([--with-expat],
                                [which expat to use for XML file support: [system,local]])],
                LIBEXPAT_ARGUMENT=$withval,
                LIBEXPAT_ARGUMENT="unspecified")
