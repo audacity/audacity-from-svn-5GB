@@ -119,19 +119,19 @@ fi
 dnl Build Options
 
 AC_ARG_ENABLE(static,
-            [AC_HELP_STRING([--enable-static],
+            [AS_HELP_STRING([--enable-static],
                             [link wx statically [default=no]])],
             static_preference="--static=$enableval",
             static_preference="")
 
 AC_ARG_ENABLE(unicode,
-            [AC_HELP_STRING([--enable-unicode],
+            [AS_HELP_STRING([--enable-unicode],
                             [enable unicode support [default=no]])],   
             unicode_preference="--unicode=$enableval",
             unicode_preference="")
 
 AC_ARG_ENABLE(debug,
-            [AC_HELP_STRING([--enable-debug],
+            [AS_HELP_STRING([--enable-debug],
                             [enable debug support [default=no]])],
             debug_preference="$enableval",
             debug_preference="no")
@@ -139,13 +139,13 @@ AC_ARG_ENABLE(debug,
 
 
 AC_ARG_WITH(lib-preference,
-            [AC_HELP_STRING([--with-lib-preference],
+            [AS_HELP_STRING([--with-lib-preference],
                             [whether to use local and/or system libraries, in order of preference (default="system local")])],
             lib_preference=$withval,
             lib_preference="system local")
 
 AC_ARG_WITH(wx-version,
-            [AC_HELP_STRING([--with-wx-version],
+            [AS_HELP_STRING([--with-wx-version],
                             [select wxWidgets version (if both installed) [2.6,2.8]])],
             wx_preference="--version=$withval",
             wx_preference="")
@@ -324,19 +324,19 @@ dnl
 dnl build options that don't use libraries - just compile-time on/off
 
 AC_ARG_ENABLE(audiounits,
-   [AC_HELP_STRING([--enable-audiounits],
+   [AS_HELP_STRING([--enable-audiounits],
       [enable audio unit plug-in support (Mac OS X only) 
        [default=auto]])], use_audiounits=$enableval,
    use_audiounits="auto")
 
 AC_ARG_ENABLE(ladspa,
-   [AC_HELP_STRING([--enable-ladspa],
+   [AS_HELP_STRING([--enable-ladspa],
       [enable LADSPA plug-in support [default=yes]])],
    use_ladspa=$enableval,
    use_ladspa="yes")
 
 AC_ARG_ENABLE(quicktime,
-   [AC_HELP_STRING([--enable-quicktime],
+   [AS_HELP_STRING([--enable-quicktime],
       [enable QuickTime import support (Mac OS X only) [default=auto]])],
    use_quicktime=$enableval,
    use_quicktime="auto")
@@ -344,20 +344,20 @@ AC_ARG_ENABLE(quicktime,
 dnl In-tree libraries (ones we write, so only options are off and local)
 
 AC_ARG_WITH(portmixer,
-   [AC_HELP_STRING([--with-portmixer],
+   [AS_HELP_STRING([--with-portmixer],
       [compile with PortMixer [default=yes]])],
    use_portmixer=$withval,
    use_portmixer="yes")
 
 AC_ARG_WITH(portaudio,
-   [AC_HELP_STRING([--with-portaudio],
+   [AS_HELP_STRING([--with-portaudio],
       [which version of PortAudio to use (=[v18,v19]) [default=v19]])],
    use_portaudio=$withval,
    use_portaudio="v19")
 
 dnl RTaudio doesn't work right now, so commenting this out RA 30/07/07
 dnl AC_ARG_WITH(rtaudio,
-dnl   [AC_HELP_STRING([--with-rtaudio],
+dnl   [AS_HELP_STRING([--with-rtaudio],
 dnl      [compile with RTAudio instead of PortAudio [default=no]])],
 dnl   use_rtaudio=$withval,
 dnl   use_rtaudio="no")
