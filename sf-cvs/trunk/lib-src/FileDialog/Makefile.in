@@ -5,7 +5,7 @@ CXX      = @CXX@
 AR       = @AR@
 RANLIB   = @RANLIB@
 
-CPPFLAGS += -Wall -I. @CPPFLAGS@ 
+CPPFLAGS += -I. @CPPFLAGS@ 
 CXXFLAGS += @CXXFLAGS@
 
 OBJS     = FileDialog.o @EXTRAOBJS@
