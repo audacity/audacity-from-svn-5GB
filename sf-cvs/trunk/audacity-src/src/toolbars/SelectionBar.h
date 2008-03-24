@@ -64,6 +64,10 @@ class SelectionBar:public ToolBar {
    // has changed.
    void UpdateRates();
 
+   // lll: Call this when something more drastic has changed
+   // in the display, f.e. when the language has changed.
+   void UpdateDisplay();
+
  private:
 
    void ValuesToControls();
