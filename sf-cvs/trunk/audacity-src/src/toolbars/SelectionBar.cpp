@@ -449,7 +449,7 @@ void SelectionBar::SetRate(double rate)
 
 void SelectionBar::OnRate(wxCommandEvent & WXUNUSED(event))
 {
-   mRateBox->GetValue().ToDouble(&mRate);
+   mRateBox->GetStringSelection().ToDouble(&mRate);
    if (mRate != 0.0 && mLeftTime) mLeftTime->SetSampleRate(mRate);
    if (mRate != 0.0 && mRightTime) mRightTime->SetSampleRate(mRate);
    if (mRate != 0.0 && mAudioTime) mAudioTime->SetSampleRate(mRate);
