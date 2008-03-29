@@ -44,30 +44,30 @@ add_news_item(
   _("Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer of Code (GSoC) 2008 "),
   _("
 <p>
-	Students! Interested in supporting Audacity and earning a stipend this summer? 
+	Students! Interested in supporting Audacity and earning a stipend this summer?
 	<em><a href=\"http://groups.google.com/group/google-summer-of-code-announce/web/guide-to-the-gsoc-web-app-for-student-applicants\">
 		Apply by 5:00 PM PDT on March 31, 2008 (00:00 UTC on April 1, 2008)!</a></em>
 </p>
 <p>
-	Audacity is a mentoring organization 
-	for the <a href=\"http://code.google.com/soc/2008/\">Google Summer of Code 2008</a>! 
+	Audacity is a mentoring organization
+	for the <a href=\"http://code.google.com/soc/2008/\">Google Summer of Code 2008</a>!
 	GSoC offers student developers $4,500 stipends to write code for various open source projects.
 </p>
 <p align=\"center\">
 	<a href=\"http://code.google.com/soc/2008/\">
-	  <img src=\"http://code.google.com/images/code_sm.png\" alt=\"Google Summer of Code 2008\"></img>
+	  <img src=\"http://google-summer-of-code.googlecode.com/files/soc08-198x128_white.jpg\" alt=\"Google Summer of Code 2008\"></img>
 	</a>
 </p>
 <p>
-	We are now seeking student participants. 
-	We look for evidence that the student has a real interest in 
+	We are now seeking student participants.
+	We look for evidence that the student has a real interest in
 	our project, 'Do they actually use it?' rather than just choosing some project that is part of GSoC.
 </p>
 <p>
 	If you are an interested student, please follow these steps:
 	<ol>
 		<li>Review the <a href=\"http://groups.google.com/group/google-summer-of-code-announce/web/guide-to-the-gsoc-web-app-for-student-applicants\">student app documentation</a>.
-			Also check the <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html\">GSoC FAQs</a>, 
+			Also check the <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html\">GSoC FAQs</a>,
 			especially from <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_student_apply\">'How does a student apply?'</a>.</li>
 		<li>Make sure you are <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_eligibility\">eligible</a>.</li>
 		<li>On the Audacity Wiki, check the <a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Ideas\">project ideas page</a>.</li>
@@ -76,7 +76,7 @@ add_news_item(
 	</ol>
 </p>
 <p>
-If you know any students who might be interested, possibly those already involved in music/audio 
+If you know any students who might be interested, possibly those already involved in music/audio
 research, please point them to our <a href=\"http://audacity.sourceforge.net/\">website</a> for this information.
 </p>
 "));
@@ -87,19 +87,19 @@ add_news_item(
   _("Audacity and Google Summer of Code (GSoC) 2008 "),
   _("
 <p>
-We are very happy to announce that Audacity has been accepted as a mentoring organization 
-for the <a href=\"http://code.google.com/soc/2008/\">Google Summer of Code 2008</a>! 
+We are very happy to announce that Audacity has been accepted as a mentoring organization
+for the <a href=\"http://code.google.com/soc/2008/\">Google Summer of Code 2008</a>!
 GSoC 'offers student developers stipends to write code for various open source projects'.
 </p>
 <p>
 We are now seeking student participants. As we wrote in our application:
-At student selection stage, we look for evidence that the student has a real interest in 
+At student selection stage, we look for evidence that the student has a real interest in
 our project, 'Do they actually use it?' rather than just choosing some project that is part of GSoC.
 </p>
 <p>
 If you are an interested student, please follow these steps:
 <ol>
-	<li>Review the <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html\">GSoC FAQ</a>, 
+	<li>Review the <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html\">GSoC FAQ</a>,
 		especially from <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_student_apply\">'How does a student apply?'</a>.</li>
 	<li>Make sure you are <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_eligibility\">eligible</a>.</li>
 	<li>On the Audacity Wiki, check the <a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Ideas\">project ideas page</a>.</li>
@@ -108,7 +108,7 @@ If you are an interested student, please follow these steps:
 </ol>
 </p>
 <p>
-If you know any students who might be interested, possibly those already involved in music/audio 
+If you know any students who might be interested, possibly those already involved in music/audio
 research, please point them to our <a href=\"http://audacity.sourceforge.net/\">website</a> for this information.
 </p>
 "));
@@ -119,9 +119,9 @@ add_news_item(
   _("LinuxQuestions.org Audio Authoring Award 2007"),
   _("
 <p>
-Audacity was chosen as 
+Audacity was chosen as
 <a href=\"http://www.linuxquestions.org/questions/2007-linuxquestions.org-members-choice-awards-79/audio-authoring-application-of-the-year-610225/?s=753ec1178602a18491f741f03855304d\">
-Audio Authoring Application of the Year</a> in the 2007 LinuxQuestions.org Members Choice poll. LinuxQuestions.org is an active online Linux community. In the voting, Audacity received nearly 70% of the 444 votes cast. Thanks to everyone who voted. 
+Audio Authoring Application of the Year</a> in the 2007 LinuxQuestions.org Members Choice poll. LinuxQuestions.org is an active online Linux community. In the voting, Audacity received nearly 70% of the 444 votes cast. Thanks to everyone who voted.
 </p>
 "));
 
@@ -131,8 +131,8 @@ add_news_item(
   _("Audacity 1.3.4 Released"),
   _("
 <p>
-The Audacity Team is pleased to announce the release of 
-<a href=\"/download\">Audacity 1.3.4 (beta)</a>, which includes several 
+The Audacity Team is pleased to announce the release of
+<a href=\"/download\">Audacity 1.3.4 (beta)</a>, which includes several
 new features and user interface improvements, such as:
 <ul>
 	<li>New Welcome Screen with introduction to Audacity.</li>
@@ -150,7 +150,7 @@ new features and user interface improvements, such as:
 </ul>
 </p>
 <p>
-Note that this release is for Windows and Linux/Unix only. 
+Note that this release is for Windows and Linux/Unix only.
 The latest Audacity beta for Mac OS is version 1.3.3.
 </p>
 <p>
@@ -158,7 +158,7 @@ See <a href=\"/download/features-1.3-a\">New Features in 1.3</a>
 for more information about 1.3.4 and the 1.3.x beta series.
 </p>
 <p>
-Check out the new e-book on 
+Check out the new e-book on
 <a href=\"http://www.informit.com/store/product.aspx?isbn=0132366576&rl=1\">Podcasting with Audacity</a>.
 </p>
 "));
@@ -169,13 +169,13 @@ add_news_item(
   _("SourceForge Community Choice Awards 2007"),
   _("
 <p>
-Audacity won the 
+Audacity won the
 <a href=\"http://sourceforge.net/community/index.php/landing-pages/cca07/\">
 	SourceForge Community Choice Awards 2007 -- Multimedia Category
 </a>!
-Congratulations to the other finalists. 
-<b>Big</b> thanks to SourceForge, to everyone who voted, and to all 
-who contribute to making Audacity great! 
+Congratulations to the other finalists.
+<b>Big</b> thanks to SourceForge, to everyone who voted, and to all
+who contribute to making Audacity great!
 </p>
 "));
 
@@ -185,10 +185,10 @@ add_news_item(
   _("Audacity 1.3.3 Released"),
   _("
 <p>
-The Audacity Team is pleased to announce the release of 
+The Audacity Team is pleased to announce the release of
 <a href=\"/download\">Audacity 1.3.3 (beta)</a>, which
 contains numerous new features and capabilities beyond the 1.3.2 (beta) release.
-Because it is a work 
+Because it is a work
 in progress and does not yet come with complete documentation or translations
 into foreign languages, it is recommended for more advanced users.
 For all users, <a href=\"/download\">Audacity 1.2.6</a>
@@ -205,13 +205,13 @@ for more information about the 1.3.x beta series.
 <dl><dt></dt><dd><!-- indent cheat -->
 <dl>
 	<dt> Opening/saving formats </dt>
-		<dd> Import 
+		<dd> Import
 			<ul>
 				<li>Import of audio from QuickTime (mov, aac, m4a) files now supported on OSX.</li>
 				<li>Broadcast Wave Format (BWF) wave files can now be imported.</li>
 			</ul>
 		</dd>
-		<dd> Export 
+		<dd> Export
 			<ul>
 				<li>Metadata can be added to OGG files.</li>
 				<li>Improved Export option selection.</li>
@@ -221,10 +221,10 @@ for more information about the 1.3.x beta series.
 		</dd>
 	<dt> Effects </dt>
 		<dd> EQ effect
-			<ul> 
+			<ul>
 				<li>Responsiveness improved.</li>
 				<li>Several enhancements added.</li>
-				<li>Batch support added.</li>				
+				<li>Batch support added.</li>
 			</ul>
 		</dd>
 		<dd> New Auto Duck effect </dd>
@@ -258,7 +258,7 @@ add_news_item(
         "1.3.2-release",
   _("Audacity 1.3.2 and 1.2.5 Released"),
   _("<p>
-The Audacity developers have been busy with many new features over  
+The Audacity developers have been busy with many new features over
 the past year.  We're pleased to announce
 <a href=\"/download/features-1.3-a\">Audacity 1.3.2 (beta)</a>, which
 contains dozens of new features and capabilities.  Because it is a work
@@ -323,7 +323,7 @@ add_news_item(
 	"AudacityStore",
   _("The Audacity Store Is Open"),
   _('
-	<p>You are invited to try out the new <a href="http://audacitystore.com/">Audacity Store</a>, which features  
+	<p>You are invited to try out the new <a href="http://audacitystore.com/">Audacity Store</a>, which features
 		Audacity-logo items (T-shirts, embroidered polo shirts, embroidered messenger bags), and consumer electronics.
 	</p>
 	<p align="center">
@@ -335,8 +335,8 @@ add_news_item(
 		</a>
 	</p>
 	<h3>New Releases on the Way</h3>
-	<p>Also, we will soon release updates to both the stable 1.2.x and development 1.3.x lines. 
-		The new 1.3.x version will be 1.3.2 -- no official 1.3.1 because there are lots of changes 
+	<p>Also, we will soon release updates to both the stable 1.2.x and development 1.3.x lines.
+		The new 1.3.x version will be 1.3.2 -- no official 1.3.1 because there are lots of changes
 			and several unofficial 1.3.1 builds have already been posted.
 		Major changes in the 1.3.2 release include:
 		<dl><dt></dt><dd><!-- indent cheat -->
@@ -344,13 +344,13 @@ add_news_item(
 				<dt>Preliminary Intel Mac Support</dt>
 					<dd>pre-release builds at <a href="http://audacityteam.org/mac">http://audacityteam.org/mac</a></dd>
 				<dt>Dependencies dialog</dt>
-					<dd>lets user see dependencies of project on other files, and 
+					<dd>lets user see dependencies of project on other files, and
 						copy audio data directly into the project</dd>
 				<dt>Crash Recovery</dt><dd>automatically saved data makes recovery fast and easy</dd>
 				<dt>New Repair Effect</dt><dd>smooths corrupted waveforms</dd>
 				<dt>UI Changes</dt>
-					<dd>themes (custom user interfaces), new toolbar docking features, new 
-						time-specification controls, increased accessibility support, history 
+					<dd>themes (custom user interfaces), new toolbar docking features, new
+						time-specification controls, increased accessibility support, history
 						window changes, lots more</dd>
 				<dt>Selection Bar Improvements</dt><dd>increased control and bug fixes</dd>
 				<dt>Equalization Effect Improvements</dt><dd>better layout of Graphic EQ, faster animation of curve, increased control</dd>
