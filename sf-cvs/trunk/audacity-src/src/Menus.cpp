@@ -505,7 +505,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem(wxT("CollapseAllTracks"), _("&Collapse All Tracks\tCtrl+Shift+C"), FN(OnCollapseAllTracks));
    c->AddItem(wxT("ExpandAllTracks"), _("E&xpand All Tracks\tCtrl+Shift+X"), FN(OnExpandAllTracks));
-
+   
    c->AddSeparator();
    c->AddItem(wxT("ShowClipping"), _("Show Clipping"), FN(OnShowClipping),
               gPrefs->Read(wxT("/GUI/ShowClipping"), 0L));
@@ -569,7 +569,7 @@ void AudacityProject::CreateMenusAndCommands()
       c->SetCommandFlags(wxT("MixAndRender"),
                          AudioIONotBusyFlag | WaveTracksSelectedFlag,
                          AudioIONotBusyFlag | WaveTracksSelectedFlag);
-      c->AddCommand(wxT("MixAndRenderToNewTrack"), _("Mix and Render to New Track\tCtrl+Shift+M"), FN(OnMixAndRenderToNewTrack));
+      c->AddCommand(wxT("MixAndRenderToNewTrack"), _("Mix and Render to New Track\tCtrl+Shift+R"), FN(OnMixAndRenderToNewTrack));
       c->SetCommandFlags(wxT("MixAndRenderToNewTrack"),
                          AudioIONotBusyFlag | WaveTracksSelectedFlag,
                          AudioIONotBusyFlag | WaveTracksSelectedFlag);
@@ -587,6 +587,10 @@ void AudacityProject::CreateMenusAndCommands()
       c->SetCommandFlags(wxT("RemoveTracks"),
                          AudioIONotBusyFlag | TracksSelectedFlag,
                          AudioIONotBusyFlag | TracksSelectedFlag);
+      c->AddSeparator();
+
+      c->AddItem(wxT("MuteAllTracks"), _("&Mute All Tracks\tCtrl+Shift+M"), FN(OnMuteAllTracks));
+      c->AddItem(wxT("UnMuteAllTracks"), _("&UnMute All Tracks\tCtrl+Shift+U"), FN(OnUnMuteAllTracks));
       c->AddSeparator();
    
       wxArrayString alignLabels;
@@ -4443,6 +4447,37 @@ void AudacityProject::OnExpandAllTracks()
    while (t)
    {
       t->SetMinimized(false);
+      t = iter.Next();
+   }
+
+   ModifyState();
+   RedrawProject();
+}
+
+
+void AudacityProject::OnMuteAllTracks()
+{
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t)
+   {
+      t->SetMute(true);
+      t = iter.Next();
+   }
+
+   ModifyState();
+   RedrawProject();
+}
+
+void AudacityProject::OnUnMuteAllTracks()
+{
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t)
+   {
+      t->SetMute(false);
       t = iter.Next();
    }
 
