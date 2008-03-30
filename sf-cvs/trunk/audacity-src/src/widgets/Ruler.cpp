@@ -392,9 +392,10 @@ void Ruler::FindLinearTickSizes(double UPP)
          mMajor = 6.0;
          return;
       }
-      if (units < 3.0) {
+      if (units < 8.0) {
          mMinor = 3.0;
          mMajor = 12.0;
+         return;
       }
       d = 10.0;
       for(;;) {
