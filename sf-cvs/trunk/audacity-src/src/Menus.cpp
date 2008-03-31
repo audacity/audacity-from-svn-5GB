@@ -565,11 +565,11 @@ void AudacityProject::CreateMenusAndCommands()
       c->SetCommandFlags(wxT("Stereo to Mono"),
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag,
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag);
-      c->AddItem(wxT("MixAndRender"),       _("&Mix and Render"),             FN(OnMixAndRender));
+      c->AddItem(wxT("MixAndRender"),       _("Mi&x and Render"),             FN(OnMixAndRender));
       c->SetCommandFlags(wxT("MixAndRender"),
                          AudioIONotBusyFlag | WaveTracksSelectedFlag,
                          AudioIONotBusyFlag | WaveTracksSelectedFlag);
-      c->AddCommand(wxT("MixAndRenderToNewTrack"), _("Mix and Render to New Track\tCtrl+Shift+R"), FN(OnMixAndRenderToNewTrack));
+      c->AddCommand(wxT("MixAndRenderToNewTrack"), _("Mix and Render to New Track\tCtrl+Shift+M"), FN(OnMixAndRenderToNewTrack));
       c->SetCommandFlags(wxT("MixAndRenderToNewTrack"),
                          AudioIONotBusyFlag | WaveTracksSelectedFlag,
                          AudioIONotBusyFlag | WaveTracksSelectedFlag);
@@ -589,7 +589,7 @@ void AudacityProject::CreateMenusAndCommands()
                          AudioIONotBusyFlag | TracksSelectedFlag);
       c->AddSeparator();
 
-      c->AddItem(wxT("MuteAllTracks"), _("&Mute All Tracks\tCtrl+Shift+M"), FN(OnMuteAllTracks));
+      c->AddItem(wxT("MuteAllTracks"), _("&Mute All Tracks\tCtrl+U"), FN(OnMuteAllTracks));
       c->AddItem(wxT("UnMuteAllTracks"), _("&UnMute All Tracks\tCtrl+Shift+U"), FN(OnUnMuteAllTracks));
       c->AddSeparator();
    
