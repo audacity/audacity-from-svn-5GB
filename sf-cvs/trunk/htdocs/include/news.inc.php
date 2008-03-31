@@ -44,9 +44,9 @@ add_news_item(
   _("Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer of Code (GSoC) 2008 "),
   _("
 <p>
-	Students! Interested in supporting Audacity and earning a stipend this summer?
+	Students! Interested in supporting Audacity and earning a stipend this summer? Extended application deadline!
 	<em><a href=\"http://groups.google.com/group/google-summer-of-code-announce/web/guide-to-the-gsoc-web-app-for-student-applicants\">
-		Apply by 5:00 PM PDT on March 31, 2008 (00:00 UTC on April 1, 2008)!</a></em>
+		Apply by 5:00 PM PDT on April 7, 2008 (00:00 UTC on April 8, 2008)!</a></em>
 </p>
 <p>
 	Audacity is a mentoring organization
