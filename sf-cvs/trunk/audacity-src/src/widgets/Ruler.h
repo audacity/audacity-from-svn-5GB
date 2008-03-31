@@ -260,14 +260,12 @@ private:
    void OnSize(wxSizeEvent &evt);
    void OnMouseEvents(wxMouseEvent &evt);
 
-   void DoDraw(wxDC *dc);
-
    void DoDrawBorder(wxDC * dc);
    void DoDrawMarks(wxDC * dc, bool /*text */ );
    void DoDrawCursor(wxDC * dc);
    void DoDrawSelection(wxDC * dc);
    void DoDrawIndicator(wxDC * dc);
-   void DoDrawPlayRegion(wxDC *dc);
+   void DoDrawPlayRegion(wxDC * dc);
 
    double Pos2Time(int p);
    int Time2Pos(double t);
