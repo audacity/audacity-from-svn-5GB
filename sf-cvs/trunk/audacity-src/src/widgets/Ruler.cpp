@@ -1503,12 +1503,31 @@ void AdornedRulerPanel::OnErase(wxEraseEvent &evt)
 void AdornedRulerPanel::OnPaint(wxPaintEvent &evt)
 {
 #if defined(__WXMAC__)
-   wxPaintDC dc( this );
+   wxPaintDC dc(this);
 #else
-   wxBufferedPaintDC dc( this );
+   wxBufferedPaintDC dc(this);
 #endif
 
-   DoDraw( &dc );
+   DoDrawBorder(&dc);
+
+   if (mViewInfo->sel0 < mViewInfo->sel1)
+   {
+      DoDrawSelection(&dc);
+   }
+
+   if (mIndType >= 0)
+   {
+      DoDrawIndicator(&dc);
+   }
+
+   DoDrawMarks(&dc, true);
+
+   if (mViewInfo->sel0 == mViewInfo->sel1)
+   {
+      DoDrawCursor(&dc);
+   }
+   
+   DoDrawPlayRegion(&dc);
 }
 
 void AdornedRulerPanel::OnSize(wxSizeEvent &evt)
@@ -1664,31 +1683,7 @@ void AdornedRulerPanel::OnMouseEvents(wxMouseEvent &evt)
    }
 }
 
-void AdornedRulerPanel::DoDraw(wxDC *dc)
-{
-   DoDrawBorder( dc );
-
-   if( mViewInfo->sel0 < mViewInfo->sel1 )
-   {
-      DoDrawSelection( dc );
-   }
-
-   if( mIndType >= 0 )
-   {
-      DoDrawIndicator( dc );
-   }
-
-   DoDrawMarks( dc, true );
-
-   if( mViewInfo->sel0 == mViewInfo->sel1 )
-   {
-      DoDrawCursor( dc );
-   }
-   
-   DoDrawPlayRegion(dc);
-}
-
-void AdornedRulerPanel::DoDrawPlayRegion(wxDC *dc)
+void AdornedRulerPanel::DoDrawPlayRegion(wxDC * dc)
 {
    double start, end;
    GetPlayRegion(&start, &end);
@@ -1774,14 +1769,7 @@ void AdornedRulerPanel::DoDrawMarks(wxDC * dc, bool /*text */ )
 
 void AdornedRulerPanel::DrawSelection()
 {
-#if defined(__WXMAC__)
-   wxClientDC dc( this );
-#else
-   wxClientDC cdc( this );
-   wxBufferedDC dc( &cdc, *mBuffer );
-#endif
-
-   DoDraw( &dc );
+   Refresh(false);
 }
 
 void AdornedRulerPanel::DoDrawSelection(wxDC * dc)
@@ -1815,17 +1803,10 @@ void AdornedRulerPanel::DrawCursor(double pos)
 {
    mCurPos = pos;
 
-#if defined(__WXMAC__)
-   wxClientDC dc( this );
-#else
-   wxClientDC cdc( this );
-   wxBufferedDC dc( &cdc, *mBuffer );
-#endif
-
-   DoDraw( &dc );
+   Refresh(false);
 }
 
-void AdornedRulerPanel::DoDrawCursor(wxDC *dc)
+void AdornedRulerPanel::DoDrawCursor(wxDC * dc)
 {
    int x = mLeftOffset + int ( ( mCurPos - mViewInfo->h ) * mViewInfo->zoom );
 
@@ -1841,19 +1822,13 @@ void AdornedRulerPanel::ClearIndicator()
 {
    mIndType = -1;
 
-#if defined(__WXMAC__)
-   wxClientDC dc( this );
-#else
-   wxClientDC cdc( this );
-   wxBufferedDC dc( &cdc, *mBuffer );
-#endif
-
-   DoDraw( &dc );
+   Refresh(false);
 }
 
 void AdornedRulerPanel::DrawIndicator( double pos, bool rec )
 {
    mIndPos = pos;
+
    if( mIndPos < 0 )
    {
       ClearIndicator();
@@ -1862,14 +1837,7 @@ void AdornedRulerPanel::DrawIndicator( double pos, bool rec )
 
    mIndType = ( rec ? 1 : 0 );
 
-#if defined(__WXMAC__)
-   wxClientDC dc( this );
-#else
-   wxClientDC cdc( this );
-   wxBufferedDC dc( &cdc, *mBuffer );
-#endif
-
-   DoDraw( &dc );
+   Refresh(false);
 }
 
 void AdornedRulerPanel::DoDrawIndicator(wxDC * dc)
