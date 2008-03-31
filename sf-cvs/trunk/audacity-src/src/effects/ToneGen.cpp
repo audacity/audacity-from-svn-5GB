@@ -416,7 +416,7 @@ bool ToneGenDialog::TransferDataFromWindow()
    amplitude[0] = TrapDouble(amplitude[0], AMP_MIN, AMP_MAX);
    frequency[0] = TrapDouble(frequency[0], FREQ_MIN, FREQ_MAX);
    amplitude[1] = TrapDouble(amplitude[1], AMP_MIN, AMP_MAX);
-   frequency[1] = TrapDouble(frequency[1], FREQ_MIN, FREQ_MAX);
+   frequency[1] = TrapDouble(frequency[1], FREQ_MIN, (float)(GetActiveProject()->GetRate())/2.);
 
    // Must handle this ourselves since ShuttleGui doesn't know about it
    length = mToneDurationT->GetTimeValue();
