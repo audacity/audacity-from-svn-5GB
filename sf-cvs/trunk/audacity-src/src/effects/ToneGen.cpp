@@ -208,7 +208,7 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
             case 2:    //sawtooth
                f = (2 * modf(mPositionInCycles/mCurRate+0.5f, &throwaway)) -1.0f;
                break;
-         case 3:    //square, no alias.  Good down to 110Hz @ 44100Hz sampling.
+            case 3:    //square, no alias.  Good down to 110Hz @ 44100Hz sampling.
                //do fundamental (k=1) outside loop
                b = (1. + cos((pre2PI * BlendedFrequency)/mCurRate))/pre4divPI;  //scaling
                f = (float) pre4divPI * sin(pre2PI * mPositionInCycles/mCurRate);
@@ -414,7 +414,7 @@ bool ToneGenDialog::TransferDataFromWindow()
    EffectDialog::TransferDataFromWindow();
 
    amplitude[0] = TrapDouble(amplitude[0], AMP_MIN, AMP_MAX);
-   frequency[0] = TrapDouble(frequency[0], FREQ_MIN, FREQ_MAX);
+   frequency[0] = TrapDouble(frequency[0], FREQ_MIN, (float)(GetActiveProject()->GetRate())/2.);
    amplitude[1] = TrapDouble(amplitude[1], AMP_MIN, AMP_MAX);
    frequency[1] = TrapDouble(frequency[1], FREQ_MIN, (float)(GetActiveProject()->GetRate())/2.);
 
