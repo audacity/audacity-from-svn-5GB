@@ -26,6 +26,7 @@ frequency changes smoothly during the tone.
 #include "../Audacity.h"
 #include "ToneGen.h"
 #include "../FFT.h"
+#include "../Project.h"
 #include "../ShuttleGui.h"
 #include "../WaveTrack.h"
 
@@ -302,7 +303,6 @@ bool EffectToneGen::Process()
 //----------------------------------------------------------------------------
 
 #define FREQ_MIN 1
-#define FREQ_MAX 20000
 #define AMP_MIN 0
 #define AMP_MAX 1
 
