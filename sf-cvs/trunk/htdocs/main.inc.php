@@ -18,7 +18,7 @@ $ind = "\t";
 
 $siteNavItems = array(
   array(_("Home"), "", 0),
-  array(_("About"), "about/", 
+  array(_("About"), "about/",
     array(
       array(_("Features"), "features"),
       array(_("Screenshots"), "screenshots"),
@@ -64,8 +64,8 @@ $siteNavItems = array(
   array(_("Get Involved"), "community/",
     array(
       array(_("Users"), "users"),
-      array(_("Translators"), "translation"),
       array(_("Developers"), "developers"),
+      array(_("Translators"), "translation"),
       array(_("Donate"), "donate"),
     )
   ),
