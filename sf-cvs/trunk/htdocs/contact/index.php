@@ -35,7 +35,7 @@
 </p>
 <p><?=_('When reporting a problem or apparent bug to the Forum, please include full details of what you are trying to do. If there is a crash or error message, please state what you did that led up to this, and what exactly any error message said.')?></p>
 
-<h3><?=_('Suggestions and Comments for the Audacity Developers')?></h3>
+<h3 id="feedback"><?=_('Suggestions and Comments for the Audacity Developers')?></h3>
 <p><?=_('If you have feedback for us that does <b>not</b> require a personal response, please <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#x3a;&#97;&#x75;&#100;&#x61;&#x63;&#105;&#116;&#x79;&#x2d;&#102;&#101;&#101;&#x64;&#x62;&#x61;&#99;&#x6b;&#64;&#108;&#x69;&#115;&#x74;&#x73;&#x2e;&#x73;&#x6f;&#117;&#114;&#x63;&#x65;&#102;&#x6f;&#114;&#x67;&#101;&#x2e;&#x6e;&#x65;&#116;&#32;">e-mail us</a>. Please tell us your experiences of the Audacity program, documentation or web site. We particularly welcome reports of possible program bugs and suggestions for new Audacity features.')?></p>
 <p><?=_('Reports of apparent bugs should be as specific as possible, including:</p>
 <ol>
