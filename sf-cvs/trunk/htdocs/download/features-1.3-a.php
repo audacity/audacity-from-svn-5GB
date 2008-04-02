@@ -101,7 +101,7 @@
   </dd>
 </dl>
 
-<h3><?=_("New features in Audacity 1.3.3")?></h3>
+<h3 id="olderdetails"><?=_("New features in Audacity 1.3.3")?></h3>
 <dl>
   <dt></dt>
   <dd>
