@@ -47,10 +47,10 @@
 <p>We can only accept feedback in English at present. <b>Note:</b> In line with our <a href="../contact/privacy">Privacy Policy</a>, this address is a public mailing list - messages are seen by all list subscribers, and posted on several web sites where the messages are archived.</p>')?>
 
 <h3><?php echo _('Discussion Lists')?></h3>
-<p><?php echo _('To discuss Audacity with other users and developers, subscribe to our');?>
+<p><?php echo _('Subscribe to our');?>
  <a href="../contact/lists"><?php
 //i18n-hint: this is the link text to the mailing list page
-echo _('mailing lists');?></a>.</p>
+echo _('mailing lists');?></a> <?=_('to discuss Audacity with our community of users and developers. C++ developers: join')?> <a href="https://lists.sourceforge.net/lists/listinfo/audacity-devel"> <?=_('our developers\' list')?></a> <?=_('to learn about the Audacity source code and contribute to making Audacity even better!')?></p>
 <?php
   include "../include/footer.inc.php";
 ?>
