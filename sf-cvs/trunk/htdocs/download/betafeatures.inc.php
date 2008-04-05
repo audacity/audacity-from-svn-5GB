@@ -9,6 +9,6 @@
  */
 ?>
 
-<p><a href="features-1.3-a"><?=_("Click here to read about new features in Audacity 1.3.")?></a></p>
+<p><a href="features-1.3-a#details"><?=_("Click here to read about new features in Audacity 1.3.")?></a></p>
 
 
