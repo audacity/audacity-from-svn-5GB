@@ -30,20 +30,20 @@ $siteNavItems = array(
   ),
   array(_("Download"), "download/",
     array(
-      array(_("Stable").": 1.2.6", ""),
+      array(_("Stable").": 1.2", ""),
       array($ind._("Windows"), "windows"),
       array($ind._("Mac"), "mac"),
       array($ind._("Linux/Unix"), "linux"),
       array($ind._("Source Code"), "source"),
       array($ind._("Release Notes"), "release-notes"),
-      array(_("Beta").": 1.3.4", ""),
+      array(_("Beta").": 1.3", ""),
       array($ind._("New Features in 1.3"), "features-1.3-a"),
       array($ind._("Windows"), "beta_windows"),
       array($ind._("Mac"), "beta_mac"),
       array($ind._("Linux/Unix"), "beta_linux"),
       array($ind._("Source Code"), "beta_source"),
       array(_("Plug-Ins"), "plugins"),
-      array(_("Buy a CD"), "buy"),
+      array(_("Obtain a CD"), "buy"),
       array(_("Vendors and Distributors of Audacity"), "bundlers"),
     )
   ),
@@ -51,7 +51,8 @@ $siteNavItems = array(
     array(
       array(_("FAQ"), "faq"),
       array(_("Documentation"), "documentation"),
-      array(_("Tutorials"), "tutorials"),
+      array(_("<A class=\"ext\" href=\"http://audacityteam.org/wiki/index.php?title=Tutorials\" target=\"_blank\">Tutorials (Wiki)</a>")."", ""),
+      array(_("<A class=\"ext\" href=\"http://audacityteam.org/wiki/index.php?title=Tips\" target=\"_blank\">Tips (Wiki)</a>")."", ""),
       array(_("Nyquist"), "nyquist"),
     )
   ),
