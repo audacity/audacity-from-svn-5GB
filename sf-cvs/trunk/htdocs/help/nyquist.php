@@ -13,6 +13,8 @@
 
 <h2><?=$pageTitle?></h2>
 
+<p><b>News:</b> Click <a href="http://music.web.cmu.edu/cmw">here</a> for details of a "Nyquist and Audacity Computer Music Workshop" held from June 1-7, 2008 at Carnegie Mellon University in Pittsburgh, Pennsylvania, USA.</p>
+
 <ol>
 	<li><b><?=_("Introduction to Nyquist and Lisp Programming")?></b></li>
 	<li><a href="nyquist2"><?=_("Programming in Nyquist")?></a></li>
@@ -26,7 +28,7 @@
 	<li><a href="http://www-2.cs.cmu.edu/~music/music.software.html">CMU Computer Music Project Software</a> - download the full Nyquist here</a></li>
 </ul>
 
-<p>To write plug-ins for use with Audacity, you will need the older <a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">Nyquist version 2.36 Manual</a>, not the version 3 manual available from CMU. This is because in Nyquist version 3 the code notation has changed to SAL instead of LISP. We will investigate integrating SAL with the Audacity implementation of Nyquist in the future.</p>
+<p>To write plug-ins for use with Audacity, you will need the older <a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">Nyquist version 2.37 Manual</a>, not the version 3 manual available from CMU. This is because in Nyquist version 3 the code notation has changed to SAL instead of LISP. We will investigate integrating SAL with the Audacity implementation of Nyquist in the future.</p>
 
 <p>Note that you don\'t need to download Nyquist in order to write simple plug-ins to use with Audacity.  All of the instructions you need are below.</p>
 
@@ -78,7 +80,7 @@
 
 <h3>Lisp function reference</h3>
 
-<p>Here\'s a list of some of the basic lisp functions you might need.  For a complete list of Lisp / Nyquist functions, see the <a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">Nyquist version 2.36 Reference Manual</a>.</p>
+<p>Here\'s a list of some of the basic lisp functions you might need.  For a complete list of Lisp / Nyquist functions, see the <a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">Nyquist version 2.37 Reference Manual</a>.</p>
 
 <p><b>Note: Symbols in Nyquist (like variable names and function names) are not case-sensitive.  They are converted to uppercase internally.</b></p>
 
