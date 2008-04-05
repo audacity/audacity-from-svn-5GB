@@ -96,7 +96,7 @@
 </div>
 
 <form id="notify" method="post" action="http://scripts.dreamhost.com/add_list.cgi">
-  <h3><?=_("Get Notified of New Versions")?></h3>
+  <h3 id="announce"><?=_("Get Notified of New Versions")?></h3>
   <p>
   <input type="hidden" name="list" value="audacity-announce">
   <input type="hidden" name="url" value="http://audacity.sourceforge.net/list/subscribed.php">

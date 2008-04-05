@@ -20,15 +20,13 @@ h3 { font-size:1.143em; margin:1.25em 0 .25em 0; }
 h4 { font-size:1em; margin:1em 0 .5em 0; }
 
 
-.donations {
-       position:absolute; 
-       top: 0px;
-       right: 15px;
+p.donations { 
+       text-align:center;
 }  
 
 
 table.bundlers {
-        border-width: 2px;
+       border-width: 2px;
 	border-style: solid;
 	border-color: #9F9F9F;
 	border-collapse: collapse;
@@ -39,16 +37,16 @@ table.bundlers th {
 	padding: 8px;
 	border-style: solid;
 	border-color: #EEEEEE;
-        background-color: #EEEEEE;  
-        vertical-align: top;   
+       background-color: #EEEEEE;  
+       vertical-align: top;   
 }
 
 table.bundlers td {
-        border-width: 1px;
+       border-width: 1px;
 	padding: 8px;
 	border-style: solid;
 	border-color: #E5E5E5;
-        vertical-align: top;
+       vertical-align: top;
 }
 
 
@@ -59,8 +57,8 @@ table.bundlers td.col3 { width:63%; }
 
 table.winsysreq {
    	margin-left: auto;
-        margin-right: auto; 
-        border-width: 2px;
+       margin-right: auto; 
+       border-width: 2px;
 	border-style: solid;
 	border-color: #9F9F9F;
 	border-collapse: collapse;
@@ -71,16 +69,16 @@ table.winsysreq th {
 	padding: 8px;
 	border-style: solid;
 	border-color: #EEEEEE;
-        background-color: #EEEEEE;  
-        vertical-align: top;   
+       background-color: #EEEEEE;  
+       vertical-align: top;   
 }
 
 table.winsysreq td {
-        border-width: 1px;
+       border-width: 1px;
 	padding: 8px;
 	border-style: solid;
 	border-color: #E5E5E5;
-        vertical-align: top;
+       vertical-align: top;
 }
 
 
@@ -201,7 +199,7 @@ table.winsysreq td.ramspeed { width:22%; }
 	border:2px solid #339;
 	background:#ffa;
 	width:40%;
-        margin:0;
+       margin:0;
 }
 #download h3 { margin:.5em 0 0 0; }
 
