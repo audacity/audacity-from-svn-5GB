@@ -27,7 +27,7 @@
 <ul>
 	<li><a href="../manual-1.2/"><?=_('Read the Audacity manual online.')?></a></li>
 	<li><a href="../audacity-manual-1.2.zip"><?=_('Download the Audacity manual in HTML format.')?></a> <?=_('(To use the manual, unzip it and open the "index.html" file.)')?></li>
-    	<li><a href="../audacity-manual-1.2.pdf"><?=_('Download the Audacity manual in PDF format.')?></a></li>
+    	<li><a href="audacity-manual-1.2.pdf"><?=_('Download the Audacity manual in PDF format.')?></a></li>
 </ul>
 
 <div lang="fr">
