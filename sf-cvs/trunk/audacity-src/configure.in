@@ -167,35 +167,22 @@ dnl different options for these. This bit tries to work out what flags we
 dnl should add to the compiler we are using.
 dnl --------------------------------------------------------------------------
 
-dnl Strict prototypes flags for C
+dnl Strict prototypes flags for C (only C because doesn't work for C++)
 AX_CFLAGS_STRICT_PROTOTYPES(CFLAGS)
-dnl grab the flag, we will try and use it on C++ as well
-AX_CFLAGS_STRICT_PROTOTYPES(pot_flags)
-
-AX_CXX_CHECK_FLAG([$pot_flags], [[int foo;]], [[foo = 1;]], cxx_does_strict="yes", cxx_does_strict="no")
-if test "x$cxx_does_strict" = "xyes" ; then
-   dnl can use strict protoypes flag on the C++ compiler
-   CXXFLAGS="$CXXFLAGS $pot_flags"
-fi
-AX_CXXCPP_CHECK_FLAG([$pot_flags], [[int foo;]], [[foo = 1;]], cxx_does_strict="yes", cxx_does_strict="no")
-if test "x$cxx_does_strict" = "xyes" ; then
-   dnl can use strict protoypes flag on the C++ pre-processor compiler
-   CXXFLAGS="$CPPFLAGS $pot_flags"
-fi
 
 dnl Sensible warnings for C
-AX_CFLAGS_WARN_ALL(CFLAGS)
-dnl grab the flag, we will try and use it on C++ as well
-AX_CFLAGS_WARN_ALL(pot_flags1)
-AX_CXX_CHECK_FLAG([$pot_flags1], [[int foo;]], [[foo = 1;]], cxx_does_strict="yes", cxx_does_strict="no")
-if test "x$cxx_does_strict" = "xyes" ; then
-   dnl can use strict protoypes flag on the C++ compiler
-   CXXFLAGS="$CXXFLAGS $pot_flags1"
+AX_CFLAGS_WARN_ALL(wall_flags)
+CFLAGS="${CFLAGS} $wall_flags"
+dnl try and use it on C++ as well
+AX_CXX_CHECK_FLAG([$wall_flags], [[int foo;]], [[foo = 1;]], cxx_does_wall="yes", cxx_does_wall="no")
+if test "x$cxx_does_wall" = "xyes" ; then
+   dnl can use all warnings flag on the C++ compiler
+   CXXFLAGS="${CXXFLAGS} $wall_flags"
 fi
-AX_CXXCPP_CHECK_FLAG([$pot_flags1], [[int foo;]], [[foo = 1;]], cxx_does_strict="yes", cxx_does_strict="no")
-if test "x$cxx_does_strict" = "xyes" ; then
-   dnl can use strict protoypes flag on the C++ pre-processor compiler
-   CXXFLAGS="$CPPFLAGS $pot_flags1"
+AX_CXXCPP_CHECK_FLAG([$wall_flags], [[int foo;]], [[foo = 1;]], cpp_does_wall="yes", cpp_does_wall="no")
+if test "x$cpp_does_wall" = "xyes" ; then
+   dnl can use all warnings flag on the C++ pre-processor
+   CPPFLAGS="${CPPFLAGS} $wall_flags"
 fi
 
 AC_CONFIG_SUBDIRS([lib-src/FileDialog])
