@@ -34,7 +34,7 @@
   <h3>Aide en Français</h3>
   <ul>
     <li><a href="../localhelp/fr/audacity-1.2-help.htb">Menu d'aide d'Audacity en français</a> (Remplacer le fichier qui porte comme nom, audacity-1.2-help.htb par celui qu'on vous propose. <a href="http://zonelibre.grics.qc.ca/libre/article.php3?id_article=100">Aide</a>)</li>
-    <li><a href="../audacity-mode-d'emploi.pdf">Mode d'emploi en français</a> (PDF, 700 ko.  Ce fichier peut prendre un bon moment de télécharger.)</li>
+    <li><a href="../localhelp/fr/audacity-mode-d'emploi.pdf">Mode d'emploi en français</a> (PDF, 700 ko.  Ce fichier peut prendre un bon moment de télécharger.)</li>
  </ul>
 </div>
 
