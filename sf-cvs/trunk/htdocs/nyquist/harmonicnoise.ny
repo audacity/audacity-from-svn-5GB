@@ -3,7 +3,7 @@
 ;type generate
 ;name "Harmonic Noise"
 ;action "Harmonic Noise..."
-;info "Author: Steven Jones   GPL  Dec 2004\n\nHarmonic noise generates tones which are approximately harmonic. \nFor each note in  MIDI note list an n-partial tone is produced. Each \npartial of each tone is actually a narrow band of noise centered at the \nideal harmonic frequency. MIDI notes may be specified either as integers \nor using the Nyquist constants 'g3' for third octave g, 'bf4' for fourth \noctave b flat, 'gs2' or second octave g sharp etc. Higher band width values \nresults in a more noisy tone.  The final parameter selects between one of \ntwo harmonic distributions."
+;info "Author: Steven Jones   GPL  Dec 2004\n\nHarmonic noise generates tones which are approximately harmonic. \nFor each note in  MIDI note list an n-partial tone is produced. Each \npartial of each tone is actually a narrow band of noise centered at the \nideal harmonic frequency. MIDI notes may be specified either as integers \nor using the Nyquist constants 'g3' for third octave g, 'bf4' for fourth \noctave b flat, 'gs2' for second octave g sharp etc. Higher band width values \nresults in a more noisy tone.  The final parameter selects between one of \ntwo harmonic distributions."
 ;control notes "MIDI Note List" string "" "c2 c3 ef4 g4 bf4 c5"
 ;control n "Number of Harmonics" int "" 8 1 32
 ;control dur "Duration" int "sec" 10 1 30
