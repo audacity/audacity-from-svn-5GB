@@ -135,7 +135,7 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
    S.EndStatic();
    S.EndVerticalLay();
    S.StartVerticalLay();
-   S.StartStatic( _("Display range minimum for 'Waveform (dB)' view"),0 );
+   S.StartStatic( _("Display range minimum: meters and 'Waveform (dB)'"),0 );
    {
       S.StartRadioButtonGroup( wxT("/GUI/EnvdBRange"), ENV_DB_RANGE );
       S.TieRadioButton( _("-36 dB (shallow range for high-amplitude editing)"),36);
