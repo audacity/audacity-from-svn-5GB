@@ -177,7 +177,7 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mIsInput(isInput),
    mStyle(HorizontalStereo),
    mDB(true),
-   mDBRange(60),
+   mDBRange(ENV_DB_RANGE),
    mDecay(true),
    mDecayRate(60),
    mClip(true),
@@ -196,6 +196,7 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
     mBkgndBrush = wxBrush(backgroundColour, wxSOLID);
 
+   mDBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    mMeterRefreshRate = gPrefs->Read(wxT("/Meter/MeterRefreshRate"), 30);
    if (mIsInput) {
       mMeterDisabled = gPrefs->Read(wxT("/Meter/MeterInputDisabled"), (long)0);
@@ -288,6 +289,18 @@ Meter::~Meter()
    delete mIcon;
    if (mBitmap)
       delete mBitmap;
+}
+
+void Meter::UpdatePrefs()
+{
+   mDBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), 60);
+   mMeterRefreshRate = gPrefs->Read(wxT("/Meter/MeterRefreshRate"), 30);
+   if (mIsInput) {
+      mMeterDisabled = gPrefs->Read(wxT("/Meter/MeterInputDisabled"), (long)0);
+   }
+   else {
+      mMeterDisabled = gPrefs->Read(wxT("/Meter/MeterOutputDisabled"), (long)0);
+   }
 }
 
 void Meter::OnErase(wxEraseEvent &evt)

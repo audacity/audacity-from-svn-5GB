@@ -27,7 +27,7 @@ class wxTextFile;
 
 class DirManager;
 
-#define ENV_DB_RANGE 36
+#define ENV_DB_RANGE 60
 
 struct EnvPoint : public XMLTagHandler {
    double t;
