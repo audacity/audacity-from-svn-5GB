@@ -109,6 +109,7 @@ scroll information.  It also has some status flags.
 #include "effects/Effect.h"
 #include "prefs/PrefsDialog.h"
 #include "widgets/ErrorDialog.h"
+#include "widgets/Meter.h"
 #include "widgets/Ruler.h"
 #include "widgets/Warning.h"
 #include "xml/XMLFileReader.h"
@@ -826,6 +827,16 @@ void AudacityProject::UpdatePrefs()
 
    if( GetControlToolBar() )
       GetControlToolBar()->UpdatePrefs();
+
+   if( GetMeterToolBar() )
+   {
+      Meter *playMeter, *recordMeter;
+      GetMeterToolBar()->GetMeters(&playMeter, &recordMeter);
+      playMeter->UpdatePrefs();
+      playMeter->HandleLayout();
+      recordMeter->UpdatePrefs();
+      recordMeter->HandleLayout();
+   }
 }
 
 void AudacityProject::RedrawProject()

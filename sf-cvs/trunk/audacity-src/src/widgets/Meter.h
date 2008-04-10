@@ -81,6 +81,8 @@ class Meter : public wxPanel
 
    ~Meter();
 
+   void UpdatePrefs();
+
    // These should be kept in the same order as they appear
    // in the menu
    enum Style {

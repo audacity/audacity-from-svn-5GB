@@ -140,6 +140,7 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
       S.StartRadioButtonGroup( wxT("/GUI/EnvdBRange"), ENV_DB_RANGE );
       S.TieRadioButton( _("-36 dB (shallow range for high-amplitude editing)"),36);
       S.TieRadioButton( _("-48 dB (PCM range of 8 bit samples)"),48);
+      S.TieRadioButton( _("-60 dB (PCM range of 10 bit samples)"),60);
       S.TieRadioButton( _("-96 dB (PCM range of 16 bit samples)"),96);
       S.TieRadioButton( _("-120 dB (approximate limit of human hearing)"),120);
       S.TieRadioButton( _("-145 dB (PCM range of 24 bit samples)"),145);
