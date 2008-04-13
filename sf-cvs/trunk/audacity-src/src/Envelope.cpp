@@ -597,6 +597,8 @@ void Envelope::Paste(double t0, Envelope *e)
       // msmeyer: The envelope is empty and has the same default value, so
       // there is nothing that must be inserted, just return. This avoids
       // the creation of unnecessary duplicate control points
+      // MJS: but the envelope does get longer
+      mTrackLen += e->mTrackLen;
       return;
    }
    if (this->mEnv.Count() != 0)
