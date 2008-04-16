@@ -59,14 +59,14 @@
 //Changes thanks to Andreas Micheler
 //This one looks pretty good and uses existing code for the log chirp, just adds an interface.
 //Perhaps it should not be included in the mainstream until the log spectrogram scale is ready as well
-//#define LOGARITHMIC_TONE_CHIRP
-//#define LOGARITHMIC_SPECTRUM
+#define LOGARITHMIC_TONE_CHIRP
+#define LOGARITHMIC_SPECTRUM
 
 // AM, 22 Nov.2007
 // Some fixes for the rulers.
 // If activated, the ruler's labels don't spill over,
 // instead all rulers are resized to fit the biggest ruler.
-//#define EXPERIMENTAL_RULER_AUTOSIZE
+#define EXPERIMENTAL_RULER_AUTOSIZE
 
 #ifdef LOGARITHMIC_SPECTRUM
    // AM, 20.Nov 2007: 
