@@ -2522,16 +2522,21 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
       //
       // 08/27/2006: too inconsistent for now...just leave it a zero.
       //
-      /*
-      if (numCaptureChannels > 0 && numPlaybackChannels > 0 && timeInfo->inputBufferAdcTime > 0)
-         gAudioIO->mLastRecordingOffset = timeInfo->inputBufferAdcTime - timeInfo->outputBufferDacTime;
-      else {
-         if (gAudioIO->mLastRecordingOffset == 0.0) {
+      // 04/16/2008: Looks like si->inputLatency comes back with something useful though.
+      // This rearranged logic uses si->inputLatency, but if PortAudio fixes inputBufferAdcTime, 
+      // this code won't have to be modified to use it. 
+      // Also avoids setting mLastRecordingOffset except when simultaneously playing and recording.
+      //
+      if (numCaptureChannels > 0 && numPlaybackChannels > 0) // simultaneously playing and recording
+      {
+         if (timeInfo->inputBufferAdcTime > 0)
+            gAudioIO->mLastRecordingOffset = timeInfo->inputBufferAdcTime - timeInfo->outputBufferDacTime;
+         else if (gAudioIO->mLastRecordingOffset == 0.0) 
+         {
             const PaStreamInfo* si = Pa_GetStreamInfo( gAudioIO->mPortStreamV19 );
             gAudioIO->mLastRecordingOffset = -si->inputLatency;
          }
       }
-      */
      #else
       if (numCaptureChannels > 0 && numPlaybackChannels > 0)
          gAudioIO->mLastRecordingOffset = (Pa_StreamTime(gAudioIO->mPortStreamV18) - outTime) / gAudioIO->mRate;
