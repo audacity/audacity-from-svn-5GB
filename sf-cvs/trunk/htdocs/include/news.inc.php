@@ -39,6 +39,27 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "April 18, 2008",
+        "GSoC_2008",
+  _("Audacity is a mentoring organization Google Summer of Code (GSoC) 2008 "),
+  _("
+<p>
+	Audacity is a mentoring organization
+	for the <a href=\"http://code.google.com/soc/2008/\">Google Summer of Code 2008</a>!
+	GSoC offers student developers $4,500 stipends to write code for various open source projects.
+</p>
+<p align=\"center\">
+	<a href=\"http://code.google.com/soc/2008/\">
+	  <img src=\"http://google-summer-of-code.googlecode.com/files/soc08-198x128_white.jpg\" alt=\"Google Summer of Code 2008\"></img>
+	</a>
+</p>
+<p>
+	All the student applications are in, and scored. Announcements will be made on April 21. 
+	Thanks for your interest!
+</p>
+"));
+
+add_news_item(
   "March 24, 2008",
         "GSoC_2008",
   _("Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer of Code (GSoC) 2008 "),
