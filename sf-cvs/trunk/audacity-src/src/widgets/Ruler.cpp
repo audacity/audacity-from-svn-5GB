@@ -392,12 +392,27 @@ void Ruler::FindLinearTickSizes(double UPP)
          mMajor = 6.0;
          return;
       }
-      if (units < 8.0) {
+      if (units < 3.0) {
          mMinor = 3.0;
          mMajor = 12.0;
          return;
       }
-      d = 10.0;
+      if (units < 6.0) {
+         mMinor = 6.0;
+         mMajor = 24.0;
+         return;
+      }
+      if (units < 12.0) {
+         mMinor = 12.0;
+         mMajor = 48.0;
+         return;
+      }
+      if (units < 24.0) {
+         mMinor = 24.0;
+         mMajor = 96.0;
+         return;
+      }
+      d = 20.0;
       for(;;) {
          if (units < d) {
             mMinor = d;
@@ -407,7 +422,7 @@ void Ruler::FindLinearTickSizes(double UPP)
          d *= 5.0;
          if (units < d) {
             mMinor = d;
-            mMajor = d*2.0;
+            mMajor = d*5.0;
             return;
          }
          d *= 2.0;
