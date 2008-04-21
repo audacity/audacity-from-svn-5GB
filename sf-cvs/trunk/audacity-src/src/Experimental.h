@@ -66,7 +66,11 @@
 // Some fixes for the rulers.
 // If activated, the ruler's labels don't spill over,
 // instead all rulers are resized to fit the biggest ruler.
-#define EXPERIMENTAL_RULER_AUTOSIZE
+// MJS, 21 April 2008
+// With Waveform (dB) view, at some vertical sizes of track, there appears to be a loop
+// where the ruler gets bigger and smaller repeatedly, using up an awful lot of cycles.
+// Really needs to be fixed before this is turned on.
+//#define EXPERIMENTAL_RULER_AUTOSIZE
 
 #ifdef LOGARITHMIC_SPECTRUM
    // AM, 20.Nov 2007: 
