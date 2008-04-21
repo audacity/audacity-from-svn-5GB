@@ -352,7 +352,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
             vruler->SetBounds(r.x, r.y+top+1, r.x + r.width, r.y + bot-1);
             vruler->SetOrientation(wxVERTICAL);
             vruler->SetRange(topval, botval);
-            vruler->SetFormat(Ruler::RealFormat);
+            vruler->SetFormat(Ruler::LinearDBFormat);
             vruler->SetLabelEdges(true);
 #ifdef LOGARITHMIC_SPECTRUM
             vruler->SetLog(false);
