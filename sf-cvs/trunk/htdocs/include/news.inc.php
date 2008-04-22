@@ -39,6 +39,27 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "April 21, 2008",
+        "GSoC_2008",
+  _("Audacity is mentoring five Google Summer of Code (GSoC) 2008 students"),
+  _("
+<p>
+	Audacity has been approved to mentor
+	five <a href=\"http://code.google.com/soc/2008/audacity/about.html\">students</a> for
+       <a href=\"http://code.google.com/soc/2008/\">Google Summer of Code 2008</a>!
+	GSoC offers student developers $4,500 stipends to write code for various open source projects.
+</p>
+<p align=\"center\">
+	<a href=\"http://code.google.com/soc/2008/\">
+	  <img src=\"http://google-summer-of-code.googlecode.com/files/soc08-198x128_white.jpg\" alt=\"Google Summer of Code 2008\"></img>
+	</a>
+</p>
+<p>
+	Congratulations to the five approved students and thanks to all who applied for their interest in Audacity!
+</p>
+"));
+
+add_news_item(
   "April 18, 2008",
         "GSoC_2008",
   _("Audacity is a mentoring organization Google Summer of Code (GSoC) 2008 "),
@@ -54,7 +75,7 @@ add_news_item(
 	</a>
 </p>
 <p>
-	All the student applications are in, and scored. Announcements will be made on April 21. 
+	All the student applications are in, and scored. Announcements will be made on April 21.
 	Thanks for your interest!
 </p>
 "));
