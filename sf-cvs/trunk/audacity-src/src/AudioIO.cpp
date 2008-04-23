@@ -1682,7 +1682,7 @@ int AudioIO::getRecordDevIndex(wxString devName)
    {
       const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
 
-      if (info && (DeviceName(info) == devName) && (info->maxOutputChannels > 0))
+      if (info && (DeviceName(info) == devName) && (info->maxInputChannels > 0))
       {
          // this device name matches the stored one, and works.
          // So we say this is the answer and return it
