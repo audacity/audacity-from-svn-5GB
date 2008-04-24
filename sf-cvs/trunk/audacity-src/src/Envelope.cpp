@@ -844,7 +844,7 @@ void Envelope::GetPoints(double *bufferWhen,
 int Envelope::Insert(double when, double value)
 {
    // in debug builds, do a spot of argument checking
-   wxASSERT(when <= (mTrackLen + mOffset));
+   wxASSERT(when <= (mTrackLen));
    wxASSERT(when >= 0);
 
    int len = mEnv.Count();
@@ -935,7 +935,7 @@ void Envelope::GetValues(double *buffer, int bufferLen,
    double tprev, vprev, tnext = 0, vnext, vstep = 0;
 
    // in debug builds, do a spot of argument checking
-   wxASSERT(t0 <= (mTrackLen + mOffset));
+   wxASSERT(t0 <= (mTrackLen));
    wxASSERT(t0 >= 0);
 
    for (int b = 0; b < bufferLen; b++) {
