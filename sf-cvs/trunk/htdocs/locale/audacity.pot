@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacity 1.3.5\n"
+"Project-Id-Version: Audacity 1.3.4\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-04-02 22:53+0100\n"
+"POT-Creation-Date: 2008-04-19 12:18-0300\n"
 "PO-Revision-Date: 1999 and beyond\n"
 "Last-Translator: FULL NAME <audacity-translation@lists.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,13 +203,13 @@ msgstr ""
 msgid "GPL License"
 msgstr ""
 
-#: AudacityApp.cpp:468 Project.cpp:1750
+#: AudacityApp.cpp:468 Project.cpp:1761
 #, c-format
 msgid "%s is already open in another window."
 msgstr ""
 
-#: AudacityApp.cpp:470 Project.cpp:1752 Project.cpp:1857 Project.cpp:2001
-#: Project.cpp:2103
+#: AudacityApp.cpp:470 Project.cpp:1763 Project.cpp:1868 Project.cpp:2012
+#: Project.cpp:2114
 msgid "Error opening project"
 msgstr ""
 
@@ -233,8 +233,8 @@ msgstr ""
 msgid "Output Meter"
 msgstr ""
 
-#. i18n-hint: Mac OS X shortcut should be Ctrl+,
 #. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
+#. i18n-hint: Mac OS X shortcut should be Ctrl+,
 #: AudacityApp.cpp:751 Menus.cpp:478
 msgid "&Preferences...\tCtrl+,"
 msgstr ""
@@ -424,7 +424,7 @@ msgid "Could not enumerate files in auto save directory"
 msgstr ""
 
 #: AutoRecovery.cpp:147 AutoRecovery.cpp:184 Menus.cpp:2575 Menus.cpp:4514
-#: Project.cpp:1960 Project.cpp:3332 Project.cpp:3411 WaveTrack.cpp:556
+#: Project.cpp:1971 Project.cpp:3343 Project.cpp:3422 WaveTrack.cpp:556
 #: WaveTrack.cpp:575 WaveTrack.cpp:1689 effects/Effect.cpp:436
 #: export/ExportMP2.cpp:230 prefs/DirectoriesPrefs.cpp:189
 #: prefs/KeyConfigPrefs.cpp:245 toolbars/ControlToolBar.cpp:532
@@ -992,7 +992,7 @@ msgstr ""
 #: effects/Equalization.cpp:1109 effects/Equalization.cpp:1111
 #: effects/Equalization.cpp:1119 effects/Equalization.cpp:1185
 #: effects/Equalization.cpp:1394 effects/Equalization.cpp:1405
-#: effects/Normalize.cpp:365 widgets/Meter.cpp:367
+#: effects/Normalize.cpp:365 widgets/Meter.cpp:380
 msgid "dB"
 msgstr ""
 
@@ -1030,8 +1030,8 @@ msgstr ""
 msgid "Export Spectral Data As:"
 msgstr ""
 
-#: FreqWindow.cpp:1079 LabelDialog.cpp:599 Menus.cpp:2207 Project.cpp:2430
-#: Project.cpp:3384 prefs/KeyConfigPrefs.cpp:180
+#: FreqWindow.cpp:1079 LabelDialog.cpp:599 Menus.cpp:2207 Project.cpp:2441
+#: Project.cpp:3395 prefs/KeyConfigPrefs.cpp:180
 msgid "Couldn't write to file: "
 msgstr ""
 
@@ -1416,7 +1416,7 @@ msgstr ""
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr ""
 
-#: LabelDialog.cpp:532 Menus.cpp:3571 Project.cpp:1820 Project.cpp:1828
+#: LabelDialog.cpp:532 Menus.cpp:3571 Project.cpp:1831 Project.cpp:1839
 #: import/ImportMIDI.cpp:31
 msgid "Could not open file: "
 msgstr ""
@@ -1484,7 +1484,7 @@ msgstr ""
 msgid "&Save Project\tCtrl+S"
 msgstr ""
 
-#: Menus.cpp:178 Project.cpp:2679
+#: Menus.cpp:178 Project.cpp:2690
 msgid "Save Project &As..."
 msgstr ""
 
@@ -2554,7 +2554,7 @@ msgstr ""
 msgid "All files (*)|*"
 msgstr ""
 
-#: Menus.cpp:3649 Project.cpp:2576 Project.cpp:2601 import/ImportPCM.cpp:440
+#: Menus.cpp:3649 Project.cpp:2587 Project.cpp:2612 import/ImportPCM.cpp:440
 #: import/ImportPCM.cpp:484
 msgid "Import"
 msgstr ""
@@ -2736,32 +2736,32 @@ msgstr ""
 msgid "Print"
 msgstr ""
 
-#: Project.cpp:635
+#: Project.cpp:636
 msgid "Main Mix"
 msgstr ""
 
-#: Project.cpp:760
+#: Project.cpp:761
 #, c-format
 msgid "Welcome to Audacity version %s"
 msgstr ""
 
-#: Project.cpp:911
+#: Project.cpp:922
 msgid "(Recovered)"
 msgstr ""
 
-#: Project.cpp:1471 TrackPanel.cpp:804 toolbars/ControlToolBar.cpp:191
+#: Project.cpp:1482 TrackPanel.cpp:804 toolbars/ControlToolBar.cpp:191
 msgid "Record"
 msgstr ""
 
-#: Project.cpp:1471 TrackPanel.cpp:804
+#: Project.cpp:1482 TrackPanel.cpp:804
 msgid "Recorded Audio"
 msgstr ""
 
-#: Project.cpp:1489
+#: Project.cpp:1500
 msgid "Save changes before closing?"
 msgstr ""
 
-#: Project.cpp:1492
+#: Project.cpp:1503
 msgid ""
 "\n"
 "If saved, the project will have no tracks.\n"
@@ -2771,23 +2771,23 @@ msgid ""
 "are open, then File > Save Project."
 msgstr ""
 
-#: Project.cpp:1495
+#: Project.cpp:1506
 msgid "Save changes?"
 msgstr ""
 
-#: Project.cpp:1683
+#: Project.cpp:1694
 msgid "All files|*.*|All supported files|"
 msgstr ""
 
-#: Project.cpp:1708
+#: Project.cpp:1719
 msgid "Select one or more audio files..."
 msgstr ""
 
-#: Project.cpp:1735
+#: Project.cpp:1746
 msgid "Audacity projects|*.aup|"
 msgstr ""
 
-#: Project.cpp:1788 Project.cpp:2175
+#: Project.cpp:1799 Project.cpp:2186
 #, c-format
 msgid ""
 "This file was saved by Audacity %s, a much\n"
@@ -2799,61 +2799,61 @@ msgid ""
 "Open this file now?"
 msgstr ""
 
-#: Project.cpp:1789
+#: Project.cpp:1800
 msgid "1.0 or earlier"
 msgstr ""
 
-#: Project.cpp:1795 Project.cpp:2187
+#: Project.cpp:1806 Project.cpp:2198
 msgid "Opening old project file"
 msgstr ""
 
-#: Project.cpp:1821 Project.cpp:1829
+#: Project.cpp:1832 Project.cpp:1840
 msgid "Error opening file"
 msgstr ""
 
-#: Project.cpp:1835
+#: Project.cpp:1846
 #, c-format
 msgid ""
 "File may be invalid or corrupted: \n"
 "%s"
 msgstr ""
 
-#: Project.cpp:1836
+#: Project.cpp:1847
 msgid "Error opening file or project"
 msgstr ""
 
-#: Project.cpp:1856
+#: Project.cpp:1867
 msgid ""
 "Audacity was unable to convert an Audacity 1.0 project to the new project "
 "format."
 msgstr ""
 
-#: Project.cpp:1959
+#: Project.cpp:1970
 msgid "Could not remove old auto save file"
 msgstr ""
 
-#: Project.cpp:1961
+#: Project.cpp:1972
 msgid "Project was recovered"
 msgstr ""
 
-#: Project.cpp:1961
+#: Project.cpp:1972
 msgid "Recover"
 msgstr ""
 
-#: Project.cpp:1990
+#: Project.cpp:2001
 msgid "Project checker repaired file"
 msgstr ""
 
-#: Project.cpp:1990 effects/Repair.h:29
+#: Project.cpp:2001 effects/Repair.h:29
 msgid "Repair"
 msgstr ""
 
-#: Project.cpp:2101
+#: Project.cpp:2112
 #, c-format
 msgid "Couldn't find the project data folder: \"%s\""
 msgstr ""
 
-#: Project.cpp:2144
+#: Project.cpp:2155
 #, c-format
 msgid ""
 "This file was saved using Audacity %s.\n"
@@ -2861,11 +2861,11 @@ msgid ""
 "a newer version to open this file."
 msgstr ""
 
-#: Project.cpp:2148
+#: Project.cpp:2159
 msgid "Can't open project file"
 msgstr ""
 
-#: Project.cpp:2182
+#: Project.cpp:2193
 #, c-format
 msgid ""
 "This file was saved by Audacity %s.\n"
@@ -2875,51 +2875,51 @@ msgid ""
 "Open this file now?"
 msgstr ""
 
-#: Project.cpp:2415
+#: Project.cpp:2426
 #, c-format
 msgid ""
 "Could not save project. Perhaps %s is not writeable,\n"
 "or the disk is full."
 msgstr ""
 
-#: Project.cpp:2417 Project.cpp:2431
+#: Project.cpp:2428 Project.cpp:2442
 msgid "Error saving project"
 msgstr ""
 
-#: Project.cpp:2493
+#: Project.cpp:2504
 #, c-format
 msgid "Saved %s"
 msgstr ""
 
 #. i18n-hint: This refers to files that are opened directly
 #. without looking at the file header.  Same as "Import Raw"
-#: Project.cpp:2509
+#: Project.cpp:2520
 msgid "Raw"
 msgstr ""
 
-#: Project.cpp:2514
+#: Project.cpp:2525
 #, c-format
 msgid "Importing %s..."
 msgstr ""
 
-#: Project.cpp:2575
+#: Project.cpp:2586
 #, c-format
 msgid "Imported '%s'"
 msgstr ""
 
-#: Project.cpp:2628 Project.cpp:2636
+#: Project.cpp:2639 Project.cpp:2647
 msgid "Error importing"
 msgstr ""
 
-#: Project.cpp:2670
+#: Project.cpp:2681
 msgid "Save Speech As:"
 msgstr ""
 
-#: Project.cpp:2672
+#: Project.cpp:2683
 msgid "Windows PCM Audio file (*.wav)|*.wav"
 msgstr ""
 
-#: Project.cpp:2678
+#: Project.cpp:2689
 msgid ""
 "Audacity project files (.aup) let you save everything you're working on "
 "exactly as it\n"
@@ -2931,65 +2931,65 @@ msgid ""
 "Export commands."
 msgstr ""
 
-#: Project.cpp:2681
+#: Project.cpp:2692
 msgid "Audacity projects (*.aup)|*.aup"
 msgstr ""
 
-#: Project.cpp:2725
+#: Project.cpp:2736
 msgid "Created new project"
 msgstr ""
 
-#: Project.cpp:2845
+#: Project.cpp:2856
 #, c-format
 msgid "Deleted %.2f seconds at t=%.2f"
 msgstr ""
 
-#: Project.cpp:2848 effects/Equalization.cpp:1262
+#: Project.cpp:2859 effects/Equalization.cpp:1262
 #: effects/Equalization.cpp:2593
 msgid "Delete"
 msgstr ""
 
-#: Project.cpp:3041
+#: Project.cpp:3052
 #, c-format
 msgid "Disk space remains for recording %d hours and %d minutes."
 msgstr ""
 
-#: Project.cpp:3044
+#: Project.cpp:3055
 #, c-format
 msgid "Disk space remains for recording 1 hour and %d minutes."
 msgstr ""
 
-#: Project.cpp:3047
+#: Project.cpp:3058
 #, c-format
 msgid "Disk space remains for recording %d minutes."
 msgstr ""
 
-#: Project.cpp:3050
+#: Project.cpp:3061
 #, c-format
 msgid "Disk space remains for recording %d seconds."
 msgstr ""
 
-#: Project.cpp:3053
+#: Project.cpp:3064
 msgid "Out of disk space"
 msgstr ""
 
-#: Project.cpp:3331
+#: Project.cpp:3342
 msgid "Could not remove old autosave file: "
 msgstr ""
 
-#: Project.cpp:3372
+#: Project.cpp:3383
 msgid "New Project"
 msgstr ""
 
-#: Project.cpp:3385
+#: Project.cpp:3396
 msgid "Error writing autosave file"
 msgstr ""
 
-#: Project.cpp:3410
+#: Project.cpp:3421
 msgid "Could not create autosave file: "
 msgstr ""
 
-#: Project.cpp:3436
+#: Project.cpp:3447
 #, c-format
 msgid "Actual Rate: %d"
 msgstr ""
@@ -4844,7 +4844,7 @@ msgid ""
 "%.6lf seconds"
 msgstr ""
 
-#: effects/ToneGen.cpp:75 widgets/Meter.cpp:366
+#: effects/ToneGen.cpp:75 widgets/Meter.cpp:379
 msgid "Linear"
 msgstr ""
 
@@ -6337,7 +6337,7 @@ msgid "Modes"
 msgstr ""
 
 #: prefs/GUIPrefs.cpp:138
-msgid "Display range minimum for 'Waveform (dB)' view"
+msgid "Display range minimum: meters and 'Waveform (dB)'"
 msgstr ""
 
 #: prefs/GUIPrefs.cpp:141
@@ -6349,54 +6349,58 @@ msgid "-48 dB (PCM range of 8 bit samples)"
 msgstr ""
 
 #: prefs/GUIPrefs.cpp:143
-msgid "-96 dB (PCM range of 16 bit samples)"
+msgid "-60 dB (PCM range of 10 bit samples)"
 msgstr ""
 
 #: prefs/GUIPrefs.cpp:144
-msgid "-120 dB (approximate limit of human hearing)"
+msgid "-96 dB (PCM range of 16 bit samples)"
 msgstr ""
 
 #: prefs/GUIPrefs.cpp:145
+msgid "-120 dB (approximate limit of human hearing)"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:146
 msgid "-145 dB (PCM range of 24 bit samples)"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:150
+#: prefs/GUIPrefs.cpp:151
 msgid "Default View Mode"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:153
+#: prefs/GUIPrefs.cpp:154
 msgid "WaveformDisplay"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:154
+#: prefs/GUIPrefs.cpp:155
 msgid "WaveformDBDisplay"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:155
+#: prefs/GUIPrefs.cpp:156
 msgid "SpectrumDisplay"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:157
+#: prefs/GUIPrefs.cpp:158
 msgid "SpectrumLogDisplay"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:159
+#: prefs/GUIPrefs.cpp:160
 msgid "PitchDisplay"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:165
+#: prefs/GUIPrefs.cpp:166
 msgid "Other interface choices"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:167
+#: prefs/GUIPrefs.cpp:168
 msgid "Language:"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:168
+#: prefs/GUIPrefs.cpp:169
 msgid "Help:"
 msgstr ""
 
-#: prefs/GUIPrefs.cpp:169
+#: prefs/GUIPrefs.cpp:170
 msgid "Solo Button:"
 msgstr ""
 
@@ -7297,13 +7301,13 @@ msgstr ""
 
 #. i18n-hint: One-letter abbreviation for Left, in VU Meter
 #. i18n-hint: One-letter abbreviation for Left, in the Pan slider
-#: widgets/ASlider.cpp:604 widgets/Meter.cpp:211
+#: widgets/ASlider.cpp:604 widgets/Meter.cpp:212
 msgid "L"
 msgstr ""
 
 #. i18n-hint: One-letter abbreviation for Right, in VU Meter
 #. i18n-hint: One-letter abbreviation for Right, in the Pan slider
-#: widgets/ASlider.cpp:607 widgets/Meter.cpp:213
+#: widgets/ASlider.cpp:607 widgets/Meter.cpp:214
 msgid "R"
 msgstr ""
 
@@ -7361,35 +7365,35 @@ msgstr ""
 msgid "Empty"
 msgstr ""
 
-#: widgets/Meter.cpp:346
+#: widgets/Meter.cpp:359
 msgid "Enable Meter"
 msgstr ""
 
-#: widgets/Meter.cpp:348
+#: widgets/Meter.cpp:361
 msgid "Disable Meter"
 msgstr ""
 
-#: widgets/Meter.cpp:351
+#: widgets/Meter.cpp:364
 msgid "Stop Monitoring"
 msgstr ""
 
-#: widgets/Meter.cpp:353
+#: widgets/Meter.cpp:366
 msgid "Start Monitoring"
 msgstr ""
 
-#: widgets/Meter.cpp:357
+#: widgets/Meter.cpp:370
 msgid "Horizontal Stereo"
 msgstr ""
 
-#: widgets/Meter.cpp:358
+#: widgets/Meter.cpp:371
 msgid "Vertical Stereo"
 msgstr ""
 
-#: widgets/Meter.cpp:375
+#: widgets/Meter.cpp:388
 msgid "Preferences..."
 msgstr ""
 
-#: widgets/Meter.cpp:1065
+#: widgets/Meter.cpp:1078
 msgid ""
 "This determines how often the meter is refreshed.\n"
 "If you have a slower PC you may want to select a\n"
@@ -7397,11 +7401,11 @@ msgid ""
 "audio qualtiy is not affected by the meter display."
 msgstr ""
 
-#: widgets/Meter.cpp:1066
+#: widgets/Meter.cpp:1079
 msgid "Meter refresh rate per second [1-100]: "
 msgstr ""
 
-#: widgets/Meter.cpp:1067
+#: widgets/Meter.cpp:1080
 msgid "Meter Preferences"
 msgstr ""
 
