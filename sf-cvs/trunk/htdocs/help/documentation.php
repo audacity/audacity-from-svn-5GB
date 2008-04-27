@@ -30,10 +30,18 @@
     	<li><a href="audacity-manual-1.2.pdf"><?=_('Download the Audacity manual in PDF format.')?></a></li>
 </ul>
 
+<?php
+	echo
+     // i18n-hint: Text below this hint is local help for
+     // specific languages and should be left untranslated.
+	_('');
+?>
+
 <div lang="fr">
   <h3>Aide en Français</h3>
   <ul>
     <li><a href="../localhelp/fr/audacity-1.2-help.htb">Menu d'aide d'Audacity en français</a> (Remplacer le fichier qui porte comme nom, audacity-1.2-help.htb par celui qu'on vous propose. <a href="http://zonelibre.grics.qc.ca/libre/article.php3?id_article=100">Aide</a>)</li>
+    <li><a href="../localhelp/fr/audacity-fr-manuel-1.2.zip">Manuel d'Audacity en français</a> (zip, 700 ko.)
     <li><a href="../localhelp/fr/audacity-mode-d'emploi.pdf">Mode d'emploi en français</a> (PDF, 700 ko.  Ce fichier peut prendre un bon moment de télécharger.)</li>
  </ul>
 </div>
