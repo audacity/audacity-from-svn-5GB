@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.3.5\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-04-27 18:55+0100\n"
+"POT-Creation-Date: 2008-04-28 22:24+0100\n"
 "PO-Revision-Date: 1999 and beyond\n"
 "Last-Translator: FULL NAME <audacity-translation@lists.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1629,7 +1629,7 @@ msgid "&Stereo to Mono"
 msgstr ""
 
 #: Menus.cpp:365
-msgid "Labeled Re&gions..."
+msgid "La&beled Regions..."
 msgstr ""
 
 #. i18n-hint: Labeled Regions submenu
@@ -1678,7 +1678,7 @@ msgid "Disj&oin\tShift+Alt+J"
 msgstr ""
 
 #: Menus.cpp:415
-msgid "&Select..."
+msgid "Select&..."
 msgstr ""
 
 #: Menus.cpp:416
@@ -1690,19 +1690,19 @@ msgid "&None\tCtrl+Shift+A"
 msgstr ""
 
 #: Menus.cpp:421
-msgid "Left at Playback Position\t["
+msgid "&Left at Playback Position\t["
 msgstr ""
 
 #: Menus.cpp:422
-msgid "Right at Playback Position\t]"
+msgid "&Right at Playback Position\t]"
 msgstr ""
 
 #: Menus.cpp:426
-msgid "Start to Cursor"
+msgid "Track &Start to Cursor\tShift+J"
 msgstr ""
 
 #: Menus.cpp:427
-msgid "Cursor to End"
+msgid "Cursor to Track &End\tShift+K"
 msgstr ""
 
 #: Menus.cpp:433
@@ -1714,39 +1714,39 @@ msgid "Mo&ve Cursor..."
 msgstr ""
 
 #: Menus.cpp:437
-msgid "to Selection Start"
+msgid "to Selection Star&t"
 msgstr ""
 
 #: Menus.cpp:438
-msgid "to Selection End"
+msgid "to Selection En&d"
 msgstr ""
 
 #: Menus.cpp:442
-msgid "to Track Start"
+msgid "to Track &Start\tJ"
 msgstr ""
 
 #: Menus.cpp:443
-msgid "to Track End"
+msgid "to Track &End\tK"
 msgstr ""
 
 #: Menus.cpp:450
-msgid "Selection Save"
+msgid "Re&gion Save"
 msgstr ""
 
 #: Menus.cpp:451
-msgid "Selection Restore"
+msgid "Regio&n Restore"
 msgstr ""
 
 #: Menus.cpp:462
-msgid "Play &Region..."
+msgid "Pla&y Region..."
 msgstr ""
 
 #: Menus.cpp:463
-msgid "Lock"
+msgid "&Lock"
 msgstr ""
 
 #: Menus.cpp:464
-msgid "Unlock"
+msgid "&Unlock"
 msgstr ""
 
 #: Menus.cpp:470
@@ -1806,7 +1806,7 @@ msgid "E&xpand All Tracks\tCtrl+Shift+X"
 msgstr ""
 
 #: Menus.cpp:510
-msgid "Show Clipping"
+msgid "&Show Clipping"
 msgstr ""
 
 #: Menus.cpp:519
@@ -1818,39 +1818,39 @@ msgid "&Toolbars..."
 msgstr ""
 
 #: Menus.cpp:526
-msgid "Control Toolbar"
+msgid "&Control Toolbar"
 msgstr ""
 
 #: Menus.cpp:527
-msgid "Device Toolbar"
+msgid "&Device Toolbar"
 msgstr ""
 
 #: Menus.cpp:528
-msgid "Edit Toolbar"
+msgid "&Edit Toolbar"
 msgstr ""
 
 #: Menus.cpp:529
-msgid "Meter Toolbar"
+msgid "&Meter Toolbar"
 msgstr ""
 
 #: Menus.cpp:530
-msgid "Mixer Toolbar"
+msgid "Mi&xer Toolbar"
 msgstr ""
 
 #: Menus.cpp:531
-msgid "Selection Toolbar"
+msgid "&Selection Toolbar"
 msgstr ""
 
 #: Menus.cpp:532
-msgid "Tools Toolbar"
+msgid "T&ools Toolbar"
 msgstr ""
 
 #: Menus.cpp:533
-msgid "Transcription Toolbar"
+msgid "Transcri&ption Toolbar"
 msgstr ""
 
 #: Menus.cpp:535
-msgid "Reset Toolbars"
+msgid "&Reset Toolbars"
 msgstr ""
 
 #: Menus.cpp:537
@@ -1922,19 +1922,19 @@ msgid "Align with Selection &End"
 msgstr ""
 
 #: Menus.cpp:601
-msgid "Align End with Cursor"
+msgid "Align End with Cu&rsor"
 msgstr ""
 
 #: Menus.cpp:602
-msgid "Align End with Selection Start"
+msgid "Align End with Selection Star&t"
 msgstr ""
 
 #: Menus.cpp:603
-msgid "Align End with Selection End"
+msgid "Align End with Selection En&d"
 msgstr ""
 
 #: Menus.cpp:604
-msgid "Align Tracks Together"
+msgid "Align Tracks To&gether"
 msgstr ""
 
 #: Menus.cpp:606
