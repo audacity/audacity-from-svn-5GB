@@ -351,8 +351,8 @@ void AudacityProject::CreateMenusAndCommands()
    
    c->AddItem(wxT("Duplicate"),      _("Duplic&ate\tCtrl+D"),             FN(OnDuplicate));
 
-   // An anomoloy... StereoToMono and EditID3 are added here for CleanSpeech, 
-   // which doesn't have a Project menu, but they are under Project for normal Audacity.
+   // An anomaly... StereoToMono is added here for CleanSpeech, 
+   // which doesn't have a Project menu, but is under Project for normal Audacity.
    if( mCleanSpeechMode )
 	{
       c->AddItem(wxT("Stereo to Mono"),      _("&Stereo to Mono"),            FN(OnStereoToMono));
@@ -362,7 +362,7 @@ void AudacityProject::CreateMenusAndCommands()
 	}
    c->AddSeparator();
 
-   c->BeginSubMenu( _( "Labeled Re&gions..." ) );
+   c->BeginSubMenu( _( "La&beled Regions..." ) );
    /* i18n-hint: Labeled Regions submenu */
    c->AddItem( wxT( "CutLabels" ), _( "&Cut\tAlt+X" ), 
          FN( OnCutLabels ) );
@@ -412,19 +412,19 @@ void AudacityProject::CreateMenusAndCommands()
          LabelsSelectedFlag );
    c->EndSubMenu();
    
-   c->BeginSubMenu(_("&Select..."));
+   c->BeginSubMenu(_("Select&..."));
    c->AddItem(wxT("SelectAll"),      _("&All\tCtrl+A"),                   FN(OnSelectAll));
    c->AddItem(wxT("SelectNone"),     _("&None\tCtrl+Shift+A"),            FN(OnSelectNone));
    c->SetCommandFlags(TracksExistFlag, TracksExistFlag,
                       wxT("SelectAll"), wxT("SelectNone"), NULL);
 
-   c->AddItem(wxT("SetLeftSelection"),_("Left at Playback Position\t["), FN(OnSetLeftSelection));
-   c->AddItem(wxT("SetRightSelection"),_("Right at Playback Position\t]"), FN(OnSetRightSelection));
+   c->AddItem(wxT("SetLeftSelection"),_("&Left at Playback Position\t["), FN(OnSetLeftSelection));
+   c->AddItem(wxT("SetRightSelection"),_("&Right at Playback Position\t]"), FN(OnSetRightSelection));
    c->SetCommandFlags(TracksExistFlag, TracksExistFlag,
                       wxT("SetLeftSelection"), wxT("SetRightSelection"), NULL);
 
-   c->AddItem(wxT("SelStartCursor"), _("Start to Cursor"),                FN(OnSelectStartCursor));
-   c->AddItem(wxT("SelCursorEnd"),   _("Cursor to End"),                  FN(OnSelectCursorEnd));
+   c->AddItem(wxT("SelStartCursor"), _("Track &Start to Cursor\tShift+J"),                FN(OnSelectStartCursor));
+   c->AddItem(wxT("SelCursorEnd"),   _("Cursor to Track &End\tShift+K"),                  FN(OnSelectCursorEnd));
    c->SetCommandFlags(TracksSelectedFlag, TracksSelectedFlag,
                       wxT("SelStartCursor"), wxT("SelCursorEnd"), NULL);
 
@@ -434,21 +434,21 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->BeginSubMenu(_("Mo&ve Cursor..."));
 
-   c->AddItem(wxT("CursSelStart"),   _("to Selection Start"),             FN(OnCursorSelStart));
-   c->AddItem(wxT("CursSelEnd"),     _("to Selection End"),               FN(OnCursorSelEnd));
+   c->AddItem(wxT("CursSelStart"),   _("to Selection Star&t"),             FN(OnCursorSelStart));
+   c->AddItem(wxT("CursSelEnd"),     _("to Selection En&d"),               FN(OnCursorSelEnd));
    c->SetCommandFlags(TimeSelectedFlag, TimeSelectedFlag,
                       wxT("CursSelStart"), wxT("CursSelEnd"), NULL);
                       
-   c->AddItem(wxT("CursTrackStart"), _("to Track Start"),                 FN(OnCursorTrackStart));
-   c->AddItem(wxT("CursTrackEnd"),   _("to Track End"),                   FN(OnCursorTrackEnd));
+   c->AddItem(wxT("CursTrackStart"), _("to Track &Start\tJ"),                 FN(OnCursorTrackStart));
+   c->AddItem(wxT("CursTrackEnd"),   _("to Track &End\tK"),                   FN(OnCursorTrackEnd));
    c->SetCommandFlags(TracksSelectedFlag, TracksSelectedFlag,
                       wxT("CursTrackStart"), wxT("CursTrackEnd"), NULL);
 
    c->EndSubMenu();
 
    c->AddSeparator();
-   c->AddItem(wxT("SelSave"),        _("Selection Save"),                 FN(OnSelectionSave));
-   c->AddItem(wxT("SelRestore"),     _("Selection Restore"),              FN(OnSelectionRestore));
+   c->AddItem(wxT("SelSave"),        _("Re&gion Save"),                 FN(OnSelectionSave));
+   c->AddItem(wxT("SelRestore"),     _("Regio&n Restore"),             FN(OnSelectionRestore));
 
    c->SetCommandFlags(wxT("SelSave"),
       TimeSelectedFlag | WaveTracksSelectedFlag,
@@ -459,9 +459,9 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
 
-   c->BeginSubMenu(_("Play &Region..."));
-   c->AddItem(wxT("LockPlayRegion"), _("Lock"), FN(OnLockPlayRegion));
-   c->AddItem(wxT("UnlockPlayRegion"), _("Unlock"), FN(OnUnlockPlayRegion));
+   c->BeginSubMenu(_("Pla&y Region..."));
+   c->AddItem(wxT("LockPlayRegion"), _("&Lock"), FN(OnLockPlayRegion));
+   c->AddItem(wxT("UnlockPlayRegion"), _("&Unlock"), FN(OnUnlockPlayRegion));
    c->SetCommandFlags(wxT("LockPlayRegion"), PlayRegionNotLockedFlag, PlayRegionNotLockedFlag);
    c->SetCommandFlags(wxT("UnlockPlayRegion"), PlayRegionLockedFlag, PlayRegionLockedFlag);
    c->EndSubMenu();
@@ -507,7 +507,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("ExpandAllTracks"), _("E&xpand All Tracks\tCtrl+Shift+X"), FN(OnExpandAllTracks));
    
    c->AddSeparator();
-   c->AddItem(wxT("ShowClipping"), _("Show Clipping"), FN(OnShowClipping),
+   c->AddItem(wxT("ShowClipping"), _("&Show Clipping"), FN(OnShowClipping),
               gPrefs->Read(wxT("/GUI/ShowClipping"), 0L));
 
    c->AddSeparator();
@@ -523,16 +523,16 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
    c->BeginSubMenu(_("&Toolbars..."));
-   c->AddItem(wxT("ShowControlTB"),       _("Control Toolbar"),       FN(OnShowControlToolBar), 0);
-   c->AddItem(wxT("ShowDeviceTB"),        _("Device Toolbar"),        FN(OnShowDeviceToolBar), 0);
-   c->AddItem(wxT("ShowEditTB"),          _("Edit Toolbar"),          FN(OnShowEditToolBar), 0);
-   c->AddItem(wxT("ShowMeterTB"),         _("Meter Toolbar"),         FN(OnShowMeterToolBar), 0);
-   c->AddItem(wxT("ShowMixerTB"),         _("Mixer Toolbar"),         FN(OnShowMixerToolBar), 0);
-   c->AddItem(wxT("ShowSelectionTB"),     _("Selection Toolbar"),     FN(OnShowSelectionToolBar), 0);
-   c->AddItem(wxT("ShowToolsTB"),         _("Tools Toolbar"),         FN(OnShowToolsToolBar), 0);
-   c->AddItem(wxT("ShowTranscriptionTB"), _("Transcription Toolbar"), FN(OnShowTranscriptionToolBar), 0);
+   c->AddItem(wxT("ShowControlTB"),       _("&Control Toolbar"),       FN(OnShowControlToolBar), 0);
+   c->AddItem(wxT("ShowDeviceTB"),        _("&Device Toolbar"),        FN(OnShowDeviceToolBar), 0);
+   c->AddItem(wxT("ShowEditTB"),          _("&Edit Toolbar"),          FN(OnShowEditToolBar), 0);
+   c->AddItem(wxT("ShowMeterTB"),         _("&Meter Toolbar"),         FN(OnShowMeterToolBar), 0);
+   c->AddItem(wxT("ShowMixerTB"),         _("Mi&xer Toolbar"),         FN(OnShowMixerToolBar), 0);
+   c->AddItem(wxT("ShowSelectionTB"),     _("&Selection Toolbar"),     FN(OnShowSelectionToolBar), 0);
+   c->AddItem(wxT("ShowToolsTB"),         _("T&ools Toolbar"),         FN(OnShowToolsToolBar), 0);
+   c->AddItem(wxT("ShowTranscriptionTB"), _("Transcri&ption Toolbar"), FN(OnShowTranscriptionToolBar), 0);
    c->AddSeparator();
-   c->AddItem(wxT("ResetToolbars"),       _("Reset Toolbars"),              FN(OnResetToolBars));
+   c->AddItem(wxT("ResetToolbars"),       _("&Reset Toolbars"),              FN(OnResetToolBars));
    c->EndSubMenu();
    c->AddItem(wxT("SimplifiedView"),      _("!Simplified View"),       FN(OnSimplifiedView), mCommandManager.mbHideFlaggedItems ? 1:0);
    c->EndMenu();
@@ -598,10 +598,10 @@ void AudacityProject::CreateMenusAndCommands()
       alignLabels.Add(_("Align with &Cursor"));
       alignLabels.Add(_("Align with Selection &Start"));
       alignLabels.Add(_("Align with Selection &End"));
-      alignLabels.Add(_("Align End with Cursor"));
-      alignLabels.Add(_("Align End with Selection Start"));
-      alignLabels.Add(_("Align End with Selection End"));
-      alignLabels.Add(_("Align Tracks Together"));
+      alignLabels.Add(_("Align End with Cu&rsor"));
+      alignLabels.Add(_("Align End with Selection Star&t"));
+      alignLabels.Add(_("Align End with Selection En&d"));
+      alignLabels.Add(_("Align Tracks To&gether"));
    
       c->BeginSubMenu(_("&Align Tracks..."));
       c->AddItemList(wxT("Align"), alignLabels, FN(OnAlign));
