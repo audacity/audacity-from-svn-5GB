@@ -229,7 +229,7 @@ bool QualityPrefs::Apply()
 void QualityPrefs::OnSampleRateChoice(wxCommandEvent& evt)
 {
    int sel = mSampleRates->GetSelection();
-   mOtherSampleRate->Enable(sel == mSampleRates->GetCount() - 1);
+   mOtherSampleRate->Enable(sel == (int)mSampleRates->GetCount() - 1);
 }
 
 
