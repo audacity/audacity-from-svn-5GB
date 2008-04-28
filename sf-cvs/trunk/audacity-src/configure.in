@@ -433,9 +433,6 @@ dnl Gather wx arguments
 LIBS="$LIBS `$WX_CONFIG $wxconfigargs --libs`"
 CPPFLAGS="$CPPFLAGS `$WX_CONFIG $wxconfigargs --cxxflags`"
 
-dnl API define is only needed on Windows
-CPPFLAGS="$CPPFLAGS -DAUDACITY_DLL_API=''"
-
 AC_CANONICAL_HOST
 
 dnl OS-specific configuration
