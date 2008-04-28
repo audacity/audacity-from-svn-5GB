@@ -7194,8 +7194,6 @@ ac_configure_args="$ac_configure_args --with-wx-config=\"$WX_CONFIG\""
 LIBS="$LIBS `$WX_CONFIG $wxconfigargs --libs`"
 CPPFLAGS="$CPPFLAGS `$WX_CONFIG $wxconfigargs --cxxflags`"
 
-CPPFLAGS="$CPPFLAGS -DAUDACITY_DLL_API=''"
-
 # Make sure we can run config.sub.
 $SHELL "$ac_aux_dir/config.sub" sun4 >/dev/null 2>&1 ||
   { { echo "$as_me:$LINENO: error: cannot run $SHELL $ac_aux_dir/config.sub" >&5
