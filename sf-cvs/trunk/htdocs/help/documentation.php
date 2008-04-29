@@ -34,7 +34,7 @@
 	echo
      // i18n-hint: Text below this hint is local help for
      // specific languages and should be left untranslated.
-	_('');
+	_(' ');
 ?>
 
 <div lang="fr">
