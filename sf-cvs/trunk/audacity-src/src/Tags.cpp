@@ -334,7 +334,7 @@ int Tags::GetNumGenres()
 void Tags::LoadDefaultGenres()
 {
    mGenres.Clear();
-   for (int i = 0; i < WXSIZEOF(DefaultGenres); i++) {
+   for (size_t i = 0; i < WXSIZEOF(DefaultGenres); i++) {
       mGenres.Add(DefaultGenres[i]);
    }
 }
@@ -899,7 +899,7 @@ bool TagsEditor::TransferDataFromWindow()
 
 bool TagsEditor::TransferDataToWindow()
 {
-   int i;
+   size_t i;
    wxString n;
    wxString v;
 
@@ -967,7 +967,7 @@ void TagsEditor::OnChange(wxGridEvent & event)
    }
 
    wxString n = mGrid->GetCellValue(event.GetRow(), 0);
-   for (int i = 0; i < STATICCNT; i++) {
+   for (size_t i = 0; i < STATICCNT; i++) {
       if (n.CmpNoCase(labelmap[i].label) == 0) {
          ischanging = true;
          wxBell();
@@ -1044,7 +1044,6 @@ void TagsEditor::OnReset(wxCommandEvent & event)
    wxFileName fn(FileNames::DataDir(), wxT("genres.txt"));
    wxTextFile tf(fn.GetFullPath());
 
-   bool saved = false;
    bool open = (tf.Exists() && tf.Open()) ||
                (!tf.Exists() && tf.Create());
 
@@ -1241,7 +1240,7 @@ void TagsEditor::OnAdd(wxCommandEvent & event)
 
 void TagsEditor::OnRemove(wxCommandEvent & event)
 {
-   int row = mGrid->GetCursorRow();
+   size_t row = mGrid->GetCursorRow();
 
    if (!mEditTitle && mGrid->GetCellValue(row, 0).CmpNoCase(LABEL_TITLE) == 0) {
       return;
@@ -1688,7 +1687,6 @@ void TagsEditor1::OnReset(wxCommandEvent & event)
    wxFileName fn(FileNames::DataDir(), wxT("genres.txt"));
    wxTextFile tf(fn.GetFullPath());
 
-   bool saved = false;
    bool open = (tf.Exists() && tf.Open()) ||
                (!tf.Exists() && tf.Create());
 
@@ -2422,7 +2420,6 @@ void TagsEditor2::OnReset(wxCommandEvent & event)
    wxFileName fn(FileNames::DataDir(), wxT("genres.txt"));
    wxTextFile tf(fn.GetFullPath());
 
-   bool saved = false;
    bool open = (tf.Exists() && tf.Open()) ||
                (!tf.Exists() && tf.Create());
 
