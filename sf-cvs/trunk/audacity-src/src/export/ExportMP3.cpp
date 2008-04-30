@@ -215,12 +215,12 @@ static CHOICES sampRates[] =
 
 void InitMP3_Statics()
 {
-   for (int i=0; i < WXSIZEOF(fixRates); i++)
+   for (size_t i=0; i < WXSIZEOF(fixRates); i++)
    {
       fixRates[i].name = wxT("");
       fixRates[i].name << fixRates[i].label << wxT(" ") << _("kbps");
    }
-   for (int i=0; i < WXSIZEOF(varRates); i++)
+   for (size_t i=0; i < WXSIZEOF(varRates); i++)
    {
       varRates[i].name = wxT("");
       varRates[i].name << i << wxT(", ");
@@ -235,7 +235,7 @@ void InitMP3_Statics()
    varRates[7].name << wxT("80-120");
    varRates[8].name << wxT("65-105");
    varRates[9].name << wxT("45-85");
-   for (int i=0; i < WXSIZEOF(varRates); i++)
+   for (size_t i=0; i < WXSIZEOF(varRates); i++)
       varRates[i].name << wxT(" ") << _("kbps");
    varRates[0].name << wxT(" ") << _("(Best Quality)");
    varRates[9].name << wxT(" ") << _("(Smaller files)");
@@ -243,16 +243,16 @@ void InitMP3_Statics()
    varModes[0].name = _("Fast");
    varModes[1].name = _("Standard");
 
-   for (int i=0; i < WXSIZEOF(setRates); i++)
+   for (size_t i=0; i < WXSIZEOF(setRates); i++)
       setRates[i].name = wxT("");
    setRates[0].name << _("Insane"  ) << wxT(", ") << 320;
    setRates[1].name << _("Extreme" ) << wxT(", ") << 220 << wxT("-") << 260;
    setRates[2].name << _("Standard") << wxT(", ") << 170 << wxT("-") << 210;
    setRates[3].name << _("Medium"  ) << wxT(", ") << 145 << wxT("-") << 185;
-   for (int i=0; i < WXSIZEOF(setRates); i++)
+   for (size_t i=0; i < WXSIZEOF(setRates); i++)
       setRates[i].name << wxT(" ") << _("kbps");
 
-   for (int i=0; i < WXSIZEOF(sampRates); i++)
+   for (size_t i=0; i < WXSIZEOF(sampRates); i++)
    {
       sampRates[i].name = wxT("");
       sampRates[i].name << sampRates[i].label;
@@ -1941,7 +1941,7 @@ int ExportMP3::AskResample(int bitrate, int rate, int lowrate, int highrate)
 
          wxArrayString choices;
          wxString selected = wxT("");
-         for (int i = 0; i < WXSIZEOF(sampRates); i++) {
+         for (size_t i = 0; i < WXSIZEOF(sampRates); i++) {
             int label = sampRates[i].label;
             if (label >= lowrate && label <= highrate) {
                choices.Add(sampRates[i].name);
