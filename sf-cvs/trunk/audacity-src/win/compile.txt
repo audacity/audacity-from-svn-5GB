@@ -80,7 +80,9 @@ versions.
 
 3. If you want to use the accessibility features, locate the
    "Setup Headers" group within the "core" project and change
-   the wxAccessible define within setup.h to 1. 
+   the wxAccessible define within setup.h to 1.  We have it turned
+   on in our releases, so you probably should also.  Particularly if 
+   you intend to release versions to other users.
 
 4. Build the configurations for all the wxWidgets projects 
    corresponding to which configurations of Audacity you want 
