@@ -2663,10 +2663,10 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
    else
 #ifdef LOGARITHMIC_SPECTRUM
       if(spectrumLog) {
-         min = gPrefs->Read(wxT("/SpectrumLog/MinFreq"), rate/2000.0);
+         min = gPrefs->Read(wxT("/SpectrumLog/MinFreq"), (long)(rate/2000.0));
          if(min < 1)
             min = 1;
-         max = gPrefs->Read(wxT("/SpectrumLog/MaxFreq"), rate/2.);
+         max = gPrefs->Read(wxT("/SpectrumLog/MaxFreq"), (long)(rate/2.));
          if(max > rate/2.)
             max = rate/2.;
          windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
