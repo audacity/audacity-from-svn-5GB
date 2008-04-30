@@ -177,6 +177,14 @@ void MyFLACFile::metadata_callback(const FLAC__StreamMetadata *metadata)
          }
          mFile->mStreamInfoDone=true;
       break;
+	  // handle the other types we do nothing with to avoid a warning
+	  case FLAC__METADATA_TYPE_PADDING:	// do nothing with padding
+	  case FLAC__METADATA_TYPE_APPLICATION:	// no idea what to do with this
+	  case FLAC__METADATA_TYPE_SEEKTABLE:	// don't need a seektable here
+	  case FLAC__METADATA_TYPE_CUESHEET:	// convert this to labels?
+	  case FLAC__METADATA_TYPE_PICTURE:		// ignore pictures
+	  case FLAC__METADATA_TYPE_UNDEFINED:	// do nothing with this either
+	  break;
    }
 }
 
