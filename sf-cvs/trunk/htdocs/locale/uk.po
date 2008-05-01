@@ -1,0 +1,306 @@
+# translation of audacity_website.po to Ukrainian
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Yuri Chornoivan <yurchor@ukr.net>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: audacity_website\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-04-29 13:46-0700\n"
+"PO-Revision-Date: 2008-05-01 09:56+0300\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"Language-Team: Ukrainian <translation@linux.org.ua>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: news/test_announcement.php:9
+msgid "Audacity 1.3.2"
+msgstr "Audacity 1.3.2"
+
+#: xml/index.php:9 xml/main.inc.php:11
+msgid "File Formats"
+msgstr "Формати файлів"
+
+#: xml/index.php:15
+msgid ""
+"Audacity uses an open XML file format to encourage interoperability.  "
+"Beginning with version 1.3.0, we are publishing the following DTD to aid "
+"those who want to develop software that reads and writes Audacity project "
+"files:"
+msgstr "Audacity використовує відкритий формат файлів XML для покращення можливостей щодо взаємодії з іншими програмами. Починаючи з версії 1.3.0, ми оприлюднюємо наступний код DTD з метою допомогти тим, хто розробляє програми, які здатні читати і записувати файли проектів Audacity:"
+
+#: xml/index.php:22
+msgid "More documentation on the Audacity project file format is forthcoming."
+msgstr "Докладнішу інформацію про формат файлів проектів Audacity буде оприлюднено згодом."
+
+#: 404.php:9
+msgid "Page Not Found"
+msgstr "Сторінку не знайдено"
+
+#: 404.php:14
+msgid ""
+"Sorry, the page you are looking for was not found.  Please try the <a href="
+"\"/\">Audacity home page</a> or the <a href=\"/site-map\">site map</a>."
+msgstr ""
+"Вибачте, сторінки, яку ви шукаєте не знайдено. Будь ласка, спробуйте перейти до <a href="
+"\"/\">Домашньої сторінки Audacity</a> або <a href=\"/site-map\">карти сайта</a>."
+
+#: copyright.php:8
+msgid "Web Site Copyright and Trademark"
+msgstr "Авторські права та торгова марка сторінки у мережі"
+
+#. i18n-hint: The Creative Commons web page below is available in several
+#. languages.  Please link to the version in your language if possible.
+#.
+#. You may add a sentence like "Czech translation copyright YOUR NAME HERE"
+#. if you wish.
+#: copyright.php:22
+#, php-format
+msgid ""
+"This web site is Copyright &copy; %s members of the Audacity development "
+"team.  Except where otherwise noted, all text and images on this site are "
+"licensed under the <a href=\"http://creativecommons.org/licenses/by/2.0/"
+"\">Creative Commons Attribution License, version 2.0</a>.  You may modify, "
+"copy, distribute, and display this material, but you must give credit to the "
+"original authors.  Please see the license for details."
+msgstr ""
+"Авторські права (Copyright &copy; %s) на цей сайт мережі належать команді розробників Audacity. За винятком окремих випадків, всі тексти і зображення з цього сайта оприлюднено за умов дотримання <a href=\"http://creativecommons.org/licenses/by/2.0/"
+"\">Creative Commons Attribution License, версії 2.0</a>. Ви можете змінювати, копіювати, розповсюджувати або показувати ці матеріали, але ви обов’язково повинні вказати їх авторів. Будь ласка, провитайте ліцензію, щоб дізнатися більше."
+
+#: copyright.php:24
+msgid ""
+"\"Audacity\" is a trademark of Dominic Mazzoni.  The Google logo is a "
+"trademark of Google, Inc."
+msgstr "\"Audacity\" є торговельною маркою, що належить Dominic Mazzoni. Логотип Google є торговельною маркою, що належить Google, Inc."
+
+#: index.php:9 in.php:9
+msgid "Free Audio Editor and Recorder"
+msgstr "Вільний редактор та записувач звуку"
+
+#: index.php:18 in.php:18
+msgid "for Microsoft Windows"
+msgstr "для Microsoft Windows"
+
+#: index.php:27 in.php:27
+msgid "for Mac OS X"
+msgstr "для Mac OS X"
+
+#: index.php:36 in.php:36
+msgid "For Windows, Mac, or GNU/Linux"
+msgstr "Для Windows, Mac або GNU/Linux"
+
+#: index.php:45 in.php:45
+msgid "The Free, Cross-Platform Sound Editor"
+msgstr "Вільний міжплатформовий редактор звукової інформації"
+
+#: index.php:48 main.inc.php:24 in.php:48
+msgid "Screenshots"
+msgstr "Знімки екрана"
+
+#: index.php:51 in.php:51
+msgid ""
+"Audacity is free, open source software for recording and editing sounds.  It "
+"is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating "
+"systems. <a href=\"about/\">Learn more about Audacity...</a> Also check our "
+"<a href=\"http://audacityteam.org/wiki/\">Wiki</a> and <a href=\"http://"
+"audacityteam.org/forum/\">Forum</a> for more information."
+msgstr ""
+"Audacity є вільною програмою з відкритими вихідними кодами для запису і редагування звукової інформації. Її версії доступні на платформах Mac OS X, Microsoft Windows, GNU/Linux та інших операційних системах. <a href=\"about/\">Дізнайтеся більше про Audacity...</a> Додаткову інформацію  ви можете отримати з нашого "
+"<a href=\"http://audacityteam.org/wiki/\">Wiki</a> та <a href=\"http://"
+"audacityteam.org/forum/\">Форуму</a>."
+
+#: index.php:53 in.php:53
+msgid ""
+"The latest release of Audacity is <a href=\"/download\">1.3.4 (beta)</a>. "
+"Because it is a work in progress and does not yet come with complete "
+"documentation or translations into foreign languages, it is recommended for "
+"more advanced users. See <a href=\"/download/features-1.3-a\">New Features "
+"in 1.3</a> for more information about the 1.3.x beta series."
+msgstr ""
+"Останнім випуском Audacity є <a href=\"/download\">1.3.4 (тестовий)</a>. "
+"Оскільки робота над ним триває, документацію для нього ще не написано повністю і його не перекладено на інші мови, ми рекомендуємо його лише досвідченим користувачам. Прочитайте про <a href=\"/download/features-1.3-a\">Нові можливості у версії 1.3</a>, щоб дізнатися більше про тестові версії 1.3.x."
+
+#: index.php:55 in.php:55
+msgid ""
+"For all users, <a href=\"/download\">Audacity 1.2.6</a> is a stable release, "
+"complete and fully documented.  You can have both Audacity 1.2.6 and 1.3.3 "
+"installed simultaneously."
+msgstr "Для всіх користувачів, стабільним випуском є <a href=\"/download\">Audacity 1.2.6</a>, цей випуск має завершену форму і повну документацію. Audacity 1.2.6 і 1.3.3 можна встановити паралельно."
+
+#: index.php:60 index.php:64 in.php:60 in.php:64
+#, php-format
+msgid "Download Audacity %s"
+msgstr "Завантажити Audacity %s"
+
+#: index.php:64 main.inc.php:39 in.php:64
+msgid "Beta"
+msgstr "Тестова версія"
+
+#: index.php:72 in.php:72
+msgid "Other downloads"
+msgstr "Інші файли для завантаження"
+
+#: index.php:93 in.php:93
+msgid "More news items..."
+msgstr "Інші новини..."
+
+#: index.php:99 in.php:99
+msgid "Get Notified of New Versions"
+msgstr "Отримання повідомлень про нові версії"
+
+#: index.php:111 in.php:111
+msgid "Email address"
+msgstr "Поштова адреса"
+
+#: index.php:112 in.php:112
+msgid "Add"
+msgstr "Додати"
+
+#: index.php:113 in.php:113
+msgid "Remove"
+msgstr "Вилучити"
+
+#: main.inc.php:20
+msgid "Home"
+msgstr "Домівка"
+
+#: main.inc.php:21
+msgid "About"
+msgstr "Про програму"
+
+#: main.inc.php:23
+msgid "Features"
+msgstr "Можливості"
+
+#: main.inc.php:25
+msgid "News"
+msgstr "Новини"
+
+#: main.inc.php:26
+msgid "License, and Advice for Vendors and Distributors"
+msgstr "Ліцензія та поради постачальникам і поширювачам"
+
+#: main.inc.php:27
+msgid "Credits"
+msgstr "Подяки"
+
+#: main.inc.php:28
+msgid "Links"
+msgstr "Посилання"
+
+#: main.inc.php:31
+msgid "Download"
+msgstr "Завантажити"
+
+#: main.inc.php:33
+msgid "Stable"
+msgstr "Стабільна версія"
+
+#: main.inc.php:34 main.inc.php:41
+msgid "Windows"
+msgstr "Windows"
+
+#: main.inc.php:35 main.inc.php:42
+msgid "Mac"
+msgstr "Mac"
+
+#: main.inc.php:36 main.inc.php:43
+msgid "Linux/Unix"
+msgstr "Linux/Unix"
+
+#: main.inc.php:37 main.inc.php:44
+msgid "Source Code"
+msgstr "Коди програми"
+
+#: main.inc.php:38
+msgid "Release Notes"
+msgstr "Примітки до випуску"
+
+#: main.inc.php:40
+msgid "New Features in 1.3"
+msgstr "Нові можливості у 1.3"
+
+#: main.inc.php:45
+msgid "Plug-Ins"
+msgstr "Додатки"
+
+#: main.inc.php:46
+msgid "Obtain a CD"
+msgstr "Отримати КД"
+
+#: main.inc.php:47
+msgid "Vendors and Distributors of Audacity"
+msgstr "Постачальники і поширювачі Audacity"
+
+#: main.inc.php:50
+msgid "Help"
+msgstr "Довідка"
+
+#: main.inc.php:52
+msgid "FAQ"
+msgstr "ЧаП"
+
+#: main.inc.php:53
+msgid "Documentation"
+msgstr "Документація"
+
+#: main.inc.php:54
+msgid ""
+"<A class=\"ext\" href=\"http://audacityteam.org/wiki/index.php?"
+"title=Tutorials\" target=\"_blank\">Tutorials (Wiki)</a>"
+msgstr ""
+"<A class=\"ext\" href=\"http://audacityteam.org/wiki/index.php?"
+"title=Tutorials\" target=\"_blank\">Підручники (Wiki)</a>"
+
+#: main.inc.php:55
+msgid ""
+"<A class=\"ext\" href=\"http://audacityteam.org/wiki/index.php?title=Tips\" "
+"target=\"_blank\">Tips (Wiki)</a>"
+msgstr ""
+"<A class=\"ext\" href=\"http://audacityteam.org/wiki/index.php?title=Tips\" "
+"target=\"_blank\">Підказки (Wiki)</a>"
+
+#: main.inc.php:56
+msgid "Nyquist"
+msgstr "Найквіст"
+
+#: main.inc.php:59
+msgid "Contact Us"
+msgstr "Зв’язати з авторами"
+
+#: main.inc.php:61
+msgid "Mailing Lists"
+msgstr "Списки розсилки"
+
+#: main.inc.php:62
+msgid "Privacy Policy"
+msgstr "Правила конфіденційності"
+
+#: main.inc.php:65
+msgid "Get Involved"
+msgstr "Приєднатися до команди"
+
+#: main.inc.php:67
+msgid "Users"
+msgstr "Користувачі"
+
+#: main.inc.php:68
+msgid "Developers"
+msgstr "Розробники"
+
+#: main.inc.php:69
+msgid "Translators"
+msgstr "Перекладачі"
+
+#: main.inc.php:70
+msgid "Donate"
+msgstr "Фінансова підтримка"
+
+#: site-map.php:8
+msgid "Site Map"
+msgstr "Карта сайта"
+
