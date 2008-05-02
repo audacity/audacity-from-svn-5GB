@@ -525,7 +525,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mIsDeleting(false),
      mTracksFitVerticallyZoomed(false),  //lda
      mCleanSpeechMode(false),            //lda
-     mShowId3Dialog(false),              //lda
+     mShowId3Dialog(true),               //lda
      mKeyboardCaptured(false),
      mLastAutoSaveTime(0),
      mAutoSaving(false),
@@ -792,7 +792,7 @@ void AudacityProject::UpdatePrefsVariables()
    gPrefs->Read(wxT("/GUI/Help"), &mHelpPref, wxT("Standard") );
 
    gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &mCleanSpeechMode, false);
-   gPrefs->Read(wxT("/AudioFiles/ShowId3Dialog"), &mShowId3Dialog, false);
+   gPrefs->Read(wxT("/AudioFiles/ShowId3Dialog"), &mShowId3Dialog, true);
    gPrefs->Read(wxT("/AudioFiles/NormalizeOnLoad"),&mNormalizeOnLoad, false);
 
 }
