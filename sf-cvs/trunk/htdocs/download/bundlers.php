@@ -17,8 +17,17 @@
 
 <p><?=_('Some vendors, <a href="http://umixit.com/aboutus.html">Umixit</a>, <a href="http://www.thinklabsmedical.com">Thinklabs</a>, and <a href="http://audiotouch.com.au/">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href="#Others">custom versions</a>. The UmixIt custom version adds a mixer board interface and karaoke window. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Audiotouch is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Many of these improvements will be incorporated in future versions of Audacity.')?></p>
 
-<p><?=_('To be considered for addition to this list, please first review our <a href="../about/license">License, and Advice for Vendors and Distributors</a> page. If you are distributing Audacity under those terms and would like to be on this list, please <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#58;&#x76;&#97;&#117;&#103;&#x68;&#x61;&#x6e;&#x40;&#x61;&#x75;&#x64;&#97;&#99;&#x69;&#x74;&#x79;&#x74;&#x65;&#97;&#x6d;&#x2e;&#x6f;&#114;&#x67;&#x3f;&#115;&#117;&#x62;&#x6a;&#x65;&#99;&#x74;&#61;&#x52;&#101;&#113;&#x75;&#x65;&#115;&#x74;&#32;&#x66;&#x6f;&#114;&#32;&#x61;&#x64;&#x64;&#105;&#x74;&#x69;&#111;&#x6e;&#32;&#x74;&#111;&#32;&#x42;&#117;&#x6e;&#x64;&#x6c;&#x65;&#114;&#x73;&#x20;&#x6c;&#105;&#x73;&#116;">contact us</a>.')?></p>
-
+<p>
+  <?php echo _('To be considered for addition to this list, please first review our <a href="../about/license">License, and Advice for Vendors and Distributors</a> page. If you are distributing Audacity under those terms ');?>
+  <?php
+  // i18n-hint: the encoding inside the <a href> tag between the  
+  // two "echo" strings obscures the email address from (at least some) 
+  // harvesting bots. Only the two strings above and below the
+  // <a href> tag need to be translated.   
+  echo _('and would like to be on this list, please ');?></a>
+  <a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#103;&#97;&#x6c;&#x65;&#64;&#x61;&#x75;&#100;&#97;&#x63;&#x69;&#116;&#x79;&#x74;&#101;&#x61;&#x6d;&#46;&#x6f;&#x72;&#103;&#63;&#x73;&#117;&#98;&#106;&#101;&#x63;&#x74;&#61;&#x52;&#x65;&#113;&#117;&#x65;&#x73;&#x74;&#x20;&#x66;&#111;&#114;&#x20;&#x61;&#100;&#x64;&#105;&#x74;&#x69;&#x6f;&#x6e;&#x20;&#116;&#x6f;&#32;&#66;&#x75;&#x6e;&#x64;&#108;&#x65;&#114;&#115;&#32;&#x4c;&#105;&#115;&#116;&#x20;">
+  <?php
+  echo _('contact us');?></a>.</p>
 
 <ul id="bundlers">
   <li>
