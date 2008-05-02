@@ -42,7 +42,7 @@ It handles initialization and termination by subclassing wxApp.
 #include <unistd.h>
 #endif
 
-// chmod
+// chmod, lstat, geteuid
 #ifdef __UNIX__
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -1026,7 +1026,7 @@ bool AudacityApp::InitTempDir()
    if (tempFromPrefs != wxT("")) {
       if (wxDirExists(tempFromPrefs))
          temp = tempFromPrefs;
-      else if (wxMkdir(tempFromPrefs))
+      else if (wxMkdir(tempFromPrefs, 0755))
          temp = tempFromPrefs;
    }
 
@@ -1035,9 +1035,22 @@ bool AudacityApp::InitTempDir()
    if (temp==wxT("") && tempDefaultLoc != wxT("")) {
       if (wxDirExists(tempDefaultLoc))
          temp = tempDefaultLoc;
-      else if (wxMkdir(tempDefaultLoc))
+      else if (wxMkdir(tempDefaultLoc, 0755))
          temp = tempDefaultLoc;
    }
+
+   // Check temp directory ownership on *nix systems only
+   #ifdef __UNIX__
+   struct stat tempStatBuf;
+   if ( lstat(temp.mb_str(), &tempStatBuf) != 0 ) {
+      temp.clear();
+   }
+   else {
+      if ( geteuid() != tempStatBuf.st_uid ) {
+         temp.clear();
+      }
+   }
+   #endif
 
    if (temp == wxT("")) {
       // Failed
