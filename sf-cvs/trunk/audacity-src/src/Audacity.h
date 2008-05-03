@@ -22,7 +22,7 @@
 #define AUDACITY_RELEASE   3
 #define AUDACITY_REVISION  5
 #define AUDACITY_MODLEVEL  0
-#define AUDACITY_SUFFIX    wxT("-rc1")
+#define AUDACITY_SUFFIX    wxT("-rc2")
 
 #define AUDACITY_MAKESTR( x ) #x
 #define AUDACITY_QUOTE( x ) AUDACITY_MAKESTR( x )
