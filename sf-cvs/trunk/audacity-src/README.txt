@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.3.4 (beta)
+Version 1.3.5 (beta)
 The change log is at the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -261,6 +261,10 @@ also supported) please email audacity-help@lists.sourceforge.net
 -------------------------------------------------------------
 
 Known issues/problems:
+  * Using the Escape key to cancel dialogues doesn't work is audacity is built
+    with wxWidgets version 2.6.4 or newer. This is due to a wxWidgets bug
+	which we have fixed in the builds provided by the Audacity project, but
+	will affect other builds of audacity.
 
   * Audacity can import and display MIDI files, but they cannot be played
     or edited.
@@ -294,16 +298,33 @@ Known issues/problems:
     not been tested, and is known to have a number of issues with both 
 	reliability and useability. Patches to improve both will be welcomed.
 
-  * Linux only: If the Audacity project rate is set to a sample rate that your
-    sound card does not support, then Audacity will try to choose a supported
-	sample rate and use that for recording and playback, resampling on the
-	fly. This does not always work correctly, however.
-
     Also note that the Windows installer will not replace 1.2.x installations,
     but will install alongside them.
 
 -------------------------------------------------------------
 CHANGE LOG
+
+Changes in 1.3.5:
+
+Recording  / Playback
+	* Several bugs fixed so that latency correction should be better, and more
+	  devices work correctly. Problems with sample rates under Linux should
+	  now be much rarer.
+	* Newer version of Portaudio library
+Import / Export
+	* Updated versions of Libogg, Libvorbis, Libflac, Libsndfile and Twolame
+	  libraries.
+
+	* Handling of file names with slashes in on OS X improved, and illegal
+	  file name characters rejected on all platforms
+Interface
+	* Improved ruler scaling and layout
+	* Expanded build information tab 
+Compilation:
+	* Fixes when building audacity with libraries disabled
+	* Improvements to make Solaris builds easier
+Security:
+	* Full fix for CVE-2007-6061 implemented thanks to Michael Schwendt
 
 Changes in 1.3.4:
 
