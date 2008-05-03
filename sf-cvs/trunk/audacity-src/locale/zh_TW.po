@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh-TW\n"
 "POT-Creation-Date: 2004-08-10 20:54-0700\n"
-"PO-Revision-Date: 2007-12-14 11:15+0800\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2008-05-03 23:20+0800\n"
+"Last-Translator: Kene Lin <kenelin@gmail.com>\n"
 "Language-Team: Taiwan <milo@ms52.url.com.tw>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,29 +14,16 @@ msgstr ""
 "X-Poedit-Country: TAIWAN\n"
 
 #: AboutDialog.cpp:142
-#: AudacityApp.cpp:732
-#: Menus.cpp:733
+#: AudacityApp.cpp:749
+#: Menus.cpp:745
 msgid "&About Audacity..."
 msgstr "關於&Audacity…"
 
-#: AboutDialog.cpp:166
-#: effects/AvcCompressor.cpp:674
-msgid "Enabled"
-msgstr "啟用"
+#: AboutDialog.cpp:156
+msgid "OK... Audacious!"
+msgstr "確定…嗆聲！"
 
-#: AboutDialog.cpp:167
-msgid "Disabled"
-msgstr "停用"
-
-#: AboutDialog.cpp:230
-msgid "Program build date: "
-msgstr "程式編譯日期："
-
-#: AboutDialog.cpp:235
-msgid "Settings folder: "
-msgstr "設定資料夾："
-
-#: AboutDialog.cpp:240
+#: AboutDialog.cpp:175
 msgid "Audacity is a free program written by a team of volunteer developers around the world. Coordination happens thanks to SourceForge.net, an online service that provides free tools to open-source software projects. Audacity is available for Windows 98 and newer, Mac OS X, Linux, and other Unix-like operating systems. Older versions of Audacity are available for Mac OS 9."
 msgstr ""
 "Audacity是一個由世界各地志願開發團隊合力撰寫的自由程式。\n"
@@ -45,7 +32,7 @@ msgstr ""
 " 及更新的Windows作業系統, Mac OS X, Linux, 和其他類似Unix的\n"
 "作業系統上使用。Mac OS 9上可以安裝較舊版本的Audacity。"
 
-#: AboutDialog.cpp:244
+#: AboutDialog.cpp:179
 msgid "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
 msgstr ""
 "這是測試版(beta)。可能包含原始碼錯誤及未完成的功能。我們需\n"
@@ -55,7 +42,7 @@ msgstr ""
 "對於正體中文有問題的話，請回報給\n"
 "http://rt.openfoundry.org/Foundry/Project/index.html?Queue=210"
 
-#: AboutDialog.cpp:247
+#: AboutDialog.cpp:182
 msgid "This is a stable, completed release of Audacity. However, if you find a bug or have a suggestion, please contact us. We depend on feedback from users in order to continue to improve Audacity. For more information, visit our website."
 msgstr ""
 "此Audacity是一個穩定的完整版。如果您發現錯誤或有什麼建\n"
@@ -71,91 +58,191 @@ msgstr ""
 #.
 #. For example:  "English translation by Dominic Mazzoni."
 #.
-#: AboutDialog.cpp:257
-#: AboutDialog.cpp:259
+#: AboutDialog.cpp:192
+#: AboutDialog.cpp:194
 msgid "translator_credits"
 msgstr "Chinese(Traditional) translation by Chido, Milo"
 
-#: AboutDialog.cpp:272
+#: AboutDialog.cpp:207
 msgid "A Free Digital Audio Editor"
 msgstr "一個自由的數位成音工程軟體"
 
-#: AboutDialog.cpp:276
-msgid "Information"
-msgstr "資訊"
-
-#: AboutDialog.cpp:278
+#: AboutDialog.cpp:211
 msgid "Credits"
 msgstr "開發小組"
 
-#: AboutDialog.cpp:282
+#: AboutDialog.cpp:215
 #, c-format
 msgid "Audacity %s Development Team"
 msgstr "Audacity %s 開發團隊"
 
-#: AboutDialog.cpp:287
+#: AboutDialog.cpp:220
 #, c-format
 msgid "Audacity %s Support Team"
 msgstr "Audacity %s 支援團隊"
 
-#: AboutDialog.cpp:292
+#: AboutDialog.cpp:225
 msgid "Emeritus Developers"
 msgstr "榮譽開發者"
 
-#: AboutDialog.cpp:297
+#: AboutDialog.cpp:230
 msgid "Other Emeritus Team Members"
 msgstr "Other Emeritus Team Members"
 
-#: AboutDialog.cpp:302
+#: AboutDialog.cpp:235
 msgid "Other Contributors"
 msgstr "其它貢獻者："
 
-#: AboutDialog.cpp:307
+#: AboutDialog.cpp:240
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacity是基於以下專案的程式碼開發的："
 
-#: AboutDialog.cpp:312
+#: AboutDialog.cpp:245
 msgid "Special thanks:"
 msgstr "特別感謝："
 
-#: AboutDialog.cpp:321
+#: AboutDialog.cpp:254
 msgid "Audacity"
 msgstr "Audacity"
 
-#. i18n-hint: Rather than a literal translation, consider adding the
-#. appropriate suffix or prefix to create a word meaning 'something which
-#. has Audacity'
-#: AboutDialog.cpp:341
-#: AboutDialog.cpp:372
-#: SplashDialog.cpp:113
-msgid "OK... Audacious!"
-msgstr "確定…嗆聲！"
+#. i18n-hint: Information about when audacity was compiled
+#: AboutDialog.cpp:299
+#: AboutDialog.cpp:312
+#: AboutDialog.cpp:468
+msgid "Build Information"
+msgstr "編譯資訊"
 
-#: AboutDialog.cpp:389
+#: AboutDialog.cpp:305
+#: effects/AvcCompressor.cpp:674
+msgid "Enabled"
+msgstr "啟用"
+
+#: AboutDialog.cpp:306
+msgid "Disabled"
+msgstr "停用"
+
+#: AboutDialog.cpp:316
+msgid "File Format Support"
+msgstr "檔案格式支援"
+
+#. i18n-hint: This is what the library (libmad) does - imports MP3 files
+#: AboutDialog.cpp:326
+#: AboutDialog.cpp:328
+msgid "MP3 Importing"
+msgstr "MP3匯入"
+
+#: AboutDialog.cpp:335
+#: AboutDialog.cpp:338
+msgid "Ogg Vorbis Import and Export"
+msgstr "Ogg Vorbis匯入及匯出"
+
+#: AboutDialog.cpp:342
+#: AboutDialog.cpp:345
+msgid "ID3 tag support"
+msgstr "ID3 tag支援"
+
+#: AboutDialog.cpp:352
+#: AboutDialog.cpp:355
+msgid "FLAC import and export"
+msgstr "FLAC匯入及匯出"
+
+#: AboutDialog.cpp:360
+#: AboutDialog.cpp:363
+msgid "MP2 export"
+msgstr "MP2匯出"
+
+#: AboutDialog.cpp:368
+#: AboutDialog.cpp:371
+msgid "Import via QuickTime"
+msgstr "透過QuickTime匯入"
+
+#. i18n-hint: Libraries that are essential to audacity
+#: AboutDialog.cpp:378
+msgid "Core Libraries"
+msgstr "核心程式庫"
+
+#: AboutDialog.cpp:384
+#: AboutDialog.cpp:387
+#: AboutDialog.cpp:390
+#: AboutDialog.cpp:392
+msgid "Sample rate conversion"
+msgstr "取樣頻率轉換"
+
+#: AboutDialog.cpp:397
+#: AboutDialog.cpp:400
+msgid "Audio playback and recording"
+msgstr "音訊播放與錄音"
+
+#: AboutDialog.cpp:413
+msgid "Features"
+msgstr "特色"
+
+#: AboutDialog.cpp:417
+#: AboutDialog.cpp:420
+#: AboutDialog.cpp:425
+#: AboutDialog.cpp:428
+#: AboutDialog.cpp:433
+#: AboutDialog.cpp:436
+#: AboutDialog.cpp:441
+#: AboutDialog.cpp:444
+msgid "Plug-in support"
+msgstr "Plug-in支援"
+
+#: AboutDialog.cpp:449
+#: AboutDialog.cpp:452
+msgid "Sound card mixer support"
+msgstr "支援音效卡混音"
+
+#: AboutDialog.cpp:457
+#: AboutDialog.cpp:460
+msgid "Pitch and Tempo Change support"
+msgstr "支援變更音高及節拍"
+
+#: AboutDialog.cpp:472
+msgid "Program build date: "
+msgstr "程式編譯日期："
+
+#: AboutDialog.cpp:475
+#: AboutDialog.cpp:477
+msgid "Build type:"
+msgstr "編譯類型："
+
+#: AboutDialog.cpp:475
+msgid "Debug build"
+msgstr "Debug build"
+
+#: AboutDialog.cpp:477
+msgid "Release build"
+msgstr "Release build"
+
+#. i18n-hint: The directory audacity is installed into (on *nix systems)
+#: AboutDialog.cpp:482
+msgid "Installation Prefix: "
+msgstr "安裝前綴："
+
+#: AboutDialog.cpp:486
+msgid "Settings folder: "
+msgstr "設定資料夾："
+
+#: AboutDialog.cpp:501
 msgid "GPL License"
 msgstr "GPL許可證"
 
-#: AboutDialog.cpp:689
-#: FreqWindow.cpp:209
-#: widgets/ErrorDialog.cpp:135
-msgid "Close"
-msgstr "關閉"
-
-#: AudacityApp.cpp:458
-#: Project.cpp:1751
+#: AudacityApp.cpp:468
+#: Project.cpp:1761
 #, c-format
 msgid "%s is already open in another window."
 msgstr "%s已在其他視窗開啟"
 
-#: AudacityApp.cpp:460
-#: Project.cpp:1753
-#: Project.cpp:1834
-#: Project.cpp:1978
-#: Project.cpp:2080
+#: AudacityApp.cpp:470
+#: Project.cpp:1763
+#: Project.cpp:1868
+#: Project.cpp:2012
+#: Project.cpp:2114
 msgid "Error opening project"
 msgstr "開啟專案錯誤"
 
-#: AudacityApp.cpp:492
+#: AudacityApp.cpp:502
 #, c-format
 msgid ""
 "%s does not exist and could not be opened.\n"
@@ -166,38 +253,38 @@ msgstr ""
 "\n"
 "它將從工作記錄中移除。"
 
-#: AudacityApp.cpp:544
+#: AudacityApp.cpp:581
 msgid "Master Gain Control"
 msgstr "主控增益控制"
 
-#: AudacityApp.cpp:545
+#: AudacityApp.cpp:582
 msgid "Input Meter"
 msgstr "輸入儀表"
 
-#: AudacityApp.cpp:546
+#: AudacityApp.cpp:583
 msgid "Output Meter"
 msgstr "輸出儀表"
 
-#. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
 #. i18n-hint: Mac OS X shortcut should be Ctrl+,
-#: AudacityApp.cpp:734
-#: Menus.cpp:470
+#. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
+#: AudacityApp.cpp:751
+#: Menus.cpp:478
 msgid "&Preferences...\tCtrl+,"
 msgstr "偏好設定(&P)...\tCtrl+,"
 
-#: AudacityApp.cpp:816
-#: AudacityApp.cpp:893
+#: AudacityApp.cpp:833
+#: AudacityApp.cpp:910
 #, c-format
 msgid "Using block size of %ld\n"
 msgstr "使用塊大小為 %ld\n"
 
-#: AudacityApp.cpp:838
-#: AudacityApp.cpp:908
+#: AudacityApp.cpp:855
+#: AudacityApp.cpp:925
 #, c-format
 msgid "Unknown command line option: %s\n"
 msgstr "不支援的命令列選項: %s\n"
 
-#: AudacityApp.cpp:1027
+#: AudacityApp.cpp:1044
 msgid ""
 "Audacity could not find a place to store temporary files.\n"
 "Please enter an appropriate directory in the preferences dialog."
@@ -205,11 +292,11 @@ msgstr ""
 "Audacity無法儲存暫存檔案。\n"
 "請至偏好設定輸入適當目錄。"
 
-#: AudacityApp.cpp:1033
+#: AudacityApp.cpp:1050
 msgid "Audacity is now going to exit. Please launch Audacity again to use the new temporary directory."
 msgstr "Audacity即將關閉。請重新啟動Audacity使用新的暫存目錄。"
 
-#: AudacityApp.cpp:1065
+#: AudacityApp.cpp:1082
 msgid ""
 "Running two copies of Audacity simultaneously may cause\n"
 "data loss or cause your system to crash.\n"
@@ -218,7 +305,7 @@ msgstr ""
 "同時開啟兩個Audacity程式可能會導致資料損毀或當機。\n"
 "\n"
 
-#: AudacityApp.cpp:1072
+#: AudacityApp.cpp:1089
 msgid ""
 "Audacity was not able to lock the temporary files directory.\n"
 "This folder may be in use by another copy of Audacity.\n"
@@ -226,19 +313,19 @@ msgstr ""
 "Audacity無法鎖定暫存檔目錄。\n"
 "此目錄可能被另一個正在執行的Audacity使用。\n"
 
-#: AudacityApp.cpp:1074
+#: AudacityApp.cpp:1091
 msgid "Do you still want to start Audacity?"
 msgstr "請問你仍要開啟Audacity嗎？"
 
-#: AudacityApp.cpp:1076
+#: AudacityApp.cpp:1093
 msgid "Error locking temporary folder"
 msgstr "鎖定暫存目錄錯誤"
 
-#: AudacityApp.cpp:1114
+#: AudacityApp.cpp:1131
 msgid "The system has detected that another copy of Audacity is running.\n"
 msgstr "系統偵測出目前有另一個Audacity正在執行。\n"
 
-#: AudacityApp.cpp:1116
+#: AudacityApp.cpp:1133
 msgid ""
 "Use the New or Open commands in the currently running Audacity\n"
 "process to open multiple projects simultaneously.\n"
@@ -246,29 +333,29 @@ msgstr ""
 "在目前執行的Audacity裡用\"開新檔案\"或\"開啟\"命令\n"
 "可以同時開啟多個檔案。\n"
 
-#: AudacityApp.cpp:1117
+#: AudacityApp.cpp:1134
 msgid "Audacity is already running"
 msgstr "Audacity 已在執行"
 
-#: AudacityApp.cpp:1134
+#: AudacityApp.cpp:1151
 msgid "Command-line options supported:"
 msgstr "支援命令列選項："
 
 #. i18n-hint: '-help' is the option and needs to stay in
 #. * English. This displays a list of available options
-#: AudacityApp.cpp:1137
+#: AudacityApp.cpp:1154
 msgid "\t-help (this message)"
 msgstr "\t-help (本訊息)"
 
 #. i18n-hint '-version' needs to stay in English.
-#: AudacityApp.cpp:1139
+#: AudacityApp.cpp:1156
 msgid "\t-version (display Audacity version)"
 msgstr "\t-版(顯示Audacity版本)"
 
 #. i18n-hint '-test' is the option and needs to stay in
 #. * English. This runs a set of automatic tests on audacity
 #. * itself
-#: AudacityApp.cpp:1143
+#: AudacityApp.cpp:1160
 msgid "\t-test (run self diagnostics)"
 msgstr "\t-test (執行自我診斷)"
 
@@ -276,15 +363,15 @@ msgstr "\t-test (執行自我診斷)"
 #. * English. 'nnn' is any integer number. This controls the
 #. * size pieces that audacity uses when writing files to the
 #. * disk
-#: AudacityApp.cpp:1148
+#: AudacityApp.cpp:1165
 msgid "\t-blocksize nnn (set max disk block size in bytes)"
 msgstr "\t-blocksize nnn (以bytes為單位設定最大磁碟block size)"
 
-#: AudacityApp.cpp:1149
+#: AudacityApp.cpp:1166
 msgid "In addition, specify the name of an audio file or Audacity project to open it."
 msgstr "此外，指定一個欲開啟的音訊檔案或工程檔案名稱。"
 
-#: AudacityApp.cpp:1421
+#: AudacityApp.cpp:1443
 msgid ""
 "Audacity project (.AUP) files are not currently \n"
 "associated with Audacity. \n"
@@ -296,15 +383,15 @@ msgstr ""
 "\n"
 "要進行關聯嗎？"
 
-#: AudacityApp.cpp:1422
+#: AudacityApp.cpp:1444
 msgid "Audacity Project Files"
 msgstr "Audacity 成音工程檔案"
 
-#: AudioIO.cpp:219
+#: AudioIO.cpp:241
 msgid "Could not find any audio devices.\n"
 msgstr "找不到任何音訊裝置。\n"
 
-#: AudioIO.cpp:220
+#: AudioIO.cpp:242
 msgid ""
 "You will not be able to play or record audio.\n"
 "\n"
@@ -312,19 +399,19 @@ msgstr ""
 "無法播放/錄製音訊。\n"
 "\n"
 
-#: AudioIO.cpp:223
+#: AudioIO.cpp:245
 msgid "Error: "
 msgstr "錯誤："
 
-#: AudioIO.cpp:226
+#: AudioIO.cpp:248
 msgid "Error Initializing Audio"
 msgstr "聲音初始化錯誤"
 
-#: AudioIO.cpp:1236
+#: AudioIO.cpp:1208
 msgid "Latency problem"
 msgstr "延遲問題"
 
-#: AudioIO.cpp:1236
+#: AudioIO.cpp:1208
 msgid ""
 "Latency setting has caused the recorded audio to be hidden before zero.\n"
 "Audacity has brought it back to start at zero.\n"
@@ -351,7 +438,7 @@ msgid "Recoverable projects"
 msgstr "可回復的工程"
 
 #: AutoRecovery.cpp:78
-#: Tags.cpp:1999
+#: Tags.cpp:2032
 msgid "Name"
 msgstr "命名"
 
@@ -372,12 +459,16 @@ msgid "Recover Projects"
 msgstr "回復工程"
 
 #: AutoRecovery.cpp:127
-msgid "You have chosen not to recover any projects. You will not be able to recover those projects later if you change your mind. Do you really want to continue without recovering?"
-msgstr "您選擇不要回復任何工程。若您選擇不要回復，您將不能回復這些工程。您真的不要回復任何工程嗎？"
+msgid ""
+"Are you sure you don't want to recover any projects?\n"
+"They can't be recovered later."
+msgstr ""
+"你確定不要復原此工程？\n"
+"之後就無法再復原了。"
 
 #: AutoRecovery.cpp:128
-msgid "Really not recover projects?"
-msgstr "真的不要回復工程？"
+msgid "Confirm?"
+msgstr "確定？"
 
 #: AutoRecovery.cpp:146
 #: AutoRecovery.cpp:183
@@ -386,20 +477,20 @@ msgstr "無法計算自動儲存資料夾內的檔案"
 
 #: AutoRecovery.cpp:147
 #: AutoRecovery.cpp:184
-#: Menus.cpp:2545
-#: Menus.cpp:4445
-#: Project.cpp:1937
-#: Project.cpp:3296
-#: Project.cpp:3375
-#: WaveTrack.cpp:548
-#: WaveTrack.cpp:567
-#: WaveTrack.cpp:1656
+#: Menus.cpp:2575
+#: Menus.cpp:4514
+#: Project.cpp:1971
+#: Project.cpp:3343
+#: Project.cpp:3422
+#: WaveTrack.cpp:556
+#: WaveTrack.cpp:575
+#: WaveTrack.cpp:1689
 #: effects/Effect.cpp:436
 #: export/ExportMP2.cpp:230
 #: prefs/DirectoriesPrefs.cpp:189
 #: prefs/KeyConfigPrefs.cpp:245
 #: toolbars/ControlToolBar.cpp:532
-#: toolbars/ControlToolBar.cpp:841
+#: toolbars/ControlToolBar.cpp:846
 msgid "Error"
 msgstr "發生錯誤"
 
@@ -504,10 +595,10 @@ msgstr "套用至檔案(&F)..."
 
 #: BatchProcessDialog.cpp:108
 #: BatchProcessDialog.cpp:247
-#: Tags.cpp:2038
-#: Tags.cpp:2042
-#: Tags.cpp:2342
-#: Tags.cpp:2346
+#: Tags.cpp:2071
+#: Tags.cpp:2075
+#: Tags.cpp:2375
+#: Tags.cpp:2379
 #: UploadDialog.cpp:180
 #: effects/AvcCompressor.cpp:732
 #: effects/ChangeLength.cpp:183
@@ -559,18 +650,18 @@ msgid "&Chains"
 msgstr "連鎖指令(&C)"
 
 #: BatchProcessDialog.cpp:435
-#: Tags.cpp:782
-#: Tags.cpp:1422
-#: Tags.cpp:2022
+#: Tags.cpp:815
+#: Tags.cpp:1455
+#: Tags.cpp:2055
 msgid "&Add"
 msgstr "新增(&A)"
 
 #: BatchProcessDialog.cpp:436
 #: LabelDialog.cpp:126
-#: Tags.cpp:783
-#: Tags.cpp:1423
-#: Tags.cpp:2023
-#: TrackPanel.cpp:4145
+#: Tags.cpp:816
+#: Tags.cpp:1456
+#: Tags.cpp:2056
+#: TrackPanel.cpp:4201
 msgid "&Remove"
 msgstr "移除(&R)"
 
@@ -844,9 +935,9 @@ msgstr "不儲存而關閉工程"
 #: DirManager.cpp:1263
 #: DirManager.cpp:1309
 #: DirManager.cpp:1351
-#: export/Export.cpp:484
-#: export/Export.cpp:501
-#: export/Export.cpp:520
+#: export/Export.cpp:490
+#: export/Export.cpp:507
+#: export/Export.cpp:526
 #: widgets/Warning.cpp:55
 msgid "Warning"
 msgstr "警告"
@@ -942,7 +1033,7 @@ msgstr "儲存錄製音訊"
 msgid "Saving recorded audio to disk..."
 msgstr "儲存錄製的音訊至磁碟..."
 
-#: FFT.cpp:379
+#: FFT.cpp:389
 msgid "Rectangular"
 msgstr "矩形"
 
@@ -951,7 +1042,7 @@ msgid "Frequency Analysis"
 msgstr "頻率分析"
 
 #: FreqWindow.cpp:140
-#: TrackPanel.cpp:510
+#: TrackPanel.cpp:563
 msgid "Spectrum"
 msgstr "頻譜"
 
@@ -1007,10 +1098,15 @@ msgstr "座標軸："
 
 #: FreqWindow.cpp:206
 #: LabelDialog.cpp:128
-#: Menus.cpp:202
-#: Menus.cpp:231
+#: Menus.cpp:204
+#: Menus.cpp:233
 msgid "&Export..."
 msgstr "匯出(&E)..."
+
+#: FreqWindow.cpp:209
+#: widgets/ErrorDialog.cpp:159
+msgid "Close"
+msgstr "關閉"
 
 # 分貝
 #: FreqWindow.cpp:272
@@ -1020,14 +1116,14 @@ msgstr "匯出(&E)..."
 #: effects/AutoDuck.cpp:791
 #: effects/Compressor.cpp:352
 #: effects/Compressor.cpp:360
-#: effects/Equalization.cpp:1103
-#: effects/Equalization.cpp:1105
-#: effects/Equalization.cpp:1113
-#: effects/Equalization.cpp:1179
-#: effects/Equalization.cpp:1388
-#: effects/Equalization.cpp:1399
+#: effects/Equalization.cpp:1109
+#: effects/Equalization.cpp:1111
+#: effects/Equalization.cpp:1119
+#: effects/Equalization.cpp:1185
+#: effects/Equalization.cpp:1394
+#: effects/Equalization.cpp:1405
 #: effects/Normalize.cpp:365
-#: widgets/Meter.cpp:363
+#: widgets/Meter.cpp:380
 msgid "dB"
 msgstr "dB"
 
@@ -1036,8 +1132,8 @@ msgstr "dB"
 #. cycles per second.
 #: FreqWindow.cpp:287
 #: FreqWindow.cpp:442
-#: effects/Equalization.cpp:1144
-#: effects/Equalization.cpp:1175
+#: effects/Equalization.cpp:1150
+#: effects/Equalization.cpp:1181
 #: import/ImportRaw.cpp:416
 msgid "Hz"
 msgstr "Hz"
@@ -1061,34 +1157,34 @@ msgstr "游標位置：%d Hz (%s) = %d dB   峰值： %d Hz (%s) = %.1f dB"
 msgid "Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s) = %.3f"
 msgstr "游標位置：%.4f 秒 (%d Hz) (%s) = %f，峰值： %.4f 秒 (%d Hz) (%s) = %.3f"
 
-#: FreqWindow.cpp:1059
+#: FreqWindow.cpp:1061
 msgid "spectrum.txt"
 msgstr "spectrum.txt"
 
-#: FreqWindow.cpp:1061
+#: FreqWindow.cpp:1063
 msgid "Export Spectral Data As:"
 msgstr "將頻譜數據匯出為："
 
-#: FreqWindow.cpp:1077
+#: FreqWindow.cpp:1079
 #: LabelDialog.cpp:599
-#: Menus.cpp:2177
-#: Project.cpp:2394
-#: Project.cpp:3348
+#: Menus.cpp:2207
+#: Project.cpp:2441
+#: Project.cpp:3395
 #: prefs/KeyConfigPrefs.cpp:180
 msgid "Couldn't write to file: "
 msgstr "無法寫入檔案："
 
-#: FreqWindow.cpp:1082
+#: FreqWindow.cpp:1084
 msgid "Frequency (Hz)\tLevel (dB)"
 msgstr "頻率(Hz)\tLevel (dB)"
 
-#: FreqWindow.cpp:1088
+#: FreqWindow.cpp:1090
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
 msgstr "延遲 (秒)\t頻率 (Hz)\t水平"
 
 #: HelpText.cpp:85
-msgid "Back to [[welcome|Welcome]] page."
-msgstr "回到[[welcome|歡迎]]頁面。"
+msgid "To [[welcome|Welcome screen]]"
+msgstr "回到[[welcome|歡迎頁面]]"
 
 #: HelpText.cpp:92
 msgid "Welcome!"
@@ -1103,63 +1199,101 @@ msgid "Recording Audio"
 msgstr "錄製音訊"
 
 #: HelpText.cpp:105
-msgid "Editing and Greyed out Menus"
-msgstr "編輯並反白選單"
+msgid "Recording - Choosing the Input Device"
+msgstr "錄音 - 選擇輸入裝置"
 
 #: HelpText.cpp:109
-msgid "Export and Saving"
-msgstr "匯出且儲存"
+msgid "Recording - Choosing the Input Source"
+msgstr "錄音 - 選擇輸入來源"
 
 #: HelpText.cpp:113
-msgid "Supported Formats"
-msgstr "支援格式"
+msgid "Recording - Setting the Input Level"
+msgstr "錄音 - 設定輸入層級"
 
 #: HelpText.cpp:117
+msgid "Editing and greyed out Menus"
+msgstr "編輯並反白選單"
+
+#: HelpText.cpp:121
+msgid "Exporting an Audio File"
+msgstr "匯出音訊檔案"
+
+#: HelpText.cpp:125
+msgid "Saving an Audacity Project"
+msgstr "儲存Audacity成音工程"
+
+#: HelpText.cpp:129
+msgid "Unsupported Formats"
+msgstr "不支援格式"
+
+#: HelpText.cpp:133
 msgid "Burn to CD"
 msgstr "燒錄至光碟"
 
-#: HelpText.cpp:121
+#: HelpText.cpp:137
 msgid "No Local Help"
 msgstr "無本地說明"
 
-#: HelpText.cpp:132
-msgid "<p>Welcome to Audacity "
-msgstr "<p>歡迎使用Audacity"
+#: HelpText.cpp:148
+msgid "</p><center><h3>Getting Started</h3></center><br>"
+msgstr "</p><center><h3>開始使用</h3></center><br>"
 
-#: HelpText.cpp:134
-msgid "Let's get started!</p><p>You can click on the links below to learn how to:<ul><li>[[play|play back]] an existing sound file.<li>[[record|record]] a new sound file.<li>[[edit|edit]] sound and [[export|export]] to a sound file like MP3. <li>[[burncd|burn to a CD]] </ul><br><br>"
-msgstr "讓我們開始吧！</p><p>你可以點下列連結獲得更多教學文章：<ul><li>[[play|播放]]一個已存在的聲音檔案。<li>如何[[record|錄製]]一個聲音檔案。<li>如何[[edit|編輯]] 聲音然後[[export|匯出]]成如MP3的檔案。<li>[[burncd|燒錄至CD]]。</ul><br><br>"
+#: HelpText.cpp:150
+msgid "Welcome to Audacity "
+msgstr "歡迎使用Audacity"
 
-#: HelpText.cpp:142
-msgid "You can always get back to these instructions by clicking the 'Help' menu, then 'Show Welcome Message.' For more detailed reading, please read our full Help by clicking the 'Help' menu, then 'Index', or <a href=\"http://audacity.sourceforge.net/help/documentation\">download our Manual</a> in PDF format.<br><br>Welcome again to Audacity."
-msgstr "你可以從'說明'選單內找到這些教學指引，在'說明'選單內的'顯示歡迎畫面'。若要完整的說明文件，則在'說明'選單內的'索引'，或者<a href=\"http://audacity.sourceforge.net/help/documentation\">下載PDF說明手冊</a>。<br><br>再次感謝您使用Audacity。"
+#: HelpText.cpp:151
+msgid "Learn how to: <ul><li>[[play|play]] an existing audio file <li>[[record|record]] your voice, LP or tape <li>[[edit|edit]] sounds <li>[[save|save or open an Audacity project]] <li>[[export|export]] to an MP3 or other audio file, or [[burncd|burn to a CD]]  </ul></p><p>"
+msgstr "讓我們一起學習如何：<ul><li>[[play|播放]]一個已存在的聲音檔案。<li>如何[[record|錄製]]一個聲音檔案。<li>如何[[edit|編輯]] 聲音然後[[export|匯出]]成如MP3的檔案。<li>[[burncd|燒錄至CD]]。</ul><br><br>"
 
-#: HelpText.cpp:156
-msgid "You can either drag existing files into Audacity, or use the <b>File > Import > Audio</b> command. <b>File > Open</b> does the same, but opens a new Audacity window for any file after the first.<br/><br/>These are the main formats Audacity will play: <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis, WAV</b>.  If your file is in some other format see (format help). If you want to import an audio CD, see [[wiki:How to import CDs|How to import CDs]]<br><br>To start playing your audio, press the green Play button. To stop, press the yellow Stop button. You can also use spacebar to either play or stop. When you start playing again after stopping, playback resumes from its previous starting point. To change the starting point, use the <b>|&lt;&lt;</b> and <b>&gt;&gt;|</b> buttons to skip to the start or end respectively, or click anywhere in the track to restart from that point.<br><br>"
+#: HelpText.cpp:159
+msgid "This screen can be viewed at any time by clicking the <i>Help</i> menu, then <i>Show Welcome Message</i>. For a detailed guide to all the Audacity menus and controls, click  <i>Help</i> menu then <i>Index</i>, or download our <a href=\"http://audacity.sourceforge.net/help/documentation/manual_1.4.pdf\">full Manual</a> in PDF format.</p>"
+msgstr "你可以從'說明'選單內找到這些教學指引，在<i>說明</i>選單內的<i>顯示歡迎畫面</i>。若要完整的說明文件，則在<i>說明</i>選單內的<i>索引</i>，或者<a href=\"http://audacity.sourceforge.net/help/documentation\">下載PDF說明手冊</a>。<br><br>再次感謝您使用Audacity。"
+
+#: HelpText.cpp:172
+#, fuzzy
+msgid "<p><b>Opening audio files:</b> Either drag the files into the current project window, or click <i>File &gt; Import &gt; Audio</i>. Files can be opened into a new project window with <i>File &gt; Open</i>. The main formats Audacity plays are <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis</b> and <b>WAV</b>. Click [[wma-proprietary|here]] if your file is in some other format. <b>To import a CD:</b> extract it to WAV or AIFF using iTunes, Windows Media Player 11 or similar. See our online guide: [[wiki:How_to_import_CDs|importing CDs]].</p><p> <p><b>Playing audio:</b> Press the green Play button to start playback. Press the blue Pause button once to pause playback, and again to resume. To stop, press the yellow Stop button. Spacebar can be used to either play or stop. After stopping, playback resumes from its last starting point. To change the starting point, click in the track at your desired starting point. The <b>|&lt;&lt;</b> and <b>&gt;&gt;|</b> buttons can be used to skip to the start or end of the track respectively. </p><br><br>"
 msgstr "你可以前已存在的檔案拖曳至Audacity開啟，或者用選單上的<b>檔案>匯入>音訊</b>。<b>檔案>開啟</b>是一樣的動作，只是會新開一個Audacity視窗而已。<br/><br/>以下是Audacity主要支援的檔案格式：<b>AIFF、AU、FLAC、M4A</b> (僅Mac), <b>MP2/MP3、OGG Vorbis、WAV</b>。如果你的檔案是其他格式，請參見(格式說明)。如果你想要從CD匯入音訊，請看[[wiki:How to import CDs|如何從CD匯入音訊]]<br><br>要開始播放你的音訊，按下綠色播放按鈕。要停止播放，按下黃色停止按鈕。你可以用空白鍵來播放/停止。當你在停止後再度播放，會從上一次開始播放的時間點開始。如果要改變播放時間點，請用<b>|&lt;&lt;</b>或<b>&gt;&gt;|</b>鈕來改變播放時間點至開頭或結尾。或者用滑鼠在音軌上點一下想要播放的起點。<br><br>"
 
-#: HelpText.cpp:179
-msgid "<b>To start recording, press the red Record button</b>. Before doing so however, there are three crucial settings you must check:<br><br>(1) The <b>Recording Device</b>, set in the Audio I/O tab of Preferences. By default Audacity will use the current system device, which is usually your inbuilt sound device, so you may not need to set this. But if you're using an external USB or Firewire device such as a USB turntable, make sure this device is selected as your recording device. <br><br>(2) The <b>input source</b> for your device, such as microphone or line-in. <ul><li><b>On Windows</b>, you normally choose your input in the dropdown selector on the right of the <b>Mixer Toolbar<b> <i>note: on Vista, you must do so at Recording Device on the Audio I/O Preferences tab.</i></li><li><b>On a Mac</b>, you normally choose input sources outside Audacity, in Apple Audio-MIDI Setup.</li></ul><i>Note: many USB or Firewire devices don't have a choice of inputs, so you can ignore this step - see the documentation for your device. <br><br>(3) <b>Input volume</b>. Before recording for real, make a test recording to set the input level, so that it's neither too soft or too loud.To do this, see this [[wiki:Recording levels|illustrated guide]] or follow these two steps: <ol><li>Turn on <b>monitoring</b>, by either double-clicking over the right-hand of the two VU Meters, or right-clicking over it and choosing \"Start Monitoring\". If you do not see the meters, click View > Toolbars and check \"Meter Toolbar\". <li>Press Record, and adjust the input volume slider on the Mixer Toolbar (by the microphone symbol), so that the red bars in the meter come close to (but do not touch) the right edge of the scale. If you can't hear the sound, go to the Audio I/O tab of Preferences and check \"Software Playthrough\". </ol><br><br>There is more help if you're stuck: our Recording FAQs, our Tutorial  <b>Your First Recording </b> in the Manual, and our Wiki [[wiki:Recording Tips|Recording Tips]], especially the [[wiki:Troubleshooting Recordings|Troubleshooting Recordings]] section. <br><br>"
-msgstr "<b>按下紅色錄音按鈕開始錄音</b>。在開始錄音之前有三樣設定要檢查：<br><br>(1)在偏好設定的音訊I/O內的<b>錄音裝置</b>。Audacity預設使用系統內的裝置，通常是內建的音訊裝置，所以你可能不用重新設定。但如果你使用外接USB或Firewire裝置的話，請檢查你是設定到正確的錄音裝置。<br><br>(2) 裝置的<b>輸入來源</b>，如麥克風或線路輸入。<ul><li><b>在Windows上</b>，你通常只需要在<b>混音工具列<b>的下拉式選單中選擇你要的輸入來源即可。<i>注意：在Vista上，你還必須在偏好設定裡的音訊I/O標籤內設定錄音裝置。</i></li><li><b>在Mac上</b>，你通常是要在Apple Audio-MIDI Setup中選擇輸入來源，而不是在Audacity中。</li></ul><i>注意：許多USB或Firewire裝置沒有輸入的選項，所以你可以忽略此步驟 - 請參考你的裝置的使用手冊。<br><br>(3) <b>輸入音量</b>。在實際錄音之前，先隨意錄一小段來測試輸入音量，試看看會不會太大聲或太小聲。相關訊息請參考[[wiki:Recording levels|illustrated guide]]或依循下列兩步驟：<ol><li>開啟<b>監視</b>，你可以雙擊右手邊的兩個VU Meters，或用右鍵點一下VU Meters然後選擇\"開始監視\"。如果你沒有看到這些儀表，點檢視>工具列然後檢查\"儀表工具列\"的狀態。<li>按下錄音，然後在混音工具列上調整輸入音量(有麥克風符號的)使得儀表上的紅色部分接近最右邊(但不超過)。若你無法從喇叭聽到聲音，請至偏好設定裡的音訊I/O標籤檢查\"軟體播放\"。</ol><br><br>若你仍有使用上的問題，Audacity還提供更多的說明文件：錄音FAQ、在使用手冊上有<b>你的第一次錄音</b>、還有Wiki上的[[wiki:Recording Tips|錄音技巧]]、特別是[[wiki:Troubleshooting Recordings|錄音問題處理]]的小節。<br><br>"
+#: HelpText.cpp:194
+msgid "<p><b>To record:</b> Set the recording device and input source, adjust the input level, then press the red Record button.</b></p><p> 1) [[inputdevice|Set Recording Device]] either in the <i>Audio I/O tab of Preferences</i> or in <i>Device Toolbar</i>. Audio I/O Preferences lets you choose stereo recording if required.<br> 2) [[inputsource|Set input source]] for that device (for example, microphone or line-in) in the dropdown selector of the <i>Mixer Toolbar</i>, or (on some systems) at Recording Device in the <i>Audio I/O tab of Preferences</i> or in <i>Device Toolbar</i>.<br> 3) [[inputlevel|Adjust input level]] using the right-hand slider on the <i>Mixer Toolbar</i>. Correct adjustment of level before recording is essential to avoid noise or distortion. </p><p> More help at: \"Recording\" <a href=\"http://audacity.sourceforge.net/help/faq\">FAQs</a>, our Tutorial <a href=\"http://www.audacityteam.org/manual/index.php?title=Tutorial_-_Your_First_Recording\"> Your First Recording</a> in the <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">Manual</a>, and our Wiki [[wiki:Recording_Tips|Recording Tips]] and [[wiki:Troubleshooting_Recordings|Troubleshooting Recordings]] pages. </p><br><br>"
+msgstr ""
 
 #: HelpText.cpp:221
-msgid "Editing: Audacity is a powerful editor, so you'll want to see what it can do with your imported file or recording.  The main commands you will use are under the <b>Edit</b> menu (such as cut, copy and paste) and under the <b>Effect</b> menu (you can do things like boost the bass, change pitch or tempo, or remove noise). <br><br>Audacity applies edits to areas of the audio track. You can select a particular area of audio by clicking in the track and dragging the shaded area with your mouse. If you don't select any audio, Audacity will select all that you have on the screen.<br><br>Two important points when editing:<br><br>(1) If you're still playing or recording, use the yellow Stop button, because you can't edit or export a moving track! <br><br>(2) On occasion, some of the menus or buttons are greyed out or say \"Disabled\" -  this is normal. For example, because you can't edit audio while playing or recording, we grey out or disable commands until you press Stop. Commands can sometimes be unavailable for other reasons - for example you can't run effects until you have audio on the screen, and you obviously can't paste audio until you've cut or copied it to Audacity's clipboard. <br><br>"
+msgid "<p>The input device is the actual physical sound device you are recording from. This is chosen at \"Recording Device\" in the <i>Audio I/O tab of Preferences</i>, On Windows and Linux, Preferences are at the bottom of the <i>Edit</i> Menu. On a Mac, they in the <i>Audacity</i> Menu. You can also conveniently select Recording Device in the <i>Device Toolbar</i>, which can be enabled at <i>View &gt; Toolbars...</i>. </p><p> By default, Audacity uses the device currently being used by the system, (usually your inbuilt sound device), so it is often not necessary to change the input device. On Windows, this current system device can be selected as \"Microsoft Sound Mapper\". If you are recording from an external USB or Firewire device such as a USB turntable, select it explicitly by name as recording device after conecting it. </p><p> Back to [[record|Recording Audio]] <br></p>"
+msgstr ""
+
+#: HelpText.cpp:244
+msgid "<p>Select the input source (such as microphone or line-in) for your [[inputdevice|recording device]]:<br> - <b>On Windows (except Vista)</b> and <b>Linux</b>, in the dropdown selector on the right of the <i>Mixer Toolbar</i>.<br> - <b>On Windows Vista</b> and <b>Mac</b>, at Recording Device on the <i>Audio I/O tab of Preferences</i>, or in <i>Device Toolbar</i>. The source will be shown as part of the parent device (for example, <i>High Def Audio Card: Microphone</i>). If necessary, Mac users can choose the input source at Apple Audio MIDI Setup. <br><i><b>Note:</b> many USB or Firewire recording devices don't have a choice of inputs, so this step is not necessary. If in doubt, see the documentation for your device. </i></p><p> <b>Tip:</b> To <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&i=streaming\">record audio playing on the computer</a>, Windows and Linux users can choose the \"Stereo Mix\", \"Wave Out\", \"Sum\" or comparable input source. </p><p> Back to [[record|Recording Audio]] <br></p>"
+msgstr ""
+
+#: HelpText.cpp:267
+msgid "<p>The input level must be set correctly. If the level is too low, there will be background noise. If the level is too high, there will be distortion in the loud parts. </p><p>To set the level, either see this [[wiki:Recording_levels|illustrated online guide]] or follow these steps: <ol><li>Turn on <b>monitoring</b>. Double-click the right-hand of the two <i>VU Meters</i> (or right-click over it) and click \"Start Monitoring\". If the meters are not visible, click <i>View &gt; Toolbars</i> and check \"Meter Toolbar\". </li><li>Adjust the input slider on the <i>Mixer Toolbar</i> (by the microphone symbol), so that the red bars in the meter come close to <b>but do not touch</b> the right edge of the scale. If you can't hear the monitored audio, go to the <i>Audio I/O tab of Preferences</i> and check \"Software Playthrough\". </li></ol></p><p> Back to [[record|Recording Audio]] <br></p>"
+msgstr ""
+
+#: HelpText.cpp:292
+#, fuzzy
+msgid "<p>The main commands for editing audio are under the <i>Edit</i> menu (such as cut, copy and paste) and the <i>Effect</i> menu (you can do things like boost the bass, change pitch or tempo, or remove noise). </p><p> Audacity applies edits to selected areas of the audio track. To select a particular area, click in the track and drag the shaded area with the mouse. If no audio is selected, Audacity selects all the audio in the project window.</p><p> When playing or recording, the Edit and Effect menus will appear greyed out, because a moving track can't be edited. Commands can sometimes be unavailable for other reasons too. For example, you can't run effects until you have audio on the screen, and you can't paste audio until you've cut or copied it to Audacity's clipboard. </p><br><br>"
 msgstr "編輯：Audacity是一個強大的編輯器，你可以看看到底它能對你的音訊檔案及錄音檔案做些什麼。你會使用到的主要功能都在<b>編輯</b>選單(如剪下、複製、貼上)及<b>效果</b>選單內(如低音增強、變更音高、變更速率、移除雜訊等)。<br><br>Audacity可以對音軌編輯、套用效果。你可以選定音軌上的一個範圍來編輯，用滑鼠左鍵對音軌上的一點按住並拖曳陰影範圍即可。如果你沒有選擇任何音軌來編輯，那麼Audacity將會自動選擇所有的音軌來編輯。<br><br>編輯時的兩個重點：<br><br>(1) 如果你正在播放或錄音，請先按下黃色停止按鈕。因為你不能編輯或匯出一個正在播放的音軌！<br><br>(2)有的時候，選單或按鈕會顯示為灰色或\"停用\" -  這是正常的。例如，當你正在播放或錄音時不能編輯音訊，此時一些指令就會顯示成灰色或者停用。有的時候還有其他原因會造成指令停用 - 例如工程內沒有任何音訊時就不能執行效果器，或者當你沒有剪下或複製音訊時，不能執行貼上的指令。<br><br>"
 
-#: HelpText.cpp:252
-msgid "Exporting and Saving have different purposes.You \"save\" an Audacity project file when you want to return to your work in Audacity later.This means you don't then have to re-import or re-record audio, or redo editing you have done so far.When you want to listen to your work in other computer programs you \"export\" it as an audio file such as a WAV, AIFF or MP3. If burning to an audio CD for standalone CD players, you must export as WAV or AIFF.<br><br>To save an Audacity project, use <b>File > Save Project</b>. This will save an <b>.aup</b> Project file, plus a <b>_data</b> folder containing the actual audio. Make sure you don't rename or move either of these, because Audacity needs to refer to both.Only use File > Save Project As... when you either need to save an empty Project, or if you want to save an existing Project to a <i> new</i> name. When you want to re-open a saved Project, simply click File > Open and open the .aup file. <br><br>When you want to export your work to an audio file, use <b>File > Export</b> and choose your desired format in the \"Save as type\" dropdown.Click the Options button for advanced choices, such as the bit rate to use for MP3 export.There are two other Export commands under the File menu.\"Export Selection\" exports only a selected area of audio.\"Export Multiple\" exports multiple files, for example where you have more than one track on screen and want to export each as a separate file. If exporting tracks from a recorded LP or tape to multiple files, use [[wiki:Splitting recordings into separate tracks|labels with Export Multiple]]. <br><br>Before you can export as <b>MP3</b>, you may need to add the LAME MP3 encoder to your computer.For help with LAME, see [[wiki:Lame_Installation|Lame Installation]]. There is also some help on how to [[burncd|burn to a CD]].<br><br>"
-msgstr "匯出與儲存的目的不同。\"儲存\"Audacity工程檔案是你希望之後還能夠以Audacity開啟此檔案來編輯。這意味著你不需要再匯入一次或重錄一次音訊，也不需要將你之前的編輯動作再做一次。而當你想要在別台電腦上聆聽你的作品，則需要將你的音訊\"匯出\"成WAV、AIFF、MP3等。或是要燒成CD則需匯出成WAV、AIFF。<br><br>要儲存Audacity成音工程，請用<b>檔案>儲存成音工程</b>。這將會儲存一個副檔名為<b>.aup</b>的工程檔案以及一個包含實際音訊的<b>_data</b>資料夾。請確保你不會去動到這兩個檔案及資料夾的名稱，因為Audacity需要名稱來連繫它們。使用檔案>另存成音工程為…的時機是當你想要儲存一個空的成音工程，或是你要將一個已存在的成音工程另存一個<i>新的</i>。當你想要開啟一個已存在的成音工程檔案，只要選檔案>開啟並選擇.aup檔案。<br><br>當你想要把作品匯出成音訊檔案，請用<b>檔案>匯出</b>然後在\"存檔類型\"下拉式選單選擇你想匯出的檔案格式。在選項內有進階的設定可選擇，如匯出MP3的位元率。在檔案選單內還有兩個其他的匯出指令。\"將選取範圍匯出\" 只會匯出已選取的範圍。\"匯出多個檔案\"會依選擇匯出多個檔案，例如工程內有多個音軌，就可以將音軌分別匯出成不同的檔案。如果想要將LP或錄音帶錄下來的聲音匯出成多個檔案，請參考[[wiki:Splitting recordings into separate tracks|加入標籤來匯出多個檔案]]。<br><br>如果你想匯出<b>MP3</b>檔案，你需要下載LAME MP3編碼器。有關LAME的相關資訊，請參見[[wiki:Lame_Installation|Lame安裝]]。也有一些關於如何[[burncd|燒錄至CD]]的說明頁面。<br><br>"
+#: HelpText.cpp:311
+msgid "<p>To return later to your unfinished work in Audacity with all tracks and edits as you left them, save an Audacity project. To play your current work in other media programs or send it to others, [[export|export]] an audio file such as WAV or MP3. </p><p> <i>File &gt; Save Project</i> saves an <b>.aup</b> project file and  a <b>_data</b> folder containing the actual audio. To re-open a saved project, click <i>File &gt; Open</i> and open the .aup file. If you save and exit more than once, an .aup.bak backup file is created, but the .aup file should always be opened if present. When your final exported file is exactly as you want, delete the project files and _data folder to save disc space. </p><p><i>File &gt; Save Project As...</i> is for saving an empty project. It also lets you save an existing Project to a <b> new</b> name. This is the only safe way to rename a project. The .aup file and _data folder should not be moved or renamed manually. </p><p>"
+msgstr ""
 
-#: HelpText.cpp:287
-msgid "<h2>Can Audacity import file formats like WMA, AAC, RealAudio  etc.?</h2> <p>Audacity cannot import or export files in <b>WMA, RealAudio, Shorten (SHN)</b>, or most other proprietary formats, because of licensing and patent restrictions. Audacity also cannot import any kind of Digital Rights Management (DRM) protected file, including most purchased online such as from iTunes or Napster.If you are on a Mac, you can import <b>AAC</b>  encoded files (such as <b>M4A</b>) as long as they are not DRM protected, but you cannot export to these formats.</p> <p>Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>Musepack</b>.We hope to support these formats in future versions of Audacity.</p> <p>If you cannot import your file into Audacity, you can as a workround convert it to WAV or AIFF.As long as it's not a DRM-protected file, you could do this with iTunes or with <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> player.If it's a DRM-protected file, you can burn it to an audio CD in the application that is licensed to play it, then extract (rip) the CD track to WAV or AIFF.You can use iTunes to extract to WAV or AIFF, plus Windows Media Player 11 or <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> on Windows.Or you can play the file on your computer and record it - see <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">."
-msgstr "<h2>Audacity可以匯入WMA、AAC、RealAudio等檔案嗎？</h2> <p>Audacity無法匯入或匯出<b>WMA、RealAudio、Shorten (SHN)</b>等檔案，以及其他專有格式的檔案，因為這些格式有專利的限制。Audacity同樣地不能匯入受Digital Rights Management (DRM)保護的檔案，包括許多線上購買的音樂，如iTunes或Napster。如果你使用的系統是Mac，你可以匯入<b>AAC</b>檔案(如<b>M4A</b>)只要它們沒有受到DRM的保護，不過你不能匯出AAC檔案。</p> <p>Audacity也還不能支援一些開放格式如<b>Ogg Speex</b>及<b>Musepack</b>。我們努力在未來的版本可以支援。</p> <p>如果你不能將你的檔案匯入Audacity，你可以先將它們轉檔成WAV或AIFF。只要它們不是受DRM保護的檔案，你可以用iTunes或<a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>播放器來轉檔。如果檔案是受DRM保護的，你可以先將檔案燒成音樂CD，用已授權的播放器來播放它，然後將CD音軌擷取成WAV或AIFF。你可以用iTunes來擷取成WAV或AIFF，或者在Windows上用Windows Media Player 11或<a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a>。或者你可以直接用電腦把音訊錄下來 - 參見<a href=\"http://audacity.sourceforge.net/help/faq?s=recording&i=streaming\">Audacity能錄製RealAudio或其它串流音訊嗎？</a>。"
+#: HelpText.cpp:335
+msgid "To hear your work in other media programs, export it to an audio file such as WAV or MP3 (some formats are [[wma-proprietary|unsupported]]). [[save|Saving an Audacity project]] creates a project file (and linked _data folder) containing all your edited tracks, so you can return to your work later. However, other programs can't read Audacity projects. </p><p> To export, click <i>File &gt; Export</i> then choose the file format you want to export to in the \"Save as type\" dropdown. To [[burncd|burn a CD]] for standalone CD players, choose WAV or AIFF. To export as MP3, the [[wiki:Lame_Installation|Lame Encoder]] must be installed. </p><p> <i>File &gt; Export Selection</i> exports only a selected area of audio. <i>Use File &gt; Export Multiple</i> to export multiple files at the same time, either one for each audio track, or one for each labeled area in a single track. <i>Tracks &gt; Add Label At Selection</i> lets you [[wiki:Splitting_recordings_into_separate_tracks|split the tracks]] from an album for multiple export as separate files. </p><br><br>"
+msgstr ""
 
-#: HelpText.cpp:314
-msgid "If you want to burn your work to an audio CD for standalone CD players, you must first [[export|export as WAV or AIFF]] and then burn that file to CD with a CD burning program like iTunes - for more help, see [[wiki:How to burn CDs|How to burn CDs]].<br><br>"
-msgstr "如果你要將你的作品燒錄成CD，你必須先[[export|匯出成WAV或AIFF]]然後用CD燒錄軟體來燒錄成CD，如iTunes - 更多說明請看[[wiki:How to burn CDs|如何燒錄成CD]]。<br><br>"
+#: HelpText.cpp:359
+msgid "<p>Audacity <b>cannot</b> [[play|play]] or [[export|export]] files in <b>WMA, RealAudio, Shorten (SHN)</b> or most other proprietary formats, due to licensing and patent restrictions.  On a Mac computer, unprotected <b>AAC</b> formats such as <b>M4A</b> can be imported. Some open formats are not yet supported, including <b>Ogg Speex</b> and <b>Musepack</b>. Files protected by any kind of Digital Rights Management (DRM), including most purchased online such as from iTunes or Napster, <b>cannot</b> be imported.</p><p> If you can't import your file into Audacity, then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> to convert it to WAV or AIFF. If it is protected, burn it to an audio CD in the program licensed to play it, then extract the CD track to WAV or AIFF using ITunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or Windows Media Player 11. You could also <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. <i>To export to an unsupported format, export to WAV or AIFF and convert it to the desired format in iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
+msgstr ""
 
-#: HelpText.cpp:329
-msgid "<p>You don't appear to have Audacity help files on your machine. You can <a href=\"http://audacity.sourceforge.net/help/documentation\">download</a> the help files and then access them from Audacity as you have just attempted, or you can click <a href=\"*URL*\">here</a> to read the help online."
+#: HelpText.cpp:383
+msgid "<p>To burn your work to an audio CD for standalone CD players, first [[export|export]] it as WAV or AIFF. The exported file should be stereo, 44100 Hz (set in the \"Project Rate\" button bottom left) and 16 bit (set in the \"Options\" button in the file export dialog). These are Audacity's default settings, so normally you will not need to change these before exporting. <p>Burn the exported file to an \"audio CD\" - not a \"data CD\" or \"MP3 CD\" - with a CD burning program like iTunes or Windows Media Player. For more help, see [[wiki:How_to_burn_CDs|How to burn CDs]] online. </p><p>"
+msgstr ""
+
+#: HelpText.cpp:403
+msgid "<p>You don't appear to have Audacity help files on your machine. Either <a href=\"http://audacity.sourceforge.net/help/documentation\">download</a> the help files and then access them again from Audacity by clicking <i>Help</i> then <i>Index</i>, or click <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">here</a> to read the full Manual online."
 msgstr "<p>你的電腦上顯然沒有Audacity說明檔案。你可以上網<a href=\"http://audacity.sourceforge.net/help/documentation\">下載</a>說明檔案然後從Audacity中使用它，如同你正要嘗試的動作，或者你可以<a href=\"*URL*\">點這裡</a>在線上閱讀說明文件。"
 
 #: HistoryWindow.cpp:53
@@ -1187,35 +1321,35 @@ msgid "&Discard"
 msgstr "捨棄(&D)"
 
 #: HistoryWindow.cpp:111
-#: Tags.cpp:2039
-#: Tags.cpp:2041
-#: Tags.cpp:2343
-#: Tags.cpp:2345
+#: Tags.cpp:2072
+#: Tags.cpp:2074
+#: Tags.cpp:2376
+#: Tags.cpp:2378
 #: effects/ChangeLength.cpp:186
 #: effects/SpikeCleaner.cpp:191
 #: effects/vamp/VampEffect.cpp:414
-#: export/ExportCL.cpp:396
+#: export/ExportCL.cpp:398
 msgid "&OK"
 msgstr "確定(&O)"
 
-#: Internat.cpp:176
+#: Internat.cpp:191
 msgid "Unable to determine"
 msgstr "無法驗證"
 
-#: Internat.cpp:180
+#: Internat.cpp:195
 #: import/ImportRaw.cpp:392
 msgid "bytes"
 msgstr "位元組"
 
-#: Internat.cpp:182
+#: Internat.cpp:197
 msgid "KB"
 msgstr "KB"
 
-#: Internat.cpp:185
+#: Internat.cpp:200
 msgid "MB"
 msgstr "MB"
 
-#: Internat.cpp:188
+#: Internat.cpp:203
 msgid "GB"
 msgstr "GB"
 
@@ -1224,8 +1358,8 @@ msgid "Track"
 msgstr "音軌"
 
 #: LabelDialog.cpp:53
-#: Menus.cpp:4019
-#: Menus.cpp:4047
+#: Menus.cpp:4057
+#: Menus.cpp:4085
 msgid "Label"
 msgstr "標籤"
 
@@ -1238,7 +1372,7 @@ msgid "End Time"
 msgstr "結束時間"
 
 #: LabelDialog.cpp:98
-#: Menus.cpp:615
+#: Menus.cpp:627
 msgid "&Edit Labels"
 msgstr "編輯標籤(&E)"
 
@@ -1255,7 +1389,7 @@ msgid "Insert &Before"
 msgstr "插入上一列(&B)"
 
 #: LabelDialog.cpp:127
-#: Menus.cpp:192
+#: Menus.cpp:194
 msgid "&Import..."
 msgstr "匯入(&I)..."
 
@@ -1280,19 +1414,19 @@ msgid "Confirm"
 msgstr "確認"
 
 #: LabelDialog.cpp:514
-#: Menus.cpp:3517
+#: Menus.cpp:3555
 msgid "Select a text file containing labels..."
 msgstr "選擇包含標籤的文字檔案..."
 
 #: LabelDialog.cpp:518
-#: Menus.cpp:3521
+#: Menus.cpp:3559
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "文字檔案 (*.txt)|*.txt|所有檔案 (*.*)|*.*"
 
 #: LabelDialog.cpp:532
-#: Menus.cpp:3533
-#: Project.cpp:1800
-#: Project.cpp:1808
+#: Menus.cpp:3571
+#: Project.cpp:1831
+#: Project.cpp:1839
 #: import/ImportMIDI.cpp:31
 msgid "Could not open file: "
 msgstr "無法開啟檔案："
@@ -1302,12 +1436,12 @@ msgid "No labels to export."
 msgstr "沒有標籤音軌匯出。"
 
 #: LabelDialog.cpp:564
-#: Menus.cpp:2142
+#: Menus.cpp:2172
 msgid "Export Labels As:"
 msgstr "將標籤匯出為："
 
 #: LabelDialog.cpp:566
-#: Menus.cpp:2140
+#: Menus.cpp:2170
 msgid "labels.txt"
 msgstr "labels.txt"
 
@@ -1321,8 +1455,8 @@ msgstr "輸入音軌名稱為"
 
 #: LabelDialog.cpp:701
 #: LabelDialog.h:52
-#: LabelTrack.cpp:88
-#: Menus.cpp:547
+#: LabelTrack.cpp:89
+#: Menus.cpp:555
 msgid "&Label Track"
 msgstr "標籤軌(&L)"
 
@@ -1368,7 +1502,7 @@ msgid "&Save Project\tCtrl+S"
 msgstr "儲存成音工程(&S)\tCtrl+S"
 
 #: Menus.cpp:178
-#: Project.cpp:2643
+#: Project.cpp:2690
 msgid "Save Project &As..."
 msgstr "另存成音工程為(&A)..."
 
@@ -1376,1233 +1510,1253 @@ msgstr "另存成音工程為(&A)..."
 msgid "Chec&k Dependencies..."
 msgstr "檢查相依性(&K)..."
 
-#: Menus.cpp:185
+#: Menus.cpp:187
 msgid "Open Me&tadata Editor..."
 msgstr "開啟標頭檔編輯器…"
 
-#: Menus.cpp:194
+#: Menus.cpp:196
 msgid "&Audio...\tCtrl+Shift+I"
 msgstr "聲音檔案(&I)...\tCtrl+Shift+I"
 
-#: Menus.cpp:195
+#: Menus.cpp:197
 msgid "&Labels..."
 msgstr "標籤(&L)..."
 
-#: Menus.cpp:196
+#: Menus.cpp:198
 msgid "&MIDI..."
 msgstr "MIDI(&M)..."
 
-#: Menus.cpp:197
+#: Menus.cpp:199
 msgid "&Raw Data..."
 msgstr "Raw Data(&R)..."
 
-#: Menus.cpp:208
-#: Menus.cpp:237
+#: Menus.cpp:210
+#: Menus.cpp:239
 msgid "Expo&rt Selection..."
 msgstr "將選取範圍匯出(&R)..."
 
-#: Menus.cpp:215
+#: Menus.cpp:217
 msgid "Export &Labels..."
 msgstr "匯出標籤(&L)..."
 
-#: Menus.cpp:216
+#: Menus.cpp:218
 msgid "Export &Multiple..."
 msgstr "匯出多個檔案(&M)..."
 
-#: Menus.cpp:245
+#: Menus.cpp:247
 msgid "CleanSpeech C&hain..."
 msgstr "清除人聲連鎖指令(&H)…"
 
-#: Menus.cpp:246
-#: Menus.cpp:260
+#: Menus.cpp:248
+#: Menus.cpp:262
 msgid "Edit C&hains..."
 msgstr "編輯連鎖指令(&H)..."
 
-#: Menus.cpp:247
+#: Menus.cpp:249
 msgid "Export CleanSpeech &Presets..."
 msgstr "匯出清除人聲設定(&P)…"
 
-#: Menus.cpp:248
+#: Menus.cpp:250
 msgid "I&mport CleanSpeech Presets..."
 msgstr "匯入清除人聲設定(&M)…"
 
-#: Menus.cpp:258
+#: Menus.cpp:260
 msgid "Appl&y Chain..."
 msgstr "套用連鎖指令(&Y)..."
 
-#: Menus.cpp:265
+#: Menus.cpp:267
 msgid "&Upload File..."
 msgstr "上傳檔案(&U)..."
 
-#: Menus.cpp:271
+#: Menus.cpp:273
 msgid "Pa&ge Setup..."
 msgstr "頁面設定(&G)..."
 
-#: Menus.cpp:272
+#: Menus.cpp:274
 msgid "&Print..."
 msgstr "列印(&P)..."
 
-#: Menus.cpp:285
+#: Menus.cpp:287
 msgid "E&xit\tCtrl+Q"
 msgstr "結束(&X)\tCtrl+Q"
 
-#: Menus.cpp:293
+#: Menus.cpp:295
 #: toolbars/EditToolBar.cpp:76
 msgid "&Edit"
 msgstr "編輯 (&E)"
 
-#: Menus.cpp:297
+#: Menus.cpp:299
 msgid "&Undo\tCtrl+Z"
 msgstr "復原(&U)\tCtrl+Z"
 
-#: Menus.cpp:305
+#: Menus.cpp:307
 #: prefs/KeyConfigPrefs.cpp:369
 #: toolbars/EditToolBar.cpp:146
 msgid "&Redo"
 msgstr "重做(&R)"
 
-#: Menus.cpp:318
+#: Menus.cpp:320
 msgid "Cu&t\tCtrl+X"
 msgstr "剪下(&T)\tCtrl+X"
 
-#: Menus.cpp:322
+#: Menus.cpp:324
 msgid "Spl&it Cut\tCtrl+Alt+X"
 msgstr "選取範圍變為空白並剪下(&I)\tCtrl+Alt+X"
 
-#: Menus.cpp:323
+#: Menus.cpp:325
 msgid "&Copy\tCtrl+C"
 msgstr "複製(&C)\tCtrl+C"
 
-#: Menus.cpp:327
+#: Menus.cpp:329
 msgid "&Paste\tCtrl+V"
 msgstr "貼上(&P)\tCtrl+V"
 
-#: Menus.cpp:331
+#: Menus.cpp:333
 msgid "Tri&m\tCtrl+T"
 msgstr "保留選取範圍(&M)\tCtrl+T"
 
-#: Menus.cpp:333
+#: Menus.cpp:335
 msgid "&Delete\tCtrl+K"
 msgstr "刪除(&D)\tCtrl+K"
 
-#: Menus.cpp:334
+#: Menus.cpp:336
 msgid "Split D&elete\tCtrl+Alt+K"
 msgstr "選取範圍變為空白並刪除(&E)\tCtrl+Alt+K"
 
-#: Menus.cpp:335
+#: Menus.cpp:337
 msgid "&Silence\tCtrl+L"
 msgstr "靜音(&S)\tCtrl+L"
 
-#: Menus.cpp:337
+#: Menus.cpp:339
 msgid "Sp&lit\tCtrl+I"
 msgstr "分離(&L)\tCtrl+I"
 
-#: Menus.cpp:342
+#: Menus.cpp:344
 msgid "Split Ne&w\tCtrl+Alt+I"
 msgstr "分離新的(&W)\tCtrl+Alt+I"
 
-#: Menus.cpp:347
+#: Menus.cpp:349
 msgid "&Join\tCtrl+J"
 msgstr "將空白範圍變為靜音(&J)\tCtrl+J"
 
-#: Menus.cpp:348
+#: Menus.cpp:350
 msgid "Disj&oin\tCtrl+Alt+J"
 msgstr "靜音範圍變為空白(&O)\tCtrl+Alt+J"
 
-#: Menus.cpp:350
+#: Menus.cpp:352
 msgid "Duplic&ate\tCtrl+D"
 msgstr "複製全部並貼上(&A)\tCtrl+D"
 
-#: Menus.cpp:356
-#: Menus.cpp:556
+#: Menus.cpp:358
+#: Menus.cpp:564
 #: effects/StereoToMono.h:23
 msgid "&Stereo to Mono"
 msgstr "立體聲至單聲道(&S)"
 
-#: Menus.cpp:363
-msgid "Labeled Re&gions..."
-msgstr "標籤區域(&G)..."
+#: Menus.cpp:365
+msgid "La&beled Regions..."
+msgstr "標籤區域(&B)..."
 
 #. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:365
+#: Menus.cpp:367
 msgid "&Cut\tAlt+X"
 msgstr "剪下(&C)\tAlt+X"
 
 #. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:370
+#: Menus.cpp:372
 msgid "&Split Cut\tShift+Alt+X"
 msgstr "選取範圍變為空白並剪下(&S)\tShift+Alt+X"
 
 #. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:375
+#: Menus.cpp:377
 msgid "Co&py\tShift+Alt+C"
 msgstr "複製(&P)\tShift+Alt+C"
 
 #. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:381
+#: Menus.cpp:383
 msgid "&Delete\tAlt+K"
 msgstr "刪除(&D)\tAlt+K"
 
 #. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:386
+#: Menus.cpp:388
 msgid "Sp&lit Delete\tShift+Alt+K"
 msgstr "選取範圍變為空白並刪除(&L)\tShift+Alt+K"
 
 #. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:391
+#: Menus.cpp:393
 msgid "Sile&nce\tAlt+L"
 msgstr "靜音(&N)\tAlt+L"
 
 #. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:397
+#: Menus.cpp:399
 msgid "Spli&t\tAlt+I"
 msgstr "分離(&T)\tAlt+I"
 
 #. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:402
+#: Menus.cpp:404
 msgid "&Join\tAlt+J"
 msgstr "將空白範圍變為靜音(&J)\tAlt+J"
 
 #. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:407
+#: Menus.cpp:409
 msgid "Disj&oin\tShift+Alt+J"
 msgstr "靜音範圍變為空白(&O)\tShift+Alt+J"
 
-#: Menus.cpp:413
-msgid "&Select..."
-msgstr "選取(&S)..."
+#: Menus.cpp:415
+msgid "Select&..."
+msgstr "選取..."
 
-#: Menus.cpp:414
+#: Menus.cpp:416
 msgid "&All\tCtrl+A"
 msgstr "全選(&A)\tCtrl+A"
 
-#: Menus.cpp:415
+#: Menus.cpp:417
 msgid "&None\tCtrl+Shift+A"
 msgstr "全不選(&N)\tCtrl+N"
 
-#: Menus.cpp:419
-msgid "Left at Playback Position\t["
-msgstr "播放位置左側\t["
+#: Menus.cpp:421
+msgid "&Left at Playback Position\t["
+msgstr "播放位置左側(&L)\t["
 
-#: Menus.cpp:420
-msgid "Right at Playback Position\t]"
-msgstr "播放位置右側\t]"
+#: Menus.cpp:422
+msgid "&Right at Playback Position\t]"
+msgstr "播放位置右側(&R)\t]"
 
-#: Menus.cpp:424
-msgid "Start to Cursor"
-msgstr "從起點至游標位置"
+#: Menus.cpp:426
+msgid "Track &Start to Cursor\tShift+J"
+msgstr "從起點至游標位置(&S)\tShift+J"
 
-#: Menus.cpp:425
-msgid "Cursor to End"
-msgstr "從游標位置至結束點"
+#: Menus.cpp:427
+msgid "Cursor to Track &End\tShift+K"
+msgstr "從游標位置至結束點(&E)\tShift+J"
 
-#: Menus.cpp:431
+#: Menus.cpp:433
 msgid "Find &Zero Crossings\tZ"
 msgstr "尋找零交點(&Z)\tZ"
 
-#: Menus.cpp:433
+#: Menus.cpp:435
 msgid "Mo&ve Cursor..."
 msgstr "移動游標(&V)..."
 
-#: Menus.cpp:435
-msgid "to Selection Start"
-msgstr "至選取範圍起始點"
+#: Menus.cpp:437
+msgid "to Selection Star&t"
+msgstr "至選取範圍起始點(&T)"
 
-#: Menus.cpp:436
-msgid "to Selection End"
-msgstr "至選取範圍結束點"
+#: Menus.cpp:438
+msgid "to Selection En&d"
+msgstr "至選取範圍結束點(&D)"
 
-#: Menus.cpp:440
-msgid "to Track Start"
-msgstr "至音軌起始點"
+#: Menus.cpp:442
+msgid "to Track &Start\tJ"
+msgstr "至音軌起始點(&S)\tJ"
 
-#: Menus.cpp:441
-msgid "to Track End"
-msgstr "至音軌結束點"
+#: Menus.cpp:443
+msgid "to Track &End\tK"
+msgstr "至音軌結束點(&E)\tK"
 
-#: Menus.cpp:448
-msgid "Selection Save"
-msgstr "儲存選取範圍"
+#: Menus.cpp:450
+msgid "Re&gion Save"
+msgstr "儲存選取範圍(&G)"
 
-#: Menus.cpp:449
-msgid "Selection Restore"
-msgstr "恢復選取範圍"
-
-#: Menus.cpp:454
-msgid "Play &Region..."
-msgstr "播放區域(&R)..."
-
-#: Menus.cpp:455
-msgid "Lock"
-msgstr "Lock"
-
-#: Menus.cpp:456
-msgid "Unlock"
-msgstr "Unlock"
+#: Menus.cpp:451
+msgid "Regio&n Restore"
+msgstr "恢復選取範圍(&N)"
 
 #: Menus.cpp:462
+msgid "Pla&y Region..."
+msgstr "播放區域(&Y)..."
+
+#: Menus.cpp:463
+msgid "&Lock"
+msgstr "Lock(&L)"
+
+#: Menus.cpp:464
+msgid "&Unlock"
+msgstr "Unlock(&U)"
+
+#: Menus.cpp:470
 msgid "Turn Snap-To On"
 msgstr "開啟滑扣功能"
 
-#: Menus.cpp:463
+#: Menus.cpp:471
 msgid "Turn Snap-To Off"
 msgstr "關閉滑扣功能"
 
-#: Menus.cpp:464
+#: Menus.cpp:472
 msgid "Turn Grid Snap On"
 msgstr "開啟格線滑扣功能"
 
-#: Menus.cpp:465
+#: Menus.cpp:473
 msgid "Turn Grid Snap Off"
 msgstr "關閉格線滑扣功能"
 
-#: Menus.cpp:474
+#: Menus.cpp:482
 msgid "&Preferences...\tCtrl+P"
 msgstr "偏好設定(&P)...\tCtrl+P"
 
-#: Menus.cpp:484
+#: Menus.cpp:492
 msgid "&View"
 msgstr "檢視(&V)"
 
-#: Menus.cpp:486
+#: Menus.cpp:494
 msgid "Zoom &In\tCtrl+1"
 msgstr "放大(&I)\tCtrl+1"
 
-#: Menus.cpp:489
+#: Menus.cpp:497
 msgid "Zoom &Normal\tCtrl+2"
 msgstr "一般(&N)\tCtrl+2"
 
-#: Menus.cpp:490
+#: Menus.cpp:498
 msgid "Zoom &Out\tCtrl+3"
 msgstr "縮小(&O)\tCtrl+3"
 
-#: Menus.cpp:493
+#: Menus.cpp:501
 msgid "&Fit in Window\tCtrl+F"
 msgstr "成音工程適合視窗大小(&F)\tCtrl+F"
 
-#: Menus.cpp:494
+#: Menus.cpp:502
 msgid "Fit &Vertically\tCtrl+Shift+F"
 msgstr "適合垂直大小(&V)\tCtrl+Shift+F"
 
-#: Menus.cpp:495
+#: Menus.cpp:503
 msgid "&Zoom to Selection\tCtrl+E"
 msgstr "縮放選取範圍符合視窗(&Z)\tCtrl+E"
 
-#: Menus.cpp:498
+#: Menus.cpp:506
 msgid "&Collapse All Tracks\tCtrl+Shift+C"
 msgstr "摺疊所有軌道(&C)\tCtrl+Shift+C"
 
-#: Menus.cpp:499
+#: Menus.cpp:507
 msgid "E&xpand All Tracks\tCtrl+Shift+X"
 msgstr "展開所有軌道\tCtrl+Shift+X"
 
-#: Menus.cpp:502
-msgid "Show Clipping"
-msgstr "顯示剪輯"
+#: Menus.cpp:510
+msgid "&Show Clipping"
+msgstr "顯示剪輯(&S)"
 
-#: Menus.cpp:511
+#: Menus.cpp:519
 msgid "&History..."
 msgstr "工作記錄(&H)..."
 
-#: Menus.cpp:517
+#: Menus.cpp:525
 msgid "&Toolbars..."
 msgstr "工具列(&T)..."
 
-#: Menus.cpp:518
-msgid "Control Toolbar"
-msgstr "控制工作列"
-
-#: Menus.cpp:519
-msgid "Device Toolbar"
-msgstr "裝置工作列"
-
-#: Menus.cpp:520
-msgid "Edit Toolbar"
-msgstr "編輯工作列"
-
-#: Menus.cpp:521
-msgid "Meter Toolbar"
-msgstr "儀表工具列"
-
-#: Menus.cpp:522
-msgid "Mixer Toolbar"
-msgstr "混音工作列"
-
-# 按下此按鈕後，可以用拖曳法建立音波選取區，以進行編輯工作。
-#: Menus.cpp:523
-msgid "Selection Toolbar"
-msgstr "選取範圍工具列"
-
-#: Menus.cpp:524
-msgid "Tools Toolbar"
-msgstr "Audacity工具列"
-
-#: Menus.cpp:525
-msgid "Transcription Toolbar"
-msgstr "錄音工具列"
+#: Menus.cpp:526
+msgid "&Control Toolbar"
+msgstr "控制工作列(&C)"
 
 #: Menus.cpp:527
-msgid "Reset Toolbars"
-msgstr "重設工具列"
+msgid "&Device Toolbar"
+msgstr "裝置工作列(&D)"
+
+#: Menus.cpp:528
+msgid "&Edit Toolbar"
+msgstr "編輯工作列(&E)"
+
+#: Menus.cpp:529
+msgid "&Meter Toolbar"
+msgstr "儀表工具列(&M)"
+
+#: Menus.cpp:530
+msgid "Mi&xer Toolbar"
+msgstr "混音工作列(&X)"
+
+# 按下此按鈕後，可以用拖曳法建立音波選取區，以進行編輯工作。
+#: Menus.cpp:531
+msgid "&Selection Toolbar"
+msgstr "選取範圍工具列(&S)"
+
+#: Menus.cpp:532
+msgid "T&ools Toolbar"
+msgstr "Audacity工具列(&O)"
+
+#: Menus.cpp:533
+msgid "Transcri&ption Toolbar"
+msgstr "錄音工具列(&P)"
+
+#: Menus.cpp:535
+msgid "&Reset Toolbars"
+msgstr "重設工具列(&R)"
 
 #: Menus.cpp:537
+msgid "!Simplified View"
+msgstr "!簡易檢視"
+
+#: Menus.cpp:545
 msgid "&Tracks"
 msgstr "軌道(&T)"
 
-#: Menus.cpp:544
+#: Menus.cpp:552
 msgid "Add &New..."
 msgstr "加入新的(&N)..."
 
-#: Menus.cpp:545
+#: Menus.cpp:553
 msgid "&Audio Track\tCtrl+Shift+N"
 msgstr "音軌(&A)\tCtrl+Shift+N"
 
-#: Menus.cpp:546
+#: Menus.cpp:554
 msgid "&Stereo Track"
 msgstr "立體聲音軌(&S)"
 
-#: Menus.cpp:548
+#: Menus.cpp:556
 #: TimeTrack.cpp:44
 msgid "&Time Track"
 msgstr "時間軌(&T)"
 
-#: Menus.cpp:551
+#: Menus.cpp:559
 msgid "&Timer Record..."
 msgstr "預約錄音(&T)…"
 
-#: Menus.cpp:560
-#: Menus.cpp:3698
-#: Mix.cpp:120
-msgid "&Mix and Render"
-msgstr "混音且執行(&M)"
+#: Menus.cpp:568
+msgid "Mi&x and Render"
+msgstr "混音且執行(&X)"
 
-#: Menus.cpp:564
+#: Menus.cpp:572
 msgid "Mix and Render to New Track\tCtrl+Shift+M"
 msgstr "混音至新軌道\tCtrl+Shift+X"
 
-#: Menus.cpp:568
+#: Menus.cpp:576
 msgid "&Resample..."
 msgstr "重新取樣(&R)..."
 
-#: Menus.cpp:578
+#: Menus.cpp:586
 msgid "Remo&ve Tracks"
 msgstr "移除軌道(&V)"
 
-#: Menus.cpp:585
+#: Menus.cpp:592
+msgid "&Mute All Tracks\tCtrl+U"
+msgstr "所有軌道靜音(&M)\tCtrl+U"
+
+#: Menus.cpp:593
+msgid "&UnMute All Tracks\tCtrl+Shift+U"
+msgstr "所有軌道不靜音(&U)\tCtrl+Shift+U"
+
+#: Menus.cpp:597
 msgid "Align with &Zero"
 msgstr "與原點對齊(&Z)"
 
-#: Menus.cpp:586
+#: Menus.cpp:598
 msgid "Align with &Cursor"
 msgstr "與游標對齊(&C)"
 
-#: Menus.cpp:587
+#: Menus.cpp:599
 msgid "Align with Selection &Start"
 msgstr "與選取範圍前端對齊(&E)"
 
-#: Menus.cpp:588
+#: Menus.cpp:600
 msgid "Align with Selection &End"
 msgstr "與選取範圍尾端對齊(&E)"
 
-#: Menus.cpp:589
-msgid "Align End with Cursor"
-msgstr "結束點和游標對齊"
+#: Menus.cpp:601
+msgid "Align End with Cu&rsor"
+msgstr "結束點和游標對齊(&R)"
 
-#: Menus.cpp:590
-msgid "Align End with Selection Start"
-msgstr "結束點與選取範圍前端對齊"
+#: Menus.cpp:602
+msgid "Align End with Selection Star&t"
+msgstr "結束點與選取範圍前端對齊(&T)"
 
-#: Menus.cpp:591
-msgid "Align End with Selection End"
-msgstr "結束點與選取範圍尾端對齊"
+#: Menus.cpp:603
+msgid "Align End with Selection En&d"
+msgstr "結束點與選取範圍尾端對齊(&D)"
 
-#: Menus.cpp:592
-msgid "Align Tracks Together"
-msgstr "對齊音軌"
+#: Menus.cpp:604
+msgid "Align Tracks To&gether"
+msgstr "對齊音軌(&G)"
 
-#: Menus.cpp:594
+#: Menus.cpp:606
 msgid "&Align Tracks..."
 msgstr "對齊音軌(&A)..."
 
-#: Menus.cpp:603
+#: Menus.cpp:615
 msgid "Ali&gn And Move Cursor..."
 msgstr "對齊並移動游標(&G)..."
 
-#: Menus.cpp:611
+#: Menus.cpp:623
 msgid "Add &Label At Selection\tCtrl+B"
 msgstr "在選取範圍加上標籤(&L)\tCtrl+B"
 
-#: Menus.cpp:612
+#: Menus.cpp:624
 msgid "Add Label At &Playback Position\tCtrl+M"
 msgstr "在播放點加上標籤(&P)\tCtrl+M"
 
-#: Menus.cpp:618
+#: Menus.cpp:630
 msgid "S&ort tracks by..."
 msgstr "軌道排序(&O)..."
 
-#: Menus.cpp:619
+#: Menus.cpp:631
 msgid "&Start time"
 msgstr "依開始時間(&S)"
 
-#: Menus.cpp:621
+#: Menus.cpp:633
 msgid "&Name"
 msgstr "依軌道名稱(&N)..."
 
-#: Menus.cpp:631
+#: Menus.cpp:643
 msgid "&Generate"
 msgstr "產生(&G)"
 
-#: Menus.cpp:654
+#: Menus.cpp:666
 msgid "Effe&ct"
 msgstr "效果(&C)"
 
-#: Menus.cpp:658
+#: Menus.cpp:670
 msgid "Repeat Last Effect\tCtrl+R"
 msgstr "重複最近一次效果\tCtrl+R"
 
-#: Menus.cpp:690
+#: Menus.cpp:702
 msgid "&Analyze"
 msgstr "分析(&A)"
 
-#: Menus.cpp:692
+#: Menus.cpp:704
 msgid "Plot Spectrum..."
 msgstr "描繪頻譜…"
 
-#: Menus.cpp:725
-#: Menus.cpp:728
+#: Menus.cpp:737
+#: Menus.cpp:740
 msgid "&Help"
 msgstr "說明(&H)"
 
-#: Menus.cpp:731
+#: Menus.cpp:743
 msgid "&About Audacity CleanSpeech..."
 msgstr "關於Audacity清除人聲(&A)..."
 
-#: Menus.cpp:735
+#: Menus.cpp:747
 msgid "&Show Welcome Message..."
 msgstr "顯示歡迎訊息(&S)…"
 
-#: Menus.cpp:736
+#: Menus.cpp:748
 msgid "&Index..."
 msgstr "索引(&I)..."
 
-#: Menus.cpp:744
+#: Menus.cpp:756
 msgid "&Screenshot Tools..."
 msgstr "擷取螢幕畫面工具(&S)…"
 
-#: Menus.cpp:747
+#: Menus.cpp:759
 msgid "&Run Benchmark..."
 msgstr "執行Benchmark(&R)..."
 
-#: Menus.cpp:749
+#: Menus.cpp:761
 msgid "&Audio Device Info..."
 msgstr "音訊裝置資訊(&A)…"
 
-#: Menus.cpp:758
+#: Menus.cpp:770
 msgid "Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"
 msgstr "停駐、檢視音軌、選取範圍列往後循環\tCtrl+Shift+F6"
 
-#: Menus.cpp:759
+#: Menus.cpp:771
 msgid "Cycle forward through Dock, Track View, and Selection Bar\tCtrl+F6"
 msgstr "停駐、檢視音軌、選取範圍列往前循環\tCtrl+F6"
 
-#: Menus.cpp:762
+#: Menus.cpp:774
 msgid "Selection Tool\tF1"
 msgstr "選取工具\tF1"
 
-#: Menus.cpp:763
+#: Menus.cpp:775
 msgid "Envelope Tool\tF2"
 msgstr "波封工具\tF2"
 
-#: Menus.cpp:764
+#: Menus.cpp:776
 msgid "Draw Tool\tF3"
 msgstr "拖拉工具\tF3"
 
-#: Menus.cpp:765
+#: Menus.cpp:777
 msgid "Zoom Tool\tF4"
 msgstr "縮放工具\tF4"
 
-#: Menus.cpp:766
+#: Menus.cpp:778
 msgid "Time Shift Tool\tF5"
 msgstr "時間移位工具\tF5"
 
-#: Menus.cpp:767
+#: Menus.cpp:779
 msgid "Multi Tool\tF6"
 msgstr "複合工具\tF6"
 
-#: Menus.cpp:769
+#: Menus.cpp:781
 msgid "Next Tool\tD"
 msgstr "\"下一個(Next)\"工具\tD"
 
-#: Menus.cpp:770
+#: Menus.cpp:782
 msgid "Previous Tool\tA"
 msgstr "上一個工具\tA"
 
-#: Menus.cpp:772
+#: Menus.cpp:784
 msgid "Play/Stop\tSpacebar"
 msgstr "播放/停止\tSpacebar"
 
-#: Menus.cpp:773
+#: Menus.cpp:785
 msgid "Stop\tS"
 msgstr "停止\tS"
 
-#: Menus.cpp:774
+#: Menus.cpp:786
 msgid "Pause\tP"
 msgstr "暫停\tP"
 
-#: Menus.cpp:775
+#: Menus.cpp:787
 msgid "Record\tR"
 msgstr "錄音\tR"
 
-#: Menus.cpp:777
+#: Menus.cpp:788
+msgid "Record Append\tShift+R"
+msgstr "附加錄音\tShift+R"
+
+#: Menus.cpp:790
 msgid "Play/Stop and Set Cursor\tShift+A"
 msgstr "播放/停止並設定游標\tShift+A"
 
-#: Menus.cpp:780
+#: Menus.cpp:793
 msgid "Play One Second\t1"
 msgstr "播放一秒\t1"
 
-#: Menus.cpp:781
+#: Menus.cpp:794
 msgid "Play To Selection\tB"
 msgstr "播放至選取選圍\tB"
 
-#: Menus.cpp:782
+#: Menus.cpp:795
 msgid "Play Looped\tL"
 msgstr "循環播放\tL"
 
-#: Menus.cpp:783
+#: Menus.cpp:796
 msgid "Play Looped\tShift+Spacebar"
 msgstr "循環播放\tShift+Spacebar"
 
-#: Menus.cpp:784
+#: Menus.cpp:797
 msgid "Play Cut Preview\tC"
 msgstr "播放剪輯試聽\tC"
 
-#: Menus.cpp:786
+#: Menus.cpp:799
 msgid "Skip to Start\tHome"
 msgstr "跳至起始點\tHome"
 
-#: Menus.cpp:787
+#: Menus.cpp:800
 msgid "Skip to End\tEnd"
 msgstr "跳至結束點\tEnd"
 
-#: Menus.cpp:789
+#: Menus.cpp:802
 msgid "Selection to Start\tShift+Home"
 msgstr "移至起始點\tShift+Home"
 
-#: Menus.cpp:790
+#: Menus.cpp:803
 msgid "Selection to End\tShift+End"
 msgstr "移至結束點\tShift+End"
 
-#: Menus.cpp:792
+#: Menus.cpp:805
 msgid "DeleteKey\tBackspace"
 msgstr "刪除鍵\tBackspace"
 
-#: Menus.cpp:797
+#: Menus.cpp:810
 msgid "DeleteKey2\tDelete"
 msgstr "刪除鍵二\tDelete"
 
-#: Menus.cpp:803
+#: Menus.cpp:816
 msgid "Seek left short period during playback\tLeft"
 msgstr "在播放時向左尋找短片段\tLeft"
 
-#: Menus.cpp:804
+#: Menus.cpp:817
 msgid "Seek right short period during playback\tRight"
 msgstr "在播放時向右尋找短片段\tRight"
 
-#: Menus.cpp:805
+#: Menus.cpp:818
 msgid "Seek left long period during playback\tShift+Left"
 msgstr "在播放時向左尋找長片段\tShift+Left"
 
-#: Menus.cpp:806
+#: Menus.cpp:819
 msgid "Seek right long period during playback\tShift+Right"
 msgstr "在播放時向右尋找長片段\tShift+Right"
 
-#: Menus.cpp:810
+#: Menus.cpp:823
 msgid "Move Focus to Previous Track\tUp"
 msgstr "選擇前一個音軌\tUp"
 
-#: Menus.cpp:811
+#: Menus.cpp:824
 msgid "Move Focus to Previous and Change Selection\tShift+Up"
 msgstr "移動聚焦音軌至前一個音軌並變更選擇音軌\tShift+Up"
 
-#: Menus.cpp:812
+#: Menus.cpp:825
 msgid "Move Focus to Next Track\tDown"
 msgstr "向下移動聚焦音軌\tDown"
 
-#: Menus.cpp:813
+#: Menus.cpp:826
 msgid "Move Focus to Next and Change Selection\tShift+Down"
 msgstr "移動聚焦音軌至下一個音軌並變更選擇音軌\tShift+Down"
 
-#: Menus.cpp:814
+#: Menus.cpp:827
 msgid "Toggle Focused Track\tReturn"
 msgstr "觸發聚焦音軌\tENTER"
 
-#: Menus.cpp:815
+#: Menus.cpp:828
 msgid "Toggle Focused Track\tNUMPAD_ENTER"
 msgstr "觸發聚焦音軌\t數字盤_ENTER"
 
-#: Menus.cpp:816
+#: Menus.cpp:829
 msgid "Toggle Focused Track\tCtrl+Spacebar"
 msgstr "觸發聚焦音軌\tCtrl+空白鍵"
 
-#: Menus.cpp:818
+#: Menus.cpp:831
 msgid "Cursor Left\tLeft"
 msgstr "游標左移\tLeft"
 
-#: Menus.cpp:819
+#: Menus.cpp:832
 msgid "Cursor Right\tRight"
 msgstr "游標右移\tRight"
 
-#: Menus.cpp:820
+#: Menus.cpp:833
 msgid "Cursor Short Jump Left\t,"
 msgstr "游標短左移\tLeft,"
 
-#: Menus.cpp:821
+#: Menus.cpp:834
 msgid "Cursor Short Jump Right\t."
 msgstr "游標短右移\tRight."
 
-#: Menus.cpp:822
+#: Menus.cpp:835
 msgid "Cursor Long Jump Left\tShift+,"
 msgstr "游標長左移\tShift+,"
 
-#: Menus.cpp:823
+#: Menus.cpp:836
 msgid "Cursor Long Jump Right\tShift+."
 msgstr "游標長右移\tShift+."
 
-#: Menus.cpp:825
+#: Menus.cpp:838
 msgid "Selection Extend Left\tShift+Left"
 msgstr "選取左端延伸\tShift+Left"
 
-#: Menus.cpp:826
+#: Menus.cpp:839
 msgid "Selection Extend Right\tShift+Right"
 msgstr "選取右端延伸\tShift+Right"
 
-#: Menus.cpp:828
+#: Menus.cpp:841
 msgid "Set (or Extend) Left Selection"
 msgstr "設定(延展)選取範圍左邊界"
 
-#: Menus.cpp:829
+#: Menus.cpp:842
 msgid "Set (or Extend) Right Selection"
 msgstr "設定(延展)選取範圍右邊界"
 
-#: Menus.cpp:831
+#: Menus.cpp:844
 msgid "Selection Contract Left\tCtrl+Shift+Right"
 msgstr "選取左端縮減\tCtrl+Shift+Right"
 
-#: Menus.cpp:832
+#: Menus.cpp:845
 msgid "Selection Contract Right\tCtrl+Shift+Left"
 msgstr "選取右端縮減\tCtrl+Shift+Left"
 
-#: Menus.cpp:834
+#: Menus.cpp:847
 msgid "Change pan on focused track\tShift+P"
 msgstr "變更聚焦音軌篩選\tShift+P"
 
-#: Menus.cpp:835
+#: Menus.cpp:848
 msgid "Pan left on focused track\tAlt+Shift+Left"
 msgstr "向左篩選聚焦音軌\tAlt+Shift+Left"
 
-#: Menus.cpp:836
+#: Menus.cpp:849
 msgid "Pan right on focused track\tAlt+Shift+Right"
 msgstr "向右篩選聚焦音軌\tAlt+Shift+Right"
 
-#: Menus.cpp:837
+#: Menus.cpp:850
 msgid "Change gain on focused track\tShift+G"
 msgstr "改變聚焦音軌的增益\tShift+G"
 
-#: Menus.cpp:838
+#: Menus.cpp:851
 msgid "Increase gain on focused track\tAlt+Shift+Up"
 msgstr "增加聚焦音軌的增益\tAlt+Shift+Up"
 
-#: Menus.cpp:839
+#: Menus.cpp:852
 msgid "Decrease gain on focused track\tAlt+Shift+Down"
 msgstr "減少聚焦音軌的增益\tAlt+Shift+Down"
 
-#: Menus.cpp:840
+#: Menus.cpp:853
 msgid "Open menu on focused track\tShift+M"
 msgstr "開啟聚焦音軌選單\tShift+M"
 
-#: Menus.cpp:841
+#: Menus.cpp:854
 msgid "Mute/Unmute focused track\tShift+U"
 msgstr "讓選擇音軌無聲/有聲\tShift+U"
 
-#: Menus.cpp:842
+#: Menus.cpp:855
 msgid "Solo/Unsolo focused track\tShift+S"
 msgstr "讓選擇音軌獨唱/合唱\tShift+S"
 
-#: Menus.cpp:843
+#: Menus.cpp:856
 msgid "Close focused track\tShift+C"
 msgstr "關閉選擇音軌\tShift+C"
 
-#: Menus.cpp:845
+#: Menus.cpp:858
 msgid "Snap To On"
 msgstr "開啟滑扣功能"
 
-#: Menus.cpp:846
+#: Menus.cpp:859
 msgid "Snap To Off"
 msgstr "關閉滑扣功能"
 
 #. i18n-hint: This is the name of the menu item on Mac OS X only
-#: Menus.cpp:860
+#: Menus.cpp:873
 msgid "Open Recent"
 msgstr "開啟最近使用的檔案"
 
 #. i18n-hint: This is the name of the menu item on Windows and Linux
-#: Menus.cpp:863
+#: Menus.cpp:876
 msgid "Recent &Files..."
 msgstr "最近使用的檔案(&F)..."
 
-#: Menus.cpp:910
+#: Menus.cpp:925
 #, c-format
 msgid "&Undo %s"
 msgstr "復原 %s (&U)"
 
-#: Menus.cpp:936
+#: Menus.cpp:951
 msgid "Can't Undo"
 msgstr "無法復原"
 
-#: Menus.cpp:945
+#: Menus.cpp:960
 #, c-format
 msgid "&Redo %s"
 msgstr "重做 %s (&R)"
 
-#: Menus.cpp:951
+#: Menus.cpp:966
 msgid "Can't Redo"
 msgstr "無法重做"
 
-#: Menus.cpp:1498
+#: Menus.cpp:1528
 msgid "Sort By Time"
 msgstr "依照時間排序"
 
-#: Menus.cpp:1498
+#: Menus.cpp:1528
 msgid "Tracks sorted by time"
 msgstr "音軌依時間排序"
 
-#: Menus.cpp:1524
+#: Menus.cpp:1554
 msgid "Sort By Name"
 msgstr "依照名稱排序"
 
-#: Menus.cpp:1524
+#: Menus.cpp:1554
 msgid "Tracks sorted by name"
 msgstr "音軌依名稱排序"
 
-#: Menus.cpp:1675
+#: Menus.cpp:1705
 msgid "Set Left Selection Bound"
 msgstr "設定選取位置左邊界"
 
-#: Menus.cpp:1709
+#: Menus.cpp:1739
 msgid "Set Right Selection Bound"
 msgstr "設定選取位置右邊界"
 
-#: Menus.cpp:1976
+#: Menus.cpp:2006
 msgid "You must select a track first."
 msgstr "必須先選取音軌。"
 
-#: Menus.cpp:2005
+#: Menus.cpp:2035
 #, c-format
 msgid "Repeat %s\tCtrl+R"
 msgstr "重複%s\tCtrl+R"
 
-#: Menus.cpp:2136
+#: Menus.cpp:2166
 msgid "There are no label tracks to export."
 msgstr "沒有標籤音軌，無法匯出。"
 
-#: Menus.cpp:2241
+#: Menus.cpp:2271
 msgid "Nothing to undo"
 msgstr "沒有可復原的操作"
 
-#: Menus.cpp:2261
+#: Menus.cpp:2291
 msgid "Nothing to redo"
 msgstr "沒有可重做的操作"
 
-#: Menus.cpp:2336
-#: TrackPanel.cpp:552
+#: Menus.cpp:2366
+#: TrackPanel.cpp:605
 #: toolbars/EditToolBar.cpp:133
 msgid "Cut"
 msgstr "剪下"
 
-#: Menus.cpp:2336
+#: Menus.cpp:2366
 msgid "Cut to the clipboard"
 msgstr "剪下至剪貼簿"
 
-#: Menus.cpp:2374
+#: Menus.cpp:2404
 msgid "Split Cut"
 msgstr "選取範圍變為空白並剪下"
 
-#: Menus.cpp:2374
+#: Menus.cpp:2404
 msgid "Split-cut to the clipboard"
 msgstr "選取範圍變為空白並剪下至剪貼簿"
 
-#: Menus.cpp:2439
-#: Menus.cpp:2510
-#: Menus.cpp:2604
-#: TrackPanel.cpp:554
+#: Menus.cpp:2469
+#: Menus.cpp:2540
+#: Menus.cpp:2634
+#: TrackPanel.cpp:607
 #: toolbars/EditToolBar.cpp:137
 msgid "Paste"
 msgstr "貼上"
 
-#: Menus.cpp:2439
+#: Menus.cpp:2469
 msgid "Pasted text from the clipboard"
 msgstr "從剪貼簿貼上文字"
 
-#: Menus.cpp:2510
-#: Menus.cpp:2604
+#: Menus.cpp:2540
+#: Menus.cpp:2634
 msgid "Pasted from the clipboard"
 msgstr "從剪貼簿貼上"
 
-#: Menus.cpp:2544
+#: Menus.cpp:2574
 msgid "Copying stereo audio into a mono track is not allowed."
 msgstr "不允許將立體聲音訊複製至單聲道音軌。"
 
-#: Menus.cpp:2640
+#: Menus.cpp:2670
 #: toolbars/EditToolBar.cpp:139
 msgid "Trim"
 msgstr "保留選取範圍"
 
-#: Menus.cpp:2640
+#: Menus.cpp:2670
 msgid "Trim file to selection"
 msgstr "將選取檔案複製至選取範圍"
 
-#: Menus.cpp:2669
+#: Menus.cpp:2699
 #, c-format
 msgid "Split-deleted %.2f seconds at t=%.2f"
 msgstr "選取範圍變為空白並刪除 %.2f 秒 (位置 t=%.2f)"
 
-#: Menus.cpp:2672
+#: Menus.cpp:2702
 msgid "Split Delete"
 msgstr "選取範圍變為空白並刪除"
 
-#: Menus.cpp:2693
+#: Menus.cpp:2723
 #, c-format
 msgid "Disjoined %.2f seconds at t=%.2f"
 msgstr "靜音範圍變為空白%.2f 秒 (位置 t=%.2f)"
 
-#: Menus.cpp:2696
+#: Menus.cpp:2726
 msgid "Disjoin"
 msgstr "靜音範圍變為空白"
 
-#: Menus.cpp:2717
+#: Menus.cpp:2747
 #, c-format
 msgid "Joined %.2f seconds at t=%.2f"
 msgstr "將空白範圍變為靜音%.2f 秒 (位置 t=%.2f)"
 
-#: Menus.cpp:2720
+#: Menus.cpp:2750
 msgid "Join"
 msgstr "將空白範圍變為靜音"
 
-#: Menus.cpp:2739
+#: Menus.cpp:2769
 #, c-format
 msgid "Silenced selected tracks for %.2f seconds at %.2f"
 msgstr "使選定音軌靜音%.2f 秒，位置在 %.2f 秒處"
 
-#: Menus.cpp:2741
+#: Menus.cpp:2771
 #: toolbars/EditToolBar.cpp:141
 msgid "Silence"
 msgstr "靜音"
 
-#: Menus.cpp:2775
+#: Menus.cpp:2805
 msgid "Duplicate"
 msgstr "複製到新音軌"
 
-#: Menus.cpp:2775
+#: Menus.cpp:2805
 msgid "Duplicated"
 msgstr "已複製到新音軌"
 
-#: Menus.cpp:2794
+#: Menus.cpp:2824
 msgid "Cut Labels"
 msgstr "剪下標籤"
 
-#: Menus.cpp:2794
+#: Menus.cpp:2824
 msgid "Cut labeled regions to the clipboard"
 msgstr "剪下標籤區域至剪貼簿"
 
-#: Menus.cpp:2808
+#: Menus.cpp:2838
 msgid "SplitCut labeled regions to the clipboard"
 msgstr "選取範圍變為空白並刪除標籤區域至剪貼簿"
 
-#: Menus.cpp:2809
+#: Menus.cpp:2839
 msgid "Split Cut Labels"
 msgstr "選取範圍變為空白並剪下標籤"
 
-#: Menus.cpp:2823
+#: Menus.cpp:2853
 msgid "Copied labeled regions to the clipboard"
 msgstr "複製標籤區域至剪貼簿"
 
-#: Menus.cpp:2823
+#: Menus.cpp:2853
 msgid "Copy Labels"
 msgstr "複製標籤"
 
-#: Menus.cpp:2835
+#: Menus.cpp:2865
 msgid "Delete Labels"
 msgstr "刪除標籤"
 
-#: Menus.cpp:2835
+#: Menus.cpp:2865
 msgid "Deleted labeled regions"
 msgstr "刪除標籤區域"
 
-#: Menus.cpp:2847
+#: Menus.cpp:2877
 msgid "Split Delete Labels"
 msgstr "選取範圍變為空白並刪除標籤"
 
-#: Menus.cpp:2847
+#: Menus.cpp:2877
 msgid "Split Deleted labeled regions"
 msgstr "選取範圍變為空白並刪除標籤區域"
 
-#: Menus.cpp:2859
+#: Menus.cpp:2889
 msgid "Silence Labels"
 msgstr "靜音標籤"
 
-#: Menus.cpp:2859
+#: Menus.cpp:2889
 msgid "Silenced labeled regions"
 msgstr "使標籤區域靜音"
 
-#: Menus.cpp:2871
+#: Menus.cpp:2901
 msgid "Split Labels"
 msgstr "分離標籤"
 
-#: Menus.cpp:2871
+#: Menus.cpp:2901
 msgid "Split labeled regions"
 msgstr "分離標籤區域"
 
-#: Menus.cpp:2883
+#: Menus.cpp:2913
 msgid "Join Labels"
 msgstr "將標籤空白範圍變為靜音"
 
-#: Menus.cpp:2883
+#: Menus.cpp:2913
 msgid "Joined labeled regions"
 msgstr "將標籤區域空白範圍變為靜音"
 
-#: Menus.cpp:2895
+#: Menus.cpp:2925
 msgid "Disjoin Labels"
 msgstr "將標籤靜音範圍變為空白"
 
-#: Menus.cpp:2895
+#: Menus.cpp:2925
 msgid "Disjoined labeled regions"
 msgstr "將標籤區域靜音範圍變為空白"
 
-#: Menus.cpp:2917
-#: TrackPanel.cpp:6024
+#: Menus.cpp:2947
+#: TrackPanel.cpp:6121
 msgid "Split"
 msgstr "分離"
 
-#: Menus.cpp:3011
+#: Menus.cpp:3041
 msgid "Split New"
 msgstr "分離新的"
 
-#: Menus.cpp:3011
+#: Menus.cpp:3041
 msgid "Split to new track"
 msgstr "分離至新的音軌"
 
-#: Menus.cpp:3094
+#: Menus.cpp:3124
 msgid "Split at labels"
 msgstr "按標籤分離"
 
-#: Menus.cpp:3394
+#: Menus.cpp:3425
 msgid "To plot the spectrum, all selected tracks must be the same sample rate."
 msgstr "為了描繪頻譜，所有選定的音軌必須具有相同的取樣頻率。"
 
-#: Menus.cpp:3420
+#: Menus.cpp:3451
 #, c-format
 msgid "Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."
 msgstr "選擇的聲音過多。只有開始 %.1f 秒的聲音會被分析。"
 
-#: Menus.cpp:3546
+#: Menus.cpp:3584
 #, c-format
 msgid "Imported labels from '%s'"
 msgstr "從'%s'匯入的標籤"
 
-#: Menus.cpp:3547
+#: Menus.cpp:3585
 msgid "Import Labels"
 msgstr "匯入標籤"
 
-#: Menus.cpp:3557
+#: Menus.cpp:3595
 msgid "Select a MIDI file..."
 msgstr "選擇MIDI檔案..."
 
-#: Menus.cpp:3561
+#: Menus.cpp:3599
 msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
 msgstr "所有檔案(*.*)|*.*|MIDI檔案(*.mid)|*.mid|Allegro檔案 (*.gro)|*.gro"
 
-#: Menus.cpp:3577
+#: Menus.cpp:3615
 #, c-format
 msgid "Imported MIDI from '%s'"
 msgstr "從'%s'匯入的MIDI"
 
-#: Menus.cpp:3579
+#: Menus.cpp:3617
 msgid "Import MIDI"
 msgstr "匯入MIDI"
 
-#: Menus.cpp:3592
+#: Menus.cpp:3630
 msgid "Select any uncompressed audio file..."
 msgstr "選取任何非壓縮聲音檔案..."
 
-#: Menus.cpp:3596
+#: Menus.cpp:3634
 msgid "All files (*)|*"
 msgstr "所有檔案(*)|*"
 
-#: Menus.cpp:3611
-#: Project.cpp:2540
-#: Project.cpp:2565
+#: Menus.cpp:3649
+#: Project.cpp:2587
+#: Project.cpp:2612
 #: import/ImportPCM.cpp:440
 #: import/ImportPCM.cpp:484
 msgid "Import"
 msgstr "匯入"
 
-#: Menus.cpp:3630
+#: Menus.cpp:3668
 msgid "Edit the metadata tags"
 msgstr "編輯標頭檔標籤"
 
-#: Menus.cpp:3631
+#: Menus.cpp:3669
+#: export/Export.cpp:298
 msgid "Edit Metadata"
 msgstr "編輯標頭檔"
 
-#: Menus.cpp:3631
+#: Menus.cpp:3669
 msgid "Edit Metadata tags"
 msgstr "編輯標頭檔標籤"
 
-#: Menus.cpp:3687
+#: Menus.cpp:3725
 #, c-format
 msgid "Rendered all audio in track '%s'"
 msgstr "提取音軌'%s'中的所有音訊"
 
-#: Menus.cpp:3688
+#: Menus.cpp:3726
 msgid "Render"
 msgstr "提取"
 
-#: Menus.cpp:3693
+#: Menus.cpp:3731
 #, c-format
 msgid "Mixed and rendered %d tracks into one new stereo track"
 msgstr "混音讓%d音軌變成一個新的立體聲音軌"
 
-#: Menus.cpp:3696
+#: Menus.cpp:3734
 #, c-format
 msgid "Mixed and rendered %d tracks into one new mono track"
 msgstr "混音讓%d音軌變成一個新的單聲道音軌"
 
-#: Menus.cpp:3828
+#: Menus.cpp:3736
+#: Mix.cpp:120
+msgid "&Mix and Render"
+msgstr "混音且執行(&M)"
+
+#: Menus.cpp:3866
 msgid "Aligned with zero"
 msgstr "已與原點對齊"
 
-#: Menus.cpp:3832
+#: Menus.cpp:3870
 msgid "Aligned cursor"
 msgstr "已對齊游標"
 
-#: Menus.cpp:3836
+#: Menus.cpp:3874
 msgid "Aligned with selection start"
 msgstr "已與選取範圍前端對齊"
 
-#: Menus.cpp:3840
+#: Menus.cpp:3878
 msgid "Aligned with selection end"
 msgstr "已與選取範圍尾端對齊"
 
-#: Menus.cpp:3844
+#: Menus.cpp:3882
 msgid "Aligned end with cursor"
 msgstr "已對齊結束點與游標"
 
-#: Menus.cpp:3848
+#: Menus.cpp:3886
 msgid "Aligned end with selection start"
 msgstr "已對齊結束點與選取範圍前端"
 
-#: Menus.cpp:3852
+#: Menus.cpp:3890
 msgid "Aligned end with selection end"
 msgstr "已對齊結束點與選取範圍尾端"
 
-#: Menus.cpp:3856
+#: Menus.cpp:3894
 msgid "Aligned"
 msgstr "已對齊"
 
-#: Menus.cpp:3889
+#: Menus.cpp:3927
 msgid "Align"
 msgstr "對齊"
 
-#: Menus.cpp:3912
+#: Menus.cpp:3950
 msgid "Created new audio track"
 msgstr "已新建音軌"
 
-#: Menus.cpp:3912
-#: Menus.cpp:3935
 #: Menus.cpp:3950
-#: Menus.cpp:3970
+#: Menus.cpp:3973
+#: Menus.cpp:3988
+#: Menus.cpp:4008
 msgid "New Track"
 msgstr "新增音軌"
 
-#: Menus.cpp:3935
+#: Menus.cpp:3973
 msgid "Created new stereo audio track"
 msgstr "已新建立體聲音軌"
 
-#: Menus.cpp:3950
+#: Menus.cpp:3988
 msgid "Created new label track"
 msgstr "已新建標籤音軌"
 
-#: Menus.cpp:3959
+#: Menus.cpp:3997
 msgid "The version of Audacity you are using does not support multiple time tracks."
 msgstr "您使用的Audacity版本不支援多個時間軌。"
 
-#: Menus.cpp:3970
+#: Menus.cpp:4008
 msgid "Created new time track"
 msgstr "已新建時間軌"
 
-#: Menus.cpp:4019
+#: Menus.cpp:4057
 msgid "Added label"
 msgstr "已加標籤"
 
-#: Menus.cpp:4047
+#: Menus.cpp:4085
 msgid "Edited labels"
 msgstr "編輯標籤"
 
-#: Menus.cpp:4074
+#: Menus.cpp:4112
 msgid "Save CleanSpeech Preset File As:"
 msgstr "另存清除人聲設定檔至："
 
-#: Menus.cpp:4078
+#: Menus.cpp:4116
 msgid "CleanSpeech Presets (*.csp)|*.csp"
 msgstr "清除人聲設定(*.csp)|*.csp"
 
-#: Menus.cpp:4085
-#: export/Export.cpp:509
+#: Menus.cpp:4123
+#: export/Export.cpp:515
 msgid "Sorry, pathnames longer than 256 characters not supported."
 msgstr "抱歉，路徑名不能超過256個字元。"
 
-#: Menus.cpp:4131
+#: Menus.cpp:4169
 msgid "Problem encountered exporting presets."
 msgstr "匯出preset發生問題。"
 
-#: Menus.cpp:4132
-#: export/Export.cpp:402
+#: Menus.cpp:4170
+#: export/Export.cpp:408
 msgid "Unable to export"
 msgstr "無法匯出"
 
-#: Menus.cpp:4316
+#: Menus.cpp:4354
 msgid "Remove Track"
 msgstr "移除音軌"
 
-#: Menus.cpp:4316
+#: Menus.cpp:4354
 msgid "Removed audio track(s)"
 msgstr "移除音訊音軌"
 
-#: Menus.cpp:4439
-msgid "Enter new samplerate:"
-msgstr "輸入新的取樣頻率："
+#: Menus.cpp:4508
+msgid "New sample rate (Hz):"
+msgstr "新的取樣頻率(Hz)："
 
-#: Menus.cpp:4439
-#: Menus.cpp:4458
-#: export/ExportMP3.cpp:1871
+#: Menus.cpp:4508
+#: Menus.cpp:4527
+#: export/ExportMP3.cpp:1926
 msgid "Resample"
 msgstr "重取樣"
 
-#: Menus.cpp:4445
+#: Menus.cpp:4514
 msgid "The entered value is invalid"
 msgstr "輸入數值無效"
 
-#: Menus.cpp:4456
+#: Menus.cpp:4525
 #, c-format
 msgid "Resampling track %d"
 msgstr "重新取樣音軌%d"
 
-#: Menus.cpp:4467
+#: Menus.cpp:4536
 msgid "Resample Track"
 msgstr "重新取樣音軌"
 
-#: Menus.cpp:4467
+#: Menus.cpp:4536
 msgid "Resampled audio track(s)"
 msgstr "重新取樣音訊音軌"
 
@@ -2627,74 +2781,101 @@ msgstr "列印發生錯誤。"
 msgid "Print"
 msgstr "列印"
 
-#: Project.cpp:635
+#: Project.cpp:636
 msgid "Main Mix"
 msgstr "主混音"
 
-#: Project.cpp:760
+#: Project.cpp:761
 #, c-format
 msgid "Welcome to Audacity version %s"
 msgstr "歡迎使用Audacity%s版"
 
-#: Project.cpp:912
+#: Project.cpp:922
 msgid "(Recovered)"
 msgstr "(回復)"
 
-#: Project.cpp:1472
-#: TrackPanel.cpp:776
+#: Project.cpp:1482
+#: TrackPanel.cpp:804
 #: toolbars/ControlToolBar.cpp:191
 msgid "Record"
 msgstr "錄音"
 
-#: Project.cpp:1472
-#: TrackPanel.cpp:776
+#: Project.cpp:1482
+#: TrackPanel.cpp:804
 msgid "Recorded Audio"
 msgstr "已錄製音訊"
 
-#: Project.cpp:1490
+#: Project.cpp:1500
 msgid "Save changes before closing?"
 msgstr "在關閉前儲存變更？"
 
-#: Project.cpp:1493
+#: Project.cpp:1503
 msgid ""
 "\n"
+"If saved, the project will have no tracks.\n"
 "\n"
-"Saved project will be empty!!\n"
-"\n"
-"To save the tracks that were previously\n"
-"open, click Cancel, Edit > Undo until all your\n"
-"tracks are open, then File > Save Project."
+"To save any previously open tracks:\n"
+"Cancel, Edit > Undo until all tracks\n"
+"are open, then File > Save Project."
 msgstr ""
 "\n"
 "\n"
-"儲存的工程是空的！\n"
+"若要儲存，則工程內沒有音軌。\n"
 "\n"
 "要儲存先前開啟的音軌，\n"
 "點取消，編輯>復原直到\n"
 "所有音軌開啟，然後再檔案>儲存工程。"
 
-#: Project.cpp:1496
+#: Project.cpp:1506
 msgid "Save changes?"
 msgstr "儲存變更？"
 
-#: Project.cpp:1684
+#: Project.cpp:1694
 msgid "All files|*.*|All supported files|"
 msgstr "所有檔案|*.*|所有支援檔案|"
 
-#: Project.cpp:1709
+#: Project.cpp:1719
 msgid "Select one or more audio files..."
 msgstr "選取一個或多個聲音檔案..."
 
-#: Project.cpp:1736
+#: Project.cpp:1746
 msgid "Audacity projects|*.aup|"
 msgstr "Audacity成音工程檔案 |*.aup|"
 
-#: Project.cpp:1801
-#: Project.cpp:1809
+#: Project.cpp:1799
+#: Project.cpp:2186
+#, c-format
+msgid ""
+"This file was saved by Audacity %s, a much\n"
+"older version.  The format has changed.\n"
+"\n"
+"Audacity could corrupt the file in opening\n"
+"it, so you must back it up first.\n"
+"\n"
+"Open this file now?"
+msgstr ""
+"此檔案格式是由非常舊版Audacity %s儲存的，而此格式\n"
+"已改變。\n"
+"目前版本的Audacity可能在嘗試開啟此檔案時損毀此檔案。\n"
+"為了安全起見，請先備份此工程檔案。\n"
+"\n"
+"您要立刻開啟此檔案嗎？"
+
+#: Project.cpp:1800
+msgid "1.0 or earlier"
+msgstr "1.0或之後"
+
+#: Project.cpp:1806
+#: Project.cpp:2198
+msgid "Opening old project file"
+msgstr "開啟先前工程檔案"
+
+#: Project.cpp:1832
+#: Project.cpp:1840
 msgid "Error opening file"
 msgstr "開啟檔案錯誤"
 
-#: Project.cpp:1815
+#: Project.cpp:1846
 #, c-format
 msgid ""
 "File may be invalid or corrupted: \n"
@@ -2703,41 +2884,41 @@ msgstr ""
 "檔案無效或中斷：\n"
 "%s"
 
-#: Project.cpp:1816
+#: Project.cpp:1847
 msgid "Error opening file or project"
 msgstr "開啟檔案或工程錯誤"
 
-#: Project.cpp:1833
+#: Project.cpp:1867
 msgid "Audacity was unable to convert an Audacity 1.0 project to the new project format."
 msgstr "Audacity 1.0格式的成音工程不能轉換為新的成音工程格式。"
 
-#: Project.cpp:1936
+#: Project.cpp:1970
 msgid "Could not remove old auto save file"
 msgstr "無法移除先前自動儲存檔案"
 
-#: Project.cpp:1938
+#: Project.cpp:1972
 msgid "Project was recovered"
 msgstr "工程已回復"
 
-#: Project.cpp:1938
+#: Project.cpp:1972
 msgid "Recover"
 msgstr "回復"
 
-#: Project.cpp:1967
+#: Project.cpp:2001
 msgid "Project checker repaired file"
 msgstr "工程檢查器修復檔案"
 
-#: Project.cpp:1967
+#: Project.cpp:2001
 #: effects/Repair.h:29
 msgid "Repair"
 msgstr "修復"
 
-#: Project.cpp:2078
+#: Project.cpp:2112
 #, c-format
 msgid "Couldn't find the project data folder: \"%s\""
 msgstr "找不到成音工程資料目錄：\"%s"
 
-#: Project.cpp:2121
+#: Project.cpp:2155
 #, c-format
 msgid ""
 "This file was saved using Audacity %s.\n"
@@ -2748,54 +2929,26 @@ msgstr ""
 "您現在使用的是Audacity %s - 您需要更新的版本\n"
 "來開啟這個檔案。"
 
-#: Project.cpp:2125
+#: Project.cpp:2159
 msgid "Can't open project file"
 msgstr "無法開啟成音工程檔案。"
 
-#: Project.cpp:2146
+#: Project.cpp:2193
 #, c-format
 msgid ""
-"This file was saved by Audacity %s, a much\n"
-"older version of Audacity.  The format has changed.\n"
-"Audacity will probably destroy the file in trying\n"
-"to open it.  You must back up your project\n"
-"first, to be safe.\n"
+"This file was saved by Audacity %s.\n"
+"You can open the file with this version of Audacity, but if you save it with this version you will no longer be able to open it in older versions.\n"
 "\n"
-"Would you like to try to open this file\n"
-"right now anyway?"
+"Open this file now?"
 msgstr ""
-"此檔案格式是由非常舊版Audacity %s儲存的，而此格式\n"
-"已改變。目前版本的Audacity可能在嘗試開啟此檔案時損毀此檔案。\n"
-"為了安全起見，請先備份此工程檔案。\n"
+"此檔案格式是由舊版Audacity %s儲存的。\n"
 "\n"
-"您要立刻開啟此檔案嗎？"
-
-#: Project.cpp:2153
-#, c-format
-msgid ""
-"This file was saved by Audacity %s and the format\n"
-"has changed.  This version of Audacity can try to\n"
-"open it, but there may be problems.  You should back up\n"
-"your project first, to be safe.\n"
-"\n"
-"After you save the file with this version of Audacity,\n"
-"you will not be able to open the file in the older\n"
-"version anymore.  Would you like to open\n"
-"this file right now anyway?"
-msgstr ""
-"此檔案格式是由舊版Audacity %s儲存的，而此格式\n"
-"已改變。目前版本的Audacity嘗試開啟此檔案，\n"
-"但可能會有問題。為了安全起見，請先備份此工程檔案。\n"
-"\n"
-"在您使用目前版本的Audacity儲存檔案後，\n"
+"你可以開啟此檔案，但若您使用目前版本的Audacity儲存檔案後，\n"
 "您將無法使用舊版的Audacity來開啟。\n"
+"\n"
 "您要立刻開啟此檔案嗎？"
 
-#: Project.cpp:2158
-msgid "Opening old project file"
-msgstr "開啟先前工程檔案"
-
-#: Project.cpp:2379
+#: Project.cpp:2426
 #, c-format
 msgid ""
 "Could not save project. Perhaps %s is not writeable,\n"
@@ -2804,46 +2957,46 @@ msgstr ""
 "無法儲存成音工程。您沒有%s的寫入權限，\n"
 "或磁碟已滿。"
 
-#: Project.cpp:2381
-#: Project.cpp:2395
+#: Project.cpp:2428
+#: Project.cpp:2442
 msgid "Error saving project"
 msgstr "儲存成音工程錯誤"
 
-#: Project.cpp:2457
+#: Project.cpp:2504
 #, c-format
 msgid "Saved %s"
 msgstr "%s已儲存"
 
 #. i18n-hint: This refers to files that are opened directly
 #. without looking at the file header.  Same as "Import Raw"
-#: Project.cpp:2473
+#: Project.cpp:2520
 msgid "Raw"
 msgstr "Raw"
 
-#: Project.cpp:2478
+#: Project.cpp:2525
 #, c-format
 msgid "Importing %s..."
 msgstr "匯入%s中..."
 
-#: Project.cpp:2539
+#: Project.cpp:2586
 #, c-format
 msgid "Imported '%s'"
 msgstr "'%s'已匯入"
 
-#: Project.cpp:2592
-#: Project.cpp:2600
+#: Project.cpp:2639
+#: Project.cpp:2647
 msgid "Error importing"
 msgstr "匯入錯誤"
 
-#: Project.cpp:2634
+#: Project.cpp:2681
 msgid "Save Speech As:"
 msgstr "另存人聲為："
 
-#: Project.cpp:2636
+#: Project.cpp:2683
 msgid "Windows PCM Audio file (*.wav)|*.wav"
 msgstr "Windows PCM Audio file (*.wav)|*.wav"
 
-#: Project.cpp:2642
+#: Project.cpp:2689
 msgid ""
 "Audacity project files (.aup) let you save everything you're working on exactly as it\n"
 "appears on the screen, but most other programs can't open Audacity project files.\n"
@@ -2857,66 +3010,66 @@ msgstr ""
 "當您需要儲存為其它軟體能開啟的檔案時，請選擇\n"
 "匯出'(Export)命令。"
 
-#: Project.cpp:2645
+#: Project.cpp:2692
 msgid "Audacity projects (*.aup)|*.aup"
 msgstr "Audacity成音工程檔案 (*.aup)|*.aup"
 
-#: Project.cpp:2689
+#: Project.cpp:2736
 msgid "Created new project"
 msgstr "已新建專案"
 
-#: Project.cpp:2809
+#: Project.cpp:2856
 #, c-format
 msgid "Deleted %.2f seconds at t=%.2f"
 msgstr "刪除 %.2f 秒 (位置 t=%.2f)"
 
-#: Project.cpp:2812
-#: effects/Equalization.cpp:1256
-#: effects/Equalization.cpp:2511
+#: Project.cpp:2859
+#: effects/Equalization.cpp:1262
+#: effects/Equalization.cpp:2593
 msgid "Delete"
 msgstr "刪除"
 
-#: Project.cpp:3005
+#: Project.cpp:3052
 #, c-format
 msgid "Disk space remains for recording %d hours and %d minutes."
 msgstr "剩餘磁碟空間可供錄音時間：%d小時%d分"
 
-#: Project.cpp:3008
+#: Project.cpp:3055
 #, c-format
 msgid "Disk space remains for recording 1 hour and %d minutes."
 msgstr "剩餘磁碟空間可供錄音時間：1小時 %d 分"
 
-#: Project.cpp:3011
+#: Project.cpp:3058
 #, c-format
 msgid "Disk space remains for recording %d minutes."
 msgstr "磁碟空間還可以錄製%d分鐘。"
 
-#: Project.cpp:3014
+#: Project.cpp:3061
 #, c-format
 msgid "Disk space remains for recording %d seconds."
 msgstr "磁碟空間還可以錄製%d秒鐘。"
 
-#: Project.cpp:3017
+#: Project.cpp:3064
 msgid "Out of disk space"
 msgstr "磁碟空間已滿"
 
-#: Project.cpp:3295
+#: Project.cpp:3342
 msgid "Could not remove old autosave file: "
 msgstr "無法移除先前自動儲存檔案："
 
-#: Project.cpp:3336
+#: Project.cpp:3383
 msgid "New Project"
 msgstr "新增工程"
 
-#: Project.cpp:3349
+#: Project.cpp:3396
 msgid "Error writing autosave file"
 msgstr "寫入自動儲存檔案有誤"
 
-#: Project.cpp:3374
+#: Project.cpp:3421
 msgid "Could not create autosave file: "
 msgstr "無法產生自動儲存檔案"
 
-#: Project.cpp:3400
+#: Project.cpp:3447
 #, c-format
 msgid "Actual Rate: %d"
 msgstr "實際頻率：%d"
@@ -2999,7 +3152,11 @@ msgid "Recording end"
 msgstr "錄音結束"
 
 #: SmartRecordDialog.cpp:226
-#: SmartRecordDialog.cpp:304
+#: SmartRecordDialog.cpp:307
+#: TimeDialog.cpp:53
+#: effects/Noise.cpp:235
+#: effects/ToneGen.cpp:329
+#: effects/ToneGen.cpp:374
 msgid "Duration"
 msgstr "持續期間"
 
@@ -3007,22 +3164,22 @@ msgstr "持續期間"
 msgid "Audacity Smart Record Progress"
 msgstr "Audacity智慧錄音處理"
 
-#: SmartRecordDialog.cpp:270
+#: SmartRecordDialog.cpp:273
 msgid "Start Date and Time"
 msgstr "開始日期及時間"
 
-#: SmartRecordDialog.cpp:287
+#: SmartRecordDialog.cpp:290
 msgid "End Date and Time"
 msgstr "結束日期及時間"
 
 #. i18n-hint: A time specification like "Sunday 28th October 2007 15:16:17 GMT"
 #. * but hopefully translated by wxwidgets will be inserted into this
-#: SmartRecordDialog.cpp:380
+#: SmartRecordDialog.cpp:383
 #, c-format
 msgid "Waiting to start recording at %s.\n"
 msgstr "等待開始錄音，開始於%s.\n"
 
-#: SmartRecordDialog.cpp:381
+#: SmartRecordDialog.cpp:384
 msgid "Audacity Smart Record - Waiting for Start"
 msgstr "Audacity智慧錄音 - 等待開始"
 
@@ -3034,244 +3191,244 @@ msgstr "歡迎使用Audacity！(&W)"
 msgid "Don't show this again at start up"
 msgstr "下次啟動時不再顯示"
 
-#: Tags.cpp:621
+#: Tags.cpp:629
 msgid "Artist Name"
 msgstr "演出者"
 
-#: Tags.cpp:622
+#: Tags.cpp:630
 msgid "Track Title"
 msgstr "音軌標題"
 
-#: Tags.cpp:623
+#: Tags.cpp:631
 msgid "Album Title"
 msgstr "專輯標題"
 
-#: Tags.cpp:624
+#: Tags.cpp:632
 msgid "Track Number"
 msgstr "音軌編號"
 
-#: Tags.cpp:625
-#: Tags.cpp:2105
+#: Tags.cpp:633
+#: Tags.cpp:2138
 msgid "Year"
 msgstr "年份"
 
-#: Tags.cpp:626
+#: Tags.cpp:634
 msgid "Genre"
 msgstr "樣式"
 
-#: Tags.cpp:627
-#: Tags.cpp:2115
+#: Tags.cpp:635
+#: Tags.cpp:2148
 #: prefs/MousePrefs.cpp:96
 msgid "Comments"
 msgstr "註解"
 
-#: Tags.cpp:745
-#: Tags.cpp:1985
+#: Tags.cpp:778
+#: Tags.cpp:2018
 msgid "Press F2 or double click to edit."
 msgstr "按F2或雙擊來編輯。"
 
-#: Tags.cpp:769
+#: Tags.cpp:802
 msgid "Tag Name"
 msgstr "標籤名稱"
 
-#: Tags.cpp:770
+#: Tags.cpp:803
 msgid "Tag Value"
 msgstr "標籤值"
 
-#: Tags.cpp:785
-#: Tags.cpp:1443
+#: Tags.cpp:818
+#: Tags.cpp:1476
 #: prefs/KeyConfigPrefs.cpp:116
 msgid "&Clear"
 msgstr "清除(&C)"
 
-#: Tags.cpp:791
+#: Tags.cpp:824
 msgid "Genres"
 msgstr "樣式"
 
-#: Tags.cpp:795
-#: Tags.cpp:1406
-#: Tags.cpp:1947
+#: Tags.cpp:828
+#: Tags.cpp:1439
+#: Tags.cpp:1980
 msgid "Edit"
 msgstr "編輯"
 
-#: Tags.cpp:796
-#: Tags.cpp:1948
+#: Tags.cpp:829
+#: Tags.cpp:1981
 msgid "Reset"
 msgstr "重置"
 
-#: Tags.cpp:801
-#: Tags.cpp:1427
-#: Tags.cpp:1955
+#: Tags.cpp:834
+#: Tags.cpp:1460
+#: Tags.cpp:1988
 msgid "Template"
 msgstr "樣板"
 
-#: Tags.cpp:805
-#: Tags.cpp:1431
-#: Tags.cpp:1959
+#: Tags.cpp:838
+#: Tags.cpp:1464
+#: Tags.cpp:1992
 #: prefs/KeyConfigPrefs.cpp:126
 msgid "&Load..."
 msgstr "載入(&L)..."
 
-#: Tags.cpp:806
-#: Tags.cpp:1432
-#: Tags.cpp:1960
+#: Tags.cpp:839
+#: Tags.cpp:1465
+#: Tags.cpp:1993
 #: prefs/KeyConfigPrefs.cpp:125
 msgid "&Save..."
 msgstr "儲存(&S)..."
 
-#: Tags.cpp:808
-#: Tags.cpp:1434
-#: Tags.cpp:1962
+#: Tags.cpp:841
+#: Tags.cpp:1467
+#: Tags.cpp:1995
 msgid "S&et Default"
 msgstr "回到預設值(&E)"
 
-#: Tags.cpp:958
-#: Tags.cpp:1597
-#: Tags.cpp:2326
+#: Tags.cpp:991
+#: Tags.cpp:1630
+#: Tags.cpp:2359
 msgid "Edit Genres"
 msgstr "編輯樣式"
 
-#: Tags.cpp:991
-#: Tags.cpp:1003
-#: Tags.cpp:1019
-#: Tags.cpp:1032
-#: Tags.cpp:1635
-#: Tags.cpp:1647
-#: Tags.cpp:1663
-#: Tags.cpp:1676
-#: Tags.cpp:2369
-#: Tags.cpp:2381
-#: Tags.cpp:2397
-#: Tags.cpp:2410
+#: Tags.cpp:1024
+#: Tags.cpp:1036
+#: Tags.cpp:1052
+#: Tags.cpp:1065
+#: Tags.cpp:1668
+#: Tags.cpp:1680
+#: Tags.cpp:1696
+#: Tags.cpp:1709
+#: Tags.cpp:2402
+#: Tags.cpp:2414
+#: Tags.cpp:2430
+#: Tags.cpp:2443
 msgid "Reset Genres"
 msgstr "重設樣式"
 
-#: Tags.cpp:991
-#: Tags.cpp:1032
-#: Tags.cpp:1635
-#: Tags.cpp:1676
-#: Tags.cpp:2369
-#: Tags.cpp:2410
+#: Tags.cpp:1024
+#: Tags.cpp:1065
+#: Tags.cpp:1668
+#: Tags.cpp:1709
+#: Tags.cpp:2402
+#: Tags.cpp:2443
 msgid "Unable to save genre file."
 msgstr "無法儲存樣式檔案。"
 
-#: Tags.cpp:1002
-#: Tags.cpp:1646
-#: Tags.cpp:2380
+#: Tags.cpp:1035
+#: Tags.cpp:1679
+#: Tags.cpp:2413
 msgid "Are you sure you want to reset the genre list to defaults?"
 msgstr "您確認要將樣式清單回復為預設值？"
 
-#: Tags.cpp:1019
-#: Tags.cpp:1663
-#: Tags.cpp:2397
+#: Tags.cpp:1052
+#: Tags.cpp:1696
+#: Tags.cpp:2430
 msgid "Unable to open genre file."
 msgstr "無法開啟樣式檔案。"
 
-#: Tags.cpp:1054
-#: Tags.cpp:1108
-#: Tags.cpp:1709
-#: Tags.cpp:1745
-#: Tags.cpp:2432
-#: Tags.cpp:2468
+#: Tags.cpp:1087
+#: Tags.cpp:1141
+#: Tags.cpp:1742
+#: Tags.cpp:1778
+#: Tags.cpp:2465
+#: Tags.cpp:2501
 msgid "Save Metadata As:"
 msgstr "另存標頭檔為："
 
-#: Tags.cpp:1079
-#: Tags.cpp:1730
-#: Tags.cpp:2453
+#: Tags.cpp:1112
+#: Tags.cpp:1763
+#: Tags.cpp:2486
 msgid "Error loading metadata"
 msgstr "載入標頭檔錯誤"
 
-#: Tags.cpp:1376
-#: Tags.cpp:1935
+#: Tags.cpp:1409
+#: Tags.cpp:1968
 msgid "Title:"
 msgstr "標題："
 
-#: Tags.cpp:1377
-#: Tags.cpp:1936
+#: Tags.cpp:1410
+#: Tags.cpp:1969
 msgid "Artist:"
 msgstr "演出者："
 
-#: Tags.cpp:1378
-#: Tags.cpp:1937
+#: Tags.cpp:1411
+#: Tags.cpp:1970
 msgid "Album:"
 msgstr "專輯："
 
-#: Tags.cpp:1379
+#: Tags.cpp:1412
 msgid "Composer:"
 msgstr "作曲："
 
-#: Tags.cpp:1380
+#: Tags.cpp:1413
 msgid "Lyricist:"
 msgstr "作詞："
 
-#: Tags.cpp:1381
-#: Tags.cpp:1940
+#: Tags.cpp:1414
+#: Tags.cpp:1973
 msgid "Comments:"
 msgstr "註解："
 
-#: Tags.cpp:1383
+#: Tags.cpp:1416
 msgid "Encoded By:"
 msgstr "編碼："
 
-#: Tags.cpp:1387
+#: Tags.cpp:1420
 msgid "Copyright:"
 msgstr "版權："
 
-#: Tags.cpp:1391
-#: Tags.cpp:1938
+#: Tags.cpp:1424
+#: Tags.cpp:1971
 msgid "Track Number:"
 msgstr "音軌編號："
 
-#: Tags.cpp:1395
-#: Tags.cpp:1939
+#: Tags.cpp:1428
+#: Tags.cpp:1972
 msgid "Year:"
 msgstr "年份："
 
-#: Tags.cpp:1399
-#: Tags.cpp:1941
+#: Tags.cpp:1432
+#: Tags.cpp:1974
 msgid "Genre:"
 msgstr "樣式："
 
-#: Tags.cpp:1457
-#: Tags.cpp:2056
+#: Tags.cpp:1490
+#: Tags.cpp:2089
 msgid "No Genres"
 msgstr "無樣式"
 
-#: Tags.cpp:1610
+#: Tags.cpp:1643
 msgid "Reset to Defaults"
 msgstr "回到預設值"
 
-#: Tags.cpp:1923
+#: Tags.cpp:1956
 msgid "Basic"
 msgstr "基本"
 
-#: Tags.cpp:1975
+#: Tags.cpp:2008
 msgid "Advanced"
 msgstr "進階"
 
-#: Tags.cpp:2000
+#: Tags.cpp:2033
 msgid "Value"
 msgstr "值"
 
-#: Tags.cpp:2036
+#: Tags.cpp:2069
 msgid "Clea&r"
 msgstr "清除(&R)"
 
-#: Tags.cpp:2069
+#: Tags.cpp:2102
 #, c-format
 msgid "Maximum length of attribute '%s' is %d characters. Data was truncated."
 msgstr "屬性 '%s' 的最大長度是 %d 個字元。數據被截短了。"
 
-#: Tags.cpp:2075
+#: Tags.cpp:2108
 msgid "Title"
 msgstr "標題"
 
-#: Tags.cpp:2085
+#: Tags.cpp:2118
 msgid "Artist"
 msgstr "演出者"
 
-#: Tags.cpp:2095
+#: Tags.cpp:2128
 msgid "Album"
 msgstr "專輯"
 
@@ -3372,431 +3529,427 @@ msgstr ""
 "在%s所需的檔案\n"
 "已經準備好了。"
 
-#: TimeDialog.cpp:53
-msgid "Specify Time"
-msgstr "指定時間"
-
-#: TrackPanel.cpp:451
-#: TrackPanel.cpp:452
+#: TrackPanel.cpp:464
+#: TrackPanel.cpp:465
 msgid "Track Panel"
 msgstr "音軌面板"
 
-#: TrackPanel.cpp:495
+#: TrackPanel.cpp:548
 #: export/ExportPCM.cpp:133
 #: prefs/QualityPrefs.cpp:97
 msgid "Other..."
 msgstr "其它..."
 
-#: TrackPanel.cpp:503
-#: TrackPanel.cpp:527
-#: TrackPanel.cpp:536
-#: TrackPanel.cpp:544
+#: TrackPanel.cpp:556
+#: TrackPanel.cpp:580
+#: TrackPanel.cpp:589
+#: TrackPanel.cpp:597
 msgid "Name..."
 msgstr "命名..."
 
-#: TrackPanel.cpp:505
-#: TrackPanel.cpp:529
-#: TrackPanel.cpp:540
-#: TrackPanel.cpp:546
+#: TrackPanel.cpp:558
+#: TrackPanel.cpp:582
+#: TrackPanel.cpp:593
+#: TrackPanel.cpp:599
 msgid "Move Track Up"
 msgstr "向上移動軌道"
 
-#: TrackPanel.cpp:506
-#: TrackPanel.cpp:530
-#: TrackPanel.cpp:541
-#: TrackPanel.cpp:547
+#: TrackPanel.cpp:559
+#: TrackPanel.cpp:583
+#: TrackPanel.cpp:594
+#: TrackPanel.cpp:600
 msgid "Move Track Down"
 msgstr "向下移動軌道"
 
-#: TrackPanel.cpp:508
+#: TrackPanel.cpp:561
 #: effects/ToneGen.cpp:325
 msgid "Waveform"
 msgstr "波形"
 
-#: TrackPanel.cpp:509
+#: TrackPanel.cpp:562
 msgid "Waveform (dB)"
 msgstr "波形 (dB)"
 
-#: TrackPanel.cpp:512
+#: TrackPanel.cpp:565
 msgid "Spectrum log(f)"
 msgstr "頻譜log(f)"
 
-#: TrackPanel.cpp:514
+#: TrackPanel.cpp:567
 msgid "Pitch (EAC)"
 msgstr "音高 (EAC)"
 
-#: TrackPanel.cpp:516
-#: TrackPanel.cpp:5994
+#: TrackPanel.cpp:569
+#: TrackPanel.cpp:6091
 msgid "Mono"
 msgstr "單聲道"
 
-#: TrackPanel.cpp:517
-#: TrackPanel.cpp:5993
+#: TrackPanel.cpp:570
+#: TrackPanel.cpp:6090
 msgid "Left Channel"
 msgstr "左聲道"
 
-#: TrackPanel.cpp:518
-#: TrackPanel.cpp:5993
+#: TrackPanel.cpp:571
+#: TrackPanel.cpp:6090
 msgid "Right Channel"
 msgstr "右聲道"
 
-#: TrackPanel.cpp:519
+#: TrackPanel.cpp:572
 msgid "Make Stereo Track"
 msgstr "合併為立體聲音軌"
 
-#: TrackPanel.cpp:520
+#: TrackPanel.cpp:573
 msgid "Split Stereo Track"
 msgstr "分離立體聲音軌為單聲道"
 
-#: TrackPanel.cpp:522
+#: TrackPanel.cpp:575
 msgid "Set Sample Format"
 msgstr "設定取樣格式"
 
-#: TrackPanel.cpp:524
-#: TrackPanel.cpp:6223
+#: TrackPanel.cpp:577
+#: TrackPanel.cpp:6320
 msgid "Set Rate"
 msgstr "設定取樣頻率"
 
-#: TrackPanel.cpp:532
+#: TrackPanel.cpp:585
 msgid "Up Octave"
 msgstr "高八度"
 
-#: TrackPanel.cpp:533
+#: TrackPanel.cpp:586
 msgid "Down Octave"
 msgstr "降一個八度"
 
-#: TrackPanel.cpp:538
+#: TrackPanel.cpp:591
 msgid "Font..."
 msgstr "字型..."
 
-#: TrackPanel.cpp:549
+#: TrackPanel.cpp:602
 msgid "Set Range..."
 msgstr "設定範圍..."
 
-#: TrackPanel.cpp:553
+#: TrackPanel.cpp:606
 #: toolbars/EditToolBar.cpp:135
 msgid "Copy"
 msgstr "複製"
 
-#: TrackPanel.cpp:1250
+#: TrackPanel.cpp:1272
 msgid "Click to vertically zoom in, Shift-click to zoom out, Drag to create a particular zoom region."
 msgstr "單擊放大垂直檢視，Shift-單擊則縮小垂直檢視，拖曳則拉出一個特定的縮放區域。"
 
-#: TrackPanel.cpp:1255
+#: TrackPanel.cpp:1277
 msgid "Drag the label vertically to change the order of the tracks."
 msgstr "垂直拖曳標籤改變音軌順序。"
 
-#: TrackPanel.cpp:1275
+#: TrackPanel.cpp:1297
 msgid "Click and drag to adjust relative size of stereo tracks."
 msgstr "單擊拖曳調整立體聲音軌的相對大小。"
 
-#: TrackPanel.cpp:1278
+#: TrackPanel.cpp:1300
 msgid "Click and drag to resize the track."
 msgstr "單擊拖曳以調整音軌大小。"
 
-#: TrackPanel.cpp:1309
+#: TrackPanel.cpp:1331
 msgid "Drag one or more label boundaries"
 msgstr "拖曳一個或多個標籤邊界"
 
-#: TrackPanel.cpp:1310
+#: TrackPanel.cpp:1332
 msgid "Drag label boundary"
 msgstr "拖曳標籤邊界"
 
 #. i18n-hint: This string is for the Mac OS, which uses Command-, as the shortcut for Preferences
-#: TrackPanel.cpp:1326
+#: TrackPanel.cpp:1348
 msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
 msgstr "複合工具模式: Cmd-，滑鼠和鍵盤設定"
 
 #. i18n-hint: This string is for Windows and Linux, which uses Control-P as the shortcut for Preferences
-#: TrackPanel.cpp:1329
+#: TrackPanel.cpp:1351
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
 msgstr "複合工具模式： Ctrl-P，滑鼠和鍵盤設定"
 
-#: TrackPanel.cpp:1349
+#: TrackPanel.cpp:1371
 msgid "Click and drag to move left selection boundary."
 msgstr "單擊拖曳以選取範圍左邊界。"
 
-#: TrackPanel.cpp:1354
+#: TrackPanel.cpp:1376
 msgid "Click and drag to move right selection boundary."
 msgstr "單擊拖曳以選取範圍右邊界。"
 
-#: TrackPanel.cpp:1680
-#: TrackPanel.cpp:3937
-#: TrackPanel.cpp:3969
-#: TrackPanel.cpp:4224
-#: TrackPanel.cpp:6335
-#: TrackPanel.cpp:6355
+#: TrackPanel.cpp:1702
+#: TrackPanel.cpp:3993
+#: TrackPanel.cpp:4025
+#: TrackPanel.cpp:4280
+#: TrackPanel.cpp:6432
+#: TrackPanel.cpp:6452
 msgid "Modified Label"
 msgstr "已修改標籤"
 
-#: TrackPanel.cpp:1681
-#: TrackPanel.cpp:3938
-#: TrackPanel.cpp:3970
-#: TrackPanel.cpp:4225
-#: TrackPanel.cpp:6336
-#: TrackPanel.cpp:6356
+#: TrackPanel.cpp:1703
+#: TrackPanel.cpp:3994
+#: TrackPanel.cpp:4026
+#: TrackPanel.cpp:4281
+#: TrackPanel.cpp:6433
+#: TrackPanel.cpp:6453
 msgid "Label Edit"
 msgstr "標籤編輯"
 
-#: TrackPanel.cpp:1908
+#: TrackPanel.cpp:1930
 msgid "Adjusted envelope."
 msgstr "已調整波封線。"
 
-#: TrackPanel.cpp:1909
+#: TrackPanel.cpp:1931
 #: prefs/MousePrefs.cpp:115
 msgid "Envelope"
 msgstr "波封"
 
-#: TrackPanel.cpp:2045
+#: TrackPanel.cpp:2082
 msgid "Moved clip to another track"
 msgstr "將剪輯移至其他音軌"
 
-#: TrackPanel.cpp:2049
+#: TrackPanel.cpp:2086
 msgid "left"
 msgstr "左"
 
-#: TrackPanel.cpp:2049
+#: TrackPanel.cpp:2086
 msgid "right"
 msgstr "右"
 
 #. i18n-hint: %s is a direction like left or right
-#: TrackPanel.cpp:2051
+#: TrackPanel.cpp:2088
 #, c-format
 msgid "Time shifted tracks/clips %s %.02f seconds"
 msgstr "時間位移音軌/片段 %s %.02f秒"
 
-#: TrackPanel.cpp:2055
+#: TrackPanel.cpp:2092
 #: prefs/MousePrefs.cpp:111
 #: prefs/MousePrefs.cpp:112
 #: prefs/MousePrefs.cpp:113
 msgid "Time-Shift"
 msgstr "時間-位移"
 
-#: TrackPanel.cpp:2897
-msgid "Draw currently only works with linear-view waveforms."
-msgstr "拖拉僅針對線性檢視波形有效。"
+#: TrackPanel.cpp:2953
+msgid "To use Draw, choose 'Waveform' in the Track Drop-down Menu."
+msgstr "想要使用拖曳，請選音軌下拉式選單中的'波形'。"
 
-#: TrackPanel.cpp:2914
-msgid "You are not zoomed in enough. Zoom in until you can see the individual samples."
-msgstr "放大不夠。請放大到您能看清楚個別取樣點。"
+#: TrackPanel.cpp:2970
+msgid "To use Draw, zoom in further until you can see the individual samples."
+msgstr "若要使用拖曳功能，請放大到您能看清楚個別取樣點。"
 
-#: TrackPanel.cpp:3185
+#: TrackPanel.cpp:3241
 msgid "Moved Sample"
 msgstr "已移動取樣"
 
-#: TrackPanel.cpp:3186
+#: TrackPanel.cpp:3242
 msgid "Sample Edit"
 msgstr "編輯樣本"
 
-#: TrackPanel.cpp:3285
+#: TrackPanel.cpp:3341
 #, c-format
 msgid "Removed track '%s.'"
 msgstr "移除'%s'音軌。"
 
-#: TrackPanel.cpp:3287
+#: TrackPanel.cpp:3343
 msgid "Track Remove"
 msgstr "移除音軌"
 
-#: TrackPanel.cpp:3428
+#: TrackPanel.cpp:3484
 msgid "Moved gain slider"
 msgstr "已移動增益滑桿"
 
-#: TrackPanel.cpp:3428
+#: TrackPanel.cpp:3484
 msgid "Moved pan slider"
 msgstr "已移動面板滑桿"
 
 #. i18n-hint: Title of the Gain slider, used to adjust the volume
-#: TrackPanel.cpp:3429
-#: TrackPanel.cpp:5638
-#: TrackPanel.cpp:7003
+#: TrackPanel.cpp:3485
+#: TrackPanel.cpp:5726
+#: TrackPanel.cpp:7149
 msgid "Gain"
 msgstr "增益"
 
 #. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#: TrackPanel.cpp:3429
-#: TrackPanel.cpp:5576
-#: TrackPanel.cpp:7010
+#: TrackPanel.cpp:3485
+#: TrackPanel.cpp:5664
+#: TrackPanel.cpp:7156
 msgid "Pan"
 msgstr "面板"
 
-#: TrackPanel.cpp:3554
-#: TrackPanel.cpp:6288
+#: TrackPanel.cpp:3610
+#: TrackPanel.cpp:6385
 #: effects/ChangePitch.cpp:284
 msgid "up"
 msgstr "上"
 
-#: TrackPanel.cpp:3558
-#: TrackPanel.cpp:6289
+#: TrackPanel.cpp:3614
+#: TrackPanel.cpp:6386
 #: effects/ChangePitch.cpp:284
 msgid "down"
 msgstr "下"
 
-#: TrackPanel.cpp:3565
-#: TrackPanel.cpp:6284
+#: TrackPanel.cpp:3621
+#: TrackPanel.cpp:6381
 #, c-format
 msgid "Moved '%s' %s"
 msgstr "已移動 '%s' %s"
 
-#: TrackPanel.cpp:3568
-#: TrackPanel.cpp:6290
+#: TrackPanel.cpp:3624
+#: TrackPanel.cpp:6387
 msgid "Move Track"
 msgstr "移動音軌"
 
-#: TrackPanel.cpp:4124
+#: TrackPanel.cpp:4180
 msgid "Expand"
 msgstr "展開"
 
-#: TrackPanel.cpp:4124
+#: TrackPanel.cpp:4180
 msgid "Expanded Cut Line"
 msgstr "展開剪切線"
 
-#: TrackPanel.cpp:4133
+#: TrackPanel.cpp:4189
 msgid "Merge"
 msgstr "合併"
 
-#: TrackPanel.cpp:4133
+#: TrackPanel.cpp:4189
 msgid "Merged Clips"
 msgstr "合併剪輯"
 
-#: TrackPanel.cpp:4145
+#: TrackPanel.cpp:4201
 msgid "Removed Cut Line"
 msgstr "移除剪切線"
 
-#: TrackPanel.cpp:5576
+#: TrackPanel.cpp:5664
 msgid "Adjusted Pan"
 msgstr "已調整篩選"
 
-#: TrackPanel.cpp:5638
+#: TrackPanel.cpp:5726
 msgid "Adjusted gain"
 msgstr "已調整增益"
 
-#: TrackPanel.cpp:5821
+#: TrackPanel.cpp:5918
 msgid "Can't delete track with active audio"
 msgstr "無法刪除正在使用的音訊"
 
-#: TrackPanel.cpp:5974
+#: TrackPanel.cpp:6071
 msgid "Stereo, "
 msgstr "立體聲，"
 
-#: TrackPanel.cpp:5977
+#: TrackPanel.cpp:6074
 msgid "Mono, "
 msgstr "單聲道，"
 
-#: TrackPanel.cpp:5979
+#: TrackPanel.cpp:6076
 msgid "Left, "
 msgstr "左聲道，"
 
-#: TrackPanel.cpp:5981
+#: TrackPanel.cpp:6078
 msgid "Right, "
 msgstr "右聲道，"
 
-#: TrackPanel.cpp:6003
-#: TrackPanel.cpp:6128
+#: TrackPanel.cpp:6100
+#: TrackPanel.cpp:6225
 #, c-format
 msgid "Changed '%s' to %s"
 msgstr "已變更的'%s' 至 %s"
 
-#: TrackPanel.cpp:6008
+#: TrackPanel.cpp:6105
 msgid "Channel"
 msgstr "聲道"
 
-#: TrackPanel.cpp:6021
+#: TrackPanel.cpp:6118
 #, c-format
 msgid "Split stereo track '%s'"
 msgstr "分離立體聲音軌'%s'"
 
-#: TrackPanel.cpp:6042
+#: TrackPanel.cpp:6139
 #, c-format
 msgid "Made '%s' a stereo track"
 msgstr "將'%s'製作為立體聲音軌"
 
-#: TrackPanel.cpp:6045
+#: TrackPanel.cpp:6142
 msgid "Make Stereo"
 msgstr "製作立體聲"
 
-#: TrackPanel.cpp:6092
+#: TrackPanel.cpp:6189
 #, c-format
 msgid "Changed '%s' to %d Hz"
 msgstr "已變更的'%s' 至 %d Hz"
 
-#: TrackPanel.cpp:6094
+#: TrackPanel.cpp:6191
 msgid "Rate Change"
 msgstr "速率變更"
 
-#: TrackPanel.cpp:6132
+#: TrackPanel.cpp:6229
 msgid "Format Change"
 msgstr "變更格式"
 
-#: TrackPanel.cpp:6222
+#: TrackPanel.cpp:6319
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
 msgstr "輸入取樣頻率(Hz，每秒的取樣數)，範圍介於1至100000："
 
-#: TrackPanel.cpp:6232
+#: TrackPanel.cpp:6329
 msgid "Invalid rate."
 msgstr "無效速率。"
 
-#: TrackPanel.cpp:6252
+#: TrackPanel.cpp:6349
 msgid "Change lower speed limit (%) to:"
 msgstr "變更最低速率限制(%)為："
 
-#: TrackPanel.cpp:6253
-#: TrackPanel.cpp:6254
+#: TrackPanel.cpp:6350
+#: TrackPanel.cpp:6351
 msgid "Lower speed limit"
 msgstr "最低速率限制"
 
-#: TrackPanel.cpp:6259
+#: TrackPanel.cpp:6356
 msgid "Change upper speed limit (%) to:"
 msgstr "變更最高速率限制(%)為："
 
-#: TrackPanel.cpp:6260
-#: TrackPanel.cpp:6261
+#: TrackPanel.cpp:6357
+#: TrackPanel.cpp:6358
 msgid "Upper speed limit"
 msgstr "最高速率限制"
 
-#: TrackPanel.cpp:6269
+#: TrackPanel.cpp:6366
 #, c-format
 msgid "Set range to '%d' - '%d'"
 msgstr "設定範圍為 '%d' - '%d"
 
-#: TrackPanel.cpp:6272
+#: TrackPanel.cpp:6369
 msgid "Set Range"
 msgstr "設定範圍"
 
-#: TrackPanel.cpp:6317
+#: TrackPanel.cpp:6414
 msgid "Change track name to:"
 msgstr "變更音軌名稱為："
 
-#: TrackPanel.cpp:6318
+#: TrackPanel.cpp:6415
 msgid "Track Name"
 msgstr "音軌名稱"
 
-#: TrackPanel.cpp:6321
+#: TrackPanel.cpp:6418
 #, c-format
 msgid "Renamed '%s' to '%s'"
 msgstr "將'%s'更名為'%s'"
 
-#: TrackPanel.cpp:6324
+#: TrackPanel.cpp:6421
 msgid "Name Change"
 msgstr "變更名稱"
 
-#: TrackPanel.cpp:6390
+#: TrackPanel.cpp:6487
 msgid "Label Track Font"
 msgstr "標籤軌字形"
 
-#: TrackPanel.cpp:6402
+#: TrackPanel.cpp:6499
 msgid "Face name"
 msgstr "封面名稱"
 
-#: TrackPanel.cpp:6411
+#: TrackPanel.cpp:6508
 msgid "Face size"
 msgstr "封面大小"
 
 # 靜音播放
-#: TrackPanel.cpp:6930
+#: TrackPanel.cpp:7076
 msgid "Mute"
 msgstr "靜音"
 
-#: TrackPanel.cpp:6930
+#: TrackPanel.cpp:7076
 msgid "Solo"
 msgstr "獨奏"
 
@@ -3852,34 +4005,34 @@ msgstr "Sign Changes        -- mean: %1.4f  sd: (%1.4f)\n"
 msgid "Direction Changes  -- mean: %1.4f  sd: (%1.4f)\n"
 msgstr "Direction Changes  -- mean: %1.4f  sd: (%1.4f)\n"
 
-#: WaveTrack.cpp:81
+#: WaveTrack.cpp:85
 msgid "Audio Track"
 msgstr "音軌"
 
-#: WaveTrack.cpp:547
-#: WaveTrack.cpp:566
+#: WaveTrack.cpp:555
+#: WaveTrack.cpp:574
 msgid "There is not enough room available to paste the selection"
 msgstr "沒有足夠的空問貼上選取範圍"
 
-#: WaveTrack.cpp:1655
+#: WaveTrack.cpp:1688
 msgid "There is not enough room available to expand the cut line"
 msgstr "沒有足夠的空間展開剪切線"
 
-#: commands/CommandManager.cpp:395
+#: commands/CommandManager.cpp:448
 #, c-format
 msgid "Plugins 1 to %i"
 msgstr "外掛程式1 至 %i"
 
-#: commands/CommandManager.cpp:409
+#: commands/CommandManager.cpp:462
 #, c-format
 msgid "Plugins %i to %i"
 msgstr "外掛程式%i 至 %i"
 
-#: commands/CommandManager.cpp:720
+#: commands/CommandManager.cpp:777
 msgid "Disallowed for some reason.  Try selecting some Audio first?"
 msgstr "因為某些原因停用。請嘗試選擇其他的音訊？"
 
-#: commands/CommandManager.cpp:724
+#: commands/CommandManager.cpp:781
 msgid ""
 "You can only do this when playing and recording are\n"
 " stopped.  [Pausing is not sufficient.]"
@@ -3887,32 +4040,32 @@ msgstr ""
 "你只能在停止播放及停止錄音後才能執行此動作。\n"
 "[暫停是不夠的。]"
 
-#: commands/CommandManager.cpp:726
+#: commands/CommandManager.cpp:783
 msgid ""
 "You must first select some stereo audio for this\n"
 " to use.  [You can't use this with mono.]"
 msgstr "在使用前必須先選擇一個立體聲音軌。[選擇單聲道音軌是無效的。]"
 
-#: commands/CommandManager.cpp:728
+#: commands/CommandManager.cpp:785
 msgid "You must first select some audio for this to use."
 msgstr "必須先選取音訊。"
 
-#: commands/CommandManager.cpp:730
+#: commands/CommandManager.cpp:787
 msgid ""
 "You must first select some audio for this\n"
 " to use. [Selecting other kinds of track won't work.]"
 msgstr "在使用前必須先選擇一些音訊音軌。[選擇其他種軌道是無效的。]"
 
-#: commands/CommandManager.cpp:735
+#: commands/CommandManager.cpp:792
 msgid "Message"
 msgstr "訊息"
 
-#: commands/CommandManager.cpp:915
+#: commands/CommandManager.cpp:972
 #, c-format
 msgid "Loaded %d keyboard shortcuts\n"
 msgstr "已讀取%d快速鍵\n"
 
-#: commands/CommandManager.cpp:917
+#: commands/CommandManager.cpp:974
 msgid "Loading keyboard shortcuts"
 msgstr "讀取快速鍵中"
 
@@ -3941,6 +4094,12 @@ msgstr "新增峰值振幅 (dB)："
 #: effects/Amplify.cpp:191
 msgid "Allow clipping"
 msgstr "允許剪輯"
+
+#: effects/Amplify.cpp:237
+#: effects/Amplify.cpp:287
+#: effects/Amplify.cpp:353
+msgid "-Infinity"
+msgstr "-無限大"
 
 #: effects/Amplify.h:46
 msgid "Amplify..."
@@ -3977,6 +4136,7 @@ msgstr "閃避總數："
 msgid "Maximum pause:"
 msgstr "最大暫停："
 
+#. i18n-hint: Name of time display format that shows time in seconds
 #: effects/AutoDuck.cpp:494
 #: effects/AutoDuck.cpp:499
 #: effects/AutoDuck.cpp:504
@@ -3987,7 +4147,7 @@ msgstr "最大暫停："
 #: prefs/AudioIOPrefs.cpp:176
 #: prefs/AudioIOPrefs.cpp:201
 #: prefs/AudioIOPrefs.cpp:203
-#: widgets/TimeTextCtrl.cpp:197
+#: widgets/TimeTextCtrl.cpp:263
 msgid "seconds"
 msgstr "秒"
 
@@ -4033,9 +4193,9 @@ msgstr "自動閃避處理中..."
 #: effects/AvcCompressor.cpp:738
 #: effects/VST/VSTEffect.cpp:448
 #: effects/audiounits/AudioUnitEffect.cpp:877
-#: effects/nyquist/Nyquist.cpp:1040
-#: widgets/ErrorDialog.cpp:74
-#: widgets/ErrorDialog.cpp:100
+#: effects/nyquist/Nyquist.cpp:1042
+#: widgets/ErrorDialog.cpp:79
+#: widgets/ErrorDialog.cpp:105
 #: widgets/Warning.cpp:67
 msgid "OK"
 msgstr "確定"
@@ -4288,45 +4448,45 @@ msgstr "套用動態範圍壓縮中..."
 msgid "DTMF Tone Generator"
 msgstr "DTMF產生器"
 
-#: effects/DtmfGen.cpp:437
+#: effects/DtmfGen.cpp:439
 msgid "by Salvo Ventura (2006)"
 msgstr "by Salvo Ventura (2006)"
 
-#: effects/DtmfGen.cpp:441
+#: effects/DtmfGen.cpp:443
 msgid "DTMF sequence:"
 msgstr "DTMF序列："
 
-#: effects/DtmfGen.cpp:444
+#: effects/DtmfGen.cpp:446
 #: effects/Noise.cpp:255
 #: effects/ToneGen.cpp:328
-#: effects/ToneGen.cpp:364
+#: effects/ToneGen.cpp:365
 msgid "Amplitude (0-1)"
 msgstr "振幅 (0-1)"
 
-#: effects/DtmfGen.cpp:446
-msgid "DTMF duration:"
-msgstr "DTMF持續期間："
+#: effects/DtmfGen.cpp:448
+msgid "Duration:"
+msgstr "持續期間："
 
-#: effects/DtmfGen.cpp:464
+#: effects/DtmfGen.cpp:469
 msgid "Tone/silence ratio:"
 msgstr "基音/靜音比例"
 
-#: effects/DtmfGen.cpp:475
+#: effects/DtmfGen.cpp:479
 msgid "Duty cycle:"
 msgstr "負載週期："
 
-#: effects/DtmfGen.cpp:477
+#: effects/DtmfGen.cpp:481
 msgid "Tone duration:"
 msgstr "基音持續期間："
 
-#: effects/DtmfGen.cpp:478
-#: effects/DtmfGen.cpp:480
-#: effects/DtmfGen.cpp:556
-#: effects/DtmfGen.cpp:557
+#: effects/DtmfGen.cpp:482
+#: effects/DtmfGen.cpp:484
+#: effects/DtmfGen.cpp:560
+#: effects/DtmfGen.cpp:561
 msgid "ms"
 msgstr "ms"
 
-#: effects/DtmfGen.cpp:479
+#: effects/DtmfGen.cpp:483
 msgid "Silence duration:"
 msgstr "靜音持續期間："
 
@@ -4391,84 +4551,85 @@ msgstr "開啟音訊裝置錯誤。請檢查輸出裝置的設置及工程取樣
 msgid "Applied effect: %s"
 msgstr "已套用效果： %s"
 
-#: effects/Equalization.cpp:300
+#: effects/Equalization.cpp:329
 msgid "B-spline"
 msgstr "B-鍵槽"
 
-#: effects/Equalization.cpp:300
+#: effects/Equalization.cpp:330
 msgid "Cosine"
 msgstr "餘弦"
 
-#: effects/Equalization.cpp:300
+#: effects/Equalization.cpp:331
 msgid "Cubic"
 msgstr "立方體"
 
-#: effects/Equalization.cpp:353
-#: effects/Equalization.cpp:404
+#: effects/Equalization.cpp:362
+#: effects/Equalization.cpp:412
 msgid "Equalization"
 msgstr "等化"
 
-#: effects/Equalization.cpp:974
+#: effects/Equalization.cpp:980
 msgid "Error loading EQ curve"
 msgstr "載入等化器錯誤"
 
-#: effects/Equalization.cpp:1013
+#: effects/Equalization.cpp:1019
 msgid "custom"
 msgstr "風格"
 
 #. i18n-hint: && in here is an escape character to get a single &
 #. * on screen, so keep it as is
-#: effects/Equalization.cpp:1081
+#: effects/Equalization.cpp:1087
 msgid "Equalization, by Martyn Shaw && Mitch Golden"
 msgstr "等化器(Martyn Shaw和Mitch Golden提供)"
 
-#: effects/Equalization.cpp:1102
+#: effects/Equalization.cpp:1108
 msgid "Max dB"
 msgstr "Max dB"
 
-#: effects/Equalization.cpp:1104
+#: effects/Equalization.cpp:1110
 msgid "Min dB"
 msgstr "Min dB"
 
 # 赫茲
-#: effects/Equalization.cpp:1177
+#: effects/Equalization.cpp:1183
 msgid "kHz"
 msgstr "kHz"
 
-#: effects/Equalization.cpp:1194
+#: effects/Equalization.cpp:1200
 msgid "Draw curves"
 msgstr "拖曳曲線"
 
-#: effects/Equalization.cpp:1199
+#: effects/Equalization.cpp:1205
 msgid "Graphic EQ"
 msgstr "圖形化等化器"
 
-#: effects/Equalization.cpp:1213
+#: effects/Equalization.cpp:1219
 msgid "Linear frequency scale"
 msgstr "線性頻率刻度"
 
-#: effects/Equalization.cpp:1222
+#: effects/Equalization.cpp:1228
 msgid "Length of filter:"
 msgstr "濾波器長度："
 
-#: effects/Equalization.cpp:1243
+#: effects/Equalization.cpp:1249
 msgid "Select curve:"
 msgstr "選取曲線："
 
-#: effects/Equalization.cpp:1253
-#: effects/Equalization.cpp:2416
+#: effects/Equalization.cpp:1259
+#: effects/Equalization.cpp:2498
+#: export/ExportMultiple.cpp:826
 msgid "Save As..."
 msgstr "另存新檔..."
 
-#: effects/Equalization.cpp:1259
+#: effects/Equalization.cpp:1265
 msgid "Flat"
 msgstr "降半音"
 
-#: effects/Equalization.cpp:2415
+#: effects/Equalization.cpp:2497
 msgid "Enter the desired name of the curve"
 msgstr "為曲線輸入名稱"
 
-#: effects/Equalization.cpp:2515
+#: effects/Equalization.cpp:2597
 msgid "Confirm Deletion"
 msgstr "確認刪除"
 
@@ -4541,54 +4702,54 @@ msgstr "波形上下反轉"
 msgid "Inverting"
 msgstr "波形上下反轉中"
 
-#: effects/Leveller.cpp:47
-msgid "Heavier"
-msgstr "較重"
-
-#: effects/Leveller.cpp:47
-msgid "Heaviest"
-msgstr "最重度"
-
-#: effects/Leveller.cpp:47
-msgid "Heavy"
-msgstr "重度"
-
-#: effects/Leveller.cpp:47
-msgid "Light"
-msgstr "較輕"
-
-#: effects/Leveller.cpp:47
-msgid "Moderate"
-msgstr "適中"
-
-#: effects/Leveller.cpp:47
+#: effects/Leveller.cpp:52
 msgid "None-Skip"
 msgstr "無略過"
 
-#: effects/Leveller.cpp:129
+#: effects/Leveller.cpp:53
+msgid "Light"
+msgstr "較輕"
+
+#: effects/Leveller.cpp:54
+msgid "Moderate"
+msgstr "適中"
+
+#: effects/Leveller.cpp:55
+msgid "Heavy"
+msgstr "重度"
+
+#: effects/Leveller.cpp:56
+msgid "Heavier"
+msgstr "較重"
+
+#: effects/Leveller.cpp:57
+msgid "Heaviest"
+msgstr "最重度"
+
+#: effects/Leveller.cpp:136
 msgid "Leveller"
 msgstr "校平儀"
 
-#: effects/Leveller.cpp:213
+#: effects/Leveller.cpp:220
 msgid "Leveller by Lynn Allan"
 msgstr "校平儀(由Lynn Allan提供)"
 
-#: effects/Leveller.cpp:216
+#: effects/Leveller.cpp:223
 msgid "Equalize soft and loud sections"
 msgstr "等化輕柔與響亮片段"
 
-#: effects/Leveller.cpp:219
-#: effects/Leveller.cpp:224
+#: effects/Leveller.cpp:226
+#: effects/Leveller.cpp:231
 msgid "Degree of Leveling"
 msgstr "水平度數"
 
-#: effects/Leveller.cpp:235
+#: effects/Leveller.cpp:242
 msgid "Noise Threshold (Hiss/Hum/Ambient Noise)"
 msgstr "雜音門檻(Hiss/Hum/Ambient Noise)"
 
 # 壓縮動作的起始點，指的是輸入音量的值。
 # THRESHOLD是用來決定開始壓縮動作的音量 ，一但超過此起始點，壓縮動作就會開始。
-#: effects/Leveller.cpp:238
+#: effects/Leveller.cpp:245
 msgid "Threshold for Noise: "
 msgstr "雜音臨界值："
 
@@ -4615,10 +4776,6 @@ msgstr "Brown"
 #: effects/Noise.cpp:41
 msgid "Noise Generator"
 msgstr "雜音產生器"
-
-#: effects/Noise.cpp:235
-msgid "Noise duration"
-msgstr "雜音持續期間"
 
 #: effects/Noise.cpp:256
 msgid "Noise type"
@@ -4654,11 +4811,11 @@ msgstr "嘗試在無雜音特徵下執行去雜音。\n"
 msgid "Noise Removal"
 msgstr "去雜音"
 
-#: effects/NoiseRemoval.cpp:812
+#: effects/NoiseRemoval.cpp:813
 msgid "Step 1"
 msgstr "步驟 1"
 
-#: effects/NoiseRemoval.cpp:813
+#: effects/NoiseRemoval.cpp:814
 msgid ""
 "Select a few seconds of just noise so Audacity knows what to filter out,\n"
 "then click Get Noise Profile:"
@@ -4667,11 +4824,11 @@ msgstr ""
 "\"以便讓Audacity判斷濾除雜音的特徵，\n"
 "\"然後點擊\"取得雜音特徵\"："
 
-#: effects/NoiseRemoval.cpp:814
+#: effects/NoiseRemoval.cpp:815
 msgid "Step 2"
 msgstr "步驟 2"
 
-#: effects/NoiseRemoval.cpp:815
+#: effects/NoiseRemoval.cpp:816
 msgid ""
 "Select all of the audio you want filtered, choose how much noise you want\n"
 "filtered out, and then click 'OK' to remove noise.\n"
@@ -4680,23 +4837,23 @@ msgstr ""
 "再選擇雜音濾除的程度，\n"
 "然後點擊\"OK\"消除雜音。\n"
 
-#: effects/NoiseRemoval.cpp:820
+#: effects/NoiseRemoval.cpp:821
 msgid "Noise Removal by Dominic Mazzoni"
 msgstr "去雜音(Dominic Mazzoni提供)"
 
-#: effects/NoiseRemoval.cpp:828
+#: effects/NoiseRemoval.cpp:829
 msgid "Get Noise Profile"
 msgstr "取得雜音特徵"
 
-#: effects/NoiseRemoval.cpp:839
+#: effects/NoiseRemoval.cpp:840
 msgid "Noise reduction (dB):"
 msgstr "雜音抑制(dB)："
 
-#: effects/NoiseRemoval.cpp:847
+#: effects/NoiseRemoval.cpp:848
 msgid "Frequency smoothing (Hz):"
 msgstr "平滑頻率(Hz)："
 
-#: effects/NoiseRemoval.cpp:855
+#: effects/NoiseRemoval.cpp:856
 msgid "Attack/decay time (secs):"
 msgstr "加強/衰減時間(秒)："
 
@@ -4939,73 +5096,66 @@ msgstr "套用突刺清除器中..."
 msgid "Applying Stereo to Mono"
 msgstr "套用立體聲至單聲道"
 
-#: effects/ToneGen.cpp:65
+#: effects/ToneGen.cpp:66
 #, c-format
 msgid "Applied effect: Generate %s wave %s, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"
 msgstr "已套用效果： 產生%s %s 波，頻率 = %.2f Hz，振幅=%.2f，%.6lf秒"
 
-#: effects/ToneGen.cpp:74
-#: widgets/Meter.cpp:362
+#: effects/ToneGen.cpp:75
+#: widgets/Meter.cpp:379
 msgid "Linear"
 msgstr "線性"
 
-#: effects/ToneGen.cpp:75
+#: effects/ToneGen.cpp:76
 msgid "Logarithmic"
 msgstr "對數(log)"
 
-#: effects/ToneGen.cpp:77
+#: effects/ToneGen.cpp:78
 msgid "Chirp Generator"
 msgstr "啾啾聲產生器"
 
-#: effects/ToneGen.cpp:77
+#: effects/ToneGen.cpp:78
 msgid "Tone Generator"
 msgstr "基音產生器"
 
-#: effects/ToneGen.cpp:78
+#: effects/ToneGen.cpp:79
 msgid "Sine"
 msgstr "正弦波"
 
-#: effects/ToneGen.cpp:79
+#: effects/ToneGen.cpp:80
 msgid "Square"
 msgstr "方波"
 
-#: effects/ToneGen.cpp:80
+#: effects/ToneGen.cpp:81
 msgid "Sawtooth"
 msgstr "鋸齒波"
 
-#: effects/ToneGen.cpp:81
+#: effects/ToneGen.cpp:82
 msgid "Square, no alias"
 msgstr "平方，無別名"
 
 #: effects/ToneGen.cpp:327
-#: effects/ToneGen.cpp:362
+#: effects/ToneGen.cpp:363
 msgid "Frequency (Hz)"
 msgstr "頻率(Hz)"
 
-#: effects/ToneGen.cpp:329
-#: effects/ToneGen.cpp:373
-#: toolbars/SelectionBar.cpp:147
-#: toolbars/SelectionBar.cpp:241
-msgid "Length"
-msgstr "時間長度"
-
-#: effects/ToneGen.cpp:353
+#: effects/ToneGen.cpp:354
 msgid "Waveform:"
 msgstr "波形："
 
-#: effects/ToneGen.cpp:360
+#: effects/ToneGen.cpp:361
 #: toolbars/ControlToolBar.cpp:185
 msgid "Start"
 msgstr "開始"
 
-#: effects/ToneGen.cpp:361
+#: effects/ToneGen.cpp:362
 #: toolbars/ControlToolBar.cpp:188
-#: toolbars/SelectionBar.cpp:141
-#: toolbars/SelectionBar.cpp:242
+#: toolbars/SelectionBar.cpp:149
+#: toolbars/SelectionBar.cpp:254
 msgid "End"
 msgstr "結束時間"
 
-#: effects/ToneGen.cpp:371
+#: effects/ToneGen.cpp:372
 msgid "Interpolation:"
 msgstr "內插法"
 
@@ -5054,7 +5204,7 @@ msgstr "毫秒"
 msgid "Threshold for silence:"
 msgstr "靜音臨界值："
 
-#: effects/TruncSilence.cpp:375
+#: effects/TruncSilence.cpp:376
 msgid "   Duration must be at least 1 millisecond"
 msgstr " 持續時間最少要一毫秒"
 
@@ -5123,6 +5273,7 @@ msgstr "抱歉，當立體聲軌道不匹配時，無法執行外掛程式效果
 
 #: effects/ladspa/LadspaEffect.cpp:573
 #: effects/ladspa/LadspaEffect.cpp:581
+#: prefs/GUIPrefs.cpp:51
 #: prefs/QualityPrefs.cpp:72
 msgid "None"
 msgstr "無"
@@ -5165,16 +5316,16 @@ msgstr "Nyquist 表示式"
 msgid "Nyquist Output: "
 msgstr "Nyquist 表示式"
 
-#: effects/nyquist/Nyquist.cpp:596
-#: effects/nyquist/Nyquist.cpp:607
+#: effects/nyquist/Nyquist.cpp:598
+#: effects/nyquist/Nyquist.cpp:609
 msgid "Nyquist returned the value:"
 msgstr "Nyquist 傳回值："
 
-#: effects/nyquist/Nyquist.cpp:649
+#: effects/nyquist/Nyquist.cpp:651
 msgid "Nyquist did not return audio.\n"
 msgstr "Nyquist 運算沒有返回音訊。\n"
 
-#: effects/nyquist/Nyquist.cpp:660
+#: effects/nyquist/Nyquist.cpp:662
 msgid "Nyquist returned too many audio channels.\n"
 msgstr "Nyquist 傳回了過多的聲音聲道。\n"
 
@@ -5207,7 +5358,7 @@ msgstr "外掛程式設定"
 msgid "Program"
 msgstr "程式"
 
-#: export/Export.cpp:401
+#: export/Export.cpp:407
 msgid ""
 "No tracks are selected! Use Ctrl-A (Select All)\n"
 "Choose Export... to export all tracks."
@@ -5215,19 +5366,19 @@ msgstr ""
 "沒有選定音軌！用Ctrl-A (選擇全部)\n"
 "選擇\"匯出\"以匯出全部音軌。"
 
-#: export/Export.cpp:445
+#: export/Export.cpp:451
 msgid "Export File"
 msgstr "匯出檔案"
 
-#: export/Export.cpp:453
+#: export/Export.cpp:459
 msgid "&Options..."
 msgstr "選項(&O)..."
 
-#: export/Export.cpp:479
+#: export/Export.cpp:485
 msgid "Are you sure you want to save the file as \""
 msgstr "您確認要將該檔案另存新檔為 \""
 
-#: export/Export.cpp:495
+#: export/Export.cpp:501
 #, c-format
 msgid ""
 "You are about to save a %s file with the name \"%s\".\n"
@@ -5242,38 +5393,38 @@ msgstr ""
 "\n"
 "您是否確定要以此副檔名儲存檔案？"
 
-#: export/Export.cpp:516
+#: export/Export.cpp:522
 #, c-format
 msgid "A file named \"%s\" already exists.  Replace?"
 msgstr "檔案名稱\"%s\"已存在，要取代它嗎？"
 
-#: export/Export.cpp:598
+#: export/Export.cpp:604
 msgid "Your tracks will be mixed down to two stereo channels in the exported file."
 msgstr "您的音軌將在匯出檔案中被合成為雙聲道立體聲。"
 
-#: export/Export.cpp:603
+#: export/Export.cpp:609
 msgid "Your tracks will be mixed down to a single mono channel in the exported file."
 msgstr "您的音軌將在匯出檔案中被合成為單聲道。"
 
-#: export/Export.cpp:613
+#: export/Export.cpp:619
 msgid "Advanced Mixing Options"
 msgstr "進階混音選項"
 
-#: export/Export.cpp:815
+#: export/Export.cpp:821
 #, c-format
 msgid "Channel: %2d"
 msgstr "聲道：%2d"
 
-#: export/Export.cpp:938
+#: export/Export.cpp:945
 msgid " - Left"
 msgstr " - 左聲道"
 
-#: export/Export.cpp:939
+#: export/Export.cpp:946
 msgid " - Right"
 msgstr " - 右聲道"
 
-#: export/Export.cpp:961
-#: export/Export.cpp:1006
+#: export/Export.cpp:976
+#: export/Export.cpp:1021
 #, c-format
 msgid "Output Channels: %2d"
 msgstr "輸出聲道：%2d"
@@ -5299,29 +5450,29 @@ msgstr "顯示輸出"
 msgid "Data will be piped to standard in. \"%f\" will be replaced with output filename selected."
 msgstr "資料將會依序排列。\"%f\"將會以選擇的輸出檔名來取代。"
 
-#: export/ExportCL.cpp:219
+#: export/ExportCL.cpp:220
 msgid "(external program)"
 msgstr "(外部程式)"
 
-#: export/ExportCL.cpp:248
+#: export/ExportCL.cpp:250
 #: export/ExportPCM.cpp:367
 #, c-format
 msgid "Cannot export audio to %s"
 msgstr "無法匯出聲音至%s"
 
-#: export/ExportCL.cpp:320
+#: export/ExportCL.cpp:322
 msgid "Export"
 msgstr "匯出"
 
-#: export/ExportCL.cpp:322
+#: export/ExportCL.cpp:324
 msgid "Exporting the selected audio using command-line encoder"
 msgstr "用命令列編碼器匯出選定的聲音"
 
-#: export/ExportCL.cpp:323
+#: export/ExportCL.cpp:325
 msgid "Exporting the entire project using command-line encoder"
 msgstr "用命令列編碼器匯出全部成音工程"
 
-#: export/ExportCL.cpp:387
+#: export/ExportCL.cpp:389
 msgid "Command Output"
 msgstr "命令輸出"
 
@@ -5397,10 +5548,6 @@ msgstr "將選定的聲音匯出為FLAC"
 msgid "Exporting the entire project as FLAC"
 msgstr "將全部成音工程匯出為FLAC"
 
-#: export/ExportFLAC.cpp:372
-msgid "Edit the metadata for the FLAC file"
-msgstr "編輯此FLAC檔案的標頭檔"
-
 #: export/ExportMP2.cpp:108
 msgid "Specify MP2 Options"
 msgstr "指定MP2選項"
@@ -5421,300 +5568,250 @@ msgstr "MP2檔案"
 msgid "Cannot export MP2 with this sample rate and bit rate"
 msgstr "無法以此取樣率及位元率匯出MP2檔案"
 
-#: export/ExportMP2.cpp:237
-msgid "Edit the ID3 tags for the MP2 file"
-msgstr "編輯此MP2檔案的ID3 Tags"
-
-#: export/ExportMP2.cpp:243
-#: export/ExportMP3.cpp:1713
+#: export/ExportMP2.cpp:240
+#: export/ExportMP3.cpp:1768
 #: export/ExportOGG.cpp:183
 msgid "Unable to open target file for writing"
 msgstr "無法開啟目標檔案寫入"
 
-#: export/ExportMP2.cpp:274
+#: export/ExportMP2.cpp:271
 #, c-format
 msgid "Exporting selected audio at %d kbps"
 msgstr "將選定的音訊以%d kbps匯出"
 
-#: export/ExportMP2.cpp:275
+#: export/ExportMP2.cpp:272
 #, c-format
 msgid "Exporting entire file at %d kbps"
 msgstr "將全部成音工程以%d kbps匯出"
 
-#. i18n-hint: kbps is the bitrate of the MP3 file, kilobits per second
-#: export/ExportMP3.cpp:142
-#: export/ExportMP3.cpp:143
-#: export/ExportMP3.cpp:144
-#: export/ExportMP3.cpp:145
-#: export/ExportMP3.cpp:146
-#: export/ExportMP3.cpp:147
-#: export/ExportMP3.cpp:148
-#: export/ExportMP3.cpp:149
-#: export/ExportMP3.cpp:150
-#: export/ExportMP3.cpp:151
-#: export/ExportMP3.cpp:152
-#: export/ExportMP3.cpp:153
-#: export/ExportMP3.cpp:154
-#: export/ExportMP3.cpp:155
-#: export/ExportMP3.cpp:156
-#: export/ExportMP3.cpp:157
-#: export/ExportMP3.cpp:158
-#: export/ExportMP3.cpp:159
+#: export/ExportMP3.cpp:221
+#: export/ExportMP3.cpp:239
+#: export/ExportMP3.cpp:253
 msgid "kbps"
 msgstr "kbps"
 
-#: export/ExportMP3.cpp:164
-msgid "0, 220-260 kbps (Best Quality)"
-msgstr "0, 220-260 kbps (最佳品質)"
+#: export/ExportMP3.cpp:240
+msgid "(Best Quality)"
+msgstr "(最佳品質)"
 
-#: export/ExportMP3.cpp:165
-msgid "1, 200-250 kbps"
-msgstr "1, 200-250 kbps"
+#: export/ExportMP3.cpp:241
+msgid "(Smaller files)"
+msgstr "(較小檔案體積)"
 
-#: export/ExportMP3.cpp:166
-msgid "2, 170-210 kbps"
-msgstr "2, 170-210 kbps"
-
-#: export/ExportMP3.cpp:167
-msgid "3, 155-195 kbps"
-msgstr "3, 155-195 kbps"
-
-#: export/ExportMP3.cpp:168
-msgid "4, 145-185 kbps"
-msgstr "4, 145-185 kbps"
-
-#: export/ExportMP3.cpp:169
-msgid "5, 110-150 kbps"
-msgstr "5, 110-150 kbps"
-
-#: export/ExportMP3.cpp:170
-msgid "6, 95-135 kbps"
-msgstr "6, 95-135 kbps"
-
-#: export/ExportMP3.cpp:171
-msgid "7, 80-120 kbps"
-msgstr "7, 80-120 kbps"
-
-#: export/ExportMP3.cpp:172
-msgid "8, 65-105 kbps"
-msgstr "8, 65-105 kbps"
-
-#: export/ExportMP3.cpp:173
-msgid "9, 45-85 kbps (Smaller files)"
-msgstr "9, 45-85 kbps (較小檔案體積)"
-
-#: export/ExportMP3.cpp:178
+#: export/ExportMP3.cpp:243
 msgid "Fast"
 msgstr "快速"
 
-#: export/ExportMP3.cpp:179
+#: export/ExportMP3.cpp:244
+#: export/ExportMP3.cpp:250
+#: prefs/GUIPrefs.cpp:41
+#: prefs/GUIPrefs.cpp:49
 msgid "Standard"
 msgstr "標準"
 
-#: export/ExportMP3.cpp:184
-msgid "Insane, 320 kbps"
-msgstr "Insane, 320 kbps"
-
-#: export/ExportMP3.cpp:185
-msgid "Extreme, 220-260 kbps"
-msgstr "Extreme, 220-260 kbps"
-
-#: export/ExportMP3.cpp:186
-msgid "Standard, 170-210 kbps"
-msgstr "Standard, 170-210 kbps"
-
-#: export/ExportMP3.cpp:187
-msgid "Medium, 145-185 kbps"
-msgstr "Medium, 145-185 kbps"
+# 波形上下反轉
+#: export/ExportMP3.cpp:248
+msgid "Insane"
+msgstr "瘋狂的"
 
 #: export/ExportMP3.cpp:249
+msgid "Extreme"
+msgstr "極大"
+
+#: export/ExportMP3.cpp:251
+msgid "Medium"
+msgstr "適中"
+
+#: export/ExportMP3.cpp:303
 msgid "Specify MP3 Options"
 msgstr "指定MP3選項"
 
-#: export/ExportMP3.cpp:264
+#: export/ExportMP3.cpp:319
 msgid "MP3 Export Setup"
 msgstr "MP3匯出設定"
 
-#: export/ExportMP3.cpp:271
+#: export/ExportMP3.cpp:326
 msgid "Bit Rate Mode:"
 msgstr "位元速率模式："
 
-#: export/ExportMP3.cpp:276
+#: export/ExportMP3.cpp:331
 msgid "Preset"
 msgstr "設定"
 
-#: export/ExportMP3.cpp:277
+#: export/ExportMP3.cpp:332
 msgid "Variable"
 msgstr "變數"
 
-#: export/ExportMP3.cpp:278
+#: export/ExportMP3.cpp:333
 msgid "Average"
 msgstr "平均"
 
-#: export/ExportMP3.cpp:279
+#: export/ExportMP3.cpp:334
 msgid "Constant"
 msgstr "常數"
 
-#: export/ExportMP3.cpp:324
+#: export/ExportMP3.cpp:373
+#: prefs/QualityPrefs.cpp:42
+#: prefs/QualityPrefs.cpp:43
+msgid "Quality"
+msgstr "品質"
+
+#: export/ExportMP3.cpp:379
 msgid "Variable Speed:"
 msgstr "可變速度："
 
-#: export/ExportMP3.cpp:331
+#: export/ExportMP3.cpp:386
 msgid "Channel Mode:"
 msgstr "聲道模式："
 
-#: export/ExportMP3.cpp:336
+#: export/ExportMP3.cpp:391
 msgid "Joint Stereo"
 msgstr "合併立體聲"
 
-#: export/ExportMP3.cpp:337
+#: export/ExportMP3.cpp:392
 msgid "Stereo"
 msgstr "立體聲"
 
-#: export/ExportMP3.cpp:481
+#: export/ExportMP3.cpp:536
 msgid "Locate Lame"
 msgstr "定位Lame"
 
-#: export/ExportMP3.cpp:501
+#: export/ExportMP3.cpp:556
 #, c-format
 msgid "Audacity needs the file %s to create MP3s."
 msgstr "Audacity需要%s檔案來建立MP3。"
 
-#: export/ExportMP3.cpp:507
+#: export/ExportMP3.cpp:562
 #, c-format
 msgid "Location of %s:"
 msgstr "%s路徑："
 
-#: export/ExportMP3.cpp:516
+#: export/ExportMP3.cpp:571
 #, c-format
 msgid "To find %s, click here -->"
 msgstr "點這裡尋找%s-->"
 
-#: export/ExportMP3.cpp:522
+#: export/ExportMP3.cpp:577
 msgid "Browse..."
 msgstr "瀏覽..."
 
-#: export/ExportMP3.cpp:523
+#: export/ExportMP3.cpp:578
 msgid "To get a free copy of Lame, click here -->"
 msgstr "點這裡取得免費的Lame-->"
 
-#: export/ExportMP3.cpp:524
+#: export/ExportMP3.cpp:579
 msgid "Download..."
 msgstr "下載..."
 
 #. i18n-hint: It's asking for the location of a file, for
 #. example, "Where is lame_enc.dll?" - you could translate
 #. "Where would I find the file %s" instead if you want.
-#: export/ExportMP3.cpp:546
+#: export/ExportMP3.cpp:601
 #, c-format
 msgid "Where is %s?"
 msgstr "%s在哪裡？"
 
-#: export/ExportMP3.cpp:1038
+#: export/ExportMP3.cpp:1094
 msgid "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
 msgstr "僅限lame_enc.dll|lame_enc.dll|動態連接庫(*.dll)|*.dll|\"\"全部檔案(*.*)|*"
 
-#: export/ExportMP3.cpp:1493
+#: export/ExportMP3.cpp:1550
 msgid "Only libmp3lame.dylib|libmp3lame.dylib|Dynamic Libraries (*.dylib)|*.dylib|All Files (*)|*"
 msgstr "僅限libmp3lame.dylib|libmp3lame.dylib|動態連接庫(*.dylib)|*.dylib|全部檔案(*)|*"
 
-#: export/ExportMP3.cpp:1510
-msgid "Only libmp3lame.so|libmp3lame.so|Primary Shared Object files (*.so)|*.so|Extended Libraries (*.so*)|*.so*|All Files (*)|*"
-msgstr "僅限libmp3lame.so|libmp3lame.so|主要的共享目標檔案(*.so)|*.so|\"\"擴充資料庫(*.so*)|*.so*|全部檔案(*)|*"
+#: export/ExportMP3.cpp:1567
+msgid "Only libmp3lame.so.0|libmp3lame.so.0|Primary Shared Object files (*.so)|*.so|Extended Libraries (*.so*)|*.so*|All Files (*)|*"
+msgstr "僅限libmp3lame.so.0|libmp3lame.so.0|主要的共享目標檔案(*.so)|*.so|\"\"擴充資料庫(*.so*)|*.so*|全部檔案(*)|*"
 
-#: export/ExportMP3.cpp:1592
+#: export/ExportMP3.cpp:1650
 msgid "MP3 Files"
 msgstr "MP3檔案"
 
-#: export/ExportMP3.cpp:1615
+#: export/ExportMP3.cpp:1673
 msgid "Could not open MP3 encoding library!"
 msgstr "無法開啟MP3編碼程式庫！"
 
-#: export/ExportMP3.cpp:1622
+#: export/ExportMP3.cpp:1680
 msgid "Not a valid or supported MP3 encoding library!"
 msgstr "不是有效的或支援的MP3編碼程式庫！"
 
-#: export/ExportMP3.cpp:1699
+#: export/ExportMP3.cpp:1757
 msgid "Unable to initialize MP3 stream"
 msgstr "無法啟始MP3串流音訊"
 
-#: export/ExportMP3.cpp:1706
-msgid "Edit the ID3 tags for the MP3 file"
-msgstr "編輯此MP3檔案的ID3 Tags"
-
-#: export/ExportMP3.cpp:1744
+#: export/ExportMP3.cpp:1799
 #, c-format
 msgid "Exporting selected audio with %s preset"
 msgstr "將選定的音訊以%s preset匯出"
 
-#: export/ExportMP3.cpp:1745
+#: export/ExportMP3.cpp:1800
 #, c-format
 msgid "Exporting entire file with %s preset"
 msgstr "將全部檔案以%s preset匯出"
 
-#: export/ExportMP3.cpp:1750
+#: export/ExportMP3.cpp:1805
 #, c-format
 msgid "Exporting selected audio with VBR quality %s"
 msgstr "將選定的音訊以VBR品質%s匯出"
 
-#: export/ExportMP3.cpp:1751
+#: export/ExportMP3.cpp:1806
 #, c-format
 msgid "Exporting entire file with VBR quality %s"
 msgstr "將全部檔案以VBR品質%s匯出"
 
-#: export/ExportMP3.cpp:1756
+#: export/ExportMP3.cpp:1811
 #, c-format
 msgid "Exporting selected audio at %d Kbps"
 msgstr "將選定的音訊以%d kbps匯出"
 
-#: export/ExportMP3.cpp:1757
+#: export/ExportMP3.cpp:1812
 #, c-format
 msgid "Exporting entire file at %d Kbps"
 msgstr "將全部檔案以%d kbps匯出"
 
-#: export/ExportMP3.cpp:1790
+#: export/ExportMP3.cpp:1845
 #, c-format
 msgid "Error %d returned from MP3 encoder"
 msgstr "MP3編碼器回報錯誤%d"
 
-#: export/ExportMP3.cpp:1863
+#: export/ExportMP3.cpp:1918
 msgid "Invalid sample rate"
 msgstr "無效取樣頻率"
 
-#: export/ExportMP3.cpp:1876
+#: export/ExportMP3.cpp:1931
 #, c-format
 msgid ""
 "The project sample rate (%d) is not supported by the MP3\n"
 "file format.  "
 msgstr "此MP3檔案格式不支援目前工程取樣速率(%d)。  "
 
-#: export/ExportMP3.cpp:1879
+#: export/ExportMP3.cpp:1934
 #, c-format
 msgid ""
 "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
 "supported by the MP3 file format.  "
 msgstr "此MP3檔案格式不支援目前工程取樣速率(%d)及位元率(%d kbps)。  "
 
-#: export/ExportMP3.cpp:1882
+#: export/ExportMP3.cpp:1937
 msgid "You may resample to one of the rates below."
 msgstr "你必須以更低的速率取樣。"
 
-#: export/ExportMP3.cpp:1905
+#: export/ExportMP3.cpp:1960
 msgid "Sample Rates"
 msgstr "取樣頻率"
 
-#: export/ExportMP3.cpp:2053
+#: export/ExportMP3.cpp:2108
 msgid "MP3 exporting plugin not found"
 msgstr "找不到MP3匯出外掛模組"
 
-#: export/ExportMultiple.cpp:88
-#: export/ExportMultiple.cpp:362
-#: export/ExportMultiple.cpp:609
-#: export/ExportMultiple.cpp:717
+#: export/ExportMultiple.cpp:95
+#: export/ExportMultiple.cpp:374
+#: export/ExportMultiple.cpp:598
+#: export/ExportMultiple.cpp:765
 msgid "Export Multiple"
 msgstr "匯出多個檔案"
 
-#: export/ExportMultiple.cpp:152
+#: export/ExportMultiple.cpp:164
 msgid ""
 "If you have more than one Audio Track, you can export each track as a separate file,\n"
 "or if you have a Label Track, you can export a new file for each label.\n"
@@ -5726,89 +5823,85 @@ msgstr ""
 "\n"
 "該檔案不包含多個音軌，或者不含標籤軌，所以無法匯出多個檔案。"
 
-#: export/ExportMultiple.cpp:153
+#: export/ExportMultiple.cpp:165
 msgid "Can't export multiple files"
 msgstr "無法匯出多個檔案"
 
-#: export/ExportMultiple.cpp:188
+#: export/ExportMultiple.cpp:200
 msgid "Export format:"
 msgstr "匯出檔案格式："
 
-#: export/ExportMultiple.cpp:195
+#: export/ExportMultiple.cpp:207
 msgid "Options..."
 msgstr "選項..."
 
-#: export/ExportMultiple.cpp:198
+#: export/ExportMultiple.cpp:210
 msgid "Export location:"
 msgstr "匯出檔案位置："
 
-#: export/ExportMultiple.cpp:204
+#: export/ExportMultiple.cpp:216
 #: prefs/DirectoriesPrefs.cpp:92
 msgid "Choose..."
 msgstr "選擇..."
 
-#: export/ExportMultiple.cpp:205
+#: export/ExportMultiple.cpp:217
 msgid "Create"
 msgstr "建立"
 
-#: export/ExportMultiple.cpp:212
+#: export/ExportMultiple.cpp:224
 msgid "Split files based on:"
 msgstr "分離檔案，基於："
 
-#: export/ExportMultiple.cpp:222
+#: export/ExportMultiple.cpp:234
 msgid "Labels"
 msgstr "標籤"
 
-#: export/ExportMultiple.cpp:227
+#: export/ExportMultiple.cpp:239
 msgid "Include audio before first label"
 msgstr "包含在第一個標籤之前的聲音"
 
-#: export/ExportMultiple.cpp:233
+#: export/ExportMultiple.cpp:245
 msgid "First file name:"
 msgstr "第一個檔案名稱："
 
-#: export/ExportMultiple.cpp:246
+#: export/ExportMultiple.cpp:258
 msgid "Tracks"
 msgstr "音軌"
 
-#: export/ExportMultiple.cpp:253
+#: export/ExportMultiple.cpp:265
 msgid "Name files:"
 msgstr "命名檔案："
 
-#: export/ExportMultiple.cpp:263
+#: export/ExportMultiple.cpp:275
 msgid "Using Label/Track Name"
 msgstr "使用標籤/音軌名"
 
-#: export/ExportMultiple.cpp:270
+#: export/ExportMultiple.cpp:282
 msgid "Numbering consecutively"
 msgstr "連續編號"
 
-#: export/ExportMultiple.cpp:276
+#: export/ExportMultiple.cpp:288
 msgid "File name prefix:"
 msgstr "檔名前置字元："
 
-#: export/ExportMultiple.cpp:294
+#: export/ExportMultiple.cpp:306
 msgid "Overwrite existing files"
 msgstr "覆蓋現有的檔案"
 
-#: export/ExportMultiple.cpp:300
+#: export/ExportMultiple.cpp:312
 msgid "E&xport"
 msgstr "匯出(&X)"
 
-#: export/ExportMultiple.cpp:360
+#: export/ExportMultiple.cpp:372
 #, c-format
 msgid "\"%s\" successfully created."
 msgstr "\"%s\" 建立完成。"
 
-#: export/ExportMultiple.cpp:369
+#: export/ExportMultiple.cpp:381
 msgid "Choose a location to save the exported files"
 msgstr "選擇儲存匯出檔案的位置"
 
-#: export/ExportMultiple.cpp:438
-msgid "Edit the metadata"
-msgstr "編輯標頭檔"
-
-#: export/ExportMultiple.cpp:480
+#: export/ExportMultiple.cpp:470
 #, c-format
 msgid ""
 "\"%s\" doesn't exist.\n"
@@ -5819,17 +5912,31 @@ msgstr ""
 "\n"
 "您要建立它嗎？"
 
-#: export/ExportMultiple.cpp:606
-#: export/ExportMultiple.cpp:714
+#: export/ExportMultiple.cpp:568
+#: export/ExportMultiple.cpp:703
+msgid "Edit metadata"
+msgstr "編輯標頭檔"
+
+#: export/ExportMultiple.cpp:595
+#: export/ExportMultiple.cpp:762
 #, c-format
 msgid "Successfully exported %d file(s)."
 msgstr "%d 檔案匯出成功。"
 
-#: export/ExportMultiple.cpp:607
-#: export/ExportMultiple.cpp:715
+#: export/ExportMultiple.cpp:596
+#: export/ExportMultiple.cpp:763
 #, c-format
 msgid "Something went wrong after exporting %d file(s)."
 msgstr "匯出%d檔案後發生錯誤。"
+
+#: export/ExportMultiple.cpp:825
+#, c-format
+msgid ""
+"Label %s is not a legal file name. You cannot use any of:   %s\n"
+"Use..."
+msgstr ""
+"%s標籤不是可用的名稱。你不可以使用%s\n"
+"請使用…"
 
 #: export/ExportOGG.cpp:64
 msgid "Specify Ogg Vorbis Options"
@@ -5855,13 +5962,9 @@ msgstr "將選定的聲音匯出為Ogg Vorbis"
 msgid "Exporting the entire project as Ogg Vorbis"
 msgstr "將全部成音工程匯出為 Ogg Vorbis"
 
-#: export/ExportOGG.cpp:347
-msgid "Edit the metadata for the OGG file"
-msgstr "編輯此OGG檔案的標頭標"
-
 #: export/ExportPCM.cpp:115
-msgid "Specify PCM Options"
-msgstr "指定PCM選項"
+msgid "Specify Uncompressed Options"
+msgstr "指定非壓縮格式選項"
 
 #: export/ExportPCM.cpp:171
 msgid "Uncompressed Export Setup"
@@ -5892,32 +5995,29 @@ msgstr "WAV、AIFF及其他非壓縮格式"
 msgid "Cannot export audio in this format."
 msgstr "無法匯出此格式"
 
-#: export/ExportPCM.cpp:400
+#: export/ExportPCM.cpp:401
 #, c-format
 msgid "Exporting the selected audio as %s"
 msgstr "將選定的聲音匯出為%s"
 
-#: export/ExportPCM.cpp:402
+#: export/ExportPCM.cpp:403
 #, c-format
 msgid "Exporting the entire project as %s"
 msgstr "將全部成音工程匯出為%s"
 
-#: export/ExportPCM.cpp:435
+#. i18n-hint: %s will be the error message from libsndfile
+#: export/ExportPCM.cpp:437
 #, c-format
-msgid "Error (file may not have been written): %hs"
-msgstr "錯誤 (檔案可能尚未寫入)：%hs"
+msgid "Error (file may not have been written): %s"
+msgstr "錯誤 (檔案可能尚未寫入)：%s"
 
-#: export/ExportPCM.cpp:462
-msgid "Edit the metadata for the uncompressed file"
-msgstr "編輯此無壓縮格式檔案的標頭檔"
-
-#: import/Import.cpp:154
+#: import/Import.cpp:155
 #, c-format
 msgid "This version of Audacity was not compiled with %s support."
 msgstr "此版本的Audacity在編譯時沒有附帶針對%s的支援。"
 
 #. i18n-hint: %s will be the filename
-#: import/Import.cpp:167
+#: import/Import.cpp:168
 #, c-format
 msgid ""
 "\"%s\" is an audio CD track. \n"
@@ -5929,7 +6029,7 @@ msgstr ""
 "Audacity無法開啟該類型檔案。\n"
 "請嘗試將它轉錄成Audacity能匯入的聲音格式如WAV或AIFF。"
 
-#: import/Import.cpp:173
+#: import/Import.cpp:174
 #, c-format
 msgid ""
 "\"%s\" is a playlist file. \n"
@@ -5940,7 +6040,7 @@ msgstr ""
 "因為它只是一種文字檔案，與音樂檔案連結。\n"
 "您或許可以用文字編輯器將它開啟來取得音樂檔案網址並下載真正的音訊檔案。"
 
-#: import/Import.cpp:178
+#: import/Import.cpp:179
 #, c-format
 msgid ""
 "\"%s\" is a Windows Media Audio file. \n"
@@ -5951,7 +6051,7 @@ msgstr ""
 "Audacity基於專利權的問題，無法開啟此私有格式。\n"
 "您可以將它轉換成Audacity支援的檔案格式如WAV或AIFF來用Audacity開啟。"
 
-#: import/Import.cpp:183
+#: import/Import.cpp:184
 #, c-format
 msgid ""
 "\"%s\" is an Advanced Audio Coding file. \n"
@@ -5962,7 +6062,7 @@ msgstr ""
 "Audacity無法開啟該類型檔案。\n"
 "請嘗試將它轉換成Audacity能支援的聲音格式如WAV或AIFF。"
 
-#: import/Import.cpp:188
+#: import/Import.cpp:189
 #, c-format
 msgid ""
 "\"%s\" is an encrypted audio file. These typically are from an online music store. \n"
@@ -5974,7 +6074,7 @@ msgstr ""
 "Audacity基於加密的問題，無法開啟此私有格式。\n"
 "您可以將它轉換成未加密、Audacity支援的檔案格式如WAV或AIFF來用Audacity開啟。"
 
-#: import/Import.cpp:193
+#: import/Import.cpp:194
 #, c-format
 msgid ""
 "\"%s\" is a RealPlayer media file. \n"
@@ -5985,7 +6085,78 @@ msgstr ""
 "Audacity無法開啟此私有格式。\n"
 "您可以將它轉換成Audacity支援的檔案格式如WAV或AIFF來用Audacity開啟。"
 
-#: import/Import.cpp:216
+#: import/Import.cpp:200
+#, c-format
+msgid ""
+"\"%s\" is a MIDI file, not an audio file. \n"
+"Audacity cannot open this type of file for playing or editing, but you can \n"
+"display it by clicking File > Import > MIDI."
+msgstr ""
+"\"%s\"是MIDI檔案，不是音訊檔案。\n"
+"Audacity無法開啟以及播放該類型檔案，\n"
+"不過你可以用檔案 > 匯入 > MIDI來顯示此檔案內容。"
+
+#: import/Import.cpp:206
+#, c-format
+msgid ""
+"\"%s\" is a notes-based file, not an audio file. \n"
+"Audacity cannot open this type of file. \n"
+"Try converting it to an audio file such as WAV or AIFF and \n"
+"then import it, or record it into Audacity."
+msgstr ""
+"\"%s\"不是音訊檔案。\n"
+"Audacity無法開啟該類型檔案。\n"
+"請嘗試將它轉換成Audacity能支援的聲音格式如WAV或AIFF。"
+
+#: import/Import.cpp:212
+#, c-format
+msgid ""
+"\"%s\" is a Musepack audio file. \n"
+"Audacity cannot open this type of file. \n"
+"If you think it might be an mp3 file, rename it to end with \".mp3\" \n"
+"and try importing it again. Otherwise you need to convert it to a supported audio \n"
+"format, such as WAV or AIFF."
+msgstr ""
+"\"%s\"是Musepack體檔案。\n"
+"Audacity無法開啟該類型檔案。\n"
+"如果你認為它有可能是mp3檔案，請將它的副檔名\n"
+"更改為\".mp3\"然後再重新匯入一次。\n"
+"或者將它轉換成Audacity能支援的聲音格式如WAV或AIFF。 "
+
+#: import/Import.cpp:218
+#, c-format
+msgid ""
+"\"%s\" is a Wavpack audio file. \n"
+"Audacity cannot open this type of file. \n"
+"You need to convert it to a supported audio format, such as WAV or AIFF."
+msgstr ""
+"\"%s\"是Wavpack檔案。\n"
+"Audacity無法開啟該類型檔案。\n"
+"請嘗試將它轉換成Audacity能支援的聲音格式如WAV或AIFF。"
+
+#: import/Import.cpp:224
+#, c-format
+msgid ""
+"\"%s\" is a Dolby Digital audio file. \n"
+"Audacity cannot currently open this type of file. \n"
+"You need to convert it to a supported audio format, such as WAV or AIFF."
+msgstr ""
+"\"%s\"是Dolby Digital檔案。\n"
+"Audacity無法開啟該類型檔案。\n"
+"請嘗試將它轉換成Audacity能支援的聲音格式如WAV或AIFF。"
+
+#: import/Import.cpp:230
+#, c-format
+msgid ""
+"\"%s\" is an Ogg Speex audio file. \n"
+"Audacity cannot currently open this type of file. \n"
+"You need to convert it to a supported audio format, such as WAV or AIFF."
+msgstr ""
+"\"%s\"是Ogg Speex檔案。\n"
+"Audacity無法開啟該類型檔案。\n"
+"請嘗試將它轉換成Audacity能支援的聲音格式如WAV或AIFF。"
+
+#: import/Import.cpp:253
 msgid ""
 "Audacity had to make a guess at the type of file.\n"
 "The Audio may be bogus.\n"
@@ -5999,7 +6170,7 @@ msgstr ""
 "如果此音訊檔案副檔名是錯誤的，請在開啟前\n"
 "更改成正確的副檔名。"
 
-#: import/Import.cpp:232
+#: import/Import.cpp:269
 msgid ""
 "Audacity did not recognize the type of this file.\n"
 "If it is uncompressed, try importing it using \"Import Raw\""
@@ -6050,31 +6221,31 @@ msgstr "分析Allegro檔案出錯。"
 msgid "Error parsing MIDI file."
 msgstr "分析MIDI檔案出錯。"
 
-#: import/ImportMP3.cpp:38
+#: import/ImportMP3.cpp:39
 msgid "MP3 files"
 msgstr "MP3檔案"
 
-#: import/ImportOGG.cpp:35
+#: import/ImportOGG.cpp:36
 msgid "Ogg Vorbis files"
 msgstr "Ogg Vorbis檔案"
 
-#: import/ImportOGG.cpp:141
+#: import/ImportOGG.cpp:142
 msgid "Media read error"
 msgstr "媒體讀取錯誤"
 
-#: import/ImportOGG.cpp:144
+#: import/ImportOGG.cpp:145
 msgid "Not an Ogg Vorbis file"
 msgstr "不是Ogg Vorbis檔案"
 
-#: import/ImportOGG.cpp:147
+#: import/ImportOGG.cpp:148
 msgid "Vorbis version mismatch"
 msgstr "Vorbis版本不匹配"
 
-#: import/ImportOGG.cpp:150
+#: import/ImportOGG.cpp:151
 msgid "Invalid Vorbis bitstream header"
 msgstr "Vorbis位元流標頭無效"
 
-#: import/ImportOGG.cpp:153
+#: import/ImportOGG.cpp:154
 msgid "Internal logic fault"
 msgstr "內部處理錯誤"
 
@@ -6262,30 +6433,19 @@ msgid "Batch"
 msgstr "批次"
 
 #: prefs/BatchPrefs.cpp:77
-#: prefs/GUIPrefs.cpp:70
+#: prefs/GUIPrefs.cpp:92
 msgid "Behaviors"
 msgstr "行為"
 
 #: prefs/BatchPrefs.cpp:80
+#: prefs/GUIPrefs.cpp:129
 msgid "&Don't apply effects in batch mode"
 msgstr "批次模式下不套用效果器(&D)"
 
 #: prefs/BatchPrefs.cpp:83
-msgid "&When importing audio, normalize all tracks in project"
-msgstr "當匯入音訊時，將工程內所有音軌單位化(&W)"
-
-#: prefs/BatchPrefs.cpp:85
+#: prefs/GUIPrefs.cpp:132
 msgid "Cl&eanSpeech Mode (Customized GUI)"
 msgstr "清除人聲模式(自定介面)(&E)"
-
-#: prefs/BatchPrefs.cpp:89
-#: prefs/GUIPrefs.cpp:92
-msgid "Show / Hide"
-msgstr "顯示/隱藏"
-
-#: prefs/BatchPrefs.cpp:91
-msgid "S&how Metadata Editor prior to export step"
-msgstr "在匯出前顯示標頭檔編輯器(&H)"
 
 #: prefs/DirectoriesPrefs.cpp:55
 #: prefs/DirectoriesPrefs.cpp:56
@@ -6351,159 +6511,231 @@ msgstr "%s目錄無法寫入"
 msgid "Changes to temporary directory will not take effect until Audacity is restarted"
 msgstr "Audacity重開後，才會變更暫存目錄。"
 
-#: prefs/FileFormatPrefs.cpp:47
 #: prefs/FileFormatPrefs.cpp:48
-msgid "Audio Files"
-msgstr "音訊檔案"
+#: prefs/FileFormatPrefs.cpp:49
+msgid "Import / Export"
+msgstr "匯入/匯出"
 
-#: prefs/FileFormatPrefs.cpp:76
-msgid "When importing uncompressed audio files"
-msgstr "當Audacity匯入非壓縮聲音檔案時"
-
-#: prefs/FileFormatPrefs.cpp:79
-msgid "&Make a copy of the file before editing (safer)"
-msgstr "在編輯前製作檔案備份(較安全)(&M)"
+#: prefs/FileFormatPrefs.cpp:77
+msgid "MP3 Export Library"
+msgstr "MP3匯出程式庫"
 
 #: prefs/FileFormatPrefs.cpp:80
-msgid "&Read directly from the original file (faster)"
-msgstr "從原始檔案中直接讀取(快速)(&R)"
-
-#: prefs/FileFormatPrefs.cpp:84
-msgid "When saving a project that depends on other audio files"
-msgstr "當要儲存相依於其他音訊檔案的工程時"
-
-#: prefs/FileFormatPrefs.cpp:87
-msgid "Always &copy all audio into project (safest)"
-msgstr "總是複製所有音訊至工程內(最安全)(&C)"
-
-#: prefs/FileFormatPrefs.cpp:88
-msgid "&Do not copy any audio"
-msgstr "不要複製任何音訊(&D)"
-
-#: prefs/FileFormatPrefs.cpp:89
-msgid "&Ask user"
-msgstr "詢問使用者(&A)"
-
-#: prefs/FileFormatPrefs.cpp:93
-msgid "When exporting tracks to an audio file"
-msgstr "當匯出音軌為音訊檔案時"
-
-#: prefs/FileFormatPrefs.cpp:96
-msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
-msgstr "總是將所有音軌混音成立體聲或單聲道。"
-
-#: prefs/FileFormatPrefs.cpp:97
-msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
-msgstr "使用自訂混音(舉例來說，匯出一個5.1聲道檔案)(&U)"
-
-#: prefs/FileFormatPrefs.cpp:102
-msgid "MP3 Export Library Location"
-msgstr "MP3匯出程式庫位置"
-
-#: prefs/FileFormatPrefs.cpp:105
 msgid "MP3 Library Version:"
 msgstr "MP3程式庫版本:"
 
-#: prefs/FileFormatPrefs.cpp:111
+#: prefs/FileFormatPrefs.cpp:86
+msgid "MP3 Library:"
+msgstr "MP3程式庫："
+
+#: prefs/FileFormatPrefs.cpp:89
 msgid "&Find Library"
 msgstr "尋找程式庫位址(&F)"
 
-#: prefs/FileFormatPrefs.cpp:113
-msgid "&Download Free Copy of LAME"
-msgstr "下載自由的LAME(&D)"
+#: prefs/FileFormatPrefs.cpp:91
+msgid "LAME MP3 Library:"
+msgstr "LAME MP3程式庫："
 
-#: prefs/FileFormatPrefs.cpp:118
-msgid "Note: Export quality options can be chosen by clicking the Options button in the Export dialogue."
+#: prefs/FileFormatPrefs.cpp:94
+msgid "&Download"
+msgstr "下載(&D)"
+
+#: prefs/FileFormatPrefs.cpp:99
+msgid "Note: Export quality options can be chosen by clicking the Options button in the Export dialog."
 msgstr "注意：匯出品質選項在匯出對話框的選項按鈕裡。"
 
-#: prefs/GUIPrefs.cpp:33
+#: prefs/FileFormatPrefs.cpp:100
+msgid "When importing audio files"
+msgstr "當Audacity匯入聲音檔案時"
+
+#: prefs/FileFormatPrefs.cpp:103
+msgid "&Make a copy of uncompressed audio files before editing (safer)"
+msgstr "在編輯前製作檔案備份(較安全)(&M)"
+
+#: prefs/FileFormatPrefs.cpp:104
+msgid "&Read uncompressed audio files directly from the original (faster)"
+msgstr "從原始檔案中直接讀取(快速)(&R)"
+
+#: prefs/FileFormatPrefs.cpp:106
+msgid "&Normalize all tracks in project"
+msgstr "將工程內所有音軌單位化(&n)"
+
+#: prefs/FileFormatPrefs.cpp:111
+msgid "When saving a project that depends on other audio files"
+msgstr "當要儲存相依於其他音訊檔案的工程時"
+
+#: prefs/FileFormatPrefs.cpp:114
+msgid "Always &copy all audio into project (safest)"
+msgstr "總是複製所有音訊至工程內(最安全)(&C)"
+
+#: prefs/FileFormatPrefs.cpp:115
+msgid "&Do not copy any audio"
+msgstr "不要複製任何音訊(&D)"
+
+#: prefs/FileFormatPrefs.cpp:116
+msgid "&Ask user"
+msgstr "詢問使用者(&A)"
+
+#: prefs/FileFormatPrefs.cpp:120
+msgid "When exporting tracks to an audio file"
+msgstr "當匯出音軌為音訊檔案時"
+
+#: prefs/FileFormatPrefs.cpp:123
+msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
+msgstr "總是將所有音軌混音成立體聲或單聲道。"
+
+#: prefs/FileFormatPrefs.cpp:124
+msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
+msgstr "使用自訂混音(舉例來說，匯出一個5.1聲道檔案)(&U)"
+
+#: prefs/FileFormatPrefs.cpp:126
+msgid "S&how Metadata Editor prior to export step"
+msgstr "在匯出前顯示標頭檔編輯器(&H)"
+
 #: prefs/GUIPrefs.cpp:34
+#: prefs/GUIPrefs.cpp:35
 msgid "Interface"
 msgstr "介面"
 
-#: prefs/GUIPrefs.cpp:72
+#: prefs/GUIPrefs.cpp:42
+msgid "In Browser"
+msgstr "瀏覽器"
+
+#: prefs/GUIPrefs.cpp:43
+msgid "From Internet"
+msgstr "網路上的說明"
+
+#: prefs/GUIPrefs.cpp:50
+msgid "Simple"
+msgstr "簡單"
+
+#: prefs/GUIPrefs.cpp:94
 msgid "&Update display while playing"
 msgstr "在播放時更新顯示(&U)"
 
-#: prefs/GUIPrefs.cpp:74
-msgid "Any Close/Exit command completely &quits Audacity"
-msgstr "任何關閉/結束指令將會完整地結束Audacity(&Q)"
+#: prefs/GUIPrefs.cpp:96
+msgid "Closing last window quits Audacity"
+msgstr "關閉最後一個視窗時結束Audacity"
 
-#: prefs/GUIPrefs.cpp:76
+#: prefs/GUIPrefs.cpp:98
 msgid "Enable &dragging of left and right selection edges"
 msgstr "允許拖動選取範圍左右兩端(&D)"
 
-#: prefs/GUIPrefs.cpp:78
+#: prefs/GUIPrefs.cpp:100
 msgid "&Ergonomic order of audio I/O buttons"
 msgstr "啟用音訊 I/O按鈕的人體工學順序(&E)"
 
-#: prefs/GUIPrefs.cpp:80
+#: prefs/GUIPrefs.cpp:102
 msgid "Automatically &fit tracks vertically zoomed"
 msgstr "音軌垂直縮放至適當大小(&F)"
 
-#: prefs/GUIPrefs.cpp:82
+#: prefs/GUIPrefs.cpp:104
 msgid "\"Move track focus\" &cycles repeatedly through tracks"
 msgstr "\"移動聚焦音軌\"循環移動音軌(&C)"
 
-#: prefs/GUIPrefs.cpp:84
+#: prefs/GUIPrefs.cpp:106
 msgid "Editing a &clip can move other clips"
 msgstr "編輯片段使之可移動其他片段(&C)"
 
-#: prefs/GUIPrefs.cpp:86
+#: prefs/GUIPrefs.cpp:108
 msgid "&Select all audio in project, if none selected"
 msgstr "若沒有選取任何音訊，則選取工程內所有音訊(&S)"
 
-#: prefs/GUIPrefs.cpp:88
+#: prefs/GUIPrefs.cpp:110
 msgid "&Beep on completion of longer activities"
 msgstr "指令執行完成後發出提示聲(&B)"
 
-#: prefs/GUIPrefs.cpp:94
+#: prefs/GUIPrefs.cpp:114
+msgid "Show / Hide"
+msgstr "顯示/隱藏"
+
+#: prefs/GUIPrefs.cpp:116
 msgid "Enable cut &lines"
 msgstr "開啟剪切線(&L)"
 
-#: prefs/GUIPrefs.cpp:96
+#: prefs/GUIPrefs.cpp:118
 msgid "Show warnings about &temp files"
 msgstr "顯示關於暫存檔案的警告(&T)"
 
-#: prefs/GUIPrefs.cpp:98
+#: prefs/GUIPrefs.cpp:120
 msgid "&Show prompt to save, even if project is empty"
 msgstr "提示儲存，即使是空的(&S)"
 
-#: prefs/GUIPrefs.cpp:100
+#: prefs/GUIPrefs.cpp:122
 msgid "Show Welcome Message at program start up"
 msgstr "程式啟動時顯示歡迎訊息"
 
-#: prefs/GUIPrefs.cpp:105
-msgid "Language"
-msgstr "語言"
+#: prefs/GUIPrefs.cpp:126
+msgid "Modes"
+msgstr "模式"
 
-#: prefs/GUIPrefs.cpp:107
-msgid "Language:"
-msgstr "語言："
+#: prefs/GUIPrefs.cpp:138
+msgid "Display range minimum: meters and 'Waveform (dB)'"
+msgstr "最小顯示範圍：儀表及\"波形(dB)\""
 
-#: prefs/GUIPrefs.cpp:110
-msgid "Minimum of dB mode display range"
-msgstr "最小 dB 模式顯示範圍"
-
-#: prefs/GUIPrefs.cpp:113
+#: prefs/GUIPrefs.cpp:141
 msgid "-36 dB (shallow range for high-amplitude editing)"
 msgstr "-36 dB  (小範圍，適用大振幅編輯)"
 
-#: prefs/GUIPrefs.cpp:114
+#: prefs/GUIPrefs.cpp:142
 msgid "-48 dB (PCM range of 8 bit samples)"
 msgstr "-48 dB (PCM 8bit 取樣範圍)"
 
-#: prefs/GUIPrefs.cpp:115
+#: prefs/GUIPrefs.cpp:143
+msgid "-60 dB (PCM range of 10 bit samples)"
+msgstr "-60 dB (PCM 10bit 取樣範圍)"
+
+#: prefs/GUIPrefs.cpp:144
 msgid "-96 dB (PCM range of 16 bit samples)"
 msgstr "-96 dB (PCM 16bit 取樣範圍)"
 
-#: prefs/GUIPrefs.cpp:116
+#: prefs/GUIPrefs.cpp:145
 msgid "-120 dB (approximate limit of human hearing)"
 msgstr "-120 dB (接近人類聽力的極限)"
 
-#: prefs/GUIPrefs.cpp:117
+#: prefs/GUIPrefs.cpp:146
 msgid "-145 dB (PCM range of 24 bit samples)"
 msgstr "-145 dB(PCM 24bit 取樣範圍)"
+
+#: prefs/GUIPrefs.cpp:151
+msgid "Default View Mode"
+msgstr "預設檢視模式"
+
+#: prefs/GUIPrefs.cpp:154
+msgid "WaveformDisplay"
+msgstr "波形顯示"
+
+#: prefs/GUIPrefs.cpp:155
+msgid "WaveformDBDisplay"
+msgstr "波形DB顯示"
+
+#: prefs/GUIPrefs.cpp:156
+msgid "SpectrumDisplay"
+msgstr "頻譜顯示"
+
+#: prefs/GUIPrefs.cpp:158
+msgid "SpectrumLogDisplay"
+msgstr "頻譜Log顯示"
+
+#: prefs/GUIPrefs.cpp:160
+msgid "PitchDisplay"
+msgstr "音高顯示"
+
+#: prefs/GUIPrefs.cpp:166
+msgid "Other interface choices"
+msgstr "其他介面選擇"
+
+#: prefs/GUIPrefs.cpp:168
+msgid "Language:"
+msgstr "語言："
+
+#: prefs/GUIPrefs.cpp:169
+msgid "Help:"
+msgstr "說明："
+
+#: prefs/GUIPrefs.cpp:170
+msgid "Solo Button:"
+msgstr "獨奏按鈕："
 
 #: prefs/KeyConfigPrefs.cpp:64
 #: prefs/KeyConfigPrefs.cpp:65
@@ -6806,11 +7038,6 @@ msgstr "放大或縮小"
 msgid "Audacity Preferences"
 msgstr "Audacity 偏好設定"
 
-#: prefs/QualityPrefs.cpp:42
-#: prefs/QualityPrefs.cpp:43
-msgid "Quality"
-msgstr "品質"
-
 #: prefs/QualityPrefs.cpp:73
 msgid "Rectangle"
 msgstr "矩形"
@@ -6890,84 +7117,92 @@ msgstr "靜音等級(dB)："
 msgid "Spectrograms"
 msgstr "聲譜圖"
 
-#: prefs/SpectrumPrefs.cpp:85
+#: prefs/SpectrumPrefs.cpp:91
 msgid "FFT Size"
 msgstr "FFT的取樣點數"
 
-#: prefs/SpectrumPrefs.cpp:88
+#: prefs/SpectrumPrefs.cpp:94
 msgid "8 - most wideband"
 msgstr "8 - 頻寬最寬"
 
-#: prefs/SpectrumPrefs.cpp:93
+#: prefs/SpectrumPrefs.cpp:99
 msgid "256 - default"
 msgstr "256 - 預設值"
 
-#: prefs/SpectrumPrefs.cpp:101
+#: prefs/SpectrumPrefs.cpp:107
 msgid "32768 - most narrowband"
 msgstr "32768 - 頻寬最窄"
 
-#: prefs/SpectrumPrefs.cpp:103
+#: prefs/SpectrumPrefs.cpp:109
 msgid "4096 - most narrowband"
 msgstr "4096 - 頻寬最窄"
 
-#: prefs/SpectrumPrefs.cpp:110
+#: prefs/SpectrumPrefs.cpp:116
 msgid "Window type:"
 msgstr "FFT Window類型："
 
-#: prefs/SpectrumPrefs.cpp:116
+#: prefs/SpectrumPrefs.cpp:125
+msgid "FFT Skip Points"
+msgstr "FFT忽略點"
+
+#: prefs/SpectrumPrefs.cpp:140
 msgid "Display"
 msgstr "顯示"
 
-#: prefs/SpectrumPrefs.cpp:120
+#: prefs/SpectrumPrefs.cpp:144
 msgid "&Grayscale"
 msgstr "灰階(&G)"
 
-#: prefs/SpectrumPrefs.cpp:123
+#: prefs/SpectrumPrefs.cpp:147
 msgid "Minimum Frequency (Hz):"
 msgstr "最低頻率 (Hz)："
 
-#: prefs/SpectrumPrefs.cpp:128
+#: prefs/SpectrumPrefs.cpp:152
 msgid "Maximum Frequency (Hz):"
 msgstr "最高頻率 (Hz)："
 
-#: prefs/SpectrumPrefs.cpp:134
+#: prefs/SpectrumPrefs.cpp:158
+msgid "&Y-Grid"
+msgstr "&Y-網格"
+
+#: prefs/SpectrumPrefs.cpp:161
 msgid "&Find Notes"
 msgstr "尋找註解(&F)"
 
-#: prefs/SpectrumPrefs.cpp:135
+#: prefs/SpectrumPrefs.cpp:162
 msgid "&Quantize Notes"
 msgstr "量化註解(&Q)"
 
-#: prefs/SpectrumPrefs.cpp:138
+#: prefs/SpectrumPrefs.cpp:165
 msgid "Minimum Amplitude (dB):"
 msgstr "最低振幅(dB)："
 
-#: prefs/SpectrumPrefs.cpp:143
+#: prefs/SpectrumPrefs.cpp:170
 msgid "Max. Number of Notes (1..128):"
 msgstr "註解最大數目(1-128)："
 
-#: prefs/SpectrumPrefs.cpp:170
+#: prefs/SpectrumPrefs.cpp:197
 msgid "The maximum frequency must be an integer"
 msgstr "最大頻率值必須是整數。"
 
-#: prefs/SpectrumPrefs.cpp:174
+#: prefs/SpectrumPrefs.cpp:201
 msgid "Maximum frequency must be in the range 100 Hz - 100,000 Hz"
 msgstr "最高頻率需介於 100 Hz - 100,000 Hz"
 
-#: prefs/SpectrumPrefs.cpp:182
+#: prefs/SpectrumPrefs.cpp:209
 msgid "The minimum frequency must be an integer"
 msgstr "最低頻率值必須是整數。"
 
-#: prefs/SpectrumPrefs.cpp:186
+#: prefs/SpectrumPrefs.cpp:213
 msgid "Minimum frequency must be at least 0 Hz"
 msgstr "最低頻率最少為0 Hz"
 
-#: prefs/SpectrumPrefs.cpp:193
+#: prefs/SpectrumPrefs.cpp:220
 msgid "The minimum amplitude (dB) must be an integer"
 msgstr "最低振幅(dB)必須是整數。"
 
-#: prefs/SpectrumPrefs.cpp:199
-#: prefs/SpectrumPrefs.cpp:203
+#: prefs/SpectrumPrefs.cpp:226
+#: prefs/SpectrumPrefs.cpp:230
 msgid "The Maximum Number of Notes must be an integer in the range 1..128"
 msgstr "最大頻率值必須是1-128之間的整數。"
 
@@ -7102,7 +7337,7 @@ msgid "Clean Speech"
 msgstr "清除人聲"
 
 #: toolbars/ControlToolBar.cpp:530
-#: toolbars/ControlToolBar.cpp:839
+#: toolbars/ControlToolBar.cpp:844
 msgid "Error while opening sound device. "
 msgstr "開啟音訊裝置錯誤。"
 
@@ -7216,39 +7451,44 @@ msgstr "輸入來源"
 msgid "Selection"
 msgstr "選取範圍"
 
-#: toolbars/SelectionBar.cpp:120
-#: toolbars/SelectionBar.cpp:177
+#: toolbars/SelectionBar.cpp:128
+#: toolbars/SelectionBar.cpp:185
 msgid "Project Rate (Hz):"
 msgstr "成音工程速率(Hz)："
 
-#: toolbars/SelectionBar.cpp:134
-#: toolbars/SelectionBar.cpp:235
+#: toolbars/SelectionBar.cpp:142
+#: toolbars/SelectionBar.cpp:247
 msgid "Selection Start:"
 msgstr "選取範圍起點"
 
-#: toolbars/SelectionBar.cpp:157
+#: toolbars/SelectionBar.cpp:155
+#: toolbars/SelectionBar.cpp:253
+msgid "Length"
+msgstr "時間長度"
+
+#: toolbars/SelectionBar.cpp:165
 msgid "hidden"
 msgstr "隱藏"
 
-#: toolbars/SelectionBar.cpp:167
-#: toolbars/SelectionBar.cpp:252
+#: toolbars/SelectionBar.cpp:175
+#: toolbars/SelectionBar.cpp:264
 msgid "Audio Position:"
 msgstr "播放時間位置："
 
-#: toolbars/SelectionBar.cpp:217
-#: toolbars/SelectionBar.cpp:222
+#: toolbars/SelectionBar.cpp:225
+#: toolbars/SelectionBar.cpp:230
 msgid "Snap To"
 msgstr "滑扣至"
 
-#: toolbars/SelectionBar.cpp:240
+#: toolbars/SelectionBar.cpp:252
 msgid "Selection "
 msgstr "選取範圍"
 
-#: toolbars/SelectionBar.cpp:305
+#: toolbars/SelectionBar.cpp:317
 msgid "Selection Length"
 msgstr "新的選取範圍長度："
 
-#: toolbars/SelectionBar.cpp:313
+#: toolbars/SelectionBar.cpp:325
 msgid "Selection End"
 msgstr "選取範圍終點"
 
@@ -7337,120 +7577,120 @@ msgstr "複合工具"
 msgid "Transcription"
 msgstr "錄音"
 
-#: toolbars/TranscriptionToolBar.cpp:165
+#: toolbars/TranscriptionToolBar.cpp:171
 msgid "Play at selected speed"
 msgstr "以選定速度播放"
 
-#: toolbars/TranscriptionToolBar.cpp:166
+#: toolbars/TranscriptionToolBar.cpp:172
 msgid "Play-at-speed"
 msgstr "播放速度"
 
-#: toolbars/TranscriptionToolBar.cpp:172
-#: toolbars/TranscriptionToolBar.cpp:177
+#: toolbars/TranscriptionToolBar.cpp:178
+#: toolbars/TranscriptionToolBar.cpp:183
 msgid "Playback Speed"
 msgstr "播放速度"
 
-#: toolbars/TranscriptionToolBar.cpp:190
+#: toolbars/TranscriptionToolBar.cpp:196
 msgid "Adjust left selection to next onset"
 msgstr "調整左選段至下一個起點"
 
-#: toolbars/TranscriptionToolBar.cpp:191
+#: toolbars/TranscriptionToolBar.cpp:197
 msgid "Left-to-On"
 msgstr "Left-to-On"
 
-#: toolbars/TranscriptionToolBar.cpp:193
+#: toolbars/TranscriptionToolBar.cpp:199
 msgid "Adjust right selection to previous offset"
 msgstr "調整右選段至前一個結束點"
 
-#: toolbars/TranscriptionToolBar.cpp:194
+#: toolbars/TranscriptionToolBar.cpp:200
 msgid "Right-to-Off"
 msgstr "Right-to-Off"
 
-#: toolbars/TranscriptionToolBar.cpp:196
+#: toolbars/TranscriptionToolBar.cpp:202
 msgid "Adjust left selection to next offset"
 msgstr "調整左選段至下一個結束點"
 
-#: toolbars/TranscriptionToolBar.cpp:197
+#: toolbars/TranscriptionToolBar.cpp:203
 msgid "Left-to-Off"
 msgstr "Left-to-Off"
 
-#: toolbars/TranscriptionToolBar.cpp:199
+#: toolbars/TranscriptionToolBar.cpp:205
 msgid "Adjust right selection to previous onset"
 msgstr "調整右選段至前一個起點"
 
-#: toolbars/TranscriptionToolBar.cpp:200
+#: toolbars/TranscriptionToolBar.cpp:206
 msgid "Right-to-On"
 msgstr "Right-to-On"
 
-#: toolbars/TranscriptionToolBar.cpp:202
+#: toolbars/TranscriptionToolBar.cpp:208
 msgid "Select region of sound around cursor"
 msgstr "選取游標附近有聲音的區域"
 
-#: toolbars/TranscriptionToolBar.cpp:203
+#: toolbars/TranscriptionToolBar.cpp:209
 msgid "Select-Sound"
 msgstr "選擇聲音"
 
-#: toolbars/TranscriptionToolBar.cpp:205
+#: toolbars/TranscriptionToolBar.cpp:211
 msgid "Select region of silence around cursor"
 msgstr "選取游標附近無聲音的區域"
 
-#: toolbars/TranscriptionToolBar.cpp:206
+#: toolbars/TranscriptionToolBar.cpp:212
 msgid "Select-Silence"
 msgstr "選擇靜音"
 
-#: toolbars/TranscriptionToolBar.cpp:208
+#: toolbars/TranscriptionToolBar.cpp:214
 msgid "Automatically make labels from words"
 msgstr "將字詞自動加入標籤"
 
-#: toolbars/TranscriptionToolBar.cpp:209
+#: toolbars/TranscriptionToolBar.cpp:215
 msgid "Make Labels"
 msgstr "產生標籤"
 
-#: toolbars/TranscriptionToolBar.cpp:211
+#: toolbars/TranscriptionToolBar.cpp:217
 msgid "Add label at selection"
 msgstr "在選取範圍加上標籤"
 
-#: toolbars/TranscriptionToolBar.cpp:212
+#: toolbars/TranscriptionToolBar.cpp:218
 msgid "Add Label"
 msgstr "新增標籤"
 
-#: toolbars/TranscriptionToolBar.cpp:214
+#: toolbars/TranscriptionToolBar.cpp:220
 msgid "Calibrate voicekey"
 msgstr "校準音調"
 
-#: toolbars/TranscriptionToolBar.cpp:215
+#: toolbars/TranscriptionToolBar.cpp:221
 msgid "Calibrate"
 msgstr "校準"
 
-#: toolbars/TranscriptionToolBar.cpp:219
+#: toolbars/TranscriptionToolBar.cpp:225
 msgid "Adjust Sensitivity"
 msgstr "調整靈敏度"
 
-#: toolbars/TranscriptionToolBar.cpp:224
+#: toolbars/TranscriptionToolBar.cpp:230
 msgid "Sensitivity"
 msgstr "靈敏度"
 
-#: toolbars/TranscriptionToolBar.cpp:229
+#: toolbars/TranscriptionToolBar.cpp:235
 msgid "Energy"
 msgstr "能量"
 
-#: toolbars/TranscriptionToolBar.cpp:230
+#: toolbars/TranscriptionToolBar.cpp:236
 msgid "Sign Changes (Low Threshold)"
 msgstr "符號變更(低門檻)"
 
-#: toolbars/TranscriptionToolBar.cpp:231
+#: toolbars/TranscriptionToolBar.cpp:237
 msgid "Sign Changes (High Threshold)"
 msgstr "符號變更(高門檻)"
 
-#: toolbars/TranscriptionToolBar.cpp:232
+#: toolbars/TranscriptionToolBar.cpp:238
 msgid "Direction Changes (Low Threshold)"
 msgstr "直接變更(低門檻)"
 
-#: toolbars/TranscriptionToolBar.cpp:233
+#: toolbars/TranscriptionToolBar.cpp:239
 msgid "Direction Changes (High Threshold)"
 msgstr "直接變更(高門檻)"
 
-#: toolbars/TranscriptionToolBar.cpp:241
+#: toolbars/TranscriptionToolBar.cpp:247
 msgid "Key type"
 msgstr "關鍵類型"
 
@@ -7458,25 +7698,25 @@ msgstr "關鍵類型"
 msgid " (disabled)"
 msgstr " (停用)"
 
-#: widgets/AButton.cpp:447
+#: widgets/AButton.cpp:452
 msgid "Press"
 msgstr "按下"
 
-#: widgets/AButton.cpp:526
+#: widgets/AButton.cpp:531
 msgid "Button"
 msgstr "按鈕"
 
 #. i18n-hint: One-letter abbreviation for Left, in VU Meter
 #. i18n-hint: One-letter abbreviation for Left, in the Pan slider
 #: widgets/ASlider.cpp:604
-#: widgets/Meter.cpp:211
+#: widgets/Meter.cpp:212
 msgid "L"
 msgstr "左"
 
 #. i18n-hint: One-letter abbreviation for Right, in VU Meter
 #. i18n-hint: One-letter abbreviation for Right, in the Pan slider
 #: widgets/ASlider.cpp:607
-#: widgets/Meter.cpp:213
+#: widgets/Meter.cpp:214
 msgid "R"
 msgstr "右"
 
@@ -7492,12 +7732,28 @@ msgstr "左聲道"
 msgid "Right"
 msgstr "右聲道"
 
-#: widgets/ErrorDialog.cpp:73
-#: widgets/ErrorDialog.cpp:97
+#: widgets/ErrorDialog.cpp:78
+#: widgets/ErrorDialog.cpp:102
 msgid "Help"
 msgstr "說明(&H)"
 
-#: widgets/ErrorDialog.cpp:190
+#: widgets/ErrorDialog.cpp:137
+msgid "<"
+msgstr "<"
+
+#: widgets/ErrorDialog.cpp:138
+msgid ">"
+msgstr ">"
+
+#: widgets/ErrorDialog.cpp:142
+msgid "Forwards"
+msgstr "快轉"
+
+#: widgets/ErrorDialog.cpp:143
+msgid "Backwards"
+msgstr "倒帶"
+
+#: widgets/ErrorDialog.cpp:249
 msgid "Help on the Internet"
 msgstr "網路上的說明"
 
@@ -7505,50 +7761,50 @@ msgstr "網路上的說明"
 msgid "Grabber"
 msgstr "擷取器"
 
-#: widgets/Grid.cpp:635
+#: widgets/Grid.cpp:643
 #, c-format
 msgid "%d rows, %d columns"
 msgstr "%d列，%d行"
 
-#: widgets/Grid.cpp:641
-#: widgets/Grid.cpp:768
+#: widgets/Grid.cpp:649
+#: widgets/Grid.cpp:776
 #, c-format
 msgid "Row %d"
 msgstr "列%d"
 
-#: widgets/Grid.cpp:783
+#: widgets/Grid.cpp:791
 msgid "Empty"
 msgstr "空白"
 
-#: widgets/Meter.cpp:342
+#: widgets/Meter.cpp:359
 msgid "Enable Meter"
 msgstr "啟用儀表工具列"
 
-#: widgets/Meter.cpp:344
+#: widgets/Meter.cpp:361
 msgid "Disable Meter"
 msgstr "停用儀表工具列"
 
-#: widgets/Meter.cpp:347
+#: widgets/Meter.cpp:364
 msgid "Stop Monitoring"
 msgstr "停止監聽"
 
-#: widgets/Meter.cpp:349
+#: widgets/Meter.cpp:366
 msgid "Start Monitoring"
 msgstr "開始監聽"
 
-#: widgets/Meter.cpp:353
+#: widgets/Meter.cpp:370
 msgid "Horizontal Stereo"
 msgstr "水平立體聲"
 
-#: widgets/Meter.cpp:354
+#: widgets/Meter.cpp:371
 msgid "Vertical Stereo"
 msgstr "垂直立體聲"
 
-#: widgets/Meter.cpp:371
+#: widgets/Meter.cpp:388
 msgid "Preferences..."
 msgstr "偏好設定..."
 
-#: widgets/Meter.cpp:1061
+#: widgets/Meter.cpp:1078
 msgid ""
 "This determines how often the meter is refreshed.\n"
 "If you have a slower PC you may want to select a\n"
@@ -7560,11 +7816,11 @@ msgstr ""
 "較低的更新頻率 (低於30)，這樣子\n"
 "電腦可以跑得比較順。"
 
-#: widgets/Meter.cpp:1062
+#: widgets/Meter.cpp:1079
 msgid "Meter refresh rate per second [1-100]: "
 msgstr "儀表更新頻率(每秒)[1-100]："
 
-#: widgets/Meter.cpp:1063
+#: widgets/Meter.cpp:1080
 msgid "Meter Preferences"
 msgstr "儀表工具列偏好設定"
 
@@ -7572,135 +7828,220 @@ msgstr "儀表工具列偏好設定"
 msgid " Please select an action "
 msgstr "請選擇一項動作"
 
-#: widgets/Ruler.cpp:1224
-#: widgets/Ruler.cpp:1225
+#: widgets/Ruler.cpp:1478
+#: widgets/Ruler.cpp:1479
 msgid "Vertical Ruler"
 msgstr "垂直尺規"
 
-#. i18n-hint: These strings control the formatting of time units in the
-#. * display. They are fairly complex, see the comments in
-#. * widgets/TimeTextCtrl.cpp for how they work
-#: widgets/TimeTextCtrl.cpp:201
+#. i18n-hint: Format string for displaying time in seconds. Change the comma
+#. * in the middle to the 1000s separator for your locale, and the 'seconds'
+#. * on the end to the word for seconds. Don't change the numbers.
+#: widgets/TimeTextCtrl.cpp:267
 msgid "01000,01000 seconds"
 msgstr "01000,01000 seconds"
 
-#: widgets/TimeTextCtrl.cpp:202
+#. i18n-hint: Name of time display format that shows time in hours, minutes
+#. * and seconds
+#: widgets/TimeTextCtrl.cpp:270
 msgid "hh:mm:ss"
 msgstr "hh:mm:ss"
 
-#: widgets/TimeTextCtrl.cpp:203
+#. i18n-hint: Format string for displaying time in hours, minutes and
+#. * seconds. Change the 'h' to the abbreviation for hours, 'm' to the
+#. * abbreviation for minutes and 's' to the abbreviation for seconds. Don't
+#. * change the numbers unless there aren't 60 seconds in a minute in your
+#. * locale
+#: widgets/TimeTextCtrl.cpp:276
 msgid "0100 h 060 m 060 s"
 msgstr "0100 h 060 m 060 s"
 
-#: widgets/TimeTextCtrl.cpp:204
+#. i18n-hint: Name of time display format that shows time in days, hours,
+#. * minutes and seconds
+#: widgets/TimeTextCtrl.cpp:279
 msgid "dd:hh:mm:ss"
 msgstr "dd:hh:mm:ss"
 
-#: widgets/TimeTextCtrl.cpp:205
+#. i18n-hint: Format string for displaying time in days, hours, minutes and
+#. * seconds. Change the 'days' to the word for days, 'h' to the abbreviation
+#. * for hours, 'm' to the abbreviation for minutes and 's' to the
+#. * abbreviation for seconds. Don't change the numbers unless there aren't
+#. * 24 hours in a day in your locale
+#: widgets/TimeTextCtrl.cpp:285
 msgid "0100 days 024 h 060 m 060 s"
 msgstr "0100 days 024 h 060 m 060 s"
 
-#: widgets/TimeTextCtrl.cpp:206
+#. i18n-hint: Name of time display format that shows time in hours,
+#. * minutes, seconds and milliseconds (1/1000 second)
+#: widgets/TimeTextCtrl.cpp:288
 msgid "hh:mm:ss + milliseconds"
 msgstr "hh:mm:ss + milliseconds"
 
-#: widgets/TimeTextCtrl.cpp:207
+#. i18n-hint: Format string for displaying time in hours, minutes, seconds
+#. * and milliseconds. Change the 'h' to the abbreviation for hours, 'm' to the
+#. * abbreviation for minutes and 's' to the abbreviation for seconds (the
+#. * milliseconds are shown as decimal seconds) . Don't change the numbers
+#. * unless there aren't 60 minutes in an hour in your locale
+#: widgets/TimeTextCtrl.cpp:294
 msgid "0100 h 060 m 060.01000 s"
 msgstr "0100 h 060 m 060.01000 s"
 
-#: widgets/TimeTextCtrl.cpp:208
+#. i18n-hint: Name of time display format that shows time in hours,
+#. * minutes, seconds and samples (at the current project sample rate)
+#: widgets/TimeTextCtrl.cpp:297
 msgid "hh:mm:ss + samples"
 msgstr "時:分:秒 + 取樣點"
 
-#: widgets/TimeTextCtrl.cpp:209
+#. i18n-hint: Format string for displaying time in hours, minutes, seconds
+#. * and samples. Change the 'h' to the abbreviation for hours, 'm' to the
+#. * abbreviation for minutes, 's' to the abbreviation for seconds and
+#. * translate samples . Don't change the numbers
+#. * unless there aren't 60 seconds in a minute in your locale
+#: widgets/TimeTextCtrl.cpp:303
 msgid "0100 h 060 m 060 s+.# samples"
 msgstr "0100 h 060 m 060 s+.# samples"
 
-#: widgets/TimeTextCtrl.cpp:210
+#. i18n-hint: Name of time display format that shows time in samples (at the
+#. * current project sample rate)
+#: widgets/TimeTextCtrl.cpp:306
 msgid "samples"
 msgstr "samples"
 
-#: widgets/TimeTextCtrl.cpp:211
+#. i18n-hint: Format string for displaying time in samples (lots of samples).
+#. * Change the ',' to the 1000s separator for your locale, and translate
+#. * samples. If 1000s aren't a base multiple for your number system, then you
+#. * can change the numbers to an appropriate one, and put a 0 on the front
+#: widgets/TimeTextCtrl.cpp:311
 msgid "01000,01000,01000 samples|#"
 msgstr "01000,01000,01000 samples|#"
 
-#: widgets/TimeTextCtrl.cpp:212
+#. i18n-hint: Name of time display format that shows time in hours, minutes,
+#. * seconds and frames at 24 frames per second (commonly used for films)
+#: widgets/TimeTextCtrl.cpp:314
 msgid "hh:mm:ss + film frames (24 fps)"
 msgstr "時:分:秒 + 影片 frames (24 fps)"
 
-#: widgets/TimeTextCtrl.cpp:213
+#. i18n-hint: Format string for displaying time in hours, minutes, seconds
+#. * and frames at 24 frames per second. Change the 'h' to the abbreviation
+#. * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
+#. * for seconds and translate 'frames' . Don't change the numbers
+#. * unless there aren't 60 seconds in a minute in your locale
+#: widgets/TimeTextCtrl.cpp:320
 msgid "0100 h 060 m 060 s+.24 frames"
 msgstr "0100 h 060 m 060 s+.24 frames"
 
-#: widgets/TimeTextCtrl.cpp:214
+#. i18n-hint: Name of time display format that shows time in frames (lots of
+#. * frames) at 24 frames per second (commonly used for films)
+#: widgets/TimeTextCtrl.cpp:323
 msgid "film frames (24 fps)"
 msgstr "影片 frames 24 fps"
 
-#: widgets/TimeTextCtrl.cpp:215
+#. i18n-hint: Format string for displaying time in frames at 24 frames per
+#. * second. Translate 'frames' and leave the rest alone
+#: widgets/TimeTextCtrl.cpp:326
 msgid "01000,01000 frames|24"
 msgstr "01000,01000 frames|24"
 
-#: widgets/TimeTextCtrl.cpp:216
+#. i18n-hint: Name of time display format that shows time in hours, minutes,
+#. * seconds and frames at NTSC TV drop-frame rate (used for American /
+#. * Japananese TV, and very odd)
+#: widgets/TimeTextCtrl.cpp:330
 msgid "hh:mm:ss + NTSC drop frames"
 msgstr "hh:mm:ss + NTSC drop frames"
 
-#: widgets/TimeTextCtrl.cpp:217
+#. i18n-hint: Format string for displaying time in hours, minutes, seconds
+#. * and frames with NTSC drop frames. Change the 'h' to the abbreviation
+#. * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
+#. * for seconds and translate 'frames'. Leave the |N alone, it's important!
+#: widgets/TimeTextCtrl.cpp:335
 msgid "0100 h 060 m 060 s+.30 frames|N"
 msgstr "0100 h 060 m 060 s+.30 frames|N"
 
-#: widgets/TimeTextCtrl.cpp:218
+#. i18n-hint: Name of time display format that shows time in hours, minutes,
+#. * seconds and frames at NTSC TV non-drop-frame rate (used for American /
+#. * Japananese TV, and doesn't quite match wall time
+#: widgets/TimeTextCtrl.cpp:339
 msgid "hh:mm:ss + NTSC non-drop frames"
 msgstr "時:分:秒 + NTSC non-drop frames"
 
-#: widgets/TimeTextCtrl.cpp:219
+#. i18n-hint: Format string for displaying time in hours, minutes, seconds
+#. * and frames with NTSC drop frames. Change the 'h' to the abbreviation
+#. * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
+#. * for seconds and translate 'frames'. Leave the | .999000999 alone,
+#. * the whole things really is slightly off-speed!
+#: widgets/TimeTextCtrl.cpp:345
 msgid "0100 h 060 m 060 s+.030 frames| .999000999"
 msgstr "0100 h 060 m 060 s+.030 frames| .999000999"
 
-#: widgets/TimeTextCtrl.cpp:220
+#. i18n-hint: Name of time display format that shows time in frames at NTSC
+#. * TV frame rate (used for American / Japananese TV
+#: widgets/TimeTextCtrl.cpp:348
 msgid "NTSC frames"
 msgstr "NTSC frames"
 
-#: widgets/TimeTextCtrl.cpp:221
+#. i18n-hint: Format string for displaying time in frames with NTSC frames.
+#. * Translate 'frames' and leave the rest alone. That really is the frame
+#. * rate!
+#: widgets/TimeTextCtrl.cpp:352
 msgid "01000,01000 frames|29.97002997"
 msgstr "01000,01000 frames|29.97002997"
 
-#: widgets/TimeTextCtrl.cpp:222
+#. i18n-hint: Name of time display format that shows time in hours, minutes,
+#. * seconds and frames at PAL TV frame rate (used for European TV)
+#: widgets/TimeTextCtrl.cpp:355
 msgid "hh:mm:ss + PAL frames (25 fps)"
 msgstr "hh:mm:ss + PAL frames (25 fps)"
 
-#: widgets/TimeTextCtrl.cpp:223
+#. i18n-hint: Format string for displaying time in hours, minutes, seconds
+#. * and frames with PAL TV frames. Change the 'h' to the abbreviation
+#. * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
+#. * for seconds and translate 'frames'. Nice simple time code!
+#: widgets/TimeTextCtrl.cpp:360
 msgid "0100 h 060 m 060 s+.25 frames"
 msgstr "0100 h 060 m 060 s+.25 frames"
 
-#: widgets/TimeTextCtrl.cpp:224
+#. i18n-hint: Name of time display format that shows time in frames at PAL
+#. * TV frame rate (used for European TV
+#: widgets/TimeTextCtrl.cpp:363
 msgid "PAL frames (25 fps)"
 msgstr "PAL frames (25 fps)"
 
-#: widgets/TimeTextCtrl.cpp:225
+#. i18n-hint: Format string for displaying time in frames with NTSC frames.
+#. * Translate 'frames' and leave the rest alone.
+#: widgets/TimeTextCtrl.cpp:366
 msgid "01000,01000 frames|25"
 msgstr "01000,01000 frames|25"
 
-#: widgets/TimeTextCtrl.cpp:226
+#. i18n-hint: Name of time display format that shows time in hours, minutes,
+#. * seconds and frames at CD Audio frame rate (75 frames per second)
+#: widgets/TimeTextCtrl.cpp:369
 msgid "hh:mm:ss + CDDA frames (75 fps)"
 msgstr "hh:mm:ss + CDDA frames (75 fps)"
 
-#: widgets/TimeTextCtrl.cpp:227
+#. i18n-hint: Format string for displaying time in hours, minutes, seconds
+#. * and frames with CD Audio frames. Change the 'h' to the abbreviation
+#. * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
+#. * for seconds and translate 'frames'.
+#: widgets/TimeTextCtrl.cpp:374
 msgid "0100 h 060 m 060 s+.75 frames"
 msgstr "0100 h 060 m 060 s+.75 frames"
 
-#: widgets/TimeTextCtrl.cpp:228
+#. i18n-hint: Name of time display format that shows time in frames at CD
+#. * Audio frame rate (75 frames per second)
+#: widgets/TimeTextCtrl.cpp:377
 msgid "CDDA frames (75 fps)"
 msgstr "CDDA frames (75 fps)"
 
-#: widgets/TimeTextCtrl.cpp:229
+#. i18n-hint: Format string for displaying time in frames with CD Audio
+#. * frames. Translate 'frames' and leave the rest alone
+#: widgets/TimeTextCtrl.cpp:380
 msgid "01000,01000 frames|75"
 msgstr "01000,01000 frames|75"
 
-#: widgets/TimeTextCtrl.cpp:366
+#: widgets/TimeTextCtrl.cpp:451
 msgid "Use right mouse button or context key to change format"
 msgstr "用滑鼠右鍵或內容鍵變更格式"
 
-#: widgets/TimeTextCtrl.cpp:1380
+#: widgets/TimeTextCtrl.cpp:1485
 msgid "Time Control"
 msgstr "時間控制"
 
