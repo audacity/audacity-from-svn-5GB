@@ -45,7 +45,7 @@ msgstr "Ceci est une version stable et complête d'Audacity. Si toutefois vous d
 msgid "translator_credits"
 msgstr ""
 "Traduction française de Christian Brochec. \n"
-"Pour toute remarque ou suggestion : christian@audacityteam.org \n"
+"Pour toute remarque ou suggestion : christian@audacityteam.org"
 
 #: AboutDialog.cpp:207
 msgid "A Free Digital Audio Editor"
