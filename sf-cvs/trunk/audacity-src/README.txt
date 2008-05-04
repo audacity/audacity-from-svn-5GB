@@ -261,10 +261,10 @@ also supported) please email audacity-help@lists.sourceforge.net
 -------------------------------------------------------------
 
 Known issues/problems:
-  * Using the Escape key to cancel dialogues doesn't work is audacity is built
-    with wxWidgets version 2.6.4 or newer. This is due to a wxWidgets bug
-	which we have fixed in the builds provided by the Audacity project, but
-	will affect other builds of audacity.
+  * Using the Escape key to cancel dialogues doesn't work if Audacity is built
+    with wxWidgets version 2.6.4 or newer. This is due to a wxWidgets bug 
+    which we have fixed in the builds provided by the Audacity project, but
+    will affect other builds of audacity.
 
   * Audacity can import and display MIDI files, but they cannot be played
     or edited.
@@ -283,8 +283,8 @@ Known issues/problems:
 
   * Mac OS X only: In the OS X version of Audacity, portable settings aren't
     picked up, and the default settings (in the default location) are always
-	used. If you want to use Audacity with portable settings under OS X, see
-	this page on the wiki for a work-around:
+    used. If you want to use Audacity with portable settings under OS X, see
+    this page on the wiki for a work-around:
       http://audacityteam.org/wiki/index.php?title=Portable_Audacity
 
   * Windows only: Audacity is incompatible with some professional
@@ -296,7 +296,7 @@ Known issues/problems:
 
   * Linux only: Audacity now supports interfacing with Jack, however this has
     not been tested, and is known to have a number of issues with both 
-	reliability and useability. Patches to improve both will be welcomed.
+    reliability and useability. Patches to improve both will be welcomed.
 
     Also note that the Windows installer will not replace 1.2.x installations,
     but will install alongside them.
