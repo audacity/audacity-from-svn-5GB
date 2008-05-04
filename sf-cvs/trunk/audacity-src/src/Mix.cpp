@@ -6,6 +6,7 @@
 
   Dominic Mazzoni
   Markus Meyer
+  Vaughan Johnson
 
 *******************************************************************//**
 
@@ -121,8 +122,8 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
                                     _("Mixing and rendering tracks"));
    wxBusyCursor busy;
    
-   bool cancelling = false;
-   while(!cancelling) {
+   bool bCancel = false;
+   while(!bCancel) {
       sampleCount blockLen = mixer->Process(maxBlockLen);
 
       if (blockLen == 0)
@@ -141,17 +142,23 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
       }
 
       int progressvalue = int (1000 * (mixer->MixGetCurrentTime() / totalTime));
-      cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
+      bCancel = !GetActiveProject()->ProgressUpdate(progressvalue);
    }
 
    GetActiveProject()->ProgressHide();
 
    mixLeft->Flush();
-   *newLeft = mixLeft;
-   if (!mono) {
+   if (!mono) 
       mixRight->Flush();
-      *newRight = mixRight;
-   }
+   if (bCancel)
+   {
+      delete mixLeft;
+      if (!mono) 
+         delete mixRight;
+   } else {
+      *newLeft = mixLeft;
+      if (!mono) 
+         *newRight = mixRight;
 
 #if 0
    int elapsedMS = wxGetElapsedTime();
@@ -165,11 +172,12 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
    printf("Elapsed time: %f sec\n", elapsedTime);
    printf("Max number of tracks to mix in real time: %f\n", maxTracks);
 #endif
+   }
 
    delete[] waveArray;
    delete mixer;
 
-   return true;
+   return !bCancel;
 }
 
 Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
