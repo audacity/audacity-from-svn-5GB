@@ -24,7 +24,11 @@ typedef enum {
    floatSample = 0x0004000F
 } sampleFormat;
 
+/** \brief Return the size (in memory) of one sample (bytes) */
 #define SAMPLE_SIZE(SampleFormat) (SampleFormat >> 16)
+/** \brief Return the size on disk of one uncompressed sample (bytes) */
+#define SAMPLE_SIZE_DISK(SampleFormat) ((SampleFormat == int24Sample) ? \
+   3 : SAMPLE_SIZE(SampleFormat) )
 
 typedef char *samplePtr;
 

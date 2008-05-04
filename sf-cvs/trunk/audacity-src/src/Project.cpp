@@ -3043,7 +3043,8 @@ void AudacityProject::OnTimer(wxTimerEvent& event)
          int recMins;
 
          recTime = freeSpace.GetHi() * 4294967296.0 + freeSpace.GetLo();
-         recTime /= SAMPLE_SIZE(gAudioIO->GetCaptureFormat());
+         recTime /= SAMPLE_SIZE_DISK(gAudioIO->GetCaptureFormat());
+         // note size on disk (=3 for 24-bit) not in memory (=4 for 24-bit)
          recTime /= gAudioIO->GetNumCaptureChannels();
          recTime /= GetRate();
          recMins = (int)(recTime / 60.0);
