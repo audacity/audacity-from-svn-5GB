@@ -388,6 +388,8 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
    this->SetSizer(pBoxSizer_Dialog);
    pBoxSizer_Dialog->Fit(this);
    pBoxSizer_Dialog->SetSizeHints(this);
+
+   effect->SetDialog(this);
 }
 
 bool ChangePitchDialog::Validate()
@@ -738,7 +740,6 @@ void ChangePitchDialog::OnPreview(wxCommandEvent &event)
 	double oldSemitonesChange = m_SemitonesChange;
 	m_pEffect->m_SemitonesChange = m_SemitonesChange;
 	m_pEffect->Preview();
-   this->SetFocus();
 	m_pEffect->m_SemitonesChange = oldSemitonesChange;
 }
 

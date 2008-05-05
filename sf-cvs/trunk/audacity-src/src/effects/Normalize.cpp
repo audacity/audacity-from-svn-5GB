@@ -375,6 +375,8 @@ NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
    SetSizer(mainSizer);
    mainSizer->Fit(this);
    mainSizer->SetSizeHints(this);
+
+   effect->SetDialog(this);
 }
 
 void NormalizeDialog::OnUpdateUI(wxCommandEvent& evt)
@@ -425,7 +427,6 @@ void NormalizeDialog::OnPreview(wxCommandEvent &event)
    mEffect->mLevel = mLevel;
 
    mEffect->Preview();
-   this->SetFocus();
    
 	mEffect->mGain = oldGain;
    mEffect->mDC = oldDC;

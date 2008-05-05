@@ -148,6 +148,7 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
    mFactory = factory;
    mProjectRate = projectRate;
    mParent = parent;
+   mDialog = NULL; // It's up to descendants to set this.
    mTracks = list;
    mT0 = *t0;
    mT1 = *t1;
@@ -389,7 +390,7 @@ void Effect::Preview()
    GetActiveProject()->ProgressShow(StripAmpersand(GetEffectName()),
                                     _("Preparing preview"));
    Process();
-   GetActiveProject()->ProgressHide();
+   GetActiveProject()->ProgressHide(mDialog);
    End();
    Init();
 
@@ -429,7 +430,7 @@ void Effect::Preview()
          ::wxMilliSleep(100);
       }
 
-      GetActiveProject()->ProgressHide();
+      GetActiveProject()->ProgressHide(mDialog);
    }
    else {
       wxMessageBox(_("Error while opening sound device. Please check the output device settings and the project sample rate."),
@@ -442,6 +443,9 @@ void Effect::Preview()
    delete mWaveTracks;
 
    mWaveTracks = saveWaveTracks;
+
+   if (mDialog)
+      mDialog->SetFocus();
 }
 
 EffectDialog::EffectDialog(wxWindow * parent,

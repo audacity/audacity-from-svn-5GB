@@ -288,6 +288,8 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
    this->SetSizer(pBoxSizer_Dialog);
    pBoxSizer_Dialog->Fit(this);
    pBoxSizer_Dialog->SetSizeHints(this);
+
+   effect->SetDialog(this);
 }
 
 bool ChangeTempoDialog::Validate()
@@ -496,7 +498,6 @@ void ChangeTempoDialog::OnPreview(wxCommandEvent &event)
 	double oldPercentChange = m_pEffect->m_PercentChange;
 	m_pEffect->m_PercentChange = m_PercentChange;
 	m_pEffect->Preview();
-   this->SetFocus();
 	m_pEffect->m_PercentChange = oldPercentChange;
 }
 

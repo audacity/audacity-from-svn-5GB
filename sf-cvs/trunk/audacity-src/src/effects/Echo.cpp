@@ -184,6 +184,8 @@ EchoDialog::EchoDialog(EffectEcho * effect, wxWindow * parent)
    
    // Initialize dialog
    Init();
+
+   effect->SetDialog(this);
 }
 
 void EchoDialog::PopulateOrExchange(ShuttleGui & S)
@@ -266,7 +268,6 @@ void EchoDialog::OnPreview(wxCommandEvent &event)
    m_pEffect->decay = decay;
 
    m_pEffect->Preview();
-   this->SetFocus();
    
    m_pEffect->delay = oldDelay;
    m_pEffect->decay = oldDecay;

@@ -323,6 +323,7 @@ TruncSilenceDialog::TruncSilenceDialog(EffectTruncSilence * effect,
    mEffect(effect)
 {
    Init();
+   effect->SetDialog(this);
 }
 
 void TruncSilenceDialog::PopulateOrExchange(ShuttleGui & S)
@@ -360,7 +361,6 @@ void TruncSilenceDialog::OnPreview(wxCommandEvent & event)
 {
    TransferDataFromWindow();
    mEffect->Preview();
-   this->SetFocus();
 }
 
 void TruncSilenceDialog::OnDurationChange(wxCommandEvent & event)

@@ -44,6 +44,7 @@ class wxFileHistory;
 const int AudacityProjectTimerID = 5200;
 
 class wxWindow;
+class wxDialog;
 class wxBoxSizer;
 class wxScrollEvent;
 class wxScrollBar;
@@ -300,7 +301,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    // Progress dialog methods
    void SetEnabledWindow( wxWindow * pWindow);
    void ProgressShow(const wxString &title, const wxString &message = wxT(""));
-   void ProgressHide();
+   void ProgressHide(wxWindow* pWindow = NULL);
    bool ProgressUpdate(int value, const wxString &message = wxT(""));
    bool ProgressIsShown();
 

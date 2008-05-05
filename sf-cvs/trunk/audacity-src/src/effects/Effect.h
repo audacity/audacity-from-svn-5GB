@@ -5,6 +5,7 @@
   Effect.h
 
   Dominic Mazzoni
+  Vaughan Johnson
 
 **********************************************************************/
 
@@ -16,8 +17,8 @@
 #include <wx/intl.h> 
 #include <wx/string.h>
 
+class wxDialog;
 class wxWindow;
-class wxFrame;
 
 #include "../WaveTrack.h"
 #include "../Shuttle.h"
@@ -120,6 +121,8 @@ class Effect {
       return true;
    }
 
+   void SetDialog(wxDialog *pDialog) { mDialog = pDialog; };
+
    void SetEffectFlags( int NewFlags )
    {
       mFlags = NewFlags;
@@ -211,6 +214,7 @@ class Effect {
  //
  protected:
    wxWindow     *mParent;
+   wxDialog     *mDialog;      // default NULL. It's up to descendants to set this.
    double        mProjectRate; // Sample rate of the project - new tracks should
                                // be created with this rate...
    TrackFactory *mFactory;
@@ -290,7 +294,6 @@ class Effect {
 };
 
 // Base dialog for generate effect
-class wxDialog;
 
 #define ID_EFFECT_PREVIEW ePreviewID
 
