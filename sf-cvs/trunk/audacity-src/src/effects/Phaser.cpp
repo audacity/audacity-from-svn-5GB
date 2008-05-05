@@ -333,6 +333,8 @@ wxDialog(parent, id, title, position, size, style)
    SetSizer(item0);
    item0->Fit(this);
    item0->SetSizeHints(this);
+
+   effect->SetDialog(this);
 }
 
 bool PhaserDialog::Validate()
@@ -564,7 +566,6 @@ void PhaserDialog::OnPreview(wxCommandEvent &event)
    m_pEffect->drywet = drywet;
 
    m_pEffect->Preview();
-   this->SetFocus();
 
    m_pEffect->freq = old_freq;
    m_pEffect->startphase = old_startphase;

@@ -324,6 +324,7 @@ ClickRemovalDialog::ClickRemovalDialog(EffectClickRemoval *effect,
    mEffect(effect)
 {
    Init();
+   effect->SetDialog(this);
 }
 
 void ClickRemovalDialog::PopulateOrExchange(ShuttleGui & S)
@@ -427,7 +428,6 @@ void ClickRemovalDialog::OnPreview(wxCommandEvent & event)
    mEffect->mThresholdLevel = mThresh;
    mEffect->mClickWidth = mWidth;
    mEffect->Preview();
-   this->SetFocus();
 }
 
 // WDR: handler implementations for NoiseRemovalDialog
@@ -435,19 +435,18 @@ void ClickRemovalDialog::OnPreview(wxCommandEvent & event)
 void ClickRemovalDialog::OnPreview(wxCommandEvent &event)
 {
   // Save & restore parameters around Preview, because we didn't do OK.
-  int oldLevel = m_pEffect->mThresholdLevel;
-  int oldWidth = m_pEffect->mClickWidth;
-  int oldSep = m_pEffect->sep;
+  int oldLevel = mEffect->mThresholdLevel;
+  int oldWidth = mEffect->mClickWidth;
+  int oldSep = mEffect->sep;
 
-  m_pEffect->mThresholdLevel = m_pSlider->GetValue();
-  m_pEffect->mClickWidth = m_pSlider_width->GetValue();
-  //  m_pEffect->sep = m_pSlider_sep->GetValue();
+  mEffect->mThresholdLevel = m_pSlider->GetValue();
+  mEffect->mClickWidth = m_pSlider_width->GetValue();
+  //  mEffect->sep = m_pSlider_sep->GetValue();
 
+  mEffect->Preview();
 
-  m_pEffect->Preview();
-
-  m_pEffect->sep   = oldSep;
-  m_pEffect->mClickWidth = oldWidth;
-  m_pEffect->mThresholdLevel = oldLevel;
+  mEffect->sep   = oldSep;
+  mEffect->mClickWidth = oldWidth;
+  mEffect->mThresholdLevel = oldLevel;
 }
 */

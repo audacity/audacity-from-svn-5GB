@@ -3551,7 +3551,7 @@ void AudacityProject::ProgressShow(const wxString &title, const wxString &messag
    // wxSafeYield(this, true);
 }
    
-void AudacityProject::ProgressHide()
+void AudacityProject::ProgressHide(wxWindow* pWindow /*= NULL*/)
 {
    if (mProgressDialog[mProgressCurrent]) {
       if( wxIsBusy() )
@@ -3571,7 +3571,7 @@ void AudacityProject::ProgressHide()
    }
 
    // Enabling the project window enables all windows again.
-   SetEnabledWindow( this );
+   SetEnabledWindow(pWindow ? pWindow : this);
 }
 
 bool AudacityProject::ProgressUpdate(int value, const wxString &message)

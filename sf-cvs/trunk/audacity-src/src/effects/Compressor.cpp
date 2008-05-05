@@ -529,6 +529,8 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
 
    SetSizeHints(500, 300, 20000, 20000);
    SetSize(500, 400);
+
+   effect->SetDialog(this);
 }
 
 bool CompressorDialog::TransferDataToWindow()
@@ -605,7 +607,6 @@ void CompressorDialog::OnPreview(wxCommandEvent &event)
    mEffect->mNormalize = useGain;
 
    mEffect->Preview();
-   this->SetFocus();
 
    mEffect->mAttackTime = oldAttackTime;
    mEffect->mDecayTime = oldDecayTime;

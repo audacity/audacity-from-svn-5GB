@@ -735,6 +735,8 @@ NoiseRemovalDialog::NoiseRemovalDialog(EffectNoiseRemoval * effect,
       (wxButton *)wxWindow::FindWindowById(ID_EFFECT_PREVIEW, this);
    m_pButton_RemoveNoise =
       (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
+
+   effect->SetDialog(this);
 }
 
 void NoiseRemovalDialog::OnGetProfile( wxCommandEvent &event )
@@ -758,7 +760,6 @@ void NoiseRemovalDialog::OnPreview(wxCommandEvent &event)
    m_pEffect->mAttackDecayTime =  mTime;
    
    m_pEffect->Preview();
-   this->SetFocus();
    
    m_pEffect->mNoiseGain = oldGain;
    m_pEffect->mFreqSmoothingHz =  oldFreq;

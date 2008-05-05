@@ -200,6 +200,8 @@ AmplifyDialog::AmplifyDialog(EffectAmplify * effect,
    SetSizer(pBoxSizer_Dialog);
    pBoxSizer_Dialog->Fit(this);
    pBoxSizer_Dialog->SetSizeHints(this);
+
+   effect->SetDialog(this);
 }
 
 bool AmplifyDialog::Validate()
@@ -387,7 +389,6 @@ void AmplifyDialog::OnPreview(wxCommandEvent &event)
    m_pEffect->peak = peak;
 
    m_pEffect->Preview();
-   this->SetFocus();
 
    m_pEffect->ratio = oldRatio;
    m_pEffect->peak = oldPeak;

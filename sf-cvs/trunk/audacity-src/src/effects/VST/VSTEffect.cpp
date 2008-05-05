@@ -91,6 +91,8 @@ VSTEffectGUIDialog::VSTEffectGUIDialog(wxWindow *parent, wxWindowID id,
    SetSizer(mainSizer);
    mainSizer->Fit(this);
    mainSizer->SetSizeHints(this);
+
+   mEffect->SetDialog(this);
 }
 
 void VSTEffectGUIDialog::OnIdle(wxIdleEvent &event)
@@ -460,6 +462,7 @@ VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
    Centre(wxBOTH | wxCENTER_FRAME);
 
    SetSize(size);
+   vst->SetDialog(this);
 }
 
 VSTEffectDialog::~VSTEffectDialog()
