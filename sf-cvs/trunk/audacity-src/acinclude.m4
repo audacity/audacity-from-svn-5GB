@@ -155,7 +155,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSOUNDTOUCH], [
 
    dnl see if soundtouch is installed on the system
 
-   PKG_CHECK_MODULES(SOUNDTOUCH, soundtouch-1.0 >= 1.3.1,
+   PKG_CHECK_MODULES(SOUNDTOUCH, soundtouch-1.0 >= 1.3.0,
                      soundtouch_available_system="yes",
                      soundtouch_available_system="no")
 
