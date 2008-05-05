@@ -8,7 +8,7 @@
 # This makefile may be invoked to build either audacity.pot or any lang.mo
 
 PROGNAME=audacity
-LINGUAS=af ar bn bg ca cs cy da de el es eu fi fr ga gl hu it ja ko lt mk nb nl oc pl pt_BR ro ru sk sl sv tr uk vi zh zh_TW
+LINGUAS=af ar bn bg ca cs cy da de el es eu fi fr ga gl he hu it ja ko lt mk nb nl oc pl pt_BR ro ru sk sl sv tr uk vi zh zh_TW
 
 prefix=@prefix@
 DATADIR=@datadir@
