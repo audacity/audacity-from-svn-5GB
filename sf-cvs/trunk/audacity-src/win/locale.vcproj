@@ -397,6 +397,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\locale\he.po"
+				>
+			</File>
+			<File
 				RelativePath="..\locale\hu.po"
 				>
 			</File>
