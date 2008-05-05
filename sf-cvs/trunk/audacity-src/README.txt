@@ -113,8 +113,8 @@ this version.
 
  * A few interface elements do not change language without restart.
 
- * Calculation of "disk space remains for recording" is 50% too low when recording
-    in 24 bit quality.
+ * Calculation of "disk space remains for recording (time)" is incorrect when recording
+    in 24 bit quality. You may record for 50% longer than the indicated time.
 
  * Pressing Play (but not spacebar) in a second project when another is already playing
     stops playback of the first project.
@@ -139,7 +139,13 @@ this version.
 
  * Windows only: Welcome Message: On some systems/browsers, links are not
     brought to top, and some screen readers that otherwise work well with Audacity
-    canot read its text.
+    cannot read its text.
+
+ * Windows (reported on): There have been reports of clicks during recording on
+    some Windows XP systems using Audacity 1.3.4, where 1.2.6 had no problem.
+    It is not clear if 1.3.5 will have this issue or if it will occur on other operating
+    systems. Users can help us by sending any reports of this problem to:
+      audacity-devel@lists.sourceforge.net
 
  * Windows only: Audacity is incompatible with some professional sound cards
     and may crash if one of these cards is the default when you open Audacity.
@@ -168,14 +174,14 @@ this version.
     not been tested, and is known to have a number of issues with both
     reliability and useability. Patches to improve both will be welcomed.
 
- * Debian-derived Linux only: Audacity configure script does not detect
-    libsoundtouch on the system and so Change Pitch and Change Tempo effects
-	are disabled. This is a debian bug (#476699), which can be worked around
-	by symlinking /usr/lib/pkgconfig/soundtouch-1.0.pc to
-	/usr/lib/pkgconfig/libSoundTouch.pc
-
  * Linux only: Playback may fail with no devices detected if using OSS emulation
     under ALSA.
+
+ * Linux (Debian-derived) only: Audacity configure script does not detect
+    libsoundtouch on the system and so Change Pitch and Change Tempo
+    effects are disabled. This is a debian bug (#476699), which can be
+    worked around by symlinking /usr/lib/pkgconfig/soundtouch-1.0.pc
+    to /usr/lib/pkgconfig/libSoundTouch.pc
 
    Also note that the Windows installer will not replace 1.2.x installations, but will
    install alongside them.
