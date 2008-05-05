@@ -174,9 +174,6 @@ this version.
     not been tested, and is known to have a number of issues with both
     reliability and useability. Patches to improve both will be welcomed.
 
- * Linux only: Playback may fail with no devices detected if using OSS emulation
-    under ALSA.
-
  * Linux (Debian-derived) only: Audacity configure script does not detect
     libsoundtouch on the system and so Change Pitch and Change Tempo
     effects are disabled. This is a debian bug (#476699), which can be
