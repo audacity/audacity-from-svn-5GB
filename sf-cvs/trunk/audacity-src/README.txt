@@ -1,122 +1,194 @@
+
 Audacity: A Free, Cross-Platform Digital Audio Editor
-
-Version 1.3.5 (beta)
-The change log is at the bottom of this document.
-
 WWW:   http://audacity.sourceforge.net/
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Lead Developers:
-   James Crook
-   Vaughan Johnson
-   Dominic Mazzoni
-   Markus Meyer
-   Leland Lucius
-   Martyn Shaw
+Version 1.3.5 (beta)
 
-Support Team:
-   Gale Andrews
-   Richard Ash
-   Christian Brochec
-   Alexandre Prokoudine
-   
-Emeritus Developers:
-   Matt Brubeck
-   Roger Dannenberg
-   Joshua Haberman
-   Monty Montgomery
-   Shane Mueller
+Contents of this README:
 
-Other Contributors:
-   Lynn Allan (CleanSpeech)
-   William Bland (Time Tracks)
-   Chris Cannam (VAMP)
-   Brian Gunlogson
-   Arun Kishore
-   Harvey Lubin (Audacity logo, http://www.agrapha.com/)
-   Greg Mekkes
-   Abe Milde
-   Paul Nasca
-   Tony Oetzmann
-   Augustus Saunders
-   Mike Underwood
-   Jun Wan
-   Tom Woodhams
-   Wing Yu
+1.  Licensing
+2.  Changes in version 1.3.5
+3.  Known Issues
+4.  Source Code, Libraries and Additional Copyright Information
+5.  Compilation Instructions
+6.  Previous Changes going back to version 1.1.0
 
-Audacity is based on code from the following projects::
-   expat
-   FLAC
-   LAME
-   libmad
-   libsndfile
-   Nyquist
-   Ogg Vorbis
-   PortAudio
-   Resample
-   SoundTouch
-   wxWidgets
-   RTaudio
-   twolame
+--------------------------------------------------------------------------------
 
-Special Thanks:
-   Dave Beydler
-   Jason Cohen
-   Dave Fancella
-   Steve Harris
-   Daniel James
-   Daniil Kolpakov
-   Robert Leidle
-   Logan Lewis
-   David Luff
-   Jason Pepas
-   Mark Phillips
-   Jonathan Ryshpan
-   Patrick Shirkey
-   David R. Sky
-   Tuomas Suutari
-   Mark Tomlinson
-   David Topper
-   Rudy Trubitt
-   StreetIQ.com
-   UmixIt (http://www.umixit.com)
-   Verilogix, Inc.
+1. Licensing
 
--------------------------------------------------------------
+This program is free software. ; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2 of the License, or (at your
+option) any later version. The program source code is also freely
+available as per Section 4 of this README.
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public
-License as published by the Free Software Foundation; either
-version 2 of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
+License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program (in a file called LICENSE.txt); if not, go
-to http://www.gnu.org/copyleft/gpl.html or write to 
+to http://www.gnu.org/copyleft/gpl.html or write to
 
   Free Software Foundation, Inc.
   59 Temple Place - Suite 330
   Boston, MA 02111-1307 USA
 
--------------------------------------------------------------
 
-Source code to this program is always available; for more
-information visit our website at:
+--------------------------------------------------------------------------------
 
-  http://audacity.sourceforge.net/
+2.  Changes in version 1.3.5
 
-Audacity is built upon other free libraries; some of
-these libraries may have come with Audacity in the lib-src
-directory.  Others you are expected to install first if
-you want Audacity to have certain capabilities.  Most
-of these libraries are not distributed under the terms
-of the GPL, but rather some other free, GPL-compatible
-license.  Specifically:
+Recording  / Playback:
+	* Several bugs fixed so that latency correction should be better, and more
+	   devices work correctly. Problems with sample rates under Linux should
+	   now be much rarer.
+	* Newer version of Portaudio library.
+
+Import / Export:
+	* Updated versions of Libogg, Libvorbis, Libflac, Libsndfile and Twolame
+	   libraries.
+	* Handling of unsupported file formats more informative.
+	* Handling of file names with slashes on OS X improved. New dialog
+	   allows replacement of illegal file name characters on all platforms.
+
+Interface:
+	* Improved scaling and layout for rulers and VU meters.
+	* Envelope fixes/improvements including full control of undo/redo.
+	* New keyboard shortcuts and improved menu navigation.
+	* Preferences: More intuitive tab arrangement. New options for
+	   mute/solo and Metadata Editor behavior. Language can now be
+	   changed without restart.
+	* Expanded Build Information tab.
+
+Effects:
+	* New Vocal Remover plug-in, improvements for Generate effects.
+
+Compilation:
+	* Fixes when building Audacity with libraries disabled.
+	* Improvements to make Mac and Solaris builds easier.
+
+Security:
+	* Full fix for issue CVE-2007-6061 on systems where temporary directories can
+	   be changed by other users (thanks to Michael Schwendt).
+
+Miscellaneous:
+	* Updated translations for many locales.
+	* Several stability improvements.
+
+
+--------------------------------------------------------------------------------
+
+3. Known Issues
+
+Please also check:
+  http://audacityteam.org/wiki/index.php?title=Known_Issues
+
+for details of any issues that have been identified after release of
+this version.
+
+ * If Audacity is built from CVS with wxWidgets 2.6.4 or later, the Escape
+    key does not cancel most dialogues, and Selection Bar spinboxes and the
+    Metadata Editor table are inaccessible to screen readers. This is due to a
+    wxWidgets bug. This does not affect builds provided by the Audacity
+    project, but will affect other builds of Audacity unless wxWidgets 2.6.3
+    is used.
+
+ * Using Delete or Backspace when the rate in the project rate dropdown is
+    highlighted deletes selected tracks.
+
+ * Export Multiple fails with no export or warning if an empty label is
+    encountered.
+
+ * The preference "Hold recorded data in memory until recording is stopped" is
+    misnamed. It caches most audio data for the duration of the session, including
+    project data and imported files. Enabling it may cause a crash when making
+    long recordings or opening large files or projects.
+
+ * Typing a new rate in the Project Rate dropdown does not change the applied rate.
+
+ * A few interface elements do not change language without restart.
+
+ * Calculation of "disk space remains for recording" is 50% too low when recording
+    in 24 bit quality.
+
+ * Pressing Play (but not spacebar) in a second project when another is already playing
+    stops playback of the first project.
+
+ * Projects created by Audacity 1.1.x may open incorrectly.
+
+ * Metadata such as ID3 tags is not fully imported and exported for all supported
+    file formats. MP3 tags *are* correctly imported and exported to the current ID3
+    specification, but some players don't fully support this specification, so may not
+    see all the tags.
+
+ * No warning is given if File > Save or File > Save Project As... is carried out with
+    no tracks open.
+
+ * Not all menu items are correctly enabled when the preference: "Select all audio in
+    project, if none selected" is checked.
+
+ * Beep on completing long process may not be audible on many systems.
+
+ * Audacity can import and display MIDI files, but they cannot be played
+    or edited.
+
+ * Windows only: Welcome Message: On some systems/browsers, links are not
+    brought to top, and some screen readers that otherwise work well with Audacity
+    canot read its text.
+
+ * Windows only: Audacity is incompatible with some professional sound cards
+    and may crash if one of these cards is the default when you open Audacity.
+    As a workaround, make a different sound card your default when using
+    Audacity, but please let us know if this affects you so that we can track down
+    and solve the problem.
+
+ * Mac OS X only: Some users find that after running Audacity other media
+    players don't produce any sound or crash. Audacity tries to select the best
+    quality settings your system is capable of, to give the best recordings
+    possible. Some sound drivers also retain these settings as defaults for
+    other applications, which can cause these symptoms
+
+   To get round this, enable the option "Do not modify audio device settings"
+   on the Audio I/O tab of the preferences, and make sure that your sound
+   device is set up (in the Apple Sound and Midi Setup utility) to work in
+   stereo, 16bits, with a sample rate of 44100Hz or 48000Hz.  More help at:
+      http://audacityteam.org/wiki/index.php?title=Mac_Bugs#Loss_of_sound_after_running_Audacity
+
+ * Mac OS X only: In the OS X version of Audacity, portable settings aren't
+    picked up, and the default settings (in the default location) are always
+    used. See this page for a workround:
+      http://audacityteam.org/wiki/index.php?title=Portable_Audacity
+
+ * Linux only: Audacity now supports interfacing with Jack, however this has
+    not been tested, and is known to have a number of issues with both
+    reliability and useability. Patches to improve both will be welcomed.
+
+ * Linux only: Playback may fail with no devices detected if using OSS emulation
+    under ALSA.
+
+   Also note that the Windows installer will not replace 1.2.x installations, but will
+   install alongside them.
+
+
+--------------------------------------------------------------------------------
+
+4.  Source Code, Libraries and Additional Copyright Information
+
+Source code to this program is always available; for more information visit
+our website at:
+
+  http://audacity.sourceforge.net/download/
+
+Audacity is built upon other free libraries; some of these libraries may have
+come with Audacity in the lib-src directory.  Others you are expected to install
+first if you want Audacity to have certain capabilities.  Most of these libraries
+are not distributed under the terms of the GPL, but rather some other free,
+GPL-compatible license.  Specifically:
 
   wxWidgets: wxWindows license (based on LGPL)
     Cross-platform GUI library - must be downloaded and
@@ -159,12 +231,12 @@ license.  Specifically:
     Encodes MPEG I layer 2 audio (used in DVDs and Radio). Optional separate
     download.
 
-For more information, see the documentation inside
-each library's source code directory.
+For more information, see the documentation inside each library's
+source code directory.
 
--------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 Additional copyright information:
--------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 Nyquist
 
@@ -190,8 +262,8 @@ list of conditions, and the disclaimer, all three of which appear below under
 "COPYRIGHT AND LICENSE INFORMATION FOR XLISP," in the documentation and/or
 other materials provided with the distribution.
 
-Neither the name of Roger B. Dannenberg, Carnegie Mellon University, nor the 
-names of any contributors may be used to endorse or promote products derived 
+Neither the name of Roger B. Dannenberg, Carnegie Mellon University, nor the
+names of any contributors may be used to endorse or promote products derived
 from this software without specific prior written permission.
 
 COPYRIGHT AND LICENSE INFORMATION FOR XLISP (part of Nyquist):
@@ -203,7 +275,7 @@ Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
 Redistributions of source code must retain the above copyright notice,
-this list of conditions and the following disclaimer. 
+this list of conditions and the following disclaimer.
 
 Redistributions in binary form must reproduce the above copyright notice, this
 list of conditions and the following disclaimer in the documentation and/or
@@ -224,20 +296,19 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
--------------------------------------------------------------
 
-Compilation instructions:
+--------------------------------------------------------------------------------
+
+5. Compilation instructions
 
 First you must download wxWidgets 2.6.x from:
 
   http://www.wxWidgets.org/
 
-If you install the RPM, make sure you install the devel RPM
-as well, otherwise, you won't be able to compile Audacity
-from source.
+If you install the RPM, make sure you install the devel RPM as well, otherwise you won't
+be able to compile Audacity from source.
 
-To compile on Linux, Mac OS X, and other Unix systems,
-simply execute these commands:
+To compile on Linux, Mac OS X, and other Unix systems, simply execute these commands:
 
   ./configure
   make
@@ -245,86 +316,27 @@ simply execute these commands:
 
 To see compile-time options you can set, you can type
 "./configure --help".
-  
-If you want to do any development, you might want to generate
-a configure cache and header dependencies:
+
+If you want to do any development, you might want to generate a configure cache and header
+dependencies:
 
   ./configure -C
   make dep
 
-To compile on Windows using MSVC++, please follow the
-instructions found in compile.txt in the "win" subdirectory.
+To compile on Windows using MSVC++, please follow the instructions found in compile.txt in
+the "win" subdirectory. CodeWarrior for Mac is also supported.
 
-For more information on compilation (CodeWarrior for Mac is
-also supported) please email audacity-help@lists.sourceforge.net
+For more information on compilation, please visit:
 
--------------------------------------------------------------
+  http://audacityteam.org/wiki/index.php?title=Developer_Guide#Platform_Specific_Guides
 
-Known issues/problems:
-  * Using the Escape key to cancel dialogues doesn't work if Audacity is built
-    with wxWidgets version 2.6.4 or newer. This is due to a wxWidgets bug 
-    which we have fixed in the builds provided by the Audacity project, but
-    will affect other builds of audacity.
+or email us at:
 
-  * Audacity can import and display MIDI files, but they cannot be played
-    or edited.
+  audacity-devel@lists.sourceforge.net
 
-  * Mac OS X only: Some users find that after running Audacity other media
-    players don't produce any sound or crash. Audacity tries to select the best
-    quality settings your system is capable of, to give the best recordings
-    possible. Some sound drivers also retain these settings as defaults for
-    other applications, which can cause these symptoms
- 
-    To get round this, enable the option "Do not modify audio device settings"
-    on the Audio I/O tab of the preferences, and make sure that your sound
-    device is set up (in the Apple Sound and Midi Setup utility) to work in
-    stereo, 16bits, with a sample rate of 44100Hz or 48000Hz.  See also 
-      http://docs.info.apple.com/article.html?artnum=300832
+--------------------------------------------------------------------------------
 
-  * Mac OS X only: In the OS X version of Audacity, portable settings aren't
-    picked up, and the default settings (in the default location) are always
-    used. If you want to use Audacity with portable settings under OS X, see
-    this page on the wiki for a work-around:
-      http://audacityteam.org/wiki/index.php?title=Portable_Audacity
-
-  * Windows only: Audacity is incompatible with some professional
-    sound cards and may crash if one of these cards is the default
-    when you open Audacity.  As a workaround, make a different
-    sound card your default when using Audacity, but please let
-    us know if this affects you so that we can track down and
-    solve the problem.
-
-  * Linux only: Audacity now supports interfacing with Jack, however this has
-    not been tested, and is known to have a number of issues with both 
-    reliability and useability. Patches to improve both will be welcomed.
-
-    Also note that the Windows installer will not replace 1.2.x installations,
-    but will install alongside them.
-
--------------------------------------------------------------
-CHANGE LOG
-
-Changes in 1.3.5:
-
-Recording  / Playback
-	* Several bugs fixed so that latency correction should be better, and more
-	  devices work correctly. Problems with sample rates under Linux should
-	  now be much rarer.
-	* Newer version of Portaudio library
-Import / Export
-	* Updated versions of Libogg, Libvorbis, Libflac, Libsndfile and Twolame
-	  libraries.
-
-	* Handling of file names with slashes in on OS X improved, and illegal
-	  file name characters rejected on all platforms
-Interface
-	* Improved ruler scaling and layout
-	* Expanded build information tab 
-Compilation:
-	* Fixes when building audacity with libraries disabled
-	* Improvements to make Solaris builds easier
-Security:
-	* Full fix for CVE-2007-6061 implemented thanks to Michael Schwendt
+6.  Previous Changes going back to version 1.1.0
 
 Changes in 1.3.4:
 
@@ -384,7 +396,7 @@ Recording / Playback:
 	* Improvements to latency correction.
 	* Updated version of portaudio-v19 library.
 
-Note that Help is no longer built in, but accessible on the Web via links 
+Note that Help is no longer built in, but accessible on the Web via links
 in Audacity.
 
 
@@ -392,17 +404,17 @@ Changes in 1.3.3:
 
 Opening/saving formats:
    * Import
-      * Import of audio from QuickTime (mov, aac, m4a) files is now  
-        supported on OSX.
+      * Import of audio from QuickTime (mov, aac, m4a) files is now
+        supported on OS X.
       * Broadcast Wave Format (BWF) wave files can now be imported.
    * Export
       * Metadata can be added to OGG files
       * Improved export option selection
       * Additional export options added to MP3 and FLAC file formats
-      * Command line exporter now supported on Windows and OSX
+      * Command line exporter now supported on Windows and OS X
 
 Effects:
-   * EQ effect 
+   * EQ effect
       * Responsiveness improved.
       * Several enhancements added.
       * Batch support added.
@@ -416,16 +428,16 @@ Effects:
 
 Other features:
    * Major speed improvement in Spectrogram rendering
-   * Increased support for drag and drop on OSX
+   * Increased support for drag and drop on OS X
    * Support added for building against wxWidgets 2.8
-   * Support opening multiple Audacity Projects at once from Explorer on  
+   * Support opening multiple Audacity Projects at once from Explorer on
      Windows
    * Improved main window sliders
    * New support for snapping while selecting and sliding
    * Improved track focus handling and visual feedback
    * Speed improvements and handling of resizing/zooming in tracks
    * Spectrum view can now be zoomed.
-   * New internal file cache to improve handling of project files over  
+   * New internal file cache to improve handling of project files over
      networks
 
 Also:
@@ -459,49 +471,49 @@ o Intel Mac support
 Changes in 1.3.0:
 
    New features
-   The new features in Audacity 1.3 have been grouped into the 
-   following six major categories. 
+   The new features in Audacity 1.3 have been grouped into the
+   following six major categories.
 
    1. Collapse/Expand Tracks
-      In Audacity 1.3, every track has an upward-pointing triangle at 
-      the bottom of the label area on the left side of the track. 
+      In Audacity 1.3, every track has an upward-pointing triangle at
+      the bottom of the label area on the left side of the track.
 
    2. Multiple clips per track
-      In Audacity 1.2, there is one audio 'clip' per track. There is 
-      no easy way to time-shift part of a track without moving the 
-      rest. In Audacity 1.3, you can split a single track into multiple 
-      clips. You can move these clips around between different tracks, 
-      making it easy to construct complex compositions out of hundreds 
+      In Audacity 1.2, there is one audio 'clip' per track. There is
+      no easy way to time-shift part of a track without moving the
+      rest. In Audacity 1.3, you can split a single track into multiple
+      clips. You can move these clips around between different tracks,
+      making it easy to construct complex compositions out of hundreds
       of smaller audio samples.
 
    3. Selection Bar
-      In Audacity 1.2, the current selection is contained in a 
-      status bar at the bottom of the window. In Audacity 1.3, 
-      this is replaced by a fully functional Selection Bar, which 
-      displays and controls the current selection (your choice of 
-      Start and End, or Start and Length), and the current audio 
-      position. The selection bar is fully editable - just click 
-      in any field and type to change the current selection precisely. 
-      In addition, many formatting options allow you to view times in 
+      In Audacity 1.2, the current selection is contained in a
+      status bar at the bottom of the window. In Audacity 1.3,
+      this is replaced by a fully functional Selection Bar, which
+      displays and controls the current selection (your choice of
+      Start and End, or Start and Length), and the current audio
+      position. The selection bar is fully editable - just click
+      in any field and type to change the current selection precisely.
+      In addition, many formatting options allow you to view times in
       different units, such as samples, CD frames, or NTSC video frames.
 
    4. Improved Label Tracks
       Label Tracks are Audacity's way for you to create markings 3
-      and annotations within your project. In Audacity 1.3, Label 
-      Tracks are much improved, with support for overlapping labels, 
-      and support for modifying both the left and right edge of the 
+      and annotations within your project. In Audacity 1.3, Label
+      Tracks are much improved, with support for overlapping labels,
+      and support for modifying both the left and right edge of the
       label region just by clicking and dragging.
 
    5. QuickTime and Audio Units on Mac OS X
-      On Mac OS X, Audacity can now import and audio file supported 
-      by Apple's QuickTime technology. This includes .MOV and .MP4 
-      (AAC) files. Unfortunately encrypted audio files (such as 
-      those from the iTunes Music Store) cannot be imported directly 
-      into Audacity - Apple does not allow this to be done easily 
+      On Mac OS X, Audacity can now import and audio file supported
+      by Apple's QuickTime technology. This includes .MOV and .MP4
+      (AAC) files. Unfortunately encrypted audio files (such as
+      those from the iTunes Music Store) cannot be imported directly
+      into Audacity - Apple does not allow this to be done easily
       because it would be too easy to circumvent the encryption this way.
 
-      Also on Mac OS X, Audacity now supports Audio Unit plug-ins. 
-      Audacity searches for Audio Units in the usual location, in the 
+      Also on Mac OS X, Audacity now supports Audio Unit plug-ins.
+      Audacity searches for Audio Units in the usual location, in the
       system or user's Library folder.
 
    6. Other features
@@ -548,7 +560,7 @@ Changes in 1.2.4:
   * Other minor bug fixes.
 
   * New or updated translations: Arabic (ar), Czech (cs), Finnish (fi),
-    Hungarian (hu), Japanese (ja), Norwegian (nb), Slovenian (sl), 
+    Hungarian (hu), Japanese (ja), Norwegian (nb), Slovenian (sl),
     Simplified Chinese (zh_CN), Traditional Chinese (zh_TW).
 
 
@@ -696,7 +708,7 @@ Changes in 1.2.1:
     problems when building with the --with-portaudio=v19 option).
 
   * Two new Nyquist plug-ins: "Cross Fade In" and "Cross Fade Out."
-  
+
   * Other minor bug-fixes.
 
 
@@ -740,21 +752,21 @@ Changes in 1.2.0-pre4:
   * Fixed bugs in the new resampler that added noise to resampled
     audio on some systems. If you experienced noise when exporting
     to a WAV, MP3 or OGG file you may have been bitten by this bug.
-  
+
   * Fixed bug that led to occasional crashes when using the
     time-shift tool in conjunction with high zoom factors.
-    
+
   * Dithering is now only applied on export when it is really
     necessary (e.g. when converting float samples to 16-bit).
-    
+
   * Files that only contain mono tracks are now automatically
     exported to stereo files when they contain tracks which are
     panned to the left or the right.
-    
+
   * The Delete key can now be used to delete the current selection,
     in addition to the Backspace key.
 
-  * Fixed bug where Audacity didn't ask whether to save 
+  * Fixed bug where Audacity didn't ask whether to save
     changes if you close the project or exit while recording.
 
   * Mac OS X: Supports Playthrough (listen to what you're recording
@@ -764,20 +776,20 @@ Changes in 1.2.0-pre4:
     Audacity.app and select 'Show Package Contents').  Launch time
     has improved significantly.
 
-  * MS Windows: Fixed problem that caused Windows XP to use 
-    the short name of a file ("TESTFI~1.AUP"), which led to 
-    problems when the file was later opened again using the 
+  * MS Windows: Fixed problem that caused Windows XP to use
+    the short name of a file ("TESTFI~1.AUP"), which led to
+    problems when the file was later opened again using the
     long file name.
-    
-  * MS Windows: Fixed bug that caused file exports to fail 
-    if the destination directory was the root folder of a 
+
+  * MS Windows: Fixed bug that caused file exports to fail
+    if the destination directory was the root folder of a
     Windows drive.
 
-  * MS Windows: Audacity's application information which 
-    is written to the Windows registry now always contains 
-    the full path to the executable. 
+  * MS Windows: Audacity's application information which
+    is written to the Windows registry now always contains
+    the full path to the executable.
 
-  * MS Windows: Fixed problems in trying to set the Windows 
+  * MS Windows: Fixed problems in trying to set the Windows
     registry as non-admin user, for file-type associations.
 
   * Make sure the "Save" command is enabled after changing
@@ -839,7 +851,7 @@ Changes in 1.2.0-pre3:
   * Fixed bugs in Unix build system (DESTDIR in locale directory,
     choosing libsamplerate instead of libresample)
 
-  * Support for LADSPA plug-ins on Windows added, and 
+  * Support for LADSPA plug-ins on Windows added, and
     three open source LADSPA plug-ins ported to Windows
     (GVerb reverb, SC4 compressor, and Hard Limiter)
 
@@ -977,11 +989,11 @@ New features in Audacity 1.1.3:
 
 New features in Audacity 1.1.2:
   * User Interface
-    - Fixed bug in Windows version, for track menu commands 
+    - Fixed bug in Windows version, for track menu commands
 	  "Name..." and "Split Stereo Track"/"Make Stereo Track".
   * Effects
-    - Nyquist support on Windows (supports plug-ins written 
-	  in Nyquist, an interpreted functional language based 
+    - Nyquist support on Windows (supports plug-ins written
+	  in Nyquist, an interpreted functional language based
 	  on Lisp).
 
 
