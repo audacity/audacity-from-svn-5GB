@@ -27,6 +27,7 @@ BEGIN_EVENT_TABLE(BrowserFrame, wxFrame)
    EVT_BUTTON( wxID_FORWARD,  BrowserFrame::OnForward)
    EVT_BUTTON( wxID_BACKWARD, BrowserFrame::OnBackward)
    EVT_BUTTON( wxID_CLOSE,    BrowserFrame::OnClose)
+   EVT_CHAR(BrowserFrame::OnChar)
 END_EVENT_TABLE()
 
 
@@ -46,6 +47,18 @@ void BrowserFrame::OnClose(wxCommandEvent & event)
 {
    Close();
 }
+
+void BrowserFrame::OnChar(wxKeyEvent & event)
+{
+   bool bSkip = true;
+   if (event.GetKeyCode() == WXK_ESCAPE)
+   {
+      bSkip = false; 
+      this->Show(FALSE);
+   }
+   event.Skip(bSkip);
+}
+
 
 void BrowserFrame::UpdateButtons()
 {

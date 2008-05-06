@@ -110,7 +110,6 @@ enum {
    RunID = 1000,
    BSaveID,
    ClearID,
-   BCloseID,
    StaticTextID,
    BlockSizeID,
    DataSizeID,
@@ -122,7 +121,7 @@ BEGIN_EVENT_TABLE(BenchmarkDialog,wxDialog)
    EVT_BUTTON( RunID,   BenchmarkDialog::OnRun )
    EVT_BUTTON( BSaveID,  BenchmarkDialog::OnSave )
    EVT_BUTTON( ClearID, BenchmarkDialog::OnClear )
-   EVT_BUTTON( BCloseID, BenchmarkDialog::OnClose )
+   EVT_BUTTON( wxID_CANCEL, BenchmarkDialog::OnClose )
 END_EVENT_TABLE()
 
 BenchmarkDialog::BenchmarkDialog(wxWindow *parent):
@@ -232,7 +231,7 @@ wxSizer *BenchmarkDialog::MakeBenchmarkDialog( wxWindow *parent, bool call_fit, 
 
    hSizer->Add(5, 5, 1, wxEXPAND);
 
-   item = new wxButton( parent, BCloseID, wxT("Close"));
+   item = new wxButton( parent, wxID_CANCEL, wxT("Close"));
    hSizer->Add(item, 0, wxALL, 5 );
 
    mainSizer->Add(hSizer, 0, wxEXPAND, 5);   

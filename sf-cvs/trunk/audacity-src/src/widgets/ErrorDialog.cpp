@@ -180,6 +180,7 @@ void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &Ht
    pWnd->Fit();
    pWnd->Centre();
    pWnd->Show( true );
+   pWnd->SetFocus();
    //Dlg.Show();
    return;
 }

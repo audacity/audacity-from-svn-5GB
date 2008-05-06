@@ -3457,6 +3457,7 @@ void AudacityProject::OnPlotSpectrum()
    gFreqWindow->Plot(len, buffer, rate);
    gFreqWindow->Show(true);
    gFreqWindow->Raise();
+   gFreqWindow->SetFocus();
 
    delete[] buffer;
 }
