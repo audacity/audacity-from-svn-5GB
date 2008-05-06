@@ -76,7 +76,6 @@ the mouse around.
 enum {
    FirstID = 7000,
 
-   FreqCloseButtonID,
    FreqExportButtonID,
    FreqAlgChoiceID,
    FreqSizeChoiceID,
@@ -109,7 +108,7 @@ void InitFreqWindow(wxWindow * parent)
 BEGIN_EVENT_TABLE(FreqWindow, wxDialog)
     EVT_CLOSE(FreqWindow::OnCloseWindow)
     EVT_SIZE(FreqWindow::OnSize)
-    EVT_BUTTON(FreqCloseButtonID, FreqWindow::OnCloseButton)
+    EVT_BUTTON(wxID_CANCEL, FreqWindow::OnCloseButton)
     EVT_BUTTON(FreqExportButtonID, FreqWindow::OnExport)
     EVT_CHOICE(FreqAlgChoiceID, FreqWindow::OnAlgChoice)
     EVT_CHOICE(FreqSizeChoiceID, FreqWindow::OnSizeChoice)
@@ -205,7 +204,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    mExportButton = new wxButton(this, FreqExportButtonID,
                                 _("&Export..."));
 
-   mCloseButton = new wxButton(this, FreqCloseButtonID,
+   mCloseButton = new wxButton(this, wxID_CANCEL,
                                _("Close"));
 
 #ifndef TARGET_CARBON

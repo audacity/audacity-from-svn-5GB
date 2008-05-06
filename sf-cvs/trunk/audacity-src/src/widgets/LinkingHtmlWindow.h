@@ -41,6 +41,7 @@ public:
    void OnForward(wxCommandEvent & event);
    void OnBackward(wxCommandEvent & event);
    void OnClose(wxCommandEvent & event);
+   void OnChar(wxKeyEvent & event);
 
    void UpdateButtons();
    //virtual void SetLabel(const wxString& label);
