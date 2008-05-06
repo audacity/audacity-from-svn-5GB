@@ -5,6 +5,8 @@
   Effect.cpp
 
   Dominic Mazzoni
+  Vaughan Johnson
+  Martyn Shaw
 
 *******************************************************************//**
 
@@ -366,7 +368,14 @@ void Effect::Preview()
 
    if (!::MixAndRender(mWaveTracks, mFactory, rate, floatSample, t0, t1,
                        &mixLeft, &mixRight))
+   {
+      if (mDialog)
+      {
+         GetActiveProject()->SetEnabledWindow(mDialog);
+         mDialog->SetFocus();
+      }
       return;
+   }
 
    // Apply effect
 
@@ -389,52 +398,54 @@ void Effect::Preview()
    // was called.
    GetActiveProject()->ProgressShow(StripAmpersand(GetEffectName()),
                                     _("Preparing preview"));
-   Process();
+   bool bSuccess = Process();
    GetActiveProject()->ProgressHide(mDialog);
    End();
    Init();
+   if (bSuccess)
+   {
+      mT0 = t0save;
+      mT1 = t1save;
 
-   mT0 = t0save;
-   mT1 = t1save;
+      WaveTrackArray playbackTracks;
+      WaveTrackArray recordingTracks;
+      // Probably not the same tracks post-processing, so can't rely on previous values of mixLeft & mixRight.
+      TrackListIterator iter(mWaveTracks); 
+      mixLeft = (WaveTrack*)(iter.First());
+      mixRight = (WaveTrack*)(iter.Next());
+      playbackTracks.Add(mixLeft);
+      if (mixRight)
+         playbackTracks.Add(mixRight);
 
-   WaveTrackArray playbackTracks;
-   WaveTrackArray recordingTracks;
-   // Probably not the same tracks post-processing, so can't rely on previous values of mixLeft & mixRight.
-   TrackListIterator iter(mWaveTracks); 
-   mixLeft = (WaveTrack*)(iter.First());
-   mixRight = (WaveTrack*)(iter.Next());
-   playbackTracks.Add(mixLeft);
-   if (mixRight)
-      playbackTracks.Add(mixRight);
+      // Start audio playing
 
-   // Start audio playing
+      int token =
+         gAudioIO->StartStream(playbackTracks, recordingTracks, NULL,
+                               rate, t0, t1, NULL);
 
-   int token =
-      gAudioIO->StartStream(playbackTracks, recordingTracks, NULL,
-                            rate, t0, t1, NULL);
+      if (token) {
+         bool previewing = true;
 
-   if (token) {
-      bool previewing = true;
+         GetActiveProject()->ProgressShow(StripAmpersand(GetEffectName()),
+                                          _("Previewing"));
 
-      GetActiveProject()->ProgressShow(StripAmpersand(GetEffectName()),
-                                       _("Previewing"));
+         while (gAudioIO->IsStreamActive(token) && previewing) {
+            ::wxMilliSleep(100);
+            int t = int(1000 * (gAudioIO->GetStreamTime() / t1));
+            previewing = GetActiveProject()->ProgressUpdate(t);
+         }
+         gAudioIO->StopStream();
 
-      while (gAudioIO->IsStreamActive(token) && previewing) {
-         ::wxMilliSleep(100);
-         int t = int(1000 * (gAudioIO->GetStreamTime() / t1));
-         previewing = GetActiveProject()->ProgressUpdate(t);
+         while (gAudioIO->IsBusy()) {
+            ::wxMilliSleep(100);
+         }
+
+         GetActiveProject()->ProgressHide(mDialog);
       }
-      gAudioIO->StopStream();
-
-      while (gAudioIO->IsBusy()) {
-         ::wxMilliSleep(100);
+      else {
+         wxMessageBox(_("Error while opening sound device. Please check the output device settings and the project sample rate."),
+                      _("Error"), wxOK | wxICON_EXCLAMATION, mParent);
       }
-
-      GetActiveProject()->ProgressHide(mDialog);
-   }
-   else {
-      wxMessageBox(_("Error while opening sound device. Please check the output device settings and the project sample rate."),
-                   _("Error"), wxOK | wxICON_EXCLAMATION, mParent);
    }
 
    if (mWaveTracks == m_pOutputWaveTracks) // typical case, but depends on descendant implementation
