@@ -75,8 +75,8 @@ Compilation:
 	* Improvements to make Mac and Solaris builds easier.
 
 Security:
-	* Full fix for issue CVE-2007-6061 on systems where temporary directories can
-	   be changed by other users (thanks to Michael Schwendt).
+	* Full fix for issue CVE-2007-6061 on systems where temporary directories
+	   can be changed by other users (thanks to Michael Schwendt).
 
 Miscellaneous:
 	* Updated translations for many locales.
@@ -94,14 +94,14 @@ for details of any issues that have been identified after release of
 this version.
 
  * If Audacity is built from CVS with wxWidgets 2.6.4 or later, the Escape
-    key does not cancel most dialogues. This is due to a wxWidgets bug.
+    key does not cancel most dialogs. This is due to a wxWidgets bug.
 
     In builds provided by the Audacity project, wx 2.6.4 has been patched.
-    This means that all dialogues can be cancelled by Escape when first
-    opened, but in Preferences and Effect dialogues, keyboard users must
-    now tab twice to reach the first field of the dialogue. Additionally, for
+    This means that all dialogs can be cancelled by Escape when first
+    opened, but in Preferences and Effect dialogs, keyboard users must
+    now tab twice to reach the first field of the dialog. Additionally, for
     Preferences, GVerb, Hard Limiter, SC4 and user-added LADSPA/VST
-    effects, once the user interacts with the dialogue, it cannot then be
+    effects, once the user interacts with the dialog, it cannot then be
     cancelled by Escape without first tabbing to the OK or Cancel buttons.
 
  * Export Multiple fails with no export or warning if an empty label is
@@ -114,11 +114,12 @@ this version.
 
  * A few interface elements do not change language without restart.
 
- * Calculation of "disk space remains for recording (time)" is incorrect when recording
-    in 24 bit quality. You may record for 50% longer than the indicated time.
+ * Calculation of "disk space remains for recording (time)" is incorrect when
+    recording in 24 bit quality. You may record for 50% longer than the indicated
+    time.
 
- * Pressing Play (but not spacebar) in a second project when another is already playing
-    stops playback of the first project.
+ * Pressing Play (but not spacebar) in a second project when another is already
+    playing stops playback of the first project.
 
  * Projects created by Audacity 1.1.x may open incorrectly.
 
@@ -273,8 +274,8 @@ other materials provided with the distribution.
 
 Redistributions in binary form must reproduce the copyright notice, the
 list of conditions, and the disclaimer, all three of which appear below under
-"COPYRIGHT AND LICENSE INFORMATION FOR XLISP," in the documentation and/or
-other materials provided with the distribution.
+"COPYRIGHT AND LICENSE INFORMATION FOR XLISP," in the documentation
+and/or other materials provided with the distribution.
 
 Neither the name of Roger B. Dannenberg, Carnegie Mellon University, nor the
 names of any contributors may be used to endorse or promote products derived
@@ -299,16 +300,19 @@ Neither the name of David Michael Betz nor the names of any contributors may be
 used to endorse or promote products derived from this software without specific
 prior written permission.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND
+CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
@@ -319,10 +323,11 @@ First you must download wxWidgets 2.6.x from:
 
   http://www.wxWidgets.org/
 
-If you install the RPM, make sure you install the devel RPM as well, otherwise you won't
-be able to compile Audacity from source.
+If you install the RPM, make sure you install the devel RPM as well, otherwise you
+won't be able to compile Audacity from source.
 
-To compile on Linux, Mac OS X, and other Unix systems, simply execute these commands:
+To compile on Linux, Mac OS X, and other Unix systems, simply execute these
+commands:
 
   ./configure
   make
@@ -331,14 +336,14 @@ To compile on Linux, Mac OS X, and other Unix systems, simply execute these comm
 To see compile-time options you can set, you can type
 "./configure --help".
 
-If you want to do any development, you might want to generate a configure cache and header
-dependencies:
+If you want to do any development, you might want to generate a configure cache
+and header dependencies:
 
   ./configure -C
   make dep
 
-To compile on Windows using MSVC++, please follow the instructions found in compile.txt in
-the "win" subdirectory. CodeWarrior for Mac is also supported.
+To compile on Windows using MSVC++, please follow the instructions found in
+compile.txt in the "win" subdirectory. CodeWarrior for Mac is also supported.
 
 For more information on compilation, please visit:
 
