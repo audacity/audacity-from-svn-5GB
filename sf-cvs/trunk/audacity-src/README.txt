@@ -98,9 +98,6 @@ this version.
     project, but will affect other builds of Audacity unless wxWidgets 2.6.3
     is used.
 
- * Using Delete or Backspace when the rate in the project rate dropdown is
-    highlighted deletes selected tracks.
-
  * Export Multiple fails with no export or warning if an empty label is
     encountered.
 
@@ -108,8 +105,6 @@ this version.
     misnamed. It caches most audio data for the duration of the session, including
     project data and imported files. Enabling it may cause a crash when making
     long recordings or opening large files or projects.
-
- * Typing a new rate in the Project Rate dropdown does not change the applied rate.
 
  * A few interface elements do not change language without restart.
 
