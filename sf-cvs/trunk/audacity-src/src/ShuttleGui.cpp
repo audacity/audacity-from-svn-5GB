@@ -1822,6 +1822,7 @@ wxSizer *CreateStdButtonSizer(wxWindow *parent, long buttons, wxButton *extra)
    {
       b = new wxButton( parent, wxID_OK );
       b->SetDefault();
+      b->SetFocus();
       bs->AddButton( b );
    }
 
@@ -1834,6 +1835,7 @@ wxSizer *CreateStdButtonSizer(wxWindow *parent, long buttons, wxButton *extra)
    {
       b = new wxButton( parent, wxID_YES );
       b->SetDefault();
+      b->SetFocus();
       bs->AddButton( b );
    }
 
