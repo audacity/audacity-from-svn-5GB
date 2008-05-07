@@ -789,7 +789,7 @@ void CommandManager::TellUserWhyDisallowed( wxUint32 flagsGot, wxUint32 flagsReq
    else if( missingFlags == TracksExistFlag )
       return;
 
-   wxMessageBox(reason, _("Message"),  wxICON_WARNING | wxOK ); 
+   wxMessageBox(reason, _("Disallowed"),  wxICON_WARNING | wxOK ); 
 }
 
 /// HandleCommandEntry() takes a CommandListEntry and executes it
