@@ -249,7 +249,7 @@ for more information about the 1.3.x beta series.
 	<dt> Opening/saving formats </dt>
 		<dd> Import
 			<ul>
-				<li>Import of audio from QuickTime (mov, aac, m4a) files now supported on OSX.</li>
+				<li>Import of audio from QuickTime (mov, aac, m4a) files now supported on OS X.</li>
 				<li>Broadcast Wave Format (BWF) wave files can now be imported.</li>
 			</ul>
 		</dd>
@@ -258,7 +258,7 @@ for more information about the 1.3.x beta series.
 				<li>Metadata can be added to OGG files.</li>
 				<li>Improved Export option selection.</li>
 				<li>Additional export options added to MP3 and FLAC file formats.</li>
-				<li>Command line exporter now supported on Windows and OSX.</li>
+				<li>Command line exporter now supported on Windows and OS X.</li>
 			</ul>
 		</dd>
 	<dt> Effects </dt>
@@ -279,7 +279,7 @@ for more information about the 1.3.x beta series.
 	<dt> Other features </dt>
 		<dd> New built-in screen capture utility </dd>
 		<dd> Major speed improvement in Spectrogram rendering </dd>
-		<dd> Increased support for drag and drop on OSX. </dd>
+		<dd> Increased support for drag and drop on OS X. </dd>
 		<dd> Support added for building against wxWidgets 2.8.x. </dd>
 		<dd> Can now open multiple Audacity Projects at once from Explorer on Windows. </dd>
 		<dd> Improved main window sliders. </dd>
