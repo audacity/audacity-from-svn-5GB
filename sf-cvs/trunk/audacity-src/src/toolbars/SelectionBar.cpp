@@ -449,11 +449,21 @@ void SelectionBar::SetRate(double rate)
 
 void SelectionBar::OnRate(wxCommandEvent & WXUNUSED(event))
 {
-   mRateBox->GetStringSelection().ToDouble(&mRate);
-   if (mRate != 0.0 && mLeftTime) mLeftTime->SetSampleRate(mRate);
-   if (mRate != 0.0 && mRightTime) mRightTime->SetSampleRate(mRate);
-   if (mRate != 0.0 && mAudioTime) mAudioTime->SetSampleRate(mRate);
-   if (mRate != 0.0 && mListener) mListener->AS_SetRate(mRate);
+   int nSel = mRateBox->GetSelection();
+   wxString sValue;
+   if (nSel != -1) // one of the existing choices
+      sValue = mRateBox->GetString(nSel);
+   else
+      sValue = mRateBox->GetValue();
+
+   if (sValue.ToDouble(&mRate) && // is a numeric value
+         (mRate != 0.0))
+   {
+      if (mLeftTime) mLeftTime->SetSampleRate(mRate);
+      if (mRightTime) mRightTime->SetSampleRate(mRate);
+      if (mAudioTime) mAudioTime->SetSampleRate(mRate);
+      if (mListener) mListener->AS_SetRate(mRate);
+   }
 }
 
 void SelectionBar::UpdateRates()
@@ -504,7 +514,8 @@ void SelectionBar::OnCaptureKey(wxCommandEvent &event)
       return;
    }
    
-   event.Skip();
+   // Swallow any others, so SelectionBar "handled" it. 
+   //    event.Skip();
 
    return;
 }
