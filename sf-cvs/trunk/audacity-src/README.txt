@@ -45,9 +45,11 @@ to http://www.gnu.org/copyleft/gpl.html or write to
 
 Recording  / Playback:
 	* Several bugs fixed so that latency correction should be better, and more
-	   devices work correctly. Problems with sample rates under Linux should
-	   now be much rarer.
+	   devices work correctly. Problems with invalid sample rates under Linux
+	   should be much rarer.
 	* Newer version of Portaudio library.
+	* New feature to record onto the end of an existing track
+	   (hold Shift while clicking Record).
 
 Import / Export:
 	* Updated versions of Libogg, Libvorbis, Libflac, Libsndfile and Twolame
@@ -92,11 +94,15 @@ for details of any issues that have been identified after release of
 this version.
 
  * If Audacity is built from CVS with wxWidgets 2.6.4 or later, the Escape
-    key does not cancel most dialogues, and Selection Bar spinboxes and the
-    Metadata Editor table are inaccessible to screen readers. This is due to a
-    wxWidgets bug. This does not affect builds provided by the Audacity
-    project, but will affect other builds of Audacity unless wxWidgets 2.6.3
-    is used.
+    key does not cancel most dialogues. This is due to a wxWidgets bug.
+
+    In builds provided by the Audacity project, wx 2.6.4 has been patched.
+    This means that all dialogues can be cancelled by Escape when first
+    opened, but in Preferences and Effect dialogues, keyboard users must
+    now tab twice to reach the first field of the dialogue. Additionally, for
+    Preferences, GVerb, Hard Limiter, SC4 and user-added LADSPA/VST
+    effects, once the user interacts with the dialogue, it cannot then be
+    cancelled by Escape without first tabbing to the OK or Cancel buttons.
 
  * Export Multiple fails with no export or warning if an empty label is
     encountered.
@@ -160,23 +166,27 @@ this version.
    stereo, 16bits, with a sample rate of 44100Hz or 48000Hz.  More help at:
       http://audacityteam.org/wiki/index.php?title=Mac_Bugs#Loss_of_sound_after_running_Audacity
 
- * Mac OS X only: In the OS X version of Audacity, portable settings aren't
-    picked up, and the default settings (in the default location) are always
-    used. See this page for a workround:
+ * Mac OS X only: Portable settings aren't picked up, and the default
+    settings (in the default location) are always used. See this page for
+    a workround:
       http://audacityteam.org/wiki/index.php?title=Portable_Audacity
 
  * Linux only: Audacity now supports interfacing with Jack, however this has
     not been tested, and is known to have a number of issues with both
     reliability and useability. Patches to improve both will be welcomed.
 
+ * Linux (reported on): The first file imported into a project no longer
+    changes the project rate to the file's rate, if that rate is absent from the
+    project rate list.
+
  * Linux (Debian-derived) only: Audacity configure script does not detect
     libsoundtouch on the system and so Change Pitch and Change Tempo
     effects are disabled. This is a debian bug (#476699), which can be
     worked around by symlinking /usr/lib/pkgconfig/soundtouch-1.0.pc
-    to /usr/lib/pkgconfig/libSoundTouch.pc
+    to /usr/lib/pkgconfig/libSoundTouch.pc.
 
-   Also note that the Windows installer will not replace 1.2.x installations, but will
-   install alongside them.
+Also note that the Windows installer will not replace 1.2.x installations, but will
+install alongside them.
 
 
 --------------------------------------------------------------------------------
