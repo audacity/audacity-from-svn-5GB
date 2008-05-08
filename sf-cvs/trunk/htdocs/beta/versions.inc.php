@@ -1,11 +1,11 @@
 <?php
 // The main version number, when we don't distinguish between platforms
-define('beta_version', '1.3.4');
+define('beta_version', '1.3.5');
 
 // Note: Sizes are in MB.
-define('beta_macosx_version', '1.3.3');
+define('beta_macosx_version', '1.3.5');
 
-define('macosx_ub_version', '1.3.3');
+define('macosx_ub_version', '1.3.5');
 define('macosx_ub_size',    7.2);
 
 //define('macosx_ppc_version', '1.3.3');
@@ -22,27 +22,27 @@ define('macosx_ub_size',    7.2);
 
 
 
-define('beta_win_exe_version', '1.3.4');
+define('beta_win_exe_version', '1.3.5');
 
-define('win_exe_version', '1.3.4');
-define('win_exe_size',    2.9);
+define('win_exe_version', '1.3.5');
+define('win_exe_size',    3.0);
 
-define('win_zip_version', '1.3.4');
-define('win_zip_size',    4.3);
+define('win_zip_version', '1.3.5');
+define('win_zip_size',    4.5);
 
-define('win_exe_unicode_version', '1.3.4');
-define('win_exe_unicode_size',    2.9);
+define('win_exe_unicode_version', '1.3.5');
+define('win_exe_unicode_size',    3.0);
 
-define('win_zip_unicode_version', '1.3.4');
-define('win_zip_unicode_size',    4.3);
+define('win_zip_unicode_version', '1.3.5');
+define('win_zip_unicode_size',    4.6);
 
 
 define('ladspa_version', '0.4.15');
 define('ladspa_size',    1.5);
 
 
-define('beta_src_version', '1.3.4');
-define('src_version', '1.3.4');
+define('beta_src_version', '1.3.5');
+define('src_version', '1.3.5');
 define('src_size',    4.1);
 define('src_suffix',  '.tar.bz2');
 
