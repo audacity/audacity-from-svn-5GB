@@ -1,6 +1,7 @@
 <?php
 /*
  * Copyright 2005 Matt Brubeck
+ * 2007-8 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -52,12 +53,12 @@
   <p>
     <?=_('The latest release of Audacity is <a href="/download">1.3.5 (beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href="/download/features-1.3-a">New Features in 1.3</a> for more information about the 1.3.x beta series.')?></p>
   <p>
-    <?=_('For all users, <a href="/download">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have both Audacity 1.2.6 and 1.3.3 installed simultaneously.')?></p>
+    <?=_('For all users, <a href="/download">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have Audacity 1.2.6 and 1.3.5 installed on the same machine.')?></p>
 </div>
 
 <div id="download">
   <div id="download_sub">
-  <h3><a href="download/<?=$download_page?>"><?php printf(_("Download Audacity %s"), $download_version)?></a></h3>
+  <h3><a href="download/<?=$download_page?>"><?php printf(_("Download Audacity %s"), $download_version)?></a></h3>	
   <p><?=$download_desc?></p>
   </div>
   <div id="download_sub">

@@ -1,6 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
+ * 2007-8 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -37,6 +38,97 @@ function most_recent_news_item() {
 
 // Add news items below in reverse-chronological order
 // (most recent first).
+
+add_news_item(
+  "May 08, 2008",
+        "1.3.5-release",
+  _("Audacity 1.3.5 Released"),
+  _("
+<p>
+The Audacity Team is pleased to announce the release of
+<a href=\"/download\">Audacity 1.3.5 (beta)</a> for Windows, 
+Mac and Linux/Unix. Changes include improvements and new 
+features for recording, import/export and the user interface. 
+Because it is a work in progress and does not yet come with 
+complete documentation or translations into foreign languages, 
+it is recommended for more advanced users. For all users, 
+<a href=\"/download\">Audacity 1.2.6</a> is a stable release, 
+complete and fully documented. You can have Audacity 1.2.6 and 
+1.3.5 installed on the same machine.
+</p>
+
+<b>Beta version 1.3.5</b>
+<dl>
+	<dt> Recording / Playback </dt>
+	      <dd>   <ul>
+                           <li>Several bugs fixed so that latency correction should be better, 
+                               and more devices work correctly.</li>
+                           <li>Problems with invalid sample rates under Linux should be much rarer.</li>
+                           <li>Newer version of Portaudio library.</li>
+                           <li>New feature to record onto the end of an existing track
+                               (hold Shift while clicking Record).</li>
+             </dd>   </ul>
+       </dt>
+
+	<dt> Import / Export </dt>
+	      <dd>   <ul>
+                           <li>Updated versions of Libogg, Libvorbis, Libflac, Libsndfile and Twolame
+                               libraries.
+                           <li>Handling of unsupported file formats more informative.</li>
+                           <li>Handling of file names with slashes on OS X improved.</li>
+                           <li>New dialog allows replacement of illegal file name characters on all platforms.</li>
+             </dd>   </ul>
+       </dt>
+
+	<dt> Interface </dt>
+	      <dd>   <ul>
+                           <li>Improved scaling and layout for rulers and VU meters.</li>
+                           <li>Envelope fixes/improvements including full control of undo/redo.</li>
+                           <li>New keyboard shortcuts and improved menu navigation.</li>
+                           <li>Preferences:</li>
+                               <ul>
+                                    <li>More intuitive tab arrangement.</li> 
+                                    <li>New options for mute/solo and Metadata Editor behavior.</li> 
+                                    <li>Language can now be changed without restart.</li>
+                               </ul>
+			      <li>Expanded Build Information tab.</li>
+           </dd>   </ul>
+       </dt>
+
+	<dt> Effects </dt>
+	      <dd>   <ul>
+                           <li>New Vocal Remover plug-in, improvements for Generate effects.</li>
+             </dd>   </ul>
+       </dt>
+
+	<dt> Compilation </dt>
+	      <dd>   <ul>
+                           <li>Fixes when building Audacity with libraries disabled.</li>
+                           <li>Improvements to make Mac and Solaris builds easier.</li>
+             </dd>   </ul>
+       </dt>
+
+	<dt> Security </dt>
+	      <dd>   <ul>
+                           <li>Full fix for issue CVE-2007-6061 on systems where temporary directories
+                                can be changed by other users (thanks to Michael Schwendt).</li>
+             </dd>   </ul>
+       </dt>
+
+
+	<dt> Miscellaneous </dt>
+	      <dd>   <ul>
+                           <li>Updated translations for many locales.</li>
+                           <li>Several stability improvements.</li> 
+             </dd>   </ul>
+       </dt>
+</dl>
+		
+<p>
+See the included README.txt for more information about this release and <a href=\"/download/features-1.3-a\">New Features in 1.3</a>
+for more information about the 1.3.x beta series.
+</p>
+"));
 
 add_news_item(
   "April 21, 2008",
