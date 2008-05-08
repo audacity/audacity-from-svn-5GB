@@ -25,7 +25,76 @@
  </ul>
 ')?></p>
 
-<h3 id="details"><?=_("New in Audacity 1.3.4")?></h3>
+<h3 id="details"><?=_("New in Audacity 1.3.5")?></h3>
+
+<dl>
+	<dt> Recording / Playback </dt>
+	      <dd>   <ul>
+                           <li>Several bugs fixed so that latency correction should be better, 
+                               and more devices work correctly.</li>
+                           <li>Problems with invalid sample rates under Linux should be much rarer.</li>
+                           <li>Newer version of Portaudio library.</li>
+                           <li>New feature to record onto the end of an existing track
+                               (hold Shift while clicking Record).</li>
+             </dd>   </ul>
+       </dt>
+
+	<dt> Import / Export </dt>
+	      <dd>   <ul>
+                           <li>Updated versions of Libogg, Libvorbis, Libflac, Libsndfile and Twolame
+                               libraries.
+                           <li>Handling of unsupported file formats more informative.</li>
+                           <li>Handling of file names with slashes on OS X improved.</li>
+                           <li>New dialog allows replacement of illegal file name characters on all platforms.</li>
+             </dd>   </ul>
+       </dt>
+
+	<dt> Interface </dt>
+	      <dd>   <ul>
+                           <li>Improved scaling and layout for rulers and VU meters.</li>
+                           <li>Envelope fixes/improvements including full control of undo/redo.</li>
+                           <li>New keyboard shortcuts and improved menu navigation.</li>
+                           <li>Preferences:</li>
+                               <ul>
+                                    <li>More intuitive tab arrangement.</li> 
+                                    <li>New options for mute/solo and Metadata Editor behavior.</li> 
+                                    <li>Language can now be changed without restart.</li>
+                               </ul>
+			      <li>Expanded Build Information tab.</li>
+           </dd>   </ul>
+       </dt>
+
+	<dt> Effects </dt>
+	      <dd>   <ul>
+                           <li>New Vocal Remover plug-in, improvements for Generate effects.</li>
+             </dd>   </ul>
+       </dt>
+
+	<dt> Compilation </dt>
+	      <dd>   <ul>
+                           <li>Fixes when building Audacity with libraries disabled.</li>
+                           <li>Improvements to make Mac and Solaris builds easier.</li>
+             </dd>   </ul>
+       </dt>
+
+	<dt> Security </dt>
+	      <dd>   <ul>
+                           <li>Full fix for issue CVE-2007-6061 on systems where temporary directories
+                                can be changed by other users (thanks to Michael Schwendt).</li>
+             </dd>   </ul>
+       </dt>
+
+
+	<dt> Miscellaneous </dt>
+	      <dd>   <ul>
+                           <li>Updated translations for many locales.</li>
+                           <li>Several stability improvements.</li> 
+             </dd>   </ul>
+       </dt>
+</dl>
+
+
+<h3><?=_("New in Audacity 1.3.4")?></h3>
 <dl>
   <dt></dt>
   <dd>
