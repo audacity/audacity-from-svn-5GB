@@ -1,7 +1,7 @@
 <?php
 /*
- * Copyright 2004 Matt Brubeck
  * Copyright 2003 Dominic Mazzoni
+ * Copyright 2004 Matt Brubeck
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -12,8 +12,6 @@
 ?>
 
 <h2><?=$pageTitle?></h2>
-
-<p><b>News:</b> Click <a href="http://music.web.cmu.edu/cmw">here</a> for details of a "Nyquist and Audacity Computer Music Workshop" held from June 1-7, 2008 at Carnegie Mellon University in Pittsburgh, Pennsylvania, USA.</p>
 
 <ol>
 	<li><b><?=_("Introduction to Nyquist and Lisp Programming")?></b></li>
