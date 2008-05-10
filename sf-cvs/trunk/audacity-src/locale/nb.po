@@ -1647,7 +1647,7 @@ msgid "&Stereo to Mono"
 msgstr "&Stereo til mono"
 
 #: Menus.cpp:464
-msgid "Labeled Re&gions..."
+msgid "La&beled Regions..."
 msgstr "Kommenterte re&gioner..."
 
 #. i18n-hint: Labeled Regions submenu
@@ -1824,8 +1824,8 @@ msgid "E&xpand All Tracks\tCtrl+Shift+X"
 msgstr "&Vis alle spor\tCtrl+Shift+X"
 
 #: Menus.cpp:502
-msgid "Show Clipping"
-msgstr "Vis klipping"
+msgid "&Show Clipping"
+msgstr "&Vis klipping"
 
 #: Menus.cpp:618
 msgid "&History..."
