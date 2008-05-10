@@ -6,8 +6,8 @@ define('stable_version', '1.2.6');
 define('mac_classic_version', '1.0.0');
 define('mac_classic_size',    1.5);
 
-define('macosx_version', '1.2.6');
-define('macosx_size',    3.2);
+define('macosx_version', '1.2.6a');
+define('macosx_size',    3.9);
 define('macosx_intel_version', '1.2.5');
 define('macosx_intel_size',    3.4);
 
