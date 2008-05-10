@@ -10,13 +10,14 @@
   include "../include/header.inc.php";
 
   echo "<h2>$pageTitle</h2>";
-  echo "<p>"._('Audacity is always free to download from us, but vendors can also sell copies of the program, thanks to the <a href="../about/license#license">GNU General Public License</a>. If you want a copy of Audacity on CD-ROM, we encourage you to use the options listed below.')."</p>";
+  echo "<p>"._('Audacity is always free to download from us, but third parties can also sell or otherwise distribute our program, thanks to the <a href="../about/license#license">GNU General Public License</a>. If you want a copy of Audacity on CD-ROM, we encourage you to use the options listed below.')."</p>";
 
   echo _('<h3>Windows</h3>
   <p>
    <ul>
-    <li><a href="http://www.theopencd.org/">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software, including Audacity. Currently, you can still <a href="http://releases.theopencd.org/">download archived CD images</a> or <a href="http://ztechshop.net/disks/opencd/">purchase a CD online</a> for worldwide shipping.</li>
-    <li><a href="http://theopendisc.com/">TheOpenDisc</a> is a similar collection of high quality free and open source software, including Audacity. Currently, a downloadable <a href="http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn">CD image</a> is available. The project hopes to make available a purchasable CD shortly.</li>
+    <li><a href="http://www.freedomsampler.com/">FreedomSampler&trade;</a> is a collection of free, open source software with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href="http://www.twistedlincoln.com/shop/catalog/products/freedomsampler">purchase</a> a copy to be shipped to you.</li>
+    <li><a href="http://www.theopencd.org/">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software. Currently, you can still <a href="http://releases.theopencd.org/">download archived CD images</a> or <a href="http://ztechshop.net/disks/opencd/">purchase a CD online</a> for worldwide shipping.</li>
+    <li><a href="http://theopendisc.com/">TheOpenDisc</a> is a similar collection of high quality free and open source software. Currently, a downloadable <a href="http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn">CD image</a> is available. The project hopes to make available a purchasable CD shortly.</li>
    </ul>
   </p>');
 
