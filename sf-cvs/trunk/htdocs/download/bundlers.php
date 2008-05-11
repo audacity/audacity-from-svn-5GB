@@ -31,25 +31,26 @@
 
 <ul id="bundlers">
   <li>
-   <a href="#Hardware Bundles">Hardware Bundles</a>
+   <a href="#hardware">Hardware Bundles</a>
   </li>
   <li>
-   <a href="#Interfaces">Interfaces</a>
+   <a href="#interfaces">Interfaces</a>
   </li>
   <li>
-    <a href="#Musical Instruments">Musical Instruments</a>
+    <a href="#instruments">Musical Instruments</a>
   </li>
   <li>
-    <a href="#Playback Devices">Playback Devices</a>
+    <a href="#playback">Playback Devices</a>
   </li>
   <li>
-    <a href="#Others">Others</a>
+    <a href="#cd">Open Source CD Bundles</a>
+  </li>
+  <li>
+    <a href="#others">Others</a>
   </li>
 </ul>
 
-
-<a name="Hardware Bundles"></a>
-<h3>Hardware Bundles</h3>
+<h3 id="hardware">Hardware Bundles</h3>
 <table class="bundlers">
   <tr>
    <th><?=_("Vendor")?></th>
@@ -97,11 +98,20 @@
    <?=_("Available in Europe. Hardware and software to record, edit and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand. NOTE: Currently Podcast Factory will not work with Windows XP Media Center Edition (XP Home and Pro are not affected). Audacity itself does work with Media Center Edition, subject to your computer having suitable sound device drivers specific to your hardware.")?>
    </td>
   </tr>
+  <tr>
+   <td>
+   <a href="http://www.twistedlincoln.com/">Twisted Lincoln, Inc.</a>
+   </td>
+   <td>
+   <a href="http://www.twistedlincoln.com/shop/catalog/computers">Desktop and Laptop Computers</a>
+   </td>
+   <td>
+   <?=_('Twisted Lincoln, Inc. sells reconditioned computers online which are preloaded with Audacity and other open source software from the company\'s <a href="#freedom">FreedomSampler&trade;</a> CD.')?>
+   </td>
+  </tr>
 </table>
 
-
-<a name="Interfaces"></a>
-<h3>Interfaces</h3>
+<h3 id="interfaces">Interfaces</h3>
 <table class="bundlers">
   <tr>
    <th><?=_("Vendor")?></th>
@@ -200,9 +210,7 @@
   </tr>
 </table>
 
-
-<a name="Musical Instruments"></a>
-<h3>Musical Instruments</h3>
+<h3 id="instruments">Musical Instruments</h3>
 <table class="bundlers">
   <tr>
    <th><?=_("Vendor")?></th>
@@ -262,8 +270,7 @@
   </tr>
 </table>
 
-<a name="Playback Devices"></a>
-<h3>Playback Devices</h3>
+<h3 id="playback">Playback Devices</h3>
 <table class="bundlers">
   <tr>
    <th><?=_("Vendor")?></th>
@@ -315,9 +322,49 @@
   </tr>
 </table>
 
+<h3 id="cd">Open Source CD Bundles</h3>
+<table class="bundlers">
+  <tr>
+   <th><?=_("Vendor")?></th>
+   <th><?=_("Product")?></th>
+   <th><?=_("Description")?></th>
+  </tr>
+  <tr>
+   <td id="freedom" class="col1">
+   <a href="http://www.twistedlincoln.com/">Twisted Lincoln,Inc.</a>
+   </td>
+   <td class="col2">
+   <a href="http://www.freedomsampler.com/">FreedomSampler&trade;</a>
+   </td>
+   <td class="col3">
+   <?=_('FreedomSampler&trade; is a collection of free, open source software with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href="http://www.twistedlincoln.com/shop/catalog/products/freedomsampler">purchase</a> a copy to be shipped to you.')?>
+   </td>
+  </tr>
+  <tr>
+   <td class="col1">
+   <a href="http://www.theopencd.org/">TheOpenCD.org</a>
+   </td>
+   <td class="col2">
+   <a href="http://www.theopencd.org/">TheOpenCD</a>
+   </td>
+   <td class="col3">
+   <?=_('TheOpenCD is a now-discontinued collection of high quality free and open source software. Currently, you can still <a href="http://releases.theopencd.org/">download archived CD images</a> or <a href="http://ztechshop.net/disks/opencd/">purchase a CD online</a> for worldwide shipping.')?>
+   </td>
+  </tr>
+  <tr>
+   <td class="col1">
+   <a href="http://theopendisc.com/">TheOpenDisc.com</a>
+   </td>
+   <td class="col2">
+   <a href="http://theopendisc.com/">OpenDisc</a>
+   </td>
+   <td class="col3">
+   <?=_('OpenDisc is a similar collection of high quality free and open source software. Currently, a downloadable <a href="http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn">CD image</a> is available. The project hopes to make available a purchasable CD shortly.')?>
+   </td>
+  </tr>
+</table>
 
-<a name="Others"></a>
-<h3>Others</h3>
+<h3 id="others">Others</h3>
 <table class="bundlers">
   <tr>
    <th><?=_("Vendor")?></th>
@@ -396,7 +443,7 @@
    </td>
    <td><?=_("Mirror site for Audacity downloads, from webzine about Windows software at Impress Watch Corporation, Tokyo, Japan.")?></td>
   </tr>
-  </table>
+</table>
 
 <?php
   include "../include/footer.inc.php";
