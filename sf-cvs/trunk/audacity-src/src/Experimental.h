@@ -38,6 +38,8 @@
 // JKC July-2007: I'm temporarily using EXPERIMENTAL_MODULES to 
 // switch on all experimental features that I am interested in.  
 // I have it defined in the debug284 build of audacity.
+// MJS 16/5/8 Removed EXPERIMENTAL_MODULES from the VC project file,
+// I think it should be turned on here, or not.
 #ifdef EXPERIMENTAL_MODULES
 // These are all quite OK for Beta builds.
 #define EXPERIMENTAL_THEMING
