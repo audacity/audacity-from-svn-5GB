@@ -11,7 +11,7 @@
 *******************************************************************//**
 
 \class DirectoriesPrefs
-\brief A PrefsPanel used to selct directories.
+\brief A PrefsPanel used to select directories.
 
 *//*******************************************************************/
 
@@ -101,7 +101,7 @@ void DirectoriesPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieCheckBox( _("Auto save a copy of the project in a separate folder"),
                      wxT("/Directories/AutoSaveEnabled"), true);
       S.StartThreeColumn();
-      S.TieTextBox( _("Auto save interval:"), wxT("/Directories/AutoSaveMinutes"), 5.0, 9);
+      S.TieTextBox( _("Auto save interval:"), wxT("/Directories/AutoSaveMinutes"), 2.0, 9);
       S.AddUnits(  _("minutes") );
       S.EndThreeColumn();
    }
@@ -109,7 +109,7 @@ void DirectoriesPrefs::PopulateOrExchange( ShuttleGui & S )
    
    S.StartStatic( _("Audio cache"),0);
    {
-      S.TieCheckBox( _("Hold recorded data in memory until recording is stopped"),
+      S.TieCheckBox( _("Play and/or record using RAM (useful for slow drives, but could crash with long files or recordings)"),
                      wxT("/Directories/CacheBlockFiles"), false);
    }
    S.EndStatic();
