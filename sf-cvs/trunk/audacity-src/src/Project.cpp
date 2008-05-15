@@ -2686,7 +2686,7 @@ bool AudacityProject::SaveAs()
 	else
 	{
  	  ShowWarningDialog(this, wxT("FirstProjectSave"),
-                     _("Audacity project files (.aup) let you save everything you're working on exactly as it\nappears on the screen, but most other programs can't open Audacity project files.\n\nWhen you want to save a file that can be opened by other programs, select one of the\nExport commands."));
+                     _("You are saving an Audacity project file (.aup).\n\nSaving a project creates a file that only Audacity can open.\n\nTo save an audio file for other programs, use one of the \"File > Export\" commands.\n"));
  	  fName = FileSelector(_NoAcc("Save Project &As...") + wxT(":"),
                           path, fName, wxT(""),
                           _("Audacity projects (*.aup)|*.aup"),
@@ -3363,7 +3363,7 @@ void AudacityProject::AutoSaveIfNeeded()
    if (!IsAutoSaveEnabled())
       return; // user disabled auto-save
       
-   double autoSaveMinutes = 5.0;
+   double autoSaveMinutes = 2.0;
    gPrefs->Read(wxT("/Directories/AutoSaveMinutes"), &autoSaveMinutes);
    
    if (mAutoSaveFileName.IsEmpty() ||
