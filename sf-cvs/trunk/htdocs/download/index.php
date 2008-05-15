@@ -46,7 +46,7 @@
       <h3><a href="beta_windows"><img alt="Windows" src="../images/new_win.png">
       <?=_("Windows")?></a><span class="downloads_smaller"><?=_("&nbsp;&nbsp;1.3.5")?></span></h3>
   
-      <h3><a href="mac"><img alt="Mac" src="../images/mac.png">
+      <h3><a href="beta_mac"><img alt="Mac" src="../images/mac.png">
       <?=_("Mac OS X")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.5 (Universal Binary)")?></span></h3>
   
       <h3><a href="beta_linux"><img alt="Linux" src="../images/unix.png">
