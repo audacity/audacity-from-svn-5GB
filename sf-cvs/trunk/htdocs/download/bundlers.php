@@ -15,7 +15,7 @@
 
 <p><?=_('Audacity is free to download, but vendors are also free to bundle copies of the program with their products, or resell or distribute Audacity, thanks to the <a href="../about/license">GNU General Public License</a>. The following are legitimate, legal offerings. We are happy and proud that they chose to bundle Audacity with their products.')?></p>
 
-<p><?=_('Some vendors, <a href="http://umixit.com/aboutus.html">Umixit</a>, <a href="http://www.thinklabsmedical.com">Thinklabs</a>, and <a href="http://audiotouch.com.au/">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href="#Others">custom versions</a>. The UmixIt custom version adds a mixer board interface and karaoke window. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Audiotouch is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Many of these improvements will be incorporated in future versions of Audacity.')?></p>
+<p><?=_('Some vendors, <a href="http://umixit.com/aboutus.html">Umixit</a>, <a href="http://www.thinklabsmedical.com">Thinklabs</a>, and <a href="http://audiotouch.com.au/">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href="#others">custom versions</a>. The UmixIt custom version adds a mixer board interface and karaoke window. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Audiotouch is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Many of these improvements will be incorporated in future versions of Audacity.')?></p>
 
 <p>
   <?php echo _('To be considered for addition to this list, please first review our <a href="../about/license">License, and Advice for Vendors and Distributors</a> page. If you are distributing Audacity under those terms ');?>
@@ -34,7 +34,7 @@
    <a href="#hardware">Hardware Bundles</a>
   </li>
   <li>
-   <a href="#interfaces">Interfaces</a>
+   <a href="#interfaces">Interfaces and Sound Cards</a>
   </li>
   <li>
     <a href="#instruments">Musical Instruments</a>
@@ -65,7 +65,7 @@
    <a href="http://www.behringer.com/PODCASTUDIO-FIREWIRE">PODCASTUDIO FIREWIRE</a>
    </td>
    <td class="col3">
-   <?=_("FireWire&reg; audio interface, 8-input mixer, headphones, studio microphone with stand, cables and software.")?></td>
+   <?=_("FireWire&reg; audio interface with 8-input mixer, plus headphones, studio microphone with stand, cables and software.")?></td>
   </tr>
   <tr>
    <td>
@@ -74,7 +74,7 @@
    <td>
    <a href="http://www.behringer.com/PODCASTUDIO-USB">PODCASTUDIO USB</a>
    </td>
-   <td><?=_("USB audio interface, 8-input mixer, headphones, studio microphone with stand, cables and software.")?></td>
+   <td><?=_("USB audio interface with 8-input mixer, plus headphones, studio microphone with stand, cables and software.")?></td>
   </tr>
   <tr>
    <td>
@@ -111,7 +111,7 @@
   </tr>
 </table>
 
-<h3 id="interfaces">Interfaces</h3>
+<h3 id="interfaces">Interfaces and Sound Cards</h3>
 <table class="bundlers">
   <tr>
    <th><?=_("Vendor")?></th>
@@ -331,7 +331,7 @@
   </tr>
   <tr>
    <td id="freedom" class="col1">
-   <a href="http://www.twistedlincoln.com/">Twisted Lincoln,Inc.</a>
+   <a href="http://www.twistedlincoln.com/">Twisted Lincoln, Inc.</a>
    </td>
    <td class="col2">
    <a href="http://www.freedomsampler.com/">FreedomSampler&trade;</a>
@@ -390,22 +390,6 @@
    <a href="http://www.mycomicbookcreator.com">Comic Book Creator</a>
    </td>
    <td><?=_("Software allowing users to create their own custom comic books with included clipart, backgrounds, word balloons, sound files and other  assets.")?></td>
-  </tr>
-  <tr>
-   <td>
-   <a href="http://www.theopencd.org">TheOpenCD</a>
-   </td>
-   <td>
-   <a href="http://releases.theopencd.org/">OpenCD downloadable CD images</a>
-   </td>
-   <td><?=_('Now discontinued, but archived CD images are still available from the link to left, and CDs can currently still be <a href="./buy">purchased</a>. A collection of high quality free and open source software (including Audacity) for Microsoft Windows. Products from TheOpenCD are now in use by alternative projects including <a href="http://ubuntu.com/">Linux Ubuntu.')?></td>
-  </tr>
-  <tr>
-   <td>
-   <a href="http://theopendisc.com/">TheOpenDisc</a>
-   </td>
-   <td><a href="http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn">OpenDisc downloadable CD image</a></td>
-   <td><?=_('Successor to TheOpenCD, a collection of high quality free and open source <a href="http://theopendisc.com/programs">software</a> (including Audacity) for Microsoft Windows. Purchasable discs may be made available in future - check their web site. ')?></td>
   </tr>
   <tr>
    <td>
