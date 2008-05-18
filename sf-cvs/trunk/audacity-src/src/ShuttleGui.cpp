@@ -1525,9 +1525,10 @@ void ShuttleGuiBase::StartRadioButtonGroup( const wxString & SettingName, const 
 /// This function must be within a StartRadioButtonGroup - EndRadioButtonGroup pair.
 wxRadioButton * ShuttleGuiBase::TieRadioButton( 
    const wxString &Prompt, 
-   int iValue)
+   const int iValue)
 {
-   WrappedType WrappedRef( iValue );
+   int iTemp = iValue;
+   WrappedType WrappedRef( iTemp );
    return TieRadioButton( Prompt, WrappedRef );
 }
 
