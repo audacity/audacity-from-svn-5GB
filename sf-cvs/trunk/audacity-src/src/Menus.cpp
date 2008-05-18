@@ -191,7 +191,7 @@ void AudacityProject::CreateMenusAndCommands()
 	{
       c->AddSeparator();
       
-      c->BeginSubMenu(_("&Import..."));
+      c->BeginSubMenu(_("&Import"));
 		c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
 		c->AddItem(wxT("ImportAudio"),    _("&Audio...\tCtrl+Shift+I"),	FN(OnImport));
 		c->AddItem(wxT("ImportLabels"),   _("&Labels..."),					FN(OnImportLabels));
@@ -334,7 +334,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem(wxT("Delete"),         _("&Delete\tCtrl+K"),                FN(OnDelete));
    c->AddItem(wxT("SplitDelete"),    _("Split D&elete\tCtrl+Alt+K"),       FN(OnSplitDelete));
-   c->AddItem(wxT("Silence"),        _("&Silence\tCtrl+L"),               FN(OnSilence));
+   c->AddItem(wxT("Silence"),        _("Silence Audi&o\tCtrl+L"),               FN(OnSilence));
    c->AddSeparator();
    c->AddItem(wxT("Split"),          _("Sp&lit\tCtrl+I"),                         FN(OnSplit));
    c->SetCommandFlags(wxT("Split"),
@@ -346,23 +346,22 @@ void AudacityProject::CreateMenusAndCommands()
       AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
       AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag);
 
-   c->AddItem(wxT("Join"),           _("&Join\tCtrl+J"),                  FN(OnJoin));
-   c->AddItem(wxT("Disjoin"),        _("Disj&oin\tCtrl+Alt+J"),                       FN(OnDisjoin));
-   
-   c->AddItem(wxT("Duplicate"),      _("Duplic&ate\tCtrl+D"),             FN(OnDuplicate));
+   c->AddItem(wxT("Join"),           _("&Join\tCtrl+J"),                   FN(OnJoin));
+   c->AddItem(wxT("Disjoin"),        _("Detac&h at Silences\tCtrl+Alt+J"), FN(OnDisjoin));
+   c->AddItem(wxT("Duplicate"),      _("Duplic&ate\tCtrl+D"),              FN(OnDuplicate));
 
    // An anomaly... StereoToMono is added here for CleanSpeech, 
-   // which doesn't have a Project menu, but is under Project for normal Audacity.
+   // which doesn't have a Tracks menu, but is under Tracks for normal Audacity.
    if( mCleanSpeechMode )
 	{
-      c->AddItem(wxT("Stereo to Mono"),      _("&Stereo to Mono"),            FN(OnStereoToMono));
+      c->AddItem(wxT("Stereo to Mono"),      _("Stereo Trac&k to Mono"),  FN(OnStereoToMono));
       c->SetCommandFlags(wxT("Stereo to Mono"),
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag,
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag);
 	}
    c->AddSeparator();
 
-   c->BeginSubMenu( _( "La&beled Regions..." ) );
+   c->BeginSubMenu( _( "La&beled Regions" ) );
    /* i18n-hint: Labeled Regions submenu */
    c->AddItem( wxT( "CutLabels" ), _( "&Cut\tAlt+X" ), 
          FN( OnCutLabels ) );
@@ -406,13 +405,12 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetCommandFlags( wxT( "JoinLabels" ), LabelsSelectedFlag, 
          LabelsSelectedFlag );
    /* i18n-hint: Labeled Regions submenu */
-   c->AddItem( wxT( "DisjoinLabels" ), _( "Disj&oin\tShift+Alt+J" ), 
-         FN( OnDisjoinLabels ) );
+   c->AddItem( wxT( "DisjoinLabels" ), _( "Detac&h at Silences\tShift+Alt+J" ),  FN( OnDisjoinLabels ) );
    c->SetCommandFlags( wxT( "DisjoinLabels" ), LabelsSelectedFlag, 
          LabelsSelectedFlag );
    c->EndSubMenu();
    
-   c->BeginSubMenu(_("Select&..."));
+   c->BeginSubMenu(_("&Select"));
    c->AddItem(wxT("SelectAll"),      _("&All\tCtrl+A"),                   FN(OnSelectAll));
    c->AddItem(wxT("SelectNone"),     _("&None\tCtrl+Shift+A"),            FN(OnSelectNone));
    c->SetCommandFlags(TracksExistFlag, TracksExistFlag,
@@ -432,7 +430,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddItem(wxT("ZeroCross"),      _("Find &Zero Crossings\tZ"),         FN(OnZeroCrossing));
 
-   c->BeginSubMenu(_("Mo&ve Cursor..."));
+   c->BeginSubMenu(_("Mo&ve Cursor"));
 
    c->AddItem(wxT("CursSelStart"),   _("to Selection Star&t"),             FN(OnCursorSelStart));
    c->AddItem(wxT("CursSelEnd"),     _("to Selection En&d"),               FN(OnCursorSelEnd));
@@ -447,7 +445,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndSubMenu();
 
    c->AddSeparator();
-   c->AddItem(wxT("SelSave"),        _("Re&gion Save"),                 FN(OnSelectionSave));
+   c->AddItem(wxT("SelSave"),        _("Re&gion Save"),                FN(OnSelectionSave));
    c->AddItem(wxT("SelRestore"),     _("Regio&n Restore"),             FN(OnSelectionRestore));
 
    c->SetCommandFlags(wxT("SelSave"),
@@ -459,7 +457,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
 
-   c->BeginSubMenu(_("Pla&y Region..."));
+   c->BeginSubMenu(_("Pla&y Region"));
    c->AddItem(wxT("LockPlayRegion"), _("&Lock"), FN(OnLockPlayRegion));
    c->AddItem(wxT("UnlockPlayRegion"), _("&Unlock"), FN(OnUnlockPlayRegion));
    c->SetCommandFlags(wxT("LockPlayRegion"), PlayRegionNotLockedFlag, PlayRegionNotLockedFlag);
@@ -475,11 +473,11 @@ void AudacityProject::CreateMenusAndCommands()
    // Moved Preferences from File Menu 02/09/05 Richard Ash.
   #ifdef __WXMAC__
    /* i18n-hint: Mac OS X Preferences shortcut should be Ctrl+, */
-   c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+,"),        FN(OnPreferences));
+   c->AddItem(wxT("Preferences"),    _("Pre&ferences...\tCtrl+,"),        FN(OnPreferences));
   #else
    /* i18n-hint: On Windows and Linux, the Preferences shortcut is usually Ctrl+P */
    c->AddSeparator();
-   c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
+   c->AddItem(wxT("Preferences"),    _("Pre&ferences...\tCtrl+P"),        FN(OnPreferences));
   #endif
    c->SetCommandFlags(wxT("Preferences"), AudioIONotBusyFlag, AudioIONotBusyFlag);
 
@@ -522,7 +520,7 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | UndoAvailableFlag);
 
    c->AddSeparator();
-   c->BeginSubMenu(_("&Toolbars..."));
+   c->BeginSubMenu(_("&Toolbars"));
    c->AddItem(wxT("ShowControlTB"),       _("&Control Toolbar"),       FN(OnShowControlToolBar), 0);
    c->AddItem(wxT("ShowDeviceTB"),        _("&Device Toolbar"),        FN(OnShowDeviceToolBar), 0);
    c->AddItem(wxT("ShowEditTB"),          _("&Edit Toolbar"),          FN(OnShowEditToolBar), 0);
@@ -549,7 +547,7 @@ void AudacityProject::CreateMenusAndCommands()
 
       c->AddSeparator();*/
 		
-		c->BeginSubMenu(_("Add &New..."));
+		c->BeginSubMenu(_("Add &New"));
 			c->AddItem(wxT("NewAudioTrack"),  _("&Audio Track\tCtrl+Shift+N"),               FN(OnNewWaveTrack));
 			c->AddItem(wxT("NewStereoTrack"), _("&Stereo Track"),              FN(OnNewStereoTrack));
 			c->AddItem(wxT("NewLabelTrack"),  _("&Label Track"),               FN(OnNewLabelTrack));
@@ -559,9 +557,9 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("SmartRecord"), _("&Timer Record..."), FN(OnSmartRecord));
 
       c->AddSeparator();
-      // StereoToMono moves elsewhere in the menu when in CleanSpeech mode.
+      // StereoToMono moves to the Edit menu when in CleanSpeech mode.
       // It belongs here normally, because it is a kind of mix-down.
-      c->AddItem(wxT("Stereo to Mono"),      _("&Stereo to Mono"),            FN(OnStereoToMono));
+      c->AddItem(wxT("Stereo to Mono"),      _("Stereo Trac&k to Mono"),            FN(OnStereoToMono));
       c->SetCommandFlags(wxT("Stereo to Mono"),
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag,
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag);
@@ -603,7 +601,7 @@ void AudacityProject::CreateMenusAndCommands()
       alignLabels.Add(_("Align End with Selection En&d"));
       alignLabels.Add(_("Align Tracks To&gether"));
    
-      c->BeginSubMenu(_("&Align Tracks..."));
+      c->BeginSubMenu(_("&Align Tracks"));
       c->AddItemList(wxT("Align"), alignLabels, FN(OnAlign));
       c->SetCommandFlags(wxT("Align"),
                          AudioIONotBusyFlag | TracksSelectedFlag,
@@ -612,7 +610,7 @@ void AudacityProject::CreateMenusAndCommands()
    
       alignLabels.RemoveAt(7); // Can't align together and move cursor
    
-      c->BeginSubMenu(_("Ali&gn And Move Cursor..."));
+      c->BeginSubMenu(_("Ali&gn And Move Cursor"));
       c->AddItemList(wxT("AlignMove"), alignLabels, FN(OnAlignMoveSel));
       c->SetCommandFlags(wxT("AlignMove"),
                          AudioIONotBusyFlag | TracksSelectedFlag,
@@ -627,10 +625,10 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("EditLabels"),       _("&Edit Labels"), FN(OnEditLabels));
 
       c->AddSeparator();   
-      c->BeginSubMenu(_("S&ort tracks by..."));
-      c->AddItem(wxT("SortByTime"), _("&Start time"), FN(OnSortTime));
+      c->BeginSubMenu(_("S&ort tracks"));
+      c->AddItem(wxT("SortByTime"), _("by &Start time"), FN(OnSortTime));
       c->SetCommandFlags(wxT("SortByTime"), TracksExistFlag, TracksExistFlag);
-      c->AddItem(wxT("SortByName"), _("&Name"), FN(OnSortName));
+      c->AddItem(wxT("SortByName"), _("by &Name"), FN(OnSortName));
       c->SetCommandFlags(wxT("SortByName"), TracksExistFlag, TracksExistFlag);
       c->EndSubMenu();
 
@@ -873,7 +871,7 @@ void AudacityProject::CreateRecentFilesMenu(CommandManager *c)
       wxMenu* pm = c->BeginSubMenu(_("Open Recent"));
    #else
       /* i18n-hint: This is the name of the menu item on Windows and Linux */
-      wxMenu* pm = c->BeginSubMenu(_("Recent &Files..."));
+      wxMenu* pm = c->BeginSubMenu(_("Recent &Files"));
    #endif
 
    c->EndSubMenu();
