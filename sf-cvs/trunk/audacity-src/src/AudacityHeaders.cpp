@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  AudacityHeaders.h
+  AudacityHeaders.cpp
 
   Dominic Mazzoni
 

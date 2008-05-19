@@ -20,6 +20,14 @@
 
 *//*******************************************************************/
 
+// For compilers that support precompilation, includes "wx/wx.h".
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
+// Include your minimal set of headers here, or wx.h
+#include <wx/window.h>
+#endif
+
 #include <wx/defs.h>
 #include <wx/intl.h>		// needed for _("translated stings") even if we
 							// don't have libflac available

@@ -16,6 +16,13 @@
 #ifndef __AUDACITY_EFFECT_PHASER__
 #define __AUDACITY_EFFECT_PHASER__
 
+// For compilers that support precompilation, includes "wx/wx.h".
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
+#include <wx/window.h>
+#endif
+
 #include <wx/dialog.h>
 #include <wx/intl.h>
 #include <wx/slider.h>

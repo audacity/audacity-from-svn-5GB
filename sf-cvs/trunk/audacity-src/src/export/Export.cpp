@@ -28,6 +28,13 @@
 
 *//********************************************************************/
 
+// For compilers that support precompilation, includes "wx/wx.h".
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
+#include <wx/window.h>
+#endif
+
 #include <wx/dynarray.h>
 #include <wx/file.h>
 #include <wx/filename.h>
