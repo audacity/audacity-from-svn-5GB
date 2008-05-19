@@ -8,6 +8,10 @@
 
 **********************************************************************/
 
+#ifdef _WIN32
+   #include <windows.h>
+#endif
+
 #include <wx/utils.h>
 #include <wx/wxchar.h>
 #include <wx/log.h>

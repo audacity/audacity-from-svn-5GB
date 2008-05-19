@@ -486,6 +486,164 @@
 				CommandLine="set CFLAGS= /I &quot;../../include&quot; /I &quot;../../src/common&quot; /I &quot;../../src/common&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_LIB&quot; /D &quot;_MBCS&quot; /Od /FD /EHsc /RTC1 /MTd /W3 /c /ZI /wd4996 /nologo /Fo&quot;.\$(OutDir)/&quot; /Fd&quot;.\$(OutDir)/&quot;&#x0D;&#x0A;set LIBS=&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto NoDX&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;&#x0D;&#x0A;set LIBS=&quot;%DXSDK_DIR%lib\x86\dxguid.lib&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoDX&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%ASIOSDK_DIR%&quot;==&quot;&quot; goto NoASIO&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\pa_asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\iasiothiscallresolver.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\common\asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\asiodrivers.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\pc\asiolist.cpp&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoASIO&#x0D;&#x0A;&#x0D;&#x0A;lib /OUT:&quot;$(TargetPath)&quot; &quot;.\$(OutDir)\*.obj&quot; %LIBS%&#x0D;&#x0A;"
 			/>
 		</Configuration>
+		<Configuration
+			Name="Modular_Release|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%ASIOSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_ASIO &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="/O2"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="../../include;../../src/common"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\$(ConfigurationName)/PA19StaticWMME.pch"
+				AssemblerListingLocation=".\$(ConfigurationName)/"
+				ObjectFile=".\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\$(ConfigurationName)/"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				CompileAs="0"
+				DisableSpecificWarnings="4996"
+				ForcedIncludeFiles="$(ProjectDir)\$(ConfigurationName)\config.h"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1032"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="$(SolutionDir)\$(ConfigurationName)\pastaticwmmev19.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="set CFLAGS=/I &quot;../../include&quot; /I &quot;../../src/common&quot; /I &quot;../../src/common&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_LIB&quot; /D &quot;_MBCS&quot; /O2 /Ob1 /GF /FD /EHsc /MT /Gy /W3 /c /wd4996 /nologo /Fo&quot;.\$(OutDir)/&quot; /Fd&quot;.\$(OutDir)/&quot;&#x0D;&#x0A;set LIBS=&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto NoDX&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;&#x0D;&#x0A;set LIBS=&quot;%DXSDK_DIR%lib\x86\dxguid.lib&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoDX&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%ASIOSDK_DIR%&quot;==&quot;&quot; goto NoASIO&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\pa_asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\iasiothiscallresolver.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\common\asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\asiodrivers.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\pc\asiolist.cpp&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoASIO&#x0D;&#x0A;&#x0D;&#x0A;lib /OUT:&quot;$(TargetPath)&quot; &quot;.\$(OutDir)\*.obj&quot; %LIBS%&#x0D;&#x0A;"
+			/>
+		</Configuration>
+		<Configuration
+			Name="MR2|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%ASIOSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_ASIO &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="../../include;../../src/common"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\$(ConfigurationName)/PA19StaticWMME.pch"
+				AssemblerListingLocation=".\$(ConfigurationName)/"
+				ObjectFile=".\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\$(ConfigurationName)/"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="4"
+				CompileAs="0"
+				DisableSpecificWarnings="4996"
+				ForcedIncludeFiles="$(ProjectDir)\$(ConfigurationName)\config.h"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1032"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="$(SolutionDir)\$(ConfigurationName)\pastaticwmmev19d.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="set CFLAGS= /I &quot;../../include&quot; /I &quot;../../src/common&quot; /I &quot;../../src/common&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_LIB&quot; /D &quot;_MBCS&quot; /Od /FD /EHsc /RTC1 /MTd /W3 /c /ZI /wd4996 /nologo /Fo&quot;.\$(OutDir)/&quot; /Fd&quot;.\$(OutDir)/&quot;&#x0D;&#x0A;set LIBS=&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto NoDX&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;&#x0D;&#x0A;set LIBS=&quot;%DXSDK_DIR%lib\x86\dxguid.lib&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoDX&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%ASIOSDK_DIR%&quot;==&quot;&quot; goto NoASIO&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\pa_asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\iasiothiscallresolver.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\common\asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\asiodrivers.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\pc\asiolist.cpp&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoASIO&#x0D;&#x0A;&#x0D;&#x0A;lib /OUT:&quot;$(TargetPath)&quot; &quot;.\$(OutDir)\*.obj&quot; %LIBS%&#x0D;&#x0A;"
+			/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
@@ -643,6 +801,22 @@
 								Name="VCCLCompilerTool"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Modular_Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="MR2|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 				</Filter>
 				<Filter
@@ -693,6 +867,22 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Debug wx284|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Modular_Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="MR2|Win32"
 							ExcludedFromBuild="true"
 							>
 							<Tool
@@ -751,6 +941,22 @@
 								Name="VCCLCompilerTool"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Modular_Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="MR2|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\..\src\hostapi\dsound\pa_win_ds_dynlink.h"
@@ -797,6 +1003,22 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Debug wx284|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Modular_Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="MR2|Win32"
 							ExcludedFromBuild="true"
 							>
 							<Tool
@@ -859,6 +1081,22 @@
 								Name="VCCLCompilerTool"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Modular_Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="MR2|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\..\src\hostapi\asio\iasiothiscallresolver.h"
@@ -911,6 +1149,22 @@
 								Name="VCCustomBuildTool"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Modular_Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="MR2|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\..\src\hostapi\asio\pa_asio.cpp"
@@ -957,6 +1211,22 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Debug wx284|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Modular_Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="MR2|Win32"
 							ExcludedFromBuild="true"
 							>
 							<Tool
@@ -1052,6 +1322,22 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug wx284|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Modular_Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MR2|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool

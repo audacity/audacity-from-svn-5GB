@@ -161,6 +161,9 @@ It handles initialization and termination by subclassing wxApp.
 #endif //(__WXMSW__)
 
 #if wxUSE_ACCESSIBILITY
+// ***James, this causes compile warnings like:
+//    ..\src\AudacityApp.cpp(165) : warning C4273: 'overrideTextCtrlNameStr' : inconsistent dll linkage
+//        C:\wxWidgets-2.8.7\include\wx/textctrl.h(65) : see previous definition of 'overrideTextCtrlNameStr'
 #if wxCHECK_VERSION(2, 8, 0)
 const wxChar overrideTextCtrlNameStr[] = wxT("");
 const wxChar overrideChoiceNameStr[] = wxT("");

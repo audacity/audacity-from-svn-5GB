@@ -63,9 +63,14 @@ ExpandingToolBar.
 
 *//*******************************************************************/
 
-
-
 #include "../Theme.h"
+
+// For compilers that support precompilation, includes "wx/wx.h".
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
+#include <wx/window.h>
+#endif
 
 #include <wx/dcmemory.h>
 #include <wx/log.h>
