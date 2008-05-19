@@ -447,16 +447,9 @@ void SelectionBar::SetRate(double rate)
    }
 }
 
-void SelectionBar::OnRate(wxCommandEvent & WXUNUSED(event))
+void SelectionBar::OnRate(wxCommandEvent &evt)
 {
-   int nSel = mRateBox->GetSelection();
-   wxString sValue;
-   if (nSel != -1) // one of the existing choices
-      sValue = mRateBox->GetString(nSel);
-   else
-      sValue = mRateBox->GetValue();
-
-   if (sValue.ToDouble(&mRate) && // is a numeric value
+   if (evt.GetString().ToDouble(&mRate) && // is a numeric value
          (mRate != 0.0))
    {
       if (mLeftTime) mLeftTime->SetSampleRate(mRate);
