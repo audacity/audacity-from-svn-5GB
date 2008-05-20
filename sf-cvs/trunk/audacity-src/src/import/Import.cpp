@@ -240,6 +240,13 @@ int Importer::Import(wxString fName,
    {
       ImportPlugin *plugin = importPluginNode->GetData();
 
+      // Skip MP3 import plugin. Opens some non-mp3 audio files (ac3 for example) as garbage.
+      while ( importPluginNode && ( plugin->GetPluginFormatDescription().CompareTo( _("MP3 files") ) == 0 ) )
+      {
+         importPluginNode = importPluginNode->GetNext();
+         plugin = importPluginNode->GetData();
+      }
+
       mInFile = plugin->Open(fName);
       if( mInFile != NULL )
       {
