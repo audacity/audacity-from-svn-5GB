@@ -40,6 +40,7 @@
 // I have it defined in the debug284 build of audacity.
 // MJS 16/5/8 Removed EXPERIMENTAL_MODULES from the VC project file,
 // I think it should be turned on here, or not.
+#define EXPERIMENTAL_MODULES
 #ifdef EXPERIMENTAL_MODULES
 // These are all quite OK for Beta builds.
 #define EXPERIMENTAL_THEMING
