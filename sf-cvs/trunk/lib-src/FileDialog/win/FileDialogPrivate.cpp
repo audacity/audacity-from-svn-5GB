@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.4 2007-06-18 16:10:50 jamescrook Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.5 2008-05-20 19:54:51 l_r_nightmare Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -312,6 +312,11 @@ int FileDialog::ShowModal()
     if ( m_dialogStyle & wxOVERWRITE_PROMPT )
     {
         msw_flags |= OFN_OVERWRITEPROMPT;
+    }
+
+    if ( m_dialogStyle & wxRESIZE_BORDER )
+    {
+       msw_flags |= OFN_ENABLESIZING;
     }
 
     if ( m_callback != NULL )
