@@ -459,7 +459,7 @@ bool Exporter::GetFilename()
                     mFilename.GetPath(),
                     mFilename.GetFullName(),
                     maskString,
-                    wxSAVE);
+                    wxSAVE | wxRESIZE_BORDER);
 
       fd.SetFilterIndex(mFormat);
 
