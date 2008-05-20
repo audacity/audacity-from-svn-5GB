@@ -77,6 +77,7 @@ scroll information.  It also has some status flags.
 #include <wx/string.h>
 #include <wx/textfile.h>
 #include <wx/timer.h>
+#include <wx/generic/filedlgg.h>
 
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
 
@@ -1717,7 +1718,12 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
    // Construct and display the file dialog
    wxArrayString selected;
 
+#if defined(__WXMSW__)
+   // Make sure you build wxWidgets with filedlgg.cpp enabled in core/generic
+   wxGenericFileDialog dlog(NULL,
+#else
    FileDialog dlog(NULL,
+#endif
                    _("Select one or more audio files..."),
                    path,
                    wxT(""),
