@@ -33,8 +33,8 @@ i.e. an alternative to the usual interface, for Audacity.
 #define scriptFnName    "RegScriptServerFunc"
 #define mainPanelFnName "MainPanelFunc"
 
-typedef _declspec( dllimport) int (*tModuleInit)(int);
-typedef _declspec( dllimport) wxWindow * (*tPanelFn)(int);
+typedef AUDACITY_DLL_API int (*tModuleInit)(int);
+typedef AUDACITY_DLL_API wxWindow * (*tPanelFn)(int);
 
 // This variable will hold the address of a subroutine in 
 // a DLL that can hijack the normal panel.
@@ -65,11 +65,11 @@ wxWindow * MakeHijackPanel()
 // It will do that through the ExecCommand function.
 extern "C" {
 
-typedef __declspec( dllexport) int (*tpExecScriptServerFunc)( wxString * pOut, wxString * pIn);
-typedef __declspec( dllimport) int (*tpRegScriptServerFunc)(tpExecScriptServerFunc pFn);
+typedef AUDACITY_DLL_API int (*tpExecScriptServerFunc)( wxString * pOut, wxString * pIn);
+typedef AUDACITY_DLL_API int (*tpRegScriptServerFunc)(tpExecScriptServerFunc pFn);
 
 // This is the function which actually obeys one command.
-__declspec( dllexport) int ExecCommand( wxString * pOut, wxString * pIn )
+AUDACITY_DLL_API int ExecCommand( wxString * pOut, wxString * pIn )
 {
    // Create a Batch that will have just one command in it...
    BatchCommands Batch;
@@ -114,7 +114,7 @@ void RegisterAndRun(  )
 
 void LoadModule(wxString fname)
 {
-   wxLogDebug(wxT("About to load %s"), fname );
+   wxLogDebug(wxT("About to load %s"), fname.c_str() );
    wxLogNull logNo;
    tModuleInit mainFn = NULL;
 
