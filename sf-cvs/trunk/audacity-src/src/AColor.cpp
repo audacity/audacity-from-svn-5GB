@@ -17,6 +17,7 @@ It is also a place to document colour usage policy in Audacity
 
 *//********************************************************************/
 
+#include <wx/colour.h>
 #include <wx/dc.h>
 #include <wx/settings.h>
 #include <wx/utils.h>
