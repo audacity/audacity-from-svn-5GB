@@ -119,7 +119,6 @@
 		1707401F0988EEBA008541CC /* aiff.c in Sources */ = {isa = PBXBuildFile; fileRef = 170734970988D6AD008541CC /* aiff.c */; };
 		170740200988EEBA008541CC /* alaw.c in Sources */ = {isa = PBXBuildFile; fileRef = 170734980988D6AD008541CC /* alaw.c */; };
 		170740210988EEBA008541CC /* au.c in Sources */ = {isa = PBXBuildFile; fileRef = 170734990988D6AD008541CC /* au.c */; };
-		170740220988EEBA008541CC /* au.h in Headers */ = {isa = PBXBuildFile; fileRef = 1707349A0988D6AD008541CC /* au.h */; };
 		170740240988EEBA008541CC /* avr.c in Sources */ = {isa = PBXBuildFile; fileRef = 1707349C0988D6AD008541CC /* avr.c */; };
 		170740250988EEBA008541CC /* command.c in Sources */ = {isa = PBXBuildFile; fileRef = 1707349D0988D6AD008541CC /* command.c */; };
 		170740260988EEBA008541CC /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = 1707349E0988D6AD008541CC /* common.c */; };
@@ -832,6 +831,7 @@
 		28A520560C12BE0300BF6811 /* pa_debugprint.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A520520C12BE0300BF6811 /* pa_debugprint.h */; };
 		28A520570C12BE0300BF6811 /* pa_ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28A520530C12BE0300BF6811 /* pa_ringbuffer.c */; };
 		28A520580C12BE0300BF6811 /* pa_ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A520540C12BE0300BF6811 /* pa_ringbuffer.h */; };
+		28B6ED8F0DE3D1B50046F0F3 /* LoadModules.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28B6ED8D0DE3D1B50046F0F3 /* LoadModules.cpp */; };
 		28D0255B0AFDA53B0035F843 /* alpasscv.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D025570AFDA53B0035F843 /* alpasscv.c */; };
 		28D0255C0AFDA53B0035F843 /* alpasscv.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D025580AFDA53B0035F843 /* alpasscv.h */; };
 		28D0255D0AFDA53B0035F843 /* alpassvc.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D025590AFDA53B0035F843 /* alpassvc.c */; };
@@ -1133,7 +1133,6 @@
 		170734970988D6AD008541CC /* aiff.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = aiff.c; sourceTree = "<group>"; };
 		170734980988D6AD008541CC /* alaw.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = alaw.c; sourceTree = "<group>"; };
 		170734990988D6AD008541CC /* au.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = au.c; sourceTree = "<group>"; };
-		1707349A0988D6AD008541CC /* au.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = au.h; sourceTree = "<group>"; };
 		1707349C0988D6AD008541CC /* avr.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = avr.c; sourceTree = "<group>"; };
 		1707349D0988D6AD008541CC /* command.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = command.c; sourceTree = "<group>"; };
 		1707349E0988D6AD008541CC /* common.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = common.c; sourceTree = "<group>"; };
@@ -2016,6 +2015,8 @@
 		28A520520C12BE0300BF6811 /* pa_debugprint.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_debugprint.h; sourceTree = "<group>"; };
 		28A520530C12BE0300BF6811 /* pa_ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_ringbuffer.c; sourceTree = "<group>"; };
 		28A520540C12BE0300BF6811 /* pa_ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_ringbuffer.h; sourceTree = "<group>"; };
+		28B6ED8D0DE3D1B50046F0F3 /* LoadModules.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = LoadModules.cpp; sourceTree = "<group>"; };
+		28B6ED8E0DE3D1B50046F0F3 /* LoadModules.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LoadModules.h; sourceTree = "<group>"; };
 		28D025570AFDA53B0035F843 /* alpasscv.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = alpasscv.c; sourceTree = "<group>"; };
 		28D025580AFDA53B0035F843 /* alpasscv.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = alpasscv.h; sourceTree = "<group>"; };
 		28D025590AFDA53B0035F843 /* alpassvc.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = alpassvc.c; sourceTree = "<group>"; };
@@ -2371,7 +2372,6 @@
 				170734970988D6AD008541CC /* aiff.c */,
 				170734980988D6AD008541CC /* alaw.c */,
 				170734990988D6AD008541CC /* au.c */,
-				1707349A0988D6AD008541CC /* au.h */,
 				1707349C0988D6AD008541CC /* avr.c */,
 				283A11A40A2C0DE7004372C4 /* broadcast.c */,
 				176EE9DB09A2EC1000188F3B /* caf.c */,
@@ -2616,9 +2616,6 @@
 		170738220988D6B0008541CC /* SoundTouch */ = {
 			isa = PBXGroup;
 			children = (
-				28FE4A060ABF4E960056F5C4 /* mmx_optimized.cpp */,
-				28FE4A070ABF4E960056F5C4 /* sse_optimized.cpp */,
-				17190D78098A439D004583C6 /* cpu_detect_x86_gcc.cpp */,
 				1707382D0988D6B0008541CC /* AAFilter.cpp */,
 				1707382E0988D6B0008541CC /* AAFilter.h */,
 				170738330988D6B0008541CC /* FIFOSampleBuffer.cpp */,
@@ -2629,6 +2626,9 @@
 				1707383D0988D6B0008541CC /* SoundTouch.cpp */,
 				170738410988D6B0008541CC /* TDStretch.cpp */,
 				170738420988D6B0008541CC /* TDStretch.h */,
+				17190D78098A439D004583C6 /* cpu_detect_x86_gcc.cpp */,
+				28FE4A060ABF4E960056F5C4 /* mmx_optimized.cpp */,
+				28FE4A070ABF4E960056F5C4 /* sse_optimized.cpp */,
 			);
 			path = SoundTouch;
 			sourceTree = "<group>";
@@ -2873,6 +2873,8 @@
 				1790B0A209883BFD008A330A /* Languages.h */,
 				1790B0A309883BFD008A330A /* Legacy.cpp */,
 				1790B0A409883BFD008A330A /* Legacy.h */,
+				28B6ED8D0DE3D1B50046F0F3 /* LoadModules.cpp */,
+				28B6ED8E0DE3D1B50046F0F3 /* LoadModules.h */,
 				28FB121F0A3790A8006F0917 /* MacroMagic.h */,
 				28EBA7FF0A78FAF800C8BB1F /* Matrix.cpp */,
 				28EBA8000A78FAF800C8BB1F /* Matrix.h */,
@@ -3967,7 +3969,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				170740220988EEBA008541CC /* au.h in Headers */,
 				170740270988EEBA008541CC /* common.h in Headers */,
 				170740280988EEBA008541CC /* config.h in Headers */,
 				1707402F0988EEBA008541CC /* float_cast.h in Headers */,
@@ -4695,7 +4696,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC \\\n             --enable-unicode=$CONFIG_UNICODE \\\n             --enable-debug=$CONFIG_DEBUG \\\n             --with-lib-preference=local,system \\\n             --with-wx-version=$WX_VER \\\n             $CONFIG_FLAGS\n\nexit $?\n";
+			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC \\\n             --enable-unicode=$CONFIG_UNICODE \\\n             --enable-debug=$CONFIG_DEBUG \\\n             --with-lib-preference=local,system \\\n             --with-wx-version=$WX_VER \\\n             $CONFIG_FLAGS || exit 1\n\n#\n# Libsndfile's endianness detection is a bit unfriendly to universal binary\n# builds, so we coerce it into working our way.\n#\nFILE=lib-src/libsndfile/src/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#undef CPU_IS_BIG_ENDIAN\n#undef CPU_IS_LITTLE_ENDIAN\n#if defined(__BIG_ENDIAN__)\n#define CPU_IS_BIG_ENDIAN 1\n#define CPU_IS_LITTLE_ENDIAN 0\n#else\n#define CPU_IS_BIG_ENDIAN 0\n#define CPU_IS_LITTLE_ENDIAN 1\n#endif\nEOF\n\n#\n# Ditto for libflac.\n#\nFILE=lib-src/libflac/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\n#\n# And libmad.\n#\nFILE=lib-src/libmad/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\nexit $?\n";
 		};
 		17073FEB0988E6C9008541CC /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5403,6 +5404,7 @@
 				28501EA20CEECEF80029ABAA /* SplashDialog.cpp in Sources */,
 				28501EAA0CEED0670029ABAA /* LoadVamp.cpp in Sources */,
 				28501EAB0CEED0680029ABAA /* VampEffect.cpp in Sources */,
+				28B6ED8F0DE3D1B50046F0F3 /* LoadModules.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5772,6 +5774,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				TOPLEVEL = ..;
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-debug-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
@@ -5992,6 +5995,10 @@
 		17CAEB89098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
 				CONFIG_DEBUG = no;
 				CONFIG_FLAGS = "";
 				CONFIG_STATIC = yes;
@@ -6001,6 +6008,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				TOPLEVEL = ..;
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
@@ -6181,6 +6189,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				TOPLEVEL = ..;
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-debug-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
@@ -6480,6 +6489,10 @@
 		28E5DA3A0AC4CBA200E7F64C /* Release Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
 				CONFIG_DEBUG = no;
 				CONFIG_FLAGS = "";
 				CONFIG_STATIC = yes;
@@ -6489,6 +6502,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				TOPLEVEL = ..;
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
