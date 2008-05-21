@@ -125,7 +125,7 @@ void AColor::Bevel(wxDC & dc, bool up, wxRect & r)
    dc.DrawLine(r.x, r.y + r.height, r.x + r.width + 1, r.y + r.height);
 }
 
-wxColour Blend( const wxColour & c1, wxColour & c2 )
+wxColour AColor::Blend( const wxColour & c1, const wxColour & c2 )
 {
    wxColour c3(
       (c1.Red() + c2.Red())/2,
