@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.5 2008-05-20 19:54:51 l_r_nightmare Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.6 2008-05-21 17:53:28 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -327,16 +327,14 @@ int FileDialog::ShowModal()
     OPENFILENAME of;
     wxZeroMemory(of);
 
-    // the OPENFILENAME struct has been extended in newer version of
-    // comcdlg32.dll, but as we don't use the extended fields anyhow, set
-    // the struct size to the old value - otherwise, the programs compiled
-    // with new headers will not work with the old libraries
-#if !defined(__WXWINCE__) && defined(_WIN32_WINNT) && (_WIN32_WINNT >= 0x0500)
-    of.lStructSize       = sizeof(OPENFILENAME) -
-                           (sizeof(void *) + 2*sizeof(DWORD));
-#else // old headers
-    of.lStructSize       = sizeof(OPENFILENAME);
-#endif
+    if ( wxGetOsVersion() == wxWINDOWS_NT )
+    {
+        of.lStructSize       = sizeof(OPENFILENAME);
+    }
+    else
+    {
+        of.lStructSize       = OPENFILENAME_SIZE_VERSION_400;
+    }
 
     of.hwndOwner         = hWnd;
     of.lpstrTitle        = WXSTRINGCAST m_message;
