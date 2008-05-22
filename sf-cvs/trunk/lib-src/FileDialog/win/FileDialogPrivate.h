@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.h,v 1.3 2008-05-22 16:00:37 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.h,v 1.4 2008-05-22 17:05:50 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -14,6 +14,8 @@
 
 #ifndef _FILEDIALOGMSW_H_
 #define _FILEDIALOGMSW_H_
+
+#include <windows.h>
 
 //-------------------------------------------------------------------------
 // wxFileDialog
