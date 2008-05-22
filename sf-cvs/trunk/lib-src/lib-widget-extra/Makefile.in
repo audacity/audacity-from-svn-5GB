@@ -10,7 +10,7 @@
 
 CC = @CC@
 CXX = @CXX@
-
+INSTALL = @INSTALL@
 LIBS = @LIBS@
 
 srcdir=@srcdir@
@@ -18,6 +18,8 @@ top_srcdir=@top_srcdir@
 top_builddir=@top_builddir@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
+includedir=@includedir@
+libdir=@libdir@
 
 # CFLAGS are specific to C.
 override CFLAGS += @CFLAGS@
@@ -31,10 +33,18 @@ override CPPFLAGS += -fno-strict-aliasing @CPPFLAGS@
 # LDFLAGS are for linking
 override LDFLAGS += @LDFLAGS@
 
+# name of the output library file
+LIBFILE = libwidgetextra.a
+
 ########################################
 # ALL OBJECT FILES
 
 OBJS = NonGuiThread.o
+
+########################################
+# Public headers, i.e. ones that get installed on the system
+
+HEADERS = NonGuiThread.h
 
 ########################################
 # DEPENDENCIES
@@ -43,7 +53,15 @@ SOURCES = $(OBJS:%.o=%.cpp)
 
 ########################################
 
-all: libwidgetextra.a 
+.PHONY: all
+all: $(LIBFILE) 
+
+.PHONY: install
+install: $(LIBFILE) $(HEADERS)
+	# install the library file
+	$(INSTALL) -d $(DESTDIR)$(LIBDIR)
+	$(INSTALL) -m 644 $(LIBFILE) $(DESTDIR)$(LIBDIR)/$(LIBFILE)
+	# install the header files
 
 libwidgetextra.a: $(OBJS)
 	ar rcs $@ $(OBJS)
