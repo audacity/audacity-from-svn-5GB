@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.6 2008-05-21 17:53:28 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.7 2008-05-22 16:00:36 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -51,6 +51,8 @@
 #include "wx/msw/missing.h"
 
 #include "../FileDialog.h"
+
+#include <shlobj.h>
 
 // ----------------------------------------------------------------------------
 // constants
@@ -137,7 +139,7 @@ FileDialogHookFunction(HWND      hDlg,
                                                         (LPTSTR)me->m_buttonlabel.c_str());
                     }
                  }
-                 if (CDN_HELP == (pNotifyCode->hdr).code)
+                 else if (CDN_HELP == (pNotifyCode->hdr).code)
                  {
                     OPENFILENAME *ofn = (OPENFILENAME *)
                         GetWindowLongPtr(hDlg, GWLP_USERDATA);
@@ -152,12 +154,181 @@ FileDialogHookFunction(HWND      hDlg,
                     me->ClickButton(index);
                     SetFocus(w);
                  }
+//                 else if ((CDN_SELCHANGE == (pNotifyCode->hdr).code) ||
+//                          (CDN_FOLDERCHANGE == (pNotifyCode->hdr).code))
+                 else if (CDN_SELCHANGE == (pNotifyCode->hdr).code)
+                 {
+                    OPENFILENAME *ofn = (OPENFILENAME *)
+                        GetWindowLongPtr(hDlg, GWLP_USERDATA);
+                    FileDialog *me = (FileDialog *)
+                        ofn->lCustData;
+                     me->FilterFiles(hDlg);
+                 }
+                 else if (CDN_TYPECHANGE == (pNotifyCode->hdr).code)
+                 {
+                    OPENFILENAME *ofn = (OPENFILENAME *)
+                        GetWindowLongPtr(hDlg, GWLP_USERDATA);
+                    FileDialog *me = (FileDialog *)
+                        ofn->lCustData;
+                     me->ParseFilter(ofn->nFilterIndex);
+                     me->FilterFiles(hDlg);
+                 }
             }
             break;
     }
 
     // do the default processing
     return 0;
+}
+
+void FileDialog::FilterFiles(HWND hDlg)
+{
+   HWND parent = ::GetParent(hDlg);
+   IShellFolder *ishell = NULL;
+   LPMALLOC imalloc = NULL;
+   HRESULT hr;
+
+   // Get pointer to the ListView control
+   HWND lv = ::GetDlgItem(::GetDlgItem(parent, lst2), 1);
+   if (lv == NULL)
+   {
+      wxASSERT(lv != NULL);
+      return;
+   }
+
+   // Get shell's memory allocation interface (must be Release()'d)
+   hr = SHGetMalloc(&imalloc);
+   if ((hr != NOERROR) || (imalloc == NULL))
+   {
+      wxASSERT((hr == NOERROR) && (imalloc != NULL));
+      return;
+   }
+
+   // Init
+   LVITEM lvi;
+   wxZeroMemory(lvi);
+
+   // Process all items
+   int fltcnt = m_Filters.GetCount();
+   int itmcnt = ::SendMessage(lv, LVM_GETITEMCOUNT, 0, 0);
+   for (int itm = 0; itm < itmcnt; itm++)
+   {
+      // Retrieve the file IDL
+      lvi.iItem = itm;
+      lvi.mask = LVIF_PARAM;
+      if (ListView_GetItem(lv, &lvi) != TRUE)
+      {
+         wxASSERT(FALSE);
+         break;
+      }
+      LPCITEMIDLIST fidl = (LPCITEMIDLIST) lvi.lParam;
+
+      // Retrieve the IShellFolder interface of the parent (must be Release()'d)
+      if (ishell == NULL)
+      {
+         hr = SHBindToParent(fidl, IID_IShellFolder, (void **)&ishell, NULL);
+         if (!SUCCEEDED(hr))
+         {
+            wxASSERT(SUCCEEDED(hr));
+            break;
+         }
+      }
+
+      // Get the attributes of the object
+      DWORD attr = SFGAO_FOLDER | SFGAO_STREAM;
+      hr = ishell->GetAttributesOf(1, &fidl, &attr);
+      if (!SUCCEEDED(hr))
+      {
+         wxASSERT(SUCCEEDED(hr));
+         break;
+      }
+
+      // Allow all folders (things like zip files get filtered below)
+      if (attr == SFGAO_FOLDER)
+      {
+         continue;
+      }
+
+      // Retrieve the parsable name of the object (includes extension)
+      STRRET str;
+      hr = ishell->GetDisplayNameOf(fidl, SHGDN_INFOLDER | SHGDN_FORPARSING, &str);
+      if (hr != NOERROR)
+      {
+         // For some objects, we get back an error of 80070057.  I'm assuming this
+         // means there is no way to represent the name (like some sort of virtual name)
+         // or I've not used the correct PIDL.  But, in either case, it "probably"
+         // represents some sort of folder (at least in all cases I've seen), so we
+         // simply allow it to display.
+         continue;
+      }
+
+      // Convert result to wxString
+      wxString filename;
+      switch (str.uType)
+      {
+         case STRRET_WSTR:
+            filename = str.pOleStr;
+            imalloc->Free(str.pOleStr);
+         break;
+
+         case STRRET_OFFSET:
+            filename = ((char *)fidl) + str.uOffset;
+         break;
+
+         case STRRET_CSTR:
+            filename = str.cStr;
+         break;
+      }
+
+      // Attempt to match it to all of our filters
+      bool match = false;
+      for (int flt = 0; flt < fltcnt; flt++)
+      {
+         if (wxMatchWild(m_Filters[flt], filename, false))
+         {
+            match = true;
+            break;
+         }
+      }
+
+      // Remove it from the display if it didn't match any of the filters.
+      if (!match)
+      {
+         ListView_DeleteItem(lv, itm);
+         itm--;
+         itmcnt--;
+      }
+   }
+
+done:
+
+   // Release the interface
+   if (ishell)
+   {
+      ishell->Release();
+   }
+
+   // Release the interface
+   if (imalloc)
+   {
+      imalloc->Release();
+   }
+}
+
+void FileDialog::ParseFilter(int index)
+{
+   m_Filters.Empty();
+
+   wxStringTokenizer tokenWild(m_FilterGroups[index - 1], wxT(";"));
+
+   while (tokenWild.HasMoreTokens())
+   {
+      wxString token = tokenWild.GetNextToken();
+      if (m_Filters.Index(token, false) == wxNOT_FOUND)
+      {
+         m_Filters.Add(token);
+      }
+   }
 }
 
 // ----------------------------------------------------------------------------
@@ -321,12 +492,16 @@ int FileDialog::ShowModal()
 
     if ( m_callback != NULL )
     {
-        msw_flags |= OFN_SHOWHELP|OFN_EXPLORER|OFN_ENABLEHOOK;
+        msw_flags |= OFN_SHOWHELP | OFN_EXPLORER | OFN_ENABLEHOOK;
     }
+
+    // We always need EXPLORER and ENABLEHOOK to use our filtering code
+    msw_flags |= OFN_EXPLORER | OFN_ENABLEHOOK;
 
     OPENFILENAME of;
     wxZeroMemory(of);
 
+    // Allow Places bar to show on supported platforms
     if ( wxGetOsVersion() == wxWINDOWS_NT )
     {
         of.lStructSize       = sizeof(OPENFILENAME);
@@ -386,9 +561,9 @@ int FileDialog::ShowModal()
     of.Flags             = msw_flags;
     of.lpfnHook          = FileDialogHookFunction;
 
-    wxArrayString wildDescriptions, wildFilters;
+    wxArrayString wildDescriptions;
 
-    size_t items = wxParseCommonDialogsFilter(m_wildCard, wildDescriptions, wildFilters);
+    size_t items = wxParseCommonDialogsFilter(m_wildCard, wildDescriptions, m_FilterGroups);
 
     wxASSERT_MSG( items > 0 , _T("empty wildcard list") );
 
@@ -398,7 +573,7 @@ int FileDialog::ShowModal()
     {
         filterBuffer += wildDescriptions[i];
         filterBuffer += wxT("|");
-        filterBuffer += wildFilters[i];
+        filterBuffer += wxT("*.*");
         filterBuffer += wxT("|");
     }
 
@@ -411,6 +586,8 @@ int FileDialog::ShowModal()
 
     of.lpstrFilter  = (LPTSTR)filterBuffer.c_str();
     of.nFilterIndex = m_filterIndex + 1;
+
+    ParseFilter(of.nFilterIndex);
 
     //=== Setting defaultFileName >>=========================================
 

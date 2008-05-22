@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.h,v 1.2 2007-06-18 16:10:50 jamescrook Exp $
+// RCS-ID:      $Id: FileDialogPrivate.h,v 1.3 2008-05-22 16:00:37 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -39,6 +39,8 @@ public:
     virtual void EnableButton(wxString label, fdCallback cb, void *cbdata);
     virtual void ClickButton(int index);
 
+    virtual void FilterFiles(HWND hDlg);
+    virtual void ParseFilter(int index);
     wxString m_buttonlabel;
 
 protected:
@@ -53,6 +55,11 @@ private:
     wxArrayString m_fileNames;
     bool m_bMovedWindow;
     long m_dialogStyle;
+
+    wxArrayString m_FilterGroups;
+    wxArrayString m_Filters;
+    wxChar *m_NameBuf;
+    int m_NameBufLen;
 
     fdCallback m_callback;
     void *m_cbdata;
