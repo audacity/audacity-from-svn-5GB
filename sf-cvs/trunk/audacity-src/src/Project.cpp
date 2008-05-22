@@ -1671,7 +1671,12 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
 {
    FormatList l;
    wxString filter;
-   wxString all = extra.AfterFirst(wxT('|')).BeforeFirst(wxT('|'));
+   wxString all;
+
+   if (extra != wxEmptyString)
+   {
+      all = extra.AfterFirst(wxT('|')).BeforeFirst(wxT('|')) + wxT(';');
+   }
 
    // Construct the filter
    l.DeleteContents(true);
@@ -1693,6 +1698,15 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
    }
    all.RemoveLast(1);
    filter.RemoveLast(1);
+
+   // For testing long filters
+#if 0
+   wxString test = wxT("*.aaa;*.bbb;*.ccc;*.ddd;*.eee");
+   all = test + wxT(';') + test + wxT(';') + test + wxT(';') +
+         test + wxT(';') + test + wxT(';') + test + wxT(';') +
+         test + wxT(';') + test + wxT(';') + test + wxT(';') +
+         all;
+#endif
 
    wxString mask = _("All files|*.*|All supported files|") +
                    all + wxT("|") +
@@ -1718,7 +1732,7 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
    // Construct and display the file dialog
    wxArrayString selected;
 
-#if defined(__WXMSW__)
+#if defined(__WXMSW__reenable_if_new_filtering_does_not_work)
    // Make sure you build wxWidgets with filedlgg.cpp enabled in core/generic
    wxGenericFileDialog dlog(NULL,
 #else
