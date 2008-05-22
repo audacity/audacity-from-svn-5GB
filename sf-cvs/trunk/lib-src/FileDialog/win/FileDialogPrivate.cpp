@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.7 2008-05-22 16:00:36 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.8 2008-05-22 16:12:17 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -272,11 +272,11 @@ void FileDialog::FilterFiles(HWND hDlg)
          break;
 
          case STRRET_OFFSET:
-            filename = ((char *)fidl) + str.uOffset;
+            filename = wxString(((char *)fidl) + str.uOffset, wxConvISO8859_1);
          break;
 
          case STRRET_CSTR:
-            filename = str.cStr;
+            filename = wxString(str.cStr, wxConvISO8859_1);
          break;
       }
 
