@@ -338,7 +338,7 @@ void UploadDialog::OnUploadFile(wxCommandEvent & WXUNUSED(event))
     FileDialog open(this, wxT("Choose file(s) to upload"),
                     ::wxGetCwd(), wxT(""),
                     wxT("All files (*.*)|*.*"),
-                    wxOPEN | wxMULTIPLE); 
+                    wxOPEN | wxMULTIPLE | wxRESIZE_BORDER); 
     
     if (open.ShowModal()==wxID_OK)
     {
@@ -1200,7 +1200,7 @@ void UploadDialog::DownloadItem (wxString &src, wxString &dest,
         {
             FileDialog saveFile(this, wxT("Download File"),
                                 wxT(""), src,
-                                wxT("All files (*.*)|*.*"), wxSAVE);
+                                wxT("All files (*.*)|*.*"), wxSAVE | wxRESIZE_BORDER);
             int result = saveFile.ShowModal();
     
             if (result == wxID_OK)
@@ -1227,7 +1227,7 @@ void UploadDialog::DownloadItem (wxString &src, bool dir)
     else
     {
 
-        FileDialog saveFile(this, wxT("Download File"), wxT(""), src, wxT("All files (*.*)|*.*"), wxSAVE);
+        FileDialog saveFile(this, wxT("Download File"), wxT(""), src, wxT("All files (*.*)|*.*"), wxSAVE | wxRESIZE_BORDER);
         int result = saveFile.ShowModal();
     
         if (result == wxID_OK)

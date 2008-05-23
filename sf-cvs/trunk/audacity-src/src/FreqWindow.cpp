@@ -1060,7 +1060,7 @@ void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
    wxString fName = _("spectrum.txt");
 
    fName = FileSelector(_("Export Spectral Data As:"),
-                        NULL, fName, wxT("txt"), wxT("*.txt"), wxSAVE, this);
+                        NULL, fName, wxT("txt"), wxT("*.txt"), wxSAVE | wxRESIZE_BORDER, this);
 
    if (fName == wxT(""))
       return;

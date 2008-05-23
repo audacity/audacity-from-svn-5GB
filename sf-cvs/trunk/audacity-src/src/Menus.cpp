@@ -2171,7 +2171,9 @@ void AudacityProject::OnExportLabels()
                         NULL,
                         fName,
                         wxT("txt"),
-                        wxT("*.txt"), wxSAVE | wxOVERWRITE_PROMPT, this);
+                        wxT("*.txt"),
+                        wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
+                        this);
 
    if (fName == wxT(""))
       return;
@@ -3556,7 +3558,7 @@ void AudacityProject::OnImportLabels()
                     wxT(""),       // Name
                     wxT(".txt"),   // Extension
                     _("Text files (*.txt)|*.txt|All files (*.*)|*.*"),
-                    0,        // Flags
+                    wxRESIZE_BORDER,        // Flags
                     this);    // Parent
 
    if (fileName != wxT("")) {
@@ -3596,7 +3598,7 @@ void AudacityProject::OnImportMIDI()
                                     wxT(""),       // Name
                                     wxT(""),       // Extension
                                     _("All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"),
-                                    0,        // Flags
+                                    wxRESIZE_BORDER,        // Flags
                                     this);    // Parent
 
    if (fileName != wxT("")) {
@@ -3631,7 +3633,7 @@ void AudacityProject::OnImportRaw()
                     wxT(""),       // Name
                     wxT(""),       // Extension
                     _("All files (*)|*"),
-                    0,        // Flags
+                    wxRESIZE_BORDER,        // Flags
                     this);    // Parent
 
    if (fileName == wxT(""))
@@ -4113,7 +4115,7 @@ void AudacityProject::OnExportCleanSpeechPresets()
                            wxT("*.csp"),       // default file extension
                            extension,
                            _("CleanSpeech Presets (*.csp)|*.csp"),
-                           wxSAVE | wxOVERWRITE_PROMPT);
+                           wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER);
 
       if (fName.empty()) { // if cancel selected
          return;
@@ -4196,7 +4198,7 @@ void AudacityProject::OnImportCleanSpeechPresets()
                            wxT("*.csp"),       // default file name
                            extension,
                            wxT("CleanSpeech Presets (*.csp)|*.csp"),
-                           wxOPEN);
+                           wxOPEN | wxRESIZE_BORDER);
 
       if (fName.empty()) { // if cancel selected
          return;

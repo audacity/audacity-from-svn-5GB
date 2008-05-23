@@ -212,7 +212,7 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
 
    FileDialog dlog(this, prompt,
                    path, wxT(""), fileSelector,
-                   wxOPEN | wxMULTIPLE);
+                   wxOPEN | wxMULTIPLE | wxRESIZE_BORDER);
 
    if (dlog.ShowModal() != wxID_OK) {
       return;
