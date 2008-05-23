@@ -64,16 +64,9 @@
 
 #include "sndfile.h"
 
-#ifdef __MACOSX__
-#include <CoreServices/CoreServices.h>
-#endif
-
-#ifdef __MACOS9__
-#include <Files.h>
-#include <Folders.h>
-#endif
-
 #ifdef __WXMAC__
+#include <CoreServices/CoreServices.h>
+
 /* prototype of MoreFiles fn, included in wxMac already */
 pascal OSErr FSpGetFullPath(const FSSpec * spec,
                             short *fullPathLength, Handle * fullPath);

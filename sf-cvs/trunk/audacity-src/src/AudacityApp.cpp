@@ -656,7 +656,8 @@ bool AudacityApp::OnInit()
    defaultTempDir.Printf(wxT("%s\\audacity_temp"), 
                          tmpDirLoc.c_str());
    #endif //__WXWSW__
-   #ifdef __MACOSX__
+
+   #ifdef __WXMAC__
    // On Mac OS X, the path to the Audacity program is in argv[0]
    wxString progPath = wxPathOnly(argv[0]);
 
@@ -670,16 +671,7 @@ bool AudacityApp::OnInit()
    defaultTempDir.Printf(wxT("%s/audacity-%s"), 
                          tmpDirLoc.c_str(),
                          wxGetUserId().c_str());
-   #endif //__MACOSX__
-   #ifdef __MACOS9__
-   // On Mac OS 9, the initial working directory is the one that
-   // contains the program.
-   wxString progPath = wxGetCwd();
-   AddUniquePathToPathList(progPath, audacityPathList);
-   AddUniquePathToPathList(progPath+wxT(":Languages"), audacityPathList);
-   defaultTempDir.Printf(wxT("%s/audacity_temp"), 
-                         tmpDirLoc.c_str());
-   #endif //__MACOS9__
+   #endif //__WXMAC__
 
    // BG: Create a temporary window to set as the top window
    wxFrame *temporarywindow = new wxFrame(NULL, -1, wxT("temporarytopwindow"));
