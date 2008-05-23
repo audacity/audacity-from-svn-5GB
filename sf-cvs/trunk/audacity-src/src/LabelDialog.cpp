@@ -518,7 +518,7 @@ void LabelDialog::OnImport(wxCommandEvent &event)
                     wxT(""),       // Name
                     wxT(".txt"),   // Extension
                     _("Text files (*.txt)|*.txt|All files (*.*)|*.*"),
-                    0,        // Flags
+                    wxRESIZE_BORDER, // Flags
                     this);    // Parent
 
    // They gave us one...
@@ -567,7 +567,9 @@ void LabelDialog::OnExport(wxCommandEvent &event)
                         NULL,
                         _("labels.txt"),
                         wxT("txt"),
-                        wxT("*.txt"), wxSAVE | wxOVERWRITE_PROMPT, this);
+                        wxT("*.txt"),
+                        wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
+                        this);
 
    if (fName == wxT(""))
       return;

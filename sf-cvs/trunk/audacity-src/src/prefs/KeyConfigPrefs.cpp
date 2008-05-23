@@ -164,7 +164,9 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
                         NULL,
                         fName,
                         wxT("xml"),
-                        wxT("*.xml"), wxSAVE | wxOVERWRITE_PROMPT, this);
+                        wxT("*.xml"),
+                        wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
+                        this);
 
    if (!fName)
       return;
@@ -198,7 +200,7 @@ void KeyConfigPrefs::OnLoad(wxCommandEvent& event)
                                     wxT(""),       // Name
                                     wxT(""),       // Extension
                                     _("XML files (*.xml)|*.xml|All files (*.*)|*.*"),
-                                    0,        // Flags
+                                    wxRESIZE_BORDER,        // Flags
                                     this);    // Parent
 
    if (!fileName)

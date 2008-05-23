@@ -1742,7 +1742,7 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
                    path,
                    wxT(""),
                    mask,
-                   wxOPEN | wxMULTIPLE);
+                   wxOPEN | wxMULTIPLE | wxRESIZE_BORDER);
 
    dlog.SetFilterIndex(index);
 
@@ -2703,7 +2703,7 @@ bool AudacityProject::SaveAs()
 	   fName = FileSelector(_("Save Speech As:"),
                            path, fName, wxT(""),
                            _("Windows PCM Audio file (*.wav)|*.wav"),  //lda
-                           wxSAVE | wxOVERWRITE_PROMPT, this);
+                           wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER, this);
 	}
 	else
 	{
@@ -2712,7 +2712,7 @@ bool AudacityProject::SaveAs()
  	  fName = FileSelector(_NoAcc("Save Project &As...") + wxT(":"),
                           path, fName, wxT(""),
                           _("Audacity projects (*.aup)|*.aup"),
-                          wxSAVE | wxOVERWRITE_PROMPT, this);
+                          wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER, this);
 	}
 
    if (fName == wxT(""))
