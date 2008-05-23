@@ -15,15 +15,13 @@
 #define __AUDACITY_THEME__
 
 #include "../Audacity.h"
+
+#include <wx/bitmap.h>
+#include <wx/colour.h>
 #include <wx/defs.h>
 #include <wx/dynarray.h>
-#include <wx/bitmap.h>
+#include <wx/font.h>
 #include <wx/image.h>
-
-class wxBitmap;
-class wxImage;
-class wxColour;
-class wxFont;
 
 // JKC: will probably change name from 'teBmps' to 'tIndexBmp';
 typedef int teBmps; /// The index of a bitmap resource in Theme Resources.
@@ -46,13 +44,13 @@ enum teResourceFlags
    resFlagInternal = 0x08  // For image manipulation.  Don't save or load.
 };
 
-//WX_DECLARE_EXPORTED_OBJARRAY(wxImage,  ArrayOfImages);
-//WX_DECLARE_EXPORTED_OBJARRAY(wxBitmap, ArrayOfBitmaps);
-//WX_DECLARE_EXPORTED_OBJARRAY(wxColour, ArrayOfColours);
+WX_DECLARE_USER_EXPORTED_OBJARRAY(wxImage,  ArrayOfImages, AUDACITY_DLL_API);
+WX_DECLARE_USER_EXPORTED_OBJARRAY(wxBitmap, ArrayOfBitmaps, AUDACITY_DLL_API);
+WX_DECLARE_USER_EXPORTED_OBJARRAY(wxColour, ArrayOfColours, AUDACITY_DLL_API);
 
-WX_DECLARE_OBJARRAY(wxImage,  ArrayOfImages);
-WX_DECLARE_OBJARRAY(wxBitmap, ArrayOfBitmaps);
-WX_DECLARE_OBJARRAY(wxColour, ArrayOfColours);
+//WX_DECLARE_OBJARRAY(wxImage,  ArrayOfImages);
+//WX_DECLARE_OBJARRAY(wxBitmap, ArrayOfBitmaps);
+//WX_DECLARE_OBJARRAY(wxColour, ArrayOfColours);
 
 class AUDACITY_DLL_API FlowPacker 
 {

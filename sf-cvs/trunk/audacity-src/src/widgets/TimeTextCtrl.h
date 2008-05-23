@@ -16,6 +16,7 @@
 #define __AUDACITY_TIME_TEXT_CTRL__
 
 #include <wx/defs.h>
+#include <wx/dynarray.h>
 #include <wx/event.h>
 #include <wx/panel.h>
 #include <wx/stattext.h>
@@ -29,7 +30,7 @@
 #include <wx/access.h>
 #endif
 
-DECLARE_EVENT_TYPE(EVT_TIMETEXTCTRL_UPDATED, -1);
+DECLARE_EXPORTED_EVENT_TYPE(AUDACITY_DLL_API, EVT_TIMETEXTCTRL_UPDATED, -1);
 
 /** \brief struct to hold a formatting control string and it's user facing name
  * Used in an array to hold the built-in time formats that are always available

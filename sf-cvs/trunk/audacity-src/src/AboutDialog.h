@@ -12,11 +12,11 @@
 #define __AUDACITY_ABOUT_DLG__
 
 #include <wx/dialog.h>
+#include <wx/sizer.h>
+#include <wx/statbmp.h>
+#include <wx/bitmap.h>
 
-class wxBoxSizer;
-class wxStaticBitmap;
-class wxBitmap;
-class ShuttleGui;
+#include "ShuttleGui.h"
 
 struct AboutDialogCreditItem {
    wxString description;
@@ -24,7 +24,6 @@ struct AboutDialogCreditItem {
 };
 
 WX_DECLARE_LIST(AboutDialogCreditItem, AboutDialogCreditItemsList);
-
 
 class AboutDialog:public wxDialog {
    DECLARE_DYNAMIC_CLASS(AboutDialog)

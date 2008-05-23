@@ -57,12 +57,12 @@ struct CommandListEntry
    wxUint32 mask;
 };
 
-WX_DEFINE_ARRAY(MenuBarListEntry *, MenuBarList);
-WX_DEFINE_ARRAY(SubMenuListEntry *, SubMenuList);
-WX_DEFINE_ARRAY(CommandListEntry *, CommandList);
+WX_DEFINE_USER_EXPORTED_ARRAY(MenuBarListEntry *, MenuBarList, class AUDACITY_DLL_API);
+WX_DEFINE_USER_EXPORTED_ARRAY(SubMenuListEntry *, SubMenuList, class AUDACITY_DLL_API);
+WX_DEFINE_USER_EXPORTED_ARRAY(CommandListEntry *, CommandList, class AUDACITY_DLL_API);
 
-WX_DECLARE_STRING_HASH_MAP(CommandListEntry *, CommandNameHash);
-WX_DECLARE_HASH_MAP(int, CommandListEntry *, wxIntegerHash, wxIntegerEqual, CommandIDHash);
+WX_DECLARE_STRING_HASH_MAP_WITH_DECL(CommandListEntry *, CommandNameHash, class AUDACITY_DLL_API);
+WX_DECLARE_HASH_MAP_WITH_DECL(int, CommandListEntry *, wxIntegerHash, wxIntegerEqual, CommandIDHash, class AUDACITY_DLL_API);
 
 class AUDACITY_DLL_API CommandManager: public XMLTagHandler
 {

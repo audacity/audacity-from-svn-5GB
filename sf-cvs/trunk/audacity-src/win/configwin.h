@@ -60,23 +60,20 @@
 #include <wx/defs.h>
 
 #if wxUSE_ACCESSIBILITY
-
+#if 0
 #define _PTR_
 
-// ***James, this was causing compile errors like:
-//    C:\wxWidgets-2.8.7\include\wx/choice.h(29) : error C2370: 'overrideChoiceNameStr' : redefinition; different storage class
-//      d:\sfw_dev\Audacity_HEAD\audacity\win\configwin.h(68) : see declaration of 'overrideChoiceNameStr'
-//#if wxCHECK_VERSION(2, 8, 0)
-//extern const wxChar overrideTextCtrlNameStr[];
-//extern const wxChar overrideChoiceNameStr[];
-//extern const wxChar overrideComboBoxNameStr[];
-//extern const wxChar overrideSliderNameStr[];
-//#else
-//extern const wxChar *overrideTextCtrlNameStr;
-//extern const wxChar *overrideChoiceNameStr;
-//extern const wxChar *overrideComboBoxNameStr;
-//extern const wxChar *overrideSliderNameStr;
-//#endif
+#if wxCHECK_VERSION(2, 8, 0)
+extern WXEXPORT const wxChar overrideTextCtrlNameStr[];
+extern WXEXPORT const wxChar overrideChoiceNameStr[];
+extern WXEXPORT const wxChar overrideComboBoxNameStr[];
+extern WXEXPORT const wxChar overrideSliderNameStr[];
+#else
+extern const wxChar *overrideTextCtrlNameStr;
+extern const wxChar *overrideChoiceNameStr;
+extern const wxChar *overrideComboBoxNameStr;
+extern const wxChar *overrideSliderNameStr;
+#endif
 
 #define wxTextCtrlNameStr overrideTextCtrlNameStr
 #define wxChoiceNameStr overrideChoiceNameStr
@@ -84,6 +81,7 @@
 #define wxSliderNameStr overrideSliderNameStr
 
 #undef _PTR_
+#endif
 #endif
 
 #ifdef _DEBUG

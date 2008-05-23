@@ -62,7 +62,7 @@ struct UndoStackElem {
    double sel1;
 };
 
-WX_DEFINE_ARRAY(UndoStackElem *, UndoStack);
+WX_DEFINE_USER_EXPORTED_ARRAY(UndoStackElem *, UndoStack, class AUDACITY_DLL_API);
 
 class AUDACITY_DLL_API UndoManager {
  public:

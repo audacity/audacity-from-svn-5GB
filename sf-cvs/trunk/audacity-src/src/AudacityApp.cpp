@@ -159,16 +159,13 @@ It handles initialization and termination by subclassing wxApp.
 #  undef D
 
 #endif //(__WXMSW__)
-
+#if 0
 #if wxUSE_ACCESSIBILITY
-// ***James, this causes compile warnings like:
-//    ..\src\AudacityApp.cpp(165) : warning C4273: 'overrideTextCtrlNameStr' : inconsistent dll linkage
-//        C:\wxWidgets-2.8.7\include\wx/textctrl.h(65) : see previous definition of 'overrideTextCtrlNameStr'
 #if wxCHECK_VERSION(2, 8, 0)
-const wxChar overrideTextCtrlNameStr[] = wxT("");
-const wxChar overrideChoiceNameStr[] = wxT("");
-const wxChar overrideComboBoxNameStr[] = wxT("");
-const wxChar overrideSliderNameStr[] = wxT("");
+WXEXPORT const wxChar overrideTextCtrlNameStr[] = wxT("");
+WXEXPORT const wxChar overrideChoiceNameStr[] = wxT("");
+WXEXPORT const wxChar overrideComboBoxNameStr[] = wxT("");
+WXEXPORT const wxChar overrideSliderNameStr[] = wxT("");
 #else
 const wxChar *overrideTextCtrlNameStr = wxT("");
 const wxChar *overrideChoiceNameStr = wxT("");
@@ -176,7 +173,7 @@ const wxChar *overrideComboBoxNameStr = wxT("");
 const wxChar *overrideSliderNameStr = wxT("");
 #endif
 #endif
-
+#endif
 ////////////////////////////////////////////////////////////
 /// Custom events
 ////////////////////////////////////////////////////////////
