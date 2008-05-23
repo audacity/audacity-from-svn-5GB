@@ -137,9 +137,13 @@ SCRIPT_PIPE_DLL_API int ExtensionModuleInit(int ix)
    ix;// compiler food.
 
    wxLogDebug("Got into DLL" );
+
+   return 0;
+
    // Here is proof that the DLL was dynamically loaded and this Init function
    // called.
    wxDialog Dlg( (wxWindow*)NULL, (wxWindowID)-1, "mod-script-pipe - Dialog Loaded by Plug In", wxPoint(0,0));
+
 
 #if 0
    ShuttleGui S( &Dlg, eIsCreating );
