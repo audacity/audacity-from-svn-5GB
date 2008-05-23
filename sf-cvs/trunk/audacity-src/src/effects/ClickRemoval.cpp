@@ -39,15 +39,6 @@
 #define finite(x) _finite(x)
 #endif
 
-#ifdef __MACOSX__
-#include <math.h>
-#endif
-
-#ifdef __MACOS9__
-#include <fp.h>
-#define finite(x) isfinite(x)
-#endif
-
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
 #include <wx/brush.h>

@@ -155,10 +155,6 @@ is time to refresh some aspect of the screen.
 #include "Audacity.h"
 #include "TrackPanel.h"
 
-#ifdef __MACOSX__
-#include <Carbon/Carbon.h>
-#endif
-
 #include <math.h>
 
 #if DEBUG_DRAW_TIMING
@@ -216,13 +212,6 @@ WX_DEFINE_OBJARRAY(TrackClipArray);
 //This loads the appropriate set of cursors, depending on platform.
 #include "../images/Cursors.h"
 #include <iostream>
-
-
-
-//FIX-ME: The WXMAC code below is obsolete
-//#if defined(__WXMAC__) && !defined(__UNIX__)
-//#include <Menus.h>
-//#endif
 
 #ifdef _DEBUG
     #ifdef _MSC_VER
@@ -5791,11 +5780,6 @@ void TrackPanel::OnTrackMenu(Track *t)
       theMenu->Enable(OnMoveUpID, mTracks->CanMoveUp(t));
       theMenu->Enable(OnMoveDownID, mTracks->CanMoveDown(t));
       
-#ifdef __WXMAC__
-      ::InsertMenu((MenuRef) mRateMenu->GetHMenu(), -1);
-      ::InsertMenu((MenuRef) mFormatMenu->GetHMenu(), -1);
-#endif
-
       //We need to find the location of the menu rectangle.
       wxRect r = FindTrackRect(t,true);
       wxRect titleRect;
@@ -5803,11 +5787,6 @@ void TrackPanel::OnTrackMenu(Track *t)
 
       PopupMenu(theMenu, titleRect.x + 1,
                   titleRect.y + titleRect.height + 1);
-      
-#ifdef __WXMAC__
-      ::DeleteMenu(mFormatMenu->MacGetMenuId());
-      ::DeleteMenu(mRateMenu->MacGetMenuId());
-#endif
    }
 
    SetCapturedTrack(NULL);

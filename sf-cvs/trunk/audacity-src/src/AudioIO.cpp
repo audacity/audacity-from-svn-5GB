@@ -642,7 +642,7 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 
 #if USE_PORTMIXER
    if (mPortStreamV19 != NULL && mLastPaError == paNoError) {
-      #ifdef __MACOSX__
+      #ifdef __WXMAC__
       if (mPortMixer) {
          if (Px_SupportsPlaythrough(mPortMixer)) {
             bool playthrough;
@@ -735,7 +735,7 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 
 #if USE_PORTMIXER
    if (mPortStreamV18 != NULL && mLastPaError == paNoError) {
-      #ifdef __MACOSX__
+      #ifdef __WXMAC__
       if (mPortMixer) {
          if (Px_SupportsPlaythrough(mPortMixer)) {
             bool playthrough;

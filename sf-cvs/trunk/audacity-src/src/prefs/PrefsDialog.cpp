@@ -186,12 +186,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    outSizer->Fit(this);
    outSizer->SetSizeHints(this);
 
-   #ifdef __MACOS9__
-   // Until sizing works properly on the Mac
-   SetSize(525, 350);
-   #endif
-
-   #ifdef __MACOSX__
+   #ifdef __WXMAC__
    // Until sizing works properly on the Mac
    SetSize(620, 350);
    #endif
