@@ -22,6 +22,11 @@
 #include <wx/stattext.h>
 #include <wx/slider.h>
 #include <wx/sizer.h>
+#include <wx/string.h>
+#include <wx/bitmap.h>
+#include <wx/choice.h>
+#include <wx/radiobut.h>
+#include <wx/checkbox.h>
 
 #if wxUSE_ACCESSIBILITY
 #if defined(__WXMSW__)
@@ -30,20 +35,12 @@
 #include <wx/access.h>
 #endif
 
-// Declare window functions
-
-class wxString;
-class wxBoxSizer;
-class wxChoice;
-class wxRadioButton;
-class wxCheckBox;
-
 #include "Effect.h"
+#include "../Envelope.h"
+#include "../WaveTrack.h"
 #include "../xml/XMLTagHandler.h"
 #include "../widgets/Ruler.h"
 
-class Envelope;
-class WaveTrack;
 class EqualizationDialog;
 
 //

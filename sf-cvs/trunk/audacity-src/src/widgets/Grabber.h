@@ -37,7 +37,7 @@ around to new positions.
 
 // Custom events
 
-DECLARE_EVENT_TYPE(EVT_GRABBER_CLICKED, -1)
+DECLARE_EXPORTED_EVENT_TYPE(AUDACITY_DLL_API, EVT_GRABBER_CLICKED, -1)
 
 class GrabberEvent:public wxCommandEvent
 {

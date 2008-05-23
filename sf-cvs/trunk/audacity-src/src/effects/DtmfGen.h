@@ -14,22 +14,20 @@
 #ifndef __AUDACITY_EFFECT_DTMF__
 #define __AUDACITY_EFFECT_DTMF__
 
+#include <wx/choice.h>
 #include <wx/defs.h>
 #include <wx/intl.h>
+#include <wx/sizer.h>
+#include <wx/string.h>
+#include <wx/textctrl.h>
+
+#include "../ShuttleGui.h"
+#include "../WaveTrack.h"
 #include "../widgets/TimeTextCtrl.h"
 
 #include "Effect.h"
 
-class wxString;
-class wxChoice;
-class wxTextCtrl;
-class ShuttleGui;
-class wxSizer;
-
 #define __UNINITIALIZED__ (-1)
-
-class WaveTrack;
-
 
 class EffectDtmf:public Effect {
 

@@ -73,9 +73,9 @@ and use it for toolbar and window layouts too.
 
 #include <wx/arrimpl.cpp> 
 
-WX_DEFINE_OBJARRAY( ArrayOfImages )
-WX_DEFINE_OBJARRAY( ArrayOfBitmaps )
-WX_DEFINE_OBJARRAY( ArrayOfColours )
+WX_DEFINE_USER_EXPORTED_OBJARRAY( ArrayOfImages )
+WX_DEFINE_USER_EXPORTED_OBJARRAY( ArrayOfBitmaps )
+WX_DEFINE_USER_EXPORTED_OBJARRAY( ArrayOfColours )
 
 // JKC: First get the MAC specific images.
 // As we've disabled USE_AQUA_THEME, we need to name each file we use.
