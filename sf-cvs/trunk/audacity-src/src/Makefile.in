@@ -71,6 +71,7 @@ OBJS = \
 	Languages.o \
 	LangChoice.o \
 	Legacy.o \
+	LoadModules.o \
 	Matrix.o \
 	Menus.o \
 	Mix.o \
