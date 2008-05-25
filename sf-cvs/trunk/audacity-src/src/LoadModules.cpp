@@ -27,14 +27,14 @@ i.e. an alternative to the usual interface, for Audacity.
 #include "AudacityApp.h"
 #include "Internat.h"
 #include "BatchCommands.h"
-#include "../lib-src/lib-widget-extra/NonGuiThread.h"
+#include <NonGuiThread.h>  // header from libwidgetextra
 
 #define initFnName      "ExtensionModuleInit"
 #define scriptFnName    "RegScriptServerFunc"
 #define mainPanelFnName "MainPanelFunc"
 
-typedef AUDACITY_DLL_API int (*tModuleInit)(int);
-typedef AUDACITY_DLL_API wxWindow * (*tPanelFn)(int);
+typedef int AUDACITY_DLL_API (*tModuleInit)(int);
+typedef wxWindow * AUDACITY_DLL_API (*tPanelFn)(int);
 
 // This variable will hold the address of a subroutine in 
 // a DLL that can hijack the normal panel.
@@ -65,8 +65,8 @@ wxWindow * MakeHijackPanel()
 // It will do that through the ExecCommand function.
 extern "C" {
 
-typedef AUDACITY_DLL_API int (*tpExecScriptServerFunc)( wxString * pOut, wxString * pIn);
-typedef AUDACITY_DLL_API int (*tpRegScriptServerFunc)(tpExecScriptServerFunc pFn);
+typedef int AUDACITY_DLL_API (*tpExecScriptServerFunc)( wxString * pOut, wxString * pIn);
+typedef int AUDACITY_DLL_API (*tpRegScriptServerFunc)(tpExecScriptServerFunc pFn);
 
 // This is the function which actually obeys one command.
 AUDACITY_DLL_API int ExecCommand( wxString * pOut, wxString * pIn )
