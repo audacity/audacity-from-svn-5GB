@@ -12,7 +12,7 @@ AC_DEFUN([AX_CONFIG_DIR], [
   # Remove --cache-file and --srcdir arguments so they do not pile up.
   ax_sub_configure_args=
   ax_prev=
-  eval "set x $ax_configure_args"
+  eval "set x $ac_configure_args"
   shift
   for ax_arg
   do
