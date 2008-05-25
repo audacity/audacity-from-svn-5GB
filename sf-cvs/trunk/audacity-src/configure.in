@@ -63,7 +63,9 @@ if test x$HAVE_PKG_CONFIG = xno ; then
 fi
 
 dnl extra variables
-AC_SUBST(BUILDLIBS)
+dnl list of static link libraries to link in, with paths relative to lib-src
+AC_SUBST(LOCAL_LIBS)
+dnl optional object files (from audacity itself) depending on options enabled
 AC_SUBST(EXTRAOBJS)
 AC_SUBST(EXTRATARGETS)
 AC_SUBST(EXTRAINSTALLTARGETS)
@@ -73,8 +75,14 @@ AC_SUBST(CDEPEND)
 AC_SUBST(PRECOMP_CFLAGS)
 AC_SUBST(AFTERBUILD)
 AC_SUBST(INSTALL_PREFIX)
+dnl the header file with #defines from configure in it
 AC_SUBST(CONFIGHEADER)
-AC_SUBST(LOCAL_LIBS)
+dnl LDFLAGS that will be valid for the build, but aren't yet valid so shouldn't
+dnl be used for configure script tests (they are needed for main build).
+AC_SUBST(BUILD_LDFLAGS)
+dnl List of libraries in lib-src that need to be compiled before building
+dnl audacity. Each name in the list should be a _target_ in lib-src/Makefile
+AC_SUBST(LIBSRC_BUILD)
 
 dnl allow the user to specify options to configure that change the
 dnl name "audacity" anywhere it appears in a pathname.   This allows
@@ -109,12 +117,17 @@ dnl knows where to look for help files, plug-ins, etc.
 dnl
 
 AC_PREFIX_DEFAULT(/usr/local)
-if [[ $prefix = "NONE" ]] ; then
-   AC_DEFINE(INSTALL_PREFIX, "/usr/local",
-        [define as prefix where Audacity is installed])
-else
-   AC_DEFINE_UNQUOTED(INSTALL_PREFIX, "$prefix")
+if test x$prefix = "xNONE" ; then
+   prefix="/usr/local/"
 fi
+AC_DEFINE_UNQUOTED(INSTALL_PREFIX, "$prefix", [define as prefix where Audacity is installed])
+
+dnl Some code (headers) can be built either as part of audacity, or as part of
+dnl audacity plug-ins. In order to tell this code what is going on, we need to
+dnl define BUILDING_AUDACITY during the audacity build, and not during the
+dnl plug-in build. This code puts the relevant content into configunix.h
+AC_DEFINE(BUILDING_AUDACITY, 1,
+   [Define we are compiling Audacity itself, not an Audacity plug-in])
 
 dnl Build Options
 
@@ -126,17 +139,15 @@ AC_ARG_ENABLE(static,
 
 AC_ARG_ENABLE(unicode,
             [AS_HELP_STRING([--enable-unicode],
-                            [enable unicode support [default=no]])],   
+                            [enable unicode support [default=yes]])],   
             unicode_preference="--unicode=$enableval",
-            unicode_preference="")
+            unicode_preference="--unicode=yes")
 
 AC_ARG_ENABLE(debug,
             [AS_HELP_STRING([--enable-debug],
                             [enable debug support [default=no]])],
             debug_preference="$enableval",
             debug_preference="no")
-
-
 
 AC_ARG_WITH(lib-preference,
             [AS_HELP_STRING([--with-lib-preference],
@@ -160,6 +171,14 @@ if test x"$debug_preference" = "xyes" ; then
    CFLAGS="${CFLAGS} -g "
    CXXFLAGS="${CXXFLAGS} -g "
 fi
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_SIZE_T
+
+dnl check if alloca.h exists. If it does, we need to include it for 
+dnl Solaris builds, by defining HAVE_ALLOCA_H
+AC_CHECK_HEADERS_ONCE(alloca.h)
 
 dnl --------------------------------------------------------------------------
 dnl We would like warnings enabled on the builds, but different compilers need
@@ -185,8 +204,85 @@ if test "x$cpp_does_wall" = "xyes" ; then
    CPPFLAGS="${CPPFLAGS} $wall_flags"
 fi
 
-AC_CONFIG_SUBDIRS([lib-src/FileDialog])
+dnl-------------------------------------------------------------------------
+dnl If the C++ compiler supports making symbols within audacity hidden then
+dnl we would like to do so. This means that only the required symbols for
+dnl plug-in functionality are exposed, rather than everything in the program.
+dnl-------------------------------------------------------------------------
+AUDACITY_CHECK_VISIBILITY
 
+dnl-------------------------------------------------------------
+dnl Configure the libraries which are essential to audacity.
+dnl These are mostly only libraries for licensing flexibility, so
+dnl there isn't a way to turn them off.
+dnl-------------------------------------------------------------
+
+dnl wxWidgets -- we assume that if wx-config is found, wxWidgets is successfully installed.
+AC_PATH_PROG(WX_CONFIG, wx-config, no, $PATH:/usr/local/bin )
+if [[ "$WX_CONFIG" = "no" ]] ; then
+   AC_MSG_ERROR("Could not find wx-config: is wxWidgets installed? is wx-config in your path?")
+fi
+
+if test "x$debug_preference" = "xyes"; then
+   dnl want debug wx as well
+   wxconfigargs="--debug=yes"
+else
+   dnl normal wx
+   wxconfigargs=""
+fi
+
+dnl more things we always pass to wx-config
+wxconfigargs="$static_preference $unicode_preference  $wxconfigargs $wx_preference"
+wx_version=`${WX_CONFIG} $wxconfigargs --version`
+
+AC_MSG_NOTICE([Checking that the chosen version of wxWidgets is 2.6.x or 2.8.x])
+
+case "${wx_version}" in
+  2.6.*|2.8.*)
+    echo "Great, you're using wxWidgets ${wx_version}!"
+    ;;
+  *)
+  wx_list=`${WX_CONFIG} --list`
+  AC_MSG_ERROR([Unable to locate a suitable configuration of wxWidgets v2.6.x or higher.
+The currently available configurations are listed below.  If necessary, either
+install the package for your distribution or download the latest version of
+wxWidgets
+from http://wxwidgets.org.
+${wx_list}])
+esac
+
+dnl Pass wx config path to lower levels
+ac_configure_args="$ac_configure_args --with-wx-config=\"$WX_CONFIG\""
+
+dnl Gather wx arguments
+LIBS="$LIBS `$WX_CONFIG $wxconfigargs --libs`"
+CXXFLAGS="$CXXFLAGS `$WX_CONFIG $wxconfigargs --cxxflags`"
+
+dnl-----------------------------------------------------------------
+dnl Pull in library Cflags and so on for the non-optional libraries
+
+dnl TODO enable/disable allegro
+LOCAL_LIBS="$LOCAL_LIBS allegro.a"
+CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/allegro"
+
+dnl Include FileDialog
+AC_CONFIG_SUBDIRS(["lib-src/FileDialog"])
+LOCAL_LIBS="$LOCAL_LIBS FileDialog.a"
+CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/FileDialog"
+
+dnl Include lib-widget-extra (via pkg-config). Doing this gets it configured as
+dnl well, because it has to be configured in order to be found
+AUDACITY_CHECKLIB_WIDGETEXTRA
+dnl pull in flags for the library
+BUILD_LDFLAGS="$BUILD_LDFLAGS $WIDGETEXTRA_LIBS"
+CXXFLAGS="$CXXFLAGS $WIDGETEXTRA_CFLAGS"
+dnl Add the library to the list of libraries that need to be compiled
+LIBSRC_BUILD="$LIBSRC_BUILD widgetextra"
+
+dnl-------------------------------------------------------------
+dnl Optional library support. Lots of things we could use, but 
+dnl can do without if they aren't available.
+dnl-------------------------------------------------------------
 LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME"
 
 AC_MSG_NOTICE([Determining what libraries are available in this tree and on the system])
@@ -296,10 +392,9 @@ if ( test "$LIBRESAMPLE_USE_LOCAL" = "yes" || test "$LIBRESAMPLE_USE_SYSTEM" = "
    fi
 fi
 
-#
-# Based on the lib selections, modify LOCAL_LIBS, CXXFLAGS, etc
-#
 
+dnl-----------------------------------------------------------------
+dnl Based on the optional lib selections, modify LOCAL_LIBS, CXXFLAGS, etc
 for lib in $LIBRARIES ; do
    eval LIB_USE_LOCAL=\$${lib}_USE_LOCAL
    eval LIB_USE_SYSTEM=\$${lib}_USE_SYSTEM
@@ -328,23 +423,11 @@ for lib in $LIBRARIES ; do
 done
 
 dnl " This is included purely to close an otherwise endless string in vim
-dnl LOCAL_LIBS="$LOCAL_LIBS expat.a"
-dnl CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/expat"
-
-dnl TODO enable/disable allegro
-LOCAL_LIBS="$LOCAL_LIBS allegro.a"
-CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/allegro"
-
-dnl Include FileDialog
-LOCAL_LIBS="$LOCAL_LIBS FileDialog.a"
-CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/FileDialog"
 
 
-dnl
-dnl Optional sublibraries
-dnl
-
-dnl build options that don't use libraries - just compile-time on/off
+dnl--------------------------------------------------------------------------
+dnl Optional features (which don't use libraries - just compile-time on/off)
+dnl--------------------------------------------------------------------------
 
 AC_ARG_ENABLE(audiounits,
    [AS_HELP_STRING([--enable-audiounits],
@@ -385,53 +468,6 @@ dnl      [compile with RTAudio instead of PortAudio [default=no]])],
 dnl   use_rtaudio=$withval,
 dnl   use_rtaudio="no")
 
-dnl --- check for required libraries ---
-
-dnl wxWidgets -- we assume that if wx-config is found, wxWidgets is successfully installed.
-AC_PATH_PROG(WX_CONFIG, wx-config, no, $PATH:/usr/local/bin )
-if [[ "$WX_CONFIG" = "no" ]] ; then
-   AC_MSG_ERROR("Could not find wx-config: is wxWidgets installed? is wx-config in your path?")
-fi
-
-dnl Check that the wx version is at least 2.6.x
-
-if test "x$debug_preference" = "xyes"; then
-   dnl want debug wx as well
-   wxconfigargs="--debug=yes"
-else
-   dnl normal wx
-   wxconfigargs=""
-fi
-
-dnl more things we always pass to wx-config
-wxconfigargs="$static_preference $unicode_preference  $wxconfigargs $wx_preference"
-
-wx_version=`${WX_CONFIG} $wxconfigargs --version`
-
-AC_MSG_NOTICE([Checking that the chosen version of wxWidgets is 2.6.x or 2.8.x])
-
-case "${wx_version}" in
-  2.6.*|2.8.*)
-    echo "Great, you're using wxWidgets ${wx_version}!"
-    ;;
-  *)
-  wx_list=`${WX_CONFIG} --list`
-  AC_MSG_ERROR([Unable to locate a suitable configuration of wxWidgets v2.6.x or higher.
-The currently available configurations are listed below.  If necessary, either
-install the package for your distribution or download the latest version of
-wxWidgets
-from http://wxwidgets.org.
-${wx_list}])
-esac
-
-dnl Pass wx config path to lower levels
-
-ac_configure_args="$ac_configure_args --with-wx-config=\"$WX_CONFIG\""
-
-dnl Gather wx arguments
-
-LIBS="$LIBS `$WX_CONFIG $wxconfigargs --libs`"
-CPPFLAGS="$CPPFLAGS `$WX_CONFIG $wxconfigargs --cxxflags`"
 
 AC_CANONICAL_HOST
 
@@ -485,7 +521,7 @@ if [[ "$use_portaudio" = "v19" ]] ; then
    AC_DEFINE(USE_PORTAUDIO_V19, 1,
       [Define if PortAudio v19 is being used (instead of v18)])
 
-   BUILDLIBS="$BUILDLIBS portaudio-v19/lib/libportaudio.a"
+   LOCAL_LIBS="$LOCAL_LIBS portaudio-v19/lib/libportaudio.a"
    EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
    CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/include $CXXFLAGS"
 
@@ -524,19 +560,19 @@ else
 
    case "${host_os}" in
       darwin* | rhapsody*)
-         BUILDLIBS="$BUILDLIBS portaudio/pa_mac_core/portaudio.a"
+         LOCAL_LIBS="$LOCAL_LIBS portaudio/pa_mac_core/portaudio.a"
          EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
 
          LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
          LIBS="-framework CoreAudio $LIBS -lz"
          ;;
       cygwin*)
-         BUILDLIBS="$BUILDLIBS portaudio/pa_win_wmme/portaudio.a"
+         LOCAL_LIBS="$LOCAL_LIBS portaudio/pa_win_wmme/portaudio.a"
          EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_win_wmme/portaudio.a"
          ;;
       *)
          dnl Unix
-         BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
+         LOCAL_LIBS="$LOCAL_LIBS portaudio/pa_unix_oss/portaudio.a"
          EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
          ;;
    esac
@@ -549,7 +585,7 @@ dnl    AC_DEFINE(USE_RTAUDIO, 1,
 dnl     [Define if RTAudio support should be enabled])
 dnl    CXXFLAGS="-I\$(top_srcdir)/lib-src/rtaudio $CXXFLAGS"
 dnl    CXXFLAGS="\`../lib-src/rtaudio/rtaudio-config --cflags\` $CXXFLAGS"
-dnl    BUILDLIBS="$BUILDLIBS rtaudio/librtaudio.a"
+dnl    LOCAL_LIBS="$LOCAL_LIBS rtaudio/librtaudio.a"
 dnl    EXTRAOBJS="$EXTRAOBJS ../lib-src/librtaudio.a"
 dnl    LIBS = "$LIBS \`../lib-src/rtaudio/rtaudio-config --libs\`"
 dnl fi
@@ -561,7 +597,7 @@ if [[ "$use_portmixer" = "yes" ]] ; then
       dnl PortMixer with PortAudio v19
 
       CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/include $CXXFLAGS"
-      BUILDLIBS="$BUILDLIBS portmixer/libportmixer.a"
+      LOCAL_LIBS="$LOCAL_LIBS portmixer/libportmixer.a"
       EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/libportmixer.a"
 
       AC_CONFIG_SUBDIRS([lib-src/portmixer])
@@ -572,16 +608,16 @@ if [[ "$use_portmixer" = "yes" ]] ; then
       CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/px_common $CXXFLAGS"
       case "${host_os}" in
          darwin* | rhapsody*)
-            BUILDLIBS="$BUILDLIBS portmixer/px_mac_core/portmixer.a"
+            LOCAL_LIBS="$LOCAL_LIBS portmixer/px_mac_core/portmixer.a"
             EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"     
             ;;
          cygwin*)
-            BUILDLIBS="$BUILDLIBS portmixer/px_win_wmme/portmixer.a"
+            LOCAL_LIBS="$LOCAL_LIBS portmixer/px_win_wmme/portmixer.a"
             EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
             ;;
          *)
             dnl Unix
-            BUILDLIBS="$BUILDLIBS portmixer/px_unix_oss/portmixer.a"
+            LOCAL_LIBS="$LOCAL_LIBS portmixer/px_unix_oss/portmixer.a"
             EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"     
             ;;
       esac
@@ -643,13 +679,6 @@ if [[ "$use_quicktime" = "yes" ]] ; then
              [Define if QuickTime importing is enabled (Mac OS X only)])
 fi
 
-dnl Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
-AC_TYPE_SIZE_T
-
-dnl check if alloca.h exists. If it does, we need to include it for 
-dnl Solaris builds, by defining HAVE_ALLOCA_H
-AC_CHECK_HEADERS_ONCE(alloca.h)
 
 
 case "${host_os}" in

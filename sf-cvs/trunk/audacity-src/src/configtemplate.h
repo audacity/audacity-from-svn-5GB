@@ -4,6 +4,12 @@
    so it can find the files it needs at runtime */
 #undef AUDACITY_NAME
 
+/* Define we are compiling Audacity itself, not an Audacity plug-in */
+#undef BUILDING_AUDACITY
+
+/* Define if the compiler supports the GCC symbol visibility functions */
+#undef CC_HASVISIBILITY
+
 /* Define to 1 if you have the <alloca.h> header file. */
 #undef HAVE_ALLOCA_H
 
