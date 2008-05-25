@@ -1,4 +1,4 @@
-all: @LOCAL_LIBS@ @BUILDLIBS@
+all: @LOCAL_LIBS@ @LIBSRC_BUILD@
 
 # Allegro
 allegro-recursive:
@@ -23,6 +23,10 @@ FileDialog-recursive:
 	$(MAKE) -C FileDialog
 FileDialog.a: FileDialog-recursive
 	ln -sf FileDialog/FileDialog.a FileDialog.a
+
+# libwidgetextra
+widgetextra:
+	$(MAKE) -C lib-widget-extra
 
 # libogg
 libogg-recursive:
@@ -146,6 +150,7 @@ clean:
 	-$(MAKE) -C libresample clean
 	-$(MAKE) -C libsndfile clean
 	-$(MAKE) -C libvorbis clean
+	-$(MAKE) -C lib-widget-extra clean
 	-$(MAKE) -C libflac clean
 	-$(MAKE) -C portaudio-v19 clean
 	-$(MAKE) -C portaudio/pa_unix_oss clean
@@ -170,6 +175,7 @@ distclean:
 	-$(MAKE) -C libresample distclean
 	-$(MAKE) -C libsndfile distclean
 	-$(MAKE) -C libvorbis distclean
+	-$(MAKE) -C lib-widget-extra distclean
 	-$(MAKE) -C libflac distclean
 	-$(MAKE) -C portaudio-v19 distclean
 	-$(MAKE) -C portaudio/pa_unix_oss distclean
@@ -181,7 +187,9 @@ distclean:
 	-$(MAKE) -C twolame distclean
 	-rm -f @LOCAL_LIBS@
 
-.PHONY: allegro-recursive expat-recursive FileDialog-recursive libogg-recursive \
+# list here all the targets that aren't actually files to be made
+.PHONY: allegro-recursive expat-recursive FileDialog-recursive \
+		widgetextra libogg-recursive \
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
 	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
 	libresample-recursive libsamplerate-recursive \
