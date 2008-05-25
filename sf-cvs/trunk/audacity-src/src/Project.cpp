@@ -1685,15 +1685,15 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
    for (FormatList::Node *n = l.GetFirst(); n; n = n->GetNext()) {
       Format *f = n->GetData();
 
-      filter += f->formatName + wxT("|");
+      wxString newfilter = f->formatName + wxT("|");
       for (size_t i = 0; i < f->formatExtensions.GetCount(); i++) {
-         if (!filter.Contains(wxT("*.") + f->formatExtensions[i] + wxT(";")))
-            filter += wxT("*.") + f->formatExtensions[i] + wxT(";");
+         if (!newfilter.Contains(wxT("*.") + f->formatExtensions[i] + wxT(";")))
+            newfilter += wxT("*.") + f->formatExtensions[i] + wxT(";");
          if (!all.Contains(wxT("*.") + f->formatExtensions[i] + wxT(";")))
             all += wxT("*.") + f->formatExtensions[i] + wxT(";");
       }
-      filter.RemoveLast(1);
-
+      newfilter.RemoveLast(1);
+      filter += newfilter;
       filter += wxT("|");
    }
    all.RemoveLast(1);
