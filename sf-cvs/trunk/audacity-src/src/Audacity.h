@@ -71,16 +71,34 @@ void QuitAudacity();
 #include "configwin.h"
 #endif
 
-#ifdef BUILDING_AUDACITY
-#define AUDACITY_DLL_API _declspec(dllexport)
-#else
-#ifdef _DLL
-#define AUDACITY_DLL_API _declspec(dllimport)
-#else
-#define AUDACITY_DLL_API
+/* Magic for dynamic library import and export. This is unfortunately
+ * compiler-specific because there isn't a standard way to do it. Currently it
+ * works with the Visual Studio compiler for windows, and for GCC 4+. Anything
+ * else gets all symbols made public, which gets messy */
+/* The Visual Studio implementation */
+#ifdef _MSC_VER
+   #ifdef BUILDING_AUDACITY
+   #define AUDACITY_DLL_API _declspec(dllexport)
+   #else
+   #ifdef _DLL
+   #define AUDACITY_DLL_API _declspec(dllimport)
+   #else
+   #define AUDACITY_DLL_API
+   #endif
+   #endif
+#endif //_MSC_VER
+/* The GCC implementation */
+#ifdef CC_HASVISIBILITY // this is provided by the configure script, is only
+// enabled for suitable GCC versions
+/* The incantation is a bit weird here because it uses ELF symbol stuff. If we 
+ * make a symbol "default" it makes it visible (for import or export). Making it
+ * "hidden" means it is invisible outside the shared object. */
+   #ifdef BUILDING_AUDACITY
+   #define AUDACITY_DLL_API __attribute__((visibility("default")))
+   #else
+   #define AUDACITY_DLL_API __attribute__((visibility("default")))
+   #endif
 #endif
-#endif
-
 
 // For compilers that support precompilation, includes "wx/wx.h".
 // Mainly for MSVC developers.
