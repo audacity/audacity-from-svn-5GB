@@ -75,9 +75,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "FFT.h"
 #include "BlockFile.h"
 
-#ifdef EXPERIMENTAL_MODULES
 #include "LoadModules.h"
-#endif
 
 #include "import/Import.h"
 #ifdef USE_QUICKTIME
@@ -677,13 +675,8 @@ bool AudacityApp::OnInit()
    wxFrame *temporarywindow = new wxFrame(NULL, -1, wxT("temporarytopwindow"));
    SetTopWindow(temporarywindow);
 
-#ifdef EXPERIMENTAL_MODULES
-#ifdef __WXMSW__
-#ifdef WXUSINGDLL
+   // load audacity plug-in modules
    LoadModules();
-#endif
-#endif
-#endif
 
    // Locale
    // wxWindows 2.3 has a much nicer wxLocale API.  We can make this code much
@@ -757,7 +750,6 @@ bool AudacityApp::OnInit()
 
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
 
-#ifdef EXPERIMENTAL_MODULES
    project->Show( false );
    wxWindow * pWnd = MakeHijackPanel() ;
    if( pWnd )
@@ -766,7 +758,6 @@ bool AudacityApp::OnInit()
       pWnd->Show( true );
    }
    else
-#endif  //EXPERIMENTAL_MODULES 
    {
       SetTopWindow(project);
       project->Show( true );
