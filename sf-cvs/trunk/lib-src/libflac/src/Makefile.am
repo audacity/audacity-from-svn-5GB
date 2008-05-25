@@ -26,8 +26,6 @@ endif
 SUBDIRS = \
 	libFLAC \
 	share \
-	flac \
-	$(XMMS_DIRS) \
 	$(CPPLIBS_DIRS)
 
 EXTRA_DIST = \

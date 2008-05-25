@@ -1,6 +1,6 @@
---- ../../../flac-1.2.1/configure.in	2007-09-13 16:48:42.000000000 +0100
-+++ configure.in	2008-03-22 16:05:54.000000000 +0000
-@@ -324,15 +324,6 @@
+--- ../../../../flac-1.2.1/configure.in	2007-09-13 16:48:42.000000000 +0100
++++ configure.in	2008-05-25 16:50:12.000000000 +0100
+@@ -324,60 +324,14 @@
  	src/libFLAC++/Makefile \
  	src/libFLAC++/flac++.pc \
  	src/flac/Makefile \
@@ -14,12 +14,13 @@
 -	src/plugin_winamp2/include/winamp2/Makefile \
 -	src/plugin_xmms/Makefile \
  	src/share/Makefile \
- 	src/share/getopt/Makefile \
- 	src/share/grabbag/Makefile \
-@@ -341,43 +332,13 @@
- 	src/share/replaygain_synthesis/include/Makefile \
- 	src/share/replaygain_synthesis/include/private/Makefile \
- 	src/share/utf8/Makefile \
+-	src/share/getopt/Makefile \
+-	src/share/grabbag/Makefile \
+-	src/share/replaygain_analysis/Makefile \
+-	src/share/replaygain_synthesis/Makefile \
+-	src/share/replaygain_synthesis/include/Makefile \
+-	src/share/replaygain_synthesis/include/private/Makefile \
+-	src/share/utf8/Makefile \
 -	src/test_grabbag/Makefile \
 -	src/test_grabbag/cuesheet/Makefile \
 -	src/test_grabbag/picture/Makefile \
@@ -79,9 +80,9 @@
  
 -SUBDIRS = FLAC $(CPPLIBS_DIRS) share test_libs_common
 +SUBDIRS = FLAC $(CPPLIBS_DIRS) share
---- ../../../flac-1.2.1/src/Makefile.am	2007-08-29 05:47:32.000000000 +0100
-+++ src/Makefile.am	2008-03-22 16:18:52.000000000 +0000
-@@ -20,22 +20,14 @@
+--- ../../../../flac-1.2.1/src/Makefile.am	2007-08-29 05:47:32.000000000 +0100
++++ src/Makefile.am	2008-05-25 17:06:46.000000000 +0100
+@@ -20,22 +20,12 @@
  endif
  
  if FLaC__WITH_CPPLIBS
@@ -92,10 +93,10 @@
  SUBDIRS = \
  	libFLAC \
  	share \
- 	flac \
+-	flac \
 -	metaflac \
 -	monkeys_audio_utilities \
- 	$(XMMS_DIRS) \
+-	$(XMMS_DIRS) \
 -	plugin_winamp2 \
 -	test_grabbag \
 -	test_libs_common \
@@ -105,3 +106,14 @@
  	$(CPPLIBS_DIRS)
  
  EXTRA_DIST = \
+--- ../../../../flac-1.2.1/src/share/Makefile.am	2007-02-02 06:25:22.000000000 +0000
++++ src/share/Makefile.am	2008-05-25 16:57:21.000000000 +0100
+@@ -15,7 +15,7 @@
+ #  restrictive of those mentioned above.  See the file COPYING.Xiph in this
+ #  distribution.
+ 
+-SUBDIRS = getopt replaygain_analysis replaygain_synthesis grabbag utf8
++SUBDIRS =
+ 
+ EXTRA_DIST = \
+ 	Makefile.lite \
