@@ -49,12 +49,14 @@ NonGuiThread::ExitCode NonGuiThread::Entry()
 // has run to completion.
 void NonGuiThread::RunInThread(tGenericFn pFn)
 {
+   #ifdef WXMSW
    wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : NULL;
    wxASSERT( traits );//"no wxAppTraits in RunInThread()?"
 
    void *cookie = NULL;
    // disable all app windows while waiting for the child process to finish
    cookie = traits->BeforeChildWaitLoop();
+   #endif
 
    NonGuiThread * mpThread = new NonGuiThread(pFn);
    mpThread->Create();
@@ -66,7 +68,9 @@ void NonGuiThread::RunInThread(tGenericFn pFn)
       //traits->AlwaysYield();
       wxYield();
    }
+   #ifdef WXMSW
    traits->AfterChildWaitLoop(cookie);
+   #endif
 }
 
 // This function starts the thread and returns immediately.
