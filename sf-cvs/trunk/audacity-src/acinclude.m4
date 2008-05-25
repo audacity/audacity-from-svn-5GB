@@ -1,4 +1,230 @@
+dnl Function to configure a sub-library now, because we need to know the result
+dnl of the configuration now in order to take decisions.
+dnl We don't worry about whether the configuration worked or not - it is
+dnl assumed that the next thing after this will be a package-specific check to
+dnl see if the package is actually available. (Hint: use pkg-config and
+dnl -uninstalled.pc files if available).
+dnl code based on a simplification of _AC_OUTPUT_SUBDIRS in 
+dnl /usr/share/autoconf/autoconf/status.m4 which implements part of 
+dnl AC_CONFIG_SUBDIRS
 
+AC_DEFUN([AX_CONFIG_DIR], [
+  # Remove --cache-file and --srcdir arguments so they do not pile up.
+  ax_sub_configure_args=
+  ax_prev=
+  eval "set x $ax_configure_args"
+  shift
+  for ax_arg
+  do
+    if test -n "$ax_prev"; then
+      ax_prev=
+      continue
+    fi
+    case $ax_arg in
+    -cache-file | --cache-file | --cache-fil | --cache-fi \
+    | --cache-f | --cache- | --cache | --cach | --cac | --ca | --c)
+      ax_prev=cache_file ;;
+    -cache-file=* | --cache-file=* | --cache-fil=* | --cache-fi=* \
+    | --cache-f=* | --cache-=* | --cache=* | --cach=* | --cac=* | --ca=* \
+    | --c=*)
+      ;;
+    --config-cache | -C)
+      ;;
+    -srcdir | --srcdir | --srcdi | --srcd | --src | --sr)
+      ax_prev=srcdir ;;
+    -srcdir=* | --srcdir=* | --srcdi=* | --srcd=* | --src=* | --sr=*)
+      ;;
+    -prefix | --prefix | --prefi | --pref | --pre | --pr | --p)
+      ax_prev=prefix ;;
+    -prefix=* | --prefix=* | --prefi=* | --pref=* | --pre=* | --pr=* | --p=*)
+      ;;
+    *)
+      case $ax_arg in
+      *\'*) ax_arg=`echo "$ax_arg" | sed "s/'/'\\\\\\\\''/g"` ;;
+      esac
+      ax_sub_configure_args="$ax_sub_configure_args '$ax_arg'" ;;
+    esac
+  done
+
+  # Always prepend --prefix to ensure using the same prefix
+  # in subdir configurations.
+  ax_arg="--prefix=$prefix"
+  case $ax_arg in
+  *\'*) ax_arg=`echo "$ax_arg" | sed "s/'/'\\\\\\\\''/g"` ;;
+  esac
+  ax_sub_configure_args="'$ax_arg' $ax_sub_configure_args"
+
+  # Pass --silent
+  if test "$silent" = yes; then
+    ax_sub_configure_args="--silent $ax_sub_configure_args"
+  fi
+
+  ax_popdir=`pwd`
+  AC_MSG_NOTICE([Configuring sources in $1])
+  dnl for out-of-place builds srcdir and builddir will be different, and
+  dnl builddir may not exist, so we must create it
+  AS_MKDIR_P(["$1"])
+  dnl and also set the variables. As this isn't autoconf, the following may be
+  dnl risky:
+  _AC_SRCDIRS(["$1"])
+  cd "$1"
+
+  # Check for guested configure; otherwise get Cygnus style configure.
+  if test -f "configure.gnu"; then
+    ax_sub_configure=$ac_srcdir/configure.gnu
+  elif test -f "$ac_srcdir/configure"; then
+    ax_sub_configure=$ac_srcdir/configure
+  elif test -f "$ac_srcdir/configure.in"; then
+    # This should be Cygnus configure.
+	ax_sub_configure=$ac_aux_dir/configure
+  else
+    AC_MSG_WARN([no configuration information is in $1])
+    ax_sub_configure=
+  fi
+
+  # The recursion is here.
+  if test -n "$ax_sub_configure"; then
+    # Make the cache file name correct relative to the subdirectory.
+    case $cache_file in
+    [[\\/]]* | ?:[[\\/]]* ) ax_sub_cache_file=$cache_file ;;
+    *) # Relative name.
+	ax_sub_cache_file=$ac_top_build_prefix$cache_file ;;
+    esac
+
+    AC_MSG_NOTICE([running $SHELL $ax_sub_configure $ax_sub_configure_args --cache-file=$ax_sub_cache_file --srcdir=$ac_srcdir])
+    # The eval makes quoting arguments work.
+    eval "\$SHELL \"\$ax_sub_configure\" $ax_sub_configure_args \
+	   --cache-file=\"\$ax_sub_cache_file\" --srcdir=\"\$ax_srcdir\""
+  fi
+
+  cd "$ax_popdir"
+  AC_MSG_NOTICE([Done configuring in $1])
+])
+
+dnl Function to test whether the compiler can do hidden symbol visibility. This
+dnl test is basically from Glibc 2.6.1 configure.in
+
+dnl If the C++ compiler supports making symbols within audacity hidden then
+dnl we would like to do so. This means that only the required symbols for
+dnl plug-in functionality are exposed, rather than everything in the program.
+dnl For GCC > 4.0 we get this by adding -fvisibility=hidden to the CXXFLAGS.
+dnl-------------------------------------------------------------------------
+AC_DEFUN([AUDACITY_CHECK_VISIBILITY], [
+dnl Step 1 - look for required support in assembler. 
+  AC_CACHE_CHECK(for .protected and .hidden assembler directive,
+		 as_protected_directive, [dnl
+  cat > conftest.s <<EOF
+.protected foo
+foo:
+.hidden bar
+bar:
+EOF
+  if AC_TRY_COMMAND(${CC} -c $ASFLAGS conftest.s 1>&AS_MESSAGE_LOG_FD); then
+    as_protected_directive="yes"
+  else
+    AC_MSG_WARN(no assembler support for symbol visibility)
+	as_protected_directive="no"
+  fi
+  rm -f conftest*])
+
+dnl Step 2 - check if the compiler will take __attribute__ declarations
+  AC_CACHE_CHECK(whether __attribute__((visibility())) is supported,
+	 cc_visibility_attribute,
+	 [cat > conftest.c <<EOF
+	 int foo __attribute__ ((visibility ("hidden"))) = 1;
+	 int bar __attribute__ ((visibility ("protected"))) = 1;
+EOF
+	  cc_visibility_attribute=no
+	  if AC_TRY_COMMAND(${CXX} -Werror -S conftest.c -o conftest.s 1>&AS_MESSAGE_LOG_FD); then
+	    if grep '\.hidden.*foo' conftest.s >/dev/null; then
+	      if grep '\.protected.*bar' conftest.s >/dev/null; then
+			cc_visibility_attribute=yes
+	      fi
+	    fi
+	  fi
+	  rm -f conftest.[cs]
+	 ])
+	 if test x$cc_visibility_attribute != "xyes"; then
+	   AC_MSG_WARN(no compiler support for visibility attributes available)
+     fi
+
+dnl Step 3 - see if __attribute__ is broke or not
+  AC_CACHE_CHECK(for broken __attribute__((visibility())),
+		 cc_broken_visibility_attribute,
+		 [cat > conftest.c <<EOF
+		  int foo (int x);
+		  int bar (int x) __asm__ ("foo") __attribute__ ((visibility ("hidden")));
+		  int bar (int x) { return x; }
+EOF
+	  cc_broken_visibility_attribute=yes
+	  if AC_TRY_COMMAND(${CC} -Werror -S conftest.c -o conftest.s1>&AS_MESSAGE_LOG_FD); then
+changequote(,)dnl
+	    if grep '\.hidden[ 	_]foo' conftest.s >/dev/null; then
+changequote([,])dnl
+	      cc_broken_visibility_attribute=no
+	    fi
+	  fi
+	  rm -f conftest.c conftest.s
+	 ])
+    if test x$cc_broken_visibility_attribute = xyes; then
+      AC_MSG_WARN(no working compiler support for visibility attribute available)
+    fi
+
+dnl Step 4 - check if we can control the default visibility of symbols
+	AX_CXX_CHECK_FLAG([-fvisibility=hidden], [[int foo;]], [[foo = 1;]], cxx_does_vis="yes", cxx_does_vis="no")
+	if test "x$cxx_does_vis" = "xyes" ; then
+	  dnl can use default visibility flag on the C++ compiler
+      CXXFLAGS="${CXXFLAGS} -fvisibility=hidden"
+	fi
+
+dnl Step 5 - Do we have all the right things to turn visibility stuff on or not?
+	if test "x$as_protected_directive" = "xyes" ; then
+      if test "x$cc_visibility_attribute" = "xyes" ; then
+	    if test "x$cc_broken_visibility_attribute" = "xno" ; then
+		  if test "x$cxx_does_vis" = "xyes" ; then
+			dnl Phew - it actually works!
+            AC_DEFINE(CC_HASVISIBILITY, 1,
+          [Define if the compiler supports the GCC symbol visibility functions])
+		  fi
+		fi
+      fi
+	fi
+
+])
+
+dnl A function to check for the correct presence of lib-widget-extra in the 
+dnl lib-src tree. Note that this is a mandatory library, and
+dnl that because we maintain it, we don't support system copies.
+
+dnl You would have thought you could use pkg-config for this. But the
+dnl pkg-config file doesn't exist until configure has been run for
+dnl lib-widget-extra. Using AC_CONFIG_SUBDIRS, that doesn't happen until
+dnl after everything in the main configure script has happened, so
+dnl we can't detect anything about the configured library, because it isn't
+dnl configured when this runs.
+dnl To get round this we have created our own subdirectory configuration
+dnl function, AX_CONFIG_DIR based on a subset of the code that implements
+dnl AC_CONFIG_SUBDIRS.
+
+AC_DEFUN([AUDACITY_CHECKLIB_WIDGETEXTRA], [
+   dnl we always need to configure libwidgetextra, so just call the script
+   dnl regardless.
+   AX_CONFIG_DIR(["${srcdir}/lib-src/lib-widget-extra"])
+   dnl having done that we get a pkg-config file we can use
+   dnl add the directory with lib-widget-extra in to the pkg-config search path
+   export PKG_CONFIG_PATH="./lib-src/lib-widget-extra/"
+   PKG_CHECK_MODULES(WIDGETEXTRA, libwidgetextra,
+                     widgetextra_available="yes",
+                     widgetextra_available="no")
+
+   if test "x$widgetextra_available" != "xyes" ; then
+      AC_MSG_ERROR([lib-widget-extra is required to build audacity. A copy is included in the audacity source distribution at lib-src/lib-widget-extra/.])
+   fi
+   dnl otherwise good - got it. Flags will be available for use in
+   dnl WIDGETEXTRA_LIBS and friends
+])
+
+dnl Check for Nyquist as a library
 AC_DEFUN([AUDACITY_CHECKLIB_LIBNYQUIST], [
    AC_ARG_ENABLE(nyquist,
                [AS_HELP_STRING([--enable-nyquist],
