@@ -35,6 +35,8 @@ override LDFLAGS += @LDFLAGS@
 
 # name of the output library file
 LIBFILE = libwidgetextra.a
+# other generated files
+EXTRAS = libwidgetextra.pc libwidgetextra-uninstalled.pc
 
 ########################################
 # ALL OBJECT FILES
@@ -78,7 +80,7 @@ dep:
 
 clean:
 	rm -rf $(OBJS)
-	rm -f libwidgetextra.a
+	rm -f $(LIBFILE) $(EXTRAS)
 
 #
 # Rule for compiling C++ files
