@@ -27,7 +27,7 @@ FileDialogue
 ------------
 The customised file saving dialogues for wxwidgets to provide the options
 button for format preferences. This is written and maintained by us so doesn't
-have and upstream at the moment.
+have an upstream at the moment.
 
 iAVC
 ----
@@ -101,6 +101,13 @@ Patches:  wav-bext.patch: backport patch from 1.0.18 of a patch to fix reading
 bext chunks in WAV files
 Upstream Version: 1.0.17
 TODO: upgrade to 1.0.18 when it comes out in order to drop the bext patch
+
+libvamp
+-------
+Library to load and use VAMP plug-ins. http://www.vamp-plugins.org/
+Version in Audacity CVS: 1.1
+Patches: ??
+Upstream Version: 1.2
 
 libvorbis
 ---------
