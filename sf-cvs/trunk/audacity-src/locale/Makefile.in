@@ -12,9 +12,6 @@ LINGUAS=af ar bn bg ca cs cy da de el es eu fi fr ga gl he hu it ja ko lt mk nb 
 
 prefix=@prefix@
 DATADIR=@datadir@
-# This is an intermediate directory that all files destined for installation
-# get put into on the way (make DESTDIR=/foo install).
-DESTDIR=@destdir@
 # this is where locale-dependant stuff (i.e. .mo files) goes
 LOCALEDIR=@localedir@
 INSTALL=@INSTALL@
