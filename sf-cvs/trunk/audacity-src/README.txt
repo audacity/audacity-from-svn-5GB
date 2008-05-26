@@ -1,10 +1,16 @@
 
-Audacity: A Free, Cross-Platform Digital Audio Editor
+Audacity(R): A Free, Cross-Platform Digital Audio Editor
 WWW:   http://audacity.sourceforge.net/
+
+Audacity is copyright (c) 1999-2008 by Audacity Team. 
+This copyright notice applies to all documents in the 
+Audacity source code archive, except as otherwise noted 
+(mostly in the lib-src subdirectories).
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
 Version 1.3.5 (beta)
+
 
 Contents of this README:
 
