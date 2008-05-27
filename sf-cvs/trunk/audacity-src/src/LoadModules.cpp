@@ -33,8 +33,9 @@ i.e. an alternative to the usual interface, for Audacity.
 #define scriptFnName    "RegScriptServerFunc"
 #define mainPanelFnName "MainPanelFunc"
 
+typedef wxWindow * pwxWindow;
 typedef int AUDACITY_DLL_API (*tModuleInit)(int);
-typedef wxWindow * AUDACITY_DLL_API (*tPanelFn)(int);
+typedef pwxWindow AUDACITY_DLL_API (*tPanelFn)(int);
 
 // This variable will hold the address of a subroutine in 
 // a DLL that can hijack the normal panel.

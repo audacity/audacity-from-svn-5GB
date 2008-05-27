@@ -18,7 +18,7 @@ void PipeServer()
    HANDLE hPipeToSrv;
    HANDLE hPipeFromSrv;
 
-   LPTSTR pipeNameToSrv= "\\\\.\\pipe\\ToSrvPipe";
+   LPTSTR pipeNameToSrv= _T("\\\\.\\pipe\\ToSrvPipe");
    hPipeToSrv = CreateNamedPipe( 
       pipeNameToSrv ,
       PIPE_ACCESS_DUPLEX,
@@ -31,7 +31,7 @@ void PipeServer()
    if( hPipeToSrv == INVALID_HANDLE_VALUE)
       return;
 
-   LPTSTR pipeNameFromSrv= "\\\\.\\pipe\\FromSrvPipe";
+   LPTSTR pipeNameFromSrv= __T("\\\\.\\pipe\\FromSrvPipe");
    hPipeFromSrv = CreateNamedPipe( 
       pipeNameFromSrv ,
       PIPE_ACCESS_DUPLEX,
