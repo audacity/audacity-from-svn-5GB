@@ -9,8 +9,6 @@
   $pageId = "developers";
   $pageTitle = _("Developers");
   include "../include/header.inc.php";
-
-  $bugzilla_url = "http://limpet.net/audacity/bugzilla";
 ?>
 
 <h2><?=$pageTitle?></h2>
@@ -35,12 +33,12 @@
 <p><?=_('For more information, read the <a href="http://sourceforge.net/cvs/?group_id=6235">SourceForge CVS instructions</a>. If using an interface CVS tool such as TortoiseCVS or WinCVS, use the command instructed in the tool\'s documentation.')?></p>
 <p><?=_('See the source code page for <a href="../download/source#instructions">compilation instructions</a>.')?></p>
 
-<?php printf(_('<h3 id="bugzilla">Bugzilla</h3>
-<p>The Audacity developers use <a href="%s/">Bugzilla</a> to keep track of confirmed bugs.  Check the list of <a href="%s/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">open bugs</a> if you are looking for something to work on.</p>
-<p><strong>Note:</strong> This Bugzilla is for development use only.  If you are a user reporting new bugs, please <a 	href="../contact/">use our Forum or e-mail us</a> instead. </p>'), $bugzilla_url, $bugzilla_url)?>
+<h3 id="bugs"><?=_('Bug Tracking')?></h3>
+<p><?=_('The Audacity developers now use <a href="http://audacityteam.org/wiki/index.php?title=Release_Checklist">Release Checklist</a> on the <a href="http://audacityteam.org/wiki/index.php">Wiki</a> to keep track of confirmed bugs. Check the list of <a href="http://audacityteam.org/wiki/index.php?title=Release_Checklist#Release_Issues">Release Issues</a> on that page if you are looking for something to work on.')?></p>
+<p><?=_('<strong>Note:</strong> This Checklist is for development use only. If you are a user reporting new bugs, please <a href="../contact/">use our Forum or e-mail us</a> instead.')?></p>
 
-<h3>Submitting Patches</h3>
-<p>We welcome patches from developers. Please see our <a href="http://audacityteam.org/wiki/index.php?title=SubmittingPatches">Submitting Patches</a> page on the <a href="http://audacityteam.org/wiki/index.php?title=Audacity_Wiki_Home_Page">Wiki</a>.
+<h3><?=_('Submitting Patches')?></h3>
+<p><?=_('We welcome patches from developers. Please see our <a href="http://audacityteam.org/wiki/index.php?title=SubmittingPatches">Submitting Patches</a> page on the <a href="http://audacityteam.org/wiki/index.php?title=Audacity_Wiki_Home_Page">Wiki</a>.')?></p>
 
 <?php
   include "../include/footer.inc.php";
