@@ -1,12 +1,10 @@
 
-//#define UNICODE
-//#define _UNICODE
+#if defined(WIN32)
 
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 #include <windows.h>
 #include <stdio.h>
 #include <tchar.h>
-
 
 const int nBuff = 1024;
 
@@ -19,6 +17,7 @@ void PipeServer()
    HANDLE hPipeFromSrv;
 
    LPTSTR pipeNameToSrv= _T("\\\\.\\pipe\\ToSrvPipe");
+
    hPipeToSrv = CreateNamedPipe( 
       pipeNameToSrv ,
       PIPE_ACCESS_DUPLEX,
@@ -32,6 +31,7 @@ void PipeServer()
       return;
 
    LPTSTR pipeNameFromSrv= __T("\\\\.\\pipe\\FromSrvPipe");
+
    hPipeFromSrv = CreateNamedPipe( 
       pipeNameFromSrv ,
       PIPE_ACCESS_DUPLEX,
@@ -43,7 +43,6 @@ void PipeServer()
       NULL);
    if( hPipeFromSrv == INVALID_HANDLE_VALUE)
       return;
-
 
    BOOL bConnected;
    BOOL bSuccess;
@@ -103,3 +102,87 @@ void PipeServer()
    CloseHandle( hPipeToSrv );
    CloseHandle( hPipeFromSrv );
 }
+
+#else
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+
+const char fifotmpl[] = "/tmp/audacity_script_pipe.%d";
+
+const int nBuff = 1024;
+
+extern "C" int DoSrv( char * pIn );
+extern "C" int DoSrvMore( char * pOut, int nMax );
+
+void PipeServer()
+{
+   FILE *fifo = NULL;
+   int rc;
+   char buf[nBuff];
+   char fifoname[nBuff];
+   
+   sprintf(fifoname, fifotmpl, getuid());
+
+   rc = mkfifo(fifoname, S_IRWXU);
+   if (rc < 0)
+   {
+      perror("Unable to create fifo");
+      printf("Ignoring...");
+//      return;
+   }
+
+   fifo = fopen(fifoname, "rw");
+   if (fifo == NULL)
+   {
+      perror("Unable to open fifo");
+      return;
+   }
+
+   while (true)
+   {
+      int len;
+
+      if (fgets(buf, sizeof(buf), fifo) == NULL)
+      {
+         perror("Read failed on fifo");
+         break;
+      }
+
+      len = strlen(buf);
+      if (len <= 1)
+      {
+         continue;
+      }
+
+      buf[len - 1] = '\0';
+
+      DoSrv(buf);
+
+      while (true)
+      {
+         len = DoSrvMore(buf, nBuff);
+         if (len <= 1)
+         {
+            break;
+         }
+         printf(buf);
+
+         fwrite(buf, 1, len, fifo);
+      }
+
+      // Here until I figure out why the second read fails.
+      break;
+   }
+
+   if (fifo != NULL)
+   {
+      fclose(fifo);
+   }
+
+   unlink(fifoname);
+}
+#endif
