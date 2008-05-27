@@ -102,60 +102,52 @@ It handles initialization and termination by subclassing wxApp.
 
 // These lines allows conditional inclusion of the various libraries
 // that Audacity can use.
-#  if wxUSE_UNICODE
-#     define U "u"
-#  else
-#     define U ""
-#  endif
-
-#  if DEBUG
-#     define D "d"
-#  else
-#     define D ""
-#  endif
 
 #  if defined(USE_LIBFLAC)
-#     pragma comment(lib, "libFLAC++" U D)
-#     pragma comment(lib, "libFLAC" U D)
+#     pragma comment(lib, "libflac++")
+#     pragma comment(lib, "libflac")
 #  endif
 
 #  if defined(USE_LIBID3TAG)
-#     pragma comment(lib, "libid3tag" U D)
+#     pragma comment(lib, "libid3tag")
 #  endif
 
 #  if defined(USE_LIBMAD)
-#     pragma comment(lib, "mad" U D)
+#     pragma comment(lib, "libmad")
 #  endif
 
 #  if defined(USE_LIBRESAMPLE)
-#     pragma comment(lib, "libresample" U D)
+#     pragma comment(lib, "libresample")
 #  endif
 
 #  if defined(USE_LIBSAMPLERATE)
-#     pragma comment(lib, "libsamplerate" U D)
+#     pragma comment(lib, "libsamplerate")
 #  endif
 
 #  if defined(USE_LIBVORBIS)
-#     pragma comment(lib, "ogg_static" U D)
-#     pragma comment(lib, "vorbis_static" U D)
-#     pragma comment(lib, "vorbisfile_static" U D)
+#     pragma comment(lib, "libogg")
+#     pragma comment(lib, "libvorbis")
 #  endif
 
 #  if defined(USE_NYQUIST)
-#     pragma comment(lib, "libnyquist" U D)
+#     pragma comment(lib, "libnyquist")
+#  endif
+
+#  if defined(USE_PORTMIXER)
+#     pragma comment(lib, "portmixer")
+#  endif
+
+#  if defined(USE_VAMP)
+#     pragma comment(lib, "libvamp")
 #  endif
 
 #  if defined(USE_SOUNDTOUCH)
-#     pragma comment(lib, "soundtouch" U D)
+#     pragma comment(lib, "soundtouch")
 #  endif
 
 #  if defined(USE_LIBTWOLAME)
-#     pragma comment(lib, "twolame_static" U D)
+#     pragma comment(lib, "twolame")
 #  endif
-
-#  undef U
-#  undef D
-
 #endif //(__WXMSW__)
 #if 0
 #if wxUSE_ACCESSIBILITY
