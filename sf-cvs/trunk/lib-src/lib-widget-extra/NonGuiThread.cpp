@@ -79,6 +79,6 @@ NonGuiThread * NonGuiThread::StartChild( tGenericFn pFn )
    NonGuiThread * pThread = new NonGuiThread(pFn);
    //pThread->mpFn = pFn;
    pThread->Create();
-   pThread->Resume();
+   pThread->Run();
    return pThread;
 }
