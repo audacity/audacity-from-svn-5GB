@@ -812,6 +812,10 @@
 		285D8BA10AAEFDFD00E0B5BE /* SmartRecordDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D8B9F0AAEFDFD00E0B5BE /* SmartRecordDialog.cpp */; };
 		285DE1FA0BF03C7800A20DF0 /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285DE1F80BF03C7800A20DF0 /* Screenshot.cpp */; };
 		287F9F3D0A69748F00F025FA /* TimeDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 287F9F3C0A69748F00F025FA /* TimeDialog.cpp */; };
+		288052870DEA69C900671EA4 /* PipeServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288052840DEA69C900671EA4 /* PipeServer.cpp */; };
+		288052880DEA69C900671EA4 /* ScripterCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288052850DEA69C900671EA4 /* ScripterCallback.cpp */; };
+		288052C20DEA73F500671EA4 /* NonGuiThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288052BC0DEA72F300671EA4 /* NonGuiThread.cpp */; };
+		288053740DEA9E4C00671EA4 /* ScripterCallback.h in Headers */ = {isa = PBXBuildFile; fileRef = 288052860DEA69C900671EA4 /* ScripterCallback.h */; };
 		2882177B0A35D8730029AF41 /* ShuttlePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288217790A35D8730029AF41 /* ShuttlePrefs.cpp */; };
 		2882178C0A35D90C0029AF41 /* treebook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2882178A0A35D90C0029AF41 /* treebook.cpp */; };
 		2891B2870C531D2C0044FBE3 /* FindClipping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2891B2850C531D2C0044FBE3 /* FindClipping.cpp */; };
@@ -1016,6 +1020,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 28501EAF0CEED1F00029ABAA;
 			remoteInfo = libvamp;
+		};
+		288054760DEAB00600671EA4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1790ABE309883346008A330A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2880527D0DEA694100671EA4;
+			remoteInfo = "mod-script-pipe";
 		};
 		28E67F630A3A16AA0021D89F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1981,6 +1992,12 @@
 		285DE1F90BF03C7800A20DF0 /* Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Screenshot.h; sourceTree = "<group>"; };
 		287F9F3B0A69748F00F025FA /* TimeDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeDialog.h; sourceTree = "<group>"; };
 		287F9F3C0A69748F00F025FA /* TimeDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeDialog.cpp; sourceTree = "<group>"; };
+		2880527E0DEA694100671EA4 /* mod-script-pipe.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "mod-script-pipe.so"; sourceTree = BUILT_PRODUCTS_DIR; };
+		288052840DEA69C900671EA4 /* PipeServer.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PipeServer.cpp; path = "mod-script-pipe/PipeServer.cpp"; sourceTree = "<group>"; };
+		288052850DEA69C900671EA4 /* ScripterCallback.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = ScripterCallback.cpp; path = "mod-script-pipe/ScripterCallback.cpp"; sourceTree = "<group>"; };
+		288052860DEA69C900671EA4 /* ScripterCallback.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = ScripterCallback.h; path = "mod-script-pipe/ScripterCallback.h"; sourceTree = "<group>"; };
+		2880529C0DEA720100671EA4 /* NonGuiThread.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = NonGuiThread.h; path = "lib-widget-extra/NonGuiThread.h"; sourceTree = "<group>"; };
+		288052BC0DEA72F300671EA4 /* NonGuiThread.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = NonGuiThread.cpp; path = "lib-widget-extra/NonGuiThread.cpp"; sourceTree = "<group>"; };
 		288217790A35D8730029AF41 /* ShuttlePrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ShuttlePrefs.cpp; sourceTree = "<group>"; };
 		2882177A0A35D8730029AF41 /* ShuttlePrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ShuttlePrefs.h; sourceTree = "<group>"; };
 		2882178A0A35D90C0029AF41 /* treebook.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = treebook.cpp; sourceTree = "<group>"; };
@@ -2127,6 +2144,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2880527C0DEA694100671EA4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -2136,6 +2160,7 @@
 				17072F230988D569008541CC /* allegro */,
 				17072F4C0988D6A9008541CC /* expat */,
 				283B3D3E0BC21EBE00FA01D5 /* FileDialog */,
+				2880529A0DEA71B000671EA4 /* lib-widget-extra */,
 				176EE9E209A2EF1000188F3B /* libflac */,
 				17072F6A0988D6A9008541CC /* libid3tag */,
 				17072FD10988D6A9008541CC /* libmad */,
@@ -2145,6 +2170,7 @@
 				28501EAC0CEED0740029ABAA /* libvamp */,
 				1707357C0988D6AD008541CC /* libvorbis */,
 				17C8BA11098B398C00216F16 /* libnyquist */,
+				2844B48E0DEA66900087C656 /* mod-script-pipe */,
 				28E821F50A39FC1300DCE280 /* portaudio-v19 */,
 				170737B00988D6AF008541CC /* portmixer */,
 				170737D30988D6AF008541CC /* soundtouch */,
@@ -2789,6 +2815,7 @@
 				2840CF220AEB803C00F49FC3 /* libtwolame.a */,
 				28501F060CEED1F00029ABAA /* libvamp.a */,
 				170740D40988F820008541CC /* libvorbis.a */,
+				2880527E0DEA694100671EA4 /* mod-script-pipe.so */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3681,6 +3708,16 @@
 			name = build;
 			sourceTree = "<group>";
 		};
+		2844B48E0DEA66900087C656 /* mod-script-pipe */ = {
+			isa = PBXGroup;
+			children = (
+				288052840DEA69C900671EA4 /* PipeServer.cpp */,
+				288052850DEA69C900671EA4 /* ScripterCallback.cpp */,
+				288052860DEA69C900671EA4 /* ScripterCallback.h */,
+			);
+			name = "mod-script-pipe";
+			sourceTree = "<group>";
+		};
 		28501E960CEECE4B0029ABAA /* vamp */ = {
 			isa = PBXGroup;
 			children = (
@@ -3731,6 +3768,15 @@
 				28501F160CEED2C50029ABAA /* PluginWrapper.h */,
 			);
 			name = hostext;
+			sourceTree = "<group>";
+		};
+		2880529A0DEA71B000671EA4 /* lib-widget-extra */ = {
+			isa = PBXGroup;
+			children = (
+				288052BC0DEA72F300671EA4 /* NonGuiThread.cpp */,
+				2880529C0DEA720100671EA4 /* NonGuiThread.h */,
+			);
+			name = "lib-widget-extra";
 			sourceTree = "<group>";
 		};
 		2897F6DB0AB3DB5A003C20C5 /* toolbars */ = {
@@ -4273,6 +4319,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2880527A0DEA694100671EA4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				288053740DEA9E4C00671EA4 /* ScripterCallback.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		28E67F520A3A160D0021D89F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -4563,6 +4617,7 @@
 				17C99D43098970800041B1BC /* PBXTargetDependency */,
 				17C99D45098970800041B1BC /* PBXTargetDependency */,
 				2840CF800AEB822100F49FC3 /* PBXTargetDependency */,
+				288054770DEAB00600671EA4 /* PBXTargetDependency */,
 			);
 			name = Audacity;
 			productName = Audacity;
@@ -4600,6 +4655,23 @@
 			productName = libsndfile;
 			productReference = 28501F060CEED1F00029ABAA /* libvamp.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		2880527D0DEA694100671EA4 /* mod-script-pipe */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 288052830DEA698A00671EA4 /* Build configuration list for PBXNativeTarget "mod-script-pipe" */;
+			buildPhases = (
+				2880527A0DEA694100671EA4 /* Headers */,
+				2880527B0DEA694100671EA4 /* Sources */,
+				2880527C0DEA694100671EA4 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "mod-script-pipe";
+			productName = "mod-script-pipe";
+			productReference = 2880527E0DEA694100671EA4 /* mod-script-pipe.so */;
+			productType = "com.apple.product-type.library.dynamic";
 		};
 		28E67F510A3A160D0021D89F /* portaudio-v19 */ = {
 			isa = PBXNativeTarget;
@@ -4644,6 +4716,7 @@
 				1707400C0988EB90008541CC /* libresample */,
 				1707401D0988EEAA008541CC /* libsndfile */,
 				28501EAF0CEED1F00029ABAA /* libvamp */,
+				2880527D0DEA694100671EA4 /* mod-script-pipe */,
 				28E67F510A3A160D0021D89F /* portaudio-v19 */,
 				170740950988F2F7008541CC /* portmixer */,
 				170740790988F1BB008541CC /* soundtouch */,
@@ -5405,6 +5478,7 @@
 				28501EAA0CEED0670029ABAA /* LoadVamp.cpp in Sources */,
 				28501EAB0CEED0680029ABAA /* VampEffect.cpp in Sources */,
 				28B6ED8F0DE3D1B50046F0F3 /* LoadModules.cpp in Sources */,
+				288052C20DEA73F500671EA4 /* NonGuiThread.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5446,6 +5520,15 @@
 				28501F4B0CEED9560029ABAA /* PluginAdapter.cpp in Sources */,
 				28501F4D0CEED9560029ABAA /* RealTime.cpp in Sources */,
 				280196B50D98174400BFEECF /* PluginBufferingAdapter.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2880527B0DEA694100671EA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				288052870DEA69C900671EA4 /* PipeServer.cpp in Sources */,
+				288052880DEA69C900671EA4 /* ScripterCallback.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5560,6 +5643,11 @@
 			target = 28501EAF0CEED1F00029ABAA /* libvamp */;
 			targetProxy = 28501F520CEED9A80029ABAA /* PBXContainerItemProxy */;
 		};
+		288054770DEAB00600671EA4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2880527D0DEA694100671EA4 /* mod-script-pipe */;
+			targetProxy = 288054760DEAB00600671EA4 /* PBXContainerItemProxy */;
+		};
 		28E67F640A3A16AA0021D89F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 28E67F510A3A160D0021D89F /* portaudio-v19 */;
@@ -5568,28 +5656,55 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		17072E8A0988BD58008541CC /* Debug Static */ = {
+		176EEBED09A2F1D600188F3B /* Debug Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					FLAC__NO_ASM,
+					"FLaC__INLINE=__inline__",
+					NDEBUG,
+				);
+				PRODUCT_NAME = FLAC;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libflac/src/libFLAC/include";
+			};
+			name = "Debug Static";
+		};
+		176EEC4009A2F33100188F3B /* Debug Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					NDEBUG,
+					"FLaC__INLINE=__inline__",
+				);
+				PRODUCT_NAME = "FLAC++";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include";
+			};
+			name = "Debug Static";
+		};
+		17CAEBA7098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = Untitled;
 			};
 			name = "Debug Static";
 		};
-		17073EEA0988DC02008541CC /* Debug Static */ = {
+		17CAEBA8098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = allegro;
 			};
 			name = "Debug Static";
 		};
-		17073F580988E07F008541CC /* Debug Static */ = {
+		17CAEBA9098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = expat;
 			};
 			name = "Debug Static";
 		};
-		17073F8A0988E15A008541CC /* Debug Static */ = {
+		17CAEBAA098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
@@ -5597,7 +5712,7 @@
 			};
 			name = "Debug Static";
 		};
-		17073FDE0988E584008541CC /* Debug Static */ = {
+		17CAEBAB098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5608,14 +5723,32 @@
 			};
 			name = "Debug Static";
 		};
-		170740060988EA90008541CC /* Debug Static */ = {
+		17CAEBAC098C9B8E00337968 /* Debug Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = intgen;
+			};
+			name = "Debug Static";
+		};
+		17CAEBAD098C9B8E00337968 /* Debug Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CMTSTUFF,
+					EXT,
+				);
+				PRODUCT_NAME = nyquist;
+			};
+			name = "Debug Static";
+		};
+		17CAEBAE098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = ogg;
 			};
 			name = "Debug Static";
 		};
-		170740170988EBB0008541CC /* Debug Static */ = {
+		17CAEBAF098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
@@ -5623,7 +5756,7 @@
 			};
 			name = "Debug Static";
 		};
-		1707406C0988EEC0008541CC /* Debug Static */ = {
+		17CAEBB0098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
@@ -5632,24 +5765,7 @@
 			};
 			name = "Debug Static";
 		};
-		1707408E0988F1FC008541CC /* Debug Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				OTHER_CFLAGS = "-fcheck-new";
-				PRODUCT_NAME = soundtouch;
-			};
-			name = "Debug Static";
-		};
-		1707409B0988F30D008541CC /* Debug Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
-				PRODUCT_NAME = portmixer;
-			};
-			name = "Debug Static";
-		};
-		170741170988F83B008541CC /* Debug Static */ = {
+		17CAEBB1098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5662,303 +5778,145 @@
 			};
 			name = "Debug Static";
 		};
-		170741460988FDD2008541CC /* Debug Static */ = {
+		17CAEBB3098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = intgen;
+				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
+				PRODUCT_NAME = portmixer;
 			};
 			name = "Debug Static";
 		};
-		176A1B66098B7BDC00DC73B4 /* Debug Static */ = {
+		17CAEBB4098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					CMTSTUFF,
-					EXT,
-				);
-				PRODUCT_NAME = nyquist;
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				OTHER_CFLAGS = "-fcheck-new";
+				PRODUCT_NAME = soundtouch;
 			};
 			name = "Debug Static";
 		};
-		176EEBEC09A2F1D600188F3B /* Debug Static */ = {
+		17CAEBB5098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					FLAC__NO_ASM,
-					"FLaC__INLINE=__inline__",
-					NDEBUG,
+					"USE_PORTAUDIO_V19=1",
+					"AUDACITY_DLL_API=",
 				);
-				PRODUCT_NAME = FLAC;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libflac/src/libFLAC/include";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../lib-src/FileDialog\"";
+				OTHER_CFLAGS = "$(WX_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				OTHER_LDFLAGS = (
+					"$(WX_LDFLAGS)",
+					"-framework",
+					QuickTime,
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					WebKit,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					AudioUnit,
+					"-framework",
+					AudioToolbox,
+					"-lz",
+					"-lpthread",
+					"-liconv",
+					"-lFLAC++",
+					"-lFLAC",
+				);
+				PRODUCT_NAME = Audacity;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Debug Static";
 		};
-		176EEBED09A2F1D600188F3B /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					FLAC__NO_ASM,
-					"FLaC__INLINE=__inline__",
-					NDEBUG,
-				);
-				PRODUCT_NAME = FLAC;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libflac/src/libFLAC/include";
-			};
-			name = "Debug Static Unicode";
-		};
-		176EEBEE09A2F1D600188F3B /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					FLAC__NO_ASM,
-					"FLaC__INLINE=__inline__",
-					NDEBUG,
-				);
-				PRODUCT_NAME = FLAC;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libflac/src/libFLAC/include";
-			};
-			name = "Release Static";
-		};
-		176EEC3F09A2F33100188F3B /* Debug Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					NDEBUG,
-					"FLaC__INLINE=__inline__",
-				);
-				PRODUCT_NAME = "FLAC++";
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include";
-			};
-			name = "Debug Static";
-		};
-		176EEC4009A2F33100188F3B /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					NDEBUG,
-					"FLaC__INLINE=__inline__",
-				);
-				PRODUCT_NAME = "FLAC++";
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include";
-			};
-			name = "Debug Static Unicode";
-		};
-		176EEC4109A2F33100188F3B /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					NDEBUG,
-					"FLaC__INLINE=__inline__",
-				);
-				PRODUCT_NAME = "FLAC++";
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include";
-			};
-			name = "Release Static";
-		};
-		1790ABE509883346008A330A /* Debug Static */ = {
+		17CAEBB6098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CONFIG_DEBUG = yes;
 				CONFIG_FLAGS = "";
 				CONFIG_STATIC = yes;
-				CONFIG_UNICODE = no;
+				CONFIG_UNICODE = yes;
 				DEAD_CODE_STRIPPING = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				TOPLEVEL = ..;
-				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-debug-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
+				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-debug-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macd_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macd_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macd_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macd_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macd_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbond_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbond_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbond-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpatd-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiffd-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpegd-$(WX_VER).a $(WX_PREFIX)/lib/libwxpngd-$(WX_VER).a";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macud_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonud_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonud_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonud-$(WX_VER).a $(WX_PREFIX)/lib/libwxregexud-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpatd-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiffd-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpegd-$(WX_VER).a $(WX_PREFIX)/lib/libwxpngd-$(WX_VER).a";
 				WX_PREFIX = /usr/local;
-				WX_VER = 2.6;
+				WX_VER = 2.8;
 				ZERO_LINK = YES;
 			};
 			name = "Debug Static";
 		};
-		1790AFB509883B6E008A330A /* Debug Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"AUDACITY_DLL_API=",
-					"USE_PORTAUDIO_V19=1",
-				);
-				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../lib-src/FileDialog\"";
-				OTHER_CFLAGS = "$(WX_CFLAGS)";
-				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
-				OTHER_LDFLAGS = (
-					"$(WX_LDFLAGS)",
-					"-framework",
-					QuickTime,
-					"-framework",
-					IOKit,
-					"-framework",
-					Carbon,
-					"-framework",
-					Cocoa,
-					"-framework",
-					System,
-					"-framework",
-					WebKit,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					AudioUnit,
-					"-framework",
-					AudioToolbox,
-					"-lz",
-					"-lpthread",
-					"-liconv",
-					"-lFLAC++",
-					"-lFLAC",
-				);
-				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
-			};
-			name = "Debug Static";
-		};
-		17CAEB7A098C926000337968 /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = Untitled;
-			};
-			name = "Release Static";
-		};
-		17CAEB7B098C926000337968 /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = allegro;
-			};
-			name = "Release Static";
-		};
-		17CAEB7C098C926000337968 /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = expat;
-			};
-			name = "Release Static";
-		};
-		17CAEB7D098C926000337968 /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				PRODUCT_NAME = id3tag;
-			};
-			name = "Release Static";
-		};
-		17CAEB7E098C926000337968 /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					FPM_PPC,
-				);
-				PRODUCT_NAME = mad;
-			};
-			name = "Release Static";
-		};
-		17CAEB7F098C926000337968 /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = intgen;
-			};
-			name = "Release Static";
-		};
-		17CAEB80098C926000337968 /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					CMTSTUFF,
-					EXT,
-				);
-				PRODUCT_NAME = nyquist;
-			};
-			name = "Release Static";
-		};
-		17CAEB81098C926000337968 /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = ogg;
-			};
-			name = "Release Static";
-		};
-		17CAEB82098C926000337968 /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				PRODUCT_NAME = resample;
-			};
-			name = "Release Static";
-		};
-		17CAEB83098C926000337968 /* Release Static */ = {
+		2840CF1F0AEB803C00F49FC3 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
-				PRODUCT_NAME = sndfile;
+				PRODUCT_NAME = twolame;
 			};
-			name = "Release Static";
+			name = "Debug Static";
 		};
-		17CAEB84098C926000337968 /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					DARWIN,
-					USE_MEMORY_H,
-				);
-				PRODUCT_NAME = vorbis;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib $(TOPLEVEL)/lib-src/libogg/include";
-			};
-			name = "Release Static";
-		};
-		17CAEB86098C926000337968 /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
-				PRODUCT_NAME = portmixer;
-			};
-			name = "Release Static";
-		};
-		17CAEB87098C926000337968 /* Release Static */ = {
+		2840CF210AEB803C00F49FC3 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				OTHER_CFLAGS = "-fcheck-new";
-				PRODUCT_NAME = soundtouch;
+				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
+				PRODUCT_NAME = twolame;
 			};
 			name = "Release Static";
 		};
-		17CAEB88098C926000337968 /* Release Static */ = {
+		28501F030CEED1F00029ABAA /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
+				PRODUCT_NAME = vamp;
+			};
+			name = "Debug Static";
+		};
+		28501F050CEED1F00029ABAA /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
+				PRODUCT_NAME = vamp;
+			};
+			name = "Release Static";
+		};
+		288052800DEA694100671EA4 /* Debug Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)/modules";
+				DYLIB_COMPATIBILITY_VERSION = "";
+				DYLIB_CURRENT_VERSION = "";
+				EXECUTABLE_EXTENSION = so;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"AUDACITY_DLL_API=",
-					"USE_PORTAUDIO_V19=1",
+					BUILDING_SCRIPT_PIPE,
+					CC_HASVISIBILITY,
 				);
-				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../lib-src/FileDialog\"";
+				INSTALL_PATH = /usr/local/lib;
+				MACH_O_TYPE = mh_bundle;
 				OTHER_CFLAGS = "$(WX_CFLAGS)";
 				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
 				OTHER_LDFLAGS = (
@@ -5984,159 +5942,90 @@
 					"-lz",
 					"-lpthread",
 					"-liconv",
-					"-lFLAC++",
-					"-lFLAC",
 				);
-				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				PREBINDING = NO;
+				PRODUCT_NAME = "mod-script-pipe";
+				ZERO_LINK = YES;
+			};
+			name = "Debug Static";
+		};
+		288052820DEA694100671EA4 /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)/modules";
+				DYLIB_COMPATIBILITY_VERSION = "";
+				DYLIB_CURRENT_VERSION = "";
+				EXECUTABLE_EXTENSION = so;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					BUILDING_SCRIPT_PIPE,
+					CC_HASVISIBILITY,
+				);
+				MACH_O_TYPE = mh_bundle;
+				OTHER_CFLAGS = "$(WX_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				OTHER_LDFLAGS = (
+					"$(WX_LDFLAGS)",
+					"-framework",
+					QuickTime,
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					WebKit,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					AudioUnit,
+					"-framework",
+					AudioToolbox,
+					"-lz",
+					"-lpthread",
+					"-liconv",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "mod-script-pipe";
+				ZERO_LINK = YES;
 			};
 			name = "Release Static";
 		};
-		17CAEB89098C926000337968 /* Release Static */ = {
+		288052CA0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				CONFIG_DEBUG = no;
+				CONFIG_DEBUG = yes;
 				CONFIG_FLAGS = "";
-				CONFIG_STATIC = yes;
-				CONFIG_UNICODE = no;
+				CONFIG_STATIC = no;
+				CONFIG_UNICODE = yes;
 				DEAD_CODE_STRIPPING = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				TOPLEVEL = ..;
-				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
+				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-debug-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_mac_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_mac_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_mac_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_mac_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_mac_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbon_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbon_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbon-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpat-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiff-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpeg-$(WX_VER).a $(WX_PREFIX)/lib/libwxpng-$(WX_VER).a";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -lwx_macud_html-$(WX_VER)  -lwx_macud_adv-$(WX_VER) -lwx_macud_core-$(WX_VER) -lwx_base_carbonud_net-$(WX_VER) -lwx_base_carbonud-$(WX_VER)";
 				WX_PREFIX = /usr/local;
-				WX_VER = 2.6;
+				WX_VER = 2.8;
+				ZERO_LINK = YES;
 			};
-			name = "Release Static";
+			name = "Debug Shared";
 		};
-		17CAEBA7098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = Untitled;
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBA8098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = allegro;
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBA9098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = expat;
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBAA098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				PRODUCT_NAME = id3tag;
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBAB098C9B8E00337968 /* Debug Static Unicode */ = {
+		288052CB0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					FPM_PPC,
-				);
-				PRODUCT_NAME = mad;
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBAC098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = intgen;
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBAD098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					CMTSTUFF,
-					EXT,
-				);
-				PRODUCT_NAME = nyquist;
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBAE098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = ogg;
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBAF098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				PRODUCT_NAME = resample;
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBB0098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
-				PRODUCT_NAME = sndfile;
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBB1098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					DARWIN,
-					USE_MEMORY_H,
-				);
-				PRODUCT_NAME = vorbis;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib $(TOPLEVEL)/lib-src/libogg/include";
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBB3098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
-				PRODUCT_NAME = portmixer;
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBB4098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				OTHER_CFLAGS = "-fcheck-new";
-				PRODUCT_NAME = soundtouch;
-			};
-			name = "Debug Static Unicode";
-		};
-		17CAEBB5098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"AUDACITY_DLL_API=",
 					"USE_PORTAUDIO_V19=1",
+					"AUDACITY_DLL_API=",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
@@ -6175,126 +6064,30 @@
 				PRODUCT_NAME = Audacity;
 				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
-			name = "Debug Static Unicode";
+			name = "Debug Shared";
 		};
-		17CAEBB6098C9B8E00337968 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CONFIG_DEBUG = yes;
-				CONFIG_FLAGS = "";
-				CONFIG_STATIC = yes;
-				CONFIG_UNICODE = yes;
-				DEAD_CODE_STRIPPING = YES;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				KEEP_PRIVATE_EXTERNS = YES;
-				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
-				TOPLEVEL = ..;
-				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-debug-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
-				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
-				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macud_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonud_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonud_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonud-$(WX_VER).a $(WX_PREFIX)/lib/libwxregexud-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpatd-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiffd-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpegd-$(WX_VER).a $(WX_PREFIX)/lib/libwxpngd-$(WX_VER).a";
-				WX_PREFIX = /usr/local;
-				WX_VER = 2.6;
-				ZERO_LINK = YES;
-			};
-			name = "Debug Static Unicode";
-		};
-		2840CF1E0AEB803C00F49FC3 /* Debug Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
-				PRODUCT_NAME = twolame;
-			};
-			name = "Debug Static";
-		};
-		2840CF1F0AEB803C00F49FC3 /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
-				PRODUCT_NAME = twolame;
-			};
-			name = "Debug Static Unicode";
-		};
-		2840CF200AEB803C00F49FC3 /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
-				PRODUCT_NAME = twolame;
-			};
-			name = "Release Static";
-		};
-		2840CF210AEB803C00F49FC3 /* Release Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
-				PRODUCT_NAME = twolame;
-			};
-			name = "Release Static Unicode";
-		};
-		28501F020CEED1F00029ABAA /* Debug Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
-				PRODUCT_NAME = vamp;
-			};
-			name = "Debug Static";
-		};
-		28501F030CEED1F00029ABAA /* Debug Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
-				PRODUCT_NAME = vamp;
-			};
-			name = "Debug Static Unicode";
-		};
-		28501F040CEED1F00029ABAA /* Release Static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
-				PRODUCT_NAME = vamp;
-			};
-			name = "Release Static";
-		};
-		28501F050CEED1F00029ABAA /* Release Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
-				PRODUCT_NAME = vamp;
-			};
-			name = "Release Static Unicode";
-		};
-		28E5DA290AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052CC0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = Untitled;
 			};
-			name = "Release Static Unicode";
+			name = "Debug Shared";
 		};
-		28E5DA2A0AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052CD0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = allegro;
 			};
-			name = "Release Static Unicode";
+			name = "Debug Shared";
 		};
-		28E5DA2B0AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052CE0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = expat;
 			};
-			name = "Release Static Unicode";
+			name = "Debug Shared";
 		};
-		28E5DA2C0AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052CF0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -6306,9 +6099,9 @@
 				PRODUCT_NAME = FLAC;
 				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libflac/src/libFLAC/include";
 			};
-			name = "Release Static Unicode";
+			name = "Debug Shared";
 		};
-		28E5DA2D0AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052D00DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -6319,17 +6112,17 @@
 				PRODUCT_NAME = "FLAC++";
 				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include";
 			};
-			name = "Release Static Unicode";
+			name = "Debug Shared";
 		};
-		28E5DA2E0AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052D10DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = id3tag;
 			};
-			name = "Release Static Unicode";
+			name = "Debug Shared";
 		};
-		28E5DA2F0AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052D20DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -6338,16 +6131,9 @@
 				);
 				PRODUCT_NAME = mad;
 			};
-			name = "Release Static Unicode";
+			name = "Debug Shared";
 		};
-		28E5DA300AC4CBA200E7F64C /* Release Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = intgen;
-			};
-			name = "Release Static Unicode";
-		};
-		28E5DA310AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052D30DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -6356,33 +6142,9 @@
 				);
 				PRODUCT_NAME = nyquist;
 			};
-			name = "Release Static Unicode";
+			name = "Debug Shared";
 		};
-		28E5DA320AC4CBA200E7F64C /* Release Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = ogg;
-			};
-			name = "Release Static Unicode";
-		};
-		28E5DA330AC4CBA200E7F64C /* Release Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				PRODUCT_NAME = resample;
-			};
-			name = "Release Static Unicode";
-		};
-		28E5DA340AC4CBA200E7F64C /* Release Static Unicode */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
-				PRODUCT_NAME = sndfile;
-			};
-			name = "Release Static Unicode";
-		};
-		28E5DA350AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052D40DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -6393,9 +6155,42 @@
 				PRODUCT_NAME = vorbis;
 				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib $(TOPLEVEL)/lib-src/libogg/include";
 			};
-			name = "Release Static Unicode";
+			name = "Debug Shared";
 		};
-		28E5DA360AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052D50DEA74F100671EA4 /* Debug Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = ogg;
+			};
+			name = "Debug Shared";
+		};
+		288052D60DEA74F100671EA4 /* Debug Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				PRODUCT_NAME = resample;
+			};
+			name = "Debug Shared";
+		};
+		288052D70DEA74F100671EA4 /* Debug Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
+				PRODUCT_NAME = sndfile;
+			};
+			name = "Debug Shared";
+		};
+		288052D80DEA74F100671EA4 /* Debug Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
+				PRODUCT_NAME = vamp;
+			};
+			name = "Debug Shared";
+		};
+		288052D90DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -6419,33 +6214,125 @@
 				);
 				PRODUCT_NAME = portaudio;
 			};
-			name = "Release Static Unicode";
+			name = "Debug Shared";
 		};
-		28E5DA370AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052DA0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
 				PRODUCT_NAME = portmixer;
 			};
-			name = "Release Static Unicode";
+			name = "Debug Shared";
 		};
-		28E5DA380AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052DB0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				OTHER_CFLAGS = "-fcheck-new";
 				PRODUCT_NAME = soundtouch;
 			};
-			name = "Release Static Unicode";
+			name = "Debug Shared";
 		};
-		28E5DA390AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052DC0DEA74F100671EA4 /* Debug Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
+				PRODUCT_NAME = twolame;
+			};
+			name = "Debug Shared";
+		};
+		288052DD0DEA74F100671EA4 /* Debug Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = intgen;
+			};
+			name = "Debug Shared";
+		};
+		288052DE0DEA74F100671EA4 /* Debug Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)/modules";
+				DYLIB_COMPATIBILITY_VERSION = "";
+				DYLIB_CURRENT_VERSION = "";
+				EXECUTABLE_EXTENSION = so;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					BUILDING_SCRIPT_PIPE,
+					CC_HASVISIBILITY,
+				);
+				INSTALL_PATH = /usr/local/lib;
+				KEEP_PRIVATE_EXTERNS = NO;
+				MACH_O_TYPE = mh_bundle;
+				OTHER_CFLAGS = "$(WX_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				OTHER_LDFLAGS = (
+					"$(WX_LDFLAGS)",
+					"-framework",
+					QuickTime,
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					WebKit,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					AudioUnit,
+					"-framework",
+					AudioToolbox,
+					"-lz",
+					"-lpthread",
+					"-liconv",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "mod-script-pipe";
+				ZERO_LINK = YES;
+			};
+			name = "Debug Shared";
+		};
+		288052DF0DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				CONFIG_DEBUG = no;
+				CONFIG_FLAGS = "";
+				CONFIG_STATIC = no;
+				CONFIG_UNICODE = yes;
+				DEAD_CODE_STRIPPING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				KEEP_PRIVATE_EXTERNS = YES;
+				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				TOPLEVEL = ..;
+				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
+				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
+				WX_CXXFLAGS = "$(WX_CFLAGS)";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -lwx_macu_html-$(WX_VER)  -lwx_macu_adv-$(WX_VER) -lwx_macu_core-$(WX_VER) -lwx_base_carbonu_net-$(WX_VER) -lwx_base_carbonu-$(WX_VER)";
+				WX_PREFIX = /usr/local;
+				WX_VER = 2.8;
+			};
+			name = "Release Shared";
+		};
+		288052E00DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"AUDACITY_DLL_API=",
 					"USE_PORTAUDIO_V19=1",
+					"AUDACITY_DLL_API=",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
@@ -6484,36 +6371,133 @@
 				PRODUCT_NAME = Audacity;
 				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
-			name = "Release Static Unicode";
+			name = "Release Shared";
 		};
-		28E5DA3A0AC4CBA200E7F64C /* Release Static Unicode */ = {
+		288052E10DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				CONFIG_DEBUG = no;
-				CONFIG_FLAGS = "";
-				CONFIG_STATIC = yes;
-				CONFIG_UNICODE = yes;
-				DEAD_CODE_STRIPPING = YES;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				KEEP_PRIVATE_EXTERNS = YES;
-				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
-				TOPLEVEL = ..;
-				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
-				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
-				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macu_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonu_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonu_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonu-$(WX_VER).a $(WX_PREFIX)/lib/libwxregexu-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpat-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiff-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpeg-$(WX_VER).a $(WX_PREFIX)/lib/libwxpng-$(WX_VER).a";
-				WX_PREFIX = /usr/local;
-				WX_VER = 2.6;
+				PRODUCT_NAME = Untitled;
 			};
-			name = "Release Static Unicode";
+			name = "Release Shared";
 		};
-		28E67F5C0A3A160D0021D89F /* Debug Static */ = {
+		288052E20DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = allegro;
+			};
+			name = "Release Shared";
+		};
+		288052E30DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = expat;
+			};
+			name = "Release Shared";
+		};
+		288052E40DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					FLAC__NO_ASM,
+					"FLaC__INLINE=__inline__",
+					NDEBUG,
+				);
+				PRODUCT_NAME = FLAC;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libflac/src/libFLAC/include";
+			};
+			name = "Release Shared";
+		};
+		288052E50DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					NDEBUG,
+					"FLaC__INLINE=__inline__",
+				);
+				PRODUCT_NAME = "FLAC++";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include";
+			};
+			name = "Release Shared";
+		};
+		288052E60DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				PRODUCT_NAME = id3tag;
+			};
+			name = "Release Shared";
+		};
+		288052E70DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					FPM_PPC,
+				);
+				PRODUCT_NAME = mad;
+			};
+			name = "Release Shared";
+		};
+		288052E80DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CMTSTUFF,
+					EXT,
+				);
+				PRODUCT_NAME = nyquist;
+			};
+			name = "Release Shared";
+		};
+		288052E90DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					DARWIN,
+					USE_MEMORY_H,
+				);
+				PRODUCT_NAME = vorbis;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib $(TOPLEVEL)/lib-src/libogg/include";
+			};
+			name = "Release Shared";
+		};
+		288052EA0DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = ogg;
+			};
+			name = "Release Shared";
+		};
+		288052EB0DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				PRODUCT_NAME = resample;
+			};
+			name = "Release Shared";
+		};
+		288052EC0DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
+				PRODUCT_NAME = sndfile;
+			};
+			name = "Release Shared";
+		};
+		288052ED0DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
+				PRODUCT_NAME = vamp;
+			};
+			name = "Release Shared";
+		};
+		288052EE0DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -6537,35 +6521,211 @@
 				);
 				PRODUCT_NAME = portaudio;
 			};
-			name = "Debug Static";
+			name = "Release Shared";
 		};
-		28E67F5D0A3A160D0021D89F /* Debug Static Unicode */ = {
+		288052EF0DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
+				PRODUCT_NAME = portmixer;
+			};
+			name = "Release Shared";
+		};
+		288052F00DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				OTHER_CFLAGS = "-fcheck-new";
+				PRODUCT_NAME = soundtouch;
+			};
+			name = "Release Shared";
+		};
+		288052F10DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
+				PRODUCT_NAME = twolame;
+			};
+			name = "Release Shared";
+		};
+		288052F20DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = intgen;
+			};
+			name = "Release Shared";
+		};
+		288052F30DEA74FD00671EA4 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)/modules";
+				DYLIB_COMPATIBILITY_VERSION = "";
+				DYLIB_CURRENT_VERSION = "";
+				EXECUTABLE_EXTENSION = so;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					BUILDING_SCRIPT_PIPE,
+					CC_HASVISIBILITY,
+				);
+				INSTALL_PATH = /usr/local/lib;
+				KEEP_PRIVATE_EXTERNS = NO;
+				MACH_O_TYPE = mh_bundle;
+				OTHER_CFLAGS = "$(WX_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				OTHER_LDFLAGS = (
+					"$(WX_LDFLAGS)",
+					"-framework",
+					QuickTime,
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					WebKit,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					AudioUnit,
+					"-framework",
+					AudioToolbox,
+					"-lz",
+					"-lpthread",
+					"-liconv",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "mod-script-pipe";
+				ZERO_LINK = YES;
+			};
+			name = "Release Shared";
+		};
+		28E5DA290AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Untitled;
+			};
+			name = "Release Static";
+		};
+		28E5DA2A0AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = allegro;
+			};
+			name = "Release Static";
+		};
+		28E5DA2B0AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = expat;
+			};
+			name = "Release Static";
+		};
+		28E5DA2C0AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"STDC_HEADERS=1",
-					"HAVE_SYS_TYPES_H=1",
-					"HAVE_SYS_STAT_H=1",
-					"HAVE_STDLIB_H=1",
-					"HAVE_STRING_H=1",
-					"HAVE_MEMORY_H=1",
-					"HAVE_STRINGS_H=1",
-					"HAVE_INTTYPES_H=1",
-					"HAVE_STDINT_H=1",
-					"HAVE_UNISTD_H=1",
-					"HAVE_DLFCN_H=1",
-					"WORDS_BIGENDIAN=1",
-					"SIZEOF_SHORT=2",
-					"SIZEOF_INT=4",
-					"SIZEOF_LONG=4",
-					"HAVE_NANOSLEEP=1",
-					"PA_USE_COREAUDIO=1",
+					HAVE_CONFIG_H,
+					FLAC__NO_ASM,
+					"FLaC__INLINE=__inline__",
+					NDEBUG,
 				);
-				PRODUCT_NAME = portaudio;
+				PRODUCT_NAME = FLAC;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libflac/src/libFLAC/include";
 			};
-			name = "Debug Static Unicode";
+			name = "Release Static";
 		};
-		28E67F5E0A3A160D0021D89F /* Release Static */ = {
+		28E5DA2D0AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					NDEBUG,
+					"FLaC__INLINE=__inline__",
+				);
+				PRODUCT_NAME = "FLAC++";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include";
+			};
+			name = "Release Static";
+		};
+		28E5DA2E0AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				PRODUCT_NAME = id3tag;
+			};
+			name = "Release Static";
+		};
+		28E5DA2F0AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					FPM_PPC,
+				);
+				PRODUCT_NAME = mad;
+			};
+			name = "Release Static";
+		};
+		28E5DA300AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = intgen;
+			};
+			name = "Release Static";
+		};
+		28E5DA310AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CMTSTUFF,
+					EXT,
+				);
+				PRODUCT_NAME = nyquist;
+			};
+			name = "Release Static";
+		};
+		28E5DA320AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = ogg;
+			};
+			name = "Release Static";
+		};
+		28E5DA330AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				PRODUCT_NAME = resample;
+			};
+			name = "Release Static";
+		};
+		28E5DA340AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
+				PRODUCT_NAME = sndfile;
+			};
+			name = "Release Static";
+		};
+		28E5DA350AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					DARWIN,
+					USE_MEMORY_H,
+				);
+				PRODUCT_NAME = vorbis;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib $(TOPLEVEL)/lib-src/libogg/include";
+			};
+			name = "Release Static";
+		};
+		28E5DA360AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -6591,16 +6751,136 @@
 			};
 			name = "Release Static";
 		};
+		28E5DA370AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
+				PRODUCT_NAME = portmixer;
+			};
+			name = "Release Static";
+		};
+		28E5DA380AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				OTHER_CFLAGS = "-fcheck-new";
+				PRODUCT_NAME = soundtouch;
+			};
+			name = "Release Static";
+		};
+		28E5DA390AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"USE_PORTAUDIO_V19=1",
+					"AUDACITY_DLL_API=",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../lib-src/FileDialog\"";
+				OTHER_CFLAGS = "$(WX_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				OTHER_LDFLAGS = (
+					"$(WX_LDFLAGS)",
+					"-framework",
+					QuickTime,
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					WebKit,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					AudioUnit,
+					"-framework",
+					AudioToolbox,
+					"-lz",
+					"-lpthread",
+					"-liconv",
+					"-lFLAC++",
+					"-lFLAC",
+				);
+				PRODUCT_NAME = Audacity;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+			};
+			name = "Release Static";
+		};
+		28E5DA3A0AC4CBA200E7F64C /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				CONFIG_DEBUG = no;
+				CONFIG_FLAGS = "";
+				CONFIG_STATIC = yes;
+				CONFIG_UNICODE = yes;
+				DEAD_CODE_STRIPPING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				KEEP_PRIVATE_EXTERNS = YES;
+				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				TOPLEVEL = ..;
+				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
+				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
+				WX_CXXFLAGS = "$(WX_CFLAGS)";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macu_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonu_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonu_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonu-$(WX_VER).a $(WX_PREFIX)/lib/libwxregexu-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpat-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiff-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpeg-$(WX_VER).a $(WX_PREFIX)/lib/libwxpng-$(WX_VER).a";
+				WX_PREFIX = /usr/local;
+				WX_VER = 2.8;
+			};
+			name = "Release Static";
+		};
+		28E67F5D0A3A160D0021D89F /* Debug Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"STDC_HEADERS=1",
+					"HAVE_SYS_TYPES_H=1",
+					"HAVE_SYS_STAT_H=1",
+					"HAVE_STDLIB_H=1",
+					"HAVE_STRING_H=1",
+					"HAVE_MEMORY_H=1",
+					"HAVE_STRINGS_H=1",
+					"HAVE_INTTYPES_H=1",
+					"HAVE_STDINT_H=1",
+					"HAVE_UNISTD_H=1",
+					"HAVE_DLFCN_H=1",
+					"WORDS_BIGENDIAN=1",
+					"SIZEOF_SHORT=2",
+					"SIZEOF_INT=4",
+					"SIZEOF_LONG=4",
+					"HAVE_NANOSLEEP=1",
+					"PA_USE_COREAUDIO=1",
+				);
+				PRODUCT_NAME = portaudio;
+			};
+			name = "Debug Static";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		17072E890988BD58008541CC /* Build configuration list for PBXAggregateTarget "Configure" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17072E8A0988BD58008541CC /* Debug Static */,
-				17CAEBA7098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB7A098C926000337968 /* Release Static */,
-				28E5DA290AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBA7098C9B8E00337968 /* Debug Static */,
+				288052CC0DEA74F100671EA4 /* Debug Shared */,
+				28E5DA290AC4CBA200E7F64C /* Release Static */,
+				288052E10DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6608,10 +6888,10 @@
 		17073EE90988DC02008541CC /* Build configuration list for PBXNativeTarget "allegro" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17073EEA0988DC02008541CC /* Debug Static */,
-				17CAEBA8098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB7B098C926000337968 /* Release Static */,
-				28E5DA2A0AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBA8098C9B8E00337968 /* Debug Static */,
+				288052CD0DEA74F100671EA4 /* Debug Shared */,
+				28E5DA2A0AC4CBA200E7F64C /* Release Static */,
+				288052E20DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6619,10 +6899,10 @@
 		17073F570988E07F008541CC /* Build configuration list for PBXNativeTarget "expat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17073F580988E07F008541CC /* Debug Static */,
-				17CAEBA9098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB7C098C926000337968 /* Release Static */,
-				28E5DA2B0AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBA9098C9B8E00337968 /* Debug Static */,
+				288052CE0DEA74F100671EA4 /* Debug Shared */,
+				28E5DA2B0AC4CBA200E7F64C /* Release Static */,
+				288052E30DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6630,10 +6910,10 @@
 		17073F890988E15A008541CC /* Build configuration list for PBXNativeTarget "libid3tag" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17073F8A0988E15A008541CC /* Debug Static */,
-				17CAEBAA098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB7D098C926000337968 /* Release Static */,
-				28E5DA2E0AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBAA098C9B8E00337968 /* Debug Static */,
+				288052D10DEA74F100671EA4 /* Debug Shared */,
+				28E5DA2E0AC4CBA200E7F64C /* Release Static */,
+				288052E60DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6641,10 +6921,10 @@
 		17073FDD0988E584008541CC /* Build configuration list for PBXNativeTarget "libmad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17073FDE0988E584008541CC /* Debug Static */,
-				17CAEBAB098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB7E098C926000337968 /* Release Static */,
-				28E5DA2F0AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBAB098C9B8E00337968 /* Debug Static */,
+				288052D20DEA74F100671EA4 /* Debug Shared */,
+				28E5DA2F0AC4CBA200E7F64C /* Release Static */,
+				288052E70DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6652,10 +6932,10 @@
 		170740050988EA90008541CC /* Build configuration list for PBXNativeTarget "libogg" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				170740060988EA90008541CC /* Debug Static */,
-				17CAEBAE098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB81098C926000337968 /* Release Static */,
-				28E5DA320AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBAE098C9B8E00337968 /* Debug Static */,
+				288052D50DEA74F100671EA4 /* Debug Shared */,
+				28E5DA320AC4CBA200E7F64C /* Release Static */,
+				288052EA0DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6663,10 +6943,10 @@
 		170740160988EBB0008541CC /* Build configuration list for PBXNativeTarget "libresample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				170740170988EBB0008541CC /* Debug Static */,
-				17CAEBAF098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB82098C926000337968 /* Release Static */,
-				28E5DA330AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBAF098C9B8E00337968 /* Debug Static */,
+				288052D60DEA74F100671EA4 /* Debug Shared */,
+				28E5DA330AC4CBA200E7F64C /* Release Static */,
+				288052EB0DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6674,10 +6954,10 @@
 		1707406B0988EEC0008541CC /* Build configuration list for PBXNativeTarget "libsndfile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1707406C0988EEC0008541CC /* Debug Static */,
-				17CAEBB0098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB83098C926000337968 /* Release Static */,
-				28E5DA340AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBB0098C9B8E00337968 /* Debug Static */,
+				288052D70DEA74F100671EA4 /* Debug Shared */,
+				28E5DA340AC4CBA200E7F64C /* Release Static */,
+				288052EC0DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6685,10 +6965,10 @@
 		1707408D0988F1FC008541CC /* Build configuration list for PBXNativeTarget "soundtouch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1707408E0988F1FC008541CC /* Debug Static */,
-				17CAEBB4098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB87098C926000337968 /* Release Static */,
-				28E5DA380AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBB4098C9B8E00337968 /* Debug Static */,
+				288052DB0DEA74F100671EA4 /* Debug Shared */,
+				28E5DA380AC4CBA200E7F64C /* Release Static */,
+				288052F00DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6696,10 +6976,10 @@
 		1707409A0988F30D008541CC /* Build configuration list for PBXNativeTarget "portmixer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1707409B0988F30D008541CC /* Debug Static */,
-				17CAEBB3098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB86098C926000337968 /* Release Static */,
-				28E5DA370AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBB3098C9B8E00337968 /* Debug Static */,
+				288052DA0DEA74F100671EA4 /* Debug Shared */,
+				28E5DA370AC4CBA200E7F64C /* Release Static */,
+				288052EF0DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6707,10 +6987,10 @@
 		170741160988F83B008541CC /* Build configuration list for PBXNativeTarget "libvorbis" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				170741170988F83B008541CC /* Debug Static */,
-				17CAEBB1098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB84098C926000337968 /* Release Static */,
-				28E5DA350AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBB1098C9B8E00337968 /* Debug Static */,
+				288052D40DEA74F100671EA4 /* Debug Shared */,
+				28E5DA350AC4CBA200E7F64C /* Release Static */,
+				288052E90DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6718,10 +6998,10 @@
 		170741450988FDD2008541CC /* Build configuration list for PBXNativeTarget "intgen" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				170741460988FDD2008541CC /* Debug Static */,
-				17CAEBAC098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB7F098C926000337968 /* Release Static */,
-				28E5DA300AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBAC098C9B8E00337968 /* Debug Static */,
+				288052DD0DEA74F100671EA4 /* Debug Shared */,
+				28E5DA300AC4CBA200E7F64C /* Release Static */,
+				288052F20DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6729,10 +7009,10 @@
 		176A1B65098B7BDC00DC73B4 /* Build configuration list for PBXNativeTarget "libnyquist" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				176A1B66098B7BDC00DC73B4 /* Debug Static */,
-				17CAEBAD098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB80098C926000337968 /* Release Static */,
-				28E5DA310AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBAD098C9B8E00337968 /* Debug Static */,
+				288052D30DEA74F100671EA4 /* Debug Shared */,
+				28E5DA310AC4CBA200E7F64C /* Release Static */,
+				288052E80DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6740,10 +7020,10 @@
 		176EEBEB09A2F1D600188F3B /* Build configuration list for PBXNativeTarget "libFLAC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				176EEBEC09A2F1D600188F3B /* Debug Static */,
-				176EEBED09A2F1D600188F3B /* Debug Static Unicode */,
-				176EEBEE09A2F1D600188F3B /* Release Static */,
-				28E5DA2C0AC4CBA200E7F64C /* Release Static Unicode */,
+				176EEBED09A2F1D600188F3B /* Debug Static */,
+				288052CF0DEA74F100671EA4 /* Debug Shared */,
+				28E5DA2C0AC4CBA200E7F64C /* Release Static */,
+				288052E40DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6751,10 +7031,10 @@
 		176EEC3E09A2F33100188F3B /* Build configuration list for PBXNativeTarget "libFLAC++" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				176EEC3F09A2F33100188F3B /* Debug Static */,
-				176EEC4009A2F33100188F3B /* Debug Static Unicode */,
-				176EEC4109A2F33100188F3B /* Release Static */,
-				28E5DA2D0AC4CBA200E7F64C /* Release Static Unicode */,
+				176EEC4009A2F33100188F3B /* Debug Static */,
+				288052D00DEA74F100671EA4 /* Debug Shared */,
+				28E5DA2D0AC4CBA200E7F64C /* Release Static */,
+				288052E50DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6762,10 +7042,10 @@
 		1790ABE409883346008A330A /* Build configuration list for PBXProject "Audacity" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1790ABE509883346008A330A /* Debug Static */,
-				17CAEBB6098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB89098C926000337968 /* Release Static */,
-				28E5DA3A0AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBB6098C9B8E00337968 /* Debug Static */,
+				288052CA0DEA74F100671EA4 /* Debug Shared */,
+				28E5DA3A0AC4CBA200E7F64C /* Release Static */,
+				288052DF0DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6773,10 +7053,10 @@
 		1790AFB409883B6E008A330A /* Build configuration list for PBXNativeTarget "Audacity" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1790AFB509883B6E008A330A /* Debug Static */,
-				17CAEBB5098C9B8E00337968 /* Debug Static Unicode */,
-				17CAEB88098C926000337968 /* Release Static */,
-				28E5DA390AC4CBA200E7F64C /* Release Static Unicode */,
+				17CAEBB5098C9B8E00337968 /* Debug Static */,
+				288052CB0DEA74F100671EA4 /* Debug Shared */,
+				28E5DA390AC4CBA200E7F64C /* Release Static */,
+				288052E00DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6784,10 +7064,10 @@
 		2840CF1D0AEB803C00F49FC3 /* Build configuration list for PBXNativeTarget "twolame" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2840CF1E0AEB803C00F49FC3 /* Debug Static */,
-				2840CF1F0AEB803C00F49FC3 /* Debug Static Unicode */,
-				2840CF200AEB803C00F49FC3 /* Release Static */,
-				2840CF210AEB803C00F49FC3 /* Release Static Unicode */,
+				2840CF1F0AEB803C00F49FC3 /* Debug Static */,
+				288052DC0DEA74F100671EA4 /* Debug Shared */,
+				2840CF210AEB803C00F49FC3 /* Release Static */,
+				288052F10DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6795,10 +7075,21 @@
 		28501F010CEED1F00029ABAA /* Build configuration list for PBXNativeTarget "libvamp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				28501F020CEED1F00029ABAA /* Debug Static */,
-				28501F030CEED1F00029ABAA /* Debug Static Unicode */,
-				28501F040CEED1F00029ABAA /* Release Static */,
-				28501F050CEED1F00029ABAA /* Release Static Unicode */,
+				28501F030CEED1F00029ABAA /* Debug Static */,
+				288052D80DEA74F100671EA4 /* Debug Shared */,
+				28501F050CEED1F00029ABAA /* Release Static */,
+				288052ED0DEA74FD00671EA4 /* Release Shared */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug Static";
+		};
+		288052830DEA698A00671EA4 /* Build configuration list for PBXNativeTarget "mod-script-pipe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				288052800DEA694100671EA4 /* Debug Static */,
+				288052DE0DEA74F100671EA4 /* Debug Shared */,
+				288052820DEA694100671EA4 /* Release Static */,
+				288052F30DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -6806,10 +7097,10 @@
 		28E67F5B0A3A160D0021D89F /* Build configuration list for PBXNativeTarget "portaudio-v19" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				28E67F5C0A3A160D0021D89F /* Debug Static */,
-				28E67F5D0A3A160D0021D89F /* Debug Static Unicode */,
-				28E67F5E0A3A160D0021D89F /* Release Static */,
-				28E5DA360AC4CBA200E7F64C /* Release Static Unicode */,
+				28E67F5D0A3A160D0021D89F /* Debug Static */,
+				288052D90DEA74F100671EA4 /* Debug Shared */,
+				28E5DA360AC4CBA200E7F64C /* Release Static */,
+				288052EE0DEA74FD00671EA4 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
