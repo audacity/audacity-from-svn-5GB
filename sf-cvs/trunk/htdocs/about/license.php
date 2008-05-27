@@ -74,7 +74,7 @@ echo _('<h4 >Updating and Documenting Audacity</h4>
 echo _('<p>If possible, please include the <a href="http://audacity.sourceforge.net/help/documentation">Audacity documentation</a> with your distribution, to reduce the number of queries we receive. ');?>
 
 <?php
-   echo _('If you adhere to these and wish to be listed as a vendor or distributor, please ');?>
+   echo _('IMPORTANT: If you write your own documentation for Audacity, please ');?>
    <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x67;&#97;&#x6c;&#101;&#x40;&#97;&#x75;&#x64;&#x61;&#x63;&#105;&#116;&#x79;&#116;&#x65;&#x61;&#x6d;&#46;&#111;&#x72;&#x67;&#63;&#x73;&#117;&#x62;&#x6a;&#101;&#99;&#116;&#x3d;&#65;&#x75;&#x64;&#97;&#x63;&#x69;&#x74;&#x79;&#32;&#68;&#x6f;&#x63;&#117;&#x6d;&#101;&#110;&#x74;&#97;&#x74;&#x69;&#x6f;&#110;">
 <?php
    echo _('submit it to us</a> for review <em>before</em> you publish it.</p>');
