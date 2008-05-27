@@ -48,7 +48,7 @@ extern "C" {
 
    // This is an example of an exported variable
 
-typedef __declspec( dllimport) int (*tpExecScriptServerFunc)( wxString * pOut, wxString * pIn);
+typedef SCRIPT_PIPE_DLL_IMPORT int (*tpExecScriptServerFunc)( wxString * pOut, wxString * pIn);
 
 
 static tpExecScriptServerFunc pScriptServerFn=NULL;
@@ -112,14 +112,14 @@ int DoSrvMore( char * pOut, int nMax )
    l = Temp.Length();
    if( l>= (nMax-3) )
       l=(nMax-4);
-   memcpy( pOut, Temp.c_str(), l );
+   memcpy( pOut, Temp.mb_str(), l );
    pOut[l] = '\n';
    pOut[l+1] = '\0';
    return l+2;
 }
 
 
-SCRIPT_PIPE_DLL_API int RegScriptServerFunc( tpExecScriptServerFunc pFn )
+int SCRIPT_PIPE_DLL_API RegScriptServerFunc( tpExecScriptServerFunc pFn )
 {
    if( pFn )
    {
@@ -131,7 +131,7 @@ SCRIPT_PIPE_DLL_API int RegScriptServerFunc( tpExecScriptServerFunc pFn )
 
 
 // This is an example of an exported function.
-SCRIPT_PIPE_DLL_API int ExtensionModuleInit(int ix)
+int SCRIPT_PIPE_DLL_API ExtensionModuleInit(int ix)
 {
 //   pExecFunc = NULL;
    ix;// compiler food.
@@ -158,9 +158,10 @@ SCRIPT_PIPE_DLL_API int ExtensionModuleInit(int ix)
    Dlg.Fit();
    Dlg.Move( 100,100 );
    int id = Dlg.ShowModal();
-
+printf("id = %d\n", id);
    // return -1 for cancel, anything else for OK.
-   return (id==wxID_CANCEL)?-1:42;
+//   return (id==wxID_CANCEL)?-1:42;
+   return 0;
 }
 
 
