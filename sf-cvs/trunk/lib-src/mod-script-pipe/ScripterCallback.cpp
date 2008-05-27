@@ -61,19 +61,19 @@ int iSent;
 // and creates a list of response lines to be sent.
 int DoSrv( char * pIn )
 {
-   wxString Str1(pIn);
-   Str1.Replace("\r","");
-   Str1.Replace("\n","");
+   wxString Str1(pIn, wxConvISO8859_1);
+   Str1.Replace( wxT("\r"), wxT(""));
+   Str1.Replace( wxT("\n"), wxT(""));
    (*pScriptServerFn)( &Str2, &Str1 );
-   int l = Str2.Length();
-   Str2+= '\n';
+   size_t l = Str2.Length();
+   Str2+= wxT('\n');
    aStr.Clear();
    iSent = -1;
-   int iStart = 0;
-   int i;
+   size_t iStart = 0;
+   size_t i;
    for(i=0;i<=l;i++)
    {
-      if( Str2[i] == '\n' )
+      if( Str2[i] == wxT('\n') )
       {
          aStr.Add( Str2.Mid( iStart, i-iStart) );
          iStart = i+1;
@@ -98,7 +98,7 @@ int DoSrvMore( char * pOut, int nMax )
    }
    else if( iSent == -1 )
    {
-      Temp = wxString::Format("Lines:%i", aStr.GetCount());
+      Temp = wxString::Format(wxT("Lines:%i"), aStr.GetCount());
       iSent++;
    }
    else
@@ -108,7 +108,7 @@ int DoSrvMore( char * pOut, int nMax )
       Temp = aStr[iSent];
       iSent++;
    }
-   int l;
+   size_t l;
    l = Temp.Length();
    if( l>= (nMax-3) )
       l=(nMax-4);
@@ -136,13 +136,13 @@ SCRIPT_PIPE_DLL_API int ExtensionModuleInit(int ix)
 //   pExecFunc = NULL;
    ix;// compiler food.
 
-   wxLogDebug("Got into DLL" );
-
-   return 0;
+#if defined(_DEBUG)
+   wxLogDebug(wxT("Got into DLL"));
+#endif
 
    // Here is proof that the DLL was dynamically loaded and this Init function
    // called.
-   wxDialog Dlg( (wxWindow*)NULL, (wxWindowID)-1, "mod-script-pipe - Dialog Loaded by Plug In", wxPoint(0,0));
+   wxDialog Dlg( (wxWindow*)NULL, (wxWindowID)-1, wxT("mod-script-pipe - Dialog Loaded by Plug In"), wxPoint(0,0));
 
 
 #if 0
