@@ -76,8 +76,11 @@ of this, doesn't work for the static libraries)".
 
 
 1. Open "C:\wxWidgets-2.8.7\build\msw\wx_dll.dsw" with 
-   Visual Studio 2005 (for VC8). It will prompt whether to 
-   convert. Click "Yes To All".
+   Visual Studio 2005 (for VC8). 
+   Make sure to use wx_dll.dsw, not wx.dsw, because wx.dsw 
+   does not have the correct dependencies for the DLL builds.
+   When you open wx_dll.dsw, Visual Studio will prompt whether 
+   to convert. Click "Yes To All".
 
 2. If you want to use the accessibility features: 
       * Open Solution Explorer. 
@@ -100,13 +103,21 @@ of this, doesn't work for the static libraries)".
       * Click OK. 
 
 3. Build for all configurations of Audacity that you want. 
-   For Batch Build for Audacity, you need build only these 
+   For Batch Build for Audacity, you need select only these 
    projects (not the whole solution) for each configuration:
       * adv
       * base
       * core
       * html
       * net
+
+   Because of dependencies, this should also build these projects: 
+	* wxexpat
+	* wxjpeg
+	* wxpng
+	* wxregex
+	* wxtiff
+	* wxzlib
 
    If you build the whole solution, ignore the linker errors for 
    wxbase28*_odbc*.* dbgrid .
