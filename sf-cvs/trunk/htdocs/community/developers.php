@@ -22,7 +22,7 @@
 <p><?=_('You can get the latest Audacity stable or development code from our CVS repository.')?>
 
 <ul>
-  <li><p><a href="http://audacity.cvs.sourceforge.net/audacity"><?=_('Browse the source code online')?></a></p></li>
+  <li><p><?=_('Browse the source code online sorted by <a href="http://audacity.cvs.sourceforge.net/audacity/audacity-src/">file name</a> or <a href="http://audacity.cvs.sourceforge.net/audacity/audacity-src/?sortby=date#dirlist">date</a>.')?></p></li>
 
   <li><p><?=_('Type this at the command line to check out the latest stable source code from CVS:')?> (1.2)</p>
   <p><kbd>cvs -d:pserver:anonymous@audacity.cvs.sourceforge.net:/cvsroot/audacity checkout -r AUDACITY_1_2 audacity</kbd></p></li>
