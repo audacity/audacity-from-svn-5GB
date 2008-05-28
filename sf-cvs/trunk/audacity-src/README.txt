@@ -2,20 +2,20 @@
 Audacity(R): A Free, Cross-Platform Digital Audio Editor
 WWW:   http://audacity.sourceforge.net/
 
-Audacity is copyright (c) 1999-2008 by Audacity Team. 
-This copyright notice applies to all documents in the 
-Audacity source code archive, except as otherwise noted 
+Audacity is copyright (c) 1999-2008 by Audacity Team.
+This copyright notice applies to all documents in the
+Audacity source code archive, except as otherwise noted
 (mostly in the lib-src subdirectories).
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Version 1.3.5 (beta)
+Version 1.3.6a1 (alpha)
 
 
 Contents of this README:
 
 1.  Licensing
-2.  Changes in version 1.3.5
+2.  Changes in version 1.3.6a1
 3.  Known Issues
 4.  Source Code, Libraries and Additional Copyright Information
 5.  Compilation Instructions
@@ -47,46 +47,29 @@ to http://www.gnu.org/copyleft/gpl.html or write to
 
 --------------------------------------------------------------------------------
 
-2.  Changes in version 1.3.5
-
-Recording  / Playback:
-	* Several bugs fixed so that latency correction should be better, and more
-	   devices work correctly. Problems with invalid sample rates under Linux
-	   should be much rarer.
-	* Newer version of Portaudio library.
-	* New feature to record onto the end of an existing track
-	   (hold Shift while clicking Record).
-
-Import / Export:
-	* Updated versions of Libogg, Libvorbis, Libflac, Libsndfile and Twolame
-	   libraries.
-	* Handling of unsupported file formats more informative.
-	* Handling of file names with slashes on OS X improved. New dialog
-	   allows replacement of illegal file name characters on all platforms.
+2.  Changes in version 1.3.6a1
 
 Interface:
-	* Improved scaling and layout for rulers and VU meters.
-	* Envelope fixes/improvements including full control of undo/redo.
-	* New keyboard shortcuts and improved menu navigation.
-	* Preferences: More intuitive tab arrangement. New options for
-	   mute/solo and Metadata Editor behavior. Language can now be
-	   changed without restart.
-	* Expanded Build Information tab.
-
-Effects:
-	* New Vocal Remover plug-in, improvements for Generate effects.
+	* Further improvements to menu navigation and wordings.
+	* All file dialogs are now resizable, and support "Places"
+	   sidebar on Windows 2000 or later.
+	* Preferences:
+	        * New "Theme" preference for modifying interface
+	           colours and images, with experimental new default
+	           colour scheme.
+	        * New "Smart Recording" preference automatically pauses
+	           recordings that fall below a pre-defined input level.
 
 Compilation:
-	* Fixes when building Audacity with libraries disabled.
-	* Improvements to make Mac and Solaris builds easier.
-
-Security:
-	* Full fix for issue CVE-2007-6061 on systems where temporary directories
-	   can be changed by other users (thanks to Michael Schwendt).
+        * Simplified modular builds for Windows, removing
+           static-linked configurations.
+        * New shared configurations on Mac to support modular
+           builds, and all builds are now Unicode.
 
 Miscellaneous:
-	* Updated translations for many locales.
-	* Several stability improvements.
+        * Default auto save interval reduced to 2 minutes.
+        * Bug fixes to correct project rate initialisation on Linux, and
+           file importing issues on PPC Macs.
 
 
 --------------------------------------------------------------------------------
@@ -110,19 +93,26 @@ this version.
     effects, once the user interacts with the dialog, it cannot then be
     cancelled by Escape without first tabbing to the OK or Cancel buttons.
 
+ * Keyboard shortcuts don't work when the focus is in any of the Selection
+    Bar spinboxes or the project rate list.
+
  * Export Multiple fails with no export or warning if an empty label is
     encountered.
 
- * The preference "Hold recorded data in memory until recording is stopped" is
-    misnamed. It caches most audio data for the duration of the session, including
-    project data and imported files. Enabling it may cause a crash when making
-    long recordings or opening large files or projects.
+ * "Audio Cache" on the Directories tab of Preferences caches most audio
+    data for the duration of the session, including project data and imported
+    files. Enabling it could cause a crash when making long recordings or
+    opening large files or projects.
+
+ * Previewing the current curve on opening Equalization, modifying that
+    curve and then previewing again plays the audio without the modified
+    equalization applied.
 
  * A few interface elements do not change language without restart.
 
  * Calculation of "disk space remains for recording (time)" is incorrect when
-    recording in 24 bit quality. You may record for 50% longer than the indicated
-    time.
+    recording in 24 bit quality. You may record for 50% longer than the
+    indicated time.
 
  * Pressing Play (but not spacebar) in a second project when another is already
     playing stops playback of the first project.
@@ -151,8 +141,8 @@ this version.
 
  * Windows (reported on): There have been reports of clicks during recording on
     some Windows XP systems using Audacity 1.3.4, where 1.2.6 had no problem.
-    It is not clear if 1.3.5 will have this issue or if it will occur on other operating
-    systems. Users can help us by sending any reports of this problem to:
+    It is not clear if current releases will have this issue or if it will occur on other
+    operating systems. Users can help us by sending any reports of this problem to:
       audacity-devel@lists.sourceforge.net
 
  * Windows only: Audacity is incompatible with some professional sound cards
@@ -160,6 +150,9 @@ this version.
     As a workaround, make a different sound card your default when using
     Audacity, but please let us know if this affects you so that we can track down
     and solve the problem.
+
+ * Windows Vista only: If no input device (such as a microphone) is enabled
+    and connected, clicking Help > Audio Device Info causes a crash.
 
  * Mac OS X only: Some users find that after running Audacity other media
     players don't produce any sound or crash. Audacity tries to select the best
@@ -172,6 +165,10 @@ this version.
    device is set up (in the Apple Sound and Midi Setup utility) to work in
    stereo, 16bits, with a sample rate of 44100Hz or 48000Hz.  More help at:
       http://audacityteam.org/wiki/index.php?title=Mac_Bugs#Loss_of_sound_after_running_Audacity
+
+ * Mac OS X only: If using Audacity when the "Hear" audio plug-in is running
+   (or has been since boot), there will be excessive memory usage which could
+   cause a crash. This appears to be due to buggy memory allocation in "Hear".
 
  * Mac OS X only: Portable settings aren't picked up, and the default
     settings (in the default location) are always used. See this page for
@@ -362,6 +359,48 @@ or email us at:
 --------------------------------------------------------------------------------
 
 6.  Previous Changes going back to version 1.1.0
+
+Changes in 1.3.5:
+
+Recording  / Playback:
+	* Several bugs fixed so that latency correction should be better, and more
+	   devices work correctly. Problems with invalid sample rates under Linux
+	   should be much rarer.
+	* Newer version of Portaudio library.
+	* New feature to record onto the end of an existing track
+	   (hold Shift while clicking Record).
+
+Import / Export:
+	* Updated versions of Libogg, Libvorbis, Libflac, Libsndfile and Twolame
+	   libraries.
+	* Handling of unsupported file formats more informative.
+	* Handling of file names with slashes on OS X improved. New dialog
+	   allows replacement of illegal file name characters on all platforms.
+
+Interface:
+	* Improved scaling and layout for rulers and VU meters.
+	* Envelope fixes/improvements including full control of undo/redo.
+	* New keyboard shortcuts and improved menu navigation.
+	* Preferences: More intuitive tab arrangement. New options for
+	   mute/solo and Metadata Editor behavior. Language can now be
+	   changed without restart.
+	* Expanded Build Information tab.
+
+Effects:
+	* New Vocal Remover plug-in, improvements for Generate effects.
+
+Compilation:
+	* Fixes when building Audacity with libraries disabled.
+	* Improvements to make Mac and Solaris builds easier.
+
+Security:
+	* Full fix for issue CVE-2007-6061 on systems where temporary directories
+	   can be changed by other users (thanks to Michael Schwendt).
+
+Miscellaneous:
+	* Updated translations for many locales.
+	* Several stability improvements.
+
 
 Changes in 1.3.4:
 
