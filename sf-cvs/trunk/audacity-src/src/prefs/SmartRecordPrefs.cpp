@@ -83,7 +83,9 @@ void SmartRecordPrefs::PopulateOrExchange( ShuttleGui & S)
       S.TieCheckBox( _("Pause Recording on Silence"), wxT("/AudioIO/PauseRecOnSilence"),false);
       S.StartMultiColumn(2, wxEXPAND);
          S.SetStretchyCol(1);
-         S.TieSlider(_("Silence level (dB):"), wxT("/AudioIO/SilenceLevel"), -50, 0, -60);
+         int dBRange;
+         dBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
+         S.TieSlider(_("Silence level (dB):"), wxT("/AudioIO/SilenceLevel"), -50, 0, -dBRange);
       S.EndMultiColumn();
    }
    S.EndStatic();

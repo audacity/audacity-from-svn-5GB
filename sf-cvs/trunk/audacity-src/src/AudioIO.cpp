@@ -841,7 +841,14 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    gPrefs->Read(wxT("/AudioIO/PauseRecOnSilence"), &mPauseRec, false);
    int silenceLevelDB;
    gPrefs->Read(wxT("/AudioIO/SilenceLevel"), &silenceLevelDB, -50);
-   mSilenceLevel = (silenceLevelDB + 60.)/60.;  // meter goes -60dB -> 0dB
+   int dBRange;
+   dBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
+   if(silenceLevelDB < -dBRange)
+   {
+      silenceLevelDB = -dBRange + 3;   // meter range was made smaller than SilenceLevel
+      gPrefs->Write(wxT("/GUI/EnvdBRange"), dBRange); // so set SilenceLevel reasonable
+   }
+   mSilenceLevel = (silenceLevelDB + dBRange)/(double)dBRange;  // meter goes -dBRange dB -> 0dB
 #endif
 
    mTimeTrack = timeTrack;
