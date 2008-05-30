@@ -3,7 +3,7 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=audacity-win-1.3.5
+OutputBaseFilename=audacity-win-1.3.6a1
 SetupIconFile=audacity.ico
 
 WizardImageFile=audacity_InnoWizardImage.bmp
@@ -13,7 +13,7 @@ SolidCompression=yes
 
 ; installer-related directives
 AppName=Audacity 1.3 Beta
-AppVerName=Audacity 1.3.5
+AppVerName=Audacity 1.3.6a1
 AppPublisher=Audacity Team
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
@@ -60,9 +60,11 @@ Name: associate_aup; Description: "&Associate Audacity project files"; GroupDesc
 Source: "..\README.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\win\Release\audacity.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\win\Release\Languages\*"; DestDir: "{app}\Languages\"; Flags: ignoreversion recursesubdirs
-Source: "..\win\Release\Nyquist\*"; DestDir: "{app}\Nyquist\"; Flags: ignoreversion
-Source: "..\win\Release\Plug-Ins\*"; DestDir: "{app}\Plug-Ins\"; Excludes: "analyze.ny, fadein.ny, fadeout.ny, undcbias.ny"; Flags: ignoreversion
+Source: "..\win\Release\languages\*"; DestDir: "{app}\Languages\"; Flags: ignoreversion recursesubdirs
+Source: "..\win\Release\modules\*"; DestDir: "{app}\Languages\"; Flags: ignoreversion recursesubdirs
+Source: "..\win\Release\nyquist\*"; DestDir: "{app}\Nyquist\"; Flags: ignoreversion
+Source: "..\win\Release\plug-ins\*"; DestDir: "{app}\Plug-Ins\"; Excludes: "analyze.ny, fadein.ny, fadeout.ny, undcbias.ny"; Flags: ignoreversion
+Source: "..\win\release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 
 [Icons]
