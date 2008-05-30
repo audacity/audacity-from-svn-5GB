@@ -25,7 +25,7 @@ Contents of this README:
 
 1. Licensing
 
-This program is free software. ; you can redistribute it and/or modify it
+This program is free software; you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
 Free Software Foundation; either version 2 of the License, or (at your
 option) any later version. The program source code is also freely
@@ -85,13 +85,19 @@ this version.
  * If Audacity is built from CVS with wxWidgets 2.6.4 or later, the Escape
     key does not cancel most dialogs. This is due to a wxWidgets bug.
 
-    In builds provided by the Audacity project, wx 2.6.4 has been patched.
+    In builds provided by the Audacity project, wx 2.8.7 has been patched.
     This means that all dialogs can be cancelled by Escape when first
     opened, but in Preferences and Effect dialogs, keyboard users must
     now tab twice to reach the first field of the dialog. Additionally, for
     Preferences, GVerb, Hard Limiter, SC4 and user-added LADSPA/VST
     effects, once the user interacts with the dialog, it cannot then be
     cancelled by Escape without first tabbing to the OK or Cancel buttons.
+
+ * Preview dialogs in effects do not have focus, so cannot be escaped
+    without a mouse. If the main effect window has focus when previewing,
+    using Escape key will mean Audacity can no longer be controlled by
+    mouse clicks. In this case, use the Exit or Quit keyboard shortcut
+    to exit Audacity.
 
  * Keyboard shortcuts don't work when the focus is in any of the Selection
     Bar spinboxes or the project rate list.
@@ -322,7 +328,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 5. Compilation instructions
 
-First you must download wxWidgets 2.6.x from:
+First you must download wxWidgets. Audacity 1.3.6 and later requires
+wxWidgets 2.8.7 from:
 
   http://www.wxWidgets.org/
 
