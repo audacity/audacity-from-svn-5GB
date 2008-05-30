@@ -30,7 +30,7 @@ default:	sdkstatic
 
 # Compile flags
 #
-CXXFLAGS	:= $(CXXFLAGS) -O2 -Wall -I.
+CXXFLAGS	:= $(CXXFLAGS) -O2 -I.
 
 # Libraries required for the plugins.
 # (Note that it is desirable to statically link libstdc++ if possible,
