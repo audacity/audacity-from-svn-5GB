@@ -29,6 +29,7 @@ Provides:
 #include "../ShuttleGui.h"
 #include "SmartRecordPrefs.h"
 #include "../AColor.h"
+#include "../Envelope.h"
 
 /*enum eThemePrefsIds {
    idLoadThemeCache=7000,
