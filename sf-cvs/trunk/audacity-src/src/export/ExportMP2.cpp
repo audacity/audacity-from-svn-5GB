@@ -266,8 +266,8 @@ bool ExportMP2::Export(AudacityProject *project,
                             stereo? 2: 1, pcmBufferSize, true,
                             rate, int16Sample, true, mixerSpec);
 
-   GetActiveProject()->ProgressShow(wxFileName(fName).GetName(),
-       selectionOnly ?
+   ProgressDialog *progress = new ProgressDialog(wxFileName(fName).GetName(),
+      selectionOnly ?
       wxString::Format(_("Exporting selected audio at %d kbps"), bitrate) :
       wxString::Format(_("Exporting entire file at %d kbps"), bitrate));
 
@@ -289,12 +289,10 @@ bool ExportMP2::Export(AudacityProject *project,
 
       outFile.Write(mp2Buffer, mp2BufferNumBytes);
 
-      int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
-                                          (t1-t0)));
-      cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
+      cancelling = !progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
 
-   GetActiveProject()->ProgressHide();
+   delete progress;
 
    delete mixer;
 

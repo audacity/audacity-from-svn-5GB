@@ -126,7 +126,7 @@ class AUDACITY_DLL_API TrackArtist {
    int mInsetBottom;
 
    float mdBrange;
-   bool mShowClipping;
+   long mShowClipping;
 
    wxBrush blankBrush;
    wxBrush unselectedBrush;

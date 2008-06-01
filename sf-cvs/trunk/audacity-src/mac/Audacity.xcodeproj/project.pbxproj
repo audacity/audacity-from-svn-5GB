@@ -808,6 +808,8 @@
 		28501F4C0CEED9560029ABAA /* PluginAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F480CEED9560029ABAA /* PluginAdapter.h */; };
 		28501F4D0CEED9560029ABAA /* RealTime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F490CEED9560029ABAA /* RealTime.cpp */; };
 		28501F4E0CEED9560029ABAA /* RealTime.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F4A0CEED9560029ABAA /* RealTime.h */; };
+		28530C4C0DF2105200555C94 /* HtmlWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28530C480DF2105200555C94 /* HtmlWindow.cpp */; };
+		28530C4D0DF2105200555C94 /* ProgressDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28530C4A0DF2105200555C94 /* ProgressDialog.cpp */; };
 		28560C910A75E40F00A3429E /* AutoRecovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */; };
 		285D8BA10AAEFDFD00E0B5BE /* SmartRecordDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D8B9F0AAEFDFD00E0B5BE /* SmartRecordDialog.cpp */; };
 		285DE1FA0BF03C7800A20DF0 /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285DE1F80BF03C7800A20DF0 /* Screenshot.cpp */; };
@@ -1020,13 +1022,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 28501EAF0CEED1F00029ABAA;
 			remoteInfo = libvamp;
-		};
-		288054760DEAB00600671EA4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1790ABE309883346008A330A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2880527D0DEA694100671EA4;
-			remoteInfo = "mod-script-pipe";
 		};
 		28E67F630A3A16AA0021D89F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1984,6 +1979,10 @@
 		28501F480CEED9560029ABAA /* PluginAdapter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginAdapter.h; path = "libvamp/vamp-sdk/PluginAdapter.h"; sourceTree = "<group>"; };
 		28501F490CEED9560029ABAA /* RealTime.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = RealTime.cpp; path = "libvamp/vamp-sdk/RealTime.cpp"; sourceTree = "<group>"; };
 		28501F4A0CEED9560029ABAA /* RealTime.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = RealTime.h; path = "libvamp/vamp-sdk/RealTime.h"; sourceTree = "<group>"; };
+		28530C480DF2105200555C94 /* HtmlWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = HtmlWindow.cpp; sourceTree = "<group>"; };
+		28530C490DF2105200555C94 /* HtmlWindow.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = HtmlWindow.h; sourceTree = "<group>"; };
+		28530C4A0DF2105200555C94 /* ProgressDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ProgressDialog.cpp; sourceTree = "<group>"; };
+		28530C4B0DF2105200555C94 /* ProgressDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ProgressDialog.h; sourceTree = "<group>"; };
 		28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = AutoRecovery.cpp; sourceTree = "<group>"; };
 		28560C900A75E40F00A3429E /* AutoRecovery.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AutoRecovery.h; sourceTree = "<group>"; };
 		285D8B9F0AAEFDFD00E0B5BE /* SmartRecordDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SmartRecordDialog.cpp; sourceTree = "<group>"; };
@@ -3221,6 +3220,8 @@
 				2897F6FD0AB3DCD0003C20C5 /* Grabber.h */,
 				280828580A75E0EA000002EF /* Grid.cpp */,
 				280828590A75E0EA000002EF /* Grid.h */,
+				28530C480DF2105200555C94 /* HtmlWindow.cpp */,
+				28530C490DF2105200555C94 /* HtmlWindow.h */,
 				28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */,
 				28F1D81C0A2D0019005506A7 /* ImageRoll.h */,
 				2816372C0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp */,
@@ -3229,6 +3230,8 @@
 				1790B10409883BFD008A330A /* Meter.h */,
 				1790B10509883BFD008A330A /* MultiDialog.cpp */,
 				1790B10609883BFD008A330A /* MultiDialog.h */,
+				28530C4A0DF2105200555C94 /* ProgressDialog.cpp */,
+				28530C4B0DF2105200555C94 /* ProgressDialog.h */,
 				1790B10709883BFD008A330A /* Ruler.cpp */,
 				1790B10809883BFD008A330A /* Ruler.h */,
 				1790B10909883BFD008A330A /* TimeTextCtrl.cpp */,
@@ -4617,7 +4620,6 @@
 				17C99D43098970800041B1BC /* PBXTargetDependency */,
 				17C99D45098970800041B1BC /* PBXTargetDependency */,
 				2840CF800AEB822100F49FC3 /* PBXTargetDependency */,
-				288054770DEAB00600671EA4 /* PBXTargetDependency */,
 			);
 			name = Audacity;
 			productName = Audacity;
@@ -5479,6 +5481,8 @@
 				28501EAB0CEED0680029ABAA /* VampEffect.cpp in Sources */,
 				28B6ED8F0DE3D1B50046F0F3 /* LoadModules.cpp in Sources */,
 				288052C20DEA73F500671EA4 /* NonGuiThread.cpp in Sources */,
+				28530C4C0DF2105200555C94 /* HtmlWindow.cpp in Sources */,
+				28530C4D0DF2105200555C94 /* ProgressDialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5642,11 +5646,6 @@
 			isa = PBXTargetDependency;
 			target = 28501EAF0CEED1F00029ABAA /* libvamp */;
 			targetProxy = 28501F520CEED9A80029ABAA /* PBXContainerItemProxy */;
-		};
-		288054770DEAB00600671EA4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2880527D0DEA694100671EA4 /* mod-script-pipe */;
-			targetProxy = 288054760DEAB00600671EA4 /* PBXContainerItemProxy */;
 		};
 		28E67F640A3A16AA0021D89F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

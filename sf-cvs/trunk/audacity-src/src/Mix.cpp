@@ -118,9 +118,8 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
                             rate, format);
 
    wxYield();
-   GetActiveProject()->ProgressShow(_NoAcc("&Mix and Render"),
-                                    _("Mixing and rendering tracks"));
-   wxBusyCursor busy;
+   ProgressDialog *progress = new ProgressDialog(_NoAcc("&Mix and Render"),
+                                                 _("Mixing and rendering tracks"));
    
    bool bCancel = false;
    while(!bCancel) {
@@ -141,11 +140,10 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
          mixRight->Append(buffer, format, blockLen);
       }
 
-      int progressvalue = int (1000 * (mixer->MixGetCurrentTime() / totalTime));
-      bCancel = !GetActiveProject()->ProgressUpdate(progressvalue);
+      bCancel = !progress->Update(mixer->MixGetCurrentTime(), totalTime);
    }
 
-   GetActiveProject()->ProgressHide();
+   delete progress;
 
    mixLeft->Flush();
    if (!mono) 

@@ -788,7 +788,7 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
                wxDefaultPosition, wxSize( 150, -1 ), choices );
          
          int val = ( int )ctrl->val;
-         if( val >= 0 && val < choice->GetCount() )
+         if( val >= 0 && val < (int)choice->GetCount() )
             choice->SetSelection( val );
         
          grid->Add( 10, 10 );

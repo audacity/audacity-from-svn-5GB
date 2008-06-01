@@ -69,5 +69,6 @@
 #include "widgets/Ruler.h"
 #include "xml/XMLTagHandler.h"
 #include "widgets/ASlider.h"
+#include "widgets/ProgressDialog.h"
 #include "widgets/Ruler.h"
 

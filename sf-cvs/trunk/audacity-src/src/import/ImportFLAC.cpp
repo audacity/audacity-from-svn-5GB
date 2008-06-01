@@ -5,6 +5,8 @@
   ImportFLAC.cpp
 
   Copyright 2004  Sami Liedes
+  Leland Lucius
+
   Based on ImportPCM.cpp by Dominic Mazzoni
   Licensed under the GNU General Public License v2 or later
 
@@ -129,29 +131,25 @@ class FLACImportFileHandle : public ImportFileHandle
 {
    friend class MyFLACFile;
 public:
-   FLACImportFileHandle(wxString name);
+   FLACImportFileHandle(const wxString & name);
    ~FLACImportFileHandle();
 
    bool Init();
 
-   void SetProgressCallback(progress_callback_t function,
-                            void *userData);
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
-   bool Import(TrackFactory *trackFactory, Track ***outTracks,
-               int *outNumTracks, Tags *tags);
+   int Import(TrackFactory *trackFactory, Track ***outTracks,
+              int *outNumTracks, Tags *tags);
 private:
-   wxString              mName;
    sampleFormat          mFormat;
    MyFLACFile           *mFile;
-   void                 *mUserData;
-   progress_callback_t   mProgressCallback;
    unsigned long         mSampleRate;
    unsigned long         mNumChannels;
    unsigned long         mBitsPerSample;
    FLAC__uint64          mNumSamples;
    FLAC__uint64          mSamplesDone;
    bool                  mStreamInfoDone;
+   bool                  mCancelled;
    WaveTrack           **mChannels;
 };
 
@@ -244,11 +242,10 @@ FLAC__StreamDecoderWriteStatus MyFLACFile::write_callback(const FLAC__Frame *fra
 
    mFile->mSamplesDone += frame->header.blocksize;
 
-   if (mFile->mProgressCallback &&
-       mFile->mProgressCallback(mFile->mUserData,
-                                float(mFile->mSamplesDone)/
-                                mFile->mNumSamples))
+   if (!mFile->mProgress->Update(mFile->mSamplesDone, mFile->mNumSamples)) {
+      mFile->mCancelled = true;
       return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
+   }
 
    return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
 }
@@ -300,12 +297,11 @@ ImportFileHandle *FLACImportPlugin::Open(wxString filename)
 }
 
 
-FLACImportFileHandle::FLACImportFileHandle(wxString name):
-   mName(name),
-   mUserData(NULL),
-   mProgressCallback(NULL),
+FLACImportFileHandle::FLACImportFileHandle(const wxString & name)
+:  ImportFileHandle(name),
    mSamplesDone(0),
-   mStreamInfoDone(false)
+   mStreamInfoDone(false),
+   mCancelled(false)
 {
    mFormat = (sampleFormat)
       gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
@@ -315,7 +311,7 @@ FLACImportFileHandle::FLACImportFileHandle(wxString name):
 bool FLACImportFileHandle::Init()
 {
 #ifdef LEGACY_FLAC
-   bool success = mFile->set_filename(OSFILENAME(mName));
+   bool success = mFile->set_filename(OSFILENAME(mFilename));
    if (!success) {
       return false;
    }
@@ -326,7 +322,7 @@ bool FLACImportFileHandle::Init()
       return false;
    }
 #else
-   if (mFile->init(OSFILENAME(mName)) != FLAC__STREAM_DECODER_INIT_STATUS_OK) {
+   if (mFile->init(OSFILENAME(mFilename)) != FLAC__STREAM_DECODER_INIT_STATUS_OK) {
       return false;
    }
 #endif
@@ -351,14 +347,6 @@ bool FLACImportFileHandle::Init()
    return true;
 }
 
-void FLACImportFileHandle::SetProgressCallback(progress_callback_t progressCallback,
-                                      void *userData)
-{
-   mProgressCallback = progressCallback;
-   mUserData = userData;
-}
-
-
 wxString FLACImportFileHandle::GetFileDescription()
 {
    return DESC;
@@ -372,13 +360,15 @@ int FLACImportFileHandle::GetFileUncompressedBytes()
 }
 
 
-bool FLACImportFileHandle::Import(TrackFactory *trackFactory,
+int FLACImportFileHandle::Import(TrackFactory *trackFactory,
 				  Track ***outTracks,
 				  int *outNumTracks,
               Tags *tags)
 {
    wxASSERT(mStreamInfoDone);
-   
+
+   CreateProgress();
+
    mChannels = new WaveTrack *[mNumChannels];
 
    unsigned long c;
@@ -414,7 +404,7 @@ bool FLACImportFileHandle::Import(TrackFactory *trackFactory,
       }
       delete[] mChannels;
 
-      return false;
+      return (mCancelled ? eImportCancelled : eImportFailed);
    }
    
    *outNumTracks = mNumChannels;
@@ -432,7 +422,7 @@ bool FLACImportFileHandle::Import(TrackFactory *trackFactory,
                    mFile->mComments[c].AfterFirst(wxT('=')));
    }
 
-   return true;
+   return eImportSuccess;
 }
 
 

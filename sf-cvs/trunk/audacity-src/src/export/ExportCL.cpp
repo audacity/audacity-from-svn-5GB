@@ -319,7 +319,7 @@ bool ExportCL::Export(AudacityProject *project,
    bool cancelling = false;
 
    // Prepare the progress display
-   GetActiveProject()->ProgressShow(_("Export"),
+   ProgressDialog *progress = new ProgressDialog(_("Export"),
       selectionOnly ?
       _("Exporting the selected audio using command-line encoder") :
       _("Exporting the entire project using command-line encoder"));
@@ -365,13 +365,11 @@ bool ExportCL::Export(AudacityProject *project,
       }
 
       // Update the progress display
-      int progressvalue = lrint(1000 * ((mixer->MixGetCurrentTime()-t0) /
-                                       (t1-t0)));
-      cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
+      cancelling = !progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
 
    // Done with the progress display
-   GetActiveProject()->ProgressHide();
+   delete progress;
 
    // Should make the process die
    p->CloseOutput();

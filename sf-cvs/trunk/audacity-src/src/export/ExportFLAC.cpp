@@ -305,7 +305,7 @@ bool ExportFLAC::Export(AudacityProject *project,
    	tmpsmplbuf[i] = (FLAC__int32 *) calloc(SAMPLES_PER_RUN, sizeof(FLAC__int32));
    }
 
-   GetActiveProject()->ProgressShow(wxFileName(fName).GetName(),
+   ProgressDialog *progress = new ProgressDialog(wxFileName(fName).GetName(),
          selectionOnly ?
          _("Exporting the selected audio as FLAC") :
          _("Exporting the entire project as FLAC"));
@@ -331,13 +331,11 @@ bool ExportFLAC::Export(AudacityProject *project,
          }
          encoder.process(tmpsmplbuf, samplesThisRun);
       }
-      int progressvalue = int(1000 * ((mixer->MixGetCurrentTime()-t0) /
-                                      (t1-t0)));
-      cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
+      cancelling = !progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
    encoder.finish();
 
-   GetActiveProject()->ProgressHide();
+   delete progress;
 
    for (i = 0; i < numChannels; i++) {
    	free(tmpsmplbuf[i]);

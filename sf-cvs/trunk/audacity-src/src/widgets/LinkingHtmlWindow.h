@@ -8,7 +8,7 @@
   Dominic Mazzoni
 
   utility fn and 
-  descendant of wxHtmlWindow that opens links in the user's 
+  descendant of HtmlWindow that opens links in the user's 
   default browser
   
 **********************************************************************/
@@ -20,9 +20,11 @@
 #include <wx/html/htmlwin.h>
 #include <wx/frame.h>
 
+#include "HtmlWindow.h"
+
 void OpenInDefaultBrowser(const wxHtmlLinkInfo& link);
 
-class LinkingHtmlWindow : public wxHtmlWindow 
+class LinkingHtmlWindow : public HtmlWindow 
 {
  public:
    LinkingHtmlWindow(wxWindow *parent, wxWindowID id = -1, 
@@ -41,16 +43,14 @@ public:
    void OnForward(wxCommandEvent & event);
    void OnBackward(wxCommandEvent & event);
    void OnClose(wxCommandEvent & event);
-   void OnChar(wxKeyEvent & event);
+   void OnKeyDown(wxKeyEvent & event);
 
    void UpdateButtons();
    //virtual void SetLabel(const wxString& label);
 
 
-   wxHtmlWindow * mpHtml;
+   HtmlWindow * mpHtml;
    DECLARE_EVENT_TABLE()
 };
-
-
 
 #endif // __AUDACITY_LINKINGHTMLWINDOW__

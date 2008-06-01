@@ -48,7 +48,6 @@ class wxDialog;
 class wxBoxSizer;
 class wxScrollEvent;
 class wxScrollBar;
-class wxProgressDialog;
 class wxPanel;
 
 class ToolManager;
@@ -298,13 +297,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    virtual void OnAudioIOStopRecording();
    virtual void OnAudioIONewBlockFiles(const wxString& blockFileLog);
 
-   // Progress dialog methods
-   void SetEnabledWindow( wxWindow * pWindow);
-   void ProgressShow(const wxString &title, const wxString &message = wxT(""));
-   void ProgressHide(wxWindow* pWindow = NULL);
-   bool ProgressUpdate(int value, const wxString &message = wxT(""));
-   bool ProgressIsShown();
-
    // Command Handling
    bool TryToMakeActionAllowed( wxUint32 & flags, wxUint32 flagsRqd, wxUint32 mask );
 
@@ -328,11 +320,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void DeleteCurrentAutoSaveFile();
    
    static bool GetCacheBlockFiles();
-
-   // Callbacks for backend operations
-
-   bool mUserCanceledProgress;
-   static bool ImportProgressCallback(void *self, float percent);
 
    // The project's name and file info
 
@@ -389,14 +376,8 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    wxScrollBar *mVsbar;
    bool mAutoScrolling;
    bool mActive;
-   bool mImportingRaw;
    bool mIconized;
    HistoryWindow *mHistoryWindow;
-
-   wxProgressDialog *mProgressDialog[3];
-   int mProgressCurrent;
-   wxString mProgressTitle;
-   wxString mProgressMessage;
 
  public:
    ToolManager *mToolManager;

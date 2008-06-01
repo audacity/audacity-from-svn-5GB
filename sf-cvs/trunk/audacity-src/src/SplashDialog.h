@@ -19,7 +19,7 @@ class wxBitmap;
 class ShuttleGui;
 class AudacityProject;
 class wxCheckbox;
-class wxHtmlWindow;
+class HtmlWindow;
 
 class SplashDialog:public wxDialog {
    DECLARE_DYNAMIC_CLASS(SplashDialog)
@@ -36,7 +36,7 @@ private:
    void Populate( ShuttleGui & S );
    void OnDontShow( wxCommandEvent & Evt );
 
-   wxHtmlWindow * mpHtml;
+   HtmlWindow * mpHtml;
    wxStaticBitmap* m_pIcon;
    wxBitmap* m_pLogo; //vvv
    static SplashDialog * pSelf;

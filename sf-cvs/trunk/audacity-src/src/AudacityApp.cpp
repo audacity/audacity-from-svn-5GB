@@ -15,6 +15,11 @@ It handles initialization and termination by subclassing wxApp.
 
 *//*******************************************************************/
 
+#if 0
+// This may be used to debug memory leaks.
+// See: Visual Leak Dectector @ http://dmoulding.googlepages.com/vld
+#include <vld.h>
+#endif
 
 #include "Audacity.h" // This should always be included first
 

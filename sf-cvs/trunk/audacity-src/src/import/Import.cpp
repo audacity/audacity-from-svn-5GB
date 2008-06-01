@@ -102,9 +102,7 @@ int Importer::Import(wxString fName,
                      TrackFactory *trackFactory,
                      Track *** tracks,
                      Tags *tags,
-                     wxString &errorMessage,
-                     progress_callback_t progressCallback,
-                     void *userData)
+                     wxString &errorMessage)
 {
    int numTracks = 0;
 
@@ -116,17 +114,18 @@ int Importer::Import(wxString fName,
    while(importPluginNode)
    {
       ImportPlugin *plugin = importPluginNode->GetData();
-      if( plugin->SupportsExtension(extension) )
+      if (plugin->SupportsExtension(extension))
       {
          mInFile = plugin->Open(fName);
-         if( mInFile != NULL )
+         if (mInFile != NULL)
          {
-            mInFile->SetProgressCallback(progressCallback, userData);
-            int res = (mInFile->Import(trackFactory, tracks, &numTracks, tags) == true );
+            int res;
+            
+            res = mInFile->Import(trackFactory, tracks, &numTracks, tags);
 
             delete mInFile;
 
-            if( res )
+            if (res == eImportSuccess)
             {
                // LOF ("list-of-files") has different semantics
                if (extension.IsSameAs(wxT("lof"), false))
@@ -137,6 +136,16 @@ int Importer::Import(wxString fName,
                   return numTracks;
                }
             }
+
+            if (res == eImportCancelled)
+            {
+               return 0;
+            }
+
+            // We could exit here since we had a match on the file extension,
+            // but there may be another plug-in that can import the file and
+            // that may recognize the extension, so we allow the loop to
+            // continue.
          }
       }
       importPluginNode = importPluginNode->GetNext();
@@ -231,7 +240,6 @@ int Importer::Import(wxString fName,
       return 0;
    }
 
-
    // no importPlugin that recognized the extension succeeded.  However, the
    // file might be misnamed.  So this time we try all the importPlugins
    //in order and see if any of them can handle the file
@@ -248,26 +256,33 @@ int Importer::Import(wxString fName,
       }
 
       mInFile = plugin->Open(fName);
-      if( mInFile != NULL )
+      if (mInFile != NULL)
       {
-         mInFile->SetProgressCallback(progressCallback, userData);
+         int res;
+
          numTracks = 0;
-         if(mInFile->Import(trackFactory, tracks, &numTracks, tags))
+         res = mInFile->Import(trackFactory, tracks, &numTracks, tags);
+         delete mInFile;
+
+         if (res == eImportSuccess)
          {
-            if (numTracks > 0) {
+            if (numTracks > 0)
+            {
                // success!
-               delete mInFile;
-               errorMessage = _( "Audacity had to make a guess at the type of file.\nThe Audio may be bogus.\n\nIf the audio is bogus, try renaming the file\nso that it has the correct extension before opening it.");
+               errorMessage.Printf(_( "Audacity had to guess at the type of file.\n\nIt was identified as: \"%s\".\n\nIf the audio does not sound right, try renaming the file\nso that it has the correct extension before opening it."),
+                                   plugin->GetPluginFormatDescription());
                return numTracks;
             }
          }
-         delete mInFile;
 
-         // This will happen if the user cancelled, or if we
-         // tried and got an error partially through.  Either way,
-         // no need to try any other formats at this point!
-         if (numTracks > 0)
+         if (res == eImportCancelled)
+         {
             return 0;
+         }
+
+         // The import failed so we allow the loop to continue since
+         // there may be another plugin that can successfully load
+         // the file.
       }
       importPluginNode = importPluginNode->GetNext();
    }

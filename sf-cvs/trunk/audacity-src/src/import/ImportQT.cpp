@@ -91,8 +91,8 @@ struct CallbackData
 class QTImportPlugin : public ImportPlugin
 {
 public:
-   QTImportPlugin():
-      ImportPlugin(wxArrayString(WXSIZEOF(exts), exts))
+   QTImportPlugin()
+   :  ImportPlugin(wxArrayString(WXSIZEOF(exts), exts))
    {
    }
 
@@ -105,11 +105,10 @@ public:
 class QTImportFileHandle : public ImportFileHandle
 {
 public:
-   QTImportFileHandle(Movie movie, Media media):
+   QTImportFileHandle(const wxString & name, Movie movie, Media media)
+   :  ImportFileHandle(name),
       mMovie(movie),
-      mMedia(media),
-      mProgressCallback(NULL),
-      mUserData(NULL)
+      mMedia(media)
    {
    }
    ~QTImportFileHandle() { }
@@ -117,18 +116,13 @@ public:
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
 
-   void SetProgressCallback(progress_callback_t function,
-                            void *userData);
-
-   bool Import(TrackFactory *trackFactory, Track ***outTracks,
-               int *outNumTracks, Tags *tags);
+   int Import(TrackFactory *trackFactory, Track ***outTracks,
+              int *outNumTracks, Tags *tags);
 private:
    void AddMetadata(Tags *tags);
 
    Movie mMovie;
    Media mMedia;
-   progress_callback_t mProgressCallback;
-   void *mUserData;
 };
 
 
@@ -200,7 +194,7 @@ ImportFileHandle *QTImportPlugin::Open(wxString Filename)
    if(theMedia == NULL)
       return NULL;
 
-   return new QTImportFileHandle(theMovie, theMedia);
+   return new QTImportFileHandle(Filename, theMovie, theMedia);
 }
 
 
@@ -214,17 +208,12 @@ int QTImportFileHandle::GetFileUncompressedBytes()
    return 0;
 }
 
-void QTImportFileHandle::SetProgressCallback(progress_callback_t function,
-                            void *userData)
-{
-   mProgressCallback = function;
-   mUserData = userData;
-}
-
-bool QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
-                                  int *outNumTracks, Tags *tags)
+int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
+                               int *outNumTracks, Tags *tags)
 {
    OSErr err = noErr;
+
+   CreateProgress();
 
    //
    // Determine the file format.
@@ -438,10 +427,8 @@ bool QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       samplesSinceLastCallback += outputFrames;
       if( samplesSinceLastCallback > SAMPLES_PER_CALLBACK )
       {
-         if( mProgressCallback )
-            cancelled = mProgressCallback(mUserData,
-                                          (float)cbData.getMediaAtThisTime /
-                                          cbData.sourceDuration);
+         cancelled = mProgress->Update((int)cbData.getMediaAtThisTime,
+                                       (int)cbData.sourceDuration);
          samplesSinceLastCallback -= SAMPLES_PER_CALLBACK;
       }
    }
@@ -482,7 +469,7 @@ bool QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
          delete channels[c];
       delete[] channels;
 
-      return false;
+      return (cancelled ? eImportCancelled : eImportFailed);
    }
 
    *outNumTracks = outputFormat.numChannels;

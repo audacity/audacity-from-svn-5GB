@@ -277,7 +277,7 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
    delete logo;
    S.Prop(0).AddWindow( icon );
 
-   wxHtmlWindow *html = new LinkingHtmlWindow(S.GetParent(), -1,
+   HtmlWindow *html = new LinkingHtmlWindow(S.GetParent(), -1,
                                          wxDefaultPosition,
                                          wxSize(LOGOWITHNAME_WIDTH, 359), // wxSize(480, 240),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
@@ -299,7 +299,7 @@ void AboutDialog::PopulateInformationPage( ShuttleGui & S )
    wxString informationStr;   // string to build up list of information in
    S.StartNotebookPage( _("Build Information") );  // start the tab
    S.StartVerticalLay(2);  // create the window
-   wxHtmlWindow *html = new wxHtmlWindow(S.GetParent(), -1, wxDefaultPosition,
+   HtmlWindow *html = new HtmlWindow(S.GetParent(), -1, wxDefaultPosition,
                            wxSize(LOGOWITHNAME_WIDTH, 264), 
                            wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
    // create a html pane in it to put the content in.
@@ -501,7 +501,7 @@ void AboutDialog::PopulateLicensePage( ShuttleGui & S )
 {
    S.StartNotebookPage( _("GPL License") );
    S.StartVerticalLay(1);
-   wxHtmlWindow *html = new wxHtmlWindow(S.GetParent(), -1,
+   HtmlWindow *html = new HtmlWindow(S.GetParent(), -1,
                                          wxDefaultPosition,
                                          wxSize(LOGOWITHNAME_WIDTH, 264), // wxSize(480, 240),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);

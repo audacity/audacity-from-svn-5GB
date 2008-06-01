@@ -5,7 +5,7 @@
   ImportPlugin.h
 
   Joshua Haberman
-
+  Leland Lucius
 
 *******************************************************************//**
 
@@ -52,24 +52,28 @@ but little else.
 
 *//*******************************************************************/
 
-
-
-
-
 #ifndef __AUDACITY_IMPORTER__
 #define __AUDACITY_IMPORTER__
 
 #include <wx/arrstr.h>
+#include <wx/filename.h>
 #include <wx/string.h>
 #include <wx/list.h>
+
+#include "../widgets/ProgressDialog.h"
 
 class TrackFactory;
 class Track;
 class Tags;
 
-typedef bool (*progress_callback_t)( void *userData, float percent );
-
 class ImportFileHandle;
+
+enum
+{
+   eImportSuccess,
+   eImportCancelled,
+   eImportFailed
+};
 
 class ImportPlugin
 {
@@ -114,8 +118,30 @@ protected:
 class ImportFileHandle
 {
 public:
-   virtual void SetProgressCallback(progress_callback_t function,
-                                    void *userData) = 0;
+   ImportFileHandle(const wxString & filename)
+   :  mFilename(filename)
+   {
+   }
+
+   ~ImportFileHandle()
+   {
+      if (mProgress != NULL)
+      {
+         delete mProgress;
+      }
+   }
+
+   // The importer should call this to create the progress dialog and
+   // identify the filename being imported.
+   void CreateProgress()
+   {
+      wxFileName f(mFilename);
+      wxString title;
+
+      title.Printf(_("Importing %s"), GetFileDescription().c_str());
+      mProgress = new ProgressDialog(title,
+                                     f.GetFullName());
+   }
 
    // This is similar to GetImporterDescription, but if possible the
    // importer will return a more specific description of the
@@ -129,10 +155,12 @@ public:
    // do the actual import, creating whatever tracks are necessary with
    // the TrackFactory and calling the progress callback every iteration
    // through the importing loop
-   virtual bool Import(TrackFactory *trackFactory, Track ***outTracks,
-                       int *outNumTracks, Tags *tags) = 0;
+   virtual int Import(TrackFactory *trackFactory, Track ***outTracks,
+                      int *outNumTracks, Tags *tags) = 0;
 
-   virtual ~ImportFileHandle() { }
+protected:
+   wxString mFilename;
+   ProgressDialog *mProgress;
 };
 
 

@@ -164,9 +164,9 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
                                   wxString dirspec,
                                   int files_p,int dirs_p,
                                   int progress_count,int progress_bias,
-                                  const wxChar *prompt){
-
-   AudacityProject *p = GetActiveProject();
+                                  const wxChar *prompt,
+                                  ProgressDialog * progress)
+{
    int count=0;
    bool cont;
 
@@ -184,9 +184,9 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
             
             cont = dir.GetNext(&name);
             
-            if (prompt && p)
-               p->ProgressUpdate(int ((count+progress_bias * 1000.0) / 
-                                 progress_count));
+            if (progress)
+               progress->Update(count + progress_bias,
+                                progress_count);
          }
       }
 
@@ -195,7 +195,7 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
          wxString subdirpath=dirpath + wxFILE_SEP_PATH + name;
          count+=rm_dash_rf_enumerate_i(subdirpath,flist,wxEmptyString,
                                      files_p,dirs_p,progress_count,
-                                     count+progress_bias,prompt);  
+                                     count+progress_bias,prompt,progress);  
          cont = dir.GetNext(&name);
       }
    }
@@ -214,18 +214,20 @@ static int rm_dash_rf_enumerate_prompt(wxString dirpath,
                                        wxString dirspec,
                                        int files_p,int dirs_p,
                                        int progress_count,
-                                       const wxChar *prompt){
-   AudacityProject *p = GetActiveProject();
+                                       const wxChar *prompt)
+{
+   ProgressDialog *progress = NULL;
 
-   if (p)
-      p->ProgressShow(_("Progress"), prompt);
+   if (prompt)
+      progress = new ProgressDialog(_("Progress"), prompt);
 
    int count=rm_dash_rf_enumerate_i(dirpath, flist, dirspec, files_p,dirs_p,
                                     progress_count,0,
-                                    prompt);
+                                    prompt,
+                                    progress);
 
-   if (p)
-      p->ProgressHide();
+   if (progress)
+      delete progress;
 
    return count;
 }
@@ -236,20 +238,20 @@ static int rm_dash_rf_enumerate(wxString dirpath,
                                 int files_p,int dirs_p){
 
    return rm_dash_rf_enumerate_i(dirpath, flist, dirspec, files_p,dirs_p,
-                                    0,0,NULL);
+                                    0,0,NULL,NULL);
 
 }
 
 
 static void rm_dash_rf_execute(wxArrayString &fList, 
                                int count, int files_p, int dirs_p,
-                               const wxChar *prompt){
+                               const wxChar *prompt)
+{
+   ProgressDialog *progress = NULL;
 
-   AudacityProject *p = GetActiveProject();
+   if (prompt)
+      progress = new ProgressDialog(_("Progress"), prompt);
 
-   if (prompt && p)
-      p->ProgressShow(_("Progress"), prompt);
-  
    for (int i = 0; i < count; i++) {
       const wxChar *file = fList[i].c_str();
       if(files_p){
@@ -259,12 +261,12 @@ static void rm_dash_rf_execute(wxArrayString &fList,
          wxRmdir(file);
       }
 
-      if (prompt && p)
-         p->ProgressUpdate(int ((i * 1000.0) / count));
+      if (progress)
+         progress->Update(i, count);
    }
    
-   if (prompt && p)
-      p->ProgressHide();
+   if (progress)
+      delete progress;
 }
 
 // static
@@ -327,10 +329,8 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       saved version of the old project must not be moved,
       otherwise the old project would not be safe. */
 
-   AudacityProject *p = GetActiveProject();
-   if (p)
-      p->ProgressShow(_("Progress"),
-                      _("Saving project data files"));
+   ProgressDialog *progress = new ProgressDialog(_("Progress"),
+                                                 _("Saving project data files"));
 
    int total=blockFileHash.size();
    int count=0;
@@ -346,8 +346,7 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
          success = MoveToNewProjectDirectory(b);
       }
 
-      if (p)
-         p->ProgressUpdate(int ((count * 1000.0) / total));
+      progress->Update(count, total);
 
       i++;
       count++;
@@ -367,8 +366,8 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
          BlockFile *b = i->second;
          MoveToNewProjectDirectory(b);
 
-         if (count>=0 && p)
-            p->ProgressUpdate(int ((count * 1000.0) / total));
+         if (count>=0)
+            progress->Update(count, total);
 
          i++;
          count--;
@@ -378,14 +377,12 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       this->projPath = oldPath;
       this->projName = oldName;
 
-      if (p)
-         p->ProgressHide();
+      delete progress;
 
       return false;
    }
 
-   if (p)
-      p->ProgressHide();
+   delete progress;
 
    // Some subtlety; SetProject is used both to move a temp project
    // into a permanent home as well as just set up path variables when
@@ -1442,11 +1439,9 @@ void DirManager::FillBlockfilesCache()
    
    if (numNeed == 0)
       return;
-      
-   AudacityProject *p = GetActiveProject();
-   
-   p->ProgressShow(_("Caching audio"),
-      _("Caching audio into memory..."));
+
+   ProgressDialog progress(_("Caching audio"),
+                           _("Caching audio into memory..."));
 
    i = blockFileHash.begin();
    int current = 0;
@@ -1455,13 +1450,11 @@ void DirManager::FillBlockfilesCache()
       BlockFile *b = i->second;
       if (b->GetNeedFillCache())
          b->FillCache();
-      if (!p->ProgressUpdate((int)((current * 1000.0) / numNeed)))
+      if (!progress.Update(current, numNeed))
          break; // user cancelled progress dialog, stop caching
       i++;
       current++;
    }
-   
-   p->ProgressHide();
 }
 
 void DirManager::WriteCacheToDisk()
@@ -1480,11 +1473,9 @@ void DirManager::WriteCacheToDisk()
    
    if (numNeed == 0)
       return;
-      
-   AudacityProject *p = GetActiveProject();
-   
-   p->ProgressShow(_("Saving recorded audio"),
-      _("Saving recorded audio to disk..."));
+
+   ProgressDialog progress(_("Saving recorded audio"),
+                           _("Saving recorded audio to disk..."));
 
    i = blockFileHash.begin();
    int current = 0;
@@ -1494,13 +1485,11 @@ void DirManager::WriteCacheToDisk()
       if (b->GetNeedWriteCacheToDisk())
       {
          b->WriteCacheToDisk();
-         p->ProgressUpdate((int)((current * 1000.0) / numNeed));
+         progress.Update(current, numNeed);
       }
       i++;
       current++;
    }
-   
-   p->ProgressHide();
 }
 
 

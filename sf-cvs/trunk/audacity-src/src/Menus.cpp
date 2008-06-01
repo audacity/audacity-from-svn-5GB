@@ -3644,19 +3644,9 @@ void AudacityProject::OnImportRaw()
    
    Track **newTracks;
    int numTracks;
-   
-   mImportingRaw = true;
 
-   ProgressShow(_("Import"));
+   numTracks = ::ImportRaw(this, fileName, mTrackFactory, &newTracks);
 
-   numTracks = ::ImportRaw(this, fileName, mTrackFactory, &newTracks,
-                           AudacityProject::ImportProgressCallback,
-                           this);
-
-   ProgressHide();
-
-   mImportingRaw = false;
-   
    if (numTracks <= 0)
       return;
 
@@ -4525,13 +4515,11 @@ void AudacityProject::OnResample()
       
       msg.Printf(_("Resampling track %d"), ++ndx);
 
-      GetActiveProject()->ProgressShow(_("Resample"),
-                                       msg);
+      ProgressDialog progress(_("Resample"), msg);
 
       if (t->GetSelected() && t->GetKind() == Track::Wave)
-         if (!((WaveTrack*)t)->Resample(newRate, true))
+         if (!((WaveTrack*)t)->Resample(newRate, &progress))
             break;
-      GetActiveProject()->ProgressHide();
    }
    
    PushState(_("Resampled audio track(s)"), _("Resample Track"));

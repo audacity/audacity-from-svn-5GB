@@ -249,10 +249,10 @@ bool ExportOGG::Export(AudacityProject *project,
                             numChannels, SAMPLES_PER_RUN, false,
                             rate, floatSample, true, mixerSpec);
 
-   GetActiveProject()->ProgressShow(wxFileName(fName).GetName(),
-                                    selectionOnly ?
-                                    _("Exporting the selected audio as Ogg Vorbis") :
-                                    _("Exporting the entire project as Ogg Vorbis"));
+   ProgressDialog *progress = new ProgressDialog(wxFileName(fName).GetName(),
+      selectionOnly ?
+      _("Exporting the selected audio as Ogg Vorbis") :
+      _("Exporting the entire project as Ogg Vorbis"));
 
    while (!cancelling && !eos) {
       float **vorbis_buffer = vorbis_analysis_buffer(&dsp, SAMPLES_PER_RUN);
@@ -310,11 +310,10 @@ bool ExportOGG::Export(AudacityProject *project,
          }
       }
 
-      int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
-                                       (t1-t0)));
-      cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
+      cancelling = !progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
-   GetActiveProject()->ProgressHide();
+
+   delete progress;;
 
    delete mixer;
 

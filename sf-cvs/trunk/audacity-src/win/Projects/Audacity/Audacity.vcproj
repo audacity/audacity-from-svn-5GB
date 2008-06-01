@@ -152,6 +152,7 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalDependencies="allegro.lib expat.lib filedialog.lib libsndfile.lib wxbase28ud.lib wxbase28ud_net.lib wxmsw28ud_adv.lib wxmsw28ud_core.lib wxmsw28ud_html.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
+				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;&quot;$(WXWIN)\lib\vc_dll&quot;"
 				IgnoreDefaultLibraryNames="dsound.lib"
 				GenerateDebugInformation="true"
@@ -239,6 +240,7 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalDependencies="allegro.lib expat.lib filedialog.lib libsndfile.lib wxbase28d.lib wxbase28d_net.lib wxmsw28d_adv.lib wxmsw28d_core.lib wxmsw28d_html.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
+				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;&quot;$(WXWIN)\lib\vc_dll&quot;"
 				IgnoreDefaultLibraryNames="dsound.lib"
 				GenerateDebugInformation="true"
@@ -1348,6 +1350,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\import\ImportOGG.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\import\ImportPCM.cpp"
 				>
 			</File>
@@ -1540,6 +1546,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\widgets\HtmlWindow.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\widgets\HtmlWindow.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\widgets\ImageRoll.cpp"
 				>
 			</File>
@@ -1569,6 +1583,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\widgets\MultiDialog.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\widgets\ProgressDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\widgets\ProgressDialog.h"
 				>
 			</File>
 			<File
