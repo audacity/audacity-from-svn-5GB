@@ -37,7 +37,7 @@ mkdir "$DMG/nyquist"
 mkdir "$DMG/plug-ins"
 
 # Copy Audacity and clean it
-cp -pR 'mac/build/Release Static Unicode/Audacity.app' "$DMG"
+cp -pR 'mac/build/Release Static/Audacity.app' "$DMG"
 strip "$DMG/Audacity.app/Contents/MacOS/"*
 
 # Copy Languages

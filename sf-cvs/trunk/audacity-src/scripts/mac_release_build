@@ -25,7 +25,7 @@ done
 # Build it
 #
 cd mac
-xcodebuild -configuration 'Release Static Unicode'
+xcodebuild -configuration 'Release Static'
 cd ..
 make -C locale
 
