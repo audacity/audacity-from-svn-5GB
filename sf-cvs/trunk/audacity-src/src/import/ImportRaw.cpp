@@ -89,8 +89,7 @@ class ImportRawDialog:public wxDialog {
 };
 
 int ImportRaw(wxWindow *parent, wxString fileName,
-              TrackFactory *trackFactory, Track ***outTracks,
-              progress_callback_t progressCallback, void *userData)
+              TrackFactory *trackFactory, Track ***outTracks)
 {
    int encoding = 0; // Guess Format
    int numChannels = 0;
@@ -199,7 +198,13 @@ int ImportRaw(wxWindow *parent, wxString fileName,
    samplePtr buffer = NewSamples(maxBlockSize, format);
    
    longSampleCount framescompleted = 0;
-   
+
+   wxString msg;
+
+   msg.Printf(_("Importing %s"), wxFileName::FileName(fileName).GetFullName());
+
+   ProgressDialog progress(_("Import Raw"), msg);
+
    long block;
    do {
       block = maxBlockSize;
@@ -230,8 +235,8 @@ int ImportRaw(wxWindow *parent, wxString fileName,
          framescompleted += block;
       }
 
-      if( progressCallback )
-         cancelled = progressCallback(userData, framescompleted*1.0 / totalFrames);
+      cancelled = !progress.Update((wxULongLong_t)framescompleted,
+                                   (wxULongLong_t)totalFrames);
       if (cancelled)
          break;
       

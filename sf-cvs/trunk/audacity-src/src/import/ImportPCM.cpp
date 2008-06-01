@@ -5,6 +5,7 @@
   ImportPCM.cpp
 
   Dominic Mazzoni
+  Leland Lucius
 
 *//****************************************************************//**
 
@@ -49,8 +50,8 @@
 class PCMImportPlugin : public ImportPlugin
 {
 public:
-   PCMImportPlugin():
-      ImportPlugin(wxArrayString())
+   PCMImportPlugin()
+   :  ImportPlugin(wxArrayString())
    {
       mExtensions = sf_get_all_extensions();
    }
@@ -68,19 +69,14 @@ public:
    PCMImportFileHandle(wxString name, SNDFILE *file, SF_INFO info);
    ~PCMImportFileHandle();
 
-   void SetProgressCallback(progress_callback_t function,
-                            void *userData);
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
-   bool Import(TrackFactory *trackFactory, Track ***outTracks,
-               int *outNumTracks, Tags *tags);
+   int Import(TrackFactory *trackFactory, Track ***outTracks,
+              int *outNumTracks, Tags *tags);
 private:
-   wxString              mName;
    SNDFILE              *mFile;
    SF_INFO               mInfo;
    sampleFormat          mFormat;
-   void                 *mUserData;
-   progress_callback_t  mProgressCallback;
 };
 
 void GetPCMImportPlugin(ImportPluginList *importPluginList,
@@ -114,12 +110,10 @@ ImportFileHandle *PCMImportPlugin::Open(wxString filename)
 }
 
 PCMImportFileHandle::PCMImportFileHandle(wxString name,
-                                         SNDFILE *file, SF_INFO info):
-   mName(name),
+                                         SNDFILE *file, SF_INFO info)
+:  ImportFileHandle(name),
    mFile(file),
-   mInfo(info),
-   mUserData(NULL),
-   mProgressCallback(NULL)
+   mInfo(info)
 {
    //
    // Figure out the format to use.
@@ -137,13 +131,6 @@ PCMImportFileHandle::PCMImportFileHandle(wxString name,
       mFormat = floatSample;
 }
 
-void PCMImportFileHandle::SetProgressCallback(progress_callback_t progressCallback,
-                                      void *userData)
-{
-   mProgressCallback = progressCallback;
-   mUserData = userData;
-}
-
 wxString PCMImportFileHandle::GetFileDescription()
 {
    return sf_header_name(mInfo.format);
@@ -154,12 +141,14 @@ int PCMImportFileHandle::GetFileUncompressedBytes()
    return mInfo.frames * mInfo.channels * SAMPLE_SIZE(mFormat);
 }
 
-bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
-                                 Track ***outTracks,
-                                 int *outNumTracks,
-                                 Tags *tags)
+int PCMImportFileHandle::Import(TrackFactory *trackFactory,
+                                Track ***outTracks,
+                                int *outNumTracks,
+                                Tags *tags)
 {
    wxASSERT(mFile);
+
+   CreateProgress();
 
    WaveTrack **channels = new WaveTrack *[mInfo.channels];
 
@@ -215,11 +204,9 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
             blockLen = fileTotalFrames - i;
 
          for (c = 0; c < mInfo.channels; c++)
-            channels[c]->AppendAlias(mName, i, blockLen, c);
+            channels[c]->AppendAlias(mFilename, i, blockLen, c);
 
-         if( mProgressCallback )
-            cancelled = mProgressCallback(mUserData,
-                                          i*1.0 / fileTotalFrames);
+         cancelled = !mProgress->Update(i, fileTotalFrames);
          if (cancelled)
             break;
       }
@@ -262,10 +249,8 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
             framescompleted += block;
          }
 
-         if( mProgressCallback )
-            cancelled = mProgressCallback(mUserData,
-                                          framescompleted*1.0 /
-                                          fileTotalFrames);
+         cancelled = !mProgress->Update(framescompleted,
+                                        fileTotalFrames);
          if (cancelled)
             break;
 
@@ -277,7 +262,7 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
          delete channels[c];
       delete[] channels;
 
-      return false;
+      return eImportCancelled;
    }
 
    *outNumTracks = mInfo.channels;
@@ -320,7 +305,7 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
       tags->SetTag(wxT("Software"), UTF8CTOWX(str));
    }
 
-   return true;
+   return eImportSuccess;
 }
 
 PCMImportFileHandle::~PCMImportFileHandle()

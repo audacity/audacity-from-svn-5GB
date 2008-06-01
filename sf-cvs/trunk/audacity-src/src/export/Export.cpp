@@ -646,12 +646,12 @@ bool Exporter::ExportTracks()
    }
 
    success = mPlugins[mFormat]->Export(mProject,
-                                    mChannels,
-                                    mActualName.GetFullPath(),
-                                    mSelectedOnly,
-                                    mT0,
-                                    mT1,
-                                    mMixerSpec);
+                                       mChannels,
+                                       mActualName.GetFullPath(),
+                                       mSelectedOnly,
+                                       mT0,
+                                       mT1,
+                                       mMixerSpec);
 
    if (mActualName != mFilename) {
       // Remove backup

@@ -55,9 +55,7 @@ public:
               TrackFactory *trackFactory,
               Track *** tracks,
               Tags *tags,
-              wxString &errorMessage,
-              progress_callback_t progressCallback,
-              void *userData);
+              wxString &errorMessage);
 
    // get a possibly more detailed description of the kind of file
    // that is being opened.  ONLY callable from INSIDE THE CALLBACK.

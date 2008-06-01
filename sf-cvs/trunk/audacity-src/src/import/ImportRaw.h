@@ -18,8 +18,7 @@ class DirManager;
 class wxWindow;
 
 int ImportRaw(wxWindow *parent, wxString fileName,
-              TrackFactory *trackFactory, Track ***outTracks,
-              progress_callback_t progressCallback, void *userData);
+              TrackFactory *trackFactory, Track ***outTracks);
 
 #endif
 

@@ -534,11 +534,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mRecordingRecoveryHandler(NULL),
      mImportedDependencies(false)
 {
-   // Initialize progress dialog array
-   for (mProgressCurrent = 2; mProgressCurrent >= 0; mProgressCurrent--) {
-      mProgressDialog[mProgressCurrent] = NULL;
-   }
-
    int widths[] = {-1, 130};
    mStatusBar = CreateStatusBar(2);
    mStatusBar->SetStatusWidths(2, widths);
@@ -757,7 +752,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mTags = new Tags();
 
    mTrackFactory = new TrackFactory(mDirManager);
-   mImportingRaw = false;
 
    wxString msg = wxString::Format(_("Welcome to Audacity version %s"),
                                    AUDACITY_VERSION_STRING);
@@ -777,9 +771,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
 AudacityProject::~AudacityProject()
 {
-   // JKC: this rather odd looking call gets rid of any window disabler
-   // that would otherwise be a memory leak.
-   SetEnabledWindow( this );
 }
 
 void AudacityProject::UpdatePrefsVariables()
@@ -1570,14 +1561,6 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    if (mHistoryWindow) {
       mHistoryWindow->Destroy();
       mHistoryWindow = NULL;
-   }
-
-   // Destroy the progress dialogs
-   for (mProgressCurrent = 2; mProgressCurrent >= 0; mProgressCurrent--) {
-      if (mProgressDialog[mProgressCurrent]) {
-         mProgressDialog[mProgressCurrent]->Destroy();
-         mProgressDialog[mProgressCurrent] = NULL;
-      }
    }
 
    DestroyChildren();
@@ -2531,30 +2514,6 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    return true;
 }
 
-bool AudacityProject::ImportProgressCallback(void *_self, float percent)
-{
-   AudacityProject *self = (AudacityProject*)_self;
-   wxString description;
-
-   if (self->mImportingRaw)
-      /* i18n-hint: This refers to files that are opened directly
-         without looking at the file header.  Same as "Import Raw" */
-      description = _("Raw");
-   else
-      description = wxGetApp().mImporter->GetFileDescription();
-      
-   wxString dialogMessage;
-   dialogMessage.Printf(_("Importing %s..."),
-                        description.c_str());
-
-   bool keepGoing = self->ProgressUpdate((int)(percent * 1000), dialogMessage);
-
-   if (!keepGoing)
-      self->mUserCanceledProgress = true;
-
-   return !keepGoing;
-}
-
 void AudacityProject::AddImportedTracks(wxString fileName,
                                         Track **newTracks, int numTracks)
 {
@@ -2629,30 +2588,11 @@ void AudacityProject::Import(wxString fileName)
    int numTracks;
    wxString errorMessage=wxT("");
 
-   mUserCanceledProgress = false;
-
-   ProgressShow(_("Import"));
-
    numTracks = wxGetApp().mImporter->Import(fileName,
                                             mTrackFactory,
                                             &newTracks,
                                             mTags,
-                                 errorMessage,
-                                 AudacityProject::ImportProgressCallback,
-                                 this);
-
-   ProgressHide();
-
-   if (mUserCanceledProgress) {
-      // Get rid of any created tracks
-      if (numTracks > 0) {
-         for (int i = 0; i < numTracks; i++) {
-            delete newTracks[i];
-         }
-         delete[] newTracks;
-      }
-      return;
-   }
+                                            errorMessage);
 
    if (!errorMessage.IsEmpty()) {
 // Old code, without the help button.
@@ -3507,129 +3447,6 @@ void AudacityProject::OnAudioIONewBlockFiles(const wxString& blockFileLog)
       f.Write(blockFileLog);
       f.Close();
    }
-}
-
-// JKC: During progress reporting we want to disable 
-// everything but the progress dialog.
-// Normally we'd use a ShowModal(), but we can't do that
-// because of Jaws screen reader.
-// So we explicitly disable all windows apart from the
-// progress dialog using a wxWindowDisabler.
-void AudacityProject::SetEnabledWindow( wxWindow * pWindow)
-{
-   static wxWindowDisabler * pDisabler=NULL;
-
-   // If we're already disabling some windows, then get rid of the disabler.
-   if( pDisabler != NULL )
-   {
-      delete pDisabler;
-      pDisabler = NULL;
-   }
-
-   // If the project window is to be enabled, then we don't disable 
-   // anything.
-   if( pWindow == this )
-      return;
-
-   // Disable all windows except pWindow.
-   pDisabler = new wxWindowDisabler( pWindow );
-}
-
-// LLL: There is an issue between the Jaws screen reader and the wxWidgets accessibility
-//      support.  When a wxGuage is displayed, Jaws will monitor its progress by querying
-//      the current value.  But, because it doesn't necessarily know when the control
-//      gets deleted, it can cause storage violations attempting to use the deleted
-//      control.
-//
-//      Whether this is a design issue with Jaws, wxWidgets, or MSAA is uncertain, but
-//      the work around is to not delete the guage right away.  So, we keep a backlog of
-//      the last three wxProgressDialogs displayed.  This gives Jaws a chance to get the
-//      last update without accessing freed storage.
-void AudacityProject::ProgressShow(const wxString &title, const wxString &message)
-{
-   if (mProgressDialog[mProgressCurrent]) {
-      ProgressHide();
-   }
-
-   mProgressTitle = title;
-   mProgressMessage = message;
-
-   mProgressCurrent = (mProgressCurrent + 1) % 3;
-   if (mProgressDialog[mProgressCurrent]) {
-      delete mProgressDialog[mProgressCurrent];
-      mProgressDialog[mProgressCurrent] = NULL;
-   }
-
-   wxStartTimer();
-   wxBeginBusyCursor();
-
-   // All new actions should be forbidden.
-   // We don't yet have a progress dialog.
-   // So NO windows are enabled.
-   SetEnabledWindow( NULL );
-
-   // This is legacy and seems not to be needed at all.
-   // It only disables windows for a moment.
-   // wxSafeYield(this, true);
-}
-   
-void AudacityProject::ProgressHide(wxWindow* pWindow /*= NULL*/)
-{
-   if (mProgressDialog[mProgressCurrent]) {
-      if( wxIsBusy() )
-      {
-         bool bBeepOnCompletion;
-         gPrefs->Read(wxT("/GUI/BeepOnCompletion"), &bBeepOnCompletion, false);
-         if( bBeepOnCompletion )
-         {
-            wxBell();
-         }
-      }
-      mProgressDialog[mProgressCurrent]->Hide();
-   }
-
-   if (wxIsBusy()) {
-      wxEndBusyCursor();
-   }
-
-   // Enabling the project window enables all windows again.
-   SetEnabledWindow(pWindow ? pWindow : this);
-}
-
-bool AudacityProject::ProgressUpdate(int value, const wxString &message)
-{
-   if (!mProgressDialog[mProgressCurrent] && wxGetElapsedTime(false) > 500) {
-      mProgressDialog[mProgressCurrent] =
-         new wxProgressDialog(mProgressTitle,
-                              mProgressMessage,
-                              1000,
-                              this,
-                              wxPD_CAN_ABORT |
-                              wxPD_ELAPSED_TIME |
-                              wxPD_REMAINING_TIME |
-                              wxPD_AUTO_HIDE);
-
-      // We've just created the progress dialog.
-      // We want to be able to click its cancel button
-      // So we enable it, whilst disabling everything else.
-      mProgressDialog[mProgressCurrent]->Show();
-      SetEnabledWindow( mProgressDialog[mProgressCurrent] );
-   }
-
-   if (mProgressDialog[mProgressCurrent]) {
-      if (value > 1000) {
-         value = 1000;
-      }
-      return mProgressDialog[mProgressCurrent]->Update(value, message);
-   }
-
-   return true;
-}
-
-bool AudacityProject::ProgressIsShown()
-{
-   return mProgressDialog[mProgressCurrent] &&
-          mProgressDialog[mProgressCurrent]->IsShown();
 }
 
 bool AudacityProject::GetCacheBlockFiles()

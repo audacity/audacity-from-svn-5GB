@@ -189,10 +189,12 @@ OBJS = \
 	widgets/ExpandingToolBar.o \
 	widgets/Grabber.o \
 	widgets/Grid.o \
+	widgets/HtmlWindow.o \
 	widgets/ImageRoll.o \
 	widgets/LinkingHtmlWindow.o \
 	widgets/Meter.o \
 	widgets/MultiDialog.o \
+	widgets/ProgressDialog.o \
 	widgets/Ruler.o \
 	widgets/TimeTextCtrl.o \
 	widgets/Warning.o \

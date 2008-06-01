@@ -16,6 +16,7 @@
 #include "Sequence.h"
 #include "WaveClip.h"
 #include "Experimental.h"
+#include "widgets/ProgressDialog.h"
 
 #include <wx/gdicmn.h>
 #include <wx/longlong.h>
@@ -301,7 +302,7 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    virtual void Merge(const Track &orig);
    
    // Resample track (i.e. all clips in the track)
-   bool Resample(int rate, bool progress = false);
+   bool Resample(int rate, ProgressDialog *progress = NULL);
 
    //
    // The following code will eventually become part of a GUIWaveTrack

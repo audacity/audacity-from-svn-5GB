@@ -1748,7 +1748,7 @@ bool WaveTrack::MergeClips(int clipidx1, int clipidx2)
    return true;
 }
 
-bool WaveTrack::Resample(int rate, bool progress)
+bool WaveTrack::Resample(int rate, ProgressDialog *progress)
 {
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
       if (!it->GetData()->Resample(rate, progress))

@@ -5,6 +5,7 @@
   ImportOGG.cpp
 
   Joshua Haberman
+  Leland Lucius
 
 *//****************************************************************//**
 
@@ -79,8 +80,8 @@ void GetOGGImportPlugin(ImportPluginList *importPluginList,
 class OggImportPlugin : public ImportPlugin
 {
 public:
-   OggImportPlugin():
-      ImportPlugin(wxArrayString(WXSIZEOF(exts), exts))
+   OggImportPlugin()
+   :  ImportPlugin(wxArrayString(WXSIZEOF(exts), exts))
    {
    }
 
@@ -94,26 +95,23 @@ public:
 class OggImportFileHandle : public ImportFileHandle
 {
 public:
-   OggImportFileHandle(wxFFile *file, OggVorbis_File *vorbisFile):
+   OggImportFileHandle(const wxString & filename,
+                       wxFFile *file,
+                       OggVorbis_File *vorbisFile)
+   :  ImportFileHandle(filename),
       mFile(file),
-      mVorbisFile(vorbisFile),
-      mProgressCallback(NULL),
-      mUserData(NULL)
+      mVorbisFile(vorbisFile)
    {
    }
    ~OggImportFileHandle();
 
-   void SetProgressCallback(progress_callback_t function,
-                            void *userData);
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
-   bool Import(TrackFactory *trackFactory, Track ***outTracks,
-               int *outNumTracks, Tags *tags);
+   int Import(TrackFactory *trackFactory, Track ***outTracks,
+              int *outNumTracks, Tags *tags);
 private:
    wxFFile *mFile;
    OggVorbis_File *mVorbisFile;
-   progress_callback_t mProgressCallback;
-   void *mUserData;
 };
 
 void GetOGGImportPlugin(ImportPluginList *importPluginList,
@@ -169,14 +167,7 @@ ImportFileHandle *OggImportPlugin::Open(wxString filename)
       return NULL;
    }
 
-   return new OggImportFileHandle(file, vorbisFile);
-}
-
-void OggImportFileHandle::SetProgressCallback(progress_callback_t progressCallback,
-                                      void *userData)
-{
-   mProgressCallback = progressCallback;
-   mUserData = userData;
+   return new OggImportFileHandle(filename, file, vorbisFile);
 }
 
 wxString OggImportFileHandle::GetFileDescription()
@@ -190,10 +181,12 @@ int OggImportFileHandle::GetFileUncompressedBytes()
    return 0;
 }
 
-bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
-                                 int *outNumTracks, Tags *tags)
+int OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
+                                int *outNumTracks, Tags *tags)
 {
    wxASSERT(mFile->IsOpened());
+
+   CreateProgress();
 
    /* -1 is for the current logical bitstream */
    vorbis_info *vi = ov_info(mVorbisFile, -1);
@@ -279,10 +272,8 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
       samplesSinceLastCallback += samplesRead;
       if (samplesSinceLastCallback > SAMPLES_PER_CALLBACK) {
-          if( mProgressCallback )
-             cancelled = mProgressCallback(mUserData,
-                                           ov_time_tell(mVorbisFile) /
-                                           ov_time_total(mVorbisFile, bitstream));
+          cancelled = !mProgress->Update(ov_time_tell(mVorbisFile),
+                                         ov_time_total(mVorbisFile, bitstream));
           samplesSinceLastCallback -= SAMPLES_PER_CALLBACK;
       }
 
@@ -298,7 +289,7 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       }
       delete[] channels;
 
-      return false;
+      return (cancelled ? eImportCancelled : eImportFailed);
    }
 
    *outNumTracks = vi->channels;
@@ -318,7 +309,7 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       }
    }
 
-   return true;
+   return eImportSuccess;
 }
 
 OggImportFileHandle::~OggImportFileHandle()

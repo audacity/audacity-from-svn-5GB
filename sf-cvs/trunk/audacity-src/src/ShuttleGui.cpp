@@ -267,6 +267,7 @@ wxCheckBox * ShuttleGuiBase::AddCheckBox( const wxString &Prompt, const wxString
    mpWind = pCheckBox = new wxCheckBox(mpParent, miId, Prompt, wxDefaultPosition, wxDefaultSize,
       Style( 0 ));
    pCheckBox->SetValue(Selected == wxT("true"));
+   pCheckBox->SetName(Prompt);
    UpdateSizers();
    return pCheckBox;
 }
@@ -285,6 +286,7 @@ wxCheckBox * ShuttleGuiBase::AddCheckBoxOnRight( const wxString &Prompt, const w
    mpWind = pCheckBox = new wxCheckBox(mpParent, miId, wxT(""), wxDefaultPosition, wxDefaultSize,
       Style( 0 ));
    pCheckBox->SetValue(Selected==wxT("true"));
+   pCheckBox->SetName(Prompt);
    UpdateSizers();
    return pCheckBox;
 }
@@ -476,6 +478,7 @@ wxTextCtrl * ShuttleGuiBase::AddTextBox(const wxString &Caption, const wxString 
 
    mpWind = pTextCtrl = new wxTextCtrl(mpParent, miId, Value,
       wxDefaultPosition, Size, Style( flags ));
+   mpWind->SetName( Caption );
    UpdateSizers();
    return pTextCtrl;
 }
@@ -1119,6 +1122,7 @@ wxRadioButton * ShuttleGuiBase::TieRadioButton(const wxString &Prompt, WrappedTy
             wxDefaultPosition, wxDefaultSize, 
             (mRadioCount==1)?wxRB_GROUP:0);
          pRadioButton->SetValue(WrappedRef.ValuesMatch( mRadioValue ));
+         pRadioButton->SetName(Prompt);
          UpdateSizers();
       }
       break;
@@ -1823,7 +1827,6 @@ wxSizer *CreateStdButtonSizer(wxWindow *parent, long buttons, wxButton *extra)
    {
       b = new wxButton( parent, wxID_OK );
       b->SetDefault();
-      b->SetFocus();
       bs->AddButton( b );
    }
 
@@ -1836,7 +1839,6 @@ wxSizer *CreateStdButtonSizer(wxWindow *parent, long buttons, wxButton *extra)
    {
       b = new wxButton( parent, wxID_YES );
       b->SetDefault();
-      b->SetFocus();
       bs->AddButton( b );
    }
 

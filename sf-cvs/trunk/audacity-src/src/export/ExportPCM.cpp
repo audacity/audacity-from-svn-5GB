@@ -396,7 +396,7 @@ bool ExportPCM::Export(AudacityProject *project,
                             info.channels, maxBlockLen, true,
                             rate, format, true, mixerSpec);
 
-   GetActiveProject()->ProgressShow(wxFileName(fName).GetName(),
+   ProgressDialog *progress = new ProgressDialog(wxFileName(fName).GetName(),
       selectionOnly ?
       wxString::Format(_("Exporting the selected audio as %s"),
                        formatStr.c_str()) :
@@ -416,12 +416,10 @@ bool ExportPCM::Export(AudacityProject *project,
       else
          sf_writef_float(sf, (float *)mixed, numSamples);
 
-      int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
-                                       (t1-t0)));
-      cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
+      cancelling = !progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
 
-   GetActiveProject()->ProgressHide();
+   delete progress;
 
    delete mixer;
 

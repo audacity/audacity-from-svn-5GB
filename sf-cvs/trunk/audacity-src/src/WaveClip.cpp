@@ -1057,7 +1057,7 @@ void WaveClip::Unlock()
       it->GetData()->Unlock();
 }
 
-bool WaveClip::Resample(int rate, bool progress)
+bool WaveClip::Resample(int rate, ProgressDialog *progress)
 {
    if (rate == mRate)
       return true; // Nothing to do
@@ -1110,7 +1110,7 @@ bool WaveClip::Resample(int rate, bool progress)
 
       if (progress)
       {
-         error = !GetActiveProject()->ProgressUpdate((int) (1000 * ((float)pos / numSamples)));
+         error = !progress->Update(pos, numSamples);
          if (error)
          {
             break;

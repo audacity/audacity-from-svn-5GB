@@ -24,6 +24,7 @@ class wxWindow;
 #include "../Shuttle.h"
 #include "../ShuttleGui.h"
 #include "../Internat.h"
+#include "../widgets/ProgressDialog.h"
 
 class Effect;
 
@@ -215,6 +216,7 @@ class Effect {
  protected:
    wxWindow     *mParent;
    wxDialog     *mDialog;      // default NULL. It's up to descendants to set this.
+   ProgressDialog *mProgress;
    double        mProjectRate; // Sample rate of the project - new tracks should
                                // be created with this rate...
    TrackFactory *mFactory;

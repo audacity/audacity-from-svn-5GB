@@ -15,6 +15,7 @@
 #include "Audacity.h"
 #include "SampleFormat.h"
 #include "Sequence.h"
+#include "widgets/ProgressDialog.h"
 #include "xml/XMLTagHandler.h"
 
 #include <wx/gdicmn.h>
@@ -81,7 +82,7 @@ public:
    
    // Resample clip. This also will set the rate, but without changing
    // the length of the clip
-   bool Resample(int rate, bool progress = false);
+   bool Resample(int rate, ProgressDialog *progress = NULL);
    
    void SetOffset(double offset);
    double GetOffset() const { return mOffset; }

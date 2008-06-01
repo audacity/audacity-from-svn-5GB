@@ -36,6 +36,7 @@ greater use in future.
 #include "../Prefs.h"
 #include "../Project.h"
 #include "../WaveTrack.h"
+#include "../widgets/ProgressDialog.h"
 
 //
 // public static methods
@@ -150,7 +151,6 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
    mFactory = factory;
    mProjectRate = projectRate;
    mParent = parent;
-   mDialog = NULL; // It's up to descendants to set this.
    mTracks = list;
    mT0 = *t0;
    mT1 = *t1;
@@ -171,10 +171,10 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
    bool returnVal = true;
    bool skipFlag = CheckWhetherSkipEffect();
    if (skipFlag == false) {
-      GetActiveProject()->ProgressShow(StripAmpersand(GetEffectName()),
-                                       GetEffectAction());
+      mProgress = new ProgressDialog(StripAmpersand(GetEffectName()),
+                                     GetEffectAction());
       returnVal = Process();
-      GetActiveProject()->ProgressHide();
+      delete mProgress;
    }
 
    End();
@@ -195,17 +195,17 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
 
 bool Effect::TotalProgress(double frac)
 {
-   return !GetActiveProject()->ProgressUpdate((int)(frac*1000 + 0.5));
+   return !mProgress->Update(rint(frac));
 }
 
 bool Effect::TrackProgress(int whichTrack, double frac)
 {
-   return TotalProgress((whichTrack+frac)/mNumTracks);
+   return !mProgress->Update(whichTrack + frac, (double) mNumTracks);
 }
 
 bool Effect::TrackGroupProgress(int whichGroup, double frac)
 {
-   return TotalProgress((whichGroup+frac)/mNumGroups);
+   return !mProgress->Update(whichGroup + frac, (double) mNumGroups);
 }
 
 //
@@ -369,11 +369,6 @@ void Effect::Preview()
    if (!::MixAndRender(mWaveTracks, mFactory, rate, floatSample, t0, t1,
                        &mixLeft, &mixRight))
    {
-      if (mDialog)
-      {
-         GetActiveProject()->SetEnabledWindow(mDialog);
-         mDialog->SetFocus();
-      }
       return;
    }
 
@@ -396,10 +391,10 @@ void Effect::Preview()
    // Effect is already inited; we call Process, End, and then Init
    // again, so the state is exactly the way it was before Preview
    // was called.
-   GetActiveProject()->ProgressShow(StripAmpersand(GetEffectName()),
-                                    _("Preparing preview"));
+   mProgress = new ProgressDialog(StripAmpersand(GetEffectName()),
+                                  _("Preparing preview"));
    bool bSuccess = Process();
-   GetActiveProject()->ProgressHide(mDialog);
+   mProgress->Destroy();
    End();
    Init();
    if (bSuccess)
@@ -426,13 +421,12 @@ void Effect::Preview()
       if (token) {
          bool previewing = true;
 
-         GetActiveProject()->ProgressShow(StripAmpersand(GetEffectName()),
+         mProgress = new ProgressDialog(StripAmpersand(GetEffectName()),
                                           _("Previewing"));
 
          while (gAudioIO->IsStreamActive(token) && previewing) {
             ::wxMilliSleep(100);
-            int t = int(1000 * (gAudioIO->GetStreamTime() / t1));
-            previewing = GetActiveProject()->ProgressUpdate(t);
+            previewing = mProgress->Update(gAudioIO->GetStreamTime(), t1);
          }
          gAudioIO->StopStream();
 
@@ -440,7 +434,7 @@ void Effect::Preview()
             ::wxMilliSleep(100);
          }
 
-         GetActiveProject()->ProgressHide(mDialog);
+         mProgress->Destroy();
       }
       else {
          wxMessageBox(_("Error while opening sound device. Please check the output device settings and the project sample rate."),
@@ -454,9 +448,6 @@ void Effect::Preview()
    delete mWaveTracks;
 
    mWaveTracks = saveWaveTracks;
-
-   if (mDialog)
-      mDialog->SetFocus();
 }
 
 EffectDialog::EffectDialog(wxWindow * parent,

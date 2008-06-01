@@ -16,6 +16,8 @@
 #include <wx/combobox.h>
 #include <wx/textfile.h>
 
+#include "widgets/ProgressDialog.h"
+
 #define wxID_FTPNAME 1000
 #define wxID_FTPHOST 1001
 #define wxID_FTPUSER 1002
@@ -123,6 +125,8 @@ class UploadDialog:public wxDialog {
    wxArrayString *deleteFileList;
    wxArrayString *deleteDirList;
    wxArrayString *ftpList;
+
+   ProgressDialog *mProgress;
 
    long listIndex;
    long ftpIndex;

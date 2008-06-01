@@ -8,7 +8,7 @@
   Dominic Mazzoni
 
   utility fn and 
-  descendant of wxHtmlWindow that opens links in the user's 
+  descendant of HtmlWindow that opens links in the user's 
   default browser
 
 **********************************************************************/
@@ -24,10 +24,10 @@
 #include "ErrorDialog.h"
 
 BEGIN_EVENT_TABLE(BrowserFrame, wxFrame)
-   EVT_BUTTON( wxID_FORWARD,  BrowserFrame::OnForward)
-   EVT_BUTTON( wxID_BACKWARD, BrowserFrame::OnBackward)
-   EVT_BUTTON( wxID_CLOSE,    BrowserFrame::OnClose)
-   EVT_CHAR(BrowserFrame::OnChar)
+   EVT_BUTTON(wxID_FORWARD,  BrowserFrame::OnForward)
+   EVT_BUTTON(wxID_BACKWARD, BrowserFrame::OnBackward)
+   EVT_BUTTON(wxID_CANCEL,   BrowserFrame::OnClose)
+   EVT_KEY_DOWN(BrowserFrame::OnKeyDown)
 END_EVENT_TABLE()
 
 
@@ -48,13 +48,13 @@ void BrowserFrame::OnClose(wxCommandEvent & event)
    Close();
 }
 
-void BrowserFrame::OnChar(wxKeyEvent & event)
+void BrowserFrame::OnKeyDown(wxKeyEvent & event)
 {
    bool bSkip = true;
    if (event.GetKeyCode() == WXK_ESCAPE)
    {
       bSkip = false; 
-      this->Show(FALSE);
+      Close(false);
    }
    event.Skip(bSkip);
 }
@@ -99,9 +99,8 @@ LinkingHtmlWindow::LinkingHtmlWindow(wxWindow *parent, wxWindowID id /*= -1*/,
                                        const wxPoint& pos /*= wxDefaultPosition*/, 
                                        const wxSize& size /*= wxDefaultSize*/, 
                                        long style /*= wxHW_SCROLLBAR_AUTO*/) :
-   wxHtmlWindow(parent, id, pos, size, style)
+   HtmlWindow(parent, id, pos, size, style)
 {
-
 }
 
 void LinkingHtmlWindow::OnLinkClicked(const wxHtmlLinkInfo& link)
@@ -119,23 +118,21 @@ void LinkingHtmlWindow::OnLinkClicked(const wxHtmlLinkInfo& link)
       else
       {
          SetPage( HelpText( href.Mid( 10 )));
-         GetParent()->SetLabel( TitleText( href.Mid( 10 )));
+         wxGetTopLevelParent(this)->SetLabel( TitleText( href.Mid( 10 )));
       }
    }
    else if( !href.StartsWith( wxT("http:")))
    {
-      wxHtmlWindow::OnLinkClicked( link );
+      HtmlWindow::OnLinkClicked( link );
    }
    else
    {
       OpenInDefaultBrowser(link);
       return;
    }
-   BrowserFrame * pDlg = wxDynamicCast( GetParent(), BrowserFrame );
+   BrowserFrame * pDlg = wxDynamicCast( GetRelatedFrame(), BrowserFrame );
    if( pDlg )
    {
       pDlg->UpdateButtons();
    };
 }
-
-

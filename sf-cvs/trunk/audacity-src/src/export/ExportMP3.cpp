@@ -1812,7 +1812,8 @@ bool ExportMP3::Export(AudacityProject *project,
                    _("Exporting entire file at %d Kbps"),
                    brate);
    }
-   GetActiveProject()->ProgressShow(wxFileName(fName).GetName(), title);
+
+   ProgressDialog *progress = new ProgressDialog(wxFileName(fName).GetName(), title);
 
    while (!cancelling) {
       sampleCount blockLen = mixer->Process(inSamples);
@@ -1849,12 +1850,10 @@ bool ExportMP3::Export(AudacityProject *project,
 
       outFile.Write(buffer, bytes);
 
-      int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
-                                          (t1-t0)));
-      cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
+      cancelling = !progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
 
-   GetActiveProject()->ProgressHide();
+   delete progress;
 
    delete mixer;
 
