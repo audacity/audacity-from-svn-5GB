@@ -72,7 +72,6 @@ It handles initialization and termination by subclassing wxApp.
 #include "Internat.h"
 #include "prefs/PrefsDialog.h"
 #include "Theme.h"
-#include "Experimental.h"
 #include "PlatformCompatibility.h"
 #include "FileNames.h"
 #include "AutoRecovery.h"
