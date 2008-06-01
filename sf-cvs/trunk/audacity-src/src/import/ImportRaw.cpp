@@ -201,7 +201,7 @@ int ImportRaw(wxWindow *parent, wxString fileName,
 
    wxString msg;
 
-   msg.Printf(_("Importing %s"), wxFileName::FileName(fileName).GetFullName());
+   msg.Printf(_("Importing %s"), wxFileName::FileName(fileName).GetFullName().c_str());
 
    ProgressDialog progress(_("Import Raw"), msg);
 

@@ -60,7 +60,6 @@ ProgressDialog::ProgressDialog(const wxString & title, const wxString & message)
    mDisable(NULL)
 {
    wxBoxSizer *v;
-   wxBoxSizer *h;
    wxWindow *w;
    wxSize ds;
 
@@ -235,10 +234,7 @@ ProgressDialog::Update(int value, const wxString & message)
    wxLongLong_t elapsed = now - mStartTime;
    wxLongLong_t estimate = elapsed * 1000ll / value;
    wxLongLong_t remains = (estimate + mStartTime) - now;
-   wxTimeSpan ts;
 
-//printf("value %d, now %lld then %lld elapsed %lld estimate %lld remaints %lld\n",
-//value, now, mStartTime, elapsed, estimate, remains);
    if (!IsShown() && elapsed > 500)
    {
       Show(true);
@@ -253,11 +249,12 @@ ProgressDialog::Update(int value, const wxString & message)
    // Only update if a full second has passed.
    if (now - mLastUpdate > 1000)
    {
-      ts = wxTimeSpan::Milliseconds(elapsed);
-      mElapsed->SetLabel(ts.Format(wxT("%H:%M:%S")));
+      wxTimeSpan tsElapsed(0, 0, 0, elapsed);
+      wxTimeSpan tsRemains(0, 0, 0, remains);
 
-      ts = wxTimeSpan::Milliseconds(remains);
-      mRemaining->SetLabel(ts.Format(wxT("%H:%M:%S")));
+      mElapsed->SetLabel(tsElapsed.Format(wxT("%H:%M:%S")));
+      mRemaining->SetLabel(tsRemains.Format(wxT("%H:%M:%S")));
+
       mLastUpdate = now;
    }
 
