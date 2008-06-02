@@ -534,6 +534,12 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mRecordingRecoveryHandler(NULL),
      mImportedDependencies(false)
 {
+   mLogger = new wxLogWindow(NULL,wxT("Debug log"), false, false);
+   mLogger->SetActiveTarget(mLogger);
+   mLogger->EnableLogging(true);
+   mLogger->SetLogLevel(wxLOG_Max);
+
+
    int widths[] = {-1, 130};
    mStatusBar = CreateStatusBar(2);
    mStatusBar->SetStatusWidths(2, widths);
@@ -1623,6 +1629,14 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
          CreateNewAudacityProject(gParentWindow);
 #endif
       }
+   }
+
+   if (mLogger)
+   {
+      mLogger->SetLogLevel(0);
+      mLogger->EnableLogging(false);
+      mLogger->SetActiveTarget(NULL);
+      delete mLogger;
    }
 
    Destroy();
