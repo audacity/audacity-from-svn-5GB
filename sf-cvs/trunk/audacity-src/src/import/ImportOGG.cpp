@@ -109,6 +109,14 @@ public:
    int GetFileUncompressedBytes();
    int Import(TrackFactory *trackFactory, Track ***outTracks,
               int *outNumTracks, Tags *tags);
+
+   //\todo { Implement actual support for importing multiple streams }
+   wxInt32 GetStreamCount(){ return 1; }
+
+   wxArrayString *GetStreamInfo(){ return NULL; }
+
+   void SetStreamUsage(wxInt32 StreamID, bool Use){}
+
 private:
    wxFFile *mFile;
    OggVorbis_File *mVorbisFile;

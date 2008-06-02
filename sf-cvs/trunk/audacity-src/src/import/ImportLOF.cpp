@@ -123,6 +123,12 @@ public:
    int Import(TrackFactory *trackFactory, Track ***outTracks,
               int *outNumTracks, Tags *tags);
 
+   wxInt32 GetStreamCount(){ return 1; }
+
+   wxArrayString *GetStreamInfo(){ return NULL; }
+
+   void SetStreamUsage(wxInt32 StreamID, bool Use){}
+
 private:
    // Takes a line of text in lof file and interprets it and opens files
    void lofOpenFiles(wxString* ln);

@@ -54,6 +54,12 @@ and ImportLOF.cpp.
 #include "ImportFLAC.h"
 #include "../Track.h"
 
+#if defined(FFMPEG_INTEGRATION)
+#include <wx/sizer.h>
+#include "../ShuttleGui.h"
+#include "ImportFFmpeg.h"
+#endif
+
 WX_DEFINE_LIST(ImportPluginList);
 WX_DEFINE_LIST(UnusableImportPluginList);
 WX_DEFINE_LIST(FormatList);
@@ -75,6 +81,9 @@ Importer::Importer()
    #ifdef USE_QUICKTIME
    GetQTImportPlugin(mImportPluginList, mUnusableImportPluginList);
    #endif
+#if defined(FFMPEG_INTEGRATION)   
+   GetFFmpegImportPlugin(mImportPluginList, mUnusableImportPluginList);
+#endif
 }
 
 Importer::~Importer()
@@ -117,8 +126,22 @@ int Importer::Import(wxString fName,
       if (plugin->SupportsExtension(extension))
       {
          mInFile = plugin->Open(fName);
-         if (mInFile != NULL)
+         if ( (mInFile != NULL) && (mInFile->GetStreamCount() > 0) )
          {
+#if defined(FFMPEG_INTEGRATION)
+            if (mInFile->GetStreamCount() > 1)                                                  
+            {
+               ImportStreamDialog ImportDlg(mInFile, NULL, -1, _("Select stream(s) to import"));
+
+               if (ImportDlg.ShowModal() == wxID_CANCEL)
+               {
+                  return 0;
+               }
+            }
+            else
+#endif
+               mInFile->SetStreamUsage(0,TRUE);
+
             int res;
             
             res = mInFile->Import(trackFactory, tracks, &numTracks, tags);
@@ -256,8 +279,23 @@ int Importer::Import(wxString fName,
       }
 
       mInFile = plugin->Open(fName);
-      if (mInFile != NULL)
+      if ( (mInFile != NULL) && (mInFile->GetStreamCount() > 0) )
       {
+#if defined(FFMPEG_INTEGRATION)
+         if (mInFile->GetStreamCount() > 1)                                                  
+         {
+            ImportStreamDialog ImportDlg(mInFile, NULL, -1, _("Select stream(s) to import"));
+
+            if (ImportDlg.ShowModal() == wxID_CANCEL)
+            {
+               return 0;
+            }
+         }
+         else
+#endif
+            mInFile->SetStreamUsage(0,TRUE);
+
+
          int res;
 
          numTracks = 0;
@@ -296,8 +334,61 @@ wxString Importer::GetFileDescription()
 {
    return mInFile->GetFileDescription();
 }
+#if defined(FFMPEG_INTEGRATION)
+//-------------------------------------------------------------------------
+// ImportStreamDialog
+//-------------------------------------------------------------------------
 
+BEGIN_EVENT_TABLE( ImportStreamDialog,wxDialog )
+   EVT_BUTTON( wxID_OK, ImportStreamDialog::OnOk )
+   EVT_BUTTON( wxID_CANCEL, ImportStreamDialog::OnCancel )
+END_EVENT_TABLE()
 
+ImportStreamDialog::ImportStreamDialog( ImportFileHandle *_mFile, wxWindow *parent, wxWindowID id, const wxString &title,
+                                       const wxPoint &position, const wxSize& size, long style ):
+wxDialog( parent, id, title, position, size, style | wxRESIZE_BORDER )
+{
+   mFile = _mFile;
+   scount = mFile->GetStreamCount();
+   for (wxInt32 i = 0; i < scount; i++)
+      mFile->SetStreamUsage(i,FALSE);
+
+   wxBoxSizer *vertSizer = new wxBoxSizer( wxVERTICAL );
+   wxArrayString *choices = mFile->GetStreamInfo();
+   StreamList = new wxListBox(this, -1, wxDefaultPosition, wxDefaultSize, *choices , wxLB_EXTENDED | wxLB_ALWAYS_SB);
+
+   vertSizer->Add( StreamList, 1, wxEXPAND | wxALIGN_LEFT | wxALL, 5 );
+
+   vertSizer->Add( CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND );
+
+   SetAutoLayout( true );
+
+   SetSizer( vertSizer );
+
+   vertSizer->Fit( this );
+
+   SetSize( 400, 200 );
+}
+
+ImportStreamDialog::~ImportStreamDialog()
+{
+
+}
+
+void ImportStreamDialog::OnOk(wxCommandEvent &event)
+{
+   wxArrayInt selitems;
+   int sels = StreamList->GetSelections(selitems);
+   for (wxInt32 i = 0; i < sels; i++)
+      mFile->SetStreamUsage(selitems[i],TRUE);
+   EndModal( wxID_OK );
+}
+
+void ImportStreamDialog::OnCancel(wxCommandEvent &event)
+{
+   EndModal( wxID_CANCEL );
+}
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

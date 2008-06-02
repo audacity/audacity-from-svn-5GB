@@ -158,6 +158,15 @@ public:
    virtual int Import(TrackFactory *trackFactory, Track ***outTracks,
                       int *outNumTracks, Tags *tags) = 0;
 
+   // Return number of elements in stream list
+   virtual wxInt32 GetStreamCount() = 0;
+
+   // Return stream descriptions list
+   virtual wxArrayString *GetStreamInfo() = 0;
+
+   // Set stream "import/don't import" flag
+   virtual void SetStreamUsage(wxInt32 StreamID, bool Use) = 0;
+
 protected:
    wxString mFilename;
    ProgressDialog *mProgress;
