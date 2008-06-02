@@ -73,6 +73,13 @@ public:
    int GetFileUncompressedBytes();
    int Import(TrackFactory *trackFactory, Track ***outTracks,
               int *outNumTracks, Tags *tags);
+
+   wxInt32 GetStreamCount(){ return 1; }
+
+   wxArrayString *GetStreamInfo(){ return NULL; }
+
+   void SetStreamUsage(wxInt32 StreamID, bool Use){}
+
 private:
    SNDFILE              *mFile;
    SF_INFO               mInfo;

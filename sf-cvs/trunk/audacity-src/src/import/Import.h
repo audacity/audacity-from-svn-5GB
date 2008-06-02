@@ -15,6 +15,10 @@
 #include <wx/string.h>
 #include <wx/list.h>
 #include <wx/listimpl.cpp>
+#include <wx/dialog.h>
+#include <wx/listbox.h>
+
+#include "../Experimental.h"
 
 class Tags;
 class TrackFactory;
@@ -66,6 +70,35 @@ private:
    UnusableImportPluginList *mUnusableImportPluginList;
    ImportFileHandle *mInFile;
 };
+#if defined(FFMPEG_INTEGRATION)
+//----------------------------------------------------------------------------
+// ImportStreamDialog
+//----------------------------------------------------------------------------
+
+class ImportStreamDialog: public wxDialog
+{
+public:
+   // constructors and destructors
+   ImportStreamDialog( ImportFileHandle *_mFile,
+      wxWindow *parent, wxWindowID id, const wxString &title,
+      const wxPoint& pos = wxDefaultPosition,
+      const wxSize& size = wxDefaultSize,
+      long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER );
+   virtual ~ImportStreamDialog();
+
+private:
+   ImportFileHandle *mFile;
+   wxInt32 scount;
+   wxListBox *StreamList;
+
+private:
+   void OnOk( wxCommandEvent &event );
+   void OnCancel( wxCommandEvent &event );
+
+private:
+   DECLARE_EVENT_TABLE()
+};
+#endif //FFMPEG_INTEGRATION
 
 #endif
 

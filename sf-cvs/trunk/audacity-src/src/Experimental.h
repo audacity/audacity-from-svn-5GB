@@ -51,6 +51,10 @@
 #define LOGARITHMIC_TONE_CHIRP
 #define LOGARITHMIC_SPECTRUM
 
+//FFmpeg integration. Some FFmpeg-related changes are NOT ifdef'ed,
+//as they are harmless (like - a few mockup methods in Import* classes)
+#define FFMPEG_INTEGRATION
+
 // AM, 22 Nov.2007
 // Some fixes for the rulers.
 // If activated, the ruler's labels don't spill over,
