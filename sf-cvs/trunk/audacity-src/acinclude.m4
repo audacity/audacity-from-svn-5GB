@@ -315,6 +315,52 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVAMP], [
    fi
 ])
 
+AC_DEFUN([AUDACITY_CHECKLIB_FFMPEG], [
+   AC_ARG_WITH(libtwolame,
+               [AS_HELP_STRING([--with-ffmpeg],
+                               [use ffmpeg for import and export support ])],
+               FFMPEG_ARGUMENT=$withval,
+               FFMPEG_ARGUMENT="unspecified")
+
+   if false ; then
+      AC_DEFINE(USE_FFMPEG, 1,
+                [Define if ffmpeg (multi-format import and export) support should be enabled])
+   fi
+
+   dnl Check for a system copy of ffmpeg to use. For now I'm insiting on a
+   dnl current version to make maintenance easier. We need both avcodec and
+   dnl avformat, so I'm going to check for both
+
+   PKG_CHECK_MODULES(AVCODEC, libavcodec >= 51,
+                     avcodec_available_system="yes",
+                     avcodec_available_system="no")
+   PKG_CHECK_MODULES(AVFORMAT, libavformat >= 51,
+                     avformat_available_system="yes",
+                     avformat_available_system="no")
+
+   FFMPEG_SYSTEM_AVAILABLE="no"
+   if test "x$avcodec_available_system" = "xyes" ; then
+      if test "x$avformat_available_system" = "xyes" ; then
+	     FFMPEG_SYSTEM_AVAILABLE="yes"
+         FFMPEG_SYSTEM_LIBS="$AVCODEC_LIBS $AVFORMAT_LIBS"
+         FFMPEG_SYSTEM_CXXFLAGS="$AVCODEC_CFLAGS $AVFORMAT_CFLAGS"
+         FFMPEG_SYSTEM_CPPSYMBOLS="USE_FFMPEG"
+		 dnl build the extra object files needed to use FFmpeg. Paths inside
+		 dnl the audacity src/ dir, as this is subsitiuted into src/Makefile.in
+		 FFMPEG_SYSTEM_OPTOBJS="FFmpeg.o import/ImportFFmpeg.o"
+         AC_MSG_NOTICE([FFmpeg library available as system library])
+      fi
+   fi
+   if test "x$FFMPEG_SYSTEM_AVAILABLE" = "xno" ; then
+      AC_MSG_NOTICE([FFmpeg library NOT available as system library])
+   fi
+
+   dnl see if ffmpeg is available locally. Right now it isn't.
+
+   FFMPEG_LOCAL_AVAILABLE="no"
+   AC_MSG_NOTICE([ffmpeg library is NOT available in the local tree])
+])
+
 AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
    AC_ARG_WITH(libtwolame,
                [AS_HELP_STRING([--with-libtwolame],
