@@ -744,6 +744,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddItem(wxT("Welcome"),          _("&Show Welcome Message..."),      FN(OnHelpWelcome));
    c->AddItem(wxT("Help"),             _("&Index..."),                      FN(OnHelp));
+   c->AddItem(wxT("Log"),             _("Show &log..."),                      FN(OnLog));
 
 
 #if 1 // Debugging tools are enabled in unstable builds
@@ -4371,6 +4372,11 @@ void AudacityProject::OnHelp()
       FileNames::HtmlHelpIndexFile(),
       wxT("http://audacityteam.org/manual/index.php?title=Main_Page" ));
       //wxT("http://audacity.sourceforge.net/help/documentation"  ));
+}
+
+void AudacityProject::OnLog()
+{
+   if (mLogger) mLogger->Show();
 }
 
 void AudacityProject::OnBenchmark()
