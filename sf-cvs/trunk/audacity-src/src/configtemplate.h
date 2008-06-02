@@ -76,6 +76,10 @@
 /* Define if Audio Unit plug-ins are enabled (Mac OS X only) */
 #undef USE_AUDIO_UNITS
 
+/* Define if ffmpeg (multi-format import and export) support should be enabled
+   */
+#undef USE_FFMPEG
+
 /* Define if LADSPA plug-ins are enabled */
 #undef USE_LADSPA
 
