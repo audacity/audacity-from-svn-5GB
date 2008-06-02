@@ -701,6 +701,10 @@ VAMP_CFLAGS
 VAMP_LIBS
 LIBTWOLAME_CFLAGS
 LIBTWOLAME_LIBS
+AVCODEC_CFLAGS
+AVCODEC_LIBS
+AVFORMAT_CFLAGS
+AVFORMAT_LIBS
 build
 build_cpu
 build_vendor
@@ -741,6 +745,10 @@ VAMP_CFLAGS
 VAMP_LIBS
 LIBTWOLAME_CFLAGS
 LIBTWOLAME_LIBS
+AVCODEC_CFLAGS
+AVCODEC_LIBS
+AVFORMAT_CFLAGS
+AVFORMAT_LIBS
 JACK_CFLAGS
 JACK_LIBS'
 ac_subdirs_all='"lib-src/FileDialog"
@@ -1355,6 +1363,7 @@ Optional Packages:
   --with-libid3tag        use libid3tag for mp3 id3 tag support
   --with-soundtouch       use libSoundTouch for pitch and tempo changing
   --with-libtwolame       use libtwolame for MP2 export support
+  --with-ffmpeg           use ffmpeg for import and export support
   --with-portmixer        compile with PortMixer [default=yes]
   --with-portaudio        which version of PortAudio to use (=[v18,v19])
                           [default=v19]
@@ -1396,6 +1405,14 @@ Some influential environment variables:
               C compiler flags for LIBTWOLAME, overriding pkg-config
   LIBTWOLAME_LIBS
               linker flags for LIBTWOLAME, overriding pkg-config
+  AVCODEC_CFLAGS
+              C compiler flags for AVCODEC, overriding pkg-config
+  AVCODEC_LIBS
+              linker flags for AVCODEC, overriding pkg-config
+  AVFORMAT_CFLAGS
+              C compiler flags for AVFORMAT, overriding pkg-config
+  AVFORMAT_LIBS
+              linker flags for AVFORMAT, overriding pkg-config
   JACK_CFLAGS C compiler flags for JACK, overriding pkg-config
   JACK_LIBS   linker flags for JACK, overriding pkg-config
 
@@ -5545,7 +5562,7 @@ BUILD_LDFLAGS="$BUILD_LDFLAGS $WIDGETEXTRA_LIBS"
 CXXFLAGS="$CXXFLAGS $WIDGETEXTRA_CFLAGS"
 LIBSRC_BUILD="$LIBSRC_BUILD widgetextra"
 
-LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME"
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG"
 
 { echo "$as_me:$LINENO: Determining what libraries are available in this tree and on the system" >&5
 echo "$as_me: Determining what libraries are available in this tree and on the system" >&6;}
@@ -7796,6 +7813,190 @@ echo "$as_me: libtwolame library is NOT available in the local tree" >&6;}
 
 
 
+# Check whether --with-libtwolame was given.
+if test "${with_libtwolame+set}" = set; then
+  withval=$with_libtwolame; FFMPEG_ARGUMENT=$withval
+else
+  FFMPEG_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_FFMPEG 1
+_ACEOF
+
+   fi
+
+
+
+pkg_failed=no
+{ echo "$as_me:$LINENO: checking for AVCODEC" >&5
+echo $ECHO_N "checking for AVCODEC... $ECHO_C" >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$AVCODEC_CFLAGS"; then
+        pkg_cv_AVCODEC_CFLAGS="$AVCODEC_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavcodec >= 51\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libavcodec >= 51") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_AVCODEC_CFLAGS=`$PKG_CONFIG --cflags "libavcodec >= 51" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$AVCODEC_LIBS"; then
+        pkg_cv_AVCODEC_LIBS="$AVCODEC_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavcodec >= 51\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libavcodec >= 51") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_AVCODEC_LIBS=`$PKG_CONFIG --libs "libavcodec >= 51" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        AVCODEC_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "libavcodec >= 51"`
+        else
+	        AVCODEC_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libavcodec >= 51"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$AVCODEC_PKG_ERRORS" >&5
+
+	{ echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+                avcodec_available_system="no"
+elif test $pkg_failed = untried; then
+	avcodec_available_system="no"
+else
+	AVCODEC_CFLAGS=$pkg_cv_AVCODEC_CFLAGS
+	AVCODEC_LIBS=$pkg_cv_AVCODEC_LIBS
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+	avcodec_available_system="yes"
+fi
+
+pkg_failed=no
+{ echo "$as_me:$LINENO: checking for AVFORMAT" >&5
+echo $ECHO_N "checking for AVFORMAT... $ECHO_C" >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$AVFORMAT_CFLAGS"; then
+        pkg_cv_AVFORMAT_CFLAGS="$AVFORMAT_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavformat >= 51\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libavformat >= 51") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_AVFORMAT_CFLAGS=`$PKG_CONFIG --cflags "libavformat >= 51" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$AVFORMAT_LIBS"; then
+        pkg_cv_AVFORMAT_LIBS="$AVFORMAT_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavformat >= 51\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libavformat >= 51") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_AVFORMAT_LIBS=`$PKG_CONFIG --libs "libavformat >= 51" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        AVFORMAT_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "libavformat >= 51"`
+        else
+	        AVFORMAT_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libavformat >= 51"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$AVFORMAT_PKG_ERRORS" >&5
+
+	{ echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+                avformat_available_system="no"
+elif test $pkg_failed = untried; then
+	avformat_available_system="no"
+else
+	AVFORMAT_CFLAGS=$pkg_cv_AVFORMAT_CFLAGS
+	AVFORMAT_LIBS=$pkg_cv_AVFORMAT_LIBS
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+	avformat_available_system="yes"
+fi
+
+   FFMPEG_SYSTEM_AVAILABLE="no"
+   if test "x$avcodec_available_system" = "xyes" ; then
+      if test "x$avformat_available_system" = "xyes" ; then
+	     FFMPEG_SYSTEM_AVAILABLE="yes"
+         FFMPEG_SYSTEM_LIBS="$AVCODEC_LIBS $AVFORMAT_LIBS"
+         FFMPEG_SYSTEM_CXXFLAGS="$AVCODEC_CFLAGS $AVFORMAT_CFLAGS"
+         FFMPEG_SYSTEM_CPPSYMBOLS="USE_FFMPEG"
+		 		 		 FFMPEG_SYSTEM_OPTOBJS="FFmpeg.o import/ImportFFmpeg.o"
+         { echo "$as_me:$LINENO: FFmpeg library available as system library" >&5
+echo "$as_me: FFmpeg library available as system library" >&6;}
+      fi
+   fi
+   if test "x$FFMPEG_SYSTEM_AVAILABLE" = "xno" ; then
+      { echo "$as_me:$LINENO: FFmpeg library NOT available as system library" >&5
+echo "$as_me: FFmpeg library NOT available as system library" >&6;}
+   fi
+
+
+   FFMPEG_LOCAL_AVAILABLE="no"
+   { echo "$as_me:$LINENO: ffmpeg library is NOT available in the local tree" >&5
+echo "$as_me: ffmpeg library is NOT available in the local tree" >&6;}
+
+
+
 { echo "$as_me:$LINENO: Figuring out what libraries to enable" >&5
 echo "$as_me: Figuring out what libraries to enable" >&6;}
 
@@ -9479,6 +9680,10 @@ VAMP_CFLAGS!$VAMP_CFLAGS$ac_delim
 VAMP_LIBS!$VAMP_LIBS$ac_delim
 LIBTWOLAME_CFLAGS!$LIBTWOLAME_CFLAGS$ac_delim
 LIBTWOLAME_LIBS!$LIBTWOLAME_LIBS$ac_delim
+AVCODEC_CFLAGS!$AVCODEC_CFLAGS$ac_delim
+AVCODEC_LIBS!$AVCODEC_LIBS$ac_delim
+AVFORMAT_CFLAGS!$AVFORMAT_CFLAGS$ac_delim
+AVFORMAT_LIBS!$AVFORMAT_LIBS$ac_delim
 build!$build$ac_delim
 build_cpu!$build_cpu$ac_delim
 build_vendor!$build_vendor$ac_delim
@@ -9486,10 +9691,6 @@ build_os!$build_os$ac_delim
 host!$host$ac_delim
 host_cpu!$host_cpu$ac_delim
 host_vendor!$host_vendor$ac_delim
-host_os!$host_os$ac_delim
-JACK_CFLAGS!$JACK_CFLAGS$ac_delim
-JACK_LIBS!$JACK_LIBS$ac_delim
-LIBOBJS!$LIBOBJS$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -9531,10 +9732,14 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+host_os!$host_os$ac_delim
+JACK_CFLAGS!$JACK_CFLAGS$ac_delim
+JACK_LIBS!$JACK_LIBS$ac_delim
+LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 1; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 5; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
