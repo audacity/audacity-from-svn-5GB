@@ -19,7 +19,7 @@ Licensed under the GNU General Public License v2 or later
 \brief An ImportPlugin for FFmpeg data
 
 *//*******************************************************************/
-#include <Experimental.h>
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -29,10 +29,7 @@ Licensed under the GNU General Public License v2 or later
 #endif
 
 #include "../Audacity.h"	// brings in config*.h and other system-wide stuff
-#include "Import.h"
-#include "ImportPlugin.h"
-
-#include "../Tags.h"
+#include <Experimental.h>
 
 #define DESC _("FFmpeg-compatible files")
 
@@ -146,10 +143,14 @@ static const wxChar *exts[] =
 };
 
 #if defined(USE_FFMPEG)
+// all the includes live here by default
+#include "Import.h"
+#include "ImportFFmpeg.h"
+#include "../Tags.h"
 #include "../Internat.h"
 #include "../WaveTrack.h"
 #include "ImportPlugin.h"
-#include "../FFmpeg.h"
+#include "../FFmpeg.h"		// which brings in avcodec.h, avformat.h
 
 extern FFmpegLibs *FFmpegLibsInst;
 
@@ -199,9 +200,8 @@ void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
       case 2: cpt = wxT("Debug"); break;
       default: cpt = wxT("Log"); break;
    }
-   wxLogMessage(wxT("%s: %s"),cpt,printstring);
+   wxLogMessage(wxT("%s: %s"),cpt.c_str(),printstring.c_str());
 }
-
 
 class FFmpegImportPlugin : public ImportPlugin
 {
@@ -254,7 +254,6 @@ public:
          mScs[StreamID]->m_use = Use;
    }
 
-
 private:
 
    AVFormatContext      *mFormatContext;
@@ -269,6 +268,7 @@ private:
    uint64_t              mSamplesDone;
    WaveTrack           ***mChannels;
 };
+
 
 void GetFFmpegImportPlugin(ImportPluginList *importPluginList,
                            UnusableImportPluginList *unusableImportPluginList)
@@ -657,7 +657,7 @@ int FFmpegImportFileHandle::DecodeFrame(streamContext *sc, bool flushing)
 int FFmpegImportFileHandle::WriteData(streamContext *sc)
 {
 
-   int pos = 0;
+   size_t pos = 0;
    int streamid = -1;
    for (int i = 0; i < mNumStreams; i++)
    {
