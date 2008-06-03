@@ -93,15 +93,6 @@ of this, doesn't work for the static libraries)".
    Audacity releases are built with wxUSE_ACCESSIBILITY 
    turned on (set to 1).
 
-3. For Ruslan Ijbulatov's work on FFMpeg support, need to 
-   enable src/generic/filedlgg.cpp. 
-      * Open Solution Explorer. 
-      * Open the hierarchy to core > Generic Sources. 
-      * Right-click filedlgg.cpp and select Properties.
-      * In Configuration menu, choose All Configurations.
-      * In General tab, set Excluded From Build to No. 
-      * Click OK. 
-
 3. Build for all configurations of Audacity that you want. 
    For Batch Build for Audacity, you need select only these 
    projects (not the whole solution) for each configuration:
