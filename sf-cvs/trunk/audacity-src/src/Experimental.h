@@ -53,7 +53,9 @@
 
 //FFmpeg integration. Some FFmpeg-related changes are NOT ifdef'ed,
 //as they are harmless (like - a few mockup methods in Import* classes)
+#if defined(USE_FFMPEG)
 #define FFMPEG_INTEGRATION
+#endif
 
 // AM, 22 Nov.2007
 // Some fixes for the rulers.
