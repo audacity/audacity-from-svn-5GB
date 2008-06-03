@@ -10,6 +10,9 @@ LRN
 
 #ifndef __AUDACITY_IMPORT_FFMPEG__
 #define __AUDACITY_IMPORT_FFMPEG__
+
+#include "ImportPlugin.h"
+
 class ImportPluginList;
 class UnusableImportPluginList;
 
