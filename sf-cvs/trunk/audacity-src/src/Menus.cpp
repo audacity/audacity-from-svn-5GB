@@ -50,6 +50,7 @@ simplifies construction of menu items.
 #include "AudacityApp.h"
 #include "AudioIO.h"
 #include "Dependencies.h"
+#include "float_cast.h"
 #include "LabelTrack.h"
 #include "import/ImportMIDI.h"
 #include "import/ImportRaw.h"
