@@ -13,8 +13,7 @@ License: GPL v2.  See License.txt.
 \brief Class used to dynamically load FFmpeg libraries
 
 *//*******************************************************************/
-#include "../FFmpeg.h"
-#if defined(FFMPEG_INTEGRATION)
+#include "FFmpeg.h"		// brings config*.h in with it
 
 #ifdef _DEBUG
    #ifdef _MSC_VER
@@ -24,6 +23,7 @@ License: GPL v2.  See License.txt.
    #endif
 #endif
 
+#if defined(USE_FFMPEG)
 //----------------------------------------------------------------------------
 // FFmpegLibs
 //----------------------------------------------------------------------------
@@ -178,4 +178,4 @@ void FFmpegLibs::FreeLibs()
    avutil.Unload();
    return;
 }
-#endif //FFMPEG_INTEGRATION
+#endif //USE_FFMPEG

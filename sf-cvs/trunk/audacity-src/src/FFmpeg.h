@@ -15,14 +15,18 @@ Describes shared object that is used to access FFmpeg libraries.
 
 #if !defined(__AUDACITY_FFMPEG__)
 #define __AUDACITY_FFMPEG__
-#include "../Experimental.h"
-#if defined(FFMPEG_INTEGRATION)
+
+#include "../Audacity.h"	// pulls in config*.h and other program stuff
+#include <Experimental.h>
+#if defined(USE_FFMPEG)
 #include <wx/dynlib.h>
+#include <wx/log.h>			// for wxLogNull
+#include <wx/msgdlg.h>		// for wxMessageBox
 
 #define __STDC_CONSTANT_MACROS 
 
-#include "libavcodec/avcodec.h"
-#include "libavformat/avformat.h"
+#include <avcodec.h>
+#include <avformat.h>
 
 #define INITDYN(w,f) if ((*(void**)&this->f=(void*)w.GetSymbol(wxT(#f))) == NULL) return false
 
