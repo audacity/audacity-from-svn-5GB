@@ -23,10 +23,12 @@ Describes shared object that is used to access FFmpeg libraries.
 #include <wx/log.h>			// for wxLogNull
 #include <wx/msgdlg.h>		// for wxMessageBox
 
-#define __STDC_CONSTANT_MACROS 
+#define __STDC_CONSTANT_MACROS
 
+extern "C" {
 #include <avcodec.h>
 #include <avformat.h>
+}
 
 #define INITDYN(w,f) if ((*(void**)&this->f=(void*)w.GetSymbol(wxT(#f))) == NULL) return false
 
