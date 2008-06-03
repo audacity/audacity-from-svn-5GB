@@ -19,8 +19,7 @@ Licensed under the GNU General Public License v2 or later
 \brief An ImportPlugin for FFmpeg data
 
 *//*******************************************************************/
-#include "../Experimental.h"
-#if defined(FFMPEG_INTEGRATION)
+#include <Experimental.h>
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -29,6 +28,7 @@ Licensed under the GNU General Public License v2 or later
 #include <wx/window.h>
 #endif
 
+#include "../Audacity.h"	// brings in config*.h and other system-wide stuff
 #include "Import.h"
 #include "ImportPlugin.h"
 
@@ -145,6 +145,7 @@ static const wxChar *exts[] =
    wxT("wv")
 };
 
+#if defined(USE_FFMPEG)
 #include "../Internat.h"
 #include "../WaveTrack.h"
 #include "ImportPlugin.h"
@@ -747,4 +748,4 @@ FFmpegImportFileHandle::~FFmpegImportFileHandle()
    }
 }
 
-#endif //FFMPEG_INTEGRATION
+#endif //USE_FFMPEG
