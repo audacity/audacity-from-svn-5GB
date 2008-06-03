@@ -249,7 +249,7 @@ FLAC__StreamDecoderWriteStatus MyFLACFile::write_callback(const FLAC__Frame *fra
 
    mFile->mSamplesDone += frame->header.blocksize;
 
-   if (!mFile->mProgress->Update(mFile->mSamplesDone, mFile->mNumSamples)) {
+   if (!mFile->mProgress->Update((wxULongLong_t) mFile->mSamplesDone, (wxULongLong_t)mFile->mNumSamples)) {
       mFile->mCancelled = true;
       return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
    }
