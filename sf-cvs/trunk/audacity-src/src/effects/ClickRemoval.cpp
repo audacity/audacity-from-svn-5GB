@@ -124,10 +124,10 @@ bool EffectClickRemoval::TransferParameters( Shuttle & shuttle )
 
 bool EffectClickRemoval::Process()
 {
-   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(m_pOutputWaveTracks);
+   TrackListIterator iter(mOutputWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {
@@ -315,7 +315,6 @@ ClickRemovalDialog::ClickRemovalDialog(EffectClickRemoval *effect,
    mEffect(effect)
 {
    Init();
-   effect->SetDialog(this);
 }
 
 void ClickRemovalDialog::PopulateOrExchange(ShuttleGui & S)

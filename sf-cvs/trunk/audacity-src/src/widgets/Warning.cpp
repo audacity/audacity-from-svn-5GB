@@ -21,6 +21,7 @@ the ability to not see similar warnings again for this session.
 #include "Warning.h"
 
 #include "../Prefs.h"
+#include "../ShuttleGui.h"
 
 #include <wx/button.h>
 #include <wx/checkbox.h>
@@ -31,57 +32,49 @@ the ability to not see similar warnings again for this session.
 
 class WarningDialog : public wxDialog
 {
-   public:
+ public:
    // constructors and destructors
    WarningDialog(wxWindow *parent, 
                  wxString message);
 
    bool dontShow;
    
-private:
-   void OnOk( wxCommandEvent &event );
+ private:
+   void OnOK(wxCommandEvent& event);
 
    wxCheckBox *mCheckBox;
-   
-private:
+
    DECLARE_EVENT_TABLE()
 };
 
 BEGIN_EVENT_TABLE(WarningDialog, wxDialog)
-   EVT_BUTTON( wxID_OK, WarningDialog::OnOk )
+   EVT_BUTTON(wxID_OK, WarningDialog::OnOK)
 END_EVENT_TABLE()
 
-WarningDialog::WarningDialog(wxWindow *parent, wxString message):
-   wxDialog(parent, (wxWindowID)-1, (wxString)_("Warning")),
+WarningDialog::WarningDialog(wxWindow *parent, wxString message)
+:  wxDialog(parent, wxID_ANY, (wxString)_("Warning")),
    dontShow( false )
 {
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-   wxBoxSizer *vSizer = new wxBoxSizer(wxVERTICAL);
+   ShuttleGui S(this, eIsCreating);
 
-   wxStaticText *statText = new wxStaticText(this, -1, message);
-   vSizer->Add(statText, 0, wxALIGN_LEFT|wxALL, 5);
+   S.SetBorder(10);
+   S.StartVerticalLay(false);
+   {
+      S.AddUnits(message);
+      mCheckBox = S.TieCheckBox(_("Don't show this warning again"), dontShow);
+   }
 
-   mCheckBox = new wxCheckBox(this, -1, _("Don't show this warning again"));
-   vSizer->Add(mCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
+   S.SetBorder(0);
+   S.AddStandardButtons(eOkButton);
 
-   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
-   ok->SetDefault();
-   ok->SetFocus();
-   vSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
-
-   mainSizer->Add(vSizer, 0, wxALL, 15);
-
-   SetAutoLayout(true);
-   SetSizer(mainSizer);
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
+   Fit();
 }
 
-void WarningDialog::OnOk(wxCommandEvent &event)
+void WarningDialog::OnOK(wxCommandEvent& event)
 {
    dontShow = mCheckBox->GetValue();
-   
-   EndModal(true);
+
+   EndModal(wxID_OK);
 }
 
 void ShowWarningDialog(wxWindow *parent,

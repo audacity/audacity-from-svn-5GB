@@ -47,8 +47,7 @@ public:
    // constructors and destructors
    BenchmarkDialog( wxWindow *parent );
    
-   wxSizer *MakeBenchmarkDialog( wxWindow *parent, bool call_fit = TRUE,
-                                 bool set_sizer = TRUE );
+   void MakeBenchmarkDialog();
    
 private:
    // WDR: handler declarations
@@ -141,7 +140,7 @@ BenchmarkDialog::BenchmarkDialog(wxWindow *parent):
 
    HoldPrint(false);
 
-   MakeBenchmarkDialog( this );
+   MakeBenchmarkDialog();
 }
 
 // WDR: handler implementations for BenchmarkDialog
@@ -151,101 +150,95 @@ void BenchmarkDialog::OnClose(wxCommandEvent &event)
    EndModal(0);
 }
 
-wxSizer *BenchmarkDialog::MakeBenchmarkDialog( wxWindow *parent, bool call_fit, bool set_sizer )
+void BenchmarkDialog::MakeBenchmarkDialog()
 {
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-   wxFlexGridSizer *gridSizer = new wxFlexGridSizer(4, 0, 0);
-
+   ShuttleGui S(this, eIsCreating);
    wxControl *item;
    
    // Strings don't need to be translated because this class doesn't
    // ever get used in a stable release.
 
-   item = new wxStaticText(parent, StaticTextID, wxT("Disk Block Size (KB):"));
-   gridSizer->Add(item, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-   item = new wxTextCtrl(parent, BlockSizeID, wxT(""), wxDefaultPosition,
-                         wxSize(100, -1), 0,
-                         wxTextValidator(wxFILTER_NUMERIC,
+   S.StartVerticalLay(true);
+   {
+      S.SetBorder(8);
+      S.StartMultiColumn(4);
+      {
+         //
+         item = S.Id(BlockSizeID).AddTextBox(wxT("Disk Block Size (KB):"),
+                                             wxT(""),
+                                             12);
+         item->SetValidator(wxTextValidator(wxFILTER_NUMERIC,
                                          &mBlockSizeStr));
-   gridSizer->Add(item, 0, wxALL, 5);
 
-   item = new wxStaticText(parent, StaticTextID, wxT("Number of Edits :"));
-   gridSizer->Add(item, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-   item = new wxTextCtrl(parent, NumEditsID, wxT(""), wxDefaultPosition,
-                         wxSize(100, -1), 0,
-                         wxTextValidator(wxFILTER_NUMERIC,
+         //
+         item = S.Id(NumEditsID).AddTextBox(wxT("Number of Edits:"),
+                                            wxT(""),
+                                            12);
+         item->SetValidator(wxTextValidator(wxFILTER_NUMERIC,
                                          &mNumEditsStr));
-   gridSizer->Add(item, 0, wxALL, 5);
 
-   item = new wxStaticText(parent, StaticTextID, wxT("Test Data Size (MB):"));
-   gridSizer->Add(item, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-   item = new wxTextCtrl(parent, DataSizeID, wxT(""), wxDefaultPosition,
-                         wxSize(100, -1), 0,
-                         wxTextValidator(wxFILTER_NUMERIC,
+         //
+         item = S.Id(DataSizeID).AddTextBox(wxT("Test Data Size (MB):"),
+                                            wxT(""),
+                                            12);
+         item->SetValidator(wxTextValidator(wxFILTER_NUMERIC,
                                          &mDataSizeStr));
-   gridSizer->Add(item, 0, wxALL, 5);
 
-   item = new wxStaticText(parent, StaticTextID, wxT("Random Seed :"));
-   gridSizer->Add(item, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-   item = new wxTextCtrl(parent, RandSeedID, wxT(""), wxDefaultPosition,
-                         wxSize(100, -1), 0,
-                         wxTextValidator(wxFILTER_NUMERIC,
+         ///
+         item = S.Id(RandSeedID).AddTextBox(wxT("Random Seed:"),
+                                            wxT(""),
+                                            12);
+         item->SetValidator(wxTextValidator(wxFILTER_NUMERIC,
                                          &mRandSeedStr));
-   gridSizer->Add(item, 0, wxALL, 5);
 
-   mainSizer->Add(gridSizer, 0, wxALL, 5);
-
-   item = new wxCheckBox(parent, 0,
-                         wxT("Show detailed info about each block file"),
-                         wxDefaultPosition, wxDefaultSize, 0,
-                         wxGenericValidator(&mBlockDetail));
-   mainSizer->Add(item, 0, wxALL, 5);
-
-   item = new wxCheckBox(parent, 0,
-                         wxT("Show detailed info about each editing operation"),
-                         wxDefaultPosition, wxDefaultSize, 0,
-                         wxGenericValidator(&mEditDetail));
-   mainSizer->Add(item, 0, wxALL, 5);
-
-   mText = new wxTextCtrl(parent, StaticTextID, wxT(""),
-                          wxDefaultPosition,
-                          wxSize(-1, 200),
-                          wxTE_MULTILINE |
-                          wxTE_READONLY);
-   mainSizer->Add(mText, 1, wxALL | wxEXPAND, 5);
-
-   wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   item = new wxButton( parent, RunID, wxT("Run"));
-   hSizer->Add(item, 0, wxALL, 5 );
-
-   item = new wxButton( parent, BSaveID, wxT("Save"));
-   hSizer->Add(item, 0, wxALL, 5 );
-
-   item = new wxButton( parent, ClearID, wxT("Clear"));
-   hSizer->Add(item, 0, wxALL, 5 );
-
-   hSizer->Add(5, 5, 1, wxEXPAND);
-
-   item = new wxButton( parent, wxID_CANCEL, wxT("Close"));
-   hSizer->Add(item, 0, wxALL, 5 );
-
-   mainSizer->Add(hSizer, 0, wxEXPAND, 5);   
-
-   if (set_sizer) {
-      parent->SetAutoLayout( TRUE );
-      parent->SetSizer( mainSizer );
-      if (call_fit) {
-         mainSizer->Fit( parent );
-         mainSizer->SetSizeHints( parent );
       }
+      S.EndMultiColumn();
+
+      //
+      item = S.AddCheckBox(wxT("Show detailed info about each block file"),
+                           wxT("false"));
+      item->SetValidator(wxGenericValidator(&mBlockDetail));
+
+      //
+      item = S.AddCheckBox(wxT("Show detailed info about each editing operation"),
+                           wxT("false"));
+      item->SetValidator(wxGenericValidator(&mEditDetail));
+
+      //
+      mText = S.Id(StaticTextID).AddTextWindow(wxT(""));
+      mText->SetName(wxT("Output"));
+      mText->SetSizeHints(wxSize(500,200));
+
+      //
+      S.SetBorder(10);
+      S.StartHorizontalLay(wxALIGN_LEFT | wxEXPAND, false);
+      {
+         S.StartHorizontalLay(wxALIGN_LEFT, false);
+         {
+            S.Id(RunID).AddButton(wxT("Run"));
+            S.Id(BSaveID).AddButton(wxT("Save"));
+            S.Id(ClearID).AddButton(wxT("Clear"));
+         }
+         S.EndHorizontalLay();
+
+         S.StartHorizontalLay(wxALIGN_CENTER, true);
+         {
+            // Spacer
+         }
+         S.EndHorizontalLay();
+
+         S.StartHorizontalLay(wxALIGN_RIGHT, false);
+         {
+            S.Id(wxID_CANCEL).AddButton(wxT("Close"));
+         }
+         S.EndHorizontalLay();
+      }
+      S.EndHorizontalLay();
    }
-    
-   return mainSizer;
+   S.EndVerticalLay();
+
+   Fit();
+   SetSizeHints(GetSize());
 }
 
 void BenchmarkDialog::OnSave( wxCommandEvent &event )

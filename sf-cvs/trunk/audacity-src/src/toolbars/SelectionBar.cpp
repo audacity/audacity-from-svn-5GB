@@ -149,10 +149,12 @@ void SelectionBar::Populate()
    mRightEndButton = new wxRadioButton(this, OnEndRadioID, _("End"),
                                        wxDefaultPosition, wxDefaultSize,
                                        wxRB_GROUP);
+   mRightEndButton->SetName(_("End"));
    mRightEndButton->SetValue(!showSelectionLength);
    hSizer->Add(mRightEndButton,
                0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 5);
    mRightLengthButton = new wxRadioButton(this, OnLengthRadioID, _("Length"));
+   mRightLengthButton->SetName(_("Length"));
    mRightLengthButton->SetValue(showSelectionLength);
    hSizer->Add(mRightLengthButton,
                0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);

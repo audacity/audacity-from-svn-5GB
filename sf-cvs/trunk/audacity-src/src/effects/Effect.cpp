@@ -123,7 +123,7 @@ EffectArray *Effect::GetEffects(int flags /* = ALL_EFFECTS */)
 Effect::Effect()
 {
    mWaveTracks = NULL;
-   m_pOutputWaveTracks = NULL;
+   mOutputWaveTracks = NULL;
 
    // Can change effect flags later (this is the new way)
    // OR using the old way, over-ride GetEffectFlags().
@@ -143,9 +143,9 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
       mWaveTracks = NULL;
    }
 
-   if (m_pOutputWaveTracks) {
-      delete m_pOutputWaveTracks;
-      m_pOutputWaveTracks = NULL;
+   if (mOutputWaveTracks) {
+      delete mOutputWaveTracks;
+      mOutputWaveTracks = NULL;
    }
 
    mFactory = factory;
@@ -180,10 +180,10 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
    End();
 
    delete mWaveTracks;
-   if (m_pOutputWaveTracks != mWaveTracks) // If processing completed successfully, they should be the same.
-      delete m_pOutputWaveTracks;
+   if (mOutputWaveTracks != mWaveTracks) // If processing completed successfully, they should be the same.
+      delete mOutputWaveTracks;
    mWaveTracks = NULL;
-   m_pOutputWaveTracks = NULL;
+   mOutputWaveTracks = NULL;
 
    if (returnVal) {
       *t0 = mT0;
@@ -211,7 +211,7 @@ bool Effect::TrackGroupProgress(int whichGroup, double frac)
 //
 // private methods
 //
-// Use these two methods to copy the input tracks to m_pOutputWaveTracks, if 
+// Use these two methods to copy the input tracks to mOutputWaveTracks, if 
 // doing the processing on them, and replacing the originals only on success (and not cancel).
 void Effect::CopyInputWaveTracks()
 {
@@ -221,31 +221,31 @@ void Effect::CopyInputWaveTracks()
    // Copy the mWaveTracks, to process the copies.
    TrackListIterator iterIn(mWaveTracks);
    WaveTrack* pInWaveTrack = (WaveTrack*)(iterIn.First());
-   m_pOutputWaveTracks = new TrackList();
+   mOutputWaveTracks = new TrackList();
    WaveTrack* pOutWaveTrack = NULL;
    while (pInWaveTrack != NULL)
    {
       pOutWaveTrack = mFactory->DuplicateWaveTrack(*(WaveTrack*)pInWaveTrack);
-      m_pOutputWaveTracks->Add(pOutWaveTrack);
+      mOutputWaveTracks->Add(pOutWaveTrack);
       pInWaveTrack = (WaveTrack*)(iterIn.Next());
    }
 }
 
 
 // If bGoodResult, replace mWaveTracks tracks in mTracks with successfully processed 
-// m_pOutputWaveTracks copies, get rid of old mWaveTracks, and set mWaveTracks to m_pOutputWaveTracks. 
-// Else clear and delete m_pOutputWaveTracks copies.
+// mOutputWaveTracks copies, get rid of old mWaveTracks, and set mWaveTracks to mOutputWaveTracks. 
+// Else clear and delete mOutputWaveTracks copies.
 void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
 {
    if (bGoodResult)
    {
-      // Circular replacement of the input wave tracks with the processed m_pOutputWaveTracks tracks. 
+      // Circular replacement of the input wave tracks with the processed mOutputWaveTracks tracks. 
       // But mWaveTracks is temporary, so replace in mTracks. More bookkeeping.
       TrackListIterator iterIn(mWaveTracks);
       WaveTrack* pInWaveTrack = (WaveTrack*)(iterIn.First());
 
-      wxASSERT(m_pOutputWaveTracks != NULL); // Make sure we at least did the CopyInputWaveTracks().
-      TrackListIterator iterOut(m_pOutputWaveTracks);
+      wxASSERT(mOutputWaveTracks != NULL); // Make sure we at least did the CopyInputWaveTracks().
+      TrackListIterator iterOut(mOutputWaveTracks);
       WaveTrack* pOutWaveTrack = (WaveTrack*)(iterOut.First());
 
       TrackListIterator iterAllTracks(mTracks);
@@ -276,12 +276,12 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
 
       // Also need to clean up mWaveTracks, primarily because Preview uses it as the processed tracks. 
       delete mWaveTracks;
-      mWaveTracks = m_pOutputWaveTracks;
+      mWaveTracks = mOutputWaveTracks;
    }
    else
    {
       // Processing failed or was cancelled so throw away the processed tracks.
-      m_pOutputWaveTracks->Clear(true); // true => delete the tracks
+      mOutputWaveTracks->Clear(true); // true => delete the tracks
    }
 }
 
@@ -394,7 +394,7 @@ void Effect::Preview()
    mProgress = new ProgressDialog(StripAmpersand(GetEffectName()),
                                   _("Preparing preview"));
    bool bSuccess = Process();
-   mProgress->Destroy();
+   delete mProgress;
    End();
    Init();
    if (bSuccess)
@@ -422,7 +422,7 @@ void Effect::Preview()
          bool previewing = true;
 
          mProgress = new ProgressDialog(StripAmpersand(GetEffectName()),
-                                          _("Previewing"));
+                                        _("Previewing"));
 
          while (gAudioIO->IsStreamActive(token) && previewing) {
             ::wxMilliSleep(100);
@@ -434,7 +434,7 @@ void Effect::Preview()
             ::wxMilliSleep(100);
          }
 
-         mProgress->Destroy();
+         delete mProgress;
       }
       else {
          wxMessageBox(_("Error while opening sound device. Please check the output device settings and the project sample rate."),
@@ -442,8 +442,8 @@ void Effect::Preview()
       }
    }
 
-   if (mWaveTracks == m_pOutputWaveTracks) // typical case, but depends on descendant implementation
-      m_pOutputWaveTracks = NULL; 
+   if (mWaveTracks == mOutputWaveTracks) // typical case, but depends on descendant implementation
+      mOutputWaveTracks = NULL; 
    mWaveTracks->Clear(true); // true => delete the tracks
    delete mWaveTracks;
 

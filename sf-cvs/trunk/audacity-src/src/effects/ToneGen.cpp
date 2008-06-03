@@ -248,10 +248,10 @@ bool EffectToneGen::Process()
    mPositionInCycles = 0.0;
    //Iterate over each track
    int ntrack = 0;
-   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(m_pOutputWaveTracks);
+   TrackListIterator iter(mOutputWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
       mSample = 0;

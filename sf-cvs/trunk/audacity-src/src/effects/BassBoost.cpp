@@ -157,11 +157,11 @@ const static wxChar *numbers[] =
 #define BOOST_MAX 36
 
 BEGIN_EVENT_TABLE(BassBoostDialog, EffectDialog)
-    EVT_SLIDER(ID_FREQ_SLIDER, BassBoostDialog::OnFreqSlider)
-    EVT_SLIDER(ID_BOOST_SLIDER, BassBoostDialog::OnBoostSlider)
-    EVT_TEXT(ID_FREQ_TEXT, BassBoostDialog::OnFreqText)
-    EVT_TEXT(ID_BOOST_TEXT, BassBoostDialog::OnBoostText)
-    EVT_BUTTON(ID_EFFECT_PREVIEW, BassBoostDialog::OnPreview)
+   EVT_SLIDER(ID_FREQ_SLIDER, BassBoostDialog::OnFreqSlider)
+   EVT_SLIDER(ID_BOOST_SLIDER, BassBoostDialog::OnBoostSlider)
+   EVT_TEXT(ID_FREQ_TEXT, BassBoostDialog::OnFreqText)
+   EVT_TEXT(ID_BOOST_TEXT, BassBoostDialog::OnBoostText)
+   EVT_BUTTON(ID_EFFECT_PREVIEW, BassBoostDialog::OnPreview)
 END_EVENT_TABLE()
 
 BassBoostDialog::BassBoostDialog(EffectBassBoost *effect,
@@ -170,7 +170,6 @@ BassBoostDialog::BassBoostDialog(EffectBassBoost *effect,
    mEffect(effect)
 {
    Init();
-   effect->SetDialog(this);
 }
 
 void BassBoostDialog::PopulateOrExchange(ShuttleGui & S)

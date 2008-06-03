@@ -146,10 +146,12 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
       _("Cepstrum")
    };
 
-   wxStaticText *algLabel = new wxStaticText(this, wxID_ANY, _("Algorithm:"));
+   wxStaticText *algLabel = new wxStaticText(this, wxID_ANY,
+                                             wxString(_("Algorithm")) + wxT(":"));
    mAlgChoice = new wxChoice(this, FreqAlgChoiceID,
                              wxDefaultPosition, wxDefaultSize,
                              5, algChoiceStrings);
+   mAlgChoice->SetName(_("Algorithm"));
 
    mAlgChoice->SetSelection(0);
 
@@ -168,6 +170,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    mSizeChoice = new wxChoice(this, FreqSizeChoiceID,
                               wxDefaultPosition, wxDefaultSize,
                               8, sizeChoiceStrings);
+   mSizeChoice->SetName(_("Size"));
 
    mSizeChoice->SetSelection(2);
 
@@ -180,10 +183,12 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
       funcChoiceStrings[i] = WindowFuncName(i) + wxString(_(" window"));
    }
 
-   wxStaticText *funcLabel = new wxStaticText(this, wxID_ANY, _("Function:"));
+   wxStaticText *funcLabel = new wxStaticText(this, wxID_ANY,
+                                              wxString(_("Function")) + wxT(":"));
    mFuncChoice = new wxChoice(this, FreqFuncChoiceID,
                               wxDefaultPosition, wxDefaultSize,
                               f, funcChoiceStrings);
+   mFuncChoice->SetName(_("Function"));
 
    mFuncChoice->SetSelection(3);
    delete[]funcChoiceStrings;
@@ -192,10 +197,12 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
       _("Log frequency")
    };
 
-   wxStaticText *axisLabel = new wxStaticText(this, wxID_ANY, _("Axis:"));
+   wxStaticText *axisLabel = new wxStaticText(this, wxID_ANY,
+                                              wxString(_("Axis")) + wxT(":"));
    mAxisChoice = new wxChoice(this, FreqAxisChoiceID,
                               wxDefaultPosition, wxDefaultSize,
                               2, axisChoiceStrings);
+   mAxisChoice->SetName(_("Axis"));
 
    mAxisChoice->SetSelection(0);
 
@@ -203,9 +210,11 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
 
    mExportButton = new wxButton(this, FreqExportButtonID,
                                 _("&Export..."));
+   mExportButton->SetName(_("Export"));
 
    mCloseButton = new wxButton(this, wxID_CANCEL,
                                _("Close"));
+   mCloseButton->SetName(_("Close"));
 
 #ifndef TARGET_CARBON
    mCloseButton->SetDefault();

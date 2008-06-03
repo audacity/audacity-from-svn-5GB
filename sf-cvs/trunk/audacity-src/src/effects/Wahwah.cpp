@@ -306,8 +306,6 @@ wxDialog(parent, id, title, position, size, style)
    SetSizer(item0);
    item0->Fit(this);
    item0->SetSizeHints(this);
-
-   effect->SetDialog(this);
 }
 
 bool WahwahDialog::Validate()

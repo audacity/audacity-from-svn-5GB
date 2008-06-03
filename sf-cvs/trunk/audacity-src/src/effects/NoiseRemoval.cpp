@@ -282,10 +282,10 @@ bool EffectNoiseRemoval::Process()
 
    // This same code will both remove noise and profile it,
    // depending on 'mDoProfile'
-   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(m_pOutputWaveTracks);
+   TrackListIterator iter(mOutputWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {
@@ -735,8 +735,6 @@ NoiseRemovalDialog::NoiseRemovalDialog(EffectNoiseRemoval * effect,
       (wxButton *)wxWindow::FindWindowById(ID_EFFECT_PREVIEW, this);
    m_pButton_RemoveNoise =
       (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
-
-   effect->SetDialog(this);
 }
 
 void NoiseRemovalDialog::OnGetProfile( wxCommandEvent &event )

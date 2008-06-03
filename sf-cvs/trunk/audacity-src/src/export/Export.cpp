@@ -975,18 +975,20 @@ ExportMixerDialog::ExportMixerDialog( TrackList *tracks, bool selectedOnly,
 
    wxWindow *mixerPanel = new ExportMixerPanel( mMixerSpec, mTrackNames, this, 
          ID_MIXERPANEL, wxDefaultPosition, wxSize( 400, -1 ) );
+   mixerPanel->SetName(_("Mixer Panel"));
    vertSizer->Add( mixerPanel, 1, wxEXPAND | wxALIGN_CENTRE | wxALL, 5 );
 
    wxBoxSizer *horSizer = new wxBoxSizer( wxHORIZONTAL );
-   
-   mChannelsText = new wxStaticText( this, -1, 
-         wxString::Format( _( "Output Channels: %2d" ), 
-            mMixerSpec->GetNumChannels() ) );
+
+   wxString label;
+   label.Printf( _( "Output Channels: %2d" ), mMixerSpec->GetNumChannels() );
+   mChannelsText = new wxStaticText( this, -1, label);
    horSizer->Add( mChannelsText, 0, wxALIGN_LEFT | wxALL, 5 );
 
    wxSlider *channels = new wxSlider( this, ID_SLIDER_CHANNEL, 
          mMixerSpec->GetNumChannels(), 1, mMixerSpec->GetMaxNumChannels(),
          wxDefaultPosition, wxSize( 300, -1 ) );
+   channels->SetName(label);
    horSizer->Add( channels, 0, wxEXPAND | wxALL, 5 );
    
    vertSizer->Add( horSizer, 0, wxALIGN_CENTRE | wxALL, 5 );
@@ -1025,8 +1027,10 @@ void ExportMixerDialog::OnSlider( wxCommandEvent &event )
    ExportMixerPanel *pnl = ( ( ExportMixerPanel* ) FindWindow( ID_MIXERPANEL ) );
    mMixerSpec->SetNumChannels( channels->GetValue() );
    pnl->Refresh( false );
-   mChannelsText->SetLabel( wxString::Format( _( "Output Channels: %2d" ), 
-            mMixerSpec->GetNumChannels() ) );
+   wxString label;
+   label.Printf( _( "Output Channels: %2d" ), mMixerSpec->GetNumChannels() );
+   mChannelsText->SetLabel( label );
+   channels->SetName( label );
 }
 
 void ExportMixerDialog::OnOk(wxCommandEvent &event)

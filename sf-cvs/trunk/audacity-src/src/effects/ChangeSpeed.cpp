@@ -88,10 +88,10 @@ bool EffectChangeSpeed::Process()
 	// Similar to EffectSoundTouch::Process()
 
    //Iterate over each track
-   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(m_pOutputWaveTracks);
+   TrackListIterator iter(mOutputWaveTracks);
    WaveTrack* pOutWaveTrack = (WaveTrack*)(iter.First());
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;
@@ -393,8 +393,6 @@ ChangeSpeedDialog::ChangeSpeedDialog(EffectChangeSpeed * effect,
    this->SetSizer(pBoxSizer_Dialog);
    pBoxSizer_Dialog->Fit(this);
    pBoxSizer_Dialog->SetSizeHints(this);
-
-   effect->SetDialog(this);
 }
 
 bool ChangeSpeedDialog::Validate()

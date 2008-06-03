@@ -72,41 +72,32 @@ LangChoiceDialog::LangChoiceDialog(wxWindow * parent,
    wxDialog(parent, id, title)
 {
    GetLanguages(mLangCodes, mLangNames);
-   mNumLangs = mLangNames.GetCount();
+   int ndx = mLangCodes.Index(GetSystemLanguageCode());
+   wxString lang;
 
-   wxString sysLang = GetSystemLanguageCode();
+   if (ndx != wxNOT_FOUND) {
+      lang = mLangNames[ndx];
+   }
 
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-   wxBoxSizer *hSizer;
+   ShuttleGui S(this, eIsCreating);
 
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-   hSizer->Add(new wxStaticText(this, -1,
-                                _("Choose Language for Audacity to use:")),
-               0, wxALIGN_CENTRE | wxALIGN_CENTER_VERTICAL | wxALL, 8);
+   S.StartVerticalLay(false);
+   {
+      S.StartHorizontalLay();
+      {
+         S.SetBorder(15);
+         mChoice = S.AddChoice(_("Choose Language for Audacity to use:"),
+                              lang,
+                              &mLangNames);
+      }
+      S.EndVerticalLay();
 
-   wxString *langArray = new wxString[mNumLangs];
-   int i;
-   for(i=0; i<mNumLangs; i++)
-      langArray[i] = mLangNames[i];
-   mChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                          mNumLangs, langArray);
-   mChoice->SetSelection(0); // in case nothing else matches
-   delete[] langArray;
-   for(i=0; i<mNumLangs; i++)
-      if (mLangCodes[i] == sysLang)
-         mChoice->SetSelection(i);
-   hSizer->Add(mChoice,
-               0, wxALIGN_CENTRE | wxALIGN_CENTER_VERTICAL | wxALL, 8);
+      S.SetBorder(0);
+      S.AddStandardButtons(eOkButton);
+   }
+   S.EndVerticalLay();
 
-   mainSizer->Add(hSizer,
-                  0, wxALL, 8);
-
-   mainSizer->Add(CreateStdButtonSizer(this, eOkButton), 0, wxEXPAND);
-
-   SetAutoLayout(true);
-   SetSizer(mainSizer);
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
+   Fit();
 }
 
 void LangChoiceDialog::OnOk(wxCommandEvent & event)

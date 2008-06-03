@@ -83,7 +83,6 @@ class ImportRawDialog:public wxDialog {
 
    int         mNumEncodings;
    int        *mEncodingSubtype;
-   wxString   *mEncodingString;
 
    DECLARE_EVENT_TABLE()
 };
@@ -280,45 +279,41 @@ END_EVENT_TABLE()
 ImportRawDialog::ImportRawDialog(wxWindow * parent,
                                  int encoding, int channels,
                                  int offset, double rate)
-   :wxDialog(parent, -1, _("Import Raw Data"),
-             wxDefaultPosition, wxDefaultSize,
-             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
-    mEncoding(encoding), mChannels(channels),
-    mOffset(offset), mRate(rate)
+:  wxDialog(parent, wxID_ANY, _("Import Raw Data"),
+            wxDefaultPosition, wxDefaultSize,
+            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
+    mEncoding(encoding),
+    mChannels(channels),
+    mOffset(offset),
+    mRate(rate)
 {
-   wxBoxSizer *mainSizer, *hSizer, *vSizer;
-   wxFlexGridSizer *gridSizer;
-   int selection, i;
+   ShuttleGui S(this, eIsCreating);
+   wxArrayString encodings;
+   wxArrayString endians;
+   wxArrayString chans;
+   int num;
+   int selection;
+   int endian;
+   int i;
 
-   mainSizer = new wxBoxSizer(wxVERTICAL);
-   
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   //
-   // Left-Side Controls (for manually selecting format)
-   //
-
-   vSizer = new wxBoxSizer(wxVERTICAL);
-
-   // Encoding Choice
-
+   num = sf_num_encodings();
    mNumEncodings = 0;
-   mEncodingSubtype = new int[sf_num_encodings()];
-   mEncodingString = new wxString[sf_num_encodings()];
+   mEncodingSubtype = new int[num];
 
    selection = 0;
-   for(i=0; i<sf_num_encodings(); i++) {
+   for (i=0; i<num; i++) {
       SF_INFO info;
+
       memset(&info, 0, sizeof(SF_INFO));
 
-      int subtype = (int)sf_encoding_index_to_subtype(i);
+      int subtype = sf_encoding_index_to_subtype(i);
       info.format = SF_FORMAT_RAW + SF_ENDIAN_LITTLE + subtype;
       info.channels = 1;
       info.samplerate = 44100;
 
       if (sf_format_check(&info)) {
          mEncodingSubtype[mNumEncodings] = subtype;
-         mEncodingString[mNumEncodings] = sf_encoding_index_name(i);;
+         encodings.Add(LAT1CTOWX(sf_encoding_index_name(i)));
 
          if ((mEncoding & SF_FORMAT_SUBMASK) == subtype)
             selection = mNumEncodings;
@@ -327,135 +322,98 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
       }
    }
 
-   mEncodingChoice = 
-      new wxChoice(this, ChoiceID,
-                   wxDefaultPosition, wxDefaultSize,
-                   mNumEncodings, mEncodingString);
-   mEncodingChoice->SetSelection(selection);
-   vSizer->Add(mEncodingChoice, 0, wxALIGN_CENTER | wxALL, 5);
+   /* i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
+       know the correct technical word. */
+   endians.Add(_("No endianness"));
+   /* i18n-hint: Refers to byte-order.  Don't translate this if you don't
+    know the correct technical word. */
+   endians.Add(_("Little-endian"));
+   /* i18n-hint: Refers to byte-order.  Don't translate this if you don't
+      know the correct technical word. */
+   endians.Add(_("Big-endian"));
+   /* i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
+      know the correct technical word. */
+   endians.Add(_("Default endianness"));
 
-   // Endian choice
-
-   wxString endianStrings[4] =
-      {/* i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-          know the correct technical word. */
-         _("No endianness"),
-         /* i18n-hint: Refers to byte-order.  Don't translate this if you don't
-          know the correct technical word. */
-       _("Little-endian"),
-         /* i18n-hint: Refers to byte-order.  Don't translate this if you don't
-            know the correct technical word. */
-       _("Big-endian"),
-         /* i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-            know the correct technical word. */
-       _("Default endianness")};
-   mEndianChoice =
-      new wxChoice(this, ChoiceID,
-                   wxDefaultPosition, wxDefaultSize,
-                   4, endianStrings);
-   switch(mEncoding & (SF_FORMAT_ENDMASK)) {
-   case SF_ENDIAN_FILE:
-      mEndianChoice->SetSelection(0);
-      break;
-   case SF_ENDIAN_LITTLE:
-      mEndianChoice->SetSelection(1);
-      break;
-   case SF_ENDIAN_BIG:
-      mEndianChoice->SetSelection(2);
-      break;
-   case SF_ENDIAN_CPU:
-      mEndianChoice->SetSelection(3);
-      break;
+   switch (mEncoding & (SF_FORMAT_ENDMASK))
+   {
+      default:
+      case SF_ENDIAN_FILE:
+         endian = 0;
+         break;
+      case SF_ENDIAN_LITTLE:
+         endian = 1;
+         break;
+      case SF_ENDIAN_BIG:
+         endian = 2;
+         break;
+      case SF_ENDIAN_CPU:
+         endian = 3;
+         break;
    }
-   vSizer->Add(mEndianChoice, 0, wxALIGN_CENTER | wxALL, 5);
 
-   // Channels choice
-
-   wxString channelStrings[16];
-   channelStrings[0].Printf(_("1 Channel (Mono)"));
-   channelStrings[1].Printf(_("2 Channels (Stereo)"));
-   for(i=2; i<16; i++) {
-      channelStrings[i].Printf(_("%d Channels"), i+1);
+   chans.Add(_("1 Channel (Mono)"));
+   chans.Add(_("2 Channels (Stereo)"));
+   for (i=2; i<16; i++) {
+      chans.Add(wxString::Format(_("%d Channels"), i + 1));
    }
-   mChannelChoice =
-      new wxChoice(this, ChoiceID,
-                   wxDefaultPosition, wxDefaultSize,
-                   16, channelStrings);
-   mChannelChoice->SetSelection(mChannels-1);
-   vSizer->Add(mChannelChoice, 0, wxALIGN_CENTER | wxALL, 5);
 
-   // Offset text
+   S.StartVerticalLay(false);
+   {
+      S.SetBorder(5);
+      S.StartTwoColumn();
+      {
+         mEncodingChoice = S.Id(ChoiceID).AddChoice(_("Encoding:"),
+                                                    encodings[selection],
+                                                    &encodings);
+         mEndianChoice = S.Id(ChoiceID).AddChoice(_("Byte order:"),
+                                                  endians[endian],
+                                                  &endians);
+         mChannelChoice = S.Id(ChoiceID).AddChoice(_("Channels:"),
+                                                   chans[mChannels-1],
+                                                   &chans);
+      }
+      S.EndTwoColumn();
 
-   gridSizer = new wxFlexGridSizer(3, 0, 0);
-   
-   gridSizer->Add(new wxStaticText(this, 0, _("Start offset:")),
-                  0, wxALIGN_LEFT | wxALL, 5);
+      S.SetBorder(5);
+      S.StartMultiColumn(3);
+      {
+         // Offset text
+         mOffsetText = S.AddTextBox(_("Start offset:"),
+                                    wxString::Format(wxT("%d"), mOffset),
+                                    12);
+         S.AddUnits(_("bytes"));
 
-   mOffsetText = new wxTextCtrl(this, 0, wxString::Format(wxT("%d"), mOffset));
-   gridSizer->Add(mOffsetText, 0, wxALIGN_LEFT | wxALL, 5);
+         // Percent text
+         mPercentText = S.AddTextBox(_("Amount to import:"),
+                                     wxT("100"),
+                                     12);
+         S.AddUnits(wxT("%"));
+         
+         // Rate text
+         mRateText = S.AddTextBox(_("Amount to import:"),
+                                  wxString::Format(wxT("%d"), (int)mRate),
+                                  12);
+         /* i18n-hint: This is the abbreviation for "Hertz", or
+            cycles per second. */
+         S.AddUnits(_("Hz"));
+      }
+      S.EndMultiColumn();
 
-   gridSizer->Add(new wxStaticText(this, 0, _("bytes")),
-                  0, wxALIGN_LEFT | wxALL, 5);
+      //
+      // Preview Pane goes here
+      //
 
-   // Percent text
+      S.AddStandardButtons();
+      // Find the OK button, and change its text to 'Import'.
+      // We MUST set mOK because it is used later.
+      mOK = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
+      mOK->SetLabel(_("&Import"));
+   }
+   S.EndVerticalLay();
 
-   gridSizer->Add(new wxStaticText(this, 0, _("Amount to import:")),
-                  0, wxALIGN_LEFT | wxALL, 5);
-
-   mPercentText = new wxTextCtrl(this, 0, wxT("100"));
-   gridSizer->Add(mPercentText, 0, wxALIGN_LEFT | wxALL, 5);
-
-   gridSizer->Add(new wxStaticText(this, 0, wxT("%")),
-                  0, wxALIGN_LEFT | wxALL, 5);
-
-   // Rate text
-
-   gridSizer->Add(new wxStaticText(this, 0, _("Sample rate:")),
-                  0, wxALIGN_LEFT | wxALL, 5);
-
-   mRateText = new wxTextCtrl(this, 0, wxString::Format(wxT("%d"), (int)mRate));
-   gridSizer->Add(mRateText, 0, wxALIGN_LEFT | wxALL, 5);
-
-   /* i18n-hint: This is the abbreviation for "Hertz", or
-      cycles per second. */
-   gridSizer->Add(new wxStaticText(this, 0, _("Hz")),
-                  0, wxALIGN_LEFT | wxALL, 5);
-
-   vSizer->Add(gridSizer, 0, wxALIGN_LEFT | wxALL, 0);
-
-   hSizer->Add(vSizer, 0, wxALIGN_TOP | wxALL, 5);
-
-   //
-   // Preview Pane goes here
-   //
-
-//   wxPanel *p = new wxPanel(this, 0, wxDefaultPosition, wxSize(100, 100));
-//   hSizer->Add(p, 0, wxALIGN_TOP | wxALL, 5);
-
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTER | wxALL, 5);
-
-   //
-   // Button row
-   //
-
-
-   /*
-   button = new wxButton(this, PlayID, _("Play"));
-   hSizer->Add(button, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-   */
-
-   mainSizer->Add(CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND);
-
-   // Find the OK button, and change its text to 'Import'.
-   // We MUST set mOK because it is used later.
-   mOK = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
-   mOK->SetLabel(_("&Import"));
-
-   SetAutoLayout(true);
-   SetSizer(mainSizer);
-
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
+   Fit();
+   SetSizeHints(GetSize());
 
    Centre(wxBOTH);
 }
@@ -463,7 +421,6 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
 ImportRawDialog::~ImportRawDialog()
 {
    delete[] mEncodingSubtype;
-   delete[] mEncodingString;
 }
 
 void ImportRawDialog::OnOK(wxCommandEvent & WXUNUSED(event))

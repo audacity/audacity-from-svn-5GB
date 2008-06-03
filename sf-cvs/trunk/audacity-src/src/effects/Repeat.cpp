@@ -25,6 +25,7 @@
 #include "Repeat.h"
 #include "../ShuttleGui.h"
 #include "../WaveTrack.h"
+#include "../widgets/TimeTextCtrl.h"
 
 #include <wx/button.h>
 #include <wx/defs.h>
@@ -77,7 +78,7 @@ bool EffectRepeat::PromptUser()
       return false;
    }
 
-   RepeatDialog dlog(mParent, -1, _("Repeat"));
+   RepeatDialog dlog(this, mParent);
    dlog.repeatCount = repeatCount;
    dlog.selectionTimeSecs = mT1 - mT0;
    dlog.maxCount = maxCount;
@@ -87,7 +88,7 @@ bool EffectRepeat::PromptUser()
 
    dlog.ShowModal();
 
-   if (!dlog.GetReturnCode())
+  if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
    repeatCount = dlog.repeatCount;
@@ -107,10 +108,10 @@ bool EffectRepeat::TransferParameters( Shuttle & shuttle )
 
 bool EffectRepeat::Process()
 {
-   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(m_pOutputWaveTracks);
+   TrackListIterator iter(mOutputWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int nTrack = 0;
 	double maxDestLen = 0.0; // used to change selection to generated bit
@@ -167,92 +168,65 @@ bool EffectRepeat::Process()
 // RepeatDialog
 //----------------------------------------------------------------------------
 
+const static wxChar *numbers[] =
+{
+   wxT("0"), wxT("1"), wxT("2"), wxT("3"), wxT("4"),
+   wxT("5"), wxT("6"), wxT("7"), wxT("8"), wxT("9"),
+   wxT("-"), wxT("+")
+};
+
 #define ID_REPEAT_TEXT 7000
 
-BEGIN_EVENT_TABLE(RepeatDialog, wxDialog)
-   EVT_BUTTON(wxID_OK, RepeatDialog::OnOk)
-   EVT_BUTTON(wxID_CANCEL, RepeatDialog::OnCancel)
+BEGIN_EVENT_TABLE(RepeatDialog, EffectDialog)
    EVT_TEXT(ID_REPEAT_TEXT, RepeatDialog::OnRepeatTextChange)
+   EVT_BUTTON(ID_EFFECT_PREVIEW, RepeatDialog::OnPreview)
 END_EVENT_TABLE()
 
-RepeatDialog::RepeatDialog(wxWindow *parent, wxWindowID id,
-                           const wxString &title):
-   wxDialog(parent, id, title)
+RepeatDialog::RepeatDialog(EffectRepeat *effect,
+                           wxWindow * parent)
+:  EffectDialog(parent, _("Repeat"), PROCESS_EFFECT),
+   mEffect(effect)
 {
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-
-   wxStaticText *statText =
-      new wxStaticText(this, -1,
-                        /* i18n-hint: && in here is an escape character to get
-                         * a single & on screen, so keep it as is */
-                       _("Repeat by Dominic Mazzoni && Vaughan Johnson"));
-   mainSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   statText =
-      new wxStaticText(this, -1,
-                       _("Number of times to repeat: "));
-   hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
-   
-   mRepeatCount =
-      new wxTextCtrl(this, ID_REPEAT_TEXT, wxT("10"), wxDefaultPosition,
-                     wxSize(60, -1), 0,
-                     wxTextValidator(wxFILTER_NUMERIC));
-   hSizer->Add(mRepeatCount, 0, wxALL, 5);
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-   mTotalTime =
-      new wxStaticText(this, -1, wxString(_("New selection length: ")) +
-                       wxT("XX minutes, XX seconds"));
-   hSizer->Add(mTotalTime, 1, wxALL | wxEXPAND, 5);
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   // OK & Cancel buttons
-   mainSizer->Add(CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND);
-
-   SetAutoLayout(true);
-   SetSizer(mainSizer);
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
+   Init();
 }
 
-void RepeatDialog::OnRepeatTextChange(wxCommandEvent & event)
+void RepeatDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   // We may even get called during the constructor.
-   // This test saves us from calling unsafe functions.
-   if( !IsShown() )
-      return;
-   TransferDataFromWindow();
+   wxTextValidator vld(wxFILTER_INCLUDE_CHAR_LIST);
+   vld.SetIncludes(wxArrayString(12, numbers));
 
-   DisplayNewTime();
-}
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      S.AddTitle(_("by Dominic Mazzoni && Vaughan Johnson"));
+   }
+   S.EndHorizontalLay();
 
-void RepeatDialog::DisplayNewTime()
-{
-   int newTime = (int)(selectionTimeSecs * (repeatCount + 1));
-   wxString str;
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      // Add a little space
+   }
+   S.EndHorizontalLay();
 
-   str = _("New selection length: ");
-   if (newTime >= 120)
-      str += wxString::Format(_("%d minutes, %d seconds"),
-                              newTime/60, newTime%60);
-   else
-      str += wxString::Format(_("%d seconds"),
-                              newTime);
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      mRepeatCount = S.Id(ID_REPEAT_TEXT).AddTextBox(_("Number of times to repeat:"),
+                                                     wxT(""),
+                                                     12);
+      mRepeatCount->SetValidator(vld);
+   }
+   S.EndHorizontalLay();
 
-   mTotalTime->SetLabel(str);
-}
-
-bool RepeatDialog::Validate()
-{
-   return TRUE;
+   S.StartHorizontalLay(wxCENTER, true);
+   {
+      mTotalTime = S.AddVariableText(_("New selection length: hh:mm:ss"));
+   }
+   S.EndHorizontalLay();
 }
 
 bool RepeatDialog::TransferDataToWindow()
 {
-   mRepeatCount->SetValue(wxString::Format(wxT("%d"), repeatCount));
+   mRepeatCount->ChangeValue(wxString::Format(wxT("%d"), repeatCount));
+
    DisplayNewTime();
 
    return true;
@@ -272,20 +246,45 @@ bool RepeatDialog::TransferDataFromWindow()
    return true;
 }
 
-void RepeatDialog::OnOk(wxCommandEvent & event)
+void RepeatDialog::DisplayNewTime()
+{
+   wxString str;
+
+   str = _("New selection length: ");
+   TimeTextCtrl tt(this,
+                   wxID_ANY,
+                   wxT(""),
+                   selectionTimeSecs * (repeatCount + 1),
+                   mEffect->mProjectRate,
+                   wxPoint(10000, 10000),  // create offscreen
+                   wxDefaultSize,
+                   true);
+   tt.SetFormatString(tt.GetBuiltinFormat(_("hh:mm:ss")));
+   str += tt.GetTimeString();
+
+   mTotalTime->SetLabel(str);
+}
+
+void RepeatDialog::OnRepeatTextChange(wxCommandEvent & event)
 {
    TransferDataFromWindow();
-   
-   EndModal(true);
+
+   DisplayNewTime();
 }
 
-void RepeatDialog::OnCancel(wxCommandEvent & event)
+void RepeatDialog::OnPreview(wxCommandEvent &event)
 {
-   EndModal(false);
+   TransferDataFromWindow();
+
+	int oldRepeatCount = mEffect->repeatCount;
+
+   mEffect->repeatCount = repeatCount;
+
+   // LL:  Preview doesn't work...Effect::Preview needs to allow new length
+   mEffect->Preview();
+
+   mEffect->repeatCount = oldRepeatCount;
 }
-
-
-
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

@@ -89,15 +89,6 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
          wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
-#ifdef __WXMAC__
-   mMacHiddenFrame = new wxFrame(NULL, -1, wxT(""), wxPoint(5000, 5000),
-                        wxSize(100, 100));
-   wxMenuBar *blankMenuBar = new wxMenuBar();
-   mMacHiddenFrame->SetMenuBar(blankMenuBar);
-   blankMenuBar->MacInstallMenuBar();
-   mMacHiddenFrame->Show();
-#endif
-
    gPrefsDialogVisible = true;
 
    wxRect rect = GetRect();
@@ -182,8 +173,8 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    outSizer->Add(topSizer, 1, wxGROW|wxTOP, TOP_LEVEL_BORDER);
 
    SetAutoLayout(true);
-   SetSizer(outSizer);
-   outSizer->Fit(this);
+   SetSizerAndFit(outSizer);
+   outSizer->FitInside(this);
    outSizer->SetSizeHints(this);
 
    #ifdef __WXMAC__
@@ -249,9 +240,6 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
 
 PrefsDialog::~PrefsDialog()
 {
-#ifdef __WXMAC__
-   mMacHiddenFrame->Destroy();
-#endif
    gPrefsDialogVisible = false;
 }
 
