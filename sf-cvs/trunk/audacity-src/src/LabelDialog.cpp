@@ -193,7 +193,7 @@ LabelDialog::LabelDialog(wxWindow *parent,
    // Layout the works
    Layout();
 
-   // Resize width base on width of columns and the vertical scrollbar
+   // Resize width based on width of columns and the vertical scrollbar
    wxRect r = mGrid->GetGridColLabelWindow()->GetRect();
    wxScrollBar sb(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
    r.width += sb.GetSize().GetWidth() + 6;

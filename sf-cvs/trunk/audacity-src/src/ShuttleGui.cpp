@@ -299,6 +299,7 @@ wxButton * ShuttleGuiBase::AddButton(const wxString &Text, int PositionFlags)
    wxButton * pBtn;
    mpWind = pBtn = new wxButton( mpParent, miId, Text, wxDefaultPosition, wxDefaultSize,
       Style( 0 ) );
+   mpWind->SetName(Text);
    miProp=0;
    UpdateSizersCore(false, PositionFlags | wxALL);
    return pBtn;
@@ -339,6 +340,7 @@ wxChoice * ShuttleGuiBase::AddChoice( const wxString &Prompt, const wxString &Se
 
    pChoice->SetSizeHints( 180,-1);// Use -1 for 'default size' - Platform specific.
    pChoice->SetStringSelection( Selected );
+   pChoice->SetName( Prompt );
 
    UpdateSizers();
    return pChoice;
@@ -406,6 +408,7 @@ wxComboBox * ShuttleGuiBase::AddCombo( const wxString &Prompt, const wxString &S
 
    mpWind = pCombo = new wxComboBox(mpParent, miId, Selected, wxDefaultPosition, wxDefaultSize, 
       n, Choices, Style( 0 ));
+   mpWind->SetName(Prompt);
 
    UpdateSizers();
    return pCombo;
@@ -422,6 +425,7 @@ wxRadioButton * ShuttleGuiBase::AddRadioButton(const wxString &Prompt)
    wxRadioButton * pRad;
    mpWind = pRad = new wxRadioButton( mpParent, miId, Prompt,
       wxDefaultPosition, wxDefaultSize, Style( wxRB_GROUP ) );
+   mpWind->SetName(Prompt);
    pRad->SetValue(true );
    UpdateSizers();
    return pRad;
@@ -435,6 +439,7 @@ wxRadioButton * ShuttleGuiBase::AddRadioButtonToGroup(const wxString &Prompt)
    wxRadioButton * pRad;
    mpWind = pRad = new wxRadioButton( mpParent, miId, Prompt,
       wxDefaultPosition, wxDefaultSize, Style( 0 ) );
+   mpWind->SetName(Prompt);
    UpdateSizers();
    return pRad;
 }
@@ -451,6 +456,7 @@ wxSlider * ShuttleGuiBase::AddSlider(const wxString &Prompt, int pos, int Max, i
       wxDefaultPosition, wxDefaultSize,
       Style( wxSL_HORIZONTAL | wxSL_LABELS | wxSL_AUTOTICKS )
       );
+   mpWind->SetName(Prompt);
    miProp=1;
    UpdateSizers();
    return pSlider;
@@ -694,12 +700,15 @@ wxPanel * ShuttleGuiBase::StartPanel(int iStyle)
    mpWind = pPanel = new wxPanel( mpParent, miId, wxDefaultPosition, wxDefaultSize,
       Style( wxNO_BORDER ));
 
-   mpWind->SetBackgroundColour( 
-      iStyle==0 
-      ? wxColour( 190,200,230) :
-      wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW) 
-      );
-   miProp=0;
+   if( iStyle != 0 )
+   {
+      mpWind->SetBackgroundColour( 
+         iStyle==1 
+         ? wxColour( 190,200,230) :
+         wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW) 
+         );
+   }
+   SetProportions(0);
    miBorder=2;
    UpdateSizers();  // adds window in to current sizer.
 

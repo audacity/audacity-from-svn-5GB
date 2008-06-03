@@ -122,8 +122,6 @@ class Effect {
       return true;
    }
 
-   void SetDialog(wxDialog *pDialog) { mDialog = pDialog; };
-
    void SetEffectFlags( int NewFlags )
    {
       mFlags = NewFlags;
@@ -214,18 +212,17 @@ class Effect {
  // may be needed by any particular subclass of Effect.
  //
  protected:
-   wxWindow     *mParent;
-   wxDialog     *mDialog;      // default NULL. It's up to descendants to set this.
+   wxWindow       *mParent;
    ProgressDialog *mProgress;
-   double        mProjectRate; // Sample rate of the project - new tracks should
+   double         mProjectRate; // Sample rate of the project - new tracks should
                                // be created with this rate...
-   TrackFactory *mFactory;
-   TrackList    *mTracks;      // the complete list of all tracks
-   TrackList    *mWaveTracks;  // effects which do not add or remove tracks
+   TrackFactory   *mFactory;
+   TrackList      *mTracks;      // the complete list of all tracks
+   TrackList      *mWaveTracks;  // effects which do not add or remove tracks
                                // should use this
-   TrackList* m_pOutputWaveTracks; // used only if CopyInputWaveTracks() is called.
-   double      mT0;
-   double      mT1;
+   TrackList*     mOutputWaveTracks; // used only if CopyInputWaveTracks() is called.
+   double         mT0;
+   double         mT1;
 
  //
  // protected methods
@@ -263,13 +260,13 @@ class Effect {
  //
  // private methods
  //
-   // Use these two methods to copy the input tracks to m_pOutputWaveTracks, if 
+   // Use these two methods to copy the input tracks to mOutputWaveTracks, if 
    // doing the processing on them, and replacing the originals only on success (and not cancel).
    void CopyInputWaveTracks();
    
    // If bGoodResult, replace mWaveTracks tracks in mTracks with successfully processed 
-   // m_pOutputWaveTracks copies, get rid of old mWaveTracks, and set mWaveTracks to m_pOutputWaveTracks. 
-   // Else clear and delete m_pOutputWaveTracks copies.
+   // mOutputWaveTracks copies, get rid of old mWaveTracks, and set mWaveTracks to mOutputWaveTracks. 
+   // Else clear and delete mOutputWaveTracks copies.
    void ReplaceProcessedWaveTracks(const bool bGoodResult);
 
  // Used only by the base Effect class

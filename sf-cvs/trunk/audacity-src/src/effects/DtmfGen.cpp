@@ -246,10 +246,10 @@ bool EffectDtmf::Process()
       return false;
 
    //Iterate over each track
-   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
    int ntrack = 0;
-   TrackListIterator iter(m_pOutputWaveTracks);
+   TrackListIterator iter(mOutputWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
       // new tmp track, to fill with dtmf sequence

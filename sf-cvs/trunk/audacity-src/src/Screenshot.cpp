@@ -434,9 +434,7 @@ void ScreenFrame::Populate()
 
 void ScreenFrame::PopulateOrExchange(ShuttleGui &S)
 {
-   wxPanel *p = S.StartPanel(0);
-   p->SetBackgroundColour(
-      wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+   wxPanel *p = S.StartPanel();
    S.SetBorder(2);
    S.StartVerticalLay(1);
 

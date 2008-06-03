@@ -246,10 +246,10 @@ void LadspaEffect::GetSamples(WaveTrack *track,
 
 bool LadspaEffect::Process()
 {
-   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(m_pOutputWaveTracks);
+   TrackListIterator iter(mOutputWaveTracks);
    int count = 0;
    Track *left = iter.First();
    Track *right;
@@ -612,14 +612,16 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
    gridSizer->AddGrowableCol(3);
 
    for (p = 0; p < numParams; p++) {
-      item = new wxStaticText(w, 0, wxString(mData->PortNames[ports[p]], wxConvISO8859_1));
-      gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+      wxString labelText = LAT1CTOWX(mData->PortNames[ports[p]]);
+      item = new wxStaticText(w, 0, labelText + wxT(":"));
+      gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
 
       wxString fieldText;
       LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
 
       if (LADSPA_IS_HINT_TOGGLED(hint.HintDescriptor)) {
          toggles[p] = new wxCheckBox(w, p, wxT(""));
+         toggles[p]->SetName(labelText);
          toggles[p]->SetValue(inputControls[ports[p]] > 0);
          gridSizer->Add(toggles[p], 0, wxALL, 5);
          ConnectFocus(toggles[p]);
@@ -635,6 +637,7 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
             fieldText = Internat::ToDisplayString(inputControls[ports[p]]);
 
          fields[p] = new wxTextCtrl(w, p, fieldText);
+         fields[p]->SetName(labelText);
          gridSizer->Add(fields[p], 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
          ConnectFocus(fields[p]);
 
@@ -677,6 +680,7 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
                           0, 0, 1000,
                           wxDefaultPosition,
                           wxSize(200, -1));
+         sliders[p]->SetName(labelText);
          gridSizer->Add(sliders[p], 0, wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALL, 5);
          ConnectFocus(sliders[p]);
 
@@ -699,6 +703,7 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
       item = new wxStaticText(w, 0, _("Length (seconds)"));
       gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
       mSeconds = new wxTextCtrl(w, LADSPA_SECONDS_ID, Internat::ToDisplayString(length));
+      mSeconds->SetName(_("Length (seconds)"));
       gridSizer->Add(mSeconds, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
       gridSizer->Add(1, 1, 0);
       gridSizer->Add(1, 1, 0);
@@ -717,8 +722,6 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
    Layout();
    Fit();
    SetSizeHints(GetSize());
-
-   eff->SetDialog(this);
 }
 
 LadspaEffectDialog::~LadspaEffectDialog()

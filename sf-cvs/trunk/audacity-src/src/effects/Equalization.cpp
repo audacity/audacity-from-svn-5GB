@@ -407,12 +407,8 @@ bool EffectEqualization::DontPromptUser()
    else
       hiFreq = ((float)(GetActiveProject()->GetRate())/2.);
 
-   // Preserve the *real* dialog that's created in PromptUser, 
-   // so Preview doesn't try to set focus to this temporary one.
-   wxDialog *pDialog = mDialog;
    EqualizationDialog dlog(this, ((double)loFreqI), hiFreq, mFilterFuncR, mFilterFuncI,
                            windowSize, mCurveName, mParent, -1, _("Equalization"));
-   mDialog = pDialog;
 
    dlog.M = mM;
    dlog.curveName = mCurveName;
@@ -440,10 +436,10 @@ bool EffectEqualization::Process()
    if (!mPrompting) {
       DontPromptUser();
    }
-   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(m_pOutputWaveTracks);
+   TrackListIterator iter(mOutputWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {
@@ -948,8 +944,6 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    whens[NUM_PTS-1] = 1.;
    whenSliders[NUMBER_OF_BANDS] = 1.;
    m_EQVals[NUMBER_OF_BANDS] = 0.;
-
-   effect->SetDialog(this);
 }
 
 //

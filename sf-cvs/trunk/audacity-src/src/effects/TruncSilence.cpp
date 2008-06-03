@@ -162,8 +162,8 @@ bool EffectTruncSilence::Process()
    }
 
    // Start processing
-   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
-   TrackListIterator iterOut(m_pOutputWaveTracks);
+   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
+   TrackListIterator iterOut(mOutputWaveTracks);
 
    longSampleCount index = start;
    longSampleCount outTrackOffset = start;
@@ -323,7 +323,6 @@ TruncSilenceDialog::TruncSilenceDialog(EffectTruncSilence * effect,
    mEffect(effect)
 {
    Init();
-   effect->SetDialog(this);
 }
 
 void TruncSilenceDialog::PopulateOrExchange(ShuttleGui & S)

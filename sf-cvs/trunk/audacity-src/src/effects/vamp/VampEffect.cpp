@@ -404,18 +404,7 @@ VampEffectDialog::VampEffectDialog(VampEffect *effect,
    w->SetScrollRate(0, 20);
    vSizer->Add(w, 1, wxEXPAND|wxALL, 5);
 
-   wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton *button;
-
-   button = new wxButton(this, wxID_CANCEL, _("&Cancel"));
-   okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   button = new wxButton(this, wxID_OK, _("&OK"));
-   button->SetDefault();
-   okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   vSizer->Add(okSizer, 0, wxALIGN_CENTRE | wxALL, 5);
+   vSizer->Add(CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND);
 
    SetSizer(vSizer);
 
@@ -439,12 +428,13 @@ VampEffectDialog::VampEffectDialog(VampEffect *effect,
          choices.Add(choice);
       }
 
+      gridSizer->Add(new wxStaticText(w, 0, _("Program")), 
+                     0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
       programCombo = new wxComboBox(w, 9999, currentProgram,
                                     wxDefaultPosition, wxDefaultSize,
                                     choices, wxCB_READONLY);
-
-      gridSizer->Add(new wxStaticText(w, 0, _("Program")), 
-                     0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+      programCombo->SetName(_("Program"));
 
       gridSizer->Add(1, 1, 0);
       gridSizer->Add(1, 1, 0);
@@ -457,8 +447,9 @@ VampEffectDialog::VampEffectDialog(VampEffect *effect,
 
    for (int p = 0; p < count; p++) {
 
-      item = new wxStaticText(w, 0, wxString(mParameters[p].name.c_str(),
-                                             wxConvISO8859_1));
+      wxString labelText = LAT1CTOWX(mParameters[p].name.c_str());
+      item = new wxStaticText(w, 0, labelText + wxT(":"));
+      item->SetName(labelText);
       gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
       wxString fieldText;
@@ -476,6 +467,7 @@ VampEffectDialog::VampEffectDialog(VampEffect *effect,
           mParameters[p].maxValue == 1.0) {
 
          toggles[p] = new wxCheckBox(w, p, wxT(""));
+         toggles[p]->SetName(labelText);
          toggles[p]->SetValue(value > 0.5);
          gridSizer->Add(toggles[p], 0, wxALL, 5);
          ConnectFocus(toggles[p]);
@@ -503,6 +495,7 @@ VampEffectDialog::VampEffectDialog(VampEffect *effect,
          combos[p] = new wxComboBox(w, p, selected,
                                     wxDefaultPosition, wxDefaultSize,
                                     choices, wxCB_READONLY);
+         combos[p]->SetName(labelText);
 
          gridSizer->Add(1, 1, 0);
          gridSizer->Add(1, 1, 0);
@@ -517,6 +510,7 @@ VampEffectDialog::VampEffectDialog(VampEffect *effect,
          fieldText = Internat::ToDisplayString(value);
 
          fields[p] = new wxTextCtrl(w, p, fieldText);
+         fields[p]->SetName(labelText);
          gridSizer->Add(fields[p], 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
          ConnectFocus(fields[p]);
 
@@ -529,6 +523,7 @@ VampEffectDialog::VampEffectDialog(VampEffect *effect,
                           0, 0, 1000,
                           wxDefaultPosition,
                           wxSize(100, -1));
+         sliders[p]->SetName(labelText);
          gridSizer->Add(sliders[p], 0, wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALL, 5);
          ConnectFocus(sliders[p]);
 

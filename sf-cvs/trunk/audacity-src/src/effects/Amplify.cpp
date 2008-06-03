@@ -84,7 +84,7 @@ bool EffectAmplify::TransferParameters( Shuttle & shuttle )
 
 bool EffectAmplify::PromptUser()
 {
-   AmplifyDialog dlog(this, mParent, -1, _("Amplify"));
+   AmplifyDialog dlog(this, mParent);
    dlog.peak = peak;
    if (peak > 0.0)
       dlog.ratio = 1.0 / peak;
@@ -94,7 +94,7 @@ bool EffectAmplify::PromptUser()
    dlog.CenterOnParent();
    dlog.ShowModal();
 
-   if (!dlog.GetReturnCode())
+  if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
    ratio = dlog.ratio;
@@ -108,7 +108,9 @@ bool EffectAmplify::ProcessSimpleMono(float *buffer, sampleCount len)
 {
    sampleCount i;
    for (i = 0; i < len; i++)
+   {
       buffer[i] = (buffer[i] * ratio);
+   }
    return true;
 }
 
@@ -116,246 +118,218 @@ bool EffectAmplify::ProcessSimpleMono(float *buffer, sampleCount len)
 // AmplifyDialog
 //----------------------------------------------------------------------------
 
+const static wxChar *numbers[] =
+{
+   wxT("0"), wxT("1"), wxT("2"), wxT("3"), wxT("4"),
+   wxT("5"), wxT("6"), wxT("7"), wxT("8"), wxT("9"),
+   wxT("-"), wxT("+")
+};
+
 #define AMP_MIN -500
 #define AMP_MAX 500
 
-// WDR: event table for AmplifyDialog
+#define ID_AMP_TEXT 10001
+#define ID_PEAK_TEXT 10002
+#define ID_AMP_SLIDER 10003
+#define ID_CLIP_CHECKBOX 10004
 
-BEGIN_EVENT_TABLE(AmplifyDialog, wxDialog)
-    EVT_BUTTON(wxID_OK, AmplifyDialog::OnOk)
-    EVT_BUTTON(wxID_CANCEL, AmplifyDialog::OnCancel)
-    EVT_SLIDER(ID_AMP_SLIDER, AmplifyDialog::OnAmpSlider)
-    EVT_TEXT(ID_AMP_TEXT, AmplifyDialog::OnAmpText)
-    EVT_TEXT(ID_PEAK_TEXT, AmplifyDialog::OnPeakText)
-    EVT_CHECKBOX(ID_CLIP_CHECKBOX, AmplifyDialog::OnClipCheckBox)
-    EVT_BUTTON(ID_EFFECT_PREVIEW, AmplifyDialog::OnPreview)
+BEGIN_EVENT_TABLE(AmplifyDialog, EffectDialog)
+   EVT_SLIDER(ID_AMP_SLIDER, AmplifyDialog::OnAmpSlider)
+   EVT_TEXT(ID_AMP_TEXT, AmplifyDialog::OnAmpText)
+   EVT_TEXT(ID_PEAK_TEXT, AmplifyDialog::OnPeakText)
+   EVT_CHECKBOX(ID_CLIP_CHECKBOX, AmplifyDialog::OnClipCheckBox)
+   EVT_BUTTON(ID_EFFECT_PREVIEW, AmplifyDialog::OnPreview)
 END_EVENT_TABLE()
 
-AmplifyDialog::AmplifyDialog(EffectAmplify * effect, 
-                             wxWindow * parent, wxWindowID id, 
-                             const wxString & title, 
-                             const wxPoint & position, const wxSize & size, 
-                             long style):
-   wxDialog(parent, id, title, position, size, style)
+AmplifyDialog::AmplifyDialog(EffectAmplify *effect,
+                             wxWindow * parent)
+:  EffectDialog(parent, _("Amplify"), PROCESS_EFFECT),
+   mEffect(effect)
 {
-   mLoopDetect = false;
-	m_pEffect = effect;
 
    ratio = float(1.0);
    peak = float(0.0);
 
-	wxStaticText * pStaticText;
-
-   wxBoxSizer * pBoxSizer_Dialog = new wxBoxSizer(wxVERTICAL);
-
-   pStaticText = new wxStaticText(this, -1,
-                                  _("Amplify by Dominic Mazzoni"),
-                                  wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxALL, 10);
-
-   // Amplification text control
-   wxBoxSizer *item2 = new wxBoxSizer(wxHORIZONTAL);
-
-   pStaticText = new wxStaticText(this, -1, _("Amplification (dB):"),
-                                  wxDefaultPosition, wxDefaultSize, 0);
-   item2->Add(pStaticText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-   wxTextCtrl * item4 = new wxTextCtrl(this, ID_AMP_TEXT, wxT(""), 
-                                       wxDefaultPosition, wxSize(60, -1), 
-                                       0, wxTextValidator(wxFILTER_NUMERIC));
-   item2->Add(item4, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-   pBoxSizer_Dialog->Add(item2, 0, wxALIGN_CENTER | wxALL, 5);
-   
-   // slider
-   wxSlider *item5 =
-       new wxSlider(this, ID_AMP_SLIDER, 0, AMP_MIN, AMP_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   pBoxSizer_Dialog->Add(item5, 1, wxGROW | wxALIGN_CENTER | wxALL, 5);
-
-   // New Peak Amplitude text control
-   wxBoxSizer *item6 = new wxBoxSizer(wxHORIZONTAL);
-   
-   pStaticText = new wxStaticText(this, -1, _("New Peak Amplitude (dB):"),
-                                  wxDefaultPosition, wxDefaultSize, 0);
-   item6->Add(pStaticText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-   
-   wxTextCtrl *item8 = new wxTextCtrl(this, ID_PEAK_TEXT, wxT(""), 
-                                      wxDefaultPosition, wxSize(60, -1), 0);
-   item6->Add(item8, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-   
-   pBoxSizer_Dialog->Add(item6, 0, wxALIGN_CENTER | wxALL, 5);
-   
-   // "Allow clipping" checkbox
-   wxCheckBox *item8b = new wxCheckBox(this, ID_CLIP_CHECKBOX,
-                                       _("Allow clipping"),
-                                       wxDefaultPosition, wxDefaultSize, 0);
-   
-   pBoxSizer_Dialog->Add(item8b, 0, wxALIGN_CENTER | wxALL, 5);
-
-   // Preview, OK, & Cancel buttons
-   pBoxSizer_Dialog->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
-   
-   SetAutoLayout(TRUE);
-   SetSizer(pBoxSizer_Dialog);
-   pBoxSizer_Dialog->Fit(this);
-   pBoxSizer_Dialog->SetSizeHints(this);
-
-   effect->SetDialog(this);
+   Init();
 }
 
-bool AmplifyDialog::Validate()
+void AmplifyDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   return TRUE;
+   wxTextValidator vld(wxFILTER_INCLUDE_CHAR_LIST);
+   vld.SetIncludes(wxArrayString(12, numbers));
+
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      S.AddTitle(_("by Dominic Mazzoni"));
+   }
+   S.EndHorizontalLay();
+
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      // Add a little space
+   }
+   S.EndHorizontalLay();
+
+   // Amplitude
+   S.StartMultiColumn(2, wxCENTER);
+   {
+      mAmpT = S.Id(ID_AMP_TEXT).AddTextBox(_("Amplification (dB):"),
+                                           wxT(""),
+                                           12);
+      mAmpT->SetValidator(vld);
+   }
+   S.EndMultiColumn();
+
+   // Amplitude
+   S.StartHorizontalLay(wxEXPAND);
+   {
+      S.SetStyle(wxSL_HORIZONTAL);
+      mAmpS = S.Id(ID_AMP_SLIDER).AddSlider(wxT(""),
+                                            0,
+                                            AMP_MAX,
+                                            AMP_MIN);
+      mAmpS->SetName(_("Amplification (dB)"));
+   }
+   S.EndHorizontalLay();
+
+   // Peek
+   S.StartMultiColumn(2, wxCENTER);
+   {
+      mPeakT = S.Id(ID_PEAK_TEXT).AddTextBox(_("New Peak Amplitude (dB):"),
+                                             wxT(""),
+                                             12);
+      // mPeakT->SetValidator(vld);
+   }
+   S.EndMultiColumn();
+
+   // Clipping
+   S.StartHorizontalLay(wxCENTER);
+   {
+      mClip = S.Id(ID_CLIP_CHECKBOX).AddCheckBox(_("Allow clipping"),
+                                                 wxT("false"));
+   }
+   S.EndHorizontalLay();
+
+   return;
 }
 
 bool AmplifyDialog::TransferDataToWindow()
 {
-   wxSlider *slider;
-
    // limit range of gain
    double dB = TrapDouble(200*log10(ratio), AMP_MIN, AMP_MAX)/10.0;
    ratio = pow(10.0, dB/20.0);
 
-   slider = GetAmpSlider();
-   if (slider)
-      slider->SetValue((int)(200*log10(ratio)+0.5));
+   mAmpS->SetValue((int)(200*log10(ratio)+0.5));
 
-   mLoopDetect = true;
+   mAmpT->ChangeValue(wxString::Format(wxT("%.1f"), 20*log10(ratio)));
 
-   wxTextCtrl *text = GetAmpText();
-   if (text) {
-      wxString str;
-      str.Printf(wxT("%.1f"), 20*log10(ratio));
-      text->SetValue(str);
-   }
+   wxString str;
+   if( ratio*peak > 0.0 )
+      str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
+   else
+      str = _("-Infinity");   // the case when the waveform is all zero
+   mPeakT->ChangeValue(str);
 
-   text = GetPeakText();
-   if (text) {
-      wxString str;
-      if( ratio*peak > 0.0 )
-         str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
-      else
-         str = _("-Infinity");   // the case when the waveform is all zero
-      text->SetValue(str);
-   }
-
-   mLoopDetect = false;
-
-   return TRUE;
+   return true;
 }
 
 bool AmplifyDialog::TransferDataFromWindow()
 {
-   wxTextCtrl *c = GetAmpText();
-   if (c) {
-      double r = 0;
+   wxString val = mAmpT->GetValue();
+   double r;
 
-      wxString val = c->GetValue();
-      val.ToDouble(&r);
-      ratio = pow(10.0,TrapDouble(r*10, AMP_MIN, AMP_MAX)/200.0);
-   }
+   val.ToDouble(&r);
+   ratio = pow(10.0,TrapDouble(r*10, AMP_MIN, AMP_MAX)/200.0);
 
-   noclip = !GetClipCheckBox()->GetValue();
+   noclip = !mClip->GetValue();
 
-   return TRUE;
+   return true;
 }
 
-// WDR: handler implementations for AmplifyDialog
+bool AmplifyDialog::Validate()
+{
+   TransferDataFromWindow();
+   
+   if (mClip->GetValue() == false) {
+     if (ratio * peak > 1.0)
+        ratio = 1.0 / peak;
+   }
+
+   return true;
+}
+// handler implementations for AmplifyDialog
+
+void AmplifyDialog::CheckClip()
+{
+   wxButton *ok = (wxButton *) FindWindow(wxID_OK);
+
+   if (!mClip->GetValue() == true) {
+      ok->Enable(ratio * peak <= 1.0);
+   }
+   else {
+      ok->Enable(true);
+   }
+}
 
 void AmplifyDialog::OnAmpText(wxCommandEvent & event)
 {
-   if (mLoopDetect)
-      return;
+   wxString val = mAmpT->GetValue();
+   double r;
 
-   wxTextCtrl *c = GetAmpText();
-   if (c) {
-      double r;
+   val.ToDouble(&r);
+   ratio = pow(10.0,TrapDouble(r*10, AMP_MIN, AMP_MAX)/200.0);
 
-      mLoopDetect = true;
+   mAmpS->SetValue((int)(200*log10(ratio)+0.5));
 
-      wxString val = c->GetValue();
-      val.ToDouble(&r);
-      ratio = pow(10.0,TrapDouble(r*10, AMP_MIN, AMP_MAX)/200.0);
-
-      wxSlider *slider = GetAmpSlider();
-      if (slider)
-         slider->SetValue((int)(200*log10(ratio)+0.5));
-
-      wxString str;
-      if( ratio*peak > 0.0 )
-         str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
-      else
-         str = _("-Infinity");   // the case when the waveform is all zero
-      GetPeakText()->SetValue(str);
-
-      mLoopDetect = false;
-   }
+   if( ratio*peak > 0.0 )
+      val.Printf(wxT("%.1f"), 20*log10(ratio*peak));
+   else
+      val = _("-Infinity");   // the case when the waveform is all zero
+   mPeakT->ChangeValue(val);
    
    CheckClip();
 }
 
 void AmplifyDialog::OnPeakText(wxCommandEvent & event)
 {
-   if (mLoopDetect)
-      return;
+   wxString val = mPeakT->GetValue();
+   double r;
 
-   wxTextCtrl *c = GetPeakText();
-   if (c) {
-      double r;
-
-      mLoopDetect = true;
-
-      wxString val = c->GetValue();
-      val.ToDouble(&r);
-
-      ratio = pow(10.0, r/20.0) / peak;
-      
-      double dB = TrapDouble(200*log10(ratio), AMP_MIN, AMP_MAX)/10.0;
-      ratio = pow(10.0, dB/20.0);
-
-      wxSlider *slider = GetAmpSlider();
-      if (slider)
-         slider->SetValue((int)(10*dB+0.5));
-      
-      wxString str;
-      str.Printf(wxT("%.1f"), dB);
-      GetAmpText()->SetValue(str);
-      
-      mLoopDetect = false;
-   }
+   val.ToDouble(&r);
+   ratio = pow(10.0, r/20.0) / peak;
    
+   double dB = TrapDouble(200*log10(ratio), AMP_MIN, AMP_MAX)/10.0;
+   ratio = pow(10.0, dB/20.0);
+
+   mAmpS->SetValue((int)(10*dB+0.5));
+   
+   val.Printf(wxT("%.1f"), dB);
+   mAmpT->ChangeValue(val);
+
    CheckClip();
 }
 
 void AmplifyDialog::OnAmpSlider(wxCommandEvent & event)
 {
-   if (mLoopDetect)
-      return;
-
-   mLoopDetect = true;
-
    wxString str;
-   double dB = GetAmpSlider()->GetValue() / 10.0;
+
+   double dB = mAmpS->GetValue() / 10.0;
    ratio = pow(10.0,TrapDouble(dB, AMP_MIN, AMP_MAX)/20.0);
    
-   double dB2 = (GetAmpSlider()->GetValue()-1) / 10.0;
+   double dB2 = (mAmpS->GetValue()-1) / 10.0;
    double ratio2 = pow(10.0,TrapDouble(dB2, AMP_MIN, AMP_MAX)/20.0);
 
-   if (!GetClipCheckBox()->GetValue() &&
-       ratio * peak > 1.0 &&
-       ratio2 * peak < 1.0)
+   if (!mClip->GetValue() && ratio * peak > 1.0 && ratio2 * peak < 1.0)
       ratio = 1.0 / peak;
    
    str.Printf(wxT("%.1f"), 20*log10(ratio));
-   GetAmpText()->SetValue(str);
-   if( ratio*peak > 0.0 )
+   mAmpT->ChangeValue(str);
+
+   if (ratio*peak > 0.0)
       str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
    else
       str = _("-Infinity");   // the case when the waveform is all zero
-   GetPeakText()->SetValue(str);
-
-   mLoopDetect = false;
+   mPeakT->ChangeValue(str);
 
    CheckClip();
 }
@@ -365,56 +339,24 @@ void AmplifyDialog::OnClipCheckBox(wxCommandEvent & event)
    CheckClip();
 }
 
-void AmplifyDialog::CheckClip()
-{
-   if (!GetClipCheckBox()->GetValue() == true) {
-      GetOK()->Enable(ratio * peak <= 1.0);
-   }
-   else {
-      GetOK()->Enable(true);
-   }
-}
-
 void AmplifyDialog::OnPreview(wxCommandEvent &event)
 {
    TransferDataFromWindow();
 
 	// Save & restore parameters around Preview, because we didn't do OK.
-	float oldRatio = m_pEffect->ratio;
-	float oldPeak = m_pEffect->peak;
+	float oldRatio = mEffect->ratio;
+	float oldPeak = mEffect->peak;
 
-   m_pEffect->ratio = ratio;
+   mEffect->ratio = ratio;
    if (noclip && ratio*peak > 1.0)
-      m_pEffect->ratio = 1.0 / peak;
-   m_pEffect->peak = peak;
+      mEffect->ratio = 1.0 / peak;
+   mEffect->peak = peak;
 
-   m_pEffect->Preview();
+   mEffect->Preview();
 
-   m_pEffect->ratio = oldRatio;
-   m_pEffect->peak = oldPeak;
+   mEffect->ratio = oldRatio;
+   mEffect->peak = oldPeak;
 }
-
-void AmplifyDialog::OnOk(wxCommandEvent & event)
-{
-   TransferDataFromWindow();
-   
-   if (GetClipCheckBox()->GetValue() == false) {
-     if (ratio * peak > 1.0)
-        ratio = 1.0 / peak;
-   }
-
-   if (Validate())
-      EndModal(true);
-   else {
-      event.Skip();
-   }
-}
-
-void AmplifyDialog::OnCancel(wxCommandEvent & event)
-{
-   EndModal(false);
-}
-
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

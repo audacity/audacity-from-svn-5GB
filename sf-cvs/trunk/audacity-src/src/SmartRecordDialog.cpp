@@ -270,10 +270,12 @@ void SmartRecordDialog::PopulateOrExchange(ShuttleGui& S)
                                  ID_DATEPICKER_START, // wxWindowID id, 
                                  m_DateTime_Start); // const wxDateTime& dt = wxDefaultDateTime, 
                                  // const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDP_DEFAULT | wxDP_SHOWCENTURY, const wxValidator& validator = wxDefaultValidator, const wxString& name = "datectrl")
+         m_pDatePickerCtrl_Start->SetName(_("Start Date"));
          m_pDatePickerCtrl_Start->SetRange(wxDateTime::Today(), wxInvalidDateTime); // No backdating.
          S.AddWindow(m_pDatePickerCtrl_Start);
 
          m_pTimeTextCtrl_Start = new TimeTextCtrl(this, ID_TIMETEXT_START, strFormat);
+         m_pTimeTextCtrl_Start->SetName(_("Start Time"));
          m_pTimeTextCtrl_Start->SetTimeValue(wxDateTime_to_AudacityTime(m_DateTime_Start));
          S.AddWindow(m_pTimeTextCtrl_Start);
          m_pTimeTextCtrl_Start->EnableMenu(false);
@@ -288,9 +290,11 @@ void SmartRecordDialog::PopulateOrExchange(ShuttleGui& S)
                                  m_DateTime_End); // const wxDateTime& dt = wxDefaultDateTime, 
                                  // const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDP_DEFAULT | wxDP_SHOWCENTURY, const wxValidator& validator = wxDefaultValidator, const wxString& name = "datectrl")
          m_pDatePickerCtrl_End->SetRange(m_DateTime_Start, wxInvalidDateTime); // No backdating.
+         m_pDatePickerCtrl_End->SetName(_("End Date"));
          S.AddWindow(m_pDatePickerCtrl_End);
 
          m_pTimeTextCtrl_End = new TimeTextCtrl(this, ID_TIMETEXT_END, strFormat);
+         m_pTimeTextCtrl_End->SetName(_("End Time"));
          m_pTimeTextCtrl_End->SetTimeValue(wxDateTime_to_AudacityTime(m_DateTime_End));
          S.AddWindow(m_pTimeTextCtrl_End);
          m_pTimeTextCtrl_End->EnableMenu(false);
@@ -301,6 +305,7 @@ void SmartRecordDialog::PopulateOrExchange(ShuttleGui& S)
       {
          wxString strFormat1 = wxT("099 days 024 h 060 m 060 s");
          m_pTimeTextCtrl_Duration = new TimeTextCtrl(this, ID_TIMETEXT_DURATION, strFormat1);
+         m_pTimeTextCtrl_Duration->SetName(_("Duration"));
          m_pTimeTextCtrl_Duration->SetTimeValue(
             Internat::CompatibleToDouble(m_TimeSpan_Duration.GetSeconds().ToString())); //v milliseconds?
          S.AddWindow(m_pTimeTextCtrl_Duration);

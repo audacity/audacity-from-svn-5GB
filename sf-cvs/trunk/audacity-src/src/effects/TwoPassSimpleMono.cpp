@@ -28,7 +28,7 @@ bool EffectTwoPassSimpleMono::Process()
     mSecondPassDisabled = false;
     
     InitPass1();
-    this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+    this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
     bool bGoodResult = ProcessPass();
         
     if (bGoodResult && !mSecondPassDisabled)
@@ -45,7 +45,7 @@ bool EffectTwoPassSimpleMono::Process()
 bool EffectTwoPassSimpleMono::ProcessPass()
 {
    //Iterate over each track
-   TrackListIterator iter(m_pOutputWaveTracks);
+   TrackListIterator iter(mOutputWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    mCurTrackNum = 0;
    while (track) {

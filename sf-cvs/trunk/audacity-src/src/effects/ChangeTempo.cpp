@@ -288,8 +288,6 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
    this->SetSizer(pBoxSizer_Dialog);
    pBoxSizer_Dialog->Fit(this);
    pBoxSizer_Dialog->SetSizeHints(this);
-
-   effect->SetDialog(this);
 }
 
 bool ChangeTempoDialog::Validate()

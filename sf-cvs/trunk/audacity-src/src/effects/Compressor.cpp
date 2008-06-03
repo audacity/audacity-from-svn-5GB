@@ -529,8 +529,6 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
 
    SetSizeHints(500, 300, 20000, 20000);
    SetSize(500, 400);
-
-   effect->SetDialog(this);
 }
 
 bool CompressorDialog::TransferDataToWindow()

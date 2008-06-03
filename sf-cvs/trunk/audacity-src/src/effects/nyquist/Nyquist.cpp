@@ -394,8 +394,8 @@ bool EffectNyquist::Process()
 {
    bool success = true;
    
-   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
-   TrackListIterator iter(m_pOutputWaveTracks);
+   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
+   TrackListIterator iter(mOutputWaveTracks);
    mCurTrack[0] = (WaveTrack *) iter.First();
    mOutputTime = mT1 - mT0;
    mCount = 0;
@@ -732,7 +732,7 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
                              const wxString & title,
                              wxString info,
                              NyqControlArray *controlArray)
-   :wxDialog(parent, id, title)
+:   wxDialog(parent, id, title)
 {
    mControls = controlArray;
    mInHandler = true; // prevents race condition on MSW
@@ -751,7 +751,7 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
       wxControl  *item;
       NyqControl *ctrl = &((*mControls)[i]);
 
-      item = new wxStaticText(this, -1, ctrl->name);
+      item = new wxStaticText(this, -1, ctrl->name + wxT(":"));
       grid->Add(item, 0, wxALIGN_RIGHT | 
                 wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -760,6 +760,7 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
 
          item = new wxTextCtrl(this, ID_NYQ_TEXT+i, ctrl->valStr,
                                wxDefaultPosition, wxSize(150, -1));
+         item->SetName(ctrl->name);
          grid->Add(item, 0, wxALIGN_CENTRE |
                    wxALIGN_CENTER_VERTICAL | wxALL, 5);
       }
@@ -786,6 +787,7 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
 
          wxChoice *choice = new wxChoice( this, ID_NYQ_CHOICE + i, 
                wxDefaultPosition, wxSize( 150, -1 ), choices );
+         choice->SetName(ctrl->name);
          
          int val = ( int )ctrl->val;
          if( val >= 0 && val < (int)choice->GetCount() )
@@ -802,11 +804,15 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
 
          item = new wxTextCtrl(this, ID_NYQ_TEXT+i, wxT(""),
                                wxDefaultPosition, wxSize(60, -1));
+         item->SetName(ctrl->name);
+
          grid->Add(item, 0, wxALIGN_CENTRE |
                    wxALIGN_CENTER_VERTICAL | wxALL, 5);
          
          item = new wxSlider(this, ID_NYQ_SLIDER+i, val, 0, ctrl->ticks,
                              wxDefaultPosition, wxSize(150, -1));
+         item->SetName(ctrl->name);
+
          grid->Add(item, 0, wxALIGN_CENTRE |
                    wxALIGN_CENTER_VERTICAL | wxALL, 5);
       }

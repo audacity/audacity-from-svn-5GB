@@ -4499,19 +4499,61 @@ void AudacityProject::OnResample()
    TrackListIterator iter(mTracks);
 
    int newRate;
-   
-   while (true) {
-      wxTextEntryDialog* dlg = new wxTextEntryDialog(this,
-         _("New sample rate (Hz):"), _("Resample"), wxT(""));
-      if (dlg->ShowModal() != wxID_OK)
-         return; // user cancelled dialog
-      newRate = atoi(dlg->GetValue().mb_str());
-      delete dlg;
-      if (newRate < 1 || newRate > 1000000)
-         wxMessageBox(_("The entered value is invalid"), _("Error"),
-                      wxICON_STOP, this);
-      else
+
+   while (true)
+   {
+      wxDialog dlg(this, wxID_ANY, wxString(_("Resample")));
+      ShuttleGui S(&dlg, eIsCreating);
+      wxString rate;
+      wxArrayString rates;
+      wxComboBox *cb;
+
+      rate.Printf(wxT("%d"), lrint(mRate));
+
+      rates.Add(wxT("8000"));
+      rates.Add(wxT("11025"));
+      rates.Add(wxT("16000"));
+      rates.Add(wxT("22050"));
+      rates.Add(wxT("44100"));
+      rates.Add(wxT("48000"));
+      rates.Add(wxT("96000"));
+
+      S.StartVerticalLay(true);
+      {
+         S.StartHorizontalLay();
+         {
+            // Add a little extra space
+         }
+         S.EndHorizontalLay();
+         
+         S.StartHorizontalLay(wxCENTER, false);
+         {
+            cb = S.AddCombo(_("New sample rate (Hz):"),
+                            rate,
+                            &rates);
+         }
+         S.EndHorizontalLay();
+         S.AddStandardButtons();
+      }
+      S.EndVerticalLay();
+
+      dlg.Fit();
+      dlg.Center();
+
+      if (dlg.ShowModal() != wxID_OK)
+      {
+         return;  // user cancelled dialog
+      }
+
+      long lrate;
+      if (cb->GetValue().ToLong(&lrate) && lrate >= 1 && lrate <= 1000000)
+      {
+         newRate = (int)lrate;
          break;
+      }
+
+      wxMessageBox(_("The entered value is invalid"), _("Error"),
+                   wxICON_ERROR, this);
    }
 
    int ndx = 0;

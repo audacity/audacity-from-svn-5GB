@@ -161,6 +161,7 @@ is time to refresh some aspect of the screen.
 #include <sys/time.h>
 #endif
 
+#include <wx/combobox.h>
 #include <wx/dcclient.h>
 #include <wx/dcbuffer.h>
 #include <wx/dcmemory.h>
@@ -6285,32 +6286,68 @@ void TrackPanel::OnRateOther(wxCommandEvent &event)
    wxASSERT(mPopupMenuTarget
             && mPopupMenuTarget->GetKind() == Track::Wave);
 
-   wxString defaultStr;
-   defaultStr.Printf(wxT("%d"),
-                     (int) (((WaveTrack *) mPopupMenuTarget)->GetRate() +
-                            0.5));
+   int newRate;
 
    /// \todo Remove artificial constants!!
    /// \todo Make a real dialog box out of this!!
-   double theRate;
-   do {
-      wxString rateStr =
-          wxGetTextFromUser(_("Enter a sample rate in Hz (per second) between 1 and 100000:"),
-                            _("Set Rate"), defaultStr);
+   while (true)
+   {
+      wxDialog dlg(this, wxID_ANY, wxString(_("Set Rate")));
+      ShuttleGui S(&dlg, eIsCreating);
+      wxString rate;
+      wxArrayString rates;
+      wxComboBox *cb;
 
-      // AS: Exit if they type in nothing.
-      if (wxT("") == rateStr)
-         return;
+      rate.Printf(wxT("%d"), lrint(((WaveTrack *) mPopupMenuTarget)->GetRate()));
 
-      if (rateStr.ToDouble(&theRate) && theRate >= 1 && theRate <= 100000)
+      rates.Add(wxT("8000"));
+      rates.Add(wxT("11025"));
+      rates.Add(wxT("16000"));
+      rates.Add(wxT("22050"));
+      rates.Add(wxT("44100"));
+      rates.Add(wxT("48000"));
+      rates.Add(wxT("96000"));
+
+      S.StartVerticalLay(true);
+      {
+         S.StartHorizontalLay();
+         {
+            // Add a little extra space
+         }
+         S.EndHorizontalLay();
+         
+         S.StartHorizontalLay(wxCENTER, false);
+         {
+            cb = S.AddCombo(_("New sample rate (Hz):"),
+                            rate,
+                            &rates);
+         }
+         S.EndHorizontalLay();
+         S.AddStandardButtons();
+      }
+      S.EndVerticalLay();
+
+      dlg.Fit();
+      dlg.Center();
+
+      if (dlg.ShowModal() != wxID_OK)
+      {
+         return;  // user cancelled dialog
+      }
+
+      long lrate;
+      if (cb->GetValue().ToLong(&lrate) && lrate >= 1 && lrate <= 1000000)
+      {
+         newRate = (int)lrate;
          break;
-      else
-         wxMessageBox(_("Invalid rate."));
+      }
 
-   } while (1);
+      wxMessageBox(_("The entered value is invalid"), _("Error"),
+                   wxICON_ERROR, this);
+   }
 
    SetMenuCheck( *mRateMenu, event.GetId() );
-   SetRate(mPopupMenuTarget, theRate);
+   SetRate(mPopupMenuTarget, newRate);
 
    mPopupMenuTarget = NULL;
    MakeParentRedrawScrollbars();
@@ -6481,6 +6518,7 @@ void TrackPanel::OnSetFont(wxCommandEvent &event)
                             wxDefaultSize,
                             facenames,
                             wxLB_SINGLE);
+         lb->SetName(_("Face name"));
          lb->SetSelection(facenames.Index(facename));
          S.AddWindow(lb, wxALIGN_LEFT | wxEXPAND | wxALL);
 
@@ -6491,6 +6529,7 @@ void TrackPanel::OnSetFont(wxCommandEvent &event)
                              wxDefaultSize,
                              wxSP_ARROW_KEYS,
                              8, 48, fontsize);
+         sc->SetName(_("Face size"));
          S.AddWindow(sc, wxALIGN_LEFT | wxALL);
       }
       S.EndMultiColumn();

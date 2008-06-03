@@ -44,18 +44,9 @@ EffectLeveller::EffectLeveller()
 }
 
 #define NUM_PASSES_CHOICES 6
-static wxString numPasses[NUM_PASSES_CHOICES];
-static double gFrameSum; // odd ... having this as member var crashed on exit
 
 bool EffectLeveller::Init()
 {
-   numPasses[0] = _("None-Skip");
-   numPasses[1] = _("Light");
-   numPasses[2] = _("Moderate");
-   numPasses[3] = _("Heavy");
-   numPasses[4] = _("Heavier");
-   numPasses[5] = _("Heaviest");
-
    mLevellerNumPasses = gPrefs->Read(wxT("/CsPresets/LevellerNumPasses"), 2L);
    if ((mLevellerNumPasses < 0) || (mLevellerNumPasses >= NUM_PASSES_CHOICES)) {  // corrupted Prefs?
       mLevellerNumPasses = 0;
@@ -75,25 +66,15 @@ bool EffectLeveller::Init()
 
 bool EffectLeveller::CheckWhetherSkipEffect()
 {
-   bool rc = ((mLevellerDbChoiceIndex >= (Enums::NumDbChoices - 1)) || (mLevellerNumPasses == 0));
-   return rc;
+   return ((mLevellerDbChoiceIndex >= (Enums::NumDbChoices - 1)) || (mLevellerNumPasses == 0));
 }
 
 void EffectLeveller::End()
 {
-   int frameSum = (int)gFrameSum;
+   int frameSum = (int)mFrameSum;
    gPrefs->Write(wxT("/Validate/LevellerFrameSum"), frameSum);
 }
 
-// Debug filenames
-// X:\CleanSpeech\testsermons\Ifl_050325_0830_LoudSoft_Quiet_Orig_16000.wav
-// X:\CleanSpeech\testsermons\Ifl_050325_0830_LoudSoft_HighNoise.wav
-// X:\CleanSpeech\testsermons\Ifl_050325_0830_LoudSoft_LowNoise_NormDeclickNr.wav
-// X:\CleanSpeech\testsermons\ThatsIt_NormNrDeclicked.wav
-// X:\CleanSpeech\LevellerTest.wav
-// X:\CleanSpeech\testsermons\Edwards_SinnersInTheHandsOfAnAngryGod_Deut3235.mp3
-// X:\CleanSpeech\testsermons\TypicalSpeech.wav
-// X:\CleanSpeech\TruncSilenceTest.wav
 #define LEVELER_FACTORS 6
 static double gLimit[LEVELER_FACTORS] = { 0.0001, 0.0, 0.1, 0.3, 0.5, 1.0 };
 static double gAdjLimit[LEVELER_FACTORS];
@@ -103,7 +84,7 @@ static double gAdjFactor[LEVELER_FACTORS] = { 0.80, 1.00, 1.20, 1.20, 1.00, 0.80
 
 void EffectLeveller::CalcLevellerFactors()
 {
-   gFrameSum            = 0.0;
+   mFrameSum            = 0.0;
    gLimit[1]            = mLevellerDbSilenceThreshold;
    int    prev          = 0;
    double addOnValue    = 0.0;
@@ -133,7 +114,7 @@ void EffectLeveller::CalcLevellerFactors()
 
 bool EffectLeveller::PromptUser()
 {
-   LevellerDialog dlog(mParent, -1, _("Leveller"));
+   LevellerDialog dlog(this, mParent);
    dlog.mLevellerDbChoiceIndex = mLevellerDbChoiceIndex;
    dlog.mLevellerNumPasses = mLevellerNumPasses;
    dlog.TransferDataToWindow();
@@ -141,9 +122,10 @@ bool EffectLeveller::PromptUser()
    dlog.CentreOnParent();
    dlog.ShowModal();
 
-   if (!dlog.GetReturnCode()) {
+   if (dlog.GetReturnCode() == wxID_CANCEL) {
       return false;
    }
+
    mLevellerNumPasses = dlog.mLevellerNumPasses;
    mLevellerDbChoiceIndex = dlog.mLevellerDbChoiceIndex;
    mLevellerDbSilenceThreshold = Enums::Db2Signal[mLevellerDbChoiceIndex];
@@ -176,7 +158,7 @@ float EffectLeveller::LevelOneFrame(float frameInBuffer)
       curSign = 1.0;
    }
    fabsCurFrame = (float)fabs(curFrame);
-   gFrameSum += fabsCurFrame;
+   mFrameSum += fabsCurFrame;
 
    for (int f = 0; f < LEVELER_FACTORS; ++f) {
      if (fabsCurFrame <= gLimit[f]) {
@@ -202,92 +184,91 @@ bool EffectLeveller::ProcessSimpleMono(float *buffer, sampleCount len)
 // LevellerDialog
 //----------------------------------------------------------------------------
 
-#define ID_DB_SILENCE_THRESHOLD_CHOICE 7001
-#define ID_DB_NUM_PASSES_CHOICE 7002
-
-BEGIN_EVENT_TABLE(LevellerDialog,wxDialog)
-   EVT_BUTTON( wxID_OK, LevellerDialog::OnOk )
-   EVT_BUTTON( wxID_CANCEL, LevellerDialog::OnCancel )
+BEGIN_EVENT_TABLE(LevellerDialog, EffectDialog)
+   EVT_BUTTON(ID_EFFECT_PREVIEW, LevellerDialog::OnPreview)
 END_EVENT_TABLE()
 
-LevellerDialog::LevellerDialog(wxWindow *parent, wxWindowID id,
-                             const wxString &title ) :
-   wxDialog( parent, id, title)
+LevellerDialog::LevellerDialog(EffectLeveller *effect, wxWindow *parent)
+:  EffectDialog(parent, _("Leveller"), PROCESS_EFFECT),
+   mEffect(effect)
 {
-   wxBoxSizer       *mainSizer = new wxBoxSizer(wxVERTICAL);
-
-   wxStaticText *statText = new wxStaticText(this, -1,
-                           _("Leveller by Lynn Allan"));
-   mainSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
-   statText = new wxStaticText(this, -1,
-                           _("Equalize soft and loud sections"));
-   mainSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticBoxSizer *group = new wxStaticBoxSizer(new wxStaticBox(this, -1, _("Degree of Leveling")), wxVERTICAL);;
-
-
-   wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
-//   wxString numPasses[] = { "None-Skip", "Light", "Moderate", "Heavy", "Heavier", "Heaviest" };
-   statText = new wxStaticText(this, -1, _("Degree of Leveling") + wxString(wxT(": ")));
-   hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   mLevellerNumPassesChoice = new wxChoice(this, ID_DB_NUM_PASSES_CHOICE,
-                                       wxDefaultPosition, wxDefaultSize, NUM_PASSES_CHOICES,
-                                       numPasses);
-   hSizer->Add(mLevellerNumPassesChoice, 0, wxALIGN_LEFT|wxALL, 5);
-   group->Add(hSizer, 0, wxALIGN_CENTRE|wxALL, 5 );
-   mainSizer->Add(group, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   group = new wxStaticBoxSizer(new wxStaticBox(this, -1,
-                                                _("Noise Threshold (Hiss/Hum/Ambient Noise)")), wxVERTICAL);
-
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-   statText = new wxStaticText(this, -1, _("Threshold for Noise: "));
-   hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   mLevellerDbSilenceThresholdChoice = new wxChoice(this, ID_DB_SILENCE_THRESHOLD_CHOICE,
-      wxDefaultPosition, wxDefaultSize, Enums::NumDbChoices,
-                                       Enums::GetDbChoices());
-   hSizer->Add(mLevellerDbSilenceThresholdChoice, 0, wxALIGN_CENTER | wxALL, 4);
-   group->Add(hSizer, 0, wxALIGN_CENTRE|wxALL, 5 );
-   mainSizer->Add(group, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   // Preview, OK, & Cancel buttons
-   mainSizer->Add(CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND);
-
-   SetAutoLayout(true);
-   SetSizer(mainSizer);
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
+   Init();
 }
 
-bool LevellerDialog::TransferDataToWindow()
+void LevellerDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   mLevellerDbSilenceThresholdChoice->SetSelection(mLevellerDbChoiceIndex);
-   mLevellerNumPassesChoice->SetSelection(mLevellerNumPasses);
+   wxArrayString db(Enums::NumDbChoices, Enums::GetDbChoices());
+   wxArrayString numPasses;
 
-   TransferDataFromWindow();
+   numPasses.Add(_("None-Skip"));
+   numPasses.Add(_("Light"));
+   numPasses.Add(_("Moderate"));
+   numPasses.Add(_("Heavy"));
+   numPasses.Add(_("Heavier"));
+   numPasses.Add(_("Heaviest"));
 
-   return true;
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      S.AddTitle(_("by Lynn Allan"));
+   }
+   S.EndHorizontalLay();
+
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      // Add a little space
+   }
+   S.EndHorizontalLay();
+
+   S.StartStatic(_("Degree of Leveling"));
+   {
+      S.StartHorizontalLay();
+      {
+         S.TieChoice(_("Degree of Leveling:"),
+                     mLevellerNumPasses,
+                     &numPasses);
+      }
+      S.EndHorizontalLay();
+   }
+   S.EndStatic();
+                                              
+   S.StartStatic(_("Noise Threshold (Hiss/Hum/Ambient Noise)"));
+   {
+      S.StartHorizontalLay();
+      {
+         S.TieChoice(_("Threshold for Noise:"),
+                     mLevellerDbChoiceIndex,
+                     &db);
+      }
+      S.EndHorizontalLay();
+   }
+   S.EndStatic();
 }
 
-bool LevellerDialog::TransferDataFromWindow()
-{
-   mLevellerDbChoiceIndex = mLevellerDbSilenceThresholdChoice->GetSelection();
-   mLevellerNumPasses = mLevellerNumPassesChoice->GetSelection();
-
-   return true;
-}
-
-void LevellerDialog::OnOk(wxCommandEvent &event)
+void LevellerDialog::OnPreview(wxCommandEvent &event)
 {
    TransferDataFromWindow();
 
-   EndModal(true);
+	// Save & restore parameters around Preview
+   int oldLevellerDbChoiceIndex = mEffect->mLevellerDbChoiceIndex;
+   int oldLevellerNumPasses = mEffect->mLevellerNumPasses;
+
+   mEffect->mLevellerDbChoiceIndex = mLevellerDbChoiceIndex;
+   mEffect->mLevellerNumPasses = mLevellerNumPasses;
+
+   mEffect->Preview();
+   
+	mEffect->mLevellerDbChoiceIndex = oldLevellerDbChoiceIndex;
+   mEffect->mLevellerNumPasses = oldLevellerNumPasses;
 }
 
-void LevellerDialog::OnCancel(wxCommandEvent &event)
-{
-   EndModal(false);
-}
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 0e9ab1c7-3cb3-4864-8f30-876218bea476
 

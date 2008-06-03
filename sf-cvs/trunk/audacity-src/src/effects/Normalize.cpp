@@ -110,7 +110,7 @@ void EffectNormalize::End()
 
 bool EffectNormalize::PromptUser()
 {
-   NormalizeDialog dlog(this, mParent, -1, _("Normalize"));
+   NormalizeDialog dlog(this, mParent);
    dlog.mGain = mGain;
    dlog.mDC = mDC;
    dlog.mLevel = mLevel;
@@ -119,7 +119,7 @@ bool EffectNormalize::PromptUser()
    dlog.CentreOnParent();
    dlog.ShowModal();
    
-   if (!dlog.GetReturnCode())
+   if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
    mGain = dlog.mGain;
@@ -139,10 +139,10 @@ bool EffectNormalize::Process()
       return true;
 
    //Iterate over each track
-   this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
+   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(m_pOutputWaveTracks);
+   TrackListIterator iter(mOutputWaveTracks);
     WaveTrack *track = (WaveTrack *) iter.First();
    mCurTrackNum = 0;
    while (track) {
@@ -316,80 +316,60 @@ void EffectNormalize::ProcessData(float *buffer, sampleCount len)
 //----------------------------------------------------------------------------
 
 #define ID_NORMALIZE_AMPLITUDE 10002
-#define ID_LEVEL_STATIC_MINUS 10003
-#define ID_LEVEL_STATIC_DB 10004
-#define ID_LEVEL_TEXT 10005
 
-BEGIN_EVENT_TABLE(NormalizeDialog,wxDialog)
-   EVT_BUTTON( wxID_OK, NormalizeDialog::OnOk )
-   EVT_BUTTON( wxID_CANCEL, NormalizeDialog::OnCancel )
-	EVT_BUTTON(ID_EFFECT_PREVIEW, NormalizeDialog::OnPreview)
+BEGIN_EVENT_TABLE(NormalizeDialog, EffectDialog)
 	EVT_CHECKBOX(ID_NORMALIZE_AMPLITUDE, NormalizeDialog::OnUpdateUI)
+	EVT_BUTTON(ID_EFFECT_PREVIEW, NormalizeDialog::OnPreview)
 END_EVENT_TABLE()
 
 NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
-                                 wxWindow *parent, wxWindowID id,
-                                 const wxString &title,
-                                 const wxPoint &position, const wxSize& size,
-                                 long style ) :
-   wxDialog( parent, id, title, position, size, style ),
+                                 wxWindow * parent)
+:  EffectDialog(parent, _("Normailze"), PROCESS_EFFECT),
    mEffect(effect)
 {
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-
-   mainSizer->Add(new wxStaticText(this, -1,
-                                   _("Normalize by Dominic Mazzoni"
-												),
-                                   wxDefaultPosition, wxDefaultSize,
-                                   wxALIGN_CENTRE),
-                  0, wxALIGN_CENTRE|wxALL, 5);
-   
-   mDCCheckBox = new wxCheckBox(this, -1,
-                                  _("Remove any DC offset (center on 0 vertically)"));
-   mDCCheckBox->SetValue(mDC);
-   mainSizer->Add(mDCCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
-
-   mGainCheckBox = new wxCheckBox(this, ID_NORMALIZE_AMPLITUDE,
-                                  _("Normalize maximum amplitude to"));
-   mGainCheckBox->SetValue(mGain);
-   mainSizer->Add(mGainCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
-   
-   wxBoxSizer *levelSizer = new wxBoxSizer(wxHORIZONTAL);
-   levelSizer->AddSpacer(30);
-   mLevelTextCtrl = new wxTextCtrl(this, ID_LEVEL_TEXT);
-   mLevelTextCtrl->SetValue(wxString::Format(wxT("%.1f"), mLevel));
-   levelSizer->Add(new wxStaticText(this, ID_LEVEL_STATIC_MINUS, _("-"),
-                   wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT), 0,
-                   wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-   levelSizer->Add(mLevelTextCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-   levelSizer->Add(new wxStaticText(this, ID_LEVEL_STATIC_DB, _("dB"),
-                   wxDefaultPosition,
-                   wxDefaultSize, wxALIGN_LEFT), 0,
-                   wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-   mainSizer->Add(levelSizer, 0, wxALIGN_LEFT|wxALIGN_TOP|wxALL, 0);
-
-   // Preview, OK, & Cancel buttons
-   mainSizer->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
-
-   SetAutoLayout(true);
-   SetSizer(mainSizer);
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
-
-   effect->SetDialog(this);
+   Init();
 }
 
-void NormalizeDialog::OnUpdateUI(wxCommandEvent& evt)
+void NormalizeDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   UpdateUI();
-}
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      S.AddTitle(_("by Dominic Mazzoni"));
+   }
+   S.EndHorizontalLay();
 
-void NormalizeDialog::UpdateUI()
-{
-   bool enable = mGainCheckBox->GetValue();
-   FindWindowById(ID_LEVEL_STATIC_MINUS)->Enable(enable);
-   FindWindowById(ID_LEVEL_STATIC_DB)->Enable(enable);
-   FindWindowById(ID_LEVEL_TEXT)->Enable(enable);
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      // Add a little space
+   }
+   S.EndHorizontalLay();
+
+   S.StartTwoColumn();
+   {
+      mDCCheckBox = S.AddCheckBox(wxT(""),
+                                  mDC ? wxT("true") : wxT("false"));
+      mDCCheckBox->SetName(_("Remove any DC offset (center on 0 vertically"));
+      S.AddUnits(_("Remove any DC offset (center on 0 vertically"));
+
+      mGainCheckBox = S.Id(ID_NORMALIZE_AMPLITUDE).AddCheckBox(wxT(""),
+                                    mGain ? wxT("true") : wxT("false"));
+      mGainCheckBox->SetName(_("Normalize maximum amplitude to"));
+      S.AddUnits(_("Normalize maximum amplitude to:"));
+
+      S.AddPrompt(wxT(" "));
+      S.StartHorizontalLay(wxCENTER, false);
+      {
+         mLevelMinux = S.AddVariableText(_("-"), false,
+                                         wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT);
+         mLevelTextCtrl = S.AddTextBox(wxT(""),
+                                       Internat::ToString(mLevel, 1),
+                                       10);
+         mLeveldB = S.AddVariableText(_("dB"), false,
+                                      wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT);
+      }
+      S.EndHorizontalLay();
+   }
+   S.EndTwoColumn();
 }
 
 bool NormalizeDialog::TransferDataToWindow()
@@ -410,7 +390,21 @@ bool NormalizeDialog::TransferDataFromWindow()
    mGain = mGainCheckBox->GetValue();
    mDC = mDCCheckBox->GetValue();
    mLevel = Internat::CompatibleToDouble(mLevelTextCtrl->GetValue());
+
    return true;
+}
+
+void NormalizeDialog::OnUpdateUI(wxCommandEvent& evt)
+{
+   UpdateUI();
+}
+
+void NormalizeDialog::UpdateUI()
+{
+   bool enable = mGainCheckBox->GetValue();
+   mLevelMinux->Enable(enable);
+   mLevelTextCtrl->Enable(enable);
+   mLeveldB->Enable(enable);
 }
 
 void NormalizeDialog::OnPreview(wxCommandEvent &event)
@@ -431,18 +425,6 @@ void NormalizeDialog::OnPreview(wxCommandEvent &event)
 	mEffect->mGain = oldGain;
    mEffect->mDC = oldDC;
    mEffect->mLevel = oldLevel;
-}
-
-void NormalizeDialog::OnOk(wxCommandEvent &event)
-{
-   TransferDataFromWindow();
-
-   EndModal(true);
-}
-
-void NormalizeDialog::OnCancel(wxCommandEvent &event)
-{
-   EndModal(false);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

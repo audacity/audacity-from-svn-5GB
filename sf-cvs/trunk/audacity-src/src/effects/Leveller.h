@@ -13,15 +13,15 @@
 
 #include "SimpleMono.h"
 
-class wxString;
-class wxCheckBox;
-class wxTextCtrl;
-class wxChoice;
+#include <wx/choice.h>
+#include <wx/string.h>
+#include <wx/textctrl.h>
 
-class EffectLeveller: public EffectSimpleMono {
+class EffectLeveller: public EffectSimpleMono
+{
+ friend class LevellerDialog;
 
-public:
-
+ public:
    EffectLeveller();
 
    virtual wxString GetEffectName() {
@@ -41,17 +41,15 @@ public:
    virtual bool PromptUser();
    virtual bool TransferParameters( Shuttle & shuttle );
 
-protected:
+ protected:
    virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
 
-private:
-   friend class LevellerDialog;
-
+ private:
    void   CalcLevellerFactors();
    int    mLevellerDbChoiceIndex;
    int    mLevellerNumPasses;
+   double mFrameSum;
    double mLevellerDbSilenceThreshold;
-//   float  mFrameSum;
    float  LevelOneFrame(float frame);
 };
 
@@ -59,27 +57,31 @@ private:
 // LevellerDialog
 //----------------------------------------------------------------------------
 
-class LevellerDialog: public wxDialog
+class LevellerDialog: public EffectDialog
 {
-public:
+ public:
    // constructors and destructors
-   LevellerDialog(wxWindow *parent, wxWindowID id, const wxString &title);
+   LevellerDialog(EffectLeveller *effect, wxWindow * parent);
 
-   virtual bool TransferDataToWindow();
-   virtual bool TransferDataFromWindow();
+   // method declarations
+   void PopulateOrExchange(ShuttleGui & S);
+//   bool TransferDataToWindow();
+//   bool TransferDataFromWindow();
 
-   void OnOk( wxCommandEvent &event );
-   void OnCancel( wxCommandEvent &event );
+ private:
+	// handlers
+   void OnPreview( wxCommandEvent &event );
 
-   int           mLevellerDbChoiceIndex;
-   int           mLevellerNumPasses;
+ private:
+   EffectLeveller *mEffect;
+   wxChoice *mLevellerDbSilenceThresholdChoice;
+   wxChoice *mLevellerNumPassesChoice;
 
-private:
-   wxChoice      *mLevellerDbSilenceThresholdChoice;
-   wxChoice      *mLevellerNumPassesChoice;
-
-private:
    DECLARE_EVENT_TABLE()
+
+ public:
+   int mLevellerDbChoiceIndex;
+   int mLevellerNumPasses;
 };
 
 #endif

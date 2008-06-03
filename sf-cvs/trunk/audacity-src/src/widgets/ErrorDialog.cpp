@@ -122,16 +122,17 @@ void ErrorDialog::OnOk(wxCommandEvent &event)
 
 void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &HtmlText, bool bIsFile = false )
 {
+   LinkingHtmlWindow *html;
+
    BrowserFrame * pWnd = new BrowserFrame();
    pWnd->Create(pParent, wxID_ANY, Title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE);// & ~wxSYSTEM_MENU);
-   wxPanel *pPan = new wxPanel(pWnd, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER|wxTAB_TRAVERSAL);
 
-   ShuttleGui S( pPan, eIsCreating );
+   ShuttleGui S( pWnd, eIsCreating );
 
-   LinkingHtmlWindow *html;
-   S.StartVerticalLay();
+   S.SetStyle( wxNO_BORDER | wxTAB_TRAVERSAL );
+   wxPanel *pPan = S.Prop(true).StartPanel();
    {
-      S.StartHorizontalLay( wxEXPAND, 0);
+      S.StartHorizontalLay( wxEXPAND, false );
       {
          wxButton * pWndBackwards = S.Id( wxID_BACKWARD ).AddButton( _("<") );
          wxButton * pWndForwards  = S.Id( wxID_FORWARD  ).AddButton( _(">") );
@@ -143,6 +144,7 @@ void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &Ht
          #endif
       }
       S.EndHorizontalLay();
+
       html = new LinkingHtmlWindow(pPan, wxID_ANY,
                                    wxDefaultPosition,
                                    bIsFile ? wxSize(500, 400) : wxSize(480, 240),
@@ -155,9 +157,10 @@ void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &Ht
          html->SetPage( HtmlText);
 
       S.Prop(1).AddWindow( html, wxEXPAND );
+
       S.Id( wxID_CANCEL ).AddButton( _("Close") )->SetDefault();
    }
-   S.EndVerticalLay();
+   S.EndPanel();
 
    // -- START of ICON stuff -----
    // If this section (providing an icon) causes compilation errors on linux, comment it out for now.
@@ -178,6 +181,7 @@ void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &Ht
    pWnd->Centre();
    pWnd->Layout();
    pWnd->Fit();
+   pWnd->SetSizeHints(pWnd->GetSize());
    pWnd->Show( true );
 
    html->SetRelatedStatusBar( 0 );
