@@ -185,6 +185,7 @@ is time to refresh some aspect of the screen.
 #include "AudioIO.h"
 #include "Envelope.h"
 #include "Experimental.h"
+#include "float_cast.h"
 #include "Internat.h"
 #include "LabelTrack.h"
 #include "NoteTrack.h"
