@@ -215,7 +215,7 @@ void BenchmarkDialog::MakeBenchmarkDialog()
       {
          S.StartHorizontalLay(wxALIGN_LEFT, false);
          {
-            S.Id(RunID).AddButton(wxT("Run"));
+            S.Id(RunID).AddButton(wxT("Run"))->SetDefault();
             S.Id(BSaveID).AddButton(wxT("Save"));
             S.Id(ClearID).AddButton(wxT("Clear"));
          }
