@@ -157,7 +157,7 @@ dnl Step 3 - see if __attribute__ is broke or not
 		  int bar (int x) { return x; }
 EOF
 	  cc_broken_visibility_attribute=yes
-	  if AC_TRY_COMMAND(${CC} -Werror -S conftest.c -o conftest.s1>&AS_MESSAGE_LOG_FD); then
+	  if AC_TRY_COMMAND(${CC} -Werror -S conftest.c -o conftest.s 1>&AS_MESSAGE_LOG_FD); then
 changequote(,)dnl
 	    if grep '\.hidden[ 	_]foo' conftest.s >/dev/null; then
 changequote([,])dnl
