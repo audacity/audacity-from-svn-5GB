@@ -1889,6 +1889,10 @@
 		28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = px_mac_coreaudio.c; sourceTree = "<group>"; };
 		28105DA10AD09FC500BB4269 /* px_mixer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = px_mixer.c; sourceTree = "<group>"; };
 		28105DA20AD09FC500BB4269 /* px_mixer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = px_mixer.h; sourceTree = "<group>"; };
+		2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug_Shared.xcconfig; path = ../Debug_Shared.xcconfig; sourceTree = "<group>"; };
+		2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug_Static.xcconfig; path = ../Debug_Static.xcconfig; sourceTree = "<group>"; };
+		2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release_Shared.xcconfig; path = ../Release_Shared.xcconfig; sourceTree = "<group>"; };
+		2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release_Static.xcconfig; path = ../Release_Static.xcconfig; sourceTree = "<group>"; };
 		2816372C0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = LinkingHtmlWindow.cpp; sourceTree = "<group>"; };
 		2816372D0BAE3B6C0079C746 /* LinkingHtmlWindow.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LinkingHtmlWindow.h; sourceTree = "<group>"; };
 		282D474A0B9E8D900034BC49 /* Snap.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Snap.cpp; sourceTree = "<group>"; };
@@ -2787,6 +2791,7 @@
 			isa = PBXGroup;
 			children = (
 				1790AFB109883B6D008A330A /* Products */,
+				287179EE0DF6383000E171DF /* Xcode Settings */,
 				17072F220988D4F4008541CC /* lib-src */,
 				178CF4FE098953FB0056CE58 /* mac */,
 				1790AFC409883BFD008A330A /* src */,
@@ -3771,6 +3776,17 @@
 				28501F160CEED2C50029ABAA /* PluginWrapper.h */,
 			);
 			name = hostext;
+			sourceTree = "<group>";
+		};
+		287179EE0DF6383000E171DF /* Xcode Settings */ = {
+			isa = PBXGroup;
+			children = (
+				2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */,
+				2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */,
+				2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */,
+				2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */,
+			);
+			name = "Xcode Settings";
 			sourceTree = "<group>";
 		};
 		2880529A0DEA71B000671EA4 /* lib-widget-extra */ = {
@@ -4771,7 +4787,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC \\\n             --enable-unicode=$CONFIG_UNICODE \\\n             --enable-debug=$CONFIG_DEBUG \\\n             --with-lib-preference=local,system \\\n             --with-wx-version=$WX_VER \\\n             $CONFIG_FLAGS || exit 1\n\n#\n# Libsndfile's endianness detection is a bit unfriendly to universal binary\n# builds, so we coerce it into working our way.\n#\nFILE=lib-src/libsndfile/src/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#undef CPU_IS_BIG_ENDIAN\n#undef CPU_IS_LITTLE_ENDIAN\n#if defined(__BIG_ENDIAN__)\n#define CPU_IS_BIG_ENDIAN 1\n#define CPU_IS_LITTLE_ENDIAN 0\n#else\n#define CPU_IS_BIG_ENDIAN 0\n#define CPU_IS_LITTLE_ENDIAN 1\n#endif\nEOF\n\n#\n# Ditto for libflac.\n#\nFILE=lib-src/libflac/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\n#\n# And libmad.\n#\nFILE=lib-src/libmad/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\nexit $?\n";
+			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC \\\n             --enable-unicode=$CONFIG_UNICODE \\\n             --enable-debug=$CONFIG_DEBUG \\\n             --with-lib-preference=local,system \\\n             --with-wx-version=$WX_VER \\\n             $CONFIG_FLAGS || exit 1\n\n#\n# Libsndfile's endianness detection is a bit unfriendly to universal binary\n# builds, so we coerce it into working our way.\n#\nFILE=lib-src/libsndfile/src/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#undef CPU_IS_BIG_ENDIAN\n#undef CPU_IS_LITTLE_ENDIAN\n#if defined(__BIG_ENDIAN__)\n#define CPU_IS_BIG_ENDIAN 1\n#define CPU_IS_LITTLE_ENDIAN 0\n#else\n#define CPU_IS_BIG_ENDIAN 0\n#define CPU_IS_LITTLE_ENDIAN 1\n#endif\nEOF\n\n#\n# Ditto for libflac.\n#\nFILE=lib-src/libflac/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\n#\n# And libmad.\n#\nFILE=lib-src/libmad/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\n#\n# Here we create empty xcconfig files if they do not exist.  Otherwise,\n# the build will fail.\n#\n#configs='Debug_Shared Debug_Static Release_Shared Release_Static'\n#for config in $configs\n#do\n#\t[ ! -f $config.xcconfig ] && touch $config.xcconfig\n#done\n\t\nexit $?\n";
 		};
 		17073FEB0988E6C9008541CC /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5657,6 +5673,7 @@
 /* Begin XCBuildConfiguration section */
 		176EEBED09A2F1D600188F3B /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -5671,6 +5688,7 @@
 		};
 		176EEC4009A2F33100188F3B /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -5684,6 +5702,7 @@
 		};
 		17CAEBA7098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = Untitled;
 			};
@@ -5691,6 +5710,7 @@
 		};
 		17CAEBA8098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = allegro;
 			};
@@ -5698,6 +5718,7 @@
 		};
 		17CAEBA9098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = expat;
 			};
@@ -5705,6 +5726,7 @@
 		};
 		17CAEBAA098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = id3tag;
@@ -5713,6 +5735,7 @@
 		};
 		17CAEBAB098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -5724,6 +5747,7 @@
 		};
 		17CAEBAC098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = intgen;
 			};
@@ -5731,6 +5755,7 @@
 		};
 		17CAEBAD098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					CMTSTUFF,
@@ -5742,6 +5767,7 @@
 		};
 		17CAEBAE098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = ogg;
 			};
@@ -5749,6 +5775,7 @@
 		};
 		17CAEBAF098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = resample;
@@ -5757,6 +5784,7 @@
 		};
 		17CAEBB0098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
@@ -5766,6 +5794,7 @@
 		};
 		17CAEBB1098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -5779,6 +5808,7 @@
 		};
 		17CAEBB3098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
 				PRODUCT_NAME = portmixer;
@@ -5787,6 +5817,7 @@
 		};
 		17CAEBB4098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				OTHER_CFLAGS = "-fcheck-new";
@@ -5796,6 +5827,7 @@
 		};
 		17CAEBB5098C9B8E00337968 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5868,6 +5900,7 @@
 		};
 		2840CF1F0AEB803C00F49FC3 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
@@ -5877,6 +5910,7 @@
 		};
 		2840CF210AEB803C00F49FC3 /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
@@ -5886,6 +5920,7 @@
 		};
 		28501F030CEED1F00029ABAA /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
@@ -5895,6 +5930,7 @@
 		};
 		28501F050CEED1F00029ABAA /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
@@ -5904,6 +5940,7 @@
 		};
 		288052800DEA694100671EA4 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)/modules";
 				DYLIB_COMPATIBILITY_VERSION = "";
@@ -5950,6 +5987,7 @@
 		};
 		288052820DEA694100671EA4 /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)/modules";
 				DYLIB_COMPATIBILITY_VERSION = "";
@@ -6021,6 +6059,7 @@
 		};
 		288052CB0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"USE_PORTAUDIO_V19=1",
@@ -6067,6 +6106,7 @@
 		};
 		288052CC0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = Untitled;
 			};
@@ -6074,6 +6114,7 @@
 		};
 		288052CD0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = allegro;
 			};
@@ -6081,6 +6122,7 @@
 		};
 		288052CE0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = expat;
 			};
@@ -6088,6 +6130,7 @@
 		};
 		288052CF0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -6102,6 +6145,7 @@
 		};
 		288052D00DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -6115,6 +6159,7 @@
 		};
 		288052D10DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = id3tag;
@@ -6123,6 +6168,7 @@
 		};
 		288052D20DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -6134,6 +6180,7 @@
 		};
 		288052D30DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					CMTSTUFF,
@@ -6145,6 +6192,7 @@
 		};
 		288052D40DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -6158,6 +6206,7 @@
 		};
 		288052D50DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = ogg;
 			};
@@ -6165,6 +6214,7 @@
 		};
 		288052D60DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = resample;
@@ -6173,6 +6223,7 @@
 		};
 		288052D70DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
@@ -6182,6 +6233,7 @@
 		};
 		288052D80DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
@@ -6191,6 +6243,7 @@
 		};
 		288052D90DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"STDC_HEADERS=1",
@@ -6217,6 +6270,7 @@
 		};
 		288052DA0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
 				PRODUCT_NAME = portmixer;
@@ -6225,6 +6279,7 @@
 		};
 		288052DB0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				OTHER_CFLAGS = "-fcheck-new";
@@ -6234,6 +6289,7 @@
 		};
 		288052DC0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
@@ -6243,6 +6299,7 @@
 		};
 		288052DD0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = intgen;
 			};
@@ -6250,6 +6307,7 @@
 		};
 		288052DE0DEA74F100671EA4 /* Debug Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)/modules";
 				DYLIB_COMPATIBILITY_VERSION = "";
@@ -6326,6 +6384,7 @@
 		};
 		288052E00DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
@@ -6374,6 +6433,7 @@
 		};
 		288052E10DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = Untitled;
 			};
@@ -6381,6 +6441,7 @@
 		};
 		288052E20DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = allegro;
 			};
@@ -6388,6 +6449,7 @@
 		};
 		288052E30DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = expat;
 			};
@@ -6395,6 +6457,7 @@
 		};
 		288052E40DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -6409,6 +6472,7 @@
 		};
 		288052E50DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -6422,6 +6486,7 @@
 		};
 		288052E60DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = id3tag;
@@ -6430,6 +6495,7 @@
 		};
 		288052E70DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -6441,6 +6507,7 @@
 		};
 		288052E80DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					CMTSTUFF,
@@ -6452,6 +6519,7 @@
 		};
 		288052E90DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -6465,6 +6533,7 @@
 		};
 		288052EA0DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = ogg;
 			};
@@ -6472,6 +6541,7 @@
 		};
 		288052EB0DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = resample;
@@ -6480,6 +6550,7 @@
 		};
 		288052EC0DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
@@ -6489,6 +6560,7 @@
 		};
 		288052ED0DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvamp";
@@ -6498,6 +6570,7 @@
 		};
 		288052EE0DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"STDC_HEADERS=1",
@@ -6524,6 +6597,7 @@
 		};
 		288052EF0DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
 				PRODUCT_NAME = portmixer;
@@ -6532,6 +6606,7 @@
 		};
 		288052F00DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				OTHER_CFLAGS = "-fcheck-new";
@@ -6541,6 +6616,7 @@
 		};
 		288052F10DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
@@ -6550,6 +6626,7 @@
 		};
 		288052F20DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = intgen;
 			};
@@ -6557,6 +6634,7 @@
 		};
 		288052F30DEA74FD00671EA4 /* Release Shared */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)/modules";
 				DYLIB_COMPATIBILITY_VERSION = "";
@@ -6604,6 +6682,7 @@
 		};
 		28E5DA290AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = Untitled;
 			};
@@ -6611,6 +6690,7 @@
 		};
 		28E5DA2A0AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = allegro;
 			};
@@ -6618,6 +6698,7 @@
 		};
 		28E5DA2B0AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = expat;
 			};
@@ -6625,6 +6706,7 @@
 		};
 		28E5DA2C0AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -6639,6 +6721,7 @@
 		};
 		28E5DA2D0AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -6652,6 +6735,7 @@
 		};
 		28E5DA2E0AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = id3tag;
@@ -6660,6 +6744,7 @@
 		};
 		28E5DA2F0AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -6671,6 +6756,7 @@
 		};
 		28E5DA300AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = intgen;
 			};
@@ -6678,6 +6764,7 @@
 		};
 		28E5DA310AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					CMTSTUFF,
@@ -6689,6 +6776,7 @@
 		};
 		28E5DA320AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = ogg;
 			};
@@ -6696,6 +6784,7 @@
 		};
 		28E5DA330AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = resample;
@@ -6704,6 +6793,7 @@
 		};
 		28E5DA340AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
@@ -6713,6 +6803,7 @@
 		};
 		28E5DA350AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_CONFIG_H,
@@ -6726,6 +6817,7 @@
 		};
 		28E5DA360AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"STDC_HEADERS=1",
@@ -6752,6 +6844,7 @@
 		};
 		28E5DA370AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
 				PRODUCT_NAME = portmixer;
@@ -6760,6 +6853,7 @@
 		};
 		28E5DA380AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				OTHER_CFLAGS = "-fcheck-new";
@@ -6769,6 +6863,7 @@
 		};
 		28E5DA390AC4CBA200E7F64C /* Release Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -6846,6 +6941,7 @@
 		};
 		28E67F5D0A3A160D0021D89F /* Debug Static */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"STDC_HEADERS=1",
