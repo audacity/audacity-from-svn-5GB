@@ -700,7 +700,7 @@ int FFmpegImportFileHandle::WriteData(streamContext *sc)
 
    mSamplesDone += 1;
 
-   if (!mProgress->Update(mSamplesDone, mNumSamples > 0 ? mNumSamples : 1)) {
+   if (!mProgress->Update((wxLongLong)mSamplesDone, (wxLongLong)(mNumSamples > 0 ? mNumSamples : 1))) {
       mCancelled = true;
       return 1;
    }
