@@ -27,7 +27,7 @@
  */
 
 
-#include "libavutil/avutil.h"
+#include "avutil.h"
 
 #define LIBAVCODEC_VERSION_MAJOR 51
 #define LIBAVCODEC_VERSION_MINOR 57
