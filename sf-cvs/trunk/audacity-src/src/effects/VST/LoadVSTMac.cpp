@@ -35,6 +35,7 @@
 #include "LoadVSTMac.h"   
 #include "../../AudacityApp.h"
 #include "../../Internat.h"
+#include "../EffectManager.h"
 
 int audacityVSTID = 1;
 
@@ -146,7 +147,7 @@ extern "C" {
                   
                   VSTEffect *vst =
                      new VSTEffect(wxString(fragNameCStr), theEffect);
-                  Effect::RegisterEffect(vst);
+                  EffectManager::Get().RegisterEffect(vst);
                }
 
                #ifdef __MACOSX__

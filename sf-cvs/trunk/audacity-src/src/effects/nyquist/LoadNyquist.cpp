@@ -16,13 +16,14 @@
 
 #include "../../Audacity.h"
 #include "../../AudacityApp.h"
+#include "../EffectManager.h"
 #include "Nyquist.h"
 
 void LoadNyquistEffect(wxString fname)
 {
    EffectNyquist *effect = new EffectNyquist(fname);
    if (effect->LoadedNyFile())
-      Effect::RegisterEffect(effect);
+      EffectManager::Get().RegisterEffect(effect);
    else
       delete effect;
 }
@@ -36,7 +37,7 @@ void LoadNyquistPlugins()
 
    // Create one "interactive Nyquist"
    EffectNyquist *effect = new EffectNyquist(wxT(""));
-   Effect::RegisterEffect(effect);
+   EffectManager::Get().RegisterEffect(effect);
 
    // Load .ny plug-ins
    for(i=0; i<audacityPathList.GetCount(); i++) {

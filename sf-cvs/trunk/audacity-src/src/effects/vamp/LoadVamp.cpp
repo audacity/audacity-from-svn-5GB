@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include "../EffectManager.h"
 #include "VampEffect.h"
 
 #include <iostream>
@@ -56,7 +57,7 @@ void LoadVampPlugins()
             }
 
             VampEffect *effect = new VampEffect(*i, n, hasParameters, name);
-            Effect::RegisterEffect(effect);
+            EffectManager::Get().RegisterEffect(effect);
          }
 
          ++n;

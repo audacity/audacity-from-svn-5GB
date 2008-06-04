@@ -1,6 +1,7 @@
 ;nyquist plug-in
 ;version 3
 ;type process
+;categories "http://lv2plug.in/ns/lv2core#LowpassPlugin"
 ;name "Low Pass Filter..."
 ;action "Performing Low Pass Filter..."
 ;info "by Dominic Mazzoni, modified by David R. Sky\nReleased under terms of the GNU General Public License Version 2\nAttenuates high frequencies above your specified cutoff frequency.\nHigher rolloff values give a sharper attenuation of frequencies above\nthe cutoff frequency. If using a rolloff of 6 dB, a [q] value greater than\ndefault 0.7 increases resonance ['ringing'] of the cutoff frequency and\ncould result in clipping.""

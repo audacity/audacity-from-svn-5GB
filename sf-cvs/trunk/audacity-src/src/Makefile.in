@@ -108,6 +108,8 @@ OBJS = \
 	commands/CommandManager.o \
 	commands/Keyboard.o \
 	effects/Effect.o \
+	effects/EffectCategory.o \
+	effects/EffectManager.o \
 	effects/SimpleMono.o \
 	effects/SimplePairedTwoTrack.o \
 	effects/SoundTouchEffect.o \

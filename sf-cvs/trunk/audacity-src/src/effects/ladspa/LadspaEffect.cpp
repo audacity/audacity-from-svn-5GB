@@ -149,6 +149,11 @@ wxString LadspaEffect::GetEffectName()
       return pluginName;
 }
 
+std::set<wxString> LadspaEffect::GetEffectCategories()
+{
+   return std::set<wxString>();
+}
+
 wxString LadspaEffect::GetEffectIdentifier()
 {
    wxStringTokenizer st(pluginName, wxT(" "));

@@ -1,6 +1,7 @@
 ;nyquist plug-in
 ;version 3
 ;type process
+;categories "http://lv2plug.in/ns/lv2core#DelayPlugin"
 ;name "Delay..."
 ;action "Performing Delay Effect..."
 ;info "by Roger Dannenberg, modified by David R. Sky\nReleased under terms of the GNU General Public License Version 2 \nDelay type: 'bouncing ball' makes the echoes occur increasingly close\ntogether (faster); 'reverse bouncing ball' makes them occur increasingly far\napart (slower). In either bouncing ball effect, delay time is not time between\nechoes but the * maximum * delay time in bounces.\nApplying delay can cause clipping (distortion), especially when reducing the\ndecay value and using more echoes. It's normally best to use Effect > Amplify\nto set the peak amplitude to -6 dB before using delay.     

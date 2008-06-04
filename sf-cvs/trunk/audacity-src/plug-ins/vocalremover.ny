@@ -1,6 +1,7 @@
 ;nyquist plug-in
 ;version 3
 ;type process
+;categories "http://lv2plug.in/ns/lv2core#UtilityPlugin"
 ;name "Vocal Remover (for center-panned vocals)..."
 ;action "Removing vocals or other center-panned audio..."
 ;info "by David R. Sky www.shellworld.net/~davidsky/ \nReleased under terms of the GNU General Public License version 2 \nRemoves center-panned audio in a stereo track by inversion and panning to center.\n\n'Simple' removal removes all the center-panned audio. If too much audio is removed,\ntry removing only selected frequencies - enter these in the box 'Frequency band\nlower and upper limit'. Then choose 'Remove band' to remove only frequencies in\nthat band, or 'Retain band' to remove only frequencies outside that band. After\nremoval, the audio will sound mono because both channels are panned to center.\n\nFor further help, select 'View Help' in the first dropdown menu and click OK. After\nreading Help, please reopen Vocal Remover to use it.\n"

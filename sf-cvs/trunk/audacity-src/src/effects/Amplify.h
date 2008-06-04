@@ -37,6 +37,12 @@ class EffectAmplify:public EffectSimpleMono
       return wxString(_("Amplify..."));
    }
 
+   virtual std::set<wxString> GetEffectCategories() {
+      std::set<wxString> result;
+      result.insert(wxT("http://lv2plug.in/ns/lv2core#AmplifierPlugin"));
+      return result;
+   }
+
    virtual wxString GetEffectIdentifier() {
       return wxString(wxT("Amplify"));
    }

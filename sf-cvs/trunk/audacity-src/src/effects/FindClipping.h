@@ -37,6 +37,13 @@ class EffectFindClipping:public Effect
       return wxString(_("Find Clipping..."));
    }
 
+   virtual std::set<wxString> GetEffectCategories()
+   {
+      std::set<wxString> result;
+      result.insert(wxT("http://lv2plug.in/ns/lv2core#AnalyserPlugin"));
+      return result;
+   }
+
    virtual wxString GetEffectIdentifier()
    {
       return wxString(wxT("FindClipping"));

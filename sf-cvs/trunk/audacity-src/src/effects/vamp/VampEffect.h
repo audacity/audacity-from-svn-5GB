@@ -42,6 +42,8 @@ class VampEffect : public Effect {
 
    virtual wxString GetEffectName();
    
+   virtual std::set<wxString> GetEffectCategories();
+
    virtual wxString GetEffectIdentifier();
 
    virtual wxString GetEffectAction();

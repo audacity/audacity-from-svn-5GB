@@ -97,6 +97,13 @@ public:
       return wxString(_("Auto Duck..."));
    }
    
+   virtual std::set<wxString> GetEffectCategories()
+   {
+     std::set<wxString> result;
+     result.insert(wxT("http://lv2plug.in/ns/lv2core#UtilityPlugin"));
+     return result;
+   }
+
    virtual wxString GetEffectIdentifier()
    {
       return wxString(wxT("AutoDuck"));

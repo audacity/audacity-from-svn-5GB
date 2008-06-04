@@ -2,6 +2,7 @@
 ;nyquist plug-in
 ;version 3
 ;type generate
+;categories "http://lv2plug.in/ns/lv2core#GeneratorPlugin"
 ;name "Pluck..."
 ;action "Generating pluck sound..."
 ;info "modified by David R. Sky\nReleased under terms of the GNU General Public License version 2 \nMIDI values for C notes: 36, 48, 60 [middle C], 72, 84, 96."

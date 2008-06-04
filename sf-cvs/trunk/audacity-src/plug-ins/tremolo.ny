@@ -1,6 +1,7 @@
 ;nyquist plug-in
 ;version 3
 ;type process
+;categories "http://lv2plug.in/ns/lv2core#ModulatorPlugin"
 ;name "Tremolo..."
 ;action "Applying Tremolo..."
 ;info "by Dominic Mazzoni, modified by David R. Sky\nReleased under terms of the GNU General Public License Version 2\n'Starting phase' sets where to start tremolo in the waveform cycle.\n'Wetness level' sets depth of tremolo - 0 percent is no tremolo,\n100 percent sweeps between zero and maximum volume.\n'Frequency' controls the speed of the oscillation - use higher\nfrequencies for faster oscillation."

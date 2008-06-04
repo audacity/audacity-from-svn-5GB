@@ -26,7 +26,7 @@
 #include "TrackPanel.h"
 #include "AudioIO.h"
 #include "commands/CommandManager.h"
-#include "effects/Effect.h"
+#include "effects/EffectManager.h"
 #include "xml/XMLTagHandler.h"
 #include "toolbars/SelectionBar.h"
 

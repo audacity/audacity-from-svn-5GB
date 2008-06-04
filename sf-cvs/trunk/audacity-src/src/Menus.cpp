@@ -45,7 +45,7 @@ simplifies construction of menu items.
 #include <wx/ffile.h>
 
 #include "Project.h"
-#include "effects/Effect.h"
+#include "effects/EffectManager.h"
 
 #include "AudacityApp.h"
 #include "AudioIO.h"
@@ -150,8 +150,10 @@ private:
 void AudacityProject::CreateMenusAndCommands()
 {
    CommandManager *c = &mCommandManager;
+   EffectManager& em = EffectManager::Get();
    EffectArray *effects;
    wxArrayString names;
+   wxArrayInt indices;
    unsigned int i;
 
    wxMenuBar *menubar = c->AddMenuBar(wxT("appmenu"));
@@ -643,7 +645,7 @@ void AudacityProject::CreateMenusAndCommands()
       c->SetDefaultFlags(AudioIONotBusyFlag,
                          AudioIONotBusyFlag);
    
-      effects = Effect::GetEffects(INSERT_EFFECT | BUILTIN_EFFECT);
+      effects = em.GetEffects(INSERT_EFFECT | BUILTIN_EFFECT);
       if(effects->GetCount()){
          for(i=0; i<effects->GetCount(); i++)
             names.Add((*effects)[i]->GetEffectName());
@@ -651,7 +653,7 @@ void AudacityProject::CreateMenusAndCommands()
       }
       delete effects;
    
-      effects = Effect::GetEffects(INSERT_EFFECT | PLUGIN_EFFECT);
+      effects = em.GetEffects(INSERT_EFFECT | PLUGIN_EFFECT);
       if (effects->GetCount()) {
          c->AddSeparator();
          names.Clear();
@@ -676,7 +678,13 @@ void AudacityProject::CreateMenusAndCommands()
    // set additionalEffects to zero to exclude the advanced effects.
    if( mCleanSpeechMode )
        additionalEffects = 0;
-   effects = Effect::GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT | additionalEffects);
+
+   // this is really ugly but we need to keep all the old code to get any
+   // effects at all in the menu when EFFECT_CATEGORIES is undefined
+
+#ifndef EFFECT_CATEGORIES
+
+   effects = em.GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT | additionalEffects);
    if(effects->GetCount()){
       names.Clear();
       for(i=0; i<effects->GetCount(); i++)
@@ -686,9 +694,9 @@ void AudacityProject::CreateMenusAndCommands()
    delete effects;
 
 
-	if( !mCleanSpeechMode )
-	{
-      effects = Effect::GetEffects(PROCESS_EFFECT | PLUGIN_EFFECT);
+   if( !mCleanSpeechMode ) {
+      
+      effects = em.GetEffects(PROCESS_EFFECT | PLUGIN_EFFECT);
       if (effects->GetCount()) {
          c->AddSeparator();
          names.Clear();
@@ -697,15 +705,54 @@ void AudacityProject::CreateMenusAndCommands()
          c->AddItemList(wxT("EffectPlugin"), names, FN(OnProcessPlugin), true);
       }
       delete effects;
+      
       c->EndMenu();
+   }
+
+#else
+   
+   // We want plugins and builtins in the same menus, but we don't want plugins
+   // or "advanced" effects if we are building CleanSpeech
+   int flags = PROCESS_EFFECT | BUILTIN_EFFECT;
+   if (!mCleanSpeechMode)
+      flags |= PLUGIN_EFFECT | ADVANCED_EFFECT;
+   
+   // The categories form a DAG, so we start at the roots (the categories
+   // without incoming links)
+   CategorySet roots = em.GetRootCategories();
+   EffectSet topLevel = CreateEffectSubmenus(c, roots, flags);
+   AddEffectsToMenu(c, topLevel);
+   
+   // Add all uncategorised effects in a special submenu
+   EffectSet unsorted = 
+      em.GetUnsortedEffects(flags);
+   if (unsorted.size() > 0) {
+      c->AddSeparator();
+      c->BeginSubMenu(_("Unsorted"));
+      names.Clear();
+      indices.Clear();
+      EffectSet::const_iterator iter;
+      for (iter = unsorted.begin(); iter != unsorted.end(); ++iter) {
+         names.Add((*iter)->GetEffectName());
+         indices.Add((*iter)->GetID());
+      }
+      c->AddItemList(wxT("Effect"), names, FN(OnProcessAny), true, indices);
+      c->EndSubMenu();
+   }
+   c->EndMenu();
+   
+#endif
+
+   if( !mCleanSpeechMode ) {
+
       c->BeginMenu(_("&Analyze"));
- 	   /* plot spectrum moved from view */
+      /* plot spectrum moved from view */
       c->AddItem(wxT("PlotSpectrum"), _("Plot Spectrum..."), FN(OnPlotSpectrum));
       c->SetCommandFlags(wxT("PlotSpectrum"),
-                           AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
-                           AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
+                         AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
+                         AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
       
-      effects = Effect::GetEffects(ANALYZE_EFFECT | BUILTIN_EFFECT);
+      effects = em.GetEffects(ANALYZE_EFFECT | BUILTIN_EFFECT);
       if(effects->GetCount()){
          names.Clear();
          for(i=0; i<effects->GetCount(); i++)
@@ -714,7 +761,7 @@ void AudacityProject::CreateMenusAndCommands()
       }
       delete effects;
       
-      effects = Effect::GetEffects(ANALYZE_EFFECT | PLUGIN_EFFECT);
+      effects = em.GetEffects(ANALYZE_EFFECT | PLUGIN_EFFECT);
       if (effects->GetCount()) {
          c->AddSeparator();
          names.Clear();
@@ -724,10 +771,10 @@ void AudacityProject::CreateMenusAndCommands()
       }
       delete effects;
       c->EndMenu();
-	}
-
+   }
+   
    // Resolve from list of all effects, 
-   effects = Effect::GetEffects(ALL_EFFECTS);
+   effects = em.GetEffects(ALL_EFFECTS);
    ResolveEffectIndices(effects);
    delete effects;
 
@@ -863,6 +910,54 @@ void AudacityProject::CreateMenusAndCommands()
    mSel0save = 0;
    mSel1save = 0;
 }
+
+#ifdef EFFECT_CATEGORIES
+
+EffectSet AudacityProject::CreateEffectSubmenus(CommandManager* c, 
+                                           const CategorySet& categories, 
+                                           int flags) {
+   EffectSet topLevel;
+   
+   CategorySet::const_iterator iter;
+   for (iter = categories.begin(); iter != categories.end(); ++iter) {
+      
+      EffectSet effects = (*iter)->GetAllEffects(flags);
+      
+      // If the subgraph for this category only contains a single effect,
+      // add it directly in this menu
+      if (effects.size() == 1)
+         topLevel.insert(*effects.begin());
+      
+      // If there are more than one effect, add a submenu for the category
+      else if (effects.size() > 0) {
+         c->BeginSubMenu((*iter)->GetName());
+         EffectSet a = CreateEffectSubmenus(c, (*iter)->GetSubCategories(), 
+                                            flags);
+         const EffectSet& b = (*iter)->GetEffects(flags);
+         EffectSet::const_iterator itr2;
+         for (itr2 = b.begin(); itr2 != b.end(); ++itr2)
+            a.insert(*itr2);
+         AddEffectsToMenu(c, a);
+         c->EndSubMenu();
+      }
+   }
+   
+   return topLevel;
+}
+
+void AudacityProject::AddEffectsToMenu(CommandManager* c, 
+                                       const EffectSet& effects) {
+   wxArrayString names;
+   wxArrayInt indices;
+   EffectSet::const_iterator iter;
+   for (iter = effects.begin(); iter != effects.end(); ++iter) {
+      names.Add((*iter)->GetEffectName());
+      indices.Add((*iter)->GetID());
+   }
+   c->AddItemList(wxT("Effects"), names, FN(OnProcessAny), true, indices);
+}
+
+#endif
 
 void AudacityProject::CreateRecentFilesMenu(CommandManager *c)
 {
@@ -1089,7 +1184,7 @@ wxUint32 AudacityProject::GetUpdateFlags()
    if (mUndoManager.UnsavedChanges())
       flags |= UnsavedChangesFlag;
 
-   if (Effect::GetLastEffect() != NULL)
+   if (EffectManager::Get().GetLastEffect() != NULL)
       flags |= HasLastEffectFlag;
 
    if (mUndoManager.UndoAvailable())
@@ -1953,7 +2048,7 @@ void AudacityProject::OnEffect(int type, int index)
    EffectArray *effects;
    Effect *f = NULL;
 
-   effects = Effect::GetEffects(type);
+   effects = EffectManager::Get().GetEffects(type);
 
    f = (*effects)[index];
    delete effects;
@@ -2030,7 +2125,7 @@ bool AudacityProject::OnEffect(int type, Effect * f)
       // Only remember a successful effect, don't rmemeber insert,
       // or analyze effects.
       if ((f->GetEffectFlags() & (INSERT_EFFECT | ANALYZE_EFFECT))==0) {
-         Effect::SetLastEffect( type, f );
+         EffectManager::Get().SetLastEffect( type, f );
          mCommandManager.Modify(wxT("RepeatLastEffect"),
             wxString::Format(_("Repeat %s\tCtrl+R"),
             shortDesc.c_str()));
@@ -2059,15 +2154,20 @@ void AudacityProject::OnGeneratePlugin(int index)
 
 void AudacityProject::OnRepeatLastEffect(int index)
 {
-   Effect *f = Effect::GetLastEffect();
+   EffectManager& em = EffectManager::Get();
+   Effect *f = em.GetLastEffect();
    if( f  != NULL )
    {
       // Setting the CONFIGURED_EFFECT bit prevents
       // prompting for parameters.
-      OnEffect( 
-         Effect::GetLastEffectType() | CONFIGURED_EFFECT,
-         f);
+      OnEffect(em.GetLastEffectType() | CONFIGURED_EFFECT, f);
    }
+}
+
+void AudacityProject::OnProcessAny(int index)
+{
+   Effect* e = EffectManager::Get().GetEffect(index);
+   OnEffect(ALL_EFFECTS, e);
 }
 
 void AudacityProject::OnProcessEffect(int index)

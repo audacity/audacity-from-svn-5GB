@@ -36,6 +36,12 @@ public:
       return wxString(_("Compressor..."));
    }
    
+   virtual std::set<wxString> GetEffectCategories() {
+     std::set<wxString> result;
+     result.insert(wxT("http://lv2plug.in/ns/lv2core#CompressorPlugin"));
+     return result;
+   }
+
    virtual wxString GetEffectIdentifier() {
       return wxString(wxT("Compressor"));
    }

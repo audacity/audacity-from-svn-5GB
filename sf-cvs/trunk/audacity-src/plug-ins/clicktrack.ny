@@ -4,6 +4,8 @@
 
 ;type generate
 
+;categories "http://lv2plug.in/ns/lv2core#GeneratorPlugin"
+
 ;name "Click Track..."
 
 ;action "Generating Click Track..."

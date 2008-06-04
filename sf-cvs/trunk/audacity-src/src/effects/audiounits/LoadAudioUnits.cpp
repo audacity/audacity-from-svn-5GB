@@ -11,6 +11,7 @@
 #include <wx/defs.h>
 #include <wx/wx.h>
 
+#include "../EffectManager.h"
 #include "AudioUnitEffect.h"
 
 void LoadAudioUnits()
@@ -35,7 +36,7 @@ void LoadAudioUnits()
       HUnlock(nameHandle);
       DisposeHandle(nameHandle);
 
-      Effect::RegisterEffect(new AudioUnitEffect(name, component));
+      EffectManager::Get().RegisterEffect(new AudioUnitEffect(name, component));
 
       component = FindNextComponent (component, &desc);
    }

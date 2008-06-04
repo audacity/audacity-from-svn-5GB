@@ -256,8 +256,8 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
             framescompleted += block;
          }
 
-         cancelled = !mProgress->Update(framescompleted,
-                                        fileTotalFrames);
+         cancelled = !mProgress->Update((long long unsigned)framescompleted,
+                                        (long long unsigned)fileTotalFrames);
          if (cancelled)
             break;
 

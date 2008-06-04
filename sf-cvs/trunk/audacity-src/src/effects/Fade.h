@@ -24,6 +24,12 @@ class EffectFadeIn: public EffectSimpleMono {
       return wxString(_("Fade In"));
    }
    
+   virtual std::set<wxString> GetEffectCategories() {
+      std::set<wxString> result;
+      result.insert(wxT("http://lv2plug.in/ns/lv2core#UtilityPlugin"));
+      return result;
+   }
+
    virtual wxString GetEffectIdentifier() {
       return wxString(wxT("FadeIn"));
    }
@@ -48,6 +54,12 @@ class EffectFadeOut:public EffectSimpleMono {
       return wxString(_("Fade Out"));
    }
    
+   virtual std::set<wxString> GetEffectCategories() {
+      std::set<wxString> result;
+      result.insert(wxT("http://lv2plug.in/ns/lv2core#UtilityPlugin"));
+      return result;
+   }
+
    virtual wxString GetEffectIdentifier() {
       return wxString(wxT("FadeOut"));
    }

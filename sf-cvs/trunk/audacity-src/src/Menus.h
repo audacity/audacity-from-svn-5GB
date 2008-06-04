@@ -10,12 +10,28 @@
 #ifndef __AUDACITY_MENUS__
 #define __AUDACITY_MENUS__
 
+#include "Experimental.h"
+
+
 // These are all member functions of class AudacityProject.
 
 void CommandManagerCallback(void *fptr);
 void CommandManagerListCallback(void *fptr, int index);
 
 void CreateMenusAndCommands();
+
+#ifdef EFFECT_CATEGORIES
+
+// Generate submenus for the categories that contain more than one effect
+// and return the effects from the categories that only contain one single
+// effect so the caller can add them to the current menu.
+EffectSet CreateEffectSubmenus(CommandManager* c, 
+                               const CategorySet& categories, int flags);
+
+// Add the set of effects to the current menu.
+void AddEffectsToMenu(CommandManager* c, const EffectSet& effects);
+
+#endif
 
 void CreateRecentFilesMenu(CommandManager *c);
 void ModifyUndoMenus();
@@ -266,6 +282,7 @@ void OnEffect(int type, int index);
 void OnGenerateEffect(int index);
 void OnGeneratePlugin(int index);
 void OnRepeatLastEffect(int index);
+void OnProcessAny(int index);
 void OnProcessEffect(int index);
 void OnProcessPlugin(int index);
 void OnAnalyzeEffect(int index);

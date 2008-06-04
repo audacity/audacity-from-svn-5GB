@@ -40,6 +40,12 @@ class EffectToneGen:public Effect {
       return wxString(mbChirp? _("Chirp..."):_("Tone..."));
    }
 
+   virtual std::set<wxString> GetEffectCategories() {
+      std::set<wxString> result;
+      result.insert(wxT("http://lv2plug.in/ns/lv2core#GeneratorPlugin"));
+      return result;
+   }
+
    virtual wxString GetEffectIdentifier() {
       return wxString(mbChirp ? wxT("Chirp") : wxT("Tone"));
    }
