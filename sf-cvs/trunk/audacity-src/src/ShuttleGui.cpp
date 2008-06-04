@@ -755,7 +755,9 @@ wxNotebookPage * ShuttleGuiBase::StartNotebookPage( const wxString Name )
       return NULL;
 //      return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wx);
    wxNotebook * pNotebook = (wxNotebook*)mpParent;
-   wxNotebookPage * pPage = new wxPanel(mpParent ); 
+   wxNotebookPage * pPage = new wxPanel(mpParent );
+   pPage->SetName(Name);
+
    pNotebook->AddPage( 
       pPage, 
       Name);
@@ -778,6 +780,7 @@ void ShuttleGuiBase::StartNotebookPage( const wxString Name, wxNotebookPage * pP
    wxNotebook * pNotebook = (wxNotebook*)mpParent;
 //   wxNotebookPage * pPage = new wxPanel(mpParent ); 
    pPage->Create( mpParent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, wxT("panel"));
+   pPage->SetName(Name);
 
    pNotebook->AddPage( 
       pPage, 
