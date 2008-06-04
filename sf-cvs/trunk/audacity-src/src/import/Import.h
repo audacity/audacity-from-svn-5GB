@@ -18,8 +18,6 @@
 #include <wx/dialog.h>
 #include <wx/listbox.h>
 
-#include "../Experimental.h"
-
 class Tags;
 class TrackFactory;
 class Track;
@@ -70,7 +68,7 @@ private:
    UnusableImportPluginList *mUnusableImportPluginList;
    ImportFileHandle *mInFile;
 };
-#if defined(FFMPEG_INTEGRATION)
+
 //----------------------------------------------------------------------------
 // ImportStreamDialog
 //----------------------------------------------------------------------------
@@ -98,7 +96,6 @@ private:
 private:
    DECLARE_EVENT_TABLE()
 };
-#endif //FFMPEG_INTEGRATION
 
 #endif
 
