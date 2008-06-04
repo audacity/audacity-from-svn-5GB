@@ -84,32 +84,32 @@ public:
 #if defined(__WXMSW__)
    wxString GetLibAVCodecName()
    {
-      return wxT("avcodec-51.dll");
+      return wxT("avcodec.dll");
    }
 
    wxString GetLibAVFormatName()
    {
-      return wxT("avformat-52.dll");
+      return wxT("avformat.dll");
    }
 
    wxString GetLibAVUtilName()
    {
-      return wxT("avutil-49.dll");
+      return wxT("avutil.dll");
    }
 #else
    wxString GetLibAVCodecName()
    {
-      return wxT("avcodec-51.so");
+      return wxT("libavcodec.so");
    }
 
    wxString GetLibAVFormatName()
    {
-      return wxT("avformat-52.so");
+      return wxT("libavformat.so");
    }
 
    wxString GetLibAVUtilName()
    {
-      return wxT("avutil-49.so");
+      return wxT("libavutil.so");
    }
 #endif
    //Ugly reference counting. I thought of using wxStuff for that,
