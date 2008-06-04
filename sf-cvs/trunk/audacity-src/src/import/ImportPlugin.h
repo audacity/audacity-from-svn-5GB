@@ -119,7 +119,8 @@ class ImportFileHandle
 {
 public:
    ImportFileHandle(const wxString & filename)
-   :  mFilename(filename)
+   :  mFilename(filename),
+   mProgress(NULL)
    {
    }
 

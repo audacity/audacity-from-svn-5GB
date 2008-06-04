@@ -81,6 +81,7 @@ public:
    /* note these values are for Windows only - Mac and Unix have their own
    * sections elsewhere */
    //\todo { Section for Mac and *nix }
+#if defined(__WXMSW__)
    wxString GetLibAVCodecName()
    {
       return wxT("avcodec-51.dll");
@@ -95,7 +96,22 @@ public:
    {
       return wxT("avutil-49.dll");
    }
+#else
+   wxString GetLibAVCodecName()
+   {
+      return wxT("avcodec-51.so");
+   }
 
+   wxString GetLibAVFormatName()
+   {
+      return wxT("avformat-52.so");
+   }
+
+   wxString GetLibAVUtilName()
+   {
+      return wxT("avutil-49.so");
+   }
+#endif
    //Ugly reference counting. I thought of using wxStuff for that,
    //but decided that wx reference counting is not useful, since
    //there's no data sharing - object is shared because libraries are.

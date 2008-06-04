@@ -36,8 +36,6 @@ FFmpegLibs::FFmpegLibs(bool showerr)
    mLibsLoaded = false;
 
    refcount = 1;
-
-   LoadLibs(NULL,showerr);
 }
 
 FFmpegLibs::~FFmpegLibs()
@@ -85,45 +83,27 @@ bool FFmpegLibs::InitLibs(wxString libpath_codec, wxString libpath_format, wxStr
 
    if (!avformat.IsLoaded() && !gotError)
    {
-      if (!avformat.Load(libpath_format, wxDL_LAZY))
-      {
-#if !defined(__WXMSW__)
-         if (showerr) wxMessageBox(wxSysErrorMsg());
-#endif
-         gotError = true;
-      }
+      gotError = !avformat.Load(libpath_format, wxDL_LAZY);
    }
 
    if (!avcodec.IsLoaded() && !gotError)
    {
-      if (!avcodec.Load(libpath_codec, wxDL_LAZY))
-      {
-#if !defined(__WXMSW__)
-         if (showerr) wxMessageBox(wxSysErrorMsg());
-#endif
-         gotError = true;
-      }
+      gotError = !avcodec.Load(libpath_codec, wxDL_LAZY);
    }
 
    if (!avutil.IsLoaded() && !gotError)
    {
-      if (!avutil.Load(libpath_util, wxDL_LAZY))
-      {
-#if !defined(__WXMSW__)
-         if (showerr) wxMessageBox(wxSysErrorMsg());
-#endif
-         gotError = true;
-      }
+      gotError = !avutil.Load(libpath_util, wxDL_LAZY);
    }
 
    if ( gotError )
    {
+      if ( showerr ) wxMessageBox(wxSysErrorMsg());
 #if defined(__WXMSW__)
       SetErrorMode(erm);
 #endif
       return false;
    }
-
 
    INITDYN(avformat,av_register_all);
    INITDYN(avformat,av_open_input_file);
