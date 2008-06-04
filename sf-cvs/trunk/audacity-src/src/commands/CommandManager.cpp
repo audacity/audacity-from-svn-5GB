@@ -90,7 +90,7 @@ CommandManager.  It holds the callback for one command.
 #include "CommandManager.h"
 
 #include "Keyboard.h"
-#include "../effects/Effect.h"
+#include "../effects/EffectManager.h"
 
 // On wxGTK, there may be many many many plugins, but the menus don't automatically
 // allow for scrolling, so we build sub-menus.  If the menu gets longer than
@@ -415,10 +415,13 @@ void CommandManager::AddItem(wxString name, wxString label_in,
 /// all of the items at once.
 void CommandManager::AddItemList(wxString name, wxArrayString labels,
                                  CommandFunctor *callback,
-                                 bool plugins /*= false*/)
+                                 bool plugins /*= false*/,
+                                 wxArrayInt indices /*= wxArrayInt()*/)
 {
    unsigned int i;
-
+   
+   bool implicitIndices = (indices.GetCount() == 0);
+   
    #ifndef __WXGTK__
    plugins = false;
    #endif
@@ -432,7 +435,8 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
    if (!plugins) {
       for(i=0; i<labels.GetCount(); i++) {
          int ID = NewIdentifier(name, labels[i], CurrentMenu(), callback,
-                                true, i, labels.GetCount());
+                                true, (implicitIndices ? i : indices[i]),
+                                labels.GetCount());
          CurrentMenu()->Append(ID, labels[i]);
       }
       mbSeparatorAllowed = true;
@@ -449,8 +453,7 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
 
    for(i=0; i<effLen; i++) {
       int ID = NewIdentifier(name, labels[i], CurrentMenu(), callback,
-                             true, i, effLen);
-
+                             true, (implicitIndices ? i : indices[i]), effLen);
       CurrentMenu()->Append(ID, labels[i]);
      
       if(((i+1) % MAX_SUBMENU_LEN) == 0 && i != (effLen - 1)) {
@@ -876,7 +879,7 @@ bool CommandManager::HandleTextualCommand(wxString & Str, wxUint32 flags, wxUint
       return false;
 
    int effectFlags = ALL_EFFECTS | CONFIGURED_EFFECT;
-   effects = Effect::GetEffects(effectFlags);
+   effects = EffectManager::Get().GetEffects(effectFlags);
    for(i=0; i<effects->GetCount(); i++) {
       wxString effectName = (*effects)[i]->GetEffectName();
       if( Str.IsSameAs( effectName ))

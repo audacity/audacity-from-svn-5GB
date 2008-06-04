@@ -1,6 +1,7 @@
 ;nyquist plug-in
 ;version 1
 ;type process
+;categories "http://lv2plug.in/ns/lv2core#UtilityPlugin" "http://lv2plug.in/ns/lv2core#FilterPlugin"
 ;name "DC Bias Removal"
 ;action "Performing DC Bias Removal..."
 (hp s 0.1)

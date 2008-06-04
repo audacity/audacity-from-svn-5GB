@@ -33,6 +33,12 @@ class EffectNormalize: public Effect
       return wxString(_("Normalize..."));
    }
 
+   virtual std::set<wxString> GetEffectCategories() {
+      std::set<wxString> result;
+      result.insert(wxT("http://lv2plug.in/ns/lv2core#UtilityPlugin"));
+      return result;
+   }
+
    // This is just used internally, users should not see it.  Do not translate.
    virtual wxString GetEffectIdentifier() {
       return wxT("Normalize");

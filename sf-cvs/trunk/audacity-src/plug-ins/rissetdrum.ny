@@ -4,6 +4,8 @@
 
 ;type generate
 
+;categories "http://lv2plug.in/ns/lv2core#GeneratorPlugin"
+
 ;name "Risset Drum..."
 
 ;action "Generating Risset Drum..."

@@ -1,6 +1,7 @@
 ;nyquist plug-in
 ;version 1
 ;type analyze
+;categories "http://lv2plug.in/ns/lv2core#AnalyserPlugin"
 ;name "Silence Finder..."
 ;action "Finding silence..."
 ;info "Written by Alex S. Brown, PMP (http://www.alexsbrown.com)\n\Released under terms of the GNU General Public License version 2\nPlaces labels at areas of silence according to the level and\nduration of silence you specify. If too many silences are detected,\nincrease the silence level and duration, and if too few are detected,\nreduce the level and duration."

@@ -139,6 +139,11 @@ wxString VSTEffect::GetEffectName()
    return pluginName + "...";
 }
 
+wxString VSTEffect::GetEffectCategories()
+{
+   return std::set<wxString>();
+}
+
 wxString VSTEffect::GetEffectAction()
 {
    return "Performing VST Effect: \""+pluginName+"\"";

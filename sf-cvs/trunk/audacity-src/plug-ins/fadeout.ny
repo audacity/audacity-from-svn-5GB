@@ -1,6 +1,7 @@
 ;nyquist plug-in
 ;version 1
 ;type process
+;categories "http://lv2plug.in/ns/lv2core#UtilityPlugin"
 ;name "Fade Out"
 ;action "Fading Out..."
 (mult (pwl 0 1 1 0 1) s)

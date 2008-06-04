@@ -113,6 +113,11 @@ wxString AudioUnitEffect::GetEffectName()
    return mName;
 }
 
+std::set<wxString> AudioUnitEffect::GetEffectCategories()
+{
+   return std::set<wxString>();
+}
+
 wxString AudioUnitEffect::GetEffectIdentifier()
 {
    wxStringTokenizer st(mName, wxT(" "));

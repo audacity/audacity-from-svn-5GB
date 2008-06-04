@@ -62,6 +62,10 @@ public:
       return mName;
    }
    
+   virtual std::set<wxString> GetEffectCategories() {
+      return mCategories;
+   }
+
    virtual wxString GetEffectIdentifier() {
       if (mInteractive) {
          // Disabled for now...
@@ -139,6 +143,8 @@ private:
    sampleCount      mCurBufferLen[2];
 
    WaveTrack       *mOutputTrack[2];
+   
+   std::set<wxString> mCategories;
    
 };
 

@@ -44,6 +44,8 @@ class VSTEffect:public Effect {
 
    virtual wxString GetEffectName();
    
+   virtual std::set<wxString> GetEffectCategories();
+
    virtual wxString GetEffectAction();
    
    virtual int GetEffectFlags() {

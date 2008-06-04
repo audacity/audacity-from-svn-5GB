@@ -33,6 +33,12 @@ class EffectRepeat:public Effect
       return wxString(_("Repeat..."));
    }
 
+   virtual std::set<wxString> GetEffectCategories() {
+      std::set<wxString> result;
+      result.insert(wxT("http://lv2plug.in/ns/lv2core#UtilityPlugin"));
+      return result;
+   }
+
    virtual wxString GetEffectIdentifier() {
       return wxString(wxT("Repeat"));
    }

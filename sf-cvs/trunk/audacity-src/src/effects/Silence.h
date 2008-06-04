@@ -34,6 +34,12 @@ class EffectSilence:public Effect {
       return wxString(_("Silence..."));
    }
 
+   virtual std::set<wxString> GetEffectCategories() {
+      std::set<wxString> result;
+      result.insert(wxT("http://lv2plug.in/ns/lv2core#GeneratorPlugin"));
+      return result;
+   }
+
    virtual wxString GetEffectIdentifier() {
       return wxString(wxT("Silence"));
    }

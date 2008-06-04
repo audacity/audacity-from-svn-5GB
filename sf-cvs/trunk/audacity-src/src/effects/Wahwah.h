@@ -41,6 +41,12 @@ class EffectWahwah:public EffectSimpleMono {
       return wxString(_("Wahwah..."));
    }
    
+   virtual std::set<wxString> GetEffectCategories() {
+      std::set<wxString> result;
+      result.insert(wxT("http://lv2plug.in/ns/lv2core#ModulatorPlugin"));
+      return result;
+   }
+
    virtual wxString GetEffectIdentifier() {
       return wxString(wxT("Wahwah"));
    }

@@ -31,6 +31,12 @@ class EffectChangePitch:public EffectSoundTouch {
       return wxString(_("Change Pitch..."));
    }
    
+   virtual std::set<wxString> GetEffectCategories() {
+      std::set<wxString> result;
+      result.insert(wxT("http://lv2plug.in/ns/lv2core#PitchPlugin"));
+      return result;
+   }
+
    virtual wxString GetEffectIdentifier() {
       return wxString(wxT("ChangePitch"));
    }

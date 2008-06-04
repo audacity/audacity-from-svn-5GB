@@ -28,6 +28,7 @@
 #include "../../Audacity.h"
 #include "../../AudacityApp.h"
 #include "../../Internat.h"
+#include "../EffectManager.h"
 #include "LadspaEffect.h"
 
 WX_DEFINE_ARRAY(wxDynamicLibrary*, DL_Array);
@@ -65,7 +66,7 @@ DL_Array &dls)
          if (uniq.Index(uniqid) == wxNOT_FOUND) {
             uniq.Add(uniqid);
             LadspaEffect *effect = new LadspaEffect(data);
-            Effect::RegisterEffect(effect);
+            EffectManager::Get().RegisterEffect(effect);
          }
             
          // Get next plugin

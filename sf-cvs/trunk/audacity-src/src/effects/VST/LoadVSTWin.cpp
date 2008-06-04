@@ -17,6 +17,7 @@
 
 #include "VSTEffect.h"
 #include "../../AudacityApp.h"
+#include "../EffectManager.h"
 #include "LoadVSTWin.h"
 
 #include <windows.h>
@@ -60,7 +61,7 @@ extern "C" {
                   title = title.Mid(0, len - 4);
                
                VSTEffect *vst = new VSTEffect(title, theEffect);
-               Effect::RegisterEffect(vst);
+               EffectManager::Get().RegisterEffect(vst);
             }
          }
          

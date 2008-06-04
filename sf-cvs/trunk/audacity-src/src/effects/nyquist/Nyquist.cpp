@@ -221,6 +221,11 @@ void EffectNyquist::Parse(wxString line)
 
       mControls.Add(ctrl);
    }
+   
+   if (len>=2 && tokens[0]==wxT("categories")) {
+      for (size_t i = 1; i < tokens.GetCount(); ++i)
+         mCategories.insert(tokens[i]);
+   }
 }
 
 void EffectNyquist::ParseFile()

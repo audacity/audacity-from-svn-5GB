@@ -57,6 +57,10 @@
 #define FFMPEG_INTEGRATION
 #endif
 
+// Effect categorisation. Adds support for arranging effects in categories
+// and displaying those categories as submenus in the Effect menu.
+#define EFFECT_CATEGORIES
+
 // AM, 22 Nov.2007
 // Some fixes for the rulers.
 // If activated, the ruler's labels don't spill over,

@@ -12,6 +12,8 @@
 #ifndef __AUDACITY_EFFECT__
 #define __AUDACITY_EFFECT__
 
+#include <set>
+
 #include <wx/button.h>
 #include <wx/dynarray.h>
 #include <wx/intl.h> 
@@ -28,7 +30,6 @@ class wxWindow;
 
 class Effect;
 
-WX_DEFINE_ARRAY(Effect *, EffectArray);
 
 #define PLUGIN_EFFECT   0x0001
 #define BUILTIN_EFFECT  0x0002
@@ -58,24 +59,7 @@ WX_DEFINE_ARRAY(Effect *, EffectArray);
 #define SKIP_EFFECT_MILLISECOND 99999
 
 class Effect {
-
- //
- // public static methods
- //
- // Used by the outside program to register the list of effects and retrieve
- // them by index number, usually when the user selects one from a menu.
- //
- public:
-   static void RegisterEffect(Effect *f, int AdditionalFlags=0);
-   static void UnregisterEffects();
-   static Effect *GetEffect(int ID);
-   static int GetNumEffects();
-
-   // Returns a sorted array of effects, which may be filtered
-   // using the flags parameter.  The caller should dispose
-   // of the array when done.
-   static EffectArray *GetEffects(int flags = ALL_EFFECTS);
-
+   
  // 
  // public methods
  //
@@ -87,6 +71,13 @@ class Effect {
    // This name will go in the menu bar;
    // append "..." if your effect pops up a dialog
    virtual wxString GetEffectName() = 0;
+
+   // Each subclass of Effect should override this method.
+   // This should return the category of this effect, which
+   // will determine where in the menu it's placed.
+#ifdef EFFECT_CATEGORIES
+   virtual std::set<wxString> GetEffectCategories() = 0;
+#endif
 
    // Totally optional - if you need a way to identify your effect
    // from somewhere else in the program.  This should be human-readable,
@@ -145,23 +136,11 @@ class Effect {
 
    wxString GetPreviewName();
 
- private:
-   static int LastType;
-   static int LastIndex;
-   static Effect * pLastEffect;
-
    // Strip ampersand ('&' char) from string. This effectively removes the
    // shortcut from the string ('E&qualizer' becomes 'Equalizer'). This is
    // important for sorting.
    static wxString StripAmpersand(const wxString& str);
-    
- public:
-    static void SetLastEffect(int type, Effect * pEffect){
-       LastType=type;
-       pLastEffect = pEffect;
-    }
-    static int GetLastEffectType(){ return LastType;}
-    static Effect * GetLastEffect(){ return pLastEffect;}
+
 
  //
  // protected virtual methods
@@ -204,6 +183,7 @@ class Effect {
    // clean up any temporary memory
    virtual void End() {
    }
+
 
  //
  // protected data
@@ -280,15 +260,14 @@ class Effect {
  // Used only by the base Effect class
  //
  private:
-   static EffectArray mEffects;
-   
+
    int mNumTracks; //v This is really mNumWaveTracks, per CountWaveTracks() and GetNumWaveTracks().
    int mNumGroups;
 
    int mID;
-   static int sNumEffects;
    
    friend class BatchCommands;// so can call PromptUser.
+   friend class EffectManager;// so it can delete effects and access mID.
 
 };
 

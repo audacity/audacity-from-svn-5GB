@@ -65,6 +65,14 @@ wxString VampEffect::GetEffectName()
    }
 }
 
+std::set<wxString> VampEffect::GetEffectCategories()
+{
+   std::set<wxString> result;
+   result.insert(wxT("NO CATEGORY"));
+   return result;
+}
+
+
 wxString VampEffect::GetEffectIdentifier()
 {
    return LAT1CTOWX(mKey.c_str());

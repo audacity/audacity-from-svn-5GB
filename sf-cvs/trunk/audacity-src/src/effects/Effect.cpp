@@ -42,14 +42,8 @@ greater use in future.
 // public static methods
 //
 
-EffectArray Effect::mEffects;
-int Effect::sNumEffects = 0;
 double Effect::sDefaultGenerateLen = 30.0;
 
-// Some static variables used for Repeat Last Effect.
-int Effect::LastType=0;
-int Effect::LastIndex=0;
-Effect * Effect::pLastEffect=NULL;
 
 wxString Effect::StripAmpersand(const wxString& str)
 {
@@ -58,63 +52,6 @@ wxString Effect::StripAmpersand(const wxString& str)
    return strippedStr;
 }
 
-void Effect::RegisterEffect(Effect *f, int NewFlags)
-{
-   f->mID = sNumEffects;
-   sNumEffects++;
-   if( NewFlags != 0)
-      f->SetEffectFlags( NewFlags );
-
-   // Insert the effect into the list in alphabetical order
-   // A linear search is good enough as long as there are
-   // only a few dozen or even a few hundred effects.
-   wxString name = StripAmpersand(f->GetEffectName());
-   int len = mEffects.GetCount();
-   int i;
-   for(i=0; i<len; i++)
-      if (name.CmpNoCase(StripAmpersand(mEffects[i]->GetEffectName())) < 0) {
-         mEffects.Insert(f, i);
-         break;
-      }
-   if (i==len)
-      mEffects.Add(f);
-}
-
-void Effect::UnregisterEffects()
-{
-   for(int i=0; i<sNumEffects; i++)
-      delete mEffects[i];
-
-   mEffects.Clear();
-}
-
-int Effect::GetNumEffects()
-{
-   return sNumEffects;
-}
-
-Effect *Effect::GetEffect(int ID)
-{
-   for(int i=0; i<sNumEffects; i++)
-      if (mEffects[i]->mID == ID)
-         return mEffects[i];
-   
-   return NULL;
-}
-
-EffectArray *Effect::GetEffects(int flags /* = ALL_EFFECTS */)
-{
-   EffectArray *results = new EffectArray();
-
-   int len = mEffects.GetCount();
-   for(int i=0; i<len; i++) {
-      int g = mEffects[i]->GetEffectFlags();
-      if ((flags & g) == g)
-         results->Add(mEffects[i]);
-   }
-
-   return results;
-}
 
 //
 // public methods

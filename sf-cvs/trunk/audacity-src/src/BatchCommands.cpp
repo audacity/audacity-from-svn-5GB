@@ -27,7 +27,7 @@ See also BatchCommandDialog and BatchProcessDialog.
 #include "Project.h"
 #include "BatchCommands.h"
 #include "commands/CommandManager.h"
-#include "effects/Effect.h"
+#include "effects/EffectManager.h"
 #include "FileNames.h"
 #include "Internat.h"
 #include "Prefs.h"
@@ -270,7 +270,7 @@ wxArrayString BatchCommands::GetAllCommands()
    int additionalEffects=ADVANCED_EFFECT;
    if( project->GetCleanSpeechMode() )
        additionalEffects = 0;
-   effects = Effect::GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT | additionalEffects);
+   effects = EffectManager::Get().GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT | additionalEffects);
    for(i=0; i<effects->GetCount(); i++) {
       command=(*effects)[i]->GetEffectIdentifier();
       if (!command.IsEmpty()) {
@@ -297,7 +297,7 @@ Effect * BatchCommands::GetEffectFromCommandName(wxString inCommand)
    unsigned int i;
    wxString command;
    Effect * f;
-   EffectArray * effects = Effect::GetEffects( ALL_EFFECTS );
+   EffectArray * effects = EffectManager::Get().GetEffects( ALL_EFFECTS );
    for(i=0; i<effects->GetCount(); i++) {
       f = (*effects)[i];
       command=f->GetEffectIdentifier();
