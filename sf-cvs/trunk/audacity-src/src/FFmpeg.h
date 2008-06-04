@@ -25,8 +25,8 @@ Describes shared object that is used to access FFmpeg libraries.
 #define __STDC_CONSTANT_MACROS
 
 extern "C" {
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
+#include <avcodec.h>
+#include <avformat.h>
 }
 
 #define INITDYN(w,f) if ((*(void**)&this->f=(void*)w.GetSymbol(wxT(#f))) == NULL) return false
