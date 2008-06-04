@@ -156,7 +156,6 @@ AboutDialog::AboutDialog(wxWindow * parent)
    
    wxButton *ok = new wxButton(S.GetParent(), wxID_OK, _("OK... Audacious!"));
    ok->SetDefault();
-   ok->SetFocus();
    S.Prop(0).AddWindow( ok );
 
    Fit();
@@ -281,6 +280,7 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
                                          wxDefaultPosition,
                                          wxSize(LOGOWITHNAME_WIDTH, 359), // wxSize(480, 240),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
+   html->SetFocus();
    html->SetPage(creditStr);
 
    /* locate the html renderer where it fits in the dialogue */
