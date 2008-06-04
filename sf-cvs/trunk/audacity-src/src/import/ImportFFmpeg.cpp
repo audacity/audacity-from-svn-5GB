@@ -299,31 +299,32 @@ ImportFileHandle *FFmpegImportPlugin::Open(wxString filename)
 
 
 FFmpegImportFileHandle::FFmpegImportFileHandle(const wxString & name)
-:  ImportFileHandle(name),
-mFormatContext(NULL),
-mNumStreams(0),
-mScs(NULL),
-mStreamInfo(NULL),
-mCancelled(false),
-mName(name),
-mUserData(NULL),
-mNumSamples(0),
-mSamplesDone(0),
-mChannels(NULL)
+:  ImportFileHandle(name)
 {
-
    if (FFmpegLibsInst == NULL)
       FFmpegLibsInst = new FFmpegLibs(true);
    else
       FFmpegLibsInst->refcount++;
-  
-   FFmpegLibsInst->av_log_set_callback(av_log_wx_callback);
+
    mStreamInfo = new wxArrayString();
+   mFormatContext = NULL;
+   mNumStreams = 0;
+   mScs = NULL;
+   mCancelled =false;
+   mName = name;
+   mUserData = NULL;
+   mNumSamples = 0;
+   mSamplesDone = 0;
+   mChannels = NULL;
 }
 
 bool FFmpegImportFileHandle::Init()
 {
+   FFmpegLibsInst->LoadLibs(NULL,true);
+
    if (!FFmpegLibsInst->ValidLibsLoaded()) return false;
+
+   FFmpegLibsInst->av_log_set_callback(av_log_wx_callback);
 
    int err = FFmpegLibsInst->av_open_input_file(&mFormatContext,OSFILENAME(mName),NULL,0, NULL);
    if (err < 0)
@@ -729,7 +730,10 @@ void FFmpegImportFileHandle::WriteMetadata(AVFormatContext *avf,Tags *tags)
 FFmpegImportFileHandle::~FFmpegImportFileHandle()
 {
    if (FFmpegLibsInst->ValidLibsLoaded())
+   {
       FFmpegLibsInst->av_close_input_file(mFormatContext);
+      FFmpegLibsInst->av_log_set_callback(FFmpegLibsInst->av_log_default_callback);
+   }
 
    for (int i = 0; i < mNumStreams; i++)
    {
@@ -739,7 +743,6 @@ FFmpegImportFileHandle::~FFmpegImportFileHandle()
       delete mScs[i];
    }
 
-   FFmpegLibsInst->av_log_set_callback(FFmpegLibsInst->av_log_default_callback);
    FFmpegLibsInst->refcount--;
    if (FFmpegLibsInst->refcount <= 0)
    {
