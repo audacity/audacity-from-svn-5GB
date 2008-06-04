@@ -29,7 +29,7 @@ Licensed under the GNU General Public License v2 or later
 #endif
 
 #include "../Audacity.h"	// brings in config*.h and other system-wide stuff
-#include <Experimental.h>
+#include "../Experimental.h"
 
 #define DESC _("FFmpeg-compatible files")
 
@@ -387,9 +387,9 @@ bool FFmpegImportFileHandle::InitCodecs()
             continue;
          }
 
-         wxString *strinfo = new wxString();
-         strinfo->Printf(_("Index[%02x] Codec[%S], Language[%S], Duration[%d]"),sc->m_stream->id,codec->name,sc->m_stream->language,sc->m_stream->duration);
-         mStreamInfo->Add(*strinfo);
+         wxString strinfo;
+         strinfo.Printf(_("Index[%02x] Codec[%S], Language[%S], Duration[%d]"),sc->m_stream->id,codec->name,sc->m_stream->language,sc->m_stream->duration);
+         mStreamInfo->Add(strinfo);
          mScs[mNumStreams++] = sc;
       }
       //for video and unknown streams do nothing

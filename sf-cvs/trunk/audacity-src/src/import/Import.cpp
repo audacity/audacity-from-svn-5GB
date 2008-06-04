@@ -41,6 +41,8 @@ and ImportLOF.cpp.
 #include <wx/intl.h>
 #include <wx/listimpl.cpp>
 #include <wx/log.h>
+#include <wx/sizer.h>         //for wxBoxSizer
+#include "../ShuttleGui.h"
 #include "../Audacity.h"
 
 #include "Import.h"
@@ -52,13 +54,9 @@ and ImportLOF.cpp.
 #include "ImportRaw.h"
 #include "ImportLOF.h"
 #include "ImportFLAC.h"
+#include "ImportFFmpeg.h"
 #include "../Track.h"
 
-#if defined(FFMPEG_INTEGRATION)
-#include <wx/sizer.h>
-#include "../ShuttleGui.h"
-#include "ImportFFmpeg.h"
-#endif
 
 WX_DEFINE_LIST(ImportPluginList);
 WX_DEFINE_LIST(UnusableImportPluginList);
@@ -81,9 +79,9 @@ Importer::Importer()
    #ifdef USE_QUICKTIME
    GetQTImportPlugin(mImportPluginList, mUnusableImportPluginList);
    #endif
-#if defined(FFMPEG_INTEGRATION)   
+   #if defined(USE_FFMPEG)
    GetFFmpegImportPlugin(mImportPluginList, mUnusableImportPluginList);
-#endif
+   #endif
 }
 
 Importer::~Importer()
@@ -128,7 +126,6 @@ int Importer::Import(wxString fName,
          mInFile = plugin->Open(fName);
          if ( (mInFile != NULL) && (mInFile->GetStreamCount() > 0) )
          {
-#if defined(FFMPEG_INTEGRATION)
             if (mInFile->GetStreamCount() > 1)                                                  
             {
                ImportStreamDialog ImportDlg(mInFile, NULL, -1, _("Select stream(s) to import"));
@@ -139,7 +136,6 @@ int Importer::Import(wxString fName,
                }
             }
             else
-#endif
                mInFile->SetStreamUsage(0,TRUE);
 
             int res;
@@ -281,8 +277,7 @@ int Importer::Import(wxString fName,
       mInFile = plugin->Open(fName);
       if ( (mInFile != NULL) && (mInFile->GetStreamCount() > 0) )
       {
-#if defined(FFMPEG_INTEGRATION)
-         if (mInFile->GetStreamCount() > 1)                                                  
+         if (mInFile->GetStreamCount() > 1)
          {
             ImportStreamDialog ImportDlg(mInFile, NULL, -1, _("Select stream(s) to import"));
 
@@ -292,7 +287,6 @@ int Importer::Import(wxString fName,
             }
          }
          else
-#endif
             mInFile->SetStreamUsage(0,TRUE);
 
 
@@ -334,7 +328,6 @@ wxString Importer::GetFileDescription()
 {
    return mInFile->GetFileDescription();
 }
-#if defined(FFMPEG_INTEGRATION)
 //-------------------------------------------------------------------------
 // ImportStreamDialog
 //-------------------------------------------------------------------------
@@ -388,7 +381,6 @@ void ImportStreamDialog::OnCancel(wxCommandEvent &event)
 {
    EndModal( wxID_CANCEL );
 }
-#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
