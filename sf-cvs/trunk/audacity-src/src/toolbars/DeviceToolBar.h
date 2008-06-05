@@ -40,9 +40,6 @@ class DeviceToolBar:public ToolBar {
    void OnChoice(wxCommandEvent & event);
 
  private:
-
-   void InitializeDeviceToolBar();
-
    wxBitmap *mPlayBitmap;
    wxBitmap *mRecordBitmap;
 
