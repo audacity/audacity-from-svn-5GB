@@ -91,71 +91,71 @@ void LoadEffects()
    
    typedef EffectCategory* CatPtr;
    
-   CatPtr gen = em.AddCategory(wxT(LV2PREFIX "GeneratorPlugin"),
+   CatPtr gen = em.AddCategory(wxT(LV2PREFIX) wxT("GeneratorPlugin"),
                                _("Generator"));
-   CatPtr inst = em.AddCategory(wxT(LV2PREFIX "IntrumentPlugin"),
+   CatPtr inst = em.AddCategory(wxT(LV2PREFIX) wxT("IntrumentPlugin"),
                                 _("Instrument"));
-   CatPtr osc = em.AddCategory(wxT(LV2PREFIX "OscillatorPlugin"),
+   CatPtr osc = em.AddCategory(wxT(LV2PREFIX) wxT("OscillatorPlugin"),
                                _("Oscillator"));
-   CatPtr util = em.AddCategory(wxT(LV2PREFIX "UtilityPlugin"),
+   CatPtr util = em.AddCategory(wxT(LV2PREFIX) wxT("UtilityPlugin"),
                                 _("Utility"));
-   CatPtr conv = em.AddCategory(wxT(LV2PREFIX "ConverterPlugin"),
+   CatPtr conv = em.AddCategory(wxT(LV2PREFIX) wxT("ConverterPlugin"),
                                 _("Converter"));
-   CatPtr anal = em.AddCategory(wxT(LV2PREFIX "AnalyserPlugin"),
+   CatPtr anal = em.AddCategory(wxT(LV2PREFIX) wxT("AnalyserPlugin"),
                                 _("Analyser"));
-   CatPtr mix = em.AddCategory(wxT(LV2PREFIX "MixerPlugin"),
+   CatPtr mix = em.AddCategory(wxT(LV2PREFIX) wxT("MixerPlugin"),
                                _("Mixer"));
-   CatPtr sim = em.AddCategory(wxT(LV2PREFIX "SimulatorPlugin"),
+   CatPtr sim = em.AddCategory(wxT(LV2PREFIX) wxT("SimulatorPlugin"),
                                _("Simulator"));
-   CatPtr del = em.AddCategory(wxT(LV2PREFIX "DelayPlugin"),
+   CatPtr del = em.AddCategory(wxT(LV2PREFIX) wxT("DelayPlugin"),
                                _("Delay"));
-   CatPtr mod = em.AddCategory(wxT(LV2PREFIX "ModulatorPlugin"),
+   CatPtr mod = em.AddCategory(wxT(LV2PREFIX) wxT("ModulatorPlugin"),
                                _("Modulator"));
-   CatPtr rev = em.AddCategory(wxT(LV2PREFIX "ReverbPlugin"),
+   CatPtr rev = em.AddCategory(wxT(LV2PREFIX) wxT("ReverbPlugin"),
                                _("Reverb"));
-   CatPtr phas = em.AddCategory(wxT(LV2PREFIX "PhaserPlugin"),
+   CatPtr phas = em.AddCategory(wxT(LV2PREFIX) wxT("PhaserPlugin"),
                                 _("Phaser"));
-   CatPtr flng = em.AddCategory(wxT(LV2PREFIX "FlangerPlugin"),
+   CatPtr flng = em.AddCategory(wxT(LV2PREFIX) wxT("FlangerPlugin"),
                                 _("Flanger"));
-   CatPtr chor = em.AddCategory(wxT(LV2PREFIX "ChorusPlugin"),
+   CatPtr chor = em.AddCategory(wxT(LV2PREFIX) wxT("ChorusPlugin"),
                                 _("Chorus"));
-   CatPtr flt = em.AddCategory(wxT(LV2PREFIX "FilterPlugin"),
+   CatPtr flt = em.AddCategory(wxT(LV2PREFIX) wxT("FilterPlugin"),
                                _("Filter"));
-   CatPtr lp = em.AddCategory(wxT(LV2PREFIX "LowpassPlugin"),
+   CatPtr lp = em.AddCategory(wxT(LV2PREFIX) wxT("LowpassPlugin"),
                               _("Lowpass"));
-   CatPtr bp = em.AddCategory(wxT(LV2PREFIX "BandpassPlugin"),
+   CatPtr bp = em.AddCategory(wxT(LV2PREFIX) wxT("BandpassPlugin"),
                               _("Bandpass"));
-   CatPtr hp = em.AddCategory(wxT(LV2PREFIX "HighpassPlugin"),
+   CatPtr hp = em.AddCategory(wxT(LV2PREFIX) wxT("HighpassPlugin"),
                               _("Highpass"));
-   CatPtr comb = em.AddCategory(wxT(LV2PREFIX "CombPlugin"),
+   CatPtr comb = em.AddCategory(wxT(LV2PREFIX) wxT("CombPlugin"),
                                 _("Comb"));
-   CatPtr alp = em.AddCategory(wxT(LV2PREFIX "AllpassPlugin"),
+   CatPtr alp = em.AddCategory(wxT(LV2PREFIX) wxT("AllpassPlugin"),
                                _("Allpass"));
-   CatPtr eq = em.AddCategory(wxT(LV2PREFIX "EQPlugin"),
+   CatPtr eq = em.AddCategory(wxT(LV2PREFIX) wxT("EQPlugin"),
                               _("Equaliser"));
-   CatPtr peq = em.AddCategory(wxT(LV2PREFIX "ParaEQPlugin"),
+   CatPtr peq = em.AddCategory(wxT(LV2PREFIX) wxT("ParaEQPlugin"),
                                _("Parametric"));
-   CatPtr meq = em.AddCategory(wxT(LV2PREFIX "MultiEQPlugin"),
+   CatPtr meq = em.AddCategory(wxT(LV2PREFIX) wxT("MultiEQPlugin"),
                                _("Multiband"));
-   CatPtr spec = em.AddCategory(wxT(LV2PREFIX "SpectralPlugin"),
+   CatPtr spec = em.AddCategory(wxT(LV2PREFIX) wxT("SpectralPlugin"),
                                 _("Spectral Processor"));
-   CatPtr ptch = em.AddCategory(wxT(LV2PREFIX "PitchPlugin"),
+   CatPtr ptch = em.AddCategory(wxT(LV2PREFIX) wxT("PitchPlugin"),
                                 _("Pitch Shifter"));
-   CatPtr amp = em.AddCategory(wxT(LV2PREFIX "AmplifierPlugin"),
+   CatPtr amp = em.AddCategory(wxT(LV2PREFIX) wxT("AmplifierPlugin"),
                                _("Amplifier"));
-   CatPtr dist = em.AddCategory(wxT(LV2PREFIX "DistortionPlugin"),
+   CatPtr dist = em.AddCategory(wxT(LV2PREFIX) wxT("DistortionPlugin"),
                                 _("Distortion"));
-   CatPtr shp = em.AddCategory(wxT(LV2PREFIX "WaveshaperPlugin"),
+   CatPtr shp = em.AddCategory(wxT(LV2PREFIX) wxT("WaveshaperPlugin"),
                                _("Waveshaper"));
-   CatPtr dyn = em.AddCategory(wxT(LV2PREFIX "DynamicsPlugin"),
+   CatPtr dyn = em.AddCategory(wxT(LV2PREFIX) wxT("DynamicsPlugin"),
                                _("Dynamics Processor"));
-   CatPtr cmp = em.AddCategory(wxT(LV2PREFIX "CompressorPlugin"),
+   CatPtr cmp = em.AddCategory(wxT(LV2PREFIX) wxT("CompressorPlugin"),
                                _("Compressor"));
-   CatPtr exp = em.AddCategory(wxT(LV2PREFIX "ExpanderPlugin"),
+   CatPtr exp = em.AddCategory(wxT(LV2PREFIX) wxT("ExpanderPlugin"),
                                _("Expander"));
-   CatPtr lim = em.AddCategory(wxT(LV2PREFIX "LimiterPlugin"),
+   CatPtr lim = em.AddCategory(wxT(LV2PREFIX) wxT("LimiterPlugin"),
                                _("Limiter"));
-   CatPtr gate = em.AddCategory(wxT(LV2PREFIX "GatePlugin"),
+   CatPtr gate = em.AddCategory(wxT(LV2PREFIX) wxT("GatePlugin"),
                                 _("Gate"));
    
    em.AddCategoryParent(inst, gen);
