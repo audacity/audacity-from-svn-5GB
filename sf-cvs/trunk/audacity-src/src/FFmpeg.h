@@ -29,7 +29,7 @@ extern "C" {
 #include <avformat.h>
 }
 
-#define INITDYN(w,f) if ((*(void**)&this->f=(void*)w.GetSymbol(wxT(#f))) == NULL) return false
+#define INITDYN(w,f) if ((*(void**)&this->f=(void*)w->GetSymbol(wxT(#f))) == NULL) return false
 
 class FFmpegLibs
 {
@@ -75,41 +75,21 @@ public:
    bool ValidLibsLoaded();
 
    /* initialize the library interface */
-   bool InitLibs(wxString libpath_codec, wxString libpath_format, wxString libpath_util, bool showerr);
+   bool InitLibs(wxString libpath_codec, bool showerr);
    void FreeLibs();
 
    /* note these values are for Windows only - Mac and Unix have their own
    * sections elsewhere */
    //\todo { Section for Mac and *nix }
 #if defined(__WXMSW__)
-   wxString GetLibAVCodecName()
-   {
-      return wxT("avcodec.dll");
-   }
-
    wxString GetLibAVFormatName()
    {
       return wxT("avformat.dll");
    }
-
-   wxString GetLibAVUtilName()
-   {
-      return wxT("avutil.dll");
-   }
 #else
-   wxString GetLibAVCodecName()
-   {
-      return wxT("libavcodec.so");
-   }
-
    wxString GetLibAVFormatName()
    {
       return wxT("libavformat.so");
-   }
-
-   wxString GetLibAVUtilName()
-   {
-      return wxT("libavutil.so");
    }
 #endif
    //Ugly reference counting. I thought of using wxStuff for that,
@@ -119,14 +99,13 @@ public:
 
 private:
 
-   wxString mLibAVCodecPath;
    wxString mLibAVFormatPath;
-   wxString mLibAVUtilPath;
+   
+   wxDynamicLibrary *avformat;
+   wxDynamicLibrary *avcodec;
+   wxDynamicLibrary *avutil;
 
-   wxDynamicLibrary avcodec;
-   wxDynamicLibrary avformat;
-   wxDynamicLibrary avutil;
-
+   bool mStatic;
    bool mLibsLoaded;
 };
 #endif //USE_FFMPEG
