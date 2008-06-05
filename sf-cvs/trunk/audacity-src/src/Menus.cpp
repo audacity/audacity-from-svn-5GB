@@ -126,9 +126,21 @@ public:
       mCommandListFunction = commandFunction;
    }
 
+   AudacityProjectCommandFunctor(AudacityProject *project,
+                                 audCommandListFunction commandFunction,
+                                 wxArrayInt explicitIndices)
+   {
+      mProject = project;
+      mCommandFunction = NULL;
+      mCommandListFunction = commandFunction;
+      mExplicitIndices = explicitIndices;
+   }
+
    virtual void operator()(int index = 0)
    {
-      if (mCommandListFunction)
+      if (mCommandListFunction && mExplicitIndices.GetCount() > 0)
+         (mProject->*(mCommandListFunction)) (mExplicitIndices[index]);
+      else if (mCommandListFunction)
          (mProject->*(mCommandListFunction)) (index);
       else
          (mProject->*(mCommandFunction)) ();
@@ -138,9 +150,11 @@ private:
    AudacityProject *mProject;
    audCommandFunction mCommandFunction;
    audCommandListFunction mCommandListFunction;
+   wxArrayInt mExplicitIndices;
 };
 
 #define FN(X) new AudacityProjectCommandFunctor(this, &AudacityProject:: X )
+#define FNI(X, I) new AudacityProjectCommandFunctor(this, &AudacityProject:: X, I)
 
 /// CreateMenusAndCommands builds the menus, and also rebuilds them after
 /// changes in configured preferences - for example changes in key-bindings
@@ -736,7 +750,7 @@ void AudacityProject::CreateMenusAndCommands()
          names.Add((*iter)->GetEffectName());
          indices.Add((*iter)->GetID());
       }
-      c->AddItemList(wxT("Effect"), names, FN(OnProcessAny), true, indices);
+      c->AddItemList(wxT("Effect"), names, FNI(OnProcessAny, indices), true);
       c->EndSubMenu();
    }
    c->EndMenu();
@@ -954,7 +968,7 @@ void AudacityProject::AddEffectsToMenu(CommandManager* c,
       names.Add((*iter)->GetEffectName());
       indices.Add((*iter)->GetID());
    }
-   c->AddItemList(wxT("Effects"), names, FN(OnProcessAny), true, indices);
+   c->AddItemList(wxT("Effects"), names, FNI(OnProcessAny, indices), true);
 }
 
 #endif

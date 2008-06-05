@@ -92,8 +92,7 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
    void AddItem(wxString name, wxString label, CommandFunctor *callback,
                 int checkmark = -1);
    void AddItemList(wxString name, wxArrayString labels,
-                    CommandFunctor *callback, bool plugins = false,
-                    wxArrayInt indices = wxArrayInt());
+                    CommandFunctor *callback, bool plugins = false);
 
    void AddSeparator();
 
