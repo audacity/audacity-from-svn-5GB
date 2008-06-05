@@ -415,13 +415,10 @@ void CommandManager::AddItem(wxString name, wxString label_in,
 /// all of the items at once.
 void CommandManager::AddItemList(wxString name, wxArrayString labels,
                                  CommandFunctor *callback,
-                                 bool plugins /*= false*/,
-                                 wxArrayInt indices /*= wxArrayInt()*/)
+                                 bool plugins /*= false*/)
 {
    unsigned int i;
-   
-   bool implicitIndices = (indices.GetCount() == 0);
-   
+
    #ifndef __WXGTK__
    plugins = false;
    #endif
@@ -435,8 +432,7 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
    if (!plugins) {
       for(i=0; i<labels.GetCount(); i++) {
          int ID = NewIdentifier(name, labels[i], CurrentMenu(), callback,
-                                true, (implicitIndices ? i : indices[i]),
-                                labels.GetCount());
+                                true, i, labels.GetCount());
          CurrentMenu()->Append(ID, labels[i]);
       }
       mbSeparatorAllowed = true;
@@ -453,7 +449,8 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
 
    for(i=0; i<effLen; i++) {
       int ID = NewIdentifier(name, labels[i], CurrentMenu(), callback,
-                             true, (implicitIndices ? i : indices[i]), effLen);
+                             true, i, effLen);
+
       CurrentMenu()->Append(ID, labels[i]);
      
       if(((i+1) % MAX_SUBMENU_LEN) == 0 && i != (effLen - 1)) {
