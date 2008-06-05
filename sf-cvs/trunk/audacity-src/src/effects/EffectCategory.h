@@ -38,7 +38,7 @@ class EffectCategory {
        automatically sorted by name while allowing for different effects with
        the same name. */
    struct CompareEffects {
-      bool operator()(Effect* a, Effect* b) {
+      bool operator()(Effect* a, Effect* b) const {
          return (a->GetEffectName() < b->GetEffectName()) ||
             ((a->GetEffectName() == b->GetEffectName()) && (a < b));
       }
@@ -51,7 +51,7 @@ class EffectCategory {
        automatically sorted by name while allowing for different categories 
        with the same name. */
    struct CompareCategories {
-      bool operator()(EffectCategory* a, EffectCategory* b) {
+      bool operator()(const EffectCategory* a, const EffectCategory* b) const {
          return (a->GetName() < b->GetName()) ||
             ((a->GetName() == b->GetName()) && (a < b));
       }
