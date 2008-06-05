@@ -16,20 +16,21 @@ Authors:
 This version is currently accurate for Audacity version 1.3.6.
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
-See also "http://audacityteam.org/wiki/index.php?title=Developing_On_Windows".
+See also 
+"http://audacityteam.org/wiki/index.php?title=Developing_On_Windows".
 ========================================================================
 
-Audacity releases are now built with Microsoft Visual C++ 8
+Audacity releases are now built with Microsoft Visual C++ 8 
 (a.k.a Visual C++ 2005), generically known as "VC8".
 
-For instructions on compiling Audacity under the Cygwin
-UNIX Emulation Layer, see the "Compiling Audacity under
+For instructions on compiling Audacity under the Cygwin 
+UNIX Emulation Layer, see the "Compiling Audacity under 
 Cygwin" section below. This is not maintained.
 
-Previous Audacity releases have been built with Visual C++ 6.0,
-with Service Pack 5. This is no longer actively supported.
+Previous Audacity releases have been built with Visual C++ 6.0, 
+with Service Pack 5. This is no longer actively supported. 
 
-Note that Audacity uses VC++'s multithreaded statically-linked
+Note that Audacity uses VC++'s multithreaded statically-linked 
 runtime libraries.
 
 
@@ -55,51 +56,49 @@ MSVC++ STEP 2:  Build wxWidgets
 ------------------------
 
 When you have downloaded and installed wxWidgets, you must
-build it.
+build it. 
 
-Audacity previously required different build settings than
-are shipped with the wxWidgets projects, to use the
-multithreaded statically-linked runtime libraries instead
-of the multithreaded DLL runtime libraries.
-We NO LONGER build that way, so this process is
-now much simpler. To build previous versions, refer
-to the corresponding version of this file.
+Audacity previously required different build settings than 
+are shipped with the wxWidgets projects, to use the 
+multithreaded statically-linked runtime libraries instead 
+of the multithreaded DLL runtime libraries. 
+We NO LONGER build that way, so this process is 
+now much simpler. To build previous versions, refer 
+to the corresponding version of this file. 
 
-For wxWidgets' instructions on compilation
-(and details about static vs dll linkage), see
-"C:\wxWidgets-2.8.7\docs\msw\install.txt".
-Note therein that wx_dll.dsw "adds the dependencies to force
-the correct order" [for DLLs, which wx.dsw does not] "(but,
-because of this, doesn't work for the static libraries)".
+For wxWidgets' instructions on compilation 
+(and details about static vs dll linkage), see 
+"C:\wxWidgets-2.8.7\docs\msw\install.txt". 
+Note that wx_dll.dsw "adds the dependencies to force the 
+correct order [for DLLs, which wx.dsw does not] (but, because 
+of this, doesn't work for the static libraries)".
 
 
-1. Open "C:\wxWidgets-2.8.7\build\msw\wx_dll.dsw" with
-   Visual Studio 2005 (for VC8).
-   Make sure to use wx_dll.dsw, not wx.dsw, because wx.dsw
+1. Open "C:\wxWidgets-2.8.7\build\msw\wx_dll.dsw" with 
+   Visual Studio 2005 (for VC8). 
+   Make sure to use wx_dll.dsw, not wx.dsw, because wx.dsw 
    does not have the correct dependencies for the DLL builds.
-   When you open wx_dll.dsw, Visual Studio will prompt whether
+   When you open wx_dll.dsw, Visual Studio will prompt whether 
    to convert. Click "Yes To All".
 
-2. If you want to use the accessibility features:
-      * Open Solution Explorer.
-      * Open the hierarchy to core > Setup Headers.
-      * There are two "setup.h" files. Open both and select
+2. If you want to use the accessibility features: 
+      * Open Solution Explorer. 
+      * Open the hierarchy to core > Setup Headers. 
+      * There are two "setup.h" files. Open both and select 
          the one that has wx/msw/setup.h as its Name in the header.
          The path is "wxWidgets-2.8.7\include\wx\msw\setup.h".
-      * In that "setup.h", change the wxUSE_ACCESSIBILITY define
-         from 0 to 1.
-   Audacity releases are built with wxUSE_ACCESSIBILITY
+      * In that "setup.h", change the wxUSE_ACCESSIBILITY define 
+         from 0 to 1. 
+   Audacity releases are built with wxUSE_ACCESSIBILITY 
    turned on (set to 1).
 
 3. Build wxWidgets for all configurations of Audacity that you want.
-    * Build "DLL Release" for a "Release" version of
-       Audacity
-    * Build "DLL Unicode Release" for a "Unicode
-       Release" version of Audacity
-    * Build "DLL Debug" for a "Debug" version of
-       Audacity
-    * Build "DLL Unicode Debug" for a "Unicode Debug"
-       version of Audacity
+    * Build "DLL Release" to use in a "Release" version of Audacity.
+    * Build "DLL Unicode Release" to use in a "Unicode Release" 
+       version of Audacity.
+    * Build "DLL Debug" to use in a "Debug" version of Audacity.
+    * Build "DLL Unicode Debug" to use in a "Unicode Debug"
+       version of Audacity.
 
    See "MSVC++ STEP 5:  Build Audacity" for the differences
    between these versions of Audacity.
@@ -112,7 +111,7 @@ because of this, doesn't work for the static libraries)".
       * html
       * net
 
-   Because of dependencies, this should also build these projects:
+   Because of dependencies, this should also build these projects: 
 	* wxexpat
 	* wxjpeg
 	* wxpng
@@ -120,17 +119,17 @@ because of this, doesn't work for the static libraries)".
 	* wxtiff
 	* wxzlib
 
-   If you build the whole solution, ignore the linker errors for
+   If you build the whole solution, ignore the linker errors for 
    wxbase28*_odbc*.* dbgrid .
-
+ 
 
 --------------------------
 MSVC++ STEP 3:  Download Audacity
 --------------------------
 
-Now you can compile Audacity.  To check out the latest
-source code from CVS, see the instructions at
-"http://audacity.sourceforge.net/community/developers".
+Now you can compile Audacity.  To check out the latest 
+source code from CVS, see the instructions at 
+"http://audacity.sourceforge.net/community/developers". 
 
 
 --------------------------------------------
@@ -144,11 +143,11 @@ There are three settings that need changing:
     2.  Resource Directory (e.g., "C:\wxWidgets-2.8.7\include")
     3.  Library Directory (e.g., "C:\wxWidgets-2.8.7\lib")
 
-Fortunately, this is parameterized, using a Windows system
-environment variable. There are various ways to set these, so
-look in the Windows help system. You want to create an
-environment variable WXWIN, set to the top-level directory
-where you installed wxWidgets. For example,
+Fortunately, this is parameterized, using a Windows system 
+environment variable. There are various ways to set these, so 
+look in the Windows help system. You want to create an 
+environment variable WXWIN, set to the top-level directory 
+where you installed wxWidgets. For example, 
 in your "autoexec.bat" file, you might have a line:
 
    set WXWIN=C:\wxWidgets-2.8.7
@@ -160,13 +159,13 @@ variables can be found in the system control panel. Click
 the "System" option, then the "Extended" or "Advanced" tab,
 then "Environment variables".
 
-In the Audacity project file, there are declarations like
+In the Audacity project file, there are declarations like 
 
    $(WXWIN)\include
 
 that get interpreted as, e.g., "C:\wxWidgets-2.8.7\include".
 
-Once you have set the WXWIN environment variable correctly,
+Once you have set the WXWIN environment variable correctly, 
 the Audacity project file's declarations will do the rest.
 
 Note that you have to restart the IDE so it picks up changes
@@ -177,88 +176,88 @@ in the environment variables.
 MSVC++ STEP 5:  Build Audacity
 -----------------------
 
-Run Visual C++ and load the Audacity solution,
+Run Visual C++ and load the Audacity solution, 
 "audacity\win\audacity.sln".
 
 
 Optional Features
 
-Audacity comes with all libs necessary to build the default
-configuration, but some functionality like OGG/Vorbis support can be
-activated optionally and must be downloaded separately. To build
-with these libs, open the file "configwin.h" and change it according
-to the third-party libraries you have installed.
+Audacity comes with all libs necessary to build the default 
+configuration, but some functionality like OGG/Vorbis support can be 
+activated optionally and must be downloaded separately. To build 
+with these libs, open the file "configwin.h" and change it according 
+to the third-party libraries you have installed. 
 
-DirectSound (Microsoft) and ASIO (Steinberg) are sound card interface
-protocols that are more efficient than the standard
-WMME. Unlike WMME, not all sound card drivers support them.
+DirectSound (Microsoft) and ASIO (Steinberg) are sound card interface 
+protocols that are more efficient than the standard 
+WMME. Unlike WMME, not all sound card drivers support them. 
 
-TO ADD SUPPORT FOR DIRECTSOUND:
-Install the DirectX SDK from Microsoft (http://msdn.microsoft.com/directx).
+TO ADD SUPPORT FOR DIRECTSOUND: 
+Install the DirectX SDK from Microsoft (http://msdn.microsoft.com/directx).  
 The installation will automatically define the DXSDK_DIR
 environment variable and its presense will cause DirectSound
 support to be automatically included when Audacity is built.
 
 
 TO ADD SUPPORT FOR ASIO:
-Because ASIO is a PROPRIETARY, closed standard,
-we (or any third party) cannot distribute its SDK.
-That means we cannot distribute builds of Audacity that support
-ASIO, because Audacity is licensed under the
-GPL (http://audacity.sourceforge.net/about/license), which requires
-we distribute all source code.
+Because ASIO is a PROPRIETARY, closed standard, 
+we (or any third party) cannot distribute its SDK. 
+That means we cannot distribute builds of Audacity that support 
+ASIO, because Audacity is licensed under the 
+GPL (http://audacity.sourceforge.net/about/license), which requires 
+we distribute all source code. 
 
-So, although you can build your own copies of Audacity with
-ASIO support, for personal use, you cannot distribute them without
-violating the Audacity license and the ASIO license.
-If you build ASIO support into Audacity, do not distribute that build.
+So, although you can build your own copies of Audacity with 
+ASIO support, for personal use, you cannot distribute them without 
+violating the Audacity license and the ASIO license. 
+If you build ASIO support into Audacity, do not distribute that build. 
 
-If you wish ASIO support, install the ASIO SDK from Steinberg
+If you wish ASIO support, install the ASIO SDK from Steinberg 
 (http://www.steinberg.net ... select Company, then 3rd Party
 Developers), then define an environment variable called
-ASIOSDK_DIR, as you did for WXWIN, above. The value should be
-the full path to the base directory of the ASIO SDK, e.g.,
+ASIOSDK_DIR, as you did for WXWIN, above. The value should be 
+the full path to the base directory of the ASIO SDK, e.g., 
          set ASIOSDK_DIR=C:\ASIOSDK2
 
 
-PortAudio (http://www.portaudio.com/) is a cross-platform OSS library
-that Audacity uses for recording and playback. The default build
-settings use PortAudio v19, but v18 is still supported. If you want
-to build with v18:
+PortAudio (http://www.portaudio.com/) is a cross-platform OSS library 
+that Audacity uses for recording and playback. The default build 
+settings use PortAudio v19, but v18 is still supported. If you want 
+to build with v18: 
 
-   1) Change the Audacity Project Dependencies to have PAStaticWMME
+   1) Change the Audacity Project Dependencies to have PAStaticWMME 
       checked and PAStaticWMMEv19 unchecked.
-   2) In "audacity\win\portaudio.h", change
+   2) In "audacity\win\portaudio.h", change 
          #define USE_PORTAUDIO_V19 1
-      to
+      to 
          #define USE_PORTAUDIO_V19 0
-   3) In the Configuration Manager, for each configuration, check
+   3) In the Configuration Manager, for each configuration, check 
       PAStaticWMME and uncheck PAStaticWMMEv19.
 
 
 Build Audacity
 
 Select the configuration that you wish to build:
-* "Release" for general use
-* "Unicode Release" for Unicode-based, general use
+* "Release" for general use 
+* "Unicode Release" for Unicode-based, general use 
 * "Debug" for a slower but debuggable executable
-* "Unicode Debug" for a Unicode-based, slower, debuggable
+* "Unicode Debug" for a Unicode-based, slower, debuggable 
    executable
 
-You can select the configuration from the Solution
-Configurations pull-down menu, or select it from the "Build"
+You can select the configuration from the Solution 
+Configurations pull-down menu, or select it from the "Build" 
 menu > "Configuration Manager..." dialog box.
 
-Build Audacity by giving the "Build" menu > "Rebuild Solution"
+Build Audacity by giving the "Build" menu > "Rebuild Solution" 
 command.
 
 
-You'll need to provide each Audacity executable access to the wxWidgets
-DLLs that you built in "MSVC++ STEP 2:  Build wxWidgets" above.
-You can put them in your Windows PATH, or simply put them in the same
-directory as the executable. The DLLs get suffixes depending on their
-configuration, adding 'u' for Unicode and 'd' for debug.
-So for instance, copy
+You'll need to provide each Audacity executable access to the wxWidgets 
+DLLs that you built in "MSVC++ STEP 2:  Build wxWidgets" above. 
+You can put them in your Windows PATH, or simply put them in the same 
+directory as the executable. The DLLs get suffixes depending on their 
+configuration, adding 'u' for Unicode and 'd' for debug. 
+So for instance, copy 
 
 	wxbase28ud_net_vc_custom.dll
 	wxbase28ud_vc_custom.dll
@@ -275,7 +274,7 @@ audacity-devel@lists.sourceforge.net.  The first suggestion
 is likely to be "try it again with a clean installation of
 the wxWidgets source and the latest Audacity source from
 CVS" though, so if that's not what you just attempted, you
-might want to try that first...
+might want to try that first... 
 
 
 ---------------------------
@@ -285,19 +284,21 @@ HELP! I get linker errors!
 In some cases, Audacity does compile, but during the linking
 process you get a bunch of error messages like this:
 
-  MSVCRTD.lib(MSVCRTD.dll) : error LNK2005: _free
-  already defined in LIBCMTD.lib(dbgheap.obj)
+  LIBCMTD.lib(LIBCMTD.dll) : error LNK2005: _free
+  already defined in MSVCRTD.lib(dbgheap.obj)
 
-This is usually caused by conflicting runtime library
-settings. All libraries linked with Audacity must use the
-multithreaded statically-linked libraries (in VC8, Project >
-Audacity Properties... > C/C++ > Code Generation >
-Runtime Library should be "Multi-threaded Debug DLL (/MDd)"
-for Debug builds, or "Multi-threaded DLL (/MD)" for Release
-builds. Make sure you set the correct library type for both
-Debug and Release builds. Also make sure you check
-all other libraries too, like the Ogg Vorbis libraries, if you
-have them installed.
+This is usually caused by conflicting runtime library settings. 
+Audacity is now linked with DLL linkage. 
+In VC8, select the Audacity project. Then 
+   Project > Properties > C/C++ > Code Generation > Runtime Library 
+should be 
+   "Multi-threaded Debug DLL (/MDd)" for Debug or Unicode Debug builds, 
+or 
+   "Multi-threaded DLL (/MD)" for Release or Unicode Release builds. 
+Make sure you set the correct library type for all corresponding build 
+configurations. 
+Also make sure you check all other libraries, like the Ogg Vorbis 
+libraries, if you have them installed.
 
 You may want to use the /VERBOSE:LIB linker parameter to
 get information about which library is causing the conflict.
@@ -305,17 +306,17 @@ get information about which library is causing the conflict.
 If all else fails, use the following procedure to force
 Audacity to link to the correct library:
 
-Select the Audacity project in the Solution Explorer. Then
-choose the "Project" menu > "Audacity Properties..." command.
+Select the Audacity project in Solution Explorer. 
+Then choose Project > Properties. 
 
-Select the desired configuration ("Debug" or "Release").
+Select the desired configuration (e.g., "Debug" or "Release").
 Select the "Linker" folder in the tree on the left, and the
 "Input" item. In the "Ignore Specific Library" field, enter
-"libcmtd.lib" if you were attempting to perform a
-Release build, or "libcmt.lib" for a Debug build.
+"msvcrt.lib" if you were attempting to perform a
+Release build, or "msvcrtd.lib" for a Debug build.
 
-On some systems, you will need to ignore "msvcrt.lib"
-or "msvcrtd.lib" instead of "libcmt.lib" or "libcmtd.lib",
+On some systems, you will need to ignore "libcmt.lib" 
+or "libcmtd.lib" instead of "msvcrt.lib" or "msvcrtd.lib",
 depending on the library which actually causes the conflict.
 
 Note that if you have configured all libraries correctly,
@@ -326,43 +327,43 @@ none of the above should actually be necessary.
 MSVC++ (OPTIONAL) STEP 6:  Add VST support
 -----------------------
 
-Audacity does not support VST plug-ins by default, but
+Audacity does not support VST plug-ins by default, but 
 here is how to enable it.
 
-1. Download the current "VST Enabler" from the Audacity website.
-    Decompress it you obtained the zip folder.
+1. Download and install the current "VST Enabler" from the 
+   Audacity website, at http://audacityteam.org/vst/. 
 
 2. Put the "vst-bridge.dll" file in the Audacity Plug-ins folder.
 
-3. Run Audacity and the plug-ins should appear in the
+3. Run Audacity and the plug-ins should appear in the 
     Generate, Effect, and/or Analyze menus.
 
+========================================================================
 
-================================================================
 -------------------------------
 Compiling Audacity under Cygwin
 -------------------------------
 
-Compiling Audacity under Cygwin is considered "experimental"
-at this time, and you may notice a few problems when you do so.
-Please be patient, and make sure to submit bug reports to the
+Compiling Audacity under Cygwin is considered "experimental" 
+at this time, and you may notice a few problems when you do so. 
+Please be patient, and make sure to submit bug reports to the 
 development team. If you follow these instructions closely, you
 *should* be able to build Audacity.
 
-These instructions will attempt to help you to compile using
-the experimental additions that appeared sometime around the 1.2
-release. They will also attempt to help you to compile Audacity
-yourself without the aforementioned support. Make sure to read
-the instructions in their entirety before beginning, because no
-matter which source tree you wind up using, all of these
+These instructions will attempt to help you to compile using 
+the experimental additions that appeared sometime around the 1.2 
+release. They will also attempt to help you to compile Audacity 
+yourself without the aforementioned support. Make sure to read 
+the instructions in their entirety before beginning, because no 
+matter which source tree you wind up using, all of these 
 instructions are likely to assist you.
 
-If you have problems building, make sure you've read all of
-these instructions. At the bottom there is a list of known
-bugs. If the problem you encounter is on this list, then there
-is also a workaround. Just remember to be patient, and that I
-(Dave Fancella) have successfully built Audacity on 3 different
-Windows installations with 2 different versions of Windows (XP
+If you have problems building, make sure you've read all of 
+these instructions. At the bottom there is a list of known 
+bugs. If the problem you encounter is on this list, then there 
+is also a workaround. Just remember to be patient, and that I 
+(Dave Fancella) have successfully built Audacity on 3 different 
+Windows installations with 2 different versions of Windows (XP 
 and 2000 Pro). Knowing that it can be done is most of the battle.
 
 
@@ -370,17 +371,17 @@ and 2000 Pro). Knowing that it can be done is most of the battle.
 Cygwin STEP 1:  Installing Cygwin
 ---------------------------------
 
-1. Install Cygwin (from "http://www.cygwin.com"). If you have
-   plenty of bandwidth available, you should use the net
+1. Install Cygwin (from "http://www.cygwin.com"). If you have 
+   plenty of bandwidth available, you should use the net 
    installer.  Otherwise, you might be better off ordering a CD.
 
-2. If you already have Cygwin installed, you should fire up
-   the installer again and compare your installed packages to
+2. If you already have Cygwin installed, you should fire up 
+   the installer again and compare your installed packages to 
    the list of packages needed.
 
-3. Install the following packages:
+3. Install the following packages: 
    (This is probably not a complete list. If you find that
-   you have to install more than this, make sure to let us know
+   you have to install more than this, make sure to let us know 
    which ones, so they can be added to this list)
     Autoconf
   Autoconf-devel (Autoconf 2.53 is required if you need to rebuild 'configure')
