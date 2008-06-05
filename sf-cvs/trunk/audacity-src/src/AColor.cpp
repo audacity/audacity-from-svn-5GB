@@ -24,7 +24,7 @@ It is also a place to document colour usage policy in Audacity
 
 #include "AColor.h"
 #include "Theme.h"
-#include "../Experimental.h"
+#include "Experimental.h"
 #include "AllThemeResources.h"
 
 bool AColor::inited = false;
