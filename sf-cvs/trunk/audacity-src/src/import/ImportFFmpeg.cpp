@@ -186,7 +186,7 @@ void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
    wxString printstring(wxT(""));
 
    if (avc) {
-      printstring.Append(wxString::Format(wxT("[%s @ %p] "), wxString::FromUTF8(avc->item_name(ptr)), avc));
+      printstring.Append(wxString::Format(wxT("[%s @ %p] "), wxString::FromUTF8(avc->item_name(ptr)).c_str(), avc));
    }
 
    wxString frm(fmt,wxConvLibc);
@@ -200,7 +200,7 @@ void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
       case 2: cpt = wxT("Debug"); break;
       default: cpt = wxT("Log"); break;
    }
-   wxLogMessage(wxT("%s: %s"),cpt,printstring);
+   wxLogMessage(wxT("%s: %s"),cpt.c_str(),printstring.c_str());
 }
 
 class FFmpegImportPlugin : public ImportPlugin
