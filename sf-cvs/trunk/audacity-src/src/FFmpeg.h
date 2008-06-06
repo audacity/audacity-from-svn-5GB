@@ -15,19 +15,35 @@ Describes shared object that is used to access FFmpeg libraries.
 
 #if !defined(__AUDACITY_FFMPEG__)
 #define __AUDACITY_FFMPEG__
-#include "Audacity.h"	// pulls in config*.h and other program stuff
-#include "Experimental.h"
+
+/* FFmpeg is written in C99. It uses many types from stdint.h. Because we are
+ * compiling this using a C++ compiler we have to put it in extern "C".
+ * __STDC_CONSTANT_MACROS is defined to make <stdint.h> behave like it
+ * is actually being compiled with a C99 compiler. This only works if these
+ * headers get to stdint.h before anyone else does, otherwise it doesn't get
+ * re-processed and doesn't work properly.
+ * The symptoms are that INT64_C is not a valid type, which tends to break
+ * somewhere down in the implementations using this file */
+extern "C" {
+#ifdef _STDINT_H
+   /* stdint.h has already been included. That's likely to break ffmpeg headers
+	* as described above so we issue a warning */
+	#warning "stdint.h included before ffmpeg headers, this may well not compile"
+#endif
+#define __STDC_CONSTANT_MACROS
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+}
+#include "Audacity.h"
+/* rather earlier than normal, but pulls in config*.h and other program stuff
+ * we need for the next bit */
+
 #if defined(USE_FFMPEG)
 #include <wx/dynlib.h>
 #include <wx/log.h>			// for wxLogNull
 #include <wx/msgdlg.h>		// for wxMessageBox
 
-#define __STDC_CONSTANT_MACROS
-
-extern "C" {
-#include <avcodec.h>
-#include <avformat.h>
-}
+// if you needed them, any other audacity header files would go here
 
 #define INITDYN(w,f) if ((*(void**)&this->f=(void*)w->GetSymbol(wxT(#f))) == NULL) return false
 

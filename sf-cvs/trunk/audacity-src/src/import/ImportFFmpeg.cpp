@@ -23,13 +23,12 @@ Licensed under the GNU General Public License v2 or later
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
+#include "../FFmpeg.h"		// which brings in avcodec.h, avformat.h
 #ifndef WX_PRECOMP
 // Include your minimal set of headers here, or wx.h
 #include <wx/window.h>
 #endif
 
-#include "../Audacity.h"	// brings in config*.h and other system-wide stuff
-#include "../Experimental.h"
 
 #define DESC _("FFmpeg-compatible files")
 
@@ -150,7 +149,6 @@ static const wxChar *exts[] =
 #include "../Internat.h"
 #include "../WaveTrack.h"
 #include "ImportPlugin.h"
-#include "../FFmpeg.h"		// which brings in avcodec.h, avformat.h
 
 extern FFmpegLibs *FFmpegLibsInst;
 
