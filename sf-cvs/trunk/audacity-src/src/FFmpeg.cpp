@@ -116,7 +116,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
          if (libname.Matches(wxT("*avcodec*.so*")))
 #endif
          {
-            wxLogMessage(wxT("Found avcodec: %s"),libpath);
+            wxLogMessage(wxT("Found avcodec: %s"),libpath.c_str());
             libpath_codec = libpath;
          }
 #if defined(__WXMSW__)
@@ -125,7 +125,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
          else if (libname.Matches(wxT("*avutil*.so*")))
 #endif
          {
-            wxLogMessage(wxT("Found avutil: %s"),libpath);
+            wxLogMessage(wxT("Found avutil: %s"),libpath.c_str());
             libpath_util = libpath;
          }
       }
