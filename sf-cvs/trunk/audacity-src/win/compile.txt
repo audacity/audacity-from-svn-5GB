@@ -30,8 +30,10 @@ Cygwin" section below. This is not maintained.
 Previous Audacity releases have been built with Visual C++ 6.0, 
 with Service Pack 5. This is no longer actively supported. 
 
-Note that Audacity uses VC++'s multithreaded statically-linked 
-runtime libraries.
+Note that Audacity uses VC++'s multithreaded DLL runtime libraries. 
+If you have MSVC installed, these are in your PATH, but users to 
+whom you distribute your builds may not have them, so you may have 
+to distribute them, as described for the wxWidgets DLLs, below.
 
 
 ---------------------------
