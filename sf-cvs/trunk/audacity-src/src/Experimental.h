@@ -53,9 +53,8 @@
 
 //FFmpeg integration. Some FFmpeg-related changes are NOT ifdef'ed,
 //as they are harmless (like - a few mockup methods in Import* classes)
-#if defined(USE_FFMPEG)
-#define FFMPEG_INTEGRATION
-#endif
+// To enable ffmpeg support #define USE_FFMPEG in config*.h, as for any other
+// optional importer library (windows users: edit win/configwin.h)
 
 // Effect categorisation. Adds support for arranging effects in categories
 // and displaying those categories as submenus in the Effect menu.
