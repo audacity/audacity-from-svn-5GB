@@ -262,6 +262,9 @@ void QuitAudacity(bool bForce)
       //Delete the clipboard
    AudacityProject::DeleteClipboard();
 
+   wxGetApp().mLogger->SetActiveTarget(NULL);
+   delete wxGetApp().mLogger;
+
    if (bForce)
    {
       wxExit();
@@ -927,6 +930,11 @@ bool AudacityApp::OnInit()
    }                            // if (argc>1)
 
 #endif // __CYGWIN__ (Cygwin command-line parser)
+
+   mLogger = new wxLogWindow(NULL,wxT("Debug log"),false,false);
+   mLogger->SetActiveTarget(mLogger);
+   mLogger->EnableLogging(true);
+   mLogger->SetLogLevel(wxLOG_Max);
 
    gInited = true;
    

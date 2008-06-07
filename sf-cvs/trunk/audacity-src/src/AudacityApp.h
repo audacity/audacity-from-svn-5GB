@@ -143,6 +143,8 @@ class AudacityApp:public wxApp {
                                    wxArrayString &results);
 
    Importer *mImporter;
+
+   wxLogWindow *mLogger;
  private:
 
    wxLocale *mLocale;
