@@ -4491,7 +4491,7 @@ void AudacityProject::OnHelp()
 
 void AudacityProject::OnLog()
 {
-   if (mLogger) mLogger->Show();
+   wxGetApp().mLogger->Show();
 }
 
 void AudacityProject::OnBenchmark()

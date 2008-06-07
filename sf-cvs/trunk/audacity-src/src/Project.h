@@ -107,8 +107,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
 
    virtual ~ AudacityProject();
 
-   wxLogWindow *mLogger;
-
    TrackList *GetTracks() { return mTracks; };
    UndoManager *GetUndoManager() { return &mUndoManager; }
 
