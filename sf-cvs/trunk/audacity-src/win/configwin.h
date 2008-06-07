@@ -5,6 +5,7 @@
 #define USE_LIBFLAC 1
 #define USE_LIBID3TAG 1
 #define USE_LIBMAD 1
+//#define USE_FFMPEG 1	//define this to build with ffmpeg import/export
 #define USE_LIBRESAMPLE 1
 #undef USE_LIBSAMPLERATE
 #define USE_LIBVORBIS 1
