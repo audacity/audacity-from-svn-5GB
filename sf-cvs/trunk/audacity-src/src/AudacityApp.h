@@ -20,6 +20,7 @@
 #include <wx/event.h>
 #include <wx/intl.h>
 #include <wx/snglinst.h>
+#include <wx/log.h>
 
 class IPCServ;
 class Importer;
