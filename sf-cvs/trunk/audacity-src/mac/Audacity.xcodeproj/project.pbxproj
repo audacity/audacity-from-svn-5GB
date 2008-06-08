@@ -734,6 +734,8 @@
 		28105DAC0AD09FC500BB4269 /* px_mixer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28105DA20AD09FC500BB4269 /* px_mixer.h */; };
 		2816372E0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2816372C0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp */; };
 		282D474C0B9E8D900034BC49 /* Snap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 282D474A0B9E8D900034BC49 /* Snap.cpp */; };
+		283135EC0DFB9D110076D551 /* ImportFFmpeg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283135EA0DFB9D110076D551 /* ImportFFmpeg.cpp */; };
+		283135FF0DFBA2E80076D551 /* FFmpeg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283135FD0DFBA2E80076D551 /* FFmpeg.cpp */; };
 		2835062D0A3A88ED00EB1EBD /* pa_unix_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 283506280A3A88ED00EB1EBD /* pa_unix_util.c */; };
 		2835062E0A3A88ED00EB1EBD /* pa_unix_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 283506290A3A88ED00EB1EBD /* pa_unix_util.h */; };
 		283A11A50A2C0DE7004372C4 /* broadcast.c in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A40A2C0DE7004372C4 /* broadcast.c */; };
@@ -1899,6 +1901,10 @@
 		2816372D0BAE3B6C0079C746 /* LinkingHtmlWindow.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LinkingHtmlWindow.h; sourceTree = "<group>"; };
 		282D474A0B9E8D900034BC49 /* Snap.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Snap.cpp; sourceTree = "<group>"; };
 		282D474B0B9E8D900034BC49 /* Snap.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Snap.h; sourceTree = "<group>"; };
+		283135EA0DFB9D110076D551 /* ImportFFmpeg.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImportFFmpeg.cpp; sourceTree = "<group>"; };
+		283135EB0DFB9D110076D551 /* ImportFFmpeg.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ImportFFmpeg.h; sourceTree = "<group>"; };
+		283135FD0DFBA2E80076D551 /* FFmpeg.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FFmpeg.cpp; sourceTree = "<group>"; };
+		283135FE0DFBA2E80076D551 /* FFmpeg.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FFmpeg.h; sourceTree = "<group>"; };
 		283506280A3A88ED00EB1EBD /* pa_unix_util.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_unix_util.c; sourceTree = "<group>"; };
 		283506290A3A88ED00EB1EBD /* pa_unix_util.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_unix_util.h; sourceTree = "<group>"; };
 		283A11A40A2C0DE7004372C4 /* broadcast.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = broadcast.c; sourceTree = "<group>"; };
@@ -2879,6 +2885,8 @@
 				1790B05F09883BFD008A330A /* Envelope.cpp */,
 				1790B06009883BFD008A330A /* Envelope.h */,
 				1790B06109883BFD008A330A /* Experimental.h */,
+				283135FD0DFBA2E80076D551 /* FFmpeg.cpp */,
+				283135FE0DFBA2E80076D551 /* FFmpeg.h */,
 				1790B07009883BFD008A330A /* FFT.cpp */,
 				1790B07109883BFD008A330A /* FFT.h */,
 				1790B07209883BFD008A330A /* FileFormats.cpp */,
@@ -3154,6 +3162,8 @@
 			children = (
 				1790B07F09883BFD008A330A /* Import.cpp */,
 				1790B08009883BFD008A330A /* Import.h */,
+				283135EA0DFB9D110076D551 /* ImportFFmpeg.cpp */,
+				283135EB0DFB9D110076D551 /* ImportFFmpeg.h */,
 				1790B08109883BFD008A330A /* ImportFLAC.cpp */,
 				1790B08209883BFD008A330A /* ImportFLAC.h */,
 				1790B08309883BFD008A330A /* ImportLOF.cpp */,
@@ -5511,6 +5521,8 @@
 				28530C4D0DF2105200555C94 /* ProgressDialog.cpp in Sources */,
 				ED3D7FF00DF73889000F43E3 /* EffectCategory.cpp in Sources */,
 				ED3D7FF10DF73889000F43E3 /* EffectManager.cpp in Sources */,
+				283135EC0DFB9D110076D551 /* ImportFFmpeg.cpp in Sources */,
+				283135FF0DFBA2E80076D551 /* FFmpeg.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5853,8 +5865,14 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../lib-src/FileDialog\"";
-				OTHER_CFLAGS = "$(WX_CFLAGS)";
-				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				OTHER_CFLAGS = (
+					"$(WX_CFLAGS)",
+					"$(FFMPEG_CFLAGS)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(WX_CXXFLAGS)",
+					"$(FFMPEG_CXXFLAGS)",
+				);
 				OTHER_LDFLAGS = (
 					"$(WX_LDFLAGS)",
 					"-framework",
@@ -5894,6 +5912,9 @@
 				CONFIG_STATIC = yes;
 				CONFIG_UNICODE = yes;
 				DEAD_CODE_STRIPPING = YES;
+				FFMPEG_CFLAGS = "-I$(FFMPEG_PREFIX)/include -D__STDC_CONSTANT_MACROS";
+				FFMPEG_CXXFLAGS = "$(FFMPEG_CFLAGS)";
+				FFMPEG_PREFIX = /usr/local;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				KEEP_PRIVATE_EXTERNS = YES;
@@ -6051,6 +6072,9 @@
 				CONFIG_STATIC = no;
 				CONFIG_UNICODE = yes;
 				DEAD_CODE_STRIPPING = YES;
+				FFMPEG_CFLAGS = "-I$(FFMPEG_PREFIX)/include -D__STDC_CONSTANT_MACROS";
+				FFMPEG_CXXFLAGS = "$(FFMPEG_CFLAGS)";
+				FFMPEG_PREFIX = /usr/local;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -6083,8 +6107,14 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../lib-src/FileDialog\"";
-				OTHER_CFLAGS = "$(WX_CFLAGS)";
-				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				OTHER_CFLAGS = (
+					"$(WX_CFLAGS)",
+					"$(FFMPEG_CFLAGS)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(WX_CXXFLAGS)",
+					"$(FFMPEG_CXXFLAGS)",
+				);
 				OTHER_LDFLAGS = (
 					"$(WX_LDFLAGS)",
 					"-framework",
@@ -6377,6 +6407,9 @@
 				CONFIG_STATIC = no;
 				CONFIG_UNICODE = yes;
 				DEAD_CODE_STRIPPING = YES;
+				FFMPEG_CFLAGS = "-I$(FFMPEG_PREFIX)/include -D__STDC_CONSTANT_MACROS";
+				FFMPEG_CXXFLAGS = "$(FFMPEG_CFLAGS)";
+				FFMPEG_PREFIX = /usr/local;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
@@ -6410,8 +6443,14 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../lib-src/FileDialog\"";
-				OTHER_CFLAGS = "$(WX_CFLAGS)";
-				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				OTHER_CFLAGS = (
+					"$(WX_CFLAGS)",
+					"$(FFMPEG_CFLAGS)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(WX_CXXFLAGS)",
+					"$(FFMPEG_CXXFLAGS)",
+				);
 				OTHER_LDFLAGS = (
 					"$(WX_LDFLAGS)",
 					"-framework",
@@ -6891,8 +6930,14 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../lib-src/FileDialog\"";
-				OTHER_CFLAGS = "$(WX_CFLAGS)";
-				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				OTHER_CFLAGS = (
+					"$(WX_CFLAGS)",
+					"$(FFMPEG_CFLAGS)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(WX_CXXFLAGS)",
+					"$(FFMPEG_CXXFLAGS)",
+				);
 				OTHER_LDFLAGS = (
 					"$(WX_LDFLAGS)",
 					"-framework",
@@ -6936,6 +6981,9 @@
 				CONFIG_STATIC = yes;
 				CONFIG_UNICODE = yes;
 				DEAD_CODE_STRIPPING = YES;
+				FFMPEG_CFLAGS = "-I$(FFMPEG_PREFIX)/include -D__STDC_CONSTANT_MACROS";
+				FFMPEG_CXXFLAGS = "$(FFMPEG_CFLAGS)";
+				FFMPEG_PREFIX = /usr/local;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				KEEP_PRIVATE_EXTERNS = YES;
