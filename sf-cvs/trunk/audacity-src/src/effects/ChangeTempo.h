@@ -73,18 +73,14 @@ friend class ChangeTempoDialog;
 // ChangeTempoDialog
 //----------------------------------------------------------------------------
 
-class ChangeTempoDialog:public wxDialog {
+class ChangeTempoDialog:public EffectDialog {
  public:
    ChangeTempoDialog(EffectChangeTempo * effect, 
-							wxWindow * parent, wxWindowID id, 
-							const wxString & title, 
-							const wxPoint & pos = wxDefaultPosition, 
-							const wxSize & size = wxDefaultSize, 
-							long style = wxDEFAULT_DIALOG_STYLE);
+							wxWindow * parent);
 
-   virtual bool Validate();
-   virtual bool TransferDataToWindow();
-   virtual bool TransferDataFromWindow();
+   void PopulateOrExchange(ShuttleGui & S);
+   bool TransferDataToWindow();
+   bool TransferDataFromWindow();
 
  private:
 	// handlers
@@ -95,8 +91,6 @@ class ChangeTempoDialog:public wxDialog {
    void OnText_ToLength(wxCommandEvent & event); 
 
    void OnPreview( wxCommandEvent &event );
-   void OnOk(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
 
 	// helper fns
 	void Update_Text_PercentChange(); // Update control per current m_PercentChange.
@@ -105,8 +99,8 @@ class ChangeTempoDialog:public wxDialog {
 	void Update_Text_ToLength(); // Use m_FromLength & m_PercentChange to set new m_ToLength & control.
 
  private:
+	EffectChangeTempo * mEffect;
    bool m_bLoopDetect;
-	EffectChangeTempo * m_pEffect;
 
    // controls
    wxTextCtrl *	m_pTextCtrl_PercentChange;
