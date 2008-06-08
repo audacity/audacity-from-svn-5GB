@@ -174,7 +174,7 @@ public:
 
    // Required
 
-   bool DisplayOptions(AudacityProject *project = NULL);
+   bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
    bool Export(AudacityProject *project,
                int channels,
                wxString fName,
@@ -193,11 +193,12 @@ private:
 ExportMP2::ExportMP2()
 :  ExportPlugin()
 {
-   SetFormat(wxT("MP2"));
-   SetExtension(wxT("mp2"));
-   SetMaxChannels(2);
-   SetCanMetaData(true);
-   SetDescription(_("MP2 Files"));
+   AddFormat();
+   SetFormat(wxT("MP2"),0);
+   SetExtension(wxT("mp2"),0);
+   SetMaxChannels(2,0);
+   SetCanMetaData(true,0);
+   SetDescription(_("MP2 Files"),0);
 }
 
 void ExportMP2::Destroy()
@@ -324,7 +325,7 @@ bool ExportMP2::Export(AudacityProject *project,
    return !cancelling;
 }
 
-bool ExportMP2::DisplayOptions(AudacityProject *project)
+bool ExportMP2::DisplayOptions(AudacityProject *project, int format)
 {
    ExportMP2Options od(project);
 

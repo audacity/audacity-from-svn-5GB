@@ -186,6 +186,7 @@ int ExportMultiple::ShowModal()
 
 void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
 {
+
    wxString name = mProject->GetName();
 
    S.SetBorder(5);
@@ -194,7 +195,10 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
       wxArrayString formats;
       
       for (size_t i = 0; i < mPlugins.GetCount(); i++) {
-         formats.Add(mPlugins[i]->GetDescription());
+         for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+         {
+            formats.Add(mPlugins[i]->GetDescription(j));
+         }
       }
 
       S.AddPrompt(_("Export format:"));
@@ -503,7 +507,7 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
                               // don't duplicate them
    ExportKit setting;   // the current batch of settings
    setting.destfile.SetPath(mDir->GetValue());
-   setting.destfile.SetExt(mPlugins[mFormatIndex]->GetExtension());
+   setting.destfile.SetExt(mPlugins[mFormatIndex]->GetExtension(mSubFormatIndex));
 
    wxString name;    // used to hold file name whilst we mess with it
    wxString title;   // un-messed-with title of file for tagging with
@@ -618,7 +622,7 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
    exportSettings.Alloc(mNumLabels);   // allocated some guessed space to use
    ExportKit setting;   // the current batch of settings
    setting.destfile.SetPath(mDir->GetValue());
-   setting.destfile.SetExt(mPlugins[mFormatIndex]->GetExtension());
+   setting.destfile.SetExt(mPlugins[mFormatIndex]->GetExtension(mSubFormatIndex));
 
    wxString name;    // used to hold file name whilst we mess with it
    wxString title;   // un-messed-with title of file for tagging with

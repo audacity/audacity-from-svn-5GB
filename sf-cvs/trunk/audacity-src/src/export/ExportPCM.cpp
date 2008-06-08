@@ -74,43 +74,40 @@ class ExportPCMOptions : public wxDialog
 {
 public:
 
-   ExportPCMOptions(wxWindow *parent);
+   ExportPCMOptions(wxWindow *parent, int format);
    void PopulateOrExchange(ShuttleGui & S);
-   void OnFormatChoice(wxCommandEvent & evt);
+   void OnHeaderChoice(wxCommandEvent & evt);
    void OnChoice(wxCommandEvent & event);
    void OnOK(wxCommandEvent& event);
 
 private:
 
-   void ValidateChoices();
+   bool ValidatePair(int format);
    int GetFormat();
 
 private:
 
-   wxArrayString mFormatNames;
    wxArrayString mHeaderNames;
    wxArrayString mEncodingNames;
-   wxChoice *mFormatChoice;
    wxChoice *mHeaderChoice;
    wxChoice *mEncodingChoice;
    wxButton *mOk;
-   int mFormatFromChoice;
    int mHeaderFromChoice;
    int mEncodingFromChoice;
+   wxArrayInt mEncodingFormats;
 
    DECLARE_EVENT_TABLE()
 };
 
 BEGIN_EVENT_TABLE(ExportPCMOptions, wxDialog)
-   EVT_CHOICE(ID_FORMAT_CHOICE,   ExportPCMOptions::OnFormatChoice)
-   EVT_CHOICE(ID_HEADER_CHOICE,   ExportPCMOptions::OnChoice)
+   EVT_CHOICE(ID_HEADER_CHOICE,   ExportPCMOptions::OnHeaderChoice)
    EVT_CHOICE(ID_ENCODING_CHOICE, ExportPCMOptions::OnChoice)
    EVT_BUTTON(wxID_OK,            ExportPCMOptions::OnOK)
 END_EVENT_TABLE()
 
 /// 
 /// 
-ExportPCMOptions::ExportPCMOptions(wxWindow *parent)
+ExportPCMOptions::ExportPCMOptions(wxWindow *parent, int selformat)
 :  wxDialog(NULL, wxID_ANY,
             wxString(_("Specify Uncompressed Options")),
             wxDefaultPosition, wxDefaultSize,
@@ -120,18 +117,11 @@ ExportPCMOptions::ExportPCMOptions(wxWindow *parent)
 
    //----- Gather our strings used in choices.
 
+   //TODO: clean the things up
+   format = sf_header_index_to_type(selformat);
    int i;
-   int num = sf_num_simple_formats();
-   int sel = num;
-   for (i = 0; i < num; i++) {
-      SF_FORMAT_INFO *info = sf_simple_format(i);
-      mFormatNames.Add(LAT1CTOWX(info->name));
-      if (format == info->format) {
-         sel = i;
-      }
-   }
-   mFormatNames.Add(_("Other..."));
-   mFormatFromChoice = sel;
+   int num;
+   int sel;
 
    num = sf_num_headers();
    sel = 0;
@@ -173,10 +163,6 @@ void ExportPCMOptions::PopulateOrExchange(ShuttleGui & S)
          S.StartMultiColumn(2, wxEXPAND);
          {
             S.SetStretchyCol(1);
-            mFormatChoice = S.Id(ID_FORMAT_CHOICE)
-               .AddChoice(_("Format:"),
-                          mFormatNames[mFormatFromChoice],
-                          &mFormatNames);
             mHeaderChoice = S.Id(ID_HEADER_CHOICE)
                .AddChoice(_("Header:"),
                           mHeaderNames[mHeaderFromChoice],
@@ -196,43 +182,65 @@ void ExportPCMOptions::PopulateOrExchange(ShuttleGui & S)
    S.AddStandardButtons();
    mOk = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
 
-   ValidateChoices();
+   wxCommandEvent nl;
+   OnHeaderChoice(nl);
 
    return;
 }
 
 ///
 ///
-void ExportPCMOptions::OnFormatChoice(wxCommandEvent & evt)
+void ExportPCMOptions::OnHeaderChoice(wxCommandEvent & evt)
 {
-   int format = sf_simple_format(mFormatChoice->GetSelection())->format;
-   int num;
-   int i;
+   int format = sf_header_index_to_type(mHeaderChoice->GetSelection());
+   mEncodingNames.Clear();
+   mEncodingChoice->Clear();
+   mEncodingFormats.Clear();
+   int sel = wxNOT_FOUND;
+   int i,j;
 
-   num = sf_num_headers();
-   for (i = 0; i < num; i++) {
-      if ((format & SF_FORMAT_TYPEMASK) == sf_header_index_to_type(i)) {
-         mHeaderChoice->SetSelection(i);
-         break;
+   int sfnum = sf_num_simple_formats();
+   wxArrayInt sfs;
+
+   for (i = 0; i < sfnum; i++)
+   {
+      SF_FORMAT_INFO *fi = sf_simple_format(i);
+      sfs.Add(fi->format);
+   }
+
+   int num = sf_num_encodings();
+   for (i = 0; i < num; i++)
+   {
+      int enc = sf_encoding_index_to_subtype(i);
+      int fmt = format | enc;
+      bool valid  = ValidatePair(fmt);
+      if (valid)
+      {
+         mEncodingNames.Add(sf_encoding_index_name(i));
+         mEncodingChoice->Append(sf_encoding_index_name(i));
+         mEncodingFormats.Add(enc);
+         for (j = 0; j < sfnum; j++)
+         {
+            int enc = sfs[j];
+            if ((sel == wxNOT_FOUND) && (fmt == enc))
+            {
+               sel = mEncodingFormats.GetCount()-1;
+               break;
+            }
+         }
       }
    }
 
-   num = sf_num_encodings();
-   for (i = 0; i < num; i++) {
-      if ((format & SF_FORMAT_SUBMASK) == sf_encoding_index_to_subtype(i)) {
-         mEncodingChoice->SetSelection(i);
-         break;
-      }
-   }
-
-   ValidateChoices();
+   if (sel == wxNOT_FOUND) sel = 0;
+   mEncodingFromChoice = sel;
+   mEncodingChoice->SetSelection(sel);
+   ValidatePair(GetFormat());
 }
 
 ///
 ///
 void ExportPCMOptions::OnChoice(wxCommandEvent & event)
 {
-   ValidateChoices();
 }
 
 /// 
@@ -246,34 +254,32 @@ void ExportPCMOptions::OnOK(wxCommandEvent& event)
    return;
 }
 
+int ExportPCMOptions::GetFormat()
+{
+   int hdr = sf_header_index_to_type(mHeaderChoice->GetSelection());
+   int sel = mEncodingChoice->GetSelection();
+   int enc = mEncodingFormats[sel];
+   return hdr | enc;
+}
+
 /// Calls a libsndfile library function to determine whether the user's
 /// choice of sample encoding (e.g. pcm 16-bit or GSM 6.10 compression)
 /// is compatible with their choice of file format (e.g. WAV, AIFF)
 /// and enables/disables the OK button accordingly.
-void ExportPCMOptions::ValidateChoices()
+bool ExportPCMOptions::ValidatePair(int format)
 {
    SF_INFO info;
    memset(&info, 0, sizeof(info));
    info.frames = 0;
    info.samplerate = 44100;
    info.channels = 1;
-   info.format = GetFormat();
+   info.format = format;
    info.sections = 1;
    info.seekable = 0;
 
-   mOk->Enable(sf_format_check(&info) ? true : false);
-
-   bool enable = mFormatChoice->GetSelection() ==
-                 (mFormatChoice->GetCount() - 1);
-
-   mHeaderChoice->Enable(enable);
-   mEncodingChoice->Enable(enable);
-}
-
-int ExportPCMOptions::GetFormat()
-{
-   return sf_header_index_to_type(mHeaderChoice->GetSelection()) |
-          sf_encoding_index_to_subtype(mEncodingChoice->GetSelection());
+   int valid = sf_format_check(&info);
+   mOk->Enable(valid != 0 ? true : false);
+   return valid != 0 ? true : false;
 }
 
 //----------------------------------------------------------------------------
@@ -289,7 +295,7 @@ public:
 
    // Required
 
-   bool DisplayOptions(AudacityProject *project = NULL);
+   bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
    bool Export(AudacityProject *project,
                int channels,
                wxString fName,
@@ -298,13 +304,6 @@ public:
                double t1,
                MixerSpec *mixerSpec = NULL,
                Tags *metadata = NULL); 
-
-   // Overrides
-
-   int GetMaxChannels();
-   wxString GetExtension();
-   wxArrayString GetExtensions();
-   bool IsExtension(wxString & ext);
 
 private:
 
@@ -315,9 +314,85 @@ private:
 ExportPCM::ExportPCM()
 :  ExportPlugin()
 {
-   SetFormat(wxT("WAV"));
-   SetCanMetaData(true);
-   SetDescription(_("WAV, AIFF, and other uncompressed types"));
+/*
+   SF_INFO si;
+
+   si.format = ReadExportFormatPref();
+   si.samplerate = 0;
+   si.channels = 0;
+
+   do {
+      si.channels++;
+   } while (sf_format_check(&si));
+
+   AddFormat();
+   SetFormat(wxT("WAV"),0);
+   SetCanMetaData(true,0);
+   SetDescription(_("WAV, AIFF, and other uncompressed types"),0);
+   SetExtension(sf_header_extension(ReadExportFormatPref()),0);
+   SetExtensions(sf_get_all_extensions(),0);
+   SetMaxChannels(si.channels - 1,0);
+
+   AddFormat();
+   SetFormat(wxT("AIFF"),1);
+   SetCanMetaData(true,1);
+   ...
+   etc...
+
+   Below is the automatic generator (exports *all* available simple formats,
+   very long list). Will be replaced with something like above.
+   */
+   for (int n = 0; n < sf_num_headers(); n++)
+   {
+      AddFormat();
+      SF_INFO si;
+
+      si.format = sf_header_index_to_type(n);
+      si.samplerate = 0;
+      si.channels = 0;
+
+      do {
+         si.channels++;
+      } while (sf_format_check(&si));
+
+      SetMaxChannels(si.channels - 1,n);
+
+      SetExtension(sf_header_extension(si.format),n);
+
+      wxArrayString as(1,sf_header_extension(si.format));
+      SetExtensions(as,n);
+
+      //FIXME: real description for all formats;
+      SetFormat(sf_header_name(si.format),n);
+      switch (si.format)
+      {
+      case SF_FORMAT_WAV:
+      case SF_FORMAT_AIFF:
+      case SF_FORMAT_AU:
+      case SF_FORMAT_RAW:
+      case SF_FORMAT_PAF:
+      case SF_FORMAT_SVX:
+      case SF_FORMAT_NIST:
+      case SF_FORMAT_VOC:
+      case SF_FORMAT_IRCAM:
+      case SF_FORMAT_W64:
+      case SF_FORMAT_MAT4:
+      case SF_FORMAT_MAT5:
+      case SF_FORMAT_PVF:
+      case SF_FORMAT_XI:
+      case SF_FORMAT_HTK:
+      case SF_FORMAT_SDS:
+      case SF_FORMAT_AVR:
+      case SF_FORMAT_WAVEX:
+      case SF_FORMAT_SD2:
+      case SF_FORMAT_FLAC:
+      case SF_FORMAT_CAF:
+         SetDescription(sf_header_name(si.format),n);
+         break;
+      }
+
+      SetCanMetaData(true,n);
+   }
 }
 
 void ExportPCM::Destroy()
@@ -483,43 +558,13 @@ bool ExportPCM::AddStrings(AudacityProject *project, SNDFILE *sf, Tags *tags)
    return true;
 }
 
-bool ExportPCM::DisplayOptions(AudacityProject *project)
+bool ExportPCM::DisplayOptions(AudacityProject *project, int format)
 {
-   ExportPCMOptions od(project);
+   ExportPCMOptions od(project,format);
 
    od.ShowModal();
 
    return true;
-}
-
-int ExportPCM::GetMaxChannels()
-{
-   SF_INFO si;
-
-   si.format = ReadExportFormatPref();
-   si.samplerate = 0;
-   si.channels = 0;
-
-   do {
-      si.channels++;
-   } while (sf_format_check(&si));
-
-   return si.channels - 1;
-}
-
-wxString ExportPCM::GetExtension()
-{
-   return sf_header_extension(ReadExportFormatPref());
-}
-
-wxArrayString ExportPCM::GetExtensions()
-{
-   return sf_get_all_extensions();
-}
-
-bool ExportPCM::IsExtension(wxString & ext)
-{
-   return ext.IsSameAs(GetExtension(), false);
 }
 
 //----------------------------------------------------------------------------

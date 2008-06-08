@@ -179,7 +179,7 @@ public:
 
    // Required
 
-   bool DisplayOptions(AudacityProject *project = NULL);
+   bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
    bool Export(AudacityProject *project,
                int channels,
                wxString fName,
@@ -201,11 +201,12 @@ private:
 ExportFLAC::ExportFLAC()
 :  ExportPlugin()
 {
-   SetFormat(wxT("FLAC"));
-   SetExtension(wxT("flac"));
-   SetMaxChannels(FLAC__MAX_CHANNELS);
-   SetCanMetaData(true);
-   SetDescription(_("FLAC Files"));
+   AddFormat();
+   SetFormat(wxT("FLAC"),0);
+   SetExtension(wxT("flac"),0);
+   SetMaxChannels(FLAC__MAX_CHANNELS,0);
+   SetCanMetaData(true,0);
+   SetDescription(_("FLAC Files"),0);
 }
 
 void ExportFLAC::Destroy()
@@ -347,7 +348,7 @@ bool ExportFLAC::Export(AudacityProject *project,
    return !cancelling;
 }
 
-bool ExportFLAC::DisplayOptions(AudacityProject *project)
+bool ExportFLAC::DisplayOptions(AudacityProject *project, int format)
 {
    ExportFLACOptions od(project);
 
