@@ -148,6 +148,11 @@ ProgressDialog::ProgressDialog(const wxString & title, const wxString & message)
    mLastUpdate = mStartTime;
    mCancel = false;
 
+   // Even though we won't necessarily show the dialog due to the the 500ms
+   // delay, we MUST disable other windows/menus anyway since we run the risk
+   // of allowing other tasks to run before this one is complete.
+   mDisable = new wxWindowDisabler(this);
+
    Show(false);
 }
 
@@ -178,9 +183,9 @@ ProgressDialog::~ProgressDialog()
 // Show/Hide the dialog
 //
 // At least on the Mac, deleting the WindowDisabler before continuing to the
-// base class is VERY important since menu items can remains can remain in
-// the disabled state.  This has to do with the Mac no honoring the Enable
-// if the application is still in a modal state.
+// base class is VERY important since menu items can remain in the disabled
+// state.  This has to do with the Mac not honoring the Enable() if the
+// application is still in a modal state.
 //
 // An example is generating a tone in an empty project.  The Export menus
 // will not get enabled.
