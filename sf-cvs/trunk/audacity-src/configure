@@ -5479,7 +5479,7 @@ echo "$as_me: running $SHELL $ax_sub_configure $ax_sub_configure_args --cache-fi
   { echo "$as_me:$LINENO: Done configuring in \"${srcdir}/lib-src/lib-widget-extra\"" >&5
 echo "$as_me: Done configuring in \"${srcdir}/lib-src/lib-widget-extra\"" >&6;}
 
-         export PKG_CONFIG_PATH="./lib-src/lib-widget-extra/"
+         export PKG_CONFIG_PATH="./lib-src/lib-widget-extra/:$PKG_CONFIG_PATH"
 
 pkg_failed=no
 { echo "$as_me:$LINENO: checking for WIDGETEXTRA" >&5
@@ -7813,9 +7813,9 @@ echo "$as_me: libtwolame library is NOT available in the local tree" >&6;}
 
 
 
-# Check whether --with-libtwolame was given.
-if test "${with_libtwolame+set}" = set; then
-  withval=$with_libtwolame; FFMPEG_ARGUMENT=$withval
+# Check whether --with-ffmpeg was given.
+if test "${with_ffmpeg+set}" = set; then
+  withval=$with_ffmpeg; FFMPEG_ARGUMENT=$withval
 else
   FFMPEG_ARGUMENT="unspecified"
 fi
