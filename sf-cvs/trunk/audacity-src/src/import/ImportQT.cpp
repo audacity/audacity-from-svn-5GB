@@ -433,8 +433,8 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       samplesSinceLastCallback += outputFrames;
       if( samplesSinceLastCallback > SAMPLES_PER_CALLBACK )
       {
-         cancelled = mProgress->Update((int)cbData.getMediaAtThisTime,
-                                       (int)cbData.sourceDuration);
+         cancelled = !mProgress->Update((wxULongLong_t)cbData.getMediaAtThisTime,
+                                        (wxULongLong_t)cbData.sourceDuration);
          samplesSinceLastCallback -= SAMPLES_PER_CALLBACK;
       }
    }
@@ -484,8 +484,8 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
          (*outTracks)[c] = channels[c];
       delete[] channels;
 
-      return true;
-   }
+   return eImportSuccess;
+}
 
 static const struct
 {
