@@ -42,7 +42,7 @@ class ExportOGGOptions : public wxDialog
 {
 public:
 
-   ExportOGGOptions(wxWindow *parent);
+   ExportOGGOptions(wxWindow *parent, int format);
    void PopulateOrExchange(ShuttleGui & S);
    void OnOK(wxCommandEvent& event);
 
@@ -59,7 +59,7 @@ END_EVENT_TABLE()
 
 /// 
 /// 
-ExportOGGOptions::ExportOGGOptions(wxWindow *parent)
+ExportOGGOptions::ExportOGGOptions(wxWindow *parent, int format)
 :  wxDialog(NULL, wxID_ANY,
             wxString(_("Specify Ogg Vorbis Options")),
             wxDefaultPosition, wxDefaultSize,
@@ -130,7 +130,7 @@ public:
 
    // Required
 
-   bool DisplayOptions(AudacityProject *project = NULL);
+   bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
    bool Export(AudacityProject *project,
                int channels,
                wxString fName,
@@ -148,11 +148,12 @@ private:
 ExportOGG::ExportOGG()
 :  ExportPlugin()
 {
-   SetFormat(wxT("OGG"));
-   SetExtension(wxT("ogg"));
-   SetMaxChannels(255);
-   SetCanMetaData(true);
-   SetDescription(_("Ogg Vorbis Files"));
+   AddFormat();
+   SetFormat(wxT("OGG"),0);
+   SetExtension(wxT("ogg"),0);
+   SetMaxChannels(255,0);
+   SetCanMetaData(true,0);
+   SetDescription(_("Ogg Vorbis Files"),0);
 }
 
 void ExportOGG::Destroy()
@@ -329,9 +330,9 @@ bool ExportOGG::Export(AudacityProject *project,
    return !cancelling;
 }
 
-bool ExportOGG::DisplayOptions(AudacityProject *project)
+bool ExportOGG::DisplayOptions(AudacityProject *project, int format)
 {
-   ExportOGGOptions od(project);
+   ExportOGGOptions od(project,format);
 
    od.ShowModal();
 

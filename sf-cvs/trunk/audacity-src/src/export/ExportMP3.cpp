@@ -1620,7 +1620,7 @@ public:
 
    // Required
 
-   bool DisplayOptions(AudacityProject *project = NULL);
+   bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
    bool Export(AudacityProject *project,
                int channels,
                wxString fName,
@@ -1643,11 +1643,12 @@ ExportMP3::ExportMP3()
 :  ExportPlugin()
 {
    InitMP3_Statics();
-   SetFormat(wxT("MP3"));
-   SetExtension(wxT("mp3"));
-   SetMaxChannels(2);
-   SetCanMetaData(true);
-   SetDescription(_("MP3 Files"));
+   AddFormat();
+   SetFormat(wxT("MP3"),0);
+   SetExtension(wxT("mp3"),0);
+   SetMaxChannels(2,0);
+   SetCanMetaData(true,0);
+   SetDescription(_("MP3 Files"),0);
 }
 
 void ExportMP3::Destroy()
@@ -1881,7 +1882,7 @@ bool ExportMP3::Export(AudacityProject *project,
    return !cancelling;
 }
 
-bool ExportMP3::DisplayOptions(AudacityProject *project)
+bool ExportMP3::DisplayOptions(AudacityProject *project, int format)
 {
    ExportMP3Options od(project);
 

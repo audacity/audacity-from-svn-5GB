@@ -213,11 +213,12 @@ public:
 ExportCL::ExportCL()
 :  ExportPlugin()
 {
-   SetFormat(wxT("CL"));
-   SetExtension(wxT(""));
-   SetMaxChannels(255);
-   SetCanMetaData(false);
-   SetDescription(_("(external program)"));
+   AddFormat();
+   SetFormat(wxT("CL"),0);
+   SetExtension(wxT(""),0);
+   SetMaxChannels(255,0);
+   SetCanMetaData(false,0);
+   SetDescription(_("(external program)"),0);
 }
 
 void ExportCL::Destroy()

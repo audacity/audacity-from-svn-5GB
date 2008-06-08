@@ -87,12 +87,24 @@ WX_DEFINE_OBJARRAY(ExportPluginArray);
 
 ExportPlugin::ExportPlugin()
 {
-   mMaxChannels = 0;
-   mCanMetaData = false;
+   mFormatInfos.Empty();
 }
 
 ExportPlugin::~ExportPlugin()
 {
+   mFormatInfos.Empty();
+}
+
+int ExportPlugin::AddFormat()
+{
+   FormatInfo *nf = new FormatInfo();
+   mFormatInfos.Add(nf);
+   return mFormatInfos.Count();
+}
+
+int ExportPlugin::GetFormatCount()
+{
+   return mFormatInfos.Count();
 }
 
 void ExportPlugin::Destroy()
@@ -100,73 +112,73 @@ void ExportPlugin::Destroy()
    delete this;
 }
 
-void ExportPlugin::SetFormat(const wxString & format)
+void ExportPlugin::SetFormat(const wxString & format, int index)
 {
-   mFormat = format;
+   mFormatInfos[index]->mFormat = format;
 }
 
-void ExportPlugin::SetDescription(const wxString & description)
+void ExportPlugin::SetDescription(const wxString & description, int index)
 {
-   mDescription = description;
+   mFormatInfos[index]->mDescription = description;
 }
 
-void ExportPlugin::SetExtension(const wxString & extension)
+void ExportPlugin::SetExtension(const wxString & extension, int index)
 {
-   mExtension = extension;
+   mFormatInfos[index]->mExtension = extension;
 }
 
-void ExportPlugin::SetExtensions(const wxArrayString & extensions)
+void ExportPlugin::SetExtensions(const wxArrayString & extensions, int index)
 {
-   mExtensions = extensions;
+   mFormatInfos[index]->mExtensions = extensions;
 }
 
-void ExportPlugin::SetMask(const wxString & mask)
+void ExportPlugin::SetMask(const wxString & mask, int index)
 {
-   mMask = mask;
+   mFormatInfos[index]->mMask = mask;
 }
 
-void ExportPlugin::SetMaxChannels(int maxchannels)
+void ExportPlugin::SetMaxChannels(int maxchannels, int index)
 {
-   mMaxChannels = maxchannels;
+   mFormatInfos[index]->mMaxChannels = maxchannels;
 }
 
-void ExportPlugin::SetCanMetaData(bool canmetadata)
+void ExportPlugin::SetCanMetaData(bool canmetadata, int index)
 {
-   mCanMetaData = canmetadata;
+   mFormatInfos[index]->mCanMetaData = canmetadata;
 }
 
-wxString ExportPlugin::GetFormat()
+wxString ExportPlugin::GetFormat(int index)
 {
-   return mFormat;
+   return mFormatInfos[index]->mFormat;
 }
 
-wxString ExportPlugin::GetDescription()
+wxString ExportPlugin::GetDescription(int index)
 {
-   return mDescription;
+   return mFormatInfos[index]->mDescription;
 }
 
-wxString ExportPlugin::GetExtension()
+wxString ExportPlugin::GetExtension(int index)
 {
-   return mExtension;
+   return mFormatInfos[index]->mExtension;
 }
 
-wxArrayString ExportPlugin::GetExtensions()
+wxArrayString ExportPlugin::GetExtensions(int index)
 {
-   return mExtensions;
+   return mFormatInfos[index]->mExtensions;
 }
 
-wxString ExportPlugin::GetMask()
+wxString ExportPlugin::GetMask(int index)
 {
-   if (!mMask.IsEmpty()) {
-      return mMask;
+   if (!mFormatInfos[index]->mMask.IsEmpty()) {
+      return mFormatInfos[index]->mMask;
    }
 
-   wxString mask = GetDescription() + wxT("|");
+   wxString mask = GetDescription(index) + wxT("|");
 
    // Build the mask, but cater to the Mac FileDialog and put the default
    // extension at the end of the mask.
-   wxString ext = GetExtension();
-   wxArrayString exts = GetExtensions();
+   wxString ext = GetExtension(index);
+   wxArrayString exts = GetExtensions(index);
    for (size_t i = 0; i < exts.GetCount(); i++) {
       if (ext != exts[i]) {
          mask += wxT("*.") + exts[i] + wxT(";");
@@ -176,32 +188,36 @@ wxString ExportPlugin::GetMask()
    return mask + wxT("*.") + ext;
 }
 
-int ExportPlugin::GetMaxChannels()
+int ExportPlugin::GetMaxChannels(int index)
 {
-   return mMaxChannels;
+   return mFormatInfos[index]->mMaxChannels;
 }
 
-bool ExportPlugin::GetCanMetaData()
+bool ExportPlugin::GetCanMetaData(int index)
 {
-   return mCanMetaData;
+   return mFormatInfos[index]->mCanMetaData;
 }
 
 bool ExportPlugin::IsExtension(wxString & ext)
 {
-   return GetExtension() == wxT("") ||
-          GetExtensions().Index(ext, false) != wxNOT_FOUND;
+   bool isext = false;
+   for (size_t i = 0; i < GetFormatCount(); i++)
+   {
+      isext = (GetExtension(i) == wxT("") || GetExtensions(i).Index(ext, false) != wxNOT_FOUND);
+   }
+   return isext;
 }
 
-bool ExportPlugin::DisplayOptions(AudacityProject *project)
+bool ExportPlugin::DisplayOptions(AudacityProject *project, int format)
 {
    if (project == NULL) {
       project = GetActiveProject();
    }
 
-   return DoDisplayOptions(project);
+   return DoDisplayOptions(project, format);
 }
 
-bool ExportPlugin::DoDisplayOptions(AudacityProject *project)
+bool ExportPlugin::DoDisplayOptions(AudacityProject *project, int format)
 {
    return false;
 }
@@ -237,6 +253,8 @@ bool ExportPlugin::DoExport(AudacityProject *project,
 // Export
 //----------------------------------------------------------------------------
 
+WX_DEFINE_OBJARRAY(FormatInfoArray);
+
 Exporter::Exporter()
 {
    mMixerSpec = NULL;
@@ -270,6 +288,20 @@ Exporter::~Exporter()
    if (mMixerSpec) {
       delete mMixerSpec;
    }
+}
+
+int Exporter::FindFormatIndex(int exportindex)
+{
+   size_t c = 0;
+   for (size_t i = 0; i < mPlugins.GetCount(); i++)
+   {
+      for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+      {
+         if (exportindex == c) return j;
+         c++;
+      }
+   }
+   return 0;
 }
 
 void Exporter::RegisterPlugin(ExportPlugin *ExportPlugin)
@@ -337,9 +369,14 @@ bool Exporter::Process(AudacityProject *project, int numChannels,
    mActualName = mFilename;
 
    for (size_t i = 0; i < mPlugins.GetCount(); i++) {
-      if (mPlugins[i]->GetFormat().IsSameAs(type, false)) {
-         mFormat = i;
-         return ExportTracks();
+      for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+      {
+         if (mPlugins[i]->GetFormat(j).IsSameAs(type, false))
+         {
+            mFormat = i;
+            mSubFormat = j;
+            return ExportTracks();
+         }
       }
    }
 
@@ -440,13 +477,20 @@ bool Exporter::GetFilename()
    wxString defaultFormat = gPrefs->Read(wxT("/Export/Format"),
                                          wxT("WAV"));
 
-   for (size_t i = 0; i < mPlugins.GetCount(); i++) {
-      maskString += mPlugins[i]->GetMask() + wxT("|");
+   mFilterIndex = 0;
 
-      if (mPlugins[i]->GetFormat() == defaultFormat) {
-         mFormat = i;
+   for (size_t i = 0; i < mPlugins.GetCount(); i++) {
+      for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+      {
+         maskString += mPlugins[i]->GetMask(j) + wxT("|");
+         if (mPlugins[i]->GetFormat(j) == defaultFormat) {
+            mFormat = i;
+            mSubFormat = j;
+         }
+         if (mFormat == 0) mFilterIndex++;
       }
    }
+   if (mFormat == 0) mFilterIndex = 0;
    maskString.RemoveLast();
 
    mFilename.SetPath(gPrefs->Read(wxT("/Export/Path"), ::wxGetCwd()));
@@ -461,7 +505,7 @@ bool Exporter::GetFilename()
                     maskString,
                     wxSAVE | wxRESIZE_BORDER);
 
-      fd.SetFilterIndex(mFormat);
+      fd.SetFilterIndex(mFilterIndex);
 
       fd.EnableButton(_("&Options..."), ExportCallback, this);
 
@@ -471,13 +515,28 @@ bool Exporter::GetFilename()
 
       mFilename = fd.GetPath();
       mFormat = fd.GetFilterIndex();
+      mFilterIndex = fd.GetFilterIndex();
+
+      size_t c = 0;
+      for (size_t i = 0; i < mPlugins.GetCount(); i++)
+      {
+         for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+         {
+            if (mFilterIndex == c)
+            {
+               mFormat = i;
+               mSubFormat = j;
+            }
+            c++;
+         }
+      }
 
       if (mFilename == wxT("")) {
          return false;
       }
 
       wxString ext = mFilename.GetExt();
-      wxString defext = mPlugins[mFormat]->GetExtension().Lower();
+      wxString defext = mPlugins[mFormat]->GetExtension(mPlugins[mFormat]->GetFormatCount()-1).Lower();
 
       //
       // Check the extension - add the default if it's not there,
@@ -506,7 +565,7 @@ bool Exporter::GetFilename()
       else if (!ext.IsEmpty() && !mPlugins[mFormat]->IsExtension(ext) && ext.CmpNoCase(defext)) {
          wxString prompt;
          prompt.Printf(_("You are about to save a %s file with the name \"%s\".\n\nNormally these files end in \".%s\", and some programs will not open files with nonstandard extensions.\n\nAre you sure you want to save the file under this name?"),
-                       mPlugins[mFormat]->GetFormat().c_str(),
+                       mPlugins[mFormat]->GetFormat(mSubFormat).c_str(),
                        mFilename.GetFullName().c_str(),
                        defext.c_str());
 
@@ -550,7 +609,7 @@ bool Exporter::GetFilename()
    if (!mProject->GetDirManager()->EnsureSafeFilename(mFilename))
       return false;
 
-   gPrefs->Write(wxT("/Export/Format"), mPlugins[mFormat]->GetFormat());
+   gPrefs->Write(wxT("/Export/Format"), mPlugins[mFormat]->GetFormat(mSubFormat));
    gPrefs->Write(wxT("/Export/Path"), mFilename.GetPath());
 
    //
@@ -572,12 +631,26 @@ bool Exporter::GetFilename()
 
 void Exporter::DisplayOptions(int index)
 {
+   size_t c = 0;
+   int mf = -1, msf = -1;
+   for (size_t i = 0; i < mPlugins.GetCount(); i++)
+   {
+      for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+      {
+         if (index == c)
+         {
+            mf = i;
+            msf = j;
+         }
+         c++;
+      }
+   }
    // This shouldn't happen...
-   if (index >= (int)mPlugins.GetCount()) {
+   if (index >= c) {
       return;
    }
 
-   mPlugins[index]->DisplayOptions(mProject);
+   mPlugins[mf]->DisplayOptions(mProject,msf);
 }
 
 bool Exporter::CheckMix()
@@ -620,7 +693,7 @@ bool Exporter::CheckMix()
    {
       ExportMixerDialog md(mProject->GetTracks(),
                            mSelectedOnly,
-                           mPlugins[mFormat]->GetMaxChannels(),
+                           mPlugins[mFormat]->GetMaxChannels(mSubFormat),
                            NULL, 
                            1,
                            _("Advanced Mixing Options"));

@@ -110,6 +110,7 @@ private:
    int mNumTracks;
    wxArrayPtrVoid mSelected;
    int mFormatIndex;
+   int mSubFormatIndex;
    bool mInitialized;
 
    /** Array of characters not allowed to be in file names on this platform */
