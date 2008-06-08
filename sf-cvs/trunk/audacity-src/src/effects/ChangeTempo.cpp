@@ -186,7 +186,7 @@ void ChangeTempoDialog::PopulateOrExchange(ShuttleGui & S)
    //
    S.StartMultiColumn(2, wxCENTER);
    {
-      m_pTextCtrl_PercentChange = S.Id(ID_TEXT_FROMLENGTH)
+      m_pTextCtrl_PercentChange = S.Id(ID_TEXT_PERCENTCHANGE)
          .AddTextBox(_("Percent Chagne:"), wxT(""), 12);
       m_pTextCtrl_PercentChange->SetValidator(numvld);
    }
