@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by:
 // Created:     01/02/97
-// RCS-ID:      $Id: setup.h,v 1.1 2008-06-08 03:02:58 windinthew Exp $
+// RCS-ID:      $Id: setup.h,v 1.2 2008-06-09 07:12:18 vjohnson Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
@@ -1035,7 +1035,7 @@
 // Default is 0.
 //
 // Recommended setting (at present): 0
-#define wxUSE_ACCESSIBILITY 1
+#define wxUSE_ACCESSIBILITY 1 // Turn it on for Audacity.
 
 // ----------------------------------------------------------------------------
 // miscellaneous settings
@@ -1096,7 +1096,7 @@
 // ----------------------------------------------------------------------------
 
 // Define 1 to use ODBC classes
-#define wxUSE_ODBC          1
+#define wxUSE_ODBC          1 // Turn it on for Audacity.
 
 // For backward compatibility reasons, this parameter now only controls the
 // default scrolling method used by cursors.  This default behavior can be
