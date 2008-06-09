@@ -536,7 +536,7 @@ bool Exporter::GetFilename()
       }
 
       wxString ext = mFilename.GetExt();
-      wxString defext = mPlugins[mFormat]->GetExtension(mPlugins[mFormat]->GetFormatCount()-1).Lower();
+      wxString defext = mPlugins[mFormat]->GetExtension(mSubFormat).Lower();
 
       //
       // Check the extension - add the default if it's not there,
