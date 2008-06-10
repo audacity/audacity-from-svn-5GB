@@ -71,7 +71,7 @@ bool EffectCompressor::TransferParameters( Shuttle & shuttle )
 
 bool EffectCompressor::PromptUser()
 {
-   CompressorDialog dlog(this, mParent, -1, _("Dynamic Range Compressor"));
+   CompressorDialog dlog(this, mParent);
    dlog.threshold = mThresholdDB;
    dlog.ratio = mRatio;
    dlog.attack = mAttackTime;
@@ -82,7 +82,7 @@ bool EffectCompressor::PromptUser()
    dlog.CentreOnParent();
    dlog.ShowModal();
 
-   if (!dlog.GetReturnCode())
+   if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
    mThresholdDB = dlog.threshold;
@@ -448,87 +448,89 @@ enum {
    DecayID
 };
 
-BEGIN_EVENT_TABLE(CompressorDialog,wxDialog)
-   EVT_BUTTON( wxID_OK, CompressorDialog::OnOk )
-   EVT_BUTTON( wxID_CANCEL, CompressorDialog::OnCancel )
-   EVT_BUTTON( ID_EFFECT_PREVIEW, CompressorDialog::OnPreview )
+BEGIN_EVENT_TABLE(CompressorDialog, EffectDialog)
    EVT_SIZE( CompressorDialog::OnSize )
+   EVT_BUTTON( ID_EFFECT_PREVIEW, CompressorDialog::OnPreview )
    EVT_SLIDER( ThresholdID, CompressorDialog::OnSlider )
    EVT_SLIDER( RatioID, CompressorDialog::OnSlider )
    EVT_SLIDER( AttackID, CompressorDialog::OnSlider )
    EVT_SLIDER( DecayID, CompressorDialog::OnSlider )
 END_EVENT_TABLE()
 
-CompressorDialog::CompressorDialog(EffectCompressor *effect,
-                                   wxWindow *parent, wxWindowID id,
-                                   const wxString &title,
-                                   const wxPoint &position, const wxSize& size,
-                                   long style ) :
-   wxDialog( parent, id, title, position, size, style ),
+CompressorDialog::CompressorDialog(EffectCompressor *effect, wxWindow *parent)
+:  EffectDialog(parent, _("Dynamic Range Compressor"), PROCESS_EFFECT,
+                wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER ),
    mEffect(effect)
 {
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+   Init();
 
-   mainSizer->Add(new wxStaticText(this, -1,
-                                   _("Dynamic Range Compressor by Dominic Mazzoni"),
-                                   wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE),
-                  0, wxALIGN_CENTRE|wxALL, 5);
-
-   mPanel = new CompressorPanel(this, -1);
-   mPanel->threshold = threshold;
-   mPanel->ratio = ratio;
-   mainSizer->Add(mPanel, 1, wxGROW|wxALIGN_CENTRE|wxALL, 5);
-
-   wxFlexGridSizer *gridSizer = new wxFlexGridSizer(2, 0, 0);
-
-   mThresholdText = new wxStaticText(this, -1, wxString(_("Threshold:")) + wxT(" XXX dB"));
-   gridSizer->Add(mThresholdText, 0, wxALIGN_LEFT|wxALL, 5);
-
-   mThresholdSlider = new wxSlider(this, ThresholdID, -8, -60, -1,
-                                   wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
-   gridSizer->Add(mThresholdSlider, 1, wxEXPAND|wxALL, 5);
-
-   mRatioText = new wxStaticText(this, -1, wxString(_("Ratio: ")) + wxT("XXXX:1"));
-   gridSizer->Add(mRatioText, 0, wxALIGN_LEFT|wxALL, 5);
-
-   mRatioSlider = new wxSlider(this, RatioID, 4, 3, 20,
-                               wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
-   gridSizer->Add(mRatioSlider, 1, wxEXPAND|wxALL, 5);
-
-   mAttackText = new wxStaticText(this, -1, wxString(_("Attack Time: ")) + wxT("XXXX secs"));
-   gridSizer->Add(mAttackText, 0, wxALIGN_LEFT|wxALL, 5);
-
-   mAttackSlider = new wxSlider(this, AttackID, 2, 1, 10,
-                                wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
-   gridSizer->Add(mAttackSlider, 1, wxEXPAND|wxALL, 5);
-
-   mDecayText = new wxStaticText(this, -1, wxString(_("Decay Time: ")) + wxT("XXXX secs"));
-   gridSizer->Add(mDecayText, 0, wxALIGN_LEFT|wxALL, 5);
-
-   mDecaySlider = new wxSlider(this, DecayID, 2, 1, 10,
-                                wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
-   gridSizer->Add(mDecaySlider, 1, wxEXPAND|wxALL, 5);
-
-   mainSizer->Add(gridSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-   wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   mGainCheckBox = new wxCheckBox(this, -1, _("Normalize to 0dB after compressing"));
-   mGainCheckBox->SetValue(true);
-   hSizer->Add(mGainCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
-
-   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-   // Preview, OK, & Cancel buttons
-   mainSizer->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
-
-   SetAutoLayout(true);
-   SetSizer(mainSizer);
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
-
-   SetSizeHints(500, 300, 20000, 20000);
+   SetSizeHints(500, 300);
    SetSize(500, 400);
+}
+
+void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
+{
+   S.SetBorder(10);
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      S.AddTitle(_("by Dominic Mazzoni"));
+   }
+   S.EndHorizontalLay();
+   S.SetBorder(5);
+
+   S.StartHorizontalLay(wxEXPAND, true);
+   {
+      S.SetBorder(10);
+      mPanel = new CompressorPanel(S.GetParent(), wxID_ANY);
+      mPanel->threshold = threshold;
+      mPanel->ratio = ratio;
+      S.Prop(true).AddWindow(mPanel, wxEXPAND | wxALL);
+      S.SetBorder(5);
+   }
+   S.EndHorizontalLay();
+
+   S.StartMultiColumn(3, wxCENTER | wxALIGN_CENTER_VERTICAL);
+   {
+      mThresholdLabel = S.AddVariableText(_("Threshold:"), true,
+                                          wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+      S.SetStyle(wxSL_HORIZONTAL);
+      mThresholdSlider = S.Id(ThresholdID).AddSlider(wxT(""), -8, -1, -60);
+      mThresholdSlider->SetName(_("Threshold"));
+      mThresholdText = S.AddVariableText(wxT("XXX dB"), true,
+                                         wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+
+      mRatioLabel = S.AddVariableText(_("Ratio:"), true,
+                                      wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+      S.SetStyle(wxSL_HORIZONTAL);
+      mRatioSlider = S.Id(RatioID).AddSlider(wxT(""), 4, 20, 3);
+      mRatioSlider->SetName(_("Ratio"));
+      mRatioText = S.AddVariableText(wxT("XXXX:1"), true,
+                                          wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+
+      mAttackLabel = S.AddVariableText(_("Attack Time:"), true,
+                                      wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+      S.SetStyle(wxSL_HORIZONTAL);
+      mAttackSlider = S.Id(AttackID).AddSlider(wxT(""), 2, 10, 1);
+      mAttackSlider->SetName(_("Attack Time"));
+      mAttackText = S.AddVariableText(wxT("XXXX secs"), true,
+                                      wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+
+      mDecayLabel = S.AddVariableText(_("Decay Time:"), true,
+                                      wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+      S.SetStyle(wxSL_HORIZONTAL);
+      mDecaySlider = S.Id(DecayID).AddSlider(wxT(""), 2, 10, 1);
+      mDecaySlider->SetName(_("Decay Time"));
+      mDecayText = S.AddVariableText(wxT("XXXX secs"), true,
+                                     wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+   }
+   S.EndMultiColumn();
+
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      mGainCheckBox = S.AddCheckBox(_("Normalize to 0dB after compressing"),
+                                    wxT("true"));
+   }
+   S.EndHorizontalLay();
 }
 
 bool CompressorDialog::TransferDataToWindow()
@@ -558,16 +560,23 @@ bool CompressorDialog::TransferDataFromWindow()
    mPanel->threshold = threshold;
    mPanel->ratio = ratio;
 
-   mThresholdText->SetLabel(wxString::Format(_("Threshold: %d dB"), (int)threshold));
+   mThresholdLabel->SetName(wxString::Format(_("Threshold %d dB"), (int)threshold));
+   mThresholdText->SetLabel(wxString::Format(_("%3d dB"), (int)threshold));
 
-   if (mRatioSlider->GetValue()%2 == 0)
-      mRatioText->SetLabel(wxString::Format(_("Ratio: %.0f:1"), ratio));
-   else
-      mRatioText->SetLabel(wxString::Format(_("Ratio: %.1f:1"), ratio));
+   if (mRatioSlider->GetValue()%2 == 0) {
+      mRatioLabel->SetName(wxString::Format(_("Ratio %.0f to 1"), ratio));
+      mRatioText->SetLabel(wxString::Format(_("%.0f:1"), ratio));
+   }
+   else {
+      mRatioLabel->SetName(wxString::Format(_("Ratio %.1f to 1"), ratio));
+      mRatioText->SetLabel(wxString::Format(_("%.1f:1"), ratio));
+   }
 
-   mAttackText->SetLabel(wxString::Format(_("Attack Time: %.1f secs"), attack));
+   mAttackLabel->SetName(wxString::Format(_("Attack Time %.1f secs"), attack));
+   mAttackText->SetLabel(wxString::Format(_("%.1f secs"), attack));
 
-   mDecayText->SetLabel(wxString::Format(_("Decay Time: %.1f secs"), decay));
+   mDecayLabel->SetName(wxString::Format(_("Decay Time %.1f secs"), decay));
+   mDecayText->SetLabel(wxString::Format(_("%.1f secs"), decay));
 
    mPanel->Refresh(false);
 
@@ -578,13 +587,6 @@ void CompressorDialog::OnSize(wxSizeEvent &event)
 {
    mPanel->Refresh( false );
    event.Skip();
-}
-
-void CompressorDialog::OnOk(wxCommandEvent &event)
-{
-   TransferDataFromWindow();
-
-   EndModal(true);
 }
 
 void CompressorDialog::OnPreview(wxCommandEvent &event)
@@ -612,12 +614,6 @@ void CompressorDialog::OnPreview(wxCommandEvent &event)
    mEffect->mRatio = oldRatio;
    mEffect->mNormalize = oldUseGain;
 }
-
-void CompressorDialog::OnCancel(wxCommandEvent &event)
-{
-   EndModal(false);
-}
-
 void CompressorDialog::OnSlider(wxCommandEvent &event)
 {
    TransferDataFromWindow();
