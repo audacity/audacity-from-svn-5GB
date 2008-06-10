@@ -79,22 +79,17 @@ friend class ChangePitchDialog;
 //----------------------------------------------------------------------------
 
 class wxChoice;
-class wxRadioBox;
+class wxRadioButton;
 class wxString;
 class wxTextCtrl;
 
-class ChangePitchDialog:public wxDialog {
+class ChangePitchDialog:public EffectDialog {
  public:
-   ChangePitchDialog(EffectChangePitch * effect, 
-							wxWindow * parent, wxWindowID id, 
-							const wxString & title, 
-							const wxPoint & pos = wxDefaultPosition, 
-							const wxSize & size = wxDefaultSize, 
-							long style = wxDEFAULT_DIALOG_STYLE);
+   ChangePitchDialog(EffectChangePitch * effect, wxWindow * parent);
 
-   virtual bool Validate();
-   virtual bool TransferDataToWindow();
-   virtual bool TransferDataFromWindow();
+   void PopulateOrExchange(ShuttleGui & S);
+   bool TransferDataToWindow();
+   bool TransferDataFromWindow();
 
  private:
 	// calculations
@@ -106,7 +101,7 @@ class ChangePitchDialog:public wxDialog {
 
 	// handlers
    void OnChoice_FromPitch(wxCommandEvent & event); 
-	void OnRadioBox_PitchUpDown(wxCommandEvent & event);
+	void OnRadioButton_PitchUpDown(wxCommandEvent & event);
    void OnChoice_ToPitch(wxCommandEvent & event); 
 
    void OnText_SemitonesChange(wxCommandEvent & event); 
@@ -118,11 +113,9 @@ class ChangePitchDialog:public wxDialog {
    void OnSlider_PercentChange(wxCommandEvent & event);
 
    void OnPreview( wxCommandEvent &event );
-   void OnOk(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
 
 	// helper fns for controls
-	void Update_RadioBox_PitchUpDown();
+	void Update_RadioButton_PitchUpDown();
 	void Update_Choice_ToPitch(); 
 
 	void Update_Text_SemitonesChange(); 
@@ -133,12 +126,13 @@ class ChangePitchDialog:public wxDialog {
    void Update_Slider_PercentChange(); // Update control per current m_PercentChange.
 
  private:
+	EffectChangePitch * mEffect;
    bool m_bLoopDetect;
-	EffectChangePitch * m_pEffect;
 
    // controls
    wxChoice *		m_pChoice_FromPitch;
-	wxRadioBox *	m_pRadioBox_PitchUpDown;
+	wxRadioButton *m_pRadioButton_PitchUp;
+	wxRadioButton *m_pRadioButton_PitchDown;
    wxChoice *		m_pChoice_ToPitch;
    
    wxTextCtrl *	m_pTextCtrl_SemitonesChange;
