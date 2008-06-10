@@ -109,14 +109,14 @@ friend class WahwahDialog;
 // WahwahDialog
 //----------------------------------------------------------------------------
 
-class WahwahDialog:public wxDialog {
+class WahwahDialog:public EffectDialog {
  public:
    // constructors and destructors
-   WahwahDialog(EffectWahwah * effect, 
-						wxWindow * parent, wxWindowID id, const wxString & title,
-						const wxPoint & pos = wxDefaultPosition,
-						const wxSize & size = wxDefaultSize,
-						long style = wxDEFAULT_DIALOG_STYLE);
+   WahwahDialog(EffectWahwah * effect, wxWindow * parent);
+
+   void PopulateOrExchange(ShuttleGui & S);
+   bool TransferDataToWindow();
+   bool TransferDataFromWindow();
 
    // WDR: method declarations for WahwahDialog
    wxSlider *GetResonanceSlider() {
@@ -148,9 +148,6 @@ class WahwahDialog:public wxDialog {
    wxTextCtrl *GetFreqOffText() {
       return (wxTextCtrl *) FindWindow(ID_FREQOFFTEXT);
    }
-   virtual bool Validate();
-   virtual bool TransferDataToWindow();
-   virtual bool TransferDataFromWindow();
 
  private:
    // WDR: member variable declarations for WahwahDialog
@@ -172,7 +169,7 @@ class WahwahDialog:public wxDialog {
    void OnCancel(wxCommandEvent & event);
 
  private:
-	EffectWahwah * m_pEffect;
+	EffectWahwah * mEffect;
 
  public:
    float freq;

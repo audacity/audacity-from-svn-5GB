@@ -69,7 +69,7 @@ wxString EffectWahwah::GetEffectDescription() {
 
 bool EffectWahwah::PromptUser()
 {
-   WahwahDialog dlog(this, mParent, -1, _("Wahwah"));
+   WahwahDialog dlog(this, mParent);
 
    dlog.freq = freq;
    dlog.freqoff = freqofs * 100;
@@ -81,7 +81,7 @@ bool EffectWahwah::PromptUser()
    dlog.CentreOnParent();
    dlog.ShowModal();
 
-   if (!dlog.GetReturnCode())
+   if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
    freq = dlog.freq;
@@ -185,7 +185,7 @@ bool EffectWahwah::ProcessSimpleMono(float *buffer, sampleCount len)
 
 // WDR: event table for WahwahDialog
 
-BEGIN_EVENT_TABLE(WahwahDialog, wxDialog)
+BEGIN_EVENT_TABLE(WahwahDialog, EffectDialog)
     EVT_BUTTON(wxID_OK, WahwahDialog::OnOk)
     EVT_BUTTON(wxID_CANCEL, WahwahDialog::OnCancel)
     EVT_TEXT(ID_FREQTEXT, WahwahDialog::OnFreqText)
@@ -201,116 +201,51 @@ BEGIN_EVENT_TABLE(WahwahDialog, wxDialog)
     EVT_BUTTON(ID_EFFECT_PREVIEW, WahwahDialog::OnPreview)
 END_EVENT_TABLE()
 
-WahwahDialog::WahwahDialog(EffectWahwah * effect, 
-									wxWindow * parent, wxWindowID id, const wxString & title, 
-									const wxPoint & position, const wxSize & size, long style):
-wxDialog(parent, id, title, position, size, style)
+WahwahDialog::WahwahDialog(EffectWahwah * effect, wxWindow * parent)
+:  EffectDialog(parent, _("Wahwah"), PROCESS_EFFECT),
+   mEffect(effect)
 {
-	m_pEffect = effect;
-
-   wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
-
-   wxStaticText *item1 =
-       new wxStaticText(this, -1, _("Wahwah by Nasca Octavian Paul"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxFlexGridSizer *item10 = new wxFlexGridSizer(3, 0, 0);
-
-   wxStaticText *item11 =
-       new wxStaticText(this, -1, _("LFO Frequency (Hz):"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item10->Add(item11, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item12 =
-       new wxTextCtrl(this, ID_FREQTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item13 =
-       new wxSlider(this, ID_FREQSLIDER, 100, FREQ_MIN, FREQ_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item14 =
-       new wxStaticText(this, -1, _("LFO Start Phase (deg.):"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item10->Add(item14, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item15 =
-       new wxTextCtrl(this, ID_PHASETEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item16 =
-       new wxSlider(this, ID_PHASESLIDER, 0, PHASE_MIN, PHASE_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item16, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item17 =
-       new wxStaticText(this, -1, _("Depth (%):"), wxDefaultPosition,
-                        wxDefaultSize, wxALIGN_RIGHT);
-   item10->Add(item17, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item18 =
-       new wxTextCtrl(this, ID_DEPTHTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item18, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item19 =
-       new wxSlider(this, ID_DEPTHSLIDER, 0, DEPTH_MIN, DEPTH_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item19, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item20 =
-       new wxStaticText(this, -1, _("Resonance:"), wxDefaultPosition,
-                        wxDefaultSize, wxALIGN_RIGHT);
-   item10->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item21 =
-       new wxTextCtrl(this, ID_RESONANCETEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item21, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item22 =
-       new wxSlider(this, ID_RESONANCESLIDER, 0, RES_MIN, RES_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item22, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item30 =
-       new wxStaticText(this, -1, _("Wah Frequency Offset (%):"),
-                        wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
-   item10->Add(item30, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item31 =
-       new wxTextCtrl(this, ID_FREQOFFTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item31, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item32 =
-       new wxSlider(this, ID_FREQOFFSLIDER, 0, FREQOFF_MIN, FREQOFF_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item32, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   // Preview, OK, & Cancel buttons
-   item0->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
-
-   SetAutoLayout(TRUE);
-   SetSizer(item0);
-   item0->Fit(this);
-   item0->SetSizeHints(this);
+   Init();
 }
 
-bool WahwahDialog::Validate()
+void WahwahDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   return TRUE;
+   S.SetBorder(10);
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      S.AddTitle(_("by Nasca Octavian Paul"));
+   }
+   S.EndHorizontalLay();
+   S.SetBorder(5);
+
+   S.StartMultiColumn(3, wxCENTER);
+   {
+      S.Id(ID_FREQTEXT).AddTextBox(_("LFO Frequency (Hz):"), wxT(""), 12);
+      S.SetStyle(wxSL_HORIZONTAL);
+      S.Id(ID_FREQSLIDER).AddSlider(wxT(""), 100, FREQ_MAX, FREQ_MIN)->
+         SetName(_("LFO frequency in hertz"));
+
+      S.Id(ID_PHASETEXT).AddTextBox(_("LFO Start Phase (deg.):"), wxT(""), 12);
+      S.SetStyle(wxSL_HORIZONTAL);
+      S.Id(ID_PHASESLIDER).AddSlider(wxT(""), 0, PHASE_MAX, PHASE_MIN)->
+         SetName(_("LFO start phase in degrees"));
+
+      S.Id(ID_DEPTHTEXT).AddTextBox(_("Depth (%):"), wxT(""), 12);
+      S.SetStyle(wxSL_HORIZONTAL);
+      S.Id(ID_DEPTHSLIDER).AddSlider(wxT(""), 0, DEPTH_MAX, DEPTH_MIN)->
+         SetName(_("Depth in percent"));
+
+      S.Id(ID_RESONANCETEXT).AddTextBox(_("Resonance:"), wxT(""), 12);
+      S.SetStyle(wxSL_HORIZONTAL);
+      S.Id(ID_RESONANCESLIDER).AddSlider(wxT(""), 0, RES_MAX, RES_MIN)->
+         SetName(_("Resonance"));
+
+      S.Id(ID_FREQOFFTEXT).AddTextBox(_("Wah Frequency Offset (%):"), wxT(""), 12);
+      S.SetStyle(wxSL_HORIZONTAL);
+      S.Id(ID_FREQOFFSLIDER).AddSlider(wxT(""), 0, FREQOFF_MAX, FREQOFF_MIN)->
+         SetName(_("Wah frequency offset in percent"));
+   }
+   S.EndMultiColumn();
 }
 
 bool WahwahDialog::TransferDataToWindow()
@@ -541,25 +476,25 @@ void WahwahDialog::OnPreview(wxCommandEvent &event)
    TransferDataFromWindow();
 
 	// Save & restore parameters around Preview, because we didn't do OK.
-   float old_freq = m_pEffect->freq;
-   float old_freqofs = m_pEffect->freqofs;
-	float old_startphase = m_pEffect->startphase;
-   float old_res = m_pEffect->res;
-   float old_depth = m_pEffect->depth;
+   float old_freq = mEffect->freq;
+   float old_freqofs = mEffect->freqofs;
+	float old_startphase = mEffect->startphase;
+   float old_res = mEffect->res;
+   float old_depth = mEffect->depth;
    
-   m_pEffect->freq = freq;
-   m_pEffect->freqofs = freqoff / 100;
-   m_pEffect->startphase = startphase * M_PI / 180;
-   m_pEffect->res = res;
-   m_pEffect->depth = depth / 100;
+   mEffect->freq = freq;
+   mEffect->freqofs = freqoff / 100;
+   mEffect->startphase = startphase * M_PI / 180;
+   mEffect->res = res;
+   mEffect->depth = depth / 100;
 
-   m_pEffect->Preview();
+   mEffect->Preview();
 
-   m_pEffect->freq = old_freq;
-   m_pEffect->freqofs = old_freqofs;
-   m_pEffect->startphase = old_startphase;
-   m_pEffect->res = old_res;
-   m_pEffect->depth = old_depth;
+   mEffect->freq = old_freq;
+   mEffect->freqofs = old_freqofs;
+   mEffect->startphase = old_startphase;
+   mEffect->res = old_res;
+   mEffect->depth = old_depth;
 }
 
 void WahwahDialog::OnOk(wxCommandEvent & event)
