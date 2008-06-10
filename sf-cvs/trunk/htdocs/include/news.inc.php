@@ -40,6 +40,44 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "June 09, 2008",
+        "PCWorld_100_Best_2008",
+  _("Audacity in PC World 100 Best Products of 2008"),
+  _("
+<p>
+The editors of <em>PC World</em> have chosen Audacity as one of the 
+<a href=\"http://www.pcworld.com/article/id,146161-page,12-c,electronics/article.html\">
+	PC World 100 Best Products of 2008
+</a>.
+</p>
+<p align=\"center\">
+	<a href=\"http://www.pcworld.com/article/id,146161-page,12-c,electronics/article.html\">
+		<img src=\"../images/PC_World_100BestLogo2008_small.jpg\" 
+			alt=\"PC World 100 Best Products of 2008\"></img>
+	</a>
+</p>
+<p>
+The 
+<a href=\"http://www.pcworld.com/article/id,146161-page,12-c,electronics/article.html\">article</a> 
+is available now on PCWorld.com, and will also be featured
+in the July 2008 issue of PC World, which hits newsstands June 17.
+</p>
+<p>
+The respected 100 Best Products Awards honor products that meld practical features with
+innovation and reflect the rapidly changing technology marketplace. To select the winners,
+PC World's editors examined hundreds of products, including those that have appeared in the
+magazine over the past 12 months. The 100 winning products and services were selected for their
+exemplary design and usability, features, performance, and innovation.
+</p>
+<p>
+&ldquo;These awards go to the best technology products we've seen in the last 12 months,&rdquo; 
+stated Edward N. Albro, editor of PC World. &ldquo;Our editors looked at hundreds of hardware,
+software and Web products to compile this list of outstanding performers. Congratulations to
+Audacity.&rdquo; 
+</p>
+"));
+
+add_news_item(
   "May 08, 2008",
         "1.3.5-release",
   _("Audacity 1.3.5 Released"),
