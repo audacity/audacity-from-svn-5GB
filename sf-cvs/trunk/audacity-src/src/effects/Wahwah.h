@@ -165,8 +165,6 @@ class WahwahDialog:public EffectDialog {
    void OnFreqText(wxCommandEvent & event);
    void OnFreqOffText(wxCommandEvent & event);
    void OnPreview(wxCommandEvent &event);
-   void OnOk(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
 
  private:
 	EffectWahwah * mEffect;

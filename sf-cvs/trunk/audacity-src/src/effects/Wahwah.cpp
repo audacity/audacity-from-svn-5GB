@@ -186,8 +186,7 @@ bool EffectWahwah::ProcessSimpleMono(float *buffer, sampleCount len)
 // WDR: event table for WahwahDialog
 
 BEGIN_EVENT_TABLE(WahwahDialog, EffectDialog)
-    EVT_BUTTON(wxID_OK, WahwahDialog::OnOk)
-    EVT_BUTTON(wxID_CANCEL, WahwahDialog::OnCancel)
+    EVT_BUTTON(ID_EFFECT_PREVIEW, WahwahDialog::OnPreview)
     EVT_TEXT(ID_FREQTEXT, WahwahDialog::OnFreqText)
     EVT_TEXT(ID_FREQOFFTEXT, WahwahDialog::OnFreqOffText)
     EVT_TEXT(ID_PHASETEXT, WahwahDialog::OnPhaseText)
@@ -198,7 +197,6 @@ BEGIN_EVENT_TABLE(WahwahDialog, EffectDialog)
     EVT_SLIDER(ID_PHASESLIDER, WahwahDialog::OnPhaseSlider)
     EVT_SLIDER(ID_DEPTHSLIDER, WahwahDialog::OnDepthSlider)
     EVT_SLIDER(ID_RESONANCESLIDER, WahwahDialog::OnResonanceSlider)
-    EVT_BUTTON(ID_EFFECT_PREVIEW, WahwahDialog::OnPreview)
 END_EVENT_TABLE()
 
 WahwahDialog::WahwahDialog(EffectWahwah * effect, wxWindow * parent)
@@ -495,22 +493,6 @@ void WahwahDialog::OnPreview(wxCommandEvent &event)
    mEffect->startphase = old_startphase;
    mEffect->res = old_res;
    mEffect->depth = old_depth;
-}
-
-void WahwahDialog::OnOk(wxCommandEvent & event)
-{
-   TransferDataFromWindow();
-
-   if (Validate())
-      EndModal(true);
-   else {
-      event.Skip();
-   }
-}
-
-void WahwahDialog::OnCancel(wxCommandEvent & event)
-{
-   EndModal(false);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
