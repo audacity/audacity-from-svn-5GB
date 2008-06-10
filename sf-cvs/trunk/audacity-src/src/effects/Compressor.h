@@ -118,43 +118,47 @@ private:
 // CompressorDialog
 //----------------------------------------------------------------------------
 
-class CompressorDialog: public wxDialog
+class CompressorDialog: public EffectDialog
 {
 public:
    // constructors and destructors
-   CompressorDialog( EffectCompressor *effect,
-                     wxWindow *parent, wxWindowID id, const wxString &title,
-                     const wxPoint& pos = wxDefaultPosition,
-                     const wxSize& size = wxDefaultSize,
-                     long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+   CompressorDialog( EffectCompressor *effect, wxWindow *parent);
+
+   void PopulateOrExchange(ShuttleGui & S);
+   bool TransferDataToWindow();
+   bool TransferDataFromWindow();
 
    double threshold;
    double ratio;
    double attack;
    double decay;
    bool useGain;
-   
-   virtual bool TransferDataToWindow();
-   virtual bool TransferDataFromWindow();
-   
+
 private:
-   void OnOk( wxCommandEvent &event );
-   void OnCancel( wxCommandEvent &event );
    void OnSize( wxSizeEvent &event );
    void OnSlider( wxCommandEvent &event );
    void OnPreview( wxCommandEvent &event );
 
    EffectCompressor *mEffect;
    CompressorPanel *mPanel;
+
+   wxStaticText *mThresholdLabel;
    wxSlider *mThresholdSlider;
-   wxSlider *mRatioSlider;
-   wxSlider *mAttackSlider;
-   wxSlider *mDecaySlider;
-   wxCheckBox *mGainCheckBox;
    wxStaticText *mThresholdText;
+
+   wxStaticText *mRatioLabel;
+   wxSlider *mRatioSlider;
    wxStaticText *mRatioText;
+
+   wxStaticText *mAttackLabel;
+   wxSlider *mAttackSlider;
    wxStaticText *mAttackText;
+
+   wxStaticText *mDecayLabel;
+   wxSlider *mDecaySlider;
    wxStaticText *mDecayText;
+
+   wxCheckBox *mGainCheckBox;
    
 private:
    DECLARE_EVENT_TABLE()
