@@ -165,29 +165,21 @@ void ChangeTempoDialog::PopulateOrExchange(ShuttleGui & S)
    wxTextValidator nullvld(wxFILTER_INCLUDE_CHAR_LIST);
    wxTextValidator numvld(wxFILTER_NUMERIC);
 
+   S.SetBorder(10);
    S.StartHorizontalLay(wxCENTER, false);
    {
-      S.AddTitle(_("by Vaughan Johnson && Dominic Mazzoni"));
+      S.AddTitle(_("by Vaughan Johnson && Dominic Mazzoni") +
+                 wxString(wxT("\n")) + 
+                 _("using SoundTouch, by Olli Parviainen"));
    }
    S.EndHorizontalLay();
-
-   S.StartHorizontalLay(wxCENTER, false);
-   {
-      S.AddTitle(_("using SoundTouch, by Olli Parviainen"));
-   }
-   S.EndHorizontalLay();
-
-   S.StartHorizontalLay(wxCENTER, false);
-   {
-      // Add a little space
-   }
-   S.EndHorizontalLay();
+   S.SetBorder(5);
 
    //
    S.StartMultiColumn(2, wxCENTER);
    {
       m_pTextCtrl_PercentChange = S.Id(ID_TEXT_PERCENTCHANGE)
-         .AddTextBox(_("Percent Chagne:"), wxT(""), 12);
+         .AddTextBox(_("Percent Change:"), wxT(""), 12);
       m_pTextCtrl_PercentChange->SetValidator(numvld);
    }
    S.EndMultiColumn();
@@ -203,18 +195,18 @@ void ChangeTempoDialog::PopulateOrExchange(ShuttleGui & S)
    S.EndHorizontalLay();
 
    // 
-   S.StartMultiColumn(5, wxCENTER | wxALIGN_CENTER_VERTICAL);
+   S.StartMultiColumn(5, wxCENTER);
    {
       //
       S.AddUnits(_("Beats per minute:"));
 
       m_pTextCtrl_FromBPM = S.Id(ID_TEXT_FROMBPM)
-         .AddTextBox(_("From:"), wxT(""), 12);
+         .AddTextBox(_("from"), wxT(""), 12);
       m_pTextCtrl_FromBPM->SetName(_("From beats per minute"));
       m_pTextCtrl_FromBPM->SetValidator(numvld);
 
       m_pTextCtrl_ToBPM = S.Id(ID_TEXT_TOBPM)
-         .AddTextBox(_("To:"), wxT(""), 12);
+         .AddTextBox(_("to"), wxT(""), 12);
       m_pTextCtrl_ToBPM->SetName(_("To beats per minute"));
       m_pTextCtrl_ToBPM->SetValidator(numvld);
 
@@ -222,12 +214,12 @@ void ChangeTempoDialog::PopulateOrExchange(ShuttleGui & S)
       S.AddUnits(_("Length (seconds):"));
 
       m_pTextCtrl_FromLength = S.Id(ID_TEXT_FROMLENGTH)
-         .AddTextBox(_("From:"), wxT(""), 12);
+         .AddTextBox(_("from"), wxT(""), 12);
       m_pTextCtrl_FromLength->SetName(_("From length in seconds"));
       m_pTextCtrl_FromLength->SetValidator(nullvld);
 
       m_pTextCtrl_ToLength = S.Id(ID_TEXT_TOLENGTH)
-         .AddTextBox(_("To:"), wxT(""), 12);
+         .AddTextBox(_("to"), wxT(""), 12);
       m_pTextCtrl_ToLength->SetName(_("To length in seconds"));
       m_pTextCtrl_ToLength->SetValidator(numvld);
    }
