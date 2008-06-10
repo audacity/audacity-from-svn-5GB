@@ -74,7 +74,7 @@ wxString EffectPhaser::GetEffectDescription() {
 
 bool EffectPhaser::PromptUser()
 {
-   PhaserDialog dlog(this, mParent, -1, _("Phaser"));
+   PhaserDialog dlog(this, mParent);
 
    dlog.freq = freq;
    dlog.startphase = startphase * 180 / M_PI;
@@ -87,7 +87,7 @@ bool EffectPhaser::PromptUser()
    dlog.CentreOnParent();
    dlog.ShowModal();
 
-   if (!dlog.GetReturnCode())
+  if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
    freq = dlog.freq;
@@ -188,13 +188,15 @@ bool EffectPhaser::ProcessSimpleMono(float *buffer, sampleCount len)
 
 // WDR: event table for PhaserDialog
 
-BEGIN_EVENT_TABLE(PhaserDialog, wxDialog)
-    EVT_BUTTON(wxID_OK, PhaserDialog::OnOk)
-    EVT_BUTTON(wxID_CANCEL, PhaserDialog::OnCancel)
+BEGIN_EVENT_TABLE(PhaserDialog, EffectDialog)
+    EVT_TEXT(ID_STAGESTEXT, PhaserDialog::OnStagesText)
+    EVT_TEXT(ID_DRYWETTEXT, PhaserDialog::OnDryWetText)
     EVT_TEXT(ID_FREQTEXT, PhaserDialog::OnFreqText)
     EVT_TEXT(ID_PHASETEXT, PhaserDialog::OnPhaseText)
     EVT_TEXT(ID_DEPTHTEXT, PhaserDialog::OnDepthText)
     EVT_TEXT(ID_FEEDBACKTEXT, PhaserDialog::OnFeedbackText)
+    EVT_SLIDER(ID_STAGESSLIDER, PhaserDialog::OnStagesSlider)
+    EVT_SLIDER(ID_DRYWETSLIDER, PhaserDialog::OnDryWetSlider)
     EVT_SLIDER(ID_FREQSLIDER, PhaserDialog::OnFreqSlider)
     EVT_SLIDER(ID_PHASESLIDER, PhaserDialog::OnPhaseSlider)
     EVT_SLIDER(ID_DEPTHSLIDER, PhaserDialog::OnDepthSlider)
@@ -202,142 +204,56 @@ BEGIN_EVENT_TABLE(PhaserDialog, wxDialog)
     EVT_BUTTON(ID_EFFECT_PREVIEW, PhaserDialog::OnPreview)
 END_EVENT_TABLE()
 
-PhaserDialog::PhaserDialog(EffectPhaser * effect, 
-									wxWindow * parent, wxWindowID id, const wxString & title, 
-									const wxPoint & position, const wxSize & size, long style):
-wxDialog(parent, id, title, position, size, style)
+PhaserDialog::PhaserDialog(EffectPhaser * effect, wxWindow * parent)
+:  EffectDialog(parent, _("Phaser"), PROCESS_EFFECT),
+   mEffect(effect)
 {
-	m_pEffect = effect;
-
-   wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
-
-   wxStaticText *item1 =
-       new wxStaticText(this, -1, _("Phaser by Nasca Octavian Paul"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxBoxSizer *item2 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxStaticText *item3 =
-       new wxStaticText(this, -1, _("Stages:"), wxDefaultPosition,
-                        wxDefaultSize, 0);
-   item2->Add(item3, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSpinCtrl *item4 =
-       new wxSpinCtrl(this, ID_STAGES, wxT("2"), wxDefaultPosition,
-                      wxSize(80, -1), 0, 2, 24, 2);
-   item2->Add(item4, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxBoxSizer *item5 = new wxBoxSizer(wxVERTICAL);
-
-   wxSlider *item6 =
-       new wxSlider(this, ID_DRYWET, 0, DRYWET_MIN, DRYWET_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item5->Add(item6, 1,
-              wxGROW | wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT | wxTOP,
-              5);
-
-   wxBoxSizer *item7 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxStaticText *item8 =
-       new wxStaticText(this, -1, _("DRY"), wxDefaultPosition,
-                        wxDefaultSize, 0);
-   item7->Add(item8, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item7->Add(10, 10, 1, wxALIGN_CENTRE | wxLEFT | wxRIGHT | wxTOP, 5);
-
-   wxStaticText *item9 =
-       new wxStaticText(this, -1, _("WET"), wxDefaultPosition,
-                        wxDefaultSize, 0);
-   item7->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item5->Add(item7, 1,
-              wxGROW | wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-
-   item2->Add(item5, 1, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item2, 0, wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-   wxFlexGridSizer *item10 = new wxFlexGridSizer(3, 0, 0);
-
-   wxStaticText *item11 =
-       new wxStaticText(this, -1, _("LFO Frequency (Hz):"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item10->Add(item11, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item12 =
-       new wxTextCtrl(this, ID_FREQTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item13 =
-       new wxSlider(this, ID_FREQSLIDER, 100, FREQ_MIN, FREQ_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item14 =
-       new wxStaticText(this, -1, _("LFO Start Phase (deg.):"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item10->Add(item14, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item15 =
-       new wxTextCtrl(this, ID_PHASETEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item16 =
-       new wxSlider(this, ID_PHASESLIDER, 0, PHASE_MIN, PHASE_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item16, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item17 =
-       new wxStaticText(this, -1, _("Depth:"), wxDefaultPosition,
-                        wxDefaultSize, wxALIGN_RIGHT);
-   item10->Add(item17, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item18 =
-       new wxTextCtrl(this, ID_DEPTHTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item18, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item19 =
-       new wxSlider(this, ID_DEPTHSLIDER, 0, DEPTH_MIN, DEPTH_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item19, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxStaticText *item20 =
-       new wxStaticText(this, -1, _("Feedback (%):"),
-                        wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
-   item10->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
-               5);
-
-   wxTextCtrl *item21 =
-       new wxTextCtrl(this, ID_FEEDBACKTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(40, -1), 0);
-   item10->Add(item21, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item22 =
-       new wxSlider(this, ID_FEEDBACKSLIDER, 0, FB_MIN, FB_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item10->Add(item22, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   // Preview, OK, & Cancel buttons
-   item0->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
-
-   SetAutoLayout(TRUE);
-   SetSizer(item0);
-   item0->Fit(this);
-   item0->SetSizeHints(this);
+   Init();
 }
 
-bool PhaserDialog::Validate()
+void PhaserDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   return TRUE;
+   S.SetBorder(10);
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      S.AddTitle(_("by Nasca Octavian Paul"));
+   }
+   S.EndHorizontalLay();
+   S.SetBorder(5);
+
+   S.StartMultiColumn(3, wxCENTER);
+   {
+      S.Id(ID_STAGESTEXT).AddTextBox(_("Stages:"), wxT(""), 12);
+      S.SetStyle(wxSL_HORIZONTAL);
+      S.Id(ID_STAGESSLIDER).AddSlider(wxT(""), 2, STAGES_MAX, STAGES_MIN)->
+         SetName(_("Stages"));
+
+      S.Id(ID_DRYWETTEXT).AddTextBox(_("Dry/Wet:"), wxT(""), 12);
+      S.SetStyle(wxSL_HORIZONTAL);
+      S.Id(ID_DRYWETSLIDER).AddSlider(wxT(""), 0, DRYWET_MAX, DRYWET_MIN)->
+         SetName(_("Dry Wet"));
+
+      S.Id(ID_FREQTEXT).AddTextBox(_("LFO Frequency (Hz):"), wxT(""), 12);
+      S.SetStyle(wxSL_HORIZONTAL);
+      S.Id(ID_FREQSLIDER).AddSlider(wxT(""), 100, FREQ_MAX, FREQ_MIN)->
+         SetName(_("LFO frequency in hertz"));
+
+      S.Id(ID_PHASETEXT).AddTextBox(_("LFO Start Phase (deg.):"), wxT(""), 12);
+      S.SetStyle(wxSL_HORIZONTAL);
+      S.Id(ID_PHASESLIDER).AddSlider(wxT(""), 0, PHASE_MAX, PHASE_MIN)->
+         SetName(_("LFO start phase in degrees"));
+
+      S.Id(ID_DEPTHTEXT).AddTextBox(_("Depth:"), wxT(""), 12);
+      S.SetStyle(wxSL_HORIZONTAL);
+      S.Id(ID_DEPTHSLIDER).AddSlider(wxT(""), 0, DEPTH_MAX, DEPTH_MIN)->
+         SetName(_("Depth in percent"));
+
+      S.Id(ID_FEEDBACKTEXT).AddTextBox(_("Feedback (%):"), wxT(""), 12);
+      S.SetStyle(wxSL_HORIZONTAL);
+      S.Id(ID_FEEDBACKSLIDER).AddSlider(wxT(""), 0, FB_MAX, FB_MIN)->
+         SetName(_("Feedback in percent"));
+   }
+   S.EndMultiColumn();
 }
 
 bool PhaserDialog::TransferDataToWindow()
@@ -360,15 +276,31 @@ bool PhaserDialog::TransferDataToWindow()
    if (slider)
       slider->SetValue((int)fb);
 
-   slider = GetDryWet();
+   slider = GetDryWetSlider();
    if (slider)
       slider->SetValue((int)drywet);
 
-   wxSpinCtrl *spin = GetStages();
-   if (spin)
-      spin->SetValue(stages);
+   slider = GetStagesSlider();
+   if (slider)
+      slider->SetValue((int)stages);
 
-   wxTextCtrl *text = GetFreqText();
+   wxTextCtrl *text;
+
+   text = GetStagesText();
+   if (text) {
+      wxString str;
+      str.Printf(wxT("%d"), stages);
+      text->SetValue(str);
+   }
+
+   text = GetDryWetText();
+   if (text) {
+      wxString str;
+      str.Printf(wxT("%d"), drywet);
+      text->SetValue(str);
+   }
+
+   text = GetFreqText();
    if (text) {
       wxString str;
       str.Printf(wxT("%.1f"), freq);
@@ -429,23 +361,40 @@ bool PhaserDialog::TransferDataFromWindow()
       fb = TrapLong(x, FB_MIN, FB_MAX);
    }
 
-   wxSpinCtrl *p = GetStages();
-   if (p) {
-      stages = TrapLong(p->GetValue(), STAGES_MIN, STAGES_MAX);
+   c = GetStagesText();
+   if (c) {
+      c->GetValue().ToLong(&x);
+      stages = TrapLong(x, STAGES_MIN, STAGES_MAX);
       if ((stages % 2) == 1)    // must be even
          stages = TrapLong(stages - 1, STAGES_MIN, STAGES_MAX);
-
    }
 
-   wxSlider *s = GetDryWet();
-   if (s) {
-      drywet = TrapLong(s->GetValue(), DRYWET_MIN, DRYWET_MAX);
+   c = GetDryWetText();
+   if (c) {
+      c->GetValue().ToLong(&x);
+      drywet = TrapLong(x, DRYWET_MIN, DRYWET_MAX);
    }
 
    return TRUE;
 }
 
 // WDR: handler implementations for PhaserDialog
+
+void PhaserDialog::OnStagesSlider(wxCommandEvent & event)
+{
+   wxString str;
+   long stage = GetStagesSlider()->GetValue();
+   str.Printf(wxT("%ld"), stage);
+   GetStagesText()->SetValue(str);
+}
+
+void PhaserDialog::OnDryWetSlider(wxCommandEvent & event)
+{
+   wxString str;
+   long drywet = GetDryWetSlider()->GetValue();
+   str.Printf(wxT("%ld"), drywet);
+   GetDryWetText()->SetValue(str);
+}
 
 void PhaserDialog::OnFeedbackSlider(wxCommandEvent & event)
 {
@@ -482,6 +431,36 @@ void PhaserDialog::OnFreqSlider(wxCommandEvent & event)
    long freq = GetFreqSlider()->GetValue();
    str.Printf(wxT("%.1f"), freq / 10.0);
    GetFreqText()->SetValue(str);
+}
+
+void PhaserDialog::OnStagesText(wxCommandEvent & event)
+{
+   wxTextCtrl *c = GetStagesText();
+   if (c) {
+      long stage;
+
+      c->GetValue().ToLong(&stage);
+      stage = TrapLong(stage, STAGES_MIN, STAGES_MAX);
+
+      wxSlider *slider = GetStagesSlider();
+      if (slider)
+         slider->SetValue(stage);
+   }
+}
+
+void PhaserDialog::OnDryWetText(wxCommandEvent & event)
+{
+   wxTextCtrl *c = GetDryWetText();
+   if (c) {
+      long drywet;
+
+      c->GetValue().ToLong(&drywet);
+      drywet = TrapLong(drywet, DRYWET_MIN, DRYWET_MAX);
+
+      wxSlider *slider = GetDryWetSlider();
+      if (slider)
+         slider->SetValue(drywet);
+   }
 }
 
 void PhaserDialog::OnFeedbackText(wxCommandEvent & event)
@@ -549,44 +528,28 @@ void PhaserDialog::OnPreview(wxCommandEvent &event)
    TransferDataFromWindow();
 
 	// Save & restore parameters around Preview, because we didn't do OK.
-   float old_freq = m_pEffect->freq;
-   float old_startphase = m_pEffect->startphase;
-   float old_fb = m_pEffect->fb;
-   int old_depth = m_pEffect->depth;
-   int old_stages = m_pEffect->stages;
-   int old_drywet = m_pEffect->drywet;
+   float old_freq = mEffect->freq;
+   float old_startphase = mEffect->startphase;
+   float old_fb = mEffect->fb;
+   int old_depth = mEffect->depth;
+   int old_stages = mEffect->stages;
+   int old_drywet = mEffect->drywet;
 
-   m_pEffect->freq = freq;
-   m_pEffect->startphase = startphase * M_PI / 180;
-   m_pEffect->fb = fb;
-   m_pEffect->depth = depth;
-   m_pEffect->stages = stages;
-   m_pEffect->drywet = drywet;
+   mEffect->freq = freq;
+   mEffect->startphase = startphase * M_PI / 180;
+   mEffect->fb = fb;
+   mEffect->depth = depth;
+   mEffect->stages = stages;
+   mEffect->drywet = drywet;
 
-   m_pEffect->Preview();
+   mEffect->Preview();
 
-   m_pEffect->freq = old_freq;
-   m_pEffect->startphase = old_startphase;
-   m_pEffect->fb = old_fb;
-   m_pEffect->depth = old_depth;
-   m_pEffect->stages = old_stages;
-   m_pEffect->drywet = old_drywet;
-}
-
-void PhaserDialog::OnOk(wxCommandEvent & event)
-{
-   TransferDataFromWindow();
-
-   if (Validate())
-      EndModal(true);
-   else {
-      event.Skip();
-   }
-}
-
-void PhaserDialog::OnCancel(wxCommandEvent & event)
-{
-   EndModal(false);
+   mEffect->freq = old_freq;
+   mEffect->startphase = old_startphase;
+   mEffect->fb = old_fb;
+   mEffect->depth = old_depth;
+   mEffect->stages = old_stages;
+   mEffect->drywet = old_drywet;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
