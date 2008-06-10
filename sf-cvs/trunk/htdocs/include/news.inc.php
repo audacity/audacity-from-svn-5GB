@@ -75,6 +75,11 @@ stated Edward N. Albro, editor of PC World. &ldquo;Our editors looked at hundred
 software and Web products to compile this list of outstanding performers. Congratulations to
 Audacity.&rdquo; 
 </p>
+<p>
+Also, in February, Audacity was selected for <em>PC Magazine's </em>
+<a href=\"http://www.pcmag.com/article2/0,1759,2260070,00.asp\">&ldquo;Hall of Fame&rdquo;</a>
+of Best Free Software.
+</p>
 "));
 
 add_news_item(
