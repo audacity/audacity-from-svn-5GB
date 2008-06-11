@@ -931,7 +931,7 @@ bool AudacityApp::OnInit()
 
 #endif // __CYGWIN__ (Cygwin command-line parser)
 
-   mLogger = new wxLogWindow(NULL,wxT("Debug log"),false,false);
+   mLogger = new wxLogWindow(NULL,wxT("Debug Log"),false,false);
    mLogger->SetActiveTarget(mLogger);
    mLogger->EnableLogging(true);
    mLogger->SetLogLevel(wxLOG_Max);
