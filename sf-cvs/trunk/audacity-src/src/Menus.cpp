@@ -806,7 +806,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddItem(wxT("Welcome"),          _("&Show Welcome Message..."),      FN(OnHelpWelcome));
    c->AddItem(wxT("Help"),             _("&Index..."),                      FN(OnHelp));
-   c->AddItem(wxT("Log"),             _("Show &log..."),                      FN(OnLog));
+   c->AddItem(wxT("Log"),             _("Show &Log..."),                      FN(OnLog));
 
 
 #if 1 // Debugging tools are enabled in unstable builds
