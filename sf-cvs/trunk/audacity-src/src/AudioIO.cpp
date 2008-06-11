@@ -775,7 +775,7 @@ void AudioIO::StartMonitoring(double sampleRate)
    long captureChannels;
    sampleFormat captureFormat = (sampleFormat)
       gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
-   gPrefs->Read(wxT("/AudioIO/RecordChannels"), &captureChannels, 1L);
+   gPrefs->Read(wxT("/AudioIO/RecordChannels"), &captureChannels, 2L);
    gPrefs->Read(wxT("/AudioIO/SWPlaythrough"), &mSoftwarePlaythrough, false);
    int playbackChannels = 0;
 
