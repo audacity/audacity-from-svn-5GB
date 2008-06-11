@@ -781,7 +781,7 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
          t1 = 1000000000.0;     // record for a long, long time (tens of years)
       }
       else {
-         recordingChannels = gPrefs->Read(wxT("/AudioIO/RecordChannels"), 1);
+         recordingChannels = gPrefs->Read(wxT("/AudioIO/RecordChannels"), 2);
          for (int c = 0; c < recordingChannels; c++) {
             WaveTrack *newTrack = p->GetTrackFactory()->NewWaveTrack();
 
