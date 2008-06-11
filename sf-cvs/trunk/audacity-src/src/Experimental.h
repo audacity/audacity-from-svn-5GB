@@ -43,7 +43,7 @@
 //#define EXPERIMENTAL_ROLL_UP_DIALOG
 //#define RIGHT_ALIGNED_TEXTBOXES
 //#define EXPERIMENTAL_VOICE_DETECTION
-//#define EXPERIMENTAL_SMART_RECORD
+#define EXPERIMENTAL_SMART_RECORD
 
 //Changes thanks to Andreas Micheler
 //This one looks pretty good and uses existing code for the log chirp, just adds an interface.
