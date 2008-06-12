@@ -6536,6 +6536,7 @@ void TrackPanel::OnTrackSticky(wxCommandEvent & event)
       else
          wt->SetStickyTrack(NULL);
    }
+   ((LabelTrack *)mPopupMenuTarget)->SetStickyTrack(wt);
    //TEMP CODE FOR REMOVAL OF ALL ASSOCIATIONS
    if (id==12999){
       wt = (WaveTrack *) iter.First();

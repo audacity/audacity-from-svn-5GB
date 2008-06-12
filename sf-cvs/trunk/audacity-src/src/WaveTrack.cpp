@@ -126,6 +126,7 @@ void WaveTrack::Init(const WaveTrack &orig)
    mDisplayNumLocations = 0;
    mDisplayLocations = NULL;
    mDisplayNumLocationsAllocated = 0;
+   mStickyLabelTrack = NULL;
 }
 
 void WaveTrack::Merge(const Track &orig)
