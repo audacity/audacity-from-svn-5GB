@@ -313,6 +313,7 @@ enum {
    OnCutSelectedTextID,
    OnCopySelectedTextID,
    OnPasteSelectedTextID,
+   OnStickySubmenuID = 12000,//leave 12000-12999 open for sticky tracks
 };
 
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
@@ -344,6 +345,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU(OnCutSelectedTextID, TrackPanel::OnCutSelectedText)
     EVT_MENU(OnCopySelectedTextID, TrackPanel::OnCopySelectedText)
     EVT_MENU(OnPasteSelectedTextID, TrackPanel::OnPasteSelectedText)
+    EVT_MENU_RANGE(OnStickySubmenuID, OnStickySubmenuID+999, TrackPanel::OnTrackSticky)
 END_EVENT_TABLE()
 
 
@@ -5775,8 +5777,46 @@ void TrackPanel::OnTrackMenu(Track *t)
    if (t->GetKind() == Track::Note)
       theMenu = mNoteTrackMenu;
    
-   if (t->GetKind() == Track::Label)
-      theMenu = mLabelTrackMenu;
+   if (t->GetKind() == Track::Label){
+#ifdef EXPERIMENTAL_STICKY_TRACKS
+      delete mLabelTrackMenu;
+      mLabelTrackMenu = new wxMenu();
+   
+      AudacityProject *p = GetActiveProject();
+      if (!p) return;
+      TrackListIterator iter(p->GetTracks());
+      WaveTrack *wt = (WaveTrack *) iter.First();
+      int count=1;
+      mStickyLabelMenu = new wxMenu();
+      while (wt) {
+         if (wt->GetKind()==Track::Wave){
+            wxString name;
+            name = wt->GetName();
+            if (name == wxT("Audio Track")) 
+               name.Printf(wxT("Wave Track #%d"), count);
+            mStickyLabelMenu->AppendCheckItem(OnStickySubmenuID + count, name);
+            if (wt->GetStickyTrack()){
+               if (wt->GetStickyTrack() == t)
+                  mStickyLabelMenu->Check(OnStickySubmenuID + count, true);
+               else
+                  mStickyLabelMenu->Enable(OnStickySubmenuID + count, false);
+            }
+            count++;
+         }
+         wt = (WaveTrack *) iter.Next();
+      }
+   
+      mLabelTrackMenu->Append(OnSetNameID, _("Name..."));
+      mLabelTrackMenu->AppendSeparator();
+      mLabelTrackMenu->Append(OnSetFontID, _("Font..."));
+      mLabelTrackMenu->AppendSeparator();
+      mLabelTrackMenu->Append(OnMoveUpID, _("Move Track Up"));
+      mLabelTrackMenu->Append(OnMoveDownID, _("Move Track Down"));
+      mLabelTrackMenu->Append(0, _("Group with Wave Track"), mStickyLabelMenu);
+      mLabelTrackMenu->Append(12999, _("Clear any grouping"));
+#endif
+       theMenu = mLabelTrackMenu;
+   }
    
    if (theMenu) {
       theMenu->Enable(OnMoveUpID, mTracks->CanMoveUp(t));
@@ -6471,6 +6511,40 @@ void TrackPanel::OnPasteSelectedText(wxCommandEvent &event)
                           true /* consolidate */);
    }
    RefreshTrack(lt, true);
+}
+
+void TrackPanel::OnTrackSticky(wxCommandEvent & event)
+{
+   wxASSERT(mPopupMenuTarget && mPopupMenuTarget->GetKind() == Track::Label);
+   int id = event.GetId();
+   int pos = id - 12000;
+   int count = 1;
+
+   AudacityProject *p = GetActiveProject();
+   if (!p) return;
+   TrackListIterator iter(p->GetTracks());
+   WaveTrack *wt = (WaveTrack *) iter.First();
+   while (wt && count!=pos) {
+      if (wt->GetKind()==Track::Wave){
+         count++;
+      }
+      wt = (WaveTrack *) iter.Next();
+   }
+   if (wt){
+      if (event.IsChecked())
+         wt->SetStickyTrack((LabelTrack *)mPopupMenuTarget);
+      else
+         wt->SetStickyTrack(NULL);
+   }
+   //TEMP CODE FOR REMOVAL OF ALL ASSOCIATIONS
+   if (id==12999){
+      wt = (WaveTrack *) iter.First();
+      while (wt) {
+         if (wt->GetKind()==Track::Wave)
+            wt->SetStickyTrack(NULL);
+         wt = (WaveTrack *) iter.Next();
+      }
+   }//END TEMP CODE
 }
 
 // Small helper class to enumerate all fonts in the system

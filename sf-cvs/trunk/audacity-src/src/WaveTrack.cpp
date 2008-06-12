@@ -36,6 +36,7 @@ Track classes.
 #include "float_cast.h"
 
 #include "WaveTrack.h"
+#include "LabelTrack.h"
 
 #include "Envelope.h"
 #include "Sequence.h"
@@ -89,6 +90,7 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    mDisplayNumLocations = 0;
    mDisplayLocations = NULL;
    mDisplayNumLocationsAllocated = 0;
+   mStickyLabelTrack = NULL;
 }
 
 WaveTrack::WaveTrack(WaveTrack &orig):
@@ -475,6 +477,10 @@ bool WaveTrack::Paste(double t0, Track *src)
    double insertDuration = other->GetEndTime();
    WaveClipList::Node* it;
 
+#ifdef EXPERIMENTAL_STICKY_TRACKS
+   if (mStickyLabelTrack) mStickyLabelTrack->ShiftLabelsOnInsert(insertDuration, t0, this);
+#endif
+
    //printf("Check if we need to make room for the pasted data\n");
    
    // Make room for the pasted data, unless the space being pasted in is empty of
@@ -615,6 +621,12 @@ bool WaveTrack::HandleClear(double t0, double t1,
 {
    if (t1 < t0)
       return false;
+
+#ifdef EXPERIMENTAL_STICKY_TRACKS
+   if (!split){
+      if (mStickyLabelTrack) mStickyLabelTrack->ShiftLabelsOnClear(t0, t1, this);
+   }
+#endif
 
    bool editClipCanMove = true;
    gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);

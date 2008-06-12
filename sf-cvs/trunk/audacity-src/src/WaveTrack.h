@@ -304,6 +304,9 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    // Resample track (i.e. all clips in the track)
    bool Resample(int rate, ProgressDialog *progress = NULL);
 
+   void SetStickyTrack(LabelTrack *lt) { mStickyLabelTrack = lt; }
+   LabelTrack* GetStickyTrack() { return mStickyLabelTrack; }
+
    //
    // The following code will eventually become part of a GUIWaveTrack
    // and will be taken out of the WaveTrack class:
@@ -364,6 +367,7 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    wxCriticalSection mFlushCriticalSection;
    wxCriticalSection mAppendCriticalSection;
    double mLegacyProjectFileOffset;
+   LabelTrack *mStickyLabelTrack;
 
 };
 

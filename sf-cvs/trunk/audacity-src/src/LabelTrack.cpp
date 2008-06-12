@@ -141,6 +141,43 @@ void LabelTrack::SetOffset(double dOffset)
    }
 }
 
+void LabelTrack::ShiftLabelsOnClear(double b, double e, WaveTrack *track)
+{
+   for (unsigned int i=0;i<mLabels.GetCount();i++){
+      if (mLabels[i]->t >= e){//label is after deletion region
+         mLabels[i]->t  = mLabels[i]->t  - (e-b);
+         mLabels[i]->t1 = mLabels[i]->t1 - (e-b);
+      }else if (mLabels[i]->t >= b && mLabels[i]->t1 <= e){//deletion region encloses label
+         wxASSERT((i < (int)mLabels.GetCount()));
+         mLabels.RemoveAt(i);
+         i--;
+      }else if (mLabels[i]->t >= b && mLabels[i]->t1 > e){//deletion region covers start
+         mLabels[i]->t  = b;
+         mLabels[i]->t1 = mLabels[i]->t1 - (e - mLabels[i]->t);
+      }else if (mLabels[i]->t < b && mLabels[i]->t1 > b && mLabels[i]->t1 <= e){//deletion regions covers end
+         mLabels[i]->t1 = b;
+      }else if (mLabels[i]->t < b && mLabels[i]->t1 > e){//label encloses deletion region
+         mLabels[i]->t1 = mLabels[i]->t1 - (e-b);
+      }else if (mLabels[i]->t1 <= b){
+         //nothing
+      }
+   }
+}
+
+void LabelTrack::ShiftLabelsOnInsert(double length, double pt, WaveTrack *track)
+{
+   for (unsigned int i=0;i<mLabels.GetCount();i++){
+      if (mLabels[i]->t > pt && mLabels[i]->t1 > pt) {
+         mLabels[i]->t = mLabels[i]->t + length;
+         mLabels[i]->t1 = mLabels[i]->t1 + length;
+      }else if (mLabels[i]->t1 < pt) {
+         //nothing
+      }else if (mLabels[i]->t < pt && mLabels[i]->t1 > pt){
+         mLabels[i]->t1 = mLabels[i]->t1 + length;
+      }
+   }
+}
+
 void LabelTrack::ResetFlags()
 {
    mMouseXPos = -1;
