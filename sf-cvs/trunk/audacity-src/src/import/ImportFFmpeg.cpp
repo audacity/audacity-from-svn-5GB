@@ -175,32 +175,6 @@ typedef struct _streamContext
    int                  m_initialchannels;               // number of channels allocated when we begin the importing. Assumes that number of channels doesn't change on the fly.
 } streamContext;
 
-void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
-{
-   int av_log_level = AV_LOG_WARNING;
-   AVClass* avc = ptr ? *(AVClass**)ptr : NULL;
-   if (level > av_log_level)
-      return;
-   wxString printstring(wxT(""));
-
-   if (avc) {
-      printstring.Append(wxString::Format(wxT("[%s @ %p] "), wxString::FromUTF8(avc->item_name(ptr)).c_str(), avc));
-   }
-
-   wxString frm(fmt,wxConvLibc);
-   printstring.Append(wxString::FormatV(frm,vl));
-
-   wxString cpt;
-   switch (level)
-   {
-      case 0: cpt = wxT("Error"); break;
-      case 1: cpt = wxT("Info"); break;
-      case 2: cpt = wxT("Debug"); break;
-      default: cpt = wxT("Log"); break;
-   }
-   wxLogMessage(wxT("%s: %s"),cpt.c_str(),printstring.c_str());
-}
-
 class FFmpegImportPlugin : public ImportPlugin
 {
 public:
@@ -701,10 +675,9 @@ int FFmpegImportFileHandle::WriteData(streamContext *sc)
    }
 
    free(tmp);
-
-   mSamplesDone += 1;
-
-   if (!mProgress->Update((wxLongLong)mSamplesDone, (wxLongLong)(mNumSamples > 0 ? mNumSamples : 1))) {
+   
+   int tsize = FFmpegLibsInst->url_fsize(mFormatContext->pb);
+   if (!mProgress->Update((wxLongLong)this->mFormatContext->pb->pos, (wxLongLong)(tsize > 0 ? tsize : 1))) {
       mCancelled = true;
       return 1;
    }

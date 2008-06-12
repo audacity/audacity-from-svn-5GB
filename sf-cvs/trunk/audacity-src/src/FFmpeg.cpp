@@ -24,9 +24,37 @@ License: GPL v2.  See License.txt.
 #endif
 
 #if defined(USE_FFMPEG)
+
+      
 //----------------------------------------------------------------------------
 // FFmpegLibs
 //----------------------------------------------------------------------------
+
+void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
+{
+   int av_log_level = AV_LOG_WARNING;
+   AVClass* avc = ptr ? *(AVClass**)ptr : NULL;
+   if (level > av_log_level)
+      return;
+   wxString printstring(wxT(""));
+
+   if (avc) {
+      printstring.Append(wxString::Format(wxT("[%s @ %p] "), wxString::FromUTF8(avc->item_name(ptr)).c_str(), avc));
+   }
+
+   wxString frm(fmt,wxConvLibc);
+   printstring.Append(wxString::FormatV(frm,vl));
+
+   wxString cpt;
+   switch (level)
+   {
+   case 0: cpt = wxT("Error"); break;
+   case 1: cpt = wxT("Info"); break;
+   case 2: cpt = wxT("Debug"); break;
+   default: cpt = wxT("Log"); break;
+   }
+   wxLogMessage(wxT("%s: %s"),cpt.c_str(),printstring.c_str());
+}
 
 //shared object
 FFmpegLibs *FFmpegLibsInst = NULL;
@@ -182,7 +210,17 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avformat,av_index_search_timestamp);
    INITDYN(avformat,av_write_header);
    INITDYN(avformat,av_interleaved_write_frame);
+   INITDYN(avformat,av_write_frame);
    INITDYN(avformat,av_iformat_next);
+   INITDYN(avformat,av_set_parameters);
+   INITDYN(avformat,url_fopen);
+   INITDYN(avformat,url_fclose);
+   INITDYN(avformat,url_fsize);
+   INITDYN(avformat,av_new_stream);
+   INITDYN(avformat,av_alloc_format_context);
+   INITDYN(avformat,guess_format);
+   INITDYN(avformat,av_write_trailer);
+   INITDYN(avformat,av_init_packet);
 
    INITDYN(avcodec,avcodec_init);
    INITDYN(avcodec,avcodec_find_encoder);
@@ -208,6 +246,14 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avutil,av_free);
    INITDYN(avutil,av_log_set_callback);
    INITDYN(avutil,av_log_default_callback);
+   INITDYN(avutil,av_fifo_init);
+   INITDYN(avutil,av_fifo_free);
+   INITDYN(avutil,av_fifo_read);
+   INITDYN(avutil,av_fifo_size);
+   INITDYN(avutil,av_fifo_generic_write);
+   INITDYN(avutil,av_malloc);
+   INITDYN(avutil,av_freep);
+   INITDYN(avutil,av_rescale_q);
 
 #if defined(__WXMSW__)
    //Return error mode to normal
