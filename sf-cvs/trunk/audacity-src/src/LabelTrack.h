@@ -166,6 +166,9 @@ class LabelTrack:public Track {
    //get current cursor position
    bool CalcCursorX(wxWindow * parent, int * x);
    int getCurrentCursorPosition() const { return mCurrentCursorPos; };
+   
+   void ShiftLabelsOnClear(double b, double e, WaveTrack *track);
+   void ShiftLabelsOnInsert(double length, double pt, WaveTrack *track);
 
  public:
 	 void SortLabels();
