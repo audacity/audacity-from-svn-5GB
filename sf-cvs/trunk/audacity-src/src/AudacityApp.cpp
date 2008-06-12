@@ -262,8 +262,12 @@ void QuitAudacity(bool bForce)
       //Delete the clipboard
    AudacityProject::DeleteClipboard();
 
-   wxGetApp().mLogger->SetActiveTarget(NULL);
-   delete wxGetApp().mLogger;
+   wxLogWindow *lw = wxGetApp().mLogger;
+   if (lw)
+   {
+      lw->SetActiveTarget(NULL);
+      delete lw;
+   }
 
    if (bForce)
    {
@@ -569,6 +573,7 @@ void AudacityApp::InitLang( const wxString & lang )
 // main frame
 bool AudacityApp::OnInit()
 {
+   mLogger = NULL;
    #if USE_QUICKTIME
    ::InitQuicktime();
    #endif
