@@ -734,7 +734,7 @@ void AudacityProject::CreateMenusAndCommands()
    // The categories form a DAG, so we start at the roots (the categories
    // without incoming links)
    CategorySet roots = em.GetRootCategories();
-   EffectSet topLevel = CreateEffectSubmenus(c, roots, flags);
+   EffectSet topLevel = CreateEffectSubmenus(c, roots, flags, 0);
    AddEffectsToMenu(c, topLevel);
    
    // Add all uncategorised effects in a special submenu
@@ -928,8 +928,9 @@ void AudacityProject::CreateMenusAndCommands()
 #ifdef EFFECT_CATEGORIES
 
 EffectSet AudacityProject::CreateEffectSubmenus(CommandManager* c, 
-                                           const CategorySet& categories, 
-                                           int flags) {
+                                                const CategorySet& categories, 
+                                                int flags,
+                                                unsigned submenuThreshold) {
    EffectSet topLevel;
    
    CategorySet::const_iterator iter;
@@ -939,20 +940,38 @@ EffectSet AudacityProject::CreateEffectSubmenus(CommandManager* c,
       
       // If the subgraph for this category only contains a single effect,
       // add it directly in this menu
-      if (effects.size() == 1)
-         topLevel.insert(*effects.begin());
+      if (effects.size() <= submenuThreshold)
+         topLevel.insert(effects.begin(), effects.end());
       
       // If there are more than one effect, add a submenu for the category
       else if (effects.size() > 0) {
-         c->BeginSubMenu((*iter)->GetName());
-         EffectSet a = CreateEffectSubmenus(c, (*iter)->GetSubCategories(), 
-                                            flags);
-         const EffectSet& b = (*iter)->GetEffects(flags);
-         EffectSet::const_iterator itr2;
-         for (itr2 = b.begin(); itr2 != b.end(); ++itr2)
-            a.insert(*itr2);
-         AddEffectsToMenu(c, a);
-         c->EndSubMenu();
+
+         EffectSet directEffects = (*iter)->GetEffects(flags);
+         CategorySet subCategories = (*iter)->GetSubCategories();
+         CategorySet nonEmptySubCategories;
+         
+         CategorySet::const_iterator sci;
+         for (sci = subCategories.begin(); sci != subCategories.end(); ++sci) {
+            if ((*sci)->GetAllEffects(flags).size() > 0)
+               nonEmptySubCategories.insert(*sci);
+         }
+         
+         // If there are no direct effects and only one subcategory,
+         // add the contents of that subcategory directly in this menu.
+         if (directEffects.size() == 0 && nonEmptySubCategories.size() == 1) {
+            EffectSet a = CreateEffectSubmenus(c, nonEmptySubCategories, 
+                                               flags);
+            topLevel.insert(a.begin(), a.end());
+         }
+         
+         // Else, add submenus for the subcategories
+         else {
+            c->BeginSubMenu((*iter)->GetName());
+            EffectSet a = CreateEffectSubmenus(c, subCategories, flags);
+            a.insert(directEffects.begin(), directEffects.end());
+            AddEffectsToMenu(c, a);
+            c->EndSubMenu();
+         }
       }
    }
    
