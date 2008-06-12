@@ -2,9 +2,9 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2005 Matt Brubeck
- * Copyright 2007 Gale Andrews, Vaughan Johnson
+ * Copyright 2007 - 8 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "faq";
@@ -40,9 +40,16 @@
         ),
         "ebay" => array(
           _("Someone is selling Audacity on eBay.  Is this legal?"),
-          _("<p>It is legal to sell Audacity, as long as the seller makes the program and source code available under the <a href=\"../about/license\">GNU General Public License</a>.</p>
-<p>Some vendors try to trick customers by selling the software under a different name.  If you bought a product and later found out it was Audacity, we encourage you to <b>ask for a refund or file a complaint</b> if you feel you did not get a fair deal.  We ask vendors to give proper credit to the Audacity project, and allow users to make an informed choice.</p>
-<p><b>If you want to buy Audacity on CD</b>, please check out the vendors listed on our <a href=\"../download/buy\">purchase page</a>.</p>")
+          // i18n-hint: the encoding inside the <a href> tag below
+          // obscures the e-mail address from (at least some)
+          // harvesting bots. Please ignore it, and restart
+          // translation at "e-mail us".
+          _("<p>It is legal to sell Audacity, as long as the seller makes the program and source code available under the <a href=\"../about/license\">GNU General Public License</a> (GPL).</p>
+<p>Some vendors try to trick customers by selling unmodified Audacity software under a different name. If you bought a product and later found out it was Audacity, we encourage you to <b>ask for a refund or file a complaint</b> if you feel you did not get a fair deal.  We ask vendors to give proper credit to the Audacity project, and allow users to make an informed choice.</p>
+<p>If you have concerns that Audacity (unmodified or otherwise) is being sold without a copy of the GPL, or without any offer to provide source code, please
+          <a href=\"&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#97;&#98;&#x75;&#115;&#x65;&#64;&#97;&#x75;&#100;&#97;&#x63;&#x69;&#116;&#x79;&#x74;&#101;&#97;&#x6d;&#x2e;&#x6f;&#114;&#x67;\">
+          e-mail us</a> in confidence. </p>
+<p><b>If you want to obtain Audacity on CD</b>, free ISO downloads and inexpensive CDs by post are available from suppliers on our <a href=\"../download/buy\">Audacity on CD page</a>.</p>")
         ),
         "blind-users" => array(
           _("Does Audacity work with screen-reader programs for blind users?"),
@@ -93,7 +100,7 @@
         "vst-bugs" => array(
           _("Why do some VST plug-ins look wrong, or not work?"),
           _("<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not yet able to display custom interfaces for plug-ins.  Instead, it uses generic controls for all VST plug-ins.  Because of this, many plug-ins will look or act differently than they do in other programs.</p>
-<p>Other VST plug-ins may not work at all, because of bugs in the VST Enabler.  You can <a href=\"../contact/\">contact us</a> to report plug-ins that do not work.</p>  
+<p>Other VST plug-ins may not work at all, because of bugs in the VST Enabler.  You can <a href=\"../contact/\">contact us</a> to report plug-ins that do not work.</p>
 <p>Audacity also does not support VST instrument (VSTi) plug-ins.</p>")
         ),
         "download-problems" => array(
@@ -151,7 +158,7 @@
   <li>Open the “Audio I/O” section of the Audacity preferences, and check the box labeled <b>Play other tracks while recording new one.</b></li>
   <li>Close the preferences and press the <b>Record</b> button. If you are recording from a microphone, make sure you use headphones so that the microphone picks up only what you are recording.</li>
 </ol>
-<p>See also: 
+<p>See also:
 	<ul>
 		<li><a href=\"faq?s=recording&amp;i=sync\">Why isn't my new track in sync with the previous ones?</a></li>
 		<li><a href=\"faq?s=recording&amp;i=playthrough\">Why can't I hear what I am recording?</a></li>
