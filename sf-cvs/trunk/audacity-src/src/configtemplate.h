@@ -89,6 +89,10 @@
 /* Define if libid3tag is present */
 #undef USE_LIBID3TAG
 
+/* Define if liblrdf (metadata for LADSPA plugins) support should be enabled
+   */
+#undef USE_LIBLRDF
+
 /* Define if mp3 support is implemented with the libmad library */
 #undef USE_LIBMAD
 

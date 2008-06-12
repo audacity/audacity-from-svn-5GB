@@ -17,6 +17,11 @@
 
 #define descriptorFnName "ladspa_descriptor"
 
+#include <cstdio>
+#include <cstdlib>
+#include <map>
+#include <queue>
+
 #include <wx/dynlib.h>
 #include <wx/hashmap.h>
 #include <wx/list.h>
@@ -27,16 +32,84 @@
 
 #include "../../Audacity.h"
 #include "../../AudacityApp.h"
+#include "../../Experimental.h"
 #include "../../Internat.h"
 #include "../EffectManager.h"
 #include "LadspaEffect.h"
 
+#if defined(USE_LIBLRDF) && defined(EFFECT_CATEGORIES)
+#include <lrdf.h>
+#endif
+
 WX_DEFINE_ARRAY(wxDynamicLibrary*, DL_Array);
 
-DL_Array ladspa_dls;
+static DL_Array ladspa_dls;
 
-void LoadLadspaEffect(wxSortedArrayString &uniq, wxString fname,
-DL_Array &dls)
+#if defined(USE_LIBLRDF) && defined(EFFECT_CATEGORIES)
+
+#define LADSPA(S) wxT("http://ladspa.org/ontology#") wxT(S)
+#define LV2(S) wxT("http://lv2plug.in/ns/lv2core#") wxT(S)
+
+static std::map<wxString, wxString> gCategoryMap;
+static std::multimap<unsigned long, wxString> gPluginCategories;
+
+static void InitCategoryMap()
+{
+   gCategoryMap[LADSPA("UtilityPlugin")] = LV2("UtilityPlugin");
+   gCategoryMap[LADSPA("GeneratorPlugin")] = LV2("GeneratorPlugin");
+   gCategoryMap[LADSPA("SimulatorPlugin")] = LV2("SimulatorPlugin");
+   gCategoryMap[LADSPA("OscillatorPlugin")] = LV2("OscillatorPlugin");
+   gCategoryMap[LADSPA("TimePlugin")] = LV2("DelayPlugin");
+   gCategoryMap[LADSPA("DelayPlugin")] = LV2("DelayPlugin");
+   gCategoryMap[LADSPA("PhaserPlugin")] = LV2("PhaserPlugin");
+   gCategoryMap[LADSPA("FlangerPlugin")] = LV2("FlangerPlugin");
+   gCategoryMap[LADSPA("ChorusPlugin")] = LV2("ChorusPlugin");
+   gCategoryMap[LADSPA("ReverbPlugin")] = LV2("ReverbPlugin");
+   gCategoryMap[LADSPA("FrequencyPlugin")] = LV2("SpectralPlugin");
+   gCategoryMap[LADSPA("FrequencyMeterPlugin")] = LV2("AnalyserPlugin");
+   gCategoryMap[LADSPA("FilterPlugin")] = LV2("FilterPlugin");
+   gCategoryMap[LADSPA("LowpassPlugin")] = LV2("LowpassPlugin");
+   gCategoryMap[LADSPA("HighpassPlugin")] = LV2("HighpassPlugin");
+   gCategoryMap[LADSPA("BandpassPlugin")] = LV2("BandpassPlugin");
+   gCategoryMap[LADSPA("CombPlugin")] = LV2("CombPlugin");
+   gCategoryMap[LADSPA("AllpassPlugin")] = LV2("AllpassPlugin");
+   gCategoryMap[LADSPA("EQPlugin")] = LV2("EQPlugin");
+   gCategoryMap[LADSPA("ParaEQPlugin")] = LV2("ParaEQPlugin");
+   gCategoryMap[LADSPA("MultiEQPlugin")] = LV2("MultiEQPlugin");
+   gCategoryMap[LADSPA("AmplitudePlugin")] = LV2("AmplifierPlugin");
+   gCategoryMap[LADSPA("PitchPlugin")] = LV2("PitchPlugin");
+   gCategoryMap[LADSPA("AmplifierPlugin")] = LV2("AmplifierPlugin");
+   gCategoryMap[LADSPA("WaveshaperPlugin")] = LV2("WaveshaperPlugin");
+   gCategoryMap[LADSPA("ModulatorPlugin")] = LV2("ModulatorPlugin");
+   gCategoryMap[LADSPA("DistortionPlugin")] = LV2("DistortionPlugin");
+   gCategoryMap[LADSPA("DynamicsPlugin")] = LV2("DynamicsPlugin");
+   gCategoryMap[LADSPA("CompressorPlugin")] = LV2("CompressorPlugin");
+   gCategoryMap[LADSPA("ExpanderPlugin")] = LV2("ExpanderPlugin");
+   gCategoryMap[LADSPA("LimiterPlugin")] = LV2("LimiterPlugin");
+   gCategoryMap[LADSPA("GatePlugin")] = LV2("GatePlugin");
+
+   // This isn't in ladspa.rdfs, it's added by the swh-plugins -
+   // we add it here to avoid having multiple "Spectral" categories
+   gCategoryMap[LADSPA("SpectralPlugin")] = LV2("SpectralPlugin");
+
+}
+
+/** This function maps a LADSPA category URI to the category URIs used
+    by Audacity (LV2 ones). If there is no known mapping for the
+    given LADSPA category URI it is returned unchanged. */
+static wxString MapCategoryUri(const wxString& ladspaCategory)
+{
+   std::map<wxString, wxString>::const_iterator iter;
+   iter = gCategoryMap.find(ladspaCategory);
+   if (iter != gCategoryMap.end())
+      return iter->second;
+   return ladspaCategory;
+}
+
+#endif
+
+static void LoadLadspaEffect(wxSortedArrayString &uniq, wxString fname,
+                             DL_Array &dls)
 {
    wxLogNull logNo;
    LADSPA_Descriptor_Function mainFn = NULL;
@@ -65,7 +138,16 @@ DL_Array &dls)
          wxString uniqid = wxString::Format(wxT("%08x-%s"), data->UniqueID, LAT1CTOWX(data->Label).c_str());
          if (uniq.Index(uniqid) == wxNOT_FOUND) {
             uniq.Add(uniqid);
-            LadspaEffect *effect = new LadspaEffect(data);
+            std::set<wxString> categories;
+
+#if defined(USE_LIBLRDF) && defined(EFFECT_CATEGORIES)
+            std::multimap<unsigned long, wxString>::const_iterator iter;
+            iter = gPluginCategories.lower_bound(data->UniqueID);
+            for ( ; iter->first == data->UniqueID; ++iter)
+               categories.insert(iter->second);
+#endif
+
+            LadspaEffect *effect = new LadspaEffect(data, categories);
             EffectManager::Get().RegisterEffect(effect);
          }
             
@@ -86,6 +168,86 @@ void LoadLadspaPlugins()
    wxSortedArrayString uniq;
    wxString pathVar;
    unsigned int i;
+   EffectManager& em = EffectManager::Get();
+
+#if defined(USE_LIBLRDF) && defined(EFFECT_CATEGORIES)
+   
+   wxArrayString rdfPathList;
+   wxString rdfPathVar;
+   wxArrayString rdfFiles;
+
+   InitCategoryMap();
+   lrdf_init();
+
+   rdfPathVar = wxGetenv(wxT("LADSPA_RDF_PATH"));
+   if (rdfPathVar != wxT(""))
+      wxGetApp().AddMultiPathsToPathList(rdfPathVar, rdfPathList);
+
+#ifdef __WXGTK__
+   wxGetApp().AddUniquePathToPathList(wxT("/usr/share/ladspa/rdf"), 
+                                      rdfPathList);
+   wxGetApp().AddUniquePathToPathList(wxT("/usr/local/share/ladspa/rdf"), 
+                                      rdfPathList);
+#endif
+   
+   wxGetApp().FindFilesInPathList(wxT("*.rdf"), rdfPathList, wxFILE, rdfFiles);
+   wxGetApp().FindFilesInPathList(wxT("*.rdfs"), 
+                                  rdfPathList, wxFILE, rdfFiles);
+   for(size_t i = 0; i < rdfFiles.GetCount(); ++i) {
+      wxString fileUri(wxT("file://"));
+      fileUri += rdfFiles[i];
+      lrdf_read_file(fileUri.mb_str(wxConvUTF8));
+   }
+   
+   
+   // Add all plugin categories found by LRDF
+   lrdf_uris* cats = 
+      lrdf_get_all_subclasses("http://ladspa.org/ontology#Plugin");
+   if (cats) {
+    
+      // Add the categories and find the plugins belonging to them
+      for (size_t i = 0; i < cats->count; ++i) {
+         char* label = lrdf_get_label(cats->items[i]);
+         if (!label)
+            continue;
+         wxString uri = MapCategoryUri(wxString::FromAscii(cats->items[i]));
+         em.AddCategory(uri, wxString::FromUTF8(label));
+         std::free(label);
+
+         lrdf_uris* plugs = lrdf_get_instances(cats->items[i]);
+         if (plugs) {
+            for (size_t j = 0; j < plugs->count; ++j) {
+               unsigned long uid = lrdf_get_uid(plugs->items[j]);
+               gPluginCategories.insert(std::make_pair(uid, uri));
+            }
+            lrdf_free_uris(plugs);
+         }
+      }
+      
+      // And their relationships
+      for (size_t i = 0; i < cats->count; ++i) {
+         EffectCategory* p = 
+            em.LookupCategory(MapCategoryUri(wxString::FromAscii(cats->
+                                                                 items[i])));
+         if (!p)
+            continue;
+         lrdf_uris* subs = lrdf_get_subclasses(cats->items[i]);
+         if (subs) {
+            for (size_t j = 0; j < subs->count; ++j) {
+               EffectCategory* c = 
+                  em.LookupCategory(MapCategoryUri(wxString::FromAscii(subs->items[j])));
+               if (c)
+                  em.AddCategoryParent(c, p);
+            }
+            lrdf_free_uris(subs);
+         }
+      }
+      
+      lrdf_free_uris(cats);
+      
+   }
+   
+#endif
 
    pathVar = wxGetenv(wxT("LADSPA_PATH"));
    if (pathVar != wxT(""))

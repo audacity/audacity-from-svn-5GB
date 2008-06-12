@@ -24,7 +24,8 @@ class LadspaEffect:public Effect {
 
  public:
 
-   LadspaEffect(const LADSPA_Descriptor *data);
+   LadspaEffect(const LADSPA_Descriptor *data, 
+                const std::set<wxString>& categories = std::set<wxString>());
    virtual ~LadspaEffect();
 
    virtual wxString GetEffectName();
@@ -72,6 +73,8 @@ class LadspaEffect:public Effect {
    float *outputControls;
    int mainRate;
    double mLength;
+
+   std::set<wxString> mCategories;
 };
 
 class LadspaEffectDialog:public wxDialog {

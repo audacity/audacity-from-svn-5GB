@@ -146,11 +146,17 @@ bool EffectManager::AddCategoryParent(EffectCategory* child,
    return true;
 }
 
-const CategorySet& EffectManager::GetRootCategories() {
+void EffectManager::FreezeCategories() {
+   CategoryMap::iterator iter;
+   for (iter = mCategories.begin(); iter != mCategories.end(); ++iter)
+      iter->second->FreezeParents();
+}
+
+const CategorySet& EffectManager::GetRootCategories() const {
    return mRootCategories;
 }
 
-EffectSet EffectManager::GetUnsortedEffects(int flags) {
+EffectSet EffectManager::GetUnsortedEffects(int flags) const {
 
    if (flags == ALL_EFFECTS)
       return mUnsorted;

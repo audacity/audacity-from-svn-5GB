@@ -197,6 +197,11 @@ void LoadEffects()
    em.AddCategoryParent(nrm, util);
    em.AddCategoryParent(tim, util);
    
+   // We freeze the internal subcategory relations between the categories
+   // added so far so LADSPA/LRDF or other category systems don't ruin
+   // our hierarchy.
+   em.FreezeCategories();
+   
 #endif
    
    // Generate menu

@@ -705,6 +705,8 @@ AVCODEC_CFLAGS
 AVCODEC_LIBS
 AVFORMAT_CFLAGS
 AVFORMAT_LIBS
+LIBLRDF_CFLAGS
+LIBLRDF_LIBS
 build
 build_cpu
 build_vendor
@@ -749,6 +751,8 @@ AVCODEC_CFLAGS
 AVCODEC_LIBS
 AVFORMAT_CFLAGS
 AVFORMAT_LIBS
+LIBLRDF_CFLAGS
+LIBLRDF_LIBS
 JACK_CFLAGS
 JACK_LIBS'
 ac_subdirs_all='"lib-src/FileDialog"
@@ -1364,6 +1368,7 @@ Optional Packages:
   --with-soundtouch       use libSoundTouch for pitch and tempo changing
   --with-libtwolame       use libtwolame for MP2 export support
   --with-ffmpeg           use ffmpeg for import and export support
+  --with-liblrdf          use liblrdf for categorisation of LADSPA plugins
   --with-portmixer        compile with PortMixer [default=yes]
   --with-portaudio        which version of PortAudio to use (=[v18,v19])
                           [default=v19]
@@ -1413,6 +1418,10 @@ Some influential environment variables:
               C compiler flags for AVFORMAT, overriding pkg-config
   AVFORMAT_LIBS
               linker flags for AVFORMAT, overriding pkg-config
+  LIBLRDF_CFLAGS
+              C compiler flags for LIBLRDF, overriding pkg-config
+  LIBLRDF_LIBS
+              linker flags for LIBLRDF, overriding pkg-config
   JACK_CFLAGS C compiler flags for JACK, overriding pkg-config
   JACK_LIBS   linker flags for JACK, overriding pkg-config
 
@@ -5562,7 +5571,7 @@ BUILD_LDFLAGS="$BUILD_LDFLAGS $WIDGETEXTRA_LIBS"
 CXXFLAGS="$CXXFLAGS $WIDGETEXTRA_CFLAGS"
 LIBSRC_BUILD="$LIBSRC_BUILD widgetextra"
 
-LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG"
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG LIBLRDF"
 
 { echo "$as_me:$LINENO: Determining what libraries are available in this tree and on the system" >&5
 echo "$as_me: Determining what libraries are available in this tree and on the system" >&6;}
@@ -7997,6 +8006,116 @@ echo "$as_me: ffmpeg library is NOT available in the local tree" >&6;}
 
 
 
+# Check whether --with-liblrdf was given.
+if test "${with_liblrdf+set}" = set; then
+  withval=$with_liblrdf; LIBLRDF_ARGUMENT=$withval
+else
+  LIBLRDF_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_LIBLRDF 1
+_ACEOF
+
+   fi
+
+
+
+pkg_failed=no
+{ echo "$as_me:$LINENO: checking for LIBLRDF" >&5
+echo $ECHO_N "checking for LIBLRDF... $ECHO_C" >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LIBLRDF_CFLAGS"; then
+        pkg_cv_LIBLRDF_CFLAGS="$LIBLRDF_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"lrdf >= 0.4.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "lrdf >= 0.4.0") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_LIBLRDF_CFLAGS=`$PKG_CONFIG --cflags "lrdf >= 0.4.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LIBLRDF_LIBS"; then
+        pkg_cv_LIBLRDF_LIBS="$LIBLRDF_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"lrdf >= 0.4.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "lrdf >= 0.4.0") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_LIBLRDF_LIBS=`$PKG_CONFIG --libs "lrdf >= 0.4.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        LIBLRDF_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "lrdf >= 0.4.0"`
+        else
+	        LIBLRDF_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "lrdf >= 0.4.0"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$LIBLRDF_PKG_ERRORS" >&5
+
+	{ echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+                liblrdf_available_system="no"
+elif test $pkg_failed = untried; then
+	liblrdf_available_system="no"
+else
+	LIBLRDF_CFLAGS=$pkg_cv_LIBLRDF_CFLAGS
+	LIBLRDF_LIBS=$pkg_cv_LIBLRDF_LIBS
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+	liblrdf_available_system="yes"
+fi
+
+   LIBLRDF_SYSTEM_AVAILABLE="no"
+   if test "x$liblrdf_available_system" = "xyes" ; then
+      LIBLRDF_SYSTEM_AVAILABLE="yes"
+      LIBLRDF_SYSTEM_LIBS="$LIBLRDF_LIBS"
+      LIBLRDF_SYSTEM_CXXFLAGS="$LIBLRDF_CFLAGS"
+      LIBLRDF_SYSTEM_CPPSYMBOLS="USE_LIBLRDF"
+      { echo "$as_me:$LINENO: liblrdf available as system library" >&5
+echo "$as_me: liblrdf available as system library" >&6;}
+   fi
+   if test "x$LIBLRDF_SYSTEM_AVAILABLE" = "xno" ; then
+      { echo "$as_me:$LINENO: liblrdf NOT available as system library" >&5
+echo "$as_me: liblrdf NOT available as system library" >&6;}
+   fi
+
+
+   LIBLRDF_LOCAL_AVAILABLE="no"
+   { echo "$as_me:$LINENO: liblrdf is NOT available in the local tree" >&5
+echo "$as_me: liblrdf is NOT available in the local tree" >&6;}
+
+
+
 { echo "$as_me:$LINENO: Figuring out what libraries to enable" >&5
 echo "$as_me: Figuring out what libraries to enable" >&6;}
 
@@ -9684,13 +9803,13 @@ AVCODEC_CFLAGS!$AVCODEC_CFLAGS$ac_delim
 AVCODEC_LIBS!$AVCODEC_LIBS$ac_delim
 AVFORMAT_CFLAGS!$AVFORMAT_CFLAGS$ac_delim
 AVFORMAT_LIBS!$AVFORMAT_LIBS$ac_delim
+LIBLRDF_CFLAGS!$LIBLRDF_CFLAGS$ac_delim
+LIBLRDF_LIBS!$LIBLRDF_LIBS$ac_delim
 build!$build$ac_delim
 build_cpu!$build_cpu$ac_delim
 build_vendor!$build_vendor$ac_delim
 build_os!$build_os$ac_delim
 host!$host$ac_delim
-host_cpu!$host_cpu$ac_delim
-host_vendor!$host_vendor$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -9732,6 +9851,8 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+host_cpu!$host_cpu$ac_delim
+host_vendor!$host_vendor$ac_delim
 host_os!$host_os$ac_delim
 JACK_CFLAGS!$JACK_CFLAGS$ac_delim
 JACK_LIBS!$JACK_LIBS$ac_delim
@@ -9739,7 +9860,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 5; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 7; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
