@@ -43,8 +43,10 @@ effects from this one class.
 #include "LadspaEffect.h"       // This class's header file
 #include "../Internat.h"
 
-LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data)
-{
+LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data,
+                           const std::set<wxString>& categories)
+   : mCategories(categories) {
+   
    mData = data;
    pluginName = LAT1CTOWX(mData->Name);
 
@@ -151,7 +153,7 @@ wxString LadspaEffect::GetEffectName()
 
 std::set<wxString> LadspaEffect::GetEffectCategories()
 {
-   return std::set<wxString>();
+   return mCategories;
 }
 
 wxString LadspaEffect::GetEffectIdentifier()

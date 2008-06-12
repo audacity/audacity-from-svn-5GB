@@ -87,11 +87,14 @@ class EffectManager {
        will not be modified, otherwise the function will return true. */
    bool AddCategoryParent(EffectCategory* child, EffectCategory* parent);
    
+   /** Freeze the subcategory relations between all categories added so far. */
+   void FreezeCategories();
+   
    /** Return the set of all root categories, i.e. the ones without parents. */
-   const CategorySet& GetRootCategories();
+   const CategorySet& GetRootCategories() const;
    
    /** Return the set of all uncategorised effects. */
-   EffectSet GetUnsortedEffects(int flags = ALL_EFFECTS);
+   EffectSet GetUnsortedEffects(int flags = ALL_EFFECTS) const;
 
 #endif
 
