@@ -100,7 +100,7 @@ public:
    virtual std::set<wxString> GetEffectCategories()
    {
      std::set<wxString> result;
-     result.insert(wxT("http://lv2plug.in/ns/lv2core#UtilityPlugin"));
+     result.insert(wxT("http://lv2plug.in/ns/lv2core#DynamicsPlugin"));
      return result;
    }
 

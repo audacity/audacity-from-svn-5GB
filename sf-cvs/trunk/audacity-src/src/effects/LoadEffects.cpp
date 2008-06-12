@@ -182,7 +182,21 @@ void LoadEffects()
    em.AddCategoryParent(exp, dyn);
    em.AddCategoryParent(lim, dyn);
    em.AddCategoryParent(gate, dyn);
+   
+   // We also add a couple of categories for internal use. These are not
+   // in lv2.ttl.
 
+#define ATEAM "http://audacityteam.org/namespace#"
+   
+   CatPtr nrm = em.AddCategory(wxT(ATEAM) wxT("NoiseRemoval"),
+                               _("Noise Removal"));
+   CatPtr pnt = em.AddCategory(wxT(ATEAM) wxT("PitchAndTempo"),
+                               _("Pitch and Tempo"));
+   CatPtr tim = em.AddCategory(wxT(ATEAM) wxT("TimelineChanger"),
+                               _("Timeline Changer"));
+   em.AddCategoryParent(nrm, util);
+   em.AddCategoryParent(tim, util);
+   
 #endif
    
    // Generate menu

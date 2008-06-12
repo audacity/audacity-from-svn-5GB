@@ -22,13 +22,14 @@ void CreateMenusAndCommands();
 
 #ifdef EFFECT_CATEGORIES
 
-// Generate submenus for the categories that contain more than one effect
-// and return the effects from the categories that only contain one single
-// effect so the caller can add them to the current menu.
+/** Generate submenus for the categories that contain more than one effect
+    and return the effects from the categories that do not contain more than
+    submenuThreshold effects so the caller can add them to the current menu. */
 EffectSet CreateEffectSubmenus(CommandManager* c, 
-                               const CategorySet& categories, int flags);
+                               const CategorySet& categories, int flags,
+                               unsigned submenuThreshold = 1);
 
-// Add the set of effects to the current menu.
+/** Add the set of effects to the current menu. */
 void AddEffectsToMenu(CommandManager* c, const EffectSet& effects);
 
 #endif

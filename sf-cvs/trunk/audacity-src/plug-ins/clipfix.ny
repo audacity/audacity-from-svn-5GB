@@ -1,7 +1,7 @@
 ;nyquist plug-in
 ;version 1
 ;type process
-;categories "http://lv2plug.in/ns/lv2core#UtilityPlugin"
+;categories "http://audacityteam.org/namespace#NoiseRemoval"
 ;name "Clip Fix..."
 ;action "Reconstructing clips..."
 ;info "Designed and implemented by Benjamin Schwartz.\n\nClip Fix attempts to reconstruct clipped regions by interpolating the\nlost signal. Before use, reduce amplification by 10 dB to give room for\nthe reconstruction. 'Threshold' is how close to the maximum sample\nmagnitude any sample must be to be considered clipped. If processing\nis slow, select only a few seconds of clipped audio at a time."    
