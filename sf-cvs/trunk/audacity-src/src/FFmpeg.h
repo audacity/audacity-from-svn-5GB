@@ -33,6 +33,7 @@ extern "C" {
 #define __STDC_CONSTANT_MACROS
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
+#include <libavutil/fifo.h>
 }
 #include "Audacity.h"
 /* rather earlier than normal, but pulls in config*.h and other program stuff
@@ -46,6 +47,8 @@ extern "C" {
 // if you needed them, any other audacity header files would go here
 
 #define INITDYN(w,f) if ((*(void**)&this->f=(void*)w->GetSymbol(wxT(#f))) == NULL) return false
+
+void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl);
 
 class FFmpegLibs
 {
@@ -63,7 +66,7 @@ public:
    AVCodec*          (*avcodec_find_decoder)          (enum CodecID id);
    AVCodec*          (*avcodec_find_decoder_by_name)  (const char *name);
    void              (*avcodec_string)                (char *buf, int buf_size, AVCodecContext *enc, int encode);
-   void              (*avcodec_get_context_defaults)  (AVCodecContext *s) ;
+   void              (*avcodec_get_context_defaults)  (AVCodecContext *s);
    AVCodecContext*   (*avcodec_alloc_context)         (void);
    void              (*avcodec_get_frame_defaults)    (AVFrame *pic);
    AVFrame*          (*avcodec_alloc_frame)           (void);
@@ -84,8 +87,28 @@ public:
    int               (*av_close_input_file)           (AVFormatContext *s);
    int               (*av_index_search_timestamp)     (AVStream *st, int64_t timestamp, int flags);
    int               (*av_write_header)               (AVFormatContext *s);
-   int               (*av_interleaved_write_frame)    (AVFormatContext *s, AVPacket *pkt);
    AVInputFormat*    (*av_iformat_next)               (AVInputFormat *f);
+   int               (*av_set_parameters)             (AVFormatContext *s, AVFormatParameters *ap);
+   int               (*url_fopen)                     (ByteIOContext **s, const char *filename, int flags);
+   int               (*url_fclose)                    (ByteIOContext *s);
+   int               (*url_fsize)                     (ByteIOContext *s);
+   AVStream*         (*av_new_stream)                 (AVFormatContext *s, int id);
+   AVFormatContext*  (*av_alloc_format_context)       (void);
+   AVOutputFormat*   (*guess_format)                  (const char *short_name, const char *filename, const char *mime_type);
+   int               (*av_write_trailer)              (AVFormatContext *s);
+   int               (*av_interleaved_write_frame)    (AVFormatContext *s, AVPacket *pkt);
+   int               (*av_write_frame)    (AVFormatContext *s, AVPacket *pkt);
+   void              (*av_init_packet)                (AVPacket *pkt);
+   int               (*av_fifo_init)                  (AVFifoBuffer *f, int size);
+   void              (*av_fifo_free)                  (AVFifoBuffer *f);
+   int               (*av_fifo_read)                  (AVFifoBuffer *f, uint8_t *buf, int buf_size);
+   int               (*av_fifo_size)                  (AVFifoBuffer *f);
+   int               (*av_fifo_generic_write)         (AVFifoBuffer *f, void *src, int size, int (*func)(void*, void*, int));
+   void*             (*av_malloc)                     (unsigned int size);
+   void              (*av_freep)                      (void *ptr);
+   int64_t           (*av_rescale_q)                  (int64_t a, AVRational bq, AVRational cq);
+
+
 
    bool LoadLibs(wxWindow *parent, bool showerr);
    bool ValidLibsLoaded();
