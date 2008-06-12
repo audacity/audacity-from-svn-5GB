@@ -86,7 +86,7 @@ void MeterToolBar::Populate()
                              true,
                              wxDefaultPosition,
                              wxSize( 130, 55 ) );
-   mPlayMeter->SetName( _("Record Meter"));
+   mRecordMeter->SetName( _("Record Meter"));
    mRecordMeter->SetLabel( _("Meter-Record") );
    mSizer->Add( mRecordMeter, wxGBPosition( 0, 1 ), wxDefaultSpan, wxEXPAND );
 
