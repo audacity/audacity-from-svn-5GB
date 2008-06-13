@@ -83,7 +83,7 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
    virtual void SaveXML(XMLWriter &xmlFile);
 
    ///Reconstructs from XML a ODPCMAliasBlockFile and reschedules it for OD loading
-   static BlockFile *ODPCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs);
+   static BlockFile *BuildFromXML(DirManager &dm, const wxChar **attrs);
 
    ///Writes the summary file if summary data is available
    virtual void Recover(void);
