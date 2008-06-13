@@ -327,9 +327,9 @@ class AUDACITY_DLL_API WaveTrack: public Track {
 
    void GetDisplayBounds(float *min, float *max);
    void SetDisplayBounds(float min, float max);
+   
 
  protected:
-
    //
    // Protected variables
    //

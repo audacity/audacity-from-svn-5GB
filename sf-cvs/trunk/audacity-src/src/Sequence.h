@@ -17,6 +17,7 @@
 #include "SampleFormat.h"
 #include "xml/XMLTagHandler.h"
 #include "xml/XMLWriter.h"
+#include "ODTaskThread.h"
 
 typedef int sampleCount;
 
@@ -71,7 +72,7 @@ class Sequence: public XMLTagHandler {
    bool Set(samplePtr buffer, sampleFormat format,
             sampleCount start, sampleCount len);
 
-   bool GetWaveDisplay(float *min, float *max, float *rms,
+   bool GetWaveDisplay(float *min, float *max, float *rms,int* bl,
                        int len, sampleCount *where,
                        double samplesPerPixel);
 
@@ -151,6 +152,10 @@ class Sequence: public XMLTagHandler {
    //
 
    BlockArray *GetBlockArray() {return mBlock;}
+   
+   ///
+   void LockDeleteUpdateMutex(){mDeleteUpdateMutex.Lock();}
+   void UnlockDeleteUpdateMutex(){mDeleteUpdateMutex.Unlock();}
 
  private:
 
@@ -174,6 +179,9 @@ class Sequence: public XMLTagHandler {
    sampleCount   mMaxSamples;
 
    bool          mErrorOpening;
+   
+   ///To block the Delete() method against the ODCalcSummaryTask::Update() method
+   ODLock   mDeleteUpdateMutex;
 
    //
    // Private methods

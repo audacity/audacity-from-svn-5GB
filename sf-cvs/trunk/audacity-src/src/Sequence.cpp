@@ -553,8 +553,11 @@ bool Sequence::AppendAlias(wxString fullPath,
 
    newBlock->start = mNumSamples;
    newBlock->f =
+#ifdef EXPERIMENTAL_ONDEMAND
+      mDirManager->NewODAliasBlockFile(fullPath, start, len, channel);   
+#else
       mDirManager->NewAliasBlockFile(fullPath, start, len, channel);
-
+#endif
    mBlock->Add(newBlock);
    mNumSamples += newBlock->f->GetLength();
 
@@ -967,7 +970,7 @@ bool Sequence::Set(samplePtr buffer, sampleFormat format,
    return ConsistencyCheck(wxT("Set"));
 }
 
-bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
+bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
                               int len, sampleCount *where,
                               double samplesPerPixel)
 {
@@ -986,7 +989,7 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
       s1 = mNumSamples;
 
    sampleCount srcX = s0;
-
+   
    unsigned int block0 = FindBlock(s0);
 
    float *temp = new float[mMaxSamples];
@@ -997,6 +1000,7 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
    float sumsq = float(0.0);
    unsigned int b = block0;
    int jcount = 0;
+   int blockStatus;
 
    while (srcX < s1) {
       // Get more samples
@@ -1014,14 +1018,35 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
       case 1:
          Read((samplePtr)temp, floatSample, mBlock->Item(b),
               srcX - mBlock->Item(b)->start, num);
+              
+         blockStatus=b;
          break;
       case 256:
-         mBlock->Item(b)->f->Read256(temp,
+         //check to see if summary data has been computed
+         if(mBlock->Item(b)->f->IsSummaryAvailable())
+         {
+            mBlock->Item(b)->f->Read256(temp,
                  (srcX - mBlock->Item(b)->start) / divisor, num);
+            blockStatus=b;
+         }
+         else
+         {
+            //otherwise, mark the display as not yet computed
+            blockStatus=-b -1;
+         }
          break;
       case 65536:
-         mBlock->Item(b)->f->Read64K(temp,
+         //check to see if summary data has been computed
+         if(mBlock->Item(b)->f->IsSummaryAvailable())
+         {
+            mBlock->Item(b)->f->Read64K(temp,
                  (srcX - mBlock->Item(b)->start) / divisor, num);
+            blockStatus=b;
+         }
+         else
+         {
+            blockStatus=-b -1;
+         }
          break;
       }
       
@@ -1048,6 +1073,7 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
             if (pixel > 0) {
                min[pixel - 1] = theMin;
                max[pixel - 1] = theMax;
+               bl[pixel - 1] = blockStatus;//MC
                if (jcount > 0)
                   rms[pixel - 1] = (float)sqrt(sumsq / jcount);
                else
@@ -1121,6 +1147,7 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
    while (pixel <= len) {
       min[pixel - 1] = theMin;
       max[pixel - 1] = theMax;
+      bl[pixel - 1] = blockStatus;//mchinen
       if (jcount > 0)
          rms[pixel - 1] = (float)sqrt(sumsq / jcount);
       else
@@ -1269,10 +1296,17 @@ BlockArray *Sequence::Blockify(samplePtr buffer, sampleCount len)
 
 bool Sequence::Delete(sampleCount start, sampleCount len)
 {
+
+
    if (len == 0)
       return true;
    if (len < 0 || start < 0 || start >= mNumSamples)
       return false;
+      
+   //TODO: add a ref-deref mechanism to SeqBlock/BlockArray so we don't have to make this a critical section.
+   //On-demand threads iterate over the mBlocks and the GUI thread deletes them, so for now put a mutex here over 
+   //both functions,
+   LockDeleteUpdateMutex();
 
    unsigned int numBlocks = mBlock->Count();
    unsigned int newNumBlocks = 0;
@@ -1312,6 +1346,8 @@ bool Sequence::Delete(sampleCount start, sampleCount len)
       delete b;
 
       mNumSamples -= len;
+      UnlockDeleteUpdateMutex();
+      
       return ConsistencyCheck(wxT("Delete - branch one"));
    }
 
@@ -1475,6 +1511,8 @@ bool Sequence::Delete(sampleCount start, sampleCount len)
 
    // Update total number of samples and do a consistency check.
    mNumSamples -= len;
+   
+   UnlockDeleteUpdateMutex();
    return ConsistencyCheck(wxT("Delete - branch two"));
 }
 

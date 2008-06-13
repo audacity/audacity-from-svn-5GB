@@ -119,7 +119,7 @@ public:
    // Getting high-level data from the for screen display and
    // clipping calculations
    //
-   bool GetWaveDisplay(float *min, float *max, float *rms, sampleCount *where,
+   bool GetWaveDisplay(float *min, float *max, float *rms,int* bl, sampleCount *where,
                        int numPixels, double t0, double pixelsPerSecond);
    bool GetSpectrogram(float *buffer, sampleCount *where,
                        int numPixels,

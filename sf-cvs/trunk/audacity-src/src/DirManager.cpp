@@ -67,6 +67,7 @@
 #include "blockfile/SimpleBlockFile.h"
 #include "blockfile/SilentBlockFile.h"
 #include "blockfile/PCMAliasBlockFile.h"
+#include "blockfile/ODPCMAliasBlockFile.h"
 #include "DirManager.h"
 #include "Internat.h"
 #include "Project.h"
@@ -768,6 +769,22 @@ BlockFile *DirManager::NewAliasBlockFile(
    return newBlockFile;
 }
 
+BlockFile *DirManager::NewODAliasBlockFile(
+                                 wxString aliasedFile, sampleCount aliasStart,
+                                 sampleCount aliasLen, int aliasChannel)
+{
+   wxFileName fileName = MakeBlockFileName();
+
+   BlockFile *newBlockFile =
+       new ODPCMAliasBlockFile(fileName,
+                             aliasedFile, aliasStart, aliasLen, aliasChannel);
+
+   blockFileHash[fileName.GetName()]=newBlockFile;
+   aliasList.Add(aliasedFile);
+
+   return newBlockFile;
+}
+
 // Adds one to the reference count of the block file,
 // UNLESS it is "locked", then it makes a new copy of
 // the BlockFile.
@@ -784,10 +801,15 @@ BlockFile *DirManager::CopyBlockFile(BlockFile *b)
    // as the existing file
    newFile.SetExt(b->GetFileName().GetExt());
 
-   if( !wxCopyFile(b->GetFileName().GetFullPath(),
+   //some block files such as ODPCMAliasBlockFIle don't always have
+   //a summary file, so we should check before we copy.
+   if(b->IsSummaryAvailable())
+   {
+      if( !wxCopyFile(b->GetFileName().GetFullPath(),
                    newFile.GetFullPath()) )
-      return NULL;
-
+         return NULL;
+   }
+   
    BlockFile *b2 = b->Copy(newFile);
 
    if (b2 == NULL)
@@ -816,6 +838,8 @@ bool DirManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       pBlockFile = SimpleBlockFile::BuildFromXML(*this, attrs);
    else if( !wxStricmp(tag, wxT("pcmaliasblockfile")) )
       pBlockFile = PCMAliasBlockFile::BuildFromXML(*this, attrs);
+   else if( !wxStricmp(tag, wxT("odpcmaliasblockfile")) )
+      pBlockFile = ODPCMAliasBlockFile::BuildFromXML(*this, attrs);
    else if( !wxStricmp(tag, wxT("blockfile")) ||
             !wxStricmp(tag, wxT("legacyblockfile")) ) {
       // Support Audacity version 1.1.1 project files
@@ -889,20 +913,43 @@ bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
    AssignFile(newFileName,f->mFileName.GetFullName(),FALSE); 
 
    if ( !(newFileName == f->mFileName) ) {
-      bool ok = wxRenameFile(f->mFileName.GetFullPath(),
+      bool ok = f->IsSummaryAvailable() && wxRenameFile(f->mFileName.GetFullPath(),
                              newFileName.GetFullPath());
 
       if (ok)
          f->mFileName = newFileName;
       else {
-         ok = wxCopyFile(f->mFileName.GetFullPath(),
-                         newFileName.GetFullPath());
-         if (ok) {
+         
+         //check to see that summary exists before we copy.
+         bool summaryExisted =  f->IsSummaryAvailable();
+         if( summaryExisted)
+         {
+            if(!wxCopyFile(f->mFileName.GetFullPath(),
+                         newFileName.GetFullPath()))
+               return false;
             wxRemoveFile(f->mFileName.GetFullPath());
-            f->mFileName = newFileName;
          }
-         else
-            return false;
+         f->mFileName = newFileName;
+            
+         //there is a small chance that the summary has begun to be computed on a different thread with the
+         //original filename.  we need to catch this case by waiting for it to finish and then copy.
+         if(!summaryExisted && (f->IsSummaryAvailable()||f->IsSummaryBeingComputed()))
+         {
+            //block to make sure OD files don't get written while we are changing file names.
+            //(It is important that OD files set this lock while computing their summary files.)
+            while(f->IsSummaryBeingComputed() && !f->IsSummaryAvailable())
+               ::wxMilliSleep(50);
+            
+            //check to make sure the oldfile exists.  
+            //if it doesn't, we can assume it was written to the new name, which is fine.
+            if(wxFileExists(oldFileName.GetFullPath()))
+            {
+               ok = wxCopyFile(oldFileName.GetFullPath(),
+                        newFileName.GetFullPath());
+               if(ok)
+                  wxRemoveFile(f->mFileName.GetFullPath());
+            }
+         }
       }
    }
 
@@ -912,19 +959,62 @@ bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
 bool DirManager::CopyToNewProjectDirectory(BlockFile *f)
 {
    wxFileName newFileName;
+   wxFileName oldFileName=f->mFileName;
    AssignFile(newFileName,f->mFileName.GetFullName(),FALSE); 
 
+   //mchinen:5/31/08:adding OD support 
+   //But also I'm also wondering if we need to delete the copied file here, while i'm reimplementing.
+   //see original code below - I don't see where that file will ever get delted or used again.
    if ( !(newFileName == f->mFileName) ) {
-      bool ok = wxCopyFile(f->mFileName.GetFullPath(),
-                           newFileName.GetFullPath());
-      if (ok) {
-         f->mFileName = newFileName;
-      }
-      else
-         return false;
-   }
+      bool ok=true;
+      bool summaryExisted =  f->IsSummaryAvailable();
+      
+      if( summaryExisted)
+      {   
+        if(!wxCopyFile(f->mFileName.GetFullPath(),
+                        newFileName.GetFullPath()))
+               return false;
+         //TODO:make sure we shouldn't delete               
+         //   wxRemoveFile(f->mFileName.GetFullPath());
 
+      }  
+        
+      f->mFileName = newFileName;
+            
+      //there is a small chance that the summary has begun to be computed on a different thread with the
+      //original filename.  we need to catch this case by waiting for it to finish and then copy.
+      if(!summaryExisted && (f->IsSummaryAvailable()||f->IsSummaryBeingComputed()))
+      {
+         //block to make sure OD files don't get written while we are changing file names.
+         //(It is important that OD files set this lock while computing their summary files.)
+         while(f->IsSummaryBeingComputed() && !f->IsSummaryAvailable())
+            ::wxMilliSleep(50);
+            
+         //check to make sure the oldfile exists.  
+         //if it doesn't, we can assume it was written to the new name, which is fine.
+         if(wxFileExists(oldFileName.GetFullPath()))
+         {
+            ok = wxCopyFile(oldFileName.GetFullPath(),
+                     newFileName.GetFullPath());
+         //     if(ok)
+         //      wxRemoveFile(f->mFileName.GetFullPath());
+         }
+      }
+   }
    return true;
+//
+//   
+//   if ( !(newFileName == f->mFileName) ) {
+//      bool ok = wxCopyFile(f->mFileName.GetFullPath(),
+//                           newFileName.GetFullPath());
+//      if (ok) {
+//         f->mFileName = newFileName;
+//      }
+//      else
+//         return false;
+//   }
+//
+//   return true;
 }
 
 void DirManager::Ref(BlockFile * f)
@@ -1158,7 +1248,7 @@ int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect)
       wxString key=i->first;
       BlockFile *b=i->second;
       
-      if(b->IsAlias()){
+      if(b->IsAlias() && b->IsSummaryAvailable()){
          /* don't look in hash; that might find files the user moved
             that the Blockfile abstraction can't find itself */
          wxFileName file=MakeBlockFilePath(key);

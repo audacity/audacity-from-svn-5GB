@@ -312,7 +312,9 @@ void TrackList::Clear(bool deleteTracks /* = false */)
    while (head) {
       TrackListNode *temp = head;
       if (deleteTracks)
+      {
          delete head->t;
+      }
       head = head->next;
       delete temp;
    }

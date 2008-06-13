@@ -719,6 +719,12 @@
 		17FDBD01098BFF4E00BCEF32 /* os_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 170732F90988D6AB008541CC /* os_types.h */; };
 		17FDBD02098BFF4E00BCEF32 /* bitwise.c in Sources */ = {isa = PBXBuildFile; fileRef = 170733980988D6AC008541CC /* bitwise.c */; };
 		17FDBD03098BFF4E00BCEF32 /* framing.c in Sources */ = {isa = PBXBuildFile; fileRef = 1707339A0988D6AC008541CC /* framing.c */; };
+		1841B50A0E00AD6E00F386E9 /* ODComputeSummaryTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B5000E00AD6E00F386E9 /* ODComputeSummaryTask.cpp */; };
+		1841B50B0E00AD6E00F386E9 /* ODManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B5020E00AD6E00F386E9 /* ODManager.cpp */; };
+		1841B50C0E00AD6E00F386E9 /* ODTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B5040E00AD6E00F386E9 /* ODTask.cpp */; };
+		1841B50D0E00AD6E00F386E9 /* ODTaskThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B5060E00AD6E00F386E9 /* ODTaskThread.cpp */; };
+		1841B50E0E00AD6E00F386E9 /* ODWaveTrackTaskQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B5080E00AD6E00F386E9 /* ODWaveTrackTaskQueue.cpp */; };
+		1841B5110E00AD8D00F386E9 /* ODPCMAliasBlockFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B50F0E00AD8D00F386E9 /* ODPCMAliasBlockFile.cpp */; };
 		280196B10D98171F00BFEECF /* Plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 280196AF0D98171F00BFEECF /* Plugin.h */; };
 		280196B20D98171F00BFEECF /* PluginBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 280196B00D98171F00BFEECF /* PluginBase.h */; };
 		280196B50D98174400BFEECF /* PluginBufferingAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280196B30D98174400BFEECF /* PluginBufferingAdapter.cpp */; };
@@ -1876,6 +1882,18 @@
 		17C8BF52098B654400216F16 /* xlsym.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = xlsym.c; sourceTree = "<group>"; };
 		17C8BF54098B654400216F16 /* xlsys.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = xlsys.c; sourceTree = "<group>"; };
 		17FC86F30994637C0061DC94 /* compile.txt */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; name = compile.txt; path = mac/compile.txt; sourceTree = "<group>"; };
+		1841B5000E00AD6E00F386E9 /* ODComputeSummaryTask.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ODComputeSummaryTask.cpp; path = ondemand/ODComputeSummaryTask.cpp; sourceTree = "<group>"; };
+		1841B5010E00AD6E00F386E9 /* ODComputeSummaryTask.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ODComputeSummaryTask.h; path = ondemand/ODComputeSummaryTask.h; sourceTree = "<group>"; };
+		1841B5020E00AD6E00F386E9 /* ODManager.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ODManager.cpp; path = ondemand/ODManager.cpp; sourceTree = "<group>"; };
+		1841B5030E00AD6E00F386E9 /* ODManager.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ODManager.h; path = ondemand/ODManager.h; sourceTree = "<group>"; };
+		1841B5040E00AD6E00F386E9 /* ODTask.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ODTask.cpp; path = ondemand/ODTask.cpp; sourceTree = "<group>"; };
+		1841B5050E00AD6E00F386E9 /* ODTask.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ODTask.h; path = ondemand/ODTask.h; sourceTree = "<group>"; };
+		1841B5060E00AD6E00F386E9 /* ODTaskThread.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ODTaskThread.cpp; path = ondemand/ODTaskThread.cpp; sourceTree = "<group>"; };
+		1841B5070E00AD6E00F386E9 /* ODTaskThread.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ODTaskThread.h; path = ondemand/ODTaskThread.h; sourceTree = "<group>"; };
+		1841B5080E00AD6E00F386E9 /* ODWaveTrackTaskQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ODWaveTrackTaskQueue.cpp; path = ondemand/ODWaveTrackTaskQueue.cpp; sourceTree = "<group>"; };
+		1841B5090E00AD6E00F386E9 /* ODWaveTrackTaskQueue.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ODWaveTrackTaskQueue.h; path = ondemand/ODWaveTrackTaskQueue.h; sourceTree = "<group>"; };
+		1841B50F0E00AD8D00F386E9 /* ODPCMAliasBlockFile.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ODPCMAliasBlockFile.cpp; sourceTree = "<group>"; };
+		1841B5100E00AD8D00F386E9 /* ODPCMAliasBlockFile.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ODPCMAliasBlockFile.h; sourceTree = "<group>"; };
 		280196AF0D98171F00BFEECF /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = Plugin.h; path = "libvamp/vamp-sdk/Plugin.h"; sourceTree = "<group>"; };
 		280196B00D98171F00BFEECF /* PluginBase.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginBase.h; path = "libvamp/vamp-sdk/PluginBase.h"; sourceTree = "<group>"; };
 		280196B30D98174400BFEECF /* PluginBufferingAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginBufferingAdapter.cpp; path = "libvamp/vamp-sdk/hostext/PluginBufferingAdapter.cpp"; sourceTree = "<group>"; };
@@ -2839,6 +2857,7 @@
 		1790AFC409883BFD008A330A /* src */ = {
 			isa = PBXGroup;
 			children = (
+				1841B4FD0E00AD3D00F386E9 /* ondemand */,
 				174D9025098C78AF00D5909F /* commands */,
 				1790AFDC09883BFD008A330A /* blockfile */,
 				1790AFFD09883BFD008A330A /* effects */,
@@ -3001,6 +3020,8 @@
 		1790AFDC09883BFD008A330A /* blockfile */ = {
 			isa = PBXGroup;
 			children = (
+				1841B50F0E00AD8D00F386E9 /* ODPCMAliasBlockFile.cpp */,
+				1841B5100E00AD8D00F386E9 /* ODPCMAliasBlockFile.h */,
 				1790AFDE09883BFD008A330A /* LegacyAliasBlockFile.cpp */,
 				1790AFDF09883BFD008A330A /* LegacyAliasBlockFile.h */,
 				1790AFE009883BFD008A330A /* LegacyBlockFile.cpp */,
@@ -3630,6 +3651,23 @@
 				17C8BF54098B654400216F16 /* xlsys.c */,
 			);
 			path = xlisp;
+			sourceTree = "<group>";
+		};
+		1841B4FD0E00AD3D00F386E9 /* ondemand */ = {
+			isa = PBXGroup;
+			children = (
+				1841B5000E00AD6E00F386E9 /* ODComputeSummaryTask.cpp */,
+				1841B5010E00AD6E00F386E9 /* ODComputeSummaryTask.h */,
+				1841B5020E00AD6E00F386E9 /* ODManager.cpp */,
+				1841B5030E00AD6E00F386E9 /* ODManager.h */,
+				1841B5040E00AD6E00F386E9 /* ODTask.cpp */,
+				1841B5050E00AD6E00F386E9 /* ODTask.h */,
+				1841B5060E00AD6E00F386E9 /* ODTaskThread.cpp */,
+				1841B5070E00AD6E00F386E9 /* ODTaskThread.h */,
+				1841B5080E00AD6E00F386E9 /* ODWaveTrackTaskQueue.cpp */,
+				1841B5090E00AD6E00F386E9 /* ODWaveTrackTaskQueue.h */,
+			);
+			name = ondemand;
 			sourceTree = "<group>";
 		};
 		28105D9A0AD09FB200BB4269 /* include */ = {
@@ -4733,7 +4771,6 @@
 		1790ABE309883346008A330A /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1790ABE409883346008A330A /* Build configuration list for PBXProject "Audacity" */;
-			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 0;
 			mainGroup = 1790ABE109883346008A330A;
 			productRefGroup = 1790AFB109883B6D008A330A /* Products */;
@@ -5523,6 +5560,12 @@
 				ED3D7FF10DF73889000F43E3 /* EffectManager.cpp in Sources */,
 				283135EC0DFB9D110076D551 /* ImportFFmpeg.cpp in Sources */,
 				283135FF0DFBA2E80076D551 /* FFmpeg.cpp in Sources */,
+				1841B50A0E00AD6E00F386E9 /* ODComputeSummaryTask.cpp in Sources */,
+				1841B50B0E00AD6E00F386E9 /* ODManager.cpp in Sources */,
+				1841B50C0E00AD6E00F386E9 /* ODTask.cpp in Sources */,
+				1841B50D0E00AD6E00F386E9 /* ODTaskThread.cpp in Sources */,
+				1841B50E0E00AD6E00F386E9 /* ODWaveTrackTaskQueue.cpp in Sources */,
+				1841B5110E00AD8D00F386E9 /* ODPCMAliasBlockFile.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

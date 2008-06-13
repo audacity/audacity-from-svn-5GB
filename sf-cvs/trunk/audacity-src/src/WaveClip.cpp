@@ -49,6 +49,7 @@ public:
       min = new float[len];
       max = new float[len];
       rms = new float[len];
+      bl = new int[len];
       where = new sampleCount[len+1];
    }
 
@@ -57,6 +58,7 @@ public:
       delete[] min;
       delete[] max;
       delete[] rms;
+      delete[] bl;
       delete[] where;
    }
 
@@ -68,6 +70,7 @@ public:
    float       *min;
    float       *max;
    float       *rms;
+   int         *bl;
 };
 
 class SpecCache {
@@ -214,7 +217,7 @@ longSampleCount WaveClip::GetEndSample() const
 // clipping calculations
 //
 
-bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,
+bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
                                sampleCount *where,
                                int numPixels, double t0,
                                double pixelsPerSecond)
@@ -228,6 +231,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,
       memcpy(min, mWaveCache->min, numPixels*sizeof(float));
       memcpy(max, mWaveCache->max, numPixels*sizeof(float));
       memcpy(rms, mWaveCache->rms, numPixels*sizeof(float));
+      memcpy(bl, mWaveCache->bl, numPixels*sizeof(int));
       memcpy(where, mWaveCache->where, (numPixels+1)*sizeof(sampleCount));
       return true;
    }
@@ -279,6 +283,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,
             mWaveCache->min[x] = oldCache->min[ox];
             mWaveCache->max[x] = oldCache->max[ox];
             mWaveCache->rms[x] = oldCache->rms[ox];
+            mWaveCache->bl[x] = oldCache->bl[ox];
          } else {
             if (mWaveCache->where[x] < s0) {
                s0 = mWaveCache->where[x];
@@ -302,6 +307,8 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,
          if (mWaveCache->where[a+1] > numSamples)
             break;
 
+      //compute the values that are outside the overlap from scratch.  
+      //mchinen:Not sure why we don't just reuse Sequence::GetWaveDisplay() 
       if (a < p1) {
          int i;
 
@@ -347,6 +354,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,
                mWaveCache->min[i] = min;
                mWaveCache->max[i] = max;
                mWaveCache->rms[i] = (float)sqrt(sumsq / len);
+               mWaveCache->bl[i] = 1; //for now just fake it.  
 
                if (seqFormat != floatSample)
                   delete[] b;
@@ -362,6 +370,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,
          if (!mSequence->GetWaveDisplay(&mWaveCache->min[p0],
                                         &mWaveCache->max[p0],
                                         &mWaveCache->rms[p0],
+                                        &mWaveCache->bl[p0],
                                         p1-p0,
                                         &mWaveCache->where[p0],
                                         mRate / pixelsPerSecond))
@@ -375,6 +384,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,
    memcpy(min, mWaveCache->min, numPixels*sizeof(float));
    memcpy(max, mWaveCache->max, numPixels*sizeof(float));
    memcpy(rms, mWaveCache->rms, numPixels*sizeof(float));
+   memcpy(bl, mWaveCache->bl, numPixels*sizeof(int));
    memcpy(where, mWaveCache->where, (numPixels+1)*sizeof(sampleCount));
 
    return true;

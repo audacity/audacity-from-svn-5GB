@@ -9,6 +9,7 @@
 ## --------------------- ##
 ## M4sh Initialization.  ##
 ## --------------------- ##
+PATH=$PATH:/sw/bin:/sw/lib;
 
 # Be more Bourne compatible
 DUALCASE=1; export DUALCASE # for MKS sh

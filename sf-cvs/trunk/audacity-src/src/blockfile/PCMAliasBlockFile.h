@@ -25,6 +25,11 @@ class PCMAliasBlockFile : public AliasBlockFile
    PCMAliasBlockFile(wxFileName baseFileName,
                      wxFileName aliasedFile, sampleCount aliasStart,
                      sampleCount aliasLen, int aliasChannel);
+   ///Constructs a PCMAliasBlockFile with the option of not writing to disk
+   PCMAliasBlockFile(wxFileName fileName,
+                     wxFileName aliasedFile, sampleCount aliasStart,
+                     sampleCount aliasLen, int aliasChannel,bool writeSummary);                  
+                     
    PCMAliasBlockFile(wxFileName existingFileName,
                      wxFileName aliasedFile, sampleCount aliasStart,
                      sampleCount aliasLen, int aliasChannel,

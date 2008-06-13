@@ -99,6 +99,13 @@ class BlockFile {
 
    /// Returns TRUE if this block references another disk file
    virtual bool IsAlias() { return false; }
+   
+   /// Returns TRUE if this block's complete summary has been computed and is ready (for OD)
+   virtual bool IsSummaryAvailable(){return true;}
+   
+   /// Returns TRUE if the summary has not yet been written, but is actively being computed and written to disk 
+   virtual bool IsSummaryBeingComputed(){return false;}
+   
    /// Create a new BlockFile identical to this, using the given filename
    virtual BlockFile *Copy(wxFileName newFileName) = 0;
 
@@ -119,9 +126,11 @@ class BlockFile {
  private:
 
    friend class DirManager;
-
+   //needed for Ref/Deref access.
+   friend class ODComputeSummaryTask;
    virtual void Ref();
    virtual bool Deref();
+   virtual int RefCount(){return mRefCount;}
 
  protected:
    /// Calculate summary data for the given sample data

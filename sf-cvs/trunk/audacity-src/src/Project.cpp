@@ -119,6 +119,8 @@ scroll information.  It also has some status flags.
 #include "export/Export.h"
 #include "FileNames.h"
 #include "BlockFile.h"
+#include "ODManager.h"
+
 
 #include "Theme.h"
 #include "AllThemeResources.h"
@@ -535,6 +537,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mImportedDependencies(false)
 {
 
+
+
+   
    int widths[] = {-1, 130};
    mStatusBar = CreateStatusBar(2);
    mStatusBar->SetStatusWidths(2, widths);
@@ -768,6 +773,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 //   mTrackPanel->SetDropTarget(new AudacityDropTarget(this));
    mTrackPanel->SetDropTarget(new DropTarget(this));
 #endif
+
+
 }
 
 AudacityProject::~AudacityProject()
@@ -2544,7 +2551,9 @@ void AudacityProject::AddImportedTracks(wxString fileName,
          {
             SeqBlock* block = clip->GetSequence()->GetBlockArray()->Item(0);
             if (block->f->IsAlias())
+            {
                mImportedDependencies = true;
+            }
          }
       }
    }

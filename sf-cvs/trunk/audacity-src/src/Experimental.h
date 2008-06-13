@@ -48,6 +48,11 @@
 //#define EXPERIMENTAL_VOICE_DETECTION
 #define EXPERIMENTAL_SMART_RECORD
 
+//uncomment this line to enable On-Demand loading of PCM files.  
+//for now it is incomplete so it will load instantly but 
+//the display of summary data will not be there (one can still see sample data if zoomed in)
+#define EXPERIMENTAL_ONDEMAND
+
 //Changes thanks to Andreas Micheler
 //This one looks pretty good and uses existing code for the log chirp, just adds an interface.
 //Perhaps it should not be included in the mainstream until the log spectrogram scale is ready as well
