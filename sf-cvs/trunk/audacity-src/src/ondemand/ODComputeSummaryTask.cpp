@@ -19,7 +19,7 @@ updating the ODPCMAliasBlockFile and the GUI of the newly available data.
 
 
 #include "ODComputeSummaryTask.h"
-#include "ODPCMAliasBlockFile.h"
+#include "../blockfile/ODPCMAliasBlockFile.h"
 #include <wx/wx.h>
 
 ///Creates a new task that computes summaries for a wavetrack that needs to be specified through SetWaveTrack()

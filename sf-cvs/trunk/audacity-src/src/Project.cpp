@@ -119,7 +119,7 @@ scroll information.  It also has some status flags.
 #include "export/Export.h"
 #include "FileNames.h"
 #include "BlockFile.h"
-#include "ODManager.h"
+#include "ondemand/ODManager.h"
 
 
 #include "Theme.h"

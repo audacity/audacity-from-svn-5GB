@@ -1758,6 +1758,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\blockfile\ODPCMAliasBlockFile.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\blockfile\ODPCMAliasBlockFile.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\blockfile\PCMAliasBlockFile.cpp"
 				>
 			</File>
@@ -1915,6 +1923,50 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\effects\vamp\VampEffect.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="ondemand"
+			>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODComputeSummaryTask.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODComputeSummaryTask.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODManager.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODTask.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODTask.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODTaskThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODTaskThread.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODWaveTrackTaskQueue.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODWaveTrackTaskQueue.h"
 				>
 			</File>
 		</Filter>

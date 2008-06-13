@@ -37,8 +37,8 @@
 
 #include "sndfile.h"
 
-#include "ODManager.h"
-#include "ODComputeSummaryTask.h"
+#include "../ondemand/ODManager.h"
+#include "../ondemand/ODComputeSummaryTask.h"
 
 #ifndef SNDFILE_1
 #error Requires libsndfile 1.0 or higher

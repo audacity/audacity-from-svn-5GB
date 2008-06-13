@@ -36,8 +36,8 @@ are implemented here to behave when the data is not available yet.
 #define __AUDACITY_ODPCMALIASBLOCKFILE__
 
 #include "PCMAliasBlockFile.h"
-#include "BlockFile.h"
-#include "ODTaskThread.h"
+#include "../BlockFile.h"
+#include "../ondemand/ODTaskThread.h"
 #include "../DirManager.h"
 #include <wx/thread.h>
 
