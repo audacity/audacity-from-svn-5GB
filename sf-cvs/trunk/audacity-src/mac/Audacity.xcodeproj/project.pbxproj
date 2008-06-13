@@ -4771,6 +4771,7 @@
 		1790ABE309883346008A330A /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1790ABE409883346008A330A /* Build configuration list for PBXProject "Audacity" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 0;
 			mainGroup = 1790ABE109883346008A330A;
 			productRefGroup = 1790AFB109883B6D008A330A /* Products */;
@@ -5955,7 +5956,7 @@
 				CONFIG_STATIC = yes;
 				CONFIG_UNICODE = yes;
 				DEAD_CODE_STRIPPING = YES;
-				FFMPEG_CFLAGS = "-I$(FFMPEG_PREFIX)/include -D__STDC_CONSTANT_MACROS";
+				FFMPEG_CFLAGS = "-I../lib-src/ffmpeg -D__STDC_CONSTANT_MACROS";
 				FFMPEG_CXXFLAGS = "$(FFMPEG_CFLAGS)";
 				FFMPEG_PREFIX = /usr/local;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -6115,7 +6116,7 @@
 				CONFIG_STATIC = no;
 				CONFIG_UNICODE = yes;
 				DEAD_CODE_STRIPPING = YES;
-				FFMPEG_CFLAGS = "-I$(FFMPEG_PREFIX)/include -D__STDC_CONSTANT_MACROS";
+				FFMPEG_CFLAGS = "-I../lib-src/ffmpeg -D__STDC_CONSTANT_MACROS";
 				FFMPEG_CXXFLAGS = "$(FFMPEG_CFLAGS)";
 				FFMPEG_PREFIX = /usr/local;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -6126,7 +6127,7 @@
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				TOPLEVEL = ..;
-				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-debug-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
+				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-debug-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
 				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -lwx_macud_html-$(WX_VER)  -lwx_macud_adv-$(WX_VER) -lwx_macud_core-$(WX_VER) -lwx_base_carbonud_net-$(WX_VER) -lwx_base_carbonud-$(WX_VER)";
@@ -6450,7 +6451,7 @@
 				CONFIG_STATIC = no;
 				CONFIG_UNICODE = yes;
 				DEAD_CODE_STRIPPING = YES;
-				FFMPEG_CFLAGS = "-I$(FFMPEG_PREFIX)/include -D__STDC_CONSTANT_MACROS";
+				FFMPEG_CFLAGS = "-I../lib-src/ffmpeg -D__STDC_CONSTANT_MACROS";
 				FFMPEG_CXXFLAGS = "$(FFMPEG_CFLAGS)";
 				FFMPEG_PREFIX = /usr/local;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -6461,7 +6462,7 @@
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				TOPLEVEL = ..;
-				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
+				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-release-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
 				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -lwx_macu_html-$(WX_VER)  -lwx_macu_adv-$(WX_VER) -lwx_macu_core-$(WX_VER) -lwx_base_carbonu_net-$(WX_VER) -lwx_base_carbonu-$(WX_VER)";
@@ -7024,7 +7025,7 @@
 				CONFIG_STATIC = yes;
 				CONFIG_UNICODE = yes;
 				DEAD_CODE_STRIPPING = YES;
-				FFMPEG_CFLAGS = "-I$(FFMPEG_PREFIX)/include -D__STDC_CONSTANT_MACROS";
+				FFMPEG_CFLAGS = "-I../lib-src/ffmpeg -D__STDC_CONSTANT_MACROS";
 				FFMPEG_CXXFLAGS = "$(FFMPEG_CFLAGS)";
 				FFMPEG_PREFIX = /usr/local;
 				GCC_DYNAMIC_NO_PIC = NO;
