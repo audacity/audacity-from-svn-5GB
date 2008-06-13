@@ -78,6 +78,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "SplashDialog.h"
 #include "FFT.h"
 #include "BlockFile.h"
+#include "ODManager.h"
 
 #include "LoadModules.h"
 
@@ -258,6 +259,9 @@ void QuitAudacity(bool bForce)
    gParentFrame = NULL;
 
    CloseScreenshotTools();
+   
+   //release ODManager Threads
+   ODManager::Quit();
 
       //Delete the clipboard
    AudacityProject::DeleteClipboard();
@@ -573,6 +577,7 @@ void AudacityApp::InitLang( const wxString & lang )
 // main frame
 bool AudacityApp::OnInit()
 {
+
    mLogger = NULL;
    #if USE_QUICKTIME
    ::InitQuicktime();
@@ -715,6 +720,8 @@ bool AudacityApp::OnInit()
       return false;
    }
 
+
+
    // More initialization
    InitCleanSpeech();
 
@@ -722,6 +729,10 @@ bool AudacityApp::OnInit()
    InitAudioIO();
 
    LoadEffects();
+#ifdef EXPERIMENTAL_ONDEMAND
+   //The On-Demand managerr initializes the first time its singleton is accessed
+   ODManager::Instance();
+#endif
 
 #ifdef __WXMAC__
 
@@ -752,7 +763,10 @@ bool AudacityApp::OnInit()
    SetExitOnFrameDelete(true);
 
 
+
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+
+
 
    project->Show( false );
    wxWindow * pWnd = MakeHijackPanel() ;
@@ -766,6 +780,8 @@ bool AudacityApp::OnInit()
       SetTopWindow(project);
       project->Show( true );
    }
+
+
 
    delete temporarywindow;
    

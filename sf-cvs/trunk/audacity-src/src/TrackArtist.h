@@ -187,7 +187,7 @@ class AUDACITY_DLL_API TrackArtist {
    void DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                       float zoomMin, float zoomMax,
                       double *envValues,
-                      float *min, float *max, float *rms,
+                      float *min, float *max, float *rms,int* bl,
                       bool dB, bool muted);
 
    void DrawNegativeOffsetTrackArrows(wxDC &dc, wxRect &r);

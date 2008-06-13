@@ -25,6 +25,7 @@
 #include "../Tags.h"
 #include "ImportPCM.h"
 
+#include <wx/wx.h>
 #include <wx/string.h>
 #include <wx/utils.h>
 #include <wx/intl.h>
@@ -35,6 +36,9 @@
 #include <wx/stattext.h>
 
 #include "sndfile.h"
+
+#include "ODManager.h"
+#include "ODComputeSummaryTask.h"
 
 #ifndef SNDFILE_1
 #error Requires libsndfile 1.0 or higher
@@ -200,12 +204,14 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
       doEdit = false;
 
    if (doEdit) {
+    wxLogDebug(wxT("Importing PCM Start\n"));
 
       // If this mode has been selected, we form the tracks as
       // aliases to the files we're editing, i.e. ("foo.wav", 12000-18000)
       // instead of actually making fresh copies of the samples.
       
       for (sampleCount i = 0; i < fileTotalFrames; i += maxBlockSize) {
+	  
          sampleCount blockLen = maxBlockSize;
          if (i + blockLen > fileTotalFrames)
             blockLen = fileTotalFrames - i;
@@ -217,6 +223,23 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
          if (cancelled)
             break;
       }
+      
+#ifdef EXPERIMENTAL_ONDEMAND
+      //now go over the wavetrack/waveclip/sequence and load all the blockfiles into a ComputeSummaryTask.  
+      //Add this task to the ODManager and the Track itself.      
+       wxLogDebug(wxT("Importing PCM \n"));
+      for (c = 0; c < mInfo.channels; c++)
+      {
+         ODComputeSummaryTask* computeTask;
+         computeTask=new ODComputeSummaryTask;
+         
+         computeTask->SetWaveTrack(channels[c]);
+         
+         //Just for now: add the task to the ODMananger (later the local track queue should take care of this.)
+         ODManager::Instance()->AddTaskToWaveTrack(computeTask,channels[c]);
+      }
+#endif      
+      
    }
    else {
       // Otherwise, we're in the "copy" mode, where we read in the actual
@@ -422,6 +445,7 @@ bool ImportPCM(wxWindow * parent,
       doEdit = false;
 
    if (doEdit) {
+ wxLogDebug(wxT("Importing PCM...ImportPCM \n"));
 
       // If this mode has been selected, we form the tracks as
       // aliases to the files we're editing, i.e. ("foo.wav", 12000-18000)

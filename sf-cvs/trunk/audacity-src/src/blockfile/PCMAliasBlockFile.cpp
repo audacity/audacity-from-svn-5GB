@@ -30,6 +30,15 @@ PCMAliasBlockFile::PCMAliasBlockFile(wxFileName fileName,
    AliasBlockFile::WriteSummary();
 }
 
+PCMAliasBlockFile::PCMAliasBlockFile(wxFileName fileName,
+                     wxFileName aliasedFile, sampleCount aliasStart,
+                     sampleCount aliasLen, int aliasChannel,bool writeSummary):
+   AliasBlockFile(fileName, aliasedFile, aliasStart, aliasLen, aliasChannel)
+{
+   if(writeSummary)
+      AliasBlockFile::WriteSummary();
+}
+
 PCMAliasBlockFile::PCMAliasBlockFile(wxFileName existingFileName,
                      wxFileName aliasedFile, sampleCount aliasStart,
                      sampleCount aliasLen, int aliasChannel,

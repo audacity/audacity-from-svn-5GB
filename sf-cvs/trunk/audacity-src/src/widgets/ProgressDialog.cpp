@@ -292,7 +292,7 @@ ProgressDialog::Update(wxLongLong current, wxLongLong total, const wxString & me
 bool
 ProgressDialog::Update(int current, int total, const wxString & message)
 {
-   return Update((int)(current * 1000 / total), message);
+   return Update((int)(current *  ((double)(1000.0 / total))), message);
 }
 
 //

@@ -912,7 +912,7 @@ void TrackArtist::DrawIndividualClipSamples(wxDC &dc, wxRect r,
 void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                                 float zoomMin, float zoomMax,
                                 double *envValues,
-                                float *min, float *max, float *rms,
+                                float *min, float *max, float *rms,int* bl,
                                 bool dB, bool muted)
 {
    // Display a line representing the
@@ -973,7 +973,6 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
       if (r2[x]>r1[x])
          r2[x] = r1[x];
    }
-
    if (imageBuffer) {
       uchar *clipBuffer = imageBuffer;
       uchar rs, gs, bs, rr, gr, br;
@@ -984,19 +983,47 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
 
       for(y=0; y<r.height; y++) {
          for(x=0; x<r.width; x++) {
-            if (y >= r2[x] && y < r1[x]) {
-               *imageBuffer++ = rr;
-               *imageBuffer++ = gr;
-               *imageBuffer++ = br;
+            //Check to see if the block data is available for this pixel.
+            //wxLogDebug(wxT("bl[x] value for x %i, val %i\n"),x,bl[x]);
+            if(bl[x]<=-1)
+            {
+               //draw one stripe every 25 pixels
+               if( (y+x)%25 == 0)
+               {
+                  *imageBuffer++ = (bl[x]%2?rs:rr) + *imageBuffer;
+                  *imageBuffer++;
+                  *imageBuffer++;
+               } 
+               else {
+                  //have a gradient away from the stripe, alter light and dark every block
+                  float lineProximity;
+                  //we want half of the range to be zero, and the other half scaled from 0.0 to 1 as you approach the line
+                  lineProximity =  fabs( ( ((y+x)%25) - 12)/12.0) - 0.5;
+                  if(lineProximity<0.0) 
+                     lineProximity = 0.0;
+                  lineProximity*=2;//scale back to 0.0-1.0
+                  *imageBuffer++ =  (bl[x]%2?rs:rr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+                  *imageBuffer++ = (bl[x]%2?gs:gr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+                  *imageBuffer++ = (bl[x]%2?bs:br)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+               }
             }
-            else if (y >= h2[x] && y < h1[x]+1) {
-               *imageBuffer++ = rs;
-               *imageBuffer++ = gs;
-               *imageBuffer++ = bs;
-            }
-            else {
-               imageBuffer += 3;
-            }
+            else
+            {
+               //we have valid summary or sample data, so commence regular waveform drawing
+               if (y >= r2[x] && y < r1[x]) {
+                  *imageBuffer++ = rr;
+                  *imageBuffer++ = gr;
+                  *imageBuffer++ = br;
+               }
+               else if (y >= h2[x] && y < h1[x]+1) {
+                  *imageBuffer++ = rs;
+                  *imageBuffer++ = gs;
+                  *imageBuffer++ = bs;
+               }
+               else {
+                  imageBuffer += 3;
+               }
+           }
          }
       }
 
@@ -1022,24 +1049,47 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
       // Draw the waveform min/max lines
       dc.SetPen(muted ? muteSamplePen : samplePen);
       for (x = 0; x < r.width; x++) {
-         if (r1[x] != r2[x]) {
-            dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + r2[x] );
-            dc.DrawLine(r.x + x, r.y + r1[x], r.x + x, r.y + h1[x]+1 );
-         } else {
-            // MM: DrawLine will not draw anything if startpoint == endpoint,
-            //     so in this case explicitely draw single point.
-            if (h1[x]+1 == h2[x])
-                dc.DrawPoint(r.x + x, r.y + h2[x]);
-            else
-               dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + h1[x]+1 );
+         if(bl[x]<=-1)
+         {
+            
+            //TODO:unify with buffer drawing.
+            dc.SetPen(bl[x]%2 ? muteSamplePen : samplePen);
+            for(int y=0;y<(r.height)/25 +1;y++)
+            {
+               //we are drawing over the buffer, but I think DrawLine takes care of this.
+               dc.DrawLine(r.x + x, r.y+ 25*y + x%25, r.x+x, 
+                     r.y+25*y+x%25 + 6 ); //take the min so we don't draw past the edge
+            }
+         }
+         else
+         {
+            dc.SetPen(muted ? muteSamplePen : samplePen);
+            if (r1[x] != r2[x]) {
+               dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + r2[x] );
+               dc.DrawLine(r.x + x, r.y + r1[x], r.x + x, r.y + h1[x]+1 );
+            } else {
+               // MM: DrawLine will not draw anything if startpoint == endpoint,
+               //     so in this case explicitely draw single point.
+               if (h1[x]+1 == h2[x])
+                  dc.DrawPoint(r.x + x, r.y + h2[x]);
+               else
+                  dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + h1[x]+1 );
+            }
          }
       }
       
       // Draw the waveform rms lines
       dc.SetPen(muted ? muteRmsPen : rmsPen);
       for (x = 0; x < r.width; x++) {
-         if (r1[x] != r2[x])
-            dc.DrawLine(r.x + x, r.y + r2[x], r.x + x, r.y + r1[x]);
+         if(bl[x]<=-1)
+         {
+            //TODO: should we draw more stuff here?
+         }
+         else
+         {
+            if (r1[x] != r2[x])
+               dc.DrawLine(r.x + x, r.y + r2[x], r.x + x, r.y + r1[x]);
+         }
       }
 
       // Draw the clipping lines
@@ -1135,7 +1185,6 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    struct timeval tv0, tv1;
    gettimeofday(&tv0, NULL);
 #endif
-
    double h = viewInfo->h;          //The horizontal position in seconds
    double pps = viewInfo->zoom;     //points-per-second--the zoom level
    double sel0 = viewInfo->sel0;    //left selection bound
@@ -1248,17 +1297,19 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    float *min = new float[mid.width];
    float *max = new float[mid.width];
    float *rms = new float[mid.width];
+   int *bl = new int[mid.width];
    sampleCount *where = new sampleCount[mid.width+1];
    
    // The WaveClip class handles the details of computing the shape
    // of the waveform.  The only way GetWaveDisplay will fail is if
    // there's a serious error, like some of the waveform data can't
    // be loaded.  So if the function returns false, we can just exit.
-   if (!clip->GetWaveDisplay(min, max, rms, where,
+   if (!clip->GetWaveDisplay(min, max, rms, bl,where,
                               mid.width, t0, pps)) {
       delete[] min;
       delete[] max;
       delete[] rms;
+      delete[] bl;
       delete[] where;
       return;
    }
@@ -1306,7 +1357,7 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
 
    if (!showIndividualSamples)
       DrawMinMaxRMS(dc, drawRect, imageBuffer, zoomMin, zoomMax,
-                    envValues, min, max, rms, dB, muted);
+                    envValues, min, max, rms,bl, dB, muted);
 
    // Transfer any buffered drawing to the DC.  Everything
    // from now on is drawn using ordinary wxWindows drawing code.
@@ -1363,7 +1414,8 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
       clip->GetEnvelope()->Draw(dc, envRect, h, pps, dB,
                                  zoomMin, zoomMax);
    }
-
+   
+   delete[] bl;
    delete[] envValues;
    delete[] min;
    delete[] max;

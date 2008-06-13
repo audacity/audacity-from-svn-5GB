@@ -48,6 +48,8 @@ Track classes.
 #include "AudioIO.h"
 #include "Prefs.h"
 
+#include "ODManager.h"
+
 WaveTrack* TrackFactory::DuplicateWaveTrack(WaveTrack &orig)
 {
    return (WaveTrack*)(orig.Duplicate());
@@ -137,12 +139,19 @@ void WaveTrack::Merge(const Track &orig)
 }
 
 WaveTrack::~WaveTrack()
-{
+{   
+   //Let the ODManager know this WaveTrack is disappearing.  
+   //Deschedules tasks associated with this track.  
+#ifdef EXPERIMENTAL_ONDEMAND
+   ODManager::Instance()->RemoveWaveTrack(this);
+#endif
+   
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
       delete it->GetData();
    mClips.Clear();
    if (mDisplayLocations)
       delete mDisplayLocations;
+      
 }
 
 double WaveTrack::GetOffset()
