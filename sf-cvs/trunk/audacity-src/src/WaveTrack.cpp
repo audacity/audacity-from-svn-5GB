@@ -48,7 +48,7 @@ Track classes.
 #include "AudioIO.h"
 #include "Prefs.h"
 
-#include "ODManager.h"
+#include "ondemand/ODManager.h"
 
 WaveTrack* TrackFactory::DuplicateWaveTrack(WaveTrack &orig)
 {

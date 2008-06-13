@@ -17,7 +17,7 @@
 #include "SampleFormat.h"
 #include "xml/XMLTagHandler.h"
 #include "xml/XMLWriter.h"
-#include "ODTaskThread.h"
+#include "ondemand/ODTaskThread.h"
 
 typedef int sampleCount;
 
