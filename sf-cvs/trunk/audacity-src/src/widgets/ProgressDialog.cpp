@@ -148,12 +148,12 @@ ProgressDialog::ProgressDialog(const wxString & title, const wxString & message)
    mLastUpdate = mStartTime;
    mCancel = false;
 
+   Show(false);
+
    // Even though we won't necessarily show the dialog due to the the 500ms
    // delay, we MUST disable other windows/menus anyway since we run the risk
    // of allowing other tasks to run before this one is complete.
    mDisable = new wxWindowDisabler(this);
-
-   Show(false);
 }
 
 //
