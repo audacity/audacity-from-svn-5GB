@@ -28,6 +28,7 @@ preferences.  Later we will rename this panel and source files.
 #include <wx/button.h>
 
 #include "../export/ExportMP3.h"
+#include "../FFmpeg.h"
 #include "../Prefs.h"
 #include "../ShuttleGui.h"
 #include "../widgets/LinkingHtmlWindow.h"
@@ -36,10 +37,14 @@ preferences.  Later we will rename this panel and source files.
 
 #define ID_MP3_FIND_BUTTON          7001
 #define ID_MP3_DOWN_BUTTON          7002
+#define ID_FFMPEG_FIND_BUTTON       7003
+#define ID_FFMPEG_DOWN_BUTTON       7004
 
 BEGIN_EVENT_TABLE(FileFormatPrefs, wxPanel)
    EVT_BUTTON(ID_MP3_FIND_BUTTON, FileFormatPrefs::OnMP3FindButton)
    EVT_BUTTON(ID_MP3_DOWN_BUTTON, FileFormatPrefs::OnMP3DownButton)
+   EVT_BUTTON(ID_FFMPEG_FIND_BUTTON, FileFormatPrefs::OnFFmpegFindButton)
+   EVT_BUTTON(ID_FFMPEG_DOWN_BUTTON, FileFormatPrefs::OnFFmpegDownButton)
 END_EVENT_TABLE()
 
 FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
@@ -96,6 +101,30 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
       S.EndHorizontalLay();
    }
    S.EndStatic();
+
+   S.StartStatic( _("FFmpeg Import/Export Library"));
+   {
+      S.StartTwoColumn();
+      S.AddVariableText( _("FFmpeg Library Version:"),
+         true,
+         wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
+      mFFmpegVersion = S.AddVariableText( wxT("FFmpeg library not found"),
+         true,
+         wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
+      S.AddVariableText( _("FFmpeg Library:"),
+         true,
+         wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
+      S.Id( ID_FFMPEG_FIND_BUTTON ).AddButton( _("&Find Library"), 
+         wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
+      S.AddVariableText( _("FFmpeg Library:"),
+         true,
+         wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
+      S.Id( ID_FFMPEG_DOWN_BUTTON ).AddButton( _("&Download"), 
+         wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
+      S.EndHorizontalLay();
+   }
+   S.EndStatic();
+
    S.AddFixedText( _("Note: Export quality options can be chosen by clicking the Options button in the Export dialog."));
    S.StartStatic( _("When importing audio files"));
    {
@@ -148,6 +177,23 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 void FileFormatPrefs::OnMP3DownButton(wxCommandEvent& evt)
 {
    wxString url = wxT("http://audacity.sourceforge.net/lame");
+   ::OpenInDefaultBrowser(url);
+}
+
+void FileFormatPrefs::SetFFmpegVersionText(bool prompt)
+{
+   mFFmpegVersion->SetLabel(GetFFmpegVersion(this, prompt));
+}
+
+
+void FileFormatPrefs::OnFFmpegFindButton(wxCommandEvent& evt)
+{
+   SetFFmpegVersionText(true);
+}
+
+void FileFormatPrefs::OnFFmpegDownButton(wxCommandEvent& evt)
+{
+   wxString url = wxT("http://audacity.sourceforge.net/ffmpeg");
    ::OpenInDefaultBrowser(url);
 }
 

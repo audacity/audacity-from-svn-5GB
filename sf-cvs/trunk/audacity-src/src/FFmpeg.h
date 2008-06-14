@@ -39,6 +39,9 @@ extern "C" {
 /* rather earlier than normal, but pulls in config*.h and other program stuff
  * we need for the next bit */
 
+#include "../widgets/LinkingHtmlWindow.h"
+#include "FileDialog.h"
+
 #if defined(USE_FFMPEG)
 #include <wx/dynlib.h>
 #include <wx/log.h>			// for wxLogNull
@@ -108,8 +111,7 @@ public:
    void              (*av_freep)                      (void *ptr);
    int64_t           (*av_rescale_q)                  (int64_t a, AVRational bq, AVRational cq);
 
-
-
+   bool FindLibs(wxWindow *parent);
    bool LoadLibs(wxWindow *parent, bool showerr);
    bool ValidLibsLoaded();
 
@@ -117,15 +119,40 @@ public:
    bool InitLibs(wxString libpath_codec, bool showerr);
    void FreeLibs();
 
+   wxString GetLibraryVersion()
+   {
+      return mVersion;
+   }
+
    /* note these values are for Windows only - Mac and Unix have their own
    * sections elsewhere */
    //\todo { Section for Mac and *nix }
 #if defined(__WXMSW__)
+   wxString GetLibraryTypeString()
+   {
+      return _("Only avformat.dll|*avformat*.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*");
+   }
+
+   wxString GetLibAVFormatPath()
+   {
+      return wxT("");
+   }
+
    wxString GetLibAVFormatName()
    {
       return wxT("avformat.dll");
    }
 #else
+   wxString GetLibraryTypeString()
+   {
+      return _("Only avformat.so|*avformat*.so*|Dynamically Linked Libraries (*.so)|*.so|All Files (*)|*");
+   }
+
+   wxString GetLibAVFormatPath()
+   {
+      return wxT("");
+   }
+
    wxString GetLibAVFormatName()
    {
       return wxT("libavformat.so");
@@ -139,6 +166,7 @@ public:
 private:
 
    wxString mLibAVFormatPath;
+   wxString mVersion;
    
    wxDynamicLibrary *avformat;
    wxDynamicLibrary *avcodec;
@@ -148,5 +176,11 @@ private:
    bool mLibsLoaded;
 };
 #endif //USE_FFMPEG
+
+//----------------------------------------------------------------------------
+// Get FFmpeg library versioqn
+//----------------------------------------------------------------------------
+wxString GetFFmpegVersion(wxWindow *parent, bool prompt);
+
 #endif
 

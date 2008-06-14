@@ -292,7 +292,7 @@ FFmpegImportFileHandle::FFmpegImportFileHandle(const wxString & name)
 
 bool FFmpegImportFileHandle::Init()
 {
-   FFmpegLibsInst->LoadLibs(NULL,true);
+   FFmpegLibsInst->LoadLibs(NULL,false);
 
    if (!FFmpegLibsInst->ValidLibsLoaded()) return false;
 
