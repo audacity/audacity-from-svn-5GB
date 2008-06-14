@@ -114,12 +114,30 @@ int Importer::Import(wxString fName,
    int numTracks = 0;
 
    wxString extension = fName.AfterLast(wxT('.'));
-   
+
+   // If user explicitly selected a filter,
+   // then we should try importing via corresponding plugin first
+   wxString type = gPrefs->Read(wxT("/DefaultOpenType"),wxT(""));
+   ImportPluginList::Node *tryFirstNode = mImportPluginList->GetFirst();
+   while(tryFirstNode)
+   {
+      ImportPlugin *plugin = tryFirstNode->GetData();
+      if (plugin->GetPluginFormatDescription().CompareTo(type) == 0)
+         break;
+      tryFirstNode= tryFirstNode->GetNext();
+   }
+
    // see if any of the plugins expect this extension and if so give
    // that plugin first dibs
    ImportPluginList::Node *importPluginNode = mImportPluginList->GetFirst();
+   ImportPluginList::Node *tmpNode;
    while(importPluginNode)
    {
+      if (tryFirstNode)
+      {
+         tmpNode = importPluginNode;
+         importPluginNode = tryFirstNode;
+      }
       ImportPlugin *plugin = importPluginNode->GetData();
       if (plugin->SupportsExtension(extension))
       {
@@ -167,7 +185,13 @@ int Importer::Import(wxString fName,
             // continue.
          }
       }
-      importPluginNode = importPluginNode->GetNext();
+      if (tryFirstNode)
+      {
+         importPluginNode = tmpNode;
+         tryFirstNode = NULL;
+      }
+      else
+         importPluginNode = importPluginNode->GetNext();
    }
 
    // None of our plugins can handle this file.  It might be that
