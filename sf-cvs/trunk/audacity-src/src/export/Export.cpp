@@ -471,11 +471,11 @@ bool Exporter::ExamineTracks()
 //
 bool Exporter::GetFilename()
 {
-   mFormat = 0;
+   mFormat = -1;
 
    wxString maskString;
    wxString defaultFormat = gPrefs->Read(wxT("/Export/Format"),
-                                         wxT("WAV"));
+      wxT("WAV"));
 
    mFilterIndex = 0;
 
@@ -487,10 +487,14 @@ bool Exporter::GetFilename()
             mFormat = i;
             mSubFormat = j;
          }
-         if (mFormat == 0) mFilterIndex++;
+         if (mFormat == -1) mFilterIndex++;
       }
    }
-   if (mFormat == 0) mFilterIndex = 0;
+   if (mFormat == -1)
+   {
+      mFormat = 0;
+      mFilterIndex = 0;
+   }
    maskString.RemoveLast();
 
    mFilename.SetPath(gPrefs->Read(wxT("/Export/Path"), ::wxGetCwd()));
