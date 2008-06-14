@@ -315,6 +315,7 @@ bool FFmpegImportFileHandle::Init()
    if (mFormatContext->start_time != AV_NOPTS_VALUE)
    {
       //TODO: handle this situation (generate <start_time> ms of slience?)
+      wxLogMessage(wxT("start_time = %d, that would be %d milliseconds."),mFormatContext->start_time,(mFormatContext->start_time/AV_TIME_BASE*1000));
       wxLogMessage(wxT("start_time support is not implemented in FFmpeg import plugin. Patches are welcome."));
    }
 
@@ -338,6 +339,7 @@ bool FFmpegImportFileHandle::InitCodecs()
          if (sc->m_stream->start_time != AV_NOPTS_VALUE)
          {
             //TODO: same as before
+            wxLogMessage(wxT("start_time = %d, that would be %d milliseconds."),sc->m_stream->start_time,(sc->m_stream->start_time/AV_TIME_BASE*1000));
             wxLogMessage(wxT("start_time support is not implemented in FFmpeg import plugin. Patches are welcome."));
          }
 
@@ -707,7 +709,7 @@ FFmpegImportFileHandle::~FFmpegImportFileHandle()
 {
    if (FFmpegLibsInst->ValidLibsLoaded())
    {
-      FFmpegLibsInst->av_close_input_file(mFormatContext);
+      if (mFormatContext) FFmpegLibsInst->av_close_input_file(mFormatContext);
       FFmpegLibsInst->av_log_set_callback(FFmpegLibsInst->av_log_default_callback);
    }
 
