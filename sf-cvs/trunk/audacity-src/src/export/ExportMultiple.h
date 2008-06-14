@@ -109,6 +109,7 @@ private:
    int mNumLabels;
    int mNumTracks;
    wxArrayPtrVoid mSelected;
+   int mFilterIndex;
    int mFormatIndex;
    int mSubFormatIndex;
    bool mInitialized;
