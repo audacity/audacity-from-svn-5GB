@@ -33,8 +33,12 @@ private:
    void OnMP3FindButton(wxCommandEvent& evt);
    void OnMP3DownButton(wxCommandEvent& evt);
    void SetMP3VersionText(bool prompt = false);
+   void OnFFmpegFindButton(wxCommandEvent& evt);
+   void OnFFmpegDownButton(wxCommandEvent& evt);
+   void SetFFmpegVersionText(bool prompt = false);
 
    wxStaticText *mMP3Version;
+   wxStaticText *mFFmpegVersion;
 
 public:
    DECLARE_EVENT_TABLE();
