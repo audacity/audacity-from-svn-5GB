@@ -56,7 +56,7 @@ and ImportLOF.cpp.
 #include "ImportFLAC.h"
 #include "ImportFFmpeg.h"
 #include "../Track.h"
-
+#include "Prefs.h"
 
 WX_DEFINE_LIST(ImportPluginList);
 WX_DEFINE_LIST(UnusableImportPluginList);
@@ -326,7 +326,7 @@ int Importer::Import(wxString fName,
             {
                // success!
                errorMessage.Printf(_( "Audacity had to guess at the type of file.\n\nIt was identified as: \"%s\".\n\nIf the audio does not sound right, try renaming the file\nso that it has the correct extension before opening it."),
-                                   plugin->GetPluginFormatDescription());
+                                 plugin->GetPluginFormatDescription().c_str());
                return numTracks;
             }
          }
