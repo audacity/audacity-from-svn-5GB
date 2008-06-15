@@ -140,7 +140,7 @@ this version.
     some Windows XP systems using Audacity 1.3.4, where 1.2.6 had no problem.
     It is not clear if current releases will have this issue or if it will occur on other
     operating systems. Users can help us by sending any reports of this problem to:
-      audacity-devel@lists.sourceforge.net
+      feedback@audacityteam.org
 
  * Windows only: Audacity is incompatible with some professional sound cards
     and may crash if one of these cards is the default when you open Audacity.
@@ -344,7 +344,8 @@ and header dependencies:
   make dep
 
 To compile on Windows using MSVC++, please follow the instructions found in
-compile.txt in the "win" subdirectory. CodeWarrior for Mac is also supported.
+compile.txt in the "win" subdirectory.
+To compile using Xcode on Mac OS X, see the instructions in mac/compile.txt.
 
 For more information on compilation, please visit:
 
