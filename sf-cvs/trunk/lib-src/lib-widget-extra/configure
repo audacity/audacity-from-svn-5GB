@@ -1255,12 +1255,6 @@ Optional Features:
   --enable-unicode        enable unicode support [default=yes]
   --enable-debug          enable debug support [default=no]
 
-Optional Packages:
-  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
-  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-wx-version       select wxWidgets version (if both installed)
-                          [2.6,2.8]
-
 Some influential environment variables:
   CC          C compiler command
   CFLAGS      C compiler flags
@@ -3364,14 +3358,6 @@ fi
 
 
 
-# Check whether --with-wx-version was given.
-if test "${with_wx_version+set}" = set; then
-  withval=$with_wx_version; wx_preference="--version=$withval"
-else
-  wx_preference=""
-fi
-
-
 
 if test x"$debug_preference" = "xyes" ; then
       { echo "$as_me:$LINENO: Adding -g for debugging to CFLAGS and CXXFLAGS ..." >&5
@@ -3966,22 +3952,22 @@ wxconfigargs="$static_preference $unicode_preference  $wxconfigargs $wx_preferen
 
 wx_version=`${WX_CONFIG} $wxconfigargs --version`
 
-{ echo "$as_me:$LINENO: Checking that the chosen version of wxWidgets is 2.6.x or 2.8.x" >&5
-echo "$as_me: Checking that the chosen version of wxWidgets is 2.6.x or 2.8.x" >&6;}
+{ echo "$as_me:$LINENO: Checking that the chosen version of wxWidgets is 2.8.x" >&5
+echo "$as_me: Checking that the chosen version of wxWidgets is 2.8.x" >&6;}
 
 case "${wx_version}" in
-  2.6.*|2.8.*)
+  2.8.*)
     echo "Great, you're using wxWidgets ${wx_version}!"
     ;;
   *)
   wx_list=`${WX_CONFIG} --list`
-  { { echo "$as_me:$LINENO: error: Unable to locate a suitable configuration of wxWidgets v2.6.x or higher.
+  { { echo "$as_me:$LINENO: error: Unable to locate a suitable configuration of wxWidgets v2.8.x or higher.
 The currently available configurations are listed below.  If necessary, either
 install the package for your distribution or download the latest version of
 wxWidgets
 from http://wxwidgets.org.
 ${wx_list}" >&5
-echo "$as_me: error: Unable to locate a suitable configuration of wxWidgets v2.6.x or higher.
+echo "$as_me: error: Unable to locate a suitable configuration of wxWidgets v2.8.x or higher.
 The currently available configurations are listed below.  If necessary, either
 install the package for your distribution or download the latest version of
 wxWidgets
