@@ -1,0 +1,233 @@
+This is intended as a list of all the patches that have been incorporated into
+the lib-src copies of libraries, to avoid them getting lost in version upgrades
+from upstream, and to remind us of the versions we are using.
+
+Libraries
+=========
+allegro
+-------
+Midi handling library. Used only to load and display midi files in audacity.
+Can't find any information on origin or version?
+
+dlcompat
+--------
+Support library for dynamic loading of modules on OS X 10.3 and older. Used
+for LADSPA on OS X support, and probably not any where else
+
+expat
+-----
+XML parser library used to parse project files and so on. By default the
+system copy is prefered over this one, even on OS X (where it is shipped by
+default). Build against system 2.0.1 works fine.
+Version in audacity CVS: 1.2
+Patches: None
+Upstream version: 2.0.1
+
+FileDialogue
+------------
+The customised file saving dialogues for wxwidgets to provide the options
+button for format preferences. This is written and maintained by us so doesn't
+have an upstream at the moment.
+
+iAVC
+----
+disused?
+
+id3lib
+------
+disused?
+
+libflac
+-------
+http://flac.sourceforge.net/
+Free Lossless Audio Codec encoding and decoding library
+Version in audacity cvs: 1.2.1
+Patches: mac-asm-fixes.patch. Fixes build on OS X Intel 10.4 by creating and
+object format for Mach-O. Needs to go upstream
+	gcc-4.3-includes.patch. Patch from gentoo to fix includes needed for
+		GCC 4.3. Already included in upstream CVS
+	asm-textreloc.patch. Patch from Gentoo to avoid text relocations is
+		the assembly optimisations. In upstream CVS
+	asneeded.patch. Add LDFLAGS needed for non-glibc systems. Taken from Gentoo.
+	flac-lite.diff. Remove all the things not included in audacity CVS from
+		the build system so it will build with 50% less stuff
+Upstream version: 1.2.1
+
+libid3tag
+---------
+MP3 tag manipulation library. Comes with libmad (below)
+
+libmad
+------
+http://www.underbit.com/products/mad/
+MP3 decoding library
+Version in audacity cvs: 0.15.1 (beta)
+Patches: libmad-mp2-out-of-spec.patch:	Import some forms of MP2 file that are
+theoretically out of spec but in practise work fine (msmeyer)
+osx-universal-build.patch: Makes build work on OS X for universal binary by
+using compiler-defined symbols for targets as well as hosts.
+Upstream version: 0.15.1 (beta)
+
+libnyquist
+----------
+Digital Audio scripting language, with our own library interface added to it
+
+libogg
+------
+library to handle Xiph.org's open multimedia container format
+Version in Audacity CVS: 1.1.3
+Patches: None, except docs build disabled in Makefile.am
+Upstream Version: 1.1.3
+
+libresample
+-----------
+Audio sample rate conversion library. Maintained by audacity project
+
+libsamplerate
+-------------
+Erik de Castro Lopo's high quality sample rate conversion library. Not used
+in release builds, could probably be removed altogther except for comparision
+purposes.
+Version in Audacity CVS: 0.1.2
+Patches: ??
+Upstream Version: 0.1.2
+
+libsndfile
+----------
+Erik de Castro Lopo's uncompressed audio file I/O library. Core and essential
+to audacity.
+Version in Audacity CVS: 1.0.17
+Patches:  wav-bext.patch: backport patch from 1.0.18 of a patch to fix reading
+bext chunks in WAV files
+Upstream Version: 1.0.17
+TODO: upgrade to 1.0.18 when it comes out in order to drop the bext patch
+
+libvamp
+-------
+Library to load and use VAMP plug-ins. http://www.vamp-plugins.org/
+Version in Audacity CVS: 1.1
+Patches: ??
+Upstream Version: 1.2
+
+libvorbis
+---------
+library for endcoding and decoding Xiph.org's high-quality compressed audio
+format.
+Version in Audacity CVS: 1.2.0
+Patches: local-libogg.patch: configure patch that lets us build against a
+local libogg if there isn't a system one.
+no-docs-examples.patch: disable building documentation and examples, so we can
+avoid shipping the files in those directories
+Upstream Version: 1.2.0
+
+lib-widget-extra
+----------------
+
+mod-script-pipe
+---------------
+
+portaudio
+---------
+http://portaudio.com/
+cross-platform audio I/O library version 18, used for 1.2.x version of
+audacity.
+Quite heavily patched local copy to get AC-97 ALSA cards to play back
+correctly.
+
+portaudio-v19
+-------------
+http://portaudio.com/
+cross-platform audio I/O library version 19, used for 1.3.2 onwards releases
+Version in audacity cvs: 18th March 2008 SVN snapshot (r1373)
+Patches:
+../portmixer/portaudio.patch	add features needed to make portmixer work.
+		Integration by upstream in progress. Will need updating as upstream
+		portaudio moves
+
+portburn
+--------
+Doesn't do anything yet
+
+portmixer
+---------
+cross-platform audio mixer control library, hooked onto portaudio. Maintained
+by the audacity project with some help from portaudio development.
+
+rtaudio
+-------
+http://www.music.mcgill.ca/~gary/rtaudio/
+Another cross-platform audio I/O library that was at one point available as an
+alternative to portaudio.
+
+soundtouch
+----------
+http://www.surina.net/soundtouch/
+Independant Pitch and Tempo changing library.
+Version in audacity cvs: 1.3.1
+Patches:
+PPC mac build?
+correct-const-usage.patch: makes usage of const keyword consistent so it
+compiles with Sun's C++ compiler. Patch sent upstream 17/03/2008
+Upstream Version: 1.3.1
+
+twolame
+-------
+http://www.twolame.org/
+MPEG I layer 2 audio encoding library used for MP2 exports
+Version in audacity cvs: 0.3.12
+Patches: None
+Upstream Version: 0.3.12
+
+wave++
+------
+http://www.scs.ryerson.ca/~lkolasa/CppWavelets.html
+disused?
+
+Crib notes on upgrading lib-src trees:
+======================================
+1 Remove old files
+------------------
+find . -not -wholename '*CVS*' -delete
+will remove all the source files but not any directories or the CVS files, so
+after this you have an empty place into which you can unpack the new tarball
+
+2 Bring in new files
+--------------------
+Next unpack the tarball. If you want to unpack within a package directory,
+then tar --strip-components 1 will remove the un-needed top level directory.
+
+3 Apply patches and updates
+---------------------------
+Now we have a new file tree. This is the point at which to clean out any
+un-needed files, re-apply any local patches so on. To clean up after patching,
+run  find . -name '*.orig' -delete and  find . -name '*~' -delete. To remove
+.svn directories from projects that use SVN upstream, use
+find . -wholename '*/.svn/*' -delete and then find . -name '.svn' -delete
+
+* run autoreconf if we have modified configure.in or configure.ac
+* run libtoolize --copy --force to update ltmain.sh, config.sub, config.guess
+
+By doing it this way we have already updated the mtime on all files, so we
+don't need to do a recusive touch.
+
+4 Add new files to CVS and remove old ones
+------------------------------------------
+CVS will list files with a ? if they are new and need to be added to the
+repository. To get a list, run 
+cvs st 2>/dev/null | grep '?'
+Finding which files have been removed is a bit harder:
+cvs st 2>/dev/null | grep 'Status: Needs Checkout'
+gives file names but not their paths, so you have to go back and grep each
+file name to find them and do cvs rm on them.
+
+To remove all the files that are in the working directory but aren't under CVS
+control, you can use this incantation:
+\rm $(cvs st 2>/dev/null | grep '?' | cut -d '?' -f 2)
+
+5 Commit the lot to CVS
+-----------------------
+Run cvs ci -f -R to commit all the files in the new library tree. Use an
+appropriate message that says what library version this is. This should do
+all the required changes and add / remove files.
+
+
