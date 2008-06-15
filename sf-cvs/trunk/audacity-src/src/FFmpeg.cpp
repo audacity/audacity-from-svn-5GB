@@ -23,9 +23,10 @@ License: GPL v2.  See License.txt.
    #endif
 #endif
 
-//shared object
-FFmpegLibs *FFmpegLibsInst = NULL;
-
+#if defined(USE_FFMPEG)
+   //shared object
+   FFmpegLibs *FFmpegLibsInst = NULL;
+#endif
 
 wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
 {

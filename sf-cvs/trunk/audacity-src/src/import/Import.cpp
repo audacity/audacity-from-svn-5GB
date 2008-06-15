@@ -56,7 +56,7 @@ and ImportLOF.cpp.
 #include "ImportFLAC.h"
 #include "ImportFFmpeg.h"
 #include "../Track.h"
-#include "Prefs.h"
+#include "../Prefs.h"
 
 WX_DEFINE_LIST(ImportPluginList);
 WX_DEFINE_LIST(UnusableImportPluginList);
