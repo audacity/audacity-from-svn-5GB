@@ -9,13 +9,13 @@ Audacity source code archive, except as otherwise noted
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Version 1.3.6a1 (alpha)
+Version 1.3.6a2 (alpha)
 
 
 Contents of this README:
 
 1.  Licensing
-2.  Changes in version 1.3.6a1
+2.  Changes in version 1.3.6a2
 3.  Known Issues
 4.  Source Code, Libraries and Additional Copyright Information
 5.  Compilation Instructions
@@ -47,29 +47,29 @@ to http://www.gnu.org/copyleft/gpl.html or write to
 
 --------------------------------------------------------------------------------
 
-2.  Changes in version 1.3.6a1
+2.  Changes in version 1.3.6a2
+
+Import / Export:
+        * Experimental support for importing a much wider range
+           of audio formats via FFmpeg: support has to be enabled
+           in *config when building and requires FFmpeg libraries
+
+Effects:
+        * Built-in plug-ins now grouped into related categories
 
 Interface:
-	* Further improvements to menu navigation and wordings.
-	* All file dialogs are now resizable, and support "Places"
-	   sidebar on Windows 2000 or later.
-	* Preferences:
-	        * New "Theme" preference for modifying interface
-	           colours and images, with experimental new default
-	           colour scheme.
-	        * New "Smart Recording" preference automatically pauses
-	           recordings that fall below a pre-defined input level.
-
-Compilation:
-        * Simplified modular builds for Windows, removing
-           static-linked configurations.
-        * New shared configurations on Mac to support modular
-           builds, and all builds are now Unicode.
+        * New Debug Log window available in all builds
+        * Experimental support for pairing a label track with any
+           number of audio tracks so that labels shift with cuts and
+           inserts in the audio track
+        * Default theme now reverted to that of 1.3.5
+        * Recording channels preference now defaults to stereo
 
 Miscellaneous:
-        * Default auto save interval reduced to 2 minutes.
-        * Bug fixes to correct project rate initialisation on Linux, and
-           file importing issues on PPC Macs.
+        * Bug fixes for shortcut availability/tab order in Selection Bar,
+           and for window focus issues when previewing effects
+        * Improvements in escaping and navigating fields in dialogs,
+           and in stabilty when screen readers are used
 
 
 --------------------------------------------------------------------------------
@@ -82,25 +82,16 @@ Please also check:
 for details of any issues that have been identified after release of
 this version.
 
- * If Audacity is built from CVS with wxWidgets 2.6.4 or later, the Escape
-    key does not cancel most dialogs. This is due to a wxWidgets bug.
+ * Using "Undo" when a label track is paired with any audio
+    track causes the pairing to break, and can cause crashes.
 
-    In builds provided by the Audacity project, wx 2.8.7 has been patched.
-    This means that all dialogs can be cancelled by Escape when first
-    opened, but in Preferences and Effect dialogs, keyboard users must
-    now tab twice to reach the first field of the dialog. Additionally, for
-    Preferences, GVerb, Hard Limiter, SC4 and user-added LADSPA/VST
-    effects, once the user interacts with the dialog, it cannot then be
-    cancelled by Escape without first tabbing to the OK or Cancel buttons.
+ * Preferences window: OK button does not work when a tab
+    is selected in the left-hand panel.
 
- * Preview dialogs in effects do not have focus, so cannot be escaped
-    without a mouse. If the main effect window has focus when previewing,
-    using Escape key will mean Audacity can no longer be controlled by
-    mouse clicks. In this case, use the Exit or Quit keyboard shortcut
-    to exit Audacity.
-
- * Keyboard shortcuts don't work when the focus is in any of the Selection
-    Bar spinboxes or the project rate list.
+ * When "Split New" is used with more than one track selected, and
+    the selected region includes white space, the split clip(s) perform
+    unwanted alignments instead of remaining at the original time
+    position.
 
  * Export Multiple fails with no export or warning if an empty label is
     encountered.
@@ -130,10 +121,10 @@ this version.
     specification, but some players don't fully support this specification, so may not
     see all the tags.
 
- * No warning is given if File > Save or File > Save Project As... is carried out with
+ * No warning given if File > Save or File > Save Project As... is carried out with
     no tracks open.
 
- * Not all menu items are correctly enabled when the preference: "Select all audio in
+ * Not all menu items correctly enabled when the preference: "Select all audio in
     project, if none selected" is checked.
 
  * Beep on completing long process may not be audible on many systems.
@@ -164,7 +155,7 @@ this version.
     players don't produce any sound or crash. Audacity tries to select the best
     quality settings your system is capable of, to give the best recordings
     possible. Some sound drivers also retain these settings as defaults for
-    other applications, which can cause these symptoms
+    other applications, which can cause these symptoms.
 
    To get round this, enable the option "Do not modify audio device settings"
    on the Audio I/O tab of the preferences, and make sure that your sound
@@ -366,6 +357,31 @@ or email us at:
 --------------------------------------------------------------------------------
 
 6.  Previous Changes going back to version 1.1.0
+
+Changes in 1.3.6a1:
+
+Interface:
+	* Further improvements to menu navigation and wordings.
+	* All file dialogs are now resizable, and support "Places"
+	   sidebar on Windows 2000 or later.
+	* Preferences:
+	        * New "Theme" preference for modifying interface
+	           colours and images, with experimental new default
+	           colour scheme.
+	        * New "Smart Recording" preference automatically pauses
+	           recordings that fall below a pre-defined input level.
+
+Compilation:
+        * Simplified modular builds for Windows, removing
+           static-linked configurations.
+        * New shared configurations on Mac to support modular
+           builds, and all builds are now Unicode.
+
+Miscellaneous:
+        * Default auto save interval reduced to 2 minutes.
+        * Bug fixes to correct project rate initialisation on Linux, and
+           file importing issues on PPC Macs.
+
 
 Changes in 1.3.5:
 
