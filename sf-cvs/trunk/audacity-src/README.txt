@@ -53,13 +53,16 @@ Import / Export:
         * Experimental support for importing a much wider range
            of audio formats via FFmpeg: support has to be enabled
            in *config when building and requires FFmpeg libraries
+        * Experimental support for "on-demand" immediate loading
+           of imported PCM WAV or AIFF files (full waveform continues
+           to load while you play or edit).
 
 Effects:
         * Built-in plug-ins now grouped into related categories
 
 Interface:
         * New Debug Log window available in all builds
-        * Experimental support for pairing a label track with any
+        * Experimental support for linking a label track with any
            number of audio tracks so that labels shift with cuts and
            inserts in the audio track
         * Default theme now reverted to that of 1.3.5
@@ -82,8 +85,12 @@ Please also check:
 for details of any issues that have been identified after release of
 this version.
 
- * Using "Undo" when a label track is paired with any audio
-    track causes the pairing to break, and can cause crashes.
+ * Using "Undo" when a label track is linked with any audio
+    track causes the linkage to break, and can cause crashes.
+
+ * "On demand" loading of files not available if using the optional
+    FFmpeg importer (that is, if "ffmpeg-compatible files" is set in
+    the import window).
 
  * Preferences window: OK button does not work when a tab
     is selected in the left-hand panel.
