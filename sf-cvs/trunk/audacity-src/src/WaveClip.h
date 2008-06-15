@@ -16,7 +16,7 @@
 #include "SampleFormat.h"
 #include "Sequence.h"
 #include "widgets/ProgressDialog.h"
-#include "ODTaskThread.h"
+#include "ondemand/ODTaskThread.h"
 #include "xml/XMLTagHandler.h"
 
 #include <wx/gdicmn.h>
