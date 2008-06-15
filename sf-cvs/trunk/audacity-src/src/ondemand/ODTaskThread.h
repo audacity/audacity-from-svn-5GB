@@ -26,7 +26,7 @@
 
 class ODTask;
 
-#ifdef __WXMAC__NOTON
+#ifdef __WXMAC__
 
 // On Mac OS X, it's better not to use the wxThread class.
 // We use our own implementation based on pthreads instead.
@@ -67,6 +67,7 @@ class ODTaskThread {
    }
 
  private:
+   int mPriority;
    bool mDestroy;
    pthread_t mThread;
 

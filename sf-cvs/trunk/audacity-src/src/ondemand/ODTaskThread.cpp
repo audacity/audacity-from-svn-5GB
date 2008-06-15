@@ -22,28 +22,28 @@
 
 
 ODTaskThread::ODTaskThread(ODTask* task)
-#ifndef __WXMAC__NOTON
+#ifndef __WXMAC__
 : wxThread()
 #endif
 {
    mTask=task;
-#ifdef __WXMAC__NOTON
+#ifdef __WXMAC__
    mDestroy = false; 
    mThread = NULL;
 #endif
    
 }   
 
-#ifdef __WXMAC__NOTON
+#ifdef __WXMAC__
    
 void ODTaskThread::Entry()
-#else NOTON
+#else 
 void *ODTaskThread::Entry()
 
 #endif
 {
    //TODO: Figure out why this has no effect at all.
-   wxThread::This()->SetPriority( 40);
+   //wxThread::This()->SetPriority( 40);
    //Do at least 5 percent of the task
    mTask->DoSome(0.05);
    
@@ -51,7 +51,7 @@ void *ODTaskThread::Entry()
    ODManager::Instance()->DecrementCurrentThreads();
    
    
-#ifndef __WXMAC__NOTON
+#ifndef __WXMAC__
    return NULL;
 #endif
 }
