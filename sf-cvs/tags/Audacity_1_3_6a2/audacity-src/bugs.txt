@@ -1,0 +1,2 @@
+See the audacity bugzilla at:
+  http://limpet.net/audacity/bugzilla/
