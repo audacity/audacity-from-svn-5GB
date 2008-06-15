@@ -52,7 +52,7 @@ extern "C" {
 
 // if you needed them, any other audacity header files would go here
 
-#define INITDYN(w,f) if ((*(void**)&this->f=(void*)w->GetSymbol(wxT(#f))) == NULL) return false
+#define INITDYN(w,f) if ((*(void**)&this->f=(void*)w->GetSymbol(wxT(#f))) == NULL) { wxLogMessage(wxT("Failed to load symbol ") wxT(#f)); return false; };
 
 void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl);
 
