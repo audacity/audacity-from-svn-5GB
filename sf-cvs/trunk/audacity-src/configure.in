@@ -155,11 +155,13 @@ AC_ARG_WITH(lib-preference,
             lib_preference=$withval,
             lib_preference="system local")
 
-AC_ARG_WITH(wx-version,
-            [AS_HELP_STRING([--with-wx-version],
-                            [select wxWidgets version (if both installed) [2.6,2.8]])],
-            wx_preference="--version=$withval",
-            wx_preference="")
+dnl AC_ARG_WITH(wx-version,
+dnl            [AS_HELP_STRING([--with-wx-version],
+dnl                            [select wxWidgets version (if both installed) [2.8,]])],
+dnl            wx_preference="--version=$withval",
+dnl            wx_preference="")
+dnl At the moment we only support wx2.8. If we start supporting 3.0 when it
+dnl comes out, we'll want it back again.
 
 dnl ----------------------------------------------------
 dnl If user asked for debug, put debug in compiler flags
@@ -235,15 +237,15 @@ dnl more things we always pass to wx-config
 wxconfigargs="$static_preference $unicode_preference  $wxconfigargs $wx_preference"
 wx_version=`${WX_CONFIG} $wxconfigargs --version`
 
-AC_MSG_NOTICE([Checking that the chosen version of wxWidgets is 2.6.x or 2.8.x])
+AC_MSG_NOTICE([Checking that the chosen version of wxWidgets is 2.8.x])
 
 case "${wx_version}" in
-  2.6.*|2.8.*)
+  2.8.*)
     echo "Great, you're using wxWidgets ${wx_version}!"
     ;;
   *)
   wx_list=`${WX_CONFIG} --list`
-  AC_MSG_ERROR([Unable to locate a suitable configuration of wxWidgets v2.6.x or higher.
+  AC_MSG_ERROR([Unable to locate a suitable configuration of wxWidgets v2.8.x or higher.
 The currently available configurations are listed below.  If necessary, either
 install the package for your distribution or download the latest version of
 wxWidgets
