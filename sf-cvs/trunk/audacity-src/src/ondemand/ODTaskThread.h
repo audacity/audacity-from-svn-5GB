@@ -26,7 +26,7 @@
 
 class ODTask;
 
-#ifdef __WXMAC__
+#ifdef __WXMAC__NOTON
 
 // On Mac OS X, it's better not to use the wxThread class.
 // We use our own implementation based on pthreads instead.
@@ -58,6 +58,14 @@ class ODTaskThread {
    void Run() {
       pthread_create(&mThread, NULL, callback, this);
    }
+   
+   ///Specifies the priority the thread will run at.  Currently doesn't work.
+   ///@param priority value from 0 (min priority) to 100 (max priority)
+   void SetPriority(int priority)
+   {
+      mPriority=priority;
+   }
+
  private:
    bool mDestroy;
    pthread_t mThread;
@@ -101,6 +109,7 @@ public:
    ///Constructs a ODTaskThread
    ///@param task the task to be launched as an 
 	ODTaskThread(ODTask* task);
+   
   
 protected:
    ///Executes a part of the task

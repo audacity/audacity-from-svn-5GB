@@ -55,7 +55,12 @@ class ODTask
     bool IsComplete();
     
     void TerminateAndBlock();
+    
+    virtual const char* GetTaskName(){return "ODTask";}
    
+   
+    ///returns the number of tasks created before this instance.
+    int GetTaskNumber(){return mTaskNumber;}
  protected:
      
    ///pure virtual function that does some part of the task this object represents.   
@@ -70,7 +75,7 @@ class ODTask
    ///ODTask can readjust its computation order.
    virtual void ODUpdate(){}
 
-   
+   int   mTaskNumber;
    float mPercentComplete;
    ODLock mPercentCompleteMutex;
    bool  mDoingTask;

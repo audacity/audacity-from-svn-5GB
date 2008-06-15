@@ -20,13 +20,18 @@ in a background thread.
 
 #include "ODTask.h"
 #include "ODManager.h"
+#include <wx/wx.h>
 
 /// Constructs an ODTask
 ODTask::ODTask()
 {
+
+   static int sTaskNumber=0;
    mPercentComplete=0;
    mDoingTask=false;
    mTerminate = false;
+   
+   mTaskNumber=sTaskNumber++;
 }
 
 
@@ -51,6 +56,8 @@ void ODTask::DoSome(float amountWork)
 {
    mBlockUntilTerminateMutex.Lock();
 
+   printf("%s %i subtask starting on new thread with priority\n", GetTaskName(),GetTaskNumber());
+
    mDoingTask=mTaskStarted=true;
    
    float workUntil = amountWork+PercentComplete();
@@ -62,8 +69,8 @@ void ODTask::DoSome(float amountWork)
    mTerminateMutex.Lock();
    if(mTerminate)
    {
-      mTerminateMutex.Unlock();
       mBlockUntilTerminateMutex.Unlock();
+      mTerminateMutex.Unlock();
       return;
    }  
    mTerminateMutex.Unlock();
@@ -75,6 +82,7 @@ void ODTask::DoSome(float amountWork)
    mTerminateMutex.Lock();
    while(PercentComplete() < workUntil && PercentComplete() < 1.0 && !mTerminate)
    {
+      wxThread::This()->Yield();
       //release within the loop so we can cut the number of iterations short
       mTerminateMutex.Unlock();
       //TODO: check to see if ondemand has been called
@@ -91,7 +99,14 @@ void ODTask::DoSome(float amountWork)
    mTerminateMutex.Lock();
    //if it is not done, put it back onto the ODManager queue.
    if(!IsComplete() && !mTerminate)
+   {
       ODManager::Instance()->AddTask(this);
+      printf("%s %i is %f done\n", GetTaskName(),GetTaskNumber(),PercentComplete());
+   }
+   else
+   {
+      printf("%s %i complete\n", GetTaskName(),GetTaskNumber());
+   }
    mTerminateMutex.Unlock();
    mBlockUntilTerminateMutex.Unlock();
    

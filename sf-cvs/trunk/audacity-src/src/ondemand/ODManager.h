@@ -93,6 +93,7 @@ class ODManager
    //mutex for above variable
    ODLock mTasksMutex;
 
+   int mNeedsDraw;
    
    ///Number of threads currently running.   Accessed thru multiple threads
    int mCurrentThreads;
@@ -107,7 +108,7 @@ class ODManager
    ODLock mTerminateMutex;
    
    
-#ifdef __WXMAC__
+#ifdef __WXMAC__NOTON
 
 // On Mac OS X, it's better not to use the wxThread class.
 // We use our own implementation based on pthreads instead.
@@ -136,12 +137,22 @@ class ODManagerHelperThread {
       ODManagerHelperThread *th = (ODManagerHelperThread *)p;
       /* return (void *) */th->Entry();
    }
+   
+   ///Specifies the priority the thread will run at.  Currently doesn't work.
+   ///@param priority value from 0 (min priority) to 100 (max priority)
+   void SetPriority(int priority)
+   {
+      mPriority=priority;
+   }
+   
    void Run() {
       pthread_create(&mThread, NULL, callback, this);
    }
  private:
    bool mDestroy;
    pthread_t mThread;
+   
+   int mPriority;
 
 };
 

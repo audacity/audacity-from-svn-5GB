@@ -16,6 +16,7 @@
 #include "SampleFormat.h"
 #include "Sequence.h"
 #include "widgets/ProgressDialog.h"
+#include "ODTaskThread.h"
 #include "xml/XMLTagHandler.h"
 
 #include <wx/gdicmn.h>
@@ -190,6 +191,9 @@ public:
    // Unlock all blockfiles
    void Unlock();
 
+   ///Delete the wave cache - force redraw.  Thread-safe
+   void DeleteWaveCache();
+
    //
    // XMLTagHandler callback methods for loading and saving
    //
@@ -213,6 +217,7 @@ protected:
    Envelope *mEnvelope;
 
    WaveCache    *mWaveCache;
+   ODLock       mWaveCacheMutex;
    SpecCache    *mSpecCache;
 
    samplePtr     mAppendBuffer;

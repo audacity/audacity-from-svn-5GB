@@ -24,7 +24,7 @@ The summary is eventually computed and written to a file in a background thread.
 #include <wx/utils.h>
 #include <wx/wxchar.h>
 #include <wx/log.h>
-
+#include <wx/thread.h>
 #include <sndfile.h>
 
 #include "PCMAliasBlockFile.h"
@@ -305,13 +305,16 @@ void ODPCMAliasBlockFile::WriteSummary()
    
    //Below from BlockFile.cpp's method.  We need to delete the data returned by
    //CalcSummary, because it uses local info.  In the future we might do something
-   //smarter and thread-dependant.
+   //smarter and thread-dependant like a static thread context.
    wxFFile summaryFile(mFileName.GetFullPath(), wxT("wb"));
 
    if( !summaryFile.IsOpened() ){
       // Never silence the Log w.r.t write errors; they always count
       // as new errors
-      wxLogError(wxT("Unable to write summary data to file %s"),
+      
+      //however, this is going to be called from a non-main thread,
+      //and wxLog calls are not thread safe.
+      printf("Unable to write summary data to file %s",
                    mFileName.GetFullPath().c_str());
       // If we can't write, there's nothing to do.
       return;
@@ -351,7 +354,9 @@ void ODPCMAliasBlockFile::WriteSummary()
 /// This method also has the side effect of setting the mMin, mMax,
 /// and mRMS members of this class.
 ///
-/// Unlike BlockFile's implementation You SHOULD delete the returned buffer
+/// Unlike BlockFile's implementation You SHOULD delete the returned buffer.
+/// this is protected so it shouldn't be hard to deal with - just override
+/// all BlockFile methods that use this method.
 ///
 /// @param buffer A buffer containing the sample data to be analyzed
 /// @param len    The length of the sample data
@@ -366,10 +371,19 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
    float *summary64K = (float *)(localFullSummary + mSummaryInfo.offset64K);
    float *summary256 = (float *)(localFullSummary + mSummaryInfo.offset256);
 
-   float *fbuffer = new float[len];
-   CopySamples(buffer, format,
+   float *fbuffer;
+   
+   //mchinen: think we can hack this - don't allocate and copy if we don't need to.,
+   if(format==floatSample)
+   {
+      fbuffer = (float*)buffer;
+   }
+   else
+   {
+      fbuffer = new float[len];
+      CopySamples(buffer, format,
                (samplePtr)fbuffer, floatSample, len);
-
+   }
    sampleCount sumLen;
    sampleCount i, j, jcount;
 
@@ -379,6 +393,9 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
    // Recalc 256 summaries
    sumLen = (len + 255) / 256;
 
+   wxThread::This()->Yield();
+   wxThread::Sleep(50);
+   
    for (i = 0; i < sumLen; i++) {
       min = fbuffer[i * 256];
       max = fbuffer[i * 256];
@@ -401,6 +418,9 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
       summary256[i * 3 + 1] = max;
       summary256[i * 3 + 2] = rms;
    }
+   
+   wxThread::This()->Yield();
+   wxThread::Sleep(50);
    for (i = sumLen; i < mSummaryInfo.frames256; i++) {
       summary256[i * 3] = 0.0f;
       summary256[i * 3 + 1] = 0.0f;
@@ -410,6 +430,8 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
    // Recalc 64K summaries
    sumLen = (len + 65535) / 65536;
 
+   wxThread::This()->Yield();
+   wxThread::Sleep(50);
    for (i = 0; i < sumLen; i++) {
       min = summary256[3 * i * 256];
       max = summary256[3 * i * 256 + 1];
@@ -431,6 +453,8 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
       summary64K[i * 3 + 1] = max;
       summary64K[i * 3 + 2] = rms;
    }
+   wxThread::This()->Yield();
+   wxThread::Sleep(50);
    for (i = sumLen; i < mSummaryInfo.frames64K; i++) {
       summary64K[i * 3] = 0.0f;
       summary64K[i * 3 + 1] = 0.0f;
@@ -443,6 +467,8 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
    sumsq = (float)summary64K[2];
    sumsq *= sumsq;
 
+   wxThread::This()->Yield();
+   wxThread::Sleep(50);
    for (i = 1; i < sumLen; i++) {
       if (summary64K[3*i] < min)
          min = summary64K[3*i];
@@ -455,8 +481,13 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
    mMin = min;
    mMax = max;
    mRMS = sqrt(sumsq / sumLen);
+   
+   wxThread::Sleep(50);
 
-   delete[] fbuffer;
-
+   //if we've used the float sample..
+   if(format!=floatSample)
+   {
+      delete[] fbuffer;
+   }
    return localFullSummary;
 }

@@ -35,7 +35,9 @@ void ODComputeSummaryTask::DoSomeInternal()
 {
    if(mBlockFiles.size()<=0)
    {
+      mPercentCompleteMutex.Lock();
       mPercentComplete = 1.0;
+      mPercentCompleteMutex.Unlock();
       return;
    }
    
@@ -47,7 +49,6 @@ void ODComputeSummaryTask::DoSomeInternal()
    //the Wavetrack/sequence.  If it doesn't it has been deleted and we should forget it.
    if(bf->RefCount()>=2)
    {
-      //  wxLogDebug(wxT("Writing summary percent complete %f \n"), mPercentComplete);
       bf->DoWriteSummary();
 
       mComputedBlockFiles++;
@@ -68,11 +69,15 @@ void ODComputeSummaryTask::DoSomeInternal()
    //update percentage complete.
    
    mPercentCompleteMutex.Lock();
-   mPercentComplete = (float) (mComputedBlockFiles+1) / (mMaxBlockFiles +1);
+   mPercentComplete = (float) 1.0 - ((float)mBlockFiles.size() / (mMaxBlockFiles+1));
    mPercentCompleteMutex.Unlock();
 
    //TODO: update track gui somehow.. or do it from a timer.  How does the cursor move in playback?
    
+   mWaveTrackMutex.Lock();
+   if(mWaveTrack)
+      mWaveTrack->DeleteWaveCaches();
+   mWaveTrackMutex.Unlock();
 }
 
 
@@ -95,11 +100,12 @@ void ODComputeSummaryTask::Update()
       BlockArray *blocks;
       Sequence *seq;
       
-      //gather all the blockfiles　that we should process in the wavetrack.
+      //gather all the blockfiles that we should process in the wavetrack.
       WaveClipList::Node* node = mWaveTrack->GetClipIterator();
       while(node) {
          clip = node->GetData();
          seq = clip->GetSequence();
+         //TODO:this lock is way to big since the whole file is one sequence.  find a way to break it down.
          seq->LockDeleteUpdateMutex();
          
          //See Sequence::Delete() for why need this for now..

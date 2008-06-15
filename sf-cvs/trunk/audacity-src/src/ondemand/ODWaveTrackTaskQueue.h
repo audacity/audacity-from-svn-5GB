@@ -47,6 +47,12 @@ class ODWaveTrackTaskQueue
    //returns true if the agrument is in the WaveTrack list.
    bool ContainsWaveTrack(WaveTrack* track);
    
+   //returns the wavetrack at position x.
+   WaveTrack* GetWaveTrack(int x);
+   
+   ///returns the number of wavetracks in this queue.
+   int GetNumWaveTracks();
+   
    ///Add a task to the queue.  
    void AddTask(ODTask* task);
    

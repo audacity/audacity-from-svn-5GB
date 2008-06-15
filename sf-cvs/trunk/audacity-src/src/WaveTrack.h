@@ -164,6 +164,10 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    bool AppendAlias(wxString fName, sampleCount start,
                     sampleCount len, int channel);
                     
+   ///Deletes all clips' wavecaches.  Careful, This may not be threadsafe.
+   void DeleteWaveCaches();
+
+                    
    ///
    /// MM: Now that each wave track can contain multiple clips, we don't
    /// have a continous space of samples anymore, but we simulate it,
