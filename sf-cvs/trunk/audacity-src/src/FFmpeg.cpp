@@ -23,15 +23,11 @@ License: GPL v2.  See License.txt.
    #endif
 #endif
 
-#if defined(USE_FFMPEG)
-   //shared object
-   FFmpegLibs *FFmpegLibsInst = NULL;
-#endif
 
 wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
 {
 #if !defined(USE_FFMPEG)
-   return _("FFmpeg support not compiled in");
+   return wxString(wxT("FFmpeg support not compiled in"));
 #else
 
    if (FFmpegLibsInst == NULL)
@@ -61,8 +57,8 @@ wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
 }
 
 #if defined(USE_FFMPEG)
-
-class FFmpegNotFoundDialog;
+//shared object
+FFmpegLibs *FFmpegLibsInst = NULL;
 
 void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
 {
@@ -89,6 +85,8 @@ void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
    }
    wxLogMessage(wxT("%s: %s"),cpt.c_str(),printstring.c_str());
 }
+
+class FFmpegNotFoundDialog;
 
 //----------------------------------------------------------------------------
 // FindFFmpegDialog
