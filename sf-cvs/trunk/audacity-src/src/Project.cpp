@@ -142,6 +142,7 @@ using std::cout;
 TrackList *AudacityProject::msClipboard = new TrackList();
 double AudacityProject::msClipLen = 0.0;
 AudacityProject *AudacityProject::msClipProject = NULL;
+ODLock   *AudacityProject::msAllProjectDeleteMutex = new ODLock();
 
 #if defined(__WXMAC__)
 const int sbarSpaceWidth = 15;
@@ -1269,11 +1270,24 @@ void AudacityProject::OnToolBarUpdate(wxCommandEvent & event)
    event.Skip(false);             /* No need to propagate any further */
 }
 
+///Prevents deletion of projects from outside threads.
+void AudacityProject::AllProjectsDeleteLock()
+{
+   msAllProjectDeleteMutex->Lock();
+}
+
+///Reallows deletion of projects from outside threads.
+void AudacityProject::AllProjectsDeleteUnlock()
+{
+   msAllProjectDeleteMutex->Unlock();
+}
+
 ///Handles the redrawing necessary for tasks as they partially update in the background.
 void AudacityProject::OnODTaskUpdate(wxCommandEvent & event)
 {
    //todo: add track data to the event - check to see if the project contains it before redrawing.
-   mTrackPanel->Refresh(false);
+   if(mTrackPanel)
+      mTrackPanel->Refresh(false);
    
 }
 
@@ -1612,7 +1626,10 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    //     have been deleted before this.
    mDirManager->Deref();
 
+   AllProjectsDeleteLock();
    gAudacityProjects.Remove(this);
+   AllProjectsDeleteUnlock();
+
    if (gActiveProject == this) {
       // Find a new active project
       if (gAudacityProjects.Count() > 0) {
@@ -2804,6 +2821,16 @@ void AudacityProject::DeleteClipboard()
       msClipboard->Clear( true );
       delete msClipboard;
       msClipboard = NULL;
+   }
+}
+
+//static
+void AudacityProject::DeleteAllProjectsDeleteLock()
+{
+   if(msAllProjectDeleteMutex)
+   {
+      delete msAllProjectDeleteMutex;
+      msAllProjectDeleteMutex=NULL;
    }
 }
 

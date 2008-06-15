@@ -393,8 +393,6 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
    // Recalc 256 summaries
    sumLen = (len + 255) / 256;
 
-   wxThread::This()->Yield();
-   wxThread::Sleep(50);
    
    for (i = 0; i < sumLen; i++) {
       min = fbuffer[i * 256];
@@ -419,8 +417,6 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
       summary256[i * 3 + 2] = rms;
    }
    
-   wxThread::This()->Yield();
-   wxThread::Sleep(50);
    for (i = sumLen; i < mSummaryInfo.frames256; i++) {
       summary256[i * 3] = 0.0f;
       summary256[i * 3 + 1] = 0.0f;
@@ -430,8 +426,6 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
    // Recalc 64K summaries
    sumLen = (len + 65535) / 65536;
 
-   wxThread::This()->Yield();
-   wxThread::Sleep(50);
    for (i = 0; i < sumLen; i++) {
       min = summary256[3 * i * 256];
       max = summary256[3 * i * 256 + 1];
@@ -453,8 +447,6 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
       summary64K[i * 3 + 1] = max;
       summary64K[i * 3 + 2] = rms;
    }
-   wxThread::This()->Yield();
-   wxThread::Sleep(50);
    for (i = sumLen; i < mSummaryInfo.frames64K; i++) {
       summary64K[i * 3] = 0.0f;
       summary64K[i * 3 + 1] = 0.0f;
@@ -467,8 +459,6 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
    sumsq = (float)summary64K[2];
    sumsq *= sumsq;
 
-   wxThread::This()->Yield();
-   wxThread::Sleep(50);
    for (i = 1; i < sumLen; i++) {
       if (summary64K[3*i] < min)
          min = summary64K[3*i];
@@ -482,7 +472,6 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
    mMax = max;
    mRMS = sqrt(sumsq / sumLen);
    
-   wxThread::Sleep(50);
 
    //if we've used the float sample..
    if(format!=floatSample)

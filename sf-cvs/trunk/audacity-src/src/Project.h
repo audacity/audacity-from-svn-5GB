@@ -69,6 +69,7 @@ class AdornedRulerPanel;
 
 class AudacityProject;
 class RecordingRecoveryHandler;
+class ODLock;
 
 AudacityProject *CreateNewAudacityProject(wxWindow * parentFrame);
 AUDACITY_DLL_API AudacityProject *GetActiveProject();
@@ -206,6 +207,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    // Other commands
 
    static void DeleteClipboard();
+   static void DeleteAllProjectsDeleteLock();
 
    void UpdateMenus();
    void UpdatePrefs();
@@ -301,7 +303,10 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    // Command Handling
    bool TryToMakeActionAllowed( wxUint32 & flags, wxUint32 flagsRqd, wxUint32 mask );
 
-
+   ///Prevents delete from external thread - for e.g. use of GetActiveProject 
+   static void AllProjectsDeleteLock();
+   static void AllProjectsDeleteUnlock();
+   
  private:
 
 
@@ -348,6 +353,8 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    static AudacityProject *msClipProject;
    static double msClipLen;
 
+   //shared by all projects
+   static ODLock *msAllProjectDeleteMutex;
    // History/Undo manager
 
    UndoManager mUndoManager;
