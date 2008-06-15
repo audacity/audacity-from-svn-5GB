@@ -38,8 +38,7 @@ extern "C" {
 #include "Audacity.h"
 /* rather earlier than normal, but pulls in config*.h and other program stuff
  * we need for the next bit */
-
-#if defined(USE_FFMPEG)
+#include <wx/string.h>
 #include <wx/dynlib.h>
 #include <wx/log.h>			// for wxLogNull
 #include <wx/msgdlg.h>		// for wxMessageBox
@@ -55,6 +54,8 @@ extern "C" {
 #define INITDYN(w,f) if ((*(void**)&this->f=(void*)w->GetSymbol(wxT(#f))) == NULL) { wxLogMessage(wxT("Failed to load symbol ") wxT(#f)); return false; };
 
 void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl);
+
+#if defined(USE_FFMPEG)
 
 class FFmpegLibs
 {
@@ -178,10 +179,11 @@ private:
    bool mStatic;
    bool mLibsLoaded;
 };
-#endif //USE_FFMPEG
+
+#endif
 
 //----------------------------------------------------------------------------
-// Get FFmpeg library versioqn
+// Get FFmpeg library version
 //----------------------------------------------------------------------------
 wxString GetFFmpegVersion(wxWindow *parent, bool prompt);
 
