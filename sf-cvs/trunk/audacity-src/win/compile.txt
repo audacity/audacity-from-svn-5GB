@@ -83,16 +83,22 @@ of this, doesn't work for the static libraries)".
    When you open wx_dll.dsw, Visual Studio will prompt whether 
    to convert. Click "Yes To All".
 
-2. If you want to use the accessibility features: 
-      * Open Solution Explorer. 
-      * Open the hierarchy to core > Setup Headers. 
-      * There are two "setup.h" files. Open both and select 
-         the one that has wx/msw/setup.h as its Name in the header.
-         The path is "wxWidgets-2.8.7\include\wx\msw\setup.h".
-      * In that "setup.h", change the wxUSE_ACCESSIBILITY define 
-         from 0 to 1. 
-   Audacity releases are built with wxUSE_ACCESSIBILITY 
-   turned on (set to 1).
+
+2. If you want to use the accessibility features, we have modified a
+   couple of the wxWidgets files. Rather than provide a patch, we 
+   store the modified files in CVS, and you can replace the 
+   corresponding wxWidgets files. 
+   In "audacity\win\wxWidgets_additions" are two .cpp files. 
+   *Ignore* all the other files there -- they are obsolete.
+   You may want to make backups of the wxWidgets originals of these, 
+   in case you might build without these accessibility features. 
+
+   * Copy access.cpp to "C:\wxWidgets-2.8.7\src\msw\ole\". 
+
+   * Copy setup.h to "C:\wxWidgets-2.8.7\include\wx\msw\".
+
+   Audacity releases are built with these accessibility mods.
+
 
 3. Build wxWidgets for all configurations of Audacity that you want.
     * Build "DLL Release" to use in a "Release" version of Audacity.
