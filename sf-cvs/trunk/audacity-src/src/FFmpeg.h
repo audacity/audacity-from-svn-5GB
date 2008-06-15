@@ -39,13 +39,16 @@ extern "C" {
 /* rather earlier than normal, but pulls in config*.h and other program stuff
  * we need for the next bit */
 
-#include "../widgets/LinkingHtmlWindow.h"
-#include "FileDialog.h"
-
 #if defined(USE_FFMPEG)
 #include <wx/dynlib.h>
 #include <wx/log.h>			// for wxLogNull
 #include <wx/msgdlg.h>		// for wxMessageBox
+#include "../widgets/LinkingHtmlWindow.h"
+#include "FileDialog.h"
+#include "ShuttleGui.h"
+#include "../Prefs.h"
+#include <wx/checkbox.h>
+#include <wx/textctrl.h>
 
 // if you needed them, any other audacity header files would go here
 
