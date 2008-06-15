@@ -115,7 +115,10 @@ void ODManager::Init()
    
 //   startThread->SetPriority(0);//default of 50.
    startThread->Create();
+   printf("starting thread from init\n");
    startThread->Run();
+   
+   printf("started thread from init\n");
    //destruction is taken care of by wx thread code.  TODO:Check if pthreads code does this.
 }
 
@@ -134,10 +137,10 @@ void ODManager::Start()
    ODTaskThread* thread;
    bool tasksInArray;
 
-   //wxLog calls not threadsafe.  
+   //wxLog calls not threadsafe.  are printfs?  thread-messy for sure, but safe?
    printf("ODManager thread strating \n");
    //TODO: Figure out why this has no effect at all.
-   wxThread::This()->SetPriority(30);
+   //wxThread::This()->SetPriority(30);
    mTerminateMutex.Lock();
    while(!mTerminate)
    {
@@ -180,7 +183,7 @@ void ODManager::Start()
       }
 
       mCurrentThreadsMutex.Unlock();
-      wxThread::Sleep(100);
+      wxThread::Sleep(200);
 //wxSleep can't be called from non-main thread.
 //      ::wxMilliSleep(250);
       mTerminateMutex.Lock();
@@ -192,7 +195,7 @@ void ODManager::Start()
       mQueuesMutex.Unlock();
 //      
 //      //TODO:this is a little excessive, in the future only redraw some, and if possible only the Tracks on the trackpanel..
-      if(mNeedsDraw > 35)
+      if(mNeedsDraw > 18)
       {
          mNeedsDraw=0;
          wxCommandEvent event( wxEVT_ODTASK_UPDATE );
@@ -207,7 +210,7 @@ void ODManager::Start()
    
    
    //wxLogDebug Not thread safe.
-   printf("ODManager thread terminating\n");
+   //printf("ODManager thread terminating\n");
 
 }
 
