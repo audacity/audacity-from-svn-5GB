@@ -265,6 +265,9 @@ void QuitAudacity(bool bForce)
 
       //Delete the clipboard
    AudacityProject::DeleteClipboard();
+   
+   //delete the static lock for audacity projects
+   AudacityProject::DeleteAllProjectsDeleteLock();
 
    wxLogWindow *lw = wxGetApp().mLogger;
    if (lw)

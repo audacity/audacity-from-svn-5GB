@@ -137,7 +137,7 @@ void ODManager::Start()
    //wxLog calls not threadsafe.  
    printf("ODManager thread strating \n");
    //TODO: Figure out why this has no effect at all.
-   wxThread::This()->SetPriority(10);
+   wxThread::This()->SetPriority(30);
    mTerminateMutex.Lock();
    while(!mTerminate)
    {
@@ -168,7 +168,7 @@ void ODManager::Start()
          //detach a new thread.
          thread = new ODTaskThread(task);
          
-         thread->SetPriority(10);//default is 50.
+//         thread->SetPriority(10);//default is 50.
          thread->Create();
          thread->Run();
          
@@ -180,7 +180,7 @@ void ODManager::Start()
       }
 
       mCurrentThreadsMutex.Unlock();
-      wxThread::Sleep(1000);
+      wxThread::Sleep(100);
 //wxSleep can't be called from non-main thread.
 //      ::wxMilliSleep(250);
       mTerminateMutex.Lock();
@@ -192,28 +192,15 @@ void ODManager::Start()
       mQueuesMutex.Unlock();
 //      
 //      //TODO:this is a little excessive, in the future only redraw some, and if possible only the Tracks on the trackpanel..
-      if(mNeedsDraw > 3)
+      if(mNeedsDraw > 35)
       {
          mNeedsDraw=0;
          wxCommandEvent event( wxEVT_ODTASK_UPDATE );
-         GetActiveProject()->AddPendingEvent( event );
-//         mQueuesMutex.Lock();
-//         for(int i=0;i<mQueues.size();i++)
-//         {
-//            WaveTrack* trackToUpdate;
-//            
-//            for(int j=0;j<mQueues[i]->GetNumWaveTracks();j++)
-//            {
-//               trackToUpdate=mQueues[i]->GetWaveTrack(j);
-//               //this check is necessary for thread-safety
-//               if(trackToUpdate)
-//               {
-//                  trackToUpdate->DeleteWaveCaches();
-//               }
-//            }
-//         }
-//         
-//         mQueuesMutex.Unlock();
+         AudacityProject::AllProjectsDeleteLock();
+         AudacityProject* proj = GetActiveProject();
+         if(proj)
+            proj->AddPendingEvent( event );
+         AudacityProject::AllProjectsDeleteUnlock();
       }   
    }
    mTerminateMutex.Unlock();

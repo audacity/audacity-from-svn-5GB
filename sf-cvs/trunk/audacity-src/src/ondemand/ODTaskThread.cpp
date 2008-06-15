@@ -43,7 +43,7 @@ void *ODTaskThread::Entry()
 #endif
 {
    //TODO: Figure out why this has no effect at all.
-   wxThread::This()->SetPriority( 20);
+   wxThread::This()->SetPriority( 40);
    //Do at least 5 percent of the task
    mTask->DoSome(0.05);
    
