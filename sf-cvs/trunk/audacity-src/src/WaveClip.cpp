@@ -71,6 +71,7 @@ public:
    float       *max;
    float       *rms;
    int         *bl;
+   
 };
 
 class SpecCache {
@@ -144,7 +145,7 @@ WaveClip::WaveClip(WaveClip& orig, DirManager *projDirManager)
 
    for (WaveClipList::Node* it=orig.mCutLines.GetFirst(); it; it=it->GetNext())
       mCutLines.Append(new WaveClip(*it->GetData(), projDirManager));
-
+ 
    mAppendBuffer = NULL;
    mAppendBufferLen = 0;
    mDirty = 0;
@@ -212,6 +213,16 @@ longSampleCount WaveClip::GetEndSample() const
    return GetStartSample() + mSequence->GetNumSamples();
 }
 
+///Delete the wave cache - force redraw.  Thread-safe
+void WaveClip::DeleteWaveCache()
+{
+   mWaveCacheMutex.Lock();
+   if(mWaveCache!=NULL)
+      delete mWaveCache;
+   mWaveCache = new WaveCache(1);
+   mWaveCacheMutex.Unlock();
+}
+
 //
 // Getting high-level data from the track for screen display and
 // clipping calculations
@@ -222,6 +233,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
                                int numPixels, double t0,
                                double pixelsPerSecond)
 {
+   mWaveCacheMutex.Lock();
    if (mWaveCache &&
        mWaveCache->dirty == mDirty &&
        mWaveCache->start == t0 &&
@@ -233,6 +245,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
       memcpy(rms, mWaveCache->rms, numPixels*sizeof(float));
       memcpy(bl, mWaveCache->bl, numPixels*sizeof(int));
       memcpy(where, mWaveCache->where, (numPixels+1)*sizeof(sampleCount));
+      mWaveCacheMutex.Unlock();
       return true;
    }
 
@@ -374,7 +387,10 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
                                         p1-p0,
                                         &mWaveCache->where[p0],
                                         mRate / pixelsPerSecond))
+         {
+            mWaveCacheMutex.Unlock();
             return false;
+         }
       }
    }
 
@@ -386,7 +402,8 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
    memcpy(rms, mWaveCache->rms, numPixels*sizeof(float));
    memcpy(bl, mWaveCache->bl, numPixels*sizeof(int));
    memcpy(where, mWaveCache->where, (numPixels+1)*sizeof(sampleCount));
-
+   
+   mWaveCacheMutex.Unlock();
    return true;
 }
 

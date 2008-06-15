@@ -16,7 +16,12 @@
 #include <wx/utils.h>
 #include <wx/wx.h>
 #include <wx/thread.h>
+#include <wx/event.h>
 bool gManagerCreated=false;
+
+
+DECLARE_EVENT_TYPE(wxEVT_ODTASK_UPDATE, -1)
+DEFINE_EVENT_TYPE(wxEVT_ODTASK_UPDATE)
 
 //private constructor - Singleton.
 ODManager::ODManager()
@@ -108,6 +113,7 @@ void ODManager::Init()
    //   wxLogDebug(wxT("Initializing ODManager...Creating manager thread\n"));
    ODManagerHelperThread* startThread = new ODManagerHelperThread;
    
+//   startThread->SetPriority(0);//default of 50.
    startThread->Create();
    startThread->Run();
    //destruction is taken care of by wx thread code.  TODO:Check if pthreads code does this.
@@ -123,10 +129,15 @@ void ODManager::DecrementCurrentThreads()
 ///Main loop for managing threads and tasks.
 void ODManager::Start()
 {   
+
    ODTask* task;
    ODTaskThread* thread;
    bool tasksInArray;
-   
+
+   //wxLog calls not threadsafe.  
+   printf("ODManager thread strating \n");
+   //TODO: Figure out why this has no effect at all.
+   wxThread::This()->SetPriority(10);
    mTerminateMutex.Lock();
    while(!mTerminate)
    {
@@ -156,6 +167,8 @@ void ODManager::Start()
          
          //detach a new thread.
          thread = new ODTaskThread(task);
+         
+         thread->SetPriority(10);//default is 50.
          thread->Create();
          thread->Run();
          
@@ -167,24 +180,48 @@ void ODManager::Start()
       }
 
       mCurrentThreadsMutex.Unlock();
-      ::wxMilliSleep(250);
+      wxThread::Sleep(1000);
+//wxSleep can't be called from non-main thread.
+//      ::wxMilliSleep(250);
       mTerminateMutex.Lock();
       
       //if there is some ODTask running, then there will be something in the queue.  If so then redraw to show progress
       
-     // mQueuesMutex.Lock();
-//      bool needsDraw = mQueues.size()>0;
-//      mQueuesMutex.Unlock();
+      mQueuesMutex.Lock();
+      mNeedsDraw += mQueues.size()>0?1:0;
+      mQueuesMutex.Unlock();
 //      
 //      //TODO:this is a little excessive, in the future only redraw some, and if possible only the Tracks on the trackpanel..
-//      if(needsDraw)
-//      {
-//         wxMutexGuiEnter();
-//       //  RedrawAllProjects();
-//         wxMutexGuiLeave();
-//      }   
+      if(mNeedsDraw > 3)
+      {
+         mNeedsDraw=0;
+         wxCommandEvent event( wxEVT_ODTASK_UPDATE );
+         GetActiveProject()->AddPendingEvent( event );
+//         mQueuesMutex.Lock();
+//         for(int i=0;i<mQueues.size();i++)
+//         {
+//            WaveTrack* trackToUpdate;
+//            
+//            for(int j=0;j<mQueues[i]->GetNumWaveTracks();j++)
+//            {
+//               trackToUpdate=mQueues[i]->GetWaveTrack(j);
+//               //this check is necessary for thread-safety
+//               if(trackToUpdate)
+//               {
+//                  trackToUpdate->DeleteWaveCaches();
+//               }
+//            }
+//         }
+//         
+//         mQueuesMutex.Unlock();
+      }   
    }
    mTerminateMutex.Unlock();
+   
+   
+   //wxLogDebug Not thread safe.
+   printf("ODManager thread terminating\n");
+
 }
 
 void ODManager::Quit()

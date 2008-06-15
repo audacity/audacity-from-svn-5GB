@@ -235,9 +235,10 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
          
          computeTask->SetWaveTrack(channels[c]);
          
-         //Just for now: add the task to the ODMananger (later the local track queue should take care of this.)
          ODManager::Instance()->AddTaskToWaveTrack(computeTask,channels[c]);
       }
+      
+      
 #endif      
       
    }

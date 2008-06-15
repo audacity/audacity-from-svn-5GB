@@ -1803,6 +1803,13 @@ void WaveTrack::FillSortedClipArray(WaveClipArray& clips)
    clips.Sort(SortClipArrayCmpFunc);
 }
 
+///Deletes all clips' wavecaches.  Careful, This may not be threadsafe.
+void WaveTrack::DeleteWaveCaches()
+{
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      it->GetData()->DeleteWaveCache();
+}
+
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //

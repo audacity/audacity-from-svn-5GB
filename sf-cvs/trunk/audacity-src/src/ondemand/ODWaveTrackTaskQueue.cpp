@@ -89,6 +89,28 @@ void ODWaveTrackTaskQueue::RemoveWaveTrack(WaveTrack* track)
    }
 }
 
+//returns the wavetrack at position x.
+WaveTrack* ODWaveTrackTaskQueue::GetWaveTrack(int x)
+{
+   WaveTrack* ret = NULL;
+   mTracksMutex.Lock();
+   if(x>=0&&x<mTracks.size())
+      ret = mTracks[x];
+   mTracksMutex.Unlock();
+   return ret;
+}
+
+///returns the number of wavetracks in this queue.
+int ODWaveTrackTaskQueue::GetNumWaveTracks()
+{
+
+   int ret = 0;
+   mTracksMutex.Lock();
+   ret=mTracks.size();
+   mTracksMutex.Unlock();
+   return ret;
+}
+
 //returns true if either tracks or tasks are empty
 bool ODWaveTrackTaskQueue::IsEmpty()
 {

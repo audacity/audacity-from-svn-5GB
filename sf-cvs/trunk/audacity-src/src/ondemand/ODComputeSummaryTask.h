@@ -42,7 +42,11 @@ class ODComputeSummaryTask:public ODTask
    ///Sets the WaveTrack to compute the summary data for.
    void SetWaveTrack(WaveTrack* track);
    
+   ///remove references to a wavetrack safely
    virtual void StopUsingWaveTrack(WaveTrack* track);
+   
+   ///Return the task name
+   virtual const char* GetTaskName(){return "ODComputeSummaryTask";}
    
 protected:
      

@@ -486,6 +486,9 @@ enum {
    TrackPanelID
 };
 
+//also in ODManager.cpp
+DECLARE_EVENT_TYPE(wxEVT_ODTASK_UPDATE, -1)
+
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_MENU_OPEN(AudacityProject::OnMenuEvent)
     EVT_MENU_CLOSE(AudacityProject::OnMenuEvent)
@@ -506,6 +509,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_COMMAND(wxID_ANY, EVT_TOOLBAR_UPDATED, AudacityProject::OnToolBarUpdate)
     EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEYBOARD, AudacityProject::OnCaptureKeyboard)
     EVT_COMMAND(wxID_ANY, EVT_RELEASE_KEYBOARD, AudacityProject::OnReleaseKeyboard)
+    EVT_COMMAND  (wxID_ANY, wxEVT_ODTASK_UPDATE, AudacityProject::OnODTaskUpdate)
 END_EVENT_TABLE()
 
 AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
@@ -1263,6 +1267,14 @@ void AudacityProject::OnToolBarUpdate(wxCommandEvent & event)
    HandleResize();
 
    event.Skip(false);             /* No need to propagate any further */
+}
+
+///Handles the redrawing necessary for tasks as they partially update in the background.
+void AudacityProject::OnODTaskUpdate(wxCommandEvent & event)
+{
+   //todo: add track data to the event - check to see if the project contains it before redrawing.
+   mTrackPanel->Refresh(false);
+   
 }
 
 void AudacityProject::OnScroll(wxScrollEvent & event)
