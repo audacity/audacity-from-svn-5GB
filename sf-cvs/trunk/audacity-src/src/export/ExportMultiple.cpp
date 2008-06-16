@@ -382,7 +382,22 @@ void ExportMultiple::OnFormat(wxCommandEvent& event)
 
 void ExportMultiple::OnOptions(wxCommandEvent& event)
 {
-   mPlugins[mFormat->GetSelection()]->DisplayOptions(mProject);
+   int sel = mFormat->GetSelection();
+   size_t c = 0;
+   for (size_t i = 0; i < mPlugins.GetCount(); i++)
+   {
+      for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+      {
+         if (sel == c)
+         {
+            mFormatIndex = i;
+            mSubFormatIndex = j;
+         }
+         c++;
+      }
+   }
+
+   mPlugins[mFormatIndex]->DisplayOptions(mProject,mSubFormatIndex);
 }
 
 void ExportMultiple::OnCreate(wxCommandEvent& event)
