@@ -331,10 +331,10 @@ AC_DEFUN([AUDACITY_CHECKLIB_FFMPEG], [
    dnl current version to make maintenance easier. We need both avcodec and
    dnl avformat, so I'm going to check for both
 
-   PKG_CHECK_MODULES(AVCODEC, libavcodec >= 51,
+   PKG_CHECK_MODULES(AVCODEC, libavcodec >= 51.53,
                      avcodec_available_system="yes",
                      avcodec_available_system="no")
-   PKG_CHECK_MODULES(AVFORMAT, libavformat >= 51,
+   PKG_CHECK_MODULES(AVFORMAT, libavformat >= 52.12,
                      avformat_available_system="yes",
                      avformat_available_system="no")
 
