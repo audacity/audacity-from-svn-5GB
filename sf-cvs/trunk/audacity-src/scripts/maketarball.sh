@@ -145,25 +145,23 @@ myrmrvf $mode scripts
 printf "Done\n"
 
 printf "removing unused libraries from CVS tree ..."
-myrmrvf $mode lib-src/iAVC lib-src/id3lib lib-src/lib-widget-extra;
-myrmrvf $mode lib-src/mod-script-pipe lib-src/portburn lib-src/rtaudio; 
+myrmrvf $mode lib-src/iAVC lib-src/id3lib;
+myrmrvf $mode lib-src/portburn lib-src/rtaudio; 
 myrmrvf $mode lib-src/wave++;
-# mod-script-pipe only builds on win32 with an unstable audacity configuration
-# so I'm not including it.
-myrmrvf $mode lib-src/mod-script-pipe;
 printf "Done\n"
 
 printf "removing libraries that should be installed locally..."
 myrmrvf $mode lib-src/libflac lib-src/libid3tag lib-src/libmad;
 myrmrvf $mode lib-src/libogg lib-src/libsamplerate lib-src/libsndfile;
 myrmrvf $mode lib-src/libvorbis lib-src/soundtouch lib-src/twolame;
+myrmrvf $mode lib-src/ffmpeg;
 printf "Done\n"
 
 printf "removing qa ... ";
 myrmrvf $mode qa 
 printf "Done\n"
 
-printf "removing doxygen files (unfinished) ... ";
+printf "removing doxygen files ... ";
 myrmvf $mode audacity.dox
 myrmrvf $mode dox2-src 
 myrmrvf $mode dox 
@@ -217,6 +215,7 @@ echo "#undef USE_LIBMAD" >> "win/configwin.h"
 echo "#undef USE_LIBSAMPLERATE" >> "win/configwin.h"
 echo "#undef USE_LIBVORBIS" >> "win/configwin.h"
 echo "#undef USE_LIBTWOLAME" >> "win/configwin.h"
+echo "#undef USE_FFMPEG" >> "win/configwin.h"
 
 printf "removing unwanted projects from VC++ solution\n"
 updsln $mode ogg_static
