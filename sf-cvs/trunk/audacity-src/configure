@@ -7839,12 +7839,12 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_AVCODEC_CFLAGS="$AVCODEC_CFLAGS"
     else
         if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavcodec >= 51\"") >&5
-  ($PKG_CONFIG --exists --print-errors "libavcodec >= 51") 2>&5
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavcodec >= 51.53\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libavcodec >= 51.53") 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_AVCODEC_CFLAGS=`$PKG_CONFIG --cflags "libavcodec >= 51" 2>/dev/null`
+  pkg_cv_AVCODEC_CFLAGS=`$PKG_CONFIG --cflags "libavcodec >= 51.53" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -7857,12 +7857,12 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_AVCODEC_LIBS="$AVCODEC_LIBS"
     else
         if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavcodec >= 51\"") >&5
-  ($PKG_CONFIG --exists --print-errors "libavcodec >= 51") 2>&5
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavcodec >= 51.53\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libavcodec >= 51.53") 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_AVCODEC_LIBS=`$PKG_CONFIG --libs "libavcodec >= 51" 2>/dev/null`
+  pkg_cv_AVCODEC_LIBS=`$PKG_CONFIG --libs "libavcodec >= 51.53" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -7881,9 +7881,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        AVCODEC_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "libavcodec >= 51"`
+	        AVCODEC_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "libavcodec >= 51.53"`
         else
-	        AVCODEC_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libavcodec >= 51"`
+	        AVCODEC_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libavcodec >= 51.53"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$AVCODEC_PKG_ERRORS" >&5
@@ -7910,12 +7910,12 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_AVFORMAT_CFLAGS="$AVFORMAT_CFLAGS"
     else
         if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavformat >= 51\"") >&5
-  ($PKG_CONFIG --exists --print-errors "libavformat >= 51") 2>&5
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavformat >= 52.12\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libavformat >= 52.12") 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_AVFORMAT_CFLAGS=`$PKG_CONFIG --cflags "libavformat >= 51" 2>/dev/null`
+  pkg_cv_AVFORMAT_CFLAGS=`$PKG_CONFIG --cflags "libavformat >= 52.12" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -7928,12 +7928,12 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_AVFORMAT_LIBS="$AVFORMAT_LIBS"
     else
         if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavformat >= 51\"") >&5
-  ($PKG_CONFIG --exists --print-errors "libavformat >= 51") 2>&5
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavformat >= 52.12\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libavformat >= 52.12") 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_AVFORMAT_LIBS=`$PKG_CONFIG --libs "libavformat >= 51" 2>/dev/null`
+  pkg_cv_AVFORMAT_LIBS=`$PKG_CONFIG --libs "libavformat >= 52.12" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -7952,9 +7952,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        AVFORMAT_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "libavformat >= 51"`
+	        AVFORMAT_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "libavformat >= 52.12"`
         else
-	        AVFORMAT_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libavformat >= 51"`
+	        AVFORMAT_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libavformat >= 52.12"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$AVFORMAT_PKG_ERRORS" >&5
