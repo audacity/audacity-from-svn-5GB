@@ -23,19 +23,25 @@ License: GPL v2.  See License.txt.
    #endif
 #endif
 
+#if !defined(USE_FFMPEG)
+wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
+{
+   return wxString(wxT("FFmpeg support not compiled in"));
+}
+#else
+
+/** This pointer to the shared object has global scope and is used to track the
+ * singleton object which wraps the FFmpeg codecs */
+FFmpegLibs *FFmpegLibsInst = NULL;
 
 wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
 {
-#if !defined(USE_FFMPEG)
-   return wxString(wxT("FFmpeg support not compiled in"));
-#else
-
    if (FFmpegLibsInst == NULL)
       FFmpegLibsInst = new FFmpegLibs(true);
    else
       FFmpegLibsInst->refcount++;
 
-   wxString versionString = _("FFmpeg library is not found");
+   wxString versionString = _("FFmpeg library not found");
 
    if (prompt) {
       FFmpegLibsInst->FindLibs(parent);
@@ -53,12 +59,9 @@ wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
    }
 
    return versionString;
-#endif
 }
 
-#if defined(USE_FFMPEG)
-//shared object
-FFmpegLibs *FFmpegLibsInst = NULL;
+
 
 void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
 {
@@ -100,7 +103,7 @@ class FindFFmpegDialog : public wxDialog
 public:
 
    FindFFmpegDialog(wxWindow *parent, wxString path, wxString name, wxString type)
-      :  wxDialog(parent, wxID_ANY, wxString(_("Locate Lame")))
+      :  wxDialog(parent, wxID_ANY, wxString(_("Locate FFmpeg")))
    {
       ShuttleGui S(this, eIsCreating);
 
@@ -236,7 +239,7 @@ public:
 "Audacity attempted to load FFmpeg libraries\n\
 to either import or export an audio file,\n\
 but libraries were not found.\n\
-If you want to use FFmpeg import/export feature,\n\
+If you want to use the FFmpeg import/export feature,\n\
 please go to Preferences->Import/Export\n\
 and tell Audacity where to look for the libraries."
          ));
