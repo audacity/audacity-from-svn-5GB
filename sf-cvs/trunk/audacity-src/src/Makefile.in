@@ -59,6 +59,7 @@ OBJS = \
 	Benchmark.o \
 	Dependencies.o \
 	Envelope.o \
+	FFmpeg.o \
 	FFT.o \
 	FileIO.o \
 	FileNames.o \
