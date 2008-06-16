@@ -7979,8 +7979,8 @@ fi
          FFMPEG_SYSTEM_LIBS="$AVCODEC_LIBS $AVFORMAT_LIBS"
          FFMPEG_SYSTEM_CXXFLAGS="$AVCODEC_CFLAGS $AVFORMAT_CFLAGS"
          FFMPEG_SYSTEM_CPPSYMBOLS="USE_FFMPEG"
-		 		 		 FFMPEG_SYSTEM_OPTOBJS="FFmpeg.o import/ImportFFmpeg.o"
-         { echo "$as_me:$LINENO: FFmpeg library available as system library" >&5
+		 		 		 FFMPEG_SYSTEM_OPTOBJS="import/ImportFFmpeg.o"
+		          { echo "$as_me:$LINENO: FFmpeg library available as system library" >&5
 echo "$as_me: FFmpeg library available as system library" >&6;}
       fi
    fi
