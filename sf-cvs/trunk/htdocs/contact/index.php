@@ -55,6 +55,8 @@
   <li>Details of what you were trying to do, what steps led to the problem occurring, and details of any error messages.</li>
 </ol>
 
+<p>Patches to fix problems or enhance features will be gratefully received. Please follow the guidance on the <a href="http://audacityteam.org/wiki/index.php?title=SubmittingPatches">Submitting Patches</a> page on our <a href="http://audacityteam.org/wiki/index.php">Wiki</a>.</p>    
+
 <p><b>Note:</b> We can only accept feedback in English at present.</p>')?>
 
 <h3><?php echo _('Discussion Lists')?></h3>
