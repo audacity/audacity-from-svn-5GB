@@ -60,7 +60,7 @@ void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl);
 class FFmpegLibs
 {
 public:
-   FFmpegLibs(bool askuser);
+   FFmpegLibs();
    ~FFmpegLibs();
 
    void              (*av_log_set_callback)           (void (*)(void*, int, const char*, va_list));
@@ -179,6 +179,9 @@ private:
    bool mStatic;
    bool mLibsLoaded;
 };
+
+FFmpegLibs *PickFFmpegLibs();
+void        DropFFmpegLibs();
 
 #endif
 

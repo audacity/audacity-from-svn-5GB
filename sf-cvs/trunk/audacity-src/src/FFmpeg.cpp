@@ -34,12 +34,34 @@ wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
  * singleton object which wraps the FFmpeg codecs */
 FFmpegLibs *FFmpegLibsInst = NULL;
 
+FFmpegLibs *PickFFmpegLibs()
+{
+   if (FFmpegLibsInst != NULL)
+   {
+      FFmpegLibsInst->refcount++;
+      return FFmpegLibsInst;
+   }
+   else
+      return new FFmpegLibs();
+}
+
+void DropFFmpegLibs()
+{
+   if (FFmpegLibsInst != NULL)
+   {
+      FFmpegLibsInst->refcount--;
+      if (FFmpegLibsInst->refcount == 0)
+      {
+         delete FFmpegLibsInst;
+         FFmpegLibsInst = NULL;
+      }
+   }
+}
+
+
 wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
 {
-   if (FFmpegLibsInst == NULL)
-      FFmpegLibsInst = new FFmpegLibs(true);
-   else
-      FFmpegLibsInst->refcount++;
+   PickFFmpegLibs();
 
    wxString versionString = _("FFmpeg library not found");
 
@@ -51,12 +73,7 @@ wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
       versionString = FFmpegLibsInst->GetLibraryVersion();
    }
 
-   FFmpegLibsInst->refcount--;
-   if (FFmpegLibsInst->refcount <= 0)
-   {
-      delete FFmpegLibsInst;
-      FFmpegLibsInst = NULL;
-   }
+   DropFFmpegLibs();
 
    return versionString;
 }
@@ -283,7 +300,7 @@ END_EVENT_TABLE()
 // FFmpegLibs
 //----------------------------------------------------------------------------
 
-FFmpegLibs::FFmpegLibs(bool showerr)
+FFmpegLibs::FFmpegLibs()
 {
    mLibsLoaded = false;
    mStatic = false;

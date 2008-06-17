@@ -273,10 +273,7 @@ ImportFileHandle *FFmpegImportPlugin::Open(wxString filename)
 FFmpegImportFileHandle::FFmpegImportFileHandle(const wxString & name)
 :  ImportFileHandle(name)
 {
-   if (FFmpegLibsInst == NULL)
-      FFmpegLibsInst = new FFmpegLibs(true);
-   else
-      FFmpegLibsInst->refcount++;
+   PickFFmpegLibs();
 
    mStreamInfo = new wxArrayString();
    mFormatContext = NULL;
@@ -721,12 +718,7 @@ FFmpegImportFileHandle::~FFmpegImportFileHandle()
       delete mScs[i];
    }
 
-   FFmpegLibsInst->refcount--;
-   if (FFmpegLibsInst->refcount <= 0)
-   {
-      delete FFmpegLibsInst;
-      FFmpegLibsInst = NULL;
-   }
+   DropFFmpegLibs();
 }
 
 #endif //USE_FFMPEG
