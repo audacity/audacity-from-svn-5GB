@@ -1,6 +1,14 @@
 
 Audacity(R): A Free, Cross-Platform Digital Audio Editor
-WWW:   http://audacity.sourceforge.net/
+WWW: http://audacity.sourceforge.net/
+
+We welcome feedback on Audacity, suggestions for new or
+improved features, bug reports and patches at:
+  feedback@audacityteam.org
+
+Personal support with Audacity is not provided by e-mail,
+but on our Forum:
+  http://audacityteam.org/forum/
 
 Audacity is copyright (c) 1999-2008 by Audacity Team.
 This copyright notice applies to all documents in the
@@ -92,6 +100,11 @@ this version.
     FFmpeg importer (that is, if "ffmpeg-compatible files" is set in
     the import window).
 
+ * MP3 Export: Bit Rate Mode and Quality choices in MP3 Options
+    dialogue are non-functional, almost always producing a 128 kbps
+    CBR file. Additionally, the reported length is often incorrect (the
+    actual length is correct).
+
  * Preferences window: OK button does not work when a tab
     is selected in the left-hand panel.
 
@@ -169,6 +182,9 @@ this version.
    device is set up (in the Apple Sound and Midi Setup utility) to work in
    stereo, 16bits, with a sample rate of 44100Hz or 48000Hz.  More help at:
       http://audacityteam.org/wiki/index.php?title=Mac_Bugs#Loss_of_sound_after_running_Audacity
+
+ * Mac OS X only: Some menus do not get re-enabled after previewing
+    then cancelling an effect, or after applying it.
 
  * Mac OS X only: If using Audacity when the "Hear" audio plug-in is running
    (or has been since boot), there will be excessive memory usage which could
@@ -358,7 +374,7 @@ For more information on compilation, please visit:
 
   http://audacityteam.org/wiki/index.php?title=Developer_Guide#Platform_Specific_Guides
 
-or email us at:
+or e-mail us at:
 
   audacity-devel@lists.sourceforge.net
 
