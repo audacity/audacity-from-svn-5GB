@@ -555,7 +555,7 @@ void TrackPanel::BuildMenus(void)
    mWaveTrackMenu->Append(OnWaveformDBID, _("Waveform (dB)"));
    mWaveTrackMenu->Append(OnSpectrumID, _("Spectrum"));
 #ifdef LOGARITHMIC_SPECTRUM
-   mWaveTrackMenu->Append(OnSpectrumLogID, _("Spectrum log(f)"));
+   mWaveTrackMenu->Append(OnSpectrumLogID, _("Spectrum log(f)"));  // i18n-hint: short form of 'logarithm'
 #endif
    mWaveTrackMenu->Append(OnPitchID, _("Pitch (EAC)"));
    mWaveTrackMenu->AppendSeparator();
