@@ -42,7 +42,10 @@ FFmpegLibs *PickFFmpegLibs()
       return FFmpegLibsInst;
    }
    else
-      return new FFmpegLibs();
+   {
+      FFmpegLibsInst = new FFmpegLibs();
+      return FFmpegLibsInst;
+   }
 }
 
 void DropFFmpegLibs()
