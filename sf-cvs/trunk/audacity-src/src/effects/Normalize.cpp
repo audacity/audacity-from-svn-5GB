@@ -324,7 +324,7 @@ END_EVENT_TABLE()
 
 NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
                                  wxWindow * parent)
-:  EffectDialog(parent, _("Normailze"), PROCESS_EFFECT),
+:  EffectDialog(parent, _("Normalize"), PROCESS_EFFECT),
    mEffect(effect)
 {
    Init();
@@ -348,8 +348,8 @@ void NormalizeDialog::PopulateOrExchange(ShuttleGui & S)
    {
       mDCCheckBox = S.AddCheckBox(wxT(""),
                                   mDC ? wxT("true") : wxT("false"));
-      mDCCheckBox->SetName(_("Remove any DC offset (center on 0 vertically"));
-      S.AddUnits(_("Remove any DC offset (center on 0 vertically"));
+      mDCCheckBox->SetName(_("Remove any DC offset (center on 0.0 vertically)"));
+      S.AddUnits(_("Remove any DC offset (center on 0.0 vertically)"));
 
       mGainCheckBox = S.Id(ID_NORMALIZE_AMPLITUDE).AddCheckBox(wxT(""),
                                     mGain ? wxT("true") : wxT("false"));
