@@ -147,7 +147,7 @@ printf "Done\n"
 printf "removing unused libraries from CVS tree ..."
 myrmrvf $mode lib-src/iAVC lib-src/id3lib;
 myrmrvf $mode lib-src/portburn lib-src/rtaudio; 
-myrmrvf $mode lib-src/wave++;
+myrmrvf $mode lib-src/wave++ lib-src/portaudio;
 printf "Done\n"
 
 printf "removing libraries that should be installed locally..."
