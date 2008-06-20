@@ -342,7 +342,6 @@ AC_DEFUN([AUDACITY_CHECKLIB_FFMPEG], [
    if test "x$avcodec_available_system" = "xyes" ; then
       if test "x$avformat_available_system" = "xyes" ; then
 	     FFMPEG_SYSTEM_AVAILABLE="yes"
-         FFMPEG_SYSTEM_LIBS="$AVCODEC_LIBS $AVFORMAT_LIBS"
          FFMPEG_SYSTEM_CXXFLAGS="$AVCODEC_CFLAGS $AVFORMAT_CFLAGS"
          FFMPEG_SYSTEM_CPPSYMBOLS="USE_FFMPEG"
 		 dnl build the extra object files needed to use FFmpeg. Paths inside
