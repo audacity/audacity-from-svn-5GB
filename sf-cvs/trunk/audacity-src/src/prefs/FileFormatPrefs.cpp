@@ -69,6 +69,7 @@ void FileFormatPrefs::Populate( )
    // ----------------------- End of main section --------------
    // Set the MP3 Version string.
    SetMP3VersionText();
+   SetFFmpegVersionText();
 }
 
 /// This PopulateOrExchange function is a good example of mixing the fully 
