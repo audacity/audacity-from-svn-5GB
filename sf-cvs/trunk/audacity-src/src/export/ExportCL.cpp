@@ -199,7 +199,7 @@ public:
 
    // Required
 
-   bool DisplayOptions(AudacityProject *project = NULL);
+   bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
    bool Export(AudacityProject *project,
                int channels,
                wxString fName,
@@ -412,7 +412,7 @@ bool ExportCL::Export(AudacityProject *project,
    return true;
 }
 
-bool ExportCL::DisplayOptions(AudacityProject *project)
+bool ExportCL::DisplayOptions(AudacityProject *project, int format)
 {
    ExportCLOptions od(project);
 
