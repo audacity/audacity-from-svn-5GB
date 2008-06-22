@@ -207,7 +207,8 @@ public:
                double t0,
                double t1,
                MixerSpec *mixerSpec = NULL,
-               Tags *metadata = NULL);
+               Tags *metadata = NULL,
+               int subformat = 0);
 };
 
 ExportCL::ExportCL()
@@ -233,7 +234,8 @@ bool ExportCL::Export(AudacityProject *project,
                       double t0,
                       double t1, 
                       MixerSpec *mixerSpec,
-                      Tags *metadata)
+                      Tags *metadata,
+                      int subformat)
 {
    ExportCLProcess *p;
    wxString output;
@@ -323,7 +325,7 @@ bool ExportCL::Export(AudacityProject *project,
    ProgressDialog *progress = new ProgressDialog(_("Export"),
       selectionOnly ?
       _("Exporting the selected audio using command-line encoder") :
-      _("Exporting the entire project using command-line encoder"));
+   _("Exporting the entire project using command-line encoder"));
 
    // Start piping the mixed data to the command
    while (!cancelling && p->IsActive() && os->IsOk()) {

@@ -182,7 +182,8 @@ public:
                double t0,
                double t1,
                MixerSpec *mixerSpec = NULL,
-               Tags *metadata = NULL);
+               Tags *metadata = NULL,
+               int subformat = 0);
 
 private:
 
@@ -208,7 +209,8 @@ void ExportMP2::Destroy()
 
 bool ExportMP2::Export(AudacityProject *project,
                int channels, wxString fName,
-               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec, Tags *metadata)
+               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec, Tags *metadata,
+               int subformat)
 {
    bool stereo = (channels == 2);
    long bitrate = gPrefs->Read(wxT("/FileFormats/MP2Bitrate"), 160);

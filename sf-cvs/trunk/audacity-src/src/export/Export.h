@@ -88,7 +88,8 @@ public:
                        double t0,
                        double t1,
                        MixerSpec *mixerSpec = NULL,
-                       Tags *metadata = NULL);
+                       Tags *metadata = NULL,
+                       int subformat = 0);
 
    virtual bool DoExport(AudacityProject *project,
                          int channels,
@@ -96,7 +97,8 @@ public:
                          bool selectedOnly,
                          double t0,
                          double t1,
-                         MixerSpec *mixerSpec);
+                         MixerSpec *mixerSpec,
+                         int subformat);
 
 private:
 

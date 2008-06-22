@@ -187,7 +187,8 @@ public:
                double t0,
                double t1,
                MixerSpec *mixerSpec = NULL,
-               Tags *metadata = NULL);
+               Tags *metadata = NULL,
+               int subformat = 0);
 
 private:
 
@@ -221,7 +222,8 @@ bool ExportFLAC::Export(AudacityProject *project,
                         double t0,
                         double t1,
                         MixerSpec *mixerSpec,
-                        Tags *metadata)
+                        Tags *metadata,
+                        int subformat)
 {
    double    rate    = project->GetRate();
    TrackList *tracks = project->GetTracks();

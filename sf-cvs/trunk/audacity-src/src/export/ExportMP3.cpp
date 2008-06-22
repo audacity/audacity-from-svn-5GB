@@ -1628,7 +1628,8 @@ public:
                double t0,
                double t1,
                MixerSpec *mixerSpec = NULL,
-               Tags *metadata = NULL);
+               Tags *metadata = NULL,
+               int subformat = 0);
 
 private:
 
@@ -1663,7 +1664,8 @@ bool ExportMP3::Export(AudacityProject *project,
                        double t0,
                        double t1,
                        MixerSpec *mixerSpec,
-                       Tags *metadata)
+                       Tags *metadata,
+                       int subformat)
 {
    int rate = lrint(project->GetRate());
    wxWindow *parent = project;
