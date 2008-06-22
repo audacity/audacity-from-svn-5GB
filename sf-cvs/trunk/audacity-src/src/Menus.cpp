@@ -2153,6 +2153,7 @@ bool AudacityProject::OnEffect(int type, Effect * f)
       //      OnZoomFit();
 
       RedrawProject();
+      mTrackPanel->SetFocus();
       mTrackPanel->EnsureVisible(mTrackPanel->GetFirstSelectedTrack());
 
       // Only remember a successful effect, don't rmemeber insert,
