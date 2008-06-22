@@ -113,12 +113,13 @@ ExportPCMOptions::ExportPCMOptions(wxWindow *parent, int selformat)
             wxDefaultPosition, wxDefaultSize,
             wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
 {
+   mOk = NULL;
    int format = ReadExportFormatPref();
 
    //----- Gather our strings used in choices.
 
    //TODO: clean the things up
-   format = sf_header_index_to_type(selformat);
+   //format = sf_header_index_to_type(selformat);
    int i;
    int num;
    int sel;
@@ -133,15 +134,24 @@ ExportPCMOptions::ExportPCMOptions(wxWindow *parent, int selformat)
    }
    mHeaderFromChoice = sel;
 
+   mEncodingFormats.Clear();
    num = sf_num_encodings();
-   sel = 0;
+   mEncodingFromChoice = sel = 0;
    for (i = 0; i < num; i++) {
-      mEncodingNames.Add(sf_encoding_index_name(i));
-      if ((format & SF_FORMAT_SUBMASK) == sf_encoding_index_to_subtype(i)) {
-         sel = i;
+      int enc = sf_encoding_index_to_subtype(i);
+      int fmt = format | enc;
+      bool valid  = ValidatePair(fmt);
+      if (valid)
+      {
+
+         mEncodingNames.Add(sf_encoding_index_name(i));
+         mEncodingFormats.Add(enc);
+         if ((format & SF_FORMAT_SUBMASK) == sf_encoding_index_to_subtype(i)) {
+            mEncodingFromChoice = sel;
+         }
+         else sel++;
       }
    }
-   mEncodingFromChoice = sel;
 
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
@@ -151,7 +161,6 @@ ExportPCMOptions::ExportPCMOptions(wxWindow *parent, int selformat)
    Fit();
    Center();
 }
-
 /// 
 /// 
 void ExportPCMOptions::PopulateOrExchange(ShuttleGui & S)
@@ -181,9 +190,6 @@ void ExportPCMOptions::PopulateOrExchange(ShuttleGui & S)
 
    S.AddStandardButtons();
    mOk = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
-
-   wxCommandEvent nl;
-   OnHeaderChoice(nl);
 
    return;
 }
@@ -278,7 +284,8 @@ bool ExportPCMOptions::ValidatePair(int format)
    info.seekable = 0;
 
    int valid = sf_format_check(&info);
-   mOk->Enable(valid != 0 ? true : false);
+   if (mOk)
+      mOk->Enable(valid != 0 ? true : false);
    return valid != 0 ? true : false;
 }
 
