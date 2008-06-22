@@ -105,18 +105,18 @@ friend class PhaserDialog;
 
 // Declare window functions
 
-#define ID_STAGESTEXT 12001
-#define ID_STAGESSLIDER 12002
-#define ID_DRYWETTEXT 12003
-#define ID_DRYWETSLIDER 12004
-#define ID_FREQTEXT 12005
-#define ID_FREQSLIDER 12006
-#define ID_PHASETEXT 12007
-#define ID_PHASESLIDER 12008
-#define ID_DEPTHTEXT 12009
-#define ID_DEPTHSLIDER 12010
-#define ID_FEEDBACKTEXT 12011
-#define ID_FEEDBACKSLIDER 12012
+#define ID_PHASER_STAGESTEXT 12001
+#define ID_PHASER_STAGESSLIDER 12002
+#define ID_PHASER_DRYWETTEXT 12003
+#define ID_PHASER_DRYWETSLIDER 12004
+#define ID_PHASER_FREQTEXT 12005
+#define ID_PHASER_FREQSLIDER 12006
+#define ID_PHASER_PHASETEXT 12007
+#define ID_PHASER_PHASESLIDER 12008
+#define ID_PHASER_DEPTHTEXT 12009
+#define ID_PHASER_DEPTHSLIDER 12010
+#define ID_PHASER_FEEDBACKTEXT 12011
+#define ID_PHASER_FEEDBACKSLIDER 12012
 
 //----------------------------------------------------------------------------
 // PhaserDialog
@@ -132,40 +132,40 @@ class PhaserDialog:public EffectDialog {
    bool TransferDataFromWindow();
 
    wxSlider *GetStagesSlider() {
-      return (wxSlider *) FindWindow(ID_STAGESSLIDER);
+      return (wxSlider *) FindWindow(ID_PHASER_STAGESSLIDER);
    }
    wxSlider *GetDryWetSlider() {
-      return (wxSlider *) FindWindow(ID_DRYWETSLIDER);
+      return (wxSlider *) FindWindow(ID_PHASER_DRYWETSLIDER);
    }
    wxSlider *GetFeedbackSlider() {
-      return (wxSlider *) FindWindow(ID_FEEDBACKSLIDER);
+      return (wxSlider *) FindWindow(ID_PHASER_FEEDBACKSLIDER);
    }
    wxSlider *GetDepthSlider() {
-      return (wxSlider *) FindWindow(ID_DEPTHSLIDER);
+      return (wxSlider *) FindWindow(ID_PHASER_DEPTHSLIDER);
    }
    wxSlider *GetPhaseSlider() {
-      return (wxSlider *) FindWindow(ID_PHASESLIDER);
+      return (wxSlider *) FindWindow(ID_PHASER_PHASESLIDER);
    }
    wxSlider *GetFreqSlider() {
-      return (wxSlider *) FindWindow(ID_FREQSLIDER);
+      return (wxSlider *) FindWindow(ID_PHASER_FREQSLIDER);
    }
    wxTextCtrl *GetStagesText() {
-      return (wxTextCtrl *) FindWindow(ID_STAGESTEXT);
+      return (wxTextCtrl *) FindWindow(ID_PHASER_STAGESTEXT);
    }
    wxTextCtrl *GetDryWetText() {
-      return (wxTextCtrl *) FindWindow(ID_DRYWETTEXT);
+      return (wxTextCtrl *) FindWindow(ID_PHASER_DRYWETTEXT);
    }
    wxTextCtrl *GetFeedbackText() {
-      return (wxTextCtrl *) FindWindow(ID_FEEDBACKTEXT);
+      return (wxTextCtrl *) FindWindow(ID_PHASER_FEEDBACKTEXT);
    }
    wxTextCtrl *GetDepthText() {
-      return (wxTextCtrl *) FindWindow(ID_DEPTHTEXT);
+      return (wxTextCtrl *) FindWindow(ID_PHASER_DEPTHTEXT);
    }
    wxTextCtrl *GetPhaseText() {
-      return (wxTextCtrl *) FindWindow(ID_PHASETEXT);
+      return (wxTextCtrl *) FindWindow(ID_PHASER_PHASETEXT);
    }
    wxTextCtrl *GetFreqText() {
-      return (wxTextCtrl *) FindWindow(ID_FREQTEXT);
+      return (wxTextCtrl *) FindWindow(ID_PHASER_FREQTEXT);
    }
 
  private:
