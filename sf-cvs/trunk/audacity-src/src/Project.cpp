@@ -489,6 +489,7 @@ enum {
 
 //also in ODManager.cpp
 DECLARE_EVENT_TYPE(wxEVT_ODTASK_UPDATE, -1)
+DECLARE_EVENT_TYPE(wxEVT_ODTASK_COMPLETE, -1)
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_MENU_OPEN(AudacityProject::OnMenuEvent)
@@ -511,6 +512,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEYBOARD, AudacityProject::OnCaptureKeyboard)
     EVT_COMMAND(wxID_ANY, EVT_RELEASE_KEYBOARD, AudacityProject::OnReleaseKeyboard)
     EVT_COMMAND  (wxID_ANY, wxEVT_ODTASK_UPDATE, AudacityProject::OnODTaskUpdate)
+    EVT_COMMAND  (wxID_ANY, wxEVT_ODTASK_COMPLETE, AudacityProject::OnODTaskComplete)
 END_EVENT_TABLE()
 
 AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
@@ -1289,6 +1291,14 @@ void AudacityProject::OnODTaskUpdate(wxCommandEvent & event)
    if(mTrackPanel)
       mTrackPanel->Refresh(false);
    
+}
+
+//redraws the task and does other book keeping after the task is complete.
+void AudacityProject::OnODTaskComplete(wxCommandEvent & event)
+{
+
+  if(mTrackPanel)
+      mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnScroll(wxScrollEvent & event)

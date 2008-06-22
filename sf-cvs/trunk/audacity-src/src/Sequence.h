@@ -28,6 +28,7 @@ class DirManager;
 class SeqBlock {
  public:
    BlockFile * f;
+   ///the sample in the global wavetrack that this block starts at.
    sampleCount start;
 };
 WX_DEFINE_ARRAY(SeqBlock *, BlockArray);

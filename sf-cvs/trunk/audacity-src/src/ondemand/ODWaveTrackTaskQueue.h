@@ -44,6 +44,9 @@ class ODWaveTrackTaskQueue
    ///to the instance in a thread-safe manner (may block)
    void RemoveWaveTrack(WaveTrack* track);      
    
+   ///replaces all instances of a WaveTrack within this task with another.  
+   void ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack);      
+   
    //returns true if the agrument is in the WaveTrack list.
    bool ContainsWaveTrack(WaveTrack* track);
    

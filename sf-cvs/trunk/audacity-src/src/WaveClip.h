@@ -193,6 +193,9 @@ public:
 
    ///Delete the wave cache - force redraw.  Thread-safe
    void DeleteWaveCache();
+   
+   ///Adds an invalid region to the wavecache so it redraws that portion only.
+   void AddInvalidRegion(long startSample, long endSample);
 
    //
    // XMLTagHandler callback methods for loading and saving
