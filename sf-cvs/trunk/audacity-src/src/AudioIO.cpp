@@ -836,8 +836,6 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    #endif
 
    gPrefs->Read(wxT("/AudioIO/SWPlaythrough"), &mSoftwarePlaythrough, false);
-
-#ifdef EXPERIMENTAL_SMART_RECORD
    gPrefs->Read(wxT("/AudioIO/SoundActivatedRecord"), &mPauseRec, false);
    int silenceLevelDB;
    gPrefs->Read(wxT("/AudioIO/SilenceLevel"), &silenceLevelDB, -50);
@@ -849,7 +847,6 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
       gPrefs->Write(wxT("/GUI/EnvdBRange"), dBRange); // so set SilenceLevel reasonable
    }
    mSilenceLevel = (silenceLevelDB + dBRange)/(double)dBRange;  // meter goes -dBRange dB -> 0dB
-#endif
 
    mTimeTrack = timeTrack;
    mListener = listener;
@@ -2237,7 +2234,6 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
    }
    gAudioIO->mUpdatingMeters = false;
 
-#ifdef EXPERIMENTAL_SMART_RECORD
    // Stop recording if 'silence' is detected
    if(gAudioIO->mPauseRec && inputBuffer) {
       if(gAudioIO->mInputMeter->GetMaxPeak() < gAudioIO->mSilenceLevel ) {
@@ -2255,7 +2251,6 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          }
       }
    }
-#endif
    if( gAudioIO->mPaused )
    {
       if (outputBuffer && numPlaybackChannels > 0)

@@ -133,12 +133,8 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    w = new FileFormatPrefs(mCategories);  mCategories->AddPage(w, w->GetName(),false,0);
    w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName(),false,0);
    w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName(),false,0);
-
    w = new DirectoriesPrefs(mCategories); mCategories->AddPage(w, w->GetName(),false,0);
-
-#ifdef EXPERIMENTAL_SMART_RECORD
    w = new SmartRecordPrefs(mCategories); mCategories->AddPage(w, w->GetName(),false,0);
-#endif
 
 #ifdef EXPERIMENTAL_THEME_PREFS
    w = new ThemePrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
