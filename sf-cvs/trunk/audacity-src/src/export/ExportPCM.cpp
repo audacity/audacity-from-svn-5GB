@@ -113,13 +113,20 @@ ExportPCMOptions::ExportPCMOptions(wxWindow *parent, int selformat)
             wxDefaultPosition, wxDefaultSize,
             wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
 {
-   mOk = NULL;
-   int format = ReadExportFormatPref();
-
-   //----- Gather our strings used in choices.
-
-   //TODO: clean the things up
-   //format = sf_header_index_to_type(selformat);
+   mOk = NULL;   
+   int format = 0;
+   switch (selformat)
+   {
+   case 0:
+      format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
+      break;
+   case 1:
+      format = SF_FORMAT_AIFF | SF_FORMAT_PCM_16;
+      break;
+   default:
+      format = ReadExportFormatPref();
+      break;
+   }
    int i;
    int num;
    int sel;
@@ -321,85 +328,40 @@ private:
 ExportPCM::ExportPCM()
 :  ExportPlugin()
 {
-/*
+
    SF_INFO si;
 
-   si.format = ReadExportFormatPref();
    si.samplerate = 0;
    si.channels = 0;
 
-   do {
-      si.channels++;
-   } while (sf_format_check(&si));
-
+   si.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
+   do { si.channels++; } while (sf_format_check(&si));
    AddFormat();
    SetFormat(wxT("WAV"),0);
    SetCanMetaData(true,0);
-   SetDescription(_("WAV, AIFF, and other uncompressed types"),0);
-   SetExtension(sf_header_extension(ReadExportFormatPref()),0);
+   SetDescription(_("Default WAV"),0);
+   SetExtension(sf_header_extension(si.format),0);
    SetExtensions(sf_get_all_extensions(),0);
    SetMaxChannels(si.channels - 1,0);
 
+   si.format = SF_FORMAT_AIFF | SF_FORMAT_PCM_16;
+   do { si.channels++; } while (sf_format_check(&si));
    AddFormat();
    SetFormat(wxT("AIFF"),1);
    SetCanMetaData(true,1);
-   ...
-   etc...
+   SetDescription(_("Default AIFF"),1);
+   SetExtension(sf_header_extension(si.format),1);
+   SetExtensions(sf_get_all_extensions(),1);
+   SetMaxChannels(si.channels - 1,1);
 
-   Below is the automatic generator (exports *all* available simple formats,
-   very long list). Will be replaced with something like above.
-   */
-   for (int n = 0; n < sf_num_headers(); n++)
-   {
-      AddFormat();
-      SF_INFO si;
+   AddFormat();
+   SetFormat(wxT("LIBSNDFILE"),2);
+   SetCanMetaData(true,2);
+   SetDescription(_("Other uncompressed files"),2);
+   SetExtension(wxT("wav"),2);
+   SetExtensions(sf_get_all_extensions(),2);
+   SetMaxChannels(255,2);
 
-      si.format = sf_header_index_to_type(n);
-      si.samplerate = 0;
-      si.channels = 0;
-
-      do {
-         si.channels++;
-      } while (sf_format_check(&si));
-
-      SetMaxChannels(si.channels - 1,n);
-
-      SetExtension(sf_header_extension(si.format),n);
-
-      wxArrayString as(1,sf_header_extension(si.format));
-      SetExtensions(as,n);
-
-      //FIXME: real description for all formats;
-      SetFormat(sf_header_name(si.format),n);
-      switch (si.format)
-      {
-      case SF_FORMAT_WAV:
-      case SF_FORMAT_AIFF:
-      case SF_FORMAT_AU:
-      case SF_FORMAT_RAW:
-      case SF_FORMAT_PAF:
-      case SF_FORMAT_SVX:
-      case SF_FORMAT_NIST:
-      case SF_FORMAT_VOC:
-      case SF_FORMAT_IRCAM:
-      case SF_FORMAT_W64:
-      case SF_FORMAT_MAT4:
-      case SF_FORMAT_MAT5:
-      case SF_FORMAT_PVF:
-      case SF_FORMAT_XI:
-      case SF_FORMAT_HTK:
-      case SF_FORMAT_SDS:
-      case SF_FORMAT_AVR:
-      case SF_FORMAT_WAVEX:
-      case SF_FORMAT_SD2:
-      case SF_FORMAT_FLAC:
-      case SF_FORMAT_CAF:
-         SetDescription(sf_header_name(si.format),n);
-         break;
-      }
-
-      SetCanMetaData(true,n);
-   }
 }
 
 void ExportPCM::Destroy()
