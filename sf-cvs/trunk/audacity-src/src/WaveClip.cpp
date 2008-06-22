@@ -26,7 +26,7 @@ drawing).  Cache's the Spectrogram frequency samples.
 *//*******************************************************************/
 
 #include <math.h>
-#include <vector.h>
+#include <vector>
 #include <wx/log.h>
 
 #include "Spectrum.h"
