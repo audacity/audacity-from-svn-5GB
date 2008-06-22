@@ -8,6 +8,9 @@ LRN
 
 **********************************************************************/
 
+#include "../Audacity.h"   // keep ffmpeg before wx because they interact
+#include "../FFmpeg.h"     // and Audacity.h before FFmpeg for config*.h
+
 #include <wx/choice.h>
 #include <wx/intl.h>
 #include <wx/timer.h>
@@ -17,7 +20,7 @@ LRN
 #include <wx/textctrl.h>
 #include <wx/window.h>
 
-#include "../Audacity.h"
+
 #include "../FileFormats.h"
 #include "../Internat.h"
 #include "../LabelTrack.h"
@@ -27,7 +30,7 @@ LRN
 #include "../Tags.h"
 #include "../Track.h"
 #include "../WaveTrack.h"
-#include "../FFmpeg.h"
+
 
 #include "Export.h"
 
