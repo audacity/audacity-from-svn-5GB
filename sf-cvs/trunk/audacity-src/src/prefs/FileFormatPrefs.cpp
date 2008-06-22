@@ -21,6 +21,7 @@ preferences.  Later we will rename this panel and source files.
  
 
 #include "../Audacity.h"
+#include "../FFmpeg.h"  // always needs to go before wx headers
 
 #include <wx/defs.h>
 #include <wx/intl.h>
@@ -28,7 +29,6 @@ preferences.  Later we will rename this panel and source files.
 #include <wx/button.h>
 
 #include "../export/ExportMP3.h"
-#include "../FFmpeg.h"
 #include "../Prefs.h"
 #include "../ShuttleGui.h"
 #include "../widgets/LinkingHtmlWindow.h"
