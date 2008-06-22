@@ -355,10 +355,31 @@ AC_DEFUN([AUDACITY_CHECKLIB_FFMPEG], [
       AC_MSG_NOTICE([FFmpeg library NOT available as system library])
    fi
 
-   dnl see if ffmpeg is available locally. Right now it isn't.
-
+   dnl see if ffmpeg is available locally, or rather that we have some headers
+   dnl in lib-src/ffmpeg/ we can use.
    FFMPEG_LOCAL_AVAILABLE="no"
-   AC_MSG_NOTICE([ffmpeg library is NOT available in the local tree])
+   AC_CHECK_FILE(${srcdir}/lib-src/ffmpeg/libavcodec/avcodec.h,
+                 avcodec_h_found="yes",
+                 avcodec_h_found="no")
+
+   AC_CHECK_FILE(${srcdir}/lib-src/ffmpeg/libavformat/avformat.h,
+                 avformat_h_found="yes",
+                 avformat_h_found="no")
+
+   if test "x$avcodec_h_found" = "xyes" ; then
+     if test "x$avformat_h_found" = "xyes" ; then
+        FFMPEG_LOCAL_AVAILABLE="yes"
+        FFMPEG_LOCAL_LIBS=""
+        FFMPEG_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/ffmpeg'
+        FFMPEG_LOCAL_OPTOBJS="import/ImportFFmpeg.o"
+        dnl export/ExportFFmpeg.o"
+        FFMPEG_LOCAL_CPPSYMBOLS="USE_FFMPEG"
+        AC_MSG_NOTICE([FFmpeg headers are available in the local tree])
+     fi
+   fi
+   if test "x$FFMPEG_LOCAL_AVAILABLE" = "xno" ; then
+     AC_MSG_NOTICE([ffmpeg library is NOT available in the local tree])
+   fi
 ])
 
 AC_DEFUN([AUDACITY_CHECKLIB_LIBLRDF], [
