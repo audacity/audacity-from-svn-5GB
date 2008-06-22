@@ -712,6 +712,9 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
 
    if (p) {
       TrackList *t = p->GetTracks();
+      TrackListIterator it(t);
+      if(it.First() == NULL)
+         mRecord->SetShift(false);
       double t0 = p->GetSel0();
       double t1 = p->GetSel1();
       if (t1 == t0)

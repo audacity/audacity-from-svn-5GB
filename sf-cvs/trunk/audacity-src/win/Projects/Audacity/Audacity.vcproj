@@ -798,19 +798,55 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\src\SmartRecordDialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\SmartRecordDialog.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\src\Snap.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\src\Snap.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\SoundActivatedRecord.cpp"
+				>
+				<FileConfiguration
+					Name="Unicode Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\..\src\SoundActivatedRecord.h"
 				>
 			</File>
 			<File
@@ -851,6 +887,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\TimeDialog.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\TimerRecordDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\TimerRecordDialog.h"
 				>
 			</File>
 			<File

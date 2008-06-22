@@ -31,24 +31,6 @@ Provides:
 #include "../AColor.h"
 #include "../Envelope.h"
 
-/*enum eThemePrefsIds {
-   idLoadThemeCache=7000,
-   idSaveThemeCache,
-   idLoadThemeComponents,
-   idSaveThemeComponents,
-   idReadThemeInternal,
-   idSaveThemeAsCode
-};*/
-
-/*BEGIN_EVENT_TABLE(ThemePrefs, wxPanel)
-   EVT_BUTTON( idLoadThemeCache,      ThemePrefs::OnLoadThemeCache)
-   EVT_BUTTON( idSaveThemeCache,      ThemePrefs::OnSaveThemeCache)
-   EVT_BUTTON( idLoadThemeComponents, ThemePrefs::OnLoadThemeComponents)
-   EVT_BUTTON( idSaveThemeComponents, ThemePrefs::OnSaveThemeComponents)
-   EVT_BUTTON( idReadThemeInternal,   ThemePrefs::OnReadThemeInternal)
-   EVT_BUTTON( idSaveThemeAsCode,     ThemePrefs::OnSaveThemeAsCode)
-END_EVENT_TABLE()*/
-
 SmartRecordPrefs::SmartRecordPrefs(wxWindow * parent) :
    PrefsPanel(parent)
 {
@@ -79,14 +61,14 @@ void SmartRecordPrefs::Populate( )
 /// Create the dialog contents, or exchange data with it.
 void SmartRecordPrefs::PopulateOrExchange( ShuttleGui & S)
 {
-   S.StartStatic( _("Pause Recording on Silence") );
+   S.StartStatic( _("Sound Activated Recording") );
    {
-      S.TieCheckBox( _("Pause Recording on Silence"), wxT("/AudioIO/PauseRecOnSilence"),false);
+      S.TieCheckBox( _("Sound Activated Recording"), wxT("/AudioIO/SoundActivatedRecord"),false);
       S.StartMultiColumn(2, wxEXPAND);
          S.SetStretchyCol(1);
          int dBRange;
          dBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
-         S.TieSlider(_("Silence level (dB):"), wxT("/AudioIO/SilenceLevel"), -50, 0, -dBRange);
+         S.TieSlider(_("Sound Activation Level (dB):"), wxT("/AudioIO/SilenceLevel"), -50, 0, -dBRange);
       S.EndMultiColumn();
    }
    S.EndStatic();

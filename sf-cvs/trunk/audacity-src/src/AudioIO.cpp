@@ -838,7 +838,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    gPrefs->Read(wxT("/AudioIO/SWPlaythrough"), &mSoftwarePlaythrough, false);
 
 #ifdef EXPERIMENTAL_SMART_RECORD
-   gPrefs->Read(wxT("/AudioIO/PauseRecOnSilence"), &mPauseRec, false);
+   gPrefs->Read(wxT("/AudioIO/SoundActivatedRecord"), &mPauseRec, false);
    int silenceLevelDB;
    gPrefs->Read(wxT("/AudioIO/SilenceLevel"), &silenceLevelDB, -50);
    int dBRange;

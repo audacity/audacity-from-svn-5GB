@@ -86,7 +86,8 @@ simplifies construction of menu items.
 #include "PlatformCompatibility.h"
 #include "FileNames.h"
 #include "TimeDialog.h"
-#include "SmartRecordDialog.h"
+#include "TimerRecordDialog.h"
+#include "SoundActivatedRecord.h"
 #include "LabelDialog.h"
 
 #include "FileDialog.h"
@@ -553,6 +554,42 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndMenu();
 
    //
+   // Transport Menu
+   //
+
+   /*i18n-hint: 'Transport' is the name given to the set of controls that
+   play, record, pause etc. */
+   c->BeginMenu(_("T&ransport"));
+   c->SetDefaultFlags(0, 0);
+      c->AddItem(wxT("Play"), _("Play\tSpacebar"), FN(OnPlayStop));
+      c->SetCommandFlags(wxT("Play"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+      c->AddItem(wxT("PlayLooped"), _("&Loop Play\tShift+Spacebar"), FN(OnPlayLooped));
+      c->SetCommandFlags(wxT("PlayLooped"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+      c->AddItem(wxT("Pause"), _("&Pause\tP"), FN(OnPause));
+      c->AddItem(wxT("Stop"), _("&Stop\tSpacebar"), FN(OnStop));
+      c->AddItem(wxT("SkipStart"), _("Skip to Start\tHome"), FN(OnSkipStart));
+      c->SetCommandFlags(wxT("SkipStart"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+      c->AddItem(wxT("SkipEnd"), _("Skip to End\tEnd"), FN(OnSkipEnd));
+      c->SetCommandFlags(wxT("SkipEnd"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+   c->AddSeparator();
+      c->AddItem(wxT("Record"), _("&Record\tR"), FN(OnRecord));
+      c->SetCommandFlags(wxT("Record"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+      c->AddItem(wxT("TimerRecord"), _("&Timer Record..."), FN(OnTimerRecord));
+      c->SetCommandFlags(wxT("TimerRecord"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+      c->AddItem(wxT("RecordAppend"), _("Append Record\tShift+R"), FN(OnRecordAppend));
+      c->SetCommandFlags(wxT("RecordAppend"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+   c->AddSeparator();
+      c->AddItem(wxT("Duplex"), _("Play While Recording (on/off)"), FN(OnTogglePlayRecording), 0);
+      c->SetCommandFlags(wxT("Duplex"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+      c->AddItem(wxT("SWPlaythrough"), _("Software Playthrough (on/off)"), FN(OnToggleSWPlaythrough), 0);
+      c->SetCommandFlags(wxT("SWPlaythrough"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+      // Sound Activated recording options
+      c->AddItem(wxT("SoundActivation"), _("Sound Activated Recording (on/off)"), FN(OnToggleSoundActivated), 0);
+      c->SetCommandFlags(wxT("SoundActivation"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+      c->AddItem(wxT("SoundActivationLevel"), _("Sound Activation Level..."), FN(OnSoundActivated));
+      c->SetCommandFlags(wxT("SoundActivationLevel"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+
+   //
    // Tracks Menu (formerly Project Menu)
    //
 	if( !mCleanSpeechMode )
@@ -570,8 +607,6 @@ void AudacityProject::CreateMenusAndCommands()
 			c->AddItem(wxT("NewLabelTrack"),  _("&Label Track"),               FN(OnNewLabelTrack));
 			c->AddItem(wxT("NewTimeTrack"),   _("&Time Track"),                FN(OnNewTimeTrack));
 		c->EndSubMenu();
-
-      c->AddItem(wxT("SmartRecord"), _("&Timer Record..."), FN(OnSmartRecord));
 
       c->AddSeparator();
       // StereoToMono moves to the Edit menu when in CleanSpeech mode.
@@ -1276,6 +1311,13 @@ void AudacityProject::ModifyToolbarMenus()
                          mToolManager->IsVisible(ToolsBarID));
    mCommandManager.Check(wxT("ShowTranscriptionTB"),
                          mToolManager->IsVisible(TranscriptionBarID));
+   bool active;
+   gPrefs->Read(wxT("/AudioIO/SoundActivatedRecord"),&active, false);
+   mCommandManager.Check(wxT("SoundActivation"), active);
+   gPrefs->Read(wxT("/AudioIO/Duplex"),&active, false);
+   mCommandManager.Check(wxT("Duplex"), active);
+   gPrefs->Read(wxT("/AudioIO/SWPlaythrough"),&active, false);
+   mCommandManager.Check(wxT("SWPlaythrough"), active);
 }
 
 void AudacityProject::UpdateMenus()
@@ -1589,6 +1631,30 @@ void AudacityProject::OnStopSelect()
    }
 
    ModifyState();
+}
+
+void AudacityProject::OnToggleSoundActivated()
+{
+   bool pause;
+   gPrefs->Read(wxT("/AudioIO/SoundActivatedRecord"), &pause, false);
+   gPrefs->Write(wxT("/AudioIO/SoundActivatedRecord"), !pause);
+   ModifyToolbarMenus();
+}
+
+void AudacityProject::OnTogglePlayRecording()
+{
+   bool Duplex;
+   gPrefs->Read(wxT("/AudioIO/Duplex"), &Duplex, false);
+   gPrefs->Write(wxT("/AudioIO/Duplex"), !Duplex);
+   ModifyToolbarMenus();
+}
+
+void AudacityProject::OnToggleSWPlaythrough()
+{
+   bool SWPlaythrough;
+   gPrefs->Read(wxT("/AudioIO/SWPlaythrough"), &SWPlaythrough, false);
+   gPrefs->Write(wxT("/AudioIO/SWPlaythrough"), !SWPlaythrough);
+   ModifyToolbarMenus();
 }
 
 double AudacityProject::GetTime(Track *t)
@@ -4139,9 +4205,15 @@ void AudacityProject::OnNewTimeTrack()
    mTrackPanel->EnsureVisible(t);
 }
 
-void AudacityProject::OnSmartRecord()
+void AudacityProject::OnTimerRecord()
 {
-   SmartRecordDialog dialog(this /* parent */ );
+   TimerRecordDialog dialog(this /* parent */ );
+   dialog.ShowModal();
+}
+
+void AudacityProject::OnSoundActivated()
+{
+   SoundActivatedRecord dialog(this /* parent */ );
    dialog.ShowModal();
 }
 
