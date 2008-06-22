@@ -118,13 +118,6 @@ bool EffectAmplify::ProcessSimpleMono(float *buffer, sampleCount len)
 // AmplifyDialog
 //----------------------------------------------------------------------------
 
-const static wxChar *numbers[] =
-{
-   wxT("0"), wxT("1"), wxT("2"), wxT("3"), wxT("4"),
-   wxT("5"), wxT("6"), wxT("7"), wxT("8"), wxT("9"),
-   wxT("-"), wxT("+")
-};
-
 #define AMP_MIN -500
 #define AMP_MAX 500
 
@@ -155,8 +148,7 @@ AmplifyDialog::AmplifyDialog(EffectAmplify *effect,
 
 void AmplifyDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   wxTextValidator vld(wxFILTER_INCLUDE_CHAR_LIST);
-   vld.SetIncludes(wxArrayString(12, numbers));
+   wxTextValidator vld(wxFILTER_NUMERIC);
 
    S.StartHorizontalLay(wxCENTER, false);
    {
@@ -198,7 +190,7 @@ void AmplifyDialog::PopulateOrExchange(ShuttleGui & S)
       mPeakT = S.Id(ID_PEAK_TEXT).AddTextBox(_("New Peak Amplitude (dB):"),
                                              wxT(""),
                                              12);
-      // mPeakT->SetValidator(vld);
+      mPeakT->SetValidator(vld);
    }
    S.EndMultiColumn();
 
