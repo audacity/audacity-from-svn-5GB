@@ -54,6 +54,7 @@
 #include "ExportFLAC.h"
 #include "ExportCL.h"
 #include "ExportMP2.h"
+#include "ExportFFmpeg.h"
 
 #include "sndfile.h"
 
@@ -229,13 +230,14 @@ bool ExportPlugin::Export(AudacityProject *project,
                           double t0,
                           double t1,
                           MixerSpec *mixerSpec,
-                          Tags *metadata)
+                          Tags *metadata,
+                          int subformat)
 {
    if (project == NULL) {
       project = GetActiveProject();
    }
 
-  return DoExport(project, channels, fName, selectedOnly, t0, t1, mixerSpec);
+  return DoExport(project, channels, fName, selectedOnly, t0, t1, mixerSpec, subformat);
 }
 
 bool ExportPlugin::DoExport(AudacityProject *project,
@@ -244,7 +246,8 @@ bool ExportPlugin::DoExport(AudacityProject *project,
                             bool selectedOnly,
                             double t0,
                             double t1,
-                            MixerSpec *mixerSpec)
+                            MixerSpec *mixerSpec,
+                            int subformat)
 {
    return false;
 }
@@ -276,6 +279,10 @@ Exporter::Exporter()
 
    // Command line export not available on Windows and Mac platforms
    RegisterPlugin(New_ExportCL());
+
+#if defined(USE_FFMPEG)
+   RegisterPlugin(New_ExportFFmpeg());
+#endif
 }
 
 Exporter::~Exporter()
@@ -475,7 +482,7 @@ bool Exporter::GetFilename()
 
    wxString maskString;
    wxString defaultFormat = gPrefs->Read(wxT("/Export/Format"),
-      wxT("WAV"));
+                                         wxT("WAV"));
 
    mFilterIndex = 0;
 
@@ -728,7 +735,9 @@ bool Exporter::ExportTracks()
                                        mSelectedOnly,
                                        mT0,
                                        mT1,
-                                       mMixerSpec);
+                                       mMixerSpec,
+                                       NULL,
+                                       mSubFormat);
 
    if (mActualName != mFilename) {
       // Remove backup
