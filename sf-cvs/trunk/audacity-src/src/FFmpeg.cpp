@@ -396,7 +396,7 @@ bool FFmpegLibs::LoadLibs(wxWindow *parent, bool showerr)
       int dontShowDlg;
       FFmpegNotFoundDialog *dlg;
       gPrefs->Read(wxT("/FFmpeg/NotFoundDontShow"),&dontShowDlg,0);
-      if (dontShowDlg == 0)
+      if ((dontShowDlg == 0) && (showerr))
       {
           dlg = new FFmpegNotFoundDialog(NULL);
           dlg->ShowModal();
