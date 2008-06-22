@@ -51,6 +51,9 @@ class ODTask
    virtual float PercentComplete();
    
    virtual void StopUsingWaveTrack(WaveTrack* track){}
+   
+   ///Replaces all instances to a wavetrack with a new one, effectively transferring the task.
+   virtual void ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack){}
     
     bool IsComplete();
     

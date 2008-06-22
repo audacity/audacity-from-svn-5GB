@@ -1810,6 +1810,13 @@ void WaveTrack::DeleteWaveCaches()
       it->GetData()->DeleteWaveCache();
 }
 
+///Adds an invalid region to the wavecache so it redraws that portion only.
+void WaveTrack::AddInvalidRegion(long startSample, long endSample)
+{
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      it->GetData()->AddInvalidRegion(startSample,endSample);
+}
+
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //

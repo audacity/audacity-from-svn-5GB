@@ -37,7 +37,7 @@ greater use in future.
 #include "../Project.h"
 #include "../WaveTrack.h"
 #include "../widgets/ProgressDialog.h"
-
+#include "../ondemand/ODManager.h"
 //
 // public static methods
 //
@@ -165,6 +165,14 @@ void Effect::CopyInputWaveTracks()
       pOutWaveTrack = mFactory->DuplicateWaveTrack(*(WaveTrack*)pInWaveTrack);
       mOutputWaveTracks->Add(pOutWaveTrack);
       pInWaveTrack = (WaveTrack*)(iterIn.Next());
+      
+      //swap on demand tasks - they should now be processed on pOutWaveTrack. 
+      //need to undo this when the user hits cancel.    
+#ifdef EXPERIMENTAL_ONDEMAND      
+ //TODO: this is complicated because concurrent tasks/effects will write over the same blockfile.  Thus if the 
+//compute summary task goes last the effect will be overwritten.  we need a lot of mutexes.
+ //     ODManager::Instance()->ReplaceTaskWaveTrack(pInputTrack,pOutputTrack);
+#endif
    }
 }
 
@@ -198,6 +206,11 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
                mTracks->Add(pOutWaveTrack);
                if (pTrack == pFirstTrack)
                   pFirstTrack = pOutWaveTrack; // We replaced the first track, so update stop condition.
+                  
+               //swap the wavecache track the ondemand task uses, since now the new one will be kept in the project
+#ifdef EXPERIMENTAL_ONDEMAND      
+               ODManager::Instance()->ReplaceWaveTrack(pInWaveTrack,pOutWaveTrack);
+#endif
             }
             delete pInWaveTrack;
 
@@ -219,6 +232,8 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
    {
       // Processing failed or was cancelled so throw away the processed tracks.
       mOutputWaveTracks->Clear(true); // true => delete the tracks
+      
+      //TODO:undo the non-gui ODTask transfer
    }
 }
 

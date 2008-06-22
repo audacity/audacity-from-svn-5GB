@@ -26,6 +26,7 @@ drawing).  Cache's the Spectrogram frequency samples.
 *//*******************************************************************/
 
 #include <math.h>
+#include <vector.h>
 #include <wx/log.h>
 
 #include "Spectrum.h"
@@ -60,17 +61,147 @@ public:
       delete[] rms;
       delete[] bl;
       delete[] where;
+      
+      ClearInvalidRegions();
    }
 
    int          dirty;
    sampleCount  len;
    double       start;
    double       pps;
+   int          rate;
    sampleCount *where;
    float       *min;
    float       *max;
    float       *rms;
    int         *bl;
+   
+   class InvalidRegion
+   {
+   public:
+     InvalidRegion(int s, int e):start(s),end(e){}
+     int start;
+     int end; 
+   };
+   
+   
+   //Thread safe call to add a new region to invalidate.  If it overlaps with other regions, it unions the them.
+   void AddInvalidRegion(long sampleStart, long sampleEnd)
+   {
+      //use pps to figure out where we are.  (pixels per second)
+      if(pps ==0)
+         return;
+      double samplesPerPixel = rate/pps;
+      //rate is SR, start is first time of the waveform (in second) on cache 
+      long invalStart = (sampleStart - start*rate)/samplesPerPixel ;
+      
+      long invalEnd = (sampleEnd - start*rate)/samplesPerPixel;
+      
+      //if they are both off the cache boundary in the same direction, the cache is missed,
+      //so we are safe, and don't need to track this one.
+      if(invalStart<0 && invalEnd <0 || invalStart>=len && invalEnd >= len)
+         return;
+      
+      //in all other cases, we need to clip the boundries so they make sense with the cache.
+      if(invalStart <0)
+         invalStart =0;
+      else if(invalStart >= len)
+         invalStart = len-1;
+      
+      if(invalEnd <0)
+         invalEnd =0;
+      else if(invalEnd >= len)
+         invalEnd = len-1;
+      
+      
+      mRegionsMutex.Lock();
+      
+      //look thru the region array for a place to insert.  We could make this more spiffy than a linear search
+      //but right now it is not needed since there will usually only be one region (which grows) for OD loading.
+      if(mRegions.size())
+      {
+         for(int i=0;i<mRegions.size();i++)
+         {
+            //if the regions intersect OR are pixel adjacent
+            if(mRegions[i]->start <= invalEnd+1 
+               && mRegions[i]->end >= invalStart-1) 
+            {
+               //take the union region
+               if(mRegions[i]->start > invalStart)
+                  mRegions[i]->start = invalStart;
+               if(mRegions[i]->end < invalEnd)
+                  mRegions[i]->end = invalEnd;
+               break;
+            }
+            
+            //this array is sorted by start/end points and has no overlaps.   If we've passed all possible intersections, insert.  The array will remain sorted.
+            if(mRegions[i]->end < invalStart)
+            {
+               InvalidRegion* newRegion = new InvalidRegion(invalStart,invalEnd);
+               mRegions.insert(mRegions.begin()+i,newRegion);
+               break;
+            }
+         }
+      }
+      else
+      {
+         InvalidRegion* newRegion = new InvalidRegion(invalStart,invalEnd);
+         mRegions.insert(mRegions.begin(),newRegion);
+      }
+      
+      
+      //now we must go and patch up all the regions that overlap.  Overlapping regions will be adjacent.
+      for(int i=1;i<mRegions.size();i++)
+      {
+         //if the regions intersect OR are pixel adjacent
+         if(mRegions[i]->start <= mRegions[i-1]->end+1 
+            && mRegions[i]->end >= mRegions[i-1]->start-1) 
+         {
+            //take the union region
+            if(mRegions[i]->start > mRegions[i-1]->start)
+               mRegions[i]->start = mRegions[i-1]->start;
+            if(mRegions[i]->end < mRegions[i-1]->end)
+               mRegions[i]->end = mRegions[i-1]->end;
+            
+            //now we must delete the previous region
+            delete mRegions[i-1];
+            mRegions.erase(mRegions.begin()+i-1);
+               //musn't forget to reset cursor
+               i--;
+         }
+         
+         //if we are past the end of the region we added, we are past the area of regions that might be oversecting.
+         if(mRegions[i]->start > invalEnd)
+         {
+            break;
+         }
+      }
+      
+      
+      mRegionsMutex.Unlock();
+   }
+   
+   //lock before calling these in a section.  unlock after finished.
+   int GetNumInvalidRegions(){return mRegions.size();}
+   int GetInvalidRegionStart(int i){return mRegions[i]->start;}
+   int GetInvalidRegionEnd(int i){return mRegions[i]->end;}
+   
+   void LockInvalidRegions(){mRegionsMutex.Lock();}
+   void UnlockInvalidRegions(){mRegionsMutex.Unlock();}
+   
+   void ClearInvalidRegions()
+   {
+      for(int i =0;i<mRegions.size();i++)
+      {
+         delete mRegions[i];
+      }
+      mRegions.clear();
+   }
+   
+   
+protected:
+   std::vector<InvalidRegion*> mRegions;
+      ODLock mRegionsMutex;
    
 };
 
@@ -223,6 +354,15 @@ void WaveClip::DeleteWaveCache()
    mWaveCacheMutex.Unlock();
 }
 
+///Adds an invalid region to the wavecache so it redraws that portion only.
+void WaveClip::AddInvalidRegion(long startSample, long endSample)
+{
+   mWaveCacheMutex.Lock();
+   if(mWaveCache!=NULL)
+      mWaveCache->AddInvalidRegion(startSample,endSample);
+   mWaveCacheMutex.Unlock();  
+}
+
 //
 // Getting high-level data from the track for screen display and
 // clipping calculations
@@ -239,6 +379,25 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
        mWaveCache->start == t0 &&
        mWaveCache->len >= numPixels &&
        mWaveCache->pps == pixelsPerSecond) {
+       
+       //check for invalid regions, and make the bottom if an else if.
+      //invalid regions are kept in a sorted array. 
+      for(int i=0;i<mWaveCache->GetNumInvalidRegions();i++)
+      {  
+         int invStart;
+         invStart = mWaveCache->GetInvalidRegionStart(i);
+         int invEnd;
+         invEnd = mWaveCache->GetInvalidRegionEnd(i);
+         mSequence->GetWaveDisplay(&mWaveCache->min[invStart],
+                                        &mWaveCache->max[invStart],
+                                        &mWaveCache->rms[invStart],
+                                        &mWaveCache->bl[invStart],
+                                        invEnd-invStart,
+                                        &mWaveCache->where[invStart],
+                                        mRate / pixelsPerSecond);
+      }
+      mWaveCache->ClearInvalidRegions();
+       
 
       memcpy(min, mWaveCache->min, numPixels*sizeof(float));
       memcpy(max, mWaveCache->max, numPixels*sizeof(float));
@@ -253,6 +412,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
 
    mWaveCache = new WaveCache(numPixels);
    mWaveCache->pps = pixelsPerSecond;
+   mWaveCache->rate = mRate;
    mWaveCache->start = t0;
    double tstep = 1.0 / pixelsPerSecond;
 
@@ -282,10 +442,37 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
       p0 = mWaveCache->len;
       p1 = 0;
 
+      //check for invalid regions, and make the bottom if an else if.
+      //invalid regions are keep in a sorted array. 
+      //TODO:integrate into below for loop so that we only load inval regions if 
+      //necessary.  (usually is the case, so no rush.)   
+      //also, we should be updating the NEW cache, but here we are patching the old one up.
+      for(int i=0;i<oldCache->GetNumInvalidRegions();i++)
+      {  
+         int invStart;
+         invStart = oldCache->GetInvalidRegionStart(i);
+         int invEnd;
+         invEnd = oldCache->GetInvalidRegionEnd(i);
+         mSequence->GetWaveDisplay(&oldCache->min[invStart],
+                                        &oldCache->max[invStart],
+                                        &oldCache->rms[invStart],
+                                        &oldCache->bl[invStart],
+                                        invEnd-invStart,
+                                        &oldCache->where[invStart],
+                                        mRate / pixelsPerSecond);
+      }
+      oldCache->ClearInvalidRegions();
+      
       for (x = 0; x < mWaveCache->len; x++)
-
+      {
+          
+         
+         
+         //below is regular cache access.  
          if (mWaveCache->where[x] >= oldCache->where[0] &&
              mWaveCache->where[x] <= oldCache->where[oldCache->len - 1]) {
+             
+             //if we hit an invalid region, load it up.
 
             int ox =
                 int ((double (oldCache->len) *
@@ -307,6 +494,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
                p1 = x + 1;
             }
          }
+      }
    }
 
    if (p1 > p0) {

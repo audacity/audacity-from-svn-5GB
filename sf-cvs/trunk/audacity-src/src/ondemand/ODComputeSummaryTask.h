@@ -45,6 +45,10 @@ class ODComputeSummaryTask:public ODTask
    ///remove references to a wavetrack safely
    virtual void StopUsingWaveTrack(WaveTrack* track);
    
+   ///Replaces all instances to a wavetrack with a new one, effectively transferring the task.
+   virtual void ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack);
+
+   
    ///Return the task name
    virtual const char* GetTaskName(){return "ODComputeSummaryTask";}
    

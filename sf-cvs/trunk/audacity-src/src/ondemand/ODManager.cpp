@@ -234,7 +234,6 @@ void ODManager::Quit()
 ///removes a wavetrack and notifies its associated tasks to stop using its reference. 
 void ODManager::RemoveWaveTrack(WaveTrack* track)
 {
-   
    mQueuesMutex.Lock();
    for(int i=0;i<mQueues.size();i++)
    {
@@ -244,7 +243,33 @@ void ODManager::RemoveWaveTrack(WaveTrack* track)
    }
    mQueuesMutex.Unlock();
 }
-  
+
+///replace the functional instance of wavetrack in tasks with another one (keeps oldTrack's gui reference)
+//TODO: this is complicated because concurrent tasks/effects will write over the same blockfile.  Thus if the 
+//compute summary task goes last the effect will be overwritten.
+//void ODManager::ReplaceTaskWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack)
+//{
+//   mQueuesMutex.Lock();
+//   for(int i=0;i<mQueues.size();i++)
+//   {
+//      mQueues[i]->ReplaceTaskWaveTrack()
+//      if(mQueues[i]->ContainsWaveTrack(track))
+//         mQueues[i]->RemoveWaveTrack(track);
+//         //TODO:Break?
+//   }
+//   mQueuesMutex.Unlock();
+//}
+   
+///replace the wavetrack whose wavecache the gui watches for updates
+void ODManager::ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack)
+{
+   mQueuesMutex.Lock();
+   for(int i=0;i<mQueues.size();i++)
+   {
+      mQueues[i]->ReplaceWaveTrack(oldTrack,newTrack);
+   }
+   mQueuesMutex.Unlock();
+} 
      
 ///remove tasks from ODWaveTrackTaskQueues that have been done.  Schedules new ones if they exist
 ///Also remove queues that have become empty.

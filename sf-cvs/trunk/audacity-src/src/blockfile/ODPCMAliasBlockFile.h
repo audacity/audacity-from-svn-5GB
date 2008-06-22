@@ -90,6 +90,12 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
    
    ///A public interface to WriteSummary
    void DoWriteSummary(){WriteSummary();}
+   
+   ///Sets the value that indicates where the first sample in this block corresponds to the global sequence/clip.  Only for display use.
+   void SetStart(sampleCount startSample){mStart = startSample;}
+   
+   ///Gets the value that indicates where the first sample in this block corresponds to the global sequence/clip.  Only for display use.
+   sampleCount GetStart(){return mStart;}
 
   protected:
    virtual void WriteSummary();
@@ -99,6 +105,9 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
    ODLock    mSummaryAvailableMutex;
    bool mSummaryAvailable;
    bool mSummaryBeingComputed;
+   
+   //for reporting after task is complete.  Only for display use.
+   sampleCount mStart;
 
 };
 

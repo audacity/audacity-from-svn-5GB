@@ -166,7 +166,9 @@ class AUDACITY_DLL_API WaveTrack: public Track {
                     
    ///Deletes all clips' wavecaches.  Careful, This may not be threadsafe.
    void DeleteWaveCaches();
-
+   
+   ///Adds an invalid region to the wavecache so it redraws that portion only.
+   void  AddInvalidRegion(long startSample, long endSample);
                     
    ///
    /// MM: Now that each wave track can contain multiple clips, we don't

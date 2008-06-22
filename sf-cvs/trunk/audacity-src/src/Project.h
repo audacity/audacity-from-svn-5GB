@@ -197,6 +197,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void OnCaptureKeyboard(wxCommandEvent & event);
    void OnReleaseKeyboard(wxCommandEvent & event);
    void OnODTaskUpdate(wxCommandEvent & event);
+   void OnODTaskComplete(wxCommandEvent & event);
    bool HandleKeyDown(wxKeyEvent & event);
    bool HandleChar(wxKeyEvent & event);
    bool HandleKeyUp(wxKeyEvent & event);

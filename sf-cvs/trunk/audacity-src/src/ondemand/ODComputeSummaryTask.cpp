@@ -42,6 +42,9 @@ void ODComputeSummaryTask::DoSomeInternal()
    }
    
    ODPCMAliasBlockFile* bf;
+   int blockStartSample;
+   int blockEndSample;
+   bool success =false;
    bf = mBlockFiles[0];
    
    //first check to see if the ref count is at least 2.  It should have one 
@@ -50,7 +53,9 @@ void ODComputeSummaryTask::DoSomeInternal()
    if(bf->RefCount()>=2)
    {
       bf->DoWriteSummary();
-
+      success = true;
+      blockStartSample = bf->GetStart();
+      blockEndSample = blockStartSample + bf->GetLength();
       mComputedBlockFiles++;
    }
    else
@@ -75,8 +80,8 @@ void ODComputeSummaryTask::DoSomeInternal()
    //TODO: update track gui somehow.. or do it from a timer.  How does the cursor move in playback?
    
    mWaveTrackMutex.Lock();
-   if(mWaveTrack)
-      mWaveTrack->DeleteWaveCaches();
+   if(success && mWaveTrack)
+      mWaveTrack->AddInvalidRegion(blockStartSample,blockEndSample);
    mWaveTrackMutex.Unlock();
 }
 
@@ -84,9 +89,22 @@ void ODComputeSummaryTask::DoSomeInternal()
 void ODComputeSummaryTask::StopUsingWaveTrack(WaveTrack* track)
 {
    mWaveTrackMutex.Lock();
-   mWaveTrack=NULL;
+   if(mWaveTrack == track)
+      mWaveTrack=NULL;
    mWaveTrackMutex.Unlock();
 }
+
+///Replaces all instances to a wavetrack with a new one, effectively transferring the task.
+void ODComputeSummaryTask::ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack)
+{
+   mWaveTrackMutex.Lock();
+   if(oldTrack == mWaveTrack)
+   {
+      mWaveTrack = newTrack;
+   }  
+   mWaveTrackMutex.Unlock();
+}
+
 
 ///by default creates the order of the wavetrack to load.
 void ODComputeSummaryTask::Update()
@@ -117,6 +135,7 @@ void ODComputeSummaryTask::Update()
             if(!blocks->Item(i)->f->IsSummaryAvailable())
             {
                blocks->Item(i)->f->Ref();
+               ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->SetStart(blocks->Item(i)->start);
                tempBlocks.push_back((ODPCMAliasBlockFile*)blocks->Item(i)->f);
                
             }

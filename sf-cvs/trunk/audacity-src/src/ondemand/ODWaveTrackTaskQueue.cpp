@@ -89,6 +89,21 @@ void ODWaveTrackTaskQueue::RemoveWaveTrack(WaveTrack* track)
    }
 }
 
+//Replaces all instances of a wavetracck with a new one (effectively transferes the task.)
+void ODWaveTrackTaskQueue::ReplaceWaveTrack(WaveTrack* oldTrack, WaveTrack* newTrack)
+{
+   if(oldTrack)
+   {
+      mTracksMutex.Lock();
+      for(int i=0;i<mTasks.size();i++)
+      {
+         mTasks[i]->ReplaceWaveTrack(oldTrack,newTrack);
+      }
+      
+      mTracksMutex.Unlock();
+   }
+}
+
 //returns the wavetrack at position x.
 WaveTrack* ODWaveTrackTaskQueue::GetWaveTrack(int x)
 {

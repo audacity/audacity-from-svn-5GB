@@ -21,6 +21,11 @@ in a background thread.
 #include "ODTask.h"
 #include "ODManager.h"
 #include <wx/wx.h>
+#include "../Project.h"
+
+
+DECLARE_EVENT_TYPE(wxEVT_ODTASK_COMPLETE, -1)
+DEFINE_EVENT_TYPE(wxEVT_ODTASK_COMPLETE)
 
 /// Constructs an ODTask
 ODTask::ODTask()
@@ -105,6 +110,13 @@ void ODTask::DoSome(float amountWork)
    }
    else
    {
+      wxCommandEvent event( wxEVT_ODTASK_COMPLETE );
+      AudacityProject::AllProjectsDeleteLock();
+      AudacityProject* proj = GetActiveProject();
+      if(proj)
+         proj->AddPendingEvent( event );
+      AudacityProject::AllProjectsDeleteUnlock();
+
       printf("%s %i complete\n", GetTaskName(),GetTaskNumber());
    }
    mTerminateMutex.Unlock();

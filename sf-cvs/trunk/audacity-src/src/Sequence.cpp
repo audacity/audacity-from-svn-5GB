@@ -798,6 +798,9 @@ int Sequence::FindBlock(sampleCount pos, sampleCount lo,
        pos < mBlock->Item(guess)->start + mBlock->Item(guess)->f->GetLength())
       return guess;
 
+   //this is a binary search, but we probably could benefit by something more like
+   //dictionary search where we guess something smarter than the binary division
+   //of the unsearched area, since samples are usually proportional to block file number.
    if (pos < mBlock->Item(guess)->start)
       return FindBlock(pos, lo, (lo + guess) / 2, guess);
    else
