@@ -1278,6 +1278,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\export\ExportFFmpeg.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\export\ExportFFmpeg.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\export\ExportFLAC.cpp"
 				>
 			</File>
