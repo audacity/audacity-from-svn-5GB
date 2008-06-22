@@ -2112,6 +2112,7 @@ bool AudacityProject::OnEffect(int type, Effect * f)
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
    WaveTrack *newTrack = NULL;
+   wxWindow *focus = wxWindow::FindFocus();
 
    //double prevEndTime = mTracks->GetEndTime();
    int count = 0;
@@ -2153,7 +2154,7 @@ bool AudacityProject::OnEffect(int type, Effect * f)
       //      OnZoomFit();
 
       RedrawProject();
-      mTrackPanel->SetFocus();
+      focus->SetFocus();
       mTrackPanel->EnsureVisible(mTrackPanel->GetFirstSelectedTrack());
 
       // Only remember a successful effect, don't rmemeber insert,
