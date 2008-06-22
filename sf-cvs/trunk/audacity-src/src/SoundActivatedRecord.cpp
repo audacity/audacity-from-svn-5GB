@@ -22,10 +22,11 @@
 
 #include <wx/dialog.h>
 
-#include "SoundActivatedRecord.h"
+#include "Envelope.h"
 #include "ShuttleGui.h"
 #include "ShuttlePrefs.h"
 #include "Prefs.h"
+#include "SoundActivatedRecord.h"
 
 BEGIN_EVENT_TABLE(SoundActivatedRecord, wxDialog)
    EVT_BUTTON(wxID_OK, SoundActivatedRecord::OnOK)
