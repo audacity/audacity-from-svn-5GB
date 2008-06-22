@@ -819,8 +819,10 @@
 		28530C4C0DF2105200555C94 /* HtmlWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28530C480DF2105200555C94 /* HtmlWindow.cpp */; };
 		28530C4D0DF2105200555C94 /* ProgressDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28530C4A0DF2105200555C94 /* ProgressDialog.cpp */; };
 		28560C910A75E40F00A3429E /* AutoRecovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */; };
-		285D8BA10AAEFDFD00E0B5BE /* SmartRecordDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D8B9F0AAEFDFD00E0B5BE /* SmartRecordDialog.cpp */; };
 		285DE1FA0BF03C7800A20DF0 /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285DE1F80BF03C7800A20DF0 /* Screenshot.cpp */; };
+		2860BA240E0F0D8600A13878 /* SoundActivatedRecord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2860BA200E0F0D8600A13878 /* SoundActivatedRecord.cpp */; };
+		2860BA250E0F0D8600A13878 /* TimerRecordDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2860BA220E0F0D8600A13878 /* TimerRecordDialog.cpp */; };
+		2860BA280E0F0DD800A13878 /* ExportFFmpeg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2860BA260E0F0DD800A13878 /* ExportFFmpeg.cpp */; };
 		287F9F3D0A69748F00F025FA /* TimeDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 287F9F3C0A69748F00F025FA /* TimeDialog.cpp */; };
 		288052870DEA69C900671EA4 /* PipeServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288052840DEA69C900671EA4 /* PipeServer.cpp */; };
 		288052880DEA69C900671EA4 /* ScripterCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288052850DEA69C900671EA4 /* ScripterCallback.cpp */; };
@@ -2015,10 +2017,14 @@
 		28530C4B0DF2105200555C94 /* ProgressDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ProgressDialog.h; sourceTree = "<group>"; };
 		28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = AutoRecovery.cpp; sourceTree = "<group>"; };
 		28560C900A75E40F00A3429E /* AutoRecovery.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AutoRecovery.h; sourceTree = "<group>"; };
-		285D8B9F0AAEFDFD00E0B5BE /* SmartRecordDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SmartRecordDialog.cpp; sourceTree = "<group>"; };
-		285D8BA00AAEFDFD00E0B5BE /* SmartRecordDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SmartRecordDialog.h; sourceTree = "<group>"; };
 		285DE1F80BF03C7800A20DF0 /* Screenshot.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Screenshot.cpp; sourceTree = "<group>"; };
 		285DE1F90BF03C7800A20DF0 /* Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Screenshot.h; sourceTree = "<group>"; };
+		2860BA200E0F0D8600A13878 /* SoundActivatedRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SoundActivatedRecord.cpp; sourceTree = "<group>"; };
+		2860BA210E0F0D8600A13878 /* SoundActivatedRecord.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SoundActivatedRecord.h; sourceTree = "<group>"; };
+		2860BA220E0F0D8600A13878 /* TimerRecordDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = TimerRecordDialog.cpp; sourceTree = "<group>"; };
+		2860BA230E0F0D8600A13878 /* TimerRecordDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = TimerRecordDialog.h; sourceTree = "<group>"; };
+		2860BA260E0F0DD800A13878 /* ExportFFmpeg.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFFmpeg.cpp; sourceTree = "<group>"; };
+		2860BA270E0F0DD800A13878 /* ExportFFmpeg.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ExportFFmpeg.h; sourceTree = "<group>"; };
 		287F9F3B0A69748F00F025FA /* TimeDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeDialog.h; sourceTree = "<group>"; };
 		287F9F3C0A69748F00F025FA /* TimeDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeDialog.cpp; sourceTree = "<group>"; };
 		2880527E0DEA694100671EA4 /* mod-script-pipe.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "mod-script-pipe.so"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2974,10 +2980,10 @@
 				283A11A70A2C0E15004372C4 /* ShuttleGui.h */,
 				288217790A35D8730029AF41 /* ShuttlePrefs.cpp */,
 				2882177A0A35D8730029AF41 /* ShuttlePrefs.h */,
-				285D8B9F0AAEFDFD00E0B5BE /* SmartRecordDialog.cpp */,
-				285D8BA00AAEFDFD00E0B5BE /* SmartRecordDialog.h */,
 				282D474A0B9E8D900034BC49 /* Snap.cpp */,
 				282D474B0B9E8D900034BC49 /* Snap.h */,
+				2860BA200E0F0D8600A13878 /* SoundActivatedRecord.cpp */,
+				2860BA210E0F0D8600A13878 /* SoundActivatedRecord.h */,
 				1790B0DE09883BFD008A330A /* Spectrum.cpp */,
 				1790B0DF09883BFD008A330A /* Spectrum.h */,
 				28501E9F0CEECEF80029ABAA /* SplashDialog.cpp */,
@@ -2991,6 +2997,8 @@
 				287F9F3B0A69748F00F025FA /* TimeDialog.h */,
 				1790B0E209883BFD008A330A /* TimeTrack.cpp */,
 				1790B0E309883BFD008A330A /* TimeTrack.h */,
+				2860BA220E0F0D8600A13878 /* TimerRecordDialog.cpp */,
+				2860BA230E0F0D8600A13878 /* TimerRecordDialog.h */,
 				1790B0E809883BFD008A330A /* Track.cpp */,
 				1790B0E909883BFD008A330A /* Track.h */,
 				1790B0EA09883BFD008A330A /* TrackArtist.cpp */,
@@ -3162,6 +3170,8 @@
 				1790B06509883BFD008A330A /* Export.h */,
 				1790B06609883BFD008A330A /* ExportCL.cpp */,
 				1790B06709883BFD008A330A /* ExportCL.h */,
+				2860BA260E0F0DD800A13878 /* ExportFFmpeg.cpp */,
+				2860BA270E0F0DD800A13878 /* ExportFFmpeg.h */,
 				28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */,
 				28E3E6E60A7C14CA00AB1361 /* ExportFLAC.h */,
 				2840CF840AEB83DB00F49FC3 /* ExportMP2.cpp */,
@@ -4771,6 +4781,7 @@
 		1790ABE309883346008A330A /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1790ABE409883346008A330A /* Build configuration list for PBXProject "Audacity" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 0;
 			mainGroup = 1790ABE109883346008A330A;
 			productRefGroup = 1790AFB109883B6D008A330A /* Products */;
@@ -5520,7 +5531,6 @@
 				28EBA8010A78FAF800C8BB1F /* InterpolateAudio.cpp in Sources */,
 				28EBA8020A78FAF800C8BB1F /* Matrix.cpp in Sources */,
 				28E3E6E80A7C14CA00AB1361 /* ExportFLAC.cpp in Sources */,
-				285D8BA10AAEFDFD00E0B5BE /* SmartRecordDialog.cpp in Sources */,
 				2897F6F00AB3DB5A003C20C5 /* ControlToolBar.cpp in Sources */,
 				2897F6F10AB3DB5A003C20C5 /* EditToolBar.cpp in Sources */,
 				2897F6F20AB3DB5A003C20C5 /* MeterToolBar.cpp in Sources */,
@@ -5566,6 +5576,9 @@
 				1841B50D0E00AD6E00F386E9 /* ODTaskThread.cpp in Sources */,
 				1841B50E0E00AD6E00F386E9 /* ODWaveTrackTaskQueue.cpp in Sources */,
 				1841B5110E00AD8D00F386E9 /* ODPCMAliasBlockFile.cpp in Sources */,
+				2860BA240E0F0D8600A13878 /* SoundActivatedRecord.cpp in Sources */,
+				2860BA250E0F0D8600A13878 /* TimerRecordDialog.cpp in Sources */,
+				2860BA280E0F0DD800A13878 /* ExportFFmpeg.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5970,7 +5983,7 @@
 				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macud_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macud_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonud_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonud_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonud-$(WX_VER).a $(WX_PREFIX)/lib/libwxregexud-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpatd-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiffd-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpegd-$(WX_VER).a $(WX_PREFIX)/lib/libwxpngd-$(WX_VER).a";
 				WX_PREFIX = /usr/local;
 				WX_VER = 2.8;
-				ZERO_LINK = YES;
+				ZERO_LINK = NO;
 			};
 			name = "Debug Static";
 		};
@@ -6132,7 +6145,7 @@
 				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -lwx_macud_html-$(WX_VER)  -lwx_macud_adv-$(WX_VER) -lwx_macud_core-$(WX_VER) -lwx_base_carbonud_net-$(WX_VER) -lwx_base_carbonud-$(WX_VER)";
 				WX_PREFIX = /usr/local;
 				WX_VER = 2.8;
-				ZERO_LINK = YES;
+				ZERO_LINK = NO;
 			};
 			name = "Debug Shared";
 		};
@@ -6467,6 +6480,7 @@
 				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -lwx_macu_html-$(WX_VER)  -lwx_macu_adv-$(WX_VER) -lwx_macu_core-$(WX_VER) -lwx_base_carbonu_net-$(WX_VER) -lwx_base_carbonu-$(WX_VER)";
 				WX_PREFIX = /usr/local;
 				WX_VER = 2.8;
+				ZERO_LINK = NO;
 			};
 			name = "Release Shared";
 		};
@@ -7039,6 +7053,7 @@
 				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macu_xrc-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_qa-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_html-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_adv-$(WX_VER).a $(WX_PREFIX)/lib/libwx_macu_core-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonu_xml-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonu_net-$(WX_VER).a $(WX_PREFIX)/lib/libwx_base_carbonu-$(WX_VER).a $(WX_PREFIX)/lib/libwxregexu-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpat-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiff-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpeg-$(WX_VER).a $(WX_PREFIX)/lib/libwxpng-$(WX_VER).a";
 				WX_PREFIX = /usr/local;
 				WX_VER = 2.8;
+				ZERO_LINK = NO;
 			};
 			name = "Release Static";
 		};
