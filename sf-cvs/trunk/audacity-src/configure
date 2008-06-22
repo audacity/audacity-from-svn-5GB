@@ -7976,7 +7976,6 @@ fi
    if test "x$avcodec_available_system" = "xyes" ; then
       if test "x$avformat_available_system" = "xyes" ; then
 	     FFMPEG_SYSTEM_AVAILABLE="yes"
-         FFMPEG_SYSTEM_LIBS="$AVCODEC_LIBS $AVFORMAT_LIBS"
          FFMPEG_SYSTEM_CXXFLAGS="$AVCODEC_CFLAGS $AVFORMAT_CFLAGS"
          FFMPEG_SYSTEM_CPPSYMBOLS="USE_FFMPEG"
 		 		 		 FFMPEG_SYSTEM_OPTOBJS="import/ImportFFmpeg.o"
@@ -7989,10 +7988,74 @@ echo "$as_me: FFmpeg library available as system library" >&6;}
 echo "$as_me: FFmpeg library NOT available as system library" >&6;}
    fi
 
+         FFMPEG_LOCAL_AVAILABLE="no"
+   as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/ffmpeg/libavcodec/avcodec.h" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/ffmpeg/libavcodec/avcodec.h" >&5
+echo $ECHO_N "checking for ${srcdir}/lib-src/ffmpeg/libavcodec/avcodec.h... $ECHO_C" >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/ffmpeg/libavcodec/avcodec.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval echo '${'$as_ac_File'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_File'}'` = yes; then
+  avcodec_h_found="yes"
+else
+  avcodec_h_found="no"
+fi
 
-   FFMPEG_LOCAL_AVAILABLE="no"
-   { echo "$as_me:$LINENO: ffmpeg library is NOT available in the local tree" >&5
+
+   as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/ffmpeg/libavformat/avformat.h" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/ffmpeg/libavformat/avformat.h" >&5
+echo $ECHO_N "checking for ${srcdir}/lib-src/ffmpeg/libavformat/avformat.h... $ECHO_C" >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/ffmpeg/libavformat/avformat.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval echo '${'$as_ac_File'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_File'}'` = yes; then
+  avformat_h_found="yes"
+else
+  avformat_h_found="no"
+fi
+
+
+   if test "x$avcodec_h_found" = "xyes" ; then
+     if test "x$avformat_h_found" = "xyes" ; then
+        FFMPEG_LOCAL_AVAILABLE="yes"
+        FFMPEG_LOCAL_LIBS=""
+        FFMPEG_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/ffmpeg'
+        FFMPEG_LOCAL_OPTOBJS="import/ImportFFmpeg.o"
+                FFMPEG_LOCAL_CPPSYMBOLS="USE_FFMPEG"
+        { echo "$as_me:$LINENO: FFmpeg headers are available in the local tree" >&5
+echo "$as_me: FFmpeg headers are available in the local tree" >&6;}
+     fi
+   fi
+   if test "x$FFMPEG_LOCAL_AVAILABLE" = "xno" ; then
+     { echo "$as_me:$LINENO: ffmpeg library is NOT available in the local tree" >&5
 echo "$as_me: ffmpeg library is NOT available in the local tree" >&6;}
+   fi
 
 
 
