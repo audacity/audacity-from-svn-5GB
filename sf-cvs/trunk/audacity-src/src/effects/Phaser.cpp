@@ -189,18 +189,18 @@ bool EffectPhaser::ProcessSimpleMono(float *buffer, sampleCount len)
 // WDR: event table for PhaserDialog
 
 BEGIN_EVENT_TABLE(PhaserDialog, EffectDialog)
-    EVT_TEXT(ID_STAGESTEXT, PhaserDialog::OnStagesText)
-    EVT_TEXT(ID_DRYWETTEXT, PhaserDialog::OnDryWetText)
-    EVT_TEXT(ID_FREQTEXT, PhaserDialog::OnFreqText)
-    EVT_TEXT(ID_PHASETEXT, PhaserDialog::OnPhaseText)
-    EVT_TEXT(ID_DEPTHTEXT, PhaserDialog::OnDepthText)
-    EVT_TEXT(ID_FEEDBACKTEXT, PhaserDialog::OnFeedbackText)
-    EVT_SLIDER(ID_STAGESSLIDER, PhaserDialog::OnStagesSlider)
-    EVT_SLIDER(ID_DRYWETSLIDER, PhaserDialog::OnDryWetSlider)
-    EVT_SLIDER(ID_FREQSLIDER, PhaserDialog::OnFreqSlider)
-    EVT_SLIDER(ID_PHASESLIDER, PhaserDialog::OnPhaseSlider)
-    EVT_SLIDER(ID_DEPTHSLIDER, PhaserDialog::OnDepthSlider)
-    EVT_SLIDER(ID_FEEDBACKSLIDER, PhaserDialog::OnFeedbackSlider)
+    EVT_TEXT(ID_PHASER_STAGESTEXT, PhaserDialog::OnStagesText)
+    EVT_TEXT(ID_PHASER_DRYWETTEXT, PhaserDialog::OnDryWetText)
+    EVT_TEXT(ID_PHASER_FREQTEXT, PhaserDialog::OnFreqText)
+    EVT_TEXT(ID_PHASER_PHASETEXT, PhaserDialog::OnPhaseText)
+    EVT_TEXT(ID_PHASER_DEPTHTEXT, PhaserDialog::OnDepthText)
+    EVT_TEXT(ID_PHASER_FEEDBACKTEXT, PhaserDialog::OnFeedbackText)
+    EVT_SLIDER(ID_PHASER_STAGESSLIDER, PhaserDialog::OnStagesSlider)
+    EVT_SLIDER(ID_PHASER_DRYWETSLIDER, PhaserDialog::OnDryWetSlider)
+    EVT_SLIDER(ID_PHASER_FREQSLIDER, PhaserDialog::OnFreqSlider)
+    EVT_SLIDER(ID_PHASER_PHASESLIDER, PhaserDialog::OnPhaseSlider)
+    EVT_SLIDER(ID_PHASER_DEPTHSLIDER, PhaserDialog::OnDepthSlider)
+    EVT_SLIDER(ID_PHASER_FEEDBACKSLIDER, PhaserDialog::OnFeedbackSlider)
     EVT_BUTTON(ID_EFFECT_PREVIEW, PhaserDialog::OnPreview)
 END_EVENT_TABLE()
 
@@ -223,34 +223,34 @@ void PhaserDialog::PopulateOrExchange(ShuttleGui & S)
 
    S.StartMultiColumn(3, wxCENTER);
    {
-      S.Id(ID_STAGESTEXT).AddTextBox(_("Stages:"), wxT(""), 12);
+      S.Id(ID_PHASER_STAGESTEXT).AddTextBox(_("Stages:"), wxT(""), 12);
       S.SetStyle(wxSL_HORIZONTAL);
-      S.Id(ID_STAGESSLIDER).AddSlider(wxT(""), 2, STAGES_MAX, STAGES_MIN)->
+      S.Id(ID_PHASER_STAGESSLIDER).AddSlider(wxT(""), 2, STAGES_MAX, STAGES_MIN)->
          SetName(_("Stages"));
 
-      S.Id(ID_DRYWETTEXT).AddTextBox(_("Dry/Wet:"), wxT(""), 12);
+      S.Id(ID_PHASER_DRYWETTEXT).AddTextBox(_("Dry/Wet:"), wxT(""), 12);
       S.SetStyle(wxSL_HORIZONTAL);
-      S.Id(ID_DRYWETSLIDER).AddSlider(wxT(""), 0, DRYWET_MAX, DRYWET_MIN)->
+      S.Id(ID_PHASER_DRYWETSLIDER).AddSlider(wxT(""), 0, DRYWET_MAX, DRYWET_MIN)->
          SetName(_("Dry Wet"));
 
-      S.Id(ID_FREQTEXT).AddTextBox(_("LFO Frequency (Hz):"), wxT(""), 12);
+      S.Id(ID_PHASER_FREQTEXT).AddTextBox(_("LFO Frequency (Hz):"), wxT(""), 12);
       S.SetStyle(wxSL_HORIZONTAL);
-      S.Id(ID_FREQSLIDER).AddSlider(wxT(""), 100, FREQ_MAX, FREQ_MIN)->
+      S.Id(ID_PHASER_FREQSLIDER).AddSlider(wxT(""), 100, FREQ_MAX, FREQ_MIN)->
          SetName(_("LFO frequency in hertz"));
 
-      S.Id(ID_PHASETEXT).AddTextBox(_("LFO Start Phase (deg.):"), wxT(""), 12);
+      S.Id(ID_PHASER_PHASETEXT).AddTextBox(_("LFO Start Phase (deg.):"), wxT(""), 12);
       S.SetStyle(wxSL_HORIZONTAL);
-      S.Id(ID_PHASESLIDER).AddSlider(wxT(""), 0, PHASE_MAX, PHASE_MIN)->
+      S.Id(ID_PHASER_PHASESLIDER).AddSlider(wxT(""), 0, PHASE_MAX, PHASE_MIN)->
          SetName(_("LFO start phase in degrees"));
 
-      S.Id(ID_DEPTHTEXT).AddTextBox(_("Depth:"), wxT(""), 12);
+      S.Id(ID_PHASER_DEPTHTEXT).AddTextBox(_("Depth:"), wxT(""), 12);
       S.SetStyle(wxSL_HORIZONTAL);
-      S.Id(ID_DEPTHSLIDER).AddSlider(wxT(""), 0, DEPTH_MAX, DEPTH_MIN)->
+      S.Id(ID_PHASER_DEPTHSLIDER).AddSlider(wxT(""), 0, DEPTH_MAX, DEPTH_MIN)->
          SetName(_("Depth in percent"));
 
-      S.Id(ID_FEEDBACKTEXT).AddTextBox(_("Feedback (%):"), wxT(""), 12);
+      S.Id(ID_PHASER_FEEDBACKTEXT).AddTextBox(_("Feedback (%):"), wxT(""), 12);
       S.SetStyle(wxSL_HORIZONTAL);
-      S.Id(ID_FEEDBACKSLIDER).AddSlider(wxT(""), 0, FB_MAX, FB_MIN)->
+      S.Id(ID_PHASER_FEEDBACKSLIDER).AddSlider(wxT(""), 0, FB_MAX, FB_MIN)->
          SetName(_("Feedback in percent"));
    }
    S.EndMultiColumn();
