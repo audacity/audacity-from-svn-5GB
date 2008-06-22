@@ -240,8 +240,14 @@ void OnShowTranscriptionToolBar();
 void OnResetToolBars();
 void OnSimplifiedView();
 
+        // Transport Menu
 
-        // Project Menu
+void OnSoundActivated();
+void OnToggleSoundActivated();
+void OnTogglePlayRecording();
+void OnToggleSWPlaythrough();
+
+        // Tracks Menu
 
 void OnImport();
 void OnImportLabels();
@@ -270,7 +276,7 @@ void OnNewWaveTrack();
 void OnNewStereoTrack();
 void OnNewLabelTrack();
 void OnNewTimeTrack();
-void OnSmartRecord();
+void OnTimerRecord();
 void OnRemoveTracks();
 void OnAddLabel();
 void OnAddLabelPlaying();
