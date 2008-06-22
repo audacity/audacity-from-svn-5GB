@@ -46,7 +46,6 @@
 //#define EXPERIMENTAL_ROLL_UP_DIALOG
 //#define RIGHT_ALIGNED_TEXTBOXES
 //#define EXPERIMENTAL_VOICE_DETECTION
-#define EXPERIMENTAL_SMART_RECORD
 
 //uncomment this line to enable On-Demand loading of PCM files.  
 //for now it is incomplete so it will load instantly but 
