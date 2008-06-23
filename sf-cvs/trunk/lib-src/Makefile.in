@@ -62,6 +62,18 @@ libvamp-recursive:
 libvamp-hostsdk.a: libvamp-recursive
 	ln -sf libvamp/vamp-sdk/libvamp-hostsdk.a libvamp-hostsdk.a
 
+# liblrdf
+liblrdf-recursive:
+	$(MAKE) -C liblrdf
+liblrdf.a: liblrdf-recursive
+	ln -sf liblrdf/src/.libs/liblrdf.a liblrdf.a
+
+# libraptor
+libraptor-recursive:
+	$(MAKE) -C libraptor
+libraptor.a: libraptor-recursive
+	ln -sf libraptor/src/.libs/libraptor.a libraptor.a
+
 # libtwolame
 libtwolame-recursive:
 	$(MAKE) -C twolame
@@ -145,6 +157,7 @@ clean:
 	-$(MAKE) -C libid3tag clean
 	-$(MAKE) -C libmad clean
 	-$(MAKE) -C libnyquist clean
+	-$(MAKE) -C liblrdf clean
 	-$(MAKE) -C libogg clean
 	-$(MAKE) -C libsamplerate clean
 	-$(MAKE) -C libresample clean
@@ -170,6 +183,7 @@ distclean:
 	-$(MAKE) -C libid3tag distclean
 	-$(MAKE) -C libmad distclean
 	-$(MAKE) -C libnyquist distclean
+	-$(MAKE) -C liblrdf distclean
 	-$(MAKE) -C libogg distclean
 	-$(MAKE) -C libsamplerate distclean
 	-$(MAKE) -C libresample distclean
@@ -193,5 +207,6 @@ distclean:
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
 	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
 	libresample-recursive libsamplerate-recursive \
-	portaudio-v19-recursive portmixer-recursive libtwolame-recursive
+	portaudio-v19-recursive portmixer-recursive libtwolame-recursive \
+	liblrdf-recursive
 
