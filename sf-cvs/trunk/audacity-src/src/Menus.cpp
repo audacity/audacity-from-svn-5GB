@@ -32,6 +32,7 @@ simplifies construction of menu items.
 
 #include "Audacity.h"
 
+#include <iterator>
 #include <math.h>
 
 #include <wx/defs.h>
@@ -801,6 +802,8 @@ void AudacityProject::CreateMenusAndCommands()
                          AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
                          AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
       
+#ifndef EFFECT_CATEGORIES
+
       effects = em.GetEffects(ANALYZE_EFFECT | BUILTIN_EFFECT);
       if(effects->GetCount()){
          names.Clear();
@@ -819,6 +822,39 @@ void AudacityProject::CreateMenusAndCommands()
          c->AddItemList(wxT("AnalyzePlugin"), names, FN(OnAnalyzePlugin), true);
       }
       delete effects;
+
+#else
+      
+      flags = ANALYZE_EFFECT | BUILTIN_EFFECT | PLUGIN_EFFECT;
+      EffectCategory* ac = 
+         em.LookupCategory(wxT("http://lv2plug.in/ns/lv2core#AnalyserPlugin"));
+      CategorySet roots = ac->GetSubCategories();
+      EffectSet analyzers = ac->GetEffects();
+      EffectSet topLevel = CreateEffectSubmenus(c, roots, flags, 0);
+      std::copy(analyzers.begin(), analyzers.end(), 
+                std::insert_iterator<EffectSet>(topLevel, topLevel.begin()));
+      AddEffectsToMenu(c, topLevel);
+      
+      // Add all uncategorised effects in a special submenu
+      EffectSet unsorted = 
+         em.GetUnsortedEffects(flags);
+      if (unsorted.size() > 0) {
+         c->AddSeparator();
+         c->BeginSubMenu(_("Unsorted"));
+         names.Clear();
+         indices.Clear();
+         EffectSet::const_iterator iter;
+         for (iter = unsorted.begin(); iter != unsorted.end(); ++iter) {
+            names.Add((*iter)->GetEffectName());
+            indices.Add((*iter)->GetID());
+         }
+         c->AddItemList(wxT("Analyze"), names, 
+                        FNI(OnProcessAny, indices), true);
+         c->EndSubMenu();
+      }
+
+#endif
+
       c->EndMenu();
    }
    

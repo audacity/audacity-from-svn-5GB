@@ -53,6 +53,8 @@ static DL_Array ladspa_dls;
 static std::map<wxString, wxString> gCategoryMap;
 static std::multimap<unsigned long, wxString> gPluginCategories;
 
+/** This function initialises the data structure that maps common LRDF
+    category URIs to LV2 or internal Audacity category URIs. */
 static void InitCategoryMap()
 {
    gCategoryMap[LADSPA("UtilityPlugin")] = LV2("UtilityPlugin");
