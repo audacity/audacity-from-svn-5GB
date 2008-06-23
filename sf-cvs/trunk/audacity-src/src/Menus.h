@@ -278,6 +278,7 @@ void OnNewLabelTrack();
 void OnNewTimeTrack();
 void OnTimerRecord();
 void OnRemoveTracks();
+void OnStickyLabel();
 void OnAddLabel();
 void OnAddLabelPlaying();
 void OnEditLabels();

@@ -490,7 +490,22 @@ bool WaveTrack::Paste(double t0, Track *src)
 #ifdef EXPERIMENTAL_STICKY_TRACKS
    if (mStickyLabelTrack) mStickyLabelTrack->ShiftLabelsOnInsert(insertDuration, t0, this);
 #endif
+#ifdef EXPERIMENTAL_POSITION_LINKING
+   AudacityProject *p = GetActiveProject();
+   if( p && p->IsSticky()){
+      TrackListIterator iter(p->GetTracks());
+      Track *t = iter.First();
+      
+      while (t && t!=this) t = iter.Next(true);
+      while (t && t->GetKind()==Track::Wave) t = iter.Next();
 
+      while (t && t->GetKind()==Track::Label){
+         //printf("t: %x\n", t);
+         ((LabelTrack *)t)->ShiftLabelsOnInsert(insertDuration, t0, this);
+         t = iter.Next();
+      }
+   }
+#endif
    //printf("Check if we need to make room for the pasted data\n");
    
    // Make room for the pasted data, unless the space being pasted in is empty of
@@ -635,6 +650,22 @@ bool WaveTrack::HandleClear(double t0, double t1,
 #ifdef EXPERIMENTAL_STICKY_TRACKS
    if (!split){
       if (mStickyLabelTrack) mStickyLabelTrack->ShiftLabelsOnClear(t0, t1, this);
+   }
+#endif
+#ifdef EXPERIMENTAL_POSITION_LINKING
+   AudacityProject *p = GetActiveProject();
+   if( p && p->IsSticky() && !split){
+      TrackListIterator iter(p->GetTracks());
+      Track *t = iter.First();
+      
+      while (t && t!=this) t = iter.Next(true);
+      while (t && t->GetKind()==Track::Wave) t = iter.Next();
+
+      while (t && t->GetKind()==Track::Label){
+         //printf("t: %x\n", t);
+         ((LabelTrack *)t)->ShiftLabelsOnClear(t0, t1, this);
+         t = iter.Next();
+      }
    }
 #endif
 
