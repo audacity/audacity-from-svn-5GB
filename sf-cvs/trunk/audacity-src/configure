@@ -707,6 +707,8 @@ AVFORMAT_CFLAGS
 AVFORMAT_LIBS
 LIBLRDF_CFLAGS
 LIBLRDF_LIBS
+LIBRAPTOR_CFLAGS
+LIBRAPTOR_LIBS
 build
 build_cpu
 build_vendor
@@ -753,6 +755,8 @@ AVFORMAT_CFLAGS
 AVFORMAT_LIBS
 LIBLRDF_CFLAGS
 LIBLRDF_LIBS
+LIBRAPTOR_CFLAGS
+LIBRAPTOR_LIBS
 JACK_CFLAGS
 JACK_LIBS'
 ac_subdirs_all='"lib-src/FileDialog"
@@ -1367,6 +1371,8 @@ Optional Packages:
   --with-libtwolame       use libtwolame for MP2 export support
   --with-ffmpeg           use ffmpeg for import and export support
   --with-liblrdf          use liblrdf for categorisation of LADSPA plugins
+  --with-libraptor        libraptor is needed for categorisation of LADSPA
+                          plugins
   --with-portmixer        compile with PortMixer [default=yes]
   --with-portaudio        which version of PortAudio to use (=[v18,v19])
                           [default=v19]
@@ -1420,6 +1426,10 @@ Some influential environment variables:
               C compiler flags for LIBLRDF, overriding pkg-config
   LIBLRDF_LIBS
               linker flags for LIBLRDF, overriding pkg-config
+  LIBRAPTOR_CFLAGS
+              C compiler flags for LIBRAPTOR, overriding pkg-config
+  LIBRAPTOR_LIBS
+              linker flags for LIBRAPTOR, overriding pkg-config
   JACK_CFLAGS C compiler flags for JACK, overriding pkg-config
   JACK_LIBS   linker flags for JACK, overriding pkg-config
 
@@ -5561,7 +5571,7 @@ BUILD_LDFLAGS="$BUILD_LDFLAGS $WIDGETEXTRA_LIBS"
 CXXFLAGS="$CXXFLAGS $WIDGETEXTRA_CFLAGS"
 LIBSRC_BUILD="$LIBSRC_BUILD widgetextra"
 
-LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG LIBLRDF"
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG LIBLRDF LIBRAPTOR"
 
 { echo "$as_me:$LINENO: Determining what libraries are available in this tree and on the system" >&5
 echo "$as_me: Determining what libraries are available in this tree and on the system" >&6;}
@@ -8162,10 +8172,184 @@ echo "$as_me: liblrdf available as system library" >&6;}
 echo "$as_me: liblrdf NOT available as system library" >&6;}
    fi
 
+      as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/liblrdf/lrdf.h" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/liblrdf/lrdf.h" >&5
+echo $ECHO_N "checking for ${srcdir}/lib-src/liblrdf/lrdf.h... $ECHO_C" >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/liblrdf/lrdf.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval echo '${'$as_ac_File'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_File'}'` = yes; then
+  lrdf_h_found="yes"
+else
+  lrdf_h_found="no"
+fi
 
-   LIBLRDF_LOCAL_AVAILABLE="no"
-   { echo "$as_me:$LINENO: liblrdf is NOT available in the local tree" >&5
+
+   if test "x$lrdf_h_found" = "xyes" ; then
+      LIBLRDF_LOCAL_AVAILABLE="yes"
+      LIBLRDF_LOCAL_LIBS="liblrdf.a"
+      LIBLRDF_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/liblrdf'
+      LIBLRDF_LOCAL_CPPSYMBOLS="USE_LIBLRDF"
+      if test ! -f lib-src/liblrdf/Makefile ; then
+         LIBLRDF_LOCAL_CONFIG_SUBDIRS="lib-src/liblrdf"
+      fi
+      { echo "$as_me:$LINENO: liblrdf is available in the local tree" >&5
+echo "$as_me: liblrdf is available in the local tree" >&6;}
+   else
+      LIBLRDF_LOCAL_AVAILABLE="no"
+      { echo "$as_me:$LINENO: liblrdf is NOT available in the local tree" >&5
 echo "$as_me: liblrdf is NOT available in the local tree" >&6;}
+   fi
+
+
+
+# Check whether --with-libraptor was given.
+if test "${with_libraptor+set}" = set; then
+  withval=$with_libraptor; LIBRAPTOR_ARGUMENT=$withval
+else
+  LIBRAPTOR_ARGUMENT="unspecified"
+fi
+
+
+
+
+pkg_failed=no
+{ echo "$as_me:$LINENO: checking for LIBRAPTOR" >&5
+echo $ECHO_N "checking for LIBRAPTOR... $ECHO_C" >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LIBRAPTOR_CFLAGS"; then
+        pkg_cv_LIBRAPTOR_CFLAGS="$LIBRAPTOR_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"raptor >= 1.4.17\"") >&5
+  ($PKG_CONFIG --exists --print-errors "raptor >= 1.4.17") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_LIBRAPTOR_CFLAGS=`$PKG_CONFIG --cflags "raptor >= 1.4.17" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LIBRAPTOR_LIBS"; then
+        pkg_cv_LIBRAPTOR_LIBS="$LIBRAPTOR_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"raptor >= 1.4.17\"") >&5
+  ($PKG_CONFIG --exists --print-errors "raptor >= 1.4.17") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_LIBRAPTOR_LIBS=`$PKG_CONFIG --libs "raptor >= 1.4.17" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        LIBRAPTOR_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "raptor >= 1.4.17"`
+        else
+	        LIBRAPTOR_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "raptor >= 1.4.17"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$LIBRAPTOR_PKG_ERRORS" >&5
+
+	{ echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+                libraptor_available_system="no"
+elif test $pkg_failed = untried; then
+	libraptor_available_system="no"
+else
+	LIBRAPTOR_CFLAGS=$pkg_cv_LIBRAPTOR_CFLAGS
+	LIBRAPTOR_LIBS=$pkg_cv_LIBRAPTOR_LIBS
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+	libraptor_available_system="yes"
+fi
+
+   LIBRAPTOR_SYSTEM_AVAILABLE="no"
+   if test "x$libraptor_available_system" = "xyes" ; then
+      LIBRAPTOR_SYSTEM_AVAILABLE="yes"
+      LIBRAPTOR_SYSTEM_LIBS="$LIBRAPTOR_LIBS"
+      LIBRAPTOR_SYSTEM_CXXFLAGS="$LIBRAPTOR_CFLAGS"
+      { echo "$as_me:$LINENO: libraptor available as system library" >&5
+echo "$as_me: libraptor available as system library" >&6;}
+   fi
+   if test "x$LIBRAPTOR_SYSTEM_AVAILABLE" = "xno" ; then
+      { echo "$as_me:$LINENO: libraptor NOT available as system library" >&5
+echo "$as_me: libraptor NOT available as system library" >&6;}
+   fi
+
+      as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/libraptor/src/raptor.h" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libraptor/src/raptor.h" >&5
+echo $ECHO_N "checking for ${srcdir}/lib-src/libraptor/src/raptor.h... $ECHO_C" >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libraptor/src/raptor.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval echo '${'$as_ac_File'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_File'}'` = yes; then
+  raptor_h_found="yes"
+else
+  raptor_h_found="no"
+fi
+
+
+   if test "x$raptor_h_found" = "xyes" ; then
+      LIBRAPTOR_LOCAL_AVAILABLE="yes"
+      LIBRAPTOR_LOCAL_LIBS="libraptor.a"
+      LIBRAPTOR_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libraptor/src'
+      if test ! -f lib-src/libraptor/Makefile ; then
+         LIBRAPTOR_LOCAL_CONFIG_SUBDIRS="lib-src/libraptor"
+      fi
+      { echo "$as_me:$LINENO: libraptor is available in the local tree" >&5
+echo "$as_me: libraptor is available in the local tree" >&6;}
+   else
+      LIBRAPTOR_LOCAL_AVAILABLE="no"
+      { echo "$as_me:$LINENO: libraptor is NOT available in the local tree" >&5
+echo "$as_me: libraptor is NOT available in the local tree" >&6;}
+   fi
 
 
 
@@ -9858,11 +10042,11 @@ AVFORMAT_CFLAGS!$AVFORMAT_CFLAGS$ac_delim
 AVFORMAT_LIBS!$AVFORMAT_LIBS$ac_delim
 LIBLRDF_CFLAGS!$LIBLRDF_CFLAGS$ac_delim
 LIBLRDF_LIBS!$LIBLRDF_LIBS$ac_delim
+LIBRAPTOR_CFLAGS!$LIBRAPTOR_CFLAGS$ac_delim
+LIBRAPTOR_LIBS!$LIBRAPTOR_LIBS$ac_delim
 build!$build$ac_delim
 build_cpu!$build_cpu$ac_delim
 build_vendor!$build_vendor$ac_delim
-build_os!$build_os$ac_delim
-host!$host$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -9904,6 +10088,8 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+build_os!$build_os$ac_delim
+host!$host$ac_delim
 host_cpu!$host_cpu$ac_delim
 host_vendor!$host_vendor$ac_delim
 host_os!$host_os$ac_delim
@@ -9913,7 +10099,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 7; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 9; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
