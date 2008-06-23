@@ -92,10 +92,12 @@ OBJS = \
 	Snap.o \
 	Spectrum.o \
 	SplashDialog.o \
+	SoundActivatedRecord.o \
 	Tags.o \
 	Theme.o \
 	TimeDialog.o \
 	TimeTrack.o \
+	TimerRecordDialog.o \
 	Track.o \
 	TrackArtist.o \
 	TrackPanel.o \
