@@ -92,8 +92,6 @@ class EffectCategory {
        EffectManager (which is our friend) to create new categories. */
    EffectCategory(const wxString& uri, const wxString& name);
 
-   ~EffectCategory();
-   
    /** Add a new parent category to this category, making this a subcategory of
        the parent. Returns true if the parent was added (or already had been
        added), false if the parent could not be added because FreezeParents()

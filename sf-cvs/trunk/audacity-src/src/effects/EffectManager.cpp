@@ -31,6 +31,11 @@ EffectManager::EffectManager()
    
 }
 
+EffectManager::~EffectManager() {
+   CategoryMap::iterator i;
+   for (i = mCategories.begin(); i != mCategories.end(); ++i)
+      delete i->second;
+}
 
 void EffectManager::RegisterEffect(Effect *f, int NewFlags)
 {
