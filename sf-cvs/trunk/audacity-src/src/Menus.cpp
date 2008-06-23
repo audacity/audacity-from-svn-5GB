@@ -670,7 +670,11 @@ void AudacityProject::CreateMenusAndCommands()
                          AudioIONotBusyFlag | TracksSelectedFlag);
       c->EndSubMenu();
    
-      c->AddSeparator();   
+      c->AddSeparator(); 
+#ifdef EXPERIMENTAL_POSITION_LINKING
+      c->AddItem(wxT("StickyLabels"),       _("Link Wave and Label Tracks"), FN(OnStickyLabel));  
+      c->AddSeparator(); 
+#endif
       c->AddItem(wxT("AddLabel"),       _("Add &Label At Selection\tCtrl+B"), FN(OnAddLabel));
       c->AddItem(wxT("AddLabelPlaying"),       _("Add Label At &Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
       c->SetCommandFlags(wxT("AddLabel"), 0, 0);
@@ -4297,6 +4301,11 @@ int AudacityProject::DoAddLabel(double left, double right)
    mTrackPanel->SetFocus();
 
    return index;
+}
+
+void AudacityProject::OnStickyLabel()
+{
+   mStickyFlag = !mStickyFlag;
 }
 
 void AudacityProject::OnAddLabel()

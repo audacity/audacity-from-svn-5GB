@@ -36,7 +36,8 @@
 #define EXPERIMENTAL_THEME_PREFS
 
 //Enables label/wavetrack pairing
-#define EXPERIMENTAL_STICKY_TRACKS
+//#define EXPERIMENTAL_STICKY_TRACKS
+#define EXPERIMENTAL_POSITION_LINKING
 
 //Next line enables Mic monitoring at times when it was previously off.
 //More work is needed as after recording or playing it results in an 
