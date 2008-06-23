@@ -51,6 +51,9 @@ class EffectManager {
    
    EffectManager();
 
+   /** A destructor is needed so we can delete all categories. */
+   ~EffectManager();
+
    /** Register an effect so it will appear in the menu. */
    void RegisterEffect(Effect *f, int AdditionalFlags=0);
    
