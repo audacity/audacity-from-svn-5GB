@@ -40,12 +40,14 @@
 VampEffect::VampEffect(Vamp::HostExt::PluginLoader::PluginKey key,
                        int output,
                        bool hasParameters,
-                       wxString name) :
+                       wxString name,
+                       wxString category) :
    mKey(key),
    mOutput(output),
    mHasParameters(hasParameters),
    mName(name),
    mRate(0),
+   mCategory(category),
    mPlugin(0)
 {
 }
@@ -68,7 +70,8 @@ wxString VampEffect::GetEffectName()
 std::set<wxString> VampEffect::GetEffectCategories()
 {
    std::set<wxString> result;
-   result.insert(wxT("NO CATEGORY"));
+   if (mCategory != wxT(""))
+      result.insert(mCategory);
    return result;
 }
 

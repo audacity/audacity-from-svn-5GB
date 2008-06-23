@@ -194,8 +194,14 @@ void LoadEffects()
                                _("Pitch and Tempo"));
    CatPtr tim = em.AddCategory(wxT(ATEAM) wxT("TimelineChanger"),
                                _("Timeline Changer"));
+   CatPtr aTim = em.AddCategory(wxT(ATEAM) wxT("TimeAnalyser"),
+                                _("Time"));
+   CatPtr onst = em.AddCategory(wxT(ATEAM) wxT("OnsetDetector"),
+                                _("Onsets"));
    em.AddCategoryParent(nrm, util);
    em.AddCategoryParent(tim, util);
+   em.AddCategoryParent(aTim, anal);
+   em.AddCategoryParent(onst, aTim);
    
    // We freeze the internal subcategory relations between the categories
    // added so far so LADSPA/LRDF or other category systems don't ruin
