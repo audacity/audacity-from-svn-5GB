@@ -24,6 +24,8 @@ Describes shared object that is used to access FFmpeg libraries.
  * re-processed and doesn't work properly.
  * The symptoms are that INT64_C is not a valid type, which tends to break
  * somewhere down in the implementations using this file */
+
+#if defined(USE_FFMPEG)
 extern "C" {
 #ifdef _STDINT_H
    /* stdint.h has already been included. That's likely to break ffmpeg headers
@@ -35,6 +37,8 @@ extern "C" {
 #include <libavformat/avformat.h>
 #include <libavutil/fifo.h>
 }
+#endif
+
 #include "Audacity.h"
 /* rather earlier than normal, but pulls in config*.h and other program stuff
  * we need for the next bit */

@@ -45,7 +45,7 @@ enum { // control IDs
 
 const int kTimerInterval = 500; // every 500 ms => 2 updates per second   
 
-double wxDateTime_to_AudacityTime(wxDateTime& dateTime)
+static double wxDateTime_to_AudacityTime(wxDateTime& dateTime)
 {
    return (dateTime.GetHour() * 3600.0) + (dateTime.GetMinute() * 60.0) + dateTime.GetSecond();
 };
