@@ -13,7 +13,7 @@ License: GPL v2.  See License.txt.
 \brief Class used to dynamically load FFmpeg libraries
 
 *//*******************************************************************/
-#include "FFmpeg.h"		// brings config*.h in with it
+
 
 #ifdef _DEBUG
    #ifdef _MSC_VER
@@ -22,6 +22,9 @@ License: GPL v2.  See License.txt.
       #define new new(_NORMAL_BLOCK, THIS_FILE, __LINE__)
    #endif
 #endif
+
+#include "Audacity.h"	// for config*.h
+#include "FFmpeg.h"
 
 #if !defined(USE_FFMPEG)
 wxString GetFFmpegVersion(wxWindow *parent, bool prompt)

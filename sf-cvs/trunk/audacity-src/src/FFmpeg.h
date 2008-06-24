@@ -24,19 +24,23 @@ Describes shared object that is used to access FFmpeg libraries.
  * re-processed and doesn't work properly.
  * The symptoms are that INT64_C is not a valid type, which tends to break
  * somewhere down in the implementations using this file */
+/* In order to be able to compile this file when ffmpeg is not available we
+ * need access to the value of USE_FFMPEG, which means config*.h needs to come
+ * in before this file. The suggest way to achieve this is by including
+ * Audacity.h */
 
 #if defined(USE_FFMPEG)
-extern "C" {
-#ifdef _STDINT_H
+	extern "C" {
+	#ifdef _STDINT_H
    /* stdint.h has already been included. That's likely to break ffmpeg headers
 	* as described above so we issue a warning */
 	#warning "stdint.h included before ffmpeg headers, this may well not compile"
-#endif
-#define __STDC_CONSTANT_MACROS
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <libavutil/fifo.h>
-}
+	#endif
+	#define __STDC_CONSTANT_MACROS
+	#include <libavcodec/avcodec.h>
+	#include <libavformat/avformat.h>
+	#include <libavutil/fifo.h>
+	}
 #endif
 
 #include "Audacity.h"
@@ -55,10 +59,17 @@ extern "C" {
 
 // if you needed them, any other audacity header files would go here
 
+/* These defines apply whether or not ffmpeg is available */
 #define INITDYN(w,f) if ((*(void**)&this->f=(void*)w->GetSymbol(wxT(#f))) == NULL) { wxLogMessage(wxT("Failed to load symbol ") wxT(#f)); return false; };
 
 void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl);
 
+//----------------------------------------------------------------------------
+// Get FFmpeg library version
+//----------------------------------------------------------------------------
+wxString GetFFmpegVersion(wxWindow *parent, bool prompt);
+
+/* from here on in, this stuff only applies when ffmpeg is available */
 #if defined(USE_FFMPEG)
 
 class FFmpegLibs
@@ -150,7 +161,7 @@ public:
    {
       return wxT("avformat.dll");
    }
-#else
+#else //__WXMSW__
    wxString GetLibraryTypeString()
    {
       return _("Only avformat.so|*avformat*.so*|Dynamically Linked Libraries (*.so)|*.so|All Files (*)|*");
@@ -165,7 +176,7 @@ public:
    {
       return wxT("libavformat.so");
    }
-#endif
+#endif //__WXMSW__
    //Ugly reference counting. I thought of using wxStuff for that,
    //but decided that wx reference counting is not useful, since
    //there's no data sharing - object is shared because libraries are.
@@ -187,12 +198,6 @@ private:
 FFmpegLibs *PickFFmpegLibs();
 void        DropFFmpegLibs();
 
-#endif
-
-//----------------------------------------------------------------------------
-// Get FFmpeg library version
-//----------------------------------------------------------------------------
-wxString GetFFmpegVersion(wxWindow *parent, bool prompt);
-
-#endif
+#endif // USE_FFMPEG
+#endif // __AUDACITY_FFMPEG__
 

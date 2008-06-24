@@ -23,6 +23,7 @@ Licensed under the GNU General Public License v2 or later
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
+#include "../Audacity.h"	// needed before FFmpeg.h
 #include "../FFmpeg.h"		// which brings in avcodec.h, avformat.h
 #ifndef WX_PRECOMP
 // Include your minimal set of headers here, or wx.h
