@@ -162,6 +162,7 @@ clean:
 	-$(MAKE) -C libsamplerate clean
 	-$(MAKE) -C libresample clean
 	-$(MAKE) -C libsndfile clean
+	-$(MAKE) -C libvamp clean
 	-$(MAKE) -C libvorbis clean
 	-$(MAKE) -C lib-widget-extra clean
 	-$(MAKE) -C libflac clean
@@ -188,6 +189,7 @@ distclean:
 	-$(MAKE) -C libsamplerate distclean
 	-$(MAKE) -C libresample distclean
 	-$(MAKE) -C libsndfile distclean
+	-$(MAKE) -C libvamp distclean
 	-$(MAKE) -C libvorbis distclean
 	-$(MAKE) -C lib-widget-extra distclean
 	-$(MAKE) -C libflac distclean
@@ -206,7 +208,7 @@ distclean:
 		widgetextra libogg-recursive \
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
 	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
-	libresample-recursive libsamplerate-recursive \
+	libresample-recursive libsamplerate-recursive libvamp-recursive \
 	portaudio-v19-recursive portmixer-recursive libtwolame-recursive \
 	liblrdf-recursive
 
