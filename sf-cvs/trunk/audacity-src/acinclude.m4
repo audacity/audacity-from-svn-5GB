@@ -263,10 +263,10 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBNYQUIST], [
 ])
 
 AC_DEFUN([AUDACITY_CHECKLIB_LIBVAMP], [
-   AC_ARG_ENABLE(vamp,
-               [AS_HELP_STRING([--enable-vamp],
-                               [enable Vamp plug-in support [default=yes]])],
-               LIBVAMP_ARGUMENT=$enableval,
+   AC_ARG_WITH(libvamp,
+               [AS_HELP_STRING([--with-libvamp],
+                               [use libvamp for Vamp plug-in support [default=yes]])],
+               LIBVAMP_ARGUMENT=$withval,
                LIBVAMP_ARGUMENT="unspecified")
 
    if false ; then
