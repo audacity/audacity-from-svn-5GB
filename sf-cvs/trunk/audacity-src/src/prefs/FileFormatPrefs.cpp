@@ -80,7 +80,8 @@ void FileFormatPrefs::Populate( )
 void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
 {
    S.SetBorder( 2 );
-   S.StartStatic( _("MP3 Export Library"));
+   S.StartHorizontalLay(wxEXPAND,0);
+   S.StartStatic( _("MP3 Export Library"),1);
    {
       S.StartTwoColumn();
          S.AddVariableText( _("MP3 Library Version:"),
@@ -99,11 +100,11 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
             wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
          S.Id( ID_MP3_DOWN_BUTTON ).AddButton( _("&Download"), 
             wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
-      S.EndHorizontalLay();
+      S.EndTwoColumn();
    }
    S.EndStatic();
 
-   S.StartStatic( _("FFmpeg Import/Export Library"));
+   S.StartStatic( _("FFmpeg Import/Export Library"),1);
    {
       S.StartTwoColumn();
       S.AddVariableText( _("FFmpeg Library Version:"),
@@ -122,11 +123,12 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
          wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
       S.Id( ID_FFMPEG_DOWN_BUTTON ).AddButton( _("&Download"), 
          wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
-      S.EndHorizontalLay();
+      S.EndTwoColumn();
    }
    S.EndStatic();
+   S.EndHorizontalLay();
 
-   S.AddFixedText( _("Note: Export quality options can be chosen by clicking the Options button in the Export dialog."));
+   S.AddFixedText( _("Note: Export quality options can be chosen by clicking the Options button in the Export dialog.\n"));
    S.StartStatic( _("When importing audio files"));
    {
       S.StartRadioButtonGroup(wxT("/FileFormats/CopyOrEditUncompressedData"),wxT("edit"));
