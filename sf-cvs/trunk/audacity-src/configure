@@ -1344,7 +1344,6 @@ Optional Features:
   --enable-unicode        enable unicode support [default=yes]
   --enable-debug          enable debug support [default=no]
   --enable-nyquist        enable Nyquist plug-in support [default=yes]
-  --enable-vamp           enable Vamp plug-in support [default=yes]
   --enable-audiounits     enable audio unit plug-in support (Mac OS X only)
                           [default=auto]
   --enable-ladspa         enable LADSPA plug-in support [default=yes]
@@ -1368,6 +1367,7 @@ Optional Packages:
   --with-libflac          use libFLAC for FLAC support
   --with-libid3tag        use libid3tag for mp3 id3 tag support
   --with-soundtouch       use libSoundTouch for pitch and tempo changing
+  --with-libvamp          use libvamp for Vamp plug-in support [default=yes]
   --with-libtwolame       use libtwolame for MP2 export support
   --with-ffmpeg           use ffmpeg for import and export support
   --with-liblrdf          use liblrdf for categorisation of LADSPA plugins
@@ -7525,9 +7525,10 @@ echo "$as_me: nyquist libraries are NOT available in the local tree" >&6;}
    fi
 
 
-   # Check whether --enable-vamp was given.
-if test "${enable_vamp+set}" = set; then
-  enableval=$enable_vamp; LIBVAMP_ARGUMENT=$enableval
+
+# Check whether --with-libvamp was given.
+if test "${with_libvamp+set}" = set; then
+  withval=$with_libvamp; LIBVAMP_ARGUMENT=$withval
 else
   LIBVAMP_ARGUMENT="unspecified"
 fi
