@@ -148,8 +148,12 @@ class AUDACITY_DLL_API WaveTrack: public Track {
 
    virtual bool Trim (double t0, double t1);
 
+   bool HandleGroupClear(double t0, double t1, bool addCutLines, bool split);
    bool HandleClear(double t0, double t1,
                     bool addCutLines, bool split);
+                    
+   bool HandleGroupPaste(double t0, Track *src);
+   bool HandlePaste(double t0, Track *src);
 
    // Returns true if there are no WaveClips in that region
    bool IsEmpty(double t0, double t1);

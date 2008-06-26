@@ -672,7 +672,7 @@ void AudacityProject::CreateMenusAndCommands()
    
       c->AddSeparator(); 
 #ifdef EXPERIMENTAL_POSITION_LINKING
-      c->AddItem(wxT("StickyLabels"),       _("Link Wave and Label Tracks"), FN(OnStickyLabel));  
+      c->AddItem(wxT("StickyLabels"),       _("Link Wave and Label Tracks"), FN(OnStickyLabel), 0);  
       c->AddSeparator(); 
 #endif
       c->AddItem(wxT("AddLabel"),       _("Add &Label At Selection\tCtrl+B"), FN(OnAddLabel));
@@ -1351,6 +1351,7 @@ void AudacityProject::ModifyToolbarMenus()
                          mToolManager->IsVisible(ToolsBarID));
    mCommandManager.Check(wxT("ShowTranscriptionTB"),
                          mToolManager->IsVisible(TranscriptionBarID));
+   mCommandManager.Check(wxT("StickyLabels"), mStickyFlag);                         
    bool active;
    gPrefs->Read(wxT("/AudioIO/SoundActivatedRecord"),&active, false);
    mCommandManager.Check(wxT("SoundActivation"), active);

@@ -146,7 +146,7 @@ void LabelTrack::SetOffset(double dOffset)
    }
 }
 
-void LabelTrack::ShiftLabelsOnClear(double b, double e, WaveTrack *track)
+void LabelTrack::ShiftLabelsOnClear(double b, double e)
 {
    for (unsigned int i=0;i<mLabels.GetCount();i++){
       if (mLabels[i]->t >= e){//label is after deletion region
@@ -169,7 +169,7 @@ void LabelTrack::ShiftLabelsOnClear(double b, double e, WaveTrack *track)
    }
 }
 
-void LabelTrack::ShiftLabelsOnInsert(double length, double pt, WaveTrack *track)
+void LabelTrack::ShiftLabelsOnInsert(double length, double pt)
 {
    for (unsigned int i=0;i<mLabels.GetCount();i++){
       if (mLabels[i]->t > pt && mLabels[i]->t1 > pt) {
