@@ -1,7 +1,7 @@
 /*
  * Local defines for the md5 functions.
  *
- * $Id: md5_loc.h,v 1.1 2008-06-23 15:12:22 larsl Exp $
+ * $Id: md5_loc.h,v 1.2 2008-06-26 15:14:26 larsl Exp $
  */
 
 /*

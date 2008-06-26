@@ -1,4 +1,4 @@
-<http://www.daml.org/2001/03/daml+oil> <http://www.daml.org/2001/03/daml+oil#versionInfo> "$Id: daml-oil.out,v 1.1 2008-06-23 15:13:37 larsl Exp $" .
+<http://www.daml.org/2001/03/daml+oil> <http://www.daml.org/2001/03/daml+oil#versionInfo> "$Id: daml-oil.out,v 1.2 2008-06-26 15:14:27 larsl Exp $" .
 <http://www.daml.org/2001/03/daml+oil> <http://www.daml.org/2001/03/daml+oil#imports> <http://www.w3.org/2000/01/rdf-schema> .
 <http://www.daml.org/2001/03/daml+oil#Class> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
 <http://www.daml.org/2001/03/daml+oil#Class> <http://www.w3.org/2000/01/rdf-schema#label> "Class" .

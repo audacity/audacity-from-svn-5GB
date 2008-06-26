@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  *
- * $Id: lrdf_md5.h,v 1.1 2008-06-23 15:12:22 larsl Exp $
+ * $Id: lrdf_md5.h,v 1.2 2008-06-26 15:14:26 larsl Exp $
  */
 
 /*

@@ -7,7 +7,7 @@ include_HEADERS = lrdf.h lrdf_types.h
 
 EXTRA_DIST = autogen.sh lrdf.i
 
-SUBDIRS = src examples
+SUBDIRS = src
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = lrdf.pc
@@ -15,4 +15,4 @@ pkgconfig_DATA = lrdf.pc
 python: lrdf.i
 	swig -python lrdf.i
 	gcc -c src/lrdf.c src/lrdf_multi.c src/md5.c lrdf_wrap.c -I/usr/include/python2.3/
-	ld -shared lrdf_multi.o lrdf.o lrdf_wrap.o md5.o -lraptor -o _lrdf.so
+	ld -shared lrdf_multi.o lrdf.o lrdf_wrap.o md5.o @RAPTOR_LIBS@ -o _lrdf.so

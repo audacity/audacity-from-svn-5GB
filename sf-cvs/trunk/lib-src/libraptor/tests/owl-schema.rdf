@@ -29,8 +29,8 @@
     explicitly into their ontology. People that do import this file
     should expect their ontology to be an OWL Full ontology. 
   </rdfs:comment>
-  <rdfs:comment>$Id: owl-schema.rdf,v 1.1 2008-06-23 15:14:02 larsl Exp $</rdfs:comment>
-  <versionInfo>$Id: owl-schema.rdf,v 1.1 2008-06-23 15:14:02 larsl Exp $</versionInfo>
+  <rdfs:comment>$Id: owl-schema.rdf,v 1.2 2008-06-26 15:14:28 larsl Exp $</rdfs:comment>
+  <versionInfo>$Id: owl-schema.rdf,v 1.2 2008-06-26 15:14:28 larsl Exp $</versionInfo>
 </Ontology>
 
 <rdfs:Class rdf:ID="Class">

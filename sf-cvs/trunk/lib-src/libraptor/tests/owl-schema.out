@@ -5,8 +5,8 @@
 <http://www.w3.org/2002/07/owl> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <http://www.w3.org/TR/2003/CR-owl-test-20030818/> .
 <http://www.w3.org/2002/07/owl> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <http://www.w3.org/TR/2003/CR-owl-semantics-20030818/> .
 <http://www.w3.org/2002/07/owl> <http://www.w3.org/2000/01/rdf-schema#comment> "This file specifies in RDF Schema format the\n    built-in classes and properties that together form the basis of\n    the RDF/XML syntax of OWL Full, OWL DL and OWL Lite.\n    We do not expect people to import this file\n    explicitly into their ontology. People that do import this file\n    should expect their ontology to be an OWL Full ontology. \n  " .
-<http://www.w3.org/2002/07/owl> <http://www.w3.org/2000/01/rdf-schema#comment> "$Id: owl-schema.out,v 1.1 2008-06-23 15:14:01 larsl Exp $" .
-<http://www.w3.org/2002/07/owl> <http://www.w3.org/2002/07/owl#versionInfo> "$Id: owl-schema.out,v 1.1 2008-06-23 15:14:01 larsl Exp $" .
+<http://www.w3.org/2002/07/owl> <http://www.w3.org/2000/01/rdf-schema#comment> "$Id: owl-schema.out,v 1.2 2008-06-26 15:14:27 larsl Exp $" .
+<http://www.w3.org/2002/07/owl> <http://www.w3.org/2002/07/owl#versionInfo> "$Id: owl-schema.out,v 1.2 2008-06-26 15:14:27 larsl Exp $" .
 <http://www.w3.org/2002/07/owl#Class> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
 <http://www.w3.org/2002/07/owl#Class> <http://www.w3.org/2000/01/rdf-schema#label> "Class" .
 <http://www.w3.org/2002/07/owl#Class> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/2000/01/rdf-schema#Class> .
