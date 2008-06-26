@@ -167,8 +167,8 @@ class LabelTrack:public Track {
    bool CalcCursorX(wxWindow * parent, int * x);
    int getCurrentCursorPosition() const { return mCurrentCursorPos; };
    
-   void ShiftLabelsOnClear(double b, double e, WaveTrack *track);
-   void ShiftLabelsOnInsert(double length, double pt, WaveTrack *track);
+   void ShiftLabelsOnClear(double b, double e);
+   void ShiftLabelsOnInsert(double length, double pt);
    WaveTrack* GetStickyTrack() { return mStickyTrack; }
    void SetStickyTrack(WaveTrack *track) { mStickyTrack = track; }
 
