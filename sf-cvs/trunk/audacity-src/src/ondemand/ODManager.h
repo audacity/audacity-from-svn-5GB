@@ -76,6 +76,15 @@ class ODManager
    
    
    void RemoveTaskIfInQueue(ODTask* task);
+   
+   ///sets a flag that is set if we have loaded some OD blockfiles from PCM.  
+   static void MarkLoadedODFlag();
+   
+   ///resets a flag that is set if we have loaded some OD blockfiles from PCM.  
+   static void UnmarkLoadedODFlag();
+   
+   ///returns a flag that is set if we have loaded some OD blockfiles from PCM.  
+   static bool HasLoadedODFlag();
   
   protected:
    //private constructor - Singleton.
@@ -88,8 +97,6 @@ class ODManager
    
    ///Remove references in our array to Tasks that have been completed/Schedule new ones
    void UpdateQueues();
-   
-
  
    
    //List of tracks and their active and inactive tasks.

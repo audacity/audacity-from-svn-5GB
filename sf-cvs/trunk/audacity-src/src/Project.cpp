@@ -120,7 +120,7 @@ scroll information.  It also has some status flags.
 #include "FileNames.h"
 #include "BlockFile.h"
 #include "ondemand/ODManager.h"
-
+#include "ondemand/ODComputeSummaryTask.h"
 
 #include "Theme.h"
 #include "AllThemeResources.h"
@@ -2001,6 +2001,33 @@ void AudacityProject::OpenFile(wxString fileName)
          mLastSavedTracks->Add(t->Duplicate());
          t = iter.Next();
       }
+      
+
+#ifdef EXPERIMENTAL_ONDEMAND
+      //check the ODManager to see if we should add the tracks to the ODManager.
+      if(ODManager::HasLoadedODFlag())
+      {
+         Track *tr;
+         TrackListIterator triter(mTracks);
+         mLastSavedTracks = new TrackList();
+         
+         tr = triter.First();
+         while (tr) {
+            if (tr->GetKind() == Track::Wave)
+            {
+               ODComputeSummaryTask* computeTask;
+               computeTask=new ODComputeSummaryTask;
+         
+               computeTask->SetWaveTrack((WaveTrack*)tr);
+               ODManager::Instance()->AddTaskToWaveTrack(computeTask,(WaveTrack*)tr);
+            }
+            tr = triter.Next();
+         }
+            
+            //release the flag.
+         ODManager::UnmarkLoadedODFlag();
+      }
+#endif
 
       InitialState();
       mTrackPanel->SetFocusedTrack(iter.First());

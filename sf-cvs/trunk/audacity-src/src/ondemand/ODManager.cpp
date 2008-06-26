@@ -18,6 +18,9 @@
 #include <wx/thread.h>
 #include <wx/event.h>
 bool gManagerCreated=false;
+/// a flag that is set if we have loaded some OD blockfiles from PCM.  
+bool sHasLoadedOD=false;
+
 
 
 DECLARE_EVENT_TYPE(wxEVT_ODTASK_UPDATE, -1)
@@ -26,7 +29,7 @@ DEFINE_EVENT_TYPE(wxEVT_ODTASK_UPDATE)
 //private constructor - Singleton.
 ODManager::ODManager()
 {
-  mTerminate = false;
+   mTerminate = false;
 }
 
 ///Adds a task to running queue.  Thread-safe.
@@ -306,5 +309,26 @@ void ODManager::UpdateQueues()
    }
    mQueuesMutex.Unlock();
    
-   
 }
+
+//static   
+///sets a flag that is set if we have loaded some OD blockfiles from PCM.  
+void ODManager::MarkLoadedODFlag()
+{
+   sHasLoadedOD = true;
+}   
+   
+//static   
+///resets a flag that is set if we have loaded some OD blockfiles from PCM.  
+void ODManager::UnmarkLoadedODFlag()
+{
+   sHasLoadedOD = false;
+}
+   
+//static   
+///returns a flag that is set if we have loaded some OD blockfiles from PCM.  
+bool ODManager::HasLoadedODFlag()
+{
+   return sHasLoadedOD;
+}
+  

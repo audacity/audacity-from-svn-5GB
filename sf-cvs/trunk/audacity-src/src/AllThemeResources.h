@@ -232,10 +232,12 @@ from there.  Audacity will look for a file called "Pause.png".
    DEFINE_COLOUR( clrSelSample,  wxColour( 50,  50, 200), wxT("SelSample"));
    DEFINE_COLOUR( clrDragSample, wxColour(  0, 100,   0), wxT("DragSample"));
                                                                 
-   DEFINE_COLOUR( clrMuteSample, wxColour(136, 136, 144), wxT("MuteSample"));
-   DEFINE_COLOUR( clrRms,        wxColour(107, 154, 247), wxT("Rms"));
-   DEFINE_COLOUR( clrMuteRms,    wxColour(136, 136, 144), wxT("MuteRms"));
-   DEFINE_COLOUR( clrShadow,     wxColour(148, 148, 148), wxT("Shadow"));
+   DEFINE_COLOUR( clrMuteSample,       wxColour(136, 136, 144),      wxT("MuteSample"));
+   DEFINE_COLOUR( clrProgressDone,     wxColour(60, 240, 60, 128),   wxT("ProgressDone"));
+   DEFINE_COLOUR( clrProgressNotYet,   wxColour(255, 255, 255,220), wxT("ProgressNotYet"));
+   DEFINE_COLOUR( clrRms,              wxColour(107, 154, 247),      wxT("Rms"));
+   DEFINE_COLOUR( clrMuteRms,          wxColour(136, 136, 144),      wxT("MuteRms"));
+   DEFINE_COLOUR( clrShadow,           wxColour(148, 148, 148),      wxT("Shadow"));
 
 
 
