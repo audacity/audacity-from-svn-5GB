@@ -2,7 +2,7 @@
 #
 # Makefile.am - automake file for Raptor Turtle tests
 #
-# $Id: Makefile.am,v 1.1 2008-06-23 15:14:12 larsl Exp $
+# $Id: Makefile.am,v 1.2 2008-06-26 15:14:28 larsl Exp $
 #
 # Copyright (C) 2003-2007, David Beckett http://purl.org/net/dajobe/
 # Copyright (C) 2003-2004, University of Bristol, UK http://www.bristol.ac.uk/

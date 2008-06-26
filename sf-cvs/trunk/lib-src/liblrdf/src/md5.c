@@ -23,7 +23,7 @@
  * Written by Ulrich Drepper <drepper@gnu.ai.mit.edu>, 1995.
  * Modified by Gray Watson <http://256.com/gray/>, 1997.
  *
- * $Id: md5.c,v 1.1 2008-06-23 15:12:22 larsl Exp $
+ * $Id: md5.c,v 1.2 2008-06-26 15:14:26 larsl Exp $
  */
 
 /*
@@ -54,7 +54,7 @@
 #include "md5_loc.h"
 
 /* static	char	*rcs_id =
-   "$Id: md5.c,v 1.1 2008-06-23 15:12:22 larsl Exp $"; */
+   "$Id: md5.c,v 1.2 2008-06-26 15:14:26 larsl Exp $"; */
 
 /* version id for the library */
 /* static char *version_id = "$MD5Version: 1.0.0 November-19-1997 $"; */
