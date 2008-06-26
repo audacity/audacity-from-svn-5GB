@@ -76,7 +76,7 @@
 #include "widgets/MultiDialog.h"
 
 #include "prefs/PrefsDialog.h"
-
+#include "ondemand/ODManager.h"
 // Static class variables
 
 int DirManager::numDirManagers = 0;
@@ -839,7 +839,13 @@ bool DirManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
    else if( !wxStricmp(tag, wxT("pcmaliasblockfile")) )
       pBlockFile = PCMAliasBlockFile::BuildFromXML(*this, attrs);
    else if( !wxStricmp(tag, wxT("odpcmaliasblockfile")) )
+   {
       pBlockFile = ODPCMAliasBlockFile::BuildFromXML(*this, attrs);
+      //in the case of loading an OD file, we need to schedule the ODManager to begin OD computing of summary
+      //However, because we don't have access to the track or even the Sequence from this call, we mark a flag
+      //in the ODMan and check it later.
+      ODManager::MarkLoadedODFlag();
+   }
    else if( !wxStricmp(tag, wxT("blockfile")) ||
             !wxStricmp(tag, wxT("legacyblockfile")) ) {
       // Support Audacity version 1.1.1 project files

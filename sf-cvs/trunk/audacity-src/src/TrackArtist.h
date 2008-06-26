@@ -143,6 +143,8 @@ class AUDACITY_DLL_API TrackArtist {
    wxPen muteRmsPen;
    wxPen selsamplePen;
    wxPen muteSamplePen;
+   wxPen odProgressNotYetPen;
+   wxPen odProgressDonePen;
    wxPen shadowPen;
    wxPen clippedPen;
    wxPen muteClippedPen;
@@ -188,7 +190,7 @@ class AUDACITY_DLL_API TrackArtist {
                       float zoomMin, float zoomMax,
                       double *envValues,
                       float *min, float *max, float *rms,int* bl,
-                      bool dB, bool muted);
+                      bool dB, bool muted, bool showProgress);
 
    void DrawNegativeOffsetTrackArrows(wxDC &dc, wxRect &r);
 

@@ -121,7 +121,7 @@ public:
    // clipping calculations
    //
    bool GetWaveDisplay(float *min, float *max, float *rms,int* bl, sampleCount *where,
-                       int numPixels, double t0, double pixelsPerSecond);
+                       int numPixels, double t0, double pixelsPerSecond, bool &isLoadingOD);
    bool GetSpectrogram(float *buffer, sampleCount *where,
                        int numPixels,
                        double t0, double pixelsPerSecond,
