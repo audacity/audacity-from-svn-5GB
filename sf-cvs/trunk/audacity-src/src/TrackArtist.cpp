@@ -1068,13 +1068,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
          }
       }
    }
-   else {
-   uchar rs, gs, bs;
-
-      GetColour(odProgressDonePen, &rs, &gs, &bs);
-
-   printf("OD PEN: r:%i, g:%i, b: %i,\n",rs,gs,bs);
-   
+   else {   
       // Draw the waveform min/max lines
       dc.SetPen(muted ? muteSamplePen : samplePen);
       for (x = 0; x < r.width; x++) {
