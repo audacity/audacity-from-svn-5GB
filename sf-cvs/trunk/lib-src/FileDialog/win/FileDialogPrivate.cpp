@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.9 2008-05-24 02:57:39 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.10 2008-06-27 03:21:14 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -242,7 +242,7 @@ void FileDialog::FilterFiles(HWND hDlg)
       }
       
       // Allow all folders (things like zip files get filtered below)
-      if (attr == SFGAO_FOLDER)
+      if (attr & SFGAO_FOLDER)
       {
          continue;
       }
