@@ -103,27 +103,32 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
       S.EndTwoColumn();
    }
    S.EndStatic();
-
    S.StartStatic( _("FFmpeg Import/Export Library"),1);
    {
       S.StartTwoColumn();
       S.AddVariableText( _("FFmpeg Library Version:"),
-         true,
-         wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
+         true, wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
+#if defined(USE_FFMPEG)
       mFFmpegVersion = S.AddVariableText( wxT("FFmpeg library not found"),
-         true,
+         true, wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
+#else
+      mFFmpegVersion = S.AddVariableText( wxT("FFmpeg support is not compiled in"),
+         true, wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
+#endif
+      S.AddVariableText( _("FFmpeg Library:"),
+         true, wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
+      wxButton *bfnd = S.Id( ID_FFMPEG_FIND_BUTTON ).AddButton( _("&Find Library"), 
          wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
       S.AddVariableText( _("FFmpeg Library:"),
          true,
          wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
-      S.Id( ID_FFMPEG_FIND_BUTTON ).AddButton( _("&Find Library"), 
-         wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
-      S.AddVariableText( _("FFmpeg Library:"),
-         true,
-         wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
-      S.Id( ID_FFMPEG_DOWN_BUTTON ).AddButton( _("&Download"), 
+      wxButton *bdwn = S.Id( ID_FFMPEG_DOWN_BUTTON ).AddButton( _("&Download"), 
          wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
       S.EndTwoColumn();
+#if !defined(USE_FFMPEG)
+      bdwn->Enable(FALSE);
+      bfnd->Enable(FALSE);
+#endif
    }
    S.EndStatic();
    S.EndHorizontalLay();
