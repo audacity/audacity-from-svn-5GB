@@ -1979,7 +1979,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="ondemand"
+			Name="src/ondemand"
 			>
 			<File
 				RelativePath="..\..\..\src\ondemand\ODComputeSummaryTask.cpp"
