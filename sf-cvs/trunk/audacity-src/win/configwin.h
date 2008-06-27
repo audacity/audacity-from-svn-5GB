@@ -15,7 +15,7 @@
 #define USE_SOUNDTOUCH 1
 #define USE_LIBTWOLAME 1
 #undef USE_VST
-#undef USE_FFMPEG
+#define USE_FFMPEG
 
 #define INSTALL_PREFIX "."
 
