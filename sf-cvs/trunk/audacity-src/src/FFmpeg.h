@@ -87,6 +87,8 @@ public:
    AVCodec*          (*avcodec_find_encoder_by_name)  (const char *name);
    AVCodec*          (*avcodec_find_decoder)          (enum CodecID id);
    AVCodec*          (*avcodec_find_decoder_by_name)  (const char *name);
+   enum CodecID      (*av_codec_get_id)               (const struct AVCodecTag **tags, unsigned int tag);
+   unsigned int      (*av_codec_get_tag)              (const struct AVCodecTag **tags, enum CodecID id);
    void              (*avcodec_string)                (char *buf, int buf_size, AVCodecContext *enc, int encode);
    void              (*avcodec_get_context_defaults)  (AVCodecContext *s);
    AVCodecContext*   (*avcodec_alloc_context)         (void);
@@ -110,6 +112,8 @@ public:
    int               (*av_index_search_timestamp)     (AVStream *st, int64_t timestamp, int flags);
    int               (*av_write_header)               (AVFormatContext *s);
    AVInputFormat*    (*av_iformat_next)               (AVInputFormat *f);
+   AVOutputFormat*   (*av_oformat_next)               (AVOutputFormat *f);
+   AVCodec*          (*av_codec_next)                 (AVCodec *c);
    int               (*av_set_parameters)             (AVFormatContext *s, AVFormatParameters *ap);
    int               (*url_fopen)                     (ByteIOContext **s, const char *filename, int flags);
    int               (*url_fclose)                    (ByteIOContext *s);
