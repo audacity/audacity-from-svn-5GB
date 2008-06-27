@@ -538,6 +538,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avformat,av_interleaved_write_frame);
    INITDYN(avformat,av_write_frame);
    INITDYN(avformat,av_iformat_next);
+   INITDYN(avformat,av_oformat_next);
    INITDYN(avformat,av_set_parameters);
    INITDYN(avformat,url_fopen);
    INITDYN(avformat,url_fclose);
@@ -553,6 +554,8 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avcodec,avcodec_find_encoder_by_name);
    INITDYN(avcodec,avcodec_find_decoder);
    INITDYN(avcodec,avcodec_find_decoder_by_name);
+   INITDYN(avcodec,av_codec_get_id);
+   INITDYN(avcodec,av_codec_get_tag);
    INITDYN(avcodec,avcodec_string);
    INITDYN(avcodec,avcodec_get_context_defaults);
    INITDYN(avcodec,avcodec_alloc_context);
@@ -568,6 +571,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avcodec,av_get_bits_per_sample_format);
    INITDYN(avcodec,avcodec_version);
    INITDYN(avcodec,av_fast_realloc);
+   INITDYN(avcodec,av_codec_next);
 
    INITDYN(avutil,av_free);
    INITDYN(avutil,av_log_set_callback);
