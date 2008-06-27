@@ -197,7 +197,7 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
    mFilterIndex = 0;
 
    for (size_t i = 0; i < mPlugins.GetCount(); i++) {
-      for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+      for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
       {
          if (mPlugins[i]->GetFormat(j) == defaultFormat) {
             mFormatIndex = i;
@@ -220,7 +220,7 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
       wxArrayString formats;
       
       for (size_t i = 0; i < mPlugins.GetCount(); i++) {
-         for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+         for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
          {
             formats.Add(mPlugins[i]->GetDescription(j));
          }
@@ -386,7 +386,7 @@ void ExportMultiple::OnOptions(wxCommandEvent& event)
    size_t c = 0;
    for (size_t i = 0; i < mPlugins.GetCount(); i++)
    {
-      for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+      for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
       {
          if (sel == c)
          {
@@ -484,7 +484,7 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
    size_t c = 0;
    for (size_t i = 0; i < mPlugins.GetCount(); i++)
    {
-      for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+      for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
       {
          if (mFilterIndex == c)
          {

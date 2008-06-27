@@ -202,7 +202,7 @@ bool ExportPlugin::GetCanMetaData(int index)
 bool ExportPlugin::IsExtension(wxString & ext)
 {
    bool isext = false;
-   for (size_t i = 0; i < GetFormatCount(); i++)
+   for (int i = 0; i < GetFormatCount(); i++)
    {
       isext = (GetExtension(i) == wxT("") || GetExtensions(i).Index(ext, false) != wxNOT_FOUND);
    }
@@ -302,7 +302,7 @@ int Exporter::FindFormatIndex(int exportindex)
    size_t c = 0;
    for (size_t i = 0; i < mPlugins.GetCount(); i++)
    {
-      for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+      for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
       {
          if (exportindex == c) return j;
          c++;
@@ -376,7 +376,7 @@ bool Exporter::Process(AudacityProject *project, int numChannels,
    mActualName = mFilename;
 
    for (size_t i = 0; i < mPlugins.GetCount(); i++) {
-      for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+      for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
       {
          if (mPlugins[i]->GetFormat(j).IsSameAs(type, false))
          {
@@ -487,7 +487,7 @@ bool Exporter::GetFilename()
    mFilterIndex = 0;
 
    for (size_t i = 0; i < mPlugins.GetCount(); i++) {
-      for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+      for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
       {
          maskString += mPlugins[i]->GetMask(j) + wxT("|");
          if (mPlugins[i]->GetFormat(j) == defaultFormat) {
@@ -531,7 +531,7 @@ bool Exporter::GetFilename()
       size_t c = 0;
       for (size_t i = 0; i < mPlugins.GetCount(); i++)
       {
-         for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+         for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
          {
             if (mFilterIndex == c)
             {
@@ -642,11 +642,11 @@ bool Exporter::GetFilename()
 
 void Exporter::DisplayOptions(int index)
 {
-   size_t c = 0;
+   int c = 0;
    int mf = -1, msf = -1;
    for (size_t i = 0; i < mPlugins.GetCount(); i++)
    {
-      for (size_t j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+      for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
       {
          if (index == c)
          {
