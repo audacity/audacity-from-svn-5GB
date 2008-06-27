@@ -146,7 +146,7 @@ void EditToolBar::Populate()
       _NoAcc("&Redo"), _NoAcc("&Redo"));
    AddSeparator();
 
-   AddButton(bmpRedo, bmpRedoDisabled, ETBLinkID,
+   AddButton(bmpLinkTracks, bmpLinkTracksDisabled, ETBLinkID,
       _("Link Tracks"), _("Link Tracks"));
    AddSeparator();
    
