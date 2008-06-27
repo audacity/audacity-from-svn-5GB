@@ -36,6 +36,8 @@ enum {
    ETBUndoID,
    ETBRedoID,
 
+   ETBLinkID,
+
    ETBZoomInID,
    ETBZoomOutID,
 
