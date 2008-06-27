@@ -44,3 +44,6 @@
 #include "EditButtons/ZoomSelDisabled.xpm"
 #include "EditButtons/ZoomFitDisabled.xpm"
 #include "EditButtons/ZoomToggleDisabled.xpm"
+#include "EditButtons/LinkTracks.xpm"
+#include "EditButtons/LinkTracksAlpha.xpm"
+#include "EditButtons/LinkTracksDisabled.xpm"

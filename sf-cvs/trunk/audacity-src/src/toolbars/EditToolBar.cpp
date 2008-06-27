@@ -146,6 +146,10 @@ void EditToolBar::Populate()
       _NoAcc("&Redo"), _NoAcc("&Redo"));
    AddSeparator();
 
+   AddButton(bmpRedo, bmpRedoDisabled, ETBLinkID,
+      _("Link Tracks"), _("Link Tracks"));
+   AddSeparator();
+   
    AddButton(bmpZoomIn, bmpZoomInDisabled, ETBZoomInID,
       _("Zoom In"),_("Zoom In"));
    AddButton(bmpZoomOut, bmpZoomOutDisabled, ETBZoomOutID,
@@ -202,6 +206,9 @@ void EditToolBar::OnButton(wxCommandEvent &event)
          break;
       case ETBRedoID:
          if (!busy) p->OnRedo();
+         break;
+      case ETBLinkID:
+         if (!busy) p->OnStickyLabel();
          break;
       case ETBZoomInID:
          p->OnZoomIn();
