@@ -61,8 +61,12 @@ Source: "..\README.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\win\Release\audacity.exe"; DestDir: "{app}"; Flags: ignoreversion
 
-; This is for the wxWidgets DLLs, but will get any in the directory.
-Source: "..\win\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+; wxWidgets DLLs. Be specific (not *.dll) so we don't accidentally distribute avformat.dll, for example.
+Source: "..\win\Release\wxbase28_net_vc_custom.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\win\Release\wxbase28_vc_custom.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\win\Release\wxmsw28_adv_vc_custom.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\win\Release\wxmsw28_core_vc_custom.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\win\Release\wxmsw28_html_vc_custom.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 ; Just include the Visual C runtimes in the Audacity folder, so we know we have the right version,
 ; don't step on anybody else's older version, and it's easy to make the zip (and they match better).
