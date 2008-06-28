@@ -148,12 +148,12 @@ void LabelTrack::SetOffset(double dOffset)
 
 void LabelTrack::ShiftLabelsOnClear(double b, double e)
 {
-   for (unsigned int i=0;i<mLabels.GetCount();i++){
+   for (size_t i=0;i<mLabels.GetCount();i++){
       if (mLabels[i]->t >= e){//label is after deletion region
          mLabels[i]->t  = mLabels[i]->t  - (e-b);
          mLabels[i]->t1 = mLabels[i]->t1 - (e-b);
       }else if (mLabels[i]->t >= b && mLabels[i]->t1 <= e){//deletion region encloses label
-         wxASSERT((i < (int)mLabels.GetCount()));
+         wxASSERT((i < mLabels.GetCount()));
          mLabels.RemoveAt(i);
          i--;
       }else if (mLabels[i]->t >= b && mLabels[i]->t1 > e){//deletion region covers start
@@ -1218,7 +1218,7 @@ bool LabelTrack::HandleMouse(const wxMouseEvent & evt,
          // reset when right button is down outside text box
          if (evt.RightDown())
          {
-            if (!highlightedRect.Inside(evt.m_x, evt.m_y))
+            if (!highlightedRect.Contains(evt.m_x, evt.m_y))
             {
                mCurrentCursorPos=0;
                mInitialCursorPos=0;
@@ -1267,7 +1267,7 @@ bool LabelTrack::HandleMouse(const wxMouseEvent & evt,
       {
          if (evt.RightDown())
          {
-            if (!highlightedRect.Inside(evt.m_x, evt.m_y))
+            if (!highlightedRect.Contains(evt.m_x, evt.m_y))
             {
                mDragXPos = -1;
             }
