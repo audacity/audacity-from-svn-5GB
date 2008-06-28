@@ -1,12 +1,66 @@
 /**********************************************************************
 
-Audacity: A Digital Audio Editor
+  Audacity: A Digital Audio Editor
 
-ExportFFmpeg.cpp
+  ExportFFmpeg.cpp
 
-LRN
+  Audacity(R) is copyright (c) 1999-2008 Audacity Team.
+  License: GPL v2.  See License.txt.
 
-**********************************************************************/
+******************************************************************//**
+
+\class ExportFFmpegAC3Options
+\brief Options dialog for FFmpeg exporting of AC3 format.
+
+*//***************************************************************//**
+
+\class ExportFFmpegWAVOptions
+\brief Options dialog for FFmpeg exporting of WAV format.
+
+*//***************************************************************//**
+
+\class ExportFFmpegMP3Options
+\brief Options dialog for FFmpeg exporting of MP3 format.
+
+*//***************************************************************//**
+
+\class ExportFFmpegFLACOptions
+\brief Options dialog for FFmpeg exporting of FLAC format.
+
+*//***************************************************************//**
+
+\class ExportFFmpegAACOptions
+\brief Options dialog for FFmpeg exporting of AAC format.
+
+*//***************************************************************//**
+
+\class ExportFFmpegVorbisOptions
+\brief Options dialog for FFmpeg exporting of Vorbis format.
+
+*//***************************************************************//**
+
+\class ExportFFmpegAMRNBOptions
+\brief Options dialog for FFmpeg exporting of AMRNB format.
+
+*//***************************************************************//**
+
+\class ExportFFmpegAMRWBOptions
+\brief Options dialog for FFmpeg exporting of AMRWB format.
+
+*//***************************************************************//**
+
+\class ExportFFmpegWMAOptions
+\brief Options dialog for FFmpeg exporting of WMA format.
+
+*//***************************************************************//**
+
+\class ExportFFmpeg
+\brief Controlling class for FFmpeg exporting.  Creates the options 
+dialog of the appropriate type, adds tags and invokes the export 
+function.
+
+*//*******************************************************************/
+
 
 #include "../Audacity.h"   // keep ffmpeg before wx because they interact
 #include "../FFmpeg.h"     // and Audacity.h before FFmpeg for config*.h
@@ -1411,7 +1465,7 @@ bool ExportFFmpeg::Finalize()
    // Write any file trailers.
    FFmpegLibsInst->av_write_trailer(mEncFormatCtx);
 
-   for (i = 0; i < mEncFormatCtx->nb_streams; i++)
+   for (i = 0; i < (int)mEncFormatCtx->nb_streams; i++)
    {
       FFmpegLibsInst->av_freep(&mEncFormatCtx->streams[i]->codec);
       FFmpegLibsInst->av_freep(&mEncFormatCtx->streams[i]);
