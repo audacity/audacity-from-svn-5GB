@@ -435,6 +435,48 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    unsigned int erm = SetErrorMode(showerr ? 0 : SEM_FAILCRITICALERRORS);
 #endif
 
+   wxString syspath;
+   bool pathfix = false;
+   wxLogMessage(wxT("Looking up PATH..."));
+   if (wxGetEnv(wxT("PATH"),&syspath))
+   {
+      wxLogMessage(wxT("PATH = %s"),syspath.c_str());
+      wxString fmtdirsc = wxPathOnly(libpath_format) + wxT(";");
+      wxString scfmtdir = wxT(";") + wxPathOnly(libpath_format);
+      wxString fmtdir = wxPathOnly(libpath_format);
+      wxLogMessage(wxT("Checking that %s is in PATH..."),fmtdir.c_str());
+      if (!syspath.Contains(fmtdirsc) && !syspath.Contains(scfmtdir) && !syspath.Contains(fmtdir))
+      {
+         wxLogMessage(wxT("not in PATH!"));
+         if (syspath.Last() == wxT(';'))
+         {
+            wxLogMessage(wxT("Appending %s ..."),fmtdir.c_str());
+            syspath.Append(fmtdirsc);
+         }
+         else
+         {
+            wxLogMessage(wxT("Appending %s ..."),scfmtdir.c_str());
+            syspath.Append(scfmtdir);
+         }
+
+         if (wxSetEnv(wxT("PATH"),syspath.c_str()))
+         {
+            pathfix = true;
+         }
+         else
+         {
+            wxLogMessage(wxT("wxSetEnv(%s) failed."),syspath.c_str());
+         }
+      }
+      else
+      {
+         wxLogMessage(wxT("in PATH."));
+      }
+   }
+   else
+   {
+      wxLogMessage(wxT("PATH does not exists."));
+   }
    avformat = new wxDynamicLibrary();
    if (!avformat->IsLoaded() && !gotError)
    {
@@ -508,6 +550,13 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
       }
    }
 
+   if ( pathfix )
+   {
+      wxString oldpath = syspath.BeforeLast(wxT(';'));
+      wxLogMessage(wxT("Returning PATH to normal..."));
+      wxSetEnv(wxT("PATH"),oldpath.c_str());
+   }
+
    if ( gotError )
    {
       wxLogMessage(wxT("Failed to load either avcodec or avutil"));
@@ -554,8 +603,8 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avcodec,avcodec_find_encoder_by_name);
    INITDYN(avcodec,avcodec_find_decoder);
    INITDYN(avcodec,avcodec_find_decoder_by_name);
-   INITDYN(avcodec,av_codec_get_id);
-   INITDYN(avcodec,av_codec_get_tag);
+   INITDYN(avformat,av_codec_get_id);
+   INITDYN(avformat,av_codec_get_tag);
    INITDYN(avcodec,avcodec_string);
    INITDYN(avcodec,avcodec_get_context_defaults);
    INITDYN(avcodec,avcodec_alloc_context);
