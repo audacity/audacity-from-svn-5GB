@@ -3,7 +3,7 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=audacity-win-unicode-1.3.6a1
+OutputBaseFilename=audacity-win-unicode-1.3.6a3
 SetupIconFile=audacity.ico
 
 WizardImageFile=audacity_InnoWizardImage.bmp
@@ -12,14 +12,14 @@ WizardSmallImageFile=audacity_InnoWizardSmallImage.bmp
 SolidCompression=yes
 
 ; installer-related directives
-AppName=Audacity 1.3 Beta (Unicode)
-AppVerName=Audacity 1.3.6a1 (Unicode)
+AppName=Audacity 1.3 Alpha (Unicode)
+AppVerName=Audacity 1.3.6a3 (Unicode)
 AppPublisher=Audacity Team
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
 ChangesAssociations=yes
-DefaultDirName={pf}\Audacity 1.3 Beta (Unicode)
+DefaultDirName={pf}\Audacity 1.3 Alpha (Unicode)
 ; Always warn if dir exists, because we'll overwrite previous Audacity.
 DirExistsWarning=yes
 DisableProgramGroupPage=yes
@@ -59,17 +59,28 @@ Name: associate_aup; Description: "&Associate Audacity project files"; GroupDesc
 [Files]
 Source: "..\README.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\win\unicode_release\audacity.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\win\unicode_release\languages\*"; DestDir: "{app}\Languages\"; Flags: ignoreversion recursesubdirs
-Source: "..\win\unicode_release\modules\*"; DestDir: "{app}\Languages\"; Flags: ignoreversion recursesubdirs
-Source: "..\win\unicode_release\nyquist\*"; DestDir: "{app}\Nyquist\"; Flags: ignoreversion
-Source: "..\win\unicode_release\plug-ins\*"; DestDir: "{app}\Plug-Ins\"; Excludes: "analyze.ny, fadein.ny, fadeout.ny, undcbias.ny"; Flags: ignoreversion
-Source: "..\win\unicode_release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\win\unicode release\audacity.exe"; DestDir: "{app}"; Flags: ignoreversion
+
+; This is for the wxWidgets DLLs, but will get any in the directory.
+Source: "..\win\unicode release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+
+; Just include the Visual C runtimes in the Audacity folder, so we know we have the right version,
+; don't step on anybody else's older version, and it's easy to make the zip (and they match better).
+; *** Hold off on this until we resolve legal questions, and MSVC version issues.
+; Source: "C:\Program Files\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest"; DestDir: "{app}"; Flags: ignoreversion
+; Source: "C:\Program Files\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\msvcp80.dll"; DestDir: "{app}"; Flags: ignoreversion
+; Source: "C:\Program Files\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\msvcr80.dll"; DestDir: "{app}"; Flags: ignoreversion
+
+Source: "..\win\unicode release\languages\*"; DestDir: "{app}\Languages\"; Flags: ignoreversion recursesubdirs
+Source: "..\win\unicode release\modules\*"; DestDir: "{app}\Modules\"; Flags: ignoreversion recursesubdirs
+Source: "..\win\unicode release\nyquist\*"; DestDir: "{app}\Nyquist\"; Flags: ignoreversion
+Source: "..\win\unicode release\plug-ins\*"; DestDir: "{app}\Plug-Ins\"; Excludes: "analyze.ny, fadein.ny, fadeout.ny, undcbias.ny"; Flags: ignoreversion
+
 
 
 [Icons]
-Name: "{commonprograms}\Audacity 1.3 Beta (Unicode)"; Filename: "{app}\audacity.exe"
-Name: "{userdesktop}\Audacity 1.3 Beta (Unicode)"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
+Name: "{commonprograms}\Audacity 1.3 Alpha (Unicode)"; Filename: "{app}\audacity.exe"
+Name: "{userdesktop}\Audacity 1.3 Alpha (Unicode)"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
 
 [InstallDelete]
 ; Get rid of Audacity 1.0.0 stuff that's no longer used.
