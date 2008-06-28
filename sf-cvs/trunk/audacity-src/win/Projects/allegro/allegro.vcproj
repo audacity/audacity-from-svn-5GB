@@ -284,6 +284,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\lib-src\allegro\allegrosmfrd.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\lib-src\allegro\allegrowr.cpp"
 				>
 			</File>
@@ -313,6 +317,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\lib-src\allegro\allegrord.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\allegro\allegrosmfrd.h"
 				>
 			</File>
 			<File

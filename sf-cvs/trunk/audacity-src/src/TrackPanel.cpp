@@ -774,6 +774,9 @@ void TrackPanel::OnTimer()
    if (p->GetAudioIOToken()>0 &&
        !gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
       p->GetControlToolBar()->OnStop(dummyEvent);      
+#ifdef EXPERIMENTAL_NOTE_TRACK
+      printf( "EXPERIMENTAL_NOTE_TRACK OnTimer\n" );
+#endif /* EXPERIMENTAL_NOTE_TRACK */
    }
 
    // Next, check to see if we were playing or recording

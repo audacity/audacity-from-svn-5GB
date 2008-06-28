@@ -2181,6 +2181,7 @@ and optional attributes as follows:
  */
 
 /* Declare Static functions */
+#ifndef EXPERIMENTAL_NOTE_TRACK
 static char *IsShape(Allegro_note_ptr note);
 static double LookupRealAttribute(Allegro_note_ptr note, Attribute attr, double def);
 static long LookupIntAttribute(Allegro_note_ptr note, Attribute attr, long def);
@@ -2191,8 +2192,31 @@ static int PITCH_TO_Y(double p, int bottom);
 static char *LookupAtomAttribute(Allegro_note_ptr note, Attribute attr, char *def);
 static int PITCH_TO_Y(double p, int bottom);
 
+#else /* EXPERIMENTAL_NOTE_TRACK */
+//static char *IsShape(Allegro_note_ptr note);
+//static char *IsShape(Alg_note_ptr note);
+//static double LookupRealAttribute(Allegro_note_ptr note, Attribute attr, double def);
+//static long LookupIntAttribute(Allegro_note_ptr note, Attribute attr, long def);
+//static bool LookupLogicalAttribute(Allegro_note_ptr note, Attribute attr, bool def);
+//static const char *LookupStringAttribute(Allegro_note_ptr note, Attribute attr, const char *def);
+//static char *LookupAtomAttribute(Allegro_note_ptr note, Attribute attr, char *def);
+//static int PITCH_TO_Y(double p, int bottom);
+//static char *LookupAtomAttribute(Allegro_note_ptr note, Attribute attr, char *def);
+//static int PITCH_TO_Y(double p, int bottom);
+static char *IsShape(Alg_note_ptr note);
+static double LookupRealAttribute(Alg_note_ptr note, Alg_attribute attr, double def);
+static long LookupIntAttribute(Alg_note_ptr note, Alg_attribute attr, long def);
+static bool LookupLogicalAttribute(Alg_note_ptr note, Alg_attribute attr, bool def);
+static const char *LookupStringAttribute(Alg_note_ptr note, Alg_attribute attr, const char *def);
+static char *LookupAtomAttribute(Alg_note_ptr note, Alg_attribute attr, char *def);
+static int PITCH_TO_Y(double p, int bottom);
+static char *LookupAtomAttribute(Alg_note_ptr note, Alg_attribute attr, char *def);
+static int PITCH_TO_Y(double p, int bottom);
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+
 // returns NULL if note is not a shape,
 // returns atom (string) value of note if note is a shape
+#ifndef EXPERIMENTAL_NOTE_TRACK
 char *IsShape(Allegro_note_ptr note)
 {
   Parameters_ptr parameters = note->parameters;
@@ -2205,7 +2229,24 @@ char *IsShape(Allegro_note_ptr note)
   return NULL;
 }
 
+#else /* EXPERIMENTAL_NOTE_TRACK */
+//char *IsShape(Allegro_note_ptr note)
+char *IsShape(Alg_note_ptr note)
+{
+  //Parameters_ptr parameters = note->parameters;
+  Alg_parameters_ptr parameters = note->parameters;
+  while (parameters) {
+    if (strcmp(parameters->parm.attr_name(), "shapea") == 0) {
+      return parameters->parm.a;
+    }
+    parameters = parameters->next;
+  }
+  return NULL;
+}
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+
 // returns value of attr, or default if not found
+#ifndef EXPERIMENTAL_NOTE_TRACK
 double LookupRealAttribute(Allegro_note_ptr note, Attribute attr, double def)
 {
   Parameters_ptr parameters = note->parameters;
@@ -2219,7 +2260,25 @@ double LookupRealAttribute(Allegro_note_ptr note, Attribute attr, double def)
   return def;
 }
 
+#else /* EXPERIMENTAL_NOTE_TRACK */
+//double LookupRealAttribute(Allegro_note_ptr note, Attribute attr, double def)
+double LookupRealAttribute(Alg_note_ptr note, Alg_attribute attr, double def)
+{
+  //Parameters_ptr parameters = note->parameters;
+  Alg_parameters_ptr parameters = note->parameters;
+  while (parameters) {
+    if (parameters->parm.attr_name() == attr + 1 &&
+        parameters->parm.attr_type() == 'r') {
+      return parameters->parm.r;
+    }
+    parameters = parameters->next;
+  }
+  return def;
+}
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+
 // returns value of attr, or default if not found
+#ifndef EXPERIMENTAL_NOTE_TRACK
 long LookupIntAttribute(Allegro_note_ptr note, Attribute attr, long def)
 {
   Parameters_ptr parameters = note->parameters;
@@ -2233,7 +2292,25 @@ long LookupIntAttribute(Allegro_note_ptr note, Attribute attr, long def)
   return def;
 }
 
+#else /* EXPERIMENTAL_NOTE_TRACK */
+//long LookupIntAttribute(Allegro_note_ptr note, Attribute attr, long def)
+long LookupIntAttribute(Alg_note_ptr note, Alg_attribute attr, long def)
+{
+  //Parameters_ptr parameters = note->parameters;
+  Alg_parameters_ptr parameters = note->parameters;
+  while (parameters) {
+    if (parameters->parm.attr_name() == attr + 1 &&
+        parameters->parm.attr_type() == 'i') {
+      return parameters->parm.i;
+    }
+    parameters = parameters->next;
+  }
+  return def;
+}
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+
 // returns value of attr, or default if not found
+#ifndef EXPERIMENTAL_NOTE_TRACK
 bool LookupLogicalAttribute(Allegro_note_ptr note, Attribute attr, bool def)
 {
   Parameters_ptr parameters = note->parameters;
@@ -2246,8 +2323,25 @@ bool LookupLogicalAttribute(Allegro_note_ptr note, Attribute attr, bool def)
   }
   return def;
 }
+#else /* EXPERIMENTAL_NOTE_TRACK */
+//bool LookupLogicalAttribute(Allegro_note_ptr note, Attribute attr, bool def)
+bool LookupLogicalAttribute(Alg_note_ptr note, Alg_attribute attr, bool def)
+{
+  //Parameters_ptr parameters = note->parameters;
+  Alg_parameters_ptr parameters = note->parameters;
+  while (parameters) {
+    if (parameters->parm.attr_name() == attr + 1 &&
+        parameters->parm.attr_type() == 'l') {
+      return parameters->parm.l;
+    }
+    parameters = parameters->next;
+  }
+  return def;
+}
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 
 // returns value of attr, or default if not found
+#ifndef EXPERIMENTAL_NOTE_TRACK
 const char *LookupStringAttribute(Allegro_note_ptr note, Attribute attr, const char *def)
 {
   Parameters_ptr parameters = note->parameters;
@@ -2260,8 +2354,25 @@ const char *LookupStringAttribute(Allegro_note_ptr note, Attribute attr, const c
   }
   return def;
 }
+#else /* EXPERIMENTAL_NOTE_TRACK */
+//const char *LookupStringAttribute(Allegro_note_ptr note, Attribute attr, const char *def)
+const char *LookupStringAttribute(Alg_note_ptr note, Alg_attribute attr, const char *def)
+{
+  //Parameters_ptr parameters = note->parameters;
+  Alg_parameters_ptr parameters = note->parameters;
+  while (parameters) {
+    if (parameters->parm.attr_name() == attr + 1 &&
+        parameters->parm.attr_type() == 's') {
+      return parameters->parm.s;
+    }
+    parameters = parameters->next;
+  }
+  return def;
+}
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 
 // returns value of attr, or default if not found
+#ifndef EXPERIMENTAL_NOTE_TRACK
 char *LookupAtomAttribute(Allegro_note_ptr note, Attribute attr, char *def)
 {
   Parameters_ptr parameters = note->parameters;
@@ -2274,6 +2385,22 @@ char *LookupAtomAttribute(Allegro_note_ptr note, Attribute attr, char *def)
   }
   return def;
 }
+#else /* EXPERIMENTAL_NOTE_TRACK */
+//char *LookupAtomAttribute(Allegro_note_ptr note, Attribute attr, char *def)
+char *LookupAtomAttribute(Alg_note_ptr note, Alg_attribute attr, char *def)
+{
+  //Parameters_ptr parameters = note->parameters;
+  Alg_parameters_ptr parameters = note->parameters;
+  while (parameters) {
+    if (parameters->parm.attr_name() == attr + 1 &&
+        parameters->parm.attr_type() == 'a') {
+      return parameters->parm.s;
+    }
+    parameters = parameters->next;
+  }
+  return def;
+}
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 
 #define TIME_TO_X(t) (r.x + (int) (((t) - h) * pps))
 #define X_TO_TIME(xx) (((xx) - r.x) / pps + h)
@@ -2314,7 +2441,22 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
 
   double h1 = X_TO_TIME(r.x + r.width);
 
+#ifndef EXPERIMENTAL_NOTE_TRACK
   Seq_ptr seq = track->mSeq;
+#else /* EXPERIMENTAL_NOTE_TRACK */
+  //Seq_ptr seq = track->mSeq;
+  Alg_seq_ptr seq = track->mSeq;
+  if (!seq) {
+	  assert(track->mSerializationBuffer);
+	  Alg_track_ptr alg_track = seq->unserialize(track->mSerializationBuffer,
+												 track->mSerializationLength);
+	  assert(alg_track->get_type() == 's');
+	  track->mSeq = seq = (Alg_seq_ptr) alg_track;
+	  free(track->mSerializationBuffer);
+	  track->mSerializationBuffer = NULL;
+  }
+  assert(seq);
+#endif /* EXPERIMENTAL_NOTE_TRACK */
   int visibleChannels = track->mVisibleChannels;
 
   if (!track->GetSelected())
@@ -2366,8 +2508,13 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
    }
 
   dc.SetClippingRegion(r);
+#ifndef EXPERIMENTAL_NOTE_TRACK
   int numEvents = seq->notes.len;
   int index;
+#else /* EXPERIMENTAL_NOTE_TRACK */
+//  int numEvents = seq->notes.len;
+//  int index;
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 
   // NOTE: it would be better to put this in some global initialization
   // function rather than do lookups every time.
@@ -2395,13 +2542,43 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
   char *sizei = symbol_table.insert_string("sizei");
   char *justifys = symbol_table.insert_string("justifys");
 
+#ifndef EXPERIMENTAL_NOTE_TRACK
   for(index=0; index<numEvents; index++) {
-
     if (seq->notes[index]->type == 'n') {
-    
+
       Allegro_note_ptr note = (Allegro_note_ptr)(seq->notes[index]);
-      
       if (visibleChannels & (1 << (seq->notes[index]->chan & 15))) {
+          //The rest of this function is the same as the 
+          //EXPERIMENTAL_NOTE_TRACK version,so it
+          //continues after the #endif.
+
+#else /* EXPERIMENTAL_NOTE_TRACK */
+//  for(index=0; index<numEvents; index++) {
+//    if (seq->notes[index]->type == 'n') {
+//      Allegro_note_ptr note = (Allegro_note_ptr)(seq->notes[index]);
+//      if (visibleChannels & (1 << (seq->notes[index]->chan & 15))) {
+
+
+  //We want to draw in seconds, so we need to convert to seconds
+  seq->convert_to_seconds();
+
+  seq->iteration_begin();
+  //for every event
+  Alg_event_ptr evt;
+  printf ("go time\n");
+  while (evt = seq->iteration_next()) {
+	
+    //printf ("one note");
+
+	//if the event is a note
+    if (evt->get_type() == 'n') {
+    
+      Alg_note_ptr note = (Alg_note_ptr) evt;
+      
+	  //if the notes channel is visible
+      if (visibleChannels & (1 << (evt->chan & 15))) {
+
+#endif /* ! EXPERIMENTAL_NOTE_TRACK */
         double x = note->time;
         double x1 = note->time + note->dur;
         if (x < h1 && x1 > h) { // omit if outside box
@@ -2622,6 +2799,9 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
     }
 
   }
+#ifdef EXPERIMENTAL_NOTE_TRACK
+  seq->iteration_end();
+#endif /* EXPERIMENTAL_NOTE_TRACK */
   dc.DestroyClippingRegion();
 }
 

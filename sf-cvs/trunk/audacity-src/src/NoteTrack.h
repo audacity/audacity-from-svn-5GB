@@ -12,14 +12,18 @@
 #define __AUDACITY_NOTETRACK__
 
 #include <wx/string.h>
-
+#include "Experimental.h"
 #include "Track.h"
 
 class wxDC;
 class wxRect;
 
 class DirManager;
+#ifndef EXPERIMENTAL_NOTE_TRACK
 class Seq;   // from "allegro.h"
+#else /* EXPERIMENTAL_NOTE_TRACK */
+class Alg_seq;   // from "allegro.h"
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 
 
 class NoteTrack:public Track {
@@ -38,7 +42,31 @@ class NoteTrack:public Track {
    void DrawLabelControls(wxDC & dc, wxRect & r);
    bool LabelClick(wxRect & r, int x, int y, bool right);
 
+#ifndef EXPERIMENTAL_NOTE_TRACK
    void SetSequence(Seq *seq);
+#else /* EXPERIMENTAL_NOTE_TRACK */
+   void SetSequence(Alg_seq *seq);
+/* HCK MIDI PATCH START */
+   Alg_seq* GetSequence();
+   void PrintSequence();
+
+   int GetVisibleChannels();
+
+/* REQUIRES PORTMIDI */
+//   int GetLastMidiPosition() const { return mLastMidiPosition; }
+//   void SetLastMidiPosition( int position )
+//   {
+//      mLastMidiPosition = position;
+//   }
+/* HCK MIDI PATCH END */
+
+   // High-level editing
+   virtual bool Cut  (double t0, double t1, Track **dest);
+   virtual bool Copy (double t0, double t1, Track **dest);
+   virtual bool Clear(double t0, double t1);
+   virtual bool Paste(double t, Track *src);
+
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 
    int GetBottomNote() const { return mBottomNote; }
    void SetBottomNote(int note) 
@@ -56,7 +84,24 @@ class NoteTrack:public Track {
    virtual void WriteXML(XMLWriter &xmlFile);
 
  private:
+#ifndef EXPERIMENTAL_NOTE_TRACK
    Seq *mSeq;
+#else /* EXPERIMENTAL_NOTE_TRACK */
+   Alg_seq *mSeq; // NULL means no sequence
+   // when Duplicate() is called, assume that it is to put a copy
+   // of the track into the undo stack or to redo/copy from the
+   // stack to the project object. We want copies to the stack
+   // to be serialized (therefore compact) representations, so
+   // copy will set mSeq to NULL and serialize to the following
+   // variables. If this design is correct, the track will be
+   // duplicated again (in the event of redo) back to the project
+   // at which point we will unserialize the data back to the
+   // mSeq variable. (TrackArtist should check to make sure this
+   // flip-flop from mSeq to mSerializationBuffer happened an
+   // even number of times, otherwise mSeq will be NULL).
+   void *mSerializationBuffer; // NULL means no buffer
+   long mSerializationLength;
+#endif /* EXPERIMENTAL_NOTE_TRACK */
    double mLen;
 
    DirManager *mDirManager;
@@ -64,8 +109,11 @@ class NoteTrack:public Track {
    int mBottomNote;
 
    int mVisibleChannels;
-
+#ifdef EXPERIMENTAL_NOTE_TRACK
+   int mLastMidiPosition;
+#else
    void CalcLen();
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 };
 
 #endif

@@ -1,3 +1,6 @@
+#include "../../src/Experimental.h"
+
+#ifndef EXPERIMENTAL_NOTE_TRACK
 // midifile reader for serpent
 
 #include "stdlib.h"
@@ -362,3 +365,4 @@ void Allegro_midifile_reader::Mf_text(int type, int len, char *msg)
 }
 
 
+#endif

@@ -1,3 +1,6 @@
+#include "../../src/Experimental.h"
+
+#ifndef EXPERIMENTAL_NOTE_TRACK
 // writemidi.cpp
 
 #include <stdio.h>
@@ -260,3 +263,4 @@ void WriteMIDI::WriteVarinum(int value)
       break;
   }
 }
+#endif

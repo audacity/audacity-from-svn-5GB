@@ -13,7 +13,13 @@
 #ifndef __AUDACITY_AUDIO_IO__
 #define __AUDACITY_AUDIO_IO__
 
+#include "Experimental.h"
 #include "portaudio.h"
+#ifdef EXPERIMENTAL_NOTE_TRACK
+//#include "portmidi.h"
+//#include "porttime.h"
+#include "allegro.h"
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 
 #include "Audacity.h"
 
@@ -53,6 +59,9 @@ public:
    virtual void OnAudioIONewBlockFiles(const wxString& blockFileLog) = 0;
 };
 
+#ifdef EXPERIMENTAL_NOTE_TRACK
+#define MAX_MIDI_BUFFER_SIZE 5000
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 class AudioIO {
 
  public:
@@ -74,7 +83,12 @@ class AudioIO {
     * fill them, and sets the stream rolling.
     * If successful, returns a token identifying this particular stream
     * instance.  For use with IsStreamActive() below */
+
    int StartStream(WaveTrackArray playbackTracks, WaveTrackArray captureTracks,
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+                   //NoteTrackArray midiTracks,
+#endif /* EXPERIMENTAL_NOTE_TRACK */
                    TimeTrack *timeTrack, double sampleRate,
                    double t0, double t1,
                    AudioIOListener* listener,
@@ -264,7 +278,17 @@ private:
                              unsigned int numCaptureChannels,
                              sampleFormat captureFormat);
 
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//   bool StartPortMidiStream();
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+
    void FillBuffers();
+
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//   void  FillMidiBuffers();
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 
    /** \brief Get the number of audio samples free in all of the playback
     * buffers.
@@ -309,12 +333,36 @@ private:
 
    double NormalizeStreamTime(double absoluteTime) const;
 
+#ifdef EXPERIMENTAL_NOTE_TRACK
+//   MIDI_PLAYBACK:
+//   PmStream           *mMidiStream;
+//   PmEvent             mMidiBuffer[MAX_MIDI_BUFFER_SIZE];
+//   PmEvent             mMidiQueue[MAX_MIDI_BUFFER_SIZE];
+//   PmError             mLastPmError;
+//   long                mCurrentMidiTime;
+//   long                mLastMidiTime;
+//   Alg_seq             *mSeq;
+//   int                 mVC;   // Visible Channel
+//   int                 mCnt;
+//   long                mMidiWait;
+//   bool                mMidiStreamActive;
+//   bool                mUpdateMidiTracks;
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+
    AudioThread        *mThread;
    Resample          **mResample;
    RingBuffer        **mCaptureBuffers;
    WaveTrackArray      mCaptureTracks;
    RingBuffer        **mPlaybackBuffers;
    WaveTrackArray      mPlaybackTracks;
+
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//   NoteTrackArray      mMidiPlaybackTracks;
+//   RingBuffer        **mMidiPlaybackBuffers;
+//   NoteTrackArray      mMidiCaptureTracks;
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+
    Mixer             **mPlaybackMixers;
    int                 mStreamToken;
    int                 mStopStreamCount;
@@ -334,10 +382,15 @@ private:
    bool                mPaused;
 #if USE_PORTAUDIO_V19
    PaStream           *mPortStreamV19;
-#else
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//   volatile bool       mInCallbackFinishedState;
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+
+#else /* USE_PORTAUDIO_V19 */
    PortAudioStream    *mPortStreamV18;
    volatile bool       mInCallbackFinishedState;
-#endif
+#endif /* USE_PORTAUDIO_V19 */
    bool                mSoftwarePlaythrough;
    bool                mPauseRec;
    float               mSilenceLevel;
@@ -349,6 +402,14 @@ private:
    volatile bool       mAudioThreadShouldCallFillBuffersOnce;
    volatile bool       mAudioThreadFillBuffersLoopRunning;
    volatile bool       mAudioThreadFillBuffersLoopActive;
+
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//   volatile bool       mMidiThreadShouldCallFillBuffersOnce;
+//   volatile bool       mMidiThreadFillBuffersLoopRunning;
+//   volatile bool       mMidiThreadFillBuffersLoopActive;
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+
    volatile double     mLastRecordingOffset;
    PaError             mLastPaError;
 
@@ -360,7 +421,7 @@ private:
    #if USE_PORTMIXER
    PxMixer            *mPortMixer;
    float               mPreviousHWPlaythrough;
-   #endif
+   #endif /* USE_PORTMIXER */
 
    bool                mEmulateMixerOutputVol;
    bool                mEmulateMixerInputVol;
@@ -386,12 +447,12 @@ private:
                 unsigned long framesPerBuffer,
                 const PaStreamCallbackTimeInfo *timeInfo,
                 PaStreamCallbackFlags statusFlags, void *userData );
-#else
+#else /* USE_PORTAUDIO_V19 */
    friend int audacityAudioCallback(
                 void *inputBuffer, void *outputBuffer,
                 unsigned long framesPerBuffer,
                 PaTimestamp outTime, void *userData );
-#endif
+#endif /* USE_PORTAUDIO_V19 */
 
 };
 
@@ -407,4 +468,3 @@ private:
 //
 // vim: et sts=3 sw=3
 // arch-tag: 5b5316f5-6078-469b-950c-9da893cd62c9
-

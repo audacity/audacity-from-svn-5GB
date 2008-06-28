@@ -27,7 +27,7 @@ void Midifile_reader::midifile()
 
 	ntrks = readheader();
 	if (midifile_error) return;
-	if ( ntrks <= 0 ) {
+    if (ntrks <= 0) {
 		mferror("No tracks!");
 		/* no need to return since midifile_error is set */
 	}
@@ -285,6 +285,13 @@ void Midifile_reader::metaevent(int type)
 		/* These are all text events */
 			Mf_text(type,leng,m);
 		break;
+
+    // EXPERIMENTAL NOTE TRACK comment:
+    // note that there are some missing meta events here. In particular
+    // FF 20 01 0n is a "Channel Prefix" used to associate messages without
+    //     channels such as text and sysex events with a channel
+    // FF 21 01 0n is a "Port Prefix" used, I think, to associate messages
+    //     with ports
 	case 0x2f:      /* End of Track */
 			Mf_eot();
 		break;
@@ -426,6 +433,13 @@ Midifile_reader::Midifile_reader()
     Msgindex = 0;        /* index of next available location in Msg */
 }
 
+#ifdef EXPERIMENTAL_NOTE_TRACK
+void Midifile_reader::finalize()
+{
+    if (Msgbuff) Mf_free(Msgbuff, Msgsize);
+    Msgbuff = NULL;
+}
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 void Midifile_reader::msginit()
 {
 	Msgindex = 0;

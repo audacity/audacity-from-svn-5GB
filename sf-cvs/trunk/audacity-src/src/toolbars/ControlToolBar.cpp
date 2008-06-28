@@ -31,6 +31,7 @@
 *//*******************************************************************/
 
 #include "../Audacity.h"
+#include "../Experimental.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -333,7 +334,13 @@ void ControlToolBar::EnableDisableButtons()
       TrackListIterator iter( p->GetTracks() );
 
       for (Track *t = iter.First(); t; t = iter.Next()) {
+#ifndef EXPERIMENTAL_NOTE_TRACK
          if (t->GetKind() == Track::Wave) {
+#else /* EXPERIMENTAL_NOTE_TRACK */
+/* HCK MIDI PATCH START */
+         if (t->GetKind() == Track::Wave || t->GetKind() == Track::Note) {
+/* HCK MIDI PATCH END */
+#endif /* EXPERIMENTAL_NOTE_TRACK */
             tracks = true;
             break;
          }
@@ -500,7 +507,12 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
          {
             token = gAudioIO->StartStream(
                mCutPreviewTracks->GetWaveTrackArray(false),
-               WaveTrackArray(), NULL, p->GetRate(), tcp0, tcp1, p, false,
+               WaveTrackArray(), 
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//               NoteTrackArray(),
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+			   NULL, p->GetRate(), tcp0, tcp1, p, false,
                t0, t1-t0);
          } else
          {
@@ -515,7 +527,12 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
             timetrack = t->GetTimeTrack();
          }
          token = gAudioIO->StartStream(t->GetWaveTrackArray(false),
-                               WaveTrackArray(), timetrack,
+                               WaveTrackArray(),
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//							   t->GetNoteTrackArray(false),
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+							   timetrack,
                                p->GetRate(), t0, t1, p, looped);
       }
       if (token != 0) {
@@ -723,14 +740,29 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       /* TODO: set up stereo tracks if that is how the user has set up
        * their preferences, and choose sample format based on prefs */
       WaveTrackArray newRecordingTracks, playbackTracks;
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//      NoteTrackArray midiTracks;
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 
       bool duplex;
       gPrefs->Read(wxT("/AudioIO/Duplex"), &duplex, true);
-      if (duplex)
+            
+      if(duplex){
          playbackTracks = t->GetWaveTrackArray(false);
-      else
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//		 midiTracks = t->GetNoteTrackArray(false);
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+     }
+      else {
          playbackTracks = WaveTrackArray();
-
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//		 midiTracks = NoteTrackArray();
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+     }
+      
       // If SHIFT key was down, the user wants append to tracks
       int recordingChannels = 0;
       bool shifted = mRecord->WasShiftDown();
@@ -824,7 +856,12 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       }
 
       int token = gAudioIO->StartStream(playbackTracks,
-                                        newRecordingTracks, t->GetTimeTrack(),
+                                        newRecordingTracks,
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//                                        midiTracks,
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+                                        t->GetTimeTrack(),
                                         p->GetRate(), t0, t1, p);
 
       bool success = (token != 0);

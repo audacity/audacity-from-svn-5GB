@@ -20,6 +20,11 @@
 #include <wx/intl.h>
 
 #include "allegro.h"
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//#include "portmidi.h"
+//#include "porttime.h"
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 
 #include "AColor.h"
 #include "NoteTrack.h"
@@ -38,17 +43,51 @@ Track(projDirManager)
 
    mSeq = NULL;
    mLen = 0.0;
+#ifdef EXPERIMENTAL_NOTE_TRACK
+   mSerializationBuffer = NULL;
+   mSerializationLength = 0;
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 
    mDirManager = projDirManager;
 
    mBottomNote = 24;
 
    mVisibleChannels = 0xFFFF;
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* HCK MIDI PATCH START */
+   mLastMidiPosition = 0;
+/* HCK MIDI PATCH END */
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 }
 
 Track *NoteTrack::Duplicate()
 {
+#ifdef EXPERIMENTAL_NOTE_TRACK
+   NoteTrack *duplicate = new NoteTrack(mDirManager);
+   // Duplicate on NoteTrack moves data from mSeq to mSerializationBuffer
+   // and from mSerializationBuffer to mSeq on alternate calls. Duplicate
+   // to the undo stack and Duplicate back to the project should result
+   // in serialized blobs on the undo stack and traversable data in the
+   // project object.
+   if (mSeq) {
+      // serialize from this to duplicate's mSerializationBuffer
+      mSeq->serialize(&duplicate->mSerializationBuffer, 
+                      &duplicate->mSerializationLength);
+   } else if (mSerializationBuffer) {
+      Alg_track_ptr alg_track = Alg_seq::unserialize(mSerializationBuffer,
+                                                      mSerializationLength);
+      assert(alg_track->get_type() == 's');
+      duplicate->mSeq = (Alg_seq_ptr) alg_track;
+   } else assert(false); // bug if neither mSeq nor mSerializationBuffer
+   // copy some other fields here
+   duplicate->mBottomNote = mBottomNote;
+   duplicate->mLastMidiPosition = mLastMidiPosition;
+   duplicate->mLen = mLen;
+   duplicate->mVisibleChannels = mVisibleChannels;
+   return duplicate;
+#else
    return new NoteTrack(mDirManager);
+#endif
 }
 
 void NoteTrack::DrawLabelControls(wxDC & dc, wxRect & r)
@@ -126,6 +165,7 @@ bool NoteTrack::LabelClick(wxRect & r, int mx, int my, bool right)
    return true;
 }
 
+#ifndef EXPERIMENTAL_NOTE_TRACK
 void NoteTrack::CalcLen()
 {
    int numEvents = mSeq->notes.len;
@@ -146,17 +186,216 @@ void NoteTrack::CalcLen()
       }
    }
 }
+#else /* EXPERIMENTAL_NOTE_TRACK */
+/* this is no longer needed -- get mLen from underlying seq->real_dur:
+// calculates the timelength of the track
+void NoteTrack::CalcLen()
+{
+    mSeq->convert_to_seconds();
 
+    mLen = 0.0;
+    for (mSeq->iteration_begin(); ; ) {
+        Alg_event_ptr currEvent = mSeq->iteration_next();
+        if (!currEvent)
+            break;
+        if (mLen < currEvent->time)
+            mLen = currEvent->time;
+        if (currEvent->get_type() == wxT('n')) {
+            double endtime = currEvent->get_end_time();
+            if (mLen < endtime)
+                mLen = endtime;
+        }
+    }
+    mSeq->iteration_end();
+
+    printf( "HCK: mLen %f\n", mLen );
+}
+*/
+/* this is an even older version; it's here for reference but probably should be deleted -RBD
+   int numEvents = mSeq->length();
+
+   if (numEvents <= 0)
+      mLen = 0.0;
+   else {
+      mLen = 0.0;
+      for (int i = 0; i < numEvents; i++) {
+         if (((Alg_event_ptr)mSeq->track_list.tracks[numEvents - 1])->time > mLen)
+            mLen = ((Alg_event_ptr)mSeq->track_list.tracks[numEvents - 1])->time;
+         if (((Alg_event_ptr)mSeq->track_list.tracks[numEvents - 1])->get_type() == wxT('n'))
+         {
+            double endtime = ((Alg_event_ptr)mSeq->track_list.tracks[numEvents - 1])->time + ((Alg_note_ptr) mSeq->track_list.tracks[numEvents - 1])->dur;
+            if (endtime > mLen)
+               mLen = endtime;
+         }
+      }
+   }
+*/
+#endif /* EXPERIMENTAL_NOTE_TRACK */
+
+#ifndef EXPERIMENTAL_NOTE_TRACK
 void NoteTrack::SetSequence(Seq *seq)
+#else /* EXPERIMENTAL_NOTE_TRACK */
+void NoteTrack::SetSequence(Alg_seq *seq)
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 {
    if (mSeq)
       delete mSeq;
 
    mSeq = seq;
-
+#ifndef EXPERIMENTAL_NOTE_TRACK
    CalcLen();
+#else
+   mLen = (seq ? seq->get_real_dur() : 0.0);
+#endif
 }
 
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* HCK MIDI PATCH START */
+Alg_seq* NoteTrack::GetSequence() 
+{
+   return mSeq;
+}
+
+void NoteTrack::PrintSequence()
+{
+   FILE *debugOutput;
+   Alg_parameters_ptr parameters;
+
+   debugOutput = fopen("debugOutput.txt", "wt");
+   fprintf(debugOutput, "Importing MIDI...\n");
+
+   if (mSeq) {
+      int i = 0;
+
+      while(i < mSeq->length()) {
+         fprintf(debugOutput, "--\n");
+         fprintf(debugOutput, "type: %c\n",
+            ((Alg_event_ptr)mSeq->track_list.tracks[i])->get_type());
+         fprintf(debugOutput, "time: %f\n",
+            ((Alg_event_ptr)mSeq->track_list.tracks[i])->time);
+         fprintf(debugOutput, "channel: %li\n",
+            ((Alg_event_ptr)mSeq->track_list.tracks[i])->chan);
+
+         if(((Alg_event_ptr)mSeq->track_list.tracks[i])->get_type() == wxT('n'))
+         {
+            fprintf(debugOutput, "pitch: %f\n",
+               ((Alg_note_ptr)mSeq->track_list.tracks[i])->pitch);
+            fprintf(debugOutput, "duration: %f\n",
+               ((Alg_note_ptr)mSeq->track_list.tracks[i])->dur);
+            fprintf(debugOutput, "velocity: %f\n",
+               ((Alg_note_ptr)mSeq->track_list.tracks[i])->loud);
+         }
+         else if(((Alg_event_ptr)mSeq->track_list.tracks[i])->get_type() == wxT('n'))
+         {
+            fprintf(debugOutput, "key: %li\n", ((Alg_update_ptr)mSeq->track_list.tracks[i])->get_identifier());
+            fprintf(debugOutput, "attribute type: %c\n", ((Alg_update_ptr)mSeq->track_list.tracks[i])->parameter.attr_type());
+            fprintf(debugOutput, "attribute: %s\n", ((Alg_update_ptr)mSeq->track_list.tracks[i])->parameter.attr_name());
+
+            if(((Alg_update_ptr)mSeq->track_list.tracks[i])->parameter.attr_type() == wxT('r'))
+            {
+               fprintf(debugOutput, "value: %f\n", ((Alg_update_ptr)mSeq->track_list.tracks[i])->parameter.r);
+            }
+            else if(((Alg_update_ptr)mSeq->track_list.tracks[i])->parameter.attr_type() == wxT('i')) {
+               fprintf(debugOutput, "value: %i\n", ((Alg_update_ptr)mSeq->track_list.tracks[i])->parameter.i);
+            }
+            else if(((Alg_update_ptr)mSeq->track_list.tracks[i])->parameter.attr_type() == wxT('s')) {
+               fprintf(debugOutput, "value: %s\n", ((Alg_update_ptr)mSeq->track_list.tracks[i])->parameter.s);
+            }
+            else {}
+         }
+        
+         i++;
+      }
+   }
+   else {
+      fprintf(debugOutput, "No sequence defined!\n");
+   }
+
+   fclose(debugOutput);
+}
+
+int NoteTrack::GetVisibleChannels()
+{
+   return mVisibleChannels;
+}
+/* HCK MIDI PATCH END */
+
+bool NoteTrack::Cut(double t0, double t1, Track **dest){
+
+   //dest goes onto clipboard
+   *dest = NULL; // This is redundant
+   if (t1 <= t0)
+      return false;
+   double len = t1-t0;
+
+   NoteTrack *newTrack = new NoteTrack(mDirManager);
+
+   newTrack->Init(*this);
+
+   mSeq->convert_to_seconds();
+   newTrack->mSeq = mSeq->cut(t0, len, false);
+
+   mLen -= len;
+   newTrack->mLen = len;
+
+   // What should be done with the rest of newTrack's members?
+   //(mBottomNote, mDirManager, mLastMidiPosition,
+   // mSerializationBuffer, mSerializationLength, mVisibleChannels)
+
+   *dest = newTrack;
+
+   return true;
+}
+bool NoteTrack::Copy(double t0, double t1, Track **dest){
+
+   //dest goes onto clipboard
+   *dest = NULL; // This is redundant and matches WaveTrack::Copy
+   if (t1 <= t0)
+      return false;
+   double len = t1-t0;
+
+   NoteTrack *newTrack = new NoteTrack(mDirManager);
+
+   newTrack->Init(*this);
+
+   mSeq->convert_to_seconds();
+   newTrack->mSeq = mSeq->copy(t0, len, false);
+   newTrack->mLen = len;
+
+   // What should be done with the rest of newTrack's members?
+   //(mBottomNote, mDirManager, mLastMidiPosition,
+   // mSerializationBuffer, mSerializationLength, mVisibleChannels)
+
+   *dest = newTrack;
+
+   return true;
+}
+bool NoteTrack::Clear(double t0, double t1){
+
+   if (t1 <= t0)
+      return false;
+   double len = t1-t0;
+
+   mSeq->clear(t0, len, false);
+
+   return true;
+}
+bool NoteTrack::Paste(double t, Track *src){
+
+   //Check that src is a non-NULL NoteTrack
+   if (src == NULL || src->GetKind() != Track::Note)
+      return false;
+   
+   NoteTrack* other = (NoteTrack*)src;
+   if (other->mSeq == NULL)
+      return false;
+
+   mSeq->paste(t, other->mSeq);
+
+   return true;
+}
+
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 bool NoteTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
    return false;

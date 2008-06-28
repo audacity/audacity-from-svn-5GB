@@ -14,6 +14,7 @@
 
 *//*******************************************************************/
 
+#include "../Experimental.h"
 #include "../Audacity.h"
 
 #include <wx/defs.h>
@@ -47,6 +48,10 @@
 
 #include "AudioIOPrefs.h"
 #include "SmartRecordPrefs.h"
+
+/* REQUIRES PORTMIDI */
+//#include "MidiIOPrefs.h" //For EXPERIMENTAL_NOTE_TRACK
+
 #include "DirectoriesPrefs.h"
 #include "FileFormatPrefs.h"
 #include "GUIPrefs.h"
@@ -129,6 +134,10 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
    // Parameters are: AppPage( page, name, IsSelected, imageId)
    w = new AudioIOPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* REQUIRES PORTMIDI */
+//   w = new MidiIOPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
+#endif /* EXPERIMENTAL_NOTE_TRACK */
    w = new QualityPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
    w = new FileFormatPrefs(mCategories);  mCategories->AddPage(w, w->GetName(),false,0);
    w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName(),false,0);

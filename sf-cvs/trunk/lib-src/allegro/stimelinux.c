@@ -1,3 +1,6 @@
+#include "../../src/Experimental.h"
+
+#ifndef EXPERIMENTAL_NOTE_TRACK
 /* stimelinux.c -- portable timer implementation for linux */
 
 #include "stime.h"
@@ -15,3 +18,4 @@ unsigned long stime_get()
 
 
 
+#endif
