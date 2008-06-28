@@ -139,7 +139,7 @@ class ToolFrame:public wxFrame
       if( bar->IsResizable() )
       {
          // Calc the minimum size of the frame
-         mMinSize = bar->GetBestFittingSize() + ( GetSize() - bar->GetSize() );
+         mMinSize = bar->GetBestSize() + ( GetSize() - bar->GetSize() );
       }
    }
 
@@ -173,7 +173,6 @@ class ToolFrame:public wxFrame
       wxSize sz = GetSize();
       wxRect r;
 
-      dc.BeginDrawing();
       dc.SetPen( wxColour( 90, 90, 90 ) );
 
 #if !defined(__WXMAC__)
@@ -196,7 +195,6 @@ class ToolFrame:public wxFrame
          dc.DrawLine( r.GetLeft() + 9, r.GetBottom(), r.GetRight(), r.GetTop() + 9 );
       }
 
-      dc.EndDrawing();
    }
 
    void OnMotion( wxMouseEvent & event )
@@ -244,7 +242,7 @@ class ToolFrame:public wxFrame
          r.height = sizerW + 2;
 
          // Is left click within resize grabber?
-         if( r.Inside( pos ) && !event.Leaving() )
+         if( r.Contains( pos ) && !event.Leaving() )
          {
             SetCursor( wxCURSOR_SIZENWSE );
             if( event.LeftDown() )
@@ -913,11 +911,11 @@ void ToolManager::OnMouse( wxMouseEvent & event )
 
       // Is mouse pointer within either dock?
       ToolDock *dock = NULL;
-      if( tr.Inside( pos ) )
+      if( tr.Contains( pos ) )
       {
          dock = mTopDock;
       }
-      else if( br.Inside( pos ) )
+      else if( br.Contains( pos ) )
       {
          dock = mBotDock;
       }
@@ -1040,10 +1038,8 @@ void ToolManager::OnIndicatorPaint( wxPaintEvent & event )
 {
    wxWindow *w = (wxWindow *)event.GetEventObject();
    wxPaintDC dc( w );
-   dc.BeginDrawing();
    dc.SetBackground( *wxBLUE_BRUSH );
    dc.Clear();
-   dc.EndDrawing();
 }
 
 //

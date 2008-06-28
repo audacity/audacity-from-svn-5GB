@@ -445,7 +445,7 @@ bool Envelope::HandleDragging( wxMouseEvent & event, wxRect & r,
    larger.Inflate(10, 10);
 
    if (!mIsDeleting &&
-       !larger.Inside(event.m_x, event.m_y)){
+       !larger.Contains(event.m_x, event.m_y)){
       
       if( mEnv.Count()> 1) {
          
@@ -470,7 +470,7 @@ bool Envelope::HandleDragging( wxMouseEvent & event, wxRect & r,
       return true;
    }
 
-   if (larger.Inside(event.m_x, event.m_y))
+   if (larger.Contains(event.m_x, event.m_y))
       mIsDeleting = false;
 
    if (mIsDeleting)
@@ -534,7 +534,7 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
                           float zoomMin, float zoomMax, float eMin, float eMax)
 {
 
-   if (event.ButtonDown())
+   if (event.ButtonDown() && mButton == wxMOUSE_BTN_NONE)
       return HandleMouseButtonDown( event, r, h, pps,dB,
                                     zoomMin, zoomMax, eMin, eMax);
 

@@ -257,7 +257,7 @@ void ToolBar::ReCreateButtons()
 #undef tbs
 
    // Set the true AND minimum sizes and do final layout
-   SetBestFittingSize(sz); // update when we drop 2.6 support
+   SetInitialSize(sz);
    Layout();
 }
 
@@ -581,7 +581,7 @@ void ToolBar::OnLeftDown( wxMouseEvent & event )
       rect.width = RWIDTH;
 
       // Is left click within resize grabber?
-      if( rect.Inside( pos ) )
+      if( rect.Contains( pos ) )
       {
          // Retrieve the mouse position
          mResizeStart = ClientToScreen( pos );
@@ -632,7 +632,7 @@ void ToolBar::OnMotion( wxMouseEvent & event )
          rect.width = RWIDTH;
 
          // Is left click within resize grabber?
-         if( rect.Inside( pos ) )
+         if( rect.Contains( pos ) )
          {
             SetCursor( wxCURSOR_SIZEWE );
          }

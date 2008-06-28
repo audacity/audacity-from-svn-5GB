@@ -514,7 +514,7 @@ void FreqWindow::PlotMouseEvent(wxMouseEvent & event)
 
       wxRect r = mPlotRect;
 
-      if (r.Inside(mMouseX, mMouseY))
+      if (r.Contains(mMouseX, mMouseY))
          mFreqPlot->SetCursor(*mCrossCursor);
       else
          mFreqPlot->SetCursor(*mArrowCursor);
@@ -712,7 +712,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
    // Find the peak nearest the cursor and plot it
 
    float bestpeak = float(0.0);
-   if ( r.Inside(mMouseX, mMouseY) & (mMouseX!=0) & (mMouseX!=r.width-1) ) {
+   if ( r.Contains(mMouseX, mMouseY) & (mMouseX!=0) & (mMouseX!=r.width-1) ) {
       if (mLogAxis)
          xPos = xMin * pow(xStep, mMouseX - (r.x + 1));
       else

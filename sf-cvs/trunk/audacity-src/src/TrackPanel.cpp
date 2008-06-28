@@ -3274,10 +3274,10 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
    wxClientDC dc(this);
 
    if (event.Dragging())
-      mTrackInfo.DrawCloseBox(&dc, r, closeRect.Inside(event.m_x, event.m_y));
+      mTrackInfo.DrawCloseBox(&dc, r, closeRect.Contains(event.m_x, event.m_y));
    else if (event.LeftUp()) {
       mTrackInfo.DrawCloseBox(&dc, r, false);
-      if (closeRect.Inside(event.m_x, event.m_y)) {
+      if (closeRect.Contains(event.m_x, event.m_y)) {
          if (!gAudioIO->IsStreamActive(p->GetAudioIOToken()))
             RemoveTrack(t);
       }
@@ -3355,10 +3355,10 @@ void TrackPanel::HandlePopping(wxMouseEvent & event)
    wxClientDC dc(this);
 
    if (event.Dragging()) {
-      mTrackInfo.DrawTitleBar(&dc, r, t, titleRect.Inside(event.m_x, event.m_y));
+      mTrackInfo.DrawTitleBar(&dc, r, t, titleRect.Contains(event.m_x, event.m_y));
    }
    else if (event.LeftUp()) {
-      if (titleRect.Inside(event.m_x, event.m_y))
+      if (titleRect.Contains(event.m_x, event.m_y))
       {
          OnTrackMenu(t);
       }
@@ -3387,13 +3387,13 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
    wxClientDC dc(this);
 
    if (event.Dragging()){
-         mTrackInfo.DrawMuteSolo(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y),
+         mTrackInfo.DrawMuteSolo(&dc, r, t, buttonRect.Contains(event.m_x, event.m_y),
                    solo, HasSoloButton());
    }
    else if (event.LeftUp() )
       {
          
-         if (buttonRect.Inside(event.m_x, event.m_y)) 
+         if (buttonRect.Contains(event.m_x, event.m_y)) 
             {
                if(solo)
                   
@@ -3423,10 +3423,10 @@ void TrackPanel::HandleMinimizing(wxMouseEvent & event)
    wxClientDC dc(this);
 
    if (event.Dragging()) {
-      mTrackInfo.DrawMinimize(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y), t->GetMinimized());
+      mTrackInfo.DrawMinimize(&dc, r, t, buttonRect.Contains(event.m_x, event.m_y), t->GetMinimized());
    }
    else if (event.LeftUp()) {
-      if (buttonRect.Inside(event.m_x, event.m_y))
+      if (buttonRect.Contains(event.m_x, event.m_y))
       {
          t->SetMinimized(!t->GetMinimized());
          if (mTracks->GetLink(t))
@@ -3547,7 +3547,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    {
       wxRect midiRect;
       mTrackInfo.GetTrackControlsRect(r, midiRect);
-      if (midiRect.Inside(event.m_x, event.m_y)) {
+      if (midiRect.Contains(event.m_x, event.m_y)) {
          ((NoteTrack *) t)->LabelClick(midiRect, event.m_x, event.m_y,
                                        event.RightDown()
                                        || event.RightDClick());
@@ -3650,7 +3650,7 @@ bool TrackPanel::GainFunc(Track * t, wxRect r, wxMouseEvent &event,
 {
    wxRect sliderRect;
    mTrackInfo.GetGainRect(r, sliderRect);
-   if (!sliderRect.Inside(x, y)) 
+   if (!sliderRect.Contains(x, y)) 
       return false;
 
    SetCapturedTrack( t, IsGainSliding);
@@ -3666,7 +3666,7 @@ bool TrackPanel::PanFunc(Track * t, wxRect r, wxMouseEvent &event,
 {
    wxRect sliderRect;
    mTrackInfo.GetPanRect(r, sliderRect);
-   if (!sliderRect.Inside(x, y))
+   if (!sliderRect.Contains(x, y))
       return false;
 
    SetCapturedTrack( t, IsPanSliding);
@@ -3685,7 +3685,7 @@ bool TrackPanel::MuteSoloFunc(Track * t, wxRect r, int x, int y,
 {
    wxRect buttonRect;
    mTrackInfo.GetMuteSoloRect(r, buttonRect, solo, HasSoloButton());
-   if (!buttonRect.Inside(x, y)) 
+   if (!buttonRect.Contains(x, y)) 
       return false;
 
    wxClientDC dc(this);
@@ -3700,7 +3700,7 @@ bool TrackPanel::MinimizeFunc(Track * t, wxRect r, int x, int y)
 {
    wxRect buttonRect;
    mTrackInfo.GetMinimizeRect(r, buttonRect, t->GetMinimized());
-   if (!buttonRect.Inside(x, y)) 
+   if (!buttonRect.Contains(x, y)) 
       return false;
 
    wxClientDC dc(this);
@@ -3716,7 +3716,7 @@ bool TrackPanel::CloseFunc(Track * t, wxRect r, int x, int y)
    wxRect closeRect;
    mTrackInfo.GetCloseBoxRect(r, closeRect);
 
-   if (!closeRect.Inside(x, y))
+   if (!closeRect.Contains(x, y))
       return false;
 
    wxClientDC dc(this);
@@ -3731,7 +3731,7 @@ bool TrackPanel::PopupFunc(Track * t, wxRect r, int x, int y)
 {
    wxRect titleRect;
    mTrackInfo.GetTitleBarRect(r, titleRect);
-   if (!titleRect.Inside(x, y)) 
+   if (!titleRect.Contains(x, y)) 
       return false;
 
    wxClientDC dc(this);
@@ -4142,7 +4142,7 @@ bool TrackPanel::HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxM
    
    if (mMouseCapture == IsOverCutLine)
    {
-      if (!mCapturedTrackLocationRect.Inside(event.m_x, event.m_y))
+      if (!mCapturedTrackLocationRect.Contains(event.m_x, event.m_y))
       {
          SetCapturedTrack( NULL );
          SetCursorByActivity();
@@ -4218,7 +4218,7 @@ bool TrackPanel::HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxM
          locRect.width = 11;
          locRect.y = r.y;
          locRect.height = r.height;
-         if (locRect.Inside(event.m_x, event.m_y))
+         if (locRect.Contains(event.m_x, event.m_y))
          {
             SetCapturedTrack(track, IsOverCutLine);
             mCapturedTrackLocation = loc;
@@ -6668,7 +6668,7 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label, bool link,
       //Determine whether the mouse is inside 
       //the current rectangle.  If so, recalculate
       //the proper dimensions and return.
-      if (r.Inside(mouseX, mouseY)) {
+      if (r.Contains(mouseX, mouseY)) {
          if (trackRect) {
             r.y -= kTopInset;
             if (label) {

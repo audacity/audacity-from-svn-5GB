@@ -89,13 +89,13 @@ void SplashDialog::Populate( ShuttleGui & S )
    const float fScale=0.5f;// smaller size.
    wxImage RescaledImage( m_pLogo->ConvertToImage() );
    // wxIMAGE_QUALITY_HIGH not supported by wxWidgets 2.6.1, or we would use it here.
-   RescaledImage.Rescale( LOGOWITHNAME_WIDTH * fScale, LOGOWITHNAME_HEIGHT *fScale );
+   RescaledImage.Rescale( int(LOGOWITHNAME_WIDTH * fScale), int(LOGOWITHNAME_HEIGHT *fScale) );
    wxBitmap RescaledBitmap( RescaledImage );
    m_pIcon =
        new wxStaticBitmap(S.GetParent(), -1, 
                           //*m_pLogo, //vvv theTheme.Bitmap(bmpAudacityLogoWithName), 
                           RescaledBitmap,
-                          wxDefaultPosition, wxSize(LOGOWITHNAME_WIDTH*fScale, LOGOWITHNAME_HEIGHT*fScale));
+                          wxDefaultPosition, wxSize(int(LOGOWITHNAME_WIDTH*fScale), int(LOGOWITHNAME_HEIGHT*fScale)));
 
    S.Prop(0).AddWindow( m_pIcon );
 

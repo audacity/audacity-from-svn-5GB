@@ -262,7 +262,7 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
    wxSize sz = mList->GetClientSize();
    if (width > sz.GetWidth() && width < 500) {
       sz.SetWidth(width);
-      mList->SetBestFittingSize(sz);
+      mList->SetInitialSize(sz);
    }
 
    d.Layout();
