@@ -1,3 +1,6 @@
+#include "../../src/Experimental.h"
+
+#ifndef EXPERIMENTAL_NOTE_TRACK
 // writemidi.h
 
 #ifndef __WRITE_MIDI__
@@ -34,3 +37,4 @@ private:
 };
 
 #endif // #define __SIMPLE_MIDI_OUT__
+#endif

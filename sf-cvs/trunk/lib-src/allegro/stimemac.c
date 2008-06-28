@@ -1,3 +1,6 @@
+#include "../../src/Experimental.h"
+
+#ifndef EXPERIMENTAL_NOTE_TRACK
 /* stimemac.c -- portable timer implementation for macOS */
 
 
@@ -46,3 +49,4 @@ unsigned long stime_get()
 
 
 
+#endif

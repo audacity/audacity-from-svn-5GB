@@ -1,3 +1,5 @@
+#include "../../src/Experimental.h"
+
 #define NOTEOFF 0x80
 #define NOTEON 0x90
 #define PRESSURE 0xa0
@@ -27,6 +29,14 @@ public:
     long Mf_currtime; /* current time in delta-time units */
     int Mf_skipinit;   /* 1 if initial garbage should be skipped */
     Midifile_reader();
+#ifdef EXPERIMENTAL_NOTE_TRACK
+	// call finalize() when done or you may leak memory.
+	void finalize();  /* clean up before deletion */
+	// Note: rather than finalize, we should have ~Midifile_reader(),
+	// but at least VC++ complains that there is no Mf_free(), even
+	// though Mf_free is declared as virtual and this is an abstract
+	// class. I don't understand this, so finalize() is a workaround. -RBD
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 
 protected:
     virtual void *Mf_malloc(size_t size) = 0; /* malloc() */

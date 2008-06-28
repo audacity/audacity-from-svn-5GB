@@ -693,6 +693,25 @@ WaveTrackArray TrackList::GetWaveTrackArray(bool selectionOnly)
    return waveTrackArray;
 }
 
+#ifdef EXPERIMENTAL_NOTE_TRACK
+/* HCK MIDI PATCH START */
+NoteTrackArray TrackList::GetNoteTrackArray(bool selectionOnly)
+{
+   NoteTrackArray noteTrackArray;
+
+   TrackListNode *p = head;
+   while (p) {
+      if (p->t->GetKind() == Track::Note &&
+         (p->t->GetSelected() || !selectionOnly))
+         noteTrackArray.Add((NoteTrack*)p->t);
+
+      p = p->next;
+   }
+   return noteTrackArray;
+}
+/* HCK MIDI PATCH END */
+
+#endif /* EXPERIMENTAL_NOTE_TRACK */
 #ifdef new
 #undef new
 #endif

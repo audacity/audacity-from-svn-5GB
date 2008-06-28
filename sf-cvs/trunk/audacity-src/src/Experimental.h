@@ -28,7 +28,7 @@
 #define __EXPERIMENTAL__
 
 //Uncomment the next #define to enable experimental features.
-//#define EXPERIMENTAL_FEATURES
+#define EXPERIMENTAL_FEATURES
 
 // Comment out the next two lines if you want to disable 'experimental theming'
 // Work in progress, June-2008.
@@ -109,26 +109,34 @@
 #ifdef EXPERIMENTAL_FEATURES
    // The first experimental feature is a notebook that adds
    // a tabbed divider to the project.
-   #define EXPERIMENTAL_NOTEBOOK
+   //#define EXPERIMENTAL_NOTEBOOK
    // The notebook in turn can contain:
    // 1. The Nyquist Inspector, which is a browser for the objects in 
    // Audacity.
-   #define EXPERIMENTAL_NYQUIST_INSPECTOR
+   //#define EXPERIMENTAL_NYQUIST_INSPECTOR
    // 2. The Vocal Studio, a screen for working with vocal sounds
    // particularly vowel sounds.
-   #define EXPERIMENTAL_VOCAL_STUDIO
+   //#define EXPERIMENTAL_VOCAL_STUDIO
    // 3. The Audacity Tester is an extended version of the benchmarks
    // display.  The crucial idea is to be able to compare waveforms
    // where effects have been applied by audacity but using different 
    // block-sizes.  This should give high confidence that we don't
    // suffer from end-effects on buffers, e.g. losing one sample on
    // each buffer.
-   #define EXPERIMENTAL_AUDACITY_TESTER
+   //#define EXPERIMENTAL_AUDACITY_TESTER
 
    // A long term plan is to use dso's and dlls for Audacity extensions
    // These are 'WX' plug ins that manage their own displays using
    // wxWindows.
-   #define EXPERIMENTAL_WX_PLUG_INS
+   //#define EXPERIMENTAL_WX_PLUG_INS
+
+	// RBD and GSW: 
+   // This flag controls MIDI playback, the updated Allegro library,
+	// and other MIDI functionality. At this point, MIDI playback and
+   // saves are not implemented, but cut, paste, undo, and copy are
+   // basically working.
+   // So far, only compiled/tested on Win32.
+	#define EXPERIMENTAL_NOTE_TRACK
 #endif
 
 //If you want any of these files, ask JKC.  They are not

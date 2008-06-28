@@ -1,3 +1,6 @@
+#include "../../src/Experimental.h"
+
+#ifndef EXPERIMENTAL_NOTE_TRACK
 /* time.h -- portable interface to millisecond timer */
 
 
@@ -22,3 +25,4 @@ unsigned long stime_get();
 
 #endif
 
+#endif

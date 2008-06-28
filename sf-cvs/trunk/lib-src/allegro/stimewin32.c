@@ -1,3 +1,6 @@
+#include "../../src/Experimental.h"
+
+#ifndef EXPERIMENTAL_NOTE_TRACK
 /* stimewin32.c -- portable timer implementation for win32 */
 
 
@@ -36,3 +39,4 @@ unsigned long stime_get()
 
 
 
+#endif

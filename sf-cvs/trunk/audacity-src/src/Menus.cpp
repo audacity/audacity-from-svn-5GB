@@ -2727,6 +2727,7 @@ void AudacityProject::OnPaste()
       countTrack = iter2.Next();
    }
 
+   //If nothing's selected
    if (numSelected == 0) {
       TrackListIterator clipIter(msClipboard);
       Track *c = clipIter.First();
@@ -3841,7 +3842,11 @@ void AudacityProject::OnImportMIDI()
                                     path,     // Path
                                     wxT(""),       // Name
                                     wxT(""),       // Extension
+#ifndef EXPERIMENTAL_NOTE_TRACK
                                     _("All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"),
+#else /* EXPERIMENTAL_NOTE_TRACK */
+                                    _("MIDI and Allegro files (*.mid;*.gro)|*.mid;*.gro|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro|All files (*.*)|*.*"),
+#endif /* EXPERIMENTAL_NOTE_TRACK */
                                     wxRESIZE_BORDER,        // Flags
                                     this);    // Parent
 

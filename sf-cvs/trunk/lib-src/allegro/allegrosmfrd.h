@@ -1,64 +1,44 @@
 #include "../../src/Experimental.h"
 
-#ifndef EXPERIMENTAL_NOTE_TRACK
-// midifile reader interface for serpent
-
-// a sequence of Events objects
-class Tracks {
-private:
-    long max;
-    void expand();
+#ifdef EXPERIMENTAL_NOTE_TRACK
+typedef class Alg_pending {
 public:
-    long len;
-    Events_ptr *tracks; // tracks is array of pointers
-    Events_ptr &operator[](int i) {
-        assert(i >= 0 && i < len);
-        return tracks[i];
-    }
-    Tracks() {
-        max = len = 0;
-        tracks = NULL;
-    }
-    void append(Events_ptr track);
-    void reset();
-};
+    Alg_note_ptr note;
+    class Alg_pending *next;
+    Alg_pending(Alg_note_ptr n, class Alg_pending *list) { 
+		note = n; next = list; }
+} *Alg_pending_ptr;
 
-
-typedef class Pending {
-public:
-    Allegro_note_ptr note;
-    class Pending *next;
-    Pending(Allegro_note_ptr n, class Pending *list) { note = n; next = list; }
-} *Pending_ptr;
-
-
-class Allegro_midifile_reader: public Midifile_reader {
+class Alg_midifile_reader: public Midifile_reader {
 public:
     FILE *file;
-    Seq_ptr seq;
+    Alg_seq_ptr seq;
     int divisions;
-    Pending_ptr pending;
-    Tracks tracks;
-    Events_ptr track;
-    int track_num;
+    Alg_pending_ptr pending;
+    Alg_track_ptr track;
+	long channel_offset_per_track; // used to encode track number into channel
+		// chan is actual_channel + channel_offset_per_track * track_num
+	    // default is 100, set this to 0 to merge all tracks to 16 channels
+    int channel_offset;
 
-    Allegro_midifile_reader() { file = NULL; pending = NULL; }
+    Alg_midifile_reader(FILE *f, Alg_seq_ptr new_seq) {
+		file = f;
+		pending = NULL;
+		seq = new_seq;
+	}
     // delete destroys the seq member as well, so set it to NULL if you
     // copied the pointer elsewhere
-    virtual ~Allegro_midifile_reader();
-    // the following is used to load the Seq from the file:
-    void initialize(FILE *file);
+    ~Alg_midifile_reader();
+    // the following is used to load the Alg_seq from the file:
+    void parse();
 
     void set_nomerge(bool flag) { Mf_nomerge = flag; }
     void set_skipinit(bool flag) { Mf_skipinit = flag; }
     long get_currtime() { return Mf_currtime; }
 
-
-
 protected:
-    void merge_tracks();
     double get_time();
-    void update(int chan, int key, Parameter_ptr param);
+    void update(int chan, int key, Alg_parameter_ptr param);
     void *Mf_malloc(size_t size) { return malloc(size); }
     void Mf_free(void *obj, size_t size) { free(obj); }
     /* Methods to be called while processing the MIDI file. */
@@ -86,5 +66,4 @@ protected:
     void Mf_sqspecific(int,char*);
     void Mf_text(int,int,char*);
 };
-
 #endif
