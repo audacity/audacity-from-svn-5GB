@@ -238,7 +238,7 @@ int Importer::Import(wxString fName,
    }
    // encrypted itunes files
    if ((extension.IsSameAs(wxT("m4p"), false))) {
-      errorMessage.Printf(_("\"%s\" is an encrypted audio file. These typically are from an online music store. \nAudacity cannot open this type of file due to the encryption. \nTry recording the file into Audacity, or burn it to audio CD then \nextract the CD track to a supported audio format such as WAV or AIFF."), fName.c_str());
+      errorMessage.Printf(_("\"%s\" is an encrypted audio file. \nThese typically are from an online music store. \nAudacity cannot open this type of file due to the encryption. \nTry recording the file into Audacity, or burn it to audio CD then \nextract the CD track to a supported audio format such as WAV or AIFF."), fName.c_str());
       return 0;
    }
    // Real Inc. files of various sorts
