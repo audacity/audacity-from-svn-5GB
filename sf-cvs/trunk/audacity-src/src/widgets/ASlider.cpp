@@ -774,7 +774,7 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       //
       // Do not change position until first drag.  This helps
       // with unintended value changes.
-      if( tolerantThumbRect.Inside( event.GetPosition() ) )
+      if( tolerantThumbRect.Contains( event.GetPosition() ) )
       {
          // Remember mouse position and current value
          mClickX = event.m_x;

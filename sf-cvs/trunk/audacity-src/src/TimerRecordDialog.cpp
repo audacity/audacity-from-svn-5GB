@@ -374,7 +374,6 @@ void TimerRecordDialog::UpdateEnd()
 
 bool TimerRecordDialog::WaitForStart()
 {
-   AudacityProject* pProject = GetActiveProject();
    wxString strMsg;
    /* i18n-hint: A time specification like "Sunday 28th October 2007 15:16:17 GMT"
 	* but hopefully translated by wxwidgets will be inserted into this */

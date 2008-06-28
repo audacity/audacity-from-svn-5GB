@@ -168,7 +168,7 @@ void Grabber::DrawGrabber( wxDC & dc )
 void Grabber::PushButton(bool state )
 {
    wxRect r = GetRect();
-   mOver = r.Inside(ScreenToClient(wxGetMousePosition()));
+   mOver = r.Contains(ScreenToClient(wxGetMousePosition()));
 
    // Redraw button
    mPressed = state;

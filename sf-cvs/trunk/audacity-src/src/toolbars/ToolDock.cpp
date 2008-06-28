@@ -324,7 +324,7 @@ int ToolDock::PositionBar( ToolBar *t, wxPoint & pos, wxRect & rect )
             r.height += toolbarGap;
 
             // Does the location fall within this bar?
-            if( r.Inside( pos ) || pos.y <= r.y )
+            if( r.Contains( pos ) || pos.y <= r.y )
             {
                // Add the new bars' dimensions to the mix
                tinfo[ ct ].rect = t->GetRect();

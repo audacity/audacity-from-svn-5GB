@@ -352,7 +352,7 @@ void Meter::OnMouse(wxMouseEvent &evt)
   #endif
 
    if (evt.RightDown() ||
-       (evt.ButtonDown() && mMenuRect.Inside(evt.m_x, evt.m_y))) {
+       (evt.ButtonDown() && mMenuRect.Contains(evt.m_x, evt.m_y))) {
       wxMenu *menu = new wxMenu();
       // Note: these should be kept in the same order as the enum
       if (mMeterDisabled)

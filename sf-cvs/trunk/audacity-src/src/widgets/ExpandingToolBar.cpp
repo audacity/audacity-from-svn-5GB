@@ -322,8 +322,8 @@ void ExpandingToolBar::RecursivelyPushEventHandlers(wxWindow *win)
 
 bool ExpandingToolBar::Layout()
 {
-   mMainSize = mMainPanel->GetBestFittingSize();
-   mExtraSize = mExtraPanel->GetBestFittingSize();
+   mMainSize = mMainPanel->GetBestSize();
+   mExtraSize = mExtraPanel->GetBestSize();
    mButtonSize = wxSize(wxMax(mMainSize.x, mExtraSize.x),
                         kToggleButtonHeight);
 
@@ -399,7 +399,7 @@ bool ExpandingToolBar::IsCursorInWindow()
                   localMouse.y < mCurrentTotalSize.y);
 
    // The grabber doesn't count!
-   if (mGrabber && mGrabber->GetRect().Inside(localMouse))
+   if (mGrabber && mGrabber->GetRect().Contains(localMouse))
       result = false;
 
    return result;
@@ -582,7 +582,7 @@ void ExpandingToolBar::UpdateMoving()
       }         
    }
 
-   if (!mAreaParent->GetRect().Inside(cursorPos))
+   if (!mAreaParent->GetRect().Contains(cursorPos))
       mDropTarget = kDummyRect;
 
    if (mDropTarget != prevTarget) {
@@ -765,7 +765,7 @@ void ToolBarDialog::SetChild(ExpandingToolBar *child)
 void ToolBarDialog::Fit()
 {
    if (mChild) {
-      wxSize childSize = mChild->GetBestFittingSize();
+      wxSize childSize = mChild->GetBestSize();
 
       // Take into account the difference between the content
       // size and the frame size
@@ -817,7 +817,7 @@ void ToolBarFrame::SetChild(ExpandingToolBar *child)
 void ToolBarFrame::Fit()
 {
    if (mChild) {
-      wxSize childSize = mChild->GetBestFittingSize();
+      wxSize childSize = mChild->GetBestSize();
 
       // Take into account the difference between the content
       // size and the frame size
