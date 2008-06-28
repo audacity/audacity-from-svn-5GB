@@ -1,11 +1,13 @@
 /**********************************************************************
 
-  Audacity: A Digital Audio Editor
+   Audacity: A Digital Audio Editor
 
-  ExportFFmpeg.cpp
+   ExportFFmpeg.cpp
 
-  Audacity(R) is copyright (c) 1999-2008 Audacity Team.
-  License: GPL v2.  See License.txt.
+   Audacity(R) is copyright (c) 1999-2008 Audacity Team.
+   License: GPL v2.  See License.txt.
+
+   LRN
 
 ******************************************************************//**
 
