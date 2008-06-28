@@ -263,7 +263,7 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
    const float fScale=0.5f;// smaller size.
    wxImage RescaledImage( logo->ConvertToImage() );
    // wxIMAGE_QUALITY_HIGH not supported by wxWidgets 2.6.1, or we would use it here.
-   RescaledImage.Rescale( LOGOWITHNAME_WIDTH * fScale, LOGOWITHNAME_HEIGHT *fScale );
+   RescaledImage.Rescale( int(LOGOWITHNAME_WIDTH * fScale), int(LOGOWITHNAME_HEIGHT *fScale) );
    wxBitmap RescaledBitmap( RescaledImage );
 
    icon =
@@ -272,7 +272,7 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
                           //vvv theTheme.Bitmap(bmpAudacityLogo), wxPoint(93, 10), wxSize(215, 190));
                           //vvv theTheme.Bitmap(bmpAudacityLogoWithName), 
                           RescaledBitmap,
-                          wxDefaultPosition, wxSize(LOGOWITHNAME_WIDTH*fScale, LOGOWITHNAME_HEIGHT*fScale));
+                          wxDefaultPosition, wxSize(int(LOGOWITHNAME_WIDTH*fScale), int(LOGOWITHNAME_HEIGHT*fScale)));
    delete logo;
    S.Prop(0).AddWindow( icon );
 
