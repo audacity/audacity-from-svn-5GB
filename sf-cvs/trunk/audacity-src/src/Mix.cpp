@@ -325,7 +325,7 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
                                     int *queueStart, int *queueLen,
                                     Resample *SRC)
 {
-   double trackRate = track->GetRate();
+   int trackRate = (int)(track->GetRate());
    double initialWarp = mRate / trackRate;
    double t = *pos / trackRate;
    int sampleSize = SAMPLE_SIZE(floatSample);
@@ -344,7 +344,12 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
       it = it->GetNext();
    }
 
-   longSampleCount max = trackRate * mT1;
+   longSampleCount max = (longSampleCount) (trackRate * mT1);
+   /* time is floating point. Sample rate is integer. The number of samples
+    * has to be integer, but the multiplication gives a float result, which we
+    * round to get an integer result. TODO: is this always right or can it be
+    * off by one sometimes? Can we not get this information directly from the
+    * clip (which must know) rather than convert the time? */
    if (last > max)
       last = max;
 
