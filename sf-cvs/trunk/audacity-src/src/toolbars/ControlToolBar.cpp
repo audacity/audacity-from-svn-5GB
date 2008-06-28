@@ -174,7 +174,7 @@ void ControlToolBar::Populate()
       ID_PAUSE_BUTTON,  true,  _("Pause"), _("Pause"));
 
    mPlay = MakeButton( bmpPlay, bmpPlayDisabled, 
-      ID_PLAY_BUTTON, true, _("Play"), _("Play (Shift for loop-play)"));
+      ID_PLAY_BUTTON, true, _("Play"), _("Play (Shift for Loop Play)"));
 
    MakeLoopImage();
 
@@ -188,7 +188,7 @@ void ControlToolBar::Populate()
       ID_FF_BUTTON, false, _("End"), _("Skip to End"));
 
    mRecord = MakeButton(bmpRecord, bmpRecordDisabled,
-      ID_RECORD_BUTTON, true, _("Record"), _("Record"));
+      ID_RECORD_BUTTON, true, _("Record"), _("Record (Shift for Append Record"));
 
    mBatch = MakeButton(bmpCleanSpeech,bmpCleanSpeechDisabled,
       ID_BATCH_BUTTON, false, _("Clean Speech"), _("Clean Speech"));
