@@ -311,7 +311,7 @@ END_EVENT_TABLE()
 
 ClickRemovalDialog::ClickRemovalDialog(EffectClickRemoval *effect,
                                        wxWindow *parent)
-:  EffectDialog(parent, _("ClickRemoval"), PROCESS_EFFECT),
+:  EffectDialog(parent, _("Click Removal"), PROCESS_EFFECT),
    mEffect(effect)
 {
    Init();
