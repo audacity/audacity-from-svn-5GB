@@ -50,6 +50,7 @@ Describes shared object that is used to access FFmpeg libraries.
 #include <wx/dynlib.h>
 #include <wx/log.h>			// for wxLogNull
 #include <wx/msgdlg.h>		// for wxMessageBox
+#include <wx/utils.h>
 #include "../widgets/LinkingHtmlWindow.h"
 #include "FileDialog.h"
 #include "ShuttleGui.h"
