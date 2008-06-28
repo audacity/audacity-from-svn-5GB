@@ -299,7 +299,7 @@ Exporter::~Exporter()
 
 int Exporter::FindFormatIndex(int exportindex)
 {
-   size_t c = 0;
+   int c = 0;
    for (size_t i = 0; i < mPlugins.GetCount(); i++)
    {
       for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
@@ -528,7 +528,7 @@ bool Exporter::GetFilename()
       mFormat = fd.GetFilterIndex();
       mFilterIndex = fd.GetFilterIndex();
 
-      size_t c = 0;
+      int c = 0;
       for (size_t i = 0; i < mPlugins.GetCount(); i++)
       {
          for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
@@ -948,7 +948,7 @@ void ExportMixerPanel::OnMouseEvent(wxMouseEvent & event)
       bool reset = true;
       //check tracks 
       for( int i = 0; i < mMixerSpec->GetNumTracks(); i++ )
-         if( mTrackRects[ i ].Inside( event.m_x, event.m_y ) )
+         if( mTrackRects[ i ].Contains( event.m_x, event.m_y ) )
          {
             reset = false;
             if( mSelectedTrack == i )
@@ -965,7 +965,7 @@ void ExportMixerPanel::OnMouseEvent(wxMouseEvent & event)
 
       //check channels
       for( int i = 0; i < mMixerSpec->GetNumChannels(); i++ )
-         if( mChannelRects[ i ].Inside( event.m_x, event.m_y ) )
+         if( mChannelRects[ i ].Contains( event.m_x, event.m_y ) )
          {
             reset = false;
             if( mSelectedChannel == i )
