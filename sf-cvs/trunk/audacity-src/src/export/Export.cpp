@@ -684,11 +684,13 @@ bool Exporter::CheckMix()
       else {
          mChannels = 1;
       }
+      if (mChannels > mPlugins[mFormat]->GetMaxChannels(mSubFormat))
+         mChannels = mPlugins[mFormat]->GetMaxChannels(mSubFormat);
 
       int numLeft =  mNumLeft + mNumMono;
       int numRight = mNumRight + mNumMono;
    
-      if (numLeft > 1 || numRight > 1)
+      if (numLeft > 1 || numRight > 1 || mNumLeft + mNumRight + mNumMono > mChannels)
          if (mChannels == 2) {
             ShowWarningDialog(mProject,
                               wxT("MixStereo"),
