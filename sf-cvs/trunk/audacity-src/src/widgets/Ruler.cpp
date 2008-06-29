@@ -859,7 +859,13 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
      if (mOrientation == wxHORIZONTAL)
        desiredPixelHeight = mBottom-mTop-5; // height less ticks and 1px gap
      else
+     {
+#ifdef EXPERIMENTAL_RULER_AUTOSIZE
+         desiredPixelHeight = 12;   // why 12?  10 -> 12 seems to be max/min
+#else
        desiredPixelHeight = (mRight-mLeft)/2;
+#endif //EXPERIMENTAL_RULER_AUTOSIZE
+     }
 
 #ifdef EXPERIMENTAL_RULER_AUTOSIZE
      if (desiredPixelHeight < 10)//8)
@@ -964,7 +970,7 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
       if (mLabelEdges) {
 #ifdef EXPERIMENTAL_RULER_AUTOSIZE
          Tick(0, mMin, true, false);
-         Tick(0, mMin, true, false);
+         Tick(mLength, mMax, true, false);
 #else //!EXPERIMENTAL_RULER_AUTOSIZE
          Tick(0, mMin, true);
          Tick(mLength, mMax, true);
