@@ -75,7 +75,8 @@ function.
 #include <wx/string.h>
 #include <wx/textctrl.h>
 #include <wx/window.h>
-
+#include <wx/spinctrl.h>
+#include <wx/combobox.h>
 
 #include "../FileFormats.h"
 #include "../Internat.h"
@@ -90,7 +91,7 @@ function.
 
 #include "Export.h"
 
-#if defined (USE_FFMPEG)
+#if defined(USE_FFMPEG)
 
 extern FFmpegLibs *FFmpegLibsInst;
 
@@ -111,7 +112,8 @@ enum FFmpegExposedFormat
   FMT_WMA2,
   FMT_RA3,
   FMT_RA9,
-  FMT_OTHER
+  FMT_OTHER,
+  FMT_LAST
 };
 
 struct ExposedFormat
@@ -135,151 +137,15 @@ ExposedFormat fmts[] =
    {FMT_AAC, wxT("AAC"), wxT("aac"), 48, true,_("AAC Files (FFmpeg)"), CODEC_ID_AAC},
    {FMT_OGGVORBIS, wxT("OGG"), wxT("ogg"), 2, true,_("OGG Vorbis Files (FFmpeg)"), CODEC_ID_VORBIS},
    {FMT_OGGFLAC, wxT("OGG"), wxT("ogg"), 255, true,_("OGG FLAC Files (FFmpeg)"), CODEC_ID_FLAC},
-   {FMT_GSMWAV, wxT("WAV"), wxT("wav"), 1, true,_("GSM-WAV Files (FFmpeg)"), CODEC_ID_GSM}, //native GSM container exists, but muxer is not available (demuxing only)
-   {FMT_GSMMSWAV, wxT("WAV"), wxT("wav"), 1, true,_("GSM-WAV (Microsoft) Files (FFmpeg)"), CODEC_ID_GSM_MS},
-   {FMT_AMRNB, wxT("AMR"), wxT("amr"), 1, true,_("AMR (narrow band) Files (FFmpeg)"), CODEC_ID_AMR_NB},
-   {FMT_AMRWB, wxT("AMR"), wxT("amr"), 1, true,_("AMR (wide band) Files (FFmpeg)"), CODEC_ID_AMR_WB},
+   {FMT_GSMWAV, wxT("GSMAIFF"), wxT("aiff"), 1, true,_("GSM-AIFF Files (FFmpeg)"), CODEC_ID_GSM},
+   {FMT_GSMMSWAV, wxT("GSMWAV"), wxT("wav"), 1, true,_("GSM-WAV (Microsoft) Files (FFmpeg)"), CODEC_ID_GSM_MS},
+   {FMT_AMRNB, wxT("AMRNB"), wxT("amr"), 1, true,_("AMR (narrow band) Files (FFmpeg)"), CODEC_ID_AMR_NB},
+   {FMT_AMRWB, wxT("AMRWB"), wxT("amr"), 1, true,_("AMR (wide band) Files (FFmpeg)"), CODEC_ID_AMR_WB},
    {FMT_WMA2, wxT("WMA"), wxT("wma"), 2, true,_("WMA (version 2) Files (FFmpeg)"), CODEC_ID_WMAV2},
-   {FMT_RA3, wxT("RA"), wxT("ra"), 6, true,_("Real Audio (version 3) Files (FFmpeg)"), CODEC_ID_AC3},
-   {FMT_RA9, wxT("RA"), wxT("ra"), 48, true,_("Real Audio (version 9) Files (FFmpeg)"), CODEC_ID_AAC},
+   {FMT_RA3, wxT("RA3"), wxT("ra"), 6, true,_("Real Audio (version 3) Files (FFmpeg)"), CODEC_ID_AC3},
+   {FMT_RA9, wxT("RA9"), wxT("ra"), 48, true,_("Real Audio (version 9) Files (FFmpeg)"), CODEC_ID_AAC},
    {FMT_OTHER, wxT("FFMPEG"), wxT("ffmpeg"), 255, true,_("Other FFmpeg-Compatible Files"), CODEC_ID_NONE}
 };
-/*
-//----------------------------------------------------------------------------
-// ExportFFmpegOptions Class
-//----------------------------------------------------------------------------
-
-class ExportFFmpegOptions : public wxDialog
-{
-public:
-
-   ExportFFmpegOptions(wxWindow *parent);
-   void PopulateOrExchange(ShuttleGui & S);
-   void OnOK(wxCommandEvent& event);
-
-private:
-
-   wxArrayString mPresetNames;
-   wxArrayString mFormatNames;
-   wxArrayString mLogLevelNames;
-   wxArrayInt    mLogLevelLabels;
-   wxArrayString mCodecNames;
-   wxArrayString mProfileNames;
-   wxArrayInt    mProfileLabels;
-   wxArrayString mPredictionOrderMethodNames;;
-   wxArrayInt    mPredictionOrderMethodLabels;
-
-   wxArrayString mBitRateNames;
-   wxArrayInt    mBitRateLabels;
-   wxArrayString mSampleRateNames;
-   wxArrayInt    mSampleRateLabels;
-
-   wxChoice *mFormatChoice;
-   wxChoice *mLogLevel;
-   wxSpinCtrl *mBitrateSpin;
-   wxSpinCtrl *mQualitySpin;
-   wxSpinCtrl *mSampleRateSpin;
-   wxChoice *mCodecChoice;
-   wxTextCtrl *mLanguageText;
-   wxTextCtrl *mTag;
-   //\todo { flags bitexact }
-   wxSpinCtrl *mCutoffSpin;
-   wxSpinCtrl *mFrameSizeSpin;
-   wxSpinCtrl *mBufSize;
-   //\todo { debug flags and flags2 reservoir }
-   wxChoice *mProfileChoice;
-   wxSpinCtrl *mLevel;
-   wxSpinCtrl *mCompressionLevelSpin;
-   wxCheckBox *mUseLPCCheck;
-   wxSpinCtrl *mLPCCoeffsPrecisionSpin;
-   wxSpinCtrl *mMinPredictionOrderSpin;
-   wxSpinCtrl *mMaxPredictionOrderSpin;
-   wxChoice *mPredictionOrderMethodChoice;
-   wxSpinCtrl *mMinPartitionOrderSpin;
-   wxSpinCtrl *mMaxPartitionOrderSpin;
-   wxSpinCtrl *mMuxRate;
-   wxSpinCtrl *mPacketSize;
-   //\todo { fflags }
-
-   wxButton *mOk;
-   wxButton *mSavePreset;
-   wxButton *mLoadPreset;
-   int mBitRateFromChoice;
-   int mSampleRateFromChoice;
-
-   DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE(ExportFFmpegOptions, wxDialog)
-EVT_BUTTON(wxID_OK,ExportFFmpegOptions::OnOK)
-END_EVENT_TABLE()
-
-ExportFFmpegOptions::ExportFFmpegOptions(wxWindow *parent)
-:  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify Other Options")),
-            wxDefaultPosition, wxDefaultSize,
-            wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
-{
-   ShuttleGui S(this, eIsCreatingFromPrefs);
-
-   for (unsigned int i=0; i < (sizeof(iOtherBitRates)/sizeof(int)); i++)
-   {
-      mBitRateNames.Add(wxString::Format(wxT("%i"),iOtherBitRates[i]/1000));
-      mBitRateLabels.Add(iOtherBitRates[i]);
-   }
-
-   for (unsigned int i=0; i < (sizeof(iOtherSampleRates)/sizeof(int)); i++)
-   {
-      mSampleRateNames.Add(wxString::Format(wxT("%i"),iOtherSampleRates[i]));
-      mSampleRateLabels.Add(iOtherSampleRates[i]);
-   }
-
-
-   PopulateOrExchange(S);
-}
-
-/// 
-/// 
-void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
-{
-   S.StartHorizontalLay(wxEXPAND, 0);
-   {
-      S.StartStatic(_("Other Export Setup"), 0);
-      {
-         S.StartTwoColumn();
-         {
-            S.TieChoice(_("Bit Rate:"), wxT("/FileFormats/OtherBitRate"), 
-               160000, mBitRateNames, mBitRateLabels);
-            S.TieChoice(_("Sample Rate:"), wxT("/FileFormats/OtherSampleRate"), 
-               48000, mSampleRateNames, mSampleRateLabels);
-         }
-         S.EndTwoColumn();
-      }
-      S.EndStatic();
-   }
-   S.EndHorizontalLay();
-
-   S.AddStandardButtons();
-
-   Layout();
-   Fit();
-   SetMinSize(GetSize());
-   Center();
-
-   return;
-}
-
-/// 
-/// 
-void ExportFFmpegOptions::OnOK(wxCommandEvent& event)
-{
-   ShuttleGui S(this, eIsSavingToPrefs);
-   PopulateOrExchange(S);
-
-   EndModal(wxID_OK);
-
-   return;
-}*/
 
 
 //----------------------------------------------------------------------------
@@ -1189,7 +1055,7 @@ ExportFFmpeg::ExportFFmpeg()
 {
    int newfmt;
 
-   for (newfmt = 0; newfmt < 15; newfmt++)
+   for (newfmt = 0; newfmt < FMT_LAST; newfmt++)
    {
       AddFormat();
       SetFormat(fmts[newfmt].name,newfmt);
@@ -1198,7 +1064,6 @@ ExportFFmpeg::ExportFFmpeg()
       SetCanMetaData(fmts[newfmt].canmetadata,newfmt);
       SetDescription(fmts[newfmt].description,newfmt);
    }
-
 
    PickFFmpegLibs();
 
@@ -1219,6 +1084,7 @@ void ExportFFmpeg::Destroy()
 
 bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
 {
+   int err;
    FFmpegLibsInst->LoadLibs(NULL,true);
 
    if (!FFmpegLibsInst->ValidLibsLoaded()) return false;
@@ -1259,18 +1125,18 @@ bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
    // Open the output file.
    if (!(mEncFormatDesc->flags & AVFMT_NOFILE))
    {
-      if (FFmpegLibsInst->url_fopen(&mEncFormatCtx->pb, mEncFormatCtx->filename, URL_WRONLY) < 0)
+      if ((err = FFmpegLibsInst->url_fopen(&mEncFormatCtx->pb, mEncFormatCtx->filename, URL_WRONLY)) < 0)
       {
-         wxLogMessage(wxT("FFmpeg : ERROR - Can't open output file \"%s\" to write."), mName.c_str());
+         wxLogMessage(wxT("FFmpeg : ERROR - Can't open output file \"%s\" to write. Error code is %d."), mName.c_str(),err);
          return false;
       }
    }
 
    // Set default parameters on the format context.
    memset(&fpOutFile, 0, sizeof(AVFormatParameters));
-   if (FFmpegLibsInst->av_set_parameters(mEncFormatCtx, &fpOutFile) < 0)
+   if ((err = FFmpegLibsInst->av_set_parameters(mEncFormatCtx, &fpOutFile)) < 0)
    {
-      wxLogMessage(wxT("FFmpeg : ERROR - Can't set output parameters for output file \"%s\"."), mName.c_str());
+      wxLogMessage(wxT("FFmpeg : ERROR - Can't set output parameters for output file \"%s\". Error code is %d."), mName.c_str(),err);
       return false;
    }
 
@@ -1282,9 +1148,10 @@ bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
       return false;
 
    // Write headers to the output file.
-   if (FFmpegLibsInst->av_write_header(mEncFormatCtx) < 0)
+   if ((err = FFmpegLibsInst->av_write_header(mEncFormatCtx)) < 0)
    {
-      wxLogMessage(wxT("FFmpeg : ERROR - Can't write headers to output file \"%s\"."), mName.c_str());
+      wxLogMessage(wxT("FFmpeg : ERROR - Can't write headers to output file \"%s\". Error code is %d."), mName.c_str(),err);
+
       return false;
    }
 
@@ -1302,6 +1169,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
 
    mEncAudioCodecCtx->codec_id = fmts[mSubFormat].codecid;
    mEncAudioCodecCtx->codec_type = CODEC_TYPE_AUDIO;
+   mEncAudioCodecCtx->codec_tag = FFmpegLibsInst->av_codec_get_tag(mEncFormatCtx->oformat->codec_tag,mEncAudioCodecCtx->codec_id);
 
    switch (mSubFormat)
    {
@@ -1349,7 +1217,6 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       mSampleRate = gPrefs->Read(wxT("/FileFormats/WMASampleRate"), 48000);
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/WMABitRate"), 198000);
       break;
-   case FMT_OTHER:
    default:
       return false;
    }
@@ -1364,6 +1231,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    if ((codec = FFmpegLibsInst->avcodec_find_encoder(mEncAudioCodecCtx->codec_id)) == NULL)
    {
       wxLogMessage(wxT("FFmpeg : ERROR - Can't find audio codec %d."),mEncAudioCodecCtx->codec_id);
+      wxMessageBox(wxString::Format(wxT("FFmpeg cannot find audio codec %d.\nSupport for this codec is probably not compiled in."),mEncAudioCodecCtx->codec_id));
       return false;
    }
 
@@ -1554,7 +1422,12 @@ bool ExportFFmpeg::Export(AudacityProject *project,
                        bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec, Tags *metadata, int subformat)
 {
    mChannels = channels;
-   if (channels > fmts[subformat].maxchannels) return false;
+   if (channels > fmts[subformat].maxchannels)
+   {
+      wxLogMessage(wxT("Attempted to export %d channels, but max. channels = %d"),channels,fmts[subformat].maxchannels);
+      wxMessageBox(wxString::Format(wxT("Attempted to export %d channels, but max. channels for selected output format is %d"),channels,fmts[subformat].maxchannels),wxT("Error"));
+      return false;
+   }
    mName = fName;
    mSubFormat = subformat;
    TrackList *tracks = project->GetTracks();
@@ -1649,61 +1522,60 @@ bool ExportFFmpeg::AddTags(Tags *tags)
 
 bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
 {
-
-   if (format == 0)
+   if (format == FMT_PCMS16LEWAV)
    {
       ExportFFmpegWAVOptions od(project);
       od.ShowModal();
       return true;
    }
-   else if (format == 1)
+   else if (format == FMT_MP3)
    {
       ExportFFmpegMP3Options od(project);
       od.ShowModal();
       return true;
    }
-   else if ((format == 2) || (format == 5) || (format == 14))
+   else if ((format == FMT_MP4) || (format == FMT_AAC) || (format == FMT_RA9))
    {
       ExportFFmpegAACOptions od(project);
       od.ShowModal();
       return true;
    }
-   else if ((format == 3) || (format == 7))
+   else if ((format == FMT_FLAC) || (format == FMT_OGGFLAC))
    {
       ExportFFmpegFLACOptions od(project);
       od.ShowModal();
       return true;
    }
-   else if ((format == 4) || (format == 13))
+   else if ((format == FMT_AC3) || (format == FMT_RA3))
    {
       ExportFFmpegAC3Options od(project);
       od.ShowModal();
       return true;
    }
-   else if (format == 6)
+   else if (format == FMT_OGGVORBIS)
    {
       ExportFFmpegVorbisOptions od(project);
       od.ShowModal();
       return true;
    }
-   else if ((format == 8) || (format == 9))
+   else if ((format == FMT_GSMWAV) || (format == FMT_GSMMSWAV))
    {
       wxMessageBox(wxT("There is no options for GSM"));
       return true;
    }
-   else if (format == 10)
+   else if (format == FMT_AMRNB)
    {
       ExportFFmpegAMRNBOptions od(project);
       od.ShowModal();
       return true;
    }
-   else if (format == 11)
+   else if (format == FMT_AMRWB)
    {
       ExportFFmpegAMRWBOptions od(project);
       od.ShowModal();
       return true;
    }
-   else if (format == 12)
+   else if (format == FMT_WMA2)
    {
       ExportFFmpegWMAOptions od(project);
       od.ShowModal();
