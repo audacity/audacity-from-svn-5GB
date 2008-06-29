@@ -575,12 +575,12 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
       c->AddItem(wxT("Record"), _("&Record\tR"), FN(OnRecord));
       c->SetCommandFlags(wxT("Record"), AudioIONotBusyFlag, AudioIONotBusyFlag);
-      c->AddItem(wxT("TimerRecord"), _("&Timer Record..."), FN(OnTimerRecord));
+      c->AddItem(wxT("TimerRecord"), _("&Timer Record...\tShift+T"), FN(OnTimerRecord));
       c->SetCommandFlags(wxT("TimerRecord"), AudioIONotBusyFlag, AudioIONotBusyFlag);
       c->AddItem(wxT("RecordAppend"), _("Append Record\tShift+R"), FN(OnRecordAppend));
       c->SetCommandFlags(wxT("RecordAppend"), AudioIONotBusyFlag, AudioIONotBusyFlag);
    c->AddSeparator();
-      c->AddItem(wxT("Duplex"), _("Play While Recording (on/off)"), FN(OnTogglePlayRecording), 0);
+      c->AddItem(wxT("Duplex"), _("Overdub (on/off)"), FN(OnTogglePlayRecording), 0);
       c->SetCommandFlags(wxT("Duplex"), AudioIONotBusyFlag, AudioIONotBusyFlag);
       c->AddItem(wxT("SWPlaythrough"), _("Software Playthrough (on/off)"), FN(OnToggleSWPlaythrough), 0);
       c->SetCommandFlags(wxT("SWPlaythrough"), AudioIONotBusyFlag, AudioIONotBusyFlag);
@@ -1355,7 +1355,7 @@ void AudacityProject::ModifyToolbarMenus()
    bool active;
    gPrefs->Read(wxT("/AudioIO/SoundActivatedRecord"),&active, false);
    mCommandManager.Check(wxT("SoundActivation"), active);
-   gPrefs->Read(wxT("/AudioIO/Duplex"),&active, false);
+   gPrefs->Read(wxT("/AudioIO/Duplex"),&active, true);
    mCommandManager.Check(wxT("Duplex"), active);
    gPrefs->Read(wxT("/AudioIO/SWPlaythrough"),&active, false);
    mCommandManager.Check(wxT("SWPlaythrough"), active);
