@@ -597,14 +597,14 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avformat,guess_format);
    INITDYN(avformat,av_write_trailer);
    INITDYN(avformat,av_init_packet);
+   INITDYN(avformat,av_codec_get_id);
+   INITDYN(avformat,av_codec_get_tag);
 
    INITDYN(avcodec,avcodec_init);
    INITDYN(avcodec,avcodec_find_encoder);
    INITDYN(avcodec,avcodec_find_encoder_by_name);
    INITDYN(avcodec,avcodec_find_decoder);
    INITDYN(avcodec,avcodec_find_decoder_by_name);
-   INITDYN(avformat,av_codec_get_id);
-   INITDYN(avformat,av_codec_get_tag);
    INITDYN(avcodec,avcodec_string);
    INITDYN(avcodec,avcodec_get_context_defaults);
    INITDYN(avcodec,avcodec_alloc_context);
