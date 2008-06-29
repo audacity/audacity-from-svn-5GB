@@ -22,7 +22,7 @@
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
 <?php include "recommended.inc.php"?>
 <ul>
-  <li><p>Universal Binary: <?php printf(_('<a href="http://audacity.sourceforge.net/files/audacity-macosx-1.3.5b.dmg">Audacity 1.3.5b</a> (.dmg file, 7.2 MB)'), "../beta/".$macosx_ub_url, macosx_ub_version, macosx_ub_size)?></p></li>
+  <li><p>Universal Binary: <?php printf(_('<a href="http://audacity.sourceforge.net/files/audacity-macosx-1.3.5c.dmg">Audacity 1.3.5c</a> (.dmg file, 7.2 MB)'), "../beta/".$macosx_ub_url, macosx_ub_version, macosx_ub_size)?></p></li>
 </ul>
 
 		<p> <b>Installation instructions:</b>
