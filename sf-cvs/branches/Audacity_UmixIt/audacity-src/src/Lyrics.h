@@ -16,6 +16,9 @@
 
 #include <wx/dynarray.h>
 #include <wx/panel.h>
+#include <wx/scrolwin.h> //vvvvv
+#include <wx/textctrl.h> //vvvvv
+
 
 // Branding removed from Lyrics window.   #include "widgets/LinkingHtmlWindow.h"
 
@@ -26,18 +29,30 @@ struct Syllable {
    double t;
    wxString text;
    wxString textWithSpace;
-   int char0;
-   int char1;
+   int char0; // index of first char of syllable in Lyrics::mText
+   int char1; // index of last  char of syllable in Lyrics::mText
    int width;
    int leftX;
-   int x;
+   int x; // centerX, used only for kBouncingBallLyrics
+
+   int height; // used only for kHighlightLyrics
+   int topY;   // used only for kHighlightLyrics
 };
 
 WX_DECLARE_OBJARRAY(Syllable, SyllableArray);
 
-class Lyrics : public wxPanel
+// Lyrics stated as a wxPanel, but easier to implement scrolling for kHighlightLyrics
+// without subclassing wxScrolledWindow. 
+// Note that if Branding is reinstated, it will be a scrolled window inside a scrolled window, 
+// but it seems unlikely it will be reinstated.
+class Lyrics : public wxPanel //vvvvv wxScrolledWindow 
 {
    DECLARE_DYNAMIC_CLASS(Lyrics)
+
+   enum LyricsStyle {
+      kBouncingBallLyrics, // Lyrics move from right to left with bouncing ball.
+      kHighlightLyrics,    // Lyrics show in scrolling page and syllables highlight successively.
+   };
 
  public:
    Lyrics(wxWindow* parent, wxWindowID id,
@@ -50,6 +65,9 @@ class Lyrics : public wxPanel
    void Add(double t, wxString syllable);
    void Finish(double finalT);
 
+   LyricsStyle GetLyricsStyle() { return mLyricsStyle; };
+   void SetLyricsStyle(const LyricsStyle newLyricsStyle);
+
    void Update(double t, bool bForce = false);
 
    //
@@ -61,30 +79,41 @@ class Lyrics : public wxPanel
    void OnMouse(wxMouseEvent &evt);
 
    void HandlePaint(wxDC &dc);
+   void HandlePaint_BouncingBall(wxDC &dc);
+   void HandlePaint_Highlight(wxDC &dc);
+
    void HandleLayout();
 
 private:
+   unsigned int GetDefaultFontSize() const; // Depends on mLyricsStyle. Call only after mLyricsStyle is set.
    void SetFont(wxDC *dc);
    void Measure(wxDC *dc);
    int FindSyllable(double t);
    void GetKaraokePosition(double t,
                            int *outX, double *outY);
 
-   int            mWidth;
-   int            mHeight;
+private:
+   int            mWidth;  // client width
+   int            mHeight; // client height
+
+   int            mKaraokeHeight; // mHeight - mBrandingHeight (so just mHeight now that Branding is removed).
+   unsigned int   mKaraokeFontSize;
+
+   // Branding removed from bottom of Lyrics window.   
+   //   int            mBrandingHeight; 
+   //   LinkingHtmlWindow* mBrandingPanel;
+
+   LyricsStyle    mLyricsStyle; // default kHighlightLyrics
+   wxTextCtrl*    mTextCtrl; // only for kHighlightLyrics
 
    double         mT;
 
-   // Branding removed from Lyrics window.   int            mBrandingHeight; 
-   int            mKaraokeHeight;
-
    int            mCurrentSyllable;
    SyllableArray  mSyllables;
-   wxString       mText;
+   wxString       mText; 
 
    int            mTextHeight;
 
-   // Branding removed from Lyrics window.   LinkingHtmlWindow* mBrandingPanel;
 
    bool           mMeasurementsDone;
 

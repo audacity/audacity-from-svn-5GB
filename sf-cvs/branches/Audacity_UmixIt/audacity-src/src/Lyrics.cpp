@@ -23,22 +23,34 @@
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(SyllableArray);
 
-BEGIN_EVENT_TABLE(Lyrics, wxPanel)
+BEGIN_EVENT_TABLE(Lyrics, wxPanel) //vvvvv wxScrolledWindow)
    EVT_CHAR(Lyrics::OnKeyEvent)
    EVT_PAINT(Lyrics::OnPaint)
    EVT_SIZE(Lyrics::OnSize)
 END_EVENT_TABLE()
 
-IMPLEMENT_CLASS(Lyrics, wxPanel)
+IMPLEMENT_CLASS(Lyrics, wxPanel) //vvvvv wxScrolledWindow)
 
 // Branding removed from Lyrics window.   #define DEFAULT_BRANDING_HEIGHT 105 //v UmixIt: Need to figure it out from logo height, etc. This works for UmixIt.
 
 Lyrics::Lyrics(wxWindow* parent, wxWindowID id,
                const wxPoint& pos /*= wxDefaultPosition*/,
                const wxSize& size /*= wxDefaultSize*/):
-   wxPanel(parent, id, pos, size),
+   wxPanel(parent, id, pos, size), //vvvvv wxScrolledWindow(parent, id, pos, size),
    mWidth(size.x), mHeight(size.y)
 {
+   #if (AUDACITY_BRANDING != BRAND_UMIXIT)
+      mLyricsStyle = kBouncingBallLyrics; // default for most
+   #else
+      mLyricsStyle = kHighlightLyrics; // default for UmixIt
+   #endif
+
+   this->SetBackgroundColour(*wxWHITE); 
+   //vvvvv 
+   //this->SetScrollRate(
+   //   10, (mLyricsStyle == kBouncingBallLyrics) ? 0 : 10); // no vertical scroll for Bouncing Ball
+   //this->SetVirtualSize(size);
+
    // Branding removed from Lyrics window.   
    //// branding
    ////v Should change this to just a wxStaticBitmap, but it's working, and no longer showing lyrics.
@@ -79,14 +91,33 @@ Lyrics::Lyrics(wxWindow* parent, wxWindowID id,
    //   mBrandingPanel = new LinkingHtmlWindow(this);
    //   mBrandingPanel->SetPage(strBranding);
    //   mBrandingHeight = DEFAULT_BRANDING_HEIGHT;
+   //   mKaraokeHeight = mHeight - mBrandingHeight;
    //} else {
    //   mBrandingPanel = NULL;
    //   mBrandingHeight = 0;
+        mKaraokeHeight = mHeight; 
    //}
+   mKaraokeFontSize = this->GetDefaultFontSize(); // Call only after mLyricsStyle is set.
+
+   mTextCtrl = 
+      new wxTextCtrl(this, -1, // wxWindow* parent, wxWindowID id, 
+                     "", // const wxString& value = "", 
+                     wxPoint(0, 0), // const wxPoint& pos = wxDefaultPosition, 
+                     size, // const wxSize& size = wxDefaultSize, 
+                     wxTE_MULTILINE | wxTE_READONLY | wxTE_RICH | wxTE_RICH2 | wxTE_NOHIDESEL); //vvv | wxHSCROLL); // long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
+   wxTextAttr newDefTextAttr(
+      wxNullColour, // const wxColour& colText, 
+      wxNullColour, // const wxColour& colBack = wxNullColour, 
+      wxFont(mKaraokeFontSize, wxSWISS, wxNORMAL, wxNORMAL)); // const wxFont& font = wxNullFont)
+   mTextCtrl->SetDefaultStyle(newDefTextAttr);
+
+   mTextCtrl->Show(mLyricsStyle == kHighlightLyrics);
+
+
+   mT = 0.0;
 
    Clear();
    Finish(0.0);
-   mT = 0.0;
 
   #ifdef __WXMAC__
    wxSizeEvent dummyEvent;
@@ -128,20 +159,28 @@ void Lyrics::Add(double t, wxString syllable)
    mSyllables[i].t = t;
    mSyllables[i].text = syllable;
 
+   mSyllables[i].char0 = mText.Length();
+
    // Put a space between syllables unless the previous one
    // ended in a hyphen
-   if (i > 0 && mSyllables[i-1].text.Length() > 0 &&
-       mSyllables[i-1].text.Right(1)!="-") {
+   if (i > 0 && 
+         // mSyllables[i-1].text.Length() > 0 &&
+         mSyllables[i-1].text.Right(1) != "-") 
+   {
       mSyllables[i].textWithSpace = " " + syllable;
-      mText += " ";
    }
    else {
       mSyllables[i].textWithSpace = syllable;
    }
 
-   mSyllables[i].char0 = mText.Length();
-   mText += syllable;
+   mText += mSyllables[i].textWithSpace;
    mSyllables[i].char1 = mText.Length();
+
+   int nTextLen = mSyllables[i].textWithSpace.Length();
+   if ((nTextLen > 0) && (mSyllables[i].textWithSpace.Right(1) == "_"))
+      *mTextCtrl << mSyllables[i].textWithSpace.Left(nTextLen - 1) << "\n";
+   else 
+      *mTextCtrl << mSyllables[i].textWithSpace;
 }
 
 void Lyrics::Finish(double finalT)
@@ -158,15 +197,31 @@ void Lyrics::Finish(double finalT)
    // Mark measurements as invalid
    mMeasurementsDone = false;
    mCurrentSyllable = 0;
+   //mTextCtrl->SetSelection(mSyllables[2].char0, mSyllables[2].char1);
+   mTextCtrl->ShowPosition(0);
+}
+
+void Lyrics::SetLyricsStyle(const LyricsStyle newLyricsStyle)
+{
+   if (mLyricsStyle == newLyricsStyle)
+      return;
+
+   mLyricsStyle = newLyricsStyle;
+   mTextCtrl->Show(mLyricsStyle == kHighlightLyrics);
+
+   wxSizeEvent ignore;
+   this->OnSize(ignore);
 }
 
 
-#define DEFAULT_FONT_POINTSIZE 80
-int gKaraokeFontPointSize = DEFAULT_FONT_POINTSIZE;
+unsigned int Lyrics::GetDefaultFontSize() const
+{
+   return (mLyricsStyle == kBouncingBallLyrics) ? 48 : 14;
+}
 
 void Lyrics::SetFont(wxDC *dc)
 {
-   dc->SetFont(wxFont(gKaraokeFontPointSize, wxSWISS, wxNORMAL, wxNORMAL));
+   dc->SetFont(wxFont(mKaraokeFontSize, wxSWISS, wxNORMAL, wxNORMAL));
 }
 
 void Lyrics::Measure(wxDC *dc)
@@ -174,10 +229,17 @@ void Lyrics::Measure(wxDC *dc)
    SetFont(dc);
 
    int width = 0, height = 0;
-   int x = 0;
+   int maxLineWidth = 0; // only for kHighlightLyrics
+
+   const int kIndent = 4;
+   int x = 2*kIndent; 
+   int y = kIndent;
+
    unsigned int i;
    for(i=0; i<mSyllables.GetCount(); i++) {
-      if (i < 2 || i >= mSyllables.GetCount()-2) {
+      if ((i < 2) || // Clear() starts the list with 2 dummies.
+            (i >= mSyllables.GetCount()-3)) // Finish() ends with 3 dummies.
+      {
          dc->GetTextExtent("DUMMY", &width, &height); // Get the correct height even if we're at i=0.
          width = 0;
       }
@@ -185,33 +247,60 @@ void Lyrics::Measure(wxDC *dc)
          dc->GetTextExtent(mSyllables[i].textWithSpace, &width, &height);
       }
 
-      // Add some space between words; the space is normally small but
-      // when there's a long pause relative to the previous word, insert
-      // extra space.
-      int extraSpacing;
-      if (i >= 2 && i < mSyllables.GetCount()-2) {
-         double deltaThis = mSyllables[i+1].t - mSyllables[i].t;
-         double deltaPrev = mSyllables[i].t - mSyllables[i-1].t;
+      if (mLyricsStyle == kBouncingBallLyrics)
+      {
+         // Add some space between words; the space is normally small but
+         // when there's a long pause relative to the previous word, insert
+         // extra space.
+         int extraWidth;
+         if (i >= 2 && i < mSyllables.GetCount()-2) {
+            double deltaThis = mSyllables[i+1].t - mSyllables[i].t;
+            double deltaPrev = mSyllables[i].t - mSyllables[i-1].t;
 
-         double ratio;
-         if (deltaPrev > 0.0)
-            ratio = deltaThis / deltaPrev;
-         else
-            ratio = deltaThis;
+            double ratio;
+            if (deltaPrev > 0.0)
+               ratio = deltaThis / deltaPrev;
+            else
+               ratio = deltaThis;
 
-         if (ratio > 2.0)
-            extraSpacing = 15 + (int)(15.0 * ratio);
+            if (ratio > 2.0)
+               extraWidth = 15 + (int)(15.0 * ratio);
+            else
+               extraWidth = 15;
+         }
          else
-            extraSpacing = 15;
+            extraWidth = 20;
+         
+         mSyllables[i].width = width + extraWidth;
+         mSyllables[i].leftX = x;
+         mSyllables[i].x = x + width/2;
+         x += mSyllables[i].width;
       }
-      else
-         extraSpacing = 20;
-      
-      mSyllables[i].width = width + extraSpacing;
-      mSyllables[i].leftX = x;
-      mSyllables[i].x = x + width/2;
-      x += mSyllables[i].width;
+      else // (mLyricsStyle == kHighlightLyrics)
+      {
+         mSyllables[i].width = width;
+         mSyllables[i].leftX = x;
+         mSyllables[i].topY = y;
+         x += mSyllables[i].width;
+         if ((mSyllables[i].text.Length() > 0) &&
+               (mSyllables[i].text.Right(1) == "_")) // end of line
+         {
+            if (x > maxLineWidth)
+               maxLineWidth = x;
+
+            // new line
+            x = kIndent; 
+            y += height + kIndent;
+         } 
+      }
    }
+   //vvvvv 
+   //if (mLyricsStyle == kBouncingBallLyrics)
+   //   //vvv For now, no scrolling in Bouncing Ball, so its paint calculations as is. 
+   //   //    this->SetVirtualSize(x, mKaraokeHeight);   // cummulative width, fixed height
+   //   this->SetVirtualSize(mWidth, mKaraokeHeight);   // client width, fixed height
+   //else // (mLyricsStyle == kHighlightLyrics)
+   //   this->SetVirtualSize((mWidth > maxLineWidth) ? mWidth : maxLineWidth, y + 2*kIndent);
    
    mTextHeight = height;
 
@@ -235,7 +324,7 @@ int Lyrics::FindSyllable(double t)
 
    if (i1 < 2)
       i1 = 2;
-   if (i1 > mSyllables.GetCount() - 3)
+   if (i1 > (int)(mSyllables.GetCount()) - 3)
       i1 = mSyllables.GetCount() - 3;
 
    return i1;
@@ -328,15 +417,28 @@ void Lyrics::GetKaraokePosition(double t,
 void Lyrics::Update(double t, bool bForce /* = false */)
 {
    mT = t;
-
-   wxRect karaokeRect(0, 0, mWidth, mKaraokeHeight);
-   this->Refresh(false, &karaokeRect);
-
    int i = FindSyllable(t);
    if (!bForce && (i == mCurrentSyllable))
       return;
 
    mCurrentSyllable = i;   
+
+   if (mLyricsStyle == kBouncingBallLyrics)
+   {
+      wxRect karaokeRect(0, 0, mWidth, mKaraokeHeight);
+      this->Refresh(false, &karaokeRect);
+   }
+   else // (mLyricsStyle == kHighlightLyrics)
+   {
+      //vvvvv 
+      //wxTextAttr defTextAttr = mTextCtrl->GetDefaultStyle();
+      //wxTextAttr highlightTextAttr(
+      //   wxNullColour), // const wxColour& colText, 
+      //   *wxCYAN) // const wxColour& colBack = wxNullColour, // const wxFont& font = wxNullFont)
+      //mTextCtrl->SetStyle(mSyllables[i].char0, mSyllables[i].char1, highlightTextAttr);
+      mTextCtrl->SetSelection(mSyllables[i].char0, mSyllables[i].char1);
+      //vvvvv mTextCtrl->ShowPosition(mSyllables[i].char0);
+   }
 }
 
 void Lyrics::OnKeyEvent(wxKeyEvent & event)
@@ -346,6 +448,7 @@ void Lyrics::OnKeyEvent(wxKeyEvent & event)
 
 void Lyrics::OnPaint(wxPaintEvent &evt)
 {
+   //vvvvv Looks like this whole thing should be only for Bouncing Ball.
    wxPaintDC dc(this);
 
    if (!mMeasurementsDone)
@@ -378,23 +481,40 @@ void Lyrics::OnSize(wxSizeEvent &evt)
    //} else {
       mKaraokeHeight = mHeight;
    //}
+   mTextCtrl->SetSize(mWidth, mKaraokeHeight);
    
-   gKaraokeFontPointSize = (int)((float)(DEFAULT_FONT_POINTSIZE * mHeight) / (float)LYRICS_DEFAULT_HEIGHT);
+   mKaraokeFontSize = 
+      (int)((float)(this->GetDefaultFontSize() * mHeight) / (float)LYRICS_DEFAULT_HEIGHT);
    // Usually don't get the size window we want, usually less than 
    // LYRICS_DEFAULT_HEIGHT, so bump it a little.
-   gKaraokeFontPointSize += 2;
+   mKaraokeFontSize += 2;
    this->Update(mT, true);
 
-   wxPaintEvent ignore;
    mMeasurementsDone = false;
+   wxPaintEvent ignore;
    this->OnPaint(ignore);
 }
 
 void Lyrics::HandlePaint(wxDC &dc)
 {
+   //vvvvv Looks like this whole thing should be only for Bouncing Ball.
    dc.SetBrush(*wxWHITE_BRUSH);
    dc.DrawRectangle(0, 0, mWidth, mKaraokeHeight);
 
+   switch (mLyricsStyle) {
+      case kHighlightLyrics: 
+         //vvvvv this->HandlePaint_Highlight(dc); 
+         break;
+
+      case kBouncingBallLyrics:
+      default:
+         this->HandlePaint_BouncingBall(dc); 
+         break;
+   }
+}
+
+void Lyrics::HandlePaint_BouncingBall(wxDC &dc)
+{
    int ctr = mWidth / 2;
    int x;
    double y;
@@ -438,6 +558,39 @@ void Lyrics::HandlePaint(wxDC &dc)
       dc.DrawEllipse(ball);
    }
 }
+
+void Lyrics::HandlePaint_Highlight(wxDC &dc)
+{
+   //vvvvv
+   //this->SetFont(&dc);
+   //int iCurrSyllable = this->FindSyllable(mT);
+   //wxBrush oldBrush = dc.GetBrush();
+   //wxPen oldPen = dc.GetPen();
+   ////wxColour oldTextForeground = dc.GetTextForeground();
+   //for (unsigned int i = 0; i < mSyllables.GetCount(); i++) 
+   //{
+   //   wxString strTemp = mSyllables[i].textWithSpace;
+   //   if ((strTemp.Length() > 0) && (strTemp.Right(1) == "_")) // end of line, but don't show the '_'
+   //      strTemp = strTemp.Left(strTemp.Length() - 1);
+
+   //   if (i == iCurrSyllable)
+   //   {
+   //      dc.SetPen(*wxCYAN_PEN);
+   //      dc.SetBrush(*wxCYAN_BRUSH);
+   //      dc.DrawRectangle(mSyllables[i].leftX, mSyllables[i].topY, mSyllables[i].width, mTextHeight);
+   //      
+   //      //dc.SetTextForeground(*wxRED);
+   //      dc.DrawText(strTemp, mSyllables[i].leftX, mSyllables[i].topY);
+   //      //dc.SetTextForeground(oldTextForeground);
+   //      
+   //      dc.SetBrush(oldBrush);
+   //      dc.SetPen(oldPen);
+   //   }
+   //   else
+   //      dc.DrawText(strTemp, mSyllables[i].leftX, mSyllables[i].topY);
+   //}
+}
+
 
 // Indentation settings for Vim and Emacs.
 // Please do not modify past this point.

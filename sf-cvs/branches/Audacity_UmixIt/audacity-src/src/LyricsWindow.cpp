@@ -20,8 +20,15 @@
 #include <Carbon/Carbon.h>
 #endif
 
+enum {
+   kMenuID_BouncingBall = 10101,
+   kMenuID_Highlight,
+};
+
 BEGIN_EVENT_TABLE(LyricsWindow, wxFrame)
    EVT_CLOSE(LyricsWindow::OnCloseWindow)
+   EVT_MENU(kMenuID_BouncingBall, LyricsWindow::OnStyle_BouncingBall)
+   EVT_MENU(kMenuID_Highlight, LyricsWindow::OnStyle_Highlight)
 END_EVENT_TABLE()
 
 const wxSize gSize = wxSize(LYRICS_DEFAULT_WIDTH, LYRICS_DEFAULT_HEIGHT);
@@ -57,6 +64,22 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
    #endif
    SetIcon(ic);
 #endif
+
+   wxMenuBar* pMenuBar = new wxMenuBar();
+   this->SetMenuBar(pMenuBar);
+   mStyleMenu = new wxMenu();
+   pMenuBar->Append(mStyleMenu, _("Style"));
+   #ifdef wxHAS_RADIO_MENU_ITEMS 
+      mStyleMenu->AppendRadioItem(kMenuID_BouncingBall, _("Bouncing Ball"));
+      mStyleMenu->AppendRadioItem(kMenuID_Highlight, _("Highlight"));
+   #else
+      mStyleMenu->AppendCheckItem(kMenuID_BouncingBall, _("Bouncing Ball"));
+      mStyleMenu->AppendCheckItem(kMenuID_Highlight, _("Highlight"));
+   #endif
+   Lyrics::LyricsStyle currStyle = mLyricsPanel->GetLyricsStyle();
+   mStyleMenu->Check(
+      (currStyle == Lyrics::kBouncingBallLyrics) ? kMenuID_BouncingBall : kMenuID_Highlight, 
+      true);
 }
 
 LyricsWindow::~LyricsWindow()
@@ -65,5 +88,21 @@ LyricsWindow::~LyricsWindow()
 void LyricsWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
 {
   this->Hide();
+}
+
+void LyricsWindow::OnStyle_BouncingBall(wxCommandEvent &evt)
+{
+   mLyricsPanel->SetLyricsStyle(Lyrics::kBouncingBallLyrics);
+   #ifndef wxHAS_RADIO_MENU_ITEMS 
+      mStyleMenu->Check(kMenuID_Highlight, false);
+   #endif
+}
+
+void LyricsWindow::OnStyle_Highlight(wxCommandEvent &evt)
+{
+   mLyricsPanel->SetLyricsStyle(Lyrics::kHighlightLyrics);
+   #ifndef wxHAS_RADIO_MENU_ITEMS 
+      mStyleMenu->Check(kMenuID_BouncingBall, false);
+   #endif
 }
 
