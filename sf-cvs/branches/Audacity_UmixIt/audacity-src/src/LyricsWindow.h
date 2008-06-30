@@ -30,6 +30,10 @@ class LyricsWindow : public wxFrame {
  private:
    void OnCloseWindow(wxCloseEvent & WXUNUSED(event));
 
+   void OnStyle_BouncingBall(wxCommandEvent &evt);
+   void OnStyle_Highlight(wxCommandEvent &evt);
+   wxMenu* mStyleMenu;
+
    AudacityProject *mProject;
    Lyrics *mLyricsPanel;
 

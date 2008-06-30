@@ -190,7 +190,9 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "<h3>" +  wxGetApp().GetAppName() + "&reg; " + versionStr + "</h3>"
       + _("A Free Digital Audio Editor") +
       "</center>"
-      #if (AUDACITY_BRANDING == BRAND_THINKLABS) 
+      #if (AUDACITY_BRANDING == BRAND_UMIXIT) 
+         "<p>The UmixIt method is protected by Patent # 7,343,210 ." +
+      #elif (AUDACITY_BRANDING == BRAND_THINKLABS) 
          "<p>"
          + strThinklabsPreamble + 
       #endif
@@ -320,9 +322,6 @@ AboutDialog::AboutDialog(wxWindow * parent)
                               wxPoint(32, 16),
                               wxSize(nBrandLogoWidth, nBrandLogoHeight));
       pBoxSizer->Add(pBrandIcon, 0, wxALIGN_CENTER | wxALL, 8);
-   #endif
-
-   #if (AUDACITY_BRANDING == BRAND_UMIXIT) || (AUDACITY_BRANDING == BRAND_THINKLABS)
       logo = new wxBitmap((const char **) powered_by_Audacity_xpm);
    #else
       logo = new wxBitmap((const char **) AudacityLogo_xpm);

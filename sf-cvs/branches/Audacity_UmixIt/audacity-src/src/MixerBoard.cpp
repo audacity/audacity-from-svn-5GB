@@ -600,6 +600,7 @@ void MixerBoardScrolledWindow::OnPaint(wxPaintEvent &evt)
 {
    wxScrolledWindow::OnPaint(evt);
 
+#if (AUDACITY_BRANDING != BRAND_UMIXIT) // June 17, 2008: Turn off, per Marissa. Shows only in BrandingPanel.
    if (mImage == NULL)
    {
       Branding* pBranding = mMixerBoard->GetProjectBranding();
@@ -617,6 +618,7 @@ void MixerBoardScrolledWindow::OnPaint(wxPaintEvent &evt)
    dc.DrawBitmap(bmp, 0, 0);
 
    dc.EndDrawing();
+#endif
 }
 
 // class MixerBoard
