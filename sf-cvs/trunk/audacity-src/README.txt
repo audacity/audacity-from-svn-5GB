@@ -1,6 +1,6 @@
 
 Audacity(R): A Free, Cross-Platform Digital Audio Editor
-WWW: http://audacity.sourceforge.net/
+  WWW: http://audacity.sourceforge.net/
 
 We welcome feedback on Audacity, suggestions for new or
 improved features, bug reports and patches at:
@@ -17,13 +17,13 @@ Audacity source code archive, except as otherwise noted
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Version 1.3.6a2 (alpha)
+Version 1.3.6a3 (alpha)
 
 
 Contents of this README:
 
 1.  Licensing
-2.  Changes in version 1.3.6a2
+2.  Changes in version 1.3.6a3
 3.  Known Issues
 4.  Source Code, Libraries and Additional Copyright Information
 5.  Compilation Instructions
@@ -55,33 +55,20 @@ to http://www.gnu.org/copyleft/gpl.html or write to
 
 --------------------------------------------------------------------------------
 
-2.  Changes in version 1.3.6a2
+2.  Changes in version 1.3.6a3
 
 Import / Export:
-        * Experimental support for importing a much wider range
-           of audio formats via FFmpeg: support has to be enabled
-           in *config when building and requires FFmpeg libraries
-        * Experimental support for "on-demand" immediate loading
-           of imported PCM WAV or AIFF files (full waveform continues
-           to load while you play or edit).
-
-Effects:
-        * Built-in plug-ins now grouped into related categories
+        * Experimental support for exporting a much wider range
+           of proprietary audio formats via FFmpeg
+        * "On-demand" immediate loading of imported PCM WAV or
+           AIFF files now has experimental "progress bar" embedded in
+           the waveform until fully loaded
 
 Interface:
-        * New Debug Log window available in all builds
-        * Experimental support for linking a label track with any
-           number of audio tracks so that labels shift with cuts and
-           inserts in the audio track
-        * Default theme now reverted to that of 1.3.5
-        * Recording channels preference now defaults to stereo
-
-Miscellaneous:
-        * Bug fixes for shortcut availability/tab order in Selection Bar,
-           and for window focus issues when previewing effects
-        * Improvements in escaping and navigating fields in dialogs,
-           and in stabilty when screen readers are used
-
+        * New Transport menu for alternative access to play and record
+           commands and some recording preferences
+        * Audio tracks are now linked to label tracks by being positioned
+           above a label track, if linkage is enabled in the Tracks menu
 
 --------------------------------------------------------------------------------
 
@@ -93,17 +80,37 @@ Please also check:
 for details of any issues that have been identified after release of
 this version.
 
- * Using "Undo" when a label track is linked with any audio
-    track causes the linkage to break, and can cause crashes.
+ * When audio/label track linkage is on: cutting a selected region
+    in both audio and label tracks results in too much of the label
+    track being deleted; and pasting audio into multiple tracks
+    inserts silence as well as the pasted content.
+
+ * Whether audio/label track linkage is on or not: a label cannot be
+    pasted with its audio; system clipboard content is pasted instead
+    of the label content; and labels denoting a selection region are
+    pasted as a cursor point.
 
  * "On demand" loading of files not available if using the optional
     FFmpeg importer (that is, if "ffmpeg-compatible files" is set in
     the import window).
 
+ * Audacity can underestimate the loudest sample in a longer selection
+    region (or in the entire track) if it contains a relatively small number
+    of different peaks. This then causes clipping if the audio is amplified
+    to 0.0 dB. Unlikely to affect a typical pop music track.
+
  * MP3 Export: Bit Rate Mode and Quality choices in MP3 Options
     dialogue are non-functional, almost always producing a 128 kbps
     CBR file. Additionally, the reported length is often incorrect (the
     actual length is correct).
+
+ * ID3 Genre tags of imported MP3s are misread (and will therefore
+    also be exported incorrectly) if the genre list in Metadata Editor is
+    opened and saved.
+
+ * When in Spectrum, Spectrum log or Pitch view, pasting in audio then
+    zooming in causes the pasted content beyond the horizontal scroll to
+    disappear.
 
  * Preferences window: OK button does not work when a tab
     is selected in the left-hand panel.
@@ -171,33 +178,30 @@ this version.
  * Windows Vista only: If no input device (such as a microphone) is enabled
     and connected, clicking Help > Audio Device Info causes a crash.
 
- * Mac OS X only: Some users find that after running Audacity other media
-    players don't produce any sound or crash. Audacity tries to select the best
-    quality settings your system is capable of, to give the best recordings
-    possible. Some sound drivers also retain these settings as defaults for
-    other applications, which can cause these symptoms.
+ * Mac OS X only: Some users find that after running Audacity other
+    media players don't produce any sound or crash. Audacity tries to
+    select the best quality settings your system is capable of, to give
+    the best recordings possible, but some Mac applications can only
+    work at lower quality settings.
 
-   To get round this, enable the option "Do not modify audio device settings"
-   on the Audio I/O tab of the preferences, and make sure that your sound
-   device is set up (in the Apple Sound and Midi Setup utility) to work in
-   stereo, 16bits, with a sample rate of 44100Hz or 48000Hz.  More help at:
+    To get round this, make sure that your sound device is set up (in
+    Apple Sound and MIDI Setup) to work in stereo, 16 bits, with a
+    sample rate of 44100Hz or 48000Hz.  More help at:
       http://audacityteam.org/wiki/index.php?title=Mac_Bugs#Loss_of_sound_after_running_Audacity
 
- * Mac OS X only: Some menus do not get re-enabled after previewing
-    then cancelling an effect, or after applying it.
-
- * Mac OS X only: If using Audacity when the "Hear" audio plug-in is running
-   (or has been since boot), there will be excessive memory usage which could
-   cause a crash. This appears to be due to buggy memory allocation in "Hear".
+ * Mac OS X only: If using Audacity when the "Hear" audio plug-in is
+    running (or has been since boot), there will be excessive memory
+    usage which could cause a crash. This appears to be due to buggy
+    memory allocation in "Hear".
 
  * Mac OS X only: Portable settings aren't picked up, and the default
     settings (in the default location) are always used. See this page for
-    a workround:
+    a workaround:
       http://audacityteam.org/wiki/index.php?title=Portable_Audacity
 
- * Linux only: Audacity now supports interfacing with Jack, however this has
-    not been tested, and is known to have a number of issues with both
-    reliability and useability. Patches to improve both will be welcomed.
+ * Linux only: Audacity now supports interfacing with Jack, however
+    this has not been tested, and has a number of known reliability and
+    useability issues. Patches to improve both will be welcomed.
 
  * Linux (reported on): The first file imported into a project no longer
     changes the project rate to the file's rate, if that rate is absent from the
@@ -381,6 +385,34 @@ or e-mail us at:
 --------------------------------------------------------------------------------
 
 6.  Previous Changes going back to version 1.1.0
+
+Changes in 1.3.6a2:
+
+Import / Export:
+        * Experimental support for importing a much wider range
+           of audio formats via FFmpeg: support has to be enabled
+           in *config when building and requires FFmpeg libraries
+        * Experimental support for "on-demand" immediate loading
+           of imported PCM WAV or AIFF files (full waveform continues
+           to load while you play or edit).
+
+Effects:
+        * Built-in plug-ins now grouped into related categories
+
+Interface:
+        * New Debug Log window available in all builds
+        * Experimental support for linking a label track with any
+           number of audio tracks so that labels shift with cuts and
+           inserts in the audio track
+        * Default theme now reverted to that of 1.3.5
+        * Recording channels preference now defaults to stereo
+
+Miscellaneous:
+        * Bug fixes for shortcut availability/tab order in Selection Bar,
+           and for window focus issues when previewing effects
+        * Improvements in escaping and navigating fields in dialogs,
+           and in stabilty when screen readers are used
+
 
 Changes in 1.3.6a1:
 
