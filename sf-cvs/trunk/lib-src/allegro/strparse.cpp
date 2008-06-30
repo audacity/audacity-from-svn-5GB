@@ -55,7 +55,7 @@ void string_escape(char *result, char *str, char *quote)
         *result++ = quote[0];
     }
     for (int i = 0; i < length; i++) {
-        if (!isalnum(str[i])) {
+        if (!isalnum((unsigned char)str[i])) {
             char *chars = "\n\t\\\r\"";
             char *special = strchr(chars, str[i]);
             if (special) {
