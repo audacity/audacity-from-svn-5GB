@@ -1304,6 +1304,10 @@ void Alg_time_map::cut(double start, double len, bool units_are_seconds)
     while (i < length() && beats[i].time < start - ALG_EPS) {
         i = i + 1;
     }
+
+    // if no beats exist at or after start, just return; nothing to cut
+    if (i == length()) return;
+
     // now i is index into beats of the first breakpoint on or 
     // after start, insert (start, initial_beat) in map
     if (within(beats[i].time, start, ALG_EPS)) {
@@ -1312,11 +1316,11 @@ void Alg_time_map::cut(double start, double len, bool units_are_seconds)
         beats[i].time = start;
         beats[i].beat = initial_beat;
     } else {
-        Alg_beat_ptr point = new Alg_beat(start, initial_beat);
-        beats.insert(i, point);
+        Alg_beat point(start, initial_beat);
+        beats.insert(i, &point);
     }
-    // now, we're correct up to beats[i]. find first beat after
-    // end so we can start shifting from there
+    // now, we're correct up to beats[i] and beats[i] happens at start.
+    // find first beat after end so we can start shifting from there
     i = i + 1;
     int start_index = i;
     while (i < length() && beats[i].time < end + ALG_EPS) i++;
@@ -2682,8 +2686,6 @@ Alg_seq *Alg_seq::cut(double start, double len, bool all)
     if (start + len > get_dur()) // can't cut after end:
         len = get_dur() - start;
 
-    write("thiscut1secs.gro");
-
     Alg_seq_ptr result = new Alg_seq();
     Alg_time_map_ptr map = new Alg_time_map(get_time_map());
     result->set_time_map(map);
@@ -2738,8 +2740,6 @@ Alg_seq *Alg_seq::cut(double start, double len, bool all)
     time_map->cut(start, len, units_are_seconds);
     set_dur(get_dur() - len);
 
-    result->write("resultsecs.gro");
-    write("thiscut2secs.gro");
     return result;
 }
 
@@ -2828,9 +2828,6 @@ void Alg_seq::paste(double start, Alg_seq *seq)
     // to manipulate time map, we need units as beats
     // save original form so we can convert back if necessary
 
-    seq->write("seqpaste1secs.gro");
-    write("thispaste1secs.gro");
-
     bool units_should_be_seconds = units_are_seconds;
     bool seq_units_should_be_seconds = seq->get_units_are_seconds();
     if (units_are_seconds) {
@@ -2838,9 +2835,6 @@ void Alg_seq::paste(double start, Alg_seq *seq)
         convert_to_beats();
     }
     seq->convert_to_beats();
-
-    seq->write("seqpaste1beats.gro");
-    write("thispaste1beats.gro");
 
     // do a paste on each track
     int i;
@@ -2863,16 +2857,12 @@ void Alg_seq::paste(double start, Alg_seq *seq)
     set_dur(get_dur() + seq->get_dur());
     assert(!seq->units_are_seconds && !units_are_seconds);
 
-    write("thispaste2beats.gro");
-
     if (units_should_be_seconds) {
         convert_to_seconds();
     }
     if (seq_units_should_be_seconds) {
         seq->convert_to_seconds();
     }
-
-    write("thispaste2secs.gro");
 }
 
 
