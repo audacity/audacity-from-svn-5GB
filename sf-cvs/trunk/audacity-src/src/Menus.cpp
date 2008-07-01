@@ -53,7 +53,9 @@ simplifies construction of menu items.
 #include "Dependencies.h"
 #include "float_cast.h"
 #include "LabelTrack.h"
+#ifdef USE_MIDI
 #include "import/ImportMIDI.h"
+#endif
 #include "import/ImportRaw.h"
 #include "export/Export.h"
 #include "export/ExportMultiple.h"
@@ -67,7 +69,9 @@ simplifies construction of menu items.
 #include "Prefs.h"
 #include "Printing.h"
 #include "UploadDialog.h"
+#ifdef USE_MIDI
 #include "NoteTrack.h"
+#endif
 #include "Tags.h"
 #include "Mix.h"
 #include "AboutDialog.h"
@@ -214,7 +218,9 @@ void AudacityProject::CreateMenusAndCommands()
 		c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
 		c->AddItem(wxT("ImportAudio"),    _("&Audio...\tCtrl+Shift+I"),	FN(OnImport));
 		c->AddItem(wxT("ImportLabels"),   _("&Labels..."),					FN(OnImportLabels));
+        #ifdef USE_MIDI
 		c->AddItem(wxT("ImportMIDI"),     _("&MIDI..."),							FN(OnImportMIDI));
+        #endif
 		c->AddItem(wxT("ImportRaw"),      _("&Raw Data..."),				FN(OnImportRaw));
       c->EndSubMenu();
       
@@ -2743,11 +2749,11 @@ void AudacityProject::OnPaste()
             WaveTrack *w = (WaveTrack *)c;
             n = mTrackFactory->NewWaveTrack(w->GetSampleFormat(), w->GetRate());
             } break;
-
+         #ifdef USE_MIDI
          case Track::Note:
             n = mTrackFactory->NewNoteTrack();
             break;
-
+         #endif
          case Track::Label:
             n = mTrackFactory->NewLabelTrack();
             break;
@@ -3834,6 +3840,7 @@ void AudacityProject::OnImportLabels()
    }
 }
 
+#ifdef USE_MIDI
 void AudacityProject::OnImportMIDI()
 {
    wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
@@ -3871,6 +3878,7 @@ void AudacityProject::OnImportMIDI()
       }
    }
 }
+#endif // USE_MIDI
 
 void AudacityProject::OnImportRaw()
 {

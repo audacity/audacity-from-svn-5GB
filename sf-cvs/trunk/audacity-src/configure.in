@@ -264,8 +264,8 @@ dnl-----------------------------------------------------------------
 dnl Pull in library Cflags and so on for the non-optional libraries
 
 dnl TODO enable/disable allegro
-LOCAL_LIBS="$LOCAL_LIBS allegro.a"
-CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/allegro"
+dnl LOCAL_LIBS="$LOCAL_LIBS allegro.a"
+dnl CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/allegro"
 
 dnl Include FileDialog
 AC_CONFIG_SUBDIRS(["lib-src/FileDialog"])
@@ -285,7 +285,7 @@ dnl-------------------------------------------------------------
 dnl Optional library support. Lots of things we could use, but 
 dnl can do without if they aren't available.
 dnl-------------------------------------------------------------
-LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG LIBLRDF LIBRAPTOR"
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG LIBLRDF LIBRAPTOR PORTSMF"
 
 AC_MSG_NOTICE([Determining what libraries are available in this tree and on the system])
 
@@ -304,6 +304,7 @@ AUDACITY_CHECKLIB_LIBTWOLAME
 AUDACITY_CHECKLIB_FFMPEG
 AUDACITY_CHECKLIB_LIBLRDF
 AUDACITY_CHECKLIB_LIBRAPTOR
+AUDACITY_CHECKLIB_PORTSMF
 
 dnl Decide what libraries to build with, and whether to use system or local libraries
 dnl Set variables based on choices.
@@ -316,7 +317,7 @@ for lib in $LIBRARIES ; do
    eval LIB_ARGUMENT="\$${lib}_ARGUMENT"
    eval LIB_SYSTEM_AVAILABLE="\$${lib}_SYSTEM_AVAILABLE"
    eval LIB_LOCAL_AVAILABLE="\$${lib}_LOCAL_AVAILABLE"
-   if test $LIB_ARGUMENT = unspecified -o $LIB_ARGUMENT = yes ; then
+   if test x"$LIB_ARGUMENT" = x"unspecified" -o x"$LIB_ARGUMENT" = x"yes" ; then
       lib_activated="no"
       for sys_or_local in $lib_preference ; do
          # example: LIBMAD_SYSTEM_AVAILABLE
@@ -406,7 +407,9 @@ for lib in $LIBRARIES ; do
    eval LIB_USE_LOCAL=\$${lib}_USE_LOCAL
    eval LIB_USE_SYSTEM=\$${lib}_USE_SYSTEM
    if test "x$LIB_USE_LOCAL" = "xyes" ; then
+      eval LIBSRC_BUILD=\"$LIBSRC_BUILD \$${lib}_LOCAL_BUILD\"
       eval LOCAL_LIBS=\"$LOCAL_LIBS \$${lib}_LOCAL_LIBS\"
+      eval BUILD_LDFLAGS=\"$BUILD_LDFLAGS \$${lib}_LOCAL_LDFLAGS\"
       eval OPTOBJS=\"$OPTOBJS \$${lib}_LOCAL_OPTOBJS\"
       eval CXXFLAGS=\"\$CXXFLAGS \$${lib}_LOCAL_CXXFLAGS\"
       eval CONFIG_SUBDIRS=\"\$${lib}_LOCAL_CONFIG_SUBDIRS\"
@@ -700,7 +703,7 @@ case "${host_os}" in
 esac
 
 AC_CONFIG_FILES([Makefile src/Makefile lib-src/Makefile \
-                 lib-src/allegro/Makefile lib-src/expat/Makefile \
+                 lib-src/expat/Makefile \
                  lib-src/libnyquist/Makefile lib-src/libvamp/Makefile \
                  lib-src/portaudio/pa_unix_oss/Makefile \
                  locale/Makefile tests/Makefile])

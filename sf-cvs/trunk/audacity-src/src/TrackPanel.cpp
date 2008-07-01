@@ -3545,6 +3545,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
                   num-1, event.m_x, event.m_y))
          return;
    }
+   #ifdef USE_MIDI
    // DM: If it's a NoteTrack, it has special controls
    else if (t->GetKind() == Track::Note)
    {
@@ -3558,6 +3559,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
          return;
       }
    }
+   #endif // USE_MIDI
 
    // DM: If they weren't clicking on a particular part of a track label,
    //  deselect other tracks and select this one.
@@ -4941,12 +4943,14 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
                       (((WaveTrack *) t)->GetSampleFormat()), r.x + offset,
                       r.y + 38);
                       
-   } else if (t->GetKind() == Track::Note) {
+   }
+   #ifdef USE_MIDI
+   else if (t->GetKind() == Track::Note) {
       wxRect midiRect;
       mTrackInfo.GetTrackControlsRect(trackRect, midiRect);
       ((NoteTrack *) t)->DrawLabelControls(*dc, midiRect);
-
    }
+   #endif
 }
 
 void TrackPanel::DrawOutsideOfTrack(Track * t, wxDC * dc, const wxRect r)
