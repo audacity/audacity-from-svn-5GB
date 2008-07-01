@@ -196,7 +196,7 @@ ExportMP2::ExportMP2()
 {
    AddFormat();
    SetFormat(wxT("MP2"),0);
-   SetExtension(wxT("mp2"),0);
+   AddExtension(wxT("mp2"),0);
    SetMaxChannels(2,0);
    SetCanMetaData(true,0);
    SetDescription(_("MP2 Files"),0);

@@ -123,9 +123,9 @@ void ExportPlugin::SetDescription(const wxString & description, int index)
    mFormatInfos[index]->mDescription = description;
 }
 
-void ExportPlugin::SetExtension(const wxString & extension, int index)
+void ExportPlugin::AddExtension(const wxString &extension,int index)
 {
-   mFormatInfos[index]->mExtension = extension;
+   mFormatInfos[index]->mExtensions.Add(extension);
 }
 
 void ExportPlugin::SetExtensions(const wxArrayString & extensions, int index)
@@ -160,7 +160,7 @@ wxString ExportPlugin::GetDescription(int index)
 
 wxString ExportPlugin::GetExtension(int index)
 {
-   return mFormatInfos[index]->mExtension;
+   return mFormatInfos[index]->mExtensions[0];
 }
 
 wxArrayString ExportPlugin::GetExtensions(int index)
@@ -204,7 +204,8 @@ bool ExportPlugin::IsExtension(wxString & ext)
    bool isext = false;
    for (int i = 0; i < GetFormatCount(); i++)
    {
-      isext = (GetExtension(i) == wxT("") || GetExtensions(i).Index(ext, false) != wxNOT_FOUND);
+      if (GetExtension(i) == wxT("") || (GetExtensions(i).Index(ext, false) != wxNOT_FOUND))
+         isext = true;
    }
    return isext;
 }

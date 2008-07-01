@@ -1646,7 +1646,7 @@ ExportMP3::ExportMP3()
    InitMP3_Statics();
    AddFormat();
    SetFormat(wxT("MP3"),0);
-   SetExtension(wxT("mp3"),0);
+   AddExtension(wxT("mp3"),0);
    SetMaxChannels(2,0);
    SetCanMetaData(true,0);
    SetDescription(_("MP3 Files"),0);

@@ -56,7 +56,7 @@ public:
    int AddFormat();
    void SetFormat(const wxString & format, int index);
    void SetDescription(const wxString & description, int index);
-   void SetExtension(const wxString & extension, int index);
+   void ExportPlugin::AddExtension(const wxString &extension,int index);
    void SetExtensions(const wxArrayString & extensions, int index);
    void SetMask(const wxString & mask, int index);
    void SetMaxChannels(int maxchannels, int index);
