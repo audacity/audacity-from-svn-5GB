@@ -1072,7 +1072,8 @@ ExportFFmpeg::ExportFFmpeg()
    mEncAudioStream = NULL;			// the output audio stream (may remain NULL)
    mEncAudioCodecCtx = NULL;		// the encoder for the output audio stream
    mEncAudioEncodedBuf = NULL;		// buffer to hold frames encoded by the encoder
-   mEncAudioEncodedBufSiz = AVCODEC_MAX_AUDIO_FRAME_SIZE;
+   #define MAX_AUDIO_PACKET_SIZE (128 * 1024)
+   mEncAudioEncodedBufSiz = 4*MAX_AUDIO_PACKET_SIZE;
    mEncAudioFifoOutBuf = NULL;		// buffer to read _out_ of the FIFO into
 }
 
@@ -1226,6 +1227,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    mEncAudioCodecCtx->time_base.num = 0;
    mEncAudioCodecCtx->time_base.den = 1;
    mEncAudioCodecCtx->sample_fmt = SAMPLE_FMT_S16;
+   mEncAudioCodecCtx->strict_std_compliance = FF_COMPLIANCE_STRICT;
 
    // Is the required audio codec compiled into libavcodec?
    if ((codec = FFmpegLibsInst->avcodec_find_encoder(mEncAudioCodecCtx->codec_id)) == NULL)
@@ -1235,13 +1237,19 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       return false;
    }
 
+   if (mEncFormatCtx->oformat->flags & AVFMT_GLOBALHEADER)
+   {
+      mEncAudioCodecCtx->flags |= CODEC_FLAG_GLOBAL_HEADER;
+      mEncAudioStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
+   }
+
    // Open the codec.
    if (FFmpegLibsInst->avcodec_open(mEncAudioCodecCtx, codec) < 0) 
    {
       wxLogMessage(wxT("FFmpeg : ERROR - Can't open audio codec %d."),mEncAudioCodecCtx->codec_id);
       return false;
    }
-
+ 
    wxLogMessage(wxT("FFmpeg : Audio Output Codec Frame Size: %d samples."), mEncAudioCodecCtx->frame_size);
 
    if ((mEncAudioCodecCtx->codec_id >= CODEC_ID_PCM_S16LE) && (mEncAudioCodecCtx->codec_id <= CODEC_ID_PCM_DVD))
@@ -1258,10 +1266,10 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    // The encoder may require a minimum number of raw audio samples for each encoding but we can't
    // guarantee we'll get this minimum each time an audio frame is decoded from the input file so 
    // we use a FIFO to store up incoming raw samples until we have enough for one call to the codec.
-   FFmpegLibsInst->av_fifo_init(&mEncAudioFifo, 2 * AVCODEC_MAX_AUDIO_FRAME_SIZE);
+   FFmpegLibsInst->av_fifo_init(&mEncAudioFifo, 1024);
 
    // Allocate a buffer to read OUT of the FIFO into. The FIFO maintains its own buffer internally.
-   if ((mEncAudioFifoOutBuf = (uint8_t*)FFmpegLibsInst->av_malloc(2 * AVCODEC_MAX_AUDIO_FRAME_SIZE)) == NULL)
+   if ((mEncAudioFifoOutBuf = (uint8_t*)FFmpegLibsInst->av_malloc(2*MAX_AUDIO_PACKET_SIZE)) == NULL)
    {
       wxLogMessage(wxT("FFmpeg : ERROR - Can't allocate buffer to read into from audio FIFO."));
       return false;
@@ -1312,7 +1320,7 @@ bool ExportFFmpeg::Finalize()
       // Okay, we got a final encoded frame we can write to the output file.
       FFmpegLibsInst->av_init_packet(&pkt);
 
-      pkt.stream_index = mEncAudioStream->index;					
+      pkt.stream_index = mEncAudioStream->index;
       pkt.data = mEncAudioEncodedBuf;
       pkt.size = nEncodedBytes;
       pkt.flags |= PKT_FLAG_KEY;
@@ -1369,11 +1377,11 @@ bool ExportFFmpeg::EncodeAudioFrame(int16_t *pFrame, int frameSize)
 
    nBytesToWrite = frameSize;
    pRawSamples  = (uint8_t*)pFrame;
-
+   FFmpegLibsInst->av_fifo_realloc(&mEncAudioFifo, FFmpegLibsInst->av_fifo_size(&mEncAudioFifo) + frameSize);
    // Put the raw audio samples into the FIFO.
    ret = FFmpegLibsInst->av_fifo_generic_write(&mEncAudioFifo, pRawSamples, nBytesToWrite,NULL);
    wxASSERT(ret == nBytesToWrite);
-   
+
    // Read raw audio samples out of the FIFO in nAudioFrameSizeOut byte-sized groups to encode.
    while ((ret = FFmpegLibsInst->av_fifo_size(&mEncAudioFifo)) >= nAudioFrameSizeOut)
    {
@@ -1388,20 +1396,14 @@ bool ExportFFmpeg::EncodeAudioFrame(int16_t *pFrame, int frameSize)
       {
          wxLogMessage(wxT("FFmpeg : ERROR - Can't encode audio frame."));
          return false;
-      } 
-      else if (pkt.size == 0)
-      {
-         wxLogMessage(wxT("FFmpeg : Audio codec buffered samples ..."));
-         return true;
       }
 
       // Rescale from the codec time_base to the AVStream time_base.
       if (mEncAudioCodecCtx->coded_frame && mEncAudioCodecCtx->coded_frame->pts != AV_NOPTS_VALUE)
          pkt.pts = FFmpegLibsInst->av_rescale_q(mEncAudioCodecCtx->coded_frame->pts, mEncAudioCodecCtx->time_base, mEncAudioStream->time_base);
-
       //wxLogMessage(wxT("FFmpeg : (%d) Writing audio frame with PTS: %lld."), mEncAudioCodecCtx->frame_number, pkt.pts);
 
-      pkt.stream_index = 0;
+      pkt.stream_index = mEncAudioStream->index;
       pkt.data = mEncAudioEncodedBuf;
       pkt.flags |= PKT_FLAG_KEY;
 
@@ -1412,7 +1414,6 @@ bool ExportFFmpeg::EncodeAudioFrame(int16_t *pFrame, int frameSize)
          return false;
       }
    }
-
    return true;
 }
 
@@ -1444,7 +1445,7 @@ bool ExportFFmpeg::Export(AudacityProject *project,
 
    AddTags(metadata);
 
-   int pcmBufferSize = 9216;
+   int pcmBufferSize = 1024;
    int numWaveTracks;
    WaveTrack **waveTracks;
    tracks->GetWaveTracks(selectionOnly, &numWaveTracks, &waveTracks);
