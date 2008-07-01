@@ -56,6 +56,8 @@ class wxSizer;
 class wxStaticBox;
 class wxMenuBar;
 class wxMenu;
+class wxSpinCtrl;
+class wxListBox;
 class Shuttle;
 
 class WrappedType;
