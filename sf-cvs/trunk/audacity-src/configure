@@ -709,6 +709,8 @@ LIBLRDF_CFLAGS
 LIBLRDF_LIBS
 LIBRAPTOR_CFLAGS
 LIBRAPTOR_LIBS
+PORTSMF_CFLAGS
+PORTSMF_LIBS
 build
 build_cpu
 build_vendor
@@ -757,6 +759,8 @@ LIBLRDF_CFLAGS
 LIBLRDF_LIBS
 LIBRAPTOR_CFLAGS
 LIBRAPTOR_LIBS
+PORTSMF_CFLAGS
+PORTSMF_LIBS
 JACK_CFLAGS
 JACK_LIBS'
 ac_subdirs_all='"lib-src/FileDialog"
@@ -1373,6 +1377,7 @@ Optional Packages:
   --with-liblrdf          use liblrdf for categorisation of LADSPA plugins
   --with-libraptor        libraptor is needed for categorisation of LADSPA
                           plugins
+  --with-midi             use portSMF for Midi support
   --with-portmixer        compile with PortMixer [default=yes]
   --with-portaudio        which version of PortAudio to use (=[v18,v19])
                           [default=v19]
@@ -1430,6 +1435,10 @@ Some influential environment variables:
               C compiler flags for LIBRAPTOR, overriding pkg-config
   LIBRAPTOR_LIBS
               linker flags for LIBRAPTOR, overriding pkg-config
+  PORTSMF_CFLAGS
+              C compiler flags for PORTSMF, overriding pkg-config
+  PORTSMF_LIBS
+              linker flags for PORTSMF, overriding pkg-config
   JACK_CFLAGS C compiler flags for JACK, overriding pkg-config
   JACK_LIBS   linker flags for JACK, overriding pkg-config
 
@@ -5194,8 +5203,6 @@ LIBS="$LIBS `$WX_CONFIG $wxconfigargs --libs`"
 CXXFLAGS="$CXXFLAGS `$WX_CONFIG $wxconfigargs --cxxflags`"
 
 
-LOCAL_LIBS="$LOCAL_LIBS allegro.a"
-CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/allegro"
 
 subdirs="$subdirs "lib-src/FileDialog""
 
@@ -5488,7 +5495,7 @@ echo "$as_me: running $SHELL $ax_sub_configure $ax_sub_configure_args --cache-fi
   { echo "$as_me:$LINENO: Done configuring in \"${srcdir}/lib-src/lib-widget-extra\"" >&5
 echo "$as_me: Done configuring in \"${srcdir}/lib-src/lib-widget-extra\"" >&6;}
 
-         export PKG_CONFIG_PATH="./lib-src/lib-widget-extra/:$PKG_CONFIG_PATH"
+         export PKG_CONFIG_PATH="${srcdir}/lib-src/lib-widget-extra/:$PKG_CONFIG_PATH"
 
 pkg_failed=no
 { echo "$as_me:$LINENO: checking for WIDGETEXTRA" >&5
@@ -5571,7 +5578,7 @@ BUILD_LDFLAGS="$BUILD_LDFLAGS $WIDGETEXTRA_LIBS"
 CXXFLAGS="$CXXFLAGS $WIDGETEXTRA_CFLAGS"
 LIBSRC_BUILD="$LIBSRC_BUILD widgetextra"
 
-LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG LIBLRDF LIBRAPTOR"
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG LIBLRDF LIBRAPTOR PORTSMF"
 
 { echo "$as_me:$LINENO: Determining what libraries are available in this tree and on the system" >&5
 echo "$as_me: Determining what libraries are available in this tree and on the system" >&6;}
@@ -8354,6 +8361,275 @@ echo "$as_me: libraptor is NOT available in the local tree" >&6;}
 
 
 
+
+# Check whether --with-midi was given.
+if test "${with_midi+set}" = set; then
+  withval=$with_midi; PORTSMF_ARGUMENT=$withval
+else
+  PORTSMF_ARGUMENT="unspecified"
+fi
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_MIDI 1
+_ACEOF
+
+   fi
+
+      if test -d ${srcdir}/lib-src/portsmf ; then
+
+  # Remove --cache-file and --srcdir arguments so they do not pile up.
+  ax_sub_configure_args=
+  ax_prev=
+  eval "set x $ac_configure_args"
+  shift
+  for ax_arg
+  do
+    if test -n "$ax_prev"; then
+      ax_prev=
+      continue
+    fi
+    case $ax_arg in
+    -cache-file | --cache-file | --cache-fil | --cache-fi \
+    | --cache-f | --cache- | --cache | --cach | --cac | --ca | --c)
+      ax_prev=cache_file ;;
+    -cache-file=* | --cache-file=* | --cache-fil=* | --cache-fi=* \
+    | --cache-f=* | --cache-=* | --cache=* | --cach=* | --cac=* | --ca=* \
+    | --c=*)
+      ;;
+    --config-cache | -C)
+      ;;
+    -srcdir | --srcdir | --srcdi | --srcd | --src | --sr)
+      ax_prev=srcdir ;;
+    -srcdir=* | --srcdir=* | --srcdi=* | --srcd=* | --src=* | --sr=*)
+      ;;
+    -prefix | --prefix | --prefi | --pref | --pre | --pr | --p)
+      ax_prev=prefix ;;
+    -prefix=* | --prefix=* | --prefi=* | --pref=* | --pre=* | --pr=* | --p=*)
+      ;;
+    *)
+      case $ax_arg in
+      *\'*) ax_arg=`echo "$ax_arg" | sed "s/'/'\\\\\\\\''/g"` ;;
+      esac
+      ax_sub_configure_args="$ax_sub_configure_args '$ax_arg'" ;;
+    esac
+  done
+
+  # Always prepend --prefix to ensure using the same prefix
+  # in subdir configurations.
+  ax_arg="--prefix=$prefix"
+  case $ax_arg in
+  *\'*) ax_arg=`echo "$ax_arg" | sed "s/'/'\\\\\\\\''/g"` ;;
+  esac
+  ax_sub_configure_args="'$ax_arg' $ax_sub_configure_args"
+
+  # Pass --silent
+  if test "$silent" = yes; then
+    ax_sub_configure_args="--silent $ax_sub_configure_args"
+  fi
+
+  ax_popdir=`pwd`
+  { echo "$as_me:$LINENO: Configuring sources in \"${srcdir}/lib-src/portsmf\"" >&5
+echo "$as_me: Configuring sources in \"${srcdir}/lib-src/portsmf\"" >&6;}
+      { as_dir=""${srcdir}/lib-src/portsmf""
+  case $as_dir in #(
+  -*) as_dir=./$as_dir;;
+  esac
+  test -d "$as_dir" || { $as_mkdir_p && mkdir -p "$as_dir"; } || {
+    as_dirs=
+    while :; do
+      case $as_dir in #(
+      *\'*) as_qdir=`echo "$as_dir" | sed "s/'/'\\\\\\\\''/g"`;; #(
+      *) as_qdir=$as_dir;;
+      esac
+      as_dirs="'$as_qdir' $as_dirs"
+      as_dir=`$as_dirname -- "$as_dir" ||
+$as_expr X"$as_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$as_dir" : 'X\(//\)[^/]' \| \
+	 X"$as_dir" : 'X\(//\)$' \| \
+	 X"$as_dir" : 'X\(/\)' \| . 2>/dev/null ||
+echo X"$as_dir" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+      test -d "$as_dir" && break
+    done
+    test -z "$as_dirs" || eval "mkdir $as_dirs"
+  } || test -d "$as_dir" || { { echo "$as_me:$LINENO: error: cannot create directory $as_dir" >&5
+echo "$as_me: error: cannot create directory $as_dir" >&2;}
+   { (exit 1); exit 1; }; }; }
+      ac_builddir=.
+
+case ""${srcdir}/lib-src/portsmf"" in
+.) ac_dir_suffix= ac_top_builddir_sub=. ac_top_build_prefix= ;;
+*)
+  ac_dir_suffix=/`echo ""${srcdir}/lib-src/portsmf"" | sed 's,^\.[\\/],,'`
+  # A ".." for each directory in $ac_dir_suffix.
+  ac_top_builddir_sub=`echo "$ac_dir_suffix" | sed 's,/[^\\/]*,/..,g;s,/,,'`
+  case $ac_top_builddir_sub in
+  "") ac_top_builddir_sub=. ac_top_build_prefix= ;;
+  *)  ac_top_build_prefix=$ac_top_builddir_sub/ ;;
+  esac ;;
+esac
+ac_abs_top_builddir=$ac_pwd
+ac_abs_builddir=$ac_pwd$ac_dir_suffix
+# for backward compatibility:
+ac_top_builddir=$ac_top_build_prefix
+
+case $srcdir in
+  .)  # We are building in place.
+    ac_srcdir=.
+    ac_top_srcdir=$ac_top_builddir_sub
+    ac_abs_top_srcdir=$ac_pwd ;;
+  [\\/]* | ?:[\\/]* )  # Absolute name.
+    ac_srcdir=$srcdir$ac_dir_suffix;
+    ac_top_srcdir=$srcdir
+    ac_abs_top_srcdir=$srcdir ;;
+  *) # Relative name.
+    ac_srcdir=$ac_top_build_prefix$srcdir$ac_dir_suffix
+    ac_top_srcdir=$ac_top_build_prefix$srcdir
+    ac_abs_top_srcdir=$ac_pwd/$srcdir ;;
+esac
+ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
+
+  cd ""${srcdir}/lib-src/portsmf""
+
+  # Check for guested configure; otherwise get Cygnus style configure.
+  if test -f "configure.gnu"; then
+    ax_sub_configure=$ac_srcdir/configure.gnu
+  elif test -f "$ac_srcdir/configure"; then
+    ax_sub_configure=$ac_srcdir/configure
+  elif test -f "$ac_srcdir/configure.in"; then
+    # This should be Cygnus configure.
+	ax_sub_configure=$ac_aux_dir/configure
+  else
+    { echo "$as_me:$LINENO: WARNING: no configuration information is in \"${srcdir}/lib-src/portsmf\"" >&5
+echo "$as_me: WARNING: no configuration information is in \"${srcdir}/lib-src/portsmf\"" >&2;}
+    ax_sub_configure=
+  fi
+
+  # The recursion is here.
+  if test -n "$ax_sub_configure"; then
+    # Make the cache file name correct relative to the subdirectory.
+    case $cache_file in
+    [\\/]* | ?:[\\/]* ) ax_sub_cache_file=$cache_file ;;
+    *) # Relative name.
+	ax_sub_cache_file=$ac_top_build_prefix$cache_file ;;
+    esac
+
+    { echo "$as_me:$LINENO: running $SHELL $ax_sub_configure $ax_sub_configure_args --cache-file=$ax_sub_cache_file --srcdir=$ac_srcdir" >&5
+echo "$as_me: running $SHELL $ax_sub_configure $ax_sub_configure_args --cache-file=$ax_sub_cache_file --srcdir=$ac_srcdir" >&6;}
+    # The eval makes quoting arguments work.
+    eval "\$SHELL \"\$ax_sub_configure\" $ax_sub_configure_args \
+	   --cache-file=\"\$ax_sub_cache_file\" --srcdir=\"\$ax_srcdir\""
+  fi
+
+  cd "$ax_popdir"
+  { echo "$as_me:$LINENO: Done configuring in \"${srcdir}/lib-src/portsmf\"" >&5
+echo "$as_me: Done configuring in \"${srcdir}/lib-src/portsmf\"" >&6;}
+
+   fi
+         export PKG_CONFIG_PATH="${srcdir}/lib-src/portsmf/:$PKG_CONFIG_PATH"
+
+pkg_failed=no
+{ echo "$as_me:$LINENO: checking for PORTSMF" >&5
+echo $ECHO_N "checking for PORTSMF... $ECHO_C" >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$PORTSMF_CFLAGS"; then
+        pkg_cv_PORTSMF_CFLAGS="$PORTSMF_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"portSMF\"") >&5
+  ($PKG_CONFIG --exists --print-errors "portSMF") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_PORTSMF_CFLAGS=`$PKG_CONFIG --cflags "portSMF" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$PORTSMF_LIBS"; then
+        pkg_cv_PORTSMF_LIBS="$PORTSMF_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"portSMF\"") >&5
+  ($PKG_CONFIG --exists --print-errors "portSMF") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_PORTSMF_LIBS=`$PKG_CONFIG --libs "portSMF" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        PORTSMF_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "portSMF"`
+        else
+	        PORTSMF_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "portSMF"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$PORTSMF_PKG_ERRORS" >&5
+
+	{ echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+                portsmf_available="no"
+elif test $pkg_failed = untried; then
+	portsmf_available="no"
+else
+	PORTSMF_CFLAGS=$pkg_cv_PORTSMF_CFLAGS
+	PORTSMF_LIBS=$pkg_cv_PORTSMF_LIBS
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+	portsmf_available="yes"
+fi
+
+   if test "x$portsmf_available" = "xyes" ; then
+      PORTSMF_LOCAL_AVAILABLE="yes"
+      PORTSMF_LOCAL_LDFLAGS=$PORTSMF_LIBS
+      PORTSMF_LOCAL_CXXFLAGS=$PORTSMF_CFLAGS
+      PORTSMF_LOCAL_CPPSYMBOLS="USE_MIDI"
+	        PORTSMF_LOCAL_OPTOBJS="NoteTrack.o import/ImportMIDI.o"
+	  	  PORTSMF_LOCAL_BUILD="portSMF"
+   else
+	  PORTSMF_LOCAL_AVAILABLE="no"
+   fi
+
+
+
 { echo "$as_me:$LINENO: Figuring out what libraries to enable" >&5
 echo "$as_me: Figuring out what libraries to enable" >&6;}
 
@@ -8363,7 +8639,7 @@ for lib in $LIBRARIES ; do
    eval LIB_ARGUMENT="\$${lib}_ARGUMENT"
    eval LIB_SYSTEM_AVAILABLE="\$${lib}_SYSTEM_AVAILABLE"
    eval LIB_LOCAL_AVAILABLE="\$${lib}_LOCAL_AVAILABLE"
-   if test $LIB_ARGUMENT = unspecified -o $LIB_ARGUMENT = yes ; then
+   if test x"$LIB_ARGUMENT" = x"unspecified" -o x"$LIB_ARGUMENT" = x"yes" ; then
       lib_activated="no"
       for sys_or_local in $lib_preference ; do
          # example: LIBMAD_SYSTEM_AVAILABLE
@@ -8461,7 +8737,9 @@ for lib in $LIBRARIES ; do
    eval LIB_USE_LOCAL=\$${lib}_USE_LOCAL
    eval LIB_USE_SYSTEM=\$${lib}_USE_SYSTEM
    if test "x$LIB_USE_LOCAL" = "xyes" ; then
+      eval LIBSRC_BUILD=\"$LIBSRC_BUILD \$${lib}_LOCAL_BUILD\"
       eval LOCAL_LIBS=\"$LOCAL_LIBS \$${lib}_LOCAL_LIBS\"
+      eval BUILD_LDFLAGS=\"$BUILD_LDFLAGS \$${lib}_LOCAL_LDFLAGS\"
       eval OPTOBJS=\"$OPTOBJS \$${lib}_LOCAL_OPTOBJS\"
       eval CXXFLAGS=\"\$CXXFLAGS \$${lib}_LOCAL_CXXFLAGS\"
       eval CONFIG_SUBDIRS=\"\$${lib}_LOCAL_CONFIG_SUBDIRS\"
@@ -9326,7 +9604,7 @@ case "${host_os}" in
       ;;
 esac
 
-ac_config_files="$ac_config_files Makefile src/Makefile lib-src/Makefile lib-src/allegro/Makefile lib-src/expat/Makefile lib-src/libnyquist/Makefile lib-src/libvamp/Makefile lib-src/portaudio/pa_unix_oss/Makefile locale/Makefile tests/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile lib-src/Makefile lib-src/expat/Makefile lib-src/libnyquist/Makefile lib-src/libvamp/Makefile lib-src/portaudio/pa_unix_oss/Makefile locale/Makefile tests/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -9887,7 +10165,6 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "lib-src/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/Makefile" ;;
-    "lib-src/allegro/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/allegro/Makefile" ;;
     "lib-src/expat/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/expat/Makefile" ;;
     "lib-src/libnyquist/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/libnyquist/Makefile" ;;
     "lib-src/libvamp/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/libvamp/Makefile" ;;
@@ -10049,9 +10326,9 @@ LIBLRDF_CFLAGS!$LIBLRDF_CFLAGS$ac_delim
 LIBLRDF_LIBS!$LIBLRDF_LIBS$ac_delim
 LIBRAPTOR_CFLAGS!$LIBRAPTOR_CFLAGS$ac_delim
 LIBRAPTOR_LIBS!$LIBRAPTOR_LIBS$ac_delim
+PORTSMF_CFLAGS!$PORTSMF_CFLAGS$ac_delim
+PORTSMF_LIBS!$PORTSMF_LIBS$ac_delim
 build!$build$ac_delim
-build_cpu!$build_cpu$ac_delim
-build_vendor!$build_vendor$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -10093,6 +10370,8 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+build_cpu!$build_cpu$ac_delim
+build_vendor!$build_vendor$ac_delim
 build_os!$build_os$ac_delim
 host!$host$ac_delim
 host_cpu!$host_cpu$ac_delim
@@ -10104,7 +10383,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 9; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 11; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
