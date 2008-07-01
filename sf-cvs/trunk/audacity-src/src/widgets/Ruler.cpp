@@ -1202,6 +1202,13 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
          displacementy=0;
       }
    }
+   else {
+      if (mOrientation==wxHORIZONTAL) {
+         mRect.Inflate(0,5);
+         displacementx=0; 
+         displacementy=0;
+      }
+   }
    for(i=0; i<mNumMajor; i++) {
       mMajorLabels[i].lx+= displacementx;
       mMajorLabels[i].ly+= displacementy;
