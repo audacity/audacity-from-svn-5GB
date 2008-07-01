@@ -77,7 +77,6 @@ OBJS = \
 	Matrix.o \
 	Menus.o \
 	Mix.o \
-	NoteTrack.o \
 	PitchName.o \
 	PlatformCompatibility.o \
 	Printing.o \
@@ -156,7 +155,6 @@ OBJS = \
 	import/Import.o \
 	import/ImportFLAC.o \
 	import/ImportLOF.o \
-	import/ImportMIDI.o \
 	import/ImportMP3.o \
 	import/ImportOGG.o \
 	import/ImportPCM.o \

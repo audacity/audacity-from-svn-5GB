@@ -2309,11 +2309,13 @@ XMLTagHandler *AudacityProject::HandleXMLChild(const wxChar *tag)
       return newTrack;
    }
 
+   #ifdef USE_MIDI
    if (!wxStrcmp(tag, wxT("notetrack"))) {
       NoteTrack *newTrack = mTrackFactory->NewNoteTrack();
       mTracks->Add(newTrack);
       return newTrack;
    }
+   #endif
 
    if (!wxStrcmp(tag, wxT("labeltrack"))) {
       LabelTrack *newTrack = mTrackFactory->NewLabelTrack();

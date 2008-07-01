@@ -37,13 +37,15 @@
 #include <wx/pen.h>
 #include <wx/log.h>
 
+#ifdef USE_MIDI
 #include "allegro.h"
+#include "NoteTrack.h"
+#endif
 
 #include "AColor.h"
 #include "BlockFile.h"
 #include "Envelope.h"
 #include "Track.h"
-#include "NoteTrack.h"
 #include "WaveTrack.h"
 #include "LabelTrack.h"
 #include "TimeTrack.h"
@@ -70,12 +72,14 @@ int gWaveformTimeCount = 0;
 #define BUFFERED_DRAWING 1
 #endif
 
+#ifdef USE_MIDI
 const int octaveHeight = 62;
 const int blackPos[5] = { 6, 16, 32, 42, 52 };
 const int whitePos[7] = { 0, 9, 17, 26, 35, 44, 53 };
 const int notePos[12] = { 1, 6, 11, 16, 21,
    27, 32, 37, 42, 47, 52, 57
 };
+#endif
 
 TrackArtist::TrackArtist()
 {
@@ -272,9 +276,11 @@ void TrackArtist::DrawTracks(TrackList * tracks,
                break;
             }
             break;              // case Wave
+         #ifdef USE_MIDI
          case Track::Note:
             DrawNoteTrack((NoteTrack *)t, dc, rr, viewInfo);
             break;
+         #endif // USE_MIDI
          case Track::Label:
             DrawLabelTrack((LabelTrack *)t, dc, rr, viewInfo);
             break;
@@ -463,6 +469,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       // Pitch
    }
 
+   #ifdef USE_MIDI
    // The note track isn't drawing a ruler at all!
    if (t->GetKind() == Track::Note) {
 
@@ -541,6 +548,8 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
          }
       }
    }
+   #endif // USE_MIDI
+
 #ifdef EXPERIMENTAL_RULER_AUTOSIZE
    t->vrulerSize = vruler->mRect.GetSize();
 #endif //EXPERIMENTAL_RULER_AUTOSIZE
@@ -2128,6 +2137,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
 #endif //EXPERIMENTAL_FIND_NOTES
 }
 
+#ifdef USE_MIDI
 /*
 Note: recall that Allegro attributes end in a type identifying letter.
 
@@ -2401,6 +2411,7 @@ char *LookupAtomAttribute(Alg_note_ptr note, Alg_attribute attr, char *def)
   return def;
 }
 #endif /* EXPERIMENTAL_NOTE_TRACK */
+#endif /* USE_MIDI */
 
 #define TIME_TO_X(t) (r.x + (int) (((t) - h) * pps))
 #define X_TO_TIME(xx) (((xx) - r.x) / pps + h)
@@ -2422,6 +2433,7 @@ char *LookupAtomAttribute(Alg_note_ptr note, Alg_attribute attr, char *def)
 
 //#define PITCH_TO_Y(p) (r.y + r.height - int(pitchht * ((p) + 0.5 - pitch0) + 0.5))
 
+#ifdef USE_MIDI
 int PITCH_TO_Y(double p, int bottom)
 {
    int octave = (((int) (p + 0.5)) / 12);
@@ -2804,6 +2816,7 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
 #endif /* EXPERIMENTAL_NOTE_TRACK */
   dc.DestroyClippingRegion();
 }
+#endif // USE_MIDI
 
 void TrackArtist::DrawLabelTrack(LabelTrack *track,
                                  wxDC & dc, wxRect & r,

@@ -108,6 +108,9 @@
 /* Define if the ogg vorbis decoding library is present */
 #undef USE_LIBVORBIS
 
+/* Define if midi support should be enabled */
+#undef USE_MIDI
+
 /* Define if Nyquist support should be enabled */
 #undef USE_NYQUIST
 

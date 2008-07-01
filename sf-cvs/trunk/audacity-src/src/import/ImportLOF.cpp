@@ -76,7 +76,9 @@
 #include <wx/tokenzr.h>
 
 #include "ImportLOF.h"
+#ifdef USE_MIDI
 #include "ImportMIDI.h"
+#endif
 #include "../WaveTrack.h"
 #include "ImportPlugin.h"
 #include "Import.h"
@@ -350,7 +352,8 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
       // To identify filename and open it
       tokenholder = temptok1.GetNextToken();
       targetfile = temptok1.GetNextToken();
-      
+     
+      #ifdef USE_MIDI
       // If file is a midi
       if (targetfile.AfterLast(wxT('.')).IsSameAs(wxT("mid"), false)
           ||  targetfile.AfterLast(wxT('.')).IsSameAs(wxT("midi"), false))
@@ -366,6 +369,11 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
       // If not a midi, open audio file
       else
       {
+      #else // USE_MIDI
+         /* if we don't have midi support, go straight on to opening as an
+          * audio file. TODO: Some sort of message here? */
+      {
+      #endif // USE_MIDI
          mProject->OpenFile(targetfile);
       }
 

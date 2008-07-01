@@ -16,6 +16,7 @@
 #define USE_SOUNDTOUCH 1
 #define USE_VAMP 1
 #undef USE_VST
+#undef USE_MIDI			// define this to use portSMF for midi file support
 
 #define INSTALL_PREFIX "."
 

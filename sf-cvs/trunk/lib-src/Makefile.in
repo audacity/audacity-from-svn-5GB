@@ -1,10 +1,8 @@
 all: @LOCAL_LIBS@ @LIBSRC_BUILD@
 
-# Allegro
-allegro-recursive:
-	$(MAKE) -C allegro
-allegro.a: allegro-recursive
-	ln -sf allegro/allegro.a allegro.a
+# portSMF
+portSMF:
+	$(MAKE) -C portsmf
 
 # dlcompat
 dl-recursive:
@@ -150,7 +148,7 @@ portmixer/px_mac_core/portmixer.a:
 
 # Utility rules
 clean:
-	-$(MAKE) -C allegro clean
+	-$(MAKE) -C portsmf clean
 	-$(MAKE) -C dlcompat clean	
 	-$(MAKE) -C expat clean
 	-$(MAKE) -C FileDialog clean
@@ -177,7 +175,7 @@ clean:
 	-rm -rf @LOCAL_LIBS@
 
 distclean:
-	-$(MAKE) -C allegro distclean
+	-$(MAKE) -C portsmf distclean
 	-$(MAKE) -C dlcompat distclean
 	-$(MAKE) -C expat distclean
 	-$(MAKE) -C FileDialog distclean
@@ -204,11 +202,10 @@ distclean:
 	-rm -f @LOCAL_LIBS@
 
 # list here all the targets that aren't actually files to be made
-.PHONY: allegro-recursive expat-recursive FileDialog-recursive \
+.PHONY: portsmf eexpat-recursive FileDialog-recursive \
 		widgetextra libogg-recursive \
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
 	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
 	libresample-recursive libsamplerate-recursive libvamp-recursive \
 	portaudio-v19-recursive portmixer-recursive libtwolame-recursive \
 	liblrdf-recursive
-
