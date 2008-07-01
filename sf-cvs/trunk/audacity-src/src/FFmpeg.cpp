@@ -630,6 +630,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avutil,av_fifo_read);
    INITDYN(avutil,av_fifo_size);
    INITDYN(avutil,av_fifo_generic_write);
+   INITDYN(avutil,av_fifo_realloc);
    INITDYN(avutil,av_malloc);
    INITDYN(avutil,av_freep);
    INITDYN(avutil,av_rescale_q);

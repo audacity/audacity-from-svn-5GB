@@ -131,6 +131,7 @@ public:
    int               (*av_fifo_read)                  (AVFifoBuffer *f, uint8_t *buf, int buf_size);
    int               (*av_fifo_size)                  (AVFifoBuffer *f);
    int               (*av_fifo_generic_write)         (AVFifoBuffer *f, void *src, int size, int (*func)(void*, void*, int));
+   void              (*av_fifo_realloc)                (AVFifoBuffer *f, unsigned int size);
    void*             (*av_malloc)                     (unsigned int size);
    void              (*av_freep)                      (void *ptr);
    int64_t           (*av_rescale_q)                  (int64_t a, AVRational bq, AVRational cq);
