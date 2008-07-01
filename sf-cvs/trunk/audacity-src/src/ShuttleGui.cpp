@@ -100,6 +100,7 @@ for registering for changes.
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/treectrl.h>
+#include <wx/spinctrl.h>
 #include "Internat.h"
 #include "Experimental.h"
 #include "ShuttleGui.h"
@@ -462,6 +463,26 @@ wxSlider * ShuttleGuiBase::AddSlider(const wxString &Prompt, int pos, int Max, i
    return pSlider;
 }
 
+wxSpinCtrl * ShuttleGuiBase::AddSpinCtrl(const wxString &Prompt, int Value, int Max, int Min)
+{
+   UseUpId();
+   if( mShuttleMode != eIsCreating )
+      return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wxSpinCtrl);
+   AddPrompt( Prompt );
+   wxSpinCtrl * pSpinCtrl;
+   mpWind = pSpinCtrl = new wxSpinCtrl( mpParent, miId, 
+      wxEmptyString,  
+      wxDefaultPosition, wxDefaultSize,
+      Style( wxSP_VERTICAL | wxSP_ARROW_KEYS ),
+      Min, Max, Value
+      );
+   mpWind->SetName(Prompt);
+   miProp=1;
+   UpdateSizers();
+   return pSpinCtrl;
+}
+
+
 wxTextCtrl * ShuttleGuiBase::AddTextBox(const wxString &Caption, const wxString &Value, const int nChars)
 {
    UseUpId();
@@ -518,6 +539,21 @@ void ShuttleGuiBase::AddConstTextBox(const wxString &Prompt, const wxString &Val
       Style( 0 ));
    UpdateSizers();
 }
+
+wxListBox * ShuttleGuiBase::AddListBox(const wxArrayString * pChoices, long style)
+{
+   UseUpId();
+   if( mShuttleMode != eIsCreating )
+      return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wxListBox);
+   wxListBox * pListBox;
+   SetProportions( 1 );
+   mpWind = pListBox = new wxListBox(mpParent, miId,
+      wxDefaultPosition, wxDefaultSize,*pChoices, style);
+   pListBox->SetMinSize( wxSize( 120,150 ));
+   UpdateSizers();
+   return pListBox;
+}
+
 
 wxListCtrl * ShuttleGuiBase::AddListControl()
 {
@@ -972,6 +1008,45 @@ wxCheckBox * ShuttleGuiBase::TieCheckBox(const wxString &Prompt, WrappedType & W
    }
    return pCheckBox;
 }
+wxSpinCtrl * ShuttleGuiBase::TieSpinCtrl( const wxString &Prompt, WrappedType & WrappedRef, const int max, const int min )
+{
+   // The Add function does a UseUpId(), so don't do it here in that case.
+   if( mShuttleMode == eIsCreating )
+      return AddSpinCtrl( Prompt, WrappedRef.ReadAsInt(), max, min );
+
+   UseUpId();
+   wxSpinCtrl * pSpinCtrl=NULL;
+
+   wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
+   pSpinCtrl = wxDynamicCast(pWnd, wxSpinCtrl);
+
+   switch( mShuttleMode )
+   {
+      // IF setting internal storage from the controls.
+   case eIsGettingFromDialog:
+      {
+         wxASSERT( pSpinCtrl );
+         WrappedRef.WriteToAsInt( pSpinCtrl->GetValue() );
+      }
+      break;
+   case eIsSettingToDialog:
+      {
+         wxASSERT( pSpinCtrl );
+         pSpinCtrl->SetValue( WrappedRef.ReadAsInt() );
+      }
+      break;
+      // IF Saving settings to external storage...
+      // or IF Getting settings from external storage.
+   case eIsGettingViaShuttle:
+   case eIsSavingViaShuttle:
+      DoDataShuttle( Prompt, WrappedRef );
+      break;
+   default:
+      wxASSERT( false );
+      break;
+   }
+   return pSpinCtrl;
+}
 
 wxTextCtrl * ShuttleGuiBase::TieTextBox( const wxString &Prompt, WrappedType & WrappedRef, const int nChars)
 {
@@ -1199,6 +1274,12 @@ wxCheckBox * ShuttleGuiBase::TieCheckBoxOnRight(const wxString &Prompt, bool &Va
    return TieCheckBox( Prompt, WrappedRef );
 }
 
+wxSpinCtrl * ShuttleGuiBase::TieSpinCtrl( const wxString &Prompt, int &Value, const int max, const int min )
+{
+   WrappedType WrappedRef(Value);
+   return TieSpinCtrl( Prompt, WrappedRef, max, min );
+}
+
 wxTextCtrl * ShuttleGuiBase::TieTextBox( const wxString &Prompt, wxString &Selected, const int nChars)
 {  
    WrappedType WrappedRef(Selected);
@@ -1415,6 +1496,26 @@ wxSlider * ShuttleGuiBase::TieSlider(
    if( DoStep(3) ) DoDataShuttle( SettingName, WrappedRef );
 
    return pSlider;
+}
+
+/// Variant of the standard TieSpinCtrl which does the two step exchange 
+/// between gui and stack variable and stack variable and shuttle.
+wxSpinCtrl * ShuttleGuiBase::TieSpinCtrl(
+                                     const wxString &Prompt, 
+                                     const wxString &SettingName, 
+                                     const int Value,
+                                     const int max,
+                                     const int min)
+{
+   wxSpinCtrl * pSpinCtrl=NULL;
+
+   int iValue = Value;
+   WrappedType WrappedRef( iValue );
+   if( DoStep(1) ) DoDataShuttle( SettingName, WrappedRef );
+   if( DoStep(2) ) pSpinCtrl = TieSpinCtrl( Prompt, WrappedRef, max, min );
+   if( DoStep(3) ) DoDataShuttle( SettingName, WrappedRef );
+
+   return pSpinCtrl;
 }
 
 /// Variant of the standard TieTextBox which does the two step exchange 
