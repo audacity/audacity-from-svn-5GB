@@ -151,7 +151,7 @@ ExportOGG::ExportOGG()
 {
    AddFormat();
    SetFormat(wxT("OGG"),0);
-   SetExtension(wxT("ogg"),0);
+   AddExtension(wxT("ogg"),0);
    SetMaxChannels(255,0);
    SetCanMetaData(true,0);
    SetDescription(_("Ogg Vorbis Files"),0);

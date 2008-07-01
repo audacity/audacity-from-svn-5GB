@@ -204,7 +204,7 @@ ExportFLAC::ExportFLAC()
 {
    AddFormat();
    SetFormat(wxT("FLAC"),0);
-   SetExtension(wxT("flac"),0);
+   AddExtension(wxT("flac"),0);
    SetMaxChannels(FLAC__MAX_CHANNELS,0);
    SetCanMetaData(true,0);
    SetDescription(_("FLAC Files"),0);

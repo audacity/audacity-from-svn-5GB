@@ -216,7 +216,7 @@ ExportCL::ExportCL()
 {
    AddFormat();
    SetFormat(wxT("CL"),0);
-   SetExtension(wxT(""),0);
+   AddExtension(wxT(""),0);
    SetMaxChannels(255,0);
    SetCanMetaData(false,0);
    SetDescription(_("(external program)"),0);

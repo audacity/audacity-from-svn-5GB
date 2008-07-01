@@ -341,7 +341,7 @@ ExportPCM::ExportPCM()
    SetFormat(wxT("WAV"),0);
    SetCanMetaData(true,0);
    SetDescription(_("WAV (Microsoft) signed 16 bit PCM"),0);
-   SetExtension(sf_header_extension(si.format),0);
+   AddExtension(sf_header_extension(si.format),0);
    SetExtensions(sf_get_all_extensions(),0);
    SetMaxChannels(si.channels - 1,0);
 
@@ -351,7 +351,7 @@ ExportPCM::ExportPCM()
    SetFormat(wxT("AIFF"),1);
    SetCanMetaData(true,1);
    SetDescription(_("AIFF (Apple) signed 16 bit PCM"),1);
-   SetExtension(sf_header_extension(si.format),1);
+   AddExtension(sf_header_extension(si.format),1);
    SetExtensions(sf_get_all_extensions(),1);
    SetMaxChannels(si.channels - 1,1);
 
@@ -359,7 +359,7 @@ ExportPCM::ExportPCM()
    SetFormat(wxT("LIBSNDFILE"),2);
    SetCanMetaData(true,2);
    SetDescription(_("Other uncompressed files"),2);
-   SetExtension(wxT("wav"),2);
+   AddExtension(wxT("wav"),2);
    SetExtensions(sf_get_all_extensions(),2);
    SetMaxChannels(255,2);
 

@@ -105,7 +105,7 @@ enum FFmpegExposedFormat
   FMT_AAC,
   FMT_OGGVORBIS,
   FMT_OGGFLAC,
-  FMT_GSMWAV,
+  FMT_GSMAIFF,
   FMT_GSMMSWAV,
   FMT_AMRNB,
   FMT_AMRWB,
@@ -129,24 +129,23 @@ struct ExposedFormat
 
 ExposedFormat fmts[] = 
 {
-   {FMT_PCMS16LEWAV, wxT("WAV"), wxT("wav"), 255, true,_("WAV Files (FFmpeg)"), CODEC_ID_PCM_S16LE},
-   {FMT_MP3, wxT("MP3"), wxT("mp3"), 2, true,_("MP3 Files (FFmpeg)"), CODEC_ID_MP3LAME},
-   {FMT_MP4, wxT("MP4"), wxT("mp4"), 48, true,_("MP4 (AAC) Files (FFmpeg)"), CODEC_ID_AAC},
-   {FMT_FLAC, wxT("FLAC"), wxT("flac"), 8, true,_("FLAC Files (FFmpeg)"), CODEC_ID_FLAC},
-   {FMT_AC3, wxT("AC3"), wxT("ac3"), 7, true,_("AC3 Files (FFmpeg)"), CODEC_ID_AC3},
-   {FMT_AAC, wxT("AAC"), wxT("aac"), 48, true,_("AAC Files (FFmpeg)"), CODEC_ID_AAC},
-   {FMT_OGGVORBIS, wxT("OGG"), wxT("ogg"), 2, true,_("OGG Vorbis Files (FFmpeg)"), CODEC_ID_VORBIS},
-   {FMT_OGGFLAC, wxT("OGG"), wxT("ogg"), 255, true,_("OGG FLAC Files (FFmpeg)"), CODEC_ID_FLAC},
-   {FMT_GSMWAV, wxT("GSMAIFF"), wxT("aiff"), 1, true,_("GSM-AIFF Files (FFmpeg)"), CODEC_ID_GSM},
-   {FMT_GSMMSWAV, wxT("GSMWAV"), wxT("wav"), 1, true,_("GSM-WAV (Microsoft) Files (FFmpeg)"), CODEC_ID_GSM_MS},
-   {FMT_AMRNB, wxT("AMRNB"), wxT("amr"), 1, true,_("AMR (narrow band) Files (FFmpeg)"), CODEC_ID_AMR_NB},
-   {FMT_AMRWB, wxT("AMRWB"), wxT("amr"), 1, true,_("AMR (wide band) Files (FFmpeg)"), CODEC_ID_AMR_WB},
-   {FMT_WMA2, wxT("WMA"), wxT("wma"), 2, true,_("WMA (version 2) Files (FFmpeg)"), CODEC_ID_WMAV2},
-   {FMT_RA3, wxT("RA3"), wxT("ra"), 6, true,_("Real Audio (version 3) Files (FFmpeg)"), CODEC_ID_AC3},
-   {FMT_RA9, wxT("RA9"), wxT("ra"), 48, true,_("Real Audio (version 9) Files (FFmpeg)"), CODEC_ID_AAC},
-   {FMT_OTHER, wxT("FFMPEG"), wxT("ffmpeg"), 255, true,_("Other FFmpeg-Compatible Files"), CODEC_ID_NONE}
+   {FMT_PCMS16LEWAV, wxT("WAV"),       wxT("wav"),    255,  true,_("WAV Files (FFmpeg)"),                      CODEC_ID_PCM_S16LE},
+   {FMT_MP3,         wxT("MP3"),       wxT("mp3"),    2,    true,_("MP3 Files (FFmpeg)"),                      CODEC_ID_MP3LAME},
+   {FMT_MP4,         wxT("MP4"),       wxT("mp4"),    48,   true,_("MP4 (AAC) Files (FFmpeg)"),                CODEC_ID_AAC},
+   {FMT_FLAC,        wxT("FLAC"),      wxT("flac"),   8,    true,_("FLAC Files (FFmpeg)"),                     CODEC_ID_FLAC},
+   {FMT_AC3,         wxT("AC3"),       wxT("ac3"),    7,    true,_("AC3 Files (FFmpeg)"),                      CODEC_ID_AC3},
+   {FMT_AAC,         wxT("AAC"),       wxT("aac"),    48,   true,_("AAC Files (FFmpeg)"),                      CODEC_ID_AAC},
+   {FMT_OGGVORBIS,   wxT("OGG"),       wxT("ogg"),    2,    true,_("OGG Vorbis Files (FFmpeg)"),               CODEC_ID_VORBIS},
+   {FMT_OGGFLAC,     wxT("OGG"),       wxT("ogg"),    255,  true,_("OGG FLAC Files (FFmpeg)"),                 CODEC_ID_FLAC},
+   {FMT_GSMAIFF,     wxT("GSMAIFF"),   wxT("aiff"),   1,    true,_("GSM-AIFF Files (FFmpeg)"),                 CODEC_ID_GSM},
+   {FMT_GSMMSWAV,    wxT("GSMWAV"),    wxT("wav"),    1,    true,_("GSM-WAV (Microsoft) Files (FFmpeg)"),      CODEC_ID_GSM_MS},
+   {FMT_AMRNB,       wxT("AMRNB"),     wxT("amr"),    1,    true,_("AMR (narrow band) Files (FFmpeg)"),        CODEC_ID_AMR_NB},
+   {FMT_AMRWB,       wxT("AMRWB"),     wxT("amr"),    1,    true,_("AMR (wide band) Files (FFmpeg)"),          CODEC_ID_AMR_WB},
+   {FMT_WMA2,        wxT("WMA"),       wxT("wma"),    2,    true,_("WMA (version 2) Files (FFmpeg)"),          CODEC_ID_WMAV2},
+   {FMT_RA3,         wxT("RA3"),       wxT("ra"),     6,    true,_("Real Audio (version 3) Files (FFmpeg)"),   CODEC_ID_AC3},
+   {FMT_RA9,         wxT("RA9"),       wxT("ra"),     48,   true,_("Real Audio (version 9) Files (FFmpeg)"),   CODEC_ID_AAC},
+   {FMT_OTHER,       wxT("FFMPEG"),    wxT("ffmpeg"), 255,  true,_("Other FFmpeg-Compatible Files"),           CODEC_ID_NONE}
 };
-
 
 //----------------------------------------------------------------------------
 // ExportFFmpegAC3Options Class
@@ -1055,11 +1054,27 @@ ExportFFmpeg::ExportFFmpeg()
 {
    int newfmt;
 
-   for (newfmt = 0; newfmt < FMT_LAST; newfmt++)
+   for (newfmt = 0; newfmt < FMT_LAST - 1; newfmt++)
    {
       AddFormat();
       SetFormat(fmts[newfmt].name,newfmt);
-      SetExtension(fmts[newfmt].extension,newfmt);
+      AddExtension(fmts[newfmt].extension,newfmt);
+      switch(newfmt)
+      {
+      case FMT_MP4:
+         AddExtension(wxString(wxT("m4a")),newfmt);
+         break;
+      case FMT_RA3:
+      case FMT_RA9:
+         AddExtension(wxString(wxT("rm")),newfmt);
+         break;
+      case FMT_WMA2:
+         AddExtension(wxString(wxT("asf")),newfmt);
+         AddExtension(wxString(wxT("wmv")),newfmt);
+         break;
+      default:
+         break;
+      }
       SetMaxChannels(fmts[newfmt].maxchannels,newfmt);
       SetCanMetaData(fmts[newfmt].canmetadata,newfmt);
       SetDescription(fmts[newfmt].description,newfmt);
@@ -1201,7 +1216,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       mSampleRate = project->GetRate();
       mEncAudioCodecCtx->global_quality = gPrefs->Read(wxT("/FileFormats/VorbisQuality"), 6);
       break;
-   case FMT_GSMWAV:
+   case FMT_GSMAIFF:
    case FMT_GSMMSWAV:
       mSampleRate = 8000;
       mEncAudioCodecCtx->bit_rate = 13000;
@@ -1559,7 +1574,7 @@ bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
       od.ShowModal();
       return true;
    }
-   else if ((format == FMT_GSMWAV) || (format == FMT_GSMMSWAV))
+   else if ((format == FMT_GSMAIFF) || (format == FMT_GSMMSWAV))
    {
       wxMessageBox(wxT("There is no options for GSM"));
       return true;
