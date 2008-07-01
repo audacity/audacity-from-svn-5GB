@@ -65,6 +65,10 @@ Import / Export:
            the waveform until fully loaded
 
 Interface:
+        * Note track: experimental support for cut, copy and paste
+           using Edit Toolbar; currently not available for Linux, where
+           EXPERIMENTAL_NOTE_TRACK must be undefined in order
+           to build
         * New Transport menu for alternative access to play and record
            commands and some recording preferences
         * Audio tracks are now linked to label tracks by being positioned
