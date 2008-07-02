@@ -76,6 +76,7 @@ void AudioIOPrefs::GetNamesAndLabels()
    int nDevices = Pa_CountDevices();
 #endif
 
+   int numChannels = 0; // find max no. of record channels available
    for(j=0; j<nDevices; j++) {
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
       Name = DeviceName(info);
@@ -87,11 +88,12 @@ void AudioIOPrefs::GetNamesAndLabels()
       if (info->maxInputChannels > 0) {
          mmRecordNames.Add( Name );
          mmRecordLabels.Add( Label );
+         if (info->maxInputChannels > numChannels)
+            numChannels = info->maxInputChannels;
       }
    }
 
    // Channel counts, mono, stereo etc...
-   const int numChannels = 16;
    for(int c=0; c<numChannels; c++)
    {
       mmChannelNames.Add(  wxString::Format(wxT("%d"), c+1));
