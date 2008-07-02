@@ -556,7 +556,28 @@ void AudacityApp::InitLang( const wxString & lang )
 
    if (lang != wxT("en")) {
       wxLogNull nolog;
+
+// LL: I do not know why loading translations fail on the Mac if LANG is not
+//     set, but for some reason it does.  So wrap the creation of wxLocale
+//     with the default translation.
+#if defined(__WXMAC__)
+      wxString oldval;
+      bool existed;
+      
+      existed = wxGetEnv(wxT("LANG"), &oldval);
+      wxSetEnv(wxT("LANG"), wxT("en_US"));
+#endif
+
       mLocale = new wxLocale(wxT(""), lang, wxT(""), true, true);
+
+#if defined(__WXMAC__)
+      if (existed) {
+         wxSetEnv(wxT("LANG"), oldval);
+      }
+      else {
+         wxUnsetEnv(wxT("LANG"));
+      }
+#endif
 
       for(unsigned int i=0; i<audacityPathList.GetCount(); i++)
          mLocale->AddCatalogLookupPathPrefix(audacityPathList[i]);
