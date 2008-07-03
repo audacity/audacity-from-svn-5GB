@@ -63,7 +63,7 @@ void GUIPrefs::Populate( )
    mLangCodes.Add("ep");   mLangNames.Add("Esperanto");
 #endif
 #ifdef EXPERIMENTAL_SAVE_DEFAULT_VIEW
-   gPrefs->Read(wxT("/DefaultViewMode"), &mDefaultViewMode, 0L);
+   gPrefs->Read(wxT("/GUI/DefaultViewMode"), &mDefaultViewMode, 0L);
 #endif //EXPERIMENTAL_SAVE_DEFAULT_VIEW
 
    //------------------------- Main section --------------------
