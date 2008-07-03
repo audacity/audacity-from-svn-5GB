@@ -52,6 +52,7 @@ public:
       rms = new float[len];
       bl = new int[len];
       where = new sampleCount[len+1];
+      numODPixels=0;
    }
 
    ~WaveCache()
@@ -600,6 +601,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
                                         &mWaveCache->where[p0],
                                         mRate / pixelsPerSecond))
          {
+            isLoadingOD=false;
             mWaveCacheMutex.Unlock();
             return false;
          }
