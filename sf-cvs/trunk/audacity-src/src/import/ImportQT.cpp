@@ -150,25 +150,24 @@ ImportFileHandle *QTImportPlugin::Open(wxString Filename)
    FInfo fileInfo;
    Movie theMovie = 0;
    Media theMedia;
+   OSErr err;
 
    // Make sure QuickTime is initialized
    //::EnterMovies();
 
 #ifdef WIN32
    char* specFilename = strdup(Filename.GetData());
-   if (FSMakeFSSpec(0,0,c2pstr(specFilename), &inFile) != noErr)
-   {
-       free(specFilename);
-       return false;
-   }
+   err = FSMakeFSSpec(0,0,c2pstr(specFilename), &inFile);
    free(specFilename);
+   if (err != noErr)
+      return NULL;
+
 #else
    wxMacFilename2FSSpec(Filename, &inFile);
 #endif
 
-   OSErr err = FSpGetFInfo(&inFile, &fileInfo);
-
-   if(err != noErr)
+   err = FSpGetFInfo(&inFile, &fileInfo);
+   if (err != noErr)
       return NULL;
 
    if (kQTFileTypeSystemSevenSound == fileInfo.fdType)
@@ -184,21 +183,24 @@ ImportFileHandle *QTImportPlugin::Open(wxString Filename)
 
       // open the movie file
       err = OpenMovieFile(&inFile, &theRefNum, fsRdPerm);
-      if(err != noErr)
+      if (err != noErr)
          return NULL;
 
       // instantiate the movie
       err = NewMovieFromFile(&theMovie, theRefNum, &theResID, NULL, newMovieActive, &wasChanged);
       CloseMovieFile(theRefNum);
-      if(err != noErr)
+      if (err != noErr)
          return NULL;
    }
 
 
    // get and return the sound track media
    theMedia = GetMediaFromMovie(theMovie);
-   if(theMedia == NULL)
+   if (theMedia == NULL)
+   {
+      DisposeMovie(theMovie);
       return NULL;
+   }
 
    return new QTImportFileHandle(Filename, theMovie, theMedia);
 }
@@ -242,7 +244,7 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    AudioFormatAtomPtr decompressionParamsAtom = NULL;
    err = GetSoundDescriptionExtension(soundDescription, &decompressionParamsHandle,
                                       siDecompressionParams);
-   if(err == noErr)
+   if (err == noErr)
    {
       // this stream has decompression parameters.  copy from the handle to the atom.
       int paramsSize = GetHandleSize(decompressionParamsHandle);
@@ -253,7 +255,7 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       HUnlock(decompressionParamsHandle);
    }
 
-   if(decompressionParamsHandle)
+   if (decompressionParamsHandle)
       DisposeHandle(decompressionParamsHandle);
 
    //
@@ -276,6 +278,11 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    outputFormat.format = kSoundNotCompressed;
 
    err = SoundConverterOpen(&inputFormat, &outputFormat, &soundConverter);
+   if (err != noErr)
+   {
+      // Need to do cleanup here...
+      return false;
+   }
 
    //
    // Create the Audacity WaveTracks to house the new data
