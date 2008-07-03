@@ -731,19 +731,67 @@
 		280196B60D98174400BFEECF /* PluginBufferingAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 280196B40D98174400BFEECF /* PluginBufferingAdapter.h */; };
 		2801A6460BF9268700648258 /* ImportQT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2801A6430BF9268700648258 /* ImportQT.cpp */; };
 		2801A6470BF9268700648258 /* ImportQTWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2801A6450BF9268700648258 /* ImportQTWrapper.cpp */; };
-		28042D450E1A8483004E4B28 /* allegroserial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28042D410E1A8483004E4B28 /* allegroserial.cpp */; };
-		28042D460E1A8483004E4B28 /* allegrosmfrd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28042D420E1A8483004E4B28 /* allegrosmfrd.cpp */; };
-		28042D470E1A8483004E4B28 /* allegrosmfrd.h in Headers */ = {isa = PBXBuildFile; fileRef = 28042D430E1A8483004E4B28 /* allegrosmfrd.h */; };
-		28042D480E1A8483004E4B28 /* allegrosmfwr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28042D440E1A8483004E4B28 /* allegrosmfwr.cpp */; };
 		280828550A75E0D0000002EF /* LabelDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828530A75E0D0000002EF /* LabelDialog.cpp */; };
 		2808285A0A75E0EA000002EF /* Grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828580A75E0EA000002EF /* Grid.cpp */; };
 		2809C4B80BCB7E560006010F /* FileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2809C4B60BCB7E560006010F /* FileIO.cpp */; };
+		280A79100E180230009155E6 /* allegroserial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280A790C0E180230009155E6 /* allegroserial.cpp */; };
+		280A79110E180230009155E6 /* allegrosmfrd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280A790D0E180230009155E6 /* allegrosmfrd.cpp */; };
+		280A79120E180230009155E6 /* allegrosmfrd.h in Headers */ = {isa = PBXBuildFile; fileRef = 280A790E0E180230009155E6 /* allegrosmfrd.h */; };
+		280A79130E180230009155E6 /* allegrosmfwr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280A790F0E180230009155E6 /* allegrosmfwr.cpp */; };
+		280DE5DA0E1634B4006159ED /* lrdf.h in Headers */ = {isa = PBXBuildFile; fileRef = 280DE5D90E1634B4006159ED /* lrdf.h */; };
+		280DE5E00E163507006159ED /* ladspa.h in Headers */ = {isa = PBXBuildFile; fileRef = 280DE5DB0E163507006159ED /* ladspa.h */; };
+		280DE5E10E163507006159ED /* lrdf.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5DC0E163507006159ED /* lrdf.c */; };
+		280DE5E20E163507006159ED /* lrdf_multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5DD0E163507006159ED /* lrdf_multi.c */; };
+		280DE5E30E163507006159ED /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5DE0E163507006159ED /* md5.c */; };
+		280DE5E40E163507006159ED /* md5_loc.h in Headers */ = {isa = PBXBuildFile; fileRef = 280DE5DF0E163507006159ED /* md5_loc.h */; };
+		280DE6150E163646006159ED /* parsedate.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5ED0E163646006159ED /* parsedate.c */; };
+		280DE6160E163646006159ED /* raptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 280DE5EE0E163646006159ED /* raptor.h */; };
+		280DE6170E163646006159ED /* raptor_avltree.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5EF0E163646006159ED /* raptor_avltree.c */; };
+		280DE6180E163646006159ED /* raptor_config.h in Headers */ = {isa = PBXBuildFile; fileRef = 280DE5F00E163646006159ED /* raptor_config.h */; };
+		280DE6190E163646006159ED /* raptor_expat.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5F10E163646006159ED /* raptor_expat.c */; };
+		280DE61A0E163646006159ED /* raptor_feature.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5F20E163646006159ED /* raptor_feature.c */; };
+		280DE61B0E163646006159ED /* raptor_general.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5F30E163646006159ED /* raptor_general.c */; };
+		280DE61C0E163646006159ED /* raptor_guess.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5F40E163646006159ED /* raptor_guess.c */; };
+		280DE61D0E163646006159ED /* raptor_identifier.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5F50E163646006159ED /* raptor_identifier.c */; };
+		280DE61E0E163646006159ED /* raptor_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 280DE5F60E163646006159ED /* raptor_internal.h */; };
+		280DE61F0E163646006159ED /* raptor_iostream.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5F70E163646006159ED /* raptor_iostream.c */; };
+		280DE6200E163646006159ED /* raptor_json_writer.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5F80E163646006159ED /* raptor_json_writer.c */; };
+		280DE6210E163646006159ED /* raptor_locator.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5F90E163646006159ED /* raptor_locator.c */; };
+		280DE6220E163646006159ED /* raptor_namespace.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5FA0E163646006159ED /* raptor_namespace.c */; };
+		280DE6230E163646006159ED /* raptor_nfc.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5FB0E163646006159ED /* raptor_nfc.c */; };
+		280DE6240E163646006159ED /* raptor_nfc.h in Headers */ = {isa = PBXBuildFile; fileRef = 280DE5FC0E163646006159ED /* raptor_nfc.h */; };
+		280DE6250E163646006159ED /* raptor_nfc_data.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5FD0E163646006159ED /* raptor_nfc_data.c */; };
+		280DE6260E163646006159ED /* raptor_parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5FE0E163646006159ED /* raptor_parse.c */; };
+		280DE6270E163646006159ED /* raptor_qname.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE5FF0E163646006159ED /* raptor_qname.c */; };
+		280DE6280E163646006159ED /* raptor_rdfxml.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6000E163646006159ED /* raptor_rdfxml.c */; };
+		280DE6290E163646006159ED /* raptor_rfc2396.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6010E163646006159ED /* raptor_rfc2396.c */; };
+		280DE62A0E163646006159ED /* raptor_sax2.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6020E163646006159ED /* raptor_sax2.c */; };
+		280DE62B0E163646006159ED /* raptor_sequence.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6030E163646006159ED /* raptor_sequence.c */; };
+		280DE62C0E163646006159ED /* raptor_serialize.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6040E163646006159ED /* raptor_serialize.c */; };
+		280DE62D0E163646006159ED /* raptor_serialize_ntriples.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6050E163646006159ED /* raptor_serialize_ntriples.c */; };
+		280DE62E0E163646006159ED /* raptor_serialize_simple.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6060E163646006159ED /* raptor_serialize_simple.c */; };
+		280DE62F0E163646006159ED /* raptor_set.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6070E163646006159ED /* raptor_set.c */; };
+		280DE6300E163646006159ED /* raptor_statement.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6080E163646006159ED /* raptor_statement.c */; };
+		280DE6310E163646006159ED /* raptor_stringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6090E163646006159ED /* raptor_stringbuffer.c */; };
+		280DE6320E163646006159ED /* raptor_turtle_writer.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE60A0E163646006159ED /* raptor_turtle_writer.c */; };
+		280DE6330E163646006159ED /* raptor_uri.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE60B0E163646006159ED /* raptor_uri.c */; };
+		280DE6340E163646006159ED /* raptor_utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE60C0E163646006159ED /* raptor_utf8.c */; };
+		280DE6350E163646006159ED /* raptor_www.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE60D0E163646006159ED /* raptor_www.c */; };
+		280DE6360E163646006159ED /* raptor_xml.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE60E0E163646006159ED /* raptor_xml.c */; };
+		280DE6370E163646006159ED /* raptor_xml_writer.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE60F0E163646006159ED /* raptor_xml_writer.c */; };
+		280DE6380E163646006159ED /* raptor_xsd.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6100E163646006159ED /* raptor_xsd.c */; };
+		280DE6390E163646006159ED /* snprintf.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6110E163646006159ED /* snprintf.c */; };
+		280DE63A0E163646006159ED /* strcasecmp.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6120E163646006159ED /* strcasecmp.c */; };
+		280DE63B0E163646006159ED /* turtle_common.c in Sources */ = {isa = PBXBuildFile; fileRef = 280DE6130E163646006159ED /* turtle_common.c */; };
+		280DE63C0E163646006159ED /* turtle_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 280DE6140E163646006159ED /* turtle_common.h */; };
 		28105D9C0AD09FB200BB4269 /* portmixer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28105D9B0AD09FB200BB4269 /* portmixer.h */; };
 		28105DAA0AD09FC500BB4269 /* px_mac_coreaudio.c in Sources */ = {isa = PBXBuildFile; fileRef = 28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */; };
 		28105DAB0AD09FC500BB4269 /* px_mixer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28105DA10AD09FC500BB4269 /* px_mixer.c */; };
 		28105DAC0AD09FC500BB4269 /* px_mixer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28105DA20AD09FC500BB4269 /* px_mixer.h */; };
 		2816372E0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2816372C0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp */; };
 		282D474C0B9E8D900034BC49 /* Snap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 282D474A0B9E8D900034BC49 /* Snap.cpp */; };
+		28307A990E1639A100A553C7 /* liblrdf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 280DE5D00E1633F3006159ED /* liblrdf.a */; };
+		28307A9A0E1639AF00A553C7 /* libraptor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 280DE5BF0E1633F1006159ED /* libraptor.a */; };
 		283135EC0DFB9D110076D551 /* ImportFFmpeg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283135EA0DFB9D110076D551 /* ImportFFmpeg.cpp */; };
 		283135FF0DFBA2E80076D551 /* FFmpeg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283135FD0DFBA2E80076D551 /* FFmpeg.cpp */; };
 		2835062D0A3A88ED00EB1EBD /* pa_unix_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 283506280A3A88ED00EB1EBD /* pa_unix_util.c */; };
@@ -859,6 +907,8 @@
 		28D65C720B97E54B000E001A /* AutoDuck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D65C700B97E54B000E001A /* AutoDuck.cpp */; };
 		28D65C760B97E573000E001A /* DtmfGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D65C740B97E573000E001A /* DtmfGen.cpp */; };
 		28E3E6E80A7C14CA00AB1361 /* ExportFLAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */; };
+		28E65A3D0E16AA66005B1F5D /* lrdf_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 28E65A3C0E16AA66005B1F5D /* lrdf_types.h */; };
+		28E65A3F0E16AAF0005B1F5D /* lrdf_md5.h in Headers */ = {isa = PBXBuildFile; fileRef = 28E65A3E0E16AAF0005B1F5D /* lrdf_md5.h */; };
 		28E67F710A3A1A750021D89F /* pa_allocation.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E821FF0A39FD7600DCE280 /* pa_allocation.c */; };
 		28E67F720A3A1A770021D89F /* pa_converters.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E822030A39FD7600DCE280 /* pa_converters.c */; };
 		28E67F730A3A1A780021D89F /* pa_cpuload.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E822070A39FD7600DCE280 /* pa_cpuload.c */; };
@@ -1024,6 +1074,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 17073EE70988DBDD008541CC;
 			remoteInfo = allegro;
+		};
+		280DE5EA0E16357F006159ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1790ABE309883346008A330A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 280DE5AF0E1633F1006159ED;
+			remoteInfo = libraptor;
+		};
+		280DE6490E1637D9006159ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1790ABE309883346008A330A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 280DE5AF0E1633F1006159ED;
+			remoteInfo = libraptor;
+		};
+		280DE64B0E1637E2006159ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1790ABE309883346008A330A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 280DE5C00E1633F3006159ED;
+			remoteInfo = liblrdf;
 		};
 		2840CF7F0AEB822100F49FC3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1907,16 +1978,64 @@
 		2801A6430BF9268700648258 /* ImportQT.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImportQT.cpp; sourceTree = "<group>"; };
 		2801A6440BF9268700648258 /* ImportQT.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ImportQT.h; sourceTree = "<group>"; };
 		2801A6450BF9268700648258 /* ImportQTWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImportQTWrapper.cpp; sourceTree = "<group>"; };
-		28042D410E1A8483004E4B28 /* allegroserial.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = allegroserial.cpp; sourceTree = "<group>"; };
-		28042D420E1A8483004E4B28 /* allegrosmfrd.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = allegrosmfrd.cpp; sourceTree = "<group>"; };
-		28042D430E1A8483004E4B28 /* allegrosmfrd.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = allegrosmfrd.h; sourceTree = "<group>"; };
-		28042D440E1A8483004E4B28 /* allegrosmfwr.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = allegrosmfwr.cpp; sourceTree = "<group>"; };
 		280828530A75E0D0000002EF /* LabelDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = LabelDialog.cpp; sourceTree = "<group>"; };
 		280828540A75E0D0000002EF /* LabelDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LabelDialog.h; sourceTree = "<group>"; };
 		280828580A75E0EA000002EF /* Grid.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Grid.cpp; sourceTree = "<group>"; };
 		280828590A75E0EA000002EF /* Grid.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Grid.h; sourceTree = "<group>"; };
 		2809C4B60BCB7E560006010F /* FileIO.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FileIO.cpp; sourceTree = "<group>"; };
 		2809C4B70BCB7E560006010F /* FileIO.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FileIO.h; sourceTree = "<group>"; };
+		280A790C0E180230009155E6 /* allegroserial.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = allegroserial.cpp; sourceTree = "<group>"; };
+		280A790D0E180230009155E6 /* allegrosmfrd.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = allegrosmfrd.cpp; sourceTree = "<group>"; };
+		280A790E0E180230009155E6 /* allegrosmfrd.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = allegrosmfrd.h; sourceTree = "<group>"; };
+		280A790F0E180230009155E6 /* allegrosmfwr.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = allegrosmfwr.cpp; sourceTree = "<group>"; };
+		280DE5BF0E1633F1006159ED /* libraptor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libraptor.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		280DE5D00E1633F3006159ED /* liblrdf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblrdf.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		280DE5D90E1634B4006159ED /* lrdf.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = lrdf.h; path = liblrdf/lrdf.h; sourceTree = "<group>"; };
+		280DE5DB0E163507006159ED /* ladspa.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = ladspa.h; path = liblrdf/src/ladspa.h; sourceTree = "<group>"; };
+		280DE5DC0E163507006159ED /* lrdf.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = lrdf.c; path = liblrdf/src/lrdf.c; sourceTree = "<group>"; };
+		280DE5DD0E163507006159ED /* lrdf_multi.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = lrdf_multi.c; path = liblrdf/src/lrdf_multi.c; sourceTree = "<group>"; };
+		280DE5DE0E163507006159ED /* md5.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = md5.c; path = liblrdf/src/md5.c; sourceTree = "<group>"; };
+		280DE5DF0E163507006159ED /* md5_loc.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = md5_loc.h; path = liblrdf/src/md5_loc.h; sourceTree = "<group>"; };
+		280DE5ED0E163646006159ED /* parsedate.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = parsedate.c; path = libraptor/src/parsedate.c; sourceTree = "<group>"; };
+		280DE5EE0E163646006159ED /* raptor.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = raptor.h; path = libraptor/src/raptor.h; sourceTree = "<group>"; };
+		280DE5EF0E163646006159ED /* raptor_avltree.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_avltree.c; path = libraptor/src/raptor_avltree.c; sourceTree = "<group>"; };
+		280DE5F00E163646006159ED /* raptor_config.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = raptor_config.h; path = libraptor/src/raptor_config.h; sourceTree = "<group>"; };
+		280DE5F10E163646006159ED /* raptor_expat.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_expat.c; path = libraptor/src/raptor_expat.c; sourceTree = "<group>"; };
+		280DE5F20E163646006159ED /* raptor_feature.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_feature.c; path = libraptor/src/raptor_feature.c; sourceTree = "<group>"; };
+		280DE5F30E163646006159ED /* raptor_general.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_general.c; path = libraptor/src/raptor_general.c; sourceTree = "<group>"; };
+		280DE5F40E163646006159ED /* raptor_guess.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_guess.c; path = libraptor/src/raptor_guess.c; sourceTree = "<group>"; };
+		280DE5F50E163646006159ED /* raptor_identifier.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_identifier.c; path = libraptor/src/raptor_identifier.c; sourceTree = "<group>"; };
+		280DE5F60E163646006159ED /* raptor_internal.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = raptor_internal.h; path = libraptor/src/raptor_internal.h; sourceTree = "<group>"; };
+		280DE5F70E163646006159ED /* raptor_iostream.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_iostream.c; path = libraptor/src/raptor_iostream.c; sourceTree = "<group>"; };
+		280DE5F80E163646006159ED /* raptor_json_writer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_json_writer.c; path = libraptor/src/raptor_json_writer.c; sourceTree = "<group>"; };
+		280DE5F90E163646006159ED /* raptor_locator.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_locator.c; path = libraptor/src/raptor_locator.c; sourceTree = "<group>"; };
+		280DE5FA0E163646006159ED /* raptor_namespace.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_namespace.c; path = libraptor/src/raptor_namespace.c; sourceTree = "<group>"; };
+		280DE5FB0E163646006159ED /* raptor_nfc.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_nfc.c; path = libraptor/src/raptor_nfc.c; sourceTree = "<group>"; };
+		280DE5FC0E163646006159ED /* raptor_nfc.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = raptor_nfc.h; path = libraptor/src/raptor_nfc.h; sourceTree = "<group>"; };
+		280DE5FD0E163646006159ED /* raptor_nfc_data.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_nfc_data.c; path = libraptor/src/raptor_nfc_data.c; sourceTree = "<group>"; };
+		280DE5FE0E163646006159ED /* raptor_parse.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_parse.c; path = libraptor/src/raptor_parse.c; sourceTree = "<group>"; };
+		280DE5FF0E163646006159ED /* raptor_qname.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_qname.c; path = libraptor/src/raptor_qname.c; sourceTree = "<group>"; };
+		280DE6000E163646006159ED /* raptor_rdfxml.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_rdfxml.c; path = libraptor/src/raptor_rdfxml.c; sourceTree = "<group>"; };
+		280DE6010E163646006159ED /* raptor_rfc2396.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_rfc2396.c; path = libraptor/src/raptor_rfc2396.c; sourceTree = "<group>"; };
+		280DE6020E163646006159ED /* raptor_sax2.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_sax2.c; path = libraptor/src/raptor_sax2.c; sourceTree = "<group>"; };
+		280DE6030E163646006159ED /* raptor_sequence.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_sequence.c; path = libraptor/src/raptor_sequence.c; sourceTree = "<group>"; };
+		280DE6040E163646006159ED /* raptor_serialize.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_serialize.c; path = libraptor/src/raptor_serialize.c; sourceTree = "<group>"; };
+		280DE6050E163646006159ED /* raptor_serialize_ntriples.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_serialize_ntriples.c; path = libraptor/src/raptor_serialize_ntriples.c; sourceTree = "<group>"; };
+		280DE6060E163646006159ED /* raptor_serialize_simple.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_serialize_simple.c; path = libraptor/src/raptor_serialize_simple.c; sourceTree = "<group>"; };
+		280DE6070E163646006159ED /* raptor_set.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_set.c; path = libraptor/src/raptor_set.c; sourceTree = "<group>"; };
+		280DE6080E163646006159ED /* raptor_statement.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_statement.c; path = libraptor/src/raptor_statement.c; sourceTree = "<group>"; };
+		280DE6090E163646006159ED /* raptor_stringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_stringbuffer.c; path = libraptor/src/raptor_stringbuffer.c; sourceTree = "<group>"; };
+		280DE60A0E163646006159ED /* raptor_turtle_writer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_turtle_writer.c; path = libraptor/src/raptor_turtle_writer.c; sourceTree = "<group>"; };
+		280DE60B0E163646006159ED /* raptor_uri.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_uri.c; path = libraptor/src/raptor_uri.c; sourceTree = "<group>"; };
+		280DE60C0E163646006159ED /* raptor_utf8.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_utf8.c; path = libraptor/src/raptor_utf8.c; sourceTree = "<group>"; };
+		280DE60D0E163646006159ED /* raptor_www.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_www.c; path = libraptor/src/raptor_www.c; sourceTree = "<group>"; };
+		280DE60E0E163646006159ED /* raptor_xml.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_xml.c; path = libraptor/src/raptor_xml.c; sourceTree = "<group>"; };
+		280DE60F0E163646006159ED /* raptor_xml_writer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_xml_writer.c; path = libraptor/src/raptor_xml_writer.c; sourceTree = "<group>"; };
+		280DE6100E163646006159ED /* raptor_xsd.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = raptor_xsd.c; path = libraptor/src/raptor_xsd.c; sourceTree = "<group>"; };
+		280DE6110E163646006159ED /* snprintf.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = snprintf.c; path = libraptor/src/snprintf.c; sourceTree = "<group>"; };
+		280DE6120E163646006159ED /* strcasecmp.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = strcasecmp.c; path = libraptor/src/strcasecmp.c; sourceTree = "<group>"; };
+		280DE6130E163646006159ED /* turtle_common.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = turtle_common.c; path = libraptor/src/turtle_common.c; sourceTree = "<group>"; };
+		280DE6140E163646006159ED /* turtle_common.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = turtle_common.h; path = libraptor/src/turtle_common.h; sourceTree = "<group>"; };
 		28105D9B0AD09FB200BB4269 /* portmixer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = portmixer.h; sourceTree = "<group>"; };
 		28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = px_mac_coreaudio.c; sourceTree = "<group>"; };
 		28105DA10AD09FC500BB4269 /* px_mixer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = px_mixer.c; sourceTree = "<group>"; };
@@ -1929,6 +2048,7 @@
 		2816372D0BAE3B6C0079C746 /* LinkingHtmlWindow.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LinkingHtmlWindow.h; sourceTree = "<group>"; };
 		282D474A0B9E8D900034BC49 /* Snap.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Snap.cpp; sourceTree = "<group>"; };
 		282D474B0B9E8D900034BC49 /* Snap.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Snap.h; sourceTree = "<group>"; };
+		28307AA60E163AF800A553C7 /* expat.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = expat.h; sourceTree = "<group>"; };
 		283135EA0DFB9D110076D551 /* ImportFFmpeg.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImportFFmpeg.cpp; sourceTree = "<group>"; };
 		283135EB0DFB9D110076D551 /* ImportFFmpeg.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ImportFFmpeg.h; sourceTree = "<group>"; };
 		283135FD0DFBA2E80076D551 /* FFmpeg.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FFmpeg.cpp; sourceTree = "<group>"; };
@@ -2087,6 +2207,8 @@
 		28D65C750B97E573000E001A /* DtmfGen.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = DtmfGen.h; sourceTree = "<group>"; };
 		28E3E6E60A7C14CA00AB1361 /* ExportFLAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportFLAC.h; sourceTree = "<group>"; };
 		28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFLAC.cpp; sourceTree = "<group>"; };
+		28E65A3C0E16AA66005B1F5D /* lrdf_types.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = lrdf_types.h; path = liblrdf/lrdf_types.h; sourceTree = "<group>"; };
+		28E65A3E0E16AAF0005B1F5D /* lrdf_md5.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = lrdf_md5.h; path = liblrdf/src/lrdf_md5.h; sourceTree = "<group>"; };
 		28E67F5F0A3A160D0021D89F /* libportaudio.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libportaudio.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28E67FC10A3A29AE0021D89F /* pa_asio.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_asio.h; sourceTree = "<group>"; };
 		28E67FC20A3A29AE0021D89F /* pa_linux_alsa.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_linux_alsa.h; sourceTree = "<group>"; };
@@ -2188,6 +2310,8 @@
 				28E67FF00A3A2B190021D89F /* libportaudio.a in Frameworks */,
 				2840CFA80AEB883500F49FC3 /* libtwolame.a in Frameworks */,
 				28501F330CEED8C70029ABAA /* libvamp.a in Frameworks */,
+				28307A990E1639A100A553C7 /* liblrdf.a in Frameworks */,
+				28307A9A0E1639AF00A553C7 /* libraptor.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2210,8 +2334,10 @@
 				2880529A0DEA71B000671EA4 /* lib-widget-extra */,
 				176EE9E209A2EF1000188F3B /* libflac */,
 				17072F6A0988D6A9008541CC /* libid3tag */,
+				280DE5D80E163488006159ED /* liblrdf */,
 				17072FD10988D6A9008541CC /* libmad */,
 				170731EB0988D6AA008541CC /* libogg */,
+				280DE5D70E163482006159ED /* libraptor */,
 				170733DB0988D6AC008541CC /* libresample */,
 				170733FC0988D6AC008541CC /* libsndfile */,
 				28501EAC0CEED0740029ABAA /* libvamp */,
@@ -2230,10 +2356,10 @@
 		17072F230988D569008541CC /* allegro */ = {
 			isa = PBXGroup;
 			children = (
-				28042D410E1A8483004E4B28 /* allegroserial.cpp */,
-				28042D420E1A8483004E4B28 /* allegrosmfrd.cpp */,
-				28042D430E1A8483004E4B28 /* allegrosmfrd.h */,
-				28042D440E1A8483004E4B28 /* allegrosmfwr.cpp */,
+				280A790C0E180230009155E6 /* allegroserial.cpp */,
+				280A790D0E180230009155E6 /* allegrosmfrd.cpp */,
+				280A790E0E180230009155E6 /* allegrosmfrd.h */,
+				280A790F0E180230009155E6 /* allegrosmfwr.cpp */,
 				17072F250988D569008541CC /* allegro.cpp */,
 				17072F260988D569008541CC /* allegro.h */,
 				17072F290988D569008541CC /* allegrord.cpp */,
@@ -2856,11 +2982,13 @@
 				176EEBEA09A2F16200188F3B /* libFLAC.a */,
 				176EEC1E09A2F2DD00188F3B /* libFLAC++.a */,
 				17073F620988E121008541CC /* libid3tag.a */,
+				280DE5D00E1633F3006159ED /* liblrdf.a */,
 				17073FC40988E561008541CC /* libmad.a */,
 				176A1A5B098B7B8D00DC73B4 /* libnyquist.a */,
 				17073FFE0988EA60008541CC /* libogg.a */,
 				28E67F5F0A3A160D0021D89F /* libportaudio.a */,
 				170740960988F2F7008541CC /* libportmixer.a */,
+				280DE5BF0E1633F1006159ED /* libraptor.a */,
 				1707400D0988EB90008541CC /* libresample.a */,
 				1707401E0988EEAA008541CC /* libsndfile.a */,
 				1707407A0988F1BB008541CC /* libsoundtouch.a */,
@@ -3234,6 +3362,7 @@
 		1790B09209883BFD008A330A /* include */ = {
 			isa = PBXGroup;
 			children = (
+				28307AA60E163AF800A553C7 /* expat.h */,
 				1790B09509883BFD008A330A /* lame.h */,
 			);
 			path = include;
@@ -3692,6 +3821,68 @@
 			name = ondemand;
 			sourceTree = "<group>";
 		};
+		280DE5D70E163482006159ED /* libraptor */ = {
+			isa = PBXGroup;
+			children = (
+				280DE5ED0E163646006159ED /* parsedate.c */,
+				280DE5EE0E163646006159ED /* raptor.h */,
+				280DE5EF0E163646006159ED /* raptor_avltree.c */,
+				280DE5F00E163646006159ED /* raptor_config.h */,
+				280DE5F10E163646006159ED /* raptor_expat.c */,
+				280DE5F20E163646006159ED /* raptor_feature.c */,
+				280DE5F30E163646006159ED /* raptor_general.c */,
+				280DE5F40E163646006159ED /* raptor_guess.c */,
+				280DE5F50E163646006159ED /* raptor_identifier.c */,
+				280DE5F60E163646006159ED /* raptor_internal.h */,
+				280DE5F70E163646006159ED /* raptor_iostream.c */,
+				280DE5F80E163646006159ED /* raptor_json_writer.c */,
+				280DE5F90E163646006159ED /* raptor_locator.c */,
+				280DE5FA0E163646006159ED /* raptor_namespace.c */,
+				280DE5FB0E163646006159ED /* raptor_nfc.c */,
+				280DE5FC0E163646006159ED /* raptor_nfc.h */,
+				280DE5FD0E163646006159ED /* raptor_nfc_data.c */,
+				280DE5FE0E163646006159ED /* raptor_parse.c */,
+				280DE5FF0E163646006159ED /* raptor_qname.c */,
+				280DE6000E163646006159ED /* raptor_rdfxml.c */,
+				280DE6010E163646006159ED /* raptor_rfc2396.c */,
+				280DE6020E163646006159ED /* raptor_sax2.c */,
+				280DE6030E163646006159ED /* raptor_sequence.c */,
+				280DE6040E163646006159ED /* raptor_serialize.c */,
+				280DE6050E163646006159ED /* raptor_serialize_ntriples.c */,
+				280DE6060E163646006159ED /* raptor_serialize_simple.c */,
+				280DE6070E163646006159ED /* raptor_set.c */,
+				280DE6080E163646006159ED /* raptor_statement.c */,
+				280DE6090E163646006159ED /* raptor_stringbuffer.c */,
+				280DE60A0E163646006159ED /* raptor_turtle_writer.c */,
+				280DE60B0E163646006159ED /* raptor_uri.c */,
+				280DE60C0E163646006159ED /* raptor_utf8.c */,
+				280DE60D0E163646006159ED /* raptor_www.c */,
+				280DE60E0E163646006159ED /* raptor_xml.c */,
+				280DE60F0E163646006159ED /* raptor_xml_writer.c */,
+				280DE6100E163646006159ED /* raptor_xsd.c */,
+				280DE6110E163646006159ED /* snprintf.c */,
+				280DE6120E163646006159ED /* strcasecmp.c */,
+				280DE6130E163646006159ED /* turtle_common.c */,
+				280DE6140E163646006159ED /* turtle_common.h */,
+			);
+			name = libraptor;
+			sourceTree = "<group>";
+		};
+		280DE5D80E163488006159ED /* liblrdf */ = {
+			isa = PBXGroup;
+			children = (
+				28E65A3E0E16AAF0005B1F5D /* lrdf_md5.h */,
+				28E65A3C0E16AA66005B1F5D /* lrdf_types.h */,
+				280DE5DB0E163507006159ED /* ladspa.h */,
+				280DE5DC0E163507006159ED /* lrdf.c */,
+				280DE5DD0E163507006159ED /* lrdf_multi.c */,
+				280DE5DE0E163507006159ED /* md5.c */,
+				280DE5DF0E163507006159ED /* md5_loc.h */,
+				280DE5D90E1634B4006159ED /* lrdf.h */,
+			);
+			name = liblrdf;
+			sourceTree = "<group>";
+		};
 		28105D9A0AD09FB200BB4269 /* include */ = {
 			isa = PBXGroup;
 			children = (
@@ -4019,7 +4210,7 @@
 				17073F370988DE65008541CC /* stime.h in Headers */,
 				17073F3A0988DE65008541CC /* strparse.h in Headers */,
 				17073F3B0988DE65008541CC /* trace.h in Headers */,
-				28042D470E1A8483004E4B28 /* allegrosmfrd.h in Headers */,
+				280A79120E180230009155E6 /* allegrosmfrd.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4371,6 +4562,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		280DE5B00E1633F1006159ED /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				280DE6160E163646006159ED /* raptor.h in Headers */,
+				280DE6180E163646006159ED /* raptor_config.h in Headers */,
+				280DE61E0E163646006159ED /* raptor_internal.h in Headers */,
+				280DE6240E163646006159ED /* raptor_nfc.h in Headers */,
+				280DE63C0E163646006159ED /* turtle_common.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		280DE5C10E1633F3006159ED /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				280DE5DA0E1634B4006159ED /* lrdf.h in Headers */,
+				280DE5E00E163507006159ED /* ladspa.h in Headers */,
+				280DE5E40E163507006159ED /* md5_loc.h in Headers */,
+				28E65A3D0E16AA66005B1F5D /* lrdf_types.h in Headers */,
+				28E65A3F0E16AAF0005B1F5D /* lrdf_md5.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2840CECC0AEB803C00F49FC3 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -4706,9 +4921,11 @@
 				176EEC7109A2F54D00188F3B /* PBXTargetDependency */,
 				176EEC7309A2F55100188F3B /* PBXTargetDependency */,
 				17C99D4F098970800041B1BC /* PBXTargetDependency */,
+				280DE64C0E1637E2006159ED /* PBXTargetDependency */,
 				17C99D4D098970800041B1BC /* PBXTargetDependency */,
 				176A1B6E098B7C7200DC73B4 /* PBXTargetDependency */,
 				17C99D4B098970800041B1BC /* PBXTargetDependency */,
+				280DE64A0E1637D9006159ED /* PBXTargetDependency */,
 				17C99D49098970800041B1BC /* PBXTargetDependency */,
 				17C99D47098970800041B1BC /* PBXTargetDependency */,
 				28501F530CEED9A80029ABAA /* PBXTargetDependency */,
@@ -4722,6 +4939,39 @@
 			productName = Audacity;
 			productReference = 1790AFB009883B6D008A330A /* Audacity.app */;
 			productType = "com.apple.product-type.application";
+		};
+		280DE5AF0E1633F1006159ED /* libraptor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 280DE5BA0E1633F1006159ED /* Build configuration list for PBXNativeTarget "libraptor" */;
+			buildPhases = (
+				280DE5B00E1633F1006159ED /* Headers */,
+				280DE5B60E1633F1006159ED /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libraptor;
+			productName = libresample;
+			productReference = 280DE5BF0E1633F1006159ED /* libraptor.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		280DE5C00E1633F3006159ED /* liblrdf */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 280DE5CB0E1633F3006159ED /* Build configuration list for PBXNativeTarget "liblrdf" */;
+			buildPhases = (
+				280DE5C10E1633F3006159ED /* Headers */,
+				280DE5C70E1633F3006159ED /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				280DE5EB0E16357F006159ED /* PBXTargetDependency */,
+			);
+			name = liblrdf;
+			productName = libresample;
+			productReference = 280DE5D00E1633F3006159ED /* liblrdf.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		2840CECB0AEB803C00F49FC3 /* twolame */ = {
 			isa = PBXNativeTarget;
@@ -4818,6 +5068,8 @@
 				2880527D0DEA694100671EA4 /* mod-script-pipe */,
 				28E67F510A3A160D0021D89F /* portaudio-v19 */,
 				170740950988F2F7008541CC /* portmixer */,
+				280DE5AF0E1633F1006159ED /* libraptor */,
+				280DE5C00E1633F3006159ED /* liblrdf */,
 				170740790988F1BB008541CC /* soundtouch */,
 				2840CECB0AEB803C00F49FC3 /* twolame */,
 				170741420988FDB3008541CC /* intgen */,
@@ -4868,7 +5120,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC \\\n             --enable-unicode=$CONFIG_UNICODE \\\n             --enable-debug=$CONFIG_DEBUG \\\n             --with-lib-preference=local,system \\\n             --with-wx-version=$WX_VER \\\n\t\t\t\t\t--without-liblrdf \\\n\t\t\t     --without-libraptor \\\n             $CONFIG_FLAGS || exit 1\n\n#\n# Libsndfile's endianness detection is a bit unfriendly to universal binary\n# builds, so we coerce it into working our way.\n#\nFILE=lib-src/libsndfile/src/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#undef CPU_IS_BIG_ENDIAN\n#undef CPU_IS_LITTLE_ENDIAN\n#if defined(__BIG_ENDIAN__)\n#define CPU_IS_BIG_ENDIAN 1\n#define CPU_IS_LITTLE_ENDIAN 0\n#else\n#define CPU_IS_BIG_ENDIAN 0\n#define CPU_IS_LITTLE_ENDIAN 1\n#endif\nEOF\n\n#\n# Ditto for libflac.\n#\nFILE=lib-src/libflac/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\n#\n# And libmad.\n#\nFILE=lib-src/libmad/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\n#\n# Here we create empty xcconfig files if they do not exist.  Otherwise,\n# the build will fail.\n#\nconfigs='Debug_Shared Debug_Static Release_Shared Release_Static'\nfor config in $configs\ndo\n\t[ ! -f $config.xcconfig ] && touch $config.xcconfig\ndone\n\t\nexit 0\n";
+			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\n#\n# Here we create empty xcconfig files if they do not exist.  Otherwise,\n# the build will fail.\n#\nconfigs='Debug_Shared Debug_Static Release_Shared Release_Static'\nfor config in $configs\ndo\n\t[ ! -f $config.xcconfig ] && touch $config.xcconfig\ndone\n\t\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC \\\n             --enable-unicode=$CONFIG_UNICODE \\\n             --enable-debug=$CONFIG_DEBUG \\\n             --with-lib-preference=local,system \\\n             --with-wx-version=$WX_VER \\\n             $CONFIG_FLAGS || exit 1\n\n#\n# Libsndfile's endianness detection is a bit unfriendly to universal binary\n# builds, so we coerce it into working our way.\n#\nFILE=lib-src/libsndfile/src/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#undef CPU_IS_BIG_ENDIAN\n#undef CPU_IS_LITTLE_ENDIAN\n#if defined(__BIG_ENDIAN__)\n#define CPU_IS_BIG_ENDIAN 1\n#define CPU_IS_LITTLE_ENDIAN 0\n#else\n#define CPU_IS_BIG_ENDIAN 0\n#define CPU_IS_LITTLE_ENDIAN 1\n#endif\nEOF\n\n#\n# Ditto for libflac.\n#\nFILE=lib-src/libflac/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\n#\n# And libmad.\n#\nFILE=lib-src/libmad/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\nexit 0\n";
 		};
 		17073FEB0988E6C9008541CC /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5009,9 +5261,9 @@
 				17073F350988DE65008541CC /* mfmidi.cpp in Sources */,
 				17073F390988DE65008541CC /* strparse.cpp in Sources */,
 				178A5931098AA81B000944FE /* stimelinux.c in Sources */,
-				28042D450E1A8483004E4B28 /* allegroserial.cpp in Sources */,
-				28042D460E1A8483004E4B28 /* allegrosmfrd.cpp in Sources */,
-				28042D480E1A8483004E4B28 /* allegrosmfwr.cpp in Sources */,
+				280A79100E180230009155E6 /* allegroserial.cpp in Sources */,
+				280A79110E180230009155E6 /* allegrosmfrd.cpp in Sources */,
+				280A79130E180230009155E6 /* allegrosmfwr.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5598,6 +5850,58 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		280DE5B60E1633F1006159ED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				280DE6150E163646006159ED /* parsedate.c in Sources */,
+				280DE6170E163646006159ED /* raptor_avltree.c in Sources */,
+				280DE6190E163646006159ED /* raptor_expat.c in Sources */,
+				280DE61A0E163646006159ED /* raptor_feature.c in Sources */,
+				280DE61B0E163646006159ED /* raptor_general.c in Sources */,
+				280DE61C0E163646006159ED /* raptor_guess.c in Sources */,
+				280DE61D0E163646006159ED /* raptor_identifier.c in Sources */,
+				280DE61F0E163646006159ED /* raptor_iostream.c in Sources */,
+				280DE6200E163646006159ED /* raptor_json_writer.c in Sources */,
+				280DE6210E163646006159ED /* raptor_locator.c in Sources */,
+				280DE6220E163646006159ED /* raptor_namespace.c in Sources */,
+				280DE6230E163646006159ED /* raptor_nfc.c in Sources */,
+				280DE6250E163646006159ED /* raptor_nfc_data.c in Sources */,
+				280DE6260E163646006159ED /* raptor_parse.c in Sources */,
+				280DE6270E163646006159ED /* raptor_qname.c in Sources */,
+				280DE6280E163646006159ED /* raptor_rdfxml.c in Sources */,
+				280DE6290E163646006159ED /* raptor_rfc2396.c in Sources */,
+				280DE62A0E163646006159ED /* raptor_sax2.c in Sources */,
+				280DE62B0E163646006159ED /* raptor_sequence.c in Sources */,
+				280DE62C0E163646006159ED /* raptor_serialize.c in Sources */,
+				280DE62D0E163646006159ED /* raptor_serialize_ntriples.c in Sources */,
+				280DE62E0E163646006159ED /* raptor_serialize_simple.c in Sources */,
+				280DE62F0E163646006159ED /* raptor_set.c in Sources */,
+				280DE6300E163646006159ED /* raptor_statement.c in Sources */,
+				280DE6310E163646006159ED /* raptor_stringbuffer.c in Sources */,
+				280DE6320E163646006159ED /* raptor_turtle_writer.c in Sources */,
+				280DE6330E163646006159ED /* raptor_uri.c in Sources */,
+				280DE6340E163646006159ED /* raptor_utf8.c in Sources */,
+				280DE6350E163646006159ED /* raptor_www.c in Sources */,
+				280DE6360E163646006159ED /* raptor_xml.c in Sources */,
+				280DE6370E163646006159ED /* raptor_xml_writer.c in Sources */,
+				280DE6380E163646006159ED /* raptor_xsd.c in Sources */,
+				280DE6390E163646006159ED /* snprintf.c in Sources */,
+				280DE63A0E163646006159ED /* strcasecmp.c in Sources */,
+				280DE63B0E163646006159ED /* turtle_common.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		280DE5C70E1633F3006159ED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				280DE5E10E163507006159ED /* lrdf.c in Sources */,
+				280DE5E20E163507006159ED /* lrdf_multi.c in Sources */,
+				280DE5E30E163507006159ED /* md5.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2840CEDA0AEB803C00F49FC3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5748,6 +6052,21 @@
 			isa = PBXTargetDependency;
 			target = 17073EE70988DBDD008541CC /* allegro */;
 			targetProxy = 17C99D52098970800041B1BC /* PBXContainerItemProxy */;
+		};
+		280DE5EB0E16357F006159ED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 280DE5AF0E1633F1006159ED /* libraptor */;
+			targetProxy = 280DE5EA0E16357F006159ED /* PBXContainerItemProxy */;
+		};
+		280DE64A0E1637D9006159ED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 280DE5AF0E1633F1006159ED /* libraptor */;
+			targetProxy = 280DE6490E1637D9006159ED /* PBXContainerItemProxy */;
+		};
+		280DE64C0E1637E2006159ED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 280DE5C00E1633F3006159ED /* liblrdf */;
+			targetProxy = 280DE64B0E1637E2006159ED /* PBXContainerItemProxy */;
 		};
 		2840CF800AEB822100F49FC3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -6002,6 +6321,90 @@
 				ZERO_LINK = NO;
 			};
 			name = "Debug Static";
+		};
+		280DE5BB0E1633F1006159ED /* Debug Static */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"RAPTOR_INTERNAL=1",
+					HAVE_CONFIG_H,
+				);
+				PRODUCT_NAME = raptor;
+			};
+			name = "Debug Static";
+		};
+		280DE5BC0E1633F1006159ED /* Debug Shared */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"RAPTOR_INTERNAL=1",
+					HAVE_CONFIG_H,
+				);
+				PRODUCT_NAME = raptor;
+			};
+			name = "Debug Shared";
+		};
+		280DE5BD0E1633F1006159ED /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"RAPTOR_INTERNAL=1",
+					HAVE_CONFIG_H,
+				);
+				PRODUCT_NAME = raptor;
+			};
+			name = "Release Static";
+		};
+		280DE5BE0E1633F1006159ED /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"RAPTOR_INTERNAL=1",
+					HAVE_CONFIG_H,
+				);
+				PRODUCT_NAME = raptor;
+			};
+			name = "Release Shared";
+		};
+		280DE5CC0E1633F3006159ED /* Debug Static */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				PRODUCT_NAME = lrdf;
+			};
+			name = "Debug Static";
+		};
+		280DE5CD0E1633F3006159ED /* Debug Shared */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				PRODUCT_NAME = lrdf;
+			};
+			name = "Debug Shared";
+		};
+		280DE5CE0E1633F3006159ED /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				PRODUCT_NAME = lrdf;
+			};
+			name = "Release Static";
+		};
+		280DE5CF0E1633F3006159ED /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				PRODUCT_NAME = lrdf;
+			};
+			name = "Release Shared";
 		};
 		2840CF1F0AEB803C00F49FC3 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
@@ -7286,6 +7689,28 @@
 				288052CB0DEA74F100671EA4 /* Debug Shared */,
 				28E5DA390AC4CBA200E7F64C /* Release Static */,
 				288052E00DEA74FD00671EA4 /* Release Shared */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug Static";
+		};
+		280DE5BA0E1633F1006159ED /* Build configuration list for PBXNativeTarget "libraptor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				280DE5BB0E1633F1006159ED /* Debug Static */,
+				280DE5BC0E1633F1006159ED /* Debug Shared */,
+				280DE5BD0E1633F1006159ED /* Release Static */,
+				280DE5BE0E1633F1006159ED /* Release Shared */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug Static";
+		};
+		280DE5CB0E1633F3006159ED /* Build configuration list for PBXNativeTarget "liblrdf" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				280DE5CC0E1633F3006159ED /* Debug Static */,
+				280DE5CD0E1633F3006159ED /* Debug Shared */,
+				280DE5CE0E1633F3006159ED /* Release Static */,
+				280DE5CF0E1633F3006159ED /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
