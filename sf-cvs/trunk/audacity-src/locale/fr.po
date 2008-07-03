@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Audacity 1.4.x\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-04-28 22:24+0100\n"
-"PO-Revision-Date: 2008-05-04 19:23+0100\n"
+"PO-Revision-Date: 2008-05-25 11:41+0100\n"
 "Last-Translator: Christian Brochec <christian@audacityteam.org>\n"
 "Language-Team: Christian Brochec <christian@audacityteam.org>\n"
 "MIME-Version: 1.0\n"
@@ -35,17 +35,12 @@ msgid "This is a stable, completed release of Audacity. However, if you find a b
 msgstr "Ceci est une version stable et complête d'Audacity. Si toutefois vous décelez un bogue ou avez une suggestion, merci de nous contacter. Nous dépendons des retours des utilisateurs pour l'amélioration d'Audacity. Pour plus d'information, veuillez vous connecter à notre site Internet."
 
 #. i18n-hint: The translation of "translator_credits" will appear
-#. in the credits in the About Audacity window.  Use this to add
-#. your own name(s) to the credits.
-#.
-#. For example:  "English translation by Dominic Mazzoni."
-#.
 #: AboutDialog.cpp:192
 #: AboutDialog.cpp:194
 msgid "translator_credits"
 msgstr ""
-"Traduction française de Christian Brochec. \n"
-"Pour toute remarque ou suggestion : christian@audacityteam.org"
+"Traduction française de Christian Brochec.\n"
+"Pour toute remarque ou suggestion  :  christian@audacityteam.org\n"
 
 #: AboutDialog.cpp:207
 msgid "A Free Digital Audio Editor"
@@ -94,7 +89,7 @@ msgstr "Audacity"
 #: AboutDialog.cpp:312
 #: AboutDialog.cpp:468
 msgid "Build Information"
-msgstr ""
+msgstr "Informations système"
 
 #: AboutDialog.cpp:305
 #: effects/AvcCompressor.cpp:674
@@ -250,7 +245,6 @@ msgid "Output Meter"
 msgstr "VU mètre de sortie"
 
 #. i18n-hint: Mac OS X shortcut should be Ctrl+,
-#. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
 #: AudacityApp.cpp:751
 #: Menus.cpp:478
 msgid "&Preferences...\tCtrl+,"
@@ -327,7 +321,6 @@ msgid "Command-line options supported:"
 msgstr "Options de lignes de commandes supportées :"
 
 #. i18n-hint: '-help' is the option and needs to stay in
-#. * English. This displays a list of available options
 #: AudacityApp.cpp:1154
 msgid "\t-help (this message)"
 msgstr "\t-help (ce message)"
@@ -338,16 +331,11 @@ msgid "\t-version (display Audacity version)"
 msgstr "\t-version (affiche la version d'Audacity)"
 
 #. i18n-hint '-test' is the option and needs to stay in
-#. * English. This runs a set of automatic tests on audacity
-#. * itself
 #: AudacityApp.cpp:1160
 msgid "\t-test (run self diagnostics)"
 msgstr "\t-test (lance l'auto diagnostic)"
 
 #. i18n-hint '-blocksize' is the option and needs to stay in
-#. * English. 'nnn' is any integer number. This controls the
-#. * size pieces that audacity uses when writing files to the
-#. * disk
 #: AudacityApp.cpp:1165
 msgid "\t-blocksize nnn (set max disk block size in bytes)"
 msgstr "\t-blocksize nnn (règle en bytes la taille maximale des blocs)"
@@ -527,7 +515,7 @@ msgid ""
 "Could not set parameters of effect %s\n"
 " to %s."
 msgstr ""
-"Impossible demodifier les paramêtres de l'effet %s\n"
+"Impossible de modifier les paramêtres de l'effet %s\n"
 "à %s."
 
 #: BatchCommands.cpp:583
@@ -833,8 +821,6 @@ msgstr ""
 #  when a file needs to be backed up to a different name.  For
 #  example, mysong would become mysong-old1, mysong-old2, etc.
 #. i18n-hint: This is the pattern for filenames that are created
-#. when a file needs to be backed up to a different name.  For
-#. example, mysong would become mysong-old1, mysong-old2, etc.
 #: DirManager.cpp:985
 #, c-format
 msgid "%s-old%d"
@@ -1054,8 +1040,6 @@ msgstr "Autocorrélation avancée"
 #  "spectrum".  Do not translate it unless you are sure you
 #  know the correct technical word in your language.
 #. i18n-hint: This is a technical term, derived from the word
-#. "spectrum".  Do not translate it unless you are sure you
-#. know the correct technical word in your language.
 #: FreqWindow.cpp:147
 msgid "Cepstrum"
 msgstr "Cepstre"
@@ -1070,7 +1054,6 @@ msgid "Size"
 msgstr "Taille"
 
 #. i18n-hint: This refers to a "window function", used in the
-#. Frequency analyze dialog box.
 #: FreqWindow.cpp:181
 msgid " window"
 msgstr " window"
@@ -1122,7 +1105,6 @@ msgid "dB"
 msgstr "dB"
 
 #. i18n-hint: This is the abbreviation for "Hertz", or
-#. cycles per second.
 #: FreqWindow.cpp:287
 #: FreqWindow.cpp:442
 #: effects/Equalization.cpp:1150
@@ -1177,7 +1159,7 @@ msgstr "Décalage (secondes)\tFréquence (Hz)\tNiveau"
 
 #: HelpText.cpp:85
 msgid "To [[welcome|Welcome screen]]"
-msgstr ""
+msgstr "[[welcome|Écran d'accueil]]"
 
 #: HelpText.cpp:92
 msgid "Welcome!"
@@ -1229,63 +1211,63 @@ msgstr "Aide locale manquante"
 
 #: HelpText.cpp:148
 msgid "</p><center><h3>Getting Started</h3></center><br>"
-msgstr ""
+msgstr "</p><center><h3>Pour bien démarrer</h3></center><br>"
 
 #: HelpText.cpp:150
 msgid "Welcome to Audacity "
-msgstr "Bienvenue dans Audacity !"
+msgstr "Bienvenue dans Audacity"
 
 #: HelpText.cpp:151
 msgid "Learn how to: <ul><li>[[play|play]] an existing audio file <li>[[record|record]] your voice, LP or tape <li>[[edit|edit]] sounds <li>[[save|save or open an Audacity project]] <li>[[export|export]] to an MP3 or other audio file, or [[burncd|burn to a CD]]  </ul></p><p>"
-msgstr ""
+msgstr "Découvrez comment : <ul><li>[[play|lire]] un fichier audio existant <li>[[record|enregistrer]] votre voix, des 33 t ou des cassettes <li>[[edit|modifier]] des sons <li>[[save|enregistrer ou ouvrir un projet Audacity]] <li>[[export|exporter]] en MP3 ou autre fichier audio, ou [[burncd|graver un CD]]  </ul></p><p>"
 
 #: HelpText.cpp:159
 msgid "This screen can be viewed at any time by clicking the <i>Help</i> menu, then <i>Show Welcome Message</i>. For a detailed guide to all the Audacity menus and controls, click  <i>Help</i> menu then <i>Index</i>, or download our <a href=\"http://audacity.sourceforge.net/help/documentation/manual_1.4.pdf\">full Manual</a> in PDF format.</p>"
-msgstr ""
+msgstr "Cet écran peut être affiché à tout moment en cliquant sur le menu <i>Aide</i>,puis <i>afficher le message d'accueil</i>. Pour une découverte des menus et contrôles d'Audacity en détail, cliquer sur le menu <i>Aide</i> puis <i>Index</i>, ou télécharger notre <a href=\"http://audacity.sourceforge.net/help/documentation/manual_1.4.pdf\">Manuel</a> en format PDF (en anglais).</p>"
 
 #: HelpText.cpp:172
 msgid "<p><b>Opening audio files:</b> Either drag the files into the current project window, or click <i>File &gt; Import &gt; Audio</i>. Files can be opened into a new project window with <i>File &gt; Open</i>. The main formats Audacity plays are <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis</b> and <b>WAV</b>. Click [[wma-proprietary|here]] if your file is in some other format. <b>To import a CD:</b> extract it to WAV or AIFF using iTunes, Windows Media Player 11 or similar. See our online guide: [[wiki:How_to_import_CDs|importing CDs]].</p><p> <p><b>Playing audio:</b> Press the green Play button to start playback. Press the blue Pause button once to pause playback, and again to resume. To stop, press the yellow Stop button. Spacebar can be used to either play or stop. After stopping, playback resumes from its last starting point. To change the starting point, click in the track at your desired starting point. The <b>|&lt;&lt;</b> and <b>&gt;&gt;|</b> buttons can be used to skip to the start or end of the track respectively. </p><br><br>"
-msgstr ""
+msgstr "<p><b>Ouverture de fichiers audio:</b> Vous pouvez au choix glisser des fichiers dans la fenêtre du projet, ou cliquer sur <i>Fichier &gt; Importer &gt; Audio</i>. Les fichiers peuvent être importés dans une nouvelle fenêtre de projet par <i>Fichier &gt; Ouvrir</i>. Les principaux formats de lecture d'Audacity sont <b>AIFF, AU, FLAC, M4A</b> (seulement sur Mac), <b>MP2/MP3, OGG Vorbis</b> et <b>WAV</b>. Cliquer [[wma-proprietary|ici]] si votre fichier est dans un autre format. <b>Pour importer un CD :</b> l'extraire en WAV ou AIFF avec iTunes, Windows Media Player 11 ou autre. Voir notre guide en ligne : [[wiki:How_to_import_CDs|importation de CD]].</p><p> <p><b>Lecture :</b> Cliquer sur le bouton vert Lecture. Cliquer une fois sur le bouton bleu Pause pour mettre en pause, puis à nouveau dessus pour redémarrer. Pour arrêter, cliquer sur le bouton jaune Stop. La barre d'espace lance la lecture et l'arrête. A l'arrêt, la lecture revient à son point de départ. Pour changer le point de départ, cliquer dans la piste à l'endroit désiré. Les boutons <b>|&lt;&lt;</b> et <b>&gt;&gt;|</b> permettent de sauter respectivement au début et à la fin de la piste. </p><br><br>"
 
 #: HelpText.cpp:194
 msgid "<p><b>To record:</b> Set the recording device and input source, adjust the input level, then press the red Record button.</b></p><p> 1) [[inputdevice|Set Recording Device]] either in the <i>Audio I/O tab of Preferences</i> or in <i>Device Toolbar</i>. Audio I/O Preferences lets you choose stereo recording if required.<br> 2) [[inputsource|Set input source]] for that device (for example, microphone or line-in) in the dropdown selector of the <i>Mixer Toolbar</i>, or (on some systems) at Recording Device in the <i>Audio I/O tab of Preferences</i> or in <i>Device Toolbar</i>.<br> 3) [[inputlevel|Adjust input level]] using the right-hand slider on the <i>Mixer Toolbar</i>. Correct adjustment of level before recording is essential to avoid noise or distortion. </p><p> More help at: \"Recording\" <a href=\"http://audacity.sourceforge.net/help/faq\">FAQs</a>, our Tutorial <a href=\"http://www.audacityteam.org/manual/index.php?title=Tutorial_-_Your_First_Recording\"> Your First Recording</a> in the <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">Manual</a>, and our Wiki [[wiki:Recording_Tips|Recording Tips]] and [[wiki:Troubleshooting_Recordings|Troubleshooting Recordings]] pages. </p><br><br>"
-msgstr ""
+msgstr "<p><b>Pour enregistrer:</b> Choisir le périphérique d'enregistrement et la source, ajuster le niveau d'entrée, puis cliquer sur le bouton rouge Enregistrement.</b></p><p> 1) [[inputdevice|Choisir le périphérique d'enregistrement]] dans l'onglet <i>E/S Audio des Préférences</i> ou dans la <i>Barre de périphérique</i>. Les préférences E/S Audio vous permettent si besoin de choisir un enregistrement stéréo.<br> 2) [[inputsource|Choix de la source]] pour ce périphérique (par exemple, microphone ou entrée ligne) dans le sélecteur de la <i>Barre de mixage</i>, ou (sous certains systèmes) dans Périphérique d'enregistrement de l'onglet <i>E/S Audio des Préférences</i> ou dans la <i>Barre de périphérique</i>.<br> 3) [[inputlevel|Réglage du niveau d'entrée]] à l'aide du curseur de droite de la <i>Barre de mixage</i>. Un ajustement correct du niveau avant l'enregistrement est essentiel pour éviter bruit ou distorsion. </p><p> Davantage d'aide sur : \"Enregistrement\" <a href=\"http://audacity.sourceforge.net/help/faq\">FAQ</a>, notre Tutoriel en anglais<a href=\"http://www.audacityteam.org/manual/index.php?title=Tutorial_-_Your_First_Recording\"> Your First Recording</a> dans le <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">Manuel</a>, et notre Wiki en anglais[[wiki:Recording_Tips|RecordingTips]] et les pages [[wiki:Troubleshooting_Recordings|Troubleshooting Recordings]]. </p><br><br>"
 
 #: HelpText.cpp:221
 msgid "<p>The input device is the actual physical sound device you are recording from. This is chosen at \"Recording Device\" in the <i>Audio I/O tab of Preferences</i>, On Windows and Linux, Preferences are at the bottom of the <i>Edit</i> Menu. On a Mac, they in the <i>Audacity</i> Menu. You can also conveniently select Recording Device in the <i>Device Toolbar</i>, which can be enabled at <i>View &gt; Toolbars...</i>. </p><p> By default, Audacity uses the device currently being used by the system, (usually your inbuilt sound device), so it is often not necessary to change the input device. On Windows, this current system device can be selected as \"Microsoft Sound Mapper\". If you are recording from an external USB or Firewire device such as a USB turntable, select it explicitly by name as recording device after conecting it. </p><p> Back to [[record|Recording Audio]] <br></p>"
-msgstr ""
+msgstr "<p>Le périphérique d'entrée est lla carte son à partir de laquelle vous enregistrez. Le choix se fait par \"Périphérique d'enregistrement\" dans l'onglet <i>E/S audio des Préférences</i>. Sous Windows et Linux, les Préférences sont à la fin du menu <i>Edition</i>. Sous Mac, ils sont dans le menu <i>Audacity</i>. Vous pouvez aussi aisément sélectionner le périphérique d'enregistrement depuis la <i>barre de périphérique</i>, qui peut être activé à partir d'<i>affichage &gt; Barres d'outils...</i>. </p><p> Audacity sélectionnant par défaut le périphérique utilisé par le système, (habituellement votre carte son intégrée), il est le plus souvent inutile de changer de périphérique d'entrée. Sous Windows, le périphérique système peut être le \"Mappeur de son Microsoft\". Si vous enregistrez à partir d'un périphérique externe USB ou Firewire comme une platine vinyl USB, sélectionnez-le comme périphérique d'enregistrement d'après sa dénomination explicite. </p><p> Retour à [[record|Enregistrement audio]] <br></p>"
 
 #: HelpText.cpp:244
 msgid "<p>Select the input source (such as microphone or line-in) for your [[inputdevice|recording device]]:<br> - <b>On Windows (except Vista)</b> and <b>Linux</b>, in the dropdown selector on the right of the <i>Mixer Toolbar</i>.<br> - <b>On Windows Vista</b> and <b>Mac</b>, at Recording Device on the <i>Audio I/O tab of Preferences</i>, or in <i>Device Toolbar</i>. The source will be shown as part of the parent device (for example, <i>High Def Audio Card: Microphone</i>). If necessary, Mac users can choose the input source at Apple Audio MIDI Setup. <br><i><b>Note:</b> many USB or Firewire recording devices don't have a choice of inputs, so this step is not necessary. If in doubt, see the documentation for your device. </i></p><p> <b>Tip:</b> To <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&i=streaming\">record audio playing on the computer</a>, Windows and Linux users can choose the \"Stereo Mix\", \"Wave Out\", \"Sum\" or comparable input source. </p><p> Back to [[record|Recording Audio]] <br></p>"
-msgstr ""
+msgstr "<p>Sélectionnez la source (le microphone ou l'entrée ligne) comme [[inputdevice|périphérique d'enregistrement]]:<br> - <b>Sous Windows (à l'exception de Vista)</b> et <b>Linux</b>, dans le sélecteur à droite de la <i>Barre de mixage</i>.<br> - <b>Sous Windows Vista</b> et <b>Mac</b>, dans Périphérique d'enregistrement de l'onglet <i>E/S audio des Préférences</i>, ou dans la <i>Barre de périphérique</i>. La source sera présentée comme une partie du périphérique parent (par exemple, <i>Microphone : Carte son HD</i>). Si nécessaire, les utilisateurs Mac peuvent choisir la source dans les réglages Apple Audio MIDI. <br><i><b>Note :</b> de nombreux périphériques d'enregistrement USB ou Firewire ne proposant pas de choix d'entrée, cette étape n'est pas nécessaire. En cas de doute, veuillez vous référer à la documentation de votre appareil. </i></p><p> <b>Astuce :</b> Pour <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&i=streaming\">enregistrer du son lu sur l'ordinateur</a>, les utilisateurs Windows et Linux peuvent choisir \"Stereo Mix\", \"Sortie son\", \"Mélange\" ou une source comparable. </p><p> Retour à [[record|Enregistrement Audio]] <br></p>"
 
 #: HelpText.cpp:267
 msgid "<p>The input level must be set correctly. If the level is too low, there will be background noise. If the level is too high, there will be distortion in the loud parts. </p><p>To set the level, either see this [[wiki:Recording_levels|illustrated online guide]] or follow these steps: <ol><li>Turn on <b>monitoring</b>. Double-click the right-hand of the two <i>VU Meters</i> (or right-click over it) and click \"Start Monitoring\". If the meters are not visible, click <i>View &gt; Toolbars</i> and check \"Meter Toolbar\". </li><li>Adjust the input slider on the <i>Mixer Toolbar</i> (by the microphone symbol), so that the red bars in the meter come close to <b>but do not touch</b> the right edge of the scale. If you can't hear the monitored audio, go to the <i>Audio I/O tab of Preferences</i> and check \"Software Playthrough\". </li></ol></p><p> Back to [[record|Recording Audio]] <br></p>"
-msgstr ""
+msgstr "<p>Le niveau d'entrée doit être réglé correctement. Si le niveau est trop bas, il y aura du bruit de fond. S'il est trop haut, les parties fortes provoqueront de la distorsion. </p><p>Pour régler le niveau, consulter [[wiki:Recording_levels|illustrated online guide]] (en anglais) ou suivez ces étapes : <ol><li>Activer le <b>monitoring</b>. Double-cliquez sur le<i>VU mètre</i> de droite (ou faites un clic droit dessus et sélectionnez \"Visualiser l'entrée\"). Si les VU mètres ne sont pas visibles, ouvrez <i>Affichage &gt; Barres d'outils</i> et cochez \"VU mètre\". </li><li>Ajustez le curseur de volume d'entrée de la <i>Barre de mixage</i> (à côté de l'icône microphone), de façon à ce que les barres de niveau rouges approchent la limite droite <b>sans la toucher</b>. Si vous ne pouvez entendre le son pendant l'enregistrement, allez dans l'onglet <i>E/S audio des Préférences</i> et cochez \"Passage audio logiciel\". </li></ol></p><p> Retour à [[record|Enregistrement audio]] <br></p>"
 
 #: HelpText.cpp:292
 msgid "<p>The main commands for editing audio are under the <i>Edit</i> menu (such as cut, copy and paste) and the <i>Effect</i> menu (you can do things like boost the bass, change pitch or tempo, or remove noise). </p><p> Audacity applies edits to selected areas of the audio track. To select a particular area, click in the track and drag the shaded area with the mouse. If no audio is selected, Audacity selects all the audio in the project window.</p><p> When playing or recording, the Edit and Effect menus will appear greyed out, because a moving track can't be edited. Commands can sometimes be unavailable for other reasons too. For example, you can't run effects until you have audio on the screen, and you can't paste audio until you've cut or copied it to Audacity's clipboard. </p><br><br>"
-msgstr ""
+msgstr "<p>Les principales commandes d'éditions audio se trouvent dans le menu <i>Edition</i> (comme couper, copier, coller) et dans le menu <i>Effets</i> (vous pouvez amplifier les basses, changer la hauteur ou le tempo, ou supprimer le bruit). </p><p> Audacity applique les transformations à des zones sélectionnées de la piste son. Pour sélectionner une zone particulière, cliquer dans la piste et glisser la souris pour étendre la zone ombrée. S'il n'y a pas d'audio de sélectionné, Audacity sélectionne tout l'audio du projet.</p><p> Durant la lecture ou l'enregistrement, les menus Edition et Effets sont grisés, car les pistes ne peuvent être traitées alors. Les commandes peuvent parfois être également indisponibles pour d'autres raisons. Par exemple vous ne pouvez pas lancer d'effet s'il n'y a pas d'audio et vous ne pouvez pas coller d'audio sans l'avoir au préalable copié dans le presse papier d'Audacity. </p><br><br>"
 
 #: HelpText.cpp:311
 msgid "<p>To return later to your unfinished work in Audacity with all tracks and edits as you left them, save an Audacity project. To play your current work in other media programs or send it to others, [[export|export]] an audio file such as WAV or MP3. </p><p> <i>File &gt; Save Project</i> saves an <b>.aup</b> project file and  a <b>_data</b> folder containing the actual audio. To re-open a saved project, click <i>File &gt; Open</i> and open the .aup file. If you save and exit more than once, an .aup.bak backup file is created, but the .aup file should always be opened if present. When your final exported file is exactly as you want, delete the project files and _data folder to save disc space. </p><p><i>File &gt; Save Project As...</i> is for saving an empty project. It also lets you save an existing Project to a <b> new</b> name. This is the only safe way to rename a project. The .aup file and _data folder should not be moved or renamed manually. </p><p>"
-msgstr ""
+msgstr "<p>Pour pouvoir reprendre plus tard un travail avec toutes les pistes et transformations en cours, enregistrez-le comme projet Audacity. Pour pouvoir lire votre travail dans d'autres programmes ou le partager avec d'autres personnes, l'[[export|exporter]] en un fichier audio WAV ou MP3. </p><p> <i>Fichier &gt; Enregistrer le projet</i> enregistre un fichier projet <b>.aup</b> et un répertoire <b>_data</b> contenant l'audio. Pour réouvrir un projet enregistré, cliquer sur <i>Fichier &gt; Ouvrir</i> et ouvrir le fichier .aup. Si vous l'enregistrez et le fermez plus d'une fois, un fichier de sauvegarde .aup.bak est créé, mais le fichier .aup original pourra toujours être ouvert. Quand le fichier final exporté est exactement tel que vous le souhaitez, vous pouvez effacer le projet et le répertoire  _data pour préserver l'espace disque. </p><p><i>Fichier &gt; Enregistrer le projet sous...</i> sert à préparer un projet vide. Il permet également de sauvegarder un projet existant sous un <b> nouveau</b> nom. C'est le seul moyen sûr pour renommer un projet. Le fichier .aup et le répertoire _data ne doivent pas être déplacés ou renommés manuellement. </p><p>"
 
 #: HelpText.cpp:335
 msgid "To hear your work in other media programs, export it to an audio file such as WAV or MP3 (some formats are [[wma-proprietary|unsupported]]). [[save|Saving an Audacity project]] creates a project file (and linked _data folder) containing all your edited tracks, so you can return to your work later. However, other programs can't read Audacity projects. </p><p> To export, click <i>File &gt; Export</i> then choose the file format you want to export to in the \"Save as type\" dropdown. To [[burncd|burn a CD]] for standalone CD players, choose WAV or AIFF. To export as MP3, the [[wiki:Lame_Installation|Lame Encoder]] must be installed. </p><p> <i>File &gt; Export Selection</i> exports only a selected area of audio. <i>Use File &gt; Export Multiple</i> to export multiple files at the same time, either one for each audio track, or one for each labeled area in a single track. <i>Tracks &gt; Add Label At Selection</i> lets you [[wiki:Splitting_recordings_into_separate_tracks|split the tracks]] from an album for multiple export as separate files. </p><br><br>"
-msgstr ""
+msgstr "Pour écouter votre travail dans d'autres programmes, l'exporter en un fichier audio WAV ou MP3 (certains formats ne sont pas [[wma-proprietary|supportés]]). [[save|Enregistrer un projet Audacity]] crée un fichier projet (et un répertoire _data associé) contenant toutes vos pistes, pour vous permettre de retourner à votre travail plus tard. Cependant, les autres programmes ne peuvent lire les projets Audacity. </p><p> Pour exporter, cliquer sur <i>Fichier &gt; Exporter</i> puis choisir le format sous lequel vous souhaitez exporter dans la liste \"type\". Pour [[burncd|graver un CD]] lisible sur tout lecteur de CD, choisir WAV ou AIFF. Pour exporter en MP3, l'[[wiki:Lame_Installation|Encodeur Lame]] doit être installé. </p><p> <i>Fichier &gt; Exporter la sélection</i> exporte seulement une portion d'audio sélectionnée. <i>Utiliser Fichier &gt; Export Multiple</i> pour exporter en une seule fois des fichiers multiples, soit un par piste audio, soit un par zone marquée dans une même piste. <i>Pistes &gt; Ajouter marqueur à la sélection</i> vous permet de[[wiki:Splitting_recordings_into_separate_tracks|séparer les pistes]] d'un album pour un export multiple en fichiers séparés. </p><br><br>"
 
 #: HelpText.cpp:359
 msgid "<p>Audacity <b>cannot</b> [[play|play]] or [[export|export]] files in <b>WMA, RealAudio, Shorten (SHN)</b> or most other proprietary formats, due to licensing and patent restrictions.  On a Mac computer, unprotected <b>AAC</b> formats such as <b>M4A</b> can be imported. Some open formats are not yet supported, including <b>Ogg Speex</b> and <b>Musepack</b>. Files protected by any kind of Digital Rights Management (DRM), including most purchased online such as from iTunes or Napster, <b>cannot</b> be imported.</p><p> If you can't import your file into Audacity, then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> to convert it to WAV or AIFF. If it is protected, burn it to an audio CD in the program licensed to play it, then extract the CD track to WAV or AIFF using ITunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or Windows Media Player 11. You could also <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. <i>To export to an unsupported format, export to WAV or AIFF and convert it to the desired format in iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
-msgstr ""
+msgstr "<p>Audacity <b>ne peut pas</b> [[play|lire]] ou [[export|exporter]] des fichiers en <b>WMA, RealAudio, Shorten (SHN)</b> ainsi que das la plupart des formats propriétaires, à cause de licences et de limitations de droits.  Sous Mac, les formats <b>AAC</b>non protégés comme le <b>M4A</b> peuvent être importés. Quelques formats libres ne sont pas encore supportés, Y compris <b>Ogg Speex</b> et <b>Musepack</b>. Les fichiers protégés par n'importe quel gestionnaire de droits digitaux (DRM), y compris la plupart de ceux achetés en ligne sur iTunes ou Napster, <b>ne peuvent pas</b> être importés.</p><p> Si vous ne pouvez pas importer un fichier dans Audacity, et qu'il n'a pas de protection DRM, utilisez iTunes ou <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> pour le convertir en WAV ou AIFF. S'il est protégé, gravez le sur un CD audio depuis son programme de lecture, puis ectraire la piste de CD en WAV ou AIFF à l'aide d' ITunes ou (on Windows) de <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> ou de Windows Media Player 11. Vous pouvez aussi <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">enregistrer</a> le CD sur votre ordinateur. <i>Pour exporter vers un format non supporté, exporter en WAV ou AIFF puis convertir au format désiré avec iTunes ou <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
 
 #: HelpText.cpp:383
 msgid "<p>To burn your work to an audio CD for standalone CD players, first [[export|export]] it as WAV or AIFF. The exported file should be stereo, 44100 Hz (set in the \"Project Rate\" button bottom left) and 16 bit (set in the \"Options\" button in the file export dialog). These are Audacity's default settings, so normally you will not need to change these before exporting. <p>Burn the exported file to an \"audio CD\" - not a \"data CD\" or \"MP3 CD\" - with a CD burning program like iTunes or Windows Media Player. For more help, see [[wiki:How_to_burn_CDs|How to burn CDs]] online. </p><p>"
-msgstr ""
+msgstr "<p>Pour graver votre oeuvre sur un CD audio lisible sur tout lecteur de CD, l'[[export|exporter]] dans un premier temps en WAV ou AIFF. Le fichier doit être stéréo, 44100 Hz (à régler grâce au sélecteur \"Projet à\" en bas à gauche) et en 16 bits (à régler depuis le bouton \"Options\" de la boîte de dialogue d'exportation). Ce sont les réglages par défaut d'Audacity, si bien que -normalement- vous n'avez rien à changer pour l'exportation. <p>Gravez le fichier exporté sur un  \"CD audio\" - et pas un \"CD de données\" ou un  \"CD MP3\" - avec un logiciel de gravure de CD comme iTunes ou Windows Media Player. Pour davantage d'aide, voir en ligne [[wiki:How_to_burn_CDs|How to burn CDs]] (en anglais). </p><p>"
 
 #: HelpText.cpp:403
 msgid "<p>You don't appear to have Audacity help files on your machine. Either <a href=\"http://audacity.sourceforge.net/help/documentation\">download</a> the help files and then access them again from Audacity by clicking <i>Help</i> then <i>Index</i>, or click <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">here</a> to read the full Manual online."
-msgstr ""
+msgstr "<p>Vous ne semblez pas avoir le fichier d'aide Audacity sur votre machine. Vous pouvez soit <a href=\"http://audacity.sourceforge.net/help/documentation\">télécharger</a> le fichier d'aide puis y accéder depuis Audacity en cliquant <i>Aide</i> puis <i>Index</i>, soit cliquer <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">ici</a> pour lire le manuel complet en ligne."
 
 #: HistoryWindow.cpp:53
 msgid "Undo History"
@@ -2959,7 +2941,6 @@ msgid "Saved %s"
 msgstr " %s enregistré"
 
 #. i18n-hint: This refers to files that are opened directly
-#. without looking at the file header.  Same as "Import Raw"
 #: Project.cpp:2520
 msgid "Raw"
 msgstr "données brutes (Raw)"
@@ -3164,7 +3145,6 @@ msgid "End Date and Time"
 msgstr "Date et heure de fin"
 
 #. i18n-hint: A time specification like "Sunday 28th October 2007 15:16:17 GMT"
-#. * but hopefully translated by wxwidgets will be inserted into this
 #: SmartRecordDialog.cpp:383
 #, c-format
 msgid "Waiting to start recording at %s.\n"
@@ -4247,7 +4227,6 @@ msgid "Change Pitch without Changing Tempo"
 msgstr "Changer la hauteur sans changer le tempo"
 
 #. i18n-hint: && in here is an escape character to get a single & on
-#. * screen, so keep it as is
 #: effects/ChangePitch.cpp:254
 #: effects/ChangeSpeed.cpp:313
 #: effects/ChangeTempo.cpp:180
@@ -4312,9 +4291,6 @@ msgid "using SampleRate, by Erik de Castro Lopo"
 msgstr "utilise SampleRate, d'Erik de Castro Lopo"
 
 #. i18n-hint: n/a is an English
-#. abbreviation meaning "not
-#. applicable" (in other words,
-#. unimportant, not relevant).
 #: effects/ChangeSpeed.cpp:364
 msgid "n/a"
 msgstr "n/a"
@@ -4505,7 +4481,6 @@ msgid "Echo"
 msgstr "Echo"
 
 #. i18n-hint: && in here is an escape character to get a single & on
-#. * screen, so keep it as is
 #: effects/Echo.cpp:195
 msgid "by Dominic Mazzoni && Vaughan Johnson"
 msgstr "par Dominic Mazzoni && Vaughan Johnson"
@@ -4569,7 +4544,6 @@ msgid "custom"
 msgstr "Personnalisé"
 
 #. i18n-hint: && in here is an escape character to get a single &
-#. * on screen, so keep it as is
 #: effects/Equalization.cpp:1087
 msgid "Equalization, by Martyn Shaw && Mitch Golden"
 msgstr "Egalisation, par Martyn Shaw && Mitch Golden"
@@ -4858,7 +4832,6 @@ msgid "Removing Noise"
 msgstr "Suppression du bruit"
 
 #. i18n-hint: First %s is the effect name, 2nd and 3rd are either true or
-#. * false (translated below) if those options were selected
 #: effects/Normalize.cpp:70
 #, c-format
 msgid "Applied effect: %s remove dc offset = %s, normalize amplitude = %s"
@@ -4870,7 +4843,6 @@ msgid "false"
 msgstr "faux"
 
 #. i18n-hint: true here means that the option was
-#. * selected. Opposite false if not selected
 #: effects/Normalize.cpp:74
 #: effects/Normalize.cpp:75
 msgid "true"
@@ -4989,7 +4961,6 @@ msgid "Repeat"
 msgstr "Répéter"
 
 #. i18n-hint: && in here is an escape character to get
-#. * a single & on screen, so keep it as is
 #: effects/Repeat.cpp:188
 msgid "Repeat by Dominic Mazzoni && Vaughan Johnson"
 msgstr "Répétition par Dominic Mazzoni && Vaughan Johnson"
@@ -5689,8 +5660,6 @@ msgid "Download..."
 msgstr "Télécharger..."
 
 #. i18n-hint: It's asking for the location of a file, for
-#. example, "Where is lame_enc.dll?" - you could translate
-#. "Where would I find the file %s" instead if you want.
 #: export/ExportMP3.cpp:601
 #, c-format
 msgid "Where is %s?"
@@ -5979,7 +5948,7 @@ msgstr "(Les combinaison d'entête et d'encodage ne sont pas toutes possibles.)"
 #: export/ExportPCM.cpp:320
 #: import/ImportPCM.cpp:47
 msgid "WAV, AIFF, and other uncompressed types"
-msgstr "WAV, AIFF,et autres types non compressés"
+msgstr "WAV, AIFF, et autres formats non compressés"
 
 #: export/ExportPCM.cpp:361
 msgid "Cannot export audio in this format."
@@ -6157,7 +6126,7 @@ msgid ""
 "If the audio is bogus, try renaming the file\n"
 "so that it has the correct extension before opening it."
 msgstr ""
-"Audacity a dû établir au jugé le type du fichier.\n"
+"Audacity a dû établir au jugé le format du fichier.\n"
 "L'audio peut être défectueux.\n"
 "\n"
 "Si c'est le cas, essayez de renommer le fichier\n"
@@ -6258,19 +6227,16 @@ msgid "Import Raw Data"
 msgstr "Importer des données brutes (Raw)"
 
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-#. know the correct technical word.
 #: import/ImportRaw.cpp:337
 msgid "No endianness"
 msgstr "Pas de \"boutisme\""
 
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
 #: import/ImportRaw.cpp:340
 msgid "Little-endian"
 msgstr "Mode \"petit-boutiste\""
 
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
 #: import/ImportRaw.cpp:343
 msgid "Big-endian"
 msgstr "Mode \"Gros-boutiste\""
@@ -6278,7 +6244,6 @@ msgstr "Mode \"Gros-boutiste\""
 #  i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #  know the correct technical word.
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-#. know the correct technical word.
 #: import/ImportRaw.cpp:346
 msgid "Default endianness"
 msgstr "\"Boutisme\" par défaut."
@@ -7209,7 +7174,6 @@ msgid "Theme"
 msgstr "Thème"
 
 #. i18n-hint: && in here is an escape character to get a single & on screen,
-#. * so keep it as is
 #: prefs/ThemePrefs.cpp:93
 msgid "Theme Cache - Images && Color"
 msgstr ""
@@ -7686,14 +7650,12 @@ msgid "Button"
 msgstr "Bouton"
 
 #. i18n-hint: One-letter abbreviation for Left, in VU Meter
-#. i18n-hint: One-letter abbreviation for Left, in the Pan slider
 #: widgets/ASlider.cpp:604
 #: widgets/Meter.cpp:212
 msgid "L"
 msgstr "G"
 
 #. i18n-hint: One-letter abbreviation for Right, in VU Meter
-#. i18n-hint: One-letter abbreviation for Right, in the Pan slider
 #: widgets/ASlider.cpp:607
 #: widgets/Meter.cpp:214
 msgid "R"
@@ -7813,205 +7775,146 @@ msgid "Vertical Ruler"
 msgstr "Règle verticale"
 
 #. i18n-hint: Format string for displaying time in seconds. Change the comma
-#. * in the middle to the 1000s separator for your locale, and the 'seconds'
-#. * on the end to the word for seconds. Don't change the numbers.
 #: widgets/TimeTextCtrl.cpp:267
 msgid "01000,01000 seconds"
 msgstr "01000,01000 secondes"
 
 #. i18n-hint: Name of time display format that shows time in hours, minutes
-#. * and seconds
 #: widgets/TimeTextCtrl.cpp:270
 msgid "hh:mm:ss"
 msgstr "hh:mm:ss"
 
 #. i18n-hint: Format string for displaying time in hours, minutes and
-#. * seconds. Change the 'h' to the abbreviation for hours, 'm' to the
-#. * abbreviation for minutes and 's' to the abbreviation for seconds. Don't
-#. * change the numbers unless there aren't 60 seconds in a minute in your
-#. * locale
 #: widgets/TimeTextCtrl.cpp:276
 msgid "0100 h 060 m 060 s"
 msgstr "0100 h 060 m 060 s"
 
 #. i18n-hint: Name of time display format that shows time in days, hours,
-#. * minutes and seconds
 #: widgets/TimeTextCtrl.cpp:279
 msgid "dd:hh:mm:ss"
 msgstr "dd:hh:mm:ss"
 
 #. i18n-hint: Format string for displaying time in days, hours, minutes and
-#. * seconds. Change the 'days' to the word for days, 'h' to the abbreviation
-#. * for hours, 'm' to the abbreviation for minutes and 's' to the
-#. * abbreviation for seconds. Don't change the numbers unless there aren't
-#. * 24 hours in a day in your locale
 #: widgets/TimeTextCtrl.cpp:285
 msgid "0100 days 024 h 060 m 060 s"
 msgstr "0100 jours 024 h 060 m 060 s"
 
 #. i18n-hint: Name of time display format that shows time in hours,
-#. * minutes, seconds and milliseconds (1/1000 second)
 #: widgets/TimeTextCtrl.cpp:288
 msgid "hh:mm:ss + milliseconds"
 msgstr "hh:mm:ss + millisecondes"
 
 #. i18n-hint: Format string for displaying time in hours, minutes, seconds
-#. * and milliseconds. Change the 'h' to the abbreviation for hours, 'm' to the
-#. * abbreviation for minutes and 's' to the abbreviation for seconds (the
-#. * milliseconds are shown as decimal seconds) . Don't change the numbers
-#. * unless there aren't 60 minutes in an hour in your locale
 #: widgets/TimeTextCtrl.cpp:294
 msgid "0100 h 060 m 060.01000 s"
 msgstr "0100 h 060 m 060.01000 s"
 
 #. i18n-hint: Name of time display format that shows time in hours,
-#. * minutes, seconds and samples (at the current project sample rate)
 #: widgets/TimeTextCtrl.cpp:297
 msgid "hh:mm:ss + samples"
 msgstr "hh:mm:ss + échantillon"
 
 #. i18n-hint: Format string for displaying time in hours, minutes, seconds
-#. * and samples. Change the 'h' to the abbreviation for hours, 'm' to the
-#. * abbreviation for minutes, 's' to the abbreviation for seconds and
-#. * translate samples . Don't change the numbers
-#. * unless there aren't 60 seconds in a minute in your locale
 #: widgets/TimeTextCtrl.cpp:303
 msgid "0100 h 060 m 060 s+.# samples"
 msgstr "0100 h 060 m 060 s+.# échantillons"
 
 #. i18n-hint: Name of time display format that shows time in samples (at the
-#. * current project sample rate)
 #: widgets/TimeTextCtrl.cpp:306
 msgid "samples"
 msgstr "Echantillons"
 
 #. i18n-hint: Format string for displaying time in samples (lots of samples).
-#. * Change the ',' to the 1000s separator for your locale, and translate
-#. * samples. If 1000s aren't a base multiple for your number system, then you
-#. * can change the numbers to an appropriate one, and put a 0 on the front
 #: widgets/TimeTextCtrl.cpp:311
 msgid "01000,01000,01000 samples|#"
 msgstr "01000,01000,01000 échantillons|#"
 
 #. i18n-hint: Name of time display format that shows time in hours, minutes,
-#. * seconds and frames at 24 frames per second (commonly used for films)
 #: widgets/TimeTextCtrl.cpp:314
 msgid "hh:mm:ss + film frames (24 fps)"
 msgstr "hh:mm:ss + images film 24i/s"
 
 #. i18n-hint: Format string for displaying time in hours, minutes, seconds
-#. * and frames at 24 frames per second. Change the 'h' to the abbreviation
-#. * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
-#. * for seconds and translate 'frames' . Don't change the numbers
-#. * unless there aren't 60 seconds in a minute in your locale
 #: widgets/TimeTextCtrl.cpp:320
 msgid "0100 h 060 m 060 s+.24 frames"
 msgstr "0100 h 060 m 060 s+.24 images"
 
 #. i18n-hint: Name of time display format that shows time in frames (lots of
-#. * frames) at 24 frames per second (commonly used for films)
 #: widgets/TimeTextCtrl.cpp:323
 msgid "film frames (24 fps)"
 msgstr "Images film 24i/s"
 
 #. i18n-hint: Format string for displaying time in frames at 24 frames per
-#. * second. Translate 'frames' and leave the rest alone
 #: widgets/TimeTextCtrl.cpp:326
 msgid "01000,01000 frames|24"
 msgstr "01000,01000 images|24"
 
 #. i18n-hint: Name of time display format that shows time in hours, minutes,
-#. * seconds and frames at NTSC TV drop-frame rate (used for American /
-#. * Japananese TV, and very odd)
 #: widgets/TimeTextCtrl.cpp:330
 msgid "hh:mm:ss + NTSC drop frames"
 msgstr "hh:mm:ss + images NTSC manquantes"
 
 #. i18n-hint: Format string for displaying time in hours, minutes, seconds
-#. * and frames with NTSC drop frames. Change the 'h' to the abbreviation
-#. * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
-#. * for seconds and translate 'frames'. Leave the |N alone, it's important!
 #: widgets/TimeTextCtrl.cpp:335
 msgid "0100 h 060 m 060 s+.30 frames|N"
 msgstr "0100 h 060 m 060 s+.30 images|N"
 
 #. i18n-hint: Name of time display format that shows time in hours, minutes,
-#. * seconds and frames at NTSC TV non-drop-frame rate (used for American /
-#. * Japananese TV, and doesn't quite match wall time
 #: widgets/TimeTextCtrl.cpp:339
 msgid "hh:mm:ss + NTSC non-drop frames"
 msgstr "hh:mm:ss + images NTSC non-drop "
 
 #. i18n-hint: Format string for displaying time in hours, minutes, seconds
-#. * and frames with NTSC drop frames. Change the 'h' to the abbreviation
-#. * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
-#. * for seconds and translate 'frames'. Leave the | .999000999 alone,
-#. * the whole things really is slightly off-speed!
 #: widgets/TimeTextCtrl.cpp:345
 msgid "0100 h 060 m 060 s+.030 frames| .999000999"
 msgstr "0100 h 060 m 060 s+.030 images| .999000999"
 
 #. i18n-hint: Name of time display format that shows time in frames at NTSC
-#. * TV frame rate (used for American / Japananese TV
 #: widgets/TimeTextCtrl.cpp:348
 msgid "NTSC frames"
 msgstr "Images NTSC"
 
 #. i18n-hint: Format string for displaying time in frames with NTSC frames.
-#. * Translate 'frames' and leave the rest alone. That really is the frame
-#. * rate!
 #: widgets/TimeTextCtrl.cpp:352
 msgid "01000,01000 frames|29.97002997"
 msgstr "01000,01000 images|29.97002997"
 
 #. i18n-hint: Name of time display format that shows time in hours, minutes,
-#. * seconds and frames at PAL TV frame rate (used for European TV)
 #: widgets/TimeTextCtrl.cpp:355
 msgid "hh:mm:ss + PAL frames (25 fps)"
 msgstr "hh:mm:ss + images PAL 25 i/s"
 
 #. i18n-hint: Format string for displaying time in hours, minutes, seconds
-#. * and frames with PAL TV frames. Change the 'h' to the abbreviation
-#. * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
-#. * for seconds and translate 'frames'. Nice simple time code!
 #: widgets/TimeTextCtrl.cpp:360
 msgid "0100 h 060 m 060 s+.25 frames"
 msgstr "0100 h 060 m 060 s+.25 images"
 
 #. i18n-hint: Name of time display format that shows time in frames at PAL
-#. * TV frame rate (used for European TV
 #: widgets/TimeTextCtrl.cpp:363
 msgid "PAL frames (25 fps)"
 msgstr "Images PAL 25 i/s"
 
 #. i18n-hint: Format string for displaying time in frames with NTSC frames.
-#. * Translate 'frames' and leave the rest alone.
 #: widgets/TimeTextCtrl.cpp:366
 msgid "01000,01000 frames|25"
 msgstr "01000,01000 images|25"
 
 #. i18n-hint: Name of time display format that shows time in hours, minutes,
-#. * seconds and frames at CD Audio frame rate (75 frames per second)
 #: widgets/TimeTextCtrl.cpp:369
 msgid "hh:mm:ss + CDDA frames (75 fps)"
 msgstr "hh:mm:ss + échantillons CDDA (75 fps)"
 
 #. i18n-hint: Format string for displaying time in hours, minutes, seconds
-#. * and frames with CD Audio frames. Change the 'h' to the abbreviation
-#. * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
-#. * for seconds and translate 'frames'.
 #: widgets/TimeTextCtrl.cpp:374
 msgid "0100 h 060 m 060 s+.75 frames"
 msgstr "0100 h 060 m 060 s+.75 échantillons"
 
 #. i18n-hint: Name of time display format that shows time in frames at CD
-#. * Audio frame rate (75 frames per second)
 #: widgets/TimeTextCtrl.cpp:377
 msgid "CDDA frames (75 fps)"
 msgstr "échantillons CDDA (75 i/s)"
 
 #. i18n-hint: Format string for displaying time in frames with CD Audio
-#. * frames. Translate 'frames' and leave the rest alone
 #: widgets/TimeTextCtrl.cpp:380
 msgid "01000,01000 frames|75"
 msgstr "01000,01000 échantillons|75"
