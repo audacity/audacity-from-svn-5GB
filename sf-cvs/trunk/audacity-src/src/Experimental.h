@@ -104,7 +104,7 @@
 
 // AM, 22.Nov 2007: 
 // Saves the default view mode for wave tracks.
-//#define EXPERIMENTAL_SAVE_DEFAULT_VIEW
+#define EXPERIMENTAL_SAVE_DEFAULT_VIEW
 
 #ifdef EXPERIMENTAL_FEATURES
    // The first experimental feature is a notebook that adds
