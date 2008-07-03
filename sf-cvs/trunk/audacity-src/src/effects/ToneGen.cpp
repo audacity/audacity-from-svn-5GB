@@ -49,20 +49,15 @@ EffectToneGen::EffectToneGen()
    frequency[1] = float(1320.0);          //Hz
    amplitude[0] = float(0.8);
    amplitude[1] = float(0.8);
-//   EnableForChirps();
    length = sDefaultGenerateLen;
-#ifdef LOGARITHMIC_TONE_CHIRP
    interpolation=0;
-#endif
 }
 
 wxString EffectToneGen::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
    /// \todo update to include *all* chirp parameters??
    const wxChar* waveformNames[] = {wxT("sine"), wxT("square"), wxT("sawtooth"), wxT("square, no alias")};
-#ifdef LOGARITHMIC_TONE_CHIRP
    const wxChar* interpolationNames[] = {wxT("linear"), wxT("logarithmic")};
-#endif
    return wxString::Format(_("Applied effect: Generate %s wave %s, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"), 
       waveformNames[waveform], mbChirp ? wxT("chirp") : wxT("tone"), frequency[0], amplitude[0], length); 
 } 
@@ -70,11 +65,9 @@ wxString EffectToneGen::GetEffectDescription() {
 bool EffectToneGen::PromptUser()
 {
    wxArrayString waveforms;
-#ifdef LOGARITHMIC_TONE_CHIRP
    wxArrayString interpolations;
    interpolations.Add(_("Linear"));
    interpolations.Add(_("Logarithmic"));
-#endif
    ToneGenDialog dlog(mParent, mbChirp ? _("Chirp Generator") : _("Tone Generator"));
    waveforms.Add(_("Sine"));
    waveforms.Add(_("Square"));
@@ -95,10 +88,8 @@ bool EffectToneGen::PromptUser()
    dlog.amplitude[1] = amplitude[1];
    dlog.length = length;
    dlog.waveforms = &waveforms;
-#ifdef LOGARITHMIC_TONE_CHIRP
    dlog.interpolation = interpolation;
    dlog.interpolations = &interpolations;
-#endif
    dlog.Init();
    dlog.TransferDataToWindow();
    dlog.Fit();
@@ -112,13 +103,11 @@ bool EffectToneGen::PromptUser()
    frequency[1] = dlog.frequency[1];
    amplitude[0] = dlog.amplitude[0];
    amplitude[1] = dlog.amplitude[1];
-#ifdef LOGARITHMIC_TONE_CHIRP
-	interpolation = dlog.interpolation;
+   interpolation = dlog.interpolation;
    if (interpolation==0)
       mbLogInterpolation = false;
    if (interpolation==1)
       mbLogInterpolation = true;
-#endif
    if( !mbChirp )
    {
       frequency[1] = frequency[0];
@@ -368,9 +357,7 @@ void ToneGenDialog::PopulateOrExchangeExtended( ShuttleGui & S )
    S.EndMultiColumn();
    S.StartMultiColumn(2, wxCENTER);
    {
-#ifdef LOGARITHMIC_TONE_CHIRP
       S.TieChoice(_("Interpolation:"), interpolation,  interpolations);
-#endif
       S.AddFixedText(_("Duration"), false);
       if (mToneDurationT == NULL)
       {
