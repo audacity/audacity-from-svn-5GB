@@ -262,6 +262,54 @@ void Effect::CountWaveTracks()
    }
 }
 
+void Effect::HandleLinkedTracksOnGenerate(double length, double t0)
+{
+   AudacityProject *p = GetActiveProject();
+   if(!p) return;
+   if ( !(p->IsSticky()) ) return;
+   
+   TrackListIterator iter(p->GetTracks());
+   
+   int editGroup = 0;
+   bool handleGroup = false;
+   Track *t=iter.First();
+   Track *n=t;
+   
+   while (t){//find edit group number
+      n=iter.Next();
+      if (t->GetSelected()) handleGroup = true;
+      if ( (n && n->GetKind()==Track::Wave && t->GetKind()==Track::Label) 
+            || (!n) ) {
+         if (handleGroup){
+            t=iter.First();
+            for (int i=0; i<editGroup; i++){//go to first in edit group
+               while (t && t->GetKind()==Track::Wave) t=iter.Next();
+               while (t && t->GetKind()==Track::Label) t=iter.Next();
+            }
+            while (t && t->GetKind()==Track::Wave){
+               if ( !(t->GetSelected()) ){
+                  //printf("t(w)(gen): %x\n", t);
+                  TrackFactory *factory = p->GetTrackFactory();
+                  WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
+                  tmp->InsertSilence(0.0, length);
+                  tmp->Flush();
+                  ((WaveTrack *)t)->HandlePaste(t0, tmp);
+               }
+               t=iter.Next();
+            }
+            while (t && t->GetKind()==Track::Label){
+               //printf("t(l)(gen): %x\n", t);
+               ((LabelTrack *)t)->ShiftLabelsOnInsert(length, t0);
+               t=iter.Next();         
+            }
+         }
+         editGroup++;
+         handleGroup = false;
+      }
+      t=n;
+   }
+}
+
 float TrapFloat(float x, float min, float max)
 {
    if (x <= min)

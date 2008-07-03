@@ -100,7 +100,7 @@ AButton *EditToolBar::AddButton(
    teBmps eFore, teBmps eDisabled,
    int id,
    const wxChar *label,
-   const wxChar *tip)
+   const wxChar *tip, bool toggle)
 {
    AButton *&r = mButtons[id];
 
@@ -109,7 +109,7 @@ AButton *EditToolBar::AddButton(
       eFore, eDisabled,
       wxWindowID(id),
       wxDefaultPosition, 
-      false,
+      toggle,
       theTheme.ImageSize( bmpRecoloredUpSmall ));
 
    r->SetLabel(label);
@@ -147,7 +147,8 @@ void EditToolBar::Populate()
    AddSeparator();
 
    AddButton(bmpLinkTracks, bmpLinkTracksDisabled, ETBLinkID,
-      _("Link Tracks"), _("Link Tracks"));
+      _("Link Tracks"), _("Link Tracks"), true);
+   
    AddSeparator();
    
    AddButton(bmpZoomIn, bmpZoomInDisabled, ETBZoomInID,
@@ -175,6 +176,8 @@ void EditToolBar::Populate()
    mButtons[ETBZoomSelID]->SetEnabled(false);
    mButtons[ETBZoomFitID]->SetEnabled(false);
    mButtons[ETBPasteID]->SetEnabled(false);
+   
+   mButtons[ETBLinkID]->PushDown();
 }
 
 void EditToolBar::OnButton(wxCommandEvent &event)
@@ -208,8 +211,14 @@ void EditToolBar::OnButton(wxCommandEvent &event)
          if (!busy) p->OnRedo();
          break;
       case ETBLinkID:
-         if (!busy) p->OnStickyLabel();
-         break;
+         if (!busy){
+            p->OnStickyLabel();
+            if (p->IsSticky())
+               mButtons[ETBLinkID]->PushDown();
+            else
+               mButtons[ETBLinkID]->PopUp();
+         }
+         return;//avoiding the call to SetButton()
       case ETBZoomInID:
          p->OnZoomIn();
          break;

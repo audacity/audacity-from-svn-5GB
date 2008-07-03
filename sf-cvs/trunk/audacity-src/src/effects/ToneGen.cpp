@@ -240,6 +240,8 @@ bool EffectToneGen::Process()
    this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
 
+   HandleLinkedTracksOnGenerate(length, mT0);
+   
    TrackListIterator iter(mOutputWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {

@@ -591,7 +591,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mViewInfo.bRedrawWaveform = false;
 
    mLockPlayRegion = false;
-   mStickyFlag = false;
+   mStickyFlag = true;
 
    CreateMenusAndCommands();
 

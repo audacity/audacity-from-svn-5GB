@@ -245,6 +245,8 @@ bool EffectDtmf::Process()
    if (dtmfDuration <= 0.0)
       return false;
 
+   HandleLinkedTracksOnGenerate(dtmfDuration, mT0);
+
    //Iterate over each track
    this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
