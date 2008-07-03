@@ -13,15 +13,14 @@
 #ifndef __AUDACITY_AUDIO_IO__
 #define __AUDACITY_AUDIO_IO__
 
-#include "Experimental.h"
 #include "portaudio.h"
-#ifdef EXPERIMENTAL_NOTE_TRACK
+#include "Audacity.h"
+
+#ifdef USE_MIDI
 //#include "portmidi.h"
 //#include "porttime.h"
 #include "allegro.h"
-#endif /* EXPERIMENTAL_NOTE_TRACK */
-
-#include "Audacity.h"
+#endif /* USE_MIDI */
 
 #if USE_PORTMIXER
 #include "portmixer.h"
