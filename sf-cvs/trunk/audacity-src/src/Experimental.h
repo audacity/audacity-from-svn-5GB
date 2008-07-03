@@ -62,9 +62,7 @@
 #define EXPERIMENTAL_ONDEMAND
 
 //Changes thanks to Andreas Micheler
-//This one looks pretty good and uses existing code for the log chirp, just adds an interface.
-//Perhaps it should not be included in the mainstream until the log spectrogram scale is ready as well
-#define LOGARITHMIC_TONE_CHIRP
+//Perhaps this should not be included in the mainstream until the log spectrogram scale is ready as well
 #define LOGARITHMIC_SPECTRUM
 
 //FFmpeg integration. Some FFmpeg-related changes are NOT ifdef'ed,
