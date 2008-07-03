@@ -8353,6 +8353,7 @@ fi
       fi
       { echo "$as_me:$LINENO: libraptor is available in the local tree" >&5
 echo "$as_me: libraptor is available in the local tree" >&6;}
+            ac_configure_args="$ac_configure_args \"--with-expat-source=$(pwd)/lib-src/expat\""
    else
       LIBRAPTOR_LOCAL_AVAILABLE="no"
       { echo "$as_me:$LINENO: libraptor is NOT available in the local tree" >&5

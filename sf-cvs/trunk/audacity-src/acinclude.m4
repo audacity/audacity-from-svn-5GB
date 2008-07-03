@@ -455,6 +455,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBRAPTOR], [
          LIBRAPTOR_LOCAL_CONFIG_SUBDIRS="lib-src/libraptor"
       fi
       AC_MSG_NOTICE([libraptor is available in the local tree])
+      ac_configure_args="$ac_configure_args \"--with-expat-source=${srcdir}/lib-src/expat\""
    else
       LIBRAPTOR_LOCAL_AVAILABLE="no"
       AC_MSG_NOTICE([libraptor is NOT available in the local tree])
