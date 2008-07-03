@@ -26,6 +26,7 @@
 #include "../ShuttleGui.h"
 #include "../Envelope.h"
 #include "../Prefs.h"
+#include "../Project.h"
 
 #include <math.h>
 
@@ -95,6 +96,62 @@ bool EffectChangeSpeed::Process()
    WaveTrack* pOutWaveTrack = (WaveTrack*)(iter.First());
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;
+	
+   //Get start and end times from track
+   mCurT0 = pOutWaveTrack->GetStartTime();
+   mCurT1 = pOutWaveTrack->GetEndTime();
+
+   //Set the current bounds to whichever left marker is
+   //greater and whichever right marker is less:
+   mCurT0 = wxMax(mT0, mCurT0);
+   mCurT1 = wxMin(mT1, mCurT1);
+   
+   AudacityProject *p = GetActiveProject();   
+   if( p && p->IsSticky() && m_PercentChange<0 && (mCurT1 > mCurT0) ){//add linked tracks to handle
+      TrackListIterator fullIter(p->GetTracks());
+      
+      int editGroup=0;   
+      
+      Track *t = fullIter.First();
+      Track *n = t;
+      while (t){//find edit group
+         n=fullIter.Next();
+         if (n && n->GetKind()==Track::Wave && t->GetKind()==Track::Label) 
+            editGroup++;
+            
+         if (t->GetSelected()){
+            t=fullIter.First();
+            for (int i=0; i<editGroup; i++){//go to first in edit group
+               while (t && t->GetKind()==Track::Wave) t=fullIter.Next();
+               while (t && t->GetKind()==Track::Label) t=fullIter.Next();
+            }
+            while (t && t->GetKind()==Track::Wave){
+               if ( !(t->GetSelected()) ){
+                  //printf ("t(w)(cs): %x\n", t);
+                  TrackFactory *factory = p->GetTrackFactory();
+                  WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
+                  double length = ( (mCurT1-mCurT0) / ((100 + m_PercentChange)/100) ) - (mCurT1-mCurT0) +
+                                    ( 10/((WaveTrack*)t)->GetRate() );
+                  //printf("length(shorter): %f\n", length);
+                  tmp->InsertSilence(0.0, length);
+                  tmp->Flush();
+                  if ( !( ((WaveTrack *)t)->HandlePaste(mCurT1, tmp)) ) return false;
+               }
+               t=fullIter.Next();
+            }
+            while (t && t->GetKind()==Track::Label){
+               //printf ("t(l)(cs): %x\n", t);
+               ((LabelTrack *)t)->ShiftLabelsOnChangeSpeed(mCurT0, mCurT1, m_PercentChange);
+               t=fullIter.Next();
+            }
+            n=t;
+            editGroup++;//we've gone through a edit group
+         }else{
+            t=n;
+         }
+      }
+   }
+   
    while (pOutWaveTrack != NULL)
    {
       //Get start and end times from track
@@ -107,8 +164,17 @@ bool EffectChangeSpeed::Process()
       mCurT1 = wxMin(mT1, mCurT1);
 
       // Process only if the right marker is to the right of the left marker
-      if (mCurT1 > mCurT0) {
-
+      if (mCurT1 > mCurT0) {       
+         if( p && p->IsSticky() && m_PercentChange>0){
+            double length =  (mCurT1-mCurT0) - ((mCurT1- mCurT0) / ((100 + m_PercentChange)/100)) + 
+                              ( 10/pOutWaveTrack->GetRate() );
+            TrackFactory *factory = p->GetTrackFactory();
+            WaveTrack *tmp = factory->NewWaveTrack( pOutWaveTrack->GetSampleFormat(), pOutWaveTrack->GetRate());
+            tmp->InsertSilence(0.0, length);
+            tmp->Flush();
+            if ( !(pOutWaveTrack->HandlePaste(mCurT1, tmp)) ) bGoodResult = false;            
+         }
+         
          //Transform the marker timepoints to samples
          longSampleCount start = pOutWaveTrack->TimeToLongSamples(mCurT0);
          longSampleCount end = pOutWaveTrack->TimeToLongSamples(mCurT1);
@@ -219,8 +285,8 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
    // Take the output track and insert it in place of the original
    // sample data
 	if (bLoopSuccess) {
-		track->Clear(mCurT0, mCurT1);
-		track->Paste(mCurT0, outputTrack);
+		track->HandleClear(mCurT0, mCurT1, false, false);
+		track->HandlePaste(mCurT0, outputTrack);
 	}
 
 	double newLength = outputTrack->GetEndTime(); 

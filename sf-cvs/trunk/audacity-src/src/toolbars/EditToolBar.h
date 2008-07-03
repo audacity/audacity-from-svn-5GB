@@ -69,7 +69,7 @@ class EditToolBar:public ToolBar {
  private:
 
    AButton *AddButton(teBmps eFore, teBmps eDisabled,
-      int id, const wxChar *label, const wxChar *tip);
+      int id, const wxChar *label, const wxChar *tip, bool toggle=false);
 
    void AddSeparator();
 

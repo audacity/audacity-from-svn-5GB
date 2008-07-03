@@ -497,10 +497,10 @@ bool WaveTrack::Paste(double t0, Track *src)
    double insertDuration = other->GetEndTime();
    WaveClipList::Node* it;
 
-#ifdef EXPERIMENTAL_STICKY_TRACKS
+   #ifdef EXPERIMENTAL_STICKY_TRACKS
    if (mStickyLabelTrack) mStickyLabelTrack->ShiftLabelsOnInsert(insertDuration, t0);
-#endif
-#ifdef EXPERIMENTAL_POSITION_LINKING
+   #endif
+   #ifdef EXPERIMENTAL_LABEL_LINKING
    AudacityProject *p = GetActiveProject();
    if( p && p->IsSticky()){
       TrackListIterator iter(p->GetTracks());
@@ -515,7 +515,7 @@ bool WaveTrack::Paste(double t0, Track *src)
          t = iter.Next();
       }
    }
-#endif
+   #endif
    //printf("Check if we need to make room for the pasted data\n");
    
    // Make room for the pasted data, unless the space being pasted in is empty of
@@ -685,12 +685,7 @@ bool WaveTrack::HandleGroupClear(double t0, double t1, bool addCutLines, bool sp
             editGroup++;
          t=n;
       }
-      if (!t) {
-         printf("false\n");
-         return true;//we didnt find the track because it's stereo
-      }else{
-         printf("true\n");
-      }
+      if (!t) return true;//we didnt find the track because it's stereo
       
       t=iter.First();
       for (int i=0; i<editGroup; i++){//go to first in edit group
@@ -875,7 +870,10 @@ bool WaveTrack::HandleGroupPaste(double t0, Track *src)
       Track *n=t;
       
       while (t && t!= this){//find edit group number
-         n=iter.Next(true);//to skip handling the second channel of stereo
+         n=iter.Next();
+         //we only add silence when we're on the first selected track
+         //to avoid adding it multiple times, though we paste in still
+         if (t->GetSelected()) return HandlePaste(t0, src);
          if (n && n->GetKind()==Track::Wave && t->GetKind()==Track::Label) 
             editGroup++;
          t=n;
@@ -883,7 +881,7 @@ bool WaveTrack::HandleGroupPaste(double t0, Track *src)
       
       //We didnt find the track because it's stereo. We don't want to shift
       //labels, but we do want to paste the src into the track.
-      if (!t) return HandlePaste(t0, src);
+      //if (!t) return HandlePaste(t0, src);
       
       t=iter.First();
       for (int i=0; i<editGroup; i++){//go to first in edit group
@@ -892,7 +890,7 @@ bool WaveTrack::HandleGroupPaste(double t0, Track *src)
       }
       
       while (t && t->GetKind()==Track::Wave){
-         //printf ("t(w): %x\n", t);
+         //printf ("t(w)(p): %x\n", t);
          if (t==this){//paste in the track
             if ( !( ((WaveTrack *)t)->HandlePaste(t0, src)) ) return false;
             if (t->GetLinked()) t=iter.Next();
@@ -907,7 +905,7 @@ bool WaveTrack::HandleGroupPaste(double t0, Track *src)
       }
       
       while (t && t->GetKind()==Track::Label){
-         //printf ("t(l): %x\n", t);
+         //printf ("t(l)(p): %x\n", t);
          ((LabelTrack *)t)->ShiftLabelsOnInsert(length, t0);
          t=iter.Next();
       }

@@ -141,7 +141,7 @@ class Effect {
    // important for sorting.
    static wxString StripAmpersand(const wxString& str);
 
-
+   void HandleLinkedTracksOnGenerate(double length, double t0);
  //
  // protected virtual methods
  //

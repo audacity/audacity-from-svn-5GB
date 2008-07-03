@@ -183,6 +183,33 @@ void LabelTrack::ShiftLabelsOnInsert(double length, double pt)
    }
 }
 
+void LabelTrack::ShiftLabelsOnChangeSpeed(double b, double e, double change)
+{
+   for (unsigned int i=0;i<mLabels.GetCount();i++){
+      mLabels[i]->t = AdjustTimeStampForSpeedChange(mLabels[i]->t, b, e, change);
+      mLabels[i]->t1 = AdjustTimeStampForSpeedChange(mLabels[i]->t1, b, e, change);
+   }
+}
+
+double LabelTrack::AdjustTimeStampForSpeedChange(double t, double b, double e, double change)
+{
+//t is the time stamp we'll be changing
+//b and e are the selection start and end
+
+   double percentChange = (100 + change)/100;
+   //printf("t: %f\nb: %f\ne: %f\nchange: %f\n", t, b, e, change);
+   
+   if (t < b){
+      return t;
+   }else if (t > e){
+      double shift = (e-b) - ((e-b)/percentChange);  
+      return (t - shift);
+   }else{
+      double shift = (t-b) - ((t-b)/percentChange);
+      return (t - shift);
+   }
+}
+
 void LabelTrack::ResetFlags()
 {
    mMouseXPos = -1;
@@ -2000,20 +2027,54 @@ bool LabelTrack::Paste(double t, Track * src)
 
 bool LabelTrack::Clear(double t0, double t1)
 {
-   int len = mLabels.Count();
-
-   for (int i = 0; i < len; i++) {
-      if (t0 <= mLabels[i]->t && mLabels[i]->t <= t1) {
-         mLabels.RemoveAt(i);
-         len--;
-         i--;
+   AudacityProject *p = GetActiveProject();   
+   if (p && p->IsSticky()){
+      bool onlyLabelTrackSel = true;
+      TrackListIterator iter(p->GetTracks());
+      Track *t = iter.First();
+      while (t){
+         if (t!=this && t->GetSelected()){
+            onlyLabelTrackSel = false;
+            break;
+         }
+         t=iter.Next();
       }
-      else if (mLabels[i]->t > t1) {
-         mLabels[i]->t -= (t1 - t0);
-         mLabels[i]->t1 -= (t1 - t0);
+      if (onlyLabelTrackSel){
+         int editGroup = 0;
+         t=iter.First();
+         Track *n=t;
+         
+         while (t && t!= this){//find edit group number
+            n=iter.Next();
+            if (n && n->GetKind()==Track::Wave && t->GetKind()==Track::Label) 
+               editGroup++;
+            t=n;
+         }
+
+         t=iter.First();
+         for (int i=0; i<editGroup; i++){//go to first in edit group
+            while (t && t->GetKind()==Track::Wave) t=iter.Next();
+            while (t && t->GetKind()==Track::Label) t=iter.Next();
+         }
+
+         if (t && t->GetKind()==Track::Wave)
+            ((WaveTrack*)t)->HandleGroupClear(t0, t1, false, false);
+      }
+   }else{
+      int len = mLabels.Count();
+
+      for (int i = 0; i < len; i++) {
+         if (t0 <= mLabels[i]->t && mLabels[i]->t <= t1) {
+            mLabels.RemoveAt(i);
+            len--;
+            i--;
+         }
+         else if (mLabels[i]->t > t1) {
+            mLabels[i]->t -= (t1 - t0);
+            mLabels[i]->t1 -= (t1 - t0);
+         }
       }
    }
-
    return true;
 }
 

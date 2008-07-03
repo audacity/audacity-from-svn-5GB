@@ -169,6 +169,8 @@ class LabelTrack:public Track {
    
    void ShiftLabelsOnClear(double b, double e);
    void ShiftLabelsOnInsert(double length, double pt);
+   void ShiftLabelsOnChangeSpeed(double b, double e, double change);
+   double AdjustTimeStampForSpeedChange(double t, double b, double e, double change);
    WaveTrack* GetStickyTrack() { return mStickyTrack; }
    void SetStickyTrack(WaveTrack *track) { mStickyTrack = track; }
 

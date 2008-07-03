@@ -678,7 +678,7 @@ void AudacityProject::CreateMenusAndCommands()
    
       c->AddSeparator(); 
 #ifdef EXPERIMENTAL_POSITION_LINKING
-      c->AddItem(wxT("StickyLabels"),       _("Link Wave and Label Tracks"), FN(OnStickyLabel), 0);  
+      c->AddItem(wxT("StickyLabels"),       _("Link Audio and Label Tracks"), FN(OnStickyLabel), 0);  
       c->AddSeparator(); 
 #endif
       c->AddItem(wxT("AddLabel"),       _("Add &Label At Selection\tCtrl+B"), FN(OnAddLabel));
@@ -2592,10 +2592,10 @@ void AudacityProject::OnCut()
          if (n->GetKind() == Track::Wave && 
              gPrefs->Read(wxT("/GUI/EnableCutLines"), (long)0))
          {
-            ((WaveTrack*)n)->CutAndAddCutLine(mViewInfo.sel0, mViewInfo.sel1, &dest);
+            ((WaveTrack*)n)->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          } else
          {
-            n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
+            n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          }
          if (dest) {
             dest->SetChannel(n->GetChannel());
@@ -2607,15 +2607,23 @@ void AudacityProject::OnCut()
       }
       n = iter.Next();
    }
+   
+   n = iter.First();
+
+   while (n) {
+      if (n->GetSelected())
+         n->Clear(mViewInfo.sel0, mViewInfo.sel1);
+      n = iter.Next();
+   }
 
    msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
    msClipProject = this;
 
-   mViewInfo.sel1 = mViewInfo.sel0;
-
    PushState(_("Cut to the clipboard"), _("Cut"));
-
+   
    RedrawProject();
+   
+   mViewInfo.sel1 = mViewInfo.sel0;
 }
 
 
