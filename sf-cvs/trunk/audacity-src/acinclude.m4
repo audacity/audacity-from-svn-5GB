@@ -514,6 +514,41 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBLRDF], [
    fi
 ])
 
+AC_DEFUN([AUDACITY_CHECKLIB_LIBSLV2], [
+   AC_ARG_WITH(libslv2,
+               [AS_HELP_STRING([--with-libslv2],
+                               [use libslv2 for loading LV2 plugins ])],
+               LIBSLV2_ARGUMENT=$withval,
+               LIBSLV2_ARGUMENT="unspecified")
+
+   if false ; then
+      AC_DEFINE(USE_LIBSLV2, 1,
+                [Define if libslv2 (library for loading LV2 plugins) should be enabled])
+   fi
+
+   dnl Check for a system copy of libslv2 to use. We need at least version 0.6.
+
+   PKG_CHECK_MODULES(LIBSLV2, slv2 >= 0.6.0,
+                     libslv2_available_system="yes",
+                     libslv2_available_system="no")
+   LIBSLV2_SYSTEM_AVAILABLE="no"
+   if test "x$libslv2_available_system" = "xyes" ; then
+      LIBSLV2_SYSTEM_AVAILABLE="yes"
+      LIBSLV2_SYSTEM_LIBS="$LIBSLV2_LIBS"
+      LIBSLV2_SYSTEM_CXXFLAGS="$LIBSLV2_CFLAGS"
+      LIBSLV2_SYSTEM_CPPSYMBOLS="USE_LIBSLV2"
+      LIBSLV2_SYSTEM_OPTOBJS="effects/lv2/LoadLV2.o effects/lv2/LV2Effect.o"
+      AC_MSG_NOTICE([libslv2 available as system library])
+   fi
+   if test "x$LIBSLV2_SYSTEM_AVAILABLE" = "xno" ; then
+      AC_MSG_NOTICE([libslv2 NOT available as system library])
+   fi
+
+   dnl see if libslv2 is available locally - it isn't (yet)
+   LIBSLV2_LOCAL_AVAILABLE="no"
+   AC_MSG_NOTICE([libslv2 is NOT available in the local tree])
+])
+
 AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
    AC_ARG_WITH(libtwolame,
                [AS_HELP_STRING([--with-libtwolame],
