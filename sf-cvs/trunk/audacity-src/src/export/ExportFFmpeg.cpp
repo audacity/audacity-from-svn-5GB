@@ -628,7 +628,7 @@ void ExportFFmpegOptions::OnCodecList(wxCommandEvent& event)
    int n = mCodecList->GetSelections(selections);
    if (n <= 0) return;
    int index = selections[0];
-   mCodecName->SetLabel(wxString::Format(wxT("[%s] %s"),mCodecNames[index],mCodecLongNames[index]));
+   mCodecName->SetLabel(wxString::Format(wxT("[%s] %s"),mCodecNames[index].c_str(),mCodecLongNames[index].c_str()));
    return;
 }
 
