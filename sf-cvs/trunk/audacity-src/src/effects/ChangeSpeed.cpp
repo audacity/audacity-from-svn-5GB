@@ -107,50 +107,9 @@ bool EffectChangeSpeed::Process()
    mCurT1 = wxMin(mT1, mCurT1);
    
    AudacityProject *p = GetActiveProject();   
-   if( p && p->IsSticky() && m_PercentChange<0 && (mCurT1 > mCurT0) ){//add linked tracks to handle
-      TrackListIterator fullIter(p->GetTracks());
-      
-      int editGroup=0;   
-      
-      Track *t = fullIter.First();
-      Track *n = t;
-      while (t){//find edit group
-         n=fullIter.Next();
-         if (n && n->GetKind()==Track::Wave && t->GetKind()==Track::Label) 
-            editGroup++;
-            
-         if (t->GetSelected()){
-            t=fullIter.First();
-            for (int i=0; i<editGroup; i++){//go to first in edit group
-               while (t && t->GetKind()==Track::Wave) t=fullIter.Next();
-               while (t && t->GetKind()==Track::Label) t=fullIter.Next();
-            }
-            while (t && t->GetKind()==Track::Wave){
-               if ( !(t->GetSelected()) ){
-                  //printf ("t(w)(cs): %x\n", t);
-                  TrackFactory *factory = p->GetTrackFactory();
-                  WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
-                  double length = ( (mCurT1-mCurT0) / ((100 + m_PercentChange)/100) ) - (mCurT1-mCurT0) +
-                                    ( 10/((WaveTrack*)t)->GetRate() );
-                  //printf("length(shorter): %f\n", length);
-                  tmp->InsertSilence(0.0, length);
-                  tmp->Flush();
-                  if ( !( ((WaveTrack *)t)->HandlePaste(mCurT1, tmp)) ) return false;
-               }
-               t=fullIter.Next();
-            }
-            while (t && t->GetKind()==Track::Label){
-               //printf ("t(l)(cs): %x\n", t);
-               ((LabelTrack *)t)->ShiftLabelsOnChangeSpeed(mCurT0, mCurT1, m_PercentChange);
-               t=fullIter.Next();
-            }
-            n=t;
-            editGroup++;//we've gone through a edit group
-         }else{
-            t=n;
-         }
-      }
-   }
+   double start = pOutWaveTrack->GetStartTime();
+   double end = pOutWaveTrack->GetEndTime();
+   double len = end-start;
    
    while (pOutWaveTrack != NULL)
    {
@@ -165,15 +124,7 @@ bool EffectChangeSpeed::Process()
 
       // Process only if the right marker is to the right of the left marker
       if (mCurT1 > mCurT0) {       
-         if( p && p->IsSticky() && m_PercentChange>0){
-            double length =  (mCurT1-mCurT0) - ((mCurT1- mCurT0) / ((100 + m_PercentChange)/100)) + 
-                              ( 10/pOutWaveTrack->GetRate() );
-            TrackFactory *factory = p->GetTrackFactory();
-            WaveTrack *tmp = factory->NewWaveTrack( pOutWaveTrack->GetSampleFormat(), pOutWaveTrack->GetRate());
-            tmp->InsertSilence(0.0, length);
-            tmp->Flush();
-            if ( !(pOutWaveTrack->HandlePaste(mCurT1, tmp)) ) bGoodResult = false;            
-         }
+         double origLength = pOutWaveTrack->GetEndTime();
          
          //Transform the marker timepoints to samples
          longSampleCount start = pOutWaveTrack->TimeToLongSamples(mCurT0);
@@ -185,11 +136,29 @@ bool EffectChangeSpeed::Process()
             bGoodResult = false;
             break;
          }
+         if( p && p->IsSticky() && m_PercentChange>0){
+            double newLength = pOutWaveTrack->GetEndTime();
+            double delta = origLength - newLength;
+            TrackFactory *factory = p->GetTrackFactory();
+            WaveTrack *tmp = factory->NewWaveTrack( pOutWaveTrack->GetSampleFormat(), pOutWaveTrack->GetRate());
+            tmp->InsertSilence(0.0, delta);
+            tmp->Flush();
+            if ( !(pOutWaveTrack->HandlePaste(mCurT1, tmp)) ) bGoodResult = false;            
+         }
       }
       
       //Iterate to the next track
       pOutWaveTrack = (WaveTrack*)(iter.Next());
       mCurTrackNum++;
+   }
+   if( p && p->IsSticky() && m_PercentChange<0){
+      pOutWaveTrack = (WaveTrack*)(iter.First());
+      double newLen = pOutWaveTrack->GetEndTime() - pOutWaveTrack->GetStartTime();
+      double timeAdded = newLen-len;
+      double sel = mCurT1-mCurT0;
+      double percent = (sel/(timeAdded+sel))*100 - 100;
+      printf("len: %f\nnewLen: %f\nsel: %f\nPercent: %f\n", len, newLen, sel, percent);
+      if ( !(HandleGroupChangeSpeed(percent, mCurT0, mCurT1)) ) bGoodResult = false;
    }
 
    this->ReplaceProcessedWaveTracks(bGoodResult); 

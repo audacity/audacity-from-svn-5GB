@@ -310,6 +310,55 @@ void Effect::HandleLinkedTracksOnGenerate(double length, double t0)
    }
 }
 
+bool Effect::HandleGroupChangeSpeed(double m_PercentChange, double mCurT0, double mCurT1)
+{
+   AudacityProject *p = GetActiveProject();   
+   if( p && p->IsSticky() && m_PercentChange<0 && (mCurT1 > mCurT0) ){//add linked tracks to handle
+      TrackListIterator fullIter(p->GetTracks());
+      
+      int editGroup=0;   
+      
+      Track *t = fullIter.First();
+      Track *n = t;
+      while (t){//find edit group
+         n=fullIter.Next();
+         if (n && n->GetKind()==Track::Wave && t->GetKind()==Track::Label) 
+            editGroup++;
+            
+         if (t->GetSelected()){
+            t=fullIter.First();
+            for (int i=0; i<editGroup; i++){//go to first in edit group
+               while (t && t->GetKind()==Track::Wave) t=fullIter.Next();
+               while (t && t->GetKind()==Track::Label) t=fullIter.Next();
+            }
+            while (t && t->GetKind()==Track::Wave){
+               if ( !(t->GetSelected()) ){
+                  //printf ("t(w)(cs): %x\n", t);
+                  TrackFactory *factory = p->GetTrackFactory();
+                  WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
+                  double length = ( (mCurT1-mCurT0) / ((100 + m_PercentChange)/100) ) - (mCurT1-mCurT0);
+                  //printf("length(shorter): %f\n", length);
+                  tmp->InsertSilence(0.0, length);
+                  tmp->Flush();
+                  if ( !( ((WaveTrack *)t)->HandlePaste(mCurT1, tmp)) ) return false;
+               }
+               t=fullIter.Next();
+            }
+            while (t && t->GetKind()==Track::Label){
+               //printf ("t(l)(cs): %x\n", t);
+               ((LabelTrack *)t)->ShiftLabelsOnChangeSpeed(mCurT0, mCurT1, m_PercentChange);
+               t=fullIter.Next();
+            }
+            n=t;
+            editGroup++;//we've gone through a edit group
+         }else{
+            t=n;
+         }
+      }
+   }
+   return true;  
+}
+
 float TrapFloat(float x, float min, float max)
 {
    if (x <= min)
