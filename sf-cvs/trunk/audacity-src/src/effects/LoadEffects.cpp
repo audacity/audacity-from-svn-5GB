@@ -63,6 +63,10 @@
 #include "ladspa/LoadLadspa.h"
 #endif
 
+#ifdef USE_LIBSLV2
+#include "lv2/LoadLV2.h"
+#endif
+
 #ifdef USE_VAMP
 #include "vamp/LoadVamp.h"
 #endif
@@ -266,6 +270,10 @@ void LoadEffects()
    LoadLadspaPlugins();
 #endif
 
+#ifdef USE_LIBSLV2
+   LoadLV2Plugins();
+#endif
+
 #ifdef USE_AUDIO_UNITS
    LoadAudioUnits();
 #endif
@@ -282,6 +290,10 @@ void UnloadEffects()
 
 #ifdef USE_LADSPA
    UnloadLadspaPlugins();
+#endif
+
+#ifdef USE_LIBSLV2
+   UnloadLV2Plugins();
 #endif
 
 #ifdef USE_VAMP

@@ -707,6 +707,8 @@ AVFORMAT_CFLAGS
 AVFORMAT_LIBS
 LIBLRDF_CFLAGS
 LIBLRDF_LIBS
+LIBSLV2_CFLAGS
+LIBSLV2_LIBS
 LIBRAPTOR_CFLAGS
 LIBRAPTOR_LIBS
 PORTSMF_CFLAGS
@@ -757,6 +759,8 @@ AVFORMAT_CFLAGS
 AVFORMAT_LIBS
 LIBLRDF_CFLAGS
 LIBLRDF_LIBS
+LIBSLV2_CFLAGS
+LIBSLV2_LIBS
 LIBRAPTOR_CFLAGS
 LIBRAPTOR_LIBS
 PORTSMF_CFLAGS
@@ -1375,6 +1379,7 @@ Optional Packages:
   --with-libtwolame       use libtwolame for MP2 export support
   --with-ffmpeg           use ffmpeg for import and export support
   --with-liblrdf          use liblrdf for categorisation of LADSPA plugins
+  --with-libslv2          use libslv2 for loading LV2 plugins
   --with-libraptor        libraptor is needed for categorisation of LADSPA
                           plugins
   --with-midi             use portSMF for Midi support
@@ -1431,6 +1436,10 @@ Some influential environment variables:
               C compiler flags for LIBLRDF, overriding pkg-config
   LIBLRDF_LIBS
               linker flags for LIBLRDF, overriding pkg-config
+  LIBSLV2_CFLAGS
+              C compiler flags for LIBSLV2, overriding pkg-config
+  LIBSLV2_LIBS
+              linker flags for LIBSLV2, overriding pkg-config
   LIBRAPTOR_CFLAGS
               C compiler flags for LIBRAPTOR, overriding pkg-config
   LIBRAPTOR_LIBS
@@ -5578,7 +5587,7 @@ BUILD_LDFLAGS="$BUILD_LDFLAGS $WIDGETEXTRA_LIBS"
 CXXFLAGS="$CXXFLAGS $WIDGETEXTRA_CFLAGS"
 LIBSRC_BUILD="$LIBSRC_BUILD widgetextra"
 
-LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG LIBLRDF LIBRAPTOR PORTSMF"
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG LIBLRDF LIBSLV2 LIBRAPTOR PORTSMF"
 
 { echo "$as_me:$LINENO: Determining what libraries are available in this tree and on the system" >&5
 echo "$as_me: Determining what libraries are available in this tree and on the system" >&6;}
@@ -8224,6 +8233,115 @@ echo "$as_me: liblrdf is NOT available in the local tree" >&6;}
 
 
 
+# Check whether --with-libslv2 was given.
+if test "${with_libslv2+set}" = set; then
+  withval=$with_libslv2; LIBSLV2_ARGUMENT=$withval
+else
+  LIBSLV2_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_LIBSLV2 1
+_ACEOF
+
+   fi
+
+
+
+pkg_failed=no
+{ echo "$as_me:$LINENO: checking for LIBSLV2" >&5
+echo $ECHO_N "checking for LIBSLV2... $ECHO_C" >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LIBSLV2_CFLAGS"; then
+        pkg_cv_LIBSLV2_CFLAGS="$LIBSLV2_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"slv2 >= 0.6.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "slv2 >= 0.6.0") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_LIBSLV2_CFLAGS=`$PKG_CONFIG --cflags "slv2 >= 0.6.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LIBSLV2_LIBS"; then
+        pkg_cv_LIBSLV2_LIBS="$LIBSLV2_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"slv2 >= 0.6.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "slv2 >= 0.6.0") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_LIBSLV2_LIBS=`$PKG_CONFIG --libs "slv2 >= 0.6.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        LIBSLV2_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "slv2 >= 0.6.0"`
+        else
+	        LIBSLV2_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "slv2 >= 0.6.0"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$LIBSLV2_PKG_ERRORS" >&5
+
+	{ echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+                libslv2_available_system="no"
+elif test $pkg_failed = untried; then
+	libslv2_available_system="no"
+else
+	LIBSLV2_CFLAGS=$pkg_cv_LIBSLV2_CFLAGS
+	LIBSLV2_LIBS=$pkg_cv_LIBSLV2_LIBS
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+	libslv2_available_system="yes"
+fi
+   LIBSLV2_SYSTEM_AVAILABLE="no"
+   if test "x$libslv2_available_system" = "xyes" ; then
+      LIBSLV2_SYSTEM_AVAILABLE="yes"
+      LIBSLV2_SYSTEM_LIBS="$LIBSLV2_LIBS"
+      LIBSLV2_SYSTEM_CXXFLAGS="$LIBSLV2_CFLAGS"
+      LIBSLV2_SYSTEM_CPPSYMBOLS="USE_LIBSLV2"
+      LIBSLV2_SYSTEM_OPTOBJS="effects/lv2/LoadLV2.o effects/lv2/LV2Effect.o"
+      { echo "$as_me:$LINENO: libslv2 available as system library" >&5
+echo "$as_me: libslv2 available as system library" >&6;}
+   fi
+   if test "x$LIBSLV2_SYSTEM_AVAILABLE" = "xno" ; then
+      { echo "$as_me:$LINENO: libslv2 NOT available as system library" >&5
+echo "$as_me: libslv2 NOT available as system library" >&6;}
+   fi
+
+      LIBSLV2_LOCAL_AVAILABLE="no"
+   { echo "$as_me:$LINENO: libslv2 is NOT available in the local tree" >&5
+echo "$as_me: libslv2 is NOT available in the local tree" >&6;}
+
+
+
 # Check whether --with-libraptor was given.
 if test "${with_libraptor+set}" = set; then
   withval=$with_libraptor; LIBRAPTOR_ARGUMENT=$withval
@@ -10325,11 +10443,11 @@ AVFORMAT_CFLAGS!$AVFORMAT_CFLAGS$ac_delim
 AVFORMAT_LIBS!$AVFORMAT_LIBS$ac_delim
 LIBLRDF_CFLAGS!$LIBLRDF_CFLAGS$ac_delim
 LIBLRDF_LIBS!$LIBLRDF_LIBS$ac_delim
+LIBSLV2_CFLAGS!$LIBSLV2_CFLAGS$ac_delim
+LIBSLV2_LIBS!$LIBSLV2_LIBS$ac_delim
 LIBRAPTOR_CFLAGS!$LIBRAPTOR_CFLAGS$ac_delim
 LIBRAPTOR_LIBS!$LIBRAPTOR_LIBS$ac_delim
 PORTSMF_CFLAGS!$PORTSMF_CFLAGS$ac_delim
-PORTSMF_LIBS!$PORTSMF_LIBS$ac_delim
-build!$build$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -10371,6 +10489,8 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PORTSMF_LIBS!$PORTSMF_LIBS$ac_delim
+build!$build$ac_delim
 build_cpu!$build_cpu$ac_delim
 build_vendor!$build_vendor$ac_delim
 build_os!$build_os$ac_delim
@@ -10384,7 +10504,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 11; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 13; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

@@ -102,6 +102,9 @@
 /* Define if libsamplerate support should be enabled */
 #undef USE_LIBSAMPLERATE
 
+/* Define if libslv2 (library for loading LV2 plugins) should be enabled */
+#undef USE_LIBSLV2
+
 /* Define if libtwolame (MP2 export) support should be enabled */
 #undef USE_LIBTWOLAME
 
