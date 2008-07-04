@@ -330,7 +330,7 @@ void ODPCMAliasBlockFile::WriteSummary()
    summaryFile.Write(summaryData, mSummaryInfo.totalSummaryBytes);
 
    DeleteSamples(sampleData);
-   delete [] summaryData;
+   delete [] (char *) summaryData;
    
    
    //above from BlockFiles.cpps method
