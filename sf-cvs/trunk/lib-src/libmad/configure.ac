@@ -17,7 +17,7 @@ dnl You should have received a copy of the GNU General Public License
 dnl along with this program; if not, write to the Free Software
 dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 dnl
-AC_REVISION([$Id: configure.ac,v 1.2 2005-09-12 07:01:29 dmazzoni Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.3 2008-07-04 10:25:35 llucius Exp $])dnl
 
 dnl Process this file with autoconf to produce a configure script.
 
@@ -142,8 +142,8 @@ then
     case "$optimize" in
 	-O|"-O "*)
 	    optimize="-O"
-	    optimize="$optimize -fforce-mem"
-	    optimize="$optimize -fforce-addr"
+	    : #x optimize="$optimize -fforce-mem"
+	    : #x optimize="$optimize -fforce-addr"
 	    : #x optimize="$optimize -finline-functions"
 	    : #- optimize="$optimize -fstrength-reduce"
 	    optimize="$optimize -fthread-jumps"

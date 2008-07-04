@@ -19,15 +19,7 @@ AM_PROG_LIBTOOL
 AC_HEADER_STDC
 AC_CHECK_HEADERS([errno.h limits.h stdlib.h string.h unistd.h])
 
-. ../../audacity_local_libraries.sh
-if test x$LIBRAPTOR_USE_LOCAL = x; then
   PKG_CHECK_MODULES(RAPTOR, raptor >= 0.9.11)
-else
-  RAPTOR_LIBS=
-  RAPTOR_CFLAGS=`echo $LIBRAPTOR_LOCAL_CXXFLAGS | sed s@-I@-I../@`
-  AC_SUBST(RAPTOR_LIBS)
-  AC_SUBST(RAPTOR_CFLAGS)
-fi
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
