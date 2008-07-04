@@ -36,7 +36,9 @@ Describes shared object that is used to access FFmpeg libraries.
 	* as described above so we issue a warning */
 	#warning "stdint.h included before ffmpeg headers, this may well not compile"
 	#endif
+   #if !defined(__STDC_CONSTANT_MACROS)
 	#define __STDC_CONSTANT_MACROS
+   #endif
 	#include <libavcodec/avcodec.h>
 	#include <libavformat/avformat.h>
 	#include <libavutil/fifo.h>
