@@ -385,7 +385,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
        mWaveCache->len >= numPixels &&
        mWaveCache->pps == pixelsPerSecond) {
        
-       //check for invalid regions, and make the bottom if an else if.
+      //check for invalid regions, and make the bottom if an else if.
       //invalid regions are kept in a sorted array. 
       for(int i=0;i<mWaveCache->GetNumInvalidRegions();i++)
       {  
@@ -399,7 +399,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
          int regionODPixelsAfter;
          regionODPixelsAfter =0;
          //before check number of ODPixels 
-         for(int j=0;j<invEnd;j++)
+         for(int j=invStart;j<invEnd;j++)
          {
             if(mWaveCache->bl[j]<0)
                regionODPixels++;
@@ -411,8 +411,8 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
                                         invEnd-invStart,
                                         &mWaveCache->where[invStart],
                                         mRate / pixelsPerSecond);
-          //after check number of ODPixels 
-         for(int j=0;j<invEnd;j++)
+         //after check number of ODPixels 
+         for(int j=invStart;j<invEnd;j++)
          {
             if(mWaveCache->bl[j]<0)
                regionODPixelsAfter++;
@@ -449,6 +449,7 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
                              ((double) x) * mRate * tstep + 0.5);
    }
 
+   //mchinen: I think s0 - s1 represents the range of samples that we will need to look up.  likewise p0-p1 the number of pixels.
    sampleCount s0 = mWaveCache->where[0];
    sampleCount s1 = mWaveCache->where[mWaveCache->len];
    int p0 = 0;
@@ -462,8 +463,9 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
        oldCache->where[0] < mWaveCache->where[mWaveCache->len] &&
        oldCache->where[oldCache->len] > mWaveCache->where[0]) {
 
-      s0 = mWaveCache->where[mWaveCache->len];
-      s1 = mWaveCache->where[0];
+      //now we are assuming the entire range is covered by the old cache and reducing s1/s0 as we find out otherwise.
+      s0 = mWaveCache->where[mWaveCache->len];  //mchinen:s0 is the min sample covered up to by the wave cache.  will shrink if old doen't overlap
+      s1 = mWaveCache->where[0];  //mchinen - same, but the maximum sample covered.  
       p0 = mWaveCache->len;
       p1 = 0;
 
@@ -534,15 +536,16 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
             break;
 
       //compute the values that are outside the overlap from scratch.  
-      //mchinen:Not sure why we don't just reuse Sequence::GetWaveDisplay() 
       if (a < p1) {
          int i;
 
          sampleFormat seqFormat = mSequence->GetSampleFormat();
-
+		 bool didUpdate = false;
          for(i=a; i<p1; i++) {
-            sampleCount left = mWaveCache->where[i] - numSamples;
-            sampleCount right = mWaveCache->where[i+1] - numSamples;
+            sampleCount left;
+			left = mWaveCache->where[i] - numSamples;
+            sampleCount right;
+			right = mWaveCache->where[i+1] - numSamples;
 
             //wxCriticalSectionLocker locker(mAppendCriticalSection);
 
@@ -584,12 +587,16 @@ bool WaveClip::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
 
                if (seqFormat != floatSample)
                   delete[] b;
+				
+			  didUpdate=true;
             }
          }         
 
          // So that the sequence doesn't try to write any
          // of these values
-         p1 = a;
+         //mchinen: but only do this if we've updated pixels in the cache.
+         if(didUpdate)
+			p1 = a;
       }
 
       if (p1 > p0) {
