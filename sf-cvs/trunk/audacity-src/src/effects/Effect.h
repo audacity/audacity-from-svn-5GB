@@ -142,6 +142,7 @@ class Effect {
    static wxString StripAmpersand(const wxString& str);
 
    void HandleLinkedTracksOnGenerate(double length, double t0);
+   bool HandleGroupChangeSpeed(double m_PercentChange, double mCurT0, double mCurT1);
  //
  // protected virtual methods
  //
