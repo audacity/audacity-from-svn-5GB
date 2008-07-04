@@ -217,7 +217,7 @@ void MixerToolBar::UpdatePrefs()
    mInputSourceChoice->SetSelection(inputSource);
 
    // Resize the control
-   mInputSourceChoice->SetSize(mInputSourceChoice->GetBestFittingSize());
+   mInputSourceChoice->SetSize(mInputSourceChoice->GetEffectiveMinSize());
 
    // Show or hide the control based on input sources
    mInputSourceChoice->Show( inputSources.GetCount() != 0 );
