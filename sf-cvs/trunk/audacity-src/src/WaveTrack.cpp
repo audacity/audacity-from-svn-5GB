@@ -444,19 +444,7 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
 bool WaveTrack::Paste(double t0, Track *src)
 {
    AudacityProject *p = GetActiveProject();
-   bool linked=false;
-   if (p){
-      TrackListIterator iter(p->GetTracks());
-      Track *t=iter.First();
-      while(t){
-         if (t->GetKind()==Track::Label){
-            linked=true;
-            break;
-         }
-         t=iter.Next();
-      }   
-   }
-   if( p && p->IsSticky() && linked)
+   if( p && p->IsSticky())
       return HandleGroupPaste(t0, src);
    else
       return HandlePaste(t0, src);
@@ -649,19 +637,7 @@ bool WaveTrack::Clear(double t0, double t1)
    bool split = false;
 #ifdef EXPERIMENTAL_FULL_LINKING
    AudacityProject *p = GetActiveProject();
-   bool linked=false;
-   if (p){
-      TrackListIterator iter(p->GetTracks());
-      Track *t=iter.First();      
-      while(t){
-         if (t->GetKind()==Track::Label){
-            linked=true;
-            break;
-         }
-         t=iter.Next();
-      }   
-   }
-   if( p && p->IsSticky() && linked)
+   if( p && p->IsSticky())
       return HandleGroupClear(t0, t1, addCutLines, split);
    else
       return HandleClear(t0, t1, addCutLines, split);
@@ -676,19 +652,7 @@ bool WaveTrack::ClearAndAddCutLine(double t0, double t1)
    bool split = false;
 #ifdef EXPERIMENTAL_FULL_LINKING
    AudacityProject *p = GetActiveProject();
-   bool linked=false;
-   if (p){
-      TrackListIterator iter(p->GetTracks());
-      Track *t=iter.First();
-      while(t){
-         if (t->GetKind()==Track::Label){
-            linked=true;
-            break;
-         }
-         t=iter.Next();
-      }   
-   }
-   if( p && p->IsSticky() && linked)
+   if( p && p->IsSticky() )
       return HandleGroupClear(t0, t1, addCutLines, split);
    else
       return HandleClear(t0, t1, addCutLines, split);
