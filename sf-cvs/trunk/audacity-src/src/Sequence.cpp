@@ -1035,7 +1035,7 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
          else
          {
             //otherwise, mark the display as not yet computed
-            blockStatus=-b -1;
+            blockStatus=-1-b;
          }
          break;
       case 65536:
@@ -1048,7 +1048,7 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
          }
          else
          {
-            blockStatus=-b -1;
+            blockStatus=-1-b;
          }
          break;
       }
