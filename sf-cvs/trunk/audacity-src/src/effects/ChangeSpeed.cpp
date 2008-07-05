@@ -111,17 +111,6 @@ bool EffectChangeSpeed::Process()
    double end = pOutWaveTrack->GetEndTime();
    double len = end-start;
    
-   TrackListIterator linkIter(p->GetTracks());
-   Track *t=linkIter.First();
-   bool linked=false;
-   while(t){
-      if (t->GetKind()==Track::Label){
-         linked=true;
-         break;
-      }
-      t=linkIter.Next();
-   }
-   
    while (pOutWaveTrack != NULL)
    {
       //Get start and end times from track
@@ -147,7 +136,7 @@ bool EffectChangeSpeed::Process()
             bGoodResult = false;
             break;
          }
-         if( p && p->IsSticky() && m_PercentChange>0 && linked){
+         if( p && p->IsSticky() && m_PercentChange>0){
             double newLength = pOutWaveTrack->GetEndTime();
             double delta = origLength - newLength;
             TrackFactory *factory = p->GetTrackFactory();
@@ -162,7 +151,7 @@ bool EffectChangeSpeed::Process()
       pOutWaveTrack = (WaveTrack*)(iter.Next());
       mCurTrackNum++;
    }
-   if( p && p->IsSticky() && m_PercentChange<0 && linked){
+   if( p && p->IsSticky() && m_PercentChange<0){
       pOutWaveTrack = (WaveTrack*)(iter.First());
       double newLen = pOutWaveTrack->GetEndTime() - pOutWaveTrack->GetStartTime();
       double timeAdded = newLen-len;
