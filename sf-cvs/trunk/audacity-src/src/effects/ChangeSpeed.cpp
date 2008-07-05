@@ -111,6 +111,17 @@ bool EffectChangeSpeed::Process()
    double end = pOutWaveTrack->GetEndTime();
    double len = end-start;
    
+   TrackListIterator linkIter(p->GetTracks());
+   Track *t=linkIter.First();
+   bool linked=false;
+   while(t){
+      if (t->GetKind()==Track::Label){
+         linked=true;
+         break;
+      }
+      t=linkIter.Next();
+   }
+   
    while (pOutWaveTrack != NULL)
    {
       //Get start and end times from track
@@ -136,7 +147,7 @@ bool EffectChangeSpeed::Process()
             bGoodResult = false;
             break;
          }
-         if( p && p->IsSticky() && m_PercentChange>0){
+         if( p && p->IsSticky() && m_PercentChange>0 && linked){
             double newLength = pOutWaveTrack->GetEndTime();
             double delta = origLength - newLength;
             TrackFactory *factory = p->GetTrackFactory();
@@ -151,13 +162,13 @@ bool EffectChangeSpeed::Process()
       pOutWaveTrack = (WaveTrack*)(iter.Next());
       mCurTrackNum++;
    }
-   if( p && p->IsSticky() && m_PercentChange<0){
+   if( p && p->IsSticky() && m_PercentChange<0 && linked){
       pOutWaveTrack = (WaveTrack*)(iter.First());
       double newLen = pOutWaveTrack->GetEndTime() - pOutWaveTrack->GetStartTime();
       double timeAdded = newLen-len;
       double sel = mCurT1-mCurT0;
       double percent = (sel/(timeAdded+sel))*100 - 100;
-      printf("len: %f\nnewLen: %f\nsel: %f\nPercent: %f\n", len, newLen, sel, percent);
+      //printf("len: %f\nnewLen: %f\nsel: %f\nPercent: %f\n", len, newLen, sel, percent);
       if ( !(HandleGroupChangeSpeed(percent, mCurT0, mCurT1)) ) bGoodResult = false;
    }
 

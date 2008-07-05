@@ -266,7 +266,18 @@ void Effect::HandleLinkedTracksOnGenerate(double length, double t0)
 {
    AudacityProject *p = GetActiveProject();
    if(!p) return;
-   if ( !(p->IsSticky()) ) return;
+   TrackListIterator linkIter(p->GetTracks());
+   Track *temp=linkIter.First();
+   bool linked=false;
+   while(temp){
+      if (temp->GetKind()==Track::Label){
+         linked=true;
+         break;
+      }
+      temp=linkIter.Next();
+   }   
+   
+   if ( !(p->IsSticky()) || !linked ) return;
    
    TrackListIterator iter(p->GetTracks());
    
