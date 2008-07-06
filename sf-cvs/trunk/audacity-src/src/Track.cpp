@@ -38,6 +38,12 @@ a TrackList.
 #pragma warning( disable : 4786 )
 #endif
 
+#ifdef __WXDEBUG__
+   // if we are in a debug build of audacity
+   /// Define this to do extended (slow) debuging of TrackListIterator
+   #define DEBUG_TLI
+#endif
+
 Track::Track(DirManager * projDirManager) 
    : 
    mDirManager(projDirManager)
@@ -163,11 +169,21 @@ Track *TrackListIterator::First(TrackList * val)
 
 Track *TrackListIterator::Next( bool SkipLinked )
 {
+   #ifdef DEBUG_TLI // if we are debugging this bit
+   wxASSERT_MSG(((*l).Contains((*cur).t)), wxT("cur invalid at start of Next(). List changed since iterator created?"));   // check that cur is in the list
+   #endif
    if (SkipLinked && cur && cur->t->GetLinked())
       cur = cur->next;
+   #ifdef DEBUG_TLI // if we are debugging this bit
+   wxASSERT_MSG(((*l).Contains((*cur).t)), wxT("cur invalid after skipping linked tracks."));   // check that cur is in the list
+   #endif
 
    if (cur)
       cur = cur->next;
+
+   #ifdef DEBUG_TLI // if we are debugging this bit
+   wxASSERT_MSG((!cur || (*l).Contains((*cur).t)), wxT("cur invalid after moving to next track."));   // check that cur is in the list if it is not null
+   #endif
 
    if (cur)
       return cur->t;
@@ -194,6 +210,9 @@ Track *TrackListIterator::RemoveCurrent()
    delete p;
 
    cur = next;
+   #ifdef DEBUG_TLI // if we are debugging this bit
+   wxASSERT_MSG(((*l).Contains((*cur).t)), wxT("cur invalid after deletion of track."));   // check that cur is in the list
+   #endif
 
    if (cur)
       return cur->t;
@@ -201,6 +220,7 @@ Track *TrackListIterator::RemoveCurrent()
       return NULL;
 }
 
+// TrackList
 TrackList::TrackList()
 {
    head = 0;
