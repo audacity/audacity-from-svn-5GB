@@ -87,7 +87,7 @@ void QuitAudacity();
    #endif
    #endif
 #endif //_MSC_VER
-/* The GCC implementation */
+/* The GCC-elf implementation */
 #ifdef CC_HASVISIBILITY // this is provided by the configure script, is only
 // enabled for suitable GCC versions
 /* The incantation is a bit weird here because it uses ELF symbol stuff. If we 
@@ -97,6 +97,20 @@ void QuitAudacity();
    #define AUDACITY_DLL_API __attribute__((visibility("default")))
    #else
    #define AUDACITY_DLL_API __attribute__((visibility("default")))
+   #endif
+#endif
+/* The GCC-win32 implementation */
+// bizzarely, GCC-for-win32 supports Visual Studio style symbol visibility, so
+// we use that if building on Cygwin
+#if defined __CYGWIN__ && defined __GNUC__
+   #ifdef BUILDING_AUDACITY
+   #define AUDACITY_DLL_API _declspec(dllexport)
+   #else
+   #ifdef _DLL
+   #define AUDACITY_DLL_API _declspec(dllimport)
+   #else
+   #define AUDACITY_DLL_API
+   #endif
    #endif
 #endif
 
