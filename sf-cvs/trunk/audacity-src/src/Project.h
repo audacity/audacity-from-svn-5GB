@@ -224,6 +224,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void EditByLabel( WaveTrack::EditFunction action ); 
    void EditClipboardByLabel( WaveTrack::EditDestFunction action );
    bool IsSticky();
+   bool GetStickyFlag() { return mStickyFlag; }
 
    // Snap To
 
