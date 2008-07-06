@@ -213,7 +213,7 @@ void EditToolBar::OnButton(wxCommandEvent &event)
       case ETBLinkID:
          if (!busy){
             p->OnStickyLabel();
-            if (p->IsSticky())
+            if (p->GetStickyFlag())
                mButtons[ETBLinkID]->PushDown();
             else
                mButtons[ETBLinkID]->PopUp();
