@@ -597,7 +597,7 @@ void ExportFFmpegOptions::OnFormatList(wxCommandEvent& event)
    FindSelectedFormat(&selfmt, &selfmtlong);
    if (selfmt == NULL) return;
 
-   mFormatName->SetLabel(wxString::Format(wxT("[%s] %s"),selfmt,selfmtlong));
+   mFormatName->SetLabel(wxString::Format(wxT("[%s] %s"),selfmt->c_str(),selfmtlong->c_str()));
 
    wxString *selcdc = NULL;
    wxString *selcdclong = NULL;
