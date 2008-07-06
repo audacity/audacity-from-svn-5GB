@@ -2016,29 +2016,21 @@ wxString AudioIO::GetDeviceInfo()
    int playDeviceNum = Pa_GetDefaultOutputDeviceID();
 #endif
 
-   s << wxT("==============================") << e;
-   s << wxT("Default capture device number: ") << recDeviceNum << e;
-   s << wxT("Default playback device number: ") << playDeviceNum << e;
-
-   // Sometimes PortAudio returns -1 if it cannot find a suitable default
-   // device, so we just use the first one available
-   if (recDeviceNum < 0)
-      recDeviceNum = 0;
-   if (playDeviceNum < 0)
-      playDeviceNum = 0;
-      
-   wxString recDevice = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
-   wxString playDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
-   int j;
-
-   // This gets info on all available audio devices (input and output)
-
 #if USE_PORTAUDIO_V19
    int cnt = Pa_GetDeviceCount();
 #else
    int cnt = Pa_CountDevices();
 #endif
 
+   s << wxT("==============================") << e;
+   s << wxT("Default capture device number: ") << recDeviceNum << e;
+   s << wxT("Default playback device number: ") << playDeviceNum << e;
+
+   wxString recDevice = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
+   wxString playDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
+   int j;
+
+   // This gets info on all available audio devices (input and output)
    if (cnt <= 0) {
       s << wxT("No devices found\n");
       return o.GetString();
@@ -2079,18 +2071,45 @@ wxString AudioIO::GetDeviceInfo()
 
       if (name == recDevice && info->maxInputChannels > 0)
          recDeviceNum = j;
+
+		// Sometimes PortAudio returns -1 if it cannot find a suitable default
+		// device, so we just use the first one available
+		if (recDeviceNum < 0 && info->maxInputChannels > 0){
+			recDeviceNum = j;
+		}
+		if (playDeviceNum < 0 && info->maxOutputChannels > 0){
+			playDeviceNum = j;
+		}
    }
+
+	bool haveRecDevice = (recDeviceNum >= 0);
+	bool havePlayDevice = (playDeviceNum >= 0);
 
    s << wxT("==============================") << e;
-   s << wxT("Selected capture device: ") << recDeviceNum << wxT(" - ") << recDevice << e;
-   s << wxT("Selected playback device: ") << playDeviceNum << wxT(" - ") << playDevice << e;
+	if(haveRecDevice){
+		s << wxT("Selected capture device: ") << recDeviceNum << wxT(" - ") << recDevice << e;
+	}else{
+		s << wxT("No capture device found.") << e;
+	}
+	if(havePlayDevice){
+		s << wxT("Selected playback device: ") << playDeviceNum << wxT(" - ") << playDevice << e;
+	}else{
+		s << wxT("No playback device found.") << e;
+	}   
 
-   wxArrayLong supportedSampleRates = GetSupportedSampleRates(playDeviceNum, recDeviceNum);
+	wxArrayLong supportedSampleRates;
 
-   s << wxT("Supported Rates:");
-   for (int k = 0; k < (int) supportedSampleRates.GetCount(); k++) {
-      s << wxT("    ") << (int)supportedSampleRates[k] << e;
-   }
+	if(havePlayDevice && haveRecDevice){
+		supportedSampleRates	= GetSupportedSampleRates(playDeviceNum, recDeviceNum);
+
+		s << wxT("Supported Rates:") << e;
+		for (int k = 0; k < (int) supportedSampleRates.GetCount(); k++) {
+			s << wxT("    ") << (int)supportedSampleRates[k] << e;
+		}
+	}else{
+		s << wxT("Cannot check mutual sample rates without both devices.") << e;
+		return o.GetString();
+	}
 
 #if defined(USE_PORTMIXER)
    int highestSampleRate = supportedSampleRates[supportedSampleRates.GetCount() - 1];
@@ -2104,18 +2123,20 @@ wxString AudioIO::GetDeviceInfo()
 #if USE_PORTAUDIO_V19
 
    PaStream *stream;
+	
+	PaStreamParameters playbackParameters;
 
-   PaStreamParameters playbackParameters;
-
-   playbackParameters.device = playDeviceNum;
-   playbackParameters.sampleFormat = paFloat32;
-   playbackParameters.hostApiSpecificStreamInfo = NULL;
-   playbackParameters.channelCount = 2;
-   if (Pa_GetDeviceInfo(playDeviceNum))
-      playbackParameters.suggestedLatency =
-         Pa_GetDeviceInfo(playDeviceNum)->defaultLowOutputLatency;
-   else
-      playbackParameters.suggestedLatency = 100; // we're just probing anyway
+	playbackParameters.device = playDeviceNum;
+	playbackParameters.sampleFormat = paFloat32;
+	playbackParameters.hostApiSpecificStreamInfo = NULL;
+	playbackParameters.channelCount = 2;
+	if (Pa_GetDeviceInfo(playDeviceNum)){
+		playbackParameters.suggestedLatency =
+			Pa_GetDeviceInfo(playDeviceNum)->defaultLowOutputLatency;
+	}
+	else{
+		playbackParameters.suggestedLatency = 100; // we're just probing anyway
+	}
 
    PaStreamParameters captureParameters;
  
@@ -2123,12 +2144,13 @@ wxString AudioIO::GetDeviceInfo()
    captureParameters.sampleFormat = paFloat32;;
    captureParameters.hostApiSpecificStreamInfo = NULL;
    captureParameters.channelCount = 2;
-   if (Pa_GetDeviceInfo(recDeviceNum))
+	if (Pa_GetDeviceInfo(recDeviceNum)){
       captureParameters.suggestedLatency =
          Pa_GetDeviceInfo(recDeviceNum)->defaultLowInputLatency;
-   else
+	}else{
       captureParameters.suggestedLatency = 100; // we're just probing anyway
- 
+	}
+
    error = Pa_OpenStream(&stream,
                          &captureParameters, &playbackParameters,
                          highestSampleRate, paFramesPerBufferUnspecified,
