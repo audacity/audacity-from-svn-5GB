@@ -5,7 +5,7 @@ define('beta_version', '1.3.5');
 // Note: Sizes are in MB.
 define('beta_macosx_version', '1.3.5');
 
-define('macosx_ub_version', '1.3.5c');
+define('macosx_ub_version', '1.3.5d');
 define('macosx_ub_size',    8.1);
 
 //define('macosx_ppc_version', '1.3.3');
