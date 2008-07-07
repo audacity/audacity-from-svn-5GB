@@ -45,7 +45,7 @@ void *ODTaskThread::Entry()
    //TODO: Figure out why this has no effect at all.
    //wxThread::This()->SetPriority( 40);
    //Do at least 5 percent of the task
-   mTask->DoSome(0.05);
+   mTask->DoSome(0.05f);
    
    //release the thread count so that the ODManager knows how many active threads are alive.
    ODManager::Instance()->DecrementCurrentThreads();

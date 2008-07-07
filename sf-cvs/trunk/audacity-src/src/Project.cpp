@@ -120,6 +120,7 @@ scroll information.  It also has some status flags.
 #include "FileNames.h"
 #include "BlockFile.h"
 #include "ondemand/ODManager.h"
+#include "ondemand/ODTask.h"
 #include "ondemand/ODComputeSummaryTask.h"
 
 #include "Theme.h"
@@ -487,9 +488,6 @@ enum {
    TrackPanelID
 };
 
-//also in ODManager.cpp
-DECLARE_EVENT_TYPE(wxEVT_ODTASK_UPDATE, -1)
-DECLARE_EVENT_TYPE(wxEVT_ODTASK_COMPLETE, -1)
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_MENU_OPEN(AudacityProject::OnMenuEvent)

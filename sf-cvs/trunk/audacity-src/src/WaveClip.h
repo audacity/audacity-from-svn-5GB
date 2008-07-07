@@ -31,6 +31,7 @@ class WaveCache;
 class SpecCache;
 class AUDACITY_DLL_API WaveClip;
 class AUDACITY_DLL_API WaveClipList;
+class AUDACITY_DLL_API ODLock;
 
 class SpecPxCache {
 public:
