@@ -86,6 +86,7 @@ simplifies construction of menu items.
 #include "toolbars/ToolManager.h"
 #include "toolbars/ControlToolBar.h"
 #include "toolbars/ToolsToolBar.h"
+#include "toolbars/EditToolBar.h"
 
 #include "Experimental.h"
 #include "PlatformCompatibility.h"
@@ -4328,6 +4329,8 @@ int AudacityProject::DoAddLabel(double left, double right)
 void AudacityProject::OnStickyLabel()
 {
    mStickyFlag = !mStickyFlag;
+   EditToolBar *toolbar = GetEditToolBar();
+   toolbar->EnableDisableButtons();
 }
 
 void AudacityProject::OnAddLabel()

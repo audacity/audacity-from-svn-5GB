@@ -136,6 +136,7 @@ bool EffectChangeSpeed::Process()
             bGoodResult = false;
             break;
          }
+#ifdef EXPERIMENTAL_FULL_LINKING
          if( p && p->IsSticky() && m_PercentChange>0){
             double newLength = pOutWaveTrack->GetEndTime();
             double delta = origLength - newLength;
@@ -145,12 +146,14 @@ bool EffectChangeSpeed::Process()
             tmp->Flush();
             if ( !(pOutWaveTrack->HandlePaste(mCurT1, tmp)) ) bGoodResult = false;            
          }
+#endif         
       }
       
       //Iterate to the next track
       pOutWaveTrack = (WaveTrack*)(iter.Next());
       mCurTrackNum++;
    }
+#ifdef EXPERIMENTAL_FULL_LINKING
    if( p && p->IsSticky() && m_PercentChange<0){
       pOutWaveTrack = (WaveTrack*)(iter.First());
       double newLen = pOutWaveTrack->GetEndTime() - pOutWaveTrack->GetStartTime();
@@ -160,6 +163,7 @@ bool EffectChangeSpeed::Process()
       //printf("len: %f\nnewLen: %f\nsel: %f\nPercent: %f\n", len, newLen, sel, percent);
       if ( !(HandleGroupChangeSpeed(percent, mCurT0, mCurT1)) ) bGoodResult = false;
    }
+#endif
 
    this->ReplaceProcessedWaveTracks(bGoodResult); 
 

@@ -217,6 +217,7 @@ void EditToolBar::OnButton(wxCommandEvent &event)
                mButtons[ETBLinkID]->PushDown();
             else
                mButtons[ETBLinkID]->PopUp();
+            p->ModifyToolbarMenus();
          }
          return;//avoiding the call to SetButton()
       case ETBZoomInID:
@@ -279,6 +280,11 @@ void EditToolBar::EnableDisableButtons()
    mButtons[ETBZoomFitID]->SetEnabled(tracks);
 
    mButtons[ETBPasteID]->SetEnabled(p->Clipboard());
+   
+   if (p->GetStickyFlag())
+      mButtons[ETBLinkID]->PushDown();
+   else
+      mButtons[ETBLinkID]->PopUp();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
