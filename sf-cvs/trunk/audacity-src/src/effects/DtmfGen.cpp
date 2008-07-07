@@ -244,8 +244,10 @@ bool EffectDtmf::Process()
 {
    if (dtmfDuration <= 0.0)
       return false;
-
+      
+#ifdef EXPERIMENTAL_FULL_LINKING
    HandleLinkedTracksOnGenerate(dtmfDuration, mT0);
+#endif
 
    //Iterate over each track
    this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
@@ -354,8 +356,8 @@ bool EffectDtmf::Process()
       delete[] data;
 
       tmp->Flush();
-      track->Clear(mT0, mT1);
-      track->Paste(mT0, tmp);
+      track->HandleClear(mT0, mT1, false, false);
+      track->HandlePaste(mT0, tmp);
       delete tmp;
 
       if (!bGoodResult)

@@ -239,9 +239,11 @@ bool EffectToneGen::Process()
    int ntrack = 0;
    this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
-
-   HandleLinkedTracksOnGenerate(length, mT0);
    
+#ifdef EXPERIMENTAL_FULL_LINKING
+   HandleLinkedTracksOnGenerate(length, mT0);
+#endif
+
    TrackListIterator iter(mOutputWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
@@ -268,8 +270,8 @@ bool EffectToneGen::Process()
       delete[] data;
 
       tmp->Flush();
-      track->Clear(mT0, mT1);
-      track->Paste(mT0, tmp);
+      track->HandleClear(mT0, mT1, false, false);
+      track->HandlePaste(mT0, tmp);
       delete tmp;
 
       if (!bGoodResult)

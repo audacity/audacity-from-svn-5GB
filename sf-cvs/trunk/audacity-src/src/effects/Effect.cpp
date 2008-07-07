@@ -265,9 +265,7 @@ void Effect::CountWaveTracks()
 void Effect::HandleLinkedTracksOnGenerate(double length, double t0)
 {
    AudacityProject *p = GetActiveProject();
-   if(!p) return; 
-   
-   if ( !(p->IsSticky()) ) return;
+   if ( !p || !(p->IsSticky()) || (mT1!=mT0) ) return;
    
    TrackListIterator iter(p->GetTracks());
    
