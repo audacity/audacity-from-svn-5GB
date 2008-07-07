@@ -24,8 +24,12 @@ in a background thread.
 #define __AUDACITY_ODTASK__
 
 #include "ODTaskThread.h"
+
+#include <wx/wx.h>
 class WaveTrack;
 
+
+DECLARE_EVENT_TYPE(wxEVT_ODTASK_COMPLETE, -1)
 
 /// A class representing a modular task to be used with the On-Demand structures.
 class ODTask

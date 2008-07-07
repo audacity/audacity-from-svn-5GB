@@ -157,12 +157,12 @@ void ODComputeSummaryTask::Update()
 void ODComputeSummaryTask::OrderBlockFiles(std::vector<ODPCMAliasBlockFile*> &unorderedBlocks)
 {
    //we are going to take things out of the array.  But first deref them since we ref them when we put them in.
-   for(int i=0;i<mBlockFiles.size();i++)
+   for(unsigned int i=0;i<mBlockFiles.size();i++)
       mBlockFiles[i]->Deref();
    mBlockFiles.clear();
    //TODO:order the blockfiles into our queue in a fancy convenient way.  (this could be user-prefs)
    //for now just put them in linear.
-   for(int i=0;i<unorderedBlocks.size();i++)
+   for(unsigned int i=0;i<unorderedBlocks.size();i++)
    {
       //check to see if the refcount is at least two before we add it to the list.
       //There should be one Ref() from us, and one from the track.  
@@ -170,7 +170,7 @@ void ODComputeSummaryTask::OrderBlockFiles(std::vector<ODPCMAliasBlockFile*> &un
       if(unorderedBlocks[i]->RefCount()>=2)
       {
          mBlockFiles.push_back(unorderedBlocks[i]);
-         if(mMaxBlockFiles< mBlockFiles.size())
+         if(mMaxBlockFiles< (int) mBlockFiles.size())
             mMaxBlockFiles = mBlockFiles.size();
       }
       else

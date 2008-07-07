@@ -29,7 +29,7 @@ ODWaveTrackTaskQueue::ODWaveTrackTaskQueue(WaveTrack* track)
 ODWaveTrackTaskQueue::~ODWaveTrackTaskQueue()
 {
    //we need to delete all ODTasks.  We will have to block or wait until block for the active ones.
-   for(int i=0;i<mTasks.size();i++)
+   for(unsigned int i=0;i<mTasks.size();i++)
    {
       mTasks[i]->TerminateAndBlock();//blocks if active.
       //small chance we may have rea-added the task back into the queue from a diff thread.  - so remove it if we have.
@@ -43,7 +43,7 @@ ODWaveTrackTaskQueue::~ODWaveTrackTaskQueue()
 bool ODWaveTrackTaskQueue::ContainsWaveTrack(WaveTrack* track)
 {
    mTracksMutex.Lock();
-   for(int i=0;i<mTracks.size();i++)
+   for(unsigned int i=0;i<mTracks.size();i++)
    {
       if(mTracks[i]==track)
       {
@@ -80,7 +80,7 @@ void ODWaveTrackTaskQueue::RemoveWaveTrack(WaveTrack* track)
    {
       
       mTracksMutex.Lock();
-      for(int i=0;i<mTasks.size();i++)
+      for(unsigned int i=0;i<mTasks.size();i++)
       {
          mTasks[i]->StopUsingWaveTrack(track);
       }
@@ -95,7 +95,7 @@ void ODWaveTrackTaskQueue::ReplaceWaveTrack(WaveTrack* oldTrack, WaveTrack* newT
    if(oldTrack)
    {
       mTracksMutex.Lock();
-      for(int i=0;i<mTasks.size();i++)
+      for(unsigned int i=0;i<mTasks.size();i++)
       {
          mTasks[i]->ReplaceWaveTrack(oldTrack,newTrack);
       }

@@ -36,6 +36,9 @@ number of threads.
 #include <time.h>
 #endif //__WXMAC__
 
+
+DECLARE_EVENT_TYPE(wxEVT_ODTASK_UPDATE, -1)
+
 /// A singleton that manages currently running Tasks on an arbitrary 
 /// number of threads.
 class WaveTrack;

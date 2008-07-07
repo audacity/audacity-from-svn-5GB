@@ -23,7 +23,6 @@ bool sHasLoadedOD=false;
 
 
 
-DECLARE_EVENT_TYPE(wxEVT_ODTASK_UPDATE, -1)
 DEFINE_EVENT_TYPE(wxEVT_ODTASK_UPDATE)
 
 //private constructor - Singleton.
@@ -43,7 +42,7 @@ void ODManager::AddTask(ODTask* task)
 void ODManager::RemoveTaskIfInQueue(ODTask* task)
 {
    mTasksMutex.Lock();
-   for(int i=0;i<mTasks.size();i++)
+   for(unsigned int i=0;i<mTasks.size();i++)
    {
       if(mTasks[i]==task)
       {
@@ -60,7 +59,7 @@ void ODManager::AddTaskToWaveTrack(ODTask* task, WaveTrack* track)
    ODWaveTrackTaskQueue* queue = NULL;
    
    mQueuesMutex.Lock();
-   for(int i=0;i<mQueues.size();i++)
+   for(unsigned int i=0;i<mQueues.size();i++)
    {
       if(mQueues[i]->ContainsWaveTrack(track))
          queue=mQueues[i];
@@ -198,7 +197,7 @@ void ODManager::Start()
       mQueuesMutex.Unlock();
 //      
 //      //TODO:this is a little excessive, in the future only redraw some, and if possible only the Tracks on the trackpanel..
-      if(mNeedsDraw > 18)
+      if(mNeedsDraw > 3)
       {
          mNeedsDraw=0;
          wxCommandEvent event( wxEVT_ODTASK_UPDATE );
@@ -238,7 +237,7 @@ void ODManager::Quit()
 void ODManager::RemoveWaveTrack(WaveTrack* track)
 {
    mQueuesMutex.Lock();
-   for(int i=0;i<mQueues.size();i++)
+   for(unsigned int i=0;i<mQueues.size();i++)
    {
       if(mQueues[i]->ContainsWaveTrack(track))
          mQueues[i]->RemoveWaveTrack(track);
@@ -267,7 +266,7 @@ void ODManager::RemoveWaveTrack(WaveTrack* track)
 void ODManager::ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack)
 {
    mQueuesMutex.Lock();
-   for(int i=0;i<mQueues.size();i++)
+   for(unsigned int i=0;i<mQueues.size();i++)
    {
       mQueues[i]->ReplaceWaveTrack(oldTrack,newTrack);
    }
@@ -279,7 +278,7 @@ void ODManager::ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack)
 void ODManager::UpdateQueues()
 {
    mQueuesMutex.Lock();
-   for(int i=0;i<mQueues.size();i++)
+   for(unsigned int i=0;i<mQueues.size();i++)
    {
       if(mQueues[i]->IsFrontTaskComplete())
       {
