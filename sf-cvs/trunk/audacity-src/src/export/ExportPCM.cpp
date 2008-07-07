@@ -342,7 +342,6 @@ ExportPCM::ExportPCM()
    SetCanMetaData(true,0);
    SetDescription(_("WAV (Microsoft) signed 16 bit PCM"),0);
    AddExtension(sf_header_extension(si.format),0);
-   SetExtensions(sf_get_all_extensions(),0);
    SetMaxChannels(si.channels - 1,0);
 
    si.format = SF_FORMAT_AIFF | SF_FORMAT_PCM_16;
@@ -352,7 +351,6 @@ ExportPCM::ExportPCM()
    SetCanMetaData(true,1);
    SetDescription(_("AIFF (Apple) signed 16 bit PCM"),1);
    AddExtension(sf_header_extension(si.format),1);
-   SetExtensions(sf_get_all_extensions(),1);
    SetMaxChannels(si.channels - 1,1);
 
    AddFormat();
