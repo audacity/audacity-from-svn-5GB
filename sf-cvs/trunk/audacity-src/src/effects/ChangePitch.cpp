@@ -253,7 +253,9 @@ void ChangePitchDialog::PopulateOrExchange(ShuttleGui & S)
    S.SetBorder(10);
    S.StartHorizontalLay(wxCENTER, false);
    {
-      S.AddTitle(_("by Vaughan Johnson && Dominic Mazzoni") +
+      S.AddTitle(_("Change Pitch without Changing Tempo") +
+                 wxString(wxT("\n\n")) +
+                 _("by Vaughan Johnson && Dominic Mazzoni") +
                  wxString(wxT("\n")) +
                  _("using SoundTouch, by Olli Parviainen"));
    }
