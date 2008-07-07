@@ -112,7 +112,6 @@ enum FFmpegExposedFormat
   FMT_AMRWB,
   FMT_WMA2,
   FMT_RA3,
-  FMT_RA9,
   FMT_OTHER,
   FMT_LAST
 };
@@ -144,7 +143,6 @@ ExposedFormat fmts[] =
    {FMT_AMRWB,       wxT("AMRWB"),     wxT("amr"),    1,    true,_("AMR (wide band) Files (FFmpeg)"),          CODEC_ID_AMR_WB},
    {FMT_WMA2,        wxT("WMA"),       wxT("wma"),    2,    true,_("WMA (version 2) Files (FFmpeg)"),          CODEC_ID_WMAV2},
    {FMT_RA3,         wxT("RA3"),       wxT("ra"),     6,    true,_("Real Audio (version 3) Files (FFmpeg)"),   CODEC_ID_AC3},
-   {FMT_RA9,         wxT("RA9"),       wxT("ra"),     48,   true,_("Real Audio (version 9) Files (FFmpeg)"),   CODEC_ID_AAC},
    {FMT_OTHER,       wxT("FFMPEG"),    wxT("ffmpeg"), 255,  true,_("Other FFmpeg-Compatible Files"),           CODEC_ID_NONE}
 };
 
@@ -1562,7 +1560,6 @@ ExportFFmpeg::ExportFFmpeg()
          AddExtension(wxString(wxT("m4a")),newfmt);
          break;
       case FMT_RA3:
-      case FMT_RA9:
          AddExtension(wxString(wxT("rm")),newfmt);
          break;
       case FMT_WMA2:
@@ -1695,7 +1692,6 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       break;
    case FMT_MP4:
    case FMT_AAC:
-   case FMT_RA9:
       mSampleRate = gPrefs->Read(wxT("/FileFormats/AACSampleRate"), 48000);
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AACBitRate"), 192000);
       break;
@@ -2049,7 +2045,7 @@ bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
       od.ShowModal();
       return true;
    }
-   else if ((format == FMT_MP4) || (format == FMT_AAC) || (format == FMT_RA9))
+   else if ((format == FMT_MP4) || (format == FMT_AAC))
    {
       ExportFFmpegAACOptions od(project);
       od.ShowModal();
