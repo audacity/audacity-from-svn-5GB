@@ -126,11 +126,11 @@ bool AudacityPrintout::OnPrintPage(int page)
 #endif
          }
          break;
-	  #ifdef USE_MIDI 
+#ifdef USE_MIDI 
       case Track::Note:
          artist.DrawNoteTrack((NoteTrack *)n, *dc, r, &viewInfo);
          break;
-	  #endif
+#endif // USE_MIDI
       case Track::Label:
          artist.DrawLabelTrack((LabelTrack *)n, *dc, r, &viewInfo);
          break;

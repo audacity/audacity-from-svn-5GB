@@ -78,7 +78,7 @@
 #include "ImportLOF.h"
 #ifdef USE_MIDI
 #include "ImportMIDI.h"
-#endif
+#endif // USE_MIDI
 #include "../WaveTrack.h"
 #include "ImportPlugin.h"
 #include "Import.h"

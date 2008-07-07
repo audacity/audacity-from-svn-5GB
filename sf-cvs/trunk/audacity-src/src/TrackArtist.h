@@ -79,10 +79,10 @@ class AUDACITY_DLL_API TrackArtist {
                      wxDC & dc, wxRect & r,
                      ViewInfo * viewInfo, bool autocorrelation);
 #endif
-   #ifdef USE_MIDI
+#ifdef USE_MIDI
    void DrawNoteTrack(NoteTrack *track,
                       wxDC & dc, wxRect & r, ViewInfo * viewInfo);
-   #endif
+#endif // USE_MIDI
 
    void DrawLabelTrack(LabelTrack *track,
                        wxDC & dc, wxRect & r, ViewInfo * viewInfo);

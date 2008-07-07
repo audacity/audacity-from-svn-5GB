@@ -55,7 +55,7 @@ simplifies construction of menu items.
 #include "LabelTrack.h"
 #ifdef USE_MIDI
 #include "import/ImportMIDI.h"
-#endif
+#endif // USE_MIDI
 #include "import/ImportRaw.h"
 #include "export/Export.h"
 #include "export/ExportMultiple.h"
@@ -71,7 +71,7 @@ simplifies construction of menu items.
 #include "UploadDialog.h"
 #ifdef USE_MIDI
 #include "NoteTrack.h"
-#endif
+#endif // USE_MIDI
 #include "Tags.h"
 #include "Mix.h"
 #include "AboutDialog.h"
@@ -221,7 +221,7 @@ void AudacityProject::CreateMenusAndCommands()
 		c->AddItem(wxT("ImportLabels"),   _("&Labels..."),					FN(OnImportLabels));
         #ifdef USE_MIDI
 		c->AddItem(wxT("ImportMIDI"),     _("&MIDI..."),							FN(OnImportMIDI));
-        #endif
+        #endif // USE_MIDI
 		c->AddItem(wxT("ImportRaw"),      _("&Raw Data..."),				FN(OnImportRaw));
       c->EndSubMenu();
       
@@ -2762,7 +2762,7 @@ void AudacityProject::OnPaste()
          case Track::Note:
             n = mTrackFactory->NewNoteTrack();
             break;
-         #endif
+         #endif // USE_MIDI
          case Track::Label:
             n = mTrackFactory->NewLabelTrack();
             break;
@@ -3858,11 +3858,7 @@ void AudacityProject::OnImportMIDI()
                                     path,     // Path
                                     wxT(""),       // Name
                                     wxT(""),       // Extension
-#ifndef EXPERIMENTAL_NOTE_TRACK
-                                    _("All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"),
-#else /* EXPERIMENTAL_NOTE_TRACK */
                                     _("MIDI and Allegro files (*.mid;*.gro)|*.mid;*.gro|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro|All files (*.*)|*.*"),
-#endif /* EXPERIMENTAL_NOTE_TRACK */
                                     wxRESIZE_BORDER,        // Flags
                                     this);    // Parent
 

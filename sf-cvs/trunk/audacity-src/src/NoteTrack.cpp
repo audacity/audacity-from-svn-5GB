@@ -20,11 +20,9 @@
 #include <wx/intl.h>
 
 #include "allegro.h"
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
 //#include "portmidi.h"
 //#include "porttime.h"
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
 #include "AColor.h"
 #include "NoteTrack.h"
@@ -43,26 +41,19 @@ Track(projDirManager)
 
    mSeq = NULL;
    mLen = 0.0;
-#ifdef EXPERIMENTAL_NOTE_TRACK
    mSerializationBuffer = NULL;
    mSerializationLength = 0;
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
    mDirManager = projDirManager;
 
    mBottomNote = 24;
 
    mVisibleChannels = 0xFFFF;
-#ifdef EXPERIMENTAL_NOTE_TRACK
-/* HCK MIDI PATCH START */
    mLastMidiPosition = 0;
-/* HCK MIDI PATCH END */
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 }
 
 Track *NoteTrack::Duplicate()
 {
-#ifdef EXPERIMENTAL_NOTE_TRACK
    NoteTrack *duplicate = new NoteTrack(mDirManager);
    // Duplicate on NoteTrack moves data from mSeq to mSerializationBuffer
    // and from mSerializationBuffer to mSeq on alternate calls. Duplicate
@@ -70,10 +61,12 @@ Track *NoteTrack::Duplicate()
    // in serialized blobs on the undo stack and traversable data in the
    // project object.
    if (mSeq) {
+      assert(!mSerializationBuffer);
       // serialize from this to duplicate's mSerializationBuffer
       mSeq->serialize(&duplicate->mSerializationBuffer, 
                       &duplicate->mSerializationLength);
    } else if (mSerializationBuffer) {
+      assert(!mSeq);
       Alg_track_ptr alg_track = Alg_seq::unserialize(mSerializationBuffer,
                                                       mSerializationLength);
       assert(alg_track->get_type() == 's');
@@ -85,9 +78,6 @@ Track *NoteTrack::Duplicate()
    duplicate->mLen = mLen;
    duplicate->mVisibleChannels = mVisibleChannels;
    return duplicate;
-#else
-   return new NoteTrack(mDirManager);
-#endif
 }
 
 void NoteTrack::DrawLabelControls(wxDC & dc, wxRect & r)
@@ -165,92 +155,15 @@ bool NoteTrack::LabelClick(wxRect & r, int mx, int my, bool right)
    return true;
 }
 
-#ifndef EXPERIMENTAL_NOTE_TRACK
-void NoteTrack::CalcLen()
-{
-   int numEvents = mSeq->notes.len;
-
-   if (numEvents <= 0)
-      mLen = 0.0;
-   else {
-      mLen = 0.0;
-      for (int i = 0; i < numEvents; i++) {
-         if (mSeq->notes[numEvents - 1]->time > mLen)
-            mLen = mSeq->notes[numEvents - 1]->time;
-         if (mSeq->notes[numEvents - 1]->type == wxT('n')) {
-            double endtime = mSeq->notes[numEvents - 1]->time +
-                ((Allegro_note_ptr) mSeq->notes[numEvents - 1])->dur;
-            if (endtime > mLen)
-               mLen = endtime;
-         }
-      }
-   }
-}
-#else /* EXPERIMENTAL_NOTE_TRACK */
-/* this is no longer needed -- get mLen from underlying seq->real_dur:
-// calculates the timelength of the track
-void NoteTrack::CalcLen()
-{
-    mSeq->convert_to_seconds();
-
-    mLen = 0.0;
-    for (mSeq->iteration_begin(); ; ) {
-        Alg_event_ptr currEvent = mSeq->iteration_next();
-        if (!currEvent)
-            break;
-        if (mLen < currEvent->time)
-            mLen = currEvent->time;
-        if (currEvent->get_type() == wxT('n')) {
-            double endtime = currEvent->get_end_time();
-            if (mLen < endtime)
-                mLen = endtime;
-        }
-    }
-    mSeq->iteration_end();
-
-    printf( "HCK: mLen %f\n", mLen );
-}
-*/
-/* this is an even older version; it's here for reference but probably should be deleted -RBD
-   int numEvents = mSeq->length();
-
-   if (numEvents <= 0)
-      mLen = 0.0;
-   else {
-      mLen = 0.0;
-      for (int i = 0; i < numEvents; i++) {
-         if (((Alg_event_ptr)mSeq->track_list.tracks[numEvents - 1])->time > mLen)
-            mLen = ((Alg_event_ptr)mSeq->track_list.tracks[numEvents - 1])->time;
-         if (((Alg_event_ptr)mSeq->track_list.tracks[numEvents - 1])->get_type() == wxT('n'))
-         {
-            double endtime = ((Alg_event_ptr)mSeq->track_list.tracks[numEvents - 1])->time + ((Alg_note_ptr) mSeq->track_list.tracks[numEvents - 1])->dur;
-            if (endtime > mLen)
-               mLen = endtime;
-         }
-      }
-   }
-*/
-#endif /* EXPERIMENTAL_NOTE_TRACK */
-
-#ifndef EXPERIMENTAL_NOTE_TRACK
-void NoteTrack::SetSequence(Seq *seq)
-#else /* EXPERIMENTAL_NOTE_TRACK */
 void NoteTrack::SetSequence(Alg_seq *seq)
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 {
    if (mSeq)
       delete mSeq;
 
    mSeq = seq;
-#ifndef EXPERIMENTAL_NOTE_TRACK
-   CalcLen();
-#else
    mLen = (seq ? seq->get_real_dur() : 0.0);
-#endif
 }
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
-/* HCK MIDI PATCH START */
 Alg_seq* NoteTrack::GetSequence() 
 {
    return mSeq;
@@ -318,7 +231,6 @@ int NoteTrack::GetVisibleChannels()
 {
    return mVisibleChannels;
 }
-/* HCK MIDI PATCH END */
 
 bool NoteTrack::Cut(double t0, double t1, Track **dest){
 
@@ -335,7 +247,7 @@ bool NoteTrack::Cut(double t0, double t1, Track **dest){
    mSeq->convert_to_seconds();
    newTrack->mSeq = mSeq->cut(t0, len, false);
 
-   mLen -= len;
+   mLen = (mLen <= len ? 0.0 : mLen - len);
    newTrack->mLen = len;
 
    // What should be done with the rest of newTrack's members?
@@ -390,12 +302,15 @@ bool NoteTrack::Paste(double t, Track *src){
    if (other->mSeq == NULL)
       return false;
 
+   if(!mSeq)
+      mSeq = new Alg_seq();
+
    mSeq->paste(t, other->mSeq);
+   mLen = mSeq->get_real_dur();
 
    return true;
 }
 
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 bool NoteTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
    return false;

@@ -28,20 +28,12 @@ class DirManager;
 class UndoStack;
 class TimeTrack;
 class WaveTrack;
-#ifdef EXPERIMENTAL_NOTE_TRACK
-/* HCK MIDI PATCH START*/
 class NoteTrack;
-/* HCK MIDI PATCH END*/
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 #ifdef __WXMSW__
 #pragma warning(disable:4284)
 #endif
 WX_DEFINE_ARRAY(WaveTrack*, WaveTrackArray);
-#ifdef EXPERIMENTAL_NOTE_TRACK
-/* HCK MIDI PATCH START*/
 WX_DEFINE_ARRAY(NoteTrack*, NoteTrackArray);
-/* HCK MIDI PATCH END*/
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
 class AUDACITY_DLL_API Track: public XMLTagHandler {
 
@@ -246,11 +238,7 @@ class AUDACITY_DLL_API TrackList {
   WaveTrackArray GetWaveTrackArray(bool selectionOnly);
   /** Consider this function depricated in favor of GetWaveTrackArray */
   void GetWaveTracks(bool selectionOnly, int *num, WaveTrack ***tracks);
-#ifdef EXPERIMENTAL_NOTE_TRACK
-/* HCK MIDI PATCH START*/
   NoteTrackArray GetNoteTrackArray(bool selectionOnly);
-/* HCK MIDI PATCH END*/
-#endif /* EXPERIMENTAL_NOTE_TRACK */
   
   /// Mainly a test function. Uses a linear search, so could be slow.
   bool Contains(Track * t) const;
