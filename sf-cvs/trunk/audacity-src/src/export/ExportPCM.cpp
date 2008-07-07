@@ -380,7 +380,19 @@ bool ExportPCM::Export(AudacityProject *project,
 {
    double       rate = project->GetRate();
    TrackList   *tracks = project->GetTracks();
-   int          sf_format = ReadExportFormatPref();
+   int sf_format;
+   switch (subformat)
+   {
+   case 0:
+      sf_format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
+      break;
+   case 1:
+      sf_format = SF_FORMAT_AIFF | SF_FORMAT_PCM_16;
+      break;
+   case 2:
+   default:
+      sf_format = ReadExportFormatPref();
+   }
    wxString     formatStr;
    SF_INFO      info;
    SNDFILE     *sf = NULL;
