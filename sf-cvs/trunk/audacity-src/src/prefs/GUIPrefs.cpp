@@ -93,15 +93,15 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       S.TieCheckBox( _("&Update display while playing"),
          wxT("/GUI/AutoScroll"), true);
-      S.TieCheckBox( _("Closing last window quits Audacity"),
+      S.TieCheckBox( _("Cl&osing last window quits Audacity"),
          wxT("/GUI/QuitOnClose"), bQuitOnCloseDefault );
       S.TieCheckBox( _("Enable &dragging of left and right selection edges"),
          wxT("/GUI/AdjustSelectionEdges"), true);
-      S.TieCheckBox( _("&Ergonomic order of audio I/O buttons"),
+      S.TieCheckBox( _("Er&gonomic order of audio I/O buttons"),
          wxT("/GUI/ErgonomicTransportButtons"), true);
       S.TieCheckBox( _("Automatically &fit tracks vertically zoomed"), 
          wxT("/GUI/TracksFitVerticallyZoomed"), false );
-      S.TieCheckBox( _("\"Move track focus\" &cycles repeatedly through tracks"), 
+      S.TieCheckBox( _("\"Move track focus\" c&ycles repeatedly through tracks"), 
          wxT("/GUI/CircularTrackNavigation"), false );
       S.TieCheckBox( _("Editing a &clip can move other clips"),
          wxT("/GUI/EditClipCanMove"), true );
@@ -117,16 +117,16 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
          wxT("/GUI/EnableCutLines"), false);
       S.TieCheckBox( _("Show warnings about &temp files"), 
          wxT("/GUI/WarnAboutTempFiles"), true );
-      S.TieCheckBox( _("&Show prompt to save, even if project is empty"),    
+      S.TieCheckBox( _("Show prompt to sa&ve, even if project is empty"),    
          wxT("/GUI/EmptyCanBeDirty"), true );
-      S.TieCheckBox( _("Show Welcome Message at program start up"),    
+      S.TieCheckBox( _("Show &Welcome Message at program start up"),    
          wxT("/GUI/ShowSplashScreen"), true );
    }
    S.EndStatic();
    S.StartStatic( _("Modes"),0 );
    {
 #ifdef __WXDEBUG__
-      S.TieCheckBox( _("&Don't apply effects in batch mode"),  
+      S.TieCheckBox( _("Don't a&pply effects in batch mode"),  
          wxT("/Batch/Debug"), false);
 #endif
       S.TieCheckBox( _("Cl&eanSpeech Mode (Customized GUI)"), 
@@ -151,13 +151,13 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
    S.StartStatic( _("Default View Mode") );
    {
       S.StartRadioButtonGroup( wxT("/GUI/DefaultViewMode"), mDefaultViewMode );
-      S.TieRadioButton( _("WaveformDisplay"), 0);
-      S.TieRadioButton( _("WaveformDBDisplay"), 1);
-      S.TieRadioButton( _("SpectrumDisplay"), 2);
+      S.TieRadioButton( _("Waveform"), 0);
+      S.TieRadioButton( _("Waveform (dB)"), 1);
+      S.TieRadioButton( _("Spectrum"), 2);
 #ifdef LOGARITHMIC_SPECTRUM
-      S.TieRadioButton( _("SpectrumLogDisplay"), 3);
+      S.TieRadioButton( _("Spectrum log(f)"), 3);
 #endif //LOGARITHMIC_SPECTRUM
-      S.TieRadioButton( _("PitchDisplay"), 4);
+      S.TieRadioButton( _("Pitch (EAC)"), 4);
       S.EndRadioButtonGroup();
    }
    S.EndStatic();
