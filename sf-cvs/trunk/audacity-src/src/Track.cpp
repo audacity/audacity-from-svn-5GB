@@ -713,8 +713,6 @@ WaveTrackArray TrackList::GetWaveTrackArray(bool selectionOnly)
    return waveTrackArray;
 }
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
-/* HCK MIDI PATCH START */
 NoteTrackArray TrackList::GetNoteTrackArray(bool selectionOnly)
 {
    NoteTrackArray noteTrackArray;
@@ -729,9 +727,7 @@ NoteTrackArray TrackList::GetNoteTrackArray(bool selectionOnly)
    }
    return noteTrackArray;
 }
-/* HCK MIDI PATCH END */
 
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 #ifdef new
 #undef new
 #endif

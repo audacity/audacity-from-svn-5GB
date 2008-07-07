@@ -2315,7 +2315,7 @@ XMLTagHandler *AudacityProject::HandleXMLChild(const wxChar *tag)
       mTracks->Add(newTrack);
       return newTrack;
    }
-   #endif
+   #endif // USE_MIDI
 
    if (!wxStrcmp(tag, wxT("labeltrack"))) {
       LabelTrack *newTrack = mTrackFactory->NewLabelTrack();

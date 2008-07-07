@@ -45,10 +45,8 @@ writing audio.
 
 #include <math.h>
 #include <stdlib.h>
-#ifdef EXPERIMENTAL_NOTE_TRACK
 //   MIDI_PLAYBACK:
 //#include <string.h>
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
 #ifdef __WXMSW__
 #include <malloc.h>
@@ -70,10 +68,8 @@ writing audio.
 #include "AudacityApp.h"
 #include "AudioIO.h"
 #include "WaveTrack.h"
-#ifdef EXPERIMENTAL_NOTE_TRACK
 //   MIDI_PLAYBACK:
 //#include "NoteTrack.h"
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 #include "Mix.h"
 #include "Resample.h"
 #include "RingBuffer.h"
@@ -131,10 +127,9 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                           PaTimestamp outTime, void *userData );
 #endif
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 //   MIDI_PLAYBACK:
 //int compareTime( const void* a, const void* b );
-#endif /* EXPERIMENTAL_NOTE_TRACK */
+
 //////////////////////////////////////////////////////////////////////
 //
 //     class AudioThread - declaration and glue code
@@ -234,12 +229,10 @@ AudioIO::AudioIO()
    mInCallbackFinishedState = false;
 #endif
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 //   MIDI_PLAYBACK:
 //   mMidiStream = NULL;
 //   mMidiStreamActive = false;
 //   mUpdateMidiTracks = false;
-#endif /* EXPERIMENTAL_NOTE_TRACK */
    mStreamToken = 0;
    mStopStreamCount = 0;
    mTempFloats = new float[65536]; // TODO: out channels * PortAudio buffer size
@@ -273,7 +266,6 @@ AudioIO::AudioIO()
       // but any attempt to play or record will simply fail.
    }
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
 //   PmError pmErr = Pm_Initialize();
 
@@ -289,7 +281,6 @@ AudioIO::AudioIO()
 
       // Same logic for PortMidi as described above for PortAudio
 //   }
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
    // Start thread
    mThread = new AudioThread();
@@ -321,10 +312,9 @@ AudioIO::~AudioIO()
    }
 #endif
    Pa_Terminate();
-#ifdef EXPERIMENTAL_NOTE_TRACK
+
 /* REQUIRES PORTMIDI */
 //   Pm_Terminate();
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
    /* Delete is a "graceful" way to stop the thread.
       (Kill is the not-graceful way.) */
@@ -838,10 +828,8 @@ void AudioIO::StartMonitoring(double sampleRate)
 
 int AudioIO::StartStream(WaveTrackArray playbackTracks,
                          WaveTrackArray captureTracks,
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
-                   //NoteTrackArray midiPlaybackTracks,
-#endif /* EXPERIMENTAL_NOTE_TRACK */
+                         //NoteTrackArray midiPlaybackTracks,
                          TimeTrack *timeTrack, double sampleRate,
                          double t0, double t1,
                          AudioIOListener* listener,
@@ -907,10 +895,8 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mLastRecordingOffset = 0;
    mPlaybackTracks = playbackTracks;
    mCaptureTracks  = captureTracks;
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
 //   mMidiPlaybackTracks = midiPlaybackTracks;
-#endif /* EXPERIMENTAL_NOTE_TRACK */
    mPlayLooped = playLooped;
    mCutPreviewGapStart = cutPreviewGapStart;
    mCutPreviewGapLen = cutPreviewGapLen;
@@ -968,11 +954,6 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
          mListener->OnAudioIOStartRecording();
    }
    
-#ifndef EXPERIMENTAL_NOTE_TRACK
-   bool success = StartPortAudioStream(sampleRate, playbackChannels,
-                                       captureChannels, captureFormat);
-#else /* EXPERIMENTAL_NOTE_TRACK */
-/* HCK MIDI PATCH START */
    bool successAudio;
 
 /* REQUIRES PORTMIDI */
@@ -985,25 +966,11 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
 //   if( !mPlaybackTracks.IsEmpty() ){
       successAudio = StartPortAudioStream(sampleRate, playbackChannels,
                                        captureChannels, captureFormat);
-/* HCK MIDI PATCH END */
-#endif /* EXPERIMENTAL_NOTE_TRACK */
-   
-#ifndef EXPERIMENTAL_NOTE_TRACK
-   if (!success) {
-#else /* EXPERIMENTAL_NOTE_TRACK */
-/* HCK MIDI PATCH START */
+
    if (!successAudio) {
-/* HCK MIDI PATCH END */
-#endif /* EXPERIMENTAL_NOTE_TRACK */
       if (mListener && captureChannels > 0)
          mListener->OnAudioIOStopRecording();
       mStreamToken = 0;
-#ifdef EXPERIMENTAL_NOTE_TRACK
-//   MIDI_PLAYBACK:
-//      printf( "***************************\n" );
-//      printf( "EXPERIMENTAL_NOTE_TRACK return #1\n" );
-//      printf( "***************************\n");
-#endif /* EXPERIMENTAL_NOTE_TRACK */
       return 0;
    }
 
@@ -1079,12 +1046,6 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
          mListener->OnAudioIOStopRecording();
       wxPrintf(wxT("%hs\n"), Pa_GetErrorText(err));
       mStreamToken = 0;
-#ifdef EXPERIMENTAL_NOTE_TRACK
-//   MIDI_PLAYBACK:
-//      printf( "***************************\n" );
-//      printf( "EXPERIMENTAL_NOTE_TRACK return #2\n" );
-//      printf( "***************************\n");
-#endif /* EXPERIMENTAL_NOTE_TRACK */
       return 0;
    }
 
@@ -1095,17 +1056,14 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    // clients accessing the AudioIO API, so they can query if
    // are the ones who have reserved AudioIO or not.
    //
-#ifdef EXPERIMENTAL_NOTE_TRACK
 //   MIDI_PLAYBACK:
 //   }
 
-#endif /* EXPERIMENTAL_NOTE_TRACK */
    mStreamToken = (++mNextStreamToken);
 
    return mStreamToken;
 }
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* HCK MIDI PATCH START */
 /* REQUIRES PORTMIDI */
 //bool AudioIO::StartPortMidiStream() 
@@ -1191,8 +1149,6 @@ HCK MIDI PATCH ORG */
 /* REQUIRES PORTMIDI END */
 /* HCK MIDI PATCH END */
 
-#endif /* EXPERIMENTAL_NOTE_TRACK */
-
 void AudioIO::SetMeters(Meter *inputMeter, Meter *outputMeter)
 {
    mInputMeter = inputMeter;
@@ -1208,29 +1164,19 @@ void AudioIO::SetMeters(Meter *inputMeter, Meter *outputMeter)
 
 void AudioIO::StopStream()
 {
-#ifdef EXPERIMENTAL_NOTE_TRACK
 //   MIDI_PLAYBACK:
-//   printf( "EXPERIMENTAL_NOTE_TRACK StopStream\n" );
-#endif /* EXPERIMENTAL_NOTE_TRACK */
+//   printf( "HCK StopStream\n" );
  #if USE_PORTAUDIO_V19
-#ifndef EXPERIMENTAL_NOTE_TRACK
-   if( mPortStreamV19 == NULL )
-#else /* EXPERIMENTAL_NOTE_TRACK */
    if( mPortStreamV19 == NULL 
 /* REQUIRES PORTMIDI */
-//      && mMidiStream == NULL 
-      )
-#endif /* EXPERIMENTAL_NOTE_TRACK */
+//	   && mMidiStream == NULL 
+	   )
       return;
 
-#ifndef EXPERIMENTAL_NOTE_TRACK
-   if( Pa_IsStreamStopped( mPortStreamV19 ) )
-#else /* EXPERIMENTAL_NOTE_TRACK */
    if( Pa_IsStreamStopped( mPortStreamV19 ) 
 /* REQUIRES PORTMIDI */
-//      && !mMidiStreamActive 
-      )
-#endif /* EXPERIMENTAL_NOTE_TRACK */
+//	   && !mMidiStreamActive 
+	   )
       return;
  #else
    if( mPortStreamV18 == NULL )
@@ -1314,7 +1260,6 @@ void AudioIO::StopStream()
       mInCallbackFinishedState = false;
    }
 #endif
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
    /* Stop Midi playback */
 //   if ( mMidiStream )
@@ -1336,7 +1281,6 @@ void AudioIO::StopStream()
 //      mLastMidiTime = 0;
 //      mSeq->iteration_end();
 //   }
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
    // If there's no token, we were just monitoring, so we can
    // skip this next part...
@@ -1487,24 +1431,6 @@ bool AudioIO::IsBusy()
    return false;
 }
 
-#ifndef EXPERIMENTAL_NOTE_TRACK
-bool AudioIO::IsStreamActive()
-{
-#if USE_PORTAUDIO_V19
-   if( mPortStreamV19 )
-      return Pa_IsStreamActive( mPortStreamV19 ) != 0;
-   else
-      return false;
-#else
-   if( mPortStreamV18 &&
-       Pa_StreamActive( mPortStreamV18 ) &&
-       mInCallbackFinishedState == false )
-      return true;
-   else
-      return false;
-#endif
-}
-#else /* EXPERIMENTAL_NOTE_TRACK */
 bool AudioIO::IsStreamActive()
 {
    bool isActive = false;
@@ -1525,7 +1451,6 @@ bool AudioIO::IsStreamActive()
 //      isActive = true;
    return isActive;
 }
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
 bool AudioIO::IsStreamActive(int token)
 {
@@ -1874,14 +1799,11 @@ AudioThread::ExitCode AudioThread::Entry()
          gAudioIO->FillBuffers();
       }
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
 //     if( gAudioIO->mMidiStreamActive )
 //      {
 //         gAudioIO->FillMidiBuffers();
 //      }
-
-#endif /* EXPERIMENTAL_NOTE_TRACK */
       Sleep(10);
    }
 
@@ -2404,16 +2326,10 @@ void AudioIO::FillBuffers()
    }
 
    gAudioIO->mAudioThreadFillBuffersLoopActive = false;
-#ifdef EXPERIMENTAL_NOTE_TRACK
-
-/* HCK MIDI PATCH START */
    //if ( mMidiStreamActive && mMidiPlaybackTracks.GetCount() > 0 )
       //FillMidiBuffers();
-/* HCK MIDI PATCH END */
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 }
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* HCK MIDI PATCH START */
 /* REQUIRES PORTMIDI */
 //void AudioIO::FillMidiBuffers()
@@ -2465,7 +2381,7 @@ void AudioIO::FillBuffers()
 
 //         while ( currEvent = testSeq->iteration_next() )
 //         {
-            // TODO EXPERIMENTAL_NOTE_TRACK : this loop has Russian painter problem
+            // TODO HCK : this loop has Russian painter problem
             /*
             // In Update mode, events should be delivered immediately
             if (mUpdateMidiTracks)
@@ -2505,12 +2421,12 @@ void AudioIO::FillBuffers()
 //            if( mCnt > 0 )
 //            {
 //               j = 0;
-//               printf( "EXPERIMENTAL_NOTE_TRACK : sorting...\n" );
+//               printf( "HCK : sorting...\n" );
 //               qsort( mMidiQueue, mCnt, sizeof( PmEvent ), compareTime );
-//               printf( "EXPERIMENTAL_NOTE_TRACK : sorting...\n" );
+//               printf( "HCK : sorting...\n" );
 //               for( int azaa = 0; azaa < mCnt; azaa++ )
 //               {
-//                  printf( "EXPERIMENTAL_NOTE_TRACK : SORT : %f %f\n", (float)mMidiQueue[azaa].timestamp, (float)time );
+//                  printf( "HCK : SORT : %f %f\n", (float)mMidiQueue[azaa].timestamp, (float)time );
 //               }
 //               while( mMidiQueue[j].timestamp <= time )
 //               {
@@ -2518,12 +2434,12 @@ void AudioIO::FillBuffers()
 //                  memcpy( &mMidiBuffer[i].message, &mMidiQueue[j].message,
 //                     sizeof( PmMessage ) );
 
-//                  printf( "EXPERIMENTAL_NOTE_TRACK : QUEUE!!!! : mCnt       : %d\n", mCnt );
-//                  printf( "EXPERIMENTAL_NOTE_TRACK : QUEUE!!!! : j          : %d\n", j );
-//                  printf( "EXPERIMENTAL_NOTE_TRACK : QUEUE!!!! : timestampQ : %f\n", (float)mMidiQueue[j].timestamp );
-//                  printf( "EXPERIMENTAL_NOTE_TRACK : QUEUE!!!! : timestampB : %f\n", (float)mMidiBuffer[i].timestamp );
-//                  printf( "EXPERIMENTAL_NOTE_TRACK : QUEUE!!!! : data Q     : %f\n", (float)mMidiQueue[j].message );
-//                  printf( "EXPERIMENTAL_NOTE_TRACK : QUEUE!!!! : data B     : %f\n", (float)mMidiBuffer[i].message );
+//                  printf( "HCK : QUEUE!!!! : mCnt       : %d\n", mCnt );
+//                  printf( "HCK : QUEUE!!!! : j          : %d\n", j );
+//                  printf( "HCK : QUEUE!!!! : timestampQ : %f\n", (float)mMidiQueue[j].timestamp );
+//                  printf( "HCK : QUEUE!!!! : timestampB : %f\n", (float)mMidiBuffer[i].timestamp );
+//                  printf( "HCK : QUEUE!!!! : data Q     : %f\n", (float)mMidiQueue[j].message );
+//                  printf( "HCK : QUEUE!!!! : data B     : %f\n", (float)mMidiBuffer[i].message );
 
 //                  i++;
 //                  j++;
@@ -2639,7 +2555,7 @@ void AudioIO::FillBuffers()
 //            {
 //               mMidiBuffer[i].timestamp = time;
 //               mMidiBuffer[i].message = Pm_Message((int)(command + channel), (long)data1, (long)data2);
-//               printf( "EXPERIMENTAL_NOTE_TRACK[%d]\n", i );
+//               printf( "HCK[%d]\n", i );
 //               printf( "Command     : %d\n", (int)command );
 //               printf( "mTime       : %f\n", (float)gAudioIO->mTime );
 //               printf( "TimeStamp   : %f\n", (float)mMidiBuffer[i].timestamp );
@@ -2652,7 +2568,7 @@ void AudioIO::FillBuffers()
 //               {
 //                  mMidiQueue[mCnt].timestamp = time + (long)currEvent->get_duration() * 1000;
 //                  mMidiQueue[mCnt].message = Pm_Message((int)(0x90 + channel), (long)data1, 0 );
-//                  printf( "EXPERIMENTAL_NOTE_TRACK QUEUE[%d]\n", mCnt );
+//                  printf( "HCK QUEUE[%d]\n", mCnt );
 //                  printf( "Command     : OFF\n" );
 //                  printf( "mTime       : %f\n", (float)gAudioIO->mTime );
 //                  printf( "TimeStamp   : %f\n", (float)mMidiQueue[mCnt].timestamp );
@@ -2688,7 +2604,7 @@ void AudioIO::FillBuffers()
 //            {
 //               if( !mUpdateMidiTracks )
 //               {
-//                  printf( "EXPERIMENTAL_NOTE_TRACK : Pm_Write : 111111111\n" );
+//                  printf( "HCK : Pm_Write : 111111111\n" );
                   //qsort( mMidiBuffer, i, sizeof( PmEvent ), compareTime );
 //                  Pm_Write(mMidiStream, mMidiBuffer, i);
 //                  mMidiWait = time - 1000;
@@ -2702,7 +2618,7 @@ void AudioIO::FillBuffers()
 //            {
 //               if( !mUpdateMidiTracks )
 //               {
-//                  printf( "EXPERIMENTAL_NOTE_TRACK : Pm_Write : 222222222\n" );
+//                  printf( "HCK : Pm_Write : 222222222\n" );
                   //qsort( mMidiBuffer, i, sizeof( PmEvent ), compareTime );
 //                  Pm_Write( mMidiStream, mMidiBuffer, i );
 //                  mMidiWait = time - 1000;
@@ -2726,7 +2642,6 @@ void AudioIO::FillBuffers()
 //}
 /* HCK MIDI PATCH END */
 
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 //////////////////////////////////////////////////////////////////////
 //
 //    PortAudio callback thread context
@@ -3164,14 +3079,12 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
    return callbackReturn;
 }
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
 //int compareTime( const void* a, const void* b )
 //{
 //   return( (int)((*(PmEvent*)a).timestamp - (*(PmEvent*)b).timestamp ) );
 //}
 
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //

@@ -773,10 +773,8 @@ void TrackPanel::OnTimer()
    // recording audio, but the stream has stopped.
    if (p->GetAudioIOToken()>0 &&
        !gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
-      p->GetControlToolBar()->OnStop(dummyEvent);      
-#ifdef EXPERIMENTAL_NOTE_TRACK
-      printf( "EXPERIMENTAL_NOTE_TRACK OnTimer\n" );
-#endif /* EXPERIMENTAL_NOTE_TRACK */
+      p->GetControlToolBar()->OnStop(dummyEvent);
+      printf( "HCK OnTimer\n" );
    }
 
    // Next, check to see if we were playing or recording
@@ -4950,7 +4948,7 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
       mTrackInfo.GetTrackControlsRect(trackRect, midiRect);
       ((NoteTrack *) t)->DrawLabelControls(*dc, midiRect);
    }
-   #endif
+   #endif // USE_MIDI
 }
 
 void TrackPanel::DrawOutsideOfTrack(Track * t, wxDC * dc, const wxRect r)

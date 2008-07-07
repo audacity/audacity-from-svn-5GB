@@ -20,7 +20,7 @@
 //#include "portmidi.h"
 //#include "porttime.h"
 #include "allegro.h"
-#endif /* USE_MIDI */
+#endif // USE_MIDI
 
 #if USE_PORTMIXER
 #include "portmixer.h"
@@ -58,9 +58,7 @@ public:
    virtual void OnAudioIONewBlockFiles(const wxString& blockFileLog) = 0;
 };
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 #define MAX_MIDI_BUFFER_SIZE 5000
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 class AudioIO {
 
  public:
@@ -84,10 +82,8 @@ class AudioIO {
     * instance.  For use with IsStreamActive() below */
 
    int StartStream(WaveTrackArray playbackTracks, WaveTrackArray captureTracks,
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
                    //NoteTrackArray midiTracks,
-#endif /* EXPERIMENTAL_NOTE_TRACK */
                    TimeTrack *timeTrack, double sampleRate,
                    double t0, double t1,
                    AudioIOListener* listener,
@@ -277,17 +273,13 @@ private:
                              unsigned int numCaptureChannels,
                              sampleFormat captureFormat);
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
 //   bool StartPortMidiStream();
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
    void FillBuffers();
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
 //   void  FillMidiBuffers();
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
    /** \brief Get the number of audio samples free in all of the playback
     * buffers.
@@ -332,7 +324,6 @@ private:
 
    double NormalizeStreamTime(double absoluteTime) const;
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 //   MIDI_PLAYBACK:
 //   PmStream           *mMidiStream;
 //   PmEvent             mMidiBuffer[MAX_MIDI_BUFFER_SIZE];
@@ -346,7 +337,6 @@ private:
 //   long                mMidiWait;
 //   bool                mMidiStreamActive;
 //   bool                mUpdateMidiTracks;
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
    AudioThread        *mThread;
    Resample          **mResample;
@@ -355,12 +345,10 @@ private:
    RingBuffer        **mPlaybackBuffers;
    WaveTrackArray      mPlaybackTracks;
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
 //   NoteTrackArray      mMidiPlaybackTracks;
 //   RingBuffer        **mMidiPlaybackBuffers;
 //   NoteTrackArray      mMidiCaptureTracks;
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
    Mixer             **mPlaybackMixers;
    int                 mStreamToken;
@@ -381,10 +369,8 @@ private:
    bool                mPaused;
 #if USE_PORTAUDIO_V19
    PaStream           *mPortStreamV19;
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
 //   volatile bool       mInCallbackFinishedState;
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
 #else /* USE_PORTAUDIO_V19 */
    PortAudioStream    *mPortStreamV18;
@@ -402,12 +388,10 @@ private:
    volatile bool       mAudioThreadFillBuffersLoopRunning;
    volatile bool       mAudioThreadFillBuffersLoopActive;
 
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /* REQUIRES PORTMIDI */
 //   volatile bool       mMidiThreadShouldCallFillBuffersOnce;
 //   volatile bool       mMidiThreadFillBuffersLoopRunning;
 //   volatile bool       mMidiThreadFillBuffersLoopActive;
-#endif /* EXPERIMENTAL_NOTE_TRACK */
 
    volatile double     mLastRecordingOffset;
    PaError             mLastPaError;
