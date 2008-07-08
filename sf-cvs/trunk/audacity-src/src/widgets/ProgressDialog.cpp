@@ -292,7 +292,7 @@ ProgressDialog::Update(wxLongLong current, wxLongLong total, const wxString & me
 bool
 ProgressDialog::Update(wxLongLong_t current, wxLongLong_t total, const wxString & message)
 {
-   return Update((int)(current.GetValue() * 1000ll / total.GetValue()), message);
+   return Update((int)(current * 1000ll / total), message);
 }
 
 //
