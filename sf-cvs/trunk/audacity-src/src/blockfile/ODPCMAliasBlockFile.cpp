@@ -480,3 +480,106 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
    }
    return localFullSummary;
 }
+
+
+
+
+/// Reads the specified data from the aliased file, using libsndfile,
+/// and converts it to the given sample format.
+/// Copied from PCMAliasBlockFIle but wxLog calls taken out for thread safety
+///
+/// @param data   The buffer to read the sample data into.
+/// @param format The format to convert the data into
+/// @param start  The offset within the block to begin reading
+/// @param len    The number of samples to read
+int ODPCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
+                                sampleCount start, sampleCount len)
+{
+   SF_INFO info;
+
+   if(!mAliasedFileName.IsOk()){ // intentionally silenced 
+      memset(data,0,SAMPLE_SIZE(format)*len);
+      return len;
+   }
+
+   memset(&info, 0, sizeof(info));
+
+   SNDFILE *sf=sf_open(OSFILENAME(mAliasedFileName.GetFullPath()),
+                        SFM_READ, &info);
+   if (!sf){
+      
+      memset(data,0,SAMPLE_SIZE(format)*len);
+
+      mSilentAliasLog=TRUE;
+
+      return len;
+   }
+
+   mSilentAliasLog=FALSE;
+
+   sf_seek(sf, mAliasStart + start, SEEK_SET);
+   samplePtr buffer = NewSamples(len * info.channels, floatSample);
+
+   int framesRead = 0;
+
+   if (format == int16Sample &&
+       !sf_subtype_more_than_16_bits(info.format)) {
+      // Special case: if the file is in 16-bit (or less) format,
+      // and the calling method wants 16-bit data, go ahead and
+      // read 16-bit data directly.  This is a pretty common
+      // case, as most audio files are 16-bit.
+      framesRead = sf_readf_short(sf, (short *)buffer, len);
+      for (int i = 0; i < framesRead; i++)
+         ((short *)data)[i] =
+            ((short *)buffer)[(info.channels * i) + mAliasChannel];
+   }
+   else {
+      // Otherwise, let libsndfile handle the conversion and
+      // scaling, and pass us normalized data as floats.  We can
+      // then convert to whatever format we want.
+      framesRead = sf_readf_float(sf, (float *)buffer, len);
+      float *bufferPtr = &((float *)buffer)[mAliasChannel];
+      CopySamples((samplePtr)bufferPtr, floatSample,
+                  (samplePtr)data, format,
+                  framesRead, true, info.channels);
+   }
+
+   DeleteSamples(buffer);
+
+   sf_close(sf);
+
+   return framesRead;
+}
+
+/// Read the summary of this alias block from disk.  Since the audio data
+/// is elsewhere, this consists of reading the entire summary file.
+///
+/// @param *data The buffer where the summary data will be stored.  It must
+///              be at least mSummaryInfo.totalSummaryBytes long.
+bool ODPCMAliasBlockFile::ReadSummary(void *data)
+{
+   wxFFile summaryFile(mFileName.GetFullPath(), wxT("rb"));
+   wxLogNull *silence=0;
+   
+   if( !summaryFile.IsOpened() ){
+
+      // new model; we need to return valid data
+      memset(data,0,(size_t)mSummaryInfo.totalSummaryBytes);
+   
+      // we silence the logging for this operation in this object
+      // after first occurrence of error; it's already reported and
+      // spewing at the user will complicate the user's ability to
+      // deal
+      mSilentLog=TRUE;
+      return true;
+
+   }else mSilentLog=FALSE; // worked properly, any future error is new 
+
+   int read = summaryFile.Read(data, (size_t)mSummaryInfo.totalSummaryBytes);
+
+   FixSummary(data);
+
+   return (read == mSummaryInfo.totalSummaryBytes);
+}
+
+

@@ -96,6 +96,16 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
    
    ///Gets the value that indicates where the first sample in this block corresponds to the global sequence/clip.  Only for display use.
    sampleCount GetStart(){return mStart;}
+   
+   //Below calls are overrided just so we can take wxlog calls out, which are not threadsafe.
+   
+   /// Reads the specified data from the aliased file using libsndfile
+   virtual int ReadData(samplePtr data, sampleFormat format,
+                        sampleCount start, sampleCount len);
+                 
+   /// Read the summary into a buffer
+   virtual bool ReadSummary(void *data);
+                        
 
   protected:
    virtual void WriteSummary();
