@@ -1323,7 +1323,7 @@ bool WaveClip::Resample(int rate, ProgressDialog *progress)
    int bufsize = 65536;
    float* inBuffer = new float[bufsize];
    float* outBuffer = new float[bufsize];
-   int pos = 0;
+   sampleCount pos = 0;
    bool error = false;
    sampleCount numSamples = mSequence->GetNumSamples();
 
