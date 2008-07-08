@@ -22,7 +22,6 @@ URI, and of course the effects that belong to this category.
 #define __AUDACITY_EFFECTCATEGORY__
 
 #include <set>
-#include <vector>
 
 #include <wx/string.h>
 
