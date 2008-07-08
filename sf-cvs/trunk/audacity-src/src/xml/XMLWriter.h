@@ -37,6 +37,8 @@ class XMLWriter {
    void WriteAttr(const wxChar *name, bool value);
    void WriteAttr(const wxString &name, long value);
    void WriteAttr(const wxChar *name, long value);
+   void WriteAttr(const wxString &name, long long value);
+   void WriteAttr(const wxChar *name, long long value);
    void WriteAttr(const wxString &name, size_t value);
    void WriteAttr(const wxChar *name, size_t value);
    void WriteAttr(const wxString &name, float value, int digits = -1);
