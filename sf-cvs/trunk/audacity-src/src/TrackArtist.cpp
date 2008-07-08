@@ -670,7 +670,7 @@ void GetColour(wxPen &pen, uchar *r, uchar *g, uchar *b)
 
 void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
                                          uchar *imageBuffer,
-                                         int *where, int ssel0, int ssel1,
+                                         sampleCount *where, int ssel0, int ssel1,
                                          double *env,
                                          float zoomMin, float zoomMax,
                                          bool dB, bool drawEnvelope)

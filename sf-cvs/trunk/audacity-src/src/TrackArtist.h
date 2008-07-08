@@ -21,6 +21,7 @@
 #include <wx/brush.h>
 #include <wx/pen.h>
 #include "Experimental.h"
+#include "Sequence.h"
 
 class wxDC;
 class wxRect;
@@ -167,7 +168,7 @@ class AUDACITY_DLL_API TrackArtist {
    // Waveform utility functions
 
    void DrawWaveformBackground(wxDC &dc, wxRect r, uchar *imageBuffer,
-                               int *where, int ssel0, int ssel1,
+                               sampleCount *where, int ssel0, int ssel1,
                                double *env, 
                                float zoomMin, float zoomMax,
                                bool dB, bool drawEnvelope);
