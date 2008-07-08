@@ -39,6 +39,7 @@ class Shuttle {
    virtual bool TransferFloat( const wxString & Name, float & fValue, const float &fDefault );
    virtual bool TransferDouble( const wxString & Name, double & dValue, const double &dDefault );
    virtual bool TransferInt( const wxString & Name, int & iValue, const int &iDefault );
+   virtual bool TransferInt( const wxString & Name, wxLongLong_t & iValue, const wxLongLong_t &iDefault );
    virtual bool TransferLongLong( const wxString & Name, wxLongLong_t & iValue, const wxLongLong_t &iDefault );
    virtual bool TransferString( const wxString & Name, wxString & strValue, const wxString &strDefault );
    virtual bool TransferEnum( const wxString & Name, int & iValue, 
