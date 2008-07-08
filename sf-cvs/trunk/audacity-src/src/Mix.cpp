@@ -464,7 +464,7 @@ sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
    return slen;
 }
 
-sampleCount Mixer::Process(int maxToProcess)
+sampleCount Mixer::Process(sampleCount maxToProcess)
 {
    if (mT >= mT1)
       return 0;
