@@ -76,8 +76,8 @@ LV2Effect::LV2Effect(SLV2Plugin data,
    float* defaultValues = new float [numPorts];
    
    // Retrieve the port ranges for all ports (some values may be NaN)
-   slv2_plugin_get_port_ranges(mData, minimumValues, 
-                               maximumValues, defaultValues);
+   slv2_plugin_get_port_ranges_float(mData, minimumValues, 
+                                     maximumValues, defaultValues);
    
    gAudioPortClass = slv2_value_new_uri(gWorld, SLV2_PORT_CLASS_AUDIO);
    gControlPortClass = slv2_value_new_uri(gWorld, SLV2_PORT_CLASS_CONTROL);
@@ -614,8 +614,8 @@ LV2EffectDialog::LV2EffectDialog(LV2Effect *eff,
    float* defaultValues = new float [numPorts];
    
    // Retrieve the port ranges for all ports (some values may be NaN)
-   slv2_plugin_get_port_ranges(mData, minimumValues, 
-                               maximumValues, defaultValues);
+   slv2_plugin_get_port_ranges_float(mData, minimumValues, 
+                                     maximumValues, defaultValues);
 
    // Create user parameter controls
    for (p = 0; p < numParams; p++) {
@@ -828,8 +828,8 @@ void LV2EffectDialog::HandleText()
    float* defaultValues = new float [numPorts];
    
    // Retrieve the port ranges for all ports (some values may be NaN)
-   slv2_plugin_get_port_ranges(mData, minimumValues, 
-                               maximumValues, defaultValues);
+   slv2_plugin_get_port_ranges_float(mData, minimumValues, 
+                                     maximumValues, defaultValues);
 
    for (uint32_t p = 0; p < numParams; p++) {
       
