@@ -37,6 +37,7 @@ class ProgressDialog:public wxDialog
    bool Update(double current, double total, const wxString & message = wxEmptyString);
    bool Update(wxULongLong_t current, wxULongLong_t total, const wxString & message = wxEmptyString);
    bool Update(wxLongLong current, wxLongLong total, const wxString & message = wxEmptyString);
+   bool Update(wxLongLong_t current, wxLongLong_t total, const wxString & message = wxEmptyString);
    bool Update(int current, int total, const wxString & message = wxEmptyString);
    void SetMessage(const wxString & message);
 

@@ -290,6 +290,15 @@ ProgressDialog::Update(wxLongLong current, wxLongLong total, const wxString & me
 // Update the time and, optionally, the message
 //
 bool
+ProgressDialog::Update(wxLongLong_t current, wxLongLong_t total, const wxString & message)
+{
+   return Update((int)(current.GetValue() * 1000ll / total.GetValue()), message);
+}
+
+//
+// Update the time and, optionally, the message
+//
+bool
 ProgressDialog::Update(int current, int total, const wxString & message)
 {
    return Update((int)(current *  ((double)(1000.0 / total))), message);
