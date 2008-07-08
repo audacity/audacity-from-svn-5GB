@@ -173,7 +173,7 @@ bool Shuttle::TransferInt( const wxString & Name, int & iValue, const int & iDef
 
 bool Shuttle::TransferInt( const wxString & Name, wxLongLong_t & iValue, const wxLongLong_t & iDefault )
 {
-   TransferLongLong(Name, iValue, iDefault);
+   return TransferLongLong(Name, iValue, iDefault);
 }
 
 bool Shuttle::TransferLongLong( const wxString & Name, wxLongLong_t & iValue, const wxLongLong_t & iDefault )
