@@ -400,10 +400,10 @@ ToWelcome()
    {
 // *URL* will be replaced by whatever URL we are looking for.
       return WrapText(
-_("<p>You don't appear to have Audacity help files on your machine. \
-Either <a href=\"http://audacity.sourceforge.net/help/documentation\">download</a> the help files \
-and then access them again from Audacity by clicking <i>Help</i> then <i>Index</i>, \
-or click <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">here</a> to read the full Manual online.")
+_("<p>Help for Audacity Beta is currently unfinished. \
+For now, a draft manual is available <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">online</a>. \
+Alternatively, click <a href=\"http://www.audacityteam.org/manual/index.php?title=Temporary_HTML_Manual_Export\">here</a> \
+to download a single-page version of the manual which can be viewed in this window.")
          );
    }
    return wxT("");
