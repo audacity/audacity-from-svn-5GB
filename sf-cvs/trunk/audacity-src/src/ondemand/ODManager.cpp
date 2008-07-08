@@ -117,10 +117,10 @@ void ODManager::Init()
    
 //   startThread->SetPriority(0);//default of 50.
    startThread->Create();
-   printf("starting thread from init\n");
+//   printf("starting thread from init\n");
    startThread->Run();
    
-   printf("started thread from init\n");
+//   printf("started thread from init\n");
    //destruction is taken care of by wx thread code.  TODO:Check if pthreads code does this.
 }
 
@@ -140,7 +140,7 @@ void ODManager::Start()
    bool tasksInArray;
 
    //wxLog calls not threadsafe.  are printfs?  thread-messy for sure, but safe?
-   printf("ODManager thread strating \n");
+ //  printf("ODManager thread strating \n");
    //TODO: Figure out why this has no effect at all.
    //wxThread::This()->SetPriority(30);
    mTerminateMutex.Lock();

@@ -27,6 +27,8 @@ number of threads.
 #include "ODTaskThread.h"
 #include <wx/thread.h>
 
+#include <wx/wx.h>
+
 #ifdef __WXMAC__
 
 // On Mac OS X, it's better not to use the wxThread class.

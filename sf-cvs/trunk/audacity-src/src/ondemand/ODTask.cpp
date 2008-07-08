@@ -59,7 +59,7 @@ void ODTask::DoSome(float amountWork)
 {
    mBlockUntilTerminateMutex.Lock();
 
-   printf("%s %i subtask starting on new thread with priority\n", GetTaskName(),GetTaskNumber());
+//   printf("%s %i subtask starting on new thread with priority\n", GetTaskName(),GetTaskNumber());
 
    mDoingTask=mTaskStarted=true;
    
@@ -104,7 +104,7 @@ void ODTask::DoSome(float amountWork)
    if(!IsComplete() && !mTerminate)
    {
       ODManager::Instance()->AddTask(this);
-      printf("%s %i is %f done\n", GetTaskName(),GetTaskNumber(),PercentComplete());
+ //     printf("%s %i is %f done\n", GetTaskName(),GetTaskNumber(),PercentComplete());
    }
    else
    {
@@ -115,7 +115,7 @@ void ODTask::DoSome(float amountWork)
          proj->AddPendingEvent( event );
       AudacityProject::AllProjectsDeleteUnlock();
 
-      printf("%s %i complete\n", GetTaskName(),GetTaskNumber());
+  //    printf("%s %i complete\n", GetTaskName(),GetTaskNumber());
    }
    mTerminateMutex.Unlock();
    mBlockUntilTerminateMutex.Unlock();
