@@ -88,7 +88,7 @@ void QuitAudacity();
    #endif
 #endif //_MSC_VER
 /* The GCC-elf implementation */
-#ifdef CC_HASVISIBILITY // this is provided by the configure script, is only
+#ifdef HAVE_VISIBILITY // this is provided by the configure script, is only
 // enabled for suitable GCC versions
 /* The incantation is a bit weird here because it uses ELF symbol stuff. If we 
  * make a symbol "default" it makes it visible (for import or export). Making it
