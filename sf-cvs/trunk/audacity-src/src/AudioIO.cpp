@@ -1436,7 +1436,7 @@ bool AudioIO::IsStreamActive()
    bool isActive = false;
 #if USE_PORTAUDIO_V19
    if( mPortStreamV19 )
-      isActive = Pa_IsStreamActive( mPortStreamV19 );
+      isActive = (Pa_IsStreamActive( mPortStreamV19 ) > 0);
    else isActive = false;
 #else
    if( mPortStreamV18 &&

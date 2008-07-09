@@ -172,7 +172,6 @@ Alg_seq* NoteTrack::GetSequence()
 void NoteTrack::PrintSequence()
 {
    FILE *debugOutput;
-   Alg_parameters_ptr parameters;
 
    debugOutput = fopen("debugOutput.txt", "wt");
    fprintf(debugOutput, "Importing MIDI...\n");

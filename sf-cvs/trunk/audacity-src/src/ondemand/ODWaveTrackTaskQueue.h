@@ -51,7 +51,7 @@ class ODWaveTrackTaskQueue
    bool ContainsWaveTrack(WaveTrack* track);
    
    //returns the wavetrack at position x.
-   WaveTrack* GetWaveTrack(int x);
+   WaveTrack* GetWaveTrack(size_t x);
    
    ///returns the number of wavetracks in this queue.
    int GetNumWaveTracks();

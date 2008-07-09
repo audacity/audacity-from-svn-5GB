@@ -123,7 +123,7 @@ public:
       //but right now it is not needed since there will usually only be one region (which grows) for OD loading.
       if(mRegions.size())
       {
-         for(int i=0;i<mRegions.size();i++)
+         for(size_t i=0;i<mRegions.size();i++)
          {
             //if the regions intersect OR are pixel adjacent
             if(mRegions[i]->start <= invalEnd+1 
@@ -154,7 +154,7 @@ public:
       
       
       //now we must go and patch up all the regions that overlap.  Overlapping regions will be adjacent.
-      for(int i=1;i<mRegions.size();i++)
+      for(size_t i=1;i<mRegions.size();i++)
       {
          //if the regions intersect OR are pixel adjacent
          if(mRegions[i]->start <= mRegions[i-1]->end+1 
@@ -194,7 +194,7 @@ public:
    
    void ClearInvalidRegions()
    {
-      for(int i =0;i<mRegions.size();i++)
+      for(size_t i =0;i<mRegions.size();i++)
       {
          delete mRegions[i];
       }
