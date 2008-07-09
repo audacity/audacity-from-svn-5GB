@@ -1532,7 +1532,7 @@ Optional Packages:
   --with-pic              try to use only PIC/non-PIC objects [default=use
                           both]
   --with-tags[=TAGS]      include additional configurations [automatic]
-  --with-raptor=SOURCE        Pick raptor source - system/internal (default auto)
+  --with-raptor=SOURCE        Pick raptor source - system/internal (default internal)
   --with-redland-config=PATH  Location of redland redland-config ()
   --with-redland=SOURCE        Pick redland source - system/internal (default auto)
   --with-pcre-config=PATH     Location of PCRE pcre-config (auto)
@@ -1540,7 +1540,7 @@ Optional Packages:
   --with-xml2-config=PATH     Location of libxml xml2-config ()
   --with-triples-source=NAME  Use NAME to provide triples - raptor (default), redland
   --with-mpfr=DIR          MPFR install area
-  --with-decimal=NAME           Use decimal library - mpfr (default), gmp, none
+  --with-decimal=NAME           Use decimal library - mpfr, gmp, none (default)
   --with-dmalloc              Use dmalloc debugging library (default=no)
   --with-memory-signing       Sign allocated memory (default=no)
   --with-html-dir=PATH    path to installed docs
@@ -20969,7 +20969,7 @@ fi
 if test "${with_raptor+set}" = set; then
   withval=$with_raptor; with_raptor="$withval"
 else
-  with_raptor="auto"
+  with_raptor="internal"
 fi
 
 
@@ -21801,6 +21801,8 @@ echo $ECHO_N "checking query languages required... $ECHO_C" >&6; }
 # Check whether --enable-query-languages was given.
 if test "${enable_query_languages+set}" = set; then
   enableval=$enable_query_languages; query_languages="$enableval"
+else
+  query_languages="sparql"
 fi
 
 if test "X$query_languages" = Xall -o "X$query_languages" = X; then
@@ -22424,7 +22426,7 @@ need_gmp=0
 if test "${with_decimal+set}" = set; then
   withval=$with_decimal; decimal="$withval"
 else
-  decimal="mpfr"
+  decimal="none"
 fi
 
 for decimal_name in $decimal mpfr gmp none; do

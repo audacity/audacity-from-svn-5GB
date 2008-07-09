@@ -26,7 +26,7 @@ dnl
 AC_INIT([Redland RDF Application Framework], 1.0.8, http://bugs.librdf.org/, redland)
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(librdf/rdf_node.c)
-AC_REVISION($Revision: 1.1 $)dnl
+AC_REVISION($Revision: 1.2 $)dnl
 
 AM_INIT_AUTOMAKE([1.7 check-news std-options -Wobsolete -Wportability -Wsyntax -Wunsupported])
 AM_CONFIG_HEADER(librdf/rdf_config.h)
@@ -210,7 +210,7 @@ dnl Checks for libraries.
 
 
 dnl Berkeley DB
-AC_ARG_WITH(bdb, [  --with-bdb=DIR          Berkeley DB install area (default=/usr)], bdb_prefix="$withval", bdb_prefix="none") 
+AC_ARG_WITH(bdb, [  --with-bdb=DIR          Berkeley DB install area (default=/usr)], bdb_prefix="$withval", bdb_prefix="no") 
 AC_ARG_WITH(bdb_lib, [  --with-bdb-lib=DIR      Berkeley DB lib directory (default=/usr/lib)], bdb_lib_dir="$withval", bdb_lib_dir="none") 
 AC_ARG_WITH(bdb_include, [  --with-bdb-include=DIR  Berkeley DB include directory (default=/usr/include)], bdb_include_dir="$withval", bdb_include_dir="none") 
 AC_ARG_WITH(bdb_dbname, [  --with-bdb-dbname=NAME  Berkeley DB library name (auto)], bdb_dbname="$withval", bdb_dbname="none")
@@ -442,7 +442,7 @@ LIBS="$LIBRDF_LIBS"
 dnl Checks for XML parsers
 
 # At present this is for passing on to raptor and not used here
-AC_ARG_WITH(xml-parser, [  --with-xml-parser=NAME  Use XML parser - expat, libxml (default=libxml)], xml_parser="$withval", xml_parser="libxml") 
+AC_ARG_WITH(xml-parser, [  --with-xml-parser=NAME  Use XML parser - expat, libxml (default=libxml)], xml_parser="$withval", xml_parser="expat") 
 
 
 
@@ -453,7 +453,7 @@ rdf_parsers_available=
 
 # raptor is REQUIRED despite the checking here
 AC_CHECK_PROG(RAPTOR_CONFIG, raptor-config, raptor-config)
-AC_ARG_WITH(raptor, [  --with-raptor=SOURCE    Pick raptor source - system/internal (default=auto)], with_raptor="$withval", with_raptor="auto")
+AC_ARG_WITH(raptor, [  --with-raptor=SOURCE    Pick raptor source - system/internal (default=internal)], with_raptor="$withval", with_raptor="internal")
 
 RAPTOR_MIN_VERSION=1.4.17
 AC_SUBST(RAPTOR_MIN_VERSION)
@@ -515,7 +515,7 @@ fi
 
 # rasqal is REQUIRED despite the checking here
 AC_CHECK_PROG(RASQAL_CONFIG, rasqal-config, rasqal-config)
-AC_ARG_WITH(rasqal, [  --with-rasqal=SOURCE    Pick rasqal source - system/internal (default=auto)], with_rasqal="$withval", with_rasqal="auto")
+AC_ARG_WITH(rasqal, [  --with-rasqal=SOURCE    Pick rasqal source - system/internal (default=internal)], with_rasqal="$withval", with_rasqal="internal")
 
 RASQAL_MIN_VERSION=0.9.16
 RASQAL_MAX_VERSION=0.9.99
@@ -565,7 +565,7 @@ AC_MSG_RESULT($digest_modules)
 DIGEST_OBJS=
 DIGEST_SRCS=
 
-AC_ARG_WITH(openssl-digests, [  --with-openssl-digests  Use openssl digests (default=yes)], enable_openssl_digests="$withval", enable_openssl_digests="yes") 
+AC_ARG_WITH(openssl-digests, [  --with-openssl-digests  Use openssl digests (default=yes)], enable_openssl_digests="$withval", enable_openssl_digests="no") 
 
 # This is needed because autoheader can't work out which computed
 # symbols must be pulled from acconfig.h into config.h.in
@@ -658,7 +658,7 @@ if test "$have_libdb" = yes; then
   storages_available="$storages_available hashes(bdb $bdb_version)"
 fi
 
-AC_ARG_WITH(threestore, [  --with-threestore(=CONFIG|yes|no)  Location of 3store-config (default=auto)], tstore_config="$withval", tstore_config="")
+AC_ARG_WITH(threestore, [  --with-threestore(=CONFIG|yes|no)  Location of 3store-config (default=no)], tstore_config="$withval", tstore_config="no")
 if test "X$tstore_config" != "Xno"; then
   if test "X$tstore_config" != "Xyes" ; then
     TSTORE_CONFIG=$tstore_config
@@ -682,7 +682,7 @@ else
 fi
 
 
-AC_ARG_WITH(mysql, [  --with-mysql(=CONFIG|yes|no) Location of MySQL 3/4 mysql_config (default=auto)], mysql_config="$withval", mysql_config="")
+AC_ARG_WITH(mysql, [  --with-mysql(=CONFIG|yes|no) Location of MySQL 3/4 mysql_config (default=no)], mysql_config="$withval", mysql_config="no")
 if test "X$mysql_config" != "Xno"; then
   if test "X$mysql_config" != "Xyes" ; then
     MYSQL_CONFIG=$mysql_config
@@ -734,8 +734,8 @@ fi
 
 
 
-AC_ARG_WITH(sqlite, [  --with-sqlite(=yes|no|2|3) Enable SQLite store with version (default=auto)], sqlite_api_version="$withval", sqlite_api_version="auto")
-AC_ARG_WITH(sqlite-version, [  --with-sqlite-version(=yes|no|2|3) SQLite version to use (default=auto)], sqlite_api_version="$withval")
+AC_ARG_WITH(sqlite, [  --with-sqlite(=yes|no|2|3) Enable SQLite store with version (default=no)], sqlite_api_version="$withval", sqlite_api_version="no")
+AC_ARG_WITH(sqlite-version, [  --with-sqlite-version(=yes|no|2|3) SQLite version to use (default=no)], sqlite_api_version="no")
 if test "x$sqlite_api_version" = "xyes" ; then
   sqlite_api_version="auto"
 fi
@@ -785,7 +785,7 @@ else
   AC_MSG_RESULT(no)
 fi
 
-AC_ARG_WITH(postgresql, [  --with-postgresql(=CONFIG|yes|no)  Location of pg_config (default=auto)], pg_config="$withval", postgresql_config="")
+AC_ARG_WITH(postgresql, [  --with-postgresql(=CONFIG|yes|no)  Location of pg_config (default=no)], pg_config="$withval", pg_config="no")
 if test "X$pg_config" != "Xno"; then
   if test "X$pg_config" != "Xyes" ; then
     PG_CONFIG=$pg_config
