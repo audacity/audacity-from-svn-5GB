@@ -541,8 +541,8 @@ AC_DEFUN([AUDACITY_CHECKLIB_REDLAND], [
                REDLAND_ARGUMENT=$withval,
                REDLAND_ARGUMENT="unspecified")
 
-   dnl Check for a system copy of SLV2 to use. We need at least version 0.6.
-   PKG_CHECK_MODULES(REDLAND, redland >= 0.6.0,
+   dnl Check for a system copy of Redland to use.
+   PKG_CHECK_MODULES(REDLAND, redland >= 1.0.7,
                      redland_available_system="yes",
                      redland_available_system="no")
    REDLAND_SYSTEM_AVAILABLE="no"
@@ -556,7 +556,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_REDLAND], [
       AC_MSG_NOTICE([Redland NOT available as system library])
    fi
 
-   dnl Check if REDLAND is available locally.
+   dnl Check if Redland is available locally.
    AC_CHECK_FILE(${srcdir}/lib-src/redland/librdf/librdf.h,
                  librdf_h_found="yes",
                  librdf_h_found="no")
@@ -569,9 +569,9 @@ AC_DEFUN([AUDACITY_CHECKLIB_REDLAND], [
          REDLAND_LOCAL_CONFIG_SUBDIRS="lib-src/redland"
       fi
       if test "x$LIBEXPAT_SYSTEM_AVAILABLE" = "xno" ; then
-         ac_configure_args="$ac_configure_args \"--with-expat-source=${srcdir}/lib-src/expat\""
+      ac_configure_args="$ac_configure_args \"--with-expat-source=${srcdir}/lib-src/expat\""
       fi
-      ac_configure_args="$ac_configure_args RAPTOR_CFLAGS='-I../../redland/raptor/src' RAPTOR_LIBS='-L../.. -lraptor'"
+      ac_configure_args="$ac_configure_args RAPTOR_CFLAGS='-I../../redland/raptor/src' RAPTOR_LIBS='-L.. -L../.. -lraptor' REDLAND_CFLAGS='-I../../redland/raptor/src -I../../redland/rasqal/src -I../../redland/librdf' REDLAND_LIBS='-L.. -L../.. -lrdf -lraptor -lrasqal'"
       AC_MSG_NOTICE([Redland is available in the local tree])
    else
       REDLAND_LOCAL_AVAILABLE="no"
