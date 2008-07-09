@@ -138,9 +138,11 @@ void ODManager::Start()
    ODTask* task;
    ODTaskThread* thread;
    bool tasksInArray;
+   
+   mNeedsDraw=0;
 
    //wxLog calls not threadsafe.  are printfs?  thread-messy for sure, but safe?
- //  printf("ODManager thread strating \n");
+   //printf("ODManager thread strating \n");
    //TODO: Figure out why this has no effect at all.
    //wxThread::This()->SetPriority(30);
    mTerminateMutex.Lock();
