@@ -67,10 +67,8 @@ CONFIG_H_PATH="$builddir/config/config.h"
 AM_PROG_CC_C_O
 
 # Library building stuff
+AC_DISABLE_SHARED
 AC_PROG_LIBTOOL
-
-# LV2 core package
-PKG_CHECK_MODULES(LV2CORE, lv2core >= 1, , [AC_ERROR([SLV2 Requires the LV2 core package (http://lv2plug.in/spec/)])])
 
 # Check for debugging flag
 debug="no"
@@ -99,7 +97,7 @@ fi
 bindings="no"
 AC_ARG_ENABLE(bindings,
 	[AS_HELP_STRING(--enable-bindings, [Build language bindings via SWIG (false)])],
-	[bindings="$enableval"])
+	[bindings="$enableval"], [bindings="no"])
 if test "$bindings" = "yes"; then
   AC_CHECK_PROGS(SWIG, "swig swig-1.3")
   if test "$SWIG" = ""; then
@@ -121,47 +119,13 @@ AM_CONDITIONAL(WITH_MZSCHEME, [test "$mzscheme" = "yes"])
 AM_CONDITIONAL(WITH_CHICKEN, [test "$chicken" = "yes"])
 
 # Check for Redland
-build_redland="no"
-AC_CHECK_PROG(REDLAND_CONFIG, redland-config, redland-config)
-if test "X$REDLAND_CONFIG" = X; then
-	AC_MSG_ERROR([SLV2 requires Redland (librdf), but redland-config not found.])
-else
-	build_redland="yes"
-	PKG_CHECK_MODULES(RAPTOR, raptor)
-	PKG_CHECK_MODULES(RASQAL, rasqal >= 0.9.14)
-	redland_major_version=`$REDLAND_CONFIG --version | \
-	  sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-	redland_minor_version=`$REDLAND_CONFIG --version | \
-	  sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-	redland_micro_version=`$REDLAND_CONFIG --version | \
-	  sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
-	AC_MSG_CHECKING([for REDLAND version >= 1.0.6])
-	version_ok="no"
-	if test 1 -le $redland_major_version; then
-		if test 0 -le $redland_minor_version; then
-			if test 6 -le $redland_micro_version; then
-				version_ok="yes"
-			fi
-		fi
-	fi
-	if test $version_ok = "no"; then
-	    act=`$REDLAND_CONFIG --version`
-		AC_MSG_ERROR([REDLAND version >= 1.0.6 required; $act found])
-	else
-		AC_MSG_RESULT([yes])
-    fi
-	REDLAND_CFLAGS=`$REDLAND_CONFIG --cflags`
-	REDLAND_LIBS=`$REDLAND_CONFIG --libs`
-	AC_SUBST(REDLAND_CFLAGS)
-	AC_SUBST(REDLAND_LIBS)
-fi
-AM_CONDITIONAL(WITH_REDLAND, [test "$build_redland" = "yes"])
+PKG_CHECK_MODULES(REDLAND, redland >= 1.0.6)
 
 # Check for JACK
 build_jack="yes"
 AC_ARG_ENABLE(jack,
 	[AS_HELP_STRING(--enable-jack, [Build JACK clients (true)])],
-	[ if test x$enable_jack = xno ; then build_jack=no ; fi ])
+	[ if test x$enable_jack = xno ; then build_jack=no ; fi ], [build_jack=no])
 if test "$build_jack" = "yes"; then
 	PKG_CHECK_MODULES(JACK, jack >= 0.102.29, build_jack="yes", build_jack="no")
 	AC_DEFINE(HAVE_JACK, 1, [Has JACK])

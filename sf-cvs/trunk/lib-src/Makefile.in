@@ -60,17 +60,27 @@ libvamp-recursive:
 libvamp-hostsdk.a: libvamp-recursive
 	ln -sf libvamp/vamp-sdk/libvamp-hostsdk.a libvamp-hostsdk.a
 
+# redland
+redland-recursive:
+	$(MAKE) -C redland
+librdf.a: redland-recursive
+	ln -sf redland/librdf/.libs/librdf.a librdf.a
+libraptor.a: redland-recursive
+	ln -sf redland/raptor/src/.libs/libraptor.a libraptor.a
+librasqal.a: redland-recursive
+	ln -sf redland/rasqal/src/.libs/librasqal.a librasqal.a
+
 # liblrdf
 liblrdf-recursive:
 	$(MAKE) -C liblrdf
 liblrdf.a: liblrdf-recursive
 	ln -sf liblrdf/src/.libs/liblrdf.a liblrdf.a
 
-# libraptor
-libraptor-recursive:
-	$(MAKE) -C libraptor
-libraptor.a: libraptor-recursive
-	ln -sf libraptor/src/.libs/libraptor.a libraptor.a
+# slv2
+slv2-recursive:
+	$(MAKE) -C slv2
+libslv2.a: slv2-recursive
+	ln -sf slv2/src/.libs/libslv2.a libslv2.a
 
 # libtwolame
 libtwolame-recursive:
@@ -208,4 +218,5 @@ distclean:
 	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
 	libresample-recursive libsamplerate-recursive libvamp-recursive \
 	portaudio-v19-recursive portmixer-recursive libtwolame-recursive \
-	liblrdf-recursive
+	liblrdf-recursive redland-recursive slv2-recursive
+
