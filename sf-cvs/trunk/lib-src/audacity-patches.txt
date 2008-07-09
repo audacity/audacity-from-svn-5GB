@@ -154,11 +154,30 @@ portmixer
 cross-platform audio mixer control library, hooked onto portaudio. Maintained
 by the audacity project with some help from portaudio development.
 
+redland
+-------
+http://librdf.org
+RDF parser and query engine. Consists of three separate libraries, Raptor
+(the parser), Rasqal (the query engine) and librdf (triple storage and
+wrapper API). It is needed for liblrdf and SLV2.
+Version in audacity cvs: 1.0.8
+Patches:
+audacity_build_tweaks.patch	Patches the configure scripts to turn off parsers, storage models and query languages not used by Audacity as well as using Expat instead of libxml2 for XML parsing. No need to integrate with upstream.
+
 rtaudio
 -------
 http://www.music.mcgill.ca/~gary/rtaudio/
 Another cross-platform audio I/O library that was at one point available as an
 alternative to portaudio.
+
+slv2
+-------
+http://wiki.drobilla.net/SLV2
+Support library for LV2 hosts (like Audacity).
+Version in audacity cvs: 0.6.0
+Patches:
+audacity_build_tweaks.patch	Patches the configure scripts to not build hosts and utility programs and to use local Redland libraries if requested. No need to integrate with upstream.
+lv2core_internal.patch		Add lv2.h as an internal header to avoid the dependency on lv2core.
 
 soundtouch
 ----------
