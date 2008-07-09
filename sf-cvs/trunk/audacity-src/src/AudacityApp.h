@@ -14,7 +14,7 @@
 #ifndef __AUDACITY_APP__
 #define __AUDACITY_APP__
 
-#include "../Audacity.h"
+#include "Audacity.h"
 
 #include <wx/app.h>
 #include <wx/event.h>

@@ -122,6 +122,7 @@ scroll information.  It also has some status flags.
 #include "ondemand/ODManager.h"
 #include "ondemand/ODTask.h"
 #include "ondemand/ODComputeSummaryTask.h"
+#include "LoadModules.h"
 
 #include "Theme.h"
 #include "AllThemeResources.h"
@@ -350,10 +351,12 @@ AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
    if(bMaximized)
       p->Maximize(true);
 
-   p->Show(true);
-
    //Set the new project as active:
    SetActiveProject(p);
+
+   ModuleManager::Dispatch(ProjectInitialized);
+
+   p->Show(true);
 
    return p;
 }

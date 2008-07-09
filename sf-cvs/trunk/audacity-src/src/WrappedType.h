@@ -12,6 +12,8 @@
 #ifndef __WRAPPED_TYPE__
 #define __WRAPPED_TYPE__
 
+#include "Audacity.h"
+
 enum teWrappedType 
 {
    eWrappedNotSet,
@@ -26,7 +28,7 @@ class wxString;
 class wxArrayString;
 class ShuttlePrefs;
 
-class WrappedType
+class AUDACITY_DLL_API WrappedType
 {
 public:
 

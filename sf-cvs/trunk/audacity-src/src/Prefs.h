@@ -29,14 +29,15 @@
 #ifndef __AUDACITY_PREFS__
 #define __AUDACITY_PREFS__
 
+#include "Audacity.h"
+
 #include <wx/config.h>
 #include <wx/fileconf.h>
 
 void InitPreferences();
 void FinishPreferences();
 
-extern wxFileConfig *gPrefs;
-
+extern AUDACITY_DLL_API wxFileConfig *gPrefs;
 extern int gMenusDirty;
 
 #endif

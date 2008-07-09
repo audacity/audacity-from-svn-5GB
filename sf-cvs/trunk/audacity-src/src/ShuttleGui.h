@@ -14,6 +14,7 @@
 #ifndef SHUTTLE_GUI
 #define SHUTTLE_GUI
 
+#include "Audacity.h"
 #include "WrappedType.h" 
 
 const int nMaxNestedSizers = 20;
@@ -63,7 +64,7 @@ class Shuttle;
 class WrappedType;
 
 
-class ShuttleGuiBase
+class AUDACITY_DLL_API ShuttleGuiBase
 {
 public:
    ShuttleGuiBase(wxWindow * pParent,teShuttleMode ShuttleMode);
@@ -316,7 +317,7 @@ wxSizer *CreateStdButtonSizer( wxWindow *parent,
                                wxButton *extra = NULL );
 
 // ShuttleGui extends ShuttleGuiBase with Audacity specific extensions.
-class ShuttleGui : public ShuttleGuiBase
+class AUDACITY_DLL_API ShuttleGui : public ShuttleGuiBase
 {
 public:
    ShuttleGui(wxWindow * pParent,teShuttleMode ShuttleMode);

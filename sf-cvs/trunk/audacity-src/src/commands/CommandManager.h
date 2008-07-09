@@ -89,10 +89,14 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
    wxMenu* BeginSubMenu(wxString tName);
    void EndSubMenu();
 
+   void InsertItem(wxString name, wxString label, CommandFunctor *callback,
+                   wxString after, int checkmark = -1);
+
    void AddItem(wxString name, wxString label, CommandFunctor *callback,
                 int checkmark = -1);
    void AddItemList(wxString name, wxArrayString labels,
                     CommandFunctor *callback, bool plugins = false);
+
 
    void AddSeparator();
 
