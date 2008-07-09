@@ -105,7 +105,7 @@ void ODWaveTrackTaskQueue::ReplaceWaveTrack(WaveTrack* oldTrack, WaveTrack* newT
 }
 
 //returns the wavetrack at position x.
-WaveTrack* ODWaveTrackTaskQueue::GetWaveTrack(int x)
+WaveTrack* ODWaveTrackTaskQueue::GetWaveTrack(size_t x)
 {
    WaveTrack* ret = NULL;
    mTracksMutex.Lock();

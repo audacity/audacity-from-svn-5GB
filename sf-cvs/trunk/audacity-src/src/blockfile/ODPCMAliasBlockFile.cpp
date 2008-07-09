@@ -91,7 +91,7 @@ void ODPCMAliasBlockFile::GetMinMax(sampleCount start, sampleCount len,
       //the max to be maximal and the min to be minimal
       *outMin = -1.0;
       *outMax = 1.0;
-      *outRMS = 0.707;//sin with amp of 1 rms
+      *outRMS = (float)0.707;//sin with amp of 1 rms
    }
 }
 
@@ -108,7 +108,7 @@ void ODPCMAliasBlockFile::GetMinMax(float *outMin, float *outMax, float *outRMS)
       //the max to be maximal and the min to be minimal
       *outMin = -1.0;
       *outMax = 1.0;
-      *outRMS = 0.707;//sin with amp of 1 rms
+      *outRMS = (float)0.707;//sin with amp of 1 rms
    }
 }
 
