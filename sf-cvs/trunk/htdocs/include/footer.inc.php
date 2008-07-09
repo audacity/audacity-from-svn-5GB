@@ -1,8 +1,12 @@
 <?php
 /*
- * Copyright 2004 Matt Brubeck
- * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+   Audacity(R) is copyright (c) 1999-2008 Audacity Team
+
+   This file is licensed under a Creative Commons license:
+   http://creativecommons.org/licenses/by/3.0/
+
+   footer.inc.php
+   Matt Brubeck, Gale Andrews
  */
 ?>
 </div>
@@ -16,7 +20,7 @@
   </p>
   <p>
 	<SCRIPT type='text/javascript' language='JavaScript' src='http://www.ohloh.net/projects/59/badge_js'></SCRIPT>
-    <a title="<?=_("Creative Commons Attribution license")?>" href="http://creativecommons.org/licenses/by/2.0/"><img alt="<?=_("Creative Commons: Some rights reserved.")?>" src="<?=$sitePath?>/images/creative-commons.gif"></a>
+    <a title="<?=_("This site is under a Creative Commons Attribution 3.0 License")?>" href="http://creativecommons.org/licenses/by/3.0/"><img alt="<?=_("Creative Commons Attribution License")?>" src="<?=$sitePath?>/images/creative-commons3.png"></a>
     <a title="<?=_("Development hosted by SourceForge")?>" href="http://sourceforge.net/projects/audacity/"><img alt="SourceForge.net" src="http://sflogo.sourceforge.net/sflogo.php?group_id=6235&amp;type=1"></a></p>
   <h2><?=_("View this page in a different language")?></h2>
   <p>
@@ -26,7 +30,7 @@
       if ($query != "")
         $query = $query."&";
       $query = htmlspecialchars($query);
-      
+
       $temp_first_item = true;
       foreach ($available_locales as $locale_lang => $i) {
         $locale_name = $i[1];
