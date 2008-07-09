@@ -425,6 +425,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\locale\cb.po"
+				>
+			</File>
+			<File
 				RelativePath="..\locale\cs.po"
 				>
 			</File>
