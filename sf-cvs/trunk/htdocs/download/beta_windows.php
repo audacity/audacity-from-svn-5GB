@@ -4,7 +4,7 @@
  * Copyright 2004 Matt Brubeck
  * Copyright 2007-8 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   require_once "../beta/versions.inc.php";
@@ -24,6 +24,8 @@
   <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor. See <a href="http://audacityteam.org/wiki/index.php?title=Windows_Vista_OS">further information about Vista</a>.'), "../beta/".$win_exe_unicode_url, win_exe_unicode_version, win_exe_unicode_size)?></p></li>
 
   <li><p>Windows 98/ME: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.</a>'), "../beta/".$win_exe_url, win_exe_version, win_exe_size)?></p></li>
+
+  <li><p><?php echo _('Visually impaired users only: we recommend the Audacity 1.3.4 installer for <a href="http://downloads.sourceforge.net/audacity/audacity-win-unicode-1.3.4.exe">Windows 2000/XP/Vista</a> or <a href="http://downloads.sourceforge.net/audacity/audacity-win-1.3.4.exe">Windows 98/ME</a>.');?></p> 
 </ul>
 
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
