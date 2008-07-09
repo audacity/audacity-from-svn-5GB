@@ -102,94 +102,59 @@ AC_DEFUN([AX_CONFIG_DIR], [
 ])
 
 dnl Function to test whether the compiler can do hidden symbol visibility. This
-dnl test is basically from Glibc 2.6.1 configure.in
+dnl test is from automake 2.62.
 
-dnl If the C++ compiler supports making symbols within audacity hidden then
-dnl we would like to do so. This means that only the required symbols for
-dnl plug-in functionality are exposed, rather than everything in the program.
-dnl For GCC > 4.0 we get this by adding -fvisibility=hidden to the CXXFLAGS.
-dnl-------------------------------------------------------------------------
-AC_DEFUN([AUDACITY_CHECK_VISIBILITY], [
-dnl Step 1 - look for required support in assembler. 
-  AC_CACHE_CHECK(for .protected and .hidden assembler directive,
-		 as_protected_directive, [dnl
-  cat > conftest.s <<EOF
-.protected foo
-foo:
-.hidden bar
-bar:
-EOF
-  if AC_TRY_COMMAND(${CC} -c $ASFLAGS conftest.s 1>&AS_MESSAGE_LOG_FD); then
-    as_protected_directive="yes"
-  else
-    AC_MSG_WARN(no assembler support for symbol visibility)
-	as_protected_directive="no"
-  fi
-  rm -f conftest*])
+# visibility.m4 serial 1 (gettext-0.15)
+dnl Copyright (C) 2005 Free Software Foundation, Inc.
+dnl This file is free software; the Free Software Foundation
+dnl gives unlimited permission to copy and/or distribute it,
+dnl with or without modifications, as long as this notice is preserved.
 
-dnl Step 2 - check if the compiler will take __attribute__ declarations
-  AC_CACHE_CHECK(whether __attribute__((visibility())) is supported,
-	 cc_visibility_attribute,
-	 [cat > conftest.c <<EOF
-	 int foo __attribute__ ((visibility ("hidden"))) = 1;
-	 int bar __attribute__ ((visibility ("protected"))) = 1;
-EOF
-	  cc_visibility_attribute=no
-	  if AC_TRY_COMMAND(${CXX} -Werror -S conftest.c -o conftest.s 1>&AS_MESSAGE_LOG_FD); then
-	    if grep '\.hidden.*foo' conftest.s >/dev/null; then
-	      if grep '\.protected.*bar' conftest.s >/dev/null; then
-			cc_visibility_attribute=yes
-	      fi
-	    fi
-	  fi
-	  rm -f conftest.[cs]
-	 ])
-	 if test x$cc_visibility_attribute != "xyes"; then
-	   AC_MSG_WARN(no compiler support for visibility attributes available)
-     fi
+dnl From Bruno Haible.
 
-dnl Step 3 - see if __attribute__ is broke or not
-  AC_CACHE_CHECK(for broken __attribute__((visibility())),
-		 cc_broken_visibility_attribute,
-		 [cat > conftest.c <<EOF
-		  int foo (int x);
-		  int bar (int x) __asm__ ("foo") __attribute__ ((visibility ("hidden")));
-		  int bar (int x) { return x; }
-EOF
-	  cc_broken_visibility_attribute=yes
-	  if AC_TRY_COMMAND(${CC} -Werror -S conftest.c -o conftest.s 1>&AS_MESSAGE_LOG_FD); then
-changequote(,)dnl
-	    if grep '\.hidden[ 	_]foo' conftest.s >/dev/null; then
-changequote([,])dnl
-	      cc_broken_visibility_attribute=no
-	    fi
-	  fi
-	  rm -f conftest.c conftest.s
-	 ])
-    if test x$cc_broken_visibility_attribute = xyes; then
-      AC_MSG_WARN(no working compiler support for visibility attribute available)
+dnl Tests whether the compiler supports the command-line option
+dnl -fvisibility=hidden and the function and variable attributes
+dnl __attribute__((__visibility__("hidden"))) and
+dnl __attribute__((__visibility__("default"))).
+dnl Does *not* test for __visibility__("protected") - which has tricky
+dnl semantics (see the 'vismain' test in glibc) and does not exist e.g. on
+dnl MacOS X.
+dnl Does *not* test for __visibility__("internal") - which has processor
+dnl dependent semantics.
+dnl Does *not* test for #pragma GCC visibility push(hidden) - which is
+dnl "really only recommended for legacy code".
+dnl Set the variable CFLAG_VISIBILITY.
+dnl Defines and sets the variable HAVE_VISIBILITY.
+
+AC_DEFUN([AUDACITY_CHECK_VISIBILITY],
+[
+  AC_REQUIRE([AC_PROG_CC])
+  CFLAG_VISIBILITY=
+  HAVE_VISIBILITY=0
+  if test -n "$GCC"; then
+    AC_MSG_CHECKING([for simple visibility declarations])
+    AC_CACHE_VAL(gl_cv_cc_visibility, [
+      gl_save_CFLAGS="$CFLAGS"
+      CFLAGS="$CFLAGS -fvisibility=hidden"
+      AC_TRY_COMPILE(
+        [extern __attribute__((__visibility__("hidden"))) int hiddenvar;
+         extern __attribute__((__visibility__("default"))) int exportedvar;
+         extern __attribute__((__visibility__("hidden"))) int hiddenfunc (void);
+         extern __attribute__((__visibility__("default"))) int exportedfunc (void);],
+        [],
+        gl_cv_cc_visibility=yes,
+        gl_cv_cc_visibility=no)
+      CFLAGS="$gl_save_CFLAGS"])
+    AC_MSG_RESULT([$gl_cv_cc_visibility])
+    if test $gl_cv_cc_visibility = yes; then
+      CFLAG_VISIBILITY="-fvisibility=hidden"
+      HAVE_VISIBILITY=1
     fi
-
-dnl Step 4 - check if we can control the default visibility of symbols
-	AX_CXX_CHECK_FLAG([-fvisibility=hidden], [[int foo;]], [[foo = 1;]], cxx_does_vis="yes", cxx_does_vis="no")
-	if test "x$cxx_does_vis" = "xyes" ; then
-	  dnl can use default visibility flag on the C++ compiler
-      CXXFLAGS="${CXXFLAGS} -fvisibility=hidden"
-	fi
-
-dnl Step 5 - Do we have all the right things to turn visibility stuff on or not?
-	if test "x$as_protected_directive" = "xyes" ; then
-      if test "x$cc_visibility_attribute" = "xyes" ; then
-	    if test "x$cc_broken_visibility_attribute" = "xno" ; then
-		  if test "x$cxx_does_vis" = "xyes" ; then
-			dnl Phew - it actually works!
-            AC_DEFINE(CC_HASVISIBILITY, 1,
-          [Define if the compiler supports the GCC symbol visibility functions])
-		  fi
-		fi
-      fi
-	fi
-
+  fi
+  AC_SUBST([CFLAG_VISIBILITY])
+  AC_SUBST([HAVE_VISIBILITY])
+  AC_DEFINE_UNQUOTED([HAVE_VISIBILITY], [$HAVE_VISIBILITY],
+    [Define to 1 or 0, depending whether the compiler supports simple visibility declarations.])
 ])
 
 dnl A function to check for the correct presence of lib-widget-extra in the 
@@ -407,7 +372,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_FFMPEG], [
         FFMPEG_LOCAL_AVAILABLE="yes"
         FFMPEG_LOCAL_LIBS=""
         FFMPEG_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/ffmpeg'
-        FFMPEG_LOCAL_OPTOBJS="import/ImportFFmpeg.o"
+         FFMPEG_LOCAL_CPPSYMBOLS="USE_FFMPEG"
          dnl build the extra object files needed to use FFmpeg. Paths inside
          dnl the audacity src/ dir, as this is subsitiuted into src/Makefile.in
          FFMPEG_LOCAL_OPTOBJS="import/ImportFFmpeg.o export/ExportFFmpeg.o"
@@ -603,6 +568,10 @@ AC_DEFUN([AUDACITY_CHECKLIB_REDLAND], [
       if test ! -f lib-src/redland/Makefile ; then
          REDLAND_LOCAL_CONFIG_SUBDIRS="lib-src/redland"
       fi
+      if test "x$LIBEXPAT_SYSTEM_AVAILABLE" = "xno" ; then
+         ac_configure_args="$ac_configure_args \"--with-expat-source=${srcdir}/lib-src/expat\""
+      fi
+      ac_configure_args="$ac_configure_args RAPTOR_CFLAGS='-I../../redland/raptor/src' RAPTOR_LIBS='-L../.. -lraptor'"
       AC_MSG_NOTICE([Redland is available in the local tree])
    else
       REDLAND_LOCAL_AVAILABLE="no"
