@@ -25,7 +25,7 @@ dnl
 AC_INIT(Rasqal RDF Query Library, 0.9.16, http://bugs.librdf.org/, rasqal)
 AC_PREREQ(2.50)
 AC_CONFIG_SRCDIR(src/rasqal_general.c)
-AC_REVISION($Revision: 1.1 $)
+AC_REVISION($Revision: 1.2 $)
 
 AM_INIT_AUTOMAKE([1.7 check-news std-options -Wall])
 AM_CONFIG_HEADER(src/rasqal_config.h)
@@ -276,7 +276,7 @@ AC_TRY_LINK([#ifdef HAVE_GETOPT_H
 
 # raptor is REQUIRED despite the checking here
 AC_CHECK_PROG(RAPTOR_CONFIG, raptor-config, raptor-config)
-AC_ARG_WITH(raptor, [  --with-raptor=SOURCE        Pick raptor source - system/internal (default auto)], with_raptor="$withval", with_raptor="auto")
+AC_ARG_WITH(raptor, [  --with-raptor=SOURCE        Pick raptor source - system/internal (default internal)], with_raptor="$withval", with_raptor="internal")
 
 RAPTOR_MIN_VERSION=1.4.17
 AC_SUBST(RAPTOR_MIN_VERSION)
@@ -623,7 +623,7 @@ if test "x" = "y"; then
 fi
 
 AC_MSG_CHECKING(query languages required)
-AC_ARG_ENABLE(query-languages, [  --enable-query-languages=LIST   Enable query languages (default=all)], query_languages="$enableval") 
+AC_ARG_ENABLE(query-languages, [  --enable-query-languages=LIST   Enable query languages (default=all)], query_languages="$enableval", query_languages="sparql") 
 if test "X$query_languages" = Xall -o "X$query_languages" = X; then
   query_languages="$rdf_query_languages_available"
   AC_MSG_RESULT(all)
@@ -741,7 +741,7 @@ fi
 need_mpfr=0
 need_gmp=0
 
-AC_ARG_WITH(decimal, [  --with-decimal=NAME           Use decimal library - mpfr (default), gmp, none], decimal="$withval", decimal="mpfr") 
+AC_ARG_WITH(decimal, [  --with-decimal=NAME           Use decimal library - mpfr, gmp, none (default)], decimal="$withval", decimal="none") 
 for decimal_name in $decimal mpfr gmp none; do
   case $decimal_name in
     mpfr)

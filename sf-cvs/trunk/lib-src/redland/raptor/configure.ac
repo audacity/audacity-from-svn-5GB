@@ -26,7 +26,7 @@ dnl
 AC_INIT(Raptor RDF Parser, 1.4.18, http://bugs.librdf.org/, raptor)
 AC_PREREQ(2.50)
 AC_CONFIG_SRCDIR(src/raptor_general.c)
-AC_REVISION($Revision: 1.1 $)
+AC_REVISION($Revision: 1.2 $)
 
 libxml_min_version=2.6.8
 
@@ -683,7 +683,7 @@ CPPFLAGS="$oCPPFLAGS"
 LIBS="$oLIBS"
 
 
-AC_ARG_WITH(xml-parser, [  --with-xml-parser=NAME    Use XML parser - libxml (default), expat], xml_parser="$withval", xml_parser="libxml") 
+AC_ARG_WITH(xml-parser, [  --with-xml-parser=NAME    Use XML parser - libxml (default), expat], xml_parser="$withval", xml_parser="expat") 
 
 for xml_parser_name in $xml_parser libxml expat; do
   case $xml_parser_name in
@@ -790,7 +790,7 @@ if test "x" = "y"; then
 fi
 
 AC_MSG_CHECKING(RDF parsers required)
-AC_ARG_ENABLE(parsers, [  --enable-parsers=LIST      Use RDF parsers (default=all)], parsers="$enableval") 
+AC_ARG_ENABLE(parsers, [  --enable-parsers=LIST      Use RDF parsers (default=all)], parsers="$enableval", parsers="rdfxml turtle") 
 if test "X$parsers" = Xall -o "X$parsers" = X; then
   parsers="$rdf_parsers_available"
   AC_MSG_RESULT(all)
@@ -875,7 +875,7 @@ if test "x" = "y"; then
 fi
 
 AC_MSG_CHECKING(RDF serializers required)
-AC_ARG_ENABLE(serializers, [  --enable-serializers=LIST  Use RDF serializers (default=all)], serializers="$enableval") 
+AC_ARG_ENABLE(serializers, [  --enable-serializers=LIST  Use RDF serializers (default=all)], serializers="$enableval", serializers="ntriples") 
 if test "X$serializers" = Xall -o "X$serializers" = X; then
   serializers="$rdf_serializers_available"
   AC_MSG_RESULT(all)
@@ -962,7 +962,7 @@ if test $ac_cv_header_fetch_h = yes; then
 fi
 
 
-AC_ARG_WITH(www, [  --with-www=NAME           Use WWW library - curl (default), xml, libfetch, none], www="$withval", www="curl") 
+AC_ARG_WITH(www, [  --with-www=NAME           Use WWW library - curl, xml, libfetch, none (default)], www="$withval", www="none") 
 
 for www_name in $www curl xml libfetch none; do
   case $www_name in

@@ -63,7 +63,7 @@
 #include "ladspa/LoadLadspa.h"
 #endif
 
-#ifdef USE_LIBSLV2
+#ifdef USE_SLV2
 #include "lv2/LoadLV2.h"
 #endif
 
@@ -270,7 +270,7 @@ void LoadEffects()
    LoadLadspaPlugins();
 #endif
 
-#ifdef USE_LIBSLV2
+#ifdef USE_SLV2
    LoadLV2Plugins();
 #endif
 
@@ -292,7 +292,7 @@ void UnloadEffects()
    UnloadLadspaPlugins();
 #endif
 
-#ifdef USE_LIBSLV2
+#ifdef USE_SLV2
    UnloadLV2Plugins();
 #endif
 

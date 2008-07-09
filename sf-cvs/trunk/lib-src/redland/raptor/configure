@@ -1572,7 +1572,7 @@ Optional Packages:
   --with-libwww-config=PATH Location of W3C libwww libwww-config
   --with-xml-parser=NAME    Use XML parser - libxml (default), expat
   --with-xml-names=1.1|1.0  Select XML version name checking (default=1.0)
-  --with-www=NAME           Use WWW library - curl (default), xml, libfetch, none
+  --with-www=NAME           Use WWW library - curl, xml, libfetch, none (default)
   --with-dmalloc            Use dmalloc debugging library (default=no)
   --with-memory-signing     Sign allocated memory (default=no)
   --with-html-dir=PATH    path to installed docs
@@ -25134,7 +25134,7 @@ LIBS="$oLIBS"
 if test "${with_xml_parser+set}" = set; then
   withval=$with_xml_parser; xml_parser="$withval"
 else
-  xml_parser="libxml"
+  xml_parser="expat"
 fi
 
 
@@ -25313,6 +25313,8 @@ echo $ECHO_N "checking RDF parsers required... $ECHO_C" >&6; }
 # Check whether --enable-parsers was given.
 if test "${enable_parsers+set}" = set; then
   enableval=$enable_parsers; parsers="$enableval"
+else
+  parsers="rdfxml turtle"
 fi
 
 if test "X$parsers" = Xall -o "X$parsers" = X; then
@@ -25511,6 +25513,8 @@ echo $ECHO_N "checking RDF serializers required... $ECHO_C" >&6; }
 # Check whether --enable-serializers was given.
 if test "${enable_serializers+set}" = set; then
   enableval=$enable_serializers; serializers="$enableval"
+else
+  serializers="ntriples"
 fi
 
 if test "X$serializers" = Xall -o "X$serializers" = X; then
@@ -25977,7 +25981,7 @@ fi
 if test "${with_www+set}" = set; then
   withval=$with_www; www="$withval"
 else
-  www="curl"
+  www="none"
 fi
 
 

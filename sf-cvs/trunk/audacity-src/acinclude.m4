@@ -518,39 +518,96 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBLRDF], [
    fi
 ])
 
-AC_DEFUN([AUDACITY_CHECKLIB_LIBSLV2], [
-   AC_ARG_WITH(libslv2,
-               [AS_HELP_STRING([--with-libslv2],
-                               [use libslv2 for loading LV2 plugins ])],
-               LIBSLV2_ARGUMENT=$withval,
-               LIBSLV2_ARGUMENT="unspecified")
+AC_DEFUN([AUDACITY_CHECKLIB_SLV2], [
+   AC_ARG_WITH(slv2,
+               [AS_HELP_STRING([--with-slv2],
+                               [use SLV2 for loading LV2 plugins ])],
+               SLV2_ARGUMENT=$withval,
+               SLV2_ARGUMENT="unspecified")
 
    if false ; then
-      AC_DEFINE(USE_LIBSLV2, 1,
-                [Define if libslv2 (library for loading LV2 plugins) should be enabled])
+      AC_DEFINE(USE_SLV2, 1,
+                [Define if SLV2 (library for loading LV2 plugins) should be enabled])
    fi
 
-   dnl Check for a system copy of libslv2 to use. We need at least version 0.6.
+   dnl Check for a system copy of SLV2 to use. We need at least version 0.6.
 
-   PKG_CHECK_MODULES(LIBSLV2, slv2 >= 0.6.0,
-                     libslv2_available_system="yes",
-                     libslv2_available_system="no")
-   LIBSLV2_SYSTEM_AVAILABLE="no"
-   if test "x$libslv2_available_system" = "xyes" ; then
-      LIBSLV2_SYSTEM_AVAILABLE="yes"
-      LIBSLV2_SYSTEM_LIBS="$LIBSLV2_LIBS"
-      LIBSLV2_SYSTEM_CXXFLAGS="$LIBSLV2_CFLAGS"
-      LIBSLV2_SYSTEM_CPPSYMBOLS="USE_LIBSLV2"
-      LIBSLV2_SYSTEM_OPTOBJS="effects/lv2/LoadLV2.o effects/lv2/LV2Effect.o"
-      AC_MSG_NOTICE([libslv2 available as system library])
+   PKG_CHECK_MODULES(SLV2, slv2 >= 0.6.0,
+                     slv2_available_system="yes",
+                     slv2_available_system="no")
+   SLV2_SYSTEM_AVAILABLE="no"
+   if test "x$slv2_available_system" = "xyes" ; then
+      SLV2_SYSTEM_AVAILABLE="yes"
+      SLV2_SYSTEM_LIBS="$SLV2_LIBS"
+      SLV2_SYSTEM_CXXFLAGS="$SLV2_CFLAGS"
+      SLV2_SYSTEM_CPPSYMBOLS="USE_SLV2"
+      SLV2_SYSTEM_OPTOBJS="effects/lv2/LoadLV2.o effects/lv2/LV2Effect.o"
+      AC_MSG_NOTICE([SLV2 available as system library])
    fi
-   if test "x$LIBSLV2_SYSTEM_AVAILABLE" = "xno" ; then
-      AC_MSG_NOTICE([libslv2 NOT available as system library])
+   if test "x$SLV2_SYSTEM_AVAILABLE" = "xno" ; then
+      AC_MSG_NOTICE([SLV2 NOT available as system library])
    fi
 
-   dnl see if libslv2 is available locally - it isn't (yet)
-   LIBSLV2_LOCAL_AVAILABLE="no"
-   AC_MSG_NOTICE([libslv2 is NOT available in the local tree])
+   dnl Check if SLV2 is available locally.
+   AC_CHECK_FILE(${srcdir}/lib-src/slv2/slv2/slv2.h,
+                 slv2_h_found="yes",
+                 slv2_h_found="no")
+
+   if test "x$slv2_h_found" = "xyes" ; then
+      SLV2_LOCAL_AVAILABLE="yes"
+      SLV2_LOCAL_LIBS="libslv2.a"
+      SLV2_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/slv2/slv2'
+      SLV2_LOCAL_CPPSYMBOLS="USE_SLV2"
+      SLV2_LOCAL_OPTOBJS="effects/lv2/LoadLV2.o effects/lv2/LV2Effect.o"
+      if test ! -f lib-src/slv2/Makefile ; then
+         SLV2_LOCAL_CONFIG_SUBDIRS="lib-src/slv2"
+      fi
+      AC_MSG_NOTICE([SLV2 is available in the local tree])
+   else
+      SLV2_LOCAL_AVAILABLE="no"
+      AC_MSG_NOTICE([SLV2 is NOT available in the local tree])
+   fi
+])
+
+AC_DEFUN([AUDACITY_CHECKLIB_REDLAND], [
+   AC_ARG_WITH(redland,
+               [AS_HELP_STRING([--with-redland],
+                               [use Redland for reading RDF data ])],
+               REDLAND_ARGUMENT=$withval,
+               REDLAND_ARGUMENT="unspecified")
+
+   dnl Check for a system copy of SLV2 to use. We need at least version 0.6.
+   PKG_CHECK_MODULES(REDLAND, redland >= 0.6.0,
+                     redland_available_system="yes",
+                     redland_available_system="no")
+   REDLAND_SYSTEM_AVAILABLE="no"
+   if test "x$redland_available_system" = "xyes" ; then
+      REDLAND_SYSTEM_AVAILABLE="yes"
+      REDLAND_SYSTEM_LIBS="$REDLAND_LIBS"
+      REDLAND_SYSTEM_CXXFLAGS="$REDLAND_CFLAGS"
+      AC_MSG_NOTICE([Redland available as system library])
+   fi
+   if test "x$REDLAND_SYSTEM_AVAILABLE" = "xno" ; then
+      AC_MSG_NOTICE([Redland NOT available as system library])
+   fi
+
+   dnl Check if REDLAND is available locally.
+   AC_CHECK_FILE(${srcdir}/lib-src/redland/librdf/librdf.h,
+                 librdf_h_found="yes",
+                 librdf_h_found="no")
+
+   if test "x$librdf_h_found" = "xyes" ; then
+      REDLAND_LOCAL_AVAILABLE="yes"
+      REDLAND_LOCAL_LIBS="librdf.a libraptor.a librasqal.a"
+      REDLAND_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/redland/librdf -I$(top_srcdir)/lib-src/redland/raptor/src -I$(top_srcdir)/lib-src/redland/rasqal/src'
+      if test ! -f lib-src/redland/Makefile ; then
+         REDLAND_LOCAL_CONFIG_SUBDIRS="lib-src/redland"
+      fi
+      AC_MSG_NOTICE([Redland is available in the local tree])
+   else
+      REDLAND_LOCAL_AVAILABLE="no"
+      AC_MSG_NOTICE([Redland is NOT available in the local tree])
+   fi
 ])
 
 AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
