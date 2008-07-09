@@ -23,7 +23,7 @@
 /// ProgressDialog Class
 ////////////////////////////////////////////////////////////
 
-class ProgressDialog:public wxDialog
+class AUDACITY_DLL_API ProgressDialog:public wxDialog
 {
 
  public:

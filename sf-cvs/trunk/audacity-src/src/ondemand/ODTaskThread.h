@@ -121,7 +121,7 @@ protected:
 
 
 //a wrapper for wxMutex.
-class ODLock : public wxMutex  
+class AUDACITY_DLL_API ODLock : public wxMutex  
 {
 public:
    ///Constructs a ODTaskThread

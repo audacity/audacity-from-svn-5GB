@@ -30,7 +30,7 @@ void MixBuffers(int numChannels, int *channelFlags, float *gains,
                 samplePtr src,
                 samplePtr *dests, int len, bool interleaved);
 
-class MixerSpec
+class AUDACITY_DLL_API MixerSpec
 {
    int mNumTracks, mNumChannels, mMaxNumChannels;
   
@@ -53,7 +53,7 @@ class MixerSpec
    MixerSpec& operator=( const MixerSpec &mixerSpec );
 };
 
-class Mixer {
+class AUDACITY_DLL_API Mixer {
  public:
    // 
    // Constructor / Destructor

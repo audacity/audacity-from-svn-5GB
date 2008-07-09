@@ -708,6 +708,9 @@ bool AudacityApp::OnInit()
    wxFrame *temporarywindow = new wxFrame(NULL, -1, wxT("temporarytopwindow"));
    SetTopWindow(temporarywindow);
 
+   // Initialize the ModuleManager
+   ModuleManager::Initialize();
+
    // load audacity plug-in modules
    LoadModules();
 
@@ -983,6 +986,8 @@ bool AudacityApp::OnInit()
 
    gInited = true;
    
+   ModuleManager::Dispatch(AppInitialized);
+
    return TRUE;
 }
 
