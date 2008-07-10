@@ -1049,6 +1049,10 @@
 		28D0255C0AFDA53B0035F843 /* alpasscv.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D025580AFDA53B0035F843 /* alpasscv.h */; };
 		28D0255D0AFDA53B0035F843 /* alpassvc.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D025590AFDA53B0035F843 /* alpassvc.c */; };
 		28D0255E0AFDA53B0035F843 /* alpassvc.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D0255A0AFDA53B0035F843 /* alpassvc.h */; };
+		28D587CB0E264CF4009C7DEA /* LoadLV2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D587C70E264CF3009C7DEA /* LoadLV2.cpp */; };
+		28D587CC0E264CF4009C7DEA /* LV2Effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D587C90E264CF4009C7DEA /* LV2Effect.cpp */; };
+		28D588030E265626009C7DEA /* sparql_lexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D587DF0E2651C6009C7DEA /* sparql_lexer.c */; };
+		28D588040E265627009C7DEA /* sparql_lexer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D587E00E2651C6009C7DEA /* sparql_lexer.h */; };
 		28D65C720B97E54B000E001A /* AutoDuck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D65C700B97E54B000E001A /* AutoDuck.cpp */; };
 		28D65C760B97E573000E001A /* DtmfGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D65C740B97E573000E001A /* DtmfGen.cpp */; };
 		28E3E6E80A7C14CA00AB1361 /* ExportFLAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */; };
@@ -2501,6 +2505,12 @@
 		28D025580AFDA53B0035F843 /* alpasscv.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = alpasscv.h; sourceTree = "<group>"; };
 		28D025590AFDA53B0035F843 /* alpassvc.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = alpassvc.c; sourceTree = "<group>"; };
 		28D0255A0AFDA53B0035F843 /* alpassvc.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = alpassvc.h; sourceTree = "<group>"; };
+		28D587C70E264CF3009C7DEA /* LoadLV2.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = LoadLV2.cpp; path = lv2/LoadLV2.cpp; sourceTree = "<group>"; };
+		28D587C80E264CF3009C7DEA /* LoadLV2.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = LoadLV2.h; path = lv2/LoadLV2.h; sourceTree = "<group>"; };
+		28D587C90E264CF4009C7DEA /* LV2Effect.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = LV2Effect.cpp; path = lv2/LV2Effect.cpp; sourceTree = "<group>"; };
+		28D587CA0E264CF4009C7DEA /* LV2Effect.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = LV2Effect.h; path = lv2/LV2Effect.h; sourceTree = "<group>"; };
+		28D587DF0E2651C6009C7DEA /* sparql_lexer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = sparql_lexer.c; path = redland/rasqal/src/sparql_lexer.c; sourceTree = "<group>"; };
+		28D587E00E2651C6009C7DEA /* sparql_lexer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = sparql_lexer.h; path = redland/rasqal/src/sparql_lexer.h; sourceTree = "<group>"; };
 		28D65C700B97E54B000E001A /* AutoDuck.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = AutoDuck.cpp; sourceTree = "<group>"; };
 		28D65C710B97E54B000E001A /* AutoDuck.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AutoDuck.h; sourceTree = "<group>"; };
 		28D65C740B97E573000E001A /* DtmfGen.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = DtmfGen.cpp; sourceTree = "<group>"; };
@@ -3496,6 +3506,7 @@
 			children = (
 				1790B00009883BFD008A330A /* audiounits */,
 				1790B02309883BFD008A330A /* ladspa */,
+				28D587C50E264CBB009C7DEA /* lv2 */,
 				1790B03409883BFD008A330A /* nyquist */,
 				28501E960CEECE4B0029ABAA /* vamp */,
 				1790AFFE09883BFD008A330A /* Amplify.cpp */,
@@ -4351,6 +4362,8 @@
 				287BD7D60E25D9E300CB4467 /* rasqal_rowsource.c */,
 				287BD7D70E25D9E300CB4467 /* rasqal_sparql_xml.c */,
 				287BD7D80E25D9E300CB4467 /* rasqal_xsd_datatypes.c */,
+				28D587DF0E2651C6009C7DEA /* sparql_lexer.c */,
+				28D587E00E2651C6009C7DEA /* sparql_lexer.h */,
 				287BD7D90E25D9E300CB4467 /* sparql_parser.c */,
 				287BD7DA0E25D9E300CB4467 /* sparql_parser.h */,
 			);
@@ -4574,6 +4587,17 @@
 				2897F6EF0AB3DB5A003C20C5 /* TranscriptionToolBar.h */,
 			);
 			path = toolbars;
+			sourceTree = "<group>";
+		};
+		28D587C50E264CBB009C7DEA /* lv2 */ = {
+			isa = PBXGroup;
+			children = (
+				28D587C70E264CF3009C7DEA /* LoadLV2.cpp */,
+				28D587C80E264CF3009C7DEA /* LoadLV2.h */,
+				28D587C90E264CF4009C7DEA /* LV2Effect.cpp */,
+				28D587CA0E264CF4009C7DEA /* LV2Effect.h */,
+			);
+			name = lv2;
 			sourceTree = "<group>";
 		};
 		28E67FC00A3A29AE0021D89F /* include */ = {
@@ -5112,6 +5136,7 @@
 				287BD9420E25DBA100CB4467 /* rasqal_config.h in Headers */,
 				287BD94D0E25DBA400CB4467 /* rasqal_internal.h in Headers */,
 				287BD9500E25DBA400CB4467 /* sparql_parser.h in Headers */,
+				28D588040E265627009C7DEA /* sparql_lexer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6468,6 +6493,8 @@
 				2860BA240E0F0D8600A13878 /* SoundActivatedRecord.cpp in Sources */,
 				2860BA250E0F0D8600A13878 /* TimerRecordDialog.cpp in Sources */,
 				2860BA280E0F0DD800A13878 /* ExportFFmpeg.cpp in Sources */,
+				28D587CB0E264CF4009C7DEA /* LoadLV2.cpp in Sources */,
+				28D587CC0E264CF4009C7DEA /* LV2Effect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6578,6 +6605,7 @@
 				287BD9520E25DBA500CB4467 /* rasqal_xsd_datatypes.c in Sources */,
 				287BD9530E25DBA500CB4467 /* rasqal_raptor.c in Sources */,
 				287BD9540E25DBA600CB4467 /* rasqal_engine.c in Sources */,
+				28D588030E265626009C7DEA /* sparql_lexer.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6971,11 +6999,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "BUILDING_AUDACITY=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../lib-src/FileDialog\"";
 				OTHER_CFLAGS = (
 					"$(WX_CFLAGS)",
 					"$(FFMPEG_CFLAGS)",
@@ -7011,7 +7034,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/liblrdf/src $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/redland/librdf $(TOPLEVEL)/lib-src/slv2 $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Debug Static";
 		};
@@ -7472,11 +7495,6 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "BUILDING_AUDACITY=1";
 				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../lib-src/FileDialog\"";
 				OTHER_CFLAGS = (
 					"$(WX_CFLAGS)",
 					"$(FFMPEG_CFLAGS)",
@@ -7512,7 +7530,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/liblrdf/src $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/redland/librdf $(TOPLEVEL)/lib-src/slv2 $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Debug Shared";
 		};
@@ -7805,11 +7823,6 @@
 				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
 				GCC_PREPROCESSOR_DEFINITIONS = "BUILDING_AUDACITY=1";
 				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../lib-src/FileDialog\"";
 				OTHER_CFLAGS = (
 					"$(WX_CFLAGS)",
 					"$(FFMPEG_CFLAGS)",
@@ -7845,7 +7858,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/liblrdf/src $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/redland/librdf $(TOPLEVEL)/lib-src/slv2 $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Release Shared";
 		};
@@ -8289,11 +8302,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "BUILDING_AUDACITY=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../lib-src/FileDialog\"";
 				OTHER_CFLAGS = (
 					"$(WX_CFLAGS)",
 					"$(FFMPEG_CFLAGS)",
@@ -8329,7 +8337,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/liblrdf/src $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/redland/librdf $(TOPLEVEL)/lib-src/slv2 $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Release Static";
 		};
