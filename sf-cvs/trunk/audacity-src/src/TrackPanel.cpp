@@ -6356,12 +6356,6 @@ void TrackPanel::OnRateOther(wxCommandEvent &event)
 
       S.StartVerticalLay(true);
       {
-         S.StartHorizontalLay();
-         {
-            // Add a little extra space
-         }
-         S.EndHorizontalLay();
-         
          S.StartHorizontalLay(wxCENTER, false);
          {
             cb = S.AddCombo(_("New sample rate (Hz):"),
@@ -6373,7 +6367,7 @@ void TrackPanel::OnRateOther(wxCommandEvent &event)
       }
       S.EndVerticalLay();
 
-      dlg.Fit();
+      dlg.SetSize(dlg.GetSizer()->GetMinSize());
       dlg.Center();
 
       if (dlg.ShowModal() != wxID_OK)
