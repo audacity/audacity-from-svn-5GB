@@ -261,7 +261,7 @@ bool LadspaEffect::Process()
    Track *left = iter.First();
    Track *right;
    while(left) {
-      longSampleCount lstart, rstart;
+      longSampleCount lstart = 0, rstart = 0;
       sampleCount len;
       GetSamples((WaveTrack *)left, &lstart, &len);
       
