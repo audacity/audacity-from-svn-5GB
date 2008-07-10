@@ -442,7 +442,6 @@
 		1790B1AA09883BFD008A330A /* XMLTagHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B11209883BFD008A330A /* XMLTagHandler.cpp */; };
 		17C99D560989710D0041B1BC /* libvorbis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 170740D40988F820008541CC /* libvorbis.a */; };
 		17C99D58098971380041B1BC /* liballegro.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17073EE80988DBDD008541CC /* liballegro.a */; };
-		17C99D59098971390041B1BC /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17073F480988E04A008541CC /* libexpat.a */; };
 		17C99D5A098971390041B1BC /* libid3tag.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17073F620988E121008541CC /* libid3tag.a */; };
 		17C99D5B098971390041B1BC /* libmad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17073FC40988E561008541CC /* libmad.a */; };
 		17C99D5C098971390041B1BC /* libogg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17073FFE0988EA60008541CC /* libogg.a */; };
@@ -2606,7 +2605,6 @@
 			files = (
 				17C99D560989710D0041B1BC /* libvorbis.a in Frameworks */,
 				17C99D58098971380041B1BC /* liballegro.a in Frameworks */,
-				17C99D59098971390041B1BC /* libexpat.a in Frameworks */,
 				17C99D5A098971390041B1BC /* libid3tag.a in Frameworks */,
 				17C99D5B098971390041B1BC /* libmad.a in Frameworks */,
 				17CBAE4A098B85CD00575C58 /* libnyquist.a in Frameworks */,
@@ -7482,7 +7480,7 @@
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-debug-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -lwx_macud_html-$(WX_VER)  -lwx_macud_adv-$(WX_VER) -lwx_macud_core-$(WX_VER) -lwx_base_carbonud_net-$(WX_VER) -lwx_base_carbonud-$(WX_VER)";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -lwx_macud_html-$(WX_VER)  -lwx_macud_adv-$(WX_VER) -lwx_macud_core-$(WX_VER) -lwx_base_carbonud_net-$(WX_VER) -lwx_base_carbonud-$(WX_VER) $(WX_PREFIX)/lib/libwxregexud-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpatd-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiffd-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpegd-$(WX_VER).a $(WX_PREFIX)/lib/libwxpngd-$(WX_VER).a";
 				WX_PREFIX = /usr/local;
 				WX_VER = 2.8;
 				ZERO_LINK = NO;
@@ -7808,7 +7806,7 @@
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-release-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -lwx_macu_html-$(WX_VER)  -lwx_macu_adv-$(WX_VER) -lwx_macu_core-$(WX_VER) -lwx_base_carbonu_net-$(WX_VER) -lwx_base_carbonu-$(WX_VER)";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -lwx_macu_html-$(WX_VER)  -lwx_macu_adv-$(WX_VER) -lwx_macu_core-$(WX_VER) -lwx_base_carbonu_net-$(WX_VER) -lwx_base_carbonu-$(WX_VER) $(WX_PREFIX)/lib/libwxregexud-$(WX_VER).a $(WX_PREFIX)/lib/libwxexpatd-$(WX_VER).a $(WX_PREFIX)/lib/libwxtiffd-$(WX_VER).a $(WX_PREFIX)/lib/libwxjpegd-$(WX_VER).a $(WX_PREFIX)/lib/libwxpngd-$(WX_VER).a";
 				WX_PREFIX = /usr/local;
 				WX_VER = 2.8;
 				ZERO_LINK = NO;

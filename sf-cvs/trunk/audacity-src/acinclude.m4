@@ -422,7 +422,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBRAPTOR], [
       fi
       AC_MSG_NOTICE([libraptor is available in the local tree])
       if test "x$LIBEXPAT_SYSTEM_AVAILABLE" = "xno" ; then
-      ac_configure_args="$ac_configure_args \"--with-expat-source=${srcdir}/lib-src/expat\""
+      ac_configure_args="$ac_configure_args \"--with-expat-source=${srcdir}/src/include\""
       fi
       ac_configure_args="$ac_configure_args RAPTOR_CFLAGS='-I../../libraptor/src' RAPTOR_LIBS='-L../.. -lraptor'"
    else
@@ -569,7 +569,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_REDLAND], [
          REDLAND_LOCAL_CONFIG_SUBDIRS="lib-src/redland"
       fi
       if test "x$LIBEXPAT_SYSTEM_AVAILABLE" = "xno" ; then
-      ac_configure_args="$ac_configure_args \"--with-expat-source=${srcdir}/lib-src/expat\""
+      ac_configure_args="$ac_configure_args \"--with-expat-source=${srcdir}/src/include\""
       fi
       ac_configure_args="$ac_configure_args RAPTOR_CFLAGS='-I../../redland/raptor/src' RAPTOR_LIBS='-L.. -L../.. -lraptor' REDLAND_CFLAGS='-I../../redland/raptor/src -I../../redland/rasqal/src -I../../redland/librdf' REDLAND_LIBS='-L.. -L../.. -lrdf -lraptor -lrasqal'"
       AC_MSG_NOTICE([Redland is available in the local tree])
