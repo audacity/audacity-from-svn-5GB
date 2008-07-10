@@ -194,4 +194,4 @@ void ODComputeSummaryTask::SetWaveTrack(WaveTrack* track)
 {
    mWaveTrack=track;
 }
- 
+
