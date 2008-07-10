@@ -473,11 +473,6 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
       mFormatName = S.Id(FEFormatNameID).AddVariableText(wxT(""));
       S.Id(FECodecLabelID).AddVariableText(wxT("Codec:"));
       mCodecName = S.Id(FECodecNameID).AddVariableText(wxT(""));
-      //       mFormatChoice = S.Id(FEFormatID).TieChoice(wxT("Format:"), wxT("/FileFormats/FFmpegFormat"), mFormatLongNames[0], mFormatLongNames, mFormatNames);
-      //       mFormatChoice->SetToolTip(wxT("File format (AAC, AC3, FLAC, etc) or container (MP4, MKV, AVI, OGG, etc)"));
-      //       mCodecChoice = S.Id(FECodecID).TieChoice(wxT("Codec:"), wxT("/FileFormats/FFmpegCodec"), mCodecLongNames[0], mCodecLongNames, mCodecNames);
-      //       mCodecChoice->SetToolTip(wxT("Audio codec"));
-
    }
    S.EndMultiColumn();
    S.AddVariableText(wxT("Not all formats and codecs are compatible. Some parameters (such as bitrate and samplerate) combinations are not compatible with some codecs too."),false);
@@ -780,7 +775,7 @@ void ExportFFmpegOptions::OnFormatList(wxCommandEvent& event)
          if (codec && format)
          {
             handled = apptable[i].control;
-            wxWindow *item = FindItem(apptable[i].control);
+            wxWindow *item = FindWindowById(apptable[i].control,this);
             if (item != NULL) item->Enable(apptable[i].enable);
          }
       }
@@ -1927,6 +1922,8 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/WMABitRate"), 198000);
       break;
    case FMT_OTHER:
+      mSampleRate = gPrefs->Read(wxT("/FileFormats/FFmpegSampleRate"),44100);
+      mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/FFmpegBitRate"), 198000);
       break;
    default:
       return false;
