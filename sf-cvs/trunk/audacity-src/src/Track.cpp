@@ -211,7 +211,7 @@ Track *TrackListIterator::RemoveCurrent()
 
    cur = next;
    #ifdef DEBUG_TLI // if we are debugging this bit
-   wxASSERT_MSG(((*l).Contains((*cur).t)), wxT("cur invalid after deletion of track."));   // check that cur is in the list
+   wxASSERT_MSG((!cur || (*l).Contains((*cur).t)), wxT("cur invalid after deletion of track."));   // check that cur is in the list
    #endif
 
    if (cur)
