@@ -8,7 +8,7 @@
 #undef BUILDING_AUDACITY
 
 /* Define if the compiler supports the GCC symbol visibility functions */
-#undef CC_HASVISIBILITY
+#undef HAVE_VISIBILITY
 
 /* Define to 1 if you have the <alloca.h> header file. */
 #undef HAVE_ALLOCA_H
@@ -102,8 +102,8 @@
 /* Define if libsamplerate support should be enabled */
 #undef USE_LIBSAMPLERATE
 
-/* Define if libslv2 (library for loading LV2 plugins) should be enabled */
-#undef USE_LIBSLV2
+/* Define if the slv2 library for loading LV2 plugins should be enabled */
+#undef USE_SLV2
 
 /* Define if libtwolame (MP2 export) support should be enabled */
 #undef USE_LIBTWOLAME
