@@ -21,8 +21,9 @@
 
 #ifndef __AUDACITY_ODTASKTHREAD__
 #define __AUDACITY_ODTASKTHREAD__
-#include <vector>
 #include <wx/thread.h>
+
+#include "../Audacity.h"	// contains the set-up of AUDACITY_DLL_API
 
 class ODTask;
 
