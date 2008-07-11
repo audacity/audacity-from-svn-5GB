@@ -521,7 +521,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_SLV2], [
    if test "x$slv2_h_found" = "xyes" ; then
       SLV2_LOCAL_AVAILABLE="yes"
       SLV2_LOCAL_LIBS="libslv2.a"
-      SLV2_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/slv2/slv2'
+      SLV2_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/slv2'
       SLV2_LOCAL_CPPSYMBOLS="USE_SLV2"
       SLV2_LOCAL_OPTOBJS="effects/lv2/LoadLV2.o effects/lv2/LV2Effect.o"
       if test ! -f lib-src/slv2/Makefile ; then
