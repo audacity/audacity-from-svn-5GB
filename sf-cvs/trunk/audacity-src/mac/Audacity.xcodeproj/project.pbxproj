@@ -2618,11 +2618,11 @@
 				28E67FF00A3A2B190021D89F /* libportaudio.a in Frameworks */,
 				2840CFA80AEB883500F49FC3 /* libtwolame.a in Frameworks */,
 				28501F330CEED8C70029ABAA /* libvamp.a in Frameworks */,
-				2862D7CD0E25E97B0014D9BB /* librasqal.a in Frameworks */,
-				2862D7CE0E25E97D0014D9BB /* librdf.a in Frameworks */,
-				2862D7CF0E25E97E0014D9BB /* libslv2.a in Frameworks */,
-				2862D7D00E25E97F0014D9BB /* libraptor.a in Frameworks */,
 				2862D7D20E25E9850014D9BB /* liblrdf.a in Frameworks */,
+				2862D7CF0E25E97E0014D9BB /* libslv2.a in Frameworks */,
+				2862D7CE0E25E97D0014D9BB /* librdf.a in Frameworks */,
+				2862D7CD0E25E97B0014D9BB /* librasqal.a in Frameworks */,
+				2862D7D00E25E97F0014D9BB /* libraptor.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
