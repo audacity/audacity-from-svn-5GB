@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="locale"
-	ProjectGUID="{BE9F28C5-058A-45F5-B2C1-D077BC058AAE}"
-	RootNamespace="locale"
+	Name="liblrdf"
+	ProjectGUID="{7BAFA434-3257-408A-AAC0-A8D352B2CE54}"
+	RootNamespace="liblrdf"
 	>
 	<Platforms>
 		<Platform
@@ -12,25 +12,21 @@
 		/>
 	</Platforms>
 	<ToolFiles>
-		<ToolFile
-			RelativePath=".\po.rules"
-		/>
 	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Unicode Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="msgfmt"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -43,6 +39,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;..\..\..\lib-src\liblrdf&quot;;&quot;..\..\..\lib-src\liblrdf\src&quot;;..\raptor;&quot;..\..\..\lib-src\libraptor\src&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;RAPTOR_STATIC=1"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				CompileAs="0"
+				DisableSpecificWarnings="4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -54,13 +59,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -70,12 +72,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -85,16 +81,15 @@
 			Name="Unicode Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="msgfmt"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -107,6 +102,18 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;..\..\..\lib-src\liblrdf&quot;;&quot;..\..\..\lib-src\liblrdf\src&quot;;..\raptor;&quot;..\..\..\lib-src\libraptor\src&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;RAPTOR_STATIC=1"
+				StringPooling="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+				CompileAs="0"
+				DisableSpecificWarnings="4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -118,13 +125,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -134,12 +138,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -149,16 +147,15 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="msgfmt"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -171,6 +168,18 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;..\..\..\lib-src\liblrdf&quot;;&quot;..\..\..\lib-src\liblrdf\src&quot;;..\raptor;&quot;..\..\..\lib-src\libraptor\src&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;RAPTOR_STATIC=1"
+				StringPooling="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+				CompileAs="0"
+				DisableSpecificWarnings="4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -182,13 +191,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -198,12 +204,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -213,16 +213,15 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="msgfmt"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -235,6 +234,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;..\..\..\lib-src\liblrdf&quot;;&quot;..\..\..\lib-src\liblrdf\src&quot;;..\raptor;&quot;..\..\..\lib-src\libraptor\src&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;RAPTOR_STATIC=1"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				CompileAs="0"
+				DisableSpecificWarnings="4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -246,13 +254,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -262,12 +267,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -281,171 +280,39 @@
 			Name="Source Files"
 			>
 			<File
-				RelativePath="..\..\..\locale\af.po"
+				RelativePath="..\..\..\lib-src\liblrdf\src\lrdf.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\ar.po"
+				RelativePath="..\..\..\lib-src\liblrdf\src\lrdf_multi.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\bg.po"
+				RelativePath="..\..\..\lib-src\liblrdf\src\md5.c"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			>
+			<File
+				RelativePath="..\..\..\lib-src\liblrdf\src\ladspa.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\bn.po"
+				RelativePath="..\..\..\lib-src\liblrdf\lrdf.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\ca.po"
+				RelativePath="..\..\..\lib-src\liblrdf\src\lrdf_md5.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\cb.po"
+				RelativePath="..\..\..\lib-src\liblrdf\lrdf_types.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\cs.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\cy.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\da.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\de.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\el.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\es.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\eu.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\fa.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\fi.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\fr.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\ga.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\gl.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\he.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\hu.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\it.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\ja.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\ko.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\lt.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\mk.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\nb.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\nl.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\oc.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\pl.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\pt.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\pt_BR.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\ro.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\ru.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\sk.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\sl.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\sv.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\tg.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\tr.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\uk.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\vi.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\zh.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\zh_TW.po"
+				RelativePath="..\..\..\lib-src\liblrdf\src\md5_loc.h"
 				>
 			</File>
 		</Filter>

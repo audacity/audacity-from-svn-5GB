@@ -5,8 +5,10 @@
 #include <ladspa.h>
 #include <time.h>
 #include <sys/types.h>
+#if !defined(WIN32)
 #include <unistd.h>
 #include <sys/time.h>
+#endif
 
 #include "lrdf.h"
 #include "lrdf_md5.h"
