@@ -129,14 +129,6 @@
    // These are 'WX' plug ins that manage their own displays using
    // wxWindows.
    //#define EXPERIMENTAL_WX_PLUG_INS
-
-	// RBD and GSW: 
-   // This flag controls MIDI playback, the updated Allegro library,
-	// and other MIDI functionality. At this point, MIDI playback and
-   // saves are not implemented, but cut, paste, undo, and copy are
-   // basically working.
-   // So far, only compiled/tested on Win32.
-	#define EXPERIMENTAL_NOTE_TRACK
 #endif
 
 //If you want any of these files, ask JKC.  They are not

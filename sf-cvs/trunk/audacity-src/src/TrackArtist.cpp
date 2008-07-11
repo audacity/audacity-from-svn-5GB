@@ -471,7 +471,11 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 
    #ifdef USE_MIDI
    // The note track isn't drawing a ruler at all!
+   // But it needs to!
    if (t->GetKind() == Track::Note) {
+      vruler->SetBounds(r.x, r.y+1, r.x + 1, r.y + r.height-1);
+      vruler->SetOrientation(wxVERTICAL);
+      vruler->Draw(*dc);
 
       dc->SetPen(*wxTRANSPARENT_PEN);
       dc->SetBrush(*wxWHITE_BRUSH);
@@ -2390,29 +2394,29 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
 
   // NOTE: it would be better to put this in some global initialization
   // function rather than do lookups every time.
-  char *line = symbol_table.insert_string("line");
-  char *rectangle = symbol_table.insert_string("rectangle");
-  char *triangle = symbol_table.insert_string("triangle");
-  char *polygon = symbol_table.insert_string("polygon");
-  char *oval = symbol_table.insert_string("oval");
-  char *text = symbol_table.insert_string("text");
-  char *texts = symbol_table.insert_string("texts");
-  char *x1r = symbol_table.insert_string("x1r");
-  char *x2r = symbol_table.insert_string("x2r");
-  char *y1r = symbol_table.insert_string("y1r");
-  char *y2r = symbol_table.insert_string("y2r");
-  char *linecolori = symbol_table.insert_string("linecolori");
-  char *fillcolori = symbol_table.insert_string("fillcolori");
-  char *linethicki = symbol_table.insert_string("linethicki");
-  char *filll = symbol_table.insert_string("filll");
-  char *fonta = symbol_table.insert_string("fonta");
-  char *roman = symbol_table.insert_string("roman");
-  char *swiss = symbol_table.insert_string("swiss");
-  char *modern = symbol_table.insert_string("modern");
-  char *weighta = symbol_table.insert_string("weighta");
-  char *bold = symbol_table.insert_string("bold");
-  char *sizei = symbol_table.insert_string("sizei");
-  char *justifys = symbol_table.insert_string("justifys");
+  Alg_attribute line = symbol_table.insert_string("line");
+  Alg_attribute rectangle = symbol_table.insert_string("rectangle");
+  Alg_attribute triangle = symbol_table.insert_string("triangle");
+  Alg_attribute polygon = symbol_table.insert_string("polygon");
+  Alg_attribute oval = symbol_table.insert_string("oval");
+  Alg_attribute text = symbol_table.insert_string("text");
+  Alg_attribute texts = symbol_table.insert_string("texts");
+  Alg_attribute x1r = symbol_table.insert_string("x1r");
+  Alg_attribute x2r = symbol_table.insert_string("x2r");
+  Alg_attribute y1r = symbol_table.insert_string("y1r");
+  Alg_attribute y2r = symbol_table.insert_string("y2r");
+  Alg_attribute linecolori = symbol_table.insert_string("linecolori");
+  Alg_attribute fillcolori = symbol_table.insert_string("fillcolori");
+  Alg_attribute linethicki = symbol_table.insert_string("linethicki");
+  Alg_attribute filll = symbol_table.insert_string("filll");
+  Alg_attribute fonta = symbol_table.insert_string("fonta");
+  Alg_attribute roman = symbol_table.insert_string("roman");
+  Alg_attribute swiss = symbol_table.insert_string("swiss");
+  Alg_attribute modern = symbol_table.insert_string("modern");
+  Alg_attribute weighta = symbol_table.insert_string("weighta");
+  Alg_attribute bold = symbol_table.insert_string("bold");
+  Alg_attribute sizei = symbol_table.insert_string("sizei");
+  Alg_attribute justifys = symbol_table.insert_string("justifys");
 
   //We want to draw in seconds, so we need to convert to seconds
   seq->convert_to_seconds();
@@ -2566,7 +2570,7 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
               while (n < 20) {
                 char name[8];
                 sprintf(name, "x%dr", n);
-                char *attr = symbol_table.insert_string(name);
+                Alg_attribute attr = symbol_table.insert_string(name);
                 double xn = LookupRealAttribute(note, attr, -1000000.0);
                 if (xn == -1000000.0) break;
                 points[n].x = TIME_TO_X(xn);

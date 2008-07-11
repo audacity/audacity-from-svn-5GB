@@ -3875,8 +3875,7 @@ void AudacityProject::OnImportMIDI()
          newTrack->SetSelected(true);
 
          PushState(wxString::Format(_("Imported MIDI from '%s'"),
-                                    fileName.c_str()),
-                   _("Import MIDI"));
+                                    fileName.c_str()), _("Import MIDI"));
 
          RedrawProject();
          mTrackPanel->EnsureVisible(newTrack);
