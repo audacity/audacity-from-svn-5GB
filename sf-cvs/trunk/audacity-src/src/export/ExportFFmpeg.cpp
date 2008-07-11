@@ -691,7 +691,7 @@ void ExportFFmpegOptions::OnAllCodecs(wxCommandEvent& event)
    mShownCodecNames = mCodecNames;
    mShownCodecLongNames = mCodecLongNames;
    mCodecList->Clear();
-   mCodecList->Append(mFormatNames);
+   mCodecList->Append(mCodecNames);
 }
 
 ///
@@ -705,7 +705,6 @@ void ExportFFmpegOptions::OnFormatList(wxCommandEvent& event)
    {
       return;
    }
-   mFormatName->SetLabel(wxString::Format(wxT("[%s] %s"),selfmt->c_str(),selfmtlong->c_str()));
 
    wxString *selcdc = NULL;
    wxString *selcdclong = NULL;
@@ -718,6 +717,8 @@ void ExportFFmpegOptions::OnFormatList(wxCommandEvent& event)
       mFormatName->SetLabel(wxString(wxT("Failed to guess format")));
       return;
    }
+   mFormatName->SetLabel(wxString::Format(wxT("%s"),selfmtlong->c_str()));
+
    const AVCodecTag **tags = fmt->codec_tag;
    int selcdcid = -1;
 
@@ -795,8 +796,6 @@ void ExportFFmpegOptions::OnCodecList(wxCommandEvent& event)
       return;
    }
 
-   mCodecName->SetLabel(wxString::Format(wxT("[%s] %s"),selcdc->c_str(),selcdclong->c_str()));
-
    wxString *selfmt = NULL;
    wxString *selfmtlong = NULL;
    FindSelectedFormat(&selfmt, &selfmtlong);
@@ -805,9 +804,10 @@ void ExportFFmpegOptions::OnCodecList(wxCommandEvent& event)
    if (cdc == NULL)
    {
       //This shouldn't really happen
-      mCodecName->SetLabel(wxString(wxT("Failed to guess format")));
+      mCodecName->SetLabel(wxString(wxT("Failed to find the codec")));
       return;
    }
+   mCodecName->SetLabel(wxString::Format(wxT("[%d] %s"),cdc->id,selcdclong->c_str()));
 
    if (selfmt != NULL)
    {
