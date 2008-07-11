@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="locale"
-	ProjectGUID="{BE9F28C5-058A-45F5-B2C1-D077BC058AAE}"
-	RootNamespace="locale"
+	Name="rasqal"
+	ProjectGUID="{BEF965EB-6330-4D18-858C-3B9F66CA9F18}"
+	RootNamespace="rasqal"
 	>
 	<Platforms>
 		<Platform
@@ -12,25 +12,21 @@
 		/>
 	</Platforms>
 	<ToolFiles>
-		<ToolFile
-			RelativePath=".\po.rules"
-		/>
 	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Unicode Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="msgfmt"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -43,6 +39,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\rasqal;&quot;..\..\..\lib-src\redland\rasqal\src&quot;;..\raptor;&quot;..\..\..\lib-src\redland\raptor\src&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;RASQAL_INTERNAL=1"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				CompileAs="0"
+				DisableSpecificWarnings="4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -54,13 +59,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -70,12 +72,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -85,16 +81,15 @@
 			Name="Unicode Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="msgfmt"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -107,6 +102,18 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\rasqal;&quot;..\..\..\lib-src\redland\rasqal\src&quot;;..\raptor;&quot;..\..\..\lib-src\redland\raptor\src&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;RASQAL_INTERNAL=1"
+				StringPooling="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+				CompileAs="0"
+				DisableSpecificWarnings="4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -118,13 +125,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -134,12 +138,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -149,16 +147,15 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="msgfmt"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -171,6 +168,18 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\rasqal;&quot;..\..\..\lib-src\redland\rasqal\src&quot;;..\raptor;&quot;..\..\..\lib-src\redland\raptor\src&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;RASQAL_INTERNAL=1"
+				StringPooling="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+				CompileAs="0"
+				DisableSpecificWarnings="4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -182,13 +191,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -198,12 +204,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -213,16 +213,15 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="msgfmt"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -235,6 +234,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\rasqal;&quot;..\..\..\lib-src\redland\rasqal\src&quot;;..\raptor;&quot;..\..\..\lib-src\redland\raptor\src&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;RASQAL_INTERNAL=1"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				CompileAs="0"
+				DisableSpecificWarnings="4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -246,13 +254,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -262,12 +267,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -281,171 +280,115 @@
 			Name="Source Files"
 			>
 			<File
-				RelativePath="..\..\..\locale\af.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_datetime.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\ar.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_decimal.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\bg.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_engine.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\bn.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_expr.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\ca.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_feature.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\cb.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_general.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\cs.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_graph_pattern.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\cy.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_literal.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\da.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_map.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\de.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_query.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\el.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_query_results.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\es.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_raptor.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\eu.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_result_formats.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\fa.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_rowsource.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\fi.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_sparql_xml.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\fr.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_xsd_datatypes.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\ga.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\sparql_lexer.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\gl.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\sparql_parser.c"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			>
+			<File
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\he.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rasqal_internal.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\hu.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rdql_common.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\it.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rdql_lexer.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\ja.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\rdql_parser.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\ko.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\sparql_common.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\lt.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\sparql_lexer.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\mk.po"
+				RelativePath="..\..\..\lib-src\redland\rasqal\src\sparql_parser.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\nb.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\nl.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\oc.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\pl.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\pt.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\pt_BR.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\ro.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\ru.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\sk.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\sl.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\sv.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\tg.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\tr.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\uk.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\vi.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\zh.po"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\locale\zh_TW.po"
+				RelativePath=".\win32_rasqal_config.h"
 				>
 			</File>
 		</Filter>

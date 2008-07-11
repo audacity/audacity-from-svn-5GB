@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#if !defined(WIN32)
 #include <unistd.h>
+#endif
 
 #include "lrdf.h"
 #include "lrdf_md5.h"
