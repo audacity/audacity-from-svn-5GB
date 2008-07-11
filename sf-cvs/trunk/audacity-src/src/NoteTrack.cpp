@@ -155,7 +155,7 @@ bool NoteTrack::LabelClick(wxRect & r, int mx, int my, bool right)
    return true;
 }
 
-void NoteTrack::SetSequence(Alg_seq *seq)
+void NoteTrack::SetSequence(Alg_seq_ptr seq)
 {
    if (mSeq)
       delete mSeq;
