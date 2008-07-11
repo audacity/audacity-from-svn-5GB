@@ -396,7 +396,7 @@ ExportFFmpegOptions::ExportFFmpegOptions(wxWindow *parent)
    for (unsigned int i = 0; i < 6; i++)
    {
       mPredictionOrderMethodLabels.Add(i);
-      mPredictionOrderMethodNames.Add(wxString::Format(wxT("%d"),PredictionOrderMethodNames[i]));
+      mPredictionOrderMethodNames.Add(wxString::Format(wxT("%s"),PredictionOrderMethodNames[i]));
    }
 
    PopulateOrExchange(S);
@@ -507,16 +507,16 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
          S.EndMultiColumn();
          S.StartMultiColumn(6);
          {
-            mBitrateSpin = S.Id(FEBitrateID).TieSpinCtrl(_("Bit Rate:"), wxT("/FileFormats/FFmpegBitRate"), 256000,1000000,1);
+            mBitrateSpin = S.Id(FEBitrateID).TieSpinCtrl(_("Bit Rate:"), wxT("/FileFormats/FFmpegBitRate"), 0,1000000,1);
             mBitrateSpin->SetToolTip(wxT("Bit Rate (bits/second) - influences the resulting file size and quality\nSome codecs may only accept specific values (128k, 192k, 256k etc)\n0 - automatic\nRecommended - 192000"));
 
-            mQualitySpin = S.Id(FEQualityID).TieSpinCtrl(_("Quality:"), wxT("/FileFormats/FFmpegQuality"), 80,100,1);
+            mQualitySpin = S.Id(FEQualityID).TieSpinCtrl(_("Quality:"), wxT("/FileFormats/FFmpegQuality"), 0,100,1);
             mQualitySpin->SetToolTip(wxT("Overral quality, used differently by different codecs\nRequired for vorbis\n0 - automatic"));
 
-            mSampleRateSpin = S.Id(FESampleRateID).TieSpinCtrl(_("Sample Rate:"), wxT("/FileFormats/FFmpegSampleRate"), 48000,200000,0);
+            mSampleRateSpin = S.Id(FESampleRateID).TieSpinCtrl(_("Sample Rate:"), wxT("/FileFormats/FFmpegSampleRate"), 0,200000,0);
             mSampleRateSpin->SetToolTip(wxT("Sample rate (Hz)\n0 - don't change sample rate"));
 
-            mCutoffSpin = S.Id(FECutoffID).TieSpinCtrl(_("Cutoff Bandwidth:"), wxT("/FileFormats/FFmpegCutOff"), 0,10000000,1);
+            mCutoffSpin = S.Id(FECutoffID).TieSpinCtrl(_("Cutoff Bandwidth:"), wxT("/FileFormats/FFmpegCutOff"), 0,10000000,0);
             mCutoffSpin->SetToolTip(wxT("Audio cutoff bandwidth (Hz)\nOptional\n0 - automatic\n"));
          }
          S.EndMultiColumn();
@@ -527,7 +527,7 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
                S.Id(FEUseLPCID).TieCheckBox(_("Use LPC"), wxT("/FileFormats/FFmpegUseLPC"), 1);
                S.AddVariableText(wxEmptyString);
 
-               mCompressionLevelSpin = S.Id(FECompLevelID).TieSpinCtrl(_("Compression Level:"), wxT("/FileFormats/FFmpegCompLevel"), 0,10,0);
+               mCompressionLevelSpin = S.Id(FECompLevelID).TieSpinCtrl(_("Compression Level:"), wxT("/FileFormats/FFmpegCompLevel"), 0,10,-1);
                mCompressionLevelSpin->SetToolTip(wxT("Compression level\nRequired for FLAC\n-1 - automatic\nmin - 0 (fast encoding, large output file)\nmax - 10 (slow encoding, small output file)"));
 
                mFrameSizeSpin =  S.Id(FEFrameSizeID).TieSpinCtrl(_("Frame Size:"), wxT("/FileFormats/FFmpegFrameSize"), 0,65535,0);
@@ -822,6 +822,27 @@ void ExportFFmpegOptions::OnCodecList(wxCommandEvent& event)
    int newselfmt = FetchCompatibleFormatList(cdc->id,selfmt);
    if (newselfmt > 0) mFormatList->Select(newselfmt);
 
+   int handled = -1;
+   AVOutputFormat *fmt = NULL;
+   for (int i = 0; apptable[i].control != 0; i++)
+   {
+      if (apptable[i].control != handled)
+      {
+         bool codec = false;
+         bool format = false;
+         if (apptable[i].codec == CODEC_ID_NONE) codec = true;
+         else if (cdc != NULL && apptable[i].codec == cdc->id) codec = true;
+         if (apptable[i].format == "any") format = true;
+         else if (selfmt != NULL && selfmt->Cmp(wxString::FromUTF8(apptable[i].format)) == 0) format = true;
+         if (codec && format)
+         {
+            handled = apptable[i].control;
+            wxWindow *item = FindWindowById(apptable[i].control,this);
+            if (item != NULL) item->Enable(apptable[i].enable);
+         }
+      }
+   }
+
    return;
 }
 
@@ -829,6 +850,10 @@ void ExportFFmpegOptions::OnCodecList(wxCommandEvent& event)
 ///
 void ExportFFmpegOptions::OnOK(wxCommandEvent& event)
 {
+   int selcdc = mCodecList->GetSelection();
+   int selfmt = mFormatList->GetSelection();
+   if (selcdc > -1) gPrefs->Write(wxT("/FileFormats/FFmpegCodec"),mCodecList->GetString(selcdc));
+   if (selfmt > -1) gPrefs->Write(wxT("/FileFormats/FFmpegFormat"),mFormatList->GetString(selfmt));
    ShuttleGui S(this, eIsSavingToPrefs);
    PopulateOrExchange(S);
 
@@ -1889,6 +1914,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    case FMT_AAC:
       mSampleRate = gPrefs->Read(wxT("/FileFormats/AACSampleRate"), 48000);
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AACBitRate"), 192000);
+      mEncAudioCodecCtx->profile = gPrefs->Read(wxT("/FileFormats/AACProfile"),FF_PROFILE_AAC_LOW);
       break;
    case FMT_FLAC:
    case FMT_OGGFLAC:
@@ -1922,8 +1948,24 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/WMABitRate"), 198000);
       break;
    case FMT_OTHER:
-      mSampleRate = gPrefs->Read(wxT("/FileFormats/FFmpegSampleRate"),44100);
-      mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/FFmpegBitRate"), 198000);
+      memcpy(mEncAudioStream->language,gPrefs->Read(wxT("/FileFormats/FFmpegLanguage"),wxT("")).c_str(),4);
+      mSampleRate = gPrefs->Read(wxT("/FileFormats/FFmpegSampleRate"),(long)0);
+      mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/FFmpegBitRate"), (long)0);
+      memcpy(&mEncAudioCodecCtx->codec_tag,gPrefs->Read(wxT("/FileFormats/FFmpegTag"),wxT("")).c_str(),4);
+      mEncAudioCodecCtx->global_quality = gPrefs->Read(wxT("/FileFormats/FFmpegQuality"),(long)0);
+      mEncAudioCodecCtx->cutoff = gPrefs->Read(wxT("/FileFormats/FFmpegCutOff"),(long)0);
+      mEncAudioCodecCtx->use_lpc = gPrefs->Read(wxT("/FileFormats/FFmpegUseLPC"),true);
+      mEncAudioCodecCtx->compression_level = gPrefs->Read(wxT("/FileFormats/FFmpegCompLevel"),-1);
+      mEncAudioCodecCtx->frame_size = gPrefs->Read(wxT("/FileFormats/FFmpegFrameSize"),(long)0);
+      mEncAudioCodecCtx->lpc_coeff_precision = gPrefs->Read(wxT("/FileFormats/FFmpegLPCCoefPrec"),(long)0);
+      mEncAudioCodecCtx->min_prediction_order = gPrefs->Read(wxT("/FileFormats/FFmpegMinPredOrder"),(long)-1);
+      mEncAudioCodecCtx->max_prediction_order = gPrefs->Read(wxT("/FileFormats/FFmpegMaxPredOrder"),(long)-1);
+      mEncAudioCodecCtx->min_partition_order = gPrefs->Read(wxT("/FileFormats/FFmpegMinPartOrder"),(long)-1);
+      mEncAudioCodecCtx->max_partition_order = gPrefs->Read(wxT("/FileFormats/FFmpegMaxPartOrder"),(long)-1);
+      mEncAudioCodecCtx->prediction_order_method = gPrefs->Read(wxT("/FileFormats/FFmpegPredOrderMethod"),(long)0);
+      mEncFormatCtx->mux_rate = gPrefs->Read(wxT("/FileFormats/FFmpegMuxRate"),(long)0);
+      mEncFormatCtx->packet_size = gPrefs->Read(wxT("/FileFormats/FFmpegPacketSize"),(long)0);
+      mEncAudioCodecCtx->codec_id = (CodecID)gPrefs->Read(wxT("/FileFormats/FFmpegCodec"), mEncFormatDesc->audio_codec);
       break;
    default:
       return false;
@@ -2144,6 +2186,8 @@ bool ExportFFmpeg::Export(AudacityProject *project,
    if (mSubFormat > 14) return false;
    
    wxString ext(fmts[mSubFormat].extension);
+   if (mSubFormat == FMT_OTHER)
+      ext = gPrefs->Read(wxT("/FileFormats/FFmpegFormat"),wxT("mkv"));
    ret = Init(ext.ToAscii(),project);
 
    if (!ret) return false;
