@@ -145,7 +145,8 @@ static void LoadLadspaEffect(wxSortedArrayString &uniq, wxString fname,
 #if defined(USE_LIBLRDF) && defined(EFFECT_CATEGORIES)
             std::multimap<unsigned long, wxString>::const_iterator iter;
             iter = gPluginCategories.lower_bound(data->UniqueID);
-            for ( ; iter->first == data->UniqueID; ++iter)
+            for ( ; (iter != gPluginCategories.end() &&
+                     iter->first == data->UniqueID); ++iter)
                categories.insert(iter->second);
 #endif
 
