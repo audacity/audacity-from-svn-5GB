@@ -43,7 +43,27 @@ SLV2Value gInputPortClass;
 SLV2Value gOutputPortClass;
 
 
+/** This function determines whether a plugin should be displayed or not.
+    It checks if the required features and non-optional port types are
+    supported. */
 static bool PluginFilter(SLV2Plugin plug) {
+   
+   // We don't support any features at all, so if the plugin requires
+   // any we skip it.
+   SLV2Values req = slv2_plugin_get_required_features(plug);
+   if (slv2_values_size(req) > 0)
+      return false;
+   
+   // We only understand audio and control ports, so if there are any others
+   // we skip the plugin.
+   uint32_t nPorts = slv2_plugin_get_num_ports(plug);
+   for (uint32_t i = 0; i < nPorts; ++i) {
+      SLV2Port port = slv2_plugin_get_port_at_index(plug, i);
+      if (!slv2_port_is_a(mData, port, gAudioPortClass) &&
+          !slv2_port_is_a(mData, port, gControlPortClass))
+         return false;
+   }
+   
    return true;
 }
 
@@ -87,9 +107,6 @@ void LoadLV2Plugins() {
             em.AddCategoryParent(chCat, pCat);
          }
       }
-      // XXX this doesn't seem to be declared, but we need to free the list
-      // somehow or it will leak - SLV2 bug?
-      //slv2_plugin_classes_free(ch);
    }
 
 #endif
