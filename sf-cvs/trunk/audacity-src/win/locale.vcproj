@@ -453,6 +453,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\locale\fa.po"
+				>
+			</File>
+			<File
 				RelativePath="..\locale\fi.po"
 				>
 			</File>
@@ -501,10 +505,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\locale\pt.po"
-				>
-			</File>
-			<File
 				RelativePath="..\locale\ru.po"
 				>
 			</File>
@@ -514,6 +514,10 @@
 			</File>
 			<File
 				RelativePath="..\locale\sv.po"
+				>
+			</File>
+			<File
+				RelativePath="..\locale\tg.po"
 				>
 			</File>
 			<File
