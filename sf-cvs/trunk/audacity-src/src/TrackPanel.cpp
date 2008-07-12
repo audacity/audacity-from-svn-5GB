@@ -3201,7 +3201,8 @@ void TrackPanel::HandleSampleEditingDrag( wxMouseEvent & event )
    //JKC I don't think this makes any noticeable difference to speed
    // whatsoever!  The real reason for the special case is probably to 
    // avoid division by zero....
-   if(abs(s0 - mDrawingLastDragSample) <= 1){
+#define LLABS(n) ((n) < 0 ? -(n) : (n))
+   if(LLABS(s0 - mDrawingLastDragSample) <= 1){
       ((WaveTrack*)mDrawingTrack)->Set((samplePtr)&newLevel,  floatSample, s0, 1);         
    }
    else 
