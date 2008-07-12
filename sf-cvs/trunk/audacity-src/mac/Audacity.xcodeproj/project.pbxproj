@@ -22,20 +22,6 @@
 
 /* Begin PBXBuildFile section */
 		17048268098C0F5F00824C66 /* mad.h in Headers */ = {isa = PBXBuildFile; fileRef = 17048267098C0F5F00824C66 /* mad.h */; };
-		17073F2D0988DE65008541CC /* allegro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17072F250988D569008541CC /* allegro.cpp */; };
-		17073F2E0988DE65008541CC /* allegro.h in Headers */ = {isa = PBXBuildFile; fileRef = 17072F260988D569008541CC /* allegro.h */; };
-		17073F2F0988DE65008541CC /* allegrord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17072F290988D569008541CC /* allegrord.cpp */; };
-		17073F300988DE65008541CC /* allegrord.h in Headers */ = {isa = PBXBuildFile; fileRef = 17072F2A0988D569008541CC /* allegrord.h */; };
-		17073F310988DE65008541CC /* allegrowr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17072F2B0988D569008541CC /* allegrowr.cpp */; };
-		17073F320988DE65008541CC /* allegrowr.h in Headers */ = {isa = PBXBuildFile; fileRef = 17072F2C0988D569008541CC /* allegrowr.h */; };
-		17073F330988DE65008541CC /* mfallegro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17072F300988D569008541CC /* mfallegro.cpp */; };
-		17073F340988DE65008541CC /* mfallegro.h in Headers */ = {isa = PBXBuildFile; fileRef = 17072F310988D569008541CC /* mfallegro.h */; };
-		17073F350988DE65008541CC /* mfmidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17072F320988D569008541CC /* mfmidi.cpp */; };
-		17073F360988DE65008541CC /* mfmidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 17072F330988D569008541CC /* mfmidi.h */; };
-		17073F370988DE65008541CC /* stime.h in Headers */ = {isa = PBXBuildFile; fileRef = 17072F340988D569008541CC /* stime.h */; };
-		17073F390988DE65008541CC /* strparse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17072F380988D569008541CC /* strparse.cpp */; };
-		17073F3A0988DE65008541CC /* strparse.h in Headers */ = {isa = PBXBuildFile; fileRef = 17072F390988D569008541CC /* strparse.h */; };
-		17073F3B0988DE65008541CC /* trace.h in Headers */ = {isa = PBXBuildFile; fileRef = 17072F3A0988D569008541CC /* trace.h */; };
 		17073F490988E061008541CC /* xmlparse.c in Sources */ = {isa = PBXBuildFile; fileRef = 17072F580988D6A9008541CC /* xmlparse.c */; };
 		17073F4A0988E061008541CC /* xmlparse.h in Headers */ = {isa = PBXBuildFile; fileRef = 17072F590988D6A9008541CC /* xmlparse.h */; };
 		17073F4B0988E061008541CC /* ascii.h in Headers */ = {isa = PBXBuildFile; fileRef = 17072F5B0988D6A9008541CC /* ascii.h */; };
@@ -315,7 +301,6 @@
 		176EEC3809A2F31A00188F3B /* encoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA2309A2EF1000188F3B /* encoder.h */; };
 		176EEC3909A2F31A00188F3B /* export.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA2409A2EF1000188F3B /* export.h */; };
 		176EEC3A09A2F31A00188F3B /* metadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA2809A2EF1000188F3B /* metadata.h */; };
-		178A5931098AA81B000944FE /* stimelinux.c in Sources */ = {isa = PBXBuildFile; fileRef = 17073F410988DF68008541CC /* stimelinux.c */; };
 		178A5935098AAA03000944FE /* debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 17072F930988D6A9008541CC /* debug.h */; };
 		178A5936098AAA3D000944FE /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 17072F920988D6A9008541CC /* debug.c */; };
 		1790B11A09883BFD008A330A /* AudacityApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790AFCE09883BFD008A330A /* AudacityApp.cpp */; };
@@ -441,7 +426,7 @@
 		1790B1A909883BFD008A330A /* XMLFileReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B11009883BFD008A330A /* XMLFileReader.cpp */; };
 		1790B1AA09883BFD008A330A /* XMLTagHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B11209883BFD008A330A /* XMLTagHandler.cpp */; };
 		17C99D560989710D0041B1BC /* libvorbis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 170740D40988F820008541CC /* libvorbis.a */; };
-		17C99D58098971380041B1BC /* liballegro.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17073EE80988DBDD008541CC /* liballegro.a */; };
+		17C99D58098971380041B1BC /* libportsmf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17073EE80988DBDD008541CC /* libportsmf.a */; };
 		17C99D5A098971390041B1BC /* libid3tag.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17073F620988E121008541CC /* libid3tag.a */; };
 		17C99D5B098971390041B1BC /* libmad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17073FC40988E561008541CC /* libmad.a */; };
 		17C99D5C098971390041B1BC /* libogg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17073FFE0988EA60008541CC /* libogg.a */; };
@@ -733,10 +718,6 @@
 		280828550A75E0D0000002EF /* LabelDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828530A75E0D0000002EF /* LabelDialog.cpp */; };
 		2808285A0A75E0EA000002EF /* Grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828580A75E0EA000002EF /* Grid.cpp */; };
 		2809C4B80BCB7E560006010F /* FileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2809C4B60BCB7E560006010F /* FileIO.cpp */; };
-		280A79100E180230009155E6 /* allegroserial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280A790C0E180230009155E6 /* allegroserial.cpp */; };
-		280A79110E180230009155E6 /* allegrosmfrd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280A790D0E180230009155E6 /* allegrosmfrd.cpp */; };
-		280A79120E180230009155E6 /* allegrosmfrd.h in Headers */ = {isa = PBXBuildFile; fileRef = 280A790E0E180230009155E6 /* allegrosmfrd.h */; };
-		280A79130E180230009155E6 /* allegrosmfwr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280A790F0E180230009155E6 /* allegrosmfwr.cpp */; };
 		28105D9C0AD09FB200BB4269 /* portmixer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28105D9B0AD09FB200BB4269 /* portmixer.h */; };
 		28105DAA0AD09FC500BB4269 /* px_mac_coreaudio.c in Sources */ = {isa = PBXBuildFile; fileRef = 28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */; };
 		28105DAB0AD09FC500BB4269 /* px_mixer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28105DA10AD09FC500BB4269 /* px_mixer.c */; };
@@ -1043,6 +1024,18 @@
 		28A520560C12BE0300BF6811 /* pa_debugprint.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A520520C12BE0300BF6811 /* pa_debugprint.h */; };
 		28A520570C12BE0300BF6811 /* pa_ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28A520530C12BE0300BF6811 /* pa_ringbuffer.c */; };
 		28A520580C12BE0300BF6811 /* pa_ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A520540C12BE0300BF6811 /* pa_ringbuffer.h */; };
+		28A96DB80E28641D00F3CE01 /* algrd_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F3A3F60E28289500729866 /* algrd_internal.h */; };
+		28A96DB90E28641D00F3CE01 /* algsmfrd_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F3A3F70E28289500729866 /* algsmfrd_internal.h */; };
+		28A96DBA0E28641E00F3CE01 /* allegro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F3A3F80E28289500729866 /* allegro.cpp */; };
+		28A96DBB0E28641E00F3CE01 /* allegro.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F3A3F90E28289500729866 /* allegro.h */; };
+		28A96DBC0E28641F00F3CE01 /* allegrord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F3A3FA0E28289500729866 /* allegrord.cpp */; };
+		28A96DBD0E28641F00F3CE01 /* allegrosmfrd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F3A3FB0E28289500729866 /* allegrosmfrd.cpp */; };
+		28A96DBE0E28642000F3CE01 /* allegrosmfwr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F3A3FC0E28289500729866 /* allegrosmfwr.cpp */; };
+		28A96DBF0E28642000F3CE01 /* allegrowr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F3A3FD0E28289500729866 /* allegrowr.cpp */; };
+		28A96DC00E28642100F3CE01 /* mfmidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F3A3FE0E28289500729866 /* mfmidi.cpp */; };
+		28A96DC10E28642200F3CE01 /* mfmidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F3A3FF0E28289500729866 /* mfmidi.h */; };
+		28A96DC20E28642300F3CE01 /* strparse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F3A4000E28289500729866 /* strparse.cpp */; };
+		28A96DC30E28642300F3CE01 /* strparse.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F3A4010E28289500729866 /* strparse.h */; };
 		28B6ED8F0DE3D1B50046F0F3 /* LoadModules.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28B6ED8D0DE3D1B50046F0F3 /* LoadModules.cpp */; };
 		28D0255B0AFDA53B0035F843 /* alpasscv.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D025570AFDA53B0035F843 /* alpasscv.c */; };
 		28D0255C0AFDA53B0035F843 /* alpasscv.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D025580AFDA53B0035F843 /* alpasscv.h */; };
@@ -1281,20 +1274,6 @@
 
 /* Begin PBXFileReference section */
 		17048267098C0F5F00824C66 /* mad.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = mad.h; sourceTree = "<group>"; };
-		17072F250988D569008541CC /* allegro.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = allegro.cpp; sourceTree = "<group>"; };
-		17072F260988D569008541CC /* allegro.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = allegro.h; sourceTree = "<group>"; };
-		17072F290988D569008541CC /* allegrord.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = allegrord.cpp; sourceTree = "<group>"; };
-		17072F2A0988D569008541CC /* allegrord.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = allegrord.h; sourceTree = "<group>"; };
-		17072F2B0988D569008541CC /* allegrowr.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = allegrowr.cpp; sourceTree = "<group>"; };
-		17072F2C0988D569008541CC /* allegrowr.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = allegrowr.h; sourceTree = "<group>"; };
-		17072F300988D569008541CC /* mfallegro.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = mfallegro.cpp; sourceTree = "<group>"; };
-		17072F310988D569008541CC /* mfallegro.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = mfallegro.h; sourceTree = "<group>"; };
-		17072F320988D569008541CC /* mfmidi.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = mfmidi.cpp; sourceTree = "<group>"; };
-		17072F330988D569008541CC /* mfmidi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = mfmidi.h; sourceTree = "<group>"; };
-		17072F340988D569008541CC /* stime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = stime.h; sourceTree = "<group>"; };
-		17072F380988D569008541CC /* strparse.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = strparse.cpp; sourceTree = "<group>"; };
-		17072F390988D569008541CC /* strparse.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = strparse.h; sourceTree = "<group>"; };
-		17072F3A0988D569008541CC /* trace.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = trace.h; sourceTree = "<group>"; };
 		17072F580988D6A9008541CC /* xmlparse.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = xmlparse.c; sourceTree = "<group>"; };
 		17072F590988D6A9008541CC /* xmlparse.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = xmlparse.h; sourceTree = "<group>"; };
 		17072F5B0988D6A9008541CC /* ascii.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ascii.h; sourceTree = "<group>"; };
@@ -1534,8 +1513,7 @@
 		1707383D0988D6B0008541CC /* SoundTouch.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = SoundTouch.cpp; sourceTree = "<group>"; };
 		170738410988D6B0008541CC /* TDStretch.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = TDStretch.cpp; sourceTree = "<group>"; };
 		170738420988D6B0008541CC /* TDStretch.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = TDStretch.h; sourceTree = "<group>"; };
-		17073EE80988DBDD008541CC /* liballegro.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liballegro.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		17073F410988DF68008541CC /* stimelinux.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = stimelinux.c; sourceTree = "<group>"; };
+		17073EE80988DBDD008541CC /* libportsmf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libportsmf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		17073F480988E04A008541CC /* libexpat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libexpat.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		17073F620988E121008541CC /* libid3tag.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libid3tag.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		17073FC40988E561008541CC /* libmad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmad.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2144,10 +2122,6 @@
 		280828590A75E0EA000002EF /* Grid.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Grid.h; sourceTree = "<group>"; };
 		2809C4B60BCB7E560006010F /* FileIO.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FileIO.cpp; sourceTree = "<group>"; };
 		2809C4B70BCB7E560006010F /* FileIO.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FileIO.h; sourceTree = "<group>"; };
-		280A790C0E180230009155E6 /* allegroserial.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = allegroserial.cpp; sourceTree = "<group>"; };
-		280A790D0E180230009155E6 /* allegrosmfrd.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = allegrosmfrd.cpp; sourceTree = "<group>"; };
-		280A790E0E180230009155E6 /* allegrosmfrd.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = allegrosmfrd.h; sourceTree = "<group>"; };
-		280A790F0E180230009155E6 /* allegrosmfwr.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = allegrosmfwr.cpp; sourceTree = "<group>"; };
 		280DE5D90E1634B4006159ED /* lrdf.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = lrdf.h; path = liblrdf/lrdf.h; sourceTree = "<group>"; };
 		280DE5DB0E163507006159ED /* ladspa.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = ladspa.h; path = liblrdf/src/ladspa.h; sourceTree = "<group>"; };
 		280DE5DC0E163507006159ED /* lrdf.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = lrdf.c; path = liblrdf/src/lrdf.c; sourceTree = "<group>"; };
@@ -2574,6 +2548,18 @@
 		28F1D81A0A2D0018005506A7 /* ExpandingToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ExpandingToolBar.h; sourceTree = "<group>"; };
 		28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImageRoll.cpp; sourceTree = "<group>"; };
 		28F1D81C0A2D0019005506A7 /* ImageRoll.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ImageRoll.h; sourceTree = "<group>"; };
+		28F3A3F60E28289500729866 /* algrd_internal.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = algrd_internal.h; path = portsmf/algrd_internal.h; sourceTree = "<group>"; };
+		28F3A3F70E28289500729866 /* algsmfrd_internal.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = algsmfrd_internal.h; path = portsmf/algsmfrd_internal.h; sourceTree = "<group>"; };
+		28F3A3F80E28289500729866 /* allegro.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = allegro.cpp; path = portsmf/allegro.cpp; sourceTree = "<group>"; };
+		28F3A3F90E28289500729866 /* allegro.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = allegro.h; path = portsmf/allegro.h; sourceTree = "<group>"; };
+		28F3A3FA0E28289500729866 /* allegrord.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = allegrord.cpp; path = portsmf/allegrord.cpp; sourceTree = "<group>"; };
+		28F3A3FB0E28289500729866 /* allegrosmfrd.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = allegrosmfrd.cpp; path = portsmf/allegrosmfrd.cpp; sourceTree = "<group>"; };
+		28F3A3FC0E28289500729866 /* allegrosmfwr.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = allegrosmfwr.cpp; path = portsmf/allegrosmfwr.cpp; sourceTree = "<group>"; };
+		28F3A3FD0E28289500729866 /* allegrowr.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = allegrowr.cpp; path = portsmf/allegrowr.cpp; sourceTree = "<group>"; };
+		28F3A3FE0E28289500729866 /* mfmidi.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = mfmidi.cpp; path = portsmf/mfmidi.cpp; sourceTree = "<group>"; };
+		28F3A3FF0E28289500729866 /* mfmidi.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = mfmidi.h; path = portsmf/mfmidi.h; sourceTree = "<group>"; };
+		28F3A4000E28289500729866 /* strparse.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = strparse.cpp; path = portsmf/strparse.cpp; sourceTree = "<group>"; };
+		28F3A4010E28289500729866 /* strparse.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = strparse.h; path = portsmf/strparse.h; sourceTree = "<group>"; };
 		28F5C10F0BE5886A00D17341 /* FileDialogPrivate.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FileDialogPrivate.cpp; sourceTree = "<group>"; };
 		28F5C1100BE5886A00D17341 /* FileDialogPrivate.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FileDialogPrivate.h; sourceTree = "<group>"; };
 		28FB121F0A3790A8006F0917 /* MacroMagic.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = MacroMagic.h; sourceTree = "<group>"; };
@@ -2604,7 +2590,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				17C99D560989710D0041B1BC /* libvorbis.a in Frameworks */,
-				17C99D58098971380041B1BC /* liballegro.a in Frameworks */,
+				17C99D58098971380041B1BC /* libportsmf.a in Frameworks */,
 				17C99D5A098971390041B1BC /* libid3tag.a in Frameworks */,
 				17C99D5B098971390041B1BC /* libmad.a in Frameworks */,
 				17CBAE4A098B85CD00575C58 /* libnyquist.a in Frameworks */,
@@ -2639,7 +2625,6 @@
 		17072F220988D4F4008541CC /* lib-src */ = {
 			isa = PBXGroup;
 			children = (
-				17072F230988D569008541CC /* allegro */,
 				17072F4C0988D6A9008541CC /* expat */,
 				283B3D3E0BC21EBE00FA01D5 /* FileDialog */,
 				2880529A0DEA71B000671EA4 /* lib-widget-extra */,
@@ -2656,6 +2641,7 @@
 				2844B48E0DEA66900087C656 /* mod-script-pipe */,
 				28E821F50A39FC1300DCE280 /* portaudio-v19 */,
 				170737B00988D6AF008541CC /* portmixer */,
+				28F3A3EF0E28280A00729866 /* portsmf */,
 				287BD6C70E25D65B00CB4467 /* redland */,
 				287BD9AE0E25DFBB00CB4467 /* slv2 */,
 				170737D30988D6AF008541CC /* soundtouch */,
@@ -2664,32 +2650,6 @@
 			name = "lib-src";
 			path = "../lib-src";
 			sourceTree = SOURCE_ROOT;
-		};
-		17072F230988D569008541CC /* allegro */ = {
-			isa = PBXGroup;
-			children = (
-				280A790C0E180230009155E6 /* allegroserial.cpp */,
-				280A790D0E180230009155E6 /* allegrosmfrd.cpp */,
-				280A790E0E180230009155E6 /* allegrosmfrd.h */,
-				280A790F0E180230009155E6 /* allegrosmfwr.cpp */,
-				17072F250988D569008541CC /* allegro.cpp */,
-				17072F260988D569008541CC /* allegro.h */,
-				17072F290988D569008541CC /* allegrord.cpp */,
-				17072F2A0988D569008541CC /* allegrord.h */,
-				17072F2B0988D569008541CC /* allegrowr.cpp */,
-				17072F2C0988D569008541CC /* allegrowr.h */,
-				17072F300988D569008541CC /* mfallegro.cpp */,
-				17072F310988D569008541CC /* mfallegro.h */,
-				17072F320988D569008541CC /* mfmidi.cpp */,
-				17072F330988D569008541CC /* mfmidi.h */,
-				17072F340988D569008541CC /* stime.h */,
-				17073F410988DF68008541CC /* stimelinux.c */,
-				17072F380988D569008541CC /* strparse.cpp */,
-				17072F390988D569008541CC /* strparse.h */,
-				17072F3A0988D569008541CC /* trace.h */,
-			);
-			path = allegro;
-			sourceTree = "<group>";
 		};
 		17072F4C0988D6A9008541CC /* expat */ = {
 			isa = PBXGroup;
@@ -3289,7 +3249,7 @@
 			children = (
 				1790AFB009883B6D008A330A /* Audacity.app */,
 				170741430988FDB3008541CC /* intgen */,
-				17073EE80988DBDD008541CC /* liballegro.a */,
+				17073EE80988DBDD008541CC /* libportsmf.a */,
 				17073F480988E04A008541CC /* libexpat.a */,
 				176EEBEA09A2F16200188F3B /* libFLAC.a */,
 				176EEC1E09A2F2DD00188F3B /* libFLAC++.a */,
@@ -4686,6 +4646,25 @@
 			path = "portaudio-v19/src/os";
 			sourceTree = "<group>";
 		};
+		28F3A3EF0E28280A00729866 /* portsmf */ = {
+			isa = PBXGroup;
+			children = (
+				28F3A3F60E28289500729866 /* algrd_internal.h */,
+				28F3A3F70E28289500729866 /* algsmfrd_internal.h */,
+				28F3A3F80E28289500729866 /* allegro.cpp */,
+				28F3A3F90E28289500729866 /* allegro.h */,
+				28F3A3FA0E28289500729866 /* allegrord.cpp */,
+				28F3A3FB0E28289500729866 /* allegrosmfrd.cpp */,
+				28F3A3FC0E28289500729866 /* allegrosmfwr.cpp */,
+				28F3A3FD0E28289500729866 /* allegrowr.cpp */,
+				28F3A3FE0E28289500729866 /* mfmidi.cpp */,
+				28F3A3FF0E28289500729866 /* mfmidi.h */,
+				28F3A4000E28289500729866 /* strparse.cpp */,
+				28F3A4010E28289500729866 /* strparse.h */,
+			);
+			name = portsmf;
+			sourceTree = "<group>";
+		};
 		28F8BBDA0BC5FA6600CDF16E /* mac */ = {
 			isa = PBXGroup;
 			children = (
@@ -4702,15 +4681,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17073F2E0988DE65008541CC /* allegro.h in Headers */,
-				17073F300988DE65008541CC /* allegrord.h in Headers */,
-				17073F320988DE65008541CC /* allegrowr.h in Headers */,
-				17073F340988DE65008541CC /* mfallegro.h in Headers */,
-				17073F360988DE65008541CC /* mfmidi.h in Headers */,
-				17073F370988DE65008541CC /* stime.h in Headers */,
-				17073F3A0988DE65008541CC /* strparse.h in Headers */,
-				17073F3B0988DE65008541CC /* trace.h in Headers */,
-				280A79120E180230009155E6 /* allegrosmfrd.h in Headers */,
+				28A96DB80E28641D00F3CE01 /* algrd_internal.h in Headers */,
+				28A96DB90E28641D00F3CE01 /* algsmfrd_internal.h in Headers */,
+				28A96DBB0E28641E00F3CE01 /* allegro.h in Headers */,
+				28A96DC10E28642200F3CE01 /* mfmidi.h in Headers */,
+				28A96DC30E28642300F3CE01 /* strparse.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5266,9 +5241,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		17073EE70988DBDD008541CC /* allegro */ = {
+		17073EE70988DBDD008541CC /* portsmf */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 17073EE90988DC02008541CC /* Build configuration list for PBXNativeTarget "allegro" */;
+			buildConfigurationList = 17073EE90988DC02008541CC /* Build configuration list for PBXNativeTarget "portsmf" */;
 			buildPhases = (
 				17073EE40988DBDD008541CC /* Headers */,
 				17073EE50988DBDD008541CC /* Sources */,
@@ -5277,9 +5252,9 @@
 			);
 			dependencies = (
 			);
-			name = allegro;
+			name = portsmf;
 			productName = allegro;
-			productReference = 17073EE80988DBDD008541CC /* liballegro.a */;
+			productReference = 17073EE80988DBDD008541CC /* libportsmf.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		17073F470988E04A008541CC /* expat */ = {
@@ -5507,7 +5482,6 @@
 			);
 			dependencies = (
 				17072E940988C35B008541CC /* PBXTargetDependency */,
-				17C99D53098970800041B1BC /* PBXTargetDependency */,
 				17C99D51098970800041B1BC /* PBXTargetDependency */,
 				176EEC7109A2F54D00188F3B /* PBXTargetDependency */,
 				176EEC7309A2F55100188F3B /* PBXTargetDependency */,
@@ -5521,6 +5495,7 @@
 				17C99D3F098970800041B1BC /* PBXTargetDependency */,
 				28E67F640A3A16AA0021D89F /* PBXTargetDependency */,
 				17C99D43098970800041B1BC /* PBXTargetDependency */,
+				17C99D53098970800041B1BC /* PBXTargetDependency */,
 				287BD8BA0E25DAC400CB4467 /* PBXTargetDependency */,
 				287BD8B80E25DAC400CB4467 /* PBXTargetDependency */,
 				287BD8B60E25DAC400CB4467 /* PBXTargetDependency */,
@@ -5694,7 +5669,6 @@
 			targets = (
 				1790AFAF09883B6D008A330A /* Audacity */,
 				17072E880988BD39008541CC /* Configure */,
-				17073EE70988DBDD008541CC /* allegro */,
 				17073F470988E04A008541CC /* expat */,
 				176EEBE909A2F16200188F3B /* libFLAC */,
 				176EEC1D09A2F2DD00188F3B /* libFLAC++ */,
@@ -5709,6 +5683,7 @@
 				2880527D0DEA694100671EA4 /* mod-script-pipe */,
 				28E67F510A3A160D0021D89F /* portaudio-v19 */,
 				170740950988F2F7008541CC /* portmixer */,
+				17073EE70988DBDD008541CC /* portsmf */,
 				170740790988F1BB008541CC /* soundtouch */,
 				2840CECB0AEB803C00F49FC3 /* twolame */,
 				170741420988FDB3008541CC /* intgen */,
@@ -5898,16 +5873,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17073F2D0988DE65008541CC /* allegro.cpp in Sources */,
-				17073F2F0988DE65008541CC /* allegrord.cpp in Sources */,
-				17073F310988DE65008541CC /* allegrowr.cpp in Sources */,
-				17073F330988DE65008541CC /* mfallegro.cpp in Sources */,
-				17073F350988DE65008541CC /* mfmidi.cpp in Sources */,
-				17073F390988DE65008541CC /* strparse.cpp in Sources */,
-				178A5931098AA81B000944FE /* stimelinux.c in Sources */,
-				280A79100E180230009155E6 /* allegroserial.cpp in Sources */,
-				280A79110E180230009155E6 /* allegrosmfrd.cpp in Sources */,
-				280A79130E180230009155E6 /* allegrosmfwr.cpp in Sources */,
+				28A96DBA0E28641E00F3CE01 /* allegro.cpp in Sources */,
+				28A96DBC0E28641F00F3CE01 /* allegrord.cpp in Sources */,
+				28A96DBD0E28641F00F3CE01 /* allegrosmfrd.cpp in Sources */,
+				28A96DBE0E28642000F3CE01 /* allegrosmfwr.cpp in Sources */,
+				28A96DBF0E28642000F3CE01 /* allegrowr.cpp in Sources */,
+				28A96DC00E28642100F3CE01 /* mfmidi.cpp in Sources */,
+				28A96DC20E28642300F3CE01 /* strparse.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6789,7 +6761,7 @@
 		};
 		17C99D53098970800041B1BC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 17073EE70988DBDD008541CC /* allegro */;
+			target = 17073EE70988DBDD008541CC /* portsmf */;
 			targetProxy = 17C99D52098970800041B1BC /* PBXContainerItemProxy */;
 		};
 		2840CF800AEB822100F49FC3 /* PBXTargetDependency */ = {
@@ -6876,7 +6848,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = allegro;
+				PRODUCT_NAME = portsmf;
 			};
 			name = "Debug Static";
 		};
@@ -7032,7 +7004,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/liblrdf/src $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/redland/librdf $(TOPLEVEL)/lib-src/slv2 $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/liblrdf/src $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/portsmf $(TOPLEVEL)/lib-src/redland/librdf $(TOPLEVEL)/lib-src/slv2 $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Debug Static";
 		};
@@ -7528,7 +7500,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/liblrdf/src $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/redland/librdf $(TOPLEVEL)/lib-src/slv2 $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/liblrdf/src $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/portsmf $(TOPLEVEL)/lib-src/redland/librdf $(TOPLEVEL)/lib-src/slv2 $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Debug Shared";
 		};
@@ -7544,7 +7516,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = allegro;
+				PRODUCT_NAME = portsmf;
 			};
 			name = "Debug Shared";
 		};
@@ -7856,7 +7828,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/liblrdf/src $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/redland/librdf $(TOPLEVEL)/lib-src/slv2 $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/liblrdf/src $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/portsmf $(TOPLEVEL)/lib-src/redland/librdf $(TOPLEVEL)/lib-src/slv2 $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Release Shared";
 		};
@@ -7872,7 +7844,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = allegro;
+				PRODUCT_NAME = portsmf;
 			};
 			name = "Release Shared";
 		};
@@ -8121,7 +8093,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = allegro;
+				PRODUCT_NAME = portsmf;
 			};
 			name = "Release Static";
 		};
@@ -8335,7 +8307,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/liblrdf/src $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/redland/librdf $(TOPLEVEL)/lib-src/slv2 $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/FileDialog $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvamp $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/liblrdf/src $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/portsmf $(TOPLEVEL)/lib-src/redland/librdf $(TOPLEVEL)/lib-src/slv2 $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Release Static";
 		};
@@ -8410,7 +8382,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
 		};
-		17073EE90988DC02008541CC /* Build configuration list for PBXNativeTarget "allegro" */ = {
+		17073EE90988DC02008541CC /* Build configuration list for PBXNativeTarget "portsmf" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				17CAEBA8098C9B8E00337968 /* Debug Static */,
