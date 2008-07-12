@@ -397,10 +397,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\locale\pt.po"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\locale\pt_BR.po"
 				>
 			</File>
