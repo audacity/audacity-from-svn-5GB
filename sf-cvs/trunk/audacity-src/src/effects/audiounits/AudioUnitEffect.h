@@ -49,11 +49,11 @@ class AudioUnitEffect:public Effect {
                            int numChannels, Float64 sampleRate);
 
    void GetSamples(WaveTrack *track,
-                   longSampleCount *start,
+                   sampleCount *start,
                    sampleCount *len);
 
    bool ProcessStereo(int count, WaveTrack * left, WaveTrack *right,
-                      longSampleCount lstart, longSampleCount rstart,
+                      sampleCount lstart, sampleCount rstart,
                       sampleCount len);
 
    bool DoRender(AudioUnit unit, int numChannels,

@@ -150,7 +150,7 @@ bool VampEffect::PromptUser()
 }
 
 void VampEffect::GetSamples(WaveTrack *track,
-                            longSampleCount *start,
+                            sampleCount *start,
                             sampleCount *len)
 {
    double trackStart = track->GetStartTime();
@@ -160,7 +160,7 @@ void VampEffect::GetSamples(WaveTrack *track,
 
    if (t1 > t0) {
       *start = track->TimeToLongSamples(t0);
-      longSampleCount end = track->TimeToLongSamples(t1);
+      sampleCount end = track->TimeToLongSamples(t1);
       *len = (sampleCount)(end - *start);
    }
    else {
@@ -194,7 +194,7 @@ bool VampEffect::Process()
 
    while (left) {
 
-      longSampleCount lstart, rstart;
+      sampleCount lstart, rstart;
       sampleCount len;
       GetSamples(left, &lstart, &len);
       
@@ -257,8 +257,8 @@ bool VampEffect::Process()
       for (int c = 0; c < channels; ++c) data[c] = new float[block];
 
       sampleCount originalLen = len;
-      longSampleCount ls = lstart;
-      longSampleCount rs = rstart;
+      sampleCount ls = lstart;
+      sampleCount rs = rstart;
 
       while (len) {
          

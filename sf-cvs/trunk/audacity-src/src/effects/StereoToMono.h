@@ -46,8 +46,8 @@ public:
 private:
    bool ProcessOne(int);
 
-   longSampleCount mLeftTrackLen;
-   longSampleCount mRightTrackLen;
+   sampleCount mLeftTrackLen;
+   sampleCount mRightTrackLen;
    WaveTrack *mLeftTrack;
    WaveTrack *mRightTrack;
 

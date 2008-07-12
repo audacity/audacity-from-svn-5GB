@@ -131,8 +131,8 @@ bool EffectTruncSilence::Process()
 
    // Transform the marker timepoints to samples
    t = (WaveTrack *) iter.First();
-   longSampleCount start = t->TimeToLongSamples(t0);
-   longSampleCount end = t->TimeToLongSamples(t1);
+   sampleCount start = t->TimeToLongSamples(t0);
+   sampleCount end = t->TimeToLongSamples(t1);
 
    // Bigger buffers reduce 'reset'
    blockLen *= 8;
@@ -165,8 +165,8 @@ bool EffectTruncSilence::Process()
    this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    TrackListIterator iterOut(mOutputWaveTracks);
 
-   longSampleCount index = start;
-   longSampleCount outTrackOffset = start;
+   sampleCount index = start;
+   sampleCount outTrackOffset = start;
    bool cancelled = false;
    while (index < end) {
 

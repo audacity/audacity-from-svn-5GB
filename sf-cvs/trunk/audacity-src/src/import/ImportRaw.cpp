@@ -95,7 +95,7 @@ int ImportRaw(wxWindow *parent, wxString fileName,
    sampleFormat format;
    sf_count_t offset = 0;
    int int_offset = 0;
-   longSampleCount totalFrames;
+   sampleCount totalFrames;
    double rate = 44100.0;
    double percent = 100.0;
    SNDFILE *sndFile;
@@ -149,7 +149,7 @@ int ImportRaw(wxWindow *parent, wxString fileName,
 
    sf_seek(sndFile, 0, SEEK_SET);
    
-   totalFrames = (longSampleCount)(sndInfo.frames * percent / 100.0);
+   totalFrames = (sampleCount)(sndInfo.frames * percent / 100.0);
 
    //
    // Sample format:
@@ -196,7 +196,7 @@ int ImportRaw(wxWindow *parent, wxString fileName,
    samplePtr srcbuffer = NewSamples(maxBlockSize * numChannels, format);
    samplePtr buffer = NewSamples(maxBlockSize, format);
    
-   longSampleCount framescompleted = 0;
+   sampleCount framescompleted = 0;
 
    wxString msg;
 

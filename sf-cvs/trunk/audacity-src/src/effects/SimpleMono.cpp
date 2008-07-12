@@ -50,8 +50,8 @@ bool EffectSimpleMono::Process()
       if (mCurT1 > mCurT0) {
 
          //Transform the marker timepoints to samples
-         longSampleCount start = pOutWaveTrack->TimeToLongSamples(mCurT0);
-         longSampleCount end = pOutWaveTrack->TimeToLongSamples(mCurT1);
+         sampleCount start = pOutWaveTrack->TimeToLongSamples(mCurT0);
+         sampleCount end = pOutWaveTrack->TimeToLongSamples(mCurT1);
          
          //Get the track rate and samples
          mCurRate = pOutWaveTrack->GetRate();
@@ -79,9 +79,9 @@ bool EffectSimpleMono::Process()
 //ProcessOne() takes a track, transforms it to bunch of buffer-blocks,
 //and executes ProcessSimpleMono on these blocks
 bool EffectSimpleMono::ProcessOne(WaveTrack * track,
-                                  longSampleCount start, longSampleCount end)
+                                  sampleCount start, sampleCount end)
 {
-   longSampleCount s;
+   sampleCount s;
    //Get the length of the buffer (as double). len is
    //used simple to calculate a progress meter, so it is easier
    //to make it a double now than it is to do it later 

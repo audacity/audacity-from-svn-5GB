@@ -112,7 +112,7 @@ bool EffectDtmf::TransferParameters( Shuttle & shuttle )
 }
 
 
-bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar tone, sampleCount last, longSampleCount total, float amplitude)
+bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar tone, sampleCount last, sampleCount total, float amplitude)
 {
 
 /*
@@ -228,7 +228,7 @@ bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar t
       // we are at the last buffer of 'len' size, so, offset is to
       // backup 'A' samples, from 'len'
       A=(fs/FADEINOUT);
-      sampleCount offset=len-(longSampleCount)(fs/FADEINOUT);
+      sampleCount offset=len-(sampleCount)(fs/FADEINOUT);
       // protect against negative offset, which can occur if too a 
       // small selection is made
       if (offset>=0) {
@@ -261,9 +261,9 @@ bool EffectDtmf::Process()
       WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(), track->GetRate());
 
       // all dtmf sequence durations in samples from seconds
-      numSamplesSequence = (longSampleCount)(dtmfDuration * track->GetRate() + 0.5);
-      numSamplesTone = (longSampleCount)(dtmfTone * track->GetRate() + 0.5);
-      numSamplesSilence = (longSampleCount)(dtmfSilence * track->GetRate() + 0.5);
+      numSamplesSequence = (sampleCount)(dtmfDuration * track->GetRate() + 0.5);
+      numSamplesTone = (sampleCount)(dtmfTone * track->GetRate() + 0.5);
+      numSamplesSilence = (sampleCount)(dtmfSilence * track->GetRate() + 0.5);
 
       // recalculate the sum, and spread the difference - due to approximations.
       // Since diff should be in the order of "some" samples, a division (resulting in zero)
@@ -284,8 +284,8 @@ bool EffectDtmf::Process()
       // this var will be used as extra samples distributor
       int extra=0;
 
-      longSampleCount i = 0;
-      longSampleCount j = 0;
+      sampleCount i = 0;
+      sampleCount j = 0;
       int n=0; // pointer to string in dtmfString
       sampleCount block;
       bool isTone = true;

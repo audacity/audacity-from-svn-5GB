@@ -105,10 +105,10 @@ class AUDACITY_DLL_API Mixer {
 
    void Clear();
    sampleCount MixSameRate(int *channelFlags, WaveTrack *src,
-                           longSampleCount *pos);
+                           sampleCount *pos);
 
    sampleCount MixVariableRates(int *channelFlags, WaveTrack *track,
-                                longSampleCount *pos, float *queue,
+                                sampleCount *pos, float *queue,
                                 int *queueStart, int *queueLen,
                                 Resample *SRC);
 
@@ -117,7 +117,7 @@ class AUDACITY_DLL_API Mixer {
    int              mNumInputTracks;
    WaveTrack      **mInputTrack;
    TimeTrack       *mTimeTrack;
-   longSampleCount *mSamplePos;
+   sampleCount     *mSamplePos;
    bool             mApplyTrackGains;
    float           *mGains;
    double          *mEnvValues;

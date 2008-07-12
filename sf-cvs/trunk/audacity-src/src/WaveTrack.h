@@ -27,8 +27,6 @@
 //
 #define WAVETRACK_MERGE_POINT_TOLERANCE 0.01
 
-typedef wxLongLong_t longSampleCount; /* 64-bit int */
-
 /// \brief Structure to hold region of a wavetrack and a comparison function
 /// for sortability.
 typedef struct REGION
@@ -185,9 +183,9 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    /// guaranteed that the same samples are affected.
    ///
    bool Get(samplePtr buffer, sampleFormat format,
-                   longSampleCount start, sampleCount len);
+                   sampleCount start, sampleCount len);
    bool Set(samplePtr buffer, sampleFormat format,
-                   longSampleCount start, sampleCount len);
+                   sampleCount start, sampleCount len);
    void GetEnvelopeValues(double *buffer, int bufferLen,
                          double t0, double tstep);
    bool GetMinMax(float *min, float *max,
@@ -209,7 +207,7 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    // for efficiency
    //
 
-   sampleCount GetBestBlockSize(longSampleCount t);
+   sampleCount GetBestBlockSize(sampleCount t);
    sampleCount GetMaxBlockSize();
    sampleCount GetIdealBlockSize();
 
@@ -236,8 +234,8 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    // Utility functions to convert between times in seconds
    // and sample positions
 
-   longSampleCount TimeToLongSamples(double t0);
-   double LongSamplesToTime(longSampleCount pos);
+   sampleCount TimeToLongSamples(double t0);
+   double LongSamplesToTime(sampleCount pos);
 
    // Get access to the clips in the tracks. This is used by
    // track artists and also by TrackPanel when sliding...it would

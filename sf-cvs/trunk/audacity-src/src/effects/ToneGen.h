@@ -71,7 +71,7 @@ class EffectToneGen:public Effect {
 
  private:
 
-   longSampleCount numSamples;
+   sampleCount numSamples;
    bool mbChirp;
    bool mbLogInterpolation;
 

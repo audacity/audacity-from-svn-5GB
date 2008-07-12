@@ -67,7 +67,7 @@ class EffectFindClipping:public Effect
 
  private:
    bool ProcessOne(LabelTrack *l, int count, WaveTrack * t,
-                   longSampleCount start, sampleCount len);
+                   sampleCount start, sampleCount len);
  
    int mStart;   ///< Using int rather than sampleCount because values are only ever small numbers
    int mStop;    ///< Using int rather than sampleCount because values are only ever small numbers

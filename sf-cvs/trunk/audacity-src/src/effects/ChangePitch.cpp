@@ -78,7 +78,7 @@ void EffectChangePitch::DeduceFrequencies()
       const int numWindows = analyzeSize / windowSize;
       double trackStart = track->GetStartTime();
       double t0 = mT0 < trackStart? trackStart: mT0;
-      longSampleCount start = track->TimeToLongSamples(t0);
+      sampleCount start = track->TimeToLongSamples(t0);
       double rate = track->GetRate();
       float buffer[analyzeSize];
       float freq[windowSize/2];

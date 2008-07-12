@@ -24,7 +24,7 @@
 #include <wx/list.h>
 #include <wx/msgdlg.h>
 
-typedef wxLongLong_t longSampleCount; /* 64-bit int */
+typedef wxLongLong_t sampleCount; /* 64-bit int */
 
 class Envelope;
 class WaveCache;
@@ -76,7 +76,7 @@ public:
 
    void ConvertToSampleFormat(sampleFormat format);
 
-   void TimeToSamplesClip(double t0, longSampleCount *s0) const;
+   void TimeToSamplesClip(double t0, sampleCount *s0) const;
    int GetRate() const { return mRate; }
    
    // Set rate without resampling. This will change the length of the clip
@@ -91,14 +91,14 @@ public:
    void Offset(double delta) { SetOffset(GetOffset() + delta); }
    double GetStartTime() const;
    double GetEndTime() const;
-   longSampleCount GetStartSample() const;
-   longSampleCount GetEndSample() const;
+   sampleCount GetStartSample() const;
+   sampleCount GetEndSample() const;
    int GetNumSamples() const { return mSequence->GetNumSamples(); }
 
    bool GetSamples(samplePtr buffer, sampleFormat format,
-                   longSampleCount start, sampleCount len) const;
+                   sampleCount start, sampleCount len) const;
    bool SetSamples(samplePtr buffer, sampleFormat format,
-                   longSampleCount start, sampleCount len);
+                   sampleCount start, sampleCount len);
  
    Envelope* GetEnvelope() { return mEnvelope; }
    BlockArray* GetSequenceBlockArray() { return mSequence->GetBlockArray(); }

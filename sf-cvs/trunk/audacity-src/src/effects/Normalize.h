@@ -61,7 +61,7 @@ class EffectNormalize: public Effect
    
  private:
    bool ProcessOne(WaveTrack * t,
-                   longSampleCount start, longSampleCount end);
+                   sampleCount start, sampleCount end);
 
    virtual void StartAnalysis();
    virtual void AnalyzeData(float *buffer, sampleCount len);

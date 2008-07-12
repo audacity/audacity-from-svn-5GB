@@ -48,7 +48,7 @@ class EffectReverse:public Effect {
 
  private:
    bool ProcessOne(int count, WaveTrack * track,
-                   longSampleCount start, sampleCount len);
+                   sampleCount start, sampleCount len);
 
  };
 

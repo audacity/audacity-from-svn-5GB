@@ -68,7 +68,7 @@ class EffectNoise:public Effect {
    virtual bool TransferParameters( Shuttle & shuttle );
 
  private:
-   longSampleCount numSamples;
+   sampleCount numSamples;
    double noiseDuration;
    int noiseType;
    double noiseAmplitude;

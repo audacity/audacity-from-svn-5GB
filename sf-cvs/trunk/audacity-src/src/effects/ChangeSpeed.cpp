@@ -127,8 +127,8 @@ bool EffectChangeSpeed::Process()
          double origLength = pOutWaveTrack->GetEndTime();
          
          //Transform the marker timepoints to samples
-         longSampleCount start = pOutWaveTrack->TimeToLongSamples(mCurT0);
-         longSampleCount end = pOutWaveTrack->TimeToLongSamples(mCurT1);
+         sampleCount start = pOutWaveTrack->TimeToLongSamples(mCurT0);
+         sampleCount end = pOutWaveTrack->TimeToLongSamples(mCurT1);
 
          //ProcessOne() (implemented below) processes a single track
          if (!ProcessOne(pOutWaveTrack, start, end))
@@ -175,7 +175,7 @@ bool EffectChangeSpeed::Process()
 // ProcessOne() takes a track, transforms it to bunch of buffer-blocks,
 // and calls libsamplerate code on these blocks.
 bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
-												longSampleCount start, longSampleCount end)
+									sampleCount start, sampleCount end)
 {
 	if (track == NULL)
 		return false;
@@ -209,7 +209,7 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
    //sample the current buffer starts at.
 	bool bLoopSuccess = true;
    sampleCount blockSize;
-  	longSampleCount samplePos = start;
+  	sampleCount samplePos = start;
    while (samplePos < end) {
       //Get a blockSize of samples (smaller than the size of the buffer)
       blockSize = track->GetBestBlockSize(samplePos);

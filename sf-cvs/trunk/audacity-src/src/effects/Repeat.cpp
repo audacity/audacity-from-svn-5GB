@@ -124,8 +124,8 @@ bool EffectRepeat::Process()
       if (t1 <= t0)
          continue;
 
-      longSampleCount start = track->TimeToLongSamples(t0);
-      longSampleCount end = track->TimeToLongSamples(t1);
+      sampleCount start = track->TimeToLongSamples(t0);
+      sampleCount end = track->TimeToLongSamples(t1);
       sampleCount len = (sampleCount)(end - start);
       double tLen = track->LongSamplesToTime(len);
       double tc = t0 + tLen;

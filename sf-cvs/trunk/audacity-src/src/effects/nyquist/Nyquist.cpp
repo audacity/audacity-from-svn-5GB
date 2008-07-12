@@ -424,7 +424,7 @@ bool EffectNyquist::Process()
          }
 
          mCurStart[0] = mCurTrack[0]->TimeToLongSamples(mT0);
-         longSampleCount end = mCurTrack[0]->TimeToLongSamples(mT1);
+         sampleCount end = mCurTrack[0]->TimeToLongSamples(mT1);
          mCurLen = (sampleCount)(end - mCurStart[0]);
 
          success = ProcessOne();

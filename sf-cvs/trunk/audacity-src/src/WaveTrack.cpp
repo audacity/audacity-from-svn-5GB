@@ -1098,16 +1098,16 @@ bool WaveTrack::Silence(double t0, double t1)
    if (t1 < t0)
       return false;
 
-   longSampleCount start = (longSampleCount)floor(t0 * mRate + 0.5);
-   longSampleCount len = (longSampleCount)floor(t1 * mRate + 0.5) - start;
+   sampleCount start = (sampleCount)floor(t0 * mRate + 0.5);
+   sampleCount len = (sampleCount)floor(t1 * mRate + 0.5) - start;
    bool result = true;
 
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
    {
       WaveClip *clip = it->GetData();
 
-      longSampleCount clipStart = clip->GetStartSample();
-      longSampleCount clipEnd = clip->GetEndSample();
+      sampleCount clipStart = clip->GetStartSample();
+      sampleCount clipEnd = clip->GetEndSample();
 
       if (clipEnd > start && clipStart < start+len)
       {
@@ -1115,8 +1115,8 @@ bool WaveTrack::Silence(double t0, double t1)
          sampleCount samplesToCopy = start+len - clipStart;
          if (samplesToCopy > clip->GetNumSamples())
             samplesToCopy = clip->GetNumSamples();
-         longSampleCount inclipDelta = 0;
-         longSampleCount startDelta = clipStart - start;
+         sampleCount inclipDelta = 0;
+         sampleCount startDelta = clipStart - start;
          if (startDelta < 0)
          {
             inclipDelta = -startDelta; // make positive value
@@ -1191,13 +1191,13 @@ bool WaveTrack::Disjoin(double t0, double t1)
       //simply look for a sequence of zeroes and if the sequence
       //is greater than minimum number, split-delete the region
       
-      longSampleCount seqStart = -1;
-      longSampleCount start, end;
+      sampleCount seqStart = -1;
+      sampleCount start, end;
       clip->TimeToSamplesClip( startTime, &start );
       clip->TimeToSamplesClip( endTime, &end );
        
-      longSampleCount len = ( end - start );
-      for( longSampleCount done = 0; done < len; done += maxAtOnce )
+      sampleCount len = ( end - start );
+      for( sampleCount done = 0; done < len; done += maxAtOnce )
       {
          sampleCount numSamples = maxAtOnce;
          if( done + maxAtOnce > len )
@@ -1207,7 +1207,7 @@ bool WaveTrack::Disjoin(double t0, double t1)
                numSamples );
          for( sampleCount i = 0; i < numSamples; i++ )
          {
-            longSampleCount curSamplePos = start + done + i;
+            sampleCount curSamplePos = start + done + i;
 
             //start a new sequence
             if( buffer[ i ] == 0.0 && seqStart == -1 )
@@ -1216,7 +1216,7 @@ bool WaveTrack::Disjoin(double t0, double t1)
             {
                if( seqStart != -1 )
                {
-                  longSampleCount seqEnd;
+                  sampleCount seqEnd;
                   
                   //consider the end case, where selection ends in zeroes
                   if( curSamplePos == end - 1 && buffer[ i ] == 0.0 )
@@ -1318,15 +1318,15 @@ bool WaveTrack::AppendAlias(wxString fName, sampleCount start,
    return GetLastOrCreateClip()->AppendAlias(fName, start, len, channel);
 }
 
-sampleCount WaveTrack::GetBestBlockSize(longSampleCount s)
+sampleCount WaveTrack::GetBestBlockSize(sampleCount s)
 {
    sampleCount bestBlockSize = GetMaxBlockSize();
 
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
    {
       WaveClip* clip = it->GetData();
-      longSampleCount startSample = (longSampleCount)floor(clip->GetStartTime()*mRate + 0.5);
-      longSampleCount endSample = startSample + clip->GetNumSamples();
+      sampleCount startSample = (sampleCount)floor(clip->GetStartTime()*mRate + 0.5);
+      sampleCount endSample = startSample + clip->GetNumSamples();
       if (s >= startSample && s < endSample)
       {
          bestBlockSize = clip->GetSequence()->GetMaxBlockSize();
@@ -1518,12 +1518,12 @@ bool WaveTrack::Unlock()
    return true;
 }
 
-longSampleCount WaveTrack::TimeToLongSamples(double t0)
+sampleCount WaveTrack::TimeToLongSamples(double t0)
 {
-   return (longSampleCount)floor(t0 * mRate + 0.5);
+   return (sampleCount)floor(t0 * mRate + 0.5);
 }
 
-double WaveTrack::LongSamplesToTime(longSampleCount pos)
+double WaveTrack::LongSamplesToTime(sampleCount pos)
 {
    return ((double)pos) / mRate;
 }
@@ -1609,7 +1609,7 @@ bool WaveTrack::GetMinMax(float *min, float *max,
 }
 
 bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
-                    longSampleCount start, sampleCount len)
+                    sampleCount start, sampleCount len)
 {
    // Simple optimization: When this buffer is completely contained within one clip,
    // don't clear anything (because we never won't have to). Otherwise, just clear
@@ -1633,8 +1633,8 @@ bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
    {
       WaveClip *clip = it->GetData();
 
-      longSampleCount clipStart = clip->GetStartSample();
-      longSampleCount clipEnd = clip->GetEndSample();
+      sampleCount clipStart = clip->GetStartSample();
+      sampleCount clipEnd = clip->GetEndSample();
 
       if (clipEnd > start && clipStart < start+len)
       {
@@ -1642,8 +1642,8 @@ bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
          sampleCount samplesToCopy = start+len - clipStart;
          if (samplesToCopy > clip->GetNumSamples())
             samplesToCopy = clip->GetNumSamples();
-         longSampleCount inclipDelta = 0;
-         longSampleCount startDelta = clipStart - start;
+         sampleCount inclipDelta = 0;
+         sampleCount startDelta = clipStart - start;
          if (startDelta < 0)
          {
             inclipDelta = -startDelta; // make positive value
@@ -1664,7 +1664,7 @@ bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
 }
 
 bool WaveTrack::Set(samplePtr buffer, sampleFormat format,
-                    longSampleCount start, sampleCount len)
+                    sampleCount start, sampleCount len)
 {
    bool result = true;
 
@@ -1672,8 +1672,8 @@ bool WaveTrack::Set(samplePtr buffer, sampleFormat format,
    {
       WaveClip *clip = it->GetData();
 
-      longSampleCount clipStart = clip->GetStartSample();
-      longSampleCount clipEnd = clip->GetEndSample();
+      sampleCount clipStart = clip->GetStartSample();
+      sampleCount clipEnd = clip->GetEndSample();
 
       if (clipEnd > start && clipStart < start+len)
       {
@@ -1681,8 +1681,8 @@ bool WaveTrack::Set(samplePtr buffer, sampleFormat format,
          sampleCount samplesToCopy = start+len - clipStart;
          if (samplesToCopy > clip->GetNumSamples())
             samplesToCopy = clip->GetNumSamples();
-         longSampleCount inclipDelta = 0;
-         longSampleCount startDelta = clipStart - start;
+         sampleCount inclipDelta = 0;
+         sampleCount startDelta = clipStart - start;
          if (startDelta < 0)
          {
             inclipDelta = -startDelta; // make positive value
@@ -1930,7 +1930,7 @@ bool WaveTrack::SplitAt(double t)
             delete newClip;
             return false;
          }
-         longSampleCount here = llrint(floor(((t - c->GetStartTime() - mOffset) * mRate) + 0.5));
+         sampleCount here = llrint(floor(((t - c->GetStartTime() - mOffset) * mRate) + 0.5));
          newClip->Offset((double)here/(double)mRate);
          mClips.Append(newClip);
          return true;

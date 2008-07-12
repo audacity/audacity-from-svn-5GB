@@ -205,7 +205,7 @@ bool AudioUnitEffect::Process()
    Track *left = iter.First();
    Track *right;
    while(left) {
-      longSampleCount lstart, rstart;
+      sampleCount lstart, rstart;
       sampleCount len;
       GetSamples((WaveTrack *)left, &lstart, &len);
       
@@ -245,7 +245,7 @@ void AudioUnitEffect::End()
 }
 
 void AudioUnitEffect::GetSamples(WaveTrack *track,
-                                 longSampleCount *start,
+                                 sampleCount *start,
                                  sampleCount *len)
 {
    double trackStart = track->GetStartTime();
@@ -255,7 +255,7 @@ void AudioUnitEffect::GetSamples(WaveTrack *track,
    
    if (t1 > t0) {
       *start = track->TimeToLongSamples(t0);
-      longSampleCount end = track->TimeToLongSamples(t1);
+      sampleCount end = track->TimeToLongSamples(t1);
       *len = (sampleCount)(end - *start);
    }
    else {
@@ -377,8 +377,8 @@ bool AudioUnitEffect::CopyParameters(AudioUnit srcUnit, AudioUnit dstUnit)
 
 bool AudioUnitEffect::ProcessStereo(int count,
                                     WaveTrack *left, WaveTrack *right,
-                                    longSampleCount lstart,
-                                    longSampleCount rstart,
+                                    sampleCount lstart,
+                                    sampleCount rstart,
                                     sampleCount len)
 {
    int numChannels = (right != NULL? 2: 1);
@@ -491,8 +491,8 @@ bool AudioUnitEffect::ProcessStereo(int count,
    }
 
    sampleCount originalLen = len;
-   longSampleCount ls = lstart;
-   longSampleCount rs = rstart;
+   sampleCount ls = lstart;
+   sampleCount rs = rstart;
    while (len) {
       int block = waveTrackBlockSize;
       if (block > len)

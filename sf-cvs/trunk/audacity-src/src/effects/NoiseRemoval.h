@@ -84,7 +84,7 @@ private:
    double     mAttackDecayTime;        // in secs
 
    bool ProcessOne(int count, WaveTrack * track,
-                   longSampleCount start, sampleCount len);
+                   sampleCount start, sampleCount len);
 
    void Initialize();
    void StartNewTrack();
@@ -99,8 +99,8 @@ private:
 
    // Variables that only exist during processing
    WaveTrack            *mOutputTrack;
-   longSampleCount       mInSampleCount;
-   longSampleCount       mOutSampleCount;
+   sampleCount       mInSampleCount;
+   sampleCount       mOutSampleCount;
    int                   mInputPos;
 
    int       mFreqSmoothingBins;

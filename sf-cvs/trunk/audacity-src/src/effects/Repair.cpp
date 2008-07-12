@@ -86,10 +86,10 @@ bool EffectRepair::Process()
       repair_t0 = (repair_t0 < t0? t0: repair_t0);
       repair_t1 = (repair_t1 > t1? t1: repair_t1);
 
-      longSampleCount s0 = track->TimeToLongSamples(t0);
-      longSampleCount repair0 = track->TimeToLongSamples(repair_t0);
-      longSampleCount repair1 = track->TimeToLongSamples(repair_t1);
-      longSampleCount s1 = track->TimeToLongSamples(t1);
+      sampleCount s0 = track->TimeToLongSamples(t0);
+      sampleCount repair0 = track->TimeToLongSamples(repair_t0);
+      sampleCount repair1 = track->TimeToLongSamples(repair_t1);
+      sampleCount s1 = track->TimeToLongSamples(t1);
 
       sampleCount repairStart = (sampleCount)(repair0 - s0);
       sampleCount repairLen = (sampleCount)(repair1 - repair0);
@@ -116,7 +116,7 @@ bool EffectRepair::Process()
 }
 
 bool EffectRepair::ProcessOne(int count, WaveTrack * track,
-                              longSampleCount start,
+                              sampleCount start,
                               sampleCount len,
                               sampleCount repairStart, sampleCount repairLen)
 {

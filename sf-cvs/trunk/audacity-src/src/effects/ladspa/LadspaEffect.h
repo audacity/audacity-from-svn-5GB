@@ -50,11 +50,11 @@ class LadspaEffect:public Effect {
 
  private:
    bool ProcessStereo(int count, WaveTrack * left, WaveTrack *right,
-                      longSampleCount lstart, longSampleCount rstart,
+                      sampleCount lstart, sampleCount rstart,
                       sampleCount len);
 
    void GetSamples(WaveTrack *track,
-                   longSampleCount *start,
+                   sampleCount *start,
                    sampleCount *len);
  
    wxString pluginName;

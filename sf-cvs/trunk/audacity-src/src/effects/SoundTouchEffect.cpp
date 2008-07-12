@@ -47,7 +47,7 @@ bool EffectSoundTouch::Process()
       
       // Process only if the right marker is to the right of the left marker
       if (mCurT1 > mCurT0) {
-         longSampleCount start, end;
+         sampleCount start, end;
          
          if (leftTrack->GetLinked()) {
             double t;
@@ -112,10 +112,10 @@ bool EffectSoundTouch::Process()
 //ProcessOne() takes a track, transforms it to bunch of buffer-blocks,
 //and executes ProcessSoundTouch on these blocks
 bool EffectSoundTouch::ProcessOne(WaveTrack *track,
-                                  longSampleCount start, longSampleCount end)
+                                  sampleCount start, sampleCount end)
 {
    WaveTrack *outputTrack;
-   longSampleCount s;
+   sampleCount s;
    
    mSoundTouch->setSampleRate((unsigned int)(track->GetRate()+0.5));
    
@@ -198,7 +198,7 @@ bool EffectSoundTouch::ProcessOne(WaveTrack *track,
 }
 
 bool EffectSoundTouch::ProcessStereo(WaveTrack* leftTrack, WaveTrack* rightTrack, 
-                                     longSampleCount start, longSampleCount end)
+                                     sampleCount start, sampleCount end)
 {
    mSoundTouch->setSampleRate((unsigned int)(leftTrack->GetRate()+0.5));
    
@@ -225,7 +225,7 @@ bool EffectSoundTouch::ProcessStereo(WaveTrack* leftTrack, WaveTrack* rightTrack
    // Go through the track one stereo buffer at a time. 
    // sourceSampleCount counts the sample at which the current buffer starts, 
    // per channel.
-   longSampleCount sourceSampleCount = start;
+   sampleCount sourceSampleCount = start;
    while (sourceSampleCount < end) {
       //Get a block of samples (smaller than the size of the buffer)
       sampleCount blockSize = leftTrack->GetBestBlockSize(sourceSampleCount);

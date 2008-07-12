@@ -159,8 +159,8 @@ bool EffectNormalize::Process()
       if (mCurT1 > mCurT0) {
 
          //Transform the marker timepoints to samples
-         longSampleCount start = track->TimeToLongSamples(mCurT0);
-         longSampleCount end = track->TimeToLongSamples(mCurT1);
+         sampleCount start = track->TimeToLongSamples(mCurT0);
+         sampleCount end = track->TimeToLongSamples(mCurT1);
          
          //Get the track rate and samples
          mCurRate = track->GetRate();
@@ -186,11 +186,11 @@ bool EffectNormalize::Process()
 //ProcessOne() takes a track, transforms it to bunch of buffer-blocks,
 //and executes AnalyzeData, then ProcessData, on it...
 bool EffectNormalize::ProcessOne(WaveTrack * track,
-                                  longSampleCount start, longSampleCount end)
+                                  sampleCount start, sampleCount end)
 {
    bool rc = true;
    
-   longSampleCount s;
+   sampleCount s;
    //Get the length of the buffer (as double). len is
    //used simple to calculate a progress meter, so it is easier
    //to make it a double now than it is to do it later 

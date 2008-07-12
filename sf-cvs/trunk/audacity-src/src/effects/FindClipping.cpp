@@ -103,8 +103,8 @@ bool EffectFindClipping::Process()
       double t1 = mT1 > trackEnd ? trackEnd : mT1;
 
       if (t1 > t0) {
-         longSampleCount start = t->TimeToLongSamples(t0);
-         longSampleCount end = t->TimeToLongSamples(t1);
+         sampleCount start = t->TimeToLongSamples(t0);
+         sampleCount end = t->TimeToLongSamples(t1);
          sampleCount len = (sampleCount)(end - start);
 
          if (!ProcessOne(l, count, t, start, len)) {
@@ -127,7 +127,7 @@ bool EffectFindClipping::Process()
 bool EffectFindClipping::ProcessOne(LabelTrack * l,
                                     int count,
                                     WaveTrack * t,
-                                    longSampleCount start,
+                                    sampleCount start,
                                     sampleCount len)
 {
    bool bGoodResult = true;

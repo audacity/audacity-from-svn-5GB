@@ -62,12 +62,12 @@ protected:
 
    // It is not usually necessary to override this method
    virtual bool ProcessTwo( int count, WaveTrack *left, WaveTrack *right,
-							longSampleCount lstart,
-							longSampleCount rstart, sampleCount len);
+							sampleCount lstart,
+							sampleCount rstart, sampleCount len);
 
    // It is not usually necessary to override this method
    void GetSamples(WaveTrack *track, 
-	               longSampleCount *start,
+	               sampleCount *start,
 				   sampleCount *len);
 
    // It is not usually necessary to override this method
@@ -107,7 +107,7 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Init()
 	  return false;		// we need an existing track
 
    while(left) {
-       longSampleCount lstart, rstart;
+       sampleCount lstart, rstart;
        sampleCount llen, rlen;
        GetSamples((WaveTrack *)left, &lstart, &llen);
      
@@ -139,7 +139,7 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Process()
    WaveTrack *left = (WaveTrack*)(iter.First());
    WaveTrack *right;
    while(left) {
-      longSampleCount lstart, rstart;
+      sampleCount lstart, rstart;
       sampleCount len;
       GetSamples((WaveTrack *)left, &lstart, &len);
 
@@ -170,8 +170,8 @@ template<class _DataType,sampleFormat _xxxSample>
 bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::ProcessTwo(int count, 
 																	   WaveTrack *left, 
 																	   WaveTrack *right,
-																	   longSampleCount lstart,
-																	   longSampleCount rstart, 
+																	   sampleCount lstart,
+																	   sampleCount rstart, 
 																	   sampleCount len)
 {
    if (mnBlockSize == 0) {
@@ -187,8 +187,8 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::ProcessTwo(int count,
    // Get both buffers here
 
    sampleCount originalLen = len;
-   longSampleCount ls = lstart;
-   longSampleCount rs = rstart;
+   sampleCount ls = lstart;
+   sampleCount rs = rstart;
    while (len) {
       int block = mnBlockSize;
       if (block > len)
@@ -227,7 +227,7 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::ProcessTwo(int count,
 
 template<class _DataType,sampleFormat _xxxSample>
 void EffectSimplePairedTwoTrack<_DataType,_xxxSample>::GetSamples(WaveTrack *track,
-										         longSampleCount *start,
+										         sampleCount *start,
 										         sampleCount *len)
 {
    double trackStart = track->GetStartTime();
@@ -237,7 +237,7 @@ void EffectSimplePairedTwoTrack<_DataType,_xxxSample>::GetSamples(WaveTrack *tra
    
    if (t1 > t0) {
       *start = track->TimeToLongSamples(t0);
-      longSampleCount end = track->TimeToLongSamples(t1);
+      sampleCount end = track->TimeToLongSamples(t1);
       *len = (sampleCount)(end - *start);
    }
    else {
