@@ -512,8 +512,8 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_COMMAND(wxID_ANY, EVT_TOOLBAR_UPDATED, AudacityProject::OnToolBarUpdate)
     EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEYBOARD, AudacityProject::OnCaptureKeyboard)
     EVT_COMMAND(wxID_ANY, EVT_RELEASE_KEYBOARD, AudacityProject::OnReleaseKeyboard)
-    EVT_COMMAND  (wxID_ANY, wxEVT_ODTASK_UPDATE, AudacityProject::OnODTaskUpdate)
-    EVT_COMMAND  (wxID_ANY, wxEVT_ODTASK_COMPLETE, AudacityProject::OnODTaskComplete)
+    EVT_COMMAND(wxID_ANY, EVT_ODTASK_UPDATE, AudacityProject::OnODTaskUpdate)
+    EVT_COMMAND(wxID_ANY, EVT_ODTASK_COMPLETE, AudacityProject::OnODTaskComplete)
 END_EVENT_TABLE()
 
 AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,

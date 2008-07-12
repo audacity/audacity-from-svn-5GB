@@ -39,7 +39,7 @@ number of threads.
 #endif //__WXMAC__
 
 
-DECLARE_EVENT_TYPE(wxEVT_ODTASK_UPDATE, -1)
+DECLARE_EXPORTED_EVENT_TYPE(AUDACITY_DLL_API, EVT_ODTASK_UPDATE, -1)
 
 /// A singleton that manages currently running Tasks on an arbitrary 
 /// number of threads.

@@ -29,7 +29,7 @@ in a background thread.
 class WaveTrack;
 
 
-DECLARE_EVENT_TYPE(wxEVT_ODTASK_COMPLETE, -1)
+DECLARE_EXPORTED_EVENT_TYPE(AUDACITY_DLL_API, EVT_ODTASK_COMPLETE, -1)
 
 /// A class representing a modular task to be used with the On-Demand structures.
 class ODTask
