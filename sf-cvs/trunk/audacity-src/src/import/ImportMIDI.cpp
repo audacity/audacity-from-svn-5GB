@@ -13,6 +13,10 @@
 #include <wx/ffile.h>
 #include <wx/intl.h>
 
+#include "../Audacity.h"
+
+#if defined(USE_MIDI)
+
 #include "../Internat.h"
 #include "../NoteTrack.h"
 #include "ImportMIDI.h"
@@ -24,7 +28,7 @@
 bool ImportMIDI(wxString fName, NoteTrack * dest)
 {
    if (fName.Length() <= 4){
-      wxMessageBox( _("Could not open file ") + fName + ": Filename too short.");
+      wxMessageBox( _("Could not open file ") + fName + _(": Filename too short."));
       return false;
    }
 
@@ -32,21 +36,21 @@ bool ImportMIDI(wxString fName, NoteTrack * dest)
    if (fName.Right(4).CmpNoCase(wxT(".mid")) == 0)
       is_midi = true;
    else if(fName.Right(4).CmpNoCase(wxT(".gro")) != 0) {
-      wxMessageBox( _("Could not open file ") + fName + ": Incorrect filetype.");
+      wxMessageBox( _("Could not open file ") + fName + _(": Incorrect filetype."));
       return false;
    }
 
    wxFFile mf(fName, wxT("rb"));
    if (!mf.IsOpened()) {
-      wxMessageBox( _("Could not open file ") + fName + ".");
+      wxMessageBox( _("Could not open file ") + fName + wxT("."));
       return false;
    }
 
-   Alg_seq_ptr new_seq = new Alg_seq(fName, is_midi);
+   Alg_seq_ptr new_seq = new Alg_seq(fName.mb_str(), is_midi);
 
    //Should we also check if(seq->tracks() == 0) ?
    if(new_seq->get_read_error() == alg_error_open){
-      wxMessageBox( _("Could not open file ") + fName + ".");
+      wxMessageBox( _("Could not open file ") + fName + wxT("."));
       mf.Close();
       return false;
    }
@@ -54,7 +58,9 @@ bool ImportMIDI(wxString fName, NoteTrack * dest)
    dest->SetSequence(new_seq);
    mf.Close();
    return true;
-}      
+}
+
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

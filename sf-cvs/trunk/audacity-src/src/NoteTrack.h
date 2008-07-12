@@ -12,8 +12,11 @@
 #define __AUDACITY_NOTETRACK__
 
 #include <wx/string.h>
+#include "Audacity.h"
 #include "Experimental.h"
 #include "Track.h"
+
+#if defined(USE_MIDI)
 
 class wxDC;
 class wxRect;
@@ -95,6 +98,8 @@ class NoteTrack:public Track {
    int mVisibleChannels;
    int mLastMidiPosition;
 };
+
+#endif
 
 #endif
 

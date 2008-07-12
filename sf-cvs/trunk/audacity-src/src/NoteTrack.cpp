@@ -19,6 +19,10 @@
 #include <wx/pen.h>
 #include <wx/intl.h>
 
+#include "Audacity.h"
+
+#if defined(USE_MIDI)
+
 #include "allegro.h"
 /* REQUIRES PORTMIDI */
 //#include "portmidi.h"
@@ -323,6 +327,8 @@ XMLTagHandler *NoteTrack::HandleXMLChild(const wxChar *tag)
 void NoteTrack::WriteXML(XMLWriter &xmlFile)
 {
 }
+
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
