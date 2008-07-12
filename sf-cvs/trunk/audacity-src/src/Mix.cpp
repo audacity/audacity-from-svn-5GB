@@ -189,7 +189,7 @@ Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
 
    mNumInputTracks = numInputTracks;
    mInputTrack = new WaveTrack*[mNumInputTracks];
-   mSamplePos = new longSampleCount[mNumInputTracks];
+   mSamplePos = new sampleCount[mNumInputTracks];
    for(i=0; i<mNumInputTracks; i++) {
       mInputTrack[i] = inputTracks[i];
       mSamplePos[i] = inputTracks[i]->TimeToLongSamples(startTime);
@@ -321,7 +321,7 @@ void MixBuffers(int numChannels, int *channelFlags, float *gains,
 }
    
 sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
-                                    longSampleCount *pos, float *queue,
+                                    sampleCount *pos, float *queue,
                                     int *queueStart, int *queueLen,
                                     Resample *SRC)
 {
@@ -334,17 +334,17 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
    sampleCount out = 0;
 
    // Find the last sample
-   longSampleCount last = -1;
+   sampleCount last = -1;
    WaveClipList::Node* it = track->GetClipIterator();
    while (it) {
-      longSampleCount end = it->GetData()->GetEndSample();
+      sampleCount end = it->GetData()->GetEndSample();
       if (end > last) {
          last = end;
       }
       it = it->GetNext();
    }
 
-   longSampleCount max = (longSampleCount) (trackRate * mT1);
+   sampleCount max = (sampleCount) (trackRate * mT1);
    /* time is floating point. Sample rate is integer. The number of samples
     * has to be integer, but the multiplication gives a float result, which we
     * round to get an integer result. TODO: is this always right or can it be
@@ -430,7 +430,7 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
 }
 
 sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
-                               longSampleCount *pos)
+                               sampleCount *pos)
 {
    int slen = mMaxOut;
    int c;

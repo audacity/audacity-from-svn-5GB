@@ -74,7 +74,7 @@ class VampEffect : public Effect {
    Vamp::Plugin *mPlugin;
 
    void GetSamples(WaveTrack *track,
-                   longSampleCount *start,
+                   sampleCount *start,
                    sampleCount *len);
 
    void AddFeatures(LabelTrack *track,

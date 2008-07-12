@@ -27,8 +27,7 @@ class EffectSimpleMono:public Effect {
    virtual bool Process();
 
  private:
-   bool ProcessOne(WaveTrack * t,
-                   longSampleCount start, longSampleCount end);
+   bool ProcessOne(WaveTrack * t, sampleCount start, sampleCount end);
 
  protected:  
 

@@ -23,7 +23,7 @@ class EffectTwoPassSimpleMono:public Effect {
 
  private:
    bool ProcessOne(WaveTrack * t,
-                   longSampleCount start, longSampleCount end);
+                   sampleCount start, sampleCount end);
    bool ProcessPass();
 
  protected:  

@@ -67,7 +67,7 @@ public:
 
 private:
    bool ProcessOne(int count, WaveTrack * track,
-                   longSampleCount start, sampleCount len);
+                   sampleCount start, sampleCount len);
 
    void RemoveClicks(sampleCount len,
                     float *buffer);

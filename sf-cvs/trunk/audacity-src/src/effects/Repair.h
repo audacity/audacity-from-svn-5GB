@@ -50,7 +50,7 @@ public:
    
 private:
    bool ProcessOne(int count, WaveTrack * track,
-                   longSampleCount start,
+                   sampleCount start,
                    sampleCount len,
                    sampleCount repairStart, sampleCount repairLen);
 };

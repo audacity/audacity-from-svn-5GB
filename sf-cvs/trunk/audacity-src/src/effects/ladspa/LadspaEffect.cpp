@@ -225,7 +225,7 @@ bool LadspaEffect::PromptUser()
 }
 
 void LadspaEffect::GetSamples(WaveTrack *track,
-                              longSampleCount *start,
+                              sampleCount *start,
                               sampleCount *len)
 {
    double trackStart = track->GetStartTime();
@@ -242,7 +242,7 @@ void LadspaEffect::GetSamples(WaveTrack *track,
 
    if (t1 > t0) {
       *start = track->TimeToLongSamples(t0);
-      longSampleCount end = track->TimeToLongSamples(t1);
+      sampleCount end = track->TimeToLongSamples(t1);
       *len = (sampleCount)(end - *start);
    }
    else {
@@ -261,7 +261,7 @@ bool LadspaEffect::Process()
    Track *left = iter.First();
    Track *right;
    while(left) {
-      longSampleCount lstart = 0, rstart = 0;
+      sampleCount lstart = 0, rstart = 0;
       sampleCount len;
       GetSamples((WaveTrack *)left, &lstart, &len);
       
@@ -294,8 +294,8 @@ bool LadspaEffect::Process()
 }
 
 bool LadspaEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
-                                 longSampleCount lstart, 
-                                 longSampleCount rstart,
+                                 sampleCount lstart, 
+                                 sampleCount rstart,
                                  sampleCount len)
 {
    /* Allocate buffers */
@@ -341,8 +341,8 @@ bool LadspaEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
    // Actually perform the effect here
 
    sampleCount originalLen = len;
-   longSampleCount ls = lstart;
-   longSampleCount rs = rstart;
+   sampleCount ls = lstart;
+   sampleCount rs = rstart;
    while (len) {
       int block = mBlockSize;
       if (block > len)

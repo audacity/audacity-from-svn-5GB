@@ -2129,7 +2129,7 @@ double AudacityProject::NearestZeroCrossing(double t0)
       WaveTrack *one = (WaveTrack *)track;
       int oneWindowSize = (int)(one->GetRate() / 100);
       float *oneDist = new float[oneWindowSize];
-      longSampleCount s = one->TimeToLongSamples(t0);
+      sampleCount s = one->TimeToLongSamples(t0);
       one->Get((samplePtr)oneDist, floatSample,
                s - oneWindowSize/2, oneWindowSize);
 
@@ -3669,7 +3669,7 @@ void AudacityProject::OnPlotSpectrum()
          WaveTrack *track = (WaveTrack *)t;
          if (selcount==0) {
             rate = track->GetRate();
-            longSampleCount start, end;
+            sampleCount start, end;
             start = track->TimeToLongSamples(mViewInfo.sel0);
             end = track->TimeToLongSamples(mViewInfo.sel1);
             len = (sampleCount)(end - start);
@@ -3686,7 +3686,7 @@ void AudacityProject::OnPlotSpectrum()
                delete[] buffer;
                return;
             }
-            longSampleCount start;
+            sampleCount start;
             start = track->TimeToLongSamples(mViewInfo.sel0);
             float *buffer2 = new float[len];
             track->Get((samplePtr)buffer2, floatSample, start, len);

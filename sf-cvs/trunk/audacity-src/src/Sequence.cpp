@@ -310,7 +310,7 @@ bool Sequence::Paste(sampleCount s, const Sequence *src)
       s = mNumSamples;
 
    // Quick check to make sure that it doesn't overflow
-   if (((double)mNumSamples) + ((double)src->mNumSamples) > 2147483647)
+   if (((double)mNumSamples) + ((double)src->mNumSamples) > wxLL(9223372036854775807))
       return false;
 
    BlockArray *srcBlock = src->mBlock;
@@ -505,7 +505,7 @@ bool Sequence::SetSilence(sampleCount s0, sampleCount len)
 bool Sequence::InsertSilence(sampleCount s0, sampleCount len)
 {
    // Quick check to make sure that it doesn't overflow
-   if (((double)mNumSamples) + ((double)len) > 2147483647)
+   if (((double)mNumSamples) + ((double)len) > wxLL(9223372036854775807))
       return false;
 
    // Create a new track containing as much silence as we
@@ -546,7 +546,7 @@ bool Sequence::AppendAlias(wxString fullPath,
                            sampleCount len, int channel)
 {
    // Quick check to make sure that it doesn't overflow
-   if (((double)mNumSamples) + ((double)len) > 2147483647)
+   if (((double)mNumSamples) + ((double)len) > wxLL(9223372036854775807))
       return false;
 
    SeqBlock *newBlock = new SeqBlock();
@@ -567,7 +567,7 @@ bool Sequence::AppendAlias(wxString fullPath,
 bool Sequence::AppendBlock(SeqBlock * b)
 {
    // Quick check to make sure that it doesn't overflow
-   if (((double)mNumSamples) + ((double)b->f->GetLength()) > 2147483647)
+   if (((double)mNumSamples) + ((double)b->f->GetLength()) > wxLL(9223372036854775807))
       return false;
 
    SeqBlock *newBlock = new SeqBlock();
@@ -1183,7 +1183,7 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
                       sampleCount len, XMLWriter* blockFileLog /*=NULL*/)
 {
    // Quick check to make sure that it doesn't overflow
-   if (((double)mNumSamples) + ((double)len) > 2147483647)
+   if (((double)mNumSamples) + ((double)len) > wxLL(9223372036854775807))
       return false;
 
    samplePtr temp = NULL;
@@ -1522,7 +1522,7 @@ bool Sequence::Delete(sampleCount start, sampleCount len)
 bool Sequence::ConsistencyCheck(const wxChar *whereStr)
 {
    unsigned int i;
-   int pos = 0;
+   sampleCount pos = 0;
    unsigned int numBlocks = mBlock->Count();
    bool error = false;
 

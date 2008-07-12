@@ -202,9 +202,9 @@ bool EffectAutoDuck::Process()
 
    bool cancel = false;
 
-   longSampleCount start =
+   sampleCount start =
       mControlTrack->TimeToLongSamples(mT0 + mOuterFadeDownLen);
-   longSampleCount end =
+   sampleCount end =
       mControlTrack->TimeToLongSamples(mT1 - mOuterFadeUpLen);
    
    if (end <= start)
@@ -218,7 +218,7 @@ bool EffectAutoDuck::Process()
    if (maxPause < mOuterFadeDownLen + mOuterFadeUpLen)
       maxPause = mOuterFadeDownLen + mOuterFadeUpLen;
       
-   longSampleCount minSamplesPause =
+   sampleCount minSamplesPause =
       mControlTrack->TimeToLongSamples(maxPause);
 
    double threshold = pow(10.0, mThresholdDb/20);
@@ -243,11 +243,11 @@ bool EffectAutoDuck::Process()
    // to make the progress bar appear more natural, we first look for all
    // duck regions and apply them all at once afterwards
    AutoDuckRegionArray regions;
-   longSampleCount pos = start;
+   sampleCount pos = start;
    
    while (pos < end)
    {
-      longSampleCount len = end - pos;
+      sampleCount len = end - pos;
       if (len > BUF_SIZE)
          len = BUF_SIZE;
       
@@ -385,7 +385,7 @@ bool EffectAutoDuck::ApplyDuckFade(int trackNumber, WaveTrack* t,
 
    while (pos < end)
    {
-      longSampleCount len = end - pos;
+      sampleCount len = end - pos;
       if (len > BUF_SIZE)
          len = BUF_SIZE;
 

@@ -39,7 +39,7 @@ CrossFader::~CrossFader()
 
 
 bool CrossFader::GetSamples(samplePtr buffer, sampleFormat format,
-							longSampleCount start, sampleCount len)
+							sampleCount start, sampleCount len)
 {
   switch (mType)
 	{
@@ -58,7 +58,7 @@ bool CrossFader::GetSamples(samplePtr buffer, sampleFormat format,
   
 }
 
-bool CrossFader::CrossFadeMix(samplePtr buffer, sampleFormat format, longSampleCount start, sampleCount len)
+bool CrossFader::CrossFadeMix(samplePtr buffer, sampleFormat format, sampleCount start, sampleCount len)
 {
 
   std::cout << "Crossfading from " << start << " to " << len+start << std::endl;
@@ -88,7 +88,7 @@ bool CrossFader::CrossFadeMix(samplePtr buffer, sampleFormat format, longSampleC
   int numclips = mClips.GetCount();
   
   //create vectors to store the important info for each clip.
-  std::vector<longSampleCount> clipStart(numclips);
+  std::vector<sampleCount> clipStart(numclips);
   std::vector<sampleCount> clipLength(numclips);
   std::vector<Sequence*> tmpSequence(numclips);
 

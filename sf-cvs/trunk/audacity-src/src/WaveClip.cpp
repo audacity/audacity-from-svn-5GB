@@ -307,13 +307,13 @@ void WaveClip::SetOffset(double offset)
 }
 
 bool WaveClip::GetSamples(samplePtr buffer, sampleFormat format,
-                   longSampleCount start, sampleCount len) const
+                   sampleCount start, sampleCount len) const
 {
    return mSequence->Get(buffer, format, start, len);
 }
 
 bool WaveClip::SetSamples(samplePtr buffer, sampleFormat format,
-                   longSampleCount start, sampleCount len)
+                   sampleCount start, sampleCount len)
 {
    bool bResult = mSequence->Set(buffer, format, start, len);
    MarkChanged();
@@ -328,7 +328,7 @@ double WaveClip::GetStartTime() const
 
 double WaveClip::GetEndTime() const
 {
-   longSampleCount numSamples = mSequence->GetNumSamples();
+   sampleCount numSamples = mSequence->GetNumSamples();
    
    double maxLen = mOffset + double(numSamples+mAppendBufferLen)/mRate;
    // JS: calculated value is not the length;
@@ -337,12 +337,12 @@ double WaveClip::GetEndTime() const
    return maxLen;
 }
 
-longSampleCount WaveClip::GetStartSample() const
+sampleCount WaveClip::GetStartSample() const
 {
-   return (longSampleCount)floor(mOffset * mRate + 0.5);
+   return (sampleCount)floor(mOffset * mRate + 0.5);
 }
 
-longSampleCount WaveClip::GetEndSample() const
+sampleCount WaveClip::GetEndSample() const
 {
    return GetStartSample() + mSequence->GetNumSamples();
 }
@@ -805,7 +805,7 @@ bool WaveClip::GetMinMax(float *min, float *max,
    if (t0 == t1)
       return true;
 
-   longSampleCount s0, s1;
+   sampleCount s0, s1;
 
    TimeToSamplesClip(t0, &s0);
    TimeToSamplesClip(t1, &s1);
@@ -826,14 +826,14 @@ void WaveClip::UpdateEnvelopeTrackLen()
    mEnvelope->SetTrackLen(((double)mSequence->GetNumSamples()) / mRate);
 }
 
-void WaveClip::TimeToSamplesClip(double t0, longSampleCount *s0) const
+void WaveClip::TimeToSamplesClip(double t0, sampleCount *s0) const
 {
    if (t0 < mOffset)
       *s0 = 0;
    else if (t0 > mOffset + double(mSequence->GetNumSamples())/mRate)
       *s0 = mSequence->GetNumSamples();
    else
-      *s0 = (longSampleCount)floor(((t0 - mOffset) * mRate) + 0.5);
+      *s0 = (sampleCount)floor(((t0 - mOffset) * mRate) + 0.5);
 }
 
 void WaveClip::ClearDisplayRect()
@@ -1007,7 +1007,7 @@ void WaveClip::WriteXML(XMLWriter &xmlFile)
 
 bool WaveClip::CreateFromCopy(double t0, double t1, WaveClip* other)
 {
-   longSampleCount s0, s1;
+   sampleCount s0, s1;
 
    other->TimeToSamplesClip(t0, &s0);
    other->TimeToSamplesClip(t1, &s1);
@@ -1051,7 +1051,7 @@ bool WaveClip::Paste(double t0, WaveClip* other)
       resampledClip = other;
    }
 
-   longSampleCount s0;
+   sampleCount s0;
    TimeToSamplesClip(t0, &s0);
    
    bool result = false;
@@ -1087,7 +1087,7 @@ bool WaveClip::Paste(double t0, WaveClip* other)
 
 bool WaveClip::InsertSilence(double t, double len)
 {
-   longSampleCount s0;
+   sampleCount s0;
    TimeToSamplesClip(t, &s0);
    sampleCount slen = (sampleCount)floor(len * mRate + 0.5);
    
@@ -1105,7 +1105,7 @@ bool WaveClip::InsertSilence(double t, double len)
 
 bool WaveClip::Clear(double t0, double t1)
 {
-   longSampleCount s0, s1;
+   sampleCount s0, s1;
 
    TimeToSamplesClip(t0, &s0);
    TimeToSamplesClip(t1, &s1);
@@ -1202,7 +1202,7 @@ bool WaveClip::ClearAndAddCutLine(double t0, double t1)
    }
    
    // Clear actual audio data
-   longSampleCount s0, s1;
+   sampleCount s0, s1;
 
    TimeToSamplesClip(t0, &s0);
    TimeToSamplesClip(t1, &s1);

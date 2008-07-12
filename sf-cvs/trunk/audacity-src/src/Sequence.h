@@ -19,7 +19,8 @@
 #include "xml/XMLWriter.h"
 #include "ondemand/ODTaskThread.h"
 
-typedef int sampleCount;
+typedef wxLongLong_t sampleCount; /** < A native 64-bit integer type, because
+                                    32-bit integers may not be enough */
 
 class BlockFile;
 class DirManager;

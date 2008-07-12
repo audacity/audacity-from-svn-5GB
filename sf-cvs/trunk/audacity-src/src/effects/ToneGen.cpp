@@ -250,8 +250,8 @@ bool EffectToneGen::Process()
       mSample = 0;
       mCurRate = track->GetRate();
       WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(), mCurRate);
-      numSamples = (longSampleCount)(length * mCurRate + 0.5);
-      longSampleCount i = 0;
+      numSamples = tmp->TimeToLongSamples(length);
+      sampleCount i = 0;
       float *data = new float[tmp->GetMaxBlockSize()];
       sampleCount block;
 

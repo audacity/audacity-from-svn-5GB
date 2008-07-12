@@ -66,7 +66,7 @@ class EffectDtmf:public Effect {
    virtual bool TransferParameters( Shuttle & shuttle );
 
  private:
-   longSampleCount numSamplesSequence, numSamplesTone, numSamplesSilence;
+   sampleCount numSamplesSequence, numSamplesTone, numSamplesSilence;
 
    wxString dtmfString;       // dtmf tone string
    int    dtmfNTones;         // total number of tones to generate
@@ -79,7 +79,7 @@ class EffectDtmf:public Effect {
  protected:
    virtual bool MakeDtmfTone(float *buffer, sampleCount len, float fs,
                              wxChar tone, sampleCount last,
-                             longSampleCount total, float amplitude);
+                             sampleCount total, float amplitude);
 
  // friendship ...
  friend class DtmfDialog;

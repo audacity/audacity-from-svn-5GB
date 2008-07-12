@@ -155,8 +155,8 @@ bool EffectNoise::Process()
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
       WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(), track->GetRate());
-      numSamples = (longSampleCount)(noiseDuration * track->GetRate() + 0.5);
-      longSampleCount i = 0;
+      numSamples = track->TimeToLongSamples(noiseDuration);
+      sampleCount i = 0;
       float *data = new float[tmp->GetMaxBlockSize()];
       sampleCount block;
 

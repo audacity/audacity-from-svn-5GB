@@ -449,8 +449,8 @@ bool EffectEqualization::Process()
       double t1 = mT1 > trackEnd? trackEnd: mT1;
 
       if (t1 > t0) {
-         longSampleCount start = track->TimeToLongSamples(t0);
-         longSampleCount end = track->TimeToLongSamples(t1);
+         sampleCount start = track->TimeToLongSamples(t0);
+         sampleCount end = track->TimeToLongSamples(t1);
          sampleCount len = (sampleCount)(end - start);
 
          if (!ProcessOne(count, track, start, len))
