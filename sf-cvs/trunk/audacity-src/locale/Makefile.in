@@ -8,7 +8,10 @@
 # This makefile may be invoked to build either audacity.pot or any lang.mo
 
 PROGNAME=audacity
-LINGUAS=af ar bn bg ca cb cs cy da de el es eu fi fr ga gl he hu it ja ko lt mk nb nl oc pl pt_BR ro ru sk sl sv tr uk vi zh zh_TW
+LINGUAS=af ar bn bg ca cb cs cy da de el es eu fa fi fr ga gl he hu it ja ko lt mk nb nl oc pl pt_BR ro ru sk sl sv tg tr uk vi zh zh_TW
+# these languages are not generated because they are currently unmaintained and
+# overlapped by another one:
+# pt - Cleber maintains pt_BR, and we do not have a pt_PT maintainer.
 
 prefix=@prefix@
 DATADIR=@datadir@
@@ -74,7 +77,7 @@ $(POTFILE):
 	  | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) \
 	  -o ../locale/$(POTFILE).template
 	cd ../locale && sed \
-	  -e 's/PACKAGE VERSION/Audacity 1.3.5/' \
+	  -e 's/PACKAGE VERSION/Audacity 1.3.6/' \
 	  -e 's/SOME DESCRIPTIVE TITLE/Audacity Strings for Translation/' \
 	  -e 's/YEAR-MO-DA HO:MI+ZONE/1999 and beyond/' \
 	  -e 's/THE PACKAGE.S COPYRIGHT HOLDER/Audacity Development Team/' \
