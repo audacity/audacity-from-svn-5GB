@@ -541,6 +541,11 @@ bool ExportPCM::AddStrings(AudacityProject *project, SNDFILE *sf, Tags *tags)
 
 bool ExportPCM::DisplayOptions(AudacityProject *project, int format)
 {
+   if (format < 2)
+   {
+      wxMessageBox(wxT("No options for this format. Use 'Other uncompressed files'."));
+      return true;
+   }
    ExportPCMOptions od(project,format);
 
    od.ShowModal();
