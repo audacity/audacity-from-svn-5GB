@@ -18,6 +18,10 @@ into a NoteTrack.
 #ifndef _IMPORT_MIDI_
 #define _IMPORT_MIDI_
 
+#include "../Audacity.h"
+
+#if defined(USE_MIDI)
+
 class NoteTrack;
 
 bool ImportMIDI(wxString fName, NoteTrack * dest);
@@ -103,6 +107,8 @@ class MIDIParser {
    int Msgsize;                 /* Size of currently allocated Msg */
    int Msgindex;                /* index of next available location in Msg */
 };
+
+#endif
 
 #endif
 
