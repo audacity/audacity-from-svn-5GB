@@ -23,7 +23,7 @@ bool sHasLoadedOD=false;
 
 
 
-DEFINE_EVENT_TYPE(wxEVT_ODTASK_UPDATE)
+DEFINE_EVENT_TYPE(EVT_ODTASK_UPDATE)
 
 //private constructor - Singleton.
 ODManager::ODManager()
@@ -202,7 +202,7 @@ void ODManager::Start()
       if(mNeedsDraw > 3)
       {
          mNeedsDraw=0;
-         wxCommandEvent event( wxEVT_ODTASK_UPDATE );
+         wxCommandEvent event( EVT_ODTASK_UPDATE );
          AudacityProject::AllProjectsDeleteLock();
          AudacityProject* proj = GetActiveProject();
          if(proj)

@@ -23,7 +23,7 @@ in a background thread.
 #include "../Project.h"
 
 
-DEFINE_EVENT_TYPE(wxEVT_ODTASK_COMPLETE)
+DEFINE_EVENT_TYPE(EVT_ODTASK_COMPLETE)
 
 /// Constructs an ODTask
 ODTask::ODTask()
@@ -108,7 +108,7 @@ void ODTask::DoSome(float amountWork)
    }
    else
    {
-      wxCommandEvent event( wxEVT_ODTASK_COMPLETE );
+      wxCommandEvent event( EVT_ODTASK_COMPLETE );
       AudacityProject::AllProjectsDeleteLock();
       AudacityProject* proj = GetActiveProject();
       if(proj)
