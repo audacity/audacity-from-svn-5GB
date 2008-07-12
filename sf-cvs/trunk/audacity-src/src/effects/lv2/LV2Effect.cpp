@@ -768,34 +768,40 @@ void LV2EffectDialog::OnSlider(wxCommandEvent &event)
    bool forceint = false;
    
    // Get the port range
-   /*
-   LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
-   if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor))
-      lower = hint.LowerBound;
-   if (LADSPA_IS_HINT_BOUNDED_ABOVE(hint.HintDescriptor))
-      upper = hint.UpperBound;
-   if (LADSPA_IS_HINT_SAMPLE_RATE(hint.HintDescriptor)) {
+   SLV2Port port = slv2_plugin_get_port_by_index(mData, p);
+   // XXX This is slow - store the values somewhere [larsl]
+   SLV2Value portIsSampleRate = 
+      slv2_value_new_uri(gWorld, "http://lv2plug.in/ns/lv2core#sampleRate");
+   SLV2Value portIsInteger = 
+      slv2_value_new_uri(gWorld, "http://lv2plug.in/ns/lv2core#integer");
+   int numPorts = slv2_plugin_get_num_ports(mData);
+   float* minimumValues = new float [numPorts];
+   float* maximumValues = new float [numPorts];
+   slv2_plugin_get_port_ranges_float(mData, minimumValues, 
+                                     maximumValues, 0);
+   if (std::isfinite(minimumValues[p]))
+      lower = minimumValues[p];
+   if (std::isfinite(maximumValues[p]))
+      lower = maximumValues[p];
+   if (slv2_port_has_property(mData, port, portIsSampleRate) || forceint) {
       lower *= sampleRate;
       upper *= sampleRate;
       forceint = true;
    }
-   */
    
    range = upper - lower;
 
    val = (sliders[p]->GetValue() / 1000.0) * range + lower;
-   
+
    // Force the value to an integer if requested
-   /*
    wxString str;
-   if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor) || forceint)
+   if (slv2_port_has_property(mData, port, portIsInteger) || forceint)
       str.Printf(wxT("%d"), (int)(val + 0.5));
    else
       str = Internat::ToDisplayString(val);
 
    fields[p]->SetValue(str);
-   */
-   
+
    inputControls[ports[p]] = val;
 
    inSlider = false;
