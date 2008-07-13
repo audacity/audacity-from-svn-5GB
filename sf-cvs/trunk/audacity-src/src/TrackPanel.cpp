@@ -6450,6 +6450,7 @@ void TrackPanel::OnMoveTrack(wxCommandEvent & event)
 /// whole sequence by an octave.
 void TrackPanel::OnChangeOctave(wxCommandEvent & event)
 {
+#if defined(USE_MIDI)
    wxASSERT(event.GetId() == OnUpOctaveID
             || event.GetId() == OnDownOctaveID);
    wxASSERT(mPopupMenuTarget->GetKind() == Track::Note);
@@ -6460,6 +6461,7 @@ void TrackPanel::OnChangeOctave(wxCommandEvent & event)
 
    MakeParentModifyState();
    Refresh(false);
+#endif
 }
 
 void TrackPanel::OnSetName(wxCommandEvent &event)
