@@ -28,9 +28,7 @@ class AUDACITY_DLL_API Ruler {
    enum RulerFormat {
       IntFormat,
       RealFormat,
-#ifdef LOGARITHMIC_SPECTRUM
       RealLogFormat,
-#endif
       TimeFormat,
       LinearDBFormat,
    };

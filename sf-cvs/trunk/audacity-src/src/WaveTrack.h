@@ -324,9 +324,7 @@ class AUDACITY_DLL_API WaveTrack: public Track {
       WaveformDisplay,
       WaveformDBDisplay,
       SpectrumDisplay,
-#ifdef LOGARITHMIC_SPECTRUM
 		SpectrumLogDisplay,
-#endif
       PitchDisplay
    } WaveTrackDisplay;
 

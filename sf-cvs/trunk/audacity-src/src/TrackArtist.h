@@ -71,15 +71,9 @@ class AUDACITY_DLL_API TrackArtist {
                      bool drawEnvelope, bool drawSamples,
                      bool drawSliders, bool dB, bool muted);
 
-#ifdef LOGARITHMIC_SPECTRUM
    void DrawSpectrum(WaveTrack *track,
                      wxDC & dc, wxRect & r,
                      ViewInfo * viewInfo, bool autocorrelation, bool logF);
-#else
-   void DrawSpectrum(WaveTrack *track,
-                     wxDC & dc, wxRect & r,
-                     ViewInfo * viewInfo, bool autocorrelation);
-#endif
 #ifdef USE_MIDI
    void DrawNoteTrack(NoteTrack *track,
                       wxDC & dc, wxRect & r, ViewInfo * viewInfo);
@@ -103,15 +97,9 @@ class AUDACITY_DLL_API TrackArtist {
                          bool drawSliders,
                          bool dB, bool muted);
 
-#ifdef LOGARITHMIC_SPECTRUM
    void DrawClipSpectrum(WaveTrack *track, WaveClip *clip,
                          wxDC & dc, wxRect & r,
                          ViewInfo * viewInfo, bool autocorrelation, bool logF);
-#else
-   void DrawClipSpectrum(WaveTrack *track, WaveClip *clip,
-                         wxDC & dc, wxRect & r,
-                         ViewInfo * viewInfo, bool autocorrelation);
-#endif
 
    void SetBackgroundBrushes(wxBrush unselectedBrush, wxBrush selectedBrush,
 			     wxPen unselectedPen, wxPen selectedPen) {

@@ -154,9 +154,7 @@ void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieRadioButton( _("Waveform"), 0);
       S.TieRadioButton( _("Waveform (dB)"), 1);
       S.TieRadioButton( _("Spectrum"), 2);
-#ifdef LOGARITHMIC_SPECTRUM
       S.TieRadioButton( _("Spectrum log(f)"), 3);
-#endif //LOGARITHMIC_SPECTRUM
       S.TieRadioButton( _("Pitch (EAC)"), 4);
       S.EndRadioButtonGroup();
    }

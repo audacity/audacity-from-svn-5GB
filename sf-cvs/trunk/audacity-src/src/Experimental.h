@@ -61,10 +61,6 @@
 //the display of summary data will not be there (one can still see sample data if zoomed in)
 #define EXPERIMENTAL_ONDEMAND
 
-//Changes thanks to Andreas Micheler
-//Perhaps this should not be included in the mainstream until the log spectrogram scale is ready as well
-#define LOGARITHMIC_SPECTRUM
-
 //FFmpeg integration. Some FFmpeg-related changes are NOT ifdef'ed,
 //as they are harmless (like - a few mockup methods in Import* classes)
 // To enable ffmpeg support #define USE_FFMPEG in config*.h, as for any other
@@ -74,7 +70,7 @@
 // and displaying those categories as submenus in the Effect menu.
 #define EFFECT_CATEGORIES
 
-// AM, 22 Nov.2007
+// Andreas Micheler, 22 Nov.2007
 // Some fixes for the rulers.
 // If activated, the ruler's labels don't spill over,
 // instead all rulers are resized to fit the biggest ruler.
@@ -86,21 +82,19 @@
 // Fixed the loop problem, so turned this on as I think it's valid.
 #define EXPERIMENTAL_RULER_AUTOSIZE
 
-#ifdef LOGARITHMIC_SPECTRUM
-   // AM, 20.Nov 2007: 
-   // A spectrumLogF-like view mode with notes quantization.
-   // Just select the "Find Notes" checkbox in the spectrum prefs 
-   // to activate it instead of the Spectrum log(f) mode.
-   //#define EXPERIMENTAL_FIND_NOTES
+// Andreas Micheler, 20.Nov 2007: 
+// A spectrumLogF-like view mode with notes quantization.
+// Just select the "Find Notes" checkbox in the spectrum prefs 
+// to activate it instead of the Spectrum log(f) mode.
+//#define EXPERIMENTAL_FIND_NOTES
 
-   // AM, 22.Nov 2007
-   // Skip Points support in the spectrum view mode.
-   //#define EXPERIMENTAL_FFT_SKIP_POINTS
+// AM, 22.Nov 2007
+// Skip Points support in the spectrum view mode.
+//#define EXPERIMENTAL_FFT_SKIP_POINTS
 
-   // AM, 22.Nov 2007: 
-   // A Frequency Grid for the Spectrum Log(f) & Find Notes modes
-   //#define EXPERIMENTAL_FFT_Y_GRID
-#endif
+// AM, 22.Nov 2007: 
+// A Frequency Grid for the Spectrum Log(f) & Find Notes modes
+//#define EXPERIMENTAL_FFT_Y_GRID
 
 // AM, 22.Nov 2007: 
 // Saves the default view mode for wave tracks.
