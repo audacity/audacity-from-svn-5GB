@@ -1247,7 +1247,7 @@ void ExportFFmpegFLACOptions::OnOK(wxCommandEvent& event)
 // ExportFFmpegAACOptions Class
 //----------------------------------------------------------------------------
 
-static int iAACBitRates[] = { 8*1024, 16*1024, 24*1024, 32*1024, 48*1024, 64*1024, 96*1024, 128*1024, 160*1024, 192*1024, 224*1024 };
+static int iAACBitRates[] = { 4*1024, 8*1024, 16*1024, 24*1024, 32*1024, 40*1024, 48*1024, 56*1024, 64*1024, 72*1024, 80*1024, 96*1024, 128*1024, 160*1024, 192*1024, 224*1024 };
 static int iAACSampleRates[] = { 96000,88200,64000,48000,44100,32000,24000,22050,16000,12000,11025,8000,7350 };
 static int iAACProfileValues[] = { FF_PROFILE_AAC_LOW, FF_PROFILE_AAC_MAIN, /*FF_PROFILE_AAC_SSR,*/ FF_PROFILE_AAC_LTP };
 static const wxChar *iAACProfileNames[] = { _("Low Complexity"), _("Main profile"), /*_("SSR"),*/ _("LTP") }; //SSR is not supported
@@ -1320,7 +1320,7 @@ ExportFFmpegAACOptions::ExportFFmpegAACOptions(wxWindow *parent)
 
    for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
    {
-      mBitRateNames.Add(wxString::Format(wxT("%i"),iAACBitRates[i]/1000));
+      mBitRateNames.Add(wxString::Format(wxT("%i"),iAACBitRates[i]/1024));
       mBitRateLabels.Add(iAACBitRates[i]);
    }
 
@@ -1350,7 +1350,7 @@ void ExportFFmpegAACOptions::PopulateOrExchange(ShuttleGui & S)
       {
          S.StartTwoColumn();
          {
-            S.Id(AACBRChoice).TieChoice(_("Bit Rate:"), wxT("/FileFormats/AACBitRate"), 
+            S.Id(AACBRChoice).TieChoice(_("Bit Rate (per channel):"), wxT("/FileFormats/AACBitRate"), 
                98000, mBitRateNames, mBitRateLabels);
             S.Id(AACSRChoice).TieChoice(_("Sample Rate:"), wxT("/FileFormats/AACSampleRate"), 
                44100, mSampleRateNames, mSampleRateLabels);
@@ -1390,17 +1390,12 @@ void ExportFFmpegAACOptions::OnSampleRate(wxCommandEvent &event)
    mBitRateLabels.Clear();
    for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
    {
-      mBitRateNames.Add(wxString::Format(wxT("%i"),iAACBitRates[i]/1000));
+      mBitRateNames.Add(wxString::Format(wxT("%i"),iAACBitRates[i]/1024));
       mBitRateLabels.Add(iAACBitRates[i]);
    }
    for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
    {
       choice->SetString(i,mBitRateNames[i]);
-      wxString s = choice->GetString(i);
-      if (s.Cmp(mBitRateNames[i]) != 0)
-      {
-         wxMessageBox(wxT("Err"));
-      }
    }
    return;
 }
@@ -2094,25 +2089,42 @@ bool ExportFFmpeg::Finalize()
       int		nFifoBytes = FFmpegLibsInst->av_fifo_size(&mEncAudioFifo);	// any bytes left in audio FIFO?
 
       nEncodedBytes = 0;
+      int		nAudioFrameSizeOut = mEncAudioCodecCtx->frame_size * mEncAudioCodecCtx->channels * sizeof(int16_t);
+      if (mEncAudioCodecCtx->frame_size == 1) nAudioFrameSizeOut = mEncAudioEncodedBufSiz;
 
       // Flush the audio FIFO first if necessary. It won't contain a _full_ audio frame because
       // if it did we'd have pulled it from the FIFO during the last encodeAudioFrame() call - 
       // the encoder must support short/incomplete frames for this to work.
-      if (nFifoBytes > 0 && mEncAudioCodecCtx->codec->capabilities & CODEC_CAP_SMALL_LAST_FRAME)
+      if (nFifoBytes > 0)
       {
-         int nFrameSizeTmp = mEncAudioCodecCtx->frame_size;
+         memset(mEncAudioFifoOutBuf,0,nAudioFrameSizeOut);
+         AVCodec *codec = mEncAudioCodecCtx->codec;
+         if ((codec->capabilities & CODEC_CAP_SMALL_LAST_FRAME)
+            || codec->id == CODEC_ID_FLAC
+            || mEncAudioCodecCtx->frame_size == 1
+            || gPrefs->Read(wxT("/FileFormats/OverrideSmallLastFrame"),(long)1)
+            )
+         {
+            int nFrameSizeTmp = mEncAudioCodecCtx->frame_size;
 
-         // The last frame is going to contain a smaller than usual number of samples.
-         mEncAudioCodecCtx->frame_size = nFifoBytes / (mEncAudioCodecCtx->channels * sizeof(int16_t));
+            // The last frame is going to contain a smaller than usual number of samples.
+            if (mEncAudioCodecCtx->frame_size != 1)
+               mEncAudioCodecCtx->frame_size = nFifoBytes / (mEncAudioCodecCtx->channels * sizeof(int16_t));
 
-         wxLogMessage(wxT("FFmpeg : Audio FIFO still contains %d bytes, writing short %d sample frame ..."), 
-            nFifoBytes, mEncAudioCodecCtx->frame_size);
+            wxLogMessage(wxT("FFmpeg : Audio FIFO still contains %d bytes, writing short %d sample frame ..."), 
+               nFifoBytes, mEncAudioCodecCtx->frame_size);
 
-         // Pull the bytes out from the FIFO and feed them to the encoder.
-         if (FFmpegLibsInst->av_fifo_read(&mEncAudioFifo, mEncAudioFifoOutBuf, nFifoBytes) == 0)
-            nEncodedBytes = FFmpegLibsInst->avcodec_encode_audio(mEncAudioCodecCtx, mEncAudioEncodedBuf, mEncAudioEncodedBufSiz, (int16_t*)mEncAudioFifoOutBuf);
+            // Pull the bytes out from the FIFO and feed them to the encoder.
+            if (FFmpegLibsInst->av_fifo_read(&mEncAudioFifo, mEncAudioFifoOutBuf, nFifoBytes) == 0)
+            {
+               if (mEncAudioCodecCtx->frame_size != 1)
+                  nEncodedBytes = FFmpegLibsInst->avcodec_encode_audio(mEncAudioCodecCtx, mEncAudioEncodedBuf, mEncAudioEncodedBufSiz, (int16_t*)mEncAudioFifoOutBuf);
+               else
+                  nEncodedBytes = FFmpegLibsInst->avcodec_encode_audio(mEncAudioCodecCtx, mEncAudioEncodedBuf, nFifoBytes, (int16_t*)mEncAudioFifoOutBuf);
+            }
 
-         mEncAudioCodecCtx->frame_size = nFrameSizeTmp;		// restore the native frame size
+            mEncAudioCodecCtx->frame_size = nFrameSizeTmp;		// restore the native frame size
+         }
       }
 
       // Now flush the encoder.
