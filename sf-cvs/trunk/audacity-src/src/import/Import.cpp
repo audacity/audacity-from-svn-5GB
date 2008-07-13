@@ -247,11 +247,13 @@ int Importer::Import(wxString fName,
       return 0;
    }
 
+#ifdef USE_MIDI
    // MIDI files must be imported, not opened
    if ((extension.IsSameAs(wxT("midi"), false))||(extension.IsSameAs(wxT("mid"), false))) {
-      errorMessage.Printf(_("\"%s\" is a MIDI file, not an audio file. \nAudacity cannot open this type of file for playing or editing, but you can \ndisplay it by clicking File > Import > MIDI."), fName.c_str());
+      errorMessage.Printf(_("\"%s\" \nis a MIDI file, not an audio file. \nAudacity cannot open this type of file for playing or editing, but you can \ndisplay it by clicking File > Import > MIDI."), fName.c_str());
       return 0;
    }
+#endif
 
    // Other notes-based formats
    if ((extension.IsSameAs(wxT("kar"), false))||(extension.IsSameAs(wxT("mod"), false))||(extension.IsSameAs(wxT("rmi"), false))) {
@@ -344,7 +346,7 @@ int Importer::Import(wxString fName,
    }
 
    // we were not able to recognize the file type
-   errorMessage = _("Audacity did not recognize the type of this file.\nIf it is uncompressed, try importing it using \"Import Raw\"" );
+   errorMessage = _("Audacity did not recognize the type of this file.\nIf it is uncompressed, try importing it using \"Import Raw\"." );
    return 0;
 }
 
