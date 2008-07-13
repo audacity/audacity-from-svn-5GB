@@ -409,7 +409,6 @@ void ExportFFmpegOptions::FetchPresetList()
    mPresets = new wxArrayString();
 }
 
-
 ///
 ///
 void ExportFFmpegOptions::FetchFormatList()
@@ -718,7 +717,6 @@ void ExportFFmpegOptions::OnFormatList(wxCommandEvent& event)
       return;
    }
    mFormatName->SetLabel(wxString::Format(wxT("%s"),selfmtlong->c_str()));
-
    const AVCodecTag **tags = fmt->codec_tag;
    int selcdcid = -1;
 
@@ -1251,8 +1249,23 @@ void ExportFFmpegFLACOptions::OnOK(wxCommandEvent& event)
 
 static int iAACBitRates[] = { 8*1024, 16*1024, 24*1024, 32*1024, 48*1024, 64*1024, 96*1024, 128*1024, 160*1024, 192*1024, 224*1024 };
 static int iAACSampleRates[] = { 96000,88200,64000,48000,44100,32000,24000,22050,16000,12000,11025,8000,7350 };
-static int iAACProfileValues[] = { FF_PROFILE_AAC_LOW, FF_PROFILE_AAC_MAIN, FF_PROFILE_AAC_SSR, FF_PROFILE_AAC_LTP };
-static const wxChar *iAACProfileNames[] = { _("Low Complexity"), _("Main profile"), _("SSR"), _("LTP") };
+static int iAACProfileValues[] = { FF_PROFILE_AAC_LOW, FF_PROFILE_AAC_MAIN, /*FF_PROFILE_AAC_SSR,*/ FF_PROFILE_AAC_LTP };
+static const wxChar *iAACProfileNames[] = { _("Low Complexity"), _("Main profile"), /*_("SSR"),*/ _("LTP") }; //SSR is not supported
+
+enum AACIDs
+{
+   AACSRChoice = 20000,
+   AACBRChoice
+};
+/* Returns the maximum bitrate per channel for that sampling frequency */
+#define FRAME_LEN 1024
+unsigned int MaxAACBitrate(unsigned long sampleRate)
+{
+   /*
+   *  Maximum of 6144 bit for a channel
+   */
+   return (unsigned int)(6144.0 * (double)sampleRate/(double)FRAME_LEN + .5);
+}
 
 
 class ExportFFmpegAACOptions : public wxDialog
@@ -1262,6 +1275,7 @@ public:
    ExportFFmpegAACOptions(wxWindow *parent);
    void PopulateOrExchange(ShuttleGui & S);
    void OnOK(wxCommandEvent& event);
+   void OnSampleRate(wxCommandEvent &event);
 
 private:
 
@@ -1285,6 +1299,7 @@ private:
 
 BEGIN_EVENT_TABLE(ExportFFmpegAACOptions, wxDialog)
 EVT_BUTTON(wxID_OK,ExportFFmpegAACOptions::OnOK)
+EVT_CHOICE(AACSRChoice,ExportFFmpegAACOptions::OnSampleRate)
 END_EVENT_TABLE()
 
 ExportFFmpegAACOptions::ExportFFmpegAACOptions(wxWindow *parent)
@@ -1294,6 +1309,14 @@ ExportFFmpegAACOptions::ExportFFmpegAACOptions(wxWindow *parent)
             wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
+
+   long selsr = gPrefs->Read(wxT("/FileFormats/AACSampleRate"),44100);
+   unsigned int mbr = MaxAACBitrate(selsr);
+
+   for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
+   {
+      iAACBitRates[i] = mbr - i*mbr/((sizeof(iAACBitRates)/sizeof(int)));
+   }
 
    for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
    {
@@ -1327,9 +1350,9 @@ void ExportFFmpegAACOptions::PopulateOrExchange(ShuttleGui & S)
       {
          S.StartTwoColumn();
          {
-            S.TieChoice(_("Bit Rate (per channel):"), wxT("/FileFormats/AACBitRate"), 
+            S.Id(AACBRChoice).TieChoice(_("Bit Rate:"), wxT("/FileFormats/AACBitRate"), 
                98000, mBitRateNames, mBitRateLabels);
-            S.TieChoice(_("Sample Rate:"), wxT("/FileFormats/AACSampleRate"), 
+            S.Id(AACSRChoice).TieChoice(_("Sample Rate:"), wxT("/FileFormats/AACSampleRate"), 
                44100, mSampleRateNames, mSampleRateLabels);
             S.TieChoice(_("Profile:"), wxT("/FileFormats/AACProfile"), 
                FF_PROFILE_AAC_LOW, mProfileNames, mProfileLabels);
@@ -1347,6 +1370,38 @@ void ExportFFmpegAACOptions::PopulateOrExchange(ShuttleGui & S)
    SetMinSize(GetSize());
    Center();
 
+   return;
+}
+
+///
+///
+void ExportFFmpegAACOptions::OnSampleRate(wxCommandEvent &event)
+{
+   wxChoice *srchoice = (wxChoice*)this->FindWindowById(AACSRChoice);
+   long selsr;
+   srchoice->GetString(srchoice->GetSelection()).ToLong(&selsr);
+   wxChoice *choice = (wxChoice*)this->FindWindowById(AACBRChoice);
+   unsigned int mbr = MaxAACBitrate(selsr);
+   for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
+   {
+      iAACBitRates[i] = mbr - i*mbr/((sizeof(iAACBitRates)/sizeof(int)));
+   }
+   mBitRateNames.Clear();
+   mBitRateLabels.Clear();
+   for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
+   {
+      mBitRateNames.Add(wxString::Format(wxT("%i"),iAACBitRates[i]/1000));
+      mBitRateLabels.Add(iAACBitRates[i]);
+   }
+   for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
+   {
+      choice->SetString(i,mBitRateNames[i]);
+      wxString s = choice->GetString(i);
+      if (s.Cmp(mBitRateNames[i]) != 0)
+      {
+         wxMessageBox(wxT("Err"));
+      }
+   }
    return;
 }
 
@@ -1913,7 +1968,8 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    case FMT_MP4:
    case FMT_AAC:
       mSampleRate = gPrefs->Read(wxT("/FileFormats/AACSampleRate"), 48000);
-      mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AACBitRate"), 192000);
+      mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AACBitRate"), 98000);
+      mEncAudioCodecCtx->bit_rate *= mChannels;
       mEncAudioCodecCtx->profile = gPrefs->Read(wxT("/FileFormats/AACProfile"),FF_PROFILE_AAC_LOW);
       break;
    case FMT_FLAC:
@@ -2241,29 +2297,29 @@ bool ExportFFmpeg::AddTags(Tags *tags)
    {
       memset(mEncFormatCtx->author,0,sizeof(mEncFormatCtx->author));
       wxString tmp(tags->GetTag(TAG_ARTIST));
-      const char *cstr = tmp.ToUTF8().data();
-      strlen(cstr) > sizeof(mEncFormatCtx->author) -1 ? sizeof(mEncFormatCtx->author) -1 : strlen(cstr);
+      const wxCharBuffer cstr = tmp.ToUTF8().data();
+      strlen(cstr.data()) > sizeof(mEncFormatCtx->author) -1 ? sizeof(mEncFormatCtx->author) -1 : strlen(cstr.data());
    }
 
    {
       memset(mEncFormatCtx->album,0,sizeof(mEncFormatCtx->album));
       wxString tmp(tags->GetTag(TAG_ALBUM));
-      const char *cstr = tmp.ToUTF8().data();
-      strlen(cstr) > sizeof(mEncFormatCtx->album) -1 ? sizeof(mEncFormatCtx->album) -1 : strlen(cstr);
+      const wxCharBuffer cstr = tmp.ToUTF8().data();
+      strlen(cstr.data()) > sizeof(mEncFormatCtx->album) -1 ? sizeof(mEncFormatCtx->album) -1 : strlen(cstr.data());
    }
 
    {
       memset(mEncFormatCtx->comment,0,sizeof(mEncFormatCtx->comment));
       wxString tmp(tags->GetTag(TAG_COMMENTS));
-      const char *cstr = tmp.ToAscii();
-      strlen(cstr) > sizeof(mEncFormatCtx->comment) -1 ? sizeof(mEncFormatCtx->comment) -1 : strlen(cstr);
+      const wxCharBuffer cstr = tmp.ToAscii();
+      strlen(cstr.data()) > sizeof(mEncFormatCtx->comment) -1 ? sizeof(mEncFormatCtx->comment) -1 : strlen(cstr.data());
    }
 
    {
       memset(mEncFormatCtx->genre,0,sizeof(mEncFormatCtx->genre));
       wxString tmp(tags->GetTag(TAG_GENRE));
-      const char *cstr = tmp.ToAscii();
-      strlen(cstr) > sizeof(mEncFormatCtx->genre) -1 ? sizeof(mEncFormatCtx->genre) -1 : strlen(cstr);
+      const wxCharBuffer cstr = tmp.ToAscii();
+      strlen(cstr.data()) > sizeof(mEncFormatCtx->genre) -1 ? sizeof(mEncFormatCtx->genre) -1 : strlen(cstr.data());
    }
 
    tags->GetTag(TAG_YEAR).ToLong((long*)&mEncFormatCtx->year);
