@@ -2380,7 +2380,7 @@ bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
    }
    else if ((format == FMT_GSMAIFF) || (format == FMT_GSMMSWAV))
    {
-      wxMessageBox(wxT("There is no options for GSM"));
+      wxMessageBox(wxT("No options for this format."));
       return true;
    }
    else if (format == FMT_AMRNB)
