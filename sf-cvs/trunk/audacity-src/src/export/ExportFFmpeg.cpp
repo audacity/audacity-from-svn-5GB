@@ -108,6 +108,7 @@ enum FFmpegExposedFormat
    FMT_PCMS16LEWAV,
    FMT_MP3,
    FMT_MP4,
+   FMT_M4A,
    FMT_FLAC,
    FMT_AC3,
    FMT_AAC,
@@ -118,7 +119,7 @@ enum FFmpegExposedFormat
    FMT_AMRNB,
    FMT_AMRWB,
    FMT_WMA2,
-   FMT_RA3,
+//   FMT_RA3,
    FMT_OTHER,
    FMT_LAST
 };
@@ -138,7 +139,8 @@ ExposedFormat fmts[] =
 {
    {FMT_PCMS16LEWAV, wxT("WAV"),       wxT("wav"),    255,  true,_("WAV Files (FFmpeg)"),                      CODEC_ID_PCM_S16LE},
    {FMT_MP3,         wxT("MP3"),       wxT("mp3"),    2,    true,_("MP3 Files (FFmpeg)"),                      CODEC_ID_MP3LAME},
-   {FMT_MP4,         wxT("MP4"),       wxT("mp4"),    48,   true,_("MP4 (AAC) Files (FFmpeg)"),                CODEC_ID_AAC},
+   {FMT_MP4,         wxT("MP4"),       wxT("mp4"),    48,   true,_("MP4/MOV/iPOD/PSP/3GP/3G2 (AAC) Files (FFmpeg)"),CODEC_ID_AAC},
+   {FMT_M4A,         wxT("M4A"),       wxT("m4a"),    48,   true,_("M4A (AAC) Files (FFmpeg)"),                CODEC_ID_AAC},
    {FMT_FLAC,        wxT("FLAC"),      wxT("flac"),   8,    true,_("FLAC Files (FFmpeg)"),                     CODEC_ID_FLAC},
    {FMT_AC3,         wxT("AC3"),       wxT("ac3"),    7,    true,_("AC3 Files (FFmpeg)"),                      CODEC_ID_AC3},
    {FMT_AAC,         wxT("AAC"),       wxT("aac"),    48,   true,_("AAC Files (FFmpeg)"),                      CODEC_ID_AAC},
@@ -147,9 +149,9 @@ ExposedFormat fmts[] =
    {FMT_GSMAIFF,     wxT("GSMAIFF"),   wxT("aiff"),   1,    true,_("GSM-AIFF Files (FFmpeg)"),                 CODEC_ID_GSM},
    {FMT_GSMMSWAV,    wxT("GSMWAV"),    wxT("wav"),    1,    true,_("GSM-WAV (Microsoft) Files (FFmpeg)"),      CODEC_ID_GSM_MS},
    {FMT_AMRNB,       wxT("AMRNB"),     wxT("amr"),    1,    true,_("AMR (narrow band) Files (FFmpeg)"),        CODEC_ID_AMR_NB},
-   {FMT_AMRWB,       wxT("AMRWB"),     wxT("3gp"),    1,    true,_("3GP-AMR (wide band) Files (FFmpeg)"),      CODEC_ID_AMR_WB},
+   {FMT_AMRWB,       wxT("AMRWB"),     wxT("amr"),    1,    true,_("AMR (wide band) Files (FFmpeg)"),          CODEC_ID_AMR_WB},
    {FMT_WMA2,        wxT("WMA"),       wxT("wma"),    2,    true,_("WMA (version 2) Files (FFmpeg)"),          CODEC_ID_WMAV2},
-   {FMT_RA3,         wxT("RA3"),       wxT("ra"),     6,    true,_("Real Audio (version 3) Files (FFmpeg)"),   CODEC_ID_AC3},
+//   {FMT_RA3,         wxT("RA3"),       wxT("ra"),     6,    true,_("Real Audio (version 3) Files (FFmpeg)"),   CODEC_ID_AC3}, //until i figure out how to export realplayer-compatible RMs
    {FMT_OTHER,       wxT("FFMPEG"),    wxT("ffmpeg"), 255,  true,_("Other FFmpeg-Compatible Files"),           CODEC_ID_NONE}
 };
 
@@ -1247,7 +1249,7 @@ void ExportFFmpegFLACOptions::OnOK(wxCommandEvent& event)
 // ExportFFmpegAACOptions Class
 //----------------------------------------------------------------------------
 
-static int iAACBitRates[] = { 4*1024, 8*1024, 16*1024, 24*1024, 32*1024, 40*1024, 48*1024, 56*1024, 64*1024, 72*1024, 80*1024, 96*1024, 128*1024, 160*1024, 192*1024, 224*1024 };
+static int iAACBitRates[16];
 static int iAACSampleRates[] = { 96000,88200,64000,48000,44100,32000,24000,22050,16000,12000,11025,8000,7350 };
 static int iAACProfileValues[] = { FF_PROFILE_AAC_LOW, FF_PROFILE_AAC_MAIN, /*FF_PROFILE_AAC_SSR,*/ FF_PROFILE_AAC_LTP };
 static const wxChar *iAACProfileNames[] = { _("Low Complexity"), _("Main profile"), /*_("SSR"),*/ _("LTP") }; //SSR is not supported
@@ -1315,7 +1317,7 @@ ExportFFmpegAACOptions::ExportFFmpegAACOptions(wxWindow *parent)
 
    for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
    {
-      iAACBitRates[i] = mbr - i*mbr/((sizeof(iAACBitRates)/sizeof(int)));
+      iAACBitRates[i] = (i+1)*mbr/((sizeof(iAACBitRates)/sizeof(int)));
    }
 
    for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
@@ -1381,10 +1383,14 @@ void ExportFFmpegAACOptions::OnSampleRate(wxCommandEvent &event)
    long selsr;
    srchoice->GetString(srchoice->GetSelection()).ToLong(&selsr);
    wxChoice *choice = (wxChoice*)this->FindWindowById(AACBRChoice);
+   long selbr;
+   selbr = choice->GetSelection();
+   if (selbr >= 0)
+      selbr = iAACBitRates[selbr];
    unsigned int mbr = MaxAACBitrate(selsr);
    for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
    {
-      iAACBitRates[i] = mbr - i*mbr/((sizeof(iAACBitRates)/sizeof(int)));
+      iAACBitRates[i] = (i+1)*mbr/((sizeof(iAACBitRates)/sizeof(int)));
    }
    mBitRateNames.Clear();
    mBitRateLabels.Clear();
@@ -1393,10 +1399,20 @@ void ExportFFmpegAACOptions::OnSampleRate(wxCommandEvent &event)
       mBitRateNames.Add(wxString::Format(wxT("%i"),iAACBitRates[i]/1024));
       mBitRateLabels.Add(iAACBitRates[i]);
    }
+   long mindiff = 1024*1024;
+   long minindex = -1;
    for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
    {
       choice->SetString(i,mBitRateNames[i]);
+      //Retain previous choice if possible
+      if (abs(iAACBitRates[i] - selbr) < mindiff)
+      {
+         mindiff = abs(iAACBitRates[i] - selbr);
+         minindex = i;
+      }
    }
+   if (minindex != -1)
+      choice->SetSelection(minindex);
    return;
 }
 
@@ -1827,10 +1843,11 @@ ExportFFmpeg::ExportFFmpeg()
       switch(newfmt)
       {
       case FMT_MP4:
-         AddExtension(wxString(wxT("m4a")),newfmt);
-         break;
-      case FMT_RA3:
-         AddExtension(wxString(wxT("rm")),newfmt);
+         AddExtension(wxString(wxT("mov")),newfmt);
+         AddExtension(wxString(wxT("psp")),newfmt);
+         AddExtension(wxString(wxT("ipod")),newfmt);
+         AddExtension(wxString(wxT("3gp")),newfmt);
+         AddExtension(wxString(wxT("3g2")),newfmt);
          break;
       case FMT_WMA2:
          AddExtension(wxString(wxT("asf")),newfmt);
@@ -1872,6 +1889,23 @@ bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
    FFmpegLibsInst->av_log_set_callback(av_log_wx_callback);
 
    AVFormatParameters	fpOutFile;
+
+   //Black magic - for mp4 format change shortname based on user-provided extension
+   if (strcmp(shortname,"mp4") == 0)
+   {
+      wxFileName fullname(mName);
+      wxString ext = fullname.GetExt();
+      if (ext.CmpNoCase(wxT("mov")))
+         shortname = "mov";
+      else if (ext.CmpNoCase(wxT("ipod")))
+         shortname = "ipod";
+      else if (ext.CmpNoCase(wxT("psp")))
+         shortname = "psp";
+      else if (ext.CmpNoCase(wxT("3gp")))
+         shortname = "3gp";
+      else if (ext.CmpNoCase(wxT("3g2")))
+         shortname = "3g2";
+   }
 
    // See if libavformat has modules that can write our output format. If so, mEncFormatDesc
    // will describe the functions used to write the format (used internally by libavformat)
@@ -1961,11 +1995,13 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/MP3BitRate"), 192000);
       break;
    case FMT_MP4:
+   case FMT_M4A:
    case FMT_AAC:
       mSampleRate = gPrefs->Read(wxT("/FileFormats/AACSampleRate"), 48000);
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AACBitRate"), 98000);
       mEncAudioCodecCtx->bit_rate *= mChannels;
       mEncAudioCodecCtx->profile = gPrefs->Read(wxT("/FileFormats/AACProfile"),FF_PROFILE_AAC_LOW);
+      mEncAudioCodecCtx->cutoff = mSampleRate/2;
       break;
    case FMT_FLAC:
    case FMT_OGGFLAC:
@@ -1973,7 +2009,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       mEncAudioCodecCtx->compression_level = gPrefs->Read(wxT("/FileFormats/FLACCompression"), 5);
       break;
    case FMT_AC3:
-   case FMT_RA3:
+//   case FMT_RA3:
       mSampleRate = gPrefs->Read(wxT("/FileFormats/AC3SampleRate"), 48000);
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AC3BitRate"), 192000);
       break;
@@ -2354,7 +2390,7 @@ bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
       od.ShowModal();
       return true;
    }
-   else if ((format == FMT_MP4) || (format == FMT_AAC))
+   else if ((format == FMT_MP4) || (format == FMT_AAC) || (format == FMT_M4A))
    {
       ExportFFmpegAACOptions od(project);
       od.ShowModal();
@@ -2366,7 +2402,7 @@ bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
       od.ShowModal();
       return true;
    }
-   else if ((format == FMT_AC3) || (format == FMT_RA3))
+   else if ((format == FMT_AC3)/* || (format == FMT_RA3)*/)
    {
       ExportFFmpegAC3Options od(project);
       od.ShowModal();
