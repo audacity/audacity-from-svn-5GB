@@ -17,13 +17,12 @@ Audacity source code archive, except as otherwise noted
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Version 1.3.6a3 (alpha)
-
+Version 1.3.6a4 (alpha)
 
 Contents of this README:
 
 1.  Licensing
-2.  Changes in version 1.3.6a3
+2.  Changes in version 1.3.6a4
 3.  Known Issues
 4.  Source Code, Libraries and Additional Copyright Information
 5.  Compilation Instructions
@@ -55,24 +54,30 @@ to http://www.gnu.org/copyleft/gpl.html or write to
 
 --------------------------------------------------------------------------------
 
-2.  Changes in version 1.3.6a3
-
-Import / Export:
-        * Experimental support for exporting a much wider range
-           of proprietary audio formats via FFmpeg
-        * "On-demand" immediate loading of imported PCM WAV or
-           AIFF files now has experimental "progress bar" embedded in
-           the waveform until fully loaded
+2.  Changes in version 1.3.6a4
 
 Interface:
-        * Note track: experimental support for cut, copy and paste
-           using Edit Toolbar; currently not available for Linux, where
-           EXPERIMENTAL_NOTE_TRACK must be undefined in order
-           to build
-        * New Transport menu for alternative access to play and record
-           commands and some recording preferences
-        * Audio tracks are now linked to label tracks by being positioned
-           above a label track, if linkage is enabled in the Tracks menu
+        * New Preference: Default View Mode, to choose type of
+           waveform, spectrum or pitch view for new tracks
+        * Note Track: experimental support is now enabled by defining
+           USE_MIDI in config*, but does not build out-of-the-box
+           on Windows
+        * Bug fixes for linked audio and label tracks; now supports
+           label shifting when changing speed and generating tones
+
+Import / Export:
+        * Improvements/fixes for AAC exports including new M4A
+           filter for compatibility with iTunes; RealAudio export
+           temporarily removed
+        * Improved refresh of on-demand loading; fixed a phantom
+           on-demand progress bar when time-shifting clips
+
+Effects:
+        * Experimental support for LV2 plug-in architecture on Linux
+           and Mac, but operation may be buggy; no LV2 support yet on
+           Windows, because the required slv2 library currently does.
+           not build
+
 
 --------------------------------------------------------------------------------
 
@@ -84,10 +89,22 @@ Please also check:
 for details of any issues that have been identified after release of
 this version.
 
- * When audio/label track linkage is on: cutting a selected region
-    in both audio and label tracks results in too much of the label
-    track being deleted; and pasting audio into multiple tracks
-    inserts silence as well as the pasted content.
+ * LADSPA Multiband EQ may not be visible in the Effect menu, and
+    may crash in use.
+
+ * Exported GSM-WAV and GSM-AIFF files may not play on some players
+    and/or may not play for the full length.
+
+ * Some multi-channel recording devices that previously recorded more
+    than two channels may no longer do so. Please send reports to:
+      feedback@audacityteam.org
+
+ * If a saved project includes tracks at a sample rate of more than
+    100000 Hz, on reopening the project such tracks will give
+    "orphaned blockfile" error and have no audio.
+
+ * When audio/label track linkage is on, pasting audio into multiple
+    tracks inserts silence as well as the pasted content.
 
  * Whether audio/label track linkage is on or not: a label cannot be
     pasted with its audio; system clipboard content is pasted instead
@@ -161,37 +178,35 @@ this version.
  * Beep on completing long process may not be audible on many systems.
 
  * Audacity can import and display MIDI files, but they cannot be played
-    or edited.
+    or saved.
 
- * Windows only: Welcome Message: On some systems/browsers, links are not
-    brought to top, and some screen readers that otherwise work well with Audacity
-    cannot read its text.
+ * Windows only: Welcome Message: On some systems/browsers, links are
+    not brought to top, and some screen readers that otherwise work
+    well with Audacity cannot read its text.
 
- * Windows (reported on): There have been reports of clicks during recording on
-    some Windows XP systems using Audacity 1.3.4, where 1.2.6 had no problem.
-    It is not clear if current releases will have this issue or if it will occur on other
-    operating systems. Users can help us by sending any reports of this problem to:
+ * Windows (reported on): There have been reports of clicks during
+    recording on some Windows XP systems using Audacity 1.3.4 and later,
+    where 1.2.6 had no problem. It is unclear if current releases will
+    have this issue or if it will occur on other operating systems.
+    Users can help us by sending any reports of this problem to:
       feedback@audacityteam.org
 
- * Windows only: Audacity is incompatible with some professional sound cards
-    and may crash if one of these cards is the default when you open Audacity.
-    As a workaround, make a different sound card your default when using
-    Audacity, but please let us know if this affects you so that we can track down
-    and solve the problem.
+ * Windows only: Audacity is incompatible with some professional sound
+    cards and may crash if one of these cards is the default when you
+    open Audacity. As a workaround, make a different sound card your
+    default when using Audacity, but please let us know if this affects
+    you so we can track down and solve the problem.
 
- * Windows Vista only: If no input device (such as a microphone) is enabled
-    and connected, clicking Help > Audio Device Info causes a crash.
+ * Mac OS X only: Very occasionally, users may find that recording
+    causes "error opening sound device", or that after running
+    Audacity, other media players don't produce any sound, or crash.
+    To resolve this, set up your sound device in Apple Audio MIDI Setup
+    to work in stereo, 16 bits, with a sample rate of 44100 Hz or
+    48000 Hz, and set the sample format and rate identically in
+    Audacity. More help at:
+      http://audacityteam.org/forum/viewtopic.php?f=17&t=5064
 
- * Mac OS X only: Some users find that after running Audacity other
-    media players don't produce any sound or crash. Audacity tries to
-    select the best quality settings your system is capable of, to give
-    the best recordings possible, but some Mac applications can only
-    work at lower quality settings.
-
-    To get round this, make sure that your sound device is set up (in
-    Apple Sound and MIDI Setup) to work in stereo, 16 bits, with a
-    sample rate of 44100Hz or 48000Hz.  More help at:
-      http://audacityteam.org/wiki/index.php?title=Mac_Bugs#Loss_of_sound_after_running_Audacity
+ * Mac OS X only: Labels do not accept certain legal characters.
 
  * Mac OS X only: If using Audacity when the "Hear" audio plug-in is
     running (or has been since boot), there will be excessive memory
@@ -389,6 +404,26 @@ or e-mail us at:
 --------------------------------------------------------------------------------
 
 6.  Previous Changes going back to version 1.1.0
+
+Changes in 1.3.6a3:
+
+Import / Export:
+        * Experimental support for exporting a much wider range
+           of proprietary audio formats via FFmpeg
+        * "On-demand" immediate loading of imported PCM WAV or
+           AIFF files now has experimental "progress bar" embedded in
+           the waveform until fully loaded
+
+Interface:
+        * Note Track: experimental support for cut, copy and paste
+           using Edit Toolbar; currently not available for Linux, where
+           EXPERIMENTAL_NOTE_TRACK must be undefined in order
+           to build
+        * New Transport menu for alternative access to play and record
+           commands and some recording preferences
+        * Audio tracks are now linked to label tracks by being positioned
+           above a label track, if linkage is enabled in the Tracks menu
+
 
 Changes in 1.3.6a2:
 
