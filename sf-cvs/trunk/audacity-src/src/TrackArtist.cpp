@@ -605,26 +605,6 @@ int GetWaveYPosNew(float value, float min, float max,
    return (int) (value * (height - 1.0) + 0.5);
 }
 
-// This function isn't used anymore.  Use GetWaveYPosNew instead.
-// (and pass in clip=false)
-int TrackArtist::GetWaveYPosUnclipped(float value, int height, bool dB, 
-                  float dBr)
-{
-   float sign = (value >= 0 ? 1 : -1);
-
-   if (dB) {
-      if (value == 0 || height == 0)
-         return height/2;
-      float db = 20 * log10(fabs(value));
-      float val = (db + dBr) / dBr;
-      if (val < 0.0)
-         val = float(0.0);
-      return (int) (sign * (height * val + 0.5));
-   } else {
-      return (int) (value * height + sign * 0.5);
-   }
-}
-
 void TrackArtist::DrawNegativeOffsetTrackArrows(wxDC &dc, wxRect &r)
 {
    // Draws two black arrows on the left side of the track to
@@ -654,7 +634,7 @@ void GetColour(wxPen &pen, uchar *r, uchar *g, uchar *b)
 
 void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
                                          uchar *imageBuffer,
-                                         sampleCount *where, int ssel0, int ssel1,
+                                         sampleCount *where, sampleCount ssel0, sampleCount ssel1,
                                          double *env,
                                          float zoomMin, float zoomMax,
                                          bool dB, bool drawEnvelope)
@@ -698,10 +678,10 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
 
    if (imageBuffer) {
       uchar r0, g0, b0, r1, g1, b1, r2, g2, b2;
-      int *sel;
+      bool *sel;
       int y;
 
-      sel = new int[r.width];
+      sel = new bool[r.width];
       for(x=0; x<r.width; x++)
          sel[x] = (ssel0 <= where[x] && where[x + 1] < ssel1);
 
@@ -1262,12 +1242,12 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    // +.99 better centers the selection drag area at single-sample
    // granularity.  Not 1.0 as that would cause 'select whole
    // track' to lose the first sample
-   int ssel0 = wxMax(0, int((sel0 - tOffset) * rate + .99)); 
-   int ssel1 = wxMax(0, int((sel1 - tOffset) * rate + .99));
+   sampleCount ssel0 = wxMax(0, sampleCount((sel0 - tOffset) * rate + .99)); 
+   sampleCount ssel1 = wxMax(0, sampleCount((sel1 - tOffset) * rate + .99));
 
    //trim selection so that it only contains the actual samples
-   if (ssel0 != ssel1 && ssel1 > (int)(0.5+trackLen*rate))
-      ssel1 = (int)(0.5+trackLen*rate);
+   if (ssel0 != ssel1 && ssel1 > (sampleCount)(0.5+trackLen*rate))
+      ssel1 = (sampleCount)(0.5+trackLen*rate);
 
    // The variable "mid" will be the rectangle containing the
    // actual waveform, as opposed to any blank area before
@@ -1387,7 +1367,7 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
 
    if (!showIndividualSamples)
       DrawMinMaxRMS(dc, drawRect, imageBuffer, zoomMin, zoomMax,
-                    envValues, min, max, rms,bl, dB, muted,isLoadingOD);
+                    envValues, min, max, rms, bl, dB, muted, isLoadingOD);
 
    // Transfer any buffered drawing to the DC.  Everything
    // from now on is drawn using ordinary wxWindows drawing code.
@@ -1619,12 +1599,12 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    if (t0 > t1)
       t0 = t1;
 
-   sampleCount ssel0 = wxMax(0, int((sel0 - tOffset) * rate + .99));
-   sampleCount ssel1 = wxMax(0, int((sel1 - tOffset) * rate + .99));
+   sampleCount ssel0 = wxMax(0, sampleCount((sel0 - tOffset) * rate + .99));
+   sampleCount ssel1 = wxMax(0, sampleCount((sel1 - tOffset) * rate + .99));
 
    //trim selection so that it only contains the actual samples
-   if (ssel0 != ssel1 && ssel1 > (int)(0.5+trackLen*rate))
-      ssel1 = (int)(0.5+trackLen*rate);
+   if (ssel0 != ssel1 && ssel1 > (sampleCount)(0.5+trackLen*rate))
+      ssel1 = (sampleCount)(0.5+trackLen*rate);
 
    // The variable "mid" will be the rectangle containing the
    // actual waveform, as opposed to any blank area before
