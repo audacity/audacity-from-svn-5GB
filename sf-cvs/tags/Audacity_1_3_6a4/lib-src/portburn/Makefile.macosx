@@ -1,0 +1,9 @@
+test_portburn: portburn_macosx.c portburn_staging.c test_portburn.c Makefile
+	gcc \
+		-framework Carbon -framework Cocoa -framework System \
+		-framework DiscRecording \
+		-Wall -g -O \
+		-o test_portburn \
+		portburn_macosx.c \
+		portburn_staging.c \
+		test_portburn.cpp
