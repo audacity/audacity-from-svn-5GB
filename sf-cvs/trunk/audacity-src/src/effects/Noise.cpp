@@ -236,7 +236,9 @@ void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
 {
    S.StartMultiColumn(2, wxCENTER);
    {
-      S.AddFixedText(_("Duration"), false);
+      S.TieChoice(_("Noise type"), nType, nTypeList);
+      S.TieTextBox(_("Amplitude (0-1)"),  nAmplitude, 10);
+      S.AddPrompt(_("Duration"));
       if (mNoiseDurationT == NULL)
       {
          mNoiseDurationT = new
@@ -255,9 +257,7 @@ void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
          mNoiseDurationT->SetFormatString(mNoiseDurationT->GetBuiltinFormat(nIsSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))));
          mNoiseDurationT->EnableMenu();
       }
-      S.AddWindow(mNoiseDurationT);
-      S.TieTextBox(_("Amplitude (0-1)"),  nAmplitude, 10);
-      S.TieChoice(_("Noise type"), nType, nTypeList);
+      S.AddWindow(mNoiseDurationT, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL);
       S.SetSizeHints(-1, -1);
    }
    S.EndMultiColumn();
