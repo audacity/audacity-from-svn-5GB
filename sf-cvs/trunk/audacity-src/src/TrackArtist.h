@@ -55,7 +55,6 @@ class AUDACITY_DLL_API TrackArtist {
 
    void DrawVRuler(Track * t, wxDC * dc, wxRect & r);
    int GetWaveYPos(float value, int height, bool dB, float dBr);
-   int GetWaveYPosUnclipped(float value, int height, bool dB, float dBr);
 
    void SetInset(int left, int top, int right, int bottom);
 
@@ -156,7 +155,7 @@ class AUDACITY_DLL_API TrackArtist {
    // Waveform utility functions
 
    void DrawWaveformBackground(wxDC &dc, wxRect r, uchar *imageBuffer,
-                               sampleCount *where, int ssel0, int ssel1,
+                               sampleCount *where, sampleCount ssel0, sampleCount ssel1,
                                double *env, 
                                float zoomMin, float zoomMax,
                                bool dB, bool drawEnvelope);

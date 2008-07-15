@@ -93,7 +93,7 @@ public:
    double GetEndTime() const;
    sampleCount GetStartSample() const;
    sampleCount GetEndSample() const;
-   int GetNumSamples() const { return mSequence->GetNumSamples(); }
+   sampleCount GetNumSamples() const { return mSequence->GetNumSamples(); }
 
    bool GetSamples(samplePtr buffer, sampleFormat format,
                    sampleCount start, sampleCount len) const;
@@ -222,7 +222,7 @@ protected:
    SpecCache    *mSpecCache;
 
    samplePtr     mAppendBuffer;
-   int           mAppendBufferLen;
+   sampleCount   mAppendBufferLen;
 
    // Cut Lines are nothing more than ordinary wave clips, with the
    // offset relative to the start of the clip.
