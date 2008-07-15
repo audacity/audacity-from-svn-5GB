@@ -92,8 +92,8 @@ this version.
  * LADSPA Multiband EQ may not be visible in the Effect menu, and
     may crash in use.
 
- * Exported GSM-WAV and GSM-AIFF files may not play on some players
-    and/or may not play for the full length.
+ * Exported MP4, GSM-WAV and GSM-AIFF files may not play on some
+    players and/or may not play for the full length.
 
  * Some multi-channel recording devices that previously recorded more
     than two channels may no longer do so. Please send reports to:
