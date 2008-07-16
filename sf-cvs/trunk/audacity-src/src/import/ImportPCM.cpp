@@ -228,16 +228,13 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
       //now go over the wavetrack/waveclip/sequence and load all the blockfiles into a ComputeSummaryTask.  
       //Add this task to the ODManager and the Track itself.      
        wxLogDebug(wxT("Importing PCM \n"));
+       
+      ODComputeSummaryTask* computeTask=new ODComputeSummaryTask;
       for (c = 0; c < mInfo.channels; c++)
       {
-         ODComputeSummaryTask* computeTask;
-         computeTask=new ODComputeSummaryTask;
-         
-         computeTask->SetWaveTrack(channels[c]);
-         
-         ODManager::Instance()->AddTaskToWaveTrack(computeTask,channels[c]);
+         computeTask->AddWaveTrack(channels[c]);
       }
-      
+      ODManager::Instance()->AddNewTask(computeTask);
       
 #endif      
       

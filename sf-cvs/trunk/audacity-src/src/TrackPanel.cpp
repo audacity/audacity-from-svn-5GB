@@ -199,6 +199,7 @@ is time to refresh some aspect of the screen.
 #include "TrackPanelAx.h"
 #include "ViewInfo.h"
 #include "WaveTrack.h"
+#include "ODManager.h"
 
 #include "toolbars/ControlToolBar.h"
 #include "toolbars/ToolManager.h"
@@ -1537,7 +1538,8 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       // Default behavior: select whole track
       mViewInfo->sel0 = mCapturedTrack->GetOffset();
       mViewInfo->sel1 = mCapturedTrack->GetEndTime();
-
+      
+      
       // Special case: if we're over a clip in a WaveTrack,
       // select just that clip
       if (mCapturedTrack->GetKind() == Track::Wave) {
@@ -1703,6 +1705,10 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
       StartSelection(event.m_x, r.x);
       mTracks->Select(pTrack);
       SetFocusedTrack(pTrack);
+      //On-Demand: check to see if there is an OD thing associated with this track.
+      if (pTrack->GetKind() == Track::Wave) {
+         ODManager::Instance()->DemandTrackUpdate((WaveTrack*)pTrack,mSelStart);
+      }
       DisplaySelection();
    }
 }
@@ -1726,6 +1732,7 @@ void TrackPanel::StartSelection(int mouseXCoordinate, int trackLeftEdge)
 
    mViewInfo->sel0 = s;
    mViewInfo->sel1 = s;
+      
 
    MakeParentModifyState();
 }
@@ -1781,6 +1788,10 @@ void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge,
 
    mViewInfo->sel0 = sel0;
    mViewInfo->sel1 = sel1;
+   
+   //On-Demand: TODO:Think about if we want to add an on-demand function right here.
+   //   printf("OD extendselection\n");
+
 
    MakeParentModifyState();
 

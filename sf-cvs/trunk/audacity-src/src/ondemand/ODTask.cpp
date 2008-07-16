@@ -35,6 +35,9 @@ ODTask::ODTask()
    mTerminate = false;
    
    mTaskNumber=sTaskNumber++;
+   
+   mDemandSample=0;
+   mDemand=false;
 }
 
 

@@ -54,14 +54,16 @@ void ODManager::RemoveTaskIfInQueue(ODTask* task)
 
 }
 
-void ODManager::AddTaskToWaveTrack(ODTask* task, WaveTrack* track)
+void ODManager::AddNewTask(ODTask* task)
 {
    ODWaveTrackTaskQueue* queue = NULL;
    
    mQueuesMutex.Lock();
    for(unsigned int i=0;i<mQueues.size();i++)
    {
-      if(mQueues[i]->ContainsWaveTrack(track))
+      //search for a task containing the lead track.  
+      //This may be buggy when adding tracks.  We may have to do an exhaustive search instead.
+      if(mQueues[i]->ContainsWaveTrack(task->GetWaveTrack(0)))
          queue=mQueues[i];
    }
   
@@ -75,7 +77,7 @@ void ODManager::AddTaskToWaveTrack(ODTask* task, WaveTrack* track)
    {
       //Make a new one, add it to the local track queue, and to the immediate running task list,
       //since this task is definitely at the head
-      queue = new ODWaveTrackTaskQueue(track);
+      queue = new ODWaveTrackTaskQueue();
       queue->AddTask(task);
       mQueues.push_back(queue);
       
@@ -199,7 +201,7 @@ void ODManager::Start()
       mQueuesMutex.Unlock();
 //      
 //      //TODO:this is a little excessive, in the future only redraw some, and if possible only the Tracks on the trackpanel..
-      if(mNeedsDraw > 3)
+      if(mNeedsDraw > 6)
       {
          mNeedsDraw=0;
          wxCommandEvent event( EVT_ODTASK_UPDATE );
@@ -274,6 +276,20 @@ void ODManager::ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack)
    }
    mQueuesMutex.Unlock();
 } 
+
+///changes the tasks associated with this Waveform to process the task from a different point in the track
+///@param track the track to update
+///@param seconds the point in the track from which the tasks associated with track should begin processing from.
+void ODManager::DemandTrackUpdate(WaveTrack* track, double seconds)
+{
+   mQueuesMutex.Lock();
+   for(unsigned int i=0;i<mQueues.size();i++)
+   {
+      mQueues[i]->DemandTrackUpdate(track,seconds);
+   }
+   mQueuesMutex.Unlock();
+
+}
      
 ///remove tasks from ODWaveTrackTaskQueues that have been done.  Schedules new ones if they exist
 ///Also remove queues that have become empty.

@@ -34,15 +34,20 @@ class ODWaveTrackTaskQueue
    // Constructor / Destructor
 
    /// Constructs an ODWaveTrackTaskQueue
-   ODWaveTrackTaskQueue(WaveTrack* track);
+   ODWaveTrackTaskQueue();
    
    virtual ~ODWaveTrackTaskQueue();
+   
+   
    
    ///Adds a track to the associated list.
    void AddWaveTrack(WaveTrack* track);
    ///Removes a track from the list.  Also notifies mTasks to stop using references
    ///to the instance in a thread-safe manner (may block)
    void RemoveWaveTrack(WaveTrack* track);      
+   
+   ///changes the tasks associated with this Waveform to process the task from a different point in the track
+   void DemandTrackUpdate(WaveTrack* track, double seconds);
    
    ///replaces all instances of a WaveTrack within this task with another.  
    void ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack);      
