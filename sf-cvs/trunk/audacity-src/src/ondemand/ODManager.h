@@ -58,12 +58,15 @@ class ODManager
    ///Kills the ODMananger Thread.
    static void Quit();   
    
-   ///Reduces the count of current threads running.  Meant to be called when ODTaskThreads end.  Thread-safe.
+   ///changes the tasks associated with this Waveform to process the task from a different point in the track
+   void DemandTrackUpdate(WaveTrack* track, double seconds);
+   
+   ///Reduces the count of current threads running.  Meant to be called when ODTaskThreads end in their own threads.  Thread-safe.
    void DecrementCurrentThreads();
    
    ///Adds a wavetrack, creates a queue member. 
    //void AddWaveTrack(WaveTrack* track);
-   void AddTaskToWaveTrack(ODTask* task, WaveTrack* track);
+   void AddNewTask(ODTask* task);
    
    ///removes a wavetrack and notifies its associated tasks to stop using its reference. 
    void RemoveWaveTrack(WaveTrack* track);

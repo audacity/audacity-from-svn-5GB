@@ -97,11 +97,11 @@ public:
       //rate is SR, start is first time of the waveform (in second) on cache 
       long invalStart = (sampleStart - start*rate)/samplesPerPixel ;
       
-      long invalEnd = (sampleEnd - start*rate)/samplesPerPixel;
+      long invalEnd = (sampleEnd - start*rate)/samplesPerPixel +1; //we should cover the end..
       
       //if they are both off the cache boundary in the same direction, the cache is missed,
       //so we are safe, and don't need to track this one.
-      if(invalStart<0 && invalEnd <0 || invalStart>=len && invalEnd >= len)
+      if((invalStart<0 && invalEnd <0) || (invalStart>=len && invalEnd >= len))
          return;
       
       //in all other cases, we need to clip the boundries so they make sense with the cache.
@@ -121,6 +121,7 @@ public:
       
       //look thru the region array for a place to insert.  We could make this more spiffy than a linear search
       //but right now it is not needed since there will usually only be one region (which grows) for OD loading.
+      bool added=false;
       if(mRegions.size())
       {
          for(size_t i=0;i<mRegions.size();i++)
@@ -134,19 +135,22 @@ public:
                   mRegions[i]->start = invalStart;
                if(mRegions[i]->end < invalEnd)
                   mRegions[i]->end = invalEnd;
+               added=true;
                break;
             }
             
-            //this array is sorted by start/end points and has no overlaps.   If we've passed all possible intersections, insert.  The array will remain sorted.
-            if(mRegions[i]->end < invalStart)
-            {
-               InvalidRegion* newRegion = new InvalidRegion(invalStart,invalEnd);
-               mRegions.insert(mRegions.begin()+i,newRegion);
-               break;
-            }
+            //this bit doesn't make sense because it assumes we add in order - now we go backwards after the initial OD finishes
+//            //this array is sorted by start/end points and has no overlaps.   If we've passed all possible intersections, insert.  The array will remain sorted.
+//            if(mRegions[i]->end < invalStart)
+//            {
+//               InvalidRegion* newRegion = new InvalidRegion(invalStart,invalEnd);
+//               mRegions.insert(mRegions.begin()+i,newRegion);
+//               break;
+//            }
          }
       }
-      else
+      
+      if(!added)
       {
          InvalidRegion* newRegion = new InvalidRegion(invalStart,invalEnd);
          mRegions.insert(mRegions.begin(),newRegion);

@@ -20,10 +20,8 @@ tasks associated with a WaveTrack.
 #include "ODTask.h"
 #include "ODManager.h"
 /// Constructs an ODWaveTrackTaskQueue
-ODWaveTrackTaskQueue::ODWaveTrackTaskQueue(WaveTrack* track)
+ODWaveTrackTaskQueue::ODWaveTrackTaskQueue()
 {
-   if(track)
-      mTracks.push_back(track);
 }
    
 ODWaveTrackTaskQueue::~ODWaveTrackTaskQueue()
@@ -70,6 +68,16 @@ void ODWaveTrackTaskQueue::AddTask(ODTask* task)
    mTasksMutex.Lock();
    mTasks.push_back(task);
    mTasksMutex.Unlock();
+   
+   //take all of the tracks in the task.  this is not threadsafe, but I think we are safe anyway
+   mTracksMutex.Lock();
+   for(int i=0;i<task->GetNumWaveTracks();i++)
+   {
+      mTracks.push_back(task->GetWaveTrack(i));
+   } 
+    
+   mTracksMutex.Unlock();
+
 }
 
 ///Removes a track from the list.  Also notifies mTasks to stop using references
@@ -88,6 +96,24 @@ void ODWaveTrackTaskQueue::RemoveWaveTrack(WaveTrack* track)
       mTracksMutex.Unlock();
    }
 }
+
+///changes the tasks associated with this Waveform to process the task from a different point in the track
+///@param track the track to update
+///@param seconds the point in the track from which the tasks associated with track should begin processing from.
+void ODWaveTrackTaskQueue::DemandTrackUpdate(WaveTrack* track, double seconds)
+{
+   if(track)
+   {
+      mTracksMutex.Lock();
+      for(unsigned int i=0;i<mTasks.size();i++)
+      {
+         mTasks[i]->DemandTrackUpdate(track,seconds);
+      }
+      
+      mTracksMutex.Unlock();
+   }
+}
+
 
 //Replaces all instances of a wavetracck with a new one (effectively transferes the task.)
 void ODWaveTrackTaskQueue::ReplaceWaveTrack(WaveTrack* oldTrack, WaveTrack* newTrack)

@@ -39,14 +39,20 @@ class ODComputeSummaryTask:public ODTask
    ODComputeSummaryTask();
    virtual ~ODComputeSummaryTask(){};
    
-   ///Sets the WaveTrack to compute the summary data for.
-   void SetWaveTrack(WaveTrack* track);
+   ///Adds a WaveTrack to compute the summary data for.
+   void AddWaveTrack(WaveTrack* track);
    
    ///remove references to a wavetrack safely
    virtual void StopUsingWaveTrack(WaveTrack* track);
    
    ///Replaces all instances to a wavetrack with a new one, effectively transferring the task.
    virtual void ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack);
+   
+   ///changes the tasks associated with this Waveform to process the task from a different point in the track
+   virtual void DemandTrackUpdate(WaveTrack* track, double seconds);
+
+   virtual int GetNumWaveTracks();
+   virtual WaveTrack* GetWaveTrack(int i);
 
    
    ///Return the task name
@@ -70,7 +76,7 @@ protected:
    
    std::vector<ODPCMAliasBlockFile*> mBlockFiles;
    
-   WaveTrack* mWaveTrack;
+   std::vector<WaveTrack*> mWaveTracks;
    ODLock     mWaveTrackMutex;
    
    int mMaxBlockFiles;

@@ -512,6 +512,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_COMMAND(wxID_ANY, EVT_TOOLBAR_UPDATED, AudacityProject::OnToolBarUpdate)
     EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEYBOARD, AudacityProject::OnCaptureKeyboard)
     EVT_COMMAND(wxID_ANY, EVT_RELEASE_KEYBOARD, AudacityProject::OnReleaseKeyboard)
+    //mchinen:multithreaded calls - may not be threadsafe with CommandEvent: may have to change.
     EVT_COMMAND(wxID_ANY, EVT_ODTASK_UPDATE, AudacityProject::OnODTaskUpdate)
     EVT_COMMAND(wxID_ANY, EVT_ODTASK_COMPLETE, AudacityProject::OnODTaskComplete)
 END_EVENT_TABLE()
@@ -2013,17 +2014,23 @@ void AudacityProject::OpenFile(wxString fileName)
          mLastSavedTracks = new TrackList();
          
          tr = triter.First();
+         
+         ODComputeSummaryTask* computeTask;
+         bool odUsed = false;
          while (tr) {
             if (tr->GetKind() == Track::Wave)
             {
-               ODComputeSummaryTask* computeTask;
-               computeTask=new ODComputeSummaryTask;
-         
-               computeTask->SetWaveTrack((WaveTrack*)tr);
-               ODManager::Instance()->AddTaskToWaveTrack(computeTask,(WaveTrack*)tr);
+               if(!odUsed)
+               {
+                  computeTask=new ODComputeSummaryTask;
+                  odUsed=true;
+               }
+               computeTask->AddWaveTrack((WaveTrack*)tr);
             }
             tr = triter.Next();
          }
+         if(odUsed)
+            ODManager::Instance()->AddNewTask(computeTask);
             
             //release the flag.
          ODManager::UnmarkLoadedODFlag();

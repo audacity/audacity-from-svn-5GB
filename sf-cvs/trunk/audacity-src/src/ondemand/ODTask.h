@@ -24,6 +24,7 @@ in a background thread.
 #define __AUDACITY_ODTASK__
 
 #include "ODTaskThread.h"
+#include "../BlockFile.h"
 
 #include <wx/wx.h>
 class WaveTrack;
@@ -54,10 +55,18 @@ class ODTask
    
    virtual float PercentComplete();
    
+   virtual int GetNumWaveTracks(){return 0;}
+   virtual WaveTrack* GetWaveTrack(int i){return NULL;}
+   
    virtual void StopUsingWaveTrack(WaveTrack* track){}
    
    ///Replaces all instances to a wavetrack with a new one, effectively transferring the task.
+   ///ODTask has no wavetrack, so it does nothing.  But subclasses that do should override this.
    virtual void ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack){}
+    
+       
+   ///changes the tasks associated with this Waveform to process the task from a different point in the track
+   virtual void DemandTrackUpdate(WaveTrack* track, double seconds){}
     
     bool IsComplete();
     
@@ -65,6 +74,9 @@ class ODTask
     
     virtual const char* GetTaskName(){return "ODTask";}
    
+    virtual sampleCount GetDemandSample(){return mDemandSample;}
+    
+    virtual void SetDemandSample(sampleCount sample){mDemandSample=sample;mDemand=true;}
    
     ///returns the number of tasks created before this instance.
     int GetTaskNumber(){return mTaskNumber;}
@@ -89,6 +101,9 @@ class ODTask
    bool  mTaskStarted;
    bool mTerminate;
    ODLock mTerminateMutex;
+   
+   bool   mDemand;
+   sampleCount mDemandSample;
    
    //for a function not a member var.
    ODLock mBlockUntilTerminateMutex;
