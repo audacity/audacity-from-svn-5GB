@@ -220,36 +220,23 @@ RealTime::operator/(const RealTime &r) const
     else return lTotal/rTotal;
 }
 
-long long
-RealTime::realTime2Frame(const RealTime &time, unsigned int sr)
+long
+RealTime::realTime2Frame(const RealTime &time, unsigned int sampleRate)
 {
-    if (time < zeroTime) return -realTime2Frame(-time, sr);
-
-    long long sampleRate = sr;
-
-    // We like integers.  The last term is always zero unless the
-    // sample rate is greater than 1MHz, but hell, you never know...
-
-    long frame =
-	time.sec * sampleRate +
-	(time.msec() * sampleRate) / 1000 +
-	((time.usec() - 1000 * time.msec()) * sampleRate) / 1000000 +
-	((time.nsec - 1000 * time.usec()) * sampleRate) / 1000000000;
-
-    return frame;
+    if (time < zeroTime) return -realTime2Frame(-time, sampleRate);
+    double s = time.sec + double(time.nsec + 1) / 1000000000.0;
+    return long(s * sampleRate);
 }
 
 RealTime
-RealTime::frame2RealTime(long long frame, unsigned int sr)
+RealTime::frame2RealTime(long frame, unsigned int sampleRate)
 {
-    if (frame < 0) return -frame2RealTime(-frame, sr);
-
-    long long sampleRate = sr;
+    if (frame < 0) return -frame2RealTime(-frame, sampleRate);
 
     RealTime rt;
-    rt.sec = frame / sampleRate;
-    frame -= rt.sec * sampleRate;
-    rt.nsec = (int)(((float(frame) * 1000000) / sampleRate) * 1000);
+    rt.sec = frame / long(sampleRate);
+    frame -= rt.sec * long(sampleRate);
+    rt.nsec = (int)(((double(frame) * 1000000.0) / sampleRate) * 1000.0);
     return rt;
 }
 
