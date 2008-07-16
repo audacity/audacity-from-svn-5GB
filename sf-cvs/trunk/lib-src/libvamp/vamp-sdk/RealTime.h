@@ -145,12 +145,12 @@ struct RealTime
     /**
      * Convert a RealTime into a sample frame at the given sample rate.
      */
-    static long long realTime2Frame(const RealTime &r, unsigned int sampleRate);
+    static long realTime2Frame(const RealTime &r, unsigned int sampleRate);
 
     /**
      * Convert a sample frame at the given sample rate into a RealTime.
      */
-    static RealTime frame2RealTime(long long frame, unsigned int sampleRate);
+    static RealTime frame2RealTime(long frame, unsigned int sampleRate);
 
     static const RealTime zeroTime;
 };

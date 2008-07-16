@@ -39,9 +39,6 @@
 #include <cstring>
 #include <cstdlib>
 
-#include <cstdlib>
-#include <cstring>
-
 //#define DEBUG_PLUGIN_ADAPTER 1
 
 namespace Vamp {
