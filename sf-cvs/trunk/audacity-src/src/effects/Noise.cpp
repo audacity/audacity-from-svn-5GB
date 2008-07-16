@@ -258,7 +258,6 @@ void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
          mNoiseDurationT->EnableMenu();
       }
       S.AddWindow(mNoiseDurationT, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL);
-      S.SetSizeHints(-1, -1);
    }
    S.EndMultiColumn();
 }
