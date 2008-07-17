@@ -210,7 +210,8 @@ BlockFile *ODPCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attr
 {
    wxFileName summaryFileName;
    wxFileName aliasFileName;
-   int aliasStart=0, aliasLen=0, aliasChannel=0;
+   sampleCount aliasStart=0, aliasLen=0;
+   int aliasChannel=0;
    float min=0, max=0, rms=0;
    long nValue;
 
