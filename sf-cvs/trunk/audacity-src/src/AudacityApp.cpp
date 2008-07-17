@@ -143,6 +143,10 @@ It handles initialization and termination by subclassing wxApp.
 #     pragma comment(lib, "libvorbis")
 #  endif
 
+#  if defined(USE_MIDI)
+#     pragma comment(lib, "portsmf")
+#  endif
+
 #  if defined(USE_NYQUIST)
 #     pragma comment(lib, "libnyquist")
 #  endif

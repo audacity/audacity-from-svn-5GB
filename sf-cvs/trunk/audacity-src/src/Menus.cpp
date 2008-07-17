@@ -2594,8 +2594,10 @@ void AudacityProject::OnCut()
              gPrefs->Read(wxT("/GUI/EnableCutLines"), (long)0))
          {
             ((WaveTrack*)n)->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
-         } else
-         {
+         } else if (n->GetKind() == Track::Note) {
+            // Since portsmf has a built-in cut operator, we use that instead
+            n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
+         } else {
             n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          }
          if (dest) {
@@ -2612,7 +2614,8 @@ void AudacityProject::OnCut()
    n = iter.First();
 
    while (n) {
-      if (n->GetSelected())
+      if (n->GetSelected() && n->GetKind() != Track::Note)
+         //if NoteTrack, it was cut, so do not clear anything
          n->Clear(mViewInfo.sel0, mViewInfo.sel1);
       n = iter.Next();
    }
