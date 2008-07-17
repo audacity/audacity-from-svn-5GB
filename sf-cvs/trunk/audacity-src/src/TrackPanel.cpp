@@ -199,7 +199,8 @@ is time to refresh some aspect of the screen.
 #include "TrackPanelAx.h"
 #include "ViewInfo.h"
 #include "WaveTrack.h"
-#include "ODManager.h"
+
+#include "ondemand/ODManager.h"
 
 #include "toolbars/ControlToolBar.h"
 #include "toolbars/ToolManager.h"
