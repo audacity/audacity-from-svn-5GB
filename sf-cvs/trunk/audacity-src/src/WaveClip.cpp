@@ -82,13 +82,14 @@ public:
    {
    public:
      InvalidRegion(int s, int e):start(s),end(e){}
-     int start;
+     //start and end pixel count.  (not samples)
+     int start;  
      int end; 
    };
    
    
    //Thread safe call to add a new region to invalidate.  If it overlaps with other regions, it unions the them.
-   void AddInvalidRegion(long sampleStart, long sampleEnd)
+   void AddInvalidRegion(sampleCount sampleStart, sampleCount sampleEnd)
    {
       //use pps to figure out where we are.  (pixels per second)
       if(pps ==0)

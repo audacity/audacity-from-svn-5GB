@@ -41,8 +41,8 @@ void ODComputeSummaryTask::DoSomeInternal()
    }
    
    ODPCMAliasBlockFile* bf;
-   int blockStartSample;
-   int blockEndSample;
+   sampleCount blockStartSample;
+   sampleCount blockEndSample;
    bool success =false;
    
    for(size_t i=0; i < mWaveTracks.size() && mBlockFiles.size();i++)
@@ -128,7 +128,7 @@ void ODComputeSummaryTask::DemandTrackUpdate(WaveTrack* track, double seconds)
    {
       if(track == mWaveTracks[i])
       {
-         SetDemandSample((unsigned int)seconds * track->GetRate());
+         SetDemandSample((sampleCount)seconds * track->GetRate());
       }
    }  
    mWaveTrackMutex.Unlock();

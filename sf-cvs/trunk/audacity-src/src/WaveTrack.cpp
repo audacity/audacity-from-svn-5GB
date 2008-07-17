@@ -2146,7 +2146,7 @@ void WaveTrack::DeleteWaveCaches()
 }
 
 ///Adds an invalid region to the wavecache so it redraws that portion only.
-void WaveTrack::AddInvalidRegion(long startSample, long endSample)
+void WaveTrack::AddInvalidRegion(sampleCount startSample, sampleCount endSample)
 {
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
       it->GetData()->AddInvalidRegion(startSample,endSample);
