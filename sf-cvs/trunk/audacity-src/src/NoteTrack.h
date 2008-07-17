@@ -99,7 +99,7 @@ class NoteTrack:public Track {
    int mLastMidiPosition;
 };
 
-#endif
+#endif // USE_MIDI
 
 #endif
 

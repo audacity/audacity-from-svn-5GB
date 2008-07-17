@@ -76,9 +76,8 @@ int gWaveformTimeCount = 0;
 const int octaveHeight = 62;
 const int blackPos[5] = { 6, 16, 32, 42, 52 };
 const int whitePos[7] = { 0, 9, 17, 26, 35, 44, 53 };
-const int notePos[12] = { 1, 6, 11, 16, 21,
-   27, 32, 37, 42, 47, 52, 57
-};
+const int notePos[12] = { 1, 6, 11, 16, 21, 27,
+                        32, 37, 42, 47, 52, 57 };
 #endif // USE_MIDI
 
 TrackArtist::TrackArtist()

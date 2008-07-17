@@ -287,6 +287,7 @@ bool NoteTrack::Copy(double t0, double t1, Track **dest){
 }
 bool NoteTrack::Clear(double t0, double t1){
 
+   // If t1 = t0, should Clear return true?
    if (t1 <= t0)
       return false;
    double len = t1-t0;
@@ -328,7 +329,7 @@ void NoteTrack::WriteXML(XMLWriter &xmlFile)
 {
 }
 
-#endif
+#endif // USE_MIDI
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
