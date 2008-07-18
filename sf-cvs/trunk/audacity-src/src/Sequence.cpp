@@ -314,7 +314,7 @@ bool Sequence::Paste(sampleCount s, const Sequence *src)
       return false;
 
    BlockArray *srcBlock = src->mBlock;
-   int addedLen = src->mNumSamples;
+   sampleCount addedLen = src->mNumSamples;
    unsigned int srcNumBlocks = srcBlock->Count();
    int sampleSize = SAMPLE_SIZE(mSampleFormat);
 
