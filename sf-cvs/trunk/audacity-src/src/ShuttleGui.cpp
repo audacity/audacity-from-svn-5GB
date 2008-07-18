@@ -341,6 +341,7 @@ wxChoice * ShuttleGuiBase::AddChoice( const wxString &Prompt, const wxString &Se
 
    pChoice->SetSizeHints( 180,-1);// Use -1 for 'default size' - Platform specific.
    pChoice->SetStringSelection( Selected );
+   pChoice->SetLabel( Prompt );
    pChoice->SetName( Prompt );
 
    UpdateSizers();
@@ -651,6 +652,8 @@ wxStaticBox * ShuttleGuiBase::StartStatic(const wxString &Str, int iProp)
       return NULL;
    wxStaticBox * pBox = new wxStaticBox(mpParent, miId, 
       Str );
+   pBox->SetLabel( Str );
+   pBox->SetName( Str );
    mpSubSizer = new wxStaticBoxSizer( 
       pBox,
       wxVERTICAL );

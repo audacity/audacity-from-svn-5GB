@@ -226,9 +226,8 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
          }
       }
 
-      S.AddPrompt(_("Export format:"));
       mFormat = S.Id(FormatID)
-         .TieChoice(wxT(""),
+         .TieChoice(_("Export format:"),
                     wxT("/Export/MultipleFormat"),
                     mPlugins[mFormatIndex]->GetFormat(mSubFormatIndex),
                     formats,
@@ -236,9 +235,8 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
       S.Id(OptionsID).AddButton(_("Options..."));
       S.AddVariableText(wxT(""), false);
 
-      S.AddPrompt(_("Export location:"));
       mDir = S.Id(DirID)
-         .TieTextBox(wxT(""),
+         .TieTextBox(_("Export location:"),
                      wxT("/Export/MultiplePath"),
                      gPrefs->Read(wxT("/Export/Path"), ::wxGetCwd()),
                      64);
@@ -259,6 +257,7 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
             S.SetBorder(1);
             mLabel = S.Id(LabelID)
                .AddRadioButton(wxT(""));
+            mLabel->SetName(_("Labels"));
             S.SetBorder(3);
             mLabelLabel = S.AddVariableText(_("Labels"), false);
 
@@ -276,6 +275,7 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
                   .TieTextBox(wxT(""),
                               name,
                               30);
+               mFirstFileName->SetName(_("First file name"));
             }
             S.EndHorizontalLay();
 
@@ -283,6 +283,7 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
             S.SetBorder(1);
             mTrack = S.Id(TrackID)
                .AddRadioButtonToGroup(wxT(""));
+            mTrack->SetName(_("Tracks"));
             S.SetBorder(3);
             mTrackLabel = S.AddVariableText(_("Tracks"), false);
          }
@@ -300,6 +301,7 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
             S.SetBorder(1);
             mByName = S.Id(ByNameID)
                .AddRadioButton(wxT(""));
+            mByName->SetName(_("Using Label/Track Name"));
             S.SetBorder(3);
             mByNameLabel = S.AddVariableText(_("Using Label/Track Name"), false);
 
@@ -307,6 +309,7 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
             S.SetBorder(1);
             mByNumber = S.Id(ByNumberID)
                .AddRadioButtonToGroup(wxT(""));
+            mByNumber->SetName(_("Numbering consecutively"));
             S.SetBorder(3);
             mByNumberLabel = S.AddVariableText(_("Numbering consecutively"), false);
 
@@ -319,6 +322,7 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
                   .TieTextBox(wxT(""),
                               name,
                               30);
+               mPrefix->SetName(_("File name prefix"));
             }
             S.EndHorizontalLay();
          }
@@ -338,7 +342,7 @@ void ExportMultiple::PopulateOrExchange(ShuttleGui& S)
 
    S.AddStandardButtons();
    mExport = (wxButton *)wxWindow::FindWindowById(wxID_OK, this);
-   mExport->SetLabel(_("E&xport"));
+   mExport->SetLabel(_("Export"));
 
 }
 
