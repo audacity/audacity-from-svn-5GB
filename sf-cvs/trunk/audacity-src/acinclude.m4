@@ -826,10 +826,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBID3TAG], [
       LIBID3TAG_LOCAL_LIBS="libid3tag.a"
       LIBID3TAG_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libid3tag'
       LIBID3TAG_LOCAL_CPPSYMBOLS="USE_LIBID3TAG"
-
-      if test ! -f lib-src/libid3tag/Makefile ; then
-         LIBID3TAG_LOCAL_CONFIG_SUBDIRS="lib-src/libid3tag"
-      fi
+      LIBID3TAG_LOCAL_CONFIG_SUBDIRS="lib-src/libid3tag"
       AC_MSG_NOTICE([libid3tag libraries are available in the local tree])
    else
       LIBID3TAG_LOCAL_AVAILABLE="no"
@@ -871,9 +868,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSNDFILE], [
       LIBSNDFILE_LOCAL_AVAILABLE="yes"
       LIBSNDFILE_LOCAL_LIBS="libsndfile.a"
       LIBSNDFILE_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libsndfile/src'
-      if test ! -f "lib-src/libsndfile/Makefile"; then
-         LIBSNDFILE_LOCAL_CONFIG_SUBDIRS="lib-src/libsndfile"
-      fi
+      LIBSNDFILE_LOCAL_CONFIG_SUBDIRS="lib-src/libsndfile"
       AC_MSG_NOTICE([libsndfile libraries are available in this source tree])
 
       dnl Temporary fix for bug #248
@@ -936,10 +931,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBMAD], [
       LIBMAD_LOCAL_LIBS="libmad.a"
       LIBMAD_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libmad'
       LIBMAD_LOCAL_CPPSYMBOLS="USE_LIBMAD"
-
-      if test ! -f lib-src/libmad/Makefile ; then
-         LIBMAD_LOCAL_CONFIG_SUBDIRS="lib-src/libmad"
-      fi
+      LIBMAD_LOCAL_CONFIG_SUBDIRS="lib-src/libmad"
       AC_MSG_NOTICE([libmad libraries are available in the local tree])
    else
       LIBMAD_LOCAL_AVAILABLE="no"
@@ -1064,10 +1056,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
       LIBFLAC_LOCAL_CXXFLAGS="$LIBFLAC_LOCAL_CXXFLAGS -I\$(top_srcdir)/lib-src/libflac/include"
 
       LIBFLAC_LOCAL_CPPSYMBOLS="USE_LIBFLAC"
-
-      if test ! -f lib-src/libflac/Makefile ; then
-         LIBFLAC_LOCAL_CONFIG_SUBDIRS="lib-src/libflac"
-      fi
+      LIBFLAC_LOCAL_CONFIG_SUBDIRS="lib-src/libflac"
 	
       AC_MSG_NOTICE([FLAC libraries are available in this source tree])
    else
