@@ -26,10 +26,14 @@ using namespace std;
 #define STREQL(x, y) (strcmp(x, y) == 0)
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 
+#ifdef _MSC_VER
+// These only work for VC++ compiler
 // 4311 is type cast ponter to long warning
 // 4996 is warning against strcpy
 // 4267 is size_t to long warning
 #pragma warning(disable: 4311 4996 4267)
+#endif
+
 Alg_atoms symbol_table;
 Serial_buffer Alg_track::ser_buf; // declare the static variable
 
