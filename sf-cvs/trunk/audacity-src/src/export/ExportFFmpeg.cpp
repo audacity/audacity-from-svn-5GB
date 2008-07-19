@@ -139,7 +139,7 @@ ExposedFormat fmts[] =
 {
    {FMT_PCMS16LEWAV, wxT("WAV"),       wxT("wav"),    255,  true,_("WAV Files (FFmpeg)"),                      CODEC_ID_PCM_S16LE},
    {FMT_MP3,         wxT("MP3"),       wxT("mp3"),    2,    true,_("MP3 Files (FFmpeg)"),                      CODEC_ID_MP3LAME},
-   {FMT_MP4,         wxT("MP4"),       wxT("mp4"),    48,   true,_("MP4/MOV/iPOD/PSP/3GP/3G2 (AAC) Files (FFmpeg)"),CODEC_ID_AAC},
+   {FMT_MP4,         wxT("MP4"),       wxT("mp4"),    48,   true,_("MP4 (AAC) Files (FFmpeg)"),                CODEC_ID_AAC},
    {FMT_M4A,         wxT("M4A"),       wxT("m4a"),    48,   true,_("M4A (AAC) Files (FFmpeg)"),                CODEC_ID_AAC},
    {FMT_FLAC,        wxT("FLAC"),      wxT("flac"),   8,    true,_("FLAC Files (FFmpeg)"),                     CODEC_ID_FLAC},
    {FMT_AC3,         wxT("AC3"),       wxT("ac3"),    7,    true,_("AC3 Files (FFmpeg)"),                      CODEC_ID_AC3},
@@ -1313,7 +1313,7 @@ ExportFFmpegAACOptions::ExportFFmpegAACOptions(wxWindow *parent)
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
    long selsr = gPrefs->Read(wxT("/FileFormats/AACSampleRate"),44100);
-   unsigned int mbr = MaxAACBitrate(selsr);
+   unsigned int mbr = MaxAACBitrate(selsr/2);
 
    for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
    {
@@ -1387,7 +1387,7 @@ void ExportFFmpegAACOptions::OnSampleRate(wxCommandEvent &event)
    selbr = choice->GetSelection();
    if (selbr >= 0)
       selbr = iAACBitRates[selbr];
-   unsigned int mbr = MaxAACBitrate(selsr);
+   unsigned int mbr = MaxAACBitrate(selsr/2);
    for (unsigned int i=0; i < (sizeof(iAACBitRates)/sizeof(int)); i++)
    {
       iAACBitRates[i] = (i+1)*mbr/((sizeof(iAACBitRates)/sizeof(int)));
@@ -1844,10 +1844,8 @@ ExportFFmpeg::ExportFFmpeg()
       {
       case FMT_MP4:
          AddExtension(wxString(wxT("mov")),newfmt);
-         AddExtension(wxString(wxT("psp")),newfmt);
-         AddExtension(wxString(wxT("ipod")),newfmt);
          AddExtension(wxString(wxT("3gp")),newfmt);
-         AddExtension(wxString(wxT("3g2")),newfmt);
+         AddExtension(wxString(wxT("m4a")),newfmt);
          break;
       case FMT_WMA2:
          AddExtension(wxString(wxT("asf")),newfmt);
@@ -1889,23 +1887,6 @@ bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
    FFmpegLibsInst->av_log_set_callback(av_log_wx_callback);
 
    AVFormatParameters	fpOutFile;
-
-   //Black magic - for mp4 format change shortname based on user-provided extension
-   if (strcmp(shortname,"mp4") == 0)
-   {
-      wxFileName fullname(mName);
-      wxString ext = fullname.GetExt();
-      if (ext.CmpNoCase(wxT("mov")))
-         shortname = "mov";
-      else if (ext.CmpNoCase(wxT("ipod")))
-         shortname = "ipod";
-      else if (ext.CmpNoCase(wxT("psp")))
-         shortname = "psp";
-      else if (ext.CmpNoCase(wxT("3gp")))
-         shortname = "3gp";
-      else if (ext.CmpNoCase(wxT("3g2")))
-         shortname = "3g2";
-   }
 
    // See if libavformat has modules that can write our output format. If so, mEncFormatDesc
    // will describe the functions used to write the format (used internally by libavformat)
