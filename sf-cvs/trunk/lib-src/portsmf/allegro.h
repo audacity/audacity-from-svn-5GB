@@ -317,7 +317,7 @@ public:
     }
     // destructor deletes the events array, but not the
     // events themselves
-    ~Alg_events();
+    virtual ~Alg_events();
     void set_events(Alg_event_ptr *e, long l, long m) {
         if (events) delete [] events;
         events = e; len = l; maxlen = m; }
@@ -512,7 +512,9 @@ public:
     void set_string(char *s) { 
         char *fence = buffer + len;
         assert(ptr < fence);
-        while (*ptr++ = *s++) assert(ptr < fence);
+		// two lots of brackets surpress a g++ warning, because this is an
+		// assignment operator inside a test.
+        while ((*ptr++ = *s++)) assert(ptr < fence);
         assert((char *)(((long) (ptr + 7)) & ~7) <= fence);
         pad(); }
     void set_int32(long v) { *((long *) ptr) = v; ptr += 4; }
