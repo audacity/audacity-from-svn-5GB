@@ -150,7 +150,7 @@ bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar t
 */
 
    float f1, f2=0.0;
-   float A,B;
+   double A,B;
 
    // select low tone: left column
    switch (tone) {
@@ -323,6 +323,9 @@ bool EffectDtmf::Process()
                // generate the tone and append
                MakeDtmfTone(data, block, track->GetRate(), dtmfString[n], j, numSamplesTone, dtmfAmplitude);
                tmp->Append((samplePtr)data, floatSample, block);
+               //Update the Progress meter
+               if (TrackProgress(ntrack, (double)(i+j) / numSamplesSequence))
+                  bGoodResult = false;
             }
             i += numSamplesTone;
             n++;
@@ -342,15 +345,15 @@ bool EffectDtmf::Process()
                // generate silence and append
                memset(data, 0, sizeof(float)*block);
                tmp->Append((samplePtr)data, floatSample, block);
+               //Update the Progress meter
+               if (TrackProgress(ntrack, (double)(i+j) / numSamplesSequence))
+                  bGoodResult = false;
             }
             i += numSamplesSilence;
          }
          // flip flag
          isTone=!isTone;
 
-         //Update the Progress meter
-         if (TrackProgress(ntrack, (double)i / numSamplesSequence))
-            bGoodResult = false;
       } // finished the whole dtmf sequence
 
       delete[] data;
