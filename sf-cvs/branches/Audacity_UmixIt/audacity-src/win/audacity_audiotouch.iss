@@ -3,7 +3,7 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=audacity-audiotouch-win-1.2.6
+OutputBaseFilename=audacity-audiotouch-win-1.2.6a5
 SetupIconFile=Audacity.ico
 
 WizardImageFile=audacity_InnoWizardImage.bmp
