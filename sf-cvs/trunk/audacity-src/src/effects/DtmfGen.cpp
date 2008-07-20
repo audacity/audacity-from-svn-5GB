@@ -315,7 +315,7 @@ bool EffectDtmf::Process()
             // the statement takes care of extracting one sample from the diff bin and
             // adding it into the tone block until depletion
             extra=(diff-- > 0?1:0);
-            for(j=0; j < numSamplesTone+extra; j+=block) {
+            for(j=0; j < numSamplesTone+extra && bGoodResult; j+=block) {
                block = tmp->GetBestBlockSize(j);
                if (block > (numSamplesTone+extra - j))
                    block = numSamplesTone+extra - j;
@@ -337,7 +337,7 @@ bool EffectDtmf::Process()
             // the statement takes care of extracting one sample from the diff bin and
             // adding it into the silence block until depletion
             extra=(diff-- > 0?1:0);
-            for(j=0; j < numSamplesSilence+extra; j+=block) {
+            for(j=0; j < numSamplesSilence+extra && bGoodResult; j+=block) {
                block = tmp->GetBestBlockSize(j);
                if (block > (numSamplesSilence+extra - j))
                    block = numSamplesSilence+extra - j;
