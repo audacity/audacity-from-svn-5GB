@@ -16,8 +16,7 @@
 
 #include <wx/dynarray.h>
 #include <wx/panel.h>
-#include <wx/scrolwin.h> //vvvvv
-#include <wx/textctrl.h> //vvvvv
+#include <wx/textctrl.h> 
 
 
 // Branding removed from Lyrics window.   #include "widgets/LinkingHtmlWindow.h"
@@ -29,28 +28,25 @@ struct Syllable {
    double t;
    wxString text;
    wxString textWithSpace;
-   int char0; // index of first char of syllable in Lyrics::mText
-   int char1; // index of last  char of syllable in Lyrics::mText
+   int char0; // index of first char of syllable in Lyrics::mText, used only for kHighlightLyrics
+   int char1; // index of last  char of syllable in Lyrics::mText, used only for kHighlightLyrics
    int width;
    int leftX;
    int x; // centerX, used only for kBouncingBallLyrics
 
-   int height; // used only for kHighlightLyrics
-   int topY;   // used only for kHighlightLyrics
+   //int height; // used only for drawn kHighlightLyrics
+   //int topY;   // used only for drawn kHighlightLyrics
 };
 
 WX_DECLARE_OBJARRAY(Syllable, SyllableArray);
 
-// Lyrics stated as a wxPanel, but easier to implement scrolling for kHighlightLyrics
-// without subclassing wxScrolledWindow. 
-// Note that if Branding is reinstated, it will be a scrolled window inside a scrolled window, 
-// but it seems unlikely it will be reinstated.
-class Lyrics : public wxPanel //vvvvv wxScrolledWindow 
+class Lyrics : public wxPanel 
 {
    DECLARE_DYNAMIC_CLASS(Lyrics)
 
    enum LyricsStyle {
       kBouncingBallLyrics, // Lyrics move from right to left with bouncing ball.
+      // kGuitarTab,       // <<future>> Guitar Tablature moves from right to left.
       kHighlightLyrics,    // Lyrics show in scrolling page and syllables highlight successively.
    };
 
@@ -68,7 +64,7 @@ class Lyrics : public wxPanel //vvvvv wxScrolledWindow
    LyricsStyle GetLyricsStyle() { return mLyricsStyle; };
    void SetLyricsStyle(const LyricsStyle newLyricsStyle);
 
-   void Update(double t, bool bForce = false);
+   void Update(double t);
 
    //
    // Event handlers
@@ -78,6 +74,9 @@ class Lyrics : public wxPanel //vvvvv wxScrolledWindow
    void OnSize(wxSizeEvent &evt);
    void OnMouse(wxMouseEvent &evt);
 
+   //vvv Doesn't seem to be a way to capture a selection event in a read-only wxTextCtrl.
+   //void OnHighlightTextCtrl(wxCommandEvent & event); 
+
    void HandlePaint(wxDC &dc);
    void HandlePaint_BouncingBall(wxDC &dc);
    void HandlePaint_Highlight(wxDC &dc);
@@ -86,7 +85,10 @@ class Lyrics : public wxPanel //vvvvv wxScrolledWindow
 
 private:
    unsigned int GetDefaultFontSize() const; // Depends on mLyricsStyle. Call only after mLyricsStyle is set.
-   void SetFont(wxDC *dc);
+   
+   void SetDrawnFont(wxDC *dc); // for kBouncingBallLyrics
+   void SetHighlightFont(); // for kHighlightLyrics
+
    void Measure(wxDC *dc);
    int FindSyllable(double t);
    void GetKaraokePosition(double t,
@@ -104,7 +106,7 @@ private:
    //   LinkingHtmlWindow* mBrandingPanel;
 
    LyricsStyle    mLyricsStyle; // default kHighlightLyrics
-   wxTextCtrl*    mTextCtrl; // only for kHighlightLyrics
+   wxTextCtrl*    mHighlightTextCtrl; // only for kHighlightLyrics
 
    double         mT;
 
@@ -112,10 +114,8 @@ private:
    SyllableArray  mSyllables;
    wxString       mText; 
 
-   int            mTextHeight;
-
-
-   bool           mMeasurementsDone;
+   int            mTextHeight; // only for drawn text
+   bool           mMeasurementsDone; // only for drawn text
 
    DECLARE_EVENT_TABLE()
 };
