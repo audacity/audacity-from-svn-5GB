@@ -40,6 +40,25 @@ struct Syllable {
 
 WX_DECLARE_OBJARRAY(Syllable, SyllableArray);
 
+class Lyrics;
+
+// Override wxTextCtrl to handle selection events, which the parent ignores if the control is read-only.
+class HighlightTextCtrl : public wxTextCtrl
+{
+public:
+   HighlightTextCtrl(Lyrics* parent, 
+                     wxWindowID id, 
+                     const wxString& value = "", 
+                     const wxPoint& pos = wxDefaultPosition, 
+                     const wxSize& size = wxDefaultSize);
+   void OnMouseEvent(wxMouseEvent &evt);
+
+private:
+   Lyrics* mLyrics;
+
+   DECLARE_EVENT_TABLE()
+};
+
 class Lyrics : public wxPanel 
 {
    DECLARE_DYNAMIC_CLASS(Lyrics)
@@ -61,6 +80,11 @@ class Lyrics : public wxPanel
    void Add(double t, wxString syllable);
    void Finish(double finalT);
 
+   int FindSyllable(long startChar); // Find the syllable whose char0 <= startChar <= char1.
+   int GetCurrentSyllableIndex() { return mCurrentSyllable; };
+   Syllable* GetSyllable(int nSyl) { return &(mSyllables[nSyl]); };
+   void SetCurrentSyllableIndex(int nSyl) { mCurrentSyllable = nSyl; };
+
    LyricsStyle GetLyricsStyle() { return mLyricsStyle; };
    void SetLyricsStyle(const LyricsStyle newLyricsStyle);
 
@@ -72,9 +96,9 @@ class Lyrics : public wxPanel
    void OnKeyEvent(wxKeyEvent & event);
    void OnPaint(wxPaintEvent &evt);
    void OnSize(wxSizeEvent &evt);
-   void OnMouse(wxMouseEvent &evt);
 
-   //vvv Doesn't seem to be a way to capture a selection event in a read-only wxTextCtrl.
+   //v Doesn't seem to be a way to capture a selection event in a read-only wxTextCtrl.
+   //    Thus the HighlightTextCtrl class.
    //void OnHighlightTextCtrl(wxCommandEvent & event); 
 
    void HandlePaint(wxDC &dc);
@@ -105,8 +129,8 @@ private:
    //   int            mBrandingHeight; 
    //   LinkingHtmlWindow* mBrandingPanel;
 
-   LyricsStyle    mLyricsStyle; // default kHighlightLyrics
-   wxTextCtrl*    mHighlightTextCtrl; // only for kHighlightLyrics
+   LyricsStyle          mLyricsStyle; // default kHighlightLyrics
+   HighlightTextCtrl*   mHighlightTextCtrl; // only for kHighlightLyrics
 
    double         mT;
 
