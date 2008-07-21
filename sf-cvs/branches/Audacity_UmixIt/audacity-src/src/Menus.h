@@ -208,7 +208,7 @@ void OnBenchmark();
 
 #if (AUDACITY_BRANDING == BRAND_THINKLABS)
    // Thinklabs Menu
-   //vvv void OnProjectNotes();
+   //v void OnProjectNotes();
    void OnChangeColorScheme();
    void OnHowToCopyDisplay();
    void OnAboutBrand();

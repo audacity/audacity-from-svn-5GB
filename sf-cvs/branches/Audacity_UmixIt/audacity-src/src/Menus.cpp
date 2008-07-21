@@ -477,7 +477,7 @@ void AudacityProject::CreateMenusAndCommands()
    #endif
    c->AddItem("ImportRaw",      _("Import &Raw Data..."),            FN(OnImportRaw));
    c->AddSeparator();
-   //vvv c->AddItem("ProjectNotes",  _("Project &Notes..."),              FN(OnProjectNotes));
+   //v c->AddItem("ProjectNotes",  _("Project &Notes..."),              FN(OnProjectNotes));
    c->AddItem("EditID3",        _("&Edit ID3 Tags..."),              FN(OnEditID3));
    c->AddSeparator();
    #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
@@ -705,7 +705,7 @@ void AudacityProject::CreateMenusAndCommands()
       // Thinklabs commands
       c->SetDefaultFlags(0, 0);
 
-      //vvv c->AddSeparator();
+      //v c->AddSeparator();
       //c->AddItem("ProjectNotes",  _("Project &Notes..."),              FN(OnProjectNotes));
 
       c->AddSeparator();

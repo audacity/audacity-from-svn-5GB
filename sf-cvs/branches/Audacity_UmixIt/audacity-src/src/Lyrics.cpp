@@ -23,14 +23,60 @@
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(SyllableArray);
 
-static const kHighlightTextCtrlID = 7654;
+
+BEGIN_EVENT_TABLE(HighlightTextCtrl, wxTextCtrl) 
+   EVT_MOUSE_EVENTS(HighlightTextCtrl::OnMouseEvent)
+END_EVENT_TABLE()
+
+HighlightTextCtrl::HighlightTextCtrl(Lyrics* parent, 
+                                       wxWindowID id, 
+                                       const wxString& value /*= ""*/, 
+                                       const wxPoint& pos /*= wxDefaultPosition*/, 
+                                       const wxSize& size /*= wxDefaultSize*/) : 
+   wxTextCtrl(parent, id, // wxWindow* parent, wxWindowID id, 
+               value, // const wxString& value = "", 
+               pos, // const wxPoint& pos = wxDefaultPosition, 
+               size, // const wxSize& size = wxDefaultSize, 
+               wxTE_MULTILINE | wxTE_READONLY | wxTE_RICH | wxTE_RICH2 | wxTE_NOHIDESEL), //v | wxHSCROLL)
+               // long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
+   mLyrics(parent)
+{
+}
+
+void HighlightTextCtrl::OnMouseEvent(wxMouseEvent& event)
+{
+   if (event.ButtonUp()) 
+   {
+      long from, to;
+      this->GetSelection(&from, &to);
+
+      int nCurSyl = mLyrics->GetCurrentSyllableIndex();
+      int nNewSyl = mLyrics->FindSyllable(from);
+      if (nNewSyl != nCurSyl)
+      {
+         Syllable* pCurSyl = mLyrics->GetSyllable(nNewSyl);
+         AudacityProject* pProj = GetActiveProject();
+         ViewInfo* pViewInfo = pProj->GetViewInfo();
+         pViewInfo->sel0 = pCurSyl->t;
+
+         //vvv Should probably select to end as in AudacityProject::OnSelectCursorEnd, 
+         // but better to generalize that in AudacityProject methods. This is okay for now.
+         pViewInfo->sel1 = pCurSyl->t;
+      }
+   }
+
+   event.Skip();
+}
+
+
+//static const kHighlightTextCtrlID = 7654;
 
 BEGIN_EVENT_TABLE(Lyrics, wxPanel) 
    EVT_CHAR(Lyrics::OnKeyEvent)
    EVT_PAINT(Lyrics::OnPaint)
    EVT_SIZE(Lyrics::OnSize)
 
-   //vvv Doesn't seem to be a way to capture a selection event in a read-only wxTextCtrl.
+   //v Doesn't seem to be a way to capture a selection event in a read-only wxTextCtrl.
 	//EVT_COMMAND_LEFT_CLICK(kHighlightTextCtrlID, Lyrics::OnHighlightTextCtrl)
 END_EVENT_TABLE()
 
@@ -98,11 +144,10 @@ Lyrics::Lyrics(wxWindow* parent, wxWindowID id,
    mKaraokeFontSize = this->GetDefaultFontSize(); // Call only after mLyricsStyle is set.
 
    mHighlightTextCtrl = 
-      new wxTextCtrl(this, kHighlightTextCtrlID, // wxWindow* parent, wxWindowID id, 
-                     "", // const wxString& value = "", 
-                     wxPoint(0, 0), // const wxPoint& pos = wxDefaultPosition, 
-                     size, // const wxSize& size = wxDefaultSize, 
-                     wxTE_MULTILINE | wxTE_READONLY | wxTE_RICH | wxTE_RICH2 | wxTE_NOHIDESEL); //v | wxHSCROLL); // long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
+      new HighlightTextCtrl(this, -1, // wxWindow* parent, wxWindowID id, 
+                              "", // const wxString& value = "", 
+                              wxPoint(0, 0), // const wxPoint& pos = wxDefaultPosition, 
+                              size); // const wxSize& size = wxDefaultSize
    this->SetHighlightFont();
 
    mHighlightTextCtrl->Show(mLyricsStyle == kHighlightLyrics);
@@ -191,6 +236,29 @@ void Lyrics::Finish(double finalT)
    mMeasurementsDone = false; // only for drawn text
    mCurrentSyllable = 0;
    mHighlightTextCtrl->ShowPosition(0);
+}
+
+// Binary-search for the syllable syllable whose char0 <= startChar <= char1.
+int Lyrics::FindSyllable(long startChar)
+{
+   int i1, i2;
+
+   i1 = 0;
+   i2 = mSyllables.GetCount();
+   while (i2 > i1+1) {
+      int pmid = (i1+i2)/2;
+      if (mSyllables[pmid].char0 > startChar)
+         i2 = pmid;
+      else
+         i1 = pmid;
+   }
+
+   if (i1 < 2)
+      i1 = 2;
+   if (i1 > (int)(mSyllables.GetCount()) - 3)
+      i1 = mSyllables.GetCount() - 3;
+
+   return i1;
 }
 
 void Lyrics::SetLyricsStyle(const LyricsStyle newLyricsStyle)
@@ -408,7 +476,16 @@ void Lyrics::GetKaraokePosition(double t,
 
 void Lyrics::Update(double t)
 {
-   mT = t;
+   if (t < 0.0) 
+   {
+      // TrackPanel::OnTimer passes gAudioIO->GetStreamTime(), which is -1000000000 if !IsStreamActive().
+      // In that case, use the selection start time. 
+      AudacityProject* pProj = GetActiveProject();
+      ViewInfo* pViewInfo = pProj->GetViewInfo();
+      mT = pViewInfo->sel0;
+   }
+   else
+      mT = t;
 
    if (mLyricsStyle == kBouncingBallLyrics)
    {
@@ -416,7 +493,7 @@ void Lyrics::Update(double t)
       this->Refresh(false, &karaokeRect);
    }
 
-   int i = FindSyllable(t);
+   int i = FindSyllable(mT);
    if (i == mCurrentSyllable)
       return;
 
@@ -424,8 +501,6 @@ void Lyrics::Update(double t)
 
    if (mLyricsStyle == kHighlightLyrics)
    {
-      long from, to;
-      mHighlightTextCtrl->GetSelection(&from, &to);
       mHighlightTextCtrl->SetSelection(mSyllables[i].char0, mSyllables[i].char1);
       
       //v No trail for now.
@@ -505,11 +580,9 @@ void Lyrics::OnSize(wxSizeEvent &evt)
       mHighlightTextCtrl->SetSize(mWidth, mKaraokeHeight);
       this->SetHighlightFont();
    }
-   
-   //vvv   this->Update(mT, true);
 }
 
-//vvv Doesn't seem to be a way to capture a selection event in a read-only wxTextCtrl.
+//v Doesn't seem to be a way to capture a selection event in a read-only wxTextCtrl.
 //void Lyrics::OnHighlightTextCtrl(wxCommandEvent & event)
 //{
 //   long from, to;
