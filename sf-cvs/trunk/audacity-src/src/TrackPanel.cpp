@@ -1747,22 +1747,22 @@ void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge,
 
    double origSel0, origSel1;
    double sel0, sel1;
-   Track *track0, *track1;
+//   Track *track0, *track1;  //mchinen:commenting out - variables not used.  remove if after August 2008
 
    if (pTrack == NULL && mCapturedTrack != NULL)
       pTrack = mCapturedTrack;
 
    if (mSelStart < selend) {
       sel0 = mSelStart;
-      track0 = mCapturedTrack;
+//      track0 = mCapturedTrack;
       sel1 = selend;
-      track1 = pTrack;
+//      track1 = pTrack;
    }
    else {
       sel1 = mSelStart;
-      track1 = mCapturedTrack;
+//      track1 = mCapturedTrack;
       sel0 = selend;
-      track0 = pTrack;
+//      track0 = pTrack;
    }
 
    origSel0 = sel0;
@@ -1792,6 +1792,11 @@ void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge,
    
    //On-Demand: TODO:Think about if we want to add an on-demand function right here.
    //   printf("OD extendselection\n");
+      
+   //On-Demand: check to see if there is an OD thing associated with this track.
+   if (pTrack->GetKind() == Track::Wave) {
+      ODManager::Instance()->DemandTrackUpdate((WaveTrack*)pTrack,sel0); //sel0 is sometimes less than mSelStart
+   }
 
 
    MakeParentModifyState();

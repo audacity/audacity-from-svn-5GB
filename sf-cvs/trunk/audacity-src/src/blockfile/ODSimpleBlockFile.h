@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  ODPCMAliasBlockFile.cpp
+  ODSimpleBlockFile.h
   
   Created by Michael Chinen (mchinen)
   Audacity(R) is copyright (c) 1999-2008 Audacity Team.
@@ -10,22 +10,13 @@
 
 ******************************************************************//**
 
-\class ODPCMAliasBlockFile
-\brief ODPCMAliasBlockFile is a special type of PCMAliasBlockFile that does not necessarily have summary data available
-The summary is eventually computed and written to a file in a background thread.
+\class ODSimpleBlockFile
+\brief ODSimpleBlockFile is a special type of SimpleBlockFile that does not necessarily have summary OR audio data available
+The summary and audio is eventually computed and written to a file in a background thread. 
 
-Load On-Demand implementation of the AliasBlockFile for PCM files.
+Load On-Demand implementation of the SimpleBlockFIle for audio files that need to be decoded (mp3,flac,etc..).
    
-to load large files more quickly, we take skip computing the summary data and put
-ODPCMAliasBlockFiles in the sequence as place holders.  A background thread loads and 
-computes the summary data into these classes.
-ODPCMAliasBlockFiles are unlike all other BlockFiles are not immutable (for the most part,) because when new
-summary data is computed for an existing ODPCMAliasBlockFile we save the buffer then and write the Summary File.  
-
-All BlockFile methods that treat the summary data as a buffer that exists in its BlockFile
-are implemented here to behave when the data is not available yet.
-
-Some of these methods have been overridden only because they used the unsafe wxLog calls in the base class.
+Also, see ODPCMAliasBlockFile for a similar file.
 *//*******************************************************************/
 
 
@@ -33,32 +24,32 @@ Some of these methods have been overridden only because they used the unsafe wxL
 
 
 
-#ifndef __AUDACITY_ODPCMALIASBLOCKFILE__
-#define __AUDACITY_ODPCMALIASBLOCKFILE__
+#ifndef __AUDACITY_ODSIMPLEBLOCKFILE__
+#define __AUDACITY_ODSIMPLEBLOCKFILE__
 
-#include "PCMAliasBlockFile.h"
+#include "SimpleBlockFile.h"
 #include "../BlockFile.h"
 #include "../ondemand/ODTaskThread.h"
 #include "../DirManager.h"
 #include <wx/thread.h>
 
 /// An AliasBlockFile that references uncompressed data in an existing file 
-class ODPCMAliasBlockFile : public PCMAliasBlockFile
+class ODSimpleBlockFile : public SimpleBlockFile
 {
  public:
 
    // Constructor / Destructor
 
-   /// Constructs a PCMAliasBlockFile, writing the summary to disk
-   ODPCMAliasBlockFile(wxFileName baseFileName,
-                     wxFileName aliasedFile, sampleCount aliasStart,
-                     sampleCount aliasLen, int aliasChannel);
-   ODPCMAliasBlockFile(wxFileName existingFileName,
-                     wxFileName aliasedFile, sampleCount aliasStart,
-                     sampleCount aliasLen, int aliasChannel,
-                     float min, float max, float rms);
-   virtual ~ODPCMAliasBlockFile();
-   
+   /// Create a disk file and write summary and sample data to it
+   ODSimpleBlockFile(wxFileName baseFileName,
+                   samplePtr sampleData, sampleCount sampleLen,
+                   sampleFormat format,
+                   bool allowDeferredWrite = false);
+   /// Create the memory structure to refer to the given block file
+   ODSimpleBlockFile(wxFileName existingFile, sampleCount len,
+                   float min, float max, float rms);
+
+   virtual ~ODSimpleBlockFile();   
    //checks to see if summary data has been computed and written to disk yet.  Thread safe.  Blocks if we are writing summary data.
    virtual bool IsSummaryAvailable();
    

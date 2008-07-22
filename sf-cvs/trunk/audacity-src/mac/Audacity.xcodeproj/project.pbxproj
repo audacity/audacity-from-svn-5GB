@@ -709,6 +709,7 @@
 		1841B50D0E00AD6E00F386E9 /* ODTaskThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B5060E00AD6E00F386E9 /* ODTaskThread.cpp */; };
 		1841B50E0E00AD6E00F386E9 /* ODWaveTrackTaskQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B5080E00AD6E00F386E9 /* ODWaveTrackTaskQueue.cpp */; };
 		1841B5110E00AD8D00F386E9 /* ODPCMAliasBlockFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B50F0E00AD8D00F386E9 /* ODPCMAliasBlockFile.cpp */; };
+		1875EAED0E31288100A0D15C /* ODSimpleBlockFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1875EAEC0E31288100A0D15C /* ODSimpleBlockFile.cpp */; };
 		280196B10D98171F00BFEECF /* Plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 280196AF0D98171F00BFEECF /* Plugin.h */; };
 		280196B20D98171F00BFEECF /* PluginBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 280196B00D98171F00BFEECF /* PluginBase.h */; };
 		280196B50D98174400BFEECF /* PluginBufferingAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280196B30D98174400BFEECF /* PluginBufferingAdapter.cpp */; };
@@ -2109,6 +2110,8 @@
 		1841B5090E00AD6E00F386E9 /* ODWaveTrackTaskQueue.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ODWaveTrackTaskQueue.h; path = ondemand/ODWaveTrackTaskQueue.h; sourceTree = "<group>"; };
 		1841B50F0E00AD8D00F386E9 /* ODPCMAliasBlockFile.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ODPCMAliasBlockFile.cpp; sourceTree = "<group>"; };
 		1841B5100E00AD8D00F386E9 /* ODPCMAliasBlockFile.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ODPCMAliasBlockFile.h; sourceTree = "<group>"; };
+		1875EAEB0E31288100A0D15C /* ODSimpleBlockFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODSimpleBlockFile.h; sourceTree = "<group>"; };
+		1875EAEC0E31288100A0D15C /* ODSimpleBlockFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ODSimpleBlockFile.cpp; sourceTree = "<group>"; };
 		280196AF0D98171F00BFEECF /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = Plugin.h; path = "libvamp/vamp-sdk/Plugin.h"; sourceTree = "<group>"; };
 		280196B00D98171F00BFEECF /* PluginBase.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginBase.h; path = "libvamp/vamp-sdk/PluginBase.h"; sourceTree = "<group>"; };
 		280196B30D98174400BFEECF /* PluginBufferingAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginBufferingAdapter.cpp; path = "libvamp/vamp-sdk/hostext/PluginBufferingAdapter.cpp"; sourceTree = "<group>"; };
@@ -3455,6 +3458,8 @@
 				1790AFE509883BFD008A330A /* SilentBlockFile.h */,
 				1790AFE609883BFD008A330A /* SimpleBlockFile.cpp */,
 				1790AFE709883BFD008A330A /* SimpleBlockFile.h */,
+				1875EAEB0E31288100A0D15C /* ODSimpleBlockFile.h */,
+				1875EAEC0E31288100A0D15C /* ODSimpleBlockFile.cpp */,
 			);
 			path = blockfile;
 			sourceTree = "<group>";
@@ -6465,6 +6470,7 @@
 				2860BA280E0F0DD800A13878 /* ExportFFmpeg.cpp in Sources */,
 				28D587CB0E264CF4009C7DEA /* LoadLV2.cpp in Sources */,
 				28D587CC0E264CF4009C7DEA /* LV2Effect.cpp in Sources */,
+				1875EAED0E31288100A0D15C /* ODSimpleBlockFile.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
