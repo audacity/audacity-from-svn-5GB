@@ -29,7 +29,7 @@ bool EffectSoundTouch::Process()
    // by the subclass for subclass-specific parameters.
    
    //Iterate over each track
-   this->CopyInputWaveTracks(); // Set up leftTrack.
+   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
 
    TrackListIterator iter(mOutputWaveTracks);
