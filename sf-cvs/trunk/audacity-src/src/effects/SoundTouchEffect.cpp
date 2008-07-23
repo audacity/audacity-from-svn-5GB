@@ -20,6 +20,7 @@ effect that uses SoundTouch to do its processing (ChangeTempo
 
 #include "SoundTouchEffect.h"
 #include "../WaveTrack.h"
+#include "../Project.h"
 
 
 bool EffectSoundTouch::Process()
@@ -28,13 +29,19 @@ bool EffectSoundTouch::Process()
    // by the subclass for subclass-specific parameters.
    
    //Iterate over each track
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
+   this->CopyInputWaveTracks(); // Set up leftTrack.
    bool bGoodResult = true;
 
    TrackListIterator iter(mOutputWaveTracks);
    WaveTrack* leftTrack = (WaveTrack*)(iter.First());
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;
+	
+   AudacityProject *p = GetActiveProject();   
+   double start = leftTrack->GetStartTime();
+   double end = leftTrack->GetEndTime();
+   double len = end-start;
+   
    while (leftTrack != NULL) {
       //Get start and end times from track
       mCurT0 = leftTrack->GetStartTime();
@@ -47,6 +54,7 @@ bool EffectSoundTouch::Process()
       
       // Process only if the right marker is to the right of the left marker
       if (mCurT1 > mCurT0) {
+         double origLength = leftTrack->GetEndTime();
          sampleCount start, end;
          
          if (leftTrack->GetLinked()) {
@@ -74,7 +82,6 @@ bool EffectSoundTouch::Process()
                bGoodResult = false;
                break;
             }
-
             mCurTrackNum++; // Increment for rightTrack, too.
          } else {
             //Transform the marker timepoints to samples
@@ -99,6 +106,17 @@ bool EffectSoundTouch::Process()
    }
 
    this->ReplaceProcessedWaveTracks(bGoodResult); 
+
+#ifdef EXPERIMENTAL_FULL_LINKING
+   if( p && p->IsSticky() ){
+      leftTrack = (WaveTrack*)(iter.First());
+      double newLen = leftTrack->GetEndTime() - leftTrack->GetStartTime();
+      double timeAdded = newLen-len;
+      double sel = mCurT1-mCurT0;
+      double percent = (sel/(timeAdded+sel))*100 - 100;
+      if ( !(HandleGroupChangeSpeed(percent, mCurT0, mCurT1)) ) bGoodResult = false;
+   }
+#endif
 
    delete mSoundTouch;
    mSoundTouch = NULL;
@@ -184,8 +202,8 @@ bool EffectSoundTouch::ProcessOne(WaveTrack *track,
    // Take the output track and insert it in place of the original
    // sample data
    
-   track->Clear(mCurT0, mCurT1);
-   track->Paste(mCurT0, outputTrack);
+   track->HandleClear(mCurT0, mCurT1, false, false);
+   track->HandlePaste(mCurT0, outputTrack);
    
    double newLength = outputTrack->GetEndTime(); 
    m_maxNewLength = wxMax(m_maxNewLength, newLength);
@@ -289,10 +307,10 @@ bool EffectSoundTouch::ProcessStereo(WaveTrack* leftTrack, WaveTrack* rightTrack
    
    // Take the output tracks and insert in place of the original
    // sample data.
-   leftTrack->Clear(mCurT0, mCurT1);
-   leftTrack->Paste(mCurT0, outputLeftTrack);
-   rightTrack->Clear(mCurT0, mCurT1);
-   rightTrack->Paste(mCurT0, outputRightTrack);
+   leftTrack->HandleClear(mCurT0, mCurT1, false, false);
+   leftTrack->HandlePaste(mCurT0, outputLeftTrack);
+   rightTrack->HandleClear(mCurT0, mCurT1, false, false);
+   rightTrack->HandlePaste(mCurT0, outputRightTrack);
 
    // Track the longest result length
    double newLength = outputLeftTrack->GetEndTime();

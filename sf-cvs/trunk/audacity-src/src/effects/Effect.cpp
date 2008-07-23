@@ -312,10 +312,14 @@ void Effect::HandleLinkedTracksOnGenerate(double length, double t0)
 bool Effect::HandleGroupChangeSpeed(double m_PercentChange, double mCurT0, double mCurT1)
 {
    AudacityProject *p = GetActiveProject();   
-   if( p && p->IsSticky() && m_PercentChange<0 && (mCurT1 > mCurT0) ){//add linked tracks to handle
+   if( p && p->IsSticky() && (mCurT1 > mCurT0) ){
       TrackListIterator fullIter(p->GetTracks());
       
       int editGroup=0;   
+      bool insertSilence = false;
+      
+      double length = ( (mCurT1-mCurT0) / ((100 + m_PercentChange)/100) ) - (mCurT1-mCurT0);
+      if (length < 0) length = 0 - length;  
       
       Track *t = fullIter.First();
       Track *n = t;
@@ -330,21 +334,40 @@ bool Effect::HandleGroupChangeSpeed(double m_PercentChange, double mCurT0, doubl
                while (t && t->GetKind()==Track::Wave) t=fullIter.Next();
                while (t && t->GetKind()==Track::Label) t=fullIter.Next();
             }
+            insertSilence = false;
             while (t && t->GetKind()==Track::Wave){
                if ( !(t->GetSelected()) ){
-                  //printf ("t(w)(cs): %x\n", t);
-                  TrackFactory *factory = p->GetTrackFactory();
-                  WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
-                  double length = ( (mCurT1-mCurT0) / ((100 + m_PercentChange)/100) ) - (mCurT1-mCurT0);
-                  //printf("length(shorter): %f\n", length);
-                  tmp->InsertSilence(0.0, length);
-                  tmp->Flush();
-                  if ( !( ((WaveTrack *)t)->HandlePaste(mCurT1, tmp)) ) return false;
+                  if (m_PercentChange > 0) insertSilence = true;
+                  if (m_PercentChange < 0){
+                     TrackFactory *factory = p->GetTrackFactory();
+                     WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
+                     tmp->InsertSilence(0.0, length);
+                     tmp->Flush();
+                     if ( !( ((WaveTrack *)t)->HandlePaste(mCurT1, tmp)) ) return false;
+                  }
                }
                t=fullIter.Next();
             }
-            while (t && t->GetKind()==Track::Label){
-               //printf ("t(l)(cs): %x\n", t);
+
+            if (insertSilence){
+               t=fullIter.First();
+               for (int i=0; i<editGroup; i++){//go to first in edit group
+                  while (t && t->GetKind()==Track::Wave) t=fullIter.Next();
+                  while (t && t->GetKind()==Track::Label) t=fullIter.Next();
+               }
+               while ( t && t->GetKind()==Track::Wave ){
+                  if (t->GetSelected()){
+                     TrackFactory *factory = p->GetTrackFactory();
+                     WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
+                     tmp->InsertSilence(0.0, length);
+                     tmp->Flush();
+                     if ( !( ((WaveTrack *)t)->HandlePaste(mCurT1, tmp)) ) return false;
+                  }
+                  t=fullIter.Next();
+               }
+            }
+            
+            while (t && t->GetKind()==Track::Label && !insertSilence){
                ((LabelTrack *)t)->ShiftLabelsOnChangeSpeed(mCurT0, mCurT1, m_PercentChange);
                t=fullIter.Next();
             }
