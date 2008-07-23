@@ -124,8 +124,6 @@ bool EffectChangeSpeed::Process()
 
       // Process only if the right marker is to the right of the left marker
       if (mCurT1 > mCurT0) {       
-         double origLength = pOutWaveTrack->GetEndTime();
-         
          //Transform the marker timepoints to samples
          sampleCount start = pOutWaveTrack->TimeToLongSamples(mCurT0);
          sampleCount end = pOutWaveTrack->TimeToLongSamples(mCurT1);
@@ -136,36 +134,25 @@ bool EffectChangeSpeed::Process()
             bGoodResult = false;
             break;
          }
-#ifdef EXPERIMENTAL_FULL_LINKING
-         if( p && p->IsSticky() && m_PercentChange>0){
-            double newLength = pOutWaveTrack->GetEndTime();
-            double delta = origLength - newLength;
-            TrackFactory *factory = p->GetTrackFactory();
-            WaveTrack *tmp = factory->NewWaveTrack( pOutWaveTrack->GetSampleFormat(), pOutWaveTrack->GetRate());
-            tmp->InsertSilence(0.0, delta);
-            tmp->Flush();
-            if ( !(pOutWaveTrack->HandlePaste(mCurT1, tmp)) ) bGoodResult = false;            
-         }
-#endif         
       }
       
       //Iterate to the next track
       pOutWaveTrack = (WaveTrack*)(iter.Next());
       mCurTrackNum++;
    }
+
+   this->ReplaceProcessedWaveTracks(bGoodResult); 
+
 #ifdef EXPERIMENTAL_FULL_LINKING
-   if( p && p->IsSticky() && m_PercentChange<0){
+   if( p && p->IsSticky() ){
       pOutWaveTrack = (WaveTrack*)(iter.First());
       double newLen = pOutWaveTrack->GetEndTime() - pOutWaveTrack->GetStartTime();
       double timeAdded = newLen-len;
       double sel = mCurT1-mCurT0;
       double percent = (sel/(timeAdded+sel))*100 - 100;
-      //printf("len: %f\nnewLen: %f\nsel: %f\nPercent: %f\n", len, newLen, sel, percent);
       if ( !(HandleGroupChangeSpeed(percent, mCurT0, mCurT1)) ) bGoodResult = false;
    }
 #endif
-
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
 
 // mT1 = mT0 + m_maxNewLength; // Update selection.
 

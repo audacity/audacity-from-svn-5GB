@@ -961,7 +961,8 @@ bool LabelTrack::CopySelectedText()
 bool LabelTrack::PasteSelectedText(double sel0, double sel1)
 {
    if (mSelIndex == -1) {
-      AddLabel(sel0, sel1, wxT(""));
+      //AddLabel(sel0, sel1, wxT(""));
+      return false;
    }
 
    wxString text;

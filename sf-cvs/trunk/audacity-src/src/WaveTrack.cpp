@@ -890,16 +890,17 @@ bool WaveTrack::HandleGroupPaste(double t0, Track *src)
       }
       
       while (t && t->GetKind()==Track::Wave){
-         //printf ("t(w)(p): %x\n", t);
          if (t==this){//paste in the track
             if ( !( ((WaveTrack *)t)->HandlePaste(t0, src)) ) return false;
             if (t->GetLinked()) t=iter.Next();
          }else{//insert silence
-            TrackFactory *factory = p->GetTrackFactory();
-            WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
-            tmp->InsertSilence(0.0, length);
-            tmp->Flush();
-            if ( !( ((WaveTrack *)t)->HandlePaste(t0, tmp)) ) return false;
+            if (! (t->GetSelected()) ){
+               TrackFactory *factory = p->GetTrackFactory();
+               WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
+               tmp->InsertSilence(0.0, length);
+               tmp->Flush();
+               if ( !( ((WaveTrack *)t)->HandlePaste(t0, tmp)) ) return false;
+            }
          }
          t=iter.Next();
       }
@@ -989,7 +990,7 @@ bool WaveTrack::HandlePaste(double t0, Track *src)
          // move everything to the right, then try to paste again
          Track *tmp = NULL;
          Cut(t0, GetEndTime()+1.0/mRate, &tmp);
-         Paste(t0 + insertDuration, tmp);
+         HandlePaste(t0 + insertDuration, tmp);
          delete tmp;
       } else
       {
