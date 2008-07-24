@@ -105,11 +105,8 @@ bool EffectChangeSpeed::Process()
    //greater and whichever right marker is less:
    mCurT0 = wxMax(mT0, mCurT0);
    mCurT1 = wxMin(mT1, mCurT1);
-   
-   AudacityProject *p = GetActiveProject();   
-   double start = pOutWaveTrack->GetStartTime();
-   double end = pOutWaveTrack->GetEndTime();
-   double len = end-start;
+
+   double len = pOutWaveTrack->GetEndTime() - pOutWaveTrack->GetStartTime();
    
    while (pOutWaveTrack != NULL)
    {
@@ -144,6 +141,7 @@ bool EffectChangeSpeed::Process()
    this->ReplaceProcessedWaveTracks(bGoodResult); 
 
 #ifdef EXPERIMENTAL_FULL_LINKING
+   AudacityProject *p = (AudacityProject*)mParent;
    if( p && p->IsSticky() ){
       pOutWaveTrack = (WaveTrack*)(iter.First());
       double newLen = pOutWaveTrack->GetEndTime() - pOutWaveTrack->GetStartTime();

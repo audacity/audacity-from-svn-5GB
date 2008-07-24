@@ -37,10 +37,7 @@ bool EffectSoundTouch::Process()
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;
 	
-   AudacityProject *p = GetActiveProject();   
-   double start = leftTrack->GetStartTime();
-   double end = leftTrack->GetEndTime();
-   double len = end-start;
+   double len = leftTrack->GetEndTime() - leftTrack->GetStartTime();
    
    while (leftTrack != NULL) {
       //Get start and end times from track
@@ -54,7 +51,6 @@ bool EffectSoundTouch::Process()
       
       // Process only if the right marker is to the right of the left marker
       if (mCurT1 > mCurT0) {
-         double origLength = leftTrack->GetEndTime();
          sampleCount start, end;
          
          if (leftTrack->GetLinked()) {
@@ -108,6 +104,7 @@ bool EffectSoundTouch::Process()
    this->ReplaceProcessedWaveTracks(bGoodResult); 
 
 #ifdef EXPERIMENTAL_FULL_LINKING
+   AudacityProject *p = (AudacityProject*)mParent;
    if( p && p->IsSticky() ){
       leftTrack = (WaveTrack*)(iter.First());
       double newLen = leftTrack->GetEndTime() - leftTrack->GetStartTime();
