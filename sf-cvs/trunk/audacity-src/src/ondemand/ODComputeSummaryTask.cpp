@@ -173,6 +173,8 @@ void ODComputeSummaryTask::Update()
                {
                   blocks->Item(i)->f->Ref();
                   ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->SetStart(blocks->Item(i)->start);
+                  ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->SetClipOffset(clip->GetStartTime()*clip->GetRate());
+                  
                   //this next bit ensures that we are spacing the blockfiles over multiple wavetracks evenly.
                   if((j+1)*numBlocksIn>tempBlocks.size())
                      tempBlocks.push_back((ODPCMAliasBlockFile*)blocks->Item(i)->f);
@@ -218,8 +220,9 @@ void ODComputeSummaryTask::OrderBlockFiles(std::vector<ODPCMAliasBlockFile*> &un
       //If there isn't, then the block was deleted for some reason and we should ignore it.
       if(unorderedBlocks[i]->RefCount()>=2)
       {
-         if(mBlockFiles.size() && unorderedBlocks[i]->GetStart() + unorderedBlocks[i]->GetLength() >=processStartSample && 
-                ( mBlockFiles[0]->GetStart() +  mBlockFiles[0]->GetLength() < processStartSample || unorderedBlocks[i]->GetStart() <= mBlockFiles[0]->GetStart())
+         if(mBlockFiles.size() && (unorderedBlocks[i]->GetStart()+unorderedBlocks[i]->GetClipOffset()) + unorderedBlocks[i]->GetLength() >=processStartSample && 
+                ( (mBlockFiles[0]->GetStart()+mBlockFiles[0]->GetClipOffset()) +  mBlockFiles[0]->GetLength() < processStartSample || 
+                  (unorderedBlocks[i]->GetStart()+unorderedBlocks[i]->GetClipOffset()) <= (mBlockFiles[0]->GetStart() +mBlockFiles[0]->GetClipOffset()))
             )
          {
             //insert at the front of the list if we get blockfiles that are after the demand sample

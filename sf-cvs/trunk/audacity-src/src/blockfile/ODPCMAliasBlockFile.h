@@ -98,6 +98,12 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
    ///Gets the value that indicates where the first sample in this block corresponds to the global sequence/clip.  Only for display use.
    sampleCount GetStart(){return mStart;}
    
+   ///sets the amount of samples the clip associated with this blockfile is offset in the wavetrack (non effecting)
+   void SetClipOffset(sampleCount numSamples){mClipOffset= numSamples;}
+   
+   ///Gets the number of samples the clip associated with this blockfile is offset by.  
+   sampleCount GetClipOffset(){return mClipOffset;}
+   
    //Below calls are overrided just so we can take wxlog calls out, which are not threadsafe.
    
    /// Reads the specified data from the aliased file using libsndfile
@@ -117,9 +123,11 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
    bool mSummaryAvailable;
    bool mSummaryBeingComputed;
    
-   //for reporting after task is complete.  Only for display use.
+   ///for reporting after task is complete.  Only for display use.
    sampleCount mStart;
 
+   ///the ODTask needs to know where this blockfile lies in the track, so for convenience, we have this here.
+   sampleCount mClipOffset;
 };
 
 #endif
