@@ -153,6 +153,7 @@ class ToolBar:public wxPanel
    void OnLeftDown(wxMouseEvent & event);
    void OnLeftUp(wxMouseEvent & event);
    void OnMotion(wxMouseEvent & event);
+   void OnCaptureLost(wxMouseCaptureLostEvent & event);
 
  private:
 

@@ -1073,6 +1073,7 @@ void LWSlider::Refresh()
 BEGIN_EVENT_TABLE(ASlider, wxWindow)
    EVT_CHAR(ASlider::OnKeyEvent)
    EVT_MOUSE_EVENTS(ASlider::OnMouseEvent)
+   EVT_MOUSE_CAPTURE_LOST(ASlider::OnCaptureLost)
    EVT_PAINT(ASlider::OnPaint)
    EVT_SIZE(ASlider::OnSize)
    EVT_ERASE_BACKGROUND(ASlider::OnErase)
@@ -1166,6 +1167,12 @@ void ASlider::OnPaint(wxPaintEvent &event)
 void ASlider::OnMouseEvent(wxMouseEvent &event)
 {
    mLWSlider->OnMouseEvent(event);
+}
+
+void ASlider::OnCaptureLost(wxMouseCaptureLostEvent &event)
+{
+   wxMouseEvent e(wxEVT_LEFT_UP);
+   mLWSlider->OnMouseEvent(e);
 }
 
 void ASlider::OnKeyEvent(wxKeyEvent &event)

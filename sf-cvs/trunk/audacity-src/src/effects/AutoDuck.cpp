@@ -628,6 +628,7 @@ static int GetDistance(const wxPoint& first, const wxPoint& second)
 BEGIN_EVENT_TABLE(EffectAutoDuckPanel, wxPanel)
    EVT_PAINT(EffectAutoDuckPanel::OnPaint)
    EVT_MOUSE_CAPTURE_CHANGED(EffectAutoDuckPanel::OnMouseCaptureChanged)
+   EVT_MOUSE_CAPTURE_LOST(EffectAutoDuckPanel::OnMouseCaptureLost)
    EVT_LEFT_DOWN(EffectAutoDuckPanel::OnLeftDown)
    EVT_LEFT_UP(EffectAutoDuckPanel::OnLeftUp)
    EVT_MOTION(EffectAutoDuckPanel::OnMotion)
@@ -826,6 +827,17 @@ void EffectAutoDuckPanel::OnMouseCaptureChanged(
 {
    SetCursor(wxNullCursor);
    mCurrentControlPoint = none;
+}
+
+void EffectAutoDuckPanel::OnMouseCaptureLost(
+   wxMouseCaptureLostEvent &evt)
+{
+   mCurrentControlPoint = none;
+
+   if (HasCapture())
+   {
+      ReleaseMouse();
+   }
 }
 
 EffectAutoDuckPanel::EControlPoint

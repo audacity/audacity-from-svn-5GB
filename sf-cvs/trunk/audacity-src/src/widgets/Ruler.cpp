@@ -1432,6 +1432,7 @@ BEGIN_EVENT_TABLE(AdornedRulerPanel, wxPanel)
    EVT_PAINT(AdornedRulerPanel::OnPaint)
    EVT_SIZE(AdornedRulerPanel::OnSize)
    EVT_MOUSE_EVENTS(AdornedRulerPanel::OnMouseEvents)
+   EVT_MOUSE_CAPTURE_LOST(AdornedRulerPanel::OnCaptureLost)
 END_EVENT_TABLE()
 
 AdornedRulerPanel::AdornedRulerPanel(wxWindow* parent,
@@ -1562,7 +1563,9 @@ void AdornedRulerPanel::OnMouseEvents(wxMouseEvent &evt)
 {
    bool isWithinStart = IsWithinMarker(evt.GetX(), mPlayRegionStart);
    bool isWithinEnd = IsWithinMarker(evt.GetX(), mPlayRegionEnd);
-   
+
+   mLastMouseX = evt.GetX();
+
    if (isWithinStart || isWithinEnd)
       SetCursor(wxCursor(wxCURSOR_SIZEWE));
    else
@@ -1662,6 +1665,13 @@ void AdornedRulerPanel::OnMouseEvents(wxMouseEvent &evt)
          ctb->PlayDefault();
       }
    }
+}
+
+void AdornedRulerPanel::OnCaptureLost(wxMouseCaptureLostEvent &evt)
+{
+   wxMouseEvent e(wxEVT_LEFT_UP);
+   e.m_x = mLastMouseX;
+   OnMouseEvents(e);
 }
 
 void AdornedRulerPanel::DoDrawPlayRegion(wxDC * dc)

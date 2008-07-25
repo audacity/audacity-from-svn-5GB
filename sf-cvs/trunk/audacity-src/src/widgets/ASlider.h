@@ -217,6 +217,7 @@ class ASlider :public wxPanel
    void OnPaint(wxPaintEvent & event);
    void OnSize(wxSizeEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
+   void OnCaptureLost(wxMouseCaptureLostEvent & event);
    void OnKeyEvent(wxKeyEvent &event);
    void OnSlider(wxCommandEvent &event);
    void OnSetFocus(wxFocusEvent & event);

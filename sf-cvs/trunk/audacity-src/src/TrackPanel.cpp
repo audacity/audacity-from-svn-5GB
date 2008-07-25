@@ -318,6 +318,7 @@ enum {
 
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MOUSE_EVENTS(TrackPanel::OnMouseEvent)
+    EVT_MOUSE_CAPTURE_LOST(TrackPanel::OnCaptureLost)
     EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEY, TrackPanel::OnCaptureKey)
     EVT_KEY_DOWN(TrackPanel::OnKeyDown)
     EVT_CHAR(TrackPanel::OnChar)
@@ -347,7 +348,6 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU(OnPasteSelectedTextID, TrackPanel::OnPasteSelectedText)
     EVT_MENU_RANGE(OnStickySubmenuID, OnStickySubmenuID+999, TrackPanel::OnTrackSticky)
 END_EVENT_TABLE()
-
 
 /// Makes a cursor from an XPM, uses CursorId as a fallback.
 wxCursor * MakeCursor( int CursorId, const char * pXpm[36],  int HotX, int HotY )
@@ -3960,6 +3960,14 @@ void TrackPanel::OnChar(wxKeyEvent & event)
       RefreshTrack(t, true);
 }
 
+/// Should handle the case when the mouse capture is lost.
+void TrackPanel::OnCaptureLost(wxMouseCaptureLostEvent & event)
+{
+   if (HasCapture()) {
+      ReleaseCapture();
+   }
+}
+
 /// This handles just generic mouse events.  Then, based
 /// on our current state, we forward the mouse events to
 /// various interested parties.
@@ -4054,8 +4062,6 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       if (t)
          EnsureVisible(t);
    }
-
-
 }
 
 bool TrackPanel::HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxMouseEvent &event)

@@ -67,6 +67,7 @@ private:
 
    void OnPaint(wxPaintEvent& evt);
    void OnMouseCaptureChanged(wxMouseCaptureChangedEvent &evt);
+   void OnMouseCaptureLost(wxMouseCaptureLostEvent &evt);
    void OnLeftDown(wxMouseEvent &evt);
    void OnLeftUp(wxMouseEvent &evt);
    void OnMotion(wxMouseEvent &evt);

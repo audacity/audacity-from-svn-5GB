@@ -79,6 +79,7 @@ BEGIN_EVENT_TABLE( ToolBar, wxPanel )
    EVT_LEFT_DOWN( ToolBar::OnLeftDown )
    EVT_LEFT_UP( ToolBar::OnLeftUp )
    EVT_MOTION( ToolBar::OnMotion )
+   EVT_MOUSE_CAPTURE_LOST( ToolBar::OnCaptureLost )
 END_EVENT_TABLE()  
 
 //
@@ -682,6 +683,14 @@ void ToolBar::OnMotion( wxMouseEvent & event )
       // Refresh our world
       GetParent()->Refresh();
       GetParent()->Update();
+   }
+}
+
+void ToolBar::OnCaptureLost( wxMouseCaptureLostEvent & event )
+{
+   if( HasCapture() )
+   {
+      ReleaseCapture();
    }
 }
 
