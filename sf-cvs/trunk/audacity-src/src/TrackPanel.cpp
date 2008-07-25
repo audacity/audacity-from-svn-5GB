@@ -3963,9 +3963,12 @@ void TrackPanel::OnChar(wxKeyEvent & event)
 /// Should handle the case when the mouse capture is lost.
 void TrackPanel::OnCaptureLost(wxMouseCaptureLostEvent & event)
 {
-   if (HasCapture()) {
-      ReleaseMouse();
-   }
+   wxMouseEvent e(wxEVT_LEFT_UP);
+
+   e.m_x = mMouseMostRecentX;
+   e.m_y = mMouseMostRecentY;
+
+   OnMouseEvent(e);
 }
 
 /// This handles just generic mouse events.  Then, based
