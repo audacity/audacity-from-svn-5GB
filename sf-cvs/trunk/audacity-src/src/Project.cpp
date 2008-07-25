@@ -2007,6 +2007,8 @@ void AudacityProject::OpenFile(wxString fileName)
 
 #ifdef EXPERIMENTAL_ONDEMAND
       //check the ODManager to see if we should add the tracks to the ODManager.
+      //this flag would have been set in the HandleXML calls from above, if there were
+      //OD***Blocks.
       if(ODManager::HasLoadedODFlag())
       {
          Track *tr;
@@ -2833,13 +2835,42 @@ void AudacityProject::PopState(TrackList * l)
    mTracks->Clear(true);
    TrackListIterator iter(l);
    Track *t = iter.First();
+   bool odUsed = false;
+   ODComputeSummaryTask* computeTask;
+   Track* copyTrack;
+
    while (t) {
       //    printf("Popping track with %d samples\n",
       //           ((WaveTrack *)t)->numSamples);
       //  ((WaveTrack *)t)->Debug();
-      mTracks->Add(t->Duplicate());
+      copyTrack=t->Duplicate();
+      mTracks->Add(copyTrack);
+     
+
+#ifdef EXPERIMENTAL_ONDEMAND
+      //add the track to OD if the manager exists.  later we might do a more rigorous check...
+      if (copyTrack->GetKind() == Track::Wave)
+      {
+         //if the ODManager hasn't been initialized, there's no chance this track has OD blocks since this
+         //is a "Redo" operation.
+         if(ODManager::IsInstanceCreated())
+         {
+            if(!odUsed)
+            {
+               computeTask=new ODComputeSummaryTask;
+               odUsed=true;
+            }
+            computeTask->AddWaveTrack((WaveTrack*)copyTrack);
+         }
+      }
+#endif
+      
       t = iter.Next();
    }
+
+   //add the task.
+   if(odUsed)
+      ODManager::Instance()->AddNewTask(computeTask);
 
    HandleResize();
 

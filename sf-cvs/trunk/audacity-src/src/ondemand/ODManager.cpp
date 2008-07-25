@@ -63,6 +63,7 @@ void ODManager::AddNewTask(ODTask* task)
    {
       //search for a task containing the lead track.  
       //This may be buggy when adding tracks.  We may have to do an exhaustive search instead.
+      //note that GetWaveTrack is not threadsafe, but we are assuming task is not running on a different thread yet.
       if(mQueues[i]->ContainsWaveTrack(task->GetWaveTrack(0)))
          queue=mQueues[i];
    }
@@ -106,6 +107,11 @@ ODManager* ODManager::Instance()
       ;
    
    return man;
+}
+
+bool ODManager::IsInstanceCreated()
+{
+  return gManagerCreated;
 }
 
 ///Launches a thread for the manager and starts accepting Tasks.

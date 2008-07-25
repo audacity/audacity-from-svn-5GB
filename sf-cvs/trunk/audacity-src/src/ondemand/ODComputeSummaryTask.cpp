@@ -129,6 +129,7 @@ void ODComputeSummaryTask::DemandTrackUpdate(WaveTrack* track, double seconds)
       if(track == mWaveTracks[i])
       {
          SetDemandSample((sampleCount)seconds * track->GetRate());
+         break;
       }
    }  
    mWaveTrackMutex.Unlock();

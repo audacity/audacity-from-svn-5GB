@@ -69,10 +69,11 @@ void ODWaveTrackTaskQueue::AddTask(ODTask* task)
    mTasks.push_back(task);
    mTasksMutex.Unlock();
    
-   //take all of the tracks in the task.  this is not threadsafe, but I think we are safe anyway
+   //take all of the tracks in the task. 
    mTracksMutex.Lock();
    for(int i=0;i<task->GetNumWaveTracks();i++)
    {
+      //ODTask::GetWaveTrack is not threadsafe, but I think we are safe anyway, because the task isn't being run yet?
       mTracks.push_back(task->GetWaveTrack(i));
    } 
     

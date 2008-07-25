@@ -93,6 +93,9 @@ class ODManager
    
    ///returns a flag that is set if we have loaded some OD blockfiles from PCM.  
    static bool HasLoadedODFlag();
+   
+   ///returns whether or not the singleton instance was created yet
+   static bool IsInstanceCreated();
   
   protected:
    //private constructor - Singleton.
