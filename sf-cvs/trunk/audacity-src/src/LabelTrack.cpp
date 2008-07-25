@@ -2017,12 +2017,6 @@ bool LabelTrack::Paste(double t, Track * src)
       len++;
    }
 
-   while (pos < len) {
-      mLabels[pos]->t += sl->mClipLen;
-      mLabels[pos]->t1 += sl->mClipLen;
-      pos++;
-   }
-
    return true;
 }
 
