@@ -74,9 +74,9 @@ class ODTask
     
     virtual const char* GetTaskName(){return "ODTask";}
    
-    virtual sampleCount GetDemandSample(){return mDemandSample;}
+    virtual sampleCount GetDemandSample();
     
-    virtual void SetDemandSample(sampleCount sample){mDemandSample=sample;mDemand=true;}
+    virtual void SetDemandSample(sampleCount sample);
    
     ///returns the number of tasks created before this instance.
     int GetTaskNumber(){return mTaskNumber;}
@@ -102,12 +102,16 @@ class ODTask
    bool mTerminate;
    ODLock mTerminateMutex;
    
-   bool   mDemand;
-   sampleCount mDemandSample;
    
    //for a function not a member var.
    ODLock mBlockUntilTerminateMutex;
-
+   
+   private:
+   sampleCount mDemandSample;
+   ODLock      mDemandSampleMutex;
+   
+   bool   mDemand;
+   ODLock mDemandMutex;
 };
 
 #endif
