@@ -212,7 +212,7 @@ BlockFile *ODPCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attr
    wxFileName aliasFileName;
    sampleCount aliasStart=0, aliasLen=0;
    int aliasChannel=0;
-   float min=0, max=0, rms=0;
+   float rms=0;
    long nValue;
 
 
@@ -274,8 +274,6 @@ BlockFile *ODPCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attr
          (aliasLen <= 0) || (aliasLen < 0.0) || !XMLValueChecker::IsValidChannel(aliasChannel) || (rms < 0.0))
       return NULL;
 
-
-   //TODO: schedule for OD Loading
    
    return new ODPCMAliasBlockFile(summaryFileName, aliasFileName,
                                 aliasStart, aliasLen, aliasChannel);
@@ -315,8 +313,8 @@ void ODPCMAliasBlockFile::WriteSummary()
       
       //however, this is going to be called from a non-main thread,
       //and wxLog calls are not thread safe.
-      printf("Unable to write summary data to file %s",
-                   mFileName.GetFullPath().c_str());
+      printf("Unable to write summary data to file");// %s",
+          //         mFileName.GetFullPath().c_str());
       // If we can't write, there's nothing to do.
       return;
    }
@@ -560,7 +558,6 @@ int ODPCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
 bool ODPCMAliasBlockFile::ReadSummary(void *data)
 {
    wxFFile summaryFile(mFileName.GetFullPath(), wxT("rb"));
-   wxLogNull *silence=0;
    
    if( !summaryFile.IsOpened() ){
 
