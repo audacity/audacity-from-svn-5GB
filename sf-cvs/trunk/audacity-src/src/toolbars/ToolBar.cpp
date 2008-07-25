@@ -690,7 +690,7 @@ void ToolBar::OnCaptureLost( wxMouseCaptureLostEvent & event )
 {
    if( HasCapture() )
    {
-      ReleaseCapture();
+      ReleaseMouse();
    }
 }
 

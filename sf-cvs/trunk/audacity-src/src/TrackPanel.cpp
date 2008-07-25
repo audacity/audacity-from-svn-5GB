@@ -3964,7 +3964,7 @@ void TrackPanel::OnChar(wxKeyEvent & event)
 void TrackPanel::OnCaptureLost(wxMouseCaptureLostEvent & event)
 {
    if (HasCapture()) {
-      ReleaseCapture();
+      ReleaseMouse();
    }
 }
 
