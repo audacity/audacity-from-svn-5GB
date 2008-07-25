@@ -347,6 +347,11 @@ void EffectEqualization::End()
    mPrompting = false;
 }
 
+bool EffectEqualization::Init()
+{
+   return(mPrompting = true);
+}
+
 bool EffectEqualization::PromptUser()
 {
    TrackListIterator iter(mWaveTracks);
