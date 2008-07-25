@@ -98,6 +98,7 @@ public:
       return wxString(_("Performing Equalization"));
    }
 
+   virtual bool Init();
    virtual void End();
    virtual bool PromptUser();
    virtual bool DontPromptUser();
