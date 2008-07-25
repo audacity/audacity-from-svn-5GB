@@ -72,6 +72,7 @@ class ToolManager:public wxEvtHandler
 
    void OnTimer( wxTimerEvent & event );
    void OnMouse( wxMouseEvent & event );
+   void OnCaptureLost( wxMouseCaptureLostEvent & event );
    void OnGrabber( GrabberEvent & event );
 
    void OnIndicatorCreate( wxWindowCreateEvent & event );

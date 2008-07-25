@@ -946,8 +946,6 @@ void ExportMixerPanel::OnMouseEvent(wxMouseEvent & event)
 {
    if( event.ButtonDown() ) 
    {
-      CaptureMouse();
-
       bool reset = true;
       //check tracks 
       for( int i = 0; i < mMixerSpec->GetNumTracks(); i++ )
@@ -997,12 +995,6 @@ found:
       if( reset )
          mSelectedTrack = mSelectedChannel = -1;
       Refresh( false );
-   }
-   
-   if( event.ButtonUp() ) 
-   {
-      if( HasCapture() )
-         ReleaseMouse();
    }
 }
 

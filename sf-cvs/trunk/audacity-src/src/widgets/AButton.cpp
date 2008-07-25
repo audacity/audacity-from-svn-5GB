@@ -37,6 +37,7 @@
 
 BEGIN_EVENT_TABLE(AButton, wxWindow)
    EVT_MOUSE_EVENTS(AButton::OnMouseEvent)
+   EVT_MOUSE_CAPTURE_LOST(AButton::OnCaptureLost)
    EVT_KEY_DOWN(AButton::OnKeyDown)
    EVT_SET_FOCUS(AButton::OnSetFocus)
    EVT_KILL_FOCUS(AButton::OnKillFocus)
@@ -308,6 +309,14 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
          GetActiveProject()->TP_DisplayStatusMessage(wxT(""));
       }
    }
+}
+
+void AButton::OnCaptureLost(wxMouseCaptureLostEvent & event)
+{
+   wxMouseEvent e(wxEVT_LEFT_UP);
+   e.m_x = -1;
+   e.m_y = -1;
+   OnMouseEvent(e);
 }
 
 void AButton::OnKeyDown(wxKeyEvent & event)

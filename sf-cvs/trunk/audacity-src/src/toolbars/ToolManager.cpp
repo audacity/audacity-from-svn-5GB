@@ -257,6 +257,14 @@ class ToolFrame:public wxFrame
       }
    }
 
+   void OnCaptureLost( wxMouseCaptureLostEvent & event )
+   {
+      if( HasCapture() )
+      {
+         ReleaseMouse();
+      }
+   }
+
    //
    // Do not allow the window to close through keyboard accelerators
    // (like ALT+F4 on Windows)
@@ -285,6 +293,7 @@ BEGIN_EVENT_TABLE( ToolFrame, wxFrame )
    EVT_GRABBER( wxID_ANY, ToolFrame::OnGrabber )
    EVT_PAINT( ToolFrame::OnPaint )
    EVT_MOUSE_EVENTS( ToolFrame::OnMotion )
+   EVT_MOUSE_CAPTURE_LOST( ToolFrame::OnCaptureLost )
    EVT_CLOSE( ToolFrame::OnClose )
    EVT_COMMAND( wxID_ANY, EVT_TOOLBAR_UPDATED, ToolFrame::OnToolBarUpdate )
 END_EVENT_TABLE()
@@ -380,6 +389,10 @@ ToolManager::ToolManager( AudacityProject *parent )
                      wxMouseEventHandler( ToolManager::OnMouse ),
                      NULL,
                      this );
+   mParent->Connect( wxEVT_MOUSE_CAPTURE_LOST,
+                     wxMouseCaptureLostEventHandler( ToolManager::OnCaptureLost ),
+                     NULL,
+                     this );
 
    // Create the top and bottom docks
    mTopDock = new ToolDock( this, mParent, TopDockID );
@@ -417,6 +430,10 @@ ToolManager::~ToolManager()
                         this );
    mParent->Disconnect( wxEVT_MOTION,
                         wxMouseEventHandler( ToolManager::OnMouse ),
+                        NULL,
+                        this );
+   mParent->Disconnect( wxEVT_MOUSE_CAPTURE_LOST,
+                        wxMouseCaptureLostEventHandler( ToolManager::OnCaptureLost ),
                         NULL,
                         this );
 
@@ -989,6 +1006,26 @@ void ToolManager::OnMouse( wxMouseEvent & event )
    // Reinstate original transition
    wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, mTransition );
 #endif
+}
+
+//
+// Deal with new capture lost event
+//
+void ToolManager::OnCaptureLost( wxMouseCaptureLostEvent & event )
+{
+   // Can't do anything if we're not dragging.  This also prevents
+   // us from intercepting events that don't belong to us from the
+   // parent since we're Connect()ed to a couple.
+   if( !mDragWindow )
+   {
+      event.Skip();
+      return;
+   }
+
+   // Simulate button up
+   wxMouseEvent e(wxEVT_LEFT_UP);
+   e.SetEventObject(mParent);
+   OnMouse(e);
 }
 
 //

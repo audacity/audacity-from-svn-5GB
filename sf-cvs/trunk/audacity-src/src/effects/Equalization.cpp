@@ -618,6 +618,7 @@ void EffectEqualization::Filter(sampleCount len,
 BEGIN_EVENT_TABLE(EqualizationPanel, wxPanel)
     EVT_PAINT(EqualizationPanel::OnPaint)
     EVT_MOUSE_EVENTS(EqualizationPanel::OnMouseEvent)
+    EVT_MOUSE_CAPTURE_LOST(EqualizationPanel::OnCaptureLost)
     EVT_SIZE(EqualizationPanel::OnSize)
 END_EVENT_TABLE()
 
@@ -855,6 +856,15 @@ void EqualizationPanel::OnMouseEvent(wxMouseEvent & event)
       ReleaseMouse();
    }
 }
+
+void EqualizationPanel::OnCaptureLost(wxMouseCaptureLostEvent & event)
+{
+   if (HasCapture())
+   {
+      ReleaseMouse();
+   }
+}
+
 
 // WDR: class implementations
 

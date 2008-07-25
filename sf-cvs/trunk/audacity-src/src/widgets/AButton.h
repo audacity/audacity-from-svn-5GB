@@ -78,6 +78,7 @@ class AButton: public wxWindow {
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnSize(wxSizeEvent & event);
    virtual void OnMouseEvent(wxMouseEvent & event);
+   virtual void OnCaptureLost(wxMouseCaptureLostEvent & event );
    virtual void OnKeyDown(wxKeyEvent & event);
    virtual void OnSetFocus(wxFocusEvent & event);
    virtual void OnKillFocus(wxFocusEvent & event);

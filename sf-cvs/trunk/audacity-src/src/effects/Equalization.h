@@ -162,6 +162,7 @@ public:
    ~EqualizationPanel();
 
    void OnMouseEvent(wxMouseEvent & event);
+   void OnCaptureLost(wxMouseCaptureLostEvent & event);
    void OnPaint(wxPaintEvent & event);
    void OnSize (wxSizeEvent & event);
 
