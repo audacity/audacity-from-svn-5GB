@@ -1390,7 +1390,7 @@ bool WaveTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
             // mRate is an int, but "rate" in the project file is a float.
             if (!XMLValueChecker::IsGoodString(strValue) || 
                   !Internat::CompatibleToDouble(strValue, &dblValue) ||
-                  (dblValue < 100.0) || (dblValue > 100000.0)) // same bounds as ImportRawDialog::OnOK
+                  (dblValue < 1.0) || (dblValue > 1000000.0)) // allow a large range to be read
                return false;
             mRate = lrint(dblValue);
          }
