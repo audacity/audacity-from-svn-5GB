@@ -391,7 +391,7 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
          S.AddUnits(wxT("%"));
          
          // Rate text
-         mRateText = S.AddTextBox(_("Amount to import:"),
+         mRateText = S.AddTextBox(_("Sample rate:"),
                                   wxString::Format(wxT("%d"), (int)mRate),
                                   12);
          /* i18n-hint: This is the abbreviation for "Hertz", or
