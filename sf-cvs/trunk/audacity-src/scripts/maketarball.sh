@@ -37,6 +37,18 @@ function myrmvf {
 	fi
 	}
 
+function myfindrm {
+	# search the file tree removing files that match the specified pattern in
+	# the second argument, with output controlled by the value of the first
+	# argument.
+	# setting it to 1 makes it verbose, to anything else makes it quiet
+	if [ $1 -eq 1 ]; then
+		find . -name '$2' -exec rm -rvf '{}' ';'
+	else
+		find . -name '$2' -exec rm -rf '{}' ';'
+	fi
+}
+
 function updsln  {
 	# removes unwanted projects from the Windows solution
 	# setting it to 1 makes it verbose, to anything else makes it quiet
@@ -120,16 +132,16 @@ find . -name '.cvsignore' -execdir rm -rf '{}' ';'
 printf "Done\n"
 
 printf "removing vim / emacs temp files... ";
-if [ $mode -eq 1 ]; then
-	find . -name '*~' -exec rm -rvf '{}' ';'
-else
-	find . -name '*~' -exec rm -rf '{}' ';'
-fi
+myfindrm $mode '*~'
 printf "Done\n"
 
 printf "removing executable and other intermediate files... ";
-myrmvf $mode audacity src/.depend config.status config.log Makefile
-myrmrvf $mode config.cache autom4te.cache
+myrmvf $mode audacity src/.depend
+myfindrm $mode config.status
+myfindrm $mode config.log
+myfindrm $mode Makefile
+myfindrm $mode config.cache
+myfindrm $mode autom4te.cache
 printf "Done\n"
 
 printf "removing orphaned symlinks in lib-src/ ... ";
@@ -145,17 +157,19 @@ myrmrvf $mode scripts
 printf "Done\n"
 
 printf "removing unused libraries from CVS tree ..."
-myrmrvf $mode lib-src/iAVC lib-src/id3lib;
-myrmrvf $mode lib-src/portburn lib-src/rtaudio; 
-myrmrvf $mode lib-src/wave++ lib-src/portaudio;
 myrmrvf $mode lib-src/allegro;
+myrmrvf $mode lib-src/iAVC lib-src/id3lib;
+myrmrvf $mode lib-src/portaudio lib-src/portburn lib-src/rtaudio; 
+myrmrvf $mode lib-src/wave++;
+
 printf "Done\n"
 
 printf "removing libraries that should be installed locally..."
-myrmrvf $mode lib-src/libflac lib-src/libid3tag lib-src/libmad;
-myrmrvf $mode lib-src/libogg lib-src/libsamplerate lib-src/libsndfile;
-myrmrvf $mode lib-src/libvorbis lib-src/soundtouch lib-src/twolame;
-myrmrvf $mode lib-src/ffmpeg;
+myrmrvf $mode lib-src/expat lib-src/libflac lib-src/libid3tag; 
+myrmrvf $mode lib-src/liblrdf lib-src/libmad lib-src/libogg lib-src/libraptor;
+myrmrvf $mode lib-src/libsamplerate lib-src/libsndfile;
+myrmrvf $mode lib-src/libvorbis lib-src/redland lib-src/slv2 lib-src/soundtouch;
+myrmrvf $mode lib-src/twolame;
 printf "Done\n"
 
 printf "removing qa ... ";
@@ -200,32 +214,42 @@ fi
 
 printf "Done\n"
 
-printf "Changing Windows header so that it doesn't build with\n";
-printf "support for libmad, libid3tag, libtwolame or libvorbis by default.\n";
+printf "Changing Windows header so that it doesn't try to build with\n";
+printf "support for optional libraries by default.\n";
 
 echo "" >> "win/configwin.h"
 echo "// The Audacity source tarball does NOT come with" >> "win/configwin.h"
-echo "// libmad, libid3tag, libtwolame, libogg, or libvorbis." >> "win/configwin.h"
+echo "// any optional libraries." >> "win/configwin.h"
 echo "" >> "win/configwin.h"
 echo "// Delete the following lines if you install them manually." >> "win/configwin.h"
 echo "" >> "win/configwin.h"
 echo "#undef MP3SUPPORT" >> "win/configwin.h"
 echo "#undef USE_LIBFLAC" >> "win/configwin.h"
 echo "#undef USE_LIBID3TAG" >> "win/configwin.h"
+echo "#undef USE_LIBLRDF" >> "win/configwin.h"
 echo "#undef USE_LIBMAD" >> "win/configwin.h"
 echo "#undef USE_LIBSAMPLERATE" >> "win/configwin.h"
-echo "#undef USE_LIBVORBIS" >> "win/configwin.h"
 echo "#undef USE_LIBTWOLAME" >> "win/configwin.h"
-echo "#undef USE_FFMPEG" >> "win/configwin.h"
+echo "#undef USE_LIBVORBIS" >> "win/configwin.h"
+echo "#undef USE_MIDI" >> "win/configwin.h"
+echo "#undef USE_SLV2" >> "win/configwin.h"
+
 
 printf "removing unwanted projects from VC++ solution\n"
-updsln $mode ogg_static
-updsln $mode vorbis_static
-updsln $mode vorbisfile_static
-updsln $mode libmad
-updsln $mode libid3tag
-updsln $mode libsamplerate
 updsln $mode libflac
 updsln $mode libflac_cpp
+updsln $mode libid3tag
+updsln $mode libmad
+updsln $mode liblrdf
+updsln $mode librdf
+updsln $mode libsamplerate
 updsln $mode libtwolame_static
+updsln $mode vorbis_static
+updsln $mode vorbisfile_static
+updsln $mode ogg_static
+updsln $mode raptor
+updsln $mode rasqal
+updsln $mode slv2
+updsln $mode portsmf
+
 printf "Done\n"
