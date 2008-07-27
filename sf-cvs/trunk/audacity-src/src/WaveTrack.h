@@ -164,7 +164,7 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    bool Flush();
 
    bool AppendAlias(wxString fName, sampleCount start,
-                    sampleCount len, int channel);
+                    sampleCount len, int channel,bool useOD);
                     
    ///Deletes all clips' wavecaches.  Careful, This may not be threadsafe.
    void DeleteWaveCaches();

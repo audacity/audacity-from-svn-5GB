@@ -209,7 +209,8 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
                   
                //swap the wavecache track the ondemand task uses, since now the new one will be kept in the project
 #ifdef EXPERIMENTAL_ONDEMAND      
-               ODManager::Instance()->ReplaceWaveTrack(pInWaveTrack,pOutWaveTrack);
+               if(ODManager::IsInstanceCreated())
+                  ODManager::Instance()->ReplaceWaveTrack(pInWaveTrack,pOutWaveTrack);
 #endif
             }
             delete pInWaveTrack;

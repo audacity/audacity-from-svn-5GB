@@ -910,9 +910,9 @@ bool WaveClip::Append(samplePtr buffer, sampleFormat format,
 }
 
 bool WaveClip::AppendAlias(wxString fName, sampleCount start,
-                            sampleCount len, int channel)
+                            sampleCount len, int channel,bool useOD)
 {
-   bool result = mSequence->AppendAlias(fName, start, len, channel);
+   bool result = mSequence->AppendAlias(fName, start, len, channel,useOD);
    if (result)
    {
       UpdateEnvelopeTrackLen();

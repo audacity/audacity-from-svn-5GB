@@ -210,6 +210,10 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
       // aliases to the files we're editing, i.e. ("foo.wav", 12000-18000)
       // instead of actually making fresh copies of the samples.
       
+      // lets use OD only if the file is longer than 30 seconds.  Otherwise, why wake up extra threads.
+      //todo: make this a user pref.
+      bool useOD =fileTotalFrames>44100*30;
+      
       for (sampleCount i = 0; i < fileTotalFrames; i += maxBlockSize) {
 	  
          sampleCount blockLen = maxBlockSize;
@@ -217,7 +221,7 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
             blockLen = fileTotalFrames - i;
 
          for (c = 0; c < mInfo.channels; c++)
-            channels[c]->AppendAlias(mFilename, i, blockLen, c);
+            channels[c]->AppendAlias(mFilename, i, blockLen, c,useOD);
 
          cancelled = !mProgress->Update(i, fileTotalFrames);
          if (cancelled)
@@ -229,22 +233,24 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
       //Add this task to the ODManager and the Track itself.      
        wxLogDebug(wxT("Importing PCM \n"));
        
-      ODComputeSummaryTask* computeTask=new ODComputeSummaryTask;
-      bool moreThanStereo = mInfo.channels>2;
-      for (c = 0; c < mInfo.channels; c++)
-      {
-         computeTask->AddWaveTrack(channels[c]);
-         if(moreThanStereo)
+      if(useOD)
+      { 
+         ODComputeSummaryTask* computeTask=new ODComputeSummaryTask;
+         bool moreThanStereo = mInfo.channels>2;
+         for (c = 0; c < mInfo.channels; c++)
          {
-            //if we have 3 more channels, they get imported on seperate tracks, so we add individual tasks for each.
-            ODManager::Instance()->AddNewTask(computeTask);
-            computeTask=new ODComputeSummaryTask;
+            computeTask->AddWaveTrack(channels[c]);
+            if(moreThanStereo)
+            {
+               //if we have 3 more channels, they get imported on seperate tracks, so we add individual tasks for each.
+               ODManager::Instance()->AddNewTask(computeTask);
+               computeTask=new ODComputeSummaryTask;
+            }
          }
+         //if we have a linked track, we add ONE task.
+         if(!moreThanStereo)
+            ODManager::Instance()->AddNewTask(computeTask);
       }
-      //if we have a linked track, we add ONE task.
-      if(!moreThanStereo)
-         ODManager::Instance()->AddNewTask(computeTask);
-      
 #endif      
       
    }

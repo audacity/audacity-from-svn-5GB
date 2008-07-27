@@ -543,7 +543,7 @@ bool Sequence::InsertSilence(sampleCount s0, sampleCount len)
 
 bool Sequence::AppendAlias(wxString fullPath,
                            sampleCount start,
-                           sampleCount len, int channel)
+                           sampleCount len, int channel,bool useOD)
 {
    // Quick check to make sure that it doesn't overflow
    if (((double)mNumSamples) + ((double)len) > wxLL(9223372036854775807))
@@ -554,7 +554,9 @@ bool Sequence::AppendAlias(wxString fullPath,
    newBlock->start = mNumSamples;
    newBlock->f =
 #ifdef EXPERIMENTAL_ONDEMAND
-      mDirManager->NewODAliasBlockFile(fullPath, start, len, channel);   
+   useOD?
+      mDirManager->NewODAliasBlockFile(fullPath, start, len, channel):
+      mDirManager->NewAliasBlockFile(fullPath, start, len, channel);
 #else
       mDirManager->NewAliasBlockFile(fullPath, start, len, channel);
 #endif
