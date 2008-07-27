@@ -230,11 +230,20 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
        wxLogDebug(wxT("Importing PCM \n"));
        
       ODComputeSummaryTask* computeTask=new ODComputeSummaryTask;
+      bool moreThanStereo = mInfo.channels>2;
       for (c = 0; c < mInfo.channels; c++)
       {
          computeTask->AddWaveTrack(channels[c]);
+         if(moreThanStereo)
+         {
+            //if we have 3 more channels, they get imported on seperate tracks, so we add individual tasks for each.
+            ODManager::Instance()->AddNewTask(computeTask);
+            computeTask=new ODComputeSummaryTask;
+         }
       }
-      ODManager::Instance()->AddNewTask(computeTask);
+      //if we have a linked track, we add ONE task.
+      if(!moreThanStereo)
+         ODManager::Instance()->AddNewTask(computeTask);
       
 #endif      
       

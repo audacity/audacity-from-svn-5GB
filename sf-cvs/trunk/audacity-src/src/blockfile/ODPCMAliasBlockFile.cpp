@@ -298,6 +298,16 @@ bool ODPCMAliasBlockFile::IsSummaryAvailable()
    return retval;
 }
 
+///Calls write summary, and makes sure it is only done once in a thread-safe fasion.
+void ODPCMAliasBlockFile::DoWriteSummary()
+{
+   bool beenDone = false;
+   mWriteSummaryMutex.Lock();
+   if(!IsSummaryAvailable())
+      WriteSummary();
+   mWriteSummaryMutex.Unlock();
+}
+
 /// Write the summary to disk, using the derived ReadData() to get the data
 void ODPCMAliasBlockFile::WriteSummary()
 {
@@ -316,6 +326,7 @@ void ODPCMAliasBlockFile::WriteSummary()
       printf("Unable to write summary data to file");// %s",
           //         mFileName.GetFullPath().c_str());
       // If we can't write, there's nothing to do.
+      
       return;
    }
 

@@ -28,6 +28,14 @@ ODComputeSummaryTask::ODComputeSummaryTask()
    mMaxBlockFiles = 0;
    mComputedBlockFiles = 0;
 }
+ 
+ODTask* ODComputeSummaryTask::Clone()
+{
+   ODComputeSummaryTask* clone = new ODComputeSummaryTask;
+   clone->mDemandSample=GetDemandSample();
+   return clone;
+   
+}
      
 ///Computes and writes the data for one BlockFile if it still has a refcount. 
 void ODComputeSummaryTask::DoSomeInternal()
@@ -85,13 +93,15 @@ void ODComputeSummaryTask::DoSomeInternal()
    }   
    
    //update percentage complete.
-   
+   CalculatePercentComplete();
+}
+
+void ODComputeSummaryTask::CalculatePercentComplete()
+{
    mPercentCompleteMutex.Lock();
    mPercentComplete = (float) 1.0 - ((float)mBlockFiles.size() / (mMaxBlockFiles+1));
    mPercentCompleteMutex.Unlock();
-
 }
-
 
 void ODComputeSummaryTask::StopUsingWaveTrack(WaveTrack* track)
 {
@@ -123,16 +133,23 @@ void ODComputeSummaryTask::ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTr
 ///@param seconds the point in the track from which the tasks associated with track should begin processing from.
 void ODComputeSummaryTask::DemandTrackUpdate(WaveTrack* track, double seconds)
 {
+   bool demandSampleChanged=false;
    mWaveTrackMutex.Lock();
    for(size_t i=0;i<mWaveTracks.size();i++)
    {
       if(track == mWaveTracks[i])
-      {
-         SetDemandSample((sampleCount)seconds * track->GetRate());
+      {  
+         sampleCount newDemandSample = (sampleCount)seconds * track->GetRate();
+         demandSampleChanged = newDemandSample != GetDemandSample();
+         SetDemandSample(newDemandSample);
          break;
       }
    }  
    mWaveTrackMutex.Unlock();
+   
+   if(demandSampleChanged)
+      SetNeedsODUpdate();
+   
 }
 
 
@@ -166,9 +183,12 @@ void ODComputeSummaryTask::Update()
             blocks = clip->GetSequenceBlockArray();
             int i;
             int numBlocksIn;
+            int insertCursor;
+            
             numBlocksIn=0;
             for(i=0; i<(int)blocks->GetCount(); i++)
             {
+               insertCursor =0;
                //in the future if we have more than one ODBlockFile, we will need type flags to cast.
                if(!blocks->Item(i)->f->IsSummaryAvailable())
                {
@@ -176,12 +196,21 @@ void ODComputeSummaryTask::Update()
                   ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->SetStart(blocks->Item(i)->start);
                   ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->SetClipOffset(clip->GetStartTime()*clip->GetRate());
                   
+                  //these will always be linear within a sequence-lets take advantage of this by keeping a cursor.
+                  while(insertCursor<tempBlocks.size()&& 
+                     tempBlocks[insertCursor]->GetStart()+tempBlocks[insertCursor]->GetClipOffset() < 
+                        ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->GetStart()+((ODPCMAliasBlockFile*)blocks->Item(i)->f)->GetClipOffset())
+                     insertCursor++;
+                  
+                  
+                  tempBlocks.insert(tempBlocks.begin()+insertCursor++,(ODPCMAliasBlockFile*)blocks->Item(i)->f);
+                  
                   //this next bit ensures that we are spacing the blockfiles over multiple wavetracks evenly.
-                  if((j+1)*numBlocksIn>tempBlocks.size())
-                     tempBlocks.push_back((ODPCMAliasBlockFile*)blocks->Item(i)->f);
-                  else
-                     tempBlocks.insert(tempBlocks.begin()+(j+1)*numBlocksIn, (ODPCMAliasBlockFile*)blocks->Item(i)->f);
-                     
+                  //if((j+1)*numBlocksIn>tempBlocks.size())
+//                     tempBlocks.push_back((ODPCMAliasBlockFile*)blocks->Item(i)->f);
+//                  else
+//                     tempBlocks.insert(tempBlocks.begin()+(j+1)*numBlocksIn, (ODPCMAliasBlockFile*)blocks->Item(i)->f);
+//                     
                   
                   numBlocksIn++;
                }
@@ -251,30 +280,3 @@ void ODComputeSummaryTask::ODUpdate()
    //clear old blockFiles and do something smarter.
    
 }   
-
-int ODComputeSummaryTask::GetNumWaveTracks()
-{
-   int num;
-   mWaveTrackMutex.Lock();
-   num = (int)mWaveTracks.size();
-   mWaveTrackMutex.Unlock();
-   return num;
-}
-
-WaveTrack* ODComputeSummaryTask::GetWaveTrack(int i)
-{
-   WaveTrack* track;
-   mWaveTrackMutex.Lock();
-   if(i<(int)mWaveTracks.size())
-      track = mWaveTracks[i];
-   mWaveTrackMutex.Unlock();
-   return track;
-}
-
-///Sets the wavetrack that will be analyzed for ODPCMAliasBlockFiles that will
-///have their summaries computed and written to disk.
-void ODComputeSummaryTask::AddWaveTrack(WaveTrack* track)
-{
-   mWaveTracks.push_back(track);
-}
-

@@ -20,6 +20,7 @@ in a background thread.
 
 #include "ODTask.h"
 #include "ODManager.h"
+#include "WaveTrack.h"
 #include "../Project.h"
 
 
@@ -33,13 +34,12 @@ ODTask::ODTask()
    mPercentComplete=0;
    mDoingTask=false;
    mTerminate = false;
+   mNeedsODUpdate=false;
    
    mTaskNumber=sTaskNumber++;
    
    mDemandSample=0;
-   mDemand=false;
 }
-
 
 void ODTask::TerminateAndBlock()
 {  
@@ -90,11 +90,13 @@ void ODTask::DoSome(float amountWork)
    {
       wxThread::This()->Yield();
       //release within the loop so we can cut the number of iterations short
-      mTerminateMutex.Unlock();
+      
+      DoSomeInternal(); //keep the terminate mutex on so we don't remo
+      mTerminateMutex.Unlock(); 
       //TODO: check to see if ondemand has been called
-      if(false)
+      if(GetNeedsODUpdate() && PercentComplete() < 1.0)
          ODUpdate();
-      DoSomeInternal();
+         
       
       //But add the mutex lock back before we check the value again.
       mTerminateMutex.Lock();
@@ -124,6 +126,12 @@ void ODTask::DoSome(float amountWork)
    mBlockUntilTerminateMutex.Unlock();
    
 }
+
+void ODTask::ODUpdate()
+{
+   Update();
+   ResetNeedsODUpdate();
+}
    
 sampleCount ODTask::GetDemandSample()
 {
@@ -140,10 +148,6 @@ void ODTask::SetDemandSample(sampleCount sample)
    mDemandSampleMutex.Lock();
    mDemandSample=sample;
    mDemandSampleMutex.Unlock();
-   
-   mDemandMutex.Lock();
-   mDemand=true;
-   mDemandMutex.Unlock();
 }
    
    
@@ -161,3 +165,65 @@ bool ODTask::IsComplete()
 {
    return PercentComplete() >= 1.0;
 }
+
+
+WaveTrack* ODTask::GetWaveTrack(int i)
+{
+   WaveTrack* track;
+   mWaveTrackMutex.Lock();
+   if(i<(int)mWaveTracks.size())
+      track = mWaveTracks[i];
+   mWaveTrackMutex.Unlock();
+   return track;
+}
+
+///Sets the wavetrack that will be analyzed for ODPCMAliasBlockFiles that will
+///have their summaries computed and written to disk.
+void ODTask::AddWaveTrack(WaveTrack* track)
+{
+   mWaveTracks.push_back(track);
+}
+
+
+int ODTask::GetNumWaveTracks()
+{
+   int num;
+   mWaveTrackMutex.Lock();
+   num = (int)mWaveTracks.size();
+   mWaveTrackMutex.Unlock();
+   return num;
+}
+
+
+void ODTask::SetNeedsODUpdate()
+{
+   mNeedsODUpdateMutex.Lock();
+   mNeedsODUpdate=true;
+   mNeedsODUpdateMutex.Unlock();
+}
+bool ODTask::GetNeedsODUpdate()
+{
+   bool ret;
+   mNeedsODUpdateMutex.Lock();
+   ret=mNeedsODUpdate;
+   mNeedsODUpdateMutex.Unlock();
+   return ret;
+}
+
+void ODTask::ResetNeedsODUpdate()
+{
+   mNeedsODUpdateMutex.Lock();
+   mNeedsODUpdate=false;
+   mNeedsODUpdateMutex.Unlock();
+}
+
+///does an od update and then recalculates the data.
+void ODTask::RecalculatePercentComplete()
+{
+   if(GetNeedsODUpdate())
+   {
+      ODUpdate();
+      CalculatePercentComplete();
+   }
+}
+   

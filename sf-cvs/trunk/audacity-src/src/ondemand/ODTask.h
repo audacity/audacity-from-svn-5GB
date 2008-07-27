@@ -26,6 +26,7 @@ in a background thread.
 #include "ODTaskThread.h"
 #include "../BlockFile.h"
 
+#include <vector>
 #include <wx/wx.h>
 class WaveTrack;
 
@@ -44,6 +45,9 @@ class ODTask
    
    virtual ~ODTask(){};
    
+   //clones everything except information about the tracks.
+   virtual ODTask* Clone()=0;
+   
 ///Do a modular part of the task.  For example, if the task is to load the entire file, load one BlockFile.
 ///Relies on DoSomeInternal(), which is the subclasses must implement.
 ///@param amountWork the percent amount of the total job to do.  1.0 represents the entire job.  the default of 0.0
@@ -55,15 +59,21 @@ class ODTask
    
    virtual float PercentComplete();
    
-   virtual int GetNumWaveTracks(){return 0;}
-   virtual WaveTrack* GetWaveTrack(int i){return NULL;}
-   
+   ///returns whether or not this task and another task can merge together, as when we make two mono tracks stereo.
+   ///for Loading/Summarizing, this is not an issue because the entire track is processed
+   ///Effects that affect portions of a track will need to check this.
+   virtual bool CanMergeWith(ODTask* otherTask){return strcmp(GetTaskName(),otherTask->GetTaskName())==0;}   
+            
    virtual void StopUsingWaveTrack(WaveTrack* track){}
    
    ///Replaces all instances to a wavetrack with a new one, effectively transferring the task.
    ///ODTask has no wavetrack, so it does nothing.  But subclasses that do should override this.
    virtual void ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack){}
     
+    ///Adds a WaveTrack to do the task for
+   void AddWaveTrack(WaveTrack* track);
+   virtual int GetNumWaveTracks();
+   virtual WaveTrack* GetWaveTrack(int i);
        
    ///changes the tasks associated with this Waveform to process the task from a different point in the track
    virtual void DemandTrackUpdate(WaveTrack* track, double seconds){}
@@ -77,10 +87,21 @@ class ODTask
     virtual sampleCount GetDemandSample();
     
     virtual void SetDemandSample(sampleCount sample);
+    
+    ///does an od update and then recalculates the data.
+    virtual void RecalculatePercentComplete();
    
     ///returns the number of tasks created before this instance.
     int GetTaskNumber(){return mTaskNumber;}
+    
+    void SetNeedsODUpdate();
+    bool GetNeedsODUpdate();
+    void ResetNeedsODUpdate();
+    
  protected:
+     
+   ///calculates the percentage complete from existing data.
+   virtual void CalculatePercentComplete() = 0; 
      
    ///pure virtual function that does some part of the task this object represents.   
    ///this function is meant to be called repeatedly until the IsComplete is true. 
@@ -91,9 +112,10 @@ class ODTask
    virtual void Update(){}
    
    ///virtual method called in DoSome everytime the user has demanded some OD function so that the
-   ///ODTask can readjust its computation order.
-   virtual void ODUpdate(){}
-
+   ///ODTask can readjust its computation order.  By default just calls Update(), but subclasses with
+   ///special needs can override this
+   virtual void ODUpdate();
+   
    int   mTaskNumber;
    float mPercentComplete;
    ODLock mPercentCompleteMutex;
@@ -101,17 +123,22 @@ class ODTask
    bool  mTaskStarted;
    bool mTerminate;
    ODLock mTerminateMutex;
-   
-   
    //for a function not a member var.
    ODLock mBlockUntilTerminateMutex;
    
-   private:
+   std::vector<WaveTrack*> mWaveTracks;
+   ODLock     mWaveTrackMutex;
+   
    sampleCount mDemandSample;
    ODLock      mDemandSampleMutex;
    
-   bool   mDemand;
-   ODLock mDemandMutex;
+   private:
+   
+   bool mNeedsODUpdate;
+   ODLock mNeedsODUpdateMutex;
+   
+   
+
 };
 
 #endif

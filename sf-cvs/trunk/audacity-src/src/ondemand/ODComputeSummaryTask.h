@@ -39,9 +39,7 @@ class ODComputeSummaryTask:public ODTask
    ODComputeSummaryTask();
    virtual ~ODComputeSummaryTask(){};
    
-   ///Adds a WaveTrack to compute the summary data for.
-   void AddWaveTrack(WaveTrack* track);
-   
+   virtual ODTask* Clone();
    ///remove references to a wavetrack safely
    virtual void StopUsingWaveTrack(WaveTrack* track);
    
@@ -50,15 +48,15 @@ class ODComputeSummaryTask:public ODTask
    
    ///changes the tasks associated with this Waveform to process the task from a different point in the track
    virtual void DemandTrackUpdate(WaveTrack* track, double seconds);
-
-   virtual int GetNumWaveTracks();
-   virtual WaveTrack* GetWaveTrack(int i);
-
    
    ///Return the task name
    virtual const char* GetTaskName(){return "ODComputeSummaryTask";}
    
+   
 protected:
+
+   ///recalculates the percentage complete.
+   virtual void CalculatePercentComplete();
      
    ///Computes and writes the data for one BlockFile if it still has a refcount. 
    virtual void DoSomeInternal();
@@ -76,9 +74,7 @@ protected:
    
    std::vector<ODPCMAliasBlockFile*> mBlockFiles;
    
-   std::vector<WaveTrack*> mWaveTracks;
-   ODLock     mWaveTrackMutex;
-   
+      
    int mMaxBlockFiles;
    int mComputedBlockFiles;
 

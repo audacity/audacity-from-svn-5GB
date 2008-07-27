@@ -31,6 +31,7 @@ ODManager::ODManager()
    mTerminate = false;
 }
 
+
 ///Adds a task to running queue.  Thread-safe.
 void ODManager::AddTask(ODTask* task)
 {
@@ -54,11 +55,16 @@ void ODManager::RemoveTaskIfInQueue(ODTask* task)
 
 }
 
-void ODManager::AddNewTask(ODTask* task)
+///Adds a new task to the queue.  Creates a queue if the tracks associated with the task is not in the list
+///
+///@param task the task to add
+///@param lockMutex locks the mutexes if true (default).  This function is used within other ODManager calls, which many need to set this to false.
+void ODManager::AddNewTask(ODTask* task, bool lockMutex)
 {
    ODWaveTrackTaskQueue* queue = NULL;
-   
-   mQueuesMutex.Lock();
+
+   if(lockMutex)
+      mQueuesMutex.Lock();
    for(unsigned int i=0;i<mQueues.size();i++)
    {
       //search for a task containing the lead track.  
@@ -72,7 +78,8 @@ void ODManager::AddNewTask(ODTask* task)
    {
       //Add it to the existing queue but keep the lock since this reference can be deleted.
       queue->AddTask(task);
-      mQueuesMutex.Unlock();
+      if(lockMutex)
+         mQueuesMutex.Unlock();
    }
    else
    {
@@ -81,8 +88,8 @@ void ODManager::AddNewTask(ODTask* task)
       queue = new ODWaveTrackTaskQueue();
       queue->AddTask(task);
       mQueues.push_back(queue);
-      
-      mQueuesMutex.Unlock();
+      if(lockMutex)
+         mQueuesMutex.Unlock();
      
       AddTask(task);
       
@@ -207,7 +214,7 @@ void ODManager::Start()
       mQueuesMutex.Unlock();
 //      
 //      //TODO:this is a little excessive, in the future only redraw some, and if possible only the Tracks on the trackpanel..
-      if(mNeedsDraw > 6)
+      if(mNeedsDraw > 11)
       {
          mNeedsDraw=0;
          wxCommandEvent event( EVT_ODTASK_UPDATE );
@@ -283,6 +290,81 @@ void ODManager::ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack)
    mQueuesMutex.Unlock();
 } 
 
+///if it shares a queue/task, creates a new queue/task for the track, and removes it from any previously existing tasks.
+void ODManager::MakeWaveTrackIndependent(WaveTrack* track)
+{
+   ODWaveTrackTaskQueue* owner=NULL;
+   mQueuesMutex.Lock();
+   for(unsigned int i=0;i<mQueues.size();i++)
+   {
+      if(mQueues[i]->ContainsWaveTrack(track))
+      {
+         owner = mQueues[i];
+         break;
+      }
+   }
+   if(owner)
+      owner->MakeWaveTrackIndependent(track);
+
+   mQueuesMutex.Unlock();
+
+}
+
+///attach the track in question to another, already existing track's queues and tasks.  Remove the task/tracks.
+///only works if both tracks exist.  Sets needODUpdate flag for the task.  This is complicated and will probably need
+///better design in the future.
+///@return returns success.  Some ODTask conditions require that the tasks finish before merging.  
+///e.g. they have different effects being processed at the same time. 
+bool ODManager::MakeWaveTrackDependent(WaveTrack* dependentTrack,WaveTrack* masterTrack)
+{
+
+   //First, check to see if the task lists are mergeable.  If so, we can simply add this track to the other task and queue, 
+   //then delete this one.
+   ODWaveTrackTaskQueue* masterQueue=NULL;
+   ODWaveTrackTaskQueue* dependentQueue=NULL;
+   unsigned int dependentIndex;
+   bool canMerge = false;
+   
+   mQueuesMutex.Lock();
+   for(unsigned int i=0;i<mQueues.size();i++)
+   {
+      if(mQueues[i]->ContainsWaveTrack(masterTrack))
+      {
+         masterQueue = mQueues[i];
+         //TODO: to be thread-safe, we should lock the removal of tasks from this queue until the merge
+         //is over - this requires another mutex.
+      }
+      else if(mQueues[i]->ContainsWaveTrack(dependentTrack))
+      {
+         dependentQueue = mQueues[i];
+         //TODO: to be thread-safe, we should lock the removal of tasks from this queue until the merge
+         //is over - this requires another mutex.
+         dependentIndex = i;
+      }
+
+   }
+   if(masterQueue&&dependentQueue)
+      canMerge=masterQueue->CanMergeWith(dependentQueue);
+
+
+   //otherwise we need to let dependentTrack's queue live on.  We'll have to wait till the conflicting tasks are done.
+   if(!canMerge)
+   {  
+      mQueuesMutex.Unlock();
+      return false;
+   }     
+   //then we add dependentTrack to the masterTrack's queue - this will allow future ODScheduling to affect them together.
+   //this sets the NeedODUpdateFlag since we don't want the head task to finish without haven't dealt with the depednent
+   masterQueue->MergeWaveTrack(dependentTrack);
+   
+   //finally remove the dependent track
+   mQueues.erase(mQueues.begin()+dependentIndex);
+   mQueuesMutex.Unlock();
+   delete dependentQueue; //note this locks the ODManager's current task queue.
+   return true;
+}
+
+
 ///changes the tasks associated with this Waveform to process the task from a different point in the track
 ///@param track the track to update
 ///@param seconds the point in the track from which the tasks associated with track should begin processing from.
@@ -304,6 +386,7 @@ void ODManager::UpdateQueues()
    mQueuesMutex.Lock();
    for(unsigned int i=0;i<mQueues.size();i++)
    {
+
       if(mQueues[i]->IsFrontTaskComplete())
       {
          mQueues[i]->RemoveFrontTask();

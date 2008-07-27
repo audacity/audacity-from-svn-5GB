@@ -52,6 +52,14 @@ class ODWaveTrackTaskQueue
    ///replaces all instances of a WaveTrack within this task with another.  
    void ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack);      
    
+   //if the wavetrack is in this queue, and is not the only wavetrack, clones the tasks and schedules it. 
+   void MakeWaveTrackIndependent(WaveTrack* track);
+   
+   ///returns whether or not this queue's task list and another's can merge together, as when we make two mono tracks stereo.
+   virtual bool CanMergeWith(ODWaveTrackTaskQueue* otherQueue);  
+   void MergeWaveTrack(WaveTrack* track);
+
+   
    //returns true if the agrument is in the WaveTrack list.
    bool ContainsWaveTrack(WaveTrack* track);
    
@@ -75,6 +83,12 @@ class ODWaveTrackTaskQueue
    
    ///Schedules the front task for immediate execution
    ODTask* GetFrontTask();
+   
+   ///returns the number of ODTasks in this queue
+   int GetNumTasks();
+   
+   ///returns a ODTask at position x
+   ODTask* GetTask(size_t x);
    
  protected:
      
