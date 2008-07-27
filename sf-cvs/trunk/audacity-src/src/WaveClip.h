@@ -145,7 +145,7 @@ public:
    bool Flush();
 
    bool AppendAlias(wxString fName, sampleCount start,
-                    sampleCount len, int channel);
+                    sampleCount len, int channel,bool useOD);
 
    /// This name is consistent with WaveTrack::Clear. It performs a "Cut"
    /// operation (but without putting the cutted audio to the clipboard)

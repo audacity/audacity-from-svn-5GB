@@ -143,7 +143,8 @@ WaveTrack::~WaveTrack()
    //Let the ODManager know this WaveTrack is disappearing.  
    //Deschedules tasks associated with this track.  
 #ifdef EXPERIMENTAL_ONDEMAND
-   ODManager::Instance()->RemoveWaveTrack(this);
+   if(ODManager::IsInstanceCreated())
+      ODManager::Instance()->RemoveWaveTrack(this);
 #endif
    
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
@@ -1314,9 +1315,9 @@ bool WaveTrack::Append(samplePtr buffer, sampleFormat format,
 }
 
 bool WaveTrack::AppendAlias(wxString fName, sampleCount start,
-                            sampleCount len, int channel)
+                            sampleCount len, int channel,bool useOD)
 {
-   return GetLastOrCreateClip()->AppendAlias(fName, start, len, channel);
+   return GetLastOrCreateClip()->AppendAlias(fName, start, len, channel,useOD);
 }
 
 sampleCount WaveTrack::GetBestBlockSize(sampleCount s)

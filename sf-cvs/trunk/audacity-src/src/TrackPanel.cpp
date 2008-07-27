@@ -1708,7 +1708,8 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
       SetFocusedTrack(pTrack);
       //On-Demand: check to see if there is an OD thing associated with this track.
       if (pTrack->GetKind() == Track::Wave) {
-         ODManager::Instance()->DemandTrackUpdate((WaveTrack*)pTrack,mSelStart);
+         if(ODManager::IsInstanceCreated())
+            ODManager::Instance()->DemandTrackUpdate((WaveTrack*)pTrack,mSelStart);
       }
       DisplaySelection();
    }
@@ -1795,7 +1796,8 @@ void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge,
       
    //On-Demand: check to see if there is an OD thing associated with this track.
    if (pTrack->GetKind() == Track::Wave) {
-      ODManager::Instance()->DemandTrackUpdate((WaveTrack*)pTrack,sel0); //sel0 is sometimes less than mSelStart
+      if(ODManager::IsInstanceCreated())
+         ODManager::Instance()->DemandTrackUpdate((WaveTrack*)pTrack,sel0); //sel0 is sometimes less than mSelStart
    }
 
 
