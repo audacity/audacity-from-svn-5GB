@@ -65,11 +65,17 @@ class ODManager
    void DecrementCurrentThreads();
    
    ///Adds a wavetrack, creates a queue member. 
-   //void AddWaveTrack(WaveTrack* track);
-   void AddNewTask(ODTask* task);
+   void AddNewTask(ODTask* task, bool lockMutex=true);
    
    ///removes a wavetrack and notifies its associated tasks to stop using its reference. 
    void RemoveWaveTrack(WaveTrack* track);
+   
+   ///if it shares a queue/task, creates a new queue/task for the track, and removes it from any previously existing tasks.
+   void MakeWaveTrackIndependent(WaveTrack* track);
+   
+   ///attach the track in question to another, already existing track's queues and tasks.  Remove the task/tracks.
+   ///Returns success if it was possible..  Some ODTask conditions make it impossible until the Tasks finish.
+   bool MakeWaveTrackDependent(WaveTrack* dependentTrack,WaveTrack* masterTrack);
    
    ///replace the functional instance of wavetrack in tasks with another one (keeps oldTrack's gui reference)
    //TODO: this is complicated because concurrent tasks/effects will write over the same blockfile.  Thus if the 

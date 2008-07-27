@@ -6078,6 +6078,14 @@ void TrackPanel::OnSplitStereo(wxCommandEvent &event)
    if (partner)
       partner->SetTeamed(false);
    mPopupMenuTarget->SetLinked(false);
+ 
+     
+   //On Demand - have each channel add it's own.
+#ifdef EXPERIMENTAL_ONDEMAND 
+   if(ODManager::IsInstanceCreated() && partner->GetKind() == Track::Wave)
+      ODManager::Instance()->MakeWaveTrackIndependent((WaveTrack*)partner);
+#endif
+   
    MakeParentPushState(wxString::Format(_("Split stereo track '%s'"),
                                         mPopupMenuTarget->GetName().
                                         c_str()),
@@ -6099,6 +6107,17 @@ void TrackPanel::OnMergeStereo(wxCommandEvent &event)
       mPopupMenuTarget->SetChannel(Track::LeftChannel);
       partner->SetChannel(Track::RightChannel);
       partner->SetTeamed(true);
+      
+      
+      //On Demand - join the queues together.
+      //TODO: in the future, we will have to check the return value of MakeWaveTrackDependent -
+      //if the tracks cannot merge, it returns false, and in that case we should not allow a merging.
+      //for example it returns false when there are two different types of ODTasks on each track's queue.
+      //we will need to display this to the user.
+#ifdef EXPERIMENTAL_ONDEMAND 
+      if(ODManager::IsInstanceCreated() && partner->GetKind() == Track::Wave &&mPopupMenuTarget->GetKind() == Track::Wave )
+         ODManager::Instance()->MakeWaveTrackDependent((WaveTrack*)partner,(WaveTrack*)mPopupMenuTarget);
+#endif
       MakeParentPushState(wxString::Format(_("Made '%s' a stereo track"),
                                            mPopupMenuTarget->GetName().
                                            c_str()),

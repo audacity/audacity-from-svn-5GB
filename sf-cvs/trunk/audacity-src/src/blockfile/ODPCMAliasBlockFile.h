@@ -90,7 +90,7 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
    virtual void Recover(void);
    
    ///A public interface to WriteSummary
-   void DoWriteSummary(){WriteSummary();}
+   void DoWriteSummary();
    
    ///Sets the value that indicates where the first sample in this block corresponds to the global sequence/clip.  Only for display use.
    void SetStart(sampleCount startSample){mStart = startSample;}
@@ -118,6 +118,8 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
    virtual void WriteSummary();
    virtual void *CalcSummary(samplePtr buffer, sampleCount len,
                              sampleFormat format);
+
+   ODLock mWriteSummaryMutex;
 
    ODLock    mSummaryAvailableMutex;
    bool mSummaryAvailable;
