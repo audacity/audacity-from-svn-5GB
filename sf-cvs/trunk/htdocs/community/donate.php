@@ -4,7 +4,7 @@
  * Copyright 2004 Matt Brubeck
  * Copyright 2006 Vaughan Johnson
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "donate";
@@ -36,11 +36,11 @@
 
 <p>
   <?=_('Rather, the team of Audacity lead developers will spend the money on items and 
-  services that benefit the project as a whole.  
+  services that benefit the project as a whole. 
   Money that comes in to the project helps us pay for bandwidth and web hosting, 
   development tools, and audio hardware.
-  In the past we used funds from donations to purchase the Audacity trademark and to 
-  subsidize travel costs for Audacity developers to meet for a hackathon, and we plan to 
+  In the past we used funds from donations to purchase the Audacity trademark and to
+  subsidize travel costs for Audacity developers to meet for a hackathon, and we plan to
   do more of these.
   Our long-term goal is to bring in enough money to hire a full-time developer who could 
   devote all of his/her time to the project and take over some of the administrative, 
@@ -48,15 +48,15 @@
 </p>
 
 <p>
-  <?=_('These are all things that help us provide Audacity for free and continue to make it better.
-  The Audacity Team is completely committed to keeping Audacity free and open source. 
-  We made that commitment in 
+  <?=_('These are all things that help us provide Audacity for free and continue to make it better. 
+  The Audacity Team is completely committed to keeping Audacity free and open source.
+  We made that commitment in
   <a href="http://audacity.sourceforge.net/about/license">
       licensing Audacity under the GNU General Public License</a>.')?>
 </p>
 
 <p>
-  <?=_('There are many ways to support Audacity, and many degrees of doing so. 
+  <?=_('There are many ways to support Audacity, and many degrees of doing so.  
   We have always welcomed users whose only contribution is simply using Audacity, 
   giving us feedback on how to improve it, and telling others about it. 
   Thank you for supporting Audacity.')?>
@@ -67,13 +67,13 @@
   <?= ('Purchase from the <a href="http://audacitystore.com/">Audacity Store</a>')?>
 </h2>
 <p>
-  <?=_('You are invited to try out the new <a href="http://audacitystore.com/">Audacity Store</a>, which features  
-  Audacity-logo items (T-shirts, embroidered polo shirts, embroidered messenger bags), and consumer electronics.')?>
+  <?=_('You are invited to try out the new <a href="http://audacitystore.com/">Audacity Store</a>, which features 
+  Audacity-logo items (T-shirts, embroidered polo shirts and embroidered messenger bags).')?>
 </p>
 <p class="logo">
-  <a title="<?=_('Audacity Store')?>" 
+  <a title="<?=_('Audacity Store')?>"
      href="http://audacitystore.com/">
-    <img alt="<?=_('Audacity Store')?>" 
+    <img alt="<?=_('Audacity Store')?>"
     src="../images/Audacity Store_banner_50pct.jpg">
   </a>
 </p>
@@ -92,16 +92,16 @@
 </map>
 <!-- End Amazon Honor System Paybox -->
 
-<p><?=_('We also accept PayPal donations through the SourceForge donation system:')?></p>
+<p><?=_('We can also accept PayPal donations through the SourceForge donation system, although currently a SourceForge account is required:')?></p>
 
 <p class="logo">
-  <a title="<?=_('Donate via PayPal')?>" 
+  <a title="<?=_('Donate via PayPal')?>"
     href="http://sourceforge.net/donate/index.php?group_id=6235">
-    <img alt="<?=_('Donate via PayPal')?>" 
+    <img alt="<?=_('Donate via PayPal')?>"
     src="../images/paypal.gif"></a>
 </p>
 
-<p><?=_('If you prefer to send a personal check or another form of payment, please visit the <a href="../about/credits">credits</a> page and contact one of the lead developers.')?></p>
+<p><?=_('If you prefer to send a personal check or another form of payment, please visit the <a href="../about/credits">credits</a> page and contact one of the developers on the Technical Leadership Council.')?></p>
 
 
 <h2>
