@@ -1292,10 +1292,10 @@ int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect)
    
    // First, pop the log so the user can see what be up.
    if(forceerror ||
-      (!orphanList.IsEmpty() ||
+      ((!orphanList.IsEmpty() ||
       !missingAliasList.empty() ||
       !missingDataList.empty() ||
-      !missingSummaryList.empty()) && !silentlycorrect){
+      !missingSummaryList.empty()) && !silentlycorrect)){
 
       wxLogWarning(_("Project check found inconsistencies inspecting the loaded project data;\nclick 'Details' for a complete list of errors, or 'OK' to proceed to more options."));
       
