@@ -3,7 +3,7 @@
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "credits";
@@ -19,7 +19,7 @@
 
 <p><?=_("Audacity was started by Dominic Mazzoni and Roger Dannenberg in the fall of 1999 at Carnegie Mellon University.  It was released as open-source software at SourceForge.net in May of 2000.")?></p>
 
-<p><a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specfic development, i.e., including none of the code libraries Audacity uses. The <a href="http://www.ohloh.net/projects/59/analyses/latest/contributors">Contributors tab</a> on the Ohloh site shows contributions of each developer.</p>
+<p><a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, that is, excluding the code libraries Audacity uses. The <a href="http://www.ohloh.net/projects/audacity/contributors">Contributors tab</a> on the Ohloh site shows the contributions of each developer.</p>
 
 <h3><?=_("Audacity Team Members")?></h3>
 <ul>
@@ -36,7 +36,7 @@
   <li>Martyn Shaw, <?=_("developer")?></li>
 </ul>
 
-<h3><?=_("Technical leadership council")?></h3>
+<h3><?=_("Technical Leadership Council")?></h3>
 <ul>
   <li><a href="http://dominic-mazzoni.com/">Dominic Mazzoni</a> - (dominic (at) audacityteam.org)</li>
   <li><a href="http://claimid.com/mbrubeck">Matt Brubeck</a> - (mbrubeck (at) audacityteam.org)</li>
@@ -98,7 +98,7 @@
   <li>Jozsef Herczeg (hu)</li>
   <li>Aldo Boccacci (it)</li>
   <li>Ohkubo Kohei (ja)</li>
-  <li>Šarūnas Gliebus (lt)</li>
+  <li>Šar?nas Gliebus (lt)</li>
   <li>Ilija Iliev (mk)</li>
   <li><a href="http://folk.uio.no/kevinu">Kevin Brubeck Unhammer</a> (nb)</li>
   <li>Tino Meinen (nl)</li>
@@ -116,7 +116,7 @@
   <li>Maxim Dziumanenko (uk)</li>
   <li>XiaoXi Liu (zh_CN)</li>
   <li><a href="http://chido.idv.st/">Chido</a> (zh_TW)</li>
-  <li>潘明忠 - <a href="http://rt.openfoundry.org/Foundry/Project/index.html?Queue=210">Audacity 中文化</a> (zh_TW)</li>
+  <li>??? - <a href="http://rt.openfoundry.org/Foundry/Project/index.html?Queue=210">Audacity ???</a> (zh_TW)</li>
 </ul>
 
 <h3><?=_("Libraries")?></h3>
@@ -126,11 +126,11 @@
   <li><a href="http://lame.sourceforge.net/">LAME</a></li>
   <li><a href="http://www.underbit.com/products/mad/">libmad</a></li>
   <li><a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a></li>
-  <li><a href="http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html">Nyquist</a></li>
+  <li><a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">Nyquist</a></li>
   <li><a href="http://vorbis.com/">Ogg Vorbis</a></li>
   <li><a href="http://www.portaudio.com/">PortAudio</a></li>
   <li><a href="http://www-ccrma.stanford.edu/~jos/resample/">Resample</a></li>
-  <li><a href="http://sky.prohosting.com/oparviai/soundtouch/">SoundTouch</a></li>
+  <li><a href="http://www.surina.net/soundtouch/">SoundTouch</a></li>
   <li><a href="http://wxwidgets.org/">wxWidgets</a></li>
 </ul>
 
