@@ -1,4 +1,5 @@
 #include <string>
+#include <cstring>
 // #include <iostream>  -- for debugging (cout)
 #include "ctype.h"
 using namespace std;
