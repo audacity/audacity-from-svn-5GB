@@ -36,6 +36,7 @@
 #include <wx/image.h>
 #include <wx/pen.h>
 #include <wx/log.h>
+#include <wx/datetime.h>
 
 #ifdef USE_MIDI
 #include "allegro.h"
@@ -69,7 +70,7 @@ int gWaveformTimeCount = 0;
 #endif
 
 #ifdef __WXMAC__
-#define BUFFERED_DRAWING 0
+#define BUFFERED_DRAWING 1
 #endif
 
 #ifdef USE_MIDI
@@ -948,6 +949,9 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
       if (r2[x]>r1[x])
          r2[x] = r1[x];
    }
+   long pixAnimOffset;
+   pixAnimOffset = wxDateTime::Now().GetTicks() *5 ; //5 pixels a second
+
    if (imageBuffer) {
       uchar *clipBuffer = imageBuffer;
       uchar rs, gs, bs, rr, gr, br;
@@ -956,7 +960,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
       GetColour(muted ? muteSamplePen : samplePen, &rs, &gs, &bs);
       GetColour(muted ? muteRmsPen : rmsPen, &rr, &gr, &br);
       
-
+      
 
       for(y=0; y<r.height; y++) {
          for(x=0; x<r.width; x++) {
@@ -1006,7 +1010,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                  //draw a dummy waveform - some kind of sinusoid.  We want to animate it so the user knows it's a dummy.  Use the second's unit of a get time function.
                  //Lets use a triangle wave for now since it's easier - I don't want to use sin() or make a wavetable just for this.
                  int triX;
-                 triX= fabs((double)(x%(2*r.height))-r.height)+r.height;
+                 triX= fabs((double)((x+pixAnimOffset)%(2*r.height))-r.height)+r.height;
                  if((y+triX)%r.height == 0)
                  {
                     *imageBuffer++ = rr/2; //(bl[x]%2?rs:rr) + *imageBuffer;
@@ -1078,7 +1082,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
             
             for(int y=0;y<r.height;y++)
             {
-					triX= fabs((double)(x%(2*r.height))-r.height)+r.height;
+               triX= fabs((double)((x+pixAnimOffset)%(2*r.height))-r.height)+r.height;
                if((y+triX)%r.height == 0)
                   dc.DrawPoint(r.x + x, r.y+y);
             }
