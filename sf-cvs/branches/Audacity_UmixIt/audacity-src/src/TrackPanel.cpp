@@ -4011,7 +4011,7 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
 
                //Save bitmaps of the areas that we are going to overwrite
                // For AudioTourch, 3-pixel wide line. Don't center it, just use x as left side.
-               const kIndicatorWidth = 
+               const int kIndicatorWidth = 
                   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
                      3;
                   #else
