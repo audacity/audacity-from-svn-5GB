@@ -966,55 +966,80 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
             {
                //check to see if we should draw the progress bar. 
                //x%pBar Height to ensure we have a square separated every 15 pixels.
-               if(showProgress && y<pBarHeight && x%pBarHeight) 
-               {
-                  //white square,  TODO: use a max(255,x+100) scheme so that we keep the waveform there, just faded. 
-                  *imageBuffer++=255;
-                  *imageBuffer++=255;
-                  *imageBuffer++=255;
-               }
-               else
-               {
+               //if(showProgress && y<pBarHeight && x%pBarHeight) 
+//               {
+//                  //white square,  TODO: use a max(255,x+100) scheme so that we keep the waveform there, just faded. 
+//                  *imageBuffer++=255;
+//                  *imageBuffer++=255;
+//                  *imageBuffer++=255;
+//               }
+//               else
+//               {
+				  bool drawStripes = false;
                   //draw the waveform
-            
-                  //draw one stripe every 25 pixels
-                  if( (y+x)%25 == 0)
-                  {
-                     *imageBuffer++ = (bl[x]%2?rs:rr) + *imageBuffer;
-                     *imageBuffer++;
-                     *imageBuffer++;
-                  } 
-                  else {
-                     //have a gradient away from the stripe, alter light and dark every block
-                     float lineProximity;
-                     //we want half of the range to be zero, and the other half scaled from 0.0 to 1 as you approach the line
-                     lineProximity =  fabs( ( ((y+x)%25) - 12)/12.0) - 0.5;
-                     if(lineProximity<0.0) 
-                        lineProximity = 0.0;
-                     lineProximity*=2;//scale back to 0.0-1.0
-                        *imageBuffer++ =  (bl[x]%2?rs:rr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
-                        *imageBuffer++ = (bl[x]%2?gs:gr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
-                        *imageBuffer++ = (bl[x]%2?bs:br)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
-                  }
+				  
+				  
+				  if(drawStripes)
+				  {
+					  //draw one stripe every 25 pixels
+					  if( (y+x)%25 == 0)
+					  {
+						  *imageBuffer++ = (bl[x]%2?rs:rr) + *imageBuffer;
+						  *imageBuffer++;
+						  *imageBuffer++;
+					  } 
+					  else {
+						  //have a gradient away from the stripe, alter light and dark every block
+						  float lineProximity;
+						  //we want half of the range to be zero, and the other half scaled from 0.0 to 1 as you approach the line
+						  lineProximity =  fabs( ( ((y+x)%25) - 12)/12.0) - 0.5;
+						  if(lineProximity<0.0) 
+							  lineProximity = 0.0;
+						  lineProximity*=2;//scale back to 0.0-1.0
+							  *imageBuffer++ =  (bl[x]%2?rs:rr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+							  *imageBuffer++ = (bl[x]%2?gs:gr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+							  *imageBuffer++ = (bl[x]%2?bs:br)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+					  }
+				  }
+				  else
+				  {
+					//draw a dummy waveform - some kind of sinusoid.  We want to animate it so the user knows it's a dummy.  Use the second's unit of a get time function.
+					//Lets use a triangle wave for now since it's easier - I don't want to use sin() or make a wavetable just for this.
+					int triX;
+					triX= fabs((double)(x%(2*r.height))-r.height)+r.height;
+					if((y+triX)%r.height == 0)
+					{
+						*imageBuffer++ = rr/2; //(bl[x]%2?rs:rr) + *imageBuffer;
+						*imageBuffer++ = gr/2;
+						*imageBuffer++ = br/2;
+					}
+					else
+					{
+						*imageBuffer++;
+						*imageBuffer++;
+						*imageBuffer++;
+					}
+					
+//				  }
                }
             }
             else
             {
                   //we have valid summary or sample data, so commence regular waveform drawing
                   if (y >= r2[x] && y < r1[x]) {
-                     *imageBuffer++ = (showProgress && y<pBarHeight && x%pBarHeight) ?rr/2+30: rr;
-                     *imageBuffer++ = (showProgress && y<pBarHeight && x%pBarHeight) ?gr/2+120:gr;
-                     *imageBuffer++ = (showProgress && y<pBarHeight && x%pBarHeight) ?br/2+30:br;
+                     *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight) ?rr/2+30: */ rr;
+                     *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight) ?gr/2+120: */gr;
+                     *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight) ?br/2+30: */br;
                   }
                   else if (y >= h2[x] && y < h1[x]+1) {
-                     *imageBuffer++ = (showProgress && y<pBarHeight && x%pBarHeight)?rs/2+30:rs;
-                     *imageBuffer++ = (showProgress && y<pBarHeight && x%pBarHeight)?gs/2+120:gs;
-                     *imageBuffer++ = (showProgress && y<pBarHeight && x%pBarHeight)?bs/2+30:bs;
+                     *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?rs/2+30: */rs;
+                     *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?gs/2+120: */gs;
+                     *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?bs/2+30: */bs;
                   }
                   else {
-                     *imageBuffer++ = (showProgress && y<pBarHeight && x%pBarHeight)?60:*imageBuffer;
-                     *imageBuffer++ = (showProgress && y<pBarHeight && x%pBarHeight)?240:*imageBuffer;
-                     *imageBuffer++ = (showProgress && y<pBarHeight && x%pBarHeight)?60:*imageBuffer;
+                     *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?60: */*imageBuffer;
+                     *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?240: */*imageBuffer;
+                     *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?60: */*imageBuffer;
                      //imageBuffer += 3;
                   }
              

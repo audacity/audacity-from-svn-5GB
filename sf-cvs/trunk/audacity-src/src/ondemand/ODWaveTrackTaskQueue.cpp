@@ -312,3 +312,19 @@ ODTask* ODWaveTrackTaskQueue::GetFrontTask()
    mTasksMutex.Unlock();
    return NULL;
 }
+
+///fills in the status bar message for a given track
+void ODWaveTrackTaskQueue::FillTipForWaveTrack( WaveTrack * t, const wxChar ** ppTip )
+{
+   if(ContainsWaveTrack(t) && GetNumTasks())
+   {
+      
+    //  if(GetNumTasks()==1)
+      mTipMsg.Printf(_("%s %2.0f%% complete.  Click to change task focal point."), GetFrontTask()->GetTip(), GetFrontTask()->PercentComplete()*100.0 );
+     // else
+       //  msg.Printf(_("%s %n additional tasks remaining."), GetFrontTask()->GetTip().c_str(), GetNumTasks());
+       
+      *ppTip = mTipMsg.c_str();
+   
+   }
+}

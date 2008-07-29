@@ -1351,6 +1351,17 @@ void TrackPanel::SetCursorAndTipWhenSelectTool( Track * t,
    // Adjusting the selection edges can be turned off in
    // the preferences...
    if (!mAdjustSelectionEdges) {
+      //For OD regions, we need to override and display the percent complete for this task.
+      //first, make sure it's a wavetrack.
+      if(t->GetKind() == Track::Wave)
+      {
+         //see if the wavetrack exists in the ODManager (if the ODManager exists)
+         if(ODManager::IsInstanceCreated())
+         {
+            //ask the wavetrack for the corresponding tip - it may not change **pptip, but that's fine.
+            ODManager::Instance()->FillTipForWaveTrack((WaveTrack*)t,ppTip);
+         }
+      }
    }
    // Is the cursor over the left selection boundary?
    else if (within(event.m_x, leftSel, SELECTION_RESIZE_REGION)) {
@@ -1362,6 +1373,21 @@ void TrackPanel::SetCursorAndTipWhenSelectTool( Track * t,
       *ppTip = _("Click and drag to move right selection boundary.");
       SetCursor(*mAdjustRightSelectionCursor);
    }
+   else
+   {
+   //For OD regions, we need to override and display the percent complete for this task.
+      //first, make sure it's a wavetrack.
+      if(t->GetKind() == Track::Wave)
+      {
+         //see if the wavetrack exists in the ODManager (if the ODManager exists)
+         if(ODManager::IsInstanceCreated())
+         {
+            //ask the wavetrack for the corresponding tip - it may not change **pptip, but that's fine.
+            ODManager::Instance()->FillTipForWaveTrack((WaveTrack*)t,ppTip);
+         }
+      }
+   }
+   
    // It's possible we didn't set the tip and cursor.
    // Subsequently called functions can detect this.
 }
