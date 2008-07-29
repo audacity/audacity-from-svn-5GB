@@ -362,7 +362,9 @@ bool Effect::HandleGroupChangeSpeed(double m_PercentChange, double mCurT0, doubl
                   WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
                   tmp->InsertSilence(0.0, length);
                   tmp->Flush();
-                  if ( !( ((WaveTrack *)t)->HandlePaste(mCurT1, tmp)) ) return false;
+                  double change = (100 + m_PercentChange)/100;
+                  double insertPt = mCurT1 - (mCurT1 - mCurT0) + ((mCurT1 - mCurT0)/change);
+                  if ( !( ((WaveTrack *)t)->HandlePaste(insertPt, tmp)) ) return false;
                }
                t=fullIter.Next();
             }

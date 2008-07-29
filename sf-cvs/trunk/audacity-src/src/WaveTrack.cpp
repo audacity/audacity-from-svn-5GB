@@ -880,10 +880,6 @@ bool WaveTrack::HandleGroupPaste(double t0, Track *src)
          t=n;
       }
       
-      //We didnt find the track because it's stereo. We don't want to shift
-      //labels, but we do want to paste the src into the track.
-      //if (!t) return HandlePaste(t0, src);
-      
       t=iter.First();
       for (int i=0; i<editGroup; i++){//go to first in edit group
          while (t && t->GetKind()==Track::Wave) t=iter.Next();
