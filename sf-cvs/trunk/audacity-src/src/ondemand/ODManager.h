@@ -88,7 +88,6 @@ class ODManager
    ///Adds a task to the running queue.  Threas-safe.
    void AddTask(ODTask* task);
    
-   
    void RemoveTaskIfInQueue(ODTask* task);
    
    ///sets a flag that is set if we have loaded some OD blockfiles from PCM.  
@@ -102,6 +101,15 @@ class ODManager
    
    ///returns whether or not the singleton instance was created yet
    static bool IsInstanceCreated();
+   
+   ///fills in the status bar message for a given track
+   void FillTipForWaveTrack( WaveTrack * t, const wxChar ** ppTip );
+   
+   ///Gets the total percent complete for all tasks combined.
+   float GetOverallPercentComplete();
+   
+   ///Get Total Number of Tasks.
+   int GetTotalNumTasks();
   
   protected:
    //private constructor - Singleton.

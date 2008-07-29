@@ -24,6 +24,7 @@ tasks associated with a WaveTrack.
 
 #include <vector>
 #include "ODTaskThread.h"
+#include <wx/wx.h>
 class WaveTrack;
 class ODTask;
 /// A class representing a modular task to be used with the On-Demand structures.
@@ -90,7 +91,14 @@ class ODWaveTrackTaskQueue
    ///returns a ODTask at position x
    ODTask* GetTask(size_t x);
    
+   ///fills in the status bar message for a given track
+   void FillTipForWaveTrack( WaveTrack * t, const wxChar ** ppTip );
+   
  protected:
+ 
+   //because we need to save this around for the tool tip.
+   wxString mTipMsg;
+   
      
   ///the list of tracks associated with this queue.
   std::vector<WaveTrack*> mTracks;

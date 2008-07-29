@@ -205,7 +205,6 @@ void ODManager::Start()
       wxThread::Sleep(200);
 //wxSleep can't be called from non-main thread.
 //      ::wxMilliSleep(250);
-      mTerminateMutex.Lock();
       
       //if there is some ODTask running, then there will be something in the queue.  If so then redraw to show progress
       
@@ -224,6 +223,7 @@ void ODManager::Start()
             proj->AddPendingEvent( event );
          AudacityProject::AllProjectsDeleteUnlock();
       }   
+      mTerminateMutex.Lock();
    }
    mTerminateMutex.Unlock();
    
@@ -437,4 +437,40 @@ bool ODManager::HasLoadedODFlag()
 {
    return sHasLoadedOD;
 }
-  
+
+///fills in the status bar message for a given track
+void ODManager::FillTipForWaveTrack( WaveTrack * t, const wxChar ** ppTip )
+{
+   mQueuesMutex.Lock();
+   for(unsigned int i=0;i<mQueues.size();i++)
+   {
+      mQueues[i]->FillTipForWaveTrack(t,ppTip);
+   }
+   mQueuesMutex.Unlock();
+}
+
+///Gets the total percent complete for all tasks combined.
+float ODManager::GetOverallPercentComplete()
+{
+   float total=0.0;
+   mQueuesMutex.Lock();
+   for(unsigned int i=0;i<mQueues.size();i++)
+   {
+      total+=mQueues[i]->GetFrontTask()->PercentComplete();
+   }
+   mQueuesMutex.Unlock();
+   return (float) total/GetTotalNumTasks();
+}
+   
+///Get Total Number of Tasks.
+int ODManager::GetTotalNumTasks()
+{
+   int ret=0;
+   mQueuesMutex.Lock();
+   for(unsigned int i=0;i<mQueues.size();i++)
+   {
+      ret+=mQueues[i]->GetNumTasks();
+   }
+   mQueuesMutex.Unlock();
+   return ret;
+}

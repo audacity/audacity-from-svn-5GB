@@ -52,6 +52,7 @@ class ODComputeSummaryTask:public ODTask
    ///Return the task name
    virtual const char* GetTaskName(){return "ODComputeSummaryTask";}
    
+   virtual const wxChar* GetTip(){return _("Import complete. Calculating waveform");}
    
 protected:
 

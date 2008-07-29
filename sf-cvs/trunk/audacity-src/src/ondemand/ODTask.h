@@ -98,6 +98,8 @@ class ODTask
     bool GetNeedsODUpdate();
     void ResetNeedsODUpdate();
     
+    virtual const wxChar* GetTip()=0;
+    
  protected:
      
    ///calculates the percentage complete from existing data.
@@ -116,6 +118,7 @@ class ODTask
    ///special needs can override this
    virtual void ODUpdate();
    
+
    int   mTaskNumber;
    float mPercentComplete;
    ODLock mPercentCompleteMutex;

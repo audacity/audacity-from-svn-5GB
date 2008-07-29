@@ -3157,6 +3157,22 @@ void AudacityProject::OnTimer(wxTimerEvent& event)
          mStatusBar->SetStatusText(msg);
       }
    }
+   else if(ODManager::IsInstanceCreated())
+   {
+      //if we have some tasks running, we should say something about it.
+      int numTasks = ODManager::Instance()->GetTotalNumTasks();
+      if(numTasks)
+      {
+         wxString msg;
+         if(numTasks>1)
+            msg.Printf(_("Running %d on-demand tasks.  %2.0f%% of overall progress complete."),
+              numTasks,ODManager::Instance()->GetOverallPercentComplete()*100.0/numTasks);       
+         else
+            msg.Printf(_("Running an on-demand task.  %2.0f%% of progress complete."),
+             ODManager::Instance()->GetOverallPercentComplete()*100.0/numTasks);    
+         mStatusBar->SetStatusText(msg);
+      }
+   }
 }
 
 //get regions selected by selected labels
