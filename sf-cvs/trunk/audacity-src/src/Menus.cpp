@@ -2838,6 +2838,12 @@ void AudacityProject::OnPaste()
                _("Error"), wxICON_ERROR, this);
             break;
          }
+         if (c->GetKind() != n->GetKind()){
+            wxMessageBox(
+               _("Pasting from one type of track into another is not allowed."),
+               _("Error"), wxICON_ERROR, this);
+            break;
+         }
 
          if (!f)
             f = n;
@@ -2886,7 +2892,7 @@ void AudacityProject::OnPaste()
 
       n = iter.Next();
    }
-
+   
    // TODO: What if we clicked past the end of the track?
 
    if (pastedSomething)
