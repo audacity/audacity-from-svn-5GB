@@ -69,7 +69,7 @@ int gWaveformTimeCount = 0;
 #endif
 
 #ifdef __WXMAC__
-#define BUFFERED_DRAWING 1
+#define BUFFERED_DRAWING 0
 #endif
 
 #ifdef USE_MIDI
@@ -1003,25 +1003,25 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
 				  }
 				  else
 				  {
-					//draw a dummy waveform - some kind of sinusoid.  We want to animate it so the user knows it's a dummy.  Use the second's unit of a get time function.
-					//Lets use a triangle wave for now since it's easier - I don't want to use sin() or make a wavetable just for this.
-					int triX;
-					triX= fabs((double)(x%(2*r.height))-r.height)+r.height;
-					if((y+triX)%r.height == 0)
-					{
-						*imageBuffer++ = rr/2; //(bl[x]%2?rs:rr) + *imageBuffer;
-						*imageBuffer++ = gr/2;
-						*imageBuffer++ = br/2;
-					}
-					else
-					{
-						*imageBuffer++;
-						*imageBuffer++;
-						*imageBuffer++;
-					}
-					
-//				  }
-               }
+                 //draw a dummy waveform - some kind of sinusoid.  We want to animate it so the user knows it's a dummy.  Use the second's unit of a get time function.
+                 //Lets use a triangle wave for now since it's easier - I don't want to use sin() or make a wavetable just for this.
+                 int triX;
+                 triX= fabs((double)(x%(2*r.height))-r.height)+r.height;
+                 if((y+triX)%r.height == 0)
+                 {
+                    *imageBuffer++ = rr/2; //(bl[x]%2?rs:rr) + *imageBuffer;
+                    *imageBuffer++ = gr/2;
+                    *imageBuffer++ = br/2;
+                 }
+                 else
+                 {
+                    *imageBuffer++;
+                    *imageBuffer++;
+                    *imageBuffer++;
+                 }
+                 
+                 //				  }
+}
             }
             else
             {
@@ -1071,23 +1071,36 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
       for (x = 0; x < r.width; x++) {
          if(bl[x]<=-1)
          {
+            //draw a dummy waveform - some kind of sinusoid.  We want to animate it so the user knows it's a dummy.  Use the second's unit of a get time function.
+            //Lets use a triangle wave for now since it's easier - I don't want to use sin() or make a wavetable just for this.
+            int triX;
+            dc.SetPen(muteSamplePen);
             
+            for(int y=0;y<r.height;y++)
+            {
+					triX= fabs((double)(x%(2*r.height))-r.height)+r.height;
+               if((y+triX)%r.height == 0)
+                  dc.DrawPoint(r.x + x, r.y+y);
+            }
+            
+             /*
             //TODO:unify with buffer drawing.
             dc.SetPen(bl[x]%2 ? muteSamplePen : samplePen);
             for(int y=0;y<(r.height)/25 +1;y++)
             {
                //we are drawing over the buffer, but I think DrawLine takes care of this.
                dc.DrawLine(r.x + x, r.y+ 25*y + x%25, r.x+x, 
-                     r.y+25*y+x%25 + 6 ); //take the min so we don't draw past the edge
+                           r.y+25*y+x%25 + 6 ); //take the min so we don't draw past the edge
             }
             
+           
             //draw a not yet progress bar
             if(showProgress && x%pBarHeight)
             {
                dc.SetPen(odProgressNotYetPen);
                dc.DrawLine(r.x + x, r.y, r.x + x, r.y + pBarHeight );
             }
-            
+            */
          }
          else
          {
@@ -1103,12 +1116,14 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                else
                   dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + h1[x]+1 );
             }
+            
+            /*
             //draw a transparent Green progress bar
             if(showProgress && x%pBarHeight)
             {
                dc.SetPen(odProgressDonePen);
                dc.DrawLine(r.x + x, r.y, r.x + x, r.y + pBarHeight );
-            }
+            }*/
          }
       }
       
