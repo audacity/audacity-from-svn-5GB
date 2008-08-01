@@ -17,12 +17,12 @@ Audacity source code archive, except as otherwise noted
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Version 1.3.6a4 (alpha)
+Version 1.3.6a5 (alpha)
 
 Contents of this README:
 
 1.  Licensing
-2.  Changes in version 1.3.6a4
+2.  Changes in version 1.3.6a5
 3.  Known Issues
 4.  Source Code, Libraries and Additional Copyright Information
 5.  Compilation Instructions
@@ -54,29 +54,34 @@ to http://www.gnu.org/copyleft/gpl.html or write to
 
 --------------------------------------------------------------------------------
 
-2.  Changes in version 1.3.6a4
+2.  Changes in version 1.3.6a5
 
 Interface:
-        * New Preference: Default View Mode, to choose type of
-           waveform, spectrum or pitch view for new tracks
-        * Note Track: experimental support is now enabled by defining
-           USE_MIDI in config*, but does not build out-of-the-box
-           on Windows
-        * Bug fixes for linked audio and label tracks; now supports
-           label shifting when changing speed and generating tones
+        * Note Track now builds on Windows
+        * Fixes/improvements for linked audio and label tracks (one
+           desynchronisation bug remains when pasting audio into a
+           greater number of tracks than were copied); now supports
+           label shifting when changing pitch and tempo
+        * Added full label pasting support: now possible to paste
+           multiple labels, region labels and labels with audio, and
+           correct label text is now pasted
 
 Import / Export:
-        * Improvements/fixes for AAC exports including new M4A
-           filter for compatibility with iTunes; RealAudio export
-           temporarily removed
-        * Improved refresh of on-demand loading; fixed a phantom
-           on-demand progress bar when time-shifting clips
+        * Added full "on-demand" support (now with minimum file
+           length of 30 seconds): clicking moves summary calculation
+           point; supports split and merge of stereo tracks;
+           incompletely summarised tracks resume summary loading
+           automatically upon import; Status Bar progress indication
 
 Effects:
-        * Experimental support for LV2 plug-in architecture on Linux
-           and Mac, but operation may be buggy; no LV2 support yet on
-           Windows, because the required slv2 library currently does.
-           not build
+        * Fixed a bug where previewing Equalization curves more
+           than once previewed the unmodified audio
+        * Improvements to DTMF generator
+
+Miscellaneous:
+        * Improved support for working with audio in excess of 2^31
+           samples (about 13.5 hours at 44100 Hz); some accessibility
+           improvements
 
 
 --------------------------------------------------------------------------------
@@ -89,36 +94,38 @@ Please also check:
 for details of any issues that have been identified after release of
 this version.
 
+ * Starting monitoring in Meter Toolbar after recording in another
+    project window then closing it causes a crash
+
+ * Quitting Audacity in the Automatic Crash Recovery dialogue then
+    relaunching it makes it impossible to quit Audacity except by
+    force-quitting.
+
  * LADSPA Multiband EQ may not be visible in the Effect menu, and
     may crash in use.
 
- * Exported MP4, GSM-WAV and GSM-AIFF files may not play on some
-    players and/or may not play for the full length.
+ * On-demand: saving a project during summarising then cancelling the
+    save causes a freeze if the save copies in the audio data;
+    re-opening a project saved during summarising gives "orphaned
+    blockfiles" error
+
+ * On demand: loading of files not available if using the optional
+    FFmpeg importer (that is, if "ffmpeg-compatible files" is set in
+    the import window).
+
+ * Exported GSM-WAV and GSM-AIFF files may not play on some players
+    and/or may not play for the full length. MP4/M4A sample rates at or
+    below 22050 Hz are doubled in the exported file. MP4 files renamed
+    to MOV will not play in Windows iTunes or QuickTime.
 
  * Some multi-channel recording devices that previously recorded more
     than two channels may no longer do so. Please send reports to:
       feedback@audacityteam.org
 
- * If a saved project includes tracks at a sample rate of more than
-    100000 Hz, on reopening the project such tracks will give
-    "orphaned blockfile" error and have no audio.
-
- * When audio/label track linkage is on, pasting audio into multiple
-    tracks inserts silence as well as the pasted content.
-
- * Whether audio/label track linkage is on or not: a label cannot be
-    pasted with its audio; system clipboard content is pasted instead
-    of the label content; and labels denoting a selection region are
-    pasted as a cursor point.
-
- * "On demand" loading of files not available if using the optional
-    FFmpeg importer (that is, if "ffmpeg-compatible files" is set in
-    the import window).
-
  * Audacity can underestimate the loudest sample in a longer selection
-    region (or in the entire track) if it contains a relatively small number
-    of different peaks. This then causes clipping if the audio is amplified
-    to 0.0 dB. Unlikely to affect a typical pop music track.
+    region (or in the entire track) if it contains a relatively small
+    number of different peaks. This causes clipping if the audio is
+    amplified to 0.0 dB. Unlikely to affect a typical pop music track.
 
  * MP3 Export: Bit Rate Mode and Quality choices in MP3 Options
     dialogue are non-functional, almost always producing a 128 kbps
@@ -126,69 +133,66 @@ this version.
     actual length is correct).
 
  * ID3 Genre tags of imported MP3s are misread (and will therefore
-    also be exported incorrectly) if the genre list in Metadata Editor is
-    opened and saved.
+    also be exported incorrectly) if the genre list in Metadata Editor
+    is opened and saved.
 
  * When in Spectrum, Spectrum log or Pitch view, pasting in audio then
-    zooming in causes the pasted content beyond the horizontal scroll to
-    disappear.
+    zooming in causes the pasted content beyond the horizontal scroll
+    to disappear.
 
- * Preferences window: OK button does not work when a tab
-    is selected in the left-hand panel.
+ * Preferences window: OK button does not work when a tab is selected
+    in the left-hand panel.
 
- * When "Split New" is used with more than one track selected, and
-    the selected region includes white space, the split clip(s) perform
+ * When "Split New" is used with more than one track selected, and the
+    selected region includes white space, the split clip(s) perform
     unwanted alignments instead of remaining at the original time
     position.
 
  * Export Multiple fails with no export or warning if an empty label is
     encountered.
 
- * "Audio Cache" on the Directories tab of Preferences caches most audio
-    data for the duration of the session, including project data and imported
-    files. Enabling it could cause a crash when making long recordings or
-    opening large files or projects.
-
- * Previewing the current curve on opening Equalization, modifying that
-    curve and then previewing again plays the audio without the modified
-    equalization applied.
+ * "Audio Cache" on the Directories tab of Preferences caches most
+    audio data for the duration of the session, including project data
+    and imported files. Enabling it could cause a crash when making
+    long recordings or opening large files or projects.
 
  * A few interface elements do not change language without restart.
 
- * Calculation of "disk space remains for recording (time)" is incorrect when
-    recording in 24 bit quality. You may record for 50% longer than the
-    indicated time.
+ * Calculation of "disk space remains for recording (time)" incorrect
+    when recording in 24 bit quality. You may record for 50% longer
+    than the indicated time.
 
- * Pressing Play (but not spacebar) in a second project when another is already
-    playing stops playback of the first project.
+ * Pressing Play (but not spacebar) in a second project when another is
+    already playing stops playback of the first project.
 
  * Projects created by Audacity 1.1.x may open incorrectly.
 
- * Metadata such as ID3 tags is not fully imported and exported for all supported
-    file formats. MP3 tags *are* correctly imported and exported to the current ID3
-    specification, but some players don't fully support this specification, so may not
-    see all the tags.
+ * Metadata such as ID3 tags is not fully imported and exported for
+    all supported file formats. MP3 tags *are* correctly imported and
+    exported to the current ID3 specification, but some players don't
+    fully support this specification, so may not see all the tags.
 
- * No warning given if File > Save or File > Save Project As... is carried out with
-    no tracks open.
+ * No warning given if File > Save or File > Save Project As... is
+    carried out with no tracks open.
 
- * Not all menu items correctly enabled when the preference: "Select all audio in
-    project, if none selected" is checked.
+ * Not all menu items correctly enabled when the preference: "Select
+    all audio in project, if none selected" is checked.
 
  * Beep on completing long process may not be audible on many systems.
 
- * Audacity can import and display MIDI files, but they cannot be played
-    or saved.
+ * Audacity can import and display MIDI files, but they cannot be
+    played or saved.
 
  * Windows only: Welcome Message: On some systems/browsers, links are
     not brought to top, and some screen readers that otherwise work
     well with Audacity cannot read its text.
 
  * Windows (reported on): There have been reports of clicks during
-    recording on some Windows XP systems using Audacity 1.3.4 and later,
-    where 1.2.6 had no problem. It is unclear if current releases will
-    have this issue or if it will occur on other operating systems.
-    Users can help us by sending any reports of this problem to:
+    recording on some Windows XP systems using Audacity 1.3.4 and
+    later, where 1.2.6 had no problem. It is unclear if current
+    releases will have this issue or if it will occur on other
+    operating systems. Users can help us by sending any reports of this
+    problem to:
       feedback@audacityteam.org
 
  * Windows only: Audacity is incompatible with some professional sound
@@ -206,34 +210,37 @@ this version.
     Audacity. More help at:
       http://audacityteam.org/forum/viewtopic.php?f=17&t=5064
 
- * Mac OS X only: Labels do not accept certain legal characters.
-
  * Mac OS X only: If using Audacity when the "Hear" audio plug-in is
     running (or has been since boot), there will be excessive memory
     usage which could cause a crash. This appears to be due to buggy
     memory allocation in "Hear".
 
  * Mac OS X only: Portable settings aren't picked up, and the default
-    settings (in the default location) are always used. See this page for
-    a workaround:
+    settings (in the default location) are always used. See this page
+    for a workaround:
       http://audacityteam.org/wiki/index.php?title=Portable_Audacity
+
+ * Mac OS X and Linux only: Labels do not accept certain legal
+    characters.
 
  * Linux only: Audacity now supports interfacing with Jack, however
     this has not been tested, and has a number of known reliability and
     useability issues. Patches to improve both will be welcomed.
 
- * Linux (reported on): The first file imported into a project no longer
-    changes the project rate to the file's rate, if that rate is absent from the
-    project rate list.
+ * Linux (reported on): The first file imported into a project no
+    longer changes the project rate to the file's rate, if that rate is
+    absent from the project rate list.
 
- * Linux (Debian-derived) only: Audacity configure script does not detect
-    libsoundtouch on the system and so Change Pitch and Change Tempo
-    effects are disabled. This is a debian bug (#476699), which can be
-    worked around by symlinking /usr/lib/pkgconfig/soundtouch-1.0.pc
-    to /usr/lib/pkgconfig/libSoundTouch.pc.
+ * Linux (Debian-derived) only: Audacity configure script does not
+    detect libsoundtouch on the system and so Change Pitch and Change
+    Tempo effects are disabled. This is a debian bug (#476699), which
+    can be worked around by symlinking
+    /usr/lib/pkgconfig/soundtouch-1.0.pc
+    to
+    /usr/lib/pkgconfig/libSoundTouch.pc
 
-Also note that the Windows installer will not replace 1.2.x installations, but will
-install alongside them.
+Also note the Windows installer will not replace 1.2.x installations,
+but will install alongside them.
 
 
 --------------------------------------------------------------------------------
@@ -404,6 +411,31 @@ or e-mail us at:
 --------------------------------------------------------------------------------
 
 6.  Previous Changes going back to version 1.1.0
+
+Changes in 1.3.6a4:
+
+Interface:
+        * New Preference: Default View Mode, to choose type of
+           waveform, spectrum or pitch view for new tracks
+        * Note Track: experimental support is now enabled by defining
+           USE_MIDI in config*, but does not build out-of-the-box
+           on Windows
+        * Bug fixes for linked audio and label tracks; now supports
+           label shifting when changing speed and generating tones
+
+Import / Export:
+        * Improvements/fixes for AAC exports including new M4A
+           filter for compatibility with iTunes; RealAudio export
+           temporarily removed
+        * Improved refresh of on-demand loading; fixed a phantom
+           on-demand progress bar when time-shifting clips
+
+Effects:
+        * Experimental support for LV2 plug-in architecture on Linux
+           and Mac, but operation may be buggy; no LV2 support yet on
+           Windows, because the required slv2 library currently does
+           not build
+
 
 Changes in 1.3.6a3:
 
