@@ -101,21 +101,22 @@ struct ExposedFormat
    const wxChar *extension;
    int maxchannels;
    bool canmetadata;
+   bool canutf8;
    const wxChar *description;
    CodecID codecid;
 };
 
 ExposedFormat fmts[] = 
 {
-   {FMT_PCMS16LEWAV, wxT("WAV"),       wxT("wav"),    255,  true,_("WAV Files (FFmpeg)"),                      CODEC_ID_PCM_S16LE},
-   {FMT_M4A,         wxT("M4A"),       wxT("m4a"),    48,   true,_("M4A (AAC) Files (FFmpeg)"),                CODEC_ID_AAC},
-   {FMT_AC3,         wxT("AC3"),       wxT("ac3"),    7,    true,_("AC3 Files (FFmpeg)"),                      CODEC_ID_AC3},
-   {FMT_GSMAIFF,     wxT("GSMAIFF"),   wxT("aiff"),   1,    true,_("GSM-AIFF Files (FFmpeg)"),                 CODEC_ID_GSM},
-   {FMT_GSMMSWAV,    wxT("GSMWAV"),    wxT("wav"),    1,    true,_("GSM-WAV (Microsoft) Files (FFmpeg)"),      CODEC_ID_GSM_MS},
-   {FMT_AMRNB,       wxT("AMRNB"),     wxT("amr"),    1,    true,_("AMR (narrow band) Files (FFmpeg)"),        CODEC_ID_AMR_NB},
-   {FMT_AMRWB,       wxT("AMRWB"),     wxT("amr"),    1,    true,_("AMR (wide band) Files (FFmpeg)"),          CODEC_ID_AMR_WB},
-   {FMT_WMA2,        wxT("WMA"),       wxT("wma"),    2,    true,_("WMA (version 2) Files (FFmpeg)"),          CODEC_ID_WMAV2},
-   {FMT_OTHER,       wxT("FFMPEG"),    wxT("ffmpeg"), 255,  true,_("Custom FFmpeg Export"),                    CODEC_ID_NONE}
+   {FMT_PCMS16LEWAV, wxT("WAV"),       wxT("wav"),    255,  true ,false,_("WAV Files (FFmpeg)"),                      CODEC_ID_PCM_S16LE},
+   {FMT_M4A,         wxT("M4A"),       wxT("m4a"),    48,   true ,true ,_("M4A (AAC) Files (FFmpeg)"),                CODEC_ID_AAC},
+   {FMT_AC3,         wxT("AC3"),       wxT("ac3"),    7,    false,false,_("AC3 Files (FFmpeg)"),                      CODEC_ID_AC3},
+   {FMT_GSMAIFF,     wxT("GSMAIFF"),   wxT("aiff"),   1,    true ,true ,_("GSM-AIFF Files (FFmpeg)"),                 CODEC_ID_GSM},
+   {FMT_GSMMSWAV,    wxT("GSMWAV"),    wxT("wav"),    1,    true ,true ,_("GSM-WAV (Microsoft) Files (FFmpeg)"),      CODEC_ID_GSM_MS},
+   {FMT_AMRNB,       wxT("AMRNB"),     wxT("amr"),    1,    true ,true ,_("AMR (narrow band) Files (FFmpeg)"),        CODEC_ID_AMR_NB},
+   {FMT_AMRWB,       wxT("AMRWB"),     wxT("amr"),    1,    true ,true ,_("AMR (wide band) Files (FFmpeg)"),          CODEC_ID_AMR_WB},
+   {FMT_WMA2,        wxT("WMA"),       wxT("wma"),    2,    true ,false,_("WMA (version 2) Files (FFmpeg)"),          CODEC_ID_WMAV2},
+   {FMT_OTHER,       wxT("FFMPEG"),    wxT("ffmpeg"), 255,  true ,true ,_("Custom FFmpeg Export"),                    CODEC_ID_NONE}
 };
 
 struct CompatibilityEntry
@@ -1450,8 +1451,8 @@ int ExportFFmpegOptions::FetchCompatibleCodecList(const wxChar *fmt, int id)
    }
    else if (found == 0)
    {
-      wxCharBuffer buf = str.mb_str();
-      AVOutputFormat *format = FFmpegLibsInst->guess_format(buf.data(),NULL,NULL);
+      wxCharBuffer buf = str.ToUTF8();
+      AVOutputFormat *format = FFmpegLibsInst->guess_format(buf,NULL,NULL);
       if (format != NULL)
       {
          AVCodec *codec = FFmpegLibsInst->avcodec_find_encoder(format->audio_codec);
@@ -1485,7 +1486,7 @@ int ExportFFmpegOptions::FetchCompatibleFormatList(CodecID id, wxString *selfmt)
          if ((selfmt != NULL) && (selfmt->Cmp(CompatibilityList[i].fmt) == 0)) index = mShownFormatNames.GetCount();
          FromList.Add(CompatibilityList[i].fmt);
          mShownFormatNames.Add(CompatibilityList[i].fmt);
-         AVOutputFormat *tofmt = FFmpegLibsInst->guess_format(wxString(CompatibilityList[i].fmt).mb_str().data(),NULL,NULL);
+         AVOutputFormat *tofmt = FFmpegLibsInst->guess_format(wxString(CompatibilityList[i].fmt).ToUTF8(),NULL,NULL);
          if (tofmt != NULL) mShownFormatLongNames.Add(wxString::Format(wxT("%s - %s"),CompatibilityList[i].fmt,wxString::FromUTF8(tofmt->long_name).c_str()));
       }
    }
@@ -1917,7 +1918,7 @@ void ExportFFmpegOptions::OnFormatList(wxCommandEvent& event)
    wxString *selcdclong = NULL;
    FindSelectedCodec(&selcdc, &selcdclong);
 
-   AVOutputFormat *fmt = FFmpegLibsInst->guess_format(selfmt->mb_str(),NULL,NULL);
+   AVOutputFormat *fmt = FFmpegLibsInst->guess_format(selfmt->ToUTF8(),NULL,NULL);
    if (fmt == NULL)
    {
       //This shouldn't really happen
@@ -1929,7 +1930,7 @@ void ExportFFmpegOptions::OnFormatList(wxCommandEvent& event)
 
    if (selcdc != NULL)
    {
-      AVCodec *cdc = FFmpegLibsInst->avcodec_find_encoder_by_name(selcdc->mb_str());
+      AVCodec *cdc = FFmpegLibsInst->avcodec_find_encoder_by_name(selcdc->ToUTF8());
       if (cdc != NULL)
       {
          selcdcid = cdc->id;
@@ -1956,7 +1957,7 @@ void ExportFFmpegOptions::OnFormatList(wxCommandEvent& event)
    int handled = -1;
    AVCodec *cdc = NULL;
    if (selcdc != NULL)
-      cdc = FFmpegLibsInst->avcodec_find_encoder_by_name(selcdc->mb_str());
+      cdc = FFmpegLibsInst->avcodec_find_encoder_by_name(selcdc->ToUTF8());
    for (int i = 0; apptable[i].control != 0; i++)
    {
       if (apptable[i].control != handled)
@@ -1994,7 +1995,7 @@ void ExportFFmpegOptions::OnCodecList(wxCommandEvent& event)
    wxString *selfmtlong = NULL;
    FindSelectedFormat(&selfmt, &selfmtlong);
 
-   AVCodec *cdc = FFmpegLibsInst->avcodec_find_encoder_by_name(selcdc->mb_str());
+   AVCodec *cdc = FFmpegLibsInst->avcodec_find_encoder_by_name(selcdc->ToUTF8());
    if (cdc == NULL)
    {
       //This shouldn't really happen
@@ -2005,7 +2006,7 @@ void ExportFFmpegOptions::OnCodecList(wxCommandEvent& event)
 
    if (selfmt != NULL)
    {
-      AVOutputFormat *fmt = FFmpegLibsInst->guess_format(selfmt->mb_str(),NULL,NULL);
+      AVOutputFormat *fmt = FFmpegLibsInst->guess_format(selfmt->ToUTF8(),NULL,NULL);
       if (fmt == NULL)
       {
          selfmt = NULL;
@@ -2103,6 +2104,7 @@ private:
    int                   mBitRate;
    int                   mSampleRate;
    int                   mChannels;
+   bool                  mSupportsUTF8;
 };
 
 ExportFFmpeg::ExportFFmpeg()
@@ -2145,6 +2147,7 @@ ExportFFmpeg::ExportFFmpeg()
    mEncAudioEncodedBufSiz = 4*MAX_AUDIO_PACKET_SIZE;
    mEncAudioFifoOutBuf = NULL;		// buffer to read _out_ of the FIFO into
    mSampleRate = 0;
+   mSupportsUTF8 = true;
 }
 
 void ExportFFmpeg::Destroy()
@@ -2539,7 +2542,11 @@ bool ExportFFmpeg::Export(AudacityProject *project,
 
    if (metadata == NULL) metadata = project->GetTags();
 
-   AddTags(metadata);
+   if (fmts[mSubFormat].canmetadata)
+   {
+      this->mSupportsUTF8 = fmts[mSubFormat].canutf8;
+      AddTags(metadata);
+   }
 
    int pcmBufferSize = 1024;
    int numWaveTracks;
@@ -2580,16 +2587,26 @@ bool ExportFFmpeg::Export(AudacityProject *project,
    return !cancelling;
 }
 
-void AddStringTag(char field[], int size, wxString value)
+void AddStringTagUTF8(char field[], int size, wxString value)
 {
       memset(field,0,size);
-      const wxCharBuffer cstr = value.ToUTF8().data();
-      memcpy(field,cstr.data(),strlen(cstr.data()) > size -1 ? size -1 : strlen(cstr.data()));
+      memcpy(field,value.ToUTF8(),strlen(value.ToUTF8()) > size -1 ? size -1 : strlen(value.ToUTF8()));
+}
+
+void AddStringTagANSI(char field[], int size, wxString value)
+{
+      memset(field,0,size);
+      memcpy(field,value.mb_str(),strlen(value.mb_str()) > size -1 ? size -1 : strlen(value.mb_str()));
 }
 
 bool ExportFFmpeg::AddTags(Tags *tags)
 {
    if (tags == NULL) return false;
+   void (*AddStringTag)(char [], int, wxString);
+   if (mSupportsUTF8)
+      AddStringTag = AddStringTagUTF8;
+   else
+      AddStringTag = AddStringTagANSI;
    AddStringTag(mEncFormatCtx->author, sizeof(mEncFormatCtx->author), tags->GetTag(TAG_ARTIST));
    AddStringTag(mEncFormatCtx->album, sizeof(mEncFormatCtx->album), tags->GetTag(TAG_ALBUM));
    AddStringTag(mEncFormatCtx->comment, sizeof(mEncFormatCtx->comment), tags->GetTag(TAG_COMMENTS));
