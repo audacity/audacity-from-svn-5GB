@@ -691,14 +691,14 @@ void FFmpegImportFileHandle::WriteMetadata(AVFormatContext *avf,Tags *tags)
    tags->Clear();
 
 
-   tags->SetTag(TAG_TITLE,wxString((const wxChar*)avf->title));
-   tags->SetTag(TAG_ARTIST,wxString((const wxChar*)avf->author));
+   tags->SetTag(TAG_TITLE,wxString::FromUTF8(avf->title));
+   tags->SetTag(TAG_ARTIST,wxString::FromUTF8(avf->author));
    //tags->SetTag(TAG_COPYRIGHT,avf->copyright);
-   tags->SetTag(TAG_COMMENTS,wxString((const wxChar*)avf->comment));
-   tags->SetTag(TAG_ALBUM,wxString((const wxChar*)avf->album));
+   tags->SetTag(TAG_COMMENTS,wxString::FromUTF8(avf->comment));
+   tags->SetTag(TAG_ALBUM,wxString::FromUTF8(avf->album));
    tags->SetTag(TAG_YEAR,avf->year);
    tags->SetTag(TAG_TRACK,avf->track);
-   tags->SetTag(TAG_GENRE,wxString((const wxChar*)avf->genre));
+   tags->SetTag(TAG_GENRE,wxString::FromUTF8(avf->genre));
 
 }
 
