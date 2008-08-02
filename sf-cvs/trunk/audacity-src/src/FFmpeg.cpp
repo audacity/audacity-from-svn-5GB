@@ -15,6 +15,10 @@ License: GPL v2.  See License.txt.
 *//*******************************************************************/
 
 
+
+#include "Audacity.h"	// for config*.h
+#include "FFmpeg.h"
+
 #ifdef _DEBUG
    #ifdef _MSC_VER
       #undef THIS_FILE
@@ -23,8 +27,6 @@ License: GPL v2.  See License.txt.
    #endif
 #endif
 
-#include "Audacity.h"	// for config*.h
-#include "FFmpeg.h"
 
 #if !defined(USE_FFMPEG)
 wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
@@ -84,8 +86,6 @@ wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
    return versionString;
 }
 
-
-
 void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
 {
    int av_log_level = AV_LOG_WARNING;
@@ -99,8 +99,10 @@ void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
    }
 
    wxString frm(fmt,wxConvLibc);
+#if defined(wxMSW)
+   frm.Replace(wxT("%t"),wxT("%i"),true); //TODO: on Windows vprintf won't handle %t, and probably some others. Investigate.
+#endif
    printstring.Append(wxString::FormatV(frm,vl));
-
    wxString cpt;
    switch (level)
    {
