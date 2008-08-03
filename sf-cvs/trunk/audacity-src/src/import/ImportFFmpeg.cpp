@@ -310,13 +310,6 @@ bool FFmpegImportFileHandle::Init()
       return false;
    }
 
-   if (mFormatContext->start_time != AV_NOPTS_VALUE)
-   {
-      //TODO: handle this situation (generate <start_time> ms of slience?)
-      wxLogMessage(wxT("start_time = %d, that would be %d milliseconds."),mFormatContext->start_time,(mFormatContext->start_time/AV_TIME_BASE*1000));
-      wxLogMessage(wxT("start_time support is not implemented in FFmpeg import plugin. Patches are welcome."));
-   }
-
    InitCodecs();
    return true;
 }
@@ -443,6 +436,34 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
          }
       }
    }
+
+   int64_t delay = 0;
+   if (mFormatContext->start_time != AV_NOPTS_VALUE)
+   {
+      delay = mFormatContext->start_time;
+      wxLogMessage(wxT("Container start_time = %d, that would be %d milliseconds."),mFormatContext->start_time,double(mFormatContext->start_time)/AV_TIME_BASE*1000);
+      //wxLogMessage(wxT("start_time support is not implemented in FFmpeg import plugin. Patches are welcome."));
+   }
+
+   for (int s = 0; s < mNumStreams; s++)
+   {
+      int64_t stream_delay = 0;
+      if (mScs[s]->m_stream->start_time != AV_NOPTS_VALUE)
+      {
+         stream_delay = mScs[s]->m_stream->start_time;
+         wxLogMessage(wxT("Stream %d start_time = %d, that would be %f milliseconds."), s, mScs[s]->m_stream->start_time, double(mScs[s]->m_stream->start_time)/AV_TIME_BASE*1000);         
+      }
+      if (delay != 0 || stream_delay != 0)
+      {
+         for (int c = 0; c < mScs[s]->m_stream->codec->channels; c++)
+         {
+            WaveTrack *t = mChannels[s][c];
+            double len = double(delay+stream_delay)/AV_TIME_BASE;
+            t->InsertSilence(0,double(delay+stream_delay)/AV_TIME_BASE);
+         }
+      }
+   }
+
 
    streamContext *sc = NULL;
    int res = 0;
