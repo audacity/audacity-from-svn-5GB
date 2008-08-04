@@ -2825,22 +2825,25 @@ void AudacityProject::OnPaste()
    Track *f = NULL;
    
    bool pastedSomething = false;
+   bool trackTypeMismatch = false;
+   double srcLength = c->GetEndTime();
 
    while (n && c) {
       if (n->GetSelected()) {
          // When trying to copy from stereo to mono track, show error and exit
          // TODO: Automatically offer user to mix down to mono (unfortunately
          //       this is not easy to implement
+         if (c->GetKind() != n->GetKind()){
+            wxMessageBox(
+               _("Pasting from one type of track into another is not allowed."),
+               _("Error"), wxICON_ERROR, this);
+            trackTypeMismatch = true;
+            break;
+         }
          if (c->GetLinked() && !n->GetLinked())
          {
             wxMessageBox(
                _("Copying stereo audio into a mono track is not allowed."),
-               _("Error"), wxICON_ERROR, this);
-            break;
-         }
-         if (c->GetKind() != n->GetKind()){
-            wxMessageBox(
-               _("Pasting from one type of track into another is not allowed."),
                _("Error"), wxICON_ERROR, this);
             break;
          }
@@ -2893,6 +2896,28 @@ void AudacityProject::OnPaste()
       n = iter.Next();
    }
    
+   if ( IsSticky() && ( (n && !c) || trackTypeMismatch ) ){
+      WaveTrack *tmp;
+      c = clipIter.First();
+      if (c->GetKind() != Track::Wave){
+         while(c && c->GetKind() != Track::Wave)
+            c = clipIter.Next();
+      }
+      
+      while (n){
+         if (n->GetSelected() && n->GetKind()==Track::Wave){
+            if (c && c->GetKind() == Track::Wave){
+               tmp = (WaveTrack*)c;
+            }else{
+               tmp = mTrackFactory->NewWaveTrack( ((WaveTrack*)n)->GetSampleFormat(), ((WaveTrack*)n)->GetRate());
+               tmp->InsertSilence(0.0, srcLength);
+               tmp->Flush();
+            }
+            ((WaveTrack *)n)->HandlePaste(t0, tmp);
+         }
+         n = iter.Next();
+      }
+   }
    // TODO: What if we clicked past the end of the track?
 
    if (pastedSomething)
