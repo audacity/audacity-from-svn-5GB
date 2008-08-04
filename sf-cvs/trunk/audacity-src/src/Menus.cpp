@@ -2838,6 +2838,9 @@ void AudacityProject::OnPaste()
                _("Pasting from one type of track into another is not allowed."),
                _("Error"), wxICON_ERROR, this);
             trackTypeMismatch = true;
+            //We /may/ have pasted something previous to this track,
+            //so we'll create an undo state so we can immediately undo.
+            pastedSomething = true;
             break;
          }
          if (c->GetLinked() && !n->GetLinked())
@@ -2896,7 +2899,7 @@ void AudacityProject::OnPaste()
       n = iter.Next();
    }
    
-   if ( IsSticky() && ( (n && !c) || trackTypeMismatch ) ){
+   if ( IsSticky() && (n && !c) ){
       WaveTrack *tmp;
       c = clipIter.First();
       if (c->GetKind() != Track::Wave){
@@ -2918,6 +2921,7 @@ void AudacityProject::OnPaste()
          n = iter.Next();
       }
    }
+
    // TODO: What if we clicked past the end of the track?
 
    if (pastedSomething)
@@ -2931,6 +2935,11 @@ void AudacityProject::OnPaste()
 
       if (f)
          mTrackPanel->EnsureVisible(f);
+   }
+   
+   if (trackTypeMismatch){
+      OnUndo();
+      mUndoManager.RemoveStateAt(mUndoManager.GetCurrentState());
    }
 }
 
