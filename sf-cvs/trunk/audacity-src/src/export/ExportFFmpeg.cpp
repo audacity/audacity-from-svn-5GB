@@ -2346,6 +2346,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       return false;
    }
 
+   if (mSampleRate == 0) return false;
    mEncAudioCodecCtx->sample_rate = mSampleRate;
    mEncAudioCodecCtx->channels = mChannels;
    mEncAudioCodecCtx->time_base.num = 0;
