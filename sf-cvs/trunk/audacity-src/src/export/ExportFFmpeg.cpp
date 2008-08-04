@@ -405,6 +405,7 @@ CompatibilityEntry CompatibilityList[] =
 //----------------------------------------------------------------------------
 
 static int iAC3BitRates[] = { 32000, 40000, 48000, 56000, 64000, 80000, 96000, 112000, 128000, 160000, 192000, 224000, 256000, 320000, 384000, 448000, 512000, 576000, 640000 };
+static int iAC3SampleRates[] = { 32000, 44100, 48000, 0};
 
 class ExportFFmpegAC3Options : public wxDialog
 {
@@ -584,6 +585,8 @@ void ExportFFmpegWAVOptions::OnOK(wxCommandEvent& event)
 
 static int iAACProfileValues[] = { FF_PROFILE_AAC_LOW, FF_PROFILE_AAC_MAIN, /*FF_PROFILE_AAC_SSR,*/ FF_PROFILE_AAC_LTP };
 static const wxChar *iAACProfileNames[] = { _("Low Complexity"), _("Main profile"), /*_("SSR"),*/ _("LTP") }; //SSR is not supported
+static const int iAACSampleRates[] = { 7350, 8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 38000, 64000, 88200, 0 };
+
 
 class ExportFFmpegAACOptions : public wxDialog
 {
@@ -2091,6 +2094,8 @@ public:
    bool EncodeAudioFrame(int16_t *pFrame, int frameSize);
    bool Finalize();
    bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
+   bool CheckSampleRate(int rate, int lowrate, int highrate, const int *sampRates);
+   int  AskResample(int bitrate, int rate, int lowrate, int highrate, const int *sampRates);
    bool Export(AudacityProject *project,
       int channels,
       wxString fName,
@@ -2126,33 +2131,42 @@ private:
 ExportFFmpeg::ExportFFmpeg()
 :  ExportPlugin()
 {
+
+   PickFFmpegLibs();
+   FFmpegLibsInst->LoadLibs(NULL,false);
    int newfmt;
 
    for (newfmt = 0; newfmt < FMT_LAST; newfmt++)
    {
-      AddFormat();
-      SetFormat(fmts[newfmt].name,newfmt);
-      AddExtension(fmts[newfmt].extension,newfmt);
-      switch(newfmt)
+      //If codec is not compiled in, do not add codec
+      if (!FFmpegLibsInst->ValidLibsLoaded() ||
+         ( fmts[newfmt].codecid != CODEC_ID_NONE &&
+         FFmpegLibsInst->avcodec_find_encoder(fmts[newfmt].codecid) != NULL ||
+         fmts[newfmt].codecid == CODEC_ID_NONE )
+         )
       {
-      case FMT_M4A:
-         AddExtension(wxString(wxT("mov")),newfmt);
-         AddExtension(wxString(wxT("3gp")),newfmt);
-         AddExtension(wxString(wxT("mp4")),newfmt);
-         break;
-      case FMT_WMA2:
-         AddExtension(wxString(wxT("asf")),newfmt);
-         AddExtension(wxString(wxT("wmv")),newfmt);
-         break;
-      default:
-         break;
+         int fmtindex = AddFormat() - 1;
+         SetFormat(fmts[newfmt].name,fmtindex);
+         AddExtension(fmts[newfmt].extension,fmtindex);
+         switch(newfmt)
+         {
+         case FMT_M4A:
+            AddExtension(wxString(wxT("mov")),fmtindex);
+            AddExtension(wxString(wxT("3gp")),fmtindex);
+            AddExtension(wxString(wxT("mp4")),fmtindex);
+            break;
+         case FMT_WMA2:
+            AddExtension(wxString(wxT("asf")),fmtindex);
+            AddExtension(wxString(wxT("wmv")),fmtindex);
+            break;
+         default:
+            break;
+         }
+         SetMaxChannels(fmts[newfmt].maxchannels,fmtindex);
+         SetCanMetaData(fmts[newfmt].canmetadata,fmtindex);
+         SetDescription(fmts[newfmt].description,fmtindex);
       }
-      SetMaxChannels(fmts[newfmt].maxchannels,newfmt);
-      SetCanMetaData(fmts[newfmt].canmetadata,newfmt);
-      SetDescription(fmts[newfmt].description,newfmt);
    }
-
-   PickFFmpegLibs();
 
    mEncFormatCtx = NULL;			// libavformat's context for our output file
    mEncFormatDesc = NULL;			// describes our output file to libavformat
@@ -2248,6 +2262,14 @@ bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
    return true;
 }
 
+bool ExportFFmpeg::CheckSampleRate(int rate, int lowrate, int highrate, const int *sampRates)
+{
+   if (rate < lowrate || rate > highrate) return false;
+   for (int i = 0; sampRates[i] > 0; i++)
+      if (rate == sampRates[i]) return true;
+   return false;
+}
+
 bool ExportFFmpeg::InitCodecs(AudacityProject *project)
 {
    AVCodec *	codec = NULL;
@@ -2271,9 +2293,13 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       mEncAudioCodecCtx->profile = FF_PROFILE_AAC_LOW;
       mEncAudioCodecCtx->cutoff = mSampleRate/2;
       mEncAudioCodecCtx->global_quality = gPrefs->Read(wxT("/FileFormats/AACQuality"),-1);
+      if (!CheckSampleRate(mSampleRate,iAACSampleRates[0],iAACSampleRates[15],&iAACSampleRates[0]))
+         mSampleRate = AskResample(mEncAudioCodecCtx->bit_rate,mSampleRate,iAACSampleRates[0],iAACSampleRates[15],&iAACSampleRates[0]);
       break;
    case FMT_AC3:
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AC3BitRate"), 192000);
+      if (!CheckSampleRate(mSampleRate,iAC3SampleRates[0],iAC3SampleRates[2],&iAC3SampleRates[0]))
+         mSampleRate = AskResample(mEncAudioCodecCtx->bit_rate,mSampleRate,iAC3SampleRates[0],iAC3SampleRates[2],&iAC3SampleRates[0]);
       break;
    case FMT_GSMAIFF:
    case FMT_GSMMSWAV:
@@ -2290,6 +2316,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       break;
    case FMT_WMA2:
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/WMABitRate"), 198000);
+      //Can't find any samplerate restrictions for WMA.
       break;
    case FMT_OTHER:
       memcpy(mEncAudioStream->language,gPrefs->Read(wxT("/FileFormats/FFmpegLanguage"),wxT("")).c_str(),4);
@@ -2633,6 +2660,84 @@ bool ExportFFmpeg::AddTags(Tags *tags)
 
    return true;
 }
+
+//----------------------------------------------------------------------------
+// AskResample dialog
+//----------------------------------------------------------------------------
+
+int ExportFFmpeg::AskResample(int bitrate, int rate, int lowrate, int highrate, const int *sampRates)
+{
+   wxDialog d(NULL, wxID_ANY, wxString(_("Invalid sample rate")));
+   wxChoice *choice;
+   ShuttleGui S(&d, eIsCreating);
+   wxString text;
+
+   S.StartVerticalLay();
+   {
+      S.SetBorder(10);
+      S.StartStatic(_("Resample"));
+      {
+         S.StartHorizontalLay(wxALIGN_CENTER, false);
+         {
+            if (bitrate == 0) {
+               text.Printf(_("The project sample rate (%d) is not supported by the current output\nfile format.  "), rate);
+            }
+            else {
+               text.Printf(_("The project sample rate (%d) and bit rate (%d kbps) combination is not\nsupported by the current output file format.  "), rate, bitrate/1024);
+            }
+
+            text += _("You may resample to one of the rates below.");
+            S.AddTitle(text);
+         }
+         S.EndHorizontalLay();
+
+         wxArrayString choices;
+         wxString selected = wxT("");
+         for (int i = 0; sampRates[i] > 0; i++)
+         {
+            int label = sampRates[i];
+            if (label >= lowrate && label <= highrate)
+            {
+               wxString name = wxString::Format(wxT("%d"),label);
+               choices.Add(name);
+               if (label <= rate)
+               {
+                  selected = name;
+               }
+            }
+         }
+
+         if (selected.IsEmpty())
+         {
+            selected = choices[0];
+         }
+
+         S.StartHorizontalLay(wxALIGN_CENTER, false);
+         {
+            choice = S.AddChoice(_("Sample Rates"),
+                                 selected,
+                                 &choices);
+         }
+         S.EndHorizontalLay();
+      }
+      S.EndStatic();
+
+      S.AddStandardButtons();
+   }
+   S.EndVerticalLay();
+
+   d.Layout();
+   d.Fit();
+   d.SetMinSize(d.GetSize());
+   d.Center();
+
+   if (d.ShowModal() == wxID_CANCEL) {
+      return 0;
+   }
+
+   return wxAtoi(choice->GetStringSelection());
+}
+
 
 bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
 {
