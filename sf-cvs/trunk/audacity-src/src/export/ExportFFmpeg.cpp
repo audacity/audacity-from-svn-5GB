@@ -1731,7 +1731,7 @@ void ExportFFmpegOptions::OnLoadPreset(wxCommandEvent& event)
    }
    if (!found)
    {
-      wxMessageBox(wxString::Format(wxT("Preset '%s' does not exists"),presetname));
+      wxMessageBox(wxString::Format(wxT("Preset '%s' does not exists"),presetname.c_str()));
       return;
    }
 
