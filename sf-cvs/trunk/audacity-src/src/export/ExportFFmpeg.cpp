@@ -623,19 +623,11 @@ ExportFFmpegAACOptions::ExportFFmpegAACOptions(wxWindow *parent)
 /// 
 void ExportFFmpegAACOptions::PopulateOrExchange(ShuttleGui & S)
 {
-   S.StartHorizontalLay(wxEXPAND, 0);
+   S.StartStatic(_("AAC Export Setup"), 1);
    {
-      S.StartStatic(_("AAC Export Setup"), 0);
-      {
-         S.StartTwoColumn();
-         {
-            S.TieSlider(wxT("Quality:"),wxT("/FileFormats/AACQuality"),250,500,-1);
-         }
-         S.EndTwoColumn();
-      }
-      S.EndStatic();
+      S.TieSlider(wxT("Quality:"),wxT("/FileFormats/AACQuality"),250,500,-1);
    }
-   S.EndHorizontalLay();
+   S.EndStatic();
 
    S.AddStandardButtons();
 
@@ -1066,7 +1058,9 @@ public:
    void PopulateOrExchange(ShuttleGui & S);
    void OnOK(wxCommandEvent& event);
    void OnFormatList(wxCommandEvent& event);
+   void DoOnFormatList();
    void OnCodecList(wxCommandEvent& event);
+   void DoOnCodecList();
    void OnAllFormats(wxCommandEvent& event);
    void OnAllCodecs(wxCommandEvent& event);
    void OnSavePreset(wxCommandEvent& event);
@@ -1198,10 +1192,10 @@ ExportFFmpegOptions::ExportFFmpegOptions(wxWindow *parent)
    PopulateOrExchange(S);
 
    mFormatList->Select(mFormatList->FindString(gPrefs->Read(wxT("/FileFormats/FFmpegFormat"))));
-   OnFormatList(wxCommandEvent());
+   DoOnFormatList();
    AVCodec *codec = FFmpegLibsInst->avcodec_find_encoder((CodecID)gPrefs->Read(wxT("/FileFormats/FFmpegCodec"),(long)CODEC_ID_NONE));
    if (codec != NULL) mCodecList->Select(mCodecList->FindString(wxString::FromUTF8(codec->name)));
-   OnCodecList(wxCommandEvent());
+   DoOnCodecList();
 
 }
 
@@ -1921,9 +1915,7 @@ void ExportFFmpegOptions::OnAllCodecs(wxCommandEvent& event)
    mCodecList->Append(mCodecNames);
 }
 
-///
-///
-void ExportFFmpegOptions::OnFormatList(wxCommandEvent& event)
+void ExportFFmpegOptions::DoOnFormatList()
 {
    wxString *selfmt = NULL;
    wxString *selfmtlong = NULL;
@@ -1998,9 +1990,7 @@ void ExportFFmpegOptions::OnFormatList(wxCommandEvent& event)
    return;
 }
 
-///
-///
-void ExportFFmpegOptions::OnCodecList(wxCommandEvent& event)
+void ExportFFmpegOptions::DoOnCodecList()
 {
    wxString *selcdc = NULL;
    wxString *selcdclong = NULL;
@@ -2058,6 +2048,20 @@ void ExportFFmpegOptions::OnCodecList(wxCommandEvent& event)
    }
 
    return;
+}
+
+///
+///
+void ExportFFmpegOptions::OnFormatList(wxCommandEvent& event)
+{
+   DoOnFormatList();
+}
+
+///
+///
+void ExportFFmpegOptions::OnCodecList(wxCommandEvent& event)
+{
+   DoOnCodecList();
 }
 
 ///
@@ -2293,8 +2297,8 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       mEncAudioCodecCtx->profile = FF_PROFILE_AAC_LOW;
       mEncAudioCodecCtx->cutoff = mSampleRate/2;
       mEncAudioCodecCtx->global_quality = gPrefs->Read(wxT("/FileFormats/AACQuality"),-1);
-      if (!CheckSampleRate(mSampleRate,iAACSampleRates[0],iAACSampleRates[15],&iAACSampleRates[0]))
-         mSampleRate = AskResample(mEncAudioCodecCtx->bit_rate,mSampleRate,iAACSampleRates[0],iAACSampleRates[15],&iAACSampleRates[0]);
+      if (!CheckSampleRate(mSampleRate,iAACSampleRates[0],iAACSampleRates[11],&iAACSampleRates[0]))
+         mSampleRate = AskResample(mEncAudioCodecCtx->bit_rate,mSampleRate,iAACSampleRates[0],iAACSampleRates[11],&iAACSampleRates[0]);
       break;
    case FMT_AC3:
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AC3BitRate"), 192000);
