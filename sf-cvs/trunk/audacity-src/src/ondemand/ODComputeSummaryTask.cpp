@@ -139,7 +139,7 @@ void ODComputeSummaryTask::DemandTrackUpdate(WaveTrack* track, double seconds)
    {
       if(track == mWaveTracks[i])
       {  
-         sampleCount newDemandSample = (sampleCount)seconds * track->GetRate();
+         sampleCount newDemandSample = (sampleCount)(seconds * track->GetRate());
          demandSampleChanged = newDemandSample != GetDemandSample();
          SetDemandSample(newDemandSample);
          break;
@@ -194,12 +194,12 @@ void ODComputeSummaryTask::Update()
                {
                   blocks->Item(i)->f->Ref();
                   ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->SetStart(blocks->Item(i)->start);
-                  ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->SetClipOffset(clip->GetStartTime()*clip->GetRate());
+                  ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->SetClipOffset((sampleCount)(clip->GetStartTime()*clip->GetRate()));
                   
                   //these will always be linear within a sequence-lets take advantage of this by keeping a cursor.
                   while(insertCursor<tempBlocks.size()&& 
-                     tempBlocks[insertCursor]->GetStart()+tempBlocks[insertCursor]->GetClipOffset() < 
-                        ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->GetStart()+((ODPCMAliasBlockFile*)blocks->Item(i)->f)->GetClipOffset())
+                     (sampleCount)(tempBlocks[insertCursor]->GetStart()+tempBlocks[insertCursor]->GetClipOffset()) < 
+                        (sampleCount)(((ODPCMAliasBlockFile*)blocks->Item(i)->f)->GetStart()+((ODPCMAliasBlockFile*)blocks->Item(i)->f)->GetClipOffset()))
                      insertCursor++;
                   
                   
