@@ -179,6 +179,12 @@ bool RemoveDependencies(AudacityProject *project,
 
          // Update the progress bar
          completedBytes += SAMPLE_SIZE(format) * len;
+         
+         //TODO: add a cancel checker to break if the user clicks cancel.
+         /*
+         cancelled = !mProgress->Update(i, fileTotalFrames);
+         if (cancelled)
+            break;*/
          progress->Update(completedBytes, totalBytesToProcess);
       }
    }

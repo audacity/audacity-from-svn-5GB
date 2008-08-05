@@ -505,11 +505,16 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
 int ODPCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
                                 sampleCount start, sampleCount len)
 {
+
+   mReadDataMutex.Lock();
+
    SF_INFO info;
 
    if(!mAliasedFileName.IsOk()){ // intentionally silenced 
       memset(data,0,SAMPLE_SIZE(format)*len);
-      return len;
+      mReadDataMutex.Unlock();
+
+         return len;
    }
 
    memset(&info, 0, sizeof(info));
@@ -522,6 +527,7 @@ int ODPCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
 
       mSilentAliasLog=TRUE;
 
+      mReadDataMutex.Unlock();
       return len;
    }
 
@@ -557,7 +563,8 @@ int ODPCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
    DeleteSamples(buffer);
 
    sf_close(sf);
-
+   
+   mReadDataMutex.Unlock();
    return framesRead;
 }
 
