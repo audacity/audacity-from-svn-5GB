@@ -2137,39 +2137,31 @@ ExportFFmpeg::ExportFFmpeg()
 {
 
    PickFFmpegLibs();
-   FFmpegLibsInst->LoadLibs(NULL,false);
    int newfmt;
 
    for (newfmt = 0; newfmt < FMT_LAST; newfmt++)
    {
-      //If codec is not compiled in, do not add codec
-      if (!FFmpegLibsInst->ValidLibsLoaded() ||
-         ( fmts[newfmt].codecid != CODEC_ID_NONE &&
-         FFmpegLibsInst->avcodec_find_encoder(fmts[newfmt].codecid) != NULL ||
-         fmts[newfmt].codecid == CODEC_ID_NONE )
-         )
+      int fmtindex = AddFormat() - 1;
+      SetFormat(fmts[newfmt].name,fmtindex);
+      AddExtension(fmts[newfmt].extension,fmtindex);
+      switch(newfmt)
       {
-         int fmtindex = AddFormat() - 1;
-         SetFormat(fmts[newfmt].name,fmtindex);
-         AddExtension(fmts[newfmt].extension,fmtindex);
-         switch(newfmt)
-         {
-         case FMT_M4A:
-            AddExtension(wxString(wxT("mov")),fmtindex);
-            AddExtension(wxString(wxT("3gp")),fmtindex);
-            AddExtension(wxString(wxT("mp4")),fmtindex);
-            break;
-         case FMT_WMA2:
-            AddExtension(wxString(wxT("asf")),fmtindex);
-            AddExtension(wxString(wxT("wmv")),fmtindex);
-            break;
-         default:
-            break;
-         }
-         SetMaxChannels(fmts[newfmt].maxchannels,fmtindex);
-         SetCanMetaData(fmts[newfmt].canmetadata,fmtindex);
-         SetDescription(fmts[newfmt].description,fmtindex);
+      case FMT_M4A:
+         AddExtension(wxString(wxT("mov")),fmtindex);
+         AddExtension(wxString(wxT("3gp")),fmtindex);
+         AddExtension(wxString(wxT("mp4")),fmtindex);
+         break;
+      case FMT_WMA2:
+         AddExtension(wxString(wxT("asf")),fmtindex);
+         AddExtension(wxString(wxT("wmv")),fmtindex);
+         break;
+      default:
+         break;
       }
+
+     SetMaxChannels(fmts[newfmt].maxchannels,fmtindex);
+     SetCanMetaData(fmts[newfmt].canmetadata,fmtindex);
+     SetDescription(fmts[newfmt].description,fmtindex);
    }
 
    mEncFormatCtx = NULL;			// libavformat's context for our output file
