@@ -327,13 +327,6 @@ bool FFmpegImportFileHandle::InitCodecs()
          sc->m_stream = mFormatContext->streams[i];
          sc->m_codecCtx = sc->m_stream->codec;
 
-         if (sc->m_stream->start_time != AV_NOPTS_VALUE)
-         {
-            //TODO: same as before
-            wxLogMessage(wxT("start_time = %d, that would be %d milliseconds."),sc->m_stream->start_time,(sc->m_stream->start_time/AV_TIME_BASE*1000));
-            wxLogMessage(wxT("start_time support is not implemented in FFmpeg import plugin. Patches are welcome."));
-         }
-
          AVCodec *codec = FFmpegLibsInst->avcodec_find_decoder(sc->m_codecCtx->codec_id);
          if (codec == NULL)
          {
