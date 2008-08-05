@@ -121,6 +121,9 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
 
    ODLock mWriteSummaryMutex;
 
+   //lock the read data - libsndfile can't handle two reads at once?
+   ODLock mReadDataMutex;
+
    ODLock    mSummaryAvailableMutex;
    bool mSummaryAvailable;
    bool mSummaryBeingComputed;
