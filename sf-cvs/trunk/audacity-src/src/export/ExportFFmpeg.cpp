@@ -1310,8 +1310,8 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
             mBitrateSpin = S.Id(FEBitrateID).TieSpinCtrl(_("Bit Rate:"), wxT("/FileFormats/FFmpegBitRate"), 0,1000000,0);
             mBitrateSpin->SetToolTip(_("Bit Rate (bits/second) - influences the resulting file size and quality\nSome codecs may only accept specific values (128k, 192k, 256k etc)\n0 - automatic\nRecommended - 192000"));
 
-            mQualitySpin = S.Id(FEQualityID).TieSpinCtrl(_("Quality:"), wxT("/FileFormats/FFmpegQuality"), 0,500,0);
-            mQualitySpin->SetToolTip(_("Overral quality, used differently by different codecs\nRequired for vorbis\n0 - automatic"));
+            mQualitySpin = S.Id(FEQualityID).TieSpinCtrl(_("Quality:"), wxT("/FileFormats/FFmpegQuality"), 0,500,-1);
+            mQualitySpin->SetToolTip(_("Overral quality, used differently by different codecs\nRequired for vorbis\n0 - automatic\n-1 - off (use bitrate instead)"));
 
             mSampleRateSpin = S.Id(FESampleRateID).TieSpinCtrl(_("Sample Rate:"), wxT("/FileFormats/FFmpegSampleRate"), 0,200000,0);
             mSampleRateSpin->SetToolTip(_("Sample rate (Hz)\n0 - don't change sample rate"));
@@ -2278,7 +2278,8 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    mEncAudioCodecCtx->codec_id = fmts[mSubFormat].codecid;
    mEncAudioCodecCtx->codec_type = CODEC_TYPE_AUDIO;
    mEncAudioCodecCtx->codec_tag = FFmpegLibsInst->av_codec_get_tag(mEncFormatCtx->oformat->codec_tag,mEncAudioCodecCtx->codec_id);
-   mSampleRate = project->GetRate();
+   mSampleRate = (int)project->GetRate();
+   mEncAudioCodecCtx->global_quality = -1; //quality mode is off by default;
    switch (mSubFormat)
    {
    case FMT_PCMS16LEWAV:
@@ -2320,7 +2321,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       if (mEncAudioCodecCtx->sample_rate != 0) mSampleRate = mEncAudioCodecCtx->sample_rate;
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/FFmpegBitRate"), (long)0);
       memcpy(&mEncAudioCodecCtx->codec_tag,gPrefs->Read(wxT("/FileFormats/FFmpegTag"),wxT("")).c_str(),4);
-      mEncAudioCodecCtx->global_quality = gPrefs->Read(wxT("/FileFormats/FFmpegQuality"),(long)0);
+      mEncAudioCodecCtx->global_quality = gPrefs->Read(wxT("/FileFormats/FFmpegQuality"),(long)-1);
       mEncAudioCodecCtx->cutoff = gPrefs->Read(wxT("/FileFormats/FFmpegCutOff"),(long)0);
       mEncAudioCodecCtx->use_lpc = gPrefs->Read(wxT("/FileFormats/FFmpegUseLPC"),true);
       mEncAudioCodecCtx->flags2 = 0;
@@ -2343,6 +2344,11 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    }
 
    if (mSampleRate == 0) return false;
+   if (mEncAudioCodecCtx->global_quality >= 0)
+   {
+      mEncAudioCodecCtx->bit_rate = 0;
+      mEncAudioCodecCtx->flags |= CODEC_FLAG_QSCALE;
+   }
    mEncAudioCodecCtx->sample_rate = mSampleRate;
    mEncAudioCodecCtx->channels = mChannels;
    mEncAudioCodecCtx->time_base.num = 0;
