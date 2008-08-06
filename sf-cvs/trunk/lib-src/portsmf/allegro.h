@@ -58,7 +58,7 @@
 // are d1 and d2 within epsilon of each other?
 bool within(double d1, double d2, double epsilon);
 
-char *heapify(char *s); // put a string on the heap
+char *heapify(const char *s); // put a string on the heap
 
 
 // Alg_attribute is an atom in the symbol table
@@ -512,8 +512,8 @@ public:
     void set_string(char *s) { 
         char *fence = buffer + len;
         assert(ptr < fence);
-		// two lots of brackets surpress a g++ warning, because this is an
-		// assignment operator inside a test.
+        // two lots of brackets surpress a g++ warning, because this is an
+        // assignment operator inside a test.
         while ((*ptr++ = *s++)) assert(ptr < fence);
         assert((char *)(((long) (ptr + 7)) & ~7) <= fence);
         pad(); }
@@ -615,7 +615,7 @@ public:
     // tempo map. (Exception: any operation that would modify the
     // tempo map should raise an error -- you don't want to change the
     // default tempo map.)
-    void set_time_map(Alg_time_map *map);
+    virtual void set_time_map(Alg_time_map *map);
     Alg_time_map *get_time_map() { return time_map; }
 
     // Methods to create events. The returned event is owned by the caller.
@@ -832,6 +832,9 @@ protected:
     long *current; // array of indexes used by iteration methods
     void serialize_seq();
     Alg_error error; // error code set by file readers
+    // an internal function used for writing Allegro track names
+    Alg_event_ptr write_track_name(std::ostream &file, int n, 
+                                   Alg_events &events);
 public:
     int channel_offset_per_track; // used to encode track_num into channel
     Alg_tracks track_list;       // array of Alg_events
@@ -857,6 +860,7 @@ public:
     int get_read_error() { return error; }
     void serialize(void **buffer, long *bytes);
     void copy_time_sigs_to(Alg_seq *dest); // a utility function
+    void set_time_map(Alg_time_map *map);
 
     // encode sequence structure into contiguous, moveable memory block
     // address of newly allocated memory is assigned to *buffer, which must

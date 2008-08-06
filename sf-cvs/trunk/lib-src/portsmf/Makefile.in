@@ -72,10 +72,6 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(libportSMF_a_SOURCES)
 DIST_SOURCES = $(libportSMF_a_SOURCES)
 dist_docDATA_INSTALL = $(INSTALL_DATA)
@@ -199,9 +195,7 @@ libportSMF_a_SOURCES = allegro.cpp \
 	allegrowr.cpp \
 	allegrosmfrd.cpp \
 	mfmidi.cpp \
-	strparse.cpp \
-	algrd_internal.h \
-	algsmfrd_internal.h
+	strparse.cpp
 
 
 # and the header files for the library. At the moment these go into the include
@@ -230,7 +224,7 @@ AUX_DIST = $(ac_aux_dir)/config.guess \
 
 # Documentation files that should be both distributed and installed in the doc
 # directory,
-dist_doc_DATA = README.txt license.txt
+dist_doc_DATA = README.txt
 all: all-am
 
 .SUFFIXES:

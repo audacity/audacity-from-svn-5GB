@@ -157,6 +157,7 @@ void OnExport();
 void OnExportSelection();
 void OnExportMultiple();
 void OnExportLabels();
+void OnExportMIDI();
 
 void OnUpload();
 
@@ -271,6 +272,10 @@ void OnCursorSelEnd();
 void OnAlign(int index);
 void OnAlignMoveSel(int index);
 void HandleAlign(int index, bool moveSel);
+
+#ifdef EXPERIMENTAL_SCOREALIGN
+void OnScoreAlign();
+#endif // EXPERIMENTAL_SCOREALIGN
 
 void OnNewWaveTrack();
 void OnNewStereoTrack();

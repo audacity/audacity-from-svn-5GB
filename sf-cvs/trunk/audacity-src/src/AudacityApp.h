@@ -70,7 +70,9 @@ enum {
    PlayRegionLockedFlag   = 0x00080000,  //msmeyer
    PlayRegionNotLockedFlag= 0x00100000,  //msmeyer
    CutCopyAvailableFlag   = 0x00200000,
-   WaveTracksExistFlag    = 0x00400000
+   WaveTracksExistFlag    = 0x00400000,
+   NoteTracksExistFlag    = 0x00800000,  //gsw
+   NoteTracksSelectedFlag = 0x01000000   //gsw
 };
 
 class AudacityApp:public wxApp {
