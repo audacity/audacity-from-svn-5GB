@@ -93,7 +93,7 @@ void ODTask::DoSome(float amountWork)
       
       DoSomeInternal(); //keep the terminate mutex on so we don't remo
       mTerminateMutex.Unlock(); 
-      //TODO: check to see if ondemand has been called
+      //check to see if ondemand has been called
       if(GetNeedsODUpdate() && PercentComplete() < 1.0)
          ODUpdate();
          
@@ -115,9 +115,22 @@ void ODTask::DoSome(float amountWork)
    {
       wxCommandEvent event( EVT_ODTASK_COMPLETE );
       AudacityProject::AllProjectsDeleteLock();
+      
+      for(unsigned i=0; i<gAudacityProjects.GetCount(); i++)
+      {
+         if(IsTaskAssociatedWithProject(gAudacityProjects[i]))
+         {
+            //this assumes tasks are only associated with one project.  
+            gAudacityProjects[i]->AddPendingEvent( event );
+            break;
+         }
+      }
+      /*
       AudacityProject* proj = GetActiveProject();
-      if(proj)
+      if(IsTaskAssociatedWithProject(proj))
          proj->AddPendingEvent( event );
+      */
+      
       AudacityProject::AllProjectsDeleteUnlock();
 
 //      printf("%s %i complete\n", GetTaskName(),GetTaskNumber());
@@ -125,6 +138,37 @@ void ODTask::DoSome(float amountWork)
    mTerminateMutex.Unlock();
    mBlockUntilTerminateMutex.Unlock();
    
+}
+
+bool ODTask::IsTaskAssociatedWithProject(AudacityProject* proj)
+{
+   TrackList *tracks = proj->GetTracks();
+   TrackListIterator iter1(tracks);
+   Track *tr = iter1.First();
+
+   while (tr) 
+   {
+      //go over all tracks in the project
+      if (tr->GetKind() == Track::Wave) 
+      {
+         //look inside our task's track list for one that matches this projects one.
+         mWaveTrackMutex.Lock();
+         for(int i=0;i<(int)mWaveTracks.size();i++)
+         {
+            if(mWaveTracks[i]==tr)
+            {
+               //if we find one, then the project is associated with us;return true
+               mWaveTrackMutex.Unlock();
+               return true;
+            }
+         }
+         mWaveTrackMutex.Unlock();
+      }
+      tr = iter1.Next();
+   }
+   
+   return false;
+
 }
 
 void ODTask::ODUpdate()

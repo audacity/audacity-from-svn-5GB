@@ -1340,8 +1340,23 @@ void TrackPanel::SetCursorAndTipWhenSelectTool( Track * t,
    
    //Make sure we are within the selected track
    if (!t || !t->GetSelected()) 
+   {
+      if(t)
+      {
+         //For OD regions, we need to override and display the percent complete for this task.
+         //first, make sure it's a wavetrack.
+         if(t->GetKind() == Track::Wave)
+         {
+            //see if the wavetrack exists in the ODManager (if the ODManager exists)
+            if(ODManager::IsInstanceCreated())
+            {
+               //ask the wavetrack for the corresponding tip - it may not change **pptip, but that's fine.
+               ODManager::Instance()->FillTipForWaveTrack((WaveTrack*)t,ppTip);
+            }
+         }
+      }
       return;
-
+   }
    wxInt64 leftSel = TimeToPosition(mViewInfo->sel0, r.x);
    wxInt64 rightSel = TimeToPosition(mViewInfo->sel1, r.x);
 
