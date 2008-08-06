@@ -100,6 +100,9 @@ class ODTask
     
     virtual const wxChar* GetTip()=0;
     
+    ///returns true if the task is associated with the project.
+    virtual bool IsTaskAssociatedWithProject(AudacityProject* proj);
+
  protected:
      
    ///calculates the percentage complete from existing data.
