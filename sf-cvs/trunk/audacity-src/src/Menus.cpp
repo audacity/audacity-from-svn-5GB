@@ -100,6 +100,12 @@ simplifies construction of menu items.
 #include "SplashDialog.h"
 #include "widgets/ErrorDialog.h"
 
+#ifdef EXPERIMENTAL_SCOREALIGN
+#include "audioreader.h"
+#include "scorealign.h"
+#include "scorealign-glue.h"
+#endif /* EXPERIMENTAL_SCOREALIGN */
+
 enum {
    kAlignZero=0,
    kAlignCursor,
@@ -242,13 +248,17 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddSeparator();
       c->AddItem(wxT("ExportLabels"),   _("Export &Labels..."),              FN(OnExportLabels));
       c->AddItem(wxT("ExportMultiple"),   _("Export &Multiple..."),              FN(OnExportMultiple));
+      c->AddItem(wxT("ExportMIDI"),   _("Export MIDI..."),              FN(OnExportMIDI));
       
       c->SetCommandFlags(wxT("ExportLabels"),
                          AudioIONotBusyFlag | LabelTracksExistFlag,
                          AudioIONotBusyFlag | LabelTracksExistFlag);
       c->SetCommandFlags(wxT("ExportMultiple"),
                          AudioIONotBusyFlag | TracksExistFlag,
-                         AudioIONotBusyFlag | TracksExistFlag);                      
+                         AudioIONotBusyFlag | TracksExistFlag);
+      c->SetCommandFlags(wxT("ExportMIDI"),
+                         AudioIONotBusyFlag | NoteTracksSelectedFlag,
+                         AudioIONotBusyFlag | NoteTracksSelectedFlag);
    }
 
    c->AddSeparator();
@@ -670,13 +680,20 @@ void AudacityProject::CreateMenusAndCommands()
    
       alignLabels.RemoveAt(7); // Can't align together and move cursor
    
-      c->BeginSubMenu(_("Ali&gn And Move Cursor"));
+      c->BeginSubMenu(_("Ali&gn and Move Cursor"));
       c->AddItemList(wxT("AlignMove"), alignLabels, FN(OnAlignMoveSel));
       c->SetCommandFlags(wxT("AlignMove"),
                          AudioIONotBusyFlag | TracksSelectedFlag,
                          AudioIONotBusyFlag | TracksSelectedFlag);
       c->EndSubMenu();
-   
+#ifdef EXPERIMENTAL_SCOREALIGN
+      c->AddItem(wxT("ScoreAlign"),       _("Synchronize MIDI with Audio"), FN(OnScoreAlign));
+
+      c->SetCommandFlags(wxT("ScoreAlign"),
+                         AudioIONotBusyFlag | NoteTracksSelectedFlag | WaveTracksSelectedFlag,
+                         AudioIONotBusyFlag | NoteTracksSelectedFlag | WaveTracksSelectedFlag);
+#endif // EXPERIMENTAL_SCOREALIGN
+
       c->AddSeparator(); 
 #ifdef EXPERIMENTAL_POSITION_LINKING
       c->AddItem(wxT("StickyLabels"),       _("Link Audio and Label Tracks"), FN(OnStickyLabel), 0);  
@@ -1288,6 +1305,16 @@ wxUint32 AudacityProject::GetUpdateFlags()
             else {
                flags |= WaveTracksSelectedFlag;
             }
+         }
+      }
+      else if (t->GetKind() == Track::Note) {
+         NoteTrack *nt = (NoteTrack *) t;
+
+         flags |= NoteTracksExistFlag;
+
+         if (nt->GetSelected()) {
+            flags |= TracksSelectedFlag;
+            flags |= NoteTracksSelectedFlag;
          }
       }
       t = iter.Next();
@@ -2474,6 +2501,93 @@ void AudacityProject::OnExportLabels()
 #endif
    f.Close();
 }
+
+
+#ifdef USE_MIDI
+void AudacityProject::OnExportMIDI(){
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+   int numNoteTracksSelected = 0;
+   NoteTrack *nt;
+
+   // Iterate through once to make sure that there is 
+   // exactly one NoteTrack selected.
+   while (t) {
+      if (t->GetSelected()) {
+         if(t->GetKind() == Track::Note) {
+            numNoteTracksSelected++;
+            nt = (NoteTrack *) t;
+         }
+      }
+      t = iter.Next();
+   }
+
+   if(numNoteTracksSelected > 1){
+      wxMessageBox(wxString::Format(wxT(
+         "Please select only one MIDI track at a time.")));
+      return;
+   }
+
+   assert(nt);
+
+   wxString fName = _("");
+
+   fName = FileSelector(_("Export MIDI As:"),
+                        NULL,
+                        fName,
+                        _(".mid|.gro"),
+                        _("MIDI file (*.mid)|*.mid|Allegro file (*.gro)|*.gro"),
+                        wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
+                        this);
+
+   if (fName == wxT(""))
+      return;
+
+   // Move existing files out of the way.  Otherwise wxTextFile will
+   // append to (rather than replace) the current file.
+
+   if (wxFileExists(fName)) {
+#ifdef __WXGTK__
+      wxString safetyFileName = fName + wxT("~");
+#else
+      wxString safetyFileName = fName + wxT(".bak");
+#endif
+
+      if (wxFileExists(safetyFileName))
+         wxRemoveFile(safetyFileName);
+
+      wxRename(fName, safetyFileName);
+   }
+
+   if(fName.EndsWith(".mid")) {
+      nt->ExportMIDI(fName);
+   } else if(fName.EndsWith(".gro")) {
+      nt->ExportAllegro(fName);
+   } else {
+      wxString title;
+      wxString msg;
+      int id;
+
+      if(fName.Contains(".")) {
+         msg = _("You have selected a filename with an unrecognized file extension.\n"
+                 "Do you want to continue?");
+      } else {
+         msg = _("You have selected a filename with no file extension.\n"
+                 "Do you want to continue?");
+      }
+
+      title = _("Export MIDI");
+
+      id = wxMessageBox(msg, title, wxYES_NO);
+      if (id == wxNO) {
+         return;
+      } else if (id == wxYES) {
+         nt->ExportMIDI(fName);
+      }
+   }
+}
+#endif // USE_MIDI
+
 
 void AudacityProject::OnExport()
 {
@@ -4283,6 +4397,84 @@ void AudacityProject::OnAlignMoveSel(int index)
    HandleAlign(index, true);
 }
 
+#ifdef EXPERIMENTAL_SCOREALIGN
+long mixer_process(void *mixer, float **buffer, long n)
+{
+   Mixer *mix = (Mixer *) mixer;
+   long frame_count = mix->Process(n);
+   *buffer = (float *) mix->GetBuffer();
+   return frame_count;
+}
+
+void AudacityProject::OnScoreAlign()
+{
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+   int numWaveTracksSelected = 0;
+   int numNoteTracksSelected = 0;
+   int numOtherTracksSelected = 0;
+   NoteTrack *nt;
+   double endTime = 0.0;
+
+   // Iterate through once to make sure that there is exactly
+   // one WaveTrack and one NoteTrack selected.
+   while (t) {
+      if (t->GetSelected()) {
+         if (t->GetKind() == Track::Wave) {
+            numWaveTracksSelected++;
+            WaveTrack *wt = (WaveTrack *) t;
+            endTime = endTime > wt->GetEndTime() ? endTime : wt->GetEndTime();
+         } else if(t->GetKind() == Track::Note) {
+            numNoteTracksSelected++;
+            nt = (NoteTrack *) t;
+         } else numOtherTracksSelected++;
+      }
+      t = iter.Next();
+   }
+
+   if(numWaveTracksSelected == 0 ||
+      numNoteTracksSelected != 1 ||
+      numOtherTracksSelected != 0){
+      wxMessageBox(wxString::Format(wxT("Please select at least one audio track "
+                                        "and one MIDI track.")));
+      return;
+   }
+
+   WaveTrack **waveTracks;
+   mTracks->GetWaveTracks(true /* selectionOnly */, 
+                          &numWaveTracksSelected, &waveTracks);
+
+   Mixer *mix = new Mixer(numWaveTracksSelected,   // int numInputTracks
+                          waveTracks,              // WaveTrack **inputTracks
+                          mTracks->GetTimeTrack(), // TimeTrack *timeTrack
+                          0.0,                     // double startTime
+                          endTime,                 // double stopTime
+                          2,                       // int numOutChannels
+                          44100,                   // int outBufferSize
+                          true,                    // bool outInterleaved
+                          mRate,                   // double outRate
+                          floatSample,             // sampleFormat outFormat
+                          true,                    // bool highQuality = true
+                          NULL);                   // MixerSpec *mixerSpec = NULL
+
+   // debugging/testing
+   //float *buffer;
+   //long buffer_len = mixer_process((void *) mix, &buffer, 4096);
+   //while (buffer_len) 
+   //   buffer_len = mixer_process((void *) mix, &buffer, 4096);
+   
+   scorealign((void *) mix, &mixer_process,
+              2 /* channels */, 44100.0 /* srate */, endTime, nt->GetSequence());
+
+   delete mix;
+
+   PushState(_("Sync MIDI with Audio"), _("Sync MIDI with Audio"));
+
+   RedrawProject();
+
+   wxMessageBox(_("Alignment completed."));
+}
+#endif /* EXPERIMENTAL_SCOREALIGN */
 void AudacityProject::OnNewWaveTrack()
 {
    WaveTrack *t = mTrackFactory->NewWaveTrack(mDefaultFormat, mRate);
@@ -4778,8 +4970,6 @@ void AudacityProject::OnAudioDeviceInfo()
    dlg.Center();
    dlg.ShowModal();
 }
-
-//
 
 void AudacityProject::OnSeparator()
 {

@@ -155,6 +155,10 @@ It handles initialization and termination by subclassing wxApp.
 #     pragma comment(lib, "portmixer")
 #  endif
 
+#  if defined(EXPERIMENTAL_SCOREALIGN)
+#     pragma comment(lib, "libscorealign")
+#  endif
+
 #  if defined(USE_SLV2)
 #     pragma comment(lib, "slv2")
 #     pragma comment(lib, "librdf")

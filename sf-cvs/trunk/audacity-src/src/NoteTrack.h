@@ -46,6 +46,9 @@ class NoteTrack:public Track {
 
    int GetVisibleChannels();
 
+   bool ExportMIDI(wxString f);
+   bool ExportAllegro(wxString f);
+
 /* REQUIRES PORTMIDI */
 //   int GetLastMidiPosition() const { return mLastMidiPosition; }
 //   void SetLastMidiPosition( int position )

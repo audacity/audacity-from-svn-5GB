@@ -2188,7 +2188,7 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
                mFileName = wxFileName(projPath, realFileName).GetFullPath();
                projName = value;
             }
-                                   
+
             SetProjectTitle();
          } else {
             projName = value;

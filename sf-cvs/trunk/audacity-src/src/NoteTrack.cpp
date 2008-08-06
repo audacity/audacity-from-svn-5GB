@@ -315,6 +315,19 @@ bool NoteTrack::Paste(double t, Track *src){
    return true;
 }
 
+
+
+bool NoteTrack::ExportMIDI(wxString f)
+{
+   return mSeq->smf_write(f.c_str());
+}
+
+bool NoteTrack::ExportAllegro(wxString f)
+{
+   return mSeq->write(f.c_str());
+}
+
+
 bool NoteTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
    return false;
