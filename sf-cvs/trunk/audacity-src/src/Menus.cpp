@@ -2559,16 +2559,16 @@ void AudacityProject::OnExportMIDI(){
       wxRename(fName, safetyFileName);
    }
 
-   if(fName.EndsWith(".mid")) {
+   if(fName.EndsWith(_(".mid"))) {
       nt->ExportMIDI(fName);
-   } else if(fName.EndsWith(".gro")) {
+   } else if(fName.EndsWith(_(".gro"))) {
       nt->ExportAllegro(fName);
    } else {
       wxString title;
       wxString msg;
       int id;
 
-      if(fName.Contains(".")) {
+      if(fName.Contains(_("."))) {
          msg = _("You have selected a filename with an unrecognized file extension.\n"
                  "Do you want to continue?");
       } else {

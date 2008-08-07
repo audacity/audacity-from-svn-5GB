@@ -3165,10 +3165,10 @@ void AudacityProject::OnTimer(wxTimerEvent& event)
       {
          wxString msg;
          if(numTasks>1)
-            msg.Printf(_("Running %d on-demand tasks.  %2.0f%% of overall progress complete."),
+            msg.Printf(_("Import(s) complete. Running %d on-demand waveform calculations. Overall %2.0f%% complete."),
               numTasks,ODManager::Instance()->GetOverallPercentComplete()*100.0/numTasks);       
          else
-            msg.Printf(_("Running an on-demand task.  %2.0f%% of progress complete."),
+            msg.Printf(_("Import complete. Running an on-demand waveform calculation. %2.0f%% complete."),
              ODManager::Instance()->GetOverallPercentComplete()*100.0/numTasks);    
          mStatusBar->SetStatusText(msg);
       }

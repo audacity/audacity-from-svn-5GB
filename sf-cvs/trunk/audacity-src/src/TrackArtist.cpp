@@ -70,7 +70,7 @@ int gWaveformTimeCount = 0;
 #endif
 
 #ifdef __WXMAC__
-#define BUFFERED_DRAWING 1
+#define BUFFERED_DRAWING 0
 #endif
 
 #ifdef USE_MIDI
@@ -950,8 +950,9 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
          r2[x] = r1[x];
    }
    long pixAnimOffset;
-   pixAnimOffset = wxDateTime::Now().GetTicks() *5 ; //5 pixels a second
-
+   pixAnimOffset = wxDateTime::Now().GetTicks(); //5 pixels a second
+   
+   bool drawStripes = true;
    if (imageBuffer) {
       uchar *clipBuffer = imageBuffer;
       uchar rs, gs, bs, rr, gr, br;
@@ -979,14 +980,14 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
 //               }
 //               else
 //               {
-				  bool drawStripes = false;
+
                   //draw the waveform
 				  
 				  
 				  if(drawStripes)
 				  {
 					  //draw one stripe every 25 pixels
-					  if( (y+x)%25 == 0)
+					  if( (y+x+pixAnimOffset)%25 == 0)
 					  {
 						  *imageBuffer++ = (bl[x]%2?rs:rr) + *imageBuffer;
 						  *imageBuffer++;
@@ -996,7 +997,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
 						  //have a gradient away from the stripe, alter light and dark every block
 						  float lineProximity;
 						  //we want half of the range to be zero, and the other half scaled from 0.0 to 1 as you approach the line
-						  lineProximity =  fabs( ( ((y+x)%25) - 12)/12.0) - 0.5;
+						  lineProximity =  fabs( ( ((y+x+pixAnimOffset)%25) - 12)/12.0) - 0.5;
 						  if(lineProximity<0.0) 
 							  lineProximity = 0.0;
 						  lineProximity*=2;//scale back to 0.0-1.0
@@ -1077,34 +1078,39 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
          {
             //draw a dummy waveform - some kind of sinusoid.  We want to animate it so the user knows it's a dummy.  Use the second's unit of a get time function.
             //Lets use a triangle wave for now since it's easier - I don't want to use sin() or make a wavetable just for this.
-            int triX;
-            dc.SetPen(muteSamplePen);
-            
-            for(int y=0;y<r.height;y++)
+            if(!drawStripes)
             {
-               triX= fabs((double)((x+pixAnimOffset)%(2*r.height))-r.height)+r.height;
-               if((y+triX)%r.height == 0)
-                  dc.DrawPoint(r.x + x, r.y+y);
+               int triX;
+               dc.SetPen(muteSamplePen);
+               
+               for(int y=0;y<r.height;y++)
+               {
+                  triX= fabs((double)((x+pixAnimOffset)%(2*r.height))-r.height)+r.height;
+                  if((y+triX)%r.height == 0)
+                     dc.DrawPoint(r.x + x, r.y+y);
+               }
             }
-            
-             /*
-            //TODO:unify with buffer drawing.
-            dc.SetPen(bl[x]%2 ? muteSamplePen : samplePen);
-            for(int y=0;y<(r.height)/25 +1;y++)
+            else
             {
-               //we are drawing over the buffer, but I think DrawLine takes care of this.
-               dc.DrawLine(r.x + x, r.y+ 25*y + x%25, r.x+x, 
-                           r.y+25*y+x%25 + 6 ); //take the min so we don't draw past the edge
+               
+               //TODO:unify with buffer drawing.
+               dc.SetPen(bl[x]%2 ? muteSamplePen : samplePen);
+               for(int y=0;y<(r.height)/25 +1;y++)
+               {
+                  //we are drawing over the buffer, but I think DrawLine takes care of this.
+                  dc.DrawLine(r.x + x, r.y+ 25*y + (x+pixAnimOffset)%25, r.x+x, 
+                              r.y+25*y+(x+pixAnimOffset)%25 + 6 ); //take the min so we don't draw past the edge
+               }
+               
+               
+               //draw a not yet progress bar
+               /*
+                if(showProgress && x%pBarHeight)
+                {
+                   dc.SetPen(odProgressNotYetPen);
+                   dc.DrawLine(r.x + x, r.y, r.x + x, r.y + pBarHeight );
+                }*/
             }
-            
-           
-            //draw a not yet progress bar
-            if(showProgress && x%pBarHeight)
-            {
-               dc.SetPen(odProgressNotYetPen);
-               dc.DrawLine(r.x + x, r.y, r.x + x, r.y + pBarHeight );
-            }
-            */
          }
          else
          {
