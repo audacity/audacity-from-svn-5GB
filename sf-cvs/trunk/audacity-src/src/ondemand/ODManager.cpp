@@ -211,8 +211,8 @@ void ODManager::Start()
       mQueuesMutex.Lock();
       mNeedsDraw += mQueues.size()>0?1:0;
       mQueuesMutex.Unlock();
-//      
-//      //TODO:this is a little excessive, in the future only redraw some, and if possible only the Tracks on the trackpanel..
+
+      //redraw the current project only (ODTasks will send a redraw on complete even if the projects are in the background)
       if(mNeedsDraw > 11)
       {
          mNeedsDraw=0;
@@ -242,14 +242,7 @@ void ODManager::Quit()
       ODManager::Instance()->mTerminateMutex.Unlock();
    }
 }
- 
-///Adds a wavetrack, creates a queue member. 
-//void ODManager::AddWaveTrack(WaveTrack* track)
-//{
-//   //TODO:Check to see if the wavetrack exists in the queue
-//   mQueues.push_back(new ODWaveTrackTaskQueue(track));
-//}
-   
+    
 ///removes a wavetrack and notifies its associated tasks to stop using its reference. 
 void ODManager::RemoveWaveTrack(WaveTrack* track)
 {
@@ -258,27 +251,10 @@ void ODManager::RemoveWaveTrack(WaveTrack* track)
    {
       if(mQueues[i]->ContainsWaveTrack(track))
          mQueues[i]->RemoveWaveTrack(track);
-         //TODO:Break?
    }
    mQueuesMutex.Unlock();
 }
 
-///replace the functional instance of wavetrack in tasks with another one (keeps oldTrack's gui reference)
-//TODO: this is complicated because concurrent tasks/effects will write over the same blockfile.  Thus if the 
-//compute summary task goes last the effect will be overwritten.
-//void ODManager::ReplaceTaskWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack)
-//{
-//   mQueuesMutex.Lock();
-//   for(int i=0;i<mQueues.size();i++)
-//   {
-//      mQueues[i]->ReplaceTaskWaveTrack()
-//      if(mQueues[i]->ContainsWaveTrack(track))
-//         mQueues[i]->RemoveWaveTrack(track);
-//         //TODO:Break?
-//   }
-//   mQueuesMutex.Unlock();
-//}
-   
 ///replace the wavetrack whose wavecache the gui watches for updates
 void ODManager::ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack)
 {
@@ -331,14 +307,10 @@ bool ODManager::MakeWaveTrackDependent(WaveTrack* dependentTrack,WaveTrack* mast
       if(mQueues[i]->ContainsWaveTrack(masterTrack))
       {
          masterQueue = mQueues[i];
-         //TODO: to be thread-safe, we should lock the removal of tasks from this queue until the merge
-         //is over - this requires another mutex.
       }
       else if(mQueues[i]->ContainsWaveTrack(dependentTrack))
       {
          dependentQueue = mQueues[i];
-         //TODO: to be thread-safe, we should lock the removal of tasks from this queue until the merge
-         //is over - this requires another mutex.
          dependentIndex = i;
       }
 

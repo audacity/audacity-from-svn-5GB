@@ -319,12 +319,12 @@ bool NoteTrack::Paste(double t, Track *src){
 
 bool NoteTrack::ExportMIDI(wxString f)
 {
-   return mSeq->smf_write(f.c_str());
+   return mSeq->smf_write(f.mb_str());
 }
 
 bool NoteTrack::ExportAllegro(wxString f)
 {
-   return mSeq->write(f.c_str());
+   return mSeq->write(f.mb_str());
 }
 
 

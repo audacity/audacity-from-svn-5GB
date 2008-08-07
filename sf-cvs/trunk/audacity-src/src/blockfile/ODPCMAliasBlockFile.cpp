@@ -40,11 +40,8 @@ ODPCMAliasBlockFile::ODPCMAliasBlockFile(wxFileName fileName,
                      sampleCount aliasLen, int aliasChannel):
    PCMAliasBlockFile(fileName, aliasedFile, aliasStart, aliasLen, aliasChannel,false)
 {
-//TODO:write new WriteSummary.  
-//   AliasBlockFile::WriteSummary();
 
   mSummaryAvailable=mSummaryBeingComputed=false;
-   //Schedule for OD loading is done one level up on the file level so order can be chosen.
 }
 
 ODPCMAliasBlockFile::ODPCMAliasBlockFile(wxFileName existingFileName,
@@ -112,7 +109,7 @@ void ODPCMAliasBlockFile::GetMinMax(float *outMin, float *outMax, float *outRMS)
    }
 }
 
-/// Returns the 256 byte summary data block
+/// Returns the 256 byte summary data block.  Clients should check to see if the summary is available before trying to read it with this call.
 bool ODPCMAliasBlockFile::Read256(float *buffer, sampleCount start, sampleCount len)
 {
    if(IsSummaryAvailable())
@@ -121,13 +118,13 @@ bool ODPCMAliasBlockFile::Read256(float *buffer, sampleCount start, sampleCount 
    }
    else
    {
-      //TODO: put some dummy value?  should we make a fake one?
+      //return nothing.  
       buffer = NULL;
       return true;
    }
 }
 
-/// Returns the 64K summary data block
+/// Returns the 64K summary data block. Clients should check to see if the summary is available before trying to read it with this call.
 bool ODPCMAliasBlockFile::Read64K(float *buffer, sampleCount start, sampleCount len)
 {
    if(IsSummaryAvailable())
@@ -136,7 +133,7 @@ bool ODPCMAliasBlockFile::Read64K(float *buffer, sampleCount start, sampleCount 
    }
    else
    {
-      //TODO: put some dummy value?  should we make a fake one?
+      //return nothing - it hasn't been calculated yet
       buffer = NULL;
       return true;
    }
@@ -161,14 +158,13 @@ BlockFile *ODPCMAliasBlockFile::Copy(wxFileName newFileName)
    }
    else
    {
-      //TODO: does it make sense to create a copy of ODPCMAliasBF?  Summary File doesn't exist in this case.
+      //Summary File doesn't exist in this case.
       //Also, this one needs to be scheduled for loading as well ... what to do?
       newBlockFile  = new ODPCMAliasBlockFile(newFileName,
                                                    mAliasedFileName, mAliasStart,
                                                    mLen, mAliasChannel,
                                                    mMin, mMax, mRMS);
-      //TODO:add to the ODManager Task list so this one loads itself.  It's wasteful to do this twice, but lets be simple and naieve
-      //just this once,.
+      //The client code will need to schedule this blockfile for OD summarizing if it is going to a new track.
    }
    
    

@@ -1832,10 +1832,7 @@ void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge,
    mViewInfo->sel0 = sel0;
    mViewInfo->sel1 = sel1;
    
-   //On-Demand: TODO:Think about if we want to add an on-demand function right here.
-   //   printf("OD extendselection\n");
-      
-   //On-Demand: check to see if there is an OD thing associated with this track.
+   //On-Demand: check to see if there is an OD thing associated with this track.  If so we want to update the focal point for the task.
    if (pTrack->GetKind() == Track::Wave) {
       if(ODManager::IsInstanceCreated())
          ODManager::Instance()->DemandTrackUpdate((WaveTrack*)pTrack,sel0); //sel0 is sometimes less than mSelStart
@@ -6153,13 +6150,19 @@ void TrackPanel::OnMergeStereo(wxCommandEvent &event)
       
       
       //On Demand - join the queues together.
-      //TODO: in the future, we will have to check the return value of MakeWaveTrackDependent -
-      //if the tracks cannot merge, it returns false, and in that case we should not allow a merging.
-      //for example it returns false when there are two different types of ODTasks on each track's queue.
-      //we will need to display this to the user.
+      
 #ifdef EXPERIMENTAL_ONDEMAND 
       if(ODManager::IsInstanceCreated() && partner->GetKind() == Track::Wave &&mPopupMenuTarget->GetKind() == Track::Wave )
-         ODManager::Instance()->MakeWaveTrackDependent((WaveTrack*)partner,(WaveTrack*)mPopupMenuTarget);
+         if(!ODManager::Instance()->MakeWaveTrackDependent((WaveTrack*)partner,(WaveTrack*)mPopupMenuTarget))
+         {
+            ;
+            //TODO: in the future, we will have to check the return value of MakeWaveTrackDependent -
+            //if the tracks cannot merge, it returns false, and in that case we should not allow a merging.
+            //for example it returns false when there are two different types of ODTasks on each track's queue.
+            //we will need to display this to the user.
+         }
+         
+         
 #endif
       MakeParentPushState(wxString::Format(_("Made '%s' a stereo track"),
                                            mPopupMenuTarget->GetName().

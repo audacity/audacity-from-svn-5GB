@@ -76,12 +76,7 @@ class ODManager
    ///attach the track in question to another, already existing track's queues and tasks.  Remove the task/tracks.
    ///Returns success if it was possible..  Some ODTask conditions make it impossible until the Tasks finish.
    bool MakeWaveTrackDependent(WaveTrack* dependentTrack,WaveTrack* masterTrack);
-   
-   ///replace the functional instance of wavetrack in tasks with another one (keeps oldTrack's gui reference)
-   //TODO: this is complicated because concurrent tasks/effects will write over the same blockfile.  Thus if the 
-   //compute summary task goes last the effect will be overwritten.
-   ///void ReplaceTaskWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack);
-   
+      
    ///replace the wavetrack whose wavecache the gui watches for updates
    void ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack); 
    
