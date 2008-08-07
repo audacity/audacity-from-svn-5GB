@@ -2569,11 +2569,9 @@ void AudacityProject::OnExportMIDI(){
       int id;
 
       if(fName.Contains(_("."))) {
-         msg = _("You have selected a filename with an unrecognized file extension.\n"
-                 "Do you want to continue?");
+         msg = _("You have selected a filename with an unrecognized file extension.\nDo you want to continue?");
       } else {
-         msg = _("You have selected a filename with no file extension.\n"
-                 "Do you want to continue?");
+         msg = _("You have selected a filename with no file extension.\nDo you want to continue?");
       }
 
       title = _("Export MIDI");
@@ -4435,8 +4433,7 @@ void AudacityProject::OnScoreAlign()
    if(numWaveTracksSelected == 0 ||
       numNoteTracksSelected != 1 ||
       numOtherTracksSelected != 0){
-      wxMessageBox(wxString::Format(wxT("Please select at least one audio track "
-                                        "and one MIDI track.")));
+      wxMessageBox(wxString::Format(wxT("Please select at least one audio track and one MIDI track.")));
       return;
    }
 
