@@ -89,9 +89,8 @@ of this, doesn't work for the static libraries)".
    store the modified files in CVS, and you can replace the 
    corresponding wxWidgets files. 
    In "audacity\win\wxWidgets_additions" are one .cpp and one .h file. 
-   *Ignore* all the other files there -- they are obsolete. You may
-   want to make backups of the wxWidgets originals of these, in case
-   you build without these accessibility features. 
+   You may want to make backups of the wxWidgets originals of these, 
+   in case you also build without these accessibility features. 
 
    * Copy access.cpp to "C:\wxWidgets-2.8.7\src\msw\ole\". 
 
