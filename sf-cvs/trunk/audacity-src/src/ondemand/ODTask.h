@@ -25,6 +25,7 @@ in a background thread.
 
 #include "ODTaskThread.h"
 #include "../BlockFile.h"
+#include "../Project.h"
 
 #include <vector>
 #include <wx/wx.h>
