@@ -197,7 +197,7 @@ void ODComputeSummaryTask::Update()
                   ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->SetClipOffset((sampleCount)(clip->GetStartTime()*clip->GetRate()));
                   
                   //these will always be linear within a sequence-lets take advantage of this by keeping a cursor.
-                  while(insertCursor<tempBlocks.size()&& 
+                  while(insertCursor<(int)tempBlocks.size()&& 
                      (sampleCount)(tempBlocks[insertCursor]->GetStart()+tempBlocks[insertCursor]->GetClipOffset()) < 
                         (sampleCount)(((ODPCMAliasBlockFile*)blocks->Item(i)->f)->GetStart()+((ODPCMAliasBlockFile*)blocks->Item(i)->f)->GetClipOffset()))
                      insertCursor++;
