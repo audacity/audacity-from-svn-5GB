@@ -223,7 +223,7 @@ bool Module::Load()
       return false;
    }
 
-   bool res = mDispatch(ModuleInitialize);
+   bool res = ((mDispatch(ModuleInitialize))!=0);
    if (res) {
       return true;
    }
