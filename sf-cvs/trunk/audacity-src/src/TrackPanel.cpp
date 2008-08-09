@@ -5755,10 +5755,12 @@ void TrackPanel::OnTrackMenu(Track *t)
          theMenu->Enable(i, !unsafe);
       }
    }
-   
+
+#if defined(USE_MIDI)
    if (t->GetKind() == Track::Note)
       theMenu = mNoteTrackMenu;
-   
+#endif
+
    if (t->GetKind() == Track::Label){
 #ifdef EXPERIMENTAL_STICKY_TRACKS
       delete mLabelTrackMenu;

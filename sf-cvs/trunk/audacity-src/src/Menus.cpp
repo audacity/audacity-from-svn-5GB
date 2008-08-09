@@ -248,8 +248,10 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddSeparator();
       c->AddItem(wxT("ExportLabels"),   _("Export &Labels..."),              FN(OnExportLabels));
       c->AddItem(wxT("ExportMultiple"),   _("Export &Multiple..."),              FN(OnExportMultiple));
+#if defined(USE_MIDI)
       c->AddItem(wxT("ExportMIDI"),   _("Export MIDI..."),              FN(OnExportMIDI));
-      
+#endif
+
       c->SetCommandFlags(wxT("ExportLabels"),
                          AudioIONotBusyFlag | LabelTracksExistFlag,
                          AudioIONotBusyFlag | LabelTracksExistFlag);
@@ -1307,6 +1309,7 @@ wxUint32 AudacityProject::GetUpdateFlags()
             }
          }
       }
+#if defined(USE_MIDI)
       else if (t->GetKind() == Track::Note) {
          NoteTrack *nt = (NoteTrack *) t;
 
@@ -1317,6 +1320,7 @@ wxUint32 AudacityProject::GetUpdateFlags()
             flags |= NoteTracksSelectedFlag;
          }
       }
+#endif
       t = iter.Next();
    }
 
@@ -2706,9 +2710,11 @@ void AudacityProject::OnCut()
              gPrefs->Read(wxT("/GUI/EnableCutLines"), (long)0))
          {
             ((WaveTrack*)n)->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
+#if defined(USE_MIDI)
          } else if (n->GetKind() == Track::Note) {
             // Since portsmf has a built-in cut operator, we use that instead
             n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
+#endif
          } else {
             n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          }
@@ -2723,14 +2729,15 @@ void AudacityProject::OnCut()
       n = iter.Next();
    }
 
+#if defined(USE_MIDI)
    n = iter.First();
-
    while (n) {
       if (n->GetSelected() && n->GetKind() != Track::Note)
          //if NoteTrack, it was cut, so do not clear anything
          n->Clear(mViewInfo.sel0, mViewInfo.sel1);
       n = iter.Next();
    }
+#endif
 
    msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
    msClipProject = this;

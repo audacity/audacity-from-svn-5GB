@@ -332,9 +332,12 @@ void ControlToolBar::EnableDisableButtons()
    // Only interested in audio type tracks
    if (p) {
       TrackListIterator iter( p->GetTracks() );
-
       for (Track *t = iter.First(); t; t = iter.Next()) {
-         if (t->GetKind() == Track::Wave || t->GetKind() == Track::Note) {
+         if (t->GetKind() == Track::Wave
+#if defined(USE_MIDI)
+         || t->GetKind() == Track::Note
+#endif          
+         ) {
             tracks = true;
             break;
          }

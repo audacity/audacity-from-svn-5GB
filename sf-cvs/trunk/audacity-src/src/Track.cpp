@@ -713,6 +713,7 @@ WaveTrackArray TrackList::GetWaveTrackArray(bool selectionOnly)
    return waveTrackArray;
 }
 
+#if defined(USE_MIDI)
 NoteTrackArray TrackList::GetNoteTrackArray(bool selectionOnly)
 {
    NoteTrackArray noteTrackArray;
@@ -727,6 +728,7 @@ NoteTrackArray TrackList::GetNoteTrackArray(bool selectionOnly)
    }
    return noteTrackArray;
 }
+#endif
 
 #ifdef new
 #undef new
