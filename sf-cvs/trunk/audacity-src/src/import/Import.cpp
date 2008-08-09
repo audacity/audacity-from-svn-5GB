@@ -139,11 +139,14 @@ int Importer::Import(wxString fName,
          importPluginNode = tryFirstNode;
       }
       ImportPlugin *plugin = importPluginNode->GetData();
+      // Do not use this plugin if it doesn't supports the file's extension
       if (plugin->SupportsExtension(extension))
       {
+         // Try to open the file with this plugin (probe it)
          mInFile = plugin->Open(fName);
          if ( (mInFile != NULL) && (mInFile->GetStreamCount() > 0) )
          {
+            // File has more than one stream - display stream selector
             if (mInFile->GetStreamCount() > 1)                                                  
             {
                ImportStreamDialog ImportDlg(mInFile, NULL, -1, _("Select stream(s) to import"));
@@ -153,6 +156,7 @@ int Importer::Import(wxString fName,
                   return 0;
                }
             }
+            // One stream - import it by default
             else
                mInFile->SetStreamUsage(0,TRUE);
 
