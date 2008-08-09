@@ -23,17 +23,23 @@
 #include <wx/gdicmn.h>
 #endif //EXPERIMENTAL_RULER_AUTOSIZE
 
-class wxTextFile;
-class DirManager;
-class UndoStack;
-class TimeTrack;
-class WaveTrack;
-class NoteTrack;
 #ifdef __WXMSW__
 #pragma warning(disable:4284)
 #endif
+
+class wxTextFile;
+class DirManager;
+class UndoStack;
+class LabelTrack;
+class TimeTrack;
+class WaveTrack;
+
 WX_DEFINE_ARRAY(WaveTrack*, WaveTrackArray);
+
+#if defined(USE_MIDI)
+class NoteTrack;
 WX_DEFINE_ARRAY(NoteTrack*, NoteTrackArray);
+#endif
 
 class AUDACITY_DLL_API Track: public XMLTagHandler {
 
@@ -84,7 +90,9 @@ class AUDACITY_DLL_API Track: public XMLTagHandler {
    enum {
       None,
       Wave,
+#if defined(USE_MIDI)
       Note,
+#endif
       Label,
       Time
    } TrackKindEnum;
@@ -238,8 +246,11 @@ class AUDACITY_DLL_API TrackList {
   WaveTrackArray GetWaveTrackArray(bool selectionOnly);
   /** Consider this function depricated in favor of GetWaveTrackArray */
   void GetWaveTracks(bool selectionOnly, int *num, WaveTrack ***tracks);
+
+#if defined(USE_MIDI)
   NoteTrackArray GetNoteTrackArray(bool selectionOnly);
-  
+#endif
+
   /// Mainly a test function. Uses a linear search, so could be slow.
   bool Contains(Track * t) const;
   
@@ -300,12 +311,6 @@ class AUDACITY_DLL_API ConstTrackListIterator {
 };
 
 
-class WaveTrack;
-class NoteTrack;
-class LabelTrack;
-class TimeTrack;
-class DirManager;
-
 class AUDACITY_DLL_API TrackFactory
 {
  private:
@@ -324,9 +329,11 @@ class AUDACITY_DLL_API TrackFactory
    WaveTrack* DuplicateWaveTrack(WaveTrack &orig);
    WaveTrack *NewWaveTrack(sampleFormat format = (sampleFormat)0,
                            double rate = 0);
-   NoteTrack *NewNoteTrack();
    LabelTrack *NewLabelTrack();
    TimeTrack *NewTimeTrack();
+#if defined(USE_MIDI)
+   NoteTrack *NewNoteTrack();
+#endif
 };
 
 #endif
