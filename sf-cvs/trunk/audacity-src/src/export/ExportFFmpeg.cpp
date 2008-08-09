@@ -16,11 +16,6 @@
 
 *//***************************************************************//**
 
-\class ExportFFmpegWAVOptions
-\brief Options dialog for FFmpeg exporting of WAV format.
-
-*//***************************************************************//**
-
 \class ExportFFmpegAACOptions
 \brief Options dialog for FFmpeg exporting of AAC format.
 
@@ -80,9 +75,9 @@ function.
 
 extern FFmpegLibs *FFmpegLibsInst;
 
+/// Identifiers for pre-set export types.
 enum FFmpegExposedFormat 
 {
-   FMT_PCMS16LEWAV,
    FMT_M4A,
    FMT_AC3,
    FMT_GSMAIFF,
@@ -94,37 +89,41 @@ enum FFmpegExposedFormat
    FMT_LAST
 };
 
+/// Describes export type
 struct ExposedFormat
 {
-   FFmpegExposedFormat fmtid;
-   const wxChar *name;
-   const wxChar *extension;
-   int maxchannels;
-   bool canmetadata;
-   bool canutf8;
-   const wxChar *description;
-   CodecID codecid;
+   FFmpegExposedFormat fmtid; //!< one of the FFmpegExposedFormat
+   const wxChar *name;        //!< format name (internal, should be unique; if not - export dialog may show unusual behaviour)
+   const wxChar *extension;   //!< default extension for this format. More extensions may be added later via AddExtension. Also used to guess the format (so, keep it relevant!)
+   int maxchannels;           //!< how much channels this format could handle
+   bool canmetadata;          //!< true if format supports metadata, false otherwise
+   bool canutf8;              //!< true if format supports metadata in UTF-8, false otherwise
+   const wxChar *description; //!< format description (will be shown in export dialog)
+   CodecID codecid;           //!< codec ID (see libavcodec/avcodec.h)
 };
 
+/// List of export types
 ExposedFormat fmts[] = 
 {
-   {FMT_PCMS16LEWAV, wxT("WAV"),       wxT("wav"),    255,  false,false,_("WAV Files (FFmpeg)"),                      CODEC_ID_PCM_S16LE},
-   {FMT_M4A,         wxT("M4A"),       wxT("m4a"),    48,   true ,true ,_("M4A (AAC) Files (FFmpeg)"),                CODEC_ID_AAC},
-   {FMT_AC3,         wxT("AC3"),       wxT("ac3"),    7,    false,false,_("AC3 Files (FFmpeg)"),                      CODEC_ID_AC3},
-   {FMT_GSMAIFF,     wxT("GSMAIFF"),   wxT("aiff"),   1,    true ,true ,_("GSM-AIFF Files (FFmpeg)"),                 CODEC_ID_GSM},
-   {FMT_GSMMSWAV,    wxT("GSMWAV"),    wxT("wav"),    1,    false,false,_("GSM-WAV (Microsoft) Files (FFmpeg)"),      CODEC_ID_GSM_MS},
-   {FMT_AMRNB,       wxT("AMRNB"),     wxT("amr"),    1,    false,false,_("AMR (narrow band) Files (FFmpeg)"),        CODEC_ID_AMR_NB},
-   {FMT_AMRWB,       wxT("AMRWB"),     wxT("amr"),    1,    false,false,_("AMR (wide band) Files (FFmpeg)"),          CODEC_ID_AMR_WB},
-   {FMT_WMA2,        wxT("WMA"),       wxT("wma"),    2,    true ,false,_("WMA (version 2) Files (FFmpeg)"),          CODEC_ID_WMAV2},
-   {FMT_OTHER,       wxT("FFMPEG"),    wxT("ffmpeg"), 255,  true ,true ,_("Custom FFmpeg Export"),                    CODEC_ID_NONE}
+   {FMT_M4A,         wxT("M4A"),     wxT("m4a"),  48,  true ,true ,_("M4A (AAC) Files (FFmpeg)"),           CODEC_ID_AAC},
+   {FMT_AC3,         wxT("AC3"),     wxT("ac3"),  7,   false,false,_("AC3 Files (FFmpeg)"),                 CODEC_ID_AC3},
+   {FMT_GSMAIFF,     wxT("GSMAIFF"), wxT("aiff"), 1,   true ,true ,_("GSM-AIFF Files (FFmpeg)"),            CODEC_ID_GSM},
+   {FMT_GSMMSWAV,    wxT("GSMWAV"),  wxT("wav"),  1,   false,false,_("GSM-WAV (Microsoft) Files (FFmpeg)"), CODEC_ID_GSM_MS},
+   {FMT_AMRNB,       wxT("AMRNB"),   wxT("amr"),  1,   false,false,_("AMR (narrow band) Files (FFmpeg)"),   CODEC_ID_AMR_NB},
+   {FMT_AMRWB,       wxT("AMRWB"),   wxT("amr"),  1,   false,false,_("AMR (wide band) Files (FFmpeg)"),     CODEC_ID_AMR_WB},
+   {FMT_WMA2,        wxT("WMA"),     wxT("wma"),  2,   true ,false,_("WMA (version 2) Files (FFmpeg)"),     CODEC_ID_WMAV2},
+   {FMT_OTHER,       wxT("FFMPEG"),  wxT(""),     255, true ,true ,_("Custom FFmpeg Export"),               CODEC_ID_NONE}
 };
 
+/// Describes format-codec compatibility
 struct CompatibilityEntry
 {
-   const wxChar *fmt;
-   CodecID codec;
+   const wxChar *fmt; //!< format, recognizeable by guess_format()
+   CodecID codec;     //!< codec ID
 };
 
+/// Format-codec compatibility list
+/// Must end with NULL entry
 CompatibilityEntry CompatibilityList[] = 
 {
    { wxT("adts"), CODEC_ID_AAC },
@@ -404,9 +403,14 @@ CompatibilityEntry CompatibilityList[] =
 // ExportFFmpegAC3Options Class
 //----------------------------------------------------------------------------
 
+/// Bit Rates supported by AC3 encoder
 static int iAC3BitRates[] = { 32000, 40000, 48000, 56000, 64000, 80000, 96000, 112000, 128000, 160000, 192000, 224000, 256000, 320000, 384000, 448000, 512000, 576000, 640000 };
-static int iAC3SampleRates[] = { 32000, 44100, 48000, 0};
 
+/// Sample Rates supported by AC3 encoder (must end with zero-element)
+/// It is not used in dialog anymore, but will be required later
+static int iAC3SampleRates[] = { 32000, 44100, 48000, 0 };
+
+/// AC3 export options dialog
 class ExportFFmpegAC3Options : public wxDialog
 {
 public:
@@ -490,101 +494,16 @@ void ExportFFmpegAC3Options::OnOK(wxCommandEvent& event)
 }
 
 //----------------------------------------------------------------------------
-// ExportFFmpegWAVOptions Class
-//----------------------------------------------------------------------------
-
-static int iWAVSampleRates[] = { 48000, 44100, 32000 };
-
-class ExportFFmpegWAVOptions : public wxDialog
-{
-public:
-
-   ExportFFmpegWAVOptions(wxWindow *parent);
-   void PopulateOrExchange(ShuttleGui & S);
-   void OnOK(wxCommandEvent& event);
-
-private:
-
-   wxArrayString mSampleRateNames;
-   wxArrayInt    mSampleRateLabels;
-
-   wxChoice *mSampleRateChoice;
-   wxButton *mOk;
-   int mSampleRateFromChoice;
-
-   DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE(ExportFFmpegWAVOptions, wxDialog)
-EVT_BUTTON(wxID_OK,            ExportFFmpegWAVOptions::OnOK)
-END_EVENT_TABLE()
-
-ExportFFmpegWAVOptions::ExportFFmpegWAVOptions(wxWindow *parent)
-:  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify WAV Options")),
-            wxDefaultPosition, wxDefaultSize,
-            wxDEFAULT_DIALOG_STYLE)
-{
-   ShuttleGui S(this, eIsCreatingFromPrefs);
-
-   for (unsigned int i=0; i < (sizeof(iWAVSampleRates)/sizeof(int)); i++)
-   {
-      mSampleRateNames.Add(wxString::Format(wxT("%i"),iWAVSampleRates[i]));
-      mSampleRateLabels.Add(iWAVSampleRates[i]);
-   }
-
-
-   PopulateOrExchange(S);
-}
-
-/// 
-/// 
-void ExportFFmpegWAVOptions::PopulateOrExchange(ShuttleGui & S)
-{
-   S.StartHorizontalLay(wxEXPAND, 0);
-   {
-      S.StartStatic(_("WAV Export Setup"), 0);
-      {
-         S.StartTwoColumn();
-         {
-            S.TieChoice(_("Sample Rate:"), wxT("/FileFormats/WAVSampleRate"), 
-               44100, mSampleRateNames, mSampleRateLabels);
-         }
-         S.EndTwoColumn();
-      }
-      S.EndStatic();
-   }
-   S.EndHorizontalLay();
-
-   S.AddStandardButtons();
-
-   Layout();
-   Fit();
-   SetMinSize(GetSize());
-   Center();
-
-   return;
-}
-
-/// 
-/// 
-void ExportFFmpegWAVOptions::OnOK(wxCommandEvent& event)
-{
-   ShuttleGui S(this, eIsSavingToPrefs);
-   PopulateOrExchange(S);
-
-   EndModal(wxID_OK);
-
-   return;
-}
-
-
-//----------------------------------------------------------------------------
 // ExportFFmpegAACOptions Class
 //----------------------------------------------------------------------------
 
+/// AAC profiles
 static int iAACProfileValues[] = { FF_PROFILE_AAC_LOW, FF_PROFILE_AAC_MAIN, /*FF_PROFILE_AAC_SSR,*/ FF_PROFILE_AAC_LTP };
+
+/// Names of AAC profiles to be displayed
 static const wxChar *iAACProfileNames[] = { _("Low Complexity"), _("Main profile"), /*_("SSR"),*/ _("LTP") }; //SSR is not supported
+
+/// Sample rates supported by AAC encoder (must end with zero-element)
 static const int iAACSampleRates[] = { 7350, 8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 38000, 64000, 88200, 0 };
 
 
@@ -605,7 +524,7 @@ private:
 };
 
 BEGIN_EVENT_TABLE(ExportFFmpegAACOptions, wxDialog)
-EVT_BUTTON(wxID_OK,ExportFFmpegAACOptions::OnOK)
+   EVT_BUTTON(wxID_OK,ExportFFmpegAACOptions::OnOK)
 END_EVENT_TABLE()
 
 ExportFFmpegAACOptions::ExportFFmpegAACOptions(wxWindow *parent)
@@ -656,7 +575,8 @@ void ExportFFmpegAACOptions::OnOK(wxCommandEvent& event)
 // ExportFFmpegAMRNBOptions Class
 //----------------------------------------------------------------------------
 
-//8kHz for NB and 16kHz for WB.
+/// Bit Rates supported by libAMR-NB encoder
+/// Sample Rate is always 8 kHz
 static int iAMRNBBitRate[] = { 4750, 5150, 5900, 6700, 7400, 7950, 10200, 12200 };
 
 class ExportFFmpegAMRNBOptions : public wxDialog
@@ -680,7 +600,7 @@ private:
 };
 
 BEGIN_EVENT_TABLE(ExportFFmpegAMRNBOptions, wxDialog)
-EVT_BUTTON(wxID_OK,ExportFFmpegAMRNBOptions::OnOK)
+   EVT_BUTTON(wxID_OK,ExportFFmpegAMRNBOptions::OnOK)
 END_EVENT_TABLE()
 
 ExportFFmpegAMRNBOptions::ExportFFmpegAMRNBOptions(wxWindow *parent)
@@ -745,7 +665,8 @@ void ExportFFmpegAMRNBOptions::OnOK(wxCommandEvent& event)
 // ExportFFmpegAMRWBOptions Class
 //----------------------------------------------------------------------------
 
-//8kHz for NB and 16kHz for WB.
+/// Bit Rates supported by libAMR-WB encoder
+/// Sample Rate is always 16 kHz
 static int iAMRWBBitRate[] = { 6600, 8850, 12650, 14250, 15850, 18250, 19850, 23050, 23850 };
 
 class ExportFFmpegAMRWBOptions : public wxDialog
@@ -769,7 +690,7 @@ private:
 };
 
 BEGIN_EVENT_TABLE(ExportFFmpegAMRWBOptions, wxDialog)
-EVT_BUTTON(wxID_OK,ExportFFmpegAMRWBOptions::OnOK)
+   EVT_BUTTON(wxID_OK,ExportFFmpegAMRWBOptions::OnOK)
 END_EVENT_TABLE()
 
 ExportFFmpegAMRWBOptions::ExportFFmpegAMRWBOptions(wxWindow *parent)
@@ -834,6 +755,7 @@ void ExportFFmpegAMRWBOptions::OnOK(wxCommandEvent& event)
 // ExportFFmpegWMAOptions Class
 //----------------------------------------------------------------------------
 
+/// Bit Rates supported by WMA encoder. Setting bit rate to other values will not result in different file size.
 static int iWMABitRate[] = { 24634, 26012, 27734, 29457, 31524, 33764, 36348, 39448, 42894, 47028, 52024, 58225, 65805, 75624, 88716, 106976, 134539, 180189, 271835, 546598 };
 
 class ExportFFmpegWMAOptions : public wxDialog
@@ -857,7 +779,7 @@ private:
 };
 
 BEGIN_EVENT_TABLE(ExportFFmpegWMAOptions, wxDialog)
-EVT_BUTTON(wxID_OK,ExportFFmpegWMAOptions::OnOK)
+   EVT_BUTTON(wxID_OK,ExportFFmpegWMAOptions::OnOK)
 END_EVENT_TABLE()
 
 ExportFFmpegWMAOptions::ExportFFmpegWMAOptions(wxWindow *parent)
@@ -923,6 +845,8 @@ void ExportFFmpegWMAOptions::OnOK(wxCommandEvent& event)
 // ExportFFmpegOptions Class
 //----------------------------------------------------------------------------
 
+/// Identifiers for UI elements of the Custom FFmpeg export dialog
+/// Do not store these in external files, as they may be changed later
 enum FFmpegExportCtrlID {
    FEFirstID = 20000,
    FEFormatID,
@@ -961,17 +885,65 @@ enum FFmpegExportCtrlID {
    FELastID
 };
 
+/// String equivalents of identifiers for UI elements
+/// These may be stored in external files
+/// I have not yet found a convinient way to keep these two lists in sync automatically
+/// To get control's ID string, use FFmpegExportCtrlIDNames[ControlID - FEFirstID]
+wxChar *FFmpegExportCtrlIDNames[] = {
+   wxT("FEFirstID"),
+   wxT("FEFormatID"),
+   wxT("FECodecID"),
+   wxT("FEFormatLabelID"),
+   wxT("FECodecLabelID"),
+   wxT("FEFormatNameID"),
+   wxT("FECodecNameID"),
+   wxT("FELogLevelID"),
+   wxT("FEPresetID"),
+   wxT("FEBitrateID"),
+   wxT("FEQualityID"),
+   wxT("FESampleRateID"),
+   wxT("FELanguageID"),
+   wxT("FETagID"),
+   wxT("FECutoffID"),
+   wxT("FEFrameSizeID"),
+   wxT("FEBufSizeID"),
+   wxT("FEProfileID"),
+   wxT("FECompLevelID"),
+   wxT("FEUseLPCID"),
+   wxT("FELPCCoeffsID"),
+   wxT("FEMinPredID"),
+   wxT("FEMaxPredID"),
+   wxT("FEPredOrderID"),
+   wxT("FEMinPartOrderID"),
+   wxT("FEMaxPartOrderID"),
+   wxT("FEMuxRateID"),
+   wxT("FEPacketSizeID"),
+   wxT("FESavePresetID"),
+   wxT("FELoadPresetID"),
+   wxT("FEDeletePresetID"),
+   wxT("FEAllFormatsID"),
+   wxT("FEAllCodecsID"),
+   wxT("FEBitReservoirID"),
+   wxT("FELastID")
+};
+
+/// Entry for the Applicability table
 struct ApplicableFor
 {
-   bool                 enable;
-   FFmpegExportCtrlID   control;
-   CodecID              codec;
-   char                *format;
+   bool                 enable;  //!< true if this control should be enabled, false otherwise
+   FFmpegExportCtrlID   control; //!< control ID
+   CodecID              codec;   //!< Codec ID
+   char                *format;  //!< Format short name
 };
 
 
-//Some controls (parameters they represent) are only applicable to a number
-//of codecs or formats
+/// Some controls (parameters they represent) are only applicable to a number
+/// of codecs and/or formats.
+/// Syntax: first, enable a control for each applicable format-codec combination
+/// then disable it for anything else
+/// "any" - any format
+/// CODEC_ID_NONE - any codec
+/// This list must end with {FALSE,FFmpegExportCtrlID(0),CODEC_ID_NONE,NULL}
 ApplicableFor apptable[] = 
 {
    {TRUE,FEQualityID,CODEC_ID_AAC,"any"},
@@ -1046,9 +1018,10 @@ ApplicableFor apptable[] =
    {FALSE,FFmpegExportCtrlID(0),CODEC_ID_NONE,NULL}
 };
 
+/// Prediction order method - names. Labels are indices of this array.
 const wxChar *PredictionOrderMethodNames[] = { _("Estimate"), _("2-level"), _("4-level"), _("8-level"), _("Full search"), _("Log search")};
 
-
+/// Custom FFmpeg export dialog
 class ExportFFmpegOptions : public wxDialog
 {
 public:
@@ -1077,8 +1050,6 @@ private:
    wxArrayString mShownCodecLongNames;
    wxArrayString mFormatNames;
    wxArrayString mFormatLongNames;
-   wxArrayString mLogLevelNames;
-   wxArrayInt    mLogLevelLabels;
    wxArrayString mCodecNames;
    wxArrayString mCodecLongNames;
    wxArrayString mProfileNames;
@@ -1128,26 +1099,50 @@ private:
 
    wxArrayString *mPresets;
 
+   /// Finds the format currently selected and returns it's name and description
    void FindSelectedFormat(wxString **name, wxString **longname);
+   
+   /// Finds the codec currently selected and returns it's name and description
    void FindSelectedCodec(wxString **name, wxString **longname);
+
+   /// Retreives format list from libavformat
    void FetchFormatList();
+
+   /// Retreives a list of formats compatible to codec
+   ///\param id Codec ID
+   ///\param selfmt format selected at the moment
+   ///\return index of the selfmt in new format list or -1 if it is not in the list
    int FetchCompatibleFormatList(CodecID id, wxString *selfmt);
+
+   /// Retreives codec list from libavcodec
    void FetchCodecList();
-   int FetchCompatibleCodecList(const wxChar *fmt, int id);
+
+   /// Retreives a list of codecs compatible to format
+   ///\param fmt Format short name
+   ///\param id id of the codec selected at the moment
+   ///\return index of the id in new codec list or -1 if it is not in the list
+   int FetchCompatibleCodecList(const wxChar *fmt, CodecID id);
+
+   /// Retreives list of presets from configuration file
    void FetchPresetList();
 
+   // Enables/disables controls based on format/codec combination,
+   // leaving only relevant controls enabled.
+   // Hiding the controls may have been a better idea,
+   // but it's hard to hide their text labels too  
+   void EnableDisableControls(AVCodec *cdc, wxString *selfmt);
    DECLARE_EVENT_TABLE()
 };
 
 BEGIN_EVENT_TABLE(ExportFFmpegOptions, wxDialog)
-EVT_BUTTON(wxID_OK,ExportFFmpegOptions::OnOK)
-EVT_LISTBOX(FEFormatID,ExportFFmpegOptions::OnFormatList)
-EVT_LISTBOX(FECodecID,ExportFFmpegOptions::OnCodecList)
-EVT_BUTTON(FEAllFormatsID,ExportFFmpegOptions::OnAllFormats)
-EVT_BUTTON(FEAllCodecsID,ExportFFmpegOptions::OnAllCodecs)
-EVT_BUTTON(FESavePresetID,ExportFFmpegOptions::OnSavePreset)
-EVT_BUTTON(FELoadPresetID,ExportFFmpegOptions::OnLoadPreset)
-EVT_BUTTON(FEDeletePresetID,ExportFFmpegOptions::OnDeletePreset)
+   EVT_BUTTON(wxID_OK,ExportFFmpegOptions::OnOK)
+   EVT_LISTBOX(FEFormatID,ExportFFmpegOptions::OnFormatList)
+   EVT_LISTBOX(FECodecID,ExportFFmpegOptions::OnCodecList)
+   EVT_BUTTON(FEAllFormatsID,ExportFFmpegOptions::OnAllFormats)
+   EVT_BUTTON(FEAllCodecsID,ExportFFmpegOptions::OnAllCodecs)
+   EVT_BUTTON(FESavePresetID,ExportFFmpegOptions::OnSavePreset)
+   EVT_BUTTON(FELoadPresetID,ExportFFmpegOptions::OnLoadPreset)
+   EVT_BUTTON(FEDeletePresetID,ExportFFmpegOptions::OnDeletePreset)
 END_EVENT_TABLE()
 
 ExportFFmpegOptions::~ExportFFmpegOptions()
@@ -1171,12 +1166,6 @@ ExportFFmpegOptions::ExportFFmpegOptions(wxWindow *parent)
    FetchFormatList();
    FetchCodecList();
 
-   for (unsigned int i = 0; i < 10; i++)
-   {
-      mLogLevelLabels.Add(i);
-      mLogLevelNames.Add(wxString::Format(wxT("%d"),i));
-   }
-
    for (unsigned int i = 0; i < 6; i++)
    {
       mPredictionOrderMethodLabels.Add(i);
@@ -1191,25 +1180,52 @@ ExportFFmpegOptions::ExportFFmpegOptions(wxWindow *parent)
 
    PopulateOrExchange(S);
 
+   //Select the format that was selected last time this dialog was closed
    mFormatList->Select(mFormatList->FindString(gPrefs->Read(wxT("/FileFormats/FFmpegFormat"))));
    DoOnFormatList();
+
+   //Select the codec that was selected last time this dialog was closed
    AVCodec *codec = FFmpegLibsInst->avcodec_find_encoder((CodecID)gPrefs->Read(wxT("/FileFormats/FFmpegCodec"),(long)CODEC_ID_NONE));
    if (codec != NULL) mCodecList->Select(mCodecList->FindString(wxString::FromUTF8(codec->name)));
    DoOnCodecList();
 
 }
 
-///
-///
+/// Preset is stored in audacity.cfg at the moment. Here is an example:
+/// [FFmpegExportPreset_testpreset3]
+/// FEFormatID=avi
+/// FECodecID=ac3
+/// FEBitrateID=256000
+/// FEQualityID=100
+/// FESampleRateID=0
+/// FELanguageID=eng
+/// FETagID=
+/// FECutoffID=0
+/// FEFrameSizeID=0
+/// FEProfileID=
+/// FECompLevelID=0
+/// FEUseLPCID=1
+/// FELPCCoeffsID=0
+/// FEMinPredID=-1
+/// FEMaxPredID=-1
+/// FEPredOrderID=
+/// FEMinPartOrderID=-1
+/// FEMaxPartOrderID=-1
+/// FEMuxRateID=0
+/// FEPacketSizeID=0
+/// FEBitReservoirID=0
+
 void ExportFFmpegOptions::FetchPresetList()
 {
    mPresets = new wxArrayString();
+   // Enumerate all sections in the config file
    wxString group;
    long dummy;
    if (gPrefs->GetFirstGroup(group,dummy))
    {
       do
       {
+         // Preset secions starts with FFmpegExportPreset_
          wxString rest;
          if (group.StartsWith(wxT("FFmpegExportPreset_"), &rest))
          {
@@ -1223,21 +1239,19 @@ void ExportFFmpegOptions::FetchPresetList()
 ///
 void ExportFFmpegOptions::FetchFormatList()
 {
-   AVOutputFormat *ofmt=NULL;
-   ofmt = FFmpegLibsInst->av_oformat_next(ofmt);
-   while (ofmt)
+   // Enumerate all output formats
+   AVOutputFormat *ofmt = NULL;
+   while (ofmt = FFmpegLibsInst->av_oformat_next(ofmt))
    {
+      // Any audio-capable format has default audio codec.
+      // If it doesn't, then it doesn't supports any audio codecs
       if (ofmt->audio_codec != CODEC_ID_NONE)
       {
-         AVCodec *encoder = FFmpegLibsInst->avcodec_find_encoder(ofmt->audio_codec);
-         if (encoder)
-         {
-            mFormatNames.Add(wxString::FromUTF8(ofmt->name));
-            mFormatLongNames.Add(wxString::Format(wxT("%s - %s"),mFormatNames.Last().c_str(),wxString::FromUTF8(ofmt->long_name).c_str()));
-         }
+         mFormatNames.Add(wxString::FromUTF8(ofmt->name));
+         mFormatLongNames.Add(wxString::Format(wxT("%s - %s"),mFormatNames.Last().c_str(),wxString::FromUTF8(ofmt->long_name).c_str()));
       }
-      ofmt = FFmpegLibsInst->av_oformat_next(ofmt);
    }
+   // Show all formats
    mShownFormatNames = mFormatNames;
    mShownFormatLongNames =  mFormatLongNames;
 }
@@ -1246,17 +1260,18 @@ void ExportFFmpegOptions::FetchFormatList()
 ///
 void ExportFFmpegOptions::FetchCodecList()
 {
-   AVCodec *codec=NULL;
-   codec = FFmpegLibsInst->av_codec_next(codec);
-   while (codec)
+   // Enumerate all codecs
+   AVCodec *codec = NULL;
+   while (codec = FFmpegLibsInst->av_codec_next(codec))
    {
+      // We're only interested in audio and only in encoders
       if (codec->type == CODEC_TYPE_AUDIO && codec->encode)
       {
          mCodecNames.Add(wxString::FromUTF8(codec->name));
          mCodecLongNames.Add(wxString::Format(wxT("%s - %s"),mCodecNames.Last().c_str(),wxString::FromUTF8(codec->long_name).c_str()));
       }
-      codec = FFmpegLibsInst->av_codec_next(codec);
    }
+   // Show all codecs
    mShownCodecNames = mCodecNames;
    mShownCodecLongNames = mCodecLongNames;
 }
@@ -1396,12 +1411,19 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
 ///
 void ExportFFmpegOptions::FindSelectedFormat(wxString **name, wxString **longname)
 {
+   // Get current selection
    wxArrayInt selections;
    int n = mFormatList->GetSelections(selections);
    if (n <= 0) return;
+
+   // Get selected format short name
    wxString selfmt = mFormatList->GetString(selections[0]);
+
+   // Find it's index
    int nFormat = mFormatNames.Index(selfmt.c_str());
    if (nFormat == wxNOT_FOUND) return;
+
+   // Return short name and description
    if (name != NULL) *name = &mFormatNames[nFormat];
    if (longname != NULL) *longname = &mFormatLongNames[nFormat];
    return;
@@ -1410,38 +1432,68 @@ void ExportFFmpegOptions::FindSelectedFormat(wxString **name, wxString **longnam
 ///
 void ExportFFmpegOptions::FindSelectedCodec(wxString **name, wxString **longname)
 {
+   // Get current selection
    wxArrayInt selections;
    int n = mCodecList->GetSelections(selections);
    if (n <= 0) return;
+
+   // Get selected codec short name
    wxString selcdc = mCodecList->GetString(selections[0]);
+
+   // Find it's index
    int nCodec = mCodecNames.Index(selcdc.c_str());
    if (nCodec == wxNOT_FOUND) return;
+
+   // Return short name and description
    if (name != NULL) *name = &mCodecNames[nCodec];
    if (longname != NULL) *longname = &mCodecLongNames[nCodec];
 }
 
 ///
 ///
-int ExportFFmpegOptions::FetchCompatibleCodecList(const wxChar *fmt, int id)
+int ExportFFmpegOptions::FetchCompatibleCodecList(const wxChar *fmt, CodecID id)
 {
+   // By default assume that id is not in the list
    int index = -1;
+   // By default no codecs are compatible (yet)
    mShownCodecNames.Clear();
    mShownCodecLongNames.Clear();
+   // Clear the listbox
    mCodecList->Clear();
+   // Zero - format is not found at all
    int found = 0;
    wxString str(fmt);
    for (int i = 0; CompatibilityList[i].fmt != NULL; i++)
    {
       if (str.Cmp(CompatibilityList[i].fmt) == 0)
       {
+         // Format is found in the list
          found = 1;
          if (CompatibilityList[i].codec == CODEC_ID_NONE)
          {
+            // Format is found in the list and it is compatible with CODEC_ID_NONE (means that it is compatible to anything)
             found = 2;
             break;
          }
+         // Find the codec, that is claimed to be compatible
          AVCodec *codec = FFmpegLibsInst->avcodec_find_encoder(CompatibilityList[i].codec);
+         // If it exists, is audio and has encoder
          if (codec != NULL && (codec->type == CODEC_TYPE_AUDIO) && codec->encode)
+         {
+            // If it was selected - remember it's new index
+            if ((id >= 0) && codec->id == id) index = mShownCodecNames.GetCount();
+            mShownCodecNames.Add(wxString::FromUTF8(codec->name));
+            mShownCodecLongNames.Add(wxString::Format(wxT("%s - %s"),mShownCodecNames.Last().c_str(),wxString::FromUTF8(codec->long_name).c_str()));
+         }
+      }
+   }
+   // All codecs are compatible with this format
+   if (found == 2)
+   {
+      AVCodec *codec = NULL;
+      while (codec = FFmpegLibsInst->av_codec_next(codec))
+      {
+         if (codec->type == CODEC_TYPE_AUDIO)
          {
             if ((id >= 0) && codec->id == id) index = mShownCodecNames.GetCount();
             mShownCodecNames.Add(wxString::FromUTF8(codec->name));
@@ -1449,19 +1501,8 @@ int ExportFFmpegOptions::FetchCompatibleCodecList(const wxChar *fmt, int id)
          }
       }
    }
-   if (found == 2)
-   {
-      AVCodec *codec = FFmpegLibsInst->av_codec_next(NULL);
-      while (codec)
-      {
-         if (codec->type == CODEC_TYPE_AUDIO)
-         {
-            mShownCodecNames.Add(wxString::FromUTF8(codec->name));
-            mShownCodecLongNames.Add(wxString::Format(wxT("%s - %s"),mShownCodecNames.Last().c_str(),wxString::FromUTF8(codec->long_name).c_str()));
-            codec = FFmpegLibsInst->av_codec_next(codec);
-         }
-      }
-   }
+   // Format is not found - find format in libavformat and add it's default audio codec
+   // This allows us to provide limited support for new formats without modifying the compatibility list
    else if (found == 0)
    {
       wxCharBuffer buf = str.ToUTF8();
@@ -1477,7 +1518,9 @@ int ExportFFmpegOptions::FetchCompatibleCodecList(const wxChar *fmt, int id)
          }
       }
    }
+   // Show new codec list
    mCodecList->Append(mShownCodecNames);
+
    return index;
 }
 
@@ -1490,8 +1533,9 @@ int ExportFFmpegOptions::FetchCompatibleFormatList(CodecID id, wxString *selfmt)
    mShownFormatLongNames.Clear();
    mFormatList->Clear();
    AVOutputFormat *ofmt = NULL;
-   ofmt = FFmpegLibsInst->av_oformat_next(ofmt);
+   ofmt = NULL;
    wxArrayString FromList;
+   // Find all formats compatible to this codec in compatibility list
    for (int i = 0; CompatibilityList[i].fmt != NULL; i++)
    {
       if (CompatibilityList[i].codec == id)
@@ -1503,7 +1547,8 @@ int ExportFFmpegOptions::FetchCompatibleFormatList(CodecID id, wxString *selfmt)
          if (tofmt != NULL) mShownFormatLongNames.Add(wxString::Format(wxT("%s - %s"),CompatibilityList[i].fmt,wxString::FromUTF8(tofmt->long_name).c_str()));
       }
    }
-   while (ofmt)
+   // Find all formats which have this codec as default and which are not in the list yet and add them too
+   while (ofmt = FFmpegLibsInst->av_oformat_next(ofmt))
    {
       if (ofmt->audio_codec == id)
       {
@@ -1524,7 +1569,6 @@ int ExportFFmpegOptions::FetchCompatibleFormatList(CodecID id, wxString *selfmt)
             mShownFormatLongNames.Add(wxString::Format(wxT("%s - %s"),mShownFormatNames.Last().c_str(),wxString::FromUTF8(ofmt->long_name).c_str()));
          }
       }
-      ofmt = FFmpegLibsInst->av_oformat_next(ofmt);
    }
    mFormatList->Append(mShownFormatNames);
    return index;
@@ -1539,6 +1583,28 @@ void ExportFFmpegOptions::OnDeletePreset(wxCommandEvent& event)
    wxString groupname = wxString::Format(wxT("FFmpegExportPreset_%s"),presetname.c_str());
    gPrefs->DeleteGroup(groupname);
    mPresets->Remove(presetname.c_str());
+}
+
+/// Change these functions to switch from gPrefs to something else,
+/// probably an external xml file.
+void SaveControlState(wxString setting, wxString value)
+{
+   gPrefs->Write(setting,value);
+}
+
+void SaveControlState(wxString setting, long value)
+{
+   gPrefs->Write(setting,value);
+}
+
+void SaveControlState(wxString setting, int value)
+{
+   gPrefs->Write(setting,value);
+}
+
+void SaveControlState(wxString setting, bool value)
+{
+   gPrefs->Write(setting,value);
 }
 
 ///
@@ -1564,15 +1630,15 @@ void ExportFFmpegOptions::OnSavePreset(wxCommandEvent& event)
          {
          case FEFormatID:
             lb = dynamic_cast<wxListBox*>(wnd);
-            setting.append(wxT("FEFormatID"));
+            setting.append(FFmpegExportCtrlIDNames[id - FEFirstID]);
             if (lb->GetSelection() < 0) { wxMessageBox(wxT("Please select format before saving a profile")); return; }
-            gPrefs->Write(setting,lb->GetString(lb->GetSelection()));
+            SaveControlState(setting,lb->GetString(lb->GetSelection()));
             break;
          case FECodecID:
             lb = dynamic_cast<wxListBox*>(wnd);
-            setting.append(wxT("FECodecID"));
+            setting.append(FFmpegExportCtrlIDNames[id - FEFirstID]);
             if (lb->GetSelection() < 0) { wxMessageBox(wxT("Please select codec before saving a profile")); return; }
-            gPrefs->Write(setting,lb->GetString(lb->GetSelection()));
+            SaveControlState(setting,lb->GetString(lb->GetSelection()));
             break;
          case FEFormatLabelID:
          case FECodecLabelID:
@@ -1580,112 +1646,51 @@ void ExportFFmpegOptions::OnSavePreset(wxCommandEvent& event)
          case FECodecNameID:
          case FELogLevelID:
          case FEPresetID:
-            break;
-         case FEBitrateID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEBitrateID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FEQualityID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEQualityID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FESampleRateID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FESampleRateID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FELanguageID:
-            tc = dynamic_cast<wxTextCtrl*>(wnd);
-            setting.append(wxT("FELanguageID"));
-            gPrefs->Write(setting,tc->GetValue());
-            break;
-         case FETagID:
-            tc = dynamic_cast<wxTextCtrl*>(wnd);
-            setting.append(wxT("FETagID"));
-            gPrefs->Write(setting,tc->GetValue());
-            break;
-         case FECutoffID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FECutoffID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FEFrameSizeID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEFrameSizeID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FEBufSizeID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEBufSizeID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FEProfileID:
-            ch = dynamic_cast<wxChoice*>(wnd);
-            setting.append(wxT("FEProfileID"));
-            gPrefs->Write(setting,ch->GetString(ch->GetSelection()));
-            break;
-         case FECompLevelID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FECompLevelID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FEUseLPCID:
-            cb = dynamic_cast<wxCheckBox*>(wnd);
-            setting.append(wxT("FEUseLPCID"));
-            gPrefs->Write(setting,cb->GetValue());
-            break;
-         case FELPCCoeffsID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FELPCCoeffsID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FEMinPredID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEMinPredID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FEMaxPredID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEMaxPredID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FEPredOrderID:
-            ch = dynamic_cast<wxChoice*>(wnd);
-            setting.append(wxT("FEPredOrderID"));
-            gPrefs->Write(setting,ch->GetString(ch->GetSelection()));
-            break;
-         case FEMinPartOrderID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEMinPartOrderID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FEMaxPartOrderID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEMaxPartOrderID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FEMuxRateID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEMuxRateID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FEPacketSizeID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEPacketSizeID"));
-            gPrefs->Write(setting,sc->GetValue());
-            break;
-         case FEBitReservoirID:
-            cb = dynamic_cast<wxCheckBox*>(wnd);
-            setting.append(wxT("FEBitReservoirID"));
-            gPrefs->Write(setting,cb->GetValue());
-            break;
          case FESavePresetID:
          case FELoadPresetID:
          case FEDeletePresetID:
          case FEAllFormatsID:
          case FEAllCodecsID:
+            break;
+         // Spin control
+         case FEBitrateID:
+         case FEQualityID:
+         case FESampleRateID:         
+         case FECutoffID:
+         case FEFrameSizeID:
+         case FEBufSizeID:
+         case FECompLevelID:
+         case FELPCCoeffsID:
+         case FEMinPredID:
+         case FEMaxPredID:
+         case FEMinPartOrderID:
+         case FEMaxPartOrderID:
+         case FEMuxRateID:
+         case FEPacketSizeID:
+            sc = dynamic_cast<wxSpinCtrl*>(wnd);
+            setting.append(FFmpegExportCtrlIDNames[id - FEFirstID]);
+            SaveControlState(setting,sc->GetValue());
+            break;
+         // Text control
+         case FELanguageID:
+         case FETagID:
+            tc = dynamic_cast<wxTextCtrl*>(wnd);
+            setting.append(FFmpegExportCtrlIDNames[id - FEFirstID]);
+            SaveControlState(setting,tc->GetValue());
+            break;
+         // Choice
+         case FEProfileID:
+         case FEPredOrderID:
+            ch = dynamic_cast<wxChoice*>(wnd);
+            setting.append(FFmpegExportCtrlIDNames[id - FEFirstID]);
+            SaveControlState(setting,ch->GetString(ch->GetSelection()));
+            break;
+         // Check box
+         case FEUseLPCID:
+         case FEBitReservoirID:
+            cb = dynamic_cast<wxCheckBox*>(wnd);
+            setting.append(FFmpegExportCtrlIDNames[id - FEFirstID]);
+            SaveControlState(setting,cb->GetValue());
             break;
          }
       }
@@ -1699,6 +1704,27 @@ void ExportFFmpegOptions::OnSavePreset(wxCommandEvent& event)
       mPresetCombo->Select(mPresets->Index(name,false));
    }
 }
+
+void LoadControlState(wxString &setting, wxString *value, wxString &defval)
+{
+   gPrefs->Read(setting,value,defval);
+}
+
+void LoadControlState(wxString &setting, long *value, long defval)
+{
+   gPrefs->Read(setting,value,defval);
+}
+
+void LoadControlState(wxString &setting, int *value, int defval)
+{
+   gPrefs->Read(setting,value,defval);
+}
+
+void LoadControlState(wxString &setting, bool *value, bool defval)
+{
+   gPrefs->Read(setting,value,defval);
+}
+
 
 ///
 ///
@@ -1746,8 +1772,10 @@ void ExportFFmpegOptions::OnLoadPreset(wxCommandEvent& event)
    wxChoice *ch;
 
    wxString readstr;
+   // readlong is often used to store temporary value
    long readlong;
    bool readbool;
+
    for (int id = FEFirstID; id < FELastID; id++)
    {
       wxWindow *wnd = FindWindowById(id,this);
@@ -1758,15 +1786,15 @@ void ExportFFmpegOptions::OnLoadPreset(wxCommandEvent& event)
          {
          case FEFormatID:
             lb = dynamic_cast<wxListBox*>(wnd);
-            setting.append(wxT("FEFormatID"));
-            gPrefs->Read(setting,&readstr,wxT("ogg"));
+            setting.append(FFmpegExportCtrlIDNames[id - FEFirstID]);
+            LoadControlState(setting,&readstr,wxString(wxT("ogg")));
             readlong = lb->FindString(readstr);
             if (readlong > -1) lb->Select(readlong);
             break;
          case FECodecID:
             lb = dynamic_cast<wxListBox*>(wnd);
-            setting.append(wxT("FECodecID"));
-            gPrefs->Read(setting,&readstr,wxT("vorbis"));
+            setting.append(FFmpegExportCtrlIDNames[id - FEFirstID]);
+            LoadControlState(setting,&readstr,wxString(wxT("vorbis")));
             readlong = lb->FindString(readstr);
             if (readlong > -1) lb->Select(readlong);
             break;
@@ -1776,119 +1804,58 @@ void ExportFFmpegOptions::OnLoadPreset(wxCommandEvent& event)
          case FECodecNameID:
          case FELogLevelID:
          case FEPresetID:
-            break;
-         case FEBitrateID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEBitrateID"));
-            gPrefs->Read(setting,&readlong,0);
-            sc->SetValue(readlong);
-            break;
-         case FEQualityID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEQualityID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FESampleRateID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FESampleRateID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FELanguageID:
-            tc = dynamic_cast<wxTextCtrl*>(wnd);
-            setting.append(wxT("FELanguageID"));
-            gPrefs->Read(setting,&readstr,wxEmptyString);
-            tc->SetValue(readstr);
-            break;
-         case FETagID:
-            tc = dynamic_cast<wxTextCtrl*>(wnd);
-            setting.append(wxT("FETagID"));
-            gPrefs->Read(setting,&readstr,wxEmptyString);
-            tc->SetValue(readstr);
-            break;
-         case FECutoffID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FECutoffID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FEFrameSizeID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEFrameSizeID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FEBufSizeID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEBufSizeID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FEProfileID:
-            ch = dynamic_cast<wxChoice*>(wnd);
-            setting.append(wxT("FEProfileID"));
-            gPrefs->Read(setting,&readstr,this->mProfileNames[0]);
-            if (ch->FindString(readstr)) ch->Select(ch->FindString(readstr));
-            break;
-         case FECompLevelID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FECompLevelID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FEUseLPCID:
-            cb = dynamic_cast<wxCheckBox*>(wnd);
-            setting.append(wxT("FEUseLPCID"));
-            gPrefs->Read(setting,&readbool,true);
-            cb->SetValue(readbool);
-            break;
-         case FELPCCoeffsID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FELPCCoeffsID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FEMinPredID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEMinPredID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FEMaxPredID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEMaxPredID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FEPredOrderID:
-            ch = dynamic_cast<wxChoice*>(wnd);
-            setting.append(wxT("FEPredOrderID"));
-            gPrefs->Read(setting,&readstr,this->mPredictionOrderMethodNames[0]);
-            if (ch->FindString(readstr)) ch->Select(ch->FindString(readstr));
-            break;
-         case FEMinPartOrderID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEMinPartOrderID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FEMaxPartOrderID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEMaxPartOrderID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FEMuxRateID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEMuxRateID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FEPacketSizeID:
-            sc = dynamic_cast<wxSpinCtrl*>(wnd);
-            setting.append(wxT("FEPacketSizeID"));
-            gPrefs->Read(setting,&readlong,0); sc->SetValue(readlong);
-            break;
-         case FEBitReservoirID:
-            cb = dynamic_cast<wxCheckBox*>(wnd);
-            setting.append(wxT("FEBitReservoirID"));
-            gPrefs->Read(setting,&readbool,true);
-            cb->SetValue(readbool);
-            break;
          case FESavePresetID:
          case FELoadPresetID:
          case FEDeletePresetID:
          case FEAllFormatsID:
          case FEAllCodecsID:
+            break;
+         // It is not entierly correct to read *all* settings with the same default value,
+         // and this code may set wrong values in some controls if corresponding settings
+         // cannot be read from the file and default values are used instead
+         // Spin control
+         case FEBitrateID:
+         case FEQualityID:
+         case FESampleRateID:
+         case FECutoffID:
+         case FEFrameSizeID:
+         case FEBufSizeID:
+         case FECompLevelID:
+         case FELPCCoeffsID:
+         case FEMinPredID:
+         case FEMaxPredID:
+         case FEMinPartOrderID:            
+         case FEMaxPartOrderID:
+         case FEMuxRateID:
+         case FEPacketSizeID:
+            sc = dynamic_cast<wxSpinCtrl*>(wnd);
+            setting.append(FFmpegExportCtrlIDNames[id - FEFirstID]);
+            gPrefs->Read(setting,&readlong,0);
+            sc->SetValue(readlong);
+            break;
+         // Text control
+         case FELanguageID:
+         case FETagID:
+            tc = dynamic_cast<wxTextCtrl*>(wnd);
+            setting.append(FFmpegExportCtrlIDNames[id - FEFirstID]);
+            gPrefs->Read(setting,&readstr,wxEmptyString);
+            tc->SetValue(readstr);
+            break;
+         // Choice
+         case FEProfileID:
+         case FEPredOrderID:
+            ch = dynamic_cast<wxChoice*>(wnd);
+            setting.append(FFmpegExportCtrlIDNames[id - FEFirstID]);
+            gPrefs->Read(setting,&readstr,this->mProfileNames[0]);
+            if (ch->FindString(readstr)) ch->Select(ch->FindString(readstr));
+            break;
+         // Check box
+         case FEUseLPCID:
+         case FEBitReservoirID:
+            cb = dynamic_cast<wxCheckBox*>(wnd);
+            setting.append(FFmpegExportCtrlIDNames[id - FEFirstID]);
+            gPrefs->Read(setting,&readbool,true);
+            cb->SetValue(readbool);
             break;
          }
       }
@@ -1913,6 +1880,29 @@ void ExportFFmpegOptions::OnAllCodecs(wxCommandEvent& event)
    mShownCodecLongNames = mCodecLongNames;
    mCodecList->Clear();
    mCodecList->Append(mCodecNames);
+}
+
+void ExportFFmpegOptions::EnableDisableControls(AVCodec *cdc, wxString *selfmt)
+{
+   int handled = -1;
+   for (int i = 0; apptable[i].control != 0; i++)
+   {
+      if (apptable[i].control != handled)
+      {
+         bool codec = false;
+         bool format = false;
+         if (apptable[i].codec == CODEC_ID_NONE) codec = true;
+         else if (cdc != NULL && apptable[i].codec == cdc->id) codec = true;
+         if (apptable[i].format == "any") format = true;
+         else if (selfmt != NULL && selfmt->Cmp(wxString::FromUTF8(apptable[i].format)) == 0) format = true;
+         if (codec && format)
+         {
+            handled = apptable[i].control;
+            wxWindow *item = FindWindowById(apptable[i].control,this);
+            if (item != NULL) item->Enable(apptable[i].enable);
+         }
+      }
+   }
 }
 
 void ExportFFmpegOptions::DoOnFormatList()
@@ -1947,46 +1937,13 @@ void ExportFFmpegOptions::DoOnFormatList()
          selcdcid = cdc->id;
       }
    }
-   int newselcdc = FetchCompatibleCodecList(selfmt->c_str(), selcdcid);
-   if (newselcdc > 0) mCodecList->Select(newselcdc);
-/*   else
-   {
-      mShownCodecNames.Clear();
-      mShownCodecLongNames.Clear();
-      mCodecList->Clear();
-      
-      CodecID id = fmt->audio_codec;
-      AVCodec *cdc = FFmpegLibsInst->avcodec_find_encoder(id);
-      if (cdc != NULL)
-      {
-         mShownCodecNames.Add(wxString::FromUTF8(cdc->name));
-         mShownCodecLongNames.Add(wxString::Format(wxT("%s - %s"),mShownCodecNames.Last().c_str(),wxString::FromUTF8(cdc->long_name).c_str()));
-         mCodecList->Append(mShownCodecNames);
-         mCodecList->Select(0);
-      }
-   }*/
-   int handled = -1;
+   int newselcdc = FetchCompatibleCodecList(selfmt->c_str(), (CodecID)selcdcid);
+   if (newselcdc >= 0) mCodecList->Select(newselcdc);
+
    AVCodec *cdc = NULL;
    if (selcdc != NULL)
       cdc = FFmpegLibsInst->avcodec_find_encoder_by_name(selcdc->ToUTF8());
-   for (int i = 0; apptable[i].control != 0; i++)
-   {
-      if (apptable[i].control != handled)
-      {
-         bool codec = false;
-         bool format = false;
-         if (apptable[i].codec == CODEC_ID_NONE) codec = true;
-         else if (cdc != NULL && apptable[i].codec == cdc->id) codec = true;
-         if (apptable[i].format == "any") format = true;
-         else if (selfmt != NULL && selfmt->Cmp(wxString::FromUTF8(apptable[i].format)) == 0) format = true;
-         if (codec && format)
-         {
-            handled = apptable[i].control;
-            wxWindow *item = FindWindowById(apptable[i].control,this);
-            if (item != NULL) item->Enable(apptable[i].enable);
-         }
-      }
-   }
+   EnableDisableControls(cdc, selfmt);
    return;
 }
 
@@ -2024,29 +1981,9 @@ void ExportFFmpegOptions::DoOnCodecList()
    }
 
    int newselfmt = FetchCompatibleFormatList(cdc->id,selfmt);
-   if (newselfmt > 0) mFormatList->Select(newselfmt);
+   if (newselfmt >= 0) mFormatList->Select(newselfmt);
 
-   int handled = -1;
-   AVOutputFormat *fmt = NULL;
-   for (int i = 0; apptable[i].control != 0; i++)
-   {
-      if (apptable[i].control != handled)
-      {
-         bool codec = false;
-         bool format = false;
-         if (apptable[i].codec == CODEC_ID_NONE) codec = true;
-         else if (cdc != NULL && apptable[i].codec == cdc->id) codec = true;
-         if (apptable[i].format == "any") format = true;
-         else if (selfmt != NULL && selfmt->Cmp(wxString::FromUTF8(apptable[i].format)) == 0) format = true;
-         if (codec && format)
-         {
-            handled = apptable[i].control;
-            wxWindow *item = FindWindowById(apptable[i].control,this);
-            if (item != NULL) item->Enable(apptable[i].enable);
-         }
-      }
-   }
-
+   EnableDisableControls(cdc, selfmt);
    return;
 }
 
@@ -2092,14 +2029,41 @@ public:
    ExportFFmpeg();
    void Destroy();
 
+   /// Format intialization
    bool Init(const char *shortname, AudacityProject *project);
+   
+   /// Codec intialization
    bool InitCodecs(AudacityProject *project);
+
+   /// Writes metadata
    bool AddTags(Tags *metadata);
+
+   /// Encodes audio
    bool EncodeAudioFrame(int16_t *pFrame, int frameSize);
+
+   /// Flushes audio encoder
    bool Finalize();
+
+   /// Shows options dialog
+   ///\param format - index of export type
    bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
+
+   /// Check whether or not current project sample rate is compatible with the export codec
    bool CheckSampleRate(int rate, int lowrate, int highrate, const int *sampRates);
+
+   /// Asks user to resample the project or cancel the export procedure
    int  AskResample(int bitrate, int rate, int lowrate, int highrate, const int *sampRates);
+
+   /// Exports audio
+   ///\param project Audacity project
+   ///\param fName output file name
+   ///\param selectedOnly true if exporting only selected audio
+   ///\param t0 audio start time
+   ///\param t1 audio end time
+   ///\param mixerSpec mixer
+   ///\param metadata tags to write into file
+   ///\param subformat index of export type
+   ///\return true if export succeded
    bool Export(AudacityProject *project,
       int channels,
       wxString fName,
@@ -2112,24 +2076,24 @@ public:
 
 private:
 
-   AVFormatContext *	mEncFormatCtx;			// libavformat's context for our output file
-   AVOutputFormat *	mEncFormatDesc;			// describes our output file to libavformat
+   AVFormatContext *	mEncFormatCtx;			   // libavformat's context for our output file
+   AVOutputFormat  *	mEncFormatDesc;			// describes our output file to libavformat
 
-   AVStream *		mEncAudioStream;			// the output audio stream (may remain NULL)
-   AVCodecContext *	mEncAudioCodecCtx;		// the encoder for the output audio stream
-   uint8_t *		mEncAudioEncodedBuf;		// buffer to hold frames encoded by the encoder
-   int			mEncAudioEncodedBufSiz;		
+   AVStream        *	mEncAudioStream;			// the output audio stream (may remain NULL)
+   AVCodecContext  *	mEncAudioCodecCtx;		// the encoder for the output audio stream
+   uint8_t         *	mEncAudioEncodedBuf;		// buffer to hold frames encoded by the encoder
+   int			      mEncAudioEncodedBufSiz;		
    AVFifoBuffer		mEncAudioFifo;				// FIFO to write incoming audio samples into
-   uint8_t *		mEncAudioFifoOutBuf;		// buffer to read _out_ of the FIFO into
+   uint8_t         *	mEncAudioFifoOutBuf;		// buffer to read _out_ of the FIFO into
 
-   bool                  mCancelled;
-   wxString              mName;
+   bool              mCancelled;
+   wxString          mName;
 
-   int                   mSubFormat;
-   int                   mBitRate;
-   int                   mSampleRate;
-   int                   mChannels;
-   bool                  mSupportsUTF8;
+   int               mSubFormat;
+   int               mBitRate;
+   int               mSampleRate;
+   int               mChannels;
+   bool              mSupportsUTF8;
 };
 
 ExportFFmpeg::ExportFFmpeg()
@@ -2138,12 +2102,13 @@ ExportFFmpeg::ExportFFmpeg()
 
    PickFFmpegLibs();
    int newfmt;
-
+   // Adds export types from the export type list
    for (newfmt = 0; newfmt < FMT_LAST; newfmt++)
    {
       int fmtindex = AddFormat() - 1;
       SetFormat(fmts[newfmt].name,fmtindex);
       AddExtension(fmts[newfmt].extension,fmtindex);
+      // For some types add other extensions
       switch(newfmt)
       {
       case FMT_M4A:
@@ -2168,10 +2133,10 @@ ExportFFmpeg::ExportFFmpeg()
    mEncFormatDesc = NULL;			// describes our output file to libavformat
    mEncAudioStream = NULL;			// the output audio stream (may remain NULL)
    mEncAudioCodecCtx = NULL;		// the encoder for the output audio stream
-   mEncAudioEncodedBuf = NULL;		// buffer to hold frames encoded by the encoder
+   mEncAudioEncodedBuf = NULL;	// buffer to hold frames encoded by the encoder
    #define MAX_AUDIO_PACKET_SIZE (128 * 1024)
    mEncAudioEncodedBufSiz = 4*MAX_AUDIO_PACKET_SIZE;
-   mEncAudioFifoOutBuf = NULL;		// buffer to read _out_ of the FIFO into
+   mEncAudioFifoOutBuf = NULL;	// buffer to read _out_ of the FIFO into
    mSampleRate = 0;
    mSupportsUTF8 = true;
 }
@@ -2214,6 +2179,7 @@ bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
    wxString tName(mName);
    memcpy(mEncFormatCtx->filename,OSFILENAME(mName),strlen(OSFILENAME(mName))+1);
    
+   // At the moment Audacity can export only one audio stream
    if ((mEncAudioStream = FFmpegLibsInst->av_new_stream(mEncFormatCtx, 1)) == NULL)
    {
       wxLogMessage(wxT("FFmpeg : ERROR - Can't add audio stream to output file \"%s\"."), mName.c_str());
@@ -2240,6 +2206,7 @@ bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
       return false;
    }
 
+   // I have no idea what is this
    mEncFormatCtx->preload   = (int)(0.5 * AV_TIME_BASE);
    mEncFormatCtx->max_delay = (int)(0.7 * AV_TIME_BASE);
 
@@ -2280,10 +2247,10 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    mEncAudioCodecCtx->codec_tag = FFmpegLibsInst->av_codec_get_tag(mEncFormatCtx->oformat->codec_tag,mEncAudioCodecCtx->codec_id);
    mSampleRate = (int)project->GetRate();
    mEncAudioCodecCtx->global_quality = -1; //quality mode is off by default;
+
+   // Each export type has it's own settings
    switch (mSubFormat)
    {
-   case FMT_PCMS16LEWAV:
-      break;
    case FMT_M4A:
       mEncAudioCodecCtx->bit_rate = 0;
       mEncAudioCodecCtx->bit_rate *= mChannels;
@@ -2343,7 +2310,9 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       return false;
    }
 
+   // This happens if user refused to resample the project
    if (mSampleRate == 0) return false;
+
    if (mEncAudioCodecCtx->global_quality >= 0)
    {
       mEncAudioCodecCtx->bit_rate = 0;
@@ -2359,8 +2328,8 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    // Is the required audio codec compiled into libavcodec?
    if ((codec = FFmpegLibsInst->avcodec_find_encoder(mEncAudioCodecCtx->codec_id)) == NULL)
    {
-      wxLogMessage(wxT("FFmpeg : ERROR - Can't find audio codec %d."),mEncAudioCodecCtx->codec_id);
-      wxMessageBox(wxString::Format(wxT("FFmpeg cannot find audio codec %d.\nSupport for this codec is probably not compiled in."),mEncAudioCodecCtx->codec_id));
+      wxLogMessage(wxT("FFmpeg : ERROR - Can't find audio codec 0x%x."),mEncAudioCodecCtx->codec_id);
+      wxMessageBox(wxString::Format(wxT("FFmpeg cannot find audio codec 0x%x.\nSupport for this codec is probably not compiled in."),mEncAudioCodecCtx->codec_id));
       return false;
    }
 
@@ -2373,7 +2342,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    // Open the codec.
    if (FFmpegLibsInst->avcodec_open(mEncAudioCodecCtx, codec) < 0) 
    {
-      wxLogMessage(wxT("FFmpeg : ERROR - Can't open audio codec %d."),mEncAudioCodecCtx->codec_id);
+      wxLogMessage(wxT("FFmpeg : ERROR - Can't open audio codec 0x%x."),mEncAudioCodecCtx->codec_id);
       return false;
    }
  
@@ -2424,8 +2393,15 @@ bool ExportFFmpeg::Finalize()
       // the encoder must support short/incomplete frames for this to work.
       if (nFifoBytes > 0)
       {
+         // Fill audio buffer with zeroes. If codec tries to read the whole buffer,
+         // it will just read silence. If not - who cares?
          memset(mEncAudioFifoOutBuf,0,nAudioFrameSizeOut);
          AVCodec *codec = mEncAudioCodecCtx->codec;
+
+         // If codec supports CODEC_CAP_SMALL_LAST_FRAME, we can feed it with smaller frame
+         // If codec is FLAC, feed it anyway (it doesn't have CODEC_CAP_SMALL_LAST_FRAME, but it works)
+         // If frame_size is 1, then it's some kind of PCM codec, they don't have frames
+         // If user configured the exporter to feed the encoder with silence
          if ((codec->capabilities & CODEC_CAP_SMALL_LAST_FRAME)
             || codec->id == CODEC_ID_FLAC
             || mEncAudioCodecCtx->frame_size == 1
@@ -2435,10 +2411,11 @@ bool ExportFFmpeg::Finalize()
             int nFrameSizeTmp = mEncAudioCodecCtx->frame_size;
 
             // The last frame is going to contain a smaller than usual number of samples.
-            if (mEncAudioCodecCtx->frame_size != 1)
+            // For codecs without CODEC_CAP_SMALL_LAST_FRAME use normal frame size
+            if (mEncAudioCodecCtx->frame_size != 1 && codec->capabilities & CODEC_CAP_SMALL_LAST_FRAME)
                mEncAudioCodecCtx->frame_size = nFifoBytes / (mEncAudioCodecCtx->channels * sizeof(int16_t));
 
-            wxLogMessage(wxT("FFmpeg : Audio FIFO still contains %d bytes, writing short %d sample frame ..."), 
+            wxLogMessage(wxT("FFmpeg : Audio FIFO still contains %d bytes, writing %d sample frame ..."), 
                nFifoBytes, mEncAudioCodecCtx->frame_size);
 
             // Pull the bytes out from the FIFO and feed them to the encoder.
@@ -2637,13 +2614,13 @@ bool ExportFFmpeg::Export(AudacityProject *project,
 void AddStringTagUTF8(char field[], int size, wxString value)
 {
       memset(field,0,size);
-      memcpy(field,value.ToUTF8(),strlen(value.ToUTF8()) > size -1 ? size -1 : strlen(value.ToUTF8()));
+      memcpy(field,value.ToUTF8(),(int)strlen(value.ToUTF8()) > size -1 ? size -1 : strlen(value.ToUTF8()));
 }
 
 void AddStringTagANSI(char field[], int size, wxString value)
 {
       memset(field,0,size);
-      memcpy(field,value.mb_str(),strlen(value.mb_str()) > size -1 ? size -1 : strlen(value.mb_str()));
+      memcpy(field,value.mb_str(),(int)strlen(value.mb_str()) > size -1 ? size -1 : strlen(value.mb_str()));
 }
 
 bool ExportFFmpeg::AddTags(Tags *tags)
@@ -2744,13 +2721,7 @@ int ExportFFmpeg::AskResample(int bitrate, int rate, int lowrate, int highrate, 
 
 bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
 {
-   if (format == FMT_PCMS16LEWAV)
-   {
-      ExportFFmpegWAVOptions od(project);
-      od.ShowModal();
-      return true;
-   }
-   else if (format == FMT_M4A)
+   if (format == FMT_M4A)
    {
       ExportFFmpegAACOptions od(project);
       od.ShowModal();
