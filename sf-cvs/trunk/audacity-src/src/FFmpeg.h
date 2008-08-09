@@ -65,6 +65,8 @@ Describes shared object that is used to access FFmpeg libraries.
 /* These defines apply whether or not ffmpeg is available */
 #define INITDYN(w,f) if ((*(void**)&this->f=(void*)w->GetSymbol(wxT(#f))) == NULL) { wxLogMessage(wxT("Failed to load symbol ") wxT(#f)); return false; };
 
+/// Callback function to catch FFmpeg log messages.
+/// Uses wxLogMessage.
 void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl);
 
 //----------------------------------------------------------------------------
@@ -75,6 +77,11 @@ wxString GetFFmpegVersion(wxWindow *parent, bool prompt);
 /* from here on in, this stuff only applies when ffmpeg is available */
 #if defined(USE_FFMPEG)
 
+/// Manages liabv* libraries - loads/unloads libraries, imports symbols.
+/// Only one instance of this class should exist at each given moment.
+/// function definitions are taken from FFmpeg headers manually,
+/// eventually (at next major FFmpeg version change) we'll have to review
+/// them and update if necessary.
 class FFmpegLibs
 {
 public:
@@ -138,14 +145,29 @@ public:
    void              (*av_freep)                      (void *ptr);
    int64_t           (*av_rescale_q)                  (int64_t a, AVRational bq, AVRational cq);
 
+   ///! Finds libav* libraries
+   ///\return true if found, false if not found
    bool FindLibs(wxWindow *parent);
+   ///! Loads libav* libraries
+   ///\param showerr - controls whether or not to show an error dialog if libraries cannot be loaded
+   ///\return true if loaded, false if not loaded
    bool LoadLibs(wxWindow *parent, bool showerr);
+   ///! Checks if libraries are loaded
+   ///\return true if libraries are loaded, false otherwise
    bool ValidLibsLoaded();
 
-   /* initialize the library interface */
+   ///! Initializes the libraries. Call after LoadLibs (when ValidLibsLoaded returns true)
+   ///\param libpath_codec - full file path to the libavformat library
+   ///\param showerr - controls whether or not to show an error dialog if libraries cannot be loaded
+   ///\return true if initialization completed without errors, false otherwise
+   /// do not call (it is called by FindLibs automatically)
    bool InitLibs(wxString libpath_codec, bool showerr);
+
+   ///! Frees (unloads) loaded libraries
    void FreeLibs();
 
+   ///! Returns library version as string
+   ///\return libavformat library version or empty string?
    wxString GetLibraryVersion()
    {
       return mVersion;
@@ -185,25 +207,39 @@ public:
       return wxT("libavformat.so");
    }
 #endif //__WXMSW__
-   //Ugly reference counting. I thought of using wxStuff for that,
-   //but decided that wx reference counting is not useful, since
-   //there's no data sharing - object is shared because libraries are.
+
+   /// Ugly reference counting. I thought of using wxStuff for that,
+   /// but decided that wx reference counting is not useful, since
+   /// there's no data sharing - object is shared because libraries are.
    int refcount;
 
 private:
 
+   ///! Stored path to libavformat library
    wxString mLibAVFormatPath;
+
+   ///! Stored library version
    wxString mVersion;
    
+   ///! wx interfaces for dynamic libraries
    wxDynamicLibrary *avformat;
    wxDynamicLibrary *avcodec;
    wxDynamicLibrary *avutil;
 
+   ///! true if libavformat has internal static linkage, false otherwise
    bool mStatic;
+
+   ///! true if libraries are loaded, false otherwise
    bool mLibsLoaded;
 };
 
+///! Helper function - creates FFmpegLibs object if it does not exists
+///! or just increments reference count if it does
+///! It is usually called by constructors or initializators
 FFmpegLibs *PickFFmpegLibs();
+
+///! Helper function - destroys FFmpegLibs object if there is no need for it
+///! anymore, or just decrements it's reference count
 void        DropFFmpegLibs();
 
 #endif // USE_FFMPEG

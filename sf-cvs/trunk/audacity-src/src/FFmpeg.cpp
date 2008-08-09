@@ -27,8 +27,9 @@ License: GPL v2.  See License.txt.
    #endif
 #endif
 
-
 #if !defined(USE_FFMPEG)
+/// FFmpeg support may or may not be compiled in,
+/// but Preferences dialog requires this function nevertheless
 wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
 {
    return wxString(wxT("FFmpeg support not compiled in"));
@@ -71,7 +72,7 @@ wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
 {
    PickFFmpegLibs();
 
-   wxString versionString = _("FFmpeg library not found");
+   wxString versionString = _("FFmpeg library is not found");
 
    if (prompt) {
       FFmpegLibsInst->FindLibs(parent);
@@ -88,6 +89,7 @@ wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
 
 void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
 {
+   //Most of this stuff is taked from FFmpeg tutorials and FFmpeg itself
    int av_log_level = AV_LOG_WARNING;
    AVClass* avc = ptr ? *(AVClass**)ptr : NULL;
    if (level > av_log_level)
@@ -123,6 +125,7 @@ class FFmpegNotFoundDialog;
 #define ID_FFMPEG_BROWSE 5000
 #define ID_FFMPEG_DLOAD  5001
 
+/// Allows user to locate libav* libraries
 class FindFFmpegDialog : public wxDialog
 {
 public:
@@ -210,7 +213,7 @@ public:
 
    void OnDownload(wxCommandEvent & event)
    {
-      wxString page = wxT("http://audacity.sourceforge.net/ffmpeg");
+      wxString page = wxT("http://audacityteam.org/wiki/index.php?title=FFmpeg");
       ::OpenInDefaultBrowser(page);
    }
 
@@ -233,8 +236,8 @@ private:
 };
 
 BEGIN_EVENT_TABLE(FindFFmpegDialog, wxDialog)
-EVT_BUTTON(ID_FFMPEG_BROWSE, FindFFmpegDialog::OnBrowse)
-EVT_BUTTON(ID_FFMPEG_DLOAD,  FindFFmpegDialog::OnDownload)
+   EVT_BUTTON(ID_FFMPEG_BROWSE, FindFFmpegDialog::OnBrowse)
+   EVT_BUTTON(ID_FFMPEG_DLOAD,  FindFFmpegDialog::OnDownload)
 END_EVENT_TABLE()
 
 
@@ -242,6 +245,9 @@ END_EVENT_TABLE()
 // FFmpegNotFoundDialog
 //----------------------------------------------------------------------------
 
+/// If Audacity failed to load libav*, this dialog
+/// shows up and tells user about that. It will pop-up
+/// again and again until it is disabled.
 class FFmpegNotFoundDialog : public wxDialog
 {
 public:
@@ -300,7 +306,7 @@ private:
 };
 
 BEGIN_EVENT_TABLE(FFmpegNotFoundDialog, wxDialog)
-EVT_BUTTON(wxID_OK, FFmpegNotFoundDialog::OnOk)
+   EVT_BUTTON(wxID_OK, FFmpegNotFoundDialog::OnOk)
 END_EVENT_TABLE()
 
 
@@ -395,6 +401,7 @@ bool FFmpegLibs::LoadLibs(wxWindow *parent, bool showerr)
       mLibsLoaded = InitLibs(mLibAVFormatPath,showerr);
    }
 
+   // If libraries aren't loaded - nag user about that
    if (!ValidLibsLoaded())
    {
       wxLogMessage(wxT("Failed to load libraries altogether."));
@@ -425,21 +432,22 @@ bool FFmpegLibs::ValidLibsLoaded()
 
 bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
 {
-   //Initially we don't know where's the avcodec and avutl libs
+   // Initially we don't know where are the avcodec and avutl libs
    wxString libpath_codec(wxT(""));
    wxString libpath_util(wxT(""));
 
    bool gotError = false;
 
 #if defined(__WXMSW__)
-   //On Windows force system to show error messages (as they are
-   //more informative than wxMessages).
+   // On Windows force system to show error messages (as they are
+   // more informative than wxMessages).
    unsigned int erm = SetErrorMode(showerr ? 0 : SEM_FAILCRITICALERRORS);
 #endif
 
    wxString syspath;
    bool pathfix = false;
    wxLogMessage(wxT("Looking up PATH..."));
+   // First take PATH environment variable (store it's content)
    if (wxGetEnv(wxT("PATH"),&syspath))
    {
       wxLogMessage(wxT("PATH = %s"),syspath.c_str());
@@ -447,6 +455,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
       wxString scfmtdir = wxT(";") + wxPathOnly(libpath_format);
       wxString fmtdir = wxPathOnly(libpath_format);
       wxLogMessage(wxT("Checking that %s is in PATH..."),fmtdir.c_str());
+      // If the directory, where libavformat is, is not in PATH - add it
       if (!syspath.Contains(fmtdirsc) && !syspath.Contains(scfmtdir) && !syspath.Contains(fmtdir))
       {
          wxLogMessage(wxT("not in PATH!"));
@@ -463,6 +472,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
 
          if (wxSetEnv(wxT("PATH"),syspath.c_str()))
          {
+            // Remember to change PATH back to normal after we're done
             pathfix = true;
          }
          else
@@ -479,6 +489,8 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    {
       wxLogMessage(wxT("PATH does not exists."));
    }
+
+   //Load libavformat
    avformat = new wxDynamicLibrary();
    if (!avformat->IsLoaded() && !gotError)
    {
@@ -502,6 +514,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
          wxString libname = litem.GetName();
          wxLogMessage(wxT("Item %d: path=%s , name=%s"),i,libpath.c_str(),libname.c_str());
          //Match name against a pattern to find avcodec and avutil
+         ///\todo own sections for Mac and *nix
 #if defined(__WXMSW__)
          if (libname.Matches(wxT("*avcodec*.dll*")))
 #else
@@ -524,7 +537,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
       //avformat loaded all right. If it didn't linked two other
       //libs to itself in process, then it's statically linked.
       //"or" operator ensures that we won't count misnamed statically linked
-      //avformat library as dynamic one.
+      //avformat library as a dynamic one.
       if ((libpath_codec.CompareTo(wxT("")) == 0)
          || (libpath_util.CompareTo(wxT("")) == 0))
       {
@@ -552,6 +565,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
       }
    }
 
+   //Return PATH to normal
    if ( pathfix )
    {
       wxString oldpath = syspath.BeforeLast(wxT(';'));
