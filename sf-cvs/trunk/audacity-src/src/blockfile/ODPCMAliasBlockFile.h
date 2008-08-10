@@ -56,7 +56,7 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
    ODPCMAliasBlockFile(wxFileName existingFileName,
                      wxFileName aliasedFile, sampleCount aliasStart,
                      sampleCount aliasLen, int aliasChannel,
-                     float min, float max, float rms);
+                     float min, float max, float rms, bool summaryAvailable);
    virtual ~ODPCMAliasBlockFile();
    
    //checks to see if summary data has been computed and written to disk yet.  Thread safe.  Blocks if we are writing summary data.
@@ -98,6 +98,12 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
    ///Gets the value that indicates where the first sample in this block corresponds to the global sequence/clip.  Only for display use.
    sampleCount GetStart(){return mStart;}
    
+   /// Locks the blockfile only if it has a file that exists.
+   void Lock();
+
+   /// Unlocks the blockfile only if it has a file that exists.
+   void Unlock();
+   
    ///sets the amount of samples the clip associated with this blockfile is offset in the wavetrack (non effecting)
    void SetClipOffset(sampleCount numSamples){mClipOffset= numSamples;}
    
@@ -112,14 +118,29 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
                  
    /// Read the summary into a buffer
    virtual bool ReadSummary(void *data);
-                        
+          
+   ///sets the file name the summary info will be saved in.  threadsafe.
+   virtual void SetFileName(wxFileName &name);
+   virtual wxFileName GetFileName();
+
+   //when the file closes, it locks the blockfiles, but it calls this so we can check if it has been saved before.
+   virtual void CloseLock();
 
   protected:
    virtual void WriteSummary();
    virtual void *CalcSummary(samplePtr buffer, sampleCount len,
                              sampleFormat format);
 
+
+   char* mFileNameChar;
+
    ODLock mWriteSummaryMutex;
+
+   //need to protect this since it is changed from the main thread upon save.
+   ODLock mFileNameMutex;
+
+   ///Also need to protect the aliased file name.
+   ODLock mAliasedFileNameMutex;
 
    //lock the read data - libsndfile can't handle two reads at once?
    ODLock mReadDataMutex;
@@ -127,6 +148,7 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
    ODLock    mSummaryAvailableMutex;
    bool mSummaryAvailable;
    bool mSummaryBeingComputed;
+   bool mHasBeenSaved;
    
    ///for reporting after task is complete.  Only for display use.
    sampleCount mStart;

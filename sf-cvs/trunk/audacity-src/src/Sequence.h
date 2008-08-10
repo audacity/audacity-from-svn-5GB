@@ -121,6 +121,7 @@ class Sequence: public XMLTagHandler {
    // 
 
    bool Lock();
+   bool CloseLock();//similar to Lock but should be called upon project close.
    bool Unlock();
 
    //

@@ -185,7 +185,7 @@ public:
    
    /// Lock all blockfiles
    void Lock();
-   
+   void CloseLock(); //similar to Lock but should be called when the project closes.
    /// Unlock all blockfiles
    void Unlock();
 
@@ -198,7 +198,7 @@ public:
    //
    // XMLTagHandler callback methods for loading and saving
    //
-
+   
    virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    virtual void HandleXMLEndTag(const wxChar *tag);
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);

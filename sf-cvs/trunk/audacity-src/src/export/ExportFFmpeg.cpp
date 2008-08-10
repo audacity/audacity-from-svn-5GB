@@ -1710,6 +1710,11 @@ void LoadControlState(wxString &setting, wxString *value, wxString &defval)
    gPrefs->Read(setting,value,defval);
 }
 
+void LoadControlState(wxString &setting, wxString *value, wxString defval)
+{
+   gPrefs->Read(setting,value,defval);
+}
+
 void LoadControlState(wxString &setting, long *value, long defval)
 {
    gPrefs->Read(setting,value,defval);

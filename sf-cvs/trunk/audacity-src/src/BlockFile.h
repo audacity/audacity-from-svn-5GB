@@ -78,6 +78,8 @@ class BlockFile {
 
    /// Gets the filename of the disk file associated with this BlockFile
    virtual wxFileName GetFileName();
+   virtual void SetFileName(wxFileName &name);
+
    virtual sampleCount GetLength() { return mLen; }
 
    /// Locks this BlockFile, to prevent it from being moved
@@ -122,6 +124,9 @@ class BlockFile {
    //be able to tell the logging to shut up from outside too.
    void SilenceLog() { mSilentLog = TRUE; }
 
+   ///when the project closes, it locks the blockfiles.
+   ///Override this in case it needs special treatment
+   virtual void CloseLock(){Lock();}
 
  private:
 
