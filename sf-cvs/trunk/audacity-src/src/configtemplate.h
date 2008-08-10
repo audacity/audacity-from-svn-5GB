@@ -7,9 +7,6 @@
 /* Define we are compiling Audacity itself, not an Audacity plug-in */
 #undef BUILDING_AUDACITY
 
-/* Define if the compiler supports the GCC symbol visibility functions */
-#undef HAVE_VISIBILITY
-
 /* Define to 1 if you have the <alloca.h> header file. */
 #undef HAVE_ALLOCA_H
 
@@ -51,6 +48,10 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
+
+/* Define to 1 or 0, depending whether the compiler supports simple visibility
+   declarations. */
+#undef HAVE_VISIBILITY
 
 /* define as prefix where Audacity is installed */
 #undef INSTALL_PREFIX
@@ -102,9 +103,6 @@
 /* Define if libsamplerate support should be enabled */
 #undef USE_LIBSAMPLERATE
 
-/* Define if the slv2 library for loading LV2 plugins should be enabled */
-#undef USE_SLV2
-
 /* Define if libtwolame (MP2 export) support should be enabled */
 #undef USE_LIBTWOLAME
 
@@ -125,6 +123,9 @@
 
 /* Define if QuickTime importing is enabled (Mac OS X only) */
 #undef USE_QUICKTIME
+
+/* Define if SLV2 (library for loading LV2 plugins) should be enabled */
+#undef USE_SLV2
 
 /* Define if SoundTouch support should be enabled */
 #undef USE_SOUNDTOUCH
