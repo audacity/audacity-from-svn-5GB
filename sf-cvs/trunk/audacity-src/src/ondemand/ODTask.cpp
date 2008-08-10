@@ -109,6 +109,21 @@ void ODTask::DoSome(float amountWork)
    if(!IsComplete() && !mTerminate)
    {
       ODManager::Instance()->AddTask(this);
+      
+      //we did a bit of progress - we should allow a resave.
+      AudacityProject::AllProjectsDeleteLock();
+      for(unsigned i=0; i<gAudacityProjects.GetCount(); i++)
+      {
+         if(IsTaskAssociatedWithProject(gAudacityProjects[i]))
+         {
+            //mark the changes so that the project can be resaved.
+            gAudacityProjects[i]->GetUndoManager()->SetODChangesFlag();
+            break;
+         }
+      }
+      AudacityProject::AllProjectsDeleteUnlock();
+
+      
 //      printf("%s %i is %f done\n", GetTaskName(),GetTaskNumber(),PercentComplete());
    }
    else
@@ -122,15 +137,11 @@ void ODTask::DoSome(float amountWork)
          {
             //this assumes tasks are only associated with one project.  
             gAudacityProjects[i]->AddPendingEvent( event );
+            //mark the changes so that the project can be resaved.
+            gAudacityProjects[i]->GetUndoManager()->SetODChangesFlag();
             break;
          }
       }
-      /*
-      AudacityProject* proj = GetActiveProject();
-      if(IsTaskAssociatedWithProject(proj))
-         proj->AddPendingEvent( event );
-      */
-      
       AudacityProject::AllProjectsDeleteUnlock();
 
 //      printf("%s %i complete\n", GetTaskName(),GetTaskNumber());

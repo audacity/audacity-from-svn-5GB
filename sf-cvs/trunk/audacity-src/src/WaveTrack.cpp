@@ -1508,6 +1508,15 @@ bool WaveTrack::Lock()
    return true;
 }
 
+bool WaveTrack::CloseLock()
+{
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      it->GetData()->CloseLock();
+
+   return true;
+}
+
+
 bool WaveTrack::Unlock()
 {
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())

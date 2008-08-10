@@ -1310,6 +1310,13 @@ void WaveClip::Lock()
       it->GetData()->Lock();
 }
 
+void WaveClip::CloseLock()
+{
+   GetSequence()->CloseLock();
+   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+      it->GetData()->Lock();
+}
+
 void WaveClip::Unlock()
 {
    GetSequence()->Unlock();

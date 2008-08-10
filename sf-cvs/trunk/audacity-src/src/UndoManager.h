@@ -50,6 +50,7 @@
 
 #include <wx/dynarray.h>
 #include <wx/string.h>
+#include "ondemand/ODTaskThread.h"
 
 class Track;
 class TrackList;
@@ -95,6 +96,11 @@ class AUDACITY_DLL_API UndoManager {
 
    void Debug();
 
+   ///to mark as unsaved changes without changing the state/tracks.
+   void SetODChangesFlag();
+   bool HasODChangesFlag();
+   void ResetODChangesFlag();
+
  private:
    int current;
    int saved;
@@ -102,6 +108,9 @@ class AUDACITY_DLL_API UndoManager {
 
    wxString lastAction;
    int consolidationCount;
+   
+   bool mODChanges;
+   ODLock mODChangesMutex;//mODChanges is accessed from many threads.
    
 };
 

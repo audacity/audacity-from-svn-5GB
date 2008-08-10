@@ -110,6 +110,14 @@ bool Sequence::Lock()
    return true;
 }
 
+bool Sequence::CloseLock()
+{
+   for (unsigned int i = 0; i < mBlock->Count(); i++)
+      mBlock->Item(i)->f->CloseLock();
+
+   return true;
+}
+
 bool Sequence::Unlock()
 {
    for (unsigned int i = 0; i < mBlock->Count(); i++)

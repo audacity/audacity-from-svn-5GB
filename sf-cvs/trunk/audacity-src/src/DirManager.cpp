@@ -317,6 +317,10 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       chmod(OSFILENAME(projFull), 0775);
       #endif
 
+      #ifdef __WXMAC__
+      chmod(OSFILENAME(projFull), 0775);
+      #endif
+
    } else {
       #ifndef __WXMAC__
       if (!wxDirExists(projFull))
@@ -398,7 +402,9 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       
       wxArrayString dirlist;
       count=rm_dash_rf_enumerate(cleanupLoc1,dirlist,wxEmptyString,0,1);
-      count+=rm_dash_rf_enumerate(cleanupLoc2,dirlist,wxEmptyString,0,1);
+//This destroys the empty dirs of the OD block files, which are yet to come. com
+//Dont know if this will make the project dirty, but I doubt it. (mchinen)
+//      count+=rm_dash_rf_enumerate(cleanupLoc2,dirlist,wxEmptyString,0,1);
       
       if(count)
          rm_dash_rf_execute(dirlist,count,0,1,_("Cleaning up cache directories"));
@@ -456,10 +462,18 @@ wxFileName DirManager::MakeBlockFilePath(wxString value){
       wxString topdir=value.Mid(0,3);
       wxString middir=wxT("d");
       middir.Append(value.Mid(3,2));
-      
-      dir.AppendDir(topdir);
+
+      dir.AppendDir(topdir);      
       dir.AppendDir(middir);
-      if(!dir.DirExists())dir.Mkdir(0777,wxPATH_MKDIR_FULL);
+
+      if(!dir.DirExists()) 
+      {
+         if(!dir.Mkdir(0777,wxPATH_MKDIR_FULL))
+         {
+            printf("mkdir in dirman failed\n");
+         }
+      }
+      
    }
    return dir;
 }
@@ -915,27 +929,29 @@ bool DirManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
 {
    wxFileName newFileName;
-   wxFileName oldFileName=f->mFileName;
-   AssignFile(newFileName,f->mFileName.GetFullName(),FALSE); 
+   wxFileName oldFileName=f->GetFileName();
+   AssignFile(newFileName,f->GetFileName().GetFullName(),FALSE); 
 
-   if ( !(newFileName == f->mFileName) ) {
-      bool ok = f->IsSummaryAvailable() && wxRenameFile(f->mFileName.GetFullPath(),
+   if ( !(newFileName == f->GetFileName()) ) {
+      bool ok = f->IsSummaryAvailable() && wxRenameFile(f->GetFileName().GetFullPath(),
                              newFileName.GetFullPath());
 
       if (ok)
-         f->mFileName = newFileName;
+         f->SetFileName(newFileName);
       else {
          
          //check to see that summary exists before we copy.
          bool summaryExisted =  f->IsSummaryAvailable();
          if( summaryExisted)
          {
-            if(!wxCopyFile(f->mFileName.GetFullPath(),
-                         newFileName.GetFullPath()))
+            if(!wxRenameFile(f->GetFileName().GetFullPath(),
+                             newFileName.GetFullPath()))
+                             /*wxCopyFile(f->GetFileName().GetFullPath(),
+                         newFileName.GetFullPath()))*/
                return false;
-            wxRemoveFile(f->mFileName.GetFullPath());
+//            wxRemoveFile(f->GetFileName().GetFullPath());
          }
-         f->mFileName = newFileName;
+         f->SetFileName(newFileName);
             
          //there is a small chance that the summary has begun to be computed on a different thread with the
          //original filename.  we need to catch this case by waiting for it to finish and then copy.
@@ -953,7 +969,7 @@ bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
                ok = wxCopyFile(oldFileName.GetFullPath(),
                         newFileName.GetFullPath());
                if(ok)
-                  wxRemoveFile(f->mFileName.GetFullPath());
+                  wxRemoveFile(f->GetFileName().GetFullPath());
             }
          }
       }
@@ -965,19 +981,19 @@ bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
 bool DirManager::CopyToNewProjectDirectory(BlockFile *f)
 {
    wxFileName newFileName;
-   wxFileName oldFileName=f->mFileName;
-   AssignFile(newFileName,f->mFileName.GetFullName(),FALSE); 
+   wxFileName oldFileName=f->GetFileName();
+   AssignFile(newFileName,f->GetFileName().GetFullName(),FALSE); 
 
    //mchinen:5/31/08:adding OD support 
    //But also I'm also wondering if we need to delete the copied file here, while i'm reimplementing.
    //see original code below - I don't see where that file will ever get delted or used again.
-   if ( !(newFileName == f->mFileName) ) {
+   if ( !(newFileName == f->GetFileName()) ) {
       bool ok=true;
       bool summaryExisted =  f->IsSummaryAvailable();
       
       if( summaryExisted)
       {   
-        if(!wxCopyFile(f->mFileName.GetFullPath(),
+        if(!wxCopyFile(f->GetFileName().GetFullPath(),
                         newFileName.GetFullPath()))
                return false;
          //TODO:make sure we shouldn't delete               
@@ -985,7 +1001,7 @@ bool DirManager::CopyToNewProjectDirectory(BlockFile *f)
 
       }  
         
-      f->mFileName = newFileName;
+      f->SetFileName(newFileName);
             
       //there is a small chance that the summary has begun to be computed on a different thread with the
       //original filename.  we need to catch this case by waiting for it to finish and then copy.

@@ -1585,7 +1585,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       Track *t = iter.First();
       while (t) {
          if (t->GetKind() == Track::Wave)
-            ((WaveTrack *) t)->Lock();
+            ((WaveTrack *) t)->CloseLock();
          t = iter.Next();
       }
 
@@ -2004,41 +2004,6 @@ void AudacityProject::OpenFile(wxString fileName)
          t = iter.Next();
       }
       
-
-#ifdef EXPERIMENTAL_ONDEMAND
-      //check the ODManager to see if we should add the tracks to the ODManager.
-      //this flag would have been set in the HandleXML calls from above, if there were
-      //OD***Blocks.
-      if(ODManager::HasLoadedODFlag())
-      {
-         Track *tr;
-         TrackListIterator triter(mTracks);
-         mLastSavedTracks = new TrackList();
-         
-         tr = triter.First();
-         
-         ODComputeSummaryTask* computeTask;
-         bool odUsed = false;
-         while (tr) {
-            if (tr->GetKind() == Track::Wave)
-            {
-               if(!odUsed)
-               {
-                  computeTask=new ODComputeSummaryTask;
-                  odUsed=true;
-               }
-               computeTask->AddWaveTrack((WaveTrack*)tr);
-            }
-            tr = triter.Next();
-         }
-         if(odUsed)
-            ODManager::Instance()->AddNewTask(computeTask);
-            
-            //release the flag.
-         ODManager::UnmarkLoadedODFlag();
-      }
-#endif
-
       InitialState();
       mTrackPanel->SetFocusedTrack(iter.First());
       HandleResize();
@@ -2111,6 +2076,41 @@ void AudacityProject::OpenFile(wxString fileName)
    }
 
    GetDirManager()->FillBlockfilesCache();
+   
+   
+
+#ifdef EXPERIMENTAL_ONDEMAND
+      //check the ODManager to see if we should add the tracks to the ODManager.
+      //this flag would have been set in the HandleXML calls from above, if there were
+      //OD***Blocks.
+      if(ODManager::HasLoadedODFlag())
+      {
+         Track *tr;
+         TrackListIterator triter(mTracks);         
+         tr = triter.First();
+         
+         ODComputeSummaryTask* computeTask;
+         bool odUsed = false;
+         while (tr) {
+            if (tr->GetKind() == Track::Wave)
+            {
+               if(!odUsed)
+               {
+                  computeTask=new ODComputeSummaryTask;
+                  odUsed=true;
+               }
+               computeTask->AddWaveTrack((WaveTrack*)tr);
+            }
+            tr = triter.Next();
+         }
+         if(odUsed)
+            ODManager::Instance()->AddNewTask(computeTask);
+            
+            //release the flag.
+         ODManager::UnmarkLoadedODFlag();
+      }
+#endif
+
 }
 
 bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
@@ -2485,7 +2485,8 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       
       // We are about to move files from the current directory to
       // the new directory.  We need to make sure files that belonged
-      // to the last saved project don't get erased, so we "lock" them.
+      // to the last saved project don't get erased, so we "lock" them, so that 
+      // SetProject() copies instead of moves the files.
       // (Otherwise the new project would be fine, but the old one would
       // be empty of all of its files.)
       
@@ -2500,7 +2501,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
          }
       }
       // This renames the project directory, and moves or copies
-      // all of our block files over
+      // all of our block files over.  
       bool success = mDirManager->SetProject(projPath, projName, !overwrite);
       
       // Unlock all blocks in all tracks of the last saved version
@@ -2545,6 +2546,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 
    saveFile.Close();
    
+   
    // Now that we have saved the file, we can delete the auto-saved version
    DeleteCurrentAutoSaveFile();
 
@@ -2588,8 +2590,16 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
+   Track *dupT;
    while (t) {
-      mLastSavedTracks->Add(t->Duplicate());
+      dupT = t->Duplicate();
+      mLastSavedTracks->Add(dupT);
+      
+      //only after the xml has been saved we can mark it saved.
+      //thus is because the OD blockfiles change on  background thread while this is going on.
+//      if(dupT->GetKind() == Track::Wave)
+  //       ((WaveTrack*)dupT)->MarkSaved(); 
+        
       t = iter.Next();
    }
 

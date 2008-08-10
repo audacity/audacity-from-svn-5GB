@@ -36,6 +36,7 @@ UndoManager::UndoManager()
    current = -1;
    saved = -1;
    consolidationCount = 0;
+   ResetODChangesFlag();
 }
 
 UndoManager::~UndoManager()
@@ -291,12 +292,13 @@ TrackList *UndoManager::Redo(double *sel0, double *sel1)
 
 bool UndoManager::UnsavedChanges()
 {
-   return (saved != current);
+   return (saved != current) || HasODChangesFlag();
 }
 
 void UndoManager::StateSaved()
 {
    saved = current;
+   ResetODChangesFlag();
 }
 
 void UndoManager::Debug()
@@ -309,6 +311,31 @@ void UndoManager::Debug()
              t ? t->GetEndTime()-t->GetStartTime() : 0);
    }
 }
+
+///to mark as unsaved changes without changing the state/tracks.
+void UndoManager::SetODChangesFlag()
+{
+   mODChangesMutex.Lock();
+   mODChanges=true;
+   mODChangesMutex.Unlock();
+}
+bool UndoManager::HasODChangesFlag()
+{
+   bool ret;
+   mODChangesMutex.Lock();
+   ret=mODChanges;
+   mODChangesMutex.Unlock();
+   return ret;
+}
+
+void UndoManager::ResetODChangesFlag()
+{
+   mODChangesMutex.Lock();
+   mODChanges=false;
+   mODChangesMutex.Unlock();
+}
+
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

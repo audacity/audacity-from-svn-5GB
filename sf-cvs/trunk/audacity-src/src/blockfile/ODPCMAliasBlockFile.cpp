@@ -31,6 +31,9 @@ The summary is eventually computed and written to a file in a background thread.
 #include "../FileFormats.h"
 #include "../Internat.h"
 
+//#include <errno.h>
+
+
 const int aheaderTagLen = 20;
 char aheaderTag[aheaderTagLen + 1] = "AudacityBlockFile112";
 
@@ -41,21 +44,30 @@ ODPCMAliasBlockFile::ODPCMAliasBlockFile(wxFileName fileName,
    PCMAliasBlockFile(fileName, aliasedFile, aliasStart, aliasLen, aliasChannel,false)
 {
 
-  mSummaryAvailable=mSummaryBeingComputed=false;
+  mSummaryAvailable=mSummaryBeingComputed=mHasBeenSaved=false;
+   mFileNameChar = new char[strlen(mFileName.GetFullPath().mb_str(wxConvUTF8))+1];
+   strcpy(mFileNameChar,mFileName.GetFullPath().mb_str(wxConvUTF8));
+
+  
 }
 
+///summaryAvailable should be true if the file has been written already.
 ODPCMAliasBlockFile::ODPCMAliasBlockFile(wxFileName existingFileName,
                      wxFileName aliasedFile, sampleCount aliasStart,
                      sampleCount aliasLen, int aliasChannel,
-                     float min, float max, float rms):
+                     float min, float max, float rms, bool summaryAvailable):
    PCMAliasBlockFile(existingFileName, aliasedFile, aliasStart, aliasLen,
                   aliasChannel, min, max, rms)
 {
-   mSummaryAvailable=mSummaryBeingComputed=false;
-}
+   mSummaryAvailable=summaryAvailable;
+   mSummaryBeingComputed=mHasBeenSaved=false;      
+   mFileNameChar = new char[strlen(mFileName.GetFullPath().mb_str(wxConvUTF8))+1];
+   strcpy(mFileNameChar,mFileName.GetFullPath().mb_str(wxConvUTF8));
+ }
 
 ODPCMAliasBlockFile::~ODPCMAliasBlockFile()
 {
+   delete [] mFileNameChar;
 }
 
 
@@ -64,13 +76,41 @@ wxLongLong ODPCMAliasBlockFile::GetSpaceUsage()
 { 
    if(IsSummaryAvailable())
    {
+      wxLongLong ret;
+      mFileNameMutex.Unlock();
       wxFFile summaryFile(mFileName.GetFullPath());
-      return summaryFile.Length();
+      ret= summaryFile.Length();
+      mFileNameMutex.Unlock();
+      return ret;
    }
    else
    {
       return 0;
    }
+}
+
+/// Locks the blockfile only if it has a file that exists.  This needs to be done
+/// so that the unsaved ODPCMAliasBlockfiles are deleted upon exit 
+void ODPCMAliasBlockFile::Lock()
+{
+   if(IsSummaryAvailable()&&mHasBeenSaved)
+      PCMAliasBlockFile::Lock();
+}
+
+//when the file closes, it locks the blockfiles, but it calls this so we can check if it has been saved before.
+void ODPCMAliasBlockFile::CloseLock()
+{
+   if(mHasBeenSaved)
+      PCMAliasBlockFile::Lock(); 
+}
+
+
+/// unlocks the blockfile only if it has a file that exists.  This needs to be done
+/// so that the unsaved ODPCMAliasBlockfiles are deleted upon exit 
+void ODPCMAliasBlockFile::Unlock()
+{
+   if(IsSummaryAvailable() && IsLocked())
+      PCMAliasBlockFile::Unlock();
 }
 
 
@@ -147,8 +187,11 @@ BlockFile *ODPCMAliasBlockFile::Copy(wxFileName newFileName)
 {
    BlockFile *newBlockFile;
    
-   
-   if(IsSummaryAvailable())
+   //If the file has been written AND it has been saved, we create a PCM alias blockfile because for
+   //all intents and purposes, it is the same.  
+   //However, if it hasn't been saved yet, we shouldn't create one because the default behavior of the
+   //PCMAliasBlockFile is to lock on exit, and this will cause orphaned blockfiles..
+   if(IsSummaryAvailable() && mHasBeenSaved)
    {
       newBlockFile  = new PCMAliasBlockFile(newFileName,
                                                    mAliasedFileName, mAliasStart,
@@ -158,12 +201,11 @@ BlockFile *ODPCMAliasBlockFile::Copy(wxFileName newFileName)
    }
    else
    {
-      //Summary File doesn't exist in this case.
-      //Also, this one needs to be scheduled for loading as well ... what to do?
+      //Summary File might exist in this case, but it might not.
       newBlockFile  = new ODPCMAliasBlockFile(newFileName,
                                                    mAliasedFileName, mAliasStart,
                                                    mLen, mAliasChannel,
-                                                   mMin, mMax, mRMS);
+                                                   mMin, mMax, mRMS,IsSummaryAvailable());
       //The client code will need to schedule this blockfile for OD summarizing if it is going to a new track.
    }
    
@@ -181,12 +223,16 @@ void ODPCMAliasBlockFile::SaveXML(XMLWriter &xmlFile)
    if(IsSummaryAvailable())
    {
       PCMAliasBlockFile::SaveXML(xmlFile);
+      mHasBeenSaved = true;
    }
    else
    {
       xmlFile.StartTag(wxT("odpcmaliasblockfile"));
 
+      mFileNameMutex.Lock();
       xmlFile.WriteAttr(wxT("summaryfile"), mFileName.GetFullName());
+      mFileNameMutex.Unlock();
+      
       xmlFile.WriteAttr(wxT("aliasfile"), mAliasedFileName.GetFullPath());
       xmlFile.WriteAttr(wxT("aliasstart"), mAliasStart);
       xmlFile.WriteAttr(wxT("aliaslen"), mLen);
@@ -201,7 +247,7 @@ void ODPCMAliasBlockFile::SaveXML(XMLWriter &xmlFile)
 }
 
 /// Constructs a ODPCMAliasBlockFile from the xml output of WriteXML.
-/// Also schedules the ODPCMAliasBlockFile for OD loading.
+/// Does not schedule the ODPCMAliasBlockFile for OD loading.  Client code must do this.
 BlockFile *ODPCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
 {
    wxFileName summaryFileName;
@@ -304,25 +350,48 @@ void ODPCMAliasBlockFile::DoWriteSummary()
    mWriteSummaryMutex.Unlock();
 }
 
+///sets the file name the summary info will be saved in.  threadsafe.
+void ODPCMAliasBlockFile::SetFileName(wxFileName &name)
+{
+   mFileNameMutex.Lock();
+   mFileName=name;
+   delete [] mFileNameChar;
+   mFileNameChar = new char[strlen(mFileName.GetFullPath().mb_str(wxConvUTF8))+1];
+   strcpy(mFileNameChar,mFileName.GetFullPath().mb_str(wxConvUTF8));
+   mFileNameMutex.Unlock();
+}
+
+///sets the file name the summary info will be saved in.  threadsafe.
+wxFileName ODPCMAliasBlockFile::GetFileName()
+{
+   wxFileName name;
+   mFileNameMutex.Lock();
+   name = mFileName;
+   mFileNameMutex.Unlock();
+   return name;
+}
+
 /// Write the summary to disk, using the derived ReadData() to get the data
 void ODPCMAliasBlockFile::WriteSummary()
 {
+   //the mFileName path may change, for example, when the project is saved.
+   //(it moves from /tmp/ to wherever it is saved to.
+   mFileNameMutex.Lock();
+      //wxFFile is not thread-safe - if any error occurs in fopen, it posts a wxlog message which WILL crash
+      //audacity because it goes into the wx GUI.  For this reason I left the FILE* method commented out (mchinen)
+     //wxFFile summaryFile(mFileName.GetFullPath(), wxT("wb"));
    
-   //Below from BlockFile.cpp's method.  We need to delete the data returned by
-   //CalcSummary, because it uses local info.  In the future we might do something
-   //smarter and thread-dependant like a static thread context.
-   wxFFile summaryFile(mFileName.GetFullPath(), wxT("wb"));
+   FILE* summaryFile=fopen(mFileNameChar, "wb");
 
-   if( !summaryFile.IsOpened() ){
-      // Never silence the Log w.r.t write errors; they always count
-      // as new errors
+   if( !summaryFile){//.IsOpened() ){
       
+      // Never silence the Log w.r.t write errors; they always count
       //however, this is going to be called from a non-main thread,
       //and wxLog calls are not thread safe.
-      printf("Unable to write summary data to file");// %s",
-          //         mFileName.GetFullPath().c_str());
-      // If we can't write, there's nothing to do.
-      
+      printf("Unable to write summary data to file: ");// %s",
+     printf("test..\n");
+      printf(" filename: %s\n",mFileNameChar);
+      mFileNameMutex.Unlock();
       return;
    }
 
@@ -333,15 +402,17 @@ void ODPCMAliasBlockFile::WriteSummary()
 
    void *summaryData = CalcSummary(sampleData, mLen,
                                             floatSample);
-   summaryFile.Write(summaryData, mSummaryInfo.totalSummaryBytes);
-
+                                            
+   //summaryFile.Write(summaryData, mSummaryInfo.totalSummaryBytes);
+   fwrite(summaryData, 1, mSummaryInfo.totalSummaryBytes, summaryFile);
+   fclose(summaryFile);
    DeleteSamples(sampleData);
    delete [] (char *) summaryData;
    
+   mFileNameMutex.Unlock();
    
-   //above from BlockFiles.cpps method
    
-   
+    //     printf("write successful. filename: %s\n",mFileNameChar);
 
    mSummaryAvailableMutex.Lock();
    mSummaryAvailable=true;
@@ -515,7 +586,10 @@ int ODPCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
 
    memset(&info, 0, sizeof(info));
 
-   SNDFILE *sf=sf_open(OSFILENAME(mAliasedFileName.GetFullPath()),
+   wxString aliasPath = mAliasedFileName.GetFullPath();
+   //there are thread-unsafe crashes here - not sure why.  sf_open may be called on the same file
+   //from different threads, but this seems okay, unless it is implemented strangely..  
+   SNDFILE *sf=sf_open(OSFILENAME(aliasPath),
                         SFM_READ, &info);
    if (!sf){
       
@@ -571,6 +645,8 @@ int ODPCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
 ///              be at least mSummaryInfo.totalSummaryBytes long.
 bool ODPCMAliasBlockFile::ReadSummary(void *data)
 {
+   
+   mFileNameMutex.Lock();
    wxFFile summaryFile(mFileName.GetFullPath(), wxT("rb"));
    
    if( !summaryFile.IsOpened() ){
@@ -583,6 +659,8 @@ bool ODPCMAliasBlockFile::ReadSummary(void *data)
       // spewing at the user will complicate the user's ability to
       // deal
       mSilentLog=TRUE;
+      
+      mFileNameMutex.Unlock();
       return true;
 
    }else mSilentLog=FALSE; // worked properly, any future error is new 
@@ -591,6 +669,8 @@ bool ODPCMAliasBlockFile::ReadSummary(void *data)
 
    FixSummary(data);
 
+   
+   mFileNameMutex.Unlock();
    return (read == mSummaryInfo.totalSummaryBytes);
 }
 
