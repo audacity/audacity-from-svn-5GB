@@ -348,7 +348,8 @@ AC_DEFUN([AUDACITY_CHECKLIB_FFMPEG], [
          FFMPEG_SYSTEM_CPPSYMBOLS="USE_FFMPEG"
 		 dnl build the extra object files needed to use FFmpeg. Paths inside
 		 dnl the audacity src/ dir, as this is subsitiuted into src/Makefile.in
-		 FFMPEG_SYSTEM_OPTOBJS="import/ImportFFmpeg.o export/ExportFFmpeg.o"
+		 FFMPEG_SYSTEM_OPTOBJS="import/ImportFFmpeg.o export/ExportFFmpeg.o \
+		 	export/ExportFFmpegDialogs.o"
          AC_MSG_NOTICE([FFmpeg library available as system library])
       fi
    fi
