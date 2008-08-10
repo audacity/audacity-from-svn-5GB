@@ -837,7 +837,7 @@ void FreqWindow::Plot(int len, float *data, double rate)
 void FreqWindow::Recalc()
 {
    if (mProcessed)
-      delete mProcessed;
+      delete[] mProcessed;
    mProcessed = NULL;
 
    if (!mData) {
