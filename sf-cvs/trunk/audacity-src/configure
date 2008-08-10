@@ -4989,7 +4989,6 @@ _ACEOF
 
 
 
-echo wx-config is ${WX_CONFIG}
 # Extract the first word of "wx-config", so it can be a program name with args.
 set dummy wx-config; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -5032,7 +5031,6 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
-echo wx-config is ${WX_CONFIG}
 if [ "$WX_CONFIG" = "no" ] ; then
    { { echo "$as_me:$LINENO: error: \"Could not find wx-config: is wxWidgets installed? is wx-config in your path?\"" >&5
 echo "$as_me: error: \"Could not find wx-config: is wxWidgets installed? is wx-config in your path?\"" >&2;}
@@ -5046,8 +5044,6 @@ else
 fi
 
 wxconfigargs="$static_preference $unicode_preference  $wxconfigargs $wx_preference"
-echo wx-config is ${WX_CONFIG}
-echo args are ${wxconfigargs} --version
 wx_version=`${WX_CONFIG} $wxconfigargs --version`
 
 { echo "$as_me:$LINENO: Checking that the chosen version of wxWidgets is 2.8.x" >&5
@@ -7862,7 +7858,8 @@ fi
 	     FFMPEG_SYSTEM_AVAILABLE="yes"
          FFMPEG_SYSTEM_CXXFLAGS="$AVCODEC_CFLAGS $AVFORMAT_CFLAGS"
          FFMPEG_SYSTEM_CPPSYMBOLS="USE_FFMPEG"
-		 		 		 FFMPEG_SYSTEM_OPTOBJS="import/ImportFFmpeg.o export/ExportFFmpeg.o"
+		 		 		 FFMPEG_SYSTEM_OPTOBJS="import/ImportFFmpeg.o export/ExportFFmpeg.o \
+		 	export/ExportFFmpegDialogs.o"
          { echo "$as_me:$LINENO: FFmpeg library available as system library" >&5
 echo "$as_me: FFmpeg library available as system library" >&6;}
       fi
