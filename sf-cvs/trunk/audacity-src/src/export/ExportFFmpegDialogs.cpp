@@ -639,16 +639,16 @@ bool FFmpegPresets::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       while (*attrs)
       {
          const wxChar *attr = *attrs++;
-         const wxChar *value = *attrs++;
+         wxString value = *attrs++;
 
          if (!value)
             break;
 
          if (!wxStrcmp(attr,wxT("name")))
          {
-            FFmpegPreset *newpreset = FindPreset(wxString(value));
+            FFmpegPreset *newpreset = FindPreset(value);
             if (!newpreset)
-               mPresets->push_front(new FFmpegPreset(wxString(value)));
+               mPresets->push_front(new FFmpegPreset(value));
             else
             {
                mPresets->remove(newpreset);
@@ -1222,9 +1222,11 @@ void ExportFFmpegOptions::OnLoadPreset(wxCommandEvent& event)
 ///
 void ExportFFmpegOptions::OnImportPresets(wxCommandEvent& event)
 {
+   wxString path;
    wxFileDialog dlg(this,_("Select xml file with presets to import"),gPrefs->Read(wxT("/FileFormats/FFmpegPresetDir")),wxEmptyString,wxString(wxT("XML files (*.xml)|*.xml")),wxFD_OPEN);
    if (dlg.ShowModal() == wxID_CANCEL) return;
-   mPresets->ImportPresets(dlg.GetPath());
+   path = dlg.GetPath();
+   mPresets->ImportPresets(path);
    delete mPresetNames;
    mPresetNames = mPresets->GetPresetList();
    mPresetCombo->Clear();
@@ -1235,9 +1237,11 @@ void ExportFFmpegOptions::OnImportPresets(wxCommandEvent& event)
 ///
 void ExportFFmpegOptions::OnExportPresets(wxCommandEvent& event)
 {
+   wxString path;
    wxFileDialog dlg(this,_("Select xml file to export presets into"),gPrefs->Read(wxT("/FileFormats/FFmpegPresetDir")),wxEmptyString,wxString(wxT("XML files (*.xml)|*.xml")),wxFD_SAVE);
    if (dlg.ShowModal() == wxID_CANCEL) return;
-   mPresets->ExportPresets(dlg.GetPath());
+   path = dlg.GetPath();
+   mPresets->ExportPresets(path);
 }
 
 ///
