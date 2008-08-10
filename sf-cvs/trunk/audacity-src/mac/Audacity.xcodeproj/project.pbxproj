@@ -1048,6 +1048,7 @@
 		28D588040E265627009C7DEA /* sparql_lexer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D587E00E2651C6009C7DEA /* sparql_lexer.h */; };
 		28D65C720B97E54B000E001A /* AutoDuck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D65C700B97E54B000E001A /* AutoDuck.cpp */; };
 		28D65C760B97E573000E001A /* DtmfGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D65C740B97E573000E001A /* DtmfGen.cpp */; };
+		28DA07390E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DA07380E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp */; };
 		28E3E6E80A7C14CA00AB1361 /* ExportFLAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */; };
 		28E67F710A3A1A750021D89F /* pa_allocation.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E821FF0A39FD7600DCE280 /* pa_allocation.c */; };
 		28E67F720A3A1A770021D89F /* pa_converters.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E822030A39FD7600DCE280 /* pa_converters.c */; };
@@ -2491,6 +2492,8 @@
 		28D65C710B97E54B000E001A /* AutoDuck.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AutoDuck.h; sourceTree = "<group>"; };
 		28D65C740B97E573000E001A /* DtmfGen.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = DtmfGen.cpp; sourceTree = "<group>"; };
 		28D65C750B97E573000E001A /* DtmfGen.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = DtmfGen.h; sourceTree = "<group>"; };
+		28DA07370E4F5CEC003933C5 /* ExportFFmpegDialogs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ExportFFmpegDialogs.h; sourceTree = "<group>"; };
+		28DA07380E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFFmpegDialogs.cpp; sourceTree = "<group>"; };
 		28E3E6E60A7C14CA00AB1361 /* ExportFLAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportFLAC.h; sourceTree = "<group>"; };
 		28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFLAC.cpp; sourceTree = "<group>"; };
 		28E65A3C0E16AA66005B1F5D /* lrdf_types.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = lrdf_types.h; path = liblrdf/lrdf_types.h; sourceTree = "<group>"; };
@@ -3587,6 +3590,8 @@
 		1790B06209883BFD008A330A /* export */ = {
 			isa = PBXGroup;
 			children = (
+				28DA07370E4F5CEC003933C5 /* ExportFFmpegDialogs.h */,
+				28DA07380E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp */,
 				1790B06409883BFD008A330A /* Export.cpp */,
 				1790B06509883BFD008A330A /* Export.h */,
 				1790B06609883BFD008A330A /* ExportCL.cpp */,
@@ -6471,6 +6476,7 @@
 				28D587CB0E264CF4009C7DEA /* LoadLV2.cpp in Sources */,
 				28D587CC0E264CF4009C7DEA /* LV2Effect.cpp in Sources */,
 				1875EAED0E31288100A0D15C /* ODSimpleBlockFile.cpp in Sources */,
+				28DA07390E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
