@@ -367,12 +367,6 @@ static CompatibilityEntry CompatibilityList[] =
    { NULL, CODEC_ID_NONE }
 };
 
-/// Bit Rates supported by AC3 encoder
-static int iAC3BitRates[] = { 32000, 40000, 48000, 56000, 64000, 80000, 96000, 112000, 128000, 160000, 192000, 224000, 256000, 320000, 384000, 448000, 512000, 576000, 640000 };
-
-/// Sample Rates supported by AC3 encoder (must end with zero-element)
-/// It is not used in dialog anymore, but will be required later
-static int iAC3SampleRates[] = { 32000, 44100, 48000, 0 };
 
 /// AAC profiles
 static int iAACProfileValues[] = { FF_PROFILE_AAC_LOW, FF_PROFILE_AAC_MAIN, /*FF_PROFILE_AAC_SSR,*/ FF_PROFILE_AAC_LTP };
@@ -402,6 +396,11 @@ public:
    ExportFFmpegAC3Options(wxWindow *parent);
    void PopulateOrExchange(ShuttleGui & S);
    void OnOK(wxCommandEvent& event);
+   /// Bit Rates supported by AC3 encoder
+   static const int iAC3BitRates[];
+   /// Sample Rates supported by AC3 encoder (must end with zero-element)
+   /// It is not used in dialog anymore, but will be required later
+   static const int iAC3SampleRates[];
 
 private:
 

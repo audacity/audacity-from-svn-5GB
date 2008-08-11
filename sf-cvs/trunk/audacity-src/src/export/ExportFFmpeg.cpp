@@ -297,8 +297,8 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       break;
    case FMT_AC3:
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AC3BitRate"), 192000);
-      if (!CheckSampleRate(mSampleRate,iAC3SampleRates[0],iAC3SampleRates[2],&iAC3SampleRates[0]))
-         mSampleRate = AskResample(mEncAudioCodecCtx->bit_rate,mSampleRate,iAC3SampleRates[0],iAC3SampleRates[2],&iAC3SampleRates[0]);
+      if (!CheckSampleRate(mSampleRate,ExportFFmpegAC3Options::iAC3SampleRates[0], ExportFFmpegAC3Options::iAC3SampleRates[2], &ExportFFmpegAC3Options::iAC3SampleRates[0]))
+         mSampleRate = AskResample(mEncAudioCodecCtx->bit_rate,mSampleRate, ExportFFmpegAC3Options::iAC3SampleRates[0], ExportFFmpegAC3Options::iAC3SampleRates[2], &ExportFFmpegAC3Options::iAC3SampleRates[0]);
       break;
    case FMT_GSMAIFF:
    case FMT_GSMMSWAV:
