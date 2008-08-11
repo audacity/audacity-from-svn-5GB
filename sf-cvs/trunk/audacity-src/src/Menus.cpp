@@ -2943,8 +2943,8 @@ void AudacityProject::OnPaste()
    Track *c = clipIter.First();
    Track *f = NULL;
    Track *tmpSrc = NULL;
-   Track *prev = NULL;
    Track *tmpC = NULL;
+   Track *prev = NULL;
    
    bool pastedSomething = false;
    bool trackTypeMismatch = false;
@@ -2953,22 +2953,9 @@ void AudacityProject::OnPaste()
 
    while (n && c) {
       if (n->GetSelected()) {
-         // When trying to copy from stereo to mono track, show error and exit
-         // TODO: Automatically offer user to mix down to mono (unfortunately
-         //       this is not easy to implement
          advanceClipboard = true;
          if (tmpC) c = tmpC;
          if (c->GetKind() != n->GetKind()){
-            /*
-            wxMessageBox(
-               _("Pasting from one type of track into another is not allowed."),
-               _("Error"), wxICON_ERROR, this);
-            trackTypeMismatch = true;
-            //We /may/ have pasted something previous to this track,
-            //so we'll create an undo state so we can immediately undo.
-            pastedSomething = true;
-            break;
-            */
             if (!trackTypeMismatch) {
                tmpSrc = prev;
                tmpC = c;
@@ -2976,16 +2963,37 @@ void AudacityProject::OnPaste()
             trackTypeMismatch = true;
             advanceClipboard = false;
             c = tmpSrc;
+            
+            // If the types still don't match...
+            while (c && c->GetKind() != n->GetKind()){
+               prev = c;
+               c = clipIter.Next();
+            }
          }
          
+         // Handle case where the first track in clipboard
+         // is of different type than the first selected track
+         if (!c){
+            c = tmpC;
+            while (n && (c->GetKind() != n->GetKind()) )
+               n = iter.Next();
+            if (!n) c = NULL;               
+         }
+         
+         // The last possible case for cross-type pastes: triggered when we try to 
+         // paste 1+ tracks from one type into 1+ tracks of another type. If 
+         // there's a mix of types, this shouldn't run.
          if (!c){
             wxMessageBox(
-               _("Pasting from one type of track into another is not allowed."),
+               _("Pasting one type of track into another is not allowed."),
                _("Error"), wxICON_ERROR, this);
             c = n;//so we don't trigger any !c conditions on our way out
             break;
          }
          
+         // When trying to copy from stereo to mono track, show error and exit
+         // TODO: Automatically offer user to mix down to mono (unfortunately
+         //       this is not easy to implement         
          if (c->GetLinked() && !n->GetLinked())
          {
             wxMessageBox(
@@ -3045,12 +3053,16 @@ void AudacityProject::OnPaste()
       n = iter.Next();
    }
    
-   if ( IsSticky() && (n && !c) ){
+   // This block handles the cases where our clipboard is smaller
+   // than the amount of selected destination tracks. We take the 
+   // last wave track, and paste that one into the remaining
+   // selected tracks.
+   if ( n && !c ){
       WaveTrack *tmp;
       bool foundSrcTrack = false;
       c = clipIter.Last();
-      //First, we find the last audio track.
-      //This is the track we'll be pasting in.
+      // First, we find the last audio track. This is the track 
+      // we'll be pasting into the excess selected tracks.
       if (c->GetKind() != Track::Wave){
          Track *last = c;
          Track *prev = NULL;
@@ -3076,6 +3088,7 @@ void AudacityProject::OnPaste()
          }
       }
       
+      // We've found our source track, now we paste it in.
       while (n){
          if (n->GetSelected() && n->GetKind()==Track::Wave){
             if (c && c->GetKind() == Track::Wave){
@@ -3105,10 +3118,6 @@ void AudacityProject::OnPaste()
       if (f)
          mTrackPanel->EnsureVisible(f);
    }
-   /*if (trackTypeMismatch){
-      OnUndo();
-      mUndoManager.RemoveStateAt(mUndoManager.GetCurrentState());
-   }*/
 }
 
 void AudacityProject::OnPasteOver()
