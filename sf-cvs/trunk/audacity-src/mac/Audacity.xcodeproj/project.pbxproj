@@ -1106,6 +1106,34 @@
 		28FE4A080ABF4E960056F5C4 /* mmx_optimized.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FE4A060ABF4E960056F5C4 /* mmx_optimized.cpp */; };
 		28FE4A090ABF4E960056F5C4 /* sse_optimized.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FE4A070ABF4E960056F5C4 /* sse_optimized.cpp */; };
 		28FE4A3A0ABF58360056F5C4 /* soundtouch_config.h in Headers */ = {isa = PBXBuildFile; fileRef = 28FE4A390ABF58360056F5C4 /* soundtouch_config.h */; };
+		ED05D12F0E50AD5800CC4BD3 /* audiomixerreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1000E50AD5700CC4BD3 /* audiomixerreader.cpp */; };
+		ED05D1300E50AD5800CC4BD3 /* audioreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1020E50AD5700CC4BD3 /* audioreader.cpp */; };
+		ED05D1310E50AD5800CC4BD3 /* categories.pbxbtree in Resources */ = {isa = PBXBuildFile; fileRef = ED05D1070E50AD5700CC4BD3 /* categories.pbxbtree */; };
+		ED05D1320E50AD5800CC4BD3 /* cdecls.pbxbtree in Resources */ = {isa = PBXBuildFile; fileRef = ED05D1080E50AD5700CC4BD3 /* cdecls.pbxbtree */; };
+		ED05D1330E50AD5800CC4BD3 /* decls.pbxbtree in Resources */ = {isa = PBXBuildFile; fileRef = ED05D1090E50AD5700CC4BD3 /* decls.pbxbtree */; };
+		ED05D1340E50AD5800CC4BD3 /* files.pbxbtree in Resources */ = {isa = PBXBuildFile; fileRef = ED05D10A0E50AD5700CC4BD3 /* files.pbxbtree */; };
+		ED05D1350E50AD5800CC4BD3 /* imports.pbxbtree in Resources */ = {isa = PBXBuildFile; fileRef = ED05D10B0E50AD5700CC4BD3 /* imports.pbxbtree */; };
+		ED05D1360E50AD5800CC4BD3 /* pbxindex.header in Resources */ = {isa = PBXBuildFile; fileRef = ED05D10C0E50AD5700CC4BD3 /* pbxindex.header */; };
+		ED05D1370E50AD5800CC4BD3 /* protocols.pbxbtree in Resources */ = {isa = PBXBuildFile; fileRef = ED05D10D0E50AD5700CC4BD3 /* protocols.pbxbtree */; };
+		ED05D1380E50AD5800CC4BD3 /* refs.pbxbtree in Resources */ = {isa = PBXBuildFile; fileRef = ED05D10E0E50AD5700CC4BD3 /* refs.pbxbtree */; };
+		ED05D1390E50AD5800CC4BD3 /* control in Resources */ = {isa = PBXBuildFile; fileRef = ED05D1100E50AD5700CC4BD3 /* control */; };
+		ED05D13A0E50AD5800CC4BD3 /* strings in Resources */ = {isa = PBXBuildFile; fileRef = ED05D1110E50AD5700CC4BD3 /* strings */; };
+		ED05D13B0E50AD5800CC4BD3 /* subclasses.pbxbtree in Resources */ = {isa = PBXBuildFile; fileRef = ED05D1120E50AD5700CC4BD3 /* subclasses.pbxbtree */; };
+		ED05D13C0E50AD5800CC4BD3 /* symbols0.pbxsymbols in Resources */ = {isa = PBXBuildFile; fileRef = ED05D1130E50AD5700CC4BD3 /* symbols0.pbxsymbols */; };
+		ED05D13D0E50AD5800CC4BD3 /* comp_chroma.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1140E50AD5700CC4BD3 /* comp_chroma.cpp */; };
+		ED05D13E0E50AD5800CC4BD3 /* curvefit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1160E50AD5700CC4BD3 /* curvefit.cpp */; };
+		ED05D13F0E50AD5800CC4BD3 /* FFT3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1190E50AD5700CC4BD3 /* FFT3.cpp */; };
+		ED05D1400E50AD5800CC4BD3 /* gen_chroma.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D11B0E50AD5700CC4BD3 /* gen_chroma.cpp */; };
+		ED05D1410E50AD5800CC4BD3 /* hillclimb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D11D0E50AD5700CC4BD3 /* hillclimb.cpp */; };
+		ED05D1420E50AD5800CC4BD3 /* libscorealign.vcproj in Resources */ = {isa = PBXBuildFile; fileRef = ED05D11F0E50AD5700CC4BD3 /* libscorealign.vcproj */; };
+		ED05D1430E50AD5800CC4BD3 /* Makefile.linux in Resources */ = {isa = PBXBuildFile; fileRef = ED05D1200E50AD5700CC4BD3 /* Makefile.linux */; };
+		ED05D1440E50AD5800CC4BD3 /* Makefile.osx in Resources */ = {isa = PBXBuildFile; fileRef = ED05D1210E50AD5700CC4BD3 /* Makefile.osx */; };
+		ED05D1450E50AD5800CC4BD3 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = ED05D1220E50AD5700CC4BD3 /* README.txt */; };
+		ED05D1460E50AD5800CC4BD3 /* regression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1230E50AD5700CC4BD3 /* regression.cpp */; };
+		ED05D1470E50AD5800CC4BD3 /* sautils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1250E50AD5700CC4BD3 /* sautils.cpp */; };
+		ED05D1480E50AD5800CC4BD3 /* scorealign-glue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1270E50AD5700CC4BD3 /* scorealign-glue.cpp */; };
+		ED05D1490E50AD5800CC4BD3 /* scorealign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1290E50AD5700CC4BD3 /* scorealign.cpp */; };
+		ED05D14A0E50AD5800CC4BD3 /* scorealign.sln in Resources */ = {isa = PBXBuildFile; fileRef = ED05D12B0E50AD5700CC4BD3 /* scorealign.sln */; };
 		ED3D7FF00DF73889000F43E3 /* EffectCategory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED3D7FEC0DF73889000F43E3 /* EffectCategory.cpp */; };
 		ED3D7FF10DF73889000F43E3 /* EffectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED3D7FEE0DF73889000F43E3 /* EffectManager.cpp */; };
 /* End PBXBuildFile section */
@@ -1271,6 +1299,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 28E67F510A3A160D0021D89F;
 			remoteInfo = "portaudio-v19";
+		};
+		ED05D14F0E50AD5800CC4BD3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED05D12C0E50AD5700CC4BD3 /* scorealign.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DD76F6C0486A84900D96B5E /* scorealign */;
+			remoteInfo = scorealign;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -2577,6 +2612,46 @@
 		28FE4A060ABF4E960056F5C4 /* mmx_optimized.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = mmx_optimized.cpp; sourceTree = "<group>"; };
 		28FE4A070ABF4E960056F5C4 /* sse_optimized.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = sse_optimized.cpp; sourceTree = "<group>"; };
 		28FE4A390ABF58360056F5C4 /* soundtouch_config.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = soundtouch_config.h; path = "../lib-src/soundtouch/include/soundtouch_config.h"; sourceTree = SOURCE_ROOT; };
+		ED05D1000E50AD5700CC4BD3 /* audiomixerreader.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = audiomixerreader.cpp; sourceTree = "<group>"; };
+		ED05D1010E50AD5700CC4BD3 /* audiomixerreader.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = audiomixerreader.h; sourceTree = "<group>"; };
+		ED05D1020E50AD5700CC4BD3 /* audioreader.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = audioreader.cpp; sourceTree = "<group>"; };
+		ED05D1030E50AD5700CC4BD3 /* audioreader.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = audioreader.h; sourceTree = "<group>"; };
+		ED05D1070E50AD5700CC4BD3 /* categories.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = categories.pbxbtree; sourceTree = "<group>"; };
+		ED05D1080E50AD5700CC4BD3 /* cdecls.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = cdecls.pbxbtree; sourceTree = "<group>"; };
+		ED05D1090E50AD5700CC4BD3 /* decls.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = decls.pbxbtree; sourceTree = "<group>"; };
+		ED05D10A0E50AD5700CC4BD3 /* files.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = files.pbxbtree; sourceTree = "<group>"; };
+		ED05D10B0E50AD5700CC4BD3 /* imports.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = imports.pbxbtree; sourceTree = "<group>"; };
+		ED05D10C0E50AD5700CC4BD3 /* pbxindex.header */ = {isa = PBXFileReference; lastKnownFileType = file; path = pbxindex.header; sourceTree = "<group>"; };
+		ED05D10D0E50AD5700CC4BD3 /* protocols.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = protocols.pbxbtree; sourceTree = "<group>"; };
+		ED05D10E0E50AD5700CC4BD3 /* refs.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = refs.pbxbtree; sourceTree = "<group>"; };
+		ED05D1100E50AD5700CC4BD3 /* control */ = {isa = PBXFileReference; lastKnownFileType = file; path = control; sourceTree = "<group>"; };
+		ED05D1110E50AD5700CC4BD3 /* strings */ = {isa = PBXFileReference; lastKnownFileType = file; path = strings; sourceTree = "<group>"; };
+		ED05D1120E50AD5700CC4BD3 /* subclasses.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = subclasses.pbxbtree; sourceTree = "<group>"; };
+		ED05D1130E50AD5700CC4BD3 /* symbols0.pbxsymbols */ = {isa = PBXFileReference; lastKnownFileType = file; path = symbols0.pbxsymbols; sourceTree = "<group>"; };
+		ED05D1140E50AD5700CC4BD3 /* comp_chroma.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = comp_chroma.cpp; sourceTree = "<group>"; };
+		ED05D1150E50AD5700CC4BD3 /* comp_chroma.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = comp_chroma.h; sourceTree = "<group>"; };
+		ED05D1160E50AD5700CC4BD3 /* curvefit.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = curvefit.cpp; sourceTree = "<group>"; };
+		ED05D1170E50AD5700CC4BD3 /* curvefit.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = curvefit.h; sourceTree = "<group>"; };
+		ED05D1190E50AD5700CC4BD3 /* FFT3.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = FFT3.cpp; sourceTree = "<group>"; };
+		ED05D11A0E50AD5700CC4BD3 /* FFT3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FFT3.h; sourceTree = "<group>"; };
+		ED05D11B0E50AD5700CC4BD3 /* gen_chroma.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = gen_chroma.cpp; sourceTree = "<group>"; };
+		ED05D11C0E50AD5700CC4BD3 /* gen_chroma.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = gen_chroma.h; sourceTree = "<group>"; };
+		ED05D11D0E50AD5700CC4BD3 /* hillclimb.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = hillclimb.cpp; sourceTree = "<group>"; };
+		ED05D11E0E50AD5700CC4BD3 /* hillclimb.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = hillclimb.h; sourceTree = "<group>"; };
+		ED05D11F0E50AD5700CC4BD3 /* libscorealign.vcproj */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = libscorealign.vcproj; sourceTree = "<group>"; };
+		ED05D1200E50AD5700CC4BD3 /* Makefile.linux */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Makefile.linux; sourceTree = "<group>"; };
+		ED05D1210E50AD5700CC4BD3 /* Makefile.osx */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Makefile.osx; sourceTree = "<group>"; };
+		ED05D1220E50AD5700CC4BD3 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		ED05D1230E50AD5700CC4BD3 /* regression.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = regression.cpp; sourceTree = "<group>"; };
+		ED05D1240E50AD5700CC4BD3 /* regression.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = regression.h; sourceTree = "<group>"; };
+		ED05D1250E50AD5700CC4BD3 /* sautils.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = sautils.cpp; sourceTree = "<group>"; };
+		ED05D1260E50AD5700CC4BD3 /* sautils.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = sautils.h; sourceTree = "<group>"; };
+		ED05D1270E50AD5700CC4BD3 /* scorealign-glue.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = "scorealign-glue.cpp"; sourceTree = "<group>"; };
+		ED05D1280E50AD5700CC4BD3 /* scorealign-glue.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "scorealign-glue.h"; sourceTree = "<group>"; };
+		ED05D1290E50AD5700CC4BD3 /* scorealign.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = scorealign.cpp; sourceTree = "<group>"; };
+		ED05D12A0E50AD5700CC4BD3 /* scorealign.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = scorealign.h; sourceTree = "<group>"; };
+		ED05D12B0E50AD5700CC4BD3 /* scorealign.sln */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = scorealign.sln; sourceTree = "<group>"; };
+		ED05D12C0E50AD5700CC4BD3 /* scorealign.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = scorealign.xcodeproj; sourceTree = "<group>"; };
 		ED3D7FEC0DF73889000F43E3 /* EffectCategory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectCategory.cpp; sourceTree = "<group>"; };
 		ED3D7FED0DF73889000F43E3 /* EffectCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectCategory.h; sourceTree = "<group>"; };
 		ED3D7FEE0DF73889000F43E3 /* EffectManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectManager.cpp; sourceTree = "<group>"; };
@@ -2640,6 +2715,7 @@
 				17072FD10988D6A9008541CC /* libmad */,
 				170731EB0988D6AA008541CC /* libogg */,
 				170733DB0988D6AC008541CC /* libresample */,
+				ED05D0FF0E50AD5600CC4BD3 /* libscorealign */,
 				170733FC0988D6AC008541CC /* libsndfile */,
 				28501EAC0CEED0740029ABAA /* libvamp */,
 				1707357C0988D6AD008541CC /* libvorbis */,
@@ -4684,6 +4760,101 @@
 			path = mac;
 			sourceTree = "<group>";
 		};
+		ED05D0FF0E50AD5600CC4BD3 /* libscorealign */ = {
+			isa = PBXGroup;
+			children = (
+				ED05D1000E50AD5700CC4BD3 /* audiomixerreader.cpp */,
+				ED05D1010E50AD5700CC4BD3 /* audiomixerreader.h */,
+				ED05D1020E50AD5700CC4BD3 /* audioreader.cpp */,
+				ED05D1030E50AD5700CC4BD3 /* audioreader.h */,
+				ED05D1040E50AD5700CC4BD3 /* build */,
+				ED05D1140E50AD5700CC4BD3 /* comp_chroma.cpp */,
+				ED05D1150E50AD5700CC4BD3 /* comp_chroma.h */,
+				ED05D1160E50AD5700CC4BD3 /* curvefit.cpp */,
+				ED05D1170E50AD5700CC4BD3 /* curvefit.h */,
+				ED05D1180E50AD5700CC4BD3 /* fft3 */,
+				ED05D11B0E50AD5700CC4BD3 /* gen_chroma.cpp */,
+				ED05D11C0E50AD5700CC4BD3 /* gen_chroma.h */,
+				ED05D11D0E50AD5700CC4BD3 /* hillclimb.cpp */,
+				ED05D11E0E50AD5700CC4BD3 /* hillclimb.h */,
+				ED05D11F0E50AD5700CC4BD3 /* libscorealign.vcproj */,
+				ED05D1200E50AD5700CC4BD3 /* Makefile.linux */,
+				ED05D1210E50AD5700CC4BD3 /* Makefile.osx */,
+				ED05D1220E50AD5700CC4BD3 /* README.txt */,
+				ED05D1230E50AD5700CC4BD3 /* regression.cpp */,
+				ED05D1240E50AD5700CC4BD3 /* regression.h */,
+				ED05D1250E50AD5700CC4BD3 /* sautils.cpp */,
+				ED05D1260E50AD5700CC4BD3 /* sautils.h */,
+				ED05D1270E50AD5700CC4BD3 /* scorealign-glue.cpp */,
+				ED05D1280E50AD5700CC4BD3 /* scorealign-glue.h */,
+				ED05D1290E50AD5700CC4BD3 /* scorealign.cpp */,
+				ED05D12A0E50AD5700CC4BD3 /* scorealign.h */,
+				ED05D12B0E50AD5700CC4BD3 /* scorealign.sln */,
+				ED05D12C0E50AD5700CC4BD3 /* scorealign.xcodeproj */,
+			);
+			path = libscorealign;
+			sourceTree = "<group>";
+		};
+		ED05D1040E50AD5700CC4BD3 /* build */ = {
+			isa = PBXGroup;
+			children = (
+				ED05D1050E50AD5700CC4BD3 /* scorealign.build */,
+			);
+			path = build;
+			sourceTree = "<group>";
+		};
+		ED05D1050E50AD5700CC4BD3 /* scorealign.build */ = {
+			isa = PBXGroup;
+			children = (
+				ED05D1060E50AD5700CC4BD3 /* scorealign.pbxindex */,
+			);
+			path = scorealign.build;
+			sourceTree = "<group>";
+		};
+		ED05D1060E50AD5700CC4BD3 /* scorealign.pbxindex */ = {
+			isa = PBXGroup;
+			children = (
+				ED05D1070E50AD5700CC4BD3 /* categories.pbxbtree */,
+				ED05D1080E50AD5700CC4BD3 /* cdecls.pbxbtree */,
+				ED05D1090E50AD5700CC4BD3 /* decls.pbxbtree */,
+				ED05D10A0E50AD5700CC4BD3 /* files.pbxbtree */,
+				ED05D10B0E50AD5700CC4BD3 /* imports.pbxbtree */,
+				ED05D10C0E50AD5700CC4BD3 /* pbxindex.header */,
+				ED05D10D0E50AD5700CC4BD3 /* protocols.pbxbtree */,
+				ED05D10E0E50AD5700CC4BD3 /* refs.pbxbtree */,
+				ED05D10F0E50AD5700CC4BD3 /* strings.pbxstrings */,
+				ED05D1120E50AD5700CC4BD3 /* subclasses.pbxbtree */,
+				ED05D1130E50AD5700CC4BD3 /* symbols0.pbxsymbols */,
+			);
+			path = scorealign.pbxindex;
+			sourceTree = "<group>";
+		};
+		ED05D10F0E50AD5700CC4BD3 /* strings.pbxstrings */ = {
+			isa = PBXGroup;
+			children = (
+				ED05D1100E50AD5700CC4BD3 /* control */,
+				ED05D1110E50AD5700CC4BD3 /* strings */,
+			);
+			path = strings.pbxstrings;
+			sourceTree = "<group>";
+		};
+		ED05D1180E50AD5700CC4BD3 /* fft3 */ = {
+			isa = PBXGroup;
+			children = (
+				ED05D1190E50AD5700CC4BD3 /* FFT3.cpp */,
+				ED05D11A0E50AD5700CC4BD3 /* FFT3.h */,
+			);
+			path = fft3;
+			sourceTree = "<group>";
+		};
+		ED05D12D0E50AD5800CC4BD3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ED05D1500E50AD5800CC4BD3 /* scorealign */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -5670,12 +5841,16 @@
 		1790ABE309883346008A330A /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1790ABE409883346008A330A /* Build configuration list for PBXProject "Audacity" */;
-			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 0;
 			mainGroup = 1790ABE109883346008A330A;
 			productRefGroup = 1790AFB109883B6D008A330A /* Products */;
 			projectDirPath = "";
-			projectRoot = ..;
+			projectReferences = (
+				{
+					ProductGroup = ED05D12D0E50AD5800CC4BD3 /* Products */;
+					ProjectRef = ED05D12C0E50AD5700CC4BD3 /* scorealign.xcodeproj */;
+				},
+			);
 			targets = (
 				1790AFAF09883B6D008A330A /* Audacity */,
 				17072E880988BD39008541CC /* Configure */,
@@ -5706,6 +5881,16 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		ED05D1500E50AD5800CC4BD3 /* scorealign */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = scorealign;
+			remoteRef = ED05D14F0E50AD5800CC4BD3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		1790AFAC09883B6D008A330A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
@@ -5720,6 +5905,23 @@
 				174F73D6098D516D009CD6E0 /* AudacityWAV.icns in Resources */,
 				174F73D8098D51AA009CD6E0 /* Info.plist in Resources */,
 				17FC86F40994637C0061DC94 /* compile.txt in Resources */,
+				ED05D1310E50AD5800CC4BD3 /* categories.pbxbtree in Resources */,
+				ED05D1320E50AD5800CC4BD3 /* cdecls.pbxbtree in Resources */,
+				ED05D1330E50AD5800CC4BD3 /* decls.pbxbtree in Resources */,
+				ED05D1340E50AD5800CC4BD3 /* files.pbxbtree in Resources */,
+				ED05D1350E50AD5800CC4BD3 /* imports.pbxbtree in Resources */,
+				ED05D1360E50AD5800CC4BD3 /* pbxindex.header in Resources */,
+				ED05D1370E50AD5800CC4BD3 /* protocols.pbxbtree in Resources */,
+				ED05D1380E50AD5800CC4BD3 /* refs.pbxbtree in Resources */,
+				ED05D1390E50AD5800CC4BD3 /* control in Resources */,
+				ED05D13A0E50AD5800CC4BD3 /* strings in Resources */,
+				ED05D13B0E50AD5800CC4BD3 /* subclasses.pbxbtree in Resources */,
+				ED05D13C0E50AD5800CC4BD3 /* symbols0.pbxsymbols in Resources */,
+				ED05D1420E50AD5800CC4BD3 /* libscorealign.vcproj in Resources */,
+				ED05D1430E50AD5800CC4BD3 /* Makefile.linux in Resources */,
+				ED05D1440E50AD5800CC4BD3 /* Makefile.osx in Resources */,
+				ED05D1450E50AD5800CC4BD3 /* README.txt in Resources */,
+				ED05D14A0E50AD5800CC4BD3 /* scorealign.sln in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6477,6 +6679,17 @@
 				28D587CC0E264CF4009C7DEA /* LV2Effect.cpp in Sources */,
 				1875EAED0E31288100A0D15C /* ODSimpleBlockFile.cpp in Sources */,
 				28DA07390E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp in Sources */,
+				ED05D12F0E50AD5800CC4BD3 /* audiomixerreader.cpp in Sources */,
+				ED05D1300E50AD5800CC4BD3 /* audioreader.cpp in Sources */,
+				ED05D13D0E50AD5800CC4BD3 /* comp_chroma.cpp in Sources */,
+				ED05D13E0E50AD5800CC4BD3 /* curvefit.cpp in Sources */,
+				ED05D13F0E50AD5800CC4BD3 /* FFT3.cpp in Sources */,
+				ED05D1400E50AD5800CC4BD3 /* gen_chroma.cpp in Sources */,
+				ED05D1410E50AD5800CC4BD3 /* hillclimb.cpp in Sources */,
+				ED05D1460E50AD5800CC4BD3 /* regression.cpp in Sources */,
+				ED05D1470E50AD5800CC4BD3 /* sautils.cpp in Sources */,
+				ED05D1480E50AD5800CC4BD3 /* scorealign-glue.cpp in Sources */,
+				ED05D1490E50AD5800CC4BD3 /* scorealign.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
