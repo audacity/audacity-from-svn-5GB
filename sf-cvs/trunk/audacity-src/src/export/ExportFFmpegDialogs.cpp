@@ -82,6 +82,11 @@ BEGIN_EVENT_TABLE(ExportFFmpegAC3Options, wxDialog)
    EVT_BUTTON(wxID_OK,ExportFFmpegAC3Options::OnOK)
 END_EVENT_TABLE()
 
+// This initialises content for the static const member variables defined in
+// ExportFFmpegDialogs.h (note no static keyword - important!)
+const int ExportFFmpegAC3Options::iAC3BitRates[] = { 32000, 40000, 48000, 56000, 64000, 80000, 96000, 112000, 128000, 160000, 192000, 224000, 256000, 320000, 384000, 448000, 512000, 576000, 640000 };
+const int ExportFFmpegAC3Options::iAC3SampleRates[] = { 32000, 44100, 48000, 0 };
+
 ExportFFmpegAC3Options::ExportFFmpegAC3Options(wxWindow *parent)
 :  wxDialog(NULL, wxID_ANY,
             wxString(_("Specify AC3 Options")),
