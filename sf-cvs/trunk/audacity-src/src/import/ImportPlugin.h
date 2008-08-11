@@ -124,7 +124,7 @@ public:
    {
    }
 
-   ~ImportFileHandle()
+   virtual ~ImportFileHandle()
    {
       if (mProgress != NULL)
       {
