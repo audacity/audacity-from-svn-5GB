@@ -482,7 +482,7 @@ bool ExportFFmpeg::Finalize()
       pkt.flags |= PKT_FLAG_KEY;
 
       // Set presentation time of frame (currently in the codec's timebase) in the stream timebase.
-      if(mEncAudioCodecCtx->coded_frame && mEncAudioCodecCtx->coded_frame->pts != AV_NOPTS_VALUE)
+      if(mEncAudioCodecCtx->coded_frame && mEncAudioCodecCtx->coded_frame->pts != int64_t(AV_NOPTS_VALUE))
          pkt.pts = FFmpegLibsInst->av_rescale_q(mEncAudioCodecCtx->coded_frame->pts, mEncAudioCodecCtx->time_base, mEncAudioStream->time_base);
 
       if (FFmpegLibsInst->av_interleaved_write_frame(mEncFormatCtx, &pkt) != 0)
@@ -555,7 +555,7 @@ bool ExportFFmpeg::EncodeAudioFrame(int16_t *pFrame, int frameSize)
       }
 
       // Rescale from the codec time_base to the AVStream time_base.
-      if (mEncAudioCodecCtx->coded_frame && mEncAudioCodecCtx->coded_frame->pts != AV_NOPTS_VALUE)
+      if (mEncAudioCodecCtx->coded_frame && mEncAudioCodecCtx->coded_frame->pts != int64_t(AV_NOPTS_VALUE))
          pkt.pts = FFmpegLibsInst->av_rescale_q(mEncAudioCodecCtx->coded_frame->pts, mEncAudioCodecCtx->time_base, mEncAudioStream->time_base);
       //wxLogMessage(wxT("FFmpeg : (%d) Writing audio frame with PTS: %lld."), mEncAudioCodecCtx->frame_number, pkt.pts);
 

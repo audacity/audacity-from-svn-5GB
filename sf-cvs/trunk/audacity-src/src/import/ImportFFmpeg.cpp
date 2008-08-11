@@ -481,7 +481,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
    for (int s = 0; s < mNumStreams; s++)
    {
       int64_t stream_delay = 0;
-      if (mScs[s]->m_stream->start_time != AV_NOPTS_VALUE)
+      if (mScs[s]->m_stream->start_time != int64_t(AV_NOPTS_VALUE))
       {
          stream_delay = mScs[s]->m_stream->start_time;
          wxLogMessage(wxT("Stream %d start_time = %d, that would be %f milliseconds."), s, mScs[s]->m_stream->start_time, double(mScs[s]->m_stream->start_time)/AV_TIME_BASE*1000);
@@ -491,7 +491,6 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
          for (int c = 0; c < mScs[s]->m_stream->codec->channels; c++)
          {
             WaveTrack *t = mChannels[s][c];
-            double len = double(stream_delay)/AV_TIME_BASE;
             t->InsertSilence(0,double(stream_delay)/AV_TIME_BASE);
          }
       }

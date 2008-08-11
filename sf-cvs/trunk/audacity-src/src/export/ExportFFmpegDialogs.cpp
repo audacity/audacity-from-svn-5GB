@@ -814,7 +814,7 @@ void ExportFFmpegOptions::FetchFormatList()
 {
    // Enumerate all output formats
    AVOutputFormat *ofmt = NULL;
-   while (ofmt = FFmpegLibsInst->av_oformat_next(ofmt))
+   while ((ofmt = FFmpegLibsInst->av_oformat_next(ofmt)))
    {
       // Any audio-capable format has default audio codec.
       // If it doesn't, then it doesn't supports any audio codecs
@@ -835,7 +835,7 @@ void ExportFFmpegOptions::FetchCodecList()
 {
    // Enumerate all codecs
    AVCodec *codec = NULL;
-   while (codec = FFmpegLibsInst->av_codec_next(codec))
+   while ((codec = FFmpegLibsInst->av_codec_next(codec)))
    {
       // We're only interested in audio and only in encoders
       if (codec->type == CODEC_TYPE_AUDIO && codec->encode)
@@ -1066,7 +1066,7 @@ int ExportFFmpegOptions::FetchCompatibleCodecList(const wxChar *fmt, CodecID id)
    if (found == 2)
    {
       AVCodec *codec = NULL;
-      while (codec = FFmpegLibsInst->av_codec_next(codec))
+      while ((codec = FFmpegLibsInst->av_codec_next(codec)))
       {
          if (codec->type == CODEC_TYPE_AUDIO)
          {
@@ -1141,7 +1141,7 @@ int ExportFFmpegOptions::FetchCompatibleFormatList(CodecID id, wxString *selfmt)
    if (found)
    {
       // Find all formats which have this codec as default and which are not in the list yet and add them too
-      while (ofmt = FFmpegLibsInst->av_oformat_next(ofmt))
+      while ((ofmt = FFmpegLibsInst->av_oformat_next(ofmt)))
       {
          if (ofmt->audio_codec == id)
          {
@@ -1275,7 +1275,7 @@ void ExportFFmpegOptions::EnableDisableControls(AVCodec *cdc, wxString *selfmt)
          bool format = false;
          if (apptable[i].codec == CODEC_ID_NONE) codec = true;
          else if (cdc != NULL && apptable[i].codec == cdc->id) codec = true;
-         if (apptable[i].format == "any") format = true;
+         if (!wxString::FromUTF8(apptable[i].format).Cmp(wxT("any"))) format = true;
          else if (selfmt != NULL && selfmt->Cmp(wxString::FromUTF8(apptable[i].format)) == 0) format = true;
          if (codec && format)
          {
