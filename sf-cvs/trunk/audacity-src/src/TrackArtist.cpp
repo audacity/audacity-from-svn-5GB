@@ -70,7 +70,7 @@ int gWaveformTimeCount = 0;
 #endif
 
 #ifdef __WXMAC__
-#define BUFFERED_DRAWING 0
+#define BUFFERED_DRAWING 1
 #endif
 
 #ifdef USE_MIDI
@@ -950,9 +950,11 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
          r2[x] = r1[x];
    }
    long pixAnimOffset;
-   pixAnimOffset = wxDateTime::Now().GetTicks(); //5 pixels a second
+   
+   pixAnimOffset = (long)fabs(wxDateTime::Now().GetTicks()*-10  )+ wxDateTime::Now().GetMillisecond()/100; //10 pixels a second
    
    bool drawStripes = true;
+   bool drawWaveform = true;
    if (imageBuffer) {
       uchar *clipBuffer = imageBuffer;
       uchar rs, gs, bs, rr, gr, br;
@@ -972,61 +974,65 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                //check to see if we should draw the progress bar. 
                //x%pBar Height to ensure we have a square separated every 15 pixels.
                //if(showProgress && y<pBarHeight && x%pBarHeight) 
-//               {
-//                  //white square,  TODO: use a max(255,x+100) scheme so that we keep the waveform there, just faded. 
-//                  *imageBuffer++=255;
-//                  *imageBuffer++=255;
-//                  *imageBuffer++=255;
-//               }
-//               else
-//               {
-
-                  //draw the waveform
-				  
-				  
-				  if(drawStripes)
-				  {
-					  //draw one stripe every 25 pixels
-					  if( (y+x+pixAnimOffset)%25 == 0)
-					  {
-						  *imageBuffer++ = (bl[x]%2?rs:rr) + *imageBuffer;
-						  *imageBuffer++;
-						  *imageBuffer++;
-					  } 
-					  else {
-						  //have a gradient away from the stripe, alter light and dark every block
-						  float lineProximity;
-						  //we want half of the range to be zero, and the other half scaled from 0.0 to 1 as you approach the line
-						  lineProximity =  fabs( ( ((y+x+pixAnimOffset)%25) - 12)/12.0) - 0.5;
-						  if(lineProximity<0.0) 
-							  lineProximity = 0.0;
-						  lineProximity*=2;//scale back to 0.0-1.0
-							  *imageBuffer++ =  (bl[x]%2?rs:rr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
-							  *imageBuffer++ = (bl[x]%2?gs:gr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
-							  *imageBuffer++ = (bl[x]%2?bs:br)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
-					  }
-				  }
-				  else
-				  {
-                 //draw a dummy waveform - some kind of sinusoid.  We want to animate it so the user knows it's a dummy.  Use the second's unit of a get time function.
-                 //Lets use a triangle wave for now since it's easier - I don't want to use sin() or make a wavetable just for this.
-                 int triX;
-                 triX= fabs((double)((x+pixAnimOffset)%(2*r.height))-r.height)+r.height;
-                 if((y+triX)%r.height == 0)
-                 {
-                    *imageBuffer++ = rr/2; //(bl[x]%2?rs:rr) + *imageBuffer;
-                    *imageBuffer++ = gr/2;
-                    *imageBuffer++ = br/2;
-                 }
-                 else
-                 {
-                    *imageBuffer++;
-                    *imageBuffer++;
-                    *imageBuffer++;
-                 }
-                 
-                 //				  }
-}
+               //               {
+               //                  //white square,  TODO: use a max(255,x+100) scheme so that we keep the waveform there, just faded. 
+               //                  *imageBuffer++=255;
+               //                  *imageBuffer++=255;
+               //                  *imageBuffer++=255;
+               //               }
+               //               else
+               //               {
+               
+               //draw the waveform
+               
+               
+               if(drawStripes)
+               {
+                  //draw one stripe every 25 pixels
+                  if( (y+x/*+pixAnimOffset*/)%25 == 0)
+                  {
+                     *imageBuffer++ = (bl[x]%2?rs:rr) + *imageBuffer;
+                     *imageBuffer++;
+                     *imageBuffer++;
+                  } 
+                  else {
+                     //have a gradient away from the stripe, alter light and dark every block
+                     float lineProximity;
+                     //we want half of the range to be zero, and the other half scaled from 0.0 to 1 as you approach the line
+                     lineProximity =  fabs( ( ((y+x/*+pixAnimOffset*/)%25) - 12)/12.0) - 0.5;
+                     if(lineProximity<0.0) 
+                        lineProximity = 0.0;
+                     lineProximity*=2;//scale back to 0.0-1.0
+                        *imageBuffer++ =  (bl[x]%2?rs:rr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+                        *imageBuffer++ = (bl[x]%2?gs:gr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+                        *imageBuffer++ = (bl[x]%2?bs:br)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+                  }
+               }
+               if(drawWaveform)
+               {
+                  
+                  //draw a dummy waveform - some kind of sinusoid.  We want to animate it so the user knows it's a dummy.  Use the second's unit of a get time function.
+                  //Lets use a triangle wave for now since it's easier - I don't want to use sin() or make a wavetable just for this.
+                  int triX;
+                  triX= fabs((double)((x+pixAnimOffset)%(2*r.height))-r.height)+r.height;
+                  if((y+triX)%r.height == 0)
+                  {
+                     if(drawStripes)
+                        imageBuffer-=3;  //move the pen back to the beginning of the pixel
+                     *imageBuffer++ = rr; //(bl[x]%2?rs:rr) + *imageBuffer;
+                     *imageBuffer++ = gr;
+                     *imageBuffer++ = br;
+                  }
+                  else
+                  {
+                     if(!drawStripes)
+                     {  *imageBuffer++;
+                        *imageBuffer++;
+                        *imageBuffer++;
+                     }
+                  }
+                  
+               }
             }
             else
             {
@@ -1076,21 +1082,8 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
       for (x = 0; x < r.width; x++) {
          if(bl[x]<=-1)
          {
-            //draw a dummy waveform - some kind of sinusoid.  We want to animate it so the user knows it's a dummy.  Use the second's unit of a get time function.
-            //Lets use a triangle wave for now since it's easier - I don't want to use sin() or make a wavetable just for this.
-            if(!drawStripes)
-            {
-               int triX;
-               dc.SetPen(muteSamplePen);
-               
-               for(int y=0;y<r.height;y++)
-               {
-                  triX= fabs((double)((x+pixAnimOffset)%(2*r.height))-r.height)+r.height;
-                  if((y+triX)%r.height == 0)
-                     dc.DrawPoint(r.x + x, r.y+y);
-               }
-            }
-            else
+
+            if(drawStripes)
             {
                
                //TODO:unify with buffer drawing.
@@ -1098,8 +1091,8 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                for(int y=0;y<(r.height)/25 +1;y++)
                {
                   //we are drawing over the buffer, but I think DrawLine takes care of this.
-                  dc.DrawLine(r.x + x, r.y+ 25*y + (x+pixAnimOffset)%25, r.x+x, 
-                              r.y+25*y+(x+pixAnimOffset)%25 + 6 ); //take the min so we don't draw past the edge
+                  dc.DrawLine(r.x + x, r.y+ 25*y + (x/*+pixAnimOffset*/)%25, r.x+x, 
+                              r.y+25*y+(x/*+pixAnimOffset*/)%25 + 6 ); //take the min so we don't draw past the edge
                }
                
                
@@ -1111,6 +1104,21 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                    dc.DrawLine(r.x + x, r.y, r.x + x, r.y + pBarHeight );
                 }*/
             }
+            
+                        //draw a dummy waveform - some kind of sinusoid.  We want to animate it so the user knows it's a dummy.  Use the second's unit of a get time function.
+            //Lets use a triangle wave for now since it's easier - I don't want to use sin() or make a wavetable just for this.
+            if(drawWaveform)
+            {
+               int triX;
+               dc.SetPen(samplePen);
+               triX= fabs((double)((x+pixAnimOffset)%(2*r.height))-r.height)+r.height;
+               for(int y=0;y<r.height;y++)
+               {
+                  if((y+triX)%r.height == 0)
+                     dc.DrawPoint(r.x + x, r.y+y);
+               }
+            }
+            
          }
          else
          {

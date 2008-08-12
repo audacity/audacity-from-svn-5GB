@@ -40,19 +40,15 @@ class ODComputeSummaryTask:public ODTask
    virtual ~ODComputeSummaryTask(){};
    
    virtual ODTask* Clone();
-   ///remove references to a wavetrack safely
-   virtual void StopUsingWaveTrack(WaveTrack* track);
-   
-   ///Replaces all instances to a wavetrack with a new one, effectively transferring the task.
-   virtual void ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack);
-   
-   ///changes the tasks associated with this Waveform to process the task from a different point in the track
-   virtual void DemandTrackUpdate(WaveTrack* track, double seconds);
    
    ///Return the task name
    virtual const char* GetTaskName(){return "ODComputeSummaryTask";}
    
    virtual const wxChar* GetTip(){return _("Import complete. Calculating waveform");}
+   
+   virtual bool UsesCustomWorkUntilPercentage(){return true;}
+   virtual float ComputeNextWorkUntilPercentageComplete();
+
    
 protected:
 

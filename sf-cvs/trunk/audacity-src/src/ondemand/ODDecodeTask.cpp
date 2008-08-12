@@ -4,7 +4,7 @@
 
   ODComputeSummaryTask.cpp
 
-  Created by Michael Chinen (mchinen) on 6/8/08.
+  Created by Michael Chinen (mchinen) on 8/10/08.
   Audacity(R) is copyright (c) 1999-2008 Audacity Team.
   License: GPL v2.  See License.txt.
 
@@ -16,32 +16,20 @@ updating the ODPCMAliasBlockFile and the GUI of the newly available data.
 
 *//*******************************************************************/
 
-
-
-#include "ODComputeSummaryTask.h"
-#include "../blockfile/ODPCMAliasBlockFile.h"
+#include "ODDecodeTask.h"
+#include "../blockfile/ODDecodeBlockFile.h"
 #include <wx/wx.h>
 
-//36 blockfiles > 3 minutes stereo 44.1kHz per ODTask::DoSome
-#define kNumBlockFilesPerDoSome 36
-
 ///Creates a new task that computes summaries for a wavetrack that needs to be specified through SetWaveTrack()
-ODComputeSummaryTask::ODComputeSummaryTask()
+ODDecodeTask::ODDecodeTask()
 {
    mMaxBlockFiles = 0;
    mComputedBlockFiles = 0;
 }
  
-ODTask* ODComputeSummaryTask::Clone()
-{
-   ODComputeSummaryTask* clone = new ODComputeSummaryTask;
-   clone->mDemandSample=GetDemandSample();
-   return clone;
-   
-}
      
 ///Computes and writes the data for one BlockFile if it still has a refcount. 
-void ODComputeSummaryTask::DoSomeInternal()
+void ODDecodeTask::DoSomeInternal()
 {
    if(mBlockFiles.size()<=0)
    {
@@ -51,7 +39,7 @@ void ODComputeSummaryTask::DoSomeInternal()
       return;
    }
    
-   ODPCMAliasBlockFile* bf;
+   ODDecodeBlockFile* bf;
    sampleCount blockStartSample;
    sampleCount blockEndSample;
    bool success =false;
@@ -65,6 +53,9 @@ void ODComputeSummaryTask::DoSomeInternal()
       //the Wavetrack/sequence.  If it doesn't it has been deleted and we should forget it.
       if(bf->RefCount()>=2)
       {
+         //OD TODO: somehow pass the bf a reference to the decoder that manages it's file.
+         
+         
          bf->DoWriteSummary();
          success = true;
          blockStartSample = bf->GetStart();
@@ -99,22 +90,7 @@ void ODComputeSummaryTask::DoSomeInternal()
    CalculatePercentComplete();
 }
 
-///compute the next time we should take a break in terms of overall percentage.
-///We want to do a constant number of blockfiles.  
-float ODComputeSummaryTask::ComputeNextWorkUntilPercentageComplete()
-{
-   if(mMaxBlockFiles==0)
-     return 1.0;
-   
-   float nextPercent;
-   mPercentCompleteMutex.Lock();
-   nextPercent=mPercentComplete + ((float)kNumBlockFilesPerDoSome/(mMaxBlockFiles+1));
-   mPercentCompleteMutex.Unlock();
-   
-   return nextPercent;
-}
-
-void ODComputeSummaryTask::CalculatePercentComplete()
+void ODDecodeTask::CalculatePercentComplete()
 {
    mPercentCompleteMutex.Lock();
    mPercentComplete = (float) 1.0 - ((float)mBlockFiles.size() / (mMaxBlockFiles+1));
@@ -122,10 +98,10 @@ void ODComputeSummaryTask::CalculatePercentComplete()
 }
 
 ///by default creates the order of the wavetrack to load.
-void ODComputeSummaryTask::Update()
+void ODDecodeTask::Update()
 {
 
-   std::vector<ODPCMAliasBlockFile*> tempBlocks;
+   std::vector<ODDecodeBlockFile*> tempBlocks;
    
    mWaveTrackMutex.Lock();
    
@@ -154,33 +130,25 @@ void ODComputeSummaryTask::Update()
             int insertCursor;
             
             numBlocksIn=0;
-            insertCursor =0;//OD TODO:see if this works, removed from inner loop (bfore was n*n)
             
+            insertCursor =0;//OD TODO:see if this works, removed from inner loop (bfore was n*n)
             for(i=0; i<(int)blocks->GetCount(); i++)
             {
-               //if there is data but no summary, this blockfile needs summarizing.
-               if(blocks->Item(i)->f->IsDataAvailable() && !blocks->Item(i)->f->IsSummaryAvailable())
+               //since we have more than one ODBlockFile, we will need type flags to cast.
+               if(!blocks->Item(i)->f->IsDataAvailable() && ((ODDecodeBlockFile*)blocks->Item(i)->f)->GetDecodeType()==this->GetDecodeType())
                {
                   blocks->Item(i)->f->Ref();
-                  ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->SetStart(blocks->Item(i)->start);
-                  ((ODPCMAliasBlockFile*)blocks->Item(i)->f)->SetClipOffset((sampleCount)(clip->GetStartTime()*clip->GetRate()));
+                  ((ODDecodeBlockFile*)blocks->Item(i)->f)->SetStart(blocks->Item(i)->start);
+                  ((ODDecodeBlockFile*)blocks->Item(i)->f)->SetClipOffset((sampleCount)(clip->GetStartTime()*clip->GetRate()));
                   
                   //these will always be linear within a sequence-lets take advantage of this by keeping a cursor.
                   while(insertCursor<(int)tempBlocks.size()&& 
                      (sampleCount)(tempBlocks[insertCursor]->GetStart()+tempBlocks[insertCursor]->GetClipOffset()) < 
-                        (sampleCount)(((ODPCMAliasBlockFile*)blocks->Item(i)->f)->GetStart()+((ODPCMAliasBlockFile*)blocks->Item(i)->f)->GetClipOffset()))
+                        (sampleCount)(((ODDecodeBlockFile*)blocks->Item(i)->f)->GetStart()+((ODDecodeBlockFile*)blocks->Item(i)->f)->GetClipOffset()))
                      insertCursor++;
                   
                   
-                  tempBlocks.insert(tempBlocks.begin()+insertCursor++,(ODPCMAliasBlockFile*)blocks->Item(i)->f);
-                  
-                  //this next bit ensures that we are spacing the blockfiles over multiple wavetracks evenly.
-                  //if((j+1)*numBlocksIn>tempBlocks.size())
-//                     tempBlocks.push_back((ODPCMAliasBlockFile*)blocks->Item(i)->f);
-//                  else
-//                     tempBlocks.insert(tempBlocks.begin()+(j+1)*numBlocksIn, (ODPCMAliasBlockFile*)blocks->Item(i)->f);
-//                     
-                  
+                  tempBlocks.insert(tempBlocks.begin()+insertCursor++,(ODDecodeBlockFile*)blocks->Item(i)->f);
                   numBlocksIn++;
                }
             }   
@@ -200,7 +168,7 @@ void ODComputeSummaryTask::Update()
 
 
 ///Orders the input as either On-Demand or default layered order.
-void ODComputeSummaryTask::OrderBlockFiles(std::vector<ODPCMAliasBlockFile*> &unorderedBlocks)
+void ODDecodeTask::OrderBlockFiles(std::vector<ODDecodeBlockFile*> &unorderedBlocks)
 {
    //we are going to take things out of the array.  But first deref them since we ref them when we put them in.
    for(unsigned int i=0;i<mBlockFiles.size();i++)
@@ -244,8 +212,45 @@ void ODComputeSummaryTask::OrderBlockFiles(std::vector<ODPCMAliasBlockFile*> &un
    
 }  
 
-void ODComputeSummaryTask::ODUpdate()
+void ODDecodeTask::ODUpdate()
 {
    //clear old blockFiles and do something smarter.
    
 }   
+
+
+
+///there could be the ODBlockFiles of several FLACs in one track (after copy and pasting)
+///so we keep a list of decoders that keep track of the file names, etc, and check the blocks against them.
+///Blocks that have IsDataAvailable()==false are blockfiles to be decoded.  if BlockFile::GetDecodeType()==ODDecodeTask::GetDecodeType() then
+///this decoder should handle it.  Decoders are accessible with the methods below.  These aren't thread-safe and should only
+///be called from the decoding thread.
+ODFileDecoder* ODDecodeTask::CreateOrGetMatchingFileDecoder(ODDecodeBlockFile* blockFile)
+{
+   
+   return mDecoders[0];
+}
+int ODDecodeTask::GetNumFileDecoders()
+{
+   return mDecoders.size();
+}
+
+
+
+///This should handle unicode converted to UTF-8 on mac/linux, but OD TODO:check on windows
+ODFileDecoder::ODFileDecoder(char* fName)
+{
+   if(fName)
+   {
+      mFName = new char[strlen(fName)];
+      strcpy(mFName,fName);
+   }
+   else
+      mFName=NULL;
+}
+
+ODFileDecoder::~ODFileDecoder()
+{
+  if(mFName)
+      delete [] mFName;
+}
