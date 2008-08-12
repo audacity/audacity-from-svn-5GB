@@ -161,6 +161,8 @@ OBJS = \
 	import/ImportRaw.o \
 	import/RawAudioGuess.o \
 	ondemand/ODComputeSummaryTask.o \
+	ondemand/ODDecodeFlacTask.o \
+	ondemand/ODDecodeTask.o \
 	ondemand/ODManager.o \
 	ondemand/ODTask.o \
 	ondemand/ODTaskThread.o \
@@ -229,6 +231,7 @@ LIBAUDACITY_OBJS = \
 	blockfile/SimpleBlockFile.o \
 	blockfile/PCMAliasBlockFile.o \
 	blockfile/ODPCMAliasBlockFile.o \
+	blockfile/ODDecodeBlockFile.o \
 	xml/XMLTagHandler.o \
 
 
