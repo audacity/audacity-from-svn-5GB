@@ -670,6 +670,7 @@ bool ExportFFmpeg::AddTags(Tags *tags)
    AddStringTag(mEncFormatCtx->album, sizeof(mEncFormatCtx->album), tags->GetTag(TAG_ALBUM));
    AddStringTag(mEncFormatCtx->comment, sizeof(mEncFormatCtx->comment), tags->GetTag(TAG_COMMENTS));
    AddStringTag(mEncFormatCtx->genre, sizeof(mEncFormatCtx->genre), tags->GetTag(TAG_GENRE));
+   AddStringTag(mEncFormatCtx->title, sizeof(mEncFormatCtx->title), tags->GetTag(TAG_TITLE));
    tags->GetTag(TAG_YEAR).ToLong((long*)&mEncFormatCtx->year);
    tags->GetTag(TAG_TRACK).ToLong((long*)&mEncFormatCtx->track);
 
