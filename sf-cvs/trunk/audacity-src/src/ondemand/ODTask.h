@@ -60,16 +60,19 @@ class ODTask
    
    virtual float PercentComplete();
    
+   virtual bool UsesCustomWorkUntilPercentage(){return false;}
+   virtual float ComputeNextWorkUntilPercentageComplete(){return 1.0;}
+   
    ///returns whether or not this task and another task can merge together, as when we make two mono tracks stereo.
    ///for Loading/Summarizing, this is not an issue because the entire track is processed
    ///Effects that affect portions of a track will need to check this.
    virtual bool CanMergeWith(ODTask* otherTask){return strcmp(GetTaskName(),otherTask->GetTaskName())==0;}   
             
-   virtual void StopUsingWaveTrack(WaveTrack* track){}
+   virtual void StopUsingWaveTrack(WaveTrack* track);
    
    ///Replaces all instances to a wavetrack with a new one, effectively transferring the task.
    ///ODTask has no wavetrack, so it does nothing.  But subclasses that do should override this.
-   virtual void ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack){}
+   virtual void ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack);
     
     ///Adds a WaveTrack to do the task for
    void AddWaveTrack(WaveTrack* track);
@@ -77,7 +80,7 @@ class ODTask
    virtual WaveTrack* GetWaveTrack(int i);
        
    ///changes the tasks associated with this Waveform to process the task from a different point in the track
-   virtual void DemandTrackUpdate(WaveTrack* track, double seconds){}
+   virtual void DemandTrackUpdate(WaveTrack* track, double seconds);
     
     bool IsComplete();
     

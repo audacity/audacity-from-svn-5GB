@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  ODSimpleBlockFile.h
+  ODDecodeBlockFile.h
   
   Created by Michael Chinen (mchinen)
   Audacity(R) is copyright (c) 1999-2008 Audacity Team.
@@ -10,8 +10,8 @@
 
 ******************************************************************//**
 
-\class ODSimpleBlockFile
-\brief ODSimpleBlockFile is a special type of SimpleBlockFile that does not necessarily have summary OR audio data available
+\class ODDecodeBlockFile
+\brief ODDecodeBlockFile is a special type of SimpleBlockFile that does not necessarily have summary OR audio data available
 The summary and audio is eventually computed and written to a file in a background thread. 
 
 Load On-Demand implementation of the SimpleBlockFIle for audio files that need to be decoded (mp3,flac,etc..).
@@ -24,37 +24,41 @@ Also, see ODPCMAliasBlockFile for a similar file.
 
 
 
-#ifndef __AUDACITY_ODSIMPLEBLOCKFILE__
-#define __AUDACITY_ODSIMPLEBLOCKFILE__
+#ifndef __AUDACITY_ODDecodeBlockFile__
+#define __AUDACITY_ODDecodeBlockFile__
 
 #include "SimpleBlockFile.h"
 #include "../BlockFile.h"
 #include "../ondemand/ODTaskThread.h"
 #include "../DirManager.h"
+#include "ODDecodeTask.h"
 #include <wx/thread.h>
 
 /// An AliasBlockFile that references uncompressed data in an existing file 
-class ODSimpleBlockFile : public SimpleBlockFile
+class ODDecodeBlockFile : public SimpleBlockFile
 {
  public:
 
    // Constructor / Destructor
 
    /// Create a disk file and write summary and sample data to it
-   ODSimpleBlockFile(wxFileName baseFileName,
+   ODDecodeBlockFile(wxFileName baseFileName, wxFileName audioFileName,
                    samplePtr sampleData, sampleCount sampleLen,
                    sampleFormat format,
                    bool allowDeferredWrite = false);
    /// Create the memory structure to refer to the given block file
-   ODSimpleBlockFile(wxFileName existingFile, sampleCount len,
+   ODDecodeBlockFile(wxFileName existingFile, wxFileName audioFileName, sampleCount len,
                    float min, float max, float rms);
 
-   virtual ~ODSimpleBlockFile();   
+   virtual ~ODDecodeBlockFile();   
    //checks to see if summary data has been computed and written to disk yet.  Thread safe.  Blocks if we are writing summary data.
    virtual bool IsSummaryAvailable();
    
+   /// Returns TRUE if this block's complete data is ready to be accessed by Read()
+   virtual bool IsDataAvailable();
+   
    /// Returns TRUE if the summary has not yet been written, but is actively being computed and written to disk 
-   virtual bool IsSummaryBeingComputed(){return mSummaryBeingComputed;}
+   virtual bool IsSummaryBeingComputed(){return false;}
    
    //Calls that rely on summary files need to be overidden
    virtual wxLongLong GetSpaceUsage();
@@ -97,19 +101,43 @@ class ODSimpleBlockFile : public SimpleBlockFile
                  
    /// Read the summary into a buffer
    virtual bool ReadSummary(void *data);
+   
+   ///Returns the type of audiofile this blockfile is loaded from.
+   virtual int GetDecodeType(){return mType;}
+   virtual void SetDecodeType(int type){mType=type;}
+   
+   ///sets the amount of samples the clip associated with this blockfile is offset in the wavetrack (non effecting)
+   void SetClipOffset(sampleCount numSamples){mClipOffset= numSamples;}
+   
+   ///Gets the number of samples the clip associated with this blockfile is offset by.  
+   sampleCount GetClipOffset(){return mClipOffset;}
+   
+   //OD TODO:set ISAlias to true while we have no data?
+   
                         
 
   protected:
+   
    virtual void WriteSummary();
    virtual void *CalcSummary(samplePtr buffer, sampleCount len,
                              sampleFormat format);
-
-   ODLock    mSummaryAvailableMutex;
-   bool mSummaryAvailable;
-   bool mSummaryBeingComputed;
    
-   //for reporting after task is complete.  Only for display use.
+   int mType;
+   
+                                                                                 
+   ///The original file the audio came from.
+   wxFileName mAudioFileName;
+
+   ODLock    mDataAvailableMutex;
+   bool mDataAvailable;
+   bool mDataBeingComputed;
+   
+   
+   ///for reporting after task is complete.  Only for display use.
    sampleCount mStart;
+
+   ///the ODTask needs to know where this blockfile lies in the track, so for convenience, we have this here.
+   sampleCount mClipOffset;
 
 };
 

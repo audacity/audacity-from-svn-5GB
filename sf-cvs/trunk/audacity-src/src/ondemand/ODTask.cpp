@@ -68,8 +68,7 @@ void ODTask::DoSome(float amountWork)
    
    float workUntil = amountWork+PercentComplete();
    
-   if(workUntil<PercentComplete())
-      workUntil = PercentComplete();
+   
    
    //check periodically to see if we should exit.
    mTerminateMutex.Lock();
@@ -82,6 +81,13 @@ void ODTask::DoSome(float amountWork)
    mTerminateMutex.Unlock();
 
    Update();   
+   
+   
+   if(UsesCustomWorkUntilPercentage())
+      workUntil = ComputeNextWorkUntilPercentageComplete();
+   
+   if(workUntil<PercentComplete())
+      workUntil = PercentComplete();
    
    //Do Some of the task.
    
@@ -282,3 +288,52 @@ void ODTask::RecalculatePercentComplete()
    }
 }
    
+///changes the tasks associated with this Waveform to process the task from a different point in the track
+///@param track the track to update
+///@param seconds the point in the track from which the tasks associated with track should begin processing from.
+void ODTask::DemandTrackUpdate(WaveTrack* track, double seconds)
+{
+   bool demandSampleChanged=false;
+   mWaveTrackMutex.Lock();
+   for(size_t i=0;i<mWaveTracks.size();i++)
+   {
+      if(track == mWaveTracks[i])
+      {  
+         sampleCount newDemandSample = (sampleCount)(seconds * track->GetRate());
+         demandSampleChanged = newDemandSample != GetDemandSample();
+         SetDemandSample(newDemandSample);
+         break;
+      }
+   }  
+   mWaveTrackMutex.Unlock();
+   
+   if(demandSampleChanged)
+      SetNeedsODUpdate();
+   
+}
+
+
+void ODTask::StopUsingWaveTrack(WaveTrack* track)
+{
+   mWaveTrackMutex.Lock();
+   for(size_t i=0;i<mWaveTracks.size();i++)
+   {
+      if(mWaveTracks[i] == track)
+         mWaveTracks[i]=NULL;
+   }
+   mWaveTrackMutex.Unlock();
+}
+
+///Replaces all instances to a wavetrack with a new one, effectively transferring the task.
+void ODTask::ReplaceWaveTrack(WaveTrack* oldTrack,WaveTrack* newTrack)
+{
+   mWaveTrackMutex.Lock();
+   for(size_t i=0;i<mWaveTracks.size();i++)
+   {
+      if(oldTrack == mWaveTracks[i])
+      {
+         mWaveTracks[i] = newTrack;
+      }
+   }  
+   mWaveTrackMutex.Unlock();
+}

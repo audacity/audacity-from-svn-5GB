@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  ODSimpleBlockFile.cpp
+  ODDecodeBlockFile.cpp
    
   Created by Michael Chinen (mchinen)
   Audacity(R) is copyright (c) 1999-2008 Audacity Team.
@@ -10,13 +10,13 @@
 
 ******************************************************************//**
 
-\class ODSimpleBlockFile
-\brief ODSimpleBlockFile is a special type of SimpleBlockFile that does not necessarily have summary OR audio data available
+\class ODDecodeBlockFile
+\brief ODDecodeBlockFile is a special type of SimpleBlockFile that does not necessarily have summary OR audio data available
 The summary is eventually computed and written to a file in a background thread.  See ODPCMAliasBlockFile for a similar class.
 
 *//*******************************************************************/
 
-#include "ODSimpleBlockFile.h"
+#include "ODDecodeBlockFile.h"
 
 
 #ifdef _WIN32
@@ -38,33 +38,35 @@ char bheaderTag[bheaderTagLen + 1] = "AudacityBlockFile112";
 
 
    /// Create a disk file and write summary and sample data to it
-ODSimpleBlockFile::ODSimpleBlockFile(wxFileName baseFileName,
+ODDecodeBlockFile::ODDecodeBlockFile(wxFileName baseFileName,wxFileName audioFileName,
                    samplePtr sampleData, sampleCount sampleLen,
                    sampleFormat format,
                    bool allowDeferredWrite):
    SimpleBlockFile(baseFileName,sampleData,sampleLen,format,allowDeferredWrite)
 {
-   mSummaryAvailable=mSummaryBeingComputed=false;
+   mDataAvailable=false;
+   mAudioFileName = audioFileName;
 }
    
 /// Create the memory structure to refer to the given block file
-ODSimpleBlockFile::ODSimpleBlockFile(wxFileName existingFile, sampleCount len,
+ODDecodeBlockFile::ODDecodeBlockFile(wxFileName existingFile, wxFileName audioFileName, sampleCount len,
                    float min, float max, float rms):
    SimpleBlockFile(existingFile,len,min,max,rms)
 {
-   mSummaryAvailable=mSummaryBeingComputed=false;
+   mDataAvailable=false;
+   mAudioFileName = audioFileName;
 }
 
 
 
-ODSimpleBlockFile::~ODSimpleBlockFile()
+ODDecodeBlockFile::~ODDecodeBlockFile()
 {
 
 }
 
 
 //Check to see if we have the file for these calls.
-wxLongLong ODSimpleBlockFile::GetSpaceUsage()
+wxLongLong ODDecodeBlockFile::GetSpaceUsage()
 { 
    if(IsSummaryAvailable())
    {
@@ -79,7 +81,7 @@ wxLongLong ODSimpleBlockFile::GetSpaceUsage()
 
 
 /// Gets extreme values for the specified region
-void ODSimpleBlockFile::GetMinMax(sampleCount start, sampleCount len,
+void ODDecodeBlockFile::GetMinMax(sampleCount start, sampleCount len,
                           float *outMin, float *outMax, float *outRMS)
 {
    if(IsSummaryAvailable())
@@ -97,7 +99,7 @@ void ODSimpleBlockFile::GetMinMax(sampleCount start, sampleCount len,
 }
 
 /// Gets extreme values for the entire block
-void ODSimpleBlockFile::GetMinMax(float *outMin, float *outMax, float *outRMS)
+void ODDecodeBlockFile::GetMinMax(float *outMin, float *outMax, float *outRMS)
 {
   if(IsSummaryAvailable())
    {
@@ -114,7 +116,7 @@ void ODSimpleBlockFile::GetMinMax(float *outMin, float *outMax, float *outRMS)
 }
 
 /// Returns the 256 byte summary data block
-bool ODSimpleBlockFile::Read256(float *buffer, sampleCount start, sampleCount len)
+bool ODDecodeBlockFile::Read256(float *buffer, sampleCount start, sampleCount len)
 {
    if(IsSummaryAvailable())
    {
@@ -129,7 +131,7 @@ bool ODSimpleBlockFile::Read256(float *buffer, sampleCount start, sampleCount le
 }
 
 /// Returns the 64K summary data block
-bool ODSimpleBlockFile::Read64K(float *buffer, sampleCount start, sampleCount len)
+bool ODDecodeBlockFile::Read64K(float *buffer, sampleCount start, sampleCount len)
 {
    if(IsSummaryAvailable())
    {
@@ -146,7 +148,7 @@ bool ODSimpleBlockFile::Read64K(float *buffer, sampleCount start, sampleCount le
 /// Construct a new PCMAliasBlockFile based on this one.
 /// otherwise construct an ODPCMAliasBlockFile that still needs to be computed.
 /// @param newFileName The filename to copy the summary data to.
-BlockFile *ODSimpleBlockFile::Copy(wxFileName newFileName)
+BlockFile *ODDecodeBlockFile::Copy(wxFileName newFileName)
 {
    BlockFile *newBlockFile;
    
@@ -177,7 +179,7 @@ BlockFile *ODSimpleBlockFile::Copy(wxFileName newFileName)
 /// Otherwise writes XML as a subset of attributes with 'odpcmaliasblockfile as the start tag.
 /// Most notably, the summaryfile attribute refers to a file that does not yet, so when the project file is read back in
 /// and this object reconstructed, it needs to avoid trying to open it as well as schedule itself for OD loading
-void ODSimpleBlockFile::SaveXML(XMLWriter &xmlFile)
+void ODDecodeBlockFile::SaveXML(XMLWriter &xmlFile)
 {
 /* TODO:
    if(IsSummaryAvailable())
@@ -186,7 +188,7 @@ void ODSimpleBlockFile::SaveXML(XMLWriter &xmlFile)
    }
    else
    {
-      xmlFile.StartTag(wxT("odsimpleblockfile"));
+      xmlFile.StartTag(wxT("ODDecodeBlockFile"));
 
       xmlFile.WriteAttr(wxT("summaryfile"), mFileName.GetFullName());
       xmlFile.WriteAttr(wxT("aliasfile"), mAliasedFileName.GetFullPath());
@@ -205,7 +207,7 @@ void ODSimpleBlockFile::SaveXML(XMLWriter &xmlFile)
 
 /// Constructs a ODPCMAliasBlockFile from the xml output of WriteXML.
 /// Also schedules the ODPCMAliasBlockFile for OD loading.
-BlockFile *ODSimpleBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
+BlockFile *ODDecodeBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
 {//TODO:
 //   wxFileName summaryFileName;
 //   wxFileName aliasFileName;
@@ -283,7 +285,7 @@ return NULL;
 
 
 
-void ODSimpleBlockFile::Recover(void)
+void ODDecodeBlockFile::Recover(void)
 {
    if(IsSummaryAvailable())
    {
@@ -291,17 +293,23 @@ void ODSimpleBlockFile::Recover(void)
    }
 }
 
-bool ODSimpleBlockFile::IsSummaryAvailable()
+bool ODDecodeBlockFile::IsSummaryAvailable()
 {
-   bool retval;
-   mSummaryAvailableMutex.Lock();
-   retval= mSummaryAvailable;
-   mSummaryAvailableMutex.Unlock();
-   return retval;
+   return IsDataAvailable();
 }
 
+bool ODDecodeBlockFile::IsDataAvailable()
+{
+   bool retval;
+   mDataAvailableMutex.Lock();
+   retval= mDataAvailable;
+   mDataAvailableMutex.Unlock();
+   return retval;
+}
 /// Write the summary to disk, using the derived ReadData() to get the data
-void ODSimpleBlockFile::WriteSummary()
+/// Here, the decoder ODTask associated with this file must fetch the samples with
+/// the ODDecodeTask::Decode() method.
+void ODDecodeBlockFile::WriteSummary()
 {
 
 /*   
@@ -339,9 +347,9 @@ void ODSimpleBlockFile::WriteSummary()
    
 */   
 
-   mSummaryAvailableMutex.Lock();
-   mSummaryAvailable=true;
-   mSummaryAvailableMutex.Unlock();
+   mDataAvailableMutex.Lock();
+   mDataAvailable=true;
+   mDataAvailableMutex.Unlock();
 }
 
 
@@ -363,7 +371,7 @@ void ODSimpleBlockFile::WriteSummary()
 /// @param buffer A buffer containing the sample data to be analyzed
 /// @param len    The length of the sample data
 /// @param format The format of the sample data.
-void *ODSimpleBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
+void *ODDecodeBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
                              sampleFormat format)
 {
    char* localFullSummary = new char[mSummaryInfo.totalSummaryBytes];
@@ -493,7 +501,7 @@ void *ODSimpleBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
 /// @param format The format to convert the data into
 /// @param start  The offset within the block to begin reading
 /// @param len    The number of samples to read
-int ODSimpleBlockFile::ReadData(samplePtr data, sampleFormat format,
+int ODDecodeBlockFile::ReadData(samplePtr data, sampleFormat format,
                                 sampleCount start, sampleCount len)
 {
    
@@ -509,7 +517,7 @@ int ODSimpleBlockFile::ReadData(samplePtr data, sampleFormat format,
 ///
 /// @param *data The buffer where the summary data will be stored.  It must
 ///              be at least mSummaryInfo.totalSummaryBytes long.
-bool ODSimpleBlockFile::ReadSummary(void *data)
+bool ODDecodeBlockFile::ReadSummary(void *data)
 {
 //   wxFFile summaryFile(mFileName.GetFullPath(), wxT("rb"));
 //   wxLogNull *silence=0;
