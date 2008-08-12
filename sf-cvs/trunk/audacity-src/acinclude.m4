@@ -369,19 +369,20 @@ AC_DEFUN([AUDACITY_CHECKLIB_FFMPEG], [
                  avformat_h_found="no")
 
    if test "x$avcodec_h_found" = "xyes" ; then
-     if test "x$avformat_h_found" = "xyes" ; then
-        FFMPEG_LOCAL_AVAILABLE="yes"
-        FFMPEG_LOCAL_LIBS=""
-        FFMPEG_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/ffmpeg'
+      if test "x$avformat_h_found" = "xyes" ; then
+         FFMPEG_LOCAL_AVAILABLE="yes"
+         FFMPEG_LOCAL_LIBS=""
+         FFMPEG_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/ffmpeg'
          FFMPEG_LOCAL_CPPSYMBOLS="USE_FFMPEG"
          dnl build the extra object files needed to use FFmpeg. Paths inside
          dnl the audacity src/ dir, as this is subsitiuted into src/Makefile.in
-         FFMPEG_LOCAL_OPTOBJS="import/ImportFFmpeg.o export/ExportFFmpeg.o"
-        AC_MSG_NOTICE([FFmpeg headers are available in the local tree])
-     fi
+         FFMPEG_LOCAL_OPTOBJS="import/ImportFFmpeg.o export/ExportFFmpeg.o \
+            export/ExportFFmpegDialogs.o"
+         AC_MSG_NOTICE([FFmpeg headers are available in the local tree])
+      fi
    fi
    if test "x$FFMPEG_LOCAL_AVAILABLE" = "xno" ; then
-     AC_MSG_NOTICE([ffmpeg library is NOT available in the local tree])
+      AC_MSG_NOTICE([ffmpeg library is NOT available in the local tree])
    fi
 ])
 
