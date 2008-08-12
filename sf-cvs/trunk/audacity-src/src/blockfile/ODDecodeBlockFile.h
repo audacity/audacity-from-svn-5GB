@@ -31,7 +31,7 @@ Also, see ODPCMAliasBlockFile for a similar file.
 #include "../BlockFile.h"
 #include "../ondemand/ODTaskThread.h"
 #include "../DirManager.h"
-#include "ODDecodeTask.h"
+#include "../ondemand/ODDecodeTask.h"
 #include <wx/thread.h>
 
 /// An AliasBlockFile that references uncompressed data in an existing file 
