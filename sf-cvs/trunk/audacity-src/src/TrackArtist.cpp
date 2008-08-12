@@ -951,7 +951,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
    }
    long pixAnimOffset;
    
-   pixAnimOffset = (long)fabs(wxDateTime::Now().GetTicks()*-10  )+ wxDateTime::Now().GetMillisecond()/100; //10 pixels a second
+   pixAnimOffset = (long)fabs( (double)(wxDateTime::Now().GetTicks()*-10)  )+ wxDateTime::Now().GetMillisecond()/100; //10 pixels a second
    
    bool drawStripes = true;
    bool drawWaveform = true;
