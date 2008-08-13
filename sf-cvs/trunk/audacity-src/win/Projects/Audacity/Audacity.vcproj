@@ -726,6 +726,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\Profiler.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\Profiler.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\Project.cpp"
 				>
 			</File>
@@ -1818,6 +1826,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\blockfile\ODDecodeBlockFile.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\blockfile\ODDecodeBlockFile.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\blockfile\ODPCMAliasBlockFile.cpp"
 				>
 			</File>
@@ -1995,6 +2011,22 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\ondemand\ODComputeSummaryTask.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODDecodeFlacTask.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODDecodeFlacTask.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODDecodeTask.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\ondemand\ODDecodeTask.h"
 				>
 			</File>
 			<File
