@@ -40,8 +40,6 @@
 
 #include "../Tags.h"
 
-#define FLAC_HEADER "fLaC"
-
 #define DESC _("FLAC files")
 
 static const wxChar *exts[] =
@@ -278,16 +276,6 @@ ImportFileHandle *FLACImportPlugin::Open(wxString filename)
    wxFile binaryFile;
    if (!binaryFile.Open(filename))
       return false; // File not found
-
-   char buf[5];
-   int num_bytes = binaryFile.Read(buf, 4);
-   buf[num_bytes] = 0;
-   if (strcmp(buf, FLAC_HEADER) != 0)
-   {
-      // File is not a FLAC file
-      binaryFile.Close();
-      return false; 
-   }
 
    binaryFile.Close();
    
