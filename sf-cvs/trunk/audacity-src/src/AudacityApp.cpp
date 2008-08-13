@@ -79,6 +79,8 @@ It handles initialization and termination by subclassing wxApp.
 #include "FFT.h"
 #include "BlockFile.h"
 #include "ondemand/ODManager.h"
+//temporarilly commented out till it is added to all projects
+//#include "Profiler.h"
 
 #include "LoadModules.h"
 
@@ -284,6 +286,10 @@ void QuitAudacity(bool bForce)
    //release ODManager Threads
    ODManager::Quit();
 
+   //print out profile if we have one by deleting it
+   //temporarilly commented out till it is added to all projects
+   //delete Profiler::Instance();
+   
       //Delete the clipboard
    AudacityProject::DeleteClipboard();
    

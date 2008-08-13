@@ -125,7 +125,8 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
 
    //when the file closes, it locks the blockfiles, but it calls this so we can check if it has been saved before.
    virtual void CloseLock();
-
+   
+  
   protected:
    virtual void WriteSummary();
    virtual void *CalcSummary(samplePtr buffer, sampleCount len,

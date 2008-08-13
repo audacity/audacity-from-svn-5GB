@@ -712,6 +712,7 @@
 		186CCE6D0E51F47400659159 /* ODDecodeBlockFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCE6B0E51F47400659159 /* ODDecodeBlockFile.cpp */; };
 		186CCE720E51F48500659159 /* ODDecodeFlacTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCE6E0E51F48500659159 /* ODDecodeFlacTask.cpp */; };
 		186CCE730E51F48500659159 /* ODDecodeTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCE700E51F48500659159 /* ODDecodeTask.cpp */; };
+		186CCEA40E523C8E00659159 /* Profiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCEA30E523C8E00659159 /* Profiler.cpp */; };
 		280196B10D98171F00BFEECF /* Plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 280196AF0D98171F00BFEECF /* Plugin.h */; };
 		280196B20D98171F00BFEECF /* PluginBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 280196B00D98171F00BFEECF /* PluginBase.h */; };
 		280196B50D98174400BFEECF /* PluginBufferingAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280196B30D98174400BFEECF /* PluginBufferingAdapter.cpp */; };
@@ -2149,6 +2150,8 @@
 		186CCE6F0E51F48500659159 /* ODDecodeFlacTask.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ODDecodeFlacTask.h; path = ondemand/ODDecodeFlacTask.h; sourceTree = "<group>"; };
 		186CCE700E51F48500659159 /* ODDecodeTask.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ODDecodeTask.cpp; path = ondemand/ODDecodeTask.cpp; sourceTree = "<group>"; };
 		186CCE710E51F48500659159 /* ODDecodeTask.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ODDecodeTask.h; path = ondemand/ODDecodeTask.h; sourceTree = "<group>"; };
+		186CCEA20E523C8D00659159 /* Profiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profiler.h; sourceTree = "<group>"; };
+		186CCEA30E523C8E00659159 /* Profiler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Profiler.cpp; sourceTree = "<group>"; };
 		280196AF0D98171F00BFEECF /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = Plugin.h; path = "libvamp/vamp-sdk/Plugin.h"; sourceTree = "<group>"; };
 		280196B00D98171F00BFEECF /* PluginBase.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginBase.h; path = "libvamp/vamp-sdk/PluginBase.h"; sourceTree = "<group>"; };
 		280196B30D98174400BFEECF /* PluginBufferingAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginBufferingAdapter.cpp; path = "libvamp/vamp-sdk/hostext/PluginBufferingAdapter.cpp"; sourceTree = "<group>"; };
@@ -3503,6 +3506,8 @@
 				1790B0FC09883BFD008A330A /* WaveTrack.h */,
 				28FC1AF90A47762C00A188AE /* WrappedType.cpp */,
 				28FC1AFA0A47762C00A188AE /* WrappedType.h */,
+				186CCEA20E523C8D00659159 /* Profiler.h */,
+				186CCEA30E523C8E00659159 /* Profiler.cpp */,
 			);
 			name = src;
 			path = ../src;
@@ -6618,6 +6623,7 @@
 				186CCE6D0E51F47400659159 /* ODDecodeBlockFile.cpp in Sources */,
 				186CCE720E51F48500659159 /* ODDecodeFlacTask.cpp in Sources */,
 				186CCE730E51F48500659159 /* ODDecodeTask.cpp in Sources */,
+				186CCEA40E523C8E00659159 /* Profiler.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

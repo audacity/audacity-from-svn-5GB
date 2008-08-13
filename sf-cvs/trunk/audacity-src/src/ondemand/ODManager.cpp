@@ -23,7 +23,22 @@ bool sHasLoadedOD=false;
 
 
 
+//libsndfile is not threadsafe - this deals with it
+ODLock sLibSndFileMutex;
+
 DEFINE_EVENT_TYPE(EVT_ODTASK_UPDATE)
+
+
+void ODManager::LockLibSndFileMutex()
+{
+   sLibSndFileMutex.Lock();
+}
+
+void ODManager::UnlockLibSndFileMutex()
+{
+   sLibSndFileMutex.Unlock();
+}
+
 
 //private constructor - Singleton.
 ODManager::ODManager()
