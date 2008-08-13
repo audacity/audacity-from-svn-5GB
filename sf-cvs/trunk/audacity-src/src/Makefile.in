@@ -80,6 +80,7 @@ OBJS = \
 	PitchName.o \
 	PlatformCompatibility.o \
 	Printing.o \
+	Profiler.o \
 	Project.o \
 	Resample.o \
 	RingBuffer.o \
