@@ -340,9 +340,8 @@ wxChoice * ShuttleGuiBase::AddChoice( const wxString &Prompt, const wxString &Se
       Style( 0 ) );
 
    pChoice->SetSizeHints( 180,-1);// Use -1 for 'default size' - Platform specific.
-   pChoice->SetStringSelection( Selected );
-   pChoice->SetLabel( Prompt );
    pChoice->SetName( Prompt );
+   pChoice->SetStringSelection( Selected );
 
    UpdateSizers();
    return pChoice;
