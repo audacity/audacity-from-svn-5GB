@@ -162,5 +162,7 @@ double TaskProfile::ComputeAverageRunTime()
 {
    if(mNumHits)
       return (double) ((double)mCumTime/CLOCKS_PER_SEC)/mNumHits;
+   else
+      return 0.0;
 }
     
