@@ -39,6 +39,8 @@
 
 #include "../ondemand/ODManager.h"
 #include "../ondemand/ODComputeSummaryTask.h"
+//temporarilly commented out till it is added to all projects
+//#include "../Profiler.h"
 
 #ifndef SNDFILE_1
 #error Requires libsndfile 1.0 or higher
@@ -202,7 +204,16 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
    // arbitrary location in the file.
    if (!mInfo.seekable)
       doEdit = false;
-
+   //for profiling, uncomment and look in audacity.app/exe's folder for AudacityProfile.txt
+   //BEGIN_TASK_PROFILING("ON Demand Load 2hr stereo wav");
+   
+   //BEGIN_TASK_PROFILING("Pre-GSOC (PCMAliasBlockFile) Drag and Drop 5 80 mb files into audacity (average per file)");
+   //BEGIN_TASK_PROFILING("Pre-GSOC (PCMAliasBlockFile) open an 80 mb wav stereo file");
+    //for profiling, uncomment and look in audacity.app/exe's folder for AudacityProfile.txt
+   //static int tempLog =0;
+   //if(tempLog++ % 5==0)
+   //   BEGIN_TASK_PROFILING("On Demand Drag and Drop 5 80 mb files into audacity, 5 wavs per task");
+   //BEGIN_TASK_PROFILING("On Demand open an 80 mb wav stereo file");   
    if (doEdit) {
     wxLogDebug(wxT("Importing PCM Start\n"));
 
@@ -347,6 +358,9 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
    if (str) {
       tags->SetTag(wxT("Software"), UTF8CTOWX(str));
    }
+
+   //comment out to undo profiling.
+   //END_TASK_PROFILING("Pre-GSOC (PCMAliasBlockFile) open an 80 mb wav stereo file");
 
    return eImportSuccess;
 }

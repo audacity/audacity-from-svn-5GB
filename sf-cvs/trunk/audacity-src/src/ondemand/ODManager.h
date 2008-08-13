@@ -106,6 +106,11 @@ class ODManager
    ///Get Total Number of Tasks.
    int GetTotalNumTasks();
   
+
+   static void LockLibSndFileMutex();
+   static void UnlockLibSndFileMutex();
+
+  
   protected:
    //private constructor - Singleton.
    ODManager();

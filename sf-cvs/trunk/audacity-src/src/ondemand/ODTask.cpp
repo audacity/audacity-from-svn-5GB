@@ -22,6 +22,8 @@ in a background thread.
 #include "ODManager.h"
 #include "../WaveTrack.h"
 #include "../Project.h"
+//temporarilly commented out till it is added to all projects
+//#include "../Profiler.h" 
 
 
 DEFINE_EVENT_TYPE(EVT_ODTASK_COMPLETE)
@@ -134,6 +136,12 @@ void ODTask::DoSome(float amountWork)
    }
    else
    {
+      //for profiling, uncomment and look in audacity.app/exe's folder for AudacityProfile.txt
+      //static int tempLog =0;
+      //if(++tempLog % 5==0)
+         //END_TASK_PROFILING("On Demand Drag and Drop 5 80 mb files into audacity, 5 wavs per task");
+      //END_TASK_PROFILING("On Demand open an 80 mb wav stereo file");   
+   
       wxCommandEvent event( EVT_ODTASK_COMPLETE );
       AudacityProject::AllProjectsDeleteLock();
       
