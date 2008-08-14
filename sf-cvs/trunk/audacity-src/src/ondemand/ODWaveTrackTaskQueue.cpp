@@ -296,7 +296,10 @@ void ODWaveTrackTaskQueue::RemoveFrontTask()
 {
    mTasksMutex.Lock();
    if(mTasks.size())
+   {
+      delete mTasks[0];
       mTasks.erase(mTasks.begin());
+   }
    mTasksMutex.Unlock();
 }
    

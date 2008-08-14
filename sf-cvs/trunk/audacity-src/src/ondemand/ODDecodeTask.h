@@ -64,14 +64,14 @@ class ODDecodeTask:public ODTask
    virtual int GetDecodeType(){return eODNone;}
    
    ///Creates an ODFileDecoder that decodes a file of filetype the subclass handles.
-   virtual ODFileDecoder* CreateFileDecoder()=0;
+   virtual ODFileDecoder* CreateFileDecoder(const char* fileName)=0;
    
    ///there could be the ODBlockFiles of several FLACs in one track (after copy and pasting)
    ///so we keep a list of decoders that keep track of the file names, etc, and check the blocks against them.
    ///Blocks that have IsDataAvailable()==false are blockfiles to be decoded.  if BlockFile::GetDecodeType()==ODDecodeTask::GetDecodeType() then
    ///this decoder should handle it.  Decoders are accessible with the methods below.  These aren't thread-safe and should only
    ///be called from the decoding thread.
-   virtual ODFileDecoder* CreateOrGetMatchingFileDecoder(ODDecodeBlockFile* blockFile);
+   virtual ODFileDecoder* GetOrCreateMatchingFileDecoder(ODDecodeBlockFile* blockFile);
    virtual int GetNumFileDecoders();
    
    
@@ -107,7 +107,7 @@ class ODFileDecoder
 {
 public:
    ///This should handle unicode converted to UTF-8 on mac/linux, but OD TODO:check on windows
-   ODFileDecoder(char* fName);
+   ODFileDecoder(const char* fName);
    virtual ~ODFileDecoder();
    
    ///Decodes the samples for this blockfile from the real file into a float buffer.  
@@ -117,7 +117,7 @@ public:
    ///this->ReadData(sampleData, floatSample, 0, mLen);
    ///This class should call ReadHeader() first, so it knows the length, and can prepare 
    ///the file object if it needs to. 
-   virtual void Decode(samplePtr data, sampleCount start, sampleCount len)=0;
+   virtual void Decode(samplePtr data, sampleFormat format, sampleCount start, sampleCount len)=0;
    
    ///Read header.  Subclasses must override.  Probably should save the info somewhere.
    ///Ideally called once per decoding of a file.  This complicates the task because 

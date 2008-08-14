@@ -26,6 +26,22 @@ struct SimpleBlockFileCache {
    void* summaryData;
 };
 
+// The AU formats we care about
+enum {
+   AU_SAMPLE_FORMAT_16 = 3,
+   AU_SAMPLE_FORMAT_24 = 4,
+   AU_SAMPLE_FORMAT_FLOAT = 6,
+};
+
+typedef struct {
+   wxUint32 magic;      // magic number
+   wxUint32 dataOffset; // byte offset to start of audio data
+   wxUint32 dataSize;   // data length, in bytes (optional)
+   wxUint32 encoding;   // data encoding enumeration
+   wxUint32 sampleRate; // samples per second
+   wxUint32 channels;   // number of interleaved channels
+} auHeader;
+
 class SimpleBlockFile : public BlockFile {
  public:
 

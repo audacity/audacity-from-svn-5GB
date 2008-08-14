@@ -85,6 +85,8 @@ class ODTask
     bool IsComplete();
     
     void TerminateAndBlock();
+    ///releases memory that the ODTask owns.  Subclasses should override.
+    virtual void Terminate(){}
     
     virtual const char* GetTaskName(){return "ODTask";}
    

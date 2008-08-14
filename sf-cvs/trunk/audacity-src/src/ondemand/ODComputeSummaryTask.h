@@ -48,6 +48,10 @@ class ODComputeSummaryTask:public ODTask
    
    virtual bool UsesCustomWorkUntilPercentage(){return true;}
    virtual float ComputeNextWorkUntilPercentageComplete();
+   
+   ///releases memory that the ODTask owns.  Subclasses should override.
+   virtual void Terminate();
+
 
    
 protected:
