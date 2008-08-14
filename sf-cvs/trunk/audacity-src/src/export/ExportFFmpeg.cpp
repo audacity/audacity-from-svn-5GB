@@ -281,7 +281,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    mEncAudioCodecCtx->codec_type = CODEC_TYPE_AUDIO;
    mEncAudioCodecCtx->codec_tag = FFmpegLibsInst->av_codec_get_tag(mEncFormatCtx->oformat->codec_tag,mEncAudioCodecCtx->codec_id);
    mSampleRate = (int)project->GetRate();
-   mEncAudioCodecCtx->global_quality = -1; //quality mode is off by default;
+   mEncAudioCodecCtx->global_quality = -99999; //quality mode is off by default;
 
    // Each export type has it's own settings
    switch (mSubFormat)
@@ -290,8 +290,8 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       mEncAudioCodecCtx->bit_rate = 0;
       mEncAudioCodecCtx->bit_rate *= mChannels;
       mEncAudioCodecCtx->profile = FF_PROFILE_AAC_LOW;
-      mEncAudioCodecCtx->cutoff = mSampleRate/2;
-      mEncAudioCodecCtx->global_quality = gPrefs->Read(wxT("/FileFormats/AACQuality"),-1);
+      mEncAudioCodecCtx->cutoff = 0;
+      mEncAudioCodecCtx->global_quality = gPrefs->Read(wxT("/FileFormats/AACQuality"),-99999);
       if (!CheckSampleRate(mSampleRate,iAACSampleRates[0],iAACSampleRates[11],&iAACSampleRates[0]))
          mSampleRate = AskResample(mEncAudioCodecCtx->bit_rate,mSampleRate,iAACSampleRates[0],iAACSampleRates[11],&iAACSampleRates[0]);
       break;
@@ -353,6 +353,8 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       mEncAudioCodecCtx->bit_rate = 0;
       mEncAudioCodecCtx->flags |= CODEC_FLAG_QSCALE;
    }
+   else mEncAudioCodecCtx->global_quality = -99999;
+   this->mEncAudioStream->quality = mEncAudioCodecCtx->global_quality = mEncAudioCodecCtx->global_quality * FF_QP2LAMBDA;
    mEncAudioCodecCtx->sample_rate = mSampleRate;
    mEncAudioCodecCtx->channels = mChannels;
    mEncAudioCodecCtx->time_base.num = 0;
