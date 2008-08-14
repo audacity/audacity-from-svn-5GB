@@ -566,7 +566,7 @@ void FFmpegPresets::LoadPreset(ExportFFmpegOptions *parent, wxString &name)
    FFmpegPreset *preset = FindPreset(name);
    if (!preset)
    {
-      wxMessageBox(wxString::Format(wxT("Preset '%s' does not exists"),name.c_str()));
+      wxMessageBox(wxString::Format(wxT("Preset '%s' does not exist."),name.c_str()));
       return;
    }
 

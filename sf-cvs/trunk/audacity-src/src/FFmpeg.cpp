@@ -487,7 +487,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    }
    else
    {
-      wxLogMessage(wxT("PATH does not exists."));
+      wxLogMessage(wxT("PATH does not exist."));
    }
 
    //Load libavformat
