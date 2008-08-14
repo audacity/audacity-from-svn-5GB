@@ -341,7 +341,8 @@ ExportPCM::ExportPCM()
    SetFormat(wxT("WAV"),0);
    SetCanMetaData(true,0);
    SetDescription(_("WAV (Microsoft) signed 16 bit PCM"),0);
-   AddExtension(sf_header_extension(si.format),0);
+   wxString wavext = sf_header_extension(si.format);
+   AddExtension(wavext,0);
    SetMaxChannels(si.channels - 1,0);
 
    si.format = SF_FORMAT_AIFF | SF_FORMAT_PCM_16;
@@ -350,15 +351,24 @@ ExportPCM::ExportPCM()
    SetFormat(wxT("AIFF"),1);
    SetCanMetaData(true,1);
    SetDescription(_("AIFF (Apple) signed 16 bit PCM"),1);
-   AddExtension(sf_header_extension(si.format),1);
+   wxString aiffext = sf_header_extension(si.format);
+   AddExtension(aiffext,1);
    SetMaxChannels(si.channels - 1,1);
 
    AddFormat();
    SetFormat(wxT("LIBSNDFILE"),2);
    SetCanMetaData(true,2);
    SetDescription(_("Other uncompressed files"),2);
-   AddExtension(wxT("wav"),2);
-   SetExtensions(sf_get_all_extensions(),2);
+   wxArrayString allext = sf_get_all_extensions();
+#if defined(wxMSW)
+   // On Windows make sure WAV is at the beginning of the list.
+   allext.Remove(wavext);
+   allext.Insert(wavext,0);
+#else
+   allext.Remove(aiffext);
+   allext.Insert(aiffext,0);
+#endif
+   SetExtensions(allext,2);
    SetMaxChannels(255,2);
 
 }
