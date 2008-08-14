@@ -170,7 +170,7 @@ void ExportFFmpegAACOptions::PopulateOrExchange(ShuttleGui & S)
 {
    S.StartStatic(_("AAC Export Setup"), 1);
    {
-      S.TieSlider(wxT("Quality:"),wxT("/FileFormats/AACQuality"),250,500,-1);
+      S.TieSlider(wxT("Quality:"),wxT("/FileFormats/AACQuality"),100,500,10);
    }
    S.EndStatic();
 
