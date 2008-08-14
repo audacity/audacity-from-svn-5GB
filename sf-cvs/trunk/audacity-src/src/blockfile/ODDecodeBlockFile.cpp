@@ -289,7 +289,7 @@ void ODDecodeBlockFile::Recover(void)
 {
    if(IsSummaryAvailable())
    {
-      WriteSummary();
+      WriteODDecodeBlockFile();
    }
 }
 
@@ -309,43 +309,38 @@ bool ODDecodeBlockFile::IsDataAvailable()
 /// Write the summary to disk, using the derived ReadData() to get the data
 /// Here, the decoder ODTask associated with this file must fetch the samples with
 /// the ODDecodeTask::Decode() method.
-void ODDecodeBlockFile::WriteSummary()
+void ODDecodeBlockFile::WriteODDecodeBlockFile()
 {
-
-/*   
-   //Below from BlockFile.cpp's method.  We need to delete the data returned by
-   //CalcSummary, because it uses local info.  In the future we might do something
-   //smarter and thread-dependant like a static thread context.
-   wxFFile summaryFile(mFileName.GetFullPath(), wxT("wb"));
-
-   if( !summaryFile.IsOpened() ){
-      // Never silence the Log w.r.t write errors; they always count
-      // as new errors
-      
-      //however, this is going to be called from a non-main thread,
-      //and wxLog calls are not thread safe.
-      printf("Unable to write summary data to file %s",
-                   mFileName.GetFullPath().c_str());
-      // If we can't write, there's nothing to do.
-      return;
-   }
 
    // To build the summary data, call ReadData (implemented by the
    // derived classes) to get the sample data
    samplePtr sampleData = NewSamples(mLen, floatSample);
+   
+   //use the decoder here.
+   mDecoderMutex.Lock();
+   
+   if(!mDecoder)
+   {
+      mDecoderMutex.Unlock();
+      return;
+   }
+   mDecoder->Decode(sampleData, mFormat, mDecodeFileStart, mLen);
+   
+   mDecoderMutex.Unlock();
    this->ReadData(sampleData, floatSample, 0, mLen);
 
-   void *summaryData = CalcSummary(sampleData, mLen,
-                                            floatSample);
-   summaryFile.Write(summaryData, mSummaryInfo.totalSummaryBytes);
+   void *summaryData = CalcSummary(sampleData, mLen, floatSample);
+  //OD TODO: use new write()                                          
+//   summaryFile.Write(summaryData, mSummaryInfo.totalSummaryBytes);
+   WriteSimpleBlockFile(
+    sampleData,
+    mLen,
+    mFormat,
+     summaryData);
 
    DeleteSamples(sampleData);
    delete [] (char *) summaryData;
-   
-   
-   //above from BlockFiles.cpps method
-   
-*/   
+
 
    mDataAvailableMutex.Lock();
    mDataAvailable=true;
@@ -543,3 +538,16 @@ bool ODDecodeBlockFile::ReadSummary(void *data)
 //   return (read == mSummaryInfo.totalSummaryBytes);
 return true;
 }
+
+///set the decoder,
+void ODDecodeBlockFile::SetODFileDecoder(ODFileDecoder* decoder)
+{
+   //since this is the only place that writes to mdecoder, it is totally thread-safe to read check without the mutex
+   if(decoder==mDecoder)
+      return;
+   mDecoderMutex.Lock();
+   mDecoder = decoder;
+   mDecoderMutex.Unlock();
+}
+   
+

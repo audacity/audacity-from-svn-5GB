@@ -48,10 +48,6 @@ class ODWaveTrackTaskQueue;
 class ODManager
 {
  public:
-
-   virtual ~ODManager(){};
-   
-  
    ///Gets the singleton instance
    static ODManager* Instance();
    
@@ -114,6 +110,8 @@ class ODManager
   protected:
    //private constructor - Singleton.
    ODManager();
+   //private constructor - delete with static method Quit()
+   virtual ~ODManager();
    ///Launches a thread for the manager and starts accepting Tasks.
    void Init();
 

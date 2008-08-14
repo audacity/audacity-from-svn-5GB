@@ -77,21 +77,7 @@ to get its definition, rather than rolling our own.
 //#define DEBUG_OUTPUT(s) printf("[SimpleBlockFile] %s\n", s)
 #define DEBUG_OUTPUT(s)
 
-// The AU formats we care about
-enum {
-   AU_SAMPLE_FORMAT_16 = 3,
-   AU_SAMPLE_FORMAT_24 = 4,
-   AU_SAMPLE_FORMAT_FLOAT = 6,
-};
 
-typedef struct {
-   wxUint32 magic;      // magic number
-   wxUint32 dataOffset; // byte offset to start of audio data
-   wxUint32 dataSize;   // data length, in bytes (optional)
-   wxUint32 encoding;   // data encoding enumeration
-   wxUint32 sampleRate; // samples per second
-   wxUint32 channels;   // number of interleaved channels
-} auHeader;
 
 wxUint32 SwapUintEndianess(wxUint32 in)
 {
@@ -229,7 +215,7 @@ bool SimpleBlockFile::WriteSimpleBlockFile(
 
    // Write the file
    if (!summaryData)
-      summaryData = BlockFile::CalcSummary(sampleData, sampleLen, format);
+      summaryData = /*BlockFile::*/CalcSummary(sampleData, sampleLen, format); //mchinen:allowing virtual override of calc summary for ODDecodeBlockFile.
    
    file.Write(&header, sizeof(header));
    file.Write(summaryData, mSummaryInfo.totalSummaryBytes);

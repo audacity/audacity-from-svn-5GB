@@ -85,7 +85,9 @@ class ODDecodeBlockFile : public SimpleBlockFile
    virtual void Recover(void);
    
    ///A public interface to WriteSummary
-   void DoWriteSummary(){WriteSummary();}
+   void DoWriteBlockFile(){WriteODDecodeBlockFile();}
+   
+   void WriteODDecodeBlockFile();
    
    ///Sets the value that indicates where the first sample in this block corresponds to the global sequence/clip.  Only for display use.
    void SetStart(sampleCount startSample){mStart = startSample;}
@@ -114,11 +116,14 @@ class ODDecodeBlockFile : public SimpleBlockFile
    
    //OD TODO:set ISAlias to true while we have no data?
    
-                        
-
+   ///set the decoder,
+   void SetODFileDecoder(ODFileDecoder* decoder);
+   
+   wxFileName GetAudioFileName(){return mAudioFileName;}
+   
   protected:
    
-   virtual void WriteSummary();
+//   virtual void WriteSimpleBlockFile();
    virtual void *CalcSummary(samplePtr buffer, sampleCount len,
                              sampleFormat format);
    
@@ -132,12 +137,18 @@ class ODDecodeBlockFile : public SimpleBlockFile
    bool mDataAvailable;
    bool mDataBeingComputed;
    
+   ODFileDecoder* mDecoder;
+   ODLock mDecoderMutex;
+   
    
    ///for reporting after task is complete.  Only for display use.
    sampleCount mStart;
 
    ///the ODTask needs to know where this blockfile lies in the track, so for convenience, we have this here.
    sampleCount mClipOffset;
+   
+   sampleFormat mFormat;
+   sampleCount mDecodeFileStart;
 
 };
 

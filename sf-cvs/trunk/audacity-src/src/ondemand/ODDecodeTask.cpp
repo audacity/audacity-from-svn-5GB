@@ -54,9 +54,8 @@ void ODDecodeTask::DoSomeInternal()
       if(bf->RefCount()>=2)
       {
          //OD TODO: somehow pass the bf a reference to the decoder that manages it's file.
-         
-         
-         bf->DoWriteSummary();
+         bf->SetODFileDecoder(GetOrCreateMatchingFileDecoder(bf));
+         bf->DoWriteBlockFile();
          success = true;
          blockStartSample = bf->GetStart();
          blockEndSample = blockStartSample + bf->GetLength();
@@ -225,10 +224,26 @@ void ODDecodeTask::ODUpdate()
 ///Blocks that have IsDataAvailable()==false are blockfiles to be decoded.  if BlockFile::GetDecodeType()==ODDecodeTask::GetDecodeType() then
 ///this decoder should handle it.  Decoders are accessible with the methods below.  These aren't thread-safe and should only
 ///be called from the decoding thread.
-ODFileDecoder* ODDecodeTask::CreateOrGetMatchingFileDecoder(ODDecodeBlockFile* blockFile)
+ODFileDecoder* ODDecodeTask::GetOrCreateMatchingFileDecoder(ODDecodeBlockFile* blockFile)
 {
+   ODFileDecoder* ret=NULL;
+   //see if the filename matches any of our decoders, if so, return it.
+   for(int i=0;i<(int)mDecoders.size();i++)
+   {
+      if(strcmp(mDecoders[i]->GetFileName(),blockFile->GetAudioFileName().GetFullPath().mb_str()) ==0)
+      {
+         ret = mDecoders[i];
+         break;
+      }
+   }
    
-   return mDecoders[0];
+   //otherwise, create and add one, and return it.
+   if(!ret)
+   {
+      ret=CreateFileDecoder(blockFile->GetFileName().GetFullPath().mb_str());
+      mDecoders.push_back(ret);
+   }
+   return ret;
 }
 int ODDecodeTask::GetNumFileDecoders()
 {
@@ -238,7 +253,7 @@ int ODDecodeTask::GetNumFileDecoders()
 
 
 ///This should handle unicode converted to UTF-8 on mac/linux, but OD TODO:check on windows
-ODFileDecoder::ODFileDecoder(char* fName)
+ODFileDecoder::ODFileDecoder(const char* fName)
 {
    if(fName)
    {

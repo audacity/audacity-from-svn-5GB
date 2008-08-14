@@ -46,6 +46,17 @@ ODManager::ODManager()
    mTerminate = false;
 }
 
+//private constructor - delete with static method Quit()
+ODManager::~ODManager()
+{
+   //get rid of all the queues.  The queues get rid of the tasks, so we don't worry abut them.
+   //nothing else should be running on OD related threads at this point, so we don't lock.
+   for(unsigned int i=0;i<mQueues.size();i++)
+      delete mQueues[i];
+      
+}
+
+
 
 ///Adds a task to running queue.  Thread-safe.
 void ODManager::AddTask(ODTask* task)
@@ -55,6 +66,7 @@ void ODManager::AddTask(ODTask* task)
    mTasksMutex.Unlock();
 }
 
+///removes a task from the active task queue
 void ODManager::RemoveTaskIfInQueue(ODTask* task)
 {
    mTasksMutex.Lock();
@@ -255,6 +267,8 @@ void ODManager::Quit()
       ODManager::Instance()->mTerminateMutex.Lock();
       ODManager::Instance()->mTerminate = true;
       ODManager::Instance()->mTerminateMutex.Unlock();
+      
+      delete ODManager::Instance();
    }
 }
     
@@ -376,6 +390,7 @@ void ODManager::UpdateQueues()
 
       if(mQueues[i]->IsFrontTaskComplete())
       {
+         //this should delete and remove the front task instance.
          mQueues[i]->RemoveFrontTask();
          //schedule next.
          if(!mQueues[i]->IsEmpty())

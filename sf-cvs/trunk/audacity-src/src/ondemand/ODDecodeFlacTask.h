@@ -47,7 +47,7 @@ class ODDecodeFlacTask:public ODDecodeTask
    
    virtual ODTask* Clone()=0;
    ///Creates an ODFileDecoder that decodes a file of filetype the subclass handles.
-   virtual ODFileDecoder* CreateFileDecoder()=0;
+   virtual ODFileDecoder* CreateFileDecoder(const char* fileName)=0;
  
 };
 
@@ -56,7 +56,7 @@ class ODFlacDecoder:public ODFileDecoder
 {
 public:
    ///This should handle unicode converted to UTF-8 on mac/linux, but OD TODO:check on windows
-   ODFlacDecoder(char* fName):ODFileDecoder(fName){}
+   ODFlacDecoder(const char* fName):ODFileDecoder(fName){}
    virtual ~ODFlacDecoder(){}
    
    ///Decodes the samples for this blockfile from the real file into a float buffer.  
@@ -66,7 +66,7 @@ public:
    ///this->ReadData(sampleData, floatSample, 0, mLen);
    ///This class should call ReadHeader() first, so it knows the length, and can prepare 
    ///the file object if it needs to. 
-   virtual void Decode(samplePtr data, sampleCount start, sampleCount len)=0;
+   virtual void Decode(samplePtr data, sampleFormat format, sampleCount start, sampleCount len)=0;
    
    ///Read header.  Subclasses must override.  Probably should save the info somewhere.
    ///Ideally called once per decoding of a file.  This complicates the task because 

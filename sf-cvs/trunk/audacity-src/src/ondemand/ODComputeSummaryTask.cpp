@@ -39,6 +39,18 @@ ODTask* ODComputeSummaryTask::Clone()
    return clone;
    
 }
+
+
+///releases memory that the ODTask owns.  Subclasses should override.
+void ODComputeSummaryTask::Terminate()
+{
+   //The terminate cblock won't allow DoSomeInternal and this method to be run async, so this is thread-safe
+   
+   //we are going to take things out of the array.  But first deref them since we ref them when we put them in.
+   for(unsigned int i=0;i<mBlockFiles.size();i++)
+      mBlockFiles[i]->Deref();
+   mBlockFiles.clear();
+}     
      
 ///Computes and writes the data for one BlockFile if it still has a refcount. 
 void ODComputeSummaryTask::DoSomeInternal()

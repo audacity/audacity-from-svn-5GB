@@ -48,6 +48,8 @@ void ODTask::TerminateAndBlock()
    //one mutex pair for the value of mTerminate
    mTerminateMutex.Lock();
    mTerminate=true;
+   //release all data the derived class may have allocated
+   Terminate();
    mTerminateMutex.Unlock();
    
    //and one mutex pair for the exit of the function

@@ -95,6 +95,7 @@ class ODLock {
    virtual ~ODLock()
    {
       pthread_mutex_destroy (mutex); 
+      free(mutex);
    }
   
 private:
