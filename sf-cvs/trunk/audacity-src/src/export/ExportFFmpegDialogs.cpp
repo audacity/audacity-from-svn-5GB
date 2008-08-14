@@ -486,7 +486,13 @@ FFmpegPreset *FFmpegPresets::FindPreset(wxString &name)
 void FFmpegPresets::SavePreset(ExportFFmpegOptions *parent, wxString &name)
 {
    FFmpegPreset *preset = FindPreset(name);
-   if (!preset)
+   if (preset)
+   {
+      wxString query = wxString::Format(_("Do you really want to overwrite this preset (%s)?"),name.c_str());
+      int action = wxMessageBox(query,_("Overwrite convirmation"),wxYES_NO | wxCENTRE);
+      if (action == wxNO) return;
+   }
+   else
    {
       preset = new FFmpegPreset(name);
       mPresets->push_front(preset);
@@ -919,6 +925,7 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
 
             mProfileChoice = S.Id(FEProfileID).TieChoice(_("Profile:"), wxT("/FileFormats/FFmpegAACProfile"), 
                mProfileLabels[0], mProfileNames, mProfileLabels);
+            mProfileChoice->SetToolTip(_("AAC Profile\nLow Complexity -default\nMost players won't play anything other than LC"));
 
 
          }
@@ -943,7 +950,8 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
                mMaxPredictionOrderSpin->SetToolTip(_("Maximal prediction order\nOptional\n-1 - default\nmin - 0\nmax - 32 (with LPC) or 4 (without LPC)"));
 
                mPredictionOrderMethodChoice = S.Id(FEPredOrderID).TieChoice(_("Prediction Order Method:"), wxT("/FileFormats/FFmpegPredOrderMethod"), 
-                  mPredictionOrderMethodLabels[0], mPredictionOrderMethodNames, mPredictionOrderMethodLabels);
+                  mPredictionOrderMethodLabels[4], mPredictionOrderMethodNames, mPredictionOrderMethodLabels);
+               mProfileChoice->SetToolTip(_("Prediction Order Method\nEstimate - fastest, lower compression\nLog search - slowest, best compression\nFull search - default"));
 
                mMinPartitionOrderSpin = S.Id(FEMinPartOrderID).TieSpinCtrl(_("Minimal partition order"), wxT("/FileFormats/FFmpegMinPartOrder"), -1,8,-1);
                mMinPartitionOrderSpin->SetToolTip(_("Minimal partition order\nOptional\n-1 - default\nmin - 0\nmax - 8"));
@@ -1179,6 +1187,11 @@ void ExportFFmpegOptions::OnDeletePreset(wxCommandEvent& event)
 {
    wxComboBox *preset = dynamic_cast<wxComboBox*>(FindWindowById(FEPresetID,this));
    wxString presetname = preset->GetValue();
+
+   wxString query = wxString::Format(_("Do you really want to delete this preset (%s)?"),presetname.c_str());
+   int action = wxMessageBox(query,_("Deletion convirmation"),wxYES_NO | wxCENTRE);
+   if (action == wxNO) return;
+
    mPresets->DeletePreset(presetname);
    long index = preset->FindString(presetname);
    preset->SetValue(wxEmptyString);
@@ -1192,6 +1205,11 @@ void ExportFFmpegOptions::OnSavePreset(wxCommandEvent& event)
 {
    wxComboBox *preset = dynamic_cast<wxComboBox*>(FindWindowById(FEPresetID,this));
    wxString name = preset->GetValue();
+   if (name.IsEmpty())
+   {
+      wxMessageBox(_("You can't save a preset without name"));
+      return;
+   }
    mPresets->SavePreset(this,name);
    int index = mPresetNames->Index(name.c_str(),false);
    if (index == -1)
