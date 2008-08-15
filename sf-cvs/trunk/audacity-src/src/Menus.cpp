@@ -721,18 +721,26 @@ void AudacityProject::CreateMenusAndCommands()
       // Generate, Effect & Analyze menus
       //
    
+
       c->BeginMenu(_("&Generate"));
       c->SetDefaultFlags(AudioIONotBusyFlag,
                          AudioIONotBusyFlag);
-   
+      
+      int flags;
+      
+      // Add sound generators
+      
+#ifndef EFFECT_CATEGORIES
+
       effects = em.GetEffects(INSERT_EFFECT | BUILTIN_EFFECT);
       if(effects->GetCount()){
+         names.Clear();
          for(i=0; i<effects->GetCount(); i++)
             names.Add((*effects)[i]->GetEffectName());
          c->AddItemList(wxT("Generate"), names, FN(OnGenerateEffect));
       }
       delete effects;
-   
+      
       effects = em.GetEffects(INSERT_EFFECT | PLUGIN_EFFECT);
       if (effects->GetCount()) {
          c->AddSeparator();
@@ -742,8 +750,43 @@ void AudacityProject::CreateMenusAndCommands()
          c->AddItemList(wxT("GeneratePlugin"), names, FN(OnGeneratePlugin), true);
       }
       delete effects;
+
+#else
+      
+      flags = INSERT_EFFECT | BUILTIN_EFFECT | PLUGIN_EFFECT;
+      EffectCategory* ac = 
+         em.LookupCategory(wxT("http://lv2plug.in/ns/lv2core#GeneratorPlugin"));
+      CategorySet roots = ac->GetSubCategories();
+      EffectSet generators = ac->GetEffects();
+      EffectSet topLevel = CreateEffectSubmenus(c, roots, flags, 0);
+      std::copy(generators.begin(), generators.end(), 
+                std::insert_iterator<EffectSet>(topLevel, topLevel.begin()));
+      AddEffectsToMenu(c, topLevel);
+      
+      // Add all uncategorised effects in a special submenu
+      EffectSet unsorted = 
+         em.GetUnsortedEffects(flags);
+      if (unsorted.size() > 0) {
+         c->AddSeparator();
+         c->BeginSubMenu(_("Unsorted"));
+         names.Clear();
+         indices.Clear();
+         EffectSet::const_iterator iter;
+         for (iter = unsorted.begin(); iter != unsorted.end(); ++iter) {
+            names.Add((*iter)->GetEffectName());
+            indices.Add((*iter)->GetID());
+         }
+         c->AddItemList(wxT("Generate"), names, 
+                        FNI(OnProcessAny, indices), true);
+         c->EndSubMenu();
+      }
+
+#endif
+
+
       c->EndMenu();
-	}
+        }        
+
    c->BeginMenu(_("Effe&ct"));
    c->SetDefaultFlags(AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
                       AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag);
@@ -786,8 +829,9 @@ void AudacityProject::CreateMenusAndCommands()
       }
       delete effects;
       
-      c->EndMenu();
    }
+
+   c->EndMenu();
 
 #else
    

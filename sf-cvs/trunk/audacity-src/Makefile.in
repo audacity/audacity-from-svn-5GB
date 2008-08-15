@@ -66,6 +66,10 @@ install-extra-data:
 	$(INSTALL) -d $(DESTDIR)$(DATADIR)/mime/packages
 	$(INSTALL) -m 644 src/audacity.xml $(DESTDIR)$(DATADIR)/mime/packages
 
+	# install basic LRDF ontology file
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/rdf
+	$(INSTALL) -m 644 lib-src/liblrdf/examples/ladspa.rdfs $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/rdf
+
 uninstall: $(EXTRAUNINSTALLTARGETS)
 	rm -rf $(DESTDIR)$(BINDIR)/$(AUDACITY_NAME)
 	rm -rf $(DESTDIR)$(DATADIR)/doc/$(AUDACITY_NAME)

@@ -53,23 +53,29 @@ typedef std::map<uint32_t, std::map<float, wxString> > ScalePointMap;
 class LV2Effect:public Effect {
 
  public:
-
+   
+   /** Create an LV2Effect from a SLV2 data handle and a category set. */
    LV2Effect(SLV2Plugin plug,
              const std::set<wxString>& categories = std::set<wxString>());
    virtual ~LV2Effect();
-
+   
+   /** Get the name of the effect. */
    virtual wxString GetEffectName();
    
+   /** Get the categories of the effect. */
    virtual std::set<wxString> GetEffectCategories();
 
+   /** Get the effect identifier (for internal use). */
    virtual wxString GetEffectIdentifier();
    
+   /** Get the action string. */
    virtual wxString GetEffectAction();
-
+   
+   /** Get the flags that describe the type of the effect. */
    virtual int GetEffectFlags() {
       return flags;
    }
- 
+   
    virtual bool Init();
 
    virtual bool PromptUser();
@@ -80,14 +86,19 @@ class LV2Effect:public Effect {
    
    bool IsValid();
    
+   /** Return a list of LV2Ports for the input parameters. */
    std::vector<LV2Port>& GetControls();
    
+   /** Return true if the plugin is a synth (MIDI input), false if not. */
    bool IsSynth();
    
+   /** Modify the note settings for the plugin (only for synths). */
    bool SetNote(sampleCount len, unsigned char velocity, unsigned char key);
    
+   /** Get a map containing all scale points for the plugin. */
    const ScalePointMap& GetScalePoints();
    
+   /** Get the port group tree for the plugin. */
    const LV2PortGroup& GetPortGroups();
    
  private:
@@ -129,6 +140,8 @@ class LV2Effect:public Effect {
    bool mPortGroupsRetrieved;
 };
 
+
+/** The control dialog for an LV2 plugin. */
 class LV2EffectDialog:public wxDialog {
    DECLARE_DYNAMIC_CLASS(LV2EffectDialog)
 

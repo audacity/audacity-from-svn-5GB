@@ -105,6 +105,8 @@ void LoadLV2Plugins() {
    gPortToggled = slv2_value_new_uri(gWorld, "http://lv2plug.in/ns/lv2core#toggled");
    gPortIsInteger = slv2_value_new_uri(gWorld, "http://lv2plug.in/ns/lv2core#integer");
    gPortIsSampleRate = slv2_value_new_uri(gWorld, "http://lv2plug.in/ns/lv2core#sampleRate");
+
+   slv2_world_load_all(gWorld);
    
 #ifdef EFFECT_CATEGORIES
    
@@ -130,7 +132,6 @@ void LoadLV2Plugins() {
 #endif
    
    // Retrieve data about all plugins
-   slv2_world_load_all(gWorld);
    SLV2Plugins plugs = slv2_world_get_all_plugins(gWorld);
    
    // Iterate over all plugins and register them with the EffectManager
