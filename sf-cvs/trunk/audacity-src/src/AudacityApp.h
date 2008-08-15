@@ -187,6 +187,7 @@ extern AudacityApp & wxGetApp();
 #endif
 
 #define MAX_AUDIO (1. - 1./(1<<15))
+#define JUST_BELOW_MAX_AUDIO (1. - 1./(1<<14))
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
