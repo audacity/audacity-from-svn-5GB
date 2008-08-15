@@ -14,14 +14,42 @@ class wxStaticText;
 class wxTextCtrl;
 class wxCheckBox;
 
+#include <map>
+#include <vector>
 #include <wx/dialog.h>
 
 #include <slv2/slv2.h>
 
 #include "../Effect.h"
+#include "LV2PortGroup.h"
 
-void LoadLadspaPlugins();
 
+/** A structure that contains information about a single LV2 plugin port. */
+struct LV2Port {
+   LV2Port()
+      : mToggle(false),
+        mInteger(false),
+        mSampleRate(false) {
+   }
+   
+   uint32_t mIndex;
+   wxString mName;
+   float mMin;
+   float mMax;
+   float mDefault;
+   float mControlBuffer;
+   bool mToggle;
+   bool mInteger;
+   bool mSampleRate;
+};
+
+
+/** This is used in LV2Effect and LV2EffectDialog. */
+typedef std::map<uint32_t, std::map<float, wxString> > ScalePointMap;
+
+
+/** The main LV2 plugin class. It handles loading and applying a 
+    single plugin. */
 class LV2Effect:public Effect {
 
  public:
@@ -49,7 +77,19 @@ class LV2Effect:public Effect {
    virtual bool Process();
    
    virtual void End();
-
+   
+   bool IsValid();
+   
+   std::vector<LV2Port>& GetControls();
+   
+   bool IsSynth();
+   
+   bool SetNote(sampleCount len, unsigned char velocity, unsigned char key);
+   
+   const ScalePointMap& GetScalePoints();
+   
+   const LV2PortGroup& GetPortGroups();
+   
  private:
    bool ProcessStereo(int count, WaveTrack * left, WaveTrack *right,
                       sampleCount lstart, sampleCount rstart,
@@ -59,6 +99,7 @@ class LV2Effect:public Effect {
                    sampleCount *start,
                    sampleCount *len);
  
+   bool mValid;
    wxString pluginName;
    int flags;
 
@@ -66,18 +107,26 @@ class LV2Effect:public Effect {
    sampleCount mBlockSize;
    float **fInBuffer;
    float **fOutBuffer;
-   unsigned long inputs;
-   unsigned long outputs;
-   unsigned long numInputControls;
-   unsigned long *inputPorts;
-   unsigned long *outputPorts;
-   float *inputControls;
-   float *outputControls;
    int mainRate;
    double mLength;
 
    std::set<wxString> mCategories;
-
+   
+   std::vector<LV2Port> mControlInputs;
+   std::vector<LV2Port> mControlOutputs;
+   std::vector<LV2Port> mAudioInputs;
+   std::vector<LV2Port> mAudioOutputs;
+   LV2Port* mMidiInput;
+   
+   sampleCount mNoteLength;
+   unsigned char mNoteVelocity;
+   unsigned char mNoteKey;
+   
+   ScalePointMap mScalePoints;
+   bool mScalePointsRetrieved;
+   
+   LV2PortGroup mRootGroup;
+   bool mPortGroupsRetrieved;
 };
 
 class LV2EffectDialog:public wxDialog {
@@ -87,9 +136,11 @@ class LV2EffectDialog:public wxDialog {
    LV2EffectDialog(LV2Effect *effect,
                    wxWindow * parent,
                    SLV2Plugin data,
-                   float *inputControls,
                    int sampleRate,
-                   double length);
+                   double length,
+                   double noteLength,
+                   unsigned char noteVelocity,
+                   unsigned char noteKey);
 
    ~LV2EffectDialog();
 
@@ -102,6 +153,9 @@ class LV2EffectDialog:public wxDialog {
    void ControlSetFocus(wxFocusEvent & event);
 
    double GetLength();
+   double GetNoteLength();
+   unsigned char GetNoteVelocity();
+   unsigned char GetNoteKey();
 
    DECLARE_EVENT_TABLE()
 
@@ -119,11 +173,12 @@ class LV2EffectDialog:public wxDialog {
    wxTextCtrl **fields;
    wxStaticText **labels;
    wxCheckBox **toggles;
-   unsigned long *ports;
-   unsigned long numParams;
-   float *inputControls;
    LV2Effect *effect;
+   std::vector<LV2Port>& mControls;
    wxTextCtrl *mSeconds;
+   wxTextCtrl *mNoteSeconds;
+   wxTextCtrl* mNoteVelocity;
+   wxTextCtrl* mNoteKey;
 };
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

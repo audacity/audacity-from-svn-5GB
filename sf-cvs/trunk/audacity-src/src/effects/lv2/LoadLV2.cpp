@@ -17,6 +17,7 @@ Functions that find and load all LV2 plugins on the system.
 
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <iostream>
 
 #include <wx/dynlib.h>
@@ -31,42 +32,54 @@ Functions that find and load all LV2 plugins on the system.
 #include "../../Internat.h"
 #include "../EffectManager.h"
 #include "LV2Effect.h"
+#include "lv2_uri_map.h"
+#include "lv2_event.h"
 
 #include "LoadLV2.h"
 
 
 SLV2World gWorld = 0;
 
+
+// This is the URI Map Feature object. It is required for loading synth
+// plugins.
+static uint32_t uri_to_id(LV2_URI_Map_Callback_Data cbd,
+                          const char* map, const char* uri) {
+   if (!std::strcmp(map, "http://lv2plug.in/ns/ext/event")) {
+      if (!std::strcmp(uri, "http://lv2plug.in/ns/ext/midi#MidiEvent"))
+         return 1;
+      else if (!std::strcmp(uri, "http://lv2plug.in/ns/ext/event#TimeStamp"))
+         return 2;
+   }
+   return 0;
+}
+static LV2_URI_Map_Feature gURIMap = { 0, &uri_to_id };
+static LV2_Feature gURIMapFeature = { "http://lv2plug.in/ns/ext/uri-map",
+                                      &gURIMap };
+
+// This is the event refcounter object. We don't actually implement it
+// since we only ever send flat MIDI events to the plugins, but it is 
+// still required.
+uint32_t event_ref(LV2_Event_Callback_Data callback_data, LV2_Event* event) {
+   return 0;
+}
+static LV2_Event_Feature gEventRef = { 0, &event_ref, &event_ref };
+static LV2_Feature gEventRefFeature = { "http://lv2plug.in/ns/ext/event",
+                                        &gEventRef };
+
+// These are the LV2 Features we support.
+LV2_Feature*const gLV2Features[] = { &gURIMapFeature, &gEventRefFeature, 0 };
+
+
 SLV2Value gAudioPortClass;
 SLV2Value gControlPortClass;
+SLV2Value gMidiPortClass;
 SLV2Value gInputPortClass;
 SLV2Value gOutputPortClass;
+SLV2Value gPortToggled;
+SLV2Value gPortIsInteger;
+SLV2Value gPortIsSampleRate;
 
-
-/** This function determines whether a plugin should be displayed or not.
-    It checks if the required features and port types are supported. */
-static bool PluginFilter(SLV2Plugin plug) {
-   
-   // We don't support any features at all, so if the plugin requires
-   // any we skip it.
-   SLV2Values req = slv2_plugin_get_required_features(plug);
-   size_t nFeatures = slv2_values_size(req);
-   slv2_values_free(req);
-   if (nFeatures > 0)
-      return false;
-   
-   // We only understand audio and control ports, so if there are any others
-   // we skip the plugin.
-   uint32_t nPorts = slv2_plugin_get_num_ports(plug);
-   for (uint32_t i = 0; i < nPorts; ++i) {
-      SLV2Port port = slv2_plugin_get_port_by_index(plug, i);
-      if (!slv2_port_is_a(plug, port, gAudioPortClass) &&
-          !slv2_port_is_a(plug, port, gControlPortClass))
-         return false;
-   }
-   
-   return true;
-}
 
 void LoadLV2Plugins() {
    
@@ -86,8 +99,12 @@ void LoadLV2Plugins() {
    
    gAudioPortClass = slv2_value_new_uri(gWorld, SLV2_PORT_CLASS_AUDIO);
    gControlPortClass = slv2_value_new_uri(gWorld, SLV2_PORT_CLASS_CONTROL);
+   gMidiPortClass = slv2_value_new_uri(gWorld, "http://lv2plug.in/ns/ext/event#EventPort");
    gInputPortClass = slv2_value_new_uri(gWorld, SLV2_PORT_CLASS_INPUT);
    gOutputPortClass = slv2_value_new_uri(gWorld, SLV2_PORT_CLASS_OUTPUT);
+   gPortToggled = slv2_value_new_uri(gWorld, "http://lv2plug.in/ns/lv2core#toggled");
+   gPortIsInteger = slv2_value_new_uri(gWorld, "http://lv2plug.in/ns/lv2core#integer");
+   gPortIsSampleRate = slv2_value_new_uri(gWorld, "http://lv2plug.in/ns/lv2core#sampleRate");
    
 #ifdef EFFECT_CATEGORIES
    
@@ -114,7 +131,7 @@ void LoadLV2Plugins() {
    
    // Retrieve data about all plugins
    slv2_world_load_all(gWorld);
-   SLV2Plugins plugs = slv2_world_get_plugins_by_filter(gWorld, &PluginFilter);
+   SLV2Plugins plugs = slv2_world_get_all_plugins(gWorld);
    
    // Iterate over all plugins and register them with the EffectManager
    for (unsigned index = 0; index < slv2_plugins_size(plugs); ++index) {
@@ -122,7 +139,10 @@ void LoadLV2Plugins() {
       std::set<wxString> cats;
       cats.insert(wxString::FromUTF8(slv2_value_as_uri(slv2_plugin_class_get_uri(slv2_plugin_get_class(plug)))));
       LV2Effect *effect = new LV2Effect(plug, cats);
-      em.RegisterEffect(effect);
+      if (effect->IsValid())
+         em.RegisterEffect(effect);
+      else
+         delete effect;
       //std::cerr<<"Loaded LV2 \""<<slv2_value_as_string(slv2_plugin_get_name(plug))<<"\""<<std::endl;
    }
    
