@@ -508,7 +508,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_SLV2], [
       SLV2_SYSTEM_LIBS="$SLV2_LIBS"
       SLV2_SYSTEM_CXXFLAGS="$SLV2_CFLAGS"
       SLV2_SYSTEM_CPPSYMBOLS="USE_SLV2"
-      SLV2_SYSTEM_OPTOBJS="effects/lv2/LoadLV2.o effects/lv2/LV2Effect.o"
+      SLV2_SYSTEM_OPTOBJS="effects/lv2/LoadLV2.o effects/lv2/LV2Effect.o effects/lv2/LV2PortGroup.o"
       AC_MSG_NOTICE([SLV2 available as system library])
    fi
    if test "x$SLV2_SYSTEM_AVAILABLE" = "xno" ; then
@@ -525,7 +525,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_SLV2], [
       SLV2_LOCAL_LIBS="libslv2.a"
       SLV2_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/slv2'
       SLV2_LOCAL_CPPSYMBOLS="USE_SLV2"
-      SLV2_LOCAL_OPTOBJS="effects/lv2/LoadLV2.o effects/lv2/LV2Effect.o"
+      SLV2_LOCAL_OPTOBJS="effects/lv2/LoadLV2.o effects/lv2/LV2Effect.o effects/lv2/LV2PortGroup.o"
       if test ! -f lib-src/slv2/Makefile ; then
          SLV2_LOCAL_CONFIG_SUBDIRS="lib-src/slv2"
       fi
