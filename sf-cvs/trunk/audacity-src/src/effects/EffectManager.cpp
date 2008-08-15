@@ -9,6 +9,7 @@
 
 **********************************************************************/
 
+#include <iostream>
 
 #include "EffectManager.h"
 
@@ -72,6 +73,7 @@ void EffectManager::RegisterEffect(Effect *f, int NewFlags)
    }
    if (!oneValid)
       mUnsorted.insert(f);
+   
 #endif
 }
 
@@ -124,6 +126,7 @@ EffectArray *EffectManager::GetEffects(int flags /* = ALL_EFFECTS */)
 
 EffectCategory* EffectManager::AddCategory(const wxString& URI, 
                                            const wxString& name) {
+   
    CategoryMap::const_iterator iter = mCategories.find(URI);
    if (iter != mCategories.end())
       return iter->second;

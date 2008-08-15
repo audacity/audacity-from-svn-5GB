@@ -19,6 +19,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
 #include <map>
 #include <queue>
 
@@ -192,7 +193,27 @@ void LoadLadspaPlugins()
    wxGetApp().AddUniquePathToPathList(wxT("/usr/local/share/ladspa/rdf"), 
                                       rdfPathList);
 #endif
+
+#ifdef __WXMAC__
+   wxGetApp().AddUniquePathToPathList(wxT("/usr/share/ladspa/rdf"), 
+                                      rdfPathList);
+   // XXX Maybe other Mac paths here?
+#endif
+
+#ifdef __WXMSW__
+   //wxGetApp().AddUniquePathToPathList(wxT("WINDOWS LRDF PATH"), 
+   //                                   rdfPathList);
+   // XXX Other Windows paths here.
+#endif
    
+   // Add the Audacity paths so we get ladspa.rdfs if we are using a local
+   // liblrdf
+   for(i=0; i<audacityPathList.GetCount(); i++) {
+      wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
+      wxGetApp().AddUniquePathToPathList(prefix + wxT("rdf"),
+                                         rdfPathList);
+   }
+
    wxGetApp().FindFilesInPathList(wxT("*.rdf"), rdfPathList, wxFILE, rdfFiles);
    wxGetApp().FindFilesInPathList(wxT("*.rdfs"), 
                                   rdfPathList, wxFILE, rdfFiles);

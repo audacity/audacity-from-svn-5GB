@@ -24,17 +24,19 @@ class LV2PortGroup {
    
    LV2PortGroup(const wxString& name = wxT(""));
    
+   /** Add a subgroup of this group. */
    void AddSubGroup(const LV2PortGroup& subgroup);
    
+   /** Return a list of all subgroups. */
    const std::vector<LV2PortGroup>& GetSubGroups() const;
    
+   /** Add a parameter number (not port number). */
    void AddParameter(uint32_t parameter);
    
+   /** Return a list of all parameters in this group. */
    const std::vector<uint32_t>& GetParameters() const;
    
    const wxString& GetName() const;
-   
-   bool operator<(const LV2PortGroup& pg) const;
    
  private:
    
