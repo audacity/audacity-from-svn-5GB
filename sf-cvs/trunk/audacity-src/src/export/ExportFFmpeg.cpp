@@ -300,11 +300,6 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       if (!CheckSampleRate(mSampleRate,ExportFFmpegAC3Options::iAC3SampleRates[0], ExportFFmpegAC3Options::iAC3SampleRates[2], &ExportFFmpegAC3Options::iAC3SampleRates[0]))
          mSampleRate = AskResample(mEncAudioCodecCtx->bit_rate,mSampleRate, ExportFFmpegAC3Options::iAC3SampleRates[0], ExportFFmpegAC3Options::iAC3SampleRates[2], &ExportFFmpegAC3Options::iAC3SampleRates[0]);
       break;
-   case FMT_GSMAIFF:
-   case FMT_GSMMSWAV:
-      mSampleRate = 8000;
-      mEncAudioCodecCtx->bit_rate = 13000;
-      break;
    case FMT_AMRNB:
       mSampleRate = 8000;
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AMRNBBitRate"), 12200);
@@ -323,7 +318,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       if (mEncAudioCodecCtx->sample_rate != 0) mSampleRate = mEncAudioCodecCtx->sample_rate;
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/FFmpegBitRate"), (long)0);
       memcpy(&mEncAudioCodecCtx->codec_tag,gPrefs->Read(wxT("/FileFormats/FFmpegTag"),wxT("")).c_str(),4);
-      mEncAudioCodecCtx->global_quality = gPrefs->Read(wxT("/FileFormats/FFmpegQuality"),(long)-1);
+      mEncAudioCodecCtx->global_quality = gPrefs->Read(wxT("/FileFormats/FFmpegQuality"),(long)-99999);
       mEncAudioCodecCtx->cutoff = gPrefs->Read(wxT("/FileFormats/FFmpegCutOff"),(long)0);
       mEncAudioCodecCtx->use_lpc = gPrefs->Read(wxT("/FileFormats/FFmpegUseLPC"),true);
       mEncAudioCodecCtx->flags2 = 0;
@@ -769,11 +764,6 @@ bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
    {
       ExportFFmpegAC3Options od(project);
       od.ShowModal();
-      return true;
-   }
-   else if ((format == FMT_GSMAIFF) || (format == FMT_GSMMSWAV))
-   {
-      wxMessageBox(wxT("No options for this format."));
       return true;
    }
    else if (format == FMT_AMRNB)
