@@ -27,6 +27,7 @@ The summary is eventually computed and written to a file in a background thread.
 #include <wx/thread.h>
 #include <sndfile.h>
 
+#include "AudacityApp.h"
 #include "PCMAliasBlockFile.h"
 #include "../FileFormats.h"
 #include "../Internat.h"
@@ -128,8 +129,8 @@ void ODPCMAliasBlockFile::GetMinMax(sampleCount start, sampleCount len,
    {
       //fake values.  These values are used usually for normalization and amplifying, so we want 
       //the max to be maximal and the min to be minimal
-      *outMin = -1.0;
-      *outMax = 1.0;
+      *outMin = -1.0*JUST_BELOW_MAX_AUDIO;
+      *outMax = 1.0*JUST_BELOW_MAX_AUDIO;
       *outRMS = (float)0.707;//sin with amp of 1 rms
    }
 }
@@ -145,8 +146,8 @@ void ODPCMAliasBlockFile::GetMinMax(float *outMin, float *outMax, float *outRMS)
    {
       //fake values.  These values are used usually for normalization and amplifying, so we want 
       //the max to be maximal and the min to be minimal
-      *outMin = -1.0;
-      *outMax = 1.0;
+      *outMin = -1.0*JUST_BELOW_MAX_AUDIO;
+      *outMax = 1.0*JUST_BELOW_MAX_AUDIO;
       *outRMS = (float)0.707;//sin with amp of 1 rms
    }
 }
