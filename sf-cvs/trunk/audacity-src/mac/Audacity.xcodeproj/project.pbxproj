@@ -1122,6 +1122,7 @@
 		28EBA7FC0A78FADE00C8BB1F /* Repair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28EBA7FA0A78FADE00C8BB1F /* Repair.cpp */; };
 		28EBA8010A78FAF800C8BB1F /* InterpolateAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28EBA7FD0A78FAF800C8BB1F /* InterpolateAudio.cpp */; };
 		28EBA8020A78FAF800C8BB1F /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28EBA7FF0A78FAF800C8BB1F /* Matrix.cpp */; };
+		28EDC8DF0E5550750034BBE7 /* LV2PortGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28EDC8DD0E5550750034BBE7 /* LV2PortGroup.cpp */; };
 		28F00A930A3E2FF100A3E5F5 /* FileNames.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F00A900A3E2FF100A3E5F5 /* FileNames.cpp */; };
 		28F1D81D0A2D0019005506A7 /* AttachableScrollBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D8170A2D0018005506A7 /* AttachableScrollBar.cpp */; };
 		28F1D81E0A2D0019005506A7 /* ExpandingToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D8190A2D0018005506A7 /* ExpandingToolBar.cpp */; };
@@ -2585,6 +2586,11 @@
 		28EBA7FE0A78FAF800C8BB1F /* InterpolateAudio.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = InterpolateAudio.h; sourceTree = "<group>"; };
 		28EBA7FF0A78FAF800C8BB1F /* Matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
 		28EBA8000A78FAF800C8BB1F /* Matrix.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
+		28EDC8DA0E5550750034BBE7 /* lv2_event.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = lv2_event.h; path = lv2/lv2_event.h; sourceTree = "<group>"; };
+		28EDC8DB0E5550750034BBE7 /* lv2_event_helpers.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = lv2_event_helpers.h; path = lv2/lv2_event_helpers.h; sourceTree = "<group>"; };
+		28EDC8DC0E5550750034BBE7 /* lv2_uri_map.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = lv2_uri_map.h; path = lv2/lv2_uri_map.h; sourceTree = "<group>"; };
+		28EDC8DD0E5550750034BBE7 /* LV2PortGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = LV2PortGroup.cpp; path = lv2/LV2PortGroup.cpp; sourceTree = "<group>"; };
+		28EDC8DE0E5550750034BBE7 /* LV2PortGroup.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = LV2PortGroup.h; path = lv2/LV2PortGroup.h; sourceTree = "<group>"; };
 		28F00A900A3E2FF100A3E5F5 /* FileNames.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FileNames.cpp; sourceTree = "<group>"; };
 		28F00A910A3E2FF100A3E5F5 /* FileNames.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FileNames.h; sourceTree = "<group>"; };
 		28F00A920A3E2FF100A3E5F5 /* ThemeAsCeeCode.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ThemeAsCeeCode.h; sourceTree = "<group>"; };
@@ -4635,6 +4641,11 @@
 				28D587C80E264CF3009C7DEA /* LoadLV2.h */,
 				28D587C90E264CF4009C7DEA /* LV2Effect.cpp */,
 				28D587CA0E264CF4009C7DEA /* LV2Effect.h */,
+				28EDC8DD0E5550750034BBE7 /* LV2PortGroup.cpp */,
+				28EDC8DE0E5550750034BBE7 /* LV2PortGroup.h */,
+				28EDC8DA0E5550750034BBE7 /* lv2_event.h */,
+				28EDC8DB0E5550750034BBE7 /* lv2_event_helpers.h */,
+				28EDC8DC0E5550750034BBE7 /* lv2_uri_map.h */,
 			);
 			name = lv2;
 			sourceTree = "<group>";
@@ -6624,6 +6635,7 @@
 				186CCE720E51F48500659159 /* ODDecodeFlacTask.cpp in Sources */,
 				186CCE730E51F48500659159 /* ODDecodeTask.cpp in Sources */,
 				186CCEA40E523C8E00659159 /* Profiler.cpp in Sources */,
+				28EDC8DF0E5550750034BBE7 /* LV2PortGroup.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
