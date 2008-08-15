@@ -488,8 +488,8 @@ void FFmpegPresets::SavePreset(ExportFFmpegOptions *parent, wxString &name)
    FFmpegPreset *preset = FindPreset(name);
    if (preset)
    {
-      wxString query = wxString::Format(_("Do you really want to overwrite this preset (%s)?"),name.c_str());
-      int action = wxMessageBox(query,_("Overwrite convirmation"),wxYES_NO | wxCENTRE);
+      wxString query = wxString::Format(_("Overwrite preset '%s'?"),name.c_str());
+      int action = wxMessageBox(query,_("Confirm Overwrite"),wxYES_NO | wxCENTRE);
       if (action == wxNO) return;
    }
    else
@@ -1188,8 +1188,8 @@ void ExportFFmpegOptions::OnDeletePreset(wxCommandEvent& event)
    wxComboBox *preset = dynamic_cast<wxComboBox*>(FindWindowById(FEPresetID,this));
    wxString presetname = preset->GetValue();
 
-   wxString query = wxString::Format(_("Do you really want to delete this preset (%s)?"),presetname.c_str());
-   int action = wxMessageBox(query,_("Deletion convirmation"),wxYES_NO | wxCENTRE);
+   wxString query = wxString::Format(_("Delete preset '%s'?"),presetname.c_str());
+   int action = wxMessageBox(query,_("Confirm Deletion"),wxYES_NO | wxCENTRE);
    if (action == wxNO) return;
 
    mPresets->DeletePreset(presetname);
