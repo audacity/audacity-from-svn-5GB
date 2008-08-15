@@ -22,7 +22,6 @@
 
 #include <assert.h>
 #include <stdbool.h>
-#include <malloc.h>
 #include <stdint.h>
 #include <string.h>
 
