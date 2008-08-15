@@ -49,13 +49,15 @@ void ODTask::TerminateAndBlock()
    mTerminateMutex.Lock();
    mTerminate=true;
    //release all data the derived class may have allocated
-   Terminate();
    mTerminateMutex.Unlock();
    
    //and one mutex pair for the exit of the function
    mBlockUntilTerminateMutex.Lock();
 //TODO lock mTerminate?
    mBlockUntilTerminateMutex.Unlock();
+   
+   //wait till we are out of doSome() to terminate.
+   Terminate();
 }
    
 ///Do a modular part of the task.  For example, if the task is to load the entire file, load one BlockFile.
