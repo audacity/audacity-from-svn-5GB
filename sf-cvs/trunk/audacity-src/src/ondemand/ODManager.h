@@ -145,6 +145,8 @@ class ODManager
    bool mTerminate;
    ODLock mTerminateMutex;
    
+   bool mTerminated;
+   ODLock mTerminatedMutex;
    
 #ifdef __WXMAC__
 

@@ -44,6 +44,7 @@ void ODManager::UnlockLibSndFileMutex()
 ODManager::ODManager()
 {
    mTerminate = false;
+   mTerminated = false;
 }
 
 //private constructor - delete with static method Quit()
@@ -254,6 +255,9 @@ void ODManager::Start()
    }
    mTerminateMutex.Unlock();
    
+   mTerminatedMutex.Lock();
+   mTerminated=true;
+   mTerminatedMutex.Unlock();
    
    //wxLogDebug Not thread safe.
    //printf("ODManager thread terminating\n");
@@ -268,6 +272,16 @@ void ODManager::Quit()
       ODManager::Instance()->mTerminate = true;
       ODManager::Instance()->mTerminateMutex.Unlock();
       
+      ODManager::Instance()->mTerminatedMutex.Lock();
+      while(!ODManager::Instance()->mTerminated)
+      {
+         ODManager::Instance()->mTerminatedMutex.Unlock();
+         wxThread::Sleep(200);
+         ODManager::Instance()->mTerminatedMutex.Lock();
+      }
+      ODManager::Instance()->mTerminatedMutex.Unlock();
+   
+
       delete ODManager::Instance();
    }
 }
