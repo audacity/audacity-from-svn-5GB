@@ -123,6 +123,10 @@ ExportPCMOptions::ExportPCMOptions(wxWindow *parent, int selformat)
    case 1:
       format = SF_FORMAT_AIFF | SF_FORMAT_PCM_16;
       break;
+   case 3:
+      format = SF_FORMAT_WAV | SF_FORMAT_GSM610;
+      break;
+   case 2:
    default:
       format = ReadExportFormatPref();
       break;
@@ -146,7 +150,7 @@ ExportPCMOptions::ExportPCMOptions(wxWindow *parent, int selformat)
    mEncodingFromChoice = sel = 0;
    for (i = 0; i < num; i++) {
       int enc = sf_encoding_index_to_subtype(i);
-      int fmt = format | enc;
+      int fmt = format & SF_FORMAT_TYPEMASK | enc;
       bool valid  = ValidatePair(fmt);
       if (valid)
       {
@@ -336,7 +340,7 @@ ExportPCM::ExportPCM()
    si.channels = 0;
 
    si.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
-   do { si.channels++; } while (sf_format_check(&si));
+   for (si.channels = 1; sf_format_check(&si); si.channels++){};
    AddFormat();
    SetFormat(wxT("WAV"),0);
    SetCanMetaData(true,0);
@@ -346,7 +350,7 @@ ExportPCM::ExportPCM()
    SetMaxChannels(si.channels - 1,0);
 
    si.format = SF_FORMAT_AIFF | SF_FORMAT_PCM_16;
-   do { si.channels++; } while (sf_format_check(&si));
+   for (si.channels = 1; sf_format_check(&si); si.channels++){};
    AddFormat();
    SetFormat(wxT("AIFF"),1);
    SetCanMetaData(true,1);
@@ -371,6 +375,14 @@ ExportPCM::ExportPCM()
    SetExtensions(allext,2);
    SetMaxChannels(255,2);
 
+   si.format = SF_FORMAT_WAV | SF_FORMAT_GSM610;
+   for (si.channels = 1; sf_format_check(&si); si.channels++){};
+   AddFormat();
+   SetFormat(wxT("GSM610"),3);
+   SetCanMetaData(true,3);
+   SetDescription(_("GSM 6.10 WAV (mobile)"),3);
+   AddExtension(sf_header_extension(si.format),3);
+   SetMaxChannels(si.channels - 1,3);
 }
 
 void ExportPCM::Destroy()
@@ -551,7 +563,7 @@ bool ExportPCM::AddStrings(AudacityProject *project, SNDFILE *sf, Tags *tags)
 
 bool ExportPCM::DisplayOptions(AudacityProject *project, int format)
 {
-   if (format < 2)
+   if (format != 2)
    {
       wxMessageBox(wxT("No options for this format. Use 'Other uncompressed files'."));
       return true;

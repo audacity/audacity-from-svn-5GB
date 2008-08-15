@@ -24,8 +24,6 @@ enum FFmpegExposedFormat
 {
    FMT_M4A,
    FMT_AC3,
-   FMT_GSMAIFF,
-   FMT_GSMMSWAV,
    FMT_AMRNB,
    FMT_AMRWB,
    FMT_WMA2,
@@ -52,8 +50,6 @@ static ExposedFormat fmts[] =
 {
    {FMT_M4A,         wxT("M4A"),     wxT("m4a"),  wxT("ipod"), 48,  true ,true ,_("M4A (AAC) Files (FFmpeg)"),           CODEC_ID_AAC},
    {FMT_AC3,         wxT("AC3"),     wxT("ac3"),  wxT("ac3"),  7,   false,false,_("AC3 Files (FFmpeg)"),                 CODEC_ID_AC3},
-   {FMT_GSMAIFF,     wxT("GSMAIFF"), wxT("aiff"), wxT("aiff"), 1,   true ,true ,_("GSM-AIFF Files (FFmpeg)"),            CODEC_ID_GSM},
-   {FMT_GSMMSWAV,    wxT("GSMWAV"),  wxT("wav"),  wxT("wav"),  1,   false,false,_("GSM-WAV (Microsoft) Files (FFmpeg)"), CODEC_ID_GSM_MS},
    {FMT_AMRNB,       wxT("AMRNB"),   wxT("amr"),  wxT("amr"),  1,   false,false,_("AMR (narrow band) Files (FFmpeg)"),   CODEC_ID_AMR_NB},
    {FMT_AMRWB,       wxT("AMRWB"),   wxT("amr"),  wxT("amr"),  1,   false,false,_("AMR (wide band) Files (FFmpeg)"),     CODEC_ID_AMR_WB},
    {FMT_WMA2,        wxT("WMA"),     wxT("wma"),  wxT("asf"),  2,   true ,false,_("WMA (version 2) Files (FFmpeg)"),     CODEC_ID_WMAV2},
