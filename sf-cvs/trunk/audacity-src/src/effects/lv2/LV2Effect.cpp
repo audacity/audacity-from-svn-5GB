@@ -60,19 +60,12 @@ LV2Effect::LV2Effect(SLV2Plugin data,
    fInBuffer = NULL;
    fOutBuffer = NULL;
    
-   //inputs = 0;
-   //outputs = 0;
-   //numInputControls = 0;
    mLength = 0;
 
    uint32_t p;
    
    // Allocate buffers for the port indices and the default control values
    uint32_t numPorts = slv2_plugin_get_num_ports(mData);
-   //   inputPorts = new unsigned long [numPorts];
-   //outputPorts = new unsigned long [numPorts];
-   //inputControls = new float [numPorts];
-   //outputControls = new float [numPorts];
    float* minimumValues = new float [numPorts];
    float* maximumValues = new float [numPorts];
    float* defaultValues = new float [numPorts];
@@ -327,6 +320,7 @@ bool LV2Effect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
                               sampleCount rstart,
                               sampleCount len)
 {
+   
    /* Allocate buffers */
    if (mBlockSize == 0) {
       mBlockSize = left->GetMaxBlockSize() * 2;
@@ -384,6 +378,7 @@ bool LV2Effect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
    sampleCount originalLen = len;
    sampleCount ls = lstart;
    sampleCount rs = rstart;
+   bool noteOver = false;
    while (len) {
       int block = mBlockSize;
       if (block > len)
@@ -416,11 +411,12 @@ bool LV2Effect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
          lv2_event_buffer_reset(midiBuffer, 1, 
                                 (uint8_t*)midiBuffer + 
                                 sizeof(LV2_Event_Buffer));
-         if (noteOffTime < len && noteOffTime < block) {
+         if (!noteOver && noteOffTime < len && noteOffTime < block) {
             LV2_Event_Iterator iter;
             lv2_event_begin(&iter, midiBuffer);
             uint8_t noteOff[] = { 0x80, mNoteKey, 64 };
             lv2_event_write(&iter, noteOffTime, 0, 1, 3, noteOff);
+            noteOver = true;
          }
       }
       
@@ -577,8 +573,6 @@ const LV2PortGroup& LV2Effect::GetPortGroups() {
             portGroups[uri] = LV2PortGroup(label);
          portGroups[uri].AddParameter(p);
          inGroup[p] = true;
-         std::cerr<<"PG: "<<p<<" <- "<<label.mb_str(wxConvUTF8)<<std::endl;
-         std::cerr<<"    "<<uri.mb_str(wxConvUTF8)<<std::endl;
       }
       slv2_values_free(portIndices);
       slv2_values_free(groupUris);
@@ -612,9 +606,6 @@ const LV2PortGroup& LV2Effect::GetPortGroups() {
             portGroups.find(sub);
          if (iter != portGroups.end() && iter2 != portGroups.end()) {
             iter->second.AddSubGroup(iter2->second);
-            std::cerr<<iter2->second.GetName().mb_str(wxConvUTF8)
-                     <<" is a subgroup of "
-                     <<iter->second.GetName().mb_str(wxConvUTF8)<<std::endl;
          }
       }
       slv2_values_free(subs);
@@ -630,11 +621,9 @@ const LV2PortGroup& LV2Effect::GetPortGroups() {
    
    std::queue<const LV2PortGroup*> groups;
    groups.push(&mRootGroup);
-   int i = 0;
    while (!groups.empty()) {
       const LV2PortGroup* g = groups.front();
       groups.pop();
-      std::cerr<<"GROUP: "<<g->GetName().mb_str(wxConvUTF8)<<std::endl;
       const std::vector<LV2PortGroup>& subs = g->GetSubGroups();
       for (std::vector<LV2PortGroup>::const_iterator iter = subs.begin();
            iter != subs.end(); ++iter)
@@ -778,7 +767,6 @@ LV2EffectDialog::LV2EffectDialog(LV2Effect *eff,
 {
    mLength = length;
    this->mData = data;
-   //this->inputControls = inputControls;
    this->sampleRate = sampleRate;
 	#ifdef __WXMSW__
 		// On Windows, for some reason, wxWindows calls OnTextCtrl during creation
@@ -811,9 +799,6 @@ LV2EffectDialog::LV2EffectDialog(LV2Effect *eff,
       vSizer->Add(item, 0, wxALL, 5);
       slv2_value_free(tmpValue);
    }
-   
-   // XXX Get the license here as well - every plugin has one, but there
-   // is no SLV2 function that returns it [larsl]
    
    wxScrolledWindow *w = new wxScrolledWindow(this,
                                               wxID_ANY,
@@ -902,8 +887,6 @@ LV2EffectDialog::LV2EffectDialog(LV2Effect *eff,
    
    while (!groups.empty()) {
       
-      std::cerr<<"There is a group in the queue"<<std::endl;
-      
       const LV2PortGroup* pg = groups.front();
       groups.pop();
       
@@ -920,15 +903,11 @@ LV2EffectDialog::LV2EffectDialog(LV2Effect *eff,
       for (iter = pg->GetSubGroups().begin(); iter != pg->GetSubGroups().end();
            ++iter) {
          groups.push(&*iter);
-         std::cerr<<"SUB: "<<pg->GetName().mb_str(wxConvUTF8)<<" --> "
-                  <<(*iter).GetName().mb_str(wxConvUTF8)<<std::endl;
       }
       
       const std::vector<uint32_t>& params = pg->GetParameters();
       for (uint32_t k = 0; k < params.size(); ++k) {
          uint32_t p = params[k];
-         
-         std::cerr<<"Doing parameter "<<p<<std::endl;
          
          wxString labelText = mControls[p].mName;
          item = new wxStaticText(w, 0, labelText + wxT(":"));
