@@ -17,12 +17,12 @@ Audacity source code archive, except as otherwise noted
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Version 1.3.6a5 (alpha)
+Version 1.3.6a6 (alpha)
 
 Contents of this README:
 
 1.  Licensing
-2.  Changes in version 1.3.6a5
+2.  Changes in version 1.3.6a6
 3.  Known Issues
 4.  Source Code, Libraries and Additional Copyright Information
 5.  Compilation Instructions
@@ -54,34 +54,28 @@ to http://www.gnu.org/copyleft/gpl.html or write to
 
 --------------------------------------------------------------------------------
 
-2.  Changes in version 1.3.6a5
+2.  Changes in version 1.3.6a6
 
 Interface:
-        * Note Track now builds on Windows
-        * Fixes/improvements for linked audio and label tracks (one
-           desynchronisation bug remains when pasting audio into a
-           greater number of tracks than were copied); now supports
-           label shifting when changing pitch and tempo
-        * Added full label pasting support: now possible to paste
-           multiple labels, region labels and labels with audio, and
-           correct label text is now pasted
+        * Note Track now supports export as a MIDI file
+        * Linked audio and label tracks: improved support when source
+           and target number of tracks differ and when cross-pasting
+           different track types
 
 Import / Export:
-        * Added full "on-demand" support (now with minimum file
-           length of 30 seconds): clicking moves summary calculation
-           point; supports split and merge of stereo tracks;
-           incompletely summarised tracks resume summary loading
-           automatically upon import; Status Bar progress indication
+        * On-demand now supports project saving during summarising;
+           reverts to stripey background; fixed some crashes due to
+           threading issues
+        * Exports: Single AAC filter (M4A LC profile) with quality
+           settings slider; removed FFmpeg formats already supported
+           by Audacity; added explicit GSM 6.10 (WAV) filter; current
+           project rate now used for all exports, with check for
+           format-invalid rates; improvements to metadata support
 
 Effects:
-        * Fixed a bug where previewing Equalization curves more
-           than once previewed the unmodified audio
-        * Improvements to DTMF generator
-
-Miscellaneous:
-        * Improved support for working with audio in excess of 2^31
-           samples (about 13.5 hours at 44100 Hz); some accessibility
-           improvements
+        * LV2 plug-ins: added support (OS X and Linux only) for using
+           synths as tone generators, scale point labels, grouped
+           controls and i18n translations
 
 
 --------------------------------------------------------------------------------
@@ -94,6 +88,13 @@ Please also check:
 for details of any issues that have been identified after release of
 this version.
 
+ * Duplicating (or otherwise copying) a selection region up to 128
+    samples, then using Repair, causes a crash if the track containing
+    the copied audio is selected.
+
+ * Tracks > Stereo Track to Mono causes a crash in Debug builds (but
+    not in Release builds)
+
  * Starting monitoring in Meter Toolbar after recording in another
     project window then closing it causes a crash
 
@@ -104,19 +105,24 @@ this version.
  * LADSPA Multiband EQ may not be visible in the Effect menu, and
     may crash in use.
 
- * On-demand: saving a project during summarising then cancelling the
-    save causes a freeze if the save copies in the audio data;
-    re-opening a project saved during summarising gives "orphaned
-    blockfiles" error
+ * On demand: does not work if using the optional FFmpeg importer
+    (that is, if "FFmpeg-compatible files" set in the import window);
+    if FFmpeg library installed, on-demand loading of audio files does
+    not start until normal load of video files completes, if the video
+    file names precede those of the audio files.
 
- * On demand: loading of files not available if using the optional
-    FFmpeg importer (that is, if "ffmpeg-compatible files" is set in
-    the import window).
+ * Exports:
+    * GSM 6.10 files cannot be exported with WAVEX (Microsoft)
+       headers, and U-Law/A-Law files with these headers may not play
+    * M4A: exports at rates below 44100 Hz have incorrect sample rates,
+       and 38000 Hz exports may not play properly (FFmpeg bugs); M4A
+       renamed to MOV will not play in Windows iTunes or QuickTime
+    * MP3: Bit Rate Mode and Quality choices in MP3 Options dialogue
+       are non-functional, almost always producing a 128 kbps CBR file.
+       Reported length is often incorrect (the actual length is correct)
 
- * Exported GSM-WAV and GSM-AIFF files may not play on some players
-    and/or may not play for the full length. MP4/M4A sample rates at or
-    below 22050 Hz are doubled in the exported file. MP4 files renamed
-    to MOV will not play in Windows iTunes or QuickTime.
+ * Linked audio and label tracks: when a Time Track is present, audio
+    is not pasted into all tracks,leading to desynchronisation
 
  * Some multi-channel recording devices that previously recorded more
     than two channels may no longer do so. Please send reports to:
@@ -126,15 +132,6 @@ this version.
     region (or in the entire track) if it contains a relatively small
     number of different peaks. This causes clipping if the audio is
     amplified to 0.0 dB. Unlikely to affect a typical pop music track.
-
- * MP3 Export: Bit Rate Mode and Quality choices in MP3 Options
-    dialogue are non-functional, almost always producing a 128 kbps
-    CBR file. Additionally, the reported length is often incorrect (the
-    actual length is correct).
-
- * ID3 Genre tags of imported MP3s are misread (and will therefore
-    also be exported incorrectly) if the genre list in Metadata Editor
-    is opened and saved.
 
  * When in Spectrum, Spectrum log or Pitch view, pasting in audio then
     zooming in causes the pasted content beyond the horizontal scroll
@@ -172,6 +169,10 @@ this version.
     exported to the current ID3 specification, but some players don't
     fully support this specification, so may not see all the tags.
 
+ * ID3 Genre tags of imported MP3s are misread (and will therefore
+    also be exported incorrectly) if the genre list in Metadata Editor
+    is opened and saved.
+
  * No warning given if File > Save or File > Save Project As... is
     carried out with no tracks open.
 
@@ -180,8 +181,9 @@ this version.
 
  * Beep on completing long process may not be audible on many systems.
 
- * Audacity can import and display MIDI files, but they cannot be
-    played or saved.
+ * Audacity can import, display and cut/copy/paste MIDI files, then
+    export them, but they cannot be played. Undoing an edit with a MIDI
+    track open causes the MIDI data to be lost
 
  * Windows only: Welcome Message: On some systems/browsers, links are
     not brought to top, and some screen readers that otherwise work
@@ -222,6 +224,9 @@ this version.
 
  * Mac OS X and Linux only: Labels do not accept certain legal
     characters.
+
+ * Linux only: Audacity does not build if EXPERIMENTAL_SCOREALIGN is
+    defined
 
  * Linux only: Audacity now supports interfacing with Jack, however
     this has not been tested, and has a number of known reliability and
@@ -412,6 +417,38 @@ or e-mail us at:
 
 6.  Previous Changes going back to version 1.1.0
 
+Changes in 1.3.6a5:
+
+Interface:
+        * Note Track now builds on Windows
+        * Fixes/improvements for linked audio and label tracks (one
+           desynchronisation bug remains when pasting audio into a
+           greater number of tracks than were copied); now supports
+           label shifting when changing pitch and tempo
+        * Added full label pasting support: now possible to paste
+           multiple labels, region labels and labels with audio, and
+           correct label text is now pasted
+
+Import / Export:
+        * Added full "on-demand" support (now with minimum file
+           length of 30 seconds): clicking moves summary calculation
+           point; supports split and merge of stereo tracks;
+           incompletely summarised tracks resume summary calculation
+           automatically; text-based Status Bar progress indication and
+           animated dummy waveform instead of embedded progress bar
+
+
+Effects:
+        * Fixed a bug where previewing Equalization curves more
+           than once previewed the unmodified audio
+        * Improvements to DTMF generator
+
+Miscellaneous:
+        * Improved support for working with audio in excess of 2^31
+           samples (about 13.5 hours at 44100 Hz); some accessibility
+           improvements
+
+
 Changes in 1.3.6a4:
 
 Interface:
@@ -426,7 +463,7 @@ Interface:
 Import / Export:
         * Improvements/fixes for AAC exports including new M4A
            filter for compatibility with iTunes; RealAudio export
-           temporarily removed
+           support removed - FFmpeg does not support this properly
         * Improved refresh of on-demand loading; fixed a phantom
            on-demand progress bar when time-shifting clips
 
