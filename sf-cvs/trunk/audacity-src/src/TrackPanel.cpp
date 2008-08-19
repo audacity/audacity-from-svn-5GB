@@ -4793,7 +4793,7 @@ void TrackPanel::DrawEverythingElse(Track * t, wxDC * dc, wxRect & r,
    if (!skipBorder)
       DrawOutside(t, dc, r, labelw, vrul, trackRect, index);
 
-   // Believe it of not, we can speed up redrawing if we don't
+   // Believe it or not, we can speed up redrawing if we don't
    // redraw the vertical ruler when only the waveform data has
    // changed.
 

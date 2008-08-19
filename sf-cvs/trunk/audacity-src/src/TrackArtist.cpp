@@ -2263,48 +2263,49 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
                                 wxDC &dc, wxRect &r,
                                 ViewInfo *viewInfo)
 {
-  double h = viewInfo->h;
-  double pps = viewInfo->zoom;
-  double sel0 = viewInfo->sel0;
-  double sel1 = viewInfo->sel1;
+   double h = viewInfo->h;
+   double pps = viewInfo->zoom;
+   double sel0 = viewInfo->sel0;
+   double sel1 = viewInfo->sel1;
 
-  double h1 = X_TO_TIME(r.x + r.width);
+   double h1 = X_TO_TIME(r.x + r.width);
 
-  Alg_seq_ptr seq = track->mSeq;
-  if (!seq) {
-	  assert(track->mSerializationBuffer);
-	  Alg_track_ptr alg_track = seq->unserialize(track->mSerializationBuffer,
-												 track->mSerializationLength);
-	  assert(alg_track->get_type() == 's');
-	  track->mSeq = seq = (Alg_seq_ptr) alg_track;
-	  free(track->mSerializationBuffer);
-	  track->mSerializationBuffer = NULL;
-  }
-  assert(seq);
-  int visibleChannels = track->mVisibleChannels;
+   Alg_seq_ptr seq = track->mSeq;
+   if (!seq) {
+      assert(track->mSerializationBuffer);
+      Alg_track_ptr alg_track = seq->unserialize(track->mSerializationBuffer,
+            track->mSerializationLength);
+      assert(alg_track->get_type() == 's');
+      track->mSeq = seq = (Alg_seq_ptr) alg_track;
+      free(track->mSerializationBuffer);
+      track->mSerializationBuffer = NULL;
+   }
+   assert(seq);
+   int visibleChannels = track->mVisibleChannels;
 
-  if (!track->GetSelected())
-   sel0 = sel1 = 0.0;
+   if (!track->GetSelected())
+      sel0 = sel1 = 0.0;
 
-  int ctrpitch = 60;
-  int pitch0;
-  int pitchht = 4;
+   int ctrpitch = 60;
+   int pitch0;
+   int pitchht = 4;
 
-  int numPitches = r.height / pitchht;
-  pitch0 = (ctrpitch - numPitches/2);
+   int numPitches = r.height / pitchht;
+   pitch0 = (ctrpitch - numPitches/2);
 
-  int bottomNote = track->GetBottomNote();
-  int bottom = r.height +
-     ((bottomNote / 12) * octaveHeight + notePos[bottomNote % 12]);
+   int bottomNote = track->GetBottomNote();
+   int bottom = r.height +
+   ((bottomNote / 12) * octaveHeight + notePos[bottomNote % 12]);
 
-  dc.SetBrush(blankBrush);
+   //214, 214, 214
+   dc.SetBrush(blankBrush);
    dc.SetPen(blankPen);
    dc.DrawRectangle(r);
 
-  wxPen blackStripePen;
-  blackStripePen.SetColour(190, 190, 190);
+   wxPen blackStripePen;
+   blackStripePen.SetColour(192, 192, 192);
    wxBrush blackStripeBrush;
-   blackStripeBrush.SetColour(190, 190, 190);
+   blackStripeBrush.SetColour(192, 192, 192);
 
    dc.SetBrush(blackStripeBrush);
 
@@ -2331,276 +2332,322 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
       }
    }
 
-  dc.SetClippingRegion(r);
+   dc.SetClippingRegion(r);
 
-  // NOTE: it would be better to put this in some global initialization
-  // function rather than do lookups every time.
-  Alg_attribute line = symbol_table.insert_string("line");
-  Alg_attribute rectangle = symbol_table.insert_string("rectangle");
-  Alg_attribute triangle = symbol_table.insert_string("triangle");
-  Alg_attribute polygon = symbol_table.insert_string("polygon");
-  Alg_attribute oval = symbol_table.insert_string("oval");
-  Alg_attribute text = symbol_table.insert_string("text");
-  Alg_attribute texts = symbol_table.insert_string("texts");
-  Alg_attribute x1r = symbol_table.insert_string("x1r");
-  Alg_attribute x2r = symbol_table.insert_string("x2r");
-  Alg_attribute y1r = symbol_table.insert_string("y1r");
-  Alg_attribute y2r = symbol_table.insert_string("y2r");
-  Alg_attribute linecolori = symbol_table.insert_string("linecolori");
-  Alg_attribute fillcolori = symbol_table.insert_string("fillcolori");
-  Alg_attribute linethicki = symbol_table.insert_string("linethicki");
-  Alg_attribute filll = symbol_table.insert_string("filll");
-  Alg_attribute fonta = symbol_table.insert_string("fonta");
-  Alg_attribute roman = symbol_table.insert_string("roman");
-  Alg_attribute swiss = symbol_table.insert_string("swiss");
-  Alg_attribute modern = symbol_table.insert_string("modern");
-  Alg_attribute weighta = symbol_table.insert_string("weighta");
-  Alg_attribute bold = symbol_table.insert_string("bold");
-  Alg_attribute sizei = symbol_table.insert_string("sizei");
-  Alg_attribute justifys = symbol_table.insert_string("justifys");
+   // Draw the selection background
+   // First, the white keys, as a single rectangle
+   wxRect selBG;
+   selBG.y = r.y;
+   selBG.height = r.height;
+   selBG.x = TIME_TO_X(sel0);
+   selBG.width = TIME_TO_X(sel1) - TIME_TO_X(sel0);
 
-  //We want to draw in seconds, so we need to convert to seconds
-  seq->convert_to_seconds();
+   wxPen selectedWhiteKeyPen;
+   selectedWhiteKeyPen.SetColour(165, 165, 190);
+   dc.SetPen(selectedWhiteKeyPen);
+   
+   wxBrush selectedWhiteKeyBrush;
+   selectedWhiteKeyBrush.SetColour(165, 165, 190);
+   dc.SetBrush(selectedWhiteKeyBrush);
 
-  seq->iteration_begin();
-  //for every event
-  Alg_event_ptr evt;
-  printf ("go time\n");
-  while (evt = seq->iteration_next()) {
-	
-    //printf ("one note");
+   dc.DrawRectangle(selBG);
 
-	//if the event is a note
-    if (evt->get_type() == 'n') {
-    
-      Alg_note_ptr note = (Alg_note_ptr) evt;
-      
-	  //if the notes channel is visible
-      if (visibleChannels & (1 << (evt->chan & 15))) {
-        double x = note->time;
-        double x1 = note->time + note->dur;
-        if (x < h1 && x1 > h) { // omit if outside box
-          char *shape = NULL;
-          if (note->loud > 0.0 || !(shape = IsShape(note))) {
+   // Then, the black keys and octave stripes, as smaller rectangles
+   wxPen selectedBlackKeyPen;
+   selectedBlackKeyPen.SetColour(148, 148, 170);
+   wxBrush selectedBlackKeyBrush;
+   selectedBlackKeyBrush.SetColour(148, 148, 170);
 
-             int octave = (((int) (note->pitch + 0.5)) / 12);
-             int n = ((int) (note->pitch + 0.5)) % 12;
-             
-             wxRect nr;
-             nr.y = bottom - octave * octaveHeight - notePos[n]
-                - 4;
-             nr.height = 5;
-             
-             if (nr.y + nr.height >= 0 && nr.y < r.height) {
-                
-                if (nr.y + nr.height > r.height)
-                   nr.height = r.height - nr.y;
-                if (nr.y < 0) {
-                   nr.height += nr.y;
-                   nr.y = 0;
-                }
-                nr.y += r.y;
-                
-                nr.x = r.x + (int) ((note->time - h) * pps);
-                nr.width = (int) (note->dur * pps) + 1;
-                
-                if (nr.x + nr.width >= r.x && nr.x < r.x + r.width) {
-                   if (nr.x < r.x) {
-                      nr.width -= (r.x - nr.x);
-                      nr.x = r.x;
-                   }
-                   if (nr.x + nr.width > r.x + r.width)
-                      nr.width = r.x + r.width - nr.x;
-                   
-                   AColor::MIDIChannel(&dc, note->chan + 1);
-                   
-                   if (note->time + note->dur >= sel0 && note->time <= sel1) {
-                      dc.SetBrush(*wxWHITE_BRUSH);
-                      dc.DrawRectangle(nr);
-                   }
-                   else {
-                      dc.DrawRectangle(nr);
-                      AColor::LightMIDIChannel(&dc, note->chan + 1);
-                      dc.DrawLine(nr.x, nr.y, nr.x + nr.width-2, nr.y);
-                      dc.DrawLine(nr.x, nr.y, nr.x, nr.y + nr.height-2);
-                      AColor::DarkMIDIChannel(&dc, note->chan + 1);
-                      dc.DrawLine(nr.x+nr.width-1, nr.y,
-                                  nr.x+nr.width-1, nr.y+nr.height-1);
-                      dc.DrawLine(nr.x, nr.y+nr.height-1,
-                                  nr.x+nr.width-1, nr.y+nr.height-1);
-                   }
+   dc.SetBrush(selectedBlackKeyBrush);
 
-                }
-             }
-             
-          } else if (shape) {
-            // draw a shape according to attributes
-            // add 0.5 to pitch because pitches are plotted with height = pitchht,
-            // thus, the center is raised by pitchht * 0.5
-            int y = PITCH_TO_Y(note->pitch, bottom);
-            long linecolor = LookupIntAttribute(note, linecolori, -1);
-            long linethick = LookupIntAttribute(note, linethicki, 1);
-            long fillcolor = -1;
-            long fillflag = 0;
+   for (int octave = 0; octave < 50; octave++) {
+      int obottom = selBG.y + bottom - octave * octaveHeight;
 
-            // set default color to be that of channel
-            AColor::MIDIChannel(&dc, note->chan+1);
-            if (shape != text) {
-              if (linecolor != -1)
-                dc.SetPen(wxPen(wxColour(RED(linecolor), 
-                                         GREEN(linecolor),
-                                         BLUE(linecolor)),
-                                linethick, wxSOLID));
-            }
-            if (shape != line) {
-              fillcolor = LookupIntAttribute(note, fillcolori, -1);
-              fillflag = LookupLogicalAttribute(note, filll, false);
-
-              if (fillcolor != -1) 
-                dc.SetBrush(wxBrush(wxColour(RED(fillcolor),
-                                             GREEN(fillcolor),
-                                             BLUE(fillcolor)),
-                                    wxSOLID));
-              if (!fillflag) dc.SetBrush(*wxTRANSPARENT_BRUSH);
-            }
-            int y1 = PITCH_TO_Y(LookupRealAttribute(note, y1r, note->pitch), bottom);
-            if (shape == line) {
-              // extreme zooms caues problems under windows, so we have to do some
-              // clipping before calling display routine
-              if (x < h) { // clip line on left
-                y = int((y + (y1 - y) * (h - x) / (x1 - x)) + 0.5);
-                x = h;
-              }
-              if (x1 > h1) { // clip line on right
-                y1 = int((y + (y1 - y) * (h1 - x) / (x1 - x)) + 0.5);
-                x1 = h1;
-              }
-              dc.DrawLine(TIME_TO_X(x), y, TIME_TO_X(x1), y1);
-            } else if (shape == rectangle) {
-              if (x < h) { // clip on left, leave 10 pixels to spare
-                x = h - (linethick + 10) / pps;
-              }
-              if (x1 > h1) { // clip on right, leave 10 pixels to spare
-                x1 = h1 + (linethick + 10) / pps;
-              }
-              dc.DrawRectangle(TIME_TO_X(x), y, int((x1 - x) * pps + 0.5), y1 - y + 1);
-            } else if (shape == triangle) {
-              wxPoint points[3];
-              points[0].x = TIME_TO_X(x);
-              CLIP(points[0].x);
-              points[0].y = y;
-              points[1].x = TIME_TO_X(LookupRealAttribute(note, x1r, note->pitch));
-              CLIP(points[1].x);
-              points[1].y = y1;
-              points[2].x = TIME_TO_X(LookupRealAttribute(note, x2r, note->time));
-              CLIP(points[2].x);
-              points[2].y = PITCH_TO_Y(LookupRealAttribute(note, y2r, note->pitch), bottom);
-              dc.DrawPolygon(3, points);
-            } else if (shape == polygon) {
-              wxPoint points[20]; // upper bound of 20 sides
-              points[0].x = TIME_TO_X(x);
-              CLIP(points[0].x);
-              points[0].y = y;
-              points[1].x = TIME_TO_X(LookupRealAttribute(note, x1r, note->time));
-              CLIP(points[1].x);
-              points[1].y = y1;
-              points[2].x = TIME_TO_X(LookupRealAttribute(note, x2r, note->time));
-              CLIP(points[2].x);
-              points[2].y = PITCH_TO_Y(LookupRealAttribute(note, y2r, note->pitch), bottom);
-              int n = 3;
-              while (n < 20) {
-                char name[8];
-                sprintf(name, "x%dr", n);
-                Alg_attribute attr = symbol_table.insert_string(name);
-                double xn = LookupRealAttribute(note, attr, -1000000.0);
-                if (xn == -1000000.0) break;
-                points[n].x = TIME_TO_X(xn);
-                CLIP(points[n].x);
-                sprintf(name, "y%dr", n - 1);
-                attr = symbol_table.insert_string(name);
-                double yn = LookupRealAttribute(note, attr, -1000000.0);
-                if (yn == -1000000.0) break;
-                points[n].y = PITCH_TO_Y(yn, bottom);
-                n++;
-              }
-              dc.DrawPolygon(n, points);
-            } else if (shape == oval) {
-              int ix = TIME_TO_X(x);
-              CLIP(ix);
-              int ix1 = int((x1 - x) * pps + 0.5);
-              if (ix1 > CLIP_MAX * 2) ix1 = CLIP_MAX * 2; // CLIP a width
-              dc.DrawEllipse(ix, y, ix1, y1 - y + 1);
-            } else if (shape == text) {
-              if (linecolor != -1)
-                dc.SetTextForeground(wxColour(RED(linecolor), 
-                                              GREEN(linecolor),
-                                              BLUE(linecolor)));
-              // if no color specified, copy color from brush
-              else dc.SetTextForeground(dc.GetBrush().GetColour());
-
-              // This seems to have no effect, so I commented it out. -RBD
-              //if (fillcolor != -1)
-              //  dc.SetTextBackground(wxColour(RED(fillcolor), 
-              //                                GREEN(fillcolor),
-              //                                BLUE(fillcolor)));
-              //// if no color specified, copy color from brush
-              //else dc.SetTextBackground(dc.GetPen().GetColour());
-
-              char *font = LookupAtomAttribute(note, fonta, NULL);
-              char *weight = LookupAtomAttribute(note, weighta, NULL);
-              int size = LookupIntAttribute(note, sizei, 8);
-              const char *justify = LookupStringAttribute(note, justifys, "ld");
-              wxFont wxfont;
-              wxfont.SetFamily(font == roman ? wxROMAN : 
-                                (font == swiss ? wxSWISS :
-                                  (font == modern ? wxMODERN : wxDEFAULT)));
-              wxfont.SetStyle(wxNORMAL);
-              wxfont.SetWeight(weight == bold ? wxBOLD : wxNORMAL);
-              wxfont.SetPointSize(size);
-              dc.SetFont(wxfont);
-
-              // now do justification
-              const char *s = LookupStringAttribute(note, texts, "");
-              #ifdef __WXMAC__
-            long textWidth, textHeight;
-              #else
-            int textWidth, textHeight;
-              #endif
-            dc.GetTextExtent(LAT1CTOWX(s), &textWidth, &textHeight);
-              long hoffset = 0;
-              long voffset = -textHeight; // default should be baseline of text
-
-              if (strlen(justify) != 2) justify = "ld";
-
-              if (justify[0] == 'c') hoffset = -(textWidth/2);
-              else if (justify[0] == 'r') hoffset = -textWidth;
-
-              if (justify[1] == 't') voffset = 0;
-              else if (justify[1] == 'c') voffset = -(textHeight/2);
-              else if (justify[1] == 'b') voffset = -textHeight;
-              if (fillflag) {
-                // It should be possible to do this with background color,
-                // but maybe because of the transfer mode, no background is
-                // drawn. To fix this, just draw a rectangle:
-                dc.SetPen(wxPen(wxColour(RED(fillcolor), 
-                                         GREEN(fillcolor),
-                                         BLUE(fillcolor)),
-                                1, wxSOLID));
-                dc.DrawRectangle(TIME_TO_X(x) + hoffset, y + voffset,
-                                 textWidth, textHeight);
-              }
-              dc.DrawText(LAT1CTOWX(s), TIME_TO_X(x) + hoffset, y + voffset);
-            }
-          }
-        }
+      if (obottom > selBG.y && obottom < selBG.y + selBG.height) {
+         dc.SetPen(*wxBLACK_PEN);
+         dc.DrawLine(selBG.x, obottom, selBG.x + selBG.width, obottom);
       }
-    }
+      if (obottom - 26 > selBG.y && obottom - 26 < selBG.y + selBG.height) {
+         dc.SetPen(selectedBlackKeyPen);
+         dc.DrawLine(selBG.x, obottom - 26, selBG.x + selBG.width, obottom - 26);
+      }
 
-  }
-  seq->iteration_end();
-  dc.DestroyClippingRegion();
+      wxRect bselBG = selBG;
+      bselBG.height = 5;
+      for (int black = 0; black < 5; black++) {
+         bselBG.y = obottom - blackPos[black] - 4;
+         if (bselBG.y > selBG.y && bselBG.y + bselBG.height < selBG.y + selBG.height) {
+            dc.SetPen(selectedBlackKeyPen);
+            dc.DrawRectangle(bselBG);
+         }
+      }
+   }
+
+   // NOTE: it would be better to put this in some global initialization
+   // function rather than do lookups every time.
+   Alg_attribute line = symbol_table.insert_string("line");
+   Alg_attribute rectangle = symbol_table.insert_string("rectangle");
+   Alg_attribute triangle = symbol_table.insert_string("triangle");
+   Alg_attribute polygon = symbol_table.insert_string("polygon");
+   Alg_attribute oval = symbol_table.insert_string("oval");
+   Alg_attribute text = symbol_table.insert_string("text");
+   Alg_attribute texts = symbol_table.insert_string("texts");
+   Alg_attribute x1r = symbol_table.insert_string("x1r");
+   Alg_attribute x2r = symbol_table.insert_string("x2r");
+   Alg_attribute y1r = symbol_table.insert_string("y1r");
+   Alg_attribute y2r = symbol_table.insert_string("y2r");
+   Alg_attribute linecolori = symbol_table.insert_string("linecolori");
+   Alg_attribute fillcolori = symbol_table.insert_string("fillcolori");
+   Alg_attribute linethicki = symbol_table.insert_string("linethicki");
+   Alg_attribute filll = symbol_table.insert_string("filll");
+   Alg_attribute fonta = symbol_table.insert_string("fonta");
+   Alg_attribute roman = symbol_table.insert_string("roman");
+   Alg_attribute swiss = symbol_table.insert_string("swiss");
+   Alg_attribute modern = symbol_table.insert_string("modern");
+   Alg_attribute weighta = symbol_table.insert_string("weighta");
+   Alg_attribute bold = symbol_table.insert_string("bold");
+   Alg_attribute sizei = symbol_table.insert_string("sizei");
+   Alg_attribute justifys = symbol_table.insert_string("justifys");
+
+   // We want to draw in seconds, so we need to convert to seconds
+   seq->convert_to_seconds();
+
+   seq->iteration_begin();
+   //for every event
+   Alg_event_ptr evt;
+   printf ("go time\n");
+   while (evt = seq->iteration_next()) {
+
+      //printf ("one note");
+
+      //if the event is a note
+      if (evt->get_type() == 'n') {
+
+         Alg_note_ptr note = (Alg_note_ptr) evt;
+
+         //if the notes channel is visible
+         if (visibleChannels & (1 << (evt->chan & 15))) {
+            double x = note->time;
+            double x1 = note->time + note->dur;
+            if (x < h1 && x1 > h) { // omit if outside box
+               char *shape = NULL;
+               if (note->loud > 0.0 || !(shape = IsShape(note))) {
+
+                  int octave = (((int) (note->pitch + 0.5)) / 12);
+                  int n = ((int) (note->pitch + 0.5)) % 12;
+
+                  wxRect nr;
+                  nr.y = bottom - octave * octaveHeight - notePos[n] - 4;
+                  nr.height = 5;
+
+                  if (nr.y + nr.height >= 0 && nr.y < r.height) {
+
+                     if (nr.y + nr.height > r.height)
+                        nr.height = r.height - nr.y;
+                     if (nr.y < 0) {
+                        nr.height += nr.y;
+                        nr.y = 0;
+                     }
+                     nr.y += r.y;
+
+                     nr.x = r.x + (int) ((note->time - h) * pps);
+                     nr.width = (int) (note->dur * pps) + 1;
+
+                     if (nr.x + nr.width >= r.x && nr.x < r.x + r.width) {
+                        if (nr.x < r.x) {
+                           nr.width -= (r.x - nr.x);
+                           nr.x = r.x;
+                        }
+                        if (nr.x + nr.width > r.x + r.width)
+                           nr.width = r.x + r.width - nr.x;
+
+                        AColor::MIDIChannel(&dc, note->chan + 1);
+
+//                      if (note->time + note->dur >= sel0 && note->time <= sel1) {
+//                         dc.SetBrush(*wxWHITE_BRUSH);
+//                         dc.DrawRectangle(nr);
+//                      } else {
+                        dc.DrawRectangle(nr);
+                        AColor::LightMIDIChannel(&dc, note->chan + 1);
+                        dc.DrawLine(nr.x, nr.y, nr.x + nr.width-2, nr.y);
+                        dc.DrawLine(nr.x, nr.y, nr.x, nr.y + nr.height-2);
+                        AColor::DarkMIDIChannel(&dc, note->chan + 1);
+                        dc.DrawLine(nr.x+nr.width-1, nr.y,
+                              nr.x+nr.width-1, nr.y+nr.height-1);
+                        dc.DrawLine(nr.x, nr.y+nr.height-1,
+                              nr.x+nr.width-1, nr.y+nr.height-1);
+//                      }
+                     }
+                  }
+
+               } else if (shape) {
+                  // draw a shape according to attributes
+                  // add 0.5 to pitch because pitches are plotted with height = pitchht,
+                  // thus, the center is raised by pitchht * 0.5
+                  int y = PITCH_TO_Y(note->pitch, bottom);
+                  long linecolor = LookupIntAttribute(note, linecolori, -1);
+                  long linethick = LookupIntAttribute(note, linethicki, 1);
+                  long fillcolor = -1;
+                  long fillflag = 0;
+
+                  // set default color to be that of channel
+                  AColor::MIDIChannel(&dc, note->chan+1);
+                  if (shape != text) {
+                     if (linecolor != -1)
+                        dc.SetPen(wxPen(wxColour(RED(linecolor), 
+                              GREEN(linecolor),
+                              BLUE(linecolor)),
+                              linethick, wxSOLID));
+                  }
+                  if (shape != line) {
+                     fillcolor = LookupIntAttribute(note, fillcolori, -1);
+                     fillflag = LookupLogicalAttribute(note, filll, false);
+
+                     if (fillcolor != -1) 
+                        dc.SetBrush(wxBrush(wxColour(RED(fillcolor),
+                              GREEN(fillcolor),
+                              BLUE(fillcolor)),
+                              wxSOLID));
+                     if (!fillflag) dc.SetBrush(*wxTRANSPARENT_BRUSH);
+                  }
+                  int y1 = PITCH_TO_Y(LookupRealAttribute(note, y1r, note->pitch), bottom);
+                  if (shape == line) {
+                     // extreme zooms caues problems under windows, so we have to do some
+                     // clipping before calling display routine
+                     if (x < h) { // clip line on left
+                        y = int((y + (y1 - y) * (h - x) / (x1 - x)) + 0.5);
+                        x = h;
+                     }
+                     if (x1 > h1) { // clip line on right
+                        y1 = int((y + (y1 - y) * (h1 - x) / (x1 - x)) + 0.5);
+                        x1 = h1;
+                     }
+                     dc.DrawLine(TIME_TO_X(x), y, TIME_TO_X(x1), y1);
+                  } else if (shape == rectangle) {
+                     if (x < h) { // clip on left, leave 10 pixels to spare
+                        x = h - (linethick + 10) / pps;
+                     }
+                     if (x1 > h1) { // clip on right, leave 10 pixels to spare
+                        x1 = h1 + (linethick + 10) / pps;
+                     }
+                     dc.DrawRectangle(TIME_TO_X(x), y, int((x1 - x) * pps + 0.5), y1 - y + 1);
+                  } else if (shape == triangle) {
+                     wxPoint points[3];
+                     points[0].x = TIME_TO_X(x);
+                     CLIP(points[0].x);
+                     points[0].y = y;
+                     points[1].x = TIME_TO_X(LookupRealAttribute(note, x1r, note->pitch));
+                     CLIP(points[1].x);
+                     points[1].y = y1;
+                     points[2].x = TIME_TO_X(LookupRealAttribute(note, x2r, note->time));
+                     CLIP(points[2].x);
+                     points[2].y = PITCH_TO_Y(LookupRealAttribute(note, y2r, note->pitch), bottom);
+                     dc.DrawPolygon(3, points);
+                  } else if (shape == polygon) {
+                     wxPoint points[20]; // upper bound of 20 sides
+                     points[0].x = TIME_TO_X(x);
+                     CLIP(points[0].x);
+                     points[0].y = y;
+                     points[1].x = TIME_TO_X(LookupRealAttribute(note, x1r, note->time));
+                     CLIP(points[1].x);
+                     points[1].y = y1;
+                     points[2].x = TIME_TO_X(LookupRealAttribute(note, x2r, note->time));
+                     CLIP(points[2].x);
+                     points[2].y = PITCH_TO_Y(LookupRealAttribute(note, y2r, note->pitch), bottom);
+                     int n = 3;
+                     while (n < 20) {
+                        char name[8];
+                        sprintf(name, "x%dr", n);
+                        Alg_attribute attr = symbol_table.insert_string(name);
+                        double xn = LookupRealAttribute(note, attr, -1000000.0);
+                        if (xn == -1000000.0) break;
+                        points[n].x = TIME_TO_X(xn);
+                        CLIP(points[n].x);
+                        sprintf(name, "y%dr", n - 1);
+                        attr = symbol_table.insert_string(name);
+                        double yn = LookupRealAttribute(note, attr, -1000000.0);
+                        if (yn == -1000000.0) break;
+                        points[n].y = PITCH_TO_Y(yn, bottom);
+                        n++;
+                     }
+                     dc.DrawPolygon(n, points);
+                  } else if (shape == oval) {
+                     int ix = TIME_TO_X(x);
+                     CLIP(ix);
+                     int ix1 = int((x1 - x) * pps + 0.5);
+                     if (ix1 > CLIP_MAX * 2) ix1 = CLIP_MAX * 2; // CLIP a width
+                     dc.DrawEllipse(ix, y, ix1, y1 - y + 1);
+                  } else if (shape == text) {
+                     if (linecolor != -1)
+                        dc.SetTextForeground(wxColour(RED(linecolor), 
+                              GREEN(linecolor),
+                              BLUE(linecolor)));
+                     // if no color specified, copy color from brush
+                     else dc.SetTextForeground(dc.GetBrush().GetColour());
+
+                     // This seems to have no effect, so I commented it out. -RBD
+                     //if (fillcolor != -1)
+                     //  dc.SetTextBackground(wxColour(RED(fillcolor), 
+                     //                                GREEN(fillcolor),
+                     //                                BLUE(fillcolor)));
+                     //// if no color specified, copy color from brush
+                     //else dc.SetTextBackground(dc.GetPen().GetColour());
+
+                     char *font = LookupAtomAttribute(note, fonta, NULL);
+                     char *weight = LookupAtomAttribute(note, weighta, NULL);
+                     int size = LookupIntAttribute(note, sizei, 8);
+                     const char *justify = LookupStringAttribute(note, justifys, "ld");
+                     wxFont wxfont;
+                     wxfont.SetFamily(font == roman ? wxROMAN : 
+                        (font == swiss ? wxSWISS :
+                           (font == modern ? wxMODERN : wxDEFAULT)));
+                     wxfont.SetStyle(wxNORMAL);
+                     wxfont.SetWeight(weight == bold ? wxBOLD : wxNORMAL);
+                     wxfont.SetPointSize(size);
+                     dc.SetFont(wxfont);
+
+                     // now do justification
+                     const char *s = LookupStringAttribute(note, texts, "");
+                     #ifdef __WXMAC__
+                     long textWidth, textHeight;
+                     #else
+                        int textWidth, textHeight;
+                     #endif
+                     dc.GetTextExtent(LAT1CTOWX(s), &textWidth, &textHeight);
+                     long hoffset = 0;
+                     long voffset = -textHeight; // default should be baseline of text
+
+                     if (strlen(justify) != 2) justify = "ld";
+
+                     if (justify[0] == 'c') hoffset = -(textWidth/2);
+                     else if (justify[0] == 'r') hoffset = -textWidth;
+
+                     if (justify[1] == 't') voffset = 0;
+                     else if (justify[1] == 'c') voffset = -(textHeight/2);
+                     else if (justify[1] == 'b') voffset = -textHeight;
+                     if (fillflag) {
+                        // It should be possible to do this with background color,
+                        // but maybe because of the transfer mode, no background is
+                        // drawn. To fix this, just draw a rectangle:
+                        dc.SetPen(wxPen(wxColour(RED(fillcolor), 
+                              GREEN(fillcolor),
+                              BLUE(fillcolor)),
+                              1, wxSOLID));
+                        dc.DrawRectangle(TIME_TO_X(x) + hoffset, y + voffset,
+                              textWidth, textHeight);
+                     }
+                     dc.DrawText(LAT1CTOWX(s), TIME_TO_X(x) + hoffset, y + voffset);
+                  }
+               }
+            }
+         }
+      }
+   }
+   seq->iteration_end();
+   dc.DestroyClippingRegion();
 }
 #endif // USE_MIDI
+
 
 void TrackArtist::DrawLabelTrack(LabelTrack *track,
                                  wxDC & dc, wxRect & r,

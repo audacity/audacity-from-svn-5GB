@@ -236,14 +236,14 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("Export"),         _("&Export..."),           FN(OnExport));
       // Enable Export commands only when there are tracks
       c->SetCommandFlags(wxT("Export"),
-                         AudioIONotBusyFlag | TracksExistFlag,
-                         AudioIONotBusyFlag | TracksExistFlag);
+                         AudioIONotBusyFlag | WaveTracksExistFlag,
+                         AudioIONotBusyFlag | WaveTracksExistFlag);
 
       c->AddItem(wxT("ExportSel"),      _("Expo&rt Selection..."), FN(OnExportSelection));
       // Enable Export Selection commands only when there's a selection
       c->SetCommandFlags(wxT("ExportSel"),
-                         AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
-                         AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag);
+                         AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
+                         AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag);
       
       c->AddSeparator();
       c->AddItem(wxT("ExportLabels"),   _("Export &Labels..."),              FN(OnExportLabels));
@@ -2578,58 +2578,56 @@ void AudacityProject::OnExportMIDI(){
 
    assert(nt);
 
-   wxString fName = _("");
+   while(true){
 
-   fName = FileSelector(_("Export MIDI As:"),
-                        NULL,
-                        fName,
-                        _(".mid|.gro"),
-                        _("MIDI file (*.mid)|*.mid|Allegro file (*.gro)|*.gro"),
-                        wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
-                        this);
+      wxString fName = _("");
 
-   if (fName == wxT(""))
-      return;
+      fName = FileSelector(_("Export MIDI As:"),
+         NULL,
+         fName,
+         _(".mid|.gro"),
+         _("MIDI file (*.mid)|*.mid|Allegro file (*.gro)|*.gro"),
+         wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
+         this);
 
-   // Move existing files out of the way.  Otherwise wxTextFile will
-   // append to (rather than replace) the current file.
+      if (fName == wxT(""))
+         return;
 
-   if (wxFileExists(fName)) {
+      if(!fName.Contains(_("."))) {
+         fName = fName + wxT(".mid");
+      }
+
+      // Move existing files out of the way.  Otherwise wxTextFile will
+      // append to (rather than replace) the current file.
+
+      if (wxFileExists(fName)) {
 #ifdef __WXGTK__
-      wxString safetyFileName = fName + wxT("~");
+         wxString safetyFileName = fName + wxT("~");
 #else
-      wxString safetyFileName = fName + wxT(".bak");
+         wxString safetyFileName = fName + wxT(".bak");
 #endif
 
-      if (wxFileExists(safetyFileName))
-         wxRemoveFile(safetyFileName);
+         if (wxFileExists(safetyFileName))
+            wxRemoveFile(safetyFileName);
 
-      wxRename(fName, safetyFileName);
-   }
-
-   if(fName.EndsWith(_(".mid"))) {
-      nt->ExportMIDI(fName);
-   } else if(fName.EndsWith(_(".gro"))) {
-      nt->ExportAllegro(fName);
-   } else {
-      wxString title;
-      wxString msg;
-      int id;
-
-      if(fName.Contains(_("."))) {
-         msg = _("You have selected a filename with an unrecognized file extension.\nDo you want to continue?");
-      } else {
-         msg = _("You have selected a filename with no file extension.\nDo you want to continue?");
+         wxRename(fName, safetyFileName);
       }
 
-      title = _("Export MIDI");
-
-      id = wxMessageBox(msg, title, wxYES_NO);
-      if (id == wxNO) {
-         return;
-      } else if (id == wxYES) {
+      if(fName.EndsWith(_(".mid")) || fName.EndsWith(_(".midi"))) {
          nt->ExportMIDI(fName);
+      } else if(fName.EndsWith(_(".gro"))) {
+         nt->ExportAllegro(fName);
+      } else {
+         wxString msg = _("You have selected a filename with an unrecognized file extension.\nDo you want to continue?");
+         wxString title = _("Export MIDI");
+         int id = wxMessageBox(msg, title, wxYES_NO);
+         if (id == wxNO) {
+            continue;
+         } else if (id == wxYES) {
+            nt->ExportMIDI(fName);
+         }
       }
+      break;
    }
 }
 #endif // USE_MIDI
@@ -4122,7 +4120,7 @@ void AudacityProject::OnImportMIDI()
                                     path,     // Path
                                     wxT(""),       // Name
                                     wxT(""),       // Extension
-                                    _("MIDI and Allegro files (*.mid;*.gro)|*.mid;*.gro|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro|All files (*.*)|*.*"),
+                                    _("MIDI and Allegro files (*.mid;*.midi;*.gro)|*.mid;*.midi;*.gro|MIDI files (*.mid;*.midi)|*.mid;*.midi|Allegro files (*.gro)|*.gro|All files (*.*)|*.*"),
                                     wxRESIZE_BORDER,        // Flags
                                     this);    // Parent
 

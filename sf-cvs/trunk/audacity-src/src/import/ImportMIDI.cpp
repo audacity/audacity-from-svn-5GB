@@ -33,7 +33,7 @@ bool ImportMIDI(wxString fName, NoteTrack * dest)
    }
 
    bool is_midi = false;
-   if (fName.Right(4).CmpNoCase(wxT(".mid")) == 0)
+   if (fName.Right(4).CmpNoCase(wxT(".mid")) == 0 || fName.Right(5).CmpNoCase(wxT(".midi")) == 0)
       is_midi = true;
    else if(fName.Right(4).CmpNoCase(wxT(".gro")) != 0) {
       wxMessageBox( _("Could not open file ") + fName + _(": Incorrect filetype."));
