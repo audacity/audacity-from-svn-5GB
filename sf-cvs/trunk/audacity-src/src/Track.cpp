@@ -170,12 +170,12 @@ Track *TrackListIterator::First(TrackList * val)
 Track *TrackListIterator::Next( bool SkipLinked )
 {
    #ifdef DEBUG_TLI // if we are debugging this bit
-   wxASSERT_MSG(((*l).Contains((*cur).t)), wxT("cur invalid at start of Next(). List changed since iterator created?"));   // check that cur is in the list
+   wxASSERT_MSG((!cur || (*l).Contains((*cur).t)), wxT("cur invalid at start of Next(). List changed since iterator created?"));   // check that cur is in the list
    #endif
    if (SkipLinked && cur && cur->t->GetLinked())
       cur = cur->next;
    #ifdef DEBUG_TLI // if we are debugging this bit
-   wxASSERT_MSG(((*l).Contains((*cur).t)), wxT("cur invalid after skipping linked tracks."));   // check that cur is in the list
+   wxASSERT_MSG((!cur || (*l).Contains((*cur).t)), wxT("cur invalid after skipping linked tracks."));   // check that cur is in the list
    #endif
 
    if (cur)
