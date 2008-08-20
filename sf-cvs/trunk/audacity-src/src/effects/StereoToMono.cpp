@@ -91,7 +91,7 @@ bool EffectStereoToMono::ProcessOne(int count)
       }
       rc = mLeftTrack->Set((samplePtr)leftBuffer, floatSample, outTrackOffset, limit);
       outTrackOffset += limit;
-      if (TrackProgress(count, ((double)index / (double)mLeftTrackLen)))
+      if (TrackProgress(count, 2.*((double)index / (double)mLeftTrackLen)))
          return false;
    }
 
