@@ -32,7 +32,6 @@ class LyricsWindow : public wxFrame {
 
    void OnStyle_BouncingBall(wxCommandEvent &evt);
    void OnStyle_Highlight(wxCommandEvent &evt);
-   wxMenu* mStyleMenu;
 
    AudacityProject *mProject;
    Lyrics *mLyricsPanel;

@@ -656,7 +656,7 @@ void Lyrics::HandlePaint_BouncingBall(wxDC &dc)
    }
 }
 
-//v This requires Lyrics be a wxScrolledWindow...
+//v Now that Highlight mode uses wxTextCtrl, no painting. This requires Lyrics be a wxScrolledWindow...
 //void Lyrics::HandlePaint_Highlight(wxDC &dc)
 //{
 //   this->SetDrawnFont(&dc);
