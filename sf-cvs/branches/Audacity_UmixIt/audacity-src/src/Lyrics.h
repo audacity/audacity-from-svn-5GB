@@ -103,7 +103,7 @@ class Lyrics : public wxPanel
 
    void HandlePaint(wxDC &dc);
    void HandlePaint_BouncingBall(wxDC &dc);
-   void HandlePaint_Highlight(wxDC &dc);
+   // void HandlePaint_Highlight(wxDC &dc); // Now that Highlight mode uses wxTextCtrl, no painting.
 
    void HandleLayout();
 
