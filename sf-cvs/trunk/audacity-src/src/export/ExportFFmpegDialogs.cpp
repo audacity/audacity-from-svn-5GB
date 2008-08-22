@@ -337,6 +337,8 @@ BEGIN_EVENT_TABLE(ExportFFmpegWMAOptions, wxDialog)
    EVT_BUTTON(wxID_OK,ExportFFmpegWMAOptions::OnOK)
 END_EVENT_TABLE()
 
+const int ExportFFmpegWMAOptions::iWMASampleRates[] = { 8000, 11025, 16000, 22050, 44100, 0};
+
 ExportFFmpegWMAOptions::ExportFFmpegWMAOptions(wxWindow *parent)
 :  wxDialog(NULL, wxID_ANY,
             wxString(_("Specify WMA Options")),
@@ -553,6 +555,7 @@ void FFmpegPresets::SavePreset(ExportFFmpegOptions *parent, wxString &name)
          // Check box
          case FEUseLPCID:
          case FEBitReservoirID:
+         case FEVariableBlockLenID:
             cb = dynamic_cast<wxCheckBox*>(wnd);
             preset->mControlState->Item(id - FEFirstID) = wxString::Format(wxT("%d"),cb->GetValue());
             break;
@@ -629,6 +632,7 @@ void FFmpegPresets::LoadPreset(ExportFFmpegOptions *parent, wxString &name)
          // Check box
          case FEUseLPCID:
          case FEBitReservoirID:
+         case FEVariableBlockLenID:
             cb = dynamic_cast<wxCheckBox*>(wnd);
             preset->mControlState->Item(id - FEFirstID).ToLong(&readlong);
             if (readlong) readbool = true; else readbool = false;
@@ -920,13 +924,15 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
             mCutoffSpin = S.Id(FECutoffID).TieSpinCtrl(_("Cutoff Bandwidth:"), wxT("/FileFormats/FFmpegCutOff"), 0,10000000,0);
             mCutoffSpin->SetToolTip(_("Audio cutoff bandwidth (Hz)\nOptional\n0 - automatic\n"));
 
-            S.AddVariableText(wxT("Use Bit Reservoir"));
-            S.Id(FEBitReservoirID).TieCheckBox(wxEmptyString, wxT("/FileFormats/FFmpegBitReservoir"), true);
-
             mProfileChoice = S.Id(FEProfileID).TieChoice(_("Profile:"), wxT("/FileFormats/FFmpegAACProfile"), 
                mProfileLabels[0], mProfileNames, mProfileLabels);
             mProfileChoice->SetToolTip(_("AAC Profile\nLow Complexity -default\nMost players won't play anything other than LC"));
 
+            S.AddVariableText(wxT("Use Bit Reservoir"));
+            S.Id(FEBitReservoirID).TieCheckBox(wxEmptyString, wxT("/FileFormats/FFmpegBitReservoir"), true);
+
+            S.AddVariableText(wxT("Use Variable Block Length"));
+            S.Id(FEVariableBlockLenID).TieCheckBox(wxEmptyString, wxT("/FileFormats/FFmpegVariableBlockLen"), true);
 
          }
          S.EndMultiColumn();
