@@ -474,6 +474,8 @@ public:
    void PopulateOrExchange(ShuttleGui & S);
    void OnOK(wxCommandEvent& event);
 
+   static const int iWMASampleRates[];
+
 private:
 
    wxArrayString mBitRateNames;
@@ -512,6 +514,7 @@ enum FFmpegExportCtrlID {
    FEMuxRateID,
    FEPacketSizeID,
    FEBitReservoirID,
+   FEVariableBlockLenID,
    FELastID,
 
    FEFormatLabelID,
@@ -556,7 +559,9 @@ static wxChar *FFmpegExportCtrlIDNames[] = {
    wxT("FEMuxRateID"),
    wxT("FEPacketSizeID"),
    wxT("FEBitReservoirID"),
+   wxT("FEVariableBlockLenID"),
    wxT("FELastID"),
+
    wxT("FEFormatLabelID"),
    wxT("FECodecLabelID"),
    wxT("FEFormatNameID"),
@@ -657,6 +662,10 @@ static ApplicableFor apptable[] =
    {TRUE,FEBitReservoirID,CODEC_ID_WMAV1,"any"},
    {TRUE,FEBitReservoirID,CODEC_ID_WMAV2,"any"},
    {FALSE,FEBitReservoirID,CODEC_ID_NONE,"any"},
+
+   {TRUE,FEVariableBlockLenID,CODEC_ID_WMAV1,"any"},
+   {TRUE,FEVariableBlockLenID,CODEC_ID_WMAV2,"any"},
+   {FALSE,FEVariableBlockLenID,CODEC_ID_NONE,"any"},
 
    {FALSE,FFmpegExportCtrlID(0),CODEC_ID_NONE,NULL}
 };
