@@ -82,32 +82,35 @@ class ODTask
    ///changes the tasks associated with this Waveform to process the task from a different point in the track
    virtual void DemandTrackUpdate(WaveTrack* track, double seconds);
     
-    bool IsComplete();
+   bool IsComplete();
     
-    void TerminateAndBlock();
-    ///releases memory that the ODTask owns.  Subclasses should override.
-    virtual void Terminate(){}
+   void TerminateAndBlock();
+   ///releases memory that the ODTask owns.  Subclasses should override.
+   virtual void Terminate(){}
     
-    virtual const char* GetTaskName(){return "ODTask";}
+   virtual const char* GetTaskName(){return "ODTask";}
    
-    virtual sampleCount GetDemandSample();
+   virtual sampleCount GetDemandSample();
     
-    virtual void SetDemandSample(sampleCount sample);
+   virtual void SetDemandSample(sampleCount sample);
     
-    ///does an od update and then recalculates the data.
-    virtual void RecalculatePercentComplete();
+   ///does an od update and then recalculates the data.
+   virtual void RecalculatePercentComplete();
    
-    ///returns the number of tasks created before this instance.
-    int GetTaskNumber(){return mTaskNumber;}
+   ///returns the number of tasks created before this instance.
+   int GetTaskNumber(){return mTaskNumber;}
     
-    void SetNeedsODUpdate();
-    bool GetNeedsODUpdate();
-    void ResetNeedsODUpdate();
+   void SetNeedsODUpdate();
+   bool GetNeedsODUpdate();
+   void ResetNeedsODUpdate();
     
-    virtual const wxChar* GetTip()=0;
+   virtual const wxChar* GetTip()=0;
     
     ///returns true if the task is associated with the project.
-    virtual bool IsTaskAssociatedWithProject(AudacityProject* proj);
+   virtual bool IsTaskAssociatedWithProject(AudacityProject* proj);
+
+   bool IsRunning();
+
 
  protected:
      
@@ -127,6 +130,9 @@ class ODTask
    ///special needs can override this
    virtual void ODUpdate();
    
+   void SetIsRunning(bool value);
+
+   
 
    int   mTaskNumber;
    float mPercentComplete;
@@ -143,6 +149,10 @@ class ODTask
    
    sampleCount mDemandSample;
    ODLock      mDemandSampleMutex;
+   
+   bool mIsRunning;
+   ODLock mIsRunningMutex;
+   
    
    private:
    

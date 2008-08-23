@@ -475,7 +475,10 @@ float ODManager::GetOverallPercentComplete()
       total+=mQueues[i]->GetFrontTask()->PercentComplete();
    }
    mQueuesMutex.Unlock();
-   return (float) total/GetTotalNumTasks();
+   
+   //avoid div by zero and be thread smart.
+   int totalTasks = GetTotalNumTasks();
+   return (float) total/(totalTasks>0?totalTasks:1);
 }
    
 ///Get Total Number of Tasks.

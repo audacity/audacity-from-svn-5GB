@@ -37,6 +37,7 @@ ODTask::ODTask()
    mDoingTask=false;
    mTerminate = false;
    mNeedsODUpdate=false;
+   mIsRunning = false;
    
    mTaskNumber=sTaskNumber++;
    
@@ -66,6 +67,7 @@ void ODTask::TerminateAndBlock()
 /// will do the smallest unit of work possible
 void ODTask::DoSome(float amountWork)
 {
+   SetIsRunning(true);
    mBlockUntilTerminateMutex.Lock();
 
 //   printf("%s %i subtask starting on new thread with priority\n", GetTaskName(),GetTaskNumber());
@@ -82,6 +84,7 @@ void ODTask::DoSome(float amountWork)
    {
       mBlockUntilTerminateMutex.Unlock();
       mTerminateMutex.Unlock();
+      SetIsRunning(false);
       return;
    }  
    mTerminateMutex.Unlock();
@@ -118,7 +121,7 @@ void ODTask::DoSome(float amountWork)
    
    mTerminateMutex.Lock();
    //if it is not done, put it back onto the ODManager queue.
-   if(!IsComplete() && !mTerminate)
+   if(PercentComplete() < 1.0&& !mTerminate)
    {
       ODManager::Instance()->AddTask(this);
       
@@ -166,6 +169,7 @@ void ODTask::DoSome(float amountWork)
    }
    mTerminateMutex.Unlock();
    mBlockUntilTerminateMutex.Unlock();
+   SetIsRunning(false);
    
 }
 
@@ -205,6 +209,22 @@ void ODTask::ODUpdate()
    Update();
    ResetNeedsODUpdate();
 }
+
+void ODTask::SetIsRunning(bool value)
+{
+   mIsRunningMutex.Lock();
+   mIsRunning=value;
+   mIsRunningMutex.Unlock();
+}
+   
+bool ODTask::IsRunning()
+{
+   bool ret;
+   mIsRunningMutex.Lock();
+   ret= mIsRunning;
+   mIsRunningMutex.Unlock();
+   return ret;
+}   
    
 sampleCount ODTask::GetDemandSample()
 {
@@ -236,7 +256,7 @@ float ODTask::PercentComplete()
 ///return 
 bool ODTask::IsComplete()
 {
-   return PercentComplete() >= 1.0;
+   return PercentComplete() >= 1.0 && !IsRunning();
 }
 
 
