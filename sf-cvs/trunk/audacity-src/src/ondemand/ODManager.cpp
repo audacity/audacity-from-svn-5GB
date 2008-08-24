@@ -134,12 +134,15 @@ ODManager* ODManager::Instance()
    if(!man)
    {
       man = new ODManager();
-      gManagerCreated = true;
       man->Init();
       inited = true;
+      gManagerCreated = true;
    }
+   
    while(!inited)
       ;
+ 
+   
    
    return man;
 }
