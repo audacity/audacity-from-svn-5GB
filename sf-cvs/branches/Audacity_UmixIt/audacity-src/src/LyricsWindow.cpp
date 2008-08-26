@@ -83,6 +83,14 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
       new wxRadioButton(pToolBar, kID_RadioButton_Highlight, _("Highlight"), wxPoint(left, top));
    pToolBar->AddControl(pRadioButton_Highlight);
 
+#if defined(__WXMAC__)
+   wxColour face = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+   pRadioButton_BouncingBall->SetBackgroundColour(face);
+   pRadioButton_Highlight->SetBackgroundColour(face);
+#endif
+
+   pToolBar->Realize();
+
    mLyricsPanel = 
       new Lyrics(this, -1, 
                   wxPoint(0, tbSize.GetHeight()), 
