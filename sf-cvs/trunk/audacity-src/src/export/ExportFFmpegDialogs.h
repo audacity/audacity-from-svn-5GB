@@ -11,6 +11,8 @@ LRN
 #if !defined(__EXPORT_FFMPEG_DIALOGS_H__)
 #define __EXPORT_FFMPEG_DIALOGS_H__
 
+#if defined(USE_FFMPEG)
+
 #include "../Audacity.h"   // keep ffmpeg before wx because they interact
 #include "../FFmpeg.h"     // and Audacity.h before FFmpeg for config*.h
 
@@ -833,5 +835,7 @@ private:
 
    FFmpegPresetList *mPresets;
 };
+
+#endif
 
 #endif //__EXPORT_FFMPEG_DIALOGS_H__
