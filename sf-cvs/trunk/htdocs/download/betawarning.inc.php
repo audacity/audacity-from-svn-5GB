@@ -3,7 +3,7 @@
  * Copyright 2005 Dominic Mazzoni
  * Copyright 2008 Martyn Shaw, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
 ?>
 
@@ -20,6 +20,15 @@
  </ul>
 ')?></p>
 
-<p><?=_('If you are new to Audacity or computer audio programs, you may prefer the fully finished Audacity 1.2. Otherwise, please help our development effort by trying the Beta and <a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#97;&#x75;&#x64;&#97;&#99;&#x69;&#x74;&#x79;&#45;&#x66;&#101;&#x65;&#x64;&#x62;&#97;&#x63;&#107;&#x40;&#x6c;&#105;&#115;&#x74;&#115;&#46;&#115;&#111;&#x75;&#x72;&#99;&#101;&#x66;&#x6f;&#114;&#103;&#101;&#46;&#110;&#x65;&#116;&#63;&#x73;&#x75;&#98;&#x6a;&#x65;&#x63;&#x74;&#61;&#x42;&#x65;&#116;&#x61;&#32;&#102;&#101;&#101;&#x64;&#98;&#x61;&#99;&#107;">send us your comments</a>. Please mention your operating system, full details of any problems, and any features that need improvement or no longer work properly. You can install 1.3 and 1.2 on the same machine by installing them to different directories.')?></p>
+<p>
+<?php
+   // i18n-hint: the encoding inside the <a href> tag between the
+   // two echo strings obscures the e-mail address from (at least
+   // some) harvesting bots. Please translate the strings above
+   // and below the <a href> tag, and ignore the line with the
+   // <a href> tag itself.   
+   echo _('If you are new to Audacity or computer audio programs, you may prefer the fully finished Audacity 1.2. Otherwise, please help our development effort by trying the Beta and ')?>
+   <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#102;&#x65;&#x65;&#x64;&#98;&#x61;&#x63;&#107;&#x40;&#97;&#x75;&#100;&#x61;&#x63;&#x69;&#116;&#121;&#116;&#x65;&#x61;&#109;&#x2e;&#111;&#114;&#x67;&#63;&#x73;&#117;&#x62;&#x6a;&#x65;&#x63;&#116;&#61;&#x42;&#x65;&#x74;&#x61;&#95;&#70;&#101;&#x65;&#100;&#x62;&#x61;&#99;&#x6b;">
+<?php
+   echo _('send us your comments</a>. Please mention your operating system, full details of any problems, and any features that need improvement or no longer work properly. You can install 1.3 and 1.2 on the same machine by installing them to different directories.')?></p>
 
-<p><?=_('<b>Note:</b> In line with our <a href="../contact/privacy">Privacy Policy</a>, feedback you give about the Beta is sent to a public mailing list - messages are seen by the list subscribers, and archived on several web sites.')?></p>
