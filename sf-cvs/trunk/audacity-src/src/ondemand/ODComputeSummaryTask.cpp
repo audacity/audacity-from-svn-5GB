@@ -30,6 +30,8 @@ ODComputeSummaryTask::ODComputeSummaryTask()
 {
    mMaxBlockFiles = 0;
    mComputedBlockFiles = 0;
+   mHasUpdateRan=false;
+
 }
  
 ODTask* ODComputeSummaryTask::Clone()
@@ -126,10 +128,31 @@ float ODComputeSummaryTask::ComputeNextWorkUntilPercentageComplete()
    return nextPercent;
 }
 
+void ODComputeSummaryTask::MarkUpdateRan()
+{
+   mHasUpdateRanMutex.Lock();
+   mHasUpdateRan=true;
+   mHasUpdateRanMutex.Unlock();
+}   
+
+bool ODComputeSummaryTask::HasUpdateRan()
+{
+   bool ret;
+   mHasUpdateRanMutex.Lock();
+   ret = mHasUpdateRan;
+   mHasUpdateRanMutex.Unlock();
+   return ret;
+}
+
 void ODComputeSummaryTask::CalculatePercentComplete()
 {
+   bool hasUpdateRan;
+   hasUpdateRan = HasUpdateRan();
    mPercentCompleteMutex.Lock();
-   mPercentComplete = (float) 1.0 - ((float)mBlockFiles.size() / (mMaxBlockFiles+1));
+   if(hasUpdateRan)
+      mPercentComplete = (float) 1.0 - ((float)mBlockFiles.size() / (mMaxBlockFiles+1));
+   else
+      mPercentComplete =0.0;
    mPercentCompleteMutex.Unlock();
 }
 
@@ -207,6 +230,8 @@ void ODComputeSummaryTask::Update()
    
    //get the new order.
    OrderBlockFiles(tempBlocks);
+   
+   MarkUpdateRan();
 }
 
 

@@ -52,7 +52,6 @@ class ODComputeSummaryTask:public ODTask
    ///releases memory that the ODTask owns.  Subclasses should override.
    virtual void Terminate();
 
-
    
 protected:
 
@@ -72,12 +71,21 @@ protected:
    ///Orders the input as either On-Demand or default layered order.
    void OrderBlockFiles(std::vector<ODPCMAliasBlockFile*> &unorderedBlocks);
 
+   ///tells us whether or not Update has been run at least once.  
+   void MarkUpdateRan();
+   bool HasUpdateRan();
    
    std::vector<ODPCMAliasBlockFile*> mBlockFiles;
    
       
    int mMaxBlockFiles;
    int mComputedBlockFiles;
+   
+   
+
+   ODLock  mHasUpdateRanMutex;
+   bool mHasUpdateRan;
+
 
 };
 

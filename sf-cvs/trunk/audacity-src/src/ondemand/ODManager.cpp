@@ -128,21 +128,19 @@ ODManager* ODManager::Instance()
 {
    static ODManager* man=NULL;
    static bool inited = false;
+   static ODLock initedMutex;
    //this isn't 100% threadsafe but I think Okay for this purpose.
    
  //   wxLogDebug(wxT("Fetching Instance\n"));
+ 
+   initedMutex.Lock();
    if(!man)
    {
       man = new ODManager();
       man->Init();
-      inited = true;
       gManagerCreated = true;
    }
-   
-   while(!inited)
-      ;
- 
-   
+   initedMutex.Unlock();
    
    return man;
 }
@@ -188,14 +186,15 @@ void ODManager::Start()
    mNeedsDraw=0;
 
    //wxLog calls not threadsafe.  are printfs?  thread-messy for sure, but safe?
-   //printf("ODManager thread strating \n");
+//   printf("ODManager thread strating \n");
    //TODO: Figure out why this has no effect at all.
    //wxThread::This()->SetPriority(30);
    mTerminateMutex.Lock();
    while(!mTerminate)
    {
       mTerminateMutex.Unlock();
-      
+//    printf("ODManager thread running \n");
+     
       //we should look at our WaveTrack queues to see if we can process a new task to the running queue.
       UpdateQueues();
       
