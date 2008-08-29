@@ -41,9 +41,10 @@
 
 *//*******************************************************************/
 
-#include "ExportFFmpegDialogs.h"
 #include "../Audacity.h"   // keep ffmpeg before wx because they interact
 #include "../FFmpeg.h"     // and Audacity.h before FFmpeg for config*.h
+
+#include "ExportFFmpegDialogs.h"
 
 #include <wx/choice.h>
 #include <wx/intl.h>
