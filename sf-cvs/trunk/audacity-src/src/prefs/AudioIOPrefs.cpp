@@ -146,7 +146,7 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
    S.EndHorizontalLay();
    S.StartStatic( _("Playthrough") );
    {
-      S.TieCheckBox( _("&Play other tracks while recording new one"),
+      S.TieCheckBox( _("Overdub: &Play other tracks while recording new one"),
          wxT("Duplex"),true);
 #ifdef __WXMAC__
       S.TieCheckBox( _("&Hardware Playthrough: Play new track while recording it"),
@@ -154,8 +154,12 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieCheckBox( _("&Software Playthrough: Play new track while recording it"),
          wxT("SWPlaythrough"),false);
 #else
-      S.TieCheckBox( _("&Software Playthrough: Play new track while recording it (uncheck when recording \"stereo mix\")"),
+      S.TieCheckBox( _("&Software Playthrough: Play new track while recording or monitoring"),
          wxT("SWPlaythrough"),false);
+      wxString Temp = wxT("     ");
+      Temp += _("(uncheck when recording \"stereo mix\")");
+      // AddUnits abused here to get left aligned text.
+      S.AddUnits(Temp);
 #endif
 
    }
