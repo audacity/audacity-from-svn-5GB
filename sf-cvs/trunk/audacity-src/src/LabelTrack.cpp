@@ -2189,7 +2189,7 @@ wxBitmap & LabelTrack::GetGlyph( int i)
 // This one XPM spec is used to generate a number of
 // different wxIcons.
 /* XPM */
-static char *GlyphXpmRegionSpec[] = {
+static const char *const GlyphXpmRegionSpec[] = {
 /* columns rows colors chars-per-pixel */
 "15 23 7 1",
 /* Default colors, with first color transparent */
@@ -2248,7 +2248,7 @@ void LabelTrack::CreateCustomGlyphs()
    int index;
    const int nSpecRows = 
       sizeof( GlyphXpmRegionSpec )/sizeof( GlyphXpmRegionSpec[0]);
-   char *XmpBmp[nSpecRows];
+   const char *XmpBmp[nSpecRows];
 
    // The glyphs are declared static wxIcon; so we only need
    // to create them once, no matter how many LabelTracks.
