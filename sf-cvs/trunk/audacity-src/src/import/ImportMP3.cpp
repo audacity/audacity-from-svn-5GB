@@ -50,8 +50,6 @@ static const wxChar *exts[] =
 {
    wxT("mp3"),
    wxT("mp2"),
-   wxT("mpg"),
-   wxT("mpeg"),
    wxT("mpa")
 };
 
