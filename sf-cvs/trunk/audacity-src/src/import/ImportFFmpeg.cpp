@@ -479,7 +479,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
 
    // Handles the start_time by creating silence. This may or may not be correct.
    // There is a possibility that we should ignore first N milliseconds of audio instead. I do not know.
-   // TODO: Nag FFmpeg devs about start_time until they finally say WHAT is this and HOW to handle it.
+   /// TODO: Nag FFmpeg devs about start_time until they finally say WHAT is this and HOW to handle it.
    for (int s = 0; s < mNumStreams; s++)
    {
       int64_t stream_delay = 0;
