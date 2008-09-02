@@ -271,7 +271,7 @@ bool ConvertLegacyTrack(wxTextFile *f, XMLFileWriter &xmlFile)
          line = f->GetNextLine();
          if (line == wxT("WaveTrack") ||
              line == wxT("NoteTrack") ||
-             line == wxT("LabelTrack") |\
+             line == wxT("LabelTrack") ||
              line == wxT("EndTracks")) {
             f->GoToLine(f->GetCurrentLine()-1);
             return true;
