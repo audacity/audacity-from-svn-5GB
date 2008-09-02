@@ -1993,7 +1993,7 @@ int ExportMP3::AddTags(AudacityProject *project, char **buffer, bool *endOfFile,
 
    wxString n, v;
    for (bool cont = tags->GetFirst(n, v); cont; cont = tags->GetNext(n, v)) {
-      char *name = "TXXX";
+      const char *name = "TXXX";
 
       if (n.CmpNoCase(TAG_TITLE) == 0) {
          name = ID3_FRAME_TITLE;
