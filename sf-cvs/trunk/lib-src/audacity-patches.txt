@@ -4,11 +4,6 @@ from upstream, and to remind us of the versions we are using.
 
 Libraries
 =========
-allegro
--------
-Midi handling library. Used only to load and display midi files in audacity.
-Can't find any information on origin or version?
-
 dlcompat
 --------
 Support library for dynamic loading of modules on OS X 10.3 and older. Used
@@ -144,6 +139,16 @@ Patches:
 ../portmixer/portaudio.patch	add features needed to make portmixer work.
 		Integration by upstream in progress. Will need updating as upstream
 		portaudio moves
+
+portsmf
+-------
+http://portmedia.sourceforge.net/
+Cross-platform Midi file reader and writer (succeeded and obsoltes allegro)
+Version in audacity cvs: SVN snapshot from ????
+Patches:
+portsmf-includes.patch	add include of <cstring> needed to compile with recent
+						GCC versions
+portsmf-string-const.patch	Add string const qualifiers as needed
 
 portburn
 --------
