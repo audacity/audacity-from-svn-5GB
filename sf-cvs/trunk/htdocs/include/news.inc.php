@@ -40,6 +40,58 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "September 12, 2008",
+        "GSoC_2008_results",
+  _("Audacity shines in Google Summer of Code (GSoC) 2008"),
+  _("
+<p>
+Four students participating with Audacity in
+<a href=\"http://code.google.com/soc/2008/\">Google Summer of Code</a> 
+successfully completed their projects, and their code will be in
+future versions of Audacity.
+</p>
+<p>
+The four 
+<a href=\"http://audacityteam.org/wiki/index.php?title=GSoC_2008_Projects\">
+projects</a> were:
+   <ul>
+      <li><b>FFmpeg support</b>, to greatly increase the range of file
+              formats that can be imported and exported</li>
+      <li><b>new GUI classes</b> for future use in displaying audio tracks</li>
+      <li><b>on-demand/level-of-detail file loading</b>, for
+              near-instant loading and editing of uncompressed files</li> 
+      <li><b>sticky labels</b> that stay with the audio through cut and paste</li>
+   </ul>
+</p>
+<p align=\"center\">
+	<a href=\"http://code.google.com/soc/2008/\">
+	  <img src=\"http://google-summer-of-code.googlecode.com/files/soc08-198x128_white.jpg\" alt=\"Google Summer of Code 2008\"></img>
+	</a>
+</p>
+<p>
+Congratulations and thanks to all our participating students for what they
+contributed to improve Audacity, and thanks to everyone who worked so hard
+on mentoring and administration. We wish all this year's students every
+success and hope they will continue their involvement with Audacity in future.
+</p>        
+<p><b>Audacity wins BOSSIE:</b> In August, Audacity won the 
+<a href=\"http://www.infoworld.com/slideshow/2008/08/165-best_of_open_so-2.html\">
+sound editing</a> category in InfoWorld's
+<a href=\"http://www.infoworld.com/article/08/08/04/32TC-bossies-2008_1.html\">
+BOSSIE</a> (Best of Open Source Software) Awards for 2008. 
+</p>
+<p align=\"center\">
+	<a href=\"http://www.infoworld.com/article/08/08/04/32TC-bossies-2008_1.html\">
+	  <img src=\"http://www.infoworld.com/awards/img/bossie_logo.gif\" alt=\"InfoWorld BOSSIE Awards 2008\"></img>
+	</a>
+</p>
+<p>
+Chosen by InfoWorld Test Center editors, analysts and reviewers, the annual BOSSIE awards
+\"celebrate the best products that open source has to offer\".  
+</p>    
+"));
+
+add_news_item(
   "June 09, 2008",
         "PCWorld_100_Best_2008",
   _("Audacity in PC World 100 Best Products of 2008"),
