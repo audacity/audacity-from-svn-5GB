@@ -171,7 +171,7 @@ bool ImportXMLTagHandler::HandleXMLTag(const char *tag, const char **attrs)
 {
    if (strcmp(tag, "import") ||
          attrs==NULL || (*attrs)==NULL ||
-         strcmp(*attrs++, "filename") || (*attrs)==NULL) 
+         strcmp(*attrs++, "filename")) 
        return false;
    wxString strPathName = FILENAME(*attrs);
    if (!XMLValueChecker::IsGoodPathName(strPathName)) {
