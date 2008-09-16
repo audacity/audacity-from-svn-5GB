@@ -70,7 +70,8 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
    wxToolBar* pToolBar = this->CreateToolBar();
    const int kHorizMargin = 8;
    wxRadioButton* pRadioButton_BouncingBall = 
-      new wxRadioButton(pToolBar, kID_RadioButton_BouncingBall, _("Bouncing Ball"), wxPoint(kHorizMargin, 4));
+      new wxRadioButton(pToolBar, kID_RadioButton_BouncingBall, _("Bouncing Ball"), wxPoint(kHorizMargin, 4),
+          wxDefaultSize, wxRB_GROUP);
    // Reposition to center vertically. 
    wxSize tbSize = pToolBar->GetSize();
    wxSize btnSize = pRadioButton_BouncingBall->GetSize();
