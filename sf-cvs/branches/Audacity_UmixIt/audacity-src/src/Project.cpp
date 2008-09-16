@@ -2686,11 +2686,6 @@ void AudacityProject::ModifyState()
    mUndoManager.ModifyState(l, mViewInfo.sel0, mViewInfo.sel1);
 
    delete l;
-   
-   #if (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
-      UpdateLyrics();
-      UpdateMixerBoard();
-   #endif
 }
 
 void AudacityProject::PopState(TrackList * l)
