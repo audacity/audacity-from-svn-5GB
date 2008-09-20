@@ -576,6 +576,7 @@ PACKAGE_VERSION='0.1'
 PACKAGE_STRING='portSMF 0.1'
 PACKAGE_BUGREPORT=''
 
+ac_unique_file="allegro.h"
 ac_default_prefix=/usr/local
 # Factoring default headers for most tests.
 ac_includes_default="\
@@ -1735,6 +1736,7 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
+
 ac_aux_dir=
 for ac_dir in autotools "$srcdir"/autotools; do
   if test -f "$ac_dir/install-sh"; then
@@ -1765,6 +1767,8 @@ ac_config_guess="$SHELL $ac_aux_dir/config.guess"  # Please don't use this var.
 ac_config_sub="$SHELL $ac_aux_dir/config.sub"  # Please don't use this var.
 ac_configure="$SHELL $ac_aux_dir/configure"  # Please don't use this var.
 
+
+# which also contains a subdir containing macros
 
 am__api_version='1.10'
 
