@@ -149,6 +149,8 @@ Patches:
 portsmf-includes.patch	add include of <cstring> needed to compile with recent
 						GCC versions
 portsmf-string-const.patch	Add string const qualifiers as needed
+local-macros.patch		Add all the necessary 3rd party m4 macros into autotools
+						/m4/ and supporting changes.
 
 portburn
 --------
