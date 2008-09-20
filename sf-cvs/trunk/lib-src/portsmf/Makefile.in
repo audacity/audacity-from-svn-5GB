@@ -14,6 +14,9 @@
 
 @SET_MAKE@
 
+# Makefile(.in) for portSMF using Autotools (but not libtool).
+# Written by Richard Ash following Gary Vaughan's Autobook
+
 
 
 VPATH = @srcdir@
@@ -39,7 +42,12 @@ DIST_COMMON = $(am__configure_deps) $(dist_doc_DATA) \
 	$(top_srcdir)/configure autotools/depcomp autotools/install-sh \
 	autotools/missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps =  \
+	$(top_srcdir)/autotools/m4/ax_cflags_strict_prototypes.m4 \
+	$(top_srcdir)/autotools/m4/ax_cflags_warn_all.m4 \
+	$(top_srcdir)/autotools/m4/ax_cxx_check_flag.m4 \
+	$(top_srcdir)/autotools/m4/ax_cxxcpp_check_flag.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -72,6 +80,10 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(libportSMF_a_SOURCES)
 DIST_SOURCES = $(libportSMF_a_SOURCES)
 dist_docDATA_INSTALL = $(INSTALL_DATA)
@@ -182,9 +194,9 @@ target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
-# Makefile(.in) for portSMF using Autotools (but not libtool).
-# Written by Richard Ash following Gary Vaughan's Autobook
-#
+# tell aclocal that extra macros can be found in autotools/m4/
+ACLOCAL_AMFLAGS = -I autotools/m4
+
 # define the output library (link with -lportSMF)
 lib_LIBRARIES = libportSMF.a
 
@@ -195,7 +207,9 @@ libportSMF_a_SOURCES = allegro.cpp \
 	allegrowr.cpp \
 	allegrosmfrd.cpp \
 	mfmidi.cpp \
-	strparse.cpp
+	strparse.cpp \
+	algrd_internal.h \
+	algsmfrd_internal.h
 
 
 # and the header files for the library. At the moment these go into the include
@@ -224,7 +238,7 @@ AUX_DIST = $(ac_aux_dir)/config.guess \
 
 # Documentation files that should be both distributed and installed in the doc
 # directory,
-dist_doc_DATA = README.txt
+dist_doc_DATA = README.txt license.txt
 all: all-am
 
 .SUFFIXES:
