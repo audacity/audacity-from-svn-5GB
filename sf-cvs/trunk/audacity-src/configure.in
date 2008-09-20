@@ -35,9 +35,10 @@ AC_PREREQ(2.59)
 
 dnl Init autoconf
 AC_INIT
-
 dnl Check for existence of Audacity.h
 AC_CONFIG_SRCDIR([src/Audacity.h])
+dnl we have some extra macros in m4/
+AC_CONFIG_MACRO_DIR([m4])
 
 dnl -------------------------------------------------------
 dnl Checks for programs.
