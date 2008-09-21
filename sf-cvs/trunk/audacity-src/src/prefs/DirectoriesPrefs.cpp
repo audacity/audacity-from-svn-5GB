@@ -125,7 +125,7 @@ void DirectoriesPrefs::OnChooseTempDir(wxCommandEvent &event)
    if (dlog.GetPath() != wxT("")) {
       wxFileName tmpDirPath;
       tmpDirPath.AssignDir(dlog.GetPath());
-#ifdef __WXMSW__
+#if defined(__WXMSW__) || defined(__WXMAC__)
       tmpDirPath.AppendDir(wxT("audacity_temp"));
 #else
       tmpDirPath.AppendDir(wxT(".audacity_temp"));
