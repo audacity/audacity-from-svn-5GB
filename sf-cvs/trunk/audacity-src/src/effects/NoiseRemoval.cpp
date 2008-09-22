@@ -353,6 +353,8 @@ void EffectNoiseRemoval::Initialize()
    mOneBlockAttackDecay = (int)(mNoiseGain / (mAttackDecayBlocks - 1));
    mMinSignalBlocks =
       (int)(mMinSignalTime * mSampleRate / (mWindowSize / 2));
+   if( mMinSignalBlocks < 1 )
+      mMinSignalBlocks = 1;
    mHistoryLen = (2 * mAttackDecayBlocks) - 1;
 
    if (mHistoryLen < mMinSignalBlocks)
