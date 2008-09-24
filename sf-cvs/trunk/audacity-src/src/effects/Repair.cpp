@@ -101,6 +101,12 @@ bool EffectRepair::Process()
             break;
       }
       
+      if (s0 == repair0 && s1 == repair1) {
+         ::wxMessageBox(_("The Repair effect needs some data to go on.\n\nPlease select an area to repair with some audio on at least one side (the more the better)."));
+            bGoodResult = false;
+            break;
+      }
+      
       if (!ProcessOne(count, track,
                       s0, len, repairStart, repairLen)) {
          bGoodResult = false;

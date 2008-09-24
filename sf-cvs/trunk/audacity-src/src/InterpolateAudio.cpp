@@ -89,6 +89,9 @@ void InterpolateAudio(float *buffer, int len,
             numBad < len &&
             firstBad+numBad <= len);
 
+   if(numBad >= len)
+      return;  //should never have been called!
+
    if (firstBad == 0) {
       // The algorithm below has a weird asymmetry in that it
       // performs poorly when interpolating to the left.  If
