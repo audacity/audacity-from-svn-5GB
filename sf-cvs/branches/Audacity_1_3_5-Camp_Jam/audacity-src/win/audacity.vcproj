@@ -712,6 +712,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\AudacityBranding.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\AudacityHeaders.cpp"
 				>
 				<FileConfiguration
@@ -943,6 +947,14 @@
 			</File>
 			<File
 				RelativePath="..\src\BlockFile.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Branding.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Branding.h"
 				>
 			</File>
 			<File
