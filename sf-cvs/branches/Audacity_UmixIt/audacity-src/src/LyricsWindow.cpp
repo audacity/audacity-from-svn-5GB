@@ -79,7 +79,7 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
    pRadioButton_BouncingBall->Move(kHorizMargin, top);
    pToolBar->AddControl(pRadioButton_BouncingBall);
 
-   int left = kHorizMargin + btnSize.GetWidth() + kHorizMargin; 
+   int left = kHorizMargin + btnSize.GetWidth() + kHorizMargin; //vvv Doesn't actually work. Probably need sizers.
    wxRadioButton* pRadioButton_Highlight = 
       new wxRadioButton(pToolBar, kID_RadioButton_Highlight, _("Highlight"), wxPoint(left, top));
    pToolBar->AddControl(pRadioButton_Highlight);
