@@ -2674,8 +2674,16 @@ void AudacityProject::PushState(wxString desc,
       this->OnZoomFitV();
       //v Robert seemed to want this at first, but not now (2/8/2008):   this->OnZoomFit();
    #else // (AUDACITY_BRANDING != BRAND_THINKLABS) && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH) 
-      UpdateLyrics();
-      UpdateMixerBoard();
+      // Some state pushes, like changing a track gain control (& probably others), 
+      // should not repopulate Lyrics Window and MixerBoard. 
+      // Others, such as deleting a label or adding a wave track, obviously do. 
+      // Could categorize these state changes, but for now...
+      // It's crucial to not do that repopulating during playback. 
+      if (!gAudioIO->IsStreamActive(GetAudioIOToken())) 
+      {
+         UpdateLyrics();
+         UpdateMixerBoard();
+      }
    #endif 
 }
 
