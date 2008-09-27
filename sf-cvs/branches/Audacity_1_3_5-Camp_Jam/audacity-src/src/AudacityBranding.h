@@ -1,0 +1,58 @@
+/**********************************************************************
+
+   Audacity: A Digital Audio Editor
+
+   AudacityBranding.h
+
+   Vaughan Johnson, March 2007
+
+   Build flags for branding.
+   Change values depending on the desired build characteristics.
+
+**********************************************************************/
+
+#pragma once
+
+#if !defined(__AUDACITY_BRANDING_H__)
+#define __AUDACITY_BRANDING_H__
+
+// custom version ID's
+#define BRAND_AUDACITY        0
+#define BRAND_UMIXIT          1  //v Do not use. Not yet ported past 1.2.6
+#define BRAND_THINKLABS       2  //v Do not use. Not yet ported past 1.2.6
+#define BRAND_AUDIOTOUCH      3  //v Do not use. Not yet ported past 1.2.6
+#define BRAND_CAMP_JAM__EASY  4
+#define BRAND_CAMP_JAM__FULL  5
+
+
+//#define AUDACITY_BRANDING BRAND_AUDACITY // standard version
+//#define AUDACITY_BRANDING BRAND_UMIXIT
+//#define AUDACITY_BRANDING BRAND_THINKLABS
+//#define AUDACITY_BRANDING BRAND_AUDIOTOUCH
+#define AUDACITY_BRANDING BRAND_CAMP_JAM__EASY
+//#define AUDACITY_BRANDING BRAND_CAMP_JAM__FULL
+
+
+#if ((AUDACITY_BRANDING == BRAND_AUDACITY) || (AUDACITY_BRANDING == BRAND_AUDIOTOUCH))
+   #define WANT_BRANDING_PANEL 0
+#else
+   #define WANT_BRANDING_PANEL 1
+#endif
+
+#define AUDACITY_URL wxT("http://audacity.sourceforge.net/")
+
+#if (AUDACITY_BRANDING == BRAND_UMIXIT)
+   #define AUDACITY_BRANDING_BRANDNAME wxT("UmixIt")
+   #define AUDACITY_BRANDING_BRANDURL wxT("http://www.umixit.com/")
+#elif (AUDACITY_BRANDING == BRAND_THINKLABS)
+   #define AUDACITY_BRANDING_BRANDNAME "Thinklabs"
+   #define AUDACITY_BRANDING_BRANDURL wxT("http://Thinklabsmedical.com/")
+#elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   #define AUDACITY_BRANDING_BRANDNAME wxT("Audacity_Audiotouch")
+   #define AUDACITY_BRANDING_BRANDURL wxT("http://www.audiotouch.com.au/")
+#elif ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+   #define AUDACITY_BRANDING_BRANDNAME wxT("Camp Jam Audacity")
+   #define AUDACITY_BRANDING_BRANDURL wxT("http://www.campjam.com/")
+#endif
+
+#endif

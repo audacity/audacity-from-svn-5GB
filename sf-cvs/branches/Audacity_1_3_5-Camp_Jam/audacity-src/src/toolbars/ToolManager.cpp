@@ -25,6 +25,7 @@
 *//**********************************************************************/
 
 #include "../Audacity.h"
+#include "../AudacityBranding.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -484,7 +485,7 @@ void ToolManager::Reset()
 #endif
       dock->Dock( bar );
 
-      Expose( ndx, ndx ==  DeviceBarID ? false : true );
+      this->Expose(ndx, this->DefaultShow(ndx));
 
       if( parent )
       {
@@ -538,7 +539,11 @@ void ToolManager::ReadConfig()
       // Read in all the settings
       gPrefs->Read( wxT("Dock"), &dock, ndx == SelectionBarID ? BotDockID : TopDockID );
       gPrefs->Read( wxT("Order"), &ord, NoBarID );
-      gPrefs->Read( wxT("Show"), &show[ ndx ], ndx == DeviceBarID ? false : true );
+      #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+         show[ndx] = this->DefaultShow(ndx);
+      #else 
+         gPrefs->Read( wxT("Show"), &show[ ndx ], this->DefaultShow(ndx) );
+      #endif
       gPrefs->Read( wxT("X"), &x, -1 );
       gPrefs->Read( wxT("Y"), &y, -1 );
       gPrefs->Read( wxT("W"), &width[ ndx ], -1 );
@@ -783,6 +788,19 @@ bool ToolManager::IsVisible( int type )
 
    // Return state of docked toolbar
    return t->IsShown();
+}
+
+bool ToolManager::DefaultShow(int type)
+{
+   bool bShow = true;
+   #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+      bShow = (type != ToolsBarID) && 
+               (type != TranscriptionBarID) && 
+               (type != DeviceBarID);
+   #else
+      bShow = (type != DeviceBarID);
+   #endif 
+   return bShow;
 }
 
 //

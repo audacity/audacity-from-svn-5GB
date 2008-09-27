@@ -20,8 +20,16 @@
 #include <wx/panel.h>
 #include <wx/timer.h>
 
+#include "../AudacityBranding.h"
 #include "../SampleFormat.h"
 #include "Ruler.h"
+
+#if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+   // Hide menus on meter toolbar. Don't show numbers and ticks. Label as "Mix Volume" and "Input Volume"
+   #define WANT_METER_MENU 0
+#else
+   #define WANT_METER_MENU 1
+#endif
 
 // Increase this when we add support for multichannel meters
 // (most of the code is already there)
@@ -122,23 +130,23 @@ class Meter : public wxPanel
    void HandlePaint(wxDC &dc);
    void HandleLayout();
 
-   //
-   // Pop-up menu handlers
-   //
-
-   void OnDisableMeter(wxCommandEvent &evt);
-   void OnHorizontal(wxCommandEvent &evt);
-   void OnVertical(wxCommandEvent &evt);
-   void OnMulti(wxCommandEvent &evt);
-   void OnEqualizer(wxCommandEvent &evt);
-   void OnWaveform(wxCommandEvent &evt);
-   void OnLinear(wxCommandEvent &evt);
-   void OnDB(wxCommandEvent &evt);
-   void OnClip(wxCommandEvent &evt);
-   void OnMonitor(wxCommandEvent &evt);
-   void OnFloat(wxCommandEvent &evt);
-   void OnPreferences(wxCommandEvent &evt);
-
+   #if WANT_METER_MENU
+      //
+      // Pop-up menu handlers
+      //
+      void OnDisableMeter(wxCommandEvent &evt);
+      void OnHorizontal(wxCommandEvent &evt);
+      void OnVertical(wxCommandEvent &evt);
+      void OnMulti(wxCommandEvent &evt);
+      void OnEqualizer(wxCommandEvent &evt);
+      void OnWaveform(wxCommandEvent &evt);
+      void OnLinear(wxCommandEvent &evt);
+      void OnDB(wxCommandEvent &evt);
+      void OnClip(wxCommandEvent &evt);
+      void OnMonitor(wxCommandEvent &evt);
+      void OnFloat(wxCommandEvent &evt);
+      void OnPreferences(wxCommandEvent &evt);
+   #endif // WANT_METER_MENU
    
    void StartMonitoring();
  private:
@@ -175,7 +183,9 @@ class Meter : public wxPanel
    bool      mLayoutValid;
 
    wxBitmap *mBitmap;
+#if WANT_METER_MENU
    wxRect    mMenuRect;
+#endif // WANT_METER_MENU
    wxPoint   mIconPos;
    wxPoint   mLeftTextPos;
    wxPoint   mRightTextPos;
