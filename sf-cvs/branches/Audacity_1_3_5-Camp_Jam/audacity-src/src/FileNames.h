@@ -21,6 +21,10 @@ class AUDACITY_DLL_API FileNames
 public:
    static wxString MkDir(const wxString &Str);
    static wxString TempDir();
+
+   // originally an ExportMultiple method. Append suffix if newName appears in otherNames.
+   static void MakeNameUnique(wxArrayString &otherNames, wxFileName &newName);
+
    /** \brief Audacity user data directory 
 	*
 	* Where audacity keeps it's settings and other user data squirreled away,

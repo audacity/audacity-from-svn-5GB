@@ -55,6 +55,7 @@ class ToolManager:public wxEvtHandler
 
    bool IsVisible( int type );
 
+   bool DefaultShow(int type);
    void ShowHide( int type );
 
    void Expose( int type, bool show );

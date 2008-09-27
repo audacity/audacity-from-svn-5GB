@@ -176,6 +176,9 @@ void AudacityProject::CreateMenusAndCommands()
                          AudioIONotBusyFlag | UnsavedChangesFlag,
                          AudioIONotBusyFlag | UnsavedChangesFlag);
       c->AddItem(wxT("SaveAs"),         _("Save Project &As..."),            FN(OnSaveAs));
+      #ifdef USE_LIBVORBIS
+         c->AddItem(wxT("SaveCompressed"), _("Save Compressed Copy of Project..."),  FN(OnSaveCompressed));
+      #endif
    }
 
    c->AddItem(wxT("CheckDeps"),      _("Chec&k Dependencies..."),          FN(OnCheckDependencies));
@@ -184,8 +187,10 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddSeparator();
 
-   c->AddItem(wxT("EditMetaData"),  _("Open Me&tadata Editor..."),          FN(OnEditMetadata));
-   //c->SetCommandFlags(wxT("EditID3"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+   #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+      c->AddItem(wxT("EditMetaData"),  _("Open Me&tadata Editor..."),          FN(OnEditMetadata));
+      //c->SetCommandFlags(wxT("EditID3"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+   #endif 
 
    if( !mCleanSpeechMode )
 	{
@@ -430,7 +435,9 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->EndSubMenu();
 
-   c->AddItem(wxT("ZeroCross"),      _("Find &Zero Crossings\tZ"),         FN(OnZeroCrossing));
+   #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+      c->AddItem(wxT("ZeroCross"),      _("Find &Zero Crossings\tZ"),         FN(OnZeroCrossing));
+   #endif 
 
    c->BeginSubMenu(_("Mo&ve Cursor..."));
 
@@ -472,16 +479,18 @@ void AudacityProject::CreateMenusAndCommands()
    wxString dummy3 = _("Turn Grid Snap On");
    wxString dummy4 = _("Turn Grid Snap Off");
 
-   // Moved Preferences from File Menu 02/09/05 Richard Ash.
-  #ifdef __WXMAC__
-   /* i18n-hint: Mac OS X Preferences shortcut should be Ctrl+, */
-   c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+,"),        FN(OnPreferences));
-  #else
-   /* i18n-hint: On Windows and Linux, the Preferences shortcut is usually Ctrl+P */
-   c->AddSeparator();
-   c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
-  #endif
-   c->SetCommandFlags(wxT("Preferences"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+   #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+      // Moved Preferences from File Menu 02/09/05 Richard Ash.
+     #ifdef __WXMAC__
+      /* i18n-hint: Mac OS X Preferences shortcut should be Ctrl+, */
+      c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+,"),        FN(OnPreferences));
+     #else
+      /* i18n-hint: On Windows and Linux, the Preferences shortcut is usually Ctrl+P */
+      c->AddSeparator();
+      c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
+     #endif
+      c->SetCommandFlags(wxT("Preferences"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+   #endif 
 
    c->EndMenu();
 
@@ -521,21 +530,23 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | UndoAvailableFlag,
                       AudioIONotBusyFlag | UndoAvailableFlag);
 
-   c->AddSeparator();
-   c->BeginSubMenu(_("&Toolbars..."));
-   c->AddItem(wxT("ShowControlTB"),       _("&Control Toolbar"),       FN(OnShowControlToolBar), 0);
-   c->AddItem(wxT("ShowDeviceTB"),        _("&Device Toolbar"),        FN(OnShowDeviceToolBar), 0);
-   c->AddItem(wxT("ShowEditTB"),          _("&Edit Toolbar"),          FN(OnShowEditToolBar), 0);
-   c->AddItem(wxT("ShowMeterTB"),         _("&Meter Toolbar"),         FN(OnShowMeterToolBar), 0);
-   c->AddItem(wxT("ShowMixerTB"),         _("Mi&xer Toolbar"),         FN(OnShowMixerToolBar), 0);
-   c->AddItem(wxT("ShowSelectionTB"),     _("&Selection Toolbar"),     FN(OnShowSelectionToolBar), 0);
-   c->AddItem(wxT("ShowToolsTB"),         _("T&ools Toolbar"),         FN(OnShowToolsToolBar), 0);
-   c->AddItem(wxT("ShowTranscriptionTB"), _("Transcri&ption Toolbar"), FN(OnShowTranscriptionToolBar), 0);
-   c->AddSeparator();
-   c->AddItem(wxT("ResetToolbars"),       _("&Reset Toolbars"),              FN(OnResetToolBars));
-   c->EndSubMenu();
-   c->AddItem(wxT("SimplifiedView"),      _("!Simplified View"),       FN(OnSimplifiedView), mCommandManager.mbHideFlaggedItems ? 1:0);
-   c->EndMenu();
+   #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+      c->AddSeparator();
+      c->BeginSubMenu(_("&Toolbars..."));
+      c->AddItem(wxT("ShowControlTB"),       _("&Control Toolbar"),       FN(OnShowControlToolBar), 0);
+      c->AddItem(wxT("ShowDeviceTB"),        _("&Device Toolbar"),        FN(OnShowDeviceToolBar), 0);
+      c->AddItem(wxT("ShowEditTB"),          _("&Edit Toolbar"),          FN(OnShowEditToolBar), 0);
+      c->AddItem(wxT("ShowMeterTB"),         _("&Meter Toolbar"),         FN(OnShowMeterToolBar), 0);
+      c->AddItem(wxT("ShowMixerTB"),         _("Mi&xer Toolbar"),         FN(OnShowMixerToolBar), 0);
+      c->AddItem(wxT("ShowSelectionTB"),     _("&Selection Toolbar"),     FN(OnShowSelectionToolBar), 0);
+      c->AddItem(wxT("ShowToolsTB"),         _("T&ools Toolbar"),         FN(OnShowToolsToolBar), 0);
+      c->AddItem(wxT("ShowTranscriptionTB"), _("Transcri&ption Toolbar"), FN(OnShowTranscriptionToolBar), 0);
+      c->AddSeparator();
+      c->AddItem(wxT("ResetToolbars"),       _("&Reset Toolbars"),        FN(OnResetToolBars));
+      c->EndSubMenu();
+      c->AddItem(wxT("SimplifiedView"),      _("!Simplified View"),       FN(OnSimplifiedView), mCommandManager.mbHideFlaggedItems ? 1:0);
+      c->EndMenu();
+   #endif 
 
    //
    // Tracks Menu (formerly Project Menu)
@@ -556,7 +567,9 @@ void AudacityProject::CreateMenusAndCommands()
 			c->AddItem(wxT("NewTimeTrack"),   _("&Time Track"),                FN(OnNewTimeTrack));
 		c->EndSubMenu();
 
-      c->AddItem(wxT("SmartRecord"), _("&Timer Record..."), FN(OnSmartRecord));
+      #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+         c->AddItem(wxT("SmartRecord"), _("&Timer Record..."), FN(OnSmartRecord));
+      #endif 
 
       c->AddSeparator();
       // StereoToMono moves elsewhere in the menu when in CleanSpeech mode.
@@ -640,29 +653,32 @@ void AudacityProject::CreateMenusAndCommands()
       // Generate, Effect & Analyze menus
       //
    
-      c->BeginMenu(_("&Generate"));
-      c->SetDefaultFlags(AudioIONotBusyFlag,
-                         AudioIONotBusyFlag);
-   
-      effects = Effect::GetEffects(INSERT_EFFECT | BUILTIN_EFFECT);
-      if(effects->GetCount()){
-         for(i=0; i<effects->GetCount(); i++)
-            names.Add((*effects)[i]->GetEffectName());
-         c->AddItemList(wxT("Generate"), names, FN(OnGenerateEffect));
-      }
-      delete effects;
-   
-      effects = Effect::GetEffects(INSERT_EFFECT | PLUGIN_EFFECT);
-      if (effects->GetCount()) {
-         c->AddSeparator();
-         names.Clear();
-         for(i=0; i<effects->GetCount(); i++)
-            names.Add((*effects)[i]->GetEffectName());
-         c->AddItemList(wxT("GeneratePlugin"), names, FN(OnGeneratePlugin), true);
-      }
-      delete effects;
-      c->EndMenu();
+      #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+         c->BeginMenu(_("&Generate"));
+         c->SetDefaultFlags(AudioIONotBusyFlag,
+                            AudioIONotBusyFlag);
+      
+         effects = Effect::GetEffects(INSERT_EFFECT | BUILTIN_EFFECT);
+         if(effects->GetCount()){
+            for(i=0; i<effects->GetCount(); i++)
+               names.Add((*effects)[i]->GetEffectName());
+            c->AddItemList(wxT("Generate"), names, FN(OnGenerateEffect));
+         }
+         delete effects;
+      
+         effects = Effect::GetEffects(INSERT_EFFECT | PLUGIN_EFFECT);
+         if (effects->GetCount()) {
+            c->AddSeparator();
+            names.Clear();
+            for(i=0; i<effects->GetCount(); i++)
+               names.Add((*effects)[i]->GetEffectName());
+            c->AddItemList(wxT("GeneratePlugin"), names, FN(OnGeneratePlugin), true);
+         }
+         delete effects;
+         c->EndMenu();
+      #endif 
 	}
+
    c->BeginMenu(_("Effe&ct"));
    c->SetDefaultFlags(AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
                       AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag);
@@ -699,32 +715,35 @@ void AudacityProject::CreateMenusAndCommands()
       }
       delete effects;
       c->EndMenu();
-      c->BeginMenu(_("&Analyze"));
- 	   /* plot spectrum moved from view */
-      c->AddItem(wxT("PlotSpectrum"), _("Plot Spectrum..."), FN(OnPlotSpectrum));
-      c->SetCommandFlags(wxT("PlotSpectrum"),
-                           AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
-                           AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
       
-      effects = Effect::GetEffects(ANALYZE_EFFECT | BUILTIN_EFFECT);
-      if(effects->GetCount()){
-         names.Clear();
-         for(i=0; i<effects->GetCount(); i++)
-            names.Add((*effects)[i]->GetEffectName());
-         c->AddItemList(wxT("Analyze"), names, FN(OnAnalyzeEffect));
-      }
-      delete effects;
-      
-      effects = Effect::GetEffects(ANALYZE_EFFECT | PLUGIN_EFFECT);
-      if (effects->GetCount()) {
-         c->AddSeparator();
-         names.Clear();
-         for(i=0; i<effects->GetCount(); i++)
-            names.Add((*effects)[i]->GetEffectName());
-         c->AddItemList(wxT("AnalyzePlugin"), names, FN(OnAnalyzePlugin), true);
-      }
-      delete effects;
-      c->EndMenu();
+      #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+         c->BeginMenu(_("&Analyze"));
+ 	      /* plot spectrum moved from view */
+         c->AddItem(wxT("PlotSpectrum"), _("Plot Spectrum..."), FN(OnPlotSpectrum));
+         c->SetCommandFlags(wxT("PlotSpectrum"),
+                              AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
+                              AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
+         
+         effects = Effect::GetEffects(ANALYZE_EFFECT | BUILTIN_EFFECT);
+         if(effects->GetCount()){
+            names.Clear();
+            for(i=0; i<effects->GetCount(); i++)
+               names.Add((*effects)[i]->GetEffectName());
+            c->AddItemList(wxT("Analyze"), names, FN(OnAnalyzeEffect));
+         }
+         delete effects;
+         
+         effects = Effect::GetEffects(ANALYZE_EFFECT | PLUGIN_EFFECT);
+         if (effects->GetCount()) {
+            c->AddSeparator();
+            names.Clear();
+            for(i=0; i<effects->GetCount(); i++)
+               names.Add((*effects)[i]->GetEffectName());
+            c->AddItemList(wxT("AnalyzePlugin"), names, FN(OnAnalyzePlugin), true);
+         }
+         delete effects;
+         c->EndMenu();
+      #endif 
 	}
 
    // Resolve from list of all effects, 
@@ -2128,6 +2147,13 @@ void AudacityProject::OnSaveAs()
 {
    SaveAs();
 }
+
+#ifdef USE_LIBVORBIS
+   void AudacityProject::OnSaveCompressed()
+   {
+      SaveAs(true);
+   }
+#endif
 
 void AudacityProject::OnCheckDependencies()
 {

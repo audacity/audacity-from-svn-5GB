@@ -133,6 +133,9 @@ void OnOpen();
 void OnClose();
 void OnSave();
 void OnSaveAs();
+#ifdef USE_LIBVORBIS
+   void OnSaveCompressed();
+#endif
 
 void OnCheckDependencies();
 
