@@ -13,6 +13,7 @@
 
 #include <wx/string.h>
 
+class wxFileName;
 
 // Uh, this is really a namespace rather than a class,
 // since all the functions are static.
