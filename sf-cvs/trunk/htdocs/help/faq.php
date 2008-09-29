@@ -69,23 +69,24 @@
         "lame-mp3" => array(
           _("How do I download and install the LAME MP3 encoder?"),
           sprintf(_('<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.
-<h3>Windows</h3>
+<h3 id="win">Windows</h3>
 <ol>
   <li>Go to the <a href="%s">LAME download page</a>.</li>
   <li>Under "For Audacity on Windows", left-click on the link "%s" and save the zip folder to anywhere on your computer.</li>
   <li>When you have finished downloading the ZIP folder, unzip it and save the file <b>lame_enc.dll</b> that it contains to anywhere on your computer.</li>
   <li>The first time you use the "Export as MP3" command, Audacity will ask you where lame_enc.dll is saved.</li>
-  <li>In case of difficulty, please view our more detailed instructions at the
-  <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#Windows_Instructions">Audacity Wiki</a>.</li>
+  <li>In case of difficulty, please view our <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#Windows_Instructions">more detailed instructions</a> on the <a href="http://audacityteam.org/wiki/">Audacity Wiki</a>.</li>
 </ol>
-<h3>Mac OS 9 or X</h3>
+<h3 id="mac">Mac OS 9 or X</h3>
 <ol>
   <li>Go to the <a href="%s">LAME download page</a>.</li>
   <li>Download either libmp3lame or the version of LameLib for your operating system.</li>
   <li>When you have finished downloading, use Stuffit Expander to extract the files.  (This may happen automatically.)</li>
   <li>Save the file called "LameLib" or libmp3lame.dylib anywhere on your computer.</li>
   <li>The first time you use the "Export as MP3" command, Audacity will ask you where LameLib or libmp3lame.dylib is saved.</li>
-</ol>'), "http://lame.buanzo.com.ar/", "libmp3lame-win-3.97.zip", "http://lame.buanzo.com.ar/")
+</ol>
+<h3 id="nix">Linux/Unix</h3>
+Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions">these instructions</a> on our <a href="http://audacityteam.org/wiki/">Wiki</a> to download and install a suitable LAME package from the internet.'), "http://lame.buanzo.com.ar/", "libmp3lame-win-3.97.zip", "http://lame.buanzo.com.ar/")
         ),
         // TODO: Connect/replace this with documentation on plug-ins page?
         "vst-enabler" => array(
@@ -177,8 +178,8 @@
 <p>With most Windows and Linux audio devices, it is possible to record whatever sound the computer is currently playing, including internet radio streams.</p>
 <p>In the drop-down menu on Audacity's mixer toolbar, choose “Wave Out” or “Stereo Mix” as the input source.  (The exact name may be different, depending on your computer's sound drivers.)  When you press the <b>Record</b> button, Audacity will capture whatever sound is playing on your computer's speakers. Note that on Windows Vista, the “stereo mix” option must be chosen in the Audio I/O tab of Preferences, in the “Recording Device” dropdown. On Windows, if you don't have a “Wave Out” or “Stereo Mix” option, or if it won't record, go to the system Control Panel and try to enable this option there. For instructions see: <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues#Using_the_Control_Panel\">Using the Control Panel</a> on the Wiki.</p>
 <p>If this doesn't work on your computer, you can instead use a cable to connect your computer's “Line Out” (speaker) port to its “Line In” port, and use Audacity to record from Line In.</p>
-<h3>Mac OS X</h3>
-<p>Mac OS X users can capture streaming audio using a program like <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>
+<h3 id=\"mac\">Mac OS X</h3>
+<p>Mac OS X users can capture streaming audio using a program like <a href=\"http://www.cycling74.com/products/soundflower\">Soundflower</a> (free, open source), <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>
 ")
         ),
         "scheduled" => array(
