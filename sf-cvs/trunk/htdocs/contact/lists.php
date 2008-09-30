@@ -2,7 +2,7 @@
 /*
  * Copyright 2005 Matt Brubeck, 2008 Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "lists";
@@ -23,15 +23,15 @@
 <dl>
   <dt id="users">audacity-users</dt>
   <dd>
-    <p><?=_('Discuss Audacity with other <a href="../community/users">users</a> and developers. <b>Note:</b> this list is currently a web-based forum only, but support for receiving and replying to messages in e-mail clients will be added shortly. You must register to send messages to audacity-users.')?></p>
-    <p><a href="http://www.nabble.com/Audacity---General-f472.html"><?=_('audacity-users archives and registration information')?></a></p>
+    <p><?=_('Discuss Audacity with other <a href="../community/users">users</a> and developers.')?> <?=$subscriberOnlyStr?></p>
+    <p><a href="http://lists.sourceforge.net/lists/listinfo/audacity-users"><?php printf($archiveStr, "audacity-users")?></a>
   </dd>
 
 <dt id="devel">audacity-devel</dt>
   <dd>
-    <p><?=_('For  <a href="../community/developers">developers</a> working with the Audacity source code and documentation, and others interested in following our development process or learning about compiling or developing Audacity source code.')?>  <?=$subscriberOnlyStr?></p>
+    <p><?=_('For  <a href="../community/developers">developers</a> working with the Audacity source code and documentation, and others interested in following our development process, or learning about compiling or developing our code.')?>  <?=$subscriberOnlyStr?></p>
     <p><a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel"><?php printf($archiveStr, "audacity-devel")?></a>
-    <p><?=_('Developers may also subscribe to receive automated notification of <a href="http://lists.sourceforge.net/lists/listinfo/audacity-cvs">latest source code changes</a> and of <a href="http://lists.sourceforge.net/lists/listinfo/audacity-bugs">bugs</a> reported to the <a href="http://limpet.net/audacity/bugzilla/">Bugzilla</a> database.')?></p> 
+    <p><?=_('Developers may also subscribe to automated notifications of <a href="http://lists.sourceforge.net/lists/listinfo/audacity-cvs">latest source code changes</a> and <a href="http://lists.sourceforge.net/lists/listinfo/audacity-bugs">bugs</a> reported to our <a href="http://limpet.net/audacity/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">Bugzilla</a> database. However, <a href="http://audacityteam.org/wiki/index.php?title=Release_Checklist">Release Checklist</a> on the <a href="http://audacityteam.org/wiki/">Wiki</a> is now used for internal bug tracking.')?></p> 
   </dd>
 
   <dt id="translation">audacity-translation</dt>

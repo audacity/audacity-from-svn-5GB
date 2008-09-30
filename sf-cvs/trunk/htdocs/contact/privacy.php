@@ -25,10 +25,10 @@
 
 <h3 id="lists"><?=_("Mailing List Policy")?></h3>
 
-<?=_('<p>(This applies to <a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel">audacity-devel</a>, <a href="http://n2.nabble.com/audacity-users-f238277.html">audacity-users</a> and our other <a href="../contact/lists">discussion lists</a>.)</p>
+<?=_('<p>(This applies to <a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel">audacity-devel</a>, <a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">audacity-users</a> and our other <a href="../contact/lists">discussion lists</a>.)</p>
 
 <p>These are public mailing lists.  When you send a message to any of these addresses, it will be forwarded to all the list subscribers, including Audacity developers and others.  SourceForge and other web sites may publish archives of these lists.</p>
-<p><b>Your email address will always be truncated in published archives for your privacy, and the Audacity developers will not share your address with anyone.</b>  However, we <b>cannot</b> prevent other subscribers from seeing or publishing your messages. Therefore we recommend you avoid putting contact details such as street addresses or telephone numbers in your emails.</p>
+<p><b>Your e-mail address will always be truncated in published archives for your privacy, and the Audacity developers will not share your address with anyone.</b>  However, we <b>cannot</b> prevent other subscribers from seeing or publishing your messages. Therefore we recommend you avoid putting contact details such as street addresses or telephone numbers in your e-mails.</p>
 <p>If you have any questions about this policy or are not comfortable writing to a public mailing list, please send a private e-mail to our <a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x64;&#111;&#x6d;&#105;&#x6e;&#x69;&#x63;&#64;&#97;&#x75;&#100;&#x61;&#99;&#105;&#116;&#121;&#x74;&#x65;&#97;&#109;&#x2e;&#x6f;&#x72;&#x67;&#x3f;&#115;&#x75;&#98;&#106;&#101;&#99;&#116;&#x3d;&#x4d;&#97;&#x69;&#108;&#105;&#110;&#x67;&#x20;&#76;&#x69;&#115;&#x74;&#115;">lead developer</a>.</p>')?>
 
 <?php
