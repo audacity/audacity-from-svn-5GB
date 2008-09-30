@@ -79,9 +79,9 @@
 </p>
 
 
-<h2><?= ('Make a Donation')?></h2>
+<h2 id="donate"><?= ('Make a Donation')?></h2>
 <p>
-  <?=_('We currently accept donations via the Amazon Honor System. Use your credit card and make a donation as small as US$1.00, or up to US$50.00:')?>
+  <?=_('We can accept donations via the Amazon Honor System, or by Paypal. To use Amazon, click the button below. You can make a donation securely by credit card, as little as US$1.00, or up to US$50.00:')?>
 </p>
 
 <!-- Begin Amazon Honor System Paybox -->
@@ -92,14 +92,21 @@
 </map>
 <!-- End Amazon Honor System Paybox -->
 
-<p><?=_('We can also accept PayPal donations through the SourceForge donation system, although currently a SourceForge account is required:')?></p>
+<p id="paypal"><?=_('Alternatively, click the button below to donate securely by Paypal. You can send any amount, using either your credit card or your Paypal account:')?></p>
 
+<!-- Begin Paypal button Form --> 
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <p class="logo">
-  <a title="<?=_('Donate via PayPal')?>"
-    href="http://sourceforge.net/donate/index.php?group_id=6235">
-    <img alt="<?=_('Donate via PayPal')?>"
-    src="../images/paypal.gif"></a>
+   <input type="hidden" name="cmd" value="_s-xclick">
+   <input type="hidden" name="item_name" value="Thank you for your donation to Audacity!">
+   <input type="hidden" name="return" value="http://audacity.sourceforge.net/">
+   <input type="hidden" name="cancel_return" value="http://audacity.sourceforge.net/community/donate">
+   <input type="image" src="../images/Paypal_large_blue.png" border="0" name="submit" alt="Paypal logo">
+   <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----">
 </p>
+</form>
+<!-- End Paypal button Form -->
+
 
 <p><?=_('If you prefer to send a personal check or another form of payment, please visit the <a href="../about/credits">credits</a> page and contact one of the developers on the Technical Leadership Council.')?></p>
 
