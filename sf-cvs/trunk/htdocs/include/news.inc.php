@@ -40,6 +40,46 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "October 1, 2008",
+  	"German_Audacity_book",
+  _("German Audacity Book released"),
+  _("
+<p>
+The probably first book about Audacity in German language was released.
+</p>
+<p>
+<table border=\"0\">
+<tr>
+<td>
+<a href=\"http://www.audacity-buch.de/buch.php?partner=homepage\">
+<img src=\"../de/buch_klein.jpg\" alt=\"Audacity Book Cover\"></img>
+</a>
+</td>
+<td>
+<p>
+The book - dubbed \"Audacity kompakt\" (A compact guide to Audacity) - was written by 
+author Markus Priemer, who was supported by German Audacity developer Markus Meyer.
+The latter also added a foreword. The book aims to be an introduction to 
+beginners who want to get started quickly with Audacity, but also acts as a reference
+for more experienced users. It not only features an introduction to how digital 
+audio works but also many tips and tricks for using Audacity.
+</p>
+<p>
+<a href=\"http://www.audacity-buch.de/buch.php?partner=homepage\">Order the book online now!</a>
+Each sale created through our web site will directly benefit Audacity 
+development.
+</p>
+<p>
+From the book's table of contents: The Basics of Digital Audio, Audio Data and Compression,
+Opening and Importing Files, Editing Audio Tracks, Effects, Command Reference, Usage Examples, ...
+</p>
+</td>
+</tr>
+</table>
+</p>
+"));
+
+add_news_item(
   "September 12, 2008",
         "GSoC_2008_results",
   _("Audacity shines in Google Summer of Code (GSoC) 2008"),
