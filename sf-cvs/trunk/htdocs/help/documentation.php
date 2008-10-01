@@ -50,7 +50,9 @@
   <h3>Hilfe auf Deutsch</h3>
   <ul>
     <li><a href="../localhelp/de/audacity-1.2-help.htb">Deutsche Hilfedatei (htb)</a> (Ersetzen Sie audacity-1.2-help.htb im Audacity Installation-Heft mit diesem Download.)</li>
-    <li><a href="../localhelp/de/audacity-deutsch-handbuch-23-Jan-2005.pdf">Deutsches Handbuch (PDF)</a>
+    <li><a href="../localhelp/de/audacity-deutsch-handbuch-23-Jan-2005.pdf">Deutsches Handbuch (PDF)</a></li>
+    <li><a href="http://www.audacity-buch.de/buch.php?partner=homepage">Markus Priemer - Audacity kompakt</a> Das deutschsprachige Anwenderhandbuch zu Audacity. 
+Herausgegeben vom bomots Verlag. Mit Unterst&uuml;tzung und einem Vorwort von Audacity-Entwickler Markus Meyer.</li>
  </ul>
 </div>
 
