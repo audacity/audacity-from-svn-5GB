@@ -45,14 +45,18 @@ add_news_item(
   _("German Audacity Book released"),
   _("
 <p>
-The probably first book about Audacity in German language was released.
+Probably the first book about Audacity in German language has been released.
 </p>
 <p>
-<table border=\"0\">
+<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
 <tr>
 <td>
+<table border=\"0\" cellpadding=\"15\">
+<tr><td>
 <a href=\"http://www.audacity-buch.de/buch.php?partner=homepage\">
-<img src=\"../de/buch_klein.jpg\" alt=\"Audacity Book Cover\"></img>
+<img src=\"../de/buch_klein.jpg\" alt=\"Audacity Book Cover\" border=\"0\"></img>
+</td></tr>
+</table>
 </a>
 </td>
 <td>
