@@ -242,9 +242,8 @@ bool EffectTruncSilence::Process()
          truncIndex++;
       }
 
-      // Update tracks if any samples were removed
-      if (truncIndex < limit) {
-
+      // Update tracks if any samples were removed, now or before
+      if (outTrackOffset + truncIndex != index + limit) {
          // Put updated sample back into output tracks.
          tndx = 0;
          t = (WaveTrack *) iterOut.First();
