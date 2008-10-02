@@ -80,15 +80,15 @@
 <div id="news">
   <?php
     global $news_items;
-    $item = array_shift($news_items);
-    $dateStr = $item->dateStr();
+    for ($i = 0; $i < 2; $i++)
+    {
+        $item = array_shift($news_items);
+        $dateStr = $item->dateStr();
+        echo "<div class=\"newsitem\"><h3>";
+        echo $dateStr . ": " . $item->title;
+        echo "</h3>" . $item->body . "</div>";
+    }
   ?>
-  <div class="newsitem">
-    <h3>
-      <?="$dateStr: $item->title"?>
-    </h3>
-    <?=$item->body?>
-  </div>
   <h4>
     <a href="about/news">
       <?=_("More news items...")?>
