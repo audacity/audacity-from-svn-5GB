@@ -1008,8 +1008,8 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
    float *temp = new float[mMaxSamples];
 
    int pixel = 0;
-   float theMin = 0;
-   float theMax = 0;
+   float theMin = 0.0;
+   float theMax = 0.0;
    float sumsq = float(0.0);
    unsigned int b = block0;
    int jcount = 0;
