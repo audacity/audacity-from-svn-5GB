@@ -71,7 +71,9 @@ extern "C" {
 #define HAVE_STRICMP 1
 
 /* MS names for these functions */
-#define vsnprintf _vsnprintf
+#if !defined _MSC_VER || _MSC_VER < 1500
+   #define vsnprintf _vsnprintf
+#endif
 #define snprintf _snprintf
 #define access _access
 #define stricmp _stricmp
