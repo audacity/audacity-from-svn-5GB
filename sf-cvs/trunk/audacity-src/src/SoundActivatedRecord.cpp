@@ -34,7 +34,8 @@ END_EVENT_TABLE()
 
 SoundActivatedRecord::SoundActivatedRecord(wxWindow* parent)
 : wxDialog(parent, -1, _("Sound Activated Record"), wxDefaultPosition, 
-           wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
+           wxDefaultSize, wxCAPTION )
+//           wxDefaultSize, wxCAPTION | wxTHICK_FRAME)
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
    PopulateOrExchange(S);
