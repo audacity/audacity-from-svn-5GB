@@ -1775,7 +1775,7 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
                    path,
                    wxT(""),
                    mask,
-                   wxOPEN | wxMULTIPLE | wxRESIZE_BORDER);
+                   wxFD_OPEN | wxFD_MULTIPLE | wxRESIZE_BORDER);
 
    dlog.SetFilterIndex(index);
 
@@ -2740,18 +2740,18 @@ bool AudacityProject::SaveAs()
 	if( mCleanSpeechMode )
 	{
 	   fName = FileSelector(_("Save Speech As:"),
-                           path, fName, wxT(""),
-                           _("Windows PCM Audio file (*.wav)|*.wav"),  //lda
-                           wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER, this);
+                  path, fName, wxT(""),
+                  _("Windows PCM Audio file (*.wav)|*.wav"),  //lda
+                  wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER, this);
 	}
 	else
 	{
  	  ShowWarningDialog(this, wxT("FirstProjectSave"),
                      _("You are saving an Audacity project file (.aup).\n\nSaving a project creates a file that only Audacity can open.\n\nTo save an audio file for other programs, use one of the \"File > Export\" commands.\n"));
  	  fName = FileSelector(_NoAcc("Save Project &As...") + wxT(":"),
-                          path, fName, wxT(""),
-                          _("Audacity projects (*.aup)|*.aup"),
-                          wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER, this);
+                    path, fName, wxT(""),
+                    _("Audacity projects (*.aup)|*.aup"),
+                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER, this);
 	}
 
    if (fName == wxT(""))

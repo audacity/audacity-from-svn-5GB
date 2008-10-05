@@ -1099,7 +1099,7 @@ void TagsEditor::OnLoad(wxCommandEvent & event)
                      wxT("Tags.xml"),
                      wxT("xml"),
                      wxT("*.xml"),
-                     wxOPEN | wxRESIZE_BORDER,
+                     wxFD_OPEN | wxRESIZE_BORDER,
                      this);
 
    // User canceled...
@@ -1153,7 +1153,7 @@ void TagsEditor::OnSave(wxCommandEvent & event)
                      wxT("Tags.xml"),
                      wxT("xml"),
                      wxT("*.xml"),
-                     wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
+                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER,
                      this);
 
    // User canceled...
@@ -1753,7 +1753,7 @@ void TagsEditor1::OnLoad(wxCommandEvent & event)
                      wxT("Tags.xml"),
                      wxT("xml"),
                      wxT("*.xml"),
-                     wxOPEN | wxRESIZE_BORDER,
+                     wxFD_OPEN | wxRESIZE_BORDER,
                      this);
 
    // User canceled...
@@ -1789,7 +1789,7 @@ void TagsEditor1::OnSave(wxCommandEvent & event)
                      wxT("Tags.xml"),
                      wxT("xml"),
                      wxT("*.xml"),
-                     wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
+                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER,
                      this);
 
    // User canceled...
@@ -2475,7 +2475,7 @@ void TagsEditor2::OnLoad(wxCommandEvent & event)
                      wxT("Tags.xml"),
                      wxT("xml"),
                      wxT("*.xml"),
-                     wxOPEN | wxRESIZE_BORDER,
+                     wxFD_OPEN | wxRESIZE_BORDER,
                      this);
 
    // User canceled...
@@ -2511,7 +2511,7 @@ void TagsEditor2::OnSave(wxCommandEvent & event)
                      wxT("Tags.xml"),
                      wxT("xml"),
                      wxT("*.xml"),
-                     wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
+                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER,
                      this);
 
    // User canceled...

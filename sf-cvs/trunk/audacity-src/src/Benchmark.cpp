@@ -127,7 +127,6 @@ BenchmarkDialog::BenchmarkDialog(wxWindow *parent):
       wxDialog( parent, 0, wxT("Benchmark"),
                 wxDefaultPosition, wxDefaultSize,
                 wxDEFAULT_DIALOG_STYLE |
-                wxDIALOG_MODAL |
                 wxRESIZE_BORDER)
 {
    mBlockSizeStr = wxT("64");
