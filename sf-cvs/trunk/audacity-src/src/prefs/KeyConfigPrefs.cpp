@@ -165,7 +165,7 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
                         fName,
                         wxT("xml"),
                         wxT("*.xml"),
-                        wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
+                        wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER,
                         this);
 
    if (!fName)

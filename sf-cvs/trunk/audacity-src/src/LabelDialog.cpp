@@ -568,7 +568,7 @@ void LabelDialog::OnExport(wxCommandEvent &event)
                         _("labels.txt"),
                         wxT("txt"),
                         wxT("*.txt"),
-                        wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
+                        wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER,
                         this);
 
    if (fName == wxT(""))

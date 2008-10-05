@@ -2500,7 +2500,7 @@ void AudacityProject::OnExportLabels()
                         fName,
                         wxT("txt"),
                         wxT("*.txt"),
-                        wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
+                        wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER,
                         this);
 
    if (fName == wxT(""))
@@ -4720,7 +4720,7 @@ void AudacityProject::OnExportCleanSpeechPresets()
                            wxT("*.csp"),       // default file extension
                            extension,
                            _("CleanSpeech Presets (*.csp)|*.csp"),
-                           wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER);
+                           wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER);
 
       if (fName.empty()) { // if cancel selected
          return;
@@ -4803,7 +4803,7 @@ void AudacityProject::OnImportCleanSpeechPresets()
                            wxT("*.csp"),       // default file name
                            extension,
                            wxT("CleanSpeech Presets (*.csp)|*.csp"),
-                           wxOPEN | wxRESIZE_BORDER);
+                           wxFD_OPEN | wxRESIZE_BORDER);
 
       if (fName.empty()) { // if cancel selected
          return;
