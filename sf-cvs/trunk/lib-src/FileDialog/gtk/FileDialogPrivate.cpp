@@ -2,7 +2,7 @@
 // Name:        gtk/filedlg.cpp
 // Purpose:     native implementation of FileDialog
 // Author:      Robert Roebling, Zbigniew Zagorski, Mart Raudsepp
-// Id:          $Id: FileDialogPrivate.cpp,v 1.4 2008-05-24 02:57:39 llucius Exp $
+// Id:          $Id: FileDialogPrivate.cpp,v 1.5 2008-10-05 14:48:59 richardash1981 Exp $
 // Copyright:   (c) 1998 Robert Roebling, 2004 Zbigniew Zagorski, 2005 Mart Raudsepp
 // Licence:     wxWindows licence
 //
@@ -77,7 +77,7 @@ extern "C" {
 #if GTK_CHECK_VERSION(2,7,3)
       if(gtk_check_version(2,7,3) != NULL)
 #endif
-         if ((style & wxSAVE) && (style & wxOVERWRITE_PROMPT))
+         if ((style & wxFD_SAVE) && (style & wxFD_OVERWRITE_PROMPT))
          {
             if ( g_file_test(filename, G_FILE_TEST_EXISTS) )
             {
@@ -95,7 +95,7 @@ extern "C" {
          }
       
       // change to the directory where the user went if asked
-      if (style & wxCHANGE_DIR)
+      if (style & wxFD_CHANGE_DIR)
       {
          // Use chdir to not care about filename encodings
          gchar* folder = g_path_get_dirname(filename);
@@ -184,7 +184,7 @@ FileDialog::FileDialog(wxWindow *parent, const wxString& message,
 #if defined(__WXGTK24__) && (!defined(__WXGPE__))
    if (!gtk_check_version(2,4,0))
    {
-      wxASSERT_MSG( !( (style & wxSAVE) && (style & wxMULTIPLE) ), wxT("FileDialog - wxMULTIPLE used on a save dialog" ) );
+      wxASSERT_MSG( !( (style & wxFD_SAVE) && (style & wxFD_MULTIPLE) ), wxT("FileDialog - wxFD_MULTIPLE used on a save dialog" ) );
       m_needParent = false;
       m_destroyed_by_delete = false;
       
@@ -202,7 +202,7 @@ FileDialog::FileDialog(wxWindow *parent, const wxString& message,
          gtk_parent = GTK_WINDOW( gtk_widget_get_toplevel(parent->m_widget) );
       
       gchar* ok_btn_stock;
-      if ( style & wxSAVE )
+      if ( style & wxFD_SAVE )
       {
          gtk_action = GTK_FILE_CHOOSER_ACTION_SAVE;
          ok_btn_stock = GTK_STOCK_SAVE;
@@ -224,7 +224,7 @@ FileDialog::FileDialog(wxWindow *parent, const wxString& message,
       // Allow pressing "Enter" key for default action
       gtk_dialog_set_default_response(GTK_DIALOG(m_widget), GTK_RESPONSE_ACCEPT);
       
-      if ( style & wxMULTIPLE )
+      if ( style & wxFD_MULTIPLE )
          gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(m_widget), true);
       
       // local-only property could be set to false to allow non-local files to be loaded.
@@ -241,7 +241,7 @@ FileDialog::FileDialog(wxWindow *parent, const wxString& message,
       
       SetWildcard(wildCard);
       
-      if ( style & wxSAVE )
+      if ( style & wxFD_SAVE )
       {
          if ( !defaultDir.empty() )
             gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(m_widget),
@@ -455,7 +455,7 @@ void FileDialog::SetFilename(const wxString& name)
 #if defined(__WXGTK24__) && (!defined(__WXGPE__))
    if (!gtk_check_version(2,4,0))
    {
-      if (GetWindowStyle() & wxSAVE)
+      if (GetWindowStyle() & wxFD_SAVE)
          gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(m_widget), wxConvFileName->cWX2MB(name));
       else
          SetPath(wxFileName(GetDirectory(), name).GetFullPath());
