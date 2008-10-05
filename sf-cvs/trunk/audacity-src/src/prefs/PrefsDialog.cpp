@@ -92,7 +92,8 @@ static const char * TrialImage[] = {
 
 PrefsDialog::PrefsDialog(wxWindow * parent):
    wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
-         wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
+         wxDefaultSize, wxCAPTION)
+//         wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
    gPrefsDialogVisible = true;
 

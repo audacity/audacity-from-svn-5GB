@@ -66,7 +66,8 @@ END_EVENT_TABLE()
 
 TimerRecordDialog::TimerRecordDialog(wxWindow* parent)
 : wxDialog(parent, -1, _("Audacity Timer Record"), wxDefaultPosition, 
-           wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
+           wxDefaultSize, wxCAPTION)
+//           wxDefaultSize, wxCAPTION | wxTHICK_FRAME)
 {
    m_DateTime_Start = wxDateTime::UNow(); 
    m_TimeSpan_Duration = wxTimeSpan::Minutes(5); // default 5 minute duration

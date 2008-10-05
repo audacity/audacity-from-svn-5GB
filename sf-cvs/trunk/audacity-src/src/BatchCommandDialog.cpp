@@ -32,6 +32,7 @@ selected command.
 #include <wx/radiobut.h>
 #include <wx/button.h>
 #include <wx/string.h>
+#include <wx/dialog.h>
 
 
 #include "Project.h"
@@ -55,7 +56,8 @@ END_EVENT_TABLE();
 BatchCommandDialog::BatchCommandDialog(wxWindow * parent, wxWindowID id):
    wxDialog(parent, id, _("Select Command"),
             wxDefaultPosition, wxSize(250,200),
-            wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
+            wxCAPTION)
+//            wxCAPTION | wxTHICK_FRAME)
 {
    SetLabel(_("Select Command"));         // Provide visual label
    SetName(_("Select Command"));          // Provide audible label
