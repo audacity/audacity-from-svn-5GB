@@ -371,7 +371,7 @@ void ToneGenDialog::PopulateOrExchangeExtended( ShuttleGui & S )
                       wxID_ANY,
                       wxT(""),
                       length,
-                      44100,
+                      mEffect->mProjectRate,
                       wxDefaultPosition,
                       wxDefaultSize,
                       true);
