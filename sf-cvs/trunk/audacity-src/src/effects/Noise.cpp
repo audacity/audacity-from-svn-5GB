@@ -38,7 +38,7 @@ bool EffectNoise::PromptUser()
    noiseTypeList.Add(_("Pink"));
    noiseTypeList.Add(_("Brown"));
 
-   NoiseDialog dlog(mParent, _("Noise Generator"));
+   NoiseDialog dlog(this, mParent, _("Noise Generator"));
 
    // dialog will be passed values from effect
    // Effect retrieves values from saved config
@@ -222,7 +222,9 @@ BEGIN_EVENT_TABLE(NoiseDialog, EffectDialog)
     EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, NoiseDialog::OnTimeCtrlUpdate)
 END_EVENT_TABLE()
 
-NoiseDialog::NoiseDialog(wxWindow * parent, const wxString & title): EffectDialog(parent, title, INSERT_EFFECT)
+NoiseDialog::NoiseDialog(EffectNoise * effect, wxWindow * parent, const wxString & title)
+:  EffectDialog(parent, title, INSERT_EFFECT), 
+   mEffect(effect)
 {
    mNoiseDurationT = NULL;
    /* // already initialized in EffectNoise::PromptUser
@@ -246,7 +248,7 @@ void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
                       wxID_ANY,
                       wxT(""),
                       nDuration,
-                      44100,
+                      mEffect->mProjectRate,
                       wxDefaultPosition,
                       wxDefaultSize,
                       true);

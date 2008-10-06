@@ -53,7 +53,7 @@
 
 bool EffectDtmf::PromptUser()
 {
-   DtmfDialog dlog(mParent, _("DTMF Tone Generator"));
+   DtmfDialog dlog(this, mParent, _("DTMF Tone Generator"));
 
 
    // dialog will be passed values from effect
@@ -430,7 +430,9 @@ BEGIN_EVENT_TABLE(DtmfDialog, EffectDialog)
 END_EVENT_TABLE()
 
 
-DtmfDialog::DtmfDialog(wxWindow * parent, const wxString & title): EffectDialog(parent, title, INSERT_EFFECT)
+DtmfDialog::DtmfDialog(EffectDtmf * effect, wxWindow * parent, const wxString & title)
+:  EffectDialog(parent, title, INSERT_EFFECT),
+   mEffect(effect)
 {
    /*
    wxString dString;       // dtmf tone string
@@ -468,7 +470,7 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
                          ID_DTMF_DURATION_TEXT,
                          wxT(""),
                          dDuration,
-                         44100,
+                         mEffect->mProjectRate,
                          wxDefaultPosition,
                          wxDefaultSize,
                          true);
