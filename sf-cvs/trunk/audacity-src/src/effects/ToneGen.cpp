@@ -68,7 +68,7 @@ bool EffectToneGen::PromptUser()
    wxArrayString interpolations;
    interpolations.Add(_("Linear"));
    interpolations.Add(_("Logarithmic"));
-   ToneGenDialog dlog(mParent, mbChirp ? _("Chirp Generator") : _("Tone Generator"));
+   ToneGenDialog dlog(this, mParent, mbChirp ? _("Chirp Generator") : _("Tone Generator"));
    waveforms.Add(_("Sine"));
    waveforms.Add(_("Square"));
    waveforms.Add(_("Sawtooth"));
@@ -303,8 +303,9 @@ BEGIN_EVENT_TABLE(ToneGenDialog, EffectDialog)
     EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, ToneGenDialog::OnTimeCtrlUpdate)
 END_EVENT_TABLE()
 
-ToneGenDialog::ToneGenDialog(wxWindow * parent, const wxString & title)
-: EffectDialog(parent, title, INSERT_EFFECT)
+ToneGenDialog::ToneGenDialog(EffectToneGen * effect, wxWindow * parent, const wxString & title)
+:  EffectDialog(parent, title, INSERT_EFFECT),
+   mEffect(effect)
 {
    mToneDurationT = NULL;
    mbChirp = false;
@@ -327,7 +328,7 @@ void ToneGenDialog::PopulateOrExchangeStandard( ShuttleGui & S )
                       wxID_ANY,
                       wxT(""),
                       length,
-                      44100,
+                      mEffect->mProjectRate,
                       wxDefaultPosition,
                       wxDefaultSize,
                       true);

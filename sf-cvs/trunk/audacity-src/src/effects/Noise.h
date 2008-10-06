@@ -90,7 +90,7 @@ class EffectNoise:public Effect {
 class NoiseDialog:public EffectDialog {
  public:
    // constructors and destructors
-   NoiseDialog(wxWindow * parent, const wxString & title);
+   NoiseDialog(EffectNoise * effect, wxWindow * parent, const wxString & title);
 
    // method declarations
    void PopulateOrExchange(ShuttleGui & S);
@@ -111,6 +111,7 @@ class NoiseDialog:public EffectDialog {
    bool nIsSelection;
 
  private:
+   EffectNoise  *mEffect;
    TimeTextCtrl *mNoiseDurationT;
 };
 

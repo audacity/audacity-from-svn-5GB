@@ -95,7 +95,7 @@ class EffectDtmf:public Effect {
 class DtmfDialog:public EffectDialog {
  public:
    // constructors and destructors
-   DtmfDialog(wxWindow * parent, const wxString & title);
+   DtmfDialog(EffectDtmf * effect, wxWindow * parent, const wxString & title);
 
    // method declarations
    void PopulateOrExchange(ShuttleGui & S);
@@ -110,6 +110,7 @@ class DtmfDialog:public EffectDialog {
    void Recalculate(void);
 
  private:
+   EffectDtmf *mEffect;
    wxSlider   *mDtmfDutyS;
    wxTextCtrl *mDtmfStringT;
    TimeTextCtrl *mDtmfDurationT;
