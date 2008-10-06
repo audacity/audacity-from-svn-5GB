@@ -575,12 +575,13 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
 
    if ( gotError )
    {
-      wxLogMessage(wxT("Failed to load either avcodec or avutil"));
-      if ( showerr ) wxMessageBox(wxSysErrorMsg());
 #if defined(__WXMSW__)
       //On Windows - return error mode to normal
       SetErrorMode(erm);
+#else
+      if ( showerr ) wxMessageBox(wxSysErrorMsg());
 #endif
+      wxLogMessage(wxT("Failed to load either avcodec or avutil"));
       return false;
    }
 
