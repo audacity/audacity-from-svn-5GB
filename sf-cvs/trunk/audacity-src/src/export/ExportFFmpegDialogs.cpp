@@ -791,36 +791,42 @@ ExportFFmpegOptions::ExportFFmpegOptions(wxWindow *parent)
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
    PickFFmpegLibs();
-   FFmpegLibsInst->LoadLibs(NULL,false);
+   FFmpegLibsInst->LoadLibs(NULL,true);
 
    mPresets = new FFmpegPresets();
    mPresetNames = mPresets->GetPresetList();
-   //FetchPresetList();
-   FetchFormatList();
-   FetchCodecList();
 
-   for (unsigned int i = 0; i < 6; i++)
+   if (FFmpegLibsInst->ValidLibsLoaded())
    {
-      mPredictionOrderMethodLabels.Add(i);
-      mPredictionOrderMethodNames.Add(wxString::Format(wxT("%s"),PredictionOrderMethodNames[i]));
+
+      
+      
+      FetchFormatList();
+      FetchCodecList();
+
+      for (unsigned int i = 0; i < 6; i++)
+      {
+         mPredictionOrderMethodLabels.Add(i);
+         mPredictionOrderMethodNames.Add(wxString::Format(wxT("%s"),PredictionOrderMethodNames[i]));
+      }
+
+      for (unsigned int i=0; i < (sizeof(iAACProfileValues)/sizeof(int)); i++)
+      {
+         mProfileNames.Add(wxString::Format(wxT("%s"),iAACProfileNames[i]));
+         mProfileLabels.Add(iAACProfileValues[i]);
+      }
+
+      PopulateOrExchange(S);
+
+      //Select the format that was selected last time this dialog was closed
+      mFormatList->Select(mFormatList->FindString(gPrefs->Read(wxT("/FileFormats/FFmpegFormat"))));
+      DoOnFormatList();
+
+      //Select the codec that was selected last time this dialog was closed
+      AVCodec *codec = FFmpegLibsInst->avcodec_find_encoder((CodecID)gPrefs->Read(wxT("/FileFormats/FFmpegCodec"),(long)CODEC_ID_NONE));
+      if (codec != NULL) mCodecList->Select(mCodecList->FindString(wxString::FromUTF8(codec->name)));
+      DoOnCodecList();
    }
-
-   for (unsigned int i=0; i < (sizeof(iAACProfileValues)/sizeof(int)); i++)
-   {
-      mProfileNames.Add(wxString::Format(wxT("%s"),iAACProfileNames[i]));
-      mProfileLabels.Add(iAACProfileValues[i]);
-   }
-
-   PopulateOrExchange(S);
-
-   //Select the format that was selected last time this dialog was closed
-   mFormatList->Select(mFormatList->FindString(gPrefs->Read(wxT("/FileFormats/FFmpegFormat"))));
-   DoOnFormatList();
-
-   //Select the codec that was selected last time this dialog was closed
-   AVCodec *codec = FFmpegLibsInst->avcodec_find_encoder((CodecID)gPrefs->Read(wxT("/FileFormats/FFmpegCodec"),(long)CODEC_ID_NONE));
-   if (codec != NULL) mCodecList->Select(mCodecList->FindString(wxString::FromUTF8(codec->name)));
-   DoOnCodecList();
 
 }
 

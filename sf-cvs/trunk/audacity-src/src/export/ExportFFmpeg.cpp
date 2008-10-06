@@ -147,7 +147,6 @@ ExportFFmpeg::ExportFFmpeg()
       switch(newfmt)
       {
       case FMT_M4A:
-         AddExtension(wxString(wxT("mov")),fmtindex);
          AddExtension(wxString(wxT("3gp")),fmtindex);
          AddExtension(wxString(wxT("mp4")),fmtindex);
          break;

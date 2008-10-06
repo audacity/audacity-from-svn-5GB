@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.10 2008-06-27 03:21:14 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.11 2008-10-06 13:37:25 l_r_nightmare Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -278,6 +278,9 @@ void FileDialog::FilterFiles(HWND hDlg)
             break;
       }
       
+      // Convert the filename to lowercase (and remember to write filters in lowercase!)
+      filename = filename.Lower();
+
       // Attempt to match it to all of our filters
       bool match = false;
       for (int flt = 0; flt < fltcnt; flt++)
