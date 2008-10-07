@@ -21,7 +21,7 @@
 
   $faqSections = array(
     "general" => array(
-      _("About Audacity"),
+      _("<div id=\"about\">About Audacity</div>"),
       array(
         "free" => array(
           _("Is Audacity really free?  Why?"),
@@ -73,7 +73,7 @@
       )
     ),
     "install" => array(
-      _("Installation and Plug-Ins"),
+      _("<div id=\"install\">Installation and Plug-Ins</div>"),
       array(
         "lame-mp3" => array(
           _("How do I download and install the LAME MP3 encoder?"),
@@ -120,7 +120,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
       ),
     ),
     "recording" => array(
-      _("Recording"),
+      _("<div id=\"record\">Recording"),
       array(
         "stereo" => array(
           _("How can I record in stereo?"),
@@ -205,7 +205,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
       ),
     ),
     "files" => array(
-      _("Opening and Saving Files"),
+      _("<div id=\"opensave\">Opening and Saving Files</div>"),
       array(
         "aup" => array(
           _("How do I open an Audacity project (AUP file) in another program?"),
@@ -284,7 +284,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
       ),
     ),
     "editing" => array(
-      _("Editing"),
+      _("<div id=\"editing\">Editing"),
       array(
         "menu-disabled" => array(
           _("Why can’t I use the effects or other menu items?"),
