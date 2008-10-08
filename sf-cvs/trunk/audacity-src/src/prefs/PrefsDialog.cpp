@@ -188,9 +188,10 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
    #ifdef __WXMSW__
    // Because it looks nice (tm)   (you can see all the tabs at once)
-   SetSize(525, 363);
+   //SetSize(525, 363);
    #endif
 
+   
    // Center after all that resizing, but make sure it doesn't end up
    // off-screen
    CentreOnParent();
