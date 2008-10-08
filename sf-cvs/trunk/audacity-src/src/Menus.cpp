@@ -2020,6 +2020,7 @@ void AudacityProject::OnSetLeftSelection()
          wxString fmt = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
 
          TimeDialog D(this, wxID_ANY, _("Set Left Selection Bound"));
+         D.SetSampleRate(mRate);
          D.SetFormatString(fmt);
          if(wxID_OK==D.ShowModal() )
             {
@@ -2054,6 +2055,7 @@ void AudacityProject::OnSetRightSelection()
          wxString fmt = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
 
          TimeDialog D(this, wxID_ANY, _("Set Right Selection Bound"));
+         D.SetSampleRate(mRate);
          D.SetFormatString(fmt);
          if(wxID_OK==D.ShowModal() )
             {
