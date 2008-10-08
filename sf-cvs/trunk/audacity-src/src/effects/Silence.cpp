@@ -31,6 +31,8 @@ bool EffectSilence::PromptUser()
 {
    TimeDialog dlog(mParent, wxID_ANY, _("Silence Generator"));
 
+   dlog.SetSampleRate(mProjectRate);
+
    if (mT1 > mT0) {
       // there is a selection: let's fit in there...
       length = mT1 - mT0;
