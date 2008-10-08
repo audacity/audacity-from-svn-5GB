@@ -120,7 +120,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
       ),
     ),
     "recording" => array(
-      _("<div id=\"record\">Recording"),
+      _("<div id=\"record\">Recording</div>"),
       array(
         "stereo" => array(
           _("How can I record in stereo?"),
@@ -284,7 +284,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
       ),
     ),
     "editing" => array(
-      _("<div id=\"editing\">Editing"),
+      _("<div id=\"editing\">Editing</div>"),
       array(
         "menu-disabled" => array(
           _("Why can’t I use the effects or other menu items?"),
