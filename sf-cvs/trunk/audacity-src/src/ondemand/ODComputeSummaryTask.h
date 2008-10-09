@@ -75,6 +75,8 @@ protected:
    void MarkUpdateRan();
    bool HasUpdateRan();
    
+   //mBlockFiles is touched on several threads- the OD terminate thread, and the task thread, so we need to mutex it.
+   ODLock  mBlockFilesMutex;
    std::vector<ODPCMAliasBlockFile*> mBlockFiles;
    
       

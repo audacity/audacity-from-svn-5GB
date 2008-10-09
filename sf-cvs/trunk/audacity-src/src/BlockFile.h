@@ -137,6 +137,7 @@ class BlockFile {
    //needed for Ref/Deref access.
    friend class ODComputeSummaryTask;
    friend class ODDecodeTask;
+   friend class ODPCMAliasBlockFile;
 
    virtual void Ref();
    virtual bool Deref();
