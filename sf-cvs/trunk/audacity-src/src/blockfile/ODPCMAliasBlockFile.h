@@ -131,7 +131,15 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
    virtual void WriteSummary();
    virtual void *CalcSummary(samplePtr buffer, sampleCount len,
                              sampleFormat format);
-
+   
+  private:
+   //Thread-safe versions
+   virtual void Ref();
+   virtual bool Deref();
+   //needed for Ref/Deref access.
+   friend class DirManager;
+   friend class ODComputeSummaryTask;
+   friend class ODDecodeTask;
 
    char* mFileNameChar;
 
@@ -145,6 +153,11 @@ class ODPCMAliasBlockFile : public PCMAliasBlockFile
 
    //lock the read data - libsndfile can't handle two reads at once?
    ODLock mReadDataMutex;
+
+
+   //lock the Ref counting
+   ODLock mDerefMutex;
+   ODLock mRefMutex;
 
    ODLock    mSummaryAvailableMutex;
    bool mSummaryAvailable;

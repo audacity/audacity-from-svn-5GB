@@ -73,6 +73,34 @@ ODPCMAliasBlockFile::~ODPCMAliasBlockFile()
    delete [] mFileNameChar;
 }
 
+/// Increases the reference count of this block by one.  Only
+/// DirManager should call this method.
+/// This method has been overidden to be threadsafe.  It is important especially
+/// if two blockfiles deref at the same time resulting in a double deletion of the file
+void ODPCMAliasBlockFile::Ref()
+{
+   mRefMutex.Lock();
+   BlockFile::Ref();
+   mRefMutex.Unlock();
+}
+
+/// Decreases the reference count of this block by one.  If this
+/// causes the count to become zero, deletes the associated disk
+/// file and deletes this object
+bool ODPCMAliasBlockFile::Deref()
+{
+   bool ret;
+   mDerefMutex.Lock();
+   ret = BlockFile::Deref();
+   if(!ret)
+   {
+      //Deref returns true when deleted, in which case we should not be touching instance variables, or ever calling this function again.
+      mDerefMutex.Unlock();
+   }
+   return ret;
+}
+
+
 
 //Check to see if we have the file for these calls.
 wxLongLong ODPCMAliasBlockFile::GetSpaceUsage()

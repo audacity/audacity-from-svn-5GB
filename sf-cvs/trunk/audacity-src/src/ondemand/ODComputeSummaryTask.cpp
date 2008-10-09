@@ -49,9 +49,12 @@ void ODComputeSummaryTask::Terminate()
    //The terminate cblock won't allow DoSomeInternal and this method to be run async, so this is thread-safe
    
    //we are going to take things out of the array.  But first deref them since we ref them when we put them in.
+   
+   mBlockFilesMutex.Lock();
    for(unsigned int i=0;i<mBlockFiles.size();i++)
       mBlockFiles[i]->Deref();
    mBlockFiles.clear();
+   mBlockFilesMutex.Unlock();
 }     
      
 ///Computes and writes the data for one BlockFile if it still has a refcount. 
@@ -70,6 +73,8 @@ void ODComputeSummaryTask::DoSomeInternal()
    sampleCount blockEndSample;
    bool success =false;
    
+   
+   mBlockFilesMutex.Lock();
    for(size_t i=0; i < mWaveTracks.size() && mBlockFiles.size();i++)
    {
       bf = mBlockFiles[0];
@@ -97,6 +102,10 @@ void ODComputeSummaryTask::DoSomeInternal()
       //take it out of the array - we are done with it.
       mBlockFiles.erase(mBlockFiles.begin());
       
+      mBlockFilesMutex.Unlock();
+      mBlockFilesMutex.Lock();
+      
+      
       //upddate the gui for all associated blocks.  It doesn't matter that we're hitting more wavetracks then we should
       //because this loop runs a number of times equal to the number of tracks, they probably are getting processed in
       //the next iteration at the same sample window.
@@ -107,7 +116,11 @@ void ODComputeSummaryTask::DoSomeInternal()
             mWaveTracks[i]->AddInvalidRegion(blockStartSample,blockEndSample);
       }
       mWaveTrackMutex.Unlock();
+      
+      
    }   
+   
+   mBlockFilesMutex.Unlock();
    
    //update percentage complete.
    CalculatePercentComplete();
@@ -229,7 +242,9 @@ void ODComputeSummaryTask::Update()
    mWaveTrackMutex.Unlock();
    
    //get the new order.
+   mBlockFilesMutex.Lock();
    OrderBlockFiles(tempBlocks);
+   mBlockFilesMutex.Unlock();
    
    MarkUpdateRan();
 }
