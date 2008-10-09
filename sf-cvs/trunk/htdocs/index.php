@@ -3,7 +3,7 @@
  * Copyright 2005 Matt Brubeck
  * 2007-8 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $sectionId = "";
@@ -16,8 +16,9 @@
   $download = which_download();
   if ($download == "windows") {
     $download_version = win_exe_version;
-    $download_desc = _("for Microsoft Windows");
+    $download_desc = _("for Windows&reg; 98/ME/2000/XP/Vista");
     $download_page = "windows";
+    $beta_download_desc = _("for Windows&reg; 98/ME/2000/XP/Vista");
     $beta_download_page = "beta_windows";
 
     include "beta/versions.inc.php";
@@ -25,8 +26,9 @@
   }
   else if ($download == "mac") {
     $download_version = macosx_version;
-    $download_desc = _("for Mac OS X");
+    $download_desc = _("for Mac OS X 10.1 or later");
     $download_page = "mac";
+    $beta_download_desc = _("for Mac OS X 10.4 or later");
     $beta_download_page = "beta_mac";
 
     include "beta/versions.inc.php";
@@ -34,8 +36,9 @@
   }
   else {
     $download_version = src_version;
-    $download_desc = _("For Windows, Mac, or GNU/Linux");
+    $download_desc = _("for Windows&reg;, Mac or GNU/Linux");
     $download_page = "";
+    $beta_download_desc = _("for Windows&reg;, Mac or GNU/Linux"); 
     $beta_download_page = "";
 
     include "beta/versions.inc.php";
@@ -51,7 +54,7 @@
   <p>
     <?=_('Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href="about/">Learn more about Audacity...</a> Also check our <a href="http://audacityteam.org/wiki/">Wiki</a> and <a href="http://audacityteam.org/forum/">Forum</a> for more information.')?></p>
   <p>
-    <?=_('The latest release of Audacity is <a href="/download">1.3.5 (beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href="/download/features-1.3-a">New Features in 1.3</a> for more information about the 1.3.x beta series.')?></p>
+    <?=_('The latest release of Audacity is <a href="/download">1.3.5 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href="/download/features-1.3-a">New Features in 1.3</a> for more information about the 1.3.x Beta series.')?></p>
   <p>
     <?=_('For all users, <a href="/download">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have Audacity 1.2.6 and 1.3.5 installed on the same machine.')?></p>
 </div>
@@ -63,7 +66,7 @@
   </div>
   <div id="download_sub">
   <h3><a href="download/<?=$beta_download_page?>"><?php printf(_("Download Audacity %s"), $beta_version)?></a> (<?=_("Beta")?>)</h3>
-  <p><?=$download_desc?></p>
+  <p><?=$beta_download_desc?></p>
   </div>
 
   <?php
@@ -80,15 +83,63 @@
 <div id="news">
   <?php
     global $news_items;
-    for ($i = 0; $i < 2; $i++)
-    {
-        $item = array_shift($news_items);
-        $dateStr = $item->dateStr();
-        echo "<div class=\"newsitem\"><h3>";
-        echo $dateStr . ": " . $item->title;
-        echo "</h3>" . $item->body . "</div>";
-    }
+    $item = array_shift($news_items);
+    $dateStr = $item->dateStr();
   ?>
+  <div class="newsitem">
+    <h3>
+      <?="$dateStr: $item->title"?>
+    </h3>
+    <?=$item->body?>
+  </div>
+
+<h3>September 12, 2008: Audacity shines in Google Summer of Code (GSoC) 2008 </h3>
+<p>
+Four students participating with Audacity in
+<a href="http://code.google.com/soc/2008/">Google Summer of Code</a> 
+successfully completed their projects, and their code will be in
+future versions of Audacity.
+</p>
+<p>
+The four 
+<a href="http://audacityteam.org/wiki/index.php?title=GSoC_2008_Projects">
+projects</a> were:
+   <ul>
+      <li><b>FFmpeg support</b>, to greatly increase the range of file
+              formats that can be imported and exported</li>
+      <li><b>new GUI classes</b> for future use in displaying audio tracks</li>
+      <li><b>on-demand/level-of-detail file loading</b>, for
+              near-instant loading and editing of uncompressed files</li> 
+      <li><b>sticky labels</b> that stay with the audio through cut and paste</li>
+   </ul>
+</p>
+<p align="center">
+	<a href="http://code.google.com/soc/2008/">
+	  <img src="http://google-summer-of-code.googlecode.com/files/soc08-198x128_white.jpg" alt="Google Summer of Code 2008"></img>
+	</a>
+</p>
+<p>
+Congratulations and thanks to all our participating students for what they
+contributed to improve Audacity, and thanks to everyone who worked so hard
+on mentoring and administration. We wish all this year's students every
+success and hope they will continue their involvement with Audacity in future.
+</p>        
+<p><b>Audacity wins BOSSIE:</b> In August, Audacity won the 
+<a href="http://www.infoworld.com/slideshow/2008/08/165-best_of_open_so-2.html">
+sound editing</a> category in InfoWorld's
+<a href="http://www.infoworld.com/article/08/08/04/32TC-bossies-2008_1.html">
+BOSSIE</a> (Best of Open Source Software) Awards for 2008. 
+</p>
+<p align="center">
+	<a href="http://www.infoworld.com/article/08/08/04/32TC-bossies-2008_1.html">
+	  <img src="http://www.infoworld.com/awards/img/bossie_logo.gif" alt="InfoWorld BOSSIE Awards 2008"></img>
+	</a>
+</p>
+<p>
+Chosen by InfoWorld Test Center editors, analysts and reviewers, the annual BOSSIE awards
+"celebrate the best products that open source has to offer".  
+</p>    
+
   <h4>
     <a href="about/news">
       <?=_("More news items...")?>
