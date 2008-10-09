@@ -83,63 +83,15 @@
 <div id="news">
   <?php
     global $news_items;
-    $item = array_shift($news_items);
-    $dateStr = $item->dateStr();
+    for ($i = 0; $i < 2; $i++)
+    {
+        $item = array_shift($news_items);
+        $dateStr = $item->dateStr();
+        echo "<div class=\"newsitem\"><h3>";
+        echo $dateStr . ": " . $item->title;
+        echo "</h3>" . $item->body . "</div>";
+    }
   ?>
-  <div class="newsitem">
-    <h3>
-      <?="$dateStr: $item->title"?>
-    </h3>
-    <?=$item->body?>
-  </div>
-
-<h3>September 12, 2008: Audacity shines in Google Summer of Code (GSoC) 2008 </h3>
-<p>
-Four students participating with Audacity in
-<a href="http://code.google.com/soc/2008/">Google Summer of Code</a> 
-successfully completed their projects, and their code will be in
-future versions of Audacity.
-</p>
-<p>
-The four 
-<a href="http://audacityteam.org/wiki/index.php?title=GSoC_2008_Projects">
-projects</a> were:
-   <ul>
-      <li><b>FFmpeg support</b>, to greatly increase the range of file
-              formats that can be imported and exported</li>
-      <li><b>new GUI classes</b> for future use in displaying audio tracks</li>
-      <li><b>on-demand/level-of-detail file loading</b>, for
-              near-instant loading and editing of uncompressed files</li> 
-      <li><b>sticky labels</b> that stay with the audio through cut and paste</li>
-   </ul>
-</p>
-<p align="center">
-	<a href="http://code.google.com/soc/2008/">
-	  <img src="http://google-summer-of-code.googlecode.com/files/soc08-198x128_white.jpg" alt="Google Summer of Code 2008"></img>
-	</a>
-</p>
-<p>
-Congratulations and thanks to all our participating students for what they
-contributed to improve Audacity, and thanks to everyone who worked so hard
-on mentoring and administration. We wish all this year's students every
-success and hope they will continue their involvement with Audacity in future.
-</p>        
-<p><b>Audacity wins BOSSIE:</b> In August, Audacity won the 
-<a href="http://www.infoworld.com/slideshow/2008/08/165-best_of_open_so-2.html">
-sound editing</a> category in InfoWorld's
-<a href="http://www.infoworld.com/article/08/08/04/32TC-bossies-2008_1.html">
-BOSSIE</a> (Best of Open Source Software) Awards for 2008. 
-</p>
-<p align="center">
-	<a href="http://www.infoworld.com/article/08/08/04/32TC-bossies-2008_1.html">
-	  <img src="http://www.infoworld.com/awards/img/bossie_logo.gif" alt="InfoWorld BOSSIE Awards 2008"></img>
-	</a>
-</p>
-<p>
-Chosen by InfoWorld Test Center editors, analysts and reviewers, the annual BOSSIE awards
-"celebrate the best products that open source has to offer".  
-</p>    
-
   <h4>
     <a href="about/news">
       <?=_("More news items...")?>
