@@ -4,7 +4,7 @@
  * Copyright 2005 Dominic Mazzoni
  * Copyright 2008 Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   require_once "../beta/versions.inc.php";
@@ -22,7 +22,7 @@
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
 <?php include "recommended.inc.php"?>
 <ul>
-  <li><p>Universal Binary: <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB)'), "../beta/".$macosx_ub_url, macosx_ub_version, macosx_ub_size)?></p></li>
+  <li><p>OS X 10.4 or later (Universal Binary): <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB)'), "../beta/".$macosx_ub_url, macosx_ub_version, macosx_ub_size)?></p></li>
 </ul>
 
 		<p> <b>Installation instructions:</b>
@@ -42,7 +42,7 @@
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
 <ul>
-  <li><?=_("Audacity 1.3.5 requires Mac OS X 10.4 or later. Users on OS X 10.3 who wish to use a Beta version of Audacity should")?> <a href="http://downloads.sourceforge.net/audacity/audacity-macosx-ub-1.3.3.dmg?modtime=1179456290&big_mirror=0"><?=_("download the previous 1.3.3 version")?></a>.<?=_(" Audacity 1.3 does not support OS X 10.2 or earlier.")?></li>
+  <li><?=_("OS X 10.3 and earlier are not supported, however the previous")?> <a href="http://downloads.sourceforge.net/audacity/audacity-macosx-ub-1.3.3.dmg?modtime=1179456290&big_mirror=0">1.3.3 Beta</a> (.dmg file, 7.2 MB) <?=_("supports OS X 10.3.")?></li>
   <li><?=_("Audacity runs best with at least 64 MB RAM and a 300 MHz processor.")?></li>
 </ul>
 
