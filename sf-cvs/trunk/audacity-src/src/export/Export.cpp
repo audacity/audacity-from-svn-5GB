@@ -199,12 +199,15 @@ bool ExportPlugin::GetCanMetaData(int index)
    return mFormatInfos[index]->mCanMetaData;
 }
 
-bool ExportPlugin::IsExtension(wxString & ext)
+bool ExportPlugin::IsExtension(wxString & ext, int index)
 {
    bool isext = false;
-   for (int i = 0; i < GetFormatCount(); i++)
+   for (int i = index; i < GetFormatCount(); i = GetFormatCount())
    {
-      if (GetExtension(i) == wxT("") || (GetExtensions(i).Index(ext, false) != wxNOT_FOUND))
+      wxString defext = GetExtension(i);
+      wxArrayString defexts = GetExtensions(i);
+      int indofext = defexts.Index(ext, false);
+      if (defext == wxT("") || (indofext != wxNOT_FOUND))
          isext = true;
    }
    return isext;
@@ -574,7 +577,7 @@ bool Exporter::GetFilename()
 
          mFilename.SetExt(defext);
       }
-      else if (!ext.IsEmpty() && !mPlugins[mFormat]->IsExtension(ext) && ext.CmpNoCase(defext)) {
+      else if (!ext.IsEmpty() && !mPlugins[mFormat]->IsExtension(ext,mSubFormat) && ext.CmpNoCase(defext)) {
          wxString prompt;
          prompt.Printf(_("You are about to save a %s file with the name \"%s\".\n\nNormally these files end in \".%s\", and some programs will not open files with nonstandard extensions.\n\nAre you sure you want to save the file under this name?"),
                        mPlugins[mFormat]->GetFormat(mSubFormat).c_str(),
