@@ -418,6 +418,7 @@ bool FFmpegLibs::LoadLibs(wxWindow *parent, bool showerr)
 
    // Oh well, just give up
    if (!ValidLibsLoaded()) {
+      if (showerr) wxMessageBox(wxT("Failed to find compatible FFmpeg libraries"));
       return false;
    }
 
@@ -616,6 +617,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avformat,av_init_packet);
    INITDYN(avformat,av_codec_get_id);
    INITDYN(avformat,av_codec_get_tag);
+   INITDYN(avformat,avformat_version);
 
    INITDYN(avcodec,avcodec_init);
    INITDYN(avcodec,avcodec_find_encoder);
@@ -651,6 +653,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avutil,av_malloc);
    INITDYN(avutil,av_freep);
    INITDYN(avutil,av_rescale_q);
+   INITDYN(avutil,avutil_version);
 
 #if defined(__WXMSW__)
    //Return error mode to normal
@@ -664,9 +667,29 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    this->av_register_all();
    
    wxLogMessage(wxT("Retrieving library version."));
-   int ver = this->avcodec_version();
-   mVersion = wxString::Format(wxT("%d.%d-%d"),ver >> 16 & 0xFF, ver >> 8 & 0xFF, ver & 0xFF);
-   wxLogMessage(wxT("Version is 0x%06x, which means %s"),ver,mVersion.c_str());
+   int avcver = this->avcodec_version();
+   int avfver = this->avformat_version();
+   int avuver = this->avutil_version();
+   mAVCodecVersion = wxString::Format(wxT("%d.%d.%d"),avcver >> 16 & 0xFF, avcver >> 8 & 0xFF, avcver & 0xFF);
+   mAVFormatVersion = wxString::Format(wxT("%d.%d.%d"),avfver >> 16 & 0xFF, avfver >> 8 & 0xFF, avfver & 0xFF);
+   mAVUtilVersion = wxString::Format(wxT("%d.%d.%d"),avuver >> 16 & 0xFF, avuver >> 8 & 0xFF, avuver & 0xFF);
+
+   wxLogMessage(wxT("AVCodec version 0x%06x - %s (built against 0x%06x - %s)"),avcver,mAVCodecVersion.c_str(),LIBAVCODEC_VERSION_INT,wxString::FromUTF8(AV_STRINGIFY(LIBAVCODEC_VERSION)).c_str());
+   wxLogMessage(wxT("AVFormat version 0x%06x - %s (built against 0x%06x - %s)"),avfver,mAVFormatVersion.c_str(),LIBAVFORMAT_VERSION_INT,wxString::FromUTF8(AV_STRINGIFY(LIBAVFORMAT_VERSION)).c_str());
+   wxLogMessage(wxT("AVUtil version 0x%06x - %s (built against 0x%06x - %s)"),avuver,mAVUtilVersion.c_str(),LIBAVUTIL_VERSION_INT,wxString::FromUTF8(AV_STRINGIFY(LIBAVUTIL_VERSION)).c_str());
+
+   int avcverdiff = (avcver >> 16 & 0xFF) - int(LIBAVCODEC_VERSION_MAJOR);
+   int avfverdiff = (avfver >> 16 & 0xFF) - int(LIBAVFORMAT_VERSION_MAJOR);
+   int avuverdiff = (avuver >> 16 & 0xFF) - int(LIBAVUTIL_VERSION_MAJOR);
+   wxLogMessage(wxT("AVCodec version mismatch is %d"),avcverdiff);
+   wxLogMessage(wxT("AVFormat version mismatch is %d"),avfverdiff);
+   wxLogMessage(wxT("AVUtil version mismatch is %d"),avuverdiff);
+   //make sure that header and library major versions are the same
+   if (avcverdiff != 0 || avfverdiff != 0 || avuverdiff != 0)
+   {
+      wxLogMessage(wxT("Version mismatch! Libraries are unusable."));
+      return false;
+   }
    return true;
 }
 

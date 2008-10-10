@@ -92,6 +92,8 @@ public:
    void              (*av_log_default_callback)       (void* ptr, int level, const char* fmt, va_list vl);
    void              (*av_free)                       (void *ptr);
    unsigned          (*avcodec_version)               (void);
+   unsigned          (*avformat_version)              (void);
+   unsigned          (*avutil_version)                (void);
    void              (*avcodec_init)                  (void);
    AVCodec*          (*avcodec_find_encoder)          (enum CodecID id);
    AVCodec*          (*avcodec_find_encoder_by_name)  (const char *name);
@@ -170,7 +172,7 @@ public:
    ///\return libavformat library version or empty string?
    wxString GetLibraryVersion()
    {
-      return mVersion;
+      return wxString::Format(wxT("F(%s),C(%s),U(%s)"),mAVFormatVersion,mAVCodecVersion,mAVUtilVersion);
    }
 
    /* note these values are for Windows only - Mac and Unix have their own
@@ -219,7 +221,9 @@ private:
    wxString mLibAVFormatPath;
 
    ///! Stored library version
-   wxString mVersion;
+   wxString mAVCodecVersion;
+   wxString mAVFormatVersion;
+   wxString mAVUtilVersion;
    
    ///! wx interfaces for dynamic libraries
    wxDynamicLibrary *avformat;
