@@ -71,7 +71,7 @@ public:
    virtual int GetMaxChannels(int index);
    virtual bool GetCanMetaData(int index);
    
-   virtual bool IsExtension(wxString & ext);
+   virtual bool IsExtension(wxString & ext, int index);
 
    virtual bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
    virtual bool DoDisplayOptions(AudacityProject *project, int format = 0);
