@@ -798,9 +798,6 @@ ExportFFmpegOptions::ExportFFmpegOptions(wxWindow *parent)
 
    if (FFmpegLibsInst->ValidLibsLoaded())
    {
-
-      
-      
       FetchFormatList();
       FetchCodecList();
 
