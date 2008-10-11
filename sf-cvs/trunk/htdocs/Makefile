@@ -38,7 +38,7 @@ RSYNCOPTS=-vrtchlpO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 #--exclude '*.po'	don't move .po files (source code of translations) to/from
 #					server because it can't use them (it only wants the .mo
 #					compiled versions)
-RSYNCOPTS+=--exclude '*/CVS' --exclude '*/CVS/*'
+RSYNCOPTS+=--exclude 'CVS' --exclude '.cvsignore'
 # Exclude CVS files we don't need on the server
 RSYNCOPTS+=--exclude '*.bak' --exclude '/files'
 # Exclude backup files from windows editors as well
