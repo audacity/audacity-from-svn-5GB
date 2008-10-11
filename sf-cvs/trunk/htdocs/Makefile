@@ -32,6 +32,14 @@ MSGFMT_ARGS=-fv
 
 # options to all rsync commands
 RSYNCOPTS=-vcrtIhl --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
+#--delete-during	delete deleted files as they are found (uses minimum disk
+#					space but is safe against aborted transfers)
+#--exclude '*~'		avoid moving editor temp files
+#--exclude '*.po'	don't move .po files (source code of translations) to/from
+#					server because it can't use them (it only wants the .mo
+#					compiled versions)
+RSYNCOPTS+=--exclude '*/CVS' --exclude '*/CVS/*'
+# Exclude CVS files we don't need on the server
 
 pull:
 	rsync $(RSYNCOPTS) richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/ .
