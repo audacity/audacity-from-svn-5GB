@@ -789,8 +789,13 @@ bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
    else if (format == FMT_OTHER)
    {
       ExportFFmpegOptions od(project);
-      od.ShowModal();
-      return true;
+      if (FFmpegLibsInst->ValidLibsLoaded())
+      {
+        od.ShowModal();
+        return true;
+      }
+      else
+        return false;
    }
 
    return false;
