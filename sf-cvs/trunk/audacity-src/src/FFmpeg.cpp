@@ -18,6 +18,7 @@ License: GPL v2.  See License.txt.
 
 #include "Audacity.h"	// for config*.h
 #include "FFmpeg.h"
+#include "AudacityApp.h"
 
 #ifdef _DEBUG
    #ifdef _MSC_VER
@@ -437,13 +438,9 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    wxString libpath_codec(wxT(""));
    wxString libpath_util(wxT(""));
 
-   bool gotError = false;
+   wxLogWindow* mLogger = wxGetApp().mLogger;
 
-#if defined(__WXMSW__)
-   // On Windows force system to show error messages (as they are
-   // more informative than wxMessages).
-   unsigned int erm = SetErrorMode(showerr ? 0 : SEM_FAILCRITICALERRORS);
-#endif
+   bool gotError = false;
 
    wxString syspath;
    bool pathfix = false;
@@ -496,7 +493,11 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    if (!avformat->IsLoaded() && !gotError)
    {
       wxLogMessage(wxT("Loading avformat from %s"),libpath_format.c_str());
+      if (showerr)
+         mLogger->SetActiveTarget(NULL);
       gotError = !avformat->Load(libpath_format, wxDL_LAZY);
+      if (showerr)
+         mLogger->SetActiveTarget(mLogger);
    }
 
    //avformat loaded successfully?
@@ -556,13 +557,21 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
       if (!avcodec->IsLoaded() && !gotError)
       {
          wxLogMessage(wxT("Loading avcodec from %s"),libpath_codec.c_str());
+         if (showerr)
+            mLogger->SetActiveTarget(NULL);
          gotError = !avcodec->Load(libpath_codec, wxDL_LAZY);
+         if (showerr)
+            mLogger->SetActiveTarget(mLogger);
       }
       avutil = new wxDynamicLibrary();
       if (!avutil->IsLoaded() && !gotError)
       {
          wxLogMessage(wxT("Loading avutil from %s"),libpath_util.c_str());
+         if (showerr)
+            mLogger->SetActiveTarget(NULL);
          gotError = !avutil->Load(libpath_util, wxDL_LAZY);
+         if (showerr)
+            mLogger->SetActiveTarget(mLogger);
       }
    }
 
@@ -576,12 +585,6 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
 
    if ( gotError )
    {
-#if defined(__WXMSW__)
-      //On Windows - return error mode to normal
-      SetErrorMode(erm);
-#else
-      if ( showerr ) wxMessageBox(wxSysErrorMsg());
-#endif
       wxLogMessage(wxT("Failed to load either avcodec or avutil"));
       return false;
    }
@@ -654,11 +657,6 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avutil,av_freep);
    INITDYN(avutil,av_rescale_q);
    INITDYN(avutil,avutil_version);
-
-#if defined(__WXMSW__)
-   //Return error mode to normal
-   SetErrorMode(erm);
-#endif
 
    //FFmpeg initialization
    wxLogMessage(wxT("All symbols loaded successfully. Initializing the library."));
