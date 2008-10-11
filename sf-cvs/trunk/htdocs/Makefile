@@ -30,8 +30,18 @@ MSGFMT_ARGS=-fv
 %.mo: %.po
 	$(MSGFMT) $(MSGFMT_ARGS) -o $@ $<
 
+# options to all rsync commands
+RSYNCOPTS=-vcrtIhl --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
+
 pull:
-	rsync -vcrptIhl --delete-during --rsh=ssh richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/ .
+	rsync $(RSYNCOPTS) richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/ .
+
+pretend-pull:
+	rsync $(RSYNCOPTS) --dry-run richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/ .
+
 
 push:
-	rsync -vcrptIhl --delete-during --rsh=ssh . richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/
+	rsync $(RSYNCOPTS) . richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/
+
+pretend-push:
+	rsync $(RSYNCOPTS) --dry-run . richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/
