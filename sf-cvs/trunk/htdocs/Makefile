@@ -31,7 +31,7 @@ MSGFMT_ARGS=-fv
 	$(MSGFMT) $(MSGFMT_ARGS) -o $@ $<
 
 # options to all rsync commands
-RSYNCOPTS=-vcrtIhlp --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
+RSYNCOPTS=-vrtchlpO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 #--delete-during	delete deleted files as they are found (uses minimum disk
 #					space but is safe against aborted transfers)
 #--exclude '*~'		avoid moving editor temp files
@@ -47,11 +47,11 @@ pull:
 	rsync $(RSYNCOPTS) richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/ .
 
 pretend-pull:
-	rsync $(RSYNCOPTS) --dry-run richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/ .
+	rsync $(RSYNCOPTS) --dry-run --itemize-changes richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/ .
 
 
 push:
 	rsync $(RSYNCOPTS) . richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/
 
 pretend-push:
-	rsync $(RSYNCOPTS) --dry-run . richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/
+	rsync $(RSYNCOPTS) --dry-run --itemize-changes . richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/
