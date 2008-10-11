@@ -40,7 +40,7 @@ RSYNCOPTS=-vcrtIhl --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 #					compiled versions)
 RSYNCOPTS+=--exclude '*/CVS' --exclude '*/CVS/*'
 # Exclude CVS files we don't need on the server
-RSYNCOPTS+=--exclude '*.bak'
+RSYNCOPTS+=--exclude '*.bak' --exclude '/files'
 # Exclude backup files from windows editors as well
 
 pull:
