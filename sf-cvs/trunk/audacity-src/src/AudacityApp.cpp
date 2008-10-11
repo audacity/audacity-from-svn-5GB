@@ -248,6 +248,15 @@ void QuitAudacity(bool bForce)
 
    gIsQuitting = true;
 
+   wxLogWindow *lw = wxGetApp().mLogger;
+   if (lw)
+   {
+      lw->EnableLogging(false);
+      lw->SetActiveTarget(NULL);
+      delete lw;
+      wxGetApp().mLogger = NULL;
+   }
+
    // Try to close each open window.  If the user hits Cancel
    // in a Save Changes dialog, don't continue.
    // BG: unless force is true
@@ -295,13 +304,6 @@ void QuitAudacity(bool bForce)
    
    //delete the static lock for audacity projects
    AudacityProject::DeleteAllProjectsDeleteLock();
-
-   wxLogWindow *lw = wxGetApp().mLogger;
-   if (lw)
-   {
-      lw->SetActiveTarget(NULL);
-      delete lw;
-   }
 
    if (bForce)
    {
@@ -842,18 +844,6 @@ bool AudacityApp::OnInit()
    if( project->mShowSplashScreen )
       project->OnHelpWelcome();//ShowSplashScreen( project );
 
-   //
-   // Auto-recovery
-   //
-
-   bool didRecoverAnything = false;
-   if (!ShowAutoRecoveryDialogIfNeeded(&project, &didRecoverAnything))
-   {
-      // Important: Prevent deleting any temporary files!
-      DirManager::SetDontDeleteTempFiles();
-      QuitAudacity(true);
-   }
-
    // JKC 10-Sep-2007: Enable monitoring from the start.
    // (recommended by lprod.org).
    // Monitoring stops again after any 
@@ -862,6 +852,23 @@ bool AudacityApp::OnInit()
    project->MayStartMonitoring();
 
    mImporter = new Importer;
+
+   mLogger = new wxLogWindow(NULL,wxT("Debug Log"),false,false);
+   mLogger->SetActiveTarget(mLogger);
+   mLogger->EnableLogging(true);
+   mLogger->SetLogLevel(wxLOG_Max);
+
+   //
+   // Auto-recovery
+   //
+   bool didRecoverAnything = false;
+   if (!ShowAutoRecoveryDialogIfNeeded(&project, &didRecoverAnything))
+   {
+      // Important: Prevent deleting any temporary files!
+      DirManager::SetDontDeleteTempFiles();
+      QuitAudacity(true);
+   }
+
 
    //
    // Command-line parsing, but only if we didn't recover
@@ -1005,11 +1012,6 @@ bool AudacityApp::OnInit()
    }                            // if (argc>1)
 
 #endif // __CYGWIN__ (Cygwin command-line parser)
-
-   mLogger = new wxLogWindow(NULL,wxT("Debug Log"),false,false);
-   mLogger->SetActiveTarget(mLogger);
-   mLogger->EnableLogging(true);
-   mLogger->SetLogLevel(wxLOG_Max);
 
    gInited = true;
    
@@ -1388,6 +1390,9 @@ int AudacityApp::OnExit()
 
    DeinitAudioIO();
    Internat::CleanUp();// JKC
+
+   if (mLogger)
+      delete mLogger;
 
    if (mLocale)
       delete mLocale;
