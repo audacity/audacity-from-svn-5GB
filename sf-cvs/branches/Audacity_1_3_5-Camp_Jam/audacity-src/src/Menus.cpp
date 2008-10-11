@@ -454,7 +454,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndSubMenu();
 
    c->AddSeparator();
-   c->AddItem(wxT("SelSave"),        _("Re&gion Save"),                 FN(OnSelectionSave));
+   c->AddItem(wxT("SelSave"),        _("Re&gion Save"),                FN(OnSelectionSave));
    c->AddItem(wxT("SelRestore"),     _("Regio&n Restore"),             FN(OnSelectionRestore));
 
    c->SetCommandFlags(wxT("SelSave"),
@@ -542,7 +542,7 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("ShowToolsTB"),         _("T&ools Toolbar"),         FN(OnShowToolsToolBar), 0);
       c->AddItem(wxT("ShowTranscriptionTB"), _("Transcri&ption Toolbar"), FN(OnShowTranscriptionToolBar), 0);
       c->AddSeparator();
-      c->AddItem(wxT("ResetToolbars"),       _("&Reset Toolbars"),        FN(OnResetToolBars));
+      c->AddItem(wxT("ResetToolbars"),       _("&Reset Toolbars"),              FN(OnResetToolBars));
       c->EndSubMenu();
       c->AddItem(wxT("SimplifiedView"),      _("!Simplified View"),       FN(OnSimplifiedView), mCommandManager.mbHideFlaggedItems ? 1:0);
       c->EndMenu();
@@ -572,7 +572,7 @@ void AudacityProject::CreateMenusAndCommands()
       #endif 
 
       c->AddSeparator();
-      // StereoToMono moves elsewhere in the menu when in CleanSpeech mode.
+      // StereoToMono moves to the Edit menu when in CleanSpeech mode.
       // It belongs here normally, because it is a kind of mix-down.
       c->AddItem(wxT("Stereo to Mono"),      _("&Stereo to Mono"),            FN(OnStereoToMono));
       c->SetCommandFlags(wxT("Stereo to Mono"),
@@ -652,7 +652,7 @@ void AudacityProject::CreateMenusAndCommands()
       //
       // Generate, Effect & Analyze menus
       //
-   
+
       #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
          c->BeginMenu(_("&Generate"));
          c->SetDefaultFlags(AudioIONotBusyFlag,
@@ -676,7 +676,7 @@ void AudacityProject::CreateMenusAndCommands()
          }
          delete effects;
          c->EndMenu();
-      #endif 
+      #endif // (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
 	}
 
    c->BeginMenu(_("Effe&ct"));

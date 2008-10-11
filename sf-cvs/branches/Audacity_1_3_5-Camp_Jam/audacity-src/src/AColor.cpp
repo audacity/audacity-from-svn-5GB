@@ -23,7 +23,7 @@ It is also a place to document colour usage policy in Audacity
 
 #include "AColor.h"
 #include "Theme.h"
-#include "../Experimental.h"
+#include "Experimental.h"
 #include "AllThemeResources.h"
 
 bool AColor::inited = false;
@@ -124,7 +124,7 @@ void AColor::Bevel(wxDC & dc, bool up, wxRect & r)
    dc.DrawLine(r.x, r.y + r.height, r.x + r.width + 1, r.y + r.height);
 }
 
-wxColour Blend( const wxColour & c1, wxColour & c2 )
+wxColour AColor::Blend( const wxColour & c1, const wxColour & c2 )
 {
    wxColour c3(
       (c1.Red() + c2.Red())/2,
@@ -488,6 +488,46 @@ void AColor::DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ )
    }
 
 }
+
+#if WANT_MULTICOLOR_TRACKS 
+   WX_DEFINE_ARRAY(void*, trackPtrsArray);
+   #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      const wxColour gRed = wxColour(255, 130, 140); // red
+      const wxColour gOrange = wxColour(255, 200, 130); // orange
+      const wxColour gYellow = wxColour(255, 240, 120); // yellow
+      const wxColour gGreen = wxColour(120, 255, 120); // green
+      const wxColour gCyan = wxColour(120, 255, 255); // cyan
+      const wxColour gBlue = wxColour(180, 200, 255); // blue
+      const wxColour gPurple = wxColour(255, 180, 255); // purple
+   #elif ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL)) 
+      const wxColour gRed = wxColour(205,  10,  16); // red
+      const wxColour gOrange = wxColour(255, 160,  80); // orange
+      const wxColour gYellow = wxColour(255, 200,  16); // yellow
+      const wxColour gGreen = wxColour( 40, 160, 120); // green
+      const wxColour gCyan = wxColour(132, 250, 250); // cyan
+      const wxColour gBlue = wxColour( 63,  77, 155); // blue // vvv same as clrSample in AllThemeResources.h
+      const wxColour gPurple = wxColour(160,  80, 240); // purple
+   #endif
+
+   // rainbow pastel color based on track's pointer -- so it's unique to track
+   wxColour AColor::GetTrackColor(void* pTrack) 
+   { 
+      static trackPtrsArray trackPtrs; 
+      int nCase = trackPtrs.Index(pTrack);
+      if (nCase == wxNOT_FOUND) trackPtrs.Add(pTrack);
+      nCase = trackPtrs.Index(pTrack);
+      switch (nCase % 7) { 
+         case 0: return gRed; 
+         case 1: return gOrange;
+         case 2: return gYellow;
+         case 3: return gGreen;
+         case 4: return gCyan;
+         case 5: return gBlue;
+         case 6: return gPurple;
+      }
+      return gRed;
+   }
+#endif
 
 void GetColorGradient(float value,
                       bool selected,

@@ -2483,6 +2483,8 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
          // We are about to move files from the current directory to
          // the new directory.  We need to make sure files that belonged
          // to the last saved project don't get erased, so we "lock" them.
+         // to the last saved project don't get erased, so we "lock" them, so that 
+         // SetProject() copies instead of moves the files.
          // (Otherwise the new project would be fine, but the old one would
          // be empty of all of its files.)
          
@@ -2497,7 +2499,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
             }
          }
          // This renames the project directory, and moves or copies
-         // all of our block files over
+         // all of our block files over.
          success = mDirManager->SetProject(projPath, projName, !overwrite);
          
          // Unlock all blocks in all tracks of the last saved version
@@ -2850,8 +2852,8 @@ bool AudacityProject::SaveAs(bool bWantSaveCompressed /*= false*/)
          ShowWarningDialog(this, wxT("FirstProjectSave"),
                            _("Audacity compressed project files (.aup) save your work in a smaller, compressed (.ogg) format. \nCompressed project files are a good way to transmit your project online, because they are much smaller. \nTo open a compressed project takes longer than usual, as it imports each compressed track. \n\nMost other programs can't open Audacity project files.\nWhen you want to save a file that can be opened by other programs, select one of the\nExport commands."));
       else
-         ShowWarningDialog(this, wxT("FirstProjectSave"),
-                           _("Audacity project files (.aup) let you save everything you're working on exactly as it\nappears on the screen, but most other programs can't open Audacity project files.\n\nWhen you want to save a file that can be opened by other programs, select one of the\nExport commands."));
+ 	      ShowWarningDialog(this, wxT("FirstProjectSave"),
+                           _("You are saving an Audacity project file (.aup).\n\nSaving a project creates a file that only Audacity can open.\n\nTo save an audio file for other programs, use one of the \"File > Export\" commands.\n"));
 
       fName = FileSelector(_NoAcc("Save Project &As...") + wxT(":"),
                              path, fName, wxT(""),
