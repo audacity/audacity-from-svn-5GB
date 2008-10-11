@@ -192,6 +192,15 @@ void TrackArtist::DrawTracks(TrackList * tracks,
          linkFlag = t->GetLinked();
       }
 
+      #if WANT_MULTICOLOR_TRACKS
+         // per track coloring
+         if (!muted) { 
+            wxColour trackColor = AColor::GetTrackColor((void*)t);
+            samplePen.SetColour(trackColor);
+            rmsPen.SetColour(trackColor.Red() * 4/5, trackColor.Green() * 4/5, trackColor.Blue() * 4/5);
+         }
+      #endif
+      
       trackRect.height = t->GetHeight();
 
 #if defined(DEBUG_CLIENT_AREA)

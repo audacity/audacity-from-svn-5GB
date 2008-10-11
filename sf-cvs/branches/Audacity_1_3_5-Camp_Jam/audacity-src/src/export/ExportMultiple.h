@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  Export.h
+  ExportMultiple.h
 
   Dominic Mazzoni
 

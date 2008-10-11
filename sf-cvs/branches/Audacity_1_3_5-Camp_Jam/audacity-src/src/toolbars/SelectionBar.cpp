@@ -54,6 +54,12 @@ with changes in the SelectionBar.
 
 IMPLEMENT_CLASS(SelectionBar, ToolBar);
 
+const static wxChar *numbers[] =
+{
+   wxT("0"), wxT("1"), wxT("2"), wxT("3"), wxT("4"),
+   wxT("5"), wxT("6"), wxT("7"), wxT("8"), wxT("9")
+};
+
 enum {
    SelectionBarFirstID = 2700,
    OnRateID,
@@ -109,20 +115,20 @@ void SelectionBar::Populate()
 
    wxString formatName = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
    int formatIndex = 1;
+
    /* we don't actually need a control yet, but we want to use it's methods
     * to do some look-ups, so we'll have to create one. We can't make the 
     * look-ups static because they depend on translations which are done at
     * runtime */
    /* for now we don't give this a format, we'll set that later once we've
     * done some other format-related housekeeping */
-   mAudioTime = new TimeTextCtrl(this, -1, wxT(""), 0.0, mRate);
-
-   for (i = 0; i < mAudioTime->GetNumBuiltins(); i++)
-      if (mAudioTime->GetBuiltinName(i) == formatName)
+   TimeTextCtrl *ttc = new TimeTextCtrl(this, wxID_ANY, wxT(""), 0.0, mRate);
+   for(i=0; i<ttc->GetNumBuiltins(); i++)
+      if (ttc->GetBuiltinName(i) == formatName)
          formatIndex = i;
-
-   formatName = mAudioTime->GetBuiltinName(formatIndex);
-   wxString format = mAudioTime->GetBuiltinFormat(formatIndex);
+   formatName = ttc->GetBuiltinName(formatIndex);
+   wxString format = ttc->GetBuiltinFormat(formatIndex);
+   delete ttc;
 
    mainSizer = new wxFlexGridSizer(7, 1, 1);
    Add(mainSizer, 0, wxALIGN_CENTER_VERTICAL);
@@ -142,11 +148,11 @@ void SelectionBar::Populate()
    mainSizer->Add(new wxStaticText(this, -1, _("Project Rate (Hz):"),
    // LLL:  On my Ubuntu 7.04 install, the label wraps to two lines
    //       and I could not figure out why.  Thus...hackage.
-   #if defined(__WXGTK__)
-      wxDefaultPosition, wxSize(110, -1)),
-   #else
-      wxDefaultPosition, wxDefaultSize),
-   #endif
+#if defined(__WXGTK__)
+                  wxDefaultPosition, wxSize(110, -1)),
+#else
+                  wxDefaultPosition, wxDefaultSize),
+#endif
                0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 
    mainSizer->Add(5, 1);
@@ -163,14 +169,16 @@ void SelectionBar::Populate()
    mRightEndButton = new wxRadioButton(this, OnEndRadioID, _("End"),
                                        wxDefaultPosition, wxDefaultSize,
                                        wxRB_GROUP);
+   mRightEndButton->SetName(_("End"));
    mRightEndButton->SetValue(!showSelectionLength);
    hSizer->Add(mRightEndButton,
                0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 5);
    mRightLengthButton = new wxRadioButton(this, OnLengthRadioID, _("Length"));
+   mRightLengthButton->SetName(_("Length"));
    mRightLengthButton->SetValue(showSelectionLength);
    hSizer->Add(mRightLengthButton,
                0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-   #if defined(__WXMSW__)
+#if defined(__WXMSW__)
       // Refer to Microsoft KB article 261192 for an explanation as
       // to why this is needed.  We've only experienced it under Win2k
       // so it's probably been fixed.  But, it doesn't hurt to have this
@@ -181,7 +189,7 @@ void SelectionBar::Populate()
                            wxRB_GROUP);
       dummyButton->Disable();
       dummyButton->Hide();
-   #endif
+#endif
    mainSizer->Add(hSizer, 0,  wxALIGN_CENTER_VERTICAL | wxRIGHT, 0);
 
    mainSizer->Add(5, 1);
@@ -197,7 +205,9 @@ void SelectionBar::Populate()
                              wxT(""),
                              wxDefaultPosition, wxSize(80, -1));
    mRateBox->SetName(_("Project Rate (Hz):"));
-   mRateBox->SetValidator(wxTextValidator(wxFILTER_NUMERIC));
+   wxTextValidator vld(wxFILTER_INCLUDE_CHAR_LIST);
+   vld.SetIncludes(wxArrayString(12, numbers));
+   mRateBox->SetValidator(vld);
    mRateBox->SetValue(wxString::Format(wxT("%d"), (int)mRate));
    UpdateRates(); // Must be done _after_ setting value on mRateBox!
 
@@ -206,19 +216,19 @@ void SelectionBar::Populate()
    // combobox is presented as one control to hook into.
    wxWindow *ctrl = mRateBox;
 
-   #if defined(__WXMAC__)
-      // The Mac uses a standard wxTextCtrl for the edit portion and that's
-      // the control that gets the focus events.  So we have to find the
-      // textctrl.
-      wxWindowList kids = mRateBox->GetChildren();
-      for (unsigned int i = 0; i < kids.GetCount(); i++) {
-         wxClassInfo *ci = kids[i]->GetClassInfo();
-         if (ci->IsKindOf(CLASSINFO(wxTextCtrl))) {
-            ctrl = kids[i];
-            break;
-         }
+#if defined(__WXMAC__)
+   // The Mac uses a standard wxTextCtrl for the edit portion and that's
+   // the control that gets the focus events.  So we have to find the
+   // textctrl.
+   wxWindowList kids = mRateBox->GetChildren();
+   for (unsigned int i = 0; i < kids.GetCount(); i++) {
+      wxClassInfo *ci = kids[i]->GetClassInfo();
+      if (ci->IsKindOf(CLASSINFO(wxTextCtrl))) {
+         ctrl = kids[i];
+         break;
       }
-   #endif
+   }
+#endif
 
    ctrl->Connect(wxEVT_SET_FOCUS,
                  wxFocusEventHandler(SelectionBar::OnFocus),
@@ -271,11 +281,7 @@ void SelectionBar::Populate()
                   0, wxRIGHT, 5);
 #endif // (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
 
-   /* we would normally be creating a new TimeTextControl here, except that we
-    * did it near the start of the function to have an object to do look-ups on
-    * so the only thing left to do here is to set its format to what we now
-    * know is correct */
-   mAudioTime->SetFormatString(format);
+   mAudioTime = new TimeTextCtrl(this, -1, format, 0.0, mRate);
    mAudioTime->SetName(_("Audio Position:"));
    mAudioTime->EnableMenu();
    mainSizer->Add(mAudioTime, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 0);
@@ -468,19 +474,12 @@ void SelectionBar::SetRate(double rate)
    }
 }
 
-void SelectionBar::OnRate(wxCommandEvent & WXUNUSED(event))
+void SelectionBar::OnRate(wxCommandEvent &evt)
 {
    if (!mRateBox)
       return; 
 
-   int nSel = mRateBox->GetSelection();
-   wxString sValue;
-   if (nSel != -1) // one of the existing choices
-      sValue = mRateBox->GetString(nSel);
-   else
-      sValue = mRateBox->GetValue();
-
-   if (sValue.ToDouble(&mRate) && // is a numeric value
+   if (evt.GetString().ToDouble(&mRate) && // is a numeric value
          (mRate != 0.0))
    {
       if (mLeftTime) mLeftTime->SetSampleRate(mRate);
@@ -520,28 +519,38 @@ void SelectionBar::OnFocus(wxFocusEvent &event)
 void SelectionBar::OnCaptureKey(wxCommandEvent &event)
 {
    wxKeyEvent *kevent = (wxKeyEvent *)event.GetEventObject();
+   wxWindow *w = FindFocus();
    int keyCode = kevent->GetKeyCode();
 
    // Pass the SPACE through for SnapTo
-   if (FindFocus() == mSnapTo && keyCode == WXK_SPACE) {
+   if (w == mSnapTo && keyCode == WXK_SPACE) {
       return;
    }
 
    // Convert numeric keypad entries.
-   if ((keyCode >= WXK_NUMPAD0) && (keyCode <= WXK_NUMPAD9))
+   if ((keyCode >= WXK_NUMPAD0) && (keyCode <= WXK_NUMPAD9)) {
       keyCode -= WXK_NUMPAD0 - '0';
+   }
 
-   if (keyCode >= '0' && keyCode <= '9')
-      return;
-
-   // UP/DOWN/LEFT/RIGHT for mRateBox
-   if (FindFocus() == mRateBox && (keyCode == WXK_LEFT || keyCode == WXK_RIGHT
-                                 || keyCode == WXK_UP || keyCode == WXK_DOWN)) {
+   if (keyCode >= '0' && keyCode <= '9') {
       return;
    }
+
+   // UP/DOWN/LEFT/RIGHT for mRateBox
+   if (w == mRateBox) {
+      switch (keyCode)
+      {
+         case WXK_LEFT:
+         case WXK_RIGHT:
+         case WXK_UP:
+         case WXK_DOWN:
+         case WXK_DELETE:
+         case WXK_BACK:
+            return;
+      }
+   }
    
-   // Swallow any others, so SelectionBar "handled" it. 
-   //    event.Skip();
+   event.Skip();
 
    return;
 }

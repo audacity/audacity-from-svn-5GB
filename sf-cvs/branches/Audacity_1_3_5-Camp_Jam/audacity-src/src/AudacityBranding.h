@@ -35,8 +35,13 @@
 
 #if ((AUDACITY_BRANDING == BRAND_AUDACITY) || (AUDACITY_BRANDING == BRAND_AUDIOTOUCH))
    #define WANT_BRANDING_PANEL 0
+   #define WANT_MULTICOLOR_TRACKS 0
 #else
    #define WANT_BRANDING_PANEL 1
+   #if ((AUDACITY_BRANDING == BRAND_UMIXIT) || \
+         (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+      #define WANT_MULTICOLOR_TRACKS 1
+   #endif
 #endif
 
 #define AUDACITY_URL wxT("http://audacity.sourceforge.net/")

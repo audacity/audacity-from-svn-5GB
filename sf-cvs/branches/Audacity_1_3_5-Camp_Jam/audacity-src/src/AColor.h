@@ -17,6 +17,8 @@
 #include <wx/brush.h>
 #include <wx/pen.h>
 
+#include "AudacityBranding.h"
+
 class wxDC;
 class wxRect;
 
@@ -28,6 +30,7 @@ class AColor {
    static void DrawFocus(wxDC & dc, wxRect & r);
    static void Bevel(wxDC & dc, bool up, wxRect & r);
    static void BevelTrackInfo(wxDC & dc, bool up, wxRect & r);
+   static wxColour Blend(const wxColour & c1, const wxColour & c2);
 
    static void UseThemeColour( wxDC * dc, int iIndex );
    static void TrackPanelBackground(wxDC * dc, bool selected);
@@ -47,6 +50,11 @@ class AColor {
    static void MIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
    static void LightMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
    static void DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
+
+   #if WANT_MULTICOLOR_TRACKS
+      // rainbow pastel color based on track's pointer -- so it's unique to track
+      static wxColour GetTrackColor(void* pTrack);
+   #endif
 
    static void TrackFocusPen(wxDC * dc, int level /* 0 - 2 */);
    static void SnapGuidePen(wxDC * dc);
