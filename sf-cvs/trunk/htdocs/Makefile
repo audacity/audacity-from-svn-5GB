@@ -40,6 +40,8 @@ RSYNCOPTS=-vcrtIhl --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 #					compiled versions)
 RSYNCOPTS+=--exclude '*/CVS' --exclude '*/CVS/*'
 # Exclude CVS files we don't need on the server
+RSYNCOPTS+=--exclude '*.bak'
+# Exclude backup files from windows editors as well
 
 pull:
 	rsync $(RSYNCOPTS) richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/ .
