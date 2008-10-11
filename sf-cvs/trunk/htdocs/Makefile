@@ -31,7 +31,7 @@ MSGFMT_ARGS=-fv
 	$(MSGFMT) $(MSGFMT_ARGS) -o $@ $<
 
 # options to all rsync commands
-RSYNCOPTS=-vcrtIhl --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
+RSYNCOPTS=-vcrtIhlp --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 #--delete-during	delete deleted files as they are found (uses minimum disk
 #					space but is safe against aborted transfers)
 #--exclude '*~'		avoid moving editor temp files
