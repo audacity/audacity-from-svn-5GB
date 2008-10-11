@@ -29,3 +29,9 @@ MSGFMT_ARGS=-fv
 
 %.mo: %.po
 	$(MSGFMT) $(MSGFMT_ARGS) -o $@ $<
+
+pull:
+	rsync -vcrptIhl --delete-during --rsh=ssh richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/ .
+
+push:
+	rsync -vcrptIhl --delete-during --rsh=ssh . richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/
