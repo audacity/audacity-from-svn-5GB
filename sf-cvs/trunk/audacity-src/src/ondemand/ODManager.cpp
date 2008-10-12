@@ -17,6 +17,8 @@
 #include <wx/wx.h>
 #include <wx/thread.h>
 #include <wx/event.h>
+
+ODLock gODInitedMutex;
 bool gManagerCreated=false;
 /// a flag that is set if we have loaded some OD blockfiles from PCM.  
 bool sHasLoadedOD=false;
@@ -127,27 +129,29 @@ void ODManager::AddNewTask(ODTask* task, bool lockMutex)
 ODManager* ODManager::Instance()
 {
    static ODManager* man=NULL;
-   static bool inited = false;
-   static ODLock initedMutex;
    //this isn't 100% threadsafe but I think Okay for this purpose.
    
  //   wxLogDebug(wxT("Fetching Instance\n"));
  
-   initedMutex.Lock();
+   gODInitedMutex.Lock();
    if(!man)
    {
       man = new ODManager();
       man->Init();
       gManagerCreated = true;
    }
-   initedMutex.Unlock();
+   gODInitedMutex.Unlock();
    
    return man;
 }
 
 bool ODManager::IsInstanceCreated()
 {
-  return gManagerCreated;
+   bool ret;
+   gODInitedMutex.Lock();
+   ret= gManagerCreated;
+   gODInitedMutex.Unlock();
+   return ret;
 }
 
 ///Launches a thread for the manager and starts accepting Tasks.
@@ -268,7 +272,7 @@ void ODManager::Start()
 
 void ODManager::Quit()
 {
-   if(gManagerCreated)
+   if(IsInstanceCreated())
    {
       ODManager::Instance()->mTerminateMutex.Lock();
       ODManager::Instance()->mTerminate = true;
