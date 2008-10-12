@@ -29,6 +29,7 @@
 #include "../Tags.h"
 #include "../Track.h"
 #include "../WaveTrack.h"
+#include "../ondemand/ODManager.h"
 
 #include "Export.h"
 
@@ -420,7 +421,13 @@ bool ExportPCM::Export(AudacityProject *project,
    SNDFILE     *sf = NULL;
    int          err;
 
+   //This whole operation should not occur while a file is being loaded on OD, 
+   //(we are worried about reading from a file being written to,) so we block.
+   //Furthermore, we need to do this because libsndfile is not threadsafe.
+   ODManager::LockLibSndFileMutex();
    formatStr = sf_header_name(sf_format & SF_FORMAT_TYPEMASK);
+   
+   ODManager::UnlockLibSndFileMutex();
 
    // Use libsndfile to export file
 
@@ -440,7 +447,9 @@ bool ExportPCM::Export(AudacityProject *project,
       return false;
    }
 
+   ODManager::LockLibSndFileMutex();
    sf = sf_open(OSFILENAME(fName), SFM_WRITE, &info);
+   ODManager::UnlockLibSndFileMutex();
    if (!sf) {
       wxMessageBox(wxString::Format(_("Cannot export audio to %s"),
                                     fName.c_str()));
@@ -489,10 +498,13 @@ bool ExportPCM::Export(AudacityProject *project,
       
       samplePtr mixed = mixer->GetBuffer();
 
+      
+      ODManager::LockLibSndFileMutex();
       if (format == int16Sample)
          sf_writef_short(sf, (short *)mixed, numSamples);
       else
          sf_writef_float(sf, (float *)mixed, numSamples);
+      ODManager::UnlockLibSndFileMutex();
 
       cancelling = !progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
@@ -503,7 +515,10 @@ bool ExportPCM::Export(AudacityProject *project,
 
    delete[] waveTracks;                            
 
+   
+   ODManager::LockLibSndFileMutex();
    err = sf_close(sf);
+   ODManager::UnlockLibSndFileMutex();
 
    if (err) {
       char buffer[1000];
@@ -528,7 +543,7 @@ bool ExportPCM::Export(AudacityProject *project,
       FSpSetFInfo(&spec, &finfo);
    }
 #endif
-
+   
    return !cancelling;
 }
 
