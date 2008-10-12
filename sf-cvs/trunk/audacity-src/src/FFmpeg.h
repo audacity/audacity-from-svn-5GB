@@ -191,7 +191,7 @@ public:
 
    wxString GetLibAVFormatName()
    {
-      return wxT("avformat.dll");
+      return (wxT("avformat-") wxT(AV_STRINGIFY(LIBAVFORMAT_VERSION_MAJOR)) wxT(".dll"));
    }
 #else //__WXMSW__
    wxString GetLibraryTypeString()
@@ -206,7 +206,7 @@ public:
 
    wxString GetLibAVFormatName()
    {
-      return wxT("libavformat.so");
+      return (wxT("avformat-") wxT(AV_STRINGIFY(LIBAVFORMAT_VERSION_MAJOR)) wxT(".dll"));
    }
 #endif //__WXMSW__
 
