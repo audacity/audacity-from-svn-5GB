@@ -188,15 +188,25 @@ void FileFormatPrefs::OnMP3DownButton(wxCommandEvent& evt)
    ::OpenInDefaultBrowser(url);
 }
 
-void FileFormatPrefs::SetFFmpegVersionText(bool prompt)
+void FileFormatPrefs::SetFFmpegVersionText()
 {
-   mFFmpegVersion->SetLabel(GetFFmpegVersion(this, prompt));
+   mFFmpegVersion->SetLabel(GetFFmpegVersion(this));
 }
 
 
 void FileFormatPrefs::OnFFmpegFindButton(wxCommandEvent& evt)
 {
-   SetFFmpegVersionText(true);
+#ifdef USE_FFMPEG
+   FFmpegLibs* FFmpegLibsInst = PickFFmpegLibs();
+
+   // Show "Locate FFmpeg" dialog
+   FFmpegLibsInst->FindLibs(this);
+   // Load the libs ('true' means that all errors will be shown)
+   LoadFFmpeg(true);
+   SetFFmpegVersionText();
+
+   DropFFmpegLibs();
+#endif
 }
 
 void FileFormatPrefs::OnFFmpegDownButton(wxCommandEvent& evt)

@@ -35,7 +35,7 @@ private:
    void SetMP3VersionText(bool prompt = false);
    void OnFFmpegFindButton(wxCommandEvent& evt);
    void OnFFmpegDownButton(wxCommandEvent& evt);
-   void SetFFmpegVersionText(bool prompt = false);
+   void SetFFmpegVersionText();
 
    wxStaticText *mMP3Version;
    wxStaticText *mFFmpegVersion;

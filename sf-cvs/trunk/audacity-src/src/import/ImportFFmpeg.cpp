@@ -294,10 +294,37 @@ wxString FFmpegImportPlugin::GetPluginFormatDescription()
 
 ImportFileHandle *FFmpegImportPlugin::Open(wxString filename)
 {
-
-   // Open the file for import
    FFmpegImportFileHandle *handle = new FFmpegImportFileHandle(filename);
 
+   //Check if we're loading explicitly supported format
+   wxString extension = filename.AfterLast(wxT('.'));
+   if (SupportsExtension(extension))
+   {
+      //Audacity is trying to load something that is declared as
+      //officially supported by this plugin.
+      //If we don't have FFmpeg configured - tell the user about it.
+      //Since this will be happening often, use disableable "FFmpeg not found" dialog
+      //insdead of usual wxMessageBox()
+      if (!FFmpegLibsInst->ValidLibsLoaded())
+      {
+         int dontShowDlg;
+         FFmpegNotFoundDialog *dlg;
+         gPrefs->Read(wxT("/FFmpeg/NotFoundDontShow"),&dontShowDlg,0);
+         if (dontShowDlg == 0)
+         {
+            dlg = new FFmpegNotFoundDialog(NULL);
+            dlg->ShowModal();
+            delete dlg;
+         }         
+      }
+   }
+   if (!FFmpegLibsInst->ValidLibsLoaded())
+   {
+      delete handle;
+      return NULL;
+   }
+
+   // Open the file for import  
    bool success = handle->Init();
    if (!success) {
       delete handle;
@@ -327,7 +354,7 @@ FFmpegImportFileHandle::FFmpegImportFileHandle(const wxString & name)
 
 bool FFmpegImportFileHandle::Init()
 {
-   FFmpegLibsInst->LoadLibs(NULL,false);
+   //FFmpegLibsInst->LoadLibs(NULL,false); //Loaded at startup or from Prefs now
 
    if (!FFmpegLibsInst->ValidLibsLoaded()) return false;
 
