@@ -42,11 +42,11 @@ class FileIO
 
  private:
    wxString mName;
+   FileIOMode mMode;
    wxURI mUri;
    wxFTP *mFtp;
    wxInputStream *mInputStream;
    wxOutputStream *mOutputStream;
-   FileIOMode mMode;
    bool mOpen;
 };
 
