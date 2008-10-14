@@ -45,6 +45,7 @@
 
 #include "../Internat.h"
 #include "../FileFormats.h"
+#include "../FileNames.h"
 #include "../LabelTrack.h"
 #include "../Project.h"
 #include "../Prefs.h"
@@ -98,6 +99,8 @@ ExportMultiple::ExportMultiple(AudacityProject *project)
    mTracks = project->GetTracks();
    mPlugins = mExporter.GetPlugins();
 
+   this->CountTracksAndLabels();
+
    // create array of characters not allowed in file names
    wxString forbid = wxFileName::GetForbiddenChars();
    for(unsigned int i=0; i < forbid.Length(); i++)
@@ -124,43 +127,42 @@ ExportMultiple::~ExportMultiple()
 {
 }
 
-int ExportMultiple::ShowModal()
+void ExportMultiple::CountTracksAndLabels()
 {
-   Track *tr;
-
    mLabels = NULL;
    mNumLabels = 0;
-   mNumTracks = 0;
+   mNumWaveTracks = 0;
 
-   // Examine the track list looking for Wave and Label tracks
-   for (tr = mIterator.First(mTracks); tr != NULL; tr = mIterator.Next()) {
-      switch (tr->GetKind())
+   Track* pTrack;
+   for (pTrack = mIterator.First(mTracks); pTrack != NULL; pTrack = mIterator.Next())
+   {
+      switch (pTrack->GetKind())
       {
-         // Only count WaveTracks, and for linked pairs, only count the
-         // second one of the pair
+         // Count WaveTracks, and for linked pairs, count only the second of the pair.
          case Track::Wave:
          {
-            if (tr->GetLinked() == false) {
-               mNumTracks++;
-            }
-
+            if (pTrack->GetLinked() == false)
+               mNumWaveTracks++;
             break;
          }
 
          // Only support one label track???
          case Track::Label:
          {
+            // Supports only one LabelTrack. 
             if (mLabels == NULL) {
-               mLabels = (LabelTrack *)tr;
+               mLabels = (LabelTrack*)pTrack;
                mNumLabels = mLabels->GetNumLabels();
             }
-
             break;
          }
       }
    }
+}
 
-   if (mNumTracks < 2 && mNumLabels < 1) {
+int ExportMultiple::ShowModal()
+{
+   if (mNumWaveTracks < 2 && mNumLabels < 1) {
       ::wxMessageBox(_("If you have more than one Audio Track, you can export each track as a separate file,\nor if you have a Label Track, you can export a new file for each label.\n\nThis project does not have multiple tracks or a Label Track, so you cannot export multiple files."),
                      _("Can't export multiple files"),
                      wxOK | wxCENTRE, this);
@@ -173,7 +175,7 @@ int ExportMultiple::ShowModal()
       mLabel->SetValue(false);
    }
 
-   if (mNumTracks < 2) {
+   if (mNumWaveTracks < 2) {
       mTrack->Enable(false);
       mLabel->SetValue(true);
       mTrack->SetValue(false);
@@ -545,8 +547,8 @@ bool ExportMultiple::DirOk()
 
 bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
 {
-   AudacityProject *project = GetActiveProject();
-   bool tagsPrompt = project->GetShowId3Dialog();
+   wxASSERT(mProject);
+   bool tagsPrompt = mProject->GetShowId3Dialog();
    int numFiles = mNumLabels;
    int l = 0;        // counter for files done
    ExportKitArray exportSettings; // dynamic array we will use to store the
@@ -619,7 +621,7 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
       wxASSERT(setting.destfile.IsOk());     // scream if file name is broke
 
       // Make sure the (final) file name is unique within the set of exports
-      MakeNameUnique(otherNames, setting.destfile);
+      FileNames::MakeNameUnique(otherNames, setting.destfile);
 
       /* do the metadata for this file */
       // copy project metadata to start with
@@ -667,8 +669,8 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
 bool ExportMultiple::ExportMultipleByTrack(bool byName,
                                            wxString prefix)
 {
-   AudacityProject *project = GetActiveProject();
-   bool tagsPrompt = project->GetShowId3Dialog();
+   wxASSERT(mProject);
+   bool tagsPrompt = mProject->GetShowId3Dialog();
    Track *tr, *tr2;
    int channels = 0;  // how many channels export?
    int l = 0;     // track counter
@@ -754,7 +756,7 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
       wxASSERT(setting.destfile.IsOk());     // scream if file name is broke
 
       // Make sure the (final) file name is unique within the set of exports
-      MakeNameUnique(otherNames, setting.destfile);
+      FileNames::MakeNameUnique(otherNames, setting.destfile);
 
       /* do the metadata for this file */
       // copy project metadata to start with
@@ -829,19 +831,6 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
                   wxOK | wxCENTRE, this);
    
    return ok;
-}
-
-void ExportMultiple::MakeNameUnique(wxArrayString &otherNames, wxFileName &newName)
-{
-   if (otherNames.Index(newName.GetFullName(), false) >= 0) {
-      int i=2;
-      wxString orig = newName.GetName();
-      do {
-         newName.SetName(wxString::Format(wxT("%s-%d"), orig.c_str(), i));
-         i++;
-      } while (otherNames.Index(newName.GetFullName(), false) >= 0);
-   }
-   otherNames.Add(newName.GetFullName());
 }
 
 bool ExportMultiple::DoExport(int channels,

@@ -93,6 +93,19 @@ enum PlayMode {
    loopedPlay
 };
 
+// XML handler for <import> tag
+class ImportXMLTagHandler : public XMLTagHandler 
+{
+ public:
+   ImportXMLTagHandler(AudacityProject* pProject) { mProject = pProject; };
+
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag) { return NULL; };
+   virtual void WriteXML(XMLWriter &xmlFile) { wxASSERT(false); } //vvv todo
+ private: 
+   AudacityProject* mProject;
+};
+
 class AUDACITY_DLL_API AudacityProject:  public wxFrame,
                                      public TrackPanelListener,
                                      public SelectionBarListener,
@@ -146,8 +159,11 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void Import(wxString fileName);
    void AddImportedTracks(wxString fileName,
                           Track **newTracks, int numTracks);
-   bool Save(bool overwrite = true, bool fromSaveAs = false);
-   bool SaveAs();
+   bool Save(bool overwrite = true, bool fromSaveAs = false, bool bWantSaveCompressed = false);
+   bool SaveAs(bool bWantSaveCompressed = false);
+   #ifdef USE_LIBVORBIS
+      bool SaveCompressedWaveTracks(const wxString strProjectPathName); // full path for aup except extension
+   #endif
    void Clear();
 
    wxString GetFileName() { return mFileName; }
@@ -415,6 +431,8 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    // Recent File and Project History
    wxFileHistory *mRecentFiles;
    
+   ImportXMLTagHandler* mImportXMLTagHandler;
+
    // Last auto-save file name and path (empty if none)
    wxString mAutoSaveFileName;
    
@@ -423,7 +441,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    
    // Are we currently auto-saving or not?
    bool mAutoSaving;
-   
+
    // Has this project been recovered from an auto-saved version
    bool mIsRecovered;
    
@@ -435,6 +453,11 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
 
    // Dependencies have been imported and a warning should be shown on save
    bool mImportedDependencies;
+
+
+   bool mWantSaveCompressed;
+   wxArrayString mStrOtherNamesArray; // used to make sure compressed file names are unique
+   
 
  private:
 

@@ -206,6 +206,9 @@ void AudacityProject::CreateMenusAndCommands()
                          AudioIONotBusyFlag | UnsavedChangesFlag,
                          AudioIONotBusyFlag | UnsavedChangesFlag);
       c->AddItem(wxT("SaveAs"),         _("Save Project &As..."),            FN(OnSaveAs));
+      #ifdef USE_LIBVORBIS
+         c->AddItem(wxT("SaveCompressed"), _("Save Compressed Copy of Project..."),  FN(OnSaveCompressed));
+      #endif
    }
 
    c->AddItem(wxT("CheckDeps"),      _("Chec&k Dependencies..."),          FN(OnCheckDependencies));
@@ -781,11 +784,11 @@ void AudacityProject::CreateMenusAndCommands()
          c->EndSubMenu();
       }
 
-#endif
+#endif // EFFECT_CATEGORIES
 
 
       c->EndMenu();
-        }        
+   }        
 
    c->BeginMenu(_("Effe&ct"));
    c->SetDefaultFlags(AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
@@ -927,7 +930,7 @@ void AudacityProject::CreateMenusAndCommands()
          c->EndSubMenu();
       }
 
-#endif
+#endif // EFFECT_CATEGORIES
 
       c->EndMenu();
    }
@@ -2456,6 +2459,13 @@ void AudacityProject::OnSaveAs()
 {
    SaveAs();
 }
+
+#ifdef USE_LIBVORBIS
+   void AudacityProject::OnSaveCompressed()
+   {
+      SaveAs(true);
+   }
+#endif
 
 void AudacityProject::OnCheckDependencies()
 {

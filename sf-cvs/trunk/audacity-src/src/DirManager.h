@@ -113,7 +113,10 @@ class DirManager: public XMLTagHandler {
    //             This leaves orphaned blockfiles on disk, but replaces
    //             files that are not found by silence
    //
-   int ProjectFSCK(bool forceerror, bool silentlycorrect);
+   // bIgnoreNonAUs: Do not count non-AU files as orphaned block files, per <import> tag.
+   //             For example, <branding> JPG and <import> OGG.
+   // 
+   int ProjectFSCK(bool forceerror, bool silentlycorrect, bool bIgnoreNonAUs = true);
    
    // Remove all orphaned blockfiles without user interaction. This is
    // generally safe, because orphaned blockfiles are not referenced by the

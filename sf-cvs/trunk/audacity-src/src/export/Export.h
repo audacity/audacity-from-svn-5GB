@@ -43,7 +43,7 @@ class FormatInfo
 WX_DECLARE_OBJARRAY(FormatInfo *, FormatInfoArray);
 
 //----------------------------------------------------------------------------
-// Exporter Class
+// ExportPlugin
 //----------------------------------------------------------------------------
 class ExportPlugin
 {
@@ -108,7 +108,7 @@ private:
 WX_DECLARE_OBJARRAY(ExportPlugin *, ExportPluginArray);
 
 //----------------------------------------------------------------------------
-// Export
+// Exporter
 //----------------------------------------------------------------------------
 class Exporter
 {
