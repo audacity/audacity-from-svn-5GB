@@ -51,6 +51,24 @@ wxString FileNames::TempDir()
    return FileNames::MkDir(gPrefs->Read(wxT("/Directories/TempDir"), wxT("")));
 }
 
+// originally an ExportMultiple method. Append suffix if newName appears in otherNames.
+void FileNames::MakeNameUnique(wxArrayString &otherNames, wxFileName &newName)
+{
+   if (otherNames.Index(newName.GetFullName(), false) >= 0) {
+      int i=2;
+      wxString orig = newName.GetName();
+      do {
+         newName.SetName(wxString::Format(wxT("%s-%d"), orig.c_str(), i));
+         i++;
+      } while (otherNames.Index(newName.GetFullName(), false) >= 0);
+   }
+   otherNames.Add(newName.GetFullName());
+}
+
+
+
+//
+// Audacity user data directories
 wxString FileNames::AutoSaveDir()
 {
    wxFileName autoSaveDir(FileNames::DataDir(), wxT("AutoSave"));

@@ -1200,7 +1200,7 @@ void DirManager::Deref()
 // good thing; this is one reason why we use the hash and not the most
 // recent savefile.
 
-int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect)
+int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect, bool bIgnoreNonAUs /*= true*/)
 {
       
    // get a rough guess of how many blockfiles will be found/processed
@@ -1230,7 +1230,10 @@ int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect)
       wxString basename=fullname.GetName();
       
       diskFileHash[basename.c_str()]=0; // just needs to be defined
-      if(blockFileHash.find(basename) == blockFileHash.end()){
+      if ((blockFileHash.find(basename) == blockFileHash.end()) &&       // is orphaned
+            (!bIgnoreNonAUs ||      // check only AU, e.g., not an imported ogg or branding jpg
+               fullname.GetExt().IsSameAs(wxT("au"))))
+      {
          // the blockfile on disk is orphaned
          orphanList.Add(fullname.GetFullPath());
          if (!silentlycorrect)

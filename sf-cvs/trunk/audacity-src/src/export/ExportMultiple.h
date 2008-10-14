@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  Export.h
+  ExportMultiple.h
 
   Dominic Mazzoni
 
@@ -41,6 +41,7 @@ private:
 
    // Export
    void CanExport();
+   void CountTracksAndLabels();
    bool DirOk();
    /** \brief Export multiple labeled regions of the project to separate files
     *
@@ -51,6 +52,7 @@ private:
     * @param prefix The string used to prefix the file number if files are being
     * numbered rather than named */
    bool ExportMultipleByLabel(bool byName, wxString prefix);
+
    /** \brief Export each track in the project to a separate file
     *
     * @param byName Controls whether files are named after the track names 
@@ -58,7 +60,7 @@ private:
     * @param prefix The string used to prefix the file number if files are being
     * numbered rather than named */
    bool ExportMultipleByTrack(bool byName, wxString prefix);
-   void MakeNameUnique(wxArrayString &otherNames, wxFileName &newName);
+
    /** Export one file of an export multiple set
     *
     * Called once for each file in the list to do a (non-interactive) export
@@ -107,7 +109,7 @@ private:
                                    tracks in the project */
    LabelTrack *mLabels;
    int mNumLabels;
-   int mNumTracks;
+   int mNumWaveTracks;
    wxArrayPtrVoid mSelected;
    int mFilterIndex;
    int mFormatIndex;
