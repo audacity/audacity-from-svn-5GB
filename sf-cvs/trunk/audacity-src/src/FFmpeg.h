@@ -72,10 +72,77 @@ void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl);
 //----------------------------------------------------------------------------
 // Get FFmpeg library version
 //----------------------------------------------------------------------------
-wxString GetFFmpegVersion(wxWindow *parent, bool prompt);
+wxString GetFFmpegVersion(wxWindow *parent);
+
+//----------------------------------------------------------------------------
+// Attempt to load and enable/disable FFmpeg at startup
+//----------------------------------------------------------------------------
+void FFmpegStartup();
 
 /* from here on in, this stuff only applies when ffmpeg is available */
 #if defined(USE_FFMPEG)
+
+bool LoadFFmpeg(bool showerror);
+
+/// If Audacity failed to load libav*, this dialog
+/// shows up and tells user about that. It will pop-up
+/// again and again until it is disabled.
+class FFmpegNotFoundDialog : public wxDialog
+{
+public:
+
+   FFmpegNotFoundDialog(wxWindow *parent)
+      :  wxDialog(parent, wxID_ANY, wxString(_("FFmpeg not found")))
+   {
+      ShuttleGui S(this, eIsCreating);
+      PopulateOrExchange(S);
+   }
+
+   void PopulateOrExchange(ShuttleGui & S)
+   {
+      wxString text;
+
+      S.SetBorder(10);
+      S.StartVerticalLay(true);
+      {
+         S.AddFixedText(wxT(
+"Audacity attempted to use FFmpeg libraries to import or export an audio file,\n\
+but libraries were not found.\n\
+If you want to use the FFmpeg import feature, please go to Preferences->Import/Export\n\
+and tell Audacity where to look for the libraries."
+         ));
+
+         int dontShowDlg = 0;
+         gPrefs->Read(wxT("/FFmpeg/NotFoundDontShow"),&dontShowDlg,0);
+         mDontShow = S.AddCheckBox(wxT("Do not show this warning again"),dontShowDlg ? wxT("true") : wxT("false"));
+
+         S.AddStandardButtons(eOkButton);
+      }
+      S.EndVerticalLay();
+
+      Layout();
+      Fit();
+      SetMinSize(GetSize());
+      Center();
+
+      return;
+   }
+
+   void OnOk(wxCommandEvent & event)
+   {
+      if (mDontShow->GetValue())
+      {
+         gPrefs->Write(wxT("/FFmpeg/NotFoundDontShow"),1);
+      }
+      this->EndModal(0);
+   }
+
+private:
+
+   wxCheckBox *mDontShow;
+
+   DECLARE_EVENT_TABLE()
+};
 
 /// Manages liabv* libraries - loads/unloads libraries, imports symbols.
 /// Only one instance of this class should exist at each given moment.

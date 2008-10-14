@@ -791,7 +791,7 @@ ExportFFmpegOptions::ExportFFmpegOptions(wxWindow *parent)
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
    PickFFmpegLibs();
-   FFmpegLibsInst->LoadLibs(NULL,true);
+   //FFmpegLibsInst->LoadLibs(NULL,true); //Loaded at startup or from Prefs now
 
    mPresets = new FFmpegPresets();
    mPresetNames = mPresets->GetPresetList();

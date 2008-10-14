@@ -31,10 +31,15 @@ License: GPL v2.  See License.txt.
 #if !defined(USE_FFMPEG)
 /// FFmpeg support may or may not be compiled in,
 /// but Preferences dialog requires this function nevertheless
-wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
+wxString GetFFmpegVersion(wxWindow *parent)
 {
    return wxString(wxT("FFmpeg support not compiled in"));
 }
+
+void FFmpegStartup()
+{
+}
+
 #else
 
 /** This pointer to the shared object has global scope and is used to track the
@@ -68,18 +73,45 @@ void DropFFmpegLibs()
    }
 }
 
+bool LoadFFmpeg(bool showerror)
+{
+   PickFFmpegLibs();
+   if (FFmpegLibsInst->ValidLibsLoaded())
+   {
+     DropFFmpegLibs();
+     return true;
+   }
+   if (!FFmpegLibsInst->LoadLibs(NULL,showerror))
+   {
+      DropFFmpegLibs();
+      gPrefs->Write(wxT("/FFmpeg/Enabled"), false);
+      return false;
+   }
+   else
+   {
+      gPrefs->Write(wxT("/FFmpeg/Enabled"), true);
+      return true;
+   }
+}
 
-wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
+void FFmpegStartup()
+{
+   bool enabled = false;
+   gPrefs->Read(wxT("/FFmpeg/Enabled"),&enabled);
+   // 'false' means that no errors should be shown whatsoever
+   if (enabled && !LoadFFmpeg(false))
+   {
+     wxMessageBox(wxT("FFmpeg was enabled in preferences, but Audacity failed to load it at startup.\nYou may wish go to Preferences and re-configure it."),wxT("FFmpeg startup failed"));
+   }
+}
+
+wxString GetFFmpegVersion(wxWindow *parent)
 {
    PickFFmpegLibs();
 
    wxString versionString = _("FFmpeg library is not found");
 
-   if (prompt) {
-      FFmpegLibsInst->FindLibs(parent);
-   }
-
-   if (FFmpegLibsInst->LoadLibs(parent, false)) {
+   if (FFmpegLibsInst->ValidLibsLoaded()) {
       versionString = FFmpegLibsInst->GetLibraryVersion();
    }
 
@@ -90,7 +122,7 @@ wxString GetFFmpegVersion(wxWindow *parent, bool prompt)
 
 void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
 {
-   //Most of this stuff is taked from FFmpeg tutorials and FFmpeg itself
+   //Most of this stuff is taken from FFmpeg tutorials and FFmpeg itself
    int av_log_level = AV_LOG_WARNING;
    AVClass* avc = ptr ? *(AVClass**)ptr : NULL;
    if (level > av_log_level)
@@ -102,7 +134,7 @@ void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
    }
 
    wxString frm(fmt,wxConvLibc);
-#if defined(wxMSW)
+#if defined(__WXMSW__)
    frm.Replace(wxT("%t"),wxT("%i"),true); //TODO: on Windows vprintf won't handle %t, and probably some others. Investigate.
 #endif
    printstring.Append(wxString::FormatV(frm,vl));
@@ -246,66 +278,6 @@ END_EVENT_TABLE()
 // FFmpegNotFoundDialog
 //----------------------------------------------------------------------------
 
-/// If Audacity failed to load libav*, this dialog
-/// shows up and tells user about that. It will pop-up
-/// again and again until it is disabled.
-class FFmpegNotFoundDialog : public wxDialog
-{
-public:
-
-   FFmpegNotFoundDialog(wxWindow *parent)
-      :  wxDialog(parent, wxID_ANY, wxString(_("FFmpeg not found")))
-   {
-      ShuttleGui S(this, eIsCreating);
-      PopulateOrExchange(S);
-   }
-
-   void PopulateOrExchange(ShuttleGui & S)
-   {
-      wxString text;
-
-      S.SetBorder(10);
-      S.StartVerticalLay(true);
-      {
-         S.AddFixedText(wxT(
-"Audacity attempted to load FFmpeg libraries\n\
-to either import or export an audio file,\n\
-but libraries were not found.\n\
-If you want to use the FFmpeg import/export feature,\n\
-please go to Preferences->Import/Export\n\
-and tell Audacity where to look for the libraries."
-         ));
-
-         mDontShow = S.AddCheckBox(wxT("Do not show this warning again"),wxT("false"));
-
-         S.AddStandardButtons(eOkButton);
-      }
-      S.EndVerticalLay();
-
-      Layout();
-      Fit();
-      SetMinSize(GetSize());
-      Center();
-
-      return;
-   }
-
-   void OnOk(wxCommandEvent & event)
-   {
-      if (mDontShow->GetValue())
-      {
-         gPrefs->Write(wxT("/FFmpeg/NotFoundDontShow"),1);
-      }
-      this->EndModal(0);
-   }
-
-private:
-
-   wxCheckBox *mDontShow;
-
-   DECLARE_EVENT_TABLE()
-};
-
 BEGIN_EVENT_TABLE(FFmpegNotFoundDialog, wxDialog)
    EVT_BUTTON(wxID_OK, FFmpegNotFoundDialog::OnOk)
 END_EVENT_TABLE()
@@ -403,6 +375,7 @@ bool FFmpegLibs::LoadLibs(wxWindow *parent, bool showerr)
    }
 
    // If libraries aren't loaded - nag user about that
+   /*
    if (!ValidLibsLoaded())
    {
       wxLogMessage(wxT("Failed to load libraries altogether."));
@@ -416,7 +389,7 @@ bool FFmpegLibs::LoadLibs(wxWindow *parent, bool showerr)
           delete dlg;
       }
    }
-
+   */
    // Oh well, just give up
    if (!ValidLibsLoaded()) {
       if (showerr) wxMessageBox(wxT("Failed to find compatible FFmpeg libraries"));

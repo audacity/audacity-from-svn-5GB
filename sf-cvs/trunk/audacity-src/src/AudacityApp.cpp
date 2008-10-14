@@ -89,6 +89,8 @@ It handles initialization and termination by subclassing wxApp.
 #include "import/ImportQT.h"
 #endif
 
+#include "FFmpeg.h"
+
 #ifdef _DEBUG
     #ifdef _MSC_VER
         #undef THIS_FILE
@@ -857,6 +859,8 @@ bool AudacityApp::OnInit()
    mLogger->SetActiveTarget(mLogger);
    mLogger->EnableLogging(true);
    mLogger->SetLogLevel(wxLOG_Max);
+
+   FFmpegStartup();
 
    //
    // Auto-recovery

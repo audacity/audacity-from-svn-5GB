@@ -134,7 +134,6 @@ private:
 ExportFFmpeg::ExportFFmpeg()
 :  ExportPlugin()
 {
-
    PickFFmpegLibs();
    int newfmt;
    // Adds export types from the export type list
@@ -184,7 +183,7 @@ void ExportFFmpeg::Destroy()
 bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
 {
    int err;
-   FFmpegLibsInst->LoadLibs(NULL,true);
+   //FFmpegLibsInst->LoadLibs(NULL,true); //Loaded at startup or from Prefs now
 
    if (!FFmpegLibsInst->ValidLibsLoaded()) return false;
 
@@ -577,6 +576,11 @@ bool ExportFFmpeg::Export(AudacityProject *project,
                        int channels, wxString fName,
                        bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec, Tags *metadata, int subformat)
 {
+   if (!FFmpegLibsInst->ValidLibsLoaded())
+   {
+      wxMessageBox(wxT("FFmpeg is required to proceed.\nYou can enable it in Preferences->Import/Export."));
+      return false;
+   }
    mChannels = channels;
    if (channels > fmts[subformat].maxchannels)
    {
@@ -756,6 +760,11 @@ int ExportFFmpeg::AskResample(int bitrate, int rate, int lowrate, int highrate, 
 
 bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
 {
+   if (!FFmpegLibsInst->ValidLibsLoaded())
+   {
+      wxMessageBox(wxT("FFmpeg is required to proceed.\nYou can enable it in Preferences->Import/Export."));
+      return false;
+   }
    if (format == FMT_M4A)
    {
       ExportFFmpegAACOptions od(project);
@@ -789,13 +798,8 @@ bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
    else if (format == FMT_OTHER)
    {
       ExportFFmpegOptions od(project);
-      if (FFmpegLibsInst->ValidLibsLoaded())
-      {
-        od.ShowModal();
-        return true;
-      }
-      else
-        return false;
+      od.ShowModal();
+      return true;
    }
 
    return false;
