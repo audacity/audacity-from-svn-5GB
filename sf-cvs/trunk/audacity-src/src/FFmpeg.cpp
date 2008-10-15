@@ -101,7 +101,10 @@ void FFmpegStartup()
    // 'false' means that no errors should be shown whatsoever
    if (enabled && !LoadFFmpeg(false))
    {
-     wxMessageBox(wxT("FFmpeg was enabled in preferences, but Audacity failed to load it at startup.\nYou may wish go to Preferences and re-configure it."),wxT("FFmpeg startup failed"));
+     wxMessageBox(wxT("FFmpeg was configured in preferences and successfully loaded before,\n\
+                      but this time Audacity failed to load it at startup.\n\
+                      You may want to go back to Preferences->Import/Export and re-configure it."),
+                      wxT("FFmpeg startup failed"));
    }
 }
 
@@ -672,6 +675,7 @@ void FFmpegLibs::FreeLibs()
       if (avcodec) avcodec->Unload();
       if (avutil) avutil->Unload();
    }
+   mLibsLoaded = false;
    return;
 }
 

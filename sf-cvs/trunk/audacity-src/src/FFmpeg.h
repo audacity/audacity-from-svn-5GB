@@ -106,7 +106,7 @@ public:
       S.StartVerticalLay(true);
       {
          S.AddFixedText(wxT(
-"Audacity attempted to use FFmpeg libraries to import or export an audio file,\n\
+"Audacity attempted to use FFmpeg libraries to import an audio file,\n\
 but libraries were not found.\n\
 If you want to use the FFmpeg import feature, please go to Preferences->Import/Export\n\
 and tell Audacity where to look for the libraries."

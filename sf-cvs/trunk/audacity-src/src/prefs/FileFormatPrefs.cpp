@@ -109,7 +109,7 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
       S.AddVariableText( _("FFmpeg Library Version:"),
          true, wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
 #if defined(USE_FFMPEG)
-      mFFmpegVersion = S.AddVariableText( wxT("FFmpeg library not found"),
+      mFFmpegVersion = S.AddVariableText( wxT("No compatible FFmpeg library is found"),
          true, wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
 #else
       mFFmpegVersion = S.AddVariableText( wxT("FFmpeg support is not compiled in"),
@@ -199,10 +199,25 @@ void FileFormatPrefs::OnFFmpegFindButton(wxCommandEvent& evt)
 #ifdef USE_FFMPEG
    FFmpegLibs* FFmpegLibsInst = PickFFmpegLibs();
 
-   // Show "Locate FFmpeg" dialog
-   FFmpegLibsInst->FindLibs(this);
+   FFmpegLibsInst->FreeLibs();
    // Load the libs ('true' means that all errors will be shown)
-   LoadFFmpeg(true);
+   bool locate = !LoadFFmpeg(true);
+
+   // Libs are fine, don't show "locate" dialog unless user really wants it
+   if (!locate)
+   {
+      int response = wxMessageBox(wxT("FFmpeg libraries are located by Audacity without your interference.\
+                       \nDo you want to override this decision and locate them yourself?"),wxT("Success"),wxCENTRE | wxYES_NO | wxICON_QUESTION);
+      if (response == wxYES)
+        locate = true;
+   }
+   if (locate)
+   {
+      // Show "Locate FFmpeg" dialog
+      FFmpegLibsInst->FindLibs(this);
+      FFmpegLibsInst->FreeLibs();
+      LoadFFmpeg(true);
+   }
    SetFFmpegVersionText();
 
    DropFFmpegLibs();
