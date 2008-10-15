@@ -537,7 +537,7 @@ enum FFmpegExportCtrlID {
 /// These may be stored in external files
 /// I have not yet found a convinient way to keep these two lists in sync automatically
 /// To get control's ID string, use FFmpegExportCtrlIDNames[ControlID - FEFirstID]
-static wxChar *FFmpegExportCtrlIDNames[] = {
+static const wxChar *FFmpegExportCtrlIDNames[] = {
    wxT("FEFirstID"),
    wxT("FEFormatID"),
    wxT("FECodecID"),
@@ -584,7 +584,7 @@ struct ApplicableFor
    bool                 enable;  //!< true if this control should be enabled, false otherwise
    FFmpegExportCtrlID   control; //!< control ID
    CodecID              codec;   //!< Codec ID
-   char                *format;  //!< Format short name
+   const char          *format;  //!< Format short name
 };
 
 /// Some controls (parameters they represent) are only applicable to a number
