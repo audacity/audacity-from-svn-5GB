@@ -109,7 +109,7 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
       S.AddVariableText( _("FFmpeg Library Version:"),
          true, wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
 #if defined(USE_FFMPEG)
-      mFFmpegVersion = S.AddVariableText( wxT("No compatible FFmpeg library is found"),
+      mFFmpegVersion = S.AddVariableText( wxT("No compatible FFmpeg library was found"),
          true, wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
 #else
       mFFmpegVersion = S.AddVariableText( wxT("FFmpeg support is not compiled in"),
@@ -184,7 +184,7 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 /// tell us where the MP3 library is.
 void FileFormatPrefs::OnMP3DownButton(wxCommandEvent& evt)
 {
-   wxString url = wxT("http://audacity.sourceforge.net/lame");
+   wxString url = wxT("http://audacity.sourceforge.net/help/faq?s=install&i=lame-mp3");
    ::OpenInDefaultBrowser(url);
 }
 
@@ -206,8 +206,8 @@ void FileFormatPrefs::OnFFmpegFindButton(wxCommandEvent& evt)
    // Libs are fine, don't show "locate" dialog unless user really wants it
    if (!locate)
    {
-      int response = wxMessageBox(wxT("FFmpeg libraries are located by Audacity without your interference.\
-                       \nDo you want to override this decision and locate them yourself?"),wxT("Success"),wxCENTRE | wxYES_NO | wxICON_QUESTION);
+      int response = wxMessageBox(wxT("Audacity has automatically detected valid FFmpeg libraries.\
+                       \nDo you still want to locate them manually?"),wxT("Success"),wxCENTRE | wxYES_NO | wxICON_QUESTION);
       if (response == wxYES)
         locate = true;
    }
@@ -226,11 +226,11 @@ void FileFormatPrefs::OnFFmpegFindButton(wxCommandEvent& evt)
 
 void FileFormatPrefs::OnFFmpegDownButton(wxCommandEvent& evt)
 {
-   wxString url = wxT("http://audacity.sourceforge.net/ffmpeg");
+   wxString url = wxT("http://www.audacityteam.org/manual/index.php?title=FAQ:Installation_and_Plug-Ins%23installffmpeg");
    ::OpenInDefaultBrowser(url);
 }
 
-/// Takes the settings from the dilaog and puts them into prefs.
+/// Takes the settings from the dialog and puts them into prefs.
 /// Most of the preferences are set by the ShuttleGui, but for some
 /// specially handled ones we need to do this ourselves.
 bool FileFormatPrefs::Apply()
