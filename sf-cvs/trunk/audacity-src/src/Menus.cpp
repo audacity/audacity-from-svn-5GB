@@ -4072,6 +4072,7 @@ void AudacityProject::OnImport()
       return;
    }
 
+   gPrefs->Write(wxT("/NewImportingSession"), true);
    for (size_t ff = 0; ff < selectedFiles.GetCount(); ff++) {
       wxString fileName = selectedFiles[ff];
 

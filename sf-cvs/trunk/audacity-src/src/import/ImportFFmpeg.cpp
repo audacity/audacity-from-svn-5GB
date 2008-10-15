@@ -305,13 +305,16 @@ ImportFileHandle *FFmpegImportPlugin::Open(wxString filename)
       //If we don't have FFmpeg configured - tell the user about it.
       //Since this will be happening often, use disableable "FFmpeg not found" dialog
       //insdead of usual wxMessageBox()
+      bool newsession = false;
+      gPrefs->Read(wxT("/NewImportingSession"), &newsession);
       if (!FFmpegLibsInst->ValidLibsLoaded())
       {
          int dontShowDlg;
          FFmpegNotFoundDialog *dlg;
          gPrefs->Read(wxT("/FFmpeg/NotFoundDontShow"),&dontShowDlg,0);
-         if (dontShowDlg == 0)
+         if (dontShowDlg == 0 && newsession)
          {
+            gPrefs->Write(wxT("/NewImportingSession"), false);
             dlg = new FFmpegNotFoundDialog(NULL);
             dlg->ShowModal();
             delete dlg;
