@@ -96,6 +96,11 @@ ExportPlugin::~ExportPlugin()
    mFormatInfos.Empty();
 }
 
+bool ExportPlugin::CheckFileName(wxFileName &filename, int format)
+{
+  return true;
+}
+
 int ExportPlugin::AddFormat()
 {
    FormatInfo *nf = new FormatInfo();
@@ -576,6 +581,10 @@ bool Exporter::GetFilename()
          }
 
          mFilename.SetExt(defext);
+      }
+      else if (!mPlugins[mFormat]->CheckFileName(mFilename, mSubFormat))
+      {
+         continue;
       }
       else if (!ext.IsEmpty() && !mPlugins[mFormat]->IsExtension(ext,mSubFormat) && ext.CmpNoCase(defext)) {
          wxString prompt;

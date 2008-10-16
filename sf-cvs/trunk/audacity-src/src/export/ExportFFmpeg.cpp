@@ -64,6 +64,9 @@ public:
    ExportFFmpeg();
    void Destroy();
 
+   /// Callback, called from GetFilename
+   bool CheckFileName(wxFileName &filename, int format = 0);
+
    /// Format intialization
    bool Init(const char *shortname, AudacityProject *project);
    
@@ -178,6 +181,16 @@ void ExportFFmpeg::Destroy()
 {
    DropFFmpegLibs();
    delete this;
+}
+
+bool ExportFFmpeg::CheckFileName(wxFileName &filename, int format)
+{
+  if (!FFmpegLibsInst->ValidLibsLoaded())
+  {
+    wxMessageBox(wxT("Properly configured FFmpeg is required to proceed.\nYou can configure it in Preferences->Import/Export."));
+    return false;
+  }
+  return true;
 }
 
 bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
@@ -578,7 +591,7 @@ bool ExportFFmpeg::Export(AudacityProject *project,
 {
    if (!FFmpegLibsInst->ValidLibsLoaded())
    {
-      wxMessageBox(wxT("FFmpeg is required to proceed.\nYou can enable it in Preferences->Import/Export."));
+      wxMessageBox(wxT("Properly configured FFmpeg is required to proceed.\nYou can configure it in Preferences->Import/Export."));
       return false;
    }
    mChannels = channels;
@@ -762,7 +775,7 @@ bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
 {
    if (!FFmpegLibsInst->ValidLibsLoaded())
    {
-      wxMessageBox(wxT("FFmpeg is required to proceed.\nYou can enable it in Preferences->Import/Export."));
+      wxMessageBox(wxT("Properly configured FFmpeg is required to proceed.\nYou can configure it in Preferences->Import/Export."));
       return false;
    }
    if (format == FMT_M4A)
