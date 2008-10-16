@@ -2,7 +2,7 @@
 // Name:        gtk/filedlg.cpp
 // Purpose:     native implementation of FileDialog
 // Author:      Robert Roebling, Zbigniew Zagorski, Mart Raudsepp
-// Id:          $Id: FileDialogPrivate.cpp,v 1.5 2008-10-05 14:48:59 richardash1981 Exp $
+// Id:          $Id: FileDialogPrivate.cpp,v 1.6 2008-10-16 22:22:48 dwritten Exp $
 // Copyright:   (c) 1998 Robert Roebling, 2004 Zbigniew Zagorski, 2005 Mart Raudsepp
 // Licence:     wxWindows licence
 //
@@ -201,7 +201,7 @@ FileDialog::FileDialog(wxWindow *parent, const wxString& message,
       if (parent)
          gtk_parent = GTK_WINDOW( gtk_widget_get_toplevel(parent->m_widget) );
       
-      gchar* ok_btn_stock;
+      const gchar* ok_btn_stock;
       if ( style & wxFD_SAVE )
       {
          gtk_action = GTK_FILE_CHOOSER_ACTION_SAVE;
