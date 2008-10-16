@@ -319,8 +319,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    virtual void OnAudioIOStopRecording();
    virtual void OnAudioIONewBlockFiles(const wxString& blockFileLog);
 
-   void OnSaveCompressed();
-
    // Command Handling
    bool TryToMakeActionAllowed( wxUint32 & flags, wxUint32 flagsRqd, wxUint32 mask );
 
