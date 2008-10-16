@@ -76,6 +76,8 @@ public:
    virtual bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
    virtual bool DoDisplayOptions(AudacityProject *project, int format = 0);
 
+   virtual bool CheckFileName(wxFileName &filename, int format = 0);
+
    /** \brief called to export audio into a file.
     *
     * @param metadata A Tags object that will over-ride the one in *project and
