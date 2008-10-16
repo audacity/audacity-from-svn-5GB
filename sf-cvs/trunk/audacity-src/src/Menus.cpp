@@ -2463,7 +2463,7 @@ void AudacityProject::OnSaveAs()
 #ifdef USE_LIBVORBIS
    void AudacityProject::OnSaveCompressed()
    {
-      SaveAs(true);
+      SaveAs();
    }
 #endif
 
