@@ -256,8 +256,10 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
 
    mTimer.SetOwner(this, OnMeterUpdateID);
    Reset(44100.0, true);
-   for(i=0; i<kMaxMeterBars; i++)
-      mBar[i].clipping = false;
+   for(i=0; i<kMaxMeterBars; i++) {
+      mBar[i].vert = false;
+      ResetBar(&mBar[i], true);
+   }
 }
 
 void Meter::CreateIcon(int aquaOffset)
