@@ -62,7 +62,7 @@
 
 <?php
   $titleStr = _("Audacity: Free Sound Editor and Recording Software");
-  $titleImg = "<img title=\"$titleStr\" alt=\"$titleStr\" src=\"$sitePath/images/Audacity-logo-r_50pct.jpg\" width=\"253\" height=\"100\">";
+  $titleImg = "<img title=\"$titleStr\" alt=\"$titleStr\" src=\"$sitePath/images/Audacity-logo-r_50pct.jpg\">";
 
   if ($sectionId == "" && $pageId == "") {
     echo "<h1>$titleImg</h1>";
