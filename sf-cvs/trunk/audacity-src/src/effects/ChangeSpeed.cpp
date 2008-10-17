@@ -533,13 +533,14 @@ void ChangeSpeedDialog::Update_Slider_PercentChange()
 void ChangeSpeedDialog::Update_Vinyl() 
 // Update Vinyl controls for new percent change.
 {
-	if (m_pChoice_ToVinyl) 
+	if (m_pChoice_ToVinyl) {
 		// Chances are so low that the slider will exactly match a 
 		// standard ratio, just turn it "n/a" unless it's 0.0.
 		if ((m_PercentChange == 0.0) && m_pChoice_FromVinyl)
 			m_pChoice_ToVinyl->SetSelection(m_pChoice_FromVinyl->GetSelection());
 		else
 			m_pChoice_ToVinyl->SetSelection(CHOICE_NA);
+        }
 }
 
 void ChangeSpeedDialog::Update_PercentChange() 
