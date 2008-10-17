@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.12 2008-10-16 16:11:48 l_r_nightmare Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.13 2008-10-17 10:14:24 l_r_nightmare Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -233,7 +233,7 @@ void FileDialog::FilterFiles(HWND hDlg)
       }
       
       // Get the attributes of the object
-      DWORD attr = SFGAO_FOLDER | SFGAO_STREAM;
+      DWORD attr = SFGAO_FOLDER | SFGAO_BROWSABLE;
       hr = ishell->GetAttributesOf(1, &fidl, &attr);
       if (!SUCCEEDED(hr))
       {
@@ -242,7 +242,7 @@ void FileDialog::FilterFiles(HWND hDlg)
       }
       
       // Allow all folders (things like zip files get filtered below)
-      if ((attr & (SFGAO_FOLDER)) && !(attr & SFGAO_STREAM))
+      if ((attr & (SFGAO_FOLDER)) && !(attr & SFGAO_BROWSABLE))
       {
          continue;
       }
