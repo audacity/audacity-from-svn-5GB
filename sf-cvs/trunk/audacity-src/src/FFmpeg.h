@@ -239,7 +239,7 @@ public:
    ///\return libavformat library version or empty string?
    wxString GetLibraryVersion()
    {
-      return wxString::Format(wxT("F(%s),C(%s),U(%s)"),mAVFormatVersion,mAVCodecVersion,mAVUtilVersion);
+      return wxString::Format(wxT("F(%s),C(%s),U(%s)"),mAVFormatVersion.c_str(),mAVCodecVersion.c_str(),mAVUtilVersion.c_str());
    }
 
    /* note these values are for Windows only - Mac and Unix have their own
