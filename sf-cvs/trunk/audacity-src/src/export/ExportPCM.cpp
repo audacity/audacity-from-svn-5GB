@@ -151,7 +151,7 @@ ExportPCMOptions::ExportPCMOptions(wxWindow *parent, int selformat)
    mEncodingFromChoice = sel = 0;
    for (i = 0; i < num; i++) {
       int enc = sf_encoding_index_to_subtype(i);
-      int fmt = format & SF_FORMAT_TYPEMASK | enc;
+      int fmt = (format & SF_FORMAT_TYPEMASK) | enc;
       bool valid  = ValidatePair(fmt);
       if (valid)
       {
