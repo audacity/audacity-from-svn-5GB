@@ -127,7 +127,7 @@ const float Dither::SHAPED_BS[] = { 2.033f, -2.165f, 1.959f, -1.590f, 0.6149f };
         DITHER_FLOAT_TO_INT16(dither, dst, src, len, stride); \
     else if (srcFormat == floatSample && dstFormat == int24Sample) \
         DITHER_FLOAT_TO_INT24(dither, dst, src, len, stride); \
-    else wxASSERT(false); \
+    else { wxASSERT(false); } \
     } while (0)
 
 
@@ -216,8 +216,9 @@ void Dither::Apply(enum DitherType ditherType,
             int* s = (int*)source;
             for (i = 0; i < len; i++, d++, s+= stride)
                 *d = FROM_INT24(s);
-        } else
+        } else {
             wxASSERT(false); // source format unknown
+        }
     } else
     if (sourceFormat == int16Sample && destFormat == int24Sample)
     {
