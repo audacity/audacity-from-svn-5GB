@@ -43,9 +43,9 @@ function myfindrm {
 	# argument.
 	# setting it to 1 makes it verbose, to anything else makes it quiet
 	if [ $1 -eq 1 ]; then
-		find . -name '$2' -exec rm -rvf '{}' ';'
+		find . -name '$2' -print -delete
 	else
-		find . -name '$2' -exec rm -rf '{}' ';'
+		find . -name '$2' -delete
 	fi
 }
 
@@ -152,13 +152,13 @@ printf "removing bugs and todo lists ... ";
 myrmvf $mode bugs.txt todo.txt
 printf "Done\n"
 
-printf "removing scripts ... ";
-myrmrvf $mode scripts
+printf "removing scripts and tests ... ";
+myrmrvf $mode scripts tests
 printf "Done\n"
 
 printf "removing unused libraries from CVS tree ..."
 myrmrvf $mode lib-src/allegro;
-myrmrvf $mode lib-src/iAVC lib-src/id3lib;
+myrmrvf $mode lib-src/iAVC lib-src/id3lib lib-src/libscorealign;
 myrmrvf $mode lib-src/portaudio lib-src/portburn lib-src/rtaudio; 
 myrmrvf $mode lib-src/wave++;
 
@@ -224,6 +224,7 @@ echo "" >> "win/configwin.h"
 echo "// Delete the following lines if you install them manually." >> "win/configwin.h"
 echo "" >> "win/configwin.h"
 echo "#undef MP3SUPPORT" >> "win/configwin.h"
+echo "#undef USE_FFMPEG" >> "win/configwin.h"
 echo "#undef USE_LIBFLAC" >> "win/configwin.h"
 echo "#undef USE_LIBID3TAG" >> "win/configwin.h"
 echo "#undef USE_LIBLRDF" >> "win/configwin.h"
@@ -231,25 +232,26 @@ echo "#undef USE_LIBMAD" >> "win/configwin.h"
 echo "#undef USE_LIBSAMPLERATE" >> "win/configwin.h"
 echo "#undef USE_LIBTWOLAME" >> "win/configwin.h"
 echo "#undef USE_LIBVORBIS" >> "win/configwin.h"
-echo "#undef USE_MIDI" >> "win/configwin.h"
 echo "#undef USE_SLV2" >> "win/configwin.h"
+echo "#undef USE_SOUNDTOUCH" >> "win/configwin.h"
+echo "#undef EXPERIMENTAL_SCOREALIGN" >> "win/configwin.h"
 
 
 printf "removing unwanted projects from VC++ solution\n"
 updsln $mode libflac
-updsln $mode libflac_cpp
+updsln $mode libflac++
 updsln $mode libid3tag
 updsln $mode libmad
 updsln $mode liblrdf
 updsln $mode librdf
 updsln $mode libsamplerate
-updsln $mode libtwolame_static
-updsln $mode vorbis_static
-updsln $mode vorbisfile_static
-updsln $mode ogg_static
+updsln $mode twolame
+updsln $mode libvorbis
+updsln $mode libogg
 updsln $mode raptor
 updsln $mode rasqal
 updsln $mode slv2
-updsln $mode portsmf
+updsln $mode soundtouch
+updsln $mode libscorealign
 
 printf "Done\n"
