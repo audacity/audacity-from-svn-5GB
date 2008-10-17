@@ -129,7 +129,7 @@ void EffectNyquist::Parse(wxString line)
       else if (line.GetChar(i)==wxT('"'))
          q = !q;
       else {
-         if (!q && !sl && line.GetChar(i)==wxT(' ') || line.GetChar(i)==wxT('\t')) {
+         if ((!q && !sl && line.GetChar(i)==wxT(' ')) || line.GetChar(i)==wxT('\t')) {
             tokens.Add(tok);
             tok = wxT("");
          }
