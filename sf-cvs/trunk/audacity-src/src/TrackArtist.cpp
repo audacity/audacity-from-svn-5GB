@@ -589,11 +589,12 @@ int GetWaveYPosNew(float value, float min, float max,
         value *= sign;
      }
    }else
-      if(!outer) 
+      if(!outer) {
          if( value >= 0.0)
             value -= 0.5;
          else
             value += 0.5;
+      }
 
    if (clip) {
       if (value < min)
@@ -899,7 +900,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
    int *clipped;
    int clipcnt = 0;
    int x;
-   int pBarHeight = 10;
+   //int pBarHeight = 10;
 
    if (mShowClipping) {
        clipped =  new int[r.width];
@@ -991,9 +992,8 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                   //draw one stripe every 25 pixels
                   if( (y+x/*+pixAnimOffset*/)%25 == 0)
                   {
-                     *imageBuffer++ = (bl[x]%2?rs:rr) + *imageBuffer;
-                     *imageBuffer++;
-                     *imageBuffer++;
+                     *imageBuffer = (bl[x]%2?rs:rr) + *imageBuffer;
+                     imageBuffer += 3; //Move pen to next pixel
                   } 
                   else {
                      //have a gradient away from the stripe, alter light and dark every block
@@ -1003,9 +1003,14 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                      if(lineProximity<0.0) 
                         lineProximity = 0.0;
                      lineProximity*=2;//scale back to 0.0-1.0
-                        *imageBuffer++ =  (bl[x]%2?rs:rr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
-                        *imageBuffer++ = (bl[x]%2?gs:gr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
-                        *imageBuffer++ = (bl[x]%2?bs:br)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+                        *imageBuffer =  (bl[x]%2?rs:rr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+                        ++imageBuffer;
+
+                        *imageBuffer = (bl[x]%2?gs:gr)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+                        ++imageBuffer;
+
+                        *imageBuffer = (bl[x]%2?bs:br)*lineProximity+ (1.0-lineProximity)* (*imageBuffer+(bl[x]%2?0:-30));
+                        ++imageBuffer;
                   }
                }
                if(drawWaveform)
@@ -1048,10 +1053,10 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                      *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?bs/2+30: */bs;
                   }
                   else {
-                     *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?60: */*imageBuffer;
-                     *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?240: */*imageBuffer;
-                     *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?60: */*imageBuffer;
-                     //imageBuffer += 3;
+                     // *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?60: */*imageBuffer;
+                     // *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?240: */*imageBuffer;
+                     // *imageBuffer++ = /*(showProgress && y<pBarHeight && x%pBarHeight)?60: */*imageBuffer;
+                     imageBuffer += 3;
                   }
              
            }
@@ -1804,7 +1809,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    sampleCount w1 = (sampleCount) ((t0*rate + x *rate *tstep) + .5);
  
    const float 
-      e=exp(1.0f), 
+//      e=exp(1.0f), 
       log2=log(2.0f),
       f=rate/2.0f/half, 
       lmin=log(float(minFreq)),
@@ -1818,8 +1823,8 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
       scale=lmax-lmin, 
       scale2=(lmax-lmin)/log2, 
-      lmin2=lmin/log2,
-      expo=exp(scale);
+      lmin2=lmin/log2 /*,
+      expo=exp(scale)*/ ;
 
 #ifdef EXPERIMENTAL_FFT_Y_GRID
    bool *yGrid;
@@ -2416,7 +2421,7 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
    //for every event
    Alg_event_ptr evt;
    printf ("go time\n");
-   while (evt = seq->iteration_next()) {
+   while ((evt = seq->iteration_next())) {
 
       //printf ("one note");
 
