@@ -239,7 +239,7 @@ public:
          mLibPath.GetName(),
          wxT(""),
          mType,
-         wxOPEN | wxRESIZE_BORDER,
+         wxFD_OPEN | wxRESIZE_BORDER,
          this);
       if (!path.IsEmpty()) {
          mLibPath = path;
