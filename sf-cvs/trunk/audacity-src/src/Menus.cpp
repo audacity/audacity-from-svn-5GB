@@ -2601,7 +2601,7 @@ void AudacityProject::OnExportMIDI(){
          fName,
          _(".mid|.gro"),
          _("MIDI file (*.mid)|*.mid|Allegro file (*.gro)|*.gro"),
-         wxSAVE | wxOVERWRITE_PROMPT | wxRESIZE_BORDER,
+         wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER,
          this);
 
       if (fName == wxT(""))
