@@ -290,12 +290,12 @@ float Envelope::ValueOfPixel( int y, int height, bool upper, bool dB,
 
    v = zoomMax - (y/(float)height) * (zoomMax - zoomMin);
 
-   if (mContourOffset) 
+   if (mContourOffset) {
      if( v > 0.0 )
        v += .5;
      else
        v -= .5;
-
+   }
    if (dB)
       v = fromDB(v);
 
