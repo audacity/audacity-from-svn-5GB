@@ -558,11 +558,11 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mToolManager(NULL),
      mAudioIOToken(-1),
      mIsDeleting(false),
-     mImportXMLTagHandler(NULL),
      mTracksFitVerticallyZoomed(false),  //lda
      mCleanSpeechMode(false),            //lda
      mShowId3Dialog(true),               //lda
      mKeyboardCaptured(false),
+     mImportXMLTagHandler(NULL),
      mLastAutoSaveTime(0),
      mAutoSaving(false),
      mIsRecovered(false),
