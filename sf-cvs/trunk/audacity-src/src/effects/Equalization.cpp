@@ -1630,8 +1630,8 @@ void EqualizationDialog::setCurve(int currentCurve)
             else
             {  //get the first point as close as we can to the last point requested
                changed = true;
-               double f = mCurves[currentCurve].points[i].Freq;
-               double v = mCurves[currentCurve].points[i].dB;
+               //double f = mCurves[currentCurve].points[i].Freq;
+               //double v = mCurves[currentCurve].points[i].dB;
                mLogEnvelope->Insert(0., mCurves[currentCurve].points[i].dB);
             }
          }
@@ -1679,7 +1679,7 @@ void EqualizationDialog::Select( int curve )
    curveName = mCurves[ curve ].Name;
 
    // If the "custom" curve became active
-   if( curve == mCurve->GetCount() - 1 )
+   if( (unsigned int)curve + 1U == mCurve->GetCount() )
    {
       // Prevent focus from being lost
       if( mDelete->FindFocus() == mDelete )
