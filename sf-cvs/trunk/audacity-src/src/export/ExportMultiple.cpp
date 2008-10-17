@@ -388,21 +388,23 @@ void ExportMultiple::OnFormat(wxCommandEvent& event)
 
 void ExportMultiple::OnOptions(wxCommandEvent& event)
 {
-   int sel = mFormat->GetSelection();
-   size_t c = 0;
-   for (size_t i = 0; i < mPlugins.GetCount(); i++)
+   const int sel = mFormat->GetSelection();
+   if (sel != wxNOT_FOUND)
    {
-      for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
-      {
-         if (sel == c)
+     size_t c = 0;
+     for (size_t i = 0; i < mPlugins.GetCount(); i++)
+     {
+       for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+       {
+         if ((size_t)sel == c)
          {
             mFormatIndex = i;
             mSubFormatIndex = j;
          }
          c++;
-      }
+       }
+     }
    }
-
    mPlugins[mFormatIndex]->DisplayOptions(mProject,mSubFormatIndex);
 }
 
@@ -486,19 +488,21 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
    }
 
    mFilterIndex = mFormat->GetSelection();
-
-   size_t c = 0;
-   for (size_t i = 0; i < mPlugins.GetCount(); i++)
+   if (mFilterIndex != wxNOT_FOUND)
    {
-      for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
-      {
-         if (mFilterIndex == c)
+     size_t c = 0;
+     for (size_t i = 0; i < mPlugins.GetCount(); i++)
+     {
+       for (int j = 0; j < mPlugins[i]->GetFormatCount(); j++)
+       {
+         if ((size_t)mFilterIndex == c)
          {
             mFormatIndex = i;
             mSubFormatIndex = j;
          }
          c++;
-      }
+       }
+     }
    }
 
    bool overwrite = mOverwrite->GetValue();
