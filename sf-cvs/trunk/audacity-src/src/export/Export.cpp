@@ -703,7 +703,7 @@ bool Exporter::CheckMix()
       int numLeft =  mNumLeft + mNumMono;
       int numRight = mNumRight + mNumMono;
    
-      if (numLeft > 1 || numRight > 1 || mNumLeft + mNumRight + mNumMono > mChannels)
+      if (numLeft > 1 || numRight > 1 || mNumLeft + mNumRight + mNumMono > mChannels) {
          if (mChannels == 2) {
             ShowWarningDialog(mProject,
                               wxT("MixStereo"),
@@ -714,6 +714,7 @@ bool Exporter::CheckMix()
                               wxT("MixMono"),
                               _("Your tracks will be mixed down to a single mono channel in the exported file."));
          }
+      }
    }
    else
    {
