@@ -62,10 +62,11 @@ RSYNCOPTS=-vrtchlO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 #					compiled versions)
 RSYNCOPTS+=--exclude 'CVS' --exclude '.cvsignore'
 # Exclude CVS files we don't need on the server
-RSYNCOPTS+=--exclude '*.bak' --exclude '/files'
+RSYNCOPTS+=--exclude '*.bak' --exclude '/files' --itemize-changes
 # Exclude backup files from windows editors as well
 # Exclude the contents of the /files directory used to host temporary download
 # files.
+# --itemize-changes 	show what is being changed on each file as it happens
 # construct some longer strings to use in commands
 UPLOADURL=$(SFUSER),$(PROJECT)@$(SFHOST):$(PROJDIR)
 
@@ -73,11 +74,11 @@ pull:
 	rsync $(RSYNCOPTS) $(UPLOADURL) .
 
 pretend-pull:
-	rsync $(RSYNCOPTS) --dry-run --itemize-changes $(UPLOADURL) .
+	rsync $(RSYNCOPTS) --dry-run $(UPLOADURL) .
 
 
 push:
 	rsync $(RSYNCOPTS) . $(UPLOADURL)
 
 pretend-push:
-	rsync $(RSYNCOPTS) --dry-run --itemize-changes . $(UPLOADURL)
+	rsync $(RSYNCOPTS) --dry-run . $(UPLOADURL)
