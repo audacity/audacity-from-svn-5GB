@@ -43,8 +43,8 @@ SFHOST=web.sourceforge.net
 # where the files are kept. The trailing / is important.
 PROJDIR=/home/groups/a/au/audacity/htdocs/
 
-# Internal configuration stuff applies to all projects
-# options to all rsync commands
+# Internal configuration stuff (applies to all projects)
+# Options to all rsync commands:
 RSYNCOPTS=-vrtchlO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 # -v Verbose mode transfers
 # -r Recursive transfer of whole dir tree
