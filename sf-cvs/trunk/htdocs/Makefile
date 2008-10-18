@@ -31,7 +31,15 @@ MSGFMT_ARGS=-fv
 	$(MSGFMT) $(MSGFMT_ARGS) -o $@ $<
 
 # options to all rsync commands
-RSYNCOPTS=-vrtchlpO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
+RSYNCOPTS=-vrtchlO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
+# -v Verbose mode transfers
+# -r Recursive transfer of whole dir tree
+# -t transfer modification times of files
+# -c Use file's md4 checksums to see if they need to be transfered (slower but
+#    more reliable than using size and modtimes of files)
+# -h Output data in human-readable formats
+# -l Preserve links in the uploaded data
+# -O Ommit directory modification times (because they are largely meaningless)
 #--delete-during	delete deleted files as they are found (uses minimum disk
 #					space but is safe against aborted transfers)
 #--exclude '*~'		avoid moving editor temp files
@@ -42,6 +50,8 @@ RSYNCOPTS+=--exclude 'CVS' --exclude '.cvsignore'
 # Exclude CVS files we don't need on the server
 RSYNCOPTS+=--exclude '*.bak' --exclude '/files'
 # Exclude backup files from windows editors as well
+# Exclude the contents of the /files directory used to host temporary download
+# files.
 
 pull:
 	rsync $(RSYNCOPTS) richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/ .
