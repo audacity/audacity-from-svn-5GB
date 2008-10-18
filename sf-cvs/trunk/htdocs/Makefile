@@ -30,6 +30,20 @@ MSGFMT_ARGS=-fv
 %.mo: %.po
 	$(MSGFMT) $(MSGFMT_ARGS) -o $@ $<
 
+# Host / Project configuration
+# ============================
+# Variables in this section configure the project, host etc to use at
+# Sourceforge.
+# $SFUSER must be set from outside to a valid SF user name, but it will be 
+# different for everyone who uses this file, so no point setting it here.
+# project unix name
+PROJECT=audacity
+# host files are on
+SFHOST=web.sourceforge.net
+# where the files are kept. The trailing / is important.
+PROJDIR=/home/groups/a/au/audacity/htdocs/
+
+# Internal configuration stuff applies to all projects
 # options to all rsync commands
 RSYNCOPTS=-vrtchlO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 # -v Verbose mode transfers
@@ -52,16 +66,18 @@ RSYNCOPTS+=--exclude '*.bak' --exclude '/files'
 # Exclude backup files from windows editors as well
 # Exclude the contents of the /files directory used to host temporary download
 # files.
+# construct some longer strings to use in commands
+UPLOADURL=$(SFUSER),$(PROJECT)@$(SFHOST):$(PROJDIR)
 
 pull:
-	rsync $(RSYNCOPTS) richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/ .
+	rsync $(RSYNCOPTS) $(UPLOADURL) .
 
 pretend-pull:
-	rsync $(RSYNCOPTS) --dry-run --itemize-changes richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/ .
+	rsync $(RSYNCOPTS) --dry-run --itemize-changes $(UPLOADURL) .
 
 
 push:
-	rsync $(RSYNCOPTS) . richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/
+	rsync $(RSYNCOPTS) . $(UPLOADURL)
 
 pretend-push:
-	rsync $(RSYNCOPTS) --dry-run --itemize-changes . richardash1981,audacity@web.sourceforge.net:/home/groups/a/au/audacity/htdocs/
+	rsync $(RSYNCOPTS) --dry-run --itemize-changes . $(UPLOADURL)
