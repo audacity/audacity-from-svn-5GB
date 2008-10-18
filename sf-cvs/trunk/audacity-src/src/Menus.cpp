@@ -2594,12 +2594,12 @@ void AudacityProject::OnExportMIDI(){
 
    while(true){
 
-      wxString fName = _("");
+      wxString fName = wxT("");
 
       fName = FileSelector(_("Export MIDI As:"),
          NULL,
          fName,
-         _(".mid|.gro"),
+         wxT(".mid|.gro"),
          _("MIDI file (*.mid)|*.mid|Allegro file (*.gro)|*.gro"),
          wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER,
          this);
@@ -2607,7 +2607,7 @@ void AudacityProject::OnExportMIDI(){
       if (fName == wxT(""))
          return;
 
-      if(!fName.Contains(_("."))) {
+      if(!fName.Contains(wxT("."))) {
          fName = fName + wxT(".mid");
       }
 
@@ -2627,9 +2627,9 @@ void AudacityProject::OnExportMIDI(){
          wxRename(fName, safetyFileName);
       }
 
-      if(fName.EndsWith(_(".mid")) || fName.EndsWith(_(".midi"))) {
+      if(fName.EndsWith(wxT(".mid")) || fName.EndsWith(wxT(".midi"))) {
          nt->ExportMIDI(fName);
-      } else if(fName.EndsWith(_(".gro"))) {
+      } else if(fName.EndsWith(wxT(".gro"))) {
          nt->ExportAllegro(fName);
       } else {
          wxString msg = _("You have selected a filename with an unrecognized file extension.\nDo you want to continue?");
