@@ -8704,6 +8704,11 @@ echo "$as_me: Not building local Redland library since we don't use the local SL
    REDLAND_USE_SYSTEM=no
 fi
 
+if [ "x$LIBLRDF_USE_LOCAL" = "xyes" ]; then
+   EXTRAINSTALLTARGETS="$EXTRAINSTALLTARGETS install-lrdf-data"
+   EXTRAUNINSTALLTARGETS="$EXTRAUNINSTALLTARGETS uninstall-lrdf-data"
+fi
+
 for lib in $LIBRARIES ; do
    eval LIB_USE_LOCAL=\$${lib}_USE_LOCAL
    eval LIB_USE_SYSTEM=\$${lib}_USE_SYSTEM
@@ -8887,9 +8892,6 @@ case "${host_os}" in
       if [ "$use_quicktime" = "auto" ] ; then
          use_quicktime="yes"
       fi
-      EXTRAINSTALLTARGETS=""
-      EXTRAUNINSTALLTARGETS=""
-
       ;;
 
    cygwin*)
@@ -8908,15 +8910,13 @@ _ACEOF
 
 
       AFTERBUILD=""
-      EXTRAINSTALLTARGETS=""
-      EXTRAUNINSTALLTARGETS=""
       ;;
 
    *)
             CONFIGHEADER="configunix.h"
       AFTERBUILD=""
-      EXTRAINSTALLTARGETS="install-extra-data"
-      EXTRAUNINSTALLTARGETS="uninstall-extra-data"
+      EXTRAINSTALLTARGETS="$EXTRAINSTALLTARGETS install-extra-data"
+      EXTRAUNINSTALLTARGETS="$EXTRAUNINSTALLTARGETS uninstall-extra-data"
 esac
 
 
