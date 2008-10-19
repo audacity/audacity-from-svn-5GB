@@ -66,24 +66,28 @@ install-extra-data:
 	$(INSTALL) -d $(DESTDIR)$(DATADIR)/mime/packages
 	$(INSTALL) -m 644 src/audacity.xml $(DESTDIR)$(DATADIR)/mime/packages
 
+.PHONY: install-lrdf-data
 	# install basic LRDF ontology file
 	$(INSTALL) -d $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/rdf
 	$(INSTALL) -m 644 lib-src/liblrdf/examples/ladspa.rdfs $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/rdf
 
+.PHONY: uninstall
 uninstall: $(EXTRAUNINSTALLTARGETS)
 	rm -rf $(DESTDIR)$(BINDIR)/$(AUDACITY_NAME)
 	rm -rf $(DESTDIR)$(DATADIR)/doc/$(AUDACITY_NAME)
 	rm -rf $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)
 	rm -rf $(DESTDIR)$(MANDIR)/man1/$(AUDACITY_NAME).1.gz
 	rm -rf $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/audacity.xpm
-
 	$(MAKE) -C locale uninstall
-
 
 .PHONY: uninstall-extra-data
 uninstall-extra-data:
 	rm -f $(DESTDIR)$(DATADIR)/applications/audacity.desktop
 	rm -f $(DESTDIR)$(DATADIR)/mime/packages/audacity.xml
+
+.PHONY: uninstall-lrdf-data
+uninstall-lrdf-data:
+	rm -f $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/rdf/ladspa.rdfs
 
 help/audacity.1.gz:
 	# gzipping the file this way prevents audacity.1 from getting deleted

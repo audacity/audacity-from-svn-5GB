@@ -68,8 +68,11 @@ dnl list of static link libraries to link in, with paths relative to lib-src
 AC_SUBST(LOCAL_LIBS)
 dnl optional object files (from audacity itself) depending on options enabled
 AC_SUBST(EXTRAOBJS)
+dnl Extra things that need to be built during make (makefile targets)
 AC_SUBST(EXTRATARGETS)
+dnl extra things to install during make install (makefile targets)
 AC_SUBST(EXTRAINSTALLTARGETS)
+dnl extra things to remove during uninstall (makefile targets)
 AC_SUBST(EXTRAUNINSTALLTARGETS)
 AC_SUBST(OPTOBJS)
 AC_SUBST(CDEPEND)
@@ -408,6 +411,14 @@ if ( test "$SLV2_USE_LOCAL" != "yes" && test "$LIBLRDF_USE_LOCAL" != "yes") && t
    REDLAND_USE_SYSTEM=no
 fi
 
+dnl If we are using a local copy of liblrdf then some extra files need to be
+dnl installed on the system, so we need to add the targets to
+dnl EXTRAINSTALLTARGETS and EXTRAUNINSTALLTARGETS
+if [[ "x$LIBLRDF_USE_LOCAL" = "xyes" ]]; then
+   EXTRAINSTALLTARGETS="$EXTRAINSTALLTARGETS install-lrdf-data"
+   EXTRAUNINSTALLTARGETS="$EXTRAUNINSTALLTARGETS uninstall-lrdf-data"
+fi
+
 dnl-----------------------------------------------------------------
 dnl Based on the optional lib selections, modify LOCAL_LIBS, CXXFLAGS, etc
 for lib in $LIBRARIES ; do
@@ -505,9 +516,6 @@ case "${host_os}" in
       if [[ "$use_quicktime" = "auto" ]] ; then
          use_quicktime="yes"
       fi
-      EXTRAINSTALLTARGETS=""
-      EXTRAUNINSTALLTARGETS=""
-
       ;;      
 
    cygwin*)
@@ -519,16 +527,14 @@ case "${host_os}" in
       AC_DEFINE(_FILE_OFFSET_BITS,32,[Placeholder for large file support])
     
       AFTERBUILD=""
-      EXTRAINSTALLTARGETS=""
-      EXTRAUNINSTALLTARGETS=""
       ;;
 
    *)
       dnl Unix OSS configuration
       CONFIGHEADER="configunix.h"
       AFTERBUILD=""
-      EXTRAINSTALLTARGETS="install-extra-data"
-      EXTRAUNINSTALLTARGETS="uninstall-extra-data"
+      EXTRAINSTALLTARGETS="$EXTRAINSTALLTARGETS install-extra-data"
+      EXTRAUNINSTALLTARGETS="$EXTRAUNINSTALLTARGETS uninstall-extra-data"
 esac
 
 dnl PortAudio configuration
