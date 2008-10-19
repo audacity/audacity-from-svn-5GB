@@ -78,7 +78,7 @@ Source: "C:\Program Files\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80
 Source: "C:\Program Files\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\msvcr80.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "..\win\Release\languages\*"; DestDir: "{app}\Languages\"; Flags: ignoreversion recursesubdirs
-Source: "..\win\Release\modules\*"; DestDir: "{app}\Modules\"; Flags: ignoreversion recursesubdirs
+Source: "..\win\Release\modules\*"; DestDir: "{app}\Modules\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist
 Source: "..\win\Release\nyquist\*"; DestDir: "{app}\Nyquist\"; Flags: ignoreversion
 Source: "..\win\Release\plug-ins\*"; DestDir: "{app}\Plug-Ins\"; Excludes: "analyze.ny, fadein.ny, fadeout.ny, undcbias.ny"; Flags: ignoreversion
 
