@@ -45,10 +45,10 @@ PROJDIR=/home/groups/a/au/audacity/htdocs/
 
 # Internal configuration stuff (applies to all projects)
 # Options to all rsync commands:
-RSYNCOPTS=-vrtchlO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
+RSYNCOPTS=-vrchlO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 # -v Verbose mode transfers
 # -r Recursive transfer of whole dir tree
-# -t transfer modification times of files
+## -t transfer modification times of files
 # -c Use file's md4 checksums to see if they need to be transfered (slower but
 #    more reliable than using size and modtimes of files)
 # -h Output data in human-readable formats
@@ -60,8 +60,9 @@ RSYNCOPTS=-vrtchlO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 #--exclude '*.po'	don't move .po files (source code of translations) to/from
 #					server because it can't use them (it only wants the .mo
 #					compiled versions)
-RSYNCOPTS+=--exclude 'CVS' --exclude '.cvsignore'
+RSYNCOPTS+=--exclude 'CVS' --exclude '.cvsignore' --exclude '.*.swp'
 # Exclude CVS files we don't need on the server
+# Exclude vim swapfiles from being synced
 RSYNCOPTS+=--exclude '*.bak' --exclude '/files' --itemize-changes
 # Exclude backup files from windows editors as well
 # Exclude the contents of the /files directory used to host temporary download
