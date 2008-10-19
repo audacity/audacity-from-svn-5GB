@@ -67,6 +67,7 @@ install-extra-data:
 	$(INSTALL) -m 644 src/audacity.xml $(DESTDIR)$(DATADIR)/mime/packages
 
 .PHONY: install-lrdf-data
+install-lrdf-data:
 	# install basic LRDF ontology file
 	$(INSTALL) -d $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/rdf
 	$(INSTALL) -m 644 lib-src/liblrdf/examples/ladspa.rdfs $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/rdf
