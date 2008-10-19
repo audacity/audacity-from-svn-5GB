@@ -3,7 +3,7 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=audacity-win-unicode-1.3.6a3
+OutputBaseFilename=audacity-win-unicode-1.3.6rc1
 SetupIconFile=audacity.ico
 
 WizardImageFile=audacity_InnoWizardImage.bmp
@@ -12,14 +12,14 @@ WizardSmallImageFile=audacity_InnoWizardSmallImage.bmp
 SolidCompression=yes
 
 ; installer-related directives
-AppName=Audacity 1.3 Alpha (Unicode)
-AppVerName=Audacity 1.3.6a3 (Unicode)
+AppName=Audacity 1.3 Beta (Unicode)
+AppVerName=Audacity 1.3.6rc1 (Unicode)
 AppPublisher=Audacity Team
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
 ChangesAssociations=yes
-DefaultDirName={pf}\Audacity 1.3 Alpha (Unicode)
+DefaultDirName={pf}\Audacity 1.3 Beta (Unicode)
 ; Always warn if dir exists, because we'll overwrite previous Audacity.
 DirExistsWarning=yes
 DisableProgramGroupPage=yes
@@ -81,15 +81,15 @@ Source: "C:\Program Files\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80
 Source: "C:\Program Files\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\msvcr80.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "..\win\unicode release\languages\*"; DestDir: "{app}\Languages\"; Flags: ignoreversion recursesubdirs
-Source: "..\win\unicode release\modules\*"; DestDir: "{app}\Modules\"; Flags: ignoreversion recursesubdirs
+Source: "..\win\unicode release\modules\*"; DestDir: "{app}\Modules\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist
 Source: "..\win\unicode release\nyquist\*"; DestDir: "{app}\Nyquist\"; Flags: ignoreversion
 Source: "..\win\unicode release\plug-ins\*"; DestDir: "{app}\Plug-Ins\"; Excludes: "analyze.ny, fadein.ny, fadeout.ny, undcbias.ny"; Flags: ignoreversion
 
 
 
 [Icons]
-Name: "{commonprograms}\Audacity 1.3 Alpha (Unicode)"; Filename: "{app}\audacity.exe"
-Name: "{userdesktop}\Audacity 1.3 Alpha (Unicode)"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
+Name: "{commonprograms}\Audacity 1.3 Beta (Unicode)"; Filename: "{app}\audacity.exe"
+Name: "{userdesktop}\Audacity 1.3 Beta (Unicode)"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
 
 [InstallDelete]
 ; Get rid of Audacity 1.0.0 stuff that's no longer used.
