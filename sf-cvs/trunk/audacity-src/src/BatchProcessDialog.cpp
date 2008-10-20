@@ -64,7 +64,7 @@ BatchProcessDialog::BatchProcessDialog(wxWindow * parent):
    AudacityProject * p = GetActiveProject();
    if (p->GetCleanSpeechMode())
    {
-      SetTitle(wxT("CleanSpeech Batch Processing"));
+      SetTitle(_("CleanSpeech Batch Processing"));
    }
 
    SetLabel(_("Apply Chain"));         // Provide visual label
@@ -203,10 +203,10 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
 
    wxString path = gPrefs->Read(wxT("/DefaultOpenPath"), ::wxGetCwd());
    wxString prompt =  project->GetCleanSpeechMode() ? 
-      wxT("Select vocal file(s) for batch CleanSpeech Chain...") :
+      _("Select vocal file(s) for batch CleanSpeech Chain...") :
       _("Select file(s) for batch processing...");
    wxString fileSelector = project->GetCleanSpeechMode() ? 
-      wxT("Vocal files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3") :
+      _("Vocal files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3") :
       _("All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac"
        );
 
