@@ -182,7 +182,7 @@ void AudacityProject::CreateMenusAndCommands()
    wxArrayString names;
    wxArrayInt indices;
 #ifndef EFFECT_CATEGORIES
-   unsigned int i;
+    unsigned int i;
 #endif
 
    wxMenuBar *menubar = c->AddMenuBar(wxT("appmenu"));
@@ -731,8 +731,6 @@ void AudacityProject::CreateMenusAndCommands()
       c->SetDefaultFlags(AudioIONotBusyFlag,
                          AudioIONotBusyFlag);
       
-      int flags;
-      
       // Add sound generators
       
 #ifndef EFFECT_CATEGORIES
@@ -758,6 +756,8 @@ void AudacityProject::CreateMenusAndCommands()
 
 #else
       
+      int flags;
+
       flags = INSERT_EFFECT | BUILTIN_EFFECT | PLUGIN_EFFECT;
       EffectCategory* ac = 
          em.LookupCategory(wxT("http://lv2plug.in/ns/lv2core#GeneratorPlugin"));
