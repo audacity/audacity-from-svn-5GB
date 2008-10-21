@@ -31,7 +31,6 @@ class WaveCache;
 class SpecCache;
 class AUDACITY_DLL_API WaveClip;
 class AUDACITY_DLL_API WaveClipList;
-class AUDACITY_DLL_API ODLock;
 
 class SpecPxCache {
 public:
@@ -58,7 +57,7 @@ WX_DEFINE_ARRAY_PTR(WaveClip*, WaveClipArray);
 class AUDACITY_DLL_API WaveClip: public XMLTagHandler
 {
 private:
-   WaveClip(WaveClip& orig)
+   WaveClip(const WaveClip&)
    {
       wxMessageBox(wxT("Fatal error - please report to audacity-devel@lists.sourceforge.net\n"));
    }
