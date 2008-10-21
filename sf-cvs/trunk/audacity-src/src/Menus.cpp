@@ -181,6 +181,10 @@ void AudacityProject::CreateMenusAndCommands()
    EffectArray *effects;
    wxArrayString names;
    wxArrayInt indices;
+#ifndef EFFECT_CATEGORIES
+   unsigned int i;
+#endif
+
    wxMenuBar *menubar = c->AddMenuBar(wxT("appmenu"));
 
    //
