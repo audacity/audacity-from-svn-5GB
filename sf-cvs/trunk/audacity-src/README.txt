@@ -17,12 +17,12 @@ Audacity source code archive, except as otherwise noted
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Version 1.3.6a6 (alpha)
+Version 1.3.6 Beta
 
 Contents of this README:
 
 1.  Licensing
-2.  Changes in version 1.3.6a6
+2.  Changes in version 1.3.6 Beta
 3.  Known Issues
 4.  Source Code, Libraries and Additional Copyright Information
 5.  Compilation Instructions
@@ -54,28 +54,34 @@ to http://www.gnu.org/copyleft/gpl.html or write to
 
 --------------------------------------------------------------------------------
 
-2.  Changes in version 1.3.6a6
+2.  Changes in 1.3.6 Beta (since Alpha 1.3.6a6):
 
 Interface:
-        * Note Track now supports export as a MIDI file
-        * Linked audio and label tracks: improved support when source
-           and target number of tracks differ and when cross-pasting
-           different track types
+        * "Save Compressed Copy of Project" saves in much smaller .OGG
+           format to facilitate online transmission of projects
+        * Improved MIDI import and export routines, and clearer color
+           for selection region
+        * Default temporary directory on Mac now accessible in Finder
 
 Import / Export:
-        * On-demand now supports project saving during summarising;
-           reverts to stripey background; fixed some crashes due to
-           threading issues
-        * Exports: Single AAC filter (M4A LC profile) with quality
-           settings slider; removed FFmpeg formats already supported
-           by Audacity; added explicit GSM 6.10 (WAV) filter; current
-           project rate now used for all exports, with check for
-           format-invalid rates; improvements to metadata support
+	* Stability improvements in on-demand loading
+        * FFmpeg: support for latest version of library, improved
+           version checks and error messages, stability improvements
+           in custom exporter
 
-Effects:
-        * LV2 plug-ins: added support (OS X and Linux only) for using
-           synths as tone generators, scale point labels, grouped
-           controls and i18n translations
+Bug Fixes:
+        * Crash in "Get Noise Profile" step of Noise Removal at project
+           rates below 20480 Hz.
+        * Underestimation of peak level in tracks with a small number
+           of different peaks
+        * Truncate Silence could result in repeated or lost audio if
+           applied to the whole of a track
+        * Other interface, generating, exporting and platform-specific
+           fixes
+
+Compilation:
+        * Added autoconf macro archive to CVS, enabling *.nix users
+           without this archive to build --with -MIDI
 
 
 --------------------------------------------------------------------------------
@@ -88,32 +94,61 @@ Please also check:
 for details of any issues that have been identified after release of
 this version.
 
- * Duplicating (or otherwise copying) a selection region up to 128
-    samples, then using Repair, causes a crash if the track containing
-    the copied audio is selected.
 
- * Tracks > Stereo Track to Mono causes a crash in Debug builds (but
-    not in Release builds)
+ * Creating a Label Track (with or without a label), then pasting in
+    error into any selected track before clipboard has any content
+    causes a crash.
+
+ * Muting/soloing specific stereo tracks when exporting may produce
+    incorrect channel results in the exported file. A file exported
+    from a single stereo track may have left channel only after use
+    of solo/mute buttons.
+
+ * Muting specific time-shifted mono tracks when exporting produces
+    audio at wrong point on timeline in exported file if muted tracks
+    are to left of unmuted.
+
+ * Entering a negative three-digit value in "Change Speed", then
+    previewing, raises an "Unhandled Exception" dialogue on which any
+    of the "Abort, Retry, Ignore" choices cause a crash. Also possible
+    freeze or crash on exit if a negative three-digit percent change is
+    previewed in "Change Tempo" or "Change Pitch".
+
+ * Nyquist plug-ins do not display moving bars in progress dialogue and
+    over-estimate "Remaining Time"; if effect is cancelled, the
+    unprocessed audio is deleted from the track, or Audacity crashes
+
+ * Change Speed and Change Tempo fail to modify the original selection
+    length after applying the effect. Repeat fails to include the
+    original selection region after applyihg the effect.
+
+ * In projects containing many tracks, clips dragged at the bottom of
+    the project may jump upwards into tracks towards the top when they
+    pass the snap-to point with other clips.
 
  * Starting monitoring in Meter Toolbar after recording in another
     project window then closing it causes a crash
 
- * Quitting Audacity in the Automatic Crash Recovery dialogue then
-    relaunching it makes it impossible to quit Audacity except by
-    force-quitting.
-
  * LADSPA Multiband EQ may not be visible in the Effect menu, and
     may crash in use.
 
- * On demand: does not work if using the optional FFmpeg importer
-    (that is, if "FFmpeg-compatible files" set in the import window);
-    if FFmpeg library installed, on-demand loading of audio files does
-    not start until normal load of video files completes, if the video
-    file names precede those of the audio files.
+ * On-demand:
+    * does not work if using the optional FFmpeg importer (that is, if
+       "FFmpeg-compatible files" set in the import window)
+    * when importing a mixture of uncompressed and compressed files,
+       on-demand loading does not start until normal import of the
+       compressed files completes, if the names of the compressed files
+       come earlier in the alphabet
+
+ * Linked audio and label tracks:
+    * Labels do not move with Effect > Repeat, Reverse, and Truncate
+       Silence, or when time-shifting clips
+    * When a Time Track is present, audio is not pasted into all
+       tracks, leading to desynchronisation
 
  * Exports:
-    * GSM 6.10 files cannot be exported with WAVEX (Microsoft)
-       headers, and U-Law/A-Law files with these headers may not play
+    * WAVEX (Microsoft) headers: GSM 6.10 files cannot be exported, and
+       U-Law/A-Law files may not be playable
     * M4A: exports at rates below 44100 Hz have incorrect sample rates,
        and 38000 Hz exports may not play properly (FFmpeg bugs); M4A
        renamed to MOV will not play in Windows iTunes or QuickTime
@@ -121,17 +156,14 @@ this version.
        are non-functional, almost always producing a 128 kbps CBR file.
        Reported length is often incorrect (the actual length is correct)
 
- * Linked audio and label tracks: when a Time Track is present, audio
-    is not pasted into all tracks,leading to desynchronisation
+ * Export Multiple:
+    * fails with no export or warning if an empty label is encountered.
+    * "Other uncompressed files" choice always produces 16-bit PCM
+       audio irrespective of header and encoding chosen in Options.
 
  * Some multi-channel recording devices that previously recorded more
     than two channels may no longer do so. Please send reports to:
       feedback@audacityteam.org
-
- * Audacity can underestimate the loudest sample in a longer selection
-    region (or in the entire track) if it contains a relatively small
-    number of different peaks. This causes clipping if the audio is
-    amplified to 0.0 dB. Unlikely to affect a typical pop music track.
 
  * When in Spectrum, Spectrum log or Pitch view, pasting in audio then
     zooming in causes the pasted content beyond the horizontal scroll
@@ -140,13 +172,15 @@ this version.
  * Preferences window: OK button does not work when a tab is selected
     in the left-hand panel.
 
- * When "Split New" is used with more than one track selected, and the
-    selected region includes white space, the split clip(s) perform
-    unwanted alignments instead of remaining at the original time
-    position.
+ * When more than one track is selected, and the region selected in the
+    clips includes white space, "Split New" and "Noise Removal" cause
+    the clip(s) to perform unwanted alignments instead of remaining at
+    their original time position. The problem occurs whether or not the
+    entire audio of the tracks is selected.
 
- * Export Multiple fails with no export or warning if an empty label is
-    encountered.
+ * Split New: If selecting part of a clip from the left edge of the
+    clip, the newly split clip wrongly aligns with the left edge of the
+    residual clip in the original track.
 
  * "Audio Cache" on the Directories tab of Preferences caches most
     audio data for the duration of the session, including project data
@@ -183,7 +217,10 @@ this version.
 
  * Audacity can import, display and cut/copy/paste MIDI files, then
     export them, but they cannot be played. Undoing an edit with a MIDI
-    track open causes the MIDI data to be lost
+    track open causes the MIDI data to be lost in Windows builds
+
+ * Windows only: LV2 support: LADSPA plug-ins not yet categorisable;
+    the slv2 library needed for full LV2 support does not build.
 
  * Windows only: Welcome Message: On some systems/browsers, links are
     not brought to top, and some screen readers that otherwise work
@@ -224,6 +261,10 @@ this version.
 
  * Mac OS X and Linux only: Labels do not accept certain legal
     characters.
+
+ * Linux only: When importing larger WAV files with Import/Export
+    Preferences set to "read directly", exporting to the same file by
+    overwriting may result in a visually/audibly corrupted file.
 
  * Linux only: Audacity does not build if EXPERIMENTAL_SCOREALIGN is
     defined
@@ -378,7 +419,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 5. Compilation instructions
 
 First you must download wxWidgets. Audacity 1.3.6 and later requires
-wxWidgets 2.8.7 from:
+wxWidgets 2.8.9 from:
 
   http://www.wxWidgets.org/
 
@@ -416,6 +457,30 @@ or e-mail us at:
 --------------------------------------------------------------------------------
 
 6.  Previous Changes going back to version 1.1.0
+
+Changes in 1.3.6a6:
+
+Interface:
+        * Note Track now supports export as a MIDI file
+        * Linked audio and label tracks: improved support when source
+           and target number of tracks differ and when cross-pasting
+           different track types
+
+Import / Export:
+        * On-demand now supports project saving during summarising;
+           reverts to stripey background; fixed some crashes due to
+           threading issues
+        * Exports: Single AAC filter (M4A LC profile) with quality
+           settings slider; removed FFmpeg formats already supported
+           by Audacity; added explicit GSM 6.10 (WAV) filter; current
+           project rate now used for all exports, with check for
+           format-invalid rates; improvements to metadata support
+
+Effects:
+        * LV2 plug-ins: added support (OS X and Linux only) for using
+           synths as tone generators, scale point labels, grouped
+           controls and i18n translations
+
 
 Changes in 1.3.6a5:
 
@@ -505,7 +570,8 @@ Import / Export:
            to load while you play or edit).
 
 Effects:
-        * Built-in plug-ins now grouped into related categories
+        * Built-in plug-ins now grouped into related hierarchical
+           categories
 
 Interface:
         * New Debug Log window available in all builds
