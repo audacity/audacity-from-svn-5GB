@@ -615,7 +615,7 @@ public:
 
    void OnDownload(wxCommandEvent & event)
    {
-      wxString page = wxT("http://audacity.sourceforge.net/lame");
+      wxString page = wxT("http://audacity.sourceforge.net/help/faq?s=install&i=lame-mp3");
       ::OpenInDefaultBrowser(page);
    }
 
