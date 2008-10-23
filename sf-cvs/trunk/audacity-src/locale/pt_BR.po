@@ -2084,7 +2084,7 @@ msgstr "Ferramenta anterior\tA"
 
 #: Menus.cpp:784
 msgid "Play/Stop\tSpacebar"
-msgstr "Reproduzir/Parar\tBarra de Espaço"
+msgstr "Reproduzir/Parar\tSpacebar"
 
 #: Menus.cpp:785
 msgid "Stop\tS"
@@ -2120,7 +2120,7 @@ msgstr "Reproduzir continuamente\tL"
 
 #: Menus.cpp:796
 msgid "Play Looped\tShift+Spacebar"
-msgstr "Reprodução contínua\tShift+Barra de Espaço"
+msgstr "Reprodução contínua\tShift+Spacebar"
 
 #: Menus.cpp:797
 msgid "Play Cut Preview\tC"
@@ -2152,55 +2152,55 @@ msgstr "Apagar\tDelete"
 
 #: Menus.cpp:816
 msgid "Seek left short period during playback\tLeft"
-msgstr "Alterar posição do cursor pouco à esquerda\tSeta para Esquerda"
+msgstr "Alterar posição do cursor pouco à esquerda\tLeft"
 
 #: Menus.cpp:817
 msgid "Seek right short period during playback\tRight"
-msgstr "Alterar posição do cursor pouco à direita\tSeta para Direita"
+msgstr "Alterar posição do cursor pouco à direita\tRight"
 
 #: Menus.cpp:818
 msgid "Seek left long period during playback\tShift+Left"
-msgstr "Alterar posição do cursor mais à esquerda\tShift+Seta para Esquerda"
+msgstr "Alterar posição do cursor mais à esquerda\tShift+Left"
 
 #: Menus.cpp:819
 msgid "Seek right long period during playback\tShift+Right"
-msgstr "Alterar posição do cursor mais à direita\tShift+Seta para Direita"
+msgstr "Alterar posição do cursor mais à direita\tShift+Right"
 
 #: Menus.cpp:823
 msgid "Move Focus to Previous Track\tUp"
-msgstr "Mover foco para a faixa anterior\tSeta para Cima"
+msgstr "Mover foco para a faixa anterior\tUp"
 
 #: Menus.cpp:824
 msgid "Move Focus to Previous and Change Selection\tShift+Up"
-msgstr "Mover foco para a faixa anterior e alterar seleção\tShift+Seta para Cima"
+msgstr "Mover foco para a faixa anterior e alterar seleção\tShift+Up"
 
 #: Menus.cpp:825
 msgid "Move Focus to Next Track\tDown"
-msgstr "Mover foco para a faixa posterior\tSeta para Baixo"
+msgstr "Mover foco para a faixa posterior\tDown"
 
 #: Menus.cpp:826
 msgid "Move Focus to Next and Change Selection\tShift+Down"
-msgstr "Mover foco para a faixa posterior e alterar seleção\tShift+Seta para Baixo"
+msgstr "Mover foco para a faixa posterior e alterar seleção\tShift+Down"
 
 #: Menus.cpp:827
 msgid "Toggle Focused Track\tReturn"
-msgstr "Alterar foco sobre a faixa\tEnter"
+msgstr "Alterar foco sobre a faixa\tReturn"
 
 #: Menus.cpp:828
 msgid "Toggle Focused Track\tNUMPAD_ENTER"
-msgstr "Alterar foco sobre a faixa\tEnter do teclado numérico"
+msgstr "Alterar foco sobre a faixa\tNUMPAD_ENTER"
 
 #: Menus.cpp:829
 msgid "Toggle Focused Track\tCtrl+Spacebar"
-msgstr "Alterar foco sobre a faixa\tCtrl+Barra de espaços"
+msgstr "Alterar foco sobre a faixa\tCtrl+Spacebar"
 
 #: Menus.cpp:831
 msgid "Cursor Left\tLeft"
-msgstr "Cursor à Esquerda\tSeta Esquerda"
+msgstr "Cursor à Esquerda\tLeft"
 
 #: Menus.cpp:832
 msgid "Cursor Right\tRight"
-msgstr "Cursor à Direita\tSeta Direita"
+msgstr "Cursor à Direita\tRight"
 
 #: Menus.cpp:833
 msgid "Cursor Short Jump Left\t,"
@@ -2220,11 +2220,11 @@ msgstr "Movimento longo do Cursor à direita\tShift+."
 
 #: Menus.cpp:838
 msgid "Selection Extend Left\tShift+Left"
-msgstr "Extender seleção à esquerda\tShift+Seta Esq."
+msgstr "Extender seleção à esquerda\tShift+Left"
 
 #: Menus.cpp:839
 msgid "Selection Extend Right\tShift+Right"
-msgstr "Extender seleção à direita\tShift+Seta Dir."
+msgstr "Extender seleção à direita\tShift+Right"
 
 #: Menus.cpp:841
 msgid "Set (or Extend) Left Selection"
@@ -2236,11 +2236,11 @@ msgstr "Ajustar (ou extender) seleção à direita"
 
 #: Menus.cpp:844
 msgid "Selection Contract Left\tCtrl+Shift+Right"
-msgstr "Contarir seleção à esquerda\tCtrl+Shift+Seta Dir."
+msgstr "Contarir seleção à esquerda\tCtrl+Shift+Right"
 
 #: Menus.cpp:845
 msgid "Selection Contract Right\tCtrl+Shift+Left"
-msgstr "Contarir seleção à direita\tCtrl+Shift+Seta Esq."
+msgstr "Contarir seleção à direita\tCtrl+Shift+Left"
 
 #: Menus.cpp:847
 msgid "Change pan on focused track\tShift+P"
@@ -2248,11 +2248,11 @@ msgstr "Alterar balanço da faixa selecionada\tShift+P"
 
 #: Menus.cpp:848
 msgid "Pan left on focused track\tAlt+Shift+Left"
-msgstr "Balanço à esquerda nas faixas selecionadas\tAlt+Shift+Seta Esq"
+msgstr "Balanço à esquerda nas faixas selecionadas\tAlt+Shift+Left"
 
 #: Menus.cpp:849
 msgid "Pan right on focused track\tAlt+Shift+Right"
-msgstr "Balanço à direita na faixa selecionada\tAlt+Shift+Seta Dir"
+msgstr "Balanço à direita na faixa selecionada\tAlt+Shift+Right"
 
 #: Menus.cpp:850
 msgid "Change gain on focused track\tShift+G"
@@ -2260,11 +2260,11 @@ msgstr "Alterar ganho na faixa selecionada\tShift+G"
 
 #: Menus.cpp:851
 msgid "Increase gain on focused track\tAlt+Shift+Up"
-msgstr "Aumentar ganho na faixa selecionada\tAlt+Shift+Seta acima"
+msgstr "Aumentar ganho na faixa selecionada\tAlt+Shift+Up"
 
 #: Menus.cpp:852
 msgid "Decrease gain on focused track\tAlt+Shift+Down"
-msgstr "Diminuir ganho na faixa selecionada\tAlt+Shift+Seta abaixo"
+msgstr "Diminuir ganho na faixa selecionada\tAlt+Shift+Down"
 
 #: Menus.cpp:853
 msgid "Open menu on focused track\tShift+M"
