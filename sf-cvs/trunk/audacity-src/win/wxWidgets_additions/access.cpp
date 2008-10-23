@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by:
 // Created:     2003-02-12
-// RCS-ID:      $Id: access.cpp,v 1.1 2008-06-08 03:02:58 windinthew Exp $
+// RCS-ID:      $Id: access.cpp,v 1.2 2008-10-23 03:12:30 windinthew Exp $
 // Copyright:   (c) 2003 Julian Smart
 // Licence:     wxWindows licence
 ///////////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@
 
 #include <oleauto.h>
 #include <oleacc.h>
-#include <winable.h>
+// #include <winable.h> // commented out because winable.h is no longer in Windows SDK  
 
 #include "wx/msw/ole/oleutils.h"
 
