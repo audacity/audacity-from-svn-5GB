@@ -101,10 +101,10 @@ void FFmpegStartup()
    // 'false' means that no errors should be shown whatsoever
    if (enabled && !LoadFFmpeg(false))
    {
-     wxMessageBox(wxT("FFmpeg was configured in preferences and successfully loaded before,\n\
-                      but this time Audacity failed to load it at startup.\n\
-                      You may want to go back to Preferences->Import/Export and re-configure it."),
-                      wxT("FFmpeg startup failed"));
+     wxMessageBox(wxT("FFmpeg was configured in Preferences and successfully loaded before, \
+                      \nbut this time Audacity failed to load it at startup. \
+                      \n\nYou may want to go back to Preferences > Import/Export and re-configure it."),
+                  wxT("FFmpeg startup failed"));
    }
 }
 
@@ -112,7 +112,7 @@ wxString GetFFmpegVersion(wxWindow *parent)
 {
    PickFFmpegLibs();
 
-   wxString versionString = _("FFmpeg library is not found");
+   wxString versionString = _("FFmpeg library not found");
 
    if (FFmpegLibsInst->ValidLibsLoaded()) {
       versionString = FFmpegLibsInst->GetLibraryVersion();
@@ -249,7 +249,7 @@ public:
 
    void OnDownload(wxCommandEvent & event)
    {
-      wxString page = wxT("http://audacityteam.org/wiki/index.php?title=FFmpeg");
+      wxString page = wxT("http://www.audacityteam.org/manual/index.php?title=FAQ:Installation_and_Plug-Ins%23installffmpeg");
       ::OpenInDefaultBrowser(page);
    }
 
@@ -344,7 +344,7 @@ bool FFmpegLibs::FindLibs(wxWindow *parent)
 
    wxLogMessage(wxT("User-specified path = %s"),path.c_str());
    if (!::wxFileExists(path)) {
-      wxLogMessage(wxT("User-specified file doesn't exists! Failed to find libraries."));
+      wxLogMessage(wxT("User-specified file doesn't exist! Failed to find libraries."));
       return false;
    }
    wxLogMessage(wxT("User-specified file exists. Success."));
