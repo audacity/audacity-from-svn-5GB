@@ -66,22 +66,25 @@ multithreaded statically-linked runtime libraries instead
 of the multithreaded DLL runtime libraries. 
 We NO LONGER build that way, so this process is 
 now much simpler. To build previous versions, refer 
-to the corresponding version of this file. 
+to the corresponding previous version of this file. 
 
 For wxWidgets' instructions on compilation 
-(and details about static vs dll linkage), see 
+(and details about static versus dll linkage), see 
 "C:\wxWidgets-2.8.9\docs\msw\install.txt". 
-Note that wx_dll.dsw "adds the dependencies to force the 
-correct order [for DLLs, which wx.dsw does not] (but, because 
-of this, doesn't work for the static libraries)".
+Note therein that wx_dll.dsw adds the dependencies to
+force the correct build order for DLLs, which wx.dsw
+does not. Because of this, wx_dll.dsw doesn't work for
+static libraries.
 
 
 1. Open "C:\wxWidgets-2.8.9\build\msw\wx_dll.dsw" with 
    Visual Studio 2005 (for VC8). 
-   Make sure to use wx_dll.dsw, not wx.dsw, because wx.dsw 
+   Make sure to use wx_dll.dsw, not wx.dsw, because wx.dsw
    does not have the correct dependencies for the DLL builds.
-   When you open wx_dll.dsw, Visual Studio will prompt whether 
-   to convert. Click "Yes To All".
+   When you open wx_dll.dsw, Visual Studio will prompt whether
+   to convert. Click "Yes To All". Next time you open a Visual
+   Studio session, you can avoid this prompt by opening 
+   "C\wxWidgets-2.8.9\build\msw\wx_dll.sln" instead of wx_dll.dsw.
 
 
 2. If you want to use the accessibility features, we have modified a
@@ -96,7 +99,7 @@ of this, doesn't work for the static libraries)".
 
    * Copy setup.h to "C:\wxWidgets-2.8.9\include\wx\msw\".
 
-   Audacity releases are built with these accessibility mods.
+   Audacity releases are built with these accessibility features.
 
 
 3. Build wxWidgets for all configurations of Audacity that you want.
@@ -110,8 +113,9 @@ of this, doesn't work for the static libraries)".
    See "MSVC++ STEP 5:  Build Audacity" for the differences
    between these versions of Audacity.
 
-   For Batch Build for Audacity, you need select only these
-   projects (not the whole solution) for each configuration:
+   If you use "Batch Build" under the "Build" menu, you need select
+   only the following five projects to build (not the whole solution)
+   for each configuration:
       * adv
       * base
       * core
@@ -119,32 +123,22 @@ of this, doesn't work for the static libraries)".
       * net
 
    Because of dependencies, this should also build these projects: 
-	* wxexpat
-	* wxjpeg
-	* wxpng
-	* wxregex
-	* wxtiff
-	* wxzlib
+      * wxexpat
+      * wxjpeg
+      * wxpng
+      * wxregex
+      * wxtiff
+      * wxzlib
 
    If you build the whole solution, ignore the linker errors for 
-   wxbase28*_odbc*.* dbgrid .
+   wxbase28*_odbc*.* dbgrid.
  
 
-4. Copy the DLL's from "C:\wxWidgets-2.8.9\lib\vc_dll"
-   to the corresponding build directory, so the 
-   Audacity executable can access them. 
-	wxbase28*_net_vc_custom.dll
-	wxbase28*_vc_custom.dll
-	wxmsw28*_adv_vc_custom.dll
-	wxmsw28*_core_vc_custom.dll
-	wxmsw28*_html_vc_custom.dll
-
-   where * depends on the configuration:
-	"d" means "Debug DLL"
-	"" means "Release DLL"
-	"ud" means "Unicode Debug DLL"
-	"u" means "Unicode Release DLL"
-
+4. Note the directory "C\wxWidgets-2.8.9\lib\vc_dll". For each
+   build of WxWidgets you made, you will need from here five DLLs
+   appropriate to that build to go in the corresponding Audacity
+   build directory. The DLLs required are noted at "Provide access
+   to the wxWidgets DLLs" at "MSVC++ STEP 5: Build Audacity" below.
 
 
 --------------------------
@@ -206,15 +200,24 @@ Run Visual C++ and load the Audacity solution,
 
 Optional Features
 
-Audacity comes with all libs necessary to build the default 
-configuration, but some functionality like OGG/Vorbis support can be 
-activated optionally and must be downloaded separately. To build 
-with these libs, open the file "configwin.h" and change it according 
-to the third-party libraries you have installed. 
+Some functionality in Audacity is currently turned on its default
+configuration, but requires that extra libraries be downloaded
+separately to use it. 
+
+* To allow export of MP3 files, download LAME:
+  http://audacity.sourceforge.net/help/faq?s=install&i=lame-mp3    
+
+* To allow import and export of a much wider range of audio formats
+  (including WMA, M4A and AC3), and to import audio from video files,
+  download FFmpeg:
+  http://www.audacityteam.org/manual/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg    
+
+To change the libraries that are enabled in Audacity, open the file 
+"win\configwin.h" and comment or uncomment the libraries as required.
 
 DirectSound (Microsoft) and ASIO (Steinberg) are sound card interface 
-protocols that are more efficient than the standard 
-WMME. Unlike WMME, not all sound card drivers support them. 
+protocols that are more efficient than the standard WMME. Unlike WMME,
+not all sound card drivers support them. 
 
 TO ADD SUPPORT FOR DIRECTSOUND: 
 Install the DirectX SDK from Microsoft (http://msdn.microsoft.com/directx).  
@@ -276,29 +279,47 @@ Build Audacity by giving the "Build" menu > "Rebuild Solution"
 command.
 
 
-You'll need to provide each Audacity executable access to the wxWidgets 
-DLLs that you built in "MSVC++ STEP 2:  Build wxWidgets" above. 
-You can put them in your Windows PATH, or simply put them in the same 
-directory as the executable. The DLLs get suffixes depending on their 
-configuration, adding 'u' for Unicode and 'd' for debug. 
-So for instance, copy 
+Provide access to the wxWidgets DLLs
+
+Each Audacity executable needs access to five specific wxWidgets
+DLLs from those you built in "MSVC++ STEP 2:  Build wxWidgets" 
+above. You can copy them to your Windows PATH, or more simply,
+to the same directory as the executable. The ones required are at 
+"C:\wxWidgets-2.8.9\lib\vc_dll":
+
+	wxbase28*_net_vc_custom.dll
+	wxbase28*_vc_custom.dll
+	wxmsw28*_adv_vc_custom.dll
+	wxmsw28*_core_vc_custom.dll
+	wxmsw28*_html_vc_custom.dll
+
+The "*" in the file names above is replaced in the actual files by
+a suffix specific to its Widgets configuration. You can identify the
+DLLs needed for each Audacity version as follows: 
+
+        "" (no suffix) for "Release" versions
+        "u" for "Unicode Release" versions 
+        "d" for "Debug" versions
+	"ud" for "Unicode Debug" versions
+
+So for instance, a Unicode Debug version of Audacity should have:  
 
 	wxbase28ud_net_vc_custom.dll
 	wxbase28ud_vc_custom.dll
 	wxmsw28ud_adv_vc_custom.dll
 	wxmsw28ud_core_vc_custom.dll
 	wxmsw28ud_html_vc_custom.dll
-
-from "C:\wxWidgets-2.8.9\lib\vc_dll" into "audacity\win\unicode debug".
+        
+in the "audacity\win\unicode debug" directory.
 
 
 That's all - if this procedure doesn't work, you can ask for
 help on the Audacity development mailing list:
-audacity-devel@lists.sourceforge.net.  The first suggestion
-is likely to be "try it again with a clean installation of
-the wxWidgets source and the latest Audacity source from
-CVS" though, so if that's not what you just attempted, you
-might want to try that first... 
+audacity-devel@lists.sourceforge.net.  However, the first
+suggestion is likely to be "try it again with a clean installation
+of the wxWidgets source and the latest Audacity source from CVS",
+so if that's not what you just attempted, you might want to try
+that first... 
 
 
 ---------------------------
