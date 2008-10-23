@@ -1614,7 +1614,7 @@ msgstr "Grouper\tCtrl+C"
 
 #: Menus.cpp:350
 msgid "Disj&oin\tCtrl+Alt+J"
-msgstr "Dégrouper\tCtrl+Maj+J"
+msgstr "Dégrouper\tCtrl+Alt+J"
 
 #: Menus.cpp:352
 msgid "Duplic&ate\tCtrl+D"
@@ -1643,7 +1643,7 @@ msgstr "Coupe &Sans réajustement\tShift+Alt+X"
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:377
 msgid "Co&py\tShift+Alt+C"
-msgstr "&Copier\tCtrl+C"
+msgstr "&Copier\tShift+Alt+C"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:383
@@ -1685,7 +1685,7 @@ msgstr "&Tout sélectionner\tCtrl+A"
 
 #: Menus.cpp:417
 msgid "&None\tCtrl+Shift+A"
-msgstr "&Aucun\tCtrl+Maj+A"
+msgstr "&Aucun\tCtrl+Shift+A"
 
 #: Menus.cpp:421
 msgid "&Left at Playback Position\t["
@@ -1789,7 +1789,7 @@ msgstr "&Ajuster à la fenêtre\tCtrl+F"
 
 #: Menus.cpp:502
 msgid "Fit &Vertically\tCtrl+Shift+F"
-msgstr "Afficher toutes les pistes\tCtrl+Maj+F"
+msgstr "Afficher toutes les pistes\tCtrl+Shift+F"
 
 #: Menus.cpp:503
 msgid "&Zoom to Selection\tCtrl+E"
@@ -1886,7 +1886,7 @@ msgstr "Mi&xage et Rendu"
 
 #: Menus.cpp:572
 msgid "Mix and Render to New Track\tCtrl+Shift+M"
-msgstr "Mixer et rendre vers une nouvelle piste\tCtrl+Maj+M"
+msgstr "Mixer et rendre vers une nouvelle piste\tCtrl+Shift+M"
 
 #: Menus.cpp:576
 msgid "&Resample..."
@@ -2055,7 +2055,7 @@ msgstr "Outi précédent\tA"
 
 #: Menus.cpp:784
 msgid "Play/Stop\tSpacebar"
-msgstr "Lecture/Stop\tBarre d'espace"
+msgstr "Lecture/Stop\tSpacebar"
 
 #: Menus.cpp:785
 msgid "Stop\tS"
@@ -2091,7 +2091,7 @@ msgstr "Lecture en boucle\tL"
 
 #: Menus.cpp:796
 msgid "Play Looped\tShift+Spacebar"
-msgstr "Lecture en boucle\tMaj+Barre d'espace"
+msgstr "Lecture en boucle\tShift+Spacebar"
 
 #: Menus.cpp:797
 msgid "Play Cut Preview\tC"
@@ -2099,27 +2099,27 @@ msgstr "Prévisualisation de la coupe\tC"
 
 #: Menus.cpp:799
 msgid "Skip to Start\tHome"
-msgstr "Retour au début\tDébut"
+msgstr "Retour au début\tHome"
 
 #: Menus.cpp:800
 msgid "Skip to End\tEnd"
-msgstr "Aller à la fin\tFin"
+msgstr "Aller à la fin\tEnd"
 
 #: Menus.cpp:802
 msgid "Selection to Start\tShift+Home"
-msgstr "Sélectionner depuis le début\tMaj.+Début"
+msgstr "Sélectionner depuis le début\tShift+Home"
 
 #: Menus.cpp:803
 msgid "Selection to End\tShift+End"
-msgstr "Sélectionner jusqu'à la fin\tMaj.+Fin"
+msgstr "Sélectionner jusqu'à la fin\tShift+End"
 
 #: Menus.cpp:805
 msgid "DeleteKey\tBackspace"
-msgstr "Touche d'effacement\tRetour arrière"
+msgstr "Touche d'effacement\tBackspace"
 
 #: Menus.cpp:810
 msgid "DeleteKey2\tDelete"
-msgstr "Touche d'effacement2\tSupprimer"
+msgstr "Touche d'effacement2\tDelete"
 
 #: Menus.cpp:816
 msgid "Seek left short period during playback\tLeft"
@@ -2143,7 +2143,7 @@ msgstr "Passer la visée à la piste précédente\tUp"
 
 #: Menus.cpp:824
 msgid "Move Focus to Previous and Change Selection\tShift+Up"
-msgstr "Passer la visée à la précédente et changer la sélection\tMaj+Pg préc"
+msgstr "Passer la visée à la précédente et changer la sélection\tShift+Up"
 
 #: Menus.cpp:825
 msgid "Move Focus to Next Track\tDown"
@@ -2151,51 +2151,51 @@ msgstr "Passer la visée à la piste suivante\tDown"
 
 #: Menus.cpp:826
 msgid "Move Focus to Next and Change Selection\tShift+Down"
-msgstr "Passer la visée à la suivante et changer la sélection\tMaj+Pg Suiv"
+msgstr "Passer la visée à la suivante et changer la sélection\tShift+Down"
 
 #: Menus.cpp:827
 msgid "Toggle Focused Track\tReturn"
-msgstr "Bascule de visée de piste\tRetour"
+msgstr "Bascule de visée de piste\tReturn"
 
 #: Menus.cpp:828
 msgid "Toggle Focused Track\tNUMPAD_ENTER"
-msgstr "Bascule de visée de piste\tEntrée pavé numérique"
+msgstr "Bascule de visée de piste\tNUMPAD_ENTER"
 
 #: Menus.cpp:829
 msgid "Toggle Focused Track\tCtrl+Spacebar"
-msgstr "Bascule de visée de piste\tCtrl+barre d'espace"
+msgstr "Bascule de visée de piste\tCtrl+Spacebar"
 
 #: Menus.cpp:831
 msgid "Cursor Left\tLeft"
-msgstr "Curseur gauche\tGauche"
+msgstr "Curseur gauche\tLeft"
 
 #: Menus.cpp:832
 msgid "Cursor Right\tRight"
-msgstr "Curseur droite\tDroite"
+msgstr "Curseur droite\tRight"
 
 #: Menus.cpp:833
 msgid "Cursor Short Jump Left\t,"
-msgstr "Petit saut de curseur à gauche\t"
+msgstr "Petit saut de curseur à gauche\t,"
 
 #: Menus.cpp:834
 msgid "Cursor Short Jump Right\t."
-msgstr "Petit saut de curseur à droite\t"
+msgstr "Petit saut de curseur à droite\t."
 
 #: Menus.cpp:835
 msgid "Cursor Long Jump Left\tShift+,"
-msgstr "Grand saut de curseur à gauche\t"
+msgstr "Grand saut de curseur à gauche\tShift+,"
 
 #: Menus.cpp:836
 msgid "Cursor Long Jump Right\tShift+."
-msgstr "Grand saut de curseur à droite\t"
+msgstr "Grand saut de curseur à droite\tShift+."
 
 #: Menus.cpp:838
 msgid "Selection Extend Left\tShift+Left"
-msgstr "Etendre la sélection à gauche\tMaj+Gauche"
+msgstr "Etendre la sélection à gauche\tShift+Left"
 
 #: Menus.cpp:839
 msgid "Selection Extend Right\tShift+Right"
-msgstr "Etendre la sélection à droite\tMaj+Droite"
+msgstr "Etendre la sélection à droite\tShift+Right"
 
 #: Menus.cpp:841
 msgid "Set (or Extend) Left Selection"
@@ -2207,51 +2207,51 @@ msgstr "Définir (ou étendre) la sélection droite"
 
 #: Menus.cpp:844
 msgid "Selection Contract Left\tCtrl+Shift+Right"
-msgstr "Réduire la sélection à gauche\tCtrl+Maj+Droite"
+msgstr "Réduire la sélection à gauche\tCtrl+Shift+Right"
 
 #: Menus.cpp:845
 msgid "Selection Contract Right\tCtrl+Shift+Left"
-msgstr "Réduire la sélection à droite\tCtrl+Maj+Gauche"
+msgstr "Réduire la sélection à droite\tCtrl+Shift+Left"
 
 #: Menus.cpp:847
 msgid "Change pan on focused track\tShift+P"
-msgstr "Changer le panoramique sur la piste visée\tMaj+P"
+msgstr "Changer le panoramique sur la piste visée\tShift+P"
 
 #: Menus.cpp:848
 msgid "Pan left on focused track\tAlt+Shift+Left"
-msgstr "Panoramique à gauche sur la piste visée\tAlt+Maj+Flêche gauche"
+msgstr "Panoramique à gauche sur la piste visée\tAlt+Shift+Left"
 
 #: Menus.cpp:849
 msgid "Pan right on focused track\tAlt+Shift+Right"
-msgstr "Panoramique à droite sur la piste visée\tAlt+Maj+Flêche droite"
+msgstr "Panoramique à droite sur la piste visée\tAlt+Shift+Right"
 
 #: Menus.cpp:850
 msgid "Change gain on focused track\tShift+G"
-msgstr "Changer le gain sur la piste visée\tMaj+G"
+msgstr "Changer le gain sur la piste visée\tShift+G"
 
 #: Menus.cpp:851
 msgid "Increase gain on focused track\tAlt+Shift+Up"
-msgstr "Augmenter le gain sur la piste visée\tAlt+Maj+Flêche haut"
+msgstr "Augmenter le gain sur la piste visée\tAlt+Shift+Up"
 
 #: Menus.cpp:852
 msgid "Decrease gain on focused track\tAlt+Shift+Down"
-msgstr "Diminuer le gain sur la piste visée\tAlt+Maj+Flêche bas"
+msgstr "Diminuer le gain sur la piste visée\tAlt+Shift+Down"
 
 #: Menus.cpp:853
 msgid "Open menu on focused track\tShift+M"
-msgstr "Ouvrir le menu sur la piste visée\tMaj+M"
+msgstr "Ouvrir le menu sur la piste visée\tShift+M"
 
 #: Menus.cpp:854
 msgid "Mute/Unmute focused track\tShift+U"
-msgstr "Muet bascule marche/arrêt sur la piste visée\tMaj+U"
+msgstr "Muet bascule marche/arrêt sur la piste visée\tShift+U"
 
 #: Menus.cpp:855
 msgid "Solo/Unsolo focused track\tShift+S"
-msgstr "Bascule marche/arrêt du solo sur la piste visée\tMaj+S"
+msgstr "Bascule marche/arrêt du solo sur la piste visée\tShift+S"
 
 #: Menus.cpp:856
 msgid "Close focused track\tShift+C"
-msgstr "Fermer la sur la piste visée\tMaj+C"
+msgstr "Fermer la sur la piste visée\tShift+C"
 
 #: Menus.cpp:858
 msgid "Snap To On"
@@ -2813,7 +2813,7 @@ msgstr "Choisir un ou plusieurs fichiers audio..."
 
 #: Project.cpp:1746
 msgid "Audacity projects|*.aup|"
-msgstr "Projets Audacity (*.aup)|*.aup"
+msgstr "Projets Audacity (*.aup)|*.aup|"
 
 #: Project.cpp:1799
 #: Project.cpp:2186
