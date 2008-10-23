@@ -3,7 +3,7 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=audacity-win-1.3.6a3
+OutputBaseFilename=audacity-win-1.3.6
 SetupIconFile=audacity.ico
 
 WizardImageFile=audacity_InnoWizardImage.bmp
@@ -12,14 +12,14 @@ WizardSmallImageFile=audacity_InnoWizardSmallImage.bmp
 SolidCompression=yes
 
 ; installer-related directives
-AppName=Audacity 1.3 Alpha
-AppVerName=Audacity 1.3.6a3
+AppName=Audacity 1.3 Beta
+AppVerName=Audacity 1.3.6
 AppPublisher=Audacity Team
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
 ChangesAssociations=yes
-DefaultDirName={pf}\Audacity 1.3 Alpha
+DefaultDirName={pf}\Audacity 1.3 Beta
 ; Always warn if dir exists, because we'll overwrite previous Audacity.
 DirExistsWarning=yes
 DisableProgramGroupPage=yes
@@ -84,8 +84,8 @@ Source: "..\win\Release\plug-ins\*"; DestDir: "{app}\Plug-Ins\"; Excludes: "anal
 
 
 [Icons]
-Name: "{commonprograms}\Audacity 1.3 Alpha"; Filename: "{app}\audacity.exe"
-Name: "{userdesktop}\Audacity 1.3 Alpha"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
+Name: "{commonprograms}\Audacity 1.3 Beta"; Filename: "{app}\audacity.exe"
+Name: "{userdesktop}\Audacity 1.3 Beta"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
 
 [InstallDelete]
 ; Get rid of Audacity 1.0.0 stuff that's no longer used.
