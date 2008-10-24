@@ -40,6 +40,7 @@
 #include <wx/dcmemory.h>
 #include <wx/image.h>
 #include <wx/intl.h>
+#define WANT_METER_MENU 1 //vvv
 #if WANT_METER_MENU
    #include <wx/menu.h>
 #endif
