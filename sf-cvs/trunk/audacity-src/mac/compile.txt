@@ -40,17 +40,17 @@ wxWindows is available from http://www.wxwindows.org.
 Similar to the Linux kernel, wxWindows is available as
 stable and development branches.  
 
-The best way to compile Audacity is to download wxMac 2.6.2.
+The best way to compile Audacity is to download wxMac 2.8.8.
 
-For step 1, just download wxMac 2.6.2 from http://www.wxwindows.org/
-Click on the "Download" link on the left.  Under the "2.6.2 stable
-release" header, click on "Mac OS" and then select wxMac-2.6.2.tar.gz
+For step 1, just download wxMac 2.8.8 from http://www.wxwindows.org/
+Click on the "Download" link on the left.  Under the "2.8.8 stable
+release" header, click on "Mac OS" and then select wxMac-2.8.8.tar.gz
 from the closest region.  Finally, select a mirror site from which
 to download.
 
 Uncompress wxMac from the command line by typing:
 
-  tar xvzf wxMac-2.6.2.tar.gz
+  tar xvzf wxMac-2.8.8.tar.gz
 
 --------------------------
 STEP 2:  Download Audacity
@@ -68,7 +68,7 @@ commands:
 STEP 3:  Compile and install wxMac
 ----------------------------------
 
-cd wxMac-2.6.2
+cd wxMac-2.8.8
 mkdir macbuild
 cd macbuild
 ../configure --disable-shared
