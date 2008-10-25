@@ -1,9 +1,9 @@
 ;nyquist plug-in
 ;version 2
 ;type process
-;name "Audio selection Sequencer 2 [for public testing]..."
+;name "Audio selection Sequencer 2..."
 ;action "Sequencing your audio selection..."
-;info "seq2test.ny  by David R. Sky www.shellworld.net/~davidsky/ \nTo generate a rest, use r, n, (),  or a blank svp input line. \nReleased under terms of the GNU General Public License version 2"
+;info "seq2.ny  by David R. Sky www.shellworld.net/~davidsky/ \nTo generate a rest, use r, n, (),  or a blank svp input line. \nReleased under terms of the GNU General Public License version 2"
 
 ;control tempo "Tempo [beats per minute], beats per sequence, sequence starting offset [beats]" string " " "210.0 8 0.0"
 ;control panning "Pan stereo selection [0=no 1=yes]" int " " 1 0 1
