@@ -3,7 +3,7 @@
  * Copyright 2004 Matt Brubeck
  * 2008 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "";
@@ -44,13 +44,13 @@
     </div>
     <div>
       <h3><a href="beta_windows"><img alt="Windows" src="../images/new_win.png">
-      <?=_("Windows")?></a><span class="downloads_smaller"><?=_("&nbsp;&nbsp;1.3.5")?></span></h3>
+      <?=_("Windows")?></a><span class="downloads_smaller"><?=_("&nbsp;&nbsp;1.3.6")?></span></h3>
   
       <h3><a href="beta_mac"><img alt="Mac" src="../images/mac.png">
-      <?=_("Mac OS X")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.5 (Universal Binary)")?></span></h3>
+      <?=_("Mac OS X")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.6 (Universal Binary)")?></span></h3>
   
       <h3><a href="beta_linux"><img alt="Linux" src="../images/unix.png">
-      <?=_("Linux/Unix")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.5 (in source code)")?></span></h3>
+      <?=_("Linux/Unix")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.6 (in source code)")?></span></h3>
   </div>
 </div>
 

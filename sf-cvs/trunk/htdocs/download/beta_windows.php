@@ -25,7 +25,6 @@
 
   <li><p>Windows 98/ME: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.</a>'), "../beta/".$win_exe_url, win_exe_version, win_exe_size)?></p></li>
 
-  <li><p><?php echo _('Visually impaired users only: we recommend the Audacity 1.3.4 installer for <a href="http://downloads.sourceforge.net/audacity/audacity-win-unicode-1.3.4.exe">Windows 2000/XP/Vista</a> or <a href="http://downloads.sourceforge.net/audacity/audacity-win-1.3.4.exe">Windows 98/ME</a>.');?></p> 
 </ul>
 
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
