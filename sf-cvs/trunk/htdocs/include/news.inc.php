@@ -3,7 +3,7 @@
  * Copyright 2004 Matt Brubeck
  * 2007-8 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
 class NewsItem {
   var $id;
@@ -38,6 +38,55 @@ function most_recent_news_item() {
 
 // Add news items below in reverse-chronological order
 // (most recent first).
+
+add_news_item(
+  "October 24, 2008",
+  	"1.3.6-release",
+  _("Audacity 1.3.6 released"),
+  _("
+<p>
+The Audacity Team is pleased to announce the release of
+<a href=\"/download\">Audacity 1.3.6 (Beta)</a> 
+for Windows, Mac and Linux/Unix. 
+</p>
+<p>This release highlights exciting new capabilities developed
+by our students in
+<a href=\"http://code.google.com/soc/2008/\">Google Summer of Code (GSoC) 2008</a>:  
+   <ul>
+      <li><b>FFmpeg support</b> (downloadable separately) permits import and
+              export of a much wider range of file formats, including WMA, 
+              M4A and AC3, plus import of audio from video files</li>
+      <li><b>On-demand loading</b> of uncompressed files eliminates the 
+              wait before files can be played or edited</li> 
+      <li><b>Linked audio and label tracks</b> allow labels to move with
+              their corresponding audio when cutting, pasting or changing
+              speed or tempo</li>
+      <li><b>Hierarchical plug-in grouping</b> for built-in plug-ins 
+   </ul>
+</p>
+<p align=\"center\">
+	<a href=\"http://code.google.com/soc/2008/\">
+	  <img src=\"http://google-summer-of-code.googlecode.com/files/soc08-198x128_white.jpg\" alt=\"Google Summer of Code 2008\"></img>
+	</a>
+</p>
+<p>
+<b>Other experimental features:</b> Sound activated recording; ability to
+save smaller, compressed project files; MIDI files can now be imported,
+cut-and-paste edited, then exported.
+</p>
+<p>
+<b>Miscellaneous:</b> Interface improvements include a new Transport menu,
+and a new Preference to choose Waveform, Spectrum or Pitch view. Several bug 
+fixes.     
+<p>
+Because it is a work in progress and does not yet come with 
+complete documentation or translations into foreign languages, 
+it is recommended for more advanced users. For all users, 
+<a href=\"/download\">Audacity 1.2.6</a> is a stable release, 
+complete and fully documented. You can have Audacity 1.2.6 and 
+1.3.6 installed on the same machine.
+</p>
+"));
 
 add_news_item(
   "October 1, 2008",

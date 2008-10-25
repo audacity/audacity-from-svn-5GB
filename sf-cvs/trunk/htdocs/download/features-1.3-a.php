@@ -2,7 +2,7 @@
 /*
  * Copyright 2005-2008 Dominic Mazzoni, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "features-1.3-a";
@@ -25,7 +25,44 @@
  </ul>
 ')?></p>
 
-<h3 id="details"><?=_("New in Audacity 1.3.5")?></h3>
+<h3 id="details"><?=_("New in Audacity 1.3.6")?></h3>
+
+<dl>
+	<dt> Major new capabilities </dt>
+         <dd>   <ul>
+                      <li><b>FFmpeg support</b> (downloadable separately) permits import and
+                             export of a much wider range of file formats, including WMA, 
+                             M4A and AC3, plus import of audio from video files</li>
+                      <li><b>On-demand loading</b> of uncompressed files eliminates the 
+                             wait before files can be played or edited</li> 
+                      <li><b>Linked audio and label tracks</b> allow labels to move with
+                             their corresponding audio when cutting, pasting or changing
+                             speed or tempo</li>
+         </ul>   </dd>
+   </dt>
+
+   <dt> Other features </dt>
+         <dd>   <ul>
+                       <li>Hierarchical plug-in grouping for built-in plug-ins</li>
+                       <li>Sound activated recording</li>
+                       <li>Ability to save smaller, compressed project files</li>
+                       <li>MIDI files can now be imported, cut-and-paste edited, then exported</li>
+         </ul>   </dd>      
+   </dt>
+
+   <dt> Miscellaneous </dt>
+         <dd>   <ul>
+                       <li>Transport menu for easy access to frequently used
+                           recording/playback commands and preferences</li>       
+                       <li>Default View Mode Preference to choose Waveform, 
+                           Spectrum or Pitch view</li>
+                       <li>Several bug fixes</li>
+         </ul>  </dd>         
+   </dt>
+</dl>
+
+
+<h3><?=_("New in Audacity 1.3.5")?></h3>
 
 <dl>
 	<dt> Recording / Playback </dt>
