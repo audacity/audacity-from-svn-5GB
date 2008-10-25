@@ -2,7 +2,7 @@
 /*
  * Copyright 2004 - 2008 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "documentation";
@@ -19,7 +19,7 @@
 
 <h3><?=_('Quick Reference Guide')?></h3>
 <ul>
-	<li><a href="../onlinehelp-1.2/"><?=_('Read the Audacity reference online.')?></a> <?=_('(You can also access this reference through the "Help" menu in the Audacity program.)')?></li>
+	<li><a href="../onlinehelp-1.2/contents.htm"><?=_('Read the Audacity reference online.')?></a> <?=_('(You can also access this reference through the "Help" menu in the Audacity program.)')?></li>
 	<li><a href="../onlinehelp-1.2/reference.html"><?=_('Printable version of the Audacity reference.')?></a> <?=_('(This can be printed as a single page using the print function of your browser.)')?></li>
  </ul>
 
