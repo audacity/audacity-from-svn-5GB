@@ -113,6 +113,8 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName[wxT("fi")] = wxT("Suomi");
    localLanguageName[wxT("fr")] = wxT("Francais");
    localLanguageName[wxT("ga")] = wxT("Gaeilge");
+   // need to replace Indonesian with proper translation. Translator was asked already, but better add here than break app.
+   localLanguageName[wxT("id")] = wxT("Indonesian");
    localLanguageName[wxT("it")] = wxT("Italiano");
    localLanguageName[wxT("ja")] = wxT("Nihongo");
    localLanguageName[wxT("lo")] = wxT("Lao"); // aka Laothian
