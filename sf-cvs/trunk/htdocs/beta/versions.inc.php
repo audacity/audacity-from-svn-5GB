@@ -43,8 +43,8 @@ define('ladspa_size',    1.5);
 
 define('beta_src_version', '1.3.6');
 define('src_version', '1.3.6');
-define('src_size',    6.2);
-define('src_suffix',  '.tar.gz');
+define('src_size',    4.5);
+define('src_suffix',  '.tar.bz2');
 
 $win_exe_url = "audacity-win/audacity-win-".win_exe_version.".exe";
 $win_zip_url = "audacity-win-zip/audacity-win-".win_zip_version.".zip";
