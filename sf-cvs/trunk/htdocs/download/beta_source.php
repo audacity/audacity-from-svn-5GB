@@ -3,7 +3,7 @@
  * Copyright 2004 Matt Brubeck
  * Copyright 2005 - 8 Dominic Mazzoni, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   require_once "../beta/versions.inc.php";
@@ -19,7 +19,7 @@
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
 
 <ul>
-  <li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (%.1lf MB)'), "../beta/".$src_url, src_version, src_size)?></p></li>
+  <li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (.tar.bz2 file, %.1lf MB)'), "../beta/".$src_url, src_version, src_size)?></p></li>
 </ul>
 
 <h3><?=_("Optional Downloads")?></h3>
