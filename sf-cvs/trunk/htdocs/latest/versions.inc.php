@@ -17,8 +17,8 @@ define('win_zip_version', '1.2.6');
 define('win_zip_size',    3.0);
 
 define('src_version', '1.2.6');
-define('src_size',    5.6);
-define('src_suffix',  '.tar.bz2');
+define('src_size',    4.6);
+define('src_suffix',  '.tar.gz');
 
 $win_exe_url = "audacity-win/audacity-win-".win_exe_version.".exe";
 $win_zip_url = "audacity-win-zip/audacity-win-".win_zip_version.".zip";

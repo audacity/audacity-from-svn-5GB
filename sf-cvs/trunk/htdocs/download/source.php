@@ -3,7 +3,7 @@
  * Copyright 2004 Matt Brubeck
  * 2006 - 8 Richard Ash, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   require_once "../latest/versions.inc.php";
@@ -17,7 +17,7 @@
 <h3><?=_("Recommended Download")?></h3>
 
 <ul>
-  <li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (%.1lf MB)'), "../latest/".$src_url, src_version, src_size)?></p></li>
+  <li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (.tar.gz file, %.1lf MB)'), "../latest/".$src_url, src_version, src_size)?></p></li>
 </ul>
 
 <h3><?=_("Optional Downloads")?></h3>
