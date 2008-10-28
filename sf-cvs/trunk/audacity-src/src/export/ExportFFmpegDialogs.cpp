@@ -92,6 +92,9 @@ ExportFFmpegAC3Options::ExportFFmpegAC3Options(wxWindow *parent)
 :  wxDialog(NULL, wxID_ANY,
             wxString(_("Specify AC3 Options")),
             wxDefaultPosition, wxDefaultSize,
+#if defined(__WXMAC__)
+            wxSTAY_ON_TOP |
+#endif
             wxDEFAULT_DIALOG_STYLE)
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
@@ -158,6 +161,9 @@ ExportFFmpegAACOptions::ExportFFmpegAACOptions(wxWindow *parent)
 :  wxDialog(NULL, wxID_ANY,
             wxString(_("Specify AAC Options")),
             wxDefaultPosition, wxDefaultSize,
+#if defined(__WXMAC__)
+            wxSTAY_ON_TOP |
+#endif
             wxDEFAULT_DIALOG_STYLE)
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
@@ -210,6 +216,9 @@ ExportFFmpegAMRNBOptions::ExportFFmpegAMRNBOptions(wxWindow *parent)
 :  wxDialog(NULL, wxID_ANY,
             wxString(_("Specify AMR-NB Options")),
             wxDefaultPosition, wxDefaultSize,
+#if defined(__WXMAC__)
+            wxSTAY_ON_TOP |
+#endif
             wxDEFAULT_DIALOG_STYLE)
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
@@ -276,6 +285,9 @@ ExportFFmpegAMRWBOptions::ExportFFmpegAMRWBOptions(wxWindow *parent)
 :  wxDialog(NULL, wxID_ANY,
             wxString(_("Specify AMR-WB Options")),
             wxDefaultPosition, wxDefaultSize,
+#if defined(__WXMAC__)
+            wxSTAY_ON_TOP |
+#endif
             wxDEFAULT_DIALOG_STYLE)
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
@@ -344,6 +356,9 @@ ExportFFmpegWMAOptions::ExportFFmpegWMAOptions(wxWindow *parent)
 :  wxDialog(NULL, wxID_ANY,
             wxString(_("Specify WMA Options")),
             wxDefaultPosition, wxDefaultSize,
+#if defined(__WXMAC__)
+            wxSTAY_ON_TOP |
+#endif
             wxDEFAULT_DIALOG_STYLE)
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
@@ -787,6 +802,9 @@ ExportFFmpegOptions::ExportFFmpegOptions(wxWindow *parent)
 :  wxDialog(NULL, wxID_ANY,
             wxString(_("Specify Other Options")),
             wxDefaultPosition, wxDefaultSize,
+#if defined(__WXMAC__)
+            wxSTAY_ON_TOP |
+#endif
             wxDEFAULT_DIALOG_STYLE)
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
