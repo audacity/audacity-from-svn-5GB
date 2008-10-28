@@ -2702,30 +2702,23 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
    unsigned int i;
    int t;
 
-   // Send data to VU meters
+   /* Send data to recording VU meter if applicable */
 
-   // It's critical that we don't update the meters while
-   // StopStream is trying to stop PortAudio, otherwise it can
-   // lead to a freeze.  We use two variables to synchronize:
-   // mUpdatingMeters tells StopStream when the callback is about
-   // to enter the code where it might update the meters, and
-   // mUpdateMeters is how the rest of the code tells the callback
-   // when it is allowed to actually do the updating.  Note that
-   // mUpdatingMeters must be set first to avoid a race condition.
-   gAudioIO->mUpdatingMeters = true;
-   if (gAudioIO->mUpdateMeters) {
-
-      if (gAudioIO->mOutputMeter && 
-          !gAudioIO->mOutputMeter->IsMeterDisabled() &&
-          outputBuffer) {
-         gAudioIO->mOutputMeter->UpdateDisplay(numPlaybackChannels,
-                                               framesPerBuffer,
-                                               (float *)outputBuffer);
-      }
-
-      if (gAudioIO->mInputMeter &&
-          !gAudioIO->mInputMeter->IsMeterDisabled() &&
-          inputBuffer) {
+   if (gAudioIO->mInputMeter &&
+         !gAudioIO->mInputMeter->IsMeterDisabled() &&
+         inputBuffer) {
+      // get here if meters are actually live , and being updated
+      /* It's critical that we don't update the meters while StopStream is
+       * trying to stop PortAudio, otherwise it can lead to a freeze.  We use
+       * two variables to synchronize:
+       *   mUpdatingMeters tells StopStream when the callback is about to enter
+       *     the code where it might update the meters, and
+       *   mUpdateMeters is how the rest of the code tells the callback when it
+       *     is allowed to actually do the updating.
+       * Note that mUpdatingMeters must be set first to avoid a race condition.
+       */
+      gAudioIO->mUpdatingMeters = true;
+      if (gAudioIO->mUpdateMeters) {
          if (gAudioIO->mCaptureFormat == floatSample)
             gAudioIO->mInputMeter->UpdateDisplay(numCaptureChannels,
                                                  framesPerBuffer,
@@ -2739,8 +2732,9 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                                                  tempFloats);
          }
       }
-   }
-   gAudioIO->mUpdatingMeters = false;
+      gAudioIO->mUpdatingMeters = false;
+   }  // end recording VU meter update
+
 
    // Stop recording if 'silence' is detected
    if(gAudioIO->mPauseRec && inputBuffer) {
@@ -3075,6 +3069,28 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          }
       }
    }
+   /* Send data to playback VU meter if applicable */
+   if (gAudioIO->mOutputMeter && 
+      !gAudioIO->mOutputMeter->IsMeterDisabled() &&
+      outputBuffer) {
+      // Get here if playback meter is live 
+      /* It's critical that we don't update the meters while StopStream is
+       * trying to stop PortAudio, otherwise it can lead to a freeze.  We use
+       * two variables to synchronize:
+       *  mUpdatingMeters tells StopStream when the callback is about to enter
+       *    the code where it might update the meters, and 
+       *  mUpdateMeters is how the rest of the code tells the callback when it
+       *    is allowed to actually do the updating.
+       * Note that mUpdatingMeters must be set first to avoid a race condition.
+       */
+      gAudioIO->mUpdatingMeters = true;
+      if (gAudioIO->mUpdateMeters) {
+         gAudioIO->mOutputMeter->UpdateDisplay(numPlaybackChannels,
+                                               framesPerBuffer,
+                                               (float *)outputBuffer);
+      }
+      gAudioIO->mUpdatingMeters = false;
+   }  // end playback VU meter update
 
    return callbackReturn;
 }
