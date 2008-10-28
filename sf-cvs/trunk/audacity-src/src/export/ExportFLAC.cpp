@@ -29,7 +29,6 @@ and libvorbis examples, Monty <monty@xiph.org>
 #include <wx/log.h>
 #include <wx/msgdlg.h>
 
-#include <vorbis/vorbisenc.h>
 #include "FLAC++/encoder.h"
 
 #include "../float_cast.h"
