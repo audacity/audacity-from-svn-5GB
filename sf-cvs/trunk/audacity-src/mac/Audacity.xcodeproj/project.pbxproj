@@ -3663,14 +3663,14 @@
 		1790B06209883BFD008A330A /* export */ = {
 			isa = PBXGroup;
 			children = (
-				28DA07370E4F5CEC003933C5 /* ExportFFmpegDialogs.h */,
-				28DA07380E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp */,
 				1790B06409883BFD008A330A /* Export.cpp */,
 				1790B06509883BFD008A330A /* Export.h */,
 				1790B06609883BFD008A330A /* ExportCL.cpp */,
 				1790B06709883BFD008A330A /* ExportCL.h */,
 				2860BA260E0F0DD800A13878 /* ExportFFmpeg.cpp */,
 				2860BA270E0F0DD800A13878 /* ExportFFmpeg.h */,
+				28DA07380E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp */,
+				28DA07370E4F5CEC003933C5 /* ExportFFmpegDialogs.h */,
 				28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */,
 				28E3E6E60A7C14CA00AB1361 /* ExportFLAC.h */,
 				2840CF840AEB83DB00F49FC3 /* ExportMP2.cpp */,
