@@ -425,6 +425,20 @@ private:
    TimeTrack *mTimeTrack;
    
 #if USE_PORTAUDIO_V19
+   /** brief The function which is called from PortAudio's callback thread
+    * context to collect and deliver audio for / from the sound device.
+    *
+    * This covers recording, playback, and doing both simultaneously. It is
+    * also invoked to do monitoring and software playthrough. Note that dealing
+    * with the two buffers needs some care to ensure that the right things
+    * happen for all possible cases.
+    * @param inputBuffer Buffer of length framesPerBuffer containing samples
+    * from the sound card, or null if not capturing audio.
+    * @param outputBuffer Uninitialised buffer of length framesPerBuffer which
+    * will be sent to the sound card after the callback, or null if not playing
+    * audio back.
+    * @param framesPerBuffer The length of the playback and recording buffers
+    */
    friend int audacityAudioCallback(
                 const void *inputBuffer, void *outputBuffer,
                 unsigned long framesPerBuffer,
