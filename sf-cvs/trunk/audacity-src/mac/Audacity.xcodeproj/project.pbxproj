@@ -5829,7 +5829,7 @@
 			mainGroup = 1790ABE109883346008A330A;
 			productRefGroup = 1790AFB109883B6D008A330A /* Products */;
 			projectDirPath = "";
-			projectRoot = "";
+			projectRoot = ../..;
 			targets = (
 				1790AFAF09883B6D008A330A /* Audacity */,
 				17072E880988BD39008541CC /* Configure */,
