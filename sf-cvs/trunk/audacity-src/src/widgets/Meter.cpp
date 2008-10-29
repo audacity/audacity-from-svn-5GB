@@ -424,7 +424,7 @@ void Meter::Reset(double sampleRate, bool resetClipping)
 
    mT = 0;
    mRate = sampleRate;
-   for(j=0; j<mNumBars; j++)
+   for(j=0; j<kMaxMeterBars; j++)
       ResetBar(&mBar[j], resetClipping);
 
    // wxTimers seem to be a little unreliable - sometimes they stop for
