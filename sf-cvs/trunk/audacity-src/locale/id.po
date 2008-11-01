@@ -1330,7 +1330,7 @@ msgstr "<p>Perintah utama untuk mengedit audio ada di menu <i>Edit</i> (seperti 
 
 #: HelpText.cpp:311
 msgid "<p>To return later to your unfinished work in Audacity with all tracks and edits as you left them, save an Audacity project. To play your current work in other media programs or send it to others, [[export|export]] an audio file such as WAV or MP3. </p><p> <i>File &gt; Save Project</i> saves an <b>.aup</b> project file and  a <b>_data</b> folder containing the actual audio. To re-open a saved project, click <i>File &gt; Open</i> and open the .aup file. If you save and exit more than once, an .aup.bak backup file is created, but the .aup file should always be opened if present. When your final exported file is exactly as you want, delete the project files and _data folder to save disc space. </p><p><i>File &gt; Save Project As...</i> is for saving an empty project. It also lets you save an existing Project to a <b> new</b> name. This is the only safe way to rename a project. The .aup file and _data folder should not be moved or renamed manually. </p><p>"
-msgstr "<p>Untuk melanjutkan kembali proyek pada Audacity, simpan proyek Audacity terlebih dahulu. Untuk memainkan pekerjaan Anda di program media atau mengirimkannya kepada orang lain, [[export|ekspor]] file audio ke format WAV atau MP3. </p><p> <i>Berkas &gt; Simpan Proyek</i> menyimpan file proyek <b>.aup</b> dan folder <b>_data</b> berisi audio yang diperlukan. Untuk membuka kembali proyek yang telah disimpan, klik <i>Berkas &gt; Buka</i> dan pilih file .aup. Jika anda menyimpan dan keluar lebih dari sekali, file backup .aup.bak akan dibuat, tapi file .aup seharusnya salalu dibuka jika terjadi. Ketika file ekspor akhir Anda sesuai dengan yang anda minta, hapus file proyek dan folder _data untuk menghemat ruang disk. </p><p><i>Berkas &gt; Simpan Proyek Sebagai...</i> digunakan untuk menyimpan proyek kosong. Ini juga digunakan untuk menyimpan Proyek yang sudah ada dengan nama<b> baru</b>. Inilah langkah teraman untuk menamai ulang proyek. File .aup dan folder _data tidak seharusnya dipindahkan atau diganti namanya ecara manual. </p><p>"
+msgstr "<p>Untuk melanjutkan kembali proyek pada Audacity, simpan proyek Audacity terlebih dahulu. Untuk memainkan pekerjaan Anda di program media atau mengirimkannya kepada orang lain, [[export|ekspor]] file audio ke format WAV atau MP3. </p><p> <i>Berkas &gt; Simpan Proyek</i> menyimpan file proyek <b>.aup</b> dan folder <b>_data</b> berisi audio yang diperlukan. Untuk membuka kembali proyek yang telah disimpan, klik <i>Berkas &gt; Buka</i> dan pilih file .aup. Jika anda menyimpan dan keluar lebih dari sekali, file backup .aup.bak akan dibuat, tapi file .aup seharusnya salalu dibuka jika terjadi. Ketika file ekspor akhir Anda sesuai dengan yang anda minta, hapus file proyek dan folder _data untuk menghemat ruang disk. </p><p><i>Berkas &gt; Simpan Proyek Sebagai...</i> digunakan untuk menyimpan proyek kosong. Ini juga digunakan untuk menyimpan Proyek yang sudah ada dengan nama<b> baru</b>. Inilah langkah teraman untuk menamai ulang proyek. File .aup dan folder _data tidak seharusnya dipindahkan atau diganti namanya secara manual. </p><p>"
 
 #: HelpText.cpp:335
 msgid "To hear your work in other media programs, export it to an audio file such as WAV or MP3 (some formats are [[wma-proprietary|unsupported]]). [[save|Saving an Audacity project]] creates a project file (and linked _data folder) containing all your edited tracks, so you can return to your work later. However, other programs can't read Audacity projects. </p><p> To export, click <i>File &gt; Export</i> then choose the file format you want to export to in the \"Save as type\" dropdown. To [[burncd|burn a CD]] for standalone CD players, choose WAV or AIFF. To export as MP3, the [[wiki:Lame_Installation|Lame Encoder]] must be installed. </p><p> <i>File &gt; Export Selection</i> exports only a selected area of audio. <i>Use File &gt; Export Multiple</i> to export multiple files at the same time, either one for each audio track, or one for each labeled area in a single track. <i>Tracks &gt; Add Label At Selection</i> lets you [[wiki:Splitting_recordings_into_separate_tracks|split the tracks]] from an album for multiple export as separate files. </p><br><br>"
@@ -1338,7 +1338,7 @@ msgstr "Untuk mendengarkan pekerjaan Anda di program media, eksporkan ke file au
 
 #: HelpText.cpp:359
 msgid "<p>Audacity <b>cannot</b> [[play|play]] or [[export|export]] files in <b>WMA, RealAudio, Shorten (SHN)</b> or most other proprietary formats, due to licensing and patent restrictions.  On a Mac computer, unprotected <b>AAC</b> formats such as <b>M4A</b> can be imported. Some open formats are not yet supported, including <b>Ogg Speex</b> and <b>Musepack</b>. Files protected by any kind of Digital Rights Management (DRM), including most purchased online such as from iTunes or Napster, <b>cannot</b> be imported.</p><p> If you can't import your file into Audacity, then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> to convert it to WAV or AIFF. If it is protected, burn it to an audio CD in the program licensed to play it, then extract the CD track to WAV or AIFF using ITunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or Windows Media Player 11. You could also <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. <i>To export to an unsupported format, export to WAV or AIFF and convert it to the desired format in iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
-msgstr "<p>Audacity <b>tidak bisa</b> [[play|memainkan]] atau [[export|mengekspor]] file ke <b>WMA, RealAudio, Shorten (SHN)</b> atau format-format berbayar lainnya, karena larangan lisensi dan paten.  Pada komputer Mac, format <b>AAC</b> yang tidak terproteksi seperti <b>M4A</b> bisa diimpor. Beberapa format open-source belum didukung, termasuk <b>Ogg Speex</b> dan <b>Musepack</b>. File yang diproteksi oleh Digital Rights Management (DRM), termasuk yang berbayar seperti dari iTunes atau Napster, <b>tidak bisa</b>diimpor.</p><p> Jika Anda tidak bisa mengimpor file Anda ke Audacity, kemudian jika itu tidak terlindungi oleh DRM, gunakan iTunes atau <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> untuk mengubahnya ke WAV atau AIFF. jika dilindungi, bakar ke CD audio pada program berlisensi untuk memainkannya, kemudian ekstrak CD ke WAV atau AIFF dengan ITunes atau (pada Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> atau Windows Media Player 11. Anda bisa juga <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">merekam</a> CD ke komputer Anda. <i>Untuk mengekspor ke format yang tidak terdukung, ekspor ke WAV atau AIFF dan ubah ke formatnya dengan iTunes atau <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
+msgstr "<p>Audacity <b>tidak bisa</b> [[play|memainkan]] atau [[export|mengekspor]] file ke <b>WMA, RealAudio, Shorten (SHN)</b> atau format-format berbayar lainnya, karena larangan lisensi dan paten.  Pada komputer Mac, format <b>AAC</b> yang tidak terproteksi seperti <b>M4A</b> bisa diimpor. Beberapa format open-source belum didukung, termasuk <b>Ogg Speex</b> dan <b>Musepack</b>. File yang diproteksi oleh Digital Rights Management (DRM), termasuk yang berbayar seperti dari iTunes atau Napster, <b>tidak bisa</b> diimpor.</p><p> Jika Anda tidak bisa mengimpor file Anda ke Audacity, kemudian jika itu tidak terlindungi oleh DRM, gunakan iTunes atau <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> untuk mengubahnya ke WAV atau AIFF. jika dilindungi, bakar ke CD audio pada program berlisensi untuk memainkannya, kemudian ekstrak CD ke WAV atau AIFF dengan ITunes atau (pada Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> atau Windows Media Player 11. Anda bisa juga <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">merekam</a> CD ke komputer Anda. <i>Untuk mengekspor ke format yang tidak terdukung, ekspor ke WAV atau AIFF dan ubah ke formatnya dengan iTunes atau <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
 
 #: HelpText.cpp:383
 msgid "<p>To burn your work to an audio CD for standalone CD players, first [[export|export]] it as WAV or AIFF. The exported file should be stereo, 44100 Hz (set in the \"Project Rate\" button bottom left) and 16 bit (set in the \"Options\" button in the file export dialog). These are Audacity's default settings, so normally you will not need to change these before exporting. <p>Burn the exported file to an \"audio CD\" - not a \"data CD\" or \"MP3 CD\" - with a CD burning program like iTunes or Windows Media Player. For more help, see [[wiki:How_to_burn_CDs|How to burn CDs]] online. </p><p>"
@@ -3253,7 +3253,7 @@ msgstr "Tidak bisa membuat file autosimpan:"
 #: Project.cpp:3719
 #, c-format
 msgid "Actual Rate: %d"
-msgstr "Rate Asil: %d"
+msgstr "Rate Asli: %d"
 
 #: Resample.cpp:42
 msgid "Libresample by Dominic Mazzoni and Julius Smith"
@@ -3847,7 +3847,7 @@ msgstr "Klik untuk perbesar secara vertikal, klik dengan Shift untuk perkecil, D
 
 #: TrackPanel.cpp:1263
 msgid "Drag the label vertically to change the order of the tracks."
-msgstr "Dorong lebel secara vertikal untuk mengubah urutan trek."
+msgstr "Dorong label secara vertikal untuk mengubah urutan trek."
 
 #: TrackPanel.cpp:1283
 msgid "Click and drag to adjust relative size of stereo tracks."
@@ -3954,7 +3954,7 @@ msgstr "Sampel Edit"
 #: TrackPanel.cpp:3305
 #, c-format
 msgid "Removed track '%s.'"
-msgstr "Dibuang trek '%s'"
+msgstr "Dibuang trek '%s.'"
 
 #: TrackPanel.cpp:3307
 msgid "Track Remove"
@@ -3996,7 +3996,7 @@ msgstr "bawah"
 #: TrackPanel.cpp:6437
 #, c-format
 msgid "Moved '%s' %s"
-msgstr "Dipindahkan '%s\" %s"
+msgstr "Dipindahkan '%s' %s"
 
 #: TrackPanel.cpp:3590
 #: TrackPanel.cpp:6443
@@ -4117,11 +4117,11 @@ msgstr "Batas kecepatan tinggi"
 #: TrackPanel.cpp:6422
 #, c-format
 msgid "Set range to '%d' - '%d'"
-msgstr "Atur jarak ke '%d\" - '%d'"
+msgstr "Atur jarak ke '%d' - '%d'"
 
 #: TrackPanel.cpp:6425
 msgid "Set Range"
-msgstr "Atur Jaraj"
+msgstr "Atur Jarak"
 
 #: TrackPanel.cpp:6472
 msgid "Change track name to:"
@@ -5115,7 +5115,7 @@ msgstr "Beda"
 
 #: effects/LoadEffects.cpp:117
 msgid "Modulator"
-msgstr "MOdulator"
+msgstr "Modulator"
 
 #: effects/LoadEffects.cpp:119
 msgid "Reverb"
@@ -5970,7 +5970,7 @@ msgstr "Data akan distandarkan. \"%f\" akan diganti dengan nama file yang dipili
 
 #: export/ExportCL.cpp:222
 msgid "(external program)"
-msgstr "(prohram eksternal)"
+msgstr "(program eksternal)"
 
 #: export/ExportCL.cpp:253
 #: export/ExportPCM.cpp:454
@@ -6158,7 +6158,7 @@ msgid ""
 "Optional\n"
 "empty - automatic"
 msgstr ""
-"Kode hurup dan bahasa ISO 639 3\n"
+"Tiga karakter kode bahasa berdasarkan ISO 639\n"
 "Opsi\n"
 "kosong - otomatis"
 
@@ -6243,7 +6243,7 @@ msgid ""
 msgstr ""
 "Profil AAC\n"
 "Kompleksitas Rendah (LC) -biasa\n"
-"Kepabnyakan player tidak mau mainkan apapun selain LC"
+"Kebannyakan player tidak mau mainkan apapun selain LC"
 
 #: export/ExportFFmpegDialogs.cpp:947
 msgid "Compression Level:"
@@ -6710,7 +6710,7 @@ msgstr "Hanya libmp3lame.so.0|libmp3lame.so.0|File Primary Shared Object (*.so)|
 
 #: export/ExportMP3.cpp:1652
 msgid "MP3 Files"
-msgstr "Fiel MP3"
+msgstr "File MP3"
 
 #: export/ExportMP3.cpp:1676
 msgid "Could not open MP3 encoding library!"
@@ -7439,7 +7439,7 @@ msgstr "Selama Bermain pada &Software: Mainkan trek baru ketika merekamnya"
 
 #: prefs/AudioIOPrefs.cpp:157
 msgid "&Software Playthrough: Play new track while recording or monitoring"
-msgstr "Selama Bermain pada &Software: Mainkan trek baru ketika merekam tau memantau"
+msgstr "Selama Bermain pada &Software: Mainkan trek baru ketika merekam atau memantau"
 
 #: prefs/AudioIOPrefs.cpp:160
 msgid "(uncheck when recording \"stereo mix\")"
@@ -7519,7 +7519,7 @@ msgstr "&Jangan aplikasikan efek pada mode batch"
 #: prefs/BatchPrefs.cpp:83
 #: prefs/GUIPrefs.cpp:132
 msgid "Cl&eanSpeech Mode (Customized GUI)"
-msgstr "Mode Cl&eanSpeech (Denagn model GUI)"
+msgstr "Mode Cl&eanSpeech (Dengan model GUI)"
 
 #: prefs/DirectoriesPrefs.cpp:55
 #: prefs/DirectoriesPrefs.cpp:56
@@ -7712,7 +7712,7 @@ msgstr "Perbolehkan &menahan batas kiri dan kanan yang dipilih"
 
 #: prefs/GUIPrefs.cpp:100
 msgid "Er&gonomic order of audio I/O buttons"
-msgstr "Er&gonomic order of audio I/O buttons"
+msgstr "Peletakan tombol I/O auido yang er&gonomis"
 
 #: prefs/GUIPrefs.cpp:102
 msgid "Automatically &fit tracks vertically zoomed"
@@ -7720,7 +7720,7 @@ msgstr "&Fit-kan trek secera vertikal dengan otomatis"
 
 #: prefs/GUIPrefs.cpp:104
 msgid "\"Move track focus\" c&ycles repeatedly through tracks"
-msgstr "\"Move track focus\" c&ycles repeatedly through tracks"
+msgstr "\"Move track focus\" memutar terus-menerus pada trek"
 
 #: prefs/GUIPrefs.cpp:106
 msgid "Editing a &clip can move other clips"
@@ -7748,7 +7748,7 @@ msgstr "Tunjukkan peringatan mengenai file &temporer"
 
 #: prefs/GUIPrefs.cpp:120
 msgid "Show prompt to sa&ve, even if project is empty"
-msgstr "Show prompt to sa&ve, even if project is empty"
+msgstr "Tunjukkan prompt untuk menyimpan, bahkan jika proyek masih kosong"
 
 #: prefs/GUIPrefs.cpp:122
 msgid "Show &Welcome Message at program start up"
@@ -8166,7 +8166,7 @@ msgstr "Rate Sampel Normal:"
 
 #: prefs/QualityPrefs.cpp:127
 msgid "Default Sample Format:"
-msgstr "Format Sampel Normal;"
+msgstr "Format Sampel Normal:"
 
 #: prefs/QualityPrefs.cpp:136
 msgid "Real-time sample rate converter:"
@@ -8369,11 +8369,11 @@ msgid ""
 msgstr ""
 "Tema adalah fitur percobaan.\n"
 "\n"
-"Untuk mencobanya, klik \"Save Theme Cache\" kemudian\n"
+"Untuk mencobanya, klik \"Simpan Cache Tema\" kemudian\n"
 "cari dan ubah gambar dan warna pada \n"
 "ImageCacheVxx.png dengan editor gambar seperti Gimp.\n"
 "\n"
-"Klik \"Load Theme Cache\" Untuk mengambil gambar dan warna\n"
+"Klik \"Ambil Cache Tema\" Untuk mengambil gambar dan warna\n"
 "yang telah diubah ke Audacity.\n"
 "\n"
 "[Hanya toolbar kontrol dan warna wavetrack \n"
@@ -8948,11 +8948,11 @@ msgstr "Silahkan pilih aksinya"
 
 #: widgets/ProgressDialog.cpp:97
 msgid "Elapsed Time:"
-msgstr "Waktu Pengambilan:"
+msgstr "Waktu Berjalan:"
 
 #: widgets/ProgressDialog.cpp:117
 msgid "Remaining Time:"
-msgstr "Tinggal:"
+msgstr "Waktu Tersisa:"
 
 #: widgets/ProgressDialog.cpp:134
 msgid "Cancel"
