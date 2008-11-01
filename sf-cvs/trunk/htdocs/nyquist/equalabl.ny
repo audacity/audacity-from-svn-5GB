@@ -3,7 +3,7 @@
 ;type analyze
 ;name "Regular interval labels..."
 ;action "Generating equally-spaced labels to the label track..."
-;info "equalabl.ny by David R. Sky www.shellworld.net/~davidsky/nyquist.htm \nChoosing to make final audio segment equal with others may slightly change your time setting.\nThanks to Alex S. Brown for example code from silencemarker.ny for setting labels in the label track.\nReleased under terms of the GNU Public License"
+;info "equalabl.ny by David R. Sky www.shellworld.net/~davidsky/nyquist.htm \nNote: equalabl.ny does not over-write previous label track, it adds to it.\nChoosing to make final audio segment equal with others may slightly change your time setting.\nThanks to Alex S. Brown for example code from silencemarker.ny for setting labels in the label track.\nReleased under terms of the GNU Public License"
 
 ;control time "Label interval [seconds]" int "" 60 1 600
 ;control text "Label text" string "" "Label"
@@ -12,6 +12,9 @@
 ;control t-choice "Final audio segment duration equal with others [0=no 1=yes]" int "" 1 0 1
 
 ; Regular interval labels by David R. Sky, June 25, 2007.
+; updated July 1 2007 to give an error message 
+; if the specified label interval time is greater than the selection duration.
+; thanks Dominic Mazzoni for this suggestion
 ; http://www.shellworld.net/~davidsky/nyquist.htm
 ; Thanks to Sami Jumppanen from the Audacity users list for plug-in suggestion
 ; Thanks to Gale Andrews from Audacity devel list for improvement suggestion
@@ -22,7 +25,6 @@
 
 #|
 equalabl.ny: Regular interval labels
-[updated with two new options]
 
 thanks to Sami Jumppanen from the Audacity users group for
 suggesting this plug-in: adding labels to the label track at
@@ -32,9 +34,8 @@ helped wake me from late night programming! And thanks to Gale
 Andrews from the Audacity development list for suggesting
 improvements. 
 
-Warning! Using this plug-in will delete any label track you had in
-your loaded audio. If you accidentally use this plug-in and want to
-restore your previous label track, simply press control+z once.
+Important note: equalabl.ny does not replace any previously-created
+label track, it adds to it.
 
 Start a new session of audacity. Load audio you want to add
 regularly-spaced labels to. Select audio [control+a]. Open analyze
@@ -86,6 +87,16 @@ http://www.opensource.org/licenses/gpl-license.php
 ; get selection duration in seconds
 (setf dur (/ len *sound-srate*))
 
+; give an error message 
+; if label time interval is greater than selection duration
+(cond ; outermost cond
+((> time dur)
+(format nil
+"Your requested label interval time of ~a seconds ~%
+is greater than the duration of your selected audio ~a seconds. ~%
+Please run this plug-in again using a smaller interval time. ~%" time dur))
+
+(t ; label interval time is equal to or less than selection duration
 ; calculate number of labels in selection
 ; this includes label at start of selection
 ; which is label number 0 if numbers are prepended to label text
@@ -160,3 +171,6 @@ http://www.opensource.org/licenses/gpl-license.php
 
 ; return label track
 l
+
+) ; close t of outermost cond
+) ; end outermost cond
