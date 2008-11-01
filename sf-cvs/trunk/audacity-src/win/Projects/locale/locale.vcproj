@@ -301,6 +301,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\locale\ca@valencia.po"
+				>
+			</File> 
+			<File
 				RelativePath="..\..\..\locale\cb.po"
 				>
 			</File>
@@ -360,6 +364,10 @@
 				RelativePath="..\..\..\locale\hu.po"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\locale\id.po"
+				>
+			</File> 
 			<File
 				RelativePath="..\..\..\locale\it.po"
 				>
