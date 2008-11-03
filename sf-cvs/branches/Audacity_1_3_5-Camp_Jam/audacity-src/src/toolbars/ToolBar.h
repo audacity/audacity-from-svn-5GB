@@ -59,6 +59,7 @@ DECLARE_EVENT_TYPE(EVT_TOOLBAR_UPDATED, -1);
 enum
 {
    NoBarID = -1,
+   BrandBarID, // Usually big, so put it first in default order. 
    ControlBarID,
    ToolsBarID,
    MeterBarID,

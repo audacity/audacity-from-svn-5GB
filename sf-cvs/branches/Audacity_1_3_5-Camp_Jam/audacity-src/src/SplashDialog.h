@@ -12,6 +12,8 @@
 #define __AUDACITY_SPLASH_DLG__
 
 #include <wx/dialog.h>
+#include "AudacityBranding.h"
+#include "widgets/AButton.h"
 
 class wxBoxSizer;
 class wxStaticBitmap;
@@ -34,11 +36,12 @@ public:
 private:
    
    void Populate( ShuttleGui & S );
+
+   void OnButton_Logo(wxCommandEvent& event);
    void OnDontShow( wxCommandEvent & Evt );
 
    wxHtmlWindow * mpHtml;
-   wxStaticBitmap* m_pIcon;
-   wxBitmap* m_pLogo; //vvv
+   AButton* mButton_Logo;
    static SplashDialog * pSelf;
 };
 

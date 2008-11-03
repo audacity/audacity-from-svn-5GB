@@ -53,6 +53,7 @@
 #endif
 
 #include "ToolManager.h"
+#include "BrandToolBar.h"
 #include "ControlToolBar.h"
 #include "DeviceToolBar.h"
 #include "EditToolBar.h"
@@ -397,6 +398,9 @@ ToolManager::ToolManager( AudacityProject *parent )
    mBars[ TranscriptionBarID ] = new TranscriptionToolBar();
    mBars[ SelectionBarID ]     = new SelectionBar();
    mBars[ DeviceBarID ]        = new DeviceToolBar();
+   #if WANT_BRAND_TOOLBAR
+      mBars[ BrandBarID ]         = new BrandToolBar();
+   #endif
 
    // We own the timer
    mTimer.SetOwner( this );
@@ -406,7 +410,7 @@ ToolManager::ToolManager( AudacityProject *parent )
 } 
 
 //
-// Destructer
+// Destructor
 //
 ToolManager::~ToolManager()
 {

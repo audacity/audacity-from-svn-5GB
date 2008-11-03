@@ -36,12 +36,9 @@
       BrandingPanel(AudacityProject* pProject, 
                      const wxPoint& pos = wxDefaultPosition, 
                      const wxSize& size = wxDefaultSize);
-      const int GetMinHeight() { return mMinHeight; };
-      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
-         void SetProjectBranding(Branding* pBranding); // Updates mMinHeight.
-      #endif
-
-      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+      #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+         void SetProjectBranding(Branding* pBranding); // Updates mMinWidth/mMinHeight.
+      #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
          // Thinklabs custom buttons
          public:
             const int GetMinLeftSectionWidth() { return mMinLeftSectionWidth; };
@@ -54,7 +51,7 @@
             AButton* mButton_Rate; // Change Tempo effect
             AButton* mButton_Display; // Toggle Display type between WaveformDisplay and WaveformAndSpectrumDisplay
 
-            void AddCustomButtons(); // Updates mMinLeftSectionWidth and mMinHeight.
+            void AddCustomButtons(); // Updates mMinLeftSectionWidth and mMinWidth/mMinHeight.
 
             // event handlers
             void OnButton_Import(wxCommandEvent& event); 
@@ -66,9 +63,11 @@
 
    private:
       // event handlers
-      void OnButton_ProjectLogo(wxCommandEvent& event); // from project file
-      void OnButton_CompanyLogo(wxCommandEvent& event); // based on AUDACITY_BRANDING build flag
       void OnButton_AudacityLogo(wxCommandEvent& event); // based on AUDACITY_BRANDING build flag
+      void OnButton_CompanyLogo(wxCommandEvent& event); // based on AUDACITY_BRANDING build flag
+      #if (AUDACITY_BRANDING != BRAND_THINKLABS)
+         void OnButton_ProjectLogo(wxCommandEvent& event); // from project file
+      #endif
 
       void OnKeyEvent(wxKeyEvent & event);
       void OnPaint(wxPaintEvent& evt);
@@ -77,8 +76,9 @@
    private:
       AudacityProject* mProject;
 
-      AButton* mButton_CompanyLogo;
+
       AButton* mButton_AudacityLogo;
+      AButton* mButton_CompanyLogo;
 
       #if (AUDACITY_BRANDING == BRAND_THINKLABS)
          int mMinLeftSectionWidth;
@@ -87,6 +87,7 @@
          int mMinRightSectionWidth;
          int mProjectLogo_origWidth;
       #endif
+      int mMinWidth;
       int mMinHeight;
 
    public:

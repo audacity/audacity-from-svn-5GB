@@ -492,6 +492,7 @@ void AColor::DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ )
 #if WANT_MULTICOLOR_TRACKS 
    WX_DEFINE_ARRAY(void*, trackPtrsArray);
    #if (AUDACITY_BRANDING == BRAND_UMIXIT)
+      // rainbow pastels
       const wxColour gRed = wxColour(255, 130, 140); // red
       const wxColour gOrange = wxColour(255, 200, 130); // orange
       const wxColour gYellow = wxColour(255, 240, 120); // yellow
@@ -500,6 +501,7 @@ void AColor::DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ )
       const wxColour gBlue = wxColour(180, 200, 255); // blue
       const wxColour gPurple = wxColour(255, 180, 255); // purple
    #elif ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL)) 
+      // colors matchine website
       const wxColour gRed = wxColour(205,  10,  16); // red
       const wxColour gOrange = wxColour(255, 160,  80); // orange
       const wxColour gYellow = wxColour(255, 200,  16); // yellow
@@ -509,7 +511,7 @@ void AColor::DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ )
       const wxColour gPurple = wxColour(160,  80, 240); // purple
    #endif
 
-   // rainbow pastel color based on track's pointer -- so it's unique to track
+   // color based on track's pointer -- so it's unique to track
    wxColour AColor::GetTrackColor(void* pTrack) 
    { 
       static trackPtrsArray trackPtrs; 

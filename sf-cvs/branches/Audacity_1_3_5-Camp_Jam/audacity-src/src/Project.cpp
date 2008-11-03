@@ -640,14 +640,16 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    // BrandingPanel
    #if WANT_BRANDING_PANEL
-      mBrandingPanel = 
-         new BrandingPanel(this, 
-                           wxDefaultPosition, 
-                           #if (AUDACITY_BRANDING == BRAND_THINKLABS)
-                              wxSize(-1, 42 + 3*4)); //v default powered_by_Audacity_xpm height plus 3*kInset  
-                           #else // BRAND_UMIXIT, BRAND_CAMP_JAM*
-                              wxSize(-1, 64 + 3*4)); //v default powered_by_Audacity_xpm height plus 3*kInset 
-                           #endif
+      #if (AUDACITY_BRANDING == BRAND_THINKLABS)
+         wxSize panelSize = wxSize(-1, 42 + 3*4);   // default powered_by_Audacity_xpm height plus 3*kInset  
+      #elif (AUDACITY_BRANDING == BRAND_UMIXIT)
+         wxSize panelSize = wxSize(-1, 64 + 3*4);  // default powered_by_Audacity_xpm height plus 3*kInset 
+      #elif ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+         wxSize panelSize = wxSize(162 + 3*4, -1); // default company_logo_xpm width plus 3*kInset 
+      #else 
+         wxSize panelSize = wxSize(-1, 64 + 3*4)); // default same as UmixIt
+      #endif
+      mBrandingPanel = new BrandingPanel(this, wxDefaultPosition, panelSize);
    #endif
 
    //
@@ -693,10 +695,24 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    wxBoxSizer *bs = new wxBoxSizer( wxVERTICAL );
    bs->Add( mToolManager->GetTopDock(), 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP );
    #if WANT_BRANDING_PANEL
-      bs->Add( mBrandingPanel, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP );
+      #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+         wxBoxSizer* pInnerVertSizer = new wxBoxSizer(wxVERTICAL);
+         pInnerVertSizer->Add( mRuler, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_CENTRE );
+         pInnerVertSizer->Add( pPage, 1, wxEXPAND | wxALIGN_LEFT );
+
+         wxBoxSizer* pHorizSizer = new wxBoxSizer(wxHORIZONTAL);
+         pHorizSizer->Add(pInnerVertSizer, 1, wxEXPAND | wxALIGN_LEFT);
+         pHorizSizer->Add(mBrandingPanel, 0, wxEXPAND | wxALIGN_RIGHT);
+         bs->Add( pHorizSizer, 1, wxEXPAND | wxALIGN_LEFT);
+      #else
+         bs->Add( mBrandingPanel, 0, wxEXPAND | wxALIGN_LEFT);
+         bs->Add( mRuler, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_CENTRE );
+         bs->Add( pPage, 1, wxEXPAND | wxALIGN_LEFT );
+      #endif
+   #else
+      bs->Add( mRuler, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_CENTRE );
+      bs->Add( pPage, 1, wxEXPAND | wxALIGN_LEFT );
    #endif
-   bs->Add( mRuler, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_CENTRE );
-   bs->Add( pPage, 1, wxEXPAND | wxALIGN_LEFT );
    bs->Add( mToolManager->GetBotDock(), 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_BOTTOM );
    SetAutoLayout( true );
    SetSizer( bs );
@@ -2558,7 +2574,9 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    }
 #endif
 
-   if (!bWantSaveCompressed)
+   if (bWantSaveCompressed)
+      mWantSaveCompressed = false; // Don't need this mode for AudacityProject::WriteXML() any more. 
+   else
    {
       // Now that we have saved the file, we can delete the auto-saved version
       DeleteCurrentAutoSaveFile();

@@ -5,6 +5,7 @@
   HelpText.cpp
 
   James Crook
+  Vaughan Johnson
 
 ********************************************************************//**
 
@@ -17,7 +18,13 @@
 
 #include "Audacity.h"
 #include "HelpText.h"
+#include "AudacityBranding.h"
 
+#if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+   #include "effects/Effect.h"
+   #include "toolbars/ControlToolBar.h"
+   #include "Project.h"
+#endif
 
 wxString WrapText( const wxString & Text )
 {
@@ -82,14 +89,22 @@ wxString LinkExpand( const wxString & Text )
 
 wxString ToWelcome( )
 {
+#if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+   return _("To [[welcome|Jam Window]]");
+#else
    return _("To [[welcome|Welcome screen]]");
+#endif
 }
 
 wxString TitleText( const wxString & Key )
 {
    if(Key==wxT("welcome"))
    {
-      return _("Welcome!");
+      #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+         return _("Camp Jam Audacity");
+      #else
+         return _("Welcome!");
+      #endif
    }
 
    if(Key ==wxT("play") )
@@ -136,14 +151,85 @@ wxString TitleText( const wxString & Key )
    {
       return _("No Local Help");
    }
-   return Key;
+   #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+      return _("Camp Jam Audacity");
+   #else
+      return Key;
+   #endif
 }
 
 wxString HelpTextBuiltIn( const wxString & Key )
 {
-   if(Key==wxT("welcome"))
-   {
-      return WrapText(
+   #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+      if (Key == wxT("welcome"))
+         return WrapText(
+                  wxString(wxT("")) +
+                  _("</p><center><h3>I want to...</h3></center><br>") +
+                  /** i18n-hint: where you see [[key|text]] translate 'text' and don't translate 'key' */
+                  _("<ul> \
+                        <li>[[play|Play]] an existing audio file. \
+                        <li>[[record|Record]] my voice or instrument. \
+                        <li>[[fixTrack|Fix]] part of a Track. \
+                        <br>&nbsp;<br> \
+                        <li>[[ChangeTempo|Slow down]] a section of this Song. \
+                        <li>[[ChangePitch|Change the key]] of this Song. \
+                        <li>[[loopPlay|Loop Play]] a section of this Song. \
+                        <br>&nbsp;<br> \
+                        <li>[[uploadTrack|Upload my Track]] to Jamling Records. \
+                        <li>[[getTrack|Get another Jamling\'s Track]] for this Song. \
+                        <li>[[uploadProject|Upload my finished Song]] to Jamling Records. \
+                        <li>[[getSong|Get another Song]] from Jamling Records. \
+                        <li>[[export|Export my finished Song]] to my media player. \
+                        <li>[[burncd|Burn my finished Song]] to a CD. \
+                        <br>&nbsp;<br> \
+                        <li>[[save|Save my Song or Open a different Song]]. \
+                     </ul></p><p>"));
+      if (Key == wxT("fixTrack"))
+         return WrapText(wxString(wxT("")) + 
+                  _("<p><b>Fix part of a Track</b> \
+                    </p><br><br>") + ToWelcome());
+      if ((Key == wxT("ChangeTempo")) || (Key == wxT("ChangePitch")))
+      {
+         Effect* pEffect = Effect::GetEffectByIdentifier(Key, BUILTIN_EFFECT | PROCESS_EFFECT | ADVANCED_EFFECT);
+         if (pEffect)
+         {
+            AudacityProject* pProject = GetActiveProject();
+            pProject->SelectAllIfNone(); 
+            pProject->OnEffect(BUILTIN_EFFECT, pEffect);
+         }
+         return HelpTextBuiltIn(wxT("welcome"));
+      }
+      if (Key == wxT("loopPlay"))
+      {
+         AudacityProject* pProject = GetActiveProject();
+         pProject->SelectAllIfNone();
+         pProject->GetControlToolBar()->PlayCurrentRegion(true); 
+         return HelpTextBuiltIn(wxT("welcome"));
+      }
+      if (Key == wxT("uploadTrack"))
+         return WrapText(wxString(wxT("")) + 
+                  _("<p><b>Upload my Track to Jamling Records</b> \
+                    </p><br><br>") + ToWelcome());
+      if (Key == wxT("getTrack"))
+         return WrapText(wxString(wxT("")) + 
+                  _("<p><b>Get another Jamling\'s Track for this Song</b> \
+                    </p><br><br>") + ToWelcome());
+      if (Key == wxT("uploadProject"))
+         return WrapText(wxString(wxT("")) + 
+                  _("<p><b>Upload my finished Song to Jamling Records</b> \
+                    </p><br><br>") + ToWelcome());
+      if (Key == wxT("getSong"))
+         return WrapText(wxString(wxT("")) + 
+                  _("<p><b>Get another Song from Jamling Records</b> \
+                    </p><br><br>") + ToWelcome());
+      if (Key == wxT("getSong"))
+         return WrapText(wxString(wxT("")) + 
+                  _("<p><b>Get another Song from Jamling Records</b> \
+                    </p><br><br>") + ToWelcome());
+   #else // !((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+      if(Key==wxT("welcome"))
+      {
+         return WrapText(
 wxString(wxT("")) +
 _("</p><center><h3>Getting Started</h3></center><br>") +
 /** i18n-hint: where you see [[key|text]] translate 'text' and don't translate 'key' */
@@ -163,7 +249,8 @@ For a detailed guide to all the Audacity menus and controls, click  \
 in PDF format.\
 </p>")
          );
-   }
+      }
+   #endif // ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
 
    if(Key ==wxT("play") )
    {
