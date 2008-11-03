@@ -68,6 +68,8 @@ class Effect {
    static void RegisterEffect(Effect *f, int AdditionalFlags=0);
    static void UnregisterEffects();
    static Effect *GetEffect(int ID);
+   static Effect* GetEffectByName(const wxString strTarget, const int kFlags = ALL_EFFECTS);
+   static Effect* GetEffectByIdentifier(const wxString strTarget, const int kFlags = ALL_EFFECTS);
    static int GetNumEffects();
 
    // Returns a sorted array of effects, which may be filtered
