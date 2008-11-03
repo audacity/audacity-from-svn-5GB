@@ -18,9 +18,9 @@
 
 // custom version ID's
 #define BRAND_AUDACITY        0
-#define BRAND_UMIXIT          1  //v Do not use. Not yet ported past 1.2.6
-#define BRAND_THINKLABS       2  //v Do not use. Not yet ported past 1.2.6
-#define BRAND_AUDIOTOUCH      3  //v Do not use. Not yet ported past 1.2.6
+#define BRAND_UMIXIT          1  //v Not yet ported past 1.2.6
+#define BRAND_THINKLABS       2  //v Not yet ported past 1.2.6
+#define BRAND_AUDIOTOUCH      3  //v Not yet ported past 1.2.6
 #define BRAND_CAMP_JAM__EASY  4
 #define BRAND_CAMP_JAM__FULL  5
 
@@ -34,14 +34,17 @@
 
 
 #if ((AUDACITY_BRANDING == BRAND_AUDACITY) || (AUDACITY_BRANDING == BRAND_AUDIOTOUCH))
+   #define WANT_BRAND_TOOLBAR 0
    #define WANT_BRANDING_PANEL 0
    #define WANT_MULTICOLOR_TRACKS 0
-#else
+#elif (AUDACITY_BRANDING == BRAND_UMIXIT)
+   #define WANT_BRAND_TOOLBAR 0
    #define WANT_BRANDING_PANEL 1
-   #if ((AUDACITY_BRANDING == BRAND_UMIXIT) || \
-         (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
-      #define WANT_MULTICOLOR_TRACKS 1
-   #endif
+   #define WANT_MULTICOLOR_TRACKS 1
+#elif ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+   #define WANT_BRAND_TOOLBAR 1
+   #define WANT_BRANDING_PANEL 0
+   #define WANT_MULTICOLOR_TRACKS 1
 #endif
 
 #define AUDACITY_URL wxT("http://audacity.sourceforge.net/")
