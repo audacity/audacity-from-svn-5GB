@@ -41,7 +41,6 @@ class BatchCommands {
    // These commands do not depend on the command list.
    wxArrayString GetNames();
    static bool PromptForParamsFor( wxString command );
-   static Effect * GetEffectFromCommandName( wxString command );
    static wxString GetCurrentParamsFor( wxString command );
    static bool SetCurrentParametersFor( Effect * f, const wxString command, const wxString params);
    static wxArrayString GetAllCommands();

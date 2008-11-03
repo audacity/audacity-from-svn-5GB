@@ -167,7 +167,7 @@ void BatchCommandDialog::OnItemSelected(wxListEvent &event)
    mCommand->SetValue( command );
    wxString params = BatchCommands::GetCurrentParamsFor( command );
    mParameters->SetValue( params );
-   Effect * f = BatchCommands::GetEffectFromCommandName( command );
+   Effect * f = Effect::GetEffectByIdentifier( command );
    mEditParams->Enable( f != NULL );
 }
 
@@ -175,7 +175,7 @@ void BatchCommandDialog::OnEditParams(wxCommandEvent &event)
 {
    wxString command = mCommand->GetValue();
    wxString params  = mParameters->GetValue();
-   Effect * f = BatchCommands::GetEffectFromCommandName( command );
+   Effect * f = Effect::GetEffectByIdentifier( command );
    if( f==NULL )
       return;
    BatchCommands::SetCurrentParametersFor( f, command, params );
