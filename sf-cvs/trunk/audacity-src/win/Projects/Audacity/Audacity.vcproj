@@ -1066,6 +1066,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\effects\Contrast.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\effects\Contrast.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\effects\DtmfGen.cpp"
 				>
 			</File>

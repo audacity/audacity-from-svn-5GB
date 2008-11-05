@@ -1069,6 +1069,11 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("SnapToOn"),      _("Snap To On"),           FN(OnSnapToOn));
    c->AddCommand(wxT("SnapToOff"),     _("Snap To Off"),          FN(OnSnapToOff));
 
+#ifdef EXPERIMENTAL_CONTRAST
+   c->AddCommand(wxT("DefineForeground"), _("Define Foreground\tCtrl+Alt+F"), FN(OnDefineForeground));
+   c->AddCommand(wxT("DefineBackground"), _("Define Background\tCtrl+Alt+B"), FN(OnDefineBackground));
+#endif
+
    mLastFlags = 0;
 
    mSel0save = 0;
@@ -5207,6 +5212,20 @@ void AudacityProject::OnSnapToOff()
 {
    SetSnapTo(false);
 }
+
+#ifdef EXPERIMENTAL_CONTRAST
+void AudacityProject::OnDefineForeground()
+{
+   gPrefs->Write(wxT("/Contrast/startTimeF"), mViewInfo.sel0);
+   gPrefs->Write(wxT("/Contrast/endTimeF"), mViewInfo.sel1);
+}
+
+void AudacityProject::OnDefineBackground()
+{
+   gPrefs->Write(wxT("/Contrast/startTimeB"), mViewInfo.sel0);
+   gPrefs->Write(wxT("/Contrast/endTimeB"), mViewInfo.sel1);
+}
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

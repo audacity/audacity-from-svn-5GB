@@ -138,6 +138,8 @@ class Sequence: public XMLTagHandler {
 
    bool GetMinMax(sampleCount start, sampleCount len,
                   float * min, float * max) const;
+   bool GetRMS(sampleCount start, sampleCount len,
+                  float * outRMS) const;
 
    //
    // Getting block size information

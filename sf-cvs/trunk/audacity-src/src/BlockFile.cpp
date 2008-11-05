@@ -398,7 +398,7 @@ void BlockFile::GetMinMax(sampleCount start, sampleCount len,
          max = sample;
       if( sample < min )
          min = sample;
-      sumsq = (sample*sample);
+      sumsq += (sample*sample);
    }
 
    DeleteSamples(blockData);

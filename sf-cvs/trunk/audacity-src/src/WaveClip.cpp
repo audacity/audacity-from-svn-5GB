@@ -818,6 +818,25 @@ bool WaveClip::GetMinMax(float *min, float *max,
    return mSequence->GetMinMax(s0, s1-s0, min, max);
 }
 
+bool WaveClip::GetRMS(float *rms, double t0,
+                          double t1)
+{
+   *rms = float(0.0);
+
+   if (t0 > t1)
+      return false;
+
+   if (t0 == t1)
+      return true;
+
+   sampleCount s0, s1;
+
+   TimeToSamplesClip(t0, &s0);
+   TimeToSamplesClip(t1, &s1);
+
+   return mSequence->GetRMS(s0, s1-s0, rms);
+}
+
 void WaveClip::ConvertToSampleFormat(sampleFormat format)
 {
    bool result;

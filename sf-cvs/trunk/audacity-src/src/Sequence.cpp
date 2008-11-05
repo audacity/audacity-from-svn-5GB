@@ -259,6 +259,65 @@ bool Sequence::GetMinMax(sampleCount start, sampleCount len,
    return true;
 }
 
+bool Sequence::GetRMS(sampleCount start, sampleCount len,
+                         float * outRMS) const
+{
+   if (len == 0 || mBlock->Count() == 0) {
+      *outRMS = float(0.0);
+      return true;
+   }
+
+   double sumsq = 0.0;
+   sampleCount length = 0;
+
+   unsigned int block0 = FindBlock(start);
+   unsigned int block1 = FindBlock(start + len);
+
+   sampleCount s0, l0, maxl0;
+
+   // First calculate the rms of the blocks in the middle of this region;
+   // this is very fast because we have the rms of every entire block
+   // already in memory.
+   unsigned int b;
+
+   for (b = block0 + 1; b < block1; b++) {
+      float blockMin, blockMax, blockRMS;
+      mBlock->Item(b)->f->GetMinMax(&blockMin, &blockMax, &blockRMS);
+
+      sumsq += blockRMS * blockRMS * mBlock->Item(block0)->f->GetLength();
+      length += mBlock->Item(block0)->f->GetLength();
+   }
+
+   // Now we take the first and last blocks into account, noting that the
+   // selection may only partly overlap these blocks.
+   // If not, we need read some samples and summaries from disk.
+   s0 = start - mBlock->Item(block0)->start;
+   l0 = len;
+   maxl0 = mBlock->Item(block0)->start + mBlock->Item(block0)->f->GetLength() - start;
+   if (l0 > maxl0)
+      l0 = maxl0;
+
+   float partialMin, partialMax, partialRMS;
+   mBlock->Item(block0)->f->GetMinMax(s0, l0, &partialMin, &partialMax, &partialRMS);
+
+   sumsq += partialRMS * partialRMS * l0;
+   length += l0;
+
+   if (block1 > block0) {
+      s0 = 0;
+      l0 = (start + len) - mBlock->Item(block1)->start;
+
+      mBlock->Item(block1)->f->GetMinMax(s0, l0,
+                                         &partialMin, &partialMax, &partialRMS);
+      sumsq += partialRMS * partialRMS * l0;
+      length += l0;
+   }
+
+   *outRMS = sqrt(sumsq/length);
+
+   return true;
+}
+
 bool Sequence::Copy(sampleCount s0, sampleCount s1, Sequence **dest)
 {
    *dest = 0;
