@@ -1615,6 +1615,40 @@ bool WaveTrack::GetMinMax(float *min, float *max,
    return result;
 }
 
+bool WaveTrack::GetRMS(float *rms, double t0, double t1)
+{
+   if (t0 > t1)
+      return false;
+
+   if (t0 == t1)
+      return true;
+
+   bool result = true;
+   double sumsq = 0.0;
+   sampleCount length = 0;
+
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip* clip = it->GetData();
+
+      if (t1 >= clip->GetStartTime() && t0 <= clip->GetEndTime())
+      {
+         float cliprms;
+         if (it->GetData()->GetRMS(&cliprms, t0, t1))
+         {
+            sumsq += cliprms * cliprms * clip->GetNumSamples();
+            length += clip->GetNumSamples();
+         } else
+         {
+            result = false;
+         }
+      }
+   }
+   *rms = sqrt(sumsq/length);
+
+   return result;
+}
+
 bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
                     sampleCount start, sampleCount len)
 {

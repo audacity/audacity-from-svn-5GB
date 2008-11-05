@@ -190,6 +190,7 @@ class AUDACITY_DLL_API WaveTrack: public Track {
                          double t0, double tstep);
    bool GetMinMax(float *min, float *max,
                   double t0, double t1);
+   bool GetRMS(float *rms, double t0, double t1);
 
    //
    // MM: We now have more than one sequence and envelope per track, so

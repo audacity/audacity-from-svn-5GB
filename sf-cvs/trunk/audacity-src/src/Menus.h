@@ -142,6 +142,10 @@ void OnSortName();
 
 void OnSnapToOn();
 void OnSnapToOff();
+#ifdef EXPERIMENTAL_CONTRAST
+void OnDefineForeground();
+void OnDefineBackground();
+#endif
 
         // File Menu
 

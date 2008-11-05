@@ -116,7 +116,7 @@ public:
    bool CreateFromCopy(double t0, double t1, WaveClip* other);
 
    /** Getting high-level data from the for screen display and clipping
-	* calculations */
+	* calculations and Contrast */
    bool GetWaveDisplay(float *min, float *max, float *rms,int* bl, sampleCount *where,
                        int numPixels, double t0, double pixelsPerSecond, bool &isLoadingOD);
    bool GetSpectrogram(float *buffer, sampleCount *where,
@@ -124,6 +124,7 @@ public:
                        double t0, double pixelsPerSecond,
                        bool autocorrelation);
    bool GetMinMax(float *min, float *max, double t0, double t1);
+   bool GetRMS(float *rms, double t0, double t1);
 
    // Set/clear/get rectangle that this WaveClip fills on screen. This is
    // called by TrackArtist while actually drawing the tracks and clips.
