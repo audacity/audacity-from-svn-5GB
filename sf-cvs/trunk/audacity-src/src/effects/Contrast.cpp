@@ -26,6 +26,7 @@
 #include "../Prefs.h"
 #include "../Project.h"
 #include "../FileNames.h"
+#include "../widgets/LinkingHtmlWindow.h"
 
 #include <math.h>
 
@@ -137,6 +138,7 @@ bool EffectContrast::CheckWhetherSkipEffect()
 enum {
    ID_BUTTON_GETFOREGROUND = 10001,
    ID_BUTTON_GETBACKGROUND,
+   ID_BUTTON_GETURL,
    ID_BACKGROUNDSTART_TEXT,
    ID_BACKGROUNDEND_TEXT,
    ID_BACKGROUNDDB_TEXT,
@@ -151,6 +153,7 @@ BEGIN_EVENT_TABLE(ContrastDialog,wxDialog)
    EVT_BUTTON(wxID_OK, ContrastDialog::OnOK)
    EVT_BUTTON(ID_BUTTON_GETFOREGROUND, ContrastDialog::OnGetForegroundDB)
    EVT_BUTTON(ID_BUTTON_GETBACKGROUND, ContrastDialog::OnGetBackgroundDB)
+   EVT_BUTTON(ID_BUTTON_GETURL, ContrastDialog::OnGetURL)
    EVT_TEXT(ID_FOREGROUNDSTART_TEXT, ContrastDialog::OnForegroundStartText)
    EVT_TEXT(ID_FOREGROUNDEND_TEXT, ContrastDialog::OnForegroundEndText)
    EVT_TEXT(ID_BACKGROUNDSTART_TEXT, ContrastDialog::OnBackgroundStartText)
@@ -167,10 +170,8 @@ ContrastDialog::ContrastDialog(EffectContrast * effect,
    m_pButton_GetForeground = NULL;
    m_pButton_GetBackground = NULL;
 
-//   gPrefs->Read(wxT("/Contrast/foregrounddB"), &foregrounddB, 0.0);
    gPrefs->Read(wxT("/Contrast/startTimeF"), &startTimeF, 0.0);
    gPrefs->Read(wxT("/Contrast/endTimeF"), &endTimeF, 0.0);
-//   gPrefs->Read(wxT("/Contrast/backgrounddB"), &backgrounddB, 0.0);
    gPrefs->Read(wxT("/Contrast/startTimeB"), &startTimeB, 0.0);
    gPrefs->Read(wxT("/Contrast/endTimeB"), &endTimeB, 0.0);
 
@@ -180,7 +181,6 @@ ContrastDialog::ContrastDialog(EffectContrast * effect,
    m_pEffect->SetStartTime(startTimeB);
    m_pEffect->SetEndTime(endTimeB);
    backgrounddB = m_pEffect->GetDB();
-
    Init();
 }
 
@@ -190,6 +190,7 @@ void ContrastDialog::OnGetForegroundDB( wxCommandEvent &event )
    m_pEffect->SetEndTime(endTimeF);
    foregrounddB = m_pEffect->GetDB();
    mForegroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), foregrounddB));
+   m_pButton_GetForeground->Enable(false);
    results();
 }
 
@@ -199,7 +200,14 @@ void ContrastDialog::OnGetBackgroundDB( wxCommandEvent &event )
    m_pEffect->SetEndTime(endTimeB);
    backgrounddB = m_pEffect->GetDB();
    mBackgroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), backgrounddB));
+   m_pButton_GetBackground->Enable(false);
    results();
+}
+
+void ContrastDialog::OnGetURL(wxCommandEvent &event)
+{
+   wxString page = wxT("http://www.w3.org/TR/WCAG20/");  // yet to determine where this should point
+   ::OpenInDefaultBrowser(page);
 }
 
 void ContrastDialog::OnOK(wxCommandEvent &event)
@@ -280,6 +288,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          }
          S.EndMultiColumn();
          m_pButton_GetForeground = S.Id(ID_BUTTON_GETFOREGROUND).AddButton(_("Measure"));
+         m_pButton_GetForeground->Enable(false);   // Disabled as we do the measurement as we put up the dialog
          mForegroundRMSText=S.Id(ID_FOREGROUNDDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f dB"), foregrounddB));
 
          //Background
@@ -302,7 +311,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          }
          S.EndMultiColumn();
          m_pButton_GetBackground = S.Id(ID_BUTTON_GETBACKGROUND).AddButton(_("Measure"));
-
+         m_pButton_GetBackground->Enable(false);
          mBackgroundRMSText=S.Id(ID_BACKGROUNDDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f dB"), backgrounddB));
       }
       S.EndMultiColumn();
@@ -323,30 +332,41 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
    }
    S.EndStatic();
    results();
+
+   //Information
+   S.StartStatic( _("Information") );
+   {
+      m_pButton_GetURL = S.Id(ID_BUTTON_GETURL).AddButton(_("WCAG Information on web"));
+   }
+   S.EndStatic();
 }
 
 void ContrastDialog::OnForegroundStartText(wxCommandEvent & event)
 {
    wxString val = mForegroundStartText->GetValue();
    val.ToDouble(&startTimeF);
+   m_pButton_GetForeground->Enable(true);
 }
 
 void ContrastDialog::OnForegroundEndText(wxCommandEvent & event)
 {
    wxString val = mForegroundEndText->GetValue();
    val.ToDouble(&endTimeF);
+   m_pButton_GetForeground->Enable(true);
 }
 
 void ContrastDialog::OnBackgroundStartText(wxCommandEvent & event)
 {
    wxString val = mBackgroundStartText->GetValue();
    val.ToDouble(&startTimeB);
+   m_pButton_GetBackground->Enable(true);
 }
 
 void ContrastDialog::OnBackgroundEndText(wxCommandEvent & event)
 {
    wxString val = mBackgroundEndText->GetValue();
    val.ToDouble(&endTimeB);
+   m_pButton_GetBackground->Enable(true);
 }
 
 void ContrastDialog::results()

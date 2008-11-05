@@ -94,6 +94,7 @@ private:
    // handlers
    void OnGetForegroundDB( wxCommandEvent &event );
    void OnGetBackgroundDB( wxCommandEvent &event );
+   void OnGetURL(wxCommandEvent &event);
    void OnForegroundStartText(wxCommandEvent & event);
    void OnForegroundEndText(wxCommandEvent & event);
    void OnBackgroundStartText(wxCommandEvent & event);
@@ -123,6 +124,7 @@ private:
 
    wxButton * m_pButton_GetBackground;
    wxButton * m_pButton_GetForeground;
+   wxButton * m_pButton_GetURL;
 
 private:
    DECLARE_EVENT_TABLE()
