@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edited version by Jack Hielema\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-18 12:56+0100\n"
-"PO-Revision-Date: 2008-10-20 21:26+0100\n"
+"POT-Creation-Date: 2008-11-03 21:45+0000\n"
+"PO-Revision-Date: 2008-11-05 20:48+0100\n"
 "Last-Translator: Thomas De Rocker <thomasderocker@yahoo.com>\n"
 "Language-Team: Nederlands <hielema@scarlet.be>\n"
 "MIME-Version: 1.0\n"
@@ -79,7 +79,7 @@ msgstr ""
 #: blog/wp-includes/class-pop3.php:135
 #: blog/wp-includes/class-pop3.php:171
 msgid "No password submitted"
-msgstr ""
+msgstr "Geen wachtwoord ingevuld"
 
 #: blog/wp-includes/class-pop3.php:143
 msgid "Authentication failed "
@@ -141,7 +141,7 @@ msgstr ""
 
 #: blog/wp-includes/class-pop3.php:323
 msgid "Premature end of list"
-msgstr ""
+msgstr "Voortijdig lijsteinde"
 
 #: blog/wp-includes/class-pop3.php:346
 #: blog/wp-includes/class-pop3.php:359
@@ -742,9 +742,8 @@ msgid "Read the Audacity manual online."
 msgstr "Lees de Audacity handleiding online."
 
 #: help/documentation.php:29
-#, fuzzy
 msgid "Download the Audacity manual in HTML format."
-msgstr "De Audacity handleiding downloaden."
+msgstr "Download de Audacity-handleiding in html-formaat"
 
 #: help/documentation.php:29
 #, fuzzy
@@ -752,9 +751,8 @@ msgid "(To use the manual, unzip it and open the \"index.html\" file.)"
 msgstr "(Om de gedownloade handleiding te kunnen gebruiken moet u hem 'unzippen' en dan het \"index.html\" bestand openen.)"
 
 #: help/documentation.php:30
-#, fuzzy
 msgid "Download the Audacity manual in PDF format."
-msgstr "De Audacity handleiding downloaden."
+msgstr "Download de Audacity-handleiding in PDFl-formaat"
 
 #. i18n-hint: Text below this hint is local help for
 #. specific languages and should be left untranslated.
@@ -2702,7 +2700,7 @@ msgstr ""
 #: download/source.php:23
 #: download/beta_source.php:25
 #: download/windows.php:25
-#: download/beta_windows.php:31
+#: download/beta_windows.php:30
 msgid "Optional Downloads"
 msgstr "Optionele downloads"
 
@@ -2804,84 +2802,89 @@ msgstr ""
 
 #: download/features-1.3-a.php:28
 #, fuzzy
+msgid "New in Audacity 1.3.6"
+msgstr "Nieuwe mogelijkheden in Audacity 1.3"
+
+#: download/features-1.3-a.php:65
+#, fuzzy
 msgid "New in Audacity 1.3.5"
 msgstr "Nieuwe mogelijkheden in Audacity 1.3"
 
-#: download/features-1.3-a.php:97
+#: download/features-1.3-a.php:134
 #, fuzzy
 msgid "New in Audacity 1.3.4"
 msgstr "Nieuwe mogelijkheden in Audacity 1.3"
 
-#: download/features-1.3-a.php:173
+#: download/features-1.3-a.php:210
 msgid "New features in Audacity 1.3.3"
 msgstr ""
 
-#: download/features-1.3-a.php:231
+#: download/features-1.3-a.php:268
 msgid "New features in Audacity 1.3.1 and 1.3.2"
 msgstr ""
 
-#: download/features-1.3-a.php:234
+#: download/features-1.3-a.php:271
 #: download/features-1.3-i.php:70
 msgid "Improved Toolbar Docking"
 msgstr ""
 
-#: download/features-1.3-a.php:235
+#: download/features-1.3-a.php:272
 msgid "Track focus for improved keyboard navigation"
 msgstr ""
 
-#: download/features-1.3-a.php:236
+#: download/features-1.3-a.php:273
 #: download/features-1.3-i.php:77
 #: download/features-1.3-k.php:36
 msgid "Repair and Equalization effects"
 msgstr ""
 
-#: download/features-1.3-a.php:237
+#: download/features-1.3-a.php:274
 #: download/features-1.3-j.php:71
 #: download/features-1.3-l.php:46
 msgid "Timer Recording"
 msgstr ""
 
-#: download/features-1.3-a.php:238
+#: download/features-1.3-a.php:275
 #: download/features-1.3-d.php:56
 #: download/features-1.3-k.php:43
 msgid "Project saving and recovery"
 msgstr ""
 
-#: download/features-1.3-a.php:239
+#: download/features-1.3-a.php:276
 #: download/features-1.3-f.php:40
 #: download/features-1.3-l.php:53
 msgid "Selection Bar"
 msgstr "Selectiebalk"
 
-#: download/features-1.3-a.php:240
+#: download/features-1.3-a.php:277
 #: download/features-1.3-b.php:50
 #: download/features-1.3-d.php:63
 msgid "Mac OS X features"
 msgstr ""
 
-#: download/features-1.3-a.php:243
+#: download/features-1.3-a.php:280
 msgid "New features in Audacity 1.3.0"
 msgstr ""
 
-#: download/features-1.3-a.php:246
+#: download/features-1.3-a.php:283
 #: download/features-1.3-c.php:259
 #: download/features-1.3-f.php:47
 msgid "Collapse/Expand Tracks"
 msgstr "Sporen Samenvouwen/Uitvouwen"
 
-#: download/features-1.3-a.php:247
+#: download/features-1.3-a.php:284
 #: download/features-1.3-b.php:56
 #: download/features-1.3-e.php:67
 msgid "Multiple clips per track"
 msgstr "Meerdere clips per spoor"
 
-#: download/features-1.3-a.php:248
+#: download/features-1.3-a.php:285
 #: download/features-1.3-c.php:266
 #: download/features-1.3-g.php:54
 msgid "Improved Label Tracks"
 msgstr "Verbeterde Labelsporen"
 
-#: download/features-1.3-a.php:249
+#: download/features-1.3-a.php:286
 #: download/features-1.3-e.php:74
 msgid "Other features"
 msgstr "Andere kenmerken"
@@ -3418,9 +3421,8 @@ msgid "Source Code"
 msgstr "Broncode"
 
 #: download/source.php:20
-#: download/beta_source.php:22
 #, fuzzy, php-format
-msgid "<a href=\"%s\">Audacity %s release (source tarball)</a> (%.1lf MB)"
+msgid "<a href=\"%s\">Audacity %s release (source tarball)</a> (.tar.gz file, %.1lf MB)"
 msgstr "<a href=\"%s\">Audacity %s broncode tarball</a> (%.1lf MB)"
 
 #: download/source.php:25
@@ -3534,6 +3536,11 @@ msgstr ""
 msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows 2000, XP or Vista running on machines of substantially higher specification than the minimum stated above."
 msgstr ""
 
+#: download/beta_source.php:22
+#, fuzzy, php-format
+msgid "<a href=\"%s\">Audacity %s release (source tarball)</a> (.tar.bz2 file, %.1lf MB)"
+msgstr "<a href=\"%s\">Audacity %s broncode tarball</a> (%.1lf MB)"
+
 #: download/beta_source.php:27
 msgid "Get the latest development code (incorporating changes since the release tarball) from <a href=\"../community/developers#cvs\">CVS</a>. This is the best choice if you are compiling on Windows."
 msgstr ""
@@ -3623,15 +3630,15 @@ msgid "Beta: 1.3 - for advanced users"
 msgstr "Voor gevorderde gebruikers"
 
 #: download/index.php:47
-msgid "&nbsp;&nbsp;1.3.5"
+msgid "&nbsp;&nbsp;1.3.6"
 msgstr ""
 
 #: download/index.php:50
-msgid "&nbsp;1.3.5 (Universal Binary)"
+msgid "&nbsp;1.3.6 (Universal Binary)"
 msgstr ""
 
 #: download/index.php:53
-msgid "&nbsp;1.3.5 (in source code)"
+msgid "&nbsp;1.3.6 (in source code)"
 msgstr ""
 
 #: download/index.php:59
@@ -3712,13 +3719,13 @@ msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - De laat
 #. original string.)
 #: download/windows.php:32
 #: download/windows.php:33
+#: download/beta_windows.php:37
 #: download/beta_windows.php:38
-#: download/beta_windows.php:39
 msgid "localized_downloads_windows"
 msgstr "localized_downloads_windows"
 
 #: download/windows.php:37
-#: download/beta_windows.php:43
+#: download/beta_windows.php:42
 #, fuzzy, php-format
 msgid "<a href=\"%s\">LADSPA plugins %s installer</a> (.exe file, %.1lf MB) - over 90 plug-ins."
 msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - De laatste versie van de gratis Audacity audio editor."
@@ -3742,11 +3749,7 @@ msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - De laat
 msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.</a>"
 msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - De laatste versie van de gratis Audacity audio editor."
 
-#: download/beta_windows.php:28
-msgid "Visually impaired users only: we recommend the Audacity 1.3.4 installer for <a href=\"http://downloads.sourceforge.net/audacity/audacity-win-unicode-1.3.4.exe\">Windows 2000/XP/Vista</a> or <a href=\"http://downloads.sourceforge.net/audacity/audacity-win-1.3.4.exe\">Windows 98/ME</a>."
-msgstr ""
-
-#: download/beta_windows.php:46
+#: download/beta_windows.php:45
 #, fuzzy, php-format
 msgid ""
 "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
@@ -4032,9 +4035,8 @@ msgid "Click the appropriate link below, which takes you to the SourceForge down
 msgstr ""
 
 #: download/buy.php:9
-#, fuzzy
 msgid "Obtain Audacity on CD"
-msgstr "Over Audacity"
+msgstr "Verkrijg Audacity op cd"
 
 #: download/buy.php:13
 msgid "Audacity is always free to download from us, but third parties can also sell or otherwise distribute our program, thanks to the <a href=\"../about/license#license\">GNU General Public License</a>. If you want a copy of Audacity on CD-ROM, we encourage you to use the options listed below."
@@ -4210,7 +4212,7 @@ msgstr ""
 #: index.php:19
 #: index.php:21
 msgid "for Windows&reg; 98/ME/2000/XP/Vista"
-msgstr ""
+msgstr "voor Windows&reg; 98/ME/2000/XP/Vista"
 
 #: index.php:29
 #, fuzzy
@@ -4225,29 +4227,29 @@ msgstr "Voor versie 1.3 van Audacity is het MAC OS X besturingssysteem versie 10
 #: index.php:39
 #: index.php:41
 msgid "for Windows&reg;, Mac or GNU/Linux"
-msgstr ""
+msgstr "for Windows&reg;, Mac of GNU/Linux"
 
 #: index.php:49
 msgid "The Free, Cross-Platform Sound Editor"
-msgstr ""
+msgstr "De Gratis, Cross-Platform Geluidseditor"
 
 #: index.php:55
-msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href=\"about/\">Learn more about Audacity...</a> Also check our <a href=\"http://audacityteam.org/wiki/\">Wiki</a> and <a href=\"http://audacityteam.org/forum/\">Forum</a> for more information."
-msgstr ""
+msgid "Audacity&reg; is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href=\"about/\">Learn more about Audacity...</a> Also check our <a href=\"http://audacityteam.org/wiki/\">Wiki</a> and <a href=\"http://audacityteam.org/forum/\">Forum</a> for more information."
+msgstr "Audacity&reg; is gratis, open source software om geluid op te nemen en te bewerken.  Het is beschikbaar voor Mac OS X, Microsoft Windows, GNU/Linux, en andere besturingssystemen. <a href=\"about/\">Leer meer over Audacity...</a> Raadpleeg ook onze <a href=\"http://audacityteam.org/wiki/\">Wiki</a> en het <a href=\"http://audacityteam.org/forum/\">Forum</a> voor meer informatie."
 
 #: index.php:57
-msgid "The latest release of Audacity is <a href=\"/download\">1.3.5 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x Beta series."
-msgstr ""
+msgid "The latest release of Audacity is <a href=\"/download\">1.3.6 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x Beta series."
+msgstr "De laatste release van Audacity is <a href=\"/download\">1.3.6 (Beta)</a>. Omdat de ontwikkeling nog steeds voortduurt, en omdat volledige documentatie of vertalingen nog niet beschikbaar zijn, is het programma aangeraden voor meer geavanceerde gebruikers. Zie <a href=\"/download/features-1.3-a\">Nieuwe Functies 1.3</a> voor meer informatie over de 1.3.x Beta series."
 
 #: index.php:59
-msgid "For all users, <a href=\"/download\">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have Audacity 1.2.6 and 1.3.5 installed on the same machine."
-msgstr ""
+msgid "For all users, <a href=\"/download\">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have Audacity 1.2.6 and 1.3.6 installed on the same machine."
+msgstr "<a href=\"/download\">Audacity 1.2.6</a> is een stabiele versie voor alle gebruikers. Ze is compleet, en volledig gedocumenteerd. Audacity 1.2.6 en 1.3.6 kunnen naast elkaar geïnstalleerd worden op dezelfde computer."
 
 #: index.php:64
 #: index.php:68
-#, fuzzy, php-format
+#, php-format
 msgid "Download Audacity %s"
-msgstr "De Audacity handleiding downloaden."
+msgstr "Download Audacity %s"
 
 #: index.php:68
 #: main.inc.php:39
@@ -4255,25 +4257,24 @@ msgid "Beta"
 msgstr "Bèta"
 
 #: index.php:76
-#, fuzzy
 msgid "Other downloads"
-msgstr "Optionele downloads"
+msgstr "Andere downloads"
 
 #: index.php:103
 msgid "Get Notified of New Versions"
-msgstr ""
+msgstr "Ontvang een bericht bij nieuwe versies"
 
 #: index.php:115
 msgid "Email address"
-msgstr ""
+msgstr "E-mailadres"
 
 #: index.php:116
 msgid "Add"
-msgstr ""
+msgstr "Toevoegen"
 
 #: index.php:117
 msgid "Remove"
-msgstr ""
+msgstr "Verwijderen"
 
 #: copyright.php:8
 msgid "Web Site Copyright and Trademark"
@@ -4300,10 +4301,104 @@ msgid "%B %d, %Y"
 msgstr ""
 
 #: include/news.inc.php:45
-msgid "German Audacity Book released"
-msgstr ""
+msgid "Audacity 1.3.6 released"
+msgstr "Audacity 1.3.6 beschikbaar"
 
 #: include/news.inc.php:46
+msgid ""
+"\n"
+"<p>\n"
+"The Audacity Team is pleased to announce the release of\n"
+"<a href=\"/download\">Audacity 1.3.6 (Beta)</a> \n"
+"for Windows, Mac and Linux/Unix. \n"
+"</p>\n"
+"<p>This release highlights exciting new capabilities developed\n"
+"by our students in\n"
+"<a href=\"http://code.google.com/soc/2008/\">Google Summer of Code (GSoC) 2008</a>:  \n"
+"   <ul>\n"
+"      <li><b>FFmpeg support</b> (downloadable separately) permits import and\n"
+"              export of a much wider range of file formats, including WMA, \n"
+"              M4A and AC3, plus import of audio from video files</li>\n"
+"      <li><b>On-demand loading</b> of uncompressed files eliminates the \n"
+"              wait before files can be played or edited</li> \n"
+"      <li><b>Linked audio and label tracks</b> allow labels to move with\n"
+"              their corresponding audio when cutting, pasting or changing\n"
+"              speed or tempo</li>\n"
+"      <li><b>Hierarchical plug-in grouping</b> for built-in plug-ins \n"
+"   </ul>\n"
+"</p>\n"
+"<p align=\"center\">\n"
+"\t<a href=\"http://code.google.com/soc/2008/\">\n"
+"\t  <img src=\"http://google-summer-of-code.googlecode.com/files/soc08-198x128_white.jpg\" alt=\"Google Summer of Code 2008\"></img>\n"
+"\t</a>\n"
+"</p>\n"
+"<p>\n"
+"<b>Other experimental features:</b> Sound activated recording; ability to\n"
+"save smaller, compressed project files; MIDI files can now be imported,\n"
+"cut-and-paste edited, then exported.\n"
+"</p>\n"
+"<p>\n"
+"<b>Miscellaneous:</b> Interface improvements include a new Transport menu,\n"
+"and a new Preference to choose Waveform, Spectrum or Pitch view. Several bug \n"
+"fixes.     \n"
+"<p>\n"
+"Because it is a work in progress and does not yet come with \n"
+"complete documentation or translations into foreign languages, \n"
+"it is recommended for more advanced users. For all users, \n"
+"<a href=\"/download\">Audacity 1.2.6</a> is a stable release, \n"
+"complete and fully documented. You can have Audacity 1.2.6 and \n"
+"1.3.6 installed on the same machine.\n"
+"</p>\n"
+msgstr ""
+"\n"
+"<p>\n"
+"Het Audacity-team is blij om de release van\n"
+"<a href=\"/download\">Audacity 1.3.6 (Bèta)</a> \n"
+"voor Windows, Mac and Linux/Unix aan te kondigen. \n"
+"</p>\n"
+"<p>Deze release vestigt de aandacht op de spannende nieuwe mogelijkheden,\n"
+"ontwikkeld door onze studenten in de\n"
+"<a href=\"http://code.google.com/soc/2008/\">Google Summer of Code (GSoC) 2008</a>:  \n"
+"   <ul>\n"
+"      <li><b>FFmpeg-ondersteuning</b> (apart te downloaden) staat het importeren en\n"
+"              exporteren toe van een veel groter aantal bestandsformaten, inclusief WMA, \n"
+"              M4A en AC3, plus het importeren van audio van videobestanden</li>\n"
+"      <li><b>On-demand laden</b> van niet-gecomprimeerde bestanden schakelt de wachttijd uit \n"
+"              voordat bestanden kunnen afgespeeld of gewijzigd worden.</li> \n"
+"      <li><b>Gelinkte audio- en labeltracks</b> staan labels toe om te verplaatsen met \n"
+"              hun overeenkomstige audio tijdens het knippen, plakken of aanpassen van \n"
+"              snelheid of tempo</li>\n"
+"      <li><b>Hiërarchische plug-in groepering</b> voor ingebouwde plugins \n"
+"   </ul>\n"
+"</p>\n"
+"<p align=\"center\">\n"
+"\t<a href=\"http://code.google.com/soc/2008/\">\n"
+"\t  <img src=\"http://google-summer-of-code.googlecode.com/files/soc08-198x128_white.jpg\" alt=\"Google Summer of Code 2008\"></img>\n"
+"\t</a>\n"
+"</p>\n"
+"<p>\n"
+"<b>Andere experimentele functies:</b> Geluidsgeactiveerde opname; mogelijkheid om\n"
+"kleinere, gecomprimeerde projectbestanden op te slaan; MIDI-bestanden kunnen nu geïmporteerd,\n"
+"gewijzigd (via knippen en plakken), en daarna geëxporteerd worden.\n"
+"</p>\n"
+"<p>\n"
+"<b>Varia:</b> Interface-verbeteringen bevatten een nieuw Transport-menu\n"
+"en een nieuwe Voorkeur om Waveform, Spectrum of Pitch view te kiezen. Verscheidene bug \n"
+"fixes.     \n"
+"<p>\n"
+"Omdat de ontwikkeling nog steeds voortduurt, en omdat volledige \n"
+"documentatie of vertalingen nog niet beschikbaar zijn, \n"
+"is het programma aangeraden voor meer geavanceerde gebruikers. \n"
+"<a href=\"/download\">Audacity 1.2.6</a> is een stabiele versie voor alle gebruikers. \n"
+"Ze is compleet, en volledig gedocumenteerd. \n"
+"Audacity 1.2.6 en 1.3.6 kunnen naast elkaar geïnstalleerd worden op dezelfde computer.\n"
+"</p>\n"
+
+#: include/news.inc.php:94
+msgid "German Audacity Book released"
+msgstr "Duits Audacity-boek uitgegeven"
+
+#: include/news.inc.php:95
 msgid ""
 "\n"
 "<p>\n"
@@ -4344,12 +4439,49 @@ msgid ""
 "</table>\n"
 "</p>\n"
 msgstr ""
+"\n"
+"<p>\n"
+"Waarschijnlijk het eerste boek over Aucacity is uitgebracht in het Duits.\n"
+"</p>\n"
+"<p>\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
+"<tr>\n"
+"<td>\n"
+"<table border=\"0\" cellpadding=\"15\">\n"
+"<tr><td>\n"
+"<a href=\"http://www.audacity-buch.de/buch.php?partner=homepage\">\n"
+"<img src=\"../de/buch_klein.jpg\" alt=\"Audacity Boek Omslag\" border=\"0\"></img>\n"
+"</td></tr>\n"
+"</table>\n"
+"</a>\n"
+"</td>\n"
+"<td>\n"
+"<p>\n"
+"Het boek - getiteld \"Audacity kompakt\" (Een compacte gids voor Audacity) - werd geschreven door \n"
+"auteur Markus Priemer, die ondersteund werd door de Duitse Audacity-ontwikkelaar Markus Meyer.\n"
+"Deze laatste voegde ook een voorwoord toe. Het boek wil een introductie zijn voor \n"
+"beginners die snel met Audacity willen starten, maar het dient ook als een referentie\n"
+"voor meer ervaren gebruikers. Het bevat niet alleen een introductie over hoe digitale \n"
+"audio werkt, maar ook vele tips & tricks om Audacity te gebruiken..\n"
+"</p>\n"
+"<p>\n"
+"<a href=\"http://www.audacity-buch.de/buch.php?partner=homepage\">Bestel het boek nu on line!</a>\n"
+"Elke verkoop die op onze site werd gedaan zal de ontwikkeling van Audacity rechtstreeks ten goede komen \n"
+"</p>\n"
+"<p>\n"
+"Uit de inhoudsopgave van het boek: De Basis van Digitale Audio, Audio Data en Compressie,\n"
+"Openen en Importeren van Bestanden, Audio Tracks Bewerken, Effecten, Commando-Referentie, Gebruiksvoorbeelden, ...\n"
+"</p>\n"
+"</td>\n"
+"</tr>\n"
+"</table>\n"
+"</p>\n"
 
-#: include/news.inc.php:89
+#: include/news.inc.php:138
 msgid "Audacity shines in Google Summer of Code (GSoC) 2008"
 msgstr ""
 
-#: include/news.inc.php:90
+#: include/news.inc.php:139
 msgid ""
 "\n"
 "<p>\n"
@@ -4399,11 +4531,11 @@ msgid ""
 "</p>    \n"
 msgstr ""
 
-#: include/news.inc.php:141
+#: include/news.inc.php:190
 msgid "Audacity in PC World 100 Best Products of 2008"
 msgstr ""
 
-#: include/news.inc.php:142
+#: include/news.inc.php:191
 msgid ""
 "\n"
 "<p>\n"
@@ -4444,12 +4576,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:184
-#, fuzzy
+#: include/news.inc.php:233
 msgid "Audacity 1.3.5 Released"
-msgstr "Audacity 1.3: Selectiebalk"
+msgstr "Audacity 1.3 beschikbaar"
 
-#: include/news.inc.php:185
+#: include/news.inc.php:234
 msgid ""
 "\n"
 "<p>\n"
@@ -4538,11 +4669,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:275
+#: include/news.inc.php:324
 msgid "Audacity is mentoring five Google Summer of Code (GSoC) 2008 students"
 msgstr ""
 
-#: include/news.inc.php:276
+#: include/news.inc.php:325
 msgid ""
 "\n"
 "<p>\n"
@@ -4561,11 +4692,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:296
+#: include/news.inc.php:345
 msgid "Audacity is a mentoring organization Google Summer of Code (GSoC) 2008 "
 msgstr ""
 
-#: include/news.inc.php:297
+#: include/news.inc.php:346
 msgid ""
 "\n"
 "<p>\n"
@@ -4584,11 +4715,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:317
+#: include/news.inc.php:366
 msgid "Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer of Code (GSoC) 2008 "
 msgstr ""
 
-#: include/news.inc.php:318
+#: include/news.inc.php:367
 msgid ""
 "\n"
 "<p>\n"
@@ -4629,11 +4760,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:360
+#: include/news.inc.php:409
 msgid "Audacity and Google Summer of Code (GSoC) 2008 "
 msgstr ""
 
-#: include/news.inc.php:361
+#: include/news.inc.php:410
 msgid ""
 "\n"
 "<p>\n"
@@ -4663,11 +4794,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:392
+#: include/news.inc.php:441
 msgid "LinuxQuestions.org Audio Authoring Award 2007"
 msgstr ""
 
-#: include/news.inc.php:393
+#: include/news.inc.php:442
 #, php-format
 msgid ""
 "\n"
@@ -4678,12 +4809,12 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:404
+#: include/news.inc.php:453
 #, fuzzy
 msgid "Audacity 1.3.4 Released"
 msgstr "Audacity 1.3: Selectiebalk"
 
-#: include/news.inc.php:405
+#: include/news.inc.php:454
 msgid ""
 "\n"
 "<p>\n"
@@ -4719,11 +4850,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:442
+#: include/news.inc.php:491
 msgid "SourceForge Community Choice Awards 2007"
 msgstr ""
 
-#: include/news.inc.php:443
+#: include/news.inc.php:492
 msgid ""
 "\n"
 "<p>\n"
@@ -4737,12 +4868,12 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:458
+#: include/news.inc.php:507
 #, fuzzy
 msgid "Audacity 1.3.3 Released"
 msgstr "Audacity 1.3: Selectiebalk"
 
-#: include/news.inc.php:459
+#: include/news.inc.php:508
 msgid ""
 "\n"
 "<p>\n"
@@ -4814,11 +4945,11 @@ msgid ""
 "</dd></dl>\n"
 msgstr ""
 
-#: include/news.inc.php:532
+#: include/news.inc.php:581
 msgid "Audacity 1.3.2 and 1.2.5 Released"
 msgstr ""
 
-#: include/news.inc.php:533
+#: include/news.inc.php:582
 msgid ""
 "<p>\n"
 "The Audacity developers have been busy with many new features over\n"
@@ -4881,11 +5012,11 @@ msgid ""
 "</dd></dl>"
 msgstr ""
 
-#: include/news.inc.php:597
+#: include/news.inc.php:646
 msgid "The Audacity Store Is Open"
 msgstr ""
 
-#: include/news.inc.php:598
+#: include/news.inc.php:647
 msgid ""
 "\n"
 "\t<p>You are invited to try out the new <a href=\"http://audacitystore.com/\">Audacity Store</a>, which features\n"
@@ -4928,11 +5059,11 @@ msgid ""
 "\t"
 msgstr ""
 
-#: include/news.inc.php:642
+#: include/news.inc.php:691
 msgid "Audacity 1.2.4 and 1.3.0 Released"
 msgstr ""
 
-#: include/news.inc.php:643
+#: include/news.inc.php:692
 msgid ""
 "<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple of bug fixes and minor improvements and is recommended for all users.  Audacity 1.3.0 is a beta release that contains hundreds of <a href=\"/download/features-1.3-a\">new features</a>, but this version is unfinished and unstable, and is recommended primarily for advanced users.  You can install both Audacity 1.2 and 1.3 simultaneously.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">1.2.4 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.4, or see <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for information about the new beta version.</p>\n"
@@ -4941,12 +5072,12 @@ msgid ""
 "</p>"
 msgstr ""
 
-#: include/news.inc.php:653
+#: include/news.inc.php:702
 #, fuzzy
 msgid "Audacity 1.2.3 Released"
 msgstr "Audacity 1.3: Selectiebalk"
 
-#: include/news.inc.php:654
+#: include/news.inc.php:703
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
