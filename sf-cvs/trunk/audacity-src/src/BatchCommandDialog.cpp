@@ -38,7 +38,7 @@ selected command.
 #include "Project.h"
 #include "BatchCommandDialog.h"
 #include "commands/CommandManager.h"
-#include "effects/Effect.h"
+#include "effects/EffectManager.h"
 #include "BatchCommands.h"
 #include "ShuttleGui.h"
 
@@ -169,7 +169,7 @@ void BatchCommandDialog::OnItemSelected(wxListEvent &event)
    mCommand->SetValue( command );
    wxString params = BatchCommands::GetCurrentParamsFor( command );
    mParameters->SetValue( params );
-   Effect * f = BatchCommands::GetEffectFromCommandName( command );
+   Effect * f = EffectManager::Get().GetEffectByIdentifier( command );
    mEditParams->Enable( f != NULL );
 }
 
@@ -177,7 +177,7 @@ void BatchCommandDialog::OnEditParams(wxCommandEvent &event)
 {
    wxString command = mCommand->GetValue();
    wxString params  = mParameters->GetValue();
-   Effect * f = BatchCommands::GetEffectFromCommandName( command );
+   Effect * f = EffectManager::Get().GetEffectByIdentifier( command );
    if( f==NULL )
       return;
    BatchCommands::SetCurrentParametersFor( f, command, params );

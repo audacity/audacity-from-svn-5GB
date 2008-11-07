@@ -107,6 +107,17 @@ Effect *EffectManager::GetEffect(int ID)
    return NULL;
 }
 
+Effect* EffectManager::GetEffectByIdentifier(const wxString strTarget, const int kFlags /*= ALL_EFFECTS*/)
+{
+   for (unsigned int i = 0; i < mEffects.GetCount(); i++) 
+   {
+      int nFlags = mEffects[i]->GetEffectFlags();
+      if (((nFlags & kFlags) == nFlags) && strTarget.IsSameAs(mEffects[i]->GetEffectIdentifier()))
+         return mEffects[i];
+   }
+   return NULL;
+}
+
 EffectArray *EffectManager::GetEffects(int flags /* = ALL_EFFECTS */)
 {
    EffectArray *results = new EffectArray();

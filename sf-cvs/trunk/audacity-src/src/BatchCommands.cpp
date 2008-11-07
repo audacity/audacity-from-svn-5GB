@@ -292,29 +292,9 @@ wxArrayString BatchCommands::GetAllCommands()
 }
 
 
-Effect * BatchCommands::GetEffectFromCommandName(wxString inCommand)
-{
-   unsigned int i;
-   wxString command;
-   Effect * f;
-   EffectArray * effects = EffectManager::Get().GetEffects( ALL_EFFECTS );
-   for(i=0; i<effects->GetCount(); i++) {
-      f = (*effects)[i];
-      command=f->GetEffectIdentifier();
-      if( command.IsSameAs( inCommand ))
-      {  
-         delete effects;
-         return f;
-      }
-   }
-   delete effects;
-   return NULL;
-}
-
 wxString BatchCommands::GetCurrentParamsFor(wxString command)
 {
-   Effect * f;
-   f=GetEffectFromCommandName( command );
+   Effect * f = EffectManager::Get().GetEffectByIdentifier( command );
    if( f==NULL )
       return wxT("");// effect not found.
    ShuttleCli shuttle;
@@ -328,8 +308,7 @@ wxString BatchCommands::GetCurrentParamsFor(wxString command)
 
 bool BatchCommands::PromptForParamsFor(wxString command)
 {
-   Effect * f;
-   f=GetEffectFromCommandName( command );
+   Effect * f = EffectManager::Get().GetEffectByIdentifier(command);
    if( f==NULL )
       return false;
 
@@ -470,7 +449,7 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
       return WriteMp3File(filename, 56);
    } else if (command == wxT("StereoToMono")) {
       // StereoToMono is an effect masquerading as a menu item.
-      Effect * f = GetEffectFromCommandName(wxT("StereoToMono"));
+      Effect * f = EffectManager::Get().GetEffectByIdentifier(wxT("StereoToMono"));
       if (f != NULL) {
          return ApplyEffectCommand(f, command, params);
       }
@@ -572,8 +551,7 @@ bool BatchCommands::ApplyCommand(const wxString command, const wxString params)
    }
    
    // Test for an effect.
-   Effect * f;
-   f=GetEffectFromCommandName( command );
+   Effect * f = EffectManager::Get().GetEffectByIdentifier( command );
    if( f!=NULL )
       return ApplyEffectCommand( f, command, params );
 

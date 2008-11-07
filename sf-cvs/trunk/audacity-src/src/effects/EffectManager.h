@@ -63,6 +63,8 @@ class EffectManager {
    /** Return an effect by its numerical ID. */
    Effect *GetEffect(int ID);
    
+   Effect* GetEffectByIdentifier(const wxString strTarget, const int kFlags = ALL_EFFECTS);
+
    /** Return the number of registered effects. */
    int GetNumEffects();
    
