@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.13 2008-10-17 10:14:24 l_r_nightmare Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.14 2008-11-08 21:00:26 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -80,6 +80,76 @@ static wxRect gs_rectDialog(0, 0, 428, 266);
 // ============================================================================
 
 IMPLEMENT_CLASS(FileDialog, wxFileDialogBase)
+
+// ----------------------------------------------------------------------------
+// Alternative implementation for SHBindToParent() since older
+// shell32.dll version do not supply it.
+//
+// By jim@mvps.org
+// http://www.geocities.com/SiliconValley/2060/
+// ----------------------------------------------------------------------------
+
+#include <ShlObj.h>
+#include <ComDef.h>
+
+HRESULT SHBindToParentLocal(
+                       LPCITEMIDLIST pidl,
+                       REFIID riid,
+                       VOID** ppv,
+                       LPCITEMIDLIST* ppidlLast)
+{
+   if (!ppv)
+      return E_POINTER;
+
+   // There must be at least one item ID.
+   if (!pidl || !pidl->mkid.cb)
+      return E_INVALIDARG;
+
+   // Get the root folder.
+   IShellFolderPtr desktop;
+   HRESULT hr = SHGetDesktopFolder(&desktop);
+   if (FAILED(hr))
+      return hr;
+
+   // Walk to the penultimate item ID.
+   LPCITEMIDLIST marker = pidl;
+   for (;;)
+   {
+      LPCITEMIDLIST next = reinterpret_cast<LPCITEMIDLIST>(
+         marker->mkid.abID - sizeof(marker->mkid.cb) + marker->mkid.cb);
+      if (!next->mkid.cb)
+         break;
+      marker = next;
+   };
+
+   if (marker == pidl)
+   {
+      // There was only a single item ID, so bind to the root folder.
+      hr = desktop->QueryInterface(riid, ppv);
+   }
+   else
+   {
+      // Copy the ID list, truncating the last item.
+      int length = marker->mkid.abID - pidl->mkid.abID;
+      if (LPITEMIDLIST parent_id = reinterpret_cast<LPITEMIDLIST>(
+         malloc(length + sizeof(pidl->mkid.cb))))
+      {
+         LPBYTE raw_data = reinterpret_cast<LPBYTE>(parent_id);
+         memcpy(raw_data, pidl, length);
+         memset(raw_data + length, 0, sizeof(pidl->mkid.cb));
+         hr = desktop->BindToObject(parent_id, 0, riid, ppv);
+         free(parent_id);
+      }
+      else
+         return E_OUTOFMEMORY;
+   }
+
+   // Return a pointer to the last item ID.
+   if (ppidlLast)
+      *ppidlLast = marker;
+
+   return hr;
+}
 
 // ----------------------------------------------------------------------------
 // hook function for moving the dialog
@@ -224,7 +294,7 @@ void FileDialog::FilterFiles(HWND hDlg)
       // Retrieve the IShellFolder interface of the parent (must be Release()'d)
       if (ishell == NULL)
       {
-         hr = SHBindToParent(fidl, IID_IShellFolder, (void **)&ishell, NULL);
+         hr = SHBindToParentLocal(fidl, IID_IShellFolder, (void **)&ishell, NULL);
          if (!SUCCEEDED(hr))
          {
             wxASSERT(SUCCEEDED(hr));
