@@ -8,7 +8,10 @@
 
 **********************************************************************/
 
+#include <wx/defs.h>
+
 #include <wx/choice.h>
+#include <wx/dynlib.h>
 #include <wx/intl.h>
 #include <wx/timer.h>
 #include <wx/msgdlg.h>
