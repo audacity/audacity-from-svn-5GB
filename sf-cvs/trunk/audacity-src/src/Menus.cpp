@@ -1070,6 +1070,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("SnapToOff"),     _("Snap To Off"),          FN(OnSnapToOff));
 
 #ifdef EXPERIMENTAL_CONTRAST
+   // these next 2 are for the Contrast analyze effect
    c->AddCommand(wxT("DefineForeground"), _("Define Foreground\tCtrl+Alt+F"), FN(OnDefineForeground));
    c->AddCommand(wxT("DefineBackground"), _("Define Background\tCtrl+Alt+B"), FN(OnDefineBackground));
 #endif
@@ -5218,12 +5219,14 @@ void AudacityProject::OnDefineForeground()
 {
    gPrefs->Write(wxT("/Contrast/startTimeF"), mViewInfo.sel0);
    gPrefs->Write(wxT("/Contrast/endTimeF"), mViewInfo.sel1);
+   TP_DisplayStatusMessage(wxT("Foreground audio selection saved (for Analyze->Contrast)"));
 }
 
 void AudacityProject::OnDefineBackground()
 {
    gPrefs->Write(wxT("/Contrast/startTimeB"), mViewInfo.sel0);
    gPrefs->Write(wxT("/Contrast/endTimeB"), mViewInfo.sel1);
+   TP_DisplayStatusMessage(wxT("Background audio selection saved (for Analyze->Contrast)"));
 }
 #endif
 
