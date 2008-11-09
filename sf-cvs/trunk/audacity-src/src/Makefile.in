@@ -124,6 +124,7 @@ OBJS = \
 	effects/ChangeTempo.o \
 	effects/ClickRemoval.o \
 	effects/Compressor.o \
+	effects/Contrast.o \
 	effects/DtmfGen.o \
 	effects/Echo.o \
 	effects/Equalization.o \
