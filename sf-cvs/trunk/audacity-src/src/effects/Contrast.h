@@ -84,11 +84,11 @@ public:
    ContrastDialog(EffectContrast * effect,
                       wxWindow *parent);
 
-   wxSizer *MakeContrastDialog(bool call_fit = true,
-                                   bool set_sizer = true);
+//   wxSizer *MakeContrastDialog(bool call_fit = true,
+//                                   bool set_sizer = true);
 
    void PopulateOrExchange(ShuttleGui & S);
-   void UpdateDisplay();
+//   void UpdateDisplay();
 
 private:
    // handlers

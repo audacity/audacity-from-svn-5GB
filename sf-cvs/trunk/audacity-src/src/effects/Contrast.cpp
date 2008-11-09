@@ -67,7 +67,6 @@ bool EffectContrast::PromptUser()
 {
    ContrastDialog dlog(this, mParent);
 
-   dlog.TransferDataToWindow();
    dlog.CentreOnParent();
    dlog.ShowModal();
 
@@ -191,6 +190,7 @@ void ContrastDialog::OnGetForegroundDB( wxCommandEvent &event )
    foregrounddB = m_pEffect->GetDB();
    mForegroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), foregrounddB));
    m_pButton_GetForeground->Enable(false);
+   m_pButton_GetForeground->SetLabel(_("Measured"));
    results();
 }
 
@@ -201,6 +201,7 @@ void ContrastDialog::OnGetBackgroundDB( wxCommandEvent &event )
    backgrounddB = m_pEffect->GetDB();
    mBackgroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), backgrounddB));
    m_pButton_GetBackground->Enable(false);
+   m_pButton_GetBackground->SetLabel(_("Measured"));
    results();
 }
 
@@ -224,15 +225,6 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
 {
    wxTextValidator vld(wxFILTER_NUMERIC);
    wxString number;
-/*   wxString step1Label;
-   wxString step1Prompt;
-   wxString step2Label;
-   wxString step2Prompt;
-
-   step1Label = _("Step 1");
-   step1Prompt = _("Select the dialogue (foreground) then click Measure Foreground:");
-   step2Label = _("Step 2");
-   step2Prompt = _("Select the background noise to measure, then click Measure Background:");*/
 
    S.StartHorizontalLay(wxCENTER, false);
    {
@@ -240,22 +232,6 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
    }
    S.EndHorizontalLay();
    
-/*   S.StartStatic(step1Label);
-   {
-      S.AddVariableText(step1Prompt);
-      m_pButton_GetBackground = S.Id(ID_BUTTON_GETFOREGROUND).
-         AddButton(_("Measure Foreground"));
-   }
-   S.EndStatic();
-
-   S.StartStatic(step2Label);
-   {
-      S.AddVariableText(step2Prompt);
-      m_pButton_GetForeground = S.Id(ID_BUTTON_GETBACKGROUND).
-         AddButton(_("Measure Background"));
-   }
-   S.EndStatic();*/
-
    S.StartStatic( _("Parameters") );
    {
       S.StartMultiColumn(5, wxEXPAND);
@@ -287,7 +263,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
             S.AddFixedText(_("seconds"), false);
          }
          S.EndMultiColumn();
-         m_pButton_GetForeground = S.Id(ID_BUTTON_GETFOREGROUND).AddButton(_("Measure"));
+         m_pButton_GetForeground = S.Id(ID_BUTTON_GETFOREGROUND).AddButton(_("Measured"));
          m_pButton_GetForeground->Enable(false);   // Disabled as we do the measurement as we put up the dialog
          mForegroundRMSText=S.Id(ID_FOREGROUNDDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f dB"), foregrounddB));
 
@@ -310,7 +286,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
             S.AddFixedText(_("seconds"));
          }
          S.EndMultiColumn();
-         m_pButton_GetBackground = S.Id(ID_BUTTON_GETBACKGROUND).AddButton(_("Measure"));
+         m_pButton_GetBackground = S.Id(ID_BUTTON_GETBACKGROUND).AddButton(_("Measured"));
          m_pButton_GetBackground->Enable(false);
          mBackgroundRMSText=S.Id(ID_BACKGROUNDDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f dB"), backgrounddB));
       }
@@ -336,6 +312,9 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
    //Information
    S.StartStatic( _("Information") );
    {
+      S.AddFixedText(_("Before you open this tool,"));
+      S.AddFixedText(_("   Ctrl+Alt+F sets the 'foreground' times."));
+      S.AddFixedText(_("   Ctrl+Alt+B sets the 'background' times."));
       m_pButton_GetURL = S.Id(ID_BUTTON_GETURL).AddButton(_("WCAG Information on web"));
    }
    S.EndStatic();
@@ -346,6 +325,7 @@ void ContrastDialog::OnForegroundStartText(wxCommandEvent & event)
    wxString val = mForegroundStartText->GetValue();
    val.ToDouble(&startTimeF);
    m_pButton_GetForeground->Enable(true);
+   m_pButton_GetForeground->SetLabel(_("Measure"));
 }
 
 void ContrastDialog::OnForegroundEndText(wxCommandEvent & event)
@@ -353,6 +333,7 @@ void ContrastDialog::OnForegroundEndText(wxCommandEvent & event)
    wxString val = mForegroundEndText->GetValue();
    val.ToDouble(&endTimeF);
    m_pButton_GetForeground->Enable(true);
+   m_pButton_GetForeground->SetLabel(_("Measure"));
 }
 
 void ContrastDialog::OnBackgroundStartText(wxCommandEvent & event)
@@ -360,6 +341,7 @@ void ContrastDialog::OnBackgroundStartText(wxCommandEvent & event)
    wxString val = mBackgroundStartText->GetValue();
    val.ToDouble(&startTimeB);
    m_pButton_GetBackground->Enable(true);
+   m_pButton_GetBackground->SetLabel(_("Measure"));
 }
 
 void ContrastDialog::OnBackgroundEndText(wxCommandEvent & event)
@@ -367,6 +349,7 @@ void ContrastDialog::OnBackgroundEndText(wxCommandEvent & event)
    wxString val = mBackgroundEndText->GetValue();
    val.ToDouble(&endTimeB);
    m_pButton_GetBackground->Enable(true);
+   m_pButton_GetBackground->SetLabel(_("Measure"));
 }
 
 void ContrastDialog::results()
