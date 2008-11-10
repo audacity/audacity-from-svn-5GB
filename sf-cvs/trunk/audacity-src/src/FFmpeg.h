@@ -263,7 +263,7 @@ public:
 #else //__WXMSW__
    wxString GetLibraryTypeString()
    {
-      return _("Only avformat.so|*avformat*.so*|Dynamically Linked Libraries (*.so)|*.so|All Files (*)|*");
+      return _("Only libavformat.so|libavformat.so*|Dynamically Linked Libraries (*.so*)|*.so*|All Files (*)|*");
    }
 
    wxString GetLibAVFormatPath()
@@ -273,7 +273,7 @@ public:
 
    wxString GetLibAVFormatName()
    {
-      return (wxT("avformat-") wxT(AV_STRINGIFY(LIBAVFORMAT_VERSION_MAJOR)) wxT(".so"));
+      return (wxT("libavformat.so.") wxT(AV_STRINGIFY(LIBAVFORMAT_VERSION_MAJOR)));
    }
 #endif //__WXMSW__
 
