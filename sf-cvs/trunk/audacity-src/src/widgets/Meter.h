@@ -40,14 +40,24 @@ struct MeterBar {
    float  peakPeakHold;
 };
 
-struct MeterUpdateMsg
+class MeterUpdateMsg
 {
+   public:
    int numFrames;
    float peak[kMaxMeterBars];
    float rms[kMaxMeterBars];
    bool clipping[kMaxMeterBars];
    int headPeakCount[kMaxMeterBars];
    int tailPeakCount[kMaxMeterBars];
+
+   /* neither constructor nor destructor do anything */
+   MeterUpdateMsg() { };
+   ~MeterUpdateMsg() { };
+   /* for debugging purposes, printing the values out is really handy */
+   /** \brief Print out all the values in the meter update message */
+   wxString toString();
+   /** \brief Only print meter updates if clipping may be happening */
+   wxString toStringIfClipped();
 };
 
 // Thread-safe queue of update messages
@@ -96,15 +106,38 @@ class Meter : public wxPanel
    Style GetStyle() { return mStyle; }
    void SetStyle(Style newStyle);
 
-   //
-   // These methods are thread-safe!  Feel free to call from a
-   // different thread (like from an audio I/O callback)
+   /** \brief
+    *
+    * This method is thread-safe!  Feel free to call from a
+    * different thread (like from an audio I/O callback).
+    */
    void Reset(double sampleRate, bool resetClipping);
+   /** \brief Update the meters with a block of audio data
+    *
+    * Process the supplied block of audio data, extracting the peak and RMS
+    * levels to send to the meter. Also record runs of clipped samples to detect
+    * clipping that lies on block boundaries.
+    * This method is thread-safe!  Feel free to call from a different thread
+    * (like from an audio I/O callback).
+    * \param numChannels The number of channels of audio being played back or
+    * recorded.
+    * \param numFrames The number of frames (samples) in this data block. It is
+    * assumed that there are the same number of frames in each channel.
+    * \param sampleData The audio data itself, as interleaved samples. So
+    * indexing through the array we get the first sample of channel, first
+    * sample of channel 2 etc up to the first sample of channel (numChannels),
+    * then the second sample of channel 1, second sample of channel 2, and so
+    * to the second sample of channel (numChannels). The last sample in the
+    * array will be the (numFrames) sample for channel (numChannels).
+    */
    void UpdateDisplay(int numChannels,
                       int numFrames, float *sampleData);
+   /** \brief Find out if the level meter is disabled or not.
+    *
+    * This method is thread-safe!  Feel free to call from a
+    * different thread (like from an audio I/O callback).
+    */
    bool IsMeterDisabled();
-   // End thread-safe methods
-   //
    
    float GetMaxPeak();
 
