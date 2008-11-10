@@ -238,17 +238,17 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
       {
 
          // Headings
-         S.AddFixedText(_(" "), false);
+         S.AddFixedText(wxT(" "), false);
          S.AddFixedText(_("Start"), false);
          S.AddFixedText(_("End"), false);
-         S.AddFixedText(_(""), false); // spacer
+         S.AddFixedText(wxT(""), false); // spacer
          S.AddFixedText(_("Volume"), false);
 
          //Foreground
          S.AddFixedText(_("Foreground:"), false);
          S.StartMultiColumn(2, wxCENTER);
          {
-            mForegroundStartText = S.Id(ID_FOREGROUNDSTART_TEXT).AddTextBox(_(""), wxT(""), 12);
+            mForegroundStartText = S.Id(ID_FOREGROUNDSTART_TEXT).AddTextBox(wxT(""), wxT(""), 12);
             mForegroundStartText->SetValidator(vld);
             number = wxString::Format(wxT("%.2f"), startTimeF);
             mForegroundStartText->ChangeValue(number);
@@ -256,7 +256,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          S.EndMultiColumn();
          S.StartMultiColumn(3, wxCENTER);
          {
-            mForegroundEndText = S.Id(ID_FOREGROUNDEND_TEXT).AddTextBox(_(""), wxT(""), 12);
+            mForegroundEndText = S.Id(ID_FOREGROUNDEND_TEXT).AddTextBox(wxT(""), wxT(""), 12);
             mForegroundEndText->SetValidator(vld);
             number = wxString::Format(wxT("%.2f"), endTimeF);
             mForegroundEndText->ChangeValue(number);
@@ -271,7 +271,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          S.AddFixedText(_("Background:"));
          S.StartMultiColumn(2, wxCENTER);
          {
-            mBackgroundStartText = S.Id(ID_BACKGROUNDSTART_TEXT).AddTextBox(_(""), wxT(""), 12);
+            mBackgroundStartText = S.Id(ID_BACKGROUNDSTART_TEXT).AddTextBox(wxT(""), wxT(""), 12);
             mBackgroundStartText->SetValidator(vld);
             number = wxString::Format(wxT("%.2f"), startTimeB);
             mBackgroundStartText->ChangeValue(number);
@@ -279,7 +279,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          S.EndMultiColumn();
          S.StartMultiColumn(3, wxCENTER);
          {
-            mBackgroundEndText = S.Id(ID_BACKGROUNDEND_TEXT).AddTextBox(_(""), wxT(""), 12);
+            mBackgroundEndText = S.Id(ID_BACKGROUNDEND_TEXT).AddTextBox(wxT(""), wxT(""), 12);
             mBackgroundEndText->SetValidator(vld);
             number = wxString::Format(wxT("%.2f"), endTimeB);
             mBackgroundEndText->ChangeValue(number);
