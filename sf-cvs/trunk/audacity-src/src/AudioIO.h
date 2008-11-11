@@ -64,6 +64,8 @@ class AudioIO {
  public:
    AudioIO();
    ~AudioIO();
+
+   void SetListener(AudioIOListener* listener);
    
    /** \brief Start up Portaudio for capture and recording as needed for
     * input monitoring and software playthrough only
