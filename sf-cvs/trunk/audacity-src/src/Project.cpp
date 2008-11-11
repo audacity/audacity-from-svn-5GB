@@ -374,6 +374,9 @@ AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
    if(bMaximized)
       p->Maximize(true);
 
+   //Initialise the Listener
+   gAudioIO->SetListener(p);
+
    //Set the new project as active:
    SetActiveProject(p);
 

@@ -2330,6 +2330,11 @@ void AudioIO::FillBuffers()
       //FillMidiBuffers();
 }
 
+void AudioIO::SetListener(AudioIOListener* listener)
+{
+   mListener = listener;
+}
+
 /* HCK MIDI PATCH START */
 /* REQUIRES PORTMIDI */
 //void AudioIO::FillMidiBuffers()
