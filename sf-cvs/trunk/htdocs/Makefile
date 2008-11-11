@@ -30,6 +30,13 @@ MSGFMT_ARGS=-fv
 %.mo: %.po
 	$(MSGFMT) $(MSGFMT_ARGS) -o $@ $<
 
+# automation of reverting .po files to the CVS versions after translation
+# build has updated them from the .pot files
+.PHONY: revert-po
+revert-po:
+	-rm -f locale/*.po
+	cvs up locale/
+
 # Host / Project configuration
 # ============================
 # Variables in this section configure the project, host etc to use at
@@ -45,6 +52,7 @@ PROJDIR=/home/groups/a/au/audacity/htdocs/
 
 # Internal configuration stuff (applies to all projects)
 # Options to all rsync commands:
+#RSYNCOPTS=-vrchlO --delete-during --rsh=ssh --exclude '*~'
 RSYNCOPTS=-vrchlO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 # -v Verbose mode transfers
 # -r Recursive transfer of whole dir tree
