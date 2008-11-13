@@ -146,6 +146,7 @@ void OnSnapToOff();
 void OnDefineForeground();
 void OnDefineBackground();
 #endif
+void OnFullScreen();
 
         // File Menu
 
