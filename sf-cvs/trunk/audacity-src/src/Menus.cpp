@@ -1068,6 +1068,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddCommand(wxT("SnapToOn"),      _("Snap To On"),           FN(OnSnapToOn));
    c->AddCommand(wxT("SnapToOff"),     _("Snap To Off"),          FN(OnSnapToOff));
+   c->AddCommand(wxT("FullScreenOnOff"), _("Full screen on/off\tF11"),  FN(OnFullScreen));
 
 #ifdef EXPERIMENTAL_CONTRAST
    // these next 2 are for the Contrast analyze effect
@@ -5229,6 +5230,14 @@ void AudacityProject::OnDefineBackground()
    TP_DisplayStatusMessage(wxT("Background audio selection saved (for Analyze->Contrast)"));
 }
 #endif
+
+void AudacityProject::OnFullScreen()
+{
+   if(wxTopLevelWindow::IsFullScreen())
+      wxTopLevelWindow::ShowFullScreen(false);
+   else
+      wxTopLevelWindow::ShowFullScreen(true);
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
