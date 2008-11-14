@@ -74,13 +74,13 @@ void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl);
 //----------------------------------------------------------------------------
 wxString GetFFmpegVersion(wxWindow *parent);
 
+/* from here on in, this stuff only applies when ffmpeg is available */
+#if defined(USE_FFMPEG)
+
 //----------------------------------------------------------------------------
 // Attempt to load and enable/disable FFmpeg at startup
 //----------------------------------------------------------------------------
 void FFmpegStartup();
-
-/* from here on in, this stuff only applies when ffmpeg is available */
-#if defined(USE_FFMPEG)
 
 bool LoadFFmpeg(bool showerror);
 

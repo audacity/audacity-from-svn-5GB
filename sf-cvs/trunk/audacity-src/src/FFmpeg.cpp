@@ -36,10 +36,6 @@ wxString GetFFmpegVersion(wxWindow *parent)
    return wxString(wxT("FFmpeg support not compiled in"));
 }
 
-void FFmpegStartup()
-{
-}
-
 #else
 
 /** This pointer to the shared object has global scope and is used to track the
@@ -94,6 +90,7 @@ bool LoadFFmpeg(bool showerror)
    }
 }
 
+/** Called during Audacity start-up to try and load the ffmpeg libraries */
 void FFmpegStartup()
 {
    bool enabled = false;
