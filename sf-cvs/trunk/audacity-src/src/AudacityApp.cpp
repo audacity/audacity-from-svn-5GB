@@ -23,6 +23,9 @@ It handles initialization and termination by subclassing wxApp.
 
 #include "Audacity.h" // This should always be included first
 
+#include "FFmpeg.h"  // this has to come before wx includes otherwise it breaks
+// Linux and OS X builds with a subtle stdint.h issue 
+
 #include <wx/defs.h>
 #include <wx/app.h>
 #include <wx/docview.h>
@@ -88,8 +91,6 @@ It handles initialization and termination by subclassing wxApp.
 #ifdef USE_QUICKTIME
 #include "import/ImportQT.h"
 #endif
-
-#include "FFmpeg.h"
 
 #ifdef _DEBUG
     #ifdef _MSC_VER
@@ -860,7 +861,9 @@ bool AudacityApp::OnInit()
    mLogger->EnableLogging(true);
    mLogger->SetLogLevel(wxLOG_Max);
 
+   #ifdef USE_FFMPEG
    FFmpegStartup();
+   #endif
 
    //
    // Auto-recovery
