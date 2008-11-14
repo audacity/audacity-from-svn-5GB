@@ -104,7 +104,10 @@ bool EffectChangeTempo::Process()
 {
    mSoundTouch = new SoundTouch();
    mSoundTouch->setTempoChange(m_PercentChange);
-   return this->EffectSoundTouch::Process();
+   bool success = this->EffectSoundTouch::Process();
+   if( success )
+      mT1 = mT0 + (mT1 - mT0)/(m_PercentChange/100 + 1.);
+   return success;
 }
 
 //----------------------------------------------------------------------------
