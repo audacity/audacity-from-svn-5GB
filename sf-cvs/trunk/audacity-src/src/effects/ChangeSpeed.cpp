@@ -152,7 +152,7 @@ bool EffectChangeSpeed::Process()
    }
 #endif
 
-// mT1 = mT0 + m_maxNewLength; // Update selection.
+   mT1 = mT0 + m_maxNewLength; // Update selection.
 
    return bGoodResult;
 }
