@@ -16,11 +16,6 @@
 #if !defined(__AUDACITY_BRANDING_H__)
 #define __AUDACITY_BRANDING_H__
 
-//enum {
-//   Brand_Audacity,
-//   Brand_UmixIt,
-//   Brand_Thinklabs
-//} BrandIndex;
 #define BRAND_AUDACITY     0
 #define BRAND_UMIXIT       1 
 #define BRAND_THINKLABS    2
