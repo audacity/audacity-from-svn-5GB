@@ -204,7 +204,7 @@ msgstr "Awalan Instalasi:"
 
 #: AboutDialog.cpp:487
 msgid "Settings folder: "
-msgstr "Aturan Folder:"
+msgstr "Folder pengaturan:"
 
 #: AboutDialog.cpp:502
 msgid "GPL License"
@@ -338,7 +338,7 @@ msgstr "\t-versi (tampilan versi Audacity)"
 #. * itself
 #: AudacityApp.cpp:1243
 msgid "\t-test (run self diagnostics)"
-msgstr "\t-tes (jalankan diagnosa otomatis)"
+msgstr "\t-test (jalankan diagnosa otomatis)"
 
 #. i18n-hint '-blocksize' is the option and needs to stay in
 #. * English. 'nnn' is any integer number. This controls the
@@ -346,7 +346,7 @@ msgstr "\t-tes (jalankan diagnosa otomatis)"
 #. * disk
 #: AudacityApp.cpp:1248
 msgid "\t-blocksize nnn (set max disk block size in bytes)"
-msgstr "\t-ukuran blok nnn (ukuran blok pada disk maksimum dalam byte)"
+msgstr "\t-blocksize nnn (ukuran blok pada disk maksimum dalam byte)"
 
 #: AudacityApp.cpp:1249
 msgid "In addition, specify the name of an audio file or Audacity project to open it."
@@ -1685,7 +1685,7 @@ msgstr "&Hapus\tCtrl+K"
 
 #: Menus.cpp:377
 msgid "Split D&elete\tCtrl+Alt+K"
-msgstr "H&apus Sekaligus\tCtrl+shift+K"
+msgstr "H&apus Sekaligus\tCtrl+Alt+K"
 
 #: Menus.cpp:378
 msgid "Silence Audi&o\tCtrl+L"
@@ -1775,7 +1775,7 @@ msgstr "Se&mua\tCtrl+A"
 
 #: Menus.cpp:456
 msgid "&None\tCtrl+Shift+A"
-msgstr "&Tidak Sama Sekali\tCtrl+shift+A"
+msgstr "&Tidak Sama Sekali\tCtrl+Shift+A"
 
 #: Menus.cpp:460
 msgid "&Left at Playback Position\t["
@@ -1958,11 +1958,11 @@ msgstr "T&ransportasi"
 
 #: Menus.cpp:587
 msgid "Play\tSpacebar"
-msgstr "Mainkan\tSpasi"
+msgstr "Mainkan\tSpacebar"
 
 #: Menus.cpp:589
 msgid "&Loop Play\tShift+Spacebar"
-msgstr "Main&kan terus-menerus\tShift+Spasi"
+msgstr "Main&kan terus-menerus\tShift+Spacebar"
 
 #: Menus.cpp:591
 msgid "&Pause\tP"
@@ -1970,7 +1970,7 @@ msgstr "&Pause\tP"
 
 #: Menus.cpp:592
 msgid "&Stop\tSpacebar"
-msgstr "&Berhenti\tSpasi"
+msgstr "&Berhenti\tSpacebar"
 
 #: Menus.cpp:593
 #: Menus.cpp:1008
@@ -2224,7 +2224,7 @@ msgstr "Alat Sebelumnya\tA"
 
 #: Menus.cpp:993
 msgid "Play/Stop\tSpacebar"
-msgstr "Main/Berhenti\tSpasi"
+msgstr "Main/Berhenti\tSpacebar"
 
 #: Menus.cpp:994
 msgid "Stop\tS"
@@ -2260,7 +2260,7 @@ msgstr "Maikan berulang\tL"
 
 #: Menus.cpp:1005
 msgid "Play Looped\tShift+Spacebar"
-msgstr "Mainkan terus-menerus\tShift+Spasi"
+msgstr "Mainkan terus-menerus\tShift+Spacebar"
 
 #: Menus.cpp:1006
 msgid "Play Cut Preview\tC"
@@ -2284,35 +2284,35 @@ msgstr "KunciHapus2\tDelete"
 
 #: Menus.cpp:1025
 msgid "Seek left short period during playback\tLeft"
-msgstr "Coba periode pendek di kiri selama bermain\tKiri"
+msgstr "Coba periode pendek di kiri selama bermain\tLeft"
 
 #: Menus.cpp:1026
 msgid "Seek right short period during playback\tRight"
-msgstr "Coba periode pendek di kanan selama bermain\tKanan"
+msgstr "Coba periode pendek di kanan selama bermain\tRight"
 
 #: Menus.cpp:1027
 msgid "Seek left long period during playback\tShift+Left"
-msgstr "Coba periode panjang di kiri selama bermain\tShift+Kiri"
+msgstr "Coba periode panjang di kiri selama bermain\tShift+Left"
 
 #: Menus.cpp:1028
 msgid "Seek right long period during playback\tShift+Right"
-msgstr "Coba periode panjang di kanan selama bermain\tShift+Kanan"
+msgstr "Coba periode panjang di kanan selama bermain\tShift+Right"
 
 #: Menus.cpp:1032
 msgid "Move Focus to Previous Track\tUp"
-msgstr "Pindahkan Fokus ke Trek Sebelumnya\tAtas"
+msgstr "Pindahkan Fokus ke Trek Sebelumnya\tUp"
 
 #: Menus.cpp:1033
 msgid "Move Focus to Previous and Change Selection\tShift+Up"
-msgstr "Pindahkan Fokus ke Trek Sebelumnya dan ubah pilihannya\tShift+Atas"
+msgstr "Pindahkan Fokus ke Trek Sebelumnya dan ubah pilihannya\tShift+Up"
 
 #: Menus.cpp:1034
 msgid "Move Focus to Next Track\tDown"
-msgstr "Pindahkan Fokus ke Trek Selanjutnya\tBawah"
+msgstr "Pindahkan Fokus ke Trek Selanjutnya\tDown"
 
 #: Menus.cpp:1035
 msgid "Move Focus to Next and Change Selection\tShift+Down"
-msgstr "Pindahkan Fokus ke Trek Selanjutnya dan ubah pilihannya\tShift+Bawah"
+msgstr "Pindahkan Fokus ke Trek Selanjutnya dan ubah pilihannya\tShift+Down"
 
 #: Menus.cpp:1036
 msgid "Toggle Focused Track\tReturn"
@@ -2328,11 +2328,11 @@ msgstr "Fokuskan ke Trek Terpilih\tCtrl+Spacebar"
 
 #: Menus.cpp:1040
 msgid "Cursor Left\tLeft"
-msgstr "Kursor Kiri\tKiri"
+msgstr "Kursor Kiri\tLeft"
 
 #: Menus.cpp:1041
 msgid "Cursor Right\tRight"
-msgstr "Kursor Kanan\tKanan"
+msgstr "Kursor Kanan\tRight"
 
 #: Menus.cpp:1042
 msgid "Cursor Short Jump Left\t,"
@@ -2352,11 +2352,11 @@ msgstr "Kursor Kanan Lompatan Tinggi\tShift+."
 
 #: Menus.cpp:1047
 msgid "Selection Extend Left\tShift+Left"
-msgstr "Pilih yang tidak dipilih di Kiri\tShift+Kiri"
+msgstr "Pilih yang tidak dipilih di Kiri\tShift+Left"
 
 #: Menus.cpp:1048
 msgid "Selection Extend Right\tShift+Right"
-msgstr "Pilih yang tidak dipilih di Kanan\tShift+Kanan"
+msgstr "Pilih yang tidak dipilih di Kanan\tShift+Right"
 
 #: Menus.cpp:1050
 msgid "Set (or Extend) Left Selection"
@@ -2368,11 +2368,11 @@ msgstr "Atur (atau Mengecualikan) Yang Terpilih di Kanan"
 
 #: Menus.cpp:1053
 msgid "Selection Contract Left\tCtrl+Shift+Right"
-msgstr "Pilih yang di Kiri\tCtrl+Shift+Kiri"
+msgstr "Pilih yang di Kiri\tCtrl+Shift+Right"
 
 #: Menus.cpp:1054
 msgid "Selection Contract Right\tCtrl+Shift+Left"
-msgstr "Pilih yang di Kanan\tCtrl+Shift+Kanan"
+msgstr "Pilih yang di Kanan\tCtrl+Shift+Left"
 
 #: Menus.cpp:1056
 msgid "Change pan on focused track\tShift+P"
@@ -2392,11 +2392,11 @@ msgstr "Ubah kekuatan pada trek yang terfokus\tShift+G"
 
 #: Menus.cpp:1060
 msgid "Increase gain on focused track\tAlt+Shift+Up"
-msgstr "Tingkatkan kekuatan pada trek yang difokuskan\tAlt+Shift+Atas"
+msgstr "Tingkatkan kekuatan pada trek yang difokuskan\tAlt+Shift+Up"
 
 #: Menus.cpp:1061
 msgid "Decrease gain on focused track\tAlt+Shift+Down"
-msgstr "Turunkan kekuatan pada trek yang difokuskan\tAlt+Shift+Bawah"
+msgstr "Turunkan kekuatan pada trek yang difokuskan\tAlt+Shift+Down"
 
 #: Menus.cpp:1062
 msgid "Open menu on focused track\tShift+M"
@@ -4394,7 +4394,7 @@ msgstr "Panjang fade up dalam: "
 #: effects/AutoDuck.cpp:521
 #: effects/Compressor.cpp:494
 msgid "Threshold:"
-msgstr "Threshold:"
+msgstr "Ambang Batas:"
 
 #: effects/AutoDuck.cpp:570
 msgid "Please enter valid values."
@@ -4657,7 +4657,7 @@ msgstr "Pembuang Klik dan Pop dari Craig DeForest"
 
 #: effects/ClickRemoval.cpp:341
 msgid "Select threshold (lower is more sensitive):"
-msgstr "Pilih threshold (lebih rendah, lebih sensitif):"
+msgstr "Pilih ambang batas (lebih rendah, lebih sensitif):"
 
 #: effects/ClickRemoval.cpp:353
 msgid "Max spike width (higher is more sensitive):"
@@ -4677,7 +4677,7 @@ msgstr "Pengompresan Dinamis"
 
 #: effects/Compressor.cpp:498
 msgid "Threshold"
-msgstr "Threshold"
+msgstr "Ambang Batas"
 
 #: effects/Compressor.cpp:502
 msgid "Ratio:"
@@ -4710,7 +4710,7 @@ msgstr "Normalkan ke 0dB setelah mengompres"
 #: effects/Compressor.cpp:563
 #, c-format
 msgid "Threshold %d dB"
-msgstr "Threshold %d dB"
+msgstr "Ambang Batas %d dB"
 
 #: effects/Compressor.cpp:564
 #, c-format
@@ -4993,11 +4993,11 @@ msgstr "dari Leland Lucius"
 
 #: effects/FindClipping.cpp:234
 msgid "Start threshold (samples):"
-msgstr "Threshold awal (sampel):"
+msgstr "Ambang batas awal (sampel):"
 
 #: effects/FindClipping.cpp:238
 msgid "Stop threshold (samples):"
-msgstr "Threshold akhir (sampel):"
+msgstr "Ambang batas akhir (sampel):"
 
 #: effects/FindClipping.cpp:250
 msgid "Start and stop must be greater than 0."
@@ -5062,11 +5062,11 @@ msgstr "Derajat Pelevelan:"
 
 #: effects/Leveller.cpp:234
 msgid "Noise Threshold (Hiss/Hum/Ambient Noise)"
-msgstr "Threshold bising (Hiss/Hum/Ambang Bising):"
+msgstr "Ambang batas bising (Hiss/Hum/Ambang Bising):"
 
 #: effects/Leveller.cpp:238
 msgid "Threshold for Noise:"
-msgstr "Threshold for Noise:"
+msgstr "Ambang Batas untuk Bising:"
 
 #: effects/Leveller.h:28
 msgid "Leveller..."
@@ -5111,7 +5111,7 @@ msgstr "Simulator"
 
 #: effects/LoadEffects.cpp:115
 msgid "Delay"
-msgstr "Beda"
+msgstr "Pembeda"
 
 #: effects/LoadEffects.cpp:117
 msgid "Modulator"
@@ -5568,7 +5568,7 @@ msgstr ""
 
 #: effects/SpikeCleaner.cpp:178
 msgid "Theshold for silence: "
-msgstr "Threshold untuk Diam:"
+msgstr "Ambang Batas untuk Diam:"
 
 #: effects/SpikeCleaner.h:27
 msgid "Spike Cleaner..."
@@ -5689,7 +5689,7 @@ msgstr "milidetik"
 
 #: effects/TruncSilence.cpp:350
 msgid "Threshold for silence:"
-msgstr "Threshold untuk Diam:"
+msgstr "Ambang Batas untuk Diam:"
 
 #: effects/TruncSilence.cpp:374
 msgid "   Duration must be at least 1 millisecond"
@@ -5903,7 +5903,7 @@ msgid ""
 msgstr ""
 "Anda ingin menyimpan file %s dengan nama \"%s\".\n"
 "\n"
-"Biasanya file berkahiran dengan \".%s\", dan beberapa program tidak dapat membuka file dengan ekstensi nonstandar.\n"
+"Biasanya file berakhiran dengan \".%s\", dan beberapa program tidak dapat membuka file dengan ekstensi nonstandar.\n"
 "\n"
 "Anda yakin ingin menyimpan file dangan nama ini?"
 
@@ -7443,7 +7443,7 @@ msgstr "Selama Bermain pada &Software: Mainkan trek baru ketika merekam atau mem
 
 #: prefs/AudioIOPrefs.cpp:160
 msgid "(uncheck when recording \"stereo mix\")"
-msgstr "("
+msgstr "(hilangkan cek ketika merekam \"stereo mix\")"
 
 #: prefs/AudioIOPrefs.cpp:168
 #: prefs/MidiIOPrefs.cpp:193
@@ -8787,19 +8787,19 @@ msgstr "Energi"
 
 #: toolbars/TranscriptionToolBar.cpp:236
 msgid "Sign Changes (Low Threshold)"
-msgstr "Pengubahan Tanda (Threshold Rendah)"
+msgstr "Pengubahan Tanda (Ambang Batas Rendah)"
 
 #: toolbars/TranscriptionToolBar.cpp:237
 msgid "Sign Changes (High Threshold)"
-msgstr "Pengubahan Tanda (Threshold Tinggi)"
+msgstr "Pengubahan Tanda (Ambang Batas Tinggi)"
 
 #: toolbars/TranscriptionToolBar.cpp:238
 msgid "Direction Changes (Low Threshold)"
-msgstr "Pengubahan Arah (Threshold Rendah)"
+msgstr "Pengubahan Arah (Ambang Batas Rendah)"
 
 #: toolbars/TranscriptionToolBar.cpp:239
 msgid "Direction Changes (High Threshold)"
-msgstr "Pengubahan Arah (Threshold Tinggi)"
+msgstr "Pengubahan Arah (Ambang Batas Tinggi)"
 
 #: toolbars/TranscriptionToolBar.cpp:247
 msgid "Key type"
