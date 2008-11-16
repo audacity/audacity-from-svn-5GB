@@ -3670,7 +3670,7 @@ msgstr ""
 msgid ""
 "Could not create directory:\n"
 "  %s"
-msgstr "Ei voitu luoda hakemistoa:\  %s"
+msgstr "Ei voitu luoda hakemistoa:\n  %s"
 
 #: Theme.cpp:963
 #, c-format
