@@ -38,7 +38,7 @@ override CFLAGS += @CFLAGS@
 override CXXFLAGS += @CXXFLAGS@
 
 # CPPFLAGS are for both C and C++.
-override CPPFLAGS += -fno-strict-aliasing -I$(srcdir)/include -I. -DLIBDIR=\"$(libdir)\" @CPPFLAGS@ 
+override CPPFLAGS += -fno-strict-aliasing -I$(srcdir)/include -I. -DLIBDIR=\"$(libdir)\" -D__STDC_CONSTANT_MACROS @CPPFLAGS@ 
 
 # LDFLAGS are for linking. BUILD_LDFLAGS are not valid during configure because
 # they reference libs that haven't been built yet

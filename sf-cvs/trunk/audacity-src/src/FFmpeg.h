@@ -30,14 +30,21 @@ Describes shared object that is used to access FFmpeg libraries.
  * Audacity.h */
 
 #if defined(USE_FFMPEG)
-	extern "C" {
-	#ifdef _STDINT_H
+   extern "C" {
+   #ifdef _STDINT_H
    /* stdint.h has already been included. That's likely to break ffmpeg headers
-	* as described above so we issue a warning */
-	#warning "stdint.h included before ffmpeg headers, this may well not compile"
-	#endif
+    * as described above so we issue a warning */
+   #warning "stdint.h included before ffmpeg headers, this might not compile"
+   #endif
+   #ifdef _STDINT_H_
+   /* as above but for Mac (mainly as a debugging tool) */
+   #warning "stdint.h included before ffmpeg headers, this might not compile"
+   #endif
+
    #if !defined(__STDC_CONSTANT_MACROS)
 	#define __STDC_CONSTANT_MACROS
+    /* also defined on the compiler command line for autotools builds, so 
+	 * should only be here for windows builders */
    #endif
 	#include <libavcodec/avcodec.h>
 	#include <libavformat/avformat.h>
