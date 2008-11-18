@@ -242,10 +242,9 @@ public:
       return wxString::Format(wxT("F(%s),C(%s),U(%s)"),mAVFormatVersion.c_str(),mAVCodecVersion.c_str(),mAVUtilVersion.c_str());
    }
 
-   /* note these values are for Windows only - Mac and Unix have their own
-   * sections elsewhere */
-   //\todo { Section for Mac and *nix }
 #if defined(__WXMSW__)
+   /* Library names and file filters for Windows only */
+
    wxString GetLibraryTypeString()
    {
       return _("Only avformat.dll|*avformat*.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*");
@@ -260,7 +259,26 @@ public:
    {
       return (wxT("avformat-") wxT(AV_STRINGIFY(LIBAVFORMAT_VERSION_MAJOR)) wxT(".dll"));
    }
-#else //__WXMSW__
+#elif defined(__WXMAC__)
+   /* Library names and file filters for Mac OS only */
+   wxString GetLibraryTypeString()
+   {
+      return _("Only libavformat.*.dylib|libavformat.*.dylib|Dynamically Linked Libraries (*.dylib)|*.dylib|All Files (*)|*");
+   }
+
+   wxString GetLibAVFormatPath()
+   {
+      return wxT("");
+   }
+
+   wxString GetLibAVFormatName()
+   {
+      return (wxT("libavformat.") wxT(AV_STRINGIFY(LIBAVFORMAT_VERSION_MAJOR)) 
+					  wxT(".dylib"));
+   }
+#else
+   /* Library names and file filters for other platforms, basically Linux and
+	* other *nix platforms */
    wxString GetLibraryTypeString()
    {
       return _("Only libavformat.so|libavformat.so*|Dynamically Linked Libraries (*.so*)|*.so*|All Files (*)|*");
@@ -275,7 +293,8 @@ public:
    {
       return (wxT("libavformat.so.") wxT(AV_STRINGIFY(LIBAVFORMAT_VERSION_MAJOR)));
    }
-#endif //__WXMSW__
+
+#endif // (__WXMAC__) || (__WXMSW__)
 
    /// Ugly reference counting. I thought of using wxStuff for that,
    /// but decided that wx reference counting is not useful, since
