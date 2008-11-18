@@ -1069,6 +1069,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("SnapToOn"),      _("Snap To On"),           FN(OnSnapToOn));
    c->AddCommand(wxT("SnapToOff"),     _("Snap To Off"),          FN(OnSnapToOff));
    c->AddCommand(wxT("FullScreenOnOff"), _("Full screen on/off\tF11"),  FN(OnFullScreen));
+   c->SetCommandFlags(wxT("FullScreenOnOff"), 0, 0);
 
 #ifdef EXPERIMENTAL_CONTRAST
    // these next 2 are for the Contrast analyze effect
