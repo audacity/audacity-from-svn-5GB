@@ -90,7 +90,7 @@ wxString LinkExpand( const wxString & Text )
 wxString ToWelcome( )
 {
 #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
-   return _("To [[welcome|Jam Window]]");
+   return _("Back to [[welcome|\"I want to...\"]]");
 #else
    return _("To [[welcome|Welcome screen]]");
 #endif
@@ -186,8 +186,14 @@ wxString HelpTextBuiltIn( const wxString & Key )
                      </ul></p><p>"));
       if (Key == wxT("fixTrack"))
          return WrapText(wxString(wxT("")) + 
-                  _("<p><b>Fix part of a Track</b> \
-                    </p><br><br>") + ToWelcome());
+                  _("<p><b>Fix part of a Track</b></p> \
+                     <ul> \
+                        <li>Select the portion of the desired track.</li> \
+                        <li>Edit menu > Silence (Ctrl+L)</li> \
+                        <li>[[record|Record]] my voice or instrument.</li> \
+                        <li>Tracks menu > Mix and Render</li> \
+                     </ul> \
+                     </p><br><br>") + ToWelcome());
       if ((Key == wxT("ChangeTempo")) || (Key == wxT("ChangePitch")))
       {
          Effect* pEffect = Effect::GetEffectByIdentifier(Key, BUILTIN_EFFECT | PROCESS_EFFECT | ADVANCED_EFFECT);
