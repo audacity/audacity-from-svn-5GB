@@ -2005,7 +2005,7 @@ msgstr "Vorige tool\tA"
 
 #: ../src/Menus.cpp:556
 msgid "Play/Stop\tSpacebar"
-msgstr "Afspelen/Stoppen\tSpatiebalk"
+msgstr "Afspelen/Stoppen\tSpacebar"
 
 #: ../src/Menus.cpp:557
 msgid "Stop\tS"
@@ -2074,41 +2074,41 @@ msgstr "DeleteKey2\tDelete"
 
 #: Menus.cpp:892
 msgid "Seek left short period during playback\tLeft"
-msgstr "Tijdens afspelen klein stapje terug spoelen\tPijl links"
+msgstr "Tijdens afspelen klein stapje terug spoelen\tLeft"
 
 #: Menus.cpp:893
 msgid "Seek right short period during playback\tRight"
-msgstr "Tijdens afspelen klein stapje vooruit spoelen\tPijl rechts"
+msgstr "Tijdens afspelen klein stapje vooruit spoelen\tRight"
 
 #: Menus.cpp:894
 msgid "Seek left long period during playback\tShift+Left"
-msgstr "Tijdens afspelen grote stap terug spoelen\tShift+Pijl links"
+msgstr "Tijdens afspelen grote stap terug spoelen\tShift+Left"
 
 #: Menus.cpp:895
 msgid "Seek right long period during playback\tShift+Right"
-msgstr "Tijdens afspelen grote stap vooruit spoelen\tShift+Pijl rechts"
+msgstr "Tijdens afspelen grote stap vooruit spoelen\tShift+Right"
 
 # bovenliggend/onderliggend vorige/volgende
 #: Menus.cpp:899
 msgid "Move Focus to Previous Track\tUp"
-msgstr "Focus naar vorige spoor\tPijl op"
+msgstr "Focus naar vorige spoor\tUp"
 
 #: Menus.cpp:900
 msgid "Move Focus to Previous and Change Selection\tShift+Up"
-msgstr "Focus naar vorige spoor en wijzig selectie\tShift+Pijl up"
+msgstr "Focus naar vorige spoor en wijzig selectie\tShift+Up"
 
 #: Menus.cpp:901
 msgid "Move Focus to Next Track\tDown"
-msgstr "Focus naar volgende spoor\tPijl neer"
+msgstr "Focus naar volgende spoor\tDown"
 
 #: Menus.cpp:902
 msgid "Move Focus to Next and Change Selection\tShift+Down"
-msgstr "Focus naar volgende spoor en wijzig selectie\tShift+Pijl neer"
+msgstr "Focus naar volgende spoor en wijzig selectie\tShift+Down"
 
 # return = enter
 #: Menus.cpp:903
 msgid "Toggle Focused Track\tReturn"
-msgstr "Focus op spoor aan/uit\tEnter"
+msgstr "Focus op spoor aan/uit\tReturn"
 
 #: Menus.cpp:904
 msgid "Toggle Focused Track\tNUMPAD_ENTER"
@@ -2116,15 +2116,15 @@ msgstr "Focus op spoor aan/uit\tNUMPAD_ENTER"
 
 #: Menus.cpp:905
 msgid "Toggle Focused Track\tCtrl+Spacebar"
-msgstr "Focus op spoor aan/uit\tCtrl+Spatiebalk"
+msgstr "Focus op spoor aan/uit\tCtrl+Spacebar"
 
 #: ../src/Menus.cpp:582
 msgid "Cursor Left\tLeft"
-msgstr "Cursor links\tLinks"
+msgstr "Cursor links\tLeft"
 
 #: ../src/Menus.cpp:583
 msgid "Cursor Right\tRight"
-msgstr "Cursor rechts\tRechts"
+msgstr "Cursor rechts\tRight"
 
 #: Menus.cpp:820
 msgid "Cursor Short Jump Left\t,"
@@ -2145,12 +2145,12 @@ msgstr "Cursor grote sprong rechts\tShift+."
 # uitbreiden/vergroten
 #: ../src/Menus.cpp:584
 msgid "Selection Extend Left\tShift+Left"
-msgstr "Selectie naar links vergroten\tShift+Links"
+msgstr "Selectie naar links vergroten\tShift+Left"
 
 # uitbreiden/vergroten
 #: ../src/Menus.cpp:585
 msgid "Selection Extend Right\tShift+Right"
-msgstr "Selectie naar rechts vergroten\tShift+Rechts"
+msgstr "Selectie naar rechts vergroten\tShift+Right"
 
 # (or extend) weggelaten om dat je de rand niet kunt uitbreiden, 
 # de selectie zelf wel.
@@ -2164,11 +2164,11 @@ msgstr "Rechter selectierand instellen"
 
 #: ../src/Menus.cpp:586
 msgid "Selection Contract Left\tCtrl+Shift+Right"
-msgstr "Selectie naar links verkleinen\tCtrl+Shift+Links"
+msgstr "Selectie naar links verkleinen\tCtrl+Shift+Right"
 
 #: ../src/Menus.cpp:587
 msgid "Selection Contract Right\tCtrl+Shift+Left"
-msgstr "Selectie naar rechts verkleinen\tCtrl+Shift+Rechts"
+msgstr "Selectie naar rechts verkleinen\tCtrl+Shift+Left"
 
 #: Menus.cpp:916
 msgid "Change pan on focused track\tShift+P"
@@ -2176,11 +2176,11 @@ msgstr "Balans wijzigen op spoor met focus\tShift+P"
 
 #: Menus.cpp:917
 msgid "Pan left on focused track\tAlt+Shift+Left"
-msgstr "Balans naar links op spoor met focus\tAlt+Shift+Pijl links"
+msgstr "Balans naar links op spoor met focus\tAlt+Shift+Left"
 
 #: Menus.cpp:918
 msgid "Pan right on focused track\tAlt+Shift+Right"
-msgstr "Balans naar rechts op spoor met focus\tAlt+Shift+Pijl rechts"
+msgstr "Balans naar rechts op spoor met focus\tAlt+Shift+Right"
 
 #: Menus.cpp:919
 msgid "Change gain on focused track\tShift+G"
@@ -2188,11 +2188,11 @@ msgstr "Versterking wijzigen op spoor met focus\tShift+G"
 
 #: Menus.cpp:920
 msgid "Increase gain on focused track\tAlt+Shift+Up"
-msgstr "Meer versterking op spoor met focus\tAlt+Shift+Pijl op"
+msgstr "Meer versterking op spoor met focus\tAlt+Shift+Up"
 
 #: Menus.cpp:921
 msgid "Decrease gain on focused track\tAlt+Shift+Down"
-msgstr "Minder versterking op spoor met focus\tAlt+Shift+Pijl neer"
+msgstr "Minder versterking op spoor met focus\tAlt+Shift+Down"
 
 #: Menus.cpp:922
 msgid "Open menu on focused track\tShift+M"
