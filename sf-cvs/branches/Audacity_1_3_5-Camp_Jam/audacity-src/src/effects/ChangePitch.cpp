@@ -17,6 +17,7 @@
 
 #include "ChangePitch.h"
 
+#include "../AudacityBranding.h"
 #include "../ShuttleGui.h"
 #include "../PitchName.h"
 #include "../Spectrum.h"
@@ -300,84 +301,85 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
 
    pBoxSizer_Dialog->Add(pBoxSizer_Pitch, 0, wxALIGN_CENTER | wxALL, 4);
 
+   #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+	   // semitones change controls
+      wxBoxSizer * pBoxSizer_SemitonesChange = new wxBoxSizer(wxHORIZONTAL);
+      pStaticText = new wxStaticText(this, -1, _("Semitones (half-steps):"),
+												   wxDefaultPosition, wxDefaultSize, 0);
+      pBoxSizer_SemitonesChange->Add(pStaticText, 0, 
+												   wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-	// semitones change controls
-   wxBoxSizer * pBoxSizer_SemitonesChange = new wxBoxSizer(wxHORIZONTAL);
-   pStaticText = new wxStaticText(this, -1, _("Semitones (half-steps):"),
-												wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_SemitonesChange->Add(pStaticText, 0, 
-												wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
+      m_pTextCtrl_SemitonesChange = 
+		   new wxTextCtrl(this, ID_TEXT_SEMITONESCHANGE, wxT("0.0"), 
+							   wxDefaultPosition, wxSize(40, -1), 0, 
+							   wxTextValidator(wxFILTER_NUMERIC));
+      pBoxSizer_SemitonesChange->Add(m_pTextCtrl_SemitonesChange, 0, 
+												   wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
-   m_pTextCtrl_SemitonesChange = 
-		new wxTextCtrl(this, ID_TEXT_SEMITONESCHANGE, wxT("0.0"), 
-							wxDefaultPosition, wxSize(40, -1), 0, 
-							wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_SemitonesChange->Add(m_pTextCtrl_SemitonesChange, 0, 
-												wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
+      pBoxSizer_Dialog->Add(pBoxSizer_SemitonesChange, 0, wxALIGN_CENTER | wxALL, 4);
 
-   pBoxSizer_Dialog->Add(pBoxSizer_SemitonesChange, 0, wxALIGN_CENTER | wxALL, 4);
+   	
+	   // from/to frequency controls
+      pBoxSizer_Dialog->Add(0, 8, 0); // spacer
+      wxBoxSizer * pBoxSizer_Frequency = new wxBoxSizer(wxHORIZONTAL);
+      
+      pStaticText = new wxStaticText(this, -1, _("Frequency (Hz):   from"),
+									          wxDefaultPosition, wxDefaultSize, 0);
+      pBoxSizer_Frequency->Add(pStaticText, 0, 
+									   wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-	
-	// from/to frequency controls
-   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
-   wxBoxSizer * pBoxSizer_Frequency = new wxBoxSizer(wxHORIZONTAL);
-   
-   pStaticText = new wxStaticText(this, -1, _("Frequency (Hz):   from"),
-									       wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_Frequency->Add(pStaticText, 0, 
-									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
+      m_pTextCtrl_FromFrequency = 
+		   new wxTextCtrl(this, ID_TEXT_FROMFREQUENCY, wxT(""), 
+							   wxDefaultPosition, wxSize(64, -1), 0,
+							   wxTextValidator(wxFILTER_NUMERIC));
+      pBoxSizer_Frequency->Add(m_pTextCtrl_FromFrequency, 0, 
+									   wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
-   m_pTextCtrl_FromFrequency = 
-		new wxTextCtrl(this, ID_TEXT_FROMFREQUENCY, wxT(""), 
-							wxDefaultPosition, wxSize(64, -1), 0,
-							wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_Frequency->Add(m_pTextCtrl_FromFrequency, 0, 
-									wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
+      pStaticText = new wxStaticText(this, -1, _("to"),
+									          wxDefaultPosition, wxDefaultSize, 0);
+      pBoxSizer_Frequency->Add(pStaticText, 0, 
+									   wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-   pStaticText = new wxStaticText(this, -1, _("to"),
-									       wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_Frequency->Add(pStaticText, 0, 
-									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
+      m_pTextCtrl_ToFrequency = 
+		   new wxTextCtrl(this, ID_TEXT_TOFREQUENCY, wxT(""), 
+							   wxDefaultPosition, wxSize(64, -1), 0,
+							   wxTextValidator(wxFILTER_NUMERIC));
+      pBoxSizer_Frequency->Add(m_pTextCtrl_ToFrequency, 0, 
+										   wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
-   m_pTextCtrl_ToFrequency = 
-		new wxTextCtrl(this, ID_TEXT_TOFREQUENCY, wxT(""), 
-							wxDefaultPosition, wxSize(64, -1), 0,
-							wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_Frequency->Add(m_pTextCtrl_ToFrequency, 0, 
-										wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
-
-   pBoxSizer_Dialog->Add(pBoxSizer_Frequency, 0, wxALIGN_CENTER | wxALL, 4);
+      pBoxSizer_Dialog->Add(pBoxSizer_Frequency, 0, wxALIGN_CENTER | wxALL, 4);
 
 
-	// percent change control
-	
-	// Group percent controls with spacers, 
-	// rather than static box, so they don't look isolated.
-   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
+	   // percent change control
+   	
+	   // Group percent controls with spacers, 
+	   // rather than static box, so they don't look isolated.
+      pBoxSizer_Dialog->Add(0, 8, 0); // spacer
 
-   wxBoxSizer * pBoxSizer_PercentChange = new wxBoxSizer(wxHORIZONTAL);
-   
-   pStaticText = new wxStaticText(this, -1, _("Percent Change:"),
-												wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_PercentChange->Add(pStaticText, 0, 
-											wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
+      wxBoxSizer * pBoxSizer_PercentChange = new wxBoxSizer(wxHORIZONTAL);
+      
+      pStaticText = new wxStaticText(this, -1, _("Percent Change:"),
+												   wxDefaultPosition, wxDefaultSize, 0);
+      pBoxSizer_PercentChange->Add(pStaticText, 0, 
+											   wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-	//v Override wxTextValidator to disallow negative values < -100.0?
-   m_pTextCtrl_PercentChange = 
-		new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, wxT("0.0"), 
-							wxDefaultPosition, wxSize(60, -1), 0,
-							wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_PercentChange->Add(m_pTextCtrl_PercentChange, 0, 
-											wxALIGN_CENTER_VERTICAL | wxALL, 4);
+	   //v Override wxTextValidator to disallow negative values < -100.0?
+      m_pTextCtrl_PercentChange = 
+		   new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, wxT("0.0"), 
+							   wxDefaultPosition, wxSize(60, -1), 0,
+							   wxTextValidator(wxFILTER_NUMERIC));
+      pBoxSizer_PercentChange->Add(m_pTextCtrl_PercentChange, 0, 
+											   wxALIGN_CENTER_VERTICAL | wxALL, 4);
 
-   pBoxSizer_Dialog->Add(pBoxSizer_PercentChange, 0, wxALIGN_CENTER | wxALL, 4);
+      pBoxSizer_Dialog->Add(pBoxSizer_PercentChange, 0, wxALIGN_CENTER | wxALL, 4);
 
-   m_pSlider_PercentChange = 
-		new wxSlider(this, ID_SLIDER_PERCENTCHANGE, 
-							0, PERCENTCHANGE_MIN, PERCENTCHANGE_MAX,
-							wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   pBoxSizer_Dialog->Add(m_pSlider_PercentChange, 1, 
-									wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 4);
+      m_pSlider_PercentChange = 
+		   new wxSlider(this, ID_SLIDER_PERCENTCHANGE, 
+							   0, PERCENTCHANGE_MIN, PERCENTCHANGE_MAX,
+							   wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
+      pBoxSizer_Dialog->Add(m_pSlider_PercentChange, 1, 
+									   wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 4);
+   #endif // (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
 
    pBoxSizer_Dialog->Add(0, 8, 0); // spacer
 
@@ -748,7 +750,12 @@ void ChangePitchDialog::OnOk(wxCommandEvent & event)
    TransferDataFromWindow();
    
    if (Validate()) 
+   {
+      #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+      wxMessageBox(_("To return to previous key: Edit menu > Undo."));
+      #endif
       EndModal(true);
+   }
    else 
       event.Skip();
 }

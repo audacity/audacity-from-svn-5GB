@@ -43,7 +43,7 @@
 
 EffectChangeTempo::EffectChangeTempo()
 {
-	m_PercentChange = 0.0;
+   m_PercentChange = -50.0; // Default to something useful, half tempo.
 	m_FromBPM = 0; // indicates not yet set
 	m_ToBPM = 0; // indicates not yet set
    m_FromLength = 0.0;	
@@ -121,20 +121,31 @@ bool EffectChangeTempo::Process()
 #define ID_TEXT_TOBPM 10004
 #define ID_TEXT_FROMLENGTH 10005
 #define ID_TEXT_TOLENGTH 10006
+#if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+   #define ID_RADIOBUTTON_50PCT 10007
+   #define ID_RADIOBUTTON_75PCT 10008
+   #define ID_RADIOBUTTON_90PCT 10009
+#endif
 
 // event table for ChangeTempoDialog
 
 BEGIN_EVENT_TABLE(ChangeTempoDialog, wxDialog)
-    EVT_BUTTON(wxID_OK, ChangeTempoDialog::OnOk)
-    EVT_BUTTON(wxID_CANCEL, ChangeTempoDialog::OnCancel)
+   EVT_BUTTON(wxID_OK, ChangeTempoDialog::OnOk)
+   EVT_BUTTON(wxID_CANCEL, ChangeTempoDialog::OnCancel)
 
-    EVT_TEXT(ID_TEXT_PERCENTCHANGE, ChangeTempoDialog::OnText_PercentChange)
-    EVT_SLIDER(ID_SLIDER_PERCENTCHANGE, ChangeTempoDialog::OnSlider_PercentChange)
-    EVT_TEXT(ID_TEXT_FROMBPM, ChangeTempoDialog::OnText_FromBPM)
-    EVT_TEXT(ID_TEXT_TOBPM, ChangeTempoDialog::OnText_ToBPM)
-    EVT_TEXT(ID_TEXT_TOLENGTH, ChangeTempoDialog::OnText_ToLength)
+   EVT_TEXT(ID_TEXT_PERCENTCHANGE, ChangeTempoDialog::OnText_PercentChange)
+   EVT_SLIDER(ID_SLIDER_PERCENTCHANGE, ChangeTempoDialog::OnSlider_PercentChange)
+   EVT_TEXT(ID_TEXT_FROMBPM, ChangeTempoDialog::OnText_FromBPM)
+   EVT_TEXT(ID_TEXT_TOBPM, ChangeTempoDialog::OnText_ToBPM)
+   EVT_TEXT(ID_TEXT_TOLENGTH, ChangeTempoDialog::OnText_ToLength)
 
-    EVT_BUTTON(ID_EFFECT_PREVIEW, ChangeTempoDialog::OnPreview)
+   #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+      EVT_RADIOBUTTON(ID_RADIOBUTTON_50PCT, ChangeTempoDialog::OnRadioButton_50pct)
+      EVT_RADIOBUTTON(ID_RADIOBUTTON_75PCT, ChangeTempoDialog::OnRadioButton_75pct)
+      EVT_RADIOBUTTON(ID_RADIOBUTTON_90PCT, ChangeTempoDialog::OnRadioButton_90pct)
+   #endif
+
+   EVT_BUTTON(ID_EFFECT_PREVIEW, ChangeTempoDialog::OnPreview)
 END_EVENT_TABLE()
 
 ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect, 
@@ -156,7 +167,12 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
    m_pTextCtrl_ToBPM = NULL;
    m_pTextCtrl_FromLength = NULL;
    m_pTextCtrl_ToLength = NULL;
-	
+   #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+      m_pRadioButton_50pct = NULL;
+      m_pRadioButton_75pct = NULL;
+      m_pRadioButton_90pct = NULL;
+   #endif
+
 	// effect parameters
 	m_PercentChange = 0.0;
 	m_FromBPM = 0; // indicates not yet set
@@ -186,100 +202,135 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
 												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxBOTTOM | wxLEFT | wxRIGHT, 8);
 
+   #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+      pBoxSizer_Dialog->AddSpacer(8);
+
+      wxBoxSizer * pBoxSizer_RadioButtons = new wxBoxSizer(wxHORIZONTAL);
+      wxRadioButton* pRadioButton_50pct = 
+         new wxRadioButton(this, ID_RADIOBUTTON_50PCT, _("Half Tempo"), 
+                           wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+      pBoxSizer_RadioButtons->Add(pRadioButton_50pct); 
+      // Default is -50%.
+      pRadioButton_50pct->SetValue(true); 
+
+      pBoxSizer_RadioButtons->AddSpacer(8);
+      wxRadioButton* pRadioButton_75pct = 
+         new wxRadioButton(this, ID_RADIOBUTTON_75PCT, _("75% Tempo"), 
+                           wxDefaultPosition, wxDefaultSize);
+      pBoxSizer_RadioButtons->Add(pRadioButton_75pct); 
+      
+      pBoxSizer_RadioButtons->AddSpacer(8);
+      wxRadioButton* pRadioButton_90pct = 
+         new wxRadioButton(this, ID_RADIOBUTTON_90PCT, _("90% Tempo"), 
+                           wxDefaultPosition, wxDefaultSize);
+      pBoxSizer_RadioButtons->Add(pRadioButton_90pct); 
+
+      #if defined(__WXMAC__)
+         wxColour face = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+         pRadioButton_50pct->SetBackgroundColour(face);
+         pRadioButton_75pct->SetBackgroundColour(face);
+         pRadioButton_90pct->SetBackgroundColour(face);
+      #endif
+
+      pBoxSizer_Dialog->Add(pBoxSizer_RadioButtons, 0, wxALIGN_CENTER | wxALL, 4);
+      pBoxSizer_Dialog->AddSpacer(8);
+
+   #else // !(AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
 	
-	// percent change controls
-	
-	// Group percent controls with spacers, 
-	// rather than static box, so they don't look isolated.
-   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
+	   // percent change controls
+   	
+	   // Group percent controls with spacers, 
+	   // rather than static box, so they don't look isolated.
+      pBoxSizer_Dialog->AddSpacer(8);
 
-   wxBoxSizer * pBoxSizer_PercentChange = new wxBoxSizer(wxHORIZONTAL);
-   
-   pStaticText = new wxStaticText(this, -1, _("Percent Change:"),
-												wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_PercentChange->Add(pStaticText, 0, 
-											wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
+      wxBoxSizer * pBoxSizer_PercentChange = new wxBoxSizer(wxHORIZONTAL);
+      
+      pStaticText = new wxStaticText(this, -1, _("Percent Change:"),
+												   wxDefaultPosition, wxDefaultSize, 0);
+      pBoxSizer_PercentChange->Add(pStaticText, 0, 
+											   wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-	//v Override wxTextValidator to disallow negative values <= -100.0?
-   m_pTextCtrl_PercentChange = 
-		new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, wxT("0.0"), 
-							wxDefaultPosition, wxSize(60, -1), 0,
-							wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_PercentChange->Add(m_pTextCtrl_PercentChange, 0, 
-											wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
+	   //v Override wxTextValidator to disallow negative values <= -100.0?
+      m_pTextCtrl_PercentChange = 
+		   new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, wxT("0.0"), 
+							   wxDefaultPosition, wxSize(60, -1), 0,
+							   wxTextValidator(wxFILTER_NUMERIC));
+      pBoxSizer_PercentChange->Add(m_pTextCtrl_PercentChange, 0, 
+											   wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
-   pBoxSizer_Dialog->Add(pBoxSizer_PercentChange, 0, wxALIGN_CENTER | wxALL, 4);
+      pBoxSizer_Dialog->Add(pBoxSizer_PercentChange, 0, wxALIGN_CENTER | wxALL, 4);
 
-   m_pSlider_PercentChange = 
-		new wxSlider(this, ID_SLIDER_PERCENTCHANGE, 0, 
-							(int)PERCENTCHANGE_MIN, (int)PERCENTCHANGE_MAX,
-							wxDefaultPosition, wxSize(100, -1), 
-							wxSL_HORIZONTAL);
-   pBoxSizer_Dialog->Add(m_pSlider_PercentChange, 1, 
-									wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 4);
+      m_pSlider_PercentChange = 
+		   new wxSlider(this, ID_SLIDER_PERCENTCHANGE, 0, 
+							   (int)PERCENTCHANGE_MIN, (int)PERCENTCHANGE_MAX,
+							   wxDefaultPosition, wxSize(100, -1), 
+							   wxSL_HORIZONTAL);
+      pBoxSizer_Dialog->Add(m_pSlider_PercentChange, 1, 
+									   wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 4);
 
-   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
-
-
-	// from/to beats-per-minute controls
-   wxBoxSizer * pBoxSizer_BPM = new wxBoxSizer(wxHORIZONTAL);
-   
-   pStaticText = new wxStaticText(this, -1, _("Beats per Minute (BPM):   from"),
-									       wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_BPM->Add(pStaticText, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
-
-   m_pTextCtrl_FromBPM = 
-		new wxTextCtrl(this, ID_TEXT_FROMBPM, wxT(""), 
-							wxDefaultPosition, wxSize(40, -1), 0,
-							wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_BPM->Add(m_pTextCtrl_FromBPM, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
-
-   pStaticText = new wxStaticText(this, -1, _("to"),
-									       wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_BPM->Add(pStaticText, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
-
-   m_pTextCtrl_ToBPM = 
-		new wxTextCtrl(this, ID_TEXT_TOBPM, wxT(""), 
-							wxDefaultPosition, wxSize(40, -1), 0,
-							wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_BPM->Add(m_pTextCtrl_ToBPM, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
-
-   pBoxSizer_Dialog->Add(pBoxSizer_BPM, 0, wxALIGN_CENTER | wxALL, 4);
+      pBoxSizer_Dialog->AddSpacer(8);
 
 
-	// from/to length controls
-   wxBoxSizer * pBoxSizer_Length = new wxBoxSizer(wxHORIZONTAL);
-   
-   pStaticText = new wxStaticText(this, -1, _("Length (seconds):   from"),
-									       wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_Length->Add(pStaticText, 0, 
-									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
+	   // from/to beats-per-minute controls
+      wxBoxSizer * pBoxSizer_BPM = new wxBoxSizer(wxHORIZONTAL);
+      
+      pStaticText = new wxStaticText(this, -1, _("Beats per Minute (BPM):   from"),
+									          wxDefaultPosition, wxDefaultSize, 0);
+      pBoxSizer_BPM->Add(pStaticText, 0, 
+								   wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-   m_pTextCtrl_FromLength = 
-		new wxTextCtrl(this, ID_TEXT_FROMLENGTH, wxT(""), 
-							wxDefaultPosition, wxSize(48, -1), 
-							wxTE_READONLY); // Read only because it's from the selection.
-							// No validator because it's read only.
-   pBoxSizer_Length->Add(m_pTextCtrl_FromLength, 0, 
-									wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
+      m_pTextCtrl_FromBPM = 
+		   new wxTextCtrl(this, ID_TEXT_FROMBPM, wxT(""), 
+							   wxDefaultPosition, wxSize(40, -1), 0,
+							   wxTextValidator(wxFILTER_NUMERIC));
+      pBoxSizer_BPM->Add(m_pTextCtrl_FromBPM, 0, 
+								   wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
-   pStaticText = new wxStaticText(this, -1, _("to"),
-									       wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_Length->Add(pStaticText, 0, 
-									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
+      pStaticText = new wxStaticText(this, -1, _("to"),
+									          wxDefaultPosition, wxDefaultSize, 0);
+      pBoxSizer_BPM->Add(pStaticText, 0, 
+								   wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-   m_pTextCtrl_ToLength =
-       new wxTextCtrl(this, ID_TEXT_TOLENGTH, wxT(""), 
-								wxDefaultPosition, wxSize(48, -1), 0,
-								wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_Length->Add(m_pTextCtrl_ToLength, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
+      m_pTextCtrl_ToBPM = 
+		   new wxTextCtrl(this, ID_TEXT_TOBPM, wxT(""), 
+							   wxDefaultPosition, wxSize(40, -1), 0,
+							   wxTextValidator(wxFILTER_NUMERIC));
+      pBoxSizer_BPM->Add(m_pTextCtrl_ToBPM, 0, 
+								   wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
-   pBoxSizer_Dialog->Add(pBoxSizer_Length, 0, wxALIGN_CENTER | wxALL, 4);
+      pBoxSizer_Dialog->Add(pBoxSizer_BPM, 0, wxALIGN_CENTER | wxALL, 4);
+
+
+	   // from/to length controls
+      wxBoxSizer * pBoxSizer_Length = new wxBoxSizer(wxHORIZONTAL);
+      
+      pStaticText = new wxStaticText(this, -1, _("Length (seconds):   from"),
+									          wxDefaultPosition, wxDefaultSize, 0);
+      pBoxSizer_Length->Add(pStaticText, 0, 
+									   wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
+
+      m_pTextCtrl_FromLength = 
+		   new wxTextCtrl(this, ID_TEXT_FROMLENGTH, wxT(""), 
+							   wxDefaultPosition, wxSize(48, -1), 
+							   wxTE_READONLY); // Read only because it's from the selection.
+							   // No validator because it's read only.
+      pBoxSizer_Length->Add(m_pTextCtrl_FromLength, 0, 
+									   wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
+
+      pStaticText = new wxStaticText(this, -1, _("to"),
+									          wxDefaultPosition, wxDefaultSize, 0);
+      pBoxSizer_Length->Add(pStaticText, 0, 
+									   wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
+
+      m_pTextCtrl_ToLength =
+          new wxTextCtrl(this, ID_TEXT_TOLENGTH, wxT(""), 
+								   wxDefaultPosition, wxSize(48, -1), 0,
+								   wxTextValidator(wxFILTER_NUMERIC));
+      pBoxSizer_Length->Add(m_pTextCtrl_ToLength, 0, 
+								   wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
+
+      pBoxSizer_Dialog->Add(pBoxSizer_Length, 0, wxALIGN_CENTER | wxALL, 4);
+   #endif // (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
 
    // Preview, OK, & Cancel buttons
    pBoxSizer_Dialog->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
@@ -489,6 +540,50 @@ void ChangeTempoDialog::OnText_ToLength(wxCommandEvent & event)
    }
 }
 
+#if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+   void ChangeTempoDialog::OnRadioButton_50pct(wxCommandEvent &evt)
+   {
+      if (m_bLoopDetect)
+         return;
+
+      m_PercentChange = -50.0;
+ 	   m_bLoopDetect = true;
+		this->Update_Text_PercentChange();
+		this->Update_Slider_PercentChange();
+		this->Update_Text_ToBPM();
+		this->Update_Text_ToLength();
+	   m_bLoopDetect = false;
+  }
+
+   void ChangeTempoDialog::OnRadioButton_75pct(wxCommandEvent &evt)
+   {
+      if (m_bLoopDetect)
+         return;
+
+      m_PercentChange = -25.0;
+ 	   m_bLoopDetect = true;
+		this->Update_Text_PercentChange();
+		this->Update_Slider_PercentChange();
+		this->Update_Text_ToBPM();
+		this->Update_Text_ToLength();
+	   m_bLoopDetect = false;
+  }
+
+   void ChangeTempoDialog::OnRadioButton_90pct(wxCommandEvent &evt)
+   {
+      if (m_bLoopDetect)
+         return;
+
+      m_PercentChange = -10.0;
+ 	   m_bLoopDetect = true;
+		this->Update_Text_PercentChange();
+		this->Update_Slider_PercentChange();
+		this->Update_Text_ToBPM();
+		this->Update_Text_ToLength();
+	   m_bLoopDetect = false;
+  }
+#endif // (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+
 
 void ChangeTempoDialog::OnPreview(wxCommandEvent &event)
 {
@@ -506,7 +601,12 @@ void ChangeTempoDialog::OnOk(wxCommandEvent & event)
    TransferDataFromWindow();
    
    if (Validate()) 
+   {
+      #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+      wxMessageBox(_("To return to previous tempo: Edit menu > Undo."));
+      #endif
       EndModal(true);
+   }
    else 
       event.Skip();
 }
