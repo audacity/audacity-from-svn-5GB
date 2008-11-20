@@ -7508,6 +7508,14 @@
 			Name="src/toolbars"
 			>
 			<File
+				RelativePath="..\src\toolbars\BrandToolBar.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\toolbars\BrandToolBar.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\toolbars\ControlToolBar.cpp"
 				>
 				<FileConfiguration
