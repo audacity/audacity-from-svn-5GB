@@ -16,6 +16,7 @@
 #ifndef __AUDACITY_EFFECT_CHANGETEMPO__
 #define __AUDACITY_EFFECT_CHANGETEMPO__
 
+#include "../AudacityBranding.h"
 #include "SoundTouchEffect.h"
 
 #include <wx/intl.h>
@@ -87,6 +88,11 @@ class ChangeTempoDialog:public wxDialog {
    void OnText_FromBPM(wxCommandEvent & event); 
    void OnText_ToBPM(wxCommandEvent & event); 
    void OnText_ToLength(wxCommandEvent & event); 
+   #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+      void OnRadioButton_50pct(wxCommandEvent & event);
+      void OnRadioButton_75pct(wxCommandEvent & event);
+      void OnRadioButton_90pct(wxCommandEvent & event);
+   #endif
 
    void OnPreview( wxCommandEvent &event );
    void OnOk(wxCommandEvent & event);
@@ -109,6 +115,11 @@ class ChangeTempoDialog:public wxDialog {
    wxTextCtrl *	m_pTextCtrl_ToBPM;
    wxTextCtrl *	m_pTextCtrl_FromLength;
    wxTextCtrl *	m_pTextCtrl_ToLength;
+   #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+      wxRadioButton* m_pRadioButton_50pct;
+      wxRadioButton* m_pRadioButton_75pct;
+      wxRadioButton* m_pRadioButton_90pct;
+   #endif
 
  public:
 	// effect parameters
