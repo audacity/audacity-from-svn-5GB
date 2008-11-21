@@ -22,14 +22,14 @@ class Envelope;
 class WaveTrack;
 
 class EffectContrast: public Effect {
-   
+
 public:
    
    EffectContrast();
    virtual ~EffectContrast();
 
    virtual wxString GetEffectName() {
-      return wxString(_("Contrast..."));
+      return wxString(_("Contrast...\tCtrl+Alt+C"));
    }
 
    virtual int GetEffectFlags() {
@@ -57,6 +57,7 @@ public:
    
    virtual bool CheckWhetherSkipEffect();
    virtual bool Process();
+   void SaveTimes(bool, double, double);
    
 private:
    bool      mDoBackground;
@@ -65,6 +66,12 @@ private:
    void SetStartTime(double);
    double GetEndTime();
    void SetEndTime(double);
+   double mStartTimeF;
+   double mEndTimeF;
+   bool bFGset;
+   double mStartTimeB;
+   double mEndTimeB;
+   bool bBGset;
 
 friend class ContrastDialog;
 };
@@ -84,21 +91,20 @@ public:
    ContrastDialog(EffectContrast * effect,
                       wxWindow *parent);
 
-//   wxSizer *MakeContrastDialog(bool call_fit = true,
-//                                   bool set_sizer = true);
-
    void PopulateOrExchange(ShuttleGui & S);
-//   void UpdateDisplay();
+
+   void OnGetForegroundDB( wxCommandEvent &event );
+   void OnGetBackgroundDB( wxCommandEvent &event );
 
 private:
    // handlers
-   void OnGetForegroundDB( wxCommandEvent &event );
-   void OnGetBackgroundDB( wxCommandEvent &event );
    void OnGetURL(wxCommandEvent &event);
    void OnForegroundStartText(wxCommandEvent & event);
    void OnForegroundEndText(wxCommandEvent & event);
    void OnBackgroundStartText(wxCommandEvent & event);
    void OnBackgroundEndText(wxCommandEvent & event);
+   void OnUseSelectionF(wxCommandEvent & event);
+   void OnUseSelectionB(wxCommandEvent & event);
    void results();
    void OnOK( wxCommandEvent &event );
 
@@ -112,11 +118,9 @@ private:
    wxStaticText *mDiffText;
 
    double foregrounddB;
-   double startTimeF;
-   double endTimeF;
    double backgrounddB;
-   double startTimeB;
-   double endTimeB;
+   double mT0orig;
+   double mT1orig;
 
  public:
 
@@ -124,7 +128,14 @@ private:
 
    wxButton * m_pButton_GetBackground;
    wxButton * m_pButton_GetForeground;
+   wxButton * m_pButton_UseCurrentF;
+   wxButton * m_pButton_UseCurrentB;
    wxButton * m_pButton_GetURL;
+
+   double startTimeF;
+   double endTimeF;
+   double startTimeB;
+   double endTimeB;
 
 private:
    DECLARE_EVENT_TABLE()
