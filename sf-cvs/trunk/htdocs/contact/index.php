@@ -23,7 +23,7 @@
   ?>
 
 <h3><?=_('Personal Support with Audacity Questions or Problems')?></h3>
-<p><?=_('If you have not already done so, please check our <a href="../help/faq">Frequently Asked Questions (FAQ)</a> and <a href="../help/documentation">documentation</a>. Please also search our <a href="http://www.nabble.com/audacity-help-f4506.html">help-list archive</a>. Although this list is no longer active, the archive has extensive coverage of many issues.')?></p>
+<p><?=_('If you have not already done so, please check our <a href="../help/faq">Frequently Asked Questions (FAQ)</a> and <a href="../help/documentation">documentation</a>. Also check out our <a href="http://audacityteam.org/wiki">Wiki</a> for <a href="http://audacityteam.org/wiki/index.php?title=Tutorials">Tutorials</a>, <a href="http://audacityteam.org/wiki/index.php?title=Tips">Tips</a> and other useful information.')?></p>
 <p>
 <?php echo _('If you still need help, please visit our user');?>
   <a href="http://audacityteam.org/forum/">
