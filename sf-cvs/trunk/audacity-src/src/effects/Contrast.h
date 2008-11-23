@@ -117,8 +117,8 @@ private:
    wxStaticText *mPassFailText;
    wxStaticText *mDiffText;
 
-   double foregrounddB;
-   double backgrounddB;
+   float foregrounddB;
+   float backgrounddB;
    double mT0orig;
    double mT1orig;
 
