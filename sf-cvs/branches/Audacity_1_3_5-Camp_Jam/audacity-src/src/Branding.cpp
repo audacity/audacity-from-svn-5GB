@@ -25,7 +25,7 @@
 #include "Project.h"
 #include "Theme.h"
 
-// Note that Camp Jam (BRAND_CAMP_JAM__EASY, BRAND_CAMP_JAM__FULL) had a 
+// Note that Jamling (BRAND_JAMLING__EASY, BRAND_JAMLING__FULL) had a 
 // right-aligned, vertical BrandingPanel briefly, before reverting to 
 // no BrandingPanel, customizing SplashDialog instead. 
 #if WANT_BRANDING_PANEL
@@ -44,7 +44,7 @@
 
    // Thinklabs custom buttons (all 64x42)
    #include "../images/Branding/Thinklabs_buttons.h" 
-#elif ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL)) 
+#elif ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL)) 
    //v Add MixerBoard if easy.
 #else
    #include "MixerBoard.h"
@@ -58,7 +58,7 @@
 #elif (AUDACITY_BRANDING == BRAND_THINKLABS)
    #include "../images/Branding/Thinklabs.xpm" // 182x42
    #include "../images/Branding/Thinklabs_over.xpm" // 182x42
-#elif ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+#elif ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
    #include "../images/Branding/CampJam.xpm" // 162x64 
    #include "../images/Branding/CampJam_over.xpm" // 162x64 
 #endif
@@ -123,7 +123,7 @@ BrandingPanel::BrandingPanel(AudacityProject* pProject,
    mProject = pProject;
 
    //vvvvv 
-   //    #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+   //    #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
    //       this->SetBackgroundColour(theTheme.Colour(clrSample)); // same as waveform color
    this->SetBackgroundColour(*wxWHITE); 
 
@@ -145,7 +145,7 @@ BrandingPanel::BrandingPanel(AudacityProject* pProject,
    wxBitmap* pButtonBitmap;
    wxBitmap* pButtonBitmapOver;
 
-   #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL)) 
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL)) 
       // No powered_by_Audacity_xpm.
       mButton_AudacityLogo = NULL;
    #else
@@ -180,7 +180,7 @@ BrandingPanel::BrandingPanel(AudacityProject* pProject,
       left = buttonPos.x - pButtonBitmap->GetWidth() - kInset;          // left of powered_by_Audacity_xpm
    else 
    {
-      #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+      #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
          left = (size.GetWidth() - pButtonBitmap->GetWidth()) / 2;      // centered
       #else 
          left = size.GetWidth() - pButtonBitmap->GetWidth() - kInset;   // right side of panel

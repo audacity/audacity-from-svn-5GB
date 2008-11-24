@@ -59,7 +59,7 @@ END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(SplashDialog, wxDialog)
 
-#if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
    #define kWidth 360 
 #else
    #define kWidth LOGOWITHNAME_WIDTH 
@@ -67,8 +67,8 @@ IMPLEMENT_CLASS(SplashDialog, wxDialog)
 
 SplashDialog::SplashDialog(wxWindow * parent)
 :  wxDialog(parent, -1, 
-            #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
-               _NoAcc("&Camp Jam Audacity"),
+            #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+               _NoAcc("&Jamling Audacity"),
                wxPoint(640 - kWidth, 120), 
                wxSize(kWidth, kWidth * 1.61803399),  // the golden ratio = 1.61803399
             #else
@@ -94,7 +94,7 @@ SplashDialog::SplashDialog(wxWindow * parent)
    
    ShuttleGui S( this, eIsCreating );
    Populate( S );
-   #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
       wxRect screenRect = wxGetClientDisplayRect();;
       this->Move(screenRect.GetWidth() - kWidth - 24, 120); // off to the right, below the ruler 
    #else
@@ -112,7 +112,7 @@ SplashDialog::SplashDialog(wxWindow * parent)
 
    // Build in the brand-specific logo and mouse-over bitmaps. 
    // The data global vars in these MUST be named company_logo_xpm and company_logo_over_xpm.
-   #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
       #include "../images/Branding/CampJam.xpm" // 162x64 image var is called company_logo_xpm.
       #include "../images/Branding/CampJam_over.xpm" // 162x64 
    #endif
@@ -120,7 +120,7 @@ SplashDialog::SplashDialog(wxWindow * parent)
 
 void SplashDialog::Populate( ShuttleGui & S )
 {
-   //#if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+   //#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
    //   this->SetBackgroundColour(theTheme.Colour(clrSample)); // same as waveform color
    //#else
    //   this->SetBackgroundColour(theTheme.Colour( clrAboutBoxBackground ));
@@ -137,7 +137,7 @@ void SplashDialog::Populate( ShuttleGui & S )
    wxBitmap* pButtonBitmap;
    wxBitmap* pButtonBitmapOver;
    #if (AUDACITY_BRANDING != BRAND_AUDACITY) //vvv Change this compile flag when other brands are supported. 
-      //vvv Compiles only BRAND_CAMP_JAM__EASY or BRAND_CAMP_JAM__FULL 
+      //vvv Compiles only BRAND_JAMLING__EASY or BRAND_JAMLING__FULL 
       //    because we don't load any other company_logo*_xpm consts yet. 
       pButtonBitmap = new wxBitmap(company_logo_xpm);
       buttonImageUp = pButtonBitmap->ConvertToImage();
