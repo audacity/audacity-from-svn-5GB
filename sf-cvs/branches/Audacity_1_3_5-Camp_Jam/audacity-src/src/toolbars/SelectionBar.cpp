@@ -137,8 +137,8 @@ void SelectionBar::Populate()
    // Top row (mostly labels)
    //
 
-#if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
-   // Camp Jam Easy version wants only the Audio Position control. 
+#if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
+   // Jamling Easy version wants only the Audio Position control. 
    mainSizer->Add(5, 1);
    mainSizer->Add(new wxStaticText(this, wxID_ANY, _("Audio Position:")),
                                     0, wxALIGN_CENTER_VERTICAL | wxLEFT, 0);
@@ -279,7 +279,7 @@ void SelectionBar::Populate()
                                    wxSize(1, toolbarSingle),
                                    wxLI_VERTICAL),
                   0, wxRIGHT, 5);
-#endif // (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+#endif // (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
 
    mAudioTime = new TimeTextCtrl(this, -1, format, 0.0, mRate);
    mAudioTime->SetName(_("Audio Position:"));

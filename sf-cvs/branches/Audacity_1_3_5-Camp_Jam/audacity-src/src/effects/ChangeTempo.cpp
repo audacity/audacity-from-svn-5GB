@@ -122,7 +122,7 @@ bool EffectChangeTempo::Process()
 #define ID_TEXT_TOBPM 10004
 #define ID_TEXT_FROMLENGTH 10005
 #define ID_TEXT_TOLENGTH 10006
-#if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+#if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
    #define ID_RADIOBUTTON_50PCT 10007
    #define ID_RADIOBUTTON_75PCT 10008
    #define ID_RADIOBUTTON_90PCT 10009
@@ -140,7 +140,7 @@ BEGIN_EVENT_TABLE(ChangeTempoDialog, wxDialog)
    EVT_TEXT(ID_TEXT_TOBPM, ChangeTempoDialog::OnText_ToBPM)
    EVT_TEXT(ID_TEXT_TOLENGTH, ChangeTempoDialog::OnText_ToLength)
 
-   #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+   #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
       EVT_RADIOBUTTON(ID_RADIOBUTTON_50PCT, ChangeTempoDialog::OnRadioButton_50pct)
       EVT_RADIOBUTTON(ID_RADIOBUTTON_75PCT, ChangeTempoDialog::OnRadioButton_75pct)
       EVT_RADIOBUTTON(ID_RADIOBUTTON_90PCT, ChangeTempoDialog::OnRadioButton_90pct)
@@ -168,7 +168,7 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
    m_pTextCtrl_ToBPM = NULL;
    m_pTextCtrl_FromLength = NULL;
    m_pTextCtrl_ToLength = NULL;
-   #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+   #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
       m_pRadioButton_50pct = NULL;
       m_pRadioButton_75pct = NULL;
       m_pRadioButton_90pct = NULL;
@@ -203,7 +203,7 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
 												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxBOTTOM | wxLEFT | wxRIGHT, 8);
 
-   #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+   #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
       pBoxSizer_Dialog->AddSpacer(8);
 
       wxBoxSizer * pBoxSizer_RadioButtons = new wxBoxSizer(wxHORIZONTAL);
@@ -236,7 +236,7 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
       pBoxSizer_Dialog->Add(pBoxSizer_RadioButtons, 0, wxALIGN_CENTER | wxALL, 4);
       pBoxSizer_Dialog->AddSpacer(8);
 
-   #else // !(AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+   #else // !(AUDACITY_BRANDING == BRAND_JAMLING__EASY)
 	
 	   // percent change controls
    	
@@ -331,7 +331,7 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
 								   wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
       pBoxSizer_Dialog->Add(pBoxSizer_Length, 0, wxALIGN_CENTER | wxALL, 4);
-   #endif // (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+   #endif // (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
 
    // Preview, OK, & Cancel buttons
    pBoxSizer_Dialog->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
@@ -541,7 +541,7 @@ void ChangeTempoDialog::OnText_ToLength(wxCommandEvent & event)
    }
 }
 
-#if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+#if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
    void ChangeTempoDialog::OnRadioButton_50pct(wxCommandEvent &evt)
    {
       if (m_bLoopDetect)
@@ -583,7 +583,7 @@ void ChangeTempoDialog::OnText_ToLength(wxCommandEvent & event)
 		this->Update_Text_ToLength();
 	   m_bLoopDetect = false;
   }
-#endif // (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+#endif // (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
 
 
 void ChangeTempoDialog::OnPreview(wxCommandEvent &event)
@@ -603,7 +603,7 @@ void ChangeTempoDialog::OnOk(wxCommandEvent & event)
    
    if (Validate()) 
    {
-      #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+      #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
       wxMessageBox(_("To return to previous tempo: Edit menu > Undo."));
       #endif
       EndModal(true);

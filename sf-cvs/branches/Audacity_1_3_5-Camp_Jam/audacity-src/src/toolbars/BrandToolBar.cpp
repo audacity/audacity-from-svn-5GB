@@ -39,7 +39,7 @@ enum
    ID_BUTTON_WELCOME, 
 };
 
-#define BUTTON_WELCOME_TEXT _("Show Jam Window") //vvv Camp Jam only for now. 
+#define BUTTON_WELCOME_TEXT _("Show Jamling Window") //v Jamling only for now. 
 
 IMPLEMENT_CLASS(BrandToolBar, ToolBar);
 
@@ -62,7 +62,7 @@ BrandToolBar::~BrandToolBar()
 #if (AUDACITY_BRANDING != BRAND_AUDACITY)
    // Build in the brand-specific logo and mouse-over bitmaps. 
    // The data global vars in these MUST be named company_logo_xpm and company_logo_over_xpm.
-   #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
       #include "../images/Branding/CampJam.xpm" // 162x64 image var is called company_logo_xpm.
       #include "../images/Branding/CampJam_over.xpm" // 162x64 
    #endif

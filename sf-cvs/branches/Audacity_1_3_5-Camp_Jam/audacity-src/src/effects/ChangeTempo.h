@@ -88,7 +88,7 @@ class ChangeTempoDialog:public wxDialog {
    void OnText_FromBPM(wxCommandEvent & event); 
    void OnText_ToBPM(wxCommandEvent & event); 
    void OnText_ToLength(wxCommandEvent & event); 
-   #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+   #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
       void OnRadioButton_50pct(wxCommandEvent & event);
       void OnRadioButton_75pct(wxCommandEvent & event);
       void OnRadioButton_90pct(wxCommandEvent & event);
@@ -115,7 +115,7 @@ class ChangeTempoDialog:public wxDialog {
    wxTextCtrl *	m_pTextCtrl_ToBPM;
    wxTextCtrl *	m_pTextCtrl_FromLength;
    wxTextCtrl *	m_pTextCtrl_ToLength;
-   #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+   #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
       wxRadioButton* m_pRadioButton_50pct;
       wxRadioButton* m_pRadioButton_75pct;
       wxRadioButton* m_pRadioButton_90pct;

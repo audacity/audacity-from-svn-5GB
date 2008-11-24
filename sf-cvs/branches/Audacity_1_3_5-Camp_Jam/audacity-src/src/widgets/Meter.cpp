@@ -833,7 +833,7 @@ void Meter::HandlePaint(wxDC &dc)
       if (mNumBars>0)
          mRuler.Draw(dc);
    #else
-      // Label as "Mix Volume" and "Input Volume" for Camp Jam. 
+      // Label as "Mix Volume" and "Input Volume" for Jamling. 
       int nFontSize = this->GetFont().GetPointSize();
       int nXPos = mIconPos.x + mIcon->GetWidth() + 8;
       int nYPos = mIconPos.y + (mIcon->GetHeight() - nFontSize - 6)/2;
