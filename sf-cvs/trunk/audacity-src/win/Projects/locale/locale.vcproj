@@ -297,6 +297,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\locale\bs.po"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\locale\ca.po"
 				>
 			</File>
