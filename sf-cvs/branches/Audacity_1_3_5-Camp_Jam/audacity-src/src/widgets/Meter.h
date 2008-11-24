@@ -24,7 +24,7 @@
 #include "../SampleFormat.h"
 #include "Ruler.h"
 
-#if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+#if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
    // Hide menus on meter toolbar. Don't show numbers and ticks. Label as "Mix Volume" and "Input Volume"
    #define WANT_METER_MENU 0
 #else

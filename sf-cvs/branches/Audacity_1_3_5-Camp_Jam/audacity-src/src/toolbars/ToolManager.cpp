@@ -543,7 +543,7 @@ void ToolManager::ReadConfig()
       // Read in all the settings
       gPrefs->Read( wxT("Dock"), &dock, ndx == SelectionBarID ? BotDockID : TopDockID );
       gPrefs->Read( wxT("Order"), &ord, NoBarID );
-      #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+      #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
          show[ndx] = this->DefaultShow(ndx);
       #else 
          gPrefs->Read( wxT("Show"), &show[ ndx ], this->DefaultShow(ndx) );
@@ -797,7 +797,7 @@ bool ToolManager::IsVisible( int type )
 bool ToolManager::DefaultShow(int type)
 {
    bool bShow = true;
-   #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+   #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
       bShow = (type != ToolsBarID) && 
                (type != TranscriptionBarID) && 
                (type != DeviceBarID);

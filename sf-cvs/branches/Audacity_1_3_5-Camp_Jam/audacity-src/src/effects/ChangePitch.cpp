@@ -301,7 +301,7 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
 
    pBoxSizer_Dialog->Add(pBoxSizer_Pitch, 0, wxALIGN_CENTER | wxALL, 4);
 
-   #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+   #if (AUDACITY_BRANDING != BRAND_JAMLING__EASY)
 	   // semitones change controls
       wxBoxSizer * pBoxSizer_SemitonesChange = new wxBoxSizer(wxHORIZONTAL);
       pStaticText = new wxStaticText(this, -1, _("Semitones (half-steps):"),
@@ -379,7 +379,7 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
 							   wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
       pBoxSizer_Dialog->Add(m_pSlider_PercentChange, 1, 
 									   wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 4);
-   #endif // (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+   #endif // (AUDACITY_BRANDING != BRAND_JAMLING__EASY)
 
    pBoxSizer_Dialog->Add(0, 8, 0); // spacer
 
@@ -751,7 +751,7 @@ void ChangePitchDialog::OnOk(wxCommandEvent & event)
    
    if (Validate()) 
    {
-      #if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
+      #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
       wxMessageBox(_("To return to previous key: Edit menu > Undo."));
       #endif
       EndModal(true);
