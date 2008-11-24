@@ -171,8 +171,7 @@ bool EffectRepeat::Process()
 const static wxChar *numbers[] =
 {
    wxT("0"), wxT("1"), wxT("2"), wxT("3"), wxT("4"),
-   wxT("5"), wxT("6"), wxT("7"), wxT("8"), wxT("9"),
-   wxT("-"), wxT("+")
+   wxT("5"), wxT("6"), wxT("7"), wxT("8"), wxT("9")
 };
 
 #define ID_REPEAT_TEXT 7000
