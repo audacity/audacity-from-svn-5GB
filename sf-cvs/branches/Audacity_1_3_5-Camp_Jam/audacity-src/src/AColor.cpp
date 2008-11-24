@@ -500,7 +500,7 @@ void AColor::DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ )
       const wxColour gCyan = wxColour(120, 255, 255); // cyan
       const wxColour gBlue = wxColour(180, 200, 255); // blue
       const wxColour gPurple = wxColour(255, 180, 255); // purple
-   #elif ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL)) 
+   #elif ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL)) 
       // colors matchine website
       const wxColour gRed = wxColour(205,  10,  16); // red
       const wxColour gOrange = wxColour(255, 160,  80); // orange

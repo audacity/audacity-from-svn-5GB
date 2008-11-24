@@ -644,7 +644,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
          wxSize panelSize = wxSize(-1, 42 + 3*4);   // default powered_by_Audacity_xpm height plus 3*kInset  
       #elif (AUDACITY_BRANDING == BRAND_UMIXIT)
          wxSize panelSize = wxSize(-1, 64 + 3*4);  // default powered_by_Audacity_xpm height plus 3*kInset 
-      #elif ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+      #elif ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
          wxSize panelSize = wxSize(162 + 3*4, -1); // default company_logo_xpm width plus 3*kInset 
       #else 
          wxSize panelSize = wxSize(-1, 64 + 3*4)); // default same as UmixIt
@@ -695,7 +695,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    wxBoxSizer *bs = new wxBoxSizer( wxVERTICAL );
    bs->Add( mToolManager->GetTopDock(), 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP );
    #if WANT_BRANDING_PANEL
-      #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+      #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
          wxBoxSizer* pInnerVertSizer = new wxBoxSizer(wxVERTICAL);
          pInnerVertSizer->Add( mRuler, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_CENTRE );
          pInnerVertSizer->Add( pPage, 1, wxEXPAND | wxALIGN_LEFT );

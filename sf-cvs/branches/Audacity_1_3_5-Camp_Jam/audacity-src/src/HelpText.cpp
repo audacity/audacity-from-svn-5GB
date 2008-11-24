@@ -20,7 +20,7 @@
 #include "HelpText.h"
 #include "AudacityBranding.h"
 
-#if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
    #include "effects/Effect.h"
    #include "toolbars/ControlToolBar.h"
    #include "Project.h"
@@ -89,7 +89,7 @@ wxString LinkExpand( const wxString & Text )
 
 wxString ToWelcome( )
 {
-#if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
    return _("Back to [[welcome|\"I want to...\"]]");
 #else
    return _("To [[welcome|Welcome screen]]");
@@ -100,8 +100,8 @@ wxString TitleText( const wxString & Key )
 {
    if(Key==wxT("welcome"))
    {
-      #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
-         return _("Camp Jam Audacity");
+      #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+         return _("Jamling Audacity");
       #else
          return _("Welcome!");
       #endif
@@ -151,8 +151,8 @@ wxString TitleText( const wxString & Key )
    {
       return _("No Local Help");
    }
-   #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
-      return _("Camp Jam Audacity");
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      return _("Jamling Audacity");
    #else
       return Key;
    #endif
@@ -160,7 +160,7 @@ wxString TitleText( const wxString & Key )
 
 wxString HelpTextBuiltIn( const wxString & Key )
 {
-   #if ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
       if (Key == wxT("welcome"))
          return WrapText(
                   wxString(wxT("")) +
@@ -232,7 +232,7 @@ wxString HelpTextBuiltIn( const wxString & Key )
          return WrapText(wxString(wxT("")) + 
                   _("<p><b>Get another Song from Jamling Records</b> \
                     </p><br><br>") + ToWelcome());
-   #else // !((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+   #else // !((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
       if(Key==wxT("welcome"))
       {
          return WrapText(
@@ -256,7 +256,7 @@ in PDF format.\
 </p>")
          );
       }
-   #endif // ((AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY) || (AUDACITY_BRANDING == BRAND_CAMP_JAM__FULL))
+   #endif // ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
 
    if(Key ==wxT("play") )
    {

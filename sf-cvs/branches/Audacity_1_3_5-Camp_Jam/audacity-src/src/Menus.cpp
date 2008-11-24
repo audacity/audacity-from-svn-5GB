@@ -187,7 +187,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddSeparator();
 
-   #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+   #if (AUDACITY_BRANDING != BRAND_JAMLING__EASY)
       c->AddItem(wxT("EditMetaData"),  _("Open Me&tadata Editor..."),          FN(OnEditMetadata));
       //c->SetCommandFlags(wxT("EditID3"), AudioIONotBusyFlag, AudioIONotBusyFlag);
    #endif 
@@ -435,7 +435,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->EndSubMenu();
 
-   #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+   #if (AUDACITY_BRANDING != BRAND_JAMLING__EASY)
       c->AddItem(wxT("ZeroCross"),      _("Find &Zero Crossings\tZ"),         FN(OnZeroCrossing));
    #endif 
 
@@ -479,7 +479,7 @@ void AudacityProject::CreateMenusAndCommands()
    wxString dummy3 = _("Turn Grid Snap On");
    wxString dummy4 = _("Turn Grid Snap Off");
 
-   #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+   #if (AUDACITY_BRANDING != BRAND_JAMLING__EASY)
       // Moved Preferences from File Menu 02/09/05 Richard Ash.
      #ifdef __WXMAC__
       /* i18n-hint: Mac OS X Preferences shortcut should be Ctrl+, */
@@ -530,7 +530,7 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | UndoAvailableFlag,
                       AudioIONotBusyFlag | UndoAvailableFlag);
 
-   #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+   #if (AUDACITY_BRANDING != BRAND_JAMLING__EASY)
       c->AddSeparator();
       c->BeginSubMenu(_("&Toolbars..."));
       c->AddItem(wxT("ShowControlTB"),       _("&Control Toolbar"),       FN(OnShowControlToolBar), 0);
@@ -567,7 +567,7 @@ void AudacityProject::CreateMenusAndCommands()
 			c->AddItem(wxT("NewTimeTrack"),   _("&Time Track"),                FN(OnNewTimeTrack));
 		c->EndSubMenu();
 
-      #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+      #if (AUDACITY_BRANDING != BRAND_JAMLING__EASY)
          c->AddItem(wxT("SmartRecord"), _("&Timer Record..."), FN(OnSmartRecord));
       #endif 
 
@@ -653,7 +653,7 @@ void AudacityProject::CreateMenusAndCommands()
       // Generate, Effect & Analyze menus
       //
 
-      #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+      #if (AUDACITY_BRANDING != BRAND_JAMLING__EASY)
          c->BeginMenu(_("&Generate"));
          c->SetDefaultFlags(AudioIONotBusyFlag,
                             AudioIONotBusyFlag);
@@ -676,7 +676,7 @@ void AudacityProject::CreateMenusAndCommands()
          }
          delete effects;
          c->EndMenu();
-      #endif // (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+      #endif // (AUDACITY_BRANDING != BRAND_JAMLING__EASY)
 	}
 
    c->BeginMenu(_("Effe&ct"));
@@ -716,7 +716,7 @@ void AudacityProject::CreateMenusAndCommands()
       delete effects;
       c->EndMenu();
       
-      #if (AUDACITY_BRANDING != BRAND_CAMP_JAM__EASY)
+      #if (AUDACITY_BRANDING != BRAND_JAMLING__EASY)
          c->BeginMenu(_("&Analyze"));
  	      /* plot spectrum moved from view */
          c->AddItem(wxT("PlotSpectrum"), _("Plot Spectrum..."), FN(OnPlotSpectrum));

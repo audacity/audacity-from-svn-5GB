@@ -107,11 +107,11 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName[wxT("de")] = wxT("Deutsch");
    localLanguageName[wxT("el")] = wxT("Ellinika");
    localLanguageName[wxT("en")] = wxT("English");
-   //vvv Started work on making menu/cmd elimination for Camp Jam via James's '!' mechanism, 
+   //vvv Started work on making menu/cmd elimination for Jamling via James's '!' mechanism, 
    //    but decided to stick with compile flags in Menus.cpp for now, so they get all 
    //    the translations for free. 
-   //#if (AUDACITY_BRANDING == BRAND_CAMP_JAM__EASY)
-   //   localLanguageName[wxT("en_Camp Jam")] = wxT("English (Camp Jam)");
+   //#if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
+   //   localLanguageName[wxT("en_Jamling")] = wxT("English (Jamling)");
    //#endif 
    localLanguageName[wxT("es")] = wxT("Espanol");
    localLanguageName[wxT("eu")] = wxT("Euskara");
