@@ -41,8 +41,8 @@
 #include <wx/stattext.h>
 #include <wx/textdlg.h>
 
-#define NORMALIZE_DB_MIN -240
-#define NORMALIZE_DB_MAX 240
+#define NORMALIZE_DB_MIN -145
+#define NORMALIZE_DB_MAX 60
 
 EffectNormalize::EffectNormalize()
 {
@@ -282,9 +282,9 @@ void EffectNormalize::StartProcessing()
    mMult = 1.0;
    mOffset = 0.0;
    
-   float ratio = pow(10.0,TrapDouble(-mLevel*10,
+   float ratio = pow(10.0,TrapDouble(-mLevel,
                                      NORMALIZE_DB_MIN,
-                                     NORMALIZE_DB_MAX)/200.0);
+                                     NORMALIZE_DB_MAX)/20.0);
 
    if (mDC) {
       mOffset = (float)(-mSum / mCount);
