@@ -1,4 +1,4 @@
-########################################
+#######################################
 #
 # Audacity Makefile
 #
@@ -114,6 +114,8 @@ OBJS = \
 	effects/EffectManager.o \
 	effects/SimpleMono.o \
 	effects/SimplePairedTwoTrack.o \
+	effects/SBSMSEffect.o \
+	effects/TimeScale.o \
 	effects/SoundTouchEffect.o \
 	effects/LoadEffects.o \
 	effects/Amplify.o \

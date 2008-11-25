@@ -127,6 +127,9 @@
 /* Define if SLV2 (library for loading LV2 plugins) should be enabled */
 #undef USE_SLV2
 
+/* Define if SBSMS support should be enabled */
+#undef USE_SBSMS
+
 /* Define if SoundTouch support should be enabled */
 #undef USE_SOUNDTOUCH
 
