@@ -1,7 +1,7 @@
 all: @LOCAL_LIBS@ @LIBSRC_BUILD@
 
 # portSMF
-portsmf:
+portSMF:
 	$(MAKE) -C portsmf
 
 # dlcompat
@@ -220,7 +220,7 @@ distclean:
 	-rm -f @LOCAL_LIBS@
 
 # list here all the targets that aren't actually files to be made
-.PHONY: portsmf eexpat-recursive FileDialog-recursive \
+.PHONY: portSMF eexpat-recursive FileDialog-recursive \
 		widgetextra libogg-recursive \
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
 	libid3tag-recursive sbsms-recursive soundtouch-recursive libsndfile-recursive \
