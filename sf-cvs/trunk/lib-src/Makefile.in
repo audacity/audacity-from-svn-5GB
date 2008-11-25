@@ -1,7 +1,7 @@
 all: @LOCAL_LIBS@ @LIBSRC_BUILD@
 
 # portSMF
-portSMF:
+portsmf:
 	$(MAKE) -C portsmf
 
 # dlcompat
@@ -120,6 +120,12 @@ libsndfile-recursive:
 libsndfile.a: libsndfile-recursive
 	ln -sf libsndfile/src/.libs/libsndfile.a libsndfile.a
 
+# SBSMS
+sbsms-recursive:
+	$(MAKE) -C sbsms
+libsbsms.a: sbsms-recursive
+	ln -sf sbsms/src/.libs/libsbsms.a .
+
 # SoundTouch
 soundtouch-recursive:
 	$(MAKE) -C soundtouch
@@ -180,6 +186,7 @@ clean:
 	-$(MAKE) -C portmixer clean
 	-$(MAKE) -C portmixer/px_unix_oss clean
 	-$(MAKE) -C portmixer/px_mac_core clean
+	-$(MAKE) -C sbsms clean
 	-$(MAKE) -C soundtouch clean
 	-$(MAKE) -C twolame clean
 	-rm -rf @LOCAL_LIBS@
@@ -207,6 +214,7 @@ distclean:
 	-$(MAKE) -C portmixer distclean
 	-$(MAKE) -C portmixer/px_unix_oss distclean
 	-$(MAKE) -C portmixer/px_mac_core distclean
+	-$(MAKE) -C sbsms distclean
 	-$(MAKE) -C soundtouch distclean
 	-$(MAKE) -C twolame distclean
 	-rm -f @LOCAL_LIBS@
@@ -215,7 +223,7 @@ distclean:
 .PHONY: portsmf eexpat-recursive FileDialog-recursive \
 		widgetextra libogg-recursive \
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
-	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
+	libid3tag-recursive sbsms-recursive soundtouch-recursive libsndfile-recursive \
 	libresample-recursive libsamplerate-recursive libvamp-recursive \
 	portaudio-v19-recursive portmixer-recursive libtwolame-recursive \
 	liblrdf-recursive redland-recursive slv2-recursive
