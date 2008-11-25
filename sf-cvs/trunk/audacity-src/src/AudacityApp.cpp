@@ -171,6 +171,10 @@ It handles initialization and termination by subclassing wxApp.
 #     pragma comment(lib, "rasqal")
 #  endif
 
+#  if defined(USE_SBSMS)
+#     pragma comment(lib, "sbsms")
+#  endif
+
 #  if defined(USE_SOUNDTOUCH)
 #     pragma comment(lib, "soundtouch")
 #  endif
