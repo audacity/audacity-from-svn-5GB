@@ -39,6 +39,9 @@
 #include "Reverse.h"
 #include "Silence.h"
 #include "StereoToMono.h"
+#ifdef USE_SBSMS 
+#include "TimeScale.h"
+#endif
 #include "ToneGen.h"
 #include "TruncSilence.h"
 #include "Wahwah.h"
@@ -260,6 +263,9 @@ void LoadEffects()
    em.RegisterEffect(new EffectReverse());
    em.RegisterEffect(new EffectStereoToMono(), HIDDEN_EFFECT);// NOT in normal effects list.
    em.RegisterEffect(new EffectTruncSilence(), SIMPLE_EFFECT);
+#ifdef USE_SBSMS 
+   em.RegisterEffect(new EffectTimeScale());
+#endif
    em.RegisterEffect(new EffectWahwah());
 
    // Analyze menu
