@@ -5,10 +5,10 @@
 #define SBSMS_SINC_SIZE 4096
 #ifdef SBSMS_REAL_FLOAT
 #define SBSMS_SINC_RES 128.0f
-#define SBSMS_SINC_SAMPLES 32.0f
+#define SBSMS_SINC_SAMPLES 31.0f
 #else
 #define SBSMS_SINC_RES 128.0
-#define SBSMS_SINC_SAMPLES 32.0
+#define SBSMS_SINC_SAMPLES 31.0
 #endif
 
 namespace _sbsms_ {
