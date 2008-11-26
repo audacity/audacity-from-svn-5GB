@@ -3,23 +3,23 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=camp_jam_audacity-win-unicode-1.3.5
+OutputBaseFilename=jamling_audacity-win-unicode-1.3.5
 SetupIconFile=audacity.ico
 
-WizardImageFile=Camp_Jam_Audacity_InnoWizardImage.bmp
+WizardImageFile=jamling_Audacity_InnoWizardImage.bmp
 WizardSmallImageFile=audacity_InnoWizardSmallImage.bmp
 
 SolidCompression=yes
 
 ; installer-related directives
-AppName=Camp Jam Audacity 1.3 Beta (Unicode)
-AppVerName=Camp Jam Audacity 1.3.5 (Unicode)
+AppName=Jamling Audacity 1.3 Beta (Unicode)
+AppVerName=Jamling Audacity 1.3.5 (Unicode)
 AppPublisher=Audacity Team
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
 ChangesAssociations=yes
-DefaultDirName={pf}\Camp Jam Audacity 1.3 Beta (Unicode)
+DefaultDirName={pf}\Jamling Audacity 1.3 Beta (Unicode)
 ; Always warn if dir exists, because we'll overwrite previous Audacity.
 DirExistsWarning=yes
 DisableProgramGroupPage=yes
@@ -66,8 +66,8 @@ Source: "..\win\unicode_release\Plug-Ins\*"; DestDir: "{app}\Plug-Ins\"; Exclude
 
 
 [Icons]
-Name: "{commonprograms}\Camp Jam Audacity 1.3 Beta (Unicode)"; Filename: "{app}\audacity.exe"
-Name: "{userdesktop}\Camp Jam Audacity"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
+Name: "{commonprograms}\Jamling Audacity 1.3 Beta (Unicode)"; Filename: "{app}\audacity.exe"
+Name: "{userdesktop}\Jamling Audacity"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
 
 [InstallDelete]
 ; Get rid of Audacity 1.0.0 stuff that's no longer used.
