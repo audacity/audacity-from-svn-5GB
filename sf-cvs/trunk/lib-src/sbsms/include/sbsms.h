@@ -29,7 +29,8 @@ extern int SBSMS_RES[SBSMS_QUALITIES][SBSMS_MAX_BANDS];
 extern int SBSMS_N[SBSMS_QUALITIES][SBSMS_MAX_BANDS];
 
 struct sbsms_resample_frame {
-  _sbsms_::real ratio;
+  _sbsms_::real ratio0;
+  _sbsms_::real ratio1;
   _sbsms_::audio *in;
   long size;
 };
@@ -148,7 +149,7 @@ void sbsms_seek(sbsms *sbsmser, long framePos, long samplePos);
 sbsms* sbsms_create(sbsms_cb getSamplesCB, sbsms_stretch_cb getStretchCB, sbsms_ratio_cb getRatioCB, int channels, int quality, bool bPreAnalyze, bool bSynthesize);
 sbsms* sbsms_create(FILE *fp, sbsms_stretch_cb getStretchCB, sbsms_ratio_cb getRatioCB);
 void sbsms_destroy(sbsms* sbsmser);
-long sbsms_read_frame(_sbsms_::audio *out, void *data, sbsms *sbsmer, _sbsms_::real *ratio);
+long sbsms_read_frame(_sbsms_::audio *out, void *data, sbsms *sbsmer, _sbsms_::real *ratio0, _sbsms_::real *ratio1);
 long sbsms_write_frame(FILE *fp, void *data, sbsms *sbsmser);
 long sbsms_samples_processed(sbsms *sbsmser);
 long sbsms_pre_analyze(sbsms_cb getSamplesCB, void *data, sbsms *sbsmser);

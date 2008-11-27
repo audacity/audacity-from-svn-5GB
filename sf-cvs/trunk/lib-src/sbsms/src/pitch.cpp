@@ -6,8 +6,9 @@ using namespace _sbsms_;
 long pitchCB(void *cb_data, sbsms_resample_frame *frame) 
 {
   pitcher *pitch = (pitcher*) cb_data;
-  long n_read = sbsms_read_frame(pitch->buf,pitch->sbsmsData,pitch->sbsmser,&(frame->ratio));
-  frame->ratio *= pitch->ratio;
+  long n_read = sbsms_read_frame(pitch->buf,pitch->sbsmsData,pitch->sbsmser,&(frame->ratio0),&(frame->ratio1));
+  frame->ratio0 *= pitch->ratio;
+  frame->ratio1 *= pitch->ratio;
   frame->size = n_read;
   frame->in = pitch->buf;
   return n_read;

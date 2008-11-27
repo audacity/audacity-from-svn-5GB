@@ -26,7 +26,8 @@ Resampler :: Resampler(SampleBuf *in, real ratio)
   bPull = false;
   this->in = in;
   bInput = true;
-  frame.ratio = ratio;
+  frame.ratio0 = ratio;
+  frame.ratio1 = ratio;
 }
 
 void Resampler :: init()
@@ -78,7 +79,10 @@ long Resampler :: read(audio *audioOut, long samples)
       inOffset = 0;
     }
     if(frame.size) {
-      real ratiorec = frame.ratio<1.0f?1.0f:1.0f/frame.ratio;
+      real dratio = 1.0f/(real)frame.size*(frame.ratio1-frame.ratio0);
+
+      real ratio = frame.ratio0 + (real)inOffset*dratio;
+      real ratiorec = ratio<1.0f?1.0f:1.0f/ratio;
       real f = ratiorec*SBSMS_SINC_RES;
       int fi = round2int(f-0.5f);
       real ff = f - fi;
@@ -86,8 +90,8 @@ long Resampler :: read(audio *audioOut, long samples)
 	ff += 1.0f;
 	fi--;
       }
-      real scale = frame.ratio<1.0f?frame.ratio:1.0f;
-      int maxDist = round2int(sincZeros*frame.ratio-0.5f);
+      real scale = ratio<1.0f?ratio:1.0f;
+      int maxDist = round2int(sincZeros*ratio-0.5f);
       // absolute start position
       startAbs = max((long)0,midAbs-maxDist);
       // samples to advance
@@ -106,7 +110,7 @@ long Resampler :: read(audio *audioOut, long samples)
       out->delay = maxDist<<1;
       out->writePos += advance;
 
-      if(fabs(frame.ratio-1.0) < 1e-6) {
+      if(fabs(ratio-1.0f) < 1e-6f && fabs(dratio) < 1e-8f ) {
 	// how far ahead to write
 	int nAhead = mid+frame.size;
 	out->N = nAhead;
@@ -117,7 +121,7 @@ long Resampler :: read(audio *audioOut, long samples)
 	  out->buf[out->writePos+mid+j][1] += frame.in[j+inOffset][1];
 	}
 	inOffset += nWrite;
-	midAbsf += frame.ratio*nWrite;
+	midAbsf += ratio*nWrite;
 	int nWritten = round2int(midAbsf);
 	midAbsf -= nWritten;
 	midAbs += nWritten;
@@ -143,12 +147,17 @@ long Resampler :: read(audio *audioOut, long samples)
 	    int k0 = (di<0)?-di:di; 
 	    int k1 = (di<0)?k0-1:k0+1;
 	    real sinc;
-	    
-	    if(k1>=SBSMS_SINC_SIZE)
-	      sinc = scale*sincTable[k0];
-	    else
+	    if(k1>=SBSMS_SINC_SIZE) {
+	      if(k0>=SBSMS_SINC_SIZE) {
+		sinc = 0.0f;
+	      } else {
+		sinc = scale*sincTable[k0];
+	      }
+	    } else if(k0>=SBSMS_SINC_SIZE) {
+	      sinc = scale*sincTable[k1];
+	    } else {
 	      sinc = scale*((1.0f-df)*sincTable[k0] + df*sincTable[k1]);
-
+	    }
 	    (*o)[0] += i0 * sinc;
 	    (*o)[1] += i1 * sinc;
 	    di += fi;
@@ -160,7 +169,22 @@ long Resampler :: read(audio *audioOut, long samples)
 	    o++;
 	  }
 	  i++;
-	  midAbsf += frame.ratio;
+	  midAbsf += ratio;
+	
+	  if(dratio != 0.0f) {
+	    ratio += dratio;
+	    ratiorec = ratio<1.0f?1.0f:1.0f/ratio;
+	    f = ratiorec*SBSMS_SINC_RES;
+	    fi = round2int(f-0.5f);
+	    ff = f - fi;
+	    if(ff<0.0f) {
+	      ff += 1.0f;
+	      fi--;
+	    }
+	    scale = ratio<1.0f?ratio:1.0f;
+	    maxDist = round2int(sincZeros*ratio-0.5f);
+	  }
+
 	  int nWritten = round2int(midAbsf);
 	  midAbsf -= nWritten;
 	  midAbs += nWritten;
@@ -187,7 +211,7 @@ long Resampler :: read(audio *audioOut, long samples)
 
 long Resampler :: samplesInOutput()
 {
-  long samplesFromBuffer = round2int(frame.ratio*(frame.size-inOffset));
+  long samplesFromBuffer = round2int(0.5f*(frame.ratio0+frame.ratio1)*(frame.size-inOffset));
   return out->writePos + midAbs - writePosAbs - out->readPos + samplesFromBuffer;
 }
 
