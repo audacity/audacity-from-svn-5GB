@@ -82,7 +82,7 @@ void *pollThreadCB(void *data) {
       pthread_cond_broadcast(&threadData->addCond);
       pthread_mutex_unlock(&threadData->addMutex);
     } 
-    if(top->isMarkReady() || top->isAssignReady()) {
+    if(top->isMarkReady()) {
       pthread_mutex_lock(&threadData->assignMutex);
       pthread_cond_broadcast(&threadData->assignCond);
       pthread_mutex_unlock(&threadData->assignMutex);
@@ -114,7 +114,6 @@ void *addThreadCB(void *data) {
   subband *top = sbsmser->top;
 
   while(threadData->bActive) {
-    //usleep(rand()%1000);
     if(!top->isAddReady()) {
       pthread_mutex_lock(&threadData->addMutex);
       pthread_cond_wait(&threadData->addCond,&threadData->addMutex);
@@ -149,7 +148,6 @@ void *assignThreadCB(void *data) {
   subband *top = sbsmser->top;
 
   while(threadData->bActive) {
-    //usleep(rand()%1000);
     if(!top->markInit(false,c)) {
       pthread_mutex_lock(&threadData->assignMutex);
       pthread_cond_wait(&threadData->assignCond,&threadData->assignMutex);
@@ -420,7 +418,7 @@ long sbsms_pre_analyze(sbsms_cb getSamplesCB, void *data, sbsms *sbsmser)
   return sbsmser->top->preAnalyze(sbsmser->ina, n_towrite, a, ratio);
 }
 
-long sbsms_read_frame(audio *buf, void *data, sbsms *sbsmser, real *ratioOut)
+long sbsms_read_frame(audio *buf, void *data, sbsms *sbsmser, real *ratio0, real *ratio1)
 {
   long n_read = 0;
   long n_write = 0;
@@ -435,11 +433,11 @@ long sbsms_read_frame(audio *buf, void *data, sbsms *sbsmser, real *ratioOut)
     assert(a<SBSMS_MAX_STRETCH && a>SBSMS_MIN_STRETCH);
 
     if(sbsmser->n_prespent) {
-      n_read = sbsmser->top->read(NULL, ratioOut);
+      n_read = sbsmser->top->read(NULL, ratio0, ratio1);
       if(n_read) sbsmser->n_prespent--;
       n_read = 0;
     } else {
-      n_read = sbsmser->top->read(buf, ratioOut);
+      n_read = sbsmser->top->read(buf, ratio0, ratio1);
     }
 
     n_write = 0;    
@@ -540,11 +538,9 @@ long sbsms_write_frame(FILE *fp, void *data, sbsms *sbsmser)
     real a = 1.0/(ratio*stretch);
     assert(a<SBSMS_MAX_STRETCH && a>SBSMS_MIN_STRETCH);
 
-    //usleep(rand()%1000);
     n_tofile = sbsmser->top->getFramesWrittenToFile();
 
     n_write = 0;
-
 #ifdef MULTITHREADED
     if(threadData->bAddThread && sbsmser->top->isAddReady()) {
       pthread_mutex_lock(&threadData->addMutex);

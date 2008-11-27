@@ -999,19 +999,21 @@ long subband :: n_readable()
   return n;
 }
 
-long subband :: read(audio *buf, real *ratio) 
+long subband :: read(audio *buf, real *ratio0, real *ratio1) 
 {
   readSubSamples();
 #ifdef MULTITHREADED
   pthread_mutex_lock(&dataMutex);
 #endif
   long n = 0;
-  if(outputFrameSize.n_readable()) {
+  if(outputFrameSize.n_readable() >= 2) {
     n = outputFrameSize.read(outputFrameSize.readPos);
     if(n_readable()>=n) {
-      real rat = frameRatio.read(frameRatio.readPos);
-      if(ratio != NULL) *ratio = rat;
-      samplesQueued -= n*rat;
+      real rat0 = frameRatio.read(frameRatio.readPos);
+      real rat1 = frameRatio.read(frameRatio.readPos+1);
+      if(ratio0 != NULL) *ratio0 = rat0;
+      if(ratio1 != NULL) *ratio1 = rat1;
+      samplesQueued -= n*0.5f*(rat0+rat1);
       outputFrameSize.advance(1);
       inputFrameSize.advance(1);
       frameRatio.advance(1);

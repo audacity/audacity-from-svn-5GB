@@ -462,6 +462,7 @@ void sbsmsplayer :: setRatio(real ratio)
   this->ratio = ratio;
   if(pthread_mutex_lock(&writeMutex) == 0) {	 
     this->si.ratio0 = ratio;
+    this->si.ratio1 = ratio;
     pthread_mutex_unlock(&writeMutex);
   }
 }

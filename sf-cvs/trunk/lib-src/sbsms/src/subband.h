@@ -20,7 +20,7 @@ class subband {
 
   long write(audio *buf, long n, real a, real ratio);
   void process();
-  long read(audio *buf, real *ratio);
+  long read(audio *buf, real *ratio0, real *ratio1);
   long n_readable();
   bool isframe_readable();
   void writingComplete();

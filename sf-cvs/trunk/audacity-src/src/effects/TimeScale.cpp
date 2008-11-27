@@ -7,7 +7,7 @@
   Clayton Otey
 
 *******************************************************************//**
-
+                                                                       
 \class EffectTimeScale
 \brief An EffectTimeScale does high quality sliding time scaling/pitch shifting
 
@@ -46,7 +46,7 @@ EffectTimeScale::EffectTimeScale()
    m_HalfStepsEnd = 0;
    m_CentsStart = 0;
    m_CentsEnd = 0;
-   m_Quality = 0;
+   m_PreAnalyze = false;
 }
 
 wxString EffectTimeScale::GetEffectDescription() { 
@@ -56,7 +56,7 @@ wxString EffectTimeScale::GetEffectDescription() {
 
 bool EffectTimeScale::Init()
 {
-  return true;
+   return true;
 }
 
 bool EffectTimeScale::PromptUser()
@@ -68,50 +68,50 @@ bool EffectTimeScale::PromptUser()
    dlog.m_HalfStepsEnd = m_HalfStepsEnd;
    dlog.m_CentsStart = m_CentsStart;
    dlog.m_CentsEnd = m_CentsEnd;
-   dlog.m_Quality = m_Quality;
+   dlog.m_PreAnalyze = m_PreAnalyze;
 
    // Don't need to call TransferDataToWindow, although other 
-   //	Audacity dialogs (from which I derived this one) do it, because 
-   //	ShowModal calls stuff that eventually calls wxWindowBase::OnInitDialog, 
-   //	which calls dlog.TransferDataToWindow();
+   // Audacity dialogs (from which I derived this one) do it, because 
+   // ShowModal calls stuff that eventually calls wxWindowBase::OnInitDialog, 
+   // which calls dlog.TransferDataToWindow();
    dlog.CentreOnParent();
    dlog.ShowModal();
 
-  if (dlog.GetReturnCode() == wxID_CANCEL)
-     return false;
-  
+   if (dlog.GetReturnCode() == wxID_CANCEL)
+      return false;
+   
    m_RateStart = dlog.m_RateStart;
    m_RateEnd = dlog.m_RateEnd;
    m_HalfStepsStart = dlog.m_HalfStepsStart;
    m_HalfStepsEnd = dlog.m_HalfStepsEnd;
    m_CentsStart = dlog.m_CentsStart;
    m_CentsEnd = dlog.m_CentsEnd;
-   m_Quality = dlog.m_Quality;
-
+   m_PreAnalyze = dlog.m_PreAnalyze;
+   
    return true;
 }
 
 bool EffectTimeScale::TransferParameters( Shuttle & shuttle )
 {
-  shuttle.TransferDouble(wxT("RateStart"),m_RateStart,0.0);
-  shuttle.TransferDouble(wxT("RateEnd"),m_RateEnd,0.0);
-  shuttle.TransferDouble(wxT("HalfStepsStart"),m_HalfStepsStart,0.0);
-  shuttle.TransferDouble(wxT("HalfStepsEnd"),m_HalfStepsEnd,0.0);
-  shuttle.TransferDouble(wxT("CentsStart"),m_CentsStart,0.0);
-  shuttle.TransferDouble(wxT("CentsEnd"),m_CentsEnd,0.0);
-  shuttle.TransferInt(wxT("Quality"),m_Quality,0);
-  return true;
+   shuttle.TransferDouble(wxT("RateStart"),m_RateStart,0.0);
+   shuttle.TransferDouble(wxT("RateEnd"),m_RateEnd,0.0);
+   shuttle.TransferDouble(wxT("HalfStepsStart"),m_HalfStepsStart,0.0);
+   shuttle.TransferDouble(wxT("HalfStepsEnd"),m_HalfStepsEnd,0.0);
+   shuttle.TransferDouble(wxT("CentsStart"),m_CentsStart,0.0);
+   shuttle.TransferDouble(wxT("CentsEnd"),m_CentsEnd,0.0);
+   shuttle.TransferBool(wxT("PreAnalyze"),m_PreAnalyze,false);
+   return true;
 }
 
 bool EffectTimeScale::Process()
 {
-  double pitchStart = pow(2.0,-(m_HalfStepsStart+0.01*m_CentsStart)/12.0);
-  double pitchEnd = pow(2.0,-(m_HalfStepsEnd+0.01*m_CentsEnd)/12.0);
-  double rateStart = (100.0+m_RateStart)/100.0;
-  double rateEnd = (100.0+m_RateEnd)/100.0;
-  int quality = m_Quality + 1;
-  this->EffectSBSMS::setParameters(rateStart,rateEnd,pitchStart,pitchEnd,quality,m_PreAnalyze);
-  return this->EffectSBSMS::Process();
+   double pitchStart = pow(2.0,-(m_HalfStepsStart+0.01*m_CentsStart)/12.0);
+   double pitchEnd = pow(2.0,-(m_HalfStepsEnd+0.01*m_CentsEnd)/12.0);
+   double rateStart = (100.0+m_RateStart)/100.0;
+   double rateEnd = (100.0+m_RateEnd)/100.0;
+   int quality = 1;
+   this->EffectSBSMS::setParameters(rateStart,rateEnd,pitchStart,pitchEnd,quality,m_PreAnalyze);
+   return this->EffectSBSMS::Process();
 }
 
 //----------------------------------------------------------------------------
@@ -134,8 +134,7 @@ bool EffectTimeScale::Process()
 #define ID_TEXT_CENTS_END 10006
 #define ID_SLIDER_RATE_START 10007
 #define ID_SLIDER_RATE_END 10008
-#define ID_SLIDER_QUALITY 10009
-#define ID_CHECKBOX_PREANALYZE 10010
+#define ID_CHECKBOX_PREANALYZE 10009
 
 // event table for TimeScaleDialog
 
@@ -148,16 +147,15 @@ BEGIN_EVENT_TABLE(TimeScaleDialog, EffectDialog)
    EVT_TEXT(ID_TEXT_CENTS_END, TimeScaleDialog::OnText_CentsEnd)
    EVT_SLIDER(ID_SLIDER_RATE_START, TimeScaleDialog::OnSlider_RateStart)
    EVT_SLIDER(ID_SLIDER_RATE_END, TimeScaleDialog::OnSlider_RateEnd)
-   EVT_SLIDER(ID_SLIDER_QUALITY, TimeScaleDialog::OnSlider_Quality)
    EVT_CHECKBOX(ID_CHECKBOX_PREANALYZE, TimeScaleDialog::OnCheckBox_PreAnalyze)
 END_EVENT_TABLE()
 
 TimeScaleDialog::TimeScaleDialog(EffectTimeScale *effect, wxWindow *parent)
-:  EffectDialog(parent, _("Time Scale"), PROCESS_EFFECT),
-   mEffect(effect)
+   :  EffectDialog(parent, _("Time Scale"), INSERT_EFFECT),
+      mEffect(effect)
 {
    m_bLoopDetect = false;
-
+   
    // NULL out these control members because there are some cases where the 
    // event table handlers get called during this method, and those handlers that 
    // can cause trouble check for NULL.
@@ -170,7 +168,6 @@ TimeScaleDialog::TimeScaleDialog(EffectTimeScale *effect, wxWindow *parent)
    m_pTextCtrl_HalfStepsEnd = NULL;
    m_pTextCtrl_CentsStart = NULL;
    m_pTextCtrl_CentsEnd = NULL;
-   m_pSlider_Quality = NULL;
    m_pCheckBox_PreAnalyze = NULL;
 
    // effect parameters
@@ -180,7 +177,6 @@ TimeScaleDialog::TimeScaleDialog(EffectTimeScale *effect, wxWindow *parent)
    m_HalfStepsEnd = 0;
    m_CentsStart = 0;
    m_CentsEnd = 0;
-   m_Quality = 0;
    m_PreAnalyze = false;
 
    Init();
@@ -196,27 +192,25 @@ void TimeScaleDialog::PopulateOrExchange(ShuttleGui & S)
    S.StartHorizontalLay(wxCENTER, false);
    {
       S.AddTitle(_("Sliding Time Scale/Pitch Shift") +
-                 wxString(wxT("\n\n")) +
-                 _("by Clayton Otey") +
                  wxString(wxT("\n")) + 
                  _("using SBSMS, by Clayton Otey"));
    }
    S.EndHorizontalLay();
    S.SetBorder(5);
-
+   
    // Rate Text
    S.StartMultiColumn(2, wxCENTER);
    {
       m_pTextCtrl_RateStart = S.Id(ID_TEXT_RATE_START)
          .AddTextBox(_("Start Rate Change (%):"), wxT(""), 12);
       m_pTextCtrl_RateStart->SetValidator(numvld);
-
+      
       m_pTextCtrl_RateEnd = S.Id(ID_TEXT_RATE_END)
          .AddTextBox(_("End Rate Change (%):"), wxT(""), 12);
       m_pTextCtrl_RateEnd->SetValidator(numvld);
    }
    S.EndMultiColumn();
-
+   
    // Rate Slider
    S.StartHorizontalLay(wxEXPAND);
    {
@@ -226,7 +220,7 @@ void TimeScaleDialog::PopulateOrExchange(ShuttleGui & S)
       m_pSlider_RateStart->SetName(_("Start Rate Change (%)"));
    }
    S.EndHorizontalLay();
-
+   
    S.StartHorizontalLay(wxEXPAND);
    {
       S.SetStyle(wxSL_HORIZONTAL);
@@ -235,7 +229,7 @@ void TimeScaleDialog::PopulateOrExchange(ShuttleGui & S)
       m_pSlider_RateEnd->SetName(_("End Rate Change (%)"));
    }
    S.EndHorizontalLay();
-
+   
    // HalfStep Text
    S.StartMultiColumn(2, wxCENTER);
    {
@@ -248,33 +242,28 @@ void TimeScaleDialog::PopulateOrExchange(ShuttleGui & S)
       m_pTextCtrl_HalfStepsEnd->SetValidator(numvld);
    }
    S.EndMultiColumn();
-
+   
    // Cents Text
    S.StartMultiColumn(2, wxCENTER);
    {
       m_pTextCtrl_CentsStart = S.Id(ID_TEXT_CENTS_START)
          .AddTextBox(_("Initial Pitch Shift (cents) [-50:50]:"), wxT(""), 12);
       m_pTextCtrl_CentsStart->SetValidator(numvld);
-
+      
       m_pTextCtrl_CentsEnd = S.Id(ID_TEXT_CENTS_END)
          .AddTextBox(_("Final Pitch Shift (cents) [-50:50]:"), wxT(""), 12);
       m_pTextCtrl_CentsEnd->SetValidator(numvld);
    }
    S.EndMultiColumn();
-
-   S.AddFixedText(_("Quality"),false);
-   // Quality Slider
+   
    S.StartHorizontalLay(wxEXPAND);
    {
       S.SetStyle(wxSL_HORIZONTAL);
-      m_pSlider_Quality = S.Id(ID_SLIDER_QUALITY)
-         .AddSlider(wxT(""), 0, 1, -1);
-      m_pSlider_Quality->SetName(_("Quality"));
+      m_pCheckBox_PreAnalyze = S.Id(ID_CHECKBOX_PREANALYZE)
+         .AddCheckBox(wxT("Dynamic Transient Sharpening"), wxT("Dynamic Transient Sharpening"));
    }
-   m_pCheckBox_PreAnalyze = S.Id(ID_CHECKBOX_PREANALYZE)
-     .AddCheckBox(wxT("Dynamic Transient Sharpening"), wxT("Dynamic Transient Sharpening"));
    S.EndHorizontalLay();
-
+   
    return;
 }
 
@@ -290,7 +279,6 @@ bool TimeScaleDialog::TransferDataToWindow()
    this->Update_Text_HalfStepsEnd();
    this->Update_Text_CentsStart();
    this->Update_Text_CentsEnd();
-   this->Update_Slider_Quality();
    this->Update_CheckBox_PreAnalyze();
 
    m_bLoopDetect = false;
@@ -344,12 +332,8 @@ bool TimeScaleDialog::TransferDataFromWindow()
       m_CentsEnd = newValue;
    }
 
-   if (m_pSlider_Quality) {
-     m_Quality = m_pSlider_Quality->GetValue();
-   }
-
    if(m_pCheckBox_PreAnalyze) {
-     m_PreAnalyze = m_pCheckBox_PreAnalyze->GetValue();
+      m_PreAnalyze = m_pCheckBox_PreAnalyze->GetValue();
    }
 
    return true;
@@ -461,28 +445,21 @@ void TimeScaleDialog::OnText_CentsStart(wxCommandEvent & event)
 
 void TimeScaleDialog::OnText_CentsEnd(wxCommandEvent & event)
 {
-  if (m_pTextCtrl_CentsEnd) {
-    wxString str = m_pTextCtrl_CentsEnd->GetValue();
-    double newValue = 0;
-    str.ToDouble(&newValue);
-    m_CentsEnd = newValue;
-
-    FindWindow(wxID_OK)->Enable(m_CentsEnd >= -50 && m_CentsEnd <=50);
-  }
-}
-
-void TimeScaleDialog::OnSlider_Quality(wxCommandEvent & event)
-{
-  if (m_pSlider_Quality) {
-    m_Quality = (m_pSlider_Quality->GetValue()); 
-  }
+   if (m_pTextCtrl_CentsEnd) {
+      wxString str = m_pTextCtrl_CentsEnd->GetValue();
+      double newValue = 0;
+      str.ToDouble(&newValue);
+      m_CentsEnd = newValue;
+      
+      FindWindow(wxID_OK)->Enable(m_CentsEnd >= -50 && m_CentsEnd <=50);
+   }
 }
 
 void TimeScaleDialog::OnCheckBox_PreAnalyze(wxCommandEvent & event)
 {
-  if (m_pCheckBox_PreAnalyze) {
-    m_PreAnalyze = m_pCheckBox_PreAnalyze->GetValue();
-  }
+   if (m_pCheckBox_PreAnalyze) {
+      m_PreAnalyze = m_pCheckBox_PreAnalyze->GetValue();
+   }
 }
 
 void TimeScaleDialog::Update_Text_RateStart()
@@ -553,18 +530,11 @@ void TimeScaleDialog::Update_Text_CentsEnd()
    }
 }
 
-void TimeScaleDialog::Update_Slider_Quality()
-{
-  if (m_pSlider_Quality) {
-      m_pSlider_Quality->SetValue(m_Quality);
-  }
-}
-
 void TimeScaleDialog::Update_CheckBox_PreAnalyze()
 {
-  if (m_pCheckBox_PreAnalyze) {
-    m_pCheckBox_PreAnalyze->SetValue(m_PreAnalyze);
-  }
+   if (m_pCheckBox_PreAnalyze) {
+      m_pCheckBox_PreAnalyze->SetValue(m_PreAnalyze);
+   }
 }
 
 #endif

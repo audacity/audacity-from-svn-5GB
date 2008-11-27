@@ -63,7 +63,6 @@ class EffectTimeScale : public EffectSBSMS {
    double m_HalfStepsEnd;
    double m_CentsStart;
    double m_CentsEnd;
-   int m_Quality;
    bool m_PreAnalyze;
 
    friend class TimeScaleDialog;
@@ -92,7 +91,6 @@ class TimeScaleDialog:public EffectDialog {
   void OnText_CentsEnd(wxCommandEvent & event);
   void OnSlider_RateStart(wxCommandEvent & event);
   void OnSlider_RateEnd(wxCommandEvent & event);
-  void OnSlider_Quality(wxCommandEvent & event);
   void OnCheckBox_PreAnalyze(wxCommandEvent & event);
   
   // helper fns
@@ -104,7 +102,6 @@ class TimeScaleDialog:public EffectDialog {
   void Update_Text_CentsEnd();
   void Update_Slider_RateStart();
   void Update_Slider_RateEnd();
-  void Update_Slider_Quality();
   void Update_CheckBox_PreAnalyze();
 
  private:
@@ -120,7 +117,6 @@ class TimeScaleDialog:public EffectDialog {
   wxTextCtrl *m_pTextCtrl_HalfStepsEnd;
   wxTextCtrl *m_pTextCtrl_CentsStart;
   wxTextCtrl *m_pTextCtrl_CentsEnd;
-  wxSlider *m_pSlider_Quality;
   wxCheckBox *m_pCheckBox_PreAnalyze;
 
  public:
@@ -130,7 +126,6 @@ class TimeScaleDialog:public EffectDialog {
    double m_HalfStepsEnd;
    double m_CentsStart;
    double m_CentsEnd;
-   int m_Quality;
    bool m_PreAnalyze;
 
  private:

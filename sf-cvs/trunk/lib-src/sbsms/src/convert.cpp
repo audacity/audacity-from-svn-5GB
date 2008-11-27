@@ -40,7 +40,8 @@ long resampleCB(void *cb_data, sbsms_resample_frame *data)
 #endif  
   r->samplesIn += n_read_in;
   data->size = n_read_in;
-  data->ratio = r->ratio;
+  data->ratio0 = r->ratio;
+  data->ratio1 = r->ratio;
   data->in = r->abuf;
 
   return n_read_in;
