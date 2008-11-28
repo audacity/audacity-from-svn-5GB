@@ -44,8 +44,6 @@ EffectTimeScale::EffectTimeScale()
    m_RateEnd = 0;
    m_HalfStepsStart = 0;
    m_HalfStepsEnd = 0;
-   m_CentsStart = 0;
-   m_CentsEnd = 0;
    m_PreAnalyze = false;
 }
 
@@ -66,8 +64,6 @@ bool EffectTimeScale::PromptUser()
    dlog.m_RateEnd = m_RateEnd;
    dlog.m_HalfStepsStart = m_HalfStepsStart;
    dlog.m_HalfStepsEnd = m_HalfStepsEnd;
-   dlog.m_CentsStart = m_CentsStart;
-   dlog.m_CentsEnd = m_CentsEnd;
    dlog.m_PreAnalyze = m_PreAnalyze;
 
    // Don't need to call TransferDataToWindow, although other 
@@ -84,8 +80,6 @@ bool EffectTimeScale::PromptUser()
    m_RateEnd = dlog.m_RateEnd;
    m_HalfStepsStart = dlog.m_HalfStepsStart;
    m_HalfStepsEnd = dlog.m_HalfStepsEnd;
-   m_CentsStart = dlog.m_CentsStart;
-   m_CentsEnd = dlog.m_CentsEnd;
    m_PreAnalyze = dlog.m_PreAnalyze;
    
    return true;
@@ -97,16 +91,14 @@ bool EffectTimeScale::TransferParameters( Shuttle & shuttle )
    shuttle.TransferDouble(wxT("RateEnd"),m_RateEnd,0.0);
    shuttle.TransferDouble(wxT("HalfStepsStart"),m_HalfStepsStart,0.0);
    shuttle.TransferDouble(wxT("HalfStepsEnd"),m_HalfStepsEnd,0.0);
-   shuttle.TransferDouble(wxT("CentsStart"),m_CentsStart,0.0);
-   shuttle.TransferDouble(wxT("CentsEnd"),m_CentsEnd,0.0);
    shuttle.TransferBool(wxT("PreAnalyze"),m_PreAnalyze,false);
    return true;
 }
 
 bool EffectTimeScale::Process()
 {
-   double pitchStart = pow(2.0,-(m_HalfStepsStart+0.01*m_CentsStart)/12.0);
-   double pitchEnd = pow(2.0,-(m_HalfStepsEnd+0.01*m_CentsEnd)/12.0);
+   double pitchStart = pow(2.0,-(m_HalfStepsStart)/12.0);
+   double pitchEnd = pow(2.0,-(m_HalfStepsEnd)/12.0);
    double rateStart = (100.0+m_RateStart)/100.0;
    double rateEnd = (100.0+m_RateEnd)/100.0;
    int quality = 1;
@@ -120,18 +112,14 @@ bool EffectTimeScale::Process()
 
 #define RATE_MAX 150
 #define RATE_DEFAULT 0
-#define RATE_MIN -80
+#define RATE_MIN -75
 #define HALFSTEPS_MIN -12
 #define HALFSTEPS_MAX 12
-#define CENTS_MIN -50
-#define CENTS_MAX 50
 
 #define ID_TEXT_RATE_START 10001
 #define ID_TEXT_RATE_END 10002
 #define ID_TEXT_HALFSTEPS_START 10003
 #define ID_TEXT_HALFSTEPS_END 10004
-#define ID_TEXT_CENTS_START 10005
-#define ID_TEXT_CENTS_END 10006
 #define ID_SLIDER_RATE_START 10007
 #define ID_SLIDER_RATE_END 10008
 #define ID_CHECKBOX_PREANALYZE 10009
@@ -143,8 +131,6 @@ BEGIN_EVENT_TABLE(TimeScaleDialog, EffectDialog)
    EVT_TEXT(ID_TEXT_RATE_END, TimeScaleDialog::OnText_RateEnd)
    EVT_TEXT(ID_TEXT_HALFSTEPS_START, TimeScaleDialog::OnText_HalfStepsStart)
    EVT_TEXT(ID_TEXT_HALFSTEPS_END, TimeScaleDialog::OnText_HalfStepsEnd)
-   EVT_TEXT(ID_TEXT_CENTS_START, TimeScaleDialog::OnText_CentsStart)
-   EVT_TEXT(ID_TEXT_CENTS_END, TimeScaleDialog::OnText_CentsEnd)
    EVT_SLIDER(ID_SLIDER_RATE_START, TimeScaleDialog::OnSlider_RateStart)
    EVT_SLIDER(ID_SLIDER_RATE_END, TimeScaleDialog::OnSlider_RateEnd)
    EVT_CHECKBOX(ID_CHECKBOX_PREANALYZE, TimeScaleDialog::OnCheckBox_PreAnalyze)
@@ -166,8 +152,6 @@ TimeScaleDialog::TimeScaleDialog(EffectTimeScale *effect, wxWindow *parent)
    m_pSlider_RateEnd = NULL; 
    m_pTextCtrl_HalfStepsStart = NULL;
    m_pTextCtrl_HalfStepsEnd = NULL;
-   m_pTextCtrl_CentsStart = NULL;
-   m_pTextCtrl_CentsEnd = NULL;
    m_pCheckBox_PreAnalyze = NULL;
 
    // effect parameters
@@ -175,8 +159,6 @@ TimeScaleDialog::TimeScaleDialog(EffectTimeScale *effect, wxWindow *parent)
    m_RateEnd = 0;
    m_HalfStepsStart = 0;
    m_HalfStepsEnd = 0;
-   m_CentsStart = 0;
-   m_CentsEnd = 0;
    m_PreAnalyze = false;
 
    Init();
@@ -202,11 +184,11 @@ void TimeScaleDialog::PopulateOrExchange(ShuttleGui & S)
    S.StartMultiColumn(2, wxCENTER);
    {
       m_pTextCtrl_RateStart = S.Id(ID_TEXT_RATE_START)
-         .AddTextBox(_("Start Rate Change (%):"), wxT(""), 12);
+         .AddTextBox(_("Initial Tempo Change (%):"), wxT(""), 12);
       m_pTextCtrl_RateStart->SetValidator(numvld);
       
       m_pTextCtrl_RateEnd = S.Id(ID_TEXT_RATE_END)
-         .AddTextBox(_("End Rate Change (%):"), wxT(""), 12);
+         .AddTextBox(_("Final Tempo Change (%):"), wxT(""), 12);
       m_pTextCtrl_RateEnd->SetValidator(numvld);
    }
    S.EndMultiColumn();
@@ -217,7 +199,7 @@ void TimeScaleDialog::PopulateOrExchange(ShuttleGui & S)
       S.SetStyle(wxSL_HORIZONTAL);
       m_pSlider_RateStart = S.Id(ID_SLIDER_RATE_START)
          .AddSlider(wxT(""), (int)RATE_DEFAULT, (int)RATE_MAX, (int)RATE_MIN);
-      m_pSlider_RateStart->SetName(_("Start Rate Change (%)"));
+      m_pSlider_RateStart->SetName(_("Initial Tempo Change (%)"));
    }
    S.EndHorizontalLay();
    
@@ -226,7 +208,7 @@ void TimeScaleDialog::PopulateOrExchange(ShuttleGui & S)
       S.SetStyle(wxSL_HORIZONTAL);
       m_pSlider_RateEnd = S.Id(ID_SLIDER_RATE_END)
          .AddSlider(wxT(""), (int)RATE_DEFAULT, (int)RATE_MAX, (int)RATE_MIN);
-      m_pSlider_RateEnd->SetName(_("End Rate Change (%)"));
+      m_pSlider_RateEnd->SetName(_("Final Tempo Change (%)"));
    }
    S.EndHorizontalLay();
    
@@ -234,28 +216,15 @@ void TimeScaleDialog::PopulateOrExchange(ShuttleGui & S)
    S.StartMultiColumn(2, wxCENTER);
    {
       m_pTextCtrl_HalfStepsStart = S.Id(ID_TEXT_HALFSTEPS_START)
-         .AddTextBox(_("Initial Pitch Shift (half steps) [-12:12]:"), wxT(""), 12);
+         .AddTextBox(_("Initial Pitch Shift (semitones) [-12 to 12]:"), wxT(""), 12);
       m_pTextCtrl_HalfStepsStart->SetValidator(numvld);
 
       m_pTextCtrl_HalfStepsEnd = S.Id(ID_TEXT_HALFSTEPS_END)
-         .AddTextBox(_("Final Pitch Shift (half steps) [-12:12]:"), wxT(""), 12);
+         .AddTextBox(_("Final Pitch Shift (semitones) [-12 to 12]:"), wxT(""), 12);
       m_pTextCtrl_HalfStepsEnd->SetValidator(numvld);
    }
    S.EndMultiColumn();
-   
-   // Cents Text
-   S.StartMultiColumn(2, wxCENTER);
-   {
-      m_pTextCtrl_CentsStart = S.Id(ID_TEXT_CENTS_START)
-         .AddTextBox(_("Initial Pitch Shift (cents) [-50:50]:"), wxT(""), 12);
-      m_pTextCtrl_CentsStart->SetValidator(numvld);
       
-      m_pTextCtrl_CentsEnd = S.Id(ID_TEXT_CENTS_END)
-         .AddTextBox(_("Final Pitch Shift (cents) [-50:50]:"), wxT(""), 12);
-      m_pTextCtrl_CentsEnd->SetValidator(numvld);
-   }
-   S.EndMultiColumn();
-   
    S.StartHorizontalLay(wxEXPAND);
    {
       S.SetStyle(wxSL_HORIZONTAL);
@@ -277,8 +246,6 @@ bool TimeScaleDialog::TransferDataToWindow()
    this->Update_Slider_RateEnd();
    this->Update_Text_HalfStepsStart();
    this->Update_Text_HalfStepsEnd();
-   this->Update_Text_CentsStart();
-   this->Update_Text_CentsEnd();
    this->Update_CheckBox_PreAnalyze();
 
    m_bLoopDetect = false;
@@ -316,20 +283,6 @@ bool TimeScaleDialog::TransferDataFromWindow()
       double newValue = 0;
       str.ToDouble(&newValue);
       m_HalfStepsEnd = newValue;
-   }
-
-   if (m_pTextCtrl_CentsStart) {
-      str = m_pTextCtrl_CentsStart->GetValue();
-      double newValue = 0;
-      str.ToDouble(&newValue);
-      m_CentsStart = newValue;
-   }
-
-   if (m_pTextCtrl_CentsEnd) {
-      str = m_pTextCtrl_CentsEnd->GetValue();
-      double newValue = 0;
-      str.ToDouble(&newValue);
-      m_CentsEnd = newValue;
    }
 
    if(m_pCheckBox_PreAnalyze) {
@@ -431,30 +384,6 @@ void TimeScaleDialog::OnText_HalfStepsEnd(wxCommandEvent & event)
   }
 }
 
-void TimeScaleDialog::OnText_CentsStart(wxCommandEvent & event)
-{
-  if (m_pTextCtrl_CentsStart) {
-    wxString str = m_pTextCtrl_CentsStart->GetValue();
-    double newValue = 0;
-    str.ToDouble(&newValue);
-    m_CentsStart = newValue;
-
-    FindWindow(wxID_OK)->Enable(m_CentsStart >= -50 && m_CentsStart <=50);
-  }
-}
-
-void TimeScaleDialog::OnText_CentsEnd(wxCommandEvent & event)
-{
-   if (m_pTextCtrl_CentsEnd) {
-      wxString str = m_pTextCtrl_CentsEnd->GetValue();
-      double newValue = 0;
-      str.ToDouble(&newValue);
-      m_CentsEnd = newValue;
-      
-      FindWindow(wxID_OK)->Enable(m_CentsEnd >= -50 && m_CentsEnd <=50);
-   }
-}
-
 void TimeScaleDialog::OnCheckBox_PreAnalyze(wxCommandEvent & event)
 {
    if (m_pCheckBox_PreAnalyze) {
@@ -509,24 +438,6 @@ void TimeScaleDialog::Update_Text_HalfStepsEnd()
       wxString str;
       str.Printf(wxT("%.3f"), m_HalfStepsEnd);
       m_pTextCtrl_HalfStepsEnd->SetValue(str);
-   }
-}
-
-void TimeScaleDialog::Update_Text_CentsStart()
-{
-   if (m_pTextCtrl_CentsStart) {
-      wxString str;
-      str.Printf(wxT("%.3f"), m_CentsStart);
-      m_pTextCtrl_CentsStart->SetValue(str);
-   }
-}
-
-void TimeScaleDialog::Update_Text_CentsEnd()
-{
-   if (m_pTextCtrl_CentsEnd) {
-      wxString str;
-      str.Printf(wxT("%.3f"), m_CentsEnd);
-      m_pTextCtrl_CentsEnd->SetValue(str);
    }
 }
 
