@@ -91,6 +91,9 @@ bool sbsms_convert(const char *filenameIn, const char *filenameOut, bool bAnalyz
   audio *abuf = NULL;
   pitcher *pitch = NULL;
   float srIn;
+  real stretch2;
+  long samplesOut;
+
 #ifdef BWAV
   AudioDecoder *decoder = NULL;
   AudioDecoder *decoderPre = NULL;
@@ -170,12 +173,11 @@ bool sbsms_convert(const char *filenameIn, const char *filenameOut, bool bAnalyz
     resamplerPre = new Resampler(resampleCB, &rbPre);
     si.rs = resamplerPre;
   }
-  real stretch2;
   if(stretch0 == stretch1)
     stretch2 = 1.0/stretch0;
   else
     stretch2 = log(stretch1/stretch0)/(stretch1-stretch0);
-  long samplesOut = samplesToProcess * stretch2;
+  samplesOut = samplesToProcess * stretch2;
   si.samplesToProcess = samplesToProcess;
   si.samplesToGenerate = samplesOut;
   si.stretch0 = stretch0;
@@ -226,10 +228,10 @@ bool sbsms_convert(const char *filenameIn, const char *filenameOut, bool bAnalyz
   } else {
     fbuf = (float*)calloc(SBSMS_MAX_FRAME_SIZE[quality]*2,sizeof(float));
     abuf = (audio*)calloc(SBSMS_MAX_FRAME_SIZE[quality],sizeof(audio));
-  
+    
     pitch = pitch_create(sbsmser,&si,1.0);
     long blockSize = SBSMS_FRAME_SIZE[quality]; 
-
+    
 #ifdef BWAV
     PcmWriter writer(filenameOut,samplesOut,(int)srOut,channels);
     if(writer.isError()) {
@@ -254,45 +256,45 @@ bool sbsms_convert(const char *filenameIn, const char *filenameOut, bool bAnalyz
       long lastPercent=0;
       
       if(pos+blockSize>samplesOut) {
-	frames = samplesOut - pos;
+        frames = samplesOut - pos;
       } else {
-	frames = blockSize;
+        frames = blockSize;
       }
       
       ret = pitch_process(abuf, frames, pitch);
       audio_convert_from(fbuf,0,abuf,0,ret);
       if(channels==1) {
-	for(int k=0;k<ret;k++) {
-	  int k2 = k<<1;
-	  fbuf[k] = volume*fbuf[k2];
-	}
+        for(int k=0;k<ret;k++) {
+          int k2 = k<<1;
+          fbuf[k] = volume*fbuf[k2];
+        }
       } else if(channels==2) {
-	for(int k=0;k<ret;k++) {
-	  int k2 = k<<1;
-	  fbuf[k2] = volume*fbuf[k2];
-	  fbuf[k2+1] = volume*fbuf[k2+1];
-	}
+        for(int k=0;k<ret;k++) {
+          int k2 = k<<1;
+          fbuf[k2] = volume*fbuf[k2];
+          fbuf[k2+1] = volume*fbuf[k2+1];
+        }
       }
       
 #ifdef BWAV
       writer.write(fbuf, ret);
 #else
       for(int k=0;k<ret;k++)
-	fprintf(OUT,"%g %g\n",fbuf[2*k],fbuf[2*k+1]);
+        fprintf(OUT,"%g %g\n",fbuf[2*k],fbuf[2*k+1]);
 #endif
       pos += ret;
-
+      
       int percent = 100.*(real)pos / (real)samplesOut;
       progressCB(percent,"Progress",data);
     }
-
+    
 #ifdef BWAV
     writer.close();
 #else
     if(OUT) fclose(OUT);
 #endif
   }
-
+  
  cleanup:
 #ifdef BWAV
   if(decoderPre) delete decoderPre;
