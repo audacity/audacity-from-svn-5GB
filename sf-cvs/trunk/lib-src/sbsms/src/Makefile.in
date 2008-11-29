@@ -35,12 +35,8 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-@ENABLE_PORTAUDIO_FALSE@bin_PROGRAMS = sbsms$(EXEEXT)
-@ENABLE_PORTAUDIO_TRUE@@ENABLE_WX_FALSE@bin_PROGRAMS = sbsms$(EXEEXT) \
-@ENABLE_PORTAUDIO_TRUE@@ENABLE_WX_FALSE@	sbsmsplay$(EXEEXT)
-@ENABLE_PORTAUDIO_TRUE@@ENABLE_WX_TRUE@bin_PROGRAMS = sbsms$(EXEEXT) \
-@ENABLE_PORTAUDIO_TRUE@@ENABLE_WX_TRUE@	sbsmsplay$(EXEEXT) \
-@ENABLE_PORTAUDIO_TRUE@@ENABLE_WX_TRUE@	wxsbsmsplayer$(EXEEXT)
+EXTRA_PROGRAMS = sbsms$(EXEEXT) sbsmsplay$(EXEEXT) \
+	wxsbsmsplayer$(EXEEXT)
 subdir = src
 DIST_COMMON = $(libsbsmsinclude_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in
@@ -238,6 +234,7 @@ PORTAUDIO_CFLAGS = @PORTAUDIO_CFLAGS@
 PORTAUDIO_LIBS = @PORTAUDIO_LIBS@
 RANLIB = @RANLIB@
 SBSMS_BIN = @SBSMS_BIN@
+SBSMS_PROGS = @SBSMS_PROGS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHARED_VERSION_INFO = @SHARED_VERSION_INFO@
@@ -311,6 +308,7 @@ libsbsmsinclude_HEADERS = ../include/sbsms.h
 lib_LTLIBRARIES = libsbsms.la
 libsbsms_la_SOURCES = pitch.cpp peak.cpp sms.cpp track.cpp trackpoint.cpp utils.cpp audio.cpp resample.cpp sbsms.cpp fft.cpp grain.cpp buffer.cpp subband.cpp audio.h buffer.h fft.h utils.h defs.h peak.h trackpoint.h grain.h pitch.h real.h resample.h ../include/sbsms.h sms.h subband.h track.h
 libsbsms_la_LDFLAGS = -version-info @SHARED_VERSION_INFO@ @SHLIB_VERSION_ARG@
+bin_PROGRAMS = @SBSMS_PROGS@
 sbsms_LDADD = libsbsms.la $(SNDFILE_LIBS) $(MAD_LIBS)
 sbsms_LDFLAGS = $(os_ldflags)
 @ENABLE_PORTAUDIO_TRUE@sbsmsplay_LDADD = libsbsms.la $(PORTAUDIO_LIBS)
