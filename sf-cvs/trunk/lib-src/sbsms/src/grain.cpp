@@ -1,4 +1,6 @@
 #include <math.h>
+#include <cstdlib>
+#include <cstring>
 #include "grain.h"
 #include "sbsms.h"
 #include "defs.h"
