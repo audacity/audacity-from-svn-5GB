@@ -1,4 +1,4 @@
-AM_CXXFLAGS = -fasm-blocks -funroll-loops -I../include -fstrict-aliasing $(SNDFILE_CFLAGS) $(PORTAUDIO_CFLAGS) $(WX_CFLAGS)
+AM_CXXFLAGS = -funroll-loops -I../include -fstrict-aliasing $(SNDFILE_CFLAGS) $(PORTAUDIO_CFLAGS) $(WX_CFLAGS)
 
 libsbsmsincludedir = $(includedir)
 libsbsmsinclude_HEADERS = ../include/sbsms.h

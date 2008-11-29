@@ -2,6 +2,8 @@
 #define BUFFER_H
 
 #include <assert.h>
+#include <cstring>
+#include <cstdlib>
 #include "sbsms.h"
 #include "grain.h"
 #include "trackpoint.h"
