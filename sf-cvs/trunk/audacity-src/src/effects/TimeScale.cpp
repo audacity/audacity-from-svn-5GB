@@ -292,6 +292,18 @@ bool TimeScaleDialog::TransferDataFromWindow()
    return true;
 }
 
+bool TimeScaleDialog::CheckParameters()
+{
+   return 
+      (m_RateStart >= -80.0 && m_RateStart <= 300.0) 
+      &&
+      (m_RateEnd >= -80.0 && m_RateEnd <= 300.0) 
+      &&
+      (m_HalfStepsStart >= -12 && m_HalfStepsStart <=12)
+      &&
+      (m_HalfStepsEnd >= -12 && m_HalfStepsEnd <=12);
+}
+
 // handler implementations for TimeScaleDialog
 
 void TimeScaleDialog::OnText_RateStart(wxCommandEvent & event)
@@ -309,7 +321,7 @@ void TimeScaleDialog::OnText_RateStart(wxCommandEvent & event)
       this->Update_Slider_RateStart();
       m_bLoopDetect = false;
 
-      FindWindow(wxID_OK)->Enable(m_RateStart >= -80.0 && m_RateStart <= 300.0);
+      FindWindow(wxID_OK)->Enable(CheckParameters());
    }
 }
 
@@ -328,7 +340,7 @@ void TimeScaleDialog::OnText_RateEnd(wxCommandEvent & event)
       this->Update_Slider_RateEnd();
       m_bLoopDetect = false;
       
-      FindWindow(wxID_OK)->Enable(m_RateEnd >= -80.0 && m_RateEnd <= 300.0);
+      FindWindow(wxID_OK)->Enable(CheckParameters());
    }
 }
 
@@ -368,7 +380,7 @@ void TimeScaleDialog::OnText_HalfStepsStart(wxCommandEvent & event)
     str.ToDouble(&newValue);
     m_HalfStepsStart = newValue;
 
-    FindWindow(wxID_OK)->Enable(m_HalfStepsStart >= -12 && m_HalfStepsStart <=12);
+    FindWindow(wxID_OK)->Enable(CheckParameters());
   }
 }
 
@@ -379,8 +391,8 @@ void TimeScaleDialog::OnText_HalfStepsEnd(wxCommandEvent & event)
     double newValue = 0;
     str.ToDouble(&newValue);
     m_HalfStepsEnd = newValue;
-
-    FindWindow(wxID_OK)->Enable(m_HalfStepsEnd >= -12 && m_HalfStepsEnd <=12);
+    
+    FindWindow(wxID_OK)->Enable(CheckParameters());
   }
 }
 

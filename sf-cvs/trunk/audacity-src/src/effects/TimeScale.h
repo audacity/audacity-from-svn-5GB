@@ -88,8 +88,9 @@ class TimeScaleDialog:public EffectDialog {
   void OnSlider_RateStart(wxCommandEvent & event);
   void OnSlider_RateEnd(wxCommandEvent & event);
   void OnCheckBox_PreAnalyze(wxCommandEvent & event);
-  
+
   // helper fns
+  bool CheckParameters();
   void Update_Text_RateStart();
   void Update_Text_RateEnd();
   void Update_Text_HalfStepsStart();
@@ -101,7 +102,7 @@ class TimeScaleDialog:public EffectDialog {
  private:
   EffectTimeScale *mEffect;
   bool m_bLoopDetect;
-
+  
   // controls
   wxTextCtrl *m_pTextCtrl_RateStart;
   wxSlider *m_pSlider_RateStart;
