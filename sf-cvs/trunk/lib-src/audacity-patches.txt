@@ -177,6 +177,14 @@ http://www.music.mcgill.ca/~gary/rtaudio/
 Another cross-platform audio I/O library that was at one point available as an
 alternative to portaudio.
 
+sbsms
+-----
+http://sbsms.sourceforge.net/
+An audio stretching library for changing pitch or tempo without changing the
+other. Alternative to SoundTouch, better on large changes but slower.
+Version in audacity cvs: ??
+Patches:
+
 slv2
 -------
 http://wiki.drobilla.net/SLV2
