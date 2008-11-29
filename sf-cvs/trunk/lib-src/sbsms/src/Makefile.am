@@ -8,15 +8,8 @@ libsbsms_la_SOURCES = pitch.cpp peak.cpp sms.cpp track.cpp trackpoint.cpp utils.
 
 libsbsms_la_LDFLAGS = -version-info @SHARED_VERSION_INFO@ @SHLIB_VERSION_ARG@
 
-if ENABLE_PORTAUDIO
-if ENABLE_WX
-bin_PROGRAMS = sbsms sbsmsplay wxsbsmsplayer
-else
-bin_PROGRAMS = sbsms sbsmsplay
-endif
-else
-bin_PROGRAMS = sbsms
-endif
+bin_PROGRAMS = @SBSMS_PROGS@
+EXTRA_PROGRAMS = sbsms sbsmsplay wxsbsmsplayer
 
 sbsms_LDADD = libsbsms.la $(SNDFILE_LIBS) $(MAD_LIBS)
 sbsms_LDFLAGS = $(os_ldflags)
