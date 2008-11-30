@@ -27,6 +27,7 @@
 #include "../Project.h"
 #include "../FileNames.h"
 #include "../widgets/LinkingHtmlWindow.h"
+#include "FileDialog.h"
 
 #include <math.h>
 
@@ -41,7 +42,9 @@
 #include <wx/bitmap.h>
 #include <wx/brush.h>
 #include <wx/button.h>
+#include <wx/datetime.h>
 #include <wx/dcmemory.h>
+#include <wx/file.h>
 #include <wx/image.h>
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
@@ -73,7 +76,7 @@ bool EffectContrast::PromptUser()
       bFGset = true;
       if( !bBGset )
       {
-         wxMessageDialog m(NULL, _("Foreground times selected.\nNow select background and use Ctrl+Alt+C or menu again."), _("Contrast Tool Foreground"), wxOK);
+         wxMessageDialog m(NULL, _("Foreground times selected.\nNow select background and use Ctrl+Shift+T or menu again."), _("Contrast Tool Foreground"), wxOK);
          m.ShowModal();
       }
    }
@@ -91,10 +94,10 @@ bool EffectContrast::PromptUser()
       ContrastDialog dlog(this, mParent);
 
       // Copy parameters into dialog from effect
-      dlog.startTimeF = mStartTimeF;
-      dlog.endTimeF = mEndTimeF;
-      dlog.startTimeB = mStartTimeB;
-      dlog.endTimeB = mEndTimeB;
+      dlog.mForegroundStartT->SetTimeValue(mStartTimeF);
+      dlog.mForegroundEndT->SetTimeValue(mEndTimeF);
+      dlog.mBackgroundStartT->SetTimeValue(mStartTimeB);
+      dlog.mBackgroundEndT->SetTimeValue(mEndTimeB);
 
       wxCommandEvent dummyEvt;
       dlog.OnGetForegroundDB(dummyEvt);
@@ -104,10 +107,10 @@ bool EffectContrast::PromptUser()
       dlog.ShowModal();
 
       // Copy parameters from dialog back into effect
-      mStartTimeF = dlog.startTimeF;
-      mEndTimeF = dlog.endTimeF;
-      mStartTimeB = dlog.startTimeB;
-      mEndTimeB = dlog.endTimeB;
+      mStartTimeF = dlog.mForegroundStartT->GetTimeValue();
+      mEndTimeF = dlog.mForegroundEndT->GetTimeValue();
+      mStartTimeB = dlog.mBackgroundStartT->GetTimeValue();
+      mEndTimeB = dlog.mBackgroundEndT->GetTimeValue();
    }
 
    return false;
@@ -119,7 +122,7 @@ float EffectContrast::GetDB()
 
    TrackListIterator iter(mWaveTracks);
    Track *t = iter.First();
-   if(mT0 >= mT1)
+   if(mT0 > mT1)
    {
       wxMessageDialog m(NULL, _("Start time after after end time!\nPlease enter reasonable times."), _("Error"), wxOK);
       m.ShowModal();
@@ -129,12 +132,14 @@ float EffectContrast::GetDB()
       mT0 = t->GetStartTime();
    if(mT1 > t->GetEndTime())
       mT1 = t->GetEndTime();
-   if(mT0 >= mT1)
+   if(mT0 > mT1)
    {
       wxMessageDialog m(NULL, _("Times are not reasonable!\nPlease enter reasonable times."), _("Error"), wxOK);
       m.ShowModal();
       return 1234.0;
    }
+   if(mT0 == mT1)
+      return 1234.0;
    while(t) {  // this isn't quite right.  What to do if more than one track selected?
       ((WaveTrack *)t)->GetRMS(&rms, mT0, mT1);
       t = iter.Next();
@@ -202,12 +207,14 @@ enum {
    ID_BUTTON_USECURRENTF,
    ID_BUTTON_USECURRENTB,
    ID_BUTTON_GETURL,
-   ID_BACKGROUNDSTART_TEXT,
-   ID_BACKGROUNDEND_TEXT,
-   ID_BACKGROUNDDB_TEXT,
-   ID_FOREGROUNDSTART_TEXT,
-   ID_FOREGROUNDEND_TEXT,
+   ID_BUTTON_EXPORT,
+   ID_BUTTON_RESET,
+   ID_FOREGROUNDSTART_T,
+   ID_FOREGROUNDEND_T,
    ID_FOREGROUNDDB_TEXT,
+   ID_BACKGROUNDSTART_T,
+   ID_BACKGROUNDEND_T,
+   ID_BACKGROUNDDB_TEXT,
    ID_RESULTS_TEXT,
    ID_RESULTSDB_TEXT
 };
@@ -219,10 +226,14 @@ BEGIN_EVENT_TABLE(ContrastDialog,wxDialog)
    EVT_BUTTON(ID_BUTTON_USECURRENTF, ContrastDialog::OnUseSelectionF)
    EVT_BUTTON(ID_BUTTON_USECURRENTB, ContrastDialog::OnUseSelectionB)
    EVT_BUTTON(ID_BUTTON_GETURL, ContrastDialog::OnGetURL)
-   EVT_TEXT(ID_FOREGROUNDSTART_TEXT, ContrastDialog::OnForegroundStartText)
-   EVT_TEXT(ID_FOREGROUNDEND_TEXT, ContrastDialog::OnForegroundEndText)
-   EVT_TEXT(ID_BACKGROUNDSTART_TEXT, ContrastDialog::OnBackgroundStartText)
-   EVT_TEXT(ID_BACKGROUNDEND_TEXT, ContrastDialog::OnBackgroundEndText)
+   EVT_BUTTON(ID_BUTTON_EXPORT, ContrastDialog::OnExport)
+   EVT_BUTTON(ID_BUTTON_RESET, ContrastDialog::OnReset)
+   EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, ContrastDialog::OnTimeCtrlUpdate)
+
+   EVT_COMMAND(ID_FOREGROUNDSTART_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnForegroundStartT)
+   EVT_COMMAND(ID_FOREGROUNDEND_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnForegroundEndT)
+   EVT_COMMAND(ID_BACKGROUNDSTART_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnBackgroundStartT)
+   EVT_COMMAND(ID_BACKGROUNDEND_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnBackgroundEndT)
 END_EVENT_TABLE()
 
 ContrastDialog::ContrastDialog(EffectContrast * effect, 
@@ -234,6 +245,10 @@ ContrastDialog::ContrastDialog(EffectContrast * effect,
    // NULL out the control members until the controls are created.
    m_pButton_GetForeground = NULL;
    m_pButton_GetBackground = NULL;
+   mForegroundStartT = NULL;
+   mForegroundEndT = NULL;
+   mBackgroundStartT = NULL;
+   mBackgroundEndT = NULL;
 
    mT0orig = m_pEffect->GetStartTime();  // keep copy of selection times
    mT1orig = m_pEffect->GetEndTime();
@@ -243,8 +258,8 @@ ContrastDialog::ContrastDialog(EffectContrast * effect,
 
 void ContrastDialog::OnGetForegroundDB( wxCommandEvent &event )
 {
-   m_pEffect->SetStartTime(startTimeF);
-   m_pEffect->SetEndTime(endTimeF);
+   m_pEffect->SetStartTime(mForegroundStartT->GetTimeValue());
+   m_pEffect->SetEndTime(mForegroundEndT->GetTimeValue());
    foregrounddB = m_pEffect->GetDB();
    if(foregrounddB == 1234.0) // magic number, is there a better way?
       mForegroundRMSText->SetLabel(wxString::Format(_(" ")));
@@ -252,13 +267,14 @@ void ContrastDialog::OnGetForegroundDB( wxCommandEvent &event )
       mForegroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), foregrounddB));
    m_pButton_GetForeground->Enable(false);
    m_pButton_GetForeground->SetLabel(_("Measured"));
+   m_pButton_UseCurrentF->SetFocus();
    results();
 }
 
 void ContrastDialog::OnGetBackgroundDB( wxCommandEvent &event )
 {
-   m_pEffect->SetStartTime(startTimeB);
-   m_pEffect->SetEndTime(endTimeB);
+   m_pEffect->SetStartTime(mBackgroundStartT->GetTimeValue());
+   m_pEffect->SetEndTime(mBackgroundEndT->GetTimeValue());
    backgrounddB = m_pEffect->GetDB();
    if(backgrounddB == 1234.0) // magic number, is there a better way?
       mBackgroundRMSText->SetLabel(wxString::Format(_(" ")));
@@ -266,12 +282,13 @@ void ContrastDialog::OnGetBackgroundDB( wxCommandEvent &event )
       mBackgroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), backgrounddB));
    m_pButton_GetBackground->Enable(false);
    m_pButton_GetBackground->SetLabel(_("Measured"));
+   m_pButton_UseCurrentB->SetFocus();
    results();
 }
 
 void ContrastDialog::OnGetURL(wxCommandEvent &event)
 {
-   wxString page = wxT("http://www.w3.org/TR/WCAG20/");  // yet to determine where this should point
+   wxString page = wxT("http://www.eramp.com/WCAG_2_audio_contrast_tool_help.htm");
    ::OpenInDefaultBrowser(page);
 }
 
@@ -297,32 +314,49 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
       {
 
          // Headings
-         S.AddFixedText(wxT(""), false); // spacer
-         S.AddFixedText(_("Start"), false);
-         S.AddFixedText(_("End"), false);
-         S.AddFixedText(wxT(""), false); // spacer
-         S.AddFixedText(wxT(""), false); // spacer
-         S.AddFixedText(_("Volume"), false);
+         S.AddFixedText(wxT(""));   // spacer
+         S.AddFixedText(_("Start"));
+         S.AddFixedText(_("End"));
+         S.AddFixedText(wxT(""));   // spacer
+         S.AddFixedText(wxT(""));   // spacer
+         S.AddFixedText(_("Volume"));
 
          //Foreground
          S.AddFixedText(_("Foreground:"), false);
-         S.StartMultiColumn(2, wxCENTER);
+         if (mForegroundStartT == NULL)
          {
-            mForegroundStartText = S.Id(ID_FOREGROUNDSTART_TEXT).AddTextBox(wxT(""), wxT(""), 12);
-            mForegroundStartText->SetValidator(vld);
-            number = wxString::Format(wxT("%.2f"), startTimeF);
-            mForegroundStartText->ChangeValue(number);
+            AudacityProject *p = GetActiveProject();
+            mForegroundStartT = new
+            TimeTextCtrl(this,
+                         ID_FOREGROUNDSTART_T,
+                         wxT(""),
+                         0.0,
+                         m_pEffect->mProjectRate,
+                         wxDefaultPosition,
+                         wxDefaultSize,
+                         true);
+            mForegroundStartT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
+            mForegroundStartT->EnableMenu();
          }
-         S.EndMultiColumn();
-         S.StartMultiColumn(3, wxCENTER);
+         S.AddWindow(mForegroundStartT);
+
+         if (mForegroundEndT == NULL)
          {
-            mForegroundEndText = S.Id(ID_FOREGROUNDEND_TEXT).AddTextBox(wxT(""), wxT(""), 12);
-            mForegroundEndText->SetValidator(vld);
-            number = wxString::Format(wxT("%.2f"), endTimeF);
-            mForegroundEndText->ChangeValue(number);
-            S.AddFixedText(_("seconds"), false);
+            AudacityProject *p = GetActiveProject();
+            mForegroundEndT = new
+            TimeTextCtrl(this,
+                         ID_FOREGROUNDEND_T,
+                         wxT(""),
+                         0.0,
+                         m_pEffect->mProjectRate,
+                         wxDefaultPosition,
+                         wxDefaultSize,
+                         true);
+            mForegroundEndT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
+            mForegroundEndT->EnableMenu();
          }
-         S.EndMultiColumn();
+         S.AddWindow(mForegroundEndT);
+
          m_pButton_GetForeground = S.Id(ID_BUTTON_GETFOREGROUND).AddButton(_("Measured"));
          m_pButton_GetForeground->Enable(false);   // Disabled as we do the measurement as we put up the dialog
          m_pButton_UseCurrentF = S.Id(ID_BUTTON_USECURRENTF).AddButton(_("Use selection"));
@@ -330,23 +364,40 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
 
          //Background
          S.AddFixedText(_("Background:"));
-         S.StartMultiColumn(2, wxCENTER);
+         if (mBackgroundStartT == NULL)
          {
-            mBackgroundStartText = S.Id(ID_BACKGROUNDSTART_TEXT).AddTextBox(wxT(""), wxT(""), 12);
-            mBackgroundStartText->SetValidator(vld);
-            number = wxString::Format(wxT("%.2f"), startTimeB);
-            mBackgroundStartText->ChangeValue(number);
+            AudacityProject *p = GetActiveProject();
+            mBackgroundStartT = new
+            TimeTextCtrl(this,
+                         ID_BACKGROUNDSTART_T,
+                         wxT(""),
+                         0.0,
+                         m_pEffect->mProjectRate,
+                         wxDefaultPosition,
+                         wxDefaultSize,
+                         true);
+            mBackgroundStartT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
+            mBackgroundStartT->EnableMenu();
          }
-         S.EndMultiColumn();
-         S.StartMultiColumn(3, wxCENTER);
+         S.AddWindow(mBackgroundStartT);
+
+         if (mBackgroundEndT == NULL)
          {
-            mBackgroundEndText = S.Id(ID_BACKGROUNDEND_TEXT).AddTextBox(wxT(""), wxT(""), 12);
-            mBackgroundEndText->SetValidator(vld);
-            number = wxString::Format(wxT("%.2f"), endTimeB);
-            mBackgroundEndText->ChangeValue(number);
-            S.AddFixedText(_("seconds"));
+            AudacityProject *p = GetActiveProject();
+            mBackgroundEndT = new
+            TimeTextCtrl(this,
+                         ID_BACKGROUNDEND_T,
+                         wxT(""),
+                         0.0,
+                         m_pEffect->mProjectRate,
+                         wxDefaultPosition,
+                         wxDefaultSize,
+                         true);
+            mBackgroundEndT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
+            mBackgroundEndT->EnableMenu();
          }
-         S.EndMultiColumn();
+         S.AddWindow(mBackgroundEndT);
+
          m_pButton_GetBackground = S.Id(ID_BUTTON_GETBACKGROUND).AddButton(_("Measured"));
          m_pButton_GetBackground->Enable(false);
          m_pButton_UseCurrentB = S.Id(ID_BUTTON_USECURRENTB).AddButton(_("Use selection"));
@@ -359,12 +410,14 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
    //Result
    S.StartStatic( _("Result") );
    {
-      S.StartMultiColumn(2, wxCENTER);
+      S.StartMultiColumn(3, wxCENTER);
       {
          S.AddFixedText(_("Contrast Result:"));
          mPassFailText = S.Id(ID_RESULTS_TEXT).AddVariableText(wxString::Format(wxT("%s"), _("Fail")));
+         m_pButton_Export = S.Id(ID_BUTTON_EXPORT).AddButton(_("Export")); //right justify
          S.AddFixedText(_("Difference:"));
          mDiffText = S.Id(ID_RESULTSDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f  Average RMS"), foregrounddB - backgrounddB));
+         m_pButton_Reset = S.Id(ID_BUTTON_RESET).AddButton(_("Reset")); //right justify
       }
       S.EndMultiColumn();
    }
@@ -374,93 +427,171 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
    //Information
    S.StartStatic( _("Information") );
    {
-      S.AddFixedText(_("Before you use this tool,"));
-      S.AddFixedText(_("   Ctrl+Alt+C sets the 'foreground' times."));
-      S.AddFixedText(_("   Ctrl+Alt+C (again) sets the 'background' times and opens the tool."));
-      S.AddFixedText(_("After you've used this tool,"));
-      S.AddFixedText(_("   Select a region then use Ctrl+Alt+C to open it."));
-      S.AddFixedText(_("   Click 'Use Selected' above to set the fore/background times."));
-      S.AddFixedText(_("   Or enter the times manually and click 'Measure'."));
-      m_pButton_GetURL = S.Id(ID_BUTTON_GETURL).AddButton(_("WCAG Information on web"));
+      m_pButton_GetURL = S.Id(ID_BUTTON_GETURL).AddButton(_("WCAG contrast tool help on the web"));
    }
    S.EndStatic();
    Fit();
 }
 
-void ContrastDialog::OnForegroundStartText(wxCommandEvent & event)
+void ContrastDialog::OnForegroundStartT(wxCommandEvent & event)
 {
-   wxString val = mForegroundStartText->GetValue();
-   val.ToDouble(&startTimeF);
    m_pButton_GetForeground->Enable(true);
    m_pButton_GetForeground->SetLabel(_("Measure"));
 }
 
-void ContrastDialog::OnForegroundEndText(wxCommandEvent & event)
+void ContrastDialog::OnForegroundEndT(wxCommandEvent & event)
 {
-   wxString val = mForegroundEndText->GetValue();
-   val.ToDouble(&endTimeF);
    m_pButton_GetForeground->Enable(true);
    m_pButton_GetForeground->SetLabel(_("Measure"));
 }
 
-void ContrastDialog::OnBackgroundStartText(wxCommandEvent & event)
+void ContrastDialog::OnBackgroundStartT(wxCommandEvent & event)
 {
-   wxString val = mBackgroundStartText->GetValue();
-   val.ToDouble(&startTimeB);
    m_pButton_GetBackground->Enable(true);
    m_pButton_GetBackground->SetLabel(_("Measure"));
 }
 
-void ContrastDialog::OnBackgroundEndText(wxCommandEvent & event)
+void ContrastDialog::OnBackgroundEndT(wxCommandEvent & event)
 {
-   wxString val = mBackgroundEndText->GetValue();
-   val.ToDouble(&endTimeB);
    m_pButton_GetBackground->Enable(true);
    m_pButton_GetBackground->SetLabel(_("Measure"));
 }
 
 void ContrastDialog::OnUseSelectionF(wxCommandEvent & event)
 {
-   wxString number;
+   mForegroundStartT->SetTimeValue(mT0orig);
+   mForegroundEndT->SetTimeValue(mT1orig);
 
-   startTimeF = mT0orig;
-   endTimeF = mT1orig;
-   number = wxString::Format(wxT("%.2f"), startTimeF);
-   mForegroundStartText->ChangeValue(number);
-   number = wxString::Format(wxT("%.2f"), endTimeF);
-   mForegroundEndText->ChangeValue(number);
-
-   m_pEffect->SetStartTime(startTimeB);
-   m_pEffect->SetEndTime(endTimeB);
+   m_pEffect->SetStartTime(mT0orig);
+   m_pEffect->SetEndTime(mT1orig);
    OnGetForegroundDB(event);
    results();
 }
 
 void ContrastDialog::OnUseSelectionB(wxCommandEvent & event)
 {
-   wxString number;
+   mBackgroundStartT->SetTimeValue(mT0orig);
+   mBackgroundEndT->SetTimeValue(mT1orig);
 
-   startTimeB = mT0orig;
-   endTimeB = mT1orig;
-   number = wxString::Format(wxT("%.2f"), startTimeB);
-   mBackgroundStartText->ChangeValue(number);
-   number = wxString::Format(wxT("%.2f"), endTimeB);
-   mBackgroundEndText->ChangeValue(number);
-
-   m_pEffect->SetStartTime(startTimeB);
-   m_pEffect->SetEndTime(endTimeB);
+   m_pEffect->SetStartTime(mT0orig);
+   m_pEffect->SetEndTime(mT1orig);
    OnGetBackgroundDB(event);
    results();
 }
 
 void ContrastDialog::results()
 {
-   if(foregrounddB - backgrounddB > 20)
-      mPassFailText->SetLabel(_("WCAG2 Pass"));
+   if( (foregrounddB != 1234.0) && (backgrounddB != 1234.0) )
+   {
+      if(foregrounddB - backgrounddB > 20)
+         mPassFailText->SetLabel(_("WCAG2 Pass"));
+      else
+         mPassFailText->SetLabel(_("WCAG2 Fail"));
+      mDiffText->SetLabel(wxString::Format(wxT("%.1f dB Average RMS"), foregrounddB - backgrounddB));
+   }
    else
-      mPassFailText->SetLabel(_("WCAG2 Fail"));
-   mDiffText->SetLabel(wxString::Format(wxT("%.1f dB Average RMS"), foregrounddB - backgrounddB));
+   {
+      mPassFailText->SetLabel(wxT(""));
+      mDiffText->SetLabel(wxT(""));
+   }
 }
+
+void ContrastDialog::OnExport(wxCommandEvent & event)
+{
+   AudacityProject * project = GetActiveProject();
+   wxString fName = _("contrast.txt");
+
+   fName = FileSelector(_("Export Contrast Result As:"),
+                        NULL, fName, wxT("txt"), wxT("*.txt"), wxFD_SAVE | wxRESIZE_BORDER, this);
+
+   if (fName == wxT(""))
+      return;
+
+   wxTextFile f(fName);
+#ifdef __WXMAC__
+   wxFile *temp = new wxFile();
+   temp->Create(fName);
+   delete temp;
+#else
+   f.Create();
+#endif
+   f.Open();
+   if (!f.IsOpened()) {
+      wxMessageBox(_("Couldn't write to file: ") + fName);
+      return;
+   }
+
+   f.AddLine(wxT("==================================="));
+   f.AddLine(_("WCAG 2.0 Success Criteria 1.4.7 Contrast Results\r\n"));
+   f.AddLine(wxString::Format(wxT("Filename = %s."), project->GetFileName() ));
+   f.AddLine(wxT("\r\nForeground"));
+   f.AddLine(wxString::Format(wxT("Time started = %f seconds."), (float)mForegroundStartT->GetTimeValue() ));
+   f.AddLine(wxString::Format(wxT("Time ended = %f seconds."), (float)mForegroundEndT->GetTimeValue() ));
+   if(foregrounddB != 1234.0)
+      f.AddLine(wxString::Format(wxT("Average RMS = %.1f dB."), foregrounddB ));
+   else
+      f.AddLine(wxString::Format(wxT("Average RMS =  dB.")));
+
+   f.AddLine(wxT("\r\nBackground"));
+   f.AddLine(wxString::Format(wxT("Time started = %f seconds."), (float)mBackgroundStartT->GetTimeValue() ));
+   f.AddLine(wxString::Format(wxT("Time ended = %f seconds."), (float)mBackgroundEndT->GetTimeValue() ));
+   if(backgrounddB != 1234.0)
+      f.AddLine(wxString::Format(wxT("Average RMS = %.1f dB."), backgrounddB ));
+   else
+      f.AddLine(wxString::Format(wxT("Average RMS =  dB.")));
+   f.AddLine(wxT("\r\nResults"));
+   float diff = foregrounddB - backgrounddB;
+   f.AddLine(wxString::Format(wxT("Difference = %f Average RMS dBs."), diff ));
+   if( diff > 20. )
+      f.AddLine(_("Pass Success Criteria 1.4.7 of WCAG 2.0"));
+   else
+      f.AddLine(_("Fail Success Criteria 1.4.7 of WCAG 2.0"));
+
+   f.AddLine(wxT("\r\nData gathered"));
+   wxString sNow;
+   wxDateTime now = wxDateTime::Now();
+   int year = now.GetYear();
+   wxDateTime::Month month = now.GetMonth();
+   wxString monthName = now.GetMonthName(month);
+   int dom = now.GetDay();
+   int hour = now.GetHour();
+   int minute = now.GetMinute();
+   int second = now.GetSecond();
+   sNow = wxString::Format(wxT("%d %s %02d %02dh %02dm %02ds"), 
+        dom, monthName.c_str(), year, hour, minute, second);
+   f.AddLine(sNow);
+
+   f.AddLine(wxT("==================================="));
+
+#ifdef __WXMAC__
+   f.Write(wxTextFileType_Mac);
+#else
+   f.Write();
+#endif
+   f.Close();
+}
+
+void ContrastDialog::OnTimeCtrlUpdate(wxCommandEvent & event) {
+   Fit();
+}
+
+
+void ContrastDialog::OnReset(wxCommandEvent & event)
+{
+   m_pEffect->bFGset = false;
+   m_pEffect->bBGset = false;
+
+   mForegroundStartT->SetTimeValue(0.0);
+   mForegroundEndT->SetTimeValue(0.0);
+   mBackgroundStartT->SetTimeValue(0.0);
+   mBackgroundEndT->SetTimeValue(0.0);
+
+   wxCommandEvent dummyEvt;
+   OnGetForegroundDB(event);
+   OnGetBackgroundDB(event);
+}
+
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
