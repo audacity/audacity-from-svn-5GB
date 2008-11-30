@@ -10,6 +10,7 @@
 #define __AUDACITY_EFFECT_CONTRAST__
 
 #include "Effect.h"
+#include "../widgets/TimeTextCtrl.h"
 
 #include <wx/dialog.h>
 #include <wx/slider.h>
@@ -29,7 +30,7 @@ public:
    virtual ~EffectContrast();
 
    virtual wxString GetEffectName() {
-      return wxString(_("Contrast...\tCtrl+Alt+C"));
+      return wxString(_("Contrast...\tCtrl+Shift+T"));
    }
 
    virtual int GetEffectFlags() {
@@ -58,6 +59,7 @@ public:
    virtual bool CheckWhetherSkipEffect();
    virtual bool Process();
    void SaveTimes(bool, double, double);
+   double length;
    
 private:
    bool      mDoBackground;
@@ -95,25 +97,24 @@ public:
 
    void OnGetForegroundDB( wxCommandEvent &event );
    void OnGetBackgroundDB( wxCommandEvent &event );
+   void OnTimeCtrlUpdate(wxCommandEvent & event);
 
 private:
    // handlers
    void OnGetURL(wxCommandEvent &event);
-   void OnForegroundStartText(wxCommandEvent & event);
-   void OnForegroundEndText(wxCommandEvent & event);
-   void OnBackgroundStartText(wxCommandEvent & event);
-   void OnBackgroundEndText(wxCommandEvent & event);
+   void OnExport(wxCommandEvent &event);
+   void OnForegroundStartT(wxCommandEvent & event);
+   void OnForegroundEndT(wxCommandEvent & event);
+   void OnBackgroundStartT(wxCommandEvent & event);
+   void OnBackgroundEndT(wxCommandEvent & event);
    void OnUseSelectionF(wxCommandEvent & event);
    void OnUseSelectionB(wxCommandEvent & event);
    void results();
    void OnOK( wxCommandEvent &event );
+   void OnReset(wxCommandEvent & event);
 
    wxStaticText *mForegroundRMSText;
-   wxTextCtrl *mForegroundStartText;
-   wxTextCtrl *mForegroundEndText;
    wxStaticText *mBackgroundRMSText;
-   wxTextCtrl *mBackgroundStartText;
-   wxTextCtrl *mBackgroundEndText;
    wxStaticText *mPassFailText;
    wxStaticText *mDiffText;
 
@@ -131,11 +132,13 @@ private:
    wxButton * m_pButton_UseCurrentF;
    wxButton * m_pButton_UseCurrentB;
    wxButton * m_pButton_GetURL;
+   wxButton * m_pButton_Export;
+   wxButton * m_pButton_Reset;
 
-   double startTimeF;
-   double endTimeF;
-   double startTimeB;
-   double endTimeB;
+   TimeTextCtrl *mForegroundStartT;
+   TimeTextCtrl *mForegroundEndT;
+   TimeTextCtrl *mBackgroundStartT;
+   TimeTextCtrl *mBackgroundEndT;
 
 private:
    DECLARE_EVENT_TABLE()
