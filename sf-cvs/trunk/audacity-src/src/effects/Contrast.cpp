@@ -427,6 +427,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
    //Information
    S.StartStatic( _("Information") );
    {
+      S.AddFixedText(_("Contrast, for analysing rms volume differences between selections, in dBs."));
       m_pButton_GetURL = S.Id(ID_BUTTON_GETURL).AddButton(_("WCAG contrast tool help on the web"));
    }
    S.EndStatic();
@@ -494,6 +495,7 @@ void ContrastDialog::results()
       mPassFailText->SetLabel(wxT(""));
       mDiffText->SetLabel(wxT(""));
    }
+   Fit();
 }
 
 void ContrastDialog::OnExport(wxCommandEvent & event)
