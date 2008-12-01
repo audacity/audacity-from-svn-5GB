@@ -155,8 +155,8 @@ bool EffectRepeat::Process()
 
    if (bGoodResult)
    {
-      // Change selection to just the generated bits.
-      mT0 = mT1;
+      // Select the new bits + original bit
+//      mT0 = mT1;
 	   mT1 = maxDestLen;
    }
 
