@@ -211,9 +211,9 @@ enum {
    ID_BUTTON_RESET,
    ID_FOREGROUNDSTART_T,
    ID_FOREGROUNDEND_T,
-   ID_FOREGROUNDDB_TEXT,
    ID_BACKGROUNDSTART_T,
    ID_BACKGROUNDEND_T,
+   ID_FOREGROUNDDB_TEXT,
    ID_BACKGROUNDDB_TEXT,
    ID_RESULTS_TEXT,
    ID_RESULTSDB_TEXT
@@ -228,7 +228,7 @@ BEGIN_EVENT_TABLE(ContrastDialog,wxDialog)
    EVT_BUTTON(ID_BUTTON_GETURL, ContrastDialog::OnGetURL)
    EVT_BUTTON(ID_BUTTON_EXPORT, ContrastDialog::OnExport)
    EVT_BUTTON(ID_BUTTON_RESET, ContrastDialog::OnReset)
-   EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, ContrastDialog::OnTimeCtrlUpdate)
+   EVT_COMMAND_RANGE(ID_FOREGROUNDSTART_T, ID_BACKGROUNDEND_T, EVT_TIMETEXTCTRL_UPDATED, ContrastDialog::OnTimeCtrlUpdate)
 
    EVT_COMMAND(ID_FOREGROUNDSTART_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnForegroundStartT)
    EVT_COMMAND(ID_FOREGROUNDEND_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnForegroundEndT)
@@ -319,7 +319,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          S.AddFixedText(_("End"));
          S.AddFixedText(wxT(""));   // spacer
          S.AddFixedText(wxT(""));   // spacer
-         S.AddFixedText(_("Volume"));
+         S.AddFixedText(_("Volume    "));
 
          //Foreground
          S.AddFixedText(_("Foreground:"), false);
@@ -422,7 +422,6 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
       S.EndMultiColumn();
    }
    S.EndStatic();
-   results();
 
    //Information
    S.StartStatic( _("Information") );
@@ -466,7 +465,6 @@ void ContrastDialog::OnUseSelectionF(wxCommandEvent & event)
    m_pEffect->SetStartTime(mT0orig);
    m_pEffect->SetEndTime(mT1orig);
    OnGetForegroundDB(event);
-   results();
 }
 
 void ContrastDialog::OnUseSelectionB(wxCommandEvent & event)
@@ -477,7 +475,6 @@ void ContrastDialog::OnUseSelectionB(wxCommandEvent & event)
    m_pEffect->SetStartTime(mT0orig);
    m_pEffect->SetEndTime(mT1orig);
    OnGetBackgroundDB(event);
-   results();
 }
 
 void ContrastDialog::results()
@@ -488,14 +485,13 @@ void ContrastDialog::results()
          mPassFailText->SetLabel(_("WCAG2 Pass"));
       else
          mPassFailText->SetLabel(_("WCAG2 Fail"));
-      mDiffText->SetLabel(wxString::Format(wxT("%.1f dB Average RMS"), foregrounddB - backgrounddB));
+      mDiffText->SetLabel(wxString::Format(wxT("%.1f dB Average rms"), foregrounddB - backgrounddB));
    }
    else
    {
-      mPassFailText->SetLabel(wxT(""));
-      mDiffText->SetLabel(wxT(""));
+      mPassFailText->SetLabel(wxT("Please select audio.      ")); // keep this message about this long to leave space
+      mDiffText->SetLabel(_(""));
    }
-   Fit();
 }
 
 void ContrastDialog::OnExport(wxCommandEvent & event)
@@ -573,7 +569,16 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
    f.Close();
 }
 
-void ContrastDialog::OnTimeCtrlUpdate(wxCommandEvent & event) {
+void ContrastDialog::OnTimeCtrlUpdate(wxCommandEvent & event)
+{
+   wxWindow *w = FindFocus();
+   TimeTextCtrl *s = (TimeTextCtrl *)w;
+   wxString setting = s->GetFormatString();
+   mForegroundStartT->SetFormatString(setting);
+   mForegroundEndT->SetFormatString(setting);
+   mBackgroundStartT->SetFormatString(setting);
+   mBackgroundEndT->SetFormatString(setting);
+
    Fit();
 }
 
