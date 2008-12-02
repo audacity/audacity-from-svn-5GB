@@ -509,17 +509,46 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
             libpath_util = libpath;
          }
       }
-      //avformat loaded all right. If it didn't linked two other
-      //libs to itself in process, then it's statically linked.
-      //"or" operator ensures that we won't count misnamed statically linked
-      //avformat library as a dynamic one.
-      if ((libpath_codec.CompareTo(wxT("")) == 0)
-         || (libpath_util.CompareTo(wxT("")) == 0))
+      if (loadsize == 0)
       {
-         wxLogMessage(wxT("The avformat library happened to be statically linked"));
-         mStatic = true;
+         wxLogMessage(wxT("Can't get a list of modules (list is empty)"));
+         // Assume that library is not statically linked
+         mStatic = false;
+         // Attempt to load avcodec_init from it.
+         if (avformat->HasSymbol("avcodec_init"))
+         {
+            // Symbol is loaded, library is statically linked
+            wxLogMessage(wxT("The avformat library happened to be statically linked"));
+            mStatic = true;
+         }
+         else
+         {
+            // Assume that other two libs are in the same directory
+            libpath_codec = wxPathOnly(libpath_format) + wxFileName::GetPathSeparator() + GetLibAVCodecName();
+            libpath_util  = wxPathOnly(libpath_format) + wxFileName::GetPathSeparator() + GetLibAVUtilName();
+            if (!wxFileExists(libpath_codec) && !wxFileExists(libpath_util))
+            {
+               // Else assume that they are somewhere in PATH,
+               // and pray that OS will hook them up by itself
+               libpath_codec = GetLibAVCodecName();
+               libpath_util = GetLibAVUtilName();
+            }
+         }
       }
-      else mStatic = false;
+      else
+      {
+         //avformat loaded all right. If it didn't linked two other
+         //libs to itself in process, then it's statically linked.
+         //"or" operator ensures that we won't count misnamed statically linked
+         //avformat library as a dynamic one.
+         if ((libpath_codec.CompareTo(wxT("")) == 0) ||
+          (libpath_util.CompareTo(wxT("")) == 0))
+         {
+            wxLogMessage(wxT("The avformat library happened to be statically linked"));
+            mStatic = true;
+         }
+         else mStatic = false;
+      }
    }
 
    if (!mStatic)
