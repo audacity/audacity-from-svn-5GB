@@ -515,7 +515,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
          // Assume that library is not statically linked
          mStatic = false;
          // Attempt to load avcodec_init from it.
-         if (avformat->HasSymbol("avcodec_init"))
+         if (avformat->HasSymbol(wxT("avcodec_init")))
          {
             // Symbol is loaded, library is statically linked
             wxLogMessage(wxT("The avformat library happened to be statically linked"));
