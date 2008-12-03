@@ -2,7 +2,7 @@
 /*
  * Copyright 2004 Matt Brubeck
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "features";
@@ -63,16 +63,16 @@
   echo _('<h3>Sound Quality</h3>
 <ul>
   <li>Record and edit 16-bit, 24-bit, and 32-bit (floating point) samples.</li>
-  <li>Record at up to 96 KHz.</li>
+  <li>Record at up to 96 kHz.</li>
   <li>Sample rates and formats are converted using high-quality resampling and dithering.</li>
   <li>Mix tracks with different sample rates or formats, and Audacity will convert them automatically in realtime.</li>
 </ul>');
 
   echo _('<h3>Plug-Ins</h3>
 <ul>
-  <li>Add new effects with <a href="http://www.ladspa.org/">LADSPA plugins</a>.</li>
-  <li>Audacity includes some sample plugins by <a href="http://plugin.org.uk/">Steve Harris</a>.</li>
-  <li>Load VST plugins for Windows and Mac, with the optional <a href="http://audacityteam.org/vst/">VST Enabler</a>.</li>
+  <li>Add new effects with <a href="http://www.ladspa.org/">LADSPA plug-ins</a>.</li>
+  <li>Audacity includes some sample plug-ins by <a href="http://plugin.org.uk/">Steve Harris</a>.</li>
+  <li>Load VST plug-ins for Windows and Mac, with the optional <a href="http://audacityteam.org/vst/">VST Enabler</a>.</li>
   <li>Write new effects with the built-in <a href="../help/nyquist">Nyquist</a> programming language.</li>
 </ul>');
 
