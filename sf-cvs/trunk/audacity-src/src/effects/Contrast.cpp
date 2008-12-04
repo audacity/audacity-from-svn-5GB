@@ -262,9 +262,15 @@ void ContrastDialog::OnGetForegroundDB( wxCommandEvent &event )
    m_pEffect->SetEndTime(mForegroundEndT->GetTimeValue());
    foregrounddB = m_pEffect->GetDB();
    if(foregrounddB == 1234.0) // magic number, is there a better way?
+   {
+      mForegroundRMSText->SetName(_("No foreground to measure"));
       mForegroundRMSText->SetLabel(wxString::Format(_(" ")));
+   }
    else
+   {
+      mForegroundRMSText->SetName(_("Measured foreground level"));
       mForegroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), foregrounddB));
+   }
    m_pButton_GetForeground->Enable(false);
    m_pButton_GetForeground->SetLabel(_("Measured"));
    m_pButton_UseCurrentF->SetFocus();
@@ -277,9 +283,15 @@ void ContrastDialog::OnGetBackgroundDB( wxCommandEvent &event )
    m_pEffect->SetEndTime(mBackgroundEndT->GetTimeValue());
    backgrounddB = m_pEffect->GetDB();
    if(backgrounddB == 1234.0) // magic number, is there a better way?
+   {
+      mBackgroundRMSText->SetName(_("No background to measure"));
       mBackgroundRMSText->SetLabel(wxString::Format(_(" ")));
+   }
    else
+   {
+      mBackgroundRMSText->SetName(_("Measured background level"));
       mBackgroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), backgrounddB));
+   }
    m_pButton_GetBackground->Enable(false);
    m_pButton_GetBackground->SetLabel(_("Measured"));
    m_pButton_UseCurrentB->SetFocus();
@@ -335,6 +347,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          wxDefaultPosition,
                          wxDefaultSize,
                          true);
+            mForegroundStartT->SetName(_("Foreground start time"));
             mForegroundStartT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
             mForegroundStartT->EnableMenu();
          }
@@ -352,6 +365,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          wxDefaultPosition,
                          wxDefaultSize,
                          true);
+            mForegroundEndT->SetName(_("Foreground end time"));
             mForegroundEndT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
             mForegroundEndT->EnableMenu();
          }
@@ -360,7 +374,8 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          m_pButton_GetForeground = S.Id(ID_BUTTON_GETFOREGROUND).AddButton(_("Measured"));
          m_pButton_GetForeground->Enable(false);   // Disabled as we do the measurement as we put up the dialog
          m_pButton_UseCurrentF = S.Id(ID_BUTTON_USECURRENTF).AddButton(_("Use selection"));
-         mForegroundRMSText=S.Id(ID_FOREGROUNDDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f dB"), foregrounddB));
+         mForegroundRMSText=S.Id(ID_FOREGROUNDDB_TEXT).AddTextBox(wxT(""), wxT(""), 12);
+         mForegroundRMSText->Enable(false);
 
          //Background
          S.AddFixedText(_("Background:"));
@@ -376,6 +391,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          wxDefaultPosition,
                          wxDefaultSize,
                          true);
+            mBackgroundStartT->SetName(_("Background start time"));
             mBackgroundStartT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
             mBackgroundStartT->EnableMenu();
          }
@@ -393,6 +409,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          wxDefaultPosition,
                          wxDefaultSize,
                          true);
+            mBackgroundEndT->SetName(_("Background end time"));
             mBackgroundEndT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
             mBackgroundEndT->EnableMenu();
          }
@@ -401,7 +418,8 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          m_pButton_GetBackground = S.Id(ID_BUTTON_GETBACKGROUND).AddButton(_("Measured"));
          m_pButton_GetBackground->Enable(false);
          m_pButton_UseCurrentB = S.Id(ID_BUTTON_USECURRENTB).AddButton(_("Use selection"));
-         mBackgroundRMSText=S.Id(ID_BACKGROUNDDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f dB"), backgrounddB));
+         mBackgroundRMSText=S.Id(ID_BACKGROUNDDB_TEXT).AddTextBox(wxT(""), wxT(""), 12);
+         mBackgroundRMSText->Enable(false);
       }
       S.EndMultiColumn();
    }
@@ -413,10 +431,12 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
       S.StartMultiColumn(3, wxCENTER);
       {
          S.AddFixedText(_("Contrast Result:"));
-         mPassFailText = S.Id(ID_RESULTS_TEXT).AddVariableText(wxString::Format(wxT("%s"), _("Fail")));
+         mPassFailText = S.Id(ID_RESULTS_TEXT).AddTextBox(wxT(""), wxT(""), 30);
+         mPassFailText->Enable(false);
          m_pButton_Export = S.Id(ID_BUTTON_EXPORT).AddButton(_("Export")); //right justify
          S.AddFixedText(_("Difference:"));
-         mDiffText = S.Id(ID_RESULTSDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f  Average RMS"), foregrounddB - backgrounddB));
+         mDiffText = S.Id(ID_RESULTSDB_TEXT).AddTextBox(wxT(""), wxT(""), 30);
+         mDiffText->Enable(false);
          m_pButton_Reset = S.Id(ID_BUTTON_RESET).AddButton(_("Reset")); //right justify
       }
       S.EndMultiColumn();
@@ -482,13 +502,21 @@ void ContrastDialog::results()
    if( (foregrounddB != 1234.0) && (backgrounddB != 1234.0) )
    {
       if(foregrounddB - backgrounddB > 20)
+      {
+         mPassFailText->SetName(_("WCAG2 Pass"));
          mPassFailText->SetLabel(_("WCAG2 Pass"));
+      }
       else
+      {
+         mPassFailText->SetName(_("WCAG2 Fail"));
          mPassFailText->SetLabel(_("WCAG2 Fail"));
+      }
+      mDiffText->SetName(_("Current difference"));
       mDiffText->SetLabel(wxString::Format(wxT("%.1f dB Average rms"), foregrounddB - backgrounddB));
    }
    else
    {
+      mPassFailText->SetName(_("Please select audio."));
       mPassFailText->SetLabel(wxT("Please select audio.      ")); // keep this message about this long to leave space
       mDiffText->SetLabel(_(""));
    }
