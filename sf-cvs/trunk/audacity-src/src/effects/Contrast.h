@@ -113,10 +113,10 @@ private:
    void OnOK( wxCommandEvent &event );
    void OnReset(wxCommandEvent & event);
 
-   wxTextCtrl *mForegroundRMSText;
-   wxTextCtrl *mBackgroundRMSText;
-   wxTextCtrl *mPassFailText;
-   wxTextCtrl *mDiffText;
+   wxStaticText *mForegroundRMSText;
+   wxStaticText *mBackgroundRMSText;
+   wxStaticText *mPassFailText;
+   wxStaticText *mDiffText;
 
    float foregrounddB;
    float backgrounddB;
