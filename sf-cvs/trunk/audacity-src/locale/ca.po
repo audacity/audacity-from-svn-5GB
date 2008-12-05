@@ -1486,7 +1486,7 @@ msgstr "&Tanca\tCtrl+W"
 
 #: Menus.cpp:174
 msgid "&Save Project\tCtrl+S"
-msgstr "&Desa el projecte\tCrtl+S"
+msgstr "&Desa el projecte\tCtrl+S"
 
 #: Menus.cpp:178
 #: Project.cpp:2690
@@ -1503,7 +1503,7 @@ msgstr "Obre l'editor de me&tadades..."
 
 #: Menus.cpp:196
 msgid "&Audio...\tCtrl+Shift+I"
-msgstr "&So...\tCtrl+Maj+I"
+msgstr "&So...\tCtrl+Shift+I"
 
 #: Menus.cpp:197
 msgid "&Labels..."
@@ -1652,12 +1652,12 @@ msgstr "&Retalla\tAlt+X"
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:372
 msgid "&Split Cut\tShift+Alt+X"
-msgstr "Divideix i re&talla\tMaj+Alt+X"
+msgstr "Divideix i re&talla\tShift+Alt+X"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:377
 msgid "Co&py\tShift+Alt+C"
-msgstr "Co&pia\tMaj+Alt+C"
+msgstr "Co&pia\tShift+Alt+C"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:383
@@ -1667,7 +1667,7 @@ msgstr "E&limina\tAlt+K"
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:388
 msgid "Sp&lit Delete\tShift+Alt+K"
-msgstr "Di&videix i elimina\tMaj+Alt+K"
+msgstr "Di&videix i elimina\tShift+Alt+K"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:393
@@ -1687,7 +1687,7 @@ msgstr "A&junta\tAlt+J"
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:409
 msgid "Disj&oin\tShift+Alt+J"
-msgstr "Se&para\tMaj+Alt+J"
+msgstr "Se&para\tShift+Alt+J"
 
 #: Menus.cpp:415
 msgid "Select&..."
@@ -1699,7 +1699,7 @@ msgstr "&Tot\tCtrl+A"
 
 #: Menus.cpp:417
 msgid "&None\tCtrl+Shift+A"
-msgstr "&Cap...\tCtrl+Maj+A"
+msgstr "&Cap...\tCtrl+Shift+A"
 
 #: Menus.cpp:421
 msgid "&Left at Playback Position\t["
@@ -1711,11 +1711,11 @@ msgstr "A la &dreta de la posició d'interpretació\t]"
 
 #: Menus.cpp:426
 msgid "Track &Start to Cursor\tShift+J"
-msgstr "De l'&inici de pista fins al cursor\tMaj.+J"
+msgstr "De l'&inici de pista fins al cursor\tShift+J"
 
 #: Menus.cpp:427
 msgid "Cursor to Track &End\tShift+K"
-msgstr "Del cursor fins al final de la pista\tMaj.+K"
+msgstr "Del cursor fins al final de la pista\tShift+K"
 
 #: Menus.cpp:433
 msgid "Find &Zero Crossings\tZ"
@@ -1811,11 +1811,11 @@ msgstr "Fes &zoom a la selecció\tCrtl+E"
 
 #: Menus.cpp:506
 msgid "&Collapse All Tracks\tCtrl+Shift+C"
-msgstr "Ai&xafa totes les pistes\tCtrl+Maj+C"
+msgstr "Ai&xafa totes les pistes\tCtrl+Shift+C"
 
 #: Menus.cpp:507
 msgid "E&xpand All Tracks\tCtrl+Shift+X"
-msgstr "E&xpandeix totes les pistes\tCtrl+Maj+X"
+msgstr "E&xpandeix totes les pistes\tCtrl+Shift+X"
 
 #: Menus.cpp:510
 msgid "&Show Clipping"
@@ -1879,7 +1879,7 @@ msgstr "Afe&geix..."
 
 #: Menus.cpp:553
 msgid "&Audio Track\tCtrl+Shift+N"
-msgstr "Pista de &so\tCtrl+Maj+N"
+msgstr "Pista de &so\tCtrl+Shift+N"
 
 #: Menus.cpp:554
 msgid "&Stereo Track"
@@ -1900,7 +1900,7 @@ msgstr "&Mescla i renderitza"
 
 #: Menus.cpp:572
 msgid "Mix and Render to New Track\tCtrl+Shift+M"
-msgstr "Mescla-ho i renderitza-ho en una nova pista\tCtrl+Maj+M"
+msgstr "Mescla-ho i renderitza-ho en una nova pista\tCtrl+Shift+M"
 
 #: Menus.cpp:576
 msgid "&Resample..."
@@ -1916,7 +1916,7 @@ msgstr "Si&lencia totes les pistes\tCtrl+U"
 
 #: Menus.cpp:593
 msgid "&UnMute All Tracks\tCtrl+Shift+U"
-msgstr "&Activa el so a totes les pistes\tCtrl+Maj+U"
+msgstr "&Activa el so a totes les pistes\tCtrl+Shift+U"
 
 #: Menus.cpp:597
 msgid "Align with &Zero"
@@ -2029,7 +2029,7 @@ msgstr "Informació del dispositiu de &so..."
 
 #: Menus.cpp:770
 msgid "Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"
-msgstr "Mou-te enrere entre l'acoblador, la vista de pistes i la barra de selecció\tCtrl+Maj+F6"
+msgstr "Mou-te enrere entre l'acoblador, la vista de pistes i la barra de selecció\tCtrl+Shift+F6"
 
 #: Menus.cpp:771
 msgid "Cycle forward through Dock, Track View, and Selection Bar\tCtrl+F6"
@@ -2057,7 +2057,7 @@ msgstr "Eina de desplaçament en el temps\tF5"
 
 #: Menus.cpp:779
 msgid "Multi Tool\tF6"
-msgstr "Multi-eina"
+msgstr "Multi-eina\tF6"
 
 #: Menus.cpp:781
 msgid "Next Tool\tD"
@@ -2069,7 +2069,7 @@ msgstr "Eina anterior\tA"
 
 #: Menus.cpp:784
 msgid "Play/Stop\tSpacebar"
-msgstr "Reprodueix/Atura't\tEspai"
+msgstr "Reprodueix/Atura't\tSpacebar"
 
 #: Menus.cpp:785
 msgid "Stop\tS"
@@ -2089,7 +2089,7 @@ msgstr "Enregistra afegint\tShift+R"
 
 #: Menus.cpp:790
 msgid "Play/Stop and Set Cursor\tShift+A"
-msgstr "Engega/Atura i Estableix la posició del cursor\tMaj+A"
+msgstr "Engega/Atura i Estableix la posició del cursor\tShift+A"
 
 #: Menus.cpp:793
 msgid "Play One Second\t1"
@@ -2105,7 +2105,7 @@ msgstr "Reprodueix en bucle\tL"
 
 #: Menus.cpp:796
 msgid "Play Looped\tShift+Spacebar"
-msgstr "Reprodueix en bucle\tMaj+Espai"
+msgstr "Reprodueix en bucle\tShift+Spacebar"
 
 #: Menus.cpp:797
 msgid "Play Cut Preview\tC"
@@ -2113,63 +2113,63 @@ msgstr "Interpreta l'exemple d'audició del fragment retallat\tC"
 
 #: Menus.cpp:799
 msgid "Skip to Start\tHome"
-msgstr "Vés a l'inici\tInici"
+msgstr "Vés a l'inici\tHome"
 
 #: Menus.cpp:800
 msgid "Skip to End\tEnd"
-msgstr "Vés a la pista següent i canvia la selecció\tMaj+Avall"
+msgstr "Vés a la pista següent i canvia la selecció\tEnd"
 
 #: Menus.cpp:802
 msgid "Selection to Start\tShift+Home"
-msgstr "Selecciona fins a l'inici\tMaj+Inici"
+msgstr "Selecciona fins a l'inici\tShift+Home"
 
 #: Menus.cpp:803
 msgid "Selection to End\tShift+End"
-msgstr "Selecciona fins al final\tMaj+Fi"
+msgstr "Selecciona fins al final\tShift+End"
 
 #: Menus.cpp:805
 msgid "DeleteKey\tBackspace"
-msgstr "Tecla d'eliminació\tRetrocés"
+msgstr "Tecla d'eliminació\tBackspace"
 
 #: Menus.cpp:810
 msgid "DeleteKey2\tDelete"
-msgstr "Tecla d'eliminació 2\tSupr"
+msgstr "Tecla d'eliminació 2\tDelete"
 
 #: Menus.cpp:816
 msgid "Seek left short period during playback\tLeft"
-msgstr "Retrocedeix una mica durant la interpretació"
+msgstr "Retrocedeix una mica durant la interpretació\tLeft"
 
 #: Menus.cpp:817
 msgid "Seek right short period during playback\tRight"
-msgstr "Avança una mica durant la interpretació\tDreta"
+msgstr "Avança una mica durant la interpretació\tRight"
 
 #: Menus.cpp:818
 msgid "Seek left long period during playback\tShift+Left"
-msgstr "Retrocedeix un tros llarg durant la interpretació\tMaj.+Esquera"
+msgstr "Retrocedeix un tros llarg durant la interpretació\tShift+Left"
 
 #: Menus.cpp:819
 msgid "Seek right long period during playback\tShift+Right"
-msgstr "Avança un tros llarg durant la interpretació\tMaj.+Dreta"
+msgstr "Avança un tros llarg durant la interpretació\tShift+Right"
 
 #: Menus.cpp:823
 msgid "Move Focus to Previous Track\tUp"
-msgstr "Vés a la pista anterior\tAmunt"
+msgstr "Vés a la pista anterior\tUp"
 
 #: Menus.cpp:824
 msgid "Move Focus to Previous and Change Selection\tShift+Up"
-msgstr "Vés a la pista anterior i canvia la selecció\tMaj+Amunt"
+msgstr "Vés a la pista anterior i canvia la selecció\tShift+Up"
 
 #: Menus.cpp:825
 msgid "Move Focus to Next Track\tDown"
-msgstr "Vés a la pista següent\tAvall"
+msgstr "Vés a la pista següent\tADown"
 
 #: Menus.cpp:826
 msgid "Move Focus to Next and Change Selection\tShift+Down"
-msgstr "Vés a la pista següent i canvia la selecció\tMaj+Avall"
+msgstr "Vés a la pista següent i canvia la selecció\tShift+Down"
 
 #: Menus.cpp:827
 msgid "Toggle Focused Track\tReturn"
-msgstr "Commuta la pista actual\tRetorn"
+msgstr "Commuta la pista actual\tReturn"
 
 #: Menus.cpp:828
 msgid "Toggle Focused Track\tNUMPAD_ENTER"
@@ -2177,15 +2177,15 @@ msgstr "Commuta la pista actual\tNUMPAD_ENTER"
 
 #: Menus.cpp:829
 msgid "Toggle Focused Track\tCtrl+Spacebar"
-msgstr "Commuta la pista actual\tCtrl+Espai"
+msgstr "Commuta la pista actual\tCtrl+Spacebar"
 
 #: Menus.cpp:831
 msgid "Cursor Left\tLeft"
-msgstr "Cursor a l'esquerra\tEsquerra"
+msgstr "Cursor a l'esquerra\tLeft"
 
 #: Menus.cpp:832
 msgid "Cursor Right\tRight"
-msgstr "Cursor a la dreta\tDreta"
+msgstr "Cursor a la dreta\tRight"
 
 #: Menus.cpp:833
 msgid "Cursor Short Jump Left\t,"
@@ -2197,19 +2197,19 @@ msgstr "Salt curt del cursor a la dreta\t."
 
 #: Menus.cpp:835
 msgid "Cursor Long Jump Left\tShift+,"
-msgstr "Salt llarg del cursor a l'esquerra\tMaj.+,"
+msgstr "Salt llarg del cursor a l'esquerra\tShift.+,"
 
 #: Menus.cpp:836
 msgid "Cursor Long Jump Right\tShift+."
-msgstr "Salt llarg del cursor a la dreta\tMaj.+."
+msgstr "Salt llarg del cursor a la dreta\tShift+."
 
 #: Menus.cpp:838
 msgid "Selection Extend Left\tShift+Left"
-msgstr "Expandeix la selecció a l'esquerra\tMaj+Esquerra"
+msgstr "Expandeix la selecció a l'esquerra\tShift+Left"
 
 #: Menus.cpp:839
 msgid "Selection Extend Right\tShift+Right"
-msgstr "Expandeix la selecció a la dreta\tMaj+Dreta"
+msgstr "Expandeix la selecció a la dreta\tShift+Right"
 
 #: Menus.cpp:841
 msgid "Set (or Extend) Left Selection"
@@ -2221,51 +2221,51 @@ msgstr "Estableix (o estén) el límit dret de la selecció"
 
 #: Menus.cpp:844
 msgid "Selection Contract Left\tCtrl+Shift+Right"
-msgstr "Contreu la selecció a l'esquerra\tCtrl+Maj+Dreta"
+msgstr "Contreu la selecció a l'esquerra\tCtrl+Shift+Right"
 
 #: Menus.cpp:845
 msgid "Selection Contract Right\tCtrl+Shift+Left"
-msgstr "Contreu la selecció a la dreta\tCtrl+Maj+Esquerra"
+msgstr "Contreu la selecció a la dreta\tCtrl+Shift+Left"
 
 #: Menus.cpp:847
 msgid "Change pan on focused track\tShift+P"
-msgstr "Canvia la posició panoràmica de la pista actual\tMaj+P"
+msgstr "Canvia la posició panoràmica de la pista actual\tShift+P"
 
 #: Menus.cpp:848
 msgid "Pan left on focused track\tAlt+Shift+Left"
-msgstr "Mou a l'esquerra la posició panoràmica de la pista actual\tAlt+Maj+Esquerra"
+msgstr "Mou a l'esquerra la posició panoràmica de la pista actual\tAlt+Shift+Left"
 
 #: Menus.cpp:849
 msgid "Pan right on focused track\tAlt+Shift+Right"
-msgstr "Mou a la dreta la posició panoràmica de la pista actual\tAlt+Maj+Dreta"
+msgstr "Mou a la dreta la posició panoràmica de la pista actual\tAlt+Shift+Right"
 
 #: Menus.cpp:850
 msgid "Change gain on focused track\tShift+G"
-msgstr "Canvia el guany a la pista actual\tMaj+G"
+msgstr "Canvia el guany a la pista actual\tShift+G"
 
 #: Menus.cpp:851
 msgid "Increase gain on focused track\tAlt+Shift+Up"
-msgstr "Incrementa el guany a la pista actual\tAlt+Maj+Amunt"
+msgstr "Incrementa el guany a la pista actual\tAlt+Shift+Up"
 
 #: Menus.cpp:852
 msgid "Decrease gain on focused track\tAlt+Shift+Down"
-msgstr "Redueix el guany a la pista actual\tAlt+Maj+Avall"
+msgstr "Redueix el guany a la pista actual\tAlt+Shift+Down"
 
 #: Menus.cpp:853
 msgid "Open menu on focused track\tShift+M"
-msgstr "Obre el menú de la pista actual\tMaj+M"
+msgstr "Obre el menú de la pista actual\tShift+M"
 
 #: Menus.cpp:854
 msgid "Mute/Unmute focused track\tShift+U"
-msgstr "Emmudeix o deixa d'emmudir la pista actual\tMaj+U"
+msgstr "Emmudeix o deixa d'emmudir la pista actual\tShift+U"
 
 #: Menus.cpp:855
 msgid "Solo/Unsolo focused track\tShift+S"
-msgstr "Activa o desactiva el Solo a la pista actual\tMaj+S"
+msgstr "Activa o desactiva el Solo a la pista actual\tShift+S"
 
 #: Menus.cpp:856
 msgid "Close focused track\tShift+C"
-msgstr "Tanca la pista actual\tMaj+C"
+msgstr "Tanca la pista actual\tShift+C"
 
 #: Menus.cpp:858
 msgid "Snap To On"
@@ -6263,7 +6263,7 @@ msgstr "El bit menor darrera (little-endian)"
 #. know the correct technical word.
 #: import/ImportRaw.cpp:343
 msgid "Big-endian"
-msgstr "El bit major darrera (big-endian)"
+msgstr "El bit Shiftor darrera (big-endian)"
 
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #. know the correct technical word.
@@ -6844,7 +6844,7 @@ msgstr "Amplia l'abast de la selecció"
 
 #: prefs/MousePrefs.cpp:100
 msgid "Shift-Left-Click"
-msgstr "Maj+clic esquerre"
+msgstr "Shift+clic esquerre"
 
 #: prefs/MousePrefs.cpp:101
 msgid "Left-Double-Click"
@@ -6906,7 +6906,7 @@ msgstr "el mateix que arrossegar a l'esquerra"
 
 #: prefs/MousePrefs.cpp:108
 msgid "Shift-Drag"
-msgstr "Majúscules+Arrossega"
+msgstr "Shiftúscules+Arrossega"
 
 #: prefs/MousePrefs.cpp:108
 msgid "Zoom out on a Range"
@@ -6926,7 +6926,7 @@ msgstr "Desplaça el clip en el temps, o mou-lo amunt o avall entre pistes"
 
 #: prefs/MousePrefs.cpp:112
 msgid "Shift-Left-Drag"
-msgstr "Maj+Arrossega a l'esquerra"
+msgstr "Shift+Arrossega a l'esquerra"
 
 #: prefs/MousePrefs.cpp:112
 msgid "Time shift all clips in track"
@@ -7009,7 +7009,7 @@ msgstr "Desplaça't a l'esquerra o a la dreta"
 
 #: prefs/MousePrefs.cpp:128
 msgid "Shift-Wheel-Rotate"
-msgstr "Majúscules+Roda del ratolí"
+msgstr "Shiftúscules+Roda del ratolí"
 
 #: prefs/MousePrefs.cpp:129
 msgid "Ctrl-Wheel-Rotate"
@@ -7308,7 +7308,7 @@ msgstr "Interpreta"
 
 #: toolbars/ControlToolBar.cpp:177
 msgid "Play (Shift for loop-play)"
-msgstr "Reprodueix (+Maj. per a reproduir en bucle)"
+msgstr "Reprodueix (+Shift. per a reproduir en bucle)"
 
 #: toolbars/ControlToolBar.cpp:182
 msgid "Stop"
@@ -7506,7 +7506,7 @@ msgstr "Feu clic i arrossegueu per a modificar les mostres"
 
 #: toolbars/ToolsToolBar.cpp:67
 msgid "Click to Zoom In, Shift-Click to Zoom Out"
-msgstr "Feu clic per a apropar i Maj+clic per a allunyar"
+msgstr "Feu clic per a apropar i Shift+clic per a allunyar"
 
 #: toolbars/ToolsToolBar.cpp:69
 msgid "Drag to Zoom Into Region, Right-Click to Zoom Out"
