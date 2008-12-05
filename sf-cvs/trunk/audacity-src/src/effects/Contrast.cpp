@@ -268,7 +268,7 @@ void ContrastDialog::OnGetForegroundDB( wxCommandEvent &event )
    }
    else
    {
-      mForegroundRMSText->SetName(_("Measured foreground level"));
+      mForegroundRMSText->SetName(wxString::Format(_("Measured foreground level %.1f dB"), foregrounddB));
       mForegroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), foregrounddB));
    }
    m_pButton_GetForeground->Enable(false);
@@ -289,7 +289,7 @@ void ContrastDialog::OnGetBackgroundDB( wxCommandEvent &event )
    }
    else
    {
-      mBackgroundRMSText->SetName(_("Measured background level"));
+      mBackgroundRMSText->SetName(wxString::Format(_("Measured background level %.1f dB"), backgrounddB));
       mBackgroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), backgrounddB));
    }
    m_pButton_GetBackground->Enable(false);
@@ -374,8 +374,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          m_pButton_GetForeground = S.Id(ID_BUTTON_GETFOREGROUND).AddButton(_("Measured"));
          m_pButton_GetForeground->Enable(false);   // Disabled as we do the measurement as we put up the dialog
          m_pButton_UseCurrentF = S.Id(ID_BUTTON_USECURRENTF).AddButton(_("Use selection"));
-         mForegroundRMSText=S.Id(ID_FOREGROUNDDB_TEXT).AddTextBox(wxT(""), wxT(""), 12);
-         mForegroundRMSText->Enable(false);
+         mForegroundRMSText=S.Id(ID_FOREGROUNDDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f dB"), foregrounddB));
 
          //Background
          S.AddFixedText(_("Background:"));
@@ -418,8 +417,15 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          m_pButton_GetBackground = S.Id(ID_BUTTON_GETBACKGROUND).AddButton(_("Measured"));
          m_pButton_GetBackground->Enable(false);
          m_pButton_UseCurrentB = S.Id(ID_BUTTON_USECURRENTB).AddButton(_("Use selection"));
-         mBackgroundRMSText=S.Id(ID_BACKGROUNDDB_TEXT).AddTextBox(wxT(""), wxT(""), 12);
-         mBackgroundRMSText->Enable(false);
+         mBackgroundRMSText=S.Id(ID_BACKGROUNDDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f dB"), backgrounddB));
+         
+         // Final row
+         S.AddFixedText(wxT(""));   // spacer
+         S.AddFixedText(wxT(""));   // spacer
+         S.AddFixedText(wxT(""));   // spacer
+         S.AddFixedText(wxT(""));   // spacer
+         m_pButton_Reset = S.Id(ID_BUTTON_RESET).AddButton(_("Reset"));
+
       }
       S.EndMultiColumn();
    }
@@ -431,13 +437,11 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
       S.StartMultiColumn(3, wxCENTER);
       {
          S.AddFixedText(_("Contrast Result:"));
-         mPassFailText = S.Id(ID_RESULTS_TEXT).AddTextBox(wxT(""), wxT(""), 30);
-         mPassFailText->Enable(false);
-         m_pButton_Export = S.Id(ID_BUTTON_EXPORT).AddButton(_("Export")); //right justify
+         mPassFailText = S.Id(ID_RESULTS_TEXT).AddVariableText(wxString::Format(wxT("%s"), _("Fail")));
+         S.AddFixedText(wxT(""));   // spacer
          S.AddFixedText(_("Difference:"));
-         mDiffText = S.Id(ID_RESULTSDB_TEXT).AddTextBox(wxT(""), wxT(""), 30);
-         mDiffText->Enable(false);
-         m_pButton_Reset = S.Id(ID_BUTTON_RESET).AddButton(_("Reset")); //right justify
+         mDiffText = S.Id(ID_RESULTSDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f  Average rms"), foregrounddB - backgrounddB));
+         m_pButton_Export = S.Id(ID_BUTTON_EXPORT).AddButton(_("Export"));
       }
       S.EndMultiColumn();
    }
@@ -446,7 +450,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
    //Information
    S.StartStatic( _("Information") );
    {
-      S.AddFixedText(_("Contrast, for analysing rms volume differences between selections, in dBs."));
+      S.AddFixedText(_("Contrast, for analysing rms volume differences between selections, in dB."));
       m_pButton_GetURL = S.Id(ID_BUTTON_GETURL).AddButton(_("WCAG contrast tool help on the web"));
    }
    S.EndStatic();
@@ -516,10 +520,12 @@ void ContrastDialog::results()
    }
    else
    {
-      mPassFailText->SetName(_("Please select audio."));
-      mPassFailText->SetLabel(wxT("Please select audio.      ")); // keep this message about this long to leave space
+      mPassFailText->SetName(_("Please enter valid times."));
+      mPassFailText->SetLabel(wxT("Please enter valid times."));
       mDiffText->SetLabel(_(""));
    }
+   Layout();
+   Fit();
 }
 
 void ContrastDialog::OnExport(wxCommandEvent & event)
@@ -554,24 +560,24 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
    f.AddLine(wxString::Format(wxT("Time started = %f seconds."), (float)mForegroundStartT->GetTimeValue() ));
    f.AddLine(wxString::Format(wxT("Time ended = %f seconds."), (float)mForegroundEndT->GetTimeValue() ));
    if(foregrounddB != 1234.0)
-      f.AddLine(wxString::Format(wxT("Average RMS = %.1f dB."), foregrounddB ));
+      f.AddLine(wxString::Format(wxT("Average rms = %.1f dB."), foregrounddB ));
    else
-      f.AddLine(wxString::Format(wxT("Average RMS =  dB.")));
+      f.AddLine(wxString::Format(wxT("Average rms =  dB.")));
 
    f.AddLine(wxT("\r\nBackground"));
    f.AddLine(wxString::Format(wxT("Time started = %f seconds."), (float)mBackgroundStartT->GetTimeValue() ));
    f.AddLine(wxString::Format(wxT("Time ended = %f seconds."), (float)mBackgroundEndT->GetTimeValue() ));
    if(backgrounddB != 1234.0)
-      f.AddLine(wxString::Format(wxT("Average RMS = %.1f dB."), backgrounddB ));
+      f.AddLine(wxString::Format(wxT("Average rms = %.1f dB."), backgrounddB ));
    else
-      f.AddLine(wxString::Format(wxT("Average RMS =  dB.")));
+      f.AddLine(wxString::Format(wxT("Average rms =  dB.")));
    f.AddLine(wxT("\r\nResults"));
    float diff = foregrounddB - backgrounddB;
-   f.AddLine(wxString::Format(wxT("Difference = %f Average RMS dBs."), diff ));
+   f.AddLine(wxString::Format(wxT("Difference = %f Average rms dB."), diff ));
    if( diff > 20. )
-      f.AddLine(_("Pass Success Criteria 1.4.7 of WCAG 2.0"));
+      f.AddLine(_("Success Criteria 1.4.7 of WCAG 2.0: Pass"));
    else
-      f.AddLine(_("Fail Success Criteria 1.4.7 of WCAG 2.0"));
+      f.AddLine(_("Success Criteria 1.4.7 of WCAG 2.0: Fail"));
 
    f.AddLine(wxT("\r\nData gathered"));
    wxString sNow;
