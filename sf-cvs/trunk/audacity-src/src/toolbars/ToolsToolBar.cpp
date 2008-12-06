@@ -180,7 +180,7 @@ void ToolsToolBar::Populate()
 
    /* Tools */
    mTool[ selectTool   ] = MakeTool( bmpIBeam, selectTool, _("Selection Tool") );
-   mTool[ envelopeTool ] = MakeTool( bmpEnvelope, envelopeTool, _("Time Shift Tool") );
+   mTool[ envelopeTool ] = MakeTool( bmpEnvelope, envelopeTool, _("Envelope Tool") );
    mTool[ drawTool     ] = MakeTool( bmpDraw, drawTool, _("Draw Tool") );
    mTool[ zoomTool     ] = MakeTool( bmpZoom, zoomTool, _("Zoom Tool") );
    mTool[ slideTool    ] = MakeTool( bmpTimeShift, slideTool, _("Slide Tool") );
