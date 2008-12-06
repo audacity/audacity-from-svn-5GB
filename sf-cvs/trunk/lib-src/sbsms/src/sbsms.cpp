@@ -393,7 +393,6 @@ long sbsms_pre_analyze(sbsms_cb getSamplesCB, void *data, sbsms *sbsmser)
   real stretch = (sbsmser->getStretchCB)(sbsmser->n_processed,data);
   real ratio = (sbsmser->getRatioCB)(sbsmser->n_processed,data);
   real a = 1.0/(ratio*stretch);
-  assert(a<SBSMS_MAX_STRETCH && a>SBSMS_MIN_STRETCH);
 
   if(sbsmser->n_prepad) {
     a = 1.0;
@@ -430,7 +429,6 @@ long sbsms_read_frame(audio *buf, void *data, sbsms *sbsmser, real *ratio0, real
     real stretch = (sbsmser->getStretchCB)(sbsmser->n_processed,data);
     real ratio = (sbsmser->getRatioCB)(sbsmser->n_processed,data);
     real a = 1.0/(ratio*stretch);
-    assert(a<SBSMS_MAX_STRETCH && a>SBSMS_MIN_STRETCH);
 
     if(sbsmser->n_prespent) {
       n_read = sbsmser->top->read(NULL, ratio0, ratio1);
@@ -536,7 +534,6 @@ long sbsms_write_frame(FILE *fp, void *data, sbsms *sbsmser)
     real stretch = (sbsmser->getStretchCB)(sbsmser->n_processed,data);
     real ratio = (sbsmser->getRatioCB)(sbsmser->n_processed,data);
     real a = 1.0/(ratio*stretch);
-    assert(a<SBSMS_MAX_STRETCH && a>SBSMS_MIN_STRETCH);
 
     n_tofile = sbsmser->top->getFramesWrittenToFile();
 
