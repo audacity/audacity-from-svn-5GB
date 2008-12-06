@@ -295,9 +295,9 @@ bool TimeScaleDialog::TransferDataFromWindow()
 bool TimeScaleDialog::CheckParameters()
 {
    return 
-      (m_RateStart >= -80.0 && m_RateStart <= 300.0) 
+      (m_RateStart >= -90.0 && m_RateStart <= 500.0) 
       &&
-      (m_RateEnd >= -80.0 && m_RateEnd <= 300.0) 
+      (m_RateEnd >= -90.0 && m_RateEnd <= 500.0) 
       &&
       (m_HalfStepsStart >= -12 && m_HalfStepsStart <=12)
       &&
