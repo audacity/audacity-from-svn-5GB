@@ -261,16 +261,6 @@ void ContrastDialog::OnGetForegroundDB( wxCommandEvent &event )
    m_pEffect->SetStartTime(mForegroundStartT->GetTimeValue());
    m_pEffect->SetEndTime(mForegroundEndT->GetTimeValue());
    foregrounddB = m_pEffect->GetDB();
-   if(foregrounddB == 1234.0) // magic number, is there a better way?
-   {
-      mForegroundRMSText->SetName(_("No foreground to measure"));
-      mForegroundRMSText->SetLabel(wxString::Format(_(" ")));
-   }
-   else
-   {
-      mForegroundRMSText->SetName(wxString::Format(_("Measured foreground level %.1f dB"), foregrounddB));
-      mForegroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), foregrounddB));
-   }
    m_pButton_GetForeground->Enable(false);
    m_pButton_GetForeground->SetLabel(_("Measured"));
    m_pButton_UseCurrentF->SetFocus();
@@ -282,16 +272,6 @@ void ContrastDialog::OnGetBackgroundDB( wxCommandEvent &event )
    m_pEffect->SetStartTime(mBackgroundStartT->GetTimeValue());
    m_pEffect->SetEndTime(mBackgroundEndT->GetTimeValue());
    backgrounddB = m_pEffect->GetDB();
-   if(backgrounddB == 1234.0) // magic number, is there a better way?
-   {
-      mBackgroundRMSText->SetName(_("No background to measure"));
-      mBackgroundRMSText->SetLabel(wxString::Format(_(" ")));
-   }
-   else
-   {
-      mBackgroundRMSText->SetName(wxString::Format(_("Measured background level %.1f dB"), backgrounddB));
-      mBackgroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), backgrounddB));
-   }
    m_pButton_GetBackground->Enable(false);
    m_pButton_GetBackground->SetLabel(_("Measured"));
    m_pButton_UseCurrentB->SetFocus();
@@ -374,7 +354,10 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          m_pButton_GetForeground = S.Id(ID_BUTTON_GETFOREGROUND).AddButton(_("Measured"));
          m_pButton_GetForeground->Enable(false);   // Disabled as we do the measurement as we put up the dialog
          m_pButton_UseCurrentF = S.Id(ID_BUTTON_USECURRENTF).AddButton(_("Use selection"));
-         mForegroundRMSText=S.Id(ID_FOREGROUNDDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f dB"), foregrounddB));
+         mForegroundRMSText=S.Id(ID_FOREGROUNDDB_TEXT).AddTextBox(wxT(""), wxT(""), 12);
+         wxWindow *FGTextCtrl = mForegroundRMSText;
+         FGTextCtrl->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
+         FGTextCtrl->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
 
          //Background
          S.AddFixedText(_("Background:"));
@@ -417,7 +400,10 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          m_pButton_GetBackground = S.Id(ID_BUTTON_GETBACKGROUND).AddButton(_("Measured"));
          m_pButton_GetBackground->Enable(false);
          m_pButton_UseCurrentB = S.Id(ID_BUTTON_USECURRENTB).AddButton(_("Use selection"));
-         mBackgroundRMSText=S.Id(ID_BACKGROUNDDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f dB"), backgrounddB));
+         mBackgroundRMSText=S.Id(ID_BACKGROUNDDB_TEXT).AddTextBox(wxT(""), wxT(""), 12);
+         wxWindow *BGTextCtrl = mBackgroundRMSText;
+         BGTextCtrl->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
+         BGTextCtrl->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
          
          // Final row
          S.AddFixedText(wxT(""));   // spacer
@@ -437,10 +423,16 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
       S.StartMultiColumn(3, wxCENTER);
       {
          S.AddFixedText(_("Contrast Result:"));
-         mPassFailText = S.Id(ID_RESULTS_TEXT).AddVariableText(wxString::Format(wxT("%s"), _("Fail")));
+         mPassFailText = S.Id(ID_RESULTS_TEXT).AddTextBox(wxT(""), wxT(""), 30);
+         wxWindow *PFTextCtrl = mPassFailText;
+         PFTextCtrl->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
+         PFTextCtrl->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
          S.AddFixedText(wxT(""));   // spacer
          S.AddFixedText(_("Difference:"));
-         mDiffText = S.Id(ID_RESULTSDB_TEXT).AddVariableText(wxString::Format(wxT("%.1f  Average rms"), foregrounddB - backgrounddB));
+         mDiffText = S.Id(ID_RESULTSDB_TEXT).AddTextBox(wxT(""), wxT(""), 30);
+         wxWindow *DTTextCtrl = mDiffText;
+         DTTextCtrl->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
+         DTTextCtrl->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
          m_pButton_Export = S.Id(ID_BUTTON_EXPORT).AddButton(_("Export"));
       }
       S.EndMultiColumn();
@@ -503,29 +495,43 @@ void ContrastDialog::OnUseSelectionB(wxCommandEvent & event)
 
 void ContrastDialog::results()
 {
+   if(foregrounddB == 1234.0) // magic number, is there a better way?
+   {
+      mForegroundRMSText->SetName(_("No foreground to measure"));
+      mForegroundRMSText->SetLabel(wxString::Format(_(" ")));
+   }
+   else
+   {
+      mForegroundRMSText->SetName(_("Measured foreground level"));
+      mForegroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), foregrounddB));
+   }
+   if(backgrounddB == 1234.0) // magic number, is there a better way?
+   {
+      mBackgroundRMSText->SetName(_("No background to measure"));
+      mBackgroundRMSText->SetLabel(wxString::Format(_(" ")));
+   }
+   else
+   {
+      mBackgroundRMSText->SetName(_("Measured background level"));
+      mBackgroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), backgrounddB));
+   }
    if( (foregrounddB != 1234.0) && (backgrounddB != 1234.0) )
    {
       if(foregrounddB - backgrounddB > 20)
-      {
-         mPassFailText->SetName(_("WCAG2 Pass"));
          mPassFailText->SetLabel(_("WCAG2 Pass"));
-      }
       else
-      {
-         mPassFailText->SetName(_("WCAG2 Fail"));
          mPassFailText->SetLabel(_("WCAG2 Fail"));
-      }
       mDiffText->SetName(_("Current difference"));
       mDiffText->SetLabel(wxString::Format(wxT("%.1f dB Average rms"), foregrounddB - backgrounddB));
    }
    else
    {
-      mPassFailText->SetName(_("Please enter valid times."));
+      mPassFailText->SetName(_(""));
       mPassFailText->SetLabel(wxT("Please enter valid times."));
       mDiffText->SetLabel(_(""));
    }
-   Layout();
-   Fit();
+//   Layout();
+//   Fit();
 }
 
 void ContrastDialog::OnExport(wxCommandEvent & event)
@@ -632,7 +638,10 @@ void ContrastDialog::OnReset(wxCommandEvent & event)
    OnGetBackgroundDB(event);
 }
 
-
+void ContrastDialog::OnFocus(wxFocusEvent &event)
+{
+   results();
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
