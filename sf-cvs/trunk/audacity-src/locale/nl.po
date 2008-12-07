@@ -6413,7 +6413,7 @@ msgstr "&Gebruiker vragen"
 
 #: prefs/FileFormatPrefs.cpp:93
 msgid "When exporting tracks to an audio file"
-msgstr ""
+msgstr "Bij het exporteren tot een audiobestand"
 
 #: prefs/FileFormatPrefs.cpp:144
 msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
@@ -6562,7 +6562,7 @@ msgstr ""
 
 #: prefs/GUIPrefs.cpp:166
 msgid "Other interface choices"
-msgstr ""
+msgstr "Andere interface opties"
 
 #: ../src/prefs/GUIPrefs.cpp:134
 msgid "Language:"
