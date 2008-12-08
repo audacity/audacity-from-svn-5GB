@@ -126,7 +126,7 @@ float EffectContrast::GetDB()
    {
       wxMessageDialog m(NULL, _("Start time after after end time!\nPlease enter reasonable times."), _("Error"), wxOK);
       m.ShowModal();
-      return 1234.0;
+      return 1234.0; // 'magic number', but the whole +ve dB range will never occur
    }
    if(mT0 < t->GetStartTime())
       mT0 = t->GetStartTime();
@@ -256,6 +256,14 @@ ContrastDialog::ContrastDialog(EffectContrast * effect,
    Init();
 }
 
+ContrastDialog::~ContrastDialog()
+{
+   mForegroundRMSText->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
+   mBackgroundRMSText->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
+   mPassFailText->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
+   mDiffText->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
+}
+
 void ContrastDialog::OnGetForegroundDB( wxCommandEvent &event )
 {
    m_pEffect->SetStartTime(mForegroundStartT->GetTimeValue());
@@ -306,7 +314,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
       {
 
          // Headings
-         S.AddFixedText(wxT(""));   // spacer
+         m_pButton_Reset = S.Id(ID_BUTTON_RESET).AddButton(_("Reset"));
          S.AddFixedText(_("Start"));
          S.AddFixedText(_("End"));
          S.AddFixedText(wxT(""));   // spacer
@@ -355,9 +363,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          m_pButton_GetForeground->Enable(false);   // Disabled as we do the measurement as we put up the dialog
          m_pButton_UseCurrentF = S.Id(ID_BUTTON_USECURRENTF).AddButton(_("Use selection"));
          mForegroundRMSText=S.Id(ID_FOREGROUNDDB_TEXT).AddTextBox(wxT(""), wxT(""), 12);
-         wxWindow *FGTextCtrl = mForegroundRMSText;
-         FGTextCtrl->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
-         FGTextCtrl->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
+         mForegroundRMSText->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
 
          //Background
          S.AddFixedText(_("Background:"));
@@ -400,18 +406,8 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          m_pButton_GetBackground = S.Id(ID_BUTTON_GETBACKGROUND).AddButton(_("Measured"));
          m_pButton_GetBackground->Enable(false);
          m_pButton_UseCurrentB = S.Id(ID_BUTTON_USECURRENTB).AddButton(_("Use selection"));
-         mBackgroundRMSText=S.Id(ID_BACKGROUNDDB_TEXT).AddTextBox(wxT(""), wxT(""), 12);
-         wxWindow *BGTextCtrl = mBackgroundRMSText;
-         BGTextCtrl->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
-         BGTextCtrl->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
-         
-         // Final row
-         S.AddFixedText(wxT(""));   // spacer
-         S.AddFixedText(wxT(""));   // spacer
-         S.AddFixedText(wxT(""));   // spacer
-         S.AddFixedText(wxT(""));   // spacer
-         m_pButton_Reset = S.Id(ID_BUTTON_RESET).AddButton(_("Reset"));
-
+         mBackgroundRMSText = S.Id(ID_BACKGROUNDDB_TEXT).AddTextBox(wxT(""), wxT(""), 12);
+         mBackgroundRMSText->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
       }
       S.EndMultiColumn();
    }
@@ -423,16 +419,12 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
       S.StartMultiColumn(3, wxCENTER);
       {
          S.AddFixedText(_("Contrast Result:"));
-         mPassFailText = S.Id(ID_RESULTS_TEXT).AddTextBox(wxT(""), wxT(""), 30);
-         wxWindow *PFTextCtrl = mPassFailText;
-         PFTextCtrl->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
-         PFTextCtrl->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
+         mPassFailText = S.Id(ID_RESULTS_TEXT).AddTextBox(wxT(""), wxT(""), 40);
+         mPassFailText->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
          S.AddFixedText(wxT(""));   // spacer
          S.AddFixedText(_("Difference:"));
          mDiffText = S.Id(ID_RESULTSDB_TEXT).AddTextBox(wxT(""), wxT(""), 30);
-         wxWindow *DTTextCtrl = mDiffText;
-         DTTextCtrl->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
-         DTTextCtrl->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(ContrastDialog::OnFocus), NULL, this);
+         mDiffText->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
          m_pButton_Export = S.Id(ID_BUTTON_EXPORT).AddButton(_("Export"));
       }
       S.EndMultiColumn();
@@ -495,40 +487,40 @@ void ContrastDialog::OnUseSelectionB(wxCommandEvent & event)
 
 void ContrastDialog::results()
 {
-   if(foregrounddB == 1234.0) // magic number, is there a better way?
+   if(foregrounddB == 1234.0) // magic number, but OK for now
    {
       mForegroundRMSText->SetName(_("No foreground to measure"));
-      mForegroundRMSText->SetLabel(wxString::Format(_(" ")));
+      mForegroundRMSText->ChangeValue(wxString::Format(_(" ")));
    }
    else
    {
       mForegroundRMSText->SetName(_("Measured foreground level"));
-      mForegroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), foregrounddB));
+      mForegroundRMSText->ChangeValue(wxString::Format(_("%.1f dB"), foregrounddB));
    }
-   if(backgrounddB == 1234.0) // magic number, is there a better way?
+   if(backgrounddB == 1234.0)
    {
       mBackgroundRMSText->SetName(_("No background to measure"));
-      mBackgroundRMSText->SetLabel(wxString::Format(_(" ")));
+      mBackgroundRMSText->ChangeValue(wxString::Format(_(" ")));
    }
    else
    {
       mBackgroundRMSText->SetName(_("Measured background level"));
-      mBackgroundRMSText->SetLabel(wxString::Format(_("%.1f dB"), backgrounddB));
+      mBackgroundRMSText->ChangeValue(wxString::Format(_("%.1f dB"), backgrounddB));
    }
    if( (foregrounddB != 1234.0) && (backgrounddB != 1234.0) )
    {
       if(foregrounddB - backgrounddB > 20)
-         mPassFailText->SetLabel(_("WCAG2 Pass"));
+         mPassFailText->ChangeValue(_("WCAG2 Pass"));
       else
-         mPassFailText->SetLabel(_("WCAG2 Fail"));
+         mPassFailText->ChangeValue(_("WCAG2 Fail"));
       mDiffText->SetName(_("Current difference"));
-      mDiffText->SetLabel(wxString::Format(wxT("%.1f dB Average rms"), foregrounddB - backgrounddB));
+      mDiffText->ChangeValue(wxString::Format(wxT("%.1f dB Average rms"), foregrounddB - backgrounddB));
    }
    else
    {
       mPassFailText->SetName(_(""));
-      mPassFailText->SetLabel(wxT("Please enter valid times."));
-      mDiffText->SetLabel(_(""));
+      mPassFailText->ChangeValue(wxT("Please enter valid times."));
+      mDiffText->ChangeValue(_(""));
    }
 //   Layout();
 //   Fit();
@@ -565,7 +557,7 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
    f.AddLine(wxT("\r\nForeground"));
    f.AddLine(wxString::Format(wxT("Time started = %f seconds."), (float)mForegroundStartT->GetTimeValue() ));
    f.AddLine(wxString::Format(wxT("Time ended = %f seconds."), (float)mForegroundEndT->GetTimeValue() ));
-   if(foregrounddB != 1234.0)
+   if(foregrounddB != 1234.0) // see other instances of '1234.0' in here
       f.AddLine(wxString::Format(wxT("Average rms = %.1f dB."), foregrounddB ));
    else
       f.AddLine(wxString::Format(wxT("Average rms =  dB.")));
@@ -599,7 +591,7 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
         dom, monthName.c_str(), year, hour, minute, second);
    f.AddLine(sNow);
 
-   f.AddLine(wxT("==================================="));
+   f.AddLine(wxT("===================================\r\n"));
 
 #ifdef __WXMAC__
    f.Write(wxTextFileType_Mac);
@@ -636,11 +628,13 @@ void ContrastDialog::OnReset(wxCommandEvent & event)
    wxCommandEvent dummyEvt;
    OnGetForegroundDB(event);
    OnGetBackgroundDB(event);
+   results();
 }
 
-void ContrastDialog::OnFocus(wxFocusEvent &event)
+void ContrastDialog::OnChar(wxKeyEvent &event)
 {
-   results();
+   event.Skip(false);
+   return;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

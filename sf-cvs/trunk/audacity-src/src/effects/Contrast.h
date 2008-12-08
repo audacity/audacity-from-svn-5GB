@@ -92,6 +92,7 @@ public:
    // constructors and destructors
    ContrastDialog(EffectContrast * effect,
                       wxWindow *parent);
+   ~ContrastDialog();
 
    void PopulateOrExchange(ShuttleGui & S);
 
@@ -112,7 +113,7 @@ private:
    void results();
    void OnOK( wxCommandEvent &event );
    void OnReset(wxCommandEvent & event);
-   void OnFocus(wxFocusEvent &event);
+   void OnChar(wxKeyEvent &event);
 
    wxTextCtrl *mForegroundRMSText;
    wxTextCtrl *mBackgroundRMSText;
