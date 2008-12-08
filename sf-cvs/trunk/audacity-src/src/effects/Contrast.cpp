@@ -314,7 +314,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
       {
 
          // Headings
-         m_pButton_Reset = S.Id(ID_BUTTON_RESET).AddButton(_("Reset"));
+         S.AddFixedText(wxT(""));   // spacer
          S.AddFixedText(_("Start"));
          S.AddFixedText(_("End"));
          S.AddFixedText(wxT(""));   // spacer
@@ -421,7 +421,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          S.AddFixedText(_("Contrast Result:"));
          mPassFailText = S.Id(ID_RESULTS_TEXT).AddTextBox(wxT(""), wxT(""), 40);
          mPassFailText->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
-         S.AddFixedText(wxT(""));   // spacer
+         m_pButton_Reset = S.Id(ID_BUTTON_RESET).AddButton(_("Reset"));
          S.AddFixedText(_("Difference:"));
          mDiffText = S.Id(ID_RESULTSDB_TEXT).AddTextBox(wxT(""), wxT(""), 30);
          mDiffText->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
