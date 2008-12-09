@@ -59,8 +59,8 @@
    #include "../images/Branding/Thinklabs.xpm" // 182x42
    #include "../images/Branding/Thinklabs_over.xpm" // 182x42
 #elif ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
-   #include "../images/Branding/CampJam.xpm" // 162x64 
-   #include "../images/Branding/CampJam_over.xpm" // 162x64 
+   #include "../images/Branding/Jamling_logo.xpm" // 162x64 
+   #include "../images/Branding/Jamling_logo_over.xpm" // 162x64 
 #endif
 
 // Build in the "powered by Audacity" logos preferred for each. 

@@ -63,8 +63,8 @@ BrandToolBar::~BrandToolBar()
    // Build in the brand-specific logo and mouse-over bitmaps. 
    // The data global vars in these MUST be named company_logo_xpm and company_logo_over_xpm.
    #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
-      #include "../images/Branding/CampJam.xpm" // 162x64 image var is called company_logo_xpm.
-      #include "../images/Branding/CampJam_over.xpm" // 162x64 
+      #include "../images/Branding/Jamling_logo.xpm" // 162x64 image var is called company_logo_xpm.
+      #include "../images/Branding/Jamling_logo_over.xpm" // 162x64 
    #endif
 #endif
 

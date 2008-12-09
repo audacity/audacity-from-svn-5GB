@@ -113,15 +113,15 @@ SplashDialog::SplashDialog(wxWindow * parent)
    // Build in the brand-specific logo and mouse-over bitmaps. 
    // The data global vars in these MUST be named company_logo_xpm and company_logo_over_xpm.
    #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
-      #include "../images/Branding/CampJam.xpm" // 162x64 image var is called company_logo_xpm.
-      #include "../images/Branding/CampJam_over.xpm" // 162x64 
+      #include "../images/Branding/Jamling_logo.xpm" // 162x64 image var is called company_logo_xpm.
+      #include "../images/Branding/Jamling_logo_over.xpm" // 162x64 
    #endif
 #endif
 
 void SplashDialog::Populate( ShuttleGui & S )
 {
    //#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
-   //   this->SetBackgroundColour(theTheme.Colour(clrSample)); // same as waveform color
+   //   this->SetBackgroundColour(wxColour(rrr, ggg, bbb)); // same as waveform color
    //#else
    //   this->SetBackgroundColour(theTheme.Colour( clrAboutBoxBackground ));
    //#endif
@@ -136,7 +136,8 @@ void SplashDialog::Populate( ShuttleGui & S )
    wxSize buttonSize;
    wxBitmap* pButtonBitmap;
    wxBitmap* pButtonBitmapOver;
-   #if (AUDACITY_BRANDING != BRAND_AUDACITY) //vvv Change this compile flag when other brands are supported. 
+   //vvv Change this compile flag when other brands are supported. 
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL)) 
       //vvv Compiles only BRAND_JAMLING__EASY or BRAND_JAMLING__FULL 
       //    because we don't load any other company_logo*_xpm consts yet. 
       pButtonBitmap = new wxBitmap(company_logo_xpm);
