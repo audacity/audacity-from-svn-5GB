@@ -14,6 +14,7 @@
 *//********************************************************************/
 
 #include <wx/string.h>
+#include <wx/html/htmlcell.h>
 #include <wx/intl.h>
 
 #include "Audacity.h"
@@ -23,6 +24,7 @@
 #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
    #include "effects/Effect.h"
    #include "toolbars/ControlToolBar.h"
+   #include "widgets/LinkingHtmlWindow.h"
    #include "Project.h"
 #endif
 
@@ -30,7 +32,11 @@ wxString WrapText( const wxString & Text )
 {
    return wxString(wxT(""))+
       wxT("<html><head></head>") +
-      wxT("<body bgcolor=\"#ffffff\">") +
+      #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+         wxT("<body bgcolor=\"#ffffff\" link=\"#e76e34\">") + // orange links, rgb = (231, 110,  52)
+      #else
+         wxT("<body bgcolor=\"#ffffff\">") +
+      #endif
       wxT("<p>") + Text +
       wxT("</body></html>");
 }
@@ -161,6 +167,7 @@ wxString TitleText( const wxString & Key )
 wxString HelpTextBuiltIn( const wxString & Key )
 {
    #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      wxString varKey = Key;
       if (Key == wxT("welcome"))
          return WrapText(
                   wxString(wxT("")) +
@@ -171,16 +178,16 @@ wxString HelpTextBuiltIn( const wxString & Key )
                         <li>[[record|Record]] my voice or instrument. \
                         <li>[[fixTrack|Fix]] part of a Track. \
                         <br>&nbsp;<br> \
-                        <li>[[ChangeTempo|Slow down]] a section of this Song. \
-                        <li>[[ChangePitch|Change the key]] of this Song. \
+                        <li>[[SlowDown|Slow down]] a section of this Song. \
+                        <li>[[ChangeKey|Change the key]] of this Song. \
                         <li>[[loopPlay|Loop Play]] a section of this Song. \
                         <br>&nbsp;<br> \
                         <li>[[uploadTrack|Upload my Track]] to Jamling Records. \
                         <li>[[getTrack|Get another Jamling\'s Track]] for this Song. \
-                        <li>[[uploadProject|Upload my finished Song]] to Jamling Records. \
+                        <li>[[uploadProject|Upload my finished Mix]] to Jamling Records. \
                         <li>[[getSong|Get another Song]] from Jamling Records. \
-                        <li>[[export|Export my finished Song]] to my media player. \
-                        <li>[[burncd|Burn my finished Song]] to a CD. \
+                        <li>[[export|Export my finished Mix]] to my media player. \
+                        <li>[[burncd|Burn my finished Mix]] to a CD. \
                         <br>&nbsp;<br> \
                         <li>[[save|Save my Song or Open a different Song]]. \
                      </ul></p><p>"));
@@ -189,9 +196,9 @@ wxString HelpTextBuiltIn( const wxString & Key )
                   _("<p><b>Fix part of a Track</b></p> \
                      <ul> \
                         <li>Select the portion of the desired track.</li> \
-                        <li>Edit menu > Silence (Ctrl+L)</li> \
+                        <li><i>Edit &gt; Silence</i> (Ctrl+L)</li> \
                         <li>[[record|Record]] my voice or instrument.</li> \
-                        <li>Tracks menu > Mix and Render</li> \
+                        <li><i>Tracks &gt; Mix and Render</i></li> \
                      </ul> \
                      </p><br><br>") + ToWelcome());
       if ((Key == wxT("ChangeTempo")) || (Key == wxT("ChangePitch")))
@@ -203,8 +210,31 @@ wxString HelpTextBuiltIn( const wxString & Key )
             pProject->SelectAllIfNone(); 
             pProject->OnEffect(BUILTIN_EFFECT, pEffect);
          }
-         return HelpTextBuiltIn(wxT("welcome"));
+         // Don't return. Change Key to be handled below.
+         if (Key == wxT("ChangeTempo")) 
+            varKey = wxT("SlowDown");
+         else
+            varKey = wxT("ChangeKey");
       }
+      if (varKey == wxT("SlowDown"))
+         return WrapText(wxString(wxT("")) + 
+                           _("<p><b>Slow down a section of this Song</b></p> \
+                              <ul> \
+                                 <li>Select the portion of the desired track.</li> \
+                                 <li>Use the [[ChangeTempo|Change Tempo dialog]] to set the slowed tempo.</li> \
+                                 <li>To loop play, hold down SHIFT when you click the green Play button.</li> \
+                                 <li>To return to previous tempo: <i>Edit &gt; Undo</i>.</li> \
+                              </ul> \
+                              </p><br><br>") + ToWelcome());
+      if (varKey == wxT("ChangeKey"))
+         return WrapText(wxString(wxT("")) + 
+                  _("<p><b>Change the key of this Song</b></p> \
+                     <ul> \
+                     <li>Use the [[ChangePitch|Change Pitch dialog]] to change the key.</li> \
+                     <li>Jamling Audacity determines the original key based on the beginning.</li> \
+                     <li>To return to previous key: <i>Edit &gt; Undo</i>.</li> \
+                     </ul> \
+                     </p><br><br>") + ToWelcome());
       if (Key == wxT("loopPlay"))
       {
          AudacityProject* pProject = GetActiveProject();
@@ -215,22 +245,48 @@ wxString HelpTextBuiltIn( const wxString & Key )
       if (Key == wxT("uploadTrack"))
          return WrapText(wxString(wxT("")) + 
                   _("<p><b>Upload my Track to Jamling Records</b> \
+                     <ul> \
+                        <li>Select the track you want to upload.</li> \
+                        <li><i>File &gt; Export Selection</i>. Export in OGG format.</li> \
+                        <li>Log on to <a href=\"") + 
+                           AUDACITY_BRANDING_BRANDURL + 
+                           _("\">Jamling</a>.</li> \
+                        <li>Go to the <a href=\"http://jamlingrecords.com/node/add/audio\">Jamling Submit Audio form</a>.</li> \
+                        <li>In the Audio File area of the form, use the Browse button to find your OGG file.</li> \
+                        <li>Optionally add a description and artwork.</li> \
+                        <li>Submit the file.</li> \
+                     </ul> \
                     </p><br><br>") + ToWelcome());
       if (Key == wxT("getTrack"))
          return WrapText(wxString(wxT("")) + 
                   _("<p><b>Get another Jamling\'s Track for this Song</b> \
+                     <ul> \
+                        <li>Go to <a href=\"http://jamlingrecords.com/content/jamling-stuff\">Jamling Stuff</a>.</li> \
+                     </ul> \
                     </p><br><br>") + ToWelcome());
       if (Key == wxT("uploadProject"))
+      {
          return WrapText(wxString(wxT("")) + 
-                  _("<p><b>Upload my finished Song to Jamling Records</b> \
+                  _("<p><b>Upload my finished Mix to Jamling Records</b> \
+                     <ul> \
+                        <li><i>File &gt; Export</i>. Export in OGG format. \
+                           This will mix all the tracks together.</li> \
+                        <li>Log on to <a href=\"") + 
+                           AUDACITY_BRANDING_BRANDURL + 
+                           _("\">Jamling</a>.</li> \
+                        <li>Go to the <a href=\"http://jamlingrecords.com/node/add/audio\">Jamling Submit Audio form</a>.</li> \
+                        <li>In the Audio File area of the form, use the Browse button to find your OGG file.</li> \
+                        <li>Optionally add a description and artwork.</li> \
+                        <li>Submit the file.</li> \
+                     </ul> \
                     </p><br><br>") + ToWelcome());
+      }
       if (Key == wxT("getSong"))
          return WrapText(wxString(wxT("")) + 
                   _("<p><b>Get another Song from Jamling Records</b> \
-                    </p><br><br>") + ToWelcome());
-      if (Key == wxT("getSong"))
-         return WrapText(wxString(wxT("")) + 
-                  _("<p><b>Get another Song from Jamling Records</b> \
+                     <ul> \
+                        <li>Go to the <a href=\"http://jamlingrecords.com/content/music\">Jamling Music</a> page.</li> \
+                     </ul> \
                     </p><br><br>") + ToWelcome());
    #else // !((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
       if(Key==wxT("welcome"))
