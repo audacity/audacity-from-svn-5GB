@@ -503,8 +503,8 @@ void AColor::DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ )
    #elif ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL)) 
       // colors matchine website
       const wxColour gRed = wxColour(205,  10,  16); // red
-      const wxColour gOrange = wxColour(255, 160,  80); // orange
-      const wxColour gYellow = wxColour(255, 200,  16); // yellow
+      const wxColour gOrange = wxColour(231, 110,  52); // orange (values from Jamling logo, per Chuck)
+      const wxColour gYellow = wxColour(252, 186,  99); // yellow ("peach", values from Jamling logo, per Chuck)
       const wxColour gGreen = wxColour( 40, 160, 120); // green
       const wxColour gCyan = wxColour(132, 250, 250); // cyan
       const wxColour gBlue = wxColour( 63,  77, 155); // blue // vvv same as clrSample in AllThemeResources.h
