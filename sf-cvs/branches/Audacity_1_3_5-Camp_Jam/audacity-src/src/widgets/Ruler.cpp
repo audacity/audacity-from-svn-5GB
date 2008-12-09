@@ -1233,6 +1233,9 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
 #ifdef EXPERIMENTAL_THEMING
    mDC->SetPen(mPen);
    mDC->SetTextForeground(mTickColour);
+#elif ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+   mDC->SetPen(*wxBLACK_PEN);
+   mDC->SetTextForeground(wxColour(231, 110,  52));
 #else
    mDC->SetPen(*wxBLACK_PEN);
    mDC->SetTextForeground(*wxBLACK);
