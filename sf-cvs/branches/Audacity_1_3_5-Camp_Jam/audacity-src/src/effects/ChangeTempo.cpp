@@ -124,8 +124,8 @@ bool EffectChangeTempo::Process()
 #define ID_TEXT_TOLENGTH 10006
 #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
    #define ID_RADIOBUTTON_50PCT 10007
-   #define ID_RADIOBUTTON_75PCT 10008
-   #define ID_RADIOBUTTON_90PCT 10009
+   #define ID_RADIOBUTTON_65PCT 10008
+   #define ID_RADIOBUTTON_80PCT 10009
 #endif
 
 // event table for ChangeTempoDialog
@@ -142,8 +142,8 @@ BEGIN_EVENT_TABLE(ChangeTempoDialog, wxDialog)
 
    #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
       EVT_RADIOBUTTON(ID_RADIOBUTTON_50PCT, ChangeTempoDialog::OnRadioButton_50pct)
-      EVT_RADIOBUTTON(ID_RADIOBUTTON_75PCT, ChangeTempoDialog::OnRadioButton_75pct)
-      EVT_RADIOBUTTON(ID_RADIOBUTTON_90PCT, ChangeTempoDialog::OnRadioButton_90pct)
+      EVT_RADIOBUTTON(ID_RADIOBUTTON_65PCT, ChangeTempoDialog::OnRadioButton_65pct)
+      EVT_RADIOBUTTON(ID_RADIOBUTTON_80PCT, ChangeTempoDialog::OnRadioButton_80pct)
    #endif
 
    EVT_BUTTON(ID_EFFECT_PREVIEW, ChangeTempoDialog::OnPreview)
@@ -170,8 +170,8 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
    m_pTextCtrl_ToLength = NULL;
    #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
       m_pRadioButton_50pct = NULL;
-      m_pRadioButton_75pct = NULL;
-      m_pRadioButton_90pct = NULL;
+      m_pRadioButton_65pct = NULL;
+      m_pRadioButton_80pct = NULL;
    #endif
 
 	// effect parameters
@@ -215,22 +215,22 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
       pRadioButton_50pct->SetValue(true); 
 
       pBoxSizer_RadioButtons->AddSpacer(8);
-      wxRadioButton* pRadioButton_75pct = 
-         new wxRadioButton(this, ID_RADIOBUTTON_75PCT, _("75% Tempo"), 
+      wxRadioButton* pRadioButton_65pct = 
+         new wxRadioButton(this, ID_RADIOBUTTON_65PCT, _("65% Tempo"), 
                            wxDefaultPosition, wxDefaultSize);
-      pBoxSizer_RadioButtons->Add(pRadioButton_75pct); 
+      pBoxSizer_RadioButtons->Add(pRadioButton_65pct); 
       
       pBoxSizer_RadioButtons->AddSpacer(8);
-      wxRadioButton* pRadioButton_90pct = 
-         new wxRadioButton(this, ID_RADIOBUTTON_90PCT, _("90% Tempo"), 
+      wxRadioButton* pRadioButton_80pct = 
+         new wxRadioButton(this, ID_RADIOBUTTON_80PCT, _("80% Tempo"), 
                            wxDefaultPosition, wxDefaultSize);
-      pBoxSizer_RadioButtons->Add(pRadioButton_90pct); 
+      pBoxSizer_RadioButtons->Add(pRadioButton_80pct); 
 
       #if defined(__WXMAC__)
          wxColour face = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
          pRadioButton_50pct->SetBackgroundColour(face);
-         pRadioButton_75pct->SetBackgroundColour(face);
-         pRadioButton_90pct->SetBackgroundColour(face);
+         pRadioButton_65pct->SetBackgroundColour(face);
+         pRadioButton_80pct->SetBackgroundColour(face);
       #endif
 
       pBoxSizer_Dialog->Add(pBoxSizer_RadioButtons, 0, wxALIGN_CENTER | wxALL, 4);
@@ -556,7 +556,7 @@ void ChangeTempoDialog::OnText_ToLength(wxCommandEvent & event)
 	   m_bLoopDetect = false;
   }
 
-   void ChangeTempoDialog::OnRadioButton_75pct(wxCommandEvent &evt)
+   void ChangeTempoDialog::OnRadioButton_65pct(wxCommandEvent &evt)
    {
       if (m_bLoopDetect)
          return;
@@ -570,7 +570,7 @@ void ChangeTempoDialog::OnText_ToLength(wxCommandEvent & event)
 	   m_bLoopDetect = false;
   }
 
-   void ChangeTempoDialog::OnRadioButton_90pct(wxCommandEvent &evt)
+   void ChangeTempoDialog::OnRadioButton_80pct(wxCommandEvent &evt)
    {
       if (m_bLoopDetect)
          return;
@@ -604,7 +604,7 @@ void ChangeTempoDialog::OnOk(wxCommandEvent & event)
    if (Validate()) 
    {
       #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
-      wxMessageBox(_("To return to previous tempo: Edit menu > Undo."));
+         wxMessageBox(_("To return to previous tempo: Edit menu > Undo."));
       #endif
       EndModal(true);
    }
