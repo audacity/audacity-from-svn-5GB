@@ -144,7 +144,10 @@ float EffectContrast::GetDB()
       ((WaveTrack *)t)->GetRMS(&rms, mT0, mT1);
       t = iter.Next();
    }
-   return 20.0*log10(fabs(rms));
+   if(rms == 0.0)
+      return(1234.0);
+   else
+      return 20.0*log10(fabs(rms));
 }
 
 double EffectContrast::GetStartTime()
