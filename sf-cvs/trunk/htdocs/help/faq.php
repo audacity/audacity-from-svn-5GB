@@ -143,9 +143,9 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
           "<p>"._("See also:").' <a href="faq?s=files&amp;i=burn-cd">'._("How do I save my recording on an audio CD?")."</a></p>"
         ),
         "mixer-toolbar-input" => array(
-          _("Why is the Input selector in the Mixer Toolbar not working as expected?"),
+          _("Why doesn't the Mixer Toolbar input selector work properly, for example on Windows Vista?"),
           _("<p>The Input selector may be greyed-out, lacking the expected choices, or apparently not recording from the indicated source.</p>
-<p>The causes of these problems vary by operating system and sound card driver. For a complete discussion, see the <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixer Toolbar Issues</a> page on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>
+<p>The cause varies by operating system and sound card driver. For example, on Windows Vista, you must use the \"Recording Device\" menu in the Audio I/O tab of Preferences to select input sources. For more help, see the <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixer Toolbar Issues</a> page on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>
 ")
         ),
         "playthrough" => array(
@@ -163,16 +163,16 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
           _("Can I play a track while recording a new one on top of it?"),
           _("<p>This is called multi-track recording.  It makes it possible to record harmonies with yourself, or add new instruments or vocals to an existing recording.  To do this in Audacity, follow these instructions:</p>
 <ol>
-  <li>If on Windows or Linux, in the dropdown menu on Audacity's Mixer Toolbar, choose the correct input you are plugged into (probably microphone or line-in). On Windows Vista, choose your input on the Audio I/O tab of Preferences instead.</li>
+  <li>Select the correct recording input that you are plugged into (probably microphone or line-in). On <b>Windows or Linux</b>, select the input in the dropdown menu in Audacity's <a href=\"http://audacity.sourceforge.net/onlinehelp-1.2/toolbar_mixer.htm\">Mixer Toolbar</a> (on Windows Vista, use the \"Recording Device\" menu in the Audio I/O tab of Preferences instead). On <b>OS X</b>, Mixer Toolbar may only show \"Default Input\". If so, select the source on the Audio Devices tab of Apple Audio MIDI Setup.</li>
   <li>Import or record the first track.</li>
-  <li>Open the “Audio I/O” section of the Audacity preferences, and check the box labeled <b>Play other tracks while recording new one.</b></li>
+  <li>Open the \"Audio I/O\" tab of Audacity preferences, and check the box labeled <b>Play other tracks while recording new one.</b></li>
   <li>Close the preferences and press the <b>Record</b> button. If you are recording from a microphone, make sure you use headphones so that the microphone picks up only what you are recording.</li>
 </ol>
 <p>See also:
 	<ul>
 		<li><a href=\"faq?s=recording&amp;i=sync\">Why isn't my new track in sync with the previous ones?</a></li>
 		<li><a href=\"faq?s=recording&amp;i=playthrough\">Why can't I hear what I am recording?</a></li>
-		<li><a href=\"faq?s=recording&amp;i=mixer-toolbar-input\">Why is the Input selector in the Mixer Toolbar not working as expected?</a></li>
+		<li><a href=\"faq?s=recording&amp;i=mixer-toolbar-input\">Why doesn't the Mixer Toolbar input selector work properly, for example on Windows Vista?</a></li>
 	</ul>
 </p>")
         ),
