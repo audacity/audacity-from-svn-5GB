@@ -275,6 +275,10 @@ const ExportPluginArray Exporter::GetPlugins()
    return mPlugins;
 }
 
+#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+   wxString gStrInstrument = wxT(""); // default to Mix
+#endif
+
 bool Exporter::Process(AudacityProject *project, bool selectedOnly, double t0, double t1)
 {
    // Save parms
@@ -293,11 +297,14 @@ bool Exporter::Process(AudacityProject *project, bool selectedOnly, double t0, d
       return false;
    }
 
+#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+   project->GetTags()->SetTag(wxT("INSTRUMENT"), gStrInstrument); 
+#else
    // Let user edit MetaData 
-
    if (!(project->GetTags()->ShowEditDialog(project, _("Edit Metadata"), mProject->GetShowId3Dialog()))) {
       return false;
    }
+#endif
 
    // Check for down mixing
    if (!CheckMix()) {
@@ -338,6 +345,40 @@ bool Exporter::Process(AudacityProject *project, int numChannels,
 
    return false;
 }
+
+#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+   #include <wx/choicdlg.h>
+
+   // GetValidInstrumentName() sets gStrInstrument to a valid instrument name if necessary.
+   // Returns true if name changed.
+   bool GetValidInstrumentName(const wxString str)
+   {
+      wxArrayString strChoices;
+      strChoices.Add(wxT("Bass"));
+      strChoices.Add(wxT("Drums"));
+      strChoices.Add(wxT("Keyboards"));
+      strChoices.Add(wxT("Lead Guitar"));
+      strChoices.Add(wxT("Rhythm Guitar"));
+      strChoices.Add(wxT("Lead Vocals"));
+      strChoices.Add(wxT("Backing Vocals"));
+      strChoices.Add(wxT("Percussion"));
+      strChoices.Add(wxT("Other Craziness!"));
+      bool bChangeStr = (strChoices.Index(str) == wxNOT_FOUND); // str is not a valid instrument.
+      if (bChangeStr) 
+      {
+         gStrInstrument = 
+            ::wxGetSingleChoice(
+               _("Current track needs a valid instrument name."), 
+               _("Choose an Instrument"), 
+               strChoices);
+         //if (gStrInstrument == wxT("")) // User canceled. 
+         //   gStrInstrument = strChoices.Last(); // (wxT("Other Craziness!"));
+      }
+      else
+         gStrInstrument = str;
+      return bChangeStr;
+   }
+#endif
 
 bool Exporter::ExamineTracks()
 {
@@ -409,6 +450,23 @@ bool Exporter::ExamineTracks()
                     wxOK | wxICON_INFORMATION);
       return false;
    }
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      if (mSelectedOnly && (mNumSelected == 1)) // single Track
+      {
+         tr = iter1.First();
+         while (!tr->GetSelected()) 
+            tr = iter1.Next();
+         wxASSERT(tr);
+         if (GetValidInstrumentName(tr->GetName())) 
+         {
+            if (gStrInstrument == wxT("")) // User canceled. 
+               return false;
+            tr->SetName(gStrInstrument); 
+         }
+      }
+      else
+         gStrInstrument = wxT(""); // Mix
+   #endif
 
    if (mT0 < earliestBegin)
       mT0 = earliestBegin;
@@ -430,8 +488,12 @@ bool Exporter::GetFilename()
    mFormat = 0;
 
    wxString maskString;
+#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+   wxString defaultFormat = wxT("OGG");
+#else
    wxString defaultFormat = gPrefs->Read(wxT("/Export/Format"),
                                          wxT("WAV"));
+#endif
 
    for (size_t i = 0; i < mPlugins.GetCount(); i++) {
       maskString += mPlugins[i]->GetMask() + wxT("|");
@@ -443,7 +505,16 @@ bool Exporter::GetFilename()
    maskString.RemoveLast();
 
    mFilename.SetPath(gPrefs->Read(wxT("/Export/Path"), ::wxGetCwd()));
+#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+   wxString strName = mProject->GetName() + wxT("_");
+   if (mSelectedOnly && (mNumSelected == 1)) // Exporting one track
+      strName += gStrInstrument + wxT("_Track");
+   else
+      strName += wxT("Mix");
+   mFilename.SetName(strName);
+#else
    mFilename.SetName(mProject->GetName());
+#endif
 
    while (true) {
 
