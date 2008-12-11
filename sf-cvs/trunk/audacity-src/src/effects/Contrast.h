@@ -98,7 +98,7 @@ public:
 
    void OnGetForegroundDB( wxCommandEvent &event );
    void OnGetBackgroundDB( wxCommandEvent &event );
-   void OnTimeCtrlUpdate(wxCommandEvent & event);
+//   void OnTimeCtrlUpdate(wxCommandEvent & event);
 
 private:
    // handlers

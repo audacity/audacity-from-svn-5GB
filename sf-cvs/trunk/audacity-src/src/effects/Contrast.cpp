@@ -231,7 +231,7 @@ BEGIN_EVENT_TABLE(ContrastDialog,wxDialog)
    EVT_BUTTON(ID_BUTTON_GETURL, ContrastDialog::OnGetURL)
    EVT_BUTTON(ID_BUTTON_EXPORT, ContrastDialog::OnExport)
    EVT_BUTTON(ID_BUTTON_RESET, ContrastDialog::OnReset)
-   EVT_COMMAND_RANGE(ID_FOREGROUNDSTART_T, ID_BACKGROUNDEND_T, EVT_TIMETEXTCTRL_UPDATED, ContrastDialog::OnTimeCtrlUpdate)
+//   EVT_COMMAND_RANGE(ID_FOREGROUNDSTART_T, ID_BACKGROUNDEND_T, EVT_TIMETEXTCTRL_UPDATED, ContrastDialog::OnTimeCtrlUpdate)
 
    EVT_COMMAND(ID_FOREGROUNDSTART_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnForegroundStartT)
    EVT_COMMAND(ID_FOREGROUNDEND_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnForegroundEndT)
@@ -328,7 +328,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          S.AddFixedText(_("Foreground:"), false);
          if (mForegroundStartT == NULL)
          {
-            AudacityProject *p = GetActiveProject();
+//            AudacityProject *p = GetActiveProject();
             mForegroundStartT = new
             TimeTextCtrl(this,
                          ID_FOREGROUNDSTART_T,
@@ -339,8 +339,9 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          wxDefaultSize,
                          true);
             mForegroundStartT->SetName(_("Foreground start time"));
-            mForegroundStartT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
-            mForegroundStartT->EnableMenu();
+//            mForegroundStartT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
+            mForegroundStartT->SetFormatString(mForegroundStartT->GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")));
+            mForegroundStartT->EnableMenu(false);
          }
          S.AddWindow(mForegroundStartT);
 
@@ -357,8 +358,9 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          wxDefaultSize,
                          true);
             mForegroundEndT->SetName(_("Foreground end time"));
-            mForegroundEndT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
-            mForegroundEndT->EnableMenu();
+//            mForegroundEndT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
+            mForegroundEndT->SetFormatString(mForegroundEndT->GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")));
+            mForegroundEndT->EnableMenu(false);
          }
          S.AddWindow(mForegroundEndT);
 
@@ -383,8 +385,9 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          wxDefaultSize,
                          true);
             mBackgroundStartT->SetName(_("Background start time"));
-            mBackgroundStartT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
-            mBackgroundStartT->EnableMenu();
+//            mBackgroundStartT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
+            mBackgroundStartT->SetFormatString(mBackgroundStartT->GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")));
+            mBackgroundStartT->EnableMenu(false);
          }
          S.AddWindow(mBackgroundStartT);
 
@@ -401,8 +404,9 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          wxDefaultSize,
                          true);
             mBackgroundEndT->SetName(_("Background end time"));
-            mBackgroundEndT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
-            mBackgroundEndT->EnableMenu();
+//            mBackgroundEndT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
+            mBackgroundEndT->SetFormatString(mBackgroundEndT->GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")));
+            mBackgroundEndT->EnableMenu(false);
          }
          S.AddWindow(mBackgroundEndT);
 
@@ -604,18 +608,18 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
    f.Close();
 }
 
-void ContrastDialog::OnTimeCtrlUpdate(wxCommandEvent & event)
-{
-   wxWindow *w = FindFocus();
-   TimeTextCtrl *s = (TimeTextCtrl *)w;
-   wxString setting = s->GetFormatString();
-   mForegroundStartT->SetFormatString(setting);
-   mForegroundEndT->SetFormatString(setting);
-   mBackgroundStartT->SetFormatString(setting);
-   mBackgroundEndT->SetFormatString(setting);
-
-   Fit();
-}
+//void ContrastDialog::OnTimeCtrlUpdate(wxCommandEvent & event)
+//{
+//   wxWindow *w = FindFocus();
+//   TimeTextCtrl *s = (TimeTextCtrl *)w;
+//   wxString setting = s->GetFormatString();
+//   mForegroundStartT->SetFormatString(setting);
+//   mForegroundEndT->SetFormatString(setting);
+//   mBackgroundStartT->SetFormatString(setting);
+//   mBackgroundEndT->SetFormatString(setting);
+//
+//   Fit();
+//}
 
 
 void ContrastDialog::OnReset(wxCommandEvent & event)
