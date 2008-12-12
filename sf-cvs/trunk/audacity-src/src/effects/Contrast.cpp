@@ -562,16 +562,32 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
    f.AddLine(_("WCAG 2.0 Success Criteria 1.4.7 Contrast Results\r\n"));
    f.AddLine(wxString::Format(wxT("Filename = %s."), project->GetFileName() ));
    f.AddLine(wxT("\r\nForeground"));
-   f.AddLine(wxString::Format(wxT("Time started = %f seconds."), (float)mForegroundStartT->GetTimeValue() ));
-   f.AddLine(wxString::Format(wxT("Time ended = %f seconds."), (float)mForegroundEndT->GetTimeValue() ));
+   float t = (float)mForegroundStartT->GetTimeValue();
+   int h = (int)(t/3600);  // there must be a standard function for this!
+   int m = (int)((t - h*3600)/60);
+   float s = t - h*3600.0 - m*60.0;
+   f.AddLine(wxString::Format(wxT("Time started = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
+   t = (float)mForegroundEndT->GetTimeValue();
+   h = (int)(t/3600);
+   m = (int)((t - h*3600)/60);
+   s = t - h*3600.0 - m*60.0;
+   f.AddLine(wxString::Format(wxT("Time ended = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
    if(foregrounddB != 1234.0) // see other instances of '1234.0' in here
       f.AddLine(wxString::Format(wxT("Average rms = %.1f dB."), foregrounddB ));
    else
       f.AddLine(wxString::Format(wxT("Average rms =  dB.")));
 
    f.AddLine(wxT("\r\nBackground"));
-   f.AddLine(wxString::Format(wxT("Time started = %f seconds."), (float)mBackgroundStartT->GetTimeValue() ));
-   f.AddLine(wxString::Format(wxT("Time ended = %f seconds."), (float)mBackgroundEndT->GetTimeValue() ));
+   t = (float)mBackgroundStartT->GetTimeValue();
+   h = (int)(t/3600);
+   m = (int)((t - h*3600)/60);
+   s = t - h*3600.0 - m*60.0;
+   f.AddLine(wxString::Format(wxT("Time started = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
+   t = (float)mBackgroundEndT->GetTimeValue();
+   h = (int)(t/3600);
+   m = (int)((t - h*3600)/60);
+   s = t - h*3600.0 - m*60.0;
+   f.AddLine(wxString::Format(wxT("Time ended = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
    if(backgrounddB != 1234.0)
       f.AddLine(wxString::Format(wxT("Average rms = %.1f dB."), backgrounddB ));
    else
