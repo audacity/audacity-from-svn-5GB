@@ -80,8 +80,17 @@ public:
 
    /** \brief called to export audio into a file.
     *
+    * @param selectedOnly Set to true if all tracks should be mixed, to false
+    * if only the selected tracks should be mixed and exported.
     * @param metadata A Tags object that will over-ride the one in *project and
     * be used to tag the file that is exported.
+    * @param subformat Control which of the multiple formats this exporter is
+    * capable of exporting should be used. Used where a single export plug-in
+    * handles a number of related formats, but they have separate
+    * entries in the Format drop-down list box. For example, the options to
+    * export to "Other PCM", "AIFF 16 Bit" and "WAV 16 Bit" are all the same
+    * libsndfile export plug-in, but with subformat set to 0, 1, and 2
+    * respectively.
     */
    virtual bool Export(AudacityProject *project,
                        int channels,

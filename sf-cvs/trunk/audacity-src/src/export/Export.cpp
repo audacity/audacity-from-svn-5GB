@@ -101,6 +101,13 @@ bool ExportPlugin::CheckFileName(wxFileName &filename, int format)
   return true;
 }
 
+/** \brief Add a new entry to the list of formats this plug-in can export
+ *
+ * To configure the format use SetFormat, SetCanMetaData etc with the index of
+ * the format.
+ * @return The number of formats currently set up. This is one more than the
+ * index of the newly added format.
+ */
 int ExportPlugin::AddFormat()
 {
    FormatInfo *nf = new FormatInfo();
@@ -118,6 +125,10 @@ void ExportPlugin::Destroy()
    delete this;
 }
 
+/**
+ * @param index The plugin to set the format for (range 0 to one less than the
+ * count of formats)
+ */
 void ExportPlugin::SetFormat(const wxString & format, int index)
 {
    mFormatInfos[index]->mFormat = format;
