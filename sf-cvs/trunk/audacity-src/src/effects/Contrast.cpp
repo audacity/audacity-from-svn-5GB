@@ -441,7 +441,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
    //Information
    S.StartStatic( _("Information") );
    {
-      S.AddFixedText(_("Contrast, for analysing rms volume differences between selections, in dB."));
+      S.AddFixedText(_("For measuring rms volume differences between two selections of audio."));
       m_pButton_GetURL = S.Id(ID_BUTTON_GETURL).AddButton(_("WCAG contrast tool help on the web"));
    }
    S.EndStatic();
