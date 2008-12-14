@@ -317,8 +317,13 @@ public:
 
    bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
    {
-      for (unsigned int i = 0; i < filenames.GetCount(); i++) {
-         mProject->Import(filenames[i]);
+      //sort by OD non OD.  load Non OD first so user can start editing asap.
+      wxArrayString sortednames(filenames);
+      
+      sortednames.Sort(CompareODFileName);
+      for (unsigned int i = 0; i < sortednames.GetCount(); i++) {
+         
+         mProject->Import(sortednames[i]);
       }
       mProject->HandleResize(); // Adjust scrollers for new track sizes.
       return true;
@@ -1833,6 +1838,12 @@ void AudacityProject::OpenFiles(AudacityProject *proj)
    if (selectedFiles.GetCount() == 0) {
       return;
    }
+   
+   
+   //sort selected files by OD status.  
+   //For the open menu we load OD first so user can edit asap.
+   //first sort selectedFiles.
+   selectedFiles.Sort(CompareODFirstFileName);
 
    for (size_t ff = 0; ff < selectedFiles.GetCount(); ff++) {
       wxString fileName = selectedFiles[ff];

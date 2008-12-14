@@ -30,6 +30,78 @@ ODLock sLibSndFileMutex;
 
 DEFINE_EVENT_TYPE(EVT_ODTASK_UPDATE)
 
+//OD files are "greater than" non OD files, to produce a sort that has
+//OD Files at the end.
+int CompareODFileName(const wxString& first, const wxString& second)
+{
+   bool firstIsOD = false;
+   bool secondIsOD = false;
+
+#ifdef EXPERIMENTAL_ONDEMAND         
+   if(first.EndsWith(wxT("wav"))||first.EndsWith(wxT("WAV"))||
+      first.EndsWith(wxT("wave"))||first.EndsWith(wxT("WAVE"))||
+      first.EndsWith(wxT("Wav"))||first.EndsWith(wxT("Wave"))||
+      first.EndsWith(wxT("aif"))||first.EndsWith(wxT("AIF"))||
+      first.EndsWith(wxT("aiff"))||first.EndsWith(wxT("AIFF"))||
+      first.EndsWith(wxT("aiff"))||first.EndsWith(wxT("Aif")) )
+    {
+      firstIsOD=true;
+    }
+   if(second.EndsWith(wxT("wav"))||second.EndsWith(wxT("WAV"))||
+      second.EndsWith(wxT("wave"))||second.EndsWith(wxT("WAVE"))||
+      second.EndsWith(wxT("Wav"))||second.EndsWith(wxT("Wave"))||
+      second.EndsWith(wxT("aif"))||second.EndsWith(wxT("AIF"))||
+      second.EndsWith(wxT("aiff"))||second.EndsWith(wxT("AIFF"))||
+      second.EndsWith(wxT("aiff"))||second.EndsWith(wxT("Aif")) )
+    {
+      secondIsOD=true;
+    }
+        
+#endif
+    
+    if(firstIsOD && !secondIsOD)
+      return 1;
+    else if(secondIsOD&&!firstIsOD)
+      return -1;
+   
+   return first.Cmp(second);
+}
+
+//same as above but OD is less than non-OD
+int CompareODFirstFileName(const wxString& first, const wxString& second)
+{
+   bool firstIsOD = false;
+   bool secondIsOD = false;
+   
+#ifdef EXPERIMENTAL_ONDEMAND      
+   if(first.EndsWith(wxT("wav"))||first.EndsWith(wxT("WAV"))||
+      first.EndsWith(wxT("wave"))||first.EndsWith(wxT("WAVE"))||
+      first.EndsWith(wxT("Wav"))||first.EndsWith(wxT("Wave"))||
+      first.EndsWith(wxT("aif"))||first.EndsWith(wxT("AIF"))||
+      first.EndsWith(wxT("aiff"))||first.EndsWith(wxT("AIFF"))||
+      first.EndsWith(wxT("aiff"))||first.EndsWith(wxT("Aif")) )
+    {
+      firstIsOD=true;
+    }
+   if(second.EndsWith(wxT("wav"))||second.EndsWith(wxT("WAV"))||
+      second.EndsWith(wxT("wave"))||second.EndsWith(wxT("WAVE"))||
+      second.EndsWith(wxT("Wav"))||second.EndsWith(wxT("Wave"))||
+      second.EndsWith(wxT("aif"))||second.EndsWith(wxT("AIF"))||
+      second.EndsWith(wxT("aiff"))||second.EndsWith(wxT("AIFF"))||
+      second.EndsWith(wxT("aiff"))||second.EndsWith(wxT("Aif")) )
+    {
+      secondIsOD=true;
+    }
+        
+#endif    
+    
+    if(firstIsOD && !secondIsOD)
+      return -1;
+    else if(secondIsOD&&!firstIsOD)
+      return 1;
+   
+   return first.Cmp(second);
+}
 
 void ODManager::LockLibSndFileMutex()
 {

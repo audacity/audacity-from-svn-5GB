@@ -41,6 +41,10 @@ number of threads.
 
 DECLARE_EXPORTED_EVENT_TYPE(AUDACITY_DLL_API, EVT_ODTASK_UPDATE, -1)
 
+///wxstring compare function for sorting filenames with od
+int CompareODFileName(const wxString& first, const wxString& second);
+int CompareODFirstFileName(const wxString& first, const wxString& second);
+
 /// A singleton that manages currently running Tasks on an arbitrary 
 /// number of threads.
 class WaveTrack;
