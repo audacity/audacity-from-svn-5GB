@@ -77,6 +77,7 @@ simplifies construction of menu items.
 #include "AboutDialog.h"
 #include "Benchmark.h"
 #include "Screenshot.h"
+#include "ondemand/ODManager.h"
 
 #include "Resample.h"
 #include "BatchProcessDialog.h"
@@ -4077,6 +4078,10 @@ void AudacityProject::OnImport()
    }
 
    gPrefs->Write(wxT("/NewImportingSession"), true);
+   //sort selected files by OD status.  Load non OD first so user can edit asap.
+   //first sort selectedFiles.
+   selectedFiles.Sort(CompareODFileName);
+   
    for (size_t ff = 0; ff < selectedFiles.GetCount(); ff++) {
       wxString fileName = selectedFiles[ff];
 
@@ -4088,6 +4093,10 @@ void AudacityProject::OnImport()
 
    HandleResize(); // Adjust scrollers for new track sizes.
 }
+
+
+
+
 
 void AudacityProject::OnImportLabels()
 {
