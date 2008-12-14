@@ -694,13 +694,17 @@ void ChangePitchDialog::OnSlider_PercentChange(wxCommandEvent & event)
 	}
 }
 
-
 void ChangePitchDialog::OnPreview(wxCommandEvent &event)
 {
    TransferDataFromWindow();
 
 	// Save & restore parameters around Preview, because we didn't do OK.
 	double oldSemitonesChange = m_SemitonesChange;
+   if( m_PercentChange < -99.0)
+   {
+      m_PercentChange = -99.0;
+      this->Update_Text_PercentChange();
+   }
 	mEffect->m_SemitonesChange = m_SemitonesChange;
 	mEffect->Preview();
 	mEffect->m_SemitonesChange = oldSemitonesChange;
@@ -763,6 +767,7 @@ void ChangePitchDialog::Update_Text_PercentChange()
 		wxString str;
 		str.Printf(wxT("%.3f"), m_PercentChange);
 		m_pTextCtrl_PercentChange->SetValue(str);
+      FindWindow(wxID_OK)->Enable(m_PercentChange > -100.0);
 	}
 }
 
