@@ -354,14 +354,13 @@ bool Exporter::Process(AudacityProject *project, bool selectedOnly, double t0, d
       return false;
    }
 
-   // Ask user for file name
-   if (!GetFilename()) {
+   // Let user edit MetaData 
+   if (!(project->GetTags()->ShowEditDialog(project, _("Edit Metadata"), mProject->GetShowId3Dialog()))) {
       return false;
    }
 
-   // Let user edit MetaData 
-
-   if (!(project->GetTags()->ShowEditDialog(project, _("Edit Metadata"), mProject->GetShowId3Dialog()))) {
+   // Ask user for file name
+   if (!GetFilename()) {
       return false;
    }
 
