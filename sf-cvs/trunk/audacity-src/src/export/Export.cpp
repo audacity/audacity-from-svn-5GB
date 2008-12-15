@@ -432,8 +432,7 @@ bool Exporter::ExamineTracks()
 
    while (tr) {
       if (tr->GetKind() == Track::Wave) {
-         if (tr->GetSelected() || !mSelectedOnly) {
-
+         if ( (tr->GetSelected() || !mSelectedOnly) && !tr->GetMute() ) {  // don't count muted tracks
             mNumSelected++;
 
             if (tr->GetChannel() == Track::LeftChannel) {
