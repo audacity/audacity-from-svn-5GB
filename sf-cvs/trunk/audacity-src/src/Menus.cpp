@@ -2349,9 +2349,12 @@ bool AudacityProject::OnEffect(int type, Effect * f)
       //STM:
       //The following automatically re-zooms after sound was generated.
       // IMO, it was disorienting, removing to try out without re-fitting
-      //if (mTracks->GetEndTime() > prevEndTime)
-      //      OnZoomFit();
-
+      //mchinen:12/14/08 reapplying for generate effects
+      if ( f->GetEffectFlags() & INSERT_EFFECT)
+      {
+            OnZoomFit();
+          //  mTrackPanel->Refresh(false);
+      }
       RedrawProject();
       if (focus != NULL) {
          focus->SetFocus();
