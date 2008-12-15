@@ -1129,8 +1129,11 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
 
       if (b->IsAlias() && ab->GetAliasedFile() == fName) {
          needToRename = true;
-         wxPrintf(_("Changing block %s\n"), b->GetFileName().GetFullName().c_str());
-         ab->ChangeAliasedFile(renamedFile);
+         //wxPrintf(_("Changing block %s\n"), b->GetFileName().GetFullName().c_str());
+         //ab->ChangeAliasedFile(renamedFile);
+         
+         //ODBlocks access the aliased file on another thread, so we need to pause them before this continues.
+         ab->LockRead();
       }
 
       it++;
@@ -1138,7 +1141,8 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
 
    if (needToRename) {
       if (!wxRenameFile(fName.GetFullPath(),
-                        renamedFile.GetFullPath())) {
+                        renamedFile.GetFullPath())) 
+      {
          // ACK!!! The renaming was unsuccessful!!!
          // (This shouldn't happen, since we tried creating a
          // file of this name and then deleted it just a
@@ -1151,8 +1155,10 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
             BlockFile *b = it->second;
             AliasBlockFile *ab = (AliasBlockFile*)b;
 
-            if (b->IsAlias() && ab->GetAliasedFile() == renamedFile)
-               ab->ChangeAliasedFile(fName);
+            if (b->IsAlias() && ab->GetAliasedFile() == fName)
+            {
+               ab->UnlockRead();
+            }
             it++;
          }
 
@@ -1161,6 +1167,25 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
                        fName.GetFullPath().c_str(),
                        renamedFile.GetFullPath().c_str());
          return false;
+      }
+      else
+      {
+         //point the aliases to the new filename.
+         BlockHash::iterator it=blockFileHash.begin();
+         while(it != blockFileHash.end()) {
+            BlockFile *b = it->second;
+            AliasBlockFile *ab = (AliasBlockFile*)b;
+
+            if (b->IsAlias() && ab->GetAliasedFile() == fName)
+            {
+               ab->ChangeAliasedFile(renamedFile);
+               ab->UnlockRead();
+               wxPrintf(_("Changed block %s to new alias name\n"), b->GetFileName().GetFullName().c_str());
+               
+            }
+            it++;
+         }
+
       }
 
       aliasList.Remove(fName.GetFullPath());

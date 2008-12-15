@@ -130,6 +130,11 @@ class BlockFile {
    ///when the project closes, it locks the blockfiles.
    ///Override this in case it needs special treatment
    virtual void CloseLock(){Lock();}
+   
+   /// Prevents a read on other threads.  The basic blockfile runs on only one thread, so does nothing.
+   virtual void LockRead(){}
+   /// Allows reading on other threads.
+   virtual void UnlockRead(){}
 
  private:
 
