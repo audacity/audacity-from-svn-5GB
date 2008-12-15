@@ -5847,6 +5847,17 @@ void TrackPanel::OnTrackMute(bool shiftDown, Track *t)
    else {
       // Normal click toggles this track.
       t->SetMute(!t->GetMute());
+      if(t->GetLinked())   // set mute the same on both, if a pair
+      {
+         bool muted = t->GetMute();
+         TrackListIterator iter(mTracks);
+         Track *i = iter.First();
+         while (i != t) {  // search for this track
+            i = iter.Next();
+         }
+         i = iter.Next();  // get the next one, since linked
+         i->SetMute(muted);   // and mute it as well
+      }
 
       if( IsSimpleSolo() )
       {
