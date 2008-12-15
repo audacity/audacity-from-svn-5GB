@@ -5828,22 +5828,26 @@ void TrackPanel::OnTrackMute(bool shiftDown, Track *t)
    }
 
    if (shiftDown) 
-      {
-         // Cosmetic...  
-         // Shift-click mutes this track and unmutes other tracks.
-         TrackListIterator iter(mTracks);
-         Track *i = iter.First();
-         while (i) {
-            if (i == t) {
+   {
+      // Cosmetic...  
+      // Shift-click mutes this track and unmutes other tracks.
+      TrackListIterator iter(mTracks);
+      Track *i = iter.First();
+      while (i) {
+         if (i == t) {
+            i->SetMute(true);
+            if(i->GetLinked()) { // also mute the linked track
+               i = iter.Next();
                i->SetMute(true);
             }
-            else {
-               i->SetMute(false);
-            }
-            i->SetSolo(false);
-            i = iter.Next();
          }
+         else {
+            i->SetMute(false);
+         }
+         i->SetSolo(false);
+         i = iter.Next();
       }
+   }
    else {
       // Normal click toggles this track.
       t->SetMute(!t->GetMute());
@@ -5865,17 +5869,21 @@ void TrackPanel::OnTrackMute(bool shiftDown, Track *t)
          Track *i = iter.First();
          int nPlaying=0;
 
-         // We also set a solo indicator if we have just one track playing.
+         // We also set a solo indicator if we have just one track / stereo pair playing.
          // otherwise clear solo on everything.
          while (i) {
             if( !i->GetMute())
+            {
                nPlaying += 1;
+               if(i->GetLinked())
+                  i = iter.Next();  // don't count this one as it is linked
+            }
             i = iter.Next();
          }
 
          i = iter.First();
          while (i) {
-            i->SetSolo( (nPlaying==1) && !i->GetMute() );
+            i->SetSolo( (nPlaying==1) && !i->GetMute() );   // will set both of a stereo pair
             i = iter.Next();
          }
       }
@@ -5902,6 +5910,17 @@ void TrackPanel::OnTrackSolo(bool shiftDown, Track *t)
    if ( bSoloMultiple ) 
    {
       t->SetSolo( !t->GetSolo() );
+      if(t->GetLinked())
+      {
+         bool soloed = t->GetSolo();
+         TrackListIterator iter(mTracks);
+         Track *i = iter.First();
+         while (i != t) {  // search for this track
+            i = iter.Next();
+         }
+         i = iter.Next();  // get the next one, since linked
+         i->SetSolo(soloed);   // and solo it as well
+      }
    }
    else 
    {
@@ -5911,17 +5930,29 @@ void TrackPanel::OnTrackSolo(bool shiftDown, Track *t)
       Track *i = iter.First();
       bool bWasSolo = t->GetSolo();
       while (i) {
-         i->SetSolo( (i==t) && !bWasSolo);
-         if( IsSimpleSolo() )
-            i->SetMute( (i!=t) && !bWasSolo);
+         if( i==t )
+         {
+            i->SetSolo(!bWasSolo);
+            if( IsSimpleSolo() )
+               i->SetMute(false);
+            if(t->GetLinked())
+            {
+               i = iter.Next();
+               i->SetSolo(!bWasSolo);
+               if( IsSimpleSolo() )
+                  i->SetMute(false);
+            }
+         }
+         else
+         {
+            i->SetSolo(false);
+            if( IsSimpleSolo() )
+               i->SetMute(!bWasSolo);
+         }
          i = iter.Next();
       }
-      //t->SetSolo(!t->GetSolo());
    }
-
-
    Refresh(false);
-
 }
 
 void TrackPanel::OnTrackClose()
