@@ -122,7 +122,7 @@ BrandingPanel::BrandingPanel(AudacityProject* pProject,
 {
    mProject = pProject;
 
-   //vvvvv 
+   //v 
    //    #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
    //       this->SetBackgroundColour(theTheme.Colour(clrSample)); // same as waveform color
    this->SetBackgroundColour(*wxWHITE); 
@@ -585,7 +585,7 @@ void BrandingPanel::OnButton_AudacityLogo(wxCommandEvent& event)
 
 void BrandingPanel::OnKeyEvent(wxKeyEvent & event)
 {
-   event.Skip(true); // Ignore them. //vvvvv
+   event.Skip(true); // Ignore them. //v
 }
 
 void BrandingPanel::OnPaint(wxPaintEvent& evt)
