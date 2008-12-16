@@ -472,6 +472,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\common\pa_ringbuffer.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\common\pa_ringbuffer.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\common\pa_skeleton.c"
 					>
 				</File>
