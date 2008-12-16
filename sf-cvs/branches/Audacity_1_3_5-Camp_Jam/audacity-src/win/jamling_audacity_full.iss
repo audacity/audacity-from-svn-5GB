@@ -3,7 +3,7 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=jamling_audacity-win-unicode-1.3.5
+OutputBaseFilename=jamling_audacity-win-full-1.3.5
 SetupIconFile=audacity.ico
 
 WizardImageFile=jamling_Audacity_InnoWizardImage.bmp
@@ -12,14 +12,14 @@ WizardSmallImageFile=audacity_InnoWizardSmallImage.bmp
 SolidCompression=yes
 
 ; installer-related directives
-AppName=Jamling Audacity 1.3 Beta (Unicode)
-AppVerName=Jamling Audacity 1.3.5 (Unicode)
+AppName=Jamling Audacity 1.3 Beta (Full)
+AppVerName=Jamling Audacity 1.3.5 (Full)
 AppPublisher=Audacity Team
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
 ChangesAssociations=yes
-DefaultDirName={pf}\Jamling Audacity 1.3 Beta (Unicode)
+DefaultDirName={pf}\Jamling Audacity 1.3 Beta (Full)
 ; Always warn if dir exists, because we'll overwrite previous Audacity.
 DirExistsWarning=yes
 DisableProgramGroupPage=yes
@@ -63,11 +63,12 @@ Source: "..\win\unicode_release\audacity.exe"; DestDir: "{app}"; Flags: ignoreve
 Source: "..\win\unicode_release\Languages\*"; DestDir: "{app}\Languages\"; Flags: ignoreversion recursesubdirs
 Source: "..\win\unicode_release\Nyquist\*"; DestDir: "{app}\Nyquist\"; Flags: ignoreversion
 Source: "..\win\unicode_release\Plug-Ins\*"; DestDir: "{app}\Plug-Ins\"; Excludes: "analyze.ny, fadein.ny, fadeout.ny, undcbias.ny"; Flags: ignoreversion
+Source: "..\win\unicode_release\Jamling_HelpText_images\*"; DestDir: "{app}\Jamling_HelpText_images\"; Flags: ignoreversion
 
 
 [Icons]
-Name: "{commonprograms}\Jamling Audacity 1.3 Beta (Unicode)"; Filename: "{app}\audacity.exe"
-Name: "{userdesktop}\Jamling Audacity"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
+Name: "{commonprograms}\Jamling Audacity 1.3 Beta (Full)"; Filename: "{app}\audacity.exe"
+Name: "{userdesktop}\Jamling Audacity (Full)"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
 
 [InstallDelete]
 ; Get rid of Audacity 1.0.0 stuff that's no longer used.
@@ -90,5 +91,5 @@ Root: HKCR; Subkey: "Audacity.Project\shell\open"; Flags: createvalueifdoesntexi
 Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; ValueData: """{app}\audacity.exe"" ""%1"""; Flags: createvalueifdoesntexist uninsdeletekey; Tasks: associate_aup
 
 [Run]
-Filename: "{app}\audacity.exe"; Description: "Launch Audacity"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\audacity.exe"; Description: "Launch Jamling Audacity (Full)"; Flags: nowait postinstall skipifsilent
 
