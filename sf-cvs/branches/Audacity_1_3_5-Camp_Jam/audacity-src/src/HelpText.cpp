@@ -18,8 +18,9 @@
 #include <wx/intl.h>
 
 #include "Audacity.h"
-#include "HelpText.h"
+#include "AudacityApp.h"
 #include "AudacityBranding.h"
+#include "HelpText.h"
 
 #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
    #include "effects/Effect.h"
@@ -92,6 +93,13 @@ wxString LinkExpand( const wxString & Text )
    }
    return Temp;
 }
+
+#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+   wxString MoreHelp()
+   {
+      return _("Need [[moreHelp|more help]]?<br><br>");
+   }
+#endif
 
 wxString ToWelcome( )
 {
@@ -168,80 +176,204 @@ wxString HelpTextBuiltIn( const wxString & Key )
 {
    #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
       wxString varKey = Key;
+      wxString strImagesDir = 
+         wxGetApp().audacityPathList[0] + wxFileName::GetPathSeparator() + 
+         wxT("Jamling_HelpText_images") + wxFileName::GetPathSeparator();
       if (Key == wxT("welcome"))
          return WrapText(
                   wxString(wxT("")) +
                   _("</p><center><h3>I want to...</h3></center><br>") +
                   /** i18n-hint: where you see [[key|text]] translate 'text' and don't translate 'key' */
-                  _("<ul> \
-                        <li>[[play|Play]] an existing audio file. \
-                        <li>[[record|Record]] my voice or instrument. \
+                  _("<ul><li>[[playSong|Play]] the Song I bought from Jamling. \
+                        <li>[[jamlingRecord|Record]] my instrument or voice. \
                         <li>[[fixTrack|Fix]] part of a Track. \
                         <br>&nbsp;<br> \
-                        <li>[[SlowDown|Slow down]] a section of this Song. \
-                        <li>[[ChangeKey|Change the key]] of this Song. \
+                        <li>[[slowDown|Slow down]] a section of this Song. \
+                        <li>[[changeKey|Change the key]] of this Song. \
                         <li>[[loopPlay|Loop Play]] a section of this Song. \
                         <br>&nbsp;<br> \
                         <li>[[uploadTrack|Upload my Track]] to Jamling Records. \
                         <li>[[getTrack|Get another Jamling\'s Track]] for this Song. \
                         <li>[[uploadProject|Upload my finished Mix]] to Jamling Records. \
-                        <li>[[getSong|Get another Song]] from Jamling Records. \
-                        <li>[[export|Export my finished Mix]] to my media player. \
-                        <li>[[burncd|Burn my finished Mix]] to a CD. \
+                        <li>[[getSong|Get a different Song]] from Jamling Records. \
+                        <li>[[jamlingExport|Export my finished Mix]] to my media player. \
+                        <li>Use these tracks in a [[exportMultiple|different recording application]]. \
                         <br>&nbsp;<br> \
                         <li>[[save|Save my Song or Open a different Song]]. \
                      </ul></p><p>"));
+      if (Key == wxT("moreHelp")) // Appears at the bottom of pages with "Back to...".
+         return WrapText(wxString(wxT("")) + 
+            _("<p><b>Need more help? Try:</b> \
+               <ul><li><a href=\"http://jamlingrecords.com/forum\">Jamling Forums</a></li> \
+                  <li><a href=\"http://audacity.sourceforge.net/manual-1.2/tutorials.html\"> \
+                     Audacity Tutorial</a></li> \
+                  <li><a href=\"http://audacityteam.org/wiki/index.php?title=Recording_Tips\"> \
+                     Recording Tips</a> at Audacity Wiki</li> \
+                  <li><a href=\"http://audacityteam.org/wiki/index.php?title=Troubleshooting_Recordings\"> \
+                     Troubleshooting Recording</a> at Audacity Wiki</li> \
+               </ul></p><br><br>") + ToWelcome());
+      if (Key == wxT("playSong"))
+         return WrapText(wxString(wxT("")) + 
+            _("<p><b>Play the Song I bought from Jamling</b> \
+               <ul><li>Your song should be loaded with all of the tracks, so you should be \
+                     able to just press play! \
+                     <img src=\"") + strImagesDir + _("PlayBtn.jpg\"></li> \
+                  <li>If you hear an annoying tick-tock sound that isn’t in the original recording, \
+                     the click track is on.  The click track is at the bottom of the main window, and \
+                     if you press the Mute button it will be silent. \
+                     <img src=\"") + strImagesDir + _("MuteBtn.jpg\"></li> \
+                  <li>You can also drag the audio files and drop them into the main Audacity window.</li> \
+               </ul></p><br><br>") + MoreHelp() + ToWelcome());
+
+      if (Key == wxT("jamlingRecord"))
+         return WrapText(wxString(wxT("")) + 
+            _("<p><b>Record my instrument or voice</b> \
+               <ul><li>Jamling Audacity will be set to your computer's default audio input - most likely \
+                     your computer's internal microphone.   \
+                     This is the easiest and fastest way to get started with Jamling.</li> \
+                  <li>To use your computer's internal mic to record a track, [[internalMic|click here]].</li> \
+                  <li>To plug your instrument or mic into your line-in port on your computer, [[lineIn|click here]].</li> \
+                  <li>To use a USB microphone or instrument interface, [[USBin|click here]].</li> \
+               </ul></p><br><br>") + MoreHelp() + ToWelcome());
+      if (Key == wxT("internalMic"))
+         return WrapText(wxString(wxT("")) + 
+            _("<p><b>Use my computer's internal microphone</b> \
+               <ul><li>Your internal computer microphone is probably already set up. Press the red Record button \
+                     <img src=\"") + strImagesDir + _("RecordBtn.jpg\"> \
+                     and make some noise.</li> \
+                  <li>Press Stop, press Play again, and check to see if the noise you made was recorded.</li> \
+                  <li>If so, you're ready to go!  \
+                     You can adjust the input level on your internal mic with the slider: \
+                     <img src=\"") + strImagesDir + _("InputLevelSlider.jpg\"></li> \
+                  <li>IMPORTANT NOTE – you’ll want to plug in headphones to prevent echo and help \
+                     the music be loud enough for you to play or sing along to!</li> \
+                  <li>If your computer is not already set up to use the internal mic, \
+                     you'll need to change the default audio input: \
+                     <ul><li>For PC, <i>Start &gt; Control Panel &gt; Sounds and Audio Devices &gt; \
+                           Audio &gt; Sound Recording – Volume...</i> Button, then check <i>Internal Mic</i> \
+                           and adjust volume.</li> \
+                        <li>For Mac, <i>Apple Menu &gt; System Preferences &gt; Sound &gt; Input &gt; \
+                           Internal Microphone</i></li> \
+                     </ul></li> \
+                  <li>You want it to be loud enough to pick up your sound, but not so loud it hits the red \
+                     on the “Input Volume” monitor.  This is called “clipping” and it makes those ugly \
+                     crackling noises you probably don't want in your track.</li> \
+                  <li>You can erase your test noise track by selecting it and going to the top menu:  \
+                     <i>Tracks &gt; Remove Tracks</i>, or by simply clicking the X button on the track.</li> \
+               </ul></p><br><br>") + MoreHelp() + ToWelcome());
+      if (Key == wxT("lineIn"))
+         return WrapText(wxString(wxT("")) + 
+            _("<p><b>Plug my instrument or mic into my computer</b> \
+               <ul><li>You'll need a cable with a 1/8” (mini) plug in order to plug into the Line In \
+                        on your computer, probably indicated by one of these symbols: \
+                     <img src=\"") + strImagesDir + _("LineIn1.jpg\"> &nbsp; &nbsp; &nbsp; \
+                     <img src=\"") + strImagesDir + _("LineIn2.jpg\"></li> \
+                  <li>If you're using a normal 1/4” instrument cable for your guitar, bass, electronic drums, \
+                     etc. you'll need an adapter like this, available for about 3 bucks at Radio Shack:\
+                     <img src=\"") + strImagesDir + _("Adapter.jpg\"></li> \
+                  <li>Once you have the right gear, you'll need to change the default audio input: \
+                     <ul><li>For PC, <i>Start &gt; Control Panel &gt; Sounds and Audio Devices &gt; \
+                           Audio &gt; Sound Recording – Volume...</i> Button, then check <i>External Mic</i> \
+                           and adjust volume.</li> \
+                        <li>For Mac, <i>Apple Menu &gt; System Preferences &gt; Sound &gt; Input &gt; \
+                           Line In</i></li> \
+                     </ul></li> \
+                  <li>You may have to restart Jamling Audacity after you've made this change.</li> \
+                  <li>Once it says “Line In” at the top, press the red Record button and make some noise \
+                     on your instrument or mic.  \
+                     Press the space bar to stop recording and press it again to play back the noise you \
+                     just made.  If you hear your noise, you're in business!</li> \
+                  <li>If so, you're ready to go!  \
+                     You can adjust the input level on your internal mic with the slider:  \
+                     <img src=\"") + strImagesDir + _("InputLevelSlider.jpg\"></li> \
+                  <li>You want it to be loud enough to pick up your sound, but not so loud it hits the red \
+                     on the “Input Volume” monitor.  This is called “clipping” and it makes those ugly \
+                     crackling noises you probably don't want in your track.</li> \
+                  <li>You can erase your test noise track by selecting it and going to the top menu:  \
+                     <i>Tracks &gt; Remove Tracks</i>, or by simply clicking the X button on the track.</li> \
+               </ul></p><br><br>") + MoreHelp() + ToWelcome());
+      if (Key == wxT("USBin"))
+         return WrapText(wxString(wxT("")) + 
+            _("<p><b>Use a USB mic or instrument interface</b></p> \
+                <p><i>USB interfaces sometimes have trouble working with Jamling Audacity.  \
+                   I could explain a bunch of technical and legal reasons that is the case, but instead \
+                   I'll just give you the basic steps to try...</i></p> \
+                <p><ul><li>First you'll need to change the default audio input: \
+                     <ul><li>For PC, <i>Start &gt; Control Panel &gt; Sounds and Audio Devices &gt; \
+                           Audio &gt; Sound Recording – Volume...</i> Button, then check <i>Internal Mic</i> \
+                           and adjust volume.</li> \
+                        <li>For Mac, <i>Apple Menu &gt; System Preferences &gt; Sound &gt; Input &gt; \
+                           Internal Microphone</i></li> \
+                     </ul></li> \
+                  <li>You may have to restart Jamling Audacity after you've made this change.</li> \
+                  <li>Once it says “USB Device” at the top, press the red Record button and make some noise \
+                     on your instrument or mic.  \
+                     Press the space bar to stop recording and press it again to play back the noise you \
+                     just made.  If you hear your noise, you're in business!</li> \
+                  <li>If so, you're ready to go!  \
+                     You can adjust the input level on your internal mic with the slider:  \
+                     <img src=\"") + strImagesDir + _("InputLevelSlider.jpg\"></li> \
+                  <li>You want it to be loud enough to pick up your sound, but not so loud it hits the red \
+                     on the “Input Volume” monitor.  This is called “clipping” and it makes those ugly \
+                     crackling noises you probably don't want in your track.</li> \
+                  <li>You can erase your test noise track by selecting it and going to the top menu:  \
+                     <i>Tracks &gt; Remove Tracks</i>, or by simply clicking the X button on the track.</li> \
+               </ul></p><br><br>") + MoreHelp() + ToWelcome());
+
       if (Key == wxT("fixTrack"))
          return WrapText(wxString(wxT("")) + 
-                  _("<p><b>Fix part of a Track</b></p> \
+                  _("<p><b>Fix part of a Track</b> \
                      <ul> \
                         <li>Select the portion of the desired track.</li> \
                         <li><i>Edit &gt; Silence</i> (Ctrl+L)</li> \
                         <li>[[record|Record]] my voice or instrument.</li> \
                         <li><i>Tracks &gt; Mix and Render</i></li> \
-                     </ul> \
-                     </p><br><br>") + ToWelcome());
+                     </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if ((Key == wxT("ChangeTempo")) || (Key == wxT("ChangePitch")))
       {
          Effect* pEffect = Effect::GetEffectByIdentifier(Key, BUILTIN_EFFECT | PROCESS_EFFECT | ADVANCED_EFFECT);
          if (pEffect)
          {
             AudacityProject* pProject = GetActiveProject();
-            pProject->SelectAllIfNone(); 
+            if (Key == wxT("ChangeTempo"))
+               pProject->SelectAllIfNone(); 
+            else // Always select all for ChangePitch, per Nick's email 2008-12-13.
+               pProject->OnSelectAll(); 
             pProject->OnEffect(BUILTIN_EFFECT, pEffect);
          }
          // Don't return. Change Key to be handled below.
          if (Key == wxT("ChangeTempo")) 
-            varKey = wxT("SlowDown");
+            varKey = wxT("slowDown");
          else
-            varKey = wxT("ChangeKey");
+            varKey = wxT("changeKey");
       }
-      if (varKey == wxT("SlowDown"))
+      if (varKey == wxT("slowDown"))
          return WrapText(wxString(wxT("")) + 
                            _("<p><b>Slow down a section of this Song</b></p> \
-                              <ul> \
-                                 <li>Select the portion of the desired track.</li> \
-                                 <li>Use the [[ChangeTempo|Change Tempo dialog]] to set the slowed tempo.</li> \
-                                 <li>To loop play, hold down SHIFT when you click the green Play button.</li> \
-                                 <li>To return to previous tempo: <i>Edit &gt; Undo</i>.</li> \
-                              </ul> \
-                              </p><br><br>") + ToWelcome());
-      if (varKey == wxT("ChangeKey"))
+                             <p>Highlight the section you want to slow down and [[ChangeTempo|click here]].</p> \
+                             <br><br>") + MoreHelp() + ToWelcome());
+      if (varKey == wxT("changeKey"))
          return WrapText(wxString(wxT("")) + 
-                  _("<p><b>Change the key of this Song</b></p> \
-                     <ul> \
-                     <li>Use the [[ChangePitch|Change Pitch dialog]] to change the key.</li> \
-                     <li>Jamling Audacity determines the original key based on the beginning.</li> \
-                     <li>To return to previous key: <i>Edit &gt; Undo</i>.</li> \
-                     </ul> \
-                     </p><br><br>") + ToWelcome());
+                  _("<p><b>Change the key of this Song</b> \
+                     <ul><li>Use the [[ChangePitch|Change Pitch dialog]] to change the key.</li> \
+                        <li>Jamling Audacity determines the original key based on the beginning.</li> \
+                        <li>You may want to go to <i>File &gt; Save As</i> before changing the key, \
+                           so you can return back to the original key later.</li> \
+                        <li>To immediately return to the previous key: <i>Edit &gt; Undo</i>.</li> \
+                     </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("loopPlay"))
-      {
-         AudacityProject* pProject = GetActiveProject();
-         pProject->SelectAllIfNone();
-         pProject->GetControlToolBar()->PlayCurrentRegion(true); 
-         return HelpTextBuiltIn(wxT("welcome"));
-      }
+      //{
+      //   AudacityProject* pProject = GetActiveProject();
+      //   pProject->SelectAllIfNone();
+      //   pProject->GetControlToolBar()->PlayCurrentRegion(true); 
+      //   return HelpTextBuiltIn(wxT("welcome"));
+      //}
+         return WrapText(wxString(wxT("")) + 
+                  _("<p><b>Loop play a section of this Song</b> \
+                     <ul><li>Highlight the section of the ong you want to loop (repeat).</li> \
+                        <li>Then hold down the shift key and click on the Play button.</li> \
+                        <li>The section you've highlighted will loop until you hit Stop (or the space bar).</li> \
+                     </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("uploadTrack"))
          return WrapText(wxString(wxT("")) + 
                   _("<p><b>Upload my Track to Jamling Records</b> \
@@ -255,15 +387,13 @@ wxString HelpTextBuiltIn( const wxString & Key )
                         <li>In the Audio File area of the form, use the Browse button to find your OGG file.</li> \
                         <li>Optionally add a description and artwork.</li> \
                         <li>Submit the file.</li> \
-                     </ul> \
-                    </p><br><br>") + ToWelcome());
+                     </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("getTrack"))
          return WrapText(wxString(wxT("")) + 
                   _("<p><b>Get another Jamling\'s Track for this Song</b> \
                      <ul> \
                         <li>Go to <a href=\"http://jamlingrecords.com/content/jamling-stuff\">Jamling Stuff</a>.</li> \
-                     </ul> \
-                    </p><br><br>") + ToWelcome());
+                     </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("uploadProject"))
       {
          return WrapText(wxString(wxT("")) + 
@@ -278,16 +408,33 @@ wxString HelpTextBuiltIn( const wxString & Key )
                         <li>In the Audio File area of the form, use the Browse button to find your OGG file.</li> \
                         <li>Optionally add a description and artwork.</li> \
                         <li>Submit the file.</li> \
-                     </ul> \
-                    </p><br><br>") + ToWelcome());
+                     </ul></p><br><br>") + MoreHelp() + ToWelcome());
       }
       if (Key == wxT("getSong"))
          return WrapText(wxString(wxT("")) + 
-                  _("<p><b>Get another Song from Jamling Records</b> \
+                  _("<p><b>Get a different Song from Jamling Records</b> \
                      <ul> \
                         <li>Go to the <a href=\"http://jamlingrecords.com/content/music\">Jamling Music</a> page.</li> \
-                     </ul> \
-                    </p><br><br>") + ToWelcome());
+                     </ul></p><br><br>") + MoreHelp() + ToWelcome());
+      if (Key == wxT("jamlingExport"))
+         return WrapText(wxString(wxT("")) + 
+                  _("<p><b>Export my finished Mix</b> \
+                     <ul><li>Most media players can read either .aiff or .wav files, so just go to \
+                           <i>File &gt; Export</i> and click OK.  \
+                           Your song will appear on your desktop, and you can drag it into your media player \
+                           from there.</li> \
+                        <li>Note: Do not select MP3 unless you’ve downloaded the MP3 encoder, \
+                           which you can find by searching for “Audacity .mp3 encoder” on the Internet.</li> \
+                        <li>Before you export your song, make sure to take note of what you’ve named it and \
+                           where you’re saving it.</li> \
+                     </ul></p><br><br>") + MoreHelp() + ToWelcome());
+      if (Key == wxT("exportMultiple"))
+         return WrapText(wxString(wxT("")) + 
+                  _("<p><b>Use these tracks in a different recording application</b> \
+                     <p>Easy – go to <i>File &gt; Export Multiple</i>.  \
+                        Choose your uncompressed format (most recording apps can use either .wav or. aiff) \
+                        and export the files.  From there, import them into your other program. \
+                     </p><br><br>") + MoreHelp() + ToWelcome());
    #else // !((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
       if(Key==wxT("welcome"))
       {
