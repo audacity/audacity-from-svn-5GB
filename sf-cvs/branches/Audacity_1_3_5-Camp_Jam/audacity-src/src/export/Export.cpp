@@ -276,7 +276,7 @@ const ExportPluginArray Exporter::GetPlugins()
 }
 
 #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
-   wxString gStrInstrument = wxT(""); // default to Mix
+   wxString gStrInstrument = wxT("Mix"); // default
 #endif
 
 bool Exporter::Process(AudacityProject *project, bool selectedOnly, double t0, double t1)
@@ -357,12 +357,12 @@ bool Exporter::Process(AudacityProject *project, int numChannels,
       strChoices.Add(wxT("Bass"));
       strChoices.Add(wxT("Drums"));
       strChoices.Add(wxT("Keyboards"));
-      strChoices.Add(wxT("Lead Guitar"));
-      strChoices.Add(wxT("Rhythm Guitar"));
-      strChoices.Add(wxT("Lead Vocals"));
-      strChoices.Add(wxT("Backing Vocals"));
+      strChoices.Add(wxT("Lead_Guitar"));
+      strChoices.Add(wxT("Rhythm_Guitar"));
+      strChoices.Add(wxT("Lead_Vocals"));
+      strChoices.Add(wxT("Backing_Vocals"));
       strChoices.Add(wxT("Percussion"));
-      strChoices.Add(wxT("Other Craziness!"));
+      strChoices.Add(wxT("Other_Craziness"));
       bool bChangeStr = (strChoices.Index(str) == wxNOT_FOUND); // str is not a valid instrument.
       if (bChangeStr) 
       {
@@ -465,7 +465,7 @@ bool Exporter::ExamineTracks()
          }
       }
       else
-         gStrInstrument = wxT(""); // Mix
+         gStrInstrument = wxT("Mix"); 
    #endif
 
    if (mT0 < earliestBegin)
@@ -506,9 +506,9 @@ bool Exporter::GetFilename()
 
    mFilename.SetPath(gPrefs->Read(wxT("/Export/Path"), ::wxGetCwd()));
 #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
-   wxString strName = mProject->GetName() + wxT("_");
+   wxString strName = mProject->GetName() + wxT("-");
    if (mSelectedOnly && (mNumSelected == 1)) // Exporting one track
-      strName += gStrInstrument + wxT("_Track");
+      strName += gStrInstrument;
    else
       strName += wxT("Mix");
    mFilename.SetName(strName);
