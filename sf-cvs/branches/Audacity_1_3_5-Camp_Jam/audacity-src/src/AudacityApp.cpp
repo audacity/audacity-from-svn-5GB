@@ -17,6 +17,7 @@ It handles initialization and termination by subclassing wxApp.
 
 
 #include "Audacity.h" // This should always be included first
+#include "AudacityBranding.h"
 
 #include <wx/defs.h>
 #include <wx/app.h>
@@ -652,7 +653,10 @@ bool AudacityApp::OnInit()
    wxString progPath = wxPathOnly(argv[0]);
    AddUniquePathToPathList(progPath, audacityPathList);
    AddUniquePathToPathList(progPath+wxT("\\Languages"), audacityPathList);
-   
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      AddUniquePathToPathList(progPath+wxT("\\Jamling_HelpText_images"), audacityPathList);
+   #endif
+
    defaultTempDir.Printf(wxT("%s\\audacity_temp"), 
                          tmpDirLoc.c_str());
    #endif //__WXWSW__
@@ -667,6 +671,10 @@ bool AudacityApp::OnInit()
 
    AddUniquePathToPathList(progPath+wxT("/Languages"), audacityPathList);
    AddUniquePathToPathList(progPath+wxT("/../../../Languages"), audacityPathList);
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      AddUniquePathToPathList(progPath+wxT("/Jamling_HelpText_images"), audacityPathList);
+      AddUniquePathToPathList(progPath+wxT("/../../../Jamling_HelpText_images"), audacityPathList);
+   #endif
    defaultTempDir.Printf(wxT("%s/audacity-%s"), 
                          tmpDirLoc.c_str(),
                          wxGetUserId().c_str());
@@ -677,6 +685,9 @@ bool AudacityApp::OnInit()
    wxString progPath = wxGetCwd();
    AddUniquePathToPathList(progPath, audacityPathList);
    AddUniquePathToPathList(progPath+wxT(":Languages"), audacityPathList);
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      AddUniquePathToPathList(progPath+wxT(":Jamling_HelpText_images"), audacityPathList);
+   #endif
    defaultTempDir.Printf(wxT("%s/audacity_temp"), 
                          tmpDirLoc.c_str());
    #endif //__MACOS9__
