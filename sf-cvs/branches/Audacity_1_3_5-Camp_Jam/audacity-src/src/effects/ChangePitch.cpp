@@ -752,7 +752,7 @@ void ChangePitchDialog::OnOk(wxCommandEvent & event)
    if (Validate()) 
    {
       #if (AUDACITY_BRANDING == BRAND_JAMLING__EASY)
-      wxMessageBox(_("To return to previous key: Edit menu > Undo."));
+         wxMessageBox(_("To return to previous key: Edit menu > Undo."));
       #endif
       EndModal(true);
    }
