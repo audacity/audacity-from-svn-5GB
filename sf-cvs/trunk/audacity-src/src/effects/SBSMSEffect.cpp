@@ -119,7 +119,8 @@ bool EffectSBSMS::Process()
    TrackListIterator iter(mOutputWaveTracks);
    WaveTrack* leftTrack = (WaveTrack*)(iter.First());
    mCurTrackNum = 0;
-   
+
+   double len = leftTrack->GetEndTime() - leftTrack->GetStartTime();   
    double maxDuration = 0.0;
    
    while (leftTrack != NULL) {
@@ -321,6 +322,18 @@ bool EffectSBSMS::Process()
    
    this->ReplaceProcessedWaveTracks(bGoodResult); 
    
+#ifdef EXPERIMENTAL_FULL_LINKING
+   AudacityProject *p = (AudacityProject*)mParent;
+   if( p && p->IsSticky() ){
+      leftTrack = (WaveTrack*)(iter.First());
+      double newLen = leftTrack->GetEndTime() - leftTrack->GetStartTime();
+      double timeAdded = newLen-len;
+      double sel = mCurT1-mCurT0;
+      double percent = (sel/(timeAdded+sel))*100 - 100;
+      if ( !(HandleGroupChangeSpeed(percent, mCurT0, mCurT1)) ) bGoodResult = false;
+   }
+#endif
+
    // Update selection
    mT0 = mCurT0;
    mT1 = mCurT0 + maxDuration;
