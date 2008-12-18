@@ -1134,6 +1134,36 @@
 		28FE4A080ABF4E960056F5C4 /* mmx_optimized.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FE4A060ABF4E960056F5C4 /* mmx_optimized.cpp */; };
 		28FE4A090ABF4E960056F5C4 /* sse_optimized.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FE4A070ABF4E960056F5C4 /* sse_optimized.cpp */; };
 		28FE4A3A0ABF58360056F5C4 /* soundtouch_config.h in Headers */ = {isa = PBXBuildFile; fileRef = 28FE4A390ABF58360056F5C4 /* soundtouch_config.h */; };
+		ED2706FF0EF9C47E007D4FFD /* sbsms.h in Headers */ = {isa = PBXBuildFile; fileRef = ED2706FE0EF9C47E007D4FFD /* sbsms.h */; };
+		ED2707240EF9C51D007D4FFD /* audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED2707020EF9C51D007D4FFD /* audio.cpp */; };
+		ED2707250EF9C51D007D4FFD /* audio.h in Headers */ = {isa = PBXBuildFile; fileRef = ED2707030EF9C51D007D4FFD /* audio.h */; };
+		ED2707260EF9C51D007D4FFD /* buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED2707040EF9C51D007D4FFD /* buffer.cpp */; };
+		ED2707270EF9C51D007D4FFD /* buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = ED2707050EF9C51D007D4FFD /* buffer.h */; };
+		ED2707280EF9C51D007D4FFD /* defs.h in Headers */ = {isa = PBXBuildFile; fileRef = ED2707060EF9C51D007D4FFD /* defs.h */; };
+		ED2707290EF9C51D007D4FFD /* fft.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED2707070EF9C51D007D4FFD /* fft.cpp */; };
+		ED27072A0EF9C51D007D4FFD /* fft.h in Headers */ = {isa = PBXBuildFile; fileRef = ED2707080EF9C51D007D4FFD /* fft.h */; };
+		ED27072B0EF9C51D007D4FFD /* grain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED2707090EF9C51D007D4FFD /* grain.cpp */; };
+		ED27072C0EF9C51D007D4FFD /* grain.h in Headers */ = {isa = PBXBuildFile; fileRef = ED27070A0EF9C51D007D4FFD /* grain.h */; };
+		ED27072D0EF9C51D007D4FFD /* peak.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED27070B0EF9C51D007D4FFD /* peak.cpp */; };
+		ED27072E0EF9C51D007D4FFD /* peak.h in Headers */ = {isa = PBXBuildFile; fileRef = ED27070C0EF9C51D007D4FFD /* peak.h */; };
+		ED27072F0EF9C51D007D4FFD /* pitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED27070D0EF9C51D007D4FFD /* pitch.cpp */; };
+		ED2707300EF9C51D007D4FFD /* real.h in Headers */ = {isa = PBXBuildFile; fileRef = ED27070E0EF9C51D007D4FFD /* real.h */; };
+		ED2707310EF9C51D007D4FFD /* resample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED27070F0EF9C51D007D4FFD /* resample.cpp */; };
+		ED2707320EF9C51D007D4FFD /* sbsms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED2707100EF9C51D007D4FFD /* sbsms.cpp */; };
+		ED2707330EF9C51D007D4FFD /* sincCoeffs.h in Headers */ = {isa = PBXBuildFile; fileRef = ED2707110EF9C51D007D4FFD /* sincCoeffs.h */; };
+		ED2707340EF9C51D007D4FFD /* sms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED2707120EF9C51D007D4FFD /* sms.cpp */; };
+		ED2707350EF9C51D007D4FFD /* sms.h in Headers */ = {isa = PBXBuildFile; fileRef = ED2707130EF9C51D007D4FFD /* sms.h */; };
+		ED2707360EF9C51D007D4FFD /* subband.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED2707140EF9C51D007D4FFD /* subband.cpp */; };
+		ED2707370EF9C51D007D4FFD /* subband.h in Headers */ = {isa = PBXBuildFile; fileRef = ED2707150EF9C51D007D4FFD /* subband.h */; };
+		ED2707380EF9C51D007D4FFD /* track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED2707160EF9C51D007D4FFD /* track.cpp */; };
+		ED2707390EF9C51D007D4FFD /* track.h in Headers */ = {isa = PBXBuildFile; fileRef = ED2707170EF9C51D007D4FFD /* track.h */; };
+		ED27073A0EF9C51D007D4FFD /* trackpoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED2707180EF9C51D007D4FFD /* trackpoint.cpp */; };
+		ED27073B0EF9C51D007D4FFD /* trackpoint.h in Headers */ = {isa = PBXBuildFile; fileRef = ED2707190EF9C51D007D4FFD /* trackpoint.h */; };
+		ED27073C0EF9C51D007D4FFD /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED27071A0EF9C51D007D4FFD /* utils.cpp */; };
+		ED27073D0EF9C51D007D4FFD /* utils.h in Headers */ = {isa = PBXBuildFile; fileRef = ED27071B0EF9C51D007D4FFD /* utils.h */; };
+		ED2707460EF9C550007D4FFD /* liblibsbsms.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2706F40EF9C3C6007D4FFD /* liblibsbsms.a */; };
+		ED2707500EF9C64F007D4FFD /* SBSMSEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED27074B0EF9C64F007D4FFD /* SBSMSEffect.cpp */; };
+		ED2707510EF9C64F007D4FFD /* TimeScale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED27074D0EF9C64F007D4FFD /* TimeScale.cpp */; };
 		ED3D7FF00DF73889000F43E3 /* EffectCategory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED3D7FEC0DF73889000F43E3 /* EffectCategory.cpp */; };
 		ED3D7FF10DF73889000F43E3 /* EffectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED3D7FEE0DF73889000F43E3 /* EffectManager.cpp */; };
 /* End PBXBuildFile section */
@@ -1306,6 +1336,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 28E67F510A3A160D0021D89F;
 			remoteInfo = "portaudio-v19";
+		};
+		ED2707470EF9C55A007D4FFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1790ABE309883346008A330A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED2706F30EF9C3C6007D4FFD /* libsbsms */;
+			remoteInfo = libsbsms;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1573,7 +1610,7 @@
 		174F73CD098D516D009CD6E0 /* AudacityOGG.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityOGG.icns; sourceTree = "<group>"; };
 		174F73CE098D516D009CD6E0 /* AudacityProject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityProject.icns; sourceTree = "<group>"; };
 		174F73CF098D516D009CD6E0 /* AudacityWAV.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityWAV.icns; sourceTree = "<group>"; };
-		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
+		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
 		176A1A5B098B7B8D00DC73B4 /* libnyquist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libnyquist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		176EE9DB09A2EC1000188F3B /* caf.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = caf.c; sourceTree = "<group>"; };
 		176EE9DC09A2EC1000188F3B /* flac.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = flac.c; sourceTree = "<group>"; };
@@ -2648,6 +2685,38 @@
 		ED05D1280E50AD5700CC4BD3 /* scorealign-glue.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "scorealign-glue.h"; sourceTree = "<group>"; };
 		ED05D1290E50AD5700CC4BD3 /* scorealign.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = scorealign.cpp; sourceTree = "<group>"; };
 		ED05D12A0E50AD5700CC4BD3 /* scorealign.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = scorealign.h; sourceTree = "<group>"; };
+		ED2706F40EF9C3C6007D4FFD /* liblibsbsms.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibsbsms.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED2706FE0EF9C47E007D4FFD /* sbsms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbsms.h; sourceTree = "<group>"; };
+		ED2707020EF9C51D007D4FFD /* audio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = audio.cpp; path = sbsms/src/audio.cpp; sourceTree = "<group>"; };
+		ED2707030EF9C51D007D4FFD /* audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = audio.h; path = sbsms/src/audio.h; sourceTree = "<group>"; };
+		ED2707040EF9C51D007D4FFD /* buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = buffer.cpp; path = sbsms/src/buffer.cpp; sourceTree = "<group>"; };
+		ED2707050EF9C51D007D4FFD /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = buffer.h; path = sbsms/src/buffer.h; sourceTree = "<group>"; };
+		ED2707060EF9C51D007D4FFD /* defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = defs.h; path = sbsms/src/defs.h; sourceTree = "<group>"; };
+		ED2707070EF9C51D007D4FFD /* fft.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fft.cpp; path = sbsms/src/fft.cpp; sourceTree = "<group>"; };
+		ED2707080EF9C51D007D4FFD /* fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fft.h; path = sbsms/src/fft.h; sourceTree = "<group>"; };
+		ED2707090EF9C51D007D4FFD /* grain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = grain.cpp; path = sbsms/src/grain.cpp; sourceTree = "<group>"; };
+		ED27070A0EF9C51D007D4FFD /* grain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = grain.h; path = sbsms/src/grain.h; sourceTree = "<group>"; };
+		ED27070B0EF9C51D007D4FFD /* peak.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = peak.cpp; path = sbsms/src/peak.cpp; sourceTree = "<group>"; };
+		ED27070C0EF9C51D007D4FFD /* peak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = peak.h; path = sbsms/src/peak.h; sourceTree = "<group>"; };
+		ED27070D0EF9C51D007D4FFD /* pitch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pitch.cpp; path = sbsms/src/pitch.cpp; sourceTree = "<group>"; };
+		ED27070E0EF9C51D007D4FFD /* real.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = real.h; path = sbsms/src/real.h; sourceTree = "<group>"; };
+		ED27070F0EF9C51D007D4FFD /* resample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = resample.cpp; path = sbsms/src/resample.cpp; sourceTree = "<group>"; };
+		ED2707100EF9C51D007D4FFD /* sbsms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sbsms.cpp; path = sbsms/src/sbsms.cpp; sourceTree = "<group>"; };
+		ED2707110EF9C51D007D4FFD /* sincCoeffs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sincCoeffs.h; path = sbsms/src/sincCoeffs.h; sourceTree = "<group>"; };
+		ED2707120EF9C51D007D4FFD /* sms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sms.cpp; path = sbsms/src/sms.cpp; sourceTree = "<group>"; };
+		ED2707130EF9C51D007D4FFD /* sms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sms.h; path = sbsms/src/sms.h; sourceTree = "<group>"; };
+		ED2707140EF9C51D007D4FFD /* subband.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = subband.cpp; path = sbsms/src/subband.cpp; sourceTree = "<group>"; };
+		ED2707150EF9C51D007D4FFD /* subband.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = subband.h; path = sbsms/src/subband.h; sourceTree = "<group>"; };
+		ED2707160EF9C51D007D4FFD /* track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = track.cpp; path = sbsms/src/track.cpp; sourceTree = "<group>"; };
+		ED2707170EF9C51D007D4FFD /* track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = track.h; path = sbsms/src/track.h; sourceTree = "<group>"; };
+		ED2707180EF9C51D007D4FFD /* trackpoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = trackpoint.cpp; path = sbsms/src/trackpoint.cpp; sourceTree = "<group>"; };
+		ED2707190EF9C51D007D4FFD /* trackpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = trackpoint.h; path = sbsms/src/trackpoint.h; sourceTree = "<group>"; };
+		ED27071A0EF9C51D007D4FFD /* utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = utils.cpp; path = sbsms/src/utils.cpp; sourceTree = "<group>"; };
+		ED27071B0EF9C51D007D4FFD /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utils.h; path = sbsms/src/utils.h; sourceTree = "<group>"; };
+		ED27074B0EF9C64F007D4FFD /* SBSMSEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SBSMSEffect.cpp; sourceTree = "<group>"; };
+		ED27074C0EF9C64F007D4FFD /* SBSMSEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBSMSEffect.h; sourceTree = "<group>"; };
+		ED27074D0EF9C64F007D4FFD /* TimeScale.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeScale.cpp; sourceTree = "<group>"; };
+		ED27074E0EF9C64F007D4FFD /* TimeScale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeScale.h; sourceTree = "<group>"; };
 		ED3D7FEC0DF73889000F43E3 /* EffectCategory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectCategory.cpp; sourceTree = "<group>"; };
 		ED3D7FED0DF73889000F43E3 /* EffectCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectCategory.h; sourceTree = "<group>"; };
 		ED3D7FEE0DF73889000F43E3 /* EffectManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectManager.cpp; sourceTree = "<group>"; };
@@ -2687,6 +2756,7 @@
 				2862D7CD0E25E97B0014D9BB /* librasqal.a in Frameworks */,
 				2862D7D00E25E97F0014D9BB /* libraptor.a in Frameworks */,
 				28E2373A0E5163A200281398 /* libscorealign.a in Frameworks */,
+				ED2707460EF9C550007D4FFD /* liblibsbsms.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2703,6 +2773,7 @@
 		17072F220988D4F4008541CC /* lib-src */ = {
 			isa = PBXGroup;
 			children = (
+				ED2706FA0EF9C436007D4FFD /* sbsms */,
 				17072F4C0988D6A9008541CC /* expat */,
 				283B3D3E0BC21EBE00FA01D5 /* FileDialog */,
 				2880529A0DEA71B000671EA4 /* lib-widget-extra */,
@@ -3351,6 +3422,7 @@
 				287BD8AE0E25DA6500CB4467 /* librdf.a */,
 				287BD9AA0E25DF2800CB4467 /* libslv2.a */,
 				28E237080E515D1D00281398 /* libscorealign.a */,
+				ED2706F40EF9C3C6007D4FFD /* liblibsbsms.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3546,6 +3618,10 @@
 		1790AFFD09883BFD008A330A /* effects */ = {
 			isa = PBXGroup;
 			children = (
+				ED27074B0EF9C64F007D4FFD /* SBSMSEffect.cpp */,
+				ED27074C0EF9C64F007D4FFD /* SBSMSEffect.h */,
+				ED27074D0EF9C64F007D4FFD /* TimeScale.cpp */,
+				ED27074E0EF9C64F007D4FFD /* TimeScale.h */,
 				18D8314C0ED0F56200FD870D /* Contrast.cpp */,
 				18D8314D0ED0F56200FD870D /* Contrast.h */,
 				1790B00009883BFD008A330A /* audiounits */,
@@ -4808,6 +4884,57 @@
 			path = fft3;
 			sourceTree = "<group>";
 		};
+		ED2706FA0EF9C436007D4FFD /* sbsms */ = {
+			isa = PBXGroup;
+			children = (
+				ED2707000EF9C489007D4FFD /* src */,
+				ED2706FD0EF9C47E007D4FFD /* include */,
+			);
+			name = sbsms;
+			sourceTree = "<group>";
+		};
+		ED2706FD0EF9C47E007D4FFD /* include */ = {
+			isa = PBXGroup;
+			children = (
+				ED2706FE0EF9C47E007D4FFD /* sbsms.h */,
+			);
+			name = include;
+			path = sbsms/include;
+			sourceTree = "<group>";
+		};
+		ED2707000EF9C489007D4FFD /* src */ = {
+			isa = PBXGroup;
+			children = (
+				ED2707020EF9C51D007D4FFD /* audio.cpp */,
+				ED2707030EF9C51D007D4FFD /* audio.h */,
+				ED2707040EF9C51D007D4FFD /* buffer.cpp */,
+				ED2707050EF9C51D007D4FFD /* buffer.h */,
+				ED2707060EF9C51D007D4FFD /* defs.h */,
+				ED2707070EF9C51D007D4FFD /* fft.cpp */,
+				ED2707080EF9C51D007D4FFD /* fft.h */,
+				ED2707090EF9C51D007D4FFD /* grain.cpp */,
+				ED27070A0EF9C51D007D4FFD /* grain.h */,
+				ED27070B0EF9C51D007D4FFD /* peak.cpp */,
+				ED27070C0EF9C51D007D4FFD /* peak.h */,
+				ED27070D0EF9C51D007D4FFD /* pitch.cpp */,
+				ED27070E0EF9C51D007D4FFD /* real.h */,
+				ED27070F0EF9C51D007D4FFD /* resample.cpp */,
+				ED2707100EF9C51D007D4FFD /* sbsms.cpp */,
+				ED2707110EF9C51D007D4FFD /* sincCoeffs.h */,
+				ED2707120EF9C51D007D4FFD /* sms.cpp */,
+				ED2707130EF9C51D007D4FFD /* sms.h */,
+				ED2707140EF9C51D007D4FFD /* subband.cpp */,
+				ED2707150EF9C51D007D4FFD /* subband.h */,
+				ED2707160EF9C51D007D4FFD /* track.cpp */,
+				ED2707170EF9C51D007D4FFD /* track.h */,
+				ED2707180EF9C51D007D4FFD /* trackpoint.cpp */,
+				ED2707190EF9C51D007D4FFD /* trackpoint.h */,
+				ED27071A0EF9C51D007D4FFD /* utils.cpp */,
+				ED27071B0EF9C51D007D4FFD /* utils.h */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -5390,6 +5517,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ED2706F00EF9C3C6007D4FFD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED2706FF0EF9C47E007D4FFD /* sbsms.h in Headers */,
+				ED2707250EF9C51D007D4FFD /* audio.h in Headers */,
+				ED2707270EF9C51D007D4FFD /* buffer.h in Headers */,
+				ED2707280EF9C51D007D4FFD /* defs.h in Headers */,
+				ED27072A0EF9C51D007D4FFD /* fft.h in Headers */,
+				ED27072C0EF9C51D007D4FFD /* grain.h in Headers */,
+				ED27072E0EF9C51D007D4FFD /* peak.h in Headers */,
+				ED2707300EF9C51D007D4FFD /* real.h in Headers */,
+				ED2707330EF9C51D007D4FFD /* sincCoeffs.h in Headers */,
+				ED2707350EF9C51D007D4FFD /* sms.h in Headers */,
+				ED2707370EF9C51D007D4FFD /* subband.h in Headers */,
+				ED2707390EF9C51D007D4FFD /* track.h in Headers */,
+				ED27073B0EF9C51D007D4FFD /* trackpoint.h in Headers */,
+				ED27073D0EF9C51D007D4FFD /* utils.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -5656,6 +5804,7 @@
 				2862D79A0E25E23B0014D9BB /* PBXTargetDependency */,
 				17C99D45098970800041B1BC /* PBXTargetDependency */,
 				2840CF800AEB822100F49FC3 /* PBXTargetDependency */,
+				ED2707480EF9C55A007D4FFD /* PBXTargetDependency */,
 			);
 			name = Audacity;
 			productName = Audacity;
@@ -5823,6 +5972,22 @@
 			productReference = 28E67F5F0A3A160D0021D89F /* libportaudio.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		ED2706F30EF9C3C6007D4FFD /* libsbsms */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED2706F90EF9C3E4007D4FFD /* Build configuration list for PBXNativeTarget "libsbsms" */;
+			buildPhases = (
+				ED2706F00EF9C3C6007D4FFD /* Headers */,
+				ED2706F10EF9C3C6007D4FFD /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libsbsms;
+			productName = libsbsms;
+			productReference = ED2706F40EF9C3C6007D4FFD /* liblibsbsms.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -5862,6 +6027,7 @@
 				287BD9680E25DE6800CB4467 /* liblrdf */,
 				287BD9950E25DF2800CB4467 /* slv2 */,
 				28E236F40E515D1D00281398 /* libscorealign */,
+				ED2706F30EF9C3C6007D4FFD /* libsbsms */,
 			);
 		};
 /* End PBXProject section */
@@ -6642,6 +6808,8 @@
 				186CCEA40E523C8E00659159 /* Profiler.cpp in Sources */,
 				28EDC8DF0E5550750034BBE7 /* LV2PortGroup.cpp in Sources */,
 				18D8314E0ED0F56300FD870D /* Contrast.cpp in Sources */,
+				ED2707500EF9C64F007D4FFD /* SBSMSEffect.cpp in Sources */,
+				ED2707510EF9C64F007D4FFD /* TimeScale.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6881,6 +7049,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ED2706F10EF9C3C6007D4FFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED2707240EF9C51D007D4FFD /* audio.cpp in Sources */,
+				ED2707260EF9C51D007D4FFD /* buffer.cpp in Sources */,
+				ED2707290EF9C51D007D4FFD /* fft.cpp in Sources */,
+				ED27072B0EF9C51D007D4FFD /* grain.cpp in Sources */,
+				ED27072D0EF9C51D007D4FFD /* peak.cpp in Sources */,
+				ED27072F0EF9C51D007D4FFD /* pitch.cpp in Sources */,
+				ED2707310EF9C51D007D4FFD /* resample.cpp in Sources */,
+				ED2707320EF9C51D007D4FFD /* sbsms.cpp in Sources */,
+				ED2707340EF9C51D007D4FFD /* sms.cpp in Sources */,
+				ED2707360EF9C51D007D4FFD /* subband.cpp in Sources */,
+				ED2707380EF9C51D007D4FFD /* track.cpp in Sources */,
+				ED27073A0EF9C51D007D4FFD /* trackpoint.cpp in Sources */,
+				ED27073C0EF9C51D007D4FFD /* utils.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -7003,6 +7191,11 @@
 			isa = PBXTargetDependency;
 			target = 28E67F510A3A160D0021D89F /* portaudio-v19 */;
 			targetProxy = 28E67F630A3A16AA0021D89F /* PBXContainerItemProxy */;
+		};
+		ED2707480EF9C55A007D4FFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED2706F30EF9C3C6007D4FFD /* libsbsms */;
+			targetProxy = ED2707470EF9C55A007D4FFD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -7169,6 +7362,11 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "BUILDING_AUDACITY=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Debug Static\"";
 				OTHER_CFLAGS = (
 					"$(WX_CFLAGS)",
 					"$(FFMPEG_CFLAGS)",
@@ -7667,6 +7865,11 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "BUILDING_AUDACITY=1";
 				INFOPLIST_FILE = Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Debug Static\"";
 				OTHER_CFLAGS = (
 					"$(WX_CFLAGS)",
 					"$(FFMPEG_CFLAGS)",
@@ -7997,6 +8200,11 @@
 				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
 				GCC_PREPROCESSOR_DEFINITIONS = "BUILDING_AUDACITY=1";
 				INFOPLIST_FILE = Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Debug Static\"";
 				OTHER_CFLAGS = (
 					"$(WX_CFLAGS)",
 					"$(FFMPEG_CFLAGS)",
@@ -8510,6 +8718,11 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "BUILDING_AUDACITY=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Debug Static\"";
 				OTHER_CFLAGS = (
 					"$(WX_CFLAGS)",
 					"$(FFMPEG_CFLAGS)",
@@ -8607,6 +8820,70 @@
 				PRODUCT_NAME = portaudio;
 			};
 			name = "Debug Static";
+		};
+		ED2706F50EF9C3C6007D4FFD /* Debug Static */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B90DF63FF000576305 /* Debug_Static.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_CFLAGS = "$(WX_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				PREBINDING = NO;
+				PRODUCT_NAME = libsbsms;
+			};
+			name = "Debug Static";
+		};
+		ED2706F60EF9C3C6007D4FFD /* Debug Shared */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5B70DF63FE500576305 /* Debug_Shared.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_CFLAGS = "$(WX_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				PREBINDING = NO;
+				PRODUCT_NAME = libsbsms;
+			};
+			name = "Debug Shared";
+		};
+		ED2706F70EF9C3C6007D4FFD /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BD0DF6400E00576305 /* Release_Static.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_CFLAGS = "$(WX_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				PREBINDING = NO;
+				PRODUCT_NAME = libsbsms;
+			};
+			name = "Release Static";
+		};
+		ED2706F80EF9C3C6007D4FFD /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2812A5BB0DF63FFD00576305 /* Release_Shared.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_CFLAGS = "$(WX_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				PREBINDING = NO;
+				PRODUCT_NAME = libsbsms;
+			};
+			name = "Release Shared";
 		};
 /* End XCBuildConfiguration section */
 
@@ -8904,6 +9181,17 @@
 				288052D90DEA74F100671EA4 /* Debug Shared */,
 				28E5DA360AC4CBA200E7F64C /* Release Static */,
 				288052EE0DEA74FD00671EA4 /* Release Shared */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug Static";
+		};
+		ED2706F90EF9C3E4007D4FFD /* Build configuration list for PBXNativeTarget "libsbsms" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED2706F50EF9C3C6007D4FFD /* Debug Static */,
+				ED2706F60EF9C3C6007D4FFD /* Debug Shared */,
+				ED2706F70EF9C3C6007D4FFD /* Release Static */,
+				ED2706F80EF9C3C6007D4FFD /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
