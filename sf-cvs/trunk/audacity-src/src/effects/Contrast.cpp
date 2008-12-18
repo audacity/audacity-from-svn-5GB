@@ -560,7 +560,7 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
 
    f.AddLine(wxT("==================================="));
    f.AddLine(_("WCAG 2.0 Success Criteria 1.4.7 Contrast Results\r\n"));
-   f.AddLine(wxString::Format(wxT("Filename = %s."), project->GetFileName() ));
+   f.AddLine(wxString::Format(wxT("Filename = %s."), project->GetFileName().c_str() ));
    f.AddLine(wxT("\r\nForeground"));
    float t = (float)mForegroundStartT->GetTimeValue();
    int h = (int)(t/3600);  // there must be a standard function for this!
