@@ -142,10 +142,6 @@ extern void AddPages(   AudacityProject * pProj, GuiFactory & Factory,  wxNotebo
 
 #endif
 
-// WCAG 2.0 Contrast analyser, as requested by David MacDonald
-// Implemented by Martyn Shaw
-#define EXPERIMENTAL_CONTRAST 1
-
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //
