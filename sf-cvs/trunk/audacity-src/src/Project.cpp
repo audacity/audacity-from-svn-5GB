@@ -2497,6 +2497,19 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    }
    else
    {
+      TrackListIterator iter(mTracks);
+      bool bHasTracks = (iter.First() != NULL);
+      if (!bHasTracks)
+      {
+         if (mUndoManager.UnsavedChanges()) {
+            int result = wxMessageBox(_("Your project is now empty.\nIf saved, the project will have no tracks.\n\nTo save any previously open tracks:\nCancel, Edit > Undo until all tracks\nare open, then File > Save Project.\n\nSave anyway?"),
+                                      _("Warning empty project"),
+                                      wxYES_NO | wxICON_QUESTION, this);
+            if (result == wxNO)
+               return false;
+         }
+      }
+
       if (!fromSaveAs && mDirManager->GetProjectName() == wxT(""))
          return SaveAs();
 
