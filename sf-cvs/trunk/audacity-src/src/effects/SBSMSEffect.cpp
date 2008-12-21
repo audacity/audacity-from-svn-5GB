@@ -160,6 +160,8 @@ bool EffectSBSMS::Process()
             mCurTrackNum++; // Increment for rightTrack, too.	
          }
          
+         sampleCount trackEnd = leftTrack->TimeToLongSamples(leftTrack->GetEndTime());
+
          // SBSMS has a fixed sample rate - we just convert to its sample rate and then convert back
          float srIn = leftTrack->GetRate();
          float srSBSMS = 44100.0;
@@ -174,7 +176,7 @@ bool EffectSBSMS::Process()
          rb.leftBuffer = (float*)calloc(maxBlockSize,sizeof(float));
          rb.rightBuffer = (float*)calloc(maxBlockSize,sizeof(float));
          rb.offset = start;
-         rb.end = end;
+         rb.end = trackEnd;
          rb.ratio = srSBSMS/srIn;
          Resampler *resampler = new Resampler(resampleCB, &rb);
          
