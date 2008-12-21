@@ -473,6 +473,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndSubMenu();
 
    c->AddItem(wxT("ZeroCross"),      _("Find &Zero Crossings\tZ"),         FN(OnZeroCrossing));
+   c->SetCommandFlags(wxT("ZeroCross"), TracksSelectedFlag, TracksSelectedFlag);
 
    c->BeginSubMenu(_("Mo&ve Cursor"));
 
