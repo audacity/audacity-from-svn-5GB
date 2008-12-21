@@ -2005,7 +2005,10 @@ int ExportMP3::AddTags(AudacityProject *project, char **buffer, bool *endOfFile,
          name = ID3_FRAME_ALBUM;
       }
       else if (n.CmpNoCase(TAG_YEAR) == 0) {
-         name = ID3_FRAME_YEAR;
+         // LLL:  This should be ID3_FRAME_YEAR, but some apps do not like the
+         //       newer frame ID, so we force usage of the older one.  (For now
+         //       anyway.)
+         name = "TYER";
       }
       else if (n.CmpNoCase(TAG_GENRE) == 0) {
          name = ID3_FRAME_GENRE;

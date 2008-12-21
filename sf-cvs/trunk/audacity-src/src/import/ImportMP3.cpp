@@ -320,6 +320,9 @@ void MP3ImportFileHandle::ImportID3(Tags *tags)
       else if (strcmp(frame->id, ID3_FRAME_TRACK) == 0) {
          n = TAG_TRACK;
       }
+      else if (strcmp(frame->id, "TYER") == 0) {
+         n = TAG_YEAR;
+      }
       else if (strcmp(frame->id, ID3_FRAME_YEAR) == 0) {
          n = TAG_YEAR;
       }
