@@ -290,7 +290,6 @@ END_EVENT_TABLE()
 FFmpegLibs::FFmpegLibs()
 {
    mLibsLoaded = false;
-   mStatic = false;
    refcount = 1;
    avformat = avcodec = avutil = NULL;
    if (gPrefs) {
@@ -301,12 +300,7 @@ FFmpegLibs::FFmpegLibs()
 
 FFmpegLibs::~FFmpegLibs()
 {
-   if (avformat) delete avformat;
-   if (!mStatic)
-   {
-      if (avcodec) delete avcodec;
-      if (avutil) delete avutil;
-   }
+   FreeLibs();
 };
 
 bool FFmpegLibs::FindLibs(wxWindow *parent)
@@ -358,7 +352,6 @@ bool FFmpegLibs::LoadLibs(wxWindow *parent, bool showerr)
    if (ValidLibsLoaded()) {
       wxLogMessage(wxT("Libraries already loaded - freeing"));
       FreeLibs();
-      mLibsLoaded = false;
    }
 
    // First try loading it from a previously located path
@@ -367,11 +360,25 @@ bool FFmpegLibs::LoadLibs(wxWindow *parent, bool showerr)
       mLibsLoaded = InitLibs(mLibAVFormatPath,showerr);
    }
 
+   // If not successful, try loading it from default path
+   if (!mLibsLoaded && !GetLibAVFormatPath().IsEmpty()) {
+      wxFileName fn(GetLibAVFormatPath(), GetLibAVFormatName());
+      wxString path = fn.GetFullPath();
+      wxLogMessage(wxT("Trying to load from default path %s."),path.c_str());
+      mLibsLoaded = InitLibs(path,showerr);
+      if (mLibsLoaded) {
+         mLibAVFormatPath = path;
+      }
+   }
+
    // If not successful, try loading using system search paths
    if (!ValidLibsLoaded()) {
-      mLibAVFormatPath = GetLibAVFormatName();
-      wxLogMessage(wxT("Trying to load from PATH. File name is %s"),mLibAVFormatPath.c_str());
-      mLibsLoaded = InitLibs(mLibAVFormatPath,showerr);
+      wxString path = GetLibAVFormatName();
+      wxLogMessage(wxT("Trying to load from system paths. File name is %s"),path.c_str());
+      mLibsLoaded = InitLibs(path,showerr);
+      if (mLibsLoaded) {
+         mLibAVFormatPath = path;
+      }
    }
 
    // If libraries aren't loaded - nag user about that
@@ -408,8 +415,9 @@ bool FFmpegLibs::ValidLibsLoaded()
 bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
 {
    // Initially we don't know where are the avcodec and avutl libs
-   wxString libpath_codec(wxT(""));
-   wxString libpath_util(wxT(""));
+   wxDynamicLibrary *codec = NULL;
+   wxDynamicLibrary *util = NULL;
+   wxFileName name(libpath_format);
 
    wxLogWindow* mLogger = wxGetApp().mLogger;
 
@@ -417,6 +425,10 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
 
    wxString syspath;
    bool pathfix = false;
+
+   FreeLibs();
+
+#if defined(__WXMSW__)
    wxLogMessage(wxT("Looking up PATH..."));
    // First take PATH environment variable (store it's content)
    if (wxGetEnv(wxT("PATH"),&syspath))
@@ -460,121 +472,54 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    {
       wxLogMessage(wxT("PATH does not exist."));
    }
+#endif
 
    //Load libavformat
    avformat = new wxDynamicLibrary();
-   if (!avformat->IsLoaded() && !gotError)
-   {
-      wxLogMessage(wxT("Loading avformat from %s"),libpath_format.c_str());
+   wxLogMessage(wxT("Loading avformat from %s"),libpath_format.c_str());
+   if (showerr)
+      mLogger->SetActiveTarget(NULL);
+   gotError = !avformat->Load(libpath_format, wxDL_LAZY);
+   if (showerr)
+      mLogger->SetActiveTarget(mLogger);
+
+   if (!gotError) {
+      if (avformat->HasSymbol(wxT("av_free"))) {
+         util = avformat;
+      }
+      if (avformat->HasSymbol(wxT("avcodec_init"))) {
+         codec = avformat;
+      }
+   }
+
+   if (!util) {
+      name.SetFullName(GetLibAVUtilName());
+      avutil = util =  new wxDynamicLibrary();
+      wxLogMessage(wxT("Loading avutil from %s"),name.GetFullPath().c_str());
+      if (showerr)
+         mLogger->SetActiveTarget(NULL);
+      util->Load(name.GetFullPath(), wxDL_LAZY);
+      if (showerr)
+         mLogger->SetActiveTarget(mLogger);
+   }
+
+   if (!codec) {
+      name.SetFullName(GetLibAVCodecName());
+      avcodec = codec = new wxDynamicLibrary();
+      wxLogMessage(wxT("Loading avcodec from %s"),name.GetFullPath().c_str());
+      if (showerr)
+         mLogger->SetActiveTarget(NULL);
+      codec->Load(name.GetFullPath(), wxDL_LAZY);
+      if (showerr)
+         mLogger->SetActiveTarget(mLogger);
+   }
+
+   if (!avformat->IsLoaded()) {
       if (showerr)
          mLogger->SetActiveTarget(NULL);
       gotError = !avformat->Load(libpath_format, wxDL_LAZY);
       if (showerr)
          mLogger->SetActiveTarget(mLogger);
-   }
-
-   //avformat loaded successfully?
-   if (!gotError)
-   {
-      wxLogMessage(wxT("avformat loaded successfully. Acquiring the list of modules."));
-      //Get the list of all loaded modules and it's length
-      wxDynamicLibraryDetailsArray loaded = avformat->ListLoaded();
-      int loadsize = loaded.size();
-      wxLogMessage(wxT("List acquired and consists of %d modules"),loadsize);
-      for (int i = 0; i < loadsize; i++)
-      {
-         _wxObjArraywxDynamicLibraryDetailsArray litem = loaded.Item(i);
-         //Get modules' path and base name
-         wxString libpath = litem.GetPath();
-         wxString libname = litem.GetName();
-         wxLogMessage(wxT("Item %d: path=%s , name=%s"),i,libpath.c_str(),libname.c_str());
-         //Match name against a pattern to find avcodec and avutil
-         ///\todo own sections for Mac and *nix
-#if defined(__WXMSW__)
-         if (libname.Matches(wxT("*avcodec*.dll*")))
-#else
-         if (libname.Matches(wxT("*avcodec*.so*")))
-#endif
-         {
-            wxLogMessage(wxT("Found avcodec: %s"),libpath.c_str());
-            libpath_codec = libpath;
-         }
-#if defined(__WXMSW__)
-         else if (libname.Matches(wxT("*avutil*.dll*")))
-#else
-         else if (libname.Matches(wxT("*avutil*.so*")))
-#endif
-         {
-            wxLogMessage(wxT("Found avutil: %s"),libpath.c_str());
-            libpath_util = libpath;
-         }
-      }
-      if (loadsize == 0)
-      {
-         wxLogMessage(wxT("Can't get a list of modules (list is empty)"));
-         // Assume that library is not statically linked
-         mStatic = false;
-         // Attempt to load avcodec_init from it.
-         if (avformat->HasSymbol(wxT("avcodec_init")))
-         {
-            // Symbol is loaded, library is statically linked
-            wxLogMessage(wxT("The avformat library happened to be statically linked"));
-            mStatic = true;
-         }
-         else
-         {
-            // Assume that other two libs are in the same directory
-            libpath_codec = wxPathOnly(libpath_format) + wxFileName::GetPathSeparator() + GetLibAVCodecName();
-            libpath_util  = wxPathOnly(libpath_format) + wxFileName::GetPathSeparator() + GetLibAVUtilName();
-            if (!wxFileExists(libpath_codec) && !wxFileExists(libpath_util))
-            {
-               // Else assume that they are somewhere in PATH,
-               // and pray that OS will hook them up by itself
-               libpath_codec = GetLibAVCodecName();
-               libpath_util = GetLibAVUtilName();
-            }
-         }
-      }
-      else
-      {
-         //avformat loaded all right. If it didn't linked two other
-         //libs to itself in process, then it's statically linked.
-         //"or" operator ensures that we won't count misnamed statically linked
-         //avformat library as a dynamic one.
-         if ((libpath_codec.CompareTo(wxT("")) == 0) ||
-          (libpath_util.CompareTo(wxT("")) == 0))
-         {
-            wxLogMessage(wxT("The avformat library happened to be statically linked"));
-            mStatic = true;
-         }
-         else mStatic = false;
-      }
-   }
-
-   if (!mStatic)
-   {
-      wxLogMessage(wxT("Trying to load avcodec and avutil"));
-      //Load other two libs
-      avcodec = new wxDynamicLibrary();
-      if (!avcodec->IsLoaded() && !gotError)
-      {
-         wxLogMessage(wxT("Loading avcodec from %s"),libpath_codec.c_str());
-         if (showerr)
-            mLogger->SetActiveTarget(NULL);
-         gotError = !avcodec->Load(libpath_codec, wxDL_LAZY);
-         if (showerr)
-            mLogger->SetActiveTarget(mLogger);
-      }
-      avutil = new wxDynamicLibrary();
-      if (!avutil->IsLoaded() && !gotError)
-      {
-         wxLogMessage(wxT("Loading avutil from %s"),libpath_util.c_str());
-         if (showerr)
-            mLogger->SetActiveTarget(NULL);
-         gotError = !avutil->Load(libpath_util, wxDL_LAZY);
-         if (showerr)
-            mLogger->SetActiveTarget(mLogger);
-      }
    }
 
    //Return PATH to normal
@@ -585,17 +530,10 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
       wxSetEnv(wxT("PATH"),oldpath.c_str());
    }
 
-   if ( gotError )
-   {
-      wxLogMessage(wxT("Failed to load either avcodec or avutil"));
+   if (gotError) {
+      wxLogMessage(wxT("Failed to load FFmpeg libs"));
+      FreeLibs();
       return false;
-   }
-
-   if (mStatic)
-   {
-      //If it's static library, load everything from it
-      avcodec = avformat;
-      avutil = avformat;
    }
 
    wxLogMessage(wxT("Importing symbols..."));
@@ -624,41 +562,41 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avformat,av_codec_get_tag);
    INITDYN(avformat,avformat_version);
 
-   INITDYN(avcodec,avcodec_init);
-   INITDYN(avcodec,avcodec_find_encoder);
-   INITDYN(avcodec,avcodec_find_encoder_by_name);
-   INITDYN(avcodec,avcodec_find_decoder);
-   INITDYN(avcodec,avcodec_find_decoder_by_name);
-   INITDYN(avcodec,avcodec_string);
-   INITDYN(avcodec,avcodec_get_context_defaults);
-   INITDYN(avcodec,avcodec_alloc_context);
-   INITDYN(avcodec,avcodec_get_frame_defaults);
-   INITDYN(avcodec,avcodec_alloc_frame);
-   INITDYN(avcodec,avcodec_open);
-   INITDYN(avcodec,avcodec_decode_audio2);
-   INITDYN(avcodec,avcodec_encode_audio);
-   INITDYN(avcodec,avcodec_close);
-   INITDYN(avcodec,avcodec_register_all);
-   INITDYN(avcodec,avcodec_flush_buffers);
-   INITDYN(avcodec,av_get_bits_per_sample);
-   INITDYN(avcodec,av_get_bits_per_sample_format);
-   INITDYN(avcodec,avcodec_version);
-   INITDYN(avcodec,av_fast_realloc);
-   INITDYN(avcodec,av_codec_next);
+   INITDYN(codec,avcodec_init);
+   INITDYN(codec,avcodec_find_encoder);
+   INITDYN(codec,avcodec_find_encoder_by_name);
+   INITDYN(codec,avcodec_find_decoder);
+   INITDYN(codec,avcodec_find_decoder_by_name);
+   INITDYN(codec,avcodec_string);
+   INITDYN(codec,avcodec_get_context_defaults);
+   INITDYN(codec,avcodec_alloc_context);
+   INITDYN(codec,avcodec_get_frame_defaults);
+   INITDYN(codec,avcodec_alloc_frame);
+   INITDYN(codec,avcodec_open);
+   INITDYN(codec,avcodec_decode_audio2);
+   INITDYN(codec,avcodec_encode_audio);
+   INITDYN(codec,avcodec_close);
+   INITDYN(codec,avcodec_register_all);
+   INITDYN(codec,avcodec_flush_buffers);
+   INITDYN(codec,av_get_bits_per_sample);
+   INITDYN(codec,av_get_bits_per_sample_format);
+   INITDYN(codec,avcodec_version);
+   INITDYN(codec,av_fast_realloc);
+   INITDYN(codec,av_codec_next);
 
-   INITDYN(avutil,av_free);
-   INITDYN(avutil,av_log_set_callback);
-   INITDYN(avutil,av_log_default_callback);
-   INITDYN(avutil,av_fifo_init);
-   INITDYN(avutil,av_fifo_free);
-   INITDYN(avutil,av_fifo_read);
-   INITDYN(avutil,av_fifo_size);
-   INITDYN(avutil,av_fifo_generic_write);
-   INITDYN(avutil,av_fifo_realloc);
-   INITDYN(avutil,av_malloc);
-   INITDYN(avutil,av_freep);
-   INITDYN(avutil,av_rescale_q);
-   INITDYN(avutil,avutil_version);
+   INITDYN(util,av_free);
+   INITDYN(util,av_log_set_callback);
+   INITDYN(util,av_log_default_callback);
+   INITDYN(util,av_fifo_init);
+   INITDYN(util,av_fifo_free);
+   INITDYN(util,av_fifo_read);
+   INITDYN(util,av_fifo_size);
+   INITDYN(util,av_fifo_generic_write);
+   INITDYN(util,av_fifo_realloc);
+   INITDYN(util,av_malloc);
+   INITDYN(util,av_freep);
+   INITDYN(util,av_rescale_q);
+   INITDYN(util,avutil_version);
 
    //FFmpeg initialization
    wxLogMessage(wxT("All symbols loaded successfully. Initializing the library."));
@@ -695,13 +633,23 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
 
 void FFmpegLibs::FreeLibs()
 {
-   if (avformat) avformat->Unload();
-   if (!mStatic)
-   {
-      if (avcodec) avcodec->Unload();
-      if (avutil) avutil->Unload();
+   if (avformat != NULL) {
+      delete avformat;
+      avformat = NULL;
    }
+
+   if (avcodec != NULL) {
+      delete avcodec;
+      avcodec = NULL;
+   }
+
+   if (avutil != NULL) {
+      delete avutil;
+      avutil = NULL;
+   }
+
    mLibsLoaded = false;
+
    return;
 }
 

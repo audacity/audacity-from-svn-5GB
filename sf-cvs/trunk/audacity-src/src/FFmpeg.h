@@ -280,18 +280,17 @@ public:
    /* Library names and file filters for Mac OS only */
    wxString GetLibraryTypeString()
    {
-      return _("Only libavformat.*.dylib|libavformat.*.dylib|Dynamically Linked Libraries (*.dylib)|*.dylib|All Files (*)|*");
+      return _("Dynamic Libraries (*.dylib)|*.dylib|All Files (*)|*");
    }
 
    wxString GetLibAVFormatPath()
    {
-      return wxT("");
+      return wxT("/usr/local/lib/audacity");
    }
 
    wxString GetLibAVFormatName()
    {
-      return (wxT("libavformat.") wxT(AV_STRINGIFY(LIBAVFORMAT_VERSION_MAJOR)) 
-					  wxT(".dylib"));
+      return (wxT("libavformat.") wxT(AV_STRINGIFY(LIBAVFORMAT_VERSION_MAJOR)) wxT(".dylib"));
    }
 
    wxString GetLibAVCodecName()
@@ -351,9 +350,6 @@ private:
    wxDynamicLibrary *avformat;
    wxDynamicLibrary *avcodec;
    wxDynamicLibrary *avutil;
-
-   ///! true if libavformat has internal static linkage, false otherwise
-   bool mStatic;
 
    ///! true if libraries are loaded, false otherwise
    bool mLibsLoaded;
