@@ -24,7 +24,7 @@
 import sys, os
 
 if len(sys.argv) != 4:
-  print "Usage: %s def.po ref.pot out.po"
+  print "Usage: %s def.po ref.pot out.po" % sys.argv[0]
   sys.exit()
 
 def_filename = sys.argv[1]
