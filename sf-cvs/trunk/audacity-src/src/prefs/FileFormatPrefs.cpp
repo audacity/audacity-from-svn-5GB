@@ -198,10 +198,16 @@ void FileFormatPrefs::OnFFmpegFindButton(wxCommandEvent& evt)
 {
 #ifdef USE_FFMPEG
    FFmpegLibs* FFmpegLibsInst = PickFFmpegLibs();
+   bool showerrs =
+#if defined(__WXDEBUG__)
+      true;
+#else
+      false;
+#endif
 
    FFmpegLibsInst->FreeLibs();
    // Load the libs ('true' means that all errors will be shown)
-   bool locate = !LoadFFmpeg(true);
+   bool locate = !LoadFFmpeg(showerrs);
 
    // Libs are fine, don't show "locate" dialog unless user really wants it
    if (!locate)
@@ -216,7 +222,7 @@ void FileFormatPrefs::OnFFmpegFindButton(wxCommandEvent& evt)
       // Show "Locate FFmpeg" dialog
       FFmpegLibsInst->FindLibs(this);
       FFmpegLibsInst->FreeLibs();
-      LoadFFmpeg(true);
+      LoadFFmpeg(showerrs);
    }
    SetFFmpegVersionText();
 
