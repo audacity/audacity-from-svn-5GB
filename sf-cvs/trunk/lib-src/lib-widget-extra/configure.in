@@ -56,6 +56,12 @@ fi
 
 dnl Build Options
 
+AC_ARG_ENABLE(static,
+            [AS_HELP_STRING([--enable-static],
+                            [link wx statically [default=no]])],
+            static_preference="--static=$enableval",
+            static_preference="")
+
 AC_ARG_ENABLE(unicode,
             [AS_HELP_STRING([--enable-unicode],
                             [enable unicode support [default=yes]])],   
