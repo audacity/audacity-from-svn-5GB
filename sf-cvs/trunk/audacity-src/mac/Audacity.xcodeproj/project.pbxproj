@@ -1341,7 +1341,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 1790ABE309883346008A330A /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = ED2706F30EF9C3C6007D4FFD /* libsbsms */;
+			remoteGlobalIDString = ED2706F30EF9C3C6007D4FFD;
 			remoteInfo = libsbsms;
 		};
 /* End PBXContainerItemProxy section */
@@ -2773,7 +2773,6 @@
 		17072F220988D4F4008541CC /* lib-src */ = {
 			isa = PBXGroup;
 			children = (
-				ED2706FA0EF9C436007D4FFD /* sbsms */,
 				17072F4C0988D6A9008541CC /* expat */,
 				283B3D3E0BC21EBE00FA01D5 /* FileDialog */,
 				2880529A0DEA71B000671EA4 /* lib-widget-extra */,
@@ -2794,6 +2793,7 @@
 				28F3A3EF0E28280A00729866 /* portsmf */,
 				287BD6C70E25D65B00CB4467 /* redland */,
 				287BD9AE0E25DFBB00CB4467 /* slv2 */,
+				ED2706FA0EF9C436007D4FFD /* sbsms */,
 				170737D30988D6AF008541CC /* soundtouch */,
 				2840CEC70AEB7E9D00F49FC3 /* twolame */,
 			);
@@ -5999,7 +5999,7 @@
 			mainGroup = 1790ABE109883346008A330A;
 			productRefGroup = 1790AFB109883B6D008A330A /* Products */;
 			projectDirPath = "";
-			projectRoot = ../..;
+			projectRoot = ..;
 			targets = (
 				1790AFAF09883B6D008A330A /* Audacity */,
 				17072E880988BD39008541CC /* Configure */,
