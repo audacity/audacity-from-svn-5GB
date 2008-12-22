@@ -29,15 +29,15 @@
 // The offset to 57 is used to determine the register. 
 // Each register starts with C (e.g., for middle C and A440, 
 // it's register 4).
-float Freq2Pitch(float freq)
+double Freq2Pitch(double freq)
 {
-   return float (57.0 + (12.0 * (log(freq / 440.0) / log(2.0))));
+   return double (57.0 + (12.0 * (log(freq / 440.0) / log(2.0))));
 }
 
-// PitchIndex returns the [0,11] index for a float pitchNum, 
+// PitchIndex returns the [0,11] index for a double pitchNum, 
 // as per result from Freq2Pitch, corresponding to modulo 12 
 // of the integer part of (pitchNum + 0.5), so 0=C, 1=C#, etc.
-unsigned int PitchIndex(float pitchNum)
+unsigned int PitchIndex(double pitchNum)
 {
 	return ((int)(pitchNum + 0.5) % 12);
 }
@@ -49,7 +49,7 @@ wxChar * p_PitchName;
 // PitchName takes pitchNum (as per result from 
 // Freq2Pitch) and returns a standard pitch/note name [C, C#, etc.). 
 // Sharps are the default, unless, bWantFlats is true.
-wxChar * PitchName(float pitchNum, bool bWantFlats /* = false */)
+wxChar * PitchName(double pitchNum, bool bWantFlats /* = false */)
 {
    p_PitchName = gPitchName;
 
@@ -130,7 +130,8 @@ wxChar * PitchName(float pitchNum, bool bWantFlats /* = false */)
 // PitchName_Absolute does the same thing as PitchName, but appends 
 // the register number, e.g., instead of "C" it will return "C4" 
 // if the pitchNum corresonds to middle C.
-wxChar * PitchName_Absolute(float pitchNum, bool bWantFlats /* = false */)
+// Sharps are the default, unless, bWantFlats is true.
+wxChar * PitchName_Absolute(double pitchNum, bool bWantFlats /* = false */)
 {
    PitchName(pitchNum, bWantFlats); 
 
