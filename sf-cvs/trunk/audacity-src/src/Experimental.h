@@ -68,7 +68,12 @@
 
 // Effect categorisation. Adds support for arranging effects in categories
 // and displaying those categories as submenus in the Effect menu.
-#define EFFECT_CATEGORIES
+// This was a 2008 GSoC project that was making good progress at the half-way point
+// but then the student didn't contribute after that.  It needs a bit of work to finish it off.
+// As a minimum, if this is turned on for a release,
+// it should have an easy mechanism to disable it at run-time, such as a menu item or a pref,
+// preferrably disabled until other work is done.  Martyn 22/12/2008.
+//#define EFFECT_CATEGORIES
 
 // Andreas Micheler, 22 Nov.2007
 // Some fixes for the rulers.
