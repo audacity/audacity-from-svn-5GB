@@ -297,6 +297,8 @@ void ContrastDialog::OnGetURL(wxCommandEvent &event)
 
 void ContrastDialog::OnOK(wxCommandEvent &event)
 {
+   wxCommandEvent dummyEvt;
+   OnReset(event);
    EndModal(0);
 }
 
