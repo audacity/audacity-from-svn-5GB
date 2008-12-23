@@ -17,6 +17,7 @@
 *//*******************************************************************/
 
 #include "../Audacity.h"
+#include "../AudacityApp.h"
 
 #include "Contrast.h"
 
@@ -54,7 +55,6 @@
 #include <wx/textctrl.h>
 #include <wx/valtext.h>
 
-#include "../AudacityApp.h"
 #include "../PlatformCompatibility.h"
 
 EffectContrast::EffectContrast()
