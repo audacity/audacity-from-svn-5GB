@@ -19,37 +19,22 @@ Describes shared object that is used to access FFmpeg libraries.
 /* FFmpeg is written in C99. It uses many types from stdint.h. Because we are
  * compiling this using a C++ compiler we have to put it in extern "C".
  * __STDC_CONSTANT_MACROS is defined to make <stdint.h> behave like it
- * is actually being compiled with a C99 compiler. This only works if these
- * headers get to stdint.h before anyone else does, otherwise it doesn't get
- * re-processed and doesn't work properly.
+ * is actually being compiled with a C99 compiler.
+ *
  * The symptoms are that INT64_C is not a valid type, which tends to break
  * somewhere down in the implementations using this file */
+
 /* In order to be able to compile this file when ffmpeg is not available we
  * need access to the value of USE_FFMPEG, which means config*.h needs to come
  * in before this file. The suggest way to achieve this is by including
  * Audacity.h */
 
 #if defined(USE_FFMPEG)
-   extern "C" {
-   #ifdef _STDINT_H
-   /* stdint.h has already been included. That's likely to break ffmpeg headers
-    * as described above so we issue a warning */
-   #warning "stdint.h included before ffmpeg headers, this might not compile"
-   #endif
-   #ifdef _STDINT_H_
-   /* as above but for Mac (mainly as a debugging tool) */
-   #warning "stdint.h included before ffmpeg headers, this might not compile"
-   #endif
-
-   #if !defined(__STDC_CONSTANT_MACROS)
-	#define __STDC_CONSTANT_MACROS
-    /* also defined on the compiler command line for autotools builds, so 
-	 * should only be here for windows builders */
-   #endif
-	#include <libavcodec/avcodec.h>
-	#include <libavformat/avformat.h>
-	#include <libavutil/fifo.h>
-	}
+extern "C" {
+   #include <libavcodec/avcodec.h>
+   #include <libavformat/avformat.h>
+   #include <libavutil/fifo.h>
+}
 #endif
 
 #include "Audacity.h"
