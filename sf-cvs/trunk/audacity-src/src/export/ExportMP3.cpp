@@ -1537,7 +1537,7 @@ public:
 
    wxString GetLibraryPath()
    {
-      return wxT("/usr/local/lib");
+      return wxT("/usr/local/lib/audacity");
    }
 
    wxString GetLibraryName()
