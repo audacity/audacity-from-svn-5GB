@@ -93,7 +93,7 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
          S.AddVariableText( _("MP3 Library:"),
             true,
             wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
-         S.Id( ID_MP3_FIND_BUTTON ).AddButton( _("&Find Library"), 
+         S.Id( ID_MP3_FIND_BUTTON ).AddButton( _("&Find Library..."), 
             wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
          S.AddVariableText( _("LAME MP3 Library:"),
             true,
@@ -117,7 +117,7 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
 #endif
       S.AddVariableText( _("FFmpeg Library:"),
          true, wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
-      wxButton *bfnd = S.Id( ID_FFMPEG_FIND_BUTTON ).AddButton( _("&Find Library"), 
+      wxButton *bfnd = S.Id( ID_FFMPEG_FIND_BUTTON ).AddButton( _("&Find Library..."), 
          wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
       S.AddVariableText( _("FFmpeg Library:"),
          true,
