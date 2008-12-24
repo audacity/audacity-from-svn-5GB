@@ -43,6 +43,7 @@ private:
 
    void OnOK(wxCommandEvent& event);
 
+   wxString GetDisplayDate(wxDateTime & dt);
    void PopulateOrExchange(ShuttleGui& S);
    bool TransferDataFromWindow();
    void UpdateDuration(); // Update m_TimeSpan_Duration and ctrl based on m_DateTime_Start and m_DateTime_End.
