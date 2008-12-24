@@ -220,10 +220,11 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
             wxTimeSpan remaining_TimeSpan;
             wxString strNewMsg;
          */
+
       wxString strMsg = 
          _("Recording start") + (wxString)wxT(":\t\t")
-		 + m_DateTime_Start.Format() + wxT("\n") + _("Recording end")
-       + wxT(":\t\t") + m_DateTime_End.Format() + wxT("\n")
+		 + GetDisplayDate(m_DateTime_Start) + wxT("\n") + _("Recording end")
+       + wxT(":\t\t") + GetDisplayDate(m_DateTime_End) + wxT("\n")
 		 + _("Duration") + wxT(":\t\t") + m_TimeSpan_Duration.Format(); 
 
       ProgressDialog progress(
@@ -256,6 +257,55 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
    }
 
    this->EndModal(wxID_OK);
+}
+
+wxString TimerRecordDialog::GetDisplayDate( wxDateTime & dt )
+{
+#if defined(__WXMSW__)
+   // On Windows, wxWidgets uses the system date control and it displays the
+   // date based on the Windows locale selected by the user.  But, wxDateTime
+   // using the strftime function to return the formatted date.  Since the
+   // default locale for the Windows CRT environment is "C", the dates come
+   // back in a different format.
+   //
+   // So, we make direct Windows calls to format the date like it the date
+   // control.
+   //
+   // (Most of this taken from src/msw/datectrl.cpp)
+
+   const wxDateTime::Tm tm(dt.GetTm());
+   SYSTEMTIME st;
+   wxString s;
+   int len;
+
+   st.wYear = (WXWORD)tm.year;
+   st.wMonth = (WXWORD)(tm.mon - wxDateTime::Jan + 1);
+   st.wDay = tm.mday;
+   st.wDayOfWeek = st.wMinute = st.wSecond = st.wMilliseconds = 0;                                                                                              
+
+   len = ::GetDateFormat(LOCALE_USER_DEFAULT,
+                         DATE_SHORTDATE,
+                         &st,
+                         NULL,
+                         NULL,
+                         0);
+   if (len > 0) {
+      len = ::GetDateFormat(LOCALE_USER_DEFAULT,
+                            DATE_SHORTDATE,
+                            &st,
+                            NULL,
+                            wxStringBuffer(s, len),
+                            len);
+      if (len > 0) {
+         s += wxT(" ") + dt.FormatTime();
+         return s;
+      }
+   }
+#endif
+
+   // Use default formatting
+wxPrintf(wxT("%s\n"), dt.Format().c_str());
+   return dt.FormatDate() + wxT(" ") + dt.FormatTime();	
 }
 
 void TimerRecordDialog::PopulateOrExchange(ShuttleGui& S)
