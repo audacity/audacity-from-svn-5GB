@@ -101,7 +101,8 @@ private:
 
 private:
    Exporter mExporter;
-   ExportPluginArray mPlugins;
+   ExportPluginArray mPlugins;   /**< Array of references to available exporter
+                                   plug-ins */
    AudacityProject *mProject;
    TrackList *mTracks;           /**< The list of tracks in the project that is
                                    being exported */
@@ -111,15 +112,21 @@ private:
    int mNumLabels;
    int mNumWaveTracks;
    wxArrayPtrVoid mSelected;
-   int mFilterIndex;
-   int mFormatIndex;
-   int mSubFormatIndex;
+   int mFilterIndex;          /**< The index in the drop-down list of export 
+                                formats (mFormat) of the selected export format.
+                                This list includes all possible
+                                plug-in - subformat combinations. */
+   int mPluginIndex;          /**< The index in mPlugins of the selected export
+                              plug-in */
+   int mSubFormatIndex;       /**< The selected subformat number within the
+                                selected export plug-in set by mPluginIndex */
    bool mInitialized;
 
    /** Array of characters not allowed to be in file names on this platform */
    wxArrayString exclude;
 
-   wxChoice      *mFormat;
+   wxChoice      *mFormat;    /**< Drop-down list of export formats 
+                                (combinations of plug-in and subformat) */
    wxButton      *mOptions;
 
    wxTextCtrl    *mDir;    /**< The directory all the exported files will end
