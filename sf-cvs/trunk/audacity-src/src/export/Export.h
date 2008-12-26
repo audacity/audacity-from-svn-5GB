@@ -65,8 +65,12 @@ public:
    virtual int GetFormatCount();
    virtual wxString GetFormat(int index);
    virtual wxString GetDescription(int index);
-   virtual wxString GetExtension(int index);
-   virtual wxArrayString GetExtensions(int index);
+   /** @brief Return the (first) file name extension for the sub-format.
+    * @param index The sub-format for which the extension is wanted */
+   virtual wxString GetExtension(int index = 0);
+   /** @brief Return all the file name extensions used for the sub-format.
+    * @param index the sub-format for which the extension is required */
+   virtual wxArrayString GetExtensions(int index = 0);
    virtual wxString GetMask(int index);
    virtual int GetMaxChannels(int index);
    virtual bool GetCanMetaData(int index);
