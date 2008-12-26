@@ -122,17 +122,20 @@ ExportPCMOptions::ExportPCMOptions(wxWindow *parent, int selformat)
    int format = 0;
    switch (selformat)
    {
-   case 0:
-      format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
+   case 0:  // other uncompressed
+      format = ReadExportFormatPref();
       break;
-   case 1:
+   case 1:  // 16-bit AIFF
       format = SF_FORMAT_AIFF | SF_FORMAT_PCM_16;
       break;
-   case 3:
+   case 2:  // 16-bit WAV
+      format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
+      break;
+   case 3:  // GSM WAV
       format = SF_FORMAT_WAV | SF_FORMAT_GSM610;
       break;
-   case 2:
-   default:
+   default: // bug - forgot to extend this case statement
+      wxASSERT(false);
       format = ReadExportFormatPref();
       break;
    }
@@ -405,7 +408,8 @@ void ExportPCM::Destroy()
  *
  * @param subformat Control whether we are doing a "preset" export to a popular
  * file type, or giving the user full control over libsndfile. Set to 0 
- * (default) gives full control, 1 gives 16-bit AIFF, 2 gives 16-bit WAV */ 
+ * (default) gives full control, 1 gives 16-bit AIFF, 2 gives 16-bit WAV 
+ * 3 gives a GSM 6.10 WAV file */ 
 bool ExportPCM::Export(AudacityProject *project,
                        int numChannels,
                        wxString fName,
@@ -421,15 +425,22 @@ bool ExportPCM::Export(AudacityProject *project,
    int sf_format;
    switch (subformat)
    {
-   case 0:
-   default:
+   case 0:  // other uncompressed
       sf_format = ReadExportFormatPref();
       break;
-   case 1:
+   case 1:  // AIFF
       sf_format = SF_FORMAT_AIFF | SF_FORMAT_PCM_16;
       break;
-   case 2:
+   case 2:  // WAV
       sf_format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
+      break;
+   case 3:
+      sf_format = SF_FORMAT_WAV | SF_FORMAT_GSM610;
+      break;
+   default: // land here if supplied a sub-format that we don't know about
+      wxASSERT(false);  // raise assertion - this is a bug
+      sf_format = ReadExportFormatPref(); // treat it like 0 so users get a
+      // working result
    break;
    }
    wxString     formatStr;
@@ -612,6 +623,11 @@ bool ExportPCM::DisplayOptions(AudacityProject *project, int format)
    else if (format == 2)
    {  // 16-bit WAV
       wxMessageBox(nopt + _("Your file will be exported as a 16-bit WAV (Microsoft) file.\n") + usepcm);
+      return true;
+   }
+   else if (format == 3)
+   {  // GSM WAV
+      wxMessageBox(nopt + _("Your file will be exported as a GSM 6.10 WAV file.\n") + usepcm);
       return true;
    }
    // default, full user control
