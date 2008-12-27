@@ -143,7 +143,7 @@ myfindrm $mode config.status
 myfindrm $mode config.log
 myfindrm $mode Makefile
 myfindrm $mode config.cache
-myfindrm $mode autom4te.cache
+find . -depth -name 'autom4te.cache' -execdir rm -rf '{}' ';'
 myfindrm $mode aclocal.m4
 printf "Done\n"
 
