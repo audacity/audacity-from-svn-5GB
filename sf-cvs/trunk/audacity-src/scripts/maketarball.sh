@@ -128,20 +128,33 @@ find . -depth -name 'CVS' -execdir rm -rf '{}' ';'
 # -depth is needed to avoid find trying to examine directories it has just
 # deleted.
 # The sort of quotes used is critical!
-find . -name '.cvsignore' -execdir rm -rf '{}' ';'
+myfindrm $mode '.cvsignore'
 printf "Done\n"
 
 printf "removing vim / emacs temp files... ";
 myfindrm $mode '*~'
+printf "\nremoving CVS conflict files... ";
+myfindrm $mode '.#*'
 printf "Done\n"
 
 printf "removing executable and other intermediate files... ";
-myrmvf $mode audacity src/.depend
+myrmvf $mode audacity src/.depend src/.gchdepend
 myfindrm $mode config.status
 myfindrm $mode config.log
 myfindrm $mode Makefile
 myfindrm $mode config.cache
 myfindrm $mode autom4te.cache
+myfindrm $mode aclocal.m4
+printf "Done\n"
+
+printf "removing executable bit from source files... ";
+if [ $mode -eq 1 ]; then
+	find . -name '*.cpp' -executable -execdir chmod ugo-x '{}' ';' -print
+	find . -name '*.h' -executable -execdir chmod ugo-x '{}' ';' -print
+else
+	find . -name '*.cpp' -executable -execdir chmod ugo-x '{}' ';'
+	find . -name '*.h' -executable -execdir chmod ugo-x '{}' ';'
+fi
 printf "Done\n"
 
 printf "removing orphaned symlinks in lib-src/ ... ";
