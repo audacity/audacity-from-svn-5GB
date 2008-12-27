@@ -112,7 +112,7 @@ private:
     *  needed to create that format output. This is used for the pop-up
     *  list of formats to choose from in the control. Note that the size will
     *  need adjusting if new time formats are added */
-   BuiltinFormatString BuiltinFormatStrings[15];
+   BuiltinFormatString BuiltinFormatStrings[16];
    double         mTimeValue;
    double         mSampleRate;
    wxString       mFormatString;
