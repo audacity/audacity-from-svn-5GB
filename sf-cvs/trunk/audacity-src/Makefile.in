@@ -4,6 +4,7 @@ exec_prefix= @exec_prefix@
 prefix= @prefix@
 BINDIR= @bindir@
 DATADIR= @datadir@
+DATAROOTDIR = @datarootdir@
 MANDIR= @mandir@
 ZIP = @ZIP@
 AUDACITY_NAME = @AUDACITY_NAME@
