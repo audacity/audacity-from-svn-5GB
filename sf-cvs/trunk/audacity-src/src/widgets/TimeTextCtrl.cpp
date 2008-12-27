@@ -284,100 +284,109 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
     * 24 hours in a day in your locale */
    BuiltinFormatStrings[2].formatStr = _("0100 days 024 h 060 m 060 s");
    /* i18n-hint: Name of time display format that shows time in hours,
+    * minutes, seconds and hundreths of a second (1/100 second) */
+   BuiltinFormatStrings[3].name = _("hh:mm:ss + hundredths");
+   /* i18n-hint: Format string for displaying time in hours, minutes, seconds
+    * and hundredths of a second. Change the 'h' to the abbreviation for hours,
+    * 'm' to the abbreviation for minutes and 's' to the abbreviation for seconds (the
+    * hundredths are shown as decimal seconds) . Don't change the numbers
+    * unless there aren't 60 minutes in an hour in your locale */
+   BuiltinFormatStrings[3].formatStr =_("0100 h 060 m 060.0100 s");
+   /* i18n-hint: Name of time display format that shows time in hours,
     * minutes, seconds and milliseconds (1/1000 second) */
-   BuiltinFormatStrings[3].name = _("hh:mm:ss + milliseconds");
+   BuiltinFormatStrings[4].name = _("hh:mm:ss + milliseconds");
    /* i18n-hint: Format string for displaying time in hours, minutes, seconds
     * and milliseconds. Change the 'h' to the abbreviation for hours, 'm' to the
     * abbreviation for minutes and 's' to the abbreviation for seconds (the
     * milliseconds are shown as decimal seconds) . Don't change the numbers
     * unless there aren't 60 minutes in an hour in your locale */
-   BuiltinFormatStrings[3].formatStr =_("0100 h 060 m 060.01000 s");
+   BuiltinFormatStrings[4].formatStr =_("0100 h 060 m 060.01000 s");
    /* i18n-hint: Name of time display format that shows time in hours,
     * minutes, seconds and samples (at the current project sample rate) */
-   BuiltinFormatStrings[4].name = _("hh:mm:ss + samples");
+   BuiltinFormatStrings[5].name = _("hh:mm:ss + samples");
    /* i18n-hint: Format string for displaying time in hours, minutes, seconds
     * and samples. Change the 'h' to the abbreviation for hours, 'm' to the
     * abbreviation for minutes, 's' to the abbreviation for seconds and
     * translate samples . Don't change the numbers
     * unless there aren't 60 seconds in a minute in your locale */
-   BuiltinFormatStrings[4].formatStr = _("0100 h 060 m 060 s+.# samples");
+   BuiltinFormatStrings[5].formatStr = _("0100 h 060 m 060 s+.# samples");
    /* i18n-hint: Name of time display format that shows time in samples (at the
     * current project sample rate) */
-   BuiltinFormatStrings[5].name = _("samples");
+   BuiltinFormatStrings[6].name = _("samples");
    /* i18n-hint: Format string for displaying time in samples (lots of samples).
     * Change the ',' to the 1000s separator for your locale, and translate
     * samples. If 1000s aren't a base multiple for your number system, then you
     * can change the numbers to an appropriate one, and put a 0 on the front */
-   BuiltinFormatStrings[5].formatStr = _("01000,01000,01000 samples|#");
+   BuiltinFormatStrings[6].formatStr = _("01000,01000,01000 samples|#");
    /* i18n-hint: Name of time display format that shows time in hours, minutes,
     * seconds and frames at 24 frames per second (commonly used for films) */
-   BuiltinFormatStrings[6].name = _("hh:mm:ss + film frames (24 fps)");
+   BuiltinFormatStrings[7].name = _("hh:mm:ss + film frames (24 fps)");
    /* i18n-hint: Format string for displaying time in hours, minutes, seconds
     * and frames at 24 frames per second. Change the 'h' to the abbreviation
     * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
     * for seconds and translate 'frames' . Don't change the numbers
     * unless there aren't 60 seconds in a minute in your locale */
-   BuiltinFormatStrings[6].formatStr = _("0100 h 060 m 060 s+.24 frames");
+   BuiltinFormatStrings[7].formatStr = _("0100 h 060 m 060 s+.24 frames");
    /* i18n-hint: Name of time display format that shows time in frames (lots of
     * frames) at 24 frames per second (commonly used for films) */
-   BuiltinFormatStrings[7].name = _("film frames (24 fps)");
+   BuiltinFormatStrings[8].name = _("film frames (24 fps)");
    /* i18n-hint: Format string for displaying time in frames at 24 frames per
     * second. Translate 'frames' and leave the rest alone */
-   BuiltinFormatStrings[7].formatStr = _("01000,01000 frames|24");
+   BuiltinFormatStrings[8].formatStr = _("01000,01000 frames|24");
    /* i18n-hint: Name of time display format that shows time in hours, minutes,
     * seconds and frames at NTSC TV drop-frame rate (used for American /
     * Japananese TV, and very odd) */
-   BuiltinFormatStrings[8].name = _("hh:mm:ss + NTSC drop frames");
+   BuiltinFormatStrings[9].name = _("hh:mm:ss + NTSC drop frames");
    /* i18n-hint: Format string for displaying time in hours, minutes, seconds
     * and frames with NTSC drop frames. Change the 'h' to the abbreviation
     * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
     * for seconds and translate 'frames'. Leave the |N alone, it's important! */
-   BuiltinFormatStrings[8].formatStr = _("0100 h 060 m 060 s+.30 frames|N");
+   BuiltinFormatStrings[9].formatStr = _("0100 h 060 m 060 s+.30 frames|N");
    /* i18n-hint: Name of time display format that shows time in hours, minutes,
     * seconds and frames at NTSC TV non-drop-frame rate (used for American /
     * Japananese TV, and doesn't quite match wall time */
-   BuiltinFormatStrings[9].name = _("hh:mm:ss + NTSC non-drop frames");
+   BuiltinFormatStrings[10].name = _("hh:mm:ss + NTSC non-drop frames");
    /* i18n-hint: Format string for displaying time in hours, minutes, seconds
     * and frames with NTSC drop frames. Change the 'h' to the abbreviation
     * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
     * for seconds and translate 'frames'. Leave the | .999000999 alone, 
     * the whole things really is slightly off-speed! */
-   BuiltinFormatStrings[9].formatStr = _("0100 h 060 m 060 s+.030 frames| .999000999");
+   BuiltinFormatStrings[10].formatStr = _("0100 h 060 m 060 s+.030 frames| .999000999");
    /* i18n-hint: Name of time display format that shows time in frames at NTSC
     * TV frame rate (used for American / Japananese TV */
-   BuiltinFormatStrings[10].name = _("NTSC frames");
+   BuiltinFormatStrings[11].name = _("NTSC frames");
    /* i18n-hint: Format string for displaying time in frames with NTSC frames.
     * Translate 'frames' and leave the rest alone. That really is the frame
     * rate! */
-   BuiltinFormatStrings[10].formatStr = _("01000,01000 frames|29.97002997");
+   BuiltinFormatStrings[11].formatStr = _("01000,01000 frames|29.97002997");
    /* i18n-hint: Name of time display format that shows time in hours, minutes,
     * seconds and frames at PAL TV frame rate (used for European TV) */
-   BuiltinFormatStrings[11].name = _("hh:mm:ss + PAL frames (25 fps)");
+   BuiltinFormatStrings[12].name = _("hh:mm:ss + PAL frames (25 fps)");
    /* i18n-hint: Format string for displaying time in hours, minutes, seconds
     * and frames with PAL TV frames. Change the 'h' to the abbreviation
     * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
     * for seconds and translate 'frames'. Nice simple time code! */
-   BuiltinFormatStrings[11].formatStr = _("0100 h 060 m 060 s+.25 frames");
+   BuiltinFormatStrings[12].formatStr = _("0100 h 060 m 060 s+.25 frames");
    /* i18n-hint: Name of time display format that shows time in frames at PAL
     * TV frame rate (used for European TV */
-   BuiltinFormatStrings[12].name = _("PAL frames (25 fps)");
+   BuiltinFormatStrings[13].name = _("PAL frames (25 fps)");
    /* i18n-hint: Format string for displaying time in frames with NTSC frames.
     * Translate 'frames' and leave the rest alone. */
-   BuiltinFormatStrings[12].formatStr = _("01000,01000 frames|25");
+   BuiltinFormatStrings[13].formatStr = _("01000,01000 frames|25");
    /* i18n-hint: Name of time display format that shows time in hours, minutes,
     * seconds and frames at CD Audio frame rate (75 frames per second) */
-   BuiltinFormatStrings[13].name = _("hh:mm:ss + CDDA frames (75 fps)");
+   BuiltinFormatStrings[14].name = _("hh:mm:ss + CDDA frames (75 fps)");
    /* i18n-hint: Format string for displaying time in hours, minutes, seconds
     * and frames with CD Audio frames. Change the 'h' to the abbreviation
     * for hours, 'm' to the abbreviation for minutes, 's' to the abbreviation
     * for seconds and translate 'frames'. */
-   BuiltinFormatStrings[13].formatStr = _("0100 h 060 m 060 s+.75 frames");
+   BuiltinFormatStrings[14].formatStr = _("0100 h 060 m 060 s+.75 frames");
    /* i18n-hint: Name of time display format that shows time in frames at CD
     * Audio frame rate (75 frames per second) */
-   BuiltinFormatStrings[14].name = _("CDDA frames (75 fps)");
+   BuiltinFormatStrings[15].name = _("CDDA frames (75 fps)");
    /* i18n-hint: Format string for displaying time in frames with CD Audio
     * frames. Translate 'frames' and leave the rest alone */
-   BuiltinFormatStrings[14].formatStr = _("01000,01000 frames|75");
+   BuiltinFormatStrings[15].formatStr = _("01000,01000 frames|75");
 
    mDigitBoxW = 10;
    mDigitBoxH = 16;
