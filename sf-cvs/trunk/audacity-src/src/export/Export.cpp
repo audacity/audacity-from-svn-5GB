@@ -472,8 +472,13 @@ bool Exporter::ExamineTracks()
       tr = iter1.Next();
    }
 
-   if (mSelectedOnly && mNumSelected == 0) {
-      wxMessageBox(_("No tracks are selected! Use Ctrl-A (Select All)\nChoose Export... to export all tracks."),
+   if (mNumSelected == 0) {
+      wxString message;
+      if(mSelectedOnly)
+         message = _("No active audio selected!");
+      else
+         message = _("No audio is active (unmuted)!");
+      wxMessageBox(message,
                     _("Unable to export"),
                     wxOK | wxICON_INFORMATION);
       return false;
