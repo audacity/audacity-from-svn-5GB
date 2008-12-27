@@ -189,9 +189,7 @@ printf "removing qa ... ";
 myrmrvf $mode qa 
 printf "Done\n"
 
-printf "removing doxygen files ... ";
-myrmvf $mode audacity.dox
-myrmrvf $mode dox2-src 
+printf "removing doxygen output files ... ";
 myrmrvf $mode dox 
 printf "Done\n"
 
