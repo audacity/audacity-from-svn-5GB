@@ -43,9 +43,9 @@ function myfindrm {
 	# argument.
 	# setting it to 1 makes it verbose, to anything else makes it quiet
 	if [ $1 -eq 1 ]; then
-		find . -name '$2' -print -delete
+		find . -name "$2" -print -delete
 	else
-		find . -name '$2' -delete
+		find . -name "$2" -delete
 	fi
 }
 
@@ -103,7 +103,6 @@ minor_version=`awk '/^#define+ AUDACITY_RELEASE / {print $3}' src/Audacity.h`
 micro_version=`awk '/^#define+ AUDACITY_REVISION / {print $3}' src/Audacity.h`
 version_suffix=`awk '/^#define+ AUDACITY_SUFFIX / {split($0,subs,"\""); print(subs[2]) }' src/Audacity.h`
 
-
 version="${major_version}.${minor_version}.${micro_version}${version_suffix}"
 echo "version set to ${version}"
 
@@ -123,18 +122,17 @@ fi
 printf "Done\n"
 
 printf "removing CVS directories... ";
-
 find . -depth -name 'CVS' -execdir rm -rf '{}' ';'
 # -depth is needed to avoid find trying to examine directories it has just
 # deleted.
 # The sort of quotes used is critical!
-myfindrm $mode '.cvsignore'
+myfindrm $mode ".cvsignore"
 printf "Done\n"
 
 printf "removing vim / emacs temp files... ";
-myfindrm $mode '*~'
+myfindrm $mode "*~"
 printf "\nremoving CVS conflict files... ";
-myfindrm $mode '.#*'
+myfindrm $mode ".#*"
 printf "Done\n"
 
 printf "removing executable and other intermediate files... ";
