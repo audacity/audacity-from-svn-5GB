@@ -212,6 +212,7 @@ enum {
    ID_BUTTON_GETURL,
    ID_BUTTON_EXPORT,
    ID_BUTTON_RESET,
+   ID_BUTTON_CLOSE,
    ID_FOREGROUNDSTART_T,
    ID_FOREGROUNDEND_T,
    ID_BACKGROUNDSTART_T,
@@ -231,6 +232,7 @@ BEGIN_EVENT_TABLE(ContrastDialog,wxDialog)
    EVT_BUTTON(ID_BUTTON_GETURL, ContrastDialog::OnGetURL)
    EVT_BUTTON(ID_BUTTON_EXPORT, ContrastDialog::OnExport)
    EVT_BUTTON(ID_BUTTON_RESET, ContrastDialog::OnReset)
+   EVT_BUTTON(ID_BUTTON_CLOSE, ContrastDialog::OnCloseWithoutReset)
 //   EVT_COMMAND_RANGE(ID_FOREGROUNDSTART_T, ID_BACKGROUNDEND_T, EVT_TIMETEXTCTRL_UPDATED, ContrastDialog::OnTimeCtrlUpdate)
 
    EVT_COMMAND(ID_FOREGROUNDSTART_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnForegroundStartT)
@@ -241,7 +243,7 @@ END_EVENT_TABLE()
 
 ContrastDialog::ContrastDialog(EffectContrast * effect, 
                                        wxWindow *parent) :
-   EffectDialog( parent, _("WCAG2 Contrast Analyzer"), ANALYZE_EFFECT)
+   EffectDialog( parent, _("WCAG2 Audio Contrast Analyzer"), ANALYZE_EFFECT)
 {
    m_pEffect = effect;
    
@@ -302,6 +304,11 @@ void ContrastDialog::OnOK(wxCommandEvent &event)
    EndModal(0);
 }
 
+void ContrastDialog::OnCloseWithoutReset(wxCommandEvent &event)
+{
+   EndModal(0);
+}
+
 void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
 {
    wxTextValidator vld(wxFILTER_NUMERIC);
@@ -312,7 +319,6 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
       S.AddTitle(_("Contrast Analyzer"));
    }
    S.EndHorizontalLay();
-   
    S.StartStatic( _("Parameters") );
    {
       S.StartMultiColumn(6, wxEXPAND);
@@ -342,7 +348,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          true);
             mForegroundStartT->SetName(_("Foreground start time"));
 //            mForegroundStartT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
-            mForegroundStartT->SetFormatString(mForegroundStartT->GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")));
+            mForegroundStartT->SetFormatString(mForegroundStartT->GetBuiltinFormat(wxT("hh:mm:ss + hundredths")));
             mForegroundStartT->EnableMenu(false);
          }
          S.AddWindow(mForegroundStartT);
@@ -361,7 +367,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          true);
             mForegroundEndT->SetName(_("Foreground end time"));
 //            mForegroundEndT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
-            mForegroundEndT->SetFormatString(mForegroundEndT->GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")));
+            mForegroundEndT->SetFormatString(mForegroundEndT->GetBuiltinFormat(wxT("hh:mm:ss + hundredths")));
             mForegroundEndT->EnableMenu(false);
          }
          S.AddWindow(mForegroundEndT);
@@ -388,7 +394,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          true);
             mBackgroundStartT->SetName(_("Background start time"));
 //            mBackgroundStartT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
-            mBackgroundStartT->SetFormatString(mBackgroundStartT->GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")));
+            mBackgroundStartT->SetFormatString(mBackgroundStartT->GetBuiltinFormat(wxT("hh:mm:ss + hundredths")));
             mBackgroundStartT->EnableMenu(false);
          }
          S.AddWindow(mBackgroundStartT);
@@ -407,7 +413,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          true);
             mBackgroundEndT->SetName(_("Background end time"));
 //            mBackgroundEndT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
-            mBackgroundEndT->SetFormatString(mBackgroundEndT->GetBuiltinFormat(wxT("hh:mm:ss + milliseconds")));
+            mBackgroundEndT->SetFormatString(mBackgroundEndT->GetBuiltinFormat(wxT("hh:mm:ss + hundredths")));
             mBackgroundEndT->EnableMenu(false);
          }
          S.AddWindow(mBackgroundEndT);
@@ -439,14 +445,24 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
       S.EndMultiColumn();
    }
    S.EndStatic();
-
-   //Information
-   S.StartStatic( _("Information") );
+   S.StartHorizontalLay(wxEXPAND);
    {
-      S.AddFixedText(_("For measuring rms volume differences between two selections of audio."));
-      m_pButton_GetURL = S.Id(ID_BUTTON_GETURL).AddButton(_("WCAG contrast tool help on the web"));
+      //Information
+      S.StartStatic( _("Information"), 1 );
+      {
+         S.AddFixedText(_("For measuring rms volume differences between two selections of audio."));
+         m_pButton_GetURL = S.Id(ID_BUTTON_GETURL).AddButton(_("Help for WCAG2 Audio Contrast Analyzer"));
+      }
+      S.EndStatic();
+      //What happens when we close the dialog (OK button is standard and clears values)
+      S.StartStatic( _("Control"));
+      {
+         S.AddFixedText(_("Note: The 'OK' button resets time values."));
+         m_pButton_Close = S.Id(ID_BUTTON_CLOSE).AddButton(_("Close but keep times"));
+      }
+      S.EndStatic();
    }
-   S.EndStatic();
+   S.EndHorizontalLay();
    Fit();
 }
 
