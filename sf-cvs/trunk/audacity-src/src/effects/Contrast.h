@@ -113,6 +113,7 @@ private:
    void results();
    void OnOK( wxCommandEvent &event );
    void OnReset(wxCommandEvent & event);
+   void OnCloseWithoutReset(wxCommandEvent & event);
    void OnChar(wxKeyEvent &event);
 
    wxTextCtrl *mForegroundRMSText;
@@ -136,6 +137,7 @@ private:
    wxButton * m_pButton_GetURL;
    wxButton * m_pButton_Export;
    wxButton * m_pButton_Reset;
+   wxButton * m_pButton_Close;
 
    TimeTextCtrl *mForegroundStartT;
    TimeTextCtrl *mForegroundEndT;
