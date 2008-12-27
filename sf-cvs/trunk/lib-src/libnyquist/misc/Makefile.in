@@ -5,7 +5,7 @@
 # DESC: This file builds various utilities for Nyquist
 #
 
-CC = cc $(CFLAGS)
+CC = @CC@ @CFLAGS@
 
 # the unix path gets us switches.h:
 # the cmt path gets us swlogic.h:
