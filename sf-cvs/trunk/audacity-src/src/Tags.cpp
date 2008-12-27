@@ -786,7 +786,7 @@ void TagsEditor::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartHorizontalLay(wxALIGN_LEFT, false);
       {
-         S.AddUnits(_("Press F2 or double click to edit."));
+         S.AddUnits(_("Use arrow keys (or RETURN key after editing) to navigate fields."));
       }
       S.EndHorizontalLay();
 
@@ -809,7 +809,7 @@ void TagsEditor::PopulateOrExchange(ShuttleGui & S)
          mGrid->CreateGrid(0, 2); 
          mGrid->SetRowLabelSize(0);
          mGrid->SetDefaultCellAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
-         mGrid->SetDefaultCellBackgroundColour(*wxWHITE);
+      // mGrid->SetDefaultCellBackgroundColour(*wxWHITE);
          mGrid->SetColLabelValue(0, _("Tag Name"));
          mGrid->SetColLabelValue(1, _("Tag Value"));
 
@@ -836,8 +836,8 @@ void TagsEditor::PopulateOrExchange(ShuttleGui & S)
          {
             S.StartMultiColumn(4, wxALIGN_CENTER);
             {
-               S.Id(EditID).AddButton(_("Edit"));
-               S.Id(ResetID).AddButton(_("Reset"));
+               S.Id(EditID).AddButton(_("E&dit..."));
+               S.Id(ResetID).AddButton(_("Rese&t..."));
             }
             S.EndMultiColumn();
          }
@@ -1094,7 +1094,7 @@ void TagsEditor::OnLoad(wxCommandEvent & event)
    wxString fn;
 
    // Ask the user for the real name
-   fn = FileSelector(_("Save Metadata As:"),
+   fn = FileSelector(_("Load Metadata As:"),
                      FileNames::DataDir(),
                      wxT("Tags.xml"),
                      wxT("xml"),
@@ -1446,7 +1446,7 @@ void TagsEditor1::PopulateOrExchange(ShuttleGui & S)
                wxArrayString dummy;
                S.SetStyle(wxCB_SORT);
                mGenreCombo = S.AddCombo(wxT(""), mGenre, &dummy);
-               S.Id(EditID).AddButton(_("Edit"));
+               S.Id(EditID).AddButton(_("E&dit..."));
             }
             S.EndMultiColumn();
 
@@ -1748,7 +1748,7 @@ void TagsEditor1::OnLoad(wxCommandEvent & event)
    wxString fn;
 
    // Ask the user for the real name
-   fn = FileSelector(_("Save Metadata As:"),
+   fn = FileSelector(_("Load Metadata As:"),
                      FileNames::DataDir(),
                      wxT("Tags.xml"),
                      wxT("xml"),
@@ -1986,8 +1986,8 @@ void TagsEditor2::PopulateOrExchange(ShuttleGui & S)
                   wxArrayString dummy;
                   S.SetStyle(wxCB_SORT);
                   mGenreCombo = S.AddCombo(wxT(""), mGenre, &dummy);
-                  S.Id(EditID).AddButton(_("Edit"));
-                  S.Id(ResetID).AddButton(_("Reset"));
+                  S.Id(EditID).AddButton(_("E&dit..."));
+                  S.Id(ResetID).AddButton(_("Rese&t..."));
                }
                S.EndHorizontalLay();
                S.SetBorder(5);
@@ -2024,7 +2024,7 @@ void TagsEditor2::PopulateOrExchange(ShuttleGui & S)
          {
             S.StartHorizontalLay(wxALIGN_LEFT, false);
             {
-               S.AddUnits(_("Press F2 or double click to edit."));
+               S.AddUnits(_("Use arrow keys (or RETURN key after editing) to navigate fields."));
             }
             S.EndHorizontalLay();
 
@@ -2043,11 +2043,11 @@ void TagsEditor2::PopulateOrExchange(ShuttleGui & S)
 
                wxGridCellAttr *attr = new wxGridCellAttr();
                attr->SetEditor(mCombo);
-               attr->SetBackgroundColour(*wxWHITE);
+            // attr->SetBackgroundColour(*wxWHITE);
                mGrid->SetColAttr(0, attr);
 
                attr = new wxGridCellAttr();
-               attr->SetBackgroundColour(*wxWHITE);
+            // attr->SetBackgroundColour(*wxWHITE);
                mGrid->SetColAttr(1, attr);
 
                // Resize the name column and set default row height.
@@ -2470,7 +2470,7 @@ void TagsEditor2::OnLoad(wxCommandEvent & event)
    wxString fn;
 
    // Ask the user for the real name
-   fn = FileSelector(_("Save Metadata As:"),
+   fn = FileSelector(_("Load Metadata As:"),
                      FileNames::DataDir(),
                      wxT("Tags.xml"),
                      wxT("xml"),
