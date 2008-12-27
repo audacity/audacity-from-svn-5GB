@@ -89,13 +89,13 @@
 <h3 id="mac">Mac OS 9 or X</h3>
 <ol>
   <li>Go to the <a href="%s">LAME download page</a>.</li>
-  <li>Download either libmp3lame or the version of LameLib for your operating system.</li>
-  <li>When you have finished downloading, use Stuffit Expander to extract the files.  (This may happen automatically.)</li>
-  <li>Save the file called "LameLib" or libmp3lame.dylib anywhere on your computer.</li>
-  <li>The first time you use the "Export as MP3" command, Audacity will ask you where LameLib or libmp3lame.dylib is saved.</li>
+  <li>Click to download either "Lame Library v3.98.2 for Audacity on OSX.dmg" or "LameLib-Carbon.sit", according to your operating system.</li>
+  <li>Double-click the .dmg to extract "Lame Library v3.98.2 for Audacity on OSX.pkg" to Finder, or use Stuffit to extract "LameLib" from the .sit (either of these may happen automatically).</li>
+  <li>Double-click the .pkg to install "libmp3lame.dylib" in /usr/local/lib/audacity, or save "LameLib" anywhere on your computer.</li>
+  <li>The first time you use the "Export as MP3" command, Audacity will ask you where libmp3lame.dylib or LameLib is saved.</li>
 </ol>
 <h3 id="nix">Linux/Unix</h3>
-Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions">these instructions</a> on our <a href="http://audacityteam.org/wiki/">Wiki</a> to download and install a suitable LAME package from the internet.'), "http://lame.buanzo.com.ar/", "libmp3lame-win-3.97.zip", "http://lame.buanzo.com.ar/")
+Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions">these instructions</a> on our <a href="http://audacityteam.org/wiki/">Wiki</a> to download and install a suitable LAME package from the internet.'), "http://lame.buanzo.com.ar/", "libmp3lame-win-3.98.2.zip", "http://lame.buanzo.com.ar/")
         ),
         // TODO: Connect/replace this with documentation on plug-ins page?
         "vst-enabler" => array(
