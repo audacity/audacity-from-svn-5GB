@@ -331,7 +331,8 @@ public:
                MixerSpec *mixerSpec = NULL,
                Tags *metadata = NULL,
                int subformat = 0); 
-
+   // optional
+   wxString GetExtension(int index = 0);
 private:
 
    bool AddStrings(AudacityProject *project, SNDFILE *sf, Tags *tags);
@@ -636,6 +637,19 @@ bool ExportPCM::DisplayOptions(AudacityProject *project, int format)
    return true;
 }
 
+wxString ExportPCM::GetExtension(int index)
+{
+if (index == 0)
+   {  // get extension libsndfile thinks is correct for currently selected
+      // format
+   wxString fileext = sf_header_extension(ReadExportFormatPref());
+   return fileext; 
+   }
+else
+   {  // do as the default in Export.cpp
+   return mFormatInfos[index]->mExtensions[0];
+   }
+}
 //----------------------------------------------------------------------------
 // Constructor
 //----------------------------------------------------------------------------
