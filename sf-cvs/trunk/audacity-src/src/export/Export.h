@@ -115,7 +115,7 @@ public:
                          MixerSpec *mixerSpec,
                          int subformat);
 
-private:
+protected:
 
    FormatInfoArray mFormatInfos;
 };
