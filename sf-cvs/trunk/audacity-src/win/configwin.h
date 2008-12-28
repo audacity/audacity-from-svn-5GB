@@ -19,7 +19,7 @@
 #define USE_VAMP 1
 #undef USE_VST
 #define USE_MIDI 1 // define this to use portSMF for midi file support
-#define EXPERIMENTAL_SCOREALIGN 1
+//#define EXPERIMENTAL_SCOREALIGN 1
 
 #define INSTALL_PREFIX "."
 
