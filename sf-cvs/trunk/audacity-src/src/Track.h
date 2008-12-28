@@ -19,9 +19,7 @@
 #include "SampleFormat.h"
 #include "xml/XMLTagHandler.h"
 #include "Experimental.h"
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
 #include <wx/gdicmn.h>
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
 #ifdef __WXMSW__
 #pragma warning(disable:4284)
@@ -56,9 +54,7 @@ class AUDACITY_DLL_API Track: public XMLTagHandler {
    bool       mMinimized;
 
  public:
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    wxSize vrulerSize;
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
  
    // This just returns a constant and can be overriden by subclasses
    // to specify a different height for the case that the track is minimized.

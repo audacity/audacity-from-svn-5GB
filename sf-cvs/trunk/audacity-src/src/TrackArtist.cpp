@@ -534,9 +534,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
    }
    #endif // USE_MIDI
 
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    t->vrulerSize = vruler->mRect.GetSize();
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
 }
 
 // Takes a value between -1      and     +1 and returns a value between 

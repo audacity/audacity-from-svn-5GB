@@ -81,11 +81,7 @@ class AUDACITY_DLL_API Ruler {
    void SetFlip(bool flip);
 
    // Good defaults are provided, but you can override here
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    void SetFonts(const wxFont &minorFont, const wxFont &majorFont, const wxFont &minorMinorFont);
-#else //!EXPERIMENTAL_RULER_AUTOSIZE
-   void SetFonts(const wxFont &minorFont, const wxFont &majorFont);
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
    // The ruler will not draw text within this (pixel) range.
    // Use this if you have another graphic object obscuring part
@@ -118,18 +114,12 @@ class AUDACITY_DLL_API Ruler {
    void FindLinearTickSizes(double UPP);
    wxString LabelString(double d, bool major);
 
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    void Tick(int pos, double d, bool major, bool minor);
-#else //!EXPERIMENTAL_RULER_AUTOSIZE
-   void Tick(int pos, double d, bool major);
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
 public:
    bool mbTicksOnly;
    bool mbTicksAtExtremes;
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    wxRect mRect;
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
 private:
    wxColour mTickColour;
@@ -138,15 +128,11 @@ private:
    int          mMaxWidth, mMaxHeight;
    int          mLeft, mTop, mRight, mBottom, mLead;
    int          mLength;
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    int          mLengthOld;
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
    wxDC        *mDC;
 
    wxFont      *mMinorFont, *mMajorFont;
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    wxFont      *mMinorMinorFont;
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
    bool         mUserFonts;
 
    double       mMin, mMax;
@@ -162,12 +148,8 @@ private:
 
    bool         mValid;
 
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    class Label {
     public:
-#else //!EXPERIMENTAL_RULER_AUTOSIZE
-   struct Label {
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
       int pos;
       int lx, ly;
       wxString text;
@@ -177,10 +159,8 @@ private:
    Label       *mMajorLabels;
    int          mNumMinor;
    Label       *mMinorLabels;   
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    int          mNumMinorMinor;
    Label       *mMinorMinorLabels;   
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
 
    int          mOrientation;
@@ -248,9 +228,7 @@ public:
    void GetPlayRegion(double* playRegionStart, double* playRegionEnd);
    
    void SetProject(AudacityProject* project) {mProject = project;};
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    void GetMaxSize(wxCoord *width, wxCoord *height);
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
 private:
    void OnErase(wxEraseEvent &evt);

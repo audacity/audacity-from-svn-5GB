@@ -46,9 +46,7 @@ a TrackList.
 
 Track::Track(DirManager * projDirManager) 
    : 
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    vrulerSize(36,0),
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
    mDirManager(projDirManager)
 {
    mDirManager->Ref();

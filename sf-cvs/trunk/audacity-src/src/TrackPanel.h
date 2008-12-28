@@ -86,21 +86,13 @@ public:
    TrackInfo(wxWindow * pParentIn);
    ~TrackInfo();
 
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    int GetTitleWidth() const;
-#else //!EXPERIMENTAL_RULER_AUTOSIZE
-   int GetTitleWidth() const { return 100; }
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
 private:
    void MakeMoreSliders();
    void EnsureSufficientSliders(int index);
 
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    void DrawBackground(wxDC * dc, const wxRect r, bool bSelected, bool bHasMuteSolo, const int labelw, const int vrul);
-#else //!EXPERIMENTAL_RULER_AUTOSIZE
-   void DrawBackground(wxDC * dc, const wxRect r, bool bSelected, bool bHasMuteSolo, const int labelw);
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
    void DrawBordersWithin(wxDC * dc, const wxRect r, bool bHasMuteSolo );
    void DrawCloseBox(wxDC * dc, const wxRect r, bool down);
    void DrawTitleBar(wxDC * dc, const wxRect r, Track * t, bool down);
@@ -218,9 +210,7 @@ class TrackPanel:public wxPanel {
    void OnTrackSticky(wxCommandEvent & event);
 
    void HandleCursorForLastMouseEvent();
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    void UpdateVRulerRect();
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
  private:
 
@@ -366,11 +356,7 @@ class TrackPanel:public wxPanel {
 //   int GetTitleWidth() const { return 100; }
    int GetTitleOffset() const { return 0; }
 
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    int GetVRulerWidth() const;
-#else //!EXPERIMENTAL_RULER_AUTOSIZE
-   int GetVRulerWidth() const { return 36;}
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
    int GetVRulerOffset() const { return GetTitleOffset() + mTrackInfo.GetTitleWidth();}
    int GetLabelWidth() const { return mTrackInfo.GetTitleWidth() + GetVRulerWidth();}
@@ -588,9 +574,7 @@ private:
    friend class ScreenFrame;
 
  public:
-#ifdef EXPERIMENTAL_RULER_AUTOSIZE
    wxSize vrulerSize;
-#endif //EXPERIMENTAL_RULER_AUTOSIZE
 
    DECLARE_EVENT_TABLE()
 };
