@@ -20,25 +20,63 @@
 // enumerating headers
 //
 
+/** @brief Get the number of container formats supported by libsndfile 
+ *
+ * Uses SFC_GET_FORMAT_MAJOR_COUNT in sf_command interface */
 int sf_num_headers();
+
+/** @brief Get the name of a container format from libsndfile 
+ *
+ * Uses SFC_GET_FORMAT_MAJOR in the sf_command() interface. Resulting C string
+ * from libsndfile is converted to a wxString 
+ * @param format The libsndfile format number for the container format required
+ */
 wxString sf_header_index_name(int format_num);
+
 unsigned int sf_header_index_to_type(int format_num);
 
 //
 // enumerating encodings
 //
-
+/** @brief Get the number of data encodings libsndfile supports (in any
+ * container or none */
 int sf_num_encodings();
+/** @brief Get the string name of the data encoding of the requested format
+ *
+ * uses SFC_GET_FORMAT_SUBTYPE */
 wxString sf_encoding_index_name(int encoding_num);
 unsigned int sf_encoding_index_to_subtype(int encoding_num);
 
 //
 // getting info about an actual SF format
 //
-
+/** @brief Get the string name of the specified container format
+ *
+ * AND format with SF_FORMAT_TYPEMASK to get only the container format and
+ * then use SFC_GET_FORMAT_INFO to get the description 
+ * @param format the libsndfile format to get the name for (only the container
+ * part is used) */
 wxString sf_header_name(int format);
+/** @brief Get an abbreviated form of the string name of the specified format
+ *
+ * Do sf_header_name() then truncate the string at the first space in the name
+ * to get just the first word of the format name.
+ * @Param format the libsndfile format to get the name for (only the container
+ * part is used) */
 wxString sf_header_shortname(int format);
+/** @brief Get the most common file extension for the given format
+ *
+ * AND the given format with SF_FORMAT_TYPEMASK to get just the container
+ * format, then retreive the most common extension using SFC_GET_FORMAT_INFO.
+ * @param format the libsndfile format to get the name for (only the container
+ * part is used) */
 wxString sf_header_extension(int format);
+/** @brief Get the string name of the specified data encoding
+ *
+ * AND format with SF_FORMAT_SUBMASK to get only the data encoding and
+ * then use SFC_GET_FORMAT_INFO to get the description 
+ * @param format the libsndfile format to get the name for (only the data
+ * encoding is used) */
 wxString sf_encoding_name(int encoding_num);
 
 //
