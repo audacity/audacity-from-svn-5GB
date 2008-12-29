@@ -229,16 +229,7 @@ bool ExportPlugin::IsExtension(wxString & ext, int index)
    return isext;
 }
 
-bool ExportPlugin::DisplayOptions(AudacityProject *project, int format)
-{
-   if (project == NULL) {
-      project = GetActiveProject();
-   }
-
-   return DoDisplayOptions(project, format);
-}
-
-bool ExportPlugin::DoDisplayOptions(AudacityProject *project, int format)
+bool ExportPlugin::DisplayOptions(wxWindow *parent, int format)
 {
    return false;
 }
@@ -538,6 +529,7 @@ bool Exporter::GetFilename()
                     mFilename.GetFullName(),
                     maskString,
                     wxFD_SAVE | wxRESIZE_BORDER);
+      mDialog = &fd;
 
       fd.SetFilterIndex(mFilterIndex);
 
@@ -688,7 +680,11 @@ void Exporter::DisplayOptions(int index)
       return;
    }
 
-   mPlugins[mf]->DisplayOptions(mProject,msf);
+#if defined(__WXMSW__)
+   mPlugins[mf]->DisplayOptions(mProject, msf);
+#else
+   mPlugins[mf]->DisplayOptions(mDialog, msf);
+#endif
 }
 
 bool Exporter::CheckMix()

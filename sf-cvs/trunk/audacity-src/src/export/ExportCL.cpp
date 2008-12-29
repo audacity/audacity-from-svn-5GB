@@ -51,10 +51,8 @@ END_EVENT_TABLE()
 /// 
 /// 
 ExportCLOptions::ExportCLOptions(wxWindow *parent)
-:  wxDialog(NULL, wxID_ANY,
-   wxString(_("Specify Command Line Encoder")),
-   wxDefaultPosition, wxDefaultSize,
-   wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+:  wxDialog(parent, wxID_ANY,
+            wxString(_("Specify Command Line Encoder")))
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
@@ -199,7 +197,7 @@ public:
 
    // Required
 
-   bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
+   bool DisplayOptions(wxWindow *parent, int format = 0);
    bool Export(AudacityProject *project,
                int channels,
                wxString fName,
@@ -414,9 +412,9 @@ bool ExportCL::Export(AudacityProject *project,
    return true;
 }
 
-bool ExportCL::DisplayOptions(AudacityProject *project, int format)
+bool ExportCL::DisplayOptions(wxWindow *parent, int format)
 {
-   ExportCLOptions od(project);
+   ExportCLOptions od(parent);
 
    od.ShowModal();
 

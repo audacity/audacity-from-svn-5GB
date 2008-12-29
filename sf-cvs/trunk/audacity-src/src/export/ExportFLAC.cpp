@@ -63,10 +63,8 @@ END_EVENT_TABLE()
 /// 
 /// 
 ExportFLACOptions::ExportFLACOptions(wxWindow *parent)
-:  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify FLAC Options")),
-            wxDefaultPosition, wxDefaultSize,
-            wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+:  wxDialog(parent, wxID_ANY,
+            wxString(_("Specify FLAC Options")))
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
@@ -178,7 +176,7 @@ public:
 
    // Required
 
-   bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
+   bool DisplayOptions(wxWindow *parent, int format = 0);
    bool Export(AudacityProject *project,
                int channels,
                wxString fName,
@@ -349,9 +347,9 @@ bool ExportFLAC::Export(AudacityProject *project,
    return !cancelling;
 }
 
-bool ExportFLAC::DisplayOptions(AudacityProject *project, int format)
+bool ExportFLAC::DisplayOptions(wxWindow *parent, int format)
 {
-   ExportFLACOptions od(project);
+   ExportFLACOptions od(parent);
 
    od.ShowModal();
 

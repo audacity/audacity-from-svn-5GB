@@ -77,8 +77,7 @@ public:
    
    virtual bool IsExtension(wxString & ext, int index);
 
-   virtual bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
-   virtual bool DoDisplayOptions(AudacityProject *project, int format = 0);
+   virtual bool DisplayOptions(wxWindow *parent, int format = 0);
 
    virtual bool CheckFileName(wxFileName &filename, int format = 0);
 
@@ -153,7 +152,7 @@ private:
    bool ExportTracks();
 
 private:
-
+   FileDialog *mDialog;
    AudacityProject *mProject;
    MixerSpec *mMixerSpec;
 
