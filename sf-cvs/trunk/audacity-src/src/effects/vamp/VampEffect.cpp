@@ -18,9 +18,9 @@
 #include "../../../lib-src/libvamp/vamp-sdk/hostext/PluginChannelAdapter.h"
 #include "../../../lib-src/libvamp/vamp-sdk/hostext/PluginInputDomainAdapter.h"
 #else
-#include <vamp-sdk/Plugin.h>
-#include <vamp-sdk/hostext/PluginChannelAdapter.h>
-#include <vamp-sdk/hostext/PluginInputDomainAdapter.h>
+#include <vamp-hostsdk/Plugin.h>
+#include <vamp-hostsdk/PluginChannelAdapter.h>
+#include <vamp-hostsdk/PluginInputDomainAdapter.h>
 #endif
 
 #include <wx/wxprec.h>

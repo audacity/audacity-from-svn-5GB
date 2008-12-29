@@ -100,10 +100,9 @@ TODO: upgrade to 1.0.18 when it comes out in order to drop the bext patch
 libvamp
 -------
 Library to load and use VAMP plug-ins. http://www.vamp-plugins.org/
-Version in Audacity CVS: 1.2
-Patches: correct-includes.patch: Adds more C++ includes needed to keep gcc
-			4.3.1 happy. In upstream CVS
-Upstream Version: 1.2
+Version in Audacity CVS: 2.0
+Patches: none
+Upstream Version: 2.0
 
 libvorbis
 ---------

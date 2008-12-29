@@ -55,10 +55,8 @@ libnyquist.a: libnyquist-recursive
 	ln -sf libnyquist/libnyquist.a libnyquist.a
 
 # libvamp
-libvamp-recursive:
+vamp-sdk:
 	$(MAKE) -C libvamp
-libvamp-hostsdk.a: libvamp-recursive
-	ln -sf libvamp/vamp-sdk/libvamp-hostsdk.a libvamp-hostsdk.a
 
 # redland
 redland-recursive:
@@ -224,7 +222,7 @@ distclean:
 		widgetextra libogg-recursive \
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
 	libid3tag-recursive sbsms-recursive soundtouch-recursive libsndfile-recursive \
-	libresample-recursive libsamplerate-recursive libvamp-recursive \
+	libresample-recursive libsamplerate-recursive vamp-sdk \
 	portaudio-v19-recursive portmixer-recursive libtwolame-recursive \
 	liblrdf-recursive redland-recursive slv2-recursive
 
