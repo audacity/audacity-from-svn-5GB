@@ -6,8 +6,7 @@
     An API for audio analysis and feature extraction plugins.
 
     Centre for Digital Music, Queen Mary, University of London.
-    Copyright 2006 Chris Cannam.
-    FFT code from Don Cross's public domain FFT implementation.
+    Copyright 2006 Chris Cannam, copyright 2007-2008 QMUL.
   
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation
@@ -35,11 +34,21 @@
     authorization.
 */
 
-#include "vamp-sdk/PluginHostAdapter.h"
-#include "vamp-sdk/hostext/PluginChannelAdapter.h"
-#include "vamp-sdk/hostext/PluginInputDomainAdapter.h"
-#include "vamp-sdk/hostext/PluginLoader.h"
-#include "vamp/vamp.h"
+
+/*
+ * This "simple" Vamp plugin host is no longer as simple as it was; it
+ * now has a lot of options and includes a lot of code to handle the
+ * various useful listing modes it supports.
+ *
+ * However, the runPlugin function still contains a reasonable
+ * implementation of a fairly generic Vamp plugin host capable of
+ * evaluating a given output on a given plugin for a sound file read
+ * via libsndfile.
+ */
+
+#include <vamp-hostsdk/PluginHostAdapter.h>
+#include <vamp-hostsdk/PluginInputDomainAdapter.h>
+#include <vamp-hostsdk/PluginLoader.h>
 
 #include <iostream>
 #include <fstream>
@@ -59,13 +68,16 @@ using Vamp::Plugin;
 using Vamp::PluginHostAdapter;
 using Vamp::RealTime;
 using Vamp::HostExt::PluginLoader;
+using Vamp::HostExt::PluginWrapper;
+using Vamp::HostExt::PluginInputDomainAdapter;
 
-#define HOST_VERSION "1.1"
+#define HOST_VERSION "1.4"
 
 enum Verbosity {
     PluginIds,
     PluginOutputIds,
-    PluginInformation
+    PluginInformation,
+    PluginInformationDetailed
 };
 
 void printFeatures(int, int, int, Plugin::FeatureSet, ofstream *, bool frames);
@@ -81,9 +93,9 @@ int runPlugin(string myname, string soname, string id, string output,
 void usage(const char *name)
 {
     cerr << "\n"
-         << name << ": A simple Vamp plugin host.\n\n"
+         << name << ": A command-line host for Vamp audio analysis plugins.\n\n"
         "Centre for Digital Music, Queen Mary, University of London.\n"
-        "Copyright 2006-2007 Chris Cannam and QMUL.\n"
+        "Copyright 2006-2008 Chris Cannam and QMUL.\n"
         "Freely redistributable; published under a BSD-style license.\n\n"
         "Usage:\n\n"
         "  " << name << " [-s] pluginlibrary[." << PLUGIN_SUFFIX << "]:plugin[:output] file.wav [-o out.txt]\n"
@@ -98,9 +110,13 @@ void usage(const char *name)
         "       If the -s option is given, results will be labelled with the audio\n"
         "       sample frame at which they occur. Otherwise, they will be labelled\n"
         "       with time in seconds.\n\n"
-        "  " << name << " -l\n\n"
+        "  " << name << " -l\n"
+        "  " << name << " --list\n\n"
         "    -- List the plugin libraries and Vamp plugins in the library search path\n"
         "       in a verbose human-readable format.\n\n"
+        "  " << name << " --list-full\n\n"
+        "    -- List all data reported by all the Vamp plugins in the library search\n"
+        "       path in a very verbose human-readable format.\n\n"
         "  " << name << " --list-ids\n\n"
         "    -- List the plugins in the search path in a terse machine-readable format,\n"
         "       in the form vamp:soname:identifier.\n\n"
@@ -139,10 +155,15 @@ int main(int argc, char **argv)
                  << "Vamp SDK version: " << VAMP_SDK_VERSION << endl;
             return 0;
 
-        } else if (!strcmp(argv[1], "-l")) {
+        } else if (!strcmp(argv[1], "-l") || !strcmp(argv[1], "--list")) {
 
             printPluginPath(true);
             enumeratePlugins(PluginInformation);
+            return 0;
+
+        } else if (!strcmp(argv[1], "--list-full")) {
+
+            enumeratePlugins(PluginInformationDetailed);
             return 0;
 
         } else if (!strcmp(argv[1], "-p")) {
@@ -286,6 +307,17 @@ int runPlugin(string myname, string soname, string id,
 
     cerr << "Running plugin: \"" << plugin->getIdentifier() << "\"..." << endl;
 
+    // Note that the following would be much simpler if we used a
+    // PluginBufferingAdapter as well -- i.e. if we had passed
+    // PluginLoader::ADAPT_ALL to loader->loadPlugin() above, instead
+    // of ADAPT_ALL_SAFE.  Then we could simply specify our own block
+    // size, keep the step size equal to the block size, and ignore
+    // the plugin's bleatings.  However, there are some issues with
+    // using a PluginBufferingAdapter that make the results sometimes
+    // technically different from (if effectively the same as) the
+    // un-adapted plugin, so we aren't doing that here.  See the
+    // PluginBufferingAdapter documentation for details.
+
     int blockSize = plugin->getPreferredBlockSize();
     int stepSize = plugin->getPreferredStepSize();
 
@@ -317,6 +349,10 @@ int runPlugin(string myname, string soname, string id,
     cerr << "Using block size = " << blockSize << ", step size = "
               << stepSize << endl;
 
+    // The channel queries here are for informational purposes only --
+    // a PluginChannelAdapter is being used automatically behind the
+    // scenes, and it will take case of any channel mismatch
+
     int minch = plugin->getMinChannelCount();
     int maxch = plugin->getMaxChannelCount();
     cerr << "Plugin accepts " << minch << " -> " << maxch << " channel(s)" << endl;
@@ -327,6 +363,10 @@ int runPlugin(string myname, string soname, string id,
 
     int returnValue = 1;
     int progress = 0;
+
+    RealTime rt;
+    PluginWrapper *wrapper = 0;
+    RealTime adjustment = RealTime::zeroTime;
 
     if (outputs.empty()) {
 	cerr << "ERROR: Plugin has no outputs!" << endl;
@@ -365,6 +405,15 @@ int runPlugin(string myname, string soname, string id,
         goto done;
     }
 
+    wrapper = dynamic_cast<PluginWrapper *>(plugin);
+    if (wrapper) {
+        // See documentation for
+        // PluginInputDomainAdapter::getTimestampAdjustment
+        PluginInputDomainAdapter *ida =
+            wrapper->getWrapper<PluginInputDomainAdapter>();
+        if (ida) adjustment = ida->getTimestampAdjustment();
+    }
+
     for (size_t i = 0; i < sfinfo.frames; i += stepSize) {
 
         int count;
@@ -391,9 +440,11 @@ int runPlugin(string myname, string soname, string id,
             }
         }
 
+        rt = RealTime::frame2RealTime(i, sfinfo.samplerate);
+
         printFeatures
-            (i, sfinfo.samplerate, outputNo, plugin->process
-             (plugbuf, RealTime::frame2RealTime(i, sfinfo.samplerate)),
+            (RealTime::realTime2Frame(rt + adjustment, sfinfo.samplerate),
+             sfinfo.samplerate, outputNo, plugin->process(plugbuf, rt),
              out, useFrames);
 
         int pp = progress;
@@ -404,7 +455,10 @@ int runPlugin(string myname, string soname, string id,
     }
     if (out) cerr << "\rDone" << endl;
 
-    printFeatures(sfinfo.frames, sfinfo.samplerate, outputNo,
+    rt = RealTime::frame2RealTime(sfinfo.frames, sfinfo.samplerate);
+
+    printFeatures(RealTime::realTime2Frame(rt + adjustment, sfinfo.samplerate),
+                  sfinfo.samplerate, outputNo,
                   plugin->getRemainingFeatures(), out, useFrames);
 
     returnValue = 0;
@@ -434,7 +488,15 @@ printFeatures(int frame, int sr, int output,
                     (features[output][i].timestamp, sr);
             }
 
-            (out ? *out : cout) << displayFrame << ":";
+            (out ? *out : cout) << displayFrame;
+
+            if (features[output][i].hasDuration) {
+                displayFrame = RealTime::realTime2Frame
+                    (features[output][i].duration, sr);
+                (out ? *out : cout) << "," << displayFrame;
+            }
+
+            (out ? *out : cout)  << ":";
 
         } else {
 
@@ -444,7 +506,14 @@ printFeatures(int frame, int sr, int output,
                 rt = features[output][i].timestamp;
             }
 
-            (out ? *out : cout) << rt.toString() << ":";
+            (out ? *out : cout) << rt.toString();
+
+            if (features[output][i].hasDuration) {
+                rt = features[output][i].duration;
+                (out ? *out : cout) << "," << rt.toString();
+            }
+
+            (out ? *out : cout) << ":";
         }
 
         for (unsigned int j = 0; j < features[output][i].values.size(); ++j) {
@@ -472,6 +541,18 @@ printPluginPath(bool verbose)
     }
 
     if (verbose) cout << endl;
+}
+
+static
+string
+header(string text, int level)
+{
+    string out = '\n' + text + '\n';
+    for (size_t i = 0; i < text.length(); ++i) {
+        out += (level == 1 ? '=' : level == 2 ? '-' : '~');
+    }
+    out += '\n';
+    return out;
 }
 
 void
@@ -507,6 +588,10 @@ enumeratePlugins(Verbosity verbosity)
             index = 0;
             if (verbosity == PluginInformation) {
                 cout << "\n  " << path << ":" << endl;
+            } else if (verbosity == PluginInformationDetailed) {
+                string::size_type ki = i->second.find(':');
+                string text = "Library \"" + i->second.substr(0, ki) + "\"";
+                cout << "\n" << header(text, 1);
             }
         }
 
@@ -516,6 +601,16 @@ enumeratePlugins(Verbosity verbosity)
             char c = char('A' + index);
             if (c > 'Z') c = char('a' + (index - 26));
 
+            PluginLoader::PluginCategoryHierarchy category =
+                loader->getPluginCategory(key);
+            string catstr;
+            if (!category.empty()) {
+                for (size_t ci = 0; ci < category.size(); ++ci) {
+                    if (ci > 0) catstr += " > ";
+                        catstr += category[ci];
+                }
+            }
+
             if (verbosity == PluginInformation) {
 
                 cout << "    [" << c << "] [v"
@@ -523,21 +618,41 @@ enumeratePlugins(Verbosity verbosity)
                      << plugin->getName() << ", \""
                      << plugin->getIdentifier() << "\"" << " ["
                      << plugin->getMaker() << "]" << endl;
-
-                PluginLoader::PluginCategoryHierarchy category =
-                    loader->getPluginCategory(key);
-
-                if (!category.empty()) {
-                    cout << "       ";
-                    for (size_t ci = 0; ci < category.size(); ++ci) {
-                        cout << " > " << category[ci];
-                    }
-                    cout << endl;
+                
+                if (catstr != "") {
+                    cout << "       > " << catstr << endl;
                 }
 
                 if (plugin->getDescription() != "") {
                     cout << "        - " << plugin->getDescription() << endl;
                 }
+
+            } else if (verbosity == PluginInformationDetailed) {
+
+                cout << header(plugin->getName(), 2);
+                cout << " - Identifier:         "
+                     << key << endl;
+                cout << " - Plugin Version:     " 
+                     << plugin->getPluginVersion() << endl;
+                cout << " - Vamp API Version:   "
+                     << plugin->getVampApiVersion() << endl;
+                cout << " - Maker:              \""
+                     << plugin->getMaker() << "\"" << endl;
+                cout << " - Copyright:          \""
+                     << plugin->getCopyright() << "\"" << endl;
+                cout << " - Description:        \""
+                     << plugin->getDescription() << "\"" << endl;
+                cout << " - Input Domain:       "
+                     << (plugin->getInputDomain() == Vamp::Plugin::TimeDomain ?
+                         "Time Domain" : "Frequency Domain") << endl;
+                cout << " - Default Step Size:  " 
+                     << plugin->getPreferredStepSize() << endl;
+                cout << " - Default Block Size: " 
+                     << plugin->getPreferredBlockSize() << endl;
+                cout << " - Minimum Channels:   " 
+                     << plugin->getMinChannelCount() << endl;
+                cout << " - Maximum Channels:   " 
+                     << plugin->getMaxChannelCount() << endl;
 
             } else if (verbosity == PluginIds) {
                 cout << "vamp:" << key << endl;
@@ -545,6 +660,91 @@ enumeratePlugins(Verbosity verbosity)
             
             Plugin::OutputList outputs =
                 plugin->getOutputDescriptors();
+
+            if (verbosity == PluginInformationDetailed) {
+
+                Plugin::ParameterList params = plugin->getParameterDescriptors();
+                for (size_t j = 0; j < params.size(); ++j) {
+                    Plugin::ParameterDescriptor &pd(params[j]);
+                    cout << "\nParameter " << j+1 << ": \"" << pd.name << "\"" << endl;
+                    cout << " - Identifier:         " << pd.identifier << endl;
+                    cout << " - Description:        \"" << pd.description << "\"" << endl;
+                    if (pd.unit != "") {
+                        cout << " - Unit:               " << pd.unit << endl;
+                    }
+                    cout << " - Range:              ";
+                    cout << pd.minValue << " -> " << pd.maxValue << endl;
+                    cout << " - Default:            ";
+                    cout << pd.defaultValue << endl;
+                    if (pd.isQuantized) {
+                        cout << " - Quantize Step:      "
+                             << pd.quantizeStep << endl;
+                    }
+                    if (!pd.valueNames.empty()) {
+                        cout << " - Value Names:        ";
+                        for (size_t k = 0; k < pd.valueNames.size(); ++k) {
+                            if (k > 0) cout << ", ";
+                            cout << "\"" << pd.valueNames[k] << "\"";
+                        }
+                        cout << endl;
+                    }
+                }
+
+                if (outputs.empty()) {
+                    cout << "\n** Note: This plugin reports no outputs!" << endl;
+                }
+                for (size_t j = 0; j < outputs.size(); ++j) {
+                    Plugin::OutputDescriptor &od(outputs[j]);
+                    cout << "\nOutput " << j+1 << ": \"" << od.name << "\"" << endl;
+                    cout << " - Identifier:         " << od.identifier << endl;
+                    cout << " - Description:        \"" << od.description << "\"" << endl;
+                    if (od.unit != "") {
+                        cout << " - Unit:               " << od.unit << endl;
+                    }
+                    if (od.hasFixedBinCount) {
+                        cout << " - Default Bin Count:  " << od.binCount << endl;
+                    }
+                    if (!od.binNames.empty()) {
+                        bool have = false;
+                        for (size_t k = 0; k < od.binNames.size(); ++k) {
+                            if (od.binNames[k] != "") {
+                                have = true; break;
+                            }
+                        }
+                        if (have) {
+                            cout << " - Bin Names:          ";
+                            for (size_t k = 0; k < od.binNames.size(); ++k) {
+                                if (k > 0) cout << ", ";
+                                cout << "\"" << od.binNames[k] << "\"";
+                            }
+                            cout << endl;
+                        }
+                    }
+                    if (od.hasKnownExtents) {
+                        cout << " - Default Extents:    ";
+                        cout << od.minValue << " -> " << od.maxValue << endl;
+                    }
+                    if (od.isQuantized) {
+                        cout << " - Quantize Step:      "
+                             << od.quantizeStep << endl;
+                    }
+                    cout << " - Sample Type:        "
+                         << (od.sampleType ==
+                             Plugin::OutputDescriptor::OneSamplePerStep ?
+                             "One Sample Per Step" :
+                             od.sampleType ==
+                             Plugin::OutputDescriptor::FixedSampleRate ?
+                             "Fixed Sample Rate" :
+                             "Variable Sample Rate") << endl;
+                    if (od.sampleType !=
+                        Plugin::OutputDescriptor::OneSamplePerStep) {
+                        cout << " - Default Rate:       "
+                             << od.sampleRate << endl;
+                    }
+                    cout << " - Has Duration:       "
+                         << (od.hasDuration ? "Yes" : "No") << endl;
+                }
+            }
 
             if (outputs.size() > 1 || verbosity == PluginOutputIds) {
                 for (size_t j = 0; j < outputs.size(); ++j) {
@@ -568,7 +768,8 @@ enumeratePlugins(Verbosity verbosity)
         }
     }
 
-    if (verbosity == PluginInformation) {
+    if (verbosity == PluginInformation ||
+        verbosity == PluginInformationDetailed) {
         cout << endl;
     }
 }

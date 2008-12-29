@@ -41,8 +41,12 @@ using std::vector;
 using std::cerr;
 using std::endl;
 
-#include <cmath>
+#include <math.h>
 
+#ifdef WIN32
+#define isnan(x) false
+#define isinf(x) false
+#endif
 
 SpectralCentroid::SpectralCentroid(float inputSampleRate) :
     Plugin(inputSampleRate),
@@ -134,7 +138,7 @@ SpectralCentroid::getOutputDescriptors() const
 }
 
 SpectralCentroid::FeatureSet
-SpectralCentroid::process(const float *const *inputBuffers, Vamp::RealTime)
+SpectralCentroid::process(const float *const *inputBuffers, Vamp::RealTime timestamp)
 {
     if (m_stepSize == 0) {
 	cerr << "ERROR: SpectralCentroid::process: "
@@ -149,15 +153,13 @@ SpectralCentroid::process(const float *const *inputBuffers, Vamp::RealTime)
 	double freq = (double(i) * m_inputSampleRate) / m_blockSize;
 	double real = inputBuffers[0][i*2];
 	double imag = inputBuffers[0][i*2 + 1];
-	double power = sqrt(real * real + imag * imag) / (m_blockSize/2);
-	numLin += freq * power;
-        numLog += log10f(freq) * power;
-	denom += power;
+	double scalemag = sqrt(real * real + imag * imag) / (m_blockSize/2);
+	numLin += freq * scalemag;
+        numLog += log10f(freq) * scalemag;
+	denom += scalemag;
     }
 
     FeatureSet returnFeatures;
-
-//    std::cerr << "power " << denom << ", block size " << m_blockSize << std::endl;
 
     if (denom != 0.0) {
 	float centroidLin = float(numLin / denom);
@@ -165,13 +167,14 @@ SpectralCentroid::process(const float *const *inputBuffers, Vamp::RealTime)
 
 	Feature feature;
 	feature.hasTimestamp = false;
-        if (!std::isnan(centroidLog) && !std::isinf(centroidLog)) {
+
+        if (!isnan(centroidLog) && !isinf(centroidLog)) {
             feature.values.push_back(centroidLog);
         }
 	returnFeatures[0].push_back(feature);
 
         feature.values.clear();
-        if (!std::isnan(centroidLin) && !std::isinf(centroidLin)) {
+        if (!isnan(centroidLin) && !isinf(centroidLin)) {
             feature.values.push_back(centroidLin);
         }
 	returnFeatures[1].push_back(feature);
