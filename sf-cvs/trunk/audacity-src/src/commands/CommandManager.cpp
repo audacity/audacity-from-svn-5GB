@@ -885,7 +885,7 @@ void CommandManager::TellUserWhyDisallowed( wxUint32 flagsGot, wxUint32 flagsReq
 {
    // The default string for 'reason' is a catch all.  I hope it won't ever be seen
    // and that we will get something more specific.
-   wxString reason = _("Disallowed for some reason.  Try selecting some Audio first?");
+   wxString reason = _("Disallowed for some reason.  Try selecting some audio first?");
 
    wxUint32 missingFlags = flagsRequired & (~flagsGot );
    if( missingFlags & AudioIONotBusyFlag )
