@@ -34,36 +34,13 @@
     authorization.
 */
 
-#include "vamp/vamp.h"
-#include "vamp-sdk/PluginAdapter.h"
+#ifndef _VAMP_HOSTSDK_REALTIME_H_
+#define _VAMP_HOSTSDK_REALTIME_H_
 
-#include "ZeroCrossing.h"
-#include "SpectralCentroid.h"
-#include "PercussionOnsetDetector.h"
-#include "FixedTempoEstimator.h"
-#include "AmplitudeFollower.h"
-#include "PowerSpectrum.h"
+// Do not include vamp-sdk/RealTime.h directly from host code.  Always
+// use this header instead.
 
-static Vamp::PluginAdapter<ZeroCrossing> zeroCrossingAdapter;
-static Vamp::PluginAdapter<SpectralCentroid> spectralCentroidAdapter;
-static Vamp::PluginAdapter<PercussionOnsetDetector> percussionOnsetAdapter;
-static Vamp::PluginAdapter<FixedTempoEstimator> fixedTempoAdapter;
-static Vamp::PluginAdapter<AmplitudeFollower> amplitudeAdapter;
-static Vamp::PluginAdapter<PowerSpectrum> powerSpectrum;
+#include "hostguard.h"
+#include <vamp-sdk/RealTime.h>
 
-const VampPluginDescriptor *vampGetPluginDescriptor(unsigned int version,
-                                                    unsigned int index)
-{
-    if (version < 1) return 0;
-
-    switch (index) {
-    case  0: return zeroCrossingAdapter.getDescriptor();
-    case  1: return spectralCentroidAdapter.getDescriptor();
-    case  2: return percussionOnsetAdapter.getDescriptor();
-    case  3: return amplitudeAdapter.getDescriptor();
-    case  4: return fixedTempoAdapter.getDescriptor();
-    case  5: return powerSpectrum.getDescriptor();
-    default: return 0;
-    }
-}
-
+#endif

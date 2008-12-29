@@ -34,36 +34,36 @@
     authorization.
 */
 
-#include "vamp/vamp.h"
-#include "vamp-sdk/PluginAdapter.h"
+#ifndef _VAMP_HOSTSDK_HOSTGUARD_H_
+#define _VAMP_HOSTSDK_HOSTGUARD_H_
 
-#include "ZeroCrossing.h"
-#include "SpectralCentroid.h"
-#include "PercussionOnsetDetector.h"
-#include "FixedTempoEstimator.h"
-#include "AmplitudeFollower.h"
-#include "PowerSpectrum.h"
+#ifdef _VAMP_IN_PLUGINSDK
+#error You have included headers from both vamp-sdk and vamp-hostsdk in the same source file. Please include only vamp-sdk headers in plugin code, and only vamp-hostsdk headers in host code.
+#else
 
-static Vamp::PluginAdapter<ZeroCrossing> zeroCrossingAdapter;
-static Vamp::PluginAdapter<SpectralCentroid> spectralCentroidAdapter;
-static Vamp::PluginAdapter<PercussionOnsetDetector> percussionOnsetAdapter;
-static Vamp::PluginAdapter<FixedTempoEstimator> fixedTempoAdapter;
-static Vamp::PluginAdapter<AmplitudeFollower> amplitudeAdapter;
-static Vamp::PluginAdapter<PowerSpectrum> powerSpectrum;
+#define _VAMP_IN_HOSTSDK
 
-const VampPluginDescriptor *vampGetPluginDescriptor(unsigned int version,
-                                                    unsigned int index)
-{
-    if (version < 1) return 0;
+#ifdef _VAMP_NO_HOST_NAMESPACE
+#define _VAMP_SDK_HOSTSPACE_BEGIN(h)
+#define _VAMP_SDK_HOSTSPACE_END(h)
+#define _VAMP_SDK_PLUGSPACE_BEGIN(h)
+#define _VAMP_SDK_PLUGSPACE_END(h)
+#else
+#define _VAMP_SDK_HOSTSPACE_BEGIN(h) \
+	namespace _VampHost {
 
-    switch (index) {
-    case  0: return zeroCrossingAdapter.getDescriptor();
-    case  1: return spectralCentroidAdapter.getDescriptor();
-    case  2: return percussionOnsetAdapter.getDescriptor();
-    case  3: return amplitudeAdapter.getDescriptor();
-    case  4: return fixedTempoAdapter.getDescriptor();
-    case  5: return powerSpectrum.getDescriptor();
-    default: return 0;
-    }
-}
+#define _VAMP_SDK_HOSTSPACE_END(h) \
+	} \
+	using namespace _VampHost;
+#define _VAMP_SDK_PLUGSPACE_BEGIN(h) \
+	namespace _VampHost {
+
+#define _VAMP_SDK_PLUGSPACE_END(h) \
+	} \
+	using namespace _VampHost;
+#endif
+
+#endif
+
+#endif
 
