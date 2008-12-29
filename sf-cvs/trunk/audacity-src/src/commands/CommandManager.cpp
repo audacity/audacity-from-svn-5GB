@@ -1024,7 +1024,7 @@ wxString CommandManager::GetPrefixedLabelFromName(wxString name)
    if (!entry)
       return wxT("");
 
-   return entry->labelPrefix + entry->label;
+   return entry->labelPrefix + wxT(" ") + entry->label;
 }
 
 wxString CommandManager::GetKeyFromName(wxString name)
