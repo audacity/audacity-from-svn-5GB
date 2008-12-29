@@ -4,7 +4,7 @@
 // Author:      Stefan Csomor
 // Modified by: Leland Lucius
 // Created:     1998-01-01
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.3 2008-05-24 02:57:39 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.4 2008-12-29 09:49:07 llucius Exp $
 // Copyright:   (c) Stefan Csomor
 // Licence:     wxWindows licence
 //
@@ -66,6 +66,7 @@ struct CustomData {
    wxString       defaultLocation;
    int            currentfilter;
    bool           saveMode;
+   bool           showing;
 };
 
 typedef struct CustomData
@@ -163,6 +164,7 @@ static void HandleCustomMouseDown(NavCBRecPtr callBackParms, CustomData *data)
                      }
 #endif
                   }
+                  NavCustomControl(callBackParms->context, kNavCtlBrowserRedraw, NULL);
                }
                
                break;
@@ -171,7 +173,6 @@ static void HandleCustomMouseDown(NavCBRecPtr callBackParms, CustomData *data)
             case kButton:
             {
                data->me->ClickButton(GetControl32BitValue(data->choice) - 1);
-               
                break;
             }
          }
@@ -243,6 +244,12 @@ static pascal void NavEventProc(NavEventCallbackMessage inSelector,
       {
 			HandleNormalEvents(ioParams, data);
 			break;
+      }
+         
+      case kNavCBTerminate:
+      {
+         data->showing = false;
+         break;
       }
    }
 }
@@ -325,7 +332,6 @@ static Boolean CheckFile( const wxString &filename , OSType type , CustomDataPtr
    
    if ( data->extensions.GetCount() > 0 )
    {
-      //for ( int i = 0 ; i < data->numfilters ; ++i )
       int i = data->currentfilter ;
       if ( data->extensions[i].Right(2) == wxT(".*") )
          return true ;
@@ -352,9 +358,13 @@ static Boolean CheckFile( const wxString &filename , OSType type , CustomDataPtr
 
 // end wxmac
 
-FileDialog::FileDialog(wxWindow *parent, const wxString& message,
-                       const wxString& defaultDir, const wxString& defaultFileName, const wxString& wildCard,
-                       long style, const wxPoint& pos)
+FileDialog::FileDialog(wxWindow *parent,
+                       const wxString& message,
+                       const wxString& defaultDir,
+                       const wxString& defaultFileName,
+                       const wxString& wildCard,
+                       long style,
+                       const wxPoint& pos)
 :wxFileDialogBase(parent, message, defaultDir, defaultFileName, wildCard, style, pos)
 {
    wxASSERT_MSG( NavServicesAvailable() , wxT("Navigation Services are not running") ) ;
@@ -414,6 +424,8 @@ int FileDialog::ShowModal()
    wxMacCFStringHolder defaultFileName(m_fileName, m_font.GetEncoding());
    dialogCreateOptions.saveFileName = defaultFileName;
    
+   dialogCreateOptions.modality = kWindowModalityWindowModal;
+   dialogCreateOptions.parentWindow = (WindowRef) GetParent()->MacGetTopLevelWindowRef();
    
    NavDialogRef dialog;
    NavObjectFilterUPP navFilterUPP = NULL;
@@ -426,6 +438,7 @@ int FileDialog::ShowModal()
    myData.choice = NULL;
    myData.button = NULL;
    myData.saveMode = false;
+   myData.showing = true;
    
    Rect r;
    SInt16 base;
@@ -444,7 +457,7 @@ int FileDialog::ShowModal()
          ::AppendMenuItemTextWithCFString(myData.menu,
                                           wxMacCFStringHolder(myData.name[i],
                                                               m_font.GetEncoding()),
-                                          0,
+                                          4,
                                           i,
                                           NULL);
       }
@@ -479,7 +492,7 @@ int FileDialog::ShowModal()
    
    dialogCreateOptions.optionFlags |= kNavNoTypePopup;
    
-   if (m_dialogStyle & wxSAVE)
+   if (m_dialogStyle & wxFD_SAVE)
    {
       myData.saveMode = true;
       
@@ -495,11 +508,12 @@ int FileDialog::ShowModal()
          dialogCreateOptions.optionFlags |= kNavPreserveSaveFileExtension;
       
 #if TARGET_API_MAC_OSX
-      if (!(m_dialogStyle & wxOVERWRITE_PROMPT))
+      if (!(m_dialogStyle & wxFD_OVERWRITE_PROMPT))
       {
          dialogCreateOptions.optionFlags |= kNavDontConfirmReplacement;
       }
 #endif
+      
       err = ::NavCreatePutFileDialog(&dialogCreateOptions,
                                      // Suppresses the 'Default' (top) menu item
                                      kNavGenericSignature, kNavGenericSignature,
@@ -525,6 +539,31 @@ int FileDialog::ShowModal()
    
    if (err == noErr)
       err = ::NavDialogRun(dialog);
+   
+   if (err == noErr)
+   {
+      WindowRef w = NavDialogGetWindow(dialog);
+      Rect r;
+      
+      // This creates our "fake" dialog with the same dimensions as the sheet so
+      // that Options dialogs will center properly on the sheet.  The "fake" dialog
+      // is never actually seen.
+      GetWindowBounds(w,kWindowStructureRgn, &r);
+      wxDialog::Create(NULL,  // no parent...otherwise strange things happen
+                       wxID_ANY,
+                       wxEmptyString,
+                       wxPoint(r.left, r.top),
+                       wxSize(r.right - r.left, r.bottom - r.top));
+      
+      BeginAppModalStateForWindow(w);
+      
+      while (myData.showing)
+      {
+         wxTheApp->MacDoOneEvent();
+      }
+      
+      EndAppModalStateForWindow(w);
+   }
    
    // clean up filter related data, etc.
    if (navFilterUPP)
@@ -554,7 +593,7 @@ int FileDialog::ShowModal()
          if (err != noErr)
             break;
          
-         if (m_dialogStyle & wxSAVE)
+         if (m_dialogStyle & wxFD_SAVE)
             thePath = wxMacFSRefToPath( &theFSRef , navReply.saveFileName ) ;
          else
             thePath = wxMacFSRefToPath( &theFSRef ) ;

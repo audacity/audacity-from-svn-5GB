@@ -84,7 +84,7 @@ public:
 
    /// Shows options dialog
    ///\param format - index of export type
-   bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
+   bool DisplayOptions(wxWindow *parent, int format = 0);
 
    /// Check whether or not current project sample rate is compatible with the export codec
    bool CheckSampleRate(int rate, int lowrate, int highrate, const int *sampRates);
@@ -771,7 +771,7 @@ int ExportFFmpeg::AskResample(int bitrate, int rate, int lowrate, int highrate, 
 }
 
 
-bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
+bool ExportFFmpeg::DisplayOptions(wxWindow *parent, int format)
 {
    if (!FFmpegLibsInst->ValidLibsLoaded())
    {
@@ -780,37 +780,37 @@ bool ExportFFmpeg::DisplayOptions(AudacityProject *project, int format)
    }
    if (format == FMT_M4A)
    {
-      ExportFFmpegAACOptions od(project);
+      ExportFFmpegAACOptions od(parent);
       od.ShowModal();
       return true;
    }
    else if (format == FMT_AC3)
    {
-      ExportFFmpegAC3Options od(project);
+      ExportFFmpegAC3Options od(parent);
       od.ShowModal();
       return true;
    }
    else if (format == FMT_AMRNB)
    {
-      ExportFFmpegAMRNBOptions od(project);
+      ExportFFmpegAMRNBOptions od(parent);
       od.ShowModal();
       return true;
    }
    else if (format == FMT_AMRWB)
    {
-      ExportFFmpegAMRWBOptions od(project);
+      ExportFFmpegAMRWBOptions od(parent);
       od.ShowModal();
       return true;
    }
    else if (format == FMT_WMA2)
    {
-      ExportFFmpegWMAOptions od(project);
+      ExportFFmpegWMAOptions od(parent);
       od.ShowModal();
       return true;
    }
    else if (format == FMT_OTHER)
    {
-      ExportFFmpegOptions od(project);
+      ExportFFmpegOptions od(parent);
       od.ShowModal();
       return true;
    }

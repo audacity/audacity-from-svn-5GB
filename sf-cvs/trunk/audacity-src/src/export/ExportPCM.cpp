@@ -114,9 +114,7 @@ END_EVENT_TABLE()
 /// 
 ExportPCMOptions::ExportPCMOptions(wxWindow *parent, int selformat)
 :  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify Uncompressed Options")),
-            wxDefaultPosition, wxDefaultSize,
-            wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+            wxString(_("Specify Uncompressed Options")))
 {
    mOk = NULL;   
    int format = 0;
@@ -321,7 +319,7 @@ public:
 
    // Required
 
-   bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
+   bool DisplayOptions(wxWindow *parent, int format = 0);
    bool Export(AudacityProject *project,
                int channels,
                wxString fName,
@@ -606,7 +604,7 @@ bool ExportPCM::AddStrings(AudacityProject *project, SNDFILE *sf, Tags *tags)
 
 /** @param format The same information as the subformat argument to the Export
  * method. Controls use of pre-defined export settings.*/
-bool ExportPCM::DisplayOptions(AudacityProject *project, int format)
+bool ExportPCM::DisplayOptions(wxWindow *parent, int format)
 {
    wxString nopt(_("There are no options for this format.\n"));
    /* i18n-hint: This is pointing users at another possible export format in 
@@ -631,9 +629,11 @@ bool ExportPCM::DisplayOptions(AudacityProject *project, int format)
       wxMessageBox(nopt + _("Your file will be exported as a GSM 6.10 WAV file.\n") + usepcm);
       return true;
    }
+
    // default, full user control
-   ExportPCMOptions od(project,format);
+   ExportPCMOptions od(parent,format);
    od.ShowModal();
+
    return true;
 }
 

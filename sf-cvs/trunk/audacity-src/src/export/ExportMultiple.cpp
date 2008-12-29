@@ -405,7 +405,7 @@ void ExportMultiple::OnOptions(wxCommandEvent& event)
        }
      }
    }
-   mPlugins[mPluginIndex]->DisplayOptions(mProject,mSubFormatIndex);
+   mPlugins[mPluginIndex]->DisplayOptions(this,mSubFormatIndex);
 }
 
 void ExportMultiple::OnCreate(wxCommandEvent& event)

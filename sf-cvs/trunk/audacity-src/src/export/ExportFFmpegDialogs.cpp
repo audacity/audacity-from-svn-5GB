@@ -89,13 +89,8 @@ const int ExportFFmpegAC3Options::iAC3BitRates[] = { 32000, 40000, 48000, 56000,
 const int ExportFFmpegAC3Options::iAC3SampleRates[] = { 32000, 44100, 48000, 0 };
 
 ExportFFmpegAC3Options::ExportFFmpegAC3Options(wxWindow *parent)
-:  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify AC3 Options")),
-            wxDefaultPosition, wxDefaultSize,
-#if defined(__WXMAC__)
-            wxSTAY_ON_TOP |
-#endif
-            wxDEFAULT_DIALOG_STYLE)
+:  wxDialog(parent, wxID_ANY,
+            wxString(_("Specify AC3 Options")))
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
@@ -158,13 +153,8 @@ BEGIN_EVENT_TABLE(ExportFFmpegAACOptions, wxDialog)
 END_EVENT_TABLE()
 
 ExportFFmpegAACOptions::ExportFFmpegAACOptions(wxWindow *parent)
-:  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify AAC Options")),
-            wxDefaultPosition, wxDefaultSize,
-#if defined(__WXMAC__)
-            wxSTAY_ON_TOP |
-#endif
-            wxDEFAULT_DIALOG_STYLE)
+:  wxDialog(parent, wxID_ANY,
+            wxString(_("Specify AAC Options")))
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
@@ -177,7 +167,11 @@ void ExportFFmpegAACOptions::PopulateOrExchange(ShuttleGui & S)
 {
    S.StartStatic(_("AAC Export Setup"), 1);
    {
+      S.StartTwoColumn();
+      {
       S.TieSlider(wxT("Quality:"),wxT("/FileFormats/AACQuality"),100,500,10);
+   }
+      S.EndTwoColumn();
    }
    S.EndStatic();
 
@@ -213,13 +207,8 @@ BEGIN_EVENT_TABLE(ExportFFmpegAMRNBOptions, wxDialog)
 END_EVENT_TABLE()
 
 ExportFFmpegAMRNBOptions::ExportFFmpegAMRNBOptions(wxWindow *parent)
-:  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify AMR-NB Options")),
-            wxDefaultPosition, wxDefaultSize,
-#if defined(__WXMAC__)
-            wxSTAY_ON_TOP |
-#endif
-            wxDEFAULT_DIALOG_STYLE)
+:  wxDialog(parent, wxID_ANY,
+            wxString(_("Specify AMR-NB Options")))
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
@@ -282,13 +271,8 @@ BEGIN_EVENT_TABLE(ExportFFmpegAMRWBOptions, wxDialog)
 END_EVENT_TABLE()
 
 ExportFFmpegAMRWBOptions::ExportFFmpegAMRWBOptions(wxWindow *parent)
-:  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify AMR-WB Options")),
-            wxDefaultPosition, wxDefaultSize,
-#if defined(__WXMAC__)
-            wxSTAY_ON_TOP |
-#endif
-            wxDEFAULT_DIALOG_STYLE)
+:  wxDialog(parent, wxID_ANY,
+            wxString(_("Specify AMR-WB Options")))
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
@@ -353,13 +337,8 @@ END_EVENT_TABLE()
 const int ExportFFmpegWMAOptions::iWMASampleRates[] = { 8000, 11025, 16000, 22050, 44100, 0};
 
 ExportFFmpegWMAOptions::ExportFFmpegWMAOptions(wxWindow *parent)
-:  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify WMA Options")),
-            wxDefaultPosition, wxDefaultSize,
-#if defined(__WXMAC__)
-            wxSTAY_ON_TOP |
-#endif
-            wxDEFAULT_DIALOG_STYLE)
+:  wxDialog(parent, wxID_ANY,
+            wxString(_("Specify WMA Options")))
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
@@ -512,9 +491,28 @@ void FFmpegPresets::SavePreset(ExportFFmpegOptions *parent, wxString &name)
    }
    else
    {
+      wxWindow *wnd;
+      wxListBox *lb;
+
+      wnd = dynamic_cast<wxWindow*>(parent)->FindWindowById(FEFormatID,parent);
+      lb = dynamic_cast<wxListBox*>(wnd);
+      if (lb->GetSelection() < 0)
+      {
+         wxMessageBox(wxT("Please select format before saving a profile"));
+         return;
+      }
+
+      wnd = dynamic_cast<wxWindow*>(parent)->FindWindowById(FECodecID,parent);
+      lb = dynamic_cast<wxListBox*>(wnd);
+      if (lb->GetSelection() < 0)
+      {
+         wxMessageBox(wxT("Please select codec before saving a profile"));
+         return;
+      }
       preset = new FFmpegPreset(name);
       mPresets->push_front(preset);
    }
+
    wxListBox *lb;
    wxSpinCtrl *sc;
    wxTextCtrl *tc;
@@ -529,14 +527,8 @@ void FFmpegPresets::SavePreset(ExportFFmpegOptions *parent, wxString &name)
          switch(id)
          {
          case FEFormatID:
-            lb = dynamic_cast<wxListBox*>(wnd);
-            if (lb->GetSelection() < 0) { wxMessageBox(wxT("Please select format before saving a profile")); return; }
-            preset->mControlState->Item(id - FEFirstID) = lb->GetString(lb->GetSelection());
             break;
          case FECodecID:
-            lb = dynamic_cast<wxListBox*>(wnd);
-            if (lb->GetSelection() < 0) { wxMessageBox(wxT("Please select codec before saving a profile")); return; }
-            preset->mControlState->Item(id - FEFirstID) = lb->GetString(lb->GetSelection());
             break;
          // Spin control
          case FEBitrateID:
@@ -799,13 +791,8 @@ ExportFFmpegOptions::~ExportFFmpegOptions()
 }
 
 ExportFFmpegOptions::ExportFFmpegOptions(wxWindow *parent)
-:  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify Other Options")),
-            wxDefaultPosition, wxDefaultSize,
-#if defined(__WXMAC__)
-            wxSTAY_ON_TOP |
-#endif
-            wxDEFAULT_DIALOG_STYLE)
+:  wxDialog(parent, wxID_ANY,
+            wxString(_("Specify Other Options")))
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
    PickFFmpegLibs();
@@ -1215,6 +1202,11 @@ void ExportFFmpegOptions::OnDeletePreset(wxCommandEvent& event)
 {
    wxComboBox *preset = dynamic_cast<wxComboBox*>(FindWindowById(FEPresetID,this));
    wxString presetname = preset->GetValue();
+   if (presetname.IsEmpty())
+   {
+      wxMessageBox(_("You can't delete a preset without name"));
+      return;
+   }
 
    wxString query = wxString::Format(_("Delete preset '%s'?"),presetname.c_str());
    int action = wxMessageBox(query,_("Confirm Deletion"),wxYES_NO | wxCENTRE);
@@ -1274,7 +1266,12 @@ void ExportFFmpegOptions::OnLoadPreset(wxCommandEvent& event)
 void ExportFFmpegOptions::OnImportPresets(wxCommandEvent& event)
 {
    wxString path;
-   wxFileDialog dlg(this,_("Select xml file with presets to import"),gPrefs->Read(wxT("/FileFormats/FFmpegPresetDir")),wxEmptyString,wxString(wxT("XML files (*.xml)|*.xml")),wxFD_OPEN);
+   FileDialog dlg(this,
+                  _("Select xml file with presets to import"),
+                  gPrefs->Read(wxT("/FileFormats/FFmpegPresetDir")),
+                  wxEmptyString,
+                  wxString(wxT("XML files (*.xml)|*.xml|All files (*.*)|*.*")),
+                  wxFD_OPEN);
    if (dlg.ShowModal() == wxID_CANCEL) return;
    path = dlg.GetPath();
    mPresets->ImportPresets(path);
@@ -1289,7 +1286,12 @@ void ExportFFmpegOptions::OnImportPresets(wxCommandEvent& event)
 void ExportFFmpegOptions::OnExportPresets(wxCommandEvent& event)
 {
    wxString path;
-   wxFileDialog dlg(this,_("Select xml file to export presets into"),gPrefs->Read(wxT("/FileFormats/FFmpegPresetDir")),wxEmptyString,wxString(wxT("XML files (*.xml)|*.xml")),wxFD_SAVE);
+   FileDialog dlg(this,
+                  _("Select xml file to export presets into"),
+                  gPrefs->Read(wxT("/FileFormats/FFmpegPresetDir")),
+                  wxEmptyString,
+                  wxString(wxT("XML files (*.xml)|*.xml|All files (*.*)|*.*")),
+                  wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
    if (dlg.ShowModal() == wxID_CANCEL) return;
    path = dlg.GetPath();
    mPresets->ExportPresets(path);

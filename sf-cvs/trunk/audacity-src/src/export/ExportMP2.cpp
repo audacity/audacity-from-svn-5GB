@@ -104,10 +104,8 @@ END_EVENT_TABLE()
 /// 
 /// 
 ExportMP2Options::ExportMP2Options(wxWindow *parent)
-:  wxDialog(NULL, wxID_ANY,
-            wxString(_("Specify MP2 Options")),
-            wxDefaultPosition, wxDefaultSize,
-            wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP)
+:  wxDialog(parent, wxID_ANY,
+            wxString(_("Specify MP2 Options")))
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
 
@@ -174,7 +172,7 @@ public:
 
    // Required
 
-   bool DisplayOptions(AudacityProject *project = NULL, int format = 0);
+   bool DisplayOptions(wxWindow *parent, int format = 0);
    bool Export(AudacityProject *project,
                int channels,
                wxString fName,
@@ -327,9 +325,9 @@ bool ExportMP2::Export(AudacityProject *project,
    return !cancelling;
 }
 
-bool ExportMP2::DisplayOptions(AudacityProject *project, int format)
+bool ExportMP2::DisplayOptions(wxWindow *parent, int format)
 {
-   ExportMP2Options od(project);
+   ExportMP2Options od(parent);
 
    od.ShowModal();
 
