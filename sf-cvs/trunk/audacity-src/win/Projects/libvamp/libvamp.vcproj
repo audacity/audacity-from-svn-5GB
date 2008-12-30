@@ -277,82 +277,90 @@
 	</References>
 	<Files>
 		<Filter
-			Name="src"
+			Name="Header Files"
 			>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\Plugin.h"
+				RelativePath="..\..\..\lib-src\libvamp\vamp-hostsdk\hostguard.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\PluginAdapter.cpp"
+				RelativePath="..\..\..\lib-src\libvamp\vamp-hostsdk\Plugin.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\PluginAdapter.h"
+				RelativePath="..\..\..\lib-src\libvamp\vamp-hostsdk\PluginBase.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\PluginBase.h"
+				RelativePath="..\..\..\lib-src\libvamp\vamp-hostsdk\PluginBufferingAdapter.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\PluginHostAdapter.cpp"
+				RelativePath="..\..\..\lib-src\libvamp\vamp-hostsdk\PluginChannelAdapter.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\PluginHostAdapter.h"
+				RelativePath="..\..\..\lib-src\libvamp\vamp-hostsdk\PluginHostAdapter.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\RealTime.cpp"
+				RelativePath="..\..\..\lib-src\libvamp\vamp-hostsdk\PluginInputDomainAdapter.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\RealTime.h"
+				RelativePath="..\..\..\lib-src\libvamp\vamp-hostsdk\PluginLoader.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\libvamp\vamp-hostsdk\PluginSummarisingAdapter.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\libvamp\vamp-hostsdk\PluginWrapper.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\libvamp\vamp-hostsdk\RealTime.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\libvamp\vamp-hostsdk\vamp-hostsdk.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="src/hostext"
+			Name="Source Files"
 			>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\hostext\PluginBufferingAdapter.cpp"
+				RelativePath="..\..\..\lib-src\libvamp\src\vamp-hostsdk\PluginBufferingAdapter.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\hostext\PluginBufferingAdapter.h"
+				RelativePath="..\..\..\lib-src\libvamp\src\vamp-hostsdk\PluginChannelAdapter.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\hostext\PluginChannelAdapter.cpp"
+				RelativePath="..\..\..\lib-src\libvamp\src\vamp-hostsdk\PluginHostAdapter.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\hostext\PluginChannelAdapter.h"
+				RelativePath="..\..\..\lib-src\libvamp\src\vamp-hostsdk\PluginInputDomainAdapter.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\hostext\PluginInputDomainAdapter.cpp"
+				RelativePath="..\..\..\lib-src\libvamp\src\vamp-hostsdk\PluginLoader.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\hostext\PluginInputDomainAdapter.h"
+				RelativePath="..\..\..\lib-src\libvamp\src\vamp-hostsdk\PluginSummarisingAdapter.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\hostext\PluginLoader.cpp"
+				RelativePath="..\..\..\lib-src\libvamp\src\vamp-hostsdk\PluginWrapper.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\hostext\PluginLoader.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\hostext\PluginWrapper.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\lib-src\libvamp\vamp-sdk\hostext\PluginWrapper.h"
+				RelativePath="..\..\..\lib-src\libvamp\src\vamp-hostsdk\RealTime.cpp"
 				>
 			</File>
 		</Filter>
