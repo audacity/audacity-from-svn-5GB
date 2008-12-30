@@ -7555,12 +7555,12 @@ if test -n "$VAMP_CFLAGS"; then
     pkg_cv_VAMP_CFLAGS="$VAMP_CFLAGS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"vamp-hostsdk >= 1.1.0\"") >&5
-  ($PKG_CONFIG --exists --print-errors "vamp-hostsdk >= 1.1.0") 2>&5
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"vamp-hostsdk >= 2.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "vamp-hostsdk >= 2.0") 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_VAMP_CFLAGS=`$PKG_CONFIG --cflags "vamp-hostsdk >= 1.1.0" 2>/dev/null`
+  pkg_cv_VAMP_CFLAGS=`$PKG_CONFIG --cflags "vamp-hostsdk >= 2.0" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -7571,12 +7571,12 @@ if test -n "$VAMP_LIBS"; then
     pkg_cv_VAMP_LIBS="$VAMP_LIBS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"vamp-hostsdk >= 1.1.0\"") >&5
-  ($PKG_CONFIG --exists --print-errors "vamp-hostsdk >= 1.1.0") 2>&5
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"vamp-hostsdk >= 2.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "vamp-hostsdk >= 2.0") 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_VAMP_LIBS=`$PKG_CONFIG --libs "vamp-hostsdk >= 1.1.0" 2>/dev/null`
+  pkg_cv_VAMP_LIBS=`$PKG_CONFIG --libs "vamp-hostsdk >= 2.0" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -7594,9 +7594,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        VAMP_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "vamp-hostsdk >= 1.1.0" 2>&1`
+	        VAMP_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "vamp-hostsdk >= 2.0" 2>&1`
         else
-	        VAMP_PKG_ERRORS=`$PKG_CONFIG --print-errors "vamp-hostsdk >= 1.1.0" 2>&1`
+	        VAMP_PKG_ERRORS=`$PKG_CONFIG --print-errors "vamp-hostsdk >= 2.0" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$VAMP_PKG_ERRORS" >&5
@@ -7629,9 +7629,9 @@ echo "$as_me: Vamp libraries are NOT available as system libraries" >&6;}
    fi
 
 
-   as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/libvamp/vamp-sdk/hostext/PluginLoader.h" | $as_tr_sh`
-{ echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libvamp/vamp-sdk/hostext/PluginLoader.h" >&5
-echo $ECHO_N "checking for ${srcdir}/lib-src/libvamp/vamp-sdk/hostext/PluginLoader.h... $ECHO_C" >&6; }
+   as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/libvamp/vamp-hostsdk/PluginLoader.h" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libvamp/vamp-hostsdk/PluginLoader.h" >&5
+echo $ECHO_N "checking for ${srcdir}/lib-src/libvamp/vamp-hostsdk/PluginLoader.h... $ECHO_C" >&6; }
 if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
@@ -7639,7 +7639,7 @@ else
   { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
 echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
    { (exit 1); exit 1; }; }
-if test -r "${srcdir}/lib-src/libvamp/vamp-sdk/hostext/PluginLoader.h"; then
+if test -r "${srcdir}/lib-src/libvamp/vamp-hostsdk/PluginLoader.h"; then
   eval "$as_ac_File=yes"
 else
   eval "$as_ac_File=no"
@@ -7657,13 +7657,12 @@ fi
 
    if test "x$vamp_h_found" = "xyes" ; then
       LIBVAMP_LOCAL_AVAILABLE="yes"
-      LIBVAMP_LOCAL_LIBS="libvamp-hostsdk.a"
-      LIBVAMP_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libvamp'
-      LIBVAMP_LOCAL_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
-      LIBVAMP_LOCAL_CPPSYMBOLS="USE_VAMP"
-      if test ! -f lib-src/libvamp/Makefile ; then
-         LIBVAMP_LOCAL_CONFIG_SUBDIRS="lib-src/libvamp"
-      fi
+	        LIBVAMP_LOCAL_BUILD="vamp-sdk"
+	        LIBVAMP_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libvamp'
+      LIBVAMP_LOCAL_LDFLAGS='-L\$(top_builddir)/lib-src/libvamp/src -lvamp-hostsdk'
+	        LIBVAMP_LOCAL_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
+	  	        LIBVAMP_LOCAL_CPPSYMBOLS="USE_VAMP"
+	        LIBVAMP_LOCAL_CONFIG_SUBDIRS="lib-src/libvamp"
       { echo "$as_me:$LINENO: Vamp libraries are available in the local tree" >&5
 echo "$as_me: Vamp libraries are available in the local tree" >&6;}
    else
@@ -9723,7 +9722,7 @@ case "${host_os}" in
       ;;
 esac
 
-ac_config_files="$ac_config_files Makefile src/Makefile lib-src/Makefile lib-src/libnyquist/Makefile lib-src/libnyquist/misc/Makefile lib-src/libvamp/Makefile locale/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile lib-src/Makefile lib-src/libnyquist/Makefile lib-src/libnyquist/misc/Makefile locale/Makefile"
 
 if [ "x$LIBEXPAT_USE_LOCAL" = "xyes" ]; then
    ac_config_files="$ac_config_files lib-src/expat/Makefile"
@@ -10298,7 +10297,6 @@ do
     "lib-src/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/Makefile" ;;
     "lib-src/libnyquist/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/libnyquist/Makefile" ;;
     "lib-src/libnyquist/misc/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/libnyquist/misc/Makefile" ;;
-    "lib-src/libvamp/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/libvamp/Makefile" ;;
     "locale/Makefile") CONFIG_FILES="$CONFIG_FILES locale/Makefile" ;;
     "lib-src/expat/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/expat/Makefile" ;;
     "lib-src/portaudio/pa_unix_oss/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/portaudio/pa_unix_oss/Makefile" ;;
