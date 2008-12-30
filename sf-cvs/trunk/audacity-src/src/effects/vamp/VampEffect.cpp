@@ -13,15 +13,9 @@
 
 #include "VampEffect.h"
 
-#ifdef _WIN32
-#include "../../../lib-src/libvamp/vamp-sdk/Plugin.h"
-#include "../../../lib-src/libvamp/vamp-sdk/hostext/PluginChannelAdapter.h"
-#include "../../../lib-src/libvamp/vamp-sdk/hostext/PluginInputDomainAdapter.h"
-#else
 #include <vamp-hostsdk/Plugin.h>
 #include <vamp-hostsdk/PluginChannelAdapter.h>
 #include <vamp-hostsdk/PluginInputDomainAdapter.h>
-#endif
 
 #include <wx/wxprec.h>
 #include <wx/button.h>
