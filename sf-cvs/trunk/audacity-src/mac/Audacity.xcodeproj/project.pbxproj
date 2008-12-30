@@ -714,10 +714,6 @@
 		186CCE730E51F48500659159 /* ODDecodeTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCE700E51F48500659159 /* ODDecodeTask.cpp */; };
 		186CCEA40E523C8E00659159 /* Profiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCEA30E523C8E00659159 /* Profiler.cpp */; };
 		18D8314E0ED0F56300FD870D /* Contrast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18D8314C0ED0F56200FD870D /* Contrast.cpp */; };
-		280196B10D98171F00BFEECF /* Plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 280196AF0D98171F00BFEECF /* Plugin.h */; };
-		280196B20D98171F00BFEECF /* PluginBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 280196B00D98171F00BFEECF /* PluginBase.h */; };
-		280196B50D98174400BFEECF /* PluginBufferingAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280196B30D98174400BFEECF /* PluginBufferingAdapter.cpp */; };
-		280196B60D98174400BFEECF /* PluginBufferingAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 280196B40D98174400BFEECF /* PluginBufferingAdapter.h */; };
 		2801A6460BF9268700648258 /* ImportQT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2801A6430BF9268700648258 /* ImportQT.cpp */; };
 		2801A6470BF9268700648258 /* ImportQTWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2801A6450BF9268700648258 /* ImportQTWrapper.cpp */; };
 		280828550A75E0D0000002EF /* LabelDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828530A75E0D0000002EF /* LabelDialog.cpp */; };
@@ -790,24 +786,20 @@
 		28501EA20CEECEF80029ABAA /* SplashDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501E9F0CEECEF80029ABAA /* SplashDialog.cpp */; };
 		28501EAA0CEED0670029ABAA /* LoadVamp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501E970CEECE910029ABAA /* LoadVamp.cpp */; };
 		28501EAB0CEED0680029ABAA /* VampEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501E990CEECE920029ABAA /* VampEffect.cpp */; };
-		28501F0B0CEED2980029ABAA /* PluginHostAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F090CEED2980029ABAA /* PluginHostAdapter.cpp */; };
-		28501F0C0CEED2980029ABAA /* PluginHostAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F0A0CEED2980029ABAA /* PluginHostAdapter.h */; };
-		28501F170CEED2C50029ABAA /* PluginChannelAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F0F0CEED2C50029ABAA /* PluginChannelAdapter.cpp */; };
-		28501F180CEED2C50029ABAA /* PluginChannelAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F100CEED2C50029ABAA /* PluginChannelAdapter.h */; };
-		28501F190CEED2C50029ABAA /* PluginInputDomainAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F110CEED2C50029ABAA /* PluginInputDomainAdapter.cpp */; };
-		28501F1A0CEED2C50029ABAA /* PluginInputDomainAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F120CEED2C50029ABAA /* PluginInputDomainAdapter.h */; };
-		28501F1B0CEED2C50029ABAA /* PluginLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F130CEED2C50029ABAA /* PluginLoader.cpp */; };
-		28501F1C0CEED2C50029ABAA /* PluginLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F140CEED2C50029ABAA /* PluginLoader.h */; };
-		28501F1D0CEED2C50029ABAA /* PluginWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F150CEED2C50029ABAA /* PluginWrapper.cpp */; };
-		28501F1E0CEED2C50029ABAA /* PluginWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F160CEED2C50029ABAA /* PluginWrapper.h */; };
 		28501F330CEED8C70029ABAA /* libvamp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28501F060CEED1F00029ABAA /* libvamp.a */; };
-		28501F4B0CEED9560029ABAA /* PluginAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F470CEED9560029ABAA /* PluginAdapter.cpp */; };
-		28501F4C0CEED9560029ABAA /* PluginAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F480CEED9560029ABAA /* PluginAdapter.h */; };
-		28501F4D0CEED9560029ABAA /* RealTime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28501F490CEED9560029ABAA /* RealTime.cpp */; };
-		28501F4E0CEED9560029ABAA /* RealTime.h in Headers */ = {isa = PBXBuildFile; fileRef = 28501F4A0CEED9560029ABAA /* RealTime.h */; };
 		28530C4C0DF2105200555C94 /* HtmlWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28530C480DF2105200555C94 /* HtmlWindow.cpp */; };
 		28530C4D0DF2105200555C94 /* ProgressDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28530C4A0DF2105200555C94 /* ProgressDialog.cpp */; };
 		28560C910A75E40F00A3429E /* AutoRecovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */; };
+		285D3CB40F09FC8F007883FC /* PluginBufferingAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D3CAC0F09FC8F007883FC /* PluginBufferingAdapter.cpp */; };
+		285D3CB50F09FC8F007883FC /* PluginChannelAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D3CAD0F09FC8F007883FC /* PluginChannelAdapter.cpp */; };
+		285D3CB60F09FC8F007883FC /* PluginHostAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D3CAE0F09FC8F007883FC /* PluginHostAdapter.cpp */; };
+		285D3CB70F09FC8F007883FC /* PluginInputDomainAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D3CAF0F09FC8F007883FC /* PluginInputDomainAdapter.cpp */; };
+		285D3CB80F09FC8F007883FC /* PluginLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D3CB00F09FC8F007883FC /* PluginLoader.cpp */; };
+		285D3CB90F09FC8F007883FC /* PluginSummarisingAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D3CB10F09FC8F007883FC /* PluginSummarisingAdapter.cpp */; };
+		285D3CBA0F09FC8F007883FC /* PluginWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D3CB20F09FC8F007883FC /* PluginWrapper.cpp */; };
+		285D3CBB0F09FC8F007883FC /* RealTime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D3CB30F09FC8F007883FC /* RealTime.cpp */; };
+		285D3CBE0F09FCB2007883FC /* PluginAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D3CBC0F09FCB2007883FC /* PluginAdapter.cpp */; };
+		285D3CBF0F09FCB2007883FC /* RealTime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D3CBD0F09FCB2007883FC /* RealTime.cpp */; };
 		285DE1FA0BF03C7800A20DF0 /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285DE1F80BF03C7800A20DF0 /* Screenshot.cpp */; };
 		2860BA240E0F0D8600A13878 /* SoundActivatedRecord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2860BA200E0F0D8600A13878 /* SoundActivatedRecord.cpp */; };
 		2860BA250E0F0D8600A13878 /* TimerRecordDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2860BA220E0F0D8600A13878 /* TimerRecordDialog.cpp */; };
@@ -2193,10 +2185,6 @@
 		186CCEA30E523C8E00659159 /* Profiler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Profiler.cpp; sourceTree = "<group>"; };
 		18D8314C0ED0F56200FD870D /* Contrast.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Contrast.cpp; sourceTree = "<group>"; };
 		18D8314D0ED0F56200FD870D /* Contrast.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Contrast.h; sourceTree = "<group>"; };
-		280196AF0D98171F00BFEECF /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = Plugin.h; path = "libvamp/vamp-sdk/Plugin.h"; sourceTree = "<group>"; };
-		280196B00D98171F00BFEECF /* PluginBase.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginBase.h; path = "libvamp/vamp-sdk/PluginBase.h"; sourceTree = "<group>"; };
-		280196B30D98174400BFEECF /* PluginBufferingAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginBufferingAdapter.cpp; path = "libvamp/vamp-sdk/hostext/PluginBufferingAdapter.cpp"; sourceTree = "<group>"; };
-		280196B40D98174400BFEECF /* PluginBufferingAdapter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginBufferingAdapter.h; path = "libvamp/vamp-sdk/hostext/PluginBufferingAdapter.h"; sourceTree = "<group>"; };
 		2801A6430BF9268700648258 /* ImportQT.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImportQT.cpp; sourceTree = "<group>"; };
 		2801A6440BF9268700648258 /* ImportQT.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ImportQT.h; sourceTree = "<group>"; };
 		2801A6450BF9268700648258 /* ImportQTWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImportQTWrapper.cpp; sourceTree = "<group>"; };
@@ -2301,26 +2289,22 @@
 		28501E9F0CEECEF80029ABAA /* SplashDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SplashDialog.cpp; sourceTree = "<group>"; };
 		28501EA00CEECEF80029ABAA /* SplashDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SplashDialog.h; sourceTree = "<group>"; };
 		28501F060CEED1F00029ABAA /* libvamp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvamp.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		28501F090CEED2980029ABAA /* PluginHostAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginHostAdapter.cpp; path = "libvamp/vamp-sdk/PluginHostAdapter.cpp"; sourceTree = "<group>"; };
-		28501F0A0CEED2980029ABAA /* PluginHostAdapter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginHostAdapter.h; path = "libvamp/vamp-sdk/PluginHostAdapter.h"; sourceTree = "<group>"; };
-		28501F0F0CEED2C50029ABAA /* PluginChannelAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginChannelAdapter.cpp; path = "libvamp/vamp-sdk/hostext/PluginChannelAdapter.cpp"; sourceTree = "<group>"; };
-		28501F100CEED2C50029ABAA /* PluginChannelAdapter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginChannelAdapter.h; path = "libvamp/vamp-sdk/hostext/PluginChannelAdapter.h"; sourceTree = "<group>"; };
-		28501F110CEED2C50029ABAA /* PluginInputDomainAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginInputDomainAdapter.cpp; path = "libvamp/vamp-sdk/hostext/PluginInputDomainAdapter.cpp"; sourceTree = "<group>"; };
-		28501F120CEED2C50029ABAA /* PluginInputDomainAdapter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginInputDomainAdapter.h; path = "libvamp/vamp-sdk/hostext/PluginInputDomainAdapter.h"; sourceTree = "<group>"; };
-		28501F130CEED2C50029ABAA /* PluginLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginLoader.cpp; path = "libvamp/vamp-sdk/hostext/PluginLoader.cpp"; sourceTree = "<group>"; };
-		28501F140CEED2C50029ABAA /* PluginLoader.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginLoader.h; path = "libvamp/vamp-sdk/hostext/PluginLoader.h"; sourceTree = "<group>"; };
-		28501F150CEED2C50029ABAA /* PluginWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginWrapper.cpp; path = "libvamp/vamp-sdk/hostext/PluginWrapper.cpp"; sourceTree = "<group>"; };
-		28501F160CEED2C50029ABAA /* PluginWrapper.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginWrapper.h; path = "libvamp/vamp-sdk/hostext/PluginWrapper.h"; sourceTree = "<group>"; };
-		28501F470CEED9560029ABAA /* PluginAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginAdapter.cpp; path = "libvamp/vamp-sdk/PluginAdapter.cpp"; sourceTree = "<group>"; };
-		28501F480CEED9560029ABAA /* PluginAdapter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = PluginAdapter.h; path = "libvamp/vamp-sdk/PluginAdapter.h"; sourceTree = "<group>"; };
-		28501F490CEED9560029ABAA /* RealTime.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = RealTime.cpp; path = "libvamp/vamp-sdk/RealTime.cpp"; sourceTree = "<group>"; };
-		28501F4A0CEED9560029ABAA /* RealTime.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = RealTime.h; path = "libvamp/vamp-sdk/RealTime.h"; sourceTree = "<group>"; };
 		28530C480DF2105200555C94 /* HtmlWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = HtmlWindow.cpp; sourceTree = "<group>"; };
 		28530C490DF2105200555C94 /* HtmlWindow.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = HtmlWindow.h; sourceTree = "<group>"; };
 		28530C4A0DF2105200555C94 /* ProgressDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ProgressDialog.cpp; sourceTree = "<group>"; };
 		28530C4B0DF2105200555C94 /* ProgressDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ProgressDialog.h; sourceTree = "<group>"; };
 		28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = AutoRecovery.cpp; sourceTree = "<group>"; };
 		28560C900A75E40F00A3429E /* AutoRecovery.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AutoRecovery.h; sourceTree = "<group>"; };
+		285D3CAC0F09FC8F007883FC /* PluginBufferingAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginBufferingAdapter.cpp; path = "libvamp/src/vamp-hostsdk/PluginBufferingAdapter.cpp"; sourceTree = "<group>"; };
+		285D3CAD0F09FC8F007883FC /* PluginChannelAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginChannelAdapter.cpp; path = "libvamp/src/vamp-hostsdk/PluginChannelAdapter.cpp"; sourceTree = "<group>"; };
+		285D3CAE0F09FC8F007883FC /* PluginHostAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginHostAdapter.cpp; path = "libvamp/src/vamp-hostsdk/PluginHostAdapter.cpp"; sourceTree = "<group>"; };
+		285D3CAF0F09FC8F007883FC /* PluginInputDomainAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginInputDomainAdapter.cpp; path = "libvamp/src/vamp-hostsdk/PluginInputDomainAdapter.cpp"; sourceTree = "<group>"; };
+		285D3CB00F09FC8F007883FC /* PluginLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginLoader.cpp; path = "libvamp/src/vamp-hostsdk/PluginLoader.cpp"; sourceTree = "<group>"; };
+		285D3CB10F09FC8F007883FC /* PluginSummarisingAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginSummarisingAdapter.cpp; path = "libvamp/src/vamp-hostsdk/PluginSummarisingAdapter.cpp"; sourceTree = "<group>"; };
+		285D3CB20F09FC8F007883FC /* PluginWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginWrapper.cpp; path = "libvamp/src/vamp-hostsdk/PluginWrapper.cpp"; sourceTree = "<group>"; };
+		285D3CB30F09FC8F007883FC /* RealTime.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = RealTime.cpp; path = "libvamp/src/vamp-hostsdk/RealTime.cpp"; sourceTree = "<group>"; };
+		285D3CBC0F09FCB2007883FC /* PluginAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = PluginAdapter.cpp; path = "libvamp/src/vamp-sdk/PluginAdapter.cpp"; sourceTree = "<group>"; };
+		285D3CBD0F09FCB2007883FC /* RealTime.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = RealTime.cpp; path = "libvamp/src/vamp-sdk/RealTime.cpp"; sourceTree = "<group>"; };
 		285DE1F80BF03C7800A20DF0 /* Screenshot.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Screenshot.cpp; sourceTree = "<group>"; };
 		285DE1F90BF03C7800A20DF0 /* Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Screenshot.h; sourceTree = "<group>"; };
 		2860BA200E0F0D8600A13878 /* SoundActivatedRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SoundActivatedRecord.cpp; sourceTree = "<group>"; };
@@ -3430,8 +3414,8 @@
 		1790AFC409883BFD008A330A /* src */ = {
 			isa = PBXGroup;
 			children = (
-				174D9025098C78AF00D5909F /* commands */,
 				1790AFDC09883BFD008A330A /* blockfile */,
+				174D9025098C78AF00D5909F /* commands */,
 				1790AFFD09883BFD008A330A /* effects */,
 				1790B06209883BFD008A330A /* export */,
 				1790B07D09883BFD008A330A /* import */,
@@ -4408,6 +4392,7 @@
 		28501EAC0CEED0740029ABAA /* libvamp */ = {
 			isa = PBXGroup;
 			children = (
+				285D3CAB0F09FC54007883FC /* vamp-hostsdk */,
 				28501EAD0CEED1480029ABAA /* vamp-sdk */,
 			);
 			name = libvamp;
@@ -4416,34 +4401,25 @@
 		28501EAD0CEED1480029ABAA /* vamp-sdk */ = {
 			isa = PBXGroup;
 			children = (
-				28501EAE0CEED1A50029ABAA /* hostext */,
-				280196AF0D98171F00BFEECF /* Plugin.h */,
-				28501F470CEED9560029ABAA /* PluginAdapter.cpp */,
-				28501F480CEED9560029ABAA /* PluginAdapter.h */,
-				280196B00D98171F00BFEECF /* PluginBase.h */,
-				28501F090CEED2980029ABAA /* PluginHostAdapter.cpp */,
-				28501F0A0CEED2980029ABAA /* PluginHostAdapter.h */,
-				28501F490CEED9560029ABAA /* RealTime.cpp */,
-				28501F4A0CEED9560029ABAA /* RealTime.h */,
+				285D3CBC0F09FCB2007883FC /* PluginAdapter.cpp */,
+				285D3CBD0F09FCB2007883FC /* RealTime.cpp */,
 			);
 			name = "vamp-sdk";
 			sourceTree = "<group>";
 		};
-		28501EAE0CEED1A50029ABAA /* hostext */ = {
+		285D3CAB0F09FC54007883FC /* vamp-hostsdk */ = {
 			isa = PBXGroup;
 			children = (
-				280196B30D98174400BFEECF /* PluginBufferingAdapter.cpp */,
-				280196B40D98174400BFEECF /* PluginBufferingAdapter.h */,
-				28501F0F0CEED2C50029ABAA /* PluginChannelAdapter.cpp */,
-				28501F100CEED2C50029ABAA /* PluginChannelAdapter.h */,
-				28501F110CEED2C50029ABAA /* PluginInputDomainAdapter.cpp */,
-				28501F120CEED2C50029ABAA /* PluginInputDomainAdapter.h */,
-				28501F130CEED2C50029ABAA /* PluginLoader.cpp */,
-				28501F140CEED2C50029ABAA /* PluginLoader.h */,
-				28501F150CEED2C50029ABAA /* PluginWrapper.cpp */,
-				28501F160CEED2C50029ABAA /* PluginWrapper.h */,
+				285D3CAC0F09FC8F007883FC /* PluginBufferingAdapter.cpp */,
+				285D3CAD0F09FC8F007883FC /* PluginChannelAdapter.cpp */,
+				285D3CAE0F09FC8F007883FC /* PluginHostAdapter.cpp */,
+				285D3CAF0F09FC8F007883FC /* PluginInputDomainAdapter.cpp */,
+				285D3CB00F09FC8F007883FC /* PluginLoader.cpp */,
+				285D3CB10F09FC8F007883FC /* PluginSummarisingAdapter.cpp */,
+				285D3CB20F09FC8F007883FC /* PluginWrapper.cpp */,
+				285D3CB30F09FC8F007883FC /* RealTime.cpp */,
 			);
-			name = hostext;
+			name = "vamp-hostsdk";
 			sourceTree = "<group>";
 		};
 		287179EE0DF6383000E171DF /* Xcode Settings */ = {
@@ -5333,16 +5309,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28501F0C0CEED2980029ABAA /* PluginHostAdapter.h in Headers */,
-				28501F180CEED2C50029ABAA /* PluginChannelAdapter.h in Headers */,
-				28501F1A0CEED2C50029ABAA /* PluginInputDomainAdapter.h in Headers */,
-				28501F1C0CEED2C50029ABAA /* PluginLoader.h in Headers */,
-				28501F1E0CEED2C50029ABAA /* PluginWrapper.h in Headers */,
-				28501F4C0CEED9560029ABAA /* PluginAdapter.h in Headers */,
-				28501F4E0CEED9560029ABAA /* RealTime.h in Headers */,
-				280196B10D98171F00BFEECF /* Plugin.h in Headers */,
-				280196B20D98171F00BFEECF /* PluginBase.h in Headers */,
-				280196B60D98174400BFEECF /* PluginBufferingAdapter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6843,14 +6809,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28501F0B0CEED2980029ABAA /* PluginHostAdapter.cpp in Sources */,
-				28501F170CEED2C50029ABAA /* PluginChannelAdapter.cpp in Sources */,
-				28501F190CEED2C50029ABAA /* PluginInputDomainAdapter.cpp in Sources */,
-				28501F1B0CEED2C50029ABAA /* PluginLoader.cpp in Sources */,
-				28501F1D0CEED2C50029ABAA /* PluginWrapper.cpp in Sources */,
-				28501F4B0CEED9560029ABAA /* PluginAdapter.cpp in Sources */,
-				28501F4D0CEED9560029ABAA /* RealTime.cpp in Sources */,
-				280196B50D98174400BFEECF /* PluginBufferingAdapter.cpp in Sources */,
+				285D3CB40F09FC8F007883FC /* PluginBufferingAdapter.cpp in Sources */,
+				285D3CB50F09FC8F007883FC /* PluginChannelAdapter.cpp in Sources */,
+				285D3CB60F09FC8F007883FC /* PluginHostAdapter.cpp in Sources */,
+				285D3CB70F09FC8F007883FC /* PluginInputDomainAdapter.cpp in Sources */,
+				285D3CB80F09FC8F007883FC /* PluginLoader.cpp in Sources */,
+				285D3CB90F09FC8F007883FC /* PluginSummarisingAdapter.cpp in Sources */,
+				285D3CBA0F09FC8F007883FC /* PluginWrapper.cpp in Sources */,
+				285D3CBB0F09FC8F007883FC /* RealTime.cpp in Sources */,
+				285D3CBE0F09FCB2007883FC /* PluginAdapter.cpp in Sources */,
+				285D3CBF0F09FCB2007883FC /* RealTime.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
