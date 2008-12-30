@@ -479,18 +479,16 @@ void AudacityProject::CreateMenusAndCommands()
    wxString dummy3 = _("Turn Grid Snap On");
    wxString dummy4 = _("Turn Grid Snap Off");
 
-   #if (AUDACITY_BRANDING != BRAND_JAMLING__EASY)
-      // Moved Preferences from File Menu 02/09/05 Richard Ash.
-     #ifdef __WXMAC__
-      /* i18n-hint: Mac OS X Preferences shortcut should be Ctrl+, */
-      c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+,"),        FN(OnPreferences));
-     #else
-      /* i18n-hint: On Windows and Linux, the Preferences shortcut is usually Ctrl+P */
-      c->AddSeparator();
-      c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
-     #endif
-      c->SetCommandFlags(wxT("Preferences"), AudioIONotBusyFlag, AudioIONotBusyFlag);
-   #endif 
+   // Moved Preferences from File Menu 02/09/05 Richard Ash.
+  #ifdef __WXMAC__
+   /* i18n-hint: Mac OS X Preferences shortcut should be Ctrl+, */
+   c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+,"),        FN(OnPreferences));
+  #else
+   /* i18n-hint: On Windows and Linux, the Preferences shortcut is usually Ctrl+P */
+   c->AddSeparator();
+   c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
+  #endif
+   c->SetCommandFlags(wxT("Preferences"), AudioIONotBusyFlag, AudioIONotBusyFlag);
 
    c->EndMenu();
 
