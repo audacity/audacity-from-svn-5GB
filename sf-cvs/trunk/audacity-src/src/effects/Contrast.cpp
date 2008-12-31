@@ -543,9 +543,9 @@ void ContrastDialog::results()
    }
    else
    {
-      mPassFailText->SetName(_(""));
+      mPassFailText->SetName(wxT(""));
       mPassFailText->ChangeValue(wxT("Please enter valid times."));
-      mDiffText->ChangeValue(_(""));
+      mDiffText->ChangeValue(wxT(""));
    }
 //   Layout();
 //   Fit();
@@ -577,9 +577,11 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
    }
 
    f.AddLine(wxT("==================================="));
-   f.AddLine(_("WCAG 2.0 Success Criteria 1.4.7 Contrast Results\r\n"));
+   f.AddLine(_("WCAG 2.0 Success Criteria 1.4.7 Contrast Results"));
+   f.AddLine(wxT(""));
    f.AddLine(wxString::Format(wxT("Filename = %s."), project->GetFileName().c_str() ));
-   f.AddLine(wxT("\r\nForeground"));
+   f.AddLine(wxT(""));
+   f.AddLine(wxT("Foreground"));
    float t = (float)mForegroundStartT->GetTimeValue();
    int h = (int)(t/3600);  // there must be a standard function for this!
    int m = (int)((t - h*3600)/60);
@@ -595,7 +597,8 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
    else
       f.AddLine(wxString::Format(wxT("Average rms =  dB.")));
 
-   f.AddLine(wxT("\r\nBackground"));
+   f.AddLine(wxT(""));
+   f.AddLine(wxT("Background"));
    t = (float)mBackgroundStartT->GetTimeValue();
    h = (int)(t/3600);
    m = (int)((t - h*3600)/60);
@@ -610,7 +613,8 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
       f.AddLine(wxString::Format(wxT("Average rms = %.1f dB."), backgrounddB ));
    else
       f.AddLine(wxString::Format(wxT("Average rms =  dB.")));
-   f.AddLine(wxT("\r\nResults"));
+   f.AddLine(wxT(""));
+   f.AddLine(wxT("Results"));
    float diff = foregrounddB - backgrounddB;
    f.AddLine(wxString::Format(wxT("Difference = %f Average rms dB."), diff ));
    if( diff > 20. )
@@ -618,7 +622,8 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
    else
       f.AddLine(_("Success Criteria 1.4.7 of WCAG 2.0: Fail"));
 
-   f.AddLine(wxT("\r\nData gathered"));
+   f.AddLine(wxT(""));
+   f.AddLine(wxT("Data gathered"));
    wxString sNow;
    wxDateTime now = wxDateTime::Now();
    int year = now.GetYear();
@@ -632,7 +637,8 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
         dom, monthName.c_str(), year, hour, minute, second);
    f.AddLine(sNow);
 
-   f.AddLine(wxT("===================================\r\n"));
+   f.AddLine(wxT("==================================="));
+   f.AddLine(wxT(""));
 
 #ifdef __WXMAC__
    f.Write(wxTextFileType_Mac);
