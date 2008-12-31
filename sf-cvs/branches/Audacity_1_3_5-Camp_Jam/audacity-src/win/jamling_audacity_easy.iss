@@ -53,7 +53,7 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 
 [Tasks]
 Name: desktopicon; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; MinVersion: 4,4
-Name: associate_aup; Description: "&Associate Audacity project files"; GroupDescription: "Other tasks:"; Flags: checkedonce; MinVersion: 4,4
+Name: associate_aup; Description: "&Associate Audacity project files (HIGHLY Recommended)"; GroupDescription: "Other tasks:"; MinVersion: 4,4
 
 
 [Files]
