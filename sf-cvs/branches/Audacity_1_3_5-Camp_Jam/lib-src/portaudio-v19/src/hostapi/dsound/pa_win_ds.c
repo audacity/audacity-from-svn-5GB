@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_ds.c,v 1.10 2008-03-18 12:36:38 richardash1981 Exp $
+ * $Id: pa_win_ds.c,v 1.10.2.1 2008-12-31 03:30:06 vjohnson Exp $
  * Portable Audio I/O Library DirectSound implementation
  *
  * Authors: Phil Burk, Robert Marsanyi & Ross Bencina
@@ -95,7 +95,9 @@
 #include "pa_win_ds.h"
 #include "pa_win_ds_dynlink.h"
 #include "pa_win_waveformat.h"
-#include "pa_win_wdmks_utils.h"
+#ifdef PAWIN_USE_WDMKS_DEVICE_INFO
+   #include "pa_win_wdmks_utils.h"
+#endif /* PAWIN_USE_WDMKS_DEVICE_INFO */
 
 
 #if (defined(WIN32) && (defined(_MSC_VER) && (_MSC_VER >= 1200))) /* MSC version 6 and above */
