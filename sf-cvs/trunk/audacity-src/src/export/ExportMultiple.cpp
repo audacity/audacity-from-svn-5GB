@@ -6,9 +6,6 @@
 
   Dominic Mazzoni
 
-  2004.06.23 added mp3 export using tompg.exe for multiple export, by ChackoN
-  tested under w2k only
-
 *******************************************************************//**
 
 \class ExportMultiple
@@ -356,7 +353,7 @@ void ExportMultiple::EnableControls()
       return;
    }
 
-   mFirst->Enable(mLabel->GetValue() && mByName->GetValue());
+   mFirst->Enable(mLabel->GetValue());
    
    enable = mLabel->GetValue() &&
             mByName->GetValue() &&
