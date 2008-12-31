@@ -304,6 +304,7 @@ public:
                ((wxFileDataObject*)GetDataObject())->SetData(0, "");
                firstFileAdded = true;
             }
+
             ((wxFileDataObject*)GetDataObject())->AddFile(name);
 
             // We only want to process one flavor
@@ -313,6 +314,38 @@ public:
 
       return foundSupported;
    }
+
+   bool OnDrop(wxCoord x, wxCoord y)
+   {
+      bool foundSupported = false;
+      bool firstFileAdded = false;
+      OSErr result;
+
+      UInt16 items = 0;
+      CountDragItems((DragReference)m_currentDrag, &items);
+
+      for (UInt16 index = 1; index <= items; index++) {
+
+         DragItemRef theItem = 0;
+         GetDragItemReferenceNumber((DragReference)m_currentDrag, index, &theItem);
+
+         UInt16 flavors = 0;
+         CountDragItemFlavors((DragReference)m_currentDrag, theItem , &flavors ) ;
+
+         for (UInt16 flavor = 1 ;flavor <= flavors; flavor++) {
+
+            FlavorType theType = 0;
+            result = GetFlavorType((DragReference)m_currentDrag, theItem, flavor, &theType);
+            if (theType != kDragPromisedFlavorFindFile && theType != kDragFlavorTypeHFS) {
+               continue;
+            }
+            return true;
+         }
+      }
+
+      return CurrentDragHasSupportedFormat();
+   }
+
 #endif
 
    bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
@@ -362,12 +395,6 @@ AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
    bool bMaximized;
    wxRect wndRect;
 
-#if defined(__WXMAC__)
-   if (gParentFrame->IsShown()) {
-      gParentFrame->Hide();
-   }
-#endif
-   
    GetNextWindowPlacement(&wndRect, &bMaximized);
 
    //Create and show a new project
@@ -1702,10 +1729,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       if (quitOnClose)
          QuitAudacity();
       else {
-#ifdef __WXMAC__
-         gParentFrame->Show();
-         wxGetApp().SetTopWindow(gParentFrame);
-#else
+#if !defined(__WXMAC__)
          CreateNewAudacityProject(gParentWindow);
 #endif
       }
