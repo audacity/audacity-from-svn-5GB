@@ -5,7 +5,7 @@
 	@author Phil Burk <philburk@softsynth.com>
 */
 /*
- * $Id: patest_mono_asio_channel_select.c,v 1.7 2008-03-18 12:36:50 richardash1981 Exp $
+ * $Id: patest_mono_asio_channel_select.c,v 1.8 2008-12-31 15:38:36 richardash1981 Exp $
  *
  * Authors:
  *    Ross Bencina <rossb@audiomulch.com>

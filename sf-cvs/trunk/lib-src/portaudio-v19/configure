@@ -20178,11 +20178,10 @@ pkg_failed=no
 { echo "$as_me:$LINENO: checking for JACK" >&5
 echo $ECHO_N "checking for JACK... $ECHO_C" >&6; }
 
-if test -n "$PKG_CONFIG"; then
-    if test -n "$JACK_CFLAGS"; then
-        pkg_cv_JACK_CFLAGS="$JACK_CFLAGS"
-    else
-        if test -n "$PKG_CONFIG" && \
+if test -n "$JACK_CFLAGS"; then
+    pkg_cv_JACK_CFLAGS="$JACK_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"jack\"") >&5
   ($PKG_CONFIG --exists --print-errors "jack") 2>&5
   ac_status=$?
@@ -20192,15 +20191,13 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
-else
-	pkg_failed=untried
+ else
+    pkg_failed=untried
 fi
-if test -n "$PKG_CONFIG"; then
-    if test -n "$JACK_LIBS"; then
-        pkg_cv_JACK_LIBS="$JACK_LIBS"
-    else
-        if test -n "$PKG_CONFIG" && \
+if test -n "$JACK_LIBS"; then
+    pkg_cv_JACK_LIBS="$JACK_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"jack\"") >&5
   ($PKG_CONFIG --exists --print-errors "jack") 2>&5
   ac_status=$?
@@ -20210,9 +20207,8 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
-else
-	pkg_failed=untried
+ else
+    pkg_failed=untried
 fi
 
 
@@ -20225,9 +20221,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        JACK_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "jack"`
+	        JACK_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "jack" 2>&1`
         else
-	        JACK_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "jack"`
+	        JACK_PKG_ERRORS=`$PKG_CONFIG --print-errors "jack" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$JACK_PKG_ERRORS" >&5

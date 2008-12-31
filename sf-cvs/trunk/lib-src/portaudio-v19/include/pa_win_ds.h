@@ -1,7 +1,7 @@
 #ifndef PA_WIN_DS_H
 #define PA_WIN_DS_H
 /*
- * $Id: pa_win_ds.h,v 1.6 2008-06-01 06:57:28 llucius Exp $
+ * $Id: pa_win_ds.h,v 1.7 2008-12-31 15:38:31 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * DirectSound specific extensions
  *

@@ -1,5 +1,5 @@
 /*
- * $Id: patest_wmme_surround.c,v 1.4 2008-03-18 12:36:54 richardash1981 Exp $
+ * $Id: patest_wmme_surround.c,v 1.5 2008-12-31 15:38:36 richardash1981 Exp $
  * Portable Audio I/O Library
  * Windows MME surround sound output test
  *

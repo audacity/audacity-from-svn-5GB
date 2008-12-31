@@ -1,5 +1,5 @@
 /*
- * $Id: pa_front.c,v 1.10 2008-03-18 12:36:31 richardash1981 Exp $
+ * $Id: pa_front.c,v 1.11 2008-12-31 15:38:32 richardash1981 Exp $
  * Portable Audio I/O Library Multi-Host API front end
  * Validate function parameters and manage multiple host APIs.
  *
@@ -90,7 +90,7 @@
 
 
 #define PA_VERSION_  1899
-#define PA_VERSION_TEXT_ "PortAudio V19-devel (built " __DATE__  ")"
+#define PA_VERSION_TEXT_ "PortAudio V19-devel (built " __DATE__  " " __TIME__ ")"
 
 
 
@@ -1508,7 +1508,7 @@ const PaStreamInfo* Pa_GetStreamInfo( PaStream *stream )
         result = 0;
 
         PA_LOGAPI(("Pa_GetStreamInfo returned:\n" ));
-        PA_LOGAPI(("\tconst PaStreamInfo*: 0 [PaError error:%d ( %s )]\n", result, error, Pa_GetErrorText( error ) ));
+        PA_LOGAPI(("\tconst PaStreamInfo*: 0 [PaError error:%d ( %s )]\n", error, Pa_GetErrorText( error ) ));
 
     }
     else
