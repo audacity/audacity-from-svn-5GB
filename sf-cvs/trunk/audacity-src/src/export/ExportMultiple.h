@@ -134,21 +134,21 @@ private:
    wxButton      *mCreate;
    wxButton      *mChoose;
    
-   wxRadioButton *mLabel;
-   wxStaticText  *mLabelLabel;
+   wxRadioButton *mLabel;  /**< button to choose export based on Labels */
+   wxStaticText  *mLabelLabel;   /**< description text for mLabel */
 
-   wxCheckBox    *mFirst;
-   wxStaticText  *mFirstFileLabel;
+   wxCheckBox    *mFirst;  /**< Check box to export audio before first label */
+   wxStaticText  *mFirstFileLabel;  /**< description text for mFirstFileName */
    wxTextCtrl    *mFirstFileName;   /**< Name to use for exporting audio before
                                       the first label in the file */
 
-   wxRadioButton *mTrack;
+   wxRadioButton *mTrack;  /**< button to choose export based on tracks */
    wxStaticText  *mTrackLabel;
    
-   wxRadioButton *mByName;
+   wxRadioButton *mByName; /**< button to choose naming exported file from label text */
    wxStaticText  *mByNameLabel;
 
-   wxRadioButton *mByNumber;
+   wxRadioButton *mByNumber;  /**< button to choose numbering exported files */
    wxStaticText  *mByNumberLabel;
 
    wxStaticText  *mPrefixLabel;
