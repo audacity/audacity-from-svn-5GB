@@ -182,15 +182,6 @@ bool GUIPrefs::Apply()
    wxString lang = gPrefs->Read(wxT("/Locale/Language"), wxT(""));
    wxGetApp().InitLang( lang );
 
-   unsigned int j;
-   for(j = 0; j < gAudacityProjects.GetCount(); j++)
-   {
-      gAudacityProjects[j]->UpdatePrefsVariables();
-      gAudacityProjects[j]->RebuildMenuBar();
-      gAudacityProjects[j]->RebuildOtherMenus();
-      if (gAudacityProjects[j]->GetSelectionBar())
-         gAudacityProjects[j]->GetSelectionBar()->UpdateDisplay();
-   }
    return true;
 }
 
