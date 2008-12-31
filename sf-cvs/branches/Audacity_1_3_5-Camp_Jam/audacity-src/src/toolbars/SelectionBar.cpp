@@ -458,7 +458,9 @@ void SelectionBar::SetField(const wxChar *msg, int fieldNum)
 
 void SelectionBar::SetSnapTo(bool state)
 {
-   mSnapTo->SetValue(state);
+   #if (AUDACITY_BRANDING != BRAND_JAMLING__EASY)
+      mSnapTo->SetValue(state);
+   #endif
 }
 
 void SelectionBar::SetRate(double rate)
