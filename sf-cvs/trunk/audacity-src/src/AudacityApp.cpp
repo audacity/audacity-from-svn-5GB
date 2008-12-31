@@ -223,7 +223,6 @@ void wxOnAssert(const wxChar *fileName, int lineNumber, const wxChar *msg)
 }
 #endif
 
-wxFrame *gParentFrame = NULL;
 wxWindow *gParentWindow = NULL;
 
 bool gInited = false;
@@ -289,11 +288,7 @@ void QuitAudacity(bool bForce)
    if (gFreqWindow)
       gFreqWindow->Destroy();
 
-   if (gParentFrame)
-      gParentFrame->Destroy();
-
    gFreqWindow = NULL;
-   gParentFrame = NULL;
 
    CloseScreenshotTools();
    
@@ -798,11 +793,7 @@ bool AudacityApp::OnInit()
 #ifdef __WXMAC__
 
    // On the Mac, users don't expect a program to quit when you close the last window.
-   // Create an offscreen frame with a menu bar.  The frame should never
-   // be visible, but when all other windows are closed, this menu bar should
-   // become visible.
-
-   gParentFrame = new wxFrame(NULL, -1, wxT("invisible"), wxPoint(5000, 5000), wxSize(100, 100), wxFRAME_NO_TASKBAR);
+   // Create a menubar that will show when all project windows are closed.
 
    wxMenu *fileMenu = new wxMenu();
    fileMenu->Append(wxID_NEW, wxT("&New\tCtrl+N"));
@@ -814,22 +805,14 @@ bool AudacityApp::OnInit()
    wxMenuBar *menuBar = new wxMenuBar();
    menuBar->Append(fileMenu, wxT("&File"));
 
-   gParentFrame->SetMenuBar(menuBar);
-
-   gParentFrame->Hide();
-
-   SetTopWindow(gParentFrame);
+   wxMenuBar::MacSetCommonMenuBar(menuBar);
 #endif //__WXMAC__
 
    SetExitOnFrameDelete(true);
 
-
-
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
-
-
-
    project->Show( false );
+
    wxWindow * pWnd = MakeHijackPanel() ;
    if( pWnd )
    {
