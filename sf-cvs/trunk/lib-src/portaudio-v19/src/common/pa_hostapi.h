@@ -1,7 +1,7 @@
 #ifndef PA_HOSTAPI_H
 #define PA_HOSTAPI_H
 /*
- * $Id: pa_hostapi.h,v 1.7 2008-03-18 12:36:31 richardash1981 Exp $
+ * $Id: pa_hostapi.h,v 1.8 2008-12-31 15:38:32 richardash1981 Exp $
  * Portable Audio I/O Library
  * host api representation
  *

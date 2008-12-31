@@ -1,5 +1,5 @@
 /*
- * $Id: test_rw.c,v 1.9 2008-03-18 12:36:29 richardash1981 Exp $
+ * $Id: test_rw.c,v 1.10 2008-12-31 15:38:31 richardash1981 Exp $
  * test_rw.c
  * Read input from one stream and write it to another.
  *

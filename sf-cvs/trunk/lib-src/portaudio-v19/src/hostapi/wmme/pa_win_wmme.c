@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_wmme.c,v 1.7 2008-03-18 12:36:40 richardash1981 Exp $
+ * $Id: pa_win_wmme.c,v 1.8 2008-12-31 15:38:36 richardash1981 Exp $
  * pa_win_wmme.c
  * Implementation of PortAudio for Windows MultiMedia Extensions (WMME)       
  *                                                                                         
@@ -150,6 +150,13 @@ Non-critical stuff for the future:
 #define DRV_QUERYDEVICEINTERFACESIZE (DRV_RESERVED + 13)
 #endif
 #endif /* PAWIN_USE_WDMKS_DEVICE_INFO */
+
+/* use CreateThread for CYGWIN, _beginthreadex for all others */
+#ifndef __CYGWIN__
+#define CREATE_THREAD (HANDLE)_beginthreadex( 0, 0, ProcessingThreadProc, stream, 0, &stream->processingThreadId )
+#else
+#define CREATE_THREAD CreateThread( 0, 0, ProcessingThreadProc, stream, 0, &stream->processingThreadId )
+#endif
 
 #if (defined(UNDER_CE))
 #pragma comment(lib, "Coredll.lib")
@@ -3244,7 +3251,7 @@ static PaError StartStream( PaStream *s )
         if( result != paNoError ) goto error;
 
         /* Create thread that waits for audio buffers to be ready for processing. */
-        stream->processingThread = CreateThread( 0, 0, ProcessingThreadProc, stream, 0, &stream->processingThreadId );
+        stream->processingThread = CREATE_THREAD;
         if( !stream->processingThread )
         {
             result = paUnanticipatedHostError;

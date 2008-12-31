@@ -8,7 +8,7 @@
     see http://www.portaudio.com/trac/wiki/V19ConvertersStatus for a discussion of this.
 */
 /*
- * $Id: patest_converters.c,v 1.1 2008-03-18 12:36:48 richardash1981 Exp $
+ * $Id: patest_converters.c,v 1.2 2008-12-31 15:38:36 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com/

@@ -1,5 +1,5 @@
 /*
- * $Id: pa_jack.c,v 1.8 2008-03-18 12:36:39 richardash1981 Exp $
+ * $Id: pa_jack.c,v 1.9 2008-12-31 15:38:35 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * JACK Implementation by Joshua Haberman
