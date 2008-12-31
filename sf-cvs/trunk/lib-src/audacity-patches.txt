@@ -133,7 +133,7 @@ portaudio-v19
 -------------
 http://portaudio.com/
 cross-platform audio I/O library version 19, used for 1.3.2 onwards releases
-Version in audacity cvs: 18th March 2008 SVN snapshot (r1373)
+Version in audacity cvs: 31st December 2008 SVN snapshot (r1396)
 Patches:
 ../portmixer/portaudio.patch	add features needed to make portmixer work.
 		Integration by upstream in progress. Will need updating as upstream
@@ -251,6 +251,9 @@ don't need to do a recusive touch.
 CVS will list files with a ? if they are new and need to be added to the
 repository. To get a list, run 
 cvs st 2>/dev/null | grep '?'
+Remember to ignore the generated files from the build system which don't need
+to be included in CVS, like aclocal.m4 and autom4te.cache
+
 Finding which files have been removed is a bit harder:
 cvs st 2>/dev/null | grep 'Status: Needs Checkout'
 gives file names but not their paths, so you have to go back and grep each
