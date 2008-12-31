@@ -809,7 +809,6 @@ void TagsEditor::PopulateOrExchange(ShuttleGui & S)
          mGrid->CreateGrid(0, 2); 
          mGrid->SetRowLabelSize(0);
          mGrid->SetDefaultCellAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
-      // mGrid->SetDefaultCellBackgroundColour(*wxWHITE);
          mGrid->SetColLabelValue(0, _("Tag Name"));
          mGrid->SetColLabelValue(1, _("Tag Value"));
 
@@ -2043,11 +2042,9 @@ void TagsEditor2::PopulateOrExchange(ShuttleGui & S)
 
                wxGridCellAttr *attr = new wxGridCellAttr();
                attr->SetEditor(mCombo);
-            // attr->SetBackgroundColour(*wxWHITE);
                mGrid->SetColAttr(0, attr);
 
                attr = new wxGridCellAttr();
-            // attr->SetBackgroundColour(*wxWHITE);
                mGrid->SetColAttr(1, attr);
 
                // Resize the name column and set default row height.
