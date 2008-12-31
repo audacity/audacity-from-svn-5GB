@@ -446,10 +446,6 @@ bool KeyConfigPrefs::Apply()
 
    gPrefs->SetPath(wxT("/"));
 
-   for(i=0; i<gAudacityProjects.GetCount(); i++)
-      if(gAudacityProjects[i])
-         gAudacityProjects[i]->RebuildMenuBar();
-
    return true;
 }
 

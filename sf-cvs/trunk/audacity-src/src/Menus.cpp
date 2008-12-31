@@ -1252,6 +1252,10 @@ void AudacityProject::ModifyUndoMenus()
 
 void AudacityProject::RebuildMenuBar()
 {
+   // On OSX, we can't rebuild the menus while a modal dialog is being shown
+   // since the enabled state for menus like Quit and Preference gets out of
+   // sync with wxWidgets idea of what it should be.
+   wxASSERT((wxGetTopLevelParent(FindFocus()) == this));
 
 // Under Windows we delete the menus, since we will soon recreate them.
 // rather oddly, the menus don't vanish as a result of doing this.
@@ -2681,6 +2685,18 @@ void AudacityProject::OnPreferences()
 {
    PrefsDialog dialog(this /* parent */ );
    dialog.ShowModal();
+
+   // LL:  Moved from PrefsDialog since wxWidgets on OSX can't deal with
+   //      rebuilding the menus while the PrefsDialog is still in the modal
+   //      state.
+   for (unsigned int j = 0; j < gAudacityProjects.GetCount(); j++) {
+      gAudacityProjects[j]->UpdatePrefsVariables();
+      gAudacityProjects[j]->RebuildMenuBar();
+      gAudacityProjects[j]->RebuildOtherMenus();
+      if (gAudacityProjects[j]->GetSelectionBar()) {
+         gAudacityProjects[j]->GetSelectionBar()->UpdateDisplay();
+      }
+   }
 }
 
 void AudacityProject::OnPageSetup()

@@ -112,7 +112,6 @@ bool BatchPrefs::Apply()
       if(gAudacityProjects[i])
       {
          gAudacityProjects[i]->SetCleanSpeechMode(mode == 1);
-         gAudacityProjects[i]->RebuildMenuBar();
          gAudacityProjects[i]->mToolManager->LayoutToolBars(); // Just to add/remove the CleanSpeech button.
       }
    return true;
