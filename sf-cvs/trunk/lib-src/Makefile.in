@@ -55,8 +55,14 @@ libnyquist.a: libnyquist-recursive
 	ln -sf libnyquist/libnyquist.a libnyquist.a
 
 # libvamp
+#
+# The reason for the "sdkstatic" is that's all that we really need
+# and it circumvents an issue when building on OSX...the makefile
+# has different options for OSX, but they aren't configurable via
+# the configure script.
+#
 vamp-sdk:
-	$(MAKE) -C libvamp
+	$(MAKE) -C libvamp sdkstatic
 
 # redland
 redland-recursive:
