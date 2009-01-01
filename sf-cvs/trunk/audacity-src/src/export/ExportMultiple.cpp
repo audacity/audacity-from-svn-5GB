@@ -368,7 +368,8 @@ void ExportMultiple::EnableControls()
    bool ok = true;
 
    if (mLabel->GetValue() && mFirst->GetValue() &&
-       mFirstFileName->GetValue() == wxT(""))
+       mFirstFileName->GetValue() == wxT("") &&
+       mPrefix->GetValue() == wxT(""))
       ok = false;
 
    if (mByNumber->GetValue() &&
