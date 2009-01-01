@@ -1,5 +1,5 @@
 /*
- * $Id: pa_debugprint.c,v 1.9 2008-12-31 15:38:31 richardash1981 Exp $
+ * $Id: pa_debugprint.c,v 1.10 2009-01-01 22:31:28 martynshaw Exp $
  * Portable Audio I/O Library Multi-Host API front end
  * Validate function parameters and manage multiple host APIs.
  *
@@ -78,7 +78,7 @@ void PaUtil_SetDebugPrintFunction(PaUtilLogCallback cb)
 /* Some Windows Mobile SDKs don't define vsnprintf but all define _vsnprintf (hopefully).
    According to MSDN "vsnprintf is identical to _vsnprintf". So we use _vsnprintf with MSC.
 */
-#define VSNPRINTF  _vsnprintf 
+#define VSNPRINTF  _vsnprintf
 #else
 #define VSNPRINTF  vsnprintf
 #endif
@@ -96,7 +96,7 @@ void PaUtil_DebugPrint( const char *format, ... )
         va_start( ap, format );
         VSNPRINTF( strdump, SIZEDUMP, format, ap );
         userCB(strdump);
-        va_end( ap ); 
+        va_end( ap );
     }
     else
     {

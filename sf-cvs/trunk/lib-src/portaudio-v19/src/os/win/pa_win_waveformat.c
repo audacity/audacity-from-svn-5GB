@@ -26,13 +26,13 @@
  */
 
 /*
- * The text above constitutes the entire PortAudio license; however, 
+ * The text above constitutes the entire PortAudio license; however,
  * the PortAudio community also makes the following non-binding requests:
  *
  * Any person wishing to distribute modifications to the Software is
  * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version. It is also 
- * requested that these non-binding requests be included along with the 
+ * they can be incorporated into the canonical version. It is also
+ * requested that these non-binding requests be included along with the
  * license above.
  */
 
@@ -51,15 +51,15 @@
 #define  WAVE_FORMAT_IEEE_FLOAT         0x0003
 #endif
 
-static GUID pawin_ksDataFormatSubtypePcm = 
+static GUID pawin_ksDataFormatSubtypePcm =
 	{ (USHORT)(WAVE_FORMAT_PCM), 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71 };
 
-static GUID pawin_ksDataFormatSubtypeIeeeFloat = 
+static GUID pawin_ksDataFormatSubtypeIeeeFloat =
 	{ (USHORT)(WAVE_FORMAT_IEEE_FLOAT), 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71 };
 
 
 
-void PaWin_InitializeWaveFormatEx( PaWinWaveFormat *waveFormat, 
+void PaWin_InitializeWaveFormatEx( PaWinWaveFormat *waveFormat,
 		int numChannels, PaSampleFormat sampleFormat, double sampleRate )
 {
 	WAVEFORMATEX *waveFormatEx = (WAVEFORMATEX*)waveFormat;
@@ -70,7 +70,7 @@ void PaWin_InitializeWaveFormatEx( PaWinWaveFormat *waveFormat,
         waveFormatEx->wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
     else
         waveFormatEx->wFormatTag = WAVE_FORMAT_PCM;
-	
+
 	waveFormatEx->nChannels = (WORD)numChannels;
 	waveFormatEx->nSamplesPerSec = (DWORD)sampleRate;
 	waveFormatEx->nAvgBytesPerSec = waveFormatEx->nSamplesPerSec * bytesPerFrame;
@@ -80,7 +80,7 @@ void PaWin_InitializeWaveFormatEx( PaWinWaveFormat *waveFormat,
 }
 
 
-void PaWin_InitializeWaveFormatExtensible( PaWinWaveFormat *waveFormat, 
+void PaWin_InitializeWaveFormatExtensible( PaWinWaveFormat *waveFormat,
 		int numChannels, PaSampleFormat sampleFormat, double sampleRate,
 		PaWinWaveFormatChannelMask channelMask )
 {
@@ -100,7 +100,7 @@ void PaWin_InitializeWaveFormatExtensible( PaWinWaveFormat *waveFormat,
 			waveFormatEx->wBitsPerSample;
 
 	*((DWORD*)&waveFormat->fields[PAWIN_INDEXOF_DWCHANNELMASK]) = channelMask;
-			
+
     if( sampleFormat == paFloat32 )
         *((GUID*)&waveFormat->fields[PAWIN_INDEXOF_SUBFORMAT]) =
             pawin_ksDataFormatSubtypeIeeeFloat;
@@ -116,7 +116,7 @@ PaWinWaveFormatChannelMask PaWin_DefaultChannelMask( int numChannels )
 		case 1:
 			return PAWIN_SPEAKER_MONO;
 		case 2:
-			return PAWIN_SPEAKER_STEREO; 
+			return PAWIN_SPEAKER_STEREO;
 		case 3:
             return PAWIN_SPEAKER_FRONT_LEFT | PAWIN_SPEAKER_FRONT_CENTER | PAWIN_SPEAKER_FRONT_RIGHT;
 		case 4:
@@ -127,22 +127,22 @@ PaWinWaveFormatChannelMask PaWin_DefaultChannelMask( int numChannels )
             /* The meaning of the PAWIN_SPEAKER_5POINT1 flag has changed over time:
                 http://msdn2.microsoft.com/en-us/library/aa474707.aspx
                We use PAWIN_SPEAKER_5POINT1 (not PAWIN_SPEAKER_5POINT1_SURROUND)
-               because on some cards (eg Audigy) PAWIN_SPEAKER_5POINT1_SURROUND 
-               results in a virtual mixdown placing the rear output in the 
+               because on some cards (eg Audigy) PAWIN_SPEAKER_5POINT1_SURROUND
+               results in a virtual mixdown placing the rear output in the
                front _and_ rear speakers.
             */
-			return PAWIN_SPEAKER_5POINT1; 
+			return PAWIN_SPEAKER_5POINT1;
         /* case 7: */
 		case 8:
 			return PAWIN_SPEAKER_7POINT1;
 	}
 
-    /* Apparently some Audigy drivers will output silence 
-       if the direct-out constant (0) is used. So this is not ideal.    
+    /* Apparently some Audigy drivers will output silence
+       if the direct-out constant (0) is used. So this is not ideal.
     */
 	return  PAWIN_SPEAKER_DIRECTOUT;
 
-    /* Note that Alec Rogers proposed the following as an alternate method to 
+    /* Note that Alec Rogers proposed the following as an alternate method to
         generate the default channel mask, however it doesn't seem to be an improvement
         over the above, since some drivers will matrix outputs mapping to non-present
         speakers accross multiple physical speakers.
