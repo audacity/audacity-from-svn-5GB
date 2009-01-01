@@ -233,14 +233,13 @@ BEGIN_EVENT_TABLE(ContrastDialog,wxDialog)
    EVT_BUTTON(ID_BUTTON_EXPORT, ContrastDialog::OnExport)
    EVT_BUTTON(ID_BUTTON_RESET, ContrastDialog::OnReset)
    EVT_BUTTON(ID_BUTTON_CLOSE, ContrastDialog::OnCloseWithoutReset)
-//   EVT_COMMAND_RANGE(ID_FOREGROUNDSTART_T, ID_BACKGROUNDEND_T, EVT_TIMETEXTCTRL_UPDATED, ContrastDialog::OnTimeCtrlUpdate)
-
    EVT_COMMAND(ID_FOREGROUNDSTART_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnForegroundStartT)
    EVT_COMMAND(ID_FOREGROUNDEND_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnForegroundEndT)
    EVT_COMMAND(ID_BACKGROUNDSTART_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnBackgroundStartT)
    EVT_COMMAND(ID_BACKGROUNDEND_T, wxEVT_COMMAND_TEXT_UPDATED, ContrastDialog::OnBackgroundEndT)
 END_EVENT_TABLE()
 
+/* i18n-hint: WCAG2 is the 'Web Content Accessibility Guidelines (WCAG) 2.0', see http://www.w3.org/TR/WCAG20/ */
 ContrastDialog::ContrastDialog(EffectContrast * effect, 
                                        wxWindow *parent) :
    EffectDialog( parent, _("WCAG2 Audio Contrast Analyzer"), ANALYZE_EFFECT)
@@ -336,7 +335,6 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          S.AddFixedText(_("Foreground:"), false);
          if (mForegroundStartT == NULL)
          {
-//            AudacityProject *p = GetActiveProject();
             mForegroundStartT = new
             TimeTextCtrl(this,
                          ID_FOREGROUNDSTART_T,
@@ -347,7 +345,6 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          wxDefaultSize,
                          true);
             mForegroundStartT->SetName(_("Foreground start time"));
-//            mForegroundStartT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
             mForegroundStartT->SetFormatString(mForegroundStartT->GetBuiltinFormat(wxT("hh:mm:ss + hundredths")));
             mForegroundStartT->EnableMenu(false);
          }
@@ -366,7 +363,6 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          wxDefaultSize,
                          true);
             mForegroundEndT->SetName(_("Foreground end time"));
-//            mForegroundEndT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
             mForegroundEndT->SetFormatString(mForegroundEndT->GetBuiltinFormat(wxT("hh:mm:ss + hundredths")));
             mForegroundEndT->EnableMenu(false);
          }
@@ -393,7 +389,6 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          wxDefaultSize,
                          true);
             mBackgroundStartT->SetName(_("Background start time"));
-//            mBackgroundStartT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
             mBackgroundStartT->SetFormatString(mBackgroundStartT->GetBuiltinFormat(wxT("hh:mm:ss + hundredths")));
             mBackgroundStartT->EnableMenu(false);
          }
@@ -412,7 +407,6 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          wxDefaultSize,
                          true);
             mBackgroundEndT->SetName(_("Background end time"));
-//            mBackgroundEndT->SetFormatString(p->GetSelectionBar()->mLeftTime->GetFormatString());
             mBackgroundEndT->SetFormatString(mBackgroundEndT->GetBuiltinFormat(wxT("hh:mm:ss + hundredths")));
             mBackgroundEndT->EnableMenu(false);
          }
@@ -515,17 +509,17 @@ void ContrastDialog::results()
    if(foregrounddB == 1234.0) // magic number, but OK for now
    {
       mForegroundRMSText->SetName(_("No foreground to measure"));
-      mForegroundRMSText->ChangeValue(wxString::Format(_(" ")));
+      mForegroundRMSText->ChangeValue(wxString::Format(wxT(" ")));
    }
    else
    {
       mForegroundRMSText->SetName(_("Measured foreground level"));
-      mForegroundRMSText->ChangeValue(wxString::Format(_("%.1f dB"), foregrounddB));
+      mForegroundRMSText->ChangeValue(wxString::Format(_("%.1f dB"), foregrounddB));   // i18n-hint: short form of 'decibels'
    }
    if(backgrounddB == 1234.0)
    {
       mBackgroundRMSText->SetName(_("No background to measure"));
-      mBackgroundRMSText->ChangeValue(wxString::Format(_(" ")));
+      mBackgroundRMSText->ChangeValue(wxString::Format(wxT(" ")));
    }
    else
    {
@@ -539,22 +533,20 @@ void ContrastDialog::results()
       else
          mPassFailText->ChangeValue(_("WCAG2 Fail"));
       mDiffText->SetName(_("Current difference"));
-      mDiffText->ChangeValue(wxString::Format(wxT("%.1f dB Average rms"), foregrounddB - backgrounddB));
+      mDiffText->ChangeValue(wxString::Format(_("%.1f dB Average rms"), foregrounddB - backgrounddB));
    }
    else
    {
       mPassFailText->SetName(wxT(""));
-      mPassFailText->ChangeValue(wxT("Please enter valid times."));
+      mPassFailText->ChangeValue(_("Please enter valid times."));
       mDiffText->ChangeValue(wxT(""));
    }
-//   Layout();
-//   Fit();
 }
 
 void ContrastDialog::OnExport(wxCommandEvent & event)
 {
    AudacityProject * project = GetActiveProject();
-   wxString fName = _("contrast.txt");
+   wxString fName = wxT("contrast.txt");
 
    fName = FileSelector(_("Export Contrast Result As:"),
                         NULL, fName, wxT("txt"), wxT("*.txt"), wxFD_SAVE | wxRESIZE_BORDER, this);
@@ -579,51 +571,51 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
    f.AddLine(wxT("==================================="));
    f.AddLine(_("WCAG 2.0 Success Criteria 1.4.7 Contrast Results"));
    f.AddLine(wxT(""));
-   f.AddLine(wxString::Format(wxT("Filename = %s."), project->GetFileName().c_str() ));
+   f.AddLine(wxString::Format(_("Filename = %s."), project->GetFileName().c_str() ));
    f.AddLine(wxT(""));
-   f.AddLine(wxT("Foreground"));
+   f.AddLine(_("Foreground"));
    float t = (float)mForegroundStartT->GetTimeValue();
    int h = (int)(t/3600);  // there must be a standard function for this!
    int m = (int)((t - h*3600)/60);
    float s = t - h*3600.0 - m*60.0;
-   f.AddLine(wxString::Format(wxT("Time started = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
+   f.AddLine(wxString::Format(_("Time started = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
    t = (float)mForegroundEndT->GetTimeValue();
    h = (int)(t/3600);
    m = (int)((t - h*3600)/60);
    s = t - h*3600.0 - m*60.0;
-   f.AddLine(wxString::Format(wxT("Time ended = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
+   f.AddLine(wxString::Format(_("Time ended = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
    if(foregrounddB != 1234.0) // see other instances of '1234.0' in here
-      f.AddLine(wxString::Format(wxT("Average rms = %.1f dB."), foregrounddB ));
+      f.AddLine(wxString::Format(_("Average rms = %.1f dB."), foregrounddB ));
    else
-      f.AddLine(wxString::Format(wxT("Average rms =  dB.")));
+      f.AddLine(wxString::Format(_("Average rms =  dB.")));
 
    f.AddLine(wxT(""));
-   f.AddLine(wxT("Background"));
+   f.AddLine(_("Background"));
    t = (float)mBackgroundStartT->GetTimeValue();
    h = (int)(t/3600);
    m = (int)((t - h*3600)/60);
    s = t - h*3600.0 - m*60.0;
-   f.AddLine(wxString::Format(wxT("Time started = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
+   f.AddLine(wxString::Format(_("Time started = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
    t = (float)mBackgroundEndT->GetTimeValue();
    h = (int)(t/3600);
    m = (int)((t - h*3600)/60);
    s = t - h*3600.0 - m*60.0;
-   f.AddLine(wxString::Format(wxT("Time ended = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
+   f.AddLine(wxString::Format(_("Time ended = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
    if(backgrounddB != 1234.0)
-      f.AddLine(wxString::Format(wxT("Average rms = %.1f dB."), backgrounddB ));
+      f.AddLine(wxString::Format(_("Average rms = %.1f dB."), backgrounddB ));
    else
-      f.AddLine(wxString::Format(wxT("Average rms =  dB.")));
+      f.AddLine(wxString::Format(_("Average rms =  dB.")));
    f.AddLine(wxT(""));
-   f.AddLine(wxT("Results"));
+   f.AddLine(_("Results"));
    float diff = foregrounddB - backgrounddB;
-   f.AddLine(wxString::Format(wxT("Difference = %f Average rms dB."), diff ));
+   f.AddLine(wxString::Format(_("Difference = %f Average rms dB."), diff ));
    if( diff > 20. )
       f.AddLine(_("Success Criteria 1.4.7 of WCAG 2.0: Pass"));
    else
       f.AddLine(_("Success Criteria 1.4.7 of WCAG 2.0: Fail"));
 
    f.AddLine(wxT(""));
-   f.AddLine(wxT("Data gathered"));
+   f.AddLine(_("Data gathered"));
    wxString sNow;
    wxDateTime now = wxDateTime::Now();
    int year = now.GetYear();
@@ -647,20 +639,6 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
 #endif
    f.Close();
 }
-
-//void ContrastDialog::OnTimeCtrlUpdate(wxCommandEvent & event)
-//{
-//   wxWindow *w = FindFocus();
-//   TimeTextCtrl *s = (TimeTextCtrl *)w;
-//   wxString setting = s->GetFormatString();
-//   mForegroundStartT->SetFormatString(setting);
-//   mForegroundEndT->SetFormatString(setting);
-//   mBackgroundStartT->SetFormatString(setting);
-//   mBackgroundEndT->SetFormatString(setting);
-//
-//   Fit();
-//}
-
 
 void ContrastDialog::OnReset(wxCommandEvent & event)
 {
