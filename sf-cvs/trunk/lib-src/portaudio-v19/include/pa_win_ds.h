@@ -1,7 +1,7 @@
 #ifndef PA_WIN_DS_H
 #define PA_WIN_DS_H
 /*
- * $Id: pa_win_ds.h,v 1.7 2008-12-31 15:38:31 richardash1981 Exp $
+ * $Id: pa_win_ds.h,v 1.8 2009-01-01 22:31:28 martynshaw Exp $
  * PortAudio Portable Real-Time Audio Library
  * DirectSound specific extensions
  *
@@ -28,13 +28,13 @@
  */
 
 /*
- * The text above constitutes the entire PortAudio license; however, 
+ * The text above constitutes the entire PortAudio license; however,
  * the PortAudio community also makes the following non-binding requests:
  *
  * Any person wishing to distribute modifications to the Software is
  * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version. It is also 
- * requested that these non-binding requests be included along with the 
+ * they can be incorporated into the canonical version. It is also
+ * requested that these non-binding requests be included along with the
  * license above.
  */
 
@@ -83,7 +83,7 @@ typedef struct PaWinDirectSoundStreamInfo{
 
     /*
         support for WAVEFORMATEXTENSIBLE channel masks. If flags contains
-        paWinDirectSoundUseChannelMask this allows you to specify which speakers 
+        paWinDirectSoundUseChannelMask this allows you to specify which speakers
         to address in a multichannel stream. Constants for channelMask
         are specified in pa_win_waveformat.h
 
@@ -113,4 +113,4 @@ LPGUID PaWinDS_GetStreamOutputGUID( PaStream* s );
 }
 #endif /* __cplusplus */
 
-#endif /* PA_WIN_DS_H */                                  
+#endif /* PA_WIN_DS_H */
