@@ -63,6 +63,7 @@
 
 #include <wx/choice.h>
 #include <wx/dynlib.h>
+#include <wx/ffile.h>
 #include <wx/intl.h>
 #include <wx/log.h>
 #include <wx/mimetype.h>
@@ -76,7 +77,6 @@
 
 #include "../Audacity.h"
 #include "../float_cast.h"
-#include "../FileIO.h"
 #include "../Internat.h"
 #include "../Mix.h"
 #include "../Prefs.h"
@@ -686,7 +686,11 @@ typedef int lame_set_error_protection_t(lame_global_flags *, int);
 typedef int lame_set_disable_reservoir_t(lame_global_flags *, int);
 typedef int lame_set_padding_type_t(lame_global_flags *, Padding_type);
 typedef int lame_set_bWriteVbrTag_t(lame_global_flags *, int);
+typedef size_t lame_get_lametag_frame_t(const lame_global_flags *, unsigned char* buffer, size_t size);
 typedef void lame_mp3_tags_fid_t(lame_global_flags *, FILE *);
+#if defined(__WXMSW__)
+typedef unsigned long beWriteInfoTag_t(lame_global_flags *, char *);
+#endif
 
 class MP3Exporter
 {
@@ -735,7 +739,7 @@ public:
    int FinishStream(unsigned char outbuffer[]);
    void CancelEncoding();
 
-   void PutInfoTag(const wxString & name);
+   void PutInfoTag(wxFFile & f, wxFileOffset off);
 
 private:
 
@@ -773,8 +777,12 @@ private:
    lame_set_disable_reservoir_t *lame_set_disable_reservoir;
    lame_set_padding_type_t *lame_set_padding_type;
    lame_set_bWriteVbrTag_t *lame_set_bWriteVbrTag;
+   lame_get_lametag_frame_t *lame_get_lametag_frame;
    lame_mp3_tags_fid_t *lame_mp3_tags_fid;
-   
+#if defined(__WXMSW__)
+   beWriteInfoTag_t *beWriteInfoTag;
+#endif
+
    lame_global_flags *mGF;
 
    static const int mSamplesPerChunk = 220500;
@@ -782,6 +790,10 @@ private:
    // As coded here, this should be the worst case.
    static const int mOutBufferSize = 
       mSamplesPerChunk * (320 / 8) / 8 + 4 * 1152 * (320 / 8) / 8 + 512;
+
+   // See MAXFRAMESIZE in libmp3lame/VbrTag.c for explanation of 2880.
+   unsigned char mInfoTagBuf[2880];
+   size_t mInfoTagLen;
 };
 
 MP3Exporter::MP3Exporter()
@@ -960,14 +972,16 @@ bool MP3Exporter::InitLibrary(wxString libpath)
    lame_set_bWriteVbrTag = (lame_set_bWriteVbrTag_t *)
        lame_lib.GetSymbol(wxT("lame_set_bWriteVbrTag"));
 
-   // It would be nice to use lame_get_lametag_frame(), but that didn't
-   // come about until 3.98.  So stick with lame_mp3_tags_fid() for now
-   // as that's been around a bit longer.
+   // These are optional
+   lame_get_lametag_frame = (lame_get_lametag_frame_t *)
+       lame_lib.GetSymbol(wxT("lame_get_lametag_frame"));
    lame_mp3_tags_fid = (lame_mp3_tags_fid_t *)
        lame_lib.GetSymbol(wxT("lame_mp3_tags_fid"));
-   
-   // With the exception of lame_mp3_tags_fid(), all symbols must be found
-   // before we consider the library valid.
+#if defined(__WXMSW__)
+   beWriteInfoTag = (beWriteInfoTag_t *)
+       lame_lib.GetSymbol(wxT("beWriteInfoTag"));
+#endif
+
    if (!lame_init ||
       !get_lame_version ||
       !lame_init_params ||
@@ -988,6 +1002,7 @@ bool MP3Exporter::InitLibrary(wxString libpath)
       !lame_set_disable_reservoir ||
       !lame_set_padding_type ||
       !lame_set_bWriteVbrTag) {
+      lame_lib.Unload();
       return false;
    }
 
@@ -1037,12 +1052,9 @@ int MP3Exporter::InitializeStream(int channels, int sampleRate)
    lame_set_disable_reservoir(mGF, true);
    lame_set_padding_type(mGF, PAD_NO);
 
-   // Write the VbrTag for all types.  For ABR/VBR, a Xing tag will be created.
-   // For CBR, it will be a Lame Info tag.  At least iTunes uses the Xing tag to
-   // determine proper duration of audio.
-   if (lame_mp3_tags_fid) {
-      lame_set_bWriteVbrTag(mGF, true);
-   }
+   // Add the VbrTag for all types.  For ABR/VBR, a Xing tag will be created.
+   // For CBR, it will be a Lame Info tag.
+   lame_set_bWriteVbrTag(mGF, true);
 
    // Set the VBR quality or ABR/CBR bitrate
    switch (mMode) {
@@ -1117,6 +1129,7 @@ int MP3Exporter::InitializeStream(int channels, int sampleRate)
    dump_config(mGF);
 #endif
 
+   mInfoTagLen = 0;
    mEncoding = true;
 
    return mSamplesPerChunk;
@@ -1182,6 +1195,10 @@ int MP3Exporter::FinishStream(unsigned char outbuffer[])
 
    int result = lame_encode_flush(mGF, outbuffer, mOutBufferSize);
 
+   if (lame_get_lametag_frame) {
+      mInfoTagLen = lame_get_lametag_frame(mGF, mInfoTagBuf, sizeof(mInfoTagBuf));
+   }
+
    return result;
 }
 
@@ -1190,17 +1207,25 @@ void MP3Exporter::CancelEncoding()
    mEncoding = false;
 }
 
-void MP3Exporter::PutInfoTag(const wxString & name)
+void MP3Exporter::PutInfoTag(wxFFile & f, wxFileOffset off)
 {
    if (mGF) {
-      wxFFile f(name, wxT("r+b"));
-
-      if (f.IsOpened()) {
+      if (mInfoTagLen > 0) {
+         f.Seek(off, wxFromStart);
+         f.Write(mInfoTagBuf, mInfoTagLen);
+      }
+#if defined(__WXMSW__)
+      else if (beWriteInfoTag) {
+         f.Flush();
+         beWriteInfoTag(mGF, OSFILENAME(f.GetName()));
+      }
+#endif
+      else if (lame_mp3_tags_fid) {   
          lame_mp3_tags_fid(mGF, f.fp());
-
-         f.Close();
       }
    }
+
+   f.SeekEnd();
 }
 
 #if defined(__WXMSW__)
@@ -1507,7 +1532,7 @@ bool ExportMP3::Export(AudacityProject *project,
       metadata = project->GetTags();
 
    // Open file for writing
-   FileIO outFile(fName, FileIO::Output);
+   wxFFile outFile(fName, wxT("w+b"));
    if (!outFile.IsOpened()) {
       wxMessageBox(_("Unable to open target file for writing"));
       return false;
@@ -1521,6 +1546,7 @@ bool ExportMP3::Export(AudacityProject *project,
      outFile.Write(id3buffer, id3len);
    }
 
+   wxFileOffset pos = outFile.Seek(0, wxFromCurrent);
    bool cancelling = false;
    long bytes;
 
@@ -1616,15 +1642,13 @@ bool ExportMP3::Export(AudacityProject *project,
       free(id3buffer);
    }
 
-   // Close the file
-   outFile.Close();
-
    // Always write the info (Xing/Lame) tag.  Until we stop supporting Lame
    // versions before 3.98, we must do this after the MP3 file has been
    // closed.
-#if !defined(__WXMSW__)
-   exporter.PutInfoTag(fName);
-#endif
+   exporter.PutInfoTag(outFile, pos);
+
+   // Close the file
+   outFile.Close();
 
    delete [] buffer;
    
