@@ -466,9 +466,9 @@ bool Exporter::ExamineTracks()
    if (mNumSelected == 0) {
       wxString message;
       if(mSelectedOnly)
-         message = _("No active audio selected!");
+         message = _("All the selected audio is muted.");
       else
-         message = _("No audio is active (unmuted)!");
+         message = _("All the audio is muted.");
       wxMessageBox(message,
                     _("Unable to export"),
                     wxOK | wxICON_INFORMATION);
