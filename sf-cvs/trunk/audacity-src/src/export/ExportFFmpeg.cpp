@@ -68,7 +68,7 @@ public:
    bool CheckFileName(wxFileName &filename, int format = 0);
 
    /// Format intialization
-   bool Init(const char *shortname, AudacityProject *project);
+   bool Init(const char *shortname, AudacityProject *project, Tags *metadata);
    
    /// Codec intialization
    bool InitCodecs(AudacityProject *project);
@@ -193,7 +193,7 @@ bool ExportFFmpeg::CheckFileName(wxFileName &filename, int format)
   return true;
 }
 
-bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
+bool ExportFFmpeg::Init(const char *shortname, AudacityProject *project, Tags *metadata)
 {
    int err;
    //FFmpegLibsInst->LoadLibs(NULL,true); //Loaded at startup or from Prefs now
@@ -232,6 +232,7 @@ bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
       return false;
    }
 
+   mEncAudioStream->id = 0;
    mEncFormatCtx->timestamp = 0;
 
    // Open the output file.
@@ -259,6 +260,15 @@ bool ExportFFmpeg::Init(const char *shortname,AudacityProject *project)
    // Open the audio stream's codec and initialise any stream related data.
    if (!InitCodecs(project))
       return false;
+
+   if (metadata == NULL) metadata = project->GetTags();
+
+   if (fmts[mSubFormat].canmetadata)
+   {
+      mSupportsUTF8 = fmts[mSubFormat].canutf8;
+      AddTags(metadata);
+   }
+
 
    // Write headers to the output file.
    if ((err = FFmpegLibsInst->av_write_header(mEncFormatCtx)) < 0)
@@ -366,10 +376,10 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    this->mEncAudioStream->quality = mEncAudioCodecCtx->global_quality = mEncAudioCodecCtx->global_quality * FF_QP2LAMBDA;
    mEncAudioCodecCtx->sample_rate = mSampleRate;
    mEncAudioCodecCtx->channels = mChannels;
-   mEncAudioCodecCtx->time_base.num = 0;
-   mEncAudioCodecCtx->time_base.den = 1;
+   mEncAudioCodecCtx->time_base.num = 1;
+   mEncAudioCodecCtx->time_base.den = mEncAudioCodecCtx->sample_rate;
    mEncAudioCodecCtx->sample_fmt = SAMPLE_FMT_S16;
-   mEncAudioCodecCtx->strict_std_compliance = FF_COMPLIANCE_STRICT;
+   //mEncAudioCodecCtx->strict_std_compliance = FF_COMPLIANCE_STRICT;
 
    // Is the required audio codec compiled into libavcodec?
    if ((codec = FFmpegLibsInst->avcodec_find_encoder(mEncAudioCodecCtx->codec_id)) == NULL)
@@ -382,7 +392,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    if (mEncFormatCtx->oformat->flags & AVFMT_GLOBALHEADER)
    {
       mEncAudioCodecCtx->flags |= CODEC_FLAG_GLOBAL_HEADER;
-      mEncAudioStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
+      mEncFormatCtx->flags |= CODEC_FLAG_GLOBAL_HEADER;
    }
 
    // Open the codec.
@@ -575,7 +585,7 @@ bool ExportFFmpeg::EncodeAudioFrame(int16_t *pFrame, int frameSize)
       pkt.flags |= PKT_FLAG_KEY;
 
       // Write the encoded audio frame to the output file.
-      if ((ret = FFmpegLibsInst->av_write_frame(mEncFormatCtx, &pkt)) != 0)
+      if ((ret = FFmpegLibsInst->av_interleaved_write_frame(mEncFormatCtx, &pkt)) != 0)
       {
          wxLogMessage(wxT("FFmpeg : ERROR - Failed to write audio frame to file."));
          return false;
@@ -611,17 +621,9 @@ bool ExportFFmpeg::Export(AudacityProject *project,
    wxString shortname(fmts[mSubFormat].shortname);
    if (mSubFormat == FMT_OTHER)
       shortname = gPrefs->Read(wxT("/FileFormats/FFmpegFormat"),wxT("matroska"));
-   ret = Init(shortname.mb_str(),project);
+   ret = Init(shortname.mb_str(),project, metadata);
 
    if (!ret) return false;
-
-   if (metadata == NULL) metadata = project->GetTags();
-
-   if (fmts[mSubFormat].canmetadata)
-   {
-      this->mSupportsUTF8 = fmts[mSubFormat].canutf8;
-      AddTags(metadata);
-   }
 
    int pcmBufferSize = 1024;
    int numWaveTracks;
