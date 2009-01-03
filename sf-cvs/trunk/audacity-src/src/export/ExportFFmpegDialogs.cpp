@@ -498,7 +498,7 @@ void FFmpegPresets::SavePreset(ExportFFmpegOptions *parent, wxString &name)
       lb = dynamic_cast<wxListBox*>(wnd);
       if (lb->GetSelection() < 0)
       {
-         wxMessageBox(wxT("Please select format before saving a profile"));
+         wxMessageBox(_("Please select format before saving a profile"));
          return;
       }
 
@@ -506,7 +506,7 @@ void FFmpegPresets::SavePreset(ExportFFmpegOptions *parent, wxString &name)
       lb = dynamic_cast<wxListBox*>(wnd);
       if (lb->GetSelection() < 0)
       {
-         wxMessageBox(wxT("Please select codec before saving a profile"));
+         wxMessageBox(_("Please select codec before saving a profile"));
          return;
       }
       preset = new FFmpegPreset(name);
@@ -577,7 +577,7 @@ void FFmpegPresets::LoadPreset(ExportFFmpegOptions *parent, wxString &name)
    FFmpegPreset *preset = FindPreset(name);
    if (!preset)
    {
-      wxMessageBox(wxString::Format(wxT("Preset '%s' does not exist."),name.c_str()));
+      wxMessageBox(wxString::Format(_("Preset '%s' does not exist."),name.c_str()));
       return;
    }
 
@@ -911,7 +911,7 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
       mFormatList->DeselectAll();
       mCodecList->DeselectAll();
 
-      S.StartStatic(wxT("Options"),0);
+      S.StartStatic(_("Options"),0);
       {
          S.StartMultiColumn(4,wxALIGN_LEFT);
          {
@@ -937,15 +937,15 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
                mProfileLabels[0], mProfileNames, mProfileLabels);
             mProfileChoice->SetToolTip(_("AAC Profile\nLow Complexity -default\nMost players won't play anything other than LC"));
 
-            S.AddVariableText(wxT("Use Bit Reservoir"));
+            S.AddVariableText(_("Use Bit Reservoir"));
             S.Id(FEBitReservoirID).TieCheckBox(wxEmptyString, wxT("/FileFormats/FFmpegBitReservoir"), true);
 
-            S.AddVariableText(wxT("Use Variable Block Length"));
+            S.AddVariableText(_("Use Variable Block Length"));
             S.Id(FEVariableBlockLenID).TieCheckBox(wxEmptyString, wxT("/FileFormats/FFmpegVariableBlockLen"), true);
 
          }
          S.EndMultiColumn();
-         S.StartStatic(wxT("FLAC options"),0);
+         S.StartStatic(_("FLAC options"),0);
          {
             S.StartMultiColumn(4);
             {
@@ -974,14 +974,14 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
                mMaxPartitionOrderSpin = S.Id(FEMaxPartOrderID).TieSpinCtrl(_("Maximal partition order"), wxT("/FileFormats/FFmpegMaxPredOrder"), -1,8,-1);
                mMaxPartitionOrderSpin->SetToolTip(_("Maximal partition order\nOptional\n-1 - default\nmin - 0\nmax - 8"));
 
-               S.AddVariableText(wxT("Use LPC"));
+               S.AddVariableText(_("Use LPC"));
                S.Id(FEUseLPCID).TieCheckBox(wxEmptyString, wxT("/FileFormats/FFmpegUseLPC"), true);
                
             }
             S.EndMultiColumn();
          }
          S.EndStatic();
-         S.StartStatic(wxT("MPEG container options"),0);
+         S.StartStatic(_("MPEG container options"),0);
          {
             S.StartMultiColumn(4);
             {
@@ -1270,7 +1270,7 @@ void ExportFFmpegOptions::OnImportPresets(wxCommandEvent& event)
                   _("Select xml file with presets to import"),
                   gPrefs->Read(wxT("/FileFormats/FFmpegPresetDir")),
                   wxEmptyString,
-                  wxString(wxT("XML files (*.xml)|*.xml|All files (*.*)|*.*")),
+                  wxString(_("XML files (*.xml)|*.xml|All files (*.*)|*.*")),
                   wxFD_OPEN);
    if (dlg.ShowModal() == wxID_CANCEL) return;
    path = dlg.GetPath();
@@ -1290,7 +1290,7 @@ void ExportFFmpegOptions::OnExportPresets(wxCommandEvent& event)
                   _("Select xml file to export presets into"),
                   gPrefs->Read(wxT("/FileFormats/FFmpegPresetDir")),
                   wxEmptyString,
-                  wxString(wxT("XML files (*.xml)|*.xml|All files (*.*)|*.*")),
+                  wxString(_("XML files (*.xml)|*.xml|All files (*.*)|*.*")),
                   wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
    if (dlg.ShowModal() == wxID_CANCEL) return;
    path = dlg.GetPath();
@@ -1358,7 +1358,7 @@ void ExportFFmpegOptions::DoOnFormatList()
    if (fmt == NULL)
    {
       //This shouldn't really happen
-      mFormatName->SetLabel(wxString(wxT("Failed to guess format")));
+      mFormatName->SetLabel(wxString(_("Failed to guess format")));
       return;
    }
    mFormatName->SetLabel(wxString::Format(wxT("%s"),selfmtlong->c_str()));
@@ -1400,7 +1400,7 @@ void ExportFFmpegOptions::DoOnCodecList()
    if (cdc == NULL)
    {
       //This shouldn't really happen
-      mCodecName->SetLabel(wxString(wxT("Failed to find the codec")));
+      mCodecName->SetLabel(wxString(_("Failed to find the codec")));
       return;
    }
    mCodecName->SetLabel(wxString::Format(wxT("[%d] %s"),cdc->id,selcdclong->c_str()));

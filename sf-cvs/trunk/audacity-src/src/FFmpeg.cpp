@@ -33,7 +33,7 @@ License: GPL v2.  See License.txt.
 /// but Preferences dialog requires this function nevertheless
 wxString GetFFmpegVersion(wxWindow *parent)
 {
-   return wxString(wxT("FFmpeg support not compiled in"));
+   return wxString(_("FFmpeg support not compiled in"));
 }
 
 #else
@@ -98,10 +98,10 @@ void FFmpegStartup()
    // 'false' means that no errors should be shown whatsoever
    if (enabled && !LoadFFmpeg(false))
    {
-     wxMessageBox(wxT("FFmpeg was configured in Preferences and successfully loaded before, \
+     wxMessageBox(_("FFmpeg was configured in Preferences and successfully loaded before, \
                       \nbut this time Audacity failed to load it at startup. \
                       \n\nYou may want to go back to Preferences > Import/Export and re-configure it."),
-                  wxT("FFmpeg startup failed"));
+                  _("FFmpeg startup failed"));
    }
 }
 
@@ -399,7 +399,7 @@ bool FFmpegLibs::LoadLibs(wxWindow *parent, bool showerr)
    */
    // Oh well, just give up
    if (!ValidLibsLoaded()) {
-      if (showerr) wxMessageBox(wxT("Failed to find compatible FFmpeg libraries"));
+      if (showerr) wxMessageBox(_("Failed to find compatible FFmpeg libraries"));
       return false;
    }
 
