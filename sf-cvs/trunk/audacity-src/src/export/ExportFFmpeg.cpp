@@ -52,6 +52,15 @@ function.
 
 extern FFmpegLibs *FFmpegLibsInst;
 
+bool CheckFFmpegPresence()
+{
+   if (!FFmpegLibsInst->ValidLibsLoaded())
+   {
+      wxMessageBox(_("Properly configured FFmpeg is required to proceed.\nYou can configure it in Preferences->Import/Export."));
+      return false;
+   }
+   return true;
+}
 
 //----------------------------------------------------------------------------
 // ExportFFmpeg
@@ -185,12 +194,9 @@ void ExportFFmpeg::Destroy()
 
 bool ExportFFmpeg::CheckFileName(wxFileName &filename, int format)
 {
-  if (!FFmpegLibsInst->ValidLibsLoaded())
-  {
-    wxMessageBox(wxT("Properly configured FFmpeg is required to proceed.\nYou can configure it in Preferences->Import/Export."));
-    return false;
-  }
-  return true;
+   if (!CheckFFmpegPresence())
+     return false;
+   return true;
 }
 
 bool ExportFFmpeg::Init(const char *shortname, AudacityProject *project, Tags *metadata)
@@ -385,7 +391,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    if ((codec = FFmpegLibsInst->avcodec_find_encoder(mEncAudioCodecCtx->codec_id)) == NULL)
    {
       wxLogMessage(wxT("FFmpeg : ERROR - Can't find audio codec 0x%x."),mEncAudioCodecCtx->codec_id);
-      wxMessageBox(wxString::Format(wxT("FFmpeg cannot find audio codec 0x%x.\nSupport for this codec is probably not compiled in."),mEncAudioCodecCtx->codec_id));
+      wxMessageBox(wxString::Format(_("FFmpeg cannot find audio codec 0x%x.\nSupport for this codec is probably not compiled in."),mEncAudioCodecCtx->codec_id));
       return false;
    }
 
@@ -599,16 +605,13 @@ bool ExportFFmpeg::Export(AudacityProject *project,
                        int channels, wxString fName,
                        bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec, Tags *metadata, int subformat)
 {
-   if (!FFmpegLibsInst->ValidLibsLoaded())
-   {
-      wxMessageBox(wxT("Properly configured FFmpeg is required to proceed.\nYou can configure it in Preferences->Import/Export."));
+   if (!CheckFFmpegPresence())
       return false;
-   }
    mChannels = channels;
    if (channels > fmts[subformat].maxchannels)
    {
       wxLogMessage(wxT("Attempted to export %d channels, but max. channels = %d"),channels,fmts[subformat].maxchannels);
-      wxMessageBox(wxString::Format(wxT("Attempted to export %d channels, but max. channels for selected output format is %d"),channels,fmts[subformat].maxchannels),wxT("Error"));
+      wxMessageBox(wxString::Format(_("Attempted to export %d channels, but max. channels for selected output format is %d"),channels,fmts[subformat].maxchannels),_("Error"));
       return false;
    }
    mName = fName;
@@ -775,11 +778,8 @@ int ExportFFmpeg::AskResample(int bitrate, int rate, int lowrate, int highrate, 
 
 bool ExportFFmpeg::DisplayOptions(wxWindow *parent, int format)
 {
-   if (!FFmpegLibsInst->ValidLibsLoaded())
-   {
-      wxMessageBox(wxT("Properly configured FFmpeg is required to proceed.\nYou can configure it in Preferences->Import/Export."));
+   if (!CheckFFmpegPresence())
       return false;
-   }
    if (format == FMT_M4A)
    {
       ExportFFmpegAACOptions od(parent);

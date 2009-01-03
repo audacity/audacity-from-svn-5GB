@@ -97,7 +97,7 @@ public:
       S.SetBorder(10);
       S.StartVerticalLay(true);
       {
-         S.AddFixedText(wxT(
+         S.AddFixedText(_(
 "Audacity attempted to use FFmpeg libraries to import an audio file,\n\
 but libraries were not found.\n\
 If you want to use the FFmpeg import feature, please go to Preferences->Import/Export\n\
@@ -106,7 +106,7 @@ and tell Audacity where to look for the libraries."
 
          int dontShowDlg = 0;
          gPrefs->Read(wxT("/FFmpeg/NotFoundDontShow"),&dontShowDlg,0);
-         mDontShow = S.AddCheckBox(wxT("Do not show this warning again"),dontShowDlg ? wxT("true") : wxT("false"));
+         mDontShow = S.AddCheckBox(_("Do not show this warning again"),dontShowDlg ? wxT("true") : wxT("false"));
 
          S.AddStandardButtons(eOkButton);
       }
