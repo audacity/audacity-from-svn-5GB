@@ -688,8 +688,44 @@ typedef int lame_set_padding_type_t(lame_global_flags *, Padding_type);
 typedef int lame_set_bWriteVbrTag_t(lame_global_flags *, int);
 typedef size_t lame_get_lametag_frame_t(const lame_global_flags *, unsigned char* buffer, size_t size);
 typedef void lame_mp3_tags_fid_t(lame_global_flags *, FILE *);
+
 #if defined(__WXMSW__)
+// An alternative solution to give Windows an additional chance of writing the tag before
+// falling bato to lame_mp3_tag_fid().  The latter can have DLL sharing issues when mixing
+// Debug/Release builds of Audacity and the lame DLL.
 typedef unsigned long beWriteInfoTag_t(lame_global_flags *, char *);
+
+// We use this to determine if the user has selected an older, Blade API only, lame_enc.dll
+// so we can be more specific about why their library isn't acceptable.
+typedef struct	{
+
+	// BladeEnc DLL Version number
+
+	BYTE	byDLLMajorVersion;
+	BYTE	byDLLMinorVersion;
+
+	// BladeEnc Engine Version Number
+
+	BYTE	byMajorVersion;
+	BYTE	byMinorVersion;
+
+	// DLL Release date
+
+	BYTE	byDay;
+	BYTE	byMonth;
+	WORD	wYear;
+
+	// BladeEnc	Homepage URL
+
+	CHAR	zHomepage[129];	
+
+	BYTE	byAlphaLevel;
+	BYTE	byBetaLevel;
+	BYTE	byMMXEnabled;
+
+	BYTE	btReserved[125];
+} be_version;
+typedef void beVersion_t(be_version *);
 #endif
 
 class MP3Exporter
@@ -781,6 +817,7 @@ private:
    lame_mp3_tags_fid_t *lame_mp3_tags_fid;
 #if defined(__WXMSW__)
    beWriteInfoTag_t *beWriteInfoTag;
+   beVersion_t *beVersion;
 #endif
 
    lame_global_flags *mGF;
@@ -980,6 +1017,8 @@ bool MP3Exporter::InitLibrary(wxString libpath)
 #if defined(__WXMSW__)
    beWriteInfoTag = (beWriteInfoTag_t *)
        lame_lib.GetSymbol(wxT("beWriteInfoTag"));
+   beVersion = (beVersion_t *)
+       lame_lib.GetSymbol(wxT("beVersion"));
 #endif
 
    if (!lame_init ||
@@ -1001,7 +1040,21 @@ bool MP3Exporter::InitLibrary(wxString libpath)
       !lame_set_error_protection ||
       !lame_set_disable_reservoir ||
       !lame_set_padding_type ||
-      !lame_set_bWriteVbrTag) {
+      !lame_set_bWriteVbrTag)
+   {
+#if defined(__WXMSW__)
+      if (beVersion) {
+         wxString m;
+         be_version v;
+         beVersion(&v);
+
+         m.Printf(_("You have selected a lame_enc.dll at version %d.%d.  Unfortunately, it doesn't include the necessary support required by version 1.37 or greater of Audacity."),
+                  v.byMajorVersion,
+                  v.byMinorVersion);
+         wxMessageBox(m);
+      }
+#endif
+
       lame_lib.Unload();
       return false;
    }
@@ -1045,7 +1098,7 @@ int MP3Exporter::InitializeStream(int channels, int sampleRate)
       return -1;
    }
 
-   lame_set_error_protection(mGF, true);
+   lame_set_error_protection(mGF, false);
    lame_set_num_channels(mGF, channels);
    lame_set_in_samplerate(mGF, sampleRate);
    lame_set_out_samplerate(mGF, sampleRate);
