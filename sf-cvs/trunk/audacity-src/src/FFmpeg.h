@@ -158,8 +158,8 @@ public:
    AVCodec*          (*avcodec_find_encoder_by_name)  (const char *name);
    AVCodec*          (*avcodec_find_decoder)          (enum CodecID id);
    AVCodec*          (*avcodec_find_decoder_by_name)  (const char *name);
-   enum CodecID      (*av_codec_get_id)               (const struct AVCodecTag **tags, unsigned int tag);
-   unsigned int      (*av_codec_get_tag)              (const struct AVCodecTag **tags, enum CodecID id);
+   enum CodecID      (*av_codec_get_id)               (const struct AVCodecTag * const *tags, unsigned int tag);
+   unsigned int      (*av_codec_get_tag)              (const struct AVCodecTag * const *tags, enum CodecID id);
    void              (*avcodec_string)                (char *buf, int buf_size, AVCodecContext *enc, int encode);
    void              (*avcodec_get_context_defaults)  (AVCodecContext *s);
    AVCodecContext*   (*avcodec_alloc_context)         (void);
@@ -194,14 +194,14 @@ public:
    AVOutputFormat*   (*guess_format)                  (const char *short_name, const char *filename, const char *mime_type);
    int               (*av_write_trailer)              (AVFormatContext *s);
    int               (*av_interleaved_write_frame)    (AVFormatContext *s, AVPacket *pkt);
-   int               (*av_write_frame)    (AVFormatContext *s, AVPacket *pkt);
+   int               (*av_write_frame)                (AVFormatContext *s, AVPacket *pkt);
    void              (*av_init_packet)                (AVPacket *pkt);
    int               (*av_fifo_init)                  (AVFifoBuffer *f, int size);
    void              (*av_fifo_free)                  (AVFifoBuffer *f);
    int               (*av_fifo_read)                  (AVFifoBuffer *f, uint8_t *buf, int buf_size);
    int               (*av_fifo_size)                  (AVFifoBuffer *f);
    int               (*av_fifo_generic_write)         (AVFifoBuffer *f, void *src, int size, int (*func)(void*, void*, int));
-   void              (*av_fifo_realloc)                (AVFifoBuffer *f, unsigned int size);
+   void              (*av_fifo_realloc)               (AVFifoBuffer *f, unsigned int size);
    void*             (*av_malloc)                     (unsigned int size);
    void              (*av_freep)                      (void *ptr);
    int64_t           (*av_rescale_q)                  (int64_t a, AVRational bq, AVRational cq);
