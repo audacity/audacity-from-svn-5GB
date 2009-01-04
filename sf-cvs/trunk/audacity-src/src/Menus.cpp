@@ -1255,7 +1255,12 @@ void AudacityProject::RebuildMenuBar()
    // On OSX, we can't rebuild the menus while a modal dialog is being shown
    // since the enabled state for menus like Quit and Preference gets out of
    // sync with wxWidgets idea of what it should be.
-   wxASSERT((wxGetTopLevelParent(FindFocus()) == this));
+#if defined(__WXMAC__) && defined(__WXDEBUG__)
+   {
+      wxDialog *d = wxDynamicCast(wxGetTopLevelParent(FindFocus()), wxDialog);
+      wxASSERT((!d || !d->IsModal()));
+   }
+#endif
 
 // Under Windows we delete the menus, since we will soon recreate them.
 // rather oddly, the menus don't vanish as a result of doing this.
