@@ -583,17 +583,22 @@ void AudacityProject::CreateMenusAndCommands()
    //
    // Transport Menu
    //
+#if defined(__WXMAC__)
+#define SPACEBAR wxT("Space")
+#else
+#define SPACEBAR wxT("Spacebar")
+#endif
 
    /*i18n-hint: 'Transport' is the name given to the set of controls that
    play, record, pause etc. */
    c->BeginMenu(_("T&ransport"));
    c->SetDefaultFlags(0, 0);
-      c->AddItem(wxT("Play"), _("Play\tSpacebar"), FN(OnPlayStop));
+      c->AddItem(wxT("Play"), _("Play\t" SPACEBAR), FN(OnPlayStop));
       c->SetCommandFlags(wxT("Play"), AudioIONotBusyFlag, AudioIONotBusyFlag);
-      c->AddItem(wxT("PlayLooped"), _("&Loop Play\tShift+Spacebar"), FN(OnPlayLooped));
+      c->AddItem(wxT("PlayLooped"), _("&Loop Play\tShift+" SPACEBAR), FN(OnPlayLooped));
       c->SetCommandFlags(wxT("PlayLooped"), AudioIONotBusyFlag, AudioIONotBusyFlag);
       c->AddItem(wxT("Pause"), _("&Pause\tP"), FN(OnPause));
-      c->AddItem(wxT("Stop"), _("&Stop\tSpacebar"), FN(OnStop));
+      c->AddItem(wxT("Stop"), _("&Stop\t" SPACEBAR), FN(OnStop));
       c->AddItem(wxT("SkipStart"), _("Skip to Start\tHome"), FN(OnSkipStart));
       c->SetCommandFlags(wxT("SkipStart"), AudioIONotBusyFlag, AudioIONotBusyFlag);
       c->AddItem(wxT("SkipEnd"), _("Skip to End\tEnd"), FN(OnSkipEnd));
@@ -994,7 +999,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("NextTool"),   _("Next Tool\tD"),                 FN(OnNextTool));
    c->AddCommand(wxT("PrevTool"),   _("Previous Tool\tA"),             FN(OnPrevTool));
 
-   c->AddCommand(wxT("Play/Stop"),   _("Play/Stop\tSpacebar"),            FN(OnPlayStop));
+   c->AddCommand(wxT("Play/Stop"),   _("Play/Stop\t" SPACEBAR),        FN(OnPlayStop));
    c->AddCommand(wxT("Stop"),        _("Stop\tS"),                     FN(OnStop));
    c->AddCommand(wxT("Pause"),       _("Pause\tP"),                    FN(OnPause));
    c->AddCommand(wxT("Record"),      _("Record\tR"),                   FN(OnRecord));
@@ -1006,7 +1011,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("PlayOneSec"),     _("Play One Second\t1"),       FN(OnPlayOneSecond));
    c->AddCommand(wxT("PlayToSelection"),_("Play To Selection\tB"),       FN(OnPlayToSelection));
    c->AddCommand(wxT("PlayLooped"),     _("Play Looped\tL"),           FN(OnPlayLooped));
-   c->AddCommand(wxT("PlayLoopAlt"),    _("Play Looped\tShift+Spacebar"), FN(OnPlayLooped));
+   c->AddCommand(wxT("PlayLoopAlt"),    _("Play Looped\tShift+" SPACEBAR), FN(OnPlayLooped));
    c->AddCommand(wxT("PlayCutPreview"), _("Play Cut Preview\tC"),      FN(OnPlayCutPreview));
 
    c->AddCommand(wxT("SkipStart"),   _("Skip to Start\tHome"),         FN(OnSkipStart));
@@ -1039,7 +1044,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("ShiftDown"),     _("Move Focus to Next and Change Selection\tShift+Down"),   FN(OnShiftDown));
    c->AddCommand(wxT("Toggle"),        _("Toggle Focused Track\tReturn"),                    FN(OnToggle));
    c->AddCommand(wxT("Toggle1"),       _("Toggle Focused Track\tNUMPAD_ENTER"),              FN(OnToggle));
-   c->AddCommand(wxT("Toggle2"),       _("Toggle Focused Track\tCtrl+Spacebar"),                FN(OnToggle));
+   c->AddCommand(wxT("Toggle2"),       _("Toggle Focused Track\tCtrl+" SPACEBAR),            FN(OnToggle));
 
    c->AddCommand(wxT("CursorLeft"),    _("Cursor Left\tLeft"),                               FN(OnCursorLeft));
    c->AddCommand(wxT("CursorRight"),   _("Cursor Right\tRight"),                             FN(OnCursorRight));
