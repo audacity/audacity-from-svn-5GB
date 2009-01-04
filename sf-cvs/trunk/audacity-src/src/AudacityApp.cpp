@@ -813,21 +813,14 @@ bool AudacityApp::OnInit()
    SetExitOnFrameDelete(true);
 
    AudacityProject *project = CreateNewAudacityProject();
-   project->Show( false );
 
    wxWindow * pWnd = MakeHijackPanel() ;
    if( pWnd )
    {
+      project->Show( false );
       SetTopWindow(pWnd);
       pWnd->Show( true );
    }
-   else
-   {
-      SetTopWindow(project);
-      project->Show( true );
-   }
-
-
 
    delete temporarywindow;
    
@@ -862,7 +855,6 @@ bool AudacityApp::OnInit()
       DirManager::SetDontDeleteTempFiles();
       QuitAudacity(true);
    }
-
 
    //
    // Command-line parsing, but only if we didn't recover
