@@ -1,0 +1,84 @@
+diff -wruN wxWidgets-2.8.9-orig/include/wx/mac/carbon/accel.h wxWidgets-2.8.9/include/wx/mac/carbon/accel.h
+--- wxWidgets-2.8.9-orig/include/wx/mac/carbon/accel.h	2008-09-15 04:29:32.000000000 -0500
++++ wxWidgets-2.8.9/include/wx/mac/carbon/accel.h	2009-01-03 17:21:16.000000000 -0600
+@@ -15,6 +15,10 @@
+ #include "wx/string.h"
+ #include "wx/event.h"
+ 
++#if defined(wxUSE_SYSTEM_OPTIONS)
++    #define wxMAC_SEPARATE_COMMAND_AND_CONTROL _T("mac.separate-command-and-control")
++#endif
++
+ class WXDLLEXPORT wxAcceleratorTable: public wxObject
+ {
+ DECLARE_DYNAMIC_CLASS(wxAcceleratorTable)
+diff -wruN wxWidgets-2.8.9-orig/src/common/menucmn.cpp wxWidgets-2.8.9/src/common/menucmn.cpp
+--- wxWidgets-2.8.9-orig/src/common/menucmn.cpp	2008-09-15 04:28:18.000000000 -0500
++++ wxWidgets-2.8.9/src/common/menucmn.cpp	2009-01-03 17:37:02.000000000 -0600
+@@ -34,6 +34,10 @@
+     #include "wx/menu.h"
+ #endif
+ 
++#if defined(__WXMAC__)
++    #include "wx/sysopt.h"
++#endif
++
+ #include "wx/stockitem.h"
+ 
+ // ----------------------------------------------------------------------------
+@@ -200,6 +204,11 @@
+                 accelFlags |= wxACCEL_ALT;
+             else if ( CompareAccelString(current, wxTRANSLATE("shift")) )
+                 accelFlags |= wxACCEL_SHIFT;
++#if defined(__WXMAC__)
++            else if ( wxSystemOptions::GetOptionInt(wxMAC_SEPARATE_COMMAND_AND_CONTROL) &&
++                      CompareAccelString(current, wxTRANSLATE("cmd")) )
++                accelFlags |= wxACCEL_CMD;
++#endif
+             else // not a recognized modifier name
+             {
+                 // we may have "Ctrl-+", for example, but we still want to
+@@ -316,6 +325,11 @@
+         text += _("Ctrl-");
+     if ( flags & wxACCEL_SHIFT )
+         text += _("Shift-");
++#if defined(__WXMAC__)
++    if ( wxSystemOptions::GetOptionInt(wxMAC_SEPARATE_COMMAND_AND_CONTROL) &&
++         (flags & wxACCEL_CMD) )
++        text += _("Cmd-");
++#endif
+ 
+     const int code = GetKeyCode();
+ 
+diff -wruN wxWidgets-2.8.9-orig/src/mac/carbon/uma.cpp wxWidgets-2.8.9/src/mac/carbon/uma.cpp
+--- wxWidgets-2.8.9-orig/src/mac/carbon/uma.cpp	2008-09-15 04:29:29.000000000 -0500
++++ wxWidgets-2.8.9/src/mac/carbon/uma.cpp	2009-01-03 17:37:22.000000000 -0600
+@@ -15,6 +15,7 @@
+ 
+ #include "wx/toplevel.h"
+ #include "wx/dc.h"
++#include "wx/sysopt.h"
+ 
+ #ifndef __DARWIN__
+ #  include <MacTextEditor.h>
+@@ -193,7 +194,19 @@
+     SInt16 key = entry->GetKeyCode() ;
+     if ( key )
+     {
+-        bool explicitCommandKey = (entry->GetFlags() & wxACCEL_CTRL);
++        bool explicitCommandKey;
++
++        if ( wxSystemOptions::GetOptionInt(wxMAC_SEPARATE_COMMAND_AND_CONTROL) )
++        {
++            explicitCommandKey = (entry->GetFlags() & wxACCEL_CMD);
++
++            if (entry->GetFlags() & wxACCEL_CTRL)
++                modifiers |= kMenuControlModifier ;
++        }
++        else
++        {
++            explicitCommandKey = (entry->GetFlags() & wxACCEL_CTRL);
++        }
+ 
+         if (entry->GetFlags() & wxACCEL_ALT)
+             modifiers |= kMenuOptionModifier ;
