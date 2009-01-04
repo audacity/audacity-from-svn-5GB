@@ -980,8 +980,8 @@ void AudacityProject::CreateMenusAndCommands()
    SetMenuBar(menubar);
 
    c->SetDefaultFlags(0, 0);
-   c->AddCommand(wxT("PrevFrame"),   _("Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"), FN(PrevFrame));
-   c->AddCommand(wxT("NextFrame"),   _("Cycle forward through Dock, Track View, and Selection Bar\tCtrl+F6"), FN(NextFrame));
+   c->AddCommand(wxT("PrevFrame"),   _("Cycle backward through toolbars and Track View\tCtrl+Shift+F6"), FN(PrevFrame));
+   c->AddCommand(wxT("NextFrame"),   _("Cycle forward through toolbars and Track View\tCtrl+F6"), FN(NextFrame));
 
 //   c->SetDefaultFlags(TrackPanelHasFocus, TrackPanelHasFocus);
    c->AddCommand(wxT("SelectTool"),  _("Selection Tool\tF1"),          FN(OnSelectTool));
@@ -994,7 +994,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("NextTool"),   _("Next Tool\tD"),                 FN(OnNextTool));
    c->AddCommand(wxT("PrevTool"),   _("Previous Tool\tA"),             FN(OnPrevTool));
 
-   c->AddCommand(wxT("Play/Stop"),   _("Play/Stop\tSpacebar"),         FN(OnPlayStop));
+   c->AddCommand(wxT("Play/Stop"),   _("Play/Stop\tSpacebar"),            FN(OnPlayStop));
    c->AddCommand(wxT("Stop"),        _("Stop\tS"),                     FN(OnStop));
    c->AddCommand(wxT("Pause"),       _("Pause\tP"),                    FN(OnPause));
    c->AddCommand(wxT("Record"),      _("Record\tR"),                   FN(OnRecord));
@@ -1039,7 +1039,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("ShiftDown"),     _("Move Focus to Next and Change Selection\tShift+Down"),   FN(OnShiftDown));
    c->AddCommand(wxT("Toggle"),        _("Toggle Focused Track\tReturn"),                    FN(OnToggle));
    c->AddCommand(wxT("Toggle1"),       _("Toggle Focused Track\tNUMPAD_ENTER"),              FN(OnToggle));
-   c->AddCommand(wxT("Toggle2"),       _("Toggle Focused Track\tCtrl+Spacebar"),             FN(OnToggle));
+   c->AddCommand(wxT("Toggle2"),       _("Toggle Focused Track\tCtrl+Spacebar"),                FN(OnToggle));
 
    c->AddCommand(wxT("CursorLeft"),    _("Cursor Left\tLeft"),                               FN(OnCursorLeft));
    c->AddCommand(wxT("CursorRight"),   _("Cursor Right\tRight"),                             FN(OnCursorRight));
@@ -2455,7 +2455,7 @@ void AudacityProject::OnAnalyzePlugin(int index)
 
 void AudacityProject::OnNew()
 {
-   CreateNewAudacityProject(gParentWindow);
+   CreateNewAudacityProject();
 }
 
 void AudacityProject::OnOpen()
@@ -4019,7 +4019,7 @@ void AudacityProject::OnPlotSpectrum()
       wxMessageBox(msg);
    }
 
-   InitFreqWindow(gParentWindow);
+   InitFreqWindow(NULL);
    gFreqWindow->Plot(len, buffer, rate);
    gFreqWindow->Show(true);
    gFreqWindow->Raise();
