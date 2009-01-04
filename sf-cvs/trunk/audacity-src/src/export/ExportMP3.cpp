@@ -1599,7 +1599,7 @@ bool ExportMP3::Export(AudacityProject *project,
      outFile.Write(id3buffer, id3len);
    }
 
-   wxFileOffset pos = outFile.Seek(0, wxFromCurrent);
+   wxFileOffset pos = outFile.Tell();
    bool cancelling = false;
    long bytes;
 
