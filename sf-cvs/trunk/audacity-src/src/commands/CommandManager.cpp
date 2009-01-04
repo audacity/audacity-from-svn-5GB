@@ -80,8 +80,8 @@ CommandManager.  It holds the callback for one command.
 #include <wx/defs.h>
 #include <wx/hash.h>
 #include <wx/intl.h>
-#include <wx/msgdlg.h>
 #include <wx/log.h>
+#include <wx/msgdlg.h>
 #include <wx/tokenzr.h>
 
 #include "../AudacityApp.h"
@@ -358,6 +358,7 @@ void CommandManager::InsertItem(wxString name, wxString label_in,
                                 int checkmark)
 {
    wxString label = label_in;
+
    if (ItemShouldBeHidden(label))
       return;
 
@@ -424,23 +425,7 @@ void CommandManager::InsertItem(wxString name, wxString label_in,
    dummy.Printf(wxT("%s%08d"), label.c_str(), mHiddenID);
    newLabel = label;
 
-   bool shortcut = false;
-
-   if (mCommandIDHash[ID]->key.Length() > 0)
-      shortcut = true;
-   
-   // Mac OS X fixes
-  #ifdef __WXMAC__
-   if (newLabel.Length() > 0 && newLabel[0] == wxT('&'))
-      newLabel = newLabel.Right(newLabel.Length()-1);
-
-   if (shortcut == true &&
-       (mCommandIDHash[ID]->key.Length() < 5 ||
-        mCommandIDHash[ID]->key.Left(5) != wxT("Ctrl+")))
-      shortcut = false;
-  #endif
-   
-   if (shortcut) {
+   if (mCommandIDHash[ID]->key.Length() > 0) {
       dummy = dummy + wxT("\t") + mCommandIDHash[ID]->key;
    }
 
@@ -463,6 +448,7 @@ void CommandManager::AddItem(wxString name, wxString label_in,
                              CommandFunctor *callback, int checkmark)
 {
    wxString label = label_in;
+
    if( ItemShouldBeHidden( label ) )
       return;
 
@@ -483,23 +469,7 @@ void CommandManager::AddItem(wxString name, wxString label_in,
    dummy.Printf(wxT("%s%08d"), label.c_str(), mHiddenID);
    newLabel = label;
 
-   bool shortcut = false;
-
-   if (mCommandIDHash[ID]->key.Length() > 0)
-      shortcut = true;
-   
-   // Mac OS X fixes
-  #ifdef __WXMAC__
-   if (newLabel.Length() > 0 && newLabel[0] == wxT('&'))
-      newLabel = newLabel.Right(newLabel.Length()-1);
-
-   if (shortcut == true &&
-       (mCommandIDHash[ID]->key.Length() < 5 ||
-        mCommandIDHash[ID]->key.Left(5) != wxT("Ctrl+")))
-      shortcut = false;
-  #endif
-   
-   if (shortcut) {
+   if (mCommandIDHash[ID]->key.Length() > 0) {
       dummy = dummy + wxT("\t") + mCommandIDHash[ID]->key;
    }
 
@@ -510,6 +480,7 @@ void CommandManager::AddItem(wxString name, wxString label_in,
    else {
       CurrentMenu()->Append(ID, dummy);
    }
+
    CurrentMenu()->SetLabel(ID, newLabel);
    mbSeparatorAllowed = true;
 }
@@ -627,26 +598,29 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
 
    mCurrentID = NextIdentifier(mCurrentID);
    tmpEntry->id = mCurrentID;
+   tmpEntry->key = KeyStringNormalize(GetKey(label));
 
-  #ifdef __WXMAC__
+#if defined(__WXMAC__)
    if (name == wxT("Preferences"))
       tmpEntry->id = wxID_PREFERENCES;
    else if (name == wxT("Exit"))
       tmpEntry->id = wxID_EXIT;
    else if (name == wxT("About"))
       tmpEntry->id = wxID_ABOUT;
-  #endif
-  
+
+   // This converts the compiled in defaults.
+   tmpEntry->key.Replace(wxT("Ctrl+"), wxT("Cmd+"));
+#endif
+
+   tmpEntry->defaultKey = tmpEntry->key;
    tmpEntry->name = name;
    tmpEntry->label = label;
    tmpEntry->labelPrefix = labelPrefix;
    tmpEntry->menu = menu;
    tmpEntry->callback = callback;
    tmpEntry->multi = multi;
-   tmpEntry->index = index;
+   tmpEntry->index = index; 
    tmpEntry->count = count;
-   tmpEntry->key = GetKey(label);
-   tmpEntry->defaultKey = GetKey(label);
    tmpEntry->flags = mDefaultFlags;
    tmpEntry->mask = mDefaultMask;
    tmpEntry->enabled = true;
@@ -654,7 +628,7 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    // Key from preferences overridse the default key given
    gPrefs->SetPath(wxT("/NewKeys"));
    if (gPrefs->HasEntry(name)) {
-      tmpEntry->key = gPrefs->Read(name, GetKey(label));
+      tmpEntry->key = KeyStringNormalize(gPrefs->Read(name, tmpEntry->key));
    }
    gPrefs->SetPath(wxT("/"));
    
@@ -1069,8 +1043,11 @@ bool CommandManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       }
 
       if (mCommandNameHash[name]) {
-         mCommandNameHash[name]->key = key;
-         mXMLKeysRead++;
+         if (GetDefaultKeyFromName(name) != key) {
+wxPrintf(wxT("name %s def %s key %s\n"), name.c_str(), GetDefaultKeyFromName(name).c_str(), key.c_str());
+            mCommandNameHash[name]->key = KeyStringNormalize(key);
+            mXMLKeysRead++;
+         }
       }
    }
 

@@ -13,7 +13,20 @@
 #include <wx/event.h>
 #include <wx/string.h>
 
-wxString KeyEventToKeyString(wxKeyEvent &keyEvent);
+#if defined(__WXMAC__)
+#include <wx/accel.h>
+#include <wx/sysopt.h>
+
+#if !defined(wxMAC_SEPARATE_COMMAND_AND_CONTROL)
+#error Your wxWidgets library does not contains needed support.  You must
+#error apply the patch found in audacity/mac/wxMac-2.8.9.patch and rebuild
+#error wxWidgets.
+#endif
+#endif
+
+wxString KeyStringNormalize(const wxString & key);
+wxString KeyStringDisplay(const wxString & key);
+wxString KeyEventToKeyString(const wxKeyEvent & keyEvent);
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
