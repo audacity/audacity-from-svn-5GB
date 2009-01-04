@@ -199,7 +199,7 @@ static CHOICES setRates[] =
 
 static CHOICES sampRates[] =
 {
-   {wxT(""),  8000     },
+   {wxT(""),  8000    },
    {wxT(""), 11025    },
    {wxT(""), 12000    },
    {wxT(""), 16000    },
@@ -1627,7 +1627,7 @@ bool ExportMP3::Export(AudacityProject *project,
       title.Printf(selectionOnly ?
                    _("Exporting selected audio with VBR quality %s") :
                    _("Exporting entire file with VBR quality %s"),
-                   FindName(varRates, WXSIZEOF(setRates), brate).c_str());
+                   FindName(varRates, WXSIZEOF(varRates), brate).c_str());
    }
    else {
       title.Printf(selectionOnly ?
