@@ -132,6 +132,9 @@ void KeyConfigPrefs::PopulateOrExchange( ShuttleGui & S )
    S.EndHorizontalLay();
 
 #if defined(__WXMAC__)
+   if (!USE_SEPARATE_COMMAND_AND_CONTROL) {
+      S.AddFixedText( _("Your wxWidgets libraries do not have the necessary support for separate command and control key usage."));
+   }
    S.AddFixedText( _("Note: Pressing Cmd+Q will quit. All other keys are valid."));
 #endif
 
