@@ -18,9 +18,14 @@
 #include <wx/sysopt.h>
 
 #if !defined(wxMAC_SEPARATE_COMMAND_AND_CONTROL)
-#error Your wxWidgets library does not contains needed support.  You must
-#error apply the patch found in audacity/mac/wxMac-2.8.9.patch and rebuild
-#error wxWidgets.
+#warning Your wxWidgets library does not contains needed support.  You must
+#warning apply the patch found in audacity/mac/wxMac-2.8.9.patch and rebuild
+#warning wxWidgets.
+
+#define wxMAC_SEPARATE_COMMAND_AND_CONTROL _T("mac.separate-command-and-control")
+#define USE_SEPARATE_COMMAND_AND_CONTROL false
+#else
+#define USE_SEPARATE_COMMAND_AND_CONTROL true
 #endif
 #endif
 

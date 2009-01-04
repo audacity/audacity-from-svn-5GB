@@ -83,6 +83,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "FFT.h"
 #include "BlockFile.h"
 #include "ondemand/ODManager.h"
+#include "commands/Keyboard.h"
 //temporarilly commented out till it is added to all projects
 //#include "Profiler.h"
 
@@ -629,7 +630,8 @@ bool AudacityApp::OnInit()
    #endif
 
    #if defined(__WXMAC__)
-   wxSystemOptions::SetOption(wxMAC_SEPARATE_COMMAND_AND_CONTROL, true);
+   wxSystemOptions::SetOption(wxMAC_SEPARATE_COMMAND_AND_CONTROL,
+                              USE_SEPARATE_COMMAND_AND_CONTROL);
    #endif
 
    // Unused strings that we want to be translated, even though
