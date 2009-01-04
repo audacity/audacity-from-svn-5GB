@@ -290,7 +290,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
       
       if (windowCalledOnce)
       {
-         mProject = CreateNewAudacityProject(gParentWindow);
+         mProject = CreateNewAudacityProject();
       }
 
       windowCalledOnce = true;
@@ -313,7 +313,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
                /* i18n-hint: You do not need to translate "LOF" */
                wxMessageBox(_("Invalid window offset in LOF file."),
                             /* i18n-hint: You do not need to translate "LOF" */
-                            _("LOF Error"), wxOK | wxCENTRE, gParentWindow);
+                            _("LOF Error"), wxOK | wxCENTRE);
             }
                
             if (tok.HasMoreTokens())
@@ -334,7 +334,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
                /* i18n-hint: You do not need to translate "LOF" */
                wxMessageBox(_("Invalid duration in LOF file."),
                             /* i18n-hint: You do not need to translate "LOF" */
-                            _("LOF Error"), wxOK | wxCENTRE, gParentWindow);
+                            _("LOF Error"), wxOK | wxCENTRE);
             }
          }     // End if statement
 
@@ -415,7 +415,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
                    targetfile.AfterLast(wxT('.')).IsSameAs(wxT("midi"), false))
                {
                   wxMessageBox(_("MIDI tracks cannot be offset individually, only audio files can be."),
-                               _("LOF Error"), wxOK | wxCENTRE, gParentWindow);
+                               _("LOF Error"), wxOK | wxCENTRE);
                }
                else
 #endif
@@ -436,7 +436,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
             {
                /* i18n-hint: You do not need to translate "LOF" */
                wxMessageBox(_("Invalid track offset in LOF file."),
-                            _("LOF Error"), wxOK | wxCENTRE, gParentWindow);
+                            _("LOF Error"), wxOK | wxCENTRE);
             }
          }     // End if statement
       }     // End if statement
