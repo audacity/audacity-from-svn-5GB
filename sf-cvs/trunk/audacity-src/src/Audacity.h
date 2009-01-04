@@ -50,8 +50,6 @@
 
 class wxWindow;
 
-extern wxWindow *gParentWindow;
-
 void QuitAudacity(bool bForce);
 void QuitAudacity();
 

@@ -30,8 +30,6 @@ void SaveWindowSize();
 void QuitAudacity(bool bForce);
 void QuitAudacity();
 
-extern wxFrame *gParentFrame;
-
 extern bool gIsQuitting;
 
 // Asynchronous open

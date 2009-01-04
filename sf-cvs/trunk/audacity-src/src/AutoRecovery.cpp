@@ -203,7 +203,7 @@ static bool RecoverAllProjects(AudacityProject** pproj)
       } else
       {
          // Create new project window
-         proj = CreateNewAudacityProject(gParentWindow);
+         proj = CreateNewAudacityProject();
       }
 
       // Open project. When an auto-save file has been opened successfully,

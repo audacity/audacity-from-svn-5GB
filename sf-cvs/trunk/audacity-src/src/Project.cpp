@@ -390,7 +390,7 @@ bool ImportXMLTagHandler::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
    return true; //v result from Import?
 };
 
-AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
+AudacityProject *CreateNewAudacityProject()
 {
    bool bMaximized;
    wxRect wndRect;
@@ -398,8 +398,9 @@ AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
    GetNextWindowPlacement(&wndRect, &bMaximized);
 
    //Create and show a new project
-   AudacityProject *p = new AudacityProject(parentWindow, -1,
-                                            wxPoint(wndRect.x, wndRect.y), wxSize(wndRect.width, wndRect.height));
+   AudacityProject *p = new AudacityProject(NULL, -1,
+                                            wxPoint(wndRect.x, wndRect.y),
+                                            wxSize(wndRect.width, wndRect.height));
 
    gAudacityProjects.Add(p);
    
@@ -1718,6 +1719,12 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    
    if (gAudacityProjects.IsEmpty() && !gIsQuitting) {
       bool quitOnClose;
+
+      // LL:  On the Mac, we don't want the logger open after all projects
+      //      have been closed since it's menu will show instead of the
+      //      common menu.
+      wxGetApp().mLogger->Show(false);
+      
 #ifdef __WXMAC__
       bool defaultQuitOnClose = false;
 #else
@@ -1730,7 +1737,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
          QuitAudacity();
       else {
 #if !defined(__WXMAC__)
-         CreateNewAudacityProject(gParentWindow);
+         CreateNewAudacityProject();
 #endif
       }
    }
@@ -1899,7 +1906,7 @@ void AudacityProject::OpenFiles(AudacityProject *proj)
       // project directory, etc.
       if (!proj || proj->mDirty || !proj->mTracks->IsEmpty()) {
          // Open in a new window
-         proj = CreateNewAudacityProject(gParentWindow);
+         proj = CreateNewAudacityProject();
       }
       // This project is clean; it's never been touched.  Therefore
       // all relevant member variables are in their initial state,
