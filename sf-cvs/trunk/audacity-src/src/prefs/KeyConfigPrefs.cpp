@@ -68,18 +68,32 @@ PrefsPanel(parent)
 
 void KeyConfigPrefs::Populate( )
 {
-   // First any pre-processing for constructing the GUI.
-   // These steps set up the pointer to the command manager...
-   AudacityProject *project = GetActiveProject();
-   if (!project)
-      return;
-   mManager = project->GetCommandManager();
-
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
    // Use 'eIsCreatingFromPrefs' so that the GUI is 
    // initialised with values from gPrefs.
    ShuttleGui S(this, eIsCreatingFromPrefs);
+
+   // First any pre-processing for constructing the GUI.
+   // These steps set up the pointer to the command manager...
+   AudacityProject *project = GetActiveProject();
+   if (!project) {
+
+      S.StartVerticalLay(true);
+      {
+         S.StartStatic(wxEmptyString, true);
+         {
+            S.AddTitle(_("Keyboard preferences currently unavailable."));
+            S.AddTitle(_("Open a new project to modify keyboard shortcuts."));
+         }
+         S.EndStatic();
+      }
+      S.EndVerticalLay();
+
+      return;
+   }
+   mManager = project->GetCommandManager();
+
    PopulateOrExchange(S);
    // ----------------------- End of main section --------------
    CreateList();
@@ -107,7 +121,7 @@ void KeyConfigPrefs::PopulateOrExchange( ShuttleGui & S )
       // the sizer scheme later...
       mCurrentComboText = new SysKeyTextCtrl(
             this, CurrentComboID, wxT(""),
-            wxDefaultPosition, wxSize(115, -1), 0 );
+            wxDefaultPosition, wxSize(300, -1), 0 );
 
       // AddWindow is a generic 'Add' for ShuttleGui.
       // It allows us to add 'foreign' controls.
@@ -116,9 +130,11 @@ void KeyConfigPrefs::PopulateOrExchange( ShuttleGui & S )
       S.Id( ClearButtonID ).AddButton( _("&Clear"));
    }
    S.EndHorizontalLay();
-   #ifdef __WXMAC__
+
+#if defined(__WXMAC__)
    S.AddFixedText( _("Note: Pressing Cmd+Q will quit. All other keys are valid."));
-   #endif
+#endif
+
    S.StartHorizontalLay( wxALIGN_LEFT, 0);
    {
       S.Id( AssignDefaultsButtonID ).AddButton( _("&Defaults"));
@@ -139,17 +155,14 @@ void KeyConfigPrefs::CreateList()
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
    mList->InsertColumn(BlankColumn,    wxT(""), wxLIST_FORMAT_LEFT );
-   mList->InsertColumn(CommandColumn,  _NoAcc("&Command"),  wxLIST_FORMAT_RIGHT );
+   mList->InsertColumn(CommandColumn,  _NoAcc("&Command"),  wxLIST_FORMAT_LEFT );
    mList->InsertColumn(KeyComboColumn, _("Key Combination"), wxLIST_FORMAT_LEFT );
 
    RepopulateBindingsList();
 
    mList->SetColumnWidth( BlankColumn, 0 ); // First column width is zero, to hide it.
-   // Would like to use wxLIST_AUTOSIZE but
-   // wxWindows does not look at the size of column heading.
-   mList->SetColumnWidth( CommandColumn, 250 );
-//   mList->SetColumnWidth( CommandColumn, wxLIST_AUTOSIZE );
-   mList->SetColumnWidth( KeyComboColumn, 115 );
+   mList->SetColumnWidth( CommandColumn, wxLIST_AUTOSIZE );
+   mList->SetColumnWidth( KeyComboColumn, 250 );
 }
 
 void KeyConfigPrefs::OnSave(wxCommandEvent& event)
@@ -373,14 +386,7 @@ void KeyConfigPrefs::RepopulateBindingsList()
          label = mManager->GetPrefixedLabelFromName(mNames[i]);
       
       label = wxMenuItem::GetLabelFromText(label.BeforeFirst('\t'));
-      wxString key = mManager->GetKeyFromName(mNames[i]);
-
-      #ifdef __WXMAC__
-      // Replace Ctrl with Cmd
-      if (key.Length() >= 5 && key.Left(5)==wxT("Ctrl+")) {
-         key = wxT("Cmd+")+key.Right(key.Length()-5);
-      }
-      #endif
+      wxString key = KeyStringDisplay(mManager->GetKeyFromName(mNames[i]));
 
       mList->SetItem( i, CommandColumn, label );
       mList->SetItem( i, KeyComboColumn, key );
@@ -390,9 +396,11 @@ void KeyConfigPrefs::RepopulateBindingsList()
 void KeyConfigPrefs::OnDefaults(wxCommandEvent& event)
 {
    unsigned int i;
-
-   for(i=0; i<mNames.GetCount(); i++) {
-      mList->SetItem( i, KeyComboColumn, mManager->GetDefaultKeyFromName(mNames[i]) );
+ 
+   for (i=0; i<mNames.GetCount(); i++) {
+      mList->SetItem(i,
+                     KeyComboColumn,
+                     KeyStringDisplay(mManager->GetDefaultKeyFromName(mNames[i])));
    }
 }
 
@@ -417,19 +425,12 @@ bool KeyConfigPrefs::Apply()
       item.SetId( i );
       mList->GetItem(item);
       wxString name = mNames[i];
-      wxString key = item.m_text;
+      wxString key = KeyStringNormalize(item.m_text);
 
-      #ifdef __WXMAC__
-      // Replace Cmd with Ctrl
-      if (key.Length() >= 4 && key.Left(4)==wxT("Cmd+")) {
-         key = wxT("Ctrl+")+key.Right(key.Length()-4);
-      }
-      #endif
-
-      wxString defaultKey = mManager->GetDefaultKeyFromName(name);
+      wxString defaultKey = KeyStringNormalize(mManager->GetDefaultKeyFromName(name));
 
       if (gPrefs->HasEntry(name)) {
-         wxString oldKey = gPrefs->Read(name, key);
+         wxString oldKey = KeyStringNormalize(gPrefs->Read(name, key));
          if (oldKey != key)  {
             gPrefs->Write(name, key);
          }
@@ -479,7 +480,7 @@ SysKeyTextCtrl::~SysKeyTextCtrl()
 //DM: On Linux, now it works except for Ctrl+3...Ctrl+8 (April/2003)
 void SysKeyTextCtrl::OnKey(wxKeyEvent& event)
 {
-   SetValue(KeyEventToKeyString(event));
+   SetValue(KeyStringDisplay(KeyEventToKeyString(event)));
 }
 
 //BG: Trap WM_CHAR

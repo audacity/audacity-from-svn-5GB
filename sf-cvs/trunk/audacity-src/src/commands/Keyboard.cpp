@@ -13,36 +13,88 @@
 
 #include "Keyboard.h"
 
-wxString KeyEventToKeyString(wxKeyEvent &event)
+wxString KeyStringNormalize(const wxString & key)
+{
+#if defined(__WXMAC__)
+   wxString newkey;
+
+   if (wxSystemOptions::GetOptionInt(wxMAC_SEPARATE_COMMAND_AND_CONTROL)) {
+      if (key.Contains(wxT("Ctrl+")) || key.Contains(wxT("Control+"))) {
+         newkey += wxT("Ctrl+");
+      }
+
+      if (key.Contains(wxT("Alt+")) || key.Contains(wxT("Option+"))) {
+         newkey += wxT("Alt+");
+      }
+
+      if (key.Contains(wxT("Shift+"))) {
+         newkey += wxT("Shift+");
+      }
+
+      if (key.Contains(wxT("Cmd+")) || key.Contains(wxT("Command+"))) {
+         newkey += wxT("Cmd+");
+      }
+   }
+   else {
+      if (key.Contains(wxT("Alt+")) || key.Contains(wxT("Option+"))) {
+         newkey += wxT("Alt+");
+      }
+
+      if (key.Contains(wxT("Shift+"))) {
+         newkey += wxT("Shift+");
+      }
+
+      if (key.Contains(wxT("Ctrl+")) || key.Contains(wxT("Control+")) ||
+          key.Contains(wxT("Cmd+")) || key.Contains(wxT("Command+"))) {
+          newkey += wxT("Ctrl+");
+      }
+   }
+
+   return newkey + key.AfterLast(wxT('+'));
+#else
+   return key;
+#endif
+}
+
+wxString KeyStringDisplay(const wxString & key)
+{
+   wxString newkey = KeyStringNormalize(key);
+
+#if defined(__WXMAC__)
+   if (wxSystemOptions::GetOptionInt(wxMAC_SEPARATE_COMMAND_AND_CONTROL)) {
+      newkey.Replace(wxT("Ctrl+"), wxT("Control+"));
+      newkey.Replace(wxT("Alt+"), wxT("Option+"));
+      newkey.Replace(wxT("Cmd+"), wxT("Command+"));
+   }
+   else {
+      newkey.Replace(wxT("Ctrl+"), wxT("Command+"));
+      newkey.Replace(wxT("Alt+"), wxT("Option+"));
+   }
+#endif
+
+   return newkey;
+}
+
+wxString KeyEventToKeyString(const wxKeyEvent & event)
 {
    wxString newStr = wxT("");
    
    long key = event.GetKeyCode();
-   
-   if(event.ControlDown())
+
+   if (event.ControlDown())
       newStr += wxT("Ctrl+");
    
-   if(event.AltDown())
+   if (event.AltDown())
       newStr += wxT("Alt+");
    
-   if(event.ShiftDown())
+   if (event.ShiftDown())
       newStr += wxT("Shift+");
 
-   if(event.MetaDown()) {
-      #ifdef __WXMAC__
+#if defined(__WXMAC__)
+   if (event.MetaDown())
       newStr += wxT("Cmd+");
-      #endif
-   }
+#endif
 
-   #if 0
-   //BG: Don't allow noncombo letters to be bound
-   if(((!event.ControlDown() && !event.AltDown() && !event.ShiftDown()) &&
-       (key >= 33 && key <= 126)) ||
-      ((!event.ControlDown() && !event.AltDown() &&
-        event.ShiftDown()) && (key >= 33 && key <= 126)))
-      return wxT("");
-   #endif
-   
    if (event.ControlDown() && key >= 1 && key <= 26)
       newStr += (wxChar)(64 + key);
    else if (key >= 33 && key <= 126)
@@ -58,7 +110,7 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
          newStr += wxT("Delete");
          break;
       case WXK_SPACE:
-         newStr += wxT("Spacebar");
+         newStr += wxT("Space");
          break;
       case WXK_TAB:
          newStr += wxT("Tab");
@@ -66,14 +118,12 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
       case WXK_RETURN:
          newStr += wxT("Return");
          break;
-#if !wxCHECK_VERSION(2, 7, 0)
       case WXK_PRIOR:
          newStr += wxT("PageUp");
          break;
       case WXK_NEXT:
          newStr += wxT("PageDown");
          break;
-#endif
       case WXK_END:
          newStr += wxT("End");
          break;
@@ -215,12 +265,6 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
       case WXK_F24:
          newStr += wxT("F24");
          break;
-      case WXK_PAGEUP:
-         newStr += wxT("PageUp");
-         break;
-      case WXK_PAGEDOWN:
-         newStr += wxT("PageDown");
-         break;
       case WXK_NUMPAD_ENTER:
          newStr += wxT("NUMPAD_ENTER");
          break;
@@ -251,14 +295,6 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
       case WXK_NUMPAD_DOWN:
          newStr += wxT("NUMPAD_DOWN");
          break;
-#if !wxCHECK_VERSION(2, 7, 0)
-      case WXK_NUMPAD_PRIOR:
-         newStr += wxT("NUMPAD_PAGEUP");
-         break;
-      case WXK_NUMPAD_NEXT:
-         newStr += wxT("NUMPAD_PAGEDOWN");
-         break;
-#endif
       case WXK_NUMPAD_PAGEUP:
          newStr += wxT("NUMPAD_PAGEUP");
          break;
@@ -300,7 +336,7 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
       }
    }
 
-   return newStr;
+   return KeyStringNormalize(newStr);
 }
 
 
