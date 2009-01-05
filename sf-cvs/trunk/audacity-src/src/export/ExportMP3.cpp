@@ -731,12 +731,18 @@ typedef void beVersion_t(be_version *);
 class MP3Exporter
 {
 public:
+   enum AskUser
+   {
+      No,
+      Maybe,
+      Yes
+   };
 
    MP3Exporter();
    virtual ~MP3Exporter();
 
    bool FindLibrary(wxWindow *parent);
-   bool LoadLibrary(wxWindow *parent, bool askuser);
+   bool LoadLibrary(wxWindow *parent, AskUser askuser);
    bool ValidLibraryLoaded();
 
    /* These global settings keep state over the life of the object */
@@ -782,6 +788,10 @@ private:
    wxString mLibPath;
    wxDynamicLibrary lame_lib;
    bool mLibraryLoaded;
+
+#if defined(__WXMSW__)
+   wxString mBladeVersion;
+#endif
 
    bool mEncoding;
    int mMode;
@@ -891,7 +901,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
    return true;
 }
 
-bool MP3Exporter::LoadLibrary(wxWindow *parent, bool askuser)
+bool MP3Exporter::LoadLibrary(wxWindow *parent, AskUser askuser)
 {
    wxLogNull logNo;
 
@@ -899,6 +909,10 @@ bool MP3Exporter::LoadLibrary(wxWindow *parent, bool askuser)
       FreeLibrary();
       mLibraryLoaded = false;
    }
+
+#if defined(__WXMSW__)
+   mBladeVersion.Empty();
+#endif
 
    // First try loading it from a previously located path
    if (!mLibPath.IsEmpty()) {
@@ -920,13 +934,19 @@ bool MP3Exporter::LoadLibrary(wxWindow *parent, bool askuser)
 
    // If not successful, must ask the user
    if (!ValidLibraryLoaded()) {
-      if (askuser && FindLibrary(parent)) {
+      if (askuser == MP3Exporter::Maybe && FindLibrary(parent)) {
          mLibraryLoaded = InitLibrary(mLibPath);
       }
    }
 
    // Oh well, just give up
    if (!ValidLibraryLoaded()) {
+#if defined(__WXMSW__)
+      if (askuser && !mBladeVersion.IsEmpty()) {
+         wxMessageBox(mBladeVersion);
+      }
+#endif
+
       return false;
    }
 
@@ -1044,14 +1064,15 @@ bool MP3Exporter::InitLibrary(wxString libpath)
    {
 #if defined(__WXMSW__)
       if (beVersion) {
-         wxString m;
          be_version v;
          beVersion(&v);
 
-         m.Printf(_("You have selected a lame_enc.dll at version %d.%d.  Unfortunately, it doesn't include the necessary support required by version 1.37 or greater of Audacity."),
-                  v.byMajorVersion,
-                  v.byMinorVersion);
-         wxMessageBox(m);
+         mBladeVersion.Printf(_("You are linking to lame_enc.dll v%d.%d. This version is not compatible with Audacity v%d.%d.%d. Please download the latest version."),
+                              v.byMajorVersion,
+                              v.byMinorVersion,
+                              AUDACITY_VERSION,
+                              AUDACITY_RELEASE,
+                              AUDACITY_REVISION);
       }
 #endif
 
@@ -1491,7 +1512,7 @@ bool ExportMP3::Export(AudacityProject *project,
    TrackList *tracks = project->GetTracks();
    MP3Exporter exporter;
 
-   if (!exporter.LoadLibrary(parent, true)) {
+   if (!exporter.LoadLibrary(parent, MP3Exporter::Maybe)) {
       wxMessageBox(_("Could not open MP3 encoding library!"));
       gPrefs->Write(wxT("/MP3/MP3LibPath"), wxString(wxT("")));
 
@@ -1940,7 +1961,7 @@ wxString GetMP3Version(wxWindow *parent, bool prompt)
       exporter.FindLibrary(parent);
    }
 
-   if (exporter.LoadLibrary(parent, false)) {
+   if (exporter.LoadLibrary(parent, prompt ? MP3Exporter::Yes : MP3Exporter::No)) {
       versionString = exporter.GetLibraryVersion();
    }
 
