@@ -64,6 +64,21 @@ ProgressDialog::ProgressDialog(const wxString & title, const wxString & message)
    wxWindow *w;
    wxSize ds;
 
+   // There's a problem where the focus is not returned to the window that had
+   // it before creating this object.  The reason is not entirely understood
+   // but if the dialog window never get shown then the focus does not get
+   // returned to the original window.
+   //
+   // This never used to be a problem for us because we didn't actually create
+   // the wxProgressDialog until after the elapsed time reached .5 seconds.
+   // This also meant that the app modal state was not established until .5
+   // seconds had passed.  This left a small window where the user would be able
+   // to interact with the main window and possibly do things like get two
+   // effects running at the same time.
+   //
+   // So, we manually restore the focus when this object is deleted.
+   mParent = FindFocus();
+
    v = new wxBoxSizer(wxVERTICAL);
 
    mMessage = new wxStaticText(this,
@@ -177,6 +192,11 @@ ProgressDialog::~ProgressDialog()
    if (mDisable)
    {
       delete mDisable;
+
+   }
+
+   if (mParent) {
+      mParent->SetFocus();
    }
 }
 
