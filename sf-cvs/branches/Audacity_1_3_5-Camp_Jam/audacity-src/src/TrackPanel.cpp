@@ -4937,18 +4937,20 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    r = trackRect;
 
    if (t->GetKind() == Track::Wave && !t->GetMinimized()) {
-      int offset;
+      // No track descriptive text for Jamling.
+      #if ((AUDACITY_BRANDING != BRAND_JAMLING__EASY) && (AUDACITY_BRANDING != BRAND_JAMLING__FULL))
+         int offset;
 
-      offset = 8;
-      
-      if (r.y + 22 + 12 < rec.y + rec.height - 19)
-         dc->DrawText(TrackSubText(t), r.x + offset, r.y + 22);
+         offset = 8;
          
-      if (r.y + 38 + 12 < rec.y + rec.height - 19)
-         dc->DrawText(GetSampleFormatStr
-                      (((WaveTrack *) t)->GetSampleFormat()), r.x + offset,
-                      r.y + 38);
-                      
+         if (r.y + 22 + 12 < rec.y + rec.height - 19)
+            dc->DrawText(TrackSubText(t), r.x + offset, r.y + 22);
+            
+         if (r.y + 38 + 12 < rec.y + rec.height - 19)
+            dc->DrawText(GetSampleFormatStr
+                         (((WaveTrack *) t)->GetSampleFormat()), r.x + offset,
+                         r.y + 38);
+      #endif
    } else if (t->GetKind() == Track::Note) {
       wxRect midiRect;
       mTrackInfo.GetTrackControlsRect(trackRect, midiRect);
@@ -6853,7 +6855,12 @@ void TrackInfo::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo, bool b
       dest.x += 36 + 8;
 #else
    dest.x = r.x ;
-   dest.y = r.y + 50;
+   // No descriptive text for Jamling, so move the mute/solos up. 
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      dest.y = r.y + 22; // magic number from call to draw TrackSubText()
+   #else
+      dest.y = r.y + 50;
+   #endif
    dest.width = 48;
    dest.height = 16;
 
@@ -6872,7 +6879,11 @@ void TrackInfo::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo, bool b
 void TrackInfo::GetGainRect(const wxRect r, wxRect & dest) const
 {
    dest.x = r.x + 7;
-   dest.y = r.y + 70;
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      dest.y = r.y + 70 - 28; // Move it up because there's no descriptive text. 
+   #else
+      dest.y = r.y + 70;
+   #endif
    dest.width = 84;
    dest.height = 25;
 }
@@ -6880,7 +6891,11 @@ void TrackInfo::GetGainRect(const wxRect r, wxRect & dest) const
 void TrackInfo::GetPanRect(const wxRect r, wxRect & dest) const
 {
    dest.x = r.x + 7;
-   dest.y = r.y + 100;
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      dest.y = r.y + 100 - 28; // Move it up because there's no descriptive text. 
+   #else
+      dest.y = r.y + 100;
+   #endif
    dest.width = 84;
    dest.height = 25;
 }
@@ -6900,11 +6915,15 @@ void TrackInfo::DrawBordersWithin(wxDC * dc, const wxRect r, bool bHasMuteSolo )
    dc->DrawLine(r.x, r.y + 16, GetTitleWidth(), r.y + 16);      // title bar
    dc->DrawLine(r.x + 16, r.y, r.x + 16, r.y + 16);     // close box
 
-   if( bHasMuteSolo && (r.height > (66+18) ))
+   unsigned int nYOffset = 50; // magic number from original, which ignores GetMuteSoloRect...
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      nYOffset = 22;
+   #endif
+   if( bHasMuteSolo && (r.height > (nYOffset + 16 + 18) ))
    {
-      dc->DrawLine(r.x, r.y + 50, GetTitleWidth(), r.y + 50);  // bevel above mute/solo
-      dc->DrawLine(r.x+48 , r.y+50, r.x+48, r.y + 66);         // line between mute/solo
-      dc->DrawLine(r.x, r.y + 66, GetTitleWidth(), r.y + 66);  // bevel below mute/solo
+      dc->DrawLine(r.x, r.y + nYOffset, GetTitleWidth(), r.y + nYOffset);  // line above mute/solo
+      dc->DrawLine(r.x+48 , r.y + nYOffset, r.x+48, r.y + nYOffset + 16);         // line between mute/solo
+      dc->DrawLine(r.x, r.y + nYOffset + 16, GetTitleWidth(), r.y + nYOffset + 16);  // line below mute/solo
    }
 
    dc->DrawLine(r.x, r.y + r.height - 19, GetTitleWidth(), r.y + r.height - 19);  // minimize bar
@@ -6946,11 +6965,15 @@ void TrackInfo::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
 
    if( bHasMuteSolo )
    {
-      fill=wxRect( r.x+1, r.y+17, fill.width - 39, 32); 
-      AColor::BevelTrackInfo( *dc, true, fill );
+      // This code is so dependent on magic numbers that don't apply for Jamling, 
+      // that it's easier to just remove these extra bevels. 
+      #if ((AUDACITY_BRANDING != BRAND_JAMLING__EASY) && (AUDACITY_BRANDING != BRAND_JAMLING__FULL))
+         fill=wxRect( r.x+1, r.y+17, fill.width - 39, 32); 
+         AColor::BevelTrackInfo( *dc, true, fill );
 
-      fill=wxRect( r.x+1, r.y+67, fill.width, r.height-87); 
-      AColor::BevelTrackInfo( *dc, true, fill );
+         fill=wxRect( r.x+1, r.y+67, fill.width, r.height-87); 
+         AColor::BevelTrackInfo( *dc, true, fill );
+      #endif
    }
    else
    {
