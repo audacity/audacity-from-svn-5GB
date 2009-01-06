@@ -576,7 +576,7 @@ public:
             }
             S.Id(ID_BROWSE).AddButton(_("Browse..."), wxALIGN_RIGHT);
             S.AddVariableText(_("To get a free copy of Lame, click here -->"), true);
-            S.Id(ID_DLOAD).AddButton(_("Download..."), wxALIGN_RIGHT);
+            S.Id(ID_DLOAD).AddButton(_("Download"), wxALIGN_RIGHT);
          }
          S.EndMultiColumn();
 
