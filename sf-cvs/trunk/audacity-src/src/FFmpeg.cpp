@@ -207,7 +207,7 @@ public:
             }
             S.Id(ID_FFMPEG_BROWSE).AddButton(_("Browse..."), wxALIGN_RIGHT);
             S.AddVariableText(_("To get a free copy of FFmpeg, click here -->"), true);
-            S.Id(ID_FFMPEG_DLOAD).AddButton(_("Download..."), wxALIGN_RIGHT);
+            S.Id(ID_FFMPEG_DLOAD).AddButton(_("Download"), wxALIGN_RIGHT);
          }
          S.EndMultiColumn();
 
