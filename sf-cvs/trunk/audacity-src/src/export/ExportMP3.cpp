@@ -1067,7 +1067,7 @@ bool MP3Exporter::InitLibrary(wxString libpath)
          be_version v;
          beVersion(&v);
 
-         mBladeVersion.Printf(_("You are linking to lame_enc.dll v%d.%d. This version is not compatible with Audacity v%d.%d.%d. Please download the latest version."),
+         mBladeVersion.Printf(_("You are linking to lame_enc.dll v%d.%d. This version is not compatible with Audacity %d.%d.%d.\nPlease download the latest version of the LAME MP3 library."),
                               v.byMajorVersion,
                               v.byMinorVersion,
                               AUDACITY_VERSION,
@@ -1955,7 +1955,7 @@ ExportPlugin *New_ExportMP3()
 wxString GetMP3Version(wxWindow *parent, bool prompt)
 {
    MP3Exporter exporter;
-   wxString versionString = _("MP3 exporting plugin not found");
+   wxString versionString = _("MP3 export library not found");
 
    if (prompt) {
       exporter.FindLibrary(parent);
