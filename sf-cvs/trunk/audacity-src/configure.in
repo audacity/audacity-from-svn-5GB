@@ -289,7 +289,9 @@ dnl-------------------------------------------------------------
 dnl Optional library support. Lots of things we could use, but 
 dnl can do without if they aren't available.
 dnl-------------------------------------------------------------
-LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSBSMS LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG LIBLRDF SLV2 REDLAND PORTSMF"
+dnl LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSBSMS LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG LIBLRDF SLV2 REDLAND PORTSMF"
+dnl disable plugin categorisation and LV2 libs for 1.3.7 release
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSBSMS LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG PORTSMF"
 
 AC_MSG_NOTICE([Determining what libraries are available in this tree and on the system])
 
@@ -307,9 +309,9 @@ AUDACITY_CHECKLIB_LIBNYQUIST
 AUDACITY_CHECKLIB_LIBVAMP
 AUDACITY_CHECKLIB_LIBTWOLAME
 AUDACITY_CHECKLIB_FFMPEG
-AUDACITY_CHECKLIB_REDLAND
-AUDACITY_CHECKLIB_SLV2
-AUDACITY_CHECKLIB_LIBLRDF
+dnl AUDACITY_CHECKLIB_REDLAND
+dnl AUDACITY_CHECKLIB_SLV2
+dnl AUDACITY_CHECKLIB_LIBLRDF
 AUDACITY_CHECKLIB_PORTSMF
 
 dnl Decide what libraries to build with, and whether to use system or local libraries
@@ -406,11 +408,11 @@ if ( test "$LIBRESAMPLE_USE_LOCAL" = "yes" || test "$LIBRESAMPLE_USE_SYSTEM" = "
    fi
 fi
 
-if ( test "$SLV2_USE_LOCAL" != "yes" && test "$LIBLRDF_USE_LOCAL" != "yes") && test "$REDLAND_USE_LOCAL" = "yes" ; then
-   AC_MSG_NOTICE([Not building local Redland library since we don't use the local SLV2 or liblrdf libraries])
-   REDLAND_USE_LOCAL=no
-   REDLAND_USE_SYSTEM=no
-fi
+dnl if ( test "$SLV2_USE_LOCAL" != "yes" && test "$LIBLRDF_USE_LOCAL" != "yes") && test "$REDLAND_USE_LOCAL" = "yes" ; then
+dnl   AC_MSG_NOTICE([Not building local Redland library since we don't use the local SLV2 or liblrdf libraries])
+dnl   REDLAND_USE_LOCAL=no
+dnl   REDLAND_USE_SYSTEM=no
+dnl fi
 
 dnl If we are using a local copy of liblrdf then some extra files need to be
 dnl installed on the system, so we need to add the targets to
