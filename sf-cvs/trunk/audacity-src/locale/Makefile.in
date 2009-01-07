@@ -15,6 +15,7 @@ LINGUAS=af ar bn bg bs ca ca@valencia cb cs cy da de el es eu fa fi fr ga gl he 
 
 prefix=@prefix@
 DATADIR=@datadir@
+DATAROOTDIR=@datarootdir@
 # this is where locale-dependant stuff (i.e. .mo files) goes
 LOCALEDIR=@localedir@
 INSTALL=@INSTALL@
