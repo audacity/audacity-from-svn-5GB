@@ -118,10 +118,10 @@ wxString KeyEventToKeyString(const wxKeyEvent & event)
       case WXK_RETURN:
          newStr += wxT("Return");
          break;
-      case WXK_PRIOR:
+      case WXK_PAGEUP:
          newStr += wxT("PageUp");
          break;
-      case WXK_NEXT:
+      case WXK_PAGEDOWN:
          newStr += wxT("PageDown");
          break;
       case WXK_END:
