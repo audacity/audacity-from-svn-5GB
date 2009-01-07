@@ -301,7 +301,7 @@ wxString HelpTextBuiltIn( const wxString & Key )
                      <img src=\"") + strImagesDir + _("LineIn1.jpg\"> &nbsp; &nbsp; &nbsp; \
                      <img src=\"") + strImagesDir + _("LineIn2.jpg\"></li> \
                   <li>If you're using a normal 1/4” instrument cable for your guitar, bass, electronic drums, \
-                     etc. you'll need an adapter like this, available for about 4 bucks at Radio Shack:\
+                     etc. you'll need an adapter like this, available for about 4 bucks:\
                      <img src=\"") + strImagesDir + _("Adapter.jpg\"></li> \
                   <li>Once you have the right gear, you'll need to change the default audio input: \
                      <ul><li>For PC, <i>Start &gt; Control Panel &gt; Sounds and Audio Devices &gt; \
