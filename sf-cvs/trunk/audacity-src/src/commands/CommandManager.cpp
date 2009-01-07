@@ -1044,7 +1044,6 @@ bool CommandManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 
       if (mCommandNameHash[name]) {
          if (GetDefaultKeyFromName(name) != key) {
-wxPrintf(wxT("name %s def %s key %s\n"), name.c_str(), GetDefaultKeyFromName(name).c_str(), key.c_str());
             mCommandNameHash[name]->key = KeyStringNormalize(key);
             mXMLKeysRead++;
          }
