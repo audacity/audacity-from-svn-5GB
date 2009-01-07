@@ -907,6 +907,14 @@ void TrackPanel::DoDrawIndicator(wxDC & dc)
       {
          x = GetLeftOffset() + int ( ( mLastIndicator - mViewInfo->h) * mViewInfo->zoom );
 
+         // LL:  Keep from trying to blit outsize of the source DC.  This results in a crash on
+         //      OSX due to allocating memory using negative sizes and can be caused by resizing
+         //      the project window while recording or playing.
+         int w = dc.GetSize().GetWidth();
+         if (x >= w) {
+            x = w - 1;
+         }
+
          dc.Blit( x, 0, 1, mBacking->GetHeight(), &mBackingDC, x, 0 );
       }
 
