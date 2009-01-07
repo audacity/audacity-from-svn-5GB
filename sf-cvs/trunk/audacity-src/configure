@@ -709,12 +709,6 @@ AVCODEC_CFLAGS
 AVCODEC_LIBS
 AVFORMAT_CFLAGS
 AVFORMAT_LIBS
-REDLAND_CFLAGS
-REDLAND_LIBS
-SLV2_CFLAGS
-SLV2_LIBS
-LIBLRDF_CFLAGS
-LIBLRDF_LIBS
 PORTSMF_CFLAGS
 PORTSMF_LIBS
 build
@@ -763,12 +757,6 @@ AVCODEC_CFLAGS
 AVCODEC_LIBS
 AVFORMAT_CFLAGS
 AVFORMAT_LIBS
-REDLAND_CFLAGS
-REDLAND_LIBS
-SLV2_CFLAGS
-SLV2_LIBS
-LIBLRDF_CFLAGS
-LIBLRDF_LIBS
 PORTSMF_CFLAGS
 PORTSMF_LIBS
 JACK_CFLAGS
@@ -1385,9 +1373,6 @@ Optional Packages:
   --with-libvamp          use libvamp for Vamp plug-in support [default=yes]
   --with-libtwolame       use libtwolame for MP2 export support
   --with-ffmpeg           use ffmpeg for import and export support
-  --with-redland          use Redland for reading RDF data
-  --with-slv2             use SLV2 for loading LV2 plugins
-  --with-liblrdf          use liblrdf for categorisation of LADSPA plugins
   --with-midi             use portSMF for Midi support
   --with-portmixer        compile with PortMixer [default=yes]
   --with-portaudio        which version of PortAudio to use (=[v18,v19])
@@ -1441,16 +1426,6 @@ Some influential environment variables:
               C compiler flags for AVFORMAT, overriding pkg-config
   AVFORMAT_LIBS
               linker flags for AVFORMAT, overriding pkg-config
-  REDLAND_CFLAGS
-              C compiler flags for REDLAND, overriding pkg-config
-  REDLAND_LIBS
-              linker flags for REDLAND, overriding pkg-config
-  SLV2_CFLAGS C compiler flags for SLV2, overriding pkg-config
-  SLV2_LIBS   linker flags for SLV2, overriding pkg-config
-  LIBLRDF_CFLAGS
-              C compiler flags for LIBLRDF, overriding pkg-config
-  LIBLRDF_LIBS
-              linker flags for LIBLRDF, overriding pkg-config
   PORTSMF_CFLAGS
               C compiler flags for PORTSMF, overriding pkg-config
   PORTSMF_LIBS
@@ -5455,7 +5430,7 @@ BUILD_LDFLAGS="$BUILD_LDFLAGS $WIDGETEXTRA_LIBS"
 CXXFLAGS="$CXXFLAGS $WIDGETEXTRA_CFLAGS"
 LIBSRC_BUILD="$LIBSRC_BUILD widgetextra"
 
-LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSBSMS LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG LIBLRDF SLV2 REDLAND PORTSMF"
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSBSMS LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG PORTSMF"
 
 { echo "$as_me:$LINENO: Determining what libraries are available in this tree and on the system" >&5
 echo "$as_me: Determining what libraries are available in this tree and on the system" >&6;}
@@ -8061,431 +8036,6 @@ echo "$as_me: ffmpeg library is NOT available in the local tree" >&6;}
 
 
 
-# Check whether --with-redland was given.
-if test "${with_redland+set}" = set; then
-  withval=$with_redland; REDLAND_ARGUMENT=$withval
-else
-  REDLAND_ARGUMENT="unspecified"
-fi
-
-
-
-pkg_failed=no
-{ echo "$as_me:$LINENO: checking for REDLAND" >&5
-echo $ECHO_N "checking for REDLAND... $ECHO_C" >&6; }
-
-if test -n "$REDLAND_CFLAGS"; then
-    pkg_cv_REDLAND_CFLAGS="$REDLAND_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"redland >= 1.0.7\"") >&5
-  ($PKG_CONFIG --exists --print-errors "redland >= 1.0.7") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_REDLAND_CFLAGS=`$PKG_CONFIG --cflags "redland >= 1.0.7" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-if test -n "$REDLAND_LIBS"; then
-    pkg_cv_REDLAND_LIBS="$REDLAND_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"redland >= 1.0.7\"") >&5
-  ($PKG_CONFIG --exists --print-errors "redland >= 1.0.7") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_REDLAND_LIBS=`$PKG_CONFIG --libs "redland >= 1.0.7" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        REDLAND_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "redland >= 1.0.7" 2>&1`
-        else
-	        REDLAND_PKG_ERRORS=`$PKG_CONFIG --print-errors "redland >= 1.0.7" 2>&1`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$REDLAND_PKG_ERRORS" >&5
-
-	{ echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-                redland_available_system="no"
-elif test $pkg_failed = untried; then
-	redland_available_system="no"
-else
-	REDLAND_CFLAGS=$pkg_cv_REDLAND_CFLAGS
-	REDLAND_LIBS=$pkg_cv_REDLAND_LIBS
-        { echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6; }
-	redland_available_system="yes"
-fi
-   REDLAND_SYSTEM_AVAILABLE="no"
-   if test "x$redland_available_system" = "xyes" ; then
-      REDLAND_SYSTEM_AVAILABLE="yes"
-      REDLAND_SYSTEM_LIBS="$REDLAND_LIBS"
-      REDLAND_SYSTEM_CXXFLAGS="$REDLAND_CFLAGS"
-      { echo "$as_me:$LINENO: Redland available as system library" >&5
-echo "$as_me: Redland available as system library" >&6;}
-   fi
-   if test "x$REDLAND_SYSTEM_AVAILABLE" = "xno" ; then
-      { echo "$as_me:$LINENO: Redland NOT available as system library" >&5
-echo "$as_me: Redland NOT available as system library" >&6;}
-   fi
-
-      as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/redland/librdf/librdf.h" | $as_tr_sh`
-{ echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/redland/librdf/librdf.h" >&5
-echo $ECHO_N "checking for ${srcdir}/lib-src/redland/librdf/librdf.h... $ECHO_C" >&6; }
-if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "${srcdir}/lib-src/redland/librdf/librdf.h"; then
-  eval "$as_ac_File=yes"
-else
-  eval "$as_ac_File=no"
-fi
-fi
-ac_res=`eval echo '${'$as_ac_File'}'`
-	       { echo "$as_me:$LINENO: result: $ac_res" >&5
-echo "${ECHO_T}$ac_res" >&6; }
-if test `eval echo '${'$as_ac_File'}'` = yes; then
-  librdf_h_found="yes"
-else
-  librdf_h_found="no"
-fi
-
-
-   if test "x$librdf_h_found" = "xyes" ; then
-      REDLAND_LOCAL_AVAILABLE="yes"
-      REDLAND_LOCAL_LIBS="librdf.a libraptor.a librasqal.a"
-      REDLAND_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/redland/librdf -I$(top_srcdir)/lib-src/redland/raptor/src -I$(top_srcdir)/lib-src/redland/rasqal/src'
-      if test ! -f lib-src/redland/Makefile ; then
-         REDLAND_LOCAL_CONFIG_SUBDIRS="lib-src/redland"
-      fi
-      if test "x$LIBEXPAT_SYSTEM_AVAILABLE" = "xno" ; then
-         # This is a horrible hack to keep from having to modify the raptor/configure.ac.  It makes
-         # the raptor configure think there's a full expat source tree.  But, all we have is expat.h
-         # tucked away in audacity/src/include.  So, we trick it...
-         ac_configure_args="$ac_configure_args \"--with-expat-source=dummy_magic\" CPPFLAGS='$CPPFLAGS -I../../../src/include'"
-      fi
-      ac_configure_args="$ac_configure_args RAPTOR_CFLAGS='-I../../redland/raptor/src' RAPTOR_LIBS='-L.. -L../.. -lraptor' REDLAND_CFLAGS='-I../../redland/raptor/src -I../../redland/rasqal/src -I../../redland/librdf' REDLAND_LIBS='-L.. -L../.. -lrdf -lraptor -lrasqal'"
-      { echo "$as_me:$LINENO: Redland is available in the local tree" >&5
-echo "$as_me: Redland is available in the local tree" >&6;}
-   else
-      REDLAND_LOCAL_AVAILABLE="no"
-      { echo "$as_me:$LINENO: Redland is NOT available in the local tree" >&5
-echo "$as_me: Redland is NOT available in the local tree" >&6;}
-   fi
-
-
-
-# Check whether --with-slv2 was given.
-if test "${with_slv2+set}" = set; then
-  withval=$with_slv2; SLV2_ARGUMENT=$withval
-else
-  SLV2_ARGUMENT="unspecified"
-fi
-
-
-   if false ; then
-
-cat >>confdefs.h <<\_ACEOF
-#define USE_SLV2 1
-_ACEOF
-
-   fi
-
-
-
-pkg_failed=no
-{ echo "$as_me:$LINENO: checking for SLV2" >&5
-echo $ECHO_N "checking for SLV2... $ECHO_C" >&6; }
-
-if test -n "$SLV2_CFLAGS"; then
-    pkg_cv_SLV2_CFLAGS="$SLV2_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"slv2 >= 0.6.0\"") >&5
-  ($PKG_CONFIG --exists --print-errors "slv2 >= 0.6.0") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_SLV2_CFLAGS=`$PKG_CONFIG --cflags "slv2 >= 0.6.0" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-if test -n "$SLV2_LIBS"; then
-    pkg_cv_SLV2_LIBS="$SLV2_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"slv2 >= 0.6.0\"") >&5
-  ($PKG_CONFIG --exists --print-errors "slv2 >= 0.6.0") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_SLV2_LIBS=`$PKG_CONFIG --libs "slv2 >= 0.6.0" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        SLV2_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "slv2 >= 0.6.0" 2>&1`
-        else
-	        SLV2_PKG_ERRORS=`$PKG_CONFIG --print-errors "slv2 >= 0.6.0" 2>&1`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$SLV2_PKG_ERRORS" >&5
-
-	{ echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-                slv2_available_system="no"
-elif test $pkg_failed = untried; then
-	slv2_available_system="no"
-else
-	SLV2_CFLAGS=$pkg_cv_SLV2_CFLAGS
-	SLV2_LIBS=$pkg_cv_SLV2_LIBS
-        { echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6; }
-	slv2_available_system="yes"
-fi
-   SLV2_SYSTEM_AVAILABLE="no"
-   if test "x$slv2_available_system" = "xyes" ; then
-      SLV2_SYSTEM_AVAILABLE="yes"
-      SLV2_SYSTEM_LIBS="$SLV2_LIBS"
-      SLV2_SYSTEM_CXXFLAGS="$SLV2_CFLAGS"
-      SLV2_SYSTEM_CPPSYMBOLS="USE_SLV2"
-      SLV2_SYSTEM_OPTOBJS="effects/lv2/LoadLV2.o effects/lv2/LV2Effect.o effects/lv2/LV2PortGroup.o"
-      { echo "$as_me:$LINENO: SLV2 available as system library" >&5
-echo "$as_me: SLV2 available as system library" >&6;}
-   fi
-   if test "x$SLV2_SYSTEM_AVAILABLE" = "xno" ; then
-      { echo "$as_me:$LINENO: SLV2 NOT available as system library" >&5
-echo "$as_me: SLV2 NOT available as system library" >&6;}
-   fi
-
-      as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/slv2/slv2/slv2.h" | $as_tr_sh`
-{ echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/slv2/slv2/slv2.h" >&5
-echo $ECHO_N "checking for ${srcdir}/lib-src/slv2/slv2/slv2.h... $ECHO_C" >&6; }
-if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "${srcdir}/lib-src/slv2/slv2/slv2.h"; then
-  eval "$as_ac_File=yes"
-else
-  eval "$as_ac_File=no"
-fi
-fi
-ac_res=`eval echo '${'$as_ac_File'}'`
-	       { echo "$as_me:$LINENO: result: $ac_res" >&5
-echo "${ECHO_T}$ac_res" >&6; }
-if test `eval echo '${'$as_ac_File'}'` = yes; then
-  slv2_h_found="yes"
-else
-  slv2_h_found="no"
-fi
-
-
-   if test "x$slv2_h_found" = "xyes" ; then
-      SLV2_LOCAL_AVAILABLE="yes"
-      SLV2_LOCAL_LIBS="libslv2.a"
-      SLV2_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/slv2'
-      SLV2_LOCAL_CPPSYMBOLS="USE_SLV2"
-      SLV2_LOCAL_OPTOBJS="effects/lv2/LoadLV2.o effects/lv2/LV2Effect.o effects/lv2/LV2PortGroup.o"
-      if test ! -f lib-src/slv2/Makefile ; then
-         SLV2_LOCAL_CONFIG_SUBDIRS="lib-src/slv2"
-      fi
-      { echo "$as_me:$LINENO: SLV2 is available in the local tree" >&5
-echo "$as_me: SLV2 is available in the local tree" >&6;}
-   else
-      SLV2_LOCAL_AVAILABLE="no"
-      { echo "$as_me:$LINENO: SLV2 is NOT available in the local tree" >&5
-echo "$as_me: SLV2 is NOT available in the local tree" >&6;}
-   fi
-
-
-
-# Check whether --with-liblrdf was given.
-if test "${with_liblrdf+set}" = set; then
-  withval=$with_liblrdf; LIBLRDF_ARGUMENT=$withval
-else
-  LIBLRDF_ARGUMENT="unspecified"
-fi
-
-
-   if false ; then
-
-cat >>confdefs.h <<\_ACEOF
-#define USE_LIBLRDF 1
-_ACEOF
-
-   fi
-
-
-
-pkg_failed=no
-{ echo "$as_me:$LINENO: checking for LIBLRDF" >&5
-echo $ECHO_N "checking for LIBLRDF... $ECHO_C" >&6; }
-
-if test -n "$LIBLRDF_CFLAGS"; then
-    pkg_cv_LIBLRDF_CFLAGS="$LIBLRDF_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"lrdf >= 0.4.0\"") >&5
-  ($PKG_CONFIG --exists --print-errors "lrdf >= 0.4.0") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_LIBLRDF_CFLAGS=`$PKG_CONFIG --cflags "lrdf >= 0.4.0" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-if test -n "$LIBLRDF_LIBS"; then
-    pkg_cv_LIBLRDF_LIBS="$LIBLRDF_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"lrdf >= 0.4.0\"") >&5
-  ($PKG_CONFIG --exists --print-errors "lrdf >= 0.4.0") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_LIBLRDF_LIBS=`$PKG_CONFIG --libs "lrdf >= 0.4.0" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        LIBLRDF_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "lrdf >= 0.4.0" 2>&1`
-        else
-	        LIBLRDF_PKG_ERRORS=`$PKG_CONFIG --print-errors "lrdf >= 0.4.0" 2>&1`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$LIBLRDF_PKG_ERRORS" >&5
-
-	{ echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-                liblrdf_available_system="no"
-elif test $pkg_failed = untried; then
-	liblrdf_available_system="no"
-else
-	LIBLRDF_CFLAGS=$pkg_cv_LIBLRDF_CFLAGS
-	LIBLRDF_LIBS=$pkg_cv_LIBLRDF_LIBS
-        { echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6; }
-	liblrdf_available_system="yes"
-fi
-
-   LIBLRDF_SYSTEM_AVAILABLE="no"
-   if test "x$liblrdf_available_system" = "xyes" ; then
-      LIBLRDF_SYSTEM_AVAILABLE="yes"
-      LIBLRDF_SYSTEM_LIBS="$LIBLRDF_LIBS"
-      LIBLRDF_SYSTEM_CXXFLAGS="$LIBLRDF_CFLAGS"
-      LIBLRDF_SYSTEM_CPPSYMBOLS="USE_LIBLRDF"
-      { echo "$as_me:$LINENO: liblrdf available as system library" >&5
-echo "$as_me: liblrdf available as system library" >&6;}
-   fi
-   if test "x$LIBLRDF_SYSTEM_AVAILABLE" = "xno" ; then
-      { echo "$as_me:$LINENO: liblrdf NOT available as system library" >&5
-echo "$as_me: liblrdf NOT available as system library" >&6;}
-   fi
-
-      as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/liblrdf/lrdf.h" | $as_tr_sh`
-{ echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/liblrdf/lrdf.h" >&5
-echo $ECHO_N "checking for ${srcdir}/lib-src/liblrdf/lrdf.h... $ECHO_C" >&6; }
-if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "${srcdir}/lib-src/liblrdf/lrdf.h"; then
-  eval "$as_ac_File=yes"
-else
-  eval "$as_ac_File=no"
-fi
-fi
-ac_res=`eval echo '${'$as_ac_File'}'`
-	       { echo "$as_me:$LINENO: result: $ac_res" >&5
-echo "${ECHO_T}$ac_res" >&6; }
-if test `eval echo '${'$as_ac_File'}'` = yes; then
-  lrdf_h_found="yes"
-else
-  lrdf_h_found="no"
-fi
-
-
-   if test "x$lrdf_h_found" = "xyes" ; then
-      LIBLRDF_LOCAL_AVAILABLE="yes"
-      LIBLRDF_LOCAL_LIBS="liblrdf.a"
-      LIBLRDF_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/liblrdf'
-      LIBLRDF_LOCAL_CPPSYMBOLS="USE_LIBLRDF"
-      if test ! -f lib-src/liblrdf/Makefile ; then
-         LIBLRDF_LOCAL_CONFIG_SUBDIRS="lib-src/liblrdf"
-      fi
-      { echo "$as_me:$LINENO: liblrdf is available in the local tree" >&5
-echo "$as_me: liblrdf is available in the local tree" >&6;}
-   else
-      LIBLRDF_LOCAL_AVAILABLE="no"
-      { echo "$as_me:$LINENO: liblrdf is NOT available in the local tree" >&5
-echo "$as_me: liblrdf is NOT available in the local tree" >&6;}
-   fi
-
-
-
 
 # Check whether --with-midi was given.
 if test "${with_midi+set}" = set; then
@@ -8853,12 +8403,6 @@ echo "$as_me: Using libsamplerate as requested" >&6;}
    fi
 fi
 
-if ( test "$SLV2_USE_LOCAL" != "yes" && test "$LIBLRDF_USE_LOCAL" != "yes") && test "$REDLAND_USE_LOCAL" = "yes" ; then
-   { echo "$as_me:$LINENO: Not building local Redland library since we don't use the local SLV2 or liblrdf libraries" >&5
-echo "$as_me: Not building local Redland library since we don't use the local SLV2 or liblrdf libraries" >&6;}
-   REDLAND_USE_LOCAL=no
-   REDLAND_USE_SYSTEM=no
-fi
 
 if [ "x$LIBLRDF_USE_LOCAL" = "xyes" ]; then
    EXTRAINSTALLTARGETS="$EXTRAINSTALLTARGETS install-lrdf-data"
@@ -10459,9 +10003,9 @@ AVCODEC_CFLAGS!$AVCODEC_CFLAGS$ac_delim
 AVCODEC_LIBS!$AVCODEC_LIBS$ac_delim
 AVFORMAT_CFLAGS!$AVFORMAT_CFLAGS$ac_delim
 AVFORMAT_LIBS!$AVFORMAT_LIBS$ac_delim
-REDLAND_CFLAGS!$REDLAND_CFLAGS$ac_delim
-REDLAND_LIBS!$REDLAND_LIBS$ac_delim
-SLV2_CFLAGS!$SLV2_CFLAGS$ac_delim
+PORTSMF_CFLAGS!$PORTSMF_CFLAGS$ac_delim
+PORTSMF_LIBS!$PORTSMF_LIBS$ac_delim
+build!$build$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -10503,12 +10047,6 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
-SLV2_LIBS!$SLV2_LIBS$ac_delim
-LIBLRDF_CFLAGS!$LIBLRDF_CFLAGS$ac_delim
-LIBLRDF_LIBS!$LIBLRDF_LIBS$ac_delim
-PORTSMF_CFLAGS!$PORTSMF_CFLAGS$ac_delim
-PORTSMF_LIBS!$PORTSMF_LIBS$ac_delim
-build!$build$ac_delim
 build_cpu!$build_cpu$ac_delim
 build_vendor!$build_vendor$ac_delim
 build_os!$build_os$ac_delim
@@ -10522,7 +10060,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 17; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 11; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
