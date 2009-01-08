@@ -349,6 +349,9 @@ bool ExportOGG::FillComment(AudacityProject *project, vorbis_comment *comment, T
 
    wxString n, v;
    for (bool cont = metadata->GetFirst(n, v); cont; cont = metadata->GetNext(n, v)) {
+      if (n == wxT("YEAR")) {
+         n = wxT("date");
+      }
       vorbis_comment_add_tag(comment,
                              (char *) (const char *) n.mb_str(wxConvUTF8),
                              (char *) (const char *) v.mb_str(wxConvUTF8));
