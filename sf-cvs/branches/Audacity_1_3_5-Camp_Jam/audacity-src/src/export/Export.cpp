@@ -354,15 +354,15 @@ bool Exporter::Process(AudacityProject *project, int numChannels,
    bool GetValidInstrumentName(const wxString str)
    {
       wxArrayString strChoices;
+      strChoices.Add(wxT("Lead Vocals"));
+      strChoices.Add(wxT("Backing Vocals"));
+      strChoices.Add(wxT("Lead Guitar"));
+      strChoices.Add(wxT("Rhythm Guitar"));
+      strChoices.Add(wxT("Keyboards"));
       strChoices.Add(wxT("Bass"));
       strChoices.Add(wxT("Drums"));
-      strChoices.Add(wxT("Keyboards"));
-      strChoices.Add(wxT("Lead_Guitar"));
-      strChoices.Add(wxT("Rhythm_Guitar"));
-      strChoices.Add(wxT("Lead_Vocals"));
-      strChoices.Add(wxT("Backing_Vocals"));
       strChoices.Add(wxT("Percussion"));
-      strChoices.Add(wxT("Other_Craziness"));
+      strChoices.Add(wxT("Other"));
       bool bChangeStr = (strChoices.Index(str) == wxNOT_FOUND); // str is not a valid instrument.
       if (bChangeStr) 
       {
@@ -451,7 +451,9 @@ bool Exporter::ExamineTracks()
       return false;
    }
    #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
-      if (mSelectedOnly && (mNumSelected == 1)) // single Track
+      if (mSelectedOnly && 
+            ((mNumSelected == 1) || // single mono Track
+               ((mNumSelected == 2) && (mNumLeft == 1) && (mNumRight == 1)))) // single stereo Track
       {
          tr = iter1.First();
          while (!tr->GetSelected()) 
