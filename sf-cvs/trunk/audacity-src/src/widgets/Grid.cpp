@@ -405,6 +405,7 @@ void Grid::OnKeyDown(wxKeyEvent &event)
          if (event.ShiftDown()) {
             if (crow == 0 && ccol == 0) {
                Navigate(wxNavigationKeyEvent::FromTab | wxNavigationKeyEvent::IsBackward);
+               return;
             }
             else if (ccol == 0) {
                SetGridCursor(crow - 1, cols - 1);
@@ -416,6 +417,7 @@ void Grid::OnKeyDown(wxKeyEvent &event)
          else {
             if (crow == rows - 1 && ccol == cols - 1) {
                Navigate(wxNavigationKeyEvent::FromTab | wxNavigationKeyEvent::IsForward);
+               return;
             }
             else if (ccol == cols - 1) {
                SetGridCursor(crow + 1, 0);
@@ -424,6 +426,7 @@ void Grid::OnKeyDown(wxKeyEvent &event)
                SetGridCursor(crow, ccol + 1);
             }
          }
+         MakeCellVisible(GetGridCursorRow(), GetGridCursorCol());
       }
       break;
 
