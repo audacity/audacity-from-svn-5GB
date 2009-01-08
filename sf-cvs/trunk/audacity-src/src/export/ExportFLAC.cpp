@@ -374,6 +374,9 @@ bool ExportFLAC::GetMetadata(AudacityProject *project, Tags *tags)
 
    wxString n, v;
    for (bool cont = tags->GetFirst(n, v); cont; cont = tags->GetNext(n, v)) {
+      if (n == TAG_YEAR) {
+         n = wxT("DATE");
+      }
       FLAC::Metadata::VorbisComment::Entry entry(n.mb_str(wxConvUTF8),
                                                  v.mb_str(wxConvUTF8));
       ::FLAC__metadata_object_vorbiscomment_append_comment(mMetadata,
