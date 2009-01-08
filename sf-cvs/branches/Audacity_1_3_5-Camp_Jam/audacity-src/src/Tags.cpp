@@ -626,40 +626,82 @@ public:
 // Editor
 //
 
-#define LABEL_ARTIST    _("Artist Name")
-#define LABEL_TITLE     _("Track Title")
-#define LABEL_ALBUM     _("Album Title")
-#define LABEL_TRACK     _("Track Number")
-#define LABEL_YEAR      _("Year")
-#define LABEL_GENRE     _("Genre")
-#define LABEL_COMMENTS  _("Comments")
+#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+   #define LABEL_ARTIST    _("ARTIST")
+   #define LABEL_PERFORMER _("PERFORMER")
+   #define LABEL_TITLE     _("TITLE")
+   #define LABEL_GENRE     _("GENRE")
+   #define LABEL_DATE      _("DATE")
+   #define LABEL_ISRC      _("ISRC")
+   #define LABEL_COMMENTS  _("COMMENTS")
+   // Define these although they shouldn't show up in Jamling versions, 
+   // just so less standard code has to be #ifdef-ed out. 
+   #define LABEL_ALBUM     _("Album Title")
+   #define LABEL_TRACK     _("Track Number")
+   #define LABEL_YEAR      _("Year")
 
-static wxString names[] =
-{
-   LABEL_ARTIST,
-   LABEL_TITLE,
-   LABEL_ALBUM,
-   LABEL_TRACK,
-   LABEL_YEAR,
-   LABEL_GENRE,
-   LABEL_COMMENTS
-};
+   static wxString names[] =
+   {
+      LABEL_ARTIST,
+      LABEL_PERFORMER, 
+      LABEL_TITLE,
+      LABEL_GENRE,
+      LABEL_DATE,
+      LABEL_ISRC,
+      LABEL_COMMENTS
+   };
 
-static struct
-{
-   wxString label;
-   wxString name;
-}
-labelmap[] =
-{
-   {  LABEL_ARTIST,     TAG_ARTIST     },
-   {  LABEL_TITLE,      TAG_TITLE      },
-   {  LABEL_ALBUM,      TAG_ALBUM      },
-   {  LABEL_TRACK,      TAG_TRACK      },
-   {  LABEL_YEAR,       TAG_YEAR       },
-   {  LABEL_GENRE,      TAG_GENRE      },
-   {  LABEL_COMMENTS,   TAG_COMMENTS   }
-};
+   static struct
+   {
+      wxString label;
+      wxString name;
+   }
+   labelmap[] =
+   {
+      {  LABEL_ARTIST,     TAG_ARTIST     },
+      {  LABEL_PERFORMER,  TAG_PERFORMER  },
+      {  LABEL_TITLE,      TAG_TITLE      },
+      {  LABEL_GENRE,      TAG_GENRE      },
+      {  LABEL_DATE,       TAG_DATE       },
+      {  LABEL_ISRC,       TAG_ISRC       },
+      {  LABEL_COMMENTS,   TAG_COMMENTS   }
+   };
+#else
+   #define LABEL_ARTIST    _("Artist Name")
+   #define LABEL_TITLE     _("Track Title")
+   #define LABEL_ALBUM     _("Album Title")
+   #define LABEL_TRACK     _("Track Number")
+   #define LABEL_YEAR      _("Year")
+   #define LABEL_GENRE     _("Genre")
+   #define LABEL_COMMENTS  _("Comments")
+
+   static wxString names[] =
+   {
+      LABEL_ARTIST,
+      LABEL_TITLE,
+      LABEL_ALBUM,
+      LABEL_TRACK,
+      LABEL_YEAR,
+      LABEL_GENRE,
+      LABEL_COMMENTS
+   };
+
+   static struct
+   {
+      wxString label;
+      wxString name;
+   }
+   labelmap[] =
+   {
+      {  LABEL_ARTIST,     TAG_ARTIST     },
+      {  LABEL_TITLE,      TAG_TITLE      },
+      {  LABEL_ALBUM,      TAG_ALBUM      },
+      {  LABEL_TRACK,      TAG_TRACK      },
+      {  LABEL_YEAR,       TAG_YEAR       },
+      {  LABEL_GENRE,      TAG_GENRE      },
+      {  LABEL_COMMENTS,   TAG_COMMENTS   }
+   };
+#endif
 
 #define STATICCNT WXSIZEOF(labelmap)
 
@@ -699,29 +741,55 @@ TagsEditor::TagsEditor(wxWindow * parent,
    mEditTitle(editTitle),
    mEditTrack(editTrack)
 {
-   names[0] = LABEL_ARTIST;
-   names[1] = LABEL_TITLE;
-   names[2] = LABEL_ALBUM;
-   names[3] = LABEL_TRACK;
-   names[4] = LABEL_YEAR;
-   names[5] = LABEL_GENRE;
-   names[6] = LABEL_COMMENTS;
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      names[0] = LABEL_ARTIST;
+      names[1] = LABEL_PERFORMER;
+      names[2] = LABEL_TITLE;
+      names[3] = LABEL_GENRE;
+      names[4] = LABEL_DATE;
+      names[5] = LABEL_ISRC;
+      names[6] = LABEL_COMMENTS;
 
-   labelmap[0].label = LABEL_ARTIST;
-   labelmap[1].label = LABEL_TITLE;
-   labelmap[2].label = LABEL_ALBUM;
-   labelmap[3].label = LABEL_TRACK;
-   labelmap[4].label = LABEL_YEAR;
-   labelmap[5].label = LABEL_GENRE;
-   labelmap[6].label = LABEL_COMMENTS;
+      labelmap[0].label = LABEL_ARTIST;
+      labelmap[1].label = LABEL_PERFORMER;
+      labelmap[2].label = LABEL_TITLE;
+      labelmap[3].label = LABEL_GENRE;
+      labelmap[4].label = LABEL_DATE;
+      labelmap[5].label = LABEL_ISRC;
+      labelmap[6].label = LABEL_COMMENTS;
 
-   labelmap[0].name = TAG_ARTIST;
-   labelmap[1].name = TAG_TITLE;
-   labelmap[2].name = TAG_ALBUM;
-   labelmap[3].name = TAG_TRACK;
-   labelmap[4].name = TAG_YEAR;
-   labelmap[5].name = TAG_GENRE;
-   labelmap[6].name = TAG_COMMENTS;
+      labelmap[0].name = TAG_ARTIST;
+      labelmap[1].name = TAG_PERFORMER;
+      labelmap[2].name = TAG_TITLE;
+      labelmap[3].name = TAG_GENRE;
+      labelmap[4].name = TAG_DATE;
+      labelmap[5].name = TAG_ISRC;
+      labelmap[6].name = TAG_COMMENTS;
+   #else
+      names[0] = LABEL_ARTIST;
+      names[1] = LABEL_TITLE;
+      names[2] = LABEL_ALBUM;
+      names[3] = LABEL_TRACK;
+      names[4] = LABEL_YEAR;
+      names[5] = LABEL_GENRE;
+      names[6] = LABEL_COMMENTS;
+
+      labelmap[0].label = LABEL_ARTIST;
+      labelmap[1].label = LABEL_TITLE;
+      labelmap[2].label = LABEL_ALBUM;
+      labelmap[3].label = LABEL_TRACK;
+      labelmap[4].label = LABEL_YEAR;
+      labelmap[5].label = LABEL_GENRE;
+      labelmap[6].label = LABEL_COMMENTS;
+
+      labelmap[0].name = TAG_ARTIST;
+      labelmap[1].name = TAG_TITLE;
+      labelmap[2].name = TAG_ALBUM;
+      labelmap[3].name = TAG_TRACK;
+      labelmap[4].name = TAG_YEAR;
+      labelmap[5].name = TAG_GENRE;
+      labelmap[6].name = TAG_COMMENTS;
+   #endif
 
    mGrid = NULL;
 
@@ -890,6 +958,17 @@ bool TagsEditor::TransferDataFromWindow()
       else if (n.CmpNoCase(LABEL_COMMENTS) == 0) {
          n = TAG_COMMENTS;
       }
+      #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+         else if (n.CmpNoCase(LABEL_PERFORMER) == 0) {
+            n = TAG_PERFORMER;
+         }
+         else if (n.CmpNoCase(LABEL_DATE) == 0) {
+            n = TAG_DATE;
+         }
+         else if (n.CmpNoCase(LABEL_ISRC) == 0) {
+            n = TAG_ISRC;
+         }
+      #endif
 
       mLocal.SetTag(n, v);
    }
@@ -1359,6 +1438,11 @@ TagsEditor1::TagsEditor1(wxWindow * parent,
    mYear     = mLocal.GetTag(TAG_YEAR);
    mGenre    = mLocal.GetTag(TAG_GENRE);
    mComments = mLocal.GetTag(TAG_COMMENTS);
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      mPerformer  = mLocal.GetTag(TAG_PERFORMER);
+      mDate       = mLocal.GetTag(TAG_DATE);
+      mISRC       = mLocal.GetTag(TAG_ISRC);
+   #endif
    mID3V2    = mLocal.GetID3V2();
 
    Rebuild();
@@ -1511,6 +1595,11 @@ bool TagsEditor1::TransferDataFromWindow()
    mLocal.SetTag(TAG_YEAR, mYear);
    mLocal.SetTag(TAG_GENRE, mGenre);
    mLocal.SetTag(TAG_COMMENTS, mComments);
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      mLocal.SetTag(TAG_PERFORMER, mPerformer);
+      mLocal.SetTag(TAG_DATE, mDate);
+      mLocal.SetTag(TAG_ISRC, mISRC);
+   #endif
    mLocal.SetID3V2(mID3V2);
 #if 0
    mLocal.Clear();
@@ -1543,6 +1632,17 @@ bool TagsEditor1::TransferDataFromWindow()
       else if (n.CmpNoCase(LABEL_COMMENTS) == 0) {
          n = TAG_COMMENTS;
       }
+      #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+         else if (n.CmpNoCase(LABEL_PERFORMER) == 0) {
+            n = TAG_PERFORMER;
+         }
+         else if (n.CmpNoCase(LABEL_DATE) == 0) {
+            n = TAG_DATE;
+         }
+         else if (n.CmpNoCase(LABEL_ISRC) == 0) {
+            n = TAG_ISRC;
+         }
+      #endif
 
       mLocal.SetTag(n, v);
    }
@@ -1559,6 +1659,11 @@ bool TagsEditor1::TransferDataToWindow()
    mYear     = mLocal.GetTag(TAG_YEAR);
    mGenre    = mLocal.GetTag(TAG_GENRE);
    mComments = mLocal.GetTag(TAG_COMMENTS);
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      mPerformer  = mLocal.GetTag(TAG_PERFORMER);
+      mDate       = mLocal.GetTag(TAG_DATE);
+      mISRC       = mLocal.GetTag(TAG_ISRC);
+   #endif
    mID3V2    = mLocal.GetID3V2();
 
    ShuttleGui S(this, eIsSettingToDialog);
@@ -1598,9 +1703,6 @@ bool TagsEditor1::TransferDataToWindow()
       else if (n.CmpNoCase(TAG_YEAR) == 0) {
          n = LABEL_YEAR;
       }
-      else if (n.CmpNoCase(TAG_COMMENTS) == 0) {
-         n = LABEL_COMMENTS;
-      }
       else if (n.CmpNoCase(TAG_GENRE) == 0) {
          n = LABEL_GENRE;
 
@@ -1612,6 +1714,20 @@ bool TagsEditor1::TransferDataToWindow()
 
          mGrid->SetCellEditor(mGrid->GetNumberRows() - 1, 1, new ComboEditor(g, true));
       }
+      else if (n.CmpNoCase(TAG_COMMENTS) == 0) {
+         n = LABEL_COMMENTS;
+      }
+      #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+         else if (n.CmpNoCase(TAG_PERFORMER) == 0) {
+            n = LABEL_PERFORMER;
+         }
+         else if (n.CmpNoCase(TAG_DATE) == 0) {
+            n = LABEL_DATE;
+         }
+         else if (n.CmpNoCase(TAG_ISRC) == 0) {
+            n = LABEL_ISRC;
+         }
+      #endif
 
       mGrid->SetCellValue(i, 0, n);
       mGrid->SetCellValue(i, 1, v);
@@ -1900,6 +2016,11 @@ TagsEditor2::TagsEditor2(wxWindow * parent,
    mYear     = mLocal.GetTag(TAG_YEAR);
    mGenre    = mLocal.GetTag(TAG_GENRE);
    mComments = mLocal.GetTag(TAG_COMMENTS);
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      mPerformer  = mLocal.GetTag(TAG_PERFORMER);
+      mDate       = mLocal.GetTag(TAG_DATE);
+      mISRC       = mLocal.GetTag(TAG_ISRC);
+   #endif
    mID3V2    = mLocal.GetID3V2();
 
    // Build, size, and position the dialog
@@ -2203,6 +2324,11 @@ bool TagsEditor2::TransferDataFromBasic()
    mLocal.SetTag(TAG_YEAR, mYear);
    mLocal.SetTag(TAG_GENRE, mGenre);
    mLocal.SetTag(TAG_COMMENTS, mComments);
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      mLocal.SetTag(TAG_PERFORMER, mPerformer);
+      mLocal.SetTag(TAG_DATE, mDate);
+      mLocal.SetTag(TAG_ISRC, mISRC);
+   #endif
    mLocal.SetID3V2(mID3V2);
 
    return true;
@@ -2242,6 +2368,17 @@ bool TagsEditor2::TransferDataFromAdvanced()
       else if (n.CmpNoCase(LABEL_COMMENTS) == 0) {
          n = TAG_COMMENTS;
       }
+      #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+         else if (n.CmpNoCase(LABEL_PERFORMER) == 0) {
+            n = TAG_PERFORMER;
+         }
+         else if (n.CmpNoCase(LABEL_DATE) == 0) {
+            n = TAG_DATE;
+         }
+         else if (n.CmpNoCase(LABEL_ISRC) == 0) {
+            n = TAG_ISRC;
+         }
+      #endif
 
       mLocal.SetTag(n, v);
    }
@@ -2258,6 +2395,11 @@ bool TagsEditor2::TransferDataToBasic()
    mYear     = mLocal.GetTag(TAG_YEAR);
    mGenre    = mLocal.GetTag(TAG_GENRE);
    mComments = mLocal.GetTag(TAG_COMMENTS);
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      mPerformer  = mLocal.GetTag(TAG_PERFORMER);
+      mDate       = mLocal.GetTag(TAG_DATE);
+      mISRC       = mLocal.GetTag(TAG_ISRC);
+   #endif
    mID3V2    = mLocal.GetID3V2();
 
    ShuttleGui S(this, eIsSettingToDialog);
@@ -2301,9 +2443,6 @@ bool TagsEditor2::TransferDataToAdvanced()
       else if (n.CmpNoCase(TAG_YEAR) == 0) {
          n = LABEL_YEAR;
       }
-      else if (n.CmpNoCase(TAG_COMMENTS) == 0) {
-         n = LABEL_COMMENTS;
-      }
       else if (n.CmpNoCase(TAG_GENRE) == 0) {
          n = LABEL_GENRE;
 
@@ -2315,6 +2454,20 @@ bool TagsEditor2::TransferDataToAdvanced()
 
          mGrid->SetCellEditor(mGrid->GetNumberRows() - 1, 1, new ComboEditor(g, true));
       }
+      else if (n.CmpNoCase(TAG_COMMENTS) == 0) {
+         n = LABEL_COMMENTS;
+      }
+      #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+         else if (n.CmpNoCase(TAG_PERFORMER) == 0) {
+            n = LABEL_PERFORMER;
+         }
+         else if (n.CmpNoCase(TAG_DATE) == 0) {
+            n = LABEL_DATE;
+         }
+         else if (n.CmpNoCase(TAG_ISRC) == 0) {
+            n = LABEL_ISRC;
+         }
+      #endif
 
       mGrid->SetCellValue(i, 0, n);
       mGrid->SetCellValue(i, 1, v);

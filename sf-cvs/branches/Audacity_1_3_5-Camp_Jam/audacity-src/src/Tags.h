@@ -30,6 +30,7 @@
 #define __AUDACITY_TAGS__
 
 #include "Audacity.h"
+#include "AudacityBranding.h"
 #include "widgets/Grid.h"
 #include "xml/XMLTagHandler.h"
 
@@ -56,6 +57,12 @@ WX_DECLARE_STRING_HASH_MAP(wxString, TagMap);
 #define TAG_ALBUM    wxT("ALBUM")
 #define TAG_TRACK    wxT("TRACKNUMBER")
 #define TAG_YEAR     wxT("YEAR")
+#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+   #define TAG_PERFORMER wxT("PERFORMER") // in addition to ARTIST
+   #define TAG_DATE wxT("DATE") // instead of YEAR
+   #define TAG_ISRC wxT("ISRC") 
+#else
+#endif
 #define TAG_GENRE    wxT("GENRE")
 #define TAG_COMMENTS wxT("COMMENTS")
 
@@ -224,6 +231,11 @@ class TagsEditor1: public wxDialog
    wxString mYear;
    wxString mGenre;
    wxString mComments;
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      wxString mPerformer;
+      wxString mDate;
+      wxString mISRC;
+   #endif
 
    wxString mCopyright;
    wxString mEncodedBy;
@@ -310,6 +322,11 @@ class TagsEditor2: public wxDialog
    wxString mYear;
    wxString mGenre;
    wxString mComments;
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      wxString mPerformer;
+      wxString mDate;
+      wxString mISRC;
+   #endif
 
    bool mID3V2;
 
