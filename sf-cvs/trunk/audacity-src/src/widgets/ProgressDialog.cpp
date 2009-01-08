@@ -22,6 +22,7 @@
 #include "../Audacity.h"
 
 #include <wx/defs.h>
+#include <wx/app.h>
 #include <wx/button.h>
 #include <wx/dcclient.h>
 #include <wx/datetime.h>
@@ -50,7 +51,7 @@ END_EVENT_TABLE()
 // Constructor
 //
 ProgressDialog::ProgressDialog(const wxString & title, const wxString & message)
-: wxDialog(wxGetTopLevelParent(FindFocus()),
+: wxDialog(wxTheApp->GetTopWindow(),
            wxID_ANY,
            title,
            wxDefaultPosition,
@@ -64,10 +65,15 @@ ProgressDialog::ProgressDialog(const wxString & title, const wxString & message)
    wxWindow *w;
    wxSize ds;
 
+   SetExtraStyle(GetExtraStyle() | wxWS_EX_TRANSIENT);
+
    // There's a problem where the focus is not returned to the window that had
    // it before creating this object.  The reason is not entirely understood
-   // but if the dialog window never get shown then the focus does not get
-   // returned to the original window.
+   // but if the dialog window never gets shown then the focus does not get
+   // returned to the original window.  It seems to have something to do with
+   // wxWindowDisabler as the problem doesn't occur when it isn't created.
+   //
+   // This only seems to be a problem on OSX and GTK.
    //
    // This never used to be a problem for us because we didn't actually create
    // the wxProgressDialog until after the elapsed time reached .5 seconds.
@@ -76,8 +82,12 @@ ProgressDialog::ProgressDialog(const wxString & title, const wxString & message)
    // to interact with the main window and possibly do things like get two
    // effects running at the same time.
    //
-   // So, we manually restore the focus when this object is deleted.
-   mParent = FindFocus();
+   // The resolution (workaround...hackage) seems to be that this dialog MUST
+   // have a parent and that we set the focus back to that parent when we're done.
+   //
+   // Therefore we use whatever wxApp::GetTopWindow() returns as the parent.  The
+   // only time this will be NULL is when Audacity is either starting or stopping.
+   // In either case, it doesn't really matter where focus winds up.
 
    v = new wxBoxSizer(wxVERTICAL);
 
@@ -195,8 +205,8 @@ ProgressDialog::~ProgressDialog()
 
    }
 
-   if (mParent) {
-      mParent->SetFocus();
+   if (GetParent()) {
+      GetParent()->SetFocus();
    }
 }
 
