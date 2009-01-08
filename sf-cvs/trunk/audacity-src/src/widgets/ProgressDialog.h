@@ -45,7 +45,6 @@ class AUDACITY_DLL_API ProgressDialog:public wxDialog
    void OnCancel(wxCommandEvent & e);
 
  private:
-   wxWindow *mParent;
    wxGauge *mGauge;
    wxStaticText *mMessage;
    wxStaticText *mElapsed;
