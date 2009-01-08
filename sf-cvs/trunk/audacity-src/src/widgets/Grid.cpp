@@ -397,11 +397,33 @@ void Grid::OnKeyDown(wxKeyEvent &event)
    {
       case WXK_TAB:
       {
-         int flags = wxNavigationKeyEvent::FromTab |
-                     ( event.ShiftDown() ?
-                       wxNavigationKeyEvent::IsBackward :
-                       wxNavigationKeyEvent::IsForward );
-         Navigate(flags);
+         int rows = GetNumberRows();
+         int cols = GetNumberCols();
+         int crow = GetGridCursorRow();
+         int ccol = GetGridCursorCol();
+
+         if (event.ShiftDown()) {
+            if (crow == 0 && ccol == 0) {
+               Navigate(wxNavigationKeyEvent::FromTab | wxNavigationKeyEvent::IsBackward);
+            }
+            else if (ccol == 0) {
+               SetGridCursor(crow - 1, cols - 1);
+            }
+            else {
+               SetGridCursor(crow, ccol - 1);
+            }
+         }
+         else {
+            if (crow == rows - 1 && ccol == cols - 1) {
+               Navigate(wxNavigationKeyEvent::FromTab | wxNavigationKeyEvent::IsForward);
+            }
+            else if (ccol == cols - 1) {
+               SetGridCursor(crow + 1, 0);
+            }
+            else {
+               SetGridCursor(crow, ccol + 1);
+            }
+         }
       }
       break;
 
