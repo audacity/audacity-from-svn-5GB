@@ -91,6 +91,9 @@ class MyFLACFile : public FLAC::Decoder::File
    MyFLACFile(FLACImportFileHandle *handle) : mFile(handle)
    {
       mWasError = false;
+      set_metadata_ignore_all();
+      set_metadata_respond(FLAC__METADATA_TYPE_VORBIS_COMMENT);
+      set_metadata_respond(FLAC__METADATA_TYPE_STREAMINFO);
    }
    
    bool get_was_error() const
