@@ -2850,15 +2850,8 @@ void AudacityProject::AddImportedTracks(wxString fileName,
    // Automatically assign rate of imported file to whole project,
    // if this is the first file that is imported
    if (initiallyEmpty && newRate > 0) {
-      // msmeyer: Before changing rate, check if rate is supported
-      // by current sound card. If it is not, don't change it,
-      // otherwise playback won't work.
-      wxArrayLong rates = AudioIO::GetSupportedSampleRates(-1, -1, newRate);
-      if (rates.Index((int)newRate) != wxNOT_FOUND)
-      {
-         mRate = newRate;
-         GetSelectionBar()->SetRate(mRate);
-      }
+      mRate = newRate;
+      GetSelectionBar()->SetRate(mRate);
    }
 
    PushState(wxString::Format(_("Imported '%s'"), fileName.c_str()),
