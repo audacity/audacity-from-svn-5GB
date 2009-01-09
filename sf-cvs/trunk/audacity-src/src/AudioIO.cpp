@@ -1722,6 +1722,9 @@ int AudioIO::GetOptimalSupportedSampleRate()
 double AudioIO::GetBestRate(bool capturing, bool playing, double sampleRate)
 {
    wxArrayLong rates;
+   if (capturing) wxLogDebug(wxT("AudioIO::GetBestRate() for capture"));
+   if (playing) wxLogDebug(wxT("AudioIO::GetBestRate() for playback"));
+   wxLogDebug(wxT("GetBestRate() suggested rate %.0lf Hz"), sampleRate);
 
    if (capturing && !playing) {
       rates = GetSupportedCaptureRates(-1, sampleRate);
@@ -1747,6 +1750,7 @@ double AudioIO::GetBestRate(bool capturing, bool playing, double sampleRate)
    long rate = (long)sampleRate;
    
    if (rates.Index(rate) != wxNOT_FOUND) {
+      wxLogDebug(wxT("GetBestRate() Returning %.0ld Hz"), rate);
       return rate;
       /* the easy case - the suggested rate (project rate) is in the list, and
        * we can just accept that and send back to the caller. This should be
@@ -1764,6 +1768,7 @@ double AudioIO::GetBestRate(bool capturing, bool playing, double sampleRate)
 
    if (rates.IsEmpty()) {
       /* we're stuck - there are no supported rates with this hardware. Error */
+      wxLogDebug(wxT("GetBestRate() Error - no supported sample rates"));
       return 0;
    }
    int i;
@@ -1771,10 +1776,12 @@ double AudioIO::GetBestRate(bool capturing, bool playing, double sampleRate)
          {
          if (rates[i] > rate) {
             // supported rate is greater than requested rate
+            wxLogDebug(wxT("GetBestRate() Returning next higher rate - %.0ld Hz"), rates[i]);
             return rates[i];
          }
          }
 
+   wxLogDebug(wxT("GetBestRate() Returning highest rate - %.0ld Hz"), rates[rates.GetCount() - 1]);
    return rates[rates.GetCount() - 1]; // the highest available rate
 }      
 
