@@ -1307,7 +1307,14 @@ void MP3Exporter::PutInfoTag(wxFFile & f, wxFileOffset off)
 
 wxString MP3Exporter::GetLibraryPath()
 {
-   return wxT("");
+   wxRegKey reg(wxT("HKEY_LOCAL_MACHINE\\Software\\Lame for Audacity"));
+   wxString path;
+
+   if (reg.Exists()) {
+      reg.QueryValue(wxT("InstallPath"), path);
+   }
+
+   return path;
 }
 
 wxString MP3Exporter::GetLibraryName()
