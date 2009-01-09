@@ -31,15 +31,16 @@ Functions that find and load all LV2 plugins on the system.
 #include "../../Experimental.h"
 #include "../../Internat.h"
 #include "../EffectManager.h"
+
+#if defined(USE_SLV2)
+
 #include "LV2Effect.h"
 #include "lv2_uri_map.h"
 #include "lv2_event.h"
 
 #include "LoadLV2.h"
 
-
 SLV2World gWorld = 0;
-
 
 // This is the URI Map Feature object. It is required for loading synth
 // plugins.
@@ -154,6 +155,8 @@ void LoadLV2Plugins() {
 void UnloadLV2Plugins()
 {
 }
+
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

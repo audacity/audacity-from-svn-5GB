@@ -11,6 +11,7 @@
 
 #include "LV2PortGroup.h"
 
+#if defined(USE_SLV2)
 
 LV2PortGroup::LV2PortGroup(const wxString& name)
   : mName(name) {
@@ -37,6 +38,7 @@ const wxString& LV2PortGroup::GetName() const {
   return mName;
 }
 
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

@@ -805,11 +805,6 @@
 		2860BA250E0F0D8600A13878 /* TimerRecordDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2860BA220E0F0D8600A13878 /* TimerRecordDialog.cpp */; };
 		2860BA280E0F0DD800A13878 /* ExportFFmpeg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2860BA260E0F0DD800A13878 /* ExportFFmpeg.cpp */; };
 		2862D7920E25E1D90014D9BB /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 2862D7910E25E1D90014D9BB /* config.h */; };
-		2862D7CD0E25E97B0014D9BB /* librasqal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 287BD8A50E25DA5500CB4467 /* librasqal.a */; };
-		2862D7CE0E25E97D0014D9BB /* librdf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 287BD8AE0E25DA6500CB4467 /* librdf.a */; };
-		2862D7CF0E25E97E0014D9BB /* libslv2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 287BD9AA0E25DF2800CB4467 /* libslv2.a */; };
-		2862D7D00E25E97F0014D9BB /* libraptor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 287BD89C0E25DA3700CB4467 /* libraptor.a */; };
-		2862D7D20E25E9850014D9BB /* liblrdf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 287BD97D0E25DE6800CB4467 /* liblrdf.a */; };
 		287BD8BD0E25DAF500CB4467 /* rdf_query.c in Sources */ = {isa = PBXBuildFile; fileRef = 287BD7010E25D8AE00CB4467 /* rdf_query.c */; };
 		287BD8C00E25DB2B00CB4467 /* rdf_hash_memory.c in Sources */ = {isa = PBXBuildFile; fileRef = 287BD6E60E25D8AE00CB4467 /* rdf_hash_memory.c */; };
 		287BD8C10E25DB2C00CB4467 /* rdf_concepts.h in Headers */ = {isa = PBXBuildFile; fileRef = 287BD6D80E25D8AE00CB4467 /* rdf_concepts.h */; };
@@ -1279,41 +1274,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 28501EAF0CEED1F00029ABAA;
 			remoteInfo = libvamp;
-		};
-		2862D7990E25E23B0014D9BB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1790ABE309883346008A330A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 287BD9950E25DF2800CB4467;
-			remoteInfo = slv2;
-		};
-		2862D79B0E25E23B0014D9BB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1790ABE309883346008A330A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 287BD9680E25DE6800CB4467;
-			remoteInfo = liblrdf;
-		};
-		287BD8B50E25DAC400CB4467 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1790ABE309883346008A330A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 287BD8A60E25DA6500CB4467;
-			remoteInfo = librdf;
-		};
-		287BD8B70E25DAC400CB4467 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1790ABE309883346008A330A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 287BD89D0E25DA5500CB4467;
-			remoteInfo = rasqal;
-		};
-		287BD8B90E25DAC400CB4467 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1790ABE309883346008A330A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 287BD8870E25DA3700CB4467;
-			remoteInfo = raptor;
 		};
 		28E237260E515E1300281398 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2734,11 +2694,6 @@
 				28E67FF00A3A2B190021D89F /* libportaudio.a in Frameworks */,
 				2840CFA80AEB883500F49FC3 /* libtwolame.a in Frameworks */,
 				28501F330CEED8C70029ABAA /* libvamp.a in Frameworks */,
-				2862D7D20E25E9850014D9BB /* liblrdf.a in Frameworks */,
-				2862D7CF0E25E97E0014D9BB /* libslv2.a in Frameworks */,
-				2862D7CE0E25E97D0014D9BB /* librdf.a in Frameworks */,
-				2862D7CD0E25E97B0014D9BB /* librasqal.a in Frameworks */,
-				2862D7D00E25E97F0014D9BB /* libraptor.a in Frameworks */,
 				28E2373A0E5163A200281398 /* libscorealign.a in Frameworks */,
 				ED2707460EF9C550007D4FFD /* liblibsbsms.a in Frameworks */,
 			);
@@ -5763,11 +5718,6 @@
 				28E67F640A3A16AA0021D89F /* PBXTargetDependency */,
 				17C99D43098970800041B1BC /* PBXTargetDependency */,
 				17C99D53098970800041B1BC /* PBXTargetDependency */,
-				287BD8BA0E25DAC400CB4467 /* PBXTargetDependency */,
-				287BD8B80E25DAC400CB4467 /* PBXTargetDependency */,
-				287BD8B60E25DAC400CB4467 /* PBXTargetDependency */,
-				2862D79C0E25E23B0014D9BB /* PBXTargetDependency */,
-				2862D79A0E25E23B0014D9BB /* PBXTargetDependency */,
 				17C99D45098970800041B1BC /* PBXTargetDependency */,
 				2840CF800AEB822100F49FC3 /* PBXTargetDependency */,
 				ED2707480EF9C55A007D4FFD /* PBXTargetDependency */,
@@ -7124,31 +7074,6 @@
 			isa = PBXTargetDependency;
 			target = 28501EAF0CEED1F00029ABAA /* libvamp */;
 			targetProxy = 28501F520CEED9A80029ABAA /* PBXContainerItemProxy */;
-		};
-		2862D79A0E25E23B0014D9BB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 287BD9950E25DF2800CB4467 /* slv2 */;
-			targetProxy = 2862D7990E25E23B0014D9BB /* PBXContainerItemProxy */;
-		};
-		2862D79C0E25E23B0014D9BB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 287BD9680E25DE6800CB4467 /* liblrdf */;
-			targetProxy = 2862D79B0E25E23B0014D9BB /* PBXContainerItemProxy */;
-		};
-		287BD8B60E25DAC400CB4467 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 287BD8A60E25DA6500CB4467 /* librdf */;
-			targetProxy = 287BD8B50E25DAC400CB4467 /* PBXContainerItemProxy */;
-		};
-		287BD8B80E25DAC400CB4467 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 287BD89D0E25DA5500CB4467 /* rasqal */;
-			targetProxy = 287BD8B70E25DAC400CB4467 /* PBXContainerItemProxy */;
-		};
-		287BD8BA0E25DAC400CB4467 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 287BD8870E25DA3700CB4467 /* raptor */;
-			targetProxy = 287BD8B90E25DAC400CB4467 /* PBXContainerItemProxy */;
 		};
 		28E237270E515E1300281398 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

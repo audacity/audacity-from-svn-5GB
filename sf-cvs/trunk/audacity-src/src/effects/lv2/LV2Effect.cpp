@@ -27,13 +27,14 @@
 #include <wx/intl.h>
 #include <wx/scrolwin.h>
 
+#if defined(USE_SLV2)
+
 #include "../Effect.h"
 #include "LoadLV2.h"
 #include "LV2Effect.h"
 #include "LV2PortGroup.h"
 #include "../Internat.h"
 #include "lv2_event_helpers.h"
-
 
 LV2Effect::LV2Effect(SLV2Plugin data,
                      const std::set<wxString>& categories)
@@ -1249,6 +1250,7 @@ unsigned char LV2EffectDialog::GetNoteKey() {
    return 64;
 }
 
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
