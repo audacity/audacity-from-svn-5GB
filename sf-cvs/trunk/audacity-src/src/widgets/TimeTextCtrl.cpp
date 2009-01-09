@@ -411,6 +411,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    }
 
 #if wxUSE_ACCESSIBILITY
+   SetLabel(wxT(""));
    SetName(wxT(""));
    SetAccessible(new TimeTextCtrlAx(this));
 #endif
