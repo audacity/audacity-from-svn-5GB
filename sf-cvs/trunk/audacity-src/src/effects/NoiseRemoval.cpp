@@ -843,6 +843,7 @@ void NoiseRemovalDialog::PopulateOrExchange(ShuttleGui & S)
                                                 0);
          S.SetStyle(wxSL_HORIZONTAL);
          mGainS = S.Id(ID_GAIN_SLIDER).AddSlider(wxT(""), 0, GAIN_MAX);
+         mGainS->SetName(_("Noise reduction"));
          mGainS->SetRange(GAIN_MIN, GAIN_MAX);
          mGainS->SetSizeHints(150, -1);
 
@@ -851,6 +852,7 @@ void NoiseRemovalDialog::PopulateOrExchange(ShuttleGui & S)
                                                 0);
          S.SetStyle(wxSL_HORIZONTAL);
          mFreqS = S.Id(ID_FREQ_SLIDER).AddSlider(wxT(""), 0, FREQ_MAX);
+         mFreqS->SetName(_("Frequency smoothing"));
          mFreqS->SetRange(FREQ_MIN, FREQ_MAX);
          mFreqS->SetSizeHints(150, -1);
 
@@ -859,6 +861,7 @@ void NoiseRemovalDialog::PopulateOrExchange(ShuttleGui & S)
                                                 0);
          S.SetStyle(wxSL_HORIZONTAL);
          mTimeS = S.Id(ID_TIME_SLIDER).AddSlider(wxT(""), 0, TIME_MAX);
+         mTimeS->SetName(_("Attach/decay time"));
          mTimeS->SetRange(TIME_MIN, TIME_MAX);
          mTimeS->SetSizeHints(150, -1);
       }

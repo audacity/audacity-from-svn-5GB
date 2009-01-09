@@ -180,7 +180,7 @@ void AmplifyDialog::PopulateOrExchange(ShuttleGui & S)
                                             0,
                                             AMP_MAX,
                                             AMP_MIN);
-      mAmpS->SetName(_("Amplification (dB)"));
+      mAmpS->SetName(_("Amplification dB"));
    }
    S.EndHorizontalLay();
 

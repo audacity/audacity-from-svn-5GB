@@ -2011,3 +2011,11 @@ void ShuttleGui::AddStandardButtons(long buttons, wxButton *extra)
 
    EndVerticalLay();
 }
+
+void ShuttleGui::AddSpace( int width, int height )
+{
+   if( mShuttleMode != eIsCreating )
+      return;
+
+   mpSizer->Add( width, height, 0);
+}

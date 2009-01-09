@@ -330,5 +330,8 @@ public:
    RulerPanel * AddRulerVertical( float low, float hi, const wxString & Units );
    AttachableScrollBar * AddAttachableScrollBar( long style = wxSB_HORIZONTAL );
    void AddStandardButtons( long buttons = eOkButton | eCancelButton, wxButton *extra = NULL );
+   void AddSpace( int width, int height );
+   void AddSpace( int size ) { AddSpace( size, size ); };
+   int GetBorder() { return miBorder; };
 };
 #endif

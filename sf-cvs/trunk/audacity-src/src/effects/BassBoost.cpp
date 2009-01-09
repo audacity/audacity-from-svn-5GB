@@ -202,6 +202,7 @@ void BassBoostDialog::PopulateOrExchange(ShuttleGui & S)
       mFreqS = S.Id(ID_FREQ_SLIDER).AddSlider(wxT(""),
                                               0,
                                               FREQ_MAX);
+      mFreqS->SetName(_("Frequency Hertz"));
       mFreqS->SetRange(FREQ_MIN, FREQ_MAX);
 
       // Boost
@@ -214,6 +215,7 @@ void BassBoostDialog::PopulateOrExchange(ShuttleGui & S)
       mBoostS = S.Id(ID_BOOST_SLIDER).AddSlider(wxT(""),
                                                 0,
                                                 BOOST_MAX);
+      mBoostS->SetName(_("Boost dB"));
       mBoostS->SetRange(BOOST_MIN, BOOST_MAX);
    }
    S.EndMultiColumn();
