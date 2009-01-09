@@ -308,15 +308,23 @@ void VampEffect::AddFeatures(LabelTrack *ltrack,
    for (Vamp::Plugin::FeatureList::iterator fli = features[mOutput].begin();
         fli != features[mOutput].end(); ++fli) {
       
-      Vamp::RealTime ftime = fli->timestamp;
-      double ltime = ftime.sec + (double(ftime.nsec) / 1000000000.0);
+      Vamp::RealTime ftime0 = fli->timestamp;
+      double ltime0 = ftime0.sec + (double(ftime0.nsec) / 1000000000.0);
+
+      Vamp::RealTime ftime1 = ftime0;
+      if (fli->hasDuration) ftime1 = ftime0 + fli->duration;
+      double ltime1 = ftime1.sec + (double(ftime1.nsec) / 1000000000.0);
 
       wxString label = LAT1CTOWX(fli->label.c_str());
       if (label == wxString()) {
-         label = wxString::Format(LAT1CTOWX("%.3f"), ltime);
+         if (fli->values.empty()) {
+            label = wxString::Format(LAT1CTOWX("%.3f"), ltime0);
+         } else {
+            label = wxString::Format(LAT1CTOWX("%.3f"), *fli->values.begin());
+         }
       }
       
-      ltrack->AddLabel(ltime, ltime, label);
+      ltrack->AddLabel(ltime0, ltime1, label);
    }
 }
 
