@@ -87,6 +87,12 @@ wxString FileNames::DataDir()
       // executable's EXE file, the prefs are stored in there, otherwise
       // the prefs are stored in the user data dir provided by the OS.
       wxFileName exePath(PlatformCompatibility::GetExecutablePath());
+#if defined(__WXMAC__)
+      // This removes (for instance) "Audacity.app/Contents/MacOSX"
+      exePath.RemoveLastDir();
+      exePath.RemoveLastDir();
+      exePath.RemoveLastDir();
+#endif
       wxFileName portablePrefsPath(exePath.GetPath(), wxT("Portable Settings"));
       
       if (::wxDirExists(portablePrefsPath.GetFullPath()))
