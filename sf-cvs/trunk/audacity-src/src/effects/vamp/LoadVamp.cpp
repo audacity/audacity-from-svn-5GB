@@ -95,7 +95,24 @@ void LoadVampPlugins()
 
 #endif
       
-      // For now we only support "time instants" conformable outputs
+      // We limit the listed plugin outputs to those whose results can
+      // readily be displayed in an Audacity label track.
+      //
+      // - Any output whose features have no values (time instants only),
+      //   with or without duration, is fine
+      //
+      // - Any output whose features have more than one value, or an
+      //   unknown or variable number of values, is right out
+      // 
+      // - Any output whose features have exactly one value, with
+      //   variable sample rate or with duration, should be OK --
+      //   this implies a sparse feature, of which the time and/or
+      //   duration are significant aspects worth displaying
+      //
+      // - An output whose features have exactly one value, with
+      //   fixed sample rate and no duration, cannot be usefully
+      //   displayed -- the value is the only significant piece of
+      //   data there and we have no good value plot
 
       Plugin::OutputList outputs = vp->getOutputDescriptors();
 
@@ -105,32 +122,38 @@ void LoadVampPlugins()
       
       for (Plugin::OutputList::iterator j = outputs.begin();
            j != outputs.end(); ++j) {
+
+         if (j->sampleType == Plugin::OutputDescriptor::FixedSampleRate ||
+             j->sampleType == Plugin::OutputDescriptor::OneSamplePerStep ||
+             !j->hasFixedBinCount ||
+             (j->hasFixedBinCount && j->binCount > 1)) {
+
+            // All of these qualities disqualify (see notes above)
+
+            ++n;
+            continue;
+         }
          
-         if (j->hasFixedBinCount &&
-             j->binCount == 0 &&
-             j->sampleType == Plugin::OutputDescriptor::VariableSampleRate) {
+         wxString name = LAT1CTOWX(vp->getName().c_str());
 
-            wxString name = LAT1CTOWX(vp->getName().c_str());
-
-            if (outputs.size() > 1) {
-               // This is not the plugin's only output.
-               // Use "plugin name: output name" as the effect name,
-               // unless the output name is the same as the plugin name
-               wxString outputName = LAT1CTOWX(j->name.c_str());
-               if (outputName != name) {
-                  name = wxString::Format(wxT("%s: %s"),
-                                          name.c_str(), outputName.c_str());
-               }
+         if (outputs.size() > 1) {
+            // This is not the plugin's only output.
+            // Use "plugin name: output name" as the effect name,
+            // unless the output name is the same as the plugin name
+            wxString outputName = LAT1CTOWX(j->name.c_str());
+            if (outputName != name) {
+               name = wxString::Format(wxT("%s: %s"),
+                                       name.c_str(), outputName.c_str());
             }
+         }
 
 #ifdef EFFECT_CATEGORIES
-            VampEffect *effect = new VampEffect(*i, n, hasParameters, name,
+         VampEffect *effect = new VampEffect(*i, n, hasParameters, name,
                                                 vampCategory);
 #else
-            VampEffect *effect = new VampEffect(*i, n, hasParameters, name);
+         VampEffect *effect = new VampEffect(*i, n, hasParameters, name);
 #endif
-            em.RegisterEffect(effect);
-         }
+         em.RegisterEffect(effect);
 
          ++n;
       }
