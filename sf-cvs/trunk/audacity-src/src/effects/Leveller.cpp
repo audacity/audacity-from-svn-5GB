@@ -192,6 +192,8 @@ LevellerDialog::LevellerDialog(EffectLeveller *effect, wxWindow *parent)
 :  EffectDialog(parent, _("Leveller"), PROCESS_EFFECT),
    mEffect(effect)
 {
+   mLevellerNumPasses = 0;
+   mLevellerDbChoiceIndex = 0;
    Init();
 }
 

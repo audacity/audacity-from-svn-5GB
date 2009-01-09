@@ -347,6 +347,7 @@ void ClickRemovalDialog::PopulateOrExchange(ShuttleGui & S)
       mThreshS = S.Id(ID_THRESH_SLIDER).AddSlider(wxT(""),
                                                   0,
                                                   MAX_THRESHOLD);
+      mThreshS->SetName(_("Select threshold"));
       mThreshS->SetRange(MIN_THRESHOLD, MAX_THRESHOLD);
 
       // Click width
@@ -359,6 +360,7 @@ void ClickRemovalDialog::PopulateOrExchange(ShuttleGui & S)
       mWidthS = S.Id(ID_WIDTH_SLIDER).AddSlider(wxT(""),
                                                 0,
                                                 MAX_CLICK_WIDTH);
+      mWidthS->SetName(_("Max spike width"));
       mWidthS->SetRange(MIN_CLICK_WIDTH, MAX_CLICK_WIDTH);
    }
    S.EndMultiColumn();
