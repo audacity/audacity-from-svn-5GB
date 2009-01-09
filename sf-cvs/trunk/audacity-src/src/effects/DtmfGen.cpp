@@ -478,6 +478,7 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
          * effect, I want it (dDuration) to be used as the duration, and with
          * "seconds" this does not always work properly. For example, it rounds
          * down to zero... */
+         mDtmfDurationT->SetName(_("Duration"));
          mDtmfDurationT->SetFormatString(mDtmfDurationT->GetBuiltinFormat(dIsSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))));
          mDtmfDurationT->EnableMenu();
       }

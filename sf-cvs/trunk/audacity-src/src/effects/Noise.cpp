@@ -256,6 +256,7 @@ void NoiseDialog::PopulateOrExchange( ShuttleGui & S )
           * the effect, I want it (nDuration) to be used as the duration, and
           * with "seconds" this does not always work properly. For example,
           * it rounds down to zero... */
+         mNoiseDurationT->SetName(_("Duration"));
          mNoiseDurationT->SetFormatString(mNoiseDurationT->GetBuiltinFormat(nIsSelection==true?(wxT("hh:mm:ss + samples")):(wxT("seconds"))));
          mNoiseDurationT->EnableMenu();
       }

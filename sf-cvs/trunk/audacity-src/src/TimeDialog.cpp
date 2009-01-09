@@ -61,6 +61,7 @@ void TimeDialog::PopulateOrExchange(ShuttleGui &S)
                          wxDefaultPosition,
                          wxDefaultSize,
                          true);
+         mTimeCtrl->SetName(_("Duration"));
          mTimeCtrl->SetFormatString(mTimeCtrl->GetBuiltinFormat(mFormat));
          S.AddWindow(mTimeCtrl);
          mTimeCtrl->EnableMenu();
