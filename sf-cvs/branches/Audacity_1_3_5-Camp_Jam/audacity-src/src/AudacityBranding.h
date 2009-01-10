@@ -60,7 +60,7 @@
    #define AUDACITY_BRANDING_BRANDURL wxT("http://www.audiotouch.com.au/")
 #elif ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
    #define AUDACITY_BRANDING_BRANDNAME wxT("Jamling Audacity")
-   #define AUDACITY_BRANDING_BRANDURL wxT("http://jamlingrecords.com/")
+   #define AUDACITY_BRANDING_BRANDURL wxT("http://jamling.com/")
 #endif
 
 #endif
