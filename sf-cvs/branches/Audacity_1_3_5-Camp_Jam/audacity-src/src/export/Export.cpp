@@ -508,11 +508,12 @@ bool Exporter::GetFilename()
 
    mFilename.SetPath(gPrefs->Read(wxT("/Export/Path"), ::wxGetCwd()));
 #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
-   wxString strName = mProject->GetName() + wxT("-");
+   wxString strName;
    if (mSelectedOnly && (mNumSelected == 1)) // Exporting one track
-      strName += gStrInstrument;
+      strName = gStrInstrument;
    else
-      strName += wxT("Mix");
+      strName = wxT("Mix");
+   strName += wxT("-") + mProject->GetName();
    mFilename.SetName(strName);
 #else
    mFilename.SetName(mProject->GetName());
