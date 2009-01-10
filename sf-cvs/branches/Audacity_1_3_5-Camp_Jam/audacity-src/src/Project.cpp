@@ -2638,14 +2638,28 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       TrackListIterator iter;
       Track* pTrack; // mono or left
 
-      // Remember which tracks were selected, and set them to unselected.
-      TrackList wereSelectedWaveTrackList;
+      // Remember which tracks were muted, and set them to unmuted, 
+      // because export does a mix-down, and we don't want muted tracks to be silenced.
+      //
+      // Remember which tracks were selected, and set them to unselected, 
+      // because we'll select one at a time for export. 
+      //
+      TrackList prevMutedWaveTrackList;
+      TrackList prevSelectedWaveTrackList;
       for (pTrack = iter.First(mTracks); pTrack != NULL; pTrack = iter.Next())
       {
-         if ((pTrack->GetKind() == Track::Wave) && pTrack->GetSelected())
+         if (pTrack->GetKind() == Track::Wave) 
          {
-            wereSelectedWaveTrackList.Add(pTrack);
-            pTrack->SetSelected(false);
+            if (pTrack->GetMute())
+            {
+               prevMutedWaveTrackList.Add(pTrack);
+               pTrack->SetMute(false);
+            }
+            if (pTrack->GetSelected())
+            {
+               prevSelectedWaveTrackList.Add(pTrack);
+               pTrack->SetSelected(false);
+            }
          }
       }
 
@@ -2680,11 +2694,11 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
          }
       }
 
-      // Restore the selection states.
-      for (pTrack = iter.First(&wereSelectedWaveTrackList); pTrack != NULL; pTrack = iter.Next())
-         pTrack->SetSelected(false);
-
-      //// Write the AUP file. 
+      // Restore the mute and selection states.
+      for (pTrack = iter.First(&prevMutedWaveTrackList); pTrack != NULL; pTrack = iter.Next())
+         pTrack->SetMute(true);
+      for (pTrack = iter.First(&prevSelectedWaveTrackList); pTrack != NULL; pTrack = iter.Next())
+         pTrack->SetSelected(true);
 
       return bSuccess;
    }
