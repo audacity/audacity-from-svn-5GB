@@ -43,6 +43,7 @@ class AUDACITY_DLL_API ProgressDialog:public wxDialog
 
  private:
    void OnCancel(wxCommandEvent & e);
+   void Beep();
 
  private:
    wxGauge *mGauge;
