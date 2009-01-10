@@ -2041,7 +2041,9 @@ wxString AudioIO::GetDeviceInfo()
    }
 
 #if defined(USE_PORTMIXER)
-   int highestSampleRate = supportedSampleRates[supportedSampleRates.GetCount() - 1];
+   if (supportedSampleRates.GetCount() > 0)
+      {
+      int highestSampleRate = supportedSampleRates[supportedSampleRates.GetCount() - 1];
    bool EmulateMixerInputVol = true;
    bool EmulateMixerOutputVol = true;
    float MixerInputVol = 1.0;
@@ -2094,7 +2096,7 @@ wxString AudioIO::GetDeviceInfo()
                             audacityAudioCallback, NULL);
    }
   
-#else
+#else // PA v18
 
    PortAudioStream *stream;
 
@@ -2110,7 +2112,7 @@ wxString AudioIO::GetDeviceInfo()
                             audacityAudioCallback, NULL);
    }
 
-#endif
+#endif // PX v19/18
 
    if (error) {
       s << wxT("Recieved ") << error << wxT(" while opening devices") << e;
@@ -2185,7 +2187,7 @@ wxString AudioIO::GetDeviceInfo()
    Px_CloseMixer(PortMixer);
 
 #endif
-
+      }
    return o.GetString();
 }
 
