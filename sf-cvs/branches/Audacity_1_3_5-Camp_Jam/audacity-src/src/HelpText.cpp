@@ -101,13 +101,18 @@ wxString LinkExpand( const wxString & Text )
    }
 #endif
 
+wxString gStrCurrKey = wxT("welcome");
+wxString gStrPrevKey = wxT("welcome");
+
 wxString ToWelcome( )
 {
-#if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
-   return _("Back to [[welcome|\"I want to...\"]]");
-#else
-   return _("To [[welcome|Welcome screen]]");
-#endif
+   wxString strResult = _("Back to [[") + gStrPrevKey + wxT("|") + TitleText(gStrPrevKey);
+   #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      strResult += _("]]<br><br>Back to [[welcome|\"I want to...\"]]");
+   #else
+      strResult += _("To [[welcome|Welcome screen]]");
+   #endif
+   return strResult;
 }
 
 wxString TitleText( const wxString & Key )
@@ -166,14 +171,53 @@ wxString TitleText( const wxString & Key )
       return _("No Local Help");
    }
    #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
-      return _("Jamling Audacity");
-   #else
-      return Key;
+      if (Key == wxT("clickTrack"))
+         return _("How do I get rid of the metronome sound?");
+      if (Key == wxT("playSong"))
+         return _("Play the Song I bought from Jamling");
+      if (Key == wxT("jamlingRecord"))
+         return _("Record my instrument or voice");
+      if (Key == wxT("fixTrack"))
+         return _("Fix part of a Track");
+      if (Key == wxT("slowDown"))
+         return _("Slow down a section of this Song");
+      if (Key == wxT("changeKey"))
+         return _("Change the key of this Song");
+      if (Key == wxT("loopPlay"))
+         return _("Loop Play a section of this Song");
+      if (Key == wxT("uploadTrack"))
+         return _("Upload my Track to Jamling");
+      if (Key == wxT("getTrack"))
+         return _("Get another Jamling\'s Track for this Song");
+      if (Key == wxT("uploadProject"))
+         return _("Upload my finished Mix to Jamling");
+      if (Key == wxT("getSong"))
+         return _("Get a different Song from Jamling");
+      if (Key == wxT("jamlingExport"))
+         return _("Export my finished Mix to my media player");
+      if (Key == wxT("exportMultiple"))
+         return _("Use these tracks in a different recording application");
+      if (Key == wxT("save"))
+         return _("Save my Song or Open a different Song");
+
+      if (Key == wxT("internalMic"))
+         return _("Use my computer's internal microphone");
+      if (Key == wxT("PCHints"))
+         return _("Recording Setup for PC");
+      if (Key == wxT("MacHints"))
+         return _("Recording Setup for Mac");
+      if (Key == wxT("lineIn"))
+         return _("Plug my instrument or mic into my computer");
+      if (Key == wxT("USBin"))
+         return _("Use a USB mic or instrument interface");
    #endif
+   return Key;
 }
 
 wxString HelpTextBuiltIn( const wxString & Key )
 {
+   gStrPrevKey = gStrCurrKey;
+   gStrCurrKey = Key;
    #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
       wxString varKey = Key;
       wxString strImagesDir = 
@@ -184,7 +228,8 @@ wxString HelpTextBuiltIn( const wxString & Key )
                   wxString(wxT("")) +
                   _("</p><center><h3>I want to...</h3></center><br>") +
                   /** i18n-hint: where you see [[key|text]] translate 'text' and don't translate 'key' */
-                  _("<ul><li>[[playSong|Play]] the Song I bought from Jamling. \
+                  _("<ul><li>How do I [[clickTrack|get rid of the metronome sound]]? \
+                        <li>[[playSong|Play]] the Song I bought from Jamling. \
                         <li>[[jamlingRecord|Record]] my instrument or voice. \
                         <li>[[fixTrack|Fix]] part of a Track. \
                         <br>&nbsp;<br> \
@@ -192,10 +237,10 @@ wxString HelpTextBuiltIn( const wxString & Key )
                         <li>[[changeKey|Change the key]] of this Song. \
                         <li>[[loopPlay|Loop Play]] a section of this Song. \
                         <br>&nbsp;<br> \
-                        <li>[[uploadTrack|Upload my Track]] to Jamling Records. \
+                        <li>[[uploadTrack|Upload my Track]] to Jamling. \
                         <li>[[getTrack|Get another Jamling\'s Track]] for this Song. \
-                        <li>[[uploadProject|Upload my finished Mix]] to Jamling Records. \
-                        <li>[[getSong|Get a different Song]] from Jamling Records. \
+                        <li>[[uploadProject|Upload my finished Mix]] to Jamling. \
+                        <li>[[getSong|Get a different Song]] from Jamling. \
                         <li>[[jamlingExport|Export my finished Mix]] to my media player. \
                         <li>Use these tracks in a [[exportMultiple|different recording application]]. \
                         <br>&nbsp;<br> \
@@ -212,6 +257,16 @@ wxString HelpTextBuiltIn( const wxString & Key )
                   <li><a href=\"http://audacityteam.org/wiki/index.php?title=Troubleshooting_Recordings\"> \
                      Troubleshooting Recording</a> at Audacity Wiki</li> \
                </ul></p><br><br>") + ToWelcome());
+      if (Key == wxT("clickTrack"))
+         return WrapText(wxString(wxT("")) + 
+            _("<p><b>How do I get rid of the metronome sound?</b> \
+               <p>&nbsp;</p> \
+               <img src=\"") + strImagesDir + _("ClickTrack.jpg\"> \
+               <ul><li>If you hear an annoying tick-tock sound that isn’t in the original recording, \
+                     the click track is on.</li> \
+                  <li>The click track is at the bottom of the main window, and if you press \
+                     the Mute button it will be silent.</li> \
+               </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("playSong"))
          return WrapText(wxString(wxT("")) + 
             _("<p><b>Play the Song I bought from Jamling</b> \
@@ -265,8 +320,8 @@ wxString HelpTextBuiltIn( const wxString & Key )
                      Jamling rock as hard as possible.  \
                      Download it \
                      <a href=\"http://www.microsoft.com/downloads/details.aspx?familyid=2da43d38-db71-4c1b-bc6a-9b6652cd92a3&displaylang=en\"> \
-                        here</a>.</li> \
-                  <li>(Don’t worry – if your PC isn’t equipped for DirectSound, Jamling will work just fine \
+                        here</a>. \
+                     (Don’t worry – if your PC isn’t equipped for DirectSound, Jamling will work just fine \
                      with whatever sound card and drivers you have.)</li> \
                   <li>Then click on the Input Level Meter \
                      <img src=\"") + strImagesDir + _("InputLevelMeter.jpg\"></li> \
@@ -286,7 +341,6 @@ wxString HelpTextBuiltIn( const wxString & Key )
                      when recording. \
                      If you want to hear it, go to <i>Audacity &gt; Preferences &gt; Audio I/O</i> tab, \
                      and check <i>Hardware Playthrough</i> and <i>Software Playthrough</i>.</li> \
-                  <li><i>Start &gt; Control Panel &gt; Sounds and Audio Devices &gt; \
                   <li>Click on the Input Level Meter \
                      <img src=\"") + strImagesDir + _("InputLevelMeter.jpg\"></li> \
                      in Audacity to start monitoring yourself.  \
@@ -409,12 +463,12 @@ wxString HelpTextBuiltIn( const wxString & Key )
                      </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("uploadTrack"))
          return WrapText(wxString(wxT("")) + 
-                  _("<p><b>Upload my Track to Jamling Records</b> \
+                  _("<p><b>Upload my Track to Jamling</b> \
                      <ul> \
                         <li>Select the track you want to upload.</li> \
                         <li><i>File &gt; Export Selection</i>. Export in OGG format.</li> \
-                        <li>Go to the <a href=\"http://jamlingrecords.com/node/add/audio\">Jamling Submit Audio form</a>.</li> \
-                        <li>In the Audio File area of the form, use the Browse button to find your OGG file.</li> \
+                        <li>Go to the <a href=\"http://jamling.com/node/add/audio\">Jamling Submit Audio form</a>.</li> \
+                        <li>In the Audio File area of the form, use the Browse button to find your Track.</li> \
                         <li>Optionally add a description and artwork.</li> \
                         <li>Submit the file.</li> \
                      </ul></p><br><br>") + MoreHelp() + ToWelcome());
@@ -425,17 +479,17 @@ wxString HelpTextBuiltIn( const wxString & Key )
          return WrapText(wxString(wxT("")) + 
                   _("<p><b>Get another Jamling\'s Track for this Song</b> \
                      <ul> \
-                        <li>Go to <a href=\"http://jamlingrecords.com/content/jamling-stuff\">Jamling Stuff</a>.</li> \
+                        <li>Go to <a href=\"http://jamling.com/content/jamling-stuff\">Jamling Stuff</a>.</li> \
                      </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("uploadProject"))
       {
          return WrapText(wxString(wxT("")) + 
-                  _("<p><b>Upload my finished Mix to Jamling Records</b> \
+                  _("<p><b>Upload my finished Mix to Jamling</b> \
                      <ul> \
                         <li><i>File &gt; Export</i>. Export in OGG format. \
                            This will mix all the tracks together.</li> \
-                        <li>Go to the <a href=\"http://jamlingrecords.com/node/add/audio\">Jamling Submit Audio form</a>.</li> \
-                        <li>In the Audio File area of the form, use the Browse button to find your OGG file.</li> \
+                        <li>Go to the <a href=\"http://jamling.com/node/add/audio\">Jamling Submit Audio form</a>.</li> \
+                        <li>In the Audio File area of the form, use the Browse button to find your Mix.</li> \
                         <li>Optionally add a description and artwork.</li> \
                         <li>Submit the file.</li> \
                      </ul></p><br><br>") + MoreHelp() + ToWelcome());
@@ -445,16 +499,18 @@ wxString HelpTextBuiltIn( const wxString & Key )
       }
       if (Key == wxT("getSong"))
          return WrapText(wxString(wxT("")) + 
-                  _("<p><b>Get a different Song from Jamling Records</b> \
+                  _("<p><b>Get a different Song from Jamling</b> \
                      <ul> \
-                        <li>Go to the <a href=\"http://jamlingrecords.com/content/music\">Jamling Music</a> page.</li> \
+                        <li>Go to the <a href=\"http://jamling.com/content/music\">Jamling Music</a> page.</li> \
                      </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("jamlingExport"))
          return WrapText(wxString(wxT("")) + 
-                  _("<p><b>Export my finished Mix</b> \
-                     <ul><li>Go to <i>File &gt; Export</i> and click OK.  \
-                           Your song will appear on your desktop, and you can drag it into your media player \
-                           from there.</li> \
+                  _("<p><b>Export my finished Mix to my media player</b> \
+                     <ul> \
+                        <li>Go to <i>File &gt; Export &gt; Save as Type &gt; \
+                           WAV, AIFF, and other uncompressed types</i>.</li>  \
+                        <li>Then choose where to save your Mix, and \
+                           import it into your media player from there.</li> \
                         <li>Note: Do not select MP3 unless you’ve downloaded the MP3 encoder, \
                            which you can find by searching for “Audacity .mp3 encoder” on the Internet.</li> \
                         <li>Before you export your Mix, make sure to take note of what you’ve named it and \
