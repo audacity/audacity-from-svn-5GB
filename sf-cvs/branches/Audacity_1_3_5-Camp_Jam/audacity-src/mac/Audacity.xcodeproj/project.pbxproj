@@ -890,6 +890,7 @@
 		28F1D81E0A2D0019005506A7 /* ExpandingToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D8190A2D0018005506A7 /* ExpandingToolBar.cpp */; };
 		28F1D81F0A2D0019005506A7 /* ImageRoll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */; };
 		28F5C1110BE5886A00D17341 /* FileDialogPrivate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F5C10F0BE5886A00D17341 /* FileDialogPrivate.cpp */; };
+		28F8B4470F19A91B00939793 /* BrandToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B4450F19A91B00939793 /* BrandToolBar.cpp */; };
 		28FB20350C415D9500F769E7 /* SmartRecordPrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FB20330C415D9500F769E7 /* SmartRecordPrefs.cpp */; };
 		28FC1AFB0A47762C00A188AE /* WrappedType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FC1AF90A47762C00A188AE /* WrappedType.cpp */; };
 		28FE4A080ABF4E960056F5C4 /* mmx_optimized.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FE4A060ABF4E960056F5C4 /* mmx_optimized.cpp */; };
@@ -1306,7 +1307,7 @@
 		174F73CD098D516D009CD6E0 /* AudacityOGG.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityOGG.icns; sourceTree = "<group>"; };
 		174F73CE098D516D009CD6E0 /* AudacityProject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityProject.icns; sourceTree = "<group>"; };
 		174F73CF098D516D009CD6E0 /* AudacityWAV.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityWAV.icns; sourceTree = "<group>"; };
-		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
+		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
 		176A1A5B098B7B8D00DC73B4 /* libnyquist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libnyquist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		176EE9DB09A2EC1000188F3B /* caf.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = caf.c; sourceTree = "<group>"; };
 		176EE9DC09A2EC1000188F3B /* flac.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = flac.c; sourceTree = "<group>"; };
@@ -2084,6 +2085,8 @@
 		28F1D81C0A2D0019005506A7 /* ImageRoll.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ImageRoll.h; sourceTree = "<group>"; };
 		28F5C10F0BE5886A00D17341 /* FileDialogPrivate.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FileDialogPrivate.cpp; sourceTree = "<group>"; };
 		28F5C1100BE5886A00D17341 /* FileDialogPrivate.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FileDialogPrivate.h; sourceTree = "<group>"; };
+		28F8B4450F19A91B00939793 /* BrandToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = BrandToolBar.cpp; sourceTree = "<group>"; };
+		28F8B4460F19A91B00939793 /* BrandToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = BrandToolBar.h; sourceTree = "<group>"; };
 		28FB121F0A3790A8006F0917 /* MacroMagic.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = MacroMagic.h; sourceTree = "<group>"; };
 		28FB12230A3790DF006F0917 /* AllThemeResources.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AllThemeResources.h; sourceTree = "<group>"; };
 		28FB20330C415D9500F769E7 /* SmartRecordPrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SmartRecordPrefs.cpp; sourceTree = "<group>"; };
@@ -3734,6 +3737,8 @@
 		2897F6DB0AB3DB5A003C20C5 /* toolbars */ = {
 			isa = PBXGroup;
 			children = (
+				28F8B4450F19A91B00939793 /* BrandToolBar.cpp */,
+				28F8B4460F19A91B00939793 /* BrandToolBar.h */,
 				2897F6DC0AB3DB5A003C20C5 /* ControlToolBar.cpp */,
 				2897F6DD0AB3DB5A003C20C5 /* ControlToolBar.h */,
 				289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */,
@@ -5403,6 +5408,7 @@
 				28501EA20CEECEF80029ABAA /* SplashDialog.cpp in Sources */,
 				28501EAA0CEED0670029ABAA /* LoadVamp.cpp in Sources */,
 				28501EAB0CEED0680029ABAA /* VampEffect.cpp in Sources */,
+				28F8B4470F19A91B00939793 /* BrandToolBar.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
