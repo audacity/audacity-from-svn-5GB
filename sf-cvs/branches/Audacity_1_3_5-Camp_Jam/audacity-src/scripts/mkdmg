@@ -14,7 +14,7 @@ REVISION=`awk '/^#define+ AUDACITY_REVISION / {print $3}' src/Audacity.h`
 
 if [ -z "$SUFFIX" ]
 then
-   SUFFIX=`grep '^#define AUDACITY_SUFFIX ' src/Audacity.h | cut -d '"' -f 2`
+   SUFFIX=`egrep '^#define AUDACITY_SUFFIX +wxT' src/Audacity.h | cut -d '"' -f 2`
 fi
 
 if [ ! -z "$TYPE" ]
@@ -24,8 +24,29 @@ fi
 
 VERSION=$VERSION.$RELEASE.$REVISION$SUFFIX
 
-VOL="Audacity $VERSION"
-DMG="audacity-macosx$TYPE-$VERSION"
+case `grep "^#define.*AUDACITY_BRANDING.*BRAND_" src/AudacityBranding.h | cut -f 3 -d "_"`                              
+in                                                                                                                      
+   UMIXIT)                                                                                                              
+      APP="UmixIt, powered by Audacity.app"                                                                             
+      VOL="UmixIt $VERSION"                                                                                             
+      DMG="audacity_umixit-osx$TYPE-$VERSION"                                                                           
+   ;;                                                                                                                   
+   THINKLABS)                                                                                                           
+      APP="Thinklabs Phonocardiography, powered by Audacity.app"                                                        
+      VOL="Audacity Thinklabs$VERSION"                                                                                  
+      DMG="audacity_thinklabs-osx$TYPE-$VERSION"                                                                        
+   ;;                                                                                                                   
+   CAMP)                                                                                                           
+      APP="Camp Jam, powered by Audacity.app"                                                        
+      VOL="Audacity Camp Jam$VERSION"                                                                                  
+      DMG="audacity_camp_jam-osx$TYPE-$VERSION"                                                                        
+   ;;                                                                                                                   
+   *)                                                                                                                   
+      APP="Audacity.app"                                                                                                
+      VOL="Audacity $VERSION"                                                                                           
+      DMG="audacity-osx$TYPE-$VERSION"                                                                                  
+   ;;                                                                                                                   
+esac                                                                                                                    
 
 # Preclean
 rm -rf "$DMG" "$DMG.dmg" TMP.dmg
@@ -37,8 +58,9 @@ mkdir "$DMG/nyquist"
 mkdir "$DMG/plug-ins"
 
 # Copy Audacity and clean it
-cp -pR Audacity.app "$DMG"
-strip "$DMG/Audacity.app/Contents/MacOS/"*
+cp -pR 'mac/build/Release Static Unicode/Audacity.app' "$DMG/$APP"
+sed -i '' -e "s/v.r.r/$VERSION/g" "$DMG/$APP/Contents/Info.plist"
+strip "$DMG/$APP/Contents/MacOS/"*
 
 # Copy Languages
 for name in locale/*.po
