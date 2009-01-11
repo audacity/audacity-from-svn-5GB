@@ -1127,12 +1127,7 @@ ProgressDialog::~ProgressDialog()
    {
       Show(false);
 
-      bool bBeepOnCompletion;
-      gPrefs->Read(wxT("/GUI/BeepOnCompletion"), &bBeepOnCompletion, false);
-      if (bBeepOnCompletion)
-      {
-         Beep();
-      }
+      Beep();
    }
 
    if (mDisable)
@@ -1303,15 +1298,31 @@ ProgressDialog::OnCancel(wxCommandEvent & e)
 void
 ProgressDialog::Beep()
 {
-#if defined(__WXMAC__)
-   AlertSoundPlay();
-#else
-   wxSound s(sizeof(beep), beep);
-   if (s.IsOk())
+   int after;
+   bool should;
+   wxString name;
+
+   gPrefs->Read(wxT("/GUI/BeepOnCompletion"), &should, false);
+   gPrefs->Read(wxT("/GUI/BeepAfterDuration"), &after, 60);
+   gPrefs->Read(wxT("/GUI/BeepFileName"), &name, wxEmptyString);
+
+   if (should && wxGetLocalTimeMillis().GetValue() - mStartTime > after * 1000)
    {
-      s.Play(wxSOUND_SYNC);
+      wxBusyCursor busy;
+      wxSound s;
+
+      if (name.IsEmpty()) {
+         s.Create(sizeof(beep), beep);
+      }
+      else {
+         s.Create(name);
+      }
+
+      if (s.IsOk())
+      {
+         s.Play(wxSOUND_SYNC);
+      }
    }
-#endif
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

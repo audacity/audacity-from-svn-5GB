@@ -43,9 +43,6 @@ It handles initialization and termination by subclassing wxApp.
 #include <wx/file.h>
 #include <wx/filename.h>
 
-#include <wx/accel.h>
-#include <wx/sysopt.h>
-
 #ifdef __WXGTK__
 #include <unistd.h>
 #endif
@@ -629,11 +626,6 @@ bool AudacityApp::OnInit()
    ::InitQuicktime();
    #endif
 
-   #if defined(__WXMAC__)
-   wxSystemOptions::SetOption(wxMAC_SEPARATE_COMMAND_AND_CONTROL,
-                              USE_SEPARATE_COMMAND_AND_CONTROL);
-   #endif
-
    // Unused strings that we want to be translated, even though
    // we're not using them yet...
    wxString future1 = _("Master Gain Control");
@@ -793,11 +785,11 @@ bool AudacityApp::OnInit()
    // Create a menubar that will show when all project windows are closed.
 
    wxMenu *fileMenu = new wxMenu();
-   fileMenu->Append(wxID_NEW, wxT("&New\tCmd+N"));
-   fileMenu->Append(wxID_OPEN, wxT("&Open...\tCmd+O"));
+   fileMenu->Append(wxID_NEW, wxT("&New\tCtrl+N"));
+   fileMenu->Append(wxID_OPEN, wxT("&Open...\tCtrl+O"));
    fileMenu->Append(wxID_ABOUT, _("&About Audacity..."));
-   /* i18n-hint: Mac OS X shortcut should be Cmd+, */
-   fileMenu->Append(wxID_PREFERENCES, _("&Preferences...\tCmd+,"));
+   /* i18n-hint: Mac OS X shortcut should be Ctrl+, */
+   fileMenu->Append(wxID_PREFERENCES, _("&Preferences...\tCtrl+,"));
 
    wxMenuBar *menuBar = new wxMenuBar();
    menuBar->Append(fileMenu, wxT("&File"));

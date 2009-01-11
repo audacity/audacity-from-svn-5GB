@@ -607,9 +607,6 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
       tmpEntry->id = wxID_EXIT;
    else if (name == wxT("About"))
       tmpEntry->id = wxID_ABOUT;
-
-   // This converts the compiled in defaults.
-   tmpEntry->key.Replace(wxT("Ctrl+"), wxT("Cmd+"));
 #endif
 
    tmpEntry->defaultKey = tmpEntry->key;

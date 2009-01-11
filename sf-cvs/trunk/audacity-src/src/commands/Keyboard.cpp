@@ -17,40 +17,27 @@ wxString KeyStringNormalize(const wxString & key)
 {
 #if defined(__WXMAC__)
    wxString newkey;
+   wxString temp = key;
+   temp.Replace(wxT("XCtrl+"), wxT("Control+"));
+   temp.Replace(wxT("Ctrl+"), wxT("Command+"));
 
-   if (wxSystemOptions::GetOptionInt(wxMAC_SEPARATE_COMMAND_AND_CONTROL)) {
-      if (key.Contains(wxT("Ctrl+")) || key.Contains(wxT("Control+"))) {
-         newkey += wxT("Ctrl+");
-      }
-
-      if (key.Contains(wxT("Alt+")) || key.Contains(wxT("Option+"))) {
-         newkey += wxT("Alt+");
-      }
-
-      if (key.Contains(wxT("Shift+"))) {
-         newkey += wxT("Shift+");
-      }
-
-      if (key.Contains(wxT("Cmd+")) || key.Contains(wxT("Command+"))) {
-         newkey += wxT("Cmd+");
-      }
-   }
-   else {
-      if (key.Contains(wxT("Alt+")) || key.Contains(wxT("Option+"))) {
-         newkey += wxT("Alt+");
-      }
-
-      if (key.Contains(wxT("Shift+"))) {
-         newkey += wxT("Shift+");
-      }
-
-      if (key.Contains(wxT("Ctrl+")) || key.Contains(wxT("Control+")) ||
-          key.Contains(wxT("Cmd+")) || key.Contains(wxT("Command+"))) {
-          newkey += wxT("Ctrl+");
-      }
+   if (temp.Contains(wxT("Control+"))) {
+      newkey += wxT("XCtrl+");
    }
 
-   return newkey + key.AfterLast(wxT('+'));
+   if (temp.Contains(wxT("Alt+")) || temp.Contains(wxT("Option+"))) {
+      newkey += wxT("Alt+");
+   }
+
+   if (temp.Contains(wxT("Shift+"))) {
+      newkey += wxT("Shift+");
+   }
+
+   if (temp.Contains(wxT("Command+"))) {
+      newkey += wxT("Ctrl+");
+   }
+
+   return newkey + temp.AfterLast(wxT('+'));
 #else
    return key;
 #endif
@@ -59,17 +46,10 @@ wxString KeyStringNormalize(const wxString & key)
 wxString KeyStringDisplay(const wxString & key)
 {
    wxString newkey = KeyStringNormalize(key);
-
 #if defined(__WXMAC__)
-   if (wxSystemOptions::GetOptionInt(wxMAC_SEPARATE_COMMAND_AND_CONTROL)) {
-      newkey.Replace(wxT("Ctrl+"), wxT("Control+"));
-      newkey.Replace(wxT("Alt+"), wxT("Option+"));
-      newkey.Replace(wxT("Cmd+"), wxT("Command+"));
-   }
-   else {
-      newkey.Replace(wxT("Ctrl+"), wxT("Command+"));
-      newkey.Replace(wxT("Alt+"), wxT("Option+"));
-   }
+   newkey.Replace(wxT("XCtrl+"), wxT("Control+"));
+   newkey.Replace(wxT("Alt+"), wxT("Option+"));
+   newkey.Replace(wxT("Ctrl+"), wxT("Command+"));
 #endif
 
    return newkey;
@@ -82,7 +62,7 @@ wxString KeyEventToKeyString(const wxKeyEvent & event)
    long key = event.GetKeyCode();
 
    if (event.ControlDown())
-      newStr += wxT("Ctrl+");
+      newStr += wxT("XCtrl+");
    
    if (event.AltDown())
       newStr += wxT("Alt+");
@@ -92,7 +72,7 @@ wxString KeyEventToKeyString(const wxKeyEvent & event)
 
 #if defined(__WXMAC__)
    if (event.MetaDown())
-      newStr += wxT("Cmd+");
+      newStr += wxT("Ctrl+");
 #endif
 
    if (event.ControlDown() && key >= 1 && key <= 26)
