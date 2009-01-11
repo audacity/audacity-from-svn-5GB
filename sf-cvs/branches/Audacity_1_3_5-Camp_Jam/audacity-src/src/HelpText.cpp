@@ -272,7 +272,7 @@ wxString HelpTextBuiltIn( const wxString & Key )
             _("<p><b>Play the Song I bought from Jamling</b> \
                <p>&nbsp;</p> \
                <ul><li><img src=\"") + strImagesDir + _("PlayBtn.jpg\"> \
-                     Your Song should be loaded and ready to go, just press Play!</li> \
+                     Your Song should be loaded and ready to go - just press Play!</li> \
                   <li>If your song didn't load properly, try importing the tracks from the top menu: \
                      <i>File &gt; Import &gt; Audio</i>. \
                   <li>The files will be named after the Song you bought \
@@ -302,7 +302,7 @@ wxString HelpTextBuiltIn( const wxString & Key )
                      If not, click [[PCHints|here for PC]] or [[MacHints|here for Mac]].</li> \
                   <li>Erase your test noise track by selecting it and going to the top menu:  \
                      <i>Tracks &gt; Remove Tracks</i>.</li> \
-                  <li>IMPORTANT NOTE, you'll want to plug in headphones to prevent feedback and help \
+                  <li>IMPORTANT NOTE - you'll want to plug in headphones to prevent feedback and help \
                      the music be loud enough for you to play or sing along!</li> \
                </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("PCHints"))
@@ -321,13 +321,13 @@ wxString HelpTextBuiltIn( const wxString & Key )
                      Download it \
                      <a href=\"http://www.microsoft.com/downloads/details.aspx?familyid=2da43d38-db71-4c1b-bc6a-9b6652cd92a3&displaylang=en\"> \
                         here</a>. \
-                     (Don't worry, if your PC isn't equipped for DirectSound, Jamling will work just fine \
+                     (Don't worry - if your PC isn't equipped for DirectSound, Jamling will work just fine \
                      with whatever sound card and drivers you have.)</li> \
                   <li>Then click on the Input Level Meter \
                      <img src=\"") + strImagesDir + _("InputLevelMeter.jpg\"></li> \
                      in Audacity to start monitoring yourself.  \
                      (Be sure to plug in headphones first.)  \
-                     You'll experience an echo, don't worry, that's normal!</li>  \
+                     You'll experience an echo - don't worry, that's normal!</li>  \
                   <li>If the echo is messing you up, you can try using Kristal, it's packaged with your \
                      Jamling Song and you'll find help to get you started at the \
                      <a href=\"http://jamling.com/content/using-kristal-record-jamling\">Jamling FAQ</a>.  </li> \
@@ -345,7 +345,7 @@ wxString HelpTextBuiltIn( const wxString & Key )
                      <img src=\"") + strImagesDir + _("InputLevelMeter.jpg\"></li> \
                      in Audacity to start monitoring yourself.  \
                      (Be sure to plug in headphones first.)  \
-                     You'll experience an echo, don't worry, that's normal!</li>  \
+                     You'll experience an echo - don't worry, that's normal!</li>  \
                </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("lineIn"))
          return WrapText(wxString(wxT("")) + 
@@ -360,7 +360,7 @@ wxString HelpTextBuiltIn( const wxString & Key )
                   <li>Once you have the right gear, you'll need to change the default audio input: \
                      <ul><li>For PC, <i>Start &gt; Control Panel &gt; Sounds and Audio Devices &gt; \
                            Audio &gt; Sound Recording...</i> \
-                           From here it varies by computer, select the option resembling <i>Line Input</i>.</li> \
+                           From here it varies by computer - select the option resembling <i>Line Input</i>.</li> \
                         <li>For Mac, <i>Apple Menu &gt; System Preferences &gt; Sound &gt; Input &gt; \
                            Line In</i></li> \
                      </ul></li> \
@@ -519,7 +519,7 @@ wxString HelpTextBuiltIn( const wxString & Key )
       if (Key == wxT("exportMultiple"))
          return WrapText(wxString(wxT("")) + 
                   _("<p><b>Use these tracks in a different recording application</b> \
-                     <p>Easy, go to <i>File &gt; Export Multiple</i>.  \
+                     <p>Easy - go to <i>File &gt; Export Multiple</i>.  \
                         Choose your uncompressed format (most recording apps can use either .wav or. aiff) \
                         and export the files.  From there, import them into your other program. \
                      </p><br><br>") + MoreHelp() + ToWelcome());
