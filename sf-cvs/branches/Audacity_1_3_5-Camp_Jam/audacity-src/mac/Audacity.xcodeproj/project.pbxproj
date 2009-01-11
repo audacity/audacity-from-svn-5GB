@@ -812,6 +812,7 @@
 		28560C910A75E40F00A3429E /* AutoRecovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */; };
 		285D8BA10AAEFDFD00E0B5BE /* SmartRecordDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285D8B9F0AAEFDFD00E0B5BE /* SmartRecordDialog.cpp */; };
 		285DE1FA0BF03C7800A20DF0 /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 285DE1F80BF03C7800A20DF0 /* Screenshot.cpp */; };
+		28795FB50EBFD4B300F52A6A /* BrandToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28795FB30EBFD4B200F52A6A /* BrandToolBar.cpp */; };
 		287F9F3D0A69748F00F025FA /* TimeDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 287F9F3C0A69748F00F025FA /* TimeDialog.cpp */; };
 		2882177B0A35D8730029AF41 /* ShuttlePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288217790A35D8730029AF41 /* ShuttlePrefs.cpp */; };
 		2882178C0A35D90C0029AF41 /* treebook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2882178A0A35D90C0029AF41 /* treebook.cpp */; };
@@ -890,7 +891,6 @@
 		28F1D81E0A2D0019005506A7 /* ExpandingToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D8190A2D0018005506A7 /* ExpandingToolBar.cpp */; };
 		28F1D81F0A2D0019005506A7 /* ImageRoll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */; };
 		28F5C1110BE5886A00D17341 /* FileDialogPrivate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F5C10F0BE5886A00D17341 /* FileDialogPrivate.cpp */; };
-		28F8B4470F19A91B00939793 /* BrandToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B4450F19A91B00939793 /* BrandToolBar.cpp */; };
 		28FB20350C415D9500F769E7 /* SmartRecordPrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FB20330C415D9500F769E7 /* SmartRecordPrefs.cpp */; };
 		28FC1AFB0A47762C00A188AE /* WrappedType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FC1AF90A47762C00A188AE /* WrappedType.cpp */; };
 		28FE4A080ABF4E960056F5C4 /* mmx_optimized.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FE4A060ABF4E960056F5C4 /* mmx_optimized.cpp */; };
@@ -1981,6 +1981,8 @@
 		285D8BA00AAEFDFD00E0B5BE /* SmartRecordDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SmartRecordDialog.h; sourceTree = "<group>"; };
 		285DE1F80BF03C7800A20DF0 /* Screenshot.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Screenshot.cpp; sourceTree = "<group>"; };
 		285DE1F90BF03C7800A20DF0 /* Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Screenshot.h; sourceTree = "<group>"; };
+		28795FB30EBFD4B200F52A6A /* BrandToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = BrandToolBar.cpp; sourceTree = "<group>"; };
+		28795FB40EBFD4B200F52A6A /* BrandToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = BrandToolBar.h; sourceTree = "<group>"; };
 		287F9F3B0A69748F00F025FA /* TimeDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeDialog.h; sourceTree = "<group>"; };
 		287F9F3C0A69748F00F025FA /* TimeDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeDialog.cpp; sourceTree = "<group>"; };
 		288217790A35D8730029AF41 /* ShuttlePrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ShuttlePrefs.cpp; sourceTree = "<group>"; };
@@ -2085,8 +2087,6 @@
 		28F1D81C0A2D0019005506A7 /* ImageRoll.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ImageRoll.h; sourceTree = "<group>"; };
 		28F5C10F0BE5886A00D17341 /* FileDialogPrivate.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FileDialogPrivate.cpp; sourceTree = "<group>"; };
 		28F5C1100BE5886A00D17341 /* FileDialogPrivate.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FileDialogPrivate.h; sourceTree = "<group>"; };
-		28F8B4450F19A91B00939793 /* BrandToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = BrandToolBar.cpp; sourceTree = "<group>"; };
-		28F8B4460F19A91B00939793 /* BrandToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = BrandToolBar.h; sourceTree = "<group>"; };
 		28FB121F0A3790A8006F0917 /* MacroMagic.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = MacroMagic.h; sourceTree = "<group>"; };
 		28FB12230A3790DF006F0917 /* AllThemeResources.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AllThemeResources.h; sourceTree = "<group>"; };
 		28FB20330C415D9500F769E7 /* SmartRecordPrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SmartRecordPrefs.cpp; sourceTree = "<group>"; };
@@ -3737,8 +3737,8 @@
 		2897F6DB0AB3DB5A003C20C5 /* toolbars */ = {
 			isa = PBXGroup;
 			children = (
-				28F8B4450F19A91B00939793 /* BrandToolBar.cpp */,
-				28F8B4460F19A91B00939793 /* BrandToolBar.h */,
+				28795FB30EBFD4B200F52A6A /* BrandToolBar.cpp */,
+				28795FB40EBFD4B200F52A6A /* BrandToolBar.h */,
 				2897F6DC0AB3DB5A003C20C5 /* ControlToolBar.cpp */,
 				2897F6DD0AB3DB5A003C20C5 /* ControlToolBar.h */,
 				289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */,
@@ -4700,7 +4700,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC \\\n             --enable-unicode=$CONFIG_UNICODE \\\n             --enable-debug=$CONFIG_DEBUG \\\n             --with-lib-preference=local,system \\\n             --with-wx-version=$WX_VER \\\n             $CONFIG_FLAGS\n\nexit $?\n";
+			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC \\\n             --enable-unicode=$CONFIG_UNICODE \\\n             --enable-debug=$CONFIG_DEBUG \\\n             --with-lib-preference=local,system \\\n             --with-wx-version=$WX_VER \\\n             $CONFIG_FLAGS\n\n#\n# Libsndfile's endianness detection is a bit unfriendly to universal binary\n# builds, so we coerce it into working our way.\n#\nFILE=lib-src/libsndfile/src/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#undef CPU_IS_BIG_ENDIAN\n#undef CPU_IS_LITTLE_ENDIAN\n#if defined(__BIG_ENDIAN__)\n#define CPU_IS_BIG_ENDIAN 1\n#define CPU_IS_LITTLE_ENDIAN 0\n#else\n#define CPU_IS_BIG_ENDIAN 0\n#define CPU_IS_LITTLE_ENDIAN 1\n#endif\nEOF\n\n#\n# Ditto for libflac.\n#\nFILE=lib-src/libflac/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\n#\n# And libmad.\n#\nFILE=lib-src/libmad/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\nexit 0\n";
 		};
 		17073FEB0988E6C9008541CC /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5408,7 +5408,7 @@
 				28501EA20CEECEF80029ABAA /* SplashDialog.cpp in Sources */,
 				28501EAA0CEED0670029ABAA /* LoadVamp.cpp in Sources */,
 				28501EAB0CEED0680029ABAA /* VampEffect.cpp in Sources */,
-				28F8B4470F19A91B00939793 /* BrandToolBar.cpp in Sources */,
+				28795FB50EBFD4B300F52A6A /* BrandToolBar.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5778,6 +5778,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				TOPLEVEL = ..;
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-debug-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
@@ -6007,6 +6008,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				TOPLEVEL = ..;
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
@@ -6187,6 +6189,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				TOPLEVEL = ..;
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-debug-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXDEBUG__ -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
@@ -6486,6 +6489,8 @@
 		28E5DA3A0AC4CBA200E7F64C /* Release Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				CONFIG_DEBUG = no;
 				CONFIG_FLAGS = "";
 				CONFIG_STATIC = yes;
@@ -6494,7 +6499,9 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				KEEP_PRIVATE_EXTERNS = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				TOPLEVEL = ..;
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-release-static-$(WX_VER) -I$(WX_PREFIX)/include/wx-$(WX_VER) -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
