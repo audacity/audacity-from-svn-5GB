@@ -22,15 +22,6 @@ diff -wruN wxWidgets-2.8.9-orig/include/wx/mac/carbon/sound.h wxWidgets-2.8.9/in
 diff -wruN wxWidgets-2.8.9-orig/src/common/menucmn.cpp wxWidgets-2.8.9/src/common/menucmn.cpp
 --- wxWidgets-2.8.9-orig/src/common/menucmn.cpp	2008-09-15 04:28:18.000000000 -0500
 +++ wxWidgets-2.8.9/src/common/menucmn.cpp	2009-01-10 16:53:27.000000000 -0600
-@@ -4,7 +4,7 @@
- // Author:      Vadim Zeitlin
- // Modified by:
- // Created:     26.10.99
--// RCS-ID:      $Id: wxMac-2.8.9.patch,v 1.2 2009-01-10 22:57:58 llucius Exp $
-+// RCS-ID:      $Id: wxMac-2.8.9.patch,v 1.2 2009-01-10 22:57:58 llucius Exp $
- // Copyright:   (c) wxWidgets team
- // Licence:     wxWindows licence
- ///////////////////////////////////////////////////////////////////////////////
 @@ -194,7 +194,11 @@
      {
          if ( (label[n] == '+') || (label[n] == '-') )
@@ -378,15 +369,6 @@ diff -wruN wxWidgets-2.8.9-orig/src/mac/carbon/sound.cpp wxWidgets-2.8.9/src/mac
 diff -wruN wxWidgets-2.8.9-orig/src/mac/carbon/uma.cpp wxWidgets-2.8.9/src/mac/carbon/uma.cpp
 --- wxWidgets-2.8.9-orig/src/mac/carbon/uma.cpp	2008-09-15 04:29:29.000000000 -0500
 +++ wxWidgets-2.8.9/src/mac/carbon/uma.cpp	2009-01-10 16:53:27.000000000 -0600
-@@ -4,7 +4,7 @@
- // Author:      Stefan Csomor
- // Modified by:
- // Created:     04/01/98
--// RCS-ID:      $Id: wxMac-2.8.9.patch,v 1.2 2009-01-10 22:57:58 llucius Exp $
-+// RCS-ID:      $Id: wxMac-2.8.9.patch,v 1.2 2009-01-10 22:57:58 llucius Exp $
- // Copyright:   (c) Stefan Csomor
- // Licence:     The wxWindows licence
- /////////////////////////////////////////////////////////////////////////////
 @@ -187,13 +187,20 @@
  void UMASetMenuItemShortcut( MenuRef menu , MenuItemIndex item , wxAcceleratorEntry *entry )
  {
