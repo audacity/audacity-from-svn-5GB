@@ -586,15 +586,21 @@ void CommandManager::Enable(CommandListEntry *entry, bool enabled)
 {
    // Don't do anything if the command's enabled state
    // is already the same
-   if (entry->enabled == enabled)
+   if (!entry->menu) {
+      entry->enabled = enabled;
       return;
+   }
 
-   entry->enabled = enabled;
+   // LL:  Refresh from real state as we can get out of sync on the
+   //      Mac due to its reluctance to enable menus when in a modal
+   //      state.
+   entry->enabled = entry->menu->IsEnabled(entry->id);
 
-   if (!entry->menu)
-      return;
-      
-   entry->menu->Enable(entry->id, enabled);
+   // Only enabled if needed
+   if (entry->enabled != enabled) {
+      entry->menu->Enable(entry->id, enabled);
+   }
+
    if (entry->multi) {
       int i;
       int ID = entry->id;
@@ -845,6 +851,7 @@ bool CommandManager::HandleMenuID(int id, wxUint32 flags, wxUint32 mask)
 bool CommandManager::HandleKey(wxKeyEvent &evt, wxUint32 flags, wxUint32 mask)
 {
    wxString keyStr = KeyEventToKeyString(evt);
+   keyStr.Replace(wxT("Cmd+"), wxT("Ctrl+"));
 	CommandListEntry *entry = mCommandKeyHash[keyStr];
    return HandleCommandEntry( entry, flags, mask );
 }
