@@ -2273,6 +2273,18 @@ void AudacityProject::OnPreferences()
 {
    PrefsDialog dialog(this /* parent */ );
    dialog.ShowModal();
+
+   // LL:  Moved from PrefsDialog since wxWidgets on OSX can't deal with
+   //      rebuilding the menus while the PrefsDialog is still in the modal
+   //      state.
+   for (unsigned int j = 0; j < gAudacityProjects.GetCount(); j++) {
+      gAudacityProjects[j]->UpdatePrefsVariables();
+      gAudacityProjects[j]->RebuildMenuBar();
+      gAudacityProjects[j]->RebuildOtherMenus();
+      if (gAudacityProjects[j]->GetSelectionBar()) {
+         gAudacityProjects[j]->GetSelectionBar()->UpdateDisplay();
+      }
+   }
 }
 
 void AudacityProject::OnPageSetup()
