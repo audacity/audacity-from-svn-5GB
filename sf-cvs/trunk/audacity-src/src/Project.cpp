@@ -66,6 +66,7 @@ scroll information.  It also has some status flags.
 #include <wx/ffile.h>
 #include <wx/filedlg.h>
 #include <wx/filefn.h>
+#include <wx/filename.h>
 #include <wx/intl.h>
 #include <wx/log.h>
 #include <wx/menu.h>
@@ -81,11 +82,6 @@ scroll information.  It also has some status flags.
 #include <wx/generic/filedlgg.h>
 
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
-
-#if defined(__WXMAC__)
-#include <CoreServices/CoreServices.h>
-#include <wx/mac/private.h>
-#endif
 
 #include "Project.h"
 
@@ -2675,15 +2671,8 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    saveFile.Close();
    
 #ifdef __WXMAC__
-   FSSpec spec;
-
-   wxMacFilename2FSSpec(mFileName, &spec);
-   FInfo finfo;
-   if (FSpGetFInfo(&spec, &finfo) == noErr) {
-      finfo.fdType = AUDACITY_PROJECT_TYPE;
-      finfo.fdCreator = AUDACITY_CREATOR;
-      FSpSetFInfo(&spec, &finfo);
-   }
+   wxFileName fn(mFileName);
+   fn.MacSetTypeAndCreator(AUDACITY_PROJECT_TYPE, AUDACITY_CREATOR);
 #endif
 
    if (!bWantSaveCompressed)

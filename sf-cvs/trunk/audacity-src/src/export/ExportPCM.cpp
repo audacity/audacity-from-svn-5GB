@@ -12,6 +12,7 @@
 
 #include <wx/choice.h>
 #include <wx/dynlib.h>
+#include <wx/filename.h>
 #include <wx/intl.h>
 #include <wx/timer.h>
 #include <wx/msgdlg.h>
@@ -35,17 +36,6 @@
 #include "../ondemand/ODManager.h"
 
 #include "Export.h"
-
-#ifdef __WXMAC__
-#define __MOVIES__   /* Apple's Movies.h not compatible with Audacity */
-/* #define __MACHELP__ */
-
-#include <wx/mac/private.h>
-# ifdef __UNIX__
-#  include <CoreServices/CoreServices.h>
-# else
-# endif
-#endif
 
 //----------------------------------------------------------------------------
 // Statics
@@ -556,18 +546,9 @@ bool ExportPCM::Export(AudacityProject *project,
    }
 
 #ifdef __WXMAC__
-
-   FSSpec spec;
-
-   wxMacFilename2FSSpec(fName, &spec);
-
-   FInfo finfo;
-   if (FSpGetFInfo(&spec, &finfo) == noErr) {
-      finfo.fdType = sf_header_mactype(sf_format & SF_FORMAT_TYPEMASK);
-      finfo.fdCreator = AUDACITY_CREATOR;
-
-      FSpSetFInfo(&spec, &finfo);
-   }
+   wxFileName fn(fName);
+   fn.MacSetTypeAndCreator(sf_header_mactype(sf_format & SF_FORMAT_TYPEMASK),
+                           AUDACITY_CREATOR);
 #endif
    
    return !cancelling;
