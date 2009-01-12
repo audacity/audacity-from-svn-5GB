@@ -23,7 +23,6 @@
 #include "HelpText.h"
 
 #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
-   #include <wx/stdpaths.h>
    #include "effects/Effect.h"
    #include "toolbars/ControlToolBar.h"
    #include "widgets/LinkingHtmlWindow.h"
