@@ -23,6 +23,7 @@
 #include "HelpText.h"
 
 #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+   #include <wx/stdpaths.h>
    #include "effects/Effect.h"
    #include "toolbars/ControlToolBar.h"
    #include "widgets/LinkingHtmlWindow.h"
@@ -221,8 +222,12 @@ wxString HelpTextBuiltIn( const wxString & Key )
    #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
       wxString varKey = Key;
       wxString strImagesDir = 
+#if defined(__WXMAC__)
+         wxGetApp().audacityPathList[0] + wxT("/../Resources/");
+#else
          wxGetApp().audacityPathList[0] + wxFileName::GetPathSeparator() + 
          wxT("Jamling_HelpText_images") + wxFileName::GetPathSeparator();
+#endif
       if (Key == wxT("welcome"))
          return WrapText(
                   wxString(wxT("")) +
@@ -804,7 +809,6 @@ wxString HelpText( const wxString & Key )
 
    wxString Text;
    Text = HelpTextBuiltIn( Key );
-
    if( !Text.IsEmpty())
       return LinkExpand( Text );
 
