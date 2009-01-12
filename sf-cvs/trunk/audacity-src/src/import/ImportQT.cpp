@@ -13,10 +13,7 @@
 **********************************************************************/
 
 #include "../Audacity.h"
-#include "../Tags.h"
-#include "ImportQT.h"
 #include "ImportPlugin.h"
-#include "wx/intl.h"
 
 #define DESC _("QuickTime files")
 
@@ -40,20 +37,17 @@ void GetQTImportPlugin(ImportPluginList *importPluginList,
 
 #else /* USE_QUICKTIME */
 
-#define Track XTrack
-
-// gives us routines to convert between filenames and FSSpec
-#ifndef WIN32
-#include <wx/mac/private.h>
-#endif
 #include <wx/msgdlg.h>
 
-// I'm not sure what __MACH__ is important for, this list of headers is
-// copied verbatim from the Apple sample code
+// There's a name collision between our Track and QuickTime's...workaround it
+#define Track XTrack
+
 #ifdef __MACH__
+// These get used when building under OSX
    #include <Carbon/Carbon.h>
    #include <QuickTime/QuickTime.h>
 #else
+// These get used when building under Windows
    #include <ConditionalMacros.h>
    #include <Movies.h>
    #include <QuickTimeComponents.h>
@@ -64,14 +58,17 @@ void GetQTImportPlugin(ImportPluginList *importPluginList,
    #include <Navigation.h>
 #endif
 
+// There's a name collision between our Track and QuickTime's...workaround it
 #undef Track
 
+#include "../Internat.h"
+#include "../Tags.h"
 #include "../WaveTrack.h"
+#include "ImportQT.h"
 
 // Prototype for the callback
 static pascal Boolean
 SoundConverterFillBufferCallback(SoundComponentDataPtr *outData, void *userData);
-
 
 Media GetMediaFromMovie(Movie mov);
 
@@ -146,8 +143,9 @@ wxString QTImportPlugin::GetPluginFormatDescription()
 
 ImportFileHandle *QTImportPlugin::Open(wxString Filename)
 {
+   FSRef inRef;
    FSSpec inFile;
-   FInfo fileInfo;
+   FSCatalogInfo catInfo;
    Movie theMovie = 0;
    Media theMedia;
    OSErr err;
@@ -155,22 +153,15 @@ ImportFileHandle *QTImportPlugin::Open(wxString Filename)
    // Make sure QuickTime is initialized
    //::EnterMovies();
 
-#ifdef WIN32
-   char* specFilename = strdup(Filename.GetData());
-   err = FSMakeFSSpec(0,0,c2pstr(specFilename), &inFile);
-   free(specFilename);
+   err = FSPathMakeRef((UInt8 *)OSFILENAME(Filename), &inRef, NULL);
    if (err != noErr)
       return NULL;
 
-#else
-   wxMacFilename2FSSpec(Filename, &inFile);
-#endif
-
-   err = FSpGetFInfo(&inFile, &fileInfo);
+   err = FSGetCatalogInfo(&inRef, kFSCatInfoFinderInfo, &catInfo, NULL, &inFile, NULL);
    if (err != noErr)
       return NULL;
 
-   if (kQTFileTypeSystemSevenSound == fileInfo.fdType)
+   if (((FInfo *)&catInfo.finderInfo)->fdType == kQTFileTypeSystemSevenSound)
    {
       // TODO: handle this case.  it is special because system seven sounds cannot
       // be opened in place
@@ -379,7 +370,6 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
    // allocate source media buffer
    cbData.hSource            = NewHandle((long)cbData.maxBufferSize);
-   MoveHHi(cbData.hSource);
    HLock(cbData.hSource);
 
    cbData.compData.desc = inputFormat;
