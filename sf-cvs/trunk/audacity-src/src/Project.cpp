@@ -83,6 +83,11 @@ scroll information.  It also has some status flags.
 
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
 
+#if defined(__WXMAC__)
+#include <CoreServices/CoreServices.h>
+#include <wx/mac/private.h>
+#endif
+
 #include "Project.h"
 
 #include "AutoRecovery.h"
