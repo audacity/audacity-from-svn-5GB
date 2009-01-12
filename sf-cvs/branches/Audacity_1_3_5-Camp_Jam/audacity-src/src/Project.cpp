@@ -2743,11 +2743,14 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       }
       mTracks->Add(newTracks[i]);
       newTracks[i]->SetSelected(true);
-      if (numTracks > 1)
-         newTracks[i]->SetName(trackNameBase + wxString::Format(wxT(" %d" ), i + 1));
-      else
+
+      if (numTracks > 2 || (numTracks > 1 && !newTracks[i]->GetTeamed())) {
+         newTracks[i]->SetName(trackNameBase + wxString::Format(wxT(" %d" ), i));
+      }
+      else {
          newTracks[i]->SetName(trackNameBase);
-         
+      }
+
       // Check if new track contains aliased blockfiles and if yes,
       // remember this to show a warning later
       if (newTracks[i]->GetKind() == WaveTrack::Wave)
