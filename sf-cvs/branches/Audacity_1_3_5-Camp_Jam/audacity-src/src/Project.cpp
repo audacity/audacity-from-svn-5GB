@@ -2745,7 +2745,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       newTracks[i]->SetSelected(true);
 
       if (numTracks > 2 || (numTracks > 1 && !newTracks[i]->GetTeamed())) {
-         newTracks[i]->SetName(trackNameBase + wxString::Format(wxT(" %d" ), i));
+         newTracks[i]->SetName(trackNameBase + wxString::Format(wxT(" %d" ), i + 1));
       }
       else {
          newTracks[i]->SetName(trackNameBase);
