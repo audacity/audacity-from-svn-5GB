@@ -833,6 +833,15 @@
 		28A520560C12BE0300BF6811 /* pa_debugprint.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A520520C12BE0300BF6811 /* pa_debugprint.h */; };
 		28A520570C12BE0300BF6811 /* pa_ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28A520530C12BE0300BF6811 /* pa_ringbuffer.c */; };
 		28A520580C12BE0300BF6811 /* pa_ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A520540C12BE0300BF6811 /* pa_ringbuffer.h */; };
+		28B142B80F1AFD9400EAD6AC /* Adapter.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28B142AF0F1AFD9400EAD6AC /* Adapter.jpg */; };
+		28B142B90F1AFD9400EAD6AC /* ClickTrack.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28B142B00F1AFD9400EAD6AC /* ClickTrack.jpg */; };
+		28B142BA0F1AFD9400EAD6AC /* InputLevelMeter.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28B142B10F1AFD9400EAD6AC /* InputLevelMeter.jpg */; };
+		28B142BB0F1AFD9400EAD6AC /* InputLevelSlider.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28B142B20F1AFD9400EAD6AC /* InputLevelSlider.jpg */; };
+		28B142BC0F1AFD9400EAD6AC /* LineIn1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28B142B30F1AFD9400EAD6AC /* LineIn1.jpg */; };
+		28B142BD0F1AFD9400EAD6AC /* LineIn2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28B142B40F1AFD9400EAD6AC /* LineIn2.jpg */; };
+		28B142BE0F1AFD9400EAD6AC /* MuteBtn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28B142B50F1AFD9400EAD6AC /* MuteBtn.jpg */; };
+		28B142BF0F1AFD9400EAD6AC /* PlayBtn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28B142B60F1AFD9400EAD6AC /* PlayBtn.jpg */; };
+		28B142C00F1AFD9400EAD6AC /* RecordBtn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28B142B70F1AFD9400EAD6AC /* RecordBtn.jpg */; };
 		28D0255B0AFDA53B0035F843 /* alpasscv.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D025570AFDA53B0035F843 /* alpasscv.c */; };
 		28D0255C0AFDA53B0035F843 /* alpasscv.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D025580AFDA53B0035F843 /* alpasscv.h */; };
 		28D0255D0AFDA53B0035F843 /* alpassvc.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D025590AFDA53B0035F843 /* alpassvc.c */; };
@@ -1887,6 +1896,7 @@
 		28105DA20AD09FC500BB4269 /* px_mixer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = px_mixer.h; sourceTree = "<group>"; };
 		2816372C0BAE3B6C0079C746 /* LinkingHtmlWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = LinkingHtmlWindow.cpp; sourceTree = "<group>"; };
 		2816372D0BAE3B6C0079C746 /* LinkingHtmlWindow.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LinkingHtmlWindow.h; sourceTree = "<group>"; };
+		28250B320F19CC26000D2AE4 /* AudacityBranding.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AudacityBranding.h; sourceTree = "<group>"; };
 		282D474A0B9E8D900034BC49 /* Snap.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Snap.cpp; sourceTree = "<group>"; };
 		282D474B0B9E8D900034BC49 /* Snap.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Snap.h; sourceTree = "<group>"; };
 		283506280A3A88ED00EB1EBD /* pa_unix_util.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_unix_util.c; sourceTree = "<group>"; };
@@ -2019,6 +2029,15 @@
 		28A520520C12BE0300BF6811 /* pa_debugprint.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_debugprint.h; sourceTree = "<group>"; };
 		28A520530C12BE0300BF6811 /* pa_ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_ringbuffer.c; sourceTree = "<group>"; };
 		28A520540C12BE0300BF6811 /* pa_ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_ringbuffer.h; sourceTree = "<group>"; };
+		28B142AF0F1AFD9400EAD6AC /* Adapter.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Adapter.jpg; sourceTree = "<group>"; };
+		28B142B00F1AFD9400EAD6AC /* ClickTrack.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ClickTrack.jpg; sourceTree = "<group>"; };
+		28B142B10F1AFD9400EAD6AC /* InputLevelMeter.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = InputLevelMeter.jpg; sourceTree = "<group>"; };
+		28B142B20F1AFD9400EAD6AC /* InputLevelSlider.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = InputLevelSlider.jpg; sourceTree = "<group>"; };
+		28B142B30F1AFD9400EAD6AC /* LineIn1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LineIn1.jpg; sourceTree = "<group>"; };
+		28B142B40F1AFD9400EAD6AC /* LineIn2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LineIn2.jpg; sourceTree = "<group>"; };
+		28B142B50F1AFD9400EAD6AC /* MuteBtn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MuteBtn.jpg; sourceTree = "<group>"; };
+		28B142B60F1AFD9400EAD6AC /* PlayBtn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PlayBtn.jpg; sourceTree = "<group>"; };
+		28B142B70F1AFD9400EAD6AC /* RecordBtn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = RecordBtn.jpg; sourceTree = "<group>"; };
 		28D025570AFDA53B0035F843 /* alpasscv.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = alpasscv.c; sourceTree = "<group>"; };
 		28D025580AFDA53B0035F843 /* alpasscv.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = alpasscv.h; sourceTree = "<group>"; };
 		28D025590AFDA53B0035F843 /* alpassvc.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = alpassvc.c; sourceTree = "<group>"; };
@@ -2650,6 +2669,7 @@
 		174F73C8098D516D009CD6E0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				28B142AE0F1AFD9400EAD6AC /* Jamling_HelpText_images */,
 				174F73C9098D516D009CD6E0 /* Audacity.icns */,
 				174F73CA098D516D009CD6E0 /* AudacityAIFF.icns */,
 				174F73CB098D516D009CD6E0 /* AudacityAU.icns */,
@@ -2817,6 +2837,7 @@
 				1790AFCC09883BFD008A330A /* Audacity.h */,
 				1790AFCE09883BFD008A330A /* AudacityApp.cpp */,
 				1790AFCF09883BFD008A330A /* AudacityApp.h */,
+				28250B320F19CC26000D2AE4 /* AudacityBranding.h */,
 				1790AFD009883BFD008A330A /* AudacityHeaders.h */,
 				1790AFD209883BFD008A330A /* AudioIO.cpp */,
 				1790AFD309883BFD008A330A /* AudioIO.h */,
@@ -3765,6 +3786,23 @@
 			path = toolbars;
 			sourceTree = "<group>";
 		};
+		28B142AE0F1AFD9400EAD6AC /* Jamling_HelpText_images */ = {
+			isa = PBXGroup;
+			children = (
+				28B142AF0F1AFD9400EAD6AC /* Adapter.jpg */,
+				28B142B00F1AFD9400EAD6AC /* ClickTrack.jpg */,
+				28B142B10F1AFD9400EAD6AC /* InputLevelMeter.jpg */,
+				28B142B20F1AFD9400EAD6AC /* InputLevelSlider.jpg */,
+				28B142B30F1AFD9400EAD6AC /* LineIn1.jpg */,
+				28B142B40F1AFD9400EAD6AC /* LineIn2.jpg */,
+				28B142B50F1AFD9400EAD6AC /* MuteBtn.jpg */,
+				28B142B60F1AFD9400EAD6AC /* PlayBtn.jpg */,
+				28B142B70F1AFD9400EAD6AC /* RecordBtn.jpg */,
+			);
+			name = Jamling_HelpText_images;
+			path = ../images/Branding/Jamling_HelpText_images;
+			sourceTree = SOURCE_ROOT;
+		};
 		28E67FC00A3A29AE0021D89F /* include */ = {
 			isa = PBXGroup;
 			children = (
@@ -4671,6 +4709,15 @@
 				174F73D6098D516D009CD6E0 /* AudacityWAV.icns in Resources */,
 				174F73D8098D51AA009CD6E0 /* Info.plist in Resources */,
 				17FC86F40994637C0061DC94 /* compile.txt in Resources */,
+				28B142B80F1AFD9400EAD6AC /* Adapter.jpg in Resources */,
+				28B142B90F1AFD9400EAD6AC /* ClickTrack.jpg in Resources */,
+				28B142BA0F1AFD9400EAD6AC /* InputLevelMeter.jpg in Resources */,
+				28B142BB0F1AFD9400EAD6AC /* InputLevelSlider.jpg in Resources */,
+				28B142BC0F1AFD9400EAD6AC /* LineIn1.jpg in Resources */,
+				28B142BD0F1AFD9400EAD6AC /* LineIn2.jpg in Resources */,
+				28B142BE0F1AFD9400EAD6AC /* MuteBtn.jpg in Resources */,
+				28B142BF0F1AFD9400EAD6AC /* PlayBtn.jpg in Resources */,
+				28B142C00F1AFD9400EAD6AC /* RecordBtn.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6446,6 +6493,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"AUDACITY_DLL_API=",
 					"USE_PORTAUDIO_V19=1",
+					"$(OTHER_DEFINES)",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
