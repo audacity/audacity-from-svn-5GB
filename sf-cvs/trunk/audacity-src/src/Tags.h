@@ -66,11 +66,9 @@ class Tags: public XMLTagHandler {
    virtual ~Tags();
 
    Tags & operator= (const Tags & src );
-   
+
    bool ShowEditDialog(wxWindow *parent, wxString title, bool force = false);
-   bool ShowEditDialog1(wxWindow *parent, wxString title, bool force = false);
-   bool ShowEditDialog2(wxWindow *parent, wxString title, bool force = false);
-   
+
    virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(XMLWriter &xmlFile);
@@ -84,9 +82,11 @@ class Tags: public XMLTagHandler {
    void LoadDefaultGenres();
    void LoadGenres();
 
-   int GetNumGenres();
-   int GetGenre(const wxString & name);
+   int GetNumUserGenres();
+   wxString GetUserGenre(int value);
+
    wxString GetGenre(int value);
+   int GetGenre(const wxString & name);
 
    bool HasTag(const wxString & name);
    wxString GetTag(const wxString & name);
@@ -161,159 +161,6 @@ class TagsEditor: public wxDialog
    Tags mLocal;
 
    Grid *mGrid;
-
-   DECLARE_EVENT_TABLE()
-};
-
-class TagsEditor1: public wxDialog
-{
- public:
-   // constructors and destructors
-   TagsEditor1(wxWindow * parent,
-              wxString title,
-              Tags * tags,
-              bool editTitle,
-              bool editTrackNumber);
-
-   virtual ~TagsEditor1();
-
-//   virtual bool Validate();
-   virtual bool TransferDataToWindow();
-   virtual bool TransferDataFromWindow();
-
- private:
-   void Rebuild();
-   void PopulateOrExchange(ShuttleGui & S);
-
-   void PopulateGenres();
-
-   void OnEdit(wxCommandEvent & event);
-   void OnReset(wxCommandEvent & event);
-
-   void OnClear(wxCommandEvent & event);
-
-   void OnLoad(wxCommandEvent & event);
-   void OnSave(wxCommandEvent & event);
-   void OnSaveDefaults(wxCommandEvent & event);
-
-   void OnAdd(wxCommandEvent & event);
-   void OnRemove(wxCommandEvent & event);
-
-   void OnOk(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
-
- private:
-   Tags *mTags;
-   bool mEditTitle;
-   bool mEditTrack;
-
-   Tags mLocal;
-
-   wxScrolledWindow *mScroller;
-
-   wxTextCtrl *mTitleText;
-   wxTextCtrl *mTrackNumText;
-   wxComboBox *mGenreCombo;
-   wxButton *mClear;
-   wxTextCtrl *mEdit;
-
-   wxString mTitle;
-   wxString mArtist;
-   wxString mAlbum;
-   wxString mTrackNum;
-   wxString mYear;
-   wxString mGenre;
-   wxString mComments;
-
-   wxString mCopyright;
-   wxString mEncodedBy;
-   wxString mComposer;
-   wxString mLyricist;
-
-   wxArrayString mCustomTags;
-   wxArrayString mCustomVals;
-
-   bool mID3V2;
-
-   bool mTransfering;
-
-   DECLARE_EVENT_TABLE()
-};
-
-class TagsEditor2: public wxDialog
-{
- public:
-   // constructors and destructors
-   TagsEditor2(wxWindow * parent,
-              wxString title,
-              Tags * tags,
-              bool editTitle,
-              bool editTrackNumber);
-
-   virtual ~TagsEditor2();
-
-   void PopulateOrExchange(ShuttleGui & S);
-
-   virtual bool Validate();
-   virtual bool TransferDataToWindow();
-   virtual bool TransferDataFromWindow();
-
- private:
-   void PopulateGenres();
-
-   bool TransferDataFromBasic();
-   bool TransferDataFromAdvanced();
-   bool TransferDataToBasic();
-   bool TransferDataToAdvanced();
-
-   void OnPage(wxNotebookEvent & event);
-
-   void OnEdit(wxCommandEvent & event);
-   void OnReset(wxCommandEvent & event);
-
-   void OnClear(wxCommandEvent & event);
-
-   void OnLoad(wxCommandEvent & event);
-   void OnSave(wxCommandEvent & event);
-   void OnSaveDefaults(wxCommandEvent & event);
-
-   void OnAdd(wxCommandEvent & event);
-   void OnRemove(wxCommandEvent & event);
-
-   void OnOk(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
-
- private:
-   Tags *mTags;
-   bool mEditTitle;
-   bool mEditTrack;
-
-   Tags mLocal;
-
-   wxNotebook *mNotebook;
-   wxNotebookPage *mBasic;
-   wxNotebookPage *mAdvanced;
-   wxButton *mClear;
-
-   ChoiceEditor *mChoice;
-   wxGridCellChoiceEditor *mCombo;
-
-   wxTextCtrl *mTitleText;
-   wxTextCtrl *mTrackNumText;
-   wxComboBox *mGenreCombo;
-   Grid *mGrid;
-
-   wxString mTitle;
-   wxString mArtist;
-   wxString mAlbum;
-   wxString mTrackNum;
-   wxString mYear;
-   wxString mGenre;
-   wxString mComments;
-
-   bool mID3V2;
-
-   bool mTransfering;
 
    DECLARE_EVENT_TABLE()
 };
