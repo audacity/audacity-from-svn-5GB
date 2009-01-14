@@ -2792,18 +2792,19 @@ void AudacityProject::OnCut()
    while (n) {
       if (n->GetSelected()) {
          dest = NULL;
-         if (n->GetKind() == Track::Wave && 
-             gPrefs->Read(wxT("/GUI/EnableCutLines"), (long)0))
+         switch (n->GetKind())
          {
-            ((WaveTrack*)n)->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
 #if defined(USE_MIDI)
-         } else if (n->GetKind() == Track::Note) {
-            // Since portsmf has a built-in cut operator, we use that instead
-            n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
+            case Track::Note:
+               // Since portsmf has a built-in cut operator, we use that instead
+               n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
+            break;
 #endif
-         } else {
-            n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
+            default:
+               n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
+            break;
          }
+
          if (dest) {
             dest->SetChannel(n->GetChannel());
             dest->SetTeamed(n->GetTeamed()); // do first
@@ -2815,15 +2816,32 @@ void AudacityProject::OnCut()
       n = iter.Next();
    }
 
-#if defined(USE_MIDI)
    n = iter.First();
    while (n) {
-      if (n->GetSelected() && n->GetKind() != Track::Note)
-         //if NoteTrack, it was cut, so do not clear anything
-         n->Clear(mViewInfo.sel0, mViewInfo.sel1);
+      if (n->GetSelected()) {
+         switch (n->GetKind())
+         {
+#if defined(USE_MIDI)
+            case Track::Note:
+               //if NoteTrack, it was cut, so do not clear anything
+            break;
+#endif
+            case Track::Wave:
+               if (gPrefs->Read(wxT("/GUI/EnableCutLines"), (long)0)) {
+                  ((WaveTrack*)n)->ClearAndAddCutLine(mViewInfo.sel0,
+                                                      mViewInfo.sel1);
+                  break;
+               }
+
+               // Fall through
+
+            default:
+               n->Clear(mViewInfo.sel0, mViewInfo.sel1);
+            break;
+         }
+      }
       n = iter.Next();
    }
-#endif
 
    msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
    msClipProject = this;
