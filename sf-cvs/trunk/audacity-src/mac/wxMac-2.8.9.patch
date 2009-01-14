@@ -376,7 +376,7 @@ diff -wruN wxWidgets-2.8.9-orig/src/mac/carbon/uma.cpp wxWidgets-2.8.9/src/mac/c
 +    {
 +        SetMenuItemModifiers( menu, item , kMenuNoModifiers ); 
 +        SetMenuItemKeyGlyph( menu, item , kMenuNullGlyph );        
-+        SetItemCmd( menu, item , 0 ); 
++        //SetItemCmd( menu, item , 0 ); 
          return ;
 +    }
  
