@@ -51,6 +51,18 @@
 #include "../WaveTrack.h"
 #include "ImportPlugin.h"
 
+#ifdef USE_LIBID3TAG 
+   #include <id3tag.h>
+   // DM: the following functions were supposed to have been
+   // included in id3tag.h - should be fixed in the next release
+   // of mad.
+   extern "C" {
+      struct id3_frame *id3_frame_new(char const *);
+      id3_length_t id3_latin1_length(id3_latin1_t const *);
+      void id3_latin1_decode(id3_latin1_t const *, id3_ucs4_t *);
+   } 
+#endif
+
 #define DESC _("WAV, AIFF, and other uncompressed types")
 
 class PCMImportPlugin : public ImportPlugin
@@ -359,6 +371,138 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
       tags->SetTag(wxT("Software"), UTF8CTOWX(str));
    }
 
+#if defined(USE_LIBID3TAG)
+   if ((mInfo.format & SF_FORMAT_TYPEMASK) == SF_FORMAT_AIFF) {
+      wxFFile f(mFilename, wxT("rb"));
+      if (f.IsOpened()) {
+         char id[5];
+         wxUint32 len;
+
+         id[4] = '\0';
+
+         f.Seek(12);        // Skip filetype, length, and formtype
+
+         while (!f.Eof()) {
+            f.Read(id, 4);    // Get chunk type
+            f.Read(&len, 4);
+            len = wxUINT32_SWAP_ON_LE(len);
+
+            if (strcmp(id, "ID3 ") != 0) {
+               f.Seek(len + (len & 0x01), wxFromCurrent);
+               continue;
+            }
+
+            id3_byte_t *buffer = (id3_byte_t *)malloc(len);
+            if (!buffer) {
+               break;
+            }
+
+            f.Read(buffer, len);
+            struct id3_tag *tp = id3_tag_parse(buffer, len);
+            free(buffer);
+
+            if (!tp) {
+               break;
+            }
+
+            tags->SetID3V2( tp->options & ID3_TAG_OPTION_ID3V1 ? false : true );
+
+            // Loop through all frames
+            for (int i = 0; i < (int) tp->nframes; i++) {
+               struct id3_frame *frame = tp->frames[i];
+
+               // printf("ID: %08x '%4s'\n", (int) *(int *)frame->id, frame->id);
+               // printf("Desc: %s\n", frame->description);
+               // printf("Num fields: %d\n", frame->nfields);
+
+               // for (int j = 0; j < (int) frame->nfields; j++) {
+               //    printf("field %d type %d\n", j, frame->fields[j].type );
+               //    if (frame->fields[j].type == ID3_FIELD_TYPE_STRINGLIST) {
+               //       printf("num strings %d\n", frame->fields[j].stringlist.nstrings);
+               //    }
+               // }
+
+               wxString n, v;
+
+               // Determine the tag name
+               if (strcmp(frame->id, ID3_FRAME_TITLE) == 0) {
+                  n = TAG_TITLE;
+               }
+               else if (strcmp(frame->id, ID3_FRAME_ARTIST) == 0) {
+                  n = TAG_ARTIST;
+               }
+               else if (strcmp(frame->id, ID3_FRAME_ALBUM) == 0) {
+                  n = TAG_ALBUM;
+               }
+               else if (strcmp(frame->id, ID3_FRAME_TRACK) == 0) {
+                  n = TAG_TRACK;
+               }
+               else if (strcmp(frame->id, "TYER") == 0) {
+                  n = TAG_YEAR;
+               }
+               else if (strcmp(frame->id, ID3_FRAME_YEAR) == 0) {
+                  n = TAG_YEAR;
+               }
+               else if (strcmp(frame->id, ID3_FRAME_COMMENT) == 0) {
+                  n = TAG_COMMENTS;
+               }
+               else if (strcmp(frame->id, ID3_FRAME_GENRE) == 0) {
+                  n = TAG_GENRE;
+               }
+               else {
+                  // Use frame description as default tag name.  The descriptions
+                  // may include several "meanings" separated by "/" characters, so
+                  // we just use the first meaning
+                  n = UTF8CTOWX(frame->description).BeforeFirst(wxT('/'));
+               }
+
+               const id3_ucs4_t *ustr = NULL;
+
+               if (n == TAG_COMMENTS) {
+                  ustr = id3_field_getfullstring(&frame->fields[3]);
+               }
+               else if (frame->nfields == 3) {
+                  ustr = id3_field_getstring(&frame->fields[1]);
+                  if (ustr) {
+                     char *str = (char *)id3_ucs4_utf8duplicate(ustr);
+                     n = UTF8CTOWX(str);
+                     free(str);
+                  }
+
+                  ustr = id3_field_getstring(&frame->fields[2]);
+               }
+               else if (frame->nfields >= 2) {
+                  ustr = id3_field_getstrings(&frame->fields[1], 0);
+               }
+
+               if (ustr) {
+                  char *str = (char *)id3_ucs4_utf8duplicate(ustr);
+                  v = UTF8CTOWX(str);
+                  free(str);
+               }
+
+               if (!n.IsEmpty() && !v.IsEmpty()) {
+                  tags->SetTag(n, v);
+               }
+            }
+
+            // Convert v1 genre to name
+            if (tags->HasTag(TAG_GENRE)) {
+               long g = -1;
+               if (tags->GetTag(TAG_GENRE).ToLong(&g)) {
+                  tags->SetTag(TAG_GENRE, tags->GetGenre(g));
+               }
+            }
+
+            id3_tag_delete(tp);
+            break;
+         }
+
+         f.Close();
+      }
+   }
+#endif
+
    //comment out to undo profiling.
    //END_TASK_PROFILING("Pre-GSOC (PCMAliasBlockFile) open an 80 mb wav stereo file");
 
@@ -369,230 +513,6 @@ PCMImportFileHandle::~PCMImportFileHandle()
 {
    sf_close(mFile);
 }
-
-
-#if 0
-
-#include <wx/file.h>
-#include <wx/string.h>
-#include <wx/thread.h>
-#include <wx/timer.h>
-#include <wx/msgdlg.h>
-#include <wx/progdlg.h>
-#include <wx/intl.h>
-
-#include "Import.h"
-#include "ImportPCM.h"
-
-#include "../FileFormats.h"
-#include "../WaveTrack.h"
-#include "../DirManager.h"
-#include "../Prefs.h"
-
-#include "sndfile.h"
-
-bool IsPCM(wxString fName)
-{
-   wxFile testFile;
-   testFile.Open(fName);
-   if (!testFile.IsOpened())
-      return false;
-   testFile.Close();
-
-   SF_INFO    info;
-   SNDFILE   *fp;
-
-   fp = sf_open_read(OSFILENAME(fName), &info);
-
-   if (fp) {
-      sf_close(fp);
-      return true;
-   }
-
-   return false;
-}
-
-
-bool ImportPCM(wxWindow * parent,
-               wxString fName, 
-               WaveTrack ** channels[],
-               int *numChannels,
-               DirManager * dirManager)
-{
-   SF_INFO       info;
-   SNDFILE      *fp;
-   sampleFormat  format;
-
-   fp = sf_open_read(OSFILENAME(fName), &info);
-
-   if (!fp) {
-      char str[1000];
-      sf_error_str((SNDFILE *)NULL, str, 1000);
-      wxMessageBox(LAT1CTOWX(str));
-
-      return false;
-   }
-
-   wxString progressStr;
-   wxString formatName = sf_header_name(info.format & SF_FORMAT_TYPEMASK);
-   progressStr.Printf(_("Importing %s File..."),
-                      formatName.c_str());
-
-   *numChannels = info.channels;
-   *channels = new WaveTrack*[*numChannels];
-
-   if (info.pcmbitwidth > 16)
-      format = floatSample;
-   else
-      format = int16Sample;
-
-   int c;
-   for(c=0; c<*numChannels; c++) {
-      (*channels)[c] = new WaveTrack(dirManager, format, info.samplerate);
-      (*channels)[c]->SetName(TrackNameFromFileName(fName));
-      (*channels)[c]->SetChannel(Track::MonoChannel);
-   }
-
-   if (*numChannels == 2) {
-      (*channels)[0]->SetChannel(Track::LeftChannel);
-      (*channels)[1]->SetChannel(Track::RightChannel);
-      (*channels)[0]->SetLinked(true);
-      (*channels)[1]->SetTeamed(true);
-   }
-
-   sampleCount fileTotalFrames = (sampleCount)info.frames;
-   sampleCount maxBlockSize = (*channels)[0]->GetMaxBlockSize();
-
-   wxString copyEdit =
-       gPrefs->Read(wxT("/FileFormats/CopyOrEditUncompressedData"), wxT("edit"));
-
-   // Fall back to "edit" if it doesn't match anything else
-   bool doEdit = true;          
-   if (copyEdit.IsSameAs(wxT("copy"), false))
-      doEdit = false;
-
-   if (doEdit) {
- wxLogDebug(wxT("Importing PCM...ImportPCM \n"));
-
-      // If this mode has been selected, we form the tracks as
-      // aliases to the files we're editing, i.e. ("foo.wav", 12000-18000)
-      // instead of actually making fresh copies of the samples.
-
-      bool cancelling = false;
-
-      GetActiveProject()->ProgressShow(_("Import"), progressStr);
-
-      for (sampleCount i = 0; i < fileTotalFrames; i += maxBlockSize) {
-         sampleCount blockLen = maxBlockSize;
-         if (i + blockLen > fileTotalFrames)
-            blockLen = fileTotalFrames - i;
-
-         for(c=0; c<*numChannels; c++)
-            (*channels)[c]->AppendAlias(fName, i, blockLen, c);
-
-         cancelling = !GetActiveProject()->ProgressUpdate((int)((i*1000.0)/fileTotalFrames));
-
-         if (cancelling)
-            i = fileTotalFrames;
-      }
-
-      GetActiveProject()->ProgressHide();
-
-      //printf(_("Time elapsed: %d\n"), wxGetElapsedTime());
-
-      if (cancelling) {
-         for(c=0; c<*numChannels; c++)
-            delete (*channels)[c];
-         delete[] (*channels);
-         *channels = NULL;
-
-         return false;
-      }
-
-      return true;
-   }
-
-   // Otherwise, we're in the "copy" mode, where we read in the actual
-   // samples from the file and store our own local copy of the
-   // samples in the tracks.
-
-   samplePtr srcbuffer = NewSamples(maxBlockSize * (*numChannels),
-                                    format);
-   samplePtr buffer = NewSamples(maxBlockSize, format);
-
-   sampleCount framescompleted = 0;
-
-   bool cancelling = false;
-
-   GetActiveProject->ProgressShow(_("Import"), progressStr);
-
-   long block;
-   do {
-      block = maxBlockSize;
-
-      if (format == int16Sample)
-         block = sf_readf_short(fp, (short *)srcbuffer, block);
-      else
-         block = sf_readf_float(fp, (float *)srcbuffer, block);
-
-      if (block) {
-         for(c=0; c<(*numChannels); c++) {
-
-            if (format==int16Sample) {
-               if (info.pcmbitwidth == 8) {
-                  for(int j=0; j<block; j++)
-                     ((short *)buffer)[j] =
-                        ((short *)srcbuffer)[(*numChannels)*j+c] << 8;
-               }
-               else {
-                  for(int j=0; j<block; j++)
-                     ((short *)buffer)[j] =
-                        ((short *)srcbuffer)[(*numChannels)*j+c];
-               }
-            }
-            else
-               for(int j=0; j<block; j++)
-                  ((float *)buffer)[j] =
-                     ((float *)srcbuffer)[(*numChannels)*j+c];
-
-            (*channels)[c]->Append(buffer, format, block);
-         }
-
-         framescompleted += block;
-      }
-
-      int progressvalue = (framescompleted > fileTotalFrames) ?
-          fileTotalFrames : framescompleted;
-
-      cancelling =
-         !GetActiveProject()->ProgressUpdate((int)((progressvalue*1000.0)/fileTotalFrames));
-
-      if (cancelling)
-         block = 0;
-   } while (block > 0);
-
-   GetActiveProject()->ProgressHide();
-
-   sf_close(fp);
-
-   //printf("Time elapsed: %d\n", wxGetElapsedTime());
-
-   DeleteSamples(srcbuffer);
-   DeleteSamples(buffer);
-
-   if (cancelling) {
-      for(c=0; c<*numChannels; c++)
-         delete (*channels)[c];
-      delete[] (*channels);
-      *channels = NULL;
-
-      return false;
-   }
-
-   return true;
-}
-
-#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

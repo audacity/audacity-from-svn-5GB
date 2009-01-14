@@ -37,6 +37,18 @@
 
 #include "Export.h"
 
+#ifdef USE_LIBID3TAG 
+   #include <id3tag.h>
+   // DM: the following functions were supposed to have been
+   // included in id3tag.h - should be fixed in the next release
+   // of mad.
+   extern "C" {
+      struct id3_frame *id3_frame_new(char const *);
+      id3_length_t id3_latin1_length(id3_latin1_t const *);
+      void id3_latin1_decode(id3_latin1_t const *, id3_ucs4_t *);
+   } 
+#endif
+
 //----------------------------------------------------------------------------
 // Statics
 //----------------------------------------------------------------------------
@@ -324,6 +336,7 @@ public:
 private:
 
    bool AddStrings(AudacityProject *project, SNDFILE *sf, Tags *tags);
+   void AddID3Chunk(wxString fName, Tags *tags);
 
 };
 
@@ -432,6 +445,7 @@ bool ExportPCM::Export(AudacityProject *project,
       // working result
    break;
    }
+
    wxString     formatStr;
    SF_INFO      info;
    SNDFILE     *sf = NULL;
@@ -514,7 +528,6 @@ bool ExportPCM::Export(AudacityProject *project,
       
       samplePtr mixed = mixer->GetBuffer();
 
-      
       ODManager::LockLibSndFileMutex();
       if (format == int16Sample)
          sf_writef_short(sf, (short *)mixed, numSamples);
@@ -531,7 +544,6 @@ bool ExportPCM::Export(AudacityProject *project,
 
    delete[] waveTracks;                            
 
-   
    ODManager::LockLibSndFileMutex();
    err = sf_close(sf);
    ODManager::UnlockLibSndFileMutex();
@@ -543,6 +555,10 @@ bool ExportPCM::Export(AudacityProject *project,
             /* i18n-hint: %s will be the error message from libsndfile */
                    (_("Error (file may not have been written): %s"),
                     buffer));
+   }
+
+   if ((sf_format & SF_FORMAT_TYPEMASK) == SF_FORMAT_AIFF) {
+      AddID3Chunk(fName, metadata);
    }
 
 #ifdef __WXMAC__
@@ -581,6 +597,123 @@ bool ExportPCM::AddStrings(AudacityProject *project, SNDFILE *sf, Tags *tags)
    }
 
    return true;
+}
+
+void ExportPCM::AddID3Chunk(wxString fName, Tags *tags)
+{
+#ifdef USE_LIBID3TAG 
+
+   struct id3_tag *tp = id3_tag_new();
+
+   wxString n, v;
+   for (bool cont = tags->GetFirst(n, v); cont; cont = tags->GetNext(n, v)) {
+      const char *name = "TXXX";
+
+      if (n.CmpNoCase(TAG_TITLE) == 0) {
+         name = ID3_FRAME_TITLE;
+      }
+      else if (n.CmpNoCase(TAG_ARTIST) == 0) {
+         name = ID3_FRAME_ARTIST;
+      }
+      else if (n.CmpNoCase(TAG_ALBUM) == 0) {
+         name = ID3_FRAME_ALBUM;
+      }
+      else if (n.CmpNoCase(TAG_YEAR) == 0) {
+         name = ID3_FRAME_YEAR;
+      }
+      else if (n.CmpNoCase(TAG_GENRE) == 0) {
+         name = ID3_FRAME_GENRE;
+      }
+      else if (n.CmpNoCase(TAG_COMMENTS) == 0) {
+         name = ID3_FRAME_COMMENT;
+      }
+      else if (n.CmpNoCase(TAG_TRACK) == 0) {
+         name = ID3_FRAME_TRACK;
+      }
+
+      struct id3_frame *frame = id3_frame_new(name);
+
+      if (!n.IsAscii() || !v.IsAscii()) {
+         id3_field_settextencoding(id3_frame_field(frame, 0), ID3_FIELD_TEXTENCODING_UTF_16);
+      }
+      else {
+         id3_field_settextencoding(id3_frame_field(frame, 0), ID3_FIELD_TEXTENCODING_ISO_8859_1);
+      }
+
+      id3_ucs4_t *ucs4 =
+         id3_utf8_ucs4duplicate((id3_utf8_t *) (const char *) v.mb_str(wxConvUTF8));
+
+      if (strcmp(name, ID3_FRAME_COMMENT) == 0) {
+         // A hack to get around iTunes not recognizing the comment.  The
+         // language defaults to XXX and, since it's not a valid language,
+         // iTunes just ignores the tag.  So, either set it to a valid language
+         // (which one???) or just clear it.  Unfortunately, there's no supported
+         // way of clearing the field, so do it directly.
+         id3_field *f = id3_frame_field(frame, 1);
+         memset(f->immediate.value, 0, sizeof(f->immediate.value));
+         id3_field_setfullstring(id3_frame_field(frame, 3), ucs4);
+      }
+      else if (strcmp(name, "TXXX") == 0) {
+         id3_field_setstring(id3_frame_field(frame, 2), ucs4);
+         free(ucs4);
+
+         ucs4 = id3_utf8_ucs4duplicate((id3_utf8_t *) (const char *) n.mb_str(wxConvUTF8));
+           
+         id3_field_setstring(id3_frame_field(frame, 1), ucs4);
+      }
+      else {
+         id3_field_setstrings(id3_frame_field(frame, 1), 1, &ucs4);
+      }
+
+      free(ucs4);
+
+      id3_tag_attachframe(tp, frame);
+   }
+
+   tp->options &= (~ID3_TAG_OPTION_COMPRESSION); // No compression
+
+   // If this version of libid3tag supports it, use v2.3 ID3
+   // tags instead of the newer, but less well supported, v2.4
+   // that libid3tag uses by default.
+#ifdef ID3_TAG_HAS_TAG_OPTION_ID3V2_3
+   tp->options |= ID3_TAG_OPTION_ID3V2_3;
+#endif
+
+   id3_length_t len;
+
+   len = id3_tag_render(tp, 0);
+   id3_byte_t *buffer = (id3_byte_t *)malloc(len + 1);
+   if (buffer == NULL) {
+      id3_tag_delete(tp);
+      return;
+   }
+   buffer[len + 1] = '\0';
+
+   len = id3_tag_render(tp, buffer);
+
+   id3_tag_delete(tp);
+
+   wxFFile f(fName, wxT("r+b"));
+   if (f.IsOpened()) {
+      wxUint32 sz;
+      
+      sz = wxUINT32_SWAP_ON_LE((wxUint32) len);
+      f.SeekEnd(0);
+      f.Write("ID3 ", 4);
+      f.Write(&sz, 4);
+
+      f.Write(buffer, len + (len & 0x01));
+
+      sz = wxUINT32_SWAP_ON_LE((wxUint32) f.Tell() - 8);
+      f.Seek(4);
+      f.Write(&sz, 4);
+
+      f.Close();
+   }
+
+   free(buffer);
+#endif
+   return;
 }
 
 /** @param format The same information as the subformat argument to the Export
