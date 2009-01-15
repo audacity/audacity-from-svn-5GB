@@ -4,7 +4,7 @@
 // Author:      Stefan Csomor
 // Modified by: Leland Lucius
 // Created:     1998-01-01
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.4 2008-12-29 09:49:07 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.5 2009-01-15 00:13:04 llucius Exp $
 // Copyright:   (c) Stefan Csomor
 // Licence:     wxWindows licence
 //
@@ -424,9 +424,6 @@ int FileDialog::ShowModal()
    wxMacCFStringHolder defaultFileName(m_fileName, m_font.GetEncoding());
    dialogCreateOptions.saveFileName = defaultFileName;
    
-   dialogCreateOptions.modality = kWindowModalityWindowModal;
-   dialogCreateOptions.parentWindow = (WindowRef) GetParent()->MacGetTopLevelWindowRef();
-   
    NavDialogRef dialog;
    NavObjectFilterUPP navFilterUPP = NULL;
    CustomData myData;
@@ -494,6 +491,9 @@ int FileDialog::ShowModal()
    
    if (m_dialogStyle & wxFD_SAVE)
    {
+      dialogCreateOptions.modality = kWindowModalityWindowModal;
+      dialogCreateOptions.parentWindow = (WindowRef) GetParent()->MacGetTopLevelWindowRef();
+   
       myData.saveMode = true;
       
       if (!numFilters)
