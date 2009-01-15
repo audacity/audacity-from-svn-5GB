@@ -425,10 +425,6 @@ void CommandManager::InsertItem(wxString name, wxString label_in,
    dummy.Printf(wxT("%s%08d"), label.c_str(), mHiddenID);
    newLabel = label;
 
-   if (mCommandIDHash[ID]->key.Length() > 0) {
-      dummy = dummy + wxT("\t") + mCommandIDHash[ID]->key;
-   }
-
    if (checkmark >= 0) {
       menu->InsertCheckItem(pos, ID, dummy);
       menu->Check(ID, checkmark != 0);
@@ -468,10 +464,6 @@ void CommandManager::AddItem(wxString name, wxString label_in,
    wxString dummy, newLabel;
    dummy.Printf(wxT("%s%08d"), label.c_str(), mHiddenID);
    newLabel = label;
-
-   if (mCommandIDHash[ID]->key.Length() > 0) {
-      dummy = dummy + wxT("\t") + mCommandIDHash[ID]->key;
-   }
 
    if (checkmark >= 0) {
       CurrentMenu()->AppendCheckItem(ID, dummy);
@@ -765,6 +757,7 @@ void CommandManager::HandleMenuOpen(wxMenuEvent &evt)
 
    // Windows does not send a CLOSE event if you move from one 
    // top-level menu to another, so simulate it.
+#if !defined(__WXMAC__)
    if (mOpenMenu) {
       wxMenuEvent dummy;
       HandleMenuClose(dummy);
@@ -772,6 +765,7 @@ void CommandManager::HandleMenuOpen(wxMenuEvent &evt)
 
    // Remember this menu
    mOpenMenu = m;
+#endif
 
    // Turn on the accelerators
    ToggleAccels(m, true);
@@ -781,6 +775,10 @@ void CommandManager::HandleMenuOpen(wxMenuEvent &evt)
 
 void CommandManager::HandleMenuClose(wxMenuEvent &evt)
 {
+#if defined(__WXMAC__)
+   mOpenMenu = evt.GetMenu();
+#endif
+
    // This can happen when if the Windows system menu is used   
    if (mOpenMenu == NULL)
       return;
@@ -927,7 +925,7 @@ bool CommandManager::HandleMenuID(int id, wxUint32 flags, wxUint32 mask)
 bool CommandManager::HandleKey(wxKeyEvent &evt, wxUint32 flags, wxUint32 mask)
 {
    wxString keyStr = KeyEventToKeyString(evt);
-	CommandListEntry *entry = mCommandKeyHash[keyStr];
+   CommandListEntry *entry = mCommandKeyHash[keyStr];
    return HandleCommandEntry( entry, flags, mask );
 }
 
