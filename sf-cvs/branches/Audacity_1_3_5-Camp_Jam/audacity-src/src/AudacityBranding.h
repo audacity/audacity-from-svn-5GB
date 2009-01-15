@@ -28,12 +28,13 @@
 // Allow specification from the command line
 #if !defined(AUDACITY_BRANDING)
 
+// Uncomment the one you want to build. Recomment the one you don't. 
 //#define AUDACITY_BRANDING BRAND_AUDACITY // standard version
 //#define AUDACITY_BRANDING BRAND_UMIXIT
 //#define AUDACITY_BRANDING BRAND_THINKLABS
 //#define AUDACITY_BRANDING BRAND_AUDIOTOUCH
 //#define AUDACITY_BRANDING BRAND_JAMLING__EASY
-#define AUDACITY_BRANDING BRAND_JAMLING__EASY
+#define AUDACITY_BRANDING BRAND_JAMLING__FULL
 
 #endif
 
