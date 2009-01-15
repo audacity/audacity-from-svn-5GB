@@ -1734,14 +1734,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\src\widgets\treebook.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\widgets\treebook.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\src\widgets\Warning.cpp"
 				>
 			</File>
