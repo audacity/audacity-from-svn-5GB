@@ -180,7 +180,7 @@ bool ExportOGG::Export(AudacityProject *project,
    FileIO outFile(fName, FileIO::Output);
 
    if (!outFile.IsOpened()) {
-      wxMessageBox(_("Unable to open target file for writing"));
+      wxMessageBox(_("Unable to open target file for writing."));
       return false;
    }
 

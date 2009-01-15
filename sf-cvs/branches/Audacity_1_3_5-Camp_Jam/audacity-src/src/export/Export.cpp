@@ -451,6 +451,13 @@ bool Exporter::ExamineTracks()
       return false;
    }
    #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
+      // In order for exported files to line up, i.e., to fake their start time, 
+      // mix down with silence from 0.0s, which inserts silence in the track. 
+      if (mT0 > 0.0)
+         mT0 = 0.0;
+      if (earliestBegin > 0.0)
+         earliestBegin = 0.0;
+
       if (mSelectedOnly && 
             ((mNumSelected == 1) || // single mono Track
                ((mNumSelected == 2) && (mNumLeft == 1) && (mNumRight == 1)))) // single stereo Track
@@ -459,6 +466,7 @@ bool Exporter::ExamineTracks()
          while (!tr->GetSelected()) 
             tr = iter1.Next();
          wxASSERT(tr);
+
          if (GetValidInstrumentName(tr->GetName())) 
          {
             if (gStrInstrument == wxT("")) // User canceled. 
@@ -509,7 +517,9 @@ bool Exporter::GetFilename()
    mFilename.SetPath(gPrefs->Read(wxT("/Export/Path"), ::wxGetCwd()));
 #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
    wxString strName;
-   if (mSelectedOnly && (mNumSelected == 1)) // Exporting one track
+   if (mSelectedOnly && 
+         ((mNumSelected == 1) || // single mono Track
+            ((mNumSelected == 2) && (mNumLeft == 1) && (mNumRight == 1)))) // single stereo Track
       strName = gStrInstrument;
    else
       strName = wxT("Mix");
