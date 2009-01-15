@@ -273,9 +273,6 @@ private:
 
    bool                  mCancelled;     //!< True if importing was canceled by user
    wxString              mName;
-   void                 *mUserData;
-   uint64_t              mNumSamples;    //!< Used for progress dialog. May not really be a number of samples.
-   uint64_t              mSamplesDone;   //!< Used for progress dialog. May not really be a number of samples.
    WaveTrack           ***mChannels;     //!< 2-dimentional array of WaveTrack's. First dimention - streams, second - channels of a stream. Length is mNumStreams
 };
 
@@ -349,9 +346,6 @@ FFmpegImportFileHandle::FFmpegImportFileHandle(const wxString & name)
    mScs = NULL;
    mCancelled =false;
    mName = name;
-   mUserData = NULL;
-   mNumSamples = 0;
-   mSamplesDone = 0;
    mChannels = NULL;
 }
 
@@ -422,9 +416,19 @@ bool FFmpegImportFileHandle::InitCodecs()
             continue;
          }
 
-         // Stream is decodeable and it is audio. Add it and it's decription to the arrays
+         // Stream is decodeable and it is audio. Add it and its decription to the arrays
          wxString strinfo;
-         strinfo.Printf(_("Index[%02x] Codec[%S], Language[%S], Duration[%d]"),sc->m_stream->id,codec->name,sc->m_stream->language,sc->m_stream->duration);
+         int duration = 0;
+         if (sc->m_stream->duration > 0)
+           duration = sc->m_stream->duration * sc->m_stream->time_base.num / sc->m_stream->time_base.den;
+         else
+           duration = mFormatContext->duration / AV_TIME_BASE;
+         wxString bitrate = wxT("");
+         if (sc->m_codecCtx->bit_rate > 0)
+           bitrate.Printf(wxT("%d"),sc->m_codecCtx->bit_rate);
+         else
+           bitrate.Printf(wxT("?"));
+         strinfo.Printf(_("Index[%02x] Codec[%S], Language[%S], Bitrate[%S], Channels[%d], Duration[%d]"),sc->m_stream->id,codec->name,sc->m_stream->language,bitrate.c_str(),sc->m_stream->codec->channels, duration);
          mStreamInfo->Add(strinfo);
          mScs[mNumStreams++] = sc;
       }
@@ -471,13 +475,9 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
    }
 
    mChannels = new WaveTrack **[mNumStreams];
-   mNumSamples = 0;
 
    for (int s = 0; s < mNumStreams; s++)
    {
-      // As you can see, it's really a number of frames.
-      // TODO: use something other than nb_frames for progress reporting (nb_frames is not available for some formats). Maybe something from the format context?
-      mNumSamples += mScs[s]->m_stream->nb_frames;
       // There is a possibility that number of channels will change over time, but we do not have WaveTracks for new channels. Remember the number of channels and stick to it.
       mScs[s]->m_initialchannels = mScs[s]->m_stream->codec->channels;
       mChannels[s] = new WaveTrack *[mScs[s]->m_stream->codec->channels];
@@ -594,7 +594,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
    *outNumTracks = 0;
    for (int s = 0; s < mNumStreams; s++)
    {
-      *outNumTracks += mScs[s]->m_stream->codec->channels;
+      *outNumTracks += mScs[s]->m_initialchannels;
    }
 
    // Create new tracks
@@ -604,7 +604,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
    int trackindex = 0;
    for (int s = 0; s < mNumStreams; s++)
    {
-      for(int c = 0; c < mScs[s]->m_stream->codec->channels; c++)
+      for(int c = 0; c < mScs[s]->m_initialchannels; c++)
       {
          mChannels[s][c]->Flush();
          (*outTracks)[trackindex++] = mChannels[s][c];
@@ -777,8 +777,8 @@ int FFmpegImportFileHandle::WriteData(streamContext *sc)
    free(tmp);
    
    // Try to update the progress indicator (and see if user wants to cancel)
-   int tsize = FFmpegLibsInst->url_fsize(mFormatContext->pb);
-   if (!mProgress->Update((wxLongLong)this->mFormatContext->pb->pos, (wxLongLong)(tsize > 0 ? tsize : 1))) {
+   if (!mProgress->Update((wxLongLong)sc->m_pkt.pts * sc->m_stream->time_base.num / sc->m_stream->time_base.den,
+                          (wxLongLong)(mFormatContext->duration > 0 ? mFormatContext->duration / AV_TIME_BASE: 1))) {
       mCancelled = true;
       return 1;
    }
