@@ -330,21 +330,52 @@ bool ImportXMLTagHandler::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
    if (wxStrcmp(tag, wxT("import")) || attrs==NULL || (*attrs)==NULL || wxStrcmp(*attrs++, wxT("filename")))
        return false;
-   wxString strPathName = *attrs;
-   if (!XMLValueChecker::IsGoodPathName(strPathName)) 
+   wxString strAttr = *attrs;
+   if (!XMLValueChecker::IsGoodPathName(strAttr)) 
    {
-      // Maybe strPathName is just a fileName, not the full path. Try the project data directory.
-      wxFileName fileName(mProject->GetDirManager()->GetProjectDataDir(), strPathName);
-      if (XMLValueChecker::IsGoodFileName(strPathName, fileName.GetPath(wxPATH_GET_VOLUME))) 
-         strPathName = fileName.GetFullPath();
+      // Maybe strAttr is just a fileName, not the full path. Try the project data directory.
+      wxFileName fileName(mProject->GetDirManager()->GetProjectDataDir(), strAttr);
+      if (XMLValueChecker::IsGoodFileName(strAttr, fileName.GetPath(wxPATH_GET_VOLUME))) 
+         strAttr = fileName.GetFullPath();
       else 
       { 
-         wxLogWarning(wxT("Could not import file: %s"), strPathName.c_str());
+         wxLogWarning(wxT("Could not import file: %s"), strAttr.c_str());
          return false;
       }
    }
-   mProject->Import(strPathName);
-   return true; //v result from Import?
+   TrackList newTrackList;
+   mProject->Import(strAttr, &newTrackList);
+   if (newTrackList.IsEmpty())
+      return false;
+
+   // Handle other attributes, now that we have the tracks. 
+   attrs++; 
+   const wxChar** pAttr;
+   TrackListIterator iter(&newTrackList);
+   bool bSuccess = true;
+   for (Track* pTrack = iter.First(); (pTrack && bSuccess); pTrack = iter.Next())
+      if (pTrack->GetKind() == Track::Wave) 
+      {
+         // Most of the "import" tag attributes are the same as for "wavetrack" tags, 
+         // so apply them via WaveTrack::HandleXMLTag().
+         bSuccess = ((WaveTrack*)pTrack)->HandleXMLTag(wxT("wavetrack"), attrs);
+
+         // "offset" tag is ignored in WaveTrack::HandleXMLTag except for legacy projects, 
+         // so handle it here. 
+         double dblValue;
+         pAttr = attrs;
+         while (*pAttr)
+         {
+            const wxChar *attr = *pAttr++;
+            const wxChar *value = *pAttr++;
+            const wxString strValue = value;
+            if (!wxStrcmp(attr, wxT("offset")) && 
+                  XMLValueChecker::IsGoodString(strValue) && 
+                  Internat::CompatibleToDouble(strValue, &dblValue))
+               pTrack->SetOffset(dblValue);
+         }
+      }
+   return bSuccess; 
 };
 
 AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
@@ -2389,6 +2420,7 @@ void AudacityProject::WriteXML(XMLWriter &xmlFile)
    mTags->WriteXML(xmlFile);
 
    Track *t;
+   WaveTrack* pWaveTrack;
    TrackListIterator iter(mTracks);
    t = iter.First();
    unsigned int ndx = 0;
@@ -2397,6 +2429,21 @@ void AudacityProject::WriteXML(XMLWriter &xmlFile)
       {
          xmlFile.StartTag(wxT("import"));
          xmlFile.WriteAttr(wxT("filename"), mStrOtherNamesArray[ndx]); // Assumes mTracks order hasn't changed!
+
+         // Don't store "channel" and "linked" tags because the importer can figure that out, 
+         // e.g., from stereo Ogg files. 
+         //    xmlFile.WriteAttr(wxT("channel"), t->GetChannel());
+         //    xmlFile.WriteAttr(wxT("linked"), t->GetLinked());
+         
+         xmlFile.WriteAttr(wxT("offset"), t->GetOffset(), 8);
+         xmlFile.WriteAttr(wxT("mute"), t->GetMute());
+         xmlFile.WriteAttr(wxT("solo"), t->GetSolo());
+         
+         pWaveTrack = (WaveTrack*)t;
+         // Don't store "rate" tag because the importer can figure that out.
+         //    xmlFile.WriteAttr(wxT("rate"), pWaveTrack->GetRate());
+         xmlFile.WriteAttr(wxT("gain"), (double)pWaveTrack->GetGain());
+         xmlFile.WriteAttr(wxT("pan"), (double)pWaveTrack->GetPan());
          xmlFile.EndTag(wxT("import"));
 
          ndx++;
@@ -2629,46 +2676,61 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       // Some of this is similar to code in ExportMultiple::ExportMultipleByTrack 
       // but that code is really tied into the dialogs.
 
+      // Copy the tracks because we're going to do some state changes before exporting. 
+      Track* pSavedTrack;
+      Track* pTrack;
+      WaveTrack* pWaveTrack;
+      TrackListIterator iter(mTracks);
+      unsigned int numWaveTracks = 0;
+      TrackList* pSavedTrackList = new TrackList();
+      for (pTrack = iter.First(); pTrack != NULL; pTrack = iter.Next())
+      {
+         if (pTrack->GetKind() == Track::Wave)
+         {
+            numWaveTracks++; 
+            pWaveTrack = (WaveTrack*)pTrack;
+            pSavedTrack = mTrackFactory->DuplicateWaveTrack(*pWaveTrack);
+         }
+         else
+            pSavedTrack = pTrack; // No need to copy. 
+         pSavedTrackList->Add(pSavedTrack);
+      }
+      TrackListIterator savedTrackIter(pSavedTrackList);
+      if (numWaveTracks == 0) 
+      {
+         // Nothing to save compressed => success. Delete the copies and go. 
+         for (pSavedTrack = savedTrackIter.First(); pSavedTrack != NULL; pSavedTrack = savedTrackIter.Next())
+            if (pSavedTrack->GetKind() == Track::Wave)
+               delete pSavedTrack;
+         delete pSavedTrackList;
+         return true;
+      }
+
+      // Okay, now some bold state-faking to default values.
+      for (pTrack = iter.First(); pTrack != NULL; pTrack = iter.Next())
+         if (pTrack->GetKind() == Track::Wave)
+         {
+            pWaveTrack = (WaveTrack*)pTrack;
+            pWaveTrack->SetSelected(false);
+            pWaveTrack->SetMute(false);
+            pWaveTrack->SetSolo(false);
+
+            pWaveTrack->SetGain(1.0); 
+            pWaveTrack->SetPan(0.0); 
+         }
+
       wxString strDataDirPathName = strProjectPathName + wxT("_data");
       if (!wxFileName::DirExists(strDataDirPathName) && 
             !wxFileName::Mkdir(strDataDirPathName, 0777, wxPATH_MKDIR_FULL))
          return false;
       strDataDirPathName += wxFileName::GetPathSeparator();
 
-      TrackListIterator iter;
-      Track* pTrack; // mono or left
-
-      // Remember which tracks were muted, and set them to unmuted, 
-      // because export does a mix-down, and we don't want muted tracks to be silenced.
-      //
-      // Remember which tracks were selected, and set them to unselected, 
-      // because we'll select one at a time for export. 
-      //
-      TrackList prevMutedWaveTrackList;
-      TrackList prevSelectedWaveTrackList;
-      for (pTrack = iter.First(mTracks); pTrack != NULL; pTrack = iter.Next())
-      {
-         if (pTrack->GetKind() == Track::Wave) 
-         {
-            if (pTrack->GetMute())
-            {
-               prevMutedWaveTrackList.Add(pTrack);
-               pTrack->SetMute(false);
-            }
-            if (pTrack->GetSelected())
-            {
-               prevSelectedWaveTrackList.Add(pTrack);
-               pTrack->SetSelected(false);
-            }
-         }
-      }
-
       // Export all WaveTracks to OGG. 
       bool bSuccess = true;
       Exporter theExporter;
       Track* pRightTrack;
       wxFileName uniqueTrackFileName;
-      for (pTrack = iter.First(mTracks); ((pTrack != NULL) && bSuccess); pTrack = iter.Next())
+      for (pTrack = iter.First(); ((pTrack != NULL) && bSuccess); pTrack = iter.Next())
       {
          if (pTrack->GetKind() == Track::Wave)
          {
@@ -2694,11 +2756,27 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
          }
       }
 
-      // Restore the mute and selection states.
-      for (pTrack = iter.First(&prevMutedWaveTrackList); pTrack != NULL; pTrack = iter.Next())
-         pTrack->SetMute(true);
-      for (pTrack = iter.First(&prevSelectedWaveTrackList); pTrack != NULL; pTrack = iter.Next())
-         pTrack->SetSelected(true);
+      // Restore the saved track states and clean up. 
+      for (pTrack = iter.First(), pSavedTrack = savedTrackIter.First(); 
+            ((pTrack != NULL) && (pSavedTrack != NULL)); 
+            pTrack = iter.Next(), pSavedTrack = savedTrackIter.Next())
+      {
+         if (pTrack->GetKind() == Track::Wave)
+         {
+            wxASSERT(pSavedTrack->GetKind() == Track::Wave);
+            pWaveTrack = (WaveTrack*)pTrack;
+            pWaveTrack->SetSelected(pSavedTrack->GetSelected());
+            pWaveTrack->SetMute(pSavedTrack->GetMute());
+            pWaveTrack->SetSolo(pSavedTrack->GetSolo());
+
+            pWaveTrack->SetGain(((WaveTrack*)pSavedTrack)->GetGain());
+            pWaveTrack->SetPan(((WaveTrack*)pSavedTrack)->GetPan());
+         }
+      }
+      for (pSavedTrack = savedTrackIter.First(); pSavedTrack != NULL; pSavedTrack = savedTrackIter.Next())
+         if (pSavedTrack->GetKind() == Track::Wave)
+            delete pSavedTrack;
+      delete pSavedTrackList;
 
       return bSuccess;
    }
@@ -2799,7 +2877,8 @@ void AudacityProject::AddImportedTracks(wxString fileName,
    //   HandleResize();
 }
 
-void AudacityProject::Import(wxString fileName)
+// If pNewTrackList is passed in non-NULL, it gets filled with the pointers to new tracks.
+void AudacityProject::Import(wxString fileName, TrackList* pNewTrackList /*= NULL*/)
 {
    Track **newTracks;
    int numTracks;
@@ -2809,13 +2888,14 @@ void AudacityProject::Import(wxString fileName)
 
    ProgressShow(_("Import"));
 
-   numTracks = wxGetApp().mImporter->Import(fileName,
-                                            mTrackFactory,
-                                            &newTracks,
-                                            mTags,
-                                 errorMessage,
-                                 AudacityProject::ImportProgressCallback,
-                                 this);
+   numTracks = 
+      wxGetApp().mImporter->Import(fileName,
+                                    mTrackFactory,
+                                    &newTracks,
+                                    mTags,
+                                    errorMessage,
+                                    AudacityProject::ImportProgressCallback,
+                                    this);
 
    ProgressHide();
 
@@ -2830,22 +2910,20 @@ void AudacityProject::Import(wxString fileName)
       return;
    }
 
-   if (!errorMessage.IsEmpty()) {
-// Old code, without the help button.
-#if 0
-      wxMessageBox(errorMessage,
-                   _("Error importing"),
-                   wxOK | wxCENTRE, this);
-#endif	   
-
-// Version that goes to internet...
-//	   ShowErrorDialog(this, _("Error importing"),
-//					  errorMessage, wxT("http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary"));	
-// Version that looks locally for the text.
+   if (!errorMessage.IsEmpty()) 
+   {
+      // Old code, without the help button.
+      //wxMessageBox(errorMessage,
+      //             _("Error importing"),
+      //             wxOK | wxCENTRE, this);
+      // Version that goes to internet...
+      //	   ShowErrorDialog(this, _("Error importing"),
+      //					  errorMessage, wxT("http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary"));	
+      // Version that looks locally for the text.
 	   ShowErrorDialog(this, _("Error importing"),
-					  errorMessage, wxT("innerlink:wma-proprietary"));	
+					         errorMessage, wxT("innerlink:wma-proprietary"));	
    }
-   if( numTracks<=0)
+   if (numTracks <= 0)
       return;
 
    // for LOF ("list of files") files, do not import the file as if it
@@ -2853,6 +2931,12 @@ void AudacityProject::Import(wxString fileName)
    if (fileName.AfterLast('.').IsSameAs(wxT("lof"), false)) {
       return;
    }
+
+   // Have to set up newTrackList before calling AddImportedTracks, 
+   // because AddImportedTracks deletes newTracks.
+   if (pNewTrackList)
+      for (int i = 0; i < numTracks; i++)
+         pNewTrackList->Add(newTracks[i]);
 
    AddImportedTracks(fileName, newTracks, numTracks);
 
