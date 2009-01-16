@@ -2040,6 +2040,7 @@ void AudacityProject::OnSetLeftSelection()
          TimeDialog D(this, wxID_ANY, _("Set Left Selection Bound"));
          D.SetSampleRate(mRate);
          D.SetFormatString(fmt);
+         D.SetTimeValue(mViewInfo.sel0);
          if(wxID_OK==D.ShowModal() )
             {
                //Get the value from the dialog
@@ -2075,6 +2076,7 @@ void AudacityProject::OnSetRightSelection()
          TimeDialog D(this, wxID_ANY, _("Set Right Selection Bound"));
          D.SetSampleRate(mRate);
          D.SetFormatString(fmt);
+         D.SetTimeValue(mViewInfo.sel1);
          if(wxID_OK==D.ShowModal() )
             {
                //Get the value from the dialog
