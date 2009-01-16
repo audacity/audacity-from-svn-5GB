@@ -6,17 +6,17 @@
 audacity \- Graphical cross-platform audio editor
 .SH SYNOPSIS
 .B audacity
--help
+\-help
 .br
 .B audacity
--version
+\-version
 .br
 
 .B audacity
-[-blocksize nnn] -test
+[\-blocksize nnn] \-test
 .br
 .B audacity
-[-blocksize nnn] [
+[\-blocksize nnn] [
 .I AUDIO-FILE
 ]
 .B ...
@@ -55,25 +55,25 @@ driven by a bash script will be much more powerful than audacity.
 
 .SH OPTIONS
 .TP 10
-\fB-help\fR
+\fB\-help\fR
 display a brief list of command line options
 .TP 10
-\fB-version\fR
+\fB\-version\fR
 display the audacity version number
 .TP 10
-\fB-test\fR
+\fB\-test\fR
 run self diagnostics tests (only present in development builds)
 .TP 10
-\fB-blocksize nnn\fR
+\fB\-blocksize nnn\fR
 set the audacity block size for writing files to disk to nnn bytes
 
 .SH FILES
-.I ~/.audacity-data/audacity.cfg
+.I ~/.audacity\-data/audacity.cfg
 .RS
 Per user configuration file.
 .RE
 
-.I /tmp/audacity-<user>/
+.I /tmp/audacity\-<user>/
 .RS
 Default location of Audacity's temp directory, where <user> is your
 username.  If this location is not suitable (not enough space in
@@ -104,7 +104,7 @@ environment variable will be searched before anywhere else.
 The current working directory when Audacity is started.
 .RE
 
-.I ~/.audacity-files
+.I ~/.audacity\-files
 
 .I <prefix>/share/audacity
 .RS
@@ -122,11 +122,11 @@ For localization files in particular (i.e. translations of Audacity
 into other languages), Audacity also searches
 .I <prefix>/share/locale
 
-.SH PLUG-INS
+.SH PLUG\-INS
 
 Audacity supports two types of plug-ins on Unix: LADSPA and Nyquist
 plug-ins.  These are generally placed in a directory called 
-.I plug-ins 
+.I plug\-ins 
 somewhere on the search path (see above).
 
 LADSPA plug-ins can either be in the plug-ins directory, or alternatively
