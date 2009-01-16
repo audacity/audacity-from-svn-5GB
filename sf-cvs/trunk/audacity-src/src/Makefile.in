@@ -194,7 +194,6 @@ OBJS = \
 	toolbars/ToolManager.o \
 	toolbars/ToolsToolBar.o \
 	toolbars/TranscriptionToolBar.o \
-	widgets/treebook.o \
 	widgets/AButton.o \
 	widgets/ASlider.o \
 	widgets/AttachableScrollBar.o \
