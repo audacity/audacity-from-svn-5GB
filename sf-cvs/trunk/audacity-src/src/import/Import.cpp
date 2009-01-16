@@ -111,6 +111,7 @@ int Importer::Import(wxString fName,
                      Tags *tags,
                      wxString &errorMessage)
 {
+   ImportFileHandle *inFile = NULL;
    int numTracks = 0;
 
    wxString extension = fName.AfterLast(wxT('.'));
@@ -166,28 +167,29 @@ int Importer::Import(wxString fName,
    {
       ImportPlugin *plugin = importPluginNode->GetData();
       // Try to open the file with this plugin (probe it)
-      mInFile = plugin->Open(fName);
-      if ( (mInFile != NULL) && (mInFile->GetStreamCount() > 0) )
+      inFile = plugin->Open(fName);
+      if ( (inFile != NULL) && (inFile->GetStreamCount() > 0) )
       {
          // File has more than one stream - display stream selector
-         if (mInFile->GetStreamCount() > 1)                                                  
+         if (inFile->GetStreamCount() > 1)                                                  
          {
-            ImportStreamDialog ImportDlg(mInFile, NULL, -1, _("Select stream(s) to import"));
+            ImportStreamDialog ImportDlg(inFile, NULL, -1, _("Select stream(s) to import"));
 
             if (ImportDlg.ShowModal() == wxID_CANCEL)
             {
+               delete inFile;
                return 0;
             }
          }
          // One stream - import it by default
          else
-            mInFile->SetStreamUsage(0,TRUE);
+            inFile->SetStreamUsage(0,TRUE);
 
          int res;
          
-         res = mInFile->Import(trackFactory, tracks, &numTracks, tags);
+         res = inFile->Import(trackFactory, tracks, &numTracks, tags);
 
-         delete mInFile;
+         delete inFile;
 
          if (res == eImportSuccess)
          {
@@ -325,10 +327,6 @@ int Importer::Import(wxString fName,
    return 0;
 }
 
-wxString Importer::GetFileDescription()
-{
-   return mInFile->GetFileDescription();
-}
 //-------------------------------------------------------------------------
 // ImportStreamDialog
 //-------------------------------------------------------------------------

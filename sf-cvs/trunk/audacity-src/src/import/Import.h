@@ -59,14 +59,9 @@ public:
               Tags *tags,
               wxString &errorMessage);
 
-   // get a possibly more detailed description of the kind of file
-   // that is being opened.  ONLY callable from INSIDE THE CALLBACK.
-   wxString GetFileDescription();
-
 private:
    ImportPluginList *mImportPluginList;
    UnusableImportPluginList *mUnusableImportPluginList;
-   ImportFileHandle *mInFile;
 };
 
 //----------------------------------------------------------------------------
