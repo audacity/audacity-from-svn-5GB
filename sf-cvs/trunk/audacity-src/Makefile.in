@@ -99,7 +99,7 @@ dox: audacity.dox
 	doxygen audacity.dox
 
 check: src/libaudacity.a
-	$(MAKE) -C tests check
+	-$(MAKE) -C tests check
 
 dep:
 	$(MAKE) -C src dep
@@ -107,7 +107,7 @@ dep:
 clean:
 	$(MAKE) -C lib-src clean
 	$(MAKE) -C src clean
-	$(MAKE) -C tests clean
+	-$(MAKE) -C tests clean
 	rm -f audacity
 	rm -f help/audacity.1.gz
 	rm -rf Audacity.app
@@ -121,7 +121,7 @@ veryclean: clean
 distclean: clean
 	$(MAKE) -C locale distclean
 	$(MAKE) -C lib-src distclean
-	$(MAKE) -C tests distclean
+	-$(MAKE) -C tests distclean
 
 	rm -f Makefile src/Makefile lib-src/Makefile lib-src/allegro/Makefile
 	rm -f locale/Makefile src/configunix.h
