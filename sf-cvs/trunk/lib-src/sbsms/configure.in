@@ -1,5 +1,10 @@
 AC_INIT([sbsms],[1.5.0])
 
+dnl Use the m4/ directory to contain libtool macros that will be needed to 
+dnl go with the ltmain.sh script (both will be created/updated via the command
+dnl libtoolize --copy --force
+AC_CONFIG_MACRO_DIR([m4])
+
 #------------------------------------------------------------------------------------
 # Library's "official" release version:
 
@@ -9,8 +14,6 @@ LIBSBSMS_RELEASE_BUILD=0
 AC_CONFIG_SRCDIR([src/sbsms.cpp])
 AC_CANONICAL_TARGET([])
 AM_CONFIG_HEADER(src/config.h)
-m4_include([m4/ac_c99_func_lrint.m4])
-m4_include([m4/ac_c99_func_lrintf.m4])
 
 AC_DISABLE_SHARED dnl allows for optimizations
 
