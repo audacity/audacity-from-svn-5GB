@@ -61,6 +61,8 @@ Patches: libmad-mp2-out-of-spec.patch:	Import some forms of MP2 file that are
 theoretically out of spec but in practise work fine (msmeyer)
 osx-universal-build.patch: Makes build work on OS X for universal binary by
 using compiler-defined symbols for targets as well as hosts.
+autotools.patch:			Update to autotools to work with recent auto{conf,
+make}
 Upstream version: 0.15.1 (beta)
 
 libnyquist
