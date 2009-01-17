@@ -2,3 +2,6 @@ Makefile
 config.h
 config.log
 config.status
+libtool
+libtool-disable-static
+stamp-h1
