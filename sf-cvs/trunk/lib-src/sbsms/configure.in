@@ -233,5 +233,9 @@ fi
 
 AM_INIT_AUTOMAKE(libsbsms, "$LIBSBSMS_RELEASE_MAJOR.$LIBSBSMS_RELEASE_MINOR.$LIBSBSMS_RELEASE_BUILD")
 
+dnl Audacity policy: don't enable automatic rebuild of configure et al if 
+dnl sources change
+AM_MAINTAINER_MODE([enabled])
+
 AC_CONFIG_FILES([Makefile src/Makefile libsbsms.spec sbsms.pc])
 AC_OUTPUT

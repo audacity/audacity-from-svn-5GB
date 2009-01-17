@@ -13,6 +13,10 @@ AC_CANONICAL_SYSTEM
 
 dnl Version 1.7 of automake is recommended
 AM_INIT_AUTOMAKE(1.7)
+dnl Audacity policy: don't enable automatic rebuild of configure et al if 
+dnl sources change
+AM_MAINTAINER_MODE([enabled])
+
 AM_CONFIG_HEADER(build/config.h)
 
 

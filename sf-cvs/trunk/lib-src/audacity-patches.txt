@@ -85,6 +85,8 @@ in release builds, could probably be removed altogther except for comparision
 purposes.
 Version in Audacity CVS: 0.1.2
 Patches: ??
+AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
+by default
 Upstream Version: 0.1.2
 
 libsndfile
@@ -94,6 +96,8 @@ to audacity.
 Version in Audacity CVS: 1.0.17
 Patches:  wav-bext.patch: backport patch from 1.0.18 of a patch to fix reading
 bext chunks in WAV files
+AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
+by default
 Upstream Version: 1.0.17
 TODO: upgrade to 1.0.18 when it comes out in order to drop the bext patch
 
@@ -114,6 +118,13 @@ local libogg if there isn't a system one.
 no-docs-examples.patch: disable building documentation and examples, so we can
 avoid shipping the files in those directories
 Upstream Version: 1.2.0
+
+liblrdf
+-------
+Patches:
+AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
+by default
+
 
 lib-widget-extra
 ----------------
@@ -150,6 +161,9 @@ portsmf-includes.patch	add include of <cstring> needed to compile with recent
 portsmf-string-const.patch	Add string const qualifiers as needed
 local-macros.patch		Add all the necessary 3rd party m4 macros into autotools
 						/m4/ and supporting changes.
+AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
+by default
+
 
 portburn
 --------
@@ -183,6 +197,10 @@ An audio stretching library for changing pitch or tempo without changing the
 other. Alternative to SoundTouch, better on large changes but slower.
 Version in audacity cvs: ??
 Patches:
+Misc fixes to configure.in/Makefile.am for autoconf macros and libtool. More
+files added to m4/ directory by libtoolizing commited to CVS.
+AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
+by default
 
 slv2
 -------
@@ -192,6 +210,9 @@ Version in audacity cvs: 0.6.0
 Patches:
 audacity_build_tweaks.patch	Patches the configure scripts to not build hosts and utility programs and to use local Redland libraries if requested. No need to integrate with upstream.
 lv2core_internal.patch		Add lv2.h as an internal header to avoid the dependency on lv2core.
+i18n.patch					Patch to support translation of some form?
+AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
+by default
 
 soundtouch
 ----------
@@ -212,6 +233,8 @@ http://www.twolame.org/
 MPEG I layer 2 audio encoding library used for MP2 exports
 Version in audacity cvs: 0.3.12
 Patches: None
+AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
+by default
 Upstream Version: 0.3.12
 
 wave++
