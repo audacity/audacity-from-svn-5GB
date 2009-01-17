@@ -17,7 +17,7 @@ dnl You should have received a copy of the GNU General Public License
 dnl along with this program; if not, write to the Free Software
 dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 dnl
-AC_REVISION([$Id: configure.ac,v 1.3 2008-07-04 10:25:35 llucius Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.4 2009-01-17 22:01:06 richardash1981 Exp $])dnl
 
 dnl Process this file with autoconf to produce a configure script.
 
@@ -26,7 +26,7 @@ AC_PREREQ(2.53)
 
 AC_CONFIG_SRCDIR([decoder.h])
 
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([-Wall foreign])
 
 AM_CONFIG_HEADER([config.h])
 
