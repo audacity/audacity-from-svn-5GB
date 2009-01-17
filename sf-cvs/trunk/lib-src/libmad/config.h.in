@@ -1,4 +1,63 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
+/*
+ * libmad - MPEG audio decoder library
+ * Copyright (C) 2000-2001 Robert Leslie
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * $Id: config.h.in,v 1.10 2009-01-17 22:25:37 richardash1981 Exp $
+ */
+
+# ifndef LIBMAD_CONFIG_H
+# define LIBMAD_CONFIG_H
+
+/*****************************************************************************
+ * Definitions selected automatically by `configure'                         *
+ *****************************************************************************/
+
+/* Define to optimize for speed over accuracy. */
+#undef OPT_SPEED
+
+/* Define to optimize for accuracy over speed. */
+#undef OPT_ACCURACY
+
+/* Define to enable a fast subband synthesis approximation optimization. */
+#undef OPT_SSO
+
+/* Define to influence a strict interpretation of the ISO/IEC standards,
+   even if this is in opposition with best accepted practices. */
+#undef OPT_STRICT
+
+/* Define if your MIPS CPU supports a 2-operand MADD instruction. */
+#undef HAVE_MADD_ASM
+
+/* Define if your MIPS CPU supports a 2-operand MADD16 instruction. */
+#undef HAVE_MADD16_ASM
+
+/* Define to enable diagnostic debugging support. */
+#undef DEBUG
+
+/* Define to disable debugging assertions. */
+#undef NDEBUG
+
+/* Define to enable experimental code. */
+#undef EXPERIMENTAL
+
+
+/* Define if building universal (internal helper macro) */
+#undef AC_APPLE_UNIVERSAL_BUILD
 
 /* Define to enable diagnostic debugging support. */
 #undef DEBUG
@@ -103,13 +162,13 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* The size of a `int', as computed by sizeof. */
+/* The size of `int', as computed by sizeof. */
 #undef SIZEOF_INT
 
-/* The size of a `long', as computed by sizeof. */
+/* The size of `long', as computed by sizeof. */
 #undef SIZEOF_LONG
 
-/* The size of a `long long', as computed by sizeof. */
+/* The size of `long long', as computed by sizeof. */
 #undef SIZEOF_LONG_LONG
 
 /* Define to 1 if you have the ANSI C header files. */
@@ -118,9 +177,17 @@
 /* Version number of package */
 #undef VERSION
 
-/* Define to 1 if your processor stores words with the most significant byte
-   first (like Motorola and SPARC, unlike Intel and VAX). */
-#undef WORDS_BIGENDIAN
+/* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
+   significant byte first (like Motorola and SPARC, unlike Intel). */
+#if defined AC_APPLE_UNIVERSAL_BUILD
+# if defined __BIG_ENDIAN__
+#  define WORDS_BIGENDIAN 1
+# endif
+#else
+# ifndef WORDS_BIGENDIAN
+#  undef WORDS_BIGENDIAN
+# endif
+#endif
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
@@ -133,3 +200,8 @@
 
 /* Define to `int' if <sys/types.h> does not define. */
 #undef pid_t
+/*****************************************************************************
+ * End of automatically configured definitions                               *
+ *****************************************************************************/
+
+# endif
