@@ -611,7 +611,10 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
 
       // Numbering files...
       if (!byName) {
-         name.Printf(wxT("%s-%d"), prefix.c_str(), l+1);
+         if (numFiles > 9)
+            name.Printf(wxT("%s-%02d"), prefix.c_str(), l+1);
+         else
+            name.Printf(wxT("%s-%d"), prefix.c_str(), l+1);
       }
 
       // store sanitised and user checjed name in object
@@ -678,6 +681,7 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
    Track *tr, *tr2;
    int channels = 0;  // how many channels export?
    int l = 0;     // track counter
+   int numTracks = 0;
    bool ok = true;
    wxArrayString otherNames;
    wxArrayPtrVoid selected;   /**< Array of pointers to the tracks which were
@@ -701,6 +705,10 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
       if (tr->GetSelected()) {
          selected.Add(tr);
          tr->SetSelected(false);
+      }
+
+      if (!tr->GetLinked()) {
+         numTracks++;
       }
    }
 
@@ -746,7 +754,12 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
          name = title;
       }
       else {
-         name = (wxString::Format(wxT("%s-%d"), prefix.c_str(), l+1));
+         if (numTracks > 9) {
+            name = (wxString::Format(wxT("%s-%02d"), prefix.c_str(), l+1));
+         }
+         else {
+            name = (wxString::Format(wxT("%s-%d"), prefix.c_str(), l+1));
+         }
       }
 
       // store sanitised and user checked name in object
@@ -775,7 +788,7 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
       /* add the settings to the array of settings to be used for export */
       exportSettings.Add(setting);
 
-      l++;  // next label, count up one
+      l++;  // next track, count up one
    }
    // end of user-interactive data gathering loop, start of export processing
    // loop
