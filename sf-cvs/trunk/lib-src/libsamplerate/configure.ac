@@ -7,6 +7,10 @@ AC_INIT
 AC_CONFIG_SRCDIR([src/samplerate.c])
 AC_CANONICAL_TARGET([])
 AM_INIT_AUTOMAKE(libsamplerate,0.1.2)
+dnl Audacity policy: don't enable automatic rebuild of configure et al if 
+dnl sources change
+AM_MAINTAINER_MODE([enabled])
+
 AM_CONFIG_HEADER(src/config.h)
 
 #------------------------------------------------------------------------------------

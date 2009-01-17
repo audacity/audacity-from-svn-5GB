@@ -8,6 +8,10 @@ AC_CONFIG_SRCDIR([src/sndfile.c])
 AC_CANONICAL_TARGET([])
 
 AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
+dnl Audacity policy: don't enable automatic rebuild of configure et al if 
+dnl sources change
+AM_MAINTAINER_MODE([enabled])
+
 AC_CONFIG_HEADERS([src/config.h])
 
 AC_LANG([C])

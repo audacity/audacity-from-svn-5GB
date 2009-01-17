@@ -2,6 +2,9 @@
 AC_INIT(src/lrdf.c)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(liblrdf, 0.4.0)
+dnl Audacity policy: don't enable automatic rebuild of configure et al if 
+dnl sources change
+AM_MAINTAINER_MODE([enabled])
 
 LRDF_LIBTOOL_VERSION=2:0:0
 
