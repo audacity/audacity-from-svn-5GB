@@ -37,9 +37,9 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSNDFILE], [
       LIBSNDFILE_LOCAL_CONFIG_SUBDIRS="lib-src/libsndfile"
       AC_MSG_NOTICE([libsndfile libraries are available in this source tree])
 
-      dnl These must be visible so libvamp can find us
-      export SNDFILE_LIBS="../libsndfile.a"
-      export SNDFILE_CFLAGS="../libsndfile/src"
+      dnl These must be visible so libvamp and sbsms can find us
+      export SNDFILE_LIBS="'`pwd`/lib-src/libsndfile.a'"
+      export SNDFILE_CFLAGS="'-I`pwd`/lib-src/libsndfile/src'"
 
       dnl Temporary fix for bug #248
       ac_configure_args="$ac_configure_args --disable-sqlite --disable-flac --disable-alsa"
