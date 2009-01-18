@@ -504,7 +504,9 @@ void EffectNoiseRemoval::FinishTrack()
 {
    // Keep flushing empty input buffers through the history
    // windows until we've output exactly as many samples as
-   // were input
+   // were input.
+   // Well, not exactly, but not more than mWindowSize/2 extra samples at the end.
+   // We'll delete them later in ProcessOne.
 
    float *empty = new float[mWindowSize / 2];
    int i;
@@ -536,7 +538,7 @@ void EffectNoiseRemoval::GetProfile()
          mNoiseThreshold[j] = min;
    }
 
-   mOutSampleCount += mWindowSize / 2;
+   mOutSampleCount += mWindowSize / 2; // what is this for?  Not used when we are getting the profile?
 }
 
 void EffectNoiseRemoval::RemoveNoise()
@@ -605,7 +607,7 @@ void EffectNoiseRemoval::RemoveNoise()
 
    // Output the first half of the overlap buffer, they're done -
    // and then shift the next half over.
-   if (mOutSampleCount >= 0) {
+   if (mOutSampleCount >= 0) {   // ...but not if it's the first half-window
       mOutputTrack->Append((samplePtr)mOutOverlapBuffer, floatSample,
                            mWindowSize / 2);
    }
@@ -668,6 +670,8 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * track,
       // sample data
       if (bLoopSuccess) {
 		   track->HandleClear(mT0, mT1, false, false);
+         // Filtering effects always end up with more data than they started with.  Delete this 'tail'.
+         mOutputTrack->HandleClear(mT1 - mT0, mOutputTrack->GetEndTime(), false, false);
          track->HandlePaste(mT0, mOutputTrack);
       }
 
