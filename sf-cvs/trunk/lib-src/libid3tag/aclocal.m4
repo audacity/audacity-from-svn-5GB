@@ -25,7 +25,7 @@ LD="$LD" LDFLAGS="$LDFLAGS" LIBS="$LIBS" \
 LN_S="$LN_S" NM="$NM" RANLIB="$RANLIB" \
 DLLTOOL="$DLLTOOL" AS="$AS" OBJDUMP="$OBJDUMP" \
 ${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig --no-reexec \
-$libtool_flags --no-verify $ac_aux_dir/ltmain.sh $lt_target \
+$libtool_flags $ac_aux_dir/ltmain.sh $lt_target \
 || AC_MSG_ERROR([libtool configure failed])
 
 # Reload cache, that may have been modified by ltconfig

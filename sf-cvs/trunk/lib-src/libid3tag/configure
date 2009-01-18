@@ -4027,7 +4027,7 @@ LD="$LD" LDFLAGS="$LDFLAGS" LIBS="$LIBS" \
 LN_S="$LN_S" NM="$NM" RANLIB="$RANLIB" \
 DLLTOOL="$DLLTOOL" AS="$AS" OBJDUMP="$OBJDUMP" \
 ${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig --no-reexec \
-$libtool_flags --no-verify $ac_aux_dir/ltmain.sh $lt_target \
+$libtool_flags $ac_aux_dir/ltmain.sh $lt_target \
 || { { $as_echo "$as_me:$LINENO: error: libtool configure failed" >&5
 $as_echo "$as_me: error: libtool configure failed" >&2;}
    { (exit 1); exit 1; }; }
