@@ -51,7 +51,9 @@ Upstream version: 1.2.1
 libid3tag
 ---------
 MP3 tag manipulation library. Comes with libmad (below)
-arguuments ([-Wall foreign]) added to AM_INIT_AUTOMAKE to avoid autoreconf
+arguments ([-Wall foreign]) added to AM_INIT_AUTOMAKE to avoid autoreconf
+failures
+arguments (--no-verify) removed from ltconfig execution to prevent configure
 failures
 
 libmad
