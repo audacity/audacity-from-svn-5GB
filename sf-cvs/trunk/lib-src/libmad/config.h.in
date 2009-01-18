@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: config.h.in,v 1.11 2009-01-17 22:44:08 richardash1981 Exp $
+ * $Id: config.h.in,v 1.12 2009-01-18 00:29:04 richardash1981 Exp $
  */
 
 # ifndef LIBMAD_CONFIG_H
