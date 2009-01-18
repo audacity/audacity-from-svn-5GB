@@ -51,6 +51,8 @@ Upstream version: 1.2.1
 libid3tag
 ---------
 MP3 tag manipulation library. Comes with libmad (below)
+arguuments ([-Wall foreign]) added to AM_INIT_AUTOMAKE to avoid autoreconf
+failures
 
 libmad
 ------
@@ -74,6 +76,8 @@ libogg
 library to handle Xiph.org's open multimedia container format
 Version in Audacity CVS: 1.1.3
 Patches: None, except docs build disabled in Makefile.am
+/usr/share/aclocal/libtool.m4 copied to acinclude.m4 (working round not having
+an m4 directory in the package for libtool files)
 Upstream Version: 1.1.3
 
 libresample
@@ -227,6 +231,8 @@ correct-const-usage.patch: makes usage of const keyword consistent so it
 compiles with Sun's C++ compiler. Patch sent upstream 17/03/2008
 fix-includes.patch: needed for GCC 4.3.1 to include all the headers we use
 directly. In upstream SVN
+Argument ([-Wall foreign]) added to AM_INIT_AUTOMAKE because autoreconf fails
+otherwise
 Upstream Version: 1.3.1
 
 twolame

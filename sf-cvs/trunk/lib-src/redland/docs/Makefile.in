@@ -18,7 +18,7 @@
 #
 # Makefile.am - docs automake file for Redland
 #
-# $Id: Makefile.in,v 1.3 2009-01-17 22:48:25 richardash1981 Exp $
+# $Id: Makefile.in,v 1.4 2009-01-18 00:29:04 richardash1981 Exp $
 #
 # Copyright (C) 2000-2006, David Beckett http://purl.org/net/dajobe/
 # Copyright (C) 2000-2005, University of Bristol, UK http://www.bristol.ac.uk/
