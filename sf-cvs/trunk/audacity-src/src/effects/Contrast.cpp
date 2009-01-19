@@ -578,12 +578,12 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
    int h = (int)(t/3600);  // there must be a standard function for this!
    int m = (int)((t - h*3600)/60);
    float s = t - h*3600.0 - m*60.0;
-   f.AddLine(wxString::Format(_("Time started = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
+   f.AddLine(wxString::Format(_("Time started = %2d hour(s), %2d minute(s), %.2f seconds."), h, m, s ));
    t = (float)mForegroundEndT->GetTimeValue();
    h = (int)(t/3600);
    m = (int)((t - h*3600)/60);
    s = t - h*3600.0 - m*60.0;
-   f.AddLine(wxString::Format(_("Time ended = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
+   f.AddLine(wxString::Format(_("Time ended = %2d hour(s), %2d minute(s), %.2f seconds."), h, m, s ));
    if(foregrounddB != 1234.0) // see other instances of '1234.0' in here
       f.AddLine(wxString::Format(_("Average rms = %.1f dB."), foregrounddB ));
    else
@@ -595,12 +595,12 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
    h = (int)(t/3600);
    m = (int)((t - h*3600)/60);
    s = t - h*3600.0 - m*60.0;
-   f.AddLine(wxString::Format(_("Time started = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
+   f.AddLine(wxString::Format(_("Time started = %2d hour(s), %2d minute(s), %.2f seconds."), h, m, s ));
    t = (float)mBackgroundEndT->GetTimeValue();
    h = (int)(t/3600);
    m = (int)((t - h*3600)/60);
    s = t - h*3600.0 - m*60.0;
-   f.AddLine(wxString::Format(_("Time ended = %2d hour(s), %2d minute(s), %.3f seconds."), h, m, s ));
+   f.AddLine(wxString::Format(_("Time ended = %2d hour(s), %2d minute(s), %.2f seconds."), h, m, s ));
    if(backgrounddB != 1234.0)
       f.AddLine(wxString::Format(_("Average rms = %.1f dB."), backgrounddB ));
    else
@@ -608,7 +608,7 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
    f.AddLine(wxT(""));
    f.AddLine(_("Results"));
    float diff = foregrounddB - backgrounddB;
-   f.AddLine(wxString::Format(_("Difference = %f Average rms dB."), diff ));
+   f.AddLine(wxString::Format(_("Difference = %.1f Average rms dB."), diff ));
    if( diff > 20. )
       f.AddLine(_("Success Criteria 1.4.7 of WCAG 2.0: Pass"));
    else
