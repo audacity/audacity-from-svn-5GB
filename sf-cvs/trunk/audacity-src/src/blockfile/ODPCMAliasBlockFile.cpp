@@ -108,7 +108,7 @@ wxLongLong ODPCMAliasBlockFile::GetSpaceUsage()
    if(IsSummaryAvailable())
    {
       wxLongLong ret;
-      mFileNameMutex.Unlock();
+      mFileNameMutex.Lock();
       wxFFile summaryFile(mFileName.GetFullPath());
       ret= summaryFile.Length();
       mFileNameMutex.Unlock();
@@ -254,7 +254,7 @@ BlockFile *ODPCMAliasBlockFile::Copy(wxFileName newFileName)
 /// and this object reconstructed, it needs to avoid trying to open it as well as schedule itself for OD loading
 void ODPCMAliasBlockFile::SaveXML(XMLWriter &xmlFile)
 {
-   
+   //we lock this so that mAliasedFileName doesn't change.
    mReadDataMutex.Lock();
    if(IsSummaryAvailable())
    {
@@ -265,9 +265,12 @@ void ODPCMAliasBlockFile::SaveXML(XMLWriter &xmlFile)
    {
       xmlFile.StartTag(wxT("odpcmaliasblockfile"));
 
+      //unlock to prevent deadlock and resume lock after.
+      mReadDataMutex.Unlock();
       mFileNameMutex.Lock();
       xmlFile.WriteAttr(wxT("summaryfile"), mFileName.GetFullName());
       mFileNameMutex.Unlock();
+      mReadDataMutex.Lock();
       
       xmlFile.WriteAttr(wxT("aliasfile"), mAliasedFileName.GetFullPath());
       xmlFile.WriteAttr(wxT("aliasstart"), mAliasStart);
@@ -420,6 +423,8 @@ void ODPCMAliasBlockFile::WriteSummary()
      //wxFFile summaryFile(mFileName.GetFullPath(), wxT("wb"));
    
    FILE* summaryFile=fopen(mFileNameChar, "wb");
+   
+   mFileNameMutex.Unlock();
 
    if( !summaryFile){//.IsOpened() ){
       
@@ -446,8 +451,6 @@ void ODPCMAliasBlockFile::WriteSummary()
    fclose(summaryFile);
    DeleteSamples(sampleData);
    delete [] (char *) summaryData;
-   
-   mFileNameMutex.Unlock();
    
    
     //     printf("write successful. filename: %s\n",mFileNameChar);
