@@ -814,8 +814,7 @@ JACK_LIBS'
 ac_subdirs_all='"lib-src/FileDialog"
 $CONFIG_SUBDIRS
 lib-src/portaudio-v19
-lib-src/portmixer
-lib-src/dlcompat'
+lib-src/portmixer'
 
 # Initialize some variables set by options.
 ac_init_help=
@@ -9349,9 +9348,7 @@ _ACEOF
    fi
 fi
 
-case "$host_os" in
-   *)
-            { $as_echo "$as_me:$LINENO: checking for lrint" >&5
+{ $as_echo "$as_me:$LINENO: checking for lrint" >&5
 $as_echo_n "checking for lrint... " >&6; }
 if test "${ac_cv_c99_lrint+set}" = set; then
   $as_echo_n "(cached) " >&6
@@ -9414,7 +9411,7 @@ _ACEOF
 
 fi
 
-      { $as_echo "$as_me:$LINENO: checking for lrintf" >&5
+{ $as_echo "$as_me:$LINENO: checking for lrintf" >&5
 $as_echo_n "checking for lrintf... " >&6; }
 if test "${ac_cv_c99_lrintf+set}" = set; then
   $as_echo_n "(cached) " >&6
@@ -9477,28 +9474,7 @@ _ACEOF
 
 fi
 
-      ;;
-esac
 
-
-if [ "$use_ladspa" = "yes" ] ; then
-   case "$host_os" in
-      darwin7*)
-         LIBS="$LIBS -ldl"
-         ;;
-      darwin[123456].* | rhapsody*)
-         LOCAL_LIBS="$LOCAL_LIBS libdl.a"
-         CXXFLAGS="$CXXFLAGS -I$(srcdir)/lib-src/dlcompat"
-         if test ! -f "lib-src/dlcompat/Makefile"; then
-            echo "--- Configuring dlcompat";
-            subdirs="$subdirs lib-src/dlcompat"
-
-         fi
-         ;;
-      *)
-         ;;
-   esac
-fi
 
 if [ "$use_ladspa" = "yes" ] ; then
    OPTOBJS="$OPTOBJS effects/ladspa/LoadLadspa.o"
@@ -9509,6 +9485,14 @@ cat >>confdefs.h <<\_ACEOF
 #define USE_LADSPA 1
 _ACEOF
 
+
+      case "$host_os" in
+      darwin7*)
+         LIBS="$LIBS -ldl"
+         ;;
+      *)
+         ;;
+   esac
 fi
 
 if [ "$use_audiounits" = "yes" ] ; then
