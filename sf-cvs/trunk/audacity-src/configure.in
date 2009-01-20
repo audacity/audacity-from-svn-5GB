@@ -215,7 +215,7 @@ dnl If the C++ compiler supports making symbols within audacity hidden then
 dnl we would like to do so. This means that only the required symbols for
 dnl plug-in functionality are exposed, rather than everything in the program.
 dnl-------------------------------------------------------------------------
-AUDACITY_CHECK_VISIBILITY
+gl_VISIBILITY
 
 dnl-------------------------------------------------------------
 dnl Configure the libraries which are essential to audacity.

@@ -1,6 +1,3 @@
-dnl Function to test whether the compiler can do hidden symbol visibility. This
-dnl test is from automake 2.62.
-
 # visibility.m4 serial 1 (gettext-0.15)
 dnl Copyright (C) 2005 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
@@ -23,7 +20,7 @@ dnl "really only recommended for legacy code".
 dnl Set the variable CFLAG_VISIBILITY.
 dnl Defines and sets the variable HAVE_VISIBILITY.
 
-AC_DEFUN([AUDACITY_CHECK_VISIBILITY],
+AC_DEFUN([gl_VISIBILITY],
 [
   AC_REQUIRE([AC_PROG_CC])
   CFLAG_VISIBILITY=
@@ -53,4 +50,3 @@ AC_DEFUN([AUDACITY_CHECK_VISIBILITY],
   AC_DEFINE_UNQUOTED([HAVE_VISIBILITY], [$HAVE_VISIBILITY],
     [Define to 1 or 0, depending whether the compiler supports simple visibility declarations.])
 ])
-
