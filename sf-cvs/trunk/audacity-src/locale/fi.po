@@ -6,8 +6,7 @@
 # Elias Julkunenm, 2008.
 # 
 msgid ""
-msgstr ""
-"Project-Id-Version: Audacity 1.3\n"
+msgstr "Project-Id-Version: Audacity 1.3\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-11-09 20:10+0000\n"
 "PO-Revision-Date: 2008-11-15 19:39+0200\n"
@@ -246,12 +245,10 @@ msgstr "Virhe avattaessa projektia"
 
 #: AudacityApp.cpp:541
 #, c-format
-msgid ""
-"%s does not exist and could not be opened.\n"
+msgid "%s does not exist and could not be opened.\n"
 "\n"
 "It has been removed from the history list."
-msgstr ""
-"Kohdetta %s ei voitu avata koska sitä ei ole.\n"
+msgstr "Kohdetta %s ei voitu avata koska sitä ei ole.\n"
 "\n"
 "Kohde on poistettu historialistasta."
 
@@ -285,11 +282,9 @@ msgid "Unknown command line option: %s\n"
 msgstr "Tuntematon komentoriviparametri: %s\n"
 
 #: AudacityApp.cpp:1127
-msgid ""
-"Audacity could not find a place to store temporary files.\n"
+msgid "Audacity could not find a place to store temporary files.\n"
 "Please enter an appropriate directory in the preferences dialog."
-msgstr ""
-"Audacity ei löytänyt paikkaa väliaikaisille tiedostoille.\n"
+msgstr "Audacity ei löytänyt paikkaa väliaikaisille tiedostoille.\n"
 "Ole hyvä ja syötä kelvollinen hakemisto asetusikkunassa."
 
 #: AudacityApp.cpp:1133
@@ -298,18 +293,15 @@ msgid "Audacity is now going to exit. Please launch Audacity again to use the ne
 msgstr "Audacity suljetaan. Ole hyvä ja käynnistä Audacity uudelleen käyttääksesi uutta väliaikaishakemistoa."
 
 #: AudacityApp.cpp:1165
-msgid ""
-"Running two copies of Audacity simultaneously may cause\n"
+msgid "Running two copies of Audacity simultaneously may cause\n"
 "data loss or cause your system to crash.\n"
 "\n"
 msgstr ""
 
 #: AudacityApp.cpp:1172
-msgid ""
-"Audacity was not able to lock the temporary files directory.\n"
+msgid "Audacity was not able to lock the temporary files directory.\n"
 "This folder may be in use by another copy of Audacity.\n"
-msgstr ""
-"Audacity ei voinut lukita väliaikaistiedostojen hakemistoa.\n"
+msgstr "Audacity ei voinut lukita väliaikaistiedostojen hakemistoa.\n"
 "Audacityn toinen kopio saattaa käyttää sitä.\n"
 
 #: AudacityApp.cpp:1174
@@ -325,8 +317,7 @@ msgid "The system has detected that another copy of Audacity is running.\n"
 msgstr "Järjestelmä on havainnut toisen käynnissä olevan Audacityn.\n"
 
 #: AudacityApp.cpp:1216
-msgid ""
-"Use the New or Open commands in the currently running Audacity\n"
+msgid "Use the New or Open commands in the currently running Audacity\n"
 "process to open multiple projects simultaneously.\n"
 msgstr ""
 
@@ -369,13 +360,11 @@ msgid "In addition, specify the name of an audio file or Audacity project to ope
 msgstr ""
 
 #: AudacityApp.cpp:1529
-msgid ""
-"Audacity project (.AUP) files are not currently \n"
+msgid "Audacity project (.AUP) files are not currently \n"
 "associated with Audacity. \n"
 "\n"
 "Associate them, so they open on double-click?"
-msgstr ""
-"Audacityn projektitiedostoja (.AUP) ei ole\n"
+msgstr "Audacityn projektitiedostoja (.AUP) ei ole\n"
 "asetettu käynnistymään Audacityssä.\n"
 "\n"
 "Tehdäänkö asetus, jotta voit avata\n"
@@ -390,11 +379,9 @@ msgid "Could not find any audio devices.\n"
 msgstr "Mitään äänilaitteita ei löydetty.\n"
 
 #: AudioIO.cpp:255
-msgid ""
-"You will not be able to play or record audio.\n"
+msgid "You will not be able to play or record audio.\n"
 "\n"
-msgstr ""
-"Et voi toistaa tai äänittää audiota.\n"
+msgstr "Et voi toistaa tai äänittää audiota.\n"
 "\n"
 
 #: AudioIO.cpp:258
@@ -410,8 +397,7 @@ msgid "Latency problem"
 msgstr ""
 
 #: AudioIO.cpp:1375
-msgid ""
-"Latency setting has caused the recorded audio to be hidden before zero.\n"
+msgid "Latency setting has caused the recorded audio to be hidden before zero.\n"
 "Audacity has brought it back to start at zero.\n"
 "You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."
 msgstr ""
@@ -421,8 +407,7 @@ msgid "Automatic Crash Recovery"
 msgstr "Automaattinen kaatumispalautus"
 
 #: AutoRecovery.cpp:73
-msgid ""
-"Some projects were not saved properly the last time Audacity was run.\n"
+msgid "Some projects were not saved properly the last time Audacity was run.\n"
 "Fortunately, the following projects can automatically be recovered:"
 msgstr ""
 
@@ -452,11 +437,9 @@ msgid "Recover Projects"
 msgstr "Palauta projekteja"
 
 #: AutoRecovery.cpp:127
-msgid ""
-"Are you sure you don't want to recover any projects?\n"
+msgid "Are you sure you don't want to recover any projects?\n"
 "They can't be recovered later."
-msgstr ""
-"Etkö halua palauttaa mitään projekteja?\n"
+msgstr "Etkö halua palauttaa mitään projekteja?\n"
 "Niitä ei voi palauttaa myöhemmin."
 
 #: AutoRecovery.cpp:128
@@ -535,8 +518,7 @@ msgstr ""
 
 #: BatchCommands.cpp:508
 #, c-format
-msgid ""
-"Could not set parameters of effect %s\n"
+msgid "Could not set parameters of effect %s\n"
 " to %s."
 msgstr ""
 
@@ -547,12 +529,10 @@ msgstr ""
 
 #: BatchCommands.cpp:652
 #, c-format
-msgid ""
-"Apply %s with parameter(s)\n"
+msgid "Apply %s with parameter(s)\n"
 "\n"
 "%s"
-msgstr ""
-"Hyväksy %d parametr(e)illä\n"
+msgstr "Hyväksy %d parametr(e)illä\n"
 "\n"
 "%s"
 
@@ -744,8 +724,7 @@ msgid "Copying audio data into project..."
 msgstr "Kopioidaan äänitietoja projektiin..."
 
 #: Dependencies.cpp:223
-msgid ""
-"Your project currently depends on the presence of other files.\n"
+msgid "Your project currently depends on the presence of other files.\n"
 "Copy audio from the following files into your project to make it self-contained?\n"
 "This will need more disc space but is safer."
 msgstr ""
@@ -814,8 +793,7 @@ msgstr "Riippuvuustarkistus"
 
 #: DirManager.cpp:137
 #, fuzzy
-msgid ""
-"Warning: there is very little free disk space left on this volume.\n"
+msgid "Warning: there is very little free disk space left on this volume.\n"
 "Please select another temporary directory in your preferences."
 msgstr "Varoitus: tällä levyllä on vain vähän vapaata tilaa. Ole hyvä ja valitse asetuksista toinen väliaikaisten tiedostojen hakemisto."
 
@@ -839,8 +817,7 @@ msgstr ""
 
 #: DirManager.cpp:505
 #, c-format
-msgid ""
-"Audacity found an orphaned blockfile %s! \n"
+msgid "Audacity found an orphaned blockfile %s! \n"
 "Please consider saving and reloading the project to perform a complete project check.\n"
 msgstr ""
 
@@ -869,14 +846,14 @@ msgstr ""
 msgid "Renamed file: %s\n"
 msgstr "Tiedosto %s nimetty uudelleen\n"
 
-#: DirManager.cpp:1132
-#, c-format
-msgid "Changing block %s\n"
-msgstr "Muutetaan jaksoa %s\n"
-
 #: DirManager.cpp:1160
 #, c-format
 msgid "Unable to rename '%s' to '%s'"
+msgstr ""
+
+#: DirManager.cpp:1183
+#, c-format
+msgid "Changed block %s to new alias name\n"
 msgstr ""
 
 #: DirManager.cpp:1224
@@ -905,15 +882,13 @@ msgid "Missing data file: (%s.au)"
 msgstr "Puuttuva datatiedosto: (%s.au)"
 
 #: DirManager.cpp:1319
-msgid ""
-"Project check found inconsistencies inspecting the loaded project data;\n"
+msgid "Project check found inconsistencies inspecting the loaded project data;\n"
 "click 'Details' for a complete list of errors, or 'OK' to proceed to more options."
 msgstr ""
 
 #: DirManager.cpp:1331
 #, c-format
-msgid ""
-"Project check found %d orphaned blockfile[s]. These files are\n"
+msgid "Project check found %d orphaned blockfile[s]. These files are\n"
 "unused and probably left over from a crash or some other bug.\n"
 "They should be deleted to avoid disk contention."
 msgstr ""
@@ -943,8 +918,7 @@ msgstr "Varoitus"
 
 #: DirManager.cpp:1366
 #, c-format
-msgid ""
-"Project check detected %d input file[s] being used in place\n"
+msgid "Project check detected %d input file[s] being used in place\n"
 "('alias files') are now missing.  There is no way for Audacity\n"
 "to recover these files automatically; you may choose to\n"
 "permanently fill in silence for the missing files, temporarily\n"
@@ -969,8 +943,7 @@ msgstr ""
 
 #: DirManager.cpp:1412
 #, c-format
-msgid ""
-"Project check detected %d missing summary file[s] (.auf).\n"
+msgid "Project check detected %d missing summary file[s] (.auf).\n"
 "Audacity can fully regenerate these summary files from the\n"
 "original audio data in the project."
 msgstr ""
@@ -985,8 +958,7 @@ msgstr ""
 
 #: DirManager.cpp:1454
 #, c-format
-msgid ""
-"Project check detected %d missing audio data blockfile[s] (.au), \n"
+msgid "Project check detected %d missing audio data blockfile[s] (.au), \n"
 "probably due to a bug, system crash or accidental deletion.\n"
 "There is no way for Audacity to recover this lost data\n"
 "automatically; you may choose to permanently fill in silence\n"
@@ -1023,6 +995,21 @@ msgstr "Tallennetaan nauhoitettua ääntä levylle..."
 msgid "Rectangular"
 msgstr "Suorakulma"
 
+#: FFmpeg.cpp:36
+msgid "FFmpeg support not compiled in"
+msgstr ""
+
+#: FFmpeg.cpp:101
+msgid "FFmpeg was configured in Preferences and successfully loaded before,                       \n"
+"but this time Audacity failed to load it at startup.                       \n"
+"\n"
+"You may want to go back to Preferences > Import/Export and re-configure it."
+msgstr ""
+
+#: FFmpeg.cpp:104
+msgid "FFmpeg startup failed"
+msgstr ""
+
 #: FFmpeg.cpp:115
 msgid "FFmpeg library not found"
 msgstr "FFmpeg-kirjastoa ei löytynyt"
@@ -1057,10 +1044,9 @@ msgstr "Selaa"
 msgid "To get a free copy of FFmpeg, click here -->"
 msgstr "Ladataksesi ilmainen kopion ohjelmasta FFmpeg, napsauta tästä -->"
 
-#: FFmpeg.cpp:213
-#: export/ExportMP3.cpp:579
-msgid "Download..."
-msgstr "Lataa..."
+#: FFmpeg.cpp:215 export/ExportMP3.cpp:579
+msgid "Download"
+msgstr ""
 
 #  i18n-hint: It's asking for the location of a file, for
 #  example, "Where is lame_enc.dll?" - you could translate
@@ -1074,17 +1060,36 @@ msgstr "Lataa..."
 msgid "Where is %s?"
 msgstr "Missä on %s?"
 
+#: FFmpeg.cpp:407
+msgid "Failed to find compatible FFmpeg libraries"
+msgstr ""
+
 #: FFmpeg.h:95
 msgid "FFmpeg not found"
 msgstr "Ohjelmaa FFmpeg ei löytynyt"
+
+#: FFmpeg.h:101
+msgid "Audacity attempted to use FFmpeg libraries to import an audio file,\n"
+"but libraries were not found.\n"
+"If you want to use the FFmpeg import feature, please go to Preferences->Import/Export\n"
+"and tell Audacity where to look for the libraries."
+msgstr ""
+
+#: FFmpeg.h:109
+msgid "Do not show this warning again"
+msgstr ""
 
 #: FFmpeg.h:251
 msgid "Only avformat.dll|*avformat*.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
 msgstr "Vain avformat.dll|*avformat*.dll|Dynaamisesti linkitetyt kirjastot (*.dll)|*.dll|Kaikki tiedostot (*.*)|*"
 
-#: FFmpeg.h:266
-msgid "Only avformat.so|*avformat*.so*|Dynamically Linked Libraries (*.so)|*.so|All Files (*)|*"
-msgstr "Vain avformat.so|*avformat*.so*|Dynaamisesti linkitetyt kirjastot (*.so)|*.so|Kaikki tiedostot (*)|*"
+#: FFmpeg.h:268
+msgid "Dynamic Libraries (*.dylib)|*.dylib|All Files (*)|*"
+msgstr ""
+
+#: FFmpeg.h:295
+msgid "Only libavformat.so|libavformat.so*|Dynamically Linked Libraries (*.so*)|*.so*|All Files (*)|*"
+msgstr ""
 
 #: FreqWindow.cpp:103
 msgid "Frequency Analysis"
@@ -1463,8 +1468,7 @@ msgid "New..."
 msgstr "Uusi..."
 
 #: LabelDialog.cpp:354
-msgid ""
-"You have left blank label names.  These will be\n"
+msgid "You have left blank label names.  These will be\n"
 "skipped when repopulating the Label Tracks.\n"
 "\n"
 "Would you like to go back and provide names?"
@@ -1532,11 +1536,9 @@ msgstr "Valitse Audacityn kieli:"
 
 #: Legacy.cpp:356
 #, c-format
-msgid ""
-"Converted a 1.0 project file to the new format.\n"
+msgid "Converted a 1.0 project file to the new format.\n"
 "The old file has been saved as '%s'"
-msgstr ""
-"1.0-projekti muunnettiin uuteen tiedostomuotoon.\n"
+msgstr "1.0-projekti muunnettiin uuteen tiedostomuotoon.\n"
 "Vanha tiedosto on tallennettu nimellä \"%s\""
 
 #: Legacy.cpp:357
@@ -1979,24 +1981,21 @@ msgstr "!Yksinkertaistettu näkymä"
 msgid "T&ransport"
 msgstr ""
 
-#: Menus.cpp:589
-#, fuzzy
-msgid "Play\tSpacebar"
-msgstr "Toista/Lopeta\tSpacebar"
-
 #: Menus.cpp:591
-#, fuzzy
-msgid "&Loop Play\tShift+Spacebar"
-msgstr "Toista silmukassa\tShift+Spacebar"
+msgid "Play\tSpace"
+msgstr ""
+
+#: Menus.cpp:593
+msgid "&Loop Play\tShift+Space"
+msgstr ""
 
 #: Menus.cpp:593
 msgid "&Pause\tP"
 msgstr "&Pysäytä\tP"
 
-#: Menus.cpp:594
-#, fuzzy
-msgid "&Stop\tSpacebar"
-msgstr "Toista/Lopeta\tSpacebar"
+#: Menus.cpp:596
+msgid "&Stop\tSpace"
+msgstr ""
 
 #: Menus.cpp:595
 #: Menus.cpp:1010
@@ -2217,12 +2216,12 @@ msgstr "&Suorita mittauskoe..."
 msgid "&Audio Device Info..."
 msgstr "&Äänilaitetiedot..."
 
-#: Menus.cpp:981
-msgid "Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"
+#: Menus.cpp:983
+msgid "Cycle backward through toolbars and Track View\tCtrl+Shift+F6"
 msgstr ""
 
-#: Menus.cpp:982
-msgid "Cycle forward through Dock, Track View, and Selection Bar\tCtrl+F6"
+#: Menus.cpp:984
+msgid "Cycle forward through toolbars and Track View\tCtrl+F6"
 msgstr ""
 
 #: Menus.cpp:985
@@ -2257,9 +2256,9 @@ msgstr "Seuraava työkalu\tD"
 msgid "Previous Tool\tA"
 msgstr "Edellinen työkalu\tA"
 
-#: Menus.cpp:995
-msgid "Play/Stop\tSpacebar"
-msgstr "Toista/Lopeta\tSpacebar"
+#: Menus.cpp:997
+msgid "Play/Stop\tSpace"
+msgstr ""
 
 #: Menus.cpp:996
 msgid "Stop\tS"
@@ -2293,9 +2292,9 @@ msgstr "Toista valintaan saakka\tB"
 msgid "Play Looped\tL"
 msgstr "Toista silmukassa\tL"
 
-#: Menus.cpp:1007
-msgid "Play Looped\tShift+Spacebar"
-msgstr "Toista silmukassa\tShift+Spacebar"
+#: Menus.cpp:1009
+msgid "Play Looped\tShift+Space"
+msgstr ""
 
 #: Menus.cpp:1008
 msgid "Play Cut Preview\tC"
@@ -2357,8 +2356,8 @@ msgstr ""
 msgid "Toggle Focused Track\tNUMPAD_ENTER"
 msgstr ""
 
-#: Menus.cpp:1040
-msgid "Toggle Focused Track\tCtrl+Spacebar"
+#: Menus.cpp:1042
+msgid "Toggle Focused Track\tCtrl+Space"
 msgstr ""
 
 #: Menus.cpp:1042
@@ -2457,12 +2456,8 @@ msgstr ""
 msgid "Snap To Off"
 msgstr ""
 
-#: Menus.cpp:1074
-msgid "Define Foreground\tCtrl+Alt+F"
-msgstr ""
-
-#: Menus.cpp:1075
-msgid "Define Background\tCtrl+Alt+B"
+#: Menus.cpp:1073
+msgid "Full screen on/off\tF11"
 msgstr ""
 
 #. i18n-hint: This is the name of the menu item on Mac OS X only
@@ -2539,8 +2534,7 @@ msgid "MIDI file (*.mid)|*.mid|Allegro file (*.gro)|*.gro"
 msgstr "MIDI-tiedostot (*.mid)|*.mid|Allegro-tiedostot (*.gro)|*.gro"
 
 #: Menus.cpp:2643
-msgid ""
-"You have selected a filename with an unrecognized file extension.\n"
+msgid "You have selected a filename with an unrecognized file extension.\n"
 "Do you want to continue?"
 msgstr ""
 
@@ -3012,8 +3006,7 @@ msgid "Save changes before closing?"
 msgstr "Tallennetaanko muutokset ennen sulkemista?"
 
 #: Project.cpp:1567
-msgid ""
-"\n"
+msgid "\n"
 "If saved, the project will have no tracks.\n"
 "\n"
 "To save any previously open tracks:\n"
@@ -3040,8 +3033,7 @@ msgstr "Audacity-projektit|*.aup|"
 #: Project.cpp:1882
 #: Project.cpp:2304
 #, c-format
-msgid ""
-"This file was saved by Audacity %s, a much\n"
+msgid "This file was saved by Audacity %s, a much\n"
 "older version.  The format has changed.\n"
 "\n"
 "Audacity could corrupt the file in opening\n"
@@ -3066,8 +3058,7 @@ msgstr "Virhe avattaessa tiedostoa"
 
 #: Project.cpp:1929
 #, c-format
-msgid ""
-"File may be invalid or corrupted: \n"
+msgid "File may be invalid or corrupted: \n"
 "%s"
 msgstr ""
 
@@ -3107,12 +3098,10 @@ msgstr "Projektin data-kansiota \"%s\" ei löytynyt."
 
 #: Project.cpp:2273
 #, c-format
-msgid ""
-"This file was saved using Audacity %s.\n"
+msgid "This file was saved using Audacity %s.\n"
 "You are using Audacity %s - you need to upgrade to\n"
 "a newer version to open this file."
-msgstr ""
-"Tämä tiedosto on tallennettu Audacityn versiolla %s.\n"
+msgstr "Tämä tiedosto on tallennettu Audacityn versiolla %s.\n"
 "Käytät Audacityn versiota %s - sinun on päivitettävä\n"
 "uudempaan versioon voidaksesi avata tämän tiedoston."
 
@@ -3122,20 +3111,32 @@ msgstr "Projektitiedoston avaaminen ei onnistu"
 
 #: Project.cpp:2311
 #, c-format
-msgid ""
-"This file was saved by Audacity %s.\n"
+msgid "This file was saved by Audacity %s.\n"
 "You can open the file with this version of Audacity, but if you save it with this version you will no longer be able to open it in older versions.\n"
 "\n"
 "Open this file now?"
 msgstr ""
 
+#: Project.cpp:2537
+msgid "Your project is now empty.\n"
+"If saved, the project will have no tracks.\n"
+"\n"
+"To save any previously open tracks:\n"
+"Click 'No', Edit > Undo until all tracks\n"
+"are open, then File > Save Project.\n"
+"\n"
+"Save anyway?"
+msgstr ""
+
+#: Project.cpp:2538
+msgid "Warning empty project"
+msgstr ""
+
 #: Project.cpp:2588
 #, fuzzy, c-format
-msgid ""
-"Could not save project. Perhaps %s \n"
+msgid "Could not save project. Perhaps %s \n"
 "is not writeable or the disk is full."
-msgstr ""
-"Projektia ei voitu tallentaa. Ehkä %s ei ole kirjoitettavissa,\n"
+msgstr "Projektia ei voitu tallentaa. Ehkä %s ei ole kirjoitettavissa,\n"
 "tai levy on täynnä."
 
 #: Project.cpp:2590
@@ -3174,16 +3175,14 @@ msgstr "Windows PCM -äänitiedosto (*.wav)|*.wav"
 
 #: Project.cpp:2891
 #, fuzzy
-msgid ""
-"Audacity compressed project files (.aup) save your work in a smaller, compressed (.ogg) format. \n"
+msgid "Audacity compressed project files (.aup) save your work in a smaller, compressed (.ogg) format. \n"
 "Compressed project files are a good way to transmit your project online, because they are much smaller. \n"
 "To open a compressed project takes longer than usual, as it imports each compressed track. \n"
 "\n"
 "Most other programs can't open Audacity project files.\n"
 "When you want to save a file that can be opened by other programs, select one of the\n"
 "Export commands."
-msgstr ""
-"Työsi tallennetaan Audacityn projektitiedostoihin (.aup) samanlaisena, kuin\n"
+msgstr "Työsi tallennetaan Audacityn projektitiedostoihin (.aup) samanlaisena, kuin\n"
 "se näkyy näytöllä. Suurin osa muista ohjelmista ei kuitenkaan pysty avaamaan\n"
 "Audacityn projektitiedostoja.\n"
 "\n"
@@ -3191,8 +3190,7 @@ msgstr ""
 "Vie-toiminnoista."
 
 #: Project.cpp:2894
-msgid ""
-"You are saving an Audacity project file (.aup).\n"
+msgid "You are saving an Audacity project file (.aup).\n"
 "\n"
 "Saving a project creates a file that only Audacity can open.\n"
 "\n"
@@ -3386,10 +3384,9 @@ msgstr "Tyylilaji"
 msgid "Comments"
 msgstr "Kommentit"
 
-#: Tags.cpp:789
-#: Tags.cpp:2027
-msgid "Press F2 or double click to edit."
-msgstr "Paina F2 tai kaksoisnapsauta muokataksesi."
+#: Tags.cpp:777
+msgid "Use arrow keys (or RETURN key after editing) to navigate fields."
+msgstr ""
 
 #: Tags.cpp:813
 msgid "Tag Name"
@@ -3409,16 +3406,13 @@ msgstr "&Tyhjennä"
 msgid "Genres"
 msgstr "Tyylilajit"
 
-#: Tags.cpp:839
-#: Tags.cpp:1449
-#: Tags.cpp:1989
-msgid "Edit"
-msgstr "Muokkaa"
+#: Tags.cpp:826
+msgid "E&dit..."
+msgstr ""
 
-#: Tags.cpp:840
-#: Tags.cpp:1990
-msgid "Reset"
-msgstr "Palauta"
+#: Tags.cpp:827
+msgid "Rese&t..."
+msgstr ""
 
 #: Tags.cpp:845
 #: Tags.cpp:1470
@@ -3488,6 +3482,16 @@ msgstr "Haluatko varmasti palauttaa tyylilajilistan oletusarvoihin?"
 msgid "Unable to open genre file."
 msgstr "Tyylilajitiedostoa ei voida avata."
 
+#: Tags.cpp:1084
+msgid "Load Metadata As:"
+msgstr ""
+
+#: Tags.cpp:1122
+#: Tags.cpp:1772
+#: Tags.cpp:2494
+msgid "Error loading metadata"
+msgstr "Virhe ladattaessa metatietoja"
+
 #: Tags.cpp:1097
 #: Tags.cpp:1151
 #: Tags.cpp:1751
@@ -3497,169 +3501,57 @@ msgstr "Tyylilajitiedostoa ei voida avata."
 msgid "Save Metadata As:"
 msgstr "Tallenna metatiedot nimellä:"
 
-#: Tags.cpp:1122
-#: Tags.cpp:1772
-#: Tags.cpp:2494
-msgid "Error loading metadata"
-msgstr "Virhe ladattaessa metatietoja"
-
-#: Tags.cpp:1419
-#: Tags.cpp:1977
-msgid "Title:"
-msgstr "Nimi:"
-
-#: Tags.cpp:1420
-#: Tags.cpp:1978
-msgid "Artist:"
-msgstr "Artisti:"
-
-#: Tags.cpp:1421
-#: Tags.cpp:1979
-msgid "Album:"
-msgstr "Albumi:"
-
-#: Tags.cpp:1422
-msgid "Composer:"
-msgstr "Säveltäjä:"
-
-#: Tags.cpp:1423
-msgid "Lyricist:"
-msgstr "Sanoittaja:"
-
-#: Tags.cpp:1424
-#: Tags.cpp:1982
-msgid "Comments:"
-msgstr "Kommentit:"
-
-#: Tags.cpp:1426
-msgid "Encoded By:"
-msgstr ""
-
-#: Tags.cpp:1430
-msgid "Copyright:"
-msgstr "Tekijänoikeudet:"
-
-#: Tags.cpp:1434
-#: Tags.cpp:1980
-msgid "Track Number:"
-msgstr "Raidan numero:"
-
-#: Tags.cpp:1438
-#: Tags.cpp:1981
-msgid "Year:"
-msgstr "Vuosi:"
-
-#: Tags.cpp:1442
-#: Tags.cpp:1983
-msgid "Genre:"
-msgstr "Tyylilaji:"
-
-#: Tags.cpp:1500
-#: Tags.cpp:2098
-msgid "No Genres"
-msgstr "Ei tyylilajeja"
-
-#: Tags.cpp:1653
-msgid "Reset to Defaults"
-msgstr "Palauta oletusarvoihin"
-
-#: Tags.cpp:1965
-msgid "Basic"
-msgstr "Perus"
-
-#: Tags.cpp:2017
-msgid "Advanced"
-msgstr "Edistynyt"
-
-#: Tags.cpp:2042
-msgid "Value"
-msgstr "Arvo"
-
-#: Tags.cpp:2078
-msgid "Clea&r"
-msgstr ""
-
-#: Tags.cpp:2111
-#, c-format
-msgid "Maximum length of attribute '%s' is %d characters. Data was truncated."
-msgstr "Suurin pituus atribuutille \"%s\" on %d merkkiä. Tieto katkaistiin."
-
-#: Tags.cpp:2117
-msgid "Title"
-msgstr "Nimi"
-
-#: Tags.cpp:2127
-msgid "Artist"
-msgstr "Esittäjä"
-
-#: Tags.cpp:2137
-msgid "Album"
-msgstr "Albumi"
-
 #: Theme.cpp:638
 #, c-format
-msgid ""
-"Audacity could not write file:\n"
+msgid "Audacity could not write file:\n"
 "  %s."
-msgstr ""
-"Audacity ei voinut kirjoittaa tiedostoa:\n"
+msgstr "Audacity ei voinut kirjoittaa tiedostoa:\n"
 "  %s."
 
 #: Theme.cpp:656
 #, c-format
-msgid ""
-"Audacity could not open file:\n"
+msgid "Audacity could not open file:\n"
 "  %s\n"
 "for writing."
-msgstr ""
-"Audacity ei voinut avata tiedostoa:\n"
+msgstr "Audacity ei voinut avata tiedostoa:\n"
 "  %s\n"
 "kirjoitusta varten."
 
 #: Theme.cpp:664
 #, c-format
-msgid ""
-"Audacity could not write images to file:\n"
+msgid "Audacity could not write images to file:\n"
 "  %s."
-msgstr ""
-"Audacity ei voinut kirjoittaa kuvia tiedostoon:\n"
+msgstr "Audacity ei voinut kirjoittaa kuvia tiedostoon:\n"
 "  %s."
 
 #: Theme.cpp:799
 #, c-format
-msgid ""
-"Audacity could not find file:\n"
+msgid "Audacity could not find file:\n"
 "  %s.\n"
 "Theme not loaded."
-msgstr ""
-"Audacity ei voinut löytää tiedostoa:\n"
+msgstr "Audacity ei voinut löytää tiedostoa:\n"
 "  %s.\n"
 "Teemaa ei ladattu."
 
 #: Theme.cpp:807
 #: Theme.cpp:896
 #, c-format
-msgid ""
-"Audacity could not load file:\n"
+msgid "Audacity could not load file:\n"
 "  %s.\n"
 "Bad png format perhaps?"
-msgstr ""
-"Audacity ei voinut ladata tiedostoa:\n"
+msgstr "Audacity ei voinut ladata tiedostoa:\n"
 "  %s.\n"
 "Ehkä virheellinen png-muoto?"
 
 #: Theme.cpp:823
-msgid ""
-"Audacity could not read its default theme.\n"
+msgid "Audacity could not read its default theme.\n"
 "Please report the problem."
-msgstr ""
-"Audacity ei voinut lukea sen oletusteemaa.\n"
+msgstr "Audacity ei voinut lukea sen oletusteemaa.\n"
 "Ilmoita tästä virheestä."
 
 #: Theme.cpp:918
 #, c-format
-msgid ""
-"None of the expected theme component files\n"
+msgid "None of the expected theme component files\n"
 " were found in:\n"
 "  %s."
 msgstr ""
@@ -3667,24 +3559,21 @@ msgstr ""
 #: Theme.cpp:942
 #: effects/NoiseRemoval.cpp:173
 #, c-format
-msgid ""
-"Could not create directory:\n"
+msgid "Could not create directory:\n"
 "  %s"
-msgstr "Ei voitu luoda hakemistoa:\n  %s"
+msgstr "Ei voitu luoda hakemistoa:\n"
+"  %s"
 
 #: Theme.cpp:963
 #, c-format
-msgid ""
-"Audacity could not save file:\n"
+msgid "Audacity could not save file:\n"
 "  %s"
-msgstr ""
-"Audacity ei voinut tallentaa tiedostoa:\n"
+msgstr "Audacity ei voinut tallentaa tiedostoa:\n"
 "  %s"
 
 #: Theme.cpp:975
 #, c-format
-msgid ""
-"All required files in:\n"
+msgid "All required files in:\n"
 "  %s\n"
 "were already present."
 msgstr ""
@@ -4255,19 +4144,17 @@ msgstr "Laajennukset 1-%i"
 msgid "Plugins %i to %i"
 msgstr "Laajennukset %i-%i"
 
-#: commands/CommandManager.cpp:888
-msgid "Disallowed for some reason.  Try selecting some Audio first?"
+#: commands/CommandManager.cpp:857
+msgid "Disallowed for some reason.  Try selecting some audio first?"
 msgstr ""
 
 #: commands/CommandManager.cpp:892
-msgid ""
-"You can only do this when playing and recording are\n"
+msgid "You can only do this when playing and recording are\n"
 " stopped.  [Pausing is not sufficient.]"
 msgstr ""
 
 #: commands/CommandManager.cpp:894
-msgid ""
-"You must first select some stereo audio for this\n"
+msgid "You must first select some stereo audio for this\n"
 " to use.  [You can't use this with mono.]"
 msgstr ""
 
@@ -4276,8 +4163,7 @@ msgid "You must first select some audio for this to use."
 msgstr ""
 
 #: commands/CommandManager.cpp:898
-msgid ""
-"You must first select some audio for this\n"
+msgid "You must first select some audio for this\n"
 " to use. [Selecting other kinds of track won't work.]"
 msgstr ""
 
@@ -4315,9 +4201,8 @@ msgid "Amplification (dB):"
 msgstr "Vahvistus (dB):"
 
 #: effects/Amplify.cpp:183
-#, fuzzy
-msgid "Amplification (dB)"
-msgstr "Vahvistus (dB):"
+msgid "Amplification dB"
+msgstr ""
 
 #: effects/Amplify.cpp:190
 msgid "New Peak Amplitude (dB):"
@@ -4456,9 +4341,17 @@ msgstr ""
 msgid "Frequency (Hz):"
 msgstr "Taajuus (Hz):"
 
+#: effects/BassBoost.cpp:205
+msgid "Frequency Hertz"
+msgstr ""
+
 #: effects/BassBoost.cpp:208
 msgid "Boost (dB):"
 msgstr "Vahvistus (dB):"
+
+#: effects/BassBoost.cpp:218
+msgid "Boost dB"
+msgstr ""
 
 #: effects/BassBoost.h:35
 msgid "BassBoost..."
@@ -4692,8 +4585,16 @@ msgstr "Naksahdusten ja poksahdusten poisto, tehnyt Craig DeForest"
 msgid "Select threshold (lower is more sensitive):"
 msgstr ""
 
+#: effects/ClickRemoval.cpp:350
+msgid "Select threshold"
+msgstr ""
+
 #: effects/ClickRemoval.cpp:353
 msgid "Max spike width (higher is more sensitive):"
+msgstr ""
+
+#: effects/ClickRemoval.cpp:363
+msgid "Max spike width"
 msgstr ""
 
 #: effects/ClickRemoval.h:42
@@ -4797,19 +4698,32 @@ msgstr "Kompressori..."
 msgid "Applying Dynamic Range Compression..."
 msgstr "Kompressoidaan..."
 
+#: effects/Contrast.cpp:79
+msgid "Contrast Tool Foreground"
+msgstr ""
+
+#: effects/Contrast.cpp:79
+msgid "Foreground times selected.\n"
+"Now select background and use Ctrl+Shift+T or menu again."
+msgstr ""
+
+#: effects/Contrast.cpp:127
+msgid "Start time after after end time!\n"
+"Please enter reasonable times."
+msgstr ""
+
+#: effects/Contrast.cpp:137
+msgid "Times are not reasonable!\n"
+"Please enter reasonable times."
+msgstr ""
+
 #: effects/Contrast.cpp:120
 msgid "Hello.\n"
 msgstr "Terve.\n"
 
-#: effects/Contrast.cpp:164
-msgid "WCAG2 Contrast Analyzer"
+#: effects/Contrast.cpp:245
+msgid "WCAG2 Audio Contrast Analyzer"
 msgstr ""
-
-#: effects/Contrast.cpp:191
-#: effects/Contrast.cpp:202
-#, c-format
-msgid "%.1f dB"
-msgstr "%.1f dB"
 
 #: effects/Contrast.cpp:193
 #: effects/Contrast.cpp:204
@@ -4841,18 +4755,37 @@ msgstr "Alku"
 msgid "End"
 msgstr "Loppu"
 
-#: effects/Contrast.cpp:245
-#, fuzzy
-msgid "Volume"
-msgstr "Äänitysvoimakkuus"
+#: effects/Contrast.cpp:332
+msgid "Volume    "
+msgstr ""
 
 #: effects/Contrast.cpp:248
 msgid "Foreground:"
 msgstr "Edusta:"
 
+#: effects/Contrast.cpp:347
+msgid "Foreground start time"
+msgstr ""
+
+#: effects/Contrast.cpp:365
+msgid "Foreground end time"
+msgstr ""
+
+#: effects/Contrast.cpp:373 effects/Contrast.cpp:417
+msgid "Use selection"
+msgstr ""
+
 #: effects/Contrast.cpp:271
 msgid "Background:"
 msgstr "Tausta:"
+
+#: effects/Contrast.cpp:391
+msgid "Background start time"
+msgstr ""
+
+#: effects/Contrast.cpp:409
+msgid "Background end time"
+msgstr ""
 
 #: effects/Contrast.cpp:298
 msgid "Result"
@@ -4862,9 +4795,10 @@ msgstr "Tlos"
 msgid "Contrast Result:"
 msgstr ""
 
-#: effects/Contrast.cpp:303
-msgid "Fail"
-msgstr "Virhe"
+#: Tags.cpp:840
+#: Tags.cpp:1990
+msgid "Reset"
+msgstr "Palauta"
 
 #: effects/Contrast.cpp:304
 msgid "Difference:"
@@ -4874,28 +4808,53 @@ msgstr ""
 msgid "Information"
 msgstr "Tietoja"
 
-#: effects/Contrast.cpp:315
-msgid "Before you open this tool,"
-msgstr "Ennen kuin avaat tämän työkalun,"
-
-#: effects/Contrast.cpp:316
-msgid "   Ctrl+Alt+F sets the 'foreground' times."
+#: effects/Contrast.cpp:447
+msgid "For measuring rms volume differences between two selections of audio."
 msgstr ""
 
-#: effects/Contrast.cpp:317
-msgid "   Ctrl+Alt+B sets the 'background' times."
+#: effects/Contrast.cpp:448
+msgid "Help for WCAG2 Audio Contrast Analyzer"
 msgstr ""
 
-#: effects/Contrast.cpp:318
-#, fuzzy
-msgid "WCAG Information on web"
-msgstr "Tietoja"
+#: toolbars/ControlToolBar.cpp:83
+msgid "Control"
+msgstr ""
+
+#: effects/Contrast.cpp:454
+msgid "Note: The 'OK' button resets time values."
+msgstr ""
+
+#: effects/Contrast.cpp:455
+msgid "Close but keep times"
+msgstr ""
 
 #: effects/Contrast.cpp:328
 #: effects/Contrast.cpp:336
 #: effects/Contrast.cpp:344
 #: effects/Contrast.cpp:352
 msgid "Measure"
+msgstr ""
+
+#: effects/Contrast.cpp:511
+msgid "No foreground to measure"
+msgstr ""
+
+#: effects/Contrast.cpp:516
+msgid "Measured foreground level"
+msgstr ""
+
+#: effects/Contrast.cpp:191
+#: effects/Contrast.cpp:202
+#, c-format
+msgid "%.1f dB"
+msgstr "%.1f dB"
+
+#: effects/Contrast.cpp:521
+msgid "No background to measure"
+msgstr ""
+
+#: effects/Contrast.cpp:526
+msgid "Measured background level"
 msgstr ""
 
 #: effects/Contrast.cpp:358
@@ -4906,10 +4865,83 @@ msgstr ""
 msgid "WCAG2 Fail"
 msgstr ""
 
-#: effects/Contrast.h:32
-#, fuzzy
-msgid "Contrast..."
-msgstr "Fontti..."
+#: effects/Contrast.cpp:535
+msgid "Current difference"
+msgstr ""
+
+#: effects/Contrast.cpp:536
+#, c-format
+msgid "%.1f dB Average rms"
+msgstr ""
+
+#: effects/Contrast.cpp:541
+msgid "Please enter valid times."
+msgstr ""
+
+#: effects/Contrast.cpp:551
+msgid "Export Contrast Result As:"
+msgstr ""
+
+#: effects/Contrast.cpp:572
+msgid "WCAG 2.0 Success Criteria 1.4.7 Contrast Results"
+msgstr ""
+
+#: effects/Contrast.cpp:574
+#, c-format
+msgid "Filename = %s."
+msgstr ""
+
+#: effects/Contrast.cpp:576
+msgid "Foreground"
+msgstr ""
+
+#: effects/Contrast.cpp:581 effects/Contrast.cpp:598
+#, c-format
+msgid "Time started = %2d hour(s), %2d minute(s), %.2f seconds."
+msgstr ""
+
+#: effects/Contrast.cpp:586 effects/Contrast.cpp:603
+#, c-format
+msgid "Time ended = %2d hour(s), %2d minute(s), %.2f seconds."
+msgstr ""
+
+#: effects/Contrast.cpp:588 effects/Contrast.cpp:605
+#, c-format
+msgid "Average rms = %.1f dB."
+msgstr ""
+
+#: effects/Contrast.cpp:590 effects/Contrast.cpp:607
+msgid "Average rms =  dB."
+msgstr ""
+
+#: effects/Contrast.cpp:593
+msgid "Background"
+msgstr ""
+
+#: effects/Contrast.cpp:609
+msgid "Results"
+msgstr ""
+
+#: effects/Contrast.cpp:611
+#, c-format
+msgid "Difference = %.1f Average rms dB."
+msgstr ""
+
+#: effects/Contrast.cpp:613
+msgid "Success Criteria 1.4.7 of WCAG 2.0: Pass"
+msgstr ""
+
+#: effects/Contrast.cpp:615
+msgid "Success Criteria 1.4.7 of WCAG 2.0: Fail"
+msgstr ""
+
+#: effects/Contrast.cpp:618
+msgid "Data gathered"
+msgstr ""
+
+#: effects/Contrast.h:33
+msgid "Contrast...\tCtrl+Shift+T"
+msgstr ""
 
 #: effects/Contrast.h:51
 msgid "Measuring background"
@@ -5441,8 +5473,7 @@ msgstr ""
 
 #: effects/NoiseRemoval.cpp:192
 #, c-format
-msgid ""
-"Could not open file:\n"
+msgid "Could not open file:\n"
 "  %s"
 msgstr ""
 
@@ -5455,8 +5486,7 @@ msgid "Step 1"
 msgstr "Vaihe 1"
 
 #: effects/NoiseRemoval.cpp:815
-msgid ""
-"Select a few seconds of just noise so Audacity knows what to filter out,\n"
+msgid "Select a few seconds of just noise so Audacity knows what to filter out,\n"
 "then click Get Noise Profile:"
 msgstr ""
 
@@ -5465,8 +5495,7 @@ msgid "Step 2"
 msgstr "Vaihe 2"
 
 #: effects/NoiseRemoval.cpp:817
-msgid ""
-"Select all of the audio you want filtered, choose how much noise you want\n"
+msgid "Select all of the audio you want filtered, choose how much noise you want\n"
 "filtered out, and then click 'OK' to remove noise.\n"
 msgstr ""
 
@@ -5482,12 +5511,24 @@ msgstr "Hae kohinaprofiili"
 msgid "Noise reduction (dB):"
 msgstr ""
 
+#: effects/NoiseRemoval.cpp:850
+msgid "Noise reduction"
+msgstr ""
+
 #: effects/NoiseRemoval.cpp:849
 msgid "Frequency smoothing (Hz):"
 msgstr ""
 
+#: effects/NoiseRemoval.cpp:859
+msgid "Frequency smoothing"
+msgstr ""
+
 #: effects/NoiseRemoval.cpp:857
 msgid "Attack/decay time (secs):"
+msgstr ""
+
+#: effects/NoiseRemoval.cpp:868
+msgid "Attach/decay time"
 msgstr ""
 
 #: effects/NoiseRemoval.h:35
@@ -5536,10 +5577,6 @@ msgstr "Normalisoi"
 msgid "Remove any DC offset (center on 0.0 vertically)"
 msgstr "Poista DC-vaihe-erot (keskitä pystysuunnassa 0:aan)"
 
-#: effects/Normalize.cpp:356
-msgid "Normalize maximum amplitude to"
-msgstr ""
-
 #: effects/Normalize.cpp:357
 msgid "Normalize maximum amplitude to:"
 msgstr ""
@@ -5547,6 +5584,10 @@ msgstr ""
 #: effects/Normalize.cpp:362
 msgid "-"
 msgstr "-"
+
+#: effects/Normalize.cpp:367
+msgid "Maximum amplitude dB"
+msgstr ""
 
 #: effects/Normalize.h:33
 msgid "Normalize..."
@@ -5626,15 +5667,13 @@ msgid "Applying Phaser"
 msgstr "Suoritetaan Phaser-efektiä"
 
 #: effects/Repair.cpp:99
-msgid ""
-"The Repair effect is intended to be used on very short sections of damaged audio (up to 128 samples).\n"
+msgid "The Repair effect is intended to be used on very short sections of damaged audio (up to 128 samples).\n"
 "\n"
 "Zoom in and select a tiny fraction of a second to repair."
 msgstr ""
 
 #: effects/Repair.cpp:105
-msgid ""
-"Repair works by using audio data outside the selection region.\n"
+msgid "Repair works by using audio data outside the selection region.\n"
 "\n"
 "Please select a region that has audio touching at least one side of it.\n"
 "\n"
@@ -5726,8 +5765,7 @@ msgid "SpikeCleaner by Lynn Allan"
 msgstr ""
 
 #: effects/SpikeCleaner.cpp:165
-msgid ""
-"Max Spike Duration (milliseconds): \n"
+msgid "Max Spike Duration (milliseconds): \n"
 "(99999 or greater is off)"
 msgstr ""
 
@@ -5750,6 +5788,50 @@ msgstr "Stereo, "
 
 #: effects/StereoToMono.h:38
 msgid "Applying Stereo to Mono"
+msgstr ""
+
+#: effects/TimeScale.cpp:140
+msgid "Time Scale"
+msgstr ""
+
+#: effects/TimeScale.cpp:176
+msgid "Sliding Time Scale/Pitch Shift"
+msgstr ""
+
+#: effects/TimeScale.cpp:178
+msgid "using SBSMS, by Clayton Otey"
+msgstr ""
+
+#: effects/TimeScale.cpp:187
+msgid "Initial Tempo Change (%):"
+msgstr ""
+
+#: effects/TimeScale.cpp:191
+msgid "Final Tempo Change (%):"
+msgstr ""
+
+#: effects/TimeScale.cpp:202
+msgid "Initial Tempo Change (%)"
+msgstr ""
+
+#: effects/TimeScale.cpp:211
+msgid "Final Tempo Change (%)"
+msgstr ""
+
+#: effects/TimeScale.cpp:219
+msgid "Initial Pitch Shift (semitones) [-12 to 12]:"
+msgstr ""
+
+#: effects/TimeScale.cpp:223
+msgid "Final Pitch Shift (semitones) [-12 to 12]:"
+msgstr ""
+
+#: effects/TimeScale.h:33
+msgid "Sliding Time Scale/Pitch Shift..."
+msgstr ""
+
+#: effects/TimeScale.h:47
+msgid "Changing Tempo/Pitch"
 msgstr ""
 
 #: effects/ToneGen.cpp:61
@@ -5798,6 +5880,22 @@ msgstr ""
 #: effects/ToneGen.cpp:348
 msgid "Waveform:"
 msgstr "Ääniaalto:"
+
+#: effects/ToneGen.cpp:358
+msgid "Frequency Hertz Start"
+msgstr ""
+
+#: effects/ToneGen.cpp:359
+msgid "Frequency Hertz End"
+msgstr ""
+
+#: effects/ToneGen.cpp:360
+msgid "Amplitude Start"
+msgstr ""
+
+#: effects/ToneGen.cpp:361
+msgid "Amplitude End"
+msgstr ""
 
 #: effects/ToneGen.cpp:365
 #, fuzzy
@@ -6030,10 +6128,12 @@ msgstr "Liitännäisten asetukset"
 msgid "Program"
 msgstr "Sovellus"
 
-#: export/Export.cpp:467
-msgid ""
-"No tracks are selected! Use Ctrl-A (Select All)\n"
-"Choose Export... to export all tracks."
+#: export/Export.cpp:469
+msgid "All the selected audio is muted."
+msgstr ""
+
+#: export/Export.cpp:471
+msgid "All the audio is muted."
 msgstr ""
 
 #: export/Export.cpp:522
@@ -6050,8 +6150,7 @@ msgstr "Haluatko varmasti tallentaa tiedoston nimellä \""
 
 #: export/Export.cpp:591
 #, c-format
-msgid ""
-"You are about to save a %s file with the name \"%s\".\n"
+msgid "You are about to save a %s file with the name \"%s\".\n"
 "\n"
 "Normally these files end in \".%s\", and some programs will not open files with nonstandard extensions.\n"
 "\n"
@@ -6141,6 +6240,22 @@ msgstr "Koko projektia viedään komentorivienkooderia käyttäen"
 msgid "Command Output"
 msgstr "Komennon tuloste"
 
+#: export/ExportFFmpeg.cpp:59
+msgid "Properly configured FFmpeg is required to proceed.\n"
+"You can configure it in Preferences->Import/Export."
+msgstr ""
+
+#: export/ExportFFmpeg.cpp:394
+#, c-format
+msgid "FFmpeg cannot find audio codec 0x%x.\n"
+"Support for this codec is probably not compiled in."
+msgstr ""
+
+#: export/ExportFFmpeg.cpp:614
+#, c-format
+msgid "Attempted to export %d channels, but max. channels for selected output format is %d"
+msgstr ""
+
 #: export/ExportFFmpeg.cpp:638
 #, fuzzy, c-format
 msgid "Exporting selected audio as %s"
@@ -6158,15 +6273,13 @@ msgstr ""
 
 #: export/ExportFFmpeg.cpp:715
 #, c-format
-msgid ""
-"The project sample rate (%d) is not supported by the current output\n"
+msgid "The project sample rate (%d) is not supported by the current output\n"
 "file format.  "
 msgstr ""
 
 #: export/ExportFFmpeg.cpp:718
 #, c-format
-msgid ""
-"The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
+msgid "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
 "supported by the current output file format.  "
 msgstr ""
 
@@ -6238,6 +6351,19 @@ msgstr "Korvataanko esiasetus \"%s\"?"
 msgid "Confirm Overwrite"
 msgstr "Varmista korvaus"
 
+#: export/ExportFFmpegDialogs.cpp:501
+msgid "Please select format before saving a profile"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:509
+msgid "Please select codec before saving a profile"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:580
+#, c-format
+msgid "Preset '%s' does not exist."
+msgstr ""
+
 #: export/ExportFFmpegDialogs.cpp:803
 msgid "Specify Other Options"
 msgstr "Määrittele muut asetukset"
@@ -6294,14 +6420,17 @@ msgstr "Näytä kaikki muodot"
 msgid "Show All Codecs"
 msgstr "Näytä kaikki koodekit"
 
+#: export/ExportFFmpegDialogs.cpp:914
+msgid "Options"
+msgstr ""
+
 #: export/ExportFFmpegDialogs.cpp:931
 #: prefs/GUIPrefs.cpp:166
 msgid "Language:"
 msgstr "Kieli:"
 
 #: export/ExportFFmpegDialogs.cpp:932
-msgid ""
-"ISO 639 3-letter language code\n"
+msgid "ISO 639 3-letter language code\n"
 "Optional\n"
 "empty - automatic"
 msgstr ""
@@ -6311,15 +6440,13 @@ msgid "Tag:"
 msgstr "Tunniste:"
 
 #: export/ExportFFmpegDialogs.cpp:935
-msgid ""
-"Codec tag (FOURCC)\n"
+msgid "Codec tag (FOURCC)\n"
 "Optional\n"
 "empty - automatic"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:938
-msgid ""
-"Bit Rate (bits/second) - influences the resulting file size and quality\n"
+msgid "Bit Rate (bits/second) - influences the resulting file size and quality\n"
 "Some codecs may only accept specific values (128k, 192k, 256k etc)\n"
 "0 - automatic\n"
 "Recommended - 192000"
@@ -6331,8 +6458,7 @@ msgid "Quality:"
 msgstr "Laatu:"
 
 #: export/ExportFFmpegDialogs.cpp:941
-msgid ""
-"Overral quality, used differently by different codecs\n"
+msgid "Overral quality, used differently by different codecs\n"
 "Required for vorbis\n"
 "0 - automatic\n"
 "-1 - off (use bitrate instead)"
@@ -6344,8 +6470,7 @@ msgid "Sample Rate:"
 msgstr "Näytteenottotaajuus:"
 
 #: export/ExportFFmpegDialogs.cpp:944
-msgid ""
-"Sample rate (Hz)\n"
+msgid "Sample rate (Hz)\n"
 "0 - don't change sample rate"
 msgstr ""
 
@@ -6354,8 +6479,7 @@ msgid "Cutoff Bandwidth:"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:947
-msgid ""
-"Audio cutoff bandwidth (Hz)\n"
+msgid "Audio cutoff bandwidth (Hz)\n"
 "Optional\n"
 "0 - automatic\n"
 msgstr ""
@@ -6365,10 +6489,21 @@ msgid "Profile:"
 msgstr "Profiili:"
 
 #: export/ExportFFmpegDialogs.cpp:951
-msgid ""
-"AAC Profile\n"
+msgid "AAC Profile\n"
 "Low Complexity -default\n"
 "Most players won't play anything other than LC"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:940
+msgid "Use Bit Reservoir"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:943
+msgid "Use Variable Block Length"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:948
+msgid "FLAC options"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:965
@@ -6376,8 +6511,7 @@ msgid "Compression Level:"
 msgstr "Pakkaustaso:"
 
 #: export/ExportFFmpegDialogs.cpp:966
-msgid ""
-"Compression level\n"
+msgid "Compression level\n"
 "Required for FLAC\n"
 "-1 - automatic\n"
 "min - 0 (fast encoding, large output file)\n"
@@ -6390,8 +6524,7 @@ msgid "Frame Size:"
 msgstr "Nimeä tiedostot:"
 
 #: export/ExportFFmpegDialogs.cpp:969
-msgid ""
-"Frame size\n"
+msgid "Frame size\n"
 "Optional\n"
 "0 - default\n"
 "min - 16\n"
@@ -6403,8 +6536,7 @@ msgid "LPC coefficients precision"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:972
-msgid ""
-"LPC coefficients precision\n"
+msgid "LPC coefficients precision\n"
 "Optional\n"
 "0 - default\n"
 "min - 1\n"
@@ -6416,8 +6548,7 @@ msgid "Minimal prediction order"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:975
-msgid ""
-"Minimal prediction order\n"
+msgid "Minimal prediction order\n"
 "Optional\n"
 "-1 - default\n"
 "min - 0\n"
@@ -6429,8 +6560,7 @@ msgid "Maximal prediction order"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:978
-msgid ""
-"Maximal prediction order\n"
+msgid "Maximal prediction order\n"
 "Optional\n"
 "-1 - default\n"
 "min - 0\n"
@@ -6442,8 +6572,7 @@ msgid "Prediction Order Method:"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:982
-msgid ""
-"Prediction Order Method\n"
+msgid "Prediction Order Method\n"
 "Estimate - fastest, lower compression\n"
 "Log search - slowest, best compression\n"
 "Full search - default"
@@ -6454,8 +6583,7 @@ msgid "Minimal partition order"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:985
-msgid ""
-"Minimal partition order\n"
+msgid "Minimal partition order\n"
 "Optional\n"
 "-1 - default\n"
 "min - 0\n"
@@ -6467,12 +6595,19 @@ msgid "Maximal partition order"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:988
-msgid ""
-"Maximal partition order\n"
+msgid "Maximal partition order\n"
 "Optional\n"
 "-1 - default\n"
 "min - 0\n"
 "max - 8"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:977
+msgid "Use LPC"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:984
+msgid "MPEG container options"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:1001
@@ -6481,8 +6616,7 @@ msgid "Mux Rate:"
 msgstr "Bittinopeus:"
 
 #: export/ExportFFmpegDialogs.cpp:1002
-msgid ""
-"Maximum bit rate of the multiplexed stream\n"
+msgid "Maximum bit rate of the multiplexed stream\n"
 "Optional\n"
 "0 - default"
 msgstr ""
@@ -6492,14 +6626,16 @@ msgid "Packet Size:"
 msgstr "Pakettikoko:"
 
 #: export/ExportFFmpegDialogs.cpp:1005
-msgid ""
-"Packet size\n"
+msgid "Packet size\n"
 "Optional\n"
 "0 - default"
-msgstr ""
-"Pakettikoko\n"
+msgstr "Pakettikoko\n"
 "Valinnainen\n"
 "0 - oletus"
+
+#: export/ExportFFmpegDialogs.cpp:1207
+msgid "You can't delete a preset without name"
+msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:1219
 #, c-format
@@ -6514,8 +6650,20 @@ msgstr ""
 msgid "Select xml file with presets to import"
 msgstr ""
 
+#: prefs/KeyConfigPrefs.cpp:202
+msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*"
+msgstr "XML-tiedostot (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*"
+
 #: export/ExportFFmpegDialogs.cpp:1292
 msgid "Select xml file to export presets into"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:1361
+msgid "Failed to guess format"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:1403
+msgid "Failed to find the codec"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.h:53
@@ -6782,6 +6930,12 @@ msgstr ""
 msgid "To get a free copy of Lame, click here -->"
 msgstr ""
 
+#: export/ExportMP3.cpp:1070
+#, c-format
+msgid "You are linking to lame_enc.dll v%d.%d. This version is not compatible with Audacity %d.%d.%d.\n"
+"Please download the latest version of the LAME MP3 library."
+msgstr ""
+
 #: export/ExportMP3.cpp:1094
 msgid "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
 msgstr "Vain lame_enc.dll|lame_enc.dll|Dynaamisesti linkitetyt kirjastot (*.dll)|*.dll|Kaikki tiedostot (*.*)|*"
@@ -6847,21 +7001,19 @@ msgstr ""
 
 #: export/ExportMP3.cpp:1933
 #, c-format
-msgid ""
-"The project sample rate (%d) is not supported by the MP3\n"
+msgid "The project sample rate (%d) is not supported by the MP3\n"
 "file format.  "
 msgstr ""
 
 #: export/ExportMP3.cpp:1936
 #, c-format
-msgid ""
-"The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
+msgid "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
 "supported by the MP3 file format.  "
 msgstr ""
 
-#: export/ExportMP3.cpp:2110
-msgid "MP3 exporting plugin not found"
-msgstr "MP3-vientilaajennusta ei löytynyt"
+#: export/ExportMP3.cpp:1965
+msgid "MP3 export library not found"
+msgstr ""
 
 #: export/ExportMultiple.cpp:96
 #: export/ExportMultiple.cpp:426
@@ -6871,13 +7023,11 @@ msgid "Export Multiple"
 msgstr "Vie moneen tiedostoon"
 
 #: export/ExportMultiple.cpp:166
-msgid ""
-"If you have more than one Audio Track, you can export each track as a separate file,\n"
+msgid "If you have more than one Audio Track, you can export each track as a separate file,\n"
 "or if you have a Label Track, you can export a new file for each label.\n"
 "\n"
 "This project does not have multiple tracks or a Label Track, so you cannot export multiple files."
-msgstr ""
-"Jos projektissa on useampi kuin yksi audioraita, voit viedä jokaisen raidan omaan tiedostoonsa,\n"
+msgstr "Jos projektissa on useampi kuin yksi audioraita, voit viedä jokaisen raidan omaan tiedostoonsa,\n"
 "tai jos projektissa on merkkiraita, voit tehdä erillisen tiedoston jokaista merkkiä kohden.\n"
 "\n"
 "Tässä projektissa ei ole useaa raitaa eikä merkkiraitaa, joten vienti moneen tiedostoon ei ole mahdollista."
@@ -6972,12 +7122,10 @@ msgstr "Valitse hakemisto vietäville tiedostoille"
 
 #: export/ExportMultiple.cpp:539
 #, c-format
-msgid ""
-"\"%s\" doesn't exist.\n"
+msgid "\"%s\" doesn't exist.\n"
 "\n"
 "Would you like to create it?"
-msgstr ""
-"Tiedostoa \"%s\" ei ole.\n"
+msgstr "Tiedostoa \"%s\" ei ole.\n"
 "\n"
 "Luodaanko se?"
 
@@ -7000,8 +7148,7 @@ msgstr ""
 
 #: export/ExportMultiple.cpp:881
 #, c-format
-msgid ""
-"Label %s is not a legal file name. You cannot use any of:   %s\n"
+msgid "Label %s is not a legal file name. You cannot use any of:   %s\n"
 "Use..."
 msgstr ""
 
@@ -7046,22 +7193,21 @@ msgstr "Enkoodaus:"
 #: export/ExportPCM.cpp:200
 #, fuzzy
 msgid "(Not all combinations of headers and encodings are possible.)"
-msgstr ""
-"(Kaikki tunnisteiden ja enkoodausten\n"
+msgstr "(Kaikki tunnisteiden ja enkoodausten\n"
 "yhdistelmät eivät ole mahdollisia.)"
-
-#: export/ExportPCM.cpp:351
-msgid "WAV (Microsoft) signed 16 bit PCM"
-msgstr ""
-
-#: export/ExportPCM.cpp:361
-msgid "AIFF (Apple) signed 16 bit PCM"
-msgstr ""
 
 #: export/ExportPCM.cpp:369
 #, fuzzy
 msgid "Other uncompressed files"
 msgstr "Valitse mikä tahansa pakkaamaton audiotiedosto..."
+
+#: export/ExportPCM.cpp:361
+msgid "AIFF (Apple) signed 16 bit PCM"
+msgstr ""
+
+#: export/ExportPCM.cpp:351
+msgid "WAV (Microsoft) signed 16 bit PCM"
+msgstr ""
 
 #: export/ExportPCM.cpp:387
 msgid "GSM 6.10 WAV (mobile)"
@@ -7087,6 +7233,30 @@ msgstr ""
 msgid "Error (file may not have been written): %s"
 msgstr "Virhe (tiedostoa ei ehkä ole tallennettu): %s"
 
+#: export/ExportPCM.cpp:723
+msgid "There are no options for this format.\n"
+msgstr ""
+
+#. i18n-hint: This is pointing users at another possible export format in
+#. * the list. So you should translate the quoted string
+#. * 'Other uncompressed files' exactly the same as you do the same string
+#. * when it comes up on it's own.
+#: export/ExportPCM.cpp:728
+msgid "If you need more control over the export format please use the 'Other uncompressed files' format."
+msgstr ""
+
+#: export/ExportPCM.cpp:733
+msgid "Your file will be exported as a 16-bit AIFF (Apple/SGI) file.\n"
+msgstr ""
+
+#: export/ExportPCM.cpp:738
+msgid "Your file will be exported as a 16-bit WAV (Microsoft) file.\n"
+msgstr ""
+
+#: export/ExportPCM.cpp:743
+msgid "Your file will be exported as a GSM 6.10 WAV file.\n"
+msgstr ""
+
 #: import/Import.cpp:156
 #: import/ImportMP3.cpp:47
 msgid "MP3 files"
@@ -7103,8 +7273,7 @@ msgstr "Tähän Audacityn versioon ei ole käännetty %s -tukea."
 
 #: import/Import.cpp:240
 #, c-format
-msgid ""
-"\"%s\" \n"
+msgid "\"%s\" \n"
 "is a MIDI file, not an audio file. \n"
 "Audacity cannot open this type of file for playing, but you can\n"
 "edit it by clicking File > Import > MIDI."
@@ -7113,8 +7282,7 @@ msgstr ""
 #. i18n-hint: %s will be the filename
 #: import/Import.cpp:250
 #, c-format
-msgid ""
-"\"%s\" is an audio CD track. \n"
+msgid "\"%s\" is an audio CD track. \n"
 "Audacity cannot open audio CDs directly. \n"
 "Extract (rip) the CD tracks to an audio format that \n"
 "Audacity can import, such as WAV or AIFF."
@@ -7122,32 +7290,28 @@ msgstr ""
 
 #: import/Import.cpp:256
 #, c-format
-msgid ""
-"\"%s\" is a playlist file. \n"
+msgid "\"%s\" is a playlist file. \n"
 "Audacity cannot open this file because it only contains links to other files. \n"
 "You may be able to open it in a text editor and download the actual audio files."
 msgstr ""
 
 #: import/Import.cpp:261
 #, c-format
-msgid ""
-"\"%s\" is a Windows Media Audio file. \n"
+msgid "\"%s\" is a Windows Media Audio file. \n"
 "Audacity cannot open this type of file due to patent restrictions. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
 msgstr ""
 
 #: import/Import.cpp:266
 #, c-format
-msgid ""
-"\"%s\" is an Advanced Audio Coding file. \n"
+msgid "\"%s\" is an Advanced Audio Coding file. \n"
 "Audacity cannot open this type of file. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
 msgstr ""
 
 #: import/Import.cpp:271
 #, c-format
-msgid ""
-"\"%s\" is an encrypted audio file. \n"
+msgid "\"%s\" is an encrypted audio file. \n"
 "These typically are from an online music store. \n"
 "Audacity cannot open this type of file due to the encryption. \n"
 "Try recording the file into Audacity, or burn it to audio CD then \n"
@@ -7156,16 +7320,14 @@ msgstr ""
 
 #: import/Import.cpp:276
 #, c-format
-msgid ""
-"\"%s\" is a RealPlayer media file. \n"
+msgid "\"%s\" is a RealPlayer media file. \n"
 "Audacity cannot open this proprietary format. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
 msgstr ""
 
 #: import/Import.cpp:282
 #, c-format
-msgid ""
-"\"%s\" is a notes-based file, not an audio file. \n"
+msgid "\"%s\" is a notes-based file, not an audio file. \n"
 "Audacity cannot open this type of file. \n"
 "Try converting it to an audio file such as WAV or AIFF and \n"
 "then import it, or record it into Audacity."
@@ -7173,8 +7335,7 @@ msgstr ""
 
 #: import/Import.cpp:288
 #, c-format
-msgid ""
-"\"%s\" is a Musepack audio file. \n"
+msgid "\"%s\" is a Musepack audio file. \n"
 "Audacity cannot open this type of file. \n"
 "If you think it might be an mp3 file, rename it to end with \".mp3\" \n"
 "and try importing it again. Otherwise you need to convert it to a supported audio \n"
@@ -7183,61 +7344,53 @@ msgstr ""
 
 #: import/Import.cpp:294
 #, c-format
-msgid ""
-"\"%s\" is a Wavpack audio file. \n"
+msgid "\"%s\" is a Wavpack audio file. \n"
 "Audacity cannot open this type of file. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
 msgstr ""
 
 #: import/Import.cpp:300
 #, c-format
-msgid ""
-"\"%s\" is a Dolby Digital audio file. \n"
+msgid "\"%s\" is a Dolby Digital audio file. \n"
 "Audacity cannot currently open this type of file. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
 msgstr ""
 
 #: import/Import.cpp:306
 #, c-format
-msgid ""
-"\"%s\" is an Ogg Speex audio file. \n"
+msgid "\"%s\" is an Ogg Speex audio file. \n"
 "Audacity cannot currently open this type of file. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
 msgstr ""
 
 #: import/Import.cpp:312
 #, c-format
-msgid ""
-"\"%s\" is a video file. \n"
+msgid "\"%s\" is a video file. \n"
 "Audacity cannot currently open this type of file. \n"
 "You need to extract the audio to a supported format, such as WAV or AIFF."
 msgstr ""
 
 #: import/Import.cpp:317
 #, fuzzy, c-format
-msgid ""
-"Audacity did not recognize the type of the file '%s'.\n"
+msgid "Audacity did not recognize the type of the file '%s'.\n"
 "If it is uncompressed, try importing it using \"Import Raw\"."
-msgstr ""
-"Audacity ei tunnistanut tiedoston tyyppiä.\n"
+msgstr "Audacity ei tunnistanut tiedoston tyyppiä.\n"
 "Jos tiedosto on pakkaamaton, kokeile tuoda se \"Tuo raakadataa\" -toiminnolla."
 
 #: import/Import.cpp:322
 #, fuzzy, c-format
-msgid ""
-"Audacity recognized the type of the file '%s',\n"
+msgid "Audacity recognized the type of the file '%s',\n"
 "but was unable to import it."
-msgstr ""
-"Audacity ei tunnistanut tiedoston tyyppiä.\n"
+msgstr "Audacity ei tunnistanut tiedoston tyyppiä.\n"
 "Jos tiedosto on pakkaamaton, kokeile tuoda se \"Tuo raakadataa\" -toiminnolla."
 
 #: import/ImportFFmpeg.cpp:34
 msgid "FFmpeg-compatible files"
 msgstr "FFmpeg-yhteensopivat tiedostot"
 
-#: import/ImportFFmpeg.cpp:427
+#: import/ImportFFmpeg.cpp:431
 #, c-format
-msgid "Index[%02x] Codec[%S], Language[%S], Duration[%d]"
+msgid "Index[%02x] Codec[%S], Language[%S], Bitrate[%S], Channels[%d], Duration[%d]"
 msgstr ""
 
 #: import/ImportFLAC.cpp:43
@@ -7322,11 +7475,6 @@ msgstr "Sisäinen logiikkavirhe"
 #: import/ImportPCM.cpp:54
 msgid "WAV, AIFF, and other uncompressed types"
 msgstr "WAV, AIFF, ja muut pakkaamattomat tyypit"
-
-#: import/ImportPCM.cpp:438
-#, c-format
-msgid "Importing %s File..."
-msgstr "Tuodaan %s -tiedostoa..."
 
 #: import/ImportPlugin.h:142
 #: import/ImportRaw.cpp:203
@@ -7531,14 +7679,12 @@ msgid "Latency"
 msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:195
-msgid ""
-"Audio to buffer:\n"
+msgid "Audio to buffer:\n"
 "(higher = more latency)"
 msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:198
-msgid ""
-"Latency correction:\n"
+msgid "Latency correction:\n"
 "(negative = backwards)"
 msgstr ""
 
@@ -7657,10 +7803,9 @@ msgstr "MP3-kirjaston versio:"
 msgid "MP3 Library:"
 msgstr "MP3-kirjasto:"
 
-#: prefs/FileFormatPrefs.cpp:96
-#: prefs/FileFormatPrefs.cpp:120
-msgid "&Find Library"
-msgstr "&Etsi kirjasto"
+#: prefs/FileFormatPrefs.cpp:96 prefs/FileFormatPrefs.cpp:120
+msgid "&Locate..."
+msgstr ""
 
 #: prefs/FileFormatPrefs.cpp:98
 msgid "LAME MP3 Library:"
@@ -7874,6 +8019,14 @@ msgstr "Painikkeet"
 msgid "Keyboard"
 msgstr "Näppäimistö"
 
+#: prefs/KeyConfigPrefs.cpp:86
+msgid "Keyboard preferences currently unavailable."
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:87
+msgid "Open a new project to modify keyboard shortcuts."
+msgstr ""
+
 #: prefs/KeyConfigPrefs.cpp:95
 msgid "Key Bindings"
 msgstr "Näppäinoikotiet"
@@ -7907,18 +8060,13 @@ msgstr "Virhe tallennettaessa näppäinoikoteitä"
 msgid "Select an XML file containing Audacity keyboard shortcuts..."
 msgstr "Valitse Audacityn näppäinoikotiet sisältävä XML-tiedosto..."
 
-#: prefs/KeyConfigPrefs.cpp:202
-msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*"
-msgstr "XML-tiedostot (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*"
-
 #: prefs/KeyConfigPrefs.cpp:215
 msgid "Error loading keyboard shortcuts"
 msgstr "Virhe ladattaessa näppäinoikoteitä"
 
 #: prefs/KeyConfigPrefs.cpp:243
 #, c-format
-msgid ""
-"The keyboard shortcut '%s' is already assigned to:\n"
+msgid "The keyboard shortcut '%s' is already assigned to:\n"
 "\n"
 "'%s'"
 msgstr ""
@@ -8419,8 +8567,7 @@ msgid "Info"
 msgstr "Tietoja"
 
 #: prefs/ThemePrefs.cpp:129
-msgid ""
-"Themability is an experimental feature.\n"
+msgid "Themability is an experimental feature.\n"
 "\n"
 "To try it out, click \"Save Theme Cache\" then\n"
 "find and modify the images and colors in \n"
@@ -8436,30 +8583,23 @@ msgid ""
 msgstr ""
 
 #: prefs/ThemePrefs.cpp:134
-msgid ""
-"You have compiled Audacity with an extra button, \n"
+msgid "You have compiled Audacity with an extra button, \n"
 "'Output Sourcery'.  This will save a C version of \n"
 "the image cache that can be compiled in as a default.\n"
 msgstr ""
 
 #: prefs/ThemePrefs.cpp:139
-msgid ""
-"If 'Load Theme Cache At Startup' is checked, then \n"
+msgid "If 'Load Theme Cache At Startup' is checked, then \n"
 "the Theme Cache will be loaded when the program \n"
 "starts up.\n"
 "\n"
 msgstr ""
 
 #: prefs/ThemePrefs.cpp:142
-msgid ""
-"Saving and loading individual theme files uses a \n"
+msgid "Saving and loading individual theme files uses a \n"
 "separate file for each image, but is otherwise the \n"
 "same idea.\n"
 "\n"
-msgstr ""
-
-#: toolbars/ControlToolBar.cpp:83
-msgid "Control"
 msgstr ""
 
 #: toolbars/ControlToolBar.cpp:175
@@ -8970,8 +9110,7 @@ msgid "Mix Volume"
 msgstr "Äänitysvoimakkuus"
 
 #: widgets/Meter.cpp:1145
-msgid ""
-"This determines how often the meter is refreshed.\n"
+msgid "This determines how often the meter is refreshed.\n"
 "If you have a slower PC you may want to select a\n"
 "lower refresh rate (30 per second or lower), so that\n"
 "audio qualtiy is not affected by the meter display."
@@ -9040,6 +9179,21 @@ msgstr "dd:hh:mm:ss"
 #: widgets/TimeTextCtrl.cpp:285
 msgid "0100 days 024 h 060 m 060 s"
 msgstr "0100 päivöö 024 h 060 m 060 s"
+
+#. i18n-hint: Name of time display format that shows time in hours,
+#. * minutes, seconds and hundreths of a second (1/100 second)
+#: widgets/TimeTextCtrl.cpp:288
+msgid "hh:mm:ss + hundredths"
+msgstr ""
+
+#. i18n-hint: Format string for displaying time in hours, minutes, seconds
+#. * and hundredths of a second. Change the 'h' to the abbreviation for hours,
+#. * 'm' to the abbreviation for minutes and 's' to the abbreviation for seconds (the
+#. * hundredths are shown as decimal seconds) . Don't change the numbers
+#. * unless there aren't 60 minutes in an hour in your locale
+#: widgets/TimeTextCtrl.cpp:294
+msgid "0100 h 060 m 060.0100 s"
+msgstr ""
 
 #. i18n-hint: Name of time display format that shows time in hours,
 #. * minutes, seconds and milliseconds (1/1000 second)
