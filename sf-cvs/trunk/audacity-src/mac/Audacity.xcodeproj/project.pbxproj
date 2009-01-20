@@ -265,7 +265,6 @@
 		174F73D4098D516D009CD6E0 /* AudacityOGG.icns in Resources */ = {isa = PBXBuildFile; fileRef = 174F73CD098D516D009CD6E0 /* AudacityOGG.icns */; };
 		174F73D5098D516D009CD6E0 /* AudacityProject.icns in Resources */ = {isa = PBXBuildFile; fileRef = 174F73CE098D516D009CD6E0 /* AudacityProject.icns */; };
 		174F73D6098D516D009CD6E0 /* AudacityWAV.icns in Resources */ = {isa = PBXBuildFile; fileRef = 174F73CF098D516D009CD6E0 /* AudacityWAV.icns */; };
-		174F73D8098D51AA009CD6E0 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 174F73D7098D51AA009CD6E0 /* Info.plist */; };
 		176A1A55098B7AFB00DC73B4 /* cmdline.c in Sources */ = {isa = PBXBuildFile; fileRef = 17C8BA14098B4FD700216F16 /* cmdline.c */; };
 		176A1A56098B7AFB00DC73B4 /* intgen.c in Sources */ = {isa = PBXBuildFile; fileRef = 17C8BA15098B4FD700216F16 /* intgen.c */; };
 		176EE9DE09A2EC1000188F3B /* caf.c in Sources */ = {isa = PBXBuildFile; fileRef = 176EE9DB09A2EC1000188F3B /* caf.c */; };
@@ -696,7 +695,6 @@
 		17CBAE43098B84E300575C58 /* xlsym.c in Sources */ = {isa = PBXBuildFile; fileRef = 17C8BF52098B654400216F16 /* xlsym.c */; };
 		17CBAE44098B84E300575C58 /* xlsys.c in Sources */ = {isa = PBXBuildFile; fileRef = 17C8BF54098B654400216F16 /* xlsys.c */; };
 		17CBAE4A098B85CD00575C58 /* libnyquist.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 176A1A5B098B7B8D00DC73B4 /* libnyquist.a */; };
-		17FC86F40994637C0061DC94 /* compile.txt in Resources */ = {isa = PBXBuildFile; fileRef = 17FC86F30994637C0061DC94 /* compile.txt */; };
 		17FDBCFE098BFF4E00BCEF32 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 170731F30988D6AA008541CC /* config.h */; };
 		17FDBCFF098BFF4E00BCEF32 /* config_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 170732F20988D6AB008541CC /* config_types.h */; };
 		17FDBD00098BFF4E00BCEF32 /* ogg.h in Headers */ = {isa = PBXBuildFile; fileRef = 170732F80988D6AB008541CC /* ogg.h */; };
@@ -5955,8 +5953,6 @@
 				174F73D4098D516D009CD6E0 /* AudacityOGG.icns in Resources */,
 				174F73D5098D516D009CD6E0 /* AudacityProject.icns in Resources */,
 				174F73D6098D516D009CD6E0 /* AudacityWAV.icns in Resources */,
-				174F73D8098D51AA009CD6E0 /* Info.plist in Resources */,
-				17FC86F40994637C0061DC94 /* compile.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5986,7 +5982,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\n#\n# Here we create empty xcconfig files if they do not exist.  Otherwise,\n# the build will fail.\n#\nconfigs='Debug_Shared Debug_Static Release_Shared Release_Static'\nfor config in $configs\ndo\n\t[ ! -f $TOPLEVEL/mac/$config.xcconfig ] && touch $TOPLEVEL/mac/$config.xcconfig\ndone\n\t\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC \\\n             --enable-unicode=$CONFIG_UNICODE \\\n             --enable-debug=$CONFIG_DEBUG \\\n             --with-lib-preference=local,system \\\n             --with-wx-version=$WX_VER \\\n             $CONFIG_FLAGS || exit 1\n\n#\n# Libsndfile's endianness detection is a bit unfriendly to universal binary\n# builds, so we coerce it into working our way.\n#\nFILE=lib-src/libsndfile/src/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#undef CPU_IS_BIG_ENDIAN\n#undef CPU_IS_LITTLE_ENDIAN\n#if defined(__BIG_ENDIAN__)\n#define CPU_IS_BIG_ENDIAN 1\n#define CPU_IS_LITTLE_ENDIAN 0\n#else\n#define CPU_IS_BIG_ENDIAN 0\n#define CPU_IS_LITTLE_ENDIAN 1\n#endif\nEOF\n\n#\n# Ditto for libflac.\n#\nFILE=lib-src/libflac/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\n#\n# And libmad.\n#\nFILE=lib-src/libmad/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\nexit 0\n";
+			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\n#\n# Here we create empty xcconfig files if they do not exist.  Otherwise,\n# the build will fail.\n#\nconfigs='Debug_Shared Debug_Static Release_Shared Release_Static'\nfor config in $configs\ndo\n\t[ ! -f $TOPLEVEL/mac/$config.xcconfig ] && touch $TOPLEVEL/mac/$config.xcconfig\ndone\n\t\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC \\\n             --enable-unicode=$CONFIG_UNICODE \\\n             --enable-debug=$CONFIG_DEBUG \\\n             --with-lib-preference=local,system \\\n             --with-wx-version=$WX_VER \\\n             $CONFIG_FLAGS || exit 1\n\n#\n# Libsndfile's endianness detection is a bit unfriendly to universal binary\n# builds, so we coerce it into working our way.\n#\nFILE=lib-src/libsndfile/src/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#undef CPU_IS_BIG_ENDIAN\n#undef CPU_IS_LITTLE_ENDIAN\n#if defined(__BIG_ENDIAN__)\n#define CPU_IS_BIG_ENDIAN 1\n#define CPU_IS_LITTLE_ENDIAN 0\n#else\n#define CPU_IS_BIG_ENDIAN 0\n#define CPU_IS_LITTLE_ENDIAN 1\n#endif\nEOF\n\n#\n# Ditto for libflac.\n#\nFILE=lib-src/libflac/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\n#\n# And libmad.\n#\nFILE=lib-src/libmad/config.h\ngrep -q '__BIG_ENDIAN__' $FILE || cat <<EOF >>$FILE\n#ifdef WORDS_BIGENDIAN\n#undef WORDS_BIGENDIAN\n#endif\n#if defined(__BIG_ENDIAN__)\n#define WORDS_BIGENDIAN 1\n#endif\nEOF\n\n#\n# Generate the header file for preprocessing the Info.plist\n#\ngcc -E -dM src/Audacity.h | grep AUDACITY >mac/Info.plist.h\n\nexit 0\n";
 		};
 		17073FEB0988E6C9008541CC /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -7307,6 +7303,9 @@
 				FFMPEG_PREFIX = /usr/local;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
+				INFOPLIST_PREFIX_HEADER = Info.plist.h;
+				INFOPLIST_PREPROCESS = YES;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
@@ -7732,6 +7731,9 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
+				INFOPLIST_PREFIX_HEADER = Info.plist.h;
+				INFOPLIST_PREPROCESS = YES;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
@@ -8065,6 +8067,9 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
+				INFOPLIST_PREFIX_HEADER = Info.plist.h;
+				INFOPLIST_PREPROCESS = YES;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
@@ -8667,6 +8672,9 @@
 				FFMPEG_PREFIX = /usr/local;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
+				INFOPLIST_PREFIX_HEADER = Info.plist.h;
+				INFOPLIST_PREPROCESS = YES;
 				KEEP_PRIVATE_EXTERNS = YES;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
