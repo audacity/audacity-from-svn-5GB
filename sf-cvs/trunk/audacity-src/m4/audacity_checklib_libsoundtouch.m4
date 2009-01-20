@@ -1,5 +1,8 @@
 dnl Add Audacity / Soundtouch license?
-dnl
+dnl Please increment the serial number below whenever you alter this macro
+dnl for the benefit of automatic macro update systems
+# audacity_checklib_libsoundtouch.m4 serial 1
+
 AC_DEFUN([AUDACITY_CHECKLIB_LIBSOUNDTOUCH], [
    AC_ARG_WITH(soundtouch,
                [AS_HELP_STRING([--with-soundtouch],

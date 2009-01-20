@@ -1,5 +1,8 @@
 dnl Add audacity / libmad licence?
-dnl
+dnl Please increment the serial number below whenever you alter this macro
+dnl for the benefit of automatic macro update systems
+# audacity_checklib_libid3tag.m4 serial 1
+
 AC_DEFUN([AUDACITY_CHECKLIB_LIBID3TAG], [
 
    AC_ARG_WITH(libid3tag,

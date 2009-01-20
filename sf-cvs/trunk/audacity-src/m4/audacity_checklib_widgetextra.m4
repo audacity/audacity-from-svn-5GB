@@ -1,4 +1,7 @@
 dnl Add Audacity/WX license?
+dnl Please increment the serial number below whenever you alter this macro
+dnl for the benefit of automatic macro update systems
+# audacity_checklib_widgetextra.m4 serial 1
 
 dnl A function to check for the correct presence of lib-widget-extra in the 
 dnl lib-src tree. Note that this is a mandatory library, and

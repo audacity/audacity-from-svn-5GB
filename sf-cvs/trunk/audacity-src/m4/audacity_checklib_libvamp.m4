@@ -1,4 +1,7 @@
 dnl Todo: add Vamp / Audacity license?
+dnl Please increment the serial number below whenever you alter this macro
+dnl for the benefit of automatic macro update systems
+# audacity_checklib_libvamp.m4 serial 1
 
 dnl Check for system copy of libvamp we can use for Vamp plug-in support
 AC_DEFUN([AUDACITY_CHECKLIB_LIBVAMP], [
