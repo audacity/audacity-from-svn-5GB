@@ -266,6 +266,8 @@ $(DIRS):
 	mkdir -p ../Audacity.app/Contents/MacOS
 	mkdir -p ../Audacity.app/Contents/Resources
 	cp -f ../audacity ../Audacity.app/Contents/MacOS/Audacity
+	gcc -E -dM Audacity.h | grep AUDACITY >Info.plist.h
+	gcc -E -P -x c -Wno-trigraphs -traditional -include Info.plist.h ../mac/Info.plist >../Audacity.app/Contents
 	cp -f ../mac/Info.plist ../Audacity.app/Contents
 	test -f "../Audacity.app/Contents/PkgInfo" || \
 	     echo "APPLauDy" > ../Audacity.app/Contents/PkgInfo
