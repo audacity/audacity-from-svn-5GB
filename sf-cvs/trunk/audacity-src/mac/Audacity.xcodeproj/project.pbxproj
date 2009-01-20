@@ -803,6 +803,52 @@
 		2860BA250E0F0D8600A13878 /* TimerRecordDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2860BA220E0F0D8600A13878 /* TimerRecordDialog.cpp */; };
 		2860BA280E0F0DD800A13878 /* ExportFFmpeg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2860BA260E0F0DD800A13878 /* ExportFFmpeg.cpp */; };
 		2862D7920E25E1D90014D9BB /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 2862D7910E25E1D90014D9BB /* config.h */; };
+		286D31090F264BEE004E6E4A /* af.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30AD0F264BB7004E6E4A /* af.po */; };
+		286D310A0F264BEE004E6E4A /* ar.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30AE0F264BB7004E6E4A /* ar.po */; };
+		286D310B0F264BEE004E6E4A /* bg.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30AF0F264BB7004E6E4A /* bg.po */; };
+		286D310C0F264BEE004E6E4A /* bn.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30B00F264BB7004E6E4A /* bn.po */; };
+		286D310D0F264BEE004E6E4A /* bs.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30B10F264BB7004E6E4A /* bs.po */; };
+		286D310E0F264BEE004E6E4A /* ca.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30B20F264BB7004E6E4A /* ca.po */; };
+		286D310F0F264BEE004E6E4A /* ca@valencia.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30B30F264BB7004E6E4A /* ca@valencia.po */; };
+		286D31100F264BEE004E6E4A /* cs.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30B40F264BB7004E6E4A /* cs.po */; };
+		286D31110F264BEE004E6E4A /* cy.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30B50F264BB7004E6E4A /* cy.po */; };
+		286D31120F264BEE004E6E4A /* da.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30B60F264BB7004E6E4A /* da.po */; };
+		286D31130F264BEE004E6E4A /* de.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30B70F264BB7004E6E4A /* de.po */; };
+		286D31140F264BEE004E6E4A /* el.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30B80F264BB7004E6E4A /* el.po */; };
+		286D31150F264BEE004E6E4A /* es.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30B90F264BB7004E6E4A /* es.po */; };
+		286D31160F264BEE004E6E4A /* eu.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30BA0F264BB7004E6E4A /* eu.po */; };
+		286D31170F264BEE004E6E4A /* fa.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30BB0F264BB7004E6E4A /* fa.po */; };
+		286D31180F264BEE004E6E4A /* fi.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30BC0F264BB7004E6E4A /* fi.po */; };
+		286D31190F264BEE004E6E4A /* fr.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30BD0F264BB7004E6E4A /* fr.po */; };
+		286D311A0F264BEE004E6E4A /* ga.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30BE0F264BB7004E6E4A /* ga.po */; };
+		286D311B0F264BEE004E6E4A /* gl.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30BF0F264BB7004E6E4A /* gl.po */; };
+		286D311C0F264BEE004E6E4A /* he.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30C00F264BB7004E6E4A /* he.po */; };
+		286D311D0F264BEE004E6E4A /* hu.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30C10F264BB7004E6E4A /* hu.po */; };
+		286D311E0F264BEE004E6E4A /* id.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30C20F264BB7004E6E4A /* id.po */; };
+		286D311F0F264BEE004E6E4A /* it.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30C30F264BB7004E6E4A /* it.po */; };
+		286D31200F264BEE004E6E4A /* ja.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30C40F264BB7004E6E4A /* ja.po */; };
+		286D31210F264BEE004E6E4A /* ka.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30C50F264BB7004E6E4A /* ka.po */; };
+		286D31220F264BEE004E6E4A /* km.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30C60F264BB7004E6E4A /* km.po */; };
+		286D31230F264BEE004E6E4A /* ko.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30C70F264BB7004E6E4A /* ko.po */; };
+		286D31240F264BEE004E6E4A /* lt.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30C80F264BB7004E6E4A /* lt.po */; };
+		286D31250F264BEE004E6E4A /* mk.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30C90F264BB7004E6E4A /* mk.po */; };
+		286D31260F264BEE004E6E4A /* nb.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30CA0F264BB7004E6E4A /* nb.po */; };
+		286D31270F264BEE004E6E4A /* nl.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30CB0F264BB7004E6E4A /* nl.po */; };
+		286D31280F264BEE004E6E4A /* oc.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30CC0F264BB7004E6E4A /* oc.po */; };
+		286D31290F264BEE004E6E4A /* pl.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30CD0F264BB7004E6E4A /* pl.po */; };
+		286D312A0F264BEE004E6E4A /* pt.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30CE0F264BB7004E6E4A /* pt.po */; };
+		286D312B0F264BEE004E6E4A /* pt_BR.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30CF0F264BB7004E6E4A /* pt_BR.po */; };
+		286D312C0F264BEE004E6E4A /* ro.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30D00F264BB7004E6E4A /* ro.po */; };
+		286D312D0F264BEE004E6E4A /* ru.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30D10F264BB7004E6E4A /* ru.po */; };
+		286D312E0F264BEE004E6E4A /* sk.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30D20F264BB7004E6E4A /* sk.po */; };
+		286D312F0F264BEE004E6E4A /* sl.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30D30F264BB7004E6E4A /* sl.po */; };
+		286D31300F264BEE004E6E4A /* sv.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30D40F264BB7004E6E4A /* sv.po */; };
+		286D31310F264BEE004E6E4A /* tg.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30D50F264BB7004E6E4A /* tg.po */; };
+		286D31320F264BEE004E6E4A /* tr.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30D60F264BB7004E6E4A /* tr.po */; };
+		286D31330F264BEE004E6E4A /* uk.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30D70F264BB7004E6E4A /* uk.po */; };
+		286D31340F264BEE004E6E4A /* vi.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30D80F264BB7004E6E4A /* vi.po */; };
+		286D31350F264BEE004E6E4A /* zh.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30D90F264BB7004E6E4A /* zh.po */; };
+		286D31360F264BEE004E6E4A /* zh_TW.po in Sources */ = {isa = PBXBuildFile; fileRef = 286D30DA0F264BB7004E6E4A /* zh_TW.po */; };
 		287BD8BD0E25DAF500CB4467 /* rdf_query.c in Sources */ = {isa = PBXBuildFile; fileRef = 287BD7010E25D8AE00CB4467 /* rdf_query.c */; };
 		287BD8C00E25DB2B00CB4467 /* rdf_hash_memory.c in Sources */ = {isa = PBXBuildFile; fileRef = 287BD6E60E25D8AE00CB4467 /* rdf_hash_memory.c */; };
 		287BD8C10E25DB2C00CB4467 /* rdf_concepts.h in Headers */ = {isa = PBXBuildFile; fileRef = 287BD6D80E25D8AE00CB4467 /* rdf_concepts.h */; };
@@ -1025,6 +1071,40 @@
 		28A96DC10E28642200F3CE01 /* mfmidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F3A3FF0E28289500729866 /* mfmidi.h */; };
 		28A96DC20E28642300F3CE01 /* strparse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F3A4000E28289500729866 /* strparse.cpp */; };
 		28A96DC30E28642300F3CE01 /* strparse.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F3A4010E28289500729866 /* strparse.h */; };
+		28AA28CD0F267F98008AED9E /* bug.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA28330F267A6E008AED9E /* bug.lsp */; };
+		28AA28CE0F267F98008AED9E /* dspprims.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA28340F267A6E008AED9E /* dspprims.lsp */; };
+		28AA28CF0F267F98008AED9E /* evalenv.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA28350F267A6E008AED9E /* evalenv.lsp */; };
+		28AA28D00F267F98008AED9E /* follow.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA28360F267A6E008AED9E /* follow.lsp */; };
+		28AA28D10F267F98008AED9E /* init.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA28370F267A6E008AED9E /* init.lsp */; };
+		28AA28D20F267F98008AED9E /* misc.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA28380F267A6E008AED9E /* misc.lsp */; };
+		28AA28D30F267F98008AED9E /* nyinit.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA28390F267A6E008AED9E /* nyinit.lsp */; };
+		28AA28D40F267F98008AED9E /* nyqmisc.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA283A0F267A6E008AED9E /* nyqmisc.lsp */; };
+		28AA28D50F267F98008AED9E /* nyquist.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA283B0F267A6E008AED9E /* nyquist.lsp */; };
+		28AA28D60F267F98008AED9E /* printrec.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA283C0F267A6E008AED9E /* printrec.lsp */; };
+		28AA28D70F267F98008AED9E /* profile.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA283D0F267A6E008AED9E /* profile.lsp */; };
+		28AA28D80F267F98008AED9E /* seq.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA283E0F267A6E008AED9E /* seq.lsp */; };
+		28AA28D90F267F98008AED9E /* seqfnint.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA283F0F267A6E008AED9E /* seqfnint.lsp */; };
+		28AA28DA0F267F98008AED9E /* seqmidi.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA28400F267A6E008AED9E /* seqmidi.lsp */; };
+		28AA28DB0F267F98008AED9E /* sndfnint.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA28410F267A6E008AED9E /* sndfnint.lsp */; };
+		28AA28DC0F267F98008AED9E /* system.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA28420F267A6E008AED9E /* system.lsp */; };
+		28AA28DD0F267F98008AED9E /* test.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA28430F267A6E008AED9E /* test.lsp */; };
+		28AA28DE0F267F98008AED9E /* xlinit.lsp in Copy Nyquist Files */ = {isa = PBXBuildFile; fileRef = 28AA28440F267A6E008AED9E /* xlinit.lsp */; };
+		28AA28E00F267FD2008AED9E /* analyze.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28120F267A2D008AED9E /* analyze.ny */; };
+		28AA28E10F267FD2008AED9E /* beat.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28130F267A2D008AED9E /* beat.ny */; };
+		28AA28E20F267FD2008AED9E /* clicktrack.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28140F267A2D008AED9E /* clicktrack.ny */; };
+		28AA28E30F267FD2008AED9E /* clipfix.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28150F267A2D008AED9E /* clipfix.ny */; };
+		28AA28E40F267FD2008AED9E /* crossfadein.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28160F267A2D008AED9E /* crossfadein.ny */; };
+		28AA28E50F267FD2008AED9E /* crossfadeout.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28170F267A2D008AED9E /* crossfadeout.ny */; };
+		28AA28E60F267FD2008AED9E /* delay.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28180F267A2D008AED9E /* delay.ny */; };
+		28AA28E70F267FD2008AED9E /* equalabel.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28190F267A2D008AED9E /* equalabel.ny */; };
+		28AA28E80F267FD2008AED9E /* highpass.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA281A0F267A2D008AED9E /* highpass.ny */; };
+		28AA28E90F267FD2008AED9E /* lowpass.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA281B0F267A2D008AED9E /* lowpass.ny */; };
+		28AA28EA0F267FD2008AED9E /* pluck.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA281C0F267A2D008AED9E /* pluck.ny */; };
+		28AA28EB0F267FD2008AED9E /* rissetdrum.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA281D0F267A2D008AED9E /* rissetdrum.ny */; };
+		28AA28EC0F267FD2008AED9E /* SilenceMarker.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA281E0F267A2D008AED9E /* SilenceMarker.ny */; };
+		28AA28ED0F267FD2008AED9E /* tremolo.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA281F0F267A2D008AED9E /* tremolo.ny */; };
+		28AA28EE0F267FD2008AED9E /* vocalremover.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28200F267A2D008AED9E /* vocalremover.ny */; };
+		28AA28EF0F267FD2008AED9E /* vocoder.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28210F267A2D008AED9E /* vocoder.ny */; };
 		28B6ED8F0DE3D1B50046F0F3 /* LoadModules.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28B6ED8D0DE3D1B50046F0F3 /* LoadModules.cpp */; };
 		28D0255B0AFDA53B0035F843 /* alpasscv.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D025570AFDA53B0035F843 /* alpasscv.c */; };
 		28D0255C0AFDA53B0035F843 /* alpasscv.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D025580AFDA53B0035F843 /* alpasscv.h */; };
@@ -1151,6 +1231,20 @@
 		ED3D7FF00DF73889000F43E3 /* EffectCategory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED3D7FEC0DF73889000F43E3 /* EffectCategory.cpp */; };
 		ED3D7FF10DF73889000F43E3 /* EffectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED3D7FEE0DF73889000F43E3 /* EffectManager.cpp */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		286D31370F264C38004E6E4A /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.po";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(TARGET_BUILD_DIR)/Languages/$(INPUT_FILE_BASE)/audacity.mo",
+			);
+			script = "OF=\"${TARGET_BUILD_DIR}/Languages/${INPUT_FILE_BASE}/audacity.mo\"\nif [ -n \"`which msgfmt`\" ]\nthen\n   msgfmt -v -o \"${OF}\" \"${INPUT_FILE_PATH}\"\nelse\n   echo \"msgfmt not available\"\n   touch \"${OF}\"\nfi";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		17072E930988C35B008541CC /* PBXContainerItemProxy */ = {
@@ -1294,6 +1388,63 @@
 			remoteInfo = libsbsms;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		28AA28CA0F267E3E008AED9E /* Copy Nyquist Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = ../nyquist;
+			dstSubfolderSpec = 1;
+			files = (
+				28AA28CD0F267F98008AED9E /* bug.lsp in Copy Nyquist Files */,
+				28AA28CE0F267F98008AED9E /* dspprims.lsp in Copy Nyquist Files */,
+				28AA28CF0F267F98008AED9E /* evalenv.lsp in Copy Nyquist Files */,
+				28AA28D00F267F98008AED9E /* follow.lsp in Copy Nyquist Files */,
+				28AA28D10F267F98008AED9E /* init.lsp in Copy Nyquist Files */,
+				28AA28D20F267F98008AED9E /* misc.lsp in Copy Nyquist Files */,
+				28AA28D30F267F98008AED9E /* nyinit.lsp in Copy Nyquist Files */,
+				28AA28D40F267F98008AED9E /* nyqmisc.lsp in Copy Nyquist Files */,
+				28AA28D50F267F98008AED9E /* nyquist.lsp in Copy Nyquist Files */,
+				28AA28D60F267F98008AED9E /* printrec.lsp in Copy Nyquist Files */,
+				28AA28D70F267F98008AED9E /* profile.lsp in Copy Nyquist Files */,
+				28AA28D80F267F98008AED9E /* seq.lsp in Copy Nyquist Files */,
+				28AA28D90F267F98008AED9E /* seqfnint.lsp in Copy Nyquist Files */,
+				28AA28DA0F267F98008AED9E /* seqmidi.lsp in Copy Nyquist Files */,
+				28AA28DB0F267F98008AED9E /* sndfnint.lsp in Copy Nyquist Files */,
+				28AA28DC0F267F98008AED9E /* system.lsp in Copy Nyquist Files */,
+				28AA28DD0F267F98008AED9E /* test.lsp in Copy Nyquist Files */,
+				28AA28DE0F267F98008AED9E /* xlinit.lsp in Copy Nyquist Files */,
+			);
+			name = "Copy Nyquist Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28AA28F00F267FF0008AED9E /* Copy Plug-in Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "../plug-ins";
+			dstSubfolderSpec = 1;
+			files = (
+				28AA28E00F267FD2008AED9E /* analyze.ny in Copy Plug-in Files */,
+				28AA28E10F267FD2008AED9E /* beat.ny in Copy Plug-in Files */,
+				28AA28E20F267FD2008AED9E /* clicktrack.ny in Copy Plug-in Files */,
+				28AA28E30F267FD2008AED9E /* clipfix.ny in Copy Plug-in Files */,
+				28AA28E40F267FD2008AED9E /* crossfadein.ny in Copy Plug-in Files */,
+				28AA28E50F267FD2008AED9E /* crossfadeout.ny in Copy Plug-in Files */,
+				28AA28E60F267FD2008AED9E /* delay.ny in Copy Plug-in Files */,
+				28AA28E70F267FD2008AED9E /* equalabel.ny in Copy Plug-in Files */,
+				28AA28E80F267FD2008AED9E /* highpass.ny in Copy Plug-in Files */,
+				28AA28E90F267FD2008AED9E /* lowpass.ny in Copy Plug-in Files */,
+				28AA28EA0F267FD2008AED9E /* pluck.ny in Copy Plug-in Files */,
+				28AA28EB0F267FD2008AED9E /* rissetdrum.ny in Copy Plug-in Files */,
+				28AA28EC0F267FD2008AED9E /* SilenceMarker.ny in Copy Plug-in Files */,
+				28AA28ED0F267FD2008AED9E /* tremolo.ny in Copy Plug-in Files */,
+				28AA28EE0F267FD2008AED9E /* vocalremover.ny in Copy Plug-in Files */,
+				28AA28EF0F267FD2008AED9E /* vocoder.ny in Copy Plug-in Files */,
+			);
+			name = "Copy Plug-in Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		17048267098C0F5F00824C66 /* mad.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = mad.h; sourceTree = "<group>"; };
@@ -2271,6 +2422,52 @@
 		2860BA260E0F0DD800A13878 /* ExportFFmpeg.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFFmpeg.cpp; sourceTree = "<group>"; };
 		2860BA270E0F0DD800A13878 /* ExportFFmpeg.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ExportFFmpeg.h; sourceTree = "<group>"; };
 		2862D7910E25E1D90014D9BB /* config.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = config.h; path = slv2/config/config.h; sourceTree = "<group>"; };
+		286D30AD0F264BB7004E6E4A /* af.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = af.po; path = ../locale/af.po; sourceTree = SOURCE_ROOT; };
+		286D30AE0F264BB7004E6E4A /* ar.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = ar.po; path = ../locale/ar.po; sourceTree = SOURCE_ROOT; };
+		286D30AF0F264BB7004E6E4A /* bg.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = bg.po; path = ../locale/bg.po; sourceTree = SOURCE_ROOT; };
+		286D30B00F264BB7004E6E4A /* bn.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = bn.po; path = ../locale/bn.po; sourceTree = SOURCE_ROOT; };
+		286D30B10F264BB7004E6E4A /* bs.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = bs.po; path = ../locale/bs.po; sourceTree = SOURCE_ROOT; };
+		286D30B20F264BB7004E6E4A /* ca.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = ca.po; path = ../locale/ca.po; sourceTree = SOURCE_ROOT; };
+		286D30B30F264BB7004E6E4A /* ca@valencia.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = "ca@valencia.po"; path = "../locale/ca@valencia.po"; sourceTree = SOURCE_ROOT; };
+		286D30B40F264BB7004E6E4A /* cs.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = cs.po; path = ../locale/cs.po; sourceTree = SOURCE_ROOT; };
+		286D30B50F264BB7004E6E4A /* cy.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = cy.po; path = ../locale/cy.po; sourceTree = SOURCE_ROOT; };
+		286D30B60F264BB7004E6E4A /* da.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = da.po; path = ../locale/da.po; sourceTree = SOURCE_ROOT; };
+		286D30B70F264BB7004E6E4A /* de.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = de.po; path = ../locale/de.po; sourceTree = SOURCE_ROOT; };
+		286D30B80F264BB7004E6E4A /* el.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = el.po; path = ../locale/el.po; sourceTree = SOURCE_ROOT; };
+		286D30B90F264BB7004E6E4A /* es.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = es.po; path = ../locale/es.po; sourceTree = SOURCE_ROOT; };
+		286D30BA0F264BB7004E6E4A /* eu.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = eu.po; path = ../locale/eu.po; sourceTree = SOURCE_ROOT; };
+		286D30BB0F264BB7004E6E4A /* fa.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = fa.po; path = ../locale/fa.po; sourceTree = SOURCE_ROOT; };
+		286D30BC0F264BB7004E6E4A /* fi.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = fi.po; path = ../locale/fi.po; sourceTree = SOURCE_ROOT; };
+		286D30BD0F264BB7004E6E4A /* fr.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = fr.po; path = ../locale/fr.po; sourceTree = SOURCE_ROOT; };
+		286D30BE0F264BB7004E6E4A /* ga.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = ga.po; path = ../locale/ga.po; sourceTree = SOURCE_ROOT; };
+		286D30BF0F264BB7004E6E4A /* gl.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = gl.po; path = ../locale/gl.po; sourceTree = SOURCE_ROOT; };
+		286D30C00F264BB7004E6E4A /* he.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = he.po; path = ../locale/he.po; sourceTree = SOURCE_ROOT; };
+		286D30C10F264BB7004E6E4A /* hu.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = hu.po; path = ../locale/hu.po; sourceTree = SOURCE_ROOT; };
+		286D30C20F264BB7004E6E4A /* id.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = id.po; path = ../locale/id.po; sourceTree = SOURCE_ROOT; };
+		286D30C30F264BB7004E6E4A /* it.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = it.po; path = ../locale/it.po; sourceTree = SOURCE_ROOT; };
+		286D30C40F264BB7004E6E4A /* ja.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = ja.po; path = ../locale/ja.po; sourceTree = SOURCE_ROOT; };
+		286D30C50F264BB7004E6E4A /* ka.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = ka.po; path = ../locale/ka.po; sourceTree = SOURCE_ROOT; };
+		286D30C60F264BB7004E6E4A /* km.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = km.po; path = ../locale/km.po; sourceTree = SOURCE_ROOT; };
+		286D30C70F264BB7004E6E4A /* ko.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = ko.po; path = ../locale/ko.po; sourceTree = SOURCE_ROOT; };
+		286D30C80F264BB7004E6E4A /* lt.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = lt.po; path = ../locale/lt.po; sourceTree = SOURCE_ROOT; };
+		286D30C90F264BB7004E6E4A /* mk.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = mk.po; path = ../locale/mk.po; sourceTree = SOURCE_ROOT; };
+		286D30CA0F264BB7004E6E4A /* nb.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = nb.po; path = ../locale/nb.po; sourceTree = SOURCE_ROOT; };
+		286D30CB0F264BB7004E6E4A /* nl.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = nl.po; path = ../locale/nl.po; sourceTree = SOURCE_ROOT; };
+		286D30CC0F264BB7004E6E4A /* oc.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = oc.po; path = ../locale/oc.po; sourceTree = SOURCE_ROOT; };
+		286D30CD0F264BB7004E6E4A /* pl.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = pl.po; path = ../locale/pl.po; sourceTree = SOURCE_ROOT; };
+		286D30CE0F264BB7004E6E4A /* pt.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = pt.po; path = ../locale/pt.po; sourceTree = SOURCE_ROOT; };
+		286D30CF0F264BB7004E6E4A /* pt_BR.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = pt_BR.po; path = ../locale/pt_BR.po; sourceTree = SOURCE_ROOT; };
+		286D30D00F264BB7004E6E4A /* ro.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = ro.po; path = ../locale/ro.po; sourceTree = SOURCE_ROOT; };
+		286D30D10F264BB7004E6E4A /* ru.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = ru.po; path = ../locale/ru.po; sourceTree = SOURCE_ROOT; };
+		286D30D20F264BB7004E6E4A /* sk.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = sk.po; path = ../locale/sk.po; sourceTree = SOURCE_ROOT; };
+		286D30D30F264BB7004E6E4A /* sl.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = sl.po; path = ../locale/sl.po; sourceTree = SOURCE_ROOT; };
+		286D30D40F264BB7004E6E4A /* sv.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = sv.po; path = ../locale/sv.po; sourceTree = SOURCE_ROOT; };
+		286D30D50F264BB7004E6E4A /* tg.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = tg.po; path = ../locale/tg.po; sourceTree = SOURCE_ROOT; };
+		286D30D60F264BB7004E6E4A /* tr.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = tr.po; path = ../locale/tr.po; sourceTree = SOURCE_ROOT; };
+		286D30D70F264BB7004E6E4A /* uk.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = uk.po; path = ../locale/uk.po; sourceTree = SOURCE_ROOT; };
+		286D30D80F264BB7004E6E4A /* vi.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = vi.po; path = ../locale/vi.po; sourceTree = SOURCE_ROOT; };
+		286D30D90F264BB7004E6E4A /* zh.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = zh.po; path = ../locale/zh.po; sourceTree = SOURCE_ROOT; };
+		286D30DA0F264BB7004E6E4A /* zh_TW.po */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 5; name = zh_TW.po; path = ../locale/zh_TW.po; sourceTree = SOURCE_ROOT; };
 		287BD6D50E25D8AE00CB4467 /* rdf_avltree.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = rdf_avltree.c; path = redland/librdf/rdf_avltree.c; sourceTree = "<group>"; };
 		287BD6D60E25D8AE00CB4467 /* rdf_avltree_internal.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = rdf_avltree_internal.h; path = redland/librdf/rdf_avltree_internal.h; sourceTree = "<group>"; };
 		287BD6D70E25D8AE00CB4467 /* rdf_concepts.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = rdf_concepts.c; path = redland/librdf/rdf_concepts.c; sourceTree = "<group>"; };
@@ -2495,6 +2692,40 @@
 		28A520520C12BE0300BF6811 /* pa_debugprint.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_debugprint.h; sourceTree = "<group>"; };
 		28A520530C12BE0300BF6811 /* pa_ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_ringbuffer.c; sourceTree = "<group>"; };
 		28A520540C12BE0300BF6811 /* pa_ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_ringbuffer.h; sourceTree = "<group>"; };
+		28AA28120F267A2D008AED9E /* analyze.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = analyze.ny; path = "../plug-ins/analyze.ny"; sourceTree = SOURCE_ROOT; };
+		28AA28130F267A2D008AED9E /* beat.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = beat.ny; path = "../plug-ins/beat.ny"; sourceTree = SOURCE_ROOT; };
+		28AA28140F267A2D008AED9E /* clicktrack.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = clicktrack.ny; path = "../plug-ins/clicktrack.ny"; sourceTree = SOURCE_ROOT; };
+		28AA28150F267A2D008AED9E /* clipfix.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = clipfix.ny; path = "../plug-ins/clipfix.ny"; sourceTree = SOURCE_ROOT; };
+		28AA28160F267A2D008AED9E /* crossfadein.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = crossfadein.ny; path = "../plug-ins/crossfadein.ny"; sourceTree = SOURCE_ROOT; };
+		28AA28170F267A2D008AED9E /* crossfadeout.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = crossfadeout.ny; path = "../plug-ins/crossfadeout.ny"; sourceTree = SOURCE_ROOT; };
+		28AA28180F267A2D008AED9E /* delay.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = delay.ny; path = "../plug-ins/delay.ny"; sourceTree = SOURCE_ROOT; };
+		28AA28190F267A2D008AED9E /* equalabel.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = equalabel.ny; path = "../plug-ins/equalabel.ny"; sourceTree = SOURCE_ROOT; };
+		28AA281A0F267A2D008AED9E /* highpass.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = highpass.ny; path = "../plug-ins/highpass.ny"; sourceTree = SOURCE_ROOT; };
+		28AA281B0F267A2D008AED9E /* lowpass.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = lowpass.ny; path = "../plug-ins/lowpass.ny"; sourceTree = SOURCE_ROOT; };
+		28AA281C0F267A2D008AED9E /* pluck.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = pluck.ny; path = "../plug-ins/pluck.ny"; sourceTree = SOURCE_ROOT; };
+		28AA281D0F267A2D008AED9E /* rissetdrum.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = rissetdrum.ny; path = "../plug-ins/rissetdrum.ny"; sourceTree = SOURCE_ROOT; };
+		28AA281E0F267A2D008AED9E /* SilenceMarker.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = SilenceMarker.ny; path = "../plug-ins/SilenceMarker.ny"; sourceTree = SOURCE_ROOT; };
+		28AA281F0F267A2D008AED9E /* tremolo.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = tremolo.ny; path = "../plug-ins/tremolo.ny"; sourceTree = SOURCE_ROOT; };
+		28AA28200F267A2D008AED9E /* vocalremover.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = vocalremover.ny; path = "../plug-ins/vocalremover.ny"; sourceTree = SOURCE_ROOT; };
+		28AA28210F267A2D008AED9E /* vocoder.ny */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = vocoder.ny; path = "../plug-ins/vocoder.ny"; sourceTree = SOURCE_ROOT; };
+		28AA28330F267A6E008AED9E /* bug.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = bug.lsp; path = ../nyquist/bug.lsp; sourceTree = SOURCE_ROOT; };
+		28AA28340F267A6E008AED9E /* dspprims.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = dspprims.lsp; path = ../nyquist/dspprims.lsp; sourceTree = SOURCE_ROOT; };
+		28AA28350F267A6E008AED9E /* evalenv.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = evalenv.lsp; path = ../nyquist/evalenv.lsp; sourceTree = SOURCE_ROOT; };
+		28AA28360F267A6E008AED9E /* follow.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = follow.lsp; path = ../nyquist/follow.lsp; sourceTree = SOURCE_ROOT; };
+		28AA28370F267A6E008AED9E /* init.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = init.lsp; path = ../nyquist/init.lsp; sourceTree = SOURCE_ROOT; };
+		28AA28380F267A6E008AED9E /* misc.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = misc.lsp; path = ../nyquist/misc.lsp; sourceTree = SOURCE_ROOT; };
+		28AA28390F267A6E008AED9E /* nyinit.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = nyinit.lsp; path = ../nyquist/nyinit.lsp; sourceTree = SOURCE_ROOT; };
+		28AA283A0F267A6E008AED9E /* nyqmisc.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = nyqmisc.lsp; path = ../nyquist/nyqmisc.lsp; sourceTree = SOURCE_ROOT; };
+		28AA283B0F267A6E008AED9E /* nyquist.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = nyquist.lsp; path = ../nyquist/nyquist.lsp; sourceTree = SOURCE_ROOT; };
+		28AA283C0F267A6E008AED9E /* printrec.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = printrec.lsp; path = ../nyquist/printrec.lsp; sourceTree = SOURCE_ROOT; };
+		28AA283D0F267A6E008AED9E /* profile.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = profile.lsp; path = ../nyquist/profile.lsp; sourceTree = SOURCE_ROOT; };
+		28AA283E0F267A6E008AED9E /* seq.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = seq.lsp; path = ../nyquist/seq.lsp; sourceTree = SOURCE_ROOT; };
+		28AA283F0F267A6E008AED9E /* seqfnint.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = seqfnint.lsp; path = ../nyquist/seqfnint.lsp; sourceTree = SOURCE_ROOT; };
+		28AA28400F267A6E008AED9E /* seqmidi.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = seqmidi.lsp; path = ../nyquist/seqmidi.lsp; sourceTree = SOURCE_ROOT; };
+		28AA28410F267A6E008AED9E /* sndfnint.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = sndfnint.lsp; path = ../nyquist/sndfnint.lsp; sourceTree = SOURCE_ROOT; };
+		28AA28420F267A6E008AED9E /* system.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = system.lsp; path = ../nyquist/system.lsp; sourceTree = SOURCE_ROOT; };
+		28AA28430F267A6E008AED9E /* test.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = test.lsp; path = ../nyquist/test.lsp; sourceTree = SOURCE_ROOT; };
+		28AA28440F267A6E008AED9E /* xlinit.lsp */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 5; name = xlinit.lsp; path = ../nyquist/xlinit.lsp; sourceTree = SOURCE_ROOT; };
 		28B6ED8D0DE3D1B50046F0F3 /* LoadModules.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = LoadModules.cpp; sourceTree = "<group>"; };
 		28B6ED8E0DE3D1B50046F0F3 /* LoadModules.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LoadModules.h; sourceTree = "<group>"; };
 		28D025570AFDA53B0035F843 /* alpasscv.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = alpasscv.c; sourceTree = "<group>"; };
@@ -3323,7 +3554,10 @@
 				1790AFB109883B6D008A330A /* Products */,
 				287179EE0DF6383000E171DF /* Xcode Settings */,
 				17072F220988D4F4008541CC /* lib-src */,
+				286D30AC0F264B58004E6E4A /* locale */,
 				178CF4FE098953FB0056CE58 /* mac */,
+				28AA28320F267A50008AED9E /* nyquist */,
+				28AA28110F267957008AED9E /* plug-ins */,
 				1790AFC409883BFD008A330A /* src */,
 			);
 			sourceTree = "<group>";
@@ -4370,6 +4604,60 @@
 			name = "vamp-hostsdk";
 			sourceTree = "<group>";
 		};
+		286D30AC0F264B58004E6E4A /* locale */ = {
+			isa = PBXGroup;
+			children = (
+				286D30AD0F264BB7004E6E4A /* af.po */,
+				286D30AE0F264BB7004E6E4A /* ar.po */,
+				286D30AF0F264BB7004E6E4A /* bg.po */,
+				286D30B00F264BB7004E6E4A /* bn.po */,
+				286D30B10F264BB7004E6E4A /* bs.po */,
+				286D30B20F264BB7004E6E4A /* ca.po */,
+				286D30B30F264BB7004E6E4A /* ca@valencia.po */,
+				286D30B40F264BB7004E6E4A /* cs.po */,
+				286D30B50F264BB7004E6E4A /* cy.po */,
+				286D30B60F264BB7004E6E4A /* da.po */,
+				286D30B70F264BB7004E6E4A /* de.po */,
+				286D30B80F264BB7004E6E4A /* el.po */,
+				286D30B90F264BB7004E6E4A /* es.po */,
+				286D30BA0F264BB7004E6E4A /* eu.po */,
+				286D30BB0F264BB7004E6E4A /* fa.po */,
+				286D30BC0F264BB7004E6E4A /* fi.po */,
+				286D30BD0F264BB7004E6E4A /* fr.po */,
+				286D30BE0F264BB7004E6E4A /* ga.po */,
+				286D30BF0F264BB7004E6E4A /* gl.po */,
+				286D30C00F264BB7004E6E4A /* he.po */,
+				286D30C10F264BB7004E6E4A /* hu.po */,
+				286D30C20F264BB7004E6E4A /* id.po */,
+				286D30C30F264BB7004E6E4A /* it.po */,
+				286D30C40F264BB7004E6E4A /* ja.po */,
+				286D30C50F264BB7004E6E4A /* ka.po */,
+				286D30C60F264BB7004E6E4A /* km.po */,
+				286D30C70F264BB7004E6E4A /* ko.po */,
+				286D30C80F264BB7004E6E4A /* lt.po */,
+				286D30C90F264BB7004E6E4A /* mk.po */,
+				286D30CA0F264BB7004E6E4A /* nb.po */,
+				286D30CB0F264BB7004E6E4A /* nl.po */,
+				286D30CC0F264BB7004E6E4A /* oc.po */,
+				286D30CD0F264BB7004E6E4A /* pl.po */,
+				286D30CE0F264BB7004E6E4A /* pt.po */,
+				286D30CF0F264BB7004E6E4A /* pt_BR.po */,
+				286D30D00F264BB7004E6E4A /* ro.po */,
+				286D30D10F264BB7004E6E4A /* ru.po */,
+				286D30D20F264BB7004E6E4A /* sk.po */,
+				286D30D30F264BB7004E6E4A /* sl.po */,
+				286D30D40F264BB7004E6E4A /* sv.po */,
+				286D30D50F264BB7004E6E4A /* tg.po */,
+				286D30D60F264BB7004E6E4A /* tr.po */,
+				286D30D70F264BB7004E6E4A /* uk.po */,
+				286D30D80F264BB7004E6E4A /* vi.po */,
+				286D30D90F264BB7004E6E4A /* zh.po */,
+				286D30DA0F264BB7004E6E4A /* zh_TW.po */,
+			);
+			includeInIndex = 1;
+			name = locale;
+			sourceTree = "<group>";
+		};
 		287179EE0DF6383000E171DF /* Xcode Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -4637,6 +4925,55 @@
 				2897F6EF0AB3DB5A003C20C5 /* TranscriptionToolBar.h */,
 			);
 			path = toolbars;
+			sourceTree = "<group>";
+		};
+		28AA28110F267957008AED9E /* plug-ins */ = {
+			isa = PBXGroup;
+			children = (
+				28AA28120F267A2D008AED9E /* analyze.ny */,
+				28AA28130F267A2D008AED9E /* beat.ny */,
+				28AA28140F267A2D008AED9E /* clicktrack.ny */,
+				28AA28150F267A2D008AED9E /* clipfix.ny */,
+				28AA28160F267A2D008AED9E /* crossfadein.ny */,
+				28AA28170F267A2D008AED9E /* crossfadeout.ny */,
+				28AA28180F267A2D008AED9E /* delay.ny */,
+				28AA28190F267A2D008AED9E /* equalabel.ny */,
+				28AA281A0F267A2D008AED9E /* highpass.ny */,
+				28AA281B0F267A2D008AED9E /* lowpass.ny */,
+				28AA281C0F267A2D008AED9E /* pluck.ny */,
+				28AA281D0F267A2D008AED9E /* rissetdrum.ny */,
+				28AA281E0F267A2D008AED9E /* SilenceMarker.ny */,
+				28AA281F0F267A2D008AED9E /* tremolo.ny */,
+				28AA28200F267A2D008AED9E /* vocalremover.ny */,
+				28AA28210F267A2D008AED9E /* vocoder.ny */,
+			);
+			name = "plug-ins";
+			sourceTree = "<group>";
+		};
+		28AA28320F267A50008AED9E /* nyquist */ = {
+			isa = PBXGroup;
+			children = (
+				28AA28330F267A6E008AED9E /* bug.lsp */,
+				28AA28340F267A6E008AED9E /* dspprims.lsp */,
+				28AA28350F267A6E008AED9E /* evalenv.lsp */,
+				28AA28360F267A6E008AED9E /* follow.lsp */,
+				28AA28370F267A6E008AED9E /* init.lsp */,
+				28AA28380F267A6E008AED9E /* misc.lsp */,
+				28AA28390F267A6E008AED9E /* nyinit.lsp */,
+				28AA283A0F267A6E008AED9E /* nyqmisc.lsp */,
+				28AA283B0F267A6E008AED9E /* nyquist.lsp */,
+				28AA283C0F267A6E008AED9E /* printrec.lsp */,
+				28AA283D0F267A6E008AED9E /* profile.lsp */,
+				28AA283E0F267A6E008AED9E /* seq.lsp */,
+				28AA283F0F267A6E008AED9E /* seqfnint.lsp */,
+				28AA28400F267A6E008AED9E /* seqmidi.lsp */,
+				28AA28410F267A6E008AED9E /* sndfnint.lsp */,
+				28AA28420F267A6E008AED9E /* system.lsp */,
+				28AA28430F267A6E008AED9E /* test.lsp */,
+				28AA28440F267A6E008AED9E /* xlinit.lsp */,
+			);
+			includeInIndex = 1;
+			name = nyquist;
 			sourceTree = "<group>";
 		};
 		28D587C50E264CBB009C7DEA /* lv2 */ = {
@@ -5691,8 +6028,11 @@
 				1790AFAC09883B6D008A330A /* Resources */,
 				1790AFAD09883B6D008A330A /* Sources */,
 				1790AFAE09883B6D008A330A /* Frameworks */,
+				28AA28CA0F267E3E008AED9E /* Copy Nyquist Files */,
+				28AA28F00F267FF0008AED9E /* Copy Plug-in Files */,
 			);
 			buildRules = (
+				286D31370F264C38004E6E4A /* PBXBuildRule */,
 			);
 			dependencies = (
 				17072E940988C35B008541CC /* PBXTargetDependency */,
@@ -6716,6 +7056,52 @@
 				18D8314E0ED0F56300FD870D /* Contrast.cpp in Sources */,
 				ED2707500EF9C64F007D4FFD /* SBSMSEffect.cpp in Sources */,
 				ED2707510EF9C64F007D4FFD /* TimeScale.cpp in Sources */,
+				286D31090F264BEE004E6E4A /* af.po in Sources */,
+				286D310A0F264BEE004E6E4A /* ar.po in Sources */,
+				286D310B0F264BEE004E6E4A /* bg.po in Sources */,
+				286D310C0F264BEE004E6E4A /* bn.po in Sources */,
+				286D310D0F264BEE004E6E4A /* bs.po in Sources */,
+				286D310E0F264BEE004E6E4A /* ca.po in Sources */,
+				286D310F0F264BEE004E6E4A /* ca@valencia.po in Sources */,
+				286D31100F264BEE004E6E4A /* cs.po in Sources */,
+				286D31110F264BEE004E6E4A /* cy.po in Sources */,
+				286D31120F264BEE004E6E4A /* da.po in Sources */,
+				286D31130F264BEE004E6E4A /* de.po in Sources */,
+				286D31140F264BEE004E6E4A /* el.po in Sources */,
+				286D31150F264BEE004E6E4A /* es.po in Sources */,
+				286D31160F264BEE004E6E4A /* eu.po in Sources */,
+				286D31170F264BEE004E6E4A /* fa.po in Sources */,
+				286D31180F264BEE004E6E4A /* fi.po in Sources */,
+				286D31190F264BEE004E6E4A /* fr.po in Sources */,
+				286D311A0F264BEE004E6E4A /* ga.po in Sources */,
+				286D311B0F264BEE004E6E4A /* gl.po in Sources */,
+				286D311C0F264BEE004E6E4A /* he.po in Sources */,
+				286D311D0F264BEE004E6E4A /* hu.po in Sources */,
+				286D311E0F264BEE004E6E4A /* id.po in Sources */,
+				286D311F0F264BEE004E6E4A /* it.po in Sources */,
+				286D31200F264BEE004E6E4A /* ja.po in Sources */,
+				286D31210F264BEE004E6E4A /* ka.po in Sources */,
+				286D31220F264BEE004E6E4A /* km.po in Sources */,
+				286D31230F264BEE004E6E4A /* ko.po in Sources */,
+				286D31240F264BEE004E6E4A /* lt.po in Sources */,
+				286D31250F264BEE004E6E4A /* mk.po in Sources */,
+				286D31260F264BEE004E6E4A /* nb.po in Sources */,
+				286D31270F264BEE004E6E4A /* nl.po in Sources */,
+				286D31280F264BEE004E6E4A /* oc.po in Sources */,
+				286D31290F264BEE004E6E4A /* pl.po in Sources */,
+				286D312A0F264BEE004E6E4A /* pt.po in Sources */,
+				286D312B0F264BEE004E6E4A /* pt_BR.po in Sources */,
+				286D312C0F264BEE004E6E4A /* ro.po in Sources */,
+				286D312D0F264BEE004E6E4A /* ru.po in Sources */,
+				286D312E0F264BEE004E6E4A /* sk.po in Sources */,
+				286D312F0F264BEE004E6E4A /* sl.po in Sources */,
+				286D31300F264BEE004E6E4A /* sv.po in Sources */,
+				286D31310F264BEE004E6E4A /* tg.po in Sources */,
+				286D31320F264BEE004E6E4A /* tr.po in Sources */,
+				286D31330F264BEE004E6E4A /* uk.po in Sources */,
+				286D31340F264BEE004E6E4A /* vi.po in Sources */,
+				286D31350F264BEE004E6E4A /* zh.po in Sources */,
+				286D31360F264BEE004E6E4A /* zh_TW.po in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
