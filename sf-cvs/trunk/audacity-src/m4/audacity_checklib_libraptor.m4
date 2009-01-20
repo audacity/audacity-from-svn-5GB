@@ -1,5 +1,8 @@
 dnl Add Audacity / raptor license?
-dnl
+dnl Please increment the serial number below whenever you alter this macro
+dnl for the benefit of automatic macro update systems
+# audacity_checklib_libraptor.m4 serial 1
+
 AC_DEFUN([AUDACITY_CHECKLIB_LIBRAPTOR], [
    AC_ARG_WITH(libraptor,
                [AS_HELP_STRING([--with-libraptor],

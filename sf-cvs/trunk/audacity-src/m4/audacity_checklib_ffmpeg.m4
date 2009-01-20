@@ -1,5 +1,8 @@
 dnl Todo: Add Audacity / FFmpeg license
 dnl
+dnl Please increment the serial number below whenever you alter this macro
+dnl for the benefit of automatic macro update systems
+# audacity_checklib_ffmpeg.m4 serial 1
 dnl Check for a copy of ffmpeg, whoose headers we will use for the importer
 AC_DEFUN([AUDACITY_CHECKLIB_FFMPEG], [
    AC_ARG_WITH(ffmpeg,

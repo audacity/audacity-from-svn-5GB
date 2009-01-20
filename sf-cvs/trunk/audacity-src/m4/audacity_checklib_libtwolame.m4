@@ -1,5 +1,8 @@
 dnl add Audacity / Twolame license ?
-dnl
+dnl Please increment the serial number below whenever you alter this macro
+dnl for the benefit of automatic macro update systems
+# audacity_checklib_libtwolame.m4 serial 1
+
 AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
    AC_ARG_WITH(libtwolame,
                [AS_HELP_STRING([--with-libtwolame],

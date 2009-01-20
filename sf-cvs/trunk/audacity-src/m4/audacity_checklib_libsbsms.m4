@@ -1,3 +1,8 @@
+dnl Please increment the serial number below whenever you alter this macro
+dnl for the benefit of automatic macro update systems
+# audacity_checklib_libsbsms.m4 serial 1
+
+
 AC_DEFUN([AUDACITY_CHECKLIB_LIBSBSMS], [
    AC_ARG_WITH(sbsms,
                [AS_HELP_STRING([--with-sbsms],

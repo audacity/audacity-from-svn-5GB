@@ -1,5 +1,8 @@
 dnl Add Audacity license?
-dnl
+dnl Please increment the serial number below whenever you alter this macro
+dnl for the benefit of automatic macro update systems
+# audacity_checklib_libresample.m4 serial 1
+
 AC_DEFUN([AUDACITY_CHECKLIB_LIBRESAMPLE], [
 
    AC_ARG_WITH(libresample,
