@@ -62,7 +62,7 @@ wxString KeyEventToKeyString(const wxKeyEvent & event)
    long key = event.GetKeyCode();
 
    if (event.ControlDown())
-#if defined(__WXMAC)
+#if defined(__WXMAC__)
       newStr += wxT("XCtrl+");
 #else
       newStr += wxT("Ctrl+");
