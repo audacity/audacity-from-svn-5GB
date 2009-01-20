@@ -309,10 +309,6 @@
 				>
 			</File> 
 			<File
-				RelativePath="..\..\..\locale\cb.po"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\locale\cs.po"
 				>
 			</File>
@@ -378,6 +374,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\locale\ja.po"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\locale\ka.po"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\locale\km.po"
 				>
 			</File>
 			<File
