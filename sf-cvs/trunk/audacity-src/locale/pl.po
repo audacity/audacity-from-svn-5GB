@@ -868,15 +868,15 @@ msgstr "Nie można usunąć %s'"
 msgid "Renamed file: %s\n"
 msgstr "Zmieniono nazwę plku: %s\n"
 
-#: DirManager.cpp:1132
-#, c-format
-msgid "Changing block %s\n"
-msgstr "Zmiana bloku %s\n"
-
 #: DirManager.cpp:1160
 #, c-format
 msgid "Unable to rename '%s' to '%s'"
 msgstr "Nie można zmienić nazwy %s na %s'"
+
+#: DirManager.cpp:1183
+#, c-format
+msgid "Changed block %s to new alias name\n"
+msgstr ""
 
 #: DirManager.cpp:1224
 #: DirManager.cpp:1515
@@ -1029,6 +1029,21 @@ msgstr "Zapisywanie nagranego dźwięku na dysk..."
 msgid "Rectangular"
 msgstr "Prostokąt"
 
+#: FFmpeg.cpp:36
+msgid "FFmpeg support not compiled in"
+msgstr ""
+
+#: FFmpeg.cpp:101
+msgid "FFmpeg was configured in Preferences and successfully loaded before,                       \n"
+"but this time Audacity failed to load it at startup.                       \n"
+"\n"
+"You may want to go back to Preferences > Import/Export and re-configure it."
+msgstr ""
+
+#: FFmpeg.cpp:104
+msgid "FFmpeg startup failed"
+msgstr ""
+
 #: FFmpeg.cpp:115
 msgid "FFmpeg library not found"
 msgstr ""
@@ -1065,10 +1080,9 @@ msgstr "Wybierz..."
 msgid "To get a free copy of FFmpeg, click here -->"
 msgstr "Aby otrzymać darmową kopię Lame, kliknij tutaj -->"
 
-#: FFmpeg.cpp:213
-#: export/ExportMP3.cpp:579
-msgid "Download..."
-msgstr "Pobierz..."
+#: FFmpeg.cpp:215 export/ExportMP3.cpp:579
+msgid "Download"
+msgstr ""
 
 #  i18n-hint: It's asking for the location of a file, for
 #  example, "Where is lame_enc.dll?" - you could translate
@@ -1082,14 +1096,33 @@ msgstr "Pobierz..."
 msgid "Where is %s?"
 msgstr "Gdzie jest %s?"
 
+#: FFmpeg.cpp:407
+msgid "Failed to find compatible FFmpeg libraries"
+msgstr ""
+
 #: FFmpeg.h:95
 msgid "FFmpeg not found"
+msgstr ""
+
+#: FFmpeg.h:101
+msgid "Audacity attempted to use FFmpeg libraries to import an audio file,\n"
+"but libraries were not found.\n"
+"If you want to use the FFmpeg import feature, please go to Preferences->Import/Export\n"
+"and tell Audacity where to look for the libraries."
+msgstr ""
+
+#: FFmpeg.h:109
+msgid "Do not show this warning again"
 msgstr ""
 
 #: FFmpeg.h:251
 #, fuzzy
 msgid "Only avformat.dll|*avformat*.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
 msgstr "Tylko lame_enc.dll|lame_enc.dll|Biblioteki dynamiczne (*.dll)|*.dll|All Files (*.*)|*"
+
+#: FFmpeg.h:268
+msgid "Dynamic Libraries (*.dylib)|*.dylib|All Files (*)|*"
+msgstr ""
 
 #: FFmpeg.h:266
 msgid "Only libavformat.so|libavformat.so*|Dynamically Linked Libraries (*.so*)|*.so*|All Files (*)|*"
@@ -2019,25 +2052,22 @@ msgstr ""
 msgid "T&ransport"
 msgstr "Transkrypcja"
 
-#: Menus.cpp:589
-#, fuzzy
-msgid "Play\tSpacebar"
-msgstr "Odtwarzaj/Zatrzymaj\tSpacja"
-
 #: Menus.cpp:591
-#, fuzzy
-msgid "&Loop Play\tShift+Spacebar"
-msgstr "Odtwarzaj zapętlone\tShift+Spacebar"
+msgid "Play\tSpace"
+msgstr ""
+
+#: Menus.cpp:593
+msgid "&Loop Play\tShift+Space"
+msgstr ""
 
 #: Menus.cpp:593
 #, fuzzy
 msgid "&Pause\tP"
 msgstr "Pauza\tP"
 
-#: Menus.cpp:594
-#, fuzzy
-msgid "&Stop\tSpacebar"
-msgstr "Odtwarzaj/Zatrzymaj\tSpacja"
+#: Menus.cpp:596
+msgid "&Stop\tSpace"
+msgstr ""
 
 #: Menus.cpp:595
 #: Menus.cpp:1010
@@ -2265,13 +2295,13 @@ msgstr "U&ruchom Benchmark"
 msgid "&Audio Device Info..."
 msgstr "&Informacja o Urządzeniu Dźwiękowym..."
 
-#: Menus.cpp:981
-msgid "Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"
-msgstr "Poruszanie się wstecz po Doku, WIdoku ścieżki i Pasku selekcji\tCtrl+Shift+F6"
+#: Menus.cpp:983
+msgid "Cycle backward through toolbars and Track View\tCtrl+Shift+F6"
+msgstr ""
 
-#: Menus.cpp:982
-msgid "Cycle forward through Dock, Track View, and Selection Bar\tCtrl+F6"
-msgstr "Poruszanie się do przodu po Doku, WIdoku ścieżki i Pasku selekcji\tCtrl+F6"
+#: Menus.cpp:984
+msgid "Cycle forward through toolbars and Track View\tCtrl+F6"
+msgstr ""
 
 #: Menus.cpp:985
 msgid "Selection Tool\tF1"
@@ -2305,9 +2335,9 @@ msgstr "Następne narzędzie\tD"
 msgid "Previous Tool\tA"
 msgstr "Poprzednie narzędzie\tA"
 
-#: Menus.cpp:995
-msgid "Play/Stop\tSpacebar"
-msgstr "Odtwarzaj/Zatrzymaj\tSpacja"
+#: Menus.cpp:997
+msgid "Play/Stop\tSpace"
+msgstr ""
 
 #: Menus.cpp:996
 msgid "Stop\tS"
@@ -2342,9 +2372,9 @@ msgstr "Odtwarzaj do zaznaczenia\tB"
 msgid "Play Looped\tL"
 msgstr "Odtwarzaj zapętlone\tL"
 
-#: Menus.cpp:1007
-msgid "Play Looped\tShift+Spacebar"
-msgstr "Odtwarzaj zapętlone\tShift+Spacebar"
+#: Menus.cpp:1009
+msgid "Play Looped\tShift+Space"
+msgstr ""
 
 #: Menus.cpp:1008
 msgid "Play Cut Preview\tC"
@@ -2406,9 +2436,9 @@ msgstr "Przemieszczaj się pomiędzy ścieżkami\tReturn"
 msgid "Toggle Focused Track\tNUMPAD_ENTER"
 msgstr "Przemieszczaj się pomiędzy ścieżkami\tNUMPAD_ENTER"
 
-#: Menus.cpp:1040
-msgid "Toggle Focused Track\tCtrl+Spacebar"
-msgstr "Przemieszczaj się pomiędzy ścieżkami\tCtrl+Spacja"
+#: Menus.cpp:1042
+msgid "Toggle Focused Track\tCtrl+Space"
+msgstr ""
 
 #: Menus.cpp:1042
 msgid "Cursor Left\tLeft"
@@ -2508,14 +2538,6 @@ msgstr "Wyłącz"
 
 #: Menus.cpp:1071
 msgid "Full screen on/off\tF11"
-msgstr ""
-
-#: Menus.cpp:1074
-msgid "Define Foreground\tCtrl+Alt+F"
-msgstr ""
-
-#: Menus.cpp:1075
-msgid "Define Background\tCtrl+Alt+B"
 msgstr ""
 
 #. i18n-hint: This is the name of the menu item on Mac OS X only
@@ -3204,6 +3226,21 @@ msgstr "Plik został zapisany przez Audacity %s i format się\n"
 "wersji. Czy chciałbyś otworzyć plik\n"
 "mimo wszystko?"
 
+#: Project.cpp:2537
+msgid "Your project is now empty.\n"
+"If saved, the project will have no tracks.\n"
+"\n"
+"To save any previously open tracks:\n"
+"Click 'No', Edit > Undo until all tracks\n"
+"are open, then File > Save Project.\n"
+"\n"
+"Save anyway?"
+msgstr ""
+
+#: Project.cpp:2538
+msgid "Warning empty project"
+msgstr ""
+
 #: Project.cpp:2588
 #, fuzzy, c-format
 msgid "Could not save project. Perhaps %s \n"
@@ -3455,10 +3492,9 @@ msgstr "Gatunek"
 msgid "Comments"
 msgstr "Komentarze"
 
-#: Tags.cpp:789
-#: Tags.cpp:2027
-msgid "Press F2 or double click to edit."
-msgstr "Naciśnij F2 lub kliknij dwukrotnie, aby edytować."
+#: Tags.cpp:777
+msgid "Use arrow keys (or RETURN key after editing) to navigate fields."
+msgstr ""
 
 #: Tags.cpp:813
 msgid "Tag Name"
@@ -3478,16 +3514,13 @@ msgstr "&Wyczyść"
 msgid "Genres"
 msgstr "Rodzaje"
 
-#: Tags.cpp:839
-#: Tags.cpp:1449
-#: Tags.cpp:1989
-msgid "Edit"
-msgstr "Edytuj"
+#: Tags.cpp:826
+msgid "E&dit..."
+msgstr ""
 
-#: Tags.cpp:840
-#: Tags.cpp:1990
-msgid "Reset"
-msgstr "Resetuj"
+#: Tags.cpp:827
+msgid "Rese&t..."
+msgstr ""
 
 #: Tags.cpp:845
 #: Tags.cpp:1470
@@ -3557,6 +3590,16 @@ msgstr "Czy jesteś pewny, że chcesz zresetować listę rodzajów?"
 msgid "Unable to open genre file."
 msgstr "Nie można otworzyć pliku z rodzajami."
 
+#: Tags.cpp:1084
+msgid "Load Metadata As:"
+msgstr ""
+
+#: Tags.cpp:1122
+#: Tags.cpp:1772
+#: Tags.cpp:2494
+msgid "Error loading metadata"
+msgstr "Błąd podczas ładowania metadanych"
+
 #: Tags.cpp:1097
 #: Tags.cpp:1151
 #: Tags.cpp:1751
@@ -3565,105 +3608,6 @@ msgstr "Nie można otworzyć pliku z rodzajami."
 #: Tags.cpp:2509
 msgid "Save Metadata As:"
 msgstr "Zapisz Metadane jako:"
-
-#: Tags.cpp:1122
-#: Tags.cpp:1772
-#: Tags.cpp:2494
-msgid "Error loading metadata"
-msgstr "Błąd podczas ładowania metadanych"
-
-#: Tags.cpp:1419
-#: Tags.cpp:1977
-msgid "Title:"
-msgstr "Tytuł:"
-
-#: Tags.cpp:1420
-#: Tags.cpp:1978
-msgid "Artist:"
-msgstr "Artysta:"
-
-#: Tags.cpp:1421
-#: Tags.cpp:1979
-msgid "Album:"
-msgstr "Album:"
-
-#: Tags.cpp:1422
-msgid "Composer:"
-msgstr "Kompozytor:"
-
-#: Tags.cpp:1423
-msgid "Lyricist:"
-msgstr "Autor tekstów:"
-
-#: Tags.cpp:1424
-#: Tags.cpp:1982
-msgid "Comments:"
-msgstr "Komentarze:"
-
-#: Tags.cpp:1426
-msgid "Encoded By:"
-msgstr "Zakodowane przez:"
-
-#: Tags.cpp:1430
-msgid "Copyright:"
-msgstr "Prawa autorskie:"
-
-#: Tags.cpp:1434
-#: Tags.cpp:1980
-msgid "Track Number:"
-msgstr "Numer ścieżki:"
-
-#: Tags.cpp:1438
-#: Tags.cpp:1981
-msgid "Year:"
-msgstr "Rok:"
-
-#: Tags.cpp:1442
-#: Tags.cpp:1983
-msgid "Genre:"
-msgstr "Rodzaj:"
-
-#: Tags.cpp:1500
-#: Tags.cpp:2098
-msgid "No Genres"
-msgstr "Brak rodzajów:"
-
-#: Tags.cpp:1653
-msgid "Reset to Defaults"
-msgstr "Zresetuj"
-
-#: Tags.cpp:1965
-msgid "Basic"
-msgstr "Podstawowe"
-
-#: Tags.cpp:2017
-msgid "Advanced"
-msgstr "Zaawansowane"
-
-#: Tags.cpp:2042
-msgid "Value"
-msgstr "Wartość"
-
-#: Tags.cpp:2078
-msgid "Clea&r"
-msgstr "Wyczyś&ć"
-
-#: Tags.cpp:2111
-#, c-format
-msgid "Maximum length of attribute '%s' is %d characters. Data was truncated."
-msgstr "Maksymalna długość atrybutu '%s' wynosi %d znaków. Dane zostały uszkodzone."
-
-#: Tags.cpp:2117
-msgid "Title"
-msgstr "Nazwa"
-
-#: Tags.cpp:2127
-msgid "Artist"
-msgstr "Artysta:"
-
-#: Tags.cpp:2137
-msgid "Album"
-msgstr "Album:"
 
 #: Theme.cpp:638
 #, c-format
@@ -4313,8 +4257,9 @@ msgstr "Wtyczki 1do %i"
 msgid "Plugins %i to %i"
 msgstr "Wtyczki %i do %i"
 
-#: commands/CommandManager.cpp:888
-msgid "Disallowed for some reason.  Try selecting some Audio first?"
+#: commands/CommandManager.cpp:857
+#, fuzzy
+msgid "Disallowed for some reason.  Try selecting some audio first?"
 msgstr "Zakazane  z pewnego powodu. Czy chcesz najpierw spróbować zaznaczyć dźwięk?"
 
 #: commands/CommandManager.cpp:892
@@ -4374,9 +4319,8 @@ msgid "Amplification (dB):"
 msgstr "Wzmocnienie (dB):"
 
 #: effects/Amplify.cpp:183
-#, fuzzy
-msgid "Amplification (dB)"
-msgstr "Wzmocnienie (dB):"
+msgid "Amplification dB"
+msgstr ""
 
 #: effects/Amplify.cpp:190
 msgid "New Peak Amplitude (dB):"
@@ -4514,9 +4458,17 @@ msgstr "autorstwa Nasca Octavian Paul"
 msgid "Frequency (Hz):"
 msgstr "Częstotliwość (Hz):"
 
+#: effects/BassBoost.cpp:205
+msgid "Frequency Hertz"
+msgstr ""
+
 #: effects/BassBoost.cpp:208
 msgid "Boost (dB):"
 msgstr "Wzmocnienie (dB):"
+
+#: effects/BassBoost.cpp:218
+msgid "Boost dB"
+msgstr ""
 
 #: effects/BassBoost.h:35
 msgid "BassBoost..."
@@ -4751,9 +4703,17 @@ msgstr "Usuwanie stukotu i trzasków autorstwa Craiga DeForest"
 msgid "Select threshold (lower is more sensitive):"
 msgstr "Zaznacz próg (niższy jest bardziej wrażliwy):"
 
+#: effects/ClickRemoval.cpp:350
+msgid "Select threshold"
+msgstr ""
+
 #: effects/ClickRemoval.cpp:353
 msgid "Max spike width (higher is more sensitive):"
 msgstr "Maksymalna wartość szczytowa (wyższa jest bardziej wrażliwa):"
+
+#: effects/ClickRemoval.cpp:363
+msgid "Max spike width"
+msgstr ""
 
 #: effects/ClickRemoval.h:42
 msgid "Click Removal..."
@@ -4860,18 +4820,31 @@ msgstr "Kompresor..."
 msgid "Applying Dynamic Range Compression..."
 msgstr "Dodano kompresję dynamiki"
 
+#: effects/Contrast.cpp:79
+msgid "Contrast Tool Foreground"
+msgstr ""
+
+#: effects/Contrast.cpp:79
+msgid "Foreground times selected.\n"
+"Now select background and use Ctrl+Shift+T or menu again."
+msgstr ""
+
+#: effects/Contrast.cpp:127
+msgid "Start time after after end time!\n"
+"Please enter reasonable times."
+msgstr ""
+
+#: effects/Contrast.cpp:137
+msgid "Times are not reasonable!\n"
+"Please enter reasonable times."
+msgstr ""
+
 #: effects/Contrast.cpp:120
 msgid "Hello.\n"
 msgstr ""
 
-#: effects/Contrast.cpp:164
-msgid "WCAG2 Contrast Analyzer"
-msgstr ""
-
-#: effects/Contrast.cpp:191
-#: effects/Contrast.cpp:202
-#, c-format
-msgid "%.1f dB"
+#: effects/Contrast.cpp:245
+msgid "WCAG2 Audio Contrast Analyzer"
 msgstr ""
 
 #: effects/Contrast.cpp:193
@@ -4906,17 +4879,36 @@ msgstr "Początek"
 msgid "End"
 msgstr "Koniec"
 
-#: effects/Contrast.cpp:245
-#, fuzzy
-msgid "Volume"
-msgstr "Wartość"
+#: effects/Contrast.cpp:332
+msgid "Volume    "
+msgstr ""
 
 #: effects/Contrast.cpp:248
 msgid "Foreground:"
 msgstr ""
 
+#: effects/Contrast.cpp:347
+msgid "Foreground start time"
+msgstr ""
+
+#: effects/Contrast.cpp:365
+msgid "Foreground end time"
+msgstr ""
+
+#: effects/Contrast.cpp:373 effects/Contrast.cpp:417
+msgid "Use selection"
+msgstr ""
+
 #: effects/Contrast.cpp:271
 msgid "Background:"
+msgstr ""
+
+#: effects/Contrast.cpp:391
+msgid "Background start time"
+msgstr ""
+
+#: effects/Contrast.cpp:409
+msgid "Background end time"
 msgstr ""
 
 #: effects/Contrast.cpp:298
@@ -4929,10 +4921,10 @@ msgstr "Resetuj"
 msgid "Contrast Result:"
 msgstr "Wyniki kalibracji"
 
-#: effects/Contrast.cpp:303
-#, fuzzy
-msgid "Fail"
-msgstr "Plik"
+#: Tags.cpp:840
+#: Tags.cpp:1990
+msgid "Reset"
+msgstr "Resetuj"
 
 #: effects/Contrast.cpp:304
 msgid "Difference:"
@@ -4942,22 +4934,25 @@ msgstr ""
 msgid "Information"
 msgstr "Wprowadzenie"
 
-#: effects/Contrast.cpp:315
-msgid "Before you open this tool,"
+#: effects/Contrast.cpp:447
+msgid "For measuring rms volume differences between two selections of audio."
 msgstr ""
 
-#: effects/Contrast.cpp:316
-msgid "   Ctrl+Alt+F sets the 'foreground' times."
+#: effects/Contrast.cpp:448
+msgid "Help for WCAG2 Audio Contrast Analyzer"
 msgstr ""
 
-#: effects/Contrast.cpp:317
-msgid "   Ctrl+Alt+B sets the 'background' times."
+#: toolbars/ControlToolBar.cpp:83
+msgid "Control"
+msgstr "Kontrola"
+
+#: effects/Contrast.cpp:454
+msgid "Note: The 'OK' button resets time values."
 msgstr ""
 
-#: effects/Contrast.cpp:318
-#, fuzzy
-msgid "WCAG Information on web"
-msgstr "Wprowadzenie"
+#: effects/Contrast.cpp:455
+msgid "Close but keep times"
+msgstr ""
 
 #: effects/Contrast.cpp:328
 #: effects/Contrast.cpp:336
@@ -4967,6 +4962,28 @@ msgstr "Wprowadzenie"
 msgid "Measure"
 msgstr "Połącz"
 
+#: effects/Contrast.cpp:511
+msgid "No foreground to measure"
+msgstr ""
+
+#: effects/Contrast.cpp:516
+msgid "Measured foreground level"
+msgstr ""
+
+#: effects/Contrast.cpp:191
+#: effects/Contrast.cpp:202
+#, c-format
+msgid "%.1f dB"
+msgstr ""
+
+#: effects/Contrast.cpp:521
+msgid "No background to measure"
+msgstr ""
+
+#: effects/Contrast.cpp:526
+msgid "Measured background level"
+msgstr ""
+
 #: effects/Contrast.cpp:358
 msgid "WCAG2 Pass"
 msgstr ""
@@ -4975,10 +4992,83 @@ msgstr ""
 msgid "WCAG2 Fail"
 msgstr ""
 
-#: effects/Contrast.h:32
-#, fuzzy
-msgid "Contrast..."
-msgstr "Font..."
+#: effects/Contrast.cpp:535
+msgid "Current difference"
+msgstr ""
+
+#: effects/Contrast.cpp:536
+#, c-format
+msgid "%.1f dB Average rms"
+msgstr ""
+
+#: effects/Contrast.cpp:541
+msgid "Please enter valid times."
+msgstr ""
+
+#: effects/Contrast.cpp:551
+msgid "Export Contrast Result As:"
+msgstr ""
+
+#: effects/Contrast.cpp:572
+msgid "WCAG 2.0 Success Criteria 1.4.7 Contrast Results"
+msgstr ""
+
+#: effects/Contrast.cpp:574
+#, c-format
+msgid "Filename = %s."
+msgstr ""
+
+#: effects/Contrast.cpp:576
+msgid "Foreground"
+msgstr ""
+
+#: effects/Contrast.cpp:581 effects/Contrast.cpp:598
+#, c-format
+msgid "Time started = %2d hour(s), %2d minute(s), %.2f seconds."
+msgstr ""
+
+#: effects/Contrast.cpp:586 effects/Contrast.cpp:603
+#, c-format
+msgid "Time ended = %2d hour(s), %2d minute(s), %.2f seconds."
+msgstr ""
+
+#: effects/Contrast.cpp:588 effects/Contrast.cpp:605
+#, c-format
+msgid "Average rms = %.1f dB."
+msgstr ""
+
+#: effects/Contrast.cpp:590 effects/Contrast.cpp:607
+msgid "Average rms =  dB."
+msgstr ""
+
+#: effects/Contrast.cpp:593
+msgid "Background"
+msgstr ""
+
+#: effects/Contrast.cpp:609
+msgid "Results"
+msgstr ""
+
+#: effects/Contrast.cpp:611
+#, c-format
+msgid "Difference = %.1f Average rms dB."
+msgstr ""
+
+#: effects/Contrast.cpp:613
+msgid "Success Criteria 1.4.7 of WCAG 2.0: Pass"
+msgstr ""
+
+#: effects/Contrast.cpp:615
+msgid "Success Criteria 1.4.7 of WCAG 2.0: Fail"
+msgstr ""
+
+#: effects/Contrast.cpp:618
+msgid "Data gathered"
+msgstr ""
+
+#: effects/Contrast.h:33
+msgid "Contrast...\tCtrl+Shift+T"
+msgstr ""
 
 #: effects/Contrast.h:51
 msgid "Measuring background"
@@ -5557,13 +5647,25 @@ msgstr "Pobierz próbkę szumu"
 msgid "Noise reduction (dB):"
 msgstr "Redukcja szumów (dB):"
 
+#: effects/NoiseRemoval.cpp:850
+msgid "Noise reduction"
+msgstr ""
+
 #: effects/NoiseRemoval.cpp:849
 msgid "Frequency smoothing (Hz):"
 msgstr "Wygładzanie częstotliwości (Hz):"
 
+#: effects/NoiseRemoval.cpp:859
+msgid "Frequency smoothing"
+msgstr ""
+
 #: effects/NoiseRemoval.cpp:857
 msgid "Attack/decay time (secs):"
 msgstr "Czas reakcji (sekund):"
+
+#: effects/NoiseRemoval.cpp:868
+msgid "Attach/decay time"
+msgstr ""
 
 #: effects/NoiseRemoval.h:35
 msgid "Noise Removal..."
@@ -5611,10 +5713,6 @@ msgstr "Normalizacja "
 msgid "Remove any DC offset (center on 0.0 vertically)"
 msgstr "Usuwanie składowej stałej"
 
-#: effects/Normalize.cpp:356
-msgid "Normalize maximum amplitude to"
-msgstr "Znormalizuj maksymalną amplitudę do"
-
 #: effects/Normalize.cpp:357
 #, fuzzy
 msgid "Normalize maximum amplitude to:"
@@ -5623,6 +5721,10 @@ msgstr "Znormalizuj maksymalną amplitudę do"
 #: effects/Normalize.cpp:362
 msgid "-"
 msgstr "-"
+
+#: effects/Normalize.cpp:367
+msgid "Maximum amplitude dB"
+msgstr ""
 
 #: effects/Normalize.h:33
 msgid "Normalize..."
@@ -5829,6 +5931,50 @@ msgstr "& Stereo do Mono"
 msgid "Applying Stereo to Mono"
 msgstr "Stosowanie stereo do mono"
 
+#: effects/TimeScale.cpp:140
+msgid "Time Scale"
+msgstr ""
+
+#: effects/TimeScale.cpp:176
+msgid "Sliding Time Scale/Pitch Shift"
+msgstr ""
+
+#: effects/TimeScale.cpp:178
+msgid "using SBSMS, by Clayton Otey"
+msgstr ""
+
+#: effects/TimeScale.cpp:187
+msgid "Initial Tempo Change (%):"
+msgstr ""
+
+#: effects/TimeScale.cpp:191
+msgid "Final Tempo Change (%):"
+msgstr ""
+
+#: effects/TimeScale.cpp:202
+msgid "Initial Tempo Change (%)"
+msgstr ""
+
+#: effects/TimeScale.cpp:211
+msgid "Final Tempo Change (%)"
+msgstr ""
+
+#: effects/TimeScale.cpp:219
+msgid "Initial Pitch Shift (semitones) [-12 to 12]:"
+msgstr ""
+
+#: effects/TimeScale.cpp:223
+msgid "Final Pitch Shift (semitones) [-12 to 12]:"
+msgstr ""
+
+#: effects/TimeScale.h:33
+msgid "Sliding Time Scale/Pitch Shift..."
+msgstr ""
+
+#: effects/TimeScale.h:47
+msgid "Changing Tempo/Pitch"
+msgstr ""
+
 #: effects/ToneGen.cpp:61
 #, c-format
 msgid "Applied effect: Generate %s wave %s, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"
@@ -5875,6 +6021,22 @@ msgstr "Częstotliwość (Hz)"
 #: effects/ToneGen.cpp:348
 msgid "Waveform:"
 msgstr "Przebieg czasowy:"
+
+#: effects/ToneGen.cpp:358
+msgid "Frequency Hertz Start"
+msgstr ""
+
+#: effects/ToneGen.cpp:359
+msgid "Frequency Hertz End"
+msgstr ""
+
+#: effects/ToneGen.cpp:360
+msgid "Amplitude Start"
+msgstr ""
+
+#: effects/ToneGen.cpp:361
+msgid "Amplitude End"
+msgstr ""
 
 #: effects/ToneGen.cpp:365
 #, fuzzy
@@ -6107,11 +6269,13 @@ msgstr "Ustawienia Wtyczki"
 msgid "Program"
 msgstr "Program"
 
-#: export/Export.cpp:467
-msgid "No tracks are selected! Use Ctrl-A (Select All)\n"
-"Choose Export... to export all tracks."
-msgstr "Żadne ścieżki nie zostały zaznaczone! Użyj Ctrl-A (Zaznacz wszystkie)\n"
-"Wybierz Eksportuj... , aby eksportować wszystkie ścieżki."
+#: export/Export.cpp:469
+msgid "All the selected audio is muted."
+msgstr ""
+
+#: export/Export.cpp:471
+msgid "All the audio is muted."
+msgstr ""
 
 #: export/Export.cpp:522
 msgid "Export File"
@@ -6222,6 +6386,22 @@ msgstr "Eksportowanie całego projektu przy użyciu enkodera z lini poleceń"
 msgid "Command Output"
 msgstr "Polecenie Wyjściowe"
 
+#: export/ExportFFmpeg.cpp:59
+msgid "Properly configured FFmpeg is required to proceed.\n"
+"You can configure it in Preferences->Import/Export."
+msgstr ""
+
+#: export/ExportFFmpeg.cpp:394
+#, c-format
+msgid "FFmpeg cannot find audio codec 0x%x.\n"
+"Support for this codec is probably not compiled in."
+msgstr ""
+
+#: export/ExportFFmpeg.cpp:614
+#, c-format
+msgid "Attempted to export %d channels, but max. channels for selected output format is %d"
+msgstr ""
+
 #: export/ExportFFmpeg.cpp:638
 #, fuzzy, c-format
 msgid "Exporting selected audio as %s"
@@ -6330,6 +6510,19 @@ msgstr "Nadpisz istniejące pliki"
 msgid "Confirm Overwrite"
 msgstr "Potwierdź Usunięcie"
 
+#: export/ExportFFmpegDialogs.cpp:501
+msgid "Please select format before saving a profile"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:509
+msgid "Please select codec before saving a profile"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:580
+#, c-format
+msgid "Preset '%s' does not exist."
+msgstr ""
+
 #: export/ExportFFmpegDialogs.cpp:803
 #, fuzzy
 msgid "Specify Other Options"
@@ -6396,6 +6589,10 @@ msgstr "Wspierane formaty"
 #, fuzzy
 msgid "Show All Codecs"
 msgstr "Pokaż/Ukryj"
+
+#: export/ExportFFmpegDialogs.cpp:914
+msgid "Options"
+msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:931
 #: prefs/GUIPrefs.cpp:166
@@ -6465,6 +6662,18 @@ msgstr ""
 msgid "AAC Profile\n"
 "Low Complexity -default\n"
 "Most players won't play anything other than LC"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:940
+msgid "Use Bit Reservoir"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:943
+msgid "Use Variable Block Length"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:948
+msgid "FLAC options"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:965
@@ -6563,6 +6772,14 @@ msgid "Maximal partition order\n"
 "max - 8"
 msgstr ""
 
+#: export/ExportFFmpegDialogs.cpp:977
+msgid "Use LPC"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:984
+msgid "MPEG container options"
+msgstr ""
+
 #: export/ExportFFmpegDialogs.cpp:1001
 #, fuzzy
 msgid "Mux Rate:"
@@ -6585,6 +6802,10 @@ msgid "Packet size\n"
 "0 - default"
 msgstr ""
 
+#: export/ExportFFmpegDialogs.cpp:1207
+msgid "You can't delete a preset without name"
+msgstr ""
+
 #: export/ExportFFmpegDialogs.cpp:1219
 #, fuzzy, c-format
 msgid "Delete preset '%s'?"
@@ -6598,10 +6819,22 @@ msgstr ""
 msgid "Select xml file with presets to import"
 msgstr ""
 
+#: prefs/KeyConfigPrefs.cpp:202
+msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*"
+msgstr "Pliki xml (*.xml)|*.xml|Wszystkie pliki (*.*)|*.*"
+
 #: export/ExportFFmpegDialogs.cpp:1292
 #, fuzzy
 msgid "Select xml file to export presets into"
 msgstr "Zaznacz plik(i) do przetwarzania wsadowego..."
+
+#: export/ExportFFmpegDialogs.cpp:1361
+msgid "Failed to guess format"
+msgstr ""
+
+#: export/ExportFFmpegDialogs.cpp:1403
+msgid "Failed to find the codec"
+msgstr ""
 
 #: export/ExportFFmpegDialogs.h:53
 msgid "M4A (AAC) Files (FFmpeg)"
@@ -6874,6 +7107,12 @@ msgstr "Audacity potrzebuje pliku %s do stworzenia pliku MP3."
 msgid "To get a free copy of Lame, click here -->"
 msgstr "Aby otrzymać darmową kopię Lame, kliknij tutaj -->"
 
+#: export/ExportMP3.cpp:1070
+#, c-format
+msgid "You are linking to lame_enc.dll v%d.%d. This version is not compatible with Audacity %d.%d.%d.\n"
+"Please download the latest version of the LAME MP3 library."
+msgstr ""
+
 #: export/ExportMP3.cpp:1094
 msgid "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
 msgstr "Tylko lame_enc.dll|lame_enc.dll|Biblioteki dynamiczne (*.dll)|*.dll|All Files (*.*)|*"
@@ -6952,9 +7191,9 @@ msgid "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
 msgstr "Częstotliwość próbkowania (%d) nie jest wspierana przez format\n"
 "plików MP3."
 
-#: export/ExportMP3.cpp:2110
-msgid "MP3 exporting plugin not found"
-msgstr "Wtyczka do eksportu MP3 nie została znaleziona"
+#: export/ExportMP3.cpp:1965
+msgid "MP3 export library not found"
+msgstr ""
 
 #: export/ExportMultiple.cpp:96
 #: export/ExportMultiple.cpp:426
@@ -7137,18 +7376,18 @@ msgstr "Kodowanie: "
 msgid "(Not all combinations of headers and encodings are possible.)"
 msgstr "(Nie wszystkie kombinacje nagłówkówi kodowań są możliwe.)"
 
-#: export/ExportPCM.cpp:351
-msgid "WAV (Microsoft) signed 16 bit PCM"
-msgstr ""
+#: export/ExportPCM.cpp:369
+#, fuzzy
+msgid "Other uncompressed files"
+msgstr "Podczas importowania nieskompresowanych plików audio"
 
 #: export/ExportPCM.cpp:361
 msgid "AIFF (Apple) signed 16 bit PCM"
 msgstr ""
 
-#: export/ExportPCM.cpp:369
-#, fuzzy
-msgid "Other uncompressed files"
-msgstr "Podczas importowania nieskompresowanych plików audio"
+#: export/ExportPCM.cpp:351
+msgid "WAV (Microsoft) signed 16 bit PCM"
+msgstr ""
 
 #: export/ExportPCM.cpp:387
 msgid "GSM 6.10 WAV (mobile)"
@@ -7173,6 +7412,30 @@ msgstr "Eksportowanie całego projektu jako %s"
 #, c-format
 msgid "Error (file may not have been written): %s"
 msgstr "Błąd (możliwe że plik nie został zapisany): %hs"
+
+#: export/ExportPCM.cpp:723
+msgid "There are no options for this format.\n"
+msgstr ""
+
+#. i18n-hint: This is pointing users at another possible export format in
+#. * the list. So you should translate the quoted string
+#. * 'Other uncompressed files' exactly the same as you do the same string
+#. * when it comes up on it's own.
+#: export/ExportPCM.cpp:728
+msgid "If you need more control over the export format please use the 'Other uncompressed files' format."
+msgstr ""
+
+#: export/ExportPCM.cpp:733
+msgid "Your file will be exported as a 16-bit AIFF (Apple/SGI) file.\n"
+msgstr ""
+
+#: export/ExportPCM.cpp:738
+msgid "Your file will be exported as a 16-bit WAV (Microsoft) file.\n"
+msgstr ""
+
+#: export/ExportPCM.cpp:743
+msgid "Your file will be exported as a GSM 6.10 WAV file.\n"
+msgstr ""
 
 #: import/Import.cpp:156
 #: import/ImportMP3.cpp:47
@@ -7333,9 +7596,9 @@ msgstr "Audacity nie rozpoznało formatu tego pliku.\n"
 msgid "FFmpeg-compatible files"
 msgstr ""
 
-#: import/ImportFFmpeg.cpp:427
+#: import/ImportFFmpeg.cpp:431
 #, c-format
-msgid "Index[%02x] Codec[%S], Language[%S], Duration[%d]"
+msgid "Index[%02x] Codec[%S], Language[%S], Bitrate[%S], Channels[%d], Duration[%d]"
 msgstr ""
 
 #: import/ImportFLAC.cpp:43
@@ -7420,11 +7683,6 @@ msgstr "Wewnętrzny błąd logiczny"
 #: import/ImportPCM.cpp:54
 msgid "WAV, AIFF, and other uncompressed types"
 msgstr "WAV, AIFF i inne nieskompresowane rodzaje"
-
-#: import/ImportPCM.cpp:438
-#, c-format
-msgid "Importing %s File..."
-msgstr "Importowanie pliku %s..."
 
 #: import/ImportPlugin.h:142
 #: import/ImportRaw.cpp:203
@@ -7752,10 +8010,9 @@ msgstr "Wersja biblioteki MP3:"
 msgid "MP3 Library:"
 msgstr "Wersja biblioteki MP3:"
 
-#: prefs/FileFormatPrefs.cpp:96
-#: prefs/FileFormatPrefs.cpp:120
-msgid "&Find Library"
-msgstr "&Znajdź Bibliotekę"
+#: prefs/FileFormatPrefs.cpp:96 prefs/FileFormatPrefs.cpp:120
+msgid "&Locate..."
+msgstr ""
 
 #: prefs/FileFormatPrefs.cpp:98
 #, fuzzy
@@ -7982,6 +8239,14 @@ msgstr "przycisk"
 msgid "Keyboard"
 msgstr "Klawiatura"
 
+#: prefs/KeyConfigPrefs.cpp:86
+msgid "Keyboard preferences currently unavailable."
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:87
+msgid "Open a new project to modify keyboard shortcuts."
+msgstr ""
+
 #: prefs/KeyConfigPrefs.cpp:95
 msgid "Key Bindings"
 msgstr "Powiązania klawiaturowe"
@@ -8014,10 +8279,6 @@ msgstr "Błąd zapisu skrótów klawiszowych"
 #: prefs/KeyConfigPrefs.cpp:198
 msgid "Select an XML file containing Audacity keyboard shortcuts..."
 msgstr "Zaznacz plik XML zawierający skróty klawiszowe programu Audacity..."
-
-#: prefs/KeyConfigPrefs.cpp:202
-msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*"
-msgstr "Pliki xml (*.xml)|*.xml|Wszystkie pliki (*.*)|*.*"
 
 #: prefs/KeyConfigPrefs.cpp:215
 msgid "Error loading keyboard shortcuts"
@@ -8586,10 +8847,6 @@ msgstr "Zapisywanie i ładowanie plików tematu używa  \n"
 "osobnych plików do każdego obrazu, ale poza tym jest to ten sam  \n"
 "pomysł.\n"
 "\n"
-
-#: toolbars/ControlToolBar.cpp:83
-msgid "Control"
-msgstr "Kontrola"
 
 #: toolbars/ControlToolBar.cpp:175
 msgid "Pause"
@@ -9178,6 +9435,21 @@ msgstr "gg:mm:ss"
 #: widgets/TimeTextCtrl.cpp:285
 msgid "0100 days 024 h 060 m 060 s"
 msgstr "0100 dni 024 g 060 m 060 s"
+
+#. i18n-hint: Name of time display format that shows time in hours,
+#. * minutes, seconds and hundreths of a second (1/100 second)
+#: widgets/TimeTextCtrl.cpp:288
+msgid "hh:mm:ss + hundredths"
+msgstr ""
+
+#. i18n-hint: Format string for displaying time in hours, minutes, seconds
+#. * and hundredths of a second. Change the 'h' to the abbreviation for hours,
+#. * 'm' to the abbreviation for minutes and 's' to the abbreviation for seconds (the
+#. * hundredths are shown as decimal seconds) . Don't change the numbers
+#. * unless there aren't 60 minutes in an hour in your locale
+#: widgets/TimeTextCtrl.cpp:294
+msgid "0100 h 060 m 060.0100 s"
+msgstr ""
 
 #. i18n-hint: Name of time display format that shows time in hours,
 #. * minutes, seconds and milliseconds (1/1000 second)
