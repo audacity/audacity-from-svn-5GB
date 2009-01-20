@@ -40,6 +40,9 @@ do
    cp -pR "mac/build/Release Static/$SUBDIR" "$DMG"
 done
 
+# Strip binary
+strip "$DMG/Audacity.app/Contents/MacOS/"*
+
 # Install misc files
 cp -pR README.txt LICENSE.txt "$DMG"
 
