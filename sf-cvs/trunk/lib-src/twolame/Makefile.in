@@ -41,7 +41,8 @@ DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	build/config.sub build/depcomp build/install-sh \
 	build/ltmain.sh build/missing build/mkinstalldirs
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/build/m4/libtool.m4 \
+	$(top_srcdir)/build/m4/pkg.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -143,6 +144,7 @@ SHELL = @SHELL@
 SNDFILE_CFLAGS = @SNDFILE_CFLAGS@
 SNDFILE_LIBS = @SNDFILE_LIBS@
 STRIP = @STRIP@
+STWOLAME_BIN = @STWOLAME_BIN@
 TWOLAME_BIN = @TWOLAME_BIN@
 TWOLAME_SO_VERSION = @TWOLAME_SO_VERSION@
 VERSION = @VERSION@
@@ -216,6 +218,9 @@ EXTRA_DIST = \
 	win32/libtwolame_static.vcproj \
 	win32/winutil.h
 
+
+#tell aclocal where extra macros can be found
+ACLOCAL_AMFLAGS = -I build/m4
 all: all-recursive
 
 .SUFFIXES:

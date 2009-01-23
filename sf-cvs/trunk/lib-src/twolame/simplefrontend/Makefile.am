@@ -2,7 +2,8 @@
 AM_CFLAGS = -I../libtwolame/
 
 # This is just sample code - don't install it
-noinst_PROGRAMS = stwolame
+noinst_PROGRAMS = @STWOLAME_BIN@
+EXTRA_PROGRAMS = stwolame
 
 stwolame_SOURCES = \
 	simplefrontend.c \
