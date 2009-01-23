@@ -45,9 +45,11 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSBSMS], [
       LIBSBSMS_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/sbsms/include'
       LIBSBSMS_LOCAL_CPPSYMBOLS="USE_SBSMS"
 
-      if test ! -f lib-src/sbsms/Makefile ; then
-         LIBSBSMS_LOCAL_CONFIG_SUBDIRS="lib-src/sbsms"
-      fi
+	  dnl set up configuring sbsms
+      LIBSBSMS_LOCAL_CONFIG_SUBDIRS="lib-src/sbsms"
+	  ac_configure_args="$ac_configure_args --disable-programs"
+	  dnl do not build programs we don't need
+
       AC_MSG_NOTICE([libsbsms libraries are available in the local tree])
    else
       LIBSBSMS_LOCAL_AVAILABLE="no"
