@@ -1,18 +1,20 @@
 # Copyright (C) 1999-2006 Erik de Castro Lopo (erikd AT mega-nerd DOT com).
 
 dnl Require autoconf version
-AC_PREREQ(2.59)
+AC_PREREQ(2.63)
 
 AC_INIT([libsndfile],[1.0.17],[erikd@mega-nerd.com])
 AC_CONFIG_SRCDIR([src/sndfile.c])
 AC_CANONICAL_TARGET([])
 
-AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
+AM_INIT_AUTOMAKE([-Wall])
 dnl Audacity policy: don't enable automatic rebuild of configure et al if 
 dnl sources change
 AM_MAINTAINER_MODE([enabled])
 
 AC_CONFIG_HEADERS([src/config.h])
+dnl keep macros in M4/
+AC_CONFIG_MACRO_DIR([M4])
 
 AC_LANG([C])
 
@@ -35,6 +37,8 @@ AC_LANG([C])
 SHARED_VERSION_INFO="1:17:0"
 
 AC_PROG_CC
+AM_PROG_CC_C_O
+AC_PROG_CXX
 AM_PROG_LIBTOOL
 
 AC_CHECK_PROG(autogen, autogen, yes, no)
@@ -80,7 +84,7 @@ SHLIB_VERSION_ARG=""
 # Finished checking, handle options.
 
 AC_ARG_ENABLE(experimental,
-	AC_HELP_STRING([--enable-experimental], [enable experimental code]))
+	AS_HELP_STRING([--enable-experimental],[enable experimental code]))
 
 EXPERIMENTAL_CODE=0
 if test x$enable_experimental = xyes ; then
@@ -89,28 +93,28 @@ if test x$enable_experimental = xyes ; then
 AC_DEFINE_UNQUOTED([ENABLE_EXPERIMENTAL_CODE],${EXPERIMENTAL_CODE}, [Set to 1 to enable experimental code.])
 
 AC_ARG_ENABLE(gcc-werror,
-	AC_HELP_STRING([--enable-gcc-werror], [enable -Werror in all Makefiles]))
+	AS_HELP_STRING([--enable-gcc-werror],[enable -Werror in all Makefiles]))
 
 AC_ARG_ENABLE(gcc-pipe,
-	AC_HELP_STRING([--disable-gcc-pipe], [disable gcc -pipe option]))
+	AS_HELP_STRING([--disable-gcc-pipe],[disable gcc -pipe option]))
 
 AC_ARG_ENABLE(gcc-opt,
-	AC_HELP_STRING([--disable-gcc-opt], [disable gcc optimisations]))
+	AS_HELP_STRING([--disable-gcc-opt],[disable gcc optimisations]))
 
 AC_ARG_ENABLE(cpu-clip,
-	AC_HELP_STRING([--disable-cpu-clip], [disable tricky cpu specific clipper]))
+	AS_HELP_STRING([--disable-cpu-clip],[disable tricky cpu specific clipper]))
 
 AC_ARG_ENABLE(bow-docs,
-	AC_HELP_STRING([--enable-bow-docs], [enable black-on-white html docs]))
+	AS_HELP_STRING([--enable-bow-docs],[enable black-on-white html docs]))
 
 AC_ARG_ENABLE(sqlite,
-	AC_HELP_STRING([--disable-sqlite], [disable use of sqlite]))
+	AS_HELP_STRING([--disable-sqlite],[disable use of sqlite]))
 
 AC_ARG_ENABLE(flac,
-	AC_HELP_STRING([--disable-flac], [disable use of FLAC]))
+	AS_HELP_STRING([--disable-flac],[disable use of FLAC]))
 
 AC_ARG_ENABLE(alsa,
-	AC_HELP_STRING([--disable-alsa], [disable use of ALSA]))
+	AS_HELP_STRING([--disable-alsa],[disable use of ALSA]))
 
 #====================================================================================
 # Check types and their sizes.

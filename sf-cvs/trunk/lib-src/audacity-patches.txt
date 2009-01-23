@@ -104,6 +104,11 @@ to audacity.
 Version in Audacity CVS: 1.0.17
 Patches:  wav-bext.patch: backport patch from 1.0.18 of a patch to fix reading
 bext chunks in WAV files
+		  update-autotools.patch: backport patch from 1.0.18pre25 to use an M4
+		  directory for m4 macro files, and other changes so that the source
+		  tree will take libtoolise --copy --force; aclocal -I M4 --install;
+		  autoreconf and generate a working build system on any reasonably
+		  sensible host.
 AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
 by default
 Upstream Version: 1.0.17

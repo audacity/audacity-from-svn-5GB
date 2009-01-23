@@ -1,5 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
+# tell aclocal that extra macros can be found in autotools/m4/
+ACLOCAL_AMFLAGS = -I M4
+
 SUBDIRS = man doc Win32 Octave src examples regtest tests
 DIST_SUBDIRS = $(SUBDIRS)
 EXTRA_DIST = reconfigure.mk acinclude.m4 libsndfile.spec.in \
