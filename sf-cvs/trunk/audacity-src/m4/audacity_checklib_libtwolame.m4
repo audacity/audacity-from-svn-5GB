@@ -44,10 +44,12 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
       LIBTWOLAME_LOCAL_LIBS="libtwolame.a"
       LIBTWOLAME_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/twolame/libtwolame'
       LIBTWOLAME_LOCAL_CPPSYMBOLS="USE_LIBTWOLAME"
+	
+	  dnl request library is configured
+      LIBTWOLAME_LOCAL_CONFIG_SUBDIRS="lib-src/twolame"
+	  dnl disable programs we don't need to build
+	  ac_configure_args="$ac_configure_args --disable-programs"
 
-      if test ! -f lib-src/twolame/Makefile ; then
-         LIBTWOLAME_LOCAL_CONFIG_SUBDIRS="lib-src/twolame"
-      fi
       AC_MSG_NOTICE([libtwolame library is available in the local tree])
    else
       LIBTWOLAME_LOCAL_AVAILABLE="no"
