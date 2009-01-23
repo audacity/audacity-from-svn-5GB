@@ -9,6 +9,8 @@ AC_INIT([twolame], [0.3.12], [twolame-discuss@lists.sourceforge.net])
 
 AC_CONFIG_SRCDIR(libtwolame/twolame.h)
 AC_CONFIG_AUX_DIR(build)
+dnl we have some extra m4 macros to point at
+AC_CONFIG_MACRO_DIR([build/m4])
 AC_CANONICAL_SYSTEM
 
 dnl Version 1.7 of automake is recommended
@@ -63,7 +65,16 @@ AC_ARG_ENABLE(debug,
 	  [ Debugging="Disabled" ]
 )
 
+AC_ARG_ENABLE(programs, 
+      [AS_HELP_STRING([--enable-programs],
+		[compile front-end programs as well as libtwolame [default=yes]])],
+	  FRONTEND_ARG=$enableval,
+	  FRONTEND_ARG="yes")
 
+BUILD_FRONTEND="no"
+if test "x$FRONTEND_ARG" = "xyes" ; then
+	BUILD_FRONTEND="yes"
+fi
 
 dnl ############## Check that types are the right size
 
@@ -86,21 +97,23 @@ AC_CHECK_LIB([m], [sqrt])
 AC_CHECK_LIB([m], [lrintf])
 AC_CHECK_LIB([mx], [powf])
 
-PKG_CHECK_MODULES(SNDFILE, sndfile >= 1.0.0,
-	[ HAVE_SNDFILE="yes" ],
-	[ AC_CHECK_LIB( [sndfile], [sf_command],
-		[ AC_CHECK_HEADER( [sndfile.h],
-			[ HAVE_SNDFILE="yes"
-			  SNDFILE_CFLAGS="" 
-			  SNDFILE_LIBS="-lsndfile" ],
-			[ AC_MSG_WARN([Can't find sndfile.h on your system]) ] ) ],
-		[ AC_MSG_WARN([Can't find libsndfile library on your system]) ]
-	) ]
-)
+dnl we only need to do this test if we are building front-ends
+if test "x$BUILD_FRONTEND" = "xyes"; then
+	PKG_CHECK_MODULES(SNDFILE, sndfile >= 1.0.0,
+		[ HAVE_SNDFILE="yes" ],
+		[ AC_CHECK_LIB( [sndfile], [sf_command],
+			[ AC_CHECK_HEADER( [sndfile.h],
+				[ HAVE_SNDFILE="yes"
+				  SNDFILE_CFLAGS="" 
+				  SNDFILE_LIBS="-lsndfile" ],
+				[ AC_MSG_WARN([Can't find sndfile.h on your system]) ] ) ],
+			[ AC_MSG_WARN([Can't find libsndfile library on your system]) ]
+		) ]
+	)
 			
-AC_SUBST(SNDFILE_CFLAGS)
-AC_SUBST(SNDFILE_LIBS)
-
+	AC_SUBST(SNDFILE_CFLAGS)
+	AC_SUBST(SNDFILE_LIBS)
+fi
 
 
 dnl ############## Header Checks
@@ -130,19 +143,28 @@ fi
 
 
 
-dnl ############## Only compile frontend if sndfile is available
+dnl ############## Only compile full frontend if sndfile is available, 
+dnl only compile anything if it wasn't asked to turn it off
 
-TWOLAME_BIN=""
-if test "x$HAVE_SNDFILE" = "xyes"; then
-	if test "$HAVE_GETOPT_H" = "yes"; then
-		TWOLAME_BIN="twolame${EXEEXT}"
-	else
-		AC_MSG_WARN([Not building twolame frontend because getopt.h is missing.])
+if test "x$BUILD_FRONTEND" = "xyes" ; then
+	STWOLAME_BIN="stwolame${EXEEXT}"	;dnl build simple frontend - no deps
+	TWOLAME_BIN=""	;dnl don't build full unless we have it's deps
+	if test "x$HAVE_SNDFILE" = "xyes"; then
+		if test "$HAVE_GETOPT_H" = "yes"; then
+			TWOLAME_BIN="twolame${EXEEXT}"
+		else
+			AC_MSG_WARN([Not building twolame frontend because getopt.h is missing.])
+		fi
+	else 
+		AC_MSG_WARN([Not building twolame frontend because libsndfile is missing.])
 	fi
-else 
-	AC_MSG_WARN([Not building twolame frontend because libsndfile is missing.])
+else
+	TWOLAME_BIN=""	;dnl don't build
+	STWOLAME_BIN="" ;dnl either binary to simplify build
 fi
+
 AC_SUBST(TWOLAME_BIN)
+AC_SUBST(STWOLAME_BIN)
 
 
 dnl ############## Final Output
