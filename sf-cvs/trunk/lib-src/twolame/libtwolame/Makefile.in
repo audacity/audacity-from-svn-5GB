@@ -38,7 +38,8 @@ subdir = libtwolame
 DIST_COMMON = $(include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/build/m4/libtool.m4 \
+	$(top_srcdir)/build/m4/pkg.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/build/mkinstalldirs
@@ -141,6 +142,7 @@ SHELL = @SHELL@
 SNDFILE_CFLAGS = @SNDFILE_CFLAGS@
 SNDFILE_LIBS = @SNDFILE_LIBS@
 STRIP = @STRIP@
+STWOLAME_BIN = @STWOLAME_BIN@
 TWOLAME_BIN = @TWOLAME_BIN@
 TWOLAME_SO_VERSION = @TWOLAME_SO_VERSION@
 VERSION = @VERSION@

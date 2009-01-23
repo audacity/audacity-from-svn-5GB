@@ -5741,8 +5741,6 @@ fi
       { $as_echo "$as_me:$LINENO: libsndfile libraries are available in this source tree" >&5
 $as_echo "$as_me: libsndfile libraries are available in this source tree" >&6;}
 
-            export SNDFILE_LIBS="'`pwd`/lib-src/libsndfile.a'"
-      export SNDFILE_CFLAGS="'-I`pwd`/lib-src/libsndfile/src'"
 
             ac_configure_args="$ac_configure_args --disable-sqlite --disable-flac --disable-alsa"
    else
@@ -7522,9 +7520,9 @@ fi
       LIBSBSMS_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/sbsms/include'
       LIBSBSMS_LOCAL_CPPSYMBOLS="USE_SBSMS"
 
-      if test ! -f lib-src/sbsms/Makefile ; then
-         LIBSBSMS_LOCAL_CONFIG_SUBDIRS="lib-src/sbsms"
-      fi
+	        LIBSBSMS_LOCAL_CONFIG_SUBDIRS="lib-src/sbsms"
+	  ac_configure_args="$ac_configure_args --disable-programs"
+
       { $as_echo "$as_me:$LINENO: libsbsms libraries are available in the local tree" >&5
 $as_echo "$as_me: libsbsms libraries are available in the local tree" >&6;}
    else
@@ -7887,6 +7885,8 @@ fi
 	        LIBVAMP_LOCAL_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
 	  	        LIBVAMP_LOCAL_CPPSYMBOLS="USE_VAMP"
 	        LIBVAMP_LOCAL_CONFIG_SUBDIRS="lib-src/libvamp"
+	  ac_configure_args="$ac_configure_args --disable-programs"
+
       { $as_echo "$as_me:$LINENO: Vamp libraries are available in the local tree" >&5
 $as_echo "$as_me: Vamp libraries are available in the local tree" >&6;}
    else
@@ -8031,9 +8031,9 @@ fi
       LIBTWOLAME_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/twolame/libtwolame'
       LIBTWOLAME_LOCAL_CPPSYMBOLS="USE_LIBTWOLAME"
 
-      if test ! -f lib-src/twolame/Makefile ; then
-         LIBTWOLAME_LOCAL_CONFIG_SUBDIRS="lib-src/twolame"
-      fi
+	        LIBTWOLAME_LOCAL_CONFIG_SUBDIRS="lib-src/twolame"
+	  	  ac_configure_args="$ac_configure_args --disable-programs"
+
       { $as_echo "$as_me:$LINENO: libtwolame library is available in the local tree" >&5
 $as_echo "$as_me: libtwolame library is available in the local tree" >&6;}
    else

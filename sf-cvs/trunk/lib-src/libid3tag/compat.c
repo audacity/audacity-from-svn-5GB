@@ -1,8 +1,7 @@
-/* C code produced by gperf version 3.0.1 */
+/* C code produced by gperf version 3.0.3 */
 /* Command-line: gperf -tCcTonD -K id -N id3_compat_lookup -s -3 -k '*' compat.gperf  */
 
-// JKC: use a #define because MSVC barfs on continuation characters for a #if
-#define CHAR_SET_FAILS  !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
+#if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
       && ('%' == 37) && ('&' == 38) && ('\'' == 39) && ('(' == 40) \
       && (')' == 41) && ('*' == 42) && ('+' == 43) && (',' == 44) \
       && ('-' == 45) && ('.' == 46) && ('/' == 47) && ('0' == 48) \
@@ -25,8 +24,6 @@
       && ('s' == 115) && ('t' == 116) && ('u' == 117) && ('v' == 118) \
       && ('w' == 119) && ('x' == 120) && ('y' == 121) && ('z' == 122) \
       && ('{' == 123) && ('|' == 124) && ('}' == 125) && ('~' == 126))
-
-#if CHAR_SET_FAILS
 /* The character set is not based on ISO-646.  */
 error "gperf generated tables don't work with this execution character set. Please report a bug to <bug-gnu-gperf@gnu.org>."
 #endif
@@ -51,7 +48,7 @@ error "gperf generated tables don't work with this execution character set. Plea
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * Id: compat.gperf,v 1.11 2004/01/23 09:41:32 rob Exp 
+ * Id: compat.gperf,v 1.3 2004/06/08 06:38:14 dmazzoni Exp 
  */
 
 # ifdef HAVE_CONFIG_H
@@ -150,6 +147,9 @@ hash (str, len)
 
 #ifdef __GNUC__
 __inline
+#ifdef __GNUC_STDC_INLINE__
+__attribute__ ((__gnu_inline__))
+#endif
 #endif
 const struct id3_compat *
 id3_compat_lookup (str, len)
