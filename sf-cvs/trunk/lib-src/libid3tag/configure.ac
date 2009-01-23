@@ -17,7 +17,7 @@ dnl You should have received a copy of the GNU General Public License
 dnl along with this program; if not, write to the Free Software
 dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 dnl
-AC_REVISION([$Id: configure.ac,v 1.4 2009-01-18 00:29:03 richardash1981 Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.5 2009-01-23 23:39:44 richardash1981 Exp $])dnl
 
 dnl Process this file with autoconf to produce a configure script.
 
@@ -25,6 +25,8 @@ AC_INIT([ID3 Tag], [0.15.1b], [support@underbit.com], [libid3tag])
 AC_PREREQ(2.53)
 
 AC_CONFIG_SRCDIR([id3tag.h])
+
+AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE([-Wall foreign])
 
