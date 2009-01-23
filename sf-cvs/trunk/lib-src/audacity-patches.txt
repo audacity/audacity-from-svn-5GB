@@ -118,7 +118,8 @@ libvamp
 -------
 Library to load and use VAMP plug-ins. http://www.vamp-plugins.org/
 Version in Audacity CVS: 2.0
-Patches: none
+Patches: optional-progs.patch: Make building the Vamp host (and so the
+dependecy on libsndfile) optional rather than mandatory
 Upstream Version: 2.0
 
 libvorbis
