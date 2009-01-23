@@ -171,8 +171,8 @@ wxString TitleText( const wxString & Key )
       return _("No Local Help");
    }
    #if ((AUDACITY_BRANDING == BRAND_JAMLING__EASY) || (AUDACITY_BRANDING == BRAND_JAMLING__FULL))
-      if (Key == wxT("clickTrack"))
-         return _("How do I get rid of the metronome sound?");
+      //if (Key == wxT("clickTrack"))
+      //   return _("How do I get rid of the metronome sound?");
       if (Key == wxT("playSong"))
          return _("Play the Song I bought from Jamling");
       if (Key == wxT("jamlingRecord"))
@@ -232,8 +232,8 @@ wxString HelpTextBuiltIn( const wxString & Key )
                   wxString(wxT("")) +
                   _("</p><center><h3>I want to...</h3></center><br>") +
                   /** i18n-hint: where you see [[key|text]] translate 'text' and don't translate 'key' */
-                  _("<ul><li>How do I [[clickTrack|get rid of the metronome sound]]? \
-                        <li>[[playSong|Play]] the Song I bought from Jamling. \
+                  /* _("<ul><li>How do I [[clickTrack|get rid of the metronome sound]]? \ */
+                  _("<ul><li>[[playSong|Play]] the Song I bought from Jamling. \
                         <li>[[jamlingRecord|Record]] my instrument or voice. \
                         <li>[[fixTrack|Fix]] part of a Track. \
                         <br>&nbsp;<br> \
@@ -261,28 +261,26 @@ wxString HelpTextBuiltIn( const wxString & Key )
                   <li><a href=\"http://audacityteam.org/wiki/index.php?title=Troubleshooting_Recordings\"> \
                      Troubleshooting Recording</a> at Audacity Wiki</li> \
                </ul></p><br><br>") + ToWelcome());
-      if (Key == wxT("clickTrack"))
-         return WrapText(wxString(wxT("")) + 
-            _("<p><b>How do I get rid of the metronome sound?</b> \
-               <p>&nbsp;</p> \
-               <img src=\"") + strImagesDir + _("ClickTrack.jpg\"> \
-               <ul><li>If you hear an annoying tick-tock sound that isn't in the original recording, \
-                     the click track is on.</li> \
-                  <li>The click track is at the bottom of the main window, and if you press \
-                     the Mute button it will be silent.</li> \
-               </ul></p><br><br>") + MoreHelp() + ToWelcome());
+      //if (Key == wxT("clickTrack"))
+      //   return WrapText(wxString(wxT("")) + 
+      //      _("<p><b>How do I get rid of the metronome sound?</b> \
+      //         <p>&nbsp;</p> \
+      //         <img src=\"") + strImagesDir + _("ClickTrack.jpg\"> \
+      //         <ul><li>If you hear an annoying tick-tock sound that isn't in the original recording, \
+      //               the click track is on.</li> \
+      //            <li>The click track is at the bottom of the main window, and if you press \
+      //               the Mute button it will be silent.</li> \
+      //         </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("playSong"))
          return WrapText(wxString(wxT("")) + 
             _("<p><b>Play the Song I bought from Jamling</b> \
                <p>&nbsp;</p> \
-               <ul><li><img src=\"") + strImagesDir + _("PlayBtn.jpg\"> \
-                     Your Song should be loaded and ready to go - just press Play!</li> \
-                  <li>If your song didn't load properly, try importing the tracks from the top menu: \
-                     <i>File &gt; Import &gt; Audio</i>. \
-                  <li>The files will be named after the Song you bought \
-                     (drums-come_together.ogg, for example).</li> \
-                  <li>You can also drag the audio files from their folder and drop them into the \
-                     Audacity window to the left.</li> \
+               <ul><li>Unzip your Jamling purchase.</li> \
+                  <li>Open the Folder.</li> \
+                  <li>Double-click on the .AUP file with the headphones.<br> \
+                     <img src=\"") + strImagesDir + _("AUPfile.jpg\"></li> \
+                  <li>Press Play.<br> \
+                     <img src=\"") + strImagesDir + _("PlayBtn.jpg\"></li> \
                </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("jamlingRecord"))
          return WrapText(wxString(wxT("")) + 
@@ -332,9 +330,6 @@ wxString HelpTextBuiltIn( const wxString & Key )
                      in Audacity to start monitoring yourself.  \
                      (Be sure to plug in headphones first.)  \
                      You'll experience an echo - don't worry, that's normal!</li>  \
-                  <li>If the echo is messing you up, you can try using Kristal, it's packaged with your \
-                     Jamling Song and you'll find help to get you started at the \
-                     <a href=\"http://jamling.com/content/using-kristal-record-jamling\">Jamling FAQ</a>.  </li> \
                </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("MacHints"))
          return WrapText(wxString(wxT("")) + 
@@ -441,8 +436,11 @@ wxString HelpTextBuiltIn( const wxString & Key )
       if (varKey == wxT("slowDown"))
          return WrapText(wxString(wxT("")) + 
                            _("<p><b>Slow down a section of this Song</b></p> \
-                             <p>Highlight the section you want to slow down and [[ChangeTempo|click here]].</p> \
-                             <br><br>") + MoreHelp() + ToWelcome());
+                              <p>Before slowing down, go to <i>File &gt; Save Project As</i> and name your \
+                                 session something new. \
+                                 This way you can always get back to the Song at the right speed!</p> \
+                              <p>Highlight the section you want to slow down and [[ChangeTempo|click here]].</p> \
+                              <br><br>") + MoreHelp() + ToWelcome());
       if (varKey == wxT("changeKey"))
          return WrapText(wxString(wxT("")) + 
                   _("<p><b>Change the key of this Song</b> \
@@ -484,6 +482,8 @@ wxString HelpTextBuiltIn( const wxString & Key )
                   _("<p><b>Get another Jamling\'s Track for this Song</b> \
                      <ul> \
                         <li>Go to <a href=\"http://jamling.com/content/jamling-stuff\">Jamling Stuff</a>.</li> \
+                        <li>Select the Track you want to download and double-click it.</li> \
+                        <li>Drag and drop the Track from your desktop (or wherever you downloaded it) into Audacity.</li> \
                      </ul></p><br><br>") + MoreHelp() + ToWelcome());
       if (Key == wxT("uploadProject"))
       {
