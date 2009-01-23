@@ -9,7 +9,7 @@ noinst_PROGRAMS = sfversion floating_point_test write_read_test \
 	locale_test largefile_test win32_ordinal_test cpp_test
 
 SNDFILEDIR = ../src
-INCLUDES = -I$(srcdir)/$(SNDFILEDIR)
+AM_CPPFLAGS = -I$(srcdir)/$(SNDFILEDIR)
 noinst_HEADERS = dft_cmp.h utils.h
 
 autogen_sources = write_read_test.tpl write_read_test.def	\
