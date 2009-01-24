@@ -229,7 +229,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void UpdateMenus();
    void UpdatePrefs();
    void UpdatePrefsVariables();
-   void RedrawProject();
+   void RedrawProject(const bool bForceWaveTracks = false);
    void RefreshCursor();
    void SelectNone();
    void SelectAllIfNone();
