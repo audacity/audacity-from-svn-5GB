@@ -132,7 +132,7 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
 
 bool Effect::TotalProgress(double frac)
 {
-   return !mProgress->Update(rint(frac));
+   return !mProgress->Update(frac);
 }
 
 bool Effect::TrackProgress(int whichTrack, double frac)

@@ -1234,6 +1234,15 @@ ProgressDialog::Update(int value, const wxString & message)
 // Update the time and, optionally, the message
 //
 bool
+ProgressDialog::Update(double current, const wxString & message)
+{
+   return Update((int)(current * 1000), message);
+}
+
+//
+// Update the time and, optionally, the message
+//
+bool
 ProgressDialog::Update(wxULongLong_t current, wxULongLong_t total, const wxString & message)
 {
    return Update((int)(current * 1000 / total), message);
