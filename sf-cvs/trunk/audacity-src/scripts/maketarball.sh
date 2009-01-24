@@ -322,6 +322,9 @@ cd "${topdir}"
 printf "Creating full source tarball .... "
 tar cf "audacity-fullsrc-${version}.tar" "${tarname}" 
 printf "Done\n"
+
+printf "Compressing full source tarball in the background .... "
+bzip2 "audacity-fullsrc-${version}.tar" &
 cd "${tardir}"
 
 # now we have the full source tarball, lets slim it down to the bits that 
@@ -337,6 +340,9 @@ cd "${topdir}"
 printf "Creating minimal source tarball .... "
 tar cf "audacity-minsrc-${version}.tar" "${tarname}" 
 printf "Done\n"
-cd "${tardir}"
 
+printf "Compressing minimal source tarball .... "
+bzip2 "audacity-minsrc-${version}.tar" 
+
+cd "${tardir}"
 printf "Done\n"
