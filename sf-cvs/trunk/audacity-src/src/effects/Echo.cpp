@@ -146,8 +146,12 @@ bool EffectEcho::ProcessOne(int count, WaveTrack * track,
 
       s += block;
       
-      if (TrackProgress(count, s / (double) len))
+      if (TrackProgress(count, s / (double) len)) {
+         delete[]buffer0;
+         delete[]buffer1;
+
          return false;
+      }
    }
 
    delete[]buffer0;
