@@ -911,9 +911,29 @@ void AudacityProject::UpdatePrefs()
    }
 }
 
-void AudacityProject::RedrawProject()
+void AudacityProject::RedrawProject(const bool bForceWaveTracks /*= false*/)
 {
    FixScrollbars();
+   if (bForceWaveTracks && mTracks)
+   {
+      TrackListIterator iter(mTracks);
+      Track* pTrack = iter.First();
+      while (pTrack) 
+      {
+         if (pTrack->GetKind() == Track::Wave)
+         {
+            WaveTrack* pWaveTrack = (WaveTrack*)pTrack;
+            WaveClipList::Node* node = pWaveTrack->GetClipIterator();
+            while (node) 
+            {
+               WaveClip *clip = node->GetData();
+               clip->MarkChanged();
+               node = node->GetNext();
+            }
+         }
+         pTrack = iter.Next();
+      }
+   }
    mTrackPanel->Refresh(false);
 }
 
