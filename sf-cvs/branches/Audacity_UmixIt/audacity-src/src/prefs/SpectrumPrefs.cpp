@@ -171,7 +171,7 @@ bool SpectrumPrefs::Apply()
    // Update the TrackPanel correspondingly. 
    // Calling RedrawProject is inefficient relative to sending a msg to TrackPanel 
    // for a particular track and control, but not a real performance hit.
-   GetActiveProject()->RedrawProject();
+   GetActiveProject()->RedrawProject(true);
 
    return true;
 

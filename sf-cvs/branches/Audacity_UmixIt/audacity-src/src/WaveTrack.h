@@ -97,7 +97,7 @@ class WaveTrack: public Track {
       PitchDisplay,
       WaveformAndSpectrumDisplay
    } WaveTrackDisplay;
-   void SetDisplay(int display) {mDisplay = display;}
+   void SetDisplay(int display) { mDisplay = display; this->MarkChanged(); }
    int GetDisplay() {return mDisplay;}
 
    void GetDisplayBounds(float *min, float *max);

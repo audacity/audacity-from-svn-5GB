@@ -63,7 +63,7 @@ enum {
 
    ETBZoomSelID,
    ETBZoomFitID,
-   #if (AUDACITY_BRANDING == BRAND_THINKLABS) || (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
       ETBZoomFitVertID,
    #endif
 

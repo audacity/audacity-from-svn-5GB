@@ -427,8 +427,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("ZoomOut",        _("Zoom &Out\tCtrl+3"),              FN(OnZoomOut));
    c->SetCommandFlags("ZoomOut", ZoomOutAvailableFlag, ZoomOutAvailableFlag);
 
-   c->AddItem("FitInWindow",    _("&Fit in Window\tCtrl+F"),         FN(OnZoomFit));
+   c->AddItem("FitInWindow",    _("&Fit Horizontally\tCtrl+F"),         FN(OnZoomFit));
    c->AddItem("FitV",           _("Fit &Vertically\tCtrl+Shift+F"),  FN(OnZoomFitV));
+   c->AddItem("FitBoth",        _("Fit &Both Horizontally and Vertically"),  FN(OnZoomFitBoth));
    c->AddItem("ZoomSel",        _("&Zoom to Selection\tCtrl+E"),     FN(OnZoomSel));
 
    #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
@@ -740,18 +741,34 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("NextTool",   _("Next Tool\tD"),                 FN(OnNextTool));
    c->AddCommand("PrevTool",   _("Previous Tool\tA"),             FN(OnPrevTool));
 
-   c->AddCommand("Play/Stop",   _("Play/Stop\tSpacebar"),         FN(OnPlayStop));
-   c->AddCommand("Stop",        _("Stop\tS"),                     FN(OnStop));
-   c->AddCommand("Pause",       _("Pause\tP"),                    FN(OnPause));
-   c->AddCommand("Record",      _("Record\tR"),                   FN(OnRecord));
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      c->AddCommand("Lock/Unlock", _("Lock/Unlock Recording\tCtrl+9"), FN(OnLockUnlock));
+      c->AddCommand("Play/Stop",   _("Play/Stop\tEnter"),            FN(OnPlayStop));
+      c->AddCommand("Stop",        _("Stop\tS"),                     FN(OnStop));
+      c->AddCommand("Pause",       _("Pause\tP"),                    FN(OnPause));
+      c->AddCommand("Record",      _("Record\tSpacebar"),            FN(OnRecord));
+   #else
+      c->AddCommand("Play/Stop",   _("Play/Stop\tSpacebar"),         FN(OnPlayStop));
+      c->AddCommand("Stop",        _("Stop\tS"),                     FN(OnStop));
+      c->AddCommand("Pause",       _("Pause\tP"),                    FN(OnPause));
+      c->AddCommand("Record",      _("Record\tR"),                   FN(OnRecord));
+   #endif
    
    c->AddCommand("PlayOneSec",     _("Play One Second\t1"),       FN(OnPlayOneSecond));
    c->AddCommand("PlayToSelection",_("Play To Selection\tB"),       FN(OnPlayToSelection));
    c->AddCommand("PlayLooped",     _("Play Looped\tL"),           FN(OnPlayLooped));
-   c->AddCommand("PlayLoopAlt",    _("Play Looped\tShift+Spacebar"), FN(OnPlayLooped));
 
-   c->AddCommand("SkipStart",   _("Skip to Start\tHome"),         FN(OnSkipStart));
-   c->AddCommand("SkipEnd",     _("Skip to End\tEnd"),            FN(OnSkipEnd));
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      c->AddCommand("PlayLoopAlt",    _("Play Looped\tShift+Enter"), FN(OnPlayLooped));
+   
+      c->AddCommand("SkipStart",   _("Starthead to Track Start\tCtrl+Left"),    FN(OnSkipStart));
+      c->AddCommand("SkipEnd",     _("Starthead to Track End\tCtrl+Right"),     FN(OnSkipEnd));
+   #else
+      c->AddCommand("PlayLoopAlt",    _("Play Looped\tShift+Spacebar"), FN(OnPlayLooped));
+   
+      c->AddCommand("SkipStart",   _("Skip to Start\tHome"),         FN(OnSkipStart));
+      c->AddCommand("SkipEnd",     _("Skip to End\tEnd"),            FN(OnSkipEnd));
+   #endif
 
    c->AddCommand("SelStart",    _("Selection to Start\tShift+Home"), FN(OnSelToStart));
    c->AddCommand("SelEnd",      _("Selection to End\tShift+End"),    FN(OnSelToEnd));
@@ -1187,6 +1204,15 @@ void AudacityProject::OnPlayLooped()
    ControlToolBar *toolbar = GetControlToolBar();
    toolbar->PlayCurrentRegion(true);
 }
+
+#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   void AudacityProject::OnLockUnlock()
+   {
+      ControlToolBar *toolbar = GetControlToolBar();
+      wxCommandEvent evt; //vvvvv
+      toolbar->OnLock(evt);
+   }
+#endif
 
 void AudacityProject::OnPlayStop()
 {
@@ -2545,6 +2571,12 @@ void AudacityProject::OnZoomFitV()
    FixScrollbars();
    Refresh(false);
    ModifyState();
+}
+
+void AudacityProject::OnZoomFitBoth()
+{
+   this->OnZoomFit();
+   this->OnZoomFitV();
 }
 
 void AudacityProject::OnZoomSel()
