@@ -409,7 +409,7 @@ int nyx_get_audio_num_channels()
       return 1;
 }
 
-void nyx_get_audio(nyx_audio_callback callback, void *userdata)
+int nyx_get_audio(nyx_audio_callback callback, void *userdata)
 {
    sample_block_type block;
    sound_type snd;
@@ -421,6 +421,7 @@ void nyx_get_audio(nyx_audio_callback callback, void *userdata)
    int result = 0;
    int num_channels;
    int ch, i;
+   int success = FALSE;
 
    if (nyx_get_type(nyx_result) != nyx_audio)
       return;
@@ -474,10 +475,15 @@ void nyx_get_audio(nyx_audio_callback callback, void *userdata)
          result = callback(buffer, ch,
                            totals[ch], cnt, userdata);
 
-         if (result == 0)
-            totals[ch] += cnt;
+         if (result != 0) {
+            break;
+         }
+
+         totals[ch] += cnt;
       }
    }
+
+   success = TRUE;
 
  finish:
       if (buffer)
@@ -486,6 +492,8 @@ void nyx_get_audio(nyx_audio_callback callback, void *userdata)
    free(totals);
 
    xlend(&nyx_cntxt);
+
+   return success;
 }
 
 int nyx_get_int()

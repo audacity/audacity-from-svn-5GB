@@ -683,7 +683,18 @@ bool EffectNyquist::ProcessOne()
       mCurBuffer[i] = NULL;
    }
 
-   nyx_get_audio(StaticPutCallback, (void *)this);
+   int success = nyx_get_audio(StaticPutCallback, (void *)this);
+
+   if (!success) {
+      for(i=0; i<outChannels; i++) {
+         delete mOutputTrack[i];
+         mOutputTrack[i] = NULL;
+      }
+
+      nyx_cleanup();
+      setlocale(LC_NUMERIC, "");
+      return false;
+   }
 
    for(i=0; i<outChannels; i++) {
       mOutputTrack[i]->Flush();
@@ -704,8 +715,10 @@ bool EffectNyquist::ProcessOne()
       mCurTrack[i]->HandlePaste(mT0, out);
    }
 
-   for(i=0; i<outChannels; i++)
+   for(i=0; i<outChannels; i++) {
       delete mOutputTrack[i];
+      mOutputTrack[i] = NULL;
+   }
 
    nyx_cleanup();
 
