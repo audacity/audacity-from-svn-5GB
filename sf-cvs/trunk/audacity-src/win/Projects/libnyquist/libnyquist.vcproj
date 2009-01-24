@@ -24,7 +24,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="set OUTDIR=&quot;$(InputDir)/$(ConfigurationName)&quot;&#x0D;&#x0A;set INTGEN=&quot;$(InputDir)/$(ConfigurationName)/intgen2.exe&quot;&#x0D;&#x0A;cd ..\..\..\lib-src\libnyquist&#x0D;&#x0A;cl /Fe%INTGEN% /D WIN32 /D NDEBUG /I win  /I cmt misc\intgen.c misc\cmdline.c&#x0D;&#x0A;%INTGEN% %OUTDIR%\sndfnint snd/snd.h nyqsrc/sound.h nyqsrc/downsample.h nyqsrc/sndread.h nyqsrc/sndseq.h nyqsrc/add.h nyqsrc/multiseq.h nyqsrc/samples.h nyqsrc/sndwrite.h nyqsrc/sndmax.h nyqsrc/compose.h nyqsrc/inverse.h nyqsrc/resamp.h nyqsrc/resampv.h nyqsrc/fft.h nyqsrc/avg.h tran/amosc.h tran/clip.h tran/const.h tran/fmosc.h tran/integrate.h tran/log.h tran/maxv.h tran/osc.h tran/prod.h tran/buzz.h tran/pwl.h tran/recip.h tran/upsample.h tran/scale.h tran/sine.h tran/partial.h tran/white.h tran/tone.h tran/tonev.h tran/atonev.h tran/atone.h tran/reson.h tran/areson.h tran/resonvc.h tran/resoncv.h tran/aresonvc.h tran/aresoncv.h tran/resonvv.h tran/aresonvv.h tran/offset.h tran/slope.h tran/delay.h tran/delaycv.h tran/shape.h tran/sampler.h tran/exp.h tran/siosc.h tran/follow.h tran/gate.h tran/quantize.h tran/ifft.h tran/congen.h tran/fromobject.h tran/fromarraystream.h tran/coterm.h tran/convolve.h tran/alpass.h tran/oneshot.h tran/chase.h tran/tapv.h tran/biquad.h tran/pluck.h tran/abs.h tran/sqrt.h tran/alpasscv.h tran/alpassvc.h&#x0D;&#x0A;%INTGEN% %OUTDIR%\seqfnint cmt/seqdecls.h nyqsrc/seqext.h cmt/seq.h nyqsrc/seqinterf.h cmt/seqread.h cmt/seqmread.h cmt/seqwrite.h cmt/seqmwrite.h&#x0D;&#x0A;"
+				CommandLine="set OUTDIR=$(InputDir)&#x0D;&#x0A;set INTGEN=&quot;$(InputDir)/$(ConfigurationName)/intgen.exe&quot;&#x0D;&#x0A;cd ..\..\..\lib-src\libnyquist&#x0D;&#x0A;cl /Fe%INTGEN% /D WIN32 /D NDEBUG /I win  /I cmt misc\intgen.c misc\cmdline.c&#x0D;&#x0A;%INTGEN% &quot;%OUTDIR%/sndfnint&quot; snd/snd.h nyqsrc/sound.h nyqsrc/downsample.h nyqsrc/sndread.h nyqsrc/sndseq.h nyqsrc/add.h nyqsrc/multiseq.h nyqsrc/samples.h nyqsrc/sndwrite.h nyqsrc/sndmax.h nyqsrc/compose.h nyqsrc/inverse.h nyqsrc/resamp.h nyqsrc/resampv.h nyqsrc/fft.h nyqsrc/avg.h tran/amosc.h tran/clip.h tran/const.h tran/fmosc.h tran/integrate.h tran/log.h tran/maxv.h tran/osc.h tran/prod.h tran/buzz.h tran/pwl.h tran/recip.h tran/upsample.h tran/scale.h tran/sine.h tran/partial.h tran/white.h tran/tone.h tran/tonev.h tran/atonev.h tran/atone.h tran/reson.h tran/areson.h tran/resonvc.h tran/resoncv.h tran/aresonvc.h tran/aresoncv.h tran/resonvv.h tran/aresonvv.h tran/offset.h tran/slope.h tran/delay.h tran/delaycv.h tran/shape.h tran/sampler.h tran/exp.h tran/siosc.h tran/follow.h tran/gate.h tran/quantize.h tran/ifft.h tran/congen.h tran/fromobject.h tran/fromarraystream.h tran/coterm.h tran/convolve.h tran/alpass.h tran/oneshot.h tran/chase.h tran/tapv.h tran/biquad.h tran/pluck.h tran/abs.h tran/sqrt.h tran/alpasscv.h tran/alpassvc.h&#x0D;&#x0A;%INTGEN% &quot;%OUTDIR%/seqfnint&quot; cmt/seqdecls.h nyqsrc/seqext.h cmt/seq.h nyqsrc/seqinterf.h cmt/seqread.h cmt/seqmread.h cmt/seqwrite.h cmt/seqmwrite.h&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -88,7 +88,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="set OUTDIR=&quot;$(InputDir)/$(ConfigurationName)&quot;&#x0D;&#x0A;set INTGEN=&quot;$(InputDir)/$(ConfigurationName)/intgen2.exe&quot;&#x0D;&#x0A;cd ..\..\..\lib-src\libnyquist&#x0D;&#x0A;cl /Fe%INTGEN% /D WIN32 /D NDEBUG /I win  /I cmt misc\intgen.c misc\cmdline.c&#x0D;&#x0A;%INTGEN% %OUTDIR%\sndfnint snd/snd.h nyqsrc/sound.h nyqsrc/downsample.h nyqsrc/sndread.h nyqsrc/sndseq.h nyqsrc/add.h nyqsrc/multiseq.h nyqsrc/samples.h nyqsrc/sndwrite.h nyqsrc/sndmax.h nyqsrc/compose.h nyqsrc/inverse.h nyqsrc/resamp.h nyqsrc/resampv.h nyqsrc/fft.h nyqsrc/avg.h tran/amosc.h tran/clip.h tran/const.h tran/fmosc.h tran/integrate.h tran/log.h tran/maxv.h tran/osc.h tran/prod.h tran/buzz.h tran/pwl.h tran/recip.h tran/upsample.h tran/scale.h tran/sine.h tran/partial.h tran/white.h tran/tone.h tran/tonev.h tran/atonev.h tran/atone.h tran/reson.h tran/areson.h tran/resonvc.h tran/resoncv.h tran/aresonvc.h tran/aresoncv.h tran/resonvv.h tran/aresonvv.h tran/offset.h tran/slope.h tran/delay.h tran/delaycv.h tran/shape.h tran/sampler.h tran/exp.h tran/siosc.h tran/follow.h tran/gate.h tran/quantize.h tran/ifft.h tran/congen.h tran/fromobject.h tran/fromarraystream.h tran/coterm.h tran/convolve.h tran/alpass.h tran/oneshot.h tran/chase.h tran/tapv.h tran/biquad.h tran/pluck.h tran/abs.h tran/sqrt.h tran/alpasscv.h tran/alpassvc.h&#x0D;&#x0A;%INTGEN% %OUTDIR%\seqfnint cmt/seqdecls.h nyqsrc/seqext.h cmt/seq.h nyqsrc/seqinterf.h cmt/seqread.h cmt/seqmread.h cmt/seqwrite.h cmt/seqmwrite.h&#x0D;&#x0A;"
+				CommandLine="set OUTDIR=$(InputDir)&#x0D;&#x0A;set INTGEN=&quot;$(InputDir)/$(ConfigurationName)/intgen.exe&quot;&#x0D;&#x0A;cd ..\..\..\lib-src\libnyquist&#x0D;&#x0A;cl /Fe%INTGEN% /D WIN32 /D NDEBUG /I win  /I cmt misc\intgen.c misc\cmdline.c&#x0D;&#x0A;%INTGEN% &quot;%OUTDIR%/sndfnint&quot; snd/snd.h nyqsrc/sound.h nyqsrc/downsample.h nyqsrc/sndread.h nyqsrc/sndseq.h nyqsrc/add.h nyqsrc/multiseq.h nyqsrc/samples.h nyqsrc/sndwrite.h nyqsrc/sndmax.h nyqsrc/compose.h nyqsrc/inverse.h nyqsrc/resamp.h nyqsrc/resampv.h nyqsrc/fft.h nyqsrc/avg.h tran/amosc.h tran/clip.h tran/const.h tran/fmosc.h tran/integrate.h tran/log.h tran/maxv.h tran/osc.h tran/prod.h tran/buzz.h tran/pwl.h tran/recip.h tran/upsample.h tran/scale.h tran/sine.h tran/partial.h tran/white.h tran/tone.h tran/tonev.h tran/atonev.h tran/atone.h tran/reson.h tran/areson.h tran/resonvc.h tran/resoncv.h tran/aresonvc.h tran/aresoncv.h tran/resonvv.h tran/aresonvv.h tran/offset.h tran/slope.h tran/delay.h tran/delaycv.h tran/shape.h tran/sampler.h tran/exp.h tran/siosc.h tran/follow.h tran/gate.h tran/quantize.h tran/ifft.h tran/congen.h tran/fromobject.h tran/fromarraystream.h tran/coterm.h tran/convolve.h tran/alpass.h tran/oneshot.h tran/chase.h tran/tapv.h tran/biquad.h tran/pluck.h tran/abs.h tran/sqrt.h tran/alpasscv.h tran/alpassvc.h&#x0D;&#x0A;%INTGEN% &quot;%OUTDIR%/seqfnint&quot; cmt/seqdecls.h nyqsrc/seqext.h cmt/seq.h nyqsrc/seqinterf.h cmt/seqread.h cmt/seqmread.h cmt/seqwrite.h cmt/seqmwrite.h&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -155,7 +155,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="set OUTDIR=&quot;$(InputDir)/$(ConfigurationName)&quot;&#x0D;&#x0A;set INTGEN=&quot;$(InputDir)/$(ConfigurationName)/intgen2.exe&quot;&#x0D;&#x0A;cd ..\..\..\lib-src\libnyquist&#x0D;&#x0A;cl /Fe%INTGEN% /D WIN32 /D NDEBUG /I win  /I cmt misc\intgen.c misc\cmdline.c&#x0D;&#x0A;%INTGEN% %OUTDIR%\sndfnint snd/snd.h nyqsrc/sound.h nyqsrc/downsample.h nyqsrc/sndread.h nyqsrc/sndseq.h nyqsrc/add.h nyqsrc/multiseq.h nyqsrc/samples.h nyqsrc/sndwrite.h nyqsrc/sndmax.h nyqsrc/compose.h nyqsrc/inverse.h nyqsrc/resamp.h nyqsrc/resampv.h nyqsrc/fft.h nyqsrc/avg.h tran/amosc.h tran/clip.h tran/const.h tran/fmosc.h tran/integrate.h tran/log.h tran/maxv.h tran/osc.h tran/prod.h tran/buzz.h tran/pwl.h tran/recip.h tran/upsample.h tran/scale.h tran/sine.h tran/partial.h tran/white.h tran/tone.h tran/tonev.h tran/atonev.h tran/atone.h tran/reson.h tran/areson.h tran/resonvc.h tran/resoncv.h tran/aresonvc.h tran/aresoncv.h tran/resonvv.h tran/aresonvv.h tran/offset.h tran/slope.h tran/delay.h tran/delaycv.h tran/shape.h tran/sampler.h tran/exp.h tran/siosc.h tran/follow.h tran/gate.h tran/quantize.h tran/ifft.h tran/congen.h tran/fromobject.h tran/fromarraystream.h tran/coterm.h tran/convolve.h tran/alpass.h tran/oneshot.h tran/chase.h tran/tapv.h tran/biquad.h tran/pluck.h tran/abs.h tran/sqrt.h tran/alpasscv.h tran/alpassvc.h&#x0D;&#x0A;%INTGEN% %OUTDIR%\seqfnint cmt/seqdecls.h nyqsrc/seqext.h cmt/seq.h nyqsrc/seqinterf.h cmt/seqread.h cmt/seqmread.h cmt/seqwrite.h cmt/seqmwrite.h&#x0D;&#x0A;"
+				CommandLine="set OUTDIR=$(InputDir)&#x0D;&#x0A;set INTGEN=&quot;$(InputDir)/$(ConfigurationName)/intgen.exe&quot;&#x0D;&#x0A;cd ..\..\..\lib-src\libnyquist&#x0D;&#x0A;cl /Fe%INTGEN% /D WIN32 /D NDEBUG /I win  /I cmt misc\intgen.c misc\cmdline.c&#x0D;&#x0A;%INTGEN% &quot;%OUTDIR%/sndfnint&quot; snd/snd.h nyqsrc/sound.h nyqsrc/downsample.h nyqsrc/sndread.h nyqsrc/sndseq.h nyqsrc/add.h nyqsrc/multiseq.h nyqsrc/samples.h nyqsrc/sndwrite.h nyqsrc/sndmax.h nyqsrc/compose.h nyqsrc/inverse.h nyqsrc/resamp.h nyqsrc/resampv.h nyqsrc/fft.h nyqsrc/avg.h tran/amosc.h tran/clip.h tran/const.h tran/fmosc.h tran/integrate.h tran/log.h tran/maxv.h tran/osc.h tran/prod.h tran/buzz.h tran/pwl.h tran/recip.h tran/upsample.h tran/scale.h tran/sine.h tran/partial.h tran/white.h tran/tone.h tran/tonev.h tran/atonev.h tran/atone.h tran/reson.h tran/areson.h tran/resonvc.h tran/resoncv.h tran/aresonvc.h tran/aresoncv.h tran/resonvv.h tran/aresonvv.h tran/offset.h tran/slope.h tran/delay.h tran/delaycv.h tran/shape.h tran/sampler.h tran/exp.h tran/siosc.h tran/follow.h tran/gate.h tran/quantize.h tran/ifft.h tran/congen.h tran/fromobject.h tran/fromarraystream.h tran/coterm.h tran/convolve.h tran/alpass.h tran/oneshot.h tran/chase.h tran/tapv.h tran/biquad.h tran/pluck.h tran/abs.h tran/sqrt.h tran/alpasscv.h tran/alpassvc.h&#x0D;&#x0A;%INTGEN% &quot;%OUTDIR%/seqfnint&quot; cmt/seqdecls.h nyqsrc/seqext.h cmt/seq.h nyqsrc/seqinterf.h cmt/seqread.h cmt/seqmread.h cmt/seqwrite.h cmt/seqmwrite.h&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -222,7 +222,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="set OUTDIR=&quot;$(InputDir)/$(ConfigurationName)&quot;&#x0D;&#x0A;set INTGEN=&quot;$(InputDir)/$(ConfigurationName)/intgen2.exe&quot;&#x0D;&#x0A;cd ..\..\..\lib-src\libnyquist&#x0D;&#x0A;cl /Fe%INTGEN% /D WIN32 /D NDEBUG /I win  /I cmt misc\intgen.c misc\cmdline.c&#x0D;&#x0A;%INTGEN% %OUTDIR%\sndfnint snd/snd.h nyqsrc/sound.h nyqsrc/downsample.h nyqsrc/sndread.h nyqsrc/sndseq.h nyqsrc/add.h nyqsrc/multiseq.h nyqsrc/samples.h nyqsrc/sndwrite.h nyqsrc/sndmax.h nyqsrc/compose.h nyqsrc/inverse.h nyqsrc/resamp.h nyqsrc/resampv.h nyqsrc/fft.h nyqsrc/avg.h tran/amosc.h tran/clip.h tran/const.h tran/fmosc.h tran/integrate.h tran/log.h tran/maxv.h tran/osc.h tran/prod.h tran/buzz.h tran/pwl.h tran/recip.h tran/upsample.h tran/scale.h tran/sine.h tran/partial.h tran/white.h tran/tone.h tran/tonev.h tran/atonev.h tran/atone.h tran/reson.h tran/areson.h tran/resonvc.h tran/resoncv.h tran/aresonvc.h tran/aresoncv.h tran/resonvv.h tran/aresonvv.h tran/offset.h tran/slope.h tran/delay.h tran/delaycv.h tran/shape.h tran/sampler.h tran/exp.h tran/siosc.h tran/follow.h tran/gate.h tran/quantize.h tran/ifft.h tran/congen.h tran/fromobject.h tran/fromarraystream.h tran/coterm.h tran/convolve.h tran/alpass.h tran/oneshot.h tran/chase.h tran/tapv.h tran/biquad.h tran/pluck.h tran/abs.h tran/sqrt.h tran/alpasscv.h tran/alpassvc.h&#x0D;&#x0A;%INTGEN% %OUTDIR%\seqfnint cmt/seqdecls.h nyqsrc/seqext.h cmt/seq.h nyqsrc/seqinterf.h cmt/seqread.h cmt/seqmread.h cmt/seqwrite.h cmt/seqmwrite.h&#x0D;&#x0A;"
+				CommandLine="set OUTDIR=$(InputDir)&#x0D;&#x0A;set INTGEN=&quot;$(InputDir)/$(ConfigurationName)/intgen.exe&quot;&#x0D;&#x0A;cd ..\..\..\lib-src\libnyquist&#x0D;&#x0A;cl /Fe%INTGEN% /D WIN32 /D NDEBUG /I win  /I cmt misc\intgen.c misc\cmdline.c&#x0D;&#x0A;%INTGEN% &quot;%OUTDIR%/sndfnint&quot; snd/snd.h nyqsrc/sound.h nyqsrc/downsample.h nyqsrc/sndread.h nyqsrc/sndseq.h nyqsrc/add.h nyqsrc/multiseq.h nyqsrc/samples.h nyqsrc/sndwrite.h nyqsrc/sndmax.h nyqsrc/compose.h nyqsrc/inverse.h nyqsrc/resamp.h nyqsrc/resampv.h nyqsrc/fft.h nyqsrc/avg.h tran/amosc.h tran/clip.h tran/const.h tran/fmosc.h tran/integrate.h tran/log.h tran/maxv.h tran/osc.h tran/prod.h tran/buzz.h tran/pwl.h tran/recip.h tran/upsample.h tran/scale.h tran/sine.h tran/partial.h tran/white.h tran/tone.h tran/tonev.h tran/atonev.h tran/atone.h tran/reson.h tran/areson.h tran/resonvc.h tran/resoncv.h tran/aresonvc.h tran/aresoncv.h tran/resonvv.h tran/aresonvv.h tran/offset.h tran/slope.h tran/delay.h tran/delaycv.h tran/shape.h tran/sampler.h tran/exp.h tran/siosc.h tran/follow.h tran/gate.h tran/quantize.h tran/ifft.h tran/congen.h tran/fromobject.h tran/fromarraystream.h tran/coterm.h tran/convolve.h tran/alpass.h tran/oneshot.h tran/chase.h tran/tapv.h tran/biquad.h tran/pluck.h tran/abs.h tran/sqrt.h tran/alpasscv.h tran/alpassvc.h&#x0D;&#x0A;%INTGEN% &quot;%OUTDIR%/seqfnint&quot; cmt/seqdecls.h nyqsrc/seqext.h cmt/seq.h nyqsrc/seqinterf.h cmt/seqread.h cmt/seqmread.h cmt/seqwrite.h cmt/seqmwrite.h&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -868,84 +868,12 @@
 			Name="gen"
 			>
 			<File
-				RelativePath=".\Unicode Debug\seqfnint.c"
+				RelativePath=".\seqfnint.c"
 				>
-				<FileConfiguration
-					Name="Unicode Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Unicode Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Unicode Debug\sndfnint.c"
+				RelativePath=".\sndfnint.c"
 				>
-				<FileConfiguration
-					Name="Unicode Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Unicode Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 	</Files>
