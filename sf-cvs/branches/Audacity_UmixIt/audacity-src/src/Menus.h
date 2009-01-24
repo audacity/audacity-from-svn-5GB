@@ -55,6 +55,10 @@ void OnRecord();
 void OnSkipStart();
 void OnSkipEnd();
 
+#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   void OnLockUnlock();
+#endif
+
         // Different posibilities for playing sound
 
 bool MakeReadyToPlay(); // Helper function that sets button states etc.
@@ -132,6 +136,7 @@ void OnZoomToggle();
 void OnZoomNormal();
 void OnZoomFit();
 void OnZoomFitV();
+void OnZoomFitBoth();
 void OnZoomSel();
 
 void OnSelectionFormat(int index);

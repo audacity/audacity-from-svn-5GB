@@ -119,9 +119,11 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    //v 4/22/2007: Clive decided to revert to WaveformDisplay as default.
    //#if (AUDACITY_BRANDING == BRAND_THINKLABS)
    //   mDisplay = WaveformAndSpectrumDisplay; // Move to GUIWaveTrack
-   //#else
-      mDisplay = WaveformDisplay; // Move to GUIWaveTrack
-   //#endif
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      this->SetDisplay(WaveformAndSpectrumDisplay); // Move to GUIWaveTrack
+   #else
+      this->SetDisplay(WaveformDisplay); // Move to GUIWaveTrack
+   #endif
 
    mSequence = new Sequence(projDirManager, format);
    mEnvelope = new Envelope();
@@ -140,10 +142,10 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
 WaveTrack::WaveTrack(WaveTrack &orig):
    Track(orig)
 {
-   #if (AUDACITY_BRANDING == BRAND_THINKLABS)
-      mDisplay = WaveformAndSpectrumDisplay; // Move to GUIWaveTrack
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      this->SetDisplay(WaveformAndSpectrumDisplay); // Move to GUIWaveTrack
    #else
-      mDisplay = WaveformDisplay; // Move to GUIWaveTrack
+      this->SetDisplay(WaveformDisplay); // Move to GUIWaveTrack
    #endif
 
    Init(orig);

@@ -54,6 +54,9 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
       case WXK_BACK:
          newStr += "Backspace";
          break;
+      case WXK_RETURN:
+         newStr += "Enter";
+         break;
       case WXK_DELETE:
          newStr += "Delete";
          break;

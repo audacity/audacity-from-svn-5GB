@@ -200,7 +200,7 @@ class AudacityProject:public wxFrame,
 
    void UpdateMenus();
    void UpdatePrefs();
-   void RedrawProject();
+   void RedrawProject(const bool bForceWaveTracks = false);
    void SelectNone();
    void Zoom(double level);
    void Rewind(bool shift);

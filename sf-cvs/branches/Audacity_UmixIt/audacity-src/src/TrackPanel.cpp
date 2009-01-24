@@ -3576,7 +3576,11 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
    }
 
    switch (event.KeyCode()) {
+#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   case WXK_RETURN:
+#else
    case WXK_SPACE:
+#endif
       mListener->TP_OnPlayKey();
       break;
    case WXK_PRIOR:
