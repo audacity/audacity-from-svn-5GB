@@ -53,6 +53,9 @@ public:
    virtual void OnAudioIONewBlockFiles(const wxString& blockFileLog) = 0;
 };
 
+#define DEFAULT_LATENCY_DURATION 100.0
+#define DEFAULT_LATENCY_CORRECTION -150.0
+
 class AudioIO {
 
  public:

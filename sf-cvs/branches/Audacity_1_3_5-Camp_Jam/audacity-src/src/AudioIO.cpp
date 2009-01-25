@@ -441,7 +441,7 @@ void AudioIO::HandleDeviceChange()
       playbackParameters.suggestedLatency =
          Pa_GetDeviceInfo(playDeviceNum)->defaultLowOutputLatency;
    else
-      playbackParameters.suggestedLatency = 100; // we're just probing anyway
+      playbackParameters.suggestedLatency = DEFAULT_LATENCY_CORRECTION/1000.0; 
 
    PaStreamParameters captureParameters;
  
@@ -453,7 +453,7 @@ void AudioIO::HandleDeviceChange()
       captureParameters.suggestedLatency =
          Pa_GetDeviceInfo(recDeviceNum)->defaultLowInputLatency;
    else
-      captureParameters.suggestedLatency = 100; // we're just probing anyway
+      captureParameters.suggestedLatency = DEFAULT_LATENCY_CORRECTION/1000.0; 
 
    // try opening for record and playback
    error = Pa_OpenStream(&stream,
@@ -578,7 +578,7 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
    PaStreamParameters *playbackParameters = NULL;
    PaStreamParameters *captureParameters = NULL;
    
-   double latencyDuration = 100.0;
+   double latencyDuration = DEFAULT_LATENCY_DURATION;
    gPrefs->Read(wxT("/AudioIO/LatencyDuration"), &latencyDuration);
 
    if( numPlaybackChannels > 0)
@@ -1161,7 +1161,7 @@ void AudioIO::StopStream()
          // case that we do not apply latency correction when recording the
          // first track in a project.
          //
-         double latencyCorrection = 0.0;
+         double latencyCorrection = DEFAULT_LATENCY_CORRECTION;
          gPrefs->Read(wxT("/AudioIO/LatencyCorrection"), &latencyCorrection);
          
          double recordingOffset =
@@ -1440,7 +1440,7 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(int devIndex, double rate)
    }
 
 #if USE_PORTAUDIO_V19
-   double latencyDuration = 100.0;
+   double latencyDuration = DEFAULT_LATENCY_DURATION;
    long recordChannels = 1;
    gPrefs->Read(wxT("/AudioIO/LatencyDuration"), &latencyDuration);
    gPrefs->Read(wxT("/AudioIO/RecordChannels"), &recordChannels);
@@ -1861,7 +1861,7 @@ wxString AudioIO::GetDeviceInfo()
       playbackParameters.suggestedLatency =
          Pa_GetDeviceInfo(playDeviceNum)->defaultLowOutputLatency;
    else
-      playbackParameters.suggestedLatency = 100; // we're just probing anyway
+      playbackParameters.suggestedLatency = DEFAULT_LATENCY_CORRECTION/1000.0;
 
    PaStreamParameters captureParameters;
  
@@ -1873,7 +1873,7 @@ wxString AudioIO::GetDeviceInfo()
       captureParameters.suggestedLatency =
          Pa_GetDeviceInfo(recDeviceNum)->defaultLowInputLatency;
    else
-      captureParameters.suggestedLatency = 100; // we're just probing anyway
+      captureParameters.suggestedLatency = DEFAULT_LATENCY_CORRECTION/1000.0; 
  
    error = Pa_OpenStream(&stream,
                          &captureParameters, &playbackParameters,
