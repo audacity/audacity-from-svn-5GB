@@ -248,19 +248,28 @@ bool ExportCL::Export(AudacityProject *project,
 
 #if defined(__WXMSW__)
    // Give Windows a chance at finding lame command in the default location.
-   wxRegKey reg(wxT("HKEY_LOCAL_MACHINE\\Software\\Lame for Audacity"));
+   wxString paths[] = {wxT("HKEY_LOCAL_MACHINE\\Software\\Lame for Audacity"),
+                       wxT("HKEY_LOCAL_MACHINE\\Software\\FFmpeg for Audacity")};
    wxString opath;
+   wxString npath;
+   wxRegKey reg;
 
-   if (reg.Exists()) {
-      wxString ipath;
-      reg.QueryValue(wxT("InstallPath"), ipath);
-      if (!ipath.IsEmpty()) {
-         wxString npath;
-         wxGetEnv(wxT("PATH"), &opath);
-         npath = opath + wxPATH_SEP + ipath;
-         wxSetEnv(wxT("PATH"),npath.c_str());
+   wxGetEnv(wxT("PATH"), &opath);
+   npath = opath;
+
+   for (int i = 0; i < WXSIZEOF(paths); i++) {
+      reg.SetName(paths[i]);
+
+      if (reg.Exists()) {
+         wxString ipath;
+         reg.QueryValue(wxT("InstallPath"), ipath);
+         if (!ipath.IsEmpty()) {
+            npath += wxPATH_SEP + ipath;
+         }
       }
    }
+
+   wxSetEnv(wxT("PATH"),npath.c_str());
 #endif
 
    // Kick off the command
