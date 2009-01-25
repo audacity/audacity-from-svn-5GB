@@ -229,6 +229,8 @@ class Effect {
 
    int GetNumWaveTracks() { return mNumTracks; }
 
+   int GetNumWaveGroups() { return mNumGroups; }
+
  //
  // protected static data
  //

@@ -96,15 +96,15 @@ public:
 private:
    
    int GetCallback(float *buffer, int channel,
-                   long start, long len);
+                   long start, long len, long totlen);
    int PutCallback(float *buffer, int channel,
-                   long start, long len);
+                   long start, long len, long totlen);
 
    static int StaticGetCallback(float *buffer, int channel,
-                                long start, long len,
+                                long start, long len, long totlen,
                                 void *userdata);
    static int StaticPutCallback(float *buffer, int channel,
-                                long start, long len,
+                                long start, long len, long totlen,
                                 void *userdata);
 
    bool       ProcessOne();
@@ -132,14 +132,17 @@ private:
 
    int              mCurNumChannels;
    WaveTrack       *mCurTrack[2];
-   sampleCount  mCurStart[2];
+   sampleCount      mCurStart[2];
    sampleCount      mCurLen;
    double           mOutputTime;
    int              mCount;
-   double           mProgress;
+   double           mProgressIn;
+   double           mProgressOut;
+   double           mProgressTot;
+   double           mScale;
 
    samplePtr        mCurBuffer[2];
-   sampleCount  mCurBufferStart[2];
+   sampleCount      mCurBufferStart[2];
    sampleCount      mCurBufferLen[2];
 
    WaveTrack       *mOutputTrack[2];
