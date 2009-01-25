@@ -34,6 +34,7 @@ extern "C"
    typedef int (*nyx_audio_callback)(float *buffer,
                                      int channel,
                                      long start, long len,
+                                     long totlen,
                                      void *userdata);
 
    /* Set to 0 to stop capturing output */

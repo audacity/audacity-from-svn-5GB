@@ -404,7 +404,11 @@ bool EffectNyquist::Process()
    mCurTrack[0] = (WaveTrack *) iter.First();
    mOutputTime = mT1 - mT0;
    mCount = 0;
-   mProgress = 0;
+   mProgressIn = 0;
+   mProgressOut = 0;
+   mProgressTot = 0;
+   mScale = (mFlags & PROCESS_EFFECT ? 0.5 : 1.0) / GetNumWaveGroups();
+
    mDebugOutput = wxT("");
    while (mCurTrack[0]) {
       mCurNumChannels = 1;
@@ -427,9 +431,12 @@ bool EffectNyquist::Process()
          sampleCount end = mCurTrack[0]->TimeToLongSamples(mT1);
          mCurLen = (sampleCount)(end - mCurStart[0]);
 
+         mProgressIn = 0.0;
+         mProgressOut = 0.0;
          success = ProcessOne();
          if (!success)
             goto finish;
+         mProgressTot += mProgressIn + mProgressOut;
       }
 
       mCurTrack[0] = (WaveTrack *) iter.Next();
@@ -455,7 +462,7 @@ bool EffectNyquist::Process()
 
 
 int EffectNyquist::GetCallback(float *buffer, int ch,
-                               long start, long len)
+                               long start, long len, long totlen)
 {
    if (mCurBuffer[ch]) {
       if ((mCurStart[ch] + start) < mCurBufferStart[ch] ||
@@ -489,11 +496,10 @@ int EffectNyquist::GetCallback(float *buffer, int ch,
                len);
 
    if (ch==0) {
-      double progress = 1.0*(start+len)/mCurLen;
-      if (progress > mProgress)
-         mProgress = progress;
-
-      if (TotalProgress(mProgress))
+      double progress = mScale*(((float)start+len)/mCurLen);
+      if (progress > mProgressIn)
+         mProgressIn = progress;
+      if (TotalProgress(mProgressIn+mProgressTot))
          return -1;
    }
 
@@ -501,9 +507,16 @@ int EffectNyquist::GetCallback(float *buffer, int ch,
 }
 
 int EffectNyquist::PutCallback(float *buffer, int channel,
-                               long start, long len)
+                               long start, long len, long totlen)
 {
-   
+   if (channel==0) {
+      double progress = mScale*((float)(start+len)/totlen);
+      if (progress > mProgressOut)
+         mProgressOut = progress;
+      if (TotalProgress(mProgressIn+mProgressOut+mProgressTot))
+         return -1;
+   }
+
    if (mOutputTrack[channel]->Append((samplePtr)buffer, floatSample, len))
       return 0;  // success
    else
@@ -511,19 +524,19 @@ int EffectNyquist::PutCallback(float *buffer, int channel,
 }
 
 int EffectNyquist::StaticGetCallback(float *buffer, int channel,
-                                     long start, long len,
+                                     long start, long len, long totlen,
                                      void *userdata)
 {
    EffectNyquist *This = (EffectNyquist *)userdata;
-   return This->GetCallback(buffer, channel, start, len);
+   return This->GetCallback(buffer, channel, start, len, totlen);
 }
 
 int EffectNyquist::StaticPutCallback(float *buffer, int channel,
-                                     long start, long len,
+                                     long start, long len, long totlen,
                                      void *userdata)
 {
    EffectNyquist *This = (EffectNyquist *)userdata;
-   return This->PutCallback(buffer, channel, start, len);
+   return This->PutCallback(buffer, channel, start, len, totlen);
 }
 
 bool EffectNyquist::ProcessOne()
