@@ -239,15 +239,41 @@ bool ExportCL::Export(AudacityProject *project,
    wxString output;
    wxString cmd;
    bool show;
+   long rc;
 
    // Retrieve settings
    gPrefs->Read(wxT("/FileFormats/ExternalProgramShowOutput"), &show, false);
    cmd = gPrefs->Read(wxT("/FileFormats/ExternalProgramExportCommand"), wxT("lame - \"%f.mp3\""));
    cmd.Replace(wxT("%f"), fName);
 
+#if defined(__WXMSW__)
+   // Give Windows a chance at finding lame command in the default location.
+   wxRegKey reg(wxT("HKEY_LOCAL_MACHINE\\Software\\Lame for Audacity"));
+   wxString opath;
+
+   if (reg.Exists()) {
+      wxString ipath;
+      reg.QueryValue(wxT("InstallPath"), ipath);
+      if (!ipath.IsEmpty()) {
+         wxString npath;
+         wxGetEnv(wxT("PATH"), &opath);
+         npath = opath + wxPATH_SEP + ipath;
+         wxSetEnv(wxT("PATH"),npath.c_str());
+      }
+   }
+#endif
+
    // Kick off the command
    p = new ExportCLProcess(&output);
-   if (!wxExecute(cmd, wxEXEC_ASYNC, p)) {
+   rc = wxExecute(cmd, wxEXEC_ASYNC, p);
+
+#if defined(__WXMSW__)
+   if (!opath.IsEmpty()) {
+      wxSetEnv(wxT("PATH"),opath.c_str());
+   }
+#endif
+
+   if (!rc) {
       wxMessageBox(wxString::Format(_("Cannot export audio to %s"),
                                     fName.c_str()));
       p->Detach();
