@@ -1372,7 +1372,7 @@ void AudioIO::StopStream()
                      track->SetOffset(track->GetStartTime() + recordingOffset);
                      if(track->GetEndTime() < 0.)
                      {
-                        wxMessageDialog m(NULL, _("Latency setting has caused the recorded audio to be hidden before zero.\nAudacity has brought it back to start at zero.\nYou may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."), _("Latency problem"), wxOK);
+                        wxMessageDialog m(NULL, _("Latency Correction setting has caused the recorded audio to be hidden before zero.\nAudacity has brought it back to start at zero.\nYou may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."), _("Latency problem"), wxOK);
                         m.ShowModal();
                         track->SetOffset(0.);
                      }
@@ -2066,7 +2066,7 @@ wxString AudioIO::GetDeviceInfo()
             Pa_GetDeviceInfo(playDeviceNum)->defaultLowOutputLatency;
       }
       else{
-         playbackParameters.suggestedLatency = DEFAULT_LATENCY_CORRECTION/1000.0; // we're just probing anyway
+         playbackParameters.suggestedLatency = DEFAULT_LATENCY_CORRECTION/1000.0; 
       }
 
       PaStreamParameters captureParameters;
