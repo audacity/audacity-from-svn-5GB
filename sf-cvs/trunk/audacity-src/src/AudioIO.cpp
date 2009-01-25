@@ -2079,7 +2079,7 @@ wxString AudioIO::GetDeviceInfo()
          captureParameters.suggestedLatency =
             Pa_GetDeviceInfo(recDeviceNum)->defaultLowInputLatency;
       }else{
-         captureParameters.suggestedLatency = DEFAULT_LATENCY_CORRECTION/1000.0; // we're just probing anyway
+         captureParameters.suggestedLatency = DEFAULT_LATENCY_CORRECTION/1000.0; 
       }
 
       error = Pa_OpenStream(&stream,
