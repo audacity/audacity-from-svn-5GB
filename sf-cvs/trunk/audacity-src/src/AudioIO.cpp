@@ -473,7 +473,7 @@ void AudioIO::HandleDeviceChange()
       playbackParameters.suggestedLatency =
          Pa_GetDeviceInfo(playDeviceNum)->defaultLowOutputLatency;
    else
-      playbackParameters.suggestedLatency = DEFAULT_LATENCY_CORRECTION/1000.0; // we're just probing anyway
+      playbackParameters.suggestedLatency = DEFAULT_LATENCY_CORRECTION/1000.0; 
 
    PaStreamParameters captureParameters;
  
@@ -485,7 +485,7 @@ void AudioIO::HandleDeviceChange()
       captureParameters.suggestedLatency =
          Pa_GetDeviceInfo(recDeviceNum)->defaultLowInputLatency;
    else
-      captureParameters.suggestedLatency = DEFAULT_LATENCY_CORRECTION/1000.0; // we're just probing anyway
+      captureParameters.suggestedLatency = DEFAULT_LATENCY_CORRECTION/1000.0; 
 
    // try opening for record and playback
    error = Pa_OpenStream(&stream,
