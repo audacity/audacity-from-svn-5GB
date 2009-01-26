@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-11-09 20:10+0000\n"
-"PO-Revision-Date: 2009-01-24 11:56+0900\n"
+"PO-Revision-Date: 2009-01-25 17:00+0900\n"
 "Last-Translator: Pepper Tree <at_chan@yahoo.co.jp>\n"
 "Language-Team: Pepper Tree <at_chan@yahoo.co.jp>\n"
 "MIME-Version: 1.0\n"
@@ -908,7 +908,7 @@ msgstr "%s' から '%s' へリネームできません"
 #: DirManager.cpp:1183
 #, c-format
 msgid "Changed block %s to new alias name\n"
-msgstr ""
+msgstr "ブロック %s は新しいエリアス名に変更されました\n"
 
 #: DirManager.cpp:1224
 #: DirManager.cpp:1515
@@ -1073,7 +1073,7 @@ msgstr "矩形"
 
 #: FFmpeg.cpp:36
 msgid "FFmpeg support not compiled in"
-msgstr ""
+msgstr "FFmpeg 対応はコンパイルされていません"
 
 #: FFmpeg.cpp:101
 msgid ""
@@ -1082,10 +1082,14 @@ msgid ""
 "\n"
 "You may want to go back to Preferences > Import/Export and re-configure it."
 msgstr ""
+"FFmpegは設定されており以前は正常に読み込まれていましたが                       \n"
+"今回Audacity起動時に読み込み失敗しました。                       \n"
+"\n"
+"設定 ＞ 読み込み/書き出しで再設定してください。"
 
 #: FFmpeg.cpp:104
 msgid "FFmpeg startup failed"
-msgstr ""
+msgstr "FFmpegの起動に失敗しました。"
 
 #: FFmpeg.cpp:115
 msgid "FFmpeg library not found"
@@ -1124,7 +1128,7 @@ msgstr "FFmpeg の無料コピーを入手するには、ここをクリック -
 #: FFmpeg.cpp:215
 #: export/ExportMP3.cpp:579
 msgid "Download"
-msgstr ""
+msgstr "ダウンロード"
 
 #  i18n-hint: It's asking for the location of a file, for
 #  example, "Where is lame_enc.dll?" - you could translate
@@ -1140,7 +1144,7 @@ msgstr "%s はどこにありますか？"
 
 #: FFmpeg.cpp:407
 msgid "Failed to find compatible FFmpeg libraries"
-msgstr ""
+msgstr "コンパチブルなFFmpegライブラリが存在しません。"
 
 #: FFmpeg.h:95
 msgid "FFmpeg not found"
@@ -1153,10 +1157,14 @@ msgid ""
 "If you want to use the FFmpeg import feature, please go to Preferences->Import/Export\n"
 "and tell Audacity where to look for the libraries."
 msgstr ""
+"Audacityはオーディオファイルを読み込むためにFFmpegライブラリを使おうとしましたが、\n"
+"ライヴラリが存在しませんでした。\n"
+"FFmpeg読み込み機能を使う場合は、設定 > 読み込み/書き出しで\n"
+"ライブラリの場所を指定してください。"
 
 #: FFmpeg.h:109
 msgid "Do not show this warning again"
-msgstr ""
+msgstr "この警告を再表示しないでください。"
 
 #: FFmpeg.h:251
 msgid "Only avformat.dll|*avformat*.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
@@ -1164,11 +1172,11 @@ msgstr "avformat.dll のみ|*avformat*.dll|動的リンクライブラリ (*.dll
 
 #: FFmpeg.h:268
 msgid "Dynamic Libraries (*.dylib)|*.dylib|All Files (*)|*"
-msgstr ""
+msgstr "ダイナミックライブラリ (*.dylib)|*.dylib|全ファイル (*)|*"
 
 #: FFmpeg.h:295
 msgid "Only libavformat.so|libavformat.so*|Dynamically Linked Libraries (*.so*)|*.so*|All Files (*)|*"
-msgstr ""
+msgstr "libavformat.so|libavformat.so*|ダイナミックリンクライブラリ (*.so*)|*.so*|全ファイル (*)|* のみ"
 
 #: FreqWindow.cpp:103
 msgid "Frequency Analysis"
@@ -2071,11 +2079,11 @@ msgstr "録音と再生 (&r)"
 
 #: Menus.cpp:591
 msgid "Play\tSpace"
-msgstr ""
+msgstr "再生\tSpace"
 
 #: Menus.cpp:593
 msgid "&Loop Play\tShift+Space"
-msgstr ""
+msgstr "ループ再生(&L)\tShift+Space"
 
 #: Menus.cpp:593
 msgid "&Pause\tP"
@@ -2083,7 +2091,7 @@ msgstr "一時停止 (&P) \tP"
 
 #: Menus.cpp:596
 msgid "&Stop\tSpace"
-msgstr ""
+msgstr "停止(&S)\tSpace"
 
 #: Menus.cpp:595
 #: Menus.cpp:1010
@@ -2298,11 +2306,11 @@ msgstr "オーディオデイバイス情報 (&A)"
 
 #: Menus.cpp:983
 msgid "Cycle backward through toolbars and Track View\tCtrl+Shift+F6"
-msgstr ""
+msgstr "ツールバーとトラックビューを逆向きに回ります。\tCtrl+Shift+F6"
 
 #: Menus.cpp:984
 msgid "Cycle forward through toolbars and Track View\tCtrl+F6"
-msgstr ""
+msgstr "ツールバーとトラックビューを順向きに回ります。\tCtrl+F6"
 
 #: Menus.cpp:985
 msgid "Selection Tool\tF1"
@@ -2338,7 +2346,7 @@ msgstr "前回のツール\tA"
 
 #: Menus.cpp:997
 msgid "Play/Stop\tSpace"
-msgstr ""
+msgstr " 再生/停止\tSpace"
 
 #: Menus.cpp:996
 msgid "Stop\tS"
@@ -2374,7 +2382,7 @@ msgstr "ループ再生\tL"
 
 #: Menus.cpp:1009
 msgid "Play Looped\tShift+Space"
-msgstr ""
+msgstr "ループ再生\tShift+Space"
 
 #: Menus.cpp:1008
 msgid "Play Cut Preview\tC"
@@ -2438,7 +2446,7 @@ msgstr "フォーカスするトラックを切り替え\tNUMPAD_ENTER"
 
 #: Menus.cpp:1042
 msgid "Toggle Focused Track\tCtrl+Space"
-msgstr ""
+msgstr "トラックの切り替え\tShift+Space"
 
 #: Menus.cpp:1042
 msgid "Cursor Left\tLeft"
@@ -2542,7 +2550,7 @@ msgstr "スナップモードを無効"
 
 #: Menus.cpp:1073
 msgid "Full screen on/off\tF11"
-msgstr ""
+msgstr "フルスクリーン表示on/off\tF11"
 
 #  i18n-hint: This is the name of the menu item on Mac OS X only
 #. i18n-hint: This is the name of the menu item on Mac OS X only
@@ -3241,10 +3249,18 @@ msgid ""
 "\n"
 "Save anyway?"
 msgstr ""
+"プロジェクトは空です。\n"
+"もし保存済みであれば、そのプロジェクトにはトラックがありません。\n"
+"\n"
+"以前開いていたトラックを保存するには:\n"
+"'No'をクリックし、編集>やり直しで全トラックが\n"
+"開かれるまで繰り返し、ファイル>プロジェクトの保存を実行する。\n"
+"\n"
+"保存しますか？"
 
 #: Project.cpp:2538
 msgid "Warning empty project"
-msgstr ""
+msgstr "警告：プロジェクトは空です。"
 
 #: Project.cpp:2588
 #, c-format
@@ -3510,7 +3526,7 @@ msgstr "コメント"
 
 #: Tags.cpp:777
 msgid "Use arrow keys (or RETURN key after editing) to navigate fields."
-msgstr ""
+msgstr "矢印キー（または編集後であればReturnキー）を使ってフィールド内を移動してください。"
 
 #: Tags.cpp:813
 msgid "Tag Name"
@@ -3532,11 +3548,11 @@ msgstr "ジャンル:"
 
 #: Tags.cpp:826
 msgid "E&dit..."
-msgstr ""
+msgstr " 編集(&d)"
 
 #: Tags.cpp:827
 msgid "Rese&t..."
-msgstr ""
+msgstr "リセット(&t)"
 
 #: Tags.cpp:845
 #: Tags.cpp:1470
@@ -3608,7 +3624,7 @@ msgstr "ジャンルファイルを開けません"
 
 #: Tags.cpp:1084
 msgid "Load Metadata As:"
-msgstr ""
+msgstr "メタデータをロード："
 
 #: Tags.cpp:1122
 #: Tags.cpp:1772
@@ -4348,7 +4364,7 @@ msgstr "増幅 (dB):"
 
 #: effects/Amplify.cpp:183
 msgid "Amplification dB"
-msgstr ""
+msgstr "増幅 dB"
 
 #: effects/Amplify.cpp:190
 msgid "New Peak Amplitude (dB):"
@@ -4362,7 +4378,7 @@ msgstr "クリッピングを許可"
 #: effects/Amplify.cpp:279
 #: effects/Amplify.cpp:323
 msgid "-Infinity"
-msgstr ""
+msgstr "-無限"
 
 #: effects/Amplify.h:37
 msgid "Amplify..."
@@ -4488,7 +4504,7 @@ msgstr "周波数 (Hz):"
 
 #: effects/BassBoost.cpp:205
 msgid "Frequency Hertz"
-msgstr ""
+msgstr "周波数 ヘルツ"
 
 #: effects/BassBoost.cpp:208
 msgid "Boost (dB):"
@@ -4496,7 +4512,7 @@ msgstr "増幅 (dB):"
 
 #: effects/BassBoost.cpp:218
 msgid "Boost dB"
-msgstr ""
+msgstr "ブースト dB"
 
 #: effects/BassBoost.h:35
 msgid "BassBoost..."
@@ -4723,7 +4739,7 @@ msgstr "閾値の選択（低くすると感度が高くなります）:"
 
 #: effects/ClickRemoval.cpp:350
 msgid "Select threshold"
-msgstr ""
+msgstr "スレッショルドの選択"
 
 #: effects/ClickRemoval.cpp:353
 msgid "Max spike width (higher is more sensitive):"
@@ -4731,7 +4747,7 @@ msgstr "最大のパルス幅（大きくすると、より感度が高くなり
 
 #: effects/ClickRemoval.cpp:363
 msgid "Max spike width"
-msgstr ""
+msgstr "最大スパイク幅"
 
 #: effects/ClickRemoval.h:42
 msgid "Click Removal..."
@@ -4833,25 +4849,31 @@ msgstr "ダイナミックレンジを圧縮..."
 
 #: effects/Contrast.cpp:79
 msgid "Contrast Tool Foreground"
-msgstr ""
+msgstr "コントラストツール 前景"
 
 #: effects/Contrast.cpp:79
 msgid ""
 "Foreground times selected.\n"
 "Now select background and use Ctrl+Shift+T or menu again."
 msgstr ""
+"前景時間が選択されました。\n"
+"次に背景を選択し Ctrl+Shift+Tまたはメニューに戻ってください。"
 
 #: effects/Contrast.cpp:127
 msgid ""
 "Start time after after end time!\n"
 "Please enter reasonable times."
 msgstr ""
+"開始時間が終了時間より後になっています！\n"
+"正しい時間を入力してください。"
 
 #: effects/Contrast.cpp:137
 msgid ""
 "Times are not reasonable!\n"
 "Please enter reasonable times."
 msgstr ""
+"時間が正しくありません！\n"
+"正しい時間を入力してください。"
 
 #: effects/Contrast.cpp:120
 msgid "Hello.\n"
@@ -4859,7 +4881,7 @@ msgstr "Hello.\n"
 
 #: effects/Contrast.cpp:245
 msgid "WCAG2 Audio Contrast Analyzer"
-msgstr ""
+msgstr "WCAG2オーディオコントラストアナライザ"
 
 #: effects/Contrast.cpp:193
 #: effects/Contrast.cpp:204
@@ -4893,7 +4915,7 @@ msgstr "終了"
 
 #: effects/Contrast.cpp:332
 msgid "Volume    "
-msgstr ""
+msgstr "ボリューム"
 
 #: effects/Contrast.cpp:248
 msgid "Foreground:"
@@ -4901,16 +4923,16 @@ msgstr "前面:"
 
 #: effects/Contrast.cpp:347
 msgid "Foreground start time"
-msgstr ""
+msgstr "前景開始時間"
 
 #: effects/Contrast.cpp:365
 msgid "Foreground end time"
-msgstr ""
+msgstr "前景終了時間"
 
 #: effects/Contrast.cpp:373
 #: effects/Contrast.cpp:417
 msgid "Use selection"
-msgstr ""
+msgstr "選択してください"
 
 #: effects/Contrast.cpp:271
 msgid "Background:"
@@ -4918,11 +4940,11 @@ msgstr "背面:"
 
 #: effects/Contrast.cpp:391
 msgid "Background start time"
-msgstr ""
+msgstr "背景開始時間"
 
 #: effects/Contrast.cpp:409
 msgid "Background end time"
-msgstr ""
+msgstr "背景終了時間"
 
 #: effects/Contrast.cpp:298
 msgid "Result"
@@ -4947,11 +4969,11 @@ msgstr "情報"
 
 #: effects/Contrast.cpp:447
 msgid "For measuring rms volume differences between two selections of audio."
-msgstr ""
+msgstr "２つのオーディオ区間同士のrmsボリュームの差を計測するには"
 
 #: effects/Contrast.cpp:448
 msgid "Help for WCAG2 Audio Contrast Analyzer"
-msgstr ""
+msgstr "WCAG2 オーディオコントラストアナライザのヘルプ"
 
 #: toolbars/ControlToolBar.cpp:83
 msgid "Control"
@@ -4959,11 +4981,11 @@ msgstr "コントロール"
 
 #: effects/Contrast.cpp:454
 msgid "Note: The 'OK' button resets time values."
-msgstr ""
+msgstr "注： 'OK'ボタンにより時間はリセットされます。"
 
 #: effects/Contrast.cpp:455
 msgid "Close but keep times"
-msgstr ""
+msgstr "時間を維持したまま閉じる"
 
 #: effects/Contrast.cpp:328
 #: effects/Contrast.cpp:336
@@ -4974,11 +4996,11 @@ msgstr "小節"
 
 #: effects/Contrast.cpp:511
 msgid "No foreground to measure"
-msgstr ""
+msgstr "計測すべき前景がありません。"
 
 #: effects/Contrast.cpp:516
 msgid "Measured foreground level"
-msgstr ""
+msgstr "計測された前景レベル"
 
 #: effects/Contrast.cpp:191
 #: effects/Contrast.cpp:202
@@ -4988,11 +5010,11 @@ msgstr "%.1f dB"
 
 #: effects/Contrast.cpp:521
 msgid "No background to measure"
-msgstr ""
+msgstr "計測すべき背景がありません。"
 
 #: effects/Contrast.cpp:526
 msgid "Measured background level"
-msgstr ""
+msgstr "計測された背景レベル"
 
 #: effects/Contrast.cpp:358
 msgid "WCAG2 Pass"
@@ -5004,85 +5026,85 @@ msgstr "WCAG2 失敗"
 
 #: effects/Contrast.cpp:535
 msgid "Current difference"
-msgstr ""
+msgstr "現在の差異"
 
 #: effects/Contrast.cpp:536
 #, c-format
 msgid "%.1f dB Average rms"
-msgstr ""
+msgstr "%.1f dB 平均 rms"
 
 #: effects/Contrast.cpp:541
 msgid "Please enter valid times."
-msgstr ""
+msgstr "有効な時間を入力してください。"
 
 #: effects/Contrast.cpp:551
 msgid "Export Contrast Result As:"
-msgstr ""
+msgstr "コントラスト結果を書き出す："
 
 #: effects/Contrast.cpp:572
 msgid "WCAG 2.0 Success Criteria 1.4.7 Contrast Results"
-msgstr ""
+msgstr "WCAG 2.0 Success Criteria 1.4.7 コントラスト結果"
 
 #: effects/Contrast.cpp:574
 #, c-format
 msgid "Filename = %s."
-msgstr ""
+msgstr "ファイル名 = %s."
 
 #: effects/Contrast.cpp:576
 msgid "Foreground"
-msgstr ""
+msgstr "前景"
 
 #: effects/Contrast.cpp:581
 #: effects/Contrast.cpp:598
 #, c-format
 msgid "Time started = %2d hour(s), %2d minute(s), %.2f seconds."
-msgstr ""
+msgstr "開始時間 = %2d 時間, %2d 分, %.2f 秒"
 
 #: effects/Contrast.cpp:586
 #: effects/Contrast.cpp:603
 #, c-format
 msgid "Time ended = %2d hour(s), %2d minute(s), %.2f seconds."
-msgstr ""
+msgstr "終了時間 = %2d 時間, %2d 分, %.2f 秒"
 
 #: effects/Contrast.cpp:588
 #: effects/Contrast.cpp:605
 #, c-format
 msgid "Average rms = %.1f dB."
-msgstr ""
+msgstr "平均 rms = %.1f dB."
 
 #: effects/Contrast.cpp:590
 #: effects/Contrast.cpp:607
 msgid "Average rms =  dB."
-msgstr ""
+msgstr "平均 rms =  dB."
 
 #: effects/Contrast.cpp:593
 msgid "Background"
-msgstr ""
+msgstr "背景"
 
 #: effects/Contrast.cpp:609
 msgid "Results"
-msgstr ""
+msgstr "結果"
 
 #: effects/Contrast.cpp:611
 #, c-format
 msgid "Difference = %.1f Average rms dB."
-msgstr ""
+msgstr "差分 = %.1f 平均 rms dB."
 
 #: effects/Contrast.cpp:613
 msgid "Success Criteria 1.4.7 of WCAG 2.0: Pass"
-msgstr ""
+msgstr "WCAG2.0のSuccess Criteria 1.4.7: 合格"
 
 #: effects/Contrast.cpp:615
 msgid "Success Criteria 1.4.7 of WCAG 2.0: Fail"
-msgstr ""
+msgstr "WCAG2.0のSuccess Criteria 1.4.7: 不合格"
 
 #: effects/Contrast.cpp:618
 msgid "Data gathered"
-msgstr ""
+msgstr "データ収集済み"
 
 #: effects/Contrast.h:33
 msgid "Contrast...\tCtrl+Shift+T"
-msgstr ""
+msgstr "コントラスト...\tCtrl+Shift+T"
 
 #: effects/Contrast.h:51
 msgid "Measuring background"
@@ -5650,7 +5672,7 @@ msgstr "ノイズ除去 (dB):"
 
 #: effects/NoiseRemoval.cpp:850
 msgid "Noise reduction"
-msgstr ""
+msgstr "ノイズの除去"
 
 #: effects/NoiseRemoval.cpp:849
 msgid "Frequency smoothing (Hz):"
@@ -5658,7 +5680,7 @@ msgstr "スムージング周波数 (Hz):"
 
 #: effects/NoiseRemoval.cpp:859
 msgid "Frequency smoothing"
-msgstr ""
+msgstr "周波数平滑化"
 
 #: effects/NoiseRemoval.cpp:857
 msgid "Attack/decay time (secs):"
@@ -5666,7 +5688,7 @@ msgstr "アタック/ディケイ時間 (秒):"
 
 #: effects/NoiseRemoval.cpp:868
 msgid "Attach/decay time"
-msgstr ""
+msgstr "アタック/デケイ時間"
 
 #: effects/NoiseRemoval.h:35
 msgid "Noise Removal..."
@@ -5723,7 +5745,7 @@ msgstr "-"
 
 #: effects/Normalize.cpp:367
 msgid "Maximum amplitude dB"
-msgstr ""
+msgstr "最大振幅 dB"
 
 #: effects/Normalize.h:33
 msgid "Normalize..."
@@ -5936,47 +5958,47 @@ msgstr "ステレオからモノラルへの変換を適用中"
 
 #: effects/TimeScale.cpp:140
 msgid "Time Scale"
-msgstr ""
+msgstr "時間軸"
 
 #: effects/TimeScale.cpp:176
 msgid "Sliding Time Scale/Pitch Shift"
-msgstr ""
+msgstr "時間軸のスライド/ピッチの変更"
 
 #: effects/TimeScale.cpp:178
 msgid "using SBSMS, by Clayton Otey"
-msgstr ""
+msgstr "SBSMSを使う, by Clayton Otey"
 
 #: effects/TimeScale.cpp:187
 msgid "Initial Tempo Change (%):"
-msgstr ""
+msgstr "テンポ変更の初期値 (%):"
 
 #: effects/TimeScale.cpp:191
 msgid "Final Tempo Change (%):"
-msgstr ""
+msgstr "テンポ変更の最終値 (%):"
 
 #: effects/TimeScale.cpp:202
 msgid "Initial Tempo Change (%)"
-msgstr ""
+msgstr "テンポ変更の初期値 (%)"
 
 #: effects/TimeScale.cpp:211
 msgid "Final Tempo Change (%)"
-msgstr ""
+msgstr "テンポ変更の最終値 (%)"
 
 #: effects/TimeScale.cpp:219
 msgid "Initial Pitch Shift (semitones) [-12 to 12]:"
-msgstr ""
+msgstr "ピッチ変更の初期値（半音） [-12 to 12]:"
 
 #: effects/TimeScale.cpp:223
 msgid "Final Pitch Shift (semitones) [-12 to 12]:"
-msgstr ""
+msgstr "ピッチ変更の最終値（半音） [-12 to 12]:"
 
 #: effects/TimeScale.h:33
 msgid "Sliding Time Scale/Pitch Shift..."
-msgstr ""
+msgstr "時間軸のスライド/ピッチの変更..."
 
 #: effects/TimeScale.h:47
 msgid "Changing Tempo/Pitch"
-msgstr ""
+msgstr "テンポ/ピッチの変更"
 
 #: effects/ToneGen.cpp:61
 #, c-format
@@ -6027,19 +6049,19 @@ msgstr "波形:"
 
 #: effects/ToneGen.cpp:358
 msgid "Frequency Hertz Start"
-msgstr ""
+msgstr "周波数 初期値"
 
 #: effects/ToneGen.cpp:359
 msgid "Frequency Hertz End"
-msgstr ""
+msgstr "周波数 最終値"
 
 #: effects/ToneGen.cpp:360
 msgid "Amplitude Start"
-msgstr ""
+msgstr "振幅 初期値"
 
 #: effects/ToneGen.cpp:361
 msgid "Amplitude End"
-msgstr ""
+msgstr "振幅 最終値"
 
 #: effects/ToneGen.cpp:365
 msgid "Interpolation:"
@@ -6269,11 +6291,11 @@ msgstr "プログラム"
 
 #: export/Export.cpp:469
 msgid "All the selected audio is muted."
-msgstr ""
+msgstr "選択されたオーディオはミュートされています。"
 
 #: export/Export.cpp:471
 msgid "All the audio is muted."
-msgstr ""
+msgstr "すべてのオーディオはミュートされています。"
 
 #: export/Export.cpp:522
 msgid "Export File"
@@ -6388,6 +6410,8 @@ msgid ""
 "Properly configured FFmpeg is required to proceed.\n"
 "You can configure it in Preferences->Import/Export."
 msgstr ""
+"続けるには正しく設定されたFFmpegが必要です。\n"
+"設定->読み込み/書き出しにて設定できます。"
 
 #: export/ExportFFmpeg.cpp:394
 #, c-format
@@ -6395,11 +6419,13 @@ msgid ""
 "FFmpeg cannot find audio codec 0x%x.\n"
 "Support for this codec is probably not compiled in."
 msgstr ""
+"FFmpegはオーディオコーデック 0x%x を発見できませんでした。\n"
+"このコーデックの対応はおそらくコンパイルされていません。"
 
 #: export/ExportFFmpeg.cpp:614
 #, c-format
 msgid "Attempted to export %d channels, but max. channels for selected output format is %d"
-msgstr ""
+msgstr "%d 個のチャンネルを書き出そうとしましたが、選択された出力形式では最大チャンネル数は%dです。"
 
 #: export/ExportFFmpeg.cpp:638
 #, c-format
@@ -6504,16 +6530,16 @@ msgstr "削除の確認"
 
 #: export/ExportFFmpegDialogs.cpp:501
 msgid "Please select format before saving a profile"
-msgstr ""
+msgstr "設定を保存する前に形式を選んでください。"
 
 #: export/ExportFFmpegDialogs.cpp:509
 msgid "Please select codec before saving a profile"
-msgstr ""
+msgstr "設定を保存する前にコーデックを選んでください。"
 
 #: export/ExportFFmpegDialogs.cpp:580
 #, c-format
 msgid "Preset '%s' does not exist."
-msgstr ""
+msgstr "プリセット '%s' は存在しません。"
 
 #: export/ExportFFmpegDialogs.cpp:803
 msgid "Specify Other Options"
@@ -6573,7 +6599,7 @@ msgstr "すべてのコーデックを表示"
 
 #: export/ExportFFmpegDialogs.cpp:914
 msgid "Options"
-msgstr ""
+msgstr "オプション"
 
 #: export/ExportFFmpegDialogs.cpp:931
 #: prefs/GUIPrefs.cpp:166
@@ -6675,15 +6701,15 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:940
 msgid "Use Bit Reservoir"
-msgstr ""
+msgstr "Bit Reservoirを使ってください。"
 
 #: export/ExportFFmpegDialogs.cpp:943
 msgid "Use Variable Block Length"
-msgstr ""
+msgstr "可変ブロック長を使ってください。"
 
 #: export/ExportFFmpegDialogs.cpp:948
 msgid "FLAC options"
-msgstr ""
+msgstr "FLACオプション"
 
 #: export/ExportFFmpegDialogs.cpp:965
 msgid "Compression Level:"
@@ -6828,11 +6854,11 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:977
 msgid "Use LPC"
-msgstr ""
+msgstr "LPCを使ってください。"
 
 #: export/ExportFFmpegDialogs.cpp:984
 msgid "MPEG container options"
-msgstr ""
+msgstr "MPEGコンテナのオプション"
 
 #: export/ExportFFmpegDialogs.cpp:1001
 msgid "Mux Rate:"
@@ -6864,7 +6890,7 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:1207
 msgid "You can't delete a preset without name"
-msgstr ""
+msgstr "無名のプリセットを削除することはできません。"
 
 #: export/ExportFFmpegDialogs.cpp:1219
 #, c-format
@@ -6889,11 +6915,11 @@ msgstr "プリセット書き出しのための xml ファイルを選択して�
 
 #: export/ExportFFmpegDialogs.cpp:1361
 msgid "Failed to guess format"
-msgstr ""
+msgstr "形式を検出できませんでした。"
 
 #: export/ExportFFmpegDialogs.cpp:1403
 msgid "Failed to find the codec"
-msgstr ""
+msgstr "コーデックが見つかりませんでした。"
 
 #: export/ExportFFmpegDialogs.h:53
 msgid "M4A (AAC) Files (FFmpeg)"
@@ -7166,6 +7192,8 @@ msgid ""
 "You are linking to lame_enc.dll v%d.%d. This version is not compatible with Audacity %d.%d.%d.\n"
 "Please download the latest version of the LAME MP3 library."
 msgstr ""
+"lame_enc.dll v%d.%d とリンクしようとしています。 このバージョンはAudacity %d.%d.%dとはコンパチブルではありません。\n"
+"LAME MP3ライブラリの最新版をダウンロードしてください。"
 
 #: export/ExportMP3.cpp:1094
 msgid "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
@@ -7248,7 +7276,7 @@ msgstr ""
 
 #: export/ExportMP3.cpp:1965
 msgid "MP3 export library not found"
-msgstr ""
+msgstr "MP3書き出しライブラリが見つかりませんでした。"
 
 #: export/ExportMultiple.cpp:96
 #: export/ExportMultiple.cpp:426
@@ -7471,7 +7499,7 @@ msgstr "エラー (ファイルへの書き込みが正常に行われなかっ�
 
 #: export/ExportPCM.cpp:723
 msgid "There are no options for this format.\n"
-msgstr ""
+msgstr "この形式にはオプションはありません。\n"
 
 #. i18n-hint: This is pointing users at another possible export format in
 #. * the list. So you should translate the quoted string
@@ -7479,19 +7507,19 @@ msgstr ""
 #. * when it comes up on it's own.
 #: export/ExportPCM.cpp:728
 msgid "If you need more control over the export format please use the 'Other uncompressed files' format."
-msgstr ""
+msgstr "書き出し形式に対してより多くの変更を行いたい場合は'他の非圧縮ファイル' 形式を使ってください。"
 
 #: export/ExportPCM.cpp:733
 msgid "Your file will be exported as a 16-bit AIFF (Apple/SGI) file.\n"
-msgstr ""
+msgstr "ファイルは16-bit AIFF (Apple/SGI)形式で書き出されます。\n"
 
 #: export/ExportPCM.cpp:738
 msgid "Your file will be exported as a 16-bit WAV (Microsoft) file.\n"
-msgstr ""
+msgstr "ファイルは16-bit WAV (Microsoft) 形式で書き出されます。\n"
 
 #: export/ExportPCM.cpp:743
 msgid "Your file will be exported as a GSM 6.10 WAV file.\n"
-msgstr ""
+msgstr "ファイルは GSM 6.10 WAV 形式で書き出されます。\n"
 
 #: import/Import.cpp:156
 #: import/ImportMP3.cpp:47
@@ -7688,7 +7716,7 @@ msgstr "FFmpeg 互換ファイル"
 #: import/ImportFFmpeg.cpp:431
 #, c-format
 msgid "Index[%02x] Codec[%S], Language[%S], Bitrate[%S], Channels[%d], Duration[%d]"
-msgstr ""
+msgstr "インデックス[%02x] コーデック[%S], 言語[%S], ビットレート[%S], チャンネル[%d], 継続時間[%d]"
 
 #: import/ImportFLAC.cpp:43
 msgid "FLAC files"
@@ -7949,7 +7977,7 @@ msgstr "ソフトウェアによるスルー再生 (録音中にその新しい�
 
 #: prefs/AudioIOPrefs.cpp:160
 msgid "(uncheck when recording \"stereo mix\")"
-msgstr ""
+msgstr "(\"stereo mix\"を録音する場合はチェックをはずしてください。)"
 
 #: prefs/AudioIOPrefs.cpp:168
 #: prefs/MidiIOPrefs.cpp:193
@@ -8111,7 +8139,7 @@ msgstr "MP3 ライブラリ:"
 #: prefs/FileFormatPrefs.cpp:96
 #: prefs/FileFormatPrefs.cpp:120
 msgid "&Locate..."
-msgstr ""
+msgstr "位置づける(&L)"
 
 #: prefs/FileFormatPrefs.cpp:98
 msgid "LAME MP3 Library:"
@@ -8324,11 +8352,11 @@ msgstr "キーボード"
 
 #: prefs/KeyConfigPrefs.cpp:86
 msgid "Keyboard preferences currently unavailable."
-msgstr ""
+msgstr "キーボードの設定は現在できません。"
 
 #: prefs/KeyConfigPrefs.cpp:87
 msgid "Open a new project to modify keyboard shortcuts."
-msgstr ""
+msgstr "キーボードショートカットを変更するには新規プロジェクトを開いてください。"
 
 #: prefs/KeyConfigPrefs.cpp:95
 msgid "Key Bindings"
@@ -9520,7 +9548,7 @@ msgstr "0100 days 024 h 060 m 060 s"
 #. * minutes, seconds and hundreths of a second (1/100 second)
 #: widgets/TimeTextCtrl.cpp:288
 msgid "hh:mm:ss + hundredths"
-msgstr ""
+msgstr "時:分:秒 + 百分の１秒"
 
 #. i18n-hint: Format string for displaying time in hours, minutes, seconds
 #. * and hundredths of a second. Change the 'h' to the abbreviation for hours,
@@ -9529,7 +9557,7 @@ msgstr ""
 #. * unless there aren't 60 minutes in an hour in your locale
 #: widgets/TimeTextCtrl.cpp:294
 msgid "0100 h 060 m 060.0100 s"
-msgstr ""
+msgstr "0100 時間 060 分 060.0100 秒"
 
 #. i18n-hint: Name of time display format that shows time in hours,
 #. * minutes, seconds and milliseconds (1/1000 second)
