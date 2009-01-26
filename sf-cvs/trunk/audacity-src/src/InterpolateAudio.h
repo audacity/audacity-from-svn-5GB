@@ -35,8 +35,8 @@
 // side (6x the number of bad samples on either side is great).  However,
 // it will work with less data, and with the bad samples on one end or
 // the other.
-void InterpolateAudio(float *buffer, int len,
-		      int firstBad, int numBad);
+void AUDACITY_DLL_API InterpolateAudio(float *buffer, int len,
+                                       int firstBad, int numBad);
 
 #endif // __AUDACITY_INTERPOLATE_AUDIO__
 

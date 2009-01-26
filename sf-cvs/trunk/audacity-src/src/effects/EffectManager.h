@@ -30,10 +30,10 @@ effects.
 #include "EffectCategory.h"
 #endif
 
-WX_DEFINE_ARRAY(Effect *, EffectArray);
+WX_DEFINE_USER_EXPORTED_ARRAY(Effect *, EffectArray, class AUDACITY_DLL_API);
 
 
-class EffectManager {
+class AUDACITY_DLL_API EffectManager {
    
  public:
    
