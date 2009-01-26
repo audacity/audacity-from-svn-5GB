@@ -213,7 +213,7 @@ void FileFormatPrefs::OnFFmpegFindButton(wxCommandEvent& evt)
    if (!locate)
    {
       int response = wxMessageBox(wxT("Audacity has automatically detected valid FFmpeg libraries.\
-                       \nDo you still want to locate them manually?"),wxT("Success"),wxCENTRE | wxYES_NO | wxICON_QUESTION);
+                       \nDo you still want to locate them manually?"),wxT("Success"),wxCENTRE | wxYES_NO | wxNO_DEFAULT |wxICON_QUESTION);
       if (response == wxYES)
         locate = true;
    }
