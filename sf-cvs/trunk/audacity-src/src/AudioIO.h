@@ -46,6 +46,7 @@ extern AudioIO *gAudioIO;
 void InitAudioIO();
 void DeinitAudioIO();
 wxString DeviceName(const PaDeviceInfo* info);
+bool ValidateDeviceNames();
 
 class AUDACITY_DLL_API AudioIOListener {
 public:
@@ -250,6 +251,11 @@ class AudioIO {
     *
     */
    wxString GetDeviceInfo();
+
+   /** \brief Ensure selected device names are valid
+    *
+    */
+   static bool ValidateDeviceNames();
 
 private:
    /** \brief Return a valid sample rate that is supported by the current I/O
