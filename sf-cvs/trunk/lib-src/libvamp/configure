@@ -639,6 +639,7 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+TARGETS
 SNDFILE_LIBS
 SNDFILE_CFLAGS
 PKG_CONFIG
@@ -695,6 +696,9 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+enable_static
+enable_shared
+enable_static_sdk
 enable_programs
 '
       ac_precious_vars='build_alias
@@ -1333,6 +1337,12 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-static         enable building of static linked vamp SDK
+                          [default=no]
+  --enable-shared         enable building of dynamic linked vamp SDK
+                          [default=yes]
+  --enable-static-sdk     enable building of static linked vamp SDK
+                          [default=no]
   --enable-programs       enable building of example host and RDF generator
                           [default=yes]
 
@@ -4232,12 +4242,53 @@ if test "$ac_res" != no; then
 fi
 
 
+TARGETS="plugins"
+
+# Check whether --enable-static was given.
+if test "${enable_static+set}" = set; then
+  enableval=$enable_static; SSDK_ARGUMENT=$enableval
+else
+  SSDK_ARGUMENT="no"
+fi
+
+
+if test "x$SSDK_ARGUMENT" = "xyes" ; then
+	TARGETS="$TARGETS sdkstatic"
+fi
+
+# Check whether --enable-shared was given.
+if test "${enable_shared+set}" = set; then
+  enableval=$enable_shared; DSDK_ARGUMENT=$enableval
+else
+  DSDK_ARGUMENT="yes"
+fi
+
+
+if test "x$DSDK_ARGUMENT" = "xyes" ; then
+	TARGETS="$TARGETS sdk"
+fi
+
+# Check whether --enable-static-sdk was given.
+if test "${enable_static_sdk+set}" = set; then
+  enableval=$enable_static_sdk; SSDK_ARGUMENT=$enableval
+else
+  SSDK_ARGUMENT="no"
+fi
+
+
+if test "x$SSDK_ARGUMENT" = "xyes" ; then
+	TARGETS="$TARGETS sdkstatic"
+fi
+
+
 # Check whether --enable-programs was given.
 if test "${enable_programs+set}" = set; then
   enableval=$enable_programs; PROGS_ARGUMENT=$enableval
 else
   PROGS_ARGUMENT="yes"
 fi
+
+
 
 
 if test "x$PROGS_ARGUMENT" = "xyes" ; then
@@ -4425,15 +4476,15 @@ $as_echo "yes" >&6; }
 	have_sndfile="yes"
 fi
 	if test "x$have_sndfile" = "xyes" ; then
-				TARGETS="sdk plugins host rdfgen test"
+					TARGETS="$TARGETS host rdfgen test"
 	else
 				{ { $as_echo "$as_me:$LINENO: error: libsndfile not found - cannot build example Vamp host!" >&5
 $as_echo "$as_me: error: libsndfile not found - cannot build example Vamp host!" >&2;}
    { (exit 1); exit 1; }; }
 	fi
-else
-		TARGETS="sdk plugins test"
 fi
+
+
 
 
 
