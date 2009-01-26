@@ -251,10 +251,16 @@ bool AudioIOPrefs::Apply()
    PopulateOrExchange( S );
 
 #if USE_PORTAUDIO_V19
+   if (!AudioIO::ValidateDeviceNames()) {
+      wxMessageBox(_("Playback and Recording device must use the same type, i.e., MME, DirectSound, etc."));
+      return false;
+   }
+
    double latencyDuration = DEFAULT_LATENCY_DURATION;
    gPrefs->Read(wxT("/AudioIO/LatencyDuration"), &latencyDuration);
    if (latencyDuration < 0)
       gPrefs->Write(wxT("/AudioIO/LatencyDuration"), DEFAULT_LATENCY_DURATION);
+
 #endif
 
 #if USE_PORTMIXER

@@ -217,6 +217,20 @@ wxString DeviceName(const PaDeviceInfo* info)
 #endif
 }
 
+bool AudioIO::ValidateDeviceNames()
+{
+#if USE_PORTAUDIO_V19
+   const PaDeviceInfo *pInfo = Pa_GetDeviceInfo(AudioIO::getPlayDevIndex());
+   const PaDeviceInfo *rInfo = Pa_GetDeviceInfo(AudioIO::getRecordDevIndex());
+
+   if (!pInfo || !rInfo || pInfo->hostApi != rInfo->hostApi) {
+      return false;
+   }
+#endif
+
+   return true;
+}
+
 AudioIO::AudioIO()
 {
    mAudioThreadShouldCallFillBuffersOnce = false;
