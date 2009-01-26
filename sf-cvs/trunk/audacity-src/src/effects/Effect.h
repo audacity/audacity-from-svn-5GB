@@ -28,9 +28,6 @@ class wxWindow;
 #include "../Internat.h"
 #include "../widgets/ProgressDialog.h"
 
-class Effect;
-
-
 #define PLUGIN_EFFECT   0x0001
 #define BUILTIN_EFFECT  0x0002
 // ADVANCED_EFFECT was introduced for Lynn Allan's 'CleanSpeech'
@@ -58,7 +55,7 @@ class Effect;
 //and so can just drop the steps we don't want?
 #define SKIP_EFFECT_MILLISECOND 99999
 
-class Effect {
+class AUDACITY_DLL_API Effect {
    
  // 
  // public methods
@@ -279,7 +276,7 @@ class Effect {
 #define ID_EFFECT_PREVIEW ePreviewID
 
 // Base dialog for regular effect
-class EffectDialog:public wxDialog
+class AUDACITY_DLL_API EffectDialog:public wxDialog
 {
 public:
    // constructors and destructors
