@@ -1,7 +1,7 @@
 dnl Todo: add Vamp / Audacity license?
 dnl Please increment the serial number below whenever you alter this macro
 dnl for the benefit of automatic macro update systems
-# audacity_checklib_libvamp.m4 serial 1
+# audacity_checklib_libvamp.m4 serial 2
 
 dnl Check for system copy of libvamp we can use for Vamp plug-in support
 AC_DEFUN([AUDACITY_CHECKLIB_LIBVAMP], [
@@ -47,7 +47,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVAMP], [
       LIBVAMP_LOCAL_BUILD="vamp-sdk"
 	  dnl compiler and linker flags
       LIBVAMP_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libvamp'
-      LIBVAMP_LOCAL_LDFLAGS='-L$(top_builddir)/lib-src/libvamp/src -Wl,-Bstatic -lvamp-hostsdk -Wl,-Bdynamic'
+      LIBVAMP_LOCAL_LDFLAGS='-L$(top_builddir)/lib-src/libvamp/src -lvamp-hostsdk'
 	  dnl add some extra object files we can build
       LIBVAMP_LOCAL_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
 	  dnl define a pre-processor symbol to tell other code that the vamp host
