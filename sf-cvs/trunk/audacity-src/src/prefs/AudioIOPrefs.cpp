@@ -25,6 +25,7 @@ other settings.
 
 #include "../Audacity.h"
 #include <wx/defs.h>
+#include <wx/choice.h>
 #include <wx/intl.h>
 
 #include "../Prefs.h"
@@ -119,7 +120,7 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       S.StartMultiColumn(2, wxEXPAND);
       S.SetStretchyCol(1);
-      S.TieChoice( _("Device") + wxString(wxT(":")), wxT("PlaybackDevice"), 
+      mPlay = S.TieChoice( _("Device") + wxString(wxT(":")), wxT("PlaybackDevice"), 
          wxT(""), mmPlayNames, mmPlayLabels );
 
       S.AddPrompt( _("Using:") );
@@ -137,7 +138,7 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       S.StartMultiColumn(2, wxEXPAND);
       S.SetStretchyCol(1);
-      S.TieChoice( _("Device") + wxString(wxT(":")), wxT("RecordingDevice"), 
+      mRec = S.TieChoice( _("Device") + wxString(wxT(":")), wxT("RecordingDevice"), 
          wxT(""), mmRecordNames, mmRecordLabels );
       S.TieChoice( _("Channels") + wxString(wxT(":")), wxT("RecordChannels"), 
          2, mmChannelNames, mmChannelLabels );
@@ -247,21 +248,20 @@ AudioIOPrefs::~AudioIOPrefs()
 
 bool AudioIOPrefs::Apply()
 {
-   ShuttleGui S( this, eIsSavingToPrefs );
-   PopulateOrExchange( S );
-
 #if USE_PORTAUDIO_V19
-   if (!AudioIO::ValidateDeviceNames()) {
+   if (!AudioIO::ValidateDeviceNames(mPlay->GetStringSelection(), mRec->GetStringSelection())) {
       wxMessageBox(_("Playback and Recording device must use the same type, i.e., MME, DirectSound, etc."));
       return false;
    }
+#endif
+
+   ShuttleGui S( this, eIsSavingToPrefs );
+   PopulateOrExchange( S );
 
    double latencyDuration = DEFAULT_LATENCY_DURATION;
    gPrefs->Read(wxT("/AudioIO/LatencyDuration"), &latencyDuration);
    if (latencyDuration < 0)
       gPrefs->Write(wxT("/AudioIO/LatencyDuration"), DEFAULT_LATENCY_DURATION);
-
-#endif
 
 #if USE_PORTMIXER
    if (gAudioIO)
