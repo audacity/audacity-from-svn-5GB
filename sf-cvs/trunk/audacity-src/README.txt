@@ -17,12 +17,12 @@ Audacity source code archive, except as otherwise noted
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Version 1.3.6 Beta
+Version 1.3.7 Beta
 
 Contents of this README:
 
 1.  Licensing
-2.  Changes in version 1.3.6 Beta
+2.  Changes in version 1.3.7 Beta
 3.  Known Issues
 4.  Source Code, Libraries and Additional Copyright Information
 5.  Compilation Instructions
@@ -54,34 +54,84 @@ to http://www.gnu.org/copyleft/gpl.html or write to
 
 --------------------------------------------------------------------------------
 
-2.  Changes in 1.3.6 Beta (since Alpha 1.3.6a6):
+2.  Changes in version 1.3.7 Beta
 
-Interface:
-        * "Save Compressed Copy of Project" saves in much smaller .OGG
-           format to facilitate online transmission of projects
-        * Improved MIDI import and export routines, and clearer color
-           for selection region
-        * Default temporary directory on Mac now accessible in Finder
+Cross-platform Bug Fixes:
+        * Muting/soloing caused incorrect channel results in exported
+           stereo files
+        * Noise Removal and all Nyquist effects pasted the original
+           unmodified audio at the end of the modified region
+        * Noise Removal inserted a tail of low level noise at the end
+           of the modified region
+        * Nyquist and Compressor plug-ins did not display moving bars
+           in progress dialogue and over-estimated "Remaining Time"
+        * Cancelling Nyquist effects deleted unprocessed audio
+        * Change Speed and Change Tempo failed to modify the original
+           selection length
+        * Cut lines invisible
+        * Fixed various bugs importing multi-stream files via FFmpeg
+        * File > Export as WAV could be corrupted if overwriting
+           an imported WAV read direct from the file
+        * Export multiple "Other uncompressed files" choice always
+           produced 16-bit PCM audio irrespective of chosen options.
+        * MP3 export usually produced a 128 kbps constant bit rate file
+           irrespective of chosen options; reported length often
+           incorrect
+        * MP3 ID3 Genre tag misread on import if the genre list in
+           Metadata Editor was opened and saved
+        * Exported metadata tags in MP3, OGG and FLAC often not seen by
+           player software - now substantially improved
+        * WMA exports (via FFmpeg)corrupted if metadata tags included
+        * Some multi-channel recording devices that previously recorded
+           more than two channels no longer did so
+        * Generated audio did not fit in window
+        * No warning was given when saving an empty project
+        * Beep on completing longer process did not work on many
+           systems
+        * fixed crashes importing lists of files (.LOF), in Meter Toolbar
+           and Change Speed
 
-Import / Export:
-	* Stability improvements in on-demand loading
-        * FFmpeg: support for latest version of library, improved
-           version checks and error messages, stability improvements
-           in custom exporter
+Platform-specific Bug Fixes:
+        * Windows Vista: crash opening Preferences with no sound
+           devices enabled and connected
+        * Mac OS X and Linux:
+           * Spurious clipping at start of playback
+           * Labels did not accept certain legal characters
+           * Shortcuts did not work after running effects
+           * Project Rate did not change to respect rate of first
+              imported file if that rate was unsupported
+        * Mac OS X only:
+           * Crash resizing project window
+           * Menu items became inactive or visibly corrupted
+           * File > Open dialogue did not always work on OS X 10.4
+           * Impossible to set independent Command and Control
+              shortcuts that shared the same key
+           * Freeze importing uncompressed files via On-Demand
+              (please report any remaining instances of this to:
+               feedback@audacityteam.org)
+           * Portable settings were not picked up, instead settings
+              were taken from the default location
+           * Fixed unavailability of FFmpeg installer
 
-Bug Fixes:
-        * Crash in "Get Noise Profile" step of Noise Removal at project
-           rates below 20480 Hz.
-        * Underestimation of peak level in tracks with a small number
-           of different peaks
-        * Truncate Silence could result in repeated or lost audio if
-           applied to the whole of a track
-        * Other interface, generating, exporting and platform-specific
-           fixes
+New Features:
+           * F11 Full Screen mode
+           * High-quality "Sliding Time Scale/Pitch Shift" effect
+           * Audio Contrast Analyzer for testing audio on the
+              internet for WCAG2 accessibility compliance.
+           * Windows: sound devices can now be opened using the
+              more efficient DirectSound API
 
-Compilation:
-        * Added autoconf macro archive to CVS, enabling *.nix users
-           without this archive to build --with -MIDI
+Other changes:
+           * Latency correction should be improved for many users
+              by employing a fixed rather than variable correction
+           * Grouping of Effects into categories turned off until
+              a way is added for users to do so themselves
+           * Numerous minor interface improvements such as Metadata
+              Editor navigation, new "hh:mm:ss + hundredths"
+              selection format
+           * Note: Windows users wanting to export MP3 files will
+              require the latest version of the LAME encoder from
+              http://lame.buanzo.com.ar/
 
 
 --------------------------------------------------------------------------------
@@ -95,39 +145,58 @@ for details of any issues that have been identified after release of
 this version.
 
 
- * Creating a Label Track (with or without a label), then pasting in
-    error into any selected track before clipboard has any content
-    causes a crash.
+ * Analyze > Silence Finder and Analyze > Beat Finder crash on
+    cancelling progress dialogue.
 
- * Muting/soloing specific stereo tracks when exporting may produce
-    incorrect channel results in the exported file. A file exported
-    from a single stereo track may have left channel only after use
-    of solo/mute buttons.
+ * Creating a Label Track (with or without a label), then pasting in
+    error into any selected audio track before clipboard has content
+    causes a crash. Pasting into the Label Track does not crash
 
  * Muting specific time-shifted mono tracks when exporting produces
     audio at wrong point on timeline in exported file if muted tracks
     are to left of unmuted.
 
- * Entering a negative three-digit value in "Change Speed", then
-    previewing, raises an "Unhandled Exception" dialogue on which any
-    of the "Abort, Retry, Ignore" choices cause a crash. Also possible
-    freeze or crash on exit if a negative three-digit percent change is
-    previewed in "Change Tempo" or "Change Pitch".
-
- * Nyquist plug-ins do not display moving bars in progress dialogue and
-    over-estimate "Remaining Time"; if effect is cancelled, the
-    unprocessed audio is deleted from the track, or Audacity crashes
-
- * Change Speed and Change Tempo fail to modify the original selection
-    length after applying the effect. Repeat fails to include the
-    original selection region after applyihg the effect.
-
  * In projects containing many tracks, clips dragged at the bottom of
     the project may jump upwards into tracks towards the top when they
     pass the snap-to point with other clips.
 
- * Starting monitoring in Meter Toolbar after recording in another
-    project window then closing it causes a crash
+ * Exports:
+    * WAVEX (Microsoft) headers: GSM 6.10 files cannot be exported, and
+       U-Law/A-Law files may not be playable
+    * M4A: exports at rates below 44100 Hz have incorrect sample rates,
+       and 38000 Hz exports may not play properly (FFmpeg bugs); M4A
+       renamed to MOV will not play in Windows iTunes or QuickTime
+
+ * Export Multiple:
+    * fails with no export or warning if an empty label is encountered.
+
+    * if user chooses to overwrite WAV files imported with preference
+       set to "read directly", the exported files and the project are
+       silenced. Set the preference to "Make a copy..." or use the
+       "FFmpeg-compatible files" import filter.
+
+ * Applying a chain including Equalization to files (File > Apply
+    Chain... > Apply to Files) leads to corruption of the waveform
+
+ * Cut Preview: when label track present and linking on, audio playback
+    continues through the region instead of omitting it.
+
+ * Nyquist effects remove or corrupt cut and split lines in the
+    modified region.
+
+ * If shortcut for "Add label at playback position" is an unmodified
+    character, using it a second time while playing or recording a
+    track enters that shortcut in a label placed at the start cursor.
+
+ * After using Plot Spectrum in one window then clearing to a new
+    window, Plot Spectrum no longer opens until Audacity is exited
+    and restarted.
+
+ * Preferences window:
+    * overflows in some locales using smaller screen sizes or larger
+       fonts, and on Macs at 1024x768 or smaller.
+    * OK button does not work when a tab is selected in the left-hand
+       panel.
 
  * LADSPA Multiband EQ may not be visible in the Effect menu, and
     may crash in use.
@@ -143,34 +212,11 @@ this version.
  * Linked audio and label tracks:
     * Labels do not move with Effect > Repeat, Reverse, and Truncate
        Silence, or when time-shifting clips
-    * When a Time Track is present, audio is not pasted into all
-       tracks, leading to desynchronisation
-
- * Exports:
-    * WAVEX (Microsoft) headers: GSM 6.10 files cannot be exported, and
-       U-Law/A-Law files may not be playable
-    * M4A: exports at rates below 44100 Hz have incorrect sample rates,
-       and 38000 Hz exports may not play properly (FFmpeg bugs); M4A
-       renamed to MOV will not play in Windows iTunes or QuickTime
-    * MP3: Bit Rate Mode and Quality choices in MP3 Options dialogue
-       are non-functional, almost always producing a 128 kbps CBR file.
-       Reported length is often incorrect (the actual length is correct)
-
- * Export Multiple:
-    * fails with no export or warning if an empty label is encountered.
-    * "Other uncompressed files" choice always produces 16-bit PCM
-       audio irrespective of header and encoding chosen in Options.
-
- * Some multi-channel recording devices that previously recorded more
-    than two channels may no longer do so. Please send reports to:
-      feedback@audacityteam.org
+    * When a Time Track is present, cut, copy and paste have no effect
 
  * When in Spectrum, Spectrum log or Pitch view, pasting in audio then
     zooming in causes the pasted content beyond the horizontal scroll
     to disappear.
-
- * Preferences window: OK button does not work when a tab is selected
-    in the left-hand panel.
 
  * When more than one track is selected, and the region selected in the
     clips includes white space, "Split New" and "Noise Removal" cause
@@ -182,10 +228,20 @@ this version.
     clip, the newly split clip wrongly aligns with the left edge of the
     residual clip in the original track.
 
+ * Import > Audio produces no entries in File > Recent Files.
+
  * "Audio Cache" on the Directories tab of Preferences caches most
     audio data for the duration of the session, including project data
     and imported files. Enabling it could cause a crash when making
     long recordings or opening large files or projects.
+
+ * It is currently possible to attempt simultaneous imports or exports
+    by using shortcuts (or File > New on Mac). Audacity is not yet
+    capable of running these simultaneous operations safely, and
+    attempting this may crash your project.
+
+ * Not all menu items are correctly enabled when the preference:
+    "Select all audio in project, if none selected" is checked.
 
  * A few interface elements do not change language without restart.
 
@@ -196,35 +252,17 @@ this version.
  * Pressing Play (but not spacebar) in a second project when another is
     already playing stops playback of the first project.
 
- * Projects created by Audacity 1.1.x may open incorrectly.
-
- * Metadata such as ID3 tags is not fully imported and exported for
-    all supported file formats. MP3 tags *are* correctly imported and
-    exported to the current ID3 specification, but some players don't
-    fully support this specification, so may not see all the tags.
-
- * ID3 Genre tags of imported MP3s are misread (and will therefore
-    also be exported incorrectly) if the genre list in Metadata Editor
-    is opened and saved.
-
- * No warning given if File > Save or File > Save Project As... is
-    carried out with no tracks open.
-
- * Not all menu items correctly enabled when the preference: "Select
-    all audio in project, if none selected" is checked.
-
- * Beep on completing long process may not be audible on many systems.
+ * Projects created by Audacity 1.1.x or earlier are no longer
+    supported. Export each project track as WAV using the appropriate
+    legacy version of Audacity, then import the WAV files into current
+    Audacity.
 
  * Audacity can import, display and cut/copy/paste MIDI files, then
     export them, but they cannot be played. Undoing an edit with a MIDI
     track open causes the MIDI data to be lost in Windows builds
 
- * Windows only: LV2 support: LADSPA plug-ins not yet categorisable;
-    the slv2 library needed for full LV2 support does not build.
-
- * Windows only: Welcome Message: On some systems/browsers, links are
-    not brought to top, and some screen readers that otherwise work
-    well with Audacity cannot read its text.
+ * Windows and Linux only: Welcome Message: On some systems/browsers,
+    links are not brought to top when the browser is already running.
 
  * Windows (reported on): There have been reports of clicks during
     recording on some Windows XP systems using Audacity 1.3.4 and
@@ -254,36 +292,9 @@ this version.
     usage which could cause a crash. This appears to be due to buggy
     memory allocation in "Hear".
 
- * Mac OS X only: Portable settings aren't picked up, and the default
-    settings (in the default location) are always used. See this page
-    for a workaround:
-      http://audacityteam.org/wiki/index.php?title=Portable_Audacity
-
- * Mac OS X and Linux only: Labels do not accept certain legal
-    characters.
-
- * Linux only: When importing larger WAV files with Import/Export
-    Preferences set to "read directly", exporting to the same file by
-    overwriting may result in a visually/audibly corrupted file.
-
- * Linux only: Audacity does not build if EXPERIMENTAL_SCOREALIGN is
-    defined
-
  * Linux only: Audacity now supports interfacing with Jack, however
     this has not been tested, and has a number of known reliability and
-    useability issues. Patches to improve both will be welcomed.
-
- * Linux (reported on): The first file imported into a project no
-    longer changes the project rate to the file's rate, if that rate is
-    absent from the project rate list.
-
- * Linux (Debian-derived) only: Audacity configure script does not
-    detect libsoundtouch on the system and so Change Pitch and Change
-    Tempo effects are disabled. This is a debian bug (#476699), which
-    can be worked around by symlinking
-    /usr/lib/pkgconfig/soundtouch-1.0.pc
-    to
-    /usr/lib/pkgconfig/libSoundTouch.pc
+    usability issues. Patches to improve both will be welcomed.
 
 Also note the Windows installer will not replace 1.2.x installations,
 but will install alongside them.
@@ -294,7 +305,7 @@ but will install alongside them.
 4.  Source Code, Libraries and Additional Copyright Information
 
 Source code to this program is always available; for more information visit
-our website at:
+our web site at:
 
   http://audacity.sourceforge.net/download/
 
@@ -458,6 +469,37 @@ or e-mail us at:
 
 6.  Previous Changes going back to version 1.1.0
 
+
+Changes in 1.3.6 Beta (since 1.3.6a6 Alpha):
+
+Interface:
+        * "Save Compressed Copy of Project" saves in much smaller .OGG
+           format to facilitate online transmission of projects
+        * Improved MIDI import and export routines, and clearer color
+           for selection region
+        * Default temporary directory on Mac now accessible in Finder
+
+Import / Export:
+	* Stability improvements in on-demand loading
+        * FFmpeg: support for latest version of library, improved
+           version checks and error messages, stability improvements
+           in custom exporter
+
+Bug Fixes:
+        * Crash in "Get Noise Profile" step of Noise Removal at project
+           rates below 20480 Hz.
+        * Underestimation of peak level in tracks with a small number
+           of different peaks
+        * Truncate Silence could result in repeated or lost audio if
+           applied to the whole of a track
+        * Other interface, generating, exporting and platform-specific
+           fixes
+
+Compilation:
+        * Added autoconf macro archive to CVS, enabling *.nix users
+           without this archive to build --with -MIDI
+
+
 Changes in 1.3.6a6:
 
 Interface:
@@ -585,7 +627,7 @@ Miscellaneous:
         * Bug fixes for shortcut availability/tab order in Selection Bar,
            and for window focus issues when previewing effects
         * Improvements in escaping and navigating fields in dialogs,
-           and in stabilty when screen readers are used
+           and in stability when screen readers are used
 
 
 Changes in 1.3.6a1:
@@ -1063,7 +1105,7 @@ Changes in 1.2.0-pre4:
     non-seekable PCM audio files, such as GSM610.
 
   * Fixed bug that was causing the samples to shift off-screen
-    horizonally when zoomed in very far and the track had a
+    horizontally when zoomed in very far and the track had a
     time-shift offset.
 
   * Fixed bugs in the new resampler that added noise to resampled
@@ -1176,7 +1218,7 @@ Changes in 1.2.0-pre3:
 Changes in 1.2.0-pre2:
 
   * Online help completed.  The full manual is nearly complete
-    and will be posted to the website for online browsing shortly.
+    and will be posted to the web site for online browsing shortly.
 
   * Audacity will no longer let you do unsafe editing operations
     while playing or recording.  This eliminates many potential
@@ -1317,7 +1359,7 @@ New features in Audacity 1.1.2:
 New features in Audacity 1.1.1:
 
   * User Interface
-    - Tooltips appear in Statusbar.
+    - Tooltips appear in Status Bar.
     - Vertical cursor follows play/record
     - Pause button
     - Drawing tool (with three different modes)
@@ -1368,7 +1410,7 @@ New features in Audacity 1.1.0:
     - Automatic real-time resampling (using linear
         interpolation)
   * Effects:
-    - Support LADSPA plugins on Linux / Unix
+    - Support LADSPA plug-ins on Linux / Unix
   * File formats:
     - New XML-based Audacity project format
     - Full Ogg Vorbis support now (importing and exporting)
