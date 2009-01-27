@@ -45,6 +45,9 @@ private:
    wxArrayString mmRecordLabels;
    wxArrayString mmChannelNames;
    wxArrayInt    mmChannelLabels;
+
+   wxChoice *mPlay;
+   wxChoice *mRec;
 };
 
 #endif

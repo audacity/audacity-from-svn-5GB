@@ -255,7 +255,7 @@ class AudioIO {
    /** \brief Ensure selected device names are valid
     *
     */
-   static bool ValidateDeviceNames();
+   static bool ValidateDeviceNames(wxString play, wxString rec);
 
 private:
    /** \brief Return a valid sample rate that is supported by the current I/O
