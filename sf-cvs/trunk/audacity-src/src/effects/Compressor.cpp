@@ -527,7 +527,7 @@ void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
 
    S.StartHorizontalLay(wxCENTER, false);
    {
-      mGainCheckBox = S.AddCheckBox(_("Normalize to 0dB after compressing"),
+      mGainCheckBox = S.AddCheckBox(_("Make-up gain for 0dB after compressing"),
                                     wxT("true"));
    }
    S.EndHorizontalLay();
