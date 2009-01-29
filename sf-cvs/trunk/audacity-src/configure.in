@@ -700,7 +700,6 @@ case "${host_os}" in
 esac
 
 AC_CONFIG_FILES([Makefile src/Makefile lib-src/Makefile \
-                 lib-src/libnyquist/Makefile lib-src/libnyquist/misc/Makefile \
                  locale/Makefile])
 dnl There are various other files we might need to process, depends on what
 dnl has been enabled previously

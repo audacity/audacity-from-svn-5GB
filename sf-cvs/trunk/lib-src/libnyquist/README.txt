@@ -1,6 +1,7 @@
 libnyquist
 
 Library code and the "nyx" interface by Dominic Mazzoni.
+Updated to Nyquist version 3.02 by Leland Lucius.
 
 Based on Nyquist version 2.29 by Roger B. Dannenberg,
 which was based on xlisp 2 by David Michael Betz.
@@ -16,15 +17,14 @@ within another application, contact the Audacity developers:
 For information about Nyquist as a standalone, interactive audio
 programming language, see the Nyquist website:
 
-  http://www.cs.cmu.edu/~rbd/nyquist.html
+  http://www.cs.cmu.edu/~music/nyquist/
 
 ------------------------------------------------------------
 
-README file for Nyquist Version 2.29
+README file for Nyquist Version 3.02
 
-WEB SITE
-====================
-http://www.cs.cmu.edu/~rbd/nyquist.html
+LICENSE: see license.txt
+WEB SITE: http://www.cs.cmu.edu/~rbd/nyquist.html
 
 INSTALLING NYQUIST
 ====================
@@ -33,11 +33,72 @@ Please see Section 1.1, Page 1, of the Nyquist Manual
 If you use Windows 95 or Windows NT, this release was
 compiled with Visual C++ 6.0.
 
-For the Macintosh release, there is an executable
-Nyquist program in the runtime directory. 
+For Mac OS X command line users, there is an executable
+Nyquist program: NyquistIDE.app/Contents/Resources/Java/ny
 
 IMPLEMENTATION STATUS
 =====================
+Version 3.02 provides:
+    Uses libsndfile and recent version of portaudio.
+    Many bug fixes.
+    Support & compatibility for Algorithmic Composition (to appear)
+Version 3.01 provides:
+    Feedback FM: see fmfb, snd-fmfb and snd-fmfbv
+    fixed help functions and internal browser window
+    Documentation mostly using SAL syntax now
+Version 3.00 provides:
+    First release supporting SAL syntax
+    Major revision to documentation (but more to come)
+    Bug fixes for sustain transformation
+    Many new STK instruments ported by Pedro Morales
+    Pedro's sdl music input language
+Version 2.38 provides:
+    improved PWL editor
+    improved preferences dialog
+    bug fixes in Equalizer editor
+    additional documentation for demos/plight/drums.lsp
+    option click or right click on completion list to get help
+    manual can be displayed in an internal window in jNyqIDE
+Version 2.37 provides:
+    fix for byte order on Mac PPC that prevented pianosyn.lsp from loading
+Version 2.36 provides:
+    cross-platform browser launching in jNyqIDE
+    fix search path set by jNyqIDE (OS X-related bug introduced in 2.35)
+    fix bug in slider update code on OS X
+Version 2.35 provides:
+    fix for Open Sound Control under Windows/jNyqIDE
+    other minor jNyqIDE fixes    
+Version 2.34 provides:
+    fix to ^U (send selection to Nyquist) in jNyqIDE
+    default sound file path for Mac OS X is /tmp
+    Nyquist exits when EOF detected -- try to make orphans abort
+Version 2.33 provides:
+    additional documentation for Open Sound Control
+        interface and utility programs
+Version 2.32 provides:
+    envelope editor in jNyqIDE
+    EQ editor in jNyqIDE
+    score editor in jNyqIDE
+    slider support in Nyquist
+    OSC (Open Sound Control) interface
+    OSC test program and serial-to-OSC program
+    drum machine (as separate download)
+    jNyqIDE has pop-up menus and per-file menu bars
+Version 2.31 provides:
+    new compositional algorithm support in xm.lsp
+    many bug fixes
+    MiniMoog emulator
+    spatialization libraries
+    sound reversal functions
+    Dolby Surround encode/decode
+Version 2.30 provides:
+    many many changes, bug fixes, enhancements
+    new Java-based IDE: jnyqide
+    LPC analysis/synthesis
+    uses PortAudio for audio I/O
+    changes for Debian Linux compatibility
+    new examples in demos
+    new documentation and html files
 Version 2.29 provides:
     new functions: snd-alpassvc, sndalpassvv, snd-eqbandvvv
     corresponding high-level functions in Nyquist
@@ -184,5 +245,4 @@ BUILDING UNDER LINUX
 in the nyquist directory:
 > ln -s sys/unix/linux/Makefile
 > make
-
 

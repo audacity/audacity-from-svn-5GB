@@ -1,0 +1,6 @@
+ (SETF MAX-STOP-TIME 10E20) 
+
+ (SETF MIN-START-TIME -10E20) 
+
+ (setf OP-AVERAGE 1) (setf OP-PEAK 2) 
+
