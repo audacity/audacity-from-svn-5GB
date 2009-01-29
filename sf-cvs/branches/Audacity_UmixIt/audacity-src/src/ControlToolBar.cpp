@@ -114,6 +114,7 @@ BEGIN_EVENT_TABLE(ControlToolBar, wxWindow)
    #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       EVT_COMMAND(ID_LOCK_BUTTON,
             wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnLock)
+      //v Never gets called.  EVT_KEY_UP(ControlToolBar::OnKeyUp)
    #endif
    EVT_COMMAND(ID_STOP_BUTTON,
          wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnStop)
@@ -655,8 +656,9 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
       return;
    }
 
+   // Play/Stop
 #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-   if (event.KeyCode() == WXK_RETURN) 
+   if (event.GetKeyCode() == WXK_RETURN) 
    {
 #else
    if (event.KeyCode() == WXK_SPACE) {
@@ -676,7 +678,23 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
    event.Skip();
 }
 
-
+//void ControlToolBar::OnKeyUp(wxKeyEvent & event)
+//{
+//   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+//      if ((event.KeyCode() == WXK_SPACE) && // Record
+//            !mIsLocked)
+//      {
+//         StopPlaying();
+//
+//         SetPlay(false);
+//         SetRecord(false);
+//         SetStop(true);
+//         mStop->Disable();
+//      }
+//   #endif
+//   event.Skip();
+//}
+//
 void ControlToolBar::UpdatePrefs()
 {
 	gPrefs->Read("/GUI/AlwaysEnablePlay", &mAlwaysEnablePlay, false);
@@ -1052,10 +1070,14 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
 {
    if (gAudioIO->IsBusy()) {
       #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-         if (!mIsLocked) // Stop only if in locked mode. 
+         if (mIsLocked) // Stop only if in locked mode. 
          {
             this->StopPlaying(); // Stop recording.
             mRecord->PopUp();
+         }
+         else
+         {
+            //vvv evt.GetClassInfo();
          }
       #else
          mRecord->PopUp();
@@ -1077,17 +1099,17 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
    mFF->Disable();
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       mPause->SetEnabled(mIsLocked);
+      this->SetRecord(mIsLocked); // If locked, push Record down, else up.
    #else
       mPause->Enable();
+      mRecord->PushDown();
    #endif
-
-   mRecord->PushDown();
 
    AudacityProject *p = GetActiveProject();
    if (p) {
       TrackList *t = p->GetTracks();
 
-      // Don't do this for Audiotouch. Not necessary. 
+      // Don't do this for Audiotouch. Not necessary. The performance hit is in the track being recorded, below.
       #if (AUDACITY_BRANDING == BRAND_THINKLABS)
          // For versions that default to dual wave/spectrum display, 
          // switch all tracks to WaveformDisplay on Record, for performance.
@@ -1120,7 +1142,7 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
          WaveTrack *newTrack = p->GetTrackFactory()->NewWaveTrack();
          newTrack->SetOffset(t0);
          newTrack->SetRate(p->GetRate());
-         newTrack->SetDisplay(WaveTrack::WaveformDisplay); // for performance
+         newTrack->SetDisplay(WaveTrack::WaveformDisplay); // for performance //vvvvv 
          if( recordingChannels == 2 )
          {
             if( c == 0 )
