@@ -51,3 +51,6 @@
 #include "ControlButtons/Pause.xpm"
 #include "ControlButtons/PauseDisabled.xpm"
 #include "ControlButtons/PauseAlpha.xpm"
+#include "ControlButtons/Lock.xpm"
+#include "ControlButtons/LockDisabled.xpm"
+#include "ControlButtons/LockAlpha.xpm"
