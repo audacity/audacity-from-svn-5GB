@@ -455,10 +455,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\lib-src\libnyquist\nyquist\nyqsrc\sndfail.c"
-					>
-				</File>
-				<File
 					RelativePath="..\..\..\lib-src\libnyquist\nyquist\nyqsrc\sndfnint.c"
 					>
 				</File>
