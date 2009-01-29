@@ -612,7 +612,6 @@
 		284A83710F3158A2001D7A67 /* WvIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 284A811C0F3158A1001D7A67 /* WvIn.cpp */; };
 		284A83720F3158A2001D7A67 /* stkinit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 284A811D0F3158A1001D7A67 /* stkinit.cpp */; };
 		284A83740F3158A2001D7A67 /* stkint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 284A811F0F3158A1001D7A67 /* stkint.cpp */; };
-		284A83960F3158A2001D7A67 /* term.c in Sources */ = {isa = PBXBuildFile; fileRef = 284A815D0F3158A2001D7A67 /* term.c */; };
 		284A83AE0F3158A2001D7A67 /* abs.c in Sources */ = {isa = PBXBuildFile; fileRef = 284A817E0F3158A2001D7A67 /* abs.c */; };
 		284A83B00F3158A2001D7A67 /* allpoles.c in Sources */ = {isa = PBXBuildFile; fileRef = 284A81810F3158A2001D7A67 /* allpoles.c */; };
 		284A83B20F3158A2001D7A67 /* alpass.c in Sources */ = {isa = PBXBuildFile; fileRef = 284A81840F3158A2001D7A67 /* alpass.c */; };
@@ -2141,7 +2140,6 @@
 		284A811C0F3158A1001D7A67 /* WvIn.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = WvIn.cpp; sourceTree = "<group>"; };
 		284A811D0F3158A1001D7A67 /* stkinit.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = stkinit.cpp; sourceTree = "<group>"; };
 		284A811F0F3158A1001D7A67 /* stkint.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = stkint.cpp; sourceTree = "<group>"; };
-		284A815D0F3158A2001D7A67 /* term.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = term.c; sourceTree = "<group>"; };
 		284A817E0F3158A2001D7A67 /* abs.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = abs.c; sourceTree = "<group>"; };
 		284A81810F3158A2001D7A67 /* allpoles.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = allpoles.c; sourceTree = "<group>"; };
 		284A81840F3158A2001D7A67 /* alpass.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = alpass.c; sourceTree = "<group>"; };
@@ -4070,7 +4068,6 @@
 				284A80680F3158A1001D7A67 /* fft */,
 				284A806B0F3158A1001D7A67 /* nyqsrc */,
 				284A80C80F3158A1001D7A67 /* nyqstk */,
-				284A81210F3158A1001D7A67 /* sys */,
 				284A817C0F3158A2001D7A67 /* tran */,
 				284A827A0F3158A2001D7A67 /* xlisp */,
 			);
@@ -4203,22 +4200,6 @@
 				284A811C0F3158A1001D7A67 /* WvIn.cpp */,
 			);
 			path = src;
-			sourceTree = "<group>";
-		};
-		284A81210F3158A1001D7A67 /* sys */ = {
-			isa = PBXGroup;
-			children = (
-				284A81390F3158A2001D7A67 /* unix */,
-			);
-			path = sys;
-			sourceTree = "<group>";
-		};
-		284A81390F3158A2001D7A67 /* unix */ = {
-			isa = PBXGroup;
-			children = (
-				284A815D0F3158A2001D7A67 /* term.c */,
-			);
-			path = unix;
 			sourceTree = "<group>";
 		};
 		284A817C0F3158A2001D7A67 /* tran */ = {
@@ -6278,7 +6259,6 @@
 				284A83710F3158A2001D7A67 /* WvIn.cpp in Sources */,
 				284A83720F3158A2001D7A67 /* stkinit.cpp in Sources */,
 				284A83740F3158A2001D7A67 /* stkint.cpp in Sources */,
-				284A83960F3158A2001D7A67 /* term.c in Sources */,
 				284A83AE0F3158A2001D7A67 /* abs.c in Sources */,
 				284A83B00F3158A2001D7A67 /* allpoles.c in Sources */,
 				284A83B20F3158A2001D7A67 /* alpass.c in Sources */,
