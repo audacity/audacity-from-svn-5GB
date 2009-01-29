@@ -128,8 +128,7 @@ am_libnyquist_a_OBJECTS = extern.$(OBJEXT) xldmem.$(OBJEXT) \
 	ModalBar.$(OBJEXT) Modal.$(OBJEXT) Flute.$(OBJEXT) \
 	JetTable.$(OBJEXT) PoleZero.$(OBJEXT) stkinit.$(OBJEXT) \
 	instr.$(OBJEXT) stkint.$(OBJEXT) fftn.$(OBJEXT) \
-	sndfnint.$(OBJEXT) seqfnint.$(OBJEXT) term.$(OBJEXT) \
-	nyx.$(OBJEXT)
+	sndfnint.$(OBJEXT) seqfnint.$(OBJEXT) nyx.$(OBJEXT)
 libnyquist_a_OBJECTS = $(am_libnyquist_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/autotools/depcomp
@@ -474,7 +473,6 @@ libnyquist_a_SOURCES = \
    $(NYQUIST)/fft/fftn.c \
    $(NYQUIST)/nyqsrc/sndfnint.c \
    $(NYQUIST)/nyqsrc/seqfnint.c \
-   $(NYQUIST)/sys/unix/term.c \
    nyx.c
 
 
@@ -732,7 +730,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tapf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tapv.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tempomap.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/term.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/timebase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tone.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tonev.Po@am__quote@
@@ -2920,20 +2917,6 @@ seqfnint.obj: $(NYQUIST)/nyqsrc/seqfnint.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(NYQUIST)/nyqsrc/seqfnint.c' object='seqfnint.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o seqfnint.obj `if test -f '$(NYQUIST)/nyqsrc/seqfnint.c'; then $(CYGPATH_W) '$(NYQUIST)/nyqsrc/seqfnint.c'; else $(CYGPATH_W) '$(srcdir)/$(NYQUIST)/nyqsrc/seqfnint.c'; fi`
-
-term.o: $(NYQUIST)/sys/unix/term.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT term.o -MD -MP -MF $(DEPDIR)/term.Tpo -c -o term.o `test -f '$(NYQUIST)/sys/unix/term.c' || echo '$(srcdir)/'`$(NYQUIST)/sys/unix/term.c
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/term.Tpo $(DEPDIR)/term.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(NYQUIST)/sys/unix/term.c' object='term.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o term.o `test -f '$(NYQUIST)/sys/unix/term.c' || echo '$(srcdir)/'`$(NYQUIST)/sys/unix/term.c
-
-term.obj: $(NYQUIST)/sys/unix/term.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT term.obj -MD -MP -MF $(DEPDIR)/term.Tpo -c -o term.obj `if test -f '$(NYQUIST)/sys/unix/term.c'; then $(CYGPATH_W) '$(NYQUIST)/sys/unix/term.c'; else $(CYGPATH_W) '$(srcdir)/$(NYQUIST)/sys/unix/term.c'; fi`
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/term.Tpo $(DEPDIR)/term.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(NYQUIST)/sys/unix/term.c' object='term.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o term.obj `if test -f '$(NYQUIST)/sys/unix/term.c'; then $(CYGPATH_W) '$(NYQUIST)/sys/unix/term.c'; else $(CYGPATH_W) '$(srcdir)/$(NYQUIST)/sys/unix/term.c'; fi`
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

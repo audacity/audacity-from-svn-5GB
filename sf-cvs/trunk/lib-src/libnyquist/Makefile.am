@@ -226,7 +226,6 @@ libnyquist_a_SOURCES = \
    $(NYQUIST)/fft/fftn.c \
    $(NYQUIST)/nyqsrc/sndfnint.c \
    $(NYQUIST)/nyqsrc/seqfnint.c \
-   $(NYQUIST)/sys/unix/term.c \
    nyx.c
 
 # files that only really viscous cleans remove
