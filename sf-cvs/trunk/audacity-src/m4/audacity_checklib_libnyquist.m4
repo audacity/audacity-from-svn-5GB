@@ -22,17 +22,19 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBNYQUIST], [
 
    dnl see if Nyquist is available locally
 
-   AC_CHECK_FILE(${srcdir}/lib-src/libnyquist/nyx/nyx.h,
+   AC_CHECK_FILE(${srcdir}/lib-src/libnyquist/nyx.h,
                  nyx_h_found="yes",
                  nyx_h_found="no")
 
    if test "x$nyx_h_found" = "xyes" ; then
       LIBNYQUIST_LOCAL_AVAILABLE="yes"
       LIBNYQUIST_LOCAL_LIBS="libnyquist.a"
-      LIBNYQUIST_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libnyquist/nyx'
+      LIBNYQUIST_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libnyquist'
       LIBNYQUIST_LOCAL_CPPSYMBOLS="USE_NYQUIST"
       LIBNYQUIST_LOCAL_OPTOBJS="effects/nyquist/Nyquist.o"
       LIBNYQUIST_LOCAL_OPTOBJS="$LIBNYQUIST_LOCAL_OPTOBJS effects/nyquist/LoadNyquist.o"
+
+      LIBNYQUIST_LOCAL_CONFIG_SUBDIRS="lib-src/libnyquist"
 
       AC_MSG_NOTICE([nyquist libraries are available in the local tree])
    else

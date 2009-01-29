@@ -7701,9 +7701,9 @@ _ACEOF
          LIBNYQUIST_SYSTEM_AVAILABLE="no"
 
 
-   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libnyquist/nyx/nyx.h" | $as_tr_sh`
-{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libnyquist/nyx/nyx.h" >&5
-$as_echo_n "checking for ${srcdir}/lib-src/libnyquist/nyx/nyx.h... " >&6; }
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libnyquist/nyx.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libnyquist/nyx.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/libnyquist/nyx.h... " >&6; }
 if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
   $as_echo_n "(cached) " >&6
 else
@@ -7711,7 +7711,7 @@ else
   { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
 $as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
    { (exit 1); exit 1; }; }
-if test -r "${srcdir}/lib-src/libnyquist/nyx/nyx.h"; then
+if test -r "${srcdir}/lib-src/libnyquist/nyx.h"; then
   eval "$as_ac_File=yes"
 else
   eval "$as_ac_File=no"
@@ -7733,10 +7733,12 @@ fi
    if test "x$nyx_h_found" = "xyes" ; then
       LIBNYQUIST_LOCAL_AVAILABLE="yes"
       LIBNYQUIST_LOCAL_LIBS="libnyquist.a"
-      LIBNYQUIST_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libnyquist/nyx'
+      LIBNYQUIST_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libnyquist'
       LIBNYQUIST_LOCAL_CPPSYMBOLS="USE_NYQUIST"
       LIBNYQUIST_LOCAL_OPTOBJS="effects/nyquist/Nyquist.o"
       LIBNYQUIST_LOCAL_OPTOBJS="$LIBNYQUIST_LOCAL_OPTOBJS effects/nyquist/LoadNyquist.o"
+
+      LIBNYQUIST_LOCAL_CONFIG_SUBDIRS="lib-src/libnyquist"
 
       { $as_echo "$as_me:$LINENO: nyquist libraries are available in the local tree" >&5
 $as_echo "$as_me: nyquist libraries are available in the local tree" >&6;}
@@ -7881,7 +7883,7 @@ fi
       LIBVAMP_LOCAL_AVAILABLE="yes"
 	        LIBVAMP_LOCAL_BUILD="vamp-sdk"
 	        LIBVAMP_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libvamp'
-      LIBVAMP_LOCAL_LDFLAGS='-L$(top_builddir)/lib-src/libvamp/src -lvamp-hostsdk'
+      LIBVAMP_LOCAL_LDFLAGS='-L$(top_builddir)/lib-src/libvamp/src -Wl,-Bstatic -lvamp-hostsdk -Wl,-Bdynamic'
 	        LIBVAMP_LOCAL_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
 	  	        LIBVAMP_LOCAL_CPPSYMBOLS="USE_VAMP"
 	        LIBVAMP_LOCAL_CONFIG_SUBDIRS="lib-src/libvamp"
@@ -9530,7 +9532,7 @@ case "${host_os}" in
       ;;
 esac
 
-ac_config_files="$ac_config_files Makefile src/Makefile lib-src/Makefile lib-src/libnyquist/Makefile lib-src/libnyquist/misc/Makefile locale/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile lib-src/Makefile locale/Makefile"
 
 if [ "x$LIBEXPAT_USE_LOCAL" = "xyes" ]; then
    ac_config_files="$ac_config_files lib-src/expat/Makefile"
@@ -10144,8 +10146,6 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "lib-src/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/Makefile" ;;
-    "lib-src/libnyquist/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/libnyquist/Makefile" ;;
-    "lib-src/libnyquist/misc/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/libnyquist/misc/Makefile" ;;
     "locale/Makefile") CONFIG_FILES="$CONFIG_FILES locale/Makefile" ;;
     "lib-src/expat/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/expat/Makefile" ;;
     "lib-src/portaudio/pa_unix_oss/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/portaudio/pa_unix_oss/Makefile" ;;
