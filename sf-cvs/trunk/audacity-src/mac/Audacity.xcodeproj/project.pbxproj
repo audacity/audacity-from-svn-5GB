@@ -7098,7 +7098,7 @@
 					EXT,
 				);
 				PRODUCT_NAME = nyquist;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libnyquist $(TOPLEVEL)/lib-src/libnyquist/nyquist/cmt $(TOPLEVEL)/lib-src/libnyquist/nyquist/fft $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqsrc $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk/include $(TOPLEVEL)/lib-src/libnyquist/nyquist/tran $(TOPLEVEL)/lib-src/libnyquist/nyquist/xlisp";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libnyquist $(TOPLEVEL)/lib-src/libnyquist/nyquist/cmt $(TOPLEVEL)/lib-src/libnyquist/nyquist/fft $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqsrc $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk/include $(TOPLEVEL)/lib-src/libnyquist/nyquist/sys/unix $(TOPLEVEL)/lib-src/libnyquist/nyquist/tran $(TOPLEVEL)/lib-src/libnyquist/nyquist/xlisp";
 			};
 			name = "Debug Static";
 		};
@@ -7808,7 +7808,7 @@
 					EXT,
 				);
 				PRODUCT_NAME = nyquist;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libnyquist $(TOPLEVEL)/lib-src/libnyquist/nyquist/cmt $(TOPLEVEL)/lib-src/libnyquist/nyquist/fft $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqsrc $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk/include $(TOPLEVEL)/lib-src/libnyquist/nyquist/tran $(TOPLEVEL)/lib-src/libnyquist/nyquist/xlisp";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libnyquist $(TOPLEVEL)/lib-src/libnyquist/nyquist/cmt $(TOPLEVEL)/lib-src/libnyquist/nyquist/fft $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqsrc $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk/include $(TOPLEVEL)/lib-src/libnyquist/nyquist/sys/unix $(TOPLEVEL)/lib-src/libnyquist/nyquist/tran $(TOPLEVEL)/lib-src/libnyquist/nyquist/xlisp";
 			};
 			name = "Debug Shared";
 		};
@@ -8139,7 +8139,7 @@
 					EXT,
 				);
 				PRODUCT_NAME = nyquist;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libnyquist $(TOPLEVEL)/lib-src/libnyquist/nyquist/cmt $(TOPLEVEL)/lib-src/libnyquist/nyquist/fft $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqsrc $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk/include $(TOPLEVEL)/lib-src/libnyquist/nyquist/tran $(TOPLEVEL)/lib-src/libnyquist/nyquist/xlisp";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libnyquist $(TOPLEVEL)/lib-src/libnyquist/nyquist/cmt $(TOPLEVEL)/lib-src/libnyquist/nyquist/fft $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqsrc $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk/include $(TOPLEVEL)/lib-src/libnyquist/nyquist/sys/unix $(TOPLEVEL)/lib-src/libnyquist/nyquist/tran $(TOPLEVEL)/lib-src/libnyquist/nyquist/xlisp";
 			};
 			name = "Release Shared";
 		};
@@ -8413,7 +8413,7 @@
 					EXT,
 				);
 				PRODUCT_NAME = nyquist;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libnyquist $(TOPLEVEL)/lib-src/libnyquist/nyquist/cmt $(TOPLEVEL)/lib-src/libnyquist/nyquist/fft $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqsrc $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk/include $(TOPLEVEL)/lib-src/libnyquist/nyquist/tran $(TOPLEVEL)/lib-src/libnyquist/nyquist/xlisp";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libnyquist $(TOPLEVEL)/lib-src/libnyquist/nyquist/cmt $(TOPLEVEL)/lib-src/libnyquist/nyquist/fft $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqsrc $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk/include $(TOPLEVEL)/lib-src/libnyquist/nyquist/sys/unix $(TOPLEVEL)/lib-src/libnyquist/nyquist/tran $(TOPLEVEL)/lib-src/libnyquist/nyquist/xlisp";
 			};
 			name = "Release Static";
 		};
