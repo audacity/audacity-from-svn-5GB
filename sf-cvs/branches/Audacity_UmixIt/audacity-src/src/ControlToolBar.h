@@ -69,6 +69,8 @@ class ControlToolBar:public ToolBar {
 
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnKeyEvent(wxKeyEvent & event);
+   //v Never gets called. Due to something in AudacityProject::HandleKeyDown?
+   //    virtual void OnKeyUp(wxKeyEvent & event);
    void OnTool(wxCommandEvent & evt);
 
    // msmeyer: These are public, but it's far better to
@@ -147,6 +149,9 @@ class ControlToolBar:public ToolBar {
    #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       AButton* mLock;
       bool mIsLocked;
+      public:
+         bool IsLocked() { return mIsLocked; };
+      private:
    #endif
    AButton *mRecord;
    AButton *mPause;

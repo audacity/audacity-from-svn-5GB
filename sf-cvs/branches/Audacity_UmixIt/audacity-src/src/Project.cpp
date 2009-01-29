@@ -1259,7 +1259,14 @@ bool AudacityProject::HandleKeyUp(wxKeyEvent & event)
 
       mTrackPanel->HandleShiftKey(false);
    }
-
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      if (event.GetKeyCode() == WXK_SPACE) // Record
+      {
+         ControlToolBar *tb = GetControlToolBar();
+         if (tb && !(tb->IsLocked()))
+            tb->StopPlaying();
+      }
+   #endif
    return false;
 }
 
