@@ -25,7 +25,88 @@
  </ul>
 ')?></p>
 
-<h3 id="details"><?=_("New in Audacity 1.3.6")?></h3>
+<h3 id="details"><?=_("New in Audacity 1.3.7")?></h3>
+
+<dl>
+	<dt> Improvements and new features </dt>
+	      <dd>   <ul>   
+                      <li>F11 Full Screen mode</li>
+                      <li>High-quality "Sliding Time Scale/Pitch Shift" effect</li>
+                      <li>"Audio Contrast Analyzer" for testing audio on the
+                           internet for
+                           <a href="http://www.eramp.com/WCAG_2_audio_contrast_tool_help.htm">
+                           WCAG2 accessibility compliance</a></li>
+                      <li>On Windows, sound devices can now be opened using the more
+                           efficient DirectSound API</li>
+                      <li>As a first step towards improving latency correction, a fixed
+                           rather than variable correction is now applied, customizable
+                           in Preferences                    
+                      <li>Numerous minor interface improvements such as Metadata
+                           Editor navigation, new "hh:mm:ss + hundredths" selection format
+                </ul>
+         </dd>
+
+	<dt> Numerous usability and stability fixes </dt>
+	      <dd> Cross-platform Bug Fixes:
+                <ul>
+                     <li>Muting/soloing caused incorrect channel results in exported
+                          stereo files</li>
+                     <li>Nyquist effects: pasted unmodified audio into the result,
+                          no progress bar, truncation of processed audio on
+                          cancel</li> 
+                     <li>Noise Removal: pasted unmodified audio into the result, 
+                          unwanted filtering tail</li>
+                     <li>Uncompressed exports:</li>
+                            <ul>
+                                  <li>Export as WAV could be corrupted if
+                                       overwriting to same file</li>
+                                  <li>Export multiple to uncompressed
+                                       formats only produced 16-bit WAV</li>
+                            </ul> 
+                     <li>Compressed exports:</li>
+                            <ul>
+                                  <li>MP3 exports now produce correct bit rate
+                                       mode, quality and length, with improved 
+                                       metadata visibility in player applications 
+                                       (Windows users will require the
+                                       <a href="http://lame.buanzo.com.ar/">
+                                       latest version of the LAME encoder</a>) 
+                                  <li>WMA exports containing metadata are now correct</li> 
+                            </ul>
+                     <li>Restored support for multi-channel recording devices that
+                          can record more than two channels using Audacity</li>
+                </ul>
+         </dd>
+
+         <dd>Platform-specific Bug Fixes:
+                <ul>
+                     <li><i>Windows Vista:</i> fixed crash opening Preferences with no sound
+                          devices enabled and connected </li>
+                     <li><i>Mac OS X and Linux:</i></li>
+                         <ul>      
+                                <li>fixes for spurious clipping, label typing, no shortcuts after
+                                     running effects</li>                           
+                                <li>project rate now always changes to respect that of first 
+                                   imported file</li>
+                         </ul>
+                     <li><i>Mac OS X only:</i></li>
+                         <ul>
+                                <li>fixes for inactive or corrupted menus, hidden dialogues, 
+                                     portable settings not detected, and inability to set 
+                                     independent Command and Control shortcuts</li>
+                                <li>FFmpeg installer now available</li>
+                         </ul> 
+                </ul>
+         </dd>    
+   </dt>    
+</dl>
+
+<p>
+Please see the included README.txt for full details of changes, and for issues known at time of Release.
+</p>
+
+
+<h3><?=_("New in Audacity 1.3.6")?></h3>
 
 <dl>
 	<dt> Major new capabilities </dt>

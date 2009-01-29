@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2005 - 8 Dominic Mazzoni, Gale Andrews
+ * Copyright 2005 - 9 Dominic Mazzoni, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -19,12 +19,15 @@
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
 
 <ul>
-  <li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (.tar.bz2 file, %.1lf MB)'), "../beta/".$src_url, src_version, src_size)?></p></li>
+  <li><p><?php printf(_('<a href="%s">Audacity 1.3.7 release (source tarball)</a> (.tar.bz2 file, 5.1 MB) - This is a minimal source tarball which assumes a Linux machine with complete system libraries.'), "http://downloads.sourceforge.net/audacity/audacity-minsrc-1.3.7.tar.bz2")?></p></li>
 </ul>
 
 <h3><?=_("Optional Downloads")?></h3>
+
 <ul>
-  <li><p><?=_('Get the latest development code (incorporating changes since the release tarball) from <a href="../community/developers#cvs">CVS</a>. This is the best choice if you are compiling on Windows.')?></p></li>
+  <li><p><?php printf(_('<a href="%s">Audacity 1.3.7 release (full source tarball)</a> (.tar.bz2 file, 13.0 MB), useful for Windows and Mac machines which may lack the necessary libraries.'), "http://downloads.sourceforge.net/audacity/audacity-fullsrc-1.3.7.tar.bz2")?></p></li>  
+  <li><p><?php printf(_('<a href="%s">Gentoo e-build</a> (2.9 kb), for use with the minimal source tarball above.'), "http://downloads.sourceforge.net/audacity/audacity-1.3.7.ebuild")?></p></li> 
+  <li><p><?php printf(_('<a href="%s">Latest CVS development code</a>, incorporating changes since the release tarball.'), "../community/developers#cvs")?></p></li>
   <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our <a href="%s">alternate download links</a>.'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></p></li>
 </ul>
 
