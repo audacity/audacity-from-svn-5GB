@@ -3080,8 +3080,7 @@ msgstr ""
 "\n"
 "Når du lagrer et prosjekt får du en fil som bare Audacity kan åpne.\n"
 "\n"
-"Hvis vil lagre en fil som kan åpnes med andre programmer, velg en av\n"
-"\"Fil > Eksport\"-kommandoene."
+"Hvis vil lagre en fil som kan åpnes med andre programmer, velg en av \"Fil > Eksport\"-kommandoene.\n"
 
 #: Project.cpp:2692
 msgid "Audacity projects (*.aup)|*.aup"
