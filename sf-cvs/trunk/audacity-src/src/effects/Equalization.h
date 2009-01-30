@@ -99,7 +99,6 @@ public:
    }
 
    virtual bool Init();
-   virtual void End();
    virtual bool PromptUser();
    virtual bool DontPromptUser();
    virtual bool TransferParameters( Shuttle & shuttle );
