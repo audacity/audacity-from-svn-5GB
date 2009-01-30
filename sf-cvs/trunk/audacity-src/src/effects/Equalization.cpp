@@ -342,14 +342,11 @@ EffectEqualization::~EffectEqualization()
    mFilterFuncI = NULL;
 }
 
-void EffectEqualization::End()
-{
-   mPrompting = false;
-}
-
 bool EffectEqualization::Init()
 {
-   return(mPrompting = true);
+   if(!mPrompting)
+      DontPromptUser();   // not previewing, ie batch mode or initial setup
+   return(true);
 }
 
 bool EffectEqualization::PromptUser()
@@ -373,12 +370,11 @@ bool EffectEqualization::PromptUser()
    dlog.dBMax = mdBMax;
    dlog.drawMode = mDrawMode;
    dlog.interp = mInterp;
-   // not required here - called automatically
-   // dlog.TransferDataToWindow();
    dlog.CentreOnParent();
 
-   mPrompting = true;
+   mPrompting = true;   // true when previewing, false in batch
    dlog.ShowModal();
+   mPrompting = false;
 
    if (!dlog.GetReturnCode())
       return false;
@@ -421,7 +417,7 @@ bool EffectEqualization::DontPromptUser()
    dlog.interp = mInterp;
    // IS required here - no call to ShowModal!
    dlog.TransferDataToWindow();
-   dlog.CalcFilter();
+   dlog.CalcFilter();   // is needed here - the one done due to TransferDataToWindow->OnLinFreq isn't reliable
 
    return true;
 }
@@ -438,9 +434,6 @@ bool EffectEqualization::TransferParameters( Shuttle & shuttle )
 
 bool EffectEqualization::Process()
 {
-   if (!mPrompting) {
-      DontPromptUser();
-   }
    this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
 
@@ -1360,7 +1353,7 @@ bool EqualizationDialog::TransferDataToWindow()
    // Set log or lin freq scale (affects interpolation as well)
    mLinFreq->SetValue( linCheck );
    wxCommandEvent dummyEvent;
-   OnLinFreq(dummyEvent);
+   OnLinFreq(dummyEvent);  // causes a CalcFilter
 
    MSlider->SetValue((M-1)/2);
    M = 0;                        // force refresh in TransferDataFromWindow()
@@ -2684,6 +2677,9 @@ void EqualizationDialog::OnPreview(wxCommandEvent &event)
 {
    TransferDataFromWindow();
    m_pEffect->Preview();
+   mPanel->RecalcRequired = true;
+   wxPaintEvent dummyEvent;
+   OnPaint(dummyEvent);
    //v Restore previous values?
 }
 
