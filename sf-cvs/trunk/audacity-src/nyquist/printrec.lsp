@@ -28,6 +28,3 @@
                   (printrec-list (cdr l))))))
     nil)
 ; )
-
-; arch-tag: 3ebdbd65-06e3-4642-9b9e-8f796f177f0f
-

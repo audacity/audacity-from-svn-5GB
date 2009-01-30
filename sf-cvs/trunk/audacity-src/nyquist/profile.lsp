@@ -25,6 +25,3 @@
   (setq *PROFILE* nil)
   (profile t))
 
-
-; arch-tag: 5b61c530-fbbd-432e-b7a8-9e4a0fa6bfc3
-

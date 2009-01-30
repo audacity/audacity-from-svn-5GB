@@ -34,6 +34,3 @@
 (defmacro eval-env (arg)        ; evaluate in current environment
           `(evalhook ,arg nil nil (getenv)))
 
-
-; arch-tag: 4cdbf611-9e20-4404-bbd9-77e37398a65f
-
