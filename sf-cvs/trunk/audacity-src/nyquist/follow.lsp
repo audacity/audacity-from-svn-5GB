@@ -47,7 +47,7 @@
   ; take the square of the input to get power
   (let ((in-squared (mult input input)))
     ; compute the time-average (sort of a low-pass) of the square
-    (setf avg (snd-avg in-squared 1000 500))
+    (setf avg (snd-avg in-squared 1000 500 OP-AVERAGE))
     ; use follower to anticipate rise and trail off smoothly
     (setf env (snd-follow avg 0.001 0.2 1.0 20))
     ; take logarithm to get dB instead of linear
@@ -67,7 +67,4 @@
     ; "44100" should be replace by the signal's sample rate
     ; = (snd-srate input)
     (mult (seq (s-rest (/ 20.0 88.2)) (cue input)) gain)))
-
-
-; arch-tag: e276f007-e894-4c2a-95b6-1fc4cbc74bfb
 

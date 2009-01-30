@@ -29,6 +29,3 @@
 
  (setf seq-bend-tag 6) 
 
-
-; arch-tag: f0cfa041-b4fb-41e9-aad5-24568c5bc246
-

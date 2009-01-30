@@ -1,7 +1,7 @@
 ;; nyqmisc.lsp -- misc functions for nyquist
 
-(setf *snd-display-max-samples* 10000)
-(setf *snd-display-print-samples* 100)
+(init-global *snd-display-max-samples* 10000)
+(init-global *snd-display-print-samples* 100)
 
 
 ; (snd-display sound) -- describe a sound
@@ -24,7 +24,4 @@
            (setf nsamples len)))
     (format t "~A: srate ~A, t0 ~A, extent ~A, dur ~A, ~A: ~A"
       sound srate t0 extent dur samples (snd-samples sound nsamples))))
-
-
-; arch-tag: a2d8e495-b702-479f-9d4d-9b81c4199647
 

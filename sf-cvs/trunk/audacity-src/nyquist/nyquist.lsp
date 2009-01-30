@@ -2,14 +2,10 @@
 ;;;   ###########################################################
 ;;;   ### NYQUIST-- A Language for Composition and Synthesis. ###
 ;;;   ###                                                     ###
-;;;   ### Copyright (c) 1994 by Roger B. Dannenberg           ###
+;;;   ### Copyright (c) 1994-2006 by Roger B. Dannenberg      ###
 ;;;   ###########################################################
 ;;;
-
-;;;   
-;;;   Modifications for using Nyquist within Audacity
-;;;   by Dominic Mazzoni
-;;;
+(load "fileio.lsp" :verbose NIL)
 
 (prog ()
    (setq lppp -12.0) (setq lpp -9.0)  (setq lp -6.0)    (setq lmp -3.0)
@@ -23,8 +19,7 @@
    (setq w 4.0)  (setq wd 6.0)   (setq wt (* st 16.0))
 )
 
-(if (not (boundp '*A4-Hertz*))
-    (setf *A4-Hertz* 440.0))
+(init-global *A4-Hertz* 440.0)
 
 ; next pitch, for initializations below
 ; 
@@ -61,10 +56,8 @@
 
 (set-pitch-names)
 
-(if (not (boundp '*DEFAULT-SOUND-SRATE*))
-  (setf *DEFAULT-SOUND-SRATE* 44100.0))
-(if (not (boundp '*DEFAULT-CONTROL-SRATE*))
-  (setf *DEFAULT-CONTROL-SRATE* 2205.0))
+(init-global *default-sound-srate* 44100.0)
+(init-global *default-control-srate* 2205.0)
 
 (setf *environment-variables*
       '(*WARP* *SUSTAIN* *START* *LOUD* *TRANSPOSE* 
@@ -98,8 +91,15 @@
 (nyq:environment-init)
 
 (defun get-duration (dur)
-  (- (local-to-global (* (get-sustain) dur))
-     (setf *rslt* (local-to-global 0))))
+  (let ((duration 
+         (- (local-to-global (* (get-sustain) dur))
+            (setf *rslt* (local-to-global 0)))))
+     (cond ((minusp duration)
+            (error
+"duration is less than zero: perhaps a warp or stretch
+is ill-formed. Nyquist cannot continue because synthesis
+functions assume durations are always positive.")))
+     duration))
 
 
 (defun get-loud ()
@@ -203,6 +203,32 @@
         phase))))		; phase
 
 
+;; FMFB
+;;
+;; this code is based on FMOSC above
+;;
+(defun fmfb (pitch index &optional dur)
+ (let ((hz (step-to-hz (+ pitch (get-transpose)))))
+   (cond ((> hz (/ *SOUND-SRATE* 2))
+          (format "Warning: fmfb nominal frequency (~A hz) will alias at current sample rate (~A hz).~%"
+                  hz *SOUND-SRATE*)))
+   (setf dur (get-duration dur))
+   (cond ((soundp index) (ny:fmfbv hz index))
+          (t
+           (scale-db (get-loud)
+                     (snd-fmfb (local-to-global 0) 
+                               hz *SOUND-SRATE* index dur))))))
+
+;; private variable index version of fmfb
+(defun ny:fmfbv (hz index)
+  (let ((modulation-srate (snd-srate index)))
+    (cond ((< *SOUND-SRATE* modulation-srate)
+           (format t "Warning: down-sampling FM modulation in fmfb~%")
+           (setf index (snd-down *SOUND-SRATE* index))))
+    (scale-db (get-loud)
+              (snd-fmfbv (local-to-global 0) hz *SOUND-SRATE* index))))
+
+
 ;; BUZZ
 ;;
 ;; (ARGUMENTS ("long" "n") ("rate_type" "sr") ("double" "hz")
@@ -217,7 +243,7 @@
     (cond ((> hz (/ *SOUND-SRATE* 2))
            (format t "Warning: buzz nominal frequency (~A hz) will alias at current sample rate (~A hz).\n"
                    hz *SOUND-SRATE*)))
-    (setf n (min n 1)) ; avoid divide by zero problem
+    (setf n (max n 1)) ; avoid divide by zero problem
     (scale-db (get-loud)
               (snd-buzz n                   ; number of harmonics
                         *SOUND-SRATE*       ; output sample rate
@@ -333,16 +359,19 @@ loop
   (let ((d (get-duration duration)))
     (if (minusp d) (setf d 0))
     (cond ((> freq (/ *CONTROL-SRATE* 2))
-       (format t "Warning: lfo frequency (~A hz) will alias at current control rate (~A hz).\n"
-           freq *CONTROL-SRATE*)))
-     (snd-osc
-    (car sound)		; samples for table
-    (cadr sound)		; step represented by table
-    *CONTROL-SRATE*		; output sample rate
-    freq			; output hz
-    *rslt*			; starting time
-    d			; duration
-    phase)))		; phase
+           (format t "Warning: lfo frequency (~A hz) will alias at current control rate (~A hz).\n"
+                     freq *CONTROL-SRATE*)))
+    (set-logical-stop
+      (snd-osc
+        (car sound)		; samples for table
+        (cadr sound)		; step represented by table
+        *CONTROL-SRATE*		; output sample rate
+        freq			; output hz
+        *rslt*			; starting time
+        d			; duration
+        phase)		        ; phase
+      duration)))
+
 
 ;; FMLFO -- like LFO but uses frequency modulation
 ;;
@@ -358,77 +387,81 @@ loop
           (t
            (error "frequency must be a number or sound")))))
 
+
 ;; OSC - table lookup oscillator
 ;;
 (defun osc (pitch &optional (duration 1.0) 
-          (sound *TABLE*) (phase 0.0))
-  (let ((d (get-duration duration))
-    (hz (step-to-hz (+ pitch (get-transpose)))))
+            (sound *TABLE*) (phase 0.0))
+  (let ((d  (get-duration duration))
+        (hz (step-to-hz (+ pitch (get-transpose)))))
     ;(display "osc" *warp* global-start global-stop actual-dur  
     ;         (get-transpose))
     (cond ((> hz (/ *SOUND-SRATE* 2))
-       (format t "Warning: osc frequency (~A hz) will alias at current sample rate (~A hz).\n"
-           hz *SOUND-SRATE*)))
-     (set-logical-stop
-     (scale-db (get-loud)
-           (snd-osc 
-        (car sound)		; samples for table
-        (cadr sound)		; step represented by table
-        *SOUND-SRATE*		; output sample rate
-        hz			;  output hz
-        *rslt*			; starting time
-        d			; duration
-        phase))                 ; phase
-     duration)))
+           (format t "Warning: osc frequency (~A hz) will alias at current sample rate (~A hz).\n"
+                     hz *SOUND-SRATE*)))
+    (set-logical-stop
+      (scale-db (get-loud)
+        (snd-osc 
+          (car sound)		; samples for table
+          (cadr sound)		; step represented by table
+          *SOUND-SRATE*		; output sample rate
+          hz			;  output hz
+          *rslt*		; starting time
+          d			; duration
+          phase))               ; phase
+      duration)))
 
 
 ;; PARTIAL -- sine osc with built-in envelope scaling
 ;;
 (defun partial (steps env)
   (let ((hz (step-to-hz (+ steps (get-transpose)))))
-    (cond ((> hz (/ *SOUND-SRATE* 2))
-       (format t "Warning: partial frequency (~A hz) will alias at current sample rate (~A hz).\n"
-           hz *SOUND-SRATE*)))
-    (snd-partial *sound-srate*
-         hz
-         env)))
+    (cond ((> hz (/ *sound-srate* 2))
+           (format t "Warning: partial frequency (~A hz) will alias at current sample rate (~A hz).\n"
+                     hz *sound-srate*)))
+    (scale-db (get-loud)
+      (snd-partial *sound-srate* hz
+                   (force-srate *sound-srate* env)))))
 
 
 ;; SAMPLER -- simple attack + sustain sampler
 ;;
 (defun sampler (pitch modulation 
-        &optional (sample *table*) (npoints 2))
+                &optional (sample *table*) (npoints 2))
   (let ((samp (car sample))
     (samp-pitch (cadr sample))
     (samp-loop-start (caddr sample))
     (hz (step-to-hz (+ pitch (get-transpose)))))
     ; make a waveform table look like a sample with no attack:
     (cond ((not (numberp samp-loop-start))
-       (setf samp-loop-start 0.0)))
+           (setf samp-loop-start 0.0)))
     (cond ((> hz (/ *SOUND-SRATE* 2))
-       (format t "Warning: sampler nominal frequency (~A hz) will alias at current sample rate (~A hz).\n"
-           hz *SOUND-SRATE*)))
+           (format t "Warning: sampler nominal frequency (~A hz) will alias at current sample rate (~A hz).\n"
+                     hz *SOUND-SRATE*)))
     (scale-db (get-loud)
        (snd-sampler 
-    samp		; samples for table
-    samp-pitch		; step represented by table
-    samp-loop-start         ; time to start loop
-    *SOUND-SRATE*		; output sample rate
-    hz			;  output hz
-    (local-to-global 0)	; starting time
-    modulation		; modulation
-    npoints))))		; number of interpolation points
+        samp		; samples for table
+        samp-pitch	; step represented by table
+        samp-loop-start ; time to start loop
+        *SOUND-SRATE*	; output sample rate
+        hz		;  output hz
+        (local-to-global 0)	; starting time
+        modulation	; modulation
+        npoints))))    	; number of interpolation points
 
 
 ;; SINE -- simple sine oscillator
 ;;
 (defun sine (steps &optional (duration 1.0))
   (let ((hz (step-to-hz (+ steps (get-transpose))))
-    (d (get-duration duration)))
+        (d (get-duration duration)))
     (cond ((> hz (/ *SOUND-SRATE* 2))
-       (format t "Warning: sine frequency (~A hz) will alias at current sample rate (~A hz).\n"
-           hz *SOUND-SRATE*)))
-    (snd-sine *rslt* hz *sound-srate* d)))
+           (format t "Warning: sine frequency (~A hz) will alias at current sample rate (~A hz).\n"
+                     hz *SOUND-SRATE*)))
+    (set-logical-stop
+      (scale-db (get-loud)
+        (snd-sine *rslt* hz *sound-srate* d))
+      duration)))
 
 
 ;; PLUCK
@@ -440,44 +473,47 @@ loop
   (let ((hz (step-to-hz (+ steps (get-transpose))))
         (d (get-duration duration)))
     (cond ((> hz (/ *SOUND-SRATE* 2))
-       (format t "Warning: pluck frequency (~A hz) will alias at current sample rate (~A hz).\n"
-           hz *SOUND-SRATE*)))
-    (snd-pluck *SOUND-SRATE* hz *rslt* d final-amp)))
-
-
+           (format t "Warning: pluck frequency (~A hz) will alias at current sample rate (~A hz).\n"
+                     hz *SOUND-SRATE*)))
+    (set-logical-stop
+      (scale-db (get-loud)
+        (snd-pluck *SOUND-SRATE* hz *rslt* d final-amp))
+      duration)))
 
 
 ;; abs-env -- restore the standard environment
 ;;
 (defmacro abs-env (s)
   `(progv '(*WARP* *LOUD* *TRANSPOSE* *SUSTAIN* 
-        *START* *STOP* *CONTROL-SRATE* *SOUND-SRATE*)
-      (list '(0.0 1.0 NIL) 0.0 0.0 1.0
-        -1e+9 1e+9 *DEFAULT-CONTROL-SRATE* *DEFAULT-SOUND-SRATE*)
-      ,s))
+            *START* *STOP*
+            *CONTROL-SRATE* *SOUND-SRATE*)
+          (list '(0.0 1.0 NIL) 0.0 0.0 1.0
+           MIN-START-TIME MAX-STOP-TIME
+           *DEFAULT-CONTROL-SRATE* *DEFAULT-SOUND-SRATE*)
+     ,s))
 
 
 ; nyq:add2 - add two arguments
 ; 
 (defun nyq:add2 (s1 s2)
-    (cond ((and (arrayp s1) (not (arrayp s2)))
-       (setf s2 (vector s2)))
-      ((and (arrayp s2) (not (arrayp s1)))
-       (setf s1 (vector s1))))
-    (cond ((arrayp s1)
-       (sum-of-arrays s1 s2))
-      (t
-       (nyq:add-2-sounds s1 s2))))
+  (cond ((and (arrayp s1) (not (arrayp s2)))
+         (setf s2 (vector s2)))
+        ((and (arrayp s2) (not (arrayp s1)))
+         (setf s1 (vector s1))))
+  (cond ((arrayp s1)
+         (sum-of-arrays s1 s2))
+        (t
+         (nyq:add-2-sounds s1 s2))))
 
 
 ; (NYQ:ADD-2-SOUNDS S1 S2) - add two sound (or number) arguments
 ; 
 (defun nyq:add-2-sounds (s1 s2)
   (cond ((numberp s1)
-     (cond ((numberp s2)
+         (cond ((numberp s2)
         (+ s1 s2))
-           (t
-        (snd-offset s2 s1))))
+          (t
+           (snd-offset s2 s1))))
     ((numberp s2)
      (snd-offset s1 s2))
     (t
@@ -485,13 +521,11 @@ loop
            (s2sr (snd-srate s2)))
 ;    (display "nyq:add-2-sounds" s1sr s2sr)
        (cond ((> s1sr s2sr)
-          (snd-add s1 (snd-up s1sr s2)))
-         ((< s1sr s2sr)
-          (snd-add (snd-up s2sr s1) s2))
-         (t
-          (snd-add s1 s2)))))))
-
-
+              (snd-add s1 (snd-up s1sr s2)))
+             ((< s1sr s2sr)
+              (snd-add (snd-up s2sr s1) s2))
+             (t
+              (snd-add s1 s2)))))))
 
 
 (defmacro at (x s)
@@ -537,14 +571,15 @@ loop
     (t
      (snd-clip x v))))
 
+
 ;; (NYQ:COERCE-TO S1 S2) - expand sound s1 to type of s2
 ; 
 (defun nyq:coerce-to (s1 s2)
-  (cond ((soundp s1)
-     (cond ((arrayp s2)
-        (nyq:sound-to-array s1 (length s2)))
-           (t s1)))
-    (t s1)))
+  (cond ((or (soundp s1) (numberp s1))
+         (cond ((arrayp s2)
+                (nyq:sound-to-array s1 (length s2)))
+               (t s1)))
+         (t s1)))
 
 
 (defmacro continuous-control-warp (beh)
@@ -578,7 +613,7 @@ loop
         (result (make-array len)))
         (dotimes (i len)
         (setf (aref result i) 
-              (snd-exp (snd-scale ln10over20 (aref snd i)))))
+              (snd-exp (snd-scale ln10over20 (aref x i)))))
         result))
     (t
      (snd-exp (snd-scale ln10over20 x)))))
@@ -592,10 +627,43 @@ loop
         (result (make-array len)))
         (dotimes (i len)
         (setf (aref result i) 
-              (snd-scale (/ 1.0 ln10over20) (snd-log (aref snd i)))))
+              (snd-scale (/ 1.0 ln10over20) (snd-log (aref x i)))))
         result))
     (t
      (snd-scale (/ 1.0 ln10over20) (snd-log x)))))
+
+
+(cond ((not (fboundp 'scalar-step-to-hz))
+       (setfn scalar-step-to-hz step-to-hz)
+       (setfn scalar-hz-to-step hz-to-step)))
+
+
+(defun step-to-hz (x)
+  (cond ((numberp x)
+         (scalar-step-to-hz x))
+        ((arrayp x)
+         (let* ((len (length x))
+                (result (make-array len)))
+           (dotimes (i len)
+             (setf (aref result i) (step-to-hz (aref x i))))
+           result))
+        (t
+         (s-exp (snd-offset (snd-scale 0.0577622650466621 x) 
+                            2.1011784386926213)))))
+
+(defun hz-to-step (x)
+  (cond ((numberp x)
+         (scalar-hz-to-step x))
+        ((arrayp x)
+         (let* ((len (length x))
+                (result (make-array len)))
+           (dotimes (i len)
+             (setf (aref result i) (hz-to-step (aref x i))))
+           result))
+        (t
+         (snd-scale 17.312340490667565
+                    (snd-offset (s-log x) -2.1011784386926213))))) 
+
 
 ; sref - access a sound at a given time point
 ;    note that the time is transformed to global
@@ -612,27 +680,6 @@ loop
 (defun extract-abs (start stop sound)
   (snd-xform sound (snd-srate sound) 0 start stop 1.0))
      
-
-;(defmacro extract (start stop sound)
-;  `(let ($newsound)
-;     (progv '(*START* *STOP*)
-;            (list (local-to-global ,start)
-;		  (local-to-global ,stop))
-;            (setf $newsound ,sound)
-;            (setf $newsound 
-;                  (loud-abs 0 (cue (set-logical-stop-abs $newsound *STOP*)))))
-;     $newsound))
-
-
-;(defmacro extract-abs (start stop sound)
-;  `(let ($newsound $newstart)
-;     (progv '(*START* *STOP*)
-;            (list ,start ,stop)
-;	    (setf $newstart *START*)
-;            (setf $newsound ,sound)            
-;            (setf $newsound (set-logical-stop-abs $newsound *STOP*)))
-;     (snd-xform $newsound (snd-srate $newsound) ,start ,stop 1.0)))
-
 
 (defun local-to-global (local-time)
   (let ((d (warp-time *WARP*))
@@ -673,9 +720,10 @@ loop
 
 ; s-plot -- compute and write n data points for plotting
 ; 
-(defun s-plot (snd &optional (n 1000))
+(defun s-plot (snd &optional (n 1000) (dur 2.0))
   (prog ((points (snd-samples snd (1+ n)))
-     (filename (soundfilename *default-plot-file*))
+	 (t0 (snd-t0 snd))
+	 (filename (soundfilename *default-plot-file*))
      outf
      (period (/ 1.0 (snd-srate snd)))
      len 
@@ -686,18 +734,25 @@ loop
        (return nil)))
     (format t "s-plot: writing ~A ... ~%" filename)
     (setf len (length points))
+    (display "s-plot" snd (snd-srate snd) period n dur)
+    (cond ((and (> len n) (> (snd-srate snd) (/ n dur)))
+           (format t "WARNING: RESAMPLING TO ~A Hz~%" (/ n dur))
+	   (setf points (snd-samples (force-srate (/ n dur) snd) (1+ n)))
+           (setf period (/ (float dur) n))
+           (setf len (length points))))
     (cond ((> len n)
        (setf len n)
-       (format t "WARNING: SOUND TRUNCATED TO ~A POINTS~%" len)))
+       (format t "WARNING: SOUND TRUNCATED TO ~A POINTS~%" len)
+       (format t "  consider (S-PLOT snd num-points duration)~%")))
     (dotimes (i len)
       (cond ((< (abs maximum) (abs (aref points i)))
          (setf maximum (aref points i))))
-      (format outf "~A ~A~%" (* i period) (aref points i)))
+      (format outf "~A ~A~%" (+ t0 (* i period)) (aref points i)))
     (close outf)
     (cond ((> (abs maximum) 1.0)
        (format t "WARNING: MAXIMUM AMPLITUDE IS ~A~%" maximum)))
     (format t "~A points from ~A to ~A~%"
-     len (snd-t0 snd) (+ (snd-t0 snd) (* len period)))))
+     len t0 (+ t0 (* len period)))))
 
 ; run something like this to plot the points:
 ; graph < points.dat | plot -Ttek
@@ -761,6 +816,46 @@ loop
       ,s))
 
 
+;; COMPUTE-DEFAULT-SOUND-FILE -- construct and set *default-sound-file*
+;;
+;; (this is harder than it might seem because the default place for
+;;  sound files is in /tmp, which is shared by users, so we'd like to
+;;  use a user-specific name to avoid collisions)
+;;
+(defun compute-default-sound-file () 
+  (let (inf user extension)
+      ; the reason for the user name is that if UserA creates a temp file,
+      ; then UserB will not be able to overwrite it. The user name is a
+      ; way to give each user a unique temp file name. Note that we don't
+      ; want each session to generate a unique name because Nyquist doesn't
+      ; delete the sound file at the end of the session.
+   (setf user (get-user))
+#|
+   (cond ((null user)           
+       (format t 
+"Please type your user-id so that I can construct a default 
+sound-file name.  To avoid this message in the future, add
+this to your .login file:
+    setenv USER <your id here>
+or add this to your init.lsp file:
+    (setf *default-sound-file* \"<your filename here>\")
+    (setf *default-sf-dir* \"<full pathname of desired directory here>\")
+
+Your id please: ")
+       (setf user (read))))
+|#
+    ; now compute the extension based on *default-sf-format*
+    (cond ((= *default-sf-format* snd-head-AIFF)
+           (setf extension ".aif"))
+          ((= *default-sf-format* snd-head-Wave)
+           (setf extension ".wav"))
+          (t
+           (setf extension ".snd")))
+    (setf *default-sound-file* 
+      (strcat (string-downcase user) "-temp" extension))
+    (format t "Default sound file is ~A.~%" *default-sound-file*)))
+
+
 ;; CONTROL-WARP -- apply a warp function to a control function
 ;; 
 (defun control-warp (warp-fn control &optional wrate)
@@ -816,7 +911,7 @@ loop
 ;;  = (snd-compose (scale-srate sound s) (snd-inverse (shift-time f (- d))
 ;;                                              0 *SOUND-SRATE*))
 ;;
-(defun sound (sound)
+(defun nyq:sound (sound)
    (cond ((null (warp-function *WARP*))
       (snd-xform sound (/ (snd-srate sound) (warp-stretch *WARP*))
              (local-to-global 0)
@@ -826,6 +921,20 @@ loop
                (snd-inverse (shift-time (warp-function *WARP*)
                         (- (warp-time *WARP*)))
                     0 *SOUND-SRATE*)))))
+
+(defun nyq:sound-of-array (sound)
+  (let* ((n (length sound))
+         (s (make-array n)))
+    (dotimes (i n)
+      (setf (aref s i) (nyq:sound (aref sound i))))
+    s))
+
+
+(defun sound (sound)
+  (cond ((arrayp sound)
+     (nyq:sound-of-array sound))
+    (t
+     (nyq:sound sound))))
 
 
 ;; (SCALE-SRATE SOUND SCALE)
@@ -861,6 +970,13 @@ loop
 (setfn control sound)
 
 
+;; (cue-file string)
+;;    Loads a sound file with the given name, returning a sound which is
+;; transformed to the current environment.
+(defun cue-file (name)
+    (cue (force-srate *SOUND-SRATE* (s-read name))))
+
+
 ;; (env t1 t2 t4 l1 l2 l3 &optional duration)
 ;; Creates a 4-phase envelope.
 ;;	tN is the duration of phase N, and lN is the final level of
@@ -894,9 +1010,9 @@ loop
       (t
        (setf t3 (- actual-dur t1 t2 t4))))
     (set-logical-stop
-     (abs-env (at *rslt*
-          (pwl t1 l1 (+ t1 t2) l2 (- actual-dur t4) l3 actual-dur)))
-     duration)))
+      (abs-env (at *rslt*
+                   (pwl t1 l1 (+ t1 t2) l2 (- actual-dur t4) l3 actual-dur)))
+      duration)))
 
 
 (defun gate (sound lookahead risetime falltime floor threshold)
@@ -1204,10 +1320,12 @@ loop
 ;;
 (defun ramp (&optional (x 1))
   (let* ((duration (get-duration x)))
-    (warp-abs nil 
-    (at *rslt*
-        (sustain-abs 1
-        (pwl duration 1 (+ duration (/ *control-srate*))))))))
+    (set-logical-stop
+      (warp-abs nil
+        (at *rslt*
+          (sustain-abs 1
+                       (pwl duration 1 (+ duration (/ *control-srate*))))))
+      x)))
 
 
 (defun resample (snd rate)
@@ -1301,24 +1419,24 @@ loop
 
 (defun nyq:min-2-sounds (s1 s2)
   (cond ((numberp s1)
-     (cond ((numberp s2)
-        (min s1 s2))
-           (t
-        (snd-minv
-         (snd-const s1 (local-to-global 0.0)
-                (snd-srate s2) (get-duration 1.0))))))
-    ((numberp s2)
-     (snd-minv (snd-const s2 (local-to-global 0.0)
-                (snd-srate s1) (get-duration 1.0))))
-    (t
-     (let ((s1sr (snd-srate s1))
-           (s2sr (snd-srate s2)))
-        (cond ((> s1sr s2sr)
-           (snd-minv s1 (snd-up s1sr s2)))
-          ((< s1sr s2sr)
-           (snd-minv (snd-up s2sr s1) s2))
-          (t
-           (snd-minv s1 s2)))))))
+         (cond ((numberp s2)
+                (min s1 s2))
+               (t
+                (snd-minv s2
+                          (snd-const s1 (local-to-global 0.0)
+                                     (snd-srate s2) (get-duration 1.0))))))
+        ((numberp s2)
+         (snd-minv s1 (snd-const s2 (local-to-global 0.0)
+                   (snd-srate s1) (get-duration 1.0))))
+       (t
+        (let ((s1sr (snd-srate s1))
+              (s2sr (snd-srate s2)))
+          (cond ((> s1sr s2sr)
+                 (snd-minv s1 (snd-up s1sr s2)))
+                ((< s1sr s2sr)
+                 (snd-minv (snd-up s2sr s1) s2))
+               (t
+                (snd-minv s1 s2)))))))
 
 (defun snd-minv (s1 s2)
   (scale -1.0 (snd-maxv (scale -1.0 s1) (scale -1.0 s2))))
@@ -1326,6 +1444,7 @@ loop
 ; sequence macros SEQ and SEQREP are now in seq.lsp:
 ; 
 (load "seq" :verbose NIL)
+
 
 ; set-logical-stop - modify the sound and return it, time is shifted and
 ;			 stretched
@@ -1351,20 +1470,25 @@ loop
 
 (defun sim-list (snds)
   (cond ((null snds)
-     (snd-zero (local-to-global 0) *sound-srate*))
-    ((null (cdr snds))
-     (car snds))
-    ((null (cddr snds))
-     (nyq:add2 (car snds) (cadr snds)))
-    (t
-     (nyq:add2 (car snds) (sim-list (cdr snds))))))
+         (snd-zero (local-to-global 0) *sound-srate*))
+        ((null (cdr snds))
+         (car snds))
+        ((null (cddr snds))
+         (nyq:add2 (car snds) (cadr snds)))
+        (t
+         (nyq:add2 (car snds) (sim-list (cdr snds))))))
 
 
-;(defun rest (&optional (dur 1.0))
-;  (cue (set-Logical-stop (* dur *stretch*) (s-create))))
-(defun s-rest (&optional (dur 1.0))
-  (let ((d (get-duration dur)))
-    (snd-const 0.0 *rslt* *SOUND-SRATE* d)))
+(defun s-rest (&optional (dur 1.0) (chans 1))
+  (let ((d (get-duration dur))
+        r)
+    (cond ((= chans 1)
+           (snd-const 0.0 *rslt* *SOUND-SRATE* d))
+          (t
+           (setf r (make-array chans))
+           (dotimes (i chans)
+             (setf (aref r i) (snd-const 0.0 *rslt* *SOUND-SRATE* d)))
+           r))))
 
 
 (defun tempo (warpfn)
@@ -1515,7 +1639,9 @@ loop
 
 ;;; operations on sounds
 
-(defun diff (x y) (sum x (prod -1 y)))
+(defun diff (x &optional y)
+  (cond (y (sum x (prod -1 y)))
+        (t (prod -1 x))))
 
 ; compare-shape is a shape table -- origin 1.
 (defun compare (x y &optional (compare-shape *step-shape*))
@@ -1531,8 +1657,9 @@ loop
 ; hz is a sound or scalar
 (defun osc-pulse (hz bias &optional (compare-shape *step-shape*))
   (compare bias (osc-tri hz) compare-shape))
+  
+;;; tapped delays
 
-(setf NY:ALL 1000000000)
-
-; arch-tag: 3918083b-777d-4628-8b00-f47921a040da
-
+;(tapv snd offset vardelay maxdelay)
+(setfn tapv snd-tapv) ;; linear interpolation
+(setfn tapf snd-tapf) ;; no interpolation

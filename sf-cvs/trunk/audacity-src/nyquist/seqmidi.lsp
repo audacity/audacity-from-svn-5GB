@@ -157,6 +157,3 @@ exit-loop ; here, we know time of next note
 ;    (seq-next the-seq)
 ;    (go loop)))
 ; 
-
-; arch-tag: 9d4cc7f3-2a74-45f3-a809-0e22c5ef957e
-

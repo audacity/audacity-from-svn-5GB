@@ -143,7 +143,7 @@
             ((< the-snd-srate feedback-srate)
              (format t "Warning: down-sampling feedback in alpass~%")
              (setf feedback (snd-down the-snd-srate feedback))))
-      (display "snd-alpasscv-4 after cond" (snd-srate the-snd) (snd-srate feedback))
+      ;(display "snd-alpasscv-4 after cond" (snd-srate the-snd) (snd-srate feedback))
       (snd-alpasscv the-snd delay feedback)))
 
     
@@ -159,9 +159,9 @@
       (setf max-delay (/ 1.0 min-hz))
       ; make sure delay is between 0 and max-delay
       ; use clip function, which is symetric, with an offset
-      (setf delay (snd-offset (clip (snd-offset delay (* max-delay 0.5))
-                                    max-delay)
-                              (* max-delay -0.5)))
+      (setf delay (snd-offset (clip (snd-offset delay (* max-delay -0.5))
+                                    (* max-delay 0.5))
+                              (* max-delay 0.5)))
       ; now delay is between 0 and max-delay, so we won't crash nyquist when
       ; we call snd-alpassvv, which doesn't test for out-of-range data
       (cond ((> the-snd-srate feedback-srate)
@@ -174,7 +174,7 @@
             ((< the-snd-srate delay-srate)
              (format t "Warning: down-sampling delay in alpass~%")
              (setf delay (snd-down the-snd-srate delay))))
-      ;(display "snd-alpassvv-4 after cond" (snd-srate the-snd) (snd-srate feedback))
+      (display "snd-alpassvv-4 after cond" (snd-srate the-snd) (snd-srate feedback))
       (snd-alpassvv the-snd delay feedback max-delay)))
 
 (setf alpass-implementations
@@ -188,6 +188,11 @@
 (defun nyq:alpass1 (snd delay feedback min-hz)
   (select-implementation-1-2 alpass-implementations
                              snd delay feedback min-hz))
+
+;; CONGEN -- contour generator, patterned after gated analog env gen
+;;
+(defun congen (gate rise fall) (multichan-expand #'snd-congen gate rise fall))
+
 
 ;; S-EXP -- exponentiate a sound
 ;;
@@ -262,6 +267,8 @@
 ;;
 (defun rms (s &optional (rate 100.0) window-size)
   (let (rslt step-size)
+    (cond ((not (eq (type-of s) 'SOUND))
+	   (break "in RMS, first parameter must be a monophonic SOUND")))
     (setf step-size (round (/ (snd-srate s) rate)))
     (cond ((null window-size)
                (setf window-size step-size)))
@@ -302,7 +309,7 @@
 (defun nyq:slope (s)
   (let* ((sr (snd-srate s))
          (sr-inverse (/ sr)))
-    (snd-xform (snd-slope s) sr (- sr-inverse) 0.0 MAX-STOP-TIME 1.0)))
+    (snd-xform (snd-slope s) sr 0 sr-inverse MAX-STOP-TIME 1.0)))
 
 
 ;; lp - lowpass filter
@@ -320,7 +327,7 @@
 
 
 
-;;; fixed-parameter filters based on snd-biquad
+;;; fixed-parameter filters based on snd-biquadfilt
 
 (setf Pi 3.14159265358979)
 
@@ -328,21 +335,33 @@
 (defun sinh (x) (* 0.5 (- (exp x) (exp (- x)))))
 
 
-; remember that snd-biquad uses the opposite sign convention for a_i's 
+; remember that snd-biquadfilt uses the opposite sign convention for a_i's 
 ; than Matlab does.
 
 ; convenient biquad: normalize a0, and use zero initial conditions.
-(defun biquad (x b0 b1 b2 a0 a1 a2)
+(defun nyq:biquad (x b0 b1 b2 a0 a1 a2)
   (let ((a0r (/ 1.0 a0)))
-    (snd-biquad x (* a0r b0) (* a0r b1) (* a0r b2) 
+    (snd-biquadfilt x (* a0r b0) (* a0r b1) (* a0r b2) 
                              (* a0r a1) (* a0r a2) 0 0)))
+
+
+(defun biquad (x b0 b1 b2 a0 a1 a2)
+  (multichan-expand #'nyq:biquad x b0 b1 b2 a0 a1 a2))
+
 
 ; biquad with Matlab sign conventions for a_i's.
 (defun biquad-m (x b0 b1 b2 a0 a1 a2)
-  (biquad x b0 b1 b2 a0 (- a1) (- a2)))
+  (multichan-expand #'nyq:biquad-m x b0 b1 b2 a0 a1 a2))
+
+(defun nyq:biquad-m (x b0 b1 b2 a0 a1 a2)
+  (nyq:biquad x b0 b1 b2 a0 (- a1) (- a2)))
 
 ; two-pole lowpass
 (defun lowpass2 (x hz &optional (q 0.7071))
+  (multichan-expand #'nyq:lowpass2 x hz q))
+
+;; NYQ:LOWPASS2 -- operates on single channel
+(defun nyq:lowpass2 (x hz q)
   (let* ((w (* 2.0 Pi (/ hz (snd-srate x))))
          (cw (cos w))
          (sw (sin w))
@@ -353,10 +372,13 @@
          (b1 (- 1.0 cw))
          (b0 (* 0.5 b1))
          (b2 b0))
-    (biquad-m x b0 b1 b2 a0 a1 a2)))
+    (nyq:biquad-m x b0 b1 b2 a0 a1 a2)))
 
 ; two-pole highpass
 (defun highpass2 (x hz &optional (q 0.7071))
+  (multichan-expand #'nyq:highpass2 x hz q))
+
+(defun nyq:highpass2 (x hz q)
   (let* ((w (* 2.0 Pi (/ hz (snd-srate x))))
          (cw (cos w))
          (sw (sin w))
@@ -367,10 +389,13 @@
          (b1 (- -1.0 cw))
          (b0 (* -0.5 b1))
          (b2 b0))
-    (biquad-m x b0 b1 b2 a0 a1 a2)))
+    (nyq:biquad-m x b0 b1 b2 a0 a1 a2)))
 
 ; two-pole bandpass.  max gain is unity.
 (defun bandpass2 (x hz q)
+  (multichan-expand #'nyq:bandpass2 x hz q))
+
+(defun nyq:bandpass2 (x hz q)
   (let* ((w (* 2.0 Pi (/ hz (snd-srate x))))
          (cw (cos w))
          (sw (sin w))
@@ -381,10 +406,13 @@
          (b0 alpha)
          (b1 0.0)
          (b2 (- alpha)))
-    (biquad-m x b0 b1 b2 a0 a1 a2)))
+    (nyq:biquad-m x b0 b1 b2 a0 a1 a2)))
 
 ; two-pole notch.
 (defun notch2 (x hz q)
+  (multichan-expand #'nyq:notch2 x hz q))
+
+(defun nyq:notch2 (x hz q)
   (let* ((w (* 2.0 Pi (/ hz (snd-srate x))))
          (cw (cos w))
          (sw (sin w))
@@ -395,11 +423,14 @@
          (b0 1.0)
          (b1 (* -2.0 cw))
          (b2 1.0))
-    (biquad-m x b0 b1 b2 a0 a1 a2)))
+    (nyq:biquad-m x b0 b1 b2 a0 a1 a2)))
 
 
 ; two-pole allpass.
 (defun allpass2 (x hz q)
+  (multichan-expand #'nyq:allpass x hz q))
+
+(defun nyq:allpass (x hz q)
   (let* ((w (* 2.0 Pi (/ hz (snd-srate x))))
          (cw (cos w))
          (sw (sin w))
@@ -410,12 +441,15 @@
          (b0 a2)
          (b1 a1)
          (b2 1.0))
-    (biquad-m x b0 b1 b2 a0 a1 a2)))
+    (nyq:biquad-m x b0 b1 b2 a0 a1 a2)))
 
 
 ; bass shelving EQ.  gain in dB; Fc is halfway point.
 ; response becomes peaky at slope > 1.
 (defun eq-lowshelf (x hz gain &optional (slope 1.0))
+  (multichan-expand #'nyq:eq-lowshelf x hz gain slope))
+
+(defun nyq:eq-lowshelf (x hz gain slope)
   (let* ((w (* 2.0 Pi (/ hz (snd-srate x))))
          (sw (sin w))
          (cw (cos w))
@@ -431,12 +465,15 @@
          (a0           (+ A  1.0    amc     bs  ))
          (a1 (* -2.0   (+ A -1.0    apc         )))
          (a2           (+ A  1.0    amc  (- bs) )))
-    (biquad-m x b0 b1 b2 a0 a1 a2)))
+    (nyq:biquad-m x b0 b1 b2 a0 a1 a2)))
 
 
 ; treble shelving EQ.  gain in dB; Fc is halfway point.
 ; response becomes peaky at slope > 1.
 (defun eq-highshelf (x hz gain &optional (slope 1.0))
+  (multichan-expand #'nyq:eq-highshelf x hz gain slope))
+
+(defun nyq:eq-highshelf (x hz gain slope)
   (let* ((w (* 2.0 Pi (/ hz (snd-srate x))))
          (sw (sin w))
          (cw (cos w))
@@ -452,7 +489,7 @@
          (a0           (+ A  1.0 (- amc)    bs  ))
          (a1 (*  2.0   (+ A -1.0 (- apc)        )))
          (a2           (+ A  1.0 (- amc) (- bs) )))
-    (biquad-m x b0 b1 b2 a0 a1 a2)))
+    (nyq:biquad-m x b0 b1 b2 a0 a1 a2)))
     
 (defun nyq:eq-band (x hz gain width)
   (cond ((and (numberp hz) (numberp gain) (numberp width))
@@ -519,5 +556,20 @@
                                                 hz 0.94276399)
                                                 hz 2.57900101))
 
-; arch-tag: bbfeeb79-b168-4209-8ae8-6a472602d155
+; YIN
+; maybe this should handle multiple channels, etc.
+(setfn yin snd-yin)
 
+
+; FOLLOW
+(defun follow (sound floor risetime falltime lookahead)
+  ;; use 10000s as "infinite" -- that's about 2^30 samples at 96K
+  (setf lookahead (round (* lookahead (snd-srate sound))))
+  (extract (/ lookahead (snd-srate sound)) 10000
+           (snd-follow sound floor risetime falltime lookahead)))
+
+(defun gate (sound floor risetime falltime lookahead threshold)
+  (setf lookahead (round (* lookahead (snd-srate sound))))
+  (setf lookahead (/ lookahead (snd-srate sound)))
+  (extract lookahead 10000
+           (snd-gate sound lookahead risetime falltime floor threshold)))

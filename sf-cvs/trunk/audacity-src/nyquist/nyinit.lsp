@@ -11,13 +11,17 @@
 
 (load "dspprims.lsp" :verbose NIL)
 (load "nyquist.lsp" :verbose NIL)
-(load "follow.lsp")
+(load "follow.lsp" :verbose NIL)
 
 (load "system.lsp" :verbose NIL)
 
 (load "seqmidi.lsp" :verbose NIL)
 (load "nyqmisc.lsp" :verbose NIL)
-
+(load "stk.lsp" :verbose NIL)
+(load "envelopes.lsp" :verbose NIL)
+(load "equalizer.lsp" :verbose NIL)
+(load "xm.lsp" :verbose NIL)
+(load "sal.lsp" :verbose NIL)
 
 ;; set to T to get ANSI headers and NIL to get antique headers
 (setf *ANSI* NIL)
@@ -26,10 +30,9 @@
 (setf *WATCH* NIL)
 
 (format t "~%Nyquist -- A Language for Sound Synthesis and Composition~%")
-(format t "    Copyright (c) 1991-2003 by Roger B. Dannenberg~%")
-(format t "    Version 2.29~%~%")
+(format t "    Copyright (c) 1991,1992,1995,2007-2009 by Roger B. Dannenberg~%")
+(format t "    Version 3.02~%~%")
 
-(setf *gc-flag* t)
+;(setf *gc-flag* t)
 
-; arch-tag: f709df74-c08d-41a0-b11d-e84daaba1457
 
