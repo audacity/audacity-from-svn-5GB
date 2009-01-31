@@ -769,7 +769,7 @@ void TrackPanel::OnTimer()
    if (p->GetAudioIOToken()>0 &&
        !gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
       p->GetControlToolBar()->OnStop(dummyEvent);
-      printf( "HCK OnTimer\n" );
+      // printf( "HCK OnTimer\n" );
    }
 
    // Next, check to see if we were playing or recording
