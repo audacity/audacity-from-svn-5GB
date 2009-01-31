@@ -238,13 +238,6 @@ bool SpectrumPrefs::Apply()
    gPrefs->Write(wxT("/Spectrum/MaxFreq"), maxFreq);
    gPrefs->Write(wxT("/Spectrum/WindowType"), windowType);
 
-   // TODO: Force all projects to repaint themselves
-   //v? Or just the active project, voila?
-   // Update the TrackPanel correspondingly. 
-   // Calling RedrawProject is inefficient relative to sending a msg to TrackPanel 
-   // for a particular track and control, but not a real performance hit.
-   GetActiveProject()->RedrawProject(true);
-
    return true;
 }
 
