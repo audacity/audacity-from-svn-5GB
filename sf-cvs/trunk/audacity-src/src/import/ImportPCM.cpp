@@ -382,10 +382,12 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
 
          f.Seek(12);        // Skip filetype, length, and formtype
 
-         while (!f.Eof()) {
+         while (!f.Error()) {
             f.Read(id, 4);    // Get chunk type
+            if (f.Eof()) {
+               break;
+            }
             f.Read(&len, 4);
-            len = wxUINT32_SWAP_ON_LE(len);
 
             if (strcmp(id, "ID3 ") != 0) {
                f.Seek(len + (len & 0x01), wxFromCurrent);
