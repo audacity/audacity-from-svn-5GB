@@ -4,6 +4,6 @@
 
 include 'mirror.inc.php';
 include 'versions.inc.php';
-header('Location: '.download_url('audacity-src-'.src_version.src_suffix));
+header('Location: '.download_url($min_src_url));
 
 ?>
