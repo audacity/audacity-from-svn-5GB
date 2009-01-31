@@ -451,46 +451,6 @@
 		18D8314E0ED0F56300FD870D /* Contrast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18D8314C0ED0F56200FD870D /* Contrast.cpp */; };
 		2801A6460BF9268700648258 /* ImportQT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2801A6430BF9268700648258 /* ImportQT.cpp */; };
 		2801A6470BF9268700648258 /* ImportQTWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2801A6450BF9268700648258 /* ImportQTWrapper.cpp */; };
-		280802840F32C1200021001D /* bug.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 2808025B0F32C11F0021001D /* bug.lsp */; };
-		280802850F32C1200021001D /* dspprims.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 2808025C0F32C11F0021001D /* dspprims.lsp */; };
-		280802860F32C1200021001D /* envelopes.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 2808025D0F32C11F0021001D /* envelopes.lsp */; };
-		280802870F32C1200021001D /* equalizer.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 2808025E0F32C11F0021001D /* equalizer.lsp */; };
-		280802880F32C1200021001D /* evalenv.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 2808025F0F32C11F0021001D /* evalenv.lsp */; };
-		280802890F32C1200021001D /* fileio.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802600F32C11F0021001D /* fileio.lsp */; };
-		2808028A0F32C1200021001D /* follow.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802610F32C11F0021001D /* follow.lsp */; };
-		2808028B0F32C1200021001D /* init.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802620F32C11F0021001D /* init.lsp */; };
-		2808028C0F32C1200021001D /* misc.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802630F32C11F0021001D /* misc.lsp */; };
-		2808028D0F32C1200021001D /* nyinit.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802640F32C11F0021001D /* nyinit.lsp */; };
-		2808028E0F32C1200021001D /* nyqmisc.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802650F32C11F0021001D /* nyqmisc.lsp */; };
-		2808028F0F32C1200021001D /* nyquist-plot.txt in Resources */ = {isa = PBXBuildFile; fileRef = 280802660F32C11F0021001D /* nyquist-plot.txt */; };
-		280802900F32C1200021001D /* nyquist.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802670F32C11F0021001D /* nyquist.lsp */; };
-		280802910F32C1200021001D /* printrec.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802680F32C11F0021001D /* printrec.lsp */; };
-		280802920F32C1200021001D /* profile.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802690F32C11F0021001D /* profile.lsp */; };
-		280802930F32C1200021001D /* mand1.raw in Resources */ = {isa = PBXBuildFile; fileRef = 2808026B0F32C11F0021001D /* mand1.raw */; };
-		280802940F32C1200021001D /* mand10.raw in Resources */ = {isa = PBXBuildFile; fileRef = 2808026C0F32C11F0021001D /* mand10.raw */; };
-		280802950F32C1200021001D /* mand11.raw in Resources */ = {isa = PBXBuildFile; fileRef = 2808026D0F32C11F0021001D /* mand11.raw */; };
-		280802960F32C1200021001D /* mand12.raw in Resources */ = {isa = PBXBuildFile; fileRef = 2808026E0F32C11F0021001D /* mand12.raw */; };
-		280802970F32C1200021001D /* mand2.raw in Resources */ = {isa = PBXBuildFile; fileRef = 2808026F0F32C11F0021001D /* mand2.raw */; };
-		280802980F32C1200021001D /* mand3.raw in Resources */ = {isa = PBXBuildFile; fileRef = 280802700F32C11F0021001D /* mand3.raw */; };
-		280802990F32C1200021001D /* mand4.raw in Resources */ = {isa = PBXBuildFile; fileRef = 280802710F32C11F0021001D /* mand4.raw */; };
-		2808029A0F32C1200021001D /* mand5.raw in Resources */ = {isa = PBXBuildFile; fileRef = 280802720F32C11F0021001D /* mand5.raw */; };
-		2808029B0F32C1200021001D /* mand6.raw in Resources */ = {isa = PBXBuildFile; fileRef = 280802730F32C11F0021001D /* mand6.raw */; };
-		2808029C0F32C1200021001D /* mand7.raw in Resources */ = {isa = PBXBuildFile; fileRef = 280802740F32C11F0021001D /* mand7.raw */; };
-		2808029D0F32C1200021001D /* mand8.raw in Resources */ = {isa = PBXBuildFile; fileRef = 280802750F32C11F0021001D /* mand8.raw */; };
-		2808029E0F32C1200021001D /* mand9.raw in Resources */ = {isa = PBXBuildFile; fileRef = 280802760F32C11F0021001D /* mand9.raw */; };
-		2808029F0F32C1200021001D /* mandpluk.raw in Resources */ = {isa = PBXBuildFile; fileRef = 280802770F32C11F0021001D /* mandpluk.raw */; };
-		280802A00F32C1200021001D /* marmstk1.raw in Resources */ = {isa = PBXBuildFile; fileRef = 280802780F32C11F0021001D /* marmstk1.raw */; };
-		280802A10F32C1200021001D /* sinewave.raw in Resources */ = {isa = PBXBuildFile; fileRef = 280802790F32C11F0021001D /* sinewave.raw */; };
-		280802A20F32C1200021001D /* sal-parse.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 2808027A0F32C11F0021001D /* sal-parse.lsp */; };
-		280802A30F32C1200021001D /* sal.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 2808027B0F32C11F0021001D /* sal.lsp */; };
-		280802A40F32C1200021001D /* seq.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 2808027C0F32C11F0021001D /* seq.lsp */; };
-		280802A50F32C1200021001D /* seqfnint.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 2808027D0F32C11F0021001D /* seqfnint.lsp */; };
-		280802A60F32C1200021001D /* seqmidi.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 2808027E0F32C11F0021001D /* seqmidi.lsp */; };
-		280802A70F32C1200021001D /* sndfnint.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 2808027F0F32C11F0021001D /* sndfnint.lsp */; };
-		280802A80F32C1200021001D /* stk.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802800F32C11F0021001D /* stk.lsp */; };
-		280802A90F32C1200021001D /* system.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802810F32C11F0021001D /* system.lsp */; };
-		280802AA0F32C1200021001D /* xlinit.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802820F32C11F0021001D /* xlinit.lsp */; };
-		280802AB0F32C1200021001D /* xm.lsp in Resources */ = {isa = PBXBuildFile; fileRef = 280802830F32C11F0021001D /* xm.lsp */; };
 		280828550A75E0D0000002EF /* LabelDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828530A75E0D0000002EF /* LabelDialog.cpp */; };
 		2808285A0A75E0EA000002EF /* Grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828580A75E0EA000002EF /* Grid.cpp */; };
 		2809C4B80BCB7E560006010F /* FileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2809C4B60BCB7E560006010F /* FileIO.cpp */; };
@@ -1047,22 +1007,6 @@
 		28A96DC10E28642200F3CE01 /* mfmidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F3A3FF0E28289500729866 /* mfmidi.h */; };
 		28A96DC20E28642300F3CE01 /* strparse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F3A4000E28289500729866 /* strparse.cpp */; };
 		28A96DC30E28642300F3CE01 /* strparse.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F3A4010E28289500729866 /* strparse.h */; };
-		28AA28E00F267FD2008AED9E /* analyze.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28120F267A2D008AED9E /* analyze.ny */; };
-		28AA28E10F267FD2008AED9E /* beat.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28130F267A2D008AED9E /* beat.ny */; };
-		28AA28E20F267FD2008AED9E /* clicktrack.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28140F267A2D008AED9E /* clicktrack.ny */; };
-		28AA28E30F267FD2008AED9E /* clipfix.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28150F267A2D008AED9E /* clipfix.ny */; };
-		28AA28E40F267FD2008AED9E /* crossfadein.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28160F267A2D008AED9E /* crossfadein.ny */; };
-		28AA28E50F267FD2008AED9E /* crossfadeout.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28170F267A2D008AED9E /* crossfadeout.ny */; };
-		28AA28E60F267FD2008AED9E /* delay.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28180F267A2D008AED9E /* delay.ny */; };
-		28AA28E70F267FD2008AED9E /* equalabel.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28190F267A2D008AED9E /* equalabel.ny */; };
-		28AA28E80F267FD2008AED9E /* highpass.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA281A0F267A2D008AED9E /* highpass.ny */; };
-		28AA28E90F267FD2008AED9E /* lowpass.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA281B0F267A2D008AED9E /* lowpass.ny */; };
-		28AA28EA0F267FD2008AED9E /* pluck.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA281C0F267A2D008AED9E /* pluck.ny */; };
-		28AA28EB0F267FD2008AED9E /* rissetdrum.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA281D0F267A2D008AED9E /* rissetdrum.ny */; };
-		28AA28EC0F267FD2008AED9E /* SilenceMarker.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA281E0F267A2D008AED9E /* SilenceMarker.ny */; };
-		28AA28ED0F267FD2008AED9E /* tremolo.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA281F0F267A2D008AED9E /* tremolo.ny */; };
-		28AA28EE0F267FD2008AED9E /* vocalremover.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28200F267A2D008AED9E /* vocalremover.ny */; };
-		28AA28EF0F267FD2008AED9E /* vocoder.ny in Copy Plug-in Files */ = {isa = PBXBuildFile; fileRef = 28AA28210F267A2D008AED9E /* vocoder.ny */; };
 		28B6ED8F0DE3D1B50046F0F3 /* LoadModules.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28B6ED8D0DE3D1B50046F0F3 /* LoadModules.cpp */; };
 		28D587CB0E264CF4009C7DEA /* LoadLV2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D587C70E264CF3009C7DEA /* LoadLV2.cpp */; };
 		28D587CC0E264CF4009C7DEA /* LV2Effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D587C90E264CF4009C7DEA /* LV2Effect.cpp */; };
@@ -1331,45 +1275,6 @@
 			remoteInfo = libsbsms;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		28AA28CA0F267E3E008AED9E /* Copy Nyquist Files */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = ../nyquist;
-			dstSubfolderSpec = 1;
-			files = (
-			);
-			name = "Copy Nyquist Files";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		28AA28F00F267FF0008AED9E /* Copy Plug-in Files */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "../plug-ins";
-			dstSubfolderSpec = 1;
-			files = (
-				28AA28E00F267FD2008AED9E /* analyze.ny in Copy Plug-in Files */,
-				28AA28E10F267FD2008AED9E /* beat.ny in Copy Plug-in Files */,
-				28AA28E20F267FD2008AED9E /* clicktrack.ny in Copy Plug-in Files */,
-				28AA28E30F267FD2008AED9E /* clipfix.ny in Copy Plug-in Files */,
-				28AA28E40F267FD2008AED9E /* crossfadein.ny in Copy Plug-in Files */,
-				28AA28E50F267FD2008AED9E /* crossfadeout.ny in Copy Plug-in Files */,
-				28AA28E60F267FD2008AED9E /* delay.ny in Copy Plug-in Files */,
-				28AA28E70F267FD2008AED9E /* equalabel.ny in Copy Plug-in Files */,
-				28AA28E80F267FD2008AED9E /* highpass.ny in Copy Plug-in Files */,
-				28AA28E90F267FD2008AED9E /* lowpass.ny in Copy Plug-in Files */,
-				28AA28EA0F267FD2008AED9E /* pluck.ny in Copy Plug-in Files */,
-				28AA28EB0F267FD2008AED9E /* rissetdrum.ny in Copy Plug-in Files */,
-				28AA28EC0F267FD2008AED9E /* SilenceMarker.ny in Copy Plug-in Files */,
-				28AA28ED0F267FD2008AED9E /* tremolo.ny in Copy Plug-in Files */,
-				28AA28EE0F267FD2008AED9E /* vocalremover.ny in Copy Plug-in Files */,
-				28AA28EF0F267FD2008AED9E /* vocoder.ny in Copy Plug-in Files */,
-			);
-			name = "Copy Plug-in Files";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		17048267098C0F5F00824C66 /* mad.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = mad.h; sourceTree = "<group>"; };
@@ -4762,6 +4667,7 @@
 		28AA28320F267A50008AED9E /* nyquist */ = {
 			isa = PBXGroup;
 			children = (
+				2808026A0F32C11F0021001D /* rawwaves */,
 				2808025B0F32C11F0021001D /* bug.lsp */,
 				2808025C0F32C11F0021001D /* dspprims.lsp */,
 				2808025D0F32C11F0021001D /* envelopes.lsp */,
@@ -4777,7 +4683,6 @@
 				280802670F32C11F0021001D /* nyquist.lsp */,
 				280802680F32C11F0021001D /* printrec.lsp */,
 				280802690F32C11F0021001D /* profile.lsp */,
-				2808026A0F32C11F0021001D /* rawwaves */,
 				2808027A0F32C11F0021001D /* sal-parse.lsp */,
 				2808027B0F32C11F0021001D /* sal.lsp */,
 				2808027C0F32C11F0021001D /* seq.lsp */,
@@ -5693,8 +5598,8 @@
 				1790AFAC09883B6D008A330A /* Resources */,
 				1790AFAD09883B6D008A330A /* Sources */,
 				1790AFAE09883B6D008A330A /* Frameworks */,
-				28AA28CA0F267E3E008AED9E /* Copy Nyquist Files */,
-				28AA28F00F267FF0008AED9E /* Copy Plug-in Files */,
+				2878AF000F340F9E00396567 /* Copy nyquist */,
+				2878AF020F340FE700396567 /* Copy plug-ins */,
 			);
 			buildRules = (
 				286D31370F264C38004E6E4A /* PBXBuildRule */,
@@ -5957,46 +5862,6 @@
 				174F73D4098D516D009CD6E0 /* AudacityOGG.icns in Resources */,
 				174F73D5098D516D009CD6E0 /* AudacityProject.icns in Resources */,
 				174F73D6098D516D009CD6E0 /* AudacityWAV.icns in Resources */,
-				280802840F32C1200021001D /* bug.lsp in Resources */,
-				280802850F32C1200021001D /* dspprims.lsp in Resources */,
-				280802860F32C1200021001D /* envelopes.lsp in Resources */,
-				280802870F32C1200021001D /* equalizer.lsp in Resources */,
-				280802880F32C1200021001D /* evalenv.lsp in Resources */,
-				280802890F32C1200021001D /* fileio.lsp in Resources */,
-				2808028A0F32C1200021001D /* follow.lsp in Resources */,
-				2808028B0F32C1200021001D /* init.lsp in Resources */,
-				2808028C0F32C1200021001D /* misc.lsp in Resources */,
-				2808028D0F32C1200021001D /* nyinit.lsp in Resources */,
-				2808028E0F32C1200021001D /* nyqmisc.lsp in Resources */,
-				2808028F0F32C1200021001D /* nyquist-plot.txt in Resources */,
-				280802900F32C1200021001D /* nyquist.lsp in Resources */,
-				280802910F32C1200021001D /* printrec.lsp in Resources */,
-				280802920F32C1200021001D /* profile.lsp in Resources */,
-				280802930F32C1200021001D /* mand1.raw in Resources */,
-				280802940F32C1200021001D /* mand10.raw in Resources */,
-				280802950F32C1200021001D /* mand11.raw in Resources */,
-				280802960F32C1200021001D /* mand12.raw in Resources */,
-				280802970F32C1200021001D /* mand2.raw in Resources */,
-				280802980F32C1200021001D /* mand3.raw in Resources */,
-				280802990F32C1200021001D /* mand4.raw in Resources */,
-				2808029A0F32C1200021001D /* mand5.raw in Resources */,
-				2808029B0F32C1200021001D /* mand6.raw in Resources */,
-				2808029C0F32C1200021001D /* mand7.raw in Resources */,
-				2808029D0F32C1200021001D /* mand8.raw in Resources */,
-				2808029E0F32C1200021001D /* mand9.raw in Resources */,
-				2808029F0F32C1200021001D /* mandpluk.raw in Resources */,
-				280802A00F32C1200021001D /* marmstk1.raw in Resources */,
-				280802A10F32C1200021001D /* sinewave.raw in Resources */,
-				280802A20F32C1200021001D /* sal-parse.lsp in Resources */,
-				280802A30F32C1200021001D /* sal.lsp in Resources */,
-				280802A40F32C1200021001D /* seq.lsp in Resources */,
-				280802A50F32C1200021001D /* seqfnint.lsp in Resources */,
-				280802A60F32C1200021001D /* seqmidi.lsp in Resources */,
-				280802A70F32C1200021001D /* sndfnint.lsp in Resources */,
-				280802A80F32C1200021001D /* stk.lsp in Resources */,
-				280802A90F32C1200021001D /* system.lsp in Resources */,
-				280802AA0F32C1200021001D /* xlinit.lsp in Resources */,
-				280802AB0F32C1200021001D /* xm.lsp in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6042,6 +5907,38 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "make -C $TOPLEVEL/lib-src/libmad mad.h\nexit $?\n";
+		};
+		2878AF000F340F9E00396567 /* Copy nyquist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(TOPLEVEL)/nyquist",
+			);
+			name = "Copy nyquist";
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/nyquist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -r \"$TOPLEVEL/nyquist\" \"$TARGET_BUILD_DIR/nyquist\"";
+		};
+		2878AF020F340FE700396567 /* Copy plug-ins */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(TOPLEVEL)/plug-ins",
+			);
+			name = "Copy plug-ins";
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/plug-ins",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -x\npwd\ncp -r \"$TOPLEVEL/plug-ins\" \"$TARGET_BUILD_DIR/plug-ins\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
