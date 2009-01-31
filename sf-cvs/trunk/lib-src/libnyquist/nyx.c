@@ -44,6 +44,7 @@ int                 nyx_expr_pos;
 int                 nyx_expr_len;
 const char         *nyx_expr_string;
 LVAL                nyx_result;
+nyx_rval            nyx_result_type = nyx_error;
 XLCONTEXT           nyx_cntxt;
 int                 nyx_parse_error_flag;
 int                 nyx_first_time = 1;
@@ -275,79 +276,103 @@ int is_labels(LVAL expr)
    LVAL second;
    LVAL third;
 
-   if (!consp(expr))
+   if (expr == NULL) {
       return 0;
-
-   label = car(expr);
-
-   if (!consp(label))
-      return 0;
-
-   first = car(label);
-   if (!(floatp(first) || fixp(first)))
-      return 0;
-
-   if (!consp(cdr(label)))
-      return 0;
-
-   second = car(cdr(label));
-
-   if (floatp(second) || fixp(second)) {
-      if (!consp(cdr(cdr(label))))
-         return 0;
-      third = car(cdr(cdr(label)));
-      if (!(stringp(third)))
-         return 0;
    }
-   else
-      if (!(stringp(second)))
+
+   while (expr != NULL) {
+      if (!consp(expr))
          return 0;
 
-   /* If this is the end of the list, we're done */
+      label = car(expr);
 
-   if (cdr(expr) == NULL)
-      return 1;
+      if (!consp(label))
+         return 0;
 
-   /* Otherwise recurse */
+      first = car(label);
+      if (!(floatp(first) || fixp(first)))
+         return 0;
 
-   return is_labels(cdr(expr));
+      if (!consp(cdr(label)))
+         return 0;
+
+      second = car(cdr(label));
+
+      if (floatp(second) || fixp(second)) {
+         if (!consp(cdr(cdr(label))))
+            return 0;
+         third = car(cdr(cdr(label)));
+         if (!(stringp(third)))
+            return 0;
+      }
+      else
+         if (!(stringp(second)))
+            return 0;
+
+      expr = cdr(expr);
+   }
+
+   return 1;
 }
 
 nyx_rval nyx_get_type(LVAL expr)
 {
-   if (expr==NULL)
-      return nyx_error;
+   if (nyx_result_type != nyx_error) {
+      return nyx_result_type;
+   }
 
-   switch(ntype(expr)) {
-   case FIXNUM:
-      return nyx_int;
-   case FLONUM:
-      return nyx_double;
-   case STRING:
-      return nyx_string;
-   case VECTOR: {
-      /* make sure it's a vector of sounds */
-      int i;
-      for(i=0; i<getsize(expr); i++)
-         if (!soundp(getelement(expr, i)))
-             return nyx_error;
-      return nyx_audio;
+   nyx_result_type = nyx_error;
+
+   if (expr==NULL) {
+      return nyx_result_type;
    }
-   case CONS: {
-      /* see if it's a list of time/string pairs representing a
-         label track */
-      if (is_labels(expr))
-         return nyx_labels;
-      else
-         return nyx_error;
-   }
-   case EXTERN: {
-      if (soundp(expr))
-         return nyx_audio;
-   }
+
+   switch(ntype(expr))
+   {
+      case FIXNUM:
+         nyx_result_type = nyx_int;
+      break;
+         
+      case FLONUM:
+         nyx_result_type = nyx_double;
+      break;
+
+      case STRING:
+         nyx_result_type = nyx_string;
+      break;
+
+      case VECTOR:
+      {
+         /* make sure it's a vector of sounds */
+         nyx_result_type = nyx_audio;
+         int i;
+         for(i=0; i<getsize(expr); i++) {
+            if (!soundp(getelement(expr, i))) {
+               nyx_result_type = nyx_error;
+               break;
+            }
+         }
+      }
+      break;
+
+      case CONS:
+      {
+         /* see if it's a list of time/string pairs representing a
+            label track */
+         if (is_labels(expr))
+            nyx_result_type = nyx_labels;
+      }
+      break;
+
+      case EXTERN:
+      {
+         if (soundp(expr))
+            nyx_result_type = nyx_audio;
+      }
+      break;
    } /* switch */
 
-   return nyx_error;
+   return nyx_result_type;
 }
 
 nyx_rval nyx_eval_expression(const char *expr_string)
@@ -359,6 +384,7 @@ nyx_rval nyx_eval_expression(const char *expr_string)
    nyx_expr_pos = 0;
 
    nyx_result = NULL;
+   nyx_result_type = nyx_error;
    nyx_parse_error_flag = 0;
 
    xlprot1(expr);
@@ -524,10 +550,9 @@ const char *nyx_get_string()
       return NULL;
 
    return (const char *)getstring(nyx_result);
-
 }
 
-int nyx_get_num_labels()
+unsigned int nyx_get_num_labels()
 {
    LVAL s = nyx_result;
    int count = 0;
@@ -543,7 +568,7 @@ int nyx_get_num_labels()
    return count;
 }
 
-void nyx_get_label(int index,
+void nyx_get_label(unsigned int index,
                    double *start_time,
                    double *end_time,
                    const char **label)
@@ -557,12 +582,13 @@ void nyx_get_label(int index,
    if (nyx_get_type(nyx_result) != nyx_labels)
       return;
 
-   if (index < 0 || index >= nyx_get_num_labels())
-      return;
-
    while(index) {
       index--;
       s = cdr(s);
+      if (s == NULL) {
+         // index was larger than number of labels
+         return;
+      }
    }
 
    /* We either have (t0 "label") or (t0 t1 "label") */
