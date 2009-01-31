@@ -61,11 +61,11 @@ extern "C"
    double      nyx_get_double();
    const char *nyx_get_string();
 
-   int         nyx_get_num_labels();
-   void        nyx_get_label(int index,
-                             double *start_time,
-                             double *end_time,
-                             const char **label);
+   unsigned int nyx_get_num_labels();
+   void         nyx_get_label(unsigned int index,
+                              double *start_time,
+                              double *end_time,
+                              const char **label);
 
    const char *nyx_get_error_str();
 
