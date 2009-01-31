@@ -7,6 +7,7 @@
  */
   require_once "main.inc.php";
   require_once "../beta/versions.inc.php";
+  require_once "../beta/mirror.inc.php";
   $pageId = "beta_source";
   $pageTitle = _("Source Code");
   include "../include/header.inc.php";
@@ -19,14 +20,15 @@
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
 
 <ul>
-  <li><p><?php printf(_('<a href="%s">Audacity 1.3.7 release (source tarball)</a> (.tar.bz2 file, 5.1 MB) - This is a minimal source tarball which assumes a Linux machine with complete system libraries.'), "http://downloads.sourceforge.net/audacity/audacity-minsrc-1.3.7.tar.bz2")?></p></li>
+<li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (%s file, %.1lf MB)'), download_url($min_src_url), src_version, src_suffix, min_src_size)?> 
+<?php printf(_('This is a minimal source tarball which assumes your system has the neccessary dependencies (libraries) installed (see below).'))?></p></li>
 </ul>
 
 <h3><?=_("Optional Downloads")?></h3>
 
 <ul>
-  <li><p><?php printf(_('<a href="%s">Audacity 1.3.7 release (full source tarball)</a> (.tar.bz2 file, 13.0 MB), useful for Windows and Mac machines which may lack the necessary libraries.'), "http://downloads.sourceforge.net/audacity/audacity-fullsrc-1.3.7.tar.bz2")?></p></li>  
-  <li><p><?php printf(_('<a href="%s">Gentoo e-build</a> (2.9 kb), for use with the minimal source tarball above.'), "http://downloads.sourceforge.net/audacity/audacity-1.3.7.ebuild")?></p></li> 
+<li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (%s file, %.1lf MB)'), download_url($full_src_url), src_version, src_suffix, full_src_size)?> 
+<?php printf(_('This is a full source tarball, useful for Windows and Mac machines which may lack the necessary dependencies to compile audacity.'))?></p></li>
   <li><p><?php printf(_('<a href="%s">Latest CVS development code</a>, incorporating changes since the release tarball.'), "../community/developers#cvs")?></p></li>
   <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our <a href="%s">alternate download links</a>.'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></p></li>
 </ul>
