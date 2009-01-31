@@ -212,7 +212,12 @@ const float EffectEqualization::curvey[][nCurvePoints] =
 #pragma warning( default: 4305 )
 #endif
 
-#ifdef __WXGTK__
+// LLL:  This seem to have a strange interaction with wxWidgets 2.8.9.  It's
+//       possible that the wxSlider was fixed as it seems to work ok for me
+//       under Ubuntu 8.10 with self build wxWidgets 2.8.9.
+//
+//       Leaving here for now...just disabling
+#ifdef __WXGTK__disabled
 /*
  * wxSlider exhibits strange behaviour on wxGTK when wxSL_INVERSE and/or
  * negative scale values are used. This affects at least SUSE 9.3 with
