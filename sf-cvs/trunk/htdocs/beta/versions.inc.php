@@ -43,7 +43,8 @@ define('ladspa_size',    1.5);
 
 define('beta_src_version', '1.3.7');
 define('src_version', '1.3.7');
-define('src_size',    5.1);
+define('min_src_size',    5.1);
+define('full_src_size',    13);
 define('src_suffix',  '.tar.bz2');
 
 $win_exe_url = "audacity-win/audacity-win-".win_exe_version.".exe";
@@ -51,7 +52,8 @@ $win_zip_url = "audacity-win-zip/audacity-win-".win_zip_version.".zip";
 $win_exe_unicode_url = "audacity-win-unicode/audacity-win-unicode-".win_exe_unicode_version.".exe";
 $win_zip_unicode_url = "audacity-win-unicode-zip/audacity-win-unicode-".win_zip_unicode_version.".zip";
 
-$src_url = "audacity-src/audacity-src-".src_version.src_suffix;
+$min_src_url = "audacity-minsrc-".src_version.src_suffix;
+$full_src_url = "audacity-fullsrc-".src_version.src_suffix;
 
 $ladspa_url = "ladspa/ladspa-".ladspa_version.".exe";
 
