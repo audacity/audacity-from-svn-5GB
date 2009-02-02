@@ -344,8 +344,8 @@ nyx_rval nyx_get_type(LVAL expr)
       case VECTOR:
       {
          /* make sure it's a vector of sounds */
-         nyx_result_type = nyx_audio;
          int i;
+         nyx_result_type = nyx_audio;
          for(i=0; i<getsize(expr); i++) {
             if (!soundp(getelement(expr, i))) {
                nyx_result_type = nyx_error;
