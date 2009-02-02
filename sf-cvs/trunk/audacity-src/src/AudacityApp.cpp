@@ -775,10 +775,6 @@ bool AudacityApp::OnInit()
 
    LoadEffects();
 
-#ifdef EXPERIMENTAL_ONDEMAND
-   //The On-Demand managerr initializes the first time its singleton is accessed
-//   ODManager::Instance();
-#endif
 
 #ifdef __WXMAC__
 

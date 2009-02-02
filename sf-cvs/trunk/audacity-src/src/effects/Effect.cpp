@@ -166,13 +166,6 @@ void Effect::CopyInputWaveTracks()
       mOutputWaveTracks->Add(pOutWaveTrack);
       pInWaveTrack = (WaveTrack*)(iterIn.Next());
       
-      //swap on demand tasks - they should now be processed on pOutWaveTrack. 
-      //need to undo this when the user hits cancel.    
-#ifdef EXPERIMENTAL_ONDEMAND      
- //TODO: this is complicated because concurrent tasks/effects will write over the same blockfile.  Thus if the 
-//compute summary task goes last the effect will be overwritten.  we need a lot of mutexes.
- //     ODManager::Instance()->ReplaceTaskWaveTrack(pInputTrack,pOutputTrack);
-#endif
    }
 }
 
@@ -208,10 +201,10 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
                   pFirstTrack = pOutWaveTrack; // We replaced the first track, so update stop condition.
                   
                //swap the wavecache track the ondemand task uses, since now the new one will be kept in the project
-#ifdef EXPERIMENTAL_ONDEMAND      
+//#ifdef EXPERIMENTAL_ONDEMAND      
                if(ODManager::IsInstanceCreated())
                   ODManager::Instance()->ReplaceWaveTrack(pInWaveTrack,pOutWaveTrack);
-#endif
+//#endif
             }
             delete pInWaveTrack;
 

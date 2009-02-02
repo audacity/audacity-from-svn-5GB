@@ -59,7 +59,10 @@
 //uncomment this line to enable On-Demand loading of PCM files.  
 //for now it is incomplete so it will load instantly but 
 //the display of summary data will not be there (one can still see sample data if zoomed in)
-#define EXPERIMENTAL_ONDEMAND
+//#define EXPERIMENTAL_ONDEMAND - as of 1/31/2009 I've taken this out (mchinen)
+
+//if this line is enabled then we do not truncate float representations to 1.0 (see Dither::Apply)
+#define EXPERIMENTAL_NOCLIP_FLOAT
 
 //FFmpeg integration. Some FFmpeg-related changes are NOT ifdef'ed,
 //as they are harmless (like - a few mockup methods in Import* classes)
