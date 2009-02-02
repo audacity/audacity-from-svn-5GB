@@ -259,14 +259,12 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
            bDidStop = true;
          bIsRecording = (wxDateTime::UNow() <= m_DateTime_End);
       }
-      if (bDidCancel)
-      {
-        // TODO: Canceled -> destroy all recorded data
-      }
       pProject->OnStop();
    }
-
-   this->EndModal(wxID_OK);
+   if (bDidCancel)
+      this->EndModal(wxID_CANCEL);
+   else
+     this->EndModal(wxID_OK);
 }
 
 wxString TimerRecordDialog::GetDisplayDate( wxDateTime & dt )
