@@ -4678,7 +4678,11 @@ void AudacityProject::OnNewTimeTrack()
 void AudacityProject::OnTimerRecord()
 {
    TimerRecordDialog dialog(this /* parent */ );
-   dialog.ShowModal();
+   int modalResult = dialog.ShowModal();
+   if (modalResult == wxID_CANCEL)
+   {
+     OnUndo();
+   }
 }
 
 void AudacityProject::OnSoundActivated()
