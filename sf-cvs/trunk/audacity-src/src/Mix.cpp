@@ -121,8 +121,8 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
    ProgressDialog *progress = new ProgressDialog(_NoAcc("&Mix and Render"),
                                                  _("Mixing and rendering tracks"));
    
-   bool bCancel = false;
-   while(!bCancel) {
+   int updateResult = eProgressSuccess;
+   while(updateResult == eProgressSuccess) {
       sampleCount blockLen = mixer->Process(maxBlockLen);
 
       if (blockLen == 0)
@@ -140,7 +140,7 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
          mixRight->Append(buffer, format, blockLen);
       }
 
-      bCancel = !progress->Update(mixer->MixGetCurrentTime(), totalTime);
+      updateResult = progress->Update(mixer->MixGetCurrentTime(), totalTime);
    }
 
    delete progress;
@@ -148,7 +148,7 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
    mixLeft->Flush();
    if (!mono) 
       mixRight->Flush();
-   if (bCancel)
+   if (updateResult == eProgressCancelled || updateResult == eProgressFailed)
    {
       delete mixLeft;
       if (!mono) 
@@ -175,7 +175,7 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
    delete[] waveArray;
    delete mixer;
 
-   return !bCancel;
+   return updateResult;
 }
 
 Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,

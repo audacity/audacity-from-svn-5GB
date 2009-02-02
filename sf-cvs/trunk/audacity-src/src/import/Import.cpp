@@ -196,7 +196,7 @@ int Importer::Import(wxString fName,
 
          delete inFile;
 
-         if (res == eImportSuccess)
+         if (res == eProgressSuccess || res == eProgressStopped)
          {
             // LOF ("list-of-files") has different semantics
             if (extension.IsSameAs(wxT("lof"), false))
@@ -208,7 +208,7 @@ int Importer::Import(wxString fName,
             }
          }
 
-         if (res == eImportCancelled)
+         if (res == eProgressCancelled || res == eProgressFailed)
          {
             return 0;
          }

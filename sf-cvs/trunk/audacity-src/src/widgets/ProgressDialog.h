@@ -19,6 +19,21 @@
 #include <wx/stattext.h>
 #include <wx/utils.h>
 
+enum
+{
+   eProgressCancelled = 0, //<! User says that whatever is happening is undesirable and shouldn't have happened at all
+   eProgressSuccess,       //<! User says nothing, everything works fine, continue doing whatever we're doing
+   eProgressFailed,        //<! Something has gone wrong, we should stop and cancel everything we did
+   eProgressStopped        //<! Nothing is wrong, but user says we should stop now and leave things as they are now
+};
+
+enum ProgressDialogFlags
+{
+   pdlgEmptyFlags = 0x00000000,
+   pdlgHideStopButton = 0x00000001,
+   pdlgHideCancelButton = 0x00000002
+} ;
+
 ////////////////////////////////////////////////////////////
 /// ProgressDialog Class
 ////////////////////////////////////////////////////////////
@@ -28,7 +43,7 @@ class AUDACITY_DLL_API ProgressDialog:public wxDialog
 
  public:
 
-   ProgressDialog(const wxString & title, const wxString & message = wxEmptyString);
+   ProgressDialog(const wxString & title, const wxString & message = wxEmptyString, ProgressDialogFlags flags = pdlgEmptyFlags);
    virtual ~ProgressDialog();
 
    bool Show(bool show = true);

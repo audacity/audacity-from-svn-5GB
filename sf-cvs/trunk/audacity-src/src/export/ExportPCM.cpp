@@ -322,7 +322,7 @@ public:
    // Required
 
    bool DisplayOptions(wxWindow *parent, int format = 0);
-   bool Export(AudacityProject *project,
+   int Export(AudacityProject *project,
                int channels,
                wxString fName,
                bool selectedOnly,
@@ -412,7 +412,7 @@ void ExportPCM::Destroy()
  * file type, or giving the user full control over libsndfile. Set to 0 
  * (default) gives full control, 1 gives 16-bit AIFF, 2 gives 16-bit WAV 
  * 3 gives a GSM 6.10 WAV file */ 
-bool ExportPCM::Export(AudacityProject *project,
+int ExportPCM::Export(AudacityProject *project,
                        int numChannels,
                        wxString fName,
                        bool selectionOnly,
@@ -502,7 +502,7 @@ bool ExportPCM::Export(AudacityProject *project,
 
    int maxBlockLen = 44100 * 5;
 
-   bool cancelling = false;
+   int updateResult = eProgressSuccess;
 
    int numWaveTracks;
    WaveTrack **waveTracks;
@@ -520,7 +520,7 @@ bool ExportPCM::Export(AudacityProject *project,
       wxString::Format(_("Exporting the entire project as %s"),
                        formatStr.c_str()));
 
-   while(!cancelling) {
+   while(updateResult == eProgressSuccess) {
       sampleCount numSamples = mixer->Process(maxBlockLen);
 
       if (numSamples == 0)
@@ -535,7 +535,7 @@ bool ExportPCM::Export(AudacityProject *project,
          sf_writef_float(sf, (float *)mixed, numSamples);
       ODManager::UnlockLibSndFileMutex();
 
-      cancelling = !progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
+      updateResult = progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
 
    delete progress;
@@ -567,7 +567,7 @@ bool ExportPCM::Export(AudacityProject *project,
                            AUDACITY_CREATOR);
 #endif
    
-   return !cancelling;
+   return updateResult;
 }
 
 bool ExportPCM::AddStrings(AudacityProject *project, SNDFILE *sf, Tags *tags)

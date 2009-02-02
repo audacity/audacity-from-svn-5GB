@@ -270,6 +270,9 @@ private:
    int                   mNumStreams;    //!< mNumstreams is less or equal to mFormatContext->nb_streams
    streamContext       **mScs;           //!< Array of pointers to stream contexts. Length is mNumStreams.
    wxArrayString        *mStreamInfo;    //!< Array of stream descriptions. Length is mNumStreams
+   
+   wxInt64               mProgressPos;   //!< Current timestamp, file position or whatever is used as first argument for Update()
+   wxInt64               mProgressLen;   //!< Duration, total length or whatever is used as second argument for Update()
 
    bool                  mCancelled;     //!< True if importing was canceled by user
    bool                  mStopped;       //!< True if importing was stopped by user
@@ -349,6 +352,8 @@ FFmpegImportFileHandle::FFmpegImportFileHandle(const wxString & name)
    mStopped = false;
    mName = name;
    mChannels = NULL;
+   mProgressPos = 0;
+   mProgressLen = 1;
 }
 
 bool FFmpegImportFileHandle::Init()
@@ -533,15 +538,15 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
    // This is the heart of the importing process
    streamContext *sc = NULL;
    // The result of Import() to be returend. It will be something other than zero if user canceled or some error appears.
-   int res = 0;
+   int res = eProgressSuccess;
    // Read next frame.
-   while ((sc = ReadNextFrame()) != NULL && (res == 0))
+   while ((sc = ReadNextFrame()) != NULL && (res == eProgressSuccess))
    {
       // ReadNextFrame returns 1 if stream is not to be imported
       if (sc != (streamContext*)1)
       {
          // Decode frame until it is not possible to decode any further
-         while (sc->m_pktRemainingSiz > 0 && (res == 0 || res == 2))
+         while (sc->m_pktRemainingSiz > 0 && (res == eProgressSuccess || res == eProgressStopped))
          {
             if (DecodeFrame(sc,false) < 0)
                break;
@@ -561,7 +566,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
    }
 
    // Flush the decoders.
-   if ((mNumStreams != 0) && (res == 0 || res == 2))
+   if ((mNumStreams != 0) && (res == eProgressSuccess || res == eProgressStopped))
    {
       for (int i = 0; i < mNumStreams; i++)
       {
@@ -579,7 +584,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
    }
 
    // Something bad happened - destroy everything!
-   if (res == 1)
+   if (res == eProgressCancelled || res == eProgressFailed)
    {
       for (int s = 0; s < mNumStreams; s++)
       {
@@ -587,10 +592,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
       }
       delete[] mChannels;
 
-      if (mCancelled)
-         return eImportCancelled;
-      else
-         return eImportFailed;
+      return res;
    }
    //else if (res == 2), we just stop the decoding as if the file has ended
 
@@ -619,7 +621,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
    // Save metadata
    WriteMetadata(mFormatContext,tags);
 
-   return eImportSuccess;
+   return res;
 }
 
 streamContext *FFmpegImportFileHandle::ReadNextFrame()
@@ -780,41 +782,28 @@ int FFmpegImportFileHandle::WriteData(streamContext *sc)
    free(tmp);
    
    // Try to update the progress indicator (and see if user wants to cancel)
-   int updateCode = 1;
+   int updateResult = eProgressSuccess;
    // PTS (presentation time) is the proper way of getting current position
    if (sc->m_pkt.pts != AV_NOPTS_VALUE && mFormatContext->duration != AV_NOPTS_VALUE)
    {
-      updateCode = mProgress->Update((wxLongLong)sc->m_pkt.pts * sc->m_stream->time_base.num / sc->m_stream->time_base.den,
-                          (wxLongLong)(mFormatContext->duration > 0 ? mFormatContext->duration / AV_TIME_BASE: 1));
+      mProgressPos = sc->m_pkt.pts * sc->m_stream->time_base.num / sc->m_stream->time_base.den;
+      mProgressLen = (mFormatContext->duration > 0 ? mFormatContext->duration / AV_TIME_BASE: 1);
    }
    // When PTS is not set, use number of frames and number of current frame
    else if (sc->m_stream->nb_frames > 0 && sc->m_codecCtx->frame_number > 0 && sc->m_codecCtx->frame_number <= sc->m_stream->nb_frames)
    {
-      updateCode = mProgress->Update((wxLongLong)sc->m_codecCtx->frame_number,
-                          (wxLongLong)sc->m_stream->nb_frames);      
+      mProgressPos = sc->m_codecCtx->frame_number;
+      mProgressLen = sc->m_stream->nb_frames;
    }
    // When number of frames is unknown, use position in file
    else if (mFormatContext->file_size > 0 && sc->m_pkt.pos > 0 && sc->m_pkt.pos <= mFormatContext->file_size)
    {
-      updateCode = mProgress->Update((wxLongLong)sc->m_pkt.pos,
-                          (wxLongLong)mFormatContext->file_size);      
+      mProgressPos = sc->m_pkt.pos;
+      mProgressLen = mFormatContext->file_size;
    }
-   // OK, i give up
-   else
-   {
-      updateCode = mProgress->Update(1, 1);
-   }
-   if (updateCode == 0) {
-      mCancelled = true;
-      return 1;
-   }
-   else if (updateCode == 2)
-   {
-      mStopped = true;
-      return 2;
-   }
+   updateResult = mProgress->Update(mProgressPos, mProgressLen);
 
-   return 0;
+   return updateResult;
 }
 
 void FFmpegImportFileHandle::WriteMetadata(AVFormatContext *avf,Tags *tags)

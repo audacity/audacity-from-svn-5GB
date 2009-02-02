@@ -177,7 +177,7 @@ public:
    // Required
 
    bool DisplayOptions(wxWindow *parent, int format = 0);
-   bool Export(AudacityProject *project,
+   int Export(AudacityProject *project,
                int channels,
                wxString fName,
                bool selectedOnly,
@@ -212,7 +212,7 @@ void ExportFLAC::Destroy()
    delete this;
 }
 
-bool ExportFLAC::Export(AudacityProject *project,
+int ExportFLAC::Export(AudacityProject *project,
                         int numChannels,
                         wxString fName,
                         bool selectionOnly,
@@ -226,7 +226,7 @@ bool ExportFLAC::Export(AudacityProject *project,
    TrackList *tracks = project->GetTracks();
    
    wxLogNull logNo;            // temporarily disable wxWindows error messages 
-   bool      cancelling = false;
+   int updateResult = eProgressSuccess;
 
    int levelPref;
    gPrefs->Read(wxT("/FileFormats/FLACLevel"), &levelPref, 5);
@@ -310,7 +310,7 @@ bool ExportFLAC::Export(AudacityProject *project,
          _("Exporting the selected audio as FLAC") :
          _("Exporting the entire project as FLAC"));
 
-   while (!cancelling) {
+   while (updateResult == eProgressSuccess) {
       sampleCount samplesThisRun = mixer->Process(SAMPLES_PER_RUN);
       if (samplesThisRun == 0) { //stop encoding
          break;
@@ -331,7 +331,7 @@ bool ExportFLAC::Export(AudacityProject *project,
          }
          encoder.process(tmpsmplbuf, samplesThisRun);
       }
-      cancelling = !progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
+      updateResult = progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
    encoder.finish();
 
@@ -344,7 +344,7 @@ bool ExportFLAC::Export(AudacityProject *project,
    
    delete[] tmpsmplbuf;
    
-   return !cancelling;
+   return updateResult;
 }
 
 bool ExportFLAC::DisplayOptions(wxWindow *parent, int format)
