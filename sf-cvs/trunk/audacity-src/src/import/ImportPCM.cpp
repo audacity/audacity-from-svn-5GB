@@ -251,7 +251,7 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
             break;
       }
       
-#ifdef EXPERIMENTAL_ONDEMAND
+//#ifdef EXPERIMENTAL_ONDEMAND
       //now go over the wavetrack/waveclip/sequence and load all the blockfiles into a ComputeSummaryTask.  
       //Add this task to the ODManager and the Track itself.      
        wxLogDebug(wxT("Importing PCM \n"));
@@ -274,7 +274,7 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
          if(!moreThanStereo)
             ODManager::Instance()->AddNewTask(computeTask);
       }
-#endif      
+//#endif      
       
    }
    else {

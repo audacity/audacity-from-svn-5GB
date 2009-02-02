@@ -37,7 +37,7 @@ int CompareODFileName(const wxString& first, const wxString& second)
    bool firstIsOD = false;
    bool secondIsOD = false;
 
-#ifdef EXPERIMENTAL_ONDEMAND         
+//#ifdef EXPERIMENTAL_ONDEMAND         
    if(first.EndsWith(wxT("wav"))||first.EndsWith(wxT("WAV"))||
       first.EndsWith(wxT("wave"))||first.EndsWith(wxT("WAVE"))||
       first.EndsWith(wxT("Wav"))||first.EndsWith(wxT("Wave"))||
@@ -57,7 +57,7 @@ int CompareODFileName(const wxString& first, const wxString& second)
       secondIsOD=true;
     }
         
-#endif
+//#endif
     
     if(firstIsOD && !secondIsOD)
       return 1;
@@ -73,7 +73,7 @@ int CompareODFirstFileName(const wxString& first, const wxString& second)
    bool firstIsOD = false;
    bool secondIsOD = false;
    
-#ifdef EXPERIMENTAL_ONDEMAND      
+//#ifdef EXPERIMENTAL_ONDEMAND      
    if(first.EndsWith(wxT("wav"))||first.EndsWith(wxT("WAV"))||
       first.EndsWith(wxT("wave"))||first.EndsWith(wxT("WAVE"))||
       first.EndsWith(wxT("Wav"))||first.EndsWith(wxT("Wave"))||
@@ -93,7 +93,7 @@ int CompareODFirstFileName(const wxString& first, const wxString& second)
       secondIsOD=true;
     }
         
-#endif    
+//#endif    
     
     if(firstIsOD && !secondIsOD)
       return -1;

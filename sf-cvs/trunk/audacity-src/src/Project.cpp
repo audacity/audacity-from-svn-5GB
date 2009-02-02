@@ -2173,7 +2173,7 @@ void AudacityProject::OpenFile(wxString fileName)
    
    
 
-#ifdef EXPERIMENTAL_ONDEMAND
+//#ifdef EXPERIMENTAL_ONDEMAND
       //check the ODManager to see if we should add the tracks to the ODManager.
       //this flag would have been set in the HandleXML calls from above, if there were
       //OD***Blocks.
@@ -2203,7 +2203,7 @@ void AudacityProject::OpenFile(wxString fileName)
             //release the flag.
          ODManager::UnmarkLoadedODFlag();
       }
-#endif
+//#endif
 
 }
 
@@ -3079,7 +3079,7 @@ void AudacityProject::PopState(TrackList * l)
       mTracks->Add(copyTrack);
      
 
-#ifdef EXPERIMENTAL_ONDEMAND
+//#ifdef EXPERIMENTAL_ONDEMAND
       //add the track to OD if the manager exists.  later we might do a more rigorous check...
       if (copyTrack->GetKind() == Track::Wave)
       {
@@ -3095,7 +3095,7 @@ void AudacityProject::PopState(TrackList * l)
             computeTask->AddWaveTrack((WaveTrack*)copyTrack);
          }
       }
-#endif
+//#endif
       
       t = iter.Next();
    }

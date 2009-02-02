@@ -6162,10 +6162,10 @@ void TrackPanel::OnSplitStereo(wxCommandEvent &event)
  
      
    //On Demand - have each channel add it's own.
-#ifdef EXPERIMENTAL_ONDEMAND 
+//#ifdef EXPERIMENTAL_ONDEMAND 
    if(ODManager::IsInstanceCreated() && partner->GetKind() == Track::Wave)
       ODManager::Instance()->MakeWaveTrackIndependent((WaveTrack*)partner);
-#endif
+//#endif
    
    MakeParentPushState(wxString::Format(_("Split stereo track '%s'"),
                                         mPopupMenuTarget->GetName().
@@ -6192,7 +6192,7 @@ void TrackPanel::OnMergeStereo(wxCommandEvent &event)
       
       //On Demand - join the queues together.
       
-#ifdef EXPERIMENTAL_ONDEMAND 
+//#ifdef EXPERIMENTAL_ONDEMAND 
       if(ODManager::IsInstanceCreated() && partner->GetKind() == Track::Wave &&mPopupMenuTarget->GetKind() == Track::Wave )
          if(!ODManager::Instance()->MakeWaveTrackDependent((WaveTrack*)partner,(WaveTrack*)mPopupMenuTarget))
          {
@@ -6204,7 +6204,7 @@ void TrackPanel::OnMergeStereo(wxCommandEvent &event)
          }
          
          
-#endif
+//#endif
       MakeParentPushState(wxString::Format(_("Made '%s' a stereo track"),
                                            mPopupMenuTarget->GetName().
                                            c_str()),
