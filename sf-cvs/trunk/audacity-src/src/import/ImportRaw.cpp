@@ -191,7 +191,7 @@ int ImportRaw(wxWindow *parent, wxString fileName,
    }
 
    sampleCount maxBlockSize = channels[0]->GetMaxBlockSize();
-   bool cancelled = false;
+   int updateResult = eProgressSuccess;
 
    samplePtr srcbuffer = NewSamples(maxBlockSize * numChannels, format);
    samplePtr buffer = NewSamples(maxBlockSize, format);
@@ -234,22 +234,25 @@ int ImportRaw(wxWindow *parent, wxString fileName,
          framescompleted += block;
       }
 
-      cancelled = !progress.Update((wxULongLong_t)framescompleted,
+      updateResult = progress.Update((wxULongLong_t)framescompleted,
                                    (wxULongLong_t)totalFrames);
-      if (cancelled)
+      if (updateResult != eProgressSuccess)
          break;
       
    } while (block > 0 && framescompleted < totalFrames);
 
    sf_close(sndFile);
 
-   bool res = (!cancelled && block >= 0);
+   int res = updateResult;
+   if (block < 0)
+     res = eProgressFailed;
 
-   if (!res) {
+   if (res == eProgressFailed || res == eProgressCancelled) {
       for (c = 0; c < numChannels; c++)
          delete channels[c];
       delete[] channels;
 
+      // It's a shame we can't return proper error code
       return 0;
    }
 

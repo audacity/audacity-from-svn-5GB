@@ -1396,7 +1396,8 @@ bool WaveClip::Resample(int rate, ProgressDialog *progress)
 
       if (progress)
       {
-         error = !progress->Update(pos, numSamples);
+         int updateResult = progress->Update(pos, numSamples);
+         error = (updateResult != eProgressSuccess);
          if (error)
          {
             break;

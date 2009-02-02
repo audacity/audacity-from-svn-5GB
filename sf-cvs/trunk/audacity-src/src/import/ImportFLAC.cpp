@@ -157,7 +157,7 @@ private:
    FLAC__uint64          mNumSamples;
    FLAC__uint64          mSamplesDone;
    bool                  mStreamInfoDone;
-   bool                  mCancelled;
+   int                   mUpdateResult;
    WaveTrack           **mChannels;
 };
 
@@ -250,8 +250,9 @@ FLAC__StreamDecoderWriteStatus MyFLACFile::write_callback(const FLAC__Frame *fra
 
    mFile->mSamplesDone += frame->header.blocksize;
 
-   if (!mFile->mProgress->Update((wxULongLong_t) mFile->mSamplesDone, mFile->mNumSamples != 0 ? (wxULongLong_t)mFile->mNumSamples : 1)) {
-      mFile->mCancelled = true;
+   mFile->mUpdateResult = mFile->mProgress->Update((wxULongLong_t) mFile->mSamplesDone, mFile->mNumSamples != 0 ? (wxULongLong_t)mFile->mNumSamples : 1);
+   if (mFile->mUpdateResult != eProgressSuccess)
+   {
       return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
    }
 
@@ -299,7 +300,7 @@ FLACImportFileHandle::FLACImportFileHandle(const wxString & name)
 :  ImportFileHandle(name),
    mSamplesDone(0),
    mStreamInfoDone(false),
-   mCancelled(false)
+   mUpdateResult(eProgressSuccess)
 {
    mFormat = (sampleFormat)
       gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
@@ -396,13 +397,13 @@ int FLACImportFileHandle::Import(TrackFactory *trackFactory,
    bool res = (mFile->process_until_end_of_stream() != 0);
 #endif
 
-   if (!res) {
+   if (mUpdateResult == eProgressFailed || mUpdateResult == eProgressCancelled) {
       for(c = 0; c < mNumChannels; c++) {
          delete mChannels[c];
       }
       delete[] mChannels;
 
-      return (mCancelled ? eImportCancelled : eImportFailed);
+      return mUpdateResult;
    }
    
    *outNumTracks = mNumChannels;
@@ -427,7 +428,7 @@ int FLACImportFileHandle::Import(TrackFactory *trackFactory,
       tags->SetTag(name, value);
    }
 
-   return eImportSuccess;
+   return mUpdateResult;
 }
 
 

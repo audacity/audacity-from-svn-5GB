@@ -132,17 +132,26 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
 
 bool Effect::TotalProgress(double frac)
 {
-   return !mProgress->Update(frac);
+   int updateResult = mProgress->Update(frac);
+   if (updateResult == eProgressSuccess)
+     return false;
+   return true;
 }
 
 bool Effect::TrackProgress(int whichTrack, double frac)
 {
-   return !mProgress->Update(whichTrack + frac, (double) mNumTracks);
+   int updateResult = mProgress->Update(whichTrack + frac, (double) mNumTracks);
+   if (updateResult == eProgressSuccess)
+     return false;
+   return true;
 }
 
 bool Effect::TrackGroupProgress(int whichGroup, double frac)
 {
-   return !mProgress->Update(whichGroup + frac, (double) mNumGroups);
+   int updateResult = mProgress->Update(whichGroup + frac, (double) mNumGroups);
+   if (updateResult == eProgressSuccess)
+     return false;
+   return true;
 }
 
 //
@@ -484,12 +493,12 @@ void Effect::Preview()
                                rate, t0, t1, NULL);
 
       if (token) {
-         bool previewing = true;
+         int previewing = eProgressSuccess;
 
          mProgress = new ProgressDialog(StripAmpersand(GetEffectName()),
-                                        _("Previewing"));
+                                        _("Previewing"), pdlgHideCancelButton);
 
-         while (gAudioIO->IsStreamActive(token) && previewing) {
+         while (gAudioIO->IsStreamActive(token) && previewing == eProgressSuccess) {
             ::wxMilliSleep(100);
             previewing = mProgress->Update(gAudioIO->GetStreamTime(), t1);
          }

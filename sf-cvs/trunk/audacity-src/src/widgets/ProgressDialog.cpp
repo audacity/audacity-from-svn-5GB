@@ -987,7 +987,7 @@ END_EVENT_TABLE()
 //
 // Constructor
 //
-ProgressDialog::ProgressDialog(const wxString & title, const wxString & message)
+ProgressDialog::ProgressDialog(const wxString & title, const wxString & message, ProgressDialogFlags flags)
 : wxDialog(wxTheApp->GetTopWindow(),
            wxID_ANY,
            title,
@@ -1095,13 +1095,19 @@ ProgressDialog::ProgressDialog(const wxString & title, const wxString & message)
 
    wxBoxSizer *h = new wxBoxSizer(wxHORIZONTAL);
 
-   w = new wxButton(this, wxID_OK, _("Stop"));
-   h->Add(w, 0, wxALIGN_RIGHT | wxRIGHT | wxBOTTOM, 10);
-   ds.x += w->GetSize().x + 10;
-
-   w = new wxButton(this, wxID_CANCEL, _("Cancel"));
-   h->Add(w, 0, wxALIGN_RIGHT | wxRIGHT | wxBOTTOM, 10);
-   ds.x += w->GetSize().x + 10;
+   if (!(flags & pdlgHideStopButton))
+   {
+      w = new wxButton(this, wxID_OK, _("Stop"));
+      h->Add(w, 0, wxALIGN_RIGHT | wxRIGHT | wxBOTTOM, 10);
+      ds.x += w->GetSize().x + 10;
+   }
+ 
+   if (!(flags & pdlgHideCancelButton))
+   {
+      w = new wxButton(this, wxID_CANCEL, _("Cancel"));
+      h->Add(w, 0, wxALIGN_RIGHT | wxRIGHT | wxBOTTOM, 10);
+      ds.x += w->GetSize().x + 10;
+   }
 
    v->Add(h, 0, wxALIGN_RIGHT | wxRIGHT | wxBOTTOM, 10);
 
@@ -1196,11 +1202,11 @@ ProgressDialog::Update(int value, const wxString & message)
    if (mCancel)
    {
       // for compatibility with old Update, that returned false on cancel
-      return 0; 
+      return eProgressCancelled; 
    }
    else if (mStop)
    {
-      return 2;
+      return eProgressStopped;
    }
 
    SetMessage(message);
@@ -1245,7 +1251,7 @@ ProgressDialog::Update(int value, const wxString & message)
 
    wxYieldIfNeeded();
 
-   return 1;
+   return eProgressSuccess;
 }
 
 //

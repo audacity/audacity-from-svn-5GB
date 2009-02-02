@@ -111,7 +111,7 @@ public:
    ///\param metadata tags to write into file
    ///\param subformat index of export type
    ///\return true if export succeded
-   bool Export(AudacityProject *project,
+   int Export(AudacityProject *project,
       int channels,
       wxString fName,
       bool selectedOnly,
@@ -133,7 +133,6 @@ private:
    AVFifoBuffer		mEncAudioFifo;				// FIFO to write incoming audio samples into
    uint8_t         *	mEncAudioFifoOutBuf;		// buffer to read _out_ of the FIFO into
 
-   bool              mCancelled;
    wxString          mName;
 
    int               mSubFormat;
@@ -601,7 +600,7 @@ bool ExportFFmpeg::EncodeAudioFrame(int16_t *pFrame, int frameSize)
 }
 
 
-bool ExportFFmpeg::Export(AudacityProject *project,
+int ExportFFmpeg::Export(AudacityProject *project,
                        int channels, wxString fName,
                        bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec, Tags *metadata, int subformat)
 {
@@ -643,9 +642,9 @@ bool ExportFFmpeg::Export(AudacityProject *project,
       wxString::Format(_("Exporting selected audio as %s"), fmts[mSubFormat].description) :
    wxString::Format(_("Exporting entire file as %s"), fmts[mSubFormat].description));
 
-   bool cancelling = false;
+   int updateResult = eProgressSuccess;
 
-   while(!cancelling) {
+   while(updateResult == eProgressSuccess) {
       sampleCount pcmNumSamples = mixer->Process(pcmBufferSize);
 
       if (pcmNumSamples == 0)
@@ -655,7 +654,7 @@ bool ExportFFmpeg::Export(AudacityProject *project,
 
       EncodeAudioFrame(pcmBuffer,(pcmNumSamples)*sizeof(int16_t)*mChannels);
 
-      cancelling = !progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
+      updateResult = progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
 
    delete progress;
@@ -664,7 +663,7 @@ bool ExportFFmpeg::Export(AudacityProject *project,
 
    Finalize();
 
-   return !cancelling;
+   return updateResult;
 }
 
 void AddStringTagUTF8(char field[], int size, wxString value)

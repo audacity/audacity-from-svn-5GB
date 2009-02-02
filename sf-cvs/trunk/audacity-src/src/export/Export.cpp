@@ -234,7 +234,7 @@ bool ExportPlugin::DisplayOptions(wxWindow *parent, int format)
    return false;
 }
 
-bool ExportPlugin::Export(AudacityProject *project,
+int ExportPlugin::Export(AudacityProject *project,
                           int channels,
                           wxString fName,
                           bool selectedOnly,
@@ -251,7 +251,7 @@ bool ExportPlugin::Export(AudacityProject *project,
   return DoExport(project, channels, fName, selectedOnly, t0, t1, mixerSpec, subformat);
 }
 
-bool ExportPlugin::DoExport(AudacityProject *project,
+int ExportPlugin::DoExport(AudacityProject *project,
                             int channels,
                             wxString fName,
                             bool selectedOnly,
@@ -748,7 +748,7 @@ bool Exporter::CheckMix()
 
 bool Exporter::ExportTracks()
 {
-   bool success;
+   int success;
 
    // Keep original in case of failure
    if (mActualName != mFilename) {
@@ -767,7 +767,7 @@ bool Exporter::ExportTracks()
 
    if (mActualName != mFilename) {
       // Remove backup
-      if (success) {
+      if (success == eProgressSuccess || success == eProgressStopped) {
          ::wxRemoveFile(mFilename.GetFullPath());
       }
       else {

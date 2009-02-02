@@ -201,7 +201,7 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
 
    sampleCount fileTotalFrames = (sampleCount)mInfo.frames;
    sampleCount maxBlockSize = channels[0]->GetMaxBlockSize();
-   bool cancelled = false;
+   int updateResult = false;
    
    wxString copyEdit =
        gPrefs->Read(wxT("/FileFormats/CopyOrEditUncompressedData"), wxT("edit"));
@@ -246,8 +246,8 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
          for (c = 0; c < mInfo.channels; c++)
             channels[c]->AppendAlias(mFilename, i, blockLen, c,useOD);
 
-         cancelled = !mProgress->Update(i, fileTotalFrames);
-         if (cancelled)
+         updateResult = mProgress->Update(i, fileTotalFrames);
+         if (updateResult != eProgressSuccess)
             break;
       }
       
@@ -315,20 +315,20 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
             framescompleted += block;
          }
 
-         cancelled = !mProgress->Update((long long unsigned)framescompleted,
+         updateResult = mProgress->Update((long long unsigned)framescompleted,
                                         (long long unsigned)fileTotalFrames);
-         if (cancelled)
+         if (updateResult != eProgressSuccess)
             break;
 
       } while (block > 0);
    }
 
-   if (cancelled) {
+   if (updateResult == eProgressFailed || updateResult == eProgressCancelled) {
       for (c = 0; c < mInfo.channels; c++)
          delete channels[c];
       delete[] channels;
 
-      return eImportCancelled;
+      return updateResult;
    }
 
    *outNumTracks = mInfo.channels;
@@ -508,7 +508,7 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
    //comment out to undo profiling.
    //END_TASK_PROFILING("Pre-GSOC (PCMAliasBlockFile) open an 80 mb wav stereo file");
 
-   return eImportSuccess;
+   return updateResult;
 }
 
 PCMImportFileHandle::~PCMImportFileHandle()

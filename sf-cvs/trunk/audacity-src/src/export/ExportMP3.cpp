@@ -1468,7 +1468,7 @@ public:
    // Required
 
    bool DisplayOptions(wxWindow *parent, int format = 0);
-   bool Export(AudacityProject *project,
+   int Export(AudacityProject *project,
                int channels,
                wxString fName,
                bool selectedOnly,
@@ -1504,7 +1504,7 @@ void ExportMP3::Destroy()
    delete this;
 }
 
-bool ExportMP3::Export(AudacityProject *project,
+int ExportMP3::Export(AudacityProject *project,
                        int channels,
                        wxString fName,
                        bool selectionOnly,
@@ -1628,7 +1628,7 @@ bool ExportMP3::Export(AudacityProject *project,
    }
 
    wxFileOffset pos = outFile.Tell();
-   bool cancelling = false;
+   int updateResult = eProgressSuccess;
    long bytes;
 
    int bufferSize = exporter.GetOutBufferSize();
@@ -1666,7 +1666,7 @@ bool ExportMP3::Export(AudacityProject *project,
 
    ProgressDialog *progress = new ProgressDialog(wxFileName(fName).GetName(), title);
 
-   while (!cancelling) {
+   while (updateResult == eProgressSuccess) {
       sampleCount blockLen = mixer->Process(inSamples);
 
       if (blockLen == 0) {
@@ -1701,7 +1701,7 @@ bool ExportMP3::Export(AudacityProject *project,
 
       outFile.Write(buffer, bytes);
 
-      cancelling = !progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
+      updateResult = progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
 
    delete progress;
@@ -1733,7 +1733,7 @@ bool ExportMP3::Export(AudacityProject *project,
 
    delete [] buffer;
    
-   return !cancelling;
+   return updateResult;
 }
 
 bool ExportMP3::DisplayOptions(wxWindow *parent, int format)

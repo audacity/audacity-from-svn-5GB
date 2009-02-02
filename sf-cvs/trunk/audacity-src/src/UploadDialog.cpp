@@ -897,8 +897,9 @@ void UploadDialog::DownloadFile (wxString src, wxString dest)
                             out->Write(chunk, size);
                         }
                     }
-                        
-                    if (!mProgress->Update(count, iterations, src))
+                    
+                    int updateResult = mProgress->Update(count, iterations, src);
+                    if (updateResult != eProgressSuccess)
                     {
                         //wxMessageBox("ABORT", _T("FTP Status"), wxOK | wxICON_INFORMATION, NULL);
 

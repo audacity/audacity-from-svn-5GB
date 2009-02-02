@@ -98,7 +98,7 @@ struct private_data {
    WaveTrack **channels;
    ProgressDialog *progress;
    int numChannels;
-   bool cancelled;
+   int updateResult;
    bool id3checked;
 };
 
@@ -214,7 +214,7 @@ int MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    mPrivateData.inputBuffer = new unsigned char [INPUT_BUFFER_SIZE];
    mPrivateData.progress    = mProgress;
    mPrivateData.channels    = NULL;
-   mPrivateData.cancelled   = false;
+   mPrivateData.updateResult= eProgressSuccess;
    mPrivateData.id3checked  = false;
    mPrivateData.numChannels = 0;
    mPrivateData.trackFactory= trackFactory;
@@ -225,7 +225,8 @@ int MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
    bool res = (mad_decoder_run(&mDecoder, MAD_DECODER_MODE_SYNC) == 0) &&
               (mPrivateData.numChannels > 0) &&
-              (!mPrivateData.cancelled);
+              !(mPrivateData.updateResult == eProgressCancelled) &&
+              !(mPrivateData.updateResult == eProgressFailed);
 
    mad_decoder_finish(&mDecoder);
 
@@ -241,7 +242,7 @@ int MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       }
       delete[] mPrivateData.channels;
 
-      return (mPrivateData.cancelled ? eImportCancelled : eImportFailed);
+      return (mPrivateData.updateResult);
    }
 
    /* success */
@@ -260,7 +261,7 @@ int MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    /* Read in any metadata */
    ImportID3(tags);
 
-      return eImportSuccess;
+      return mPrivateData.updateResult;
    }
 
 MP3ImportFileHandle::~MP3ImportFileHandle()
@@ -391,13 +392,12 @@ enum mad_flow input_cb(void *_data, struct mad_stream *stream)
 {
    struct private_data *data = (struct private_data *)_data;
 
-   data->cancelled = !data->progress->Update((wxULongLong_t)data->file->Tell(),
+   data->updateResult = data->progress->Update((wxULongLong_t)data->file->Tell(),
                                              (wxULongLong_t)data->file->Length());
-   if(data->cancelled)
+   if(data->updateResult != eProgressSuccess)
       return MAD_FLOW_STOP;
 
    if(data->file->Eof()) {
-      data->cancelled = false;
       return MAD_FLOW_STOP;
    }
 

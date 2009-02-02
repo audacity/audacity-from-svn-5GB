@@ -231,7 +231,7 @@ int LOFImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    if(mTextFile->Eof())
    {
       mTextFile->Close();
-      return eImportFailed;
+      return eProgressFailed;
    }
 
    wxString line = mTextFile->GetFirstLine();
@@ -251,9 +251,9 @@ int LOFImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
    // exited ok
    if(mTextFile->Close())
-      return eImportSuccess;
+      return eProgressSuccess;
 
-   return eImportFailed;
+   return eProgressFailed;
 }
 
 static int CountNumTracks(AudacityProject *proj)

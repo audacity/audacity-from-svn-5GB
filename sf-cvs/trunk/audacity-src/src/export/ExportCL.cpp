@@ -198,7 +198,7 @@ public:
    // Required
 
    bool DisplayOptions(wxWindow *parent, int format = 0);
-   bool Export(AudacityProject *project,
+   int Export(AudacityProject *project,
                int channels,
                wxString fName,
                bool selectedOnly,
@@ -225,7 +225,7 @@ void ExportCL::Destroy()
    delete this;
 }
 
-bool ExportCL::Export(AudacityProject *project,
+int ExportCL::Export(AudacityProject *project,
                       int channels,
                       wxString fName,
                       bool selectionOnly,
@@ -352,7 +352,7 @@ bool ExportCL::Export(AudacityProject *project,
 
    size_t numBytes = 0;
    samplePtr mixed;
-   bool cancelling = false;
+   int updateResult = eProgressSuccess;
 
    // Prepare the progress display
    ProgressDialog *progress = new ProgressDialog(_("Export"),
@@ -361,7 +361,7 @@ bool ExportCL::Export(AudacityProject *project,
    _("Exporting the entire project using command-line encoder"));
 
    // Start piping the mixed data to the command
-   while (!cancelling && p->IsActive() && os->IsOk()) {
+   while (updateResult == eProgressSuccess && p->IsActive() && os->IsOk()) {
       // Capture any stdout and stderr from the command
       Drain(p->GetInputStream(), &output);
       Drain(p->GetErrorStream(), &output);
@@ -401,7 +401,7 @@ bool ExportCL::Export(AudacityProject *project,
       }
 
       // Update the progress display
-      cancelling = !progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
+      updateResult = progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
 
    // Done with the progress display
@@ -444,7 +444,7 @@ bool ExportCL::Export(AudacityProject *project,
    delete[] waveTracks;                            
    delete p;
 
-   return true;
+   return updateResult;
 }
 
 bool ExportCL::DisplayOptions(wxWindow *parent, int format)

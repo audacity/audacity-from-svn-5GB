@@ -204,12 +204,11 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
 
    this->TransferDataFromWindow();
 
-   bool bDidCancel = false;
-   bool bDidStop = false;
+   int updateResult = eProgressSuccess;
    if (m_DateTime_Start > wxDateTime::UNow()) 
-      bDidCancel = !this->WaitForStart(); 
+      updateResult = this->WaitForStart(); 
 
-   if (!bDidCancel)  
+   if (updateResult == eProgressSuccess)  
    {
       // Record for specified time.
    	AudacityProject* pProject = GetActiveProject();
@@ -240,7 +239,8 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
 
       wxDateTime dateTime_UNow;
       wxTimeSpan done_TimeSpan;
-      while (bIsRecording && !bDidCancel && !bDidStop) {
+
+      while (bIsRecording && updateResult == eProgressSuccess) {
 		 // sit in this loop during the recording phase, i.e. from rec start to
 		 // recording end
          wxMilliSleep(kTimerInterval);
@@ -251,17 +251,14 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
          // remaining_TimeSpan = m_DateTime_End - dateTime_UNow;
 
          // strNewMsg = strMsg + _("\nDone: ") + done_TimeSpan.Format() + _("     Remaining: ") + remaining_TimeSpan.Format();
-         int iResult = progress.Update(done_TimeSpan.GetSeconds(),
+         updateResult = progress.Update(done_TimeSpan.GetSeconds(),
                                        m_TimeSpan_Duration.GetSeconds()); // , strNewMsg);
-         if (iResult == 0)
-           bDidCancel = true;
-         else if (iResult == 2)
-           bDidStop = true;
          bIsRecording = (wxDateTime::UNow() <= m_DateTime_End);
       }
       pProject->OnStop();
    }
-   if (bDidCancel)
+   // Maybe we shouldn't return wxID_CANCEL on failure...?
+   if (updateResult == eProgressSuccess || updateResult == eProgressFailed)
       this->EndModal(wxID_CANCEL);
    else
      this->EndModal(wxID_OK);
@@ -431,7 +428,7 @@ void TimerRecordDialog::UpdateEnd()
    m_pTimeTextCtrl_End->SetTimeValue(wxDateTime_to_AudacityTime(m_DateTime_End));
 }
 
-bool TimerRecordDialog::WaitForStart()
+int TimerRecordDialog::WaitForStart()
 {
    wxString strMsg;
    /* i18n-hint: A time specification like "Sunday 28th October 2007 15:16:17 GMT"
@@ -442,17 +439,17 @@ bool TimerRecordDialog::WaitForStart()
    wxDateTime startWait_DateTime = wxDateTime::UNow();
    wxTimeSpan waitDuration = m_DateTime_Start - startWait_DateTime;
 
-   bool bDidCancel = false;
+   int updateResult = eProgressSuccess;
    bool bIsRecording = false;
    wxTimeSpan done_TimeSpan;
-   while (!bDidCancel && !bIsRecording) {
+   while (updateResult == eProgressSuccess && !bIsRecording) {
       wxMilliSleep(10);
 
       done_TimeSpan = wxDateTime::UNow() - startWait_DateTime;
-      bDidCancel = !progress.Update(done_TimeSpan.GetSeconds(),
+      updateResult = progress.Update(done_TimeSpan.GetSeconds(),
                                     waitDuration.GetSeconds());
 
       bIsRecording = (m_DateTime_Start <= wxDateTime::UNow());
    }
-   return !bDidCancel;
+   return updateResult;
 }
