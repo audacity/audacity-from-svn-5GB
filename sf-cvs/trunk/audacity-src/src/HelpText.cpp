@@ -230,7 +230,7 @@ By default, Audacity uses the device currently being used by the system, \
 so it is often not necessary to change the input device. \
 On Windows, this current system device can be selected as \"Microsoft Sound Mapper\". \
 If you are recording from an external USB or Firewire device such as a USB turntable, \
-select it explicitly by name as recording device after conecting it. \
+select it explicitly by name as recording device after connecting it. \
 </p><p> \
 Back to [[record|Recording Audio]] \
 <br></p>") +
@@ -367,7 +367,7 @@ then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.c
 to convert it to WAV or AIFF. \
 If it is protected, burn it to an audio CD in the program licensed to play it, \
 then extract the CD track to WAV or AIFF using \
-ITunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or \
+iTunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or \
 Windows Media Player 11. You could also \
 <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. \
 <i>To export to an unsupported format, export to WAV or AIFF and \
