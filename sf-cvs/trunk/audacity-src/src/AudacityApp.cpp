@@ -62,6 +62,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "DirManager.h"
 #include "effects/LoadEffects.h"
 #include "FFmpeg.h"
+#include "GStreamerLoader.h"
 #include "FreqWindow.h"
 #include "Internat.h"
 #include "LangChoice.h"
@@ -826,8 +827,6 @@ bool AudacityApp::OnInit()
    // So we also call StartMonitoring when STOP is called.
    project->MayStartMonitoring();
 
-   mImporter = new Importer;
-
    mLogger = new wxLogWindow(NULL,wxT("Debug Log"),false,false);
    mLogger->SetActiveTarget(mLogger);
    mLogger->EnableLogging(true);
@@ -836,6 +835,12 @@ bool AudacityApp::OnInit()
    #ifdef USE_FFMPEG
    FFmpegStartup();
    #endif
+
+   #ifdef USE_GSTREAMER
+   GStreamerStartup();
+   #endif
+
+   mImporter = new Importer;
 
    //
    // Auto-recovery
