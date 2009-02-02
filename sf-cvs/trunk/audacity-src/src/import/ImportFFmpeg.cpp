@@ -272,6 +272,7 @@ private:
    wxArrayString        *mStreamInfo;    //!< Array of stream descriptions. Length is mNumStreams
 
    bool                  mCancelled;     //!< True if importing was canceled by user
+   bool                  mStopped;       //!< True if importing was stopped by user
    wxString              mName;
    WaveTrack           ***mChannels;     //!< 2-dimentional array of WaveTrack's. First dimention - streams, second - channels of a stream. Length is mNumStreams
 };
@@ -344,7 +345,8 @@ FFmpegImportFileHandle::FFmpegImportFileHandle(const wxString & name)
    mFormatContext = NULL;
    mNumStreams = 0;
    mScs = NULL;
-   mCancelled =false;
+   mCancelled = false;
+   mStopped = false;
    mName = name;
    mChannels = NULL;
 }
@@ -539,7 +541,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
       if (sc != (streamContext*)1)
       {
          // Decode frame until it is not possible to decode any further
-         while (sc->m_pktRemainingSiz > 0 && (res == 0))
+         while (sc->m_pktRemainingSiz > 0 && (res == 0 || res == 2))
          {
             if (DecodeFrame(sc,false) < 0)
                break;
@@ -559,7 +561,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
    }
 
    // Flush the decoders.
-   if ((mNumStreams != 0) && (res == 0))
+   if ((mNumStreams != 0) && (res == 0 || res == 2))
    {
       for (int i = 0; i < mNumStreams; i++)
       {
@@ -577,7 +579,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
    }
 
    // Something bad happened - destroy everything!
-   if (res)
+   if (res == 1)
    {
       for (int s = 0; s < mNumStreams; s++)
       {
@@ -590,6 +592,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
       else
          return eImportFailed;
    }
+   //else if (res == 2), we just stop the decoding as if the file has ended
 
    *outNumTracks = 0;
    for (int s = 0; s < mNumStreams; s++)
@@ -777,10 +780,38 @@ int FFmpegImportFileHandle::WriteData(streamContext *sc)
    free(tmp);
    
    // Try to update the progress indicator (and see if user wants to cancel)
-   if (!mProgress->Update((wxLongLong)sc->m_pkt.pts * sc->m_stream->time_base.num / sc->m_stream->time_base.den,
-                          (wxLongLong)(mFormatContext->duration > 0 ? mFormatContext->duration / AV_TIME_BASE: 1))) {
+   int updateCode = 1;
+   // PTS (presentation time) is the proper way of getting current position
+   if (sc->m_pkt.pts != AV_NOPTS_VALUE && mFormatContext->duration != AV_NOPTS_VALUE)
+   {
+      updateCode = mProgress->Update((wxLongLong)sc->m_pkt.pts * sc->m_stream->time_base.num / sc->m_stream->time_base.den,
+                          (wxLongLong)(mFormatContext->duration > 0 ? mFormatContext->duration / AV_TIME_BASE: 1));
+   }
+   // When PTS is not set, use number of frames and number of current frame
+   else if (sc->m_stream->nb_frames > 0 && sc->m_codecCtx->frame_number > 0 && sc->m_codecCtx->frame_number <= sc->m_stream->nb_frames)
+   {
+      updateCode = mProgress->Update((wxLongLong)sc->m_codecCtx->frame_number,
+                          (wxLongLong)sc->m_stream->nb_frames);      
+   }
+   // When number of frames is unknown, use position in file
+   else if (mFormatContext->file_size > 0 && sc->m_pkt.pos > 0 && sc->m_pkt.pos <= mFormatContext->file_size)
+   {
+      updateCode = mProgress->Update((wxLongLong)sc->m_pkt.pos,
+                          (wxLongLong)mFormatContext->file_size);      
+   }
+   // OK, i give up
+   else
+   {
+      updateCode = mProgress->Update(1, 1);
+   }
+   if (updateCode == 0) {
       mCancelled = true;
       return 1;
+   }
+   else if (updateCode == 2)
+   {
+      mStopped = true;
+      return 2;
    }
 
    return 0;

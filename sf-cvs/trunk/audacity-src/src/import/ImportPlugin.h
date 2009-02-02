@@ -72,7 +72,8 @@ enum
 {
    eImportSuccess,
    eImportCancelled,
-   eImportFailed
+   eImportFailed,
+   eImportStopped
 };
 
 class ImportPlugin
