@@ -55,6 +55,7 @@ and ImportLOF.cpp.
 #include "ImportLOF.h"
 #include "ImportFLAC.h"
 #include "ImportFFmpeg.h"
+#include "ImportGStreamer.h"
 #include "../Track.h"
 #include "../Prefs.h"
 
@@ -82,6 +83,10 @@ Importer::Importer()
    #if defined(USE_FFMPEG)
    GetFFmpegImportPlugin(mImportPluginList, mUnusableImportPluginList);
    #endif
+   #if defined(USE_GSTREAMER)
+   GetGStreamerImportPlugin(mImportPluginList, mUnusableImportPluginList);
+   #endif
+
 }
 
 Importer::~Importer()
