@@ -33,17 +33,18 @@ class AUDACITY_DLL_API ProgressDialog:public wxDialog
 
    bool Show(bool show = true);
 
-   bool Update(int value, const wxString & message = wxEmptyString);
-   bool Update(double current, const wxString & message = wxEmptyString);
-   bool Update(double current, double total, const wxString & message = wxEmptyString);
-   bool Update(wxULongLong_t current, wxULongLong_t total, const wxString & message = wxEmptyString);
-   bool Update(wxLongLong current, wxLongLong total, const wxString & message = wxEmptyString);
-   bool Update(wxLongLong_t current, wxLongLong_t total, const wxString & message = wxEmptyString);
-   bool Update(int current, int total, const wxString & message = wxEmptyString);
+   int Update(int value, const wxString & message = wxEmptyString);
+   int Update(double current, const wxString & message = wxEmptyString);
+   int Update(double current, double total, const wxString & message = wxEmptyString);
+   int Update(wxULongLong_t current, wxULongLong_t total, const wxString & message = wxEmptyString);
+   int Update(wxLongLong current, wxLongLong total, const wxString & message = wxEmptyString);
+   int Update(wxLongLong_t current, wxLongLong_t total, const wxString & message = wxEmptyString);
+   int Update(int current, int total, const wxString & message = wxEmptyString);
    void SetMessage(const wxString & message);
 
  private:
    void OnCancel(wxCommandEvent & e);
+   void OnStop(wxCommandEvent & e);
    void Beep();
 
  private:
@@ -59,6 +60,7 @@ class AUDACITY_DLL_API ProgressDialog:public wxDialog
    int mLastValue;
 
    bool mCancel;
+   bool mStop;
    
    DECLARE_EVENT_TABLE();
 };

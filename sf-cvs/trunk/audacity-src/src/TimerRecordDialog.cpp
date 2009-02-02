@@ -27,6 +27,7 @@
 #include <wx/sizer.h>
 #include <wx/string.h>
 #include <wx/timer.h>
+#include <wx/dynlib.h> //<! For windows.h
 
 #include "TimerRecordDialog.h"
 #include "Project.h"
@@ -204,6 +205,7 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
    this->TransferDataFromWindow();
 
    bool bDidCancel = false;
+   bool bDidStop = false;
    if (m_DateTime_Start > wxDateTime::UNow()) 
       bDidCancel = !this->WaitForStart(); 
 
@@ -238,7 +240,7 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
 
       wxDateTime dateTime_UNow;
       wxTimeSpan done_TimeSpan;
-      while (bIsRecording && !bDidCancel) {
+      while (bIsRecording && !bDidCancel && !bDidStop) {
 		 // sit in this loop during the recording phase, i.e. from rec start to
 		 // recording end
          wxMilliSleep(kTimerInterval);
@@ -249,9 +251,17 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
          // remaining_TimeSpan = m_DateTime_End - dateTime_UNow;
 
          // strNewMsg = strMsg + _("\nDone: ") + done_TimeSpan.Format() + _("     Remaining: ") + remaining_TimeSpan.Format();
-         bDidCancel = !progress.Update(done_TimeSpan.GetSeconds(),
+         int iResult = progress.Update(done_TimeSpan.GetSeconds(),
                                        m_TimeSpan_Duration.GetSeconds()); // , strNewMsg);
+         if (iResult == 0)
+           bDidCancel = true;
+         else if (iResult == 2)
+           bDidStop = true;
          bIsRecording = (wxDateTime::UNow() <= m_DateTime_End);
+      }
+      if (bDidCancel)
+      {
+        // TODO: Canceled -> destroy all recorded data
       }
       pProject->OnStop();
    }

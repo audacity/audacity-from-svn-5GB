@@ -981,6 +981,7 @@ static const unsigned char beep[] =
 
 BEGIN_EVENT_TABLE(ProgressDialog, wxDialog)
    EVT_BUTTON(wxID_CANCEL, ProgressDialog::OnCancel)
+   EVT_BUTTON(wxID_OK, ProgressDialog::OnStop)
 END_EVENT_TABLE()  
 
 //
@@ -1092,9 +1093,20 @@ ProgressDialog::ProgressDialog(const wxString & title, const wxString & message)
    v->Add(g, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT | wxBOTTOM, 10);
    ds.y += mRemaining->GetSize().y + 10;
 
+   wxBoxSizer *h = new wxBoxSizer(wxHORIZONTAL);
+
+   w = new wxButton(this, wxID_OK, _("Stop"));
+   h->Add(w, 0, wxALIGN_RIGHT | wxRIGHT | wxBOTTOM, 10);
+   ds.x += w->GetSize().x + 10;
+
    w = new wxButton(this, wxID_CANCEL, _("Cancel"));
-   v->Add(w, 0, wxALIGN_RIGHT | wxRIGHT | wxBOTTOM, 10);
+   h->Add(w, 0, wxALIGN_RIGHT | wxRIGHT | wxBOTTOM, 10);
+   ds.x += w->GetSize().x + 10;
+
+   v->Add(h, 0, wxALIGN_RIGHT | wxRIGHT | wxBOTTOM, 10);
+
    ds.y += w->GetSize().y + 10;
+
    SetSizerAndFit(v);
 
    wxClientDC dc(this);
@@ -1109,6 +1121,7 @@ ProgressDialog::ProgressDialog(const wxString & title, const wxString & message)
    mStartTime = wxGetLocalTimeMillis().GetValue();
    mLastUpdate = mStartTime;
    mCancel = false;
+   mStop = false;
 
    Show(false);
 
@@ -1177,12 +1190,17 @@ ProgressDialog::Show(bool show)
 //
 // Update the time and, optionally, the message
 //
-bool
+int
 ProgressDialog::Update(int value, const wxString & message)
 {
    if (mCancel)
    {
-      return false;
+      // for compatibility with old Update, that returned false on cancel
+      return 0; 
+   }
+   else if (mStop)
+   {
+      return 2;
    }
 
    SetMessage(message);
@@ -1227,13 +1245,13 @@ ProgressDialog::Update(int value, const wxString & message)
 
    wxYieldIfNeeded();
 
-   return true;
+   return 1;
 }
 
 //
 // Update the time and, optionally, the message
 //
-bool
+int
 ProgressDialog::Update(double current, const wxString & message)
 {
    return Update((int)(current * 1000), message);
@@ -1242,7 +1260,7 @@ ProgressDialog::Update(double current, const wxString & message)
 //
 // Update the time and, optionally, the message
 //
-bool
+int
 ProgressDialog::Update(wxULongLong_t current, wxULongLong_t total, const wxString & message)
 {
    return Update((int)(current * 1000 / total), message);
@@ -1251,7 +1269,7 @@ ProgressDialog::Update(wxULongLong_t current, wxULongLong_t total, const wxStrin
 //
 // Update the time and, optionally, the message
 //
-bool
+int
 ProgressDialog::Update(wxLongLong current, wxLongLong total, const wxString & message)
 {
    return Update((int)(current.GetValue() * 1000ll / total.GetValue()), message);
@@ -1260,7 +1278,7 @@ ProgressDialog::Update(wxLongLong current, wxLongLong total, const wxString & me
 //
 // Update the time and, optionally, the message
 //
-bool
+int
 ProgressDialog::Update(wxLongLong_t current, wxLongLong_t total, const wxString & message)
 {
    return Update((int)(current * 1000ll / total), message);
@@ -1269,7 +1287,7 @@ ProgressDialog::Update(wxLongLong_t current, wxLongLong_t total, const wxString 
 //
 // Update the time and, optionally, the message
 //
-bool
+int
 ProgressDialog::Update(int current, int total, const wxString & message)
 {
    return Update((int)(current *  ((double)(1000.0 / total))), message);
@@ -1278,7 +1296,7 @@ ProgressDialog::Update(int current, int total, const wxString & message)
 //
 // Update the time and, optionally, the message
 //
-bool
+int
 ProgressDialog::Update(double current, double total, const wxString & message)
 {
    return Update((int)(current * 1000.0 / total), message);
@@ -1302,6 +1320,14 @@ ProgressDialog::OnCancel(wxCommandEvent & e)
 {
    FindWindowById(wxID_CANCEL, this)->Disable();
    mCancel = true;
+}
+
+void
+ProgressDialog::OnStop(wxCommandEvent & e)
+{
+   FindWindowById(wxID_OK, this)->Disable();
+   mCancel = false;
+   mStop = true;
 }
 
 void
