@@ -238,6 +238,13 @@ bool SpectrumPrefs::Apply()
    gPrefs->Write(wxT("/Spectrum/MaxFreq"), maxFreq);
    gPrefs->Write(wxT("/Spectrum/WindowType"), windowType);
 
+   // Update the TrackPanel correspondingly. 
+   // Calling RedrawProject is inefficient relative to sending a msg to TrackPanel 
+   // for a particular track and control, but not a real performance hit.
+   AudacityProject* pProj = GetActiveProject();
+   if (pProj)
+      pProj->RedrawProject(true);
+
    return true;
 }
 
