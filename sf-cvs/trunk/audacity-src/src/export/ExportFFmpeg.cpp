@@ -150,6 +150,18 @@ ExportFFmpeg::ExportFFmpeg()
    // Adds export types from the export type list
    for (newfmt = 0; newfmt < FMT_LAST; newfmt++)
    {
+      wxString shortname(fmts[newfmt].shortname);
+      if (newfmt < FMT_OTHER)
+      {
+         // Format/Codec support is compiled in
+         AVOutputFormat *avoformat = FFmpegLibsInst->guess_format(shortname.mb_str(), NULL, NULL);
+         AVCodec *avcodec = FFmpegLibsInst->avcodec_find_encoder(fmts[newfmt].codecid);
+         if (avoformat == NULL || avcodec == NULL)
+         {
+            fmts[newfmt].compiledIn = false;
+            continue;
+         }
+      }
       int fmtindex = AddFormat() - 1;
       SetFormat(fmts[newfmt].name,fmtindex);
       AddExtension(fmts[newfmt].extension,fmtindex);
@@ -607,14 +619,24 @@ int ExportFFmpeg::Export(AudacityProject *project,
    if (!CheckFFmpegPresence())
       return false;
    mChannels = channels;
-   if (channels > fmts[subformat].maxchannels)
+   // subformat index may not correspond directly to fmts[] index, convert it
+   mSubFormat = -1;
+   for (int i = 0; i <= FMT_OTHER; i++)
    {
-      wxLogMessage(wxT("Attempted to export %d channels, but max. channels = %d"),channels,fmts[subformat].maxchannels);
-      wxMessageBox(wxString::Format(_("Attempted to export %d channels, but max. channels for selected output format is %d"),channels,fmts[subformat].maxchannels),_("Error"));
+      if (fmts[i].compiledIn) mSubFormat++;
+      if (mSubFormat == subformat || i == FMT_OTHER)
+      {
+         mSubFormat = i;
+         break;
+      }
+   }
+   if (channels > fmts[mSubFormat].maxchannels)
+   {
+      wxLogMessage(wxT("Attempted to export %d channels, but max. channels = %d"),channels,fmts[mSubFormat].maxchannels);
+      wxMessageBox(wxString::Format(_("Attempted to export %d channels, but max. channels for selected output format is %d"),channels,fmts[mSubFormat].maxchannels),_("Error"));
       return false;
    }
    mName = fName;
-   mSubFormat = subformat;
    TrackList *tracks = project->GetTracks();
    bool ret = true;
 
@@ -779,37 +801,48 @@ bool ExportFFmpeg::DisplayOptions(wxWindow *parent, int format)
 {
    if (!CheckFFmpegPresence())
       return false;
-   if (format == FMT_M4A)
+   // subformat index may not correspond directly to fmts[] index, convert it
+   mSubFormat = -1;
+   for (int i = 0; i <= FMT_OTHER; i++)
+   {
+      if (fmts[i].compiledIn) mSubFormat++;
+      if (mSubFormat == format || i == FMT_OTHER)
+      {
+         mSubFormat = i;
+         break;
+      }
+   }
+   if (mSubFormat == FMT_M4A)
    {
       ExportFFmpegAACOptions od(parent);
       od.ShowModal();
       return true;
    }
-   else if (format == FMT_AC3)
+   else if (mSubFormat == FMT_AC3)
    {
       ExportFFmpegAC3Options od(parent);
       od.ShowModal();
       return true;
    }
-   else if (format == FMT_AMRNB)
+   else if (mSubFormat == FMT_AMRNB)
    {
       ExportFFmpegAMRNBOptions od(parent);
       od.ShowModal();
       return true;
    }
-   else if (format == FMT_AMRWB)
+   else if (mSubFormat == FMT_AMRWB)
    {
       ExportFFmpegAMRWBOptions od(parent);
       od.ShowModal();
       return true;
    }
-   else if (format == FMT_WMA2)
+   else if (mSubFormat == FMT_WMA2)
    {
       ExportFFmpegWMAOptions od(parent);
       od.ShowModal();
       return true;
    }
-   else if (format == FMT_OTHER)
+   else if (mSubFormat == FMT_OTHER)
    {
       ExportFFmpegOptions od(parent);
       od.ShowModal();

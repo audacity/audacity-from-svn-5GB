@@ -45,17 +45,18 @@ struct ExposedFormat
    bool canutf8;              //!< true if format supports metadata in UTF-8, false otherwise
    const wxChar *description; //!< format description (will be shown in export dialog)
    CodecID codecid;           //!< codec ID (see libavcodec/avcodec.h)
+   bool compiledIn;           //!< support for this codec/format is compiled in (checked at runtime)
 };
 
 /// List of export types
 static ExposedFormat fmts[] = 
 {
-   {FMT_M4A,         wxT("M4A"),     wxT("m4a"),  wxT("ipod"), 48,  true ,true ,_("M4A (AAC) Files (FFmpeg)"),           CODEC_ID_AAC},
-   {FMT_AC3,         wxT("AC3"),     wxT("ac3"),  wxT("ac3"),  7,   false,false,_("AC3 Files (FFmpeg)"),                 CODEC_ID_AC3},
-   {FMT_AMRNB,       wxT("AMRNB"),   wxT("amr"),  wxT("amr"),  1,   false,false,_("AMR (narrow band) Files (FFmpeg)"),   CODEC_ID_AMR_NB},
-   {FMT_AMRWB,       wxT("AMRWB"),   wxT("amr"),  wxT("amr"),  1,   false,false,_("AMR (wide band) Files (FFmpeg)"),     CODEC_ID_AMR_WB},
-   {FMT_WMA2,        wxT("WMA"),     wxT("wma"),  wxT("asf"),  2,   true ,false,_("WMA (version 2) Files (FFmpeg)"),     CODEC_ID_WMAV2},
-   {FMT_OTHER,       wxT("FFMPEG"),  wxT(""),     wxT(""),     255, true ,true ,_("Custom FFmpeg Export"),               CODEC_ID_NONE}
+   {FMT_M4A,         wxT("M4A"),     wxT("m4a"),  wxT("ipod"), 48,  true ,true ,_("M4A (AAC) Files (FFmpeg)"),           CODEC_ID_AAC,    true},
+   {FMT_AC3,         wxT("AC3"),     wxT("ac3"),  wxT("ac3"),  7,   false,false,_("AC3 Files (FFmpeg)"),                 CODEC_ID_AC3,    true},
+   {FMT_AMRNB,       wxT("AMRNB"),   wxT("amr"),  wxT("amr"),  1,   false,false,_("AMR (narrow band) Files (FFmpeg)"),   CODEC_ID_AMR_NB, true},
+   {FMT_AMRWB,       wxT("AMRWB"),   wxT("amr"),  wxT("amr"),  1,   false,false,_("AMR (wide band) Files (FFmpeg)"),     CODEC_ID_AMR_WB, true},
+   {FMT_WMA2,        wxT("WMA"),     wxT("wma"),  wxT("asf"),  2,   true ,false,_("WMA (version 2) Files (FFmpeg)"),     CODEC_ID_WMAV2,  true},
+   {FMT_OTHER,       wxT("FFMPEG"),  wxT(""),     wxT(""),     255, true ,true ,_("Custom FFmpeg Export"),               CODEC_ID_NONE,   true}
 };
 
 /// Describes format-codec compatibility
