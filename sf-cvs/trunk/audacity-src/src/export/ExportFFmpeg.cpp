@@ -145,7 +145,23 @@ private:
 ExportFFmpeg::ExportFFmpeg()
 :  ExportPlugin()
 {
+   mEncFormatCtx = NULL;			// libavformat's context for our output file
+   mEncFormatDesc = NULL;			// describes our output file to libavformat
+   mEncAudioStream = NULL;			// the output audio stream (may remain NULL)
+   mEncAudioCodecCtx = NULL;		// the encoder for the output audio stream
+   mEncAudioEncodedBuf = NULL;	// buffer to hold frames encoded by the encoder
+   #define MAX_AUDIO_PACKET_SIZE (128 * 1024)
+   mEncAudioEncodedBufSiz = 4*MAX_AUDIO_PACKET_SIZE;
+   mEncAudioFifoOutBuf = NULL;	// buffer to read _out_ of the FIFO into
+   mSampleRate = 0;
+   mSupportsUTF8 = true;
+
    PickFFmpegLibs();
+   if (!FFmpegLibsInst->ValidLibsLoaded())
+   {
+     DropFFmpegLibs();
+     return;
+   }
    int newfmt;
    // Adds export types from the export type list
    for (newfmt = 0; newfmt < FMT_LAST; newfmt++)
@@ -184,17 +200,6 @@ ExportFFmpeg::ExportFFmpeg()
      SetCanMetaData(fmts[newfmt].canmetadata,fmtindex);
      SetDescription(fmts[newfmt].description,fmtindex);
    }
-
-   mEncFormatCtx = NULL;			// libavformat's context for our output file
-   mEncFormatDesc = NULL;			// describes our output file to libavformat
-   mEncAudioStream = NULL;			// the output audio stream (may remain NULL)
-   mEncAudioCodecCtx = NULL;		// the encoder for the output audio stream
-   mEncAudioEncodedBuf = NULL;	// buffer to hold frames encoded by the encoder
-   #define MAX_AUDIO_PACKET_SIZE (128 * 1024)
-   mEncAudioEncodedBufSiz = 4*MAX_AUDIO_PACKET_SIZE;
-   mEncAudioFifoOutBuf = NULL;	// buffer to read _out_ of the FIFO into
-   mSampleRate = 0;
-   mSupportsUTF8 = true;
 }
 
 void ExportFFmpeg::Destroy()
