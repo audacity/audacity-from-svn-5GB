@@ -1565,6 +1565,11 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 //     and/or attempts to delete objects twice.
 void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 {
+   if (gFreqWindow) {
+      gFreqWindow->Destroy();
+      gFreqWindow = NULL;
+   }
+
    if (gPrefsDialogVisible || wxIsBusy()) {
       event.Veto();
       return;
