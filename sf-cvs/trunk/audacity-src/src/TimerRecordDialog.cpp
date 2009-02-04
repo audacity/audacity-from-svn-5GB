@@ -208,7 +208,13 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
    if (m_DateTime_Start > wxDateTime::UNow()) 
       updateResult = this->WaitForStart(); 
 
-   if (updateResult == eProgressSuccess)  
+   if (updateResult != eProgressSuccess) 
+   {
+      // Don't proceed, but don't treat it as canceled recording. User just canceled waiting. 
+      this->EndModal(wxID_CANCEL);
+      return;
+   }
+   else 
    {
       // Record for specified time.
    	AudacityProject* pProject = GetActiveProject();
@@ -224,9 +230,9 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
 
       wxString strMsg = 
          _("Recording start") + (wxString)wxT(":\t\t")
-		 + GetDisplayDate(m_DateTime_Start) + wxT("\n") + _("Recording end")
-       + wxT(":\t\t") + GetDisplayDate(m_DateTime_End) + wxT("\n")
-		 + _("Duration") + wxT(":\t\t") + m_TimeSpan_Duration.Format(); 
+         + GetDisplayDate(m_DateTime_Start) + wxT("\n") + _("Recording end")
+         + wxT(":\t\t") + GetDisplayDate(m_DateTime_End) + wxT("\n")
+         + _("Duration") + wxT(":\t\t") + m_TimeSpan_Duration.Format(); 
 
       ProgressDialog progress(
                _("Audacity Timer Record Progress"), // const wxString& title,
@@ -257,11 +263,11 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
       }
       pProject->OnStop();
    }
-   // Maybe we shouldn't return wxID_CANCEL on failure...?
-   if (updateResult == eProgressSuccess || updateResult == eProgressFailed)
-      this->EndModal(wxID_CANCEL);
+   // Let the caller handle cancellation or failure from recording progress. 
+   if (updateResult == eProgressCancelled || updateResult == eProgressFailed)
+      this->EndModal(updateResult);
    else
-     this->EndModal(wxID_OK);
+      this->EndModal(wxID_OK);
 }
 
 wxString TimerRecordDialog::GetDisplayDate( wxDateTime & dt )
@@ -435,7 +441,7 @@ int TimerRecordDialog::WaitForStart()
 	* but hopefully translated by wxwidgets will be inserted into this */
    strMsg.Printf(_("Waiting to start recording at %s.\n"), GetDisplayDate(m_DateTime_Start).c_str()); 
    ProgressDialog progress(_("Audacity Timer Record - Waiting for Start"),
-                           strMsg);
+                           strMsg, pdlgHideStopButton);
    wxDateTime startWait_DateTime = wxDateTime::UNow();
    wxTimeSpan waitDuration = m_DateTime_Start - startWait_DateTime;
 
