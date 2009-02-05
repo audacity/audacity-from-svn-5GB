@@ -1640,6 +1640,8 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       }
    }
    
+   ModuleManager::Dispatch(ProjectClosing);
+
    // Stop the timer since there's no need to update anything anymore
    delete mTimer;
    mTimer = NULL;

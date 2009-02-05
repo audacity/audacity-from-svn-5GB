@@ -37,13 +37,23 @@ extern "C"
                                      long totlen,
                                      void *userdata);
 
-   /* Set to 0 to stop capturing output */
-   void        nyx_capture_output(int max_len);
+   typedef void (*nyx_output_callback)(int c,
+                                       void *userdata);
 
-   /* Returns all output text captured so far, and resets it */
-   void        nyx_get_captured_output(int *out_len,
-                                       const char **out_chars);
-   
+   typedef void (*nyx_os_callback)(void *userdata);
+
+   /* Set to NULL to stop capturing output */
+   void        nyx_capture_output(nyx_output_callback callback,
+                                  void *userdata);
+
+   /* Set to NULL to stop checking */
+   void        nyx_set_os_callback(nyx_os_callback callback,
+                                   void *userdata);
+
+   void        nyx_stop();
+   void        nyx_break();
+   void        nyx_continue();
+
    void        nyx_set_audio_params( double rate );
 
    void        nyx_set_input_audio(nyx_audio_callback callback,

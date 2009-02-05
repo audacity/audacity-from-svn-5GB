@@ -264,6 +264,8 @@ void QuitAudacity(bool bForce)
       }
    }
 
+   ModuleManager::Dispatch(AppQuiting);
+
    wxLogWindow *lw = wxGetApp().mLogger;
    if (lw)
    {

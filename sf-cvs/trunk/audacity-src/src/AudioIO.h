@@ -41,7 +41,7 @@ class AudioThread;
 class Meter;
 class TimeTrack;
 
-extern AudioIO *gAudioIO;
+extern AUDACITY_DLL_API AudioIO *gAudioIO;
 
 void InitAudioIO();
 void DeinitAudioIO();
@@ -64,7 +64,7 @@ public:
 #define DEFAULT_LATENCY_DURATION 100.0
 #define DEFAULT_LATENCY_CORRECTION -130.0
 
-class AudioIO {
+class AUDACITY_DLL_API AudioIO {
 
  public:
    AudioIO();
