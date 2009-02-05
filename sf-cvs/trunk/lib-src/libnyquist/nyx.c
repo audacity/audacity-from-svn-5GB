@@ -37,9 +37,10 @@ extern LVAL a_sound;
 extern snd_list_type zero_snd_list;
 
 /* globals */
-int                 nyx_output_pos;
-int                 nyx_output_len;
-char               *nyx_output_string;
+nyx_os_callback     nyx_os_cb = NULL;
+void               *nyx_os_ud;
+nyx_output_callback nyx_output_cb;
+void               *nyx_output_ud;
 int                 nyx_expr_pos;
 int                 nyx_expr_len;
 const char         *nyx_expr_string;
@@ -96,9 +97,8 @@ void nyx_init()
       argv[0] = "nyquist";
       xlisp_main_init(1, argv);
 
-      nyx_output_len = 0;
-      nyx_output_pos = 0;
-      nyx_output_string = NULL;
+      nyx_os_cb = NULL;
+      nyx_output_cb = NULL;
       
       nyx_first_time = 0;
    }
@@ -111,12 +111,8 @@ void nyx_init()
 
 void nyx_cleanup()
 {
-   if (nyx_output_string) {
-      free(nyx_output_string);
-      nyx_output_string = NULL;
-      nyx_output_pos = 0;
-      nyx_output_len = 0;
-   }
+   nyx_output_cb = NULL;
+   nyx_os_cb = NULL;
 
    xlpop(); /* garbage-collect nyx_result */
    gc(); /* run the garbage-collector now */
@@ -167,22 +163,10 @@ void nyx_susp_print_tree(nyx_susp_type susp, int n)
 {
 }
 
-void nyx_capture_output(int max_len)
+void nyx_capture_output(nyx_output_callback callback, void *userdata)
 {
-   if (nyx_output_string)
-      free(nyx_output_string);
-
-   nyx_output_string = (char *)malloc(max_len);
-   nyx_output_len = max_len;
-   nyx_output_pos = 0;
-}
-
-void nyx_get_captured_output(int *out_len,
-                             const char **out_chars)
-{
-   *out_len = nyx_output_pos;
-   *out_chars = (const char *)nyx_output_string;
-   nyx_output_pos = 0;
+   nyx_output_cb = callback;
+   nyx_output_ud = userdata;
 }
 
 void nyx_set_audio_params( double rate )
@@ -441,11 +425,11 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
 {
    sample_block_type block;
    sound_type snd;
-   sound_type *snds;
-   float *buffer;
-   long bufferlen;
-   long *totals;
-   long *lens;
+   sound_type *snds = NULL;
+   float *buffer = NULL;
+   long bufferlen = 0;
+   long *totals = NULL;
+   long *lens = NULL;
    long cnt;
    int result = 0;
    int num_channels;
@@ -456,9 +440,21 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
       return;
 
    num_channels = nyx_get_audio_num_channels();
+
    snds = (sound_type *)malloc(num_channels * sizeof(sound_type));
+   if (snds == NULL) {
+      goto finish;
+   }
+
    totals = (long *)malloc(num_channels * sizeof(long));
+   if (totals == NULL) {
+      goto finish;
+   }
+
    lens = (long *)malloc(num_channels * sizeof(long));
+   if (lens == NULL) {
+      goto finish;
+   }
 
    /* setup the error return */
    xlbegin(&nyx_cntxt,CF_TOPLEVEL|CF_CLEANUP|CF_BRKLEVEL,(LVAL)1);
@@ -474,9 +470,6 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
       totals[ch] = 0;
       lens[ch] = snd_length(snd, snd->stop);
    }
-
-   buffer = NULL;
-   bufferlen = 0;
 
    while(result==0) {
       for(ch=0; ch<num_channels; ch++) {
@@ -494,7 +487,12 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
          if (cnt > bufferlen) {
             if (buffer)
                free(buffer);
+
             buffer = (float *)malloc(cnt * sizeof(float));
+            if (buffer == NULL) {
+               goto finish;
+            }
+
             bufferlen = cnt;
          }
 
@@ -517,13 +515,23 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
    success = TRUE;
 
  finish:
-   if (buffer)
-      free(buffer);
-   free(snds);
-   free(totals);
-   free(lens);
-
    xlend(&nyx_cntxt);
+
+   if (buffer) {
+      free(buffer);
+   }
+
+   if (lens) {
+      free(lens);
+   }
+
+   if (totals) {
+      free(totals);
+   }
+
+   if (snds) {
+      free(snds);
+   }
 
    return success;
 }
@@ -621,6 +629,29 @@ const char *nyx_get_error_str()
    return NULL;
 }
 
+void nyx_set_os_callback(nyx_os_callback callback, void *userdata)
+{
+   nyx_os_cb = callback;
+   nyx_os_ud = userdata;
+}
+
+void nyx_stop()
+{
+   xlflush();
+   xltoplevel();
+}
+
+void nyx_break()
+{
+   xlflush();
+   xlbreak("BREAK", s_unbound);
+}
+
+void nyx_continue()
+{
+   xlflush();
+   xlcontinue();
+}
 
 int ostgetc()
 {
@@ -723,8 +754,8 @@ void ostputc(int ch)
 {     
    oscheck();		/* check for control characters */
    
-   if (nyx_output_pos < nyx_output_len)
-      nyx_output_string[nyx_output_pos++] = (char)ch;
+   if (nyx_output_cb)
+      nyx_output_cb(ch, nyx_output_ud);
    else
       putchar(((char) ch));
 }
@@ -732,7 +763,7 @@ void ostputc(int ch)
 /* ostoutflush - flush output buffer */
 void ostoutflush()
 {
-   if (nyx_output_pos >= nyx_output_len)
+   if (!nyx_output_cb)
       fflush(stdout);
 }
 
@@ -744,6 +775,9 @@ void osflush(void)
 /* oscheck - check for control characters during execution */
 void oscheck(void)
 {
+   if (nyx_os_cb) {
+      nyx_os_cb(nyx_os_ud);
+   }
    /* if they hit control-c:
       xflush(); xltoplevel(); return;
    */

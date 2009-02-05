@@ -26,6 +26,8 @@
 
 #include "nyx.h"
 
+#include <string>
+
 class WaveTrack;
 
 class NyqControl {
@@ -43,9 +45,9 @@ class NyqControl {
    int ticks;
 };
 
-WX_DECLARE_OBJARRAY(NyqControl, NyqControlArray);
+WX_DECLARE_USER_EXPORTED_OBJARRAY(NyqControl,  NyqControlArray, AUDACITY_DLL_API);
 
-class EffectNyquist: public Effect {
+class AUDACITY_DLL_API EffectNyquist: public Effect {
 
 public:
    
@@ -57,6 +59,13 @@ public:
    bool LoadedNyFile() {
       return mOK;
    }
+
+   void Continue();
+   void Break();
+   void Stop();
+
+   void SetCommand(wxString cmd);
+   wxString GetOutput();
 
    virtual wxString GetEffectName() {
       return mName;
@@ -99,6 +108,8 @@ private:
                    long start, long len, long totlen);
    int PutCallback(float *buffer, int channel,
                    long start, long len, long totlen);
+   void OutputCallback(int c);
+   void OSCallback();
 
    static int StaticGetCallback(float *buffer, int channel,
                                 long start, long len, long totlen,
@@ -106,6 +117,8 @@ private:
    static int StaticPutCallback(float *buffer, int channel,
                                 long start, long len, long totlen,
                                 void *userdata);
+   static void StaticOutputCallback(int c, void *userdata);
+   static void StaticOSCallback(void *userdata);
 
    bool       ProcessOne();
 
@@ -119,6 +132,13 @@ private:
    wxFileName       mFileName;
    wxDateTime       mFileModified;
 
+   bool mStop;
+   bool mBreak;
+   bool mCont;
+
+   bool             mCompiler;
+   bool             mIsSal;
+   bool             mExternal;
    bool             mInteractive;
    bool             mOK;
    wxString         mCmd;
@@ -126,7 +146,7 @@ private:
    wxString         mAction;
    wxString         mInfo;
    bool             mDebug;
-   wxString         mDebugOutput;
+   std::string      mDebugOutput;
 
    NyqControlArray  mControls;
 
@@ -146,9 +166,9 @@ private:
    sampleCount      mCurBufferLen[2];
 
    WaveTrack       *mOutputTrack[2];
-   
+
    std::set<wxString> mCategories;
-   
+
 };
 
 class NyquistDialog:public wxDialog {

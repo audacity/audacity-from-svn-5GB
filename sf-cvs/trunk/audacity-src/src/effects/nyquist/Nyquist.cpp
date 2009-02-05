@@ -61,6 +61,9 @@ effects from this one class.
 #endif
 
 #include <locale.h>
+#include <iostream>
+#include <ostream>
+#include <sstream>
 
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(NyqControlArray);
@@ -89,6 +92,20 @@ extern "C" {
 }
 #endif
 
+void EffectNyquist::Break()
+{
+   mBreak = true;
+}
+
+void EffectNyquist::Continue()
+{
+   mCont = true;
+}
+
+void EffectNyquist::Stop()
+{
+   mStop = true;
+}
 
 #define UNINITIALIZED_CONTROL ((double)99999999.99)
 
@@ -160,6 +177,34 @@ void EffectNyquist::Parse(wxString line)
          mFlags = INSERT_EFFECT | PLUGIN_EFFECT;
       if (tokens[1]==wxT("analyze"))
          mFlags = ANALYZE_EFFECT | PLUGIN_EFFECT;
+      return;
+   }
+
+   if (len == 2 && tokens[0] == wxT("codetype")) {
+      if (tokens[1] == wxT("lisp")) {
+         mIsSal = false;
+      }
+      else if (tokens[1] == wxT("sal")) {
+         mIsSal = true;
+      }
+      return;
+   }
+
+   if (len >= 2 && tokens[0] == wxT("debugflags")) {
+      for (int i = 1; i < len; i++) {
+         if (tokens[i] == wxT("trace")) {
+            mDebug = true;
+         }
+         else if (tokens[i] == wxT("notrace")) {
+            mDebug = false;
+         }
+         else if (tokens[i] == wxT("compiler")) {
+            mCompiler = true;
+         }
+         else if (tokens[i] == wxT("nocompiler")) {
+            mCompiler = false;
+         }
+      }
       return;
    }
 
@@ -237,6 +282,7 @@ void EffectNyquist::ParseFile()
    mCmd = wxT("");
    mFlags = PROCESS_EFFECT | PLUGIN_EFFECT;
    mOK = false;
+   mIsSal = false;
    mControls.Clear();
 
    int i;
@@ -253,14 +299,24 @@ void EffectNyquist::ParseFile()
 
 EffectNyquist::EffectNyquist(wxString fName)
 {
-   mInteractive = false;
    mAction = _("Applying Nyquist Effect...");
+   mCmd = wxEmptyString;
+   mFlags = HIDDEN_EFFECT;
+   mInteractive = false;
+   mExternal = false;
+   mCompiler = false;
+   mDebug = false;
+   mIsSal = false;
+   mOK = false;
+
+   mStop = false;
+   mBreak = false;
+   mCont = false;
 
    if (fName == wxT("")) {
       // Interactive Nyquist
       mOK = true;
       mInteractive = true;
-      mCmd = wxT("");
       mName = _("Nyquist Prompt...");
       mFlags = PROCESS_EFFECT | BUILTIN_EFFECT | ADVANCED_EFFECT;
       return;
@@ -316,13 +372,34 @@ bool EffectNyquist::SetXlispPath()
    return ::wxFileExists(fname);
 }
 
+void EffectNyquist::SetCommand(wxString cmd)
+{
+   mExternal = true;
+   mInteractive = false;
+   mCmd = wxT("");
+   mFlags = HIDDEN_EFFECT;
+   mOK = false;
+   mIsSal = false;
+   mControls.Clear();
+
+   wxStringTokenizer lines(cmd, wxT("\n"));
+   while (lines.HasMoreTokens()) {
+      wxString line = lines.GetNextToken();
+      
+      if (line.Length() > 1 && line.GetChar(0) == wxT(';'))
+         Parse(line);
+      else
+         mCmd += line + wxT("\n");
+   }
+}
+
 bool EffectNyquist::PromptUser()
 {
    if (!SetXlispPath())
       return false;
 
    if (mInteractive) {
-      NyquistInputDialog dlog(mParent, -1,
+      NyquistInputDialog dlog(wxGetTopLevelParent(NULL), -1,
                               _NoAcc("Nyquist Prompt..."),
                               _("Enter Nyquist Command: "),
                               mCmd);
@@ -334,21 +411,20 @@ bool EffectNyquist::PromptUser()
 
       if (result == eDebugID)
          mDebug = true;
-      else
-         mDebug = false;
-      
+
       mCmd = dlog.GetCommand();
 
       return true;
    }
 
-   if (mFileName.GetModificationTime().IsLaterThan(mFileModified)) {
-      ParseFile();
-      mFileModified = mFileName.GetModificationTime();
+   if (!mExternal) {
+      if (mFileName.GetModificationTime().IsLaterThan(mFileModified)) {
+         ParseFile();
+         mFileModified = mFileName.GetModificationTime();
+      }
    }
 
    if (mControls.GetCount() == 0) {
-      mDebug = false;
       return true;
    }
 
@@ -389,8 +465,6 @@ bool EffectNyquist::PromptUser()
    
    if (result == eDebugID)
       mDebug = true;
-   else
-      mDebug = false;
 
    return true;
 }
@@ -398,7 +472,11 @@ bool EffectNyquist::PromptUser()
 bool EffectNyquist::Process()
 {
    bool success = true;
-   
+
+   if (mExternal) {
+      mProgress->Hide();
+   }
+
    this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    TrackListIterator iter(mOutputWaveTracks);
    mCurTrack[0] = (WaveTrack *) iter.First();
@@ -409,7 +487,12 @@ bool EffectNyquist::Process()
    mProgressTot = 0;
    mScale = (mFlags & PROCESS_EFFECT ? 0.5 : 1.0) / GetNumWaveGroups();
 
-   mDebugOutput = wxT("");
+   mStop = false;
+   mBreak = false;
+   mCont = false;
+
+   mDebugOutput = "";
+
    while (mCurTrack[0]) {
       mCurNumChannels = 1;
       if (mT1 >= mT0) {
@@ -447,16 +530,19 @@ bool EffectNyquist::Process()
 
  finish:
 
-   if (mDebug) {
+   if (mDebug && !mExternal) {
       NyquistOutputDialog dlog(mParent, -1,
                                _("Nyquist"),
                                _("Nyquist Output: "),
-                               mDebugOutput);
+                               wxString(mDebugOutput.c_str(), wxConvISO8859_1));
       dlog.CentreOnParent();
       dlog.ShowModal();
    }
 
-   this->ReplaceProcessedWaveTracks(success); 
+   this->ReplaceProcessedWaveTracks(success);
+
+   mDebug = false;
+
    return success;
 }
 
@@ -523,6 +609,34 @@ int EffectNyquist::PutCallback(float *buffer, int channel,
       return -1; // failure
 }
 
+void EffectNyquist::OutputCallback(int c)
+{
+   if (mDebug && !mExternal) {
+      mDebugOutput += (char)c;
+      return;
+   }
+
+   std::cout << (char)c;
+}
+
+void EffectNyquist::OSCallback()
+{
+   if (mStop) {
+      mStop = false;
+      nyx_stop();
+   }
+   else if (mBreak) {
+      mBreak = false;
+      nyx_break();
+   }
+   else if (mCont) {
+      mCont = false;
+      nyx_continue();
+   }
+
+   wxYieldIfNeeded();
+}
+
 int EffectNyquist::StaticGetCallback(float *buffer, int channel,
                                      long start, long len, long totlen,
                                      void *userdata)
@@ -539,6 +653,16 @@ int EffectNyquist::StaticPutCallback(float *buffer, int channel,
    return This->PutCallback(buffer, channel, start, len, totlen);
 }
 
+void EffectNyquist::StaticOutputCallback(int c, void *This)
+{
+   ((EffectNyquist *)This)->OutputCallback(c);
+}
+
+void EffectNyquist::StaticOSCallback(void *This)
+{
+   ((EffectNyquist *)This)->OSCallback();
+}
+
 bool EffectNyquist::ProcessOne()
 {
    // libnyquist breaks except in LC_NUMERIC=="C".
@@ -548,11 +672,43 @@ bool EffectNyquist::ProcessOne()
    setlocale(LC_NUMERIC, "C");
 
    nyx_rval rval;
+   wxString code = mCmd;
+
+#if defined(SAL_SEPARATE_COMPILE)
+   if (mIsSal) {
+      code.Replace(wxT("\""), wxT("\\\""));
+
+      wxString c;
+      c =  wxT("(setf *tracenable* T)\n");
+      c += wxT("(setf *sal-call-stack* nil)\n");
+      c += wxT("(setf *sal-compiler-debug* t)\n");
+      c += wxT("(format nil \"~s\" (sal-compile \"define variable *audacity-plugin-result*\n") +
+           code +
+           wxT("\nset *audacity-plugin-result* = main()\n\" nil t nil))\n");
+
+      nyx_init();
+      nyx_set_os_callback(StaticOSCallback, (void *)this);
+      nyx_capture_output(StaticOutputCallback, (void *)this);
+      rval = nyx_eval_expression(c.mb_str());
+
+      if (rval == nyx_string) {
+         code = wxString(nyx_get_string(), wxConvISO8859_1);
+      }
+
+       nyx_cleanup();
+       setlocale(LC_NUMERIC, "");
+
+       if (rval != nyx_string) {
+         wxMessageBox(_("SAL compile didn't return anything"), wxT("Nyquist"),
+                      wxOK | wxCENTRE, mParent);
+         return true;
+      }
+   }
+#endif
 
    nyx_init();
-
-   if (mDebug)
-      nyx_capture_output(65536);
+   nyx_set_os_callback(StaticOSCallback, (void *)this);
+   nyx_capture_output(StaticOutputCallback, (void *)this);
 
    if( !( mFlags & INSERT_EFFECT ) )
       nyx_set_input_audio(StaticGetCallback, (void *)this,
@@ -565,6 +721,9 @@ bool EffectNyquist::ProcessOne()
 
    if (mDebug) {
       cmd = cmd + wxT("(setf *tracenable* T)\n");
+      if (mExternal) {
+         cmd = cmd + wxT("(setf *breakenable* T)\n");
+      }
    }
 
    for(unsigned int j=0; j<mControls.GetCount(); j++) {
@@ -585,23 +744,45 @@ bool EffectNyquist::ProcessOne()
                                     str.c_str());
       }
    }
-   
-   cmd += mCmd;
-   
-   //wxMessageBox(cmd);
-   
+
+#if !defined(SAL_SEPARATE_COMPILE)
+   if (mIsSal) {
+      wxString str = mCmd;
+      str.Replace(wxT("\""), wxT("\\\""));
+
+      if (mCompiler) {
+         cmd += wxT("(setf *sal-compiler-debug* t)\n");
+      }
+
+      cmd += wxT("(setf *sal-call-stack* nil)\n");
+      cmd += wxT("(setf *audacity-plugin-result* nil)\n");
+      cmd += wxT("(eval (sal-compile \"define variable *audacity-plugin-result*\n") +
+             str +
+             wxT("\nset *audacity-plugin-result* = main()\n\" nil t nil))\n");
+      cmd += wxT("(eval *audacity-plugin-result*)");
+   }
+   else {
+      cmd += mCmd;
+   }
+#endif
+
+#if defined(SAL_SEPARATE_COMPILE)
+   if (mIsSal) {
+      cmd += wxT("(setf *audacity-plugin-result* nil)\n");
+   }
+
+   cmd += code;
+
+   if (mIsSal) {
+      cmd += wxT("(eval *audacity-plugin-result*)");
+   }
+#endif
+
    int i;
 	for (i = 0; i < mCurNumChannels; i++)
 		mCurBuffer[i] = NULL;
+
    rval = nyx_eval_expression(cmd.mb_str());
-
-   if (mDebug) {
-      int len;
-      const char *str;
-
-      nyx_get_captured_output(&len, &str);
-      mDebugOutput += wxString(str, wxConvISO8859_1, len);
-   }
 
    if (rval == nyx_string) {
       wxMessageBox(wxString(nyx_get_string(), wxConvISO8859_1), wxT("Nyquist"),
@@ -634,8 +815,8 @@ bool EffectNyquist::ProcessOne()
    }
 
    if (rval == nyx_labels) {
-      int numLabels = nyx_get_num_labels();
-      int l;
+      unsigned int numLabels = nyx_get_num_labels();
+      unsigned int l;
       LabelTrack *ltrack = NULL;
 
       TrackListIterator iter(mTracks);
@@ -732,6 +913,10 @@ bool EffectNyquist::ProcessOne()
       delete mOutputTrack[i];
       mOutputTrack[i] = NULL;
    }
+
+   nyx_capture_output(StaticOutputCallback, (void *)NULL);
+
+   nyx_set_os_callback(StaticOSCallback, (void *)NULL);
 
    nyx_cleanup();
 

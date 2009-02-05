@@ -30,7 +30,9 @@ typedef enum
    ModuleInitialize,
    ModuleTerminate,
    AppInitialized,
-   ProjectInitialized
+   AppQuiting,
+   ProjectInitialized,
+   ProjectClosing
 } ModuleDispatchTypes;
 
 typedef int AUDACITY_DLL_API (*fnModuleDispatch)(ModuleDispatchTypes type);
