@@ -217,6 +217,8 @@ class SpecCache {
 public:
    SpecCache(int cacheLen, int half, bool autocorrelation)
    {
+      minFreqOld = -1;
+      maxFreqOld = -1;
       windowTypeOld = -1;
       windowSizeOld = -1;
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
@@ -237,6 +239,8 @@ public:
       delete[] where;
    }
 
+   int          minFreqOld;
+   int          maxFreqOld;
    int          windowTypeOld;
    int          windowSizeOld;
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
@@ -645,6 +649,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
                                double t0, double pixelsPerSecond,
                                bool autocorrelation)
 {
+   int minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
+   int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000L);;
    int windowType;
    int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
@@ -655,6 +661,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
    gPrefs->Read(wxT("/Spectrum/WindowType"), &windowType, 3);
 
    if (mSpecCache &&
+       mSpecCache->minFreqOld == minFreq &&
+       mSpecCache->maxFreqOld == maxFreq &&
        mSpecCache->windowTypeOld == windowType &&
        mSpecCache->windowSizeOld == windowSize &&
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
@@ -692,6 +700,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
    // with the current one, re-use as much of the cache as
    // possible
    if (oldCache->dirty == mDirty &&
+       oldCache->minFreqOld == minFreq &&
+       oldCache->maxFreqOld == maxFreq &&
        oldCache->windowTypeOld == windowType &&
        oldCache->windowSizeOld == windowSize &&
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
@@ -728,6 +738,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
 #else //!EXPERIMENTAL_FFT_SKIP_POINTS
    float *buffer = new float[windowSize];
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
+   mSpecCache->minFreqOld = minFreq;
+   mSpecCache->maxFreqOld = maxFreq;
    mSpecCache->windowTypeOld = windowType;
    mSpecCache->windowSizeOld = windowSize;
 
