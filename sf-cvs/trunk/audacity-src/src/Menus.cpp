@@ -4679,9 +4679,10 @@ void AudacityProject::OnTimerRecord()
 {
    TimerRecordDialog dialog(this /* parent */ );
    int modalResult = dialog.ShowModal();
-   if (modalResult == wxID_CANCEL)
+   if (modalResult == eProgressCancelled)
    {
-     OnUndo();
+      // Cancelled while the recording, so throw out the fresh track.
+      OnUndo();
    }
 }
 
