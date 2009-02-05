@@ -397,7 +397,7 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    fillBufferUPP = NewSoundConverterFillBufferDataUPP(SoundConverterFillBufferCallback);
 
    bool done = false;
-   bool cancelled = false;
+   int updateResult = eProgressSuccess;
    sampleCount samplesSinceLastCallback = 0;
    UInt32 outputFrames;
    UInt32 outputBytes;
@@ -405,7 +405,7 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
 #define SAMPLES_PER_CALLBACK 10000
 
-   while(!done && !cancelled)
+   while(!done && updateResult == eProgressSuccess)
    {
       err = SoundConverterFillBuffer(soundConverter,    // a sound converter
                                      fillBufferUPP,     // the callback
@@ -430,8 +430,8 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       samplesSinceLastCallback += outputFrames;
       if( samplesSinceLastCallback > SAMPLES_PER_CALLBACK )
       {
-         cancelled = !mProgress->Update((wxULongLong_t)cbData.getMediaAtThisTime,
-                                        (wxULongLong_t)cbData.sourceDuration);
+         updateResult = mProgress->Update((wxULongLong_t)cbData.getMediaAtThisTime,
+                                          (wxULongLong_t)cbData.sourceDuration);
          samplesSinceLastCallback -= SAMPLES_PER_CALLBACK;
       }
    }
@@ -453,7 +453,7 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       channels[c]->Flush();
    }
 
-   bool res = (!cancelled && err == noErr);
+   bool res = (updateResult == eProgressSuccess && err == noErr);
 
    //
    // Extract any metadata
@@ -472,7 +472,7 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
          delete channels[c];
       delete[] channels;
 
-      return (cancelled ? eImportCancelled : eImportFailed);
+      return (updateResult == eProgressCancelled ? eProgressCancelled : eProgressFailed);
    }
 
    *outNumTracks = outputFormat.numChannels;
@@ -481,7 +481,7 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
          (*outTracks)[c] = channels[c];
       delete[] channels;
 
-   return eImportSuccess;
+   return eProgressSuccess;
 }
 
 static const struct
