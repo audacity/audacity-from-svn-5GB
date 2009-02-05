@@ -60,6 +60,7 @@ class SpecCache {
 public:
    SpecCache(int cacheLen, int viewHeight, bool autocorrelation)
    {
+      maxFreqOld = -1;
       dirty = -1;
       start = -1.0;
       pps = 0.0;
@@ -76,6 +77,7 @@ public:
       delete[] where;
    }
 
+   int          maxFreqOld;
    int          dirty;
    int          height;
    bool         ac;
@@ -594,7 +596,9 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
                                double t0, double pixelsPerSecond,
                                bool autocorrelation)
 {
+   int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000L);;
    if (mSpecCache &&
+       mSpecCache->maxFreqOld == maxFreq &&
        mSpecCache->dirty == mDirty &&
        mSpecCache->start == t0 &&
        mSpecCache->ac == autocorrelation &&
@@ -626,6 +630,7 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
    // with the current one, re-use as much of the cache as
    // possible
    if (oldCache->dirty == GetDirty() &&
+       oldCache->maxFreqOld == maxFreq &&
        oldCache->pps == pixelsPerSecond &&
        oldCache->height == height &&
        oldCache->ac == autocorrelation &&
@@ -659,9 +664,9 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
       defaultMaxFreq = 1000;
       defaultFFTSize = 4096;
    #endif
-   int maxFreqPref = gPrefs->Read("/Spectrum/MaxFreq", defaultMaxFreq);
    int windowSize = gPrefs->Read("/Spectrum/FFTSize", defaultFFTSize);
    float *buffer = new float[windowSize];
+   mSpecCache->maxFreqOld = maxFreq;
 
    for (x = 0; x < mSpecCache->len; x++)
       if (recalc[x]) {
@@ -687,7 +692,7 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
                            start, len);
 
             ComputeSpectrum(buffer, windowSize, height,
-                            maxFreqPref, windowSize,
+                            maxFreq, windowSize,
                             mRate, &mSpecCache->freq[height * x],
                             autocorrelation);
          }
