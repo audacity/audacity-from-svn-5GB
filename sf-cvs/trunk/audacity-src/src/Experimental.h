@@ -35,18 +35,6 @@
 //#define EXPERIMENTAL_THEMING
 #define EXPERIMENTAL_THEME_PREFS
 
-//The next few enable different kinds of label/wavetrack pairing.
-//You should probably only enable one at a time.
-//The next line enables a menu-based system
-//#define EXPERIMENTAL_STICKY_TRACKS
-//The next block enables a positional-based system.
-//LABEL_LINKING only links label tracks, while FULL_LINKING links wave and label tracks
-#define EXPERIMENTAL_POSITION_LINKING
-#ifdef EXPERIMENTAL_POSITION_LINKING
-   #define EXPERIMENTAL_FULL_LINKING
-   //#define EXPERIMENTAL_LABEL_LINKING
-#endif
-
 //Next line enables Mic monitoring at times when it was previously off.
 //More work is needed as after recording or playing it results in an 
 //unwanted record-cursor on the wave track.

@@ -5759,43 +5759,6 @@ void TrackPanel::OnTrackMenu(Track *t)
 #endif
 
    if (t->GetKind() == Track::Label){
-#ifdef EXPERIMENTAL_STICKY_TRACKS
-      delete mLabelTrackMenu;
-      mLabelTrackMenu = new wxMenu();
-   
-      AudacityProject *p = GetActiveProject();
-      if (!p) return;
-      TrackListIterator iter(p->GetTracks());
-      WaveTrack *wt = (WaveTrack *) iter.First();
-      int count=1;
-      mStickyLabelMenu = new wxMenu();
-      while (wt) {
-         if (wt->GetKind()==Track::Wave){
-            wxString name;
-            name = wt->GetName();
-            if (name == wxT("Audio Track")) 
-               name.Printf(wxT("Wave Track #%d"), count);
-            mStickyLabelMenu->AppendCheckItem(OnStickySubmenuID + count, name);
-            if (wt->GetStickyTrack()){
-               if (wt->GetStickyTrack() == t)
-                  mStickyLabelMenu->Check(OnStickySubmenuID + count, true);
-               else
-                  mStickyLabelMenu->Enable(OnStickySubmenuID + count, false);
-            }
-            count++;
-         }
-         wt = (WaveTrack *) iter.Next();
-      }
-   
-      mLabelTrackMenu->Append(OnSetNameID, _("Name..."));
-      mLabelTrackMenu->AppendSeparator();
-      mLabelTrackMenu->Append(OnSetFontID, _("Font..."));
-      mLabelTrackMenu->AppendSeparator();
-      mLabelTrackMenu->Append(OnMoveUpID, _("Move Track Up"));
-      mLabelTrackMenu->Append(OnMoveDownID, _("Move Track Down"));
-      mLabelTrackMenu->Append(0, _("Group with Wave Track"), mStickyLabelMenu);
-      mLabelTrackMenu->Append(12999, _("Clear any grouping"));
-#endif
        theMenu = mLabelTrackMenu;
    }
    

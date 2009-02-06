@@ -103,7 +103,6 @@ bool EffectSoundTouch::Process()
 
    this->ReplaceProcessedWaveTracks(bGoodResult); 
 
-#ifdef EXPERIMENTAL_FULL_LINKING
    AudacityProject *p = (AudacityProject*)mParent;
    if( p && p->IsSticky() ){
       leftTrack = (WaveTrack*)(iter.First());
@@ -113,7 +112,6 @@ bool EffectSoundTouch::Process()
       double percent = (sel/(timeAdded+sel))*100 - 100;
       if ( !(HandleGroupChangeSpeed(percent, mCurT0, mCurT1)) ) bGoodResult = false;
    }
-#endif
 
    delete mSoundTouch;
    mSoundTouch = NULL;

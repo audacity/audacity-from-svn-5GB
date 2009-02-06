@@ -140,7 +140,6 @@ bool EffectChangeSpeed::Process()
 
    this->ReplaceProcessedWaveTracks(bGoodResult); 
 
-#ifdef EXPERIMENTAL_FULL_LINKING
    AudacityProject *p = (AudacityProject*)mParent;
    if( p && p->IsSticky() ){
       pOutWaveTrack = (WaveTrack*)(iter.First());
@@ -150,7 +149,6 @@ bool EffectChangeSpeed::Process()
       double percent = (sel/(timeAdded+sel))*100 - 100;
       if ( !(HandleGroupChangeSpeed(percent, mCurT0, mCurT1)) ) bGoodResult = false;
    }
-#endif
 
    mT1 = mT0 + m_maxNewLength; // Update selection.
 

@@ -704,10 +704,6 @@ void AudacityProject::CreateMenusAndCommands()
 #endif // EXPERIMENTAL_SCOREALIGN
 
       c->AddSeparator(); 
-#ifdef EXPERIMENTAL_POSITION_LINKING
-      c->AddItem(wxT("StickyLabels"),       _("Link Audio and Label Tracks"), FN(OnStickyLabel), 0);  
-      c->AddSeparator(); 
-#endif
       c->AddItem(wxT("AddLabel"),       _("Add &Label At Selection\tCtrl+B"), FN(OnAddLabel));
       c->AddItem(wxT("AddLabelPlaying"),       _("Add Label At &Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
       c->SetCommandFlags(wxT("AddLabel"), 0, 0);
