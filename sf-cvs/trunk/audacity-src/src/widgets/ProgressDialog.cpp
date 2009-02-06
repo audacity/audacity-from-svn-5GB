@@ -1002,15 +1002,11 @@ ProgressDialog::ProgressDialog(const wxString & title, const wxString & message,
    wxWindow *w;
    wxSize ds;
 
-   SetExtraStyle(GetExtraStyle() | wxWS_EX_TRANSIENT);
-
    // There's a problem where the focus is not returned to the window that had
    // it before creating this object.  The reason is not entirely understood
    // but if the dialog window never gets shown then the focus does not get
    // returned to the original window.  It seems to have something to do with
    // wxWindowDisabler as the problem doesn't occur when it isn't created.
-   //
-   // This only seems to be a problem on OSX and GTK.
    //
    // This never used to be a problem for us because we didn't actually create
    // the wxProgressDialog until after the elapsed time reached .5 seconds.
@@ -1018,13 +1014,10 @@ ProgressDialog::ProgressDialog(const wxString & title, const wxString & message,
    // seconds had passed.  This left a small window where the user would be able
    // to interact with the main window and possibly do things like get two
    // effects running at the same time.
-   //
-   // The resolution (workaround...hackage) seems to be that this dialog MUST
-   // have a parent and that we set the focus back to that parent when we're done.
-   //
-   // Therefore we use whatever wxApp::GetTopWindow() returns as the parent.  The
-   // only time this will be NULL is when Audacity is either starting or stopping.
-   // In either case, it doesn't really matter where focus winds up.
+
+   mHadFocus = wxWindow::FindFocus();
+
+   SetExtraStyle(GetExtraStyle() | wxWS_EX_TRANSIENT);
 
    v = new wxBoxSizer(wxVERTICAL);
 
@@ -1155,8 +1148,8 @@ ProgressDialog::~ProgressDialog()
 
    }
 
-   if (GetParent()) {
-      GetParent()->SetFocus();
+   if (mHadFocus) {
+      mHadFocus->SetFocus();
    }
 }
 

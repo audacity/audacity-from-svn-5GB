@@ -63,6 +63,7 @@ class AUDACITY_DLL_API ProgressDialog:public wxDialog
    void Beep();
 
  private:
+   wxWindow *mHadFocus;
    wxGauge *mGauge;
    wxStaticText *mMessage;
    wxStaticText *mElapsed;
