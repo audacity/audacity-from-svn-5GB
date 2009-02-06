@@ -441,7 +441,6 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
 
    return true;
 }
-#ifdef EXPERIMENTAL_FULL_LINKING
 bool WaveTrack::Paste(double t0, Track *src)
 {
    AudacityProject *p = GetActiveProject();
@@ -451,215 +450,26 @@ bool WaveTrack::Paste(double t0, Track *src)
       return HandlePaste(t0, src);
 }
 
-#else
-bool WaveTrack::Paste(double t0, Track *src)
-{
-   bool editClipCanMove = true;
-   gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
-   
-   //printf("paste: entering WaveTrack::Paste\n");
-   
-   // JKC Added...
-   if( src == NULL )
-      return false;
-
-   if (src->GetKind() != Track::Wave)
-      return false;
-      
-   //printf("paste: we have a wave track\n");
-
-   WaveTrack* other = (WaveTrack*)src;
-   
-   //
-   // Pasting is a bit complicated, because with the existence of multiclip mode,
-   // we must guess the behaviour the user wants.
-   //
-   // Currently, two modes are implemented:
-   //
-   // - If a single clip should be pasted, and it should be pasted inside another
-   //   clip, no new clips are generated. The audio is simply inserted.
-   //   This resembles the old (pre-multiclip support) behaviour. However, if
-   //   the clip is pasted outside of any clip, a new clip is generated. This is
-   //   the only behaviour which is different to what was done before, but it
-   //   shouldn't confuse users too much.
-   //
-   // - If multiple clips should be pasted, these are always pasted as single
-   //   clips, and the current clip is splitted, when necessary. This may seem
-   //   strange at first, but it probably is better than trying to auto-merge
-   //   anything. The user can still merge the clips by hand (which should be
-   //   a simple command reachable by a hotkey or single mouse click).
-   //
-
-   if (other->GetNumClips() == 0)
-      return false;
-
-   //printf("paste: we have at least one clip\n");
-
-   double insertDuration = other->GetEndTime();
-   WaveClipList::Node* it;
-
-   #ifdef EXPERIMENTAL_STICKY_TRACKS
-   if (mStickyLabelTrack) mStickyLabelTrack->ShiftLabelsOnInsert(insertDuration, t0);
-   #endif
-   #ifdef EXPERIMENTAL_LABEL_LINKING
-   AudacityProject *p = GetActiveProject();
-   if( p && p->IsSticky()){
-      TrackListIterator iter(p->GetTracks());
-      Track *t = iter.First();
-      
-      while (t && t!=this) t = iter.Next(true);
-      while (t && t->GetKind()==Track::Wave) t = iter.Next();
-
-      while (t && t->GetKind()==Track::Label){
-         //printf("t: %x\n", t);
-         ((LabelTrack *)t)->ShiftLabelsOnInsert(insertDuration, t0);
-         t = iter.Next();
-      }
-   }
-   #endif
-   //printf("Check if we need to make room for the pasted data\n");
-   
-   // Make room for the pasted data, unless the space being pasted in is empty of
-   // any clips
-   if (!IsEmpty(t0, t0+insertDuration-1.0/mRate) && editClipCanMove) {
-      if (other->GetNumClips() > 1) {
-         // We need to insert multiple clips, so split the current clip and
-         // move everything to the right, then try to paste again
-         Track *tmp = NULL;
-         Cut(t0, GetEndTime()+1.0/mRate, &tmp);
-         Paste(t0 + insertDuration, tmp);
-         delete tmp;
-      } else
-      {
-         // We only need to insert one single clip, so just move all clips
-         // to the right of the paste point out of the way
-         for (it=GetClipIterator(); it; it=it->GetNext())
-         {
-            WaveClip* clip = it->GetData();
-            if (clip->GetStartTime() > t0-(1.0/mRate))
-               clip->Offset(insertDuration);
-         }
-      }
-   }
-
-   if (other->GetNumClips() == 1)
-   {
-      // Single clip mode
-      // printf("paste: checking for single clip mode!\n");
-      
-      WaveClip *insideClip = NULL;
-
-      for (it=GetClipIterator(); it; it=it->GetNext())
-      {
-         WaveClip *clip = it->GetData();
-
-         // The 1.0/mRate is the time for one sample - kind of a fudge factor,
-         // because an overlap of less than a sample should not trigger
-         // traditional behaviour.
-
-         if (editClipCanMove)
-         {
-            if (t0+src->GetEndTime()-1.0/mRate > clip->GetStartTime() &&
-                t0 < clip->GetEndTime() - 1.0/mRate)
-            {
-               //printf("t0=%.6f: inside clip is %.6f ... %.6f\n",
-               //       t0, clip->GetStartTime(), clip->GetEndTime());
-               insideClip = clip;
-               break;
-            }
-         } else
-         {
-            if (t0 >= clip->GetStartTime() && t0 < clip->GetEndTime())
-            {
-               insideClip = clip;
-               break;
-            }
-         }
-      }
-
-      if (insideClip)
-      {
-         // Exhibit traditional behaviour
-         //printf("paste: traditional behaviour\n");
-         if (!editClipCanMove)
-         {
-            // We did not move other clips out of the way already, so
-            // check if we can paste without having to move other clips
-            for (it=GetClipIterator(); it; it=it->GetNext())
-            {
-               WaveClip *clip = it->GetData();
-               
-               if (clip->GetStartTime() > insideClip->GetStartTime() &&
-                   insideClip->GetEndTime() + insertDuration >
-                                                      clip->GetStartTime())
-               {
-                  wxMessageBox(
-                     _("There is not enough room available to paste the selection"),
-                     _("Error"), wxICON_STOP);
-                  return false;
-               }
-            }
-         }
-         
-         return insideClip->Paste(t0, other->GetClipByIndex(0));
-      }
-
-      // Just fall through and exhibit new behaviour
-   }
-
-   // Insert new clips
-   //printf("paste: multi clip mode!\n");
-
-   if (!editClipCanMove && !IsEmpty(t0, t0+insertDuration-1.0/mRate))
-   {
-      wxMessageBox(
-         _("There is not enough room available to paste the selection"),
-         _("Error"), wxICON_STOP);
-      return false;
-   }
-
-   for (it=other->GetClipIterator(); it; it=it->GetNext())
-   {
-      WaveClip* clip = it->GetData();
-
-      WaveClip* newClip = new WaveClip(*clip, mDirManager);
-      newClip->Resample(mRate);
-      newClip->Offset(t0);
-      newClip->MarkChanged();
-      mClips.Append(newClip);
-   }
-   return true;
-}
-#endif
-
 bool WaveTrack::Clear(double t0, double t1)
 {
    bool addCutLines = false;
    bool split = false;
-#ifdef EXPERIMENTAL_FULL_LINKING
    AudacityProject *p = GetActiveProject();
    if( p && p->IsSticky())
       return HandleGroupClear(t0, t1, addCutLines, split);
    else
       return HandleClear(t0, t1, addCutLines, split);
-#else   
-   return HandleClear(t0, t1, addCutLines, split);
-#endif
 }
 
 bool WaveTrack::ClearAndAddCutLine(double t0, double t1)
 {
    bool addCutLines = true;
    bool split = false;
-#ifdef EXPERIMENTAL_FULL_LINKING
    AudacityProject *p = GetActiveProject();
    if( p && p->IsSticky() )
       return HandleGroupClear(t0, t1, addCutLines, split);
    else
       return HandleClear(t0, t1, addCutLines, split);
-#else   
-   return HandleClear(t0, t1, addCutLines, split);
-#endif
 }
 
 bool WaveTrack::SplitDelete(double t0, double t1)
@@ -715,28 +525,6 @@ bool WaveTrack::HandleClear(double t0, double t1,
 {
    if (t1 < t0)
       return false;
-
-#ifdef EXPERIMENTAL_STICKY_TRACKS
-   if (!split){
-      if (mStickyLabelTrack) mStickyLabelTrack->ShiftLabelsOnClear(t0, t1);
-   }
-#endif
-#ifdef EXPERIMENTAL_LABEL_LINKING
-   AudacityProject *p = GetActiveProject();
-   if( p && p->IsSticky() && !split){
-      TrackListIterator iter(p->GetTracks());
-      Track *t = iter.First();
-      
-      while (t && t!=this) t = iter.Next(true);
-      while (t && t->GetKind()==Track::Wave) t = iter.Next();
-
-      while (t && t->GetKind()==Track::Label){
-         //printf("t: %x\n", t);
-         ((LabelTrack *)t)->ShiftLabelsOnClear(t0, t1);
-         t = iter.Next();
-      }
-   }
-#endif
 
    bool editClipCanMove = true;
    gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove);
@@ -958,25 +746,6 @@ bool WaveTrack::HandlePaste(double t0, Track *src)
    double insertDuration = other->GetEndTime();
    WaveClipList::Node* it;
 
-#ifdef EXPERIMENTAL_STICKY_TRACKS
-   if (mStickyLabelTrack) mStickyLabelTrack->ShiftLabelsOnInsert(insertDuration, t0);
-#endif
-#ifdef EXPERIMENTAL_LABEL_LINKING
-   AudacityProject *p = GetActiveProject();
-   if( p && p->IsSticky()){
-      TrackListIterator iter(p->GetTracks());
-      Track *t = iter.First();
-      
-      while (t && t!=this) t = iter.Next(true);
-      while (t && t->GetKind()==Track::Wave) t = iter.Next();
-
-      while (t && t->GetKind()==Track::Label){
-         //printf("t: %x\n", t);
-         ((LabelTrack *)t)->ShiftLabelsOnInsert(insertDuration, t0);
-         t = iter.Next();
-      }
-   }
-#endif
    //printf("Check if we need to make room for the pasted data\n");
    
    // Make room for the pasted data, unless the space being pasted in is empty of

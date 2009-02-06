@@ -57,9 +57,7 @@ bool EffectSilence::Process()
    if (length <= 0.0)
       length = sDefaultGenerateLen;
       
-#ifdef EXPERIMENTAL_FULL_LINKING
    HandleLinkedTracksOnGenerate(length, mT0);
-#endif
 
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();

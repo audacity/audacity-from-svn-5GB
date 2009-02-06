@@ -131,9 +131,6 @@ LabelTrack::~LabelTrack()
 
    for (int i = 0; i < len; i++)
       delete mLabels[i];
-#ifdef EXPERIMENTAL_STICKY_TRACKS      
-   if (mStickyTrack) mStickyTrack->SetStickyTrack(NULL);
-#endif
 }
 
 void LabelTrack::SetOffset(double dOffset)
@@ -2021,7 +2018,7 @@ bool LabelTrack::Paste(double t, Track * src)
 
 bool LabelTrack::Clear(double t0, double t1)
 {
-#ifdef EXPERIMENTAL_FULL_LINKING
+
    AudacityProject *p = GetActiveProject();   
    if (p && p->IsSticky()){
       bool onlyLabelTrackSel = true;
@@ -2058,21 +2055,6 @@ bool LabelTrack::Clear(double t0, double t1)
    }else{
       ShiftLabelsOnClear(t0, t1);
    }
-#else
-   int len = mLabels.Count();
-
-   for (int i = 0; i < len; i++) {
-      if (t0 <= mLabels[i]->t && mLabels[i]->t <= t1) {
-         mLabels.RemoveAt(i);
-         len--;
-         i--;
-      }
-      else if (mLabels[i]->t > t1) {
-         mLabels[i]->t -= (t1 - t0);
-         mLabels[i]->t1 -= (t1 - t0);
-      }
-   }
-#endif
    return true;
 }
 

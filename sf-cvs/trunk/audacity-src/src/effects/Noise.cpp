@@ -147,9 +147,7 @@ bool EffectNoise::Process()
    this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
    
-#ifdef EXPERIMENTAL_FULL_LINKING
    HandleLinkedTracksOnGenerate(noiseDuration, mT0);
-#endif
 
    TrackListIterator iter(mOutputWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
