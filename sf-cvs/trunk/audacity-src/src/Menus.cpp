@@ -2944,6 +2944,7 @@ void AudacityProject::OnPaste()
 
    int numSelected =0;
 
+   // Pastes text into the first label track or counts selected wave tracks
    while (countTrack) {
       if (countTrack->GetSelected()) {
          if (countTrack->GetKind() == Track::Label) {
@@ -2970,6 +2971,8 @@ void AudacityProject::OnPaste()
    if (numSelected == 0) {
       TrackListIterator clipIter(msClipboard);
       Track *c = clipIter.First();
+      if(c == NULL)  // if there is no audio to paste...
+         return;
       Track *n;
       Track *f = NULL;
 
@@ -3043,6 +3046,8 @@ void AudacityProject::OnPaste()
 
    Track *n = iter.First();
    Track *c = clipIter.First();
+   if(c == NULL)    // if there is no audio to paste...
+      return;
    Track *f = NULL;
    Track *tmpSrc = NULL;
    Track *tmpC = NULL;
