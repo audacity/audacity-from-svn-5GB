@@ -1169,6 +1169,12 @@ bool WaveTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
             // track is created.
             mLegacyProjectFileOffset = dblValue;
          }
+         else if (!wxStrcmp(attr, wxT("mute")) && 
+                  XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+            mMute = (nValue != 0);
+         else if (!wxStrcmp(attr, wxT("solo")) && 
+                  XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+            mSolo = (nValue != 0);
          else if (!wxStrcmp(attr, wxT("gain")) && 
                   XMLValueChecker::IsGoodString(strValue) && 
                   Internat::CompatibleToDouble(strValue, &dblValue))
@@ -1248,6 +1254,8 @@ void WaveTrack::WriteXML(XMLWriter &xmlFile)
    xmlFile.WriteAttr(wxT("channel"), mChannel);
    xmlFile.WriteAttr(wxT("linked"), mLinked);
    xmlFile.WriteAttr(wxT("offset"), mOffset, 8);
+   xmlFile.WriteAttr(wxT("mute"), mMute);
+   xmlFile.WriteAttr(wxT("solo"), mSolo);
    xmlFile.WriteAttr(wxT("rate"), mRate);
    xmlFile.WriteAttr(wxT("gain"), (double)mGain);
    xmlFile.WriteAttr(wxT("pan"), (double)mPan);
