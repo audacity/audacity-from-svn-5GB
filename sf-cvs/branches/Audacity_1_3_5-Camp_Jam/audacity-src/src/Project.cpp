@@ -1577,20 +1577,20 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       RedrawProject();
    }
 
-	// These two lines test for an 'empty' project.
+   // These two lines test for an 'empty' project.
    // of course it could still have a history at this stage.
    TrackListIterator iter2(mTracks);
-	bool bHasTracks = (iter2.First() != NULL);
+   bool bHasTracks = (iter2.First() != NULL);
 
-	// We may not bother to prompt the user to save, if the 
+   // We may not bother to prompt the user to save, if the 
    // project is now empty.
-	if (event.CanVeto() && (mEmptyCanBeDirty || bHasTracks)) {
+   if (event.CanVeto() && (mEmptyCanBeDirty || bHasTracks)) {
       if (mUndoManager.UnsavedChanges()) {
 
          wxString Message = _("Save changes before closing?");
          if( !bHasTracks )
          { 
-			 Message += _("\nIf saved, the project will have no tracks.\n\nTo save any previously open tracks:\nCancel, Edit > Undo until all tracks\nare open, then File > Save Project.");
+          Message += _("\nIf saved, the project will have no tracks.\n\nTo save any previously open tracks:\nCancel, Edit > Undo until all tracks\nare open, then File > Save Project.");
          }
          int result = wxMessageBox( Message,
                                    _("Save changes?"),
@@ -1601,7 +1601,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
             event.Veto();
             return;
          }
-		}
+      }
    }
    
    // Stop the timer since there's no need to update anything anymore
@@ -2044,7 +2044,7 @@ void AudacityProject::OpenFile(wxString fileName)
          mLastSavedTracks->Add(t->Duplicate());
          t = iter.Next();
       }
-
+      
       InitialState();
       mTrackPanel->SetFocusedTrack(iter.First());
       HandleResize();
@@ -2194,7 +2194,7 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
                mFileName = wxFileName(projPath, realFileName).GetFullPath();
                projName = value;
             }
-                                   
+
             SetProjectTitle();
          } else {
             projName = value;
@@ -2510,11 +2510,11 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    wxString safetyFileName = wxT("");
    if (wxFileExists(mFileName)) {
 
-      #ifdef __WXGTK__
-         safetyFileName = mFileName + wxT("~");
-      #else
-         safetyFileName = mFileName + wxT(".bak");
-      #endif
+#ifdef __WXGTK__
+      safetyFileName = mFileName + wxT("~");
+#else
+      safetyFileName = mFileName + wxT(".bak");
+#endif
 
       if (wxFileExists(safetyFileName))
          wxRemoveFile(safetyFileName);
@@ -2545,7 +2545,6 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       {
          // We are about to move files from the current directory to
          // the new directory.  We need to make sure files that belonged
-         // to the last saved project don't get erased, so we "lock" them.
          // to the last saved project don't get erased, so we "lock" them, so that 
          // SetProject() copies instead of moves the files.
          // (Otherwise the new project would be fine, but the old one would
@@ -2622,7 +2621,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 #endif
 
    if (bWantSaveCompressed)
-      mWantSaveCompressed = false; // Don't need this mode for AudacityProject::WriteXML() any more. 
+      mWantSaveCompressed = false; // Don't want this mode for AudacityProject::WriteXML() any more. 
    else
    {
       // Now that we have saved the file, we can delete the auto-saved version
@@ -2821,14 +2820,13 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       }
       mTracks->Add(newTracks[i]);
       newTracks[i]->SetSelected(true);
-
       if (numTracks > 2 || (numTracks > 1 && !newTracks[i]->GetTeamed())) {
          newTracks[i]->SetName(trackNameBase + wxString::Format(wxT(" %d" ), i + 1));
       }
       else {
          newTracks[i]->SetName(trackNameBase);
       }
-
+         
       // Check if new track contains aliased blockfiles and if yes,
       // remember this to show a warning later
       if (newTracks[i]->GetKind() == WaveTrack::Wave)
@@ -2838,7 +2836,9 @@ void AudacityProject::AddImportedTracks(wxString fileName,
          {
             SeqBlock* block = clip->GetSequence()->GetBlockArray()->Item(0);
             if (block->f->IsAlias())
+            {
                mImportedDependencies = true;
+            }
          }
       }
    }
@@ -2955,23 +2955,23 @@ bool AudacityProject::SaveAs(bool bWantSaveCompressed /*= false*/)
 {
    wxString path = wxPathOnly(mFileName);
    wxString fName;
-	wxString ext = mCleanSpeechMode ? wxT(".wav") : wxT(".aup");
+   wxString ext = mCleanSpeechMode ? wxT(".wav") : wxT(".aup");
 
-	fName = GetName().Len()? GetName() + ext : wxString(wxT(""));
-	if( mCleanSpeechMode )
-	{
-	   fName = FileSelector(_("Save Speech As:"),
-                           path, fName, wxT(""),
-                           _("Windows PCM Audio file (*.wav)|*.wav"),  //lda
+   fName = GetName().Len()? GetName() + ext : wxString(wxT(""));
+   if( mCleanSpeechMode )
+   {
+      fName = FileSelector(_("Save Speech As:"),
+                  path, fName, wxT(""),
+                  _("Windows PCM Audio file (*.wav)|*.wav"),  //lda
                            wxSAVE | wxOVERWRITE_PROMPT, this);
-	}
-	else
-	{
+   }
+   else
+   {
       if (bWantSaveCompressed)
          ShowWarningDialog(this, wxT("FirstProjectSave"),
                            _("Audacity compressed project files (.aup) save your work in a smaller, compressed (.ogg) format. \nCompressed project files are a good way to transmit your project online, because they are much smaller. \nTo open a compressed project takes longer than usual, as it imports each compressed track. \n\nMost other programs can't open Audacity project files.\nWhen you want to save a file that can be opened by other programs, select one of the\nExport commands."));
       else
- 	      ShowWarningDialog(this, wxT("FirstProjectSave"),
+         ShowWarningDialog(this, wxT("FirstProjectSave"),
                            _("You are saving an Audacity project file (.aup).\n\nSaving a project creates a file that only Audacity can open.\n\nTo save an audio file for other programs, use one of the \"File > Export\" commands.\n"));
 
       fName = FileSelector(_NoAcc("Save Project &As...") + wxT(":"),

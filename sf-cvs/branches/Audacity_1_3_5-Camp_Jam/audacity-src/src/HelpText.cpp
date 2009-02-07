@@ -618,7 +618,7 @@ By default, Audacity uses the device currently being used by the system, \
 so it is often not necessary to change the input device. \
 On Windows, this current system device can be selected as \"Microsoft Sound Mapper\". \
 If you are recording from an external USB or Firewire device such as a USB turntable, \
-select it explicitly by name as recording device after conecting it. \
+select it explicitly by name as recording device after connecting it. \
 </p><p> \
 Back to [[record|Recording Audio]] \
 <br></p>") +
@@ -755,7 +755,7 @@ then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.c
 to convert it to WAV or AIFF. \
 If it is protected, burn it to an audio CD in the program licensed to play it, \
 then extract the CD track to WAV or AIFF using \
-ITunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or \
+iTunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or \
 Windows Media Player 11. You could also \
 <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. \
 <i>To export to an unsupported format, export to WAV or AIFF and \
@@ -788,10 +788,10 @@ ToWelcome()
    {
 // *URL* will be replaced by whatever URL we are looking for.
       return WrapText(
-_("<p>You don't appear to have Audacity help files on your machine. \
-Either <a href=\"http://audacity.sourceforge.net/help/documentation\">download</a> the help files \
-and then access them again from Audacity by clicking <i>Help</i> then <i>Index</i>, \
-or click <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">here</a> to read the full Manual online.")
+_("<p>Help for Audacity Beta is currently unfinished. \
+For now, a draft manual is available <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">online</a>. \
+Alternatively, click <a href=\"http://www.audacityteam.org/manual/index.php?title=Temporary_HTML_Manual_Export\">here</a> \
+to download a single-page version of the manual which can be viewed in this window.")
          );
    }
    return wxT("");
@@ -808,6 +808,7 @@ wxString HelpText( const wxString & Key )
 
    wxString Text;
    Text = HelpTextBuiltIn( Key );
+
    if( !Text.IsEmpty())
       return LinkExpand( Text );
 

@@ -297,6 +297,11 @@ void TrackArtist::DrawTracks(TrackList * tracks,
 
 void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 {
+   // Label tracks do not have a vruler
+   if (t->GetKind() == Track::Label) {
+      return;
+   }
+
    // All waves have a ruler in the info panel
    // The ruler needs a bevelled surround.
    if (t->GetKind() == Track::Wave )
@@ -602,11 +607,12 @@ int GetWaveYPosNew(float value, float min, float max,
         value *= sign;
      }
    }else
-      if(!outer) 
+      if(!outer) {
          if( value >= 0.0)
             value -= 0.5;
          else
             value += 0.5;
+      }
 
    if (clip) {
       if (value < min)
