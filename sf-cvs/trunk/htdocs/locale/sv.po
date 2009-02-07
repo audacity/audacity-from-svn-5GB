@@ -17,7 +17,6 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-Country: SWEDEN\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Poedit-Basepath: /home/sanna/Dokument/Netizen/audacity/1.3/svn/audacity_website/htdocs\n"
 
 #: blog/wp-includes/class-pop3.php:82
 #: blog/wp-includes/class-pop3.php:90
