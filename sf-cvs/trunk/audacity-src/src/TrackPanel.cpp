@@ -3367,20 +3367,25 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
                    solo, HasSoloButton());
    }
    else if (event.LeftUp() )
+   {      
+      if (buttonRect.Contains(event.m_x, event.m_y)) 
       {
-         
-         if (buttonRect.Contains(event.m_x, event.m_y)) 
-            {
-               if(solo)
-                  
-                  OnTrackSolo(event.ShiftDown(),t);
-               else
-                  OnTrackMute(event.ShiftDown(),t);
-            }  
-         SetCapturedTrack( NULL );
-         // mTrackInfo.DrawMuteSolo(&dc, r, t, false, solo);
-         Refresh(false);
-      }
+         // For either, MakeParentPushState to make the track state dirty.
+         if(solo)
+         {
+            OnTrackSolo(event.ShiftDown(),t);
+            MakeParentPushState(_("Soloed track"), _("Solo"), true /* consolidate */);
+         }
+         else
+         {
+            OnTrackMute(event.ShiftDown(),t);
+            MakeParentPushState(_("Muted track"), _("Mute"), true /* consolidate */);
+         }
+      }  
+      SetCapturedTrack( NULL );
+      // mTrackInfo.DrawMuteSolo(&dc, r, t, false, solo);
+      Refresh(false);
+   }
 }
 
 void TrackPanel::HandleMinimizing(wxMouseEvent & event)

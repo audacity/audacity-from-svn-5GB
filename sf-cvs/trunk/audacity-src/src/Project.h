@@ -156,7 +156,10 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    static void OpenFiles(AudacityProject *proj);
    void OpenFile(wxString fileName);
    bool WarnOfLegacyFile( );
-   void Import(wxString fileName);
+
+   // If pNewTrackList is passed in non-NULL, it gets filled with the pointers to new tracks.
+   void Import(wxString fileName, TrackList* pNewTrackList = NULL); 
+   
    void AddImportedTracks(wxString fileName,
                           Track **newTracks, int numTracks);
    bool Save(bool overwrite = true, bool fromSaveAs = false, bool bWantSaveCompressed = false);
