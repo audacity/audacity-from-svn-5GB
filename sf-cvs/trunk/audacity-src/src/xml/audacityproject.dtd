@@ -44,6 +44,8 @@
 <!ATTLIST wavetrack rate CDATA #REQUIRED>
 <!ATTLIST wavetrack gain CDATA #REQUIRED>
 <!ATTLIST wavetrack pan CDATA #REQUIRED>
+<!ATTLIST wavetrack mute CDATA "0">
+<!ATTLIST wavetrack solo CDATA "0">
 
 <!ELEMENT waveclip (sequence, envelope)>
 <!ATTLIST waveclip offset CDATA #REQUIRED>
