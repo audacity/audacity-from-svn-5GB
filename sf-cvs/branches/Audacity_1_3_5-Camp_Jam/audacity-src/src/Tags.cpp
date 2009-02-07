@@ -207,7 +207,10 @@ static const wxChar *DefaultGenres[] =
    wxT("Terror"),
    wxT("Indie"),
    wxT("BritPop"),
-   wxT("Negerpunk"),
+
+   // Standard name is offensive (see "http://www.audacityteam.org/forum/viewtopic.php?f=11&t=3924").
+   wxT("Offensive"), // wxT("Negerpunk"),
+
    wxT("Polsk Punk"),
    wxT("Beat"),
    wxT("Christian Gangsta Rap"),
@@ -893,8 +896,8 @@ void TagsEditor::PopulateOrExchange(ShuttleGui & S)
          {
             S.StartMultiColumn(4, wxALIGN_CENTER);
             {
-               S.Id(EditID).AddButton(_("Edit"));
-               S.Id(ResetID).AddButton(_("Reset"));
+               S.Id(EditID).AddButton(_("E&dit..."));
+               S.Id(ResetID).AddButton(_("Rese&t..."));
             }
             S.EndMultiColumn();
          }
@@ -1162,7 +1165,7 @@ void TagsEditor::OnLoad(wxCommandEvent & event)
    wxString fn;
 
    // Ask the user for the real name
-   fn = FileSelector(_("Save Metadata As:"),
+   fn = FileSelector(_("Load Metadata As:"),
                      FileNames::DataDir(),
                      wxT("Tags.xml"),
                      wxT("xml"),
