@@ -82,6 +82,9 @@ clean:
 	rm -rf $(OBJS)
 	rm -f $(LIBFILE) $(EXTRAS)
 
+distclean: clean
+	rm -f config.log config.status Makefile
+
 #
 # Rule for compiling C++ files
 #
