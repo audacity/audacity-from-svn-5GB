@@ -21,14 +21,14 @@
 
 <ul>
 <li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (%s file, %.1lf MB)'), download_url($min_src_url), src_version, src_suffix, min_src_size)?> 
-<?php printf(_('This is a minimal source tarball which assumes your system has the neccessary dependencies (libraries) installed (see below).'))?></p></li>
+<?php printf(_('This is our standard source tarball. It assumes your system has the necessary dependencies (libraries) installed (see below).'))?></p></li>
 </ul>
 
 <h3><?=_("Optional Downloads")?></h3>
 
 <ul>
 <li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (%s file, %.1lf MB)'), download_url($full_src_url), src_version, src_suffix, full_src_size)?> 
-<?php printf(_('This is a full source tarball, useful for Windows and Mac machines which may lack the necessary dependencies to compile audacity.'))?></p></li>
+<?php printf(_('This is a full source tarball, useful for Windows and Mac machines which may lack the necessary dependencies to compile Audacity.'))?></p></li>
   <li><p><?php printf(_('<a href="%s">Latest CVS development code</a>, incorporating changes since the release tarball.'), "../community/developers#cvs")?></p></li>
   <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our <a href="%s">alternate download links</a>.'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></p></li>
 </ul>
