@@ -2208,8 +2208,8 @@ wxString AudioIO::GetDeviceInfo()
    
       Px_CloseMixer(PortMixer);
 
-#endif
       }  //end of massive if statement if a valid sample rate has been found
+#endif
    return o.GetString();
 }
 
