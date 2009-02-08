@@ -112,7 +112,10 @@ bext chunks in WAV files
 AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
 by default
 Upstream Version: 1.0.17
-TODO: upgrade to 1.0.18 when it comes out in order to drop the bext patch
+TODO: 
+* upgrade to 1.0.18 when it comes out in order to drop the bext patch
+* work out which parts of the autotools patch are not upstream and send them
+  there
 
 libvamp
 -------
@@ -120,6 +123,8 @@ Library to load and use VAMP plug-ins. http://www.vamp-plugins.org/
 Version in Audacity CVS: 2.0
 Patches: optional-progs.patch: Make building the Vamp host (and so the
 dependecy on libsndfile) optional rather than mandatory
+		 distclean.patch: ensure that distclean actually works and takes away
+		 auto* droppings
 Upstream Version: 2.0
 
 libvorbis
