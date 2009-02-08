@@ -101,21 +101,14 @@ libsndfile
 ----------
 Erik de Castro Lopo's uncompressed audio file I/O library. Core and essential
 to audacity.
-Version in Audacity CVS: 1.0.17
-Patches:  wav-bext.patch: backport patch from 1.0.18 of a patch to fix reading
-bext chunks in WAV files
-		  update-autotools.patch: backport patch from 1.0.18pre25 to use an M4
-		  directory for m4 macro files, and other changes so that the source
-		  tree will take libtoolise --copy --force; aclocal -I M4 --install;
-		  autoreconf and generate a working build system on any reasonably
-		  sensible host.
+Version in Audacity CVS: 1.0.18pre25
+Patches:  macro-quoting.patch: quote arguments to AC_DEFUN such that
+			autoreconf works with autorecnf 2.63
 AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
 by default
-Upstream Version: 1.0.17
+Upstream Version: 1.0.18pre25
 TODO: 
-* upgrade to 1.0.18 when it comes out in order to drop the bext patch
-* work out which parts of the autotools patch are not upstream and send them
-  there
+* upgrade to 1.0.18 stable when it comes out
 
 libvamp
 -------
@@ -285,7 +278,9 @@ run  find . -name '*.orig' -delete and  find . -name '*~' -delete. To remove
 find . -wholename '*/.svn/*' -delete and then find . -name '.svn' -delete
 
 * run autoreconf if we have modified configure.in or configure.ac
-* run libtoolize --copy --force to update ltmain.sh, config.sub, config.guess
+* If the package uses libtool, run libtoolize --copy --force to update 
+	ltmain.sh, config.sub, config.guess. If not, update config.sub,
+	config.guess from /usr/share/gnuconfig/
 
 By doing it this way we have already updated the mtime on all files, so we
 don't need to do a recusive touch.

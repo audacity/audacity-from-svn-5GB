@@ -1,19 +1,33 @@
 /*
-** Copyright (C) 1999-2005 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2007 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
-** This program is free software; you can redistribute it and/or modify
-** it under the terms of the GNU General Public License as published by
-** the Free Software Foundation; either version 2 of the License, or
-** (at your option) any later version.
+** All rights reserved.
 **
-** This program is distributed in the hope that it will be useful,
-** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-** GNU General Public License for more details.
+** Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
 **
-** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+**     * Redistributions of source code must retain the above copyright
+**       notice, this list of conditions and the following disclaimer.
+**     * Redistributions in binary form must reproduce the above copyright
+**       notice, this list of conditions and the following disclaimer in
+**       the documentation and/or other materials provided with the
+**       distribution.
+**     * Neither the author nor the names of any contributors may be used
+**       to endorse or promote products derived from this software without
+**       specific prior written permission.
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+** TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+** PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+** CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+** EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+** PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+** OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+** WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+** OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+** ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "sfconfig.h"
@@ -127,10 +141,10 @@ alsa_play (int argc, char *argv [])
 
 static snd_pcm_t *
 alsa_open (int channels, unsigned samplerate, int realtime)
-{	const char * device = "plughw:0" ;
+{	const char * device = "default" ;
 	snd_pcm_t *alsa_dev = NULL ;
 	snd_pcm_hw_params_t *hw_params ;
-	snd_pcm_uframes_t buffer_size, xfer_align, start_threshold ;
+	snd_pcm_uframes_t buffer_size ;
 	snd_pcm_uframes_t alsa_period_size, alsa_buffer_frames ;
 	snd_pcm_sw_params_t *sw_params ;
 
@@ -219,16 +233,8 @@ alsa_open (int channels, unsigned samplerate, int realtime)
 
 	/* note: set start threshold to delay start until the ring buffer is full */
 	snd_pcm_sw_params_current (alsa_dev, sw_params) ;
-	if ((err = snd_pcm_sw_params_get_xfer_align (sw_params, &xfer_align)) < 0)
-	{	fprintf (stderr, "cannot get xfer align (%s)\n", snd_strerror (err)) ;
-		goto catch_error ;
-		} ;
 
-	/* round up to closest transfer boundary */
-	start_threshold = (buffer_size / xfer_align) * xfer_align ;
-	if (start_threshold < 1)
-		start_threshold = 1 ;
-	if ((err = snd_pcm_sw_params_set_start_threshold (alsa_dev, sw_params, start_threshold)) < 0)
+	if ((err = snd_pcm_sw_params_set_start_threshold (alsa_dev, sw_params, buffer_size)) < 0)
 	{	fprintf (stderr, "cannot set start threshold (%s)\n", snd_strerror (err)) ;
 		goto catch_error ;
 		} ;
@@ -256,7 +262,6 @@ static int
 alsa_write_float (snd_pcm_t *alsa_dev, float *data, int frames, int channels)
 {	static	int epipe_count = 0 ;
 
-	snd_pcm_status_t *status ;
 	int total = 0 ;
 	int retval ;
 
@@ -288,8 +293,11 @@ alsa_write_float (snd_pcm_t *alsa_dev, float *data, int frames, int channels)
 						} ;
 					epipe_count += 100 ;
 
+#if 0
 					if (0)
-					{	snd_pcm_status_alloca (&status) ;
+					{	snd_pcm_status_t *status ;
+
+						snd_pcm_status_alloca (&status) ;
 						if ((retval = snd_pcm_status (alsa_dev, status)) < 0)
 							fprintf (stderr, "alsa_out: xrun. can't determine length\n") ;
 						else if (snd_pcm_status_get_state (status) == SND_PCM_STATE_XRUN)
@@ -305,6 +313,7 @@ alsa_write_float (snd_pcm_t *alsa_dev, float *data, int frames, int channels)
 						else
 							fprintf (stderr, "alsa_write_float: xrun. can't determine length\n") ;
 						} ;
+#endif
 
 					snd_pcm_prepare (alsa_dev) ;
 					break ;
@@ -348,7 +357,7 @@ linux_play (int argc, char *argv [])
 {	static short buffer [BUFFER_LEN] ;
 	SNDFILE *sndfile ;
 	SF_INFO sfinfo ;
-	int		k, audio_device, readcount, subformat ;
+	int		k, audio_device, readcount, writecount, subformat ;
 
 	for (k = 1 ; k < argc ; k++)
 	{	memset (&sfinfo, 0, sizeof (sfinfo)) ;
@@ -382,12 +391,12 @@ linux_play (int argc, char *argv [])
 			while ((readcount = sf_read_float (sndfile, float_buffer, BUFFER_LEN)))
 			{	for (m = 0 ; m < readcount ; m++)
 					buffer [m] = scale * float_buffer [m] ;
-				write (audio_device, buffer, readcount * sizeof (short)) ;
+				writecount = write (audio_device, buffer, readcount * sizeof (short)) ;
 				} ;
 			}
 		else
 		{	while ((readcount = sf_read_short (sndfile, buffer, BUFFER_LEN)))
-				write (audio_device, buffer, readcount * sizeof (short)) ;
+				writecount = write (audio_device, buffer, readcount * sizeof (short)) ;
 			} ;
 
 		if (ioctl (audio_device, SNDCTL_DSP_POST, 0) == -1)
@@ -427,17 +436,17 @@ linux_open_dsp_device (int channels, int srate)
 		} ;
 
 	fmt = CPU_IS_BIG_ENDIAN ? AFMT_S16_BE : AFMT_S16_LE ;
-	if (ioctl (fd, SOUND_PCM_SETFMT, &fmt) != 0)
+	if (ioctl (fd, SNDCTL_DSP_SETFMT, &fmt) != 0)
 	{	perror ("linux_open_dsp_device : set format ") ;
-	    exit (1) ;
+		exit (1) ;
   		} ;
 
-	if (ioctl (fd, SOUND_PCM_WRITE_CHANNELS, &channels) != 0)
+	if (ioctl (fd, SNDCTL_DSP_CHANNELS, &channels) != 0)
 	{	perror ("linux_open_dsp_device : channels ") ;
 		exit (1) ;
 		} ;
 
-	if (ioctl (fd, SOUND_PCM_WRITE_RATE, &srate) != 0)
+	if (ioctl (fd, SNDCTL_DSP_SPEED, &srate) != 0)
 	{	perror ("linux_open_dsp_device : sample rate ") ;
 		exit (1) ;
 		} ;
@@ -683,7 +692,7 @@ win32_play_data (Win32_Audio_Data *audio_data)
 } /* win32_play_data */
 
 static void CALLBACK
-win32_audio_out_callback (HWAVEOUT hwave, UINT msg, DWORD data, DWORD param1, DWORD param2)
+win32_audio_out_callback (HWAVEOUT hwave, UINT msg, DWORD_PTR data, DWORD param1, DWORD param2)
 {	Win32_Audio_Data	*audio_data ;
 
 	/* Prevent compiler warnings. */
@@ -710,11 +719,6 @@ win32_audio_out_callback (HWAVEOUT hwave, UINT msg, DWORD data, DWORD param1, DW
 
 	return ;
 } /* win32_audio_out_callback */
-
-/* This is needed for earlier versions of the M$ development tools. */
-#ifndef DWORD_PTR
-#define DWORD_PTR DWORD
-#endif
 
 static void
 win32_play (int argc, char *argv [])
@@ -921,7 +925,7 @@ main (int argc, char *argv [])
 		**     Sleep (15) ;
 		** Instead, use this:
 		*/
-		_sleep (5 * 1000) ;
+		Sleep (5 * 1000) ;
 #endif
 		return 1 ;
 		} ;
@@ -951,10 +955,4 @@ main (int argc, char *argv [])
 
 	return 0 ;
 } /* main */
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch
-** revision control system.
-**
-** arch-tag: 8fc4110d-6cec-4e03-91df-0f384cabedac
-*/
+

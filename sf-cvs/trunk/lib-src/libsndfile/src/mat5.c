@@ -22,11 +22,11 @@
 #include	<fcntl.h>
 #include	<string.h>
 #include	<ctype.h>
+#include	<math.h>
 
 #include	"sndfile.h"
 #include	"sfendian.h"
 #include	"common.h"
-#include	"float_cast.h"
 
 /*------------------------------------------------------------------------------
 ** Information on how to decode and encode this file was obtained in a PDF
@@ -91,16 +91,16 @@ mat5_open	(SF_PRIVATE *psf)
 			return error ;
 		} ;
 
-	if ((psf->sf.format & SF_FORMAT_TYPEMASK) != SF_FORMAT_MAT5)
+	if ((SF_CONTAINER (psf->sf.format)) != SF_FORMAT_MAT5)
 		return	SFE_BAD_OPEN_FORMAT ;
 
-	subformat = psf->sf.format & SF_FORMAT_SUBMASK ;
+	subformat = SF_CODEC (psf->sf.format) ;
 
 	if (psf->mode == SFM_WRITE || psf->mode == SFM_RDWR)
 	{	if (psf->is_pipe)
 			return SFE_NO_PIPE_WRITE ;
 
-		psf->endian = psf->sf.format & SF_FORMAT_ENDMASK ;
+		psf->endian = SF_ENDIAN (psf->sf.format) ;
 		if (CPU_IS_LITTLE_ENDIAN && (psf->endian == SF_ENDIAN_CPU || psf->endian == 0))
 			psf->endian = SF_ENDIAN_LITTLE ;
 		else if (CPU_IS_BIG_ENDIAN && (psf->endian == SF_ENDIAN_CPU || psf->endian == 0))
@@ -174,7 +174,7 @@ mat5_write_header (SF_PRIVATE *psf, int calc_length)
 		psf->sf.frames = psf->datalength / (psf->bytewidth * psf->sf.channels) ;
 		} ;
 
-	switch (psf->sf.format & SF_FORMAT_SUBMASK)
+	switch (SF_CODEC (psf->sf.format))
 	{	case SF_FORMAT_PCM_U8 :
 				encoding = MAT5_TYPE_UCHAR ;
 				break ;
@@ -259,7 +259,8 @@ static int
 mat5_read_header (SF_PRIVATE *psf)
 {	char	name [32] ;
 	short	version, endian ;
-	int		type, size, flags1, flags2, rows, cols ;
+	int		type, flags1, flags2, rows, cols ;
+	unsigned size ;
 
 	psf_binheader_readf (psf, "pb", 0, psf->u.cbuf, 124) ;
 
@@ -448,7 +449,7 @@ mat5_read_header (SF_PRIVATE *psf)
 
 	if (rows == 0 && cols == 0)
 	{	psf_log_printf (psf, "*** Error : zero channel count.\n") ;
-		return SFE_MAT5_ZERO_CHANNELS ;
+		return SFE_CHANNEL_COUNT_ZERO ;
 		} ;
 
 	psf->sf.channels	= rows ;
@@ -498,10 +499,3 @@ mat5_read_header (SF_PRIVATE *psf)
 	return 0 ;
 } /* mat5_read_header */
 
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: dfdb6742-b2be-4be8-b390-d0c674e8bc8e
-*/

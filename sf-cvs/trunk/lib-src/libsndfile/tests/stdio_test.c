@@ -74,7 +74,7 @@ main (void)
 {	int k ;
 
 	if (file_exists ("libsndfile.spec.in"))
-		chdir ("tests") ;
+		exit_if_true (chdir ("tests") != 0, "\n    Error : chdir ('tests') failed.\n") ;
 
 	for (k = 0 ; filetypes [k] ; k++)
 		stdio_test (filetypes [k]) ;
@@ -150,10 +150,3 @@ file_exists (const char *filename)
 
 #endif
 
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: f46d84fd-d37b-4d08-b1ba-80f2f1e0cfb9
-*/

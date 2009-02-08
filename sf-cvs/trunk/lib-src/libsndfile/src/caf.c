@@ -22,10 +22,10 @@
 #include	<stdlib.h>
 #include	<string.h>
 #include	<ctype.h>
+#include	<math.h>
 
 #include	"sndfile.h"
 #include	"sfendian.h"
-#include	"float_cast.h"
 #include	"common.h"
 
 /*------------------------------------------------------------------------------
@@ -103,13 +103,13 @@ caf_open (SF_PRIVATE *psf)
 			return error ;
 		} ;
 
-	subformat = psf->sf.format & SF_FORMAT_SUBMASK ;
+	subformat = SF_CODEC (psf->sf.format) ;
 
 	if (psf->mode == SFM_WRITE || psf->mode == SFM_RDWR)
 	{	if (psf->is_pipe)
 			return SFE_NO_PIPE_WRITE ;
 
-		format = psf->sf.format & SF_FORMAT_TYPEMASK ;
+		format = SF_CONTAINER (psf->sf.format) ;
 		if (format != SF_FORMAT_CAF)
 			return	SFE_BAD_OPEN_FORMAT ;
 
@@ -400,9 +400,9 @@ caf_write_header (SF_PRIVATE *psf, int calc_length)
  	double64_be_write (1.0 * psf->sf.samplerate, psf->u.ucbuf) ;
 	psf_binheader_writef (psf, "b", psf->u.ucbuf, make_size_t (8)) ;
 
-	subformat = psf->sf.format & SF_FORMAT_SUBMASK ;
+	subformat = SF_CODEC (psf->sf.format) ;
 
-	psf->endian = psf->sf.format & SF_FORMAT_ENDMASK ;
+	psf->endian = SF_ENDIAN (psf->sf.format) ;
 
 	if (CPU_IS_BIG_ENDIAN && (psf->endian == 0 || psf->endian == SF_ENDIAN_CPU))
 		psf->endian = SF_ENDIAN_BIG ;
@@ -529,10 +529,3 @@ caf_write_header (SF_PRIVATE *psf, int calc_length)
 	return psf->error ;
 } /* caf_write_header */
 
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch
-** revision control system.
-**
-** arch-tag: 65883e65-bd3c-4618-9241-d3c02fd630bd
-*/

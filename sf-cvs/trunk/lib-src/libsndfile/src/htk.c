@@ -60,10 +60,10 @@ htk_open	(SF_PRIVATE *psf)
 			return error ;
 		} ;
 
-	subformat = psf->sf.format & SF_FORMAT_SUBMASK ;
+	subformat = SF_CODEC (psf->sf.format) ;
 
 	if (psf->mode == SFM_WRITE || psf->mode == SFM_RDWR)
-	{	if ((psf->sf.format & SF_FORMAT_TYPEMASK) != SF_FORMAT_HTK)
+	{	if ((SF_CONTAINER (psf->sf.format)) != SF_FORMAT_HTK)
 			return	SFE_BAD_OPEN_FORMAT ;
 
 		psf->endian = SF_ENDIAN_BIG ;
@@ -216,10 +216,4 @@ htk_read_header (SF_PRIVATE *psf)
 
 	return 0 ;
 } /* htk_read_header */
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: c350e972-082e-4c20-8934-03391a723560
-*/
+

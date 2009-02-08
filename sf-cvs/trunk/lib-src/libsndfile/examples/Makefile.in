@@ -33,56 +33,50 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-bin_PROGRAMS = sndfile-info$(EXEEXT) sndfile-play$(EXEEXT) \
-	sndfile-convert$(EXEEXT)
 noinst_PROGRAMS = make_sine$(EXEEXT) sfprocess$(EXEEXT) \
-	list_formats$(EXEEXT) cooledit-fixer$(EXEEXT) \
-	generate$(EXEEXT)
+	list_formats$(EXEEXT) generate$(EXEEXT) sndfilehandle$(EXEEXT) \
+	sndfile-to-text$(EXEEXT)
 subdir = examples
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/M4/add_cflags.m4 \
-	$(top_srcdir)/M4/clip_mode.m4 $(top_srcdir)/M4/endian.m4 \
-	$(top_srcdir)/M4/extra_largefile.m4 \
-	$(top_srcdir)/M4/flexible_array.m4 $(top_srcdir)/M4/libtool.m4 \
+	$(top_srcdir)/M4/add_cxxflags.m4 $(top_srcdir)/M4/clip_mode.m4 \
+	$(top_srcdir)/M4/endian.m4 $(top_srcdir)/M4/extra_largefile.m4 \
+	$(top_srcdir)/M4/extra_pkg.m4 \
+	$(top_srcdir)/M4/flexible_array.m4 \
+	$(top_srcdir)/M4/gcc_version.m4 $(top_srcdir)/M4/libtool.m4 \
 	$(top_srcdir)/M4/lrint.m4 $(top_srcdir)/M4/lrintf.m4 \
-	$(top_srcdir)/M4/pkg.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/M4/ltoptions.m4 $(top_srcdir)/M4/ltsugar.m4 \
+	$(top_srcdir)/M4/ltversion.m4 $(top_srcdir)/M4/lt~obsolete.m4 \
+	$(top_srcdir)/M4/mkoctfile_version.m4 \
+	$(top_srcdir)/M4/octave.m4 $(top_srcdir)/M4/pkg.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/src/config.h
 CONFIG_CLEAN_FILES =
-am__installdirs = "$(DESTDIR)$(bindir)"
-binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
-PROGRAMS = $(bin_PROGRAMS) $(noinst_PROGRAMS)
-am_cooledit_fixer_OBJECTS = cooledit-fixer.$(OBJEXT)
-cooledit_fixer_OBJECTS = $(am_cooledit_fixer_OBJECTS)
-cooledit_fixer_DEPENDENCIES = $(SNDFILEDIR)/libsndfile.la
+PROGRAMS = $(noinst_PROGRAMS)
 am_generate_OBJECTS = generate.$(OBJEXT)
 generate_OBJECTS = $(am_generate_OBJECTS)
-generate_DEPENDENCIES = $(SNDFILEDIR)/libsndfile.la
+generate_DEPENDENCIES = $(top_builddir)/src/libsndfile.la
 am_list_formats_OBJECTS = list_formats.$(OBJEXT)
 list_formats_OBJECTS = $(am_list_formats_OBJECTS)
-list_formats_DEPENDENCIES = $(SNDFILEDIR)/libsndfile.la
+list_formats_DEPENDENCIES = $(top_builddir)/src/libsndfile.la
 am_make_sine_OBJECTS = make_sine.$(OBJEXT)
 make_sine_OBJECTS = $(am_make_sine_OBJECTS)
-make_sine_DEPENDENCIES = $(SNDFILEDIR)/libsndfile.la
+make_sine_DEPENDENCIES = $(top_builddir)/src/libsndfile.la
 am_sfprocess_OBJECTS = sfprocess.$(OBJEXT)
 sfprocess_OBJECTS = $(am_sfprocess_OBJECTS)
-sfprocess_DEPENDENCIES = $(SNDFILEDIR)/libsndfile.la
-am_sndfile_convert_OBJECTS = sndfile-convert.$(OBJEXT)
-sndfile_convert_OBJECTS = $(am_sndfile_convert_OBJECTS)
-sndfile_convert_DEPENDENCIES = $(SNDFILEDIR)/libsndfile.la
-am_sndfile_info_OBJECTS = sndfile-info.$(OBJEXT)
-sndfile_info_OBJECTS = $(am_sndfile_info_OBJECTS)
-sndfile_info_DEPENDENCIES = $(SNDFILEDIR)/libsndfile.la
-am_sndfile_play_OBJECTS = sndfile-play.$(OBJEXT)
-sndfile_play_OBJECTS = $(am_sndfile_play_OBJECTS)
-am__DEPENDENCIES_1 =
-sndfile_play_DEPENDENCIES = $(SNDFILEDIR)/libsndfile.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+sfprocess_DEPENDENCIES = $(top_builddir)/src/libsndfile.la
+am_sndfile_to_text_OBJECTS = sndfile-to-text.$(OBJEXT)
+sndfile_to_text_OBJECTS = $(am_sndfile_to_text_OBJECTS)
+sndfile_to_text_DEPENDENCIES = $(top_builddir)/src/libsndfile.la
+am_sndfilehandle_OBJECTS = sndfilehandle.$(OBJEXT)
+sndfilehandle_OBJECTS = $(am_sndfilehandle_OBJECTS)
+sndfilehandle_DEPENDENCIES = $(top_builddir)/src/libsndfile.la
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/src
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/Cfg/depcomp
 am__depfiles_maybe = depfiles
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -93,18 +87,26 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(cooledit_fixer_SOURCES) $(generate_SOURCES) \
-	$(list_formats_SOURCES) $(make_sine_SOURCES) \
-	$(sfprocess_SOURCES) $(sndfile_convert_SOURCES) \
-	$(sndfile_info_SOURCES) $(sndfile_play_SOURCES)
-DIST_SOURCES = $(cooledit_fixer_SOURCES) $(generate_SOURCES) \
-	$(list_formats_SOURCES) $(make_sine_SOURCES) \
-	$(sfprocess_SOURCES) $(sndfile_convert_SOURCES) \
-	$(sndfile_info_SOURCES) $(sndfile_play_SOURCES)
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
+SOURCES = $(generate_SOURCES) $(list_formats_SOURCES) \
+	$(make_sine_SOURCES) $(sfprocess_SOURCES) \
+	$(sndfile_to_text_SOURCES) $(sndfilehandle_SOURCES)
+DIST_SOURCES = $(generate_SOURCES) $(list_formats_SOURCES) \
+	$(make_sine_SOURCES) $(sfprocess_SOURCES) \
+	$(sndfile_to_text_SOURCES) $(sndfilehandle_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
+ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
 ALSA_LIBS = @ALSA_LIBS@
 AMTAR = @AMTAR@
 AR = @AR@
@@ -126,19 +128,29 @@ CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DSYMUTIL = @DSYMUTIL@
-ECHO = @ECHO@
+DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENABLE_EXPERIMENTAL_CODE = @ENABLE_EXPERIMENTAL_CODE@
 EXEEXT = @EXEEXT@
-F77 = @F77@
-FFLAGS = @FFLAGS@
+EXTERNAL_CFLAGS = @EXTERNAL_CFLAGS@
+EXTERNAL_LIBS = @EXTERNAL_LIBS@
+FGREP = @FGREP@
+FLAC_CFLAGS = @FLAC_CFLAGS@
 FLAC_LIBS = @FLAC_LIBS@
 GCC_MAJOR_VERSION = @GCC_MAJOR_VERSION@
+GCC_MINOR_VERSION = @GCC_MINOR_VERSION@
+GCC_VERSION = @GCC_VERSION@
 GETCONF = @GETCONF@
 GREP = @GREP@
+HAVE_AUTOGEN = @HAVE_AUTOGEN@
+HAVE_JACK = @HAVE_JACK@
+HAVE_MKOCTFILE = @HAVE_MKOCTFILE@
+HAVE_OCTAVE = @HAVE_OCTAVE@
+HAVE_OCTAVE_CONFIG = @HAVE_OCTAVE_CONFIG@
+HAVE_WINE = @HAVE_WINE@
 HTML_BGCOLOUR = @HTML_BGCOLOUR@
 HTML_FGCOLOUR = @HTML_FGCOLOUR@
 INSTALL = @INSTALL@
@@ -146,20 +158,38 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+JACK_CFLAGS = @JACK_CFLAGS@
+JACK_LIBS = @JACK_LIBS@
+LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
+LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+MKOCTFILE = @MKOCTFILE@
+MKOCTFILE_VERSION = @MKOCTFILE_VERSION@
+NM = @NM@
 NMEDIT = @NMEDIT@
+OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
+OCTAVE = @OCTAVE@
+OCTAVE_CONFIG = @OCTAVE_CONFIG@
+OCTAVE_CONFIG_VERSION = @OCTAVE_CONFIG_VERSION@
+OCTAVE_DEST_MDIR = @OCTAVE_DEST_MDIR@
+OCTAVE_DEST_ODIR = @OCTAVE_DEST_ODIR@
+OCTAVE_VERSION = @OCTAVE_VERSION@
+OGG_CFLAGS = @OGG_CFLAGS@
+OGG_LIBS = @OGG_LIBS@
 OS_SPECIFIC_CFLAGS = @OS_SPECIFIC_CFLAGS@
 OS_SPECIFIC_LINKS = @OS_SPECIFIC_LINKS@
+OTOOL = @OTOOL@
+OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -181,19 +211,22 @@ SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
 TYPEOF_SF_COUNT_T = @TYPEOF_SF_COUNT_T@
 VERSION = @VERSION@
+VORBISENC_CFLAGS = @VORBISENC_CFLAGS@
+VORBISENC_LIBS = @VORBISENC_LIBS@
+VORBIS_CFLAGS = @VORBIS_CFLAGS@
+VORBIS_LIBS = @VORBIS_LIBS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
-ac_ct_F77 = @ac_ct_F77@
+ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
 am__tar = @am__tar@
 am__untar = @am__untar@
-autogen = @autogen@
 bindir = @bindir@
 build = @build@
 build_alias = @build_alias@
@@ -220,6 +253,7 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
+lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -239,32 +273,23 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-
-# This is the BeOS version of sndfile-play. It needs to be compiled with the C++
-# compiler.
-EXTRA_DIST = sndfile-play-beos.cpp
-SNDFILEDIR = ../src
-AM_CPPFLAGS = -I$(srcdir)/$(SNDFILEDIR) $(OS_SPECIFIC_CFLAGS)
-sndfile_info_SOURCES = sndfile-info.c 
-sndfile_info_LDADD = $(SNDFILEDIR)/libsndfile.la
-sndfile_play_SOURCES = sndfile-play.c 
-sndfile_play_LDADD = $(SNDFILEDIR)/libsndfile.la $(OS_SPECIFIC_LINKS) $(ALSA_LIBS)
-sndfile_convert_SOURCES = sndfile-convert.c 
-sndfile_convert_LDADD = $(SNDFILEDIR)/libsndfile.la
-make_sine_SOURCES = make_sine.c 
-make_sine_LDADD = $(SNDFILEDIR)/libsndfile.la
-sfprocess_SOURCES = sfprocess.c 
-sfprocess_LDADD = $(SNDFILEDIR)/libsndfile.la
-list_formats_SOURCES = list_formats.c 
-list_formats_LDADD = $(SNDFILEDIR)/libsndfile.la
-cooledit_fixer_SOURCES = cooledit-fixer.c 
-cooledit_fixer_LDADD = $(SNDFILEDIR)/libsndfile.la
-generate_SOURCES = generate.c 
-generate_LDADD = $(SNDFILEDIR)/libsndfile.la
+INCLUDES = -I$(top_srcdir)/src
+sndfile_to_text_SOURCES = sndfile-to-text.c
+sndfile_to_text_LDADD = $(top_builddir)/src/libsndfile.la
+make_sine_SOURCES = make_sine.c
+make_sine_LDADD = $(top_builddir)/src/libsndfile.la
+sfprocess_SOURCES = sfprocess.c
+sfprocess_LDADD = $(top_builddir)/src/libsndfile.la
+list_formats_SOURCES = list_formats.c
+list_formats_LDADD = $(top_builddir)/src/libsndfile.la
+generate_SOURCES = generate.c
+generate_LDADD = $(top_builddir)/src/libsndfile.la
+sndfilehandle_SOURCES = sndfilehandle.cc
+sndfilehandle_LDADD = $(top_builddir)/src/libsndfile.la
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .lo .o .obj
+.SUFFIXES: .c .cc .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -294,34 +319,6 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-install-binPROGRAMS: $(bin_PROGRAMS)
-	@$(NORMAL_INSTALL)
-	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
-	@list='$(bin_PROGRAMS)'; for p in $$list; do \
-	  p1=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
-	  if test -f $$p \
-	     || test -f $$p1 \
-	  ; then \
-	    f=`echo "$$p1" | sed 's,^.*/,,;$(transform);s/$$/$(EXEEXT)/'`; \
-	   echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(binPROGRAMS_INSTALL) '$$p' '$(DESTDIR)$(bindir)/$$f'"; \
-	   $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(binPROGRAMS_INSTALL) "$$p" "$(DESTDIR)$(bindir)/$$f" || exit 1; \
-	  else :; fi; \
-	done
-
-uninstall-binPROGRAMS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(bin_PROGRAMS)'; for p in $$list; do \
-	  f=`echo "$$p" | sed 's,^.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/'`; \
-	  echo " rm -f '$(DESTDIR)$(bindir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(bindir)/$$f"; \
-	done
-
-clean-binPROGRAMS:
-	@list='$(bin_PROGRAMS)'; for p in $$list; do \
-	  f=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
-	  echo " rm -f $$p $$f"; \
-	  rm -f $$p $$f ; \
-	done
 
 clean-noinstPROGRAMS:
 	@list='$(noinst_PROGRAMS)'; for p in $$list; do \
@@ -329,9 +326,6 @@ clean-noinstPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
-cooledit-fixer$(EXEEXT): $(cooledit_fixer_OBJECTS) $(cooledit_fixer_DEPENDENCIES) 
-	@rm -f cooledit-fixer$(EXEEXT)
-	$(LINK) $(cooledit_fixer_OBJECTS) $(cooledit_fixer_LDADD) $(LIBS)
 generate$(EXEEXT): $(generate_OBJECTS) $(generate_DEPENDENCIES) 
 	@rm -f generate$(EXEEXT)
 	$(LINK) $(generate_OBJECTS) $(generate_LDADD) $(LIBS)
@@ -344,15 +338,12 @@ make_sine$(EXEEXT): $(make_sine_OBJECTS) $(make_sine_DEPENDENCIES)
 sfprocess$(EXEEXT): $(sfprocess_OBJECTS) $(sfprocess_DEPENDENCIES) 
 	@rm -f sfprocess$(EXEEXT)
 	$(LINK) $(sfprocess_OBJECTS) $(sfprocess_LDADD) $(LIBS)
-sndfile-convert$(EXEEXT): $(sndfile_convert_OBJECTS) $(sndfile_convert_DEPENDENCIES) 
-	@rm -f sndfile-convert$(EXEEXT)
-	$(LINK) $(sndfile_convert_OBJECTS) $(sndfile_convert_LDADD) $(LIBS)
-sndfile-info$(EXEEXT): $(sndfile_info_OBJECTS) $(sndfile_info_DEPENDENCIES) 
-	@rm -f sndfile-info$(EXEEXT)
-	$(LINK) $(sndfile_info_OBJECTS) $(sndfile_info_LDADD) $(LIBS)
-sndfile-play$(EXEEXT): $(sndfile_play_OBJECTS) $(sndfile_play_DEPENDENCIES) 
-	@rm -f sndfile-play$(EXEEXT)
-	$(LINK) $(sndfile_play_OBJECTS) $(sndfile_play_LDADD) $(LIBS)
+sndfile-to-text$(EXEEXT): $(sndfile_to_text_OBJECTS) $(sndfile_to_text_DEPENDENCIES) 
+	@rm -f sndfile-to-text$(EXEEXT)
+	$(LINK) $(sndfile_to_text_OBJECTS) $(sndfile_to_text_LDADD) $(LIBS)
+sndfilehandle$(EXEEXT): $(sndfilehandle_OBJECTS) $(sndfilehandle_DEPENDENCIES) 
+	@rm -f sndfilehandle$(EXEEXT)
+	$(CXXLINK) $(sndfilehandle_OBJECTS) $(sndfilehandle_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -360,14 +351,12 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cooledit-fixer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/generate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/list_formats.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/make_sine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sfprocess.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sndfile-convert.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sndfile-info.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sndfile-play.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sndfile-to-text.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sndfilehandle.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -389,6 +378,27 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+.cc.o:
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ $<
+
+.cc.obj:
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+.cc.lo:
+@am__fastdepCXX_TRUE@	$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -473,9 +483,6 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(PROGRAMS)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)"; do \
-	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
-	done
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -502,8 +509,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic clean-libtool \
-	clean-noinstPROGRAMS mostlyclean-am
+clean-am: clean-generic clean-libtool clean-noinstPROGRAMS \
+	mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -525,7 +532,7 @@ install-data-am:
 
 install-dvi: install-dvi-am
 
-install-exec-am: install-binPROGRAMS
+install-exec-am:
 
 install-html: install-html-am
 
@@ -557,23 +564,22 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS
+uninstall-am:
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
-	clean-generic clean-libtool clean-noinstPROGRAMS ctags \
-	distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-binPROGRAMS \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-binPROGRAMS
+.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
+	clean-libtool clean-noinstPROGRAMS ctags distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags uninstall uninstall-am
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

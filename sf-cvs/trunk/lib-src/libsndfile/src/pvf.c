@@ -56,10 +56,10 @@ pvf_open	(SF_PRIVATE *psf)
 			return error ;
 		} ;
 
-	subformat = psf->sf.format & SF_FORMAT_SUBMASK ;
+	subformat = SF_CODEC (psf->sf.format) ;
 
 	if (psf->mode == SFM_WRITE || psf->mode == SFM_RDWR)
-	{	if ((psf->sf.format & SF_FORMAT_TYPEMASK) != SF_FORMAT_PVF)
+	{	if ((SF_CONTAINER (psf->sf.format)) != SF_FORMAT_PVF)
 			return	SFE_BAD_OPEN_FORMAT ;
 
 		psf->endian = SF_ENDIAN_BIG ;
@@ -91,21 +91,17 @@ pvf_open	(SF_PRIVATE *psf)
 */
 
 static int
-pvf_close	(SF_PRIVATE *psf)
+pvf_close	(SF_PRIVATE * UNUSED (psf))
 {
-	psf = psf ;
-
 	return 0 ;
 } /* pvf_close */
 
 static int
-pvf_write_header (SF_PRIVATE *psf, int calc_length)
+pvf_write_header (SF_PRIVATE *psf, int UNUSED (calc_length))
 {	sf_count_t	current ;
 
 	if (psf->pipeoffset > 0)
 		return 0 ;
-
-	calc_length = calc_length ; /* Avoid a compiler warning. */
 
 	current = psf_ftell (psf) ;
 
@@ -190,10 +186,3 @@ pvf_read_header (SF_PRIVATE *psf)
 
 	return 0 ;
 } /* pvf_read_header */
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: 20a26761-8bc1-41d7-b1f3-9793bf3d9864
-*/

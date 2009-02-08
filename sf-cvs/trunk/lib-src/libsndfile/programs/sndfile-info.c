@@ -1,32 +1,50 @@
 /*
-** Copyright (C) 1999-2006 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2008 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
-** This program is free software; you can redistribute it and/or modify
-** it under the terms of the GNU General Public License as published by
-** the Free Software Foundation; either version 2 of the License, or
-** (at your option) any later version.
+** All rights reserved.
 **
-** This program is distributed in the hope that it will be useful,
-** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-** GNU General Public License for more details.
+** Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
 **
-** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+**     * Redistributions of source code must retain the above copyright
+**       notice, this list of conditions and the following disclaimer.
+**     * Redistributions in binary form must reproduce the above copyright
+**       notice, this list of conditions and the following disclaimer in
+**       the documentation and/or other materials provided with the
+**       distribution.
+**     * Neither the author nor the names of any contributors may be used
+**       to endorse or promote products derived from this software without
+**       specific prior written permission.
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+** TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+** PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+** CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+** EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+** PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+** OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+** WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+** OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+** ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include	<stdio.h>
 #include	<stdlib.h>
 #include	<string.h>
+#include	<inttypes.h>
 #include	<ctype.h>
 #include	<math.h>
 
 #include	<sndfile.h>
 
+#include "common.h"
+
 #define	BUFFER_LEN		(1 << 16)
 
 #if (defined (WIN32) || defined (_WIN32))
+#include <windows.h>
 #define	snprintf	_snprintf
 #endif
 
@@ -34,8 +52,11 @@ static void print_version (void) ;
 static void print_usage (const char *progname) ;
 
 static void info_dump (const char *filename) ;
-static void instrument_dump (const char *filename) ;
-static void broadcast_dump (const char *filename) ;
+static int	instrument_dump (const char *filename) ;
+static int	broadcast_dump (const char *filename) ;
+static void total_dump (void) ;
+
+static double total_seconds = 0.0 ;
 
 int
 main (int argc, char *argv [])
@@ -54,17 +75,26 @@ main (int argc, char *argv [])
 		} ;
 
 	if (strcmp (argv [1], "-i") == 0)
-	{	instrument_dump (argv [2]) ;
-		return 0 ;
+	{	int error = 0 ;
+
+		for (k = 2 ; k < argc ; k++)
+			error += instrument_dump (argv [k]) ;
+		return error ;
 		} ;
 
 	if (strcmp (argv [1], "-b") == 0)
-	{	broadcast_dump (argv [2]) ;
-		return 0 ;
+	{	int error = 0 ;
+
+		for (k = 2 ; k < argc ; k++)
+			error += broadcast_dump (argv [k]) ;
+		return error ;
 		} ;
 
 	for (k = 1 ; k < argc ; k++)
 		info_dump (argv [k]) ;
+
+	if (argc > 2)
+		total_dump () ;
 
 	return 0 ;
 } /* main */
@@ -103,7 +133,7 @@ print_usage (const char *progname)
 		**     Sleep (15) ;
 		** Instead, use this:
 		*/
-		_sleep (5 * 1000) ;
+		Sleep (5 * 1000) ;
 #endif
 } /* print_usage */
 
@@ -171,12 +201,26 @@ calc_decibels (SF_INFO * sfinfo, double max)
 } /* calc_decibels */
 
 static const char *
-generate_duration_str (SF_INFO *sfinfo)
+format_duration_str (double seconds)
 {	static char str [128] ;
-
-	int seconds ;
+	int hrs, min ;
+	double sec ;
 
 	memset (str, 0, sizeof (str)) ;
+
+	hrs = (int) (seconds / 3600.0) ;
+	min = (int) ((seconds - (hrs * 3600.0)) / 60.0) ;
+	sec = seconds - (hrs * 3600.0) - (min * 60.0) ;
+
+	snprintf (str, sizeof (str) - 1, "%02d:%02d:%06.3f", hrs, min, sec) ;
+
+	return str ;
+} /* format_duration_str */
+
+static const char *
+generate_duration_str (SF_INFO *sfinfo)
+{
+	double seconds ;
 
 	if (sfinfo->samplerate < 1)
 		return NULL ;
@@ -184,20 +228,12 @@ generate_duration_str (SF_INFO *sfinfo)
 	if (sfinfo->frames / sfinfo->samplerate > 0x7FFFFFFF)
 		return "unknown" ;
 
-	seconds = sfinfo->frames / sfinfo->samplerate ;
+	seconds = (1.0 * sfinfo->frames) / sfinfo->samplerate ;
 
-	snprintf (str, sizeof (str) - 1, "%02d:", seconds / 60 / 60) ;
+	/* Accumulate the total of all known file durations */
+	total_seconds += seconds ;
 
-	seconds = seconds % (60 * 60) ;
-	snprintf (str + strlen (str), sizeof (str) - strlen (str) - 1, "%02d:", seconds / 60) ;
-
-	seconds = seconds % 60 ;
-	snprintf (str + strlen (str), sizeof (str) - strlen (str) - 1, "%02d.", seconds) ;
-
-	seconds = ((1000 * sfinfo->frames) / sfinfo->samplerate) % 1000 ;
-	snprintf (str + strlen (str), sizeof (str) - strlen (str) - 1, "%03d", seconds) ;
-
-	return str ;
+	return format_duration_str (seconds) ;
 } /* generate_duration_str */
 
 static void
@@ -232,20 +268,20 @@ info_dump (const char *filename)
 		}
 	else
 	{	printf ("Sample Rate : %d\n", sfinfo.samplerate) ;
-		if (sfinfo.frames > 0x7FFFFFFF)
-			printf ("Frames      : unknown\n") ;
-		else
-			printf ("Frames      : %ld\n", (long) sfinfo.frames) ;
+		printf ("Frames      : %" PRId64 "\n", sfinfo.frames) ;
 		printf ("Channels    : %d\n", sfinfo.channels) ;
 		printf ("Format      : 0x%08X\n", sfinfo.format) ;
 		printf ("Sections    : %d\n", sfinfo.sections) ;
 		printf ("Seekable    : %s\n", (sfinfo.seekable ? "TRUE" : "FALSE")) ;
 		printf ("Duration    : %s\n", generate_duration_str (&sfinfo)) ;
 
-		/* Do not use sf_signal_max because it doesn work for non-seekable files . */
-		signal_max = get_signal_max (file) ;
-		decibels = calc_decibels (&sfinfo, signal_max) ;
-		printf ("Signal Max  : %g (%4.2f dB)\n\n", signal_max, decibels) ;
+		if (sfinfo.frames < 10 * 1024 * 1024)
+		{	/* Do not use sf_signal_max because it doesn't work for non-seekable files . */
+			signal_max = get_signal_max (file) ;
+			decibels = calc_decibels (&sfinfo, signal_max) ;
+			printf ("Signal Max  : %g (%4.2f dB)\n", signal_max, decibels) ;
+			} ;
+		putchar ('\n') ;
 		} ;
 
 	sf_close (file) ;
@@ -269,7 +305,7 @@ str_of_type (int mode)
 	return "????" ;
 } /* str_of_mode */
 
-static void
+static int
 instrument_dump (const char *filename)
 {	SNDFILE	 *file ;
 	SF_INFO	 sfinfo ;
@@ -283,7 +319,7 @@ instrument_dump (const char *filename)
 		fflush (stdout) ;
 		memset (data, 0, sizeof (data)) ;
 		puts (sf_strerror (NULL)) ;
-		return ;
+		return 1 ;
 		} ;
 
 	got_inst = sf_command (file, SFC_GET_INSTRUMENT, &inst, sizeof (inst)) ;
@@ -291,7 +327,7 @@ instrument_dump (const char *filename)
 
 	if (got_inst == SF_FALSE)
 	{	printf ("Error : File '%s' does not contain instrument data.\n\n", filename) ;
-		return ;
+		return 1 ;
 		} ;
 
 	printf ("Instrument : %s\n\n", filename) ;
@@ -305,13 +341,15 @@ instrument_dump (const char *filename)
 		printf ("  %-2d    Mode : %s    Start : %6d   End : %6d   Count : %6d\n", k, str_of_type (inst.loops [k].mode), inst.loops [k].start, inst.loops [k].end, inst.loops [k].count) ;
 
 	putchar ('\n') ;
+	return 0 ;
 } /* instrument_dump */
 
-static void
+static int
 broadcast_dump (const char *filename)
 {	SNDFILE	 *file ;
 	SF_INFO	 sfinfo ;
-	SF_BROADCAST_INFO bext ;
+	SF_BROADCAST_INFO_2K bext ;
+	double time_ref_sec ;
 	int got_bext ;
 
 	memset (&sfinfo, 0, sizeof (sfinfo)) ;
@@ -321,34 +359,49 @@ broadcast_dump (const char *filename)
 		fflush (stdout) ;
 		memset (data, 0, sizeof (data)) ;
 		puts (sf_strerror (NULL)) ;
-		return ;
+		return 1 ;
 		} ;
 
-	memset (&bext, 0, sizeof (SF_BROADCAST_INFO)) ;
+	memset (&bext, 0, sizeof (SF_BROADCAST_INFO_2K)) ;
 
 	got_bext = sf_command (file, SFC_GET_BROADCAST_INFO, &bext, sizeof (bext)) ;
 	sf_close (file) ;
 
 	if (got_bext == SF_FALSE)
 	{	printf ("Error : File '%s' does not contain broadcast information.\n\n", filename) ;
-		return ;
+		return 1 ;
 		} ;
+
+	/*
+	**	From : http://www.ebu.ch/en/technical/publications/userguides/bwf_user_guide.php
+	**
+	**	Time Reference:
+	**		This field is a count from midnight in samples to the first sample
+	**		of the audio sequence.
+	*/
+
+	time_ref_sec = ((pow (2.0, 32) * bext.time_reference_high) + (1.0 * bext.time_reference_low)) / sfinfo.samplerate ;
 
 	printf ("Description      : %.*s\n", (int) sizeof (bext.description), bext.description) ;
 	printf ("Originator       : %.*s\n", (int) sizeof (bext.originator), bext.originator) ;
 	printf ("Origination ref  : %.*s\n", (int) sizeof (bext.originator_reference), bext.originator_reference) ;
 	printf ("Origination date : %.*s\n", (int) sizeof (bext.origination_date), bext.origination_date) ;
 	printf ("Origination time : %.*s\n", (int) sizeof (bext.origination_time), bext.origination_time) ;
+
+	if (bext.time_reference_high == 0 && bext.time_reference_low == 0)
+		printf ("Time ref         : 0\n") ;
+	else
+		printf ("Time ref         : 0x%x%08x (%.6f seconds)\n", bext.time_reference_high, bext.time_reference_low, time_ref_sec) ;
+
 	printf ("BWF version      : %d\n", bext.version) ;
 	printf ("UMID             : %.*s\n", (int) sizeof (bext.umid), bext.umid) ;
 	printf ("Coding history   : %.*s\n", bext.coding_history_size, bext.coding_history) ;
 
+	return 0 ;
 } /* broadcast_dump */
 
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch
-** revision control system.
-**
-** arch-tag: f59a05db-a182-41de-aedd-d717ce2bb099
-*/
+static void
+total_dump (void)
+{	printf ("========================================\n") ;
+	printf ("Total Duration : %s\n", format_duration_str (total_seconds)) ;
+} /* total_dump */
