@@ -672,39 +672,6 @@ bool EffectNyquist::ProcessOne()
    setlocale(LC_NUMERIC, "C");
 
    nyx_rval rval;
-   wxString code = mCmd;
-
-#if defined(SAL_SEPARATE_COMPILE)
-   if (mIsSal) {
-      code.Replace(wxT("\""), wxT("\\\""));
-
-      wxString c;
-      c =  wxT("(setf *tracenable* T)\n");
-      c += wxT("(setf *sal-call-stack* nil)\n");
-      c += wxT("(setf *sal-compiler-debug* t)\n");
-      c += wxT("(format nil \"~s\" (sal-compile \"define variable *audacity-plugin-result*\n") +
-           code +
-           wxT("\nset *audacity-plugin-result* = main()\n\" nil t nil))\n");
-
-      nyx_init();
-      nyx_set_os_callback(StaticOSCallback, (void *)this);
-      nyx_capture_output(StaticOutputCallback, (void *)this);
-      rval = nyx_eval_expression(c.mb_str());
-
-      if (rval == nyx_string) {
-         code = wxString(nyx_get_string(), wxConvISO8859_1);
-      }
-
-       nyx_cleanup();
-       setlocale(LC_NUMERIC, "");
-
-       if (rval != nyx_string) {
-         wxMessageBox(_("SAL compile didn't return anything"), wxT("Nyquist"),
-                      wxOK | wxCENTRE, mParent);
-         return true;
-      }
-   }
-#endif
 
    nyx_init();
    nyx_set_os_callback(StaticOSCallback, (void *)this);
@@ -745,7 +712,6 @@ bool EffectNyquist::ProcessOne()
       }
    }
 
-#if !defined(SAL_SEPARATE_COMPILE)
    if (mIsSal) {
       wxString str = mCmd;
       str.Replace(wxT("\""), wxT("\\\""));
@@ -755,28 +721,12 @@ bool EffectNyquist::ProcessOne()
       }
 
       cmd += wxT("(setf *sal-call-stack* nil)\n");
-      cmd += wxT("(setf *audacity-plugin-result* nil)\n");
-      cmd += wxT("(eval (sal-compile \"define variable *audacity-plugin-result*\n") +
-             str +
-             wxT("\nset *audacity-plugin-result* = main()\n\" nil t nil))\n");
-      cmd += wxT("(eval *audacity-plugin-result*)");
+      cmd += wxT("(sal-compile \"\n") + str + wxT("\n\" t t nil)\n");
+      cmd += wxT("(main)\n");
    }
    else {
       cmd += mCmd;
    }
-#endif
-
-#if defined(SAL_SEPARATE_COMPILE)
-   if (mIsSal) {
-      cmd += wxT("(setf *audacity-plugin-result* nil)\n");
-   }
-
-   cmd += code;
-
-   if (mIsSal) {
-      cmd += wxT("(eval *audacity-plugin-result*)");
-   }
-#endif
 
    int i;
 	for (i = 0; i < mCurNumChannels; i++)
