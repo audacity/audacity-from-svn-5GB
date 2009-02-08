@@ -126,14 +126,28 @@ if test x$prefix = "xNONE" ; then
 fi
 AC_DEFINE_UNQUOTED(INSTALL_PREFIX, "$prefix", [define as prefix where Audacity is installed])
 
+### Configuration of Audacity module support ###
+################################################
 dnl Some code (headers) can be built either as part of audacity, or as part of
 dnl audacity plug-ins. In order to tell this code what is going on, we need to
 dnl define BUILDING_AUDACITY during the audacity build, and not during the
 dnl plug-in build. This code puts the relevant content into configunix.h
 AC_DEFINE(BUILDING_AUDACITY, 1,
    [Define we are compiling Audacity itself, not an Audacity plug-in])
+# Add -rdynamic to linker flags so the right symbols are exported for
+# plug-ins. This might not work on all architectures / compilers, so we need
+# to check if it does or not.
+AX_LD_CHECK_FLAG([-rdynamic],[],[],
+               have_dynamic_link=yes,have_dynamic_link=no)
+if test "x$have_dynamic_link" = "xyes" ; then
+   BUILD_LDFLAGS="${BUILD_LDFLAGS} -rdynamic "
+else
+   AC_MSG_WARN(["Linker does not support -rdynamic. Could not enable exporting all symbols"])
+   AC_MSG_WARN(["Audacity module support will probably not work"])
+fi
 
-dnl Build Options
+### Build Options ###
+#####################
 
 AC_ARG_ENABLE(static,
             [AS_HELP_STRING([--enable-static],
