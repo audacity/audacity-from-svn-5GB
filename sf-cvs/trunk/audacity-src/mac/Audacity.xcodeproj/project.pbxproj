@@ -972,6 +972,12 @@
 		287BD9F40E25E02C00CB4467 /* value.c in Sources */ = {isa = PBXBuildFile; fileRef = 287BD9D00E25E02C00CB4467 /* value.c */; };
 		287BD9F50E25E02C00CB4467 /* values.c in Sources */ = {isa = PBXBuildFile; fileRef = 287BD9D10E25E02C00CB4467 /* values.c */; };
 		287BD9F60E25E02C00CB4467 /* world.c in Sources */ = {isa = PBXBuildFile; fileRef = 287BD9D20E25E02C00CB4467 /* world.c */; };
+		287DBE890F3F6B2700C5BBED /* audio_detect.c in Sources */ = {isa = PBXBuildFile; fileRef = 287DBE830F3F6B2700C5BBED /* audio_detect.c */; };
+		287DBE8A0F3F6B2700C5BBED /* chunk.c in Sources */ = {isa = PBXBuildFile; fileRef = 287DBE840F3F6B2700C5BBED /* chunk.c */; };
+		287DBE8B0F3F6B2700C5BBED /* ima_oki_adpcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 287DBE850F3F6B2700C5BBED /* ima_oki_adpcm.c */; };
+		287DBE8C0F3F6B2700C5BBED /* ima_oki_adpcm.h in Headers */ = {isa = PBXBuildFile; fileRef = 287DBE860F3F6B2700C5BBED /* ima_oki_adpcm.h */; };
+		287DBE8D0F3F6B2700C5BBED /* mpc2k.c in Sources */ = {isa = PBXBuildFile; fileRef = 287DBE870F3F6B2700C5BBED /* mpc2k.c */; };
+		287DBE8E0F3F6B2700C5BBED /* rf64.c in Sources */ = {isa = PBXBuildFile; fileRef = 287DBE880F3F6B2700C5BBED /* rf64.c */; };
 		287F9F3D0A69748F00F025FA /* TimeDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 287F9F3C0A69748F00F025FA /* TimeDialog.cpp */; };
 		288052870DEA69C900671EA4 /* PipeServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288052840DEA69C900671EA4 /* PipeServer.cpp */; };
 		288052880DEA69C900671EA4 /* ScripterCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288052850DEA69C900671EA4 /* ScripterCallback.cpp */; };
@@ -2457,6 +2463,12 @@
 		287BD9D00E25E02C00CB4467 /* value.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = value.c; path = slv2/src/value.c; sourceTree = "<group>"; };
 		287BD9D10E25E02C00CB4467 /* values.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = values.c; path = slv2/src/values.c; sourceTree = "<group>"; };
 		287BD9D20E25E02C00CB4467 /* world.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = world.c; path = slv2/src/world.c; sourceTree = "<group>"; };
+		287DBE830F3F6B2700C5BBED /* audio_detect.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = audio_detect.c; sourceTree = "<group>"; };
+		287DBE840F3F6B2700C5BBED /* chunk.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = chunk.c; sourceTree = "<group>"; };
+		287DBE850F3F6B2700C5BBED /* ima_oki_adpcm.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = ima_oki_adpcm.c; sourceTree = "<group>"; };
+		287DBE860F3F6B2700C5BBED /* ima_oki_adpcm.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ima_oki_adpcm.h; sourceTree = "<group>"; };
+		287DBE870F3F6B2700C5BBED /* mpc2k.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = mpc2k.c; sourceTree = "<group>"; };
+		287DBE880F3F6B2700C5BBED /* rf64.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = rf64.c; sourceTree = "<group>"; };
 		287F9F3B0A69748F00F025FA /* TimeDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeDialog.h; sourceTree = "<group>"; };
 		287F9F3C0A69748F00F025FA /* TimeDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeDialog.cpp; sourceTree = "<group>"; };
 		2880527E0DEA694100671EA4 /* mod-script-pipe.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "mod-script-pipe.so"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2934,9 +2946,11 @@
 				170734970988D6AD008541CC /* aiff.c */,
 				170734980988D6AD008541CC /* alaw.c */,
 				170734990988D6AD008541CC /* au.c */,
+				287DBE830F3F6B2700C5BBED /* audio_detect.c */,
 				1707349C0988D6AD008541CC /* avr.c */,
 				283A11A40A2C0DE7004372C4 /* broadcast.c */,
 				176EE9DB09A2EC1000188F3B /* caf.c */,
+				287DBE840F3F6B2700C5BBED /* chunk.c */,
 				1707349D0988D6AD008541CC /* command.c */,
 				1707349E0988D6AD008541CC /* common.c */,
 				1707349F0988D6AD008541CC /* common.h */,
@@ -2953,12 +2967,15 @@
 				170734EA0988D6AD008541CC /* gsm610.c */,
 				170734EB0988D6AD008541CC /* htk.c */,
 				170734EC0988D6AD008541CC /* ima_adpcm.c */,
+				287DBE850F3F6B2700C5BBED /* ima_oki_adpcm.c */,
+				287DBE860F3F6B2700C5BBED /* ima_oki_adpcm.h */,
 				170734ED0988D6AD008541CC /* interleave.c */,
 				170734EE0988D6AD008541CC /* ircam.c */,
 				170734F00988D6AD008541CC /* macbinary3.c */,
 				170734F10988D6AD008541CC /* macos.c */,
 				170734F50988D6AD008541CC /* mat4.c */,
 				170734F60988D6AD008541CC /* mat5.c */,
+				287DBE870F3F6B2700C5BBED /* mpc2k.c */,
 				170734F70988D6AD008541CC /* ms_adpcm.c */,
 				170734F80988D6AD008541CC /* nist.c */,
 				170734F90988D6AD008541CC /* ogg.c */,
@@ -2966,6 +2983,7 @@
 				170734FB0988D6AD008541CC /* pcm.c */,
 				170734FC0988D6AD008541CC /* pvf.c */,
 				170734FD0988D6AD008541CC /* raw.c */,
+				287DBE880F3F6B2700C5BBED /* rf64.c */,
 				170734FE0988D6AD008541CC /* rx2.c */,
 				170734FF0988D6AD008541CC /* sd2.c */,
 				170735000988D6AD008541CC /* sds.c */,
@@ -5037,6 +5055,7 @@
 				1707405C0988EEBA008541CC /* sfendian.h in Headers */,
 				1707405E0988EEBA008541CC /* sndfile.h in Headers */,
 				170740680988EEBA008541CC /* wav_w64.h in Headers */,
+				287DBE8C0F3F6B2700C5BBED /* ima_oki_adpcm.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6098,6 +6117,11 @@
 				176EE9DF09A2EC1000188F3B /* flac.c in Sources */,
 				176EE9E009A2EC1000188F3B /* g72x.c in Sources */,
 				283A11A50A2C0DE7004372C4 /* broadcast.c in Sources */,
+				287DBE890F3F6B2700C5BBED /* audio_detect.c in Sources */,
+				287DBE8A0F3F6B2700C5BBED /* chunk.c in Sources */,
+				287DBE8B0F3F6B2700C5BBED /* ima_oki_adpcm.c in Sources */,
+				287DBE8D0F3F6B2700C5BBED /* mpc2k.c in Sources */,
+				287DBE8E0F3F6B2700C5BBED /* rf64.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
