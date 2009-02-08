@@ -677,9 +677,9 @@ subdirs
 WX_CONFIG
 HAVE_VISIBILITY
 CFLAG_VISIBILITY
-SED
 EGREP
 GREP
+SED
 AUDACITY_NAME
 LIBSRC_BUILD
 BUILD_LDFLAGS
@@ -3748,12 +3748,195 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
+### Configuration of Audacity module support ###
+################################################
 
 cat >>confdefs.h <<\_ACEOF
 #define BUILDING_AUDACITY 1
 _ACEOF
 
+# Add -rdynamic to linker flags so the right symbols are exported for
+# plug-ins. This might not work on all architectures / compilers, so we need
+# to check if it does or not.
+{ $as_echo "$as_me:$LINENO: checking for a sed that does not truncate output" >&5
+$as_echo_n "checking for a sed that does not truncate output... " >&6; }
+if test "${ac_cv_path_SED+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+            ac_script=s/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/
+     for ac_i in 1 2 3 4 5 6 7; do
+       ac_script="$ac_script$as_nl$ac_script"
+     done
+     echo "$ac_script" 2>/dev/null | sed 99q >conftest.sed
+     $as_unset ac_script || ac_script=
+     if test -z "$SED"; then
+  ac_path_SED_found=false
+  # Loop through the user's path and test for each of PROGNAME-LIST
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_prog in sed gsed; do
+    for ac_exec_ext in '' $ac_executable_extensions; do
+      ac_path_SED="$as_dir/$ac_prog$ac_exec_ext"
+      { test -f "$ac_path_SED" && $as_test_x "$ac_path_SED"; } || continue
+# Check for GNU ac_path_SED and select it if it is found.
+  # Check for GNU $ac_path_SED
+case `"$ac_path_SED" --version 2>&1` in
+*GNU*)
+  ac_cv_path_SED="$ac_path_SED" ac_path_SED_found=:;;
+*)
+  ac_count=0
+  $as_echo_n 0123456789 >"conftest.in"
+  while :
+  do
+    cat "conftest.in" "conftest.in" >"conftest.tmp"
+    mv "conftest.tmp" "conftest.in"
+    cp "conftest.in" "conftest.nl"
+    $as_echo '' >> "conftest.nl"
+    "$ac_path_SED" -f conftest.sed < "conftest.nl" >"conftest.out" 2>/dev/null || break
+    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
+    ac_count=`expr $ac_count + 1`
+    if test $ac_count -gt ${ac_path_SED_max-0}; then
+      # Best one so far, save it but keep looking for a better one
+      ac_cv_path_SED="$ac_path_SED"
+      ac_path_SED_max=$ac_count
+    fi
+    # 10*(2^10) chars as input seems more than enough
+    test $ac_count -gt 10 && break
+  done
+  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
+esac
 
+      $ac_path_SED_found && break 3
+    done
+  done
+done
+IFS=$as_save_IFS
+  if test -z "$ac_cv_path_SED"; then
+    { { $as_echo "$as_me:$LINENO: error: no acceptable sed could be found in \$PATH" >&5
+$as_echo "$as_me: error: no acceptable sed could be found in \$PATH" >&2;}
+   { (exit 1); exit 1; }; }
+  fi
+else
+  ac_cv_path_SED=$SED
+fi
+
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_path_SED" >&5
+$as_echo "$ac_cv_path_SED" >&6; }
+ SED="$ac_cv_path_SED"
+  rm -f conftest.sed
+
+
+
+
+
+
+
+  flag=`echo "-rdynamic" | $SED 'y% .=/+-(){}<>:*,%_______________%'`
+
+  { $as_echo "$as_me:$LINENO: checking whether the linker accepts the -rdynamic flag" >&5
+$as_echo_n "checking whether the linker accepts the -rdynamic flag... " >&6; }
+if { as_var=ax_cv_ld_check_flag_$flag; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+
+
+    #AC_LANG_PUSH([C])
+
+    save_LDFLAGS="$LDFLAGS"
+    LDFLAGS="$LDFLAGS -rdynamic"
+    cat >conftest.$ac_ext <<_ACEOF
+
+      /* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext && {
+	 test "$cross_compiling" = yes ||
+	 $as_test_x conftest$ac_exeext
+       }; then
+
+      eval "ax_cv_ld_check_flag_$flag=yes"
+
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+      eval "ax_cv_ld_check_flag_$flag=no"
+
+fi
+
+rm -rf conftest.dSYM
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+
+    LDFLAGS="$save_LDFLAGS"
+
+    #AC_LANG_POP
+
+
+fi
+ac_res=`eval 'as_val=${'ax_cv_ld_check_flag_$flag'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+
+  if eval "test \"`echo '$ax_cv_ld_check_flag_'$flag`\" = yes"; then
+
+    :
+    have_dynamic_link=yes
+
+else
+
+    :
+    have_dynamic_link=no
+
+fi
+
+
+if test "x$have_dynamic_link" = "xyes" ; then
+   BUILD_LDFLAGS="${BUILD_LDFLAGS} -rdynamic "
+else
+   { $as_echo "$as_me:$LINENO: WARNING: \"Linker does not support -rdynamic. Could not enable exporting all symbols\"" >&5
+$as_echo "$as_me: WARNING: \"Linker does not support -rdynamic. Could not enable exporting all symbols\"" >&2;}
+   { $as_echo "$as_me:$LINENO: WARNING: \"Audacity module support will probably not work\"" >&5
+$as_echo "$as_me: WARNING: \"Audacity module support will probably not work\"" >&2;}
+fi
+
+### Build Options ###
+#####################
 
 # Check whether --enable-static was given.
 if test "${enable_static+set}" = set; then
@@ -3796,7 +3979,6 @@ $as_echo "$as_me: Adding -g for debugging to CFLAGS and CXXFLAGS ..." >&6;}
    CFLAGS="${CFLAGS} -g "
    CXXFLAGS="${CXXFLAGS} -g "
 fi
-
 
 { $as_echo "$as_me:$LINENO: checking for an ANSI C-conforming const" >&5
 $as_echo_n "checking for an ANSI C-conforming const... " >&6; }
@@ -4793,77 +4975,6 @@ case ".$ac_cv_cflags_warn_all" in
 esac
 
 CFLAGS="${CFLAGS} $wall_flags"
-{ $as_echo "$as_me:$LINENO: checking for a sed that does not truncate output" >&5
-$as_echo_n "checking for a sed that does not truncate output... " >&6; }
-if test "${ac_cv_path_SED+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-            ac_script=s/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/
-     for ac_i in 1 2 3 4 5 6 7; do
-       ac_script="$ac_script$as_nl$ac_script"
-     done
-     echo "$ac_script" 2>/dev/null | sed 99q >conftest.sed
-     $as_unset ac_script || ac_script=
-     if test -z "$SED"; then
-  ac_path_SED_found=false
-  # Loop through the user's path and test for each of PROGNAME-LIST
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_prog in sed gsed; do
-    for ac_exec_ext in '' $ac_executable_extensions; do
-      ac_path_SED="$as_dir/$ac_prog$ac_exec_ext"
-      { test -f "$ac_path_SED" && $as_test_x "$ac_path_SED"; } || continue
-# Check for GNU ac_path_SED and select it if it is found.
-  # Check for GNU $ac_path_SED
-case `"$ac_path_SED" --version 2>&1` in
-*GNU*)
-  ac_cv_path_SED="$ac_path_SED" ac_path_SED_found=:;;
-*)
-  ac_count=0
-  $as_echo_n 0123456789 >"conftest.in"
-  while :
-  do
-    cat "conftest.in" "conftest.in" >"conftest.tmp"
-    mv "conftest.tmp" "conftest.in"
-    cp "conftest.in" "conftest.nl"
-    $as_echo '' >> "conftest.nl"
-    "$ac_path_SED" -f conftest.sed < "conftest.nl" >"conftest.out" 2>/dev/null || break
-    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
-    ac_count=`expr $ac_count + 1`
-    if test $ac_count -gt ${ac_path_SED_max-0}; then
-      # Best one so far, save it but keep looking for a better one
-      ac_cv_path_SED="$ac_path_SED"
-      ac_path_SED_max=$ac_count
-    fi
-    # 10*(2^10) chars as input seems more than enough
-    test $ac_count -gt 10 && break
-  done
-  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
-esac
-
-      $ac_path_SED_found && break 3
-    done
-  done
-done
-IFS=$as_save_IFS
-  if test -z "$ac_cv_path_SED"; then
-    { { $as_echo "$as_me:$LINENO: error: no acceptable sed could be found in \$PATH" >&5
-$as_echo "$as_me: error: no acceptable sed could be found in \$PATH" >&2;}
-   { (exit 1); exit 1; }; }
-  fi
-else
-  ac_cv_path_SED=$SED
-fi
-
-fi
-{ $as_echo "$as_me:$LINENO: result: $ac_cv_path_SED" >&5
-$as_echo "$ac_cv_path_SED" >&6; }
- SED="$ac_cv_path_SED"
-  rm -f conftest.sed
-
 
 
 
@@ -5742,7 +5853,7 @@ fi
 $as_echo "$as_me: libsndfile libraries are available in this source tree" >&6;}
 
 
-            ac_configure_args="$ac_configure_args --disable-sqlite --disable-flac --disable-alsa"
+            ac_configure_args="$ac_configure_args --disable-sqlite --disable-external-libs --disable-alsa"
    else
       LIBSNDFILE_LOCAL_AVAILABLE="no"
       { $as_echo "$as_me:$LINENO: libsndfile libraries are NOT available in this source tree" >&5
@@ -7883,7 +7994,7 @@ fi
       LIBVAMP_LOCAL_AVAILABLE="yes"
 	        LIBVAMP_LOCAL_BUILD="vamp-sdk"
 	        LIBVAMP_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libvamp'
-      LIBVAMP_LOCAL_LDFLAGS='-L$(top_builddir)/lib-src/libvamp/src -Wl,-Bstatic -lvamp-hostsdk -Wl,-Bdynamic'
+      LIBVAMP_LOCAL_LDFLAGS='-L$(top_builddir)/lib-src/libvamp/src -lvamp-hostsdk'
 	        LIBVAMP_LOCAL_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
 	  	        LIBVAMP_LOCAL_CPPSYMBOLS="USE_VAMP"
 	        LIBVAMP_LOCAL_CONFIG_SUBDIRS="lib-src/libvamp"
