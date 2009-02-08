@@ -135,7 +135,6 @@ if test $ac_cv_c_byte_order = unknown ; then
 	fi
 
 )
-]
 
 if test $ac_cv_c_byte_order = big ; then
 	ac_cv_c_big_endian=1
@@ -147,8 +146,13 @@ else
 	ac_cv_c_big_endian=0
 	ac_cv_c_little_endian=0
 
-fi
+	AC_MSG_WARN([[*****************************************************************]])
+	AC_MSG_WARN([[*** Not able to determine endian-ness of target processor.       ]])
+	AC_MSG_WARN([[*** The constants CPU_IS_BIG_ENDIAN and CPU_IS_LITTLE_ENDIAN in  ]])
+	AC_MSG_WARN([[*** src/config.h may need to be hand editied.                    ]])
+	AC_MSG_WARN([[*****************************************************************]])
+	fi
 
-)# AC_C_FIND_ENDIAN
+])# AC_C_FIND_ENDIAN
 
 

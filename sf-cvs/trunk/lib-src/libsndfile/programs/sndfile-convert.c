@@ -1,21 +1,34 @@
 /*
-** Copyright (C) 1999-2005 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2008 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
-** This program is free software; you can redistribute it and/or modify
-** it under the terms of the GNU General Public License as published by
-** the Free Software Foundation; either version 2 of the License, or
-** (at your option) any later version.
+** All rights reserved.
 **
-** This program is distributed in the hope that it will be useful,
-** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-** GNU General Public License for more details.
+** Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
 **
-** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+**     * Redistributions of source code must retain the above copyright
+**       notice, this list of conditions and the following disclaimer.
+**     * Redistributions in binary form must reproduce the above copyright
+**       notice, this list of conditions and the following disclaimer in
+**       the documentation and/or other materials provided with the
+**       distribution.
+**     * Neither the author nor the names of any contributors may be used
+**       to endorse or promote products derived from this software without
+**       specific prior written permission.
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+** TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+** PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+** CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+** EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+** PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+** OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+** WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+** OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+** ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +37,7 @@
 
 #include <sndfile.h>
 
-#define	 BUFFER_LEN	1024
+#include "common.h"
 
 
 typedef	struct
@@ -39,8 +52,6 @@ typedef struct
 } OUTPUT_FORMAT_MAP ;
 
 static void copy_metadata (SNDFILE *outfile, SNDFILE *infile) ;
-static void copy_data_fp (SNDFILE *outfile, SNDFILE *infile, int channels) ;
-static void copy_data_int (SNDFILE *outfile, SNDFILE *infile, int channels) ;
 
 static OUTPUT_FORMAT_MAP format_map [] =
 {
@@ -67,7 +78,11 @@ static OUTPUT_FORMAT_MAP format_map [] =
 	{	"sds",		0, 	SF_FORMAT_SDS 	},
 	{	"sd2",		0, 	SF_FORMAT_SD2 	},
 	{	"vox",		0, 	SF_FORMAT_RAW 	},
-	{	"xi",		0, 	SF_FORMAT_XI 	}
+	{	"xi",		0, 	SF_FORMAT_XI 	},
+	{	"wve",		0,	SF_FORMAT_WVE	},
+	{	"oga",		0,	SF_FORMAT_OGG	},
+	{	"mpc",		0,	SF_FORMAT_MPC2K	},
+	{	"rf64",		0,	SF_FORMAT_RF64	},
 } ; /* format_map */
 
 static int
@@ -109,7 +124,12 @@ print_usage (char *progname)
 
 	int k ;
 
-	printf ("\nUsage : %s [encoding] <input file> <output file>\n", progname) ;
+	printf ("\nUsage : %s [options] [encoding] <input file> <output file>\n", progname) ;
+	puts ("\n"
+		"    where [option] may be:\n\n"
+		"        -override-sample-rate=X  : force sample rate of input to X\n\n"
+		) ;
+
 	puts ("\n"
 		"    where [encoding] may be one of the following:\n\n"
 		"        -pcms8     : force the output to signed 8 bit pcm\n"
@@ -128,6 +148,7 @@ print_usage (char *progname)
 		"        -dwvw12    : force the output to 12 bit DWVW (AIFF only)\n"
 		"        -dwvw16    : force the output to 16 bit DWVW (AIFF only)\n"
 		"        -dwvw24    : force the output to 24 bit DWVW (AIFF only)\n"
+		"        -vorbis    : force the output to Vorbis (OGG only)\n"
 		) ;
 
 	puts (
@@ -150,6 +171,7 @@ main (int argc, char * argv [])
 	SNDFILE	 	*infile = NULL, *outfile = NULL ;
 	SF_INFO	 	sfinfo ;
 	int			k, outfilemajor, outfileminor = 0, infileminor ;
+	int			override_sample_rate = 0 ; /* assume no sample rate override. */
 
 	progname = strrchr (argv [0], '/') ;
 	progname = progname ? progname + 1 : argv [0] ;
@@ -237,6 +259,18 @@ main (int argc, char * argv [])
 		{	outfileminor = SF_FORMAT_DWVW_24 ;
 			continue ;
 			} ;
+		if (! strcmp (argv [k], "-vorbis"))
+		{	outfileminor = SF_FORMAT_VORBIS ;
+			continue ;
+			} ;
+
+		if (strstr (argv [k], "-override-sample-rate=") == argv [k])
+		{	const char *ptr ;
+
+			ptr = argv [k] + strlen ("-override-sample-rate=") ;
+			override_sample_rate = atoi (ptr) ;
+			continue ;
+			} ;
 
 		printf ("Error : Not able to decode argunment '%s'.\n", argv [k]) ;
 		exit (1) ;
@@ -247,6 +281,10 @@ main (int argc, char * argv [])
 		puts (sf_strerror (NULL)) ;
 		return 1 ;
 		} ;
+
+	/* Update sample rate if forced to something else. */
+	if (override_sample_rate)
+		sfinfo.samplerate = override_sample_rate ;
 
 	infileminor = sfinfo.format & SF_FORMAT_SUBMASK ;
 
@@ -291,11 +329,12 @@ main (int argc, char * argv [])
 	/* Copy the metadata */
 	copy_metadata (outfile, infile) ;
 
-	if ((outfileminor == SF_FORMAT_DOUBLE) || (outfileminor == SF_FORMAT_FLOAT) ||
-				(infileminor == SF_FORMAT_DOUBLE) || (infileminor == SF_FORMAT_FLOAT))
-		copy_data_fp (outfile, infile, sfinfo.channels) ;
+	if ((outfileminor == SF_FORMAT_DOUBLE) || (outfileminor == SF_FORMAT_FLOAT)
+			|| (infileminor == SF_FORMAT_DOUBLE) || (infileminor == SF_FORMAT_FLOAT)
+			|| (infileminor == SF_FORMAT_VORBIS) || (outfileminor == SF_FORMAT_VORBIS))
+		sfe_copy_data_fp (outfile, infile, sfinfo.channels) ;
 	else
-		copy_data_int (outfile, infile, sfinfo.channels) ;
+		sfe_copy_data_int (outfile, infile, sfinfo.channels) ;
 
 	sf_close (infile) ;
 	sf_close (outfile) ;
@@ -306,6 +345,7 @@ main (int argc, char * argv [])
 static void
 copy_metadata (SNDFILE *outfile, SNDFILE *infile)
 {	SF_INSTRUMENT inst ;
+	SF_BROADCAST_INFO_2K binfo ;
 	const char *str ;
 	int k, err = 0 ;
 
@@ -316,61 +356,13 @@ copy_metadata (SNDFILE *outfile, SNDFILE *infile)
 		} ;
 
 	memset (&inst, 0, sizeof (inst)) ;
+	memset (&binfo, 0, sizeof (binfo)) ;
+
 	if (sf_command (infile, SFC_GET_INSTRUMENT, &inst, sizeof (inst)) == SF_TRUE)
 		sf_command (outfile, SFC_SET_INSTRUMENT, &inst, sizeof (inst)) ;
 
+	if (sf_command (infile, SFC_GET_BROADCAST_INFO, &binfo, sizeof (binfo)) == SF_TRUE)
+		sf_command (outfile, SFC_SET_BROADCAST_INFO, &binfo, sizeof (binfo)) ;
+
 } /* copy_metadata */
 
-static void
-copy_data_fp (SNDFILE *outfile, SNDFILE *infile, int channels)
-{	static double	data [BUFFER_LEN], max ;
-	int		frames, readcount, k ;
-
-	frames = BUFFER_LEN / channels ;
-	readcount = frames ;
-
-	sf_command (infile, SFC_CALC_SIGNAL_MAX, &max, sizeof (max)) ;
-
-	if (max < 1.0)
-	{	while (readcount > 0)
-		{	readcount = sf_readf_double (infile, data, frames) ;
-			sf_writef_double (outfile, data, readcount) ;
-			} ;
-		}
-	else
-	{	sf_command (infile, SFC_SET_NORM_DOUBLE, NULL, SF_FALSE) ;
-
-		while (readcount > 0)
-		{	readcount = sf_readf_double (infile, data, frames) ;
-			for (k = 0 ; k < readcount * channels ; k++)
-				data [k] /= max ;
-			sf_writef_double (outfile, data, readcount) ;
-			} ;
-		} ;
-
-	return ;
-} /* copy_data_fp */
-
-static void
-copy_data_int (SNDFILE *outfile, SNDFILE *infile, int channels)
-{	static int	data [BUFFER_LEN] ;
-	int		frames, readcount ;
-
-	frames = BUFFER_LEN / channels ;
-	readcount = frames ;
-
-	while (readcount > 0)
-	{	readcount = sf_readf_int (infile, data, frames) ;
-		sf_writef_int (outfile, data, readcount) ;
-		} ;
-
-	return ;
-} /* copy_data_int */
-
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch
-** revision control system.
-**
-** arch-tag: 259682b3-2887-48a6-b5bb-3cde00521ba3
-*/

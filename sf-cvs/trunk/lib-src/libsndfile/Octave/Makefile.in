@@ -37,11 +37,17 @@ subdir = Octave
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/M4/add_cflags.m4 \
-	$(top_srcdir)/M4/clip_mode.m4 $(top_srcdir)/M4/endian.m4 \
-	$(top_srcdir)/M4/extra_largefile.m4 \
-	$(top_srcdir)/M4/flexible_array.m4 $(top_srcdir)/M4/libtool.m4 \
+	$(top_srcdir)/M4/add_cxxflags.m4 $(top_srcdir)/M4/clip_mode.m4 \
+	$(top_srcdir)/M4/endian.m4 $(top_srcdir)/M4/extra_largefile.m4 \
+	$(top_srcdir)/M4/extra_pkg.m4 \
+	$(top_srcdir)/M4/flexible_array.m4 \
+	$(top_srcdir)/M4/gcc_version.m4 $(top_srcdir)/M4/libtool.m4 \
 	$(top_srcdir)/M4/lrint.m4 $(top_srcdir)/M4/lrintf.m4 \
-	$(top_srcdir)/M4/pkg.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/M4/ltoptions.m4 $(top_srcdir)/M4/ltsugar.m4 \
+	$(top_srcdir)/M4/ltversion.m4 $(top_srcdir)/M4/lt~obsolete.m4 \
+	$(top_srcdir)/M4/mkoctfile_version.m4 \
+	$(top_srcdir)/M4/octave.m4 $(top_srcdir)/M4/pkg.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -57,9 +63,10 @@ am__vpath_adj = case $$p in \
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(octconfigdir)"
 octconfigDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(octconfig_DATA)
+DATA = $(noinst_DATA) $(octconfig_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
+ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
 ALSA_LIBS = @ALSA_LIBS@
 AMTAR = @AMTAR@
 AR = @AR@
@@ -81,19 +88,31 @@ CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DSYMUTIL = @DSYMUTIL@
-ECHO = @ECHO@
+DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENABLE_EXPERIMENTAL_CODE = @ENABLE_EXPERIMENTAL_CODE@
-EXEEXT = @EXEEXT@
-F77 = @F77@
-FFLAGS = @FFLAGS@
+
+# Prevent any extension.
+EXEEXT = 
+EXTERNAL_CFLAGS = @EXTERNAL_CFLAGS@
+EXTERNAL_LIBS = @EXTERNAL_LIBS@
+FGREP = @FGREP@
+FLAC_CFLAGS = @FLAC_CFLAGS@
 FLAC_LIBS = @FLAC_LIBS@
 GCC_MAJOR_VERSION = @GCC_MAJOR_VERSION@
+GCC_MINOR_VERSION = @GCC_MINOR_VERSION@
+GCC_VERSION = @GCC_VERSION@
 GETCONF = @GETCONF@
 GREP = @GREP@
+HAVE_AUTOGEN = @HAVE_AUTOGEN@
+HAVE_JACK = @HAVE_JACK@
+HAVE_MKOCTFILE = @HAVE_MKOCTFILE@
+HAVE_OCTAVE = @HAVE_OCTAVE@
+HAVE_OCTAVE_CONFIG = @HAVE_OCTAVE_CONFIG@
+HAVE_WINE = @HAVE_WINE@
 HTML_BGCOLOUR = @HTML_BGCOLOUR@
 HTML_FGCOLOUR = @HTML_FGCOLOUR@
 INSTALL = @INSTALL@
@@ -101,20 +120,38 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+JACK_CFLAGS = @JACK_CFLAGS@
+JACK_LIBS = @JACK_LIBS@
+LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
+LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+MKOCTFILE = @MKOCTFILE@
+MKOCTFILE_VERSION = @MKOCTFILE_VERSION@
+NM = @NM@
 NMEDIT = @NMEDIT@
+OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
+OCTAVE = @OCTAVE@
+OCTAVE_CONFIG = @OCTAVE_CONFIG@
+OCTAVE_CONFIG_VERSION = @OCTAVE_CONFIG_VERSION@
+OCTAVE_DEST_MDIR = @OCTAVE_DEST_MDIR@
+OCTAVE_DEST_ODIR = @OCTAVE_DEST_ODIR@/sndfile
+OCTAVE_VERSION = @OCTAVE_VERSION@
+OGG_CFLAGS = @OGG_CFLAGS@
+OGG_LIBS = @OGG_LIBS@
 OS_SPECIFIC_CFLAGS = @OS_SPECIFIC_CFLAGS@
 OS_SPECIFIC_LINKS = @OS_SPECIFIC_LINKS@
+OTOOL = @OTOOL@
+OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -136,19 +173,22 @@ SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
 TYPEOF_SF_COUNT_T = @TYPEOF_SF_COUNT_T@
 VERSION = @VERSION@
+VORBISENC_CFLAGS = @VORBISENC_CFLAGS@
+VORBISENC_LIBS = @VORBISENC_LIBS@
+VORBIS_CFLAGS = @VORBIS_CFLAGS@
+VORBIS_LIBS = @VORBIS_LIBS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
-ac_ct_F77 = @ac_ct_F77@
+ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
 am__tar = @am__tar@
 am__untar = @am__untar@
-autogen = @autogen@
 bindir = @bindir@
 build = @build@
 build_alias = @build_alias@
@@ -175,6 +215,7 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
+lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -194,9 +235,25 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-EXTRA_DIST = sndfile_load.m sndfile_save.m sndfile_play.m
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) --tag=CXX --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+
+EXTRA_DIST = sndfile_load.m sndfile_save.m sndfile_play.m \
+	octave_test.m octave_test.sh $(oct_module_srcs) PKG_ADD
+
 octconfigdir = $(exec_prefix)/share/octave/site/m
 octconfig_DATA = sndfile_load.m sndfile_save.m sndfile_play.m
+OCT_CXXFLAGS = @OCT_CXXFLAGS@
+OCT_LIB_DIR = @OCT_LIB_DIR@
+OCT_LIBS = @OCT_LIBS@
+SNDFILEDIR = $(top_builddir)/src
+INCLUDES = -I$(SNDFILEDIR)
+oct_module_srcs = sndfile.cc
+oct_module_files = sndfile.oct PKG_ADD
+
+# Make these noinst so they can be installed manually.
+noinst_DATA = $(oct_module_files)
 all: all-am
 
 .SUFFIXES:
@@ -318,7 +375,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libtool mostlyclean-am
+clean-am: clean-generic clean-libtool clean-local mostlyclean-am
 
 distclean: distclean-am
 	-rm -f Makefile
@@ -338,7 +395,7 @@ install-data-am: install-octconfigDATA
 
 install-dvi: install-dvi-am
 
-install-exec-am:
+install-exec-am: install-exec-local
 
 install-html: install-html-am
 
@@ -368,22 +425,63 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-octconfigDATA
+uninstall-am: uninstall-local uninstall-octconfigDATA
 
 .MAKE: install-am install-strip
 
 .PHONY: all all-am check check-am clean clean-generic clean-libtool \
-	distclean distclean-generic distclean-libtool distdir dvi \
-	dvi-am html html-am info info-am install install-am \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-octconfigDATA \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	uninstall uninstall-am uninstall-octconfigDATA
+	clean-local distclean distclean-generic distclean-libtool \
+	distdir dvi dvi-am html html-am info info-am install \
+	install-am install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-exec-local \
+	install-html install-html-am install-info install-info-am \
+	install-man install-octconfigDATA install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-local uninstall-octconfigDATA
 
+
+# Use Octave's mkoctfile to do all the heavy lifting. Unfortunately, its
+# a little dumb so we need to guide it carefully.
+sndfile.oct : sndfile.o
+	$(MKOCTFILE) -v $(INCLUDES) $(builddir)/$+ -L$(SNDFILEDIR)/.libs -L$(SNDFILEDIR) -lsndfile -o $(builddir)/$@
+
+sndfile.o : sndfile.cc
+	$(MKOCTFILE) -v $(INCLUDES) -c $+ -o $(builddir)/$@
+
+# Allow for the test being run in the build dir, but the test script
+# being located in the source dir.
+check :
+	octave_src_dir=$(srcdir) $(srcdir)/octave_test.sh
+
+# Since the octave modules are installed in a special location, a custom install
+# and uninstall routine must be specified.
+install-exec-local : $(oct_module_files)
+	@$(NORMAL_INSTALL)
+	test -z "$(OCTAVE_DEST_ODIR)" || $(mkdir_p) "$(DESTDIR)$(OCTAVE_DEST_ODIR)"
+	@list='$(oct_module_files)'; for p in $$list; do \
+	  p1=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
+	  if test -f $$p \
+	     || test -f $$p1 \
+	  ; then \
+	    f=`echo "$$p1" | sed 's,^.*/,,;$(transform);s/$$/$(EXEEXT)/'`; \
+	   echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(INSTALL) '$$p' '$(DESTDIR)$(OCTAVE_DEST_ODIR)/$$f'"; \
+	   $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(INSTALL) "$$p" "$(DESTDIR)$(OCTAVE_DEST_ODIR)/$$f" || exit 1; \
+	  else :; fi; \
+	done
+
+uninstall-local :
+	@$(NORMAL_UNINSTALL)
+	@list='$(oct_module_files)'; for p in $$list; do \
+	  f=`echo "$$p" | sed 's,^.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/'`; \
+	  echo " rm -f '$(DESTDIR)$(OCTAVE_DEST_ODIR)/$$f'"; \
+	  rm -f "$(DESTDIR)$(OCTAVE_DEST_ODIR)/$$f"; \
+	done
+
+clean-local :
+	rm -f sndfile.o sndfile.oct
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

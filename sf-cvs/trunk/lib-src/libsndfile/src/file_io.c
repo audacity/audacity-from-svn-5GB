@@ -55,6 +55,15 @@
 
 #define	SENSIBLE_SIZE	(0x40000000)
 
+/*
+**	Neat solution to the Win32/OS2 binary file flage requirement.
+**	If O_BINARY isn't already defined by the inclusion of the system
+**	headers, set it to zero.
+*/
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+
 static void psf_log_syserr (SF_PRIVATE *psf, int error) ;
 
 #if (USE_WINDOWS_API == 0)
@@ -526,17 +535,17 @@ psf_open_fd (const char * pathname, int open_mode)
 
 	switch (open_mode)
 	{	case SFM_READ :
-				oflag = O_RDONLY ;
+				oflag = O_RDONLY | O_BINARY ;
 				mode = 0 ;
 				break ;
 
 		case SFM_WRITE :
-				oflag = O_WRONLY | O_CREAT | O_TRUNC ;
+				oflag = O_WRONLY | O_CREAT | O_TRUNC | O_BINARY ;
 				mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH ;
 				break ;
 
 		case SFM_RDWR :
-				oflag = O_RDWR | O_CREAT ;
+				oflag = O_RDWR | O_CREAT | O_BINARY ;
 				mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH ;
 				break ;
 
@@ -544,11 +553,6 @@ psf_open_fd (const char * pathname, int open_mode)
 				return - SFE_BAD_OPEN_MODE ;
 				break ;
 		} ;
-
-#if OS_IS_WIN32
-	/* For Cygwin. */
-	oflag |= O_BINARY ;
-#endif
 
 	if (mode == 0)
 		fd = open (pathname, oflag) ;
@@ -588,10 +592,6 @@ psf_fsync (SF_PRIVATE *psf)
 #include <windows.h>
 #include <io.h>
 
-#ifndef HAVE_SSIZE_T
-typedef long ssize_t ;
-#endif
-
 static int psf_close_handle (HANDLE handle) ;
 static HANDLE psf_open_handle (const char * path, int mode) ;
 static sf_count_t psf_get_filelen_handle (HANDLE handle) ;
@@ -603,7 +603,7 @@ psf_fopen (SF_PRIVATE *psf, const char *pathname, int open_mode)
 	psf->hfile = psf_open_handle (pathname, open_mode) ;
 
 	if (psf->hfile == NULL)
-		psf_log_syserr (psf, GetLastError()) ;
+		psf_log_syserr (psf, GetLastError ()) ;
 
 	psf->mode = open_mode ;
 
@@ -858,7 +858,7 @@ psf_set_stdio (SF_PRIVATE *psf, int mode)
 /* USE_WINDOWS_API */ void
 psf_set_file (SF_PRIVATE *psf, int fd)
 {	HANDLE handle ;
-	long osfhandle ;
+	intptr_t osfhandle ;
 
 	osfhandle = _get_osfhandle (fd) ;
 	handle = (HANDLE) osfhandle ;
@@ -1160,10 +1160,6 @@ psf_ftruncate (SF_PRIVATE *psf, sf_count_t len)
 
 #include <io.h>
 #include <direct.h>
-
-#ifndef HAVE_SSIZE_T
-typedef long ssize_t ;
-#endif
 
 /* Win32 */ int
 psf_fopen (SF_PRIVATE *psf, const char *pathname, int open_mode)
@@ -1528,10 +1524,3 @@ psf_log_syserr (SF_PRIVATE *psf, int error)
 
 #endif
 
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch
-** revision control system.
-**
-** arch-tag: 749740d7-ecc7-47bd-8cf7-600f31d32e6d
-*/

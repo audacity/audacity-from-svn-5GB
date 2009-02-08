@@ -40,7 +40,7 @@ int
 txw_open	(SF_PRIVATE *psf)
 {	if (psf)
 		return SFE_UNIMPLEMENTED ;
-	return (psf && 0) ;
+	return 0 ;
 } /* txw_open */
 
 #else
@@ -125,7 +125,7 @@ txw_open	(SF_PRIVATE *psf)
 static int
 txw_read_header	(SF_PRIVATE *psf)
 {	TXW_HEADER txwh ;
-	char	*strptr ;
+	const char	*strptr ;
 
 	memset (&txwh, 0, sizeof (txwh)) ;
 	memset (psf->u.cbuf, 0, sizeof (psf->u.cbuf)) ;
@@ -370,10 +370,3 @@ txw_seek (SF_PRIVATE *psf, int mode, sf_count_t offset)
 } /* txw_seek */
 
 #endif
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: 4d0ba7af-b1c5-46b4-a900-7c6f59fd9a89
-*/

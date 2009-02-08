@@ -27,32 +27,19 @@
 
 #if (OS_IS_MACOSX == 1)
 
-#include	<CoreServices.h>
-
 int
-macbinary3_open (SF_PRIVATE *psf)
+macbinary3_open (SF_PRIVATE * UNUSED (psf))
 {
-	if (psf)
-		return 0 ;
-
 	return 0 ;
 } /* macbinary3_open */
 
 #else
 
 int
-macbinary3_open (SF_PRIVATE *psf)
+macbinary3_open (SF_PRIVATE * UNUSED (psf))
 {
-	psf = psf ;
 	return 0 ;
 } /* macbinary3_open */
 
 #endif /* OS_IS_MACOSX */
 
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: c397a7d7-1a31-4349-9684-bd29ef06211e
-*/
