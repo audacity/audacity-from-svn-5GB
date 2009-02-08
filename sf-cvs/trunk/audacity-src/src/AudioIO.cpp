@@ -1541,11 +1541,12 @@ wxArrayLong AudioIO::GetSupportedPlaybackRates(int devIndex, double rate)
    {  // weren't given a device index, get the prefs / default one
       devIndex = getPlayDevIndex();
    }
-
+   wxLogDebug(wxT("Getting supported playback rates for device %d"), devIndex);
    devInfo = Pa_GetDeviceInfo(devIndex);
    
    if (!devInfo)
    {
+      wxLogDebug(wxT("GetSupportedPlaybackRates() Could not get device info!"));
       return supported;
    }
 
@@ -1562,6 +1563,7 @@ wxArrayLong AudioIO::GetSupportedPlaybackRates(int devIndex, double rate)
    {
       if (Pa_IsFormatSupported(NULL, &pars, RatesToTry[i]) == 0)
       {
+         wxLogDebug(wxT("Rate %ld Hz is supported"), RatesToTry[i]);
          supported.Add(RatesToTry[i]);
       }
    }
@@ -1570,6 +1572,7 @@ wxArrayLong AudioIO::GetSupportedPlaybackRates(int devIndex, double rate)
    {
       if (Pa_IsFormatSupported(NULL, &pars, irate) == 0)
       {
+         wxLogDebug(wxT("Suggested rate %ld Hz is supported"), irate);
          supported.Add(irate);
       }
    }
@@ -1617,10 +1620,12 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(int devIndex, double rate)
    {  // not given a device, look up in prefs / default
       devIndex = getRecordDevIndex();
    }
+   wxLogDebug(wxT("Getting supported capture rates for device %d"), devIndex);
    devInfo = Pa_GetDeviceInfo(devIndex);
 
    if (!devInfo)
    {
+      wxLogDebug(wxT("GetSupportedCaptureRates() Could not get device info!"));
       return supported;
    }
 
@@ -1642,6 +1647,7 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(int devIndex, double rate)
    {
       if (Pa_IsFormatSupported(&pars, NULL, RatesToTry[i]) == 0)
       {
+         wxLogDebug(wxT("Rate %ld Hz is supported"), RatesToTry[i]);
          supported.Add(RatesToTry[i]);
       }
    }
@@ -1650,6 +1656,7 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(int devIndex, double rate)
    {
       if (Pa_IsFormatSupported(&pars, NULL, irate) == 0)
       {
+         wxLogDebug(wxT("Suggested rate %ld Hz is supported"), irate);
          supported.Add(irate);
       }
    }
@@ -1964,6 +1971,7 @@ wxString AudioIO::GetDeviceInfo()
 #else
    int cnt = Pa_CountDevices();
 #endif
+   wxLogDebug(wxT("Portaudio reports %d audio devices"),cnt);
 
    s << wxT("==============================") << e;
    s << wxT("Default capture device number: ") << recDeviceNum << e;
