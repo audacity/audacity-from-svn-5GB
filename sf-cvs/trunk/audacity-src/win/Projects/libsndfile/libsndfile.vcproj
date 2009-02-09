@@ -39,8 +39,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\lib-src\libsndfile\Win32;..\..\..\lib-src\libsndfile\include;..\..\..\lib-src\libsndfile\src"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;inline=__inline"
+				AdditionalIncludeDirectories=".;&quot;..\..\..\lib-src\libsndfile\include&quot;;&quot;..\..\..\lib-src\libsndfile\src&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;inline=__inline;LIBSNDFILE_PRIVATE_CONFIG"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -103,8 +103,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\lib-src\libsndfile\Win32;..\..\..\lib-src\libsndfile\include;..\..\..\lib-src\libsndfile\src"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;inline=__inline"
+				AdditionalIncludeDirectories=".;&quot;..\..\..\lib-src\libsndfile\include&quot;;&quot;..\..\..\lib-src\libsndfile\src&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;inline=__inline;LIBSNDFILE_PRIVATE_CONFIG"
 				StringPooling="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -169,8 +169,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\lib-src\libsndfile\Win32;..\..\..\lib-src\libsndfile\include;..\..\..\lib-src\libsndfile\src"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;inline=__inline"
+				AdditionalIncludeDirectories=".;&quot;..\..\..\lib-src\libsndfile\include&quot;;&quot;..\..\..\lib-src\libsndfile\src&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;inline=__inline;LIBSNDFILE_PRIVATE_CONFIG"
 				StringPooling="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -234,8 +234,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\lib-src\libsndfile\Win32;..\..\..\lib-src\libsndfile\include;..\..\..\lib-src\libsndfile\src"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;inline=__inline"
+				AdditionalIncludeDirectories=".;&quot;..\..\..\lib-src\libsndfile\include&quot;;&quot;..\..\..\lib-src\libsndfile\src&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;inline=__inline;LIBSNDFILE_PRIVATE_CONFIG"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -292,6 +292,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\lib-src\libsndfile\src\audio_detect.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\lib-src\libsndfile\src\avr.c"
 				>
 			</File>
@@ -301,6 +305,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\lib-src\libsndfile\src\caf.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\libsndfile\src\chunk.c"
 				>
 			</File>
 			<File
@@ -356,6 +364,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\lib-src\libsndfile\src\ima_oki_adpcm.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\lib-src\libsndfile\src\interleave.c"
 				>
 			</File>
@@ -377,6 +389,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\lib-src\libsndfile\src\mat5.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\libsndfile\src\mpc2k.c"
 				>
 			</File>
 			<File
@@ -405,6 +421,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\lib-src\libsndfile\src\raw.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\libsndfile\src\rf64.c"
 				>
 			</File>
 			<File
@@ -476,7 +496,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\config.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\lib-src\libsndfile\src\float_cast.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\libsndfile\src\ima_oki_adpcm.h"
 				>
 			</File>
 			<File
@@ -489,6 +517,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\lib-src\libsndfile\src\sfendian.h"
+				>
+			</File>
+			<File
+				RelativePath=".\sndfile.h"
 				>
 			</File>
 			<File
