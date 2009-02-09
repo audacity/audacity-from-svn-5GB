@@ -32,7 +32,8 @@ class LabelTrack;
 class TimeTrack;
 class WaveTrack;
 
-WX_DEFINE_ARRAY(WaveTrack*, WaveTrackArray);
+WX_DEFINE_USER_EXPORTED_ARRAY(WaveTrack*, WaveTrackArray, class AUDACITY_DLL_API);
+//WX_DEFINE_ARRAY(WaveTrack*, WaveTrackArray);
 
 #if defined(USE_MIDI)
 class NoteTrack;
