@@ -2718,7 +2718,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       }
       
       if (!success) {
-         wxMessageBox(wxString::Format(_("Could not save project. Perhaps %s \nis not writeable or the disk is full."),
+         wxMessageBox(wxString::Format(_("Could not save project. Perhaps %s \nis not writable or the disk is full."),
                                        project.c_str()),
                       _("Error saving project"),
                       wxOK | wxCENTRE, this);
