@@ -284,7 +284,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
     * 24 hours in a day in your locale */
    BuiltinFormatStrings[2].formatStr = _("0100 days 024 h 060 m 060 s");
    /* i18n-hint: Name of time display format that shows time in hours,
-    * minutes, seconds and hundreths of a second (1/100 second) */
+    * minutes, seconds and hundredths of a second (1/100 second) */
    BuiltinFormatStrings[3].name = _("hh:mm:ss + hundredths");
    /* i18n-hint: Format string for displaying time in hours, minutes, seconds
     * and hundredths of a second. Change the 'h' to the abbreviation for hours,
@@ -335,7 +335,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    BuiltinFormatStrings[8].formatStr = _("01000,01000 frames|24");
    /* i18n-hint: Name of time display format that shows time in hours, minutes,
     * seconds and frames at NTSC TV drop-frame rate (used for American /
-    * Japananese TV, and very odd) */
+    * Japanese TV, and very odd) */
    BuiltinFormatStrings[9].name = _("hh:mm:ss + NTSC drop frames");
    /* i18n-hint: Format string for displaying time in hours, minutes, seconds
     * and frames with NTSC drop frames. Change the 'h' to the abbreviation
@@ -344,7 +344,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    BuiltinFormatStrings[9].formatStr = _("0100 h 060 m 060 s+.30 frames|N");
    /* i18n-hint: Name of time display format that shows time in hours, minutes,
     * seconds and frames at NTSC TV non-drop-frame rate (used for American /
-    * Japananese TV, and doesn't quite match wall time */
+    * Japanese TV, and doesn't quite match wall time */
    BuiltinFormatStrings[10].name = _("hh:mm:ss + NTSC non-drop frames");
    /* i18n-hint: Format string for displaying time in hours, minutes, seconds
     * and frames with NTSC drop frames. Change the 'h' to the abbreviation
@@ -353,7 +353,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
     * the whole things really is slightly off-speed! */
    BuiltinFormatStrings[10].formatStr = _("0100 h 060 m 060 s+.030 frames| .999000999");
    /* i18n-hint: Name of time display format that shows time in frames at NTSC
-    * TV frame rate (used for American / Japananese TV */
+    * TV frame rate (used for American / Japanese TV */
    BuiltinFormatStrings[11].name = _("NTSC frames");
    /* i18n-hint: Format string for displaying time in frames with NTSC frames.
     * Translate 'frames' and leave the rest alone. That really is the frame
