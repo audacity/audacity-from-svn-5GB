@@ -4,7 +4,9 @@
 
   PitchName.h
 
-  Dominic Mazzoni, Vaughan Johnson
+  Copyright 2005-6, Vaughan Johnson and Dominic Mazzoni. 
+  Copyright 2008, Vaughan Johnson. 
+  All rights reserved.
 
   Utilities for converting from frequency to pitch 
   and from pitch to absolute (e.g., C4 for middle C) 
@@ -17,21 +19,20 @@
 
 #include <wx/defs.h>
 
-// Freq2Pitch takes a frequency in Hz (exponential scale relative to 
+// FreqToMIDInoteNumber takes a frequency in Hz (exponential scale relative to 
 // alphabetic pitch names) and returns a pitch ID number (linear 
-// scale), such that A440 (A4) is 57, middle C (C4) is 48, etc.
-// The offset to 57 is used to determine the register. 
+// scale), such that A440 (A4) is 69, middle C (C4) is 60, etc.
 // Each register starts with C (e.g., for middle C and A440, 
 // it's register 4).
-double Freq2Pitch(double freq);
+double FreqToMIDInoteNumber(double freq);
 
 // PitchIndex returns the [0,11] index for a double pitchNum, 
-// as per result from Freq2Pitch, corresponding to modulo 12 
+// as per result from FreqToMIDInoteNumber, corresponding to modulo 12 
 // of the integer part of (pitchNum + 0.5), so 0=C, 1=C#, etc.
 unsigned int PitchIndex(double pitchNum);
 
 // PitchName takes pitchNum (as per result from 
-// Freq2Pitch) and returns a standard pitch/note name [C, C#, etc.). 
+// FreqToMIDInoteNumber) and returns a standard pitch/note name [C, C#, etc.). 
 // Sharps are the default, unless, bWantFlats is true.
 wxChar * PitchName(double pitchNum, bool bWantFlats = false);
 
