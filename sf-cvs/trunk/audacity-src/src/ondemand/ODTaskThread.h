@@ -54,7 +54,12 @@ class ODTaskThread {
    }
    static void *callback(void *p) {
       ODTaskThread *th = (ODTaskThread *)p;
-      /* return (void *)*/th->Entry();
+#if defined(__WXMAC__)
+      /*return (void *)*/ th->Entry();
+      return NULL;
+#else
+      return (void *) th->Entry();
+#endif
    }
    void Run() {
       pthread_create(&mThread, NULL, callback, this);

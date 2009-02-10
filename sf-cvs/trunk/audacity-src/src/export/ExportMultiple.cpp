@@ -872,16 +872,17 @@ bool ExportMultiple::DoExport(int channels,
    }
 
    // Call the format export routine
-   bool rc = mPlugins[mPluginIndex]->Export(mProject,
-                                            channels,
-                                            name.GetFullPath(),
-                                            selectedOnly,
-                                            t0,
-                                            t1,
-                                            NULL,
-                                            &tags,
-                                            mSubFormatIndex);
-   return rc;
+   int success = mPlugins[mPluginIndex]->Export(mProject,
+                                                channels,
+                                                name.GetFullPath(),
+                                                selectedOnly,
+                                                t0,
+                                                t1,
+                                                NULL,
+                                                &tags,
+                                                mSubFormatIndex);
+
+   return (success == eProgressSuccess || success == eProgressStopped);
 }
 
 wxString ExportMultiple::MakeFileName(wxString input)

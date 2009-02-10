@@ -29,8 +29,6 @@ typedef wxLongLong_t sampleCount; /* 64-bit int */
 class Envelope;
 class WaveCache;
 class SpecCache;
-class AUDACITY_DLL_API WaveClip;
-class AUDACITY_DLL_API WaveClipList;
 
 class SpecPxCache {
 public:
@@ -51,8 +49,10 @@ public:
    bool         valid;
 };
 
-WX_DECLARE_LIST(WaveClip, WaveClipList);
-WX_DEFINE_ARRAY_PTR(WaveClip*, WaveClipArray);
+class WaveClip;
+
+WX_DECLARE_USER_EXPORTED_LIST(WaveClip, WaveClipList, AUDACITY_DLL_API);
+WX_DEFINE_USER_EXPORTED_ARRAY_PTR(WaveClip*, WaveClipArray, class AUDACITY_DLL_API);
 
 class AUDACITY_DLL_API WaveClip: public XMLTagHandler
 {

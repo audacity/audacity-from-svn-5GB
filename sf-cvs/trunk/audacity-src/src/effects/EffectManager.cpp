@@ -28,15 +28,25 @@ EffectManager::EffectManager()
    : mLastType(0),
      mLastIndex(0),
      mLastEffect(0),
-     mNumEffects(0) {
-   
+     mNumEffects(0)
+{
+#ifdef EFFECT_CATEGORIES
+   mCategories = new CategoryMap();
+   mRootCategories = new CategorySet();
+   mUnsorted = new EffectSet();
+#endif
 }
 
-EffectManager::~EffectManager() {
+EffectManager::~EffectManager()
+{
 #ifdef EFFECT_CATEGORIES
    CategoryMap::iterator i;
-   for (i = mCategories.begin(); i != mCategories.end(); ++i)
+   for (i = mCategories->begin(); i != mCategories->end(); ++i)
       delete i->second;
+
+   delete mUnsorted;
+   delete mRootCategories;
+   delete mCategories;
 #endif
 }
 
@@ -74,7 +84,7 @@ void EffectManager::RegisterEffect(Effect *f, int NewFlags)
       }
    }
    if (!oneValid)
-      mUnsorted.insert(f);
+      mUnsorted->insert(f);
    
 #endif
 }
@@ -87,10 +97,10 @@ void EffectManager::UnregisterEffects()
    mEffects.clear();
 
 #ifdef EFFECT_CATEGORIES
-   mUnsorted.clear();
+   mUnsorted->clear();
    
    CategoryMap::iterator iter;
-   for (iter = mCategories.begin(); iter != mCategories.end(); ++iter)
+   for (iter = mCategories->begin(); iter != mCategories->end(); ++iter)
       iter->second->mEffects.clear();
 #endif
 }
@@ -140,18 +150,18 @@ EffectArray *EffectManager::GetEffects(int flags /* = ALL_EFFECTS */)
 EffectCategory* EffectManager::AddCategory(const wxString& URI, 
                                            const wxString& name) {
    
-   CategoryMap::const_iterator iter = mCategories.find(URI);
-   if (iter != mCategories.end())
+   CategoryMap::const_iterator iter = mCategories->find(URI);
+   if (iter != mCategories->end())
       return iter->second;
    EffectCategory* cat = new EffectCategory(URI, name);
-   mCategories.insert(std::make_pair(URI, cat));
-   mRootCategories.insert(cat);
+   mCategories->insert(std::make_pair(URI, cat));
+   mRootCategories->insert(cat);
    return cat;
 }
 
 EffectCategory* EffectManager::LookupCategory(const wxString& URI) {
-   CategoryMap::const_iterator iter = mCategories.find(URI);
-   if (iter != mCategories.end())
+   CategoryMap::const_iterator iter = mCategories->find(URI);
+   if (iter != mCategories->end())
       return iter->second;
    return 0;
 }
@@ -161,30 +171,30 @@ bool EffectManager::AddCategoryParent(EffectCategory* child,
    bool result = child->AddParent(parent);
    if (!result)
       return false;
-   CategorySet::iterator iter = mRootCategories.find(child);
-   if (iter != mRootCategories.end())
-      mRootCategories.erase(iter);
+   CategorySet::iterator iter = mRootCategories->find(child);
+   if (iter != mRootCategories->end())
+      mRootCategories->erase(iter);
    return true;
 }
 
 void EffectManager::FreezeCategories() {
    CategoryMap::iterator iter;
-   for (iter = mCategories.begin(); iter != mCategories.end(); ++iter)
+   for (iter = mCategories->begin(); iter != mCategories->end(); ++iter)
       iter->second->FreezeParents();
 }
 
 const CategorySet& EffectManager::GetRootCategories() const {
-   return mRootCategories;
+   return *mRootCategories;
 }
 
 EffectSet EffectManager::GetUnsortedEffects(int flags) const {
 
    if (flags == ALL_EFFECTS)
-      return mUnsorted;
+      return *mUnsorted;
 
    EffectSet result;
    EffectSet::const_iterator iter;
-   for (iter = mUnsorted.begin(); iter != mUnsorted.end(); ++iter) {
+   for (iter = mUnsorted->begin(); iter != mUnsorted->end(); ++iter) {
       int g = (*iter)->GetEffectFlags();
       if ((flags & g) == g)
          result.insert(*iter);

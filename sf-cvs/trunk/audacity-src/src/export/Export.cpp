@@ -777,7 +777,7 @@ bool Exporter::ExportTracks()
       }
    }
 
-   return success;
+   return (success == eProgressSuccess || success == eProgressStopped);
 }
 
 //----------------------------------------------------------------------------

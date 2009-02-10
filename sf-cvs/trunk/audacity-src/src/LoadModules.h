@@ -35,7 +35,7 @@ typedef enum
    ProjectClosing
 } ModuleDispatchTypes;
 
-typedef int AUDACITY_DLL_API (*fnModuleDispatch)(ModuleDispatchTypes type);
+typedef int (*fnModuleDispatch)(ModuleDispatchTypes type);
 
 class Module
 {

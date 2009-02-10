@@ -269,7 +269,7 @@ void EffectNyquist::Parse(wxString line)
    
    if (len>=2 && tokens[0]==wxT("categories")) {
       for (size_t i = 1; i < tokens.GetCount(); ++i)
-         mCategories.insert(tokens[i]);
+         mCategories.Add(tokens[i]);
    }
 }
 
