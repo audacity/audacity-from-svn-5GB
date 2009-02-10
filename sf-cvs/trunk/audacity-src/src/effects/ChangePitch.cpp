@@ -105,9 +105,9 @@ void EffectChangePitch::DeduceFrequencies()
       m_ToFrequency = (m_FromFrequency * (100.0 + m_PercentChange)) / 100.0;
 
       // Now we can set the pitch control values. 
-      m_FromPitchIndex = PitchIndex(Freq2Pitch(m_FromFrequency));
+      m_FromPitchIndex = PitchIndex(FreqToMIDInoteNumber(m_FromFrequency));
       m_bWantPitchDown = (m_ToFrequency < m_FromFrequency);
-      m_ToPitchIndex = PitchIndex(Freq2Pitch(m_ToFrequency));
+      m_ToPitchIndex = PitchIndex(FreqToMIDInoteNumber(m_ToFrequency));
    }
 }
 
@@ -588,7 +588,7 @@ void ChangePitchDialog::OnText_FromFrequency(wxCommandEvent & event)
       str.ToDouble(&newDouble);
       m_FromFrequency = newDouble;
 
-      m_FromPitchIndex = PitchIndex(Freq2Pitch(m_FromFrequency));
+      m_FromPitchIndex = PitchIndex(FreqToMIDInoteNumber(m_FromFrequency));
       this->Calc_ToFrequency();
       m_bWantPitchDown = (m_ToFrequency < m_FromFrequency);
       this->Calc_ToPitchIndex(); // Call *after* m_bWantPitchDown is updated.

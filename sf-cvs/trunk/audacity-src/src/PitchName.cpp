@@ -4,8 +4,9 @@
 
   PitchName.cpp
 
-  Dominic Mazzoni
-  Vaughan Johnson
+  Copyright 2005-6, Vaughan Johnson and Dominic Mazzoni. 
+  Copyright 2008-9, Vaughan Johnson. 
+  All rights reserved.
 
 *******************************************************************//*!
 
@@ -23,19 +24,19 @@
 #include "PitchName.h"
 
 
-// Freq2Pitch takes a frequency in Hz (exponential scale relative to 
+// FreqToMIDInoteNumber takes a frequency in Hz (exponential scale relative to 
 // alphabetic pitch names) and returns a pitch ID number (linear 
-// scale), such that A440 (A4) is 57, middle C (C4) is 48, etc.
-// The offset to 57 is used to determine the register. 
+// scale), such that A440 (A4) is 69, middle C (C4) is 60, etc.
 // Each register starts with C (e.g., for middle C and A440, 
 // it's register 4).
-double Freq2Pitch(double freq)
+double FreqToMIDInoteNumber(double freq)
 {
-   return double (57.0 + (12.0 * (log(freq / 440.0) / log(2.0))));
+   // Make the calculation relative to A440 (A4), note number 69. 
+   return double (69.0 + (12.0 * (log(freq / 440.0) / log(2.0))));
 }
 
 // PitchIndex returns the [0,11] index for a double pitchNum, 
-// as per result from Freq2Pitch, corresponding to modulo 12 
+// as per result from FreqToMIDInoteNumber, corresponding to modulo 12 
 // of the integer part of (pitchNum + 0.5), so 0=C, 1=C#, etc.
 unsigned int PitchIndex(double pitchNum)
 {
@@ -44,85 +45,85 @@ unsigned int PitchIndex(double pitchNum)
 
 
 wxChar gPitchName[10];
-wxChar * p_PitchName;
+wxChar * pPitchName;
 
 // PitchName takes pitchNum (as per result from 
-// Freq2Pitch) and returns a standard pitch/note name [C, C#, etc.). 
+// FreqToMIDInoteNumber) and returns a standard pitch/note name [C, C#, etc.). 
 // Sharps are the default, unless, bWantFlats is true.
 wxChar * PitchName(double pitchNum, bool bWantFlats /* = false */)
 {
-   p_PitchName = gPitchName;
+   pPitchName = gPitchName;
 
    switch (PitchIndex(pitchNum)) {
    case 0:
-      *p_PitchName++ = wxT('C');
+      *pPitchName++ = wxT('C');
       break;
    case 1:
       if (bWantFlats) {
-         *p_PitchName++ = wxT('D');
-         *p_PitchName++ = wxT('b');
+         *pPitchName++ = wxT('D');
+         *pPitchName++ = wxT('b');
       } else {
-         *p_PitchName++ = wxT('C');
-         *p_PitchName++ = wxT('#');
+         *pPitchName++ = wxT('C');
+         *pPitchName++ = wxT('#');
       }
       break;
    case 2:
-      *p_PitchName++ = wxT('D');
+      *pPitchName++ = wxT('D');
       break;
    case 3:
       if (bWantFlats) {
-         *p_PitchName++ = wxT('E');
-         *p_PitchName++ = wxT('b');
+         *pPitchName++ = wxT('E');
+         *pPitchName++ = wxT('b');
       } else {
-         *p_PitchName++ = wxT('D');
-         *p_PitchName++ = wxT('#');
+         *pPitchName++ = wxT('D');
+         *pPitchName++ = wxT('#');
       }
       break;
    case 4:
-      *p_PitchName++ = wxT('E');
+      *pPitchName++ = wxT('E');
       break;
    case 5:
-      *p_PitchName++ = wxT('F');
+      *pPitchName++ = wxT('F');
       break;
    case 6:
       if (bWantFlats) {
-         *p_PitchName++ = wxT('G');
-         *p_PitchName++ = wxT('b');
+         *pPitchName++ = wxT('G');
+         *pPitchName++ = wxT('b');
       } else {
-         *p_PitchName++ = wxT('F');
-         *p_PitchName++ = wxT('#');
+         *pPitchName++ = wxT('F');
+         *pPitchName++ = wxT('#');
       }
       break;
    case 7:
-      *p_PitchName++ = wxT('G');
+      *pPitchName++ = wxT('G');
       break;
    case 8:
       if (bWantFlats) {
-         *p_PitchName++ = wxT('A');
-         *p_PitchName++ = wxT('b');
+         *pPitchName++ = wxT('A');
+         *pPitchName++ = wxT('b');
       } else {
-         *p_PitchName++ = wxT('G');
-         *p_PitchName++ = wxT('#');
+         *pPitchName++ = wxT('G');
+         *pPitchName++ = wxT('#');
       }
       break;
    case 9:
-      *p_PitchName++ = wxT('A');
+      *pPitchName++ = wxT('A');
       break;
    case 10:
       if (bWantFlats) {
-         *p_PitchName++ = wxT('B');
-         *p_PitchName++ = wxT('b');
+         *pPitchName++ = wxT('B');
+         *pPitchName++ = wxT('b');
       } else {
-         *p_PitchName++ = wxT('A');
-         *p_PitchName++ = wxT('#');
+         *pPitchName++ = wxT('A');
+         *pPitchName++ = wxT('#');
       }
       break;
    case 11:
-      *p_PitchName++ = wxT('B');
+      *pPitchName++ = wxT('B');
       break;
    }
 
-	*p_PitchName = wxT('\0');
+	*pPitchName = wxT('\0');
 
    return gPitchName;
 }
@@ -135,9 +136,9 @@ wxChar * PitchName_Absolute(double pitchNum, bool bWantFlats /* = false */)
 {
    PitchName(pitchNum, bWantFlats); 
 
-	// PitchName sets p_PitchName to the next available char in gPitchName, 
+	// PitchName sets pPitchName to the next available char in gPitchName, 
 	// so it's ready to append the register number.
-   wxSnprintf(p_PitchName, 8, wxT("%d"), ((int)(pitchNum + 0.5) / 12));
+   wxSnprintf(pPitchName, 8, wxT("%d"), (((int)(pitchNum + 0.5) / 12) - 1));
 
    return gPitchName;
 }

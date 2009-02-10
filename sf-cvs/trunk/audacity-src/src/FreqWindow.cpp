@@ -779,8 +779,8 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
       const wxChar *pp;
 
       if (alg == 0) {
-         xpitch = PitchName_Absolute(Freq2Pitch(xPos));
-         peakpitch = PitchName_Absolute(Freq2Pitch(bestpeak));
+         xpitch = PitchName_Absolute(FreqToMIDInoteNumber(xPos));
+         peakpitch = PitchName_Absolute(FreqToMIDInoteNumber(bestpeak));
          xp = xpitch.c_str();
          pp = peakpitch.c_str();
 
@@ -789,8 +789,8 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
                int (value + 0.5), int (bestpeak + 0.5),
                pp, bestValue);
       } else if (xPos > 0.0 && bestpeak > 0.0) {
-         xpitch = PitchName_Absolute(Freq2Pitch(1.0 / xPos));
-         peakpitch = PitchName_Absolute(Freq2Pitch(1.0 / bestpeak));
+         xpitch = PitchName_Absolute(FreqToMIDInoteNumber(1.0 / xPos));
+         peakpitch = PitchName_Absolute(FreqToMIDInoteNumber(1.0 / bestpeak));
          xp = xpitch.c_str();
          pp = peakpitch.c_str();
          info.Printf(_("Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s) = %.3f"),
