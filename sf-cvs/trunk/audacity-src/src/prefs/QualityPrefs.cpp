@@ -127,33 +127,10 @@ void QualityPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieChoice(_("Default Sample Format:"),
          wxT("/SamplingRate/DefaultProjectSampleFormat"),
          floatSample, mmSampleFormatNames, mmSampleFormatLabels );
-
-// JKC For the old style of layout, uncomment the next line.
-// #define OLD_STYLE_LAYOUT
-// Once we've chosen which layout to use we'll remove the 
-// other one.  (June/2006).
-#ifdef OLD_STYLE_LAYOUT
-      S.TieChoice(_("Real-time sample rate converter:"),
-         wxT("/Quality/LibresampleSampleRateConverter"),
-         (int)0, mConverterNames, mConverterLabels),
-      S.TieChoice(_("High-quality sample rate converter:"),
-         wxT("/Quality/LibresampleHQSampleRateConverter"),
-         (int)1, mConverterNames, mConverterLabels),
-      S.TieChoice(_("Real-time dither:"),
-         wxT("/Quality/DitherAlgorithm"),
-         Dither::none, mmDitherNames, mmDitherLabels );  
-      S.TieChoice(_("High-quality dither:"),
-         wxT("/Quality/HQDitherAlgorithm"),
-         Dither::shaped, mmDitherNames, mmDitherLabels );  
-#endif
       S.EndTwoColumn();
    }
    S.EndStatic();
 
-// The new style of layout has 
-//   - columns for converter and dither.
-//   - rows for Real-time and High-quality.
-#ifndef OLD_STYLE_LAYOUT
    S.StartStatic( _("Conversion") );
    {
       // We use blank labels here and there to end up with
@@ -177,7 +154,6 @@ void QualityPrefs::PopulateOrExchange( ShuttleGui & S )
       S.EndMultiColumn();
    }
    S.EndStatic();
-#endif
 }
 
 /// Add a compound control made up from a choice and an edit 
