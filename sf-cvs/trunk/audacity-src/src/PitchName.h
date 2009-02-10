@@ -4,8 +4,7 @@
 
   PitchName.h
 
-  Copyright 2005-6, Vaughan Johnson and Dominic Mazzoni. 
-  Copyright 2008, Vaughan Johnson. 
+  Copyright 2005-9, Vaughan Johnson and Dominic Mazzoni. 
   All rights reserved.
 
   Utilities for converting from frequency to pitch 
