@@ -138,10 +138,27 @@ public:
 
  protected:
 
-   void OnKillFocus(wxFocusEvent &event);
    wxChoice *Choice() const { return (wxChoice *)m_control; }
 
  private:
+
+   // A whole separate class just to get rid of Visual C++ warning C4407
+   class FocusHandler:wxEvtHandler
+   {
+   public:
+      void ConnectEvent(wxWindow *w)
+      {
+         w->GetEventHandler()->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(FocusHandler::OnKillFocus));
+      };
+      void DisconnectEvent(wxWindow *w)
+      {
+         w->GetEventHandler()->Disconnect(wxEVT_KILL_FOCUS, wxFocusEventHandler(FocusHandler::OnKillFocus));
+      };
+      void OnKillFocus(wxFocusEvent &event)
+      {
+         return;
+      };
+   } mHandler;
 
    wxArrayString mChoices;
    wxString mOld;

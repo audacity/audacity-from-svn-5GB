@@ -513,7 +513,6 @@ void FFmpegPresets::SavePreset(ExportFFmpegOptions *parent, wxString &name)
       mPresets->push_front(preset);
    }
 
-   wxListBox *lb;
    wxSpinCtrl *sc;
    wxTextCtrl *tc;
    wxCheckBox *cb;

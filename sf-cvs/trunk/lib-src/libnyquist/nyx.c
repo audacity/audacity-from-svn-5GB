@@ -29,6 +29,7 @@
 
 /* nyquist includes */
 #include "sound.h"
+#include "samples.h"
 #include "falloc.h"
 
 
@@ -138,7 +139,7 @@ void nyx_susp_fetch(register nyx_susp_type susp, snd_list_type snd_list)
    if (err)
       longjmp(nyx_cntxt.c_jmpbuf, 1);      
 
-   snd_list->block_len = n;
+   snd_list->block_len = (short)n;
    susp->susp.current += n;
 
    if (n == 0) {
@@ -437,7 +438,7 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
    int success = FALSE;
 
    if (nyx_get_type(nyx_result) != nyx_audio)
-      return;
+      return success;
 
    num_channels = nyx_get_audio_num_channels();
 

@@ -36,8 +36,8 @@ i.e. an alternative to the usual interface, for Audacity.
 #define mainPanelFnName "MainPanelFunc"
 
 typedef wxWindow * pwxWindow;
-typedef int AUDACITY_DLL_API (*tModuleInit)(int);
-typedef pwxWindow AUDACITY_DLL_API (*tPanelFn)(int);
+typedef int (*tModuleInit)(int);
+typedef pwxWindow (*tPanelFn)(int);
 
 // This variable will hold the address of a subroutine in 
 // a DLL that can hijack the normal panel.
@@ -68,8 +68,8 @@ wxWindow * MakeHijackPanel()
 // It will do that through the ExecCommand function.
 extern "C" {
 
-typedef int AUDACITY_DLL_API (*tpExecScriptServerFunc)( wxString * pOut, wxString * pIn);
-typedef int AUDACITY_DLL_API (*tpRegScriptServerFunc)(tpExecScriptServerFunc pFn);
+typedef int (*tpExecScriptServerFunc)( wxString * pOut, wxString * pIn);
+typedef int (*tpRegScriptServerFunc)(tpExecScriptServerFunc pFn);
 
 // This is the function which actually obeys one command.
 AUDACITY_DLL_API int ExecCommand( wxString * pOut, wxString * pIn )

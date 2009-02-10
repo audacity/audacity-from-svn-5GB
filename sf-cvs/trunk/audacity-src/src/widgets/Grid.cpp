@@ -259,7 +259,7 @@ ChoiceEditor::ChoiceEditor(const wxArrayString &choices)
 ChoiceEditor::~ChoiceEditor()
 {
    if (m_control)
-      m_control->GetEventHandler()->Disconnect(wxEVT_KILL_FOCUS, wxFocusEventHandler(ChoiceEditor::OnKillFocus));
+      mHandler.DisconnectEvent(m_control);
 }
 
 wxGridCellEditor *ChoiceEditor::Clone() const
@@ -276,7 +276,7 @@ void ChoiceEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHand
                             mChoices);
 
    wxGridCellEditor::Create(parent, id, evtHandler);
-   m_control->GetEventHandler()->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(ChoiceEditor::OnKillFocus));
+   mHandler.ConnectEvent(m_control);
 }
 
 void ChoiceEditor::SetSize(const wxRect &rect)
@@ -329,11 +329,6 @@ void ChoiceEditor::SetChoices(const wxArrayString &choices)
 wxString ChoiceEditor::GetValue() const
 {
    return mChoices[Choice()->GetSelection()];
-}
-
-void ChoiceEditor::OnKillFocus(wxFocusEvent &event)
-{
-   return;
 }
 
 ///

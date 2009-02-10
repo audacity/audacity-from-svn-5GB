@@ -72,7 +72,11 @@ public:
    }
    
    virtual std::set<wxString> GetEffectCategories() {
-      return mCategories;
+      std::set<wxString> cats;
+      for (size_t i = 0; i < mCategories.GetCount(); i++) {
+         cats.insert(mCategories[i]);
+      }
+      return cats;
    }
 
    virtual wxString GetEffectIdentifier() {
@@ -167,8 +171,7 @@ private:
 
    WaveTrack       *mOutputTrack[2];
 
-   std::set<wxString> mCategories;
-
+   wxArrayString    mCategories;
 };
 
 class NyquistDialog:public wxDialog {

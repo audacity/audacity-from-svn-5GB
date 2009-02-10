@@ -175,7 +175,7 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
    delete[] waveArray;
    delete mixer;
 
-   return updateResult;
+   return (updateResult == eProgressSuccess || updateResult == eProgressStopped);
 }
 
 Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
