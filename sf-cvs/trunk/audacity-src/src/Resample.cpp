@@ -28,6 +28,26 @@
 
 #include <wx/intl.h>
 
+int Resample::GetFastMethod()
+{
+   return gPrefs->Read(GetFastMethodKey(), GetFastMethodDefault());
+}
+
+int Resample::GetBestMethod()
+{
+   return gPrefs->Read(GetBestMethodKey(), GetBestMethodDefault());
+}
+
+void Resample::SetFastMethod(int index)
+{
+   gPrefs->Write(GetFastMethodKey(), (long)index);
+}
+
+void Resample::SetBestMethod(int index)
+{
+   gPrefs->Write(GetBestMethodKey(), (long)index);
+}
+
 #if USE_LIBRESAMPLE
 
 #include "libresample.h"
@@ -51,32 +71,28 @@ wxString Resample::GetMethodName(int index)
 {
    if (index == 1)
       return _("High-quality Sinc Interpolation");
-   else
-      return _("Fast Sinc Interpolation");
+
+   return _("Fast Sinc Interpolation");
 }
 
-int Resample::GetFastMethod()
+const wxString Resample::GetFastMethodKey()
 {
-   return gPrefs->Read(wxT("/Quality/LibresampleSampleRateConverter"),
-                       (long)0);
+   return wxT("/Quality/LibresampleSampleRateConverter");
 }
 
-int Resample::GetBestMethod()
+const wxString Resample::GetBestMethodKey()
 {
-   return gPrefs->Read(wxT("/Quality/LibresampleHQSampleRateConverter"),
-                       (long)1);
+   return wxT("/Quality/LibresampleHQSampleRateConverter");
 }
 
-void Resample::SetFastMethod(int index)
+int Resample::GetFastMethodDefault()
 {
-   gPrefs->Write(wxT("/Quality/LibresampleSampleRateConverter"),
-                 (long)index);
+   return 0;
 }
 
-void Resample::SetBestMethod(int index)
+int Resample::GetBestMethodDefault()
 {
-   gPrefs->Write(wxT("/Quality/LibresampleHQSampleRateConverter"),
-                 (long)index);   
+   return 1;
 }
 
 Resample::Resample(bool useBestMethod, double minFactor, double maxFactor)
@@ -140,28 +156,24 @@ wxString Resample::GetMethodName(int index)
    return wxString(wxString::FromAscii(src_get_name(index)));
 }
 
-int Resample::GetFastMethod()
+const wxString Resample::GetFastMethodKey()
 {
-   return gPrefs->Read(wxT("/Quality/SampleRateConverter"),
-                       (long)SRC_SINC_FASTEST);
+   return wxT("/Quality/SampleRateConverter");
 }
 
-int Resample::GetBestMethod()
+const wxString Resample::GetBestMethodKey()
 {
-   return gPrefs->Read(wxT("/Quality/HQSampleRateConverter"),
-                       (long)SRC_SINC_FASTEST);
+   return wxT("/Quality/HQSampleRateConverter");
 }
 
-void Resample::SetFastMethod(int index)
+int Resample::GetFastMethodDefault()
 {
-   gPrefs->Write(wxT("/Quality/SampleRateConverter"),
-                 (long)index);
+   return SRC_SINC_FASTEST;
 }
 
-void Resample::SetBestMethod(int index)
+int Resample::GetBestMethodDefault()
 {
-   gPrefs->Write(wxT("/Quality/HQSampleRateConverter"),
-                 (long)index);   
+   return SRC_SINC_BEST_QUALITY;
 }
 
 Resample::Resample(bool useBestMethod, double minFactor, double maxFactor)

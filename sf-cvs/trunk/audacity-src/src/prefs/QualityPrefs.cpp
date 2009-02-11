@@ -140,14 +140,16 @@ void QualityPrefs::PopulateOrExchange( ShuttleGui & S )
       S.AddTitle(_("Sample Rate Converter" ));
       S.AddTitle(_("Dither"));
       S.TieChoice(_("Real-time:"),
-         wxT("/Quality/LibresampleSampleRateConverter"),
-         (int)0, mConverterNames, mConverterLabels),
+         Resample::GetFastMethodKey(),
+         Resample::GetFastMethodDefault(),
+         mConverterNames, mConverterLabels),
       S.TieChoice(wxT(""),
          wxT("/Quality/DitherAlgorithm"),
          Dither::none, mmDitherNames, mmDitherLabels );  
       S.TieChoice(_("High-quality:"),
-         wxT("/Quality/LibresampleHQSampleRateConverter"),
-         (int)1, mConverterNames, mConverterLabels),
+         Resample::GetBestMethodKey(),
+         Resample::GetBestMethodDefault(),
+         mConverterNames, mConverterLabels),
       S.TieChoice(wxT(""),
          wxT("/Quality/HQDitherAlgorithm"),
          Dither::shaped, mmDitherNames, mmDitherLabels );  
