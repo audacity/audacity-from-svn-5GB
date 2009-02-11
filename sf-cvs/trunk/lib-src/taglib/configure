@@ -1613,8 +1613,8 @@ Optional Features:
                           of memory)
   --enable-closure        delay template instantiation
   --enable-nmcheck        enable automatic namespace cleanness check
-  --enable-shared[=PKGS]  build shared libraries [default=yes]
-  --enable-static[=PKGS]  build static libraries [default=no]
+  --enable-shared[=PKGS]  build shared libraries [default=no]
+  --enable-static[=PKGS]  build static libraries [default=yes]
   --enable-libsuffix      /lib directory suffix (64,32,none,auto=default)
   --enable-fast-install[=PKGS]
                           optimize for fast installation [default=yes]
@@ -7576,7 +7576,7 @@ if test "${enable_shared+set}" = set; then
       ;;
     esac
 else
-  enable_shared=yes
+  enable_shared=no
 fi
 
 
@@ -7601,7 +7601,7 @@ if test "${enable_static+set}" = set; then
       ;;
     esac
 else
-  enable_static=no
+  enable_static=yes
 fi
 
 
@@ -24584,11 +24584,6 @@ done # for ac_tag
 
 { (exit 0); exit 0; }
 _ACEOF
-if test "x$with_fast_perl" = "xyes"; then    
-  perl -i.bak $ac_aux_dir/conf.change.pl $CONFIG_STATUS    \
-    || mv $CONFIG_STATUS.bak $CONFIG_STATUS    
-  rm -f $CONFIG_STATUS.bak
-fi    
 chmod +x $CONFIG_STATUS
 ac_clean_files=$ac_clean_files_save
 
