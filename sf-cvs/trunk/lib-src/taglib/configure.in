@@ -70,11 +70,11 @@ dnl CFLAGS="$NOOPT_CFLAGS" dnl __kdevelop[noopt]__
 CXXFLAGS="$CXXFLAGS $USE_EXCEPTIONS" dnl __kdevelop[exc]__
 
 dnl create only shared libtool-libraries
-AC_ENABLE_SHARED(yes)
+AC_ENABLE_SHARED(no)
 
 dnl set the following to yes, if you want to create static
 dnl libtool-libraries, too.
-AC_ENABLE_STATIC(no)
+AC_ENABLE_STATIC(yes)
 
 dnl create a working libtool-script
 KDE_PROG_LIBTOOL
