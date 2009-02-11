@@ -262,22 +262,24 @@ wxString Resample::GetMethodName(int index)
    return _("Resampling disabled.");
 }
 
-int Resample::GetFastMethod()
+const wxString Resample::GetFastMethodKey()
+{
+   return wxT("/Quality/DisabledConverter");
+}
+
+const wxString Resample::GetBestMethodKey()
+{
+   return wxT("/Quality/DisabledConverter");
+}
+
+int Resample::GetFastMethodDefault()
 {
    return 0;
 }
 
-int Resample::GetBestMethod()
+int Resample::GetBestMethodDefault()
 {
    return 0;
-}
-
-void Resample::SetFastMethod(int)
-{
-}
-
-void Resample::SetBestMethod(int)
-{
 }
 
 Resample::Resample(bool, double, double)
