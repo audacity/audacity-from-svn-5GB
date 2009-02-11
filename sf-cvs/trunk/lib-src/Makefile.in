@@ -135,6 +135,12 @@ soundtouch-recursive:
 libSoundTouch.a: soundtouch-recursive
 	ln -sf soundtouch/source/SoundTouch/.libs/libSoundTouch.a .
 
+# TagLib
+taglib-recursive:
+	$(MAKE) -C taglib
+taglib.a: taglib-recursive
+	ln -sf taglib/taglib/.libs/taglib.a .
+
 # PortAudio
 portaudio-v19-recursive:
 	$(MAKE) -C portaudio-v19 lib/libportaudio.la
