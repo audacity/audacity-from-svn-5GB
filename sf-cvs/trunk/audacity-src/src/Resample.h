@@ -56,6 +56,11 @@ class Resample
    static void SetFastMethod(int index);
    static void SetBestMethod(int index);
 
+   static const wxString GetFastMethodKey();
+   static const wxString GetBestMethodKey();
+   static int GetFastMethodDefault();
+   static int GetBestMethodDefault();
+
    /// Constructor.
    /// The first parameter lets you select either the best method or
    /// the fast method - the particular method used was set by
