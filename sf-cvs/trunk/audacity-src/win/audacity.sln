@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual C++ Express 2005
+# Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Audacity", "Projects\Audacity\Audacity.vcproj", "{1D64095C-F936-4FCF-B609-56E9DDF941FA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A64FFB5D-0CF0-43EE-9DE3-C72260864BFF} = {A64FFB5D-0CF0-43EE-9DE3-C72260864BFF}
@@ -81,6 +81,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libscorealign", "..\lib-src\libscorealign\libscorealign.vcproj", "{5F04DE5D-0A34-496E-8A34-BE30BA9C70A1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sbsms", "Projects\sbsms\sbsms.vcproj", "{A64FFB5D-0CF0-43EE-9DE3-C72260864BFF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "taglib", "Projects\taglib\taglib.vcproj", "{D912E7BF-61FE-4D17-9D1B-3F1D268429D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -302,6 +304,14 @@ Global
 		{A64FFB5D-0CF0-43EE-9DE3-C72260864BFF}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
 		{A64FFB5D-0CF0-43EE-9DE3-C72260864BFF}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
 		{A64FFB5D-0CF0-43EE-9DE3-C72260864BFF}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{D912E7BF-61FE-4D17-9D1B-3F1D268429D6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D912E7BF-61FE-4D17-9D1B-3F1D268429D6}.Debug|Win32.Build.0 = Debug|Win32
+		{D912E7BF-61FE-4D17-9D1B-3F1D268429D6}.Release|Win32.ActiveCfg = Release|Win32
+		{D912E7BF-61FE-4D17-9D1B-3F1D268429D6}.Release|Win32.Build.0 = Release|Win32
+		{D912E7BF-61FE-4D17-9D1B-3F1D268429D6}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{D912E7BF-61FE-4D17-9D1B-3F1D268429D6}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{D912E7BF-61FE-4D17-9D1B-3F1D268429D6}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{D912E7BF-61FE-4D17-9D1B-3F1D268429D6}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
