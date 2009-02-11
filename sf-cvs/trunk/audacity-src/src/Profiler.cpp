@@ -33,7 +33,7 @@ Profiler::~Profiler()
       
       time(&now);
       fprintf(log,"Audacity Profiler Run, Ended at ");
-      fprintf(log,ctime(&now));   
+      fprintf(log,"%s",ctime(&now));
       fprintf(log,"****************************************\n");
       //print out the tasks
       for(int i=0;i<(int)mTasks.size();i++)
