@@ -241,6 +241,21 @@ Argument ([-Wall foreign]) added to AM_INIT_AUTOMAKE because autoreconf fails
 otherwise
 Upstream Version: 1.3.1
 
+taglib
+------
+http://developer.kde.org/~wheeler/taglib.html
+svn co svn://anonsvn.kde.org/home/kde/trunk/kdesupport/taglib
+Audio Meta-Data Library
+Version in audacity cvs: svn revision 924567 (post 1.5)
+Patches: none
+
+If replacing via svn, you need to do the following to generate the configure
+scripts (from within the base taglib directory):
+   sh admin/cvs.sh dist
+
+And remove the .svn directories (from within the base taglib direcotry):
+   find -d . -path \*/.svn\* -exec rm -rf \{\} \;
+
 twolame
 -------
 http://www.twolame.org/

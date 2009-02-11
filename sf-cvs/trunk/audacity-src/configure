@@ -650,6 +650,8 @@ build_os
 build_vendor
 build_cpu
 build
+TAGLIB_LIBS
+TAGLIB_CFLAGS
 PORTSMF_LIBS
 PORTSMF_CFLAGS
 AVFORMAT_LIBS
@@ -768,6 +770,7 @@ with_libvamp
 with_libtwolame
 with_ffmpeg
 with_midi
+with_taglib
 enable_audiounits
 enable_ladspa
 enable_quicktime
@@ -809,6 +812,8 @@ AVFORMAT_CFLAGS
 AVFORMAT_LIBS
 PORTSMF_CFLAGS
 PORTSMF_LIBS
+TAGLIB_CFLAGS
+TAGLIB_LIBS
 JACK_CFLAGS
 JACK_LIBS'
 ac_subdirs_all='"lib-src/FileDialog"
@@ -1474,6 +1479,7 @@ Optional Packages:
   --with-libtwolame       use libtwolame for MP2 export support
   --with-ffmpeg           use ffmpeg for import and export support
   --with-midi             use portSMF for Midi support
+  --with-taglib           use TagLib for metadata support
   --with-portmixer        compile with PortMixer [default=yes]
   --with-portaudio        which version of PortAudio to use (=[v18,v19])
                           [default=v19]
@@ -1530,6 +1536,9 @@ Some influential environment variables:
               C compiler flags for PORTSMF, overriding pkg-config
   PORTSMF_LIBS
               linker flags for PORTSMF, overriding pkg-config
+  TAGLIB_CFLAGS
+              C compiler flags for TAGLIB, overriding pkg-config
+  TAGLIB_LIBS linker flags for TAGLIB, overriding pkg-config
   JACK_CFLAGS C compiler flags for JACK, overriding pkg-config
   JACK_LIBS   linker flags for JACK, overriding pkg-config
 
@@ -5717,7 +5726,7 @@ BUILD_LDFLAGS="$BUILD_LDFLAGS $WIDGETEXTRA_LIBS"
 CXXFLAGS="$CXXFLAGS $WIDGETEXTRA_CFLAGS"
 LIBSRC_BUILD="$LIBSRC_BUILD widgetextra"
 
-LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSBSMS LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG PORTSMF"
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSBSMS LIBSOUNDTOUCH LIBNYQUIST LIBVAMP LIBEXPAT LIBTWOLAME FFMPEG PORTSMF TAGLIB"
 
 { $as_echo "$as_me:$LINENO: Determining what libraries are available in this tree and on the system" >&5
 $as_echo "$as_me: Determining what libraries are available in this tree and on the system" >&6;}
@@ -8665,6 +8674,152 @@ fi
 	  	  PORTSMF_LOCAL_BUILD="portSMF"
    else
 	  PORTSMF_LOCAL_AVAILABLE="no"
+   fi
+
+
+
+# Check whether --with-taglib was given.
+if test "${with_taglib+set}" = set; then
+  withval=$with_taglib; TAGLIB_ARGUMENT=$withval
+else
+  TAGLIB_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_TAGLIB 1
+_ACEOF
+
+   fi
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for TAGLIB" >&5
+$as_echo_n "checking for TAGLIB... " >&6; }
+
+if test -n "$TAGLIB_CFLAGS"; then
+    pkg_cv_TAGLIB_CFLAGS="$TAGLIB_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"taglib >= 1.5\"") >&5
+  ($PKG_CONFIG --exists --print-errors "taglib >= 1.5") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_TAGLIB_CFLAGS=`$PKG_CONFIG --cflags "taglib >= 1.5" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$TAGLIB_LIBS"; then
+    pkg_cv_TAGLIB_LIBS="$TAGLIB_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"taglib >= 1.5\"") >&5
+  ($PKG_CONFIG --exists --print-errors "taglib >= 1.5") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_TAGLIB_LIBS=`$PKG_CONFIG --libs "taglib >= 1.5" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        TAGLIB_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "taglib >= 1.5" 2>&1`
+        else
+	        TAGLIB_PKG_ERRORS=`$PKG_CONFIG --print-errors "taglib >= 1.5" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$TAGLIB_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                taglib_available_system="no"
+elif test $pkg_failed = untried; then
+	taglib_available_system="no"
+else
+	TAGLIB_CFLAGS=$pkg_cv_TAGLIB_CFLAGS
+	TAGLIB_LIBS=$pkg_cv_TAGLIB_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	taglib_available_system="yes"
+fi
+
+   if test "x$taglib_available_system" = "xyes" ; then
+      TAGLIB_SYSTEM_AVAILABLE="yes"
+      TAGLIB_SYSTEM_LIBS=$TAGLIB_LIBS
+      TAGLIB_SYSTEM_CXXFLAGS=$TAGLIB_CFLAGS
+      TAGLIB_SYSTEM_CPPSYMBOLS="USE_TAGLIB"
+      { $as_echo "$as_me:$LINENO: TagLib library available as system library" >&5
+$as_echo "$as_me: TagLib library available as system library" >&6;}
+   else
+      TAGLIB_SYSTEM_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: TagLib library NOT available as system library" >&5
+$as_echo "$as_me: TagLib library NOT available as system library" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/taglib/taglib/tag.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/taglib/taglib/tag.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/taglib/taglib/tag.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/taglib/taglib/tag.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  tag_h_found="yes"
+else
+  tag_h_found="no"
+fi
+
+
+   if test "x$tag_h_found" = "xyes" ; then
+      TAGLIB_LOCAL_AVAILABLE="yes"
+      TAGLIB_LOCAL_LIBS="taglib.a"
+      TAGLIB_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/taglib/taglib'
+      TAGLIB_LOCAL_CPPSYMBOLS="USE_TAGLIB"
+
+            TAGLIB_LOCAL_CONFIG_SUBDIRS="lib-src/taglib"
+
+      { $as_echo "$as_me:$LINENO: TagLib library is available in the local tree" >&5
+$as_echo "$as_me: TagLib library is available in the local tree" >&6;}
+   else
+      TAGLIB_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: TagLib library is NOT available in the local tree" >&5
+$as_echo "$as_me: TagLib library is NOT available in the local tree" >&6;}
    fi
 
 

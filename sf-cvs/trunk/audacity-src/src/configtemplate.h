@@ -136,6 +136,9 @@
 /* Use system Expat library */
 #undef USE_SYSTEM_EXPAT
 
+/* Define if TagLib (metadata export) support should be enabled */
+#undef USE_TAGLIB
+
 /* Define if Vamp analysis plugin support should be enabled */
 #undef USE_VAMP
 
