@@ -384,7 +384,6 @@ bool ODPCMAliasBlockFile::IsSummaryAvailable()
 ///Calls write summary, and makes sure it is only done once in a thread-safe fasion.
 void ODPCMAliasBlockFile::DoWriteSummary()
 {
-   bool beenDone = false;
    mWriteSummaryMutex.Lock();
    if(!IsSummaryAvailable())
       WriteSummary();
