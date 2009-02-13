@@ -3,7 +3,7 @@
 dnl Require autoconf version
 AC_PREREQ(2.57)
 
-AC_INIT([libsndfile],[1.0.18pre25],[erikd@mega-nerd.com])
+AC_INIT([libsndfile],[1.0.18],[erikd@mega-nerd.com])
 
 # Put config stuff in Cfg.
 AC_CONFIG_AUX_DIR(Cfg)
@@ -14,9 +14,6 @@ AC_CANONICAL_TARGET([])
 AC_CONFIG_MACRO_DIR([M4])
 
 AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
-# Audacity policy: don't enable automatic rebuild of configure et al if 
-# sources change
-AM_MAINTAINER_MODE([enabled])
 AC_CONFIG_HEADERS([src/config.h])
 
 dnl Add parameters for aclocal

@@ -11,8 +11,6 @@ DIST_SUBDIRS = M4 man doc Win32 src Octave examples regtest tests programs
 
 EXTRA_DIST = libsndfile.spec.in sndfile.pc.in Mingw-make-dist.sh
 
-#tell aclocal where extra macros can be found
-ACLOCAL_AMFLAGS = -I M4
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = sndfile.pc
