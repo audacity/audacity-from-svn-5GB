@@ -101,14 +101,14 @@ libsndfile
 ----------
 Erik de Castro Lopo's uncompressed audio file I/O library. Core and essential
 to audacity.
-Version in Audacity CVS: 1.0.18pre25
-Patches:  macro-quoting.patch: quote arguments to AC_DEFUN such that
-			autoreconf works with autorecnf 2.63
+Version in Audacity CVS: 1.0.18
+Patches: macro-quoting.patch: quote arguments to AC_DEFUN such that
+			autoreconf works with autorecnf 2.63. Has been accepted upstream
+		 portability.patch: add portability macros / pre-processor to 
+			enable build on non-standard platforms. Not yet accepted upstream.
 AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
 by default
-Upstream Version: 1.0.18pre25
-TODO: 
-* upgrade to 1.0.18 stable when it comes out
+Upstream Version: 1.0.18
 
 libvamp
 -------
