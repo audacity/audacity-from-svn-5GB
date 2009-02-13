@@ -29,143 +29,6 @@ msgstr "Audacity encourage l'interopérabilité avec l'utilisation d'un format d
 msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr "De la documentation sur le format de fichier de projet Audacity arrive prochainement."
 
-#: blog/wp-includes/class-pop3.php:82 blog/wp-includes/class-pop3.php:90
-#: blog/wp-includes/class-pop3.php:102
-msgid "POP3 connect:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:82
-msgid "No server specified"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:90 blog/wp-includes/class-pop3.php:102
-#: blog/wp-includes/class-pop3.php:123 blog/wp-includes/class-pop3.php:246
-#: blog/wp-includes/class-pop3.php:300 blog/wp-includes/class-pop3.php:311
-#: blog/wp-includes/class-pop3.php:359 blog/wp-includes/class-pop3.php:397
-#: blog/wp-includes/class-pop3.php:430 blog/wp-includes/class-pop3.php:529
-#: blog/wp-includes/class-pop3.php:552
-msgid "Error "
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:115 blog/wp-includes/class-pop3.php:118
-#: blog/wp-includes/class-pop3.php:123
-msgid "POP3 user:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:115
-msgid "no login ID submitted"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:118 blog/wp-includes/class-pop3.php:138
-msgid "connection not established"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:135 blog/wp-includes/class-pop3.php:138
-#: blog/wp-includes/class-pop3.php:143
-msgid "POP3 pass:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:135 blog/wp-includes/class-pop3.php:171
-msgid "No password submitted"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:143
-msgid "Authentication failed "
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:162 blog/wp-includes/class-pop3.php:168
-#: blog/wp-includes/class-pop3.php:171 blog/wp-includes/class-pop3.php:176
-#: blog/wp-includes/class-pop3.php:186
-msgid "POP3 apop:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:162 blog/wp-includes/class-pop3.php:205
-#: blog/wp-includes/class-pop3.php:230 blog/wp-includes/class-pop3.php:272
-#: blog/wp-includes/class-pop3.php:346 blog/wp-includes/class-pop3.php:390
-#: blog/wp-includes/class-pop3.php:420 blog/wp-includes/class-pop3.php:454
-#: blog/wp-includes/class-pop3.php:517 blog/wp-includes/class-pop3.php:585
-msgid "No connection to server"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:168
-msgid "No login ID submitted"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:176
-msgid "No server banner"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:176 blog/wp-includes/class-pop3.php:186
-msgid "abort"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:186
-msgid "apop authentication failed"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:205
-msgid "POP3 login:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:230 blog/wp-includes/class-pop3.php:246
-msgid "POP3 top:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:272 blog/wp-includes/class-pop3.php:300
-#: blog/wp-includes/class-pop3.php:311 blog/wp-includes/class-pop3.php:323
-msgid "POP3 pop_list:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:323
-msgid "Premature end of list"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:346 blog/wp-includes/class-pop3.php:359
-msgid "POP3 get:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:390 blog/wp-includes/class-pop3.php:397
-msgid "POP3 last:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:420 blog/wp-includes/class-pop3.php:430
-msgid "POP3 reset:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:454 blog/wp-includes/class-pop3.php:460
-msgid "POP3 send_cmd:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:460
-msgid "Empty command string"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:480
-msgid "POP3 quit:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:480
-msgid "connection does not exist"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:517 blog/wp-includes/class-pop3.php:529
-#: blog/wp-includes/class-pop3.php:552
-msgid "POP3 uidl:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:585 blog/wp-includes/class-pop3.php:590
-#: blog/wp-includes/class-pop3.php:596
-msgid "POP3 delete:"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:590
-msgid "No msg number submitted"
-msgstr ""
-
-#: blog/wp-includes/class-pop3.php:596
-msgid "Command failed "
-msgstr ""
-
 #: htdocs/help/faq.php:24 help/faq.php:24
 msgid "<div id=\"about\">About Audacity</div>"
 msgstr ""
@@ -2463,6 +2326,10 @@ msgid "\n"
 " </ul>\n"
 msgstr ""
 
+#: download/features-1.3-a.php:28
+msgid "New in Audacity 1.3.7"
+msgstr ""
+
 #: htdocs/download/features-1.3-a.php:28 download/features-1.3-a.php:28
 msgid "New in Audacity 1.3.6"
 msgstr ""
@@ -3205,13 +3072,24 @@ msgstr ""
 msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows 2000, XP or Vista running on machines of substantially higher specification than the minimum stated above."
 msgstr ""
 
-#: htdocs/download/beta_source.php:22 download/beta_source.php:22
+#: download/beta_source.php:23 download/beta_source.php:30
 #, php-format
-msgid "<a href=\"%s\">Audacity %s release (source tarball)</a> (.tar.bz2 file, %.1lf MB)"
+msgid "<a href=\"%s\">Audacity %s release (source tarball)</a> (%s file, %.1lf MB)"
 msgstr ""
 
-#: htdocs/download/beta_source.php:27 download/beta_source.php:27
-msgid "Get the latest development code (incorporating changes since the release tarball) from <a href=\"../community/developers#cvs\">CVS</a>. This is the best choice if you are compiling on Windows."
+#: download/beta_source.php:24
+#, php-format
+msgid "This is our standard source tarball. It assumes your system has the necessary dependencies (libraries) installed (see below)."
+msgstr ""
+
+#: download/beta_source.php:31
+#, php-format
+msgid "This is a full source tarball, useful for Windows and Mac machines which may lack the necessary dependencies to compile Audacity."
+msgstr ""
+
+#: download/beta_source.php:32
+#, php-format
+msgid "<a href=\"%s\">Latest CVS development code</a>, incorporating changes since the release tarball."
 msgstr ""
 
 #: htdocs/download/beta_source.php:40 download/beta_source.php:40
@@ -3296,16 +3174,16 @@ msgstr ""
 msgid "Beta: 1.3 - for advanced users"
 msgstr ""
 
-#: htdocs/download/index.php:47 download/index.php:47
-msgid "&nbsp;&nbsp;1.3.6"
+#: download/index.php:47
+msgid "&nbsp;&nbsp;1.3.7"
 msgstr ""
 
-#: htdocs/download/index.php:50 download/index.php:50
-msgid "&nbsp;1.3.6 (Universal Binary)"
+#: download/index.php:50
+msgid "&nbsp;1.3.7 (Universal Binary)"
 msgstr ""
 
-#: htdocs/download/index.php:53 download/index.php:53
-msgid "&nbsp;1.3.6 (in source code)"
+#: download/index.php:53
+msgid "&nbsp;1.3.7 (in source code)"
 msgstr ""
 
 #: htdocs/download/index.php:59 download/index.php:59
@@ -3666,8 +3544,8 @@ msgstr ""
 msgid "Otherwise, we recommend either searching the web pages of your distribution for the latest information, or compiling Audacity from <a href=\"beta_source#recdown\">source code</a>."
 msgstr ""
 
-#: htdocs/download/recommended.inc.php:10 download/recommended.inc.php:10
-msgid "Click the appropriate link below, which takes you to the SourceForge download page - don't \"save link as..\" or \"save target as..\". The SourceForge download should start automatically. If it does not, click the links in the orange panel marked \"direct link\" or \"mirror\". <b>Only these links and the automatic download are authorized versions of Audacity</b>. Disable any automatic download managers if the download is incorrect."
+#: download/recommended.inc.php:10
+msgid "Click the appropriate link below, which takes you to the SourceForge download page - don't \"save link as..\" or \"save target as..\". The SourceForge download should start automatically. If it does not, click the links in the black panel marked \"direct link\" or \"mirror\". <b>Only these links and the automatic download are authorized versions of Audacity</b>. Disable any automatic download managers if the download is incorrect."
 msgstr ""
 
 #: htdocs/download/buy.php:9 download/buy.php:9
@@ -3952,12 +3830,12 @@ msgstr "La Station audio libre et multi-plateformes"
 msgid "Audacity&reg; is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href=\"about/\">Learn more about Audacity...</a> Also check our <a href=\"http://audacityteam.org/wiki/\">Wiki</a> and <a href=\"http://audacityteam.org/forum/\">Forum</a> for more information."
 msgstr ""
 
-#: htdocs/index.php:57 index.php:57
-msgid "The latest release of Audacity is <a href=\"/download\">1.3.6 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x Beta series."
+#: index.php:57
+msgid "The latest release of Audacity is <a href=\"/download\">1.3.7 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x Beta series."
 msgstr ""
 
-#: htdocs/index.php:59 index.php:59
-msgid "For all users, <a href=\"/download\">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have Audacity 1.2.6 and 1.3.6 installed on the same machine."
+#: index.php:59
+msgid "For all users, <a href=\"/download\">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have Audacity 1.2.6 and 1.3.7 installed on the same machine."
 msgstr ""
 
 #: index.php:55
@@ -4015,6 +3893,101 @@ msgstr "\"Audacity\" est une marque déposée de Dominic Mazzoni. Le logo Google
 #: include/news.inc.php:24
 msgid "%B %d, %Y"
 msgstr "%d %B %Y"
+
+#: include/news.inc.php:45
+msgid "Audacity 1.3.7 released"
+msgstr ""
+
+#: include/news.inc.php:46
+msgid "\n"
+"<p>\n"
+"The Audacity Team is pleased to announce the release of\n"
+"<a href=\"/download\">Audacity 1.3.7 (Beta)</a> \n"
+"for Windows, Mac and Linux/Unix. \n"
+"</p>\n"
+"<p>This is primarily a bug-fix release which significantly improves\n"
+"stability and usability, especially on Mac OS X. It incorporates some\n"
+"new features too, including DirectSound device support for Windows.\n"
+"</p>\n"
+"\n"
+"<dl>\n"
+"\t<dt> Cross-Platform Bug Fixes include: </dt>\n"
+"\t      <dd>   <ul>\n"
+"                       <li>Muting/soloing caused incorrect channel results in exported\n"
+"                            stereo files</li>\n"
+"                       <li>Nyquist effects: pasted unmodified audio into the result,\n"
+"                            no progress bar, truncation of processed audio on\n"
+"                            cancel</li> \n"
+"                       <li>Noise Removal: pasted unmodified audio into the result, \n"
+"                            unwanted filtering tail</li>\n"
+"                       <li>Uncompressed exports:</li>\n"
+"                                <ul>\n"
+"                                       <li>Export as WAV could be corrupted if overwriting\n"
+"                                            to same file</li>\n"
+"                                       <li>Export multiple to uncompressed formats only \n"
+"                                            produced 16-bit WAV</li>\n"
+"                                </ul>\n"
+"                       <li>Compressed exports:</li>\n"
+"                                <ul>\n"
+"                                       <li>MP3 exports now produce correct bit rate\n"
+"                                            mode, quality and length, with improved metadata \n"
+"                                            visibility in player applications</li>\n"
+"                                       <li>WMA exports containing metadata are now correct</li> \n"
+"                                </ul>                               \n"
+"                        <li>Restored support for multi-channel recording devices that\n"
+"                            can record more than two channels using Audacity</li>\n"
+"                </ul>\n"
+"         </dd>    \n"
+"\n"
+"\t<dt> Platform-specific Bug Fixes</dt>\n"
+"\t      <dd>   <ul>\n"
+"                       <li><i>Windows Vista:</i> fixed crash opening Preferences with no sound\n"
+"                            devices enabled and connected </li>\n"
+"                       <li><i>Mac OS X and Linux:</i></li>\n"
+"                                <ul>\n"
+"                                       <li>fixes for spurious clipping, label typing, no shortcuts\n"
+"                                            after running effects</li>\n"
+"                                       <li>project rate now always changes to respect that of \n"
+"                                            first imported file</li>\n"
+"                                </ul> \n"
+"                       <li><i>Mac OS X only:</i></li>\n"
+"                                <ul>\n"
+"                                       <li>fixes for inactive or corrupted menus and hidden\n"
+"                                            dialogues, portable settings not detected, and\n"
+"                                            inability to set independent Command and Control shortcuts</li>\n"
+"                                       <li>FFmpeg installer now available</li>\n"
+"                                </ul>\n"
+"                </ul>\n"
+"         </dd>    \n"
+"\n"
+"\t<dt> New Features </dt>\n"
+"\t      <dd>   <ul>\n"
+"                       <li>F11 Full Screen mode, high-quality \"Sliding Time Scale/Pitch Shift\"\n"
+"                            effect, Audio Contrast Analyzer </li>\n"
+"                       <li>Windows: sound devices can now be opened using the more efficient\n"
+"                            DirectSound API\n"
+"                </ul>\n"
+"         </dd>    \n"
+"\n"
+"\t<dt> Other changes </dt>\n"
+"\t      <dd>   <ul>\n"
+"                       <li>As a first step towards improving latency correction,\n"
+"                            a fixed rather than variable correction is now applied</li>\n"
+"\t\t\t\t\t\t\t  <li>Numerous minor interface fixes and improvements</li>\n"
+"                </ul>\n"
+"         </dd>    \n"
+"</dl>\n"
+"\n"
+"<p>\n"
+"Because it is a work in progress and does not yet come with \n"
+"complete documentation or translations into foreign languages, \n"
+"it is recommended for more advanced users. For all users, \n"
+"<a href=\"/download\">Audacity 1.2.6</a> is a stable release, \n"
+"complete and fully documented. You can have Audacity 1.2.6 and \n"
+"1.3.7 installed on the same machine.\n"
+"</p>\n"
+"<br>\n"
+msgstr ""
 
 #: htdocs/include/news.inc.php:45 include/news.inc.php:45
 msgid "Audacity 1.3.6 released"
