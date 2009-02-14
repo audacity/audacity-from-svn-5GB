@@ -293,7 +293,7 @@ llrintf (float flt)
 #define PACKAGE_VERSION "1.0.18"
 
 /* Set to maximum allowed value of sf_count_t type. */
-#define SF_COUNT_MAX 0x7FFFFFFFFFFFFFFFLL
+#define SF_COUNT_MAX LLONG_MAX
 
 /* The size of `double', as computed by sizeof. */
 #define SIZEOF_DOUBLE 8
@@ -341,7 +341,7 @@ llrintf (float flt)
 #define STDC_HEADERS 1
 
 /* Set to long if unknown. */
-#define TYPEOF_SF_COUNT_T loff_t
+#define TYPEOF_SF_COUNT_T __int64
 
 /* Set to 1 to use the native windows API */
 #define USE_WINDOWS_API 1

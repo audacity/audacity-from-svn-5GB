@@ -301,12 +301,19 @@ typedef	struct SNDFILE_tag	SNDFILE ;
 ** header file to be compiler by both GCC and the microsoft compiler.
 */
 
+
+#ifdef _MSC_VER
+#include <limits.h>
+typedef __int64	sf_count_t ;
+#define SF_COUNT_MAX		LLONG_MAX
+#else
 #ifdef _MSCVER
 typedef __int64_t	sf_count_t ;
 #define SF_COUNT_MAX		0x7fffffffffffffffi64
 #else
 typedef off_t	sf_count_t ;
 #define SF_COUNT_MAX		0x7FFFFFFFFFFFFFFFLL
+#endif
 #endif
 
 
