@@ -91,11 +91,14 @@ libsamplerate
 Erik de Castro Lopo's high quality sample rate conversion library. Not used
 in release builds, could probably be removed altogther except for comparision
 purposes.
-Version in Audacity CVS: 0.1.2
-Patches: ??
+Version in Audacity CVS: 0.1.7
+Patches: endian.m4, lrint.m4, llrint.m4, lrintf.m4, clip_mode.m4 copied from
+			libsndfile's M4/.
+		 signal.m4 created out of the tail of acinclude.m4 with the remaining
+		 	necessary macro
 AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
 by default
-Upstream Version: 0.1.2
+Upstream Version: 0.1.7
 
 libsndfile
 ----------
