@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2008 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -28,6 +28,8 @@
 
 #include <samplerate.h>
 #include <sndfile.h>
+
+#define DEFAULT_CONVERTER SRC_SINC_MEDIUM_QUALITY
 
 #define	BUFFER_LEN		4096	/*-(1<<16)-*/
 
@@ -62,7 +64,7 @@ main (int argc, char *argv [])
 		usage_exit (argv [0]) ;
 
 	/* Set default converter. */
-	converter = SRC_SINC_BEST_QUALITY ;
+	converter = DEFAULT_CONVERTER ;
 
 	for (k = 1 ; k < argc - 2 ; k++)
 	{	if (strcmp (argv [k], "--max-speed") == 0)
@@ -96,7 +98,7 @@ main (int argc, char *argv [])
 		exit (1) ;
 		} ;
 
-	if (! (infile = sf_open (argv [argc - 2], SFM_READ, &sfinfo)))
+	if ((infile = sf_open (argv [argc - 2], SFM_READ, &sfinfo)) == NULL)
 	{	printf ("Error : Not able to open input file '%s'\n", argv [argc - 2]) ;
 		exit (1) ;
 		} ;
@@ -115,6 +117,12 @@ main (int argc, char *argv [])
 	{	printf ("Not able to determine new sample rate. Exiting.\n") ;
 		sf_close (infile) ;
 		exit (1) ;
+		} ;
+
+	if (fabs (src_ratio - 1.0) < 1e-20)
+	{	printf ("Target samplerate and input samplerate are the same. Exiting.\n") ;
+		sf_close (infile) ;
+		exit (0) ;
 		} ;
 
 	printf ("SRC Ratio     : %f\n", src_ratio) ;
@@ -256,7 +264,8 @@ apply_gain (float * data, long frames, int channels, double max, double gain)
 
 static void
 usage_exit (const char *progname)
-{	const char	*cptr ;
+{	char lsf_ver [128] ;
+	const char	*cptr ;
 	int		k ;
 
 	if ((cptr = strrchr (progname, '/')) != NULL)
@@ -265,18 +274,22 @@ usage_exit (const char *progname)
 	if ((cptr = strrchr (progname, '\\')) != NULL)
 		progname = cptr + 1 ;
 
+	
+	sf_command (NULL, SFC_GET_LIB_VERSION, lsf_ver, sizeof (lsf_ver)) ;
+
 	printf ("\n"
 		"  A Sample Rate Converter using libsndfile for file I/O and Secret \n"
 		"  Rabbit Code (aka libsamplerate) for performing the conversion.\n"
 		"  It works on any file format supported by libsndfile with any \n"
 		"  number of channels (limited only by host memory).\n"
 		"\n"
-		"  libsamplerate version : %s\n"
+		"       %s\n"
+		"       %s\n"
 		"\n"
 		"  Usage : \n"
 		"       %s -to <new sample rate> [-c <number>] <input file> <output file>\n"
 		"       %s -by <amount> [-c <number>] <input file> <output file>\n"
-		"\n", src_get_version (), progname, progname) ;
+		"\n", src_get_version (), lsf_ver, progname, progname) ;
 
 	puts (
 		"  The optional -c argument allows the converter type to be chosen from\n"
@@ -285,7 +298,7 @@ usage_exit (const char *progname)
 		) ;
 
 	for (k = 0 ; (cptr = src_get_name (k)) != NULL ; k++)
-		printf ("       %d : %s\n", k, cptr) ;
+		printf ("       %d : %s%s\n", k, cptr, k == DEFAULT_CONVERTER ? " (default)" : "") ;
 
 	puts ("") ;
 
@@ -305,7 +318,7 @@ main (void)
 		"\n"
 		"****************************************************************\n"
 		"  This example program was compiled without libsndfile \n"
-		"  (http://www.zip.com.au/~erikd/libsndfile/).\n"
+		"  (http://www.mega-nerd.com/libsndfile/).\n"
 		"  It is therefore completely broken and non-functional.\n"
 		"****************************************************************\n"
 		"\n"
@@ -315,11 +328,4 @@ main (void)
 } /* main */
 
 #endif
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: 4bb75515-3b00-4e31-bc37-35f3659e61cb
-*/
 

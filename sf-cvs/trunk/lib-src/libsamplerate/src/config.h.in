@@ -9,11 +9,17 @@
 /* Target processor clips on positive float to int conversion. */
 #undef CPU_CLIPS_POSITIVE
 
-/* Set to 1 to enable debugging. */
-#undef ENABLE_DEBUG
+/* Target processor is big endian. */
+#undef CPU_IS_BIG_ENDIAN
+
+/* Target processor is little endian. */
+#undef CPU_IS_LITTLE_ENDIAN
 
 /* Major version of GCC or 3 otherwise. */
 #undef GCC_MAJOR_VERSION
+
+/* Define to 1 if you have the `alarm' function. */
+#undef HAVE_ALARM
 
 /* Define to 1 if you have the `calloc' function. */
 #undef HAVE_CALLOC
@@ -39,9 +45,6 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Define to 1 if you have the `efence' library (-lefence). */
-#undef HAVE_LIBEFENCE
-
 /* Define to 1 if you have the `m' library (-lm). */
 #undef HAVE_LIBM
 
@@ -62,6 +65,12 @@
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
+
+/* Define if you have signal SIGALRM. */
+#undef HAVE_SIGALRM
+
+/* Define to 1 if you have the `signal' function. */
+#undef HAVE_SIGNAL
 
 /* Set to 1 if you have libsndfile. */
 #undef HAVE_SNDFILE
@@ -90,6 +99,13 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
+/* Define to the sub-directory in which libtool stores uninstalled libraries.
+   */
+#undef LT_OBJDIR
+
+/* Define to 1 if your C compiler doesn't accept -c and -o together. */
+#undef NO_MINUS_C_MINUS_O
+
 /* Set to 1 if compiling for Win32 */
 #undef OS_IS_WIN32
 
@@ -111,16 +127,16 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* The size of a `double', as computed by sizeof. */
+/* The size of `double', as computed by sizeof. */
 #undef SIZEOF_DOUBLE
 
-/* The size of a `float', as computed by sizeof. */
+/* The size of `float', as computed by sizeof. */
 #undef SIZEOF_FLOAT
 
-/* The size of a `int', as computed by sizeof. */
+/* The size of `int', as computed by sizeof. */
 #undef SIZEOF_INT
 
-/* The size of a `long', as computed by sizeof. */
+/* The size of `long', as computed by sizeof. */
 #undef SIZEOF_LONG
 
 /* Define to 1 if you have the ANSI C header files. */

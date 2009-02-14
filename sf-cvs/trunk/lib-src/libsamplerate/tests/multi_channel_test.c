@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2008 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -16,19 +16,21 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 */
 
+#include "config.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <assert.h>
 
 #include <samplerate.h>
 
 #include "util.h"
-#include "calc_snr.h"
-#include "config.h"
-
-#define	BUFFER_LEN		(1<<15)
+#define	BUFFER_LEN		50000
 #define	BLOCK_LEN		(12)
+
+#define	MAX_CHANNELS	10
 
 static void simple_test (int converter, int channel_count, double target_snr) ;
 static void process_test (int converter, int channel_count, double target_snr) ;
@@ -36,42 +38,32 @@ static void callback_test (int converter, int channel_count, double target_snr) 
 
 int
 main (void)
-{
-	/* Force output of the Electric Fence banner message. */
-	force_efence_banner () ;
+{	double target ;
+	int k ;
 
 	puts ("\n    Zero Order Hold interpolator :") ;
-	simple_test		(SRC_ZERO_ORDER_HOLD, 1, 45.0) ;
-	process_test	(SRC_ZERO_ORDER_HOLD, 1, 45.0) ;
-	callback_test	(SRC_ZERO_ORDER_HOLD, 1, 45.0) ;
-	simple_test		(SRC_ZERO_ORDER_HOLD, 2, 44.0) ;
-	process_test	(SRC_ZERO_ORDER_HOLD, 2, 44.0) ;
-	callback_test	(SRC_ZERO_ORDER_HOLD, 2, 44.0) ;
-	simple_test		(SRC_ZERO_ORDER_HOLD, 3, 44.0) ;
-	process_test	(SRC_ZERO_ORDER_HOLD, 3, 44.0) ;
-	callback_test	(SRC_ZERO_ORDER_HOLD, 3, 44.0) ;
+	target = 38.0 ;
+	for (k = 1 ; k <= 3 ; k++)
+	{	simple_test		(SRC_ZERO_ORDER_HOLD, k, target) ;
+		process_test	(SRC_ZERO_ORDER_HOLD, k, target) ;
+		callback_test	(SRC_ZERO_ORDER_HOLD, k, target) ;
+		} ;
 
 	puts ("\n    Linear interpolator :") ;
-	simple_test		(SRC_LINEAR, 1, 92.0) ;
-	process_test	(SRC_LINEAR, 1, 92.0) ;
-	callback_test	(SRC_LINEAR, 1, 92.0) ;
-	simple_test		(SRC_LINEAR, 2, 90.0) ;
-	process_test	(SRC_LINEAR, 2, 90.0) ;
-	callback_test	(SRC_LINEAR, 2, 90.0) ;
-	simple_test		(SRC_LINEAR, 3, 88.0) ;
-	process_test	(SRC_LINEAR, 3, 88.0) ;
-	callback_test	(SRC_LINEAR, 3, 88.0) ;
+	target = 79.0 ;
+	for (k = 1 ; k <= 3 ; k++)
+	{	simple_test		(SRC_LINEAR, k, target) ;
+		process_test	(SRC_LINEAR, k, target) ;
+		callback_test	(SRC_LINEAR, k, target) ;
+		} ;
 
 	puts ("\n    Sinc interpolator :") ;
-	simple_test		(SRC_SINC_FASTEST, 1, 100.0) ;
-	process_test	(SRC_SINC_FASTEST, 1, 100.0) ;
-	callback_test	(SRC_SINC_FASTEST, 1, 100.0) ;
-	simple_test		(SRC_SINC_FASTEST, 2, 100.0) ;
-	process_test	(SRC_SINC_FASTEST, 2, 100.0) ;
-	callback_test	(SRC_SINC_FASTEST, 2, 100.0) ;
-	simple_test		(SRC_SINC_FASTEST, 3, 100.0) ;
-	process_test	(SRC_SINC_FASTEST, 3, 100.0) ;
-	callback_test	(SRC_SINC_FASTEST, 3, 100.0) ;
+	target = 100.0 ;
+	for (k = 1 ; k <= MAX_CHANNELS ; k++)
+	{	simple_test		(SRC_SINC_FASTEST, k, target) ;
+		process_test	(SRC_SINC_FASTEST, k, target) ;
+		callback_test	(SRC_SINC_FASTEST, k, target) ;
+		} ;
 
 	puts ("") ;
 
@@ -81,10 +73,10 @@ main (void)
 /*==============================================================================
 */
 
-static float input_serial		[BUFFER_LEN] ;
-static float input_interleaved	[BUFFER_LEN] ;
-static float output_interleaved	[BUFFER_LEN] ;
-static float output_serial		[BUFFER_LEN] ;
+static float input_serial		[BUFFER_LEN * MAX_CHANNELS] ;
+static float input_interleaved	[BUFFER_LEN * MAX_CHANNELS] ;
+static float output_interleaved	[BUFFER_LEN * MAX_CHANNELS] ;
+static float output_serial		[BUFFER_LEN * MAX_CHANNELS] ;
 
 static void
 simple_test (int converter, int channel_count, double target_snr)
@@ -93,20 +85,22 @@ simple_test (int converter, int channel_count, double target_snr)
 	double	freq, snr ;
 	int		ch, error, frames ;
 
-	printf ("\t%-22s (%d channel%c) ............. ", "simple_test", channel_count, channel_count > 1 ? 's' : ' ') ;
+	printf ("\t%-22s (%2d channel%c) ............ ", "simple_test", channel_count, channel_count > 1 ? 's' : ' ') ;
 	fflush (stdout) ;
+
+	assert (channel_count <= MAX_CHANNELS) ;
 
 	memset (input_serial, 0, sizeof (input_serial)) ;
 	memset (input_interleaved, 0, sizeof (input_interleaved)) ;
 	memset (output_interleaved, 0, sizeof (output_interleaved)) ;
 	memset (output_serial, 0, sizeof (output_serial)) ;
 
-	frames = MIN (ARRAY_LEN (input_serial) / channel_count, 1 << 16) ;
+	frames = BUFFER_LEN ;
 
 	/* Calculate channel_count separate windowed sine waves. */
 	for (ch = 0 ; ch < channel_count ; ch++)
 	{	freq = (200.0 + 33.333333333 * ch) / 44100.0 ;
-		gen_windowed_sines (input_serial + ch * frames, frames, &freq, 1) ;
+		gen_windowed_sines (1, &freq, 1.0, input_serial + ch * frames, frames) ;
 		} ;
 
 	/* Interleave the data in preparation for SRC. */
@@ -139,7 +133,7 @@ simple_test (int converter, int channel_count, double target_snr)
 	deinterleave_data (output_interleaved, output_serial, frames, channel_count) ;
 
 	for (ch = 0 ; ch < channel_count ; ch++)
-	{	snr = calculate_snr (output_serial + ch * frames, frames) ;
+	{	snr = calculate_snr (output_serial + ch * frames, frames, 1) ;
 		if (snr < target_snr)
 		{	printf ("\n\nLine %d: channel %d snr %f should be %f\n", __LINE__, ch, snr, target_snr) ;
 			save_oct_float ("output.dat", input_serial, channel_count * frames, output_serial, channel_count * frames) ;
@@ -163,20 +157,22 @@ process_test (int converter, int channel_count, double target_snr)
 	double	freq, snr ;
 	int		ch, error, frames, current_in, current_out ;
 
-	printf ("\t%-22s (%d channel%c) ............. ", "process_test", channel_count, channel_count > 1 ? 's' : ' ') ;
+	printf ("\t%-22s (%2d channel%c) ............ ", "process_test", channel_count, channel_count > 1 ? 's' : ' ') ;
 	fflush (stdout) ;
+
+	assert (channel_count <= MAX_CHANNELS) ;
 
 	memset (input_serial, 0, sizeof (input_serial)) ;
 	memset (input_interleaved, 0, sizeof (input_interleaved)) ;
 	memset (output_interleaved, 0, sizeof (output_interleaved)) ;
 	memset (output_serial, 0, sizeof (output_serial)) ;
 
-	frames = MIN (ARRAY_LEN (input_serial) / channel_count, 1 << 16) ;
+	frames = BUFFER_LEN ;
 
 	/* Calculate channel_count separate windowed sine waves. */
 	for (ch = 0 ; ch < channel_count ; ch++)
-	{	freq = (200.0 + 33.333333333 * ch) / 44100.0 ;
-		gen_windowed_sines (input_serial + ch * frames, frames, &freq, 1) ;
+	{	freq = (400.0 + 11.333333333 * ch) / 44100.0 ;
+		gen_windowed_sines (1, &freq, 1.0, input_serial + ch * frames, frames) ;
 		} ;
 
 	/* Interleave the data in preparation for SRC. */
@@ -234,7 +230,7 @@ process_test (int converter, int channel_count, double target_snr)
 	deinterleave_data (output_interleaved, output_serial, frames, channel_count) ;
 
 	for (ch = 0 ; ch < channel_count ; ch++)
-	{	snr = calculate_snr (output_serial + ch * frames, frames) ;
+	{	snr = calculate_snr (output_serial + ch * frames, frames, 1) ;
 		if (snr < target_snr)
 		{	printf ("\n\nLine %d: channel %d snr %f should be %f\n", __LINE__, ch, snr, target_snr) ;
 			save_oct_float ("output.dat", input_serial, channel_count * frames, output_serial, channel_count * frames) ;
@@ -289,8 +285,10 @@ callback_test (int converter, int channel_count, double target_snr)
 	double	freq, snr, src_ratio ;
 	int		ch, error, frames, read_total, read_count ;
 
-	printf ("\t%-22s (%d channel%c) ............. ", "callback_test", channel_count, channel_count > 1 ? 's' : ' ') ;
+	printf ("\t%-22s (%2d channel%c) ............ ", "callback_test", channel_count, channel_count > 1 ? 's' : ' ') ;
 	fflush (stdout) ;
+
+	assert (channel_count <= MAX_CHANNELS) ;
 
 	memset (input_serial, 0, sizeof (input_serial)) ;
 	memset (input_interleaved, 0, sizeof (input_interleaved)) ;
@@ -298,12 +296,12 @@ callback_test (int converter, int channel_count, double target_snr)
 	memset (output_serial, 0, sizeof (output_serial)) ;
 	memset (&test_callback_data, 0, sizeof (test_callback_data)) ;
 
-	frames = MIN (ARRAY_LEN (input_serial) / channel_count, 1 << 16) ;
+	frames = BUFFER_LEN ;
 
 	/* Calculate channel_count separate windowed sine waves. */
 	for (ch = 0 ; ch < channel_count ; ch++)
 	{	freq = (200.0 + 33.333333333 * ch) / 44100.0 ;
-		gen_windowed_sines (input_serial + ch * frames, frames, &freq, 1) ;
+		gen_windowed_sines (1, &freq, 1.0, input_serial + ch * frames, frames) ;
 		} ;
 
 	/* Interleave the data in preparation for SRC. */
@@ -351,7 +349,7 @@ callback_test (int converter, int channel_count, double target_snr)
 	deinterleave_data (output_interleaved, output_serial, frames, channel_count) ;
 
 	for (ch = 0 ; ch < channel_count ; ch++)
-	{	snr = calculate_snr (output_serial + ch * frames, frames) ;
+	{	snr = calculate_snr (output_serial + ch * frames, frames, 1) ;
 		if (snr < target_snr)
 		{	printf ("\n\nLine %d: channel %d snr %f should be %f\n", __LINE__, ch, snr, target_snr) ;
 			save_oct_float ("output.dat", input_serial, channel_count * frames, output_serial, channel_count * frames) ;
@@ -363,11 +361,4 @@ callback_test (int converter, int channel_count, double target_snr)
 
 	return ;
 } /* callback_test */
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: 48c58d36-baed-4f24-89f1-027a939b240a
-*/
 

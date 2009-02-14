@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2008 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 #define	LONG_BUFFER_LEN		((1 << 16) - 20)
 
 static void stream_test (int converter, double ratio) ;
-static void term_test (int converter, double ratio) ;
+static void init_term_test (int converter, double ratio) ;
 
 static int	next_block_length (int reset) ;
 
@@ -41,13 +41,10 @@ main (void)
 
 	int k ;
 
-	/* Force output of the Electric Fence banner message. */
-	force_efence_banner () ;
-
 	puts ("\n    Zero Order Hold interpolator:") ;
 
 	for (k = 0 ; k < ARRAY_LEN (src_ratios) ; k++)
-		term_test (SRC_ZERO_ORDER_HOLD, src_ratios [k]) ;
+		init_term_test (SRC_ZERO_ORDER_HOLD, src_ratios [k]) ;
 	puts ("") ;
 	for (k = 0 ; k < ARRAY_LEN (src_ratios) ; k++)
 		stream_test (SRC_ZERO_ORDER_HOLD, src_ratios [k]) ;
@@ -55,7 +52,7 @@ main (void)
 
 	puts ("\n    Linear interpolator:") ;
 	for (k = 0 ; k < ARRAY_LEN (src_ratios) ; k++)
-		term_test (SRC_LINEAR, src_ratios [k]) ;
+		init_term_test (SRC_LINEAR, src_ratios [k]) ;
 	puts ("") ;
 	for (k = 0 ; k < ARRAY_LEN (src_ratios) ; k++)
 		stream_test (SRC_LINEAR, src_ratios [k]) ;
@@ -63,7 +60,7 @@ main (void)
 
 	puts ("\n    Sinc interpolator:") ;
 	for (k = 0 ; k < ARRAY_LEN (src_ratios) ; k++)
-		term_test (SRC_SINC_FASTEST, src_ratios [k]) ;
+		init_term_test (SRC_SINC_FASTEST, src_ratios [k]) ;
 	puts ("") ;
 	for (k = 0 ; k < ARRAY_LEN (src_ratios) ; k++)
 		stream_test (SRC_SINC_FASTEST, src_ratios [k]) ;
@@ -74,14 +71,14 @@ main (void)
 } /* main */
 
 static void
-term_test (int converter, double src_ratio)
+init_term_test (int converter, double src_ratio)
 {	static float input [SHORT_BUFFER_LEN], output [SHORT_BUFFER_LEN] ;
 
 	SRC_DATA	src_data ;
 
-	int input_len, output_len, error, terminate ;
+	int k, input_len, output_len, error, terminate ;
 
-	printf ("\ttermination_test (SRC ratio = %7.4f) .......... ", src_ratio) ;
+	printf ("\tinit_term_test   (SRC ratio = %7.4f) .......... ", src_ratio) ;
 	fflush (stdout) ;
 
 	/* Calculate maximun input and output lengths. */
@@ -96,6 +93,9 @@ term_test (int converter, double src_ratio)
 
 	/* Reduce input_len by 10 so output is longer than necessary. */
 	input_len -= 10 ;
+
+	for (k = 0 ; k < ARRAY_LEN (input) ; k++)
+		input [k] = 1.0 ;
 
 	if (output_len > SHORT_BUFFER_LEN)
 	{	printf ("\n\nLine %d : output_len > SHORT_BUFFER_LEN\n\n", __LINE__) ;
@@ -127,7 +127,7 @@ term_test (int converter, double src_ratio)
 		exit (1) ;
 		} ;
 
-	if (src_data.input_frames_used != input_len)
+	if (abs (src_data.input_frames_used - input_len) > 1)
 	{	printf ("\n\nLine %d : input_frames_used should be %d, is %ld.\n\n",
 					 __LINE__, input_len, src_data.input_frames_used) ;
 		printf ("\tsrc_ratio  : %.4f\n", src_ratio) ;
@@ -135,10 +135,16 @@ term_test (int converter, double src_ratio)
 		exit (1) ;
 		} ;
 
+	if (fabs (output [0]) < 0.1)
+	{	printf ("\n\nLine %d : First output sample is bad.\n\n", __LINE__) ;
+		printf ("\toutput [0] == %f\n\n", output [0]) ;
+		exit (1) ;
+		}
+
 	puts ("ok") ;
 
 	return ;
-} /* term_test */
+} /* init_term_test */
 
 static void
 stream_test (int converter, double src_ratio)
@@ -301,12 +307,4 @@ next_block_length (int reset)
 
 	return block_lengths [block_len_index] ;
 } /* next_block_length */
-
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: 03cb1e3c-5177-41b1-83c1-460b33733742
-*/
 

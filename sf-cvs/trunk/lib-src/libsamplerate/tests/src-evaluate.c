@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2008 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -33,11 +33,10 @@
 #include <math.h>
 #include <sys/utsname.h>
 
-#include "calc_snr.h"
 #include "util.h"
 
 #define	MAX_FREQS		4
-#define	BUFFER_LEN		40000
+#define	BUFFER_LEN		80000
 
 #define SAFE_STRNCAT(dest,src,len)								\
 		{	int safe_strncat_count ;							\
@@ -61,16 +60,16 @@ typedef struct
 	const char	*version_cmd ;
 	const char	*version_start ;
 	const char	*convert_cmd ;
-
-	char		version [256] ;
 	int			format ;
 } RESAMPLE_PROG ;
 
 static char *get_progname (char *) ;
-static void usage_exit (char *, RESAMPLE_PROG *prog, int count) ;
-static void measure_program (RESAMPLE_PROG *prog, int verbose) ;
-static void generate_source_wav (char *filename, double *freqs, int freq_count, int format) ;
+static void usage_exit (const char *, const RESAMPLE_PROG *prog, int count) ;
+static void measure_program (const RESAMPLE_PROG *prog, int verbose) ;
+static void generate_source_wav (const char *filename, const double *freqs, int freq_count, int format) ;
 static const char* get_machine_details (void) ;
+
+static char	version_string [512] ;
 
 int
 main (int argc, char *argv [])
@@ -78,23 +77,20 @@ main (int argc, char *argv [])
 	{	{	"sndfile-resample",
 			"examples/sndfile-resample --version",
 			"libsamplerate",
-			"examples/sndfile-resample --max-speed -c 2 -to %d source.wav destination.wav",
-			"", /* Version string retrived later. */
-			SF_FORMAT_WAV | SF_FORMAT_FLOAT
+			"examples/sndfile-resample --max-speed -c 0 -to %d source.wav destination.wav",
+			SF_FORMAT_WAV | SF_FORMAT_PCM_32
 			},
 		{	"sox",
 			"sox -h 2>&1",
 			"sox",
 			"sox source.wav -r %d destination.wav resample 0.835",
-			"", /* Version string retrived later. */
 			SF_FORMAT_WAV | SF_FORMAT_PCM_32
 			},
 		{	"ResampAudio",
 			"ResampAudio --version",
 			"ResampAudio",
 			"ResampAudio -f cutoff=0.41,atten=100,ratio=128 -s %d source.wav destination.wav",
-			"", /* Version string retrived later. */
-			SF_FORMAT_WAV | SF_FORMAT_FLOAT
+			SF_FORMAT_WAV | SF_FORMAT_PCM_32
 			},
 
 		/*-
@@ -107,7 +103,6 @@ main (int argc, char *argv [])
 			"ssrc",
 			"Shibatch",
 			"ssrc --rate %d source.wav destination.wav",
-			"", /+* Version string retrived later. *+/
 			SF_FORMAT_WAV | SF_FORMAT_PCM_32
 			},-*/
 
@@ -120,7 +115,6 @@ main (int argc, char *argv [])
 			"resample -version",
 			"resample",
 			"resample -to %d source.wav destination.wav",
-			"", /+* Version string retrived later. *+/
 			SF_FORMAT_WAV | SF_FORMAT_FLOAT
 			},-*/
 
@@ -129,7 +123,6 @@ main (int argc, char *argv [])
 			"mplayer -v 2>&1",
 			"MPlayer ",
 			"mplayer -ao pcm -srate %d source.wav >/dev/null 2>&1 && mv audiodump.wav destination.wav",
-			"", /+* Version string retrived later. *+/
 			SF_FORMAT_WAV | SF_FORMAT_PCM_32
 			},-*/
 
@@ -180,7 +173,7 @@ get_progname (char *progname)
 } /* get_progname */
 
 static void
-usage_exit (char *progname, RESAMPLE_PROG *prog, int count)
+usage_exit (const char *progname, const RESAMPLE_PROG *prog, int count)
 {	int k ;
 
 	printf ("\n  Usage : %s <number>\n\n", progname) ;
@@ -220,12 +213,12 @@ get_machine_details (void)
 */
 
 static void
-get_version_string (RESAMPLE_PROG *prog)
+get_version_string (const RESAMPLE_PROG *prog)
 {	FILE *file ;
 	char *cptr ;
 
 	/* Default. */
-	snprintf (prog->version, sizeof (prog->version), "no version") ;
+	snprintf (version_string, sizeof (version_string), "no version") ;
 
 	if (prog->version_cmd == NULL)
 		return ;
@@ -233,33 +226,33 @@ get_version_string (RESAMPLE_PROG *prog)
 	if ((file = popen (prog->version_cmd, "r")) == NULL)
 		return ;
 
-	while ((cptr = fgets (prog->version, sizeof (prog->version), file)) != NULL)
+	while ((cptr = fgets (version_string, sizeof (version_string), file)) != NULL)
 	{
 		if (strstr (cptr, prog->version_start) != NULL)
 			break ;
 
-		prog->version [0] = 0 ;
+		version_string [0] = 0 ;
 		} ;
 
 	pclose (file) ;
 
 	/* Remove trailing newline. */
-	if ((cptr = strchr (prog->version, '\n')) != NULL)
+	if ((cptr = strchr (version_string, '\n')) != NULL)
 		cptr [0] = 0 ;
 
 	/* Remove leading whitespace from version string. */
-	cptr = prog->version ;
+	cptr = version_string ;
 	while (cptr [0] != 0 && isspace (cptr [0]))
 		cptr ++ ;
 
-	if (cptr != prog->version)
-		strncpy (prog->version, cptr, sizeof (prog->version)) ;
+	if (cptr != version_string)
+		strncpy (version_string, cptr, sizeof (version_string)) ;
 
 	return ;
 } /* get_version_string */
 
 static void
-generate_source_wav (char *filename, double *freqs, int freq_count, int format)
+generate_source_wav (const char *filename, const double *freqs, int freq_count, int format)
 {	static float buffer [BUFFER_LEN] ;
 
 	SNDFILE *sndfile ;
@@ -276,7 +269,7 @@ generate_source_wav (char *filename, double *freqs, int freq_count, int format)
 
 	sf_command (sndfile, SFC_SET_ADD_PEAK_CHUNK, NULL, SF_FALSE) ;
 
-	gen_windowed_sines (buffer, ARRAY_LEN (buffer), freqs, freq_count) ;
+	gen_windowed_sines (freq_count, freqs, 0.9, buffer, ARRAY_LEN (buffer)) ;
 
 	if (sf_write_float (sndfile, buffer, ARRAY_LEN (buffer)) != ARRAY_LEN (buffer))
 	{	printf ("Line %d : sf_write_float short write.\n", __LINE__) ;
@@ -287,8 +280,8 @@ generate_source_wav (char *filename, double *freqs, int freq_count, int format)
 } /* generate_source_wav */
 
 static double
-measure_destination_wav (char *filename, int *output_samples)
-{	static float buffer [124000] ;
+measure_destination_wav (char *filename, int *output_samples, int expected_peaks)
+{	static float buffer [250000] ;
 
 	SNDFILE *sndfile ;
 	SF_INFO sfinfo ;
@@ -305,7 +298,7 @@ measure_destination_wav (char *filename, int *output_samples)
 		} ;
 
 	if (sfinfo.frames > ARRAY_LEN (buffer))
-	{	printf ("Line %d : Too many frames of data in file.\n", __LINE__) ;
+	{	printf ("Line %d : Too many frames (%ld) of data in file.\n", __LINE__, (long) sfinfo.frames) ;
 		exit (1) ;
 		} ;
 
@@ -318,13 +311,13 @@ measure_destination_wav (char *filename, int *output_samples)
 
 	sf_close (sndfile) ;
 
-	snr = calculate_snr (buffer, sfinfo.frames) ;
+	snr = calculate_snr (buffer, sfinfo.frames, expected_peaks) ;
 
 	return snr ;
 } /* measure_desination_wav */
 
 static double
-measure_snr (RESAMPLE_PROG *prog, int *output_samples, int verbose)
+measure_snr (const RESAMPLE_PROG *prog, int *output_samples, int verbose)
 {	static SNR_TEST snr_test [] =
 	{
 		{	1,	{ 0.211111111111 },		48000,		1,	1.0 },
@@ -334,6 +327,7 @@ measure_snr (RESAMPLE_PROG *prog, int *output_samples, int verbose)
 		{	1,	{ 0.011111111111 },		13231,		1,	1.0 },
 		{	1,	{ 0.011111111111 },		44101,		1,	1.0 },
 		{	2,	{ 0.311111, 0.49 },		78199,		2,	1.0 },
+		{	2,	{ 0.011111, 0.49 },		12345,		1,	0.5 },
 		{	2,	{ 0.0123456, 0.4 },		20143,		1,	0.5 },
 		{	2,	{ 0.0111111, 0.4 },		26461,		1,	0.5 },
 		{	1,	{ 0.381111111111 },		58661,		1,	1.0 }
@@ -355,11 +349,11 @@ measure_snr (RESAMPLE_PROG *prog, int *output_samples, int verbose)
 		generate_source_wav ("source.wav", snr_test [k].freqs, snr_test [k].freq_count, prog->format) ;
 
 		snprintf (command, sizeof (command), prog->convert_cmd, snr_test [k].output_samplerate) ;
-		SAFE_STRNCAT (command, " >/dev/null", sizeof (command)) ;
+		SAFE_STRNCAT (command, " >/dev/null 2>&1", sizeof (command)) ;
 		if ((retval = system (command)) != 0)
 			printf ("system returned %d\n", retval) ;
 
-		snr = measure_destination_wav ("destination.wav", &sample_count) ;
+		snr = measure_destination_wav ("destination.wav", &sample_count, snr_test->pass_band_peaks) ;
 
 		*output_samples += sample_count ;
 
@@ -394,8 +388,8 @@ measure_destination_peak (const char *filename)
 		exit (1) ;
 		} ;
 
-	if (sfinfo.frames > ARRAY_LEN (data) || sfinfo.frames < ARRAY_LEN (data) - 100)
-	{	printf ("Line %d : bad frame count.\n", __LINE__) ;
+	if (sfinfo.frames > ARRAY_LEN (data) + 4 || sfinfo.frames < ARRAY_LEN (data) - 100)
+	{	printf ("Line %d : bad frame count (got %d, expected %d).\n", __LINE__, (int) sfinfo.frames, ARRAY_LEN (data)) ;
 		exit (1) ;
 		} ;
 
@@ -414,7 +408,7 @@ measure_destination_peak (const char *filename)
 } /* measure_destination_peak */
 
 static double
-find_attenuation (double freq, RESAMPLE_PROG *prog, int verbose)
+find_attenuation (double freq, const RESAMPLE_PROG *prog, int verbose)
 {	static char	command [256] ;
 	double	output_peak ;
 	int		retval ;
@@ -427,7 +421,7 @@ find_attenuation (double freq, RESAMPLE_PROG *prog, int verbose)
 	remove (filename) ;
 
 	snprintf (command, sizeof (command), prog->convert_cmd, 88189) ;
-	SAFE_STRNCAT (command, " >/dev/null", sizeof (command)) ;
+	SAFE_STRNCAT (command, " >/dev/null 2>&1", sizeof (command)) ;
 	if ((retval = system (command)) != 0)
 		printf ("system returned %d\n", retval) ;
 
@@ -440,7 +434,7 @@ find_attenuation (double freq, RESAMPLE_PROG *prog, int verbose)
 } /* find_attenuation */
 
 static double
-bandwidth_test (RESAMPLE_PROG *prog, int verbose)
+bandwidth_test (const RESAMPLE_PROG *prog, int verbose)
 {	double	f1, f2, a1, a2 ;
 	double	freq, atten ;
 
@@ -479,7 +473,7 @@ bandwidth_test (RESAMPLE_PROG *prog, int verbose)
 } /* bandwidth_test */
 
 static void
-measure_program (RESAMPLE_PROG *prog, int verbose)
+measure_program (const RESAMPLE_PROG *prog, int verbose)
 {	double	snr, bandwidth, conversion_rate ;
 	int		output_samples ;
 	struct	tms	time_data ;
@@ -490,7 +484,7 @@ measure_program (RESAMPLE_PROG *prog, int verbose)
 	printf ("  Date    : %s", ctime (&time_now)) ;
 
 	get_version_string (prog) ;
-	printf ("  Program : %s\n", prog->version) ;
+	printf ("  Program : %s\n", version_string) ;
 	printf ("  Command : %s\n\n", prog->convert_cmd) ;
 
 	snr = measure_snr (prog, &output_samples, verbose) ;
@@ -532,12 +526,4 @@ main (void)
 } /* main */
 
 #endif /* (HAVE_FFTW3 && HAVE_SNDFILE) */
-
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: df0ffa9a-fc60-4dad-a481-7be2845f1390
-*/
 

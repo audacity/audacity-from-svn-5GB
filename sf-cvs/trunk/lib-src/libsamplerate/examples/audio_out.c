@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2003 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2008 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <errno.h>
 
 #include <config.h>
 
@@ -63,7 +62,7 @@ static void linux_close (AUDIO_OUT *audio_out) ;
 static AUDIO_OUT *
 linux_open (int channels, int samplerate)
 {	LINUX_AUDIO_OUT	*linux_out ;
-	int stereo, temp, error ;
+	int stereo, fmt, error ;
 
 	if ((linux_out = malloc (sizeof (LINUX_AUDIO_OUT))) == NULL)
 	{	perror ("linux_open : malloc ") ;
@@ -90,18 +89,18 @@ linux_open (int channels, int samplerate)
 		exit (1) ;
 		} ;
 
-	temp = 16 ;
-	if ((error = ioctl (linux_out->fd, SOUND_PCM_WRITE_BITS, &temp)) != 0)
-	{	perror ("linux_open : bitwidth ") ;
-		exit (1) ;
-		} ;
+	fmt = CPU_IS_BIG_ENDIAN ? AFMT_S16_BE : AFMT_S16_LE ;
+	if (ioctl (linux_out->fd, SNDCTL_DSP_SETFMT, &fmt) != 0)
+	{	perror ("linux_open_dsp_device : set format ") ;
+	    exit (1) ;
+  		} ;
 
-	if ((error = ioctl (linux_out->fd, SOUND_PCM_WRITE_CHANNELS, &channels)) != 0)
+	if ((error = ioctl (linux_out->fd, SNDCTL_DSP_CHANNELS, &channels)) != 0)
 	{	perror ("linux_open : channels ") ;
 		exit (1) ;
 		} ;
 
-	if ((error = ioctl (linux_out->fd, SOUND_PCM_WRITE_RATE, &samplerate)) != 0)
+	if ((error = ioctl (linux_out->fd, SNDCTL_DSP_SPEED, &samplerate)) != 0)
 	{	perror ("linux_open : sample rate ") ;
 		exit (1) ;
 		} ;
@@ -119,7 +118,7 @@ linux_play (get_audio_callback_t callback, AUDIO_OUT *audio_out, void *callback_
 {	LINUX_AUDIO_OUT *linux_out ;
 	static float float_buffer [BUFFER_LEN] ;
 	static short buffer [BUFFER_LEN] ;
-	int		k, readcount ;
+	int		k, readcount, ignored ;
 
 	if ((linux_out = (LINUX_AUDIO_OUT*) audio_out) == NULL)
 	{	printf ("linux_play : AUDIO_OUT is NULL.\n") ;
@@ -134,7 +133,7 @@ linux_play (get_audio_callback_t callback, AUDIO_OUT *audio_out, void *callback_
 	while ((readcount = callback (callback_data, float_buffer, BUFFER_LEN / linux_out->channels)))
 	{	for (k = 0 ; k < readcount * linux_out->channels ; k++)
 			buffer [k] = lrint (32767.0 * float_buffer [k]) ;
-		write (linux_out->fd, buffer, readcount * linux_out->channels * sizeof (short)) ;
+		ignored = write (linux_out->fd, buffer, readcount * linux_out->channels * sizeof (short)) ;
 		} ;
 
 	return ;
@@ -380,7 +379,6 @@ macosx_audio_out_callback (AudioDeviceID device, const AudioTimeStamp* current_t
 
 #include <windows.h>
 #include <mmsystem.h>
-#include <mmreg.h>
 
 #define	WIN32_BUFFER_LEN	(1<<15)
 #define	WIN32_MAGIC			MAKE_MAGIC ('W', 'i', 'n', '3', '2', 's', 'u', 'x')
@@ -794,7 +792,8 @@ audio_close (AUDIO_OUT *audio_out)
 AUDIO_OUT *
 audio_open (int channels, int samplerate)
 {
-	channels = samplerate ;
+	(void) channels ;
+	(void) samplerate ;
 
 	return NULL ;
 } /* audio_open */
@@ -802,9 +801,9 @@ audio_open (int channels, int samplerate)
 void
 audio_play (get_audio_callback_t callback, AUDIO_OUT *audio_out, void *callback_data)
 {
-	callback = NULL ;
-	audio_out = NULL ;
-	callback_data = NULL ;
+	(void) callback ;
+	(void) audio_out ;
+	(void) callback_data ;
 
 	return ;
 } /* audio_play */
@@ -818,12 +817,4 @@ audio_close (AUDIO_OUT *audio_out)
 } /* audio_close */
 
 #endif /* HAVE_SNDFILE */
-
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: 46fb3b80-7460-44ec-99b3-c893fa320b86
-*/
 

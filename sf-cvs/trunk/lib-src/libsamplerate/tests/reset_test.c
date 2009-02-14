@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2008 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 #include <samplerate.h>
 
@@ -35,9 +34,7 @@ static float data_zero [BUFFER_LEN] ;
 
 int
 main (void)
-{	/* Force output of the Electric Fence banner message. */
-	force_efence_banner () ;
-
+{
 	puts ("") ;
 
 	process_reset_test (SRC_ZERO_ORDER_HOLD) ;
@@ -238,12 +235,4 @@ callback_reset_test (int converter)
 	puts ("ok") ;
 } /* callback_reset_test */
 
-
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: 4840a60d-e20c-4fa5-bec0-df004b2ff215
-*/
 
