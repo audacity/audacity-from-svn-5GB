@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2008 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -22,21 +22,29 @@
 
 #define	ARRAY_LEN(x)	((int) (sizeof (x) / sizeof ((x) [0])))
 
-void gen_windowed_sines (float *data, int data_len, double *freqs, int freq_count) ;
+void gen_windowed_sines (int freq_count, const double *freqs, double max, float *output, int output_len) ;
 
 void save_oct_float (char *filename, float *input, int in_len, float *output, int out_len) ;
 void save_oct_double (char *filename, double *input, int in_len, double *output, int out_len) ;
 
-void force_efence_banner (void) ;
-
 void interleave_data (const float *in, float *out, int frames, int channels) ;
 
 void deinterleave_data (const float *in, float *out, int frames, int channels) ;
+
+void reverse_data (float *data, int datalen) ;
+
+double calculate_snr (float *data, int len, int expected_peaks) ;
+
+void print_cpu_name (void) ;
+
+#if OS_IS_WIN32
 /*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
+**	Extra Win32 hacks.
 **
-** arch-tag: 94b7a7fd-c69d-4bfc-b7cc-2fe09a869aa5
+**	Despite Microsoft claim of windows being POSIX compatibile it has '_sleep'
+**	instead of 'sleep'.
 */
+
+#define sleep _sleep
+#endif
 

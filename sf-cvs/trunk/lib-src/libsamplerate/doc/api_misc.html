@@ -6,20 +6,20 @@
 	Secret Rabbit Code (aka libsamplerate)
 	</TITLE>
 	<META NAME="Author"      CONTENT="Erik de Castro Lopo (erikd AT mega-nerd DOT com)">
-    <META NAME="Version"     CONTENT="libsamplerate-0.0.14">
+    <META NAME="Version"     CONTENT="libsamplerate-0.1.7">
 	<META NAME="Description" CONTENT="The Secret Rabbit Code Home Page">
-	<META NAME="Keywords"    CONTENT="libsamplerate sound audio dsp Linux">
+	<META NAME="Keywords"    CONTENT="libsamplerate sound resample audio dsp Linux">
 	<LINK REL=StyleSheet HREF="SRC.css" TYPE="text/css" MEDIA="all">
 </HEAD>
 
 <BODY TEXT="#FFFFFF" BGCOLOR="#000000" LINK="#FB1465" VLINK="#FB1465" ALINK="#FB1465">
-
+<!-- pepper -->
 <CENTER>
 	<IMG SRC="SRC.png" HEIGHT=100 WIDTH=760 ALT="SRC.png">
 </CENTER>
-
+<!-- pepper -->
 <BR>
-
+<!-- pepper -->
 <TABLE ALIGN="center" WIDTH="98%">
 <TR>
 <TD VALIGN="top">
@@ -35,7 +35,9 @@
 <BR>
 <DIV CLASS="block">
 Author :<BR>Erik de Castro Lopo
+<!-- pepper -->
 <BR><BR>
+<!-- pepper -->
 
 </DIV>
 	<IMG SRC=
@@ -44,7 +46,9 @@ Author :<BR>Erik de Castro Lopo
 </DIV>
 
 </TD>
+<!-- pepper -->
 <!-- ######################################################################## -->
+<!-- pepper -->
 <TD VALIGN="top">
 <DIV CLASS="block">
 
@@ -157,14 +161,16 @@ This struct is defined as:
 The <B>data_in</B> pointer is used to pass audio data into the converter while the
 <B>data_out</B> pointer supplies the converter with an array to hold the converter's
 output.
+For a converter which has been configured for mulitchannel operation, these pointers
+need to point to a single array of interleaved data.
 </P>
 <P>
 The <B>input_frames</B> and <B>output_frames</B> fields supply the converter with 
-the lengths of the arrays pointed to by the <B>data_in</B> and <b>data_out</B> 
-pointers respectively.
+the lengths of the arrays (in frames) pointed to by the <B>data_in</B> and 
+<b>data_out</B> pointers respectively.
 For monophinc data, these values would indicate the length of the arrays while
-for stereo data these values would be equal to the half the length of the array
-and so on.
+for multi channel data these values would be equal to the the length of the array
+divided by the number of channels.
 </P>
 
 <P>
@@ -183,9 +189,38 @@ For time varying sample rate conversions, the ratio will be linearly
 interpolated between the <B>src_ratio</B> value of the previous call
 to <B>src_process</B> and the value for the current call.
 </P>
+<P>
+The <B>input_frames_used</B> and <B>output_frames_gen</B> fields are set by the
+converter to inform the caller of the number of frames consumed from the
+<B>data_in</B> array and the number of frames generated in the <B>data_out</B>
+array respectively.
+These values are for the current call to <B>src_process</B> only.
+</P>
+
+<A NAME="Aux"></A>
+<H3><BR>Auxillary Functions</H3>
+<P>
+There are four auxillary functions for converting arrays of float data
+to and from short or int data.
+These functions are defined as:
+</P>
+<PRE>
+    void src_short_to_float_array (const short *in, float *out, int len) ;
+    void src_float_to_short_array (const float *in, short *out, int len) ;
+    void src_int_to_float_array (const int *in, float *out, int len) ;
+    void src_float_to_int_array (const float *in, int *out, int len) ;
+</PRE>
+<P>
+The float data is assumed to be in the range [-1.0, 1.0] and it is
+automatically scaled on the conversion to and from float.
+On the float to short/int conversion path, any data values which would overflow
+the range of short/int data are clipped.
+</P>
+
 </DIV>
 </TD></TR>
 </TABLE>
 
 </BODY>
 </HTML>
+

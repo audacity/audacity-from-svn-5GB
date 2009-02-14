@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2008 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 #include <math.h>
 
 #include	"util.h"
@@ -27,34 +29,34 @@
 #endif
 
 void
-gen_windowed_sines (float *data, int data_len, double *freqs, int freq_count)
+gen_windowed_sines (int freq_count, const double *freqs, double max, float *output, int output_len)
 {	int 	k, freq ;
 	double	amplitude, phase ;
 
-	amplitude = 1.0 / freq_count ;
+	amplitude = max / freq_count ;
 
-	for (k = 0 ; k < data_len ; k++)
-		data [k] = 0.0 ;
+	for (k = 0 ; k < output_len ; k++)
+		output [k] = 0.0 ;
 
 	for (freq = 0 ; freq < freq_count ; freq++)
 	{	phase = 0.9 * M_PI / freq_count ;
 
 		if (freqs [freq] <= 0.0 || freqs [freq] >= 0.5)
-		{	printf ("\n" __FILE__ " : Error : freq [%d] == %g is out of range. Should be < 0.5.\n", freq, freqs [freq]) ;
+		{	printf ("\n%s : Error : freq [%d] == %g is out of range. Should be < 0.5.\n", __FILE__, freq, freqs [freq]) ;
 			exit (1) ;
 			} ;
 
-		for (k = 0 ; k < data_len ; k++)
-			data [k] += amplitude * sin (freqs [freq] * (2 * k) * M_PI + phase) ;
+		for (k = 0 ; k < output_len ; k++)
+			output [k] += amplitude * sin (freqs [freq] * (2 * k) * M_PI + phase) ;
 		} ;
 
 	/* Apply Hanning Window. */
-	for (k = 0 ; k < data_len ; k++)
-		data [k] *= 0.5 - 0.5 * cos ((2 * k) * M_PI / (data_len - 1)) ;
+	for (k = 0 ; k < output_len ; k++)
+		output [k] *= 0.5 - 0.5 * cos ((2 * k) * M_PI / (output_len - 1)) ;
 
-	/*	data [k] *= 0.3635819 - 0.4891775 * cos ((2 * k) * M_PI / (data_len - 1))
-					+ 0.1365995 * cos ((4 * k) * M_PI / (data_len - 1))
-					- 0.0106411 * cos ((6 * k) * M_PI / (data_len - 1)) ;
+	/*	data [k] *= 0.3635819 - 0.4891775 * cos ((2 * k) * M_PI / (output_len - 1))
+					+ 0.1365995 * cos ((4 * k) * M_PI / (output_len - 1))
+					- 0.0106411 * cos ((6 * k) * M_PI / (output_len - 1)) ;
 		*/
 
 	return ;
@@ -147,17 +149,51 @@ deinterleave_data (const float *in, float *out, int frames, int channels)
 } /* deinterleave_data */
 
 void
-force_efence_banner (void)
-{	void *dummy ;
+reverse_data (float *data, int datalen)
+{	int left, right ;
+	float temp ;
 
-	dummy = malloc (1) ;
-	free (dummy) ;
-} /* force_efence_banner */
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: e3af4906-31f4-43e1-87ce-d2a49b506609
-*/
+	left = 0 ;
+	right = datalen - 1 ;
+
+	while (left < right)
+	{	temp = data [left] ;
+		data [left] = data [right] ;
+		data [right] = temp ;
+		left ++ ;
+		right -- ;
+		} ;
+
+} /* reverse_data */
+
+void
+print_cpu_name (void)
+{	char buffer [512] ;
+	FILE * file ;
+
+	if ((file = fopen ("/proc/cpuinfo", "r")) == NULL)
+	{	puts ("Unknown") ;
+		return ;
+		} ;
+
+	while (fgets (buffer, sizeof (buffer), file) != NULL)
+		if (strstr (buffer, "model name") == buffer)
+		{	const char * cptr ;
+	
+			if ((cptr = strchr (buffer, ':')) != NULL)
+			{	cptr ++ ;
+				while (isspace (cptr [0])) cptr ++ ;
+				printf ("%s", cptr) ;
+				goto complete ;
+				} ;
+			} ;
+
+	fclose (file) ;
+	puts ("Unknown") ;
+	return ;
+
+complete :
+	fclose (file) ;
+	return ;
+} /* print_cpu_name */
 

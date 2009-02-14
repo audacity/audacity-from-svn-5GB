@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2008 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 
 #include "config.h"
 
-#include "calc_snr.h"
 #include "util.h"
 
 #if (HAVE_FFTW3 == 1)
@@ -35,7 +34,7 @@
 
 static void log_mag_spectrum (double *input, int len, double *magnitude) ;
 static void smooth_mag_spectrum (double *magnitude, int len) ;
-static double find_snr (const double *magnitude, int len) ;
+static double find_snr (const double *magnitude, int len, int expected_peaks) ;
 
 typedef struct
 {	double	peak ;
@@ -43,7 +42,7 @@ typedef struct
 } PEAK_DATA ;
 
 double
-calculate_snr (float *data, int len)
+calculate_snr (float *data, int len, int expected_peaks)
 {	static double magnitude [MAX_SPEC_LEN] ;
 	static double datacopy [MAX_SPEC_LEN] ;
 
@@ -67,7 +66,7 @@ calculate_snr (float *data, int len)
 	log_mag_spectrum (datacopy, len, magnitude) ;
 	smooth_mag_spectrum (magnitude, len / 2) ;
 
-	snr = find_snr (magnitude, len) ;
+	snr = find_snr (magnitude, len, expected_peaks) ;
 
 	return snr ;
 } /* calculate_snr */
@@ -144,7 +143,7 @@ peak_compare (const void *vp1, const void *vp2)
 } /* peak_compare */
 
 static double
-find_snr (const double *magnitude, int len)
+find_snr (const double *magnitude, int len, int expected_peaks)
 {	PEAK_DATA peaks [MAX_PEAKS] ;
 
 	int		k, peak_count = 0 ;
@@ -159,17 +158,18 @@ find_snr (const double *magnitude, int len)
 			{	peaks [peak_count].peak = magnitude [k] ;
 				peaks [peak_count].index = k ;
 				peak_count ++ ;
+				qsort (peaks, peak_count, sizeof (PEAK_DATA), peak_compare) ;
 				}
 			else if (magnitude [k] > peaks [MAX_PEAKS - 1].peak)
-			{	qsort (peaks, MAX_PEAKS, sizeof (PEAK_DATA), peak_compare) ;
-				peaks [MAX_PEAKS - 1].peak = magnitude [k] ;
+			{	peaks [MAX_PEAKS - 1].peak = magnitude [k] ;
 				peaks [MAX_PEAKS - 1].index = k ;
+				qsort (peaks, MAX_PEAKS, sizeof (PEAK_DATA), peak_compare) ;
 				} ;
 			} ;
 		} ;
 
-	if (peak_count < MAX_PEAKS / 2)
-	{	printf ("\n%s : line %d : bad peak_count (%d).\n\n", __FILE__, __LINE__, peak_count) ;
+	if (peak_count < expected_peaks)
+	{	printf ("\n%s : line %d : bad peak_count (%d), expected %d.\n\n", __FILE__, __LINE__, peak_count, expected_peaks) ;
 		return -1.0 ;
 		} ;
 
@@ -228,22 +228,15 @@ log_mag_spectrum (double *input, int len, double *magnitude)
 #else /* ! (HAVE_LIBFFTW && HAVE_LIBRFFTW) */
 
 double
-calculate_snr (float *data, int len)
+calculate_snr (float *data, int len, int expected_peaks)
 {	double snr = 200.0 ;
 
 	data = data ;
 	len = len ;
+	expected_peaks = expected_peaks ;
 
 	return snr ;
 } /* calculate_snr */
 
 #endif
-
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: 7ae937c5-53a5-45d8-8aa2-793de9c35f0a
-*/
 

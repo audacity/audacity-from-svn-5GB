@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2008 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -31,9 +31,6 @@ static void src_ratio_test (void) ;
 int
 main (void)
 {
-	/* Force output of the Electric Fence banner message. */
-	force_efence_banner () ;
-
 	puts ("") ;
 
 	printf ("    version : %s\n\n", src_get_version ()) ;
@@ -102,7 +99,7 @@ src_ratio_test (void)
 		{	printf ("\n\nLine %d : SRC ratio %f should not have passed.\n\n", __LINE__, ratio_test [k].ratio) ;
 			exit (1) ;
 			} ;
-		printf ("\t SRC ratio (%8.5f) : %s .................... ok\n", ratio_test [k].ratio,
+		printf ("\t SRC ratio (%9.5f) : %s ................... ok\n", ratio_test [k].ratio,
 			(ratio_test [k].should_pass ? "pass" : "fail")) ;
 		} ;
 
@@ -138,11 +135,3 @@ error_test (void)
 
 	return ;
 } /* error_test */
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: 36c2bc7a-7c01-4e8e-8467-75af592e61d7
-*/
-
