@@ -192,7 +192,7 @@ RepeatDialog::RepeatDialog(EffectRepeat *effect,
 void RepeatDialog::PopulateOrExchange(ShuttleGui & S)
 {
    wxTextValidator vld(wxFILTER_INCLUDE_CHAR_LIST);
-   vld.SetIncludes(wxArrayString(12, numbers));
+   vld.SetIncludes(wxArrayString(10, numbers));
 
    S.StartHorizontalLay(wxCENTER, false);
    {
