@@ -3370,16 +3370,17 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
    {      
       if (buttonRect.Contains(event.m_x, event.m_y)) 
       {
-         // For either, MakeParentPushState to make the track state dirty.
+         //v Disrupts workflow to have these on the stack, so no longer doing it.
+         //    For either, MakeParentPushState to make the track state dirty.
          if(solo)
          {
             OnTrackSolo(event.ShiftDown(),t);
-            MakeParentPushState(_("Soloed track"), _("Solo"), true /* consolidate */);
+            //v MakeParentPushState(_("Soloed track"), _("Solo"), true /* consolidate */);
          }
          else
          {
             OnTrackMute(event.ShiftDown(),t);
-            MakeParentPushState(_("Muted track"), _("Mute"), true /* consolidate */);
+            //v MakeParentPushState(_("Muted track"), _("Mute"), true /* consolidate */);
          }
       }  
       SetCapturedTrack( NULL );
