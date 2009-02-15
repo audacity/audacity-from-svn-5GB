@@ -192,6 +192,8 @@
 /* Version number of package */
 #define VERSION "0.1.7"
 
+
+
 /* Extra Win32 hacks. */
 
 /*
