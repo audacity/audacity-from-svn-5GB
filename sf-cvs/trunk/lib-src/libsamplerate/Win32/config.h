@@ -190,10 +190,7 @@
 #define STDC_HEADERS 1
 
 /* Version number of package */
-<<<<<<< diff from left file
-#define VERSION "0.1.4"
-
-
+#define VERSION "0.1.7"
 
 /* Extra Win32 hacks. */
 
@@ -203,6 +200,3 @@
 */
 
 #define inline __inline
-========
-#define VERSION "0.1.7"
->>>>>>> diff from right file
