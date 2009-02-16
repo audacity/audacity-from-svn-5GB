@@ -9,19 +9,38 @@
   $pageId = "translation";
   $pageTitle = _("Translators");
   include "../include/header.inc.php";
+  include "potdates.inc";
 ?>
 
 <h2><?=$pageTitle?></h2>
 
-<p><?=_('A group of volunteers is translating the free Audacity sound editor into many different languages.  If you would like to help, please join the <a href="../contact/lists#translation">audacity-translation mailing list</a> and introduce yourself.')?></p>
+<p><?php
+  // i18n-hint: The two %s will be replaced by HTML tags to make the text
+  // inbetween into a link to the mailing list page. They are thus invisible in
+  // the final text.
+printf(_('A group of volunteers is translating the free Audacity sound editor into many different languages.  If you would like to help, please join the %saudacity-translation mailing list%s and introduce yourself.'), '<a href="../contact/lists#translation">', '</a>'); ?></p>
 
 <p><?=_('The translation effort is now focused on Audacity 1.3.  Translations from previous versions of Audacity have been imported and need to be updated.')?></p>
 
 <h3><?=_("Resources for Translators")?></h3>
 <ul>
   <li><a href="../contact/lists#translation"><?=_("Mailing list and archives")?></a></li>
-  <li><a href="../locale/audacity.pot"><?=_("Latest audacity.pot file")?></a></li>
-  <li><a href="../locale/audacity_website.pot"><?=_("Latest audacity_website.pot file")?></a></li>
+  <li><a href="../locale/audacity.pot"><?php
+		// i18n-hint: The three numbers will be year, month, day. Remember you
+		// can re-order the numbers if you want to - to get Day, Month, Year,
+		// translate the values as %4$02d/%3$02d/%2$04d. The string (%s) inserts
+		// a html tag to end the link, and is not visible.
+	printf(_("Latest audacity.pot file%s (last updated %04d/%02d/%02d)"), 
+		'</a>', $prog_year, $prog_month, $prog_day);
+?></a></li>
+  <li><a href="../locale/audacity_website.pot"><?php
+		// i18n-hint: The three numbers will be year, month, day. Remember you
+		// can re-order the numbers if you want to - to get Day, Month, Year,
+		// translate the values as %4$02d/%3$02d/%2$04d. The string (%s) inserts
+		// a html tag to end the link, and is not visible.
+   printf(_("Latest audacity_website.pot file%s (last updated %04d/%02d/%02d)"),
+		'</a>', $web_year, $web_month, $web_day);
+?></a></li>
   <li><a href="http://wxwidgets.org/i18n.php"><?=_("wxWidgets i18n")?></a></li>
 </ul>
 
