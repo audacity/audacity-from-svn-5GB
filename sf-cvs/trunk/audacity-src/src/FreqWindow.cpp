@@ -279,6 +279,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    vRuler->ruler.SetFormat(Ruler::LinearDBFormat);
    vRuler->ruler.SetUnits(_("dB"));
    vRuler->ruler.SetLabelEdges(true);
+
    int w, h;
    vRuler->ruler.GetMaxSize(&w, NULL);
    vRuler->SetSize(wxSize(w, 150));  // height needed for wxGTK
@@ -499,10 +500,12 @@ void FreqWindow::DrawPlot()
    memDC.SetBrush(*wxTRANSPARENT_BRUSH);
    memDC.DrawRectangle(r);
 
+   hRuler->ruler.DrawGrid(memDC, r.height);
+   vRuler->ruler.DrawGrid(memDC, r.width);
+
    memDC.SelectObject( wxNullBitmap );
 
    mBitmap->SetMask( new wxMask( *mBitmap, wxColour(254, 254, 254) ) );
-
 }
 
 
