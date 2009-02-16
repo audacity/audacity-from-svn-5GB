@@ -2566,6 +2566,8 @@ void AudacityProject::WriteXML(XMLWriter &xmlFile)
          xmlFile.WriteAttr(wxT("offset"), t->GetOffset(), 8);
          xmlFile.WriteAttr(wxT("mute"), t->GetMute());
          xmlFile.WriteAttr(wxT("solo"), t->GetSolo());
+         xmlFile.WriteAttr(wxT("height"), t->GetActualHeight());
+         xmlFile.WriteAttr(wxT("minimized"), t->GetMinimized());
          
          pWaveTrack = (WaveTrack*)t;
          // Don't store "rate" tag because the importer can figure that out.

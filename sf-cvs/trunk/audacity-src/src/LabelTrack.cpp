@@ -1860,6 +1860,12 @@ bool LabelTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
             mLabels.Clear();
             mLabels.Alloc(nValue);
          }
+         else if (!wxStrcmp(attr, wxT("height")) && 
+                  XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+            mHeight = nValue;
+         else if (!wxStrcmp(attr, wxT("minimized")) && 
+                  XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+            mMinimized = (nValue != 0);
       }
 
       return true;
@@ -1884,6 +1890,8 @@ void LabelTrack::WriteXML(XMLWriter &xmlFile)
    xmlFile.StartTag(wxT("labeltrack"));
    xmlFile.WriteAttr(wxT("name"), mName);
    xmlFile.WriteAttr(wxT("numlabels"), len);
+   xmlFile.WriteAttr(wxT("height"), this->GetActualHeight());
+   xmlFile.WriteAttr(wxT("minimized"), this->GetMinimized());
 
    for (i = 0; i < len; i++) {
       xmlFile.StartTag(wxT("label"));

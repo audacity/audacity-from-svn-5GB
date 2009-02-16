@@ -139,7 +139,12 @@ bool TimeTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
                return false;
             mChannel = nValue;
          }
-
+         else if (!wxStrcmp(attr, wxT("height")) && 
+                  XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+            mHeight = nValue;
+         else if (!wxStrcmp(attr, wxT("minimized")) && 
+                  XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
+            mMinimized = (nValue != 0);
          
       } // while
       return true;
@@ -163,6 +168,8 @@ void TimeTrack::WriteXML(XMLWriter &xmlFile)
    xmlFile.WriteAttr(wxT("name"), mName);
    xmlFile.WriteAttr(wxT("channel"), mChannel);
    xmlFile.WriteAttr(wxT("offset"), mOffset, 8);
+   xmlFile.WriteAttr(wxT("height"), this->GetActualHeight());
+   xmlFile.WriteAttr(wxT("minimized"), this->GetMinimized());
 
    mEnvelope->WriteXML(xmlFile);
 
