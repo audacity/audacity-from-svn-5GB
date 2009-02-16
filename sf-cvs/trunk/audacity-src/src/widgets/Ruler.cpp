@@ -135,6 +135,15 @@ Ruler::Ruler()
    mUserBitLen = 0;
    
    mValid = false;
+
+   mCustom = false;
+   mbMinor = true;
+
+   mGridLineLength = 0;
+   mMajorGrid = false;
+   mMinorGrid = false;
+
+   mZeroPosition = -1;
 }
 
 Ruler::~Ruler()
@@ -251,6 +260,11 @@ void Ruler::SetFlip(bool flip)
       
       Invalidate();
    }
+}
+
+void Ruler::SetMinor(bool value)
+{
+   mbMinor = value;
 }
 
 void Ruler::SetFonts(const wxFont &minorFont, const wxFont &majorFont, const wxFont &minorMinorFont)
@@ -769,6 +783,121 @@ void Ruler::Tick(int pos, double d, bool major, bool minor)
 
    wxRect r(strLeft, strTop, strW, strH);
    mRect.Union(r);
+
+}
+
+void Ruler::TickCustom(int labelIdx, bool major, bool minor)
+{
+   //This should only used in the mCustom case
+   // Many code comes from 'Tick' method: this should
+   // be optimized.
+
+   int pos;
+   wxString l;
+   wxCoord strW, strH, strD, strL;
+   int strPos, strLen, strLeft, strTop;
+
+   // FIXME: We don't draw a tick if of end of our label arrays
+   // But we shouldn't have an array of labels.
+   if( mNumMinor >= mLength )
+      return;
+   if( mNumMajor >= mLength )
+      return;
+
+   Label *label;
+   if (major)
+      label = &mMajorLabels[labelIdx];
+   else if (minor)
+      label = &mMinorLabels[labelIdx];
+   else
+      label = &mMinorMinorLabels[labelIdx];
+
+   pos = label->pos;         // already stored in label class
+   l   = label->text;
+   label->lx = mLeft - 1000; // don't display
+   label->ly = mTop - 1000;  // don't display
+
+   mDC->SetFont(major? *mMajorFont: minor? *mMinorFont : *mMinorMinorFont);
+
+   mDC->GetTextExtent(l, &strW, &strH, &strD, &strL);
+
+   if (mOrientation == wxHORIZONTAL) {
+      strLen = strW;
+      strPos = pos - strW/2;
+      if (strPos < 0)
+         strPos = 0;
+      if (strPos + strW >= mLength)
+         strPos = mLength - strW;
+      strLeft = mLeft + strPos;
+      if (mFlip) {
+         strTop = mTop + 4;
+         mMaxHeight = max(mMaxHeight, strH + 4);
+      }
+      else {
+
+         strTop =-strH-mLead;
+         strTop = mTop- mLead+4;// More space was needed...
+         mMaxHeight = max(mMaxHeight, strH + 6);
+      }
+   }
+   else {
+      strLen = strH;
+      strPos = pos - strH/2;
+      if (strPos < 0)
+         strPos = 0;
+      if (strPos + strH >= mLength)
+         strPos = mLength - strH;
+      strTop = mTop + strPos;
+      if (mFlip) {
+         strLeft = mLeft + 5;
+         mMaxWidth = max(mMaxWidth, strW + 5);
+      }
+      else {
+
+         strLeft =-strW-6;
+       }
+   }
+
+
+   // FIXME: we shouldn't even get here if strPos < 0.
+   // Ruler code currently does  not handle very small or
+   // negative sized windows (i.e. don't draw) properly.
+   if( strPos < 0 )
+      return;
+
+   // See if any of the pixels we need to draw this
+   // label is already covered
+
+   int i;
+   for(i=0; i<strLen; i++)
+      if (mBits[strPos+i])
+         return;
+
+   // If not, position the label
+
+   label->lx = strLeft;
+   label->ly = strTop;
+
+   // And mark these pixels, plus some surrounding
+   // ones (the spacing between labels), as covered
+   int leftMargin = mSpacing;
+   if (strPos < leftMargin)
+      leftMargin = strPos;
+   strPos -= leftMargin;
+   strLen += leftMargin;
+
+   int rightMargin = mSpacing;
+   if (strPos + strLen > mLength - mSpacing)
+      rightMargin = mLength - strPos - strLen;
+   strLen += rightMargin;
+
+   for(i=0; i<strLen; i++)
+      mBits[strPos+i] = 1;
+
+
+   wxRect r(strLeft, strTop, strW, strH);
+   mRect.Union(r);
+
 }
 
 void Ruler::Update()
@@ -846,23 +975,27 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
    }
 
    // FIXME: Surely we do not need to allocate storage for the labels?
-   // We can just recompute them as we need them?
-   mNumMajor = 0;
-   mNumMinor = 0;
-   mNumMinorMinor = 0;
-   if (mLength!=mLengthOld) {
-      if (mMajorLabels)
-         delete[] mMajorLabels;
-      mMajorLabels = new Label[mLength+1];
-      if (mMinorLabels)
-         delete[] mMinorLabels;
-      mMinorLabels = new Label[mLength+1];
-      if (mMinorMinorLabels)
-         delete[] mMinorMinorLabels;
-      mMinorMinorLabels = new Label[mLength+1];
-      mLengthOld = mLength;
+   // We can just recompute them as we need them?  Yes, but only if 
+   // mCustom is false!!!! 
+
+   if(!mCustom) {
+      mNumMajor = 0;
+      mNumMinor = 0;
+      mNumMinorMinor = 0;
+      if (mLength!=mLengthOld) {
+         if (mMajorLabels)
+            delete[] mMajorLabels;
+         mMajorLabels = new Label[mLength+1];
+         if (mMinorLabels)
+            delete[] mMinorLabels;
+         mMinorLabels = new Label[mLength+1];
+         if (mMinorMinorLabels)
+            delete[] mMinorMinorLabels;
+         mMinorMinorLabels = new Label[mLength+1];
+         mLengthOld = mLength;
+      }
    }
-   
+
    if (mBits)
       delete[] mBits;
    mBits = new int[mLength+1];
@@ -873,10 +1006,24 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
       for(i=0; i<=mLength; i++)
          mBits[i] = 0;
 
-   if(mLog==false) {
+   // *************** Label calculation routine **************
+   if(mCustom == true) {
+      
+      // SET PARAMETER IN MCUSTOM CASE
+      // Works only with major labels
+      
+      int numLabel = mNumMajor;
+      
+      i = 0;
+      while((i<numLabel) && (i<=mLength)) {
+         
+         TickCustom(i, true, false);
+         i++;
+      }   
+
+   } else if(mLog==false) {
 
       double UPP = (mMax-mMin)/mLength;  // Units per pixel
-
       FindLinearTickSizes(UPP);
       
       // Left and Right Edges
@@ -919,7 +1066,7 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
             Tick(i, sg * majorInt * mMajor, true, false);
          }
       }
-         
+
       // Minor ticks
       d = mMin - UPP/2;
       lastD = d;
@@ -1074,7 +1221,6 @@ void Ruler::Draw(wxDC& dc)
 void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
 {
    mDC = &dc;
-
    if( mLength <=0 )
       return;
 
@@ -1145,37 +1291,36 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
                        mMajorLabels[i].ly);
    }
 
-   mDC->SetFont(*mMinorFont);
-
-   for(i=0; i<mNumMinor; i++) {
-      int pos = mMinorLabels[i].pos;
-
-      if( mbTicksAtExtremes || ((pos!=0)&&(pos!=iMaxPos)))
-      {
-         if (mOrientation == wxHORIZONTAL) 
+   if(mbMinor == true) {
+      mDC->SetFont(*mMinorFont);
+      for(i=0; i<mNumMinor; i++) {
+         int pos = mMinorLabels[i].pos;
+         if( mbTicksAtExtremes || ((pos!=0)&&(pos!=iMaxPos)))
          {
-            if (mFlip)
-               mDC->DrawLine(mLeft + pos, mTop,
-                             mLeft + pos, mTop + 2);
-            else
-               mDC->DrawLine(mLeft + pos, mBottom - 2,
-                             mLeft + pos, mBottom);
+            if (mOrientation == wxHORIZONTAL) 
+            {
+               if (mFlip)
+                  mDC->DrawLine(mLeft + pos, mTop,
+                                mLeft + pos, mTop + 2);
+               else
+                  mDC->DrawLine(mLeft + pos, mBottom - 2,
+                                mLeft + pos, mBottom);
+            }
+            else 
+            {
+               if (mFlip)
+                  mDC->DrawLine(mLeft, mTop + pos,
+                                mLeft + 2, mTop + pos);
+               else
+                  mDC->DrawLine(mRight - 2, mTop + pos,
+                                mRight, mTop + pos);
+            }
          }
-         else 
-         {
-            if (mFlip)
-               mDC->DrawLine(mLeft, mTop + pos,
-                             mLeft + 2, mTop + pos);
-            else
-               mDC->DrawLine(mRight - 2, mTop + pos,
-                             mRight, mTop + pos);
-         }
+         if (mMinorLabels[i].text != wxT(""))
+            mDC->DrawText(mMinorLabels[i].text,
+                          mMinorLabels[i].lx,
+                          mMinorLabels[i].ly);
       }
-
-      if (mMinorLabels[i].text != wxT(""))
-         mDC->DrawText(mMinorLabels[i].text,
-                       mMinorLabels[i].lx,
-                       mMinorLabels[i].ly);
    }
 
    mDC->SetFont(*mMinorMinorFont);
@@ -1210,7 +1355,94 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
                        mMinorMinorLabels[i].lx,
                        mMinorMinorLabels[i].ly);
       }
+   }  
+}
+
+// ********** Draw grid ***************************
+void Ruler::DrawGrid(wxDC& dc, int length, bool minor, bool major)
+{
+   mGridLineLength = length;
+   mMajorGrid = major;
+   mMinorGrid = minor;
+   mDC = &dc;
+
+   int gridPos;
+   wxPen gridPen;
+
+   if(mbMinor && (mMinorGrid && (mGridLineLength != 0 ))) {
+      gridPen.SetColour(178, 178, 178); // very light grey
+      mDC->SetPen(gridPen);
+      for(int i=0; i<mNumMinor; i++) {
+         gridPos = mMinorLabels[i].pos;
+         if(mOrientation == wxHORIZONTAL) {
+            if((gridPos != 0) && (gridPos != mGridLineLength))
+               mDC->DrawLine(gridPos+1, 1, gridPos+1, mGridLineLength);
+         }
+         else {
+            if((gridPos != 0) && (gridPos != mGridLineLength))
+               mDC->DrawLine(1, gridPos+1, mGridLineLength, gridPos+1);
+         }
+      }
    }
+
+   if(mMajorGrid && (mGridLineLength != 0 )) {
+      gridPen.SetColour(127, 127, 127); // light grey
+      mDC->SetPen(gridPen);
+      for(int i=0; i<mNumMajor; i++) {
+         gridPos = mMajorLabels[i].pos;
+         if(mOrientation == wxHORIZONTAL) {
+            if((gridPos != 0) && (gridPos != mGridLineLength))
+               mDC->DrawLine(gridPos+1, 1, gridPos+1, mGridLineLength);
+         }
+         else {
+            if((gridPos != 0) && (gridPos != mGridLineLength))
+               mDC->DrawLine(1, gridPos+1, mGridLineLength, gridPos+1);
+         }
+      }
+      
+      GetZeroPosition();
+      if(mZeroPosition > 0) {
+         // Draw 'zero' grid line in black
+         mDC->SetPen(*wxBLACK_PEN);
+         if(mOrientation == wxHORIZONTAL) {
+            if(mZeroPosition != mGridLineLength)
+               mDC->DrawLine(mZeroPosition+1, 1, mZeroPosition+1, mGridLineLength);
+         }
+         else {
+            if(mZeroPosition != mGridLineLength)
+               mDC->DrawLine(1, mZeroPosition+1, mGridLineLength, mZeroPosition+1);
+         }
+      }
+   }
+}
+
+int Ruler::FindZero(Label * label, const int len)
+{
+   int i = 0;
+   double d = 1.0;   // arbitrary
+   wxString s;
+
+   do {
+      s = label[i].text;
+      if(!s.IsEmpty())
+         s.ToDouble(&d);
+      else
+         d = 1.0; // arbitrary, looking for some text here
+      i++;
+   } while( (i < len) && (d != 0.0) );
+
+   if(d == 0.0)
+      return (mZeroPosition  = label[i - 1].pos) ;
+   else
+      return -1;
+}
+
+int Ruler::GetZeroPosition() 
+{
+   int zero;
+   if((zero = FindZero(mMajorLabels, mNumMajor)) < 0)
+      zero = FindZero(mMinorLabels, mNumMinor);
+   return zero;
 }
 
 void Ruler::GetMaxSize(wxCoord *width, wxCoord *height)
@@ -1231,6 +1463,36 @@ void Ruler::GetMaxSize(wxCoord *width, wxCoord *height)
       *height = mRect.GetHeight(); //mMaxHeight;
 }
 
+
+void Ruler::SetCustomMode(bool value) { mCustom = value; }
+
+void Ruler::SetCustomMajorLabels(wxArrayString *label, int numLabel, int start, int step)
+{
+   int i;
+
+   mNumMajor = numLabel;
+   mMajorLabels = new Label[numLabel];
+
+   for(i=0; i<numLabel; i++) {
+      mMajorLabels[i].text = label->Item(i);
+      mMajorLabels[i].pos  = start + i*step;
+   }
+   //Remember: delete majorlabels....
+}
+
+void Ruler::SetCustomMinorLabels(wxArrayString *label, int numLabel, int start, int step)
+{
+   int i;
+
+   mNumMinor = numLabel;
+   mMinorLabels = new Label[numLabel];
+
+   for(i=0; i<numLabel; i++) {
+      mMinorLabels[i].text = label->Item(i);
+      mMinorLabels[i].pos  = start + i*step;
+   }
+   //Remember: delete majorlabels....
+}
 
 //
 // RulerPanel

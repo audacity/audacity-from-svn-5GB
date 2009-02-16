@@ -80,6 +80,9 @@ class AUDACITY_DLL_API Ruler {
    // and a horizontal ruler hug the top (instead of bottom)
    void SetFlip(bool flip);
 
+   // Set it to false if you don't want minor labels.
+   void SetMinor(bool value);
+
    // Good defaults are provided, but you can override here
    void SetFonts(const wxFont &minorFont, const wxFont &majorFont, const wxFont &minorMinorFont);
 
@@ -94,6 +97,18 @@ class AUDACITY_DLL_API Ruler {
    //
    void GetMaxSize(wxCoord *width, wxCoord *height);
 
+
+   // The following functions should allow a custom ruler setup:
+   // autosize is a GREAT thing, but for some applications it's
+   // useful the definition of a label array and label step by 
+   // the user.
+   void SetCustomMode(bool value);
+   // If this is the case, you should provide a wxString array of labels, start
+   // label position, and labels step. The range eventually specified will be
+   // ignored.
+   void SetCustomMajorLabels(wxArrayString *label, int numLabel, int start, int step);
+   void SetCustomMinorLabels(wxArrayString *label, int numLabel, int start, int step);
+   
    //
    // Drawing
    //
@@ -101,6 +116,9 @@ class AUDACITY_DLL_API Ruler {
    // Note that it will not erase for you...
    void Draw(wxDC& dc);
    void Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed);
+   // If length <> 0, draws lines perpendiculars to ruler corresponding
+   // to selected ticks (major, minor, or both), in an adjacent window.
+   void DrawGrid(wxDC& dc, int length, bool minor = true, bool major = true);
 
    // So we can have white ticks on black...
    void SetTickColour( const wxColour & colour)
@@ -115,6 +133,9 @@ class AUDACITY_DLL_API Ruler {
    wxString LabelString(double d, bool major);
 
    void Tick(int pos, double d, bool major, bool minor);
+
+   // Another tick generator for custom ruler case (noauto) .
+   void TickCustom(int labelIdx, bool major, bool minor);
 
 public:
    bool mbTicksOnly;
@@ -162,7 +183,13 @@ private:
    int          mNumMinorMinor;
    Label       *mMinorMinorLabels;   
 
+   // Returns 'zero' label coordinate (for grid drawing)
+   int FindZero(Label * label, int len);
+   
+   public:
+   int GetZeroPosition();
 
+   private:
    int          mOrientation;
    int          mSpacing;
    bool         mHasSetSpacing;
@@ -170,6 +197,12 @@ private:
    RulerFormat  mFormat;
    bool         mLog;
    bool         mFlip;
+   bool         mCustom;
+   bool         mbMinor;
+   bool         mMajorGrid;      //  for grid drawing
+   bool         mMinorGrid;      //         .
+   int          mGridLineLength; //         .
+   int          mZeroPosition;   //        end
    wxString     mUnits;
 };
 
