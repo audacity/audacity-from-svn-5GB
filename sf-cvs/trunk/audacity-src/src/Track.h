@@ -60,6 +60,7 @@ class AUDACITY_DLL_API Track: public XMLTagHandler {
    // This just returns a constant and can be overriden by subclasses
    // to specify a different height for the case that the track is minimized.
    virtual int GetMinimizedHeight() const;
+   int GetActualHeight() { return mHeight; };
  
    int GetHeight() const;
    void SetHeight( int h ) { mHeight = h; }
