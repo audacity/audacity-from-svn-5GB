@@ -312,7 +312,7 @@ enum
    eDebugID       = wxID_LOWEST - 2
 };
 
-wxSizer *CreateStdButtonSizer( wxWindow *parent,
+AUDACITY_DLL_API wxSizer *CreateStdButtonSizer( wxWindow *parent,
                                long buttons = eOkButton | eCancelButton,
                                wxButton *extra = NULL );
 
