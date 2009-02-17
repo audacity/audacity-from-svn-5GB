@@ -307,6 +307,7 @@ enum {
    OnPitchID,
 
    OnSplitStereoID,
+   OnSplitStereoMonoID,
    OnMergeStereoID,
 
    OnSetTimeTrackRangeID,
@@ -341,6 +342,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU_RANGE(On16BitID, OnFloatID, TrackPanel::OnFormatChange)
     EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
     EVT_MENU(OnSplitStereoID, TrackPanel::OnSplitStereo)
+    EVT_MENU(OnSplitStereoMonoID, TrackPanel::OnSplitStereoMono)
     EVT_MENU(OnMergeStereoID, TrackPanel::OnMergeStereo)
 
     EVT_MENU(OnCutSelectedTextID, TrackPanel::OnCutSelectedText)
@@ -559,6 +561,7 @@ void TrackPanel::BuildMenus(void)
    mWaveTrackMenu->AppendCheckItem(OnChannelRightID, _("Right Channel"));
    mWaveTrackMenu->Append(OnMergeStereoID, _("Make Stereo Track"));
    mWaveTrackMenu->Append(OnSplitStereoID, _("Split Stereo Track"));
+   mWaveTrackMenu->Append(OnSplitStereoMonoID, _("Split Stereo to Mono"));
    mWaveTrackMenu->AppendSeparator();
    mWaveTrackMenu->Append(0, _("Set Sample Format"), mFormatMenu);
    mWaveTrackMenu->AppendSeparator();
@@ -5733,6 +5736,7 @@ void TrackPanel::OnTrackMenu(Track *t)
       
       theMenu->Enable(OnMergeStereoID, canMakeStereo);
       theMenu->Enable(OnSplitStereoID, t->GetLinked());
+      theMenu->Enable(OnSplitStereoMonoID, t->GetLinked());
       theMenu->Check(OnChannelMonoID, t->GetChannel() == Track::MonoChannel);
       theMenu->Check(OnChannelLeftID, t->GetChannel() == Track::LeftChannel);
       theMenu->Check(OnChannelRightID, t->GetChannel() == Track::RightChannel);
@@ -6137,6 +6141,34 @@ void TrackPanel::OnSplitStereo(wxCommandEvent &event)
 //#endif
    
    MakeParentPushState(wxString::Format(_("Split stereo track '%s'"),
+                                        mPopupMenuTarget->GetName().
+                                        c_str()),
+                       _("Split"));
+
+   Refresh(false);
+}
+
+/// Split a stereo track into two mono tracks...
+void TrackPanel::OnSplitStereoMono(wxCommandEvent &event)
+{
+   wxASSERT(mPopupMenuTarget);
+   Track *partner = mTracks->GetLink(mPopupMenuTarget);
+   if (partner)
+      partner->SetTeamed(false);
+   mPopupMenuTarget->SetLinked(false);
+     
+   //make the split tracks mono
+   mPopupMenuTarget->SetChannel(Track::MonoChannel);
+   if(partner)
+      partner->SetChannel(Track::MonoChannel); 
+
+   //On Demand - have each channel add it's own.
+//#ifdef EXPERIMENTAL_ONDEMAND 
+   if(ODManager::IsInstanceCreated() && partner->GetKind() == Track::Wave)
+      ODManager::Instance()->MakeWaveTrackIndependent((WaveTrack*)partner);
+//#endif
+   
+   MakeParentPushState(wxString::Format(_("Split Stereo to Mono '%s'"),
                                         mPopupMenuTarget->GetName().
                                         c_str()),
                        _("Split"));
