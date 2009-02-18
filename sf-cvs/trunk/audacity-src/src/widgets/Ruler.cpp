@@ -1366,6 +1366,8 @@ void Ruler::DrawGrid(wxDC& dc, int length, bool minor, bool major)
    mMinorGrid = minor;
    mDC = &dc;
 
+   Update();
+
    int gridPos;
    wxPen gridPen;
 
@@ -1511,10 +1513,6 @@ RulerPanel::RulerPanel(wxWindow* parent, wxWindowID id,
                        const wxSize& size /*= wxDefaultSize*/):
    wxPanel(parent, id, pos, size)
 {
-   int width, height;
-   GetClientSize(&width, &height);
-
-   ruler.SetBounds(0, 0, width-1, height-1);
 }
 
 RulerPanel::~RulerPanel()
@@ -1540,14 +1538,24 @@ void RulerPanel::OnPaint(wxPaintEvent &evt)
 
 void RulerPanel::OnSize(wxSizeEvent &evt)
 {
-   int width, height;
-   GetClientSize(&width, &height);
-
-   ruler.SetBounds(0, 0, width-1, height-1);
-
    Refresh(false);
 }
 
+// LL:  We're overloading DoSetSize so that we can update the ruler bounds immediately
+//      instead of waiting for a wxEVT_SIZE to come through.  This is needed by (at least)
+//      FreqWindow since it needs to have an updated ruler before RulerPanel gets the
+//      size event.
+void RulerPanel::DoSetSize(int x, int y,
+                           int width, int height,
+                           int sizeFlags)
+{
+   wxPanel::DoSetSize(x, y, width, height, sizeFlags);
+
+   int w, h;
+   GetClientSize(&w, &h);
+
+   ruler.SetBounds(0, 0, w-1, h-1);
+}
 
 /**********************************************************************
 
