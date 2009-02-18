@@ -1114,8 +1114,9 @@ void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
 
 
 BEGIN_EVENT_TABLE(FreqPlot, wxWindow)
-    EVT_PAINT(FreqPlot::OnPaint)
-    EVT_MOUSE_EVENTS(FreqPlot::OnMouseEvent)
+   EVT_ERASE_BACKGROUND(FreqPlot::OnErase)
+   EVT_PAINT(FreqPlot::OnPaint)
+   EVT_MOUSE_EVENTS(FreqPlot::OnMouseEvent)
 END_EVENT_TABLE()
 
 FreqPlot::FreqPlot(wxWindow * parent, wxWindowID id,
@@ -1123,6 +1124,11 @@ FreqPlot::FreqPlot(wxWindow * parent, wxWindowID id,
                        const wxSize & size):wxWindow(parent, id, pos, size)
 {
    freqWindow = (FreqWindow *) parent;
+}
+
+void FreqPlot::OnErase(wxEraseEvent &evt)
+{
+   // Ignore it to prevent flashing
 }
 
 void FreqPlot::OnPaint(wxPaintEvent & evt)

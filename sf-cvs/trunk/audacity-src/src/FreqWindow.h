@@ -44,6 +44,7 @@ class FreqPlot:public wxWindow {
 
    void OnMouseEvent(wxMouseEvent & event);
    void OnPaint(wxPaintEvent & event);
+   void OnErase(wxEraseEvent & event);
 
  private:
 
