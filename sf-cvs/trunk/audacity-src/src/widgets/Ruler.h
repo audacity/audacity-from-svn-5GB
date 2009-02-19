@@ -201,8 +201,7 @@ private:
    bool         mbMinor;
    bool         mMajorGrid;      //  for grid drawing
    bool         mMinorGrid;      //         .
-   int          mGridLineLength; //         .
-   int          mZeroPosition;   //        end
+   int          mGridLineLength; //        end
    wxString     mUnits;
 };
 
