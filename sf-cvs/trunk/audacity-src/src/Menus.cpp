@@ -66,6 +66,7 @@ simplifies construction of menu items.
 #include "Internat.h"
 #include "FileFormats.h"
 #include "FreqWindow.h"
+#include "LoadModules.h"	
 #include "Prefs.h"
 #include "Printing.h"
 #include "UploadDialog.h"
@@ -1285,6 +1286,8 @@ void AudacityProject::RebuildMenuBar()
    mRecentFiles = NULL;
 
    CreateMenusAndCommands();
+
+   ModuleManager::Dispatch(MenusRebuilt);
 }
 
 int AudacityProject::GetFocusedFrame()
