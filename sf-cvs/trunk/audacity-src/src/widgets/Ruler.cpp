@@ -1436,7 +1436,7 @@ int Ruler::FindZero(Label * label, const int len)
    if(d == 0.0)
       return (mZeroPosition  = label[i - 1].pos) ;
    else
-      return -1;
+      return mZeroPosition  = -1;
 }
 
 int Ruler::GetZeroPosition() 
