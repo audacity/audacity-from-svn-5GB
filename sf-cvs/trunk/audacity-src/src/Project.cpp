@@ -1867,7 +1867,7 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
          all;
 #endif
 
-   wxString mask = _("All files|*.*|All supported files|") +
+   wxString mask = _("All files|*|All supported files|") +
                    all + wxT("|") +
                    extra + 
                    filter;
