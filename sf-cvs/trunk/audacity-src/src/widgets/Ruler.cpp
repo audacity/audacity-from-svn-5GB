@@ -142,8 +142,6 @@ Ruler::Ruler()
    mGridLineLength = 0;
    mMajorGrid = false;
    mMinorGrid = false;
-
-   mZeroPosition = -1;
 }
 
 Ruler::~Ruler()
@@ -1402,17 +1400,17 @@ void Ruler::DrawGrid(wxDC& dc, int length, bool minor, bool major)
          }
       }
       
-      GetZeroPosition();
-      if(mZeroPosition > 0) {
+      int zeroPosition = GetZeroPosition();
+      if(zeroPosition > 0) {
          // Draw 'zero' grid line in black
          mDC->SetPen(*wxBLACK_PEN);
          if(mOrientation == wxHORIZONTAL) {
-            if(mZeroPosition != mGridLineLength)
-               mDC->DrawLine(mZeroPosition+1, 1, mZeroPosition+1, mGridLineLength);
+            if(zeroPosition != mGridLineLength)
+               mDC->DrawLine(zeroPosition+1, 1, zeroPosition+1, mGridLineLength);
          }
          else {
-            if(mZeroPosition != mGridLineLength)
-               mDC->DrawLine(1, mZeroPosition+1, mGridLineLength, mZeroPosition+1);
+            if(zeroPosition != mGridLineLength)
+               mDC->DrawLine(1, zeroPosition+1, mGridLineLength, zeroPosition+1);
          }
       }
    }
@@ -1434,9 +1432,9 @@ int Ruler::FindZero(Label * label, const int len)
    } while( (i < len) && (d != 0.0) );
 
    if(d == 0.0)
-      return (mZeroPosition  = label[i - 1].pos) ;
+      return (label[i - 1].pos) ;
    else
-      return mZeroPosition  = -1;
+      return -1;
 }
 
 int Ruler::GetZeroPosition() 
