@@ -54,12 +54,15 @@ extern FFmpegLibs *FFmpegLibsInst;
 
 bool CheckFFmpegPresence()
 {
+   bool result = true;
+   PickFFmpegLibs();
    if (!FFmpegLibsInst->ValidLibsLoaded())
    {
       wxMessageBox(_("Properly configured FFmpeg is required to proceed.\nYou can configure it in Preferences->Import/Export."));
-      return false;
+      result = false;
    }
-   return true;
+   DropFFmpegLibs();
+   return result;
 }
 
 //----------------------------------------------------------------------------
@@ -157,19 +160,15 @@ ExportFFmpeg::ExportFFmpeg()
    mSupportsUTF8 = true;
 
    PickFFmpegLibs();
-   if (!FFmpegLibsInst->ValidLibsLoaded())
-   {
-     DropFFmpegLibs();
-     return;
-   }
    int newfmt;
    // Adds export types from the export type list
    for (newfmt = 0; newfmt < FMT_LAST; newfmt++)
    {
       wxString shortname(fmts[newfmt].shortname);
-      if (newfmt < FMT_OTHER)
+      //Don't hide export types when there's no av-libs, and don't hide FMT_OTHER
+      if (newfmt < FMT_OTHER && FFmpegLibsInst->ValidLibsLoaded())
       {
-         // Format/Codec support is compiled in
+         // Format/Codec support is compiled in?
          AVOutputFormat *avoformat = FFmpegLibsInst->guess_format(shortname.mb_str(), NULL, NULL);
          AVCodec *avcodec = FFmpegLibsInst->avcodec_find_encoder(fmts[newfmt].codecid);
          if (avoformat == NULL || avcodec == NULL)
@@ -200,6 +199,7 @@ ExportFFmpeg::ExportFFmpeg()
      SetCanMetaData(fmts[newfmt].canmetadata,fmtindex);
      SetDescription(fmts[newfmt].description,fmtindex);
    }
+   DropFFmpegLibs();
 }
 
 void ExportFFmpeg::Destroy()
@@ -210,9 +210,16 @@ void ExportFFmpeg::Destroy()
 
 bool ExportFFmpeg::CheckFileName(wxFileName &filename, int format)
 {
+   bool result = true;
    if (!CheckFFmpegPresence())
-     return false;
-   return true;
+   {
+      result = false;
+      if (format == FMT_AMRNB || format == FMT_AMRWB)
+      {
+         wxMessageBox(_("AMR export in FFmpeg depends on libamr, which is proprietary and cannot be distributed. That is - it's illegal to download FFmpeg libraries with libamr support compiled in, you can only build such libraries yourself from the source and use them on your own machine."), _("AMR support is unlikely"));
+      }
+   }
+   return result;
 }
 
 bool ExportFFmpeg::Init(const char *shortname, AudacityProject *project, Tags *metadata)
