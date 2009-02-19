@@ -32,7 +32,8 @@ typedef enum
    AppInitialized,
    AppQuiting,
    ProjectInitialized,
-   ProjectClosing
+   ProjectClosing,
+   MenusRebuilt
 } ModuleDispatchTypes;
 
 typedef int (*fnModuleDispatch)(ModuleDispatchTypes type);
