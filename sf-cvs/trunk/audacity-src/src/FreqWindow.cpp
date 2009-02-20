@@ -80,7 +80,8 @@ enum {
    FreqAlgChoiceID,
    FreqSizeChoiceID,
    FreqFuncChoiceID,
-   FreqAxisChoiceID
+   FreqAxisChoiceID,
+   ReplotButtonID
 };
 
 FreqWindow *gFreqWindow = NULL;
@@ -92,15 +93,21 @@ FreqWindow *gFreqWindow = NULL;
 
 void InitFreqWindow(wxWindow * parent)
 {
-   if (gFreqWindow)
-      return;
+   if(!gFreqWindow)
+   {
+      wxPoint where;
 
-   wxPoint where;
+      where.x = 150;
+      where.y = 150;
 
-   where.x = 150;
-   where.y = 150;
+      gFreqWindow = new FreqWindow(parent, -1, _("Frequency Analysis"), where);
+   }
 
-   gFreqWindow = new FreqWindow(parent, -1, _("Frequency Analysis"), where);
+   gFreqWindow->GetAudio();
+   gFreqWindow->Plot();
+   gFreqWindow->Show(true);
+   gFreqWindow->Raise();
+   gFreqWindow->SetFocus();
 }
 
 // FreqWindow
@@ -114,6 +121,7 @@ BEGIN_EVENT_TABLE(FreqWindow, wxDialog)
     EVT_CHOICE(FreqSizeChoiceID, FreqWindow::OnSizeChoice)
     EVT_CHOICE(FreqFuncChoiceID, FreqWindow::OnFuncChoice)
     EVT_CHOICE(FreqAxisChoiceID, FreqWindow::OnAxisChoice)
+    EVT_BUTTON(ReplotButtonID, FreqWindow::OnReplot)
 END_EVENT_TABLE()
 
 FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
@@ -212,6 +220,10 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                                 _("&Export..."));
    mExportButton->SetName(_("Export"));
 
+   mReplotButton = new wxButton(this, ReplotButtonID,
+                                _("&Replot"));
+   mReplotButton->SetName(_("Replot"));
+
    mCloseButton = new wxButton(this, wxID_CANCEL,
                                _("Close"));
    mCloseButton->SetName(_("Close"));
@@ -307,6 +319,8 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
 
    vs->Add( 1, 5, 0 );
 
+   wxFlexGridSizer *gs = new wxFlexGridSizer( 2 );
+
    hs = new wxBoxSizer( wxHORIZONTAL );
    hs->Add( algLabel, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
    hs->Add( mAlgChoice, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
@@ -314,7 +328,8 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    hs->Add( mSizeChoice, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
    hs->Add( 10, 1, 0 );
    hs->Add( mExportButton, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxLEFT | wxRIGHT, 5 );
-   vs->Add( hs, 0, wxALIGN_CENTER_HORIZONTAL | wxLEFT | wxRIGHT | wxBOTTOM, 5 );
+   gs->Add( hs, 0, wxALIGN_CENTER_HORIZONTAL | wxLEFT | wxRIGHT , 5 );
+   gs->Add( mReplotButton, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxLEFT | wxRIGHT | wxBOTTOM, 5 );
 
    hs = new wxBoxSizer( wxHORIZONTAL );
    hs->Add( funcLabel, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
@@ -323,7 +338,9 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    hs->Add( mAxisChoice, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
    hs->Add( 10, 1, 0 );
    hs->Add( mCloseButton, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxLEFT | wxRIGHT, 5 );
-   vs->Add( hs, 0, wxALIGN_CENTER_HORIZONTAL | wxLEFT | wxRIGHT | wxBOTTOM, 5 );
+   gs->Add( hs, 0, wxALIGN_CENTER_HORIZONTAL | wxLEFT | wxRIGHT | wxBOTTOM, 5 );
+   // still some gs space for grid on-off control
+   vs->Add( gs, 0, wxEXPAND | wxBOTTOM, 0 );
 
    vs->Add( mInfo, 0, wxEXPAND | wxBOTTOM, 0 );
 
@@ -345,6 +362,70 @@ FreqWindow::~FreqWindow()
    delete mCrossCursor;
    if (mData)
       delete[]mData;
+   if(buffer)
+      delete[] buffer;
+}
+
+void FreqWindow::GetAudio()
+{
+   int selcount = 0;
+   int i;
+   bool warning = false;
+   sampleCount len;
+   double rate;
+   AudacityProject *p = GetActiveProject();
+   TrackListIterator iter(p->GetTracks());
+   Track *t = iter.First();
+   while (t) {
+      if (t->GetSelected() && t->GetKind() == Track::Wave) {
+         WaveTrack *track = (WaveTrack *)t;
+         if (selcount==0) {
+            rate = track->GetRate();
+            sampleCount start, end;
+            start = track->TimeToLongSamples(p->mViewInfo.sel0);
+            end = track->TimeToLongSamples(p->mViewInfo.sel1);
+            len = (sampleCount)(end - start);
+            if (len > 1048576) {
+               warning = true;
+               len = 1048576;
+            }
+            buffer = new float[len];
+            track->Get((samplePtr)buffer, floatSample, start, len);
+         }
+         else {
+            if (track->GetRate() != rate) {
+               wxMessageBox(_("To plot the spectrum, all selected tracks must be the same sample rate."));
+               delete[] buffer;
+               return;
+            }
+            sampleCount start;
+            start = track->TimeToLongSamples(p->mViewInfo.sel0);
+            float *buffer2 = new float[len];
+            track->Get((samplePtr)buffer2, floatSample, start, len);
+            for(i=0; i<len; i++)
+               buffer[i] += buffer2[i];
+            delete[] buffer2;
+         }
+         selcount++;
+      }
+      t = iter.Next();
+   }
+   
+   if (selcount == 0)
+      return;
+   
+   if (selcount > 1)
+      for(i=0; i<len; i++)
+         buffer[i] /= selcount;
+   
+   if (warning) {
+      wxString msg;
+      msg.Printf(_("Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."),
+                          (len / rate));
+      wxMessageBox(msg);
+   }
+   mDataLen = len;
+   mRate = rate;
 }
 
 void FreqWindow::OnSize(wxSizeEvent & event)
@@ -823,15 +904,13 @@ void FreqWindow::OnCloseButton(wxCommandEvent & WXUNUSED(event))
    this->Show(FALSE);
 }
 
-void FreqWindow::Plot(int len, float *data, double rate)
+void FreqWindow::Plot()
 {
-   mRate = rate;
-   mDataLen = len;
    if (mData)
       delete[]mData;
-   mData = new float[len];
-   for (int i = 0; i < len; i++)
-      mData[i] = data[i];
+   mData = new float[mDataLen];
+   for (int i = 0; i < mDataLen; i++)
+      mData[i] = buffer[i];
    Recalc();
    wxSizeEvent dummy;
    OnSize( dummy );
@@ -1112,6 +1191,11 @@ void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
    f.Close();
 }
 
+void FreqWindow::OnReplot(wxCommandEvent & WXUNUSED(event))
+{
+   GetAudio();
+   gFreqWindow->Plot();
+}
 
 BEGIN_EVENT_TABLE(FreqPlot, wxWindow)
    EVT_ERASE_BACKGROUND(FreqPlot::OnErase)
