@@ -59,8 +59,9 @@ class FreqWindow:public wxDialog {
               const wxString & title, const wxPoint & pos);
 
    virtual ~ FreqWindow();
+   void GetAudio();
 
-   void Plot(int len, float *data, double rate);
+   void Plot();
 
    void PlotMouseEvent(wxMouseEvent & event);
    void PlotPaint(wxPaintEvent & event);
@@ -73,11 +74,13 @@ class FreqWindow:public wxDialog {
    void OnFuncChoice(wxCommandEvent & event);
    void OnAxisChoice(wxCommandEvent & event);
    void OnExport(wxCommandEvent & event);
+   void OnReplot(wxCommandEvent & event);
 
    void Recalc();
    void DrawPlot();
 
  private:
+   float *buffer;
 
 #ifdef __WXMSW__
    static const int fontSize = 8;
@@ -96,6 +99,7 @@ class FreqWindow:public wxDialog {
 
    wxButton *mCloseButton;
    wxButton *mExportButton;
+   wxButton *mReplotButton;
    wxChoice *mAlgChoice;
    wxChoice *mSizeChoice;
    wxChoice *mFuncChoice;

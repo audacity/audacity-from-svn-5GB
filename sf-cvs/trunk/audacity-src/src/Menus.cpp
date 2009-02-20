@@ -3986,70 +3986,7 @@ void AudacityProject::OnShowClipping()
 
 void AudacityProject::OnPlotSpectrum()
 {
-   int selcount = 0;
-   int i;
-   double rate = 0;
-   sampleCount len = 0;
-   float *buffer = NULL;
-   bool warning = false;
-   TrackListIterator iter(mTracks);
-   Track *t = iter.First();
-   while (t) {
-      if (t->GetSelected() && t->GetKind() == Track::Wave) {
-         WaveTrack *track = (WaveTrack *)t;
-         if (selcount==0) {
-            rate = track->GetRate();
-            sampleCount start, end;
-            start = track->TimeToLongSamples(mViewInfo.sel0);
-            end = track->TimeToLongSamples(mViewInfo.sel1);
-            len = (sampleCount)(end - start);
-            if (len > 1048576) {
-               warning = true;
-               len = 1048576;
-            }
-            buffer = new float[len];
-            track->Get((samplePtr)buffer, floatSample, start, len);
-         }
-         else {
-            if (track->GetRate() != rate) {
-               wxMessageBox(_("To plot the spectrum, all selected tracks must be the same sample rate."));
-               delete[] buffer;
-               return;
-            }
-            sampleCount start;
-            start = track->TimeToLongSamples(mViewInfo.sel0);
-            float *buffer2 = new float[len];
-            track->Get((samplePtr)buffer2, floatSample, start, len);
-            for(i=0; i<len; i++)
-               buffer[i] += buffer2[i];
-            delete[] buffer2;
-         }
-         selcount++;
-      }
-      t = iter.Next();
-   }
-   
-   if (selcount == 0)
-      return;
-   
-   if (selcount > 1)
-      for(i=0; i<len; i++)
-         buffer[i] /= selcount;
-   
-   if (warning) {
-      wxString msg;
-      msg.Printf(_("Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."),
-                          (len / rate));
-      wxMessageBox(msg);
-   }
-
    InitFreqWindow(NULL);
-   gFreqWindow->Plot(len, buffer, rate);
-   gFreqWindow->Show(true);
-   gFreqWindow->Raise();
-   gFreqWindow->SetFocus();
-
-   delete[] buffer;
 }
 
 
