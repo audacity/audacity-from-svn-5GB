@@ -68,6 +68,8 @@ the mouse around.
 #include "FFT.h"
 #include "Internat.h"
 #include "PitchName.h"
+#include "Project.h"
+#include "WaveClip.h"
 #include "Theme.h"
 #include "AllThemeResources.h"
 
