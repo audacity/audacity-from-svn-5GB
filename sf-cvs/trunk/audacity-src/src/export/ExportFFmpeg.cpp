@@ -65,6 +65,21 @@ bool CheckFFmpegPresence()
    return result;
 }
 
+int AdjustFormatIndex(int format)
+{
+   int subFormat = -1;
+   for (int i = 0; i <= FMT_OTHER; i++)
+   {
+      if (fmts[i].compiledIn) subFormat++;
+      if (subFormat == format || i == FMT_OTHER)
+      {
+         subFormat = i;
+         break;
+      }
+   }
+   return subFormat;
+}
+
 //----------------------------------------------------------------------------
 // ExportFFmpeg
 //----------------------------------------------------------------------------
@@ -159,7 +174,7 @@ ExportFFmpeg::ExportFFmpeg()
    mSampleRate = 0;
    mSupportsUTF8 = true;
 
-   PickFFmpegLibs();
+   PickFFmpegLibs(); // DropFFmpegLibs() call is in ExportFFmpeg::Destroy()
    int newfmt;
    // Adds export types from the export type list
    for (newfmt = 0; newfmt < FMT_LAST; newfmt++)
@@ -199,7 +214,6 @@ ExportFFmpeg::ExportFFmpeg()
      SetCanMetaData(fmts[newfmt].canmetadata,fmtindex);
      SetDescription(fmts[newfmt].description,fmtindex);
    }
-   DropFFmpegLibs();
 }
 
 void ExportFFmpeg::Destroy()
@@ -211,13 +225,15 @@ void ExportFFmpeg::Destroy()
 bool ExportFFmpeg::CheckFileName(wxFileName &filename, int format)
 {
    bool result = true;
-   if (!CheckFFmpegPresence())
+   int subFormat = AdjustFormatIndex(format);
+   if (format == FMT_AMRNB || format == FMT_AMRWB)
+   {
+      wxMessageBox(_("Properly configured FFmpeg is required to proceed. You can configure it in Preferences->Import/Export.\nHowever AMR support is not available with our FFmpeg installer, but requires you compile FFmpeg yourself."), _("AMR support is unlikely"));
+      result = false;
+   }
+   else if (!CheckFFmpegPresence())
    {
       result = false;
-      if (format == FMT_AMRNB || format == FMT_AMRWB)
-      {
-         wxMessageBox(_("AMR export in FFmpeg depends on libamr, which is proprietary and cannot be distributed. That is - it's illegal to download FFmpeg libraries with libamr support compiled in, you can only build such libraries yourself from the source and use them on your own machine."), _("AMR support is unlikely"));
-      }
    }
    return result;
 }
@@ -632,16 +648,7 @@ int ExportFFmpeg::Export(AudacityProject *project,
       return false;
    mChannels = channels;
    // subformat index may not correspond directly to fmts[] index, convert it
-   mSubFormat = -1;
-   for (int i = 0; i <= FMT_OTHER; i++)
-   {
-      if (fmts[i].compiledIn) mSubFormat++;
-      if (mSubFormat == subformat || i == FMT_OTHER)
-      {
-         mSubFormat = i;
-         break;
-      }
-   }
+   mSubFormat = AdjustFormatIndex(subformat);
    if (channels > fmts[mSubFormat].maxchannels)
    {
       wxLogMessage(wxT("Attempted to export %d channels, but max. channels = %d"),channels,fmts[mSubFormat].maxchannels);
@@ -814,16 +821,7 @@ bool ExportFFmpeg::DisplayOptions(wxWindow *parent, int format)
    if (!CheckFFmpegPresence())
       return false;
    // subformat index may not correspond directly to fmts[] index, convert it
-   mSubFormat = -1;
-   for (int i = 0; i <= FMT_OTHER; i++)
-   {
-      if (fmts[i].compiledIn) mSubFormat++;
-      if (mSubFormat == format || i == FMT_OTHER)
-      {
-         mSubFormat = i;
-         break;
-      }
-   }
+   mSubFormat = AdjustFormatIndex(format);
    if (mSubFormat == FMT_M4A)
    {
       ExportFFmpegAACOptions od(parent);
