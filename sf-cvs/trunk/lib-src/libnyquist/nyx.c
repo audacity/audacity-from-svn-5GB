@@ -32,6 +32,8 @@
 #include "samples.h"
 #include "falloc.h"
 
+/* show memory stats */
+//	#define NYX_MEMORY_STATS 1
 
 /* nyquist externs */
 extern LVAL a_sound;
@@ -108,6 +110,11 @@ void nyx_init()
    xlprot1(nyx_result);
 
    nyx_save_obarray();
+
+#if defined(NYX_MEMORY_STATS)
+   printf("\nnyx_init\n");
+   xmem();
+#endif
 }
 
 void nyx_cleanup()
@@ -117,6 +124,11 @@ void nyx_cleanup()
 
    xlpop(); /* garbage-collect nyx_result */
    gc(); /* run the garbage-collector now */
+
+#if defined(NYX_MEMORY_STATS)
+   printf("\nnyx_cleanup\n");
+   xmem();
+#endif
 }
 
 void nyx_susp_fetch(register nyx_susp_type susp, snd_list_type snd_list)
@@ -136,8 +148,12 @@ void nyx_susp_fetch(register nyx_susp_type susp, snd_list_type snd_list)
 
    err = susp->callback(out_ptr, susp->channel,
                             susp->susp.current, n, 0, susp->userdata);
-   if (err)
-      longjmp(nyx_cntxt.c_jmpbuf, 1);      
+   if (err) {
+      // The user canceled or some other error occurred, so we use
+      // xlsignal() to jump back to our error handler.
+      xlsignal(NULL, NULL);
+      // never get here.
+   }
 
    snd_list->block_len = (short)n;
    susp->susp.current += n;
@@ -364,6 +380,11 @@ nyx_rval nyx_eval_expression(const char *expr_string)
 {
    LVAL expr = NULL;
 
+#if defined(NYX_MEMORY_STATS)
+   printf("\nnyx_eval_expression before\n");
+   xmem();
+#endif
+
    nyx_expr_string = expr_string;
    nyx_expr_len = strlen(nyx_expr_string);
    nyx_expr_pos = 0;
@@ -374,10 +395,16 @@ nyx_rval nyx_eval_expression(const char *expr_string)
 
    xlprot1(expr);
 
+   /* Setup a new context */
+   xlbegin(&nyx_cntxt, CF_TOPLEVEL|CF_CLEANUP|CF_BRKLEVEL|CF_ERROR, s_true);
+
    /* setup the error return */
-   xlbegin(&nyx_cntxt,CF_TOPLEVEL|CF_CLEANUP|CF_BRKLEVEL,(LVAL)1);
-   if (setjmp(nyx_cntxt.c_jmpbuf))
+   if (setjmp(nyx_cntxt.c_jmpbuf)) {
+      // If the script is cancelled or some other condition occurs that causes
+      // the script to exit and return to this level, then we don't need to
+      // restore the previous context.
       goto finish;
+   }
 
    while(nyx_expr_pos < nyx_expr_len) {
       expr = NULL;
@@ -398,15 +425,21 @@ nyx_rval nyx_eval_expression(const char *expr_string)
 
    xlflush();
 
+   xltoplevel();
+
  finish:
-   xlend(&nyx_cntxt);
 
    xlpop(); /* unprotect expr */
 
    /* reset the globals to their initial state */
    obarray = nyx_old_obarray;
-   setvalue(xlenter("S"), NULL);
+   setvalue(xlenter("S"), NIL);
    gc();
+
+#if defined(NYX_MEMORY_STATS)
+   printf("\nnyx_eval_expression after\n");
+   xmem();
+#endif
 
    return nyx_get_type(nyx_result);
 }
@@ -440,6 +473,11 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
    if (nyx_get_type(nyx_result) != nyx_audio)
       return success;
 
+#if defined(NYX_MEMORY_STATS)
+   printf("\nnyx_get_audio before\n");
+   xmem();
+#endif
+
    num_channels = nyx_get_audio_num_channels();
 
    snds = (sound_type *)malloc(num_channels * sizeof(sound_type));
@@ -457,10 +495,16 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
       goto finish;
    }
 
+   /* Setup a new context */
+   xlbegin(&nyx_cntxt, CF_TOPLEVEL|CF_CLEANUP|CF_BRKLEVEL|CF_ERROR, s_true);
+
    /* setup the error return */
-   xlbegin(&nyx_cntxt,CF_TOPLEVEL|CF_CLEANUP|CF_BRKLEVEL,(LVAL)1);
-   if (setjmp(nyx_cntxt.c_jmpbuf))
+   if (setjmp(nyx_cntxt.c_jmpbuf)) {
+      // If the script is cancelled or some other condition occurs that causes
+      // the script to exit and return to this level, then we don't need to
+      // restore the previous context.
       goto finish;
+   }
 
    for(ch=0; ch<num_channels; ch++) {
       if (num_channels == 1)
@@ -506,7 +550,10 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
                            totals[ch], cnt, lens[ch], userdata);
 
          if (result != 0) {
-            goto finish;
+            // The user canceled or some other error occurred, so we use
+            // xlsignal() to jump back to our error handler.
+            xlsignal(NULL, NULL);
+            // never get here.
          }
 
          totals[ch] += cnt;
@@ -515,8 +562,11 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
 
    success = TRUE;
 
+   xltoplevel();
+
  finish:
-   xlend(&nyx_cntxt);
+
+   gc();
 
    if (buffer) {
       free(buffer);
@@ -533,6 +583,11 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
    if (snds) {
       free(snds);
    }
+
+#if defined(NYX_MEMORY_STATS)
+   printf("\nnyx_get_audio after\n");
+   xmem();
+#endif
 
    return success;
 }
