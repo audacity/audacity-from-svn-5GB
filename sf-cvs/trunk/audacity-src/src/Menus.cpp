@@ -704,8 +704,11 @@ void AudacityProject::CreateMenusAndCommands()
                          AudioIONotBusyFlag | NoteTracksSelectedFlag | WaveTracksSelectedFlag);
 #endif // EXPERIMENTAL_SCOREALIGN
 
+      c->AddSeparator();
+      c->AddItem(wxT("StickyLabels"),       _("&Link Audio and Label Tracks"), FN(OnStickyLabel), 0); 	 
+
       c->AddSeparator(); 
-      c->AddItem(wxT("AddLabel"),       _("Add &Label At Selection\tCtrl+B"), FN(OnAddLabel));
+      c->AddItem(wxT("AddLabel"),       _("Add Label At &Selection\tCtrl+B"), FN(OnAddLabel));
       c->AddItem(wxT("AddLabelPlaying"),       _("Add Label At &Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
       c->SetCommandFlags(wxT("AddLabel"), 0, 0);
       c->SetCommandFlags(wxT("AddLabelPlaying"), 0, AudioIONotBusyFlag);
