@@ -44,6 +44,7 @@
   <li>Vaughan Johnson - (vaughan (at) audacityteam.org)</li>
   <li>Leland Lucius - (leland (at) audacityteam.org)</li>
   <li>Markus Meyer - (markus (at) audacityteam.org)</li>
+  <li>Martyn Shaw - (martynshaw99 (at) googlemail.com)</li>
 </ul>
 
 <h3><?=_("Emeritus: distinguished Audacity team members, not currently active")?></h3>
